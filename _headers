@@ -1,0 +1,9 @@
+# Reconnu automatiquement par Netlify (ignoré par les autres hébergeurs,
+# ce qui est sans danger). Empêche le navigateur de mettre sw.js en cache
+# trop longtemps, pour que la détection de nouvelle version soit fiable.
+
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/index.html
+  Cache-Control: no-cache, no-store, must-revalidate

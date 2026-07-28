@@ -622,14 +622,50 @@
   window.addEventListener("offline", updateSyncStatus);
 
   /* ---------------------------------------------------------
-     Service worker (hors-ligne)
+     Service worker (hors-ligne + mise à jour automatique)
   --------------------------------------------------------- */
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("sw.js").catch(() => {
-        /* l'appli reste utilisable même si le SW échoue à s'enregistrer */
-      });
+    let refreshing = false;
+
+    // Dès qu'un nouveau service worker prend le contrôle (il a déjà fait
+    // skipWaiting() côté sw.js), on recharge la page une seule fois pour
+    // charger les nouveaux fichiers.
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (refreshing) return;
+      refreshing = true;
+      showUpdateToast();
+      setTimeout(() => window.location.reload(), 900);
     });
+
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("sw.js")
+        .then((registration) => {
+          // Vérifie immédiatement s'il existe une version plus récente.
+          registration.update();
+
+          // Et à nouveau chaque fois que l'appli redevient visible
+          // (ex. rouverte depuis l'écran d'accueil de l'iPhone).
+          document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "visible") {
+              registration.update();
+            }
+          });
+
+          // Filet de sécurité si l'appli reste ouverte longtemps en arrière-plan.
+          setInterval(() => registration.update(), 60 * 60 * 1000);
+        })
+        .catch(() => {
+          /* l'appli reste utilisable même si le SW échoue à s'enregistrer */
+        });
+    });
+  }
+
+  function showUpdateToast() {
+    const toast = document.createElement("div");
+    toast.className = "update-toast";
+    toast.textContent = "Mise à jour de l'appli…";
+    document.body.appendChild(toast);
   }
 
   /* ---------------------------------------------------------

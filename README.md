@@ -90,6 +90,24 @@ code de synchronisation joue le rôle de mot de passe — garde-le pour toi.
 La configuration proposée (policy Supabase ouverte à la clé « anon ») est
 adaptée à un usage personnel, pas à des données sensibles.
 
+## Mise à jour automatique
+
+L'appli vérifie s'il existe une nouvelle version à chaque ouverture (et
+toutes les heures si elle reste ouverte en arrière-plan). Dès qu'une
+nouvelle version est détectée, elle s'active et la page se recharge
+toute seule — plus besoin de vider le cache ou de réinstaller l'icône.
+
+Deux conditions pour que ça marche bien :
+- **Redéployer les fichiers** à chaque changement (copier le zip sur ton
+  PC ne suffit pas si l'appli tourne sur une URL en ligne)
+- **Incrémenter `CACHE_NAME`** dans `sw.js` à chaque déploiement (ex.
+  `fiches-cache-v5` → `v6`) — c'est ce qui fait que le fichier `sw.js`
+  change d'octets et que le navigateur le remarque
+
+Le fichier `_headers` (reconnu par Netlify) empêche en plus la mise en
+cache de `sw.js` et `index.html` côté serveur, pour que la vérification
+soit toujours fiable.
+
 ## Comment fonctionne la répétition espacée
 
 Chaque fiche a trois valeurs : un facteur de facilité, un intervalle
