@@ -419,11 +419,14 @@
   const copyCodeBtn = el("copy-code-btn");
   const disconnectBtn = el("disconnect-btn");
   const syncPendingNoteEl = el("sync-pending-note");
+  const syncErrorNoteEl = el("sync-error-note");
+  const retrySyncBtn = el("retry-sync-btn");
   const syncStatusBtn = el("sync-status");
   const syncDotEl = el("sync-dot");
   const syncStatusTextEl = el("sync-status-text");
 
   let unsubscribeRealtime = null;
+  let syncAutoRetrying = false;
 
   function renderSyncView() {
     const configured = Sync.isConfigured();
@@ -435,6 +438,28 @@
       const pending = Sync.pendingCount();
       syncPendingNoteEl.hidden = pending === 0;
       syncPendingNoteEl.textContent = `${pending} fiche(s) en attente d'envoi (dès que la connexion revient).`;
+
+      const lastError = Sync.getLastError();
+      syncErrorNoteEl.hidden = !lastError;
+      syncErrorNoteEl.textContent = lastError
+        ? `Dernière erreur Supabase : ${lastError}`
+        : "";
+
+      // Nouvelle tentative silencieuse à chaque ouverture de l'onglet,
+      // sans se relancer elle-même pour éviter une boucle.
+      if (pending > 0 && navigator.onLine && !syncAutoRetrying) {
+        syncAutoRetrying = true;
+        Sync.flushPending((id) => cards.find((c) => c.id === id)).then(() => {
+          syncAutoRetrying = false;
+          const stillPending = Sync.pendingCount();
+          syncPendingNoteEl.hidden = stillPending === 0;
+          syncPendingNoteEl.textContent = `${stillPending} fiche(s) en attente d'envoi (dès que la connexion revient).`;
+          const err = Sync.getLastError();
+          syncErrorNoteEl.hidden = !err;
+          syncErrorNoteEl.textContent = err ? `Dernière erreur Supabase : ${err}` : "";
+          updateSyncStatus();
+        });
+      }
     }
   }
 
@@ -488,6 +513,17 @@
     } catch {
       /* presse-papier indisponible, tant pis */
     }
+  });
+
+  retrySyncBtn.addEventListener("click", async () => {
+    retrySyncBtn.disabled = true;
+    retrySyncBtn.textContent = "Envoi...";
+    await reconcileWithRemote();
+    await Sync.flushPending((id) => cards.find((c) => c.id === id));
+    renderSyncView();
+    updateSyncStatus();
+    retrySyncBtn.disabled = false;
+    retrySyncBtn.textContent = "Réessayer maintenant";
   });
 
   disconnectBtn.addEventListener("click", () => {

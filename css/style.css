@@ -635,6 +635,17 @@ textarea, input {
   margin: 0 0 16px;
 }
 
+.sync-error {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--terracotta);
+  background: rgba(182, 96, 74, 0.12);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
 /* ============================================================
    RESPONSIVE + MOTION
    ============================================================ */

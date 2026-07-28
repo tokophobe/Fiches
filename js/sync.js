@@ -136,10 +136,14 @@ async function pullAll() {
     .eq("sync_code", code);
   if (error) {
     console.warn("Sync: échec du chargement distant", error.message);
+    lastError = error.message;
     return [];
   }
+  lastError = "";
   return data.map(rowToCard);
 }
+
+let lastError = "";
 
 async function pushCard(card) {
   const c = getClient();
@@ -148,9 +152,11 @@ async function pushCard(card) {
   const { error } = await c.from("cards").upsert(cardToRow(card, code));
   if (error) {
     console.warn("Sync: échec de l'envoi, mis en attente", error.message);
+    lastError = error.message;
     addPending(card.id);
     return false;
   }
+  lastError = "";
   removePending(card.id);
   return true;
 }
@@ -197,4 +203,5 @@ window.Sync = {
   flushPending,
   subscribeRealtime,
   pendingCount: () => getPending().length,
+  getLastError: () => lastError,
 };
