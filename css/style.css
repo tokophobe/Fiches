@@ -356,6 +356,7 @@ textarea, input {
   margin: 0;
   overflow-y: auto;
   flex: 1;
+  white-space: pre-line;
 }
 
 .tap-hint {
