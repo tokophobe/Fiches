@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Fiches — révision espacée</title>
+<meta name="description" content="Crée des fiches question / réponse et révise-les avec la répétition espacée." />
+
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#1A2D26" />
+<link rel="icon" href="icons/icon-192.png" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Fiches" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+</head>
+<body>
+
+<div class="desk">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">✎</span>
+      <h1>Fiches</h1>
+    </div>
+    <div class="header-right">
+      <button class="sync-status" id="sync-status" type="button" title="État de la synchronisation">
+        <span class="sync-dot" id="sync-dot"></span>
+        <span id="sync-status-text">Local</span>
+      </button>
+      <div class="due-pill" id="due-pill" title="Fiches à revoir aujourd'hui">
+        <span id="due-count">0</span> à revoir
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Navigation">
+    <button class="tab is-active" role="tab" aria-selected="true" data-view="review">Réviser</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="manage">Gérer</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="stats">Stats</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="sync">Sync</button>
+  </nav>
+
+  <main>
+    <!-- VUE RÉVISION -->
+    <section id="view-review" class="view is-active" aria-labelledby="tab-review">
+      <p class="review-progress" id="review-progress"></p>
+
+      <div class="stage" id="stage">
+        <!-- empty state -->
+        <div class="empty-state" id="empty-state" hidden>
+          <p class="empty-title">Rien à réviser pour l'instant.</p>
+          <p class="empty-sub">Reviens plus tard, ou ajoute des fiches dans l'onglet « Gérer ».</p>
+        </div>
+
+        <!-- card stack -->
+        <div class="card-stack" id="card-stack" hidden>
+          <div class="stack-card stack-card--back-2" aria-hidden="true"></div>
+          <div class="stack-card stack-card--back-1" aria-hidden="true"></div>
+          <button class="stack-card stack-card--front" id="flip-card" type="button" aria-label="Retourner la fiche">
+            <div class="rule-line"></div>
+            <div class="hole" aria-hidden="true"></div>
+            <div class="card-face card-face--question">
+              <span class="card-label">Question</span>
+              <p class="card-text" id="question-text"></p>
+              <span class="tap-hint">Touche la fiche pour voir la réponse</span>
+            </div>
+            <div class="card-face card-face--answer">
+              <span class="card-label card-label--answer">Réponse</span>
+              <p class="card-text" id="answer-text"></p>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="rating-row" id="rating-row" hidden>
+        <button class="stamp stamp--again" data-rating="again" type="button">
+          <span class="stamp-label">Encore</span>
+          <span class="stamp-sub">&lt; 1 j</span>
+        </button>
+        <button class="stamp stamp--hard" data-rating="hard" type="button">
+          <span class="stamp-label">Difficile</span>
+          <span class="stamp-sub" id="sub-hard">—</span>
+        </button>
+        <button class="stamp stamp--good" data-rating="good" type="button">
+          <span class="stamp-label">Bien</span>
+          <span class="stamp-sub" id="sub-good">—</span>
+        </button>
+        <button class="stamp stamp--easy" data-rating="easy" type="button">
+          <span class="stamp-label">Facile</span>
+          <span class="stamp-sub" id="sub-easy">—</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- VUE GESTION -->
+    <section id="view-manage" class="view" aria-labelledby="tab-manage">
+      <form class="card-form" id="card-form">
+        <h2 class="section-title">Nouvelle fiche</h2>
+        <label class="field">
+          <span>Question</span>
+          <textarea id="input-question" rows="2" required placeholder="Ex. Capitale de l'Islande ?"></textarea>
+        </label>
+        <label class="field">
+          <span>Réponse</span>
+          <textarea id="input-answer" rows="2" required placeholder="Ex. Reykjavik"></textarea>
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary" id="submit-btn">Ajouter à la pile</button>
+          <button type="button" class="btn btn--ghost" id="cancel-edit" hidden>Annuler</button>
+        </div>
+      </form>
+
+      <div class="list-header">
+        <h2 class="section-title">Toutes les fiches (<span id="total-count">0</span>)</h2>
+        <div class="io-buttons">
+          <button class="btn btn--small" id="export-btn" type="button">Exporter</button>
+          <label class="btn btn--small btn--file">
+            Importer
+            <input type="file" id="import-input" accept="application/json" hidden />
+          </label>
+        </div>
+      </div>
+
+      <ul class="card-list" id="card-list"></ul>
+    </section>
+
+    <!-- VUE STATS -->
+    <section id="view-stats" class="view" aria-labelledby="tab-stats">
+      <h2 class="section-title">Où en es-tu</h2>
+      <div class="stat-grid">
+        <div class="stat-box">
+          <span class="stat-number" id="stat-total">0</span>
+          <span class="stat-label">fiches au total</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="stat-due">0</span>
+          <span class="stat-label">à revoir aujourd'hui</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="stat-learning">0</span>
+          <span class="stat-label">en apprentissage</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="stat-mastered">0</span>
+          <span class="stat-label">bien maîtrisées</span>
+        </div>
+      </div>
+      <p class="stat-note">Une fiche est « bien maîtrisée » dès que l'intervalle avant la prochaine question dépasse 21 jours.</p>
+    </section>
+
+    <!-- VUE SYNC -->
+    <section id="view-sync" class="view" aria-labelledby="tab-sync">
+
+      <div id="sync-unconfigured">
+        <h2 class="section-title">Synchroniser tes fiches</h2>
+        <p class="sync-intro">
+          Relie l'appli à un projet Supabase gratuit pour retrouver les mêmes
+          fiches sur tous tes appareils. Marche à suivre complète dans le
+          <code>README.md</code> du projet (créer un projet, exécuter
+          <code>supabase-schema.sql</code>, puis coller les infos ci-dessous).
+        </p>
+
+        <form class="card-form" id="sync-form">
+          <label class="field">
+            <span>URL du projet Supabase</span>
+            <input type="url" id="sync-url" required placeholder="https://xxxx.supabase.co" />
+          </label>
+          <label class="field">
+            <span>Clé publique (anon/public)</span>
+            <input type="text" id="sync-key" required placeholder="eyJhbGciOi..." />
+          </label>
+          <label class="field">
+            <span>Code de synchronisation</span>
+            <div class="code-row">
+              <input type="text" id="sync-code" required placeholder="XXXX-XXXX" />
+              <button type="button" class="btn btn--small" id="generate-code-btn">Générer</button>
+            </div>
+          </label>
+          <p class="field-hint">
+            Nouveau ? Clique « Générer » puis note le code. Sur ton autre
+            appareil, entre exactement le même code pour rejoindre le même
+            espace.
+          </p>
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary">Connecter</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="sync-configured" hidden>
+        <h2 class="section-title">Connecté</h2>
+        <div class="sync-card">
+          <span class="card-label">Ton code de synchronisation</span>
+          <p class="sync-code-display" id="current-sync-code">—</p>
+          <button class="btn btn--small" id="copy-code-btn" type="button">Copier le code</button>
+        </div>
+        <p class="sync-intro">
+          Entre ce même code sur tes autres appareils, dans cet onglet, pour
+          qu'ils partagent les mêmes fiches.
+        </p>
+        <p class="sync-pending" id="sync-pending-note" hidden></p>
+        <button class="btn btn--ghost" id="disconnect-btn" type="button">Se déconnecter de cet espace</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="js/sm2.js"></script>
+<script src="js/db.js"></script>
+<script src="js/sync.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
