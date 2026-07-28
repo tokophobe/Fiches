@@ -17,7 +17,7 @@
 
   --font-type: "Special Elite", "Arial", monospace;
   /*--font-body: "Source Serif 4", Georgia, serif;*/
-  --font-body: "Source Serif 4", Arial, serif;
+  --font-body: sans-serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", monospace;
 
   --shadow-deep: 0 18px 40px rgba(0, 0, 0, 0.35);
