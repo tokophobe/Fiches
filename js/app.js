@@ -19,6 +19,7 @@
   const questionTextEl = el("question-text");
   const answerTextEl = el("answer-text");
   const ratingRowEl = el("rating-row");
+  const editCurrentBtn = el("edit-current-btn");
 
   const cardForm = el("card-form");
   const inputQuestion = el("input-question");
@@ -115,6 +116,7 @@
       currentCard = null;
       emptyStateEl.hidden = false;
       cardStackEl.hidden = true;
+      editCurrentBtn.hidden = true;
       reviewProgressEl.textContent =
         cards.length === 0
           ? ""
@@ -125,6 +127,7 @@
     currentCard = reviewQueue[0];
     emptyStateEl.hidden = true;
     cardStackEl.hidden = false;
+    editCurrentBtn.hidden = false;
     questionTextEl.textContent = currentCard.question;
     answerTextEl.textContent = currentCard.answer;
 
@@ -153,6 +156,16 @@
     if (days < 365) return `${Math.round(days / 30)} mois`;
     return `${Math.round(days / 365)} an(s)`;
   }
+
+  let editReturnToReview = false;
+
+  editCurrentBtn.addEventListener("click", () => {
+    if (!currentCard) return;
+    editReturnToReview = true;
+    enterEditMode(currentCard);
+    document.querySelector('.tab[data-view="manage"]').click();
+    inputQuestion.focus();
+  });
 
   flipCardEl.addEventListener("click", () => {
     if (!currentCard) return;
@@ -218,10 +231,17 @@
 
     cardForm.reset();
     renderAll();
-    if (!currentCard) startReviewSession();
+
+    if (editReturnToReview) {
+      editReturnToReview = false;
+      document.querySelector('.tab[data-view="review"]').click();
+    } else if (!currentCard) {
+      startReviewSession();
+    }
   });
 
   cancelEditBtn.addEventListener("click", () => {
+    editReturnToReview = false;
     exitEditMode();
     cardForm.reset();
   });
