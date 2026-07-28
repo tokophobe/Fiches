@@ -15,10 +15,12 @@
   --terracotta: #b6604a;
   --blue: #4b7996;
 
-  --font-type: "Special Elite", "Arial", monospace;
+  /*--font-type: "Special Elite", "Arial", monospace;*/
+  --font-type: sans-serif;
   /*--font-body: "Source Serif 4", Georgia, serif;*/
   --font-body: sans-serif;
-  --font-mono: "IBM Plex Mono", "SFMono-Regular", monospace;
+  --font-mono: sans-serif;
+  /*--font-mono: "IBM Plex Mono", "SFMono-Regular", monospace;*/
 
   --shadow-deep: 0 18px 40px rgba(0, 0, 0, 0.35);
   --radius-card: 14px;
