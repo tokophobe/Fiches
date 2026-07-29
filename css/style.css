@@ -137,9 +137,16 @@ textarea, input {
   padding: 6px 12px;
   font-weight: 600;
   box-shadow: var(--shadow-deep);
+  transition: background-color 0.35s ease, color 0.35s ease;
 }
 
 .due-pill #due-count { font-size: 13px; }
+
+/* Mode bonus (révision libre, plus rien de programmé) : fond blanc distinctif. */
+.due-pill.is-bonus {
+  background: #ffffff !important;
+  color: var(--desk) !important;
+}
 
 .tabs {
   display: flex;

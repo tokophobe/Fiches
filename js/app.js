@@ -8,9 +8,16 @@
   let currentCard = null;
   let editingId = null;
   let isFlipped = false;
+  /** nombre de fiches dues au moment où la session a démarré (dénominateur stable du compteur) */
+  let sessionTotalDue = 0;
+  /** true dès qu'on a épuisé les fiches dues et qu'on pioche des fiches au hasard */
+  let isBonusMode = false;
+  /** true dès que la toute première session de révision a été lancée (au chargement de l'appli) */
+  let reviewSessionStarted = false;
 
   const el = (id) => document.getElementById(id);
 
+  const duePillEl = el("due-pill");
   const dueCountEl = el("due-count");
   const reviewProgressEl = el("review-progress");
   const emptyStateEl = el("empty-state");
@@ -87,14 +94,31 @@
   }
 
   function renderDuePill() {
-    dueCountEl.textContent = String(dueCards().length);
+    const due = dueCards().length;
+    dueCountEl.textContent = String(due);
+
+    if (isBonusMode) {
+      duePillEl.classList.add("is-bonus");
+      duePillEl.style.removeProperty("background");
+      duePillEl.style.removeProperty("color");
+      return;
+    }
+
+    duePillEl.classList.remove("is-bonus");
+    const total = cards.filter((c) => !c.deleted).length;
+    const fraction = total === 0 ? 0 : due / total;
+    const hue = Math.round(120 - 120 * Math.min(1, Math.max(0, fraction)));
+    duePillEl.style.background = `hsl(${hue}, 62%, 42%)`;
+    duePillEl.style.color = "var(--paper)";
   }
 
   /* ---------------------------------------------------------
      Vue Réviser
   --------------------------------------------------------- */
   function startReviewSession() {
+    reviewSessionStarted = true;
     reviewQueue = shuffle(dueCards());
+    sessionTotalDue = reviewQueue.length;
     showNextCard();
   }
 
@@ -107,41 +131,89 @@
     return a;
   }
 
+  /** Reprend la fiche affichée depuis `cards` (après édition/sync ailleurs) sans changer de fiche ni remélanger la file. */
+  function syncCurrentCardFromStore() {
+    if (!currentCard) return;
+    const fresh = cards.find((c) => c.id === currentCard.id && !c.deleted);
+    if (!fresh) {
+      if (!isBonusMode) {
+        reviewQueue = reviewQueue.filter((c) => c.id !== currentCard.id);
+      }
+      showNextCard();
+      return;
+    }
+    currentCard = fresh;
+    questionTextEl.textContent = currentCard.question;
+    answerTextEl.textContent = currentCard.answer;
+    updateRatingPreviews();
+  }
+
+  function pickRandomBonusCard(pool, excludeId) {
+    const candidates =
+      pool.length > 1 ? pool.filter((c) => c.id !== excludeId) : pool;
+    return candidates[Math.floor(Math.random() * candidates.length)];
+  }
+
   function showNextCard() {
     isFlipped = false;
     flipCardEl.classList.remove("is-flipped");
     ratingRowEl.hidden = true;
 
-    if (reviewQueue.length === 0) {
+    if (reviewQueue.length > 0) {
+      isBonusMode = false;
+      currentCard = reviewQueue[0];
+      emptyStateEl.hidden = true;
+      cardStackEl.hidden = false;
+      editCurrentBtn.hidden = false;
+      questionTextEl.textContent = currentCard.question;
+      answerTextEl.textContent = currentCard.answer;
+
+      const doneToday = sessionTotalDue - reviewQueue.length;
+      reviewProgressEl.textContent = `${doneToday}/${sessionTotalDue} fiches revues aujourd'hui`;
+
+      updateRatingPreviews();
+      renderDuePill();
+      return;
+    }
+
+    // Plus rien de programmé pour aujourd'hui.
+    const pool = cards.filter((c) => !c.deleted);
+    if (pool.length === 0) {
+      isBonusMode = false;
       currentCard = null;
       emptyStateEl.hidden = false;
       cardStackEl.hidden = true;
       editCurrentBtn.hidden = true;
-      reviewProgressEl.textContent =
-        cards.length === 0
-          ? ""
-          : "Tout est à jour pour aujourd'hui.";
+      reviewProgressEl.textContent = "";
+      renderDuePill();
       return;
     }
 
-    currentCard = reviewQueue[0];
+    // Mode bonus : on continue avec des fiches piochées au hasard.
+    isBonusMode = true;
+    currentCard = pickRandomBonusCard(pool, currentCard ? currentCard.id : null);
     emptyStateEl.hidden = true;
     cardStackEl.hidden = false;
     editCurrentBtn.hidden = false;
     questionTextEl.textContent = currentCard.question;
     answerTextEl.textContent = currentCard.answer;
+    reviewProgressEl.textContent = "Fiches du jour terminées — révision libre";
 
-    const totalToday = dueCards().length;
-    const doneToday = totalToday - reviewQueue.length;
-    reviewProgressEl.textContent = `${doneToday}/${totalToday} fiches revues aujourd'hui`;
-
-    updateRatingPreviews(currentCard);
+    updateRatingPreviews();
+    renderDuePill();
   }
 
-  function updateRatingPreviews(card) {
+  function updateRatingPreviews() {
+    if (!currentCard) return;
+    if (isBonusMode) {
+      el("sub-hard").textContent = "+1 j";
+      el("sub-good").textContent = "+3 j";
+      el("sub-easy").textContent = "+5 j";
+      return;
+    }
     const previews = {};
     for (const rating of ["hard", "good", "easy"]) {
-      const next = SM2.sm2Next(card, rating);
+      const next = SM2.sm2Next(currentCard, rating);
       previews[rating] = formatInterval(next.interval);
     }
     el("sub-hard").textContent = previews.hard;
@@ -182,6 +254,15 @@
   });
 
   async function rateCurrentCard(rating) {
+    if (isBonusMode) {
+      await rateBonusCard(rating);
+    } else {
+      await rateScheduledCard(rating);
+    }
+    showNextCard();
+  }
+
+  async function rateScheduledCard(rating) {
     const next = SM2.sm2Next(currentCard, rating);
     const updated = touch({
       ...currentCard,
@@ -200,10 +281,35 @@
       reviewQueue.push(updated);
     }
 
-    renderDuePill();
     renderStats();
     renderManageList();
-    showNextCard();
+  }
+
+  /** Mode bonus (révision libre) : la date d'interrogation est simplement reculée,
+   *  sans toucher au facteur de facilité SM-2. "Encore" ne change rien, on passe
+   *  juste à une autre fiche aléatoire. */
+  async function rateBonusCard(rating) {
+    const bonusDays = { hard: 1, good: 3, easy: 5 }[rating];
+    if (bonusDays === undefined) return;
+
+    const due = new Date();
+    due.setHours(0, 0, 0, 0);
+    due.setDate(due.getDate() + bonusDays);
+
+    const updated = touch({
+      ...currentCard,
+      interval: bonusDays,
+      dueDate: due.toISOString(),
+      lastReviewed: new Date().toISOString(),
+      reviewCount: (currentCard.reviewCount || 0) + 1,
+    });
+    await persist(updated);
+
+    const idx = cards.findIndex((c) => c.id === updated.id);
+    if (idx >= 0) cards[idx] = updated;
+
+    renderStats();
+    renderManageList();
   }
 
   /* ---------------------------------------------------------
@@ -419,9 +525,16 @@
       document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
       el(`view-${view}`).classList.add("is-active");
 
-      if (view === "review") startReviewSession();
+      if (view === "review") {
+        if (!reviewSessionStarted) {
+          startReviewSession();
+        } else {
+          syncCurrentCardFromStore();
+        }
+      }
       if (view === "stats") renderStats();
       if (view === "sync") renderSyncView();
+      renderDuePill();
     });
   });
 
@@ -604,8 +717,11 @@
     unsubscribeRealtime = Sync.subscribeRealtime(async (remote) => {
       await mergeRemoteCard(remote);
       renderAll();
-      // Si la fiche en cours de révision a changé ailleurs, on rafraîchit la file.
-      if (currentCard && currentCard.id === remote.id) {
+      if (currentCard) {
+        // On resynchronise le contenu de la fiche affichée sans en changer.
+        syncCurrentCardFromStore();
+      } else if (!isBonusMode) {
+        // Rien n'était affiché : on peut lancer une session sans rien perturber.
         startReviewSession();
       }
     });
