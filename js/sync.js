@@ -67,6 +67,9 @@ function cardToRow(card, syncCode) {
   return {
     id: card.id,
     sync_code: syncCode,
+    subject: card.subject || null,
+    subject_name:
+      typeof window.getSubjectName === "function" ? window.getSubjectName(card.subject) : null,
     question: card.question,
     answer: card.answer,
     created_at: card.createdAt,
@@ -84,6 +87,8 @@ function cardToRow(card, syncCode) {
 function rowToCard(row) {
   return {
     id: row.id,
+    subject: row.subject || null,
+    subjectName: row.subject_name || null,
     question: row.question,
     answer: row.answer,
     createdAt: row.created_at,

@@ -40,6 +40,11 @@
     </div>
   </header>
 
+  <div class="subject-bar">
+    <select class="subject-select" id="subject-select" aria-label="Matière active"></select>
+    <button class="subject-add-btn" id="add-subject-btn" type="button" title="Nouvelle matière">+</button>
+  </div>
+
   <nav class="tabs" role="tablist" aria-label="Navigation">
     <button class="tab is-active" role="tab" aria-selected="true" data-view="review">Réviser</button>
     <button class="tab" role="tab" aria-selected="false" data-view="manage">Gérer</button>
@@ -104,6 +109,14 @@
 
     <!-- VUE GESTION -->
     <section id="view-manage" class="view" aria-labelledby="tab-manage">
+      <div class="subjects-panel">
+        <div class="list-header">
+          <h2 class="section-title">Matières</h2>
+          <button class="btn btn--small" id="manage-add-subject-btn" type="button">+ Nouvelle matière</button>
+        </div>
+        <ul class="subject-list" id="subject-list"></ul>
+      </div>
+
       <form class="card-form" id="card-form">
         <h2 class="section-title">Nouvelle fiche</h2>
         <label class="field">
@@ -121,7 +134,7 @@
       </form>
 
       <div class="list-header">
-        <h2 class="section-title">Toutes les fiches (<span id="total-count">0</span>)</h2>
+        <h2 class="section-title">Fiches de cette matière (<span id="total-count">0</span>)</h2>
         <div class="io-buttons">
           <button class="btn btn--small" id="export-btn" type="button">Exporter</button>
           <label class="btn btn--small btn--file">
@@ -130,13 +143,18 @@
           </label>
         </div>
       </div>
+      <div class="import-target-row">
+        <label class="import-target-label" for="import-target-select">Importer dans :</label>
+        <select class="import-target-select" id="import-target-select" aria-label="Matière cible pour l'import"></select>
+      </div>
+      <p class="import-note">Un import ajoute toujours de nouvelles fiches — il ne modifie ni ne supprime jamais celles déjà présentes.</p>
 
       <ul class="card-list" id="card-list"></ul>
     </section>
 
     <!-- VUE STATS -->
     <section id="view-stats" class="view" aria-labelledby="tab-stats">
-      <h2 class="section-title">Où en es-tu</h2>
+      <h2 class="section-title">Où en es-tu — <span id="stats-subject-name"></span></h2>
       <div class="stat-grid">
         <div class="stat-box">
           <span class="stat-number" id="stat-total">0</span>

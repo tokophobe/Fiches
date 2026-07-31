@@ -7,6 +7,19 @@ pose, et plus tu réponds juste, moins souvent elle te les repose
 Tout est stocké **en local sur ton appareil** (IndexedDB) — pas de
 compte, pas de serveur, ça marche hors-ligne une fois installée.
 
+## Matières
+
+L'appli gère plusieurs matières indépendantes (histoire, maths, etc.).
+Chacune a ses propres fiches, sa propre file de révision et ses propres
+stats. Le sélecteur en haut de l'écran permet de changer de matière à
+tout moment ; le bouton **+** en crée une nouvelle. Dans l'onglet
+**Gérer**, une section « Matières » permet de renommer ou supprimer une
+matière (la suppression retire aussi ses fiches — au moins une matière
+doit toujours rester).
+
+Si tu utilises la synchronisation Supabase, la matière de chaque fiche
+est propagée automatiquement entre appareils.
+
 ## Structure du projet
 
 ```
@@ -71,6 +84,10 @@ juste un **code de synchronisation** que tu entres sur chaque appareil.
   contenu de `supabase-schema.sql` (à la racine de ce dossier), clique **Run**
 - Va dans **Project Settings → API** : note l'**URL du projet** et la clé
   **anon / public** (surtout pas la clé `service_role`, qui est secrète)
+
+*Projet Supabase déjà existant (créé avant l'ajout des matières) ?*
+Recolle et relance `supabase-schema.sql` une fois — les commandes sont
+sans risque à rejouer, elles ajoutent juste les colonnes manquantes.
 
 **2. Connecte l'appli**
 - Ouvre l'appli → onglet **Sync**

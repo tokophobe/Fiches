@@ -5,6 +5,8 @@
 create table if not exists public.cards (
   id text primary key,
   sync_code text not null,
+  subject text,
+  subject_name text,
   question text not null,
   answer text not null,
   created_at timestamptz not null default now(),
@@ -17,6 +19,11 @@ create table if not exists public.cards (
   updated_at timestamptz not null default now(),
   deleted boolean not null default false
 );
+
+-- Pour les bases créées avant l'introduction des matières : ajoute les
+-- colonnes si elles n'existent pas déjà (sans effet si déjà présentes).
+alter table public.cards add column if not exists subject text;
+alter table public.cards add column if not exists subject_name text;
 
 create index if not exists cards_sync_code_idx on public.cards (sync_code);
 

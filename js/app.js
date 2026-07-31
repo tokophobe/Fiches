@@ -15,6 +15,12 @@
   /** true dès que la toute première session de révision a été lancée (au chargement de l'appli) */
   let reviewSessionStarted = false;
 
+  /** @type {Array<{id:string,name:string,createdAt:string,updatedAt:string}>} liste des matières */
+  let subjects = [];
+  /** id de la matière actuellement affichée */
+  let currentSubjectId = null;
+  const CURRENT_SUBJECT_KEY = "fiches_current_subject";
+
   const el = (id) => document.getElementById(id);
 
   const duePillEl = el("due-pill");
@@ -43,14 +49,22 @@
 
   const exportBtn = el("export-btn");
   const importInput = el("import-input");
+  const importTargetSelect = el("import-target-select");
+
+  const subjectSelectEl = el("subject-select");
+  const addSubjectBtn = el("add-subject-btn");
+  const manageAddSubjectBtn = el("manage-add-subject-btn");
+  const subjectListEl = el("subject-list");
+  const statsSubjectNameEl = el("stats-subject-name");
 
   const uid = () =>
     `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 
-  function newCard(question, answer) {
+  function newCard(question, answer, subjectId = currentSubjectId) {
     const now = new Date().toISOString();
     return {
       id: uid(),
+      subject: subjectId,
       question,
       answer,
       createdAt: now,
@@ -62,6 +76,227 @@
       ...SM2.createSm2State(),
     };
   }
+
+  /* ---------------------------------------------------------
+     Matières (subjects)
+  --------------------------------------------------------- */
+  function newSubject(name) {
+    const now = new Date().toISOString();
+    return { id: uid(), name: name.trim(), createdAt: now, updatedAt: now };
+  }
+
+  function subjectName(id) {
+    const s = subjects.find((x) => x.id === id);
+    return s ? s.name : "Matière inconnue";
+  }
+
+  /** Exposé pour que sync.js puisse dénormaliser le nom de la matière sur chaque ligne envoyée. */
+  window.getSubjectName = subjectName;
+
+  /** Charge les matières depuis IndexedDB ; en crée une par défaut si aucune n'existe encore. */
+  async function loadSubjects() {
+    subjects = await DB.getAllSubjects();
+    if (subjects.length === 0) {
+      const general = newSubject("Général");
+      await DB.putSubject(general);
+      subjects = [general];
+    }
+    subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+
+    const saved = localStorage.getItem(CURRENT_SUBJECT_KEY);
+    if (saved && subjects.some((s) => s.id === saved)) {
+      currentSubjectId = saved;
+    } else {
+      currentSubjectId = subjects[0].id;
+      localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
+    }
+  }
+
+  /** Fiches créées avant l'introduction des matières (ou reçues d'un vieil export) : on les rattache à la matière active. */
+  async function migrateOrphanCards() {
+    const orphans = cards.filter((c) => !c.subject);
+    if (orphans.length === 0) return;
+    const fixed = orphans.map((c) => touch({ ...c, subject: currentSubjectId }));
+    await DB.bulkPut(fixed);
+    for (const f of fixed) {
+      const idx = cards.findIndex((c) => c.id === f.id);
+      if (idx >= 0) cards[idx] = f;
+    }
+  }
+
+  function renderSubjectSelect() {
+    const opts = subjects
+      .map(
+        (s) =>
+          `<option value="${s.id}" ${s.id === currentSubjectId ? "selected" : ""}>${escapeHtml(s.name)}</option>`
+      )
+      .join("");
+    subjectSelectEl.innerHTML = opts;
+
+    // Le sélecteur d'import propose en plus la création d'une nouvelle matière à la volée.
+    const importOpts =
+      opts + `<option value="__new__">+ Nouvelle matière…</option>`;
+    const prevImportTarget = importTargetSelect.value || currentSubjectId;
+    importTargetSelect.innerHTML = importOpts;
+    if ([...importTargetSelect.options].some((o) => o.value === prevImportTarget)) {
+      importTargetSelect.value = prevImportTarget;
+    } else {
+      importTargetSelect.value = currentSubjectId;
+    }
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderSubjectManageList() {
+    subjectListEl.innerHTML = "";
+    for (const s of subjects) {
+      const li = document.createElement("li");
+      li.className = "subject-row" + (s.id === currentSubjectId ? " is-active" : "");
+
+      const nameBtn = document.createElement("button");
+      nameBtn.type = "button";
+      nameBtn.className = "subject-row-name";
+      nameBtn.textContent = s.name;
+      nameBtn.title = "Renommer";
+      nameBtn.addEventListener("click", () => renameSubject(s.id));
+
+      const count = document.createElement("span");
+      count.className = "subject-row-count";
+      const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
+      count.textContent = `${n} fiche${n > 1 ? "s" : ""}`;
+
+      const actions = document.createElement("div");
+      actions.className = "row-actions";
+
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "icon-btn icon-btn--danger";
+      delBtn.textContent = "suppr.";
+      delBtn.addEventListener("click", () => deleteSubject(s.id));
+
+      actions.appendChild(delBtn);
+
+      li.appendChild(nameBtn);
+      li.appendChild(count);
+      li.appendChild(actions);
+      subjectListEl.appendChild(li);
+    }
+  }
+
+  async function createSubjectFlow() {
+    const name = prompt("Nom de la nouvelle matière :");
+    if (!name || !name.trim()) return null;
+    const subject = newSubject(name);
+    await DB.putSubject(subject);
+    subjects.push(subject);
+    subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    return subject;
+  }
+
+  async function renameSubject(id) {
+    const s = subjects.find((x) => x.id === id);
+    if (!s) return;
+    const name = prompt("Nouveau nom de la matière :", s.name);
+    if (!name || !name.trim() || name.trim() === s.name) return;
+    s.name = name.trim();
+    s.updatedAt = new Date().toISOString();
+    await DB.putSubject(s);
+    subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    renderSubjectSelect();
+    renderSubjectManageList();
+    if (statsSubjectNameEl) statsSubjectNameEl.textContent = subjectName(currentSubjectId);
+  }
+
+  async function deleteSubject(id) {
+    if (subjects.length <= 1) {
+      alert("Impossible de supprimer la dernière matière restante.");
+      return;
+    }
+    const s = subjects.find((x) => x.id === id);
+    if (!s) return;
+    const n = cards.filter((c) => !c.deleted && c.subject === id).length;
+    const confirmMsg =
+      n > 0
+        ? `Supprimer la matière « ${s.name} » et ses ${n} fiche(s) ? Cette action est irréversible.`
+        : `Supprimer la matière « ${s.name} » ?`;
+    if (!confirm(confirmMsg)) return;
+
+    // Suppression douce des fiches de cette matière (cohérent avec la sync).
+    const toDelete = cards.filter((c) => !c.deleted && c.subject === id);
+    for (const c of toDelete) {
+      const updated = touch({ ...c, deleted: true });
+      await persist(updated);
+      const idx = cards.findIndex((x) => x.id === c.id);
+      if (idx >= 0) cards[idx] = updated;
+    }
+
+    await DB.removeSubject(id);
+    subjects = subjects.filter((x) => x.id !== id);
+
+    if (currentSubjectId === id) {
+      currentSubjectId = subjects[0].id;
+      localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
+      reviewSessionStarted = false;
+    }
+
+    renderSubjectSelect();
+    renderSubjectManageList();
+    renderAll();
+    if (el("view-review").classList.contains("is-active")) {
+      startReviewSession();
+    }
+  }
+
+  function switchSubject(id) {
+    if (id === currentSubjectId || !subjects.some((s) => s.id === id)) return;
+    currentSubjectId = id;
+    localStorage.setItem(CURRENT_SUBJECT_KEY, id);
+
+    // On repart d'une session de révision propre pour la nouvelle matière.
+    reviewSessionStarted = false;
+    reviewQueue = [];
+    currentCard = null;
+    isBonusMode = false;
+
+    renderSubjectSelect();
+    renderAll();
+
+    if (el("view-review").classList.contains("is-active")) {
+      startReviewSession();
+    }
+    if (el("view-stats").classList.contains("is-active")) {
+      renderStats();
+    }
+  }
+
+  subjectSelectEl.addEventListener("change", () => {
+    switchSubject(subjectSelectEl.value);
+  });
+
+  addSubjectBtn.addEventListener("click", async () => {
+    const s = await createSubjectFlow();
+    if (s) switchSubject(s.id);
+  });
+
+  manageAddSubjectBtn.addEventListener("click", async () => {
+    const s = await createSubjectFlow();
+    if (s) {
+      switchSubject(s.id);
+      renderSubjectManageList();
+    }
+  });
+
+  importTargetSelect.addEventListener("change", async () => {
+    if (importTargetSelect.value === "__new__") {
+      const s = await createSubjectFlow();
+      renderSubjectSelect();
+      importTargetSelect.value = s ? s.id : currentSubjectId;
+    }
+  });
 
   function touch(card) {
     return { ...card, updatedAt: new Date().toISOString() };
@@ -78,19 +313,19 @@
   /* ---------------------------------------------------------
      Chargement / rafraîchissement des données
   --------------------------------------------------------- */
-  async function loadCards() {
-    cards = await DB.getAll();
-    renderAll();
-  }
-
   function renderAll() {
     renderDuePill();
     renderManageList();
     renderStats();
   }
 
+  /** Toutes les fiches non supprimées de la matière actuellement active. */
+  function subjectCards() {
+    return cards.filter((c) => !c.deleted && c.subject === currentSubjectId);
+  }
+
   function dueCards() {
-    return cards.filter((c) => !c.deleted && SM2.isDue(c));
+    return subjectCards().filter((c) => SM2.isDue(c));
   }
 
   function renderDuePill() {
@@ -105,7 +340,7 @@
     }
 
     duePillEl.classList.remove("is-bonus");
-    const total = cards.filter((c) => !c.deleted).length;
+    const total = subjectCards().length;
     const fraction = total === 0 ? 0 : due / total;
     const hue = Math.round(120 - 120 * Math.min(1, Math.max(0, fraction)));
     duePillEl.style.background = `hsl(${hue}, 62%, 42%)`;
@@ -177,7 +412,7 @@
     }
 
     // Plus rien de programmé pour aujourd'hui.
-    const pool = cards.filter((c) => !c.deleted);
+    const pool = subjectCards();
     if (pool.length === 0) {
       isBonusMode = false;
       currentCard = null;
@@ -368,9 +603,10 @@
   }
 
   function renderManageList() {
-    const visible = cards.filter((c) => !c.deleted);
+    const visible = subjectCards();
     totalCountEl.textContent = String(visible.length);
     cardListEl.innerHTML = "";
+    renderSubjectManageList();
 
     if (visible.length === 0) {
       const li = document.createElement("li");
@@ -452,13 +688,20 @@
      Import / export JSON
   --------------------------------------------------------- */
   exportBtn.addEventListener("click", () => {
-    const blob = new Blob([JSON.stringify(cards.filter((c) => !c.deleted), null, 2)], {
+    const subj = subjects.find((s) => s.id === currentSubjectId);
+    const blob = new Blob([JSON.stringify(subjectCards(), null, 2)], {
       type: "application/json",
     });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `fiches-${new Date().toISOString().slice(0, 10)}.json`;
+    const slug = (subj ? subj.name : "fiches")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+    a.download = `fiches-${slug || "export"}-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
   });
@@ -467,30 +710,43 @@
     const file = importInput.files[0];
     if (!file) return;
     try {
+      let targetId = importTargetSelect.value;
+      if (targetId === "__new__" || !subjects.some((s) => s.id === targetId)) {
+        targetId = currentSubjectId;
+      }
+
       const text = await file.text();
       const imported = JSON.parse(text);
       if (!Array.isArray(imported)) throw new Error("Format inattendu");
 
+      // Chaque import crée de nouvelles fiches avec de nouveaux identifiants :
+      // rien parmi les fiches déjà présentes n'est jamais modifié ni supprimé.
       const normalized = imported.map((item) =>
         touch({
-          ...newCard(item.question ?? "", item.answer ?? ""),
+          ...newCard(item.question ?? "", item.answer ?? "", targetId),
           ...item,
-          id: item.id || uid(),
+          id: uid(),
+          subject: targetId,
         })
       );
 
       await DB.bulkPut(normalized);
+      cards.push(...normalized);
       if (Sync.isConfigured()) {
         for (const card of normalized) {
           Sync.pushCard(card);
         }
       }
-      await loadCards();
-      startReviewSession();
+      renderAll();
+      if (targetId === currentSubjectId) {
+        startReviewSession();
+      }
+      alert(`${normalized.length} fiche(s) ajoutée(s) à « ${subjectName(targetId)} ». Les fiches existantes n'ont pas été touchées.`);
     } catch (err) {
       alert("Import impossible : le fichier ne semble pas être un export valide.");
     } finally {
       importInput.value = "";
+      importTargetSelect.value = currentSubjectId;
     }
   });
 
@@ -498,7 +754,8 @@
      Vue Stats
   --------------------------------------------------------- */
   function renderStats() {
-    const visible = cards.filter((c) => !c.deleted);
+    if (statsSubjectNameEl) statsSubjectNameEl.textContent = subjectName(currentSubjectId);
+    const visible = subjectCards();
     statTotal.textContent = String(visible.length);
     statDue.textContent = String(dueCards().length);
     statLearning.textContent = String(
@@ -670,8 +927,40 @@
     updateSyncStatus();
   });
 
+  /** Trouve (ou crée) localement la matière référencée par une fiche distante, à partir de son id + nom dénormalisé. */
+  async function ensureLocalSubjectFor(remote) {
+    if (remote.subject && subjects.some((s) => s.id === remote.subject)) {
+      return remote.subject;
+    }
+    if (remote.subject) {
+      // Matière inconnue sur cet appareil (créée ailleurs) : on la recrée avec le même id
+      // pour que les deux appareils convergent vers la même matière.
+      const s = {
+        id: remote.subject,
+        name: remote.subjectName || "Matière importée",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      await DB.putSubject(s);
+      subjects.push(s);
+      subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      renderSubjectSelect();
+      return s.id;
+    }
+    // Fiche distante ancienne, sans matière renseignée : on la range dans "Général".
+    let general = subjects.find((s) => s.name === "Général");
+    if (!general) {
+      general = newSubject("Général");
+      await DB.putSubject(general);
+      subjects.push(general);
+      renderSubjectSelect();
+    }
+    return general.id;
+  }
+
   /** Fusionne une fiche reçue de Supabase (import initial ou temps réel). */
   async function mergeRemoteCard(remote) {
+    remote.subject = await ensureLocalSubjectFor(remote);
     const idx = cards.findIndex((c) => c.id === remote.id);
     if (idx === -1) {
       cards.push(remote);
@@ -787,12 +1076,17 @@
   /* ---------------------------------------------------------
      Démarrage
   --------------------------------------------------------- */
-  loadCards().then(async () => {
+  (async () => {
+    await loadSubjects();
+    renderSubjectSelect();
+    cards = await DB.getAll();
+    await migrateOrphanCards();
+    renderAll();
     startReviewSession();
     updateSyncStatus();
     if (Sync.isConfigured()) {
       await connectSync();
       startReviewSession();
     }
-  });
+  })();
 })();

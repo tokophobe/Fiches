@@ -4,8 +4,9 @@
  */
 
 const DB_NAME = "fiches-db";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const STORE = "cards";
+const SUBJECT_STORE = "subjects";
 
 function openDb() {
   return new Promise((resolve, reject) => {
@@ -16,22 +17,29 @@ function openDb() {
         const store = db.createObjectStore(STORE, { keyPath: "id" });
         store.createIndex("dueDate", "dueDate", { unique: false });
       }
+      if (!db.objectStoreNames.contains(SUBJECT_STORE)) {
+        db.createObjectStore(SUBJECT_STORE, { keyPath: "id" });
+      }
     };
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
   });
 }
 
-async function withStore(mode, fn) {
+async function withStoreIn(storeName, mode, fn) {
   const db = await openDb();
   return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE, mode);
-    const store = tx.objectStore(STORE);
+    const tx = db.transaction(storeName, mode);
+    const store = tx.objectStore(storeName);
     const result = fn(store);
     tx.oncomplete = () => resolve(result);
     tx.onerror = () => reject(tx.error);
     tx.onabort = () => reject(tx.error);
   });
+}
+
+async function withStore(mode, fn) {
+  return withStoreIn(STORE, mode, fn);
 }
 
 function reqToPromise(req) {
@@ -66,6 +74,24 @@ const DB = {
     await withStore("readwrite", (store) => {
       cards.forEach((c) => store.put(c));
     });
+  },
+
+  /* ---- matières (subjects) ---- */
+
+  async getAllSubjects() {
+    const db = await openDb();
+    const tx = db.transaction(SUBJECT_STORE, "readonly");
+    const store = tx.objectStore(SUBJECT_STORE);
+    return reqToPromise(store.getAll());
+  },
+
+  async putSubject(subject) {
+    await withStoreIn(SUBJECT_STORE, "readwrite", (store) => store.put(subject));
+    return subject;
+  },
+
+  async removeSubject(id) {
+    await withStoreIn(SUBJECT_STORE, "readwrite", (store) => store.delete(id));
   },
 };
 
