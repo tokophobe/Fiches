@@ -43,9 +43,14 @@
   const totalCountEl = el("total-count");
 
   const statTotal = el("stat-total");
-  const statDue = el("stat-due");
-  const statLearning = el("stat-learning");
-  const statMastered = el("stat-mastered");
+  const statsSubjectSelectEl = el("stats-subject-select");
+  const statsRangeSelectEl = el("stats-range-select");
+  const dueChartEl = el("due-chart");
+  const chartEmptyEl = el("chart-empty");
+  const ALL_SUBJECTS = "__all__";
+  let statsSubjectFilter = ALL_SUBJECTS;
+  let statsRangeDays = 15;
+  const CHART_MAX_BAR_PX = 140;
 
   const exportBtn = el("export-btn");
   const importInput = el("import-input");
@@ -55,7 +60,6 @@
   const addSubjectBtn = el("add-subject-btn");
   const manageAddSubjectBtn = el("manage-add-subject-btn");
   const subjectListEl = el("subject-list");
-  const statsSubjectNameEl = el("stats-subject-name");
 
   const uid = () =>
     `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -194,6 +198,7 @@
     await DB.putSubject(subject);
     subjects.push(subject);
     subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    renderStatsSubjectSelect();
     return subject;
   }
 
@@ -208,7 +213,8 @@
     subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
     renderSubjectSelect();
     renderSubjectManageList();
-    if (statsSubjectNameEl) statsSubjectNameEl.textContent = subjectName(currentSubjectId);
+    renderStatsSubjectSelect();
+    if (el("view-stats").classList.contains("is-active")) renderStats();
   }
 
   async function deleteSubject(id) {
@@ -242,13 +248,16 @@
       localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
       reviewSessionStarted = false;
     }
+    if (statsSubjectFilter === id) statsSubjectFilter = ALL_SUBJECTS;
 
     renderSubjectSelect();
     renderSubjectManageList();
+    renderStatsSubjectSelect();
     renderAll();
     if (el("view-review").classList.contains("is-active")) {
       startReviewSession();
     }
+    if (el("view-stats").classList.contains("is-active")) renderStats();
   }
 
   function switchSubject(id) {
@@ -753,18 +762,130 @@
   /* ---------------------------------------------------------
      Vue Stats
   --------------------------------------------------------- */
-  function renderStats() {
-    if (statsSubjectNameEl) statsSubjectNameEl.textContent = subjectName(currentSubjectId);
-    const visible = subjectCards();
-    statTotal.textContent = String(visible.length);
-    statDue.textContent = String(dueCards().length);
-    statLearning.textContent = String(
-      visible.filter((c) => c.interval > 0 && c.interval <= 21).length
-    );
-    statMastered.textContent = String(
-      visible.filter((c) => c.interval > 21).length
-    );
+  function renderStatsSubjectSelect() {
+    if (!statsSubjectSelectEl) return;
+    const prev = statsSubjectSelectEl.value || statsSubjectFilter;
+    statsSubjectSelectEl.innerHTML =
+      `<option value="${ALL_SUBJECTS}">Toutes catégories confondues</option>` +
+      subjects
+        .map((s) => `<option value="${s.id}">${escapeHtml(s.name)}</option>`)
+        .join("");
+    const valid = prev === ALL_SUBJECTS || subjects.some((s) => s.id === prev);
+    statsSubjectFilter = valid ? prev : ALL_SUBJECTS;
+    statsSubjectSelectEl.value = statsSubjectFilter;
   }
+
+  /** Fiches (non supprimées) dans le périmètre choisi pour l'onglet Stats. */
+  function statsScopeCards() {
+    if (statsSubjectFilter === ALL_SUBJECTS) {
+      return cards.filter((c) => !c.deleted);
+    }
+    return cards.filter((c) => !c.deleted && c.subject === statsSubjectFilter);
+  }
+
+  function startOfDay(date) {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+
+  /** Construit un bucket "fiches dues" par jour calendaire, du jour présent
+   *  à `days - 1` jours plus tard. Les fiches en retard (dueDate passée)
+   *  sont comptées dans le bucket d'aujourd'hui. */
+  function computeDueHistogram(pool, days) {
+    const today = startOfDay(new Date());
+    const buckets = [];
+    for (let i = 0; i < days; i++) {
+      const d = new Date(today);
+      d.setDate(d.getDate() + i);
+      buckets.push({ date: d, count: 0 });
+    }
+    const horizon = new Date(today);
+    horizon.setDate(horizon.getDate() + days);
+
+    for (const c of pool) {
+      if (!c.dueDate) continue;
+      const due = new Date(c.dueDate);
+      if (due.getTime() < today.getTime()) {
+        buckets[0].count += 1; // en retard -> comptée aujourd'hui
+        continue;
+      }
+      if (due.getTime() >= horizon.getTime()) continue; // hors période affichée
+      const dueDay = startOfDay(due);
+      const offset = Math.round((dueDay.getTime() - today.getTime()) / 86400000);
+      if (offset >= 0 && offset < days) buckets[offset].count += 1;
+    }
+    return buckets;
+  }
+
+  function formatChartDate(date) {
+    return `${date.getDate()}/${date.getMonth() + 1}`;
+  }
+
+  function renderDueChart() {
+    if (!dueChartEl) return;
+    const pool = statsScopeCards();
+    const buckets = computeDueHistogram(pool, statsRangeDays);
+    const max = Math.max(0, ...buckets.map((b) => b.count));
+
+    dueChartEl.innerHTML = "";
+    if (max === 0) {
+      chartEmptyEl.hidden = false;
+      el("chart-wrap").hidden = true;
+      return;
+    }
+    chartEmptyEl.hidden = true;
+    el("chart-wrap").hidden = false;
+
+    // Espace les étiquettes de date pour rester lisible sur les longues périodes ;
+    // la fiche du jour et le dernier jour affiché restent toujours étiquetés.
+    const labelEvery =
+      statsRangeDays <= 15 ? 1 : statsRangeDays <= 31 ? 2 : statsRangeDays <= 93 ? 7 : statsRangeDays <= 182 ? 14 : 30;
+
+    const frag = document.createDocumentFragment();
+    buckets.forEach((b, i) => {
+      const col = document.createElement("div");
+      col.className = "chart-col" + (i === 0 ? " is-today" : "");
+      col.style.width = statsRangeDays <= 31 ? "22px" : statsRangeDays <= 93 ? "10px" : "6px";
+
+      const value = document.createElement("span");
+      value.className = "chart-value";
+      value.textContent = b.count > 0 ? String(b.count) : "";
+
+      const bar = document.createElement("div");
+      bar.className = "chart-bar";
+      const height = max === 0 ? 0 : Math.max(b.count > 0 ? 3 : 0, Math.round((b.count / max) * CHART_MAX_BAR_PX));
+      bar.style.height = `${height}px`;
+
+      const label = document.createElement("span");
+      label.className = "chart-label";
+      const showLabel = i === 0 || i === buckets.length - 1 || i % labelEvery === 0;
+      label.textContent = showLabel ? (i === 0 ? "Auj." : formatChartDate(b.date)) : "";
+
+      col.appendChild(value);
+      col.appendChild(bar);
+      col.appendChild(label);
+      frag.appendChild(col);
+    });
+    dueChartEl.appendChild(frag);
+  }
+
+  function renderStats() {
+    renderStatsSubjectSelect();
+    const total = statsScopeCards().length;
+    statTotal.textContent = String(total);
+    renderDueChart();
+  }
+
+  statsSubjectSelectEl.addEventListener("change", () => {
+    statsSubjectFilter = statsSubjectSelectEl.value;
+    renderStats();
+  });
+
+  statsRangeSelectEl.addEventListener("change", () => {
+    statsRangeDays = Number(statsRangeSelectEl.value) || 15;
+    renderDueChart();
+  });
 
   /* ---------------------------------------------------------
      Navigation par onglets
@@ -946,6 +1067,7 @@
       subjects.push(s);
       subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
       renderSubjectSelect();
+      renderStatsSubjectSelect();
       return s.id;
     }
     // Fiche distante ancienne, sans matière renseignée : on la range dans "Général".
@@ -955,6 +1077,7 @@
       await DB.putSubject(general);
       subjects.push(general);
       renderSubjectSelect();
+      renderStatsSubjectSelect();
     }
     return general.id;
   }

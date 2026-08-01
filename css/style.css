@@ -688,12 +688,32 @@ textarea, input {
 /* ============================================================
    STATS VIEW
    ============================================================ */
+.stats-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.stats-select {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink);
+  background: var(--paper-2);
+  border: 1px solid rgba(35, 48, 42, 0.15);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
 .stat-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-bottom: 14px;
 }
+
+.stat-grid--single { grid-template-columns: 1fr; }
 
 .stat-box {
   background: var(--paper);
@@ -723,6 +743,75 @@ textarea, input {
   color: rgba(247,241,225,0.55);
   line-height: 1.5;
 }
+
+.chart-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(247, 241, 225, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 4px 0 10px;
+}
+
+.chart-wrap {
+  background: var(--paper);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-deep);
+  padding: 16px 12px 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.chart {
+  display: flex;
+  align-items: flex-end;
+  height: 180px;
+  gap: 3px;
+}
+
+.chart-col {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  gap: 4px;
+}
+
+.chart-bar {
+  width: 100%;
+  min-height: 2px;
+  border-radius: 3px 3px 0 0;
+  background: var(--teal);
+}
+
+.chart-col.is-today .chart-bar { background: var(--rule); }
+
+.chart-value {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.chart-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  height: 12px;
+}
+
+.chart-col.is-today .chart-label { color: var(--rule); font-weight: 600; }
+
+.chart-empty {
+  font-size: 13px;
+  color: rgba(247,241,225,0.55);
+  text-align: center;
+  padding: 20px 0;
+}
+
 
 /* ============================================================
    SYNC VIEW

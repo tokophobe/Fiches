@@ -154,26 +154,31 @@
 
     <!-- VUE STATS -->
     <section id="view-stats" class="view" aria-labelledby="tab-stats">
-      <h2 class="section-title">Où en es-tu — <span id="stats-subject-name"></span></h2>
-      <div class="stat-grid">
+      <h2 class="section-title">Où en es-tu</h2>
+
+      <div class="stats-controls">
+        <select class="stats-select" id="stats-subject-select" aria-label="Matière pour les statistiques"></select>
+        <select class="stats-select" id="stats-range-select" aria-label="Période affichée">
+          <option value="15">15 jours</option>
+          <option value="30">1 mois</option>
+          <option value="90">3 mois</option>
+          <option value="182">6 mois</option>
+          <option value="365">1 an</option>
+        </select>
+      </div>
+
+      <div class="stat-grid stat-grid--single">
         <div class="stat-box">
           <span class="stat-number" id="stat-total">0</span>
           <span class="stat-label">fiches au total</span>
         </div>
-        <div class="stat-box">
-          <span class="stat-number" id="stat-due">0</span>
-          <span class="stat-label">à revoir aujourd'hui</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-number" id="stat-learning">0</span>
-          <span class="stat-label">en apprentissage</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-number" id="stat-mastered">0</span>
-          <span class="stat-label">bien maîtrisées</span>
-        </div>
       </div>
-      <p class="stat-note">Une fiche est « bien maîtrisée » dès que l'intervalle avant la prochaine question dépasse 21 jours.</p>
+
+      <h3 class="chart-title">Fiches à revoir par jour</h3>
+      <div class="chart-wrap" id="chart-wrap">
+        <div class="chart" id="due-chart"></div>
+      </div>
+      <p class="chart-empty" id="chart-empty" hidden>Rien à revoir sur cette période.</p>
     </section>
 
     <!-- VUE SYNC -->
