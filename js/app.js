@@ -910,6 +910,7 @@
     retrySyncBtn.textContent = "Envoi...";
     await reconcileWithRemote();
     await Sync.flushPending((id) => cards.find((c) => c.id === id));
+    mergeNewDueCardsIntoQueue();
     renderSyncView();
     updateSyncStatus();
     retrySyncBtn.disabled = false;
@@ -974,6 +975,22 @@
     }
   }
 
+  /** Ajoute discrètement à la file en cours les fiches dues de la matière active
+   *  qui viennent d'arriver par la sync, sans jamais changer la fiche affichée. */
+  function mergeNewDueCardsIntoQueue() {
+    if (!reviewSessionStarted || isBonusMode) return;
+    const queueIds = new Set(reviewQueue.map((c) => c.id));
+    const currentId = currentCard ? currentCard.id : null;
+    const newlyDue = dueCards().filter(
+      (c) => c.id !== currentId && !queueIds.has(c.id)
+    );
+    if (newlyDue.length === 0) return;
+    reviewQueue.push(...newlyDue);
+    sessionTotalDue += newlyDue.length;
+    reviewProgressEl.textContent = `${sessionTotalDue - reviewQueue.length}/${sessionTotalDue} fiches revues aujourd'hui`;
+    renderDuePill();
+  }
+
   async function reconcileWithRemote() {
     const remoteCards = await Sync.pullAll();
     const remoteById = new Map(remoteCards.map((r) => [r.id, r]));
@@ -1007,8 +1024,10 @@
       await mergeRemoteCard(remote);
       renderAll();
       if (currentCard) {
-        // On resynchronise le contenu de la fiche affichée sans en changer.
+        // On resynchronise le contenu de la fiche affichée sans en changer,
+        // et on ajoute la nouvelle fiche à la file sans rien basculer à l'écran.
         syncCurrentCardFromStore();
+        mergeNewDueCardsIntoQueue();
       } else if (!isBonusMode) {
         // Rien n'était affiché : on peut lancer une session sans rien perturber.
         startReviewSession();
@@ -1086,7 +1105,12 @@
     updateSyncStatus();
     if (Sync.isConfigured()) {
       await connectSync();
-      startReviewSession();
+      // Ne relance pas startReviewSession() ici : reconcileWithRemote() a déjà
+      // rafraîchi les données via renderAll(), et relancer une session ici
+      // remélangeait la file et changeait la fiche affichée sous les yeux de
+      // l'utilisateur, sans lien avec son évaluation. On ajoute juste
+      // discrètement les éventuelles nouvelles fiches dues à la file en cours.
+      mergeNewDueCardsIntoQueue();
     }
   })();
 })();
