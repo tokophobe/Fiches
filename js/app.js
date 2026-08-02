@@ -341,7 +341,9 @@
     const due = dueCards().length;
     dueCountEl.textContent = String(due);
 
-    if (isBonusMode) {
+    // Dès que le compteur atteint 0, la pastille passe en blanc (comme en
+    // mode bonus) — que l'on soit ou non dans une session de révision.
+    if (isBonusMode || due === 0) {
       duePillEl.classList.add("is-bonus");
       duePillEl.style.removeProperty("background");
       duePillEl.style.removeProperty("color");
@@ -392,7 +394,46 @@
     updateRatingPreviews();
   }
 
+  /** Repère, parmi les prochaines échéances de `pool`, le jour calendaire
+   *  qui concentre le plus de fiches (la barre la plus haute du graphique).
+   *  Renvoie le timestamp (00:00) de ce jour, ou null si aucun jour ne
+   *  ressort (pas d'échéance future, ou aucun jour avec plus d'une fiche). */
+  function findBusiestUpcomingDay(pool) {
+    const counts = new Map();
+    for (const c of pool) {
+      if (!c.dueDate) continue;
+      const day = startOfDay(new Date(c.dueDate)).getTime();
+      counts.set(day, (counts.get(day) || 0) + 1);
+    }
+    let bestDay = null;
+    let bestCount = 1; // on ne "lisse" que s'il y a un vrai pic (>= 2 fiches)
+    for (const [day, count] of counts) {
+      if (count > bestCount) {
+        bestCount = count;
+        bestDay = day;
+      }
+    }
+    return bestDay;
+  }
+
+  /** Mode bonus : pioche en priorité parmi les fiches du jour le plus chargé
+   *  à venir, pour lisser la charge de révision future. Si aucun pic net ne
+   *  se dégage, on retombe sur un tirage aléatoire classique. */
   function pickRandomBonusCard(pool, excludeId) {
+    const busiestDay = findBusiestUpcomingDay(pool);
+    if (busiestDay !== null) {
+      const fromBusiestDay = pool.filter(
+        (c) => c.dueDate && startOfDay(new Date(c.dueDate)).getTime() === busiestDay
+      );
+      const filtered =
+        fromBusiestDay.length > 1
+          ? fromBusiestDay.filter((c) => c.id !== excludeId)
+          : fromBusiestDay;
+      if (filtered.length > 0) {
+        return filtered[Math.floor(Math.random() * filtered.length)];
+      }
+    }
+
     const candidates =
       pool.length > 1 ? pool.filter((c) => c.id !== excludeId) : pool;
     return candidates[Math.floor(Math.random() * candidates.length)];
@@ -846,7 +887,6 @@
     buckets.forEach((b, i) => {
       const col = document.createElement("div");
       col.className = "chart-col" + (i === 0 ? " is-today" : "");
-      col.style.width = statsRangeDays <= 31 ? "22px" : statsRangeDays <= 93 ? "10px" : "6px";
 
       const value = document.createElement("span");
       value.className = "chart-value";
