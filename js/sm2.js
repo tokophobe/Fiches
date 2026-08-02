@@ -48,6 +48,15 @@ function sm2Next(state, rating) {
     ...state,
   };
 
+  // Le nouveau facteur de facilité (EF') doit être calculé AVANT l'intervalle :
+  // c'est lui qui sert à multiplier l'intervalle précédent (formule SM-2
+  // standard). Le calculer après faisait que Difficile/Bien/Facile
+  // utilisaient tous l'ancien EF, identique — et donc affichaient le même
+  // nombre de jours dès qu'une fiche avait déjà 2 révisions réussies.
+  let newEasiness =
+    easiness + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+  if (newEasiness < 1.3) newEasiness = 1.3;
+
   if (quality < 3) {
     repetitions = 0;
     interval = 1;
@@ -58,20 +67,16 @@ function sm2Next(state, rating) {
     } else if (repetitions === 2) {
       interval = 6;
     } else {
-      interval = Math.round(interval * easiness);
+      interval = Math.round(interval * newEasiness);
     }
   }
-
-  easiness =
-    easiness + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
-  if (easiness < 1.3) easiness = 1.3;
 
   const due = new Date();
   due.setHours(0, 0, 0, 0);
   due.setDate(due.getDate() + interval);
 
   return {
-    easiness: Math.round(easiness * 100) / 100,
+    easiness: Math.round(newEasiness * 100) / 100,
     interval,
     repetitions,
     dueDate: due.toISOString(),

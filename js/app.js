@@ -1171,7 +1171,16 @@
     const idx = cards.findIndex((c) => c.id === remote.id);
     const local = idx >= 0 ? cards[idx] : null;
 
-    if (remote.subject) {
+    if (remote.deleted) {
+      // Fiche supprimée : elle ne sera jamais affichée (partout on filtre sur
+      // !c.deleted), donc pas besoin de résoudre une vraie matière pour elle.
+      // Important : si on appelait ensureLocalSubjectFor ici, une matière
+      // qu'on vient de supprimer localement (avec toutes ses fiches) serait
+      // recréée dès qu'on récupère ces mêmes fiches (supprimées) depuis
+      // Supabase — c'est ce qui faisait "réapparaître" la matière supprimée
+      // à chaque réouverture de l'appli.
+      remote.subject = remote.subject || (local ? local.subject : null);
+    } else if (remote.subject) {
       remote.subject = await ensureLocalSubjectFor(remote);
     } else if (local && local.subject) {
       remote.subject = local.subject;
