@@ -678,6 +678,14 @@ textarea, input {
 .icon-btn:hover { background: rgba(35,48,42,0.08); }
 .icon-btn--danger:hover { background: rgba(182, 96, 74, 0.15); color: var(--terracotta); }
 
+.card-row-move {
+  appearance: none;
+  cursor: pointer;
+  border: 1px solid rgba(35,48,42,0.15);
+  max-width: 92px;
+}
+.card-row-move:hover { background: rgba(35,48,42,0.08); }
+
 .list-empty {
   text-align: center;
   color: rgba(247,241,225,0.5);

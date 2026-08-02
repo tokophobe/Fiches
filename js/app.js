@@ -116,11 +116,16 @@
     }
   }
 
-  /** Fiches créées avant l'introduction des matières (ou reçues d'un vieil export) : on les rattache à la matière active. */
+  /** Fiches créées avant l'introduction des matières (ou reçues d'un vieil export) :
+   *  on les rattache à une matière fixe et déterministe (la première par ordre
+   *  alphabétique) plutôt qu'à "la matière actuellement affichée", qui peut varier
+   *  d'un appareil à l'autre et provoquer des reclassements imprévisibles lors
+   *  de la synchronisation. */
   async function migrateOrphanCards() {
     const orphans = cards.filter((c) => !c.subject);
     if (orphans.length === 0) return;
-    const fixed = orphans.map((c) => touch({ ...c, subject: currentSubjectId }));
+    const target = subjects[0].id;
+    const fixed = orphans.map((c) => touch({ ...c, subject: target }));
     await DB.bulkPut(fixed);
     for (const f of fixed) {
       const idx = cards.findIndex((c) => c.id === f.id);
@@ -706,6 +711,24 @@
       delBtn.addEventListener("click", () => deleteCard(card.id));
 
       actions.appendChild(editBtn);
+
+      if (subjects.length > 1) {
+        const moveSelect = document.createElement("select");
+        moveSelect.className = "icon-btn card-row-move";
+        moveSelect.title = "Déplacer vers une autre matière";
+        moveSelect.innerHTML =
+          `<option value="">déplacer…</option>` +
+          subjects
+            .filter((s) => s.id !== card.subject)
+            .map((s) => `<option value="${s.id}">${escapeHtml(s.name)}</option>`)
+            .join("");
+        moveSelect.addEventListener("change", async () => {
+          if (!moveSelect.value) return;
+          await moveCardToSubject(card.id, moveSelect.value);
+        });
+        actions.appendChild(moveSelect);
+      }
+
       actions.appendChild(delBtn);
 
       li.appendChild(main);
@@ -717,6 +740,23 @@
   function daysUntil(dueDateIso) {
     const ms = new Date(dueDateIso).getTime() - Date.now();
     return Math.max(0, Math.ceil(ms / 86400000));
+  }
+
+  /** Reclasse manuellement une fiche vers une autre matière (utile pour
+   *  corriger un classement erroné, ex. après une synchronisation). */
+  async function moveCardToSubject(id, newSubjectId) {
+    const card = cards.find((c) => c.id === id);
+    if (!card || card.subject === newSubjectId) return;
+    const updated = touch({ ...card, subject: newSubjectId });
+    await persist(updated);
+
+    const idx = cards.findIndex((c) => c.id === id);
+    if (idx >= 0) cards[idx] = updated;
+    reviewQueue = reviewQueue.filter((c) => c.id !== id);
+    if (currentCard && currentCard.id === id) {
+      showNextCard();
+    }
+    renderAll();
   }
 
   async function deleteCard(id) {
@@ -1122,19 +1162,29 @@
     return general.id;
   }
 
-  /** Fusionne une fiche reçue de Supabase (import initial ou temps réel). */
+  /** Fusionne une fiche reçue de Supabase (import initial ou temps réel).
+   *  Règle importante : une ligne distante sans matière renseignée (donnée
+   *  ancienne, d'avant l'introduction des matières) ne doit jamais dégrader
+   *  une fiche déjà correctement classée localement — sinon une simple
+   *  synchronisation peut faire "retomber" une fiche dans Général. */
   async function mergeRemoteCard(remote) {
-    remote.subject = await ensureLocalSubjectFor(remote);
     const idx = cards.findIndex((c) => c.id === remote.id);
-    if (idx === -1) {
+    const local = idx >= 0 ? cards[idx] : null;
+
+    if (remote.subject) {
+      remote.subject = await ensureLocalSubjectFor(remote);
+    } else if (local && local.subject) {
+      remote.subject = local.subject;
+    } else {
+      remote.subject = await ensureLocalSubjectFor(remote);
+    }
+
+    if (!local) {
       cards.push(remote);
       await DB.put(remote);
-    } else {
-      const local = cards[idx];
-      if (new Date(remote.updatedAt) > new Date(local.updatedAt || 0)) {
-        cards[idx] = remote;
-        await DB.put(remote);
-      }
+    } else if (new Date(remote.updatedAt) > new Date(local.updatedAt || 0)) {
+      cards[idx] = remote;
+      await DB.put(remote);
     }
   }
 
