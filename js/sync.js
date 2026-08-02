@@ -131,21 +131,39 @@ function removePending(id) {
 /* ---------------------------------------------------------
    API publique
 --------------------------------------------------------- */
+const PULL_PAGE_SIZE = 1000; // limite par défaut de PostgREST par requête
+
 async function pullAll() {
   const c = getClient();
   const { code } = getConfig();
   if (!c || !code) return [];
-  const { data, error } = await c
-    .from("cards")
-    .select("*")
-    .eq("sync_code", code);
-  if (error) {
-    console.warn("Sync: échec du chargement distant", error.message);
-    lastError = error.message;
-    return [];
+
+  const all = [];
+  let from = 0;
+
+  while (true) {
+    const to = from + PULL_PAGE_SIZE - 1;
+    const { data, error } = await c
+      .from("cards")
+      .select("*")
+      .eq("sync_code", code)
+      .range(from, to);
+
+    if (error) {
+      console.warn("Sync: échec du chargement distant", error.message);
+      lastError = error.message;
+      // On garde ce qui a déjà été récupéré plutôt que de tout jeter :
+      // mieux vaut une synchro partielle que rien du tout.
+      return all.map(rowToCard);
+    }
+
+    all.push(...data);
+    if (data.length < PULL_PAGE_SIZE) break; // dernière page atteinte
+    from += PULL_PAGE_SIZE;
   }
+
   lastError = "";
-  return data.map(rowToCard);
+  return all.map(rowToCard);
 }
 
 let lastError = "";
