@@ -1192,8 +1192,26 @@
       cards.push(remote);
       await DB.put(remote);
     } else if (new Date(remote.updatedAt) > new Date(local.updatedAt || 0)) {
-      cards[idx] = remote;
-      await DB.put(remote);
+      // Garde-fou : une ligne distante qui a toutes les apparences d'une
+      // fiche "jamais révisée" (aucune lastReviewed, intervalle et
+      // répétitions à 0) ne doit jamais écraser une fiche locale qui, elle,
+      // a une vraie progression. Une réponse "Encore" légitime redonne bien
+      // un intervalle de 1 jour, jamais 0 — donc ce garde-fou ne bloque pas
+      // les remises à zéro volontaires, seulement les lignes distantes
+      // incomplètes/corrompues qui feraient perdre la progression réelle
+      // d'une fiche (ex. remise à "interrogation immédiate" à tort).
+      const remoteLooksNeverReviewed =
+        !remote.deleted &&
+        !remote.lastReviewed &&
+        (remote.repetitions || 0) === 0 &&
+        (remote.interval || 0) === 0;
+      const localHasRealProgress =
+        Boolean(local.lastReviewed) || local.repetitions > 0 || local.interval > 0;
+
+      if (!(remoteLooksNeverReviewed && localHasRealProgress)) {
+        cards[idx] = remote;
+        await DB.put(remote);
+      }
     }
   }
 
