@@ -379,9 +379,21 @@
     return subjectCards().filter((c) => SM2.isDue(c));
   }
 
+  function renderBrandBadge(due) {
+    const badgeEl = el("brand-badge");
+    if (!badgeEl) return;
+    if (due > 0) {
+      badgeEl.textContent = due > 99 ? "99+" : String(due);
+      badgeEl.hidden = false;
+    } else {
+      badgeEl.hidden = true;
+    }
+  }
+
   function renderDuePill() {
     const due = dueCards().length;
     dueCountEl.textContent = String(due);
+    renderBrandBadge(due);
 
     // Dès que le compteur atteint 0, la pastille passe en blanc (comme en
     // mode bonus) — que l'on soit ou non dans une session de révision.
@@ -612,20 +624,43 @@
     renderManageList();
   }
 
-  /** Mode bonus (révision libre) : la date d'interrogation est simplement reculée,
-   *  sans toucher au facteur de facilité SM-2. "Encore" ne change rien, on passe
-   *  juste à une autre fiche aléatoire. */
+  /** Mode bonus (révision libre) : la date d'interrogation est reculée à partir
+   *  de la prochaine interrogation déjà programmée pour cette fiche (et non à
+   *  partir d'aujourd'hui), pour ne pas raccourcir l'intervalle d'une fiche
+   *  révisée en avance. Si cette échéance est déjà passée (fiche en retard),
+   *  on repart d'aujourd'hui. "Encore" ramène explicitement la fiche à
+   *  aujourd'hui, sans toucher au facteur de facilité SM-2. */
   async function rateBonusCard(rating) {
+    const today = startOfDay(new Date());
+
+    if (rating === "again") {
+      const updated = touch({
+        ...currentCard,
+        dueDate: today.toISOString(),
+        lastReviewed: new Date().toISOString(),
+        reviewCount: (currentCard.reviewCount || 0) + 1,
+      });
+      await persist(updated);
+
+      const idx = cards.findIndex((c) => c.id === updated.id);
+      if (idx >= 0) cards[idx] = updated;
+
+      renderStats();
+      renderManageList();
+      return;
+    }
+
     const bonusDays = { hard: 1, good: 3, easy: 5 }[rating];
     if (bonusDays === undefined) return;
 
-    const due = new Date();
-    due.setHours(0, 0, 0, 0);
+    const scheduledDue = currentCard.dueDate ? startOfDay(new Date(currentCard.dueDate)) : today;
+    const base = scheduledDue.getTime() > today.getTime() ? scheduledDue : today;
+    const due = new Date(base);
     due.setDate(due.getDate() + bonusDays);
 
     const updated = touch({
       ...currentCard,
-      interval: bonusDays,
+      interval: Math.round((due.getTime() - today.getTime()) / 86400000),
       dueDate: due.toISOString(),
       lastReviewed: new Date().toISOString(),
       reviewCount: (currentCard.reviewCount || 0) + 1,
@@ -979,8 +1014,11 @@
       value.textContent = dense ? "" : b.count > 0 ? String(b.count) : "";
 
       const bar = document.createElement("div");
-      bar.className = "chart-bar";
-      const height = max === 0 ? 0 : Math.max(b.count > 0 ? 3 : 0, Math.round((b.count / max) * CHART_MAX_BAR_PX));
+      bar.className = "chart-bar" + (b.count === 0 ? " chart-bar--zero" : "");
+      // Les jours à zéro fiche gardent une petite barre témoin (couleur neutre)
+      // pour rester visibles dans la grille, plutôt que de disparaître.
+      const height =
+        b.count === 0 ? 3 : Math.max(3, Math.round((b.count / max) * CHART_MAX_BAR_PX));
       bar.style.height = `${height}px`;
 
       const label = document.createElement("span");

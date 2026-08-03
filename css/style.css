@@ -14,6 +14,7 @@
   --teal: #3e7c6b;
   --terracotta: #b6604a;
   --blue: #4b7996;
+  --paper-3: #ddcfa9;
 
 /*--font-type: "Special Elite", "Arial", monospace;*/
   --font-type: sans-serif;
@@ -81,12 +82,39 @@ textarea, input {
   gap: 8px;
 }
 
+.brand-mark-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
 .brand-mark {
   color: var(--rule);
   font-size: 20px;
   transform: rotate(-8deg);
   display: inline-block;
 }
+
+/* Pastille de notification façon icône iOS : ronde, à droite, rouge, avec le
+   même style de police que le reste de l'interface (font-mono). */
+.brand-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #ff3b30;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+  box-shadow: 0 0 0 2px var(--desk);
+}
+
+.brand-badge[hidden] { display: none; }
 
 .brand h1 {
   margin: 0;
@@ -176,6 +204,14 @@ textarea, input {
 .subject-select:focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 2px;
+}
+
+/* Le <select> hérite sa couleur claire (--paper) pour rester lisible fermé sur
+   fond sombre, mais le menu déroulant natif s'ouvre sur fond clair : sans ceci
+   le texte des options reste clair sur fond clair et devient illisible. */
+.subject-select option {
+  color: var(--ink);
+  background: var(--paper);
 }
 
 .subject-add-btn {
@@ -423,6 +459,7 @@ textarea, input {
   border: none;
   padding: 0;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.3, 1);
   box-shadow: var(--shadow-deep);
   text-align: left;
@@ -456,6 +493,7 @@ textarea, input {
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   border-radius: var(--radius-card);
   padding: 34px 26px 24px 46px;
   display: flex;
@@ -811,6 +849,11 @@ textarea, input {
 }
 
 .chart-col.is-today .chart-bar { background: var(--rule); }
+
+/* Jours sans aucune fiche due : couleur neutre (beige plus foncé que le fond
+   de la carte), pour rester visible sans attirer l'œil comme une vraie donnée. */
+.chart-bar--zero { background: var(--paper-3); }
+.chart-col.is-today .chart-bar--zero { background: var(--paper-3); }
 
 .chart-value {
   font-family: var(--font-mono);
