@@ -63,9 +63,16 @@ function sm2Next(state, rating) {
   } else {
     repetitions += 1;
     if (repetitions === 1) {
-      interval = 1;
+      // Première bonne réponse : le SM-2 classique fixe ici un intervalle
+      // de 1 jour quelle que soit la note (Difficile/Bien/Facile), donc
+      // les 3 boutons affichaient la même durée pour toute fiche neuve.
+      // On différencie dès la première répétition pour que les boutons
+      // aient toujours des durées distinctes.
+      interval = quality === 3 ? 1 : quality === 4 ? 2 : 3;
     } else if (repetitions === 2) {
-      interval = 6;
+      // Même souci pour la deuxième répétition (6 jours fixes en SM-2
+      // classique) : on différencie aussi ce palier.
+      interval = quality === 3 ? 4 : quality === 4 ? 6 : 10;
     } else {
       interval = Math.round(interval * newEasiness);
     }
