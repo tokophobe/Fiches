@@ -324,6 +324,43 @@
     }
   }
 
+  /** Répercute la version à jour d'une fiche partout où une copie ancienne
+   *  pourrait encore traîner (la fiche affichée, et la file de révision en
+   *  cours). Sans ça, `currentCard` et `reviewQueue` gardent l'instantané
+   *  pris au début de la session : on se retrouve interrogé sur l'ancien
+   *  contenu d'une fiche qu'on vient d'éditer, et une réponse donnée avec
+   *  cet instantané périmé écrase ensuite la vraie mise à jour dans la base
+   *  (elle "n'est pas enregistrée"). Ça couvre aussi le cas de deux appareils
+   *  ouverts en même temps : une fiche notée sur l'un doit disparaître de la
+   *  file de l'autre au lieu d'y être proposée une seconde fois.
+   *  N'est volontairement PAS appelée depuis les fonctions de notation
+   *  (rateScheduledCard / rateBonusCard), qui gèrent déjà `reviewQueue`
+   *  elles-mêmes (shift/push), y compris pour "Encore" qui remet la fiche
+   *  en fin de file même si elle n'est plus "due" au sens strict. */
+  function syncCardEverywhere(updated) {
+    if (currentCard && currentCard.id === updated.id) {
+      currentCard = updated;
+      if (el("view-review").classList.contains("is-active")) {
+        questionTextEl.textContent = currentCard.question;
+        answerTextEl.textContent = currentCard.answer;
+        updateRatingPreviews();
+      }
+    }
+
+    const qIdx = reviewQueue.findIndex((c) => c.id === updated.id);
+    if (qIdx >= 0) {
+      const stillBelongsInQueue =
+        !updated.deleted &&
+        updated.subject === currentSubjectId &&
+        SM2.isDue(updated);
+      if (stillBelongsInQueue) {
+        reviewQueue[qIdx] = updated;
+      } else {
+        reviewQueue.splice(qIdx, 1);
+      }
+    }
+  }
+
   /* ---------------------------------------------------------
      Chargement / rafraîchissement des données
   --------------------------------------------------------- */
@@ -617,6 +654,7 @@
         const updated = touch({ ...cards[idx], question, answer });
         await persist(updated);
         cards[idx] = updated;
+        syncCardEverywhere(updated);
       }
       exitEditMode();
     } else {
@@ -918,6 +956,14 @@
     chartEmptyEl.hidden = true;
     el("chart-wrap").hidden = false;
 
+    // Au-delà d'1 mois affiché (3 mois / 6 mois / 1 an), il y a trop de
+    // colonnes pour qu'un espace entre chaque barre reste visible : les
+    // barres finissent par disparaître entre les espaces. On les fait donc
+    // se toucher, et on retire les nombres qui n'ont de toute façon plus la
+    // place de s'afficher lisiblement.
+    const dense = statsRangeDays > 31;
+    dueChartEl.classList.toggle("chart--dense", dense);
+
     // Espace les étiquettes de date pour rester lisible sur les longues périodes ;
     // la fiche du jour et le dernier jour affiché restent toujours étiquetés.
     const labelEvery =
@@ -930,7 +976,7 @@
 
       const value = document.createElement("span");
       value.className = "chart-value";
-      value.textContent = b.count > 0 ? String(b.count) : "";
+      value.textContent = dense ? "" : b.count > 0 ? String(b.count) : "";
 
       const bar = document.createElement("div");
       bar.className = "chart-bar";
@@ -1211,6 +1257,7 @@
       if (!(remoteLooksNeverReviewed && localHasRealProgress)) {
         cards[idx] = remote;
         await DB.put(remote);
+        syncCardEverywhere(remote);
       }
     }
   }

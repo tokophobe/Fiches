@@ -777,6 +777,21 @@ textarea, input {
   width: 100%;
 }
 
+/* Périodes longues (3 mois / 6 mois / 1 an) : trop de colonnes pour qu'un
+   espace entre chaque barre reste visible, donc les barres se touchent ;
+   les nombres au-dessus (déjà vidés en JS) n'ont plus besoin de leur place. */
+.chart.chart--dense {
+  gap: 0;
+}
+
+.chart.chart--dense .chart-bar {
+  border-radius: 0;
+}
+
+.chart.chart--dense .chart-value {
+  display: none;
+}
+
 .chart-col {
   flex: 1 1 0;
   min-width: 0;
