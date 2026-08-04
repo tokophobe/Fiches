@@ -53,15 +53,13 @@
     <button class="tab" role="tab" aria-selected="false" data-view="manage">Gérer</button>
     <button class="tab" role="tab" aria-selected="false" data-view="stats">Stats</button>
     <button class="tab" role="tab" aria-selected="false" data-view="sync">Sync</button>
+    <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">⚙</button>
   </nav>
 
   <main>
     <!-- VUE RÉVISION -->
     <section id="view-review" class="view is-active" aria-labelledby="tab-review">
-      <div class="review-toolbar">
-        <p class="review-progress" id="review-progress"></p>
-        <button class="edit-current-btn" id="edit-current-btn" type="button" hidden>✎ Modifier cette fiche</button>
-      </div>
+      <p class="review-progress sr-only" id="review-progress" aria-live="polite"></p>
 
       <div class="stage" id="stage">
         <!-- empty state -->
@@ -87,6 +85,7 @@
               <p class="card-text" id="answer-text"></p>
             </div>
           </button>
+          <button class="card-edit-btn" id="edit-current-btn" type="button" hidden title="Modifier cette fiche" aria-label="Modifier cette fiche">✎</button>
         </div>
       </div>
 
@@ -107,6 +106,17 @@
           <span class="stamp-label">Facile</span>
           <span class="stamp-sub" id="sub-easy">—</span>
         </button>
+      </div>
+
+      <div class="review-chart-section" id="review-chart-section">
+        <button class="chart-title chart-title--tap" id="review-chart-toggle" type="button">
+          <span>Fiches à revoir — <span id="review-chart-subject-name"></span></span>
+          <span class="chart-scale-tag" id="review-chart-scale-label">15 j</span>
+        </button>
+        <div class="chart-wrap chart-wrap--mini" id="review-chart-wrap">
+          <div class="chart chart--mini" id="review-due-chart"></div>
+        </div>
+        <p class="chart-empty" id="review-chart-empty" hidden>Rien à revoir sur cette période.</p>
       </div>
     </section>
 
@@ -170,10 +180,14 @@
         </select>
       </div>
 
-      <div class="stat-grid stat-grid--single">
+      <div class="stat-grid">
         <div class="stat-box">
           <span class="stat-number" id="stat-total">0</span>
           <span class="stat-label">fiches au total</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="stat-reviewed-today">0</span>
+          <span class="stat-label">revues aujourd'hui</span>
         </div>
       </div>
 
@@ -239,6 +253,34 @@
         <div class="form-actions">
           <button class="btn btn--small" id="retry-sync-btn" type="button">Réessayer maintenant</button>
           <button class="btn btn--ghost" id="disconnect-btn" type="button">Se déconnecter de cet espace</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VUE RÉGLAGES -->
+    <section id="view-settings" class="view" aria-labelledby="tab-settings">
+      <h2 class="section-title">Réglages</h2>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Mode bonus — recul des fiches (en jours)</h3>
+        <p class="field-hint settings-block-hint">
+          Une fois les fiches du jour terminées, tu peux continuer en révision
+          libre. Chaque réponse recule alors la fiche du nombre de jours
+          choisi ci-dessous, sans passer par l'algorithme SM-2.
+        </p>
+        <div class="settings-bonus-row">
+          <label class="field settings-bonus-field">
+            <span>Difficile</span>
+            <input type="number" id="setting-bonus-hard" min="1" max="365" step="1" inputmode="numeric" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Bien</span>
+            <input type="number" id="setting-bonus-good" min="1" max="365" step="1" inputmode="numeric" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Facile</span>
+            <input type="number" id="setting-bonus-easy" min="1" max="365" step="1" inputmode="numeric" />
+          </label>
         </div>
       </div>
     </section>

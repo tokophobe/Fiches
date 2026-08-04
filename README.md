@@ -4,6 +4,22 @@ Une PWA toute simple : tu entres des questions/réponses, l'appli te les
 pose, et plus tu réponds juste, moins souvent elle te les repose
 (algorithme SM-2, celui d'Anki).
 
+## Nouveautés de cette version
+
+- Pastille de notification (à côté du logo) redessinée façon icône iOS :
+  icône en fond "squircle", badge en dégradé rouge avec liseré.
+- Mode bonus (révision libre) : le tirage lisse toujours la charge en
+  piochant en priorité parmi les fiches du jour le plus chargé à venir.
+- Page **Réviser** : un mini-histogramme des échéances de la matière en
+  cours apparaît en bas de page (taper dessus change l'échelle : 15 j
+  → 1 mois → 3 mois → 6 mois → 1 an → boucle). Le compteur « fiches
+  revues aujourd'hui » a été déplacé dans **Stats**, et le bouton
+  « Modifier cette fiche » est maintenant une icône dans le coin
+  supérieur droit de la fiche elle-même.
+- Nouvel onglet **Réglages** (icône ⚙) : permet de configurer le
+  nombre de jours dont chaque bouton (Difficile / Bien / Facile)
+  recule une fiche en mode bonus (1/3/5 par défaut).
+
 Tout est stocké **en local sur ton appareil** (IndexedDB) — pas de
 compte, pas de serveur, ça marche hors-ligne une fois installée.
 

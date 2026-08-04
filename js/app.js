@@ -43,6 +43,7 @@
   const totalCountEl = el("total-count");
 
   const statTotal = el("stat-total");
+  const statReviewedToday = el("stat-reviewed-today");
   const statsSubjectSelectEl = el("stats-subject-select");
   const statsRangeSelectEl = el("stats-range-select");
   const dueChartEl = el("due-chart");
@@ -51,6 +52,27 @@
   let statsSubjectFilter = ALL_SUBJECTS;
   let statsRangeDays = 15;
   const CHART_MAX_BAR_PX = 140;
+
+  /* Mini histogramme de la page Réviser (matière en cours). Échelle propre,
+     changée en tapant dessus, indépendante du sélecteur de l'onglet Stats. */
+  const reviewChartEl = el("review-due-chart");
+  const reviewChartEmptyEl = el("review-chart-empty");
+  const reviewChartWrapEl = el("review-chart-wrap");
+  const reviewChartToggleEl = el("review-chart-toggle");
+  const reviewChartScaleLabelEl = el("review-chart-scale-label");
+  const reviewChartSubjectNameEl = el("review-chart-subject-name");
+  const REVIEW_CHART_STEPS = [15, 30, 90, 182, 365];
+  const REVIEW_CHART_MAX_BAR_PX = 64;
+  let reviewChartRangeDays = 15;
+
+  /* Réglages du mode bonus : nombre de jours dont chaque note recule la
+     fiche en révision libre (persisté en local, indépendant par appareil). */
+  const BONUS_DAYS_KEY = "fiches_bonus_days";
+  const DEFAULT_BONUS_DAYS = { hard: 1, good: 3, easy: 5 };
+  let bonusDaysSettings = { ...DEFAULT_BONUS_DAYS };
+  const settingBonusHardEl = el("setting-bonus-hard");
+  const settingBonusGoodEl = el("setting-bonus-good");
+  const settingBonusEasyEl = el("setting-bonus-easy");
 
   const exportBtn = el("export-btn");
   const importInput = el("import-input");
@@ -368,6 +390,7 @@
     renderDuePill();
     renderManageList();
     renderStats();
+    renderReviewChart();
   }
 
   /** Toutes les fiches non supprimées de la matière actuellement active. */
@@ -472,7 +495,8 @@
 
   /** Mode bonus : pioche en priorité parmi les fiches du jour le plus chargé
    *  à venir, pour lisser la charge de révision future. Si aucun pic net ne
-   *  se dégage, on retombe sur un tirage aléatoire classique. */
+   *  se dégage, on retombe sur un tirage aléatoire classique sur toute la
+   *  matière. */
   function pickRandomBonusCard(pool, excludeId) {
     const busiestDay = findBusiestUpcomingDay(pool);
     if (busiestDay !== null) {
@@ -512,6 +536,7 @@
 
       updateRatingPreviews();
       renderDuePill();
+      renderReviewChart();
       return;
     }
 
@@ -525,6 +550,7 @@
       editCurrentBtn.hidden = true;
       reviewProgressEl.textContent = "";
       renderDuePill();
+      renderReviewChart();
       return;
     }
 
@@ -540,14 +566,15 @@
 
     updateRatingPreviews();
     renderDuePill();
+    renderReviewChart();
   }
 
   function updateRatingPreviews() {
     if (!currentCard) return;
     if (isBonusMode) {
-      el("sub-hard").textContent = "+1 j";
-      el("sub-good").textContent = "+3 j";
-      el("sub-easy").textContent = "+5 j";
+      el("sub-hard").textContent = `+${bonusDaysSettings.hard} j`;
+      el("sub-good").textContent = `+${bonusDaysSettings.good} j`;
+      el("sub-easy").textContent = `+${bonusDaysSettings.easy} j`;
       return;
     }
     const previews = {};
@@ -650,7 +677,7 @@
       return;
     }
 
-    const bonusDays = { hard: 1, good: 3, easy: 5 }[rating];
+    const bonusDays = bonusDaysSettings[rating];
     if (bonusDays === undefined) return;
 
     const scheduledDue = currentCard.dueDate ? startOfDay(new Date(currentCard.dueDate)) : today;
@@ -976,33 +1003,35 @@
     return `${date.getDate()}/${date.getMonth() + 1}`;
   }
 
-  function renderDueChart() {
-    if (!dueChartEl) return;
-    const pool = statsScopeCards();
-    const buckets = computeDueHistogram(pool, statsRangeDays);
+  /** Dessine un histogramme "fiches dues par jour" dans les éléments fournis.
+   *  Factorisé pour être partagé entre le grand graphique de l'onglet Stats
+   *  et le mini graphique de la page Réviser (matière en cours). */
+  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, days, maxBarPx) {
+    if (!chartEl) return;
+    const buckets = computeDueHistogram(pool, days);
     const max = Math.max(0, ...buckets.map((b) => b.count));
 
-    dueChartEl.innerHTML = "";
+    chartEl.innerHTML = "";
     if (max === 0) {
-      chartEmptyEl.hidden = false;
-      el("chart-wrap").hidden = true;
+      if (emptyEl) emptyEl.hidden = false;
+      if (wrapEl) wrapEl.hidden = true;
       return;
     }
-    chartEmptyEl.hidden = true;
-    el("chart-wrap").hidden = false;
+    if (emptyEl) emptyEl.hidden = true;
+    if (wrapEl) wrapEl.hidden = false;
 
     // Au-delà d'1 mois affiché (3 mois / 6 mois / 1 an), il y a trop de
     // colonnes pour qu'un espace entre chaque barre reste visible : les
     // barres finissent par disparaître entre les espaces. On les fait donc
     // se toucher, et on retire les nombres qui n'ont de toute façon plus la
     // place de s'afficher lisiblement.
-    const dense = statsRangeDays > 31;
-    dueChartEl.classList.toggle("chart--dense", dense);
+    const dense = days > 31;
+    chartEl.classList.toggle("chart--dense", dense);
 
     // Espace les étiquettes de date pour rester lisible sur les longues périodes ;
     // la fiche du jour et le dernier jour affiché restent toujours étiquetés.
     const labelEvery =
-      statsRangeDays <= 15 ? 1 : statsRangeDays <= 31 ? 2 : statsRangeDays <= 93 ? 7 : statsRangeDays <= 182 ? 14 : 30;
+      days <= 15 ? 1 : days <= 31 ? 2 : days <= 93 ? 7 : days <= 182 ? 14 : 30;
 
     const frag = document.createDocumentFragment();
     buckets.forEach((b, i) => {
@@ -1018,7 +1047,7 @@
       // Les jours à zéro fiche gardent une petite barre témoin (couleur neutre)
       // pour rester visibles dans la grille, plutôt que de disparaître.
       const height =
-        b.count === 0 ? 3 : Math.max(3, Math.round((b.count / max) * CHART_MAX_BAR_PX));
+        b.count === 0 ? 3 : Math.max(3, Math.round((b.count / max) * maxBarPx));
       bar.style.height = `${height}px`;
 
       const label = document.createElement("span");
@@ -1031,13 +1060,28 @@
       col.appendChild(label);
       frag.appendChild(col);
     });
-    dueChartEl.appendChild(frag);
+    chartEl.appendChild(frag);
+  }
+
+  function renderDueChart() {
+    const pool = statsScopeCards();
+    renderHistogramInto(dueChartEl, chartEmptyEl, el("chart-wrap"), pool, statsRangeDays, CHART_MAX_BAR_PX);
+  }
+
+  /** Fiches (de `pool`) dont la dernière révision remonte à aujourd'hui. */
+  function reviewedTodayCount(pool) {
+    const today = startOfDay(new Date()).getTime();
+    return pool.filter((c) => {
+      if (!c.lastReviewed) return false;
+      return startOfDay(new Date(c.lastReviewed)).getTime() === today;
+    }).length;
   }
 
   function renderStats() {
     renderStatsSubjectSelect();
-    const total = statsScopeCards().length;
-    statTotal.textContent = String(total);
+    const pool = statsScopeCards();
+    statTotal.textContent = String(pool.length);
+    if (statReviewedToday) statReviewedToday.textContent = String(reviewedTodayCount(pool));
     renderDueChart();
   }
 
@@ -1050,6 +1094,94 @@
     statsRangeDays = Number(statsRangeSelectEl.value) || 15;
     renderDueChart();
   });
+
+  /* ---------------------------------------------------------
+     Mini histogramme de la page Réviser (matière en cours)
+  --------------------------------------------------------- */
+  function formatRangeShort(days) {
+    switch (days) {
+      case 15: return "15 j";
+      case 30: return "1 mois";
+      case 90: return "3 mois";
+      case 182: return "6 mois";
+      case 365: return "1 an";
+      default: return `${days} j`;
+    }
+  }
+
+  function renderReviewChart() {
+    if (!reviewChartEl) return;
+    if (reviewChartSubjectNameEl) reviewChartSubjectNameEl.textContent = subjectName(currentSubjectId);
+    if (reviewChartScaleLabelEl) reviewChartScaleLabelEl.textContent = formatRangeShort(reviewChartRangeDays);
+    const pool = subjectCards();
+    renderHistogramInto(
+      reviewChartEl,
+      reviewChartEmptyEl,
+      reviewChartWrapEl,
+      pool,
+      reviewChartRangeDays,
+      REVIEW_CHART_MAX_BAR_PX
+    );
+  }
+
+  /** Tape sur le mini graphique : passe à l'échelle supérieure (boucle). */
+  function cycleReviewChartRange() {
+    const idx = REVIEW_CHART_STEPS.indexOf(reviewChartRangeDays);
+    reviewChartRangeDays = REVIEW_CHART_STEPS[(idx + 1) % REVIEW_CHART_STEPS.length];
+    renderReviewChart();
+  }
+
+  if (reviewChartToggleEl) reviewChartToggleEl.addEventListener("click", cycleReviewChartRange);
+  if (reviewChartWrapEl) reviewChartWrapEl.addEventListener("click", cycleReviewChartRange);
+
+  /* ---------------------------------------------------------
+     Réglages : recul (en jours) du mode bonus
+  --------------------------------------------------------- */
+  function clampBonusDays(value, fallback) {
+    const n = Number(value);
+    if (!Number.isFinite(n) || n < 1) return fallback;
+    return Math.min(365, Math.round(n));
+  }
+
+  function loadBonusDaysSettings() {
+    try {
+      const raw = localStorage.getItem(BONUS_DAYS_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        bonusDaysSettings = {
+          hard: clampBonusDays(parsed.hard, DEFAULT_BONUS_DAYS.hard),
+          good: clampBonusDays(parsed.good, DEFAULT_BONUS_DAYS.good),
+          easy: clampBonusDays(parsed.easy, DEFAULT_BONUS_DAYS.easy),
+        };
+      }
+    } catch {
+      bonusDaysSettings = { ...DEFAULT_BONUS_DAYS };
+    }
+  }
+
+  function saveBonusDaysSettings() {
+    localStorage.setItem(BONUS_DAYS_KEY, JSON.stringify(bonusDaysSettings));
+  }
+
+  function renderSettingsView() {
+    if (settingBonusHardEl) settingBonusHardEl.value = bonusDaysSettings.hard;
+    if (settingBonusGoodEl) settingBonusGoodEl.value = bonusDaysSettings.good;
+    if (settingBonusEasyEl) settingBonusEasyEl.value = bonusDaysSettings.easy;
+  }
+
+  function wireBonusSettingInput(inputEl, rating) {
+    if (!inputEl) return;
+    inputEl.addEventListener("change", () => {
+      bonusDaysSettings[rating] = clampBonusDays(inputEl.value, DEFAULT_BONUS_DAYS[rating]);
+      inputEl.value = bonusDaysSettings[rating];
+      saveBonusDaysSettings();
+      if (isBonusMode) updateRatingPreviews();
+    });
+  }
+
+  wireBonusSettingInput(settingBonusHardEl, "hard");
+  wireBonusSettingInput(settingBonusGoodEl, "good");
+  wireBonusSettingInput(settingBonusEasyEl, "easy");
 
   /* ---------------------------------------------------------
      Navigation par onglets
@@ -1073,9 +1205,11 @@
         } else {
           syncCurrentCardFromStore();
         }
+        renderReviewChart();
       }
       if (view === "stats") renderStats();
       if (view === "sync") renderSyncView();
+      if (view === "settings") renderSettingsView();
       renderDuePill();
     });
   });
@@ -1421,6 +1555,8 @@
      Démarrage
   --------------------------------------------------------- */
   (async () => {
+    loadBonusDaysSettings();
+    renderSettingsView();
     await loadSubjects();
     renderSubjectSelect();
     cards = await DB.getAll();
