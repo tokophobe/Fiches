@@ -63,7 +63,7 @@
   const reviewChartScaleLabelEl = el("review-chart-scale-label");
   const reviewChartSubjectNameEl = el("review-chart-subject-name");
   const REVIEW_CHART_STEPS = [15, 30, 90, 182, 365];
-  const REVIEW_CHART_MAX_BAR_PX = 64;
+  const REVIEW_CHART_MAX_BAR_PX = 33;
   let reviewChartRangeDays = 15;
 
   /* Réglages du mode bonus : nombre de jours dont chaque note recule la

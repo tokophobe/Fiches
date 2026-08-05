@@ -633,7 +633,7 @@ textarea, input {
    REVIEW: mini histogramme (matière en cours), en bas de la page
    ============================================================ */
 .review-chart-section {
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .chart-title--tap {
@@ -672,15 +672,15 @@ textarea, input {
   text-transform: none;
 }
 
-.chart-wrap--mini {
-  padding: 8px 8px 4px;
+.chart-wrap.chart-wrap--mini {
+  padding: 6px 6px 3px;
   cursor: pointer;
 }
 
-.chart--mini { height: 62px; }
-.chart--mini .chart-col { gap: 2px; }
-.chart--mini .chart-value { font-size: 8px; }
-.chart--mini .chart-label { font-size: 8px; height: 9px; }
+.chart.chart--mini { height: 42px; }
+.chart.chart--mini .chart-col { gap: 1px; }
+.chart.chart--mini .chart-value { display: none; }
+.chart.chart--mini .chart-label { font-size: 7px; height: 8px; }
 
 /* ============================================================
    MANAGE VIEW: form + list
