@@ -33,6 +33,7 @@
   const answerTextEl = el("answer-text");
   const ratingRowEl = el("rating-row");
   const editCurrentBtn = el("edit-current-btn");
+  const hibernateCurrentBtn = el("hibernate-current-btn");
 
   const cardForm = el("card-form");
   const inputQuestion = el("input-question");
@@ -73,6 +74,21 @@
   const settingBonusHardEl = el("setting-bonus-hard");
   const settingBonusGoodEl = el("setting-bonus-good");
   const settingBonusEasyEl = el("setting-bonus-easy");
+
+  /* Réglage du comportement du bouton "Encore" en mode bonus : soit une
+     date fixe (toujours le lendemain), soit un jour de plus à chaque fois
+     par rapport à l'échéance actuelle de la fiche. */
+  const BONUS_AGAIN_MODE_KEY = "fiches_bonus_again_mode";
+  const DEFAULT_BONUS_AGAIN_MODE = "fixed"; // "fixed" | "increment"
+  let bonusAgainMode = DEFAULT_BONUS_AGAIN_MODE;
+  const settingBonusAgainModeEl = el("setting-bonus-again-mode");
+
+  /* Réglage du nombre de jours dont le bouton "hibernation" repousse la
+     prochaine interrogation d'une fiche. */
+  const HIBERNATE_DAYS_KEY = "fiches_hibernate_days";
+  const DEFAULT_HIBERNATE_DAYS = 7;
+  let hibernateDays = DEFAULT_HIBERNATE_DAYS;
+  const settingHibernateDaysEl = el("setting-hibernate-days");
 
   const exportBtn = el("export-btn");
   const importInput = el("import-input");
@@ -520,7 +536,6 @@
   function showNextCard() {
     isFlipped = false;
     flipCardEl.classList.remove("is-flipped");
-    ratingRowEl.hidden = true;
 
     if (reviewQueue.length > 0) {
       isBonusMode = false;
@@ -528,6 +543,10 @@
       emptyStateEl.hidden = true;
       cardStackEl.hidden = false;
       editCurrentBtn.hidden = false;
+      if (hibernateCurrentBtn) hibernateCurrentBtn.hidden = false;
+      // Les boutons d'évaluation restent affichés en permanence (côté
+      // question comme côté réponse) : on ne les cache plus au retournement.
+      ratingRowEl.hidden = false;
       questionTextEl.textContent = currentCard.question;
       answerTextEl.textContent = currentCard.answer;
 
@@ -548,6 +567,8 @@
       emptyStateEl.hidden = false;
       cardStackEl.hidden = true;
       editCurrentBtn.hidden = true;
+      if (hibernateCurrentBtn) hibernateCurrentBtn.hidden = true;
+      ratingRowEl.hidden = true;
       reviewProgressEl.textContent = "";
       renderDuePill();
       renderReviewChart();
@@ -560,6 +581,8 @@
     emptyStateEl.hidden = true;
     cardStackEl.hidden = false;
     editCurrentBtn.hidden = false;
+    if (hibernateCurrentBtn) hibernateCurrentBtn.hidden = false;
+    ratingRowEl.hidden = false;
     questionTextEl.textContent = currentCard.question;
     answerTextEl.textContent = currentCard.answer;
     reviewProgressEl.textContent = "Fiches du jour terminées — révision libre";
@@ -572,11 +595,14 @@
   function updateRatingPreviews() {
     if (!currentCard) return;
     if (isBonusMode) {
+      el("sub-again").textContent =
+        bonusAgainMode === "increment" ? "+1 j" : "→ demain";
       el("sub-hard").textContent = `+${bonusDaysSettings.hard} j`;
       el("sub-good").textContent = `+${bonusDaysSettings.good} j`;
       el("sub-easy").textContent = `+${bonusDaysSettings.easy} j`;
       return;
     }
+    el("sub-again").textContent = "< 1 j";
     const previews = {};
     for (const rating of ["hard", "good", "easy"]) {
       const next = SM2.sm2Next(currentCard, rating);
@@ -609,7 +635,6 @@
     if (!currentCard) return;
     isFlipped = !isFlipped;
     flipCardEl.classList.toggle("is-flipped", isFlipped);
-    ratingRowEl.hidden = !isFlipped;
   });
 
   ratingRowEl.addEventListener("click", async (e) => {
@@ -651,39 +676,48 @@
     renderManageList();
   }
 
+  /** Calcule la nouvelle échéance quand on répond "Encore" en mode bonus,
+   *  selon le réglage choisi :
+   *   - "fixed"     : toujours le lendemain (date fixe), quelle que soit
+   *                   l'échéance actuelle de la fiche.
+   *   - "increment" : un jour de plus par rapport à l'échéance actuelle de
+   *                   la fiche (ou à aujourd'hui si elle est déjà passée) —
+   *                   plusieurs "Encore" successifs éloignent donc la fiche
+   *                   un peu plus à chaque fois. */
+  function nextBonusAgainDueDate(card, today) {
+    if (bonusAgainMode === "increment") {
+      const base = card.dueDate ? startOfDay(new Date(card.dueDate)) : today;
+      const start = base.getTime() > today.getTime() ? base : today;
+      const due = new Date(start);
+      due.setDate(due.getDate() + 1);
+      return due;
+    }
+    const due = new Date(today);
+    due.setDate(due.getDate() + 1);
+    return due;
+  }
+
   /** Mode bonus (révision libre) : la date d'interrogation est reculée à partir
    *  de la prochaine interrogation déjà programmée pour cette fiche (et non à
    *  partir d'aujourd'hui), pour ne pas raccourcir l'intervalle d'une fiche
    *  révisée en avance. Si cette échéance est déjà passée (fiche en retard),
-   *  on repart d'aujourd'hui. "Encore" ramène explicitement la fiche à
-   *  aujourd'hui, sans toucher au facteur de facilité SM-2. */
+   *  on repart d'aujourd'hui. "Encore" recule la fiche d'au moins un jour
+   *  (voir nextBonusAgainDueDate), sans toucher au facteur de facilité SM-2 —
+   *  elle n'est donc plus jamais remise à "due aujourd'hui" par erreur. */
   async function rateBonusCard(rating) {
     const today = startOfDay(new Date());
+    let due;
 
     if (rating === "again") {
-      const updated = touch({
-        ...currentCard,
-        dueDate: today.toISOString(),
-        lastReviewed: new Date().toISOString(),
-        reviewCount: (currentCard.reviewCount || 0) + 1,
-      });
-      await persist(updated);
-
-      const idx = cards.findIndex((c) => c.id === updated.id);
-      if (idx >= 0) cards[idx] = updated;
-
-      renderStats();
-      renderManageList();
-      return;
+      due = nextBonusAgainDueDate(currentCard, today);
+    } else {
+      const bonusDays = bonusDaysSettings[rating];
+      if (bonusDays === undefined) return;
+      const scheduledDue = currentCard.dueDate ? startOfDay(new Date(currentCard.dueDate)) : today;
+      const base = scheduledDue.getTime() > today.getTime() ? scheduledDue : today;
+      due = new Date(base);
+      due.setDate(due.getDate() + bonusDays);
     }
-
-    const bonusDays = bonusDaysSettings[rating];
-    if (bonusDays === undefined) return;
-
-    const scheduledDue = currentCard.dueDate ? startOfDay(new Date(currentCard.dueDate)) : today;
-    const base = scheduledDue.getTime() > today.getTime() ? scheduledDue : today;
-    const due = new Date(base);
-    due.setDate(due.getDate() + bonusDays);
 
     const updated = touch({
       ...currentCard,
@@ -697,8 +731,54 @@
     const idx = cards.findIndex((c) => c.id === updated.id);
     if (idx >= 0) cards[idx] = updated;
 
+    // Comportement bizarre corrigé : si malgré tout la fiche redevient due
+    // aujourd'hui (ou reste en retard), on la remet dans la file normale au
+    // lieu de rester en mode bonus avec un compteur "à revoir" qui n'est
+    // plus à zéro.
+    if (SM2.isDue(updated)) {
+      reviewQueue.push(updated);
+      sessionTotalDue += 1;
+    }
+
     renderStats();
     renderManageList();
+  }
+
+  /** Bouton "hibernation" : repousse la prochaine interrogation d'une fiche
+   *  de plusieurs jours (réglable) sans que ça compte comme une révision —
+   *  ni passage par SM-2, ni lastReviewed touché. Fonctionne aussi bien en
+   *  file normale qu'en mode bonus. */
+  async function hibernateCurrentCard() {
+    const card = currentCard;
+    if (!card) return;
+    const today = startOfDay(new Date());
+    const base = card.dueDate ? startOfDay(new Date(card.dueDate)) : today;
+    const start = base.getTime() > today.getTime() ? base : today;
+    const due = new Date(start);
+    due.setDate(due.getDate() + hibernateDays);
+
+    const updated = touch({
+      ...card,
+      dueDate: due.toISOString(),
+      interval: Math.round((due.getTime() - today.getTime()) / 86400000),
+    });
+    await persist(updated);
+
+    const idx = cards.findIndex((c) => c.id === updated.id);
+    if (idx >= 0) cards[idx] = updated;
+
+    reviewQueue = reviewQueue.filter((c) => c.id !== updated.id);
+    renderStats();
+    renderManageList();
+    renderDuePill();
+    showNextCard();
+  }
+
+  if (hibernateCurrentBtn) {
+    hibernateCurrentBtn.addEventListener("click", async () => {
+      if (!currentCard) return;
+      await hibernateCurrentCard();
+    });
   }
 
   /* ---------------------------------------------------------
@@ -1163,10 +1243,40 @@
     localStorage.setItem(BONUS_DAYS_KEY, JSON.stringify(bonusDaysSettings));
   }
 
+  function loadBonusAgainMode() {
+    const raw = localStorage.getItem(BONUS_AGAIN_MODE_KEY);
+    bonusAgainMode = raw === "increment" ? "increment" : DEFAULT_BONUS_AGAIN_MODE;
+  }
+
+  function saveBonusAgainMode() {
+    localStorage.setItem(BONUS_AGAIN_MODE_KEY, bonusAgainMode);
+  }
+
+  function clampHibernateDays(value, fallback) {
+    const n = Number(value);
+    if (!Number.isFinite(n) || n < 1) return fallback;
+    return Math.min(365, Math.round(n));
+  }
+
+  function loadHibernateDays() {
+    try {
+      const raw = localStorage.getItem(HIBERNATE_DAYS_KEY);
+      hibernateDays = raw ? clampHibernateDays(raw, DEFAULT_HIBERNATE_DAYS) : DEFAULT_HIBERNATE_DAYS;
+    } catch {
+      hibernateDays = DEFAULT_HIBERNATE_DAYS;
+    }
+  }
+
+  function saveHibernateDays() {
+    localStorage.setItem(HIBERNATE_DAYS_KEY, String(hibernateDays));
+  }
+
   function renderSettingsView() {
     if (settingBonusHardEl) settingBonusHardEl.value = bonusDaysSettings.hard;
     if (settingBonusGoodEl) settingBonusGoodEl.value = bonusDaysSettings.good;
     if (settingBonusEasyEl) settingBonusEasyEl.value = bonusDaysSettings.easy;
+    if (settingBonusAgainModeEl) settingBonusAgainModeEl.value = bonusAgainMode;
+    if (settingHibernateDaysEl) settingHibernateDaysEl.value = hibernateDays;
   }
 
   function wireBonusSettingInput(inputEl, rating) {
@@ -1182,6 +1292,22 @@
   wireBonusSettingInput(settingBonusHardEl, "hard");
   wireBonusSettingInput(settingBonusGoodEl, "good");
   wireBonusSettingInput(settingBonusEasyEl, "easy");
+
+  if (settingBonusAgainModeEl) {
+    settingBonusAgainModeEl.addEventListener("change", () => {
+      bonusAgainMode = settingBonusAgainModeEl.value === "increment" ? "increment" : "fixed";
+      saveBonusAgainMode();
+      if (isBonusMode) updateRatingPreviews();
+    });
+  }
+
+  if (settingHibernateDaysEl) {
+    settingHibernateDaysEl.addEventListener("change", () => {
+      hibernateDays = clampHibernateDays(settingHibernateDaysEl.value, DEFAULT_HIBERNATE_DAYS);
+      settingHibernateDaysEl.value = hibernateDays;
+      saveHibernateDays();
+    });
+  }
 
   /* ---------------------------------------------------------
      Navigation par onglets
@@ -1556,6 +1682,8 @@
   --------------------------------------------------------- */
   (async () => {
     loadBonusDaysSettings();
+    loadBonusAgainMode();
+    loadHibernateDays();
     renderSettingsView();
     await loadSubjects();
     renderSubjectSelect();
