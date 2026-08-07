@@ -471,14 +471,17 @@ textarea, input {
 
 .card-icon-btn[hidden] { display: none; }
 
-/* Bouton "Modifier" : agrandi et plus contrasté que les autres icônes (le
-   crayon ✎ passait facilement inaperçu) — fond plus marqué, trait plus épais
-   et plus sombre. */
+/* Bouton "Modifier" : forme oblongue (même hauteur que le bouton
+   "Hibernation", mais plus large) pour rester bien visible et facile à
+   toucher sans dominer visuellement le coin de la fiche comme le ferait un
+   grand cercle. Fond plus marqué et trait plus épais et plus sombre que les
+   autres icônes, pour que le crayon ne passe plus inaperçu. */
 .card-edit-btn {
   right: 12px;
-  width: 42px;
-  height: 42px;
-  font-size: 22px;
+  width: 54px;
+  height: 34px;
+  border-radius: 17px;
+  font-size: 19px;
   font-weight: 700;
   background: rgba(35, 48, 42, 0.14);
   color: var(--ink);
@@ -487,7 +490,7 @@ textarea, input {
 .card-edit-btn:hover { background: rgba(35, 48, 42, 0.22); }
 
 .card-hibernate-btn {
-  right: 60px;
+  right: 72px;
   font-size: 14px;
 }
 
@@ -648,10 +651,10 @@ textarea, input {
   cursor: pointer;
 }
 
-.chart.chart--mini { height: 136px; }
+.chart.chart--mini { height: 124px; }
 .chart.chart--mini .chart-col { gap: 3px; }
 .chart.chart--mini .chart-value { font-size: 10px; }
-.chart.chart--mini .chart-label { font-size: 9px; height: 12px; }
+.chart.chart--mini .chart-label { display: none; }
 
 /* ============================================================
    MANAGE VIEW: form + list

@@ -171,6 +171,35 @@
     }
   }
 
+  /** Nettoyage ponctuel (exécuté à chaque démarrage) : fusionne les matières
+   *  strictement homonymes lorsque certaines n'ont aucune fiche — séquelle du
+   *  bug de synchronisation ci-dessus, qui pouvait laisser une matière
+   *  "Général" fantôme et vide sur un appareil après une synchro. On ne
+   *  touche jamais à une matière qui contient des fiches. */
+  async function dedupeEmptySubjects() {
+    const byName = new Map();
+    for (const s of subjects) {
+      if (!byName.has(s.name)) byName.set(s.name, []);
+      byName.get(s.name).push(s);
+    }
+    for (const group of byName.values()) {
+      if (group.length < 2) continue;
+      const withCards = group.filter((s) =>
+        cards.some((c) => c.subject === s.id && !c.deleted)
+      );
+      const keep = withCards[0] || group[0];
+      const toRemove = group.filter((s) => s.id !== keep.id && !withCards.includes(s));
+      for (const s of toRemove) {
+        await DB.removeSubject(s.id);
+        subjects = subjects.filter((x) => x.id !== s.id);
+        if (currentSubjectId === s.id) {
+          currentSubjectId = keep.id;
+          localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
+        }
+      }
+    }
+  }
+
   function renderSubjectSelect() {
     const opts = subjects
       .map(
@@ -1084,6 +1113,16 @@
     if (emptyEl) emptyEl.hidden = true;
     if (wrapEl) wrapEl.hidden = false;
 
+    // L'échelle (dénominateur utilisé pour la hauteur des barres) est arrondie
+    // au multiple de 5 supérieur plutôt que de coller exactement au maximum
+    // du jour. Sans ça, noter UNE SEULE fiche peut changer le total le plus
+    // élevé (ex. 7 -> 6) et donc redessiner TOUTES les barres à une nouvelle
+    // échelle, même celles dont le nombre de fiches n'a pas bougé — ce qui
+    // donnait l'impression que plusieurs barres changent en même temps. En
+    // arrondissant par palier de 5, une petite variation reste dans le même
+    // palier et seules les barres réellement concernées bougent.
+    const scaleMax = Math.max(5, Math.ceil(max / 5) * 5);
+
     // Au-delà d'1 mois affiché (3 mois / 6 mois / 1 an), il y a trop de
     // colonnes pour qu'un espace entre chaque barre reste visible : les
     // barres finissent par disparaître entre les espaces. On les fait donc
@@ -1110,7 +1149,7 @@
       // Les jours à zéro fiche gardent une petite barre témoin (couleur neutre)
       // pour rester visibles dans la grille, plutôt que de disparaître.
       const height =
-        b.count === 0 ? 3 : Math.max(3, Math.round((b.count / max) * maxBarPx));
+        b.count === 0 ? 3 : Math.max(3, Math.round((b.count / scaleMax) * maxBarPx));
       bar.style.height = `${height}px`;
 
       const label = document.createElement("span");
@@ -1463,9 +1502,30 @@
     if (remote.subject) {
       // Matière inconnue sur cet appareil (créée ailleurs) : on la recrée avec le même id
       // pour que les deux appareils convergent vers la même matière.
+      const remoteName = remote.subjectName || "Matière importée";
+
+      // Évite les doublons "fantômes" : si une matière locale du même nom
+      // existe déjà mais n'a encore aucune fiche (typiquement le "Général"
+      // créé automatiquement au tout premier lancement de l'appli, avant la
+      // toute première synchronisation), on la remplace par celle du serveur
+      // au lieu d'en garder deux — sinon chaque nouvel appareil qui se
+      // connecte fait apparaître une matière "Général" vide supplémentaire.
+      const emptyDuplicate = subjects.find(
+        (s) => s.id !== remote.subject && s.name === remoteName &&
+          !cards.some((c) => c.subject === s.id && !c.deleted)
+      );
+      if (emptyDuplicate) {
+        await DB.removeSubject(emptyDuplicate.id);
+        subjects = subjects.filter((s) => s.id !== emptyDuplicate.id);
+        if (currentSubjectId === emptyDuplicate.id) {
+          currentSubjectId = remote.subject;
+          localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
+        }
+      }
+
       const s = {
         id: remote.subject,
-        name: remote.subjectName || "Matière importée",
+        name: remoteName,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -1668,9 +1728,10 @@
     loadHibernateDays();
     renderSettingsView();
     await loadSubjects();
-    renderSubjectSelect();
     cards = await DB.getAll();
     await migrateOrphanCards();
+    await dedupeEmptySubjects();
+    renderSubjectSelect();
     renderAll();
     startReviewSession();
     updateSyncStatus();

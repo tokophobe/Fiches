@@ -51,7 +51,7 @@
     <button class="tab is-active" role="tab" aria-selected="true" data-view="review">Réviser</button>
     <button class="tab" role="tab" aria-selected="false" data-view="manage">Gérer</button>
     <button class="tab" role="tab" aria-selected="false" data-view="stats">Stats</button>
-    <button class="tab" role="tab" aria-selected="false" data-view="sync">Sync</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">⚙</button>
   </nav>
 
@@ -133,11 +133,11 @@
         <h2 class="section-title">Nouvelle fiche</h2>
         <label class="field">
           <span>Question</span>
-          <textarea id="input-question" rows="2" required placeholder="Ex. Capitale de l'Islande ?"></textarea>
+          <textarea id="input-question" rows="3" required placeholder="Ex. Capitale de l'Islande ?"></textarea>
         </label>
         <label class="field">
           <span>Réponse</span>
-          <textarea id="input-answer" rows="2" required placeholder="Ex. Reykjavik"></textarea>
+          <textarea id="input-answer" rows="6" required placeholder="Ex. Reykjavik"></textarea>
         </label>
         <div class="form-actions">
           <button type="submit" class="btn btn--primary" id="submit-btn">Ajouter à la pile</button>
