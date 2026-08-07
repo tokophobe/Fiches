@@ -63,7 +63,7 @@
   const reviewChartScaleLabelEl = el("review-chart-scale-label");
   const reviewChartSubjectNameEl = el("review-chart-subject-name");
   const REVIEW_CHART_STEPS = [15, 30, 90, 182, 365];
-  const REVIEW_CHART_MAX_BAR_PX = 33;
+  const REVIEW_CHART_MAX_BAR_PX = 100;
   let reviewChartRangeDays = 15;
 
   /* Réglages du mode bonus : nombre de jours dont chaque note recule la
@@ -418,21 +418,9 @@
     return subjectCards().filter((c) => SM2.isDue(c));
   }
 
-  function renderBrandBadge(due) {
-    const badgeEl = el("brand-badge");
-    if (!badgeEl) return;
-    if (due > 0) {
-      badgeEl.textContent = due > 99 ? "99+" : String(due);
-      badgeEl.hidden = false;
-    } else {
-      badgeEl.hidden = true;
-    }
-  }
-
   function renderDuePill() {
     const due = dueCards().length;
     dueCountEl.textContent = String(due);
-    renderBrandBadge(due);
 
     // Dès que le compteur atteint 0, la pastille passe en blanc (comme en
     // mode bonus) — que l'on soit ou non dans une session de révision.
@@ -1079,10 +1067,6 @@
     return buckets;
   }
 
-  function formatChartDate(date) {
-    return `${date.getDate()}/${date.getMonth() + 1}`;
-  }
-
   /** Dessine un histogramme "fiches dues par jour" dans les éléments fournis.
    *  Factorisé pour être partagé entre le grand graphique de l'onglet Stats
    *  et le mini graphique de la page Réviser (matière en cours). */
@@ -1108,11 +1092,10 @@
     const dense = days > 31;
     chartEl.classList.toggle("chart--dense", dense);
 
-    // Espace les étiquettes de date pour rester lisible sur les longues périodes ;
-    // la fiche du jour et le dernier jour affiché restent toujours étiquetés.
-    const labelEvery =
-      days <= 15 ? 1 : days <= 31 ? 2 : days <= 93 ? 7 : days <= 182 ? 14 : 30;
-
+    // Les dates par colonne ont été retirées (trop de bruit visuel) : seul
+    // "Auj." reste, sur la première colonne. L'échelle affichée (15 j, 1
+    // mois...) est indiquée ailleurs (étiquette au-dessus du graphique),
+    // donc pas besoin de répéter chaque date individuelle ici.
     const frag = document.createDocumentFragment();
     buckets.forEach((b, i) => {
       const col = document.createElement("div");
@@ -1132,8 +1115,7 @@
 
       const label = document.createElement("span");
       label.className = "chart-label";
-      const showLabel = i === 0 || i === buckets.length - 1 || i % labelEvery === 0;
-      label.textContent = showLabel ? (i === 0 ? "Auj." : formatChartDate(b.date)) : "";
+      label.textContent = i === 0 ? "Auj." : "";
 
       col.appendChild(value);
       col.appendChild(bar);

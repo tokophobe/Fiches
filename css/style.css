@@ -83,8 +83,7 @@ textarea, input {
 }
 
 /* Le fanion ✎ est présenté comme une icône d'appli (fond "squircle" façon
-   icône d'écran d'accueil), pour que la pastille qui le chevauche se lise
-   sans ambiguïté comme un badge de notification iOS. */
+   icône d'écran d'accueil). */
 .brand-mark-wrap {
   position: relative;
   display: inline-flex;
@@ -103,32 +102,6 @@ textarea, input {
   transform: rotate(-8deg);
   display: inline-block;
 }
-
-/* Pastille de notification façon icône iOS : cercle rouge en dégradé,
-   chevauchant le coin supérieur droit de l'icône, avec le liseré clair qui
-   la "découpe" du fond — comme sur l'écran d'accueil de l'iPhone. La police
-   système (plutôt que la police mono de l'appli) est ce qui rapproche le
-   plus le rendu du badge natif iOS. */
-.brand-badge {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  min-width: 17px;
-  height: 17px;
-  padding: 0 4px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #ff5c50, #e0362a);
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font-mono);
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 17px;
-  text-align: center;
-  letter-spacing: 0;
-  box-shadow: 0 0 0 2px var(--desk);
-}
-
-.brand-badge[hidden] { display: none; }
 
 .brand h1 {
   margin: 0;
@@ -472,18 +445,13 @@ textarea, input {
 /* Boutons "Modifier" et "Hibernation" : posés dans le coin supérieur droit de
    la pile (au-dessus de la fiche, hors de l'élément qui la retourne), donc
    toujours visibles et cliquables côté question comme côté réponse, sans
-   déclencher le retournement de la fiche.
-   Le trou perforé (.hole) est physiquement en haut à gauche de la fiche,
-   mais comme toute la fiche pivote à 180° (rotateY) côté réponse, il se
-   retrouve visuellement en haut à droite — juste sous ces boutons. On les
-   décale donc vers la gauche (right: 50px / 90px, au lieu de 12px) pour
-   qu'ils ne chevauchent plus le trou une fois la fiche retournée. */
+   déclencher le retournement de la fiche. */
 .card-icon-btn {
   position: absolute;
-  top: 12px;
+  top: 10px;
   z-index: 5;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border: none;
   background: rgba(35, 48, 42, 0.08);
@@ -503,10 +471,23 @@ textarea, input {
 
 .card-icon-btn[hidden] { display: none; }
 
-.card-edit-btn { right: 50px; }
+/* Bouton "Modifier" : agrandi et plus contrasté que les autres icônes (le
+   crayon ✎ passait facilement inaperçu) — fond plus marqué, trait plus épais
+   et plus sombre. */
+.card-edit-btn {
+  right: 12px;
+  width: 42px;
+  height: 42px;
+  font-size: 22px;
+  font-weight: 700;
+  background: rgba(35, 48, 42, 0.14);
+  color: var(--ink);
+}
+
+.card-edit-btn:hover { background: rgba(35, 48, 42, 0.22); }
 
 .card-hibernate-btn {
-  right: 90px;
+  right: 60px;
   font-size: 14px;
 }
 
@@ -520,23 +501,13 @@ textarea, input {
   z-index: 2;
 }
 
-.hole {
-  position: absolute;
-  top: 20px; left: 20px;
-  width: 12px; height: 12px;
-  border-radius: 50%;
-  background: var(--desk);
-  box-shadow: inset 0 2px 3px rgba(0,0,0,0.4);
-  z-index: 2;
-}
-
 .card-face {
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   border-radius: var(--radius-card);
-  padding: 34px 26px 24px 46px;
+  padding: 34px 26px 24px 26px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -677,10 +648,10 @@ textarea, input {
   cursor: pointer;
 }
 
-.chart.chart--mini { height: 42px; }
-.chart.chart--mini .chart-col { gap: 1px; }
-.chart.chart--mini .chart-value { display: none; }
-.chart.chart--mini .chart-label { font-size: 7px; height: 8px; }
+.chart.chart--mini { height: 136px; }
+.chart.chart--mini .chart-col { gap: 3px; }
+.chart.chart--mini .chart-value { font-size: 10px; }
+.chart.chart--mini .chart-label { font-size: 9px; height: 12px; }
 
 /* ============================================================
    MANAGE VIEW: form + list

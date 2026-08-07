@@ -28,7 +28,6 @@
     <div class="brand">
       <span class="brand-mark-wrap">
         <span class="brand-mark" aria-hidden="true">✎</span>
-        <span class="brand-badge" id="brand-badge" hidden aria-hidden="true"></span>
       </span>
       <h1>Fiches</h1>
     </div>
@@ -74,7 +73,6 @@
           <div class="stack-card stack-card--back-1" aria-hidden="true"></div>
           <button class="stack-card stack-card--front" id="flip-card" type="button" aria-label="Retourner la fiche">
             <div class="rule-line"></div>
-            <div class="hole" aria-hidden="true"></div>
             <div class="card-face card-face--question">
               <span class="card-label">Question</span>
               <p class="card-text" id="question-text"></p>
@@ -110,6 +108,10 @@
       </div>
 
       <div class="review-chart-section" id="review-chart-section">
+        <button class="chart-title--tap" id="review-chart-toggle" type="button" title="Toucher pour changer la période affichée">
+          <span id="review-chart-subject-name">Fiches à revoir</span>
+          <span class="chart-scale-tag" id="review-chart-scale-label">15 j</span>
+        </button>
         <div class="chart-wrap chart-wrap--mini" id="review-chart-wrap">
           <div class="chart chart--mini" id="review-due-chart"></div>
         </div>
