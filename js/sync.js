@@ -174,7 +174,23 @@ async function pushCard(card) {
   const c = getClient();
   const { code } = getConfig();
   if (!c || !code) return false;
-  const { error } = await c.from("cards").upsert(cardToRow(card, code));
+
+  let row = cardToRow(card, code);
+  let { error } = await c.from("cards").upsert(row);
+
+  // Cas connu : la colonne max_interval_reached vient d'être ajoutée en
+  // SQL mais le cache de schéma de PostgREST n'a pas encore été rafraîchi
+  // côté Supabase (ça peut prendre quelques minutes, même après un
+  // `NOTIFY pgrst, 'reload schema'`). Plutôt que de bloquer toute la
+  // synchro de la fiche pour ça, on retente sans ce champ : le reste
+  // (question, réponse, échéance...) part quand même, et le record de
+  // récompense repartira tout seul dès que la colonne sera reconnue.
+  if (error && isMissingColumnError(error, "max_interval_reached")) {
+    console.warn("Sync: colonne max_interval_reached pas encore reconnue, envoi sans elle");
+    const { max_interval_reached, ...rowWithoutRewards } = row;
+    ({ error } = await c.from("cards").upsert(rowWithoutRewards));
+  }
+
   if (error) {
     console.warn("Sync: échec de l'envoi, mis en attente", error.message);
     lastError = error.message;
@@ -184,6 +200,14 @@ async function pushCard(card) {
   lastError = "";
   removePending(card.id);
   return true;
+}
+
+/** Détecte l'erreur PostgREST "Could not find the 'x' column of 'y' in the
+ *  schema cache", qui survient quand une colonne a été ajoutée en base
+ *  mais que l'API n'a pas encore rechargé son schéma. */
+function isMissingColumnError(error, columnName) {
+  const msg = (error && error.message) || "";
+  return msg.includes(columnName) && msg.toLowerCase().includes("schema cache");
 }
 
 async function flushPending(getCardById) {
