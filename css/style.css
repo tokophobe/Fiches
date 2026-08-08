@@ -1132,112 +1132,131 @@ textarea, input {
 }
 
 /* ============================================================
-   RÉCOMPENSES : calendrier de l'avent des délais de report
+   RÉCOMPENSES : tableau des délais x rareté des cartes obtenues
    ============================================================ */
 .rewards-intro {
   margin: 0 0 14px;
   line-height: 1.5;
 }
 
-.rewards-record {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--ink-soft);
-  background: var(--paper);
+/* Icône 🎁 de l'onglet : grisée quand rien n'attend d'être ouvert. */
+.tab--icon#tab-rewards.is-empty {
+  filter: grayscale(1);
+  opacity: 0.45;
+}
+
+.rewards-table-wrap {
+  background: var(--paper-2);
   border-radius: var(--radius-card);
-  padding: 10px 14px;
-  margin-bottom: 16px;
   box-shadow: var(--shadow-deep);
+  overflow: hidden;
+  padding: 4px;
 }
 
-.rewards-record strong {
-  color: var(--rule);
-  font-size: 14px;
-}
-
-.rewards-grid {
+.rewards-row {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  grid-template-columns: 46px repeat(4, 1fr);
+  gap: 4px;
 }
 
-.reward-box {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  border-radius: 12px;
+.rewards-row + .rewards-row { margin-top: 4px; }
+
+.rewards-row--header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--paper-2);
+  padding-bottom: 6px;
+  margin-bottom: 2px;
+}
+
+.rewards-cell {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  background: var(--paper-2);
-  border: 2px solid var(--paper-3);
-  box-shadow: var(--shadow-deep);
-  cursor: default;
-  overflow: hidden;
+  text-align: center;
 }
 
-.reward-box .reward-emoji {
-  font-size: 26px;
-  line-height: 1;
-}
-
-.reward-box .reward-day {
+.rewards-cell--day {
   font-family: var(--font-mono);
   font-size: 9px;
   color: var(--ink-soft);
+  justify-content: flex-start;
+  padding-left: 2px;
+}
+
+.rewards-cell--head {
+  font-family: var(--font-mono);
+  font-size: 9px;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
 }
 
-.reward-box .reward-lock {
-  font-size: 15px;
-  opacity: 0.35;
+.reward-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  border: 2px solid var(--paper-3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  cursor: default;
+  padding: 0;
 }
 
-/* Case pas encore atteinte : verrouillée, sobre. */
-.reward-box--locked { opacity: 0.55; }
+.reward-cell .reward-emoji {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.reward-cell .reward-lock {
+  font-size: 14px;
+  opacity: 0.3;
+}
+
+/* Case pas encore atteinte : verrouillée, sobre, quasi invisible. */
+.reward-cell--locked { opacity: 0.4; background: var(--paper-2); }
 
 /* Case débloquée mais pas encore ouverte : cadeau à toucher, pulse doux
    pour attirer l'œil sans être criard. */
-.reward-box--unlocked {
+.reward-cell--unlocked {
   cursor: pointer;
-  background: var(--paper);
   border-color: var(--amber);
   animation: reward-pulse 1.6s ease-in-out infinite;
 }
 
-.reward-box--unlocked .reward-emoji { font-size: 24px; }
+.reward-cell--unlocked .reward-emoji { font-size: 26px; }
 
 @keyframes reward-pulse {
-  0%, 100% { box-shadow: var(--shadow-deep), 0 0 0 0 rgba(207, 154, 77, 0.5); }
-  50% { box-shadow: var(--shadow-deep), 0 0 0 6px rgba(207, 154, 77, 0); }
+  0%, 100% { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25), 0 0 0 0 rgba(207, 154, 77, 0.5); }
+  50% { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25), 0 0 0 5px rgba(207, 154, 77, 0); }
 }
 
 /* Case ouverte : couleur selon la rareté de la récompense collectée. */
-.reward-box--opened { cursor: default; }
-.reward-box--tier-commun { border-color: var(--ink-soft); background: var(--paper); }
-.reward-box--tier-rare { border-color: var(--blue); background: var(--paper); }
-.reward-box--tier-epique { border-color: #8a5fd1; background: var(--paper); }
-.reward-box--tier-legendaire { border-color: var(--amber); background: var(--paper); }
-.reward-box--tier-heroique { border-color: var(--terracotta); background: var(--paper); }
-.reward-box--tier-mythique {
+.reward-cell--opened { cursor: default; }
+.reward-cell--tier-commune { border-color: var(--ink-soft); }
+.reward-cell--tier-rare { border-color: var(--blue); }
+.reward-cell--tier-epique { border-color: #8a5fd1; }
+.reward-cell--tier-legendaire {
   border: 2px solid transparent;
   background:
     linear-gradient(var(--paper), var(--paper)) padding-box,
     linear-gradient(120deg, #cf9a4d, #8a5fd1, #4b7996, #b6604a, #cf9a4d) border-box;
   background-size: 100% 100%, 300% 300%;
-  animation: reward-mythic-shimmer 4s linear infinite;
+  animation: reward-legend-shimmer 4s linear infinite;
 }
 
-@keyframes reward-mythic-shimmer {
+@keyframes reward-legend-shimmer {
   0% { background-position: 0 0, 0% 50%; }
   100% { background-position: 0 0, 300% 50%; }
 }
 
 /* Petite animation d'ouverture jouée une fois quand une case vient d'être
    touchée pour révéler la récompense. */
-.reward-box--just-opened { animation: reward-reveal 500ms ease; }
+.reward-cell--just-opened { animation: reward-reveal 500ms ease; }
 @keyframes reward-reveal {
   0% { transform: scale(0.7) rotate(-8deg); opacity: 0.4; }
   60% { transform: scale(1.15) rotate(4deg); opacity: 1; }
@@ -1254,8 +1273,8 @@ textarea, input {
 @media (prefers-reduced-motion: reduce) {
   .stack-card--front { transition: none; }
   .view.is-active { animation: none; }
-  .reward-box--unlocked { animation: none; }
-  .reward-box--tier-mythique { animation: none; }
-  .reward-box--just-opened { animation: none; }
+  .reward-cell--unlocked { animation: none; }
+  .reward-cell--tier-legendaire { animation: none; }
+  .reward-cell--just-opened { animation: none; }
   .chart-col--changed .chart-bar { animation: none; }
 }

@@ -79,6 +79,7 @@ function cardToRow(card, syncCode) {
     easiness: card.easiness,
     interval: card.interval,
     repetitions: card.repetitions,
+    max_interval_reached: card.maxIntervalReached || 0,
     updated_at: card.updatedAt || card.createdAt,
     deleted: Boolean(card.deleted),
   };
@@ -98,6 +99,7 @@ function rowToCard(row) {
     easiness: Number(row.easiness),
     interval: row.interval,
     repetitions: row.repetitions,
+    maxIntervalReached: row.max_interval_reached || 0,
     updatedAt: row.updated_at,
     deleted: Boolean(row.deleted),
   };
@@ -215,6 +217,67 @@ function subscribeRealtime(onRemoteChange) {
   return () => c.removeChannel(channel);
 }
 
+/* ---------------------------------------------------------
+   État des récompenses (page "Récompenses") : une seule ligne JSON par
+   code de synchro, séparée des fiches. Contrairement aux fiches, il n'y a
+   rien à fusionner champ par champ ici : on prend l'union des clés
+   "case ouverte" des deux côtés (voir mergeRewardsOpened côté app.js).
+--------------------------------------------------------- */
+async function pullRewardState() {
+  const c = getClient();
+  const { code } = getConfig();
+  if (!c || !code) return {};
+
+  const { data, error } = await c
+    .from("reward_state")
+    .select("opened")
+    .eq("sync_code", code)
+    .maybeSingle();
+
+  if (error) {
+    console.warn("Sync: échec du chargement des récompenses distantes", error.message);
+    return {};
+  }
+  return (data && data.opened) || {};
+}
+
+async function pushRewardState(openedMap) {
+  const c = getClient();
+  const { code } = getConfig();
+  if (!c || !code) return false;
+
+  const { error } = await c.from("reward_state").upsert({
+    sync_code: code,
+    opened: openedMap,
+    updated_at: new Date().toISOString(),
+  });
+
+  if (error) {
+    console.warn("Sync: échec de l'envoi des récompenses", error.message);
+    return false;
+  }
+  return true;
+}
+
+function subscribeRewardRealtime(onRemoteChange) {
+  const c = getClient();
+  const { code } = getConfig();
+  if (!c || !code) return () => {};
+
+  const channel = c
+    .channel(`reward-state-${code}`)
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "reward_state", filter: `sync_code=eq.${code}` },
+      (payload) => {
+        if (payload.new && payload.new.opened) onRemoteChange(payload.new.opened);
+      }
+    )
+    .subscribe();
+
+  return () => c.removeChannel(channel);
+}
+
 window.Sync = {
   generateSyncCode,
   getConfig,
@@ -225,6 +288,9 @@ window.Sync = {
   pushCard,
   flushPending,
   subscribeRealtime,
+  pullRewardState,
+  pushRewardState,
+  subscribeRewardRealtime,
   pendingCount: () => getPending().length,
   getLastError: () => lastError,
 };

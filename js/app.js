@@ -91,113 +91,102 @@
   const settingHibernateDaysEl = el("setting-hibernate-days");
 
   /* ---------------------------------------------------------
-     Récompenses : "calendrier de l'avent" des délais de report record.
-     À chaque fois qu'une fiche atteint un délai avant prochaine révision
-     (son `interval`, en jours) jamais atteint auparavant par aucune fiche,
-     la case correspondante du calendrier se débloque et peut être ouverte
-     pour révéler un emoji à collectionner. Plus le délai est grand, plus
-     la case est rare (et censée être plus belle).
+     Récompenses : tableau des délais de report x rareté de carte.
+     Chaque ligne représente un délai avant prochaine révision (en jours,
+     jusqu'à 3 ans). Chaque colonne représente un niveau de rareté de
+     carte à collectionner. Une ligne débloque sa colonne "commune" dès
+     qu'UNE fiche a un jour atteint ce délai ; 25 fiches débloquent la
+     "rare", 50 l'"épique", 100 la "légendaire". Chaque case débloquée
+     peut être ouverte une fois pour révéler un emoji, qui n'apparaît
+     jamais deux fois ailleurs dans le tableau.
+
+     Le nombre de fiches ayant atteint un délai donné se déduit du champ
+     `maxIntervalReached` de chaque fiche (le plus grand intervalle
+     qu'elle ait jamais atteint) : ce champ se synchronise avec le reste
+     de la fiche via Supabase, donc les cases débloquées sont toujours
+     identiques sur tous les appareils. Seul l'état "ouverte / pas encore
+     ouverte" (et l'emoji tiré) est stocké à part et synchronisé via la
+     table `reward_state` (voir js/sync.js).
   --------------------------------------------------------- */
-  const REWARDS_STATE_KEY = "fiches_rewards_state";
+  const REWARDS_OPENED_KEY = "fiches_rewards_opened";
 
-  /** Paliers (en jours) du calendrier, du plus facile au plus rare.
-   *  6 paliers de rareté x 4 cases chacun = 24 cases, comme un calendrier
-   *  de l'avent. */
-  const REWARD_MILESTONES = [
-    { days: 1, tier: "commun" },
-    { days: 2, tier: "commun" },
-    { days: 3, tier: "commun" },
-    { days: 5, tier: "commun" },
-    { days: 7, tier: "rare" },
-    { days: 10, tier: "rare" },
-    { days: 14, tier: "rare" },
-    { days: 21, tier: "rare" },
-    { days: 30, tier: "epique" },
-    { days: 45, tier: "epique" },
-    { days: 60, tier: "epique" },
-    { days: 90, tier: "epique" },
-    { days: 120, tier: "legendaire" },
-    { days: 150, tier: "legendaire" },
-    { days: 180, tier: "legendaire" },
-    { days: 240, tier: "legendaire" },
-    { days: 300, tier: "heroique" },
-    { days: 365, tier: "heroique" },
-    { days: 450, tier: "heroique" },
-    { days: 545, tier: "heroique" },
-    { days: 650, tier: "mythique" },
-    { days: 730, tier: "mythique" },
-    { days: 900, tier: "mythique" },
-    { days: 1095, tier: "mythique" },
-  ];
+  /** 150 paliers de délai (en jours), de 1 jour à 3 ans (1095 j), avec une
+   *  granularité fine au début et de plus en plus large ensuite. */
+  const REWARD_DAY_MILESTONES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 100, 105, 110, 115, 120, 126, 132, 139, 145, 152, 160, 167, 175, 184, 193, 202, 212, 222, 232, 244, 255, 268, 280, 294, 308, 323, 338, 355, 372, 390, 408, 428, 449, 470, 493, 516, 541, 567, 595, 623, 653, 685, 718, 752, 788, 826, 866, 907, 951, 997, 1045, 1095];
 
+  const REWARD_TIERS = ["commune", "rare", "epique", "legendaire"];
+  const REWARD_TIER_THRESHOLDS = { commune: 1, rare: 25, epique: 50, legendaire: 100 };
   const REWARD_TIER_LABELS = {
-    commun: "Commune",
+    commune: "Commune",
     rare: "Rare",
     epique: "Épique",
     legendaire: "Légendaire",
-    heroique: "Héroïque",
-    mythique: "Mythique",
   };
 
+  /* Pools d'emoji par rareté, du plus ordinaire au plus somptueux. Aucun
+     emoji n'apparaît dans plus d'un pool : l'unicité entre cases est ainsi
+     garantie tant qu'un pool n'est pas épuisé (voir pickUniqueRewardEmoji). */
   const REWARD_EMOJI_POOLS = {
-    commun: ["🙂", "🍀", "⭐", "🎈", "🍎", "🌼", "🧦", "🍬"],
-    rare: ["🔷", "🦋", "🌈", "🎁", "🐚", "🍯", "🪁", "🧩"],
-    epique: ["🔮", "🏆", "💎", "🌟", "⚡", "🐙", "🦉", "🌵"],
-    legendaire: ["👑", "🦄", "🌌", "🔱", "🧿", "✨", "🕊️", "🎇"],
-    heroique: ["🦸", "🛡️", "⚔️", "🥇", "🎖️", "🏅", "🔥", "🌋"],
-    mythique: ["🐉", "🌠", "💫", "🪽", "🐲", "🌸", "🕉️", "🦚"],
+    commune: ["😀","😃","😄","😁","😆","🙂","🙃","😉","😊","😇","🥲","😋","😛","😜","🤪","😝","🤑","🤗","🤭","🤔","😐","😑","😶","😏","😴","😌","🙄","😬","🤤","🥱","😎","🤓","🧐","🙁","😮","😲","🍎","🍏","🍐","🍊","🍋","🍌","🍉","🍇","🍓","🍈","🍒","🍑","🥭","🍍","🥥","🥝","🍅","🥑","🍆","🥔","🥕","🌽","🥒","🥦","🍞","🥐","🥖","🥨","🥯","🥞","🧀","🍔","🍟","🍕","🌭","🥪","🌮","🌯","🥙","🥚","🍳","🥘","🍲","🥗","🍿","🥫","☕","🍵","🧃","🥤","🍩","🍪","🎂","🧁","🍫","🍬","🍭","🍮","🍯","🥄","🍴","🍽️","🥢","🧺","🧦","👕","👖","🧥","🧢","👟","🎒","📚","✏️","📌","📎","🔑","🔒","💡","🕯️","🧸","🪀","🪁","⚽","🏀","🏈","🎾","🏓","🏸","🥊","🎳","🎯","🎲","🧩","🃏","🎮","🖍️","🖊️","📖","📔","📒","📕","📗","📘","📙","🗒️","📋","📁","✂️","📐","📏","🧮","🔔","🔕","📢","📣","🧭","⏰","⌛"],
+    rare: ["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐨","🐯","🦁","🐮","🐷","🐽","🐸","🐵","🙈","🙉","🙊","🐒","🐔","🐧","🐦","🐤","🐣","🐥","🦆","🦅","🦉","🦇","🐺","🐗","🐴","🐝","🐛","🐌","🐞","🐜","🐢","🐍","🦎","🦖","🦕","🐙","🦑","🦐","🦞","🦀","🐡","🐠","🐟","🐬","🐳","🐋","🦈","🐊","🐅","🐆","🦓","🦍","🦧","🐘","🦛","🦏","🐪","🐫","🦒","🦘","🐃","🐂","🐄","🐎","🐖","🐏","🐑","🦙","🐐","🦌","🐕","🐩","🦮","🐈","🐓","🦃","🦤","🦢","🦩","🐇","🦝","🦨","🦡","🦫","🦦","🦥","🐁","🐀","🐿️","🦔","🌵","🎄","🌲","🌳","🌴","🌱","🌿","☘️","🍀","🎍","🪴","🎋","🍃","🍂","🍁","🌾","🥀","🌷","🪻","🌼","🌻","🍄"],
+    epique: ["🌊","🌋","🏔️","⛰️","🗻","🏕️","🏜️","🏝️","🌅","🌄","🌉","🌁","🔭","🔬","🧬","⚗️","🧪","🧫","🕹️","🛸","🚀","🛰️","⚡","🔥","💧","🌪️","☄️","🌙","🌚","🌝","🌛","🌜","🪐","🌍","🌎","🌏","🔆","🔅","🌀","🎐","🏮","🪔","🔦","🥇","🎗️","🛡️","⚔️","🗡️","🏹","🪄","🧙","🧙‍♂️","🧙‍♀️","🦂","🕷️","🕸️","🦟","🦠","🧊","🪨","🌬️","🎡","🎢","🎠","🗿","🎭","🎨","🧿","📿","🪬","🀄","🎴","🪅","🪆","🧨","🎃","👻","💣","🧯","🛎️","🗝️","⚙️","🔗","⛓️","🧲","🪞","🖼️","🪟","🚪","🛋️","🪑","🛏️","🚿","🛁","⏳"],
+    legendaire: ["👑","💍","💐","🌹","🦄","🐲","🐉","🕊️","🦋","🌸","🪷","🌺","🎇","🎆","🌠","✨","💫","⭐","🌟","🌈","💎","👼","🕉️","☯️","☮️","☪️","🛐","⛩️","🕋","🏰","🗼","🍾","🥂","🎉","🎊","🎁","🏵️","💠","🔯","👸","🤴","🦸","🦸‍♀️","🦹","🧚","🧚‍♀️","🧜‍♀️","🧜‍♂️","🧞","🧞‍♂️","🦚","🐦‍⬛","🌌","🎑","🔱","⚜️","🌞","🧧","🪩","💒","⛪","🕌","🛕","🏯","🗽","🏆","🎖️"],
   };
 
-  let rewardsState = { maxIntervalDays: 0, milestones: {} };
+  /* { "<days>:<tier>": {emoji, openedAt} } — état local, fusionné avec
+     l'état distant au démarrage et à chaque mise à jour temps réel. */
+  let rewardsOpened = {};
+  let rewardsSyncUnsub = null;
 
-  function loadRewardsState() {
+  function rewardCellKey(days, tier) {
+    return `${days}:${tier}`;
+  }
+
+  function loadRewardsOpened() {
     try {
-      const raw = localStorage.getItem(REWARDS_STATE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        rewardsState = {
-          maxIntervalDays: Number(parsed.maxIntervalDays) || 0,
-          milestones: parsed.milestones && typeof parsed.milestones === "object" ? parsed.milestones : {},
-        };
-        return;
-      }
+      const raw = localStorage.getItem(REWARDS_OPENED_KEY);
+      rewardsOpened = raw ? JSON.parse(raw) : {};
     } catch {
-      /* état corrompu : on repart de zéro plutôt que de planter l'appli */
+      rewardsOpened = {};
     }
-    rewardsState = { maxIntervalDays: 0, milestones: {} };
   }
 
-  function saveRewardsState() {
-    localStorage.setItem(REWARDS_STATE_KEY, JSON.stringify(rewardsState));
+  function saveRewardsOpened() {
+    localStorage.setItem(REWARDS_OPENED_KEY, JSON.stringify(rewardsOpened));
   }
 
-  /** Choisit un emoji au hasard dans le pool du palier, sans jamais retirer
-   *  du pool (deux paliers du même niveau peuvent retomber sur le même
-   *  emoji : c'est acceptable pour une collection de cette taille). */
-  function pickRewardEmoji(tier) {
-    const pool = REWARD_EMOJI_POOLS[tier] || REWARD_EMOJI_POOLS.commun;
+  /** Choisit un emoji jamais encore utilisé nulle part dans le tableau.
+   *  Cherche d'abord dans le pool du palier demandé ; si celui-ci est
+   *  épuisé (cas extrême), retombe sur les autres pools plutôt que de
+   *  répéter un emoji déjà attribué. */
+  function pickUniqueRewardEmoji(tier) {
+    const used = new Set(Object.values(rewardsOpened).map((e) => e.emoji));
+    const order = [tier, ...REWARD_TIERS.filter((t) => t !== tier)];
+    for (const t of order) {
+      const pool = REWARD_EMOJI_POOLS[t] || [];
+      const free = pool.filter((e) => !used.has(e));
+      if (free.length > 0) return free[Math.floor(Math.random() * free.length)];
+    }
+    // Tous les pools sont épuisés (des centaines de cases ouvertes) :
+    // dernier recours, on autorise une répétition plutôt que de planter.
+    const pool = REWARD_EMOJI_POOLS[tier] || REWARD_EMOJI_POOLS.commune;
     return pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  /** Nombre de fiches ayant un jour atteint au moins `days` jours
+   *  d'intervalle. */
+  function cardsReachingDays(days) {
+    return cards.filter((c) => !c.deleted && (c.maxIntervalReached || 0) >= days).length;
   }
 
   /** Appelée après chaque changement d'échéance issu d'une vraie révision
    *  (algorithme SM-2 normal ou mode bonus — pas l'hibernation, qui ne
-   *  compte volontairement pas comme une révision). Si l'intervalle obtenu
-   *  dépasse le record actuel, débloque toutes les cases de paliers
-   *  franchies (une case reste "à ouvrir" tant que l'utilisateur ne l'a
-   *  pas touchée dans la page Récompenses). */
-  function checkRewardRecord(intervalDays) {
-    if (!Number.isFinite(intervalDays) || intervalDays <= rewardsState.maxIntervalDays) return;
-    rewardsState.maxIntervalDays = intervalDays;
-    let changed = false;
-    for (const milestone of REWARD_MILESTONES) {
-      if (milestone.days > intervalDays) break;
-      const key = String(milestone.days);
-      if (!rewardsState.milestones[key]) {
-        rewardsState.milestones[key] = { status: "unlocked", unlockedAt: new Date().toISOString() };
-        changed = true;
-      }
-    }
-    if (changed) saveRewardsState();
+   *  compte volontairement pas comme une révision). Met à jour le record
+   *  personnel de la fiche ; le déblocage des cases se recalcule ensuite à
+   *  la volée depuis les fiches, donc rien d'autre à faire ici. */
+  function trackCardInterval(card, intervalDays) {
+    if (!Number.isFinite(intervalDays)) return;
+    card.maxIntervalReached = Math.max(card.maxIntervalReached || 0, intervalDays);
   }
 
   const exportBtn = el("export-btn");
@@ -546,6 +535,7 @@
     renderManageList();
     renderStats();
     renderReviewChart();
+    refreshRewardsIndicator();
   }
 
   /** Toutes les fiches non supprimées de la matière actuellement active. */
@@ -788,6 +778,7 @@
       lastReviewed: new Date().toISOString(),
       reviewCount: (currentCard.reviewCount || 0) + 1,
     });
+    trackCardInterval(updated, updated.interval);
     await persist(updated);
 
     const idx = cards.findIndex((c) => c.id === updated.id);
@@ -799,7 +790,7 @@
       reviewQueue.push(updated);
     }
 
-    checkRewardRecord(updated.interval);
+    refreshRewardsIndicator();
     renderStats();
     renderManageList();
   }
@@ -854,6 +845,7 @@
       lastReviewed: new Date().toISOString(),
       reviewCount: (currentCard.reviewCount || 0) + 1,
     });
+    trackCardInterval(updated, updated.interval);
     await persist(updated);
 
     const idx = cards.findIndex((c) => c.id === updated.id);
@@ -868,7 +860,7 @@
       sessionTotalDue += 1;
     }
 
-    checkRewardRecord(updated.interval);
+    refreshRewardsIndicator();
     renderStats();
     renderManageList();
   }
@@ -1309,58 +1301,83 @@
   }
 
   /* ---------------------------------------------------------
-     Vue Récompenses : rendu du calendrier
+     Vue Récompenses : rendu du tableau délais x rareté
   --------------------------------------------------------- */
   const rewardsGridEl = el("rewards-grid");
-  const rewardsRecordValueEl = el("rewards-record-value");
 
   function formatRewardDays(days) {
-    if (days < 30) return `${days} j`;
-    if (days < 365) return `${Math.round(days / 30)} mois`;
+    if (days < 90) return `${days} j`;
+    if (days < 730) return `${Math.round(days / 30)} mois`;
     return `${(days / 365).toFixed(days % 365 === 0 ? 0 : 1)} an(s)`;
+  }
+
+  /** Y a-t-il au moins une case débloquée mais pas encore ouverte ?
+   *  Détermine si l'onglet 🎁 doit être grisé ou non. */
+  function hasPendingRewardToOpen() {
+    for (const days of REWARD_DAY_MILESTONES) {
+      const reached = cardsReachingDays(days);
+      if (reached < 1) continue; // aucune case de cette ligne n'est débloquée
+      for (const tier of REWARD_TIERS) {
+        if (reached < REWARD_TIER_THRESHOLDS[tier]) break;
+        if (!rewardsOpened[rewardCellKey(days, tier)]) return true;
+      }
+    }
+    return false;
+  }
+
+  function refreshRewardsIndicator() {
+    const tabEl = el("tab-rewards");
+    if (tabEl) tabEl.classList.toggle("is-empty", !hasPendingRewardToOpen());
   }
 
   function renderRewardsView() {
     if (!rewardsGridEl) return;
-    rewardsRecordValueEl.textContent =
-      rewardsState.maxIntervalDays > 0 ? formatRewardDays(rewardsState.maxIntervalDays) : "aucun report pour l'instant";
-
     rewardsGridEl.innerHTML = "";
     const frag = document.createDocumentFragment();
 
-    REWARD_MILESTONES.forEach((milestone) => {
-      const key = String(milestone.days);
-      const entry = rewardsState.milestones[key];
-      const box = document.createElement("button");
-      box.type = "button";
-      box.dataset.milestone = key;
+    REWARD_DAY_MILESTONES.forEach((days) => {
+      const reached = cardsReachingDays(days);
+      const row = document.createElement("div");
+      row.className = "rewards-row";
 
-      if (!entry) {
-        box.className = "reward-box reward-box--locked";
-        box.disabled = true;
-        box.innerHTML = `
-          <span class="reward-lock">🔒</span>
-          <span class="reward-day">${formatRewardDays(milestone.days)}</span>
-        `;
-        box.title = `Se débloque à ${formatRewardDays(milestone.days)} de report — ${REWARD_TIER_LABELS[milestone.tier]}`;
-      } else if (entry.status === "unlocked") {
-        box.className = "reward-box reward-box--unlocked";
-        box.innerHTML = `
-          <span class="reward-emoji">🎁</span>
-          <span class="reward-day">${formatRewardDays(milestone.days)}</span>
-        `;
-        box.title = "Touche pour ouvrir ta récompense";
-      } else {
-        box.className = `reward-box reward-box--opened reward-box--tier-${milestone.tier}`;
-        box.disabled = true;
-        box.innerHTML = `
-          <span class="reward-emoji">${entry.emoji}</span>
-          <span class="reward-day">${formatRewardDays(milestone.days)}</span>
-        `;
-        box.title = `${REWARD_TIER_LABELS[milestone.tier]} — obtenue à ${formatRewardDays(milestone.days)} de report`;
-      }
+      const label = document.createElement("div");
+      label.className = "rewards-cell rewards-cell--day";
+      label.textContent = formatRewardDays(days);
+      row.appendChild(label);
 
-      frag.appendChild(box);
+      REWARD_TIERS.forEach((tier) => {
+        const key = rewardCellKey(days, tier);
+        const entry = rewardsOpened[key];
+        const unlocked = reached >= REWARD_TIER_THRESHOLDS[tier];
+        const cell = document.createElement("button");
+        cell.type = "button";
+        cell.dataset.days = String(days);
+        cell.dataset.tier = tier;
+
+        if (entry) {
+          cell.className = `reward-cell reward-cell--opened reward-cell--tier-${tier}`;
+          cell.disabled = true;
+          cell.innerHTML = `<span class="reward-emoji">${entry.emoji}</span>`;
+          cell.title = `${REWARD_TIER_LABELS[tier]} — obtenue à ${formatRewardDays(days)} de report`;
+        } else if (unlocked) {
+          cell.className = "reward-cell reward-cell--unlocked";
+          cell.innerHTML = `<span class="reward-emoji">🎁</span>`;
+          cell.title = `${REWARD_TIER_LABELS[tier]} débloquée — touche pour ouvrir`;
+        } else {
+          cell.className = "reward-cell reward-cell--locked";
+          cell.disabled = true;
+          cell.innerHTML = `<span class="reward-lock">🔒</span>`;
+          const need = REWARD_TIER_THRESHOLDS[tier];
+          cell.title =
+            need === 1
+              ? `Se débloque dès qu'une fiche atteint ${formatRewardDays(days)} — ${REWARD_TIER_LABELS[tier]}`
+              : `Se débloque quand ${need} fiches ont atteint ${formatRewardDays(days)} — ${REWARD_TIER_LABELS[tier]} (${reached}/${need})`;
+        }
+
+        row.appendChild(cell);
+      });
+
+      frag.appendChild(row);
     });
 
     rewardsGridEl.appendChild(frag);
@@ -1368,22 +1385,47 @@
 
   if (rewardsGridEl) {
     rewardsGridEl.addEventListener("click", (e) => {
-      const box = e.target.closest(".reward-box--unlocked");
-      if (!box) return;
-      const key = box.dataset.milestone;
-      const entry = rewardsState.milestones[key];
-      const milestone = REWARD_MILESTONES.find((m) => String(m.days) === key);
-      if (!entry || !milestone) return;
+      const cell = e.target.closest(".reward-cell--unlocked");
+      if (!cell) return;
+      const days = Number(cell.dataset.days);
+      const tier = cell.dataset.tier;
+      const key = rewardCellKey(days, tier);
+      if (rewardsOpened[key]) return;
 
-      entry.status = "opened";
-      entry.emoji = pickRewardEmoji(milestone.tier);
-      entry.openedAt = new Date().toISOString();
-      saveRewardsState();
+      rewardsOpened[key] = { emoji: pickUniqueRewardEmoji(tier), openedAt: new Date().toISOString() };
+      saveRewardsOpened();
+      if (Sync.isConfigured()) Sync.pushRewardState(rewardsOpened);
       renderRewardsView();
+      refreshRewardsIndicator();
 
-      const opened = rewardsGridEl.querySelector(`.reward-box[data-milestone="${key}"]`);
-      if (opened) opened.classList.add("reward-box--just-opened");
+      const opened = rewardsGridEl.querySelector(`.reward-cell[data-days="${days}"][data-tier="${tier}"]`);
+      if (opened) opened.classList.add("reward-cell--just-opened");
     });
+  }
+
+  /** Fusionne un état de récompenses distant (venant de Supabase) avec
+   *  l'état local : une case déjà ouverte ici garde son emoji (déjà
+   *  affiché à la personne, on ne le change pas sous ses yeux), une case
+   *  ouverte seulement en distant est adoptée telle quelle. */
+  function mergeRewardsOpened(remoteMap) {
+    let changed = false;
+    for (const [key, entry] of Object.entries(remoteMap || {})) {
+      if (!rewardsOpened[key]) {
+        rewardsOpened[key] = entry;
+        changed = true;
+      }
+    }
+    if (changed) saveRewardsOpened();
+    return changed;
+  }
+
+  async function syncRewardsWithRemote() {
+    if (!Sync.isConfigured()) return;
+    const remote = await Sync.pullRewardState();
+    mergeRewardsOpened(remote);
+    // Renvoie l'état fusionné pour que l'autre appareil récupère aussi les
+    // ouvertures faites hors-ligne sur celui-ci.
+    await Sync.pushRewardState(rewardsOpened);
   }
 
   statsSubjectSelectEl.addEventListener("change", () => {
@@ -1844,9 +1886,11 @@
   async function connectSync() {
     if (!Sync.isConfigured()) return;
     if (unsubscribeRealtime) unsubscribeRealtime();
+    if (rewardsSyncUnsub) rewardsSyncUnsub();
 
     await reconcileWithRemote();
     await Sync.flushPending((id) => cards.find((c) => c.id === id));
+    await syncRewardsWithRemote();
 
     unsubscribeRealtime = Sync.subscribeRealtime(async (remote) => {
       await mergeRemoteCard(remote);
@@ -1859,6 +1903,14 @@
       } else if (!isBonusMode) {
         // Rien n'était affiché : on peut lancer une session sans rien perturber.
         startReviewSession();
+      }
+    });
+
+    rewardsSyncUnsub = Sync.subscribeRewardRealtime((remoteMap) => {
+      const changed = mergeRewardsOpened(remoteMap);
+      if (changed) {
+        if (el("view-rewards") && el("view-rewards").classList.contains("is-active")) renderRewardsView();
+        refreshRewardsIndicator();
       }
     });
 
@@ -1927,17 +1979,22 @@
     loadBonusDaysSettings();
     loadBonusAgainMode();
     loadHibernateDays();
-    loadRewardsState();
+    loadRewardsOpened();
     renderSettingsView();
     await loadSubjects();
     cards = await DB.getAll();
     await migrateOrphanCards();
     await dedupeEmptySubjects();
-    // Rattrape les cases de récompenses déjà méritées par des fiches
-    // existantes (ex. import, sync depuis un autre appareil) sans attendre
-    // une prochaine révision.
-    const existingMaxInterval = Math.max(0, ...cards.map((c) => c.interval || 0));
-    checkRewardRecord(existingMaxInterval);
+    // Rattrape le record par-fiche pour les fiches existantes qui n'ont
+    // pas encore ce champ (ex. créées avant cette fonctionnalité, ou
+    // importées) : sans ça leurs paliers déjà mérités resteraient invisibles.
+    for (const c of cards) {
+      const shouldBe = Math.max(c.maxIntervalReached || 0, c.interval || 0);
+      if (shouldBe !== (c.maxIntervalReached || 0)) {
+        c.maxIntervalReached = shouldBe;
+        await persist(c);
+      }
+    }
     renderSubjectSelect();
     renderAll();
     startReviewSession();

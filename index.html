@@ -52,7 +52,7 @@
     <button class="tab" role="tab" aria-selected="false" data-view="manage">Gérer</button>
     <button class="tab" role="tab" aria-selected="false" data-view="stats">Stats</button>
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
-    <button class="tab tab--icon" role="tab" aria-selected="false" data-view="rewards" title="Récompenses" aria-label="Récompenses">🎁</button>
+    <button class="tab tab--icon" role="tab" aria-selected="false" data-view="rewards" id="tab-rewards" title="Récompenses" aria-label="Récompenses">🎁</button>
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">⚙</button>
   </nav>
 
@@ -109,10 +109,6 @@
       </div>
 
       <div class="review-chart-section" id="review-chart-section">
-        <button class="chart-title--tap" id="review-chart-toggle" type="button" title="Toucher pour changer la période affichée" hidden>
-          <span id="review-chart-subject-name">Fiches à revoir</span>
-          <span class="chart-scale-tag" id="review-chart-scale-label">15 j</span>
-        </button>
         <div class="chart-wrap chart-wrap--mini" id="review-chart-wrap">
           <div class="chart chart--mini" id="review-due-chart"></div>
         </div>
@@ -202,14 +198,20 @@
     <section id="view-rewards" class="view" aria-labelledby="tab-rewards">
       <h2 class="section-title">Récompenses</h2>
       <p class="field-hint rewards-intro">
-        Chaque fois qu'une fiche atteint un délai avant révision jamais
-        atteint auparavant, une nouvelle case se débloque. Touche-la pour
-        l'ouvrir et découvrir la récompense.
+        Chaque ligne est un délai avant révision. Dès qu'une fiche l'atteint,
+        la case Commune se débloque ; 25 fiches débloquent la Rare, 50
+        l'Épique, 100 la Légendaire. Touche une case débloquée pour l'ouvrir.
       </p>
-      <div class="rewards-record" id="rewards-record">
-        Record actuel : <strong id="rewards-record-value">—</strong>
+      <div class="rewards-table-wrap">
+        <div class="rewards-row rewards-row--header">
+          <div class="rewards-cell rewards-cell--day"></div>
+          <div class="rewards-cell rewards-cell--head rewards-cell--tier-commune">Commune</div>
+          <div class="rewards-cell rewards-cell--head rewards-cell--tier-rare">Rare</div>
+          <div class="rewards-cell rewards-cell--head rewards-cell--tier-epique">Épique</div>
+          <div class="rewards-cell rewards-cell--head rewards-cell--tier-legendaire">Légend.</div>
+        </div>
+        <div id="rewards-grid"></div>
       </div>
-      <div class="rewards-grid" id="rewards-grid"></div>
     </section>
 
     <!-- VUE SYNC -->
