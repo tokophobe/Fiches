@@ -52,6 +52,7 @@
     <button class="tab" role="tab" aria-selected="false" data-view="manage">Gérer</button>
     <button class="tab" role="tab" aria-selected="false" data-view="stats">Stats</button>
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
+    <button class="tab tab--icon" role="tab" aria-selected="false" data-view="rewards" title="Récompenses" aria-label="Récompenses">🎁</button>
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">⚙</button>
   </nav>
 
@@ -108,7 +109,7 @@
       </div>
 
       <div class="review-chart-section" id="review-chart-section">
-        <button class="chart-title--tap" id="review-chart-toggle" type="button" title="Toucher pour changer la période affichée">
+        <button class="chart-title--tap" id="review-chart-toggle" type="button" title="Toucher pour changer la période affichée" hidden>
           <span id="review-chart-subject-name">Fiches à revoir</span>
           <span class="chart-scale-tag" id="review-chart-scale-label">15 j</span>
         </button>
@@ -195,6 +196,20 @@
         <div class="chart" id="due-chart"></div>
       </div>
       <p class="chart-empty" id="chart-empty" hidden>Rien à revoir sur cette période.</p>
+    </section>
+
+    <!-- VUE RÉCOMPENSES -->
+    <section id="view-rewards" class="view" aria-labelledby="tab-rewards">
+      <h2 class="section-title">Récompenses</h2>
+      <p class="field-hint rewards-intro">
+        Chaque fois qu'une fiche atteint un délai avant révision jamais
+        atteint auparavant, une nouvelle case se débloque. Touche-la pour
+        l'ouvrir et découvrir la récompense.
+      </p>
+      <div class="rewards-record" id="rewards-record">
+        Record actuel : <strong id="rewards-record-value">—</strong>
+      </div>
+      <div class="rewards-grid" id="rewards-grid"></div>
     </section>
 
     <!-- VUE SYNC -->

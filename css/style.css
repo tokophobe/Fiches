@@ -654,7 +654,20 @@ textarea, input {
 .chart.chart--mini { height: 124px; }
 .chart.chart--mini .chart-col { gap: 3px; }
 .chart.chart--mini .chart-value { font-size: 10px; }
-.chart.chart--mini .chart-label { display: none; }
+.chart.chart--mini .chart-label { display: block; font-size: 9px; }
+
+/* Flash bref sur une colonne dont le nombre de fiches vient de changer
+   (ex. mode bonus : une fiche quitte un jour pour un autre). Sans repère
+   visuel, un déplacement d'une fiche entre deux jours de même hauteur de
+   barre est invisible ; ce flash rend le changement perceptible même quand
+   la hauteur ne bouge pas. */
+.chart-col--changed .chart-bar {
+  animation: chart-bar-flash 700ms ease-out;
+}
+@keyframes chart-bar-flash {
+  0% { filter: brightness(1.8); box-shadow: 0 0 6px 1px var(--amber); }
+  100% { filter: brightness(1); box-shadow: none; }
+}
 
 /* ============================================================
    MANAGE VIEW: form + list
@@ -1119,6 +1132,119 @@ textarea, input {
 }
 
 /* ============================================================
+   RÉCOMPENSES : calendrier de l'avent des délais de report
+   ============================================================ */
+.rewards-intro {
+  margin: 0 0 14px;
+  line-height: 1.5;
+}
+
+.rewards-record {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  background: var(--paper);
+  border-radius: var(--radius-card);
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-deep);
+}
+
+.rewards-record strong {
+  color: var(--rule);
+  font-size: 14px;
+}
+
+.rewards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.reward-box {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: var(--paper-2);
+  border: 2px solid var(--paper-3);
+  box-shadow: var(--shadow-deep);
+  cursor: default;
+  overflow: hidden;
+}
+
+.reward-box .reward-emoji {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.reward-box .reward-day {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.reward-box .reward-lock {
+  font-size: 15px;
+  opacity: 0.35;
+}
+
+/* Case pas encore atteinte : verrouillée, sobre. */
+.reward-box--locked { opacity: 0.55; }
+
+/* Case débloquée mais pas encore ouverte : cadeau à toucher, pulse doux
+   pour attirer l'œil sans être criard. */
+.reward-box--unlocked {
+  cursor: pointer;
+  background: var(--paper);
+  border-color: var(--amber);
+  animation: reward-pulse 1.6s ease-in-out infinite;
+}
+
+.reward-box--unlocked .reward-emoji { font-size: 24px; }
+
+@keyframes reward-pulse {
+  0%, 100% { box-shadow: var(--shadow-deep), 0 0 0 0 rgba(207, 154, 77, 0.5); }
+  50% { box-shadow: var(--shadow-deep), 0 0 0 6px rgba(207, 154, 77, 0); }
+}
+
+/* Case ouverte : couleur selon la rareté de la récompense collectée. */
+.reward-box--opened { cursor: default; }
+.reward-box--tier-commun { border-color: var(--ink-soft); background: var(--paper); }
+.reward-box--tier-rare { border-color: var(--blue); background: var(--paper); }
+.reward-box--tier-epique { border-color: #8a5fd1; background: var(--paper); }
+.reward-box--tier-legendaire { border-color: var(--amber); background: var(--paper); }
+.reward-box--tier-heroique { border-color: var(--terracotta); background: var(--paper); }
+.reward-box--tier-mythique {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--paper), var(--paper)) padding-box,
+    linear-gradient(120deg, #cf9a4d, #8a5fd1, #4b7996, #b6604a, #cf9a4d) border-box;
+  background-size: 100% 100%, 300% 300%;
+  animation: reward-mythic-shimmer 4s linear infinite;
+}
+
+@keyframes reward-mythic-shimmer {
+  0% { background-position: 0 0, 0% 50%; }
+  100% { background-position: 0 0, 300% 50%; }
+}
+
+/* Petite animation d'ouverture jouée une fois quand une case vient d'être
+   touchée pour révéler la récompense. */
+.reward-box--just-opened { animation: reward-reveal 500ms ease; }
+@keyframes reward-reveal {
+  0% { transform: scale(0.7) rotate(-8deg); opacity: 0.4; }
+  60% { transform: scale(1.15) rotate(4deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+/* ============================================================
    RESPONSIVE + MOTION
    ============================================================ */
 @media (max-width: 380px) {
@@ -1128,4 +1254,8 @@ textarea, input {
 @media (prefers-reduced-motion: reduce) {
   .stack-card--front { transition: none; }
   .view.is-active { animation: none; }
+  .reward-box--unlocked { animation: none; }
+  .reward-box--tier-mythique { animation: none; }
+  .reward-box--just-opened { animation: none; }
+  .chart-col--changed .chart-bar { animation: none; }
 }

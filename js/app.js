@@ -90,6 +90,116 @@
   let hibernateDays = DEFAULT_HIBERNATE_DAYS;
   const settingHibernateDaysEl = el("setting-hibernate-days");
 
+  /* ---------------------------------------------------------
+     Récompenses : "calendrier de l'avent" des délais de report record.
+     À chaque fois qu'une fiche atteint un délai avant prochaine révision
+     (son `interval`, en jours) jamais atteint auparavant par aucune fiche,
+     la case correspondante du calendrier se débloque et peut être ouverte
+     pour révéler un emoji à collectionner. Plus le délai est grand, plus
+     la case est rare (et censée être plus belle).
+  --------------------------------------------------------- */
+  const REWARDS_STATE_KEY = "fiches_rewards_state";
+
+  /** Paliers (en jours) du calendrier, du plus facile au plus rare.
+   *  6 paliers de rareté x 4 cases chacun = 24 cases, comme un calendrier
+   *  de l'avent. */
+  const REWARD_MILESTONES = [
+    { days: 1, tier: "commun" },
+    { days: 2, tier: "commun" },
+    { days: 3, tier: "commun" },
+    { days: 5, tier: "commun" },
+    { days: 7, tier: "rare" },
+    { days: 10, tier: "rare" },
+    { days: 14, tier: "rare" },
+    { days: 21, tier: "rare" },
+    { days: 30, tier: "epique" },
+    { days: 45, tier: "epique" },
+    { days: 60, tier: "epique" },
+    { days: 90, tier: "epique" },
+    { days: 120, tier: "legendaire" },
+    { days: 150, tier: "legendaire" },
+    { days: 180, tier: "legendaire" },
+    { days: 240, tier: "legendaire" },
+    { days: 300, tier: "heroique" },
+    { days: 365, tier: "heroique" },
+    { days: 450, tier: "heroique" },
+    { days: 545, tier: "heroique" },
+    { days: 650, tier: "mythique" },
+    { days: 730, tier: "mythique" },
+    { days: 900, tier: "mythique" },
+    { days: 1095, tier: "mythique" },
+  ];
+
+  const REWARD_TIER_LABELS = {
+    commun: "Commune",
+    rare: "Rare",
+    epique: "Épique",
+    legendaire: "Légendaire",
+    heroique: "Héroïque",
+    mythique: "Mythique",
+  };
+
+  const REWARD_EMOJI_POOLS = {
+    commun: ["🙂", "🍀", "⭐", "🎈", "🍎", "🌼", "🧦", "🍬"],
+    rare: ["🔷", "🦋", "🌈", "🎁", "🐚", "🍯", "🪁", "🧩"],
+    epique: ["🔮", "🏆", "💎", "🌟", "⚡", "🐙", "🦉", "🌵"],
+    legendaire: ["👑", "🦄", "🌌", "🔱", "🧿", "✨", "🕊️", "🎇"],
+    heroique: ["🦸", "🛡️", "⚔️", "🥇", "🎖️", "🏅", "🔥", "🌋"],
+    mythique: ["🐉", "🌠", "💫", "🪽", "🐲", "🌸", "🕉️", "🦚"],
+  };
+
+  let rewardsState = { maxIntervalDays: 0, milestones: {} };
+
+  function loadRewardsState() {
+    try {
+      const raw = localStorage.getItem(REWARDS_STATE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        rewardsState = {
+          maxIntervalDays: Number(parsed.maxIntervalDays) || 0,
+          milestones: parsed.milestones && typeof parsed.milestones === "object" ? parsed.milestones : {},
+        };
+        return;
+      }
+    } catch {
+      /* état corrompu : on repart de zéro plutôt que de planter l'appli */
+    }
+    rewardsState = { maxIntervalDays: 0, milestones: {} };
+  }
+
+  function saveRewardsState() {
+    localStorage.setItem(REWARDS_STATE_KEY, JSON.stringify(rewardsState));
+  }
+
+  /** Choisit un emoji au hasard dans le pool du palier, sans jamais retirer
+   *  du pool (deux paliers du même niveau peuvent retomber sur le même
+   *  emoji : c'est acceptable pour une collection de cette taille). */
+  function pickRewardEmoji(tier) {
+    const pool = REWARD_EMOJI_POOLS[tier] || REWARD_EMOJI_POOLS.commun;
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  /** Appelée après chaque changement d'échéance issu d'une vraie révision
+   *  (algorithme SM-2 normal ou mode bonus — pas l'hibernation, qui ne
+   *  compte volontairement pas comme une révision). Si l'intervalle obtenu
+   *  dépasse le record actuel, débloque toutes les cases de paliers
+   *  franchies (une case reste "à ouvrir" tant que l'utilisateur ne l'a
+   *  pas touchée dans la page Récompenses). */
+  function checkRewardRecord(intervalDays) {
+    if (!Number.isFinite(intervalDays) || intervalDays <= rewardsState.maxIntervalDays) return;
+    rewardsState.maxIntervalDays = intervalDays;
+    let changed = false;
+    for (const milestone of REWARD_MILESTONES) {
+      if (milestone.days > intervalDays) break;
+      const key = String(milestone.days);
+      if (!rewardsState.milestones[key]) {
+        rewardsState.milestones[key] = { status: "unlocked", unlockedAt: new Date().toISOString() };
+        changed = true;
+      }
+    }
+    if (changed) saveRewardsState();
+  }
+
   const exportBtn = el("export-btn");
   const importInput = el("import-input");
   const importTargetSelect = el("import-target-select");
@@ -689,6 +799,7 @@
       reviewQueue.push(updated);
     }
 
+    checkRewardRecord(updated.interval);
     renderStats();
     renderManageList();
   }
@@ -757,6 +868,7 @@
       sessionTotalDue += 1;
     }
 
+    checkRewardRecord(updated.interval);
     renderStats();
     renderManageList();
   }
@@ -1104,6 +1216,13 @@
     const buckets = computeDueHistogram(pool, days);
     const max = Math.max(0, ...buckets.map((b) => b.count));
 
+    // Compte précédent par jour (mémorisé sur l'élément lui-même) : sert à
+    // repérer, après un nouveau rendu, quelles colonnes ont réellement changé
+    // de valeur pour leur appliquer un bref flash — sans ça, un déplacement
+    // d'une fiche d'un jour à l'autre (même hauteur de barre des deux côtés)
+    // passe complètement inaperçu dans le mini graphique.
+    const prevCounts = chartEl._prevCounts || null;
+
     chartEl.innerHTML = "";
     if (max === 0) {
       if (emptyEl) emptyEl.hidden = false;
@@ -1137,8 +1256,10 @@
     // donc pas besoin de répéter chaque date individuelle ici.
     const frag = document.createDocumentFragment();
     buckets.forEach((b, i) => {
+      const changed = prevCounts !== null && prevCounts[i] !== b.count;
       const col = document.createElement("div");
-      col.className = "chart-col" + (i === 0 ? " is-today" : "");
+      col.className =
+        "chart-col" + (i === 0 ? " is-today" : "") + (changed ? " chart-col--changed" : "");
 
       const value = document.createElement("span");
       value.className = "chart-value";
@@ -1162,6 +1283,7 @@
       frag.appendChild(col);
     });
     chartEl.appendChild(frag);
+    chartEl._prevCounts = buckets.map((b) => b.count);
   }
 
   function renderDueChart() {
@@ -1184,6 +1306,84 @@
     statTotal.textContent = String(pool.length);
     if (statReviewedToday) statReviewedToday.textContent = String(reviewedTodayCount(pool));
     renderDueChart();
+  }
+
+  /* ---------------------------------------------------------
+     Vue Récompenses : rendu du calendrier
+  --------------------------------------------------------- */
+  const rewardsGridEl = el("rewards-grid");
+  const rewardsRecordValueEl = el("rewards-record-value");
+
+  function formatRewardDays(days) {
+    if (days < 30) return `${days} j`;
+    if (days < 365) return `${Math.round(days / 30)} mois`;
+    return `${(days / 365).toFixed(days % 365 === 0 ? 0 : 1)} an(s)`;
+  }
+
+  function renderRewardsView() {
+    if (!rewardsGridEl) return;
+    rewardsRecordValueEl.textContent =
+      rewardsState.maxIntervalDays > 0 ? formatRewardDays(rewardsState.maxIntervalDays) : "aucun report pour l'instant";
+
+    rewardsGridEl.innerHTML = "";
+    const frag = document.createDocumentFragment();
+
+    REWARD_MILESTONES.forEach((milestone) => {
+      const key = String(milestone.days);
+      const entry = rewardsState.milestones[key];
+      const box = document.createElement("button");
+      box.type = "button";
+      box.dataset.milestone = key;
+
+      if (!entry) {
+        box.className = "reward-box reward-box--locked";
+        box.disabled = true;
+        box.innerHTML = `
+          <span class="reward-lock">🔒</span>
+          <span class="reward-day">${formatRewardDays(milestone.days)}</span>
+        `;
+        box.title = `Se débloque à ${formatRewardDays(milestone.days)} de report — ${REWARD_TIER_LABELS[milestone.tier]}`;
+      } else if (entry.status === "unlocked") {
+        box.className = "reward-box reward-box--unlocked";
+        box.innerHTML = `
+          <span class="reward-emoji">🎁</span>
+          <span class="reward-day">${formatRewardDays(milestone.days)}</span>
+        `;
+        box.title = "Touche pour ouvrir ta récompense";
+      } else {
+        box.className = `reward-box reward-box--opened reward-box--tier-${milestone.tier}`;
+        box.disabled = true;
+        box.innerHTML = `
+          <span class="reward-emoji">${entry.emoji}</span>
+          <span class="reward-day">${formatRewardDays(milestone.days)}</span>
+        `;
+        box.title = `${REWARD_TIER_LABELS[milestone.tier]} — obtenue à ${formatRewardDays(milestone.days)} de report`;
+      }
+
+      frag.appendChild(box);
+    });
+
+    rewardsGridEl.appendChild(frag);
+  }
+
+  if (rewardsGridEl) {
+    rewardsGridEl.addEventListener("click", (e) => {
+      const box = e.target.closest(".reward-box--unlocked");
+      if (!box) return;
+      const key = box.dataset.milestone;
+      const entry = rewardsState.milestones[key];
+      const milestone = REWARD_MILESTONES.find((m) => String(m.days) === key);
+      if (!entry || !milestone) return;
+
+      entry.status = "opened";
+      entry.emoji = pickRewardEmoji(milestone.tier);
+      entry.openedAt = new Date().toISOString();
+      saveRewardsState();
+      renderRewardsView();
+
+      const opened = rewardsGridEl.querySelector(`.reward-box[data-milestone="${key}"]`);
+      if (opened) opened.classList.add("reward-box--just-opened");
+    });
   }
 
   statsSubjectSelectEl.addEventListener("change", () => {
@@ -1355,6 +1555,7 @@
         renderReviewChart();
       }
       if (view === "stats") renderStats();
+      if (view === "rewards") renderRewardsView();
       if (view === "sync") renderSyncView();
       if (view === "settings") renderSettingsView();
       renderDuePill();
@@ -1726,11 +1927,17 @@
     loadBonusDaysSettings();
     loadBonusAgainMode();
     loadHibernateDays();
+    loadRewardsState();
     renderSettingsView();
     await loadSubjects();
     cards = await DB.getAll();
     await migrateOrphanCards();
     await dedupeEmptySubjects();
+    // Rattrape les cases de récompenses déjà méritées par des fiches
+    // existantes (ex. import, sync depuis un autre appareil) sans attendre
+    // une prochaine révision.
+    const existingMaxInterval = Math.max(0, ...cards.map((c) => c.interval || 0));
+    checkRewardRecord(existingMaxInterval);
     renderSubjectSelect();
     renderAll();
     startReviewSession();
