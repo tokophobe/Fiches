@@ -39,6 +39,7 @@ create index if not exists cards_sync_code_idx on public.cards (sync_code);
 -- mot de passe. Voir le README pour les implications de sécurité.
 alter table public.cards enable row level security;
 
+drop policy if exists "anon can read/write cards" on public.cards;
 create policy "anon can read/write cards"
   on public.cards
   for all
@@ -47,8 +48,18 @@ create policy "anon can read/write cards"
   with check (true);
 
 -- Active la réplication en temps réel (pour que le PC voie immédiatement
--- ce que tu ajoutes sur le téléphone, et inversement).
-alter publication supabase_realtime add table public.cards;
+-- ce que tu ajoutes sur le téléphone, et inversement). "do $$ ... $$"
+-- évite une erreur si la table est déjà dans la publication (rejouer ce
+-- script plusieurs fois est censé être sans risque).
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'cards'
+  ) then
+    alter publication supabase_realtime add table public.cards;
+  end if;
+end $$;
 
 -- Table de la page "Récompenses" : une seule ligne par code de synchro,
 -- qui stocke quelles cases du tableau ont été ouvertes et avec quel emoji.
@@ -61,6 +72,7 @@ create table if not exists public.reward_state (
 
 alter table public.reward_state enable row level security;
 
+drop policy if exists "anon can read/write reward_state" on public.reward_state;
 create policy "anon can read/write reward_state"
   on public.reward_state
   for all
@@ -68,4 +80,12 @@ create policy "anon can read/write reward_state"
   using (true)
   with check (true);
 
-alter publication supabase_realtime add table public.reward_state;
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'reward_state'
+  ) then
+    alter publication supabase_realtime add table public.reward_state;
+  end if;
+end $$;
