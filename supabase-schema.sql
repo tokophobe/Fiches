@@ -61,14 +61,18 @@ begin
   end if;
 end $$;
 
--- Table de la page "Récompenses" : une seule ligne par code de synchro,
--- qui stocke quelles cases du tableau ont été ouvertes et avec quel emoji.
--- Séparée de la table "cards" car ce n'est pas une donnée par fiche.
+-- Table partagée par la page "Tamagotchi" (et l'ancienne page "Récompenses",
+-- conservée pour compatibilité) : une seule ligne par code de synchro.
+-- "opened" = ancien tableau de récompenses (plus utilisé par l'appli).
+-- "tamagotchi" = état du compagnon (besoins, croissance) + ses cadeaux.
 create table if not exists public.reward_state (
   sync_code text primary key,
   opened jsonb not null default '{}'::jsonb,
   updated_at timestamptz not null default now()
 );
+
+-- Pour les bases créées avant l'introduction du Tamagotchi.
+alter table public.reward_state add column if not exists tamagotchi jsonb;
 
 alter table public.reward_state enable row level security;
 
@@ -89,3 +93,8 @@ begin
     alter publication supabase_realtime add table public.reward_state;
   end if;
 end $$;
+
+-- Force PostgREST à recharger son cache de schéma tout de suite (sinon les
+-- nouvelles colonnes peuvent mettre quelques minutes à être reconnues par
+-- l'API, même après ce script).
+notify pgrst, 'reload schema';

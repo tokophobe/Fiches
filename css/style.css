@@ -1132,135 +1132,200 @@ textarea, input {
 }
 
 /* ============================================================
-   RÉCOMPENSES : tableau des délais x rareté des cartes obtenues
+   TAMAGOTCHI
    ============================================================ */
-.rewards-intro {
-  margin: 0 0 14px;
-  line-height: 1.5;
-}
 
-/* Icône 🎁 de l'onglet : grisée quand rien n'attend d'être ouvert. */
-.tab--icon#tab-rewards.is-empty {
-  filter: grayscale(1);
-  opacity: 0.45;
-}
-
-.rewards-table-wrap {
-  background: var(--paper-2);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-deep);
-  overflow: hidden;
-  padding: 4px;
-}
-
-.rewards-row {
-  display: grid;
-  grid-template-columns: 46px repeat(4, 1fr);
-  gap: 4px;
-}
-
-.rewards-row + .rewards-row { margin-top: 4px; }
-
-.rewards-row--header {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  background: var(--paper-2);
-  padding-bottom: 6px;
-  margin-bottom: 2px;
-}
-
-.rewards-cell {
+/* Bouton smiley dans le header : rond compact, même hauteur que les
+   autres pastilles du header, donc n'ajoute aucune hauteur à la page. */
+.tama-mood-btn {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(247, 241, 225, 0.22);
+  background: rgba(247, 241, 225, 0.08);
+  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-}
-
-.rewards-cell--day {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  color: var(--ink-soft);
-  justify-content: flex-start;
-  padding-left: 2px;
-}
-
-.rewards-cell--head {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  color: var(--ink-soft);
-}
-
-.reward-cell {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--paper);
-  border: 2px solid var(--paper-3);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-  cursor: default;
   padding: 0;
-}
-
-.reward-cell .reward-emoji {
-  font-size: 32px;
   line-height: 1;
 }
 
-.reward-cell .reward-lock {
-  font-size: 14px;
-  opacity: 0.3;
+.tama-mood-btn:hover { background: rgba(247, 241, 225, 0.16); }
+
+/* Icône 🎁 -> stade de croissance de l'onglet : petit point ambre quand un
+   cadeau attend d'être récolté quelque part. */
+.tab--icon#tab-tamagotchi { position: relative; }
+.tab--icon#tab-tamagotchi.has-pending-gift::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: -2px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 0 2px var(--desk);
 }
 
-/* Case pas encore atteinte : verrouillée, sobre, quasi invisible. */
-.reward-cell--locked { opacity: 0.4; background: var(--paper-2); }
+.tama-hero-card {
+  background: var(--paper);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-deep);
+  padding: 24px 16px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-/* Case débloquée mais pas encore ouverte : cadeau à toucher, pulse doux
-   pour attirer l'œil sans être criard. */
-.reward-cell--unlocked {
+.tama-hero-emoji {
+  display: block;
+  font-size: 56px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.tama-hero-name {
+  font-family: var(--font-type);
+  font-size: 20px;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+
+.tama-mood-line {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 0 0 10px;
+}
+
+.tama-progress-note {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  background: var(--paper-2);
+  border-radius: 999px;
+  padding: 6px 12px;
+  display: inline-block;
+  margin: 0;
+}
+
+.tama-needs-list {
+  background: var(--paper);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-deep);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tama-need-row {
+  display: grid;
+  grid-template-columns: 92px 1fr 28px;
+  align-items: center;
+  gap: 10px;
+}
+
+.tama-need-label {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tama-need-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--paper-3);
+  overflow: hidden;
+}
+
+.tama-need-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--sage);
+  transition: width 0.3s ease;
+}
+
+.tama-need-fill.is-mid { background: var(--amber); }
+.tama-need-fill.is-low { background: var(--terracotta); }
+
+.tama-need-value {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  text-align: right;
+}
+
+.tama-env-card {
+  background: var(--paper);
+  color: var(--ink-soft);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-deep);
+  padding: 14px 16px;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.tama-hint { margin-bottom: 8px; }
+
+/* Cadeau posé sur une barre de l'histogramme mini (page Réviser) : superposé
+   en haut de la colonne, sans changer sa hauteur ni celle de la page. */
+.chart-col { position: relative; }
+
+.chart-gift {
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  font-size: 15px;
+  line-height: 1;
+  padding: 2px;
   cursor: pointer;
-  border-color: var(--amber);
-  animation: reward-pulse 1.6s ease-in-out infinite;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+  animation: chart-gift-pulse 1.6s ease-in-out infinite;
+  z-index: 2;
 }
 
-.reward-cell--unlocked .reward-emoji { font-size: 26px; }
+.chart-gift--rare { font-size: 16px; }
+.chart-gift--epique { font-size: 17px; }
+.chart-gift--legendaire { font-size: 18px; filter: drop-shadow(0 0 4px var(--amber)); }
 
-@keyframes reward-pulse {
-  0%, 100% { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25), 0 0 0 0 rgba(207, 154, 77, 0.5); }
-  50% { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25), 0 0 0 5px rgba(207, 154, 77, 0); }
+@keyframes chart-gift-pulse {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.15); }
 }
 
-/* Case ouverte : couleur selon la rareté de la récompense collectée. */
-.reward-cell--opened { cursor: default; }
-.reward-cell--tier-commune { border-color: var(--ink-soft); }
-.reward-cell--tier-rare { border-color: var(--blue); }
-.reward-cell--tier-epique { border-color: #8a5fd1; }
-.reward-cell--tier-legendaire {
-  border: 2px solid transparent;
-  background:
-    linear-gradient(var(--paper), var(--paper)) padding-box,
-    linear-gradient(120deg, #cf9a4d, #8a5fd1, #4b7996, #b6604a, #cf9a4d) border-box;
-  background-size: 100% 100%, 300% 300%;
-  animation: reward-legend-shimmer 4s linear infinite;
+/* Toast de confirmation à l'ouverture d'un cadeau : discret, en bas d'écran,
+   n'affecte la mise en page d'aucune vue. */
+.tama-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  box-shadow: var(--shadow-deep);
+  z-index: 50;
+  animation: tama-toast-in-out 1.6s ease forwards;
+  pointer-events: none;
 }
 
-@keyframes reward-legend-shimmer {
-  0% { background-position: 0 0, 0% 50%; }
-  100% { background-position: 0 0, 300% 50%; }
-}
-
-/* Petite animation d'ouverture jouée une fois quand une case vient d'être
-   touchée pour révéler la récompense. */
-.reward-cell--just-opened { animation: reward-reveal 500ms ease; }
-@keyframes reward-reveal {
-  0% { transform: scale(0.7) rotate(-8deg); opacity: 0.4; }
-  60% { transform: scale(1.15) rotate(4deg); opacity: 1; }
-  100% { transform: scale(1) rotate(0); opacity: 1; }
+@keyframes tama-toast-in-out {
+  0% { opacity: 0; transform: translate(-50%, 10px); }
+  15% { opacity: 1; transform: translate(-50%, 0); }
+  80% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -6px); }
 }
 
 /* ============================================================
@@ -1273,8 +1338,7 @@ textarea, input {
 @media (prefers-reduced-motion: reduce) {
   .stack-card--front { transition: none; }
   .view.is-active { animation: none; }
-  .reward-cell--unlocked { animation: none; }
-  .reward-cell--tier-legendaire { animation: none; }
-  .reward-cell--just-opened { animation: none; }
   .chart-col--changed .chart-bar { animation: none; }
+  .chart-gift { animation: none; }
+  .tama-toast { animation: none; opacity: 1; }
 }

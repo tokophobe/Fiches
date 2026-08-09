@@ -36,6 +36,9 @@
         <span class="sync-dot" id="sync-dot"></span>
         <span id="sync-status-text">Local</span>
       </button>
+      <button class="tama-mood-btn" id="tama-mood-btn" type="button" title="Humeur du compagnon" aria-label="Humeur du compagnon">
+        <span id="tama-mood-emoji">🥚</span>
+      </button>
       <div class="due-pill" id="due-pill" title="Fiches à revoir aujourd'hui">
         <span id="due-count">0</span> à revoir
       </div>
@@ -52,7 +55,7 @@
     <button class="tab" role="tab" aria-selected="false" data-view="manage">Gérer</button>
     <button class="tab" role="tab" aria-selected="false" data-view="stats">Stats</button>
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
-    <button class="tab tab--icon" role="tab" aria-selected="false" data-view="rewards" id="tab-rewards" title="Récompenses" aria-label="Récompenses">🎁</button>
+    <button class="tab tab--icon" role="tab" aria-selected="false" data-view="tamagotchi" id="tab-tamagotchi" title="Tamagotchi" aria-label="Tamagotchi"><span id="tab-tamagotchi-icon">🥚</span></button>
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">⚙</button>
   </nav>
 
@@ -194,24 +197,28 @@
       <p class="chart-empty" id="chart-empty" hidden>Rien à revoir sur cette période.</p>
     </section>
 
-    <!-- VUE RÉCOMPENSES -->
-    <section id="view-rewards" class="view" aria-labelledby="tab-rewards">
-      <h2 class="section-title">Récompenses</h2>
-      <p class="field-hint rewards-intro">
-        Chaque ligne est un délai avant révision. Dès qu'une fiche l'atteint,
-        la case Commune se débloque ; 25 fiches débloquent la Rare, 50
-        l'Épique, 100 la Légendaire. Touche une case débloquée pour l'ouvrir.
-      </p>
-      <div class="rewards-table-wrap">
-        <div class="rewards-row rewards-row--header">
-          <div class="rewards-cell rewards-cell--day"></div>
-          <div class="rewards-cell rewards-cell--head rewards-cell--tier-commune">Commune</div>
-          <div class="rewards-cell rewards-cell--head rewards-cell--tier-rare">Rare</div>
-          <div class="rewards-cell rewards-cell--head rewards-cell--tier-epique">Épique</div>
-          <div class="rewards-cell rewards-cell--head rewards-cell--tier-legendaire">Légend.</div>
-        </div>
-        <div id="rewards-grid"></div>
+    <!-- VUE TAMAGOTCHI -->
+    <section id="view-tamagotchi" class="view" aria-labelledby="tab-tamagotchi">
+      <h2 class="section-title">Ton compagnon</h2>
+
+      <div class="tama-hero-card">
+        <span class="tama-hero-emoji" id="tama-hero-emoji">🥚</span>
+        <p class="tama-hero-name" id="tama-hero-name">Œuf</p>
+        <p class="tama-mood-line" id="tama-mood-line">😐 Neutre</p>
+        <p class="tama-progress-note" id="tama-progress-note"></p>
       </div>
+
+      <h3 class="settings-block-title">Ses besoins</h3>
+      <div class="tama-needs-list" id="tama-needs-list"></div>
+
+      <h3 class="settings-block-title">Son environnement</h3>
+      <p class="field-hint tama-env-card" id="tama-env-text"></p>
+
+      <p class="field-hint tama-hint">
+        Des cadeaux 🎁 apparaissent sur l'histogramme de la page Réviser
+        quand une barre de fiches dues atteint un certain nombre. Touche-les
+        pour les récolter et combler l'un de ses besoins.
+      </p>
     </section>
 
     <!-- VUE SYNC -->

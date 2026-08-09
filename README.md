@@ -102,10 +102,11 @@ juste un **code de synchronisation** que tu entres sur chaque appareil.
   **anon / public** (surtout pas la clé `service_role`, qui est secrète)
 
 *Projet Supabase déjà existant (créé avant l'ajout des matières ou de la
-page Récompenses) ?* Recolle et relance `supabase-schema.sql` une fois —
+page Tamagotchi) ?* Recolle et relance `supabase-schema.sql` une fois —
 les commandes sont sans risque à rejouer, elles ajoutent juste les
-colonnes et la table manquantes (dont `reward_state`, nécessaire pour que
-les cases ouvertes dans **Récompenses** se synchronisent elles aussi).
+colonnes et la table manquantes (dont `reward_state`, qui porte
+maintenant aussi la colonne `tamagotchi`, nécessaire pour que le
+compagnon et ses cadeaux se synchronisent entre appareils).
 
 **2. Connecte l'appli**
 - Ouvre l'appli → onglet **Sync**

@@ -90,103 +90,341 @@
   let hibernateDays = DEFAULT_HIBERNATE_DAYS;
   const settingHibernateDaysEl = el("setting-hibernate-days");
 
-  /* ---------------------------------------------------------
-     Récompenses : tableau des délais de report x rareté de carte.
-     Chaque ligne représente un délai avant prochaine révision (en jours,
-     jusqu'à 3 ans). Chaque colonne représente un niveau de rareté de
-     carte à collectionner. Une ligne débloque sa colonne "commune" dès
-     qu'UNE fiche a un jour atteint ce délai ; 25 fiches débloquent la
-     "rare", 50 l'"épique", 100 la "légendaire". Chaque case débloquée
-     peut être ouverte une fois pour révéler un emoji, qui n'apparaît
-     jamais deux fois ailleurs dans le tableau.
-
-     Le nombre de fiches ayant atteint un délai donné se déduit du champ
-     `maxIntervalReached` de chaque fiche (le plus grand intervalle
-     qu'elle ait jamais atteint) : ce champ se synchronise avec le reste
-     de la fiche via Supabase, donc les cases débloquées sont toujours
-     identiques sur tous les appareils. Seul l'état "ouverte / pas encore
-     ouverte" (et l'emoji tiré) est stocké à part et synchronisé via la
-     table `reward_state` (voir js/sync.js).
-  --------------------------------------------------------- */
-  const REWARDS_OPENED_KEY = "fiches_rewards_opened";
-
-  /** 150 paliers de délai (en jours), de 1 jour à 3 ans (1095 j), avec une
-   *  granularité fine au début et de plus en plus large ensuite. */
-  const REWARD_DAY_MILESTONES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 100, 105, 110, 115, 120, 126, 132, 139, 145, 152, 160, 167, 175, 184, 193, 202, 212, 222, 232, 244, 255, 268, 280, 294, 308, 323, 338, 355, 372, 390, 408, 428, 449, 470, 493, 516, 541, 567, 595, 623, 653, 685, 718, 752, 788, 826, 866, 907, 951, 997, 1045, 1095];
-
-  const REWARD_TIERS = ["commune", "rare", "epique", "legendaire"];
-  const REWARD_TIER_THRESHOLDS = { commune: 1, rare: 25, epique: 50, legendaire: 100 };
-  const REWARD_TIER_LABELS = {
-    commune: "Commune",
-    rare: "Rare",
-    epique: "Épique",
-    legendaire: "Légendaire",
-  };
-
-  /* Pools d'emoji par rareté, du plus ordinaire au plus somptueux. Aucun
-     emoji n'apparaît dans plus d'un pool : l'unicité entre cases est ainsi
-     garantie tant qu'un pool n'est pas épuisé (voir pickUniqueRewardEmoji). */
-  const REWARD_EMOJI_POOLS = {
-    commune: ["😀","😃","😄","😁","😆","🙂","🙃","😉","😊","😇","🥲","😋","😛","😜","🤪","😝","🤑","🤗","🤭","🤔","😐","😑","😶","😏","😴","😌","🙄","😬","🤤","🥱","😎","🤓","🧐","🙁","😮","😲","🍎","🍏","🍐","🍊","🍋","🍌","🍉","🍇","🍓","🍈","🍒","🍑","🥭","🍍","🥥","🥝","🍅","🥑","🍆","🥔","🥕","🌽","🥒","🥦","🍞","🥐","🥖","🥨","🥯","🥞","🧀","🍔","🍟","🍕","🌭","🥪","🌮","🌯","🥙","🥚","🍳","🥘","🍲","🥗","🍿","🥫","☕","🍵","🧃","🥤","🍩","🍪","🎂","🧁","🍫","🍬","🍭","🍮","🍯","🥄","🍴","🍽️","🥢","🧺","🧦","👕","👖","🧥","🧢","👟","🎒","📚","✏️","📌","📎","🔑","🔒","💡","🕯️","🧸","🪀","🪁","⚽","🏀","🏈","🎾","🏓","🏸","🥊","🎳","🎯","🎲","🧩","🃏","🎮","🖍️","🖊️","📖","📔","📒","📕","📗","📘","📙","🗒️","📋","📁","✂️","📐","📏","🧮","🔔","🔕","📢","📣","🧭","⏰","⌛"],
-    rare: ["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐨","🐯","🦁","🐮","🐷","🐽","🐸","🐵","🙈","🙉","🙊","🐒","🐔","🐧","🐦","🐤","🐣","🐥","🦆","🦅","🦉","🦇","🐺","🐗","🐴","🐝","🐛","🐌","🐞","🐜","🐢","🐍","🦎","🦖","🦕","🐙","🦑","🦐","🦞","🦀","🐡","🐠","🐟","🐬","🐳","🐋","🦈","🐊","🐅","🐆","🦓","🦍","🦧","🐘","🦛","🦏","🐪","🐫","🦒","🦘","🐃","🐂","🐄","🐎","🐖","🐏","🐑","🦙","🐐","🦌","🐕","🐩","🦮","🐈","🐓","🦃","🦤","🦢","🦩","🐇","🦝","🦨","🦡","🦫","🦦","🦥","🐁","🐀","🐿️","🦔","🌵","🎄","🌲","🌳","🌴","🌱","🌿","☘️","🍀","🎍","🪴","🎋","🍃","🍂","🍁","🌾","🥀","🌷","🪻","🌼","🌻","🍄"],
-    epique: ["🌊","🌋","🏔️","⛰️","🗻","🏕️","🏜️","🏝️","🌅","🌄","🌉","🌁","🔭","🔬","🧬","⚗️","🧪","🧫","🕹️","🛸","🚀","🛰️","⚡","🔥","💧","🌪️","☄️","🌙","🌚","🌝","🌛","🌜","🪐","🌍","🌎","🌏","🔆","🔅","🌀","🎐","🏮","🪔","🔦","🥇","🎗️","🛡️","⚔️","🗡️","🏹","🪄","🧙","🧙‍♂️","🧙‍♀️","🦂","🕷️","🕸️","🦟","🦠","🧊","🪨","🌬️","🎡","🎢","🎠","🗿","🎭","🎨","🧿","📿","🪬","🀄","🎴","🪅","🪆","🧨","🎃","👻","💣","🧯","🛎️","🗝️","⚙️","🔗","⛓️","🧲","🪞","🖼️","🪟","🚪","🛋️","🪑","🛏️","🚿","🛁","⏳"],
-    legendaire: ["👑","💍","💐","🌹","🦄","🐲","🐉","🕊️","🦋","🌸","🪷","🌺","🎇","🎆","🌠","✨","💫","⭐","🌟","🌈","💎","👼","🕉️","☯️","☮️","☪️","🛐","⛩️","🕋","🏰","🗼","🍾","🥂","🎉","🎊","🎁","🏵️","💠","🔯","👸","🤴","🦸","🦸‍♀️","🦹","🧚","🧚‍♀️","🧜‍♀️","🧜‍♂️","🧞","🧞‍♂️","🦚","🐦‍⬛","🌌","🎑","🔱","⚜️","🌞","🧧","🪩","💒","⛪","🕌","🛕","🏯","🗽","🏆","🎖️"],
-  };
-
-  /* { "<days>:<tier>": {emoji, openedAt} } — état local, fusionné avec
-     l'état distant au démarrage et à chaque mise à jour temps réel. */
-  let rewardsOpened = {};
-  let rewardsSyncUnsub = null;
-
-  function rewardCellKey(days, tier) {
-    return `${days}:${tier}`;
-  }
-
-  function loadRewardsOpened() {
-    try {
-      const raw = localStorage.getItem(REWARDS_OPENED_KEY);
-      rewardsOpened = raw ? JSON.parse(raw) : {};
-    } catch {
-      rewardsOpened = {};
-    }
-  }
-
-  function saveRewardsOpened() {
-    localStorage.setItem(REWARDS_OPENED_KEY, JSON.stringify(rewardsOpened));
-  }
-
-  /** Choisit un emoji jamais encore utilisé nulle part dans le tableau.
-   *  Cherche d'abord dans le pool du palier demandé ; si celui-ci est
-   *  épuisé (cas extrême), retombe sur les autres pools plutôt que de
-   *  répéter un emoji déjà attribué. */
-  function pickUniqueRewardEmoji(tier) {
-    const used = new Set(Object.values(rewardsOpened).map((e) => e.emoji));
-    const order = [tier, ...REWARD_TIERS.filter((t) => t !== tier)];
-    for (const t of order) {
-      const pool = REWARD_EMOJI_POOLS[t] || [];
-      const free = pool.filter((e) => !used.has(e));
-      if (free.length > 0) return free[Math.floor(Math.random() * free.length)];
-    }
-    // Tous les pools sont épuisés (des centaines de cases ouvertes) :
-    // dernier recours, on autorise une répétition plutôt que de planter.
-    const pool = REWARD_EMOJI_POOLS[tier] || REWARD_EMOJI_POOLS.commune;
-    return pool[Math.floor(Math.random() * pool.length)];
-  }
-
-  /** Nombre de fiches ayant un jour atteint au moins `days` jours
-   *  d'intervalle. */
-  function cardsReachingDays(days) {
-    return cards.filter((c) => !c.deleted && (c.maxIntervalReached || 0) >= days).length;
-  }
-
   /** Appelée après chaque changement d'échéance issu d'une vraie révision
    *  (algorithme SM-2 normal ou mode bonus — pas l'hibernation, qui ne
    *  compte volontairement pas comme une révision). Met à jour le record
-   *  personnel de la fiche ; le déblocage des cases se recalcule ensuite à
-   *  la volée depuis les fiches, donc rien d'autre à faire ici. */
+   *  personnel de la fiche (conservé pour historique / usages futurs). */
   function trackCardInterval(card, intervalDays) {
     if (!Number.isFinite(intervalDays)) return;
     card.maxIntervalReached = Math.max(card.maxIntervalReached || 0, intervalDays);
+  }
+
+  /* ---------------------------------------------------------
+     Tamagotchi : un compagnon qui grandit fiche après fiche.
+
+     Mécanique des cadeaux : sur le mini histogramme de la page Réviser
+     (fiches dues par jour, matière en cours), dès qu'une colonne atteint
+     un certain nombre de fiches dues ce jour-là, un petit cadeau 🎁
+     apparaît sur cette barre — à aller chercher d'un coup de pouce.
+     L'ouvrir tire un emoji dans le pool du besoin le plus bas du moment
+     (manger / boire / dormir / jouer / copains / se soigner) : le type
+     d'emoji obtenu détermine donc quel besoin est comblé.
+
+     Le compagnon grandit dès qu'il a cumulé assez de "bons jours" —
+     des jours où tous ses besoins sont restés bien remplis. Un jour
+     moins bon ne le fait pas régresser, il met juste sa croissance en
+     pause : rien de punitif, juste un encouragement à revenir régulièrement.
+
+     État synchronisé (une ligne JSON par code de synchro, voir js/sync.js) :
+     `tamaState` (besoins, jours cumulés, dates) et `tamaGifts` (cadeaux
+     déjà repérés/ouverts, par matière + date).
+  --------------------------------------------------------- */
+  const TAMA_STATE_KEY = "fiches_tama_state";
+  const TAMA_GIFTS_KEY = "fiches_tama_gifts";
+
+  const NEED_KEYS = ["manger", "boire", "dormir", "jouer", "copains", "soigner"];
+  const NEED_LABELS = {
+    manger: "Manger",
+    boire: "Boire",
+    dormir: "Dormir",
+    jouer: "Jouer",
+    copains: "Copains",
+    soigner: "Se soigner",
+  };
+  const NEED_ICONS = {
+    manger: "🍽️",
+    boire: "🥤",
+    dormir: "😴",
+    jouer: "🎲",
+    copains: "🐾",
+    soigner: "💊",
+  };
+
+  /* 6 besoins x 32 emoji, découpés en 4 tranches de 8 (commune / rare /
+     épique / légendaire) : la tranche pioche selon la rareté du cadeau,
+     le besoin selon ce qui manque le plus au compagnon à ce moment-là. */
+  const NEED_EMOJI_POOLS = {
+    manger: ["🍎","🍏","🍊","🍋","🍌","🍉","🍇","🍓","🍒","🍑","🥭","🍍","🥥","🥝","🍅","🥑","🥕","🌽","🥒","🥦","🍞","🥐","🥖","🧀","🍕","🍔","🍣","🍰","🎂","🍫","🍩","🍯"],
+    boire: ["☕","🍵","🧃","🥤","🥛","🧋","🍶","🫖","🥥","🍹","🧉","🍯","🫙","🚰","💧","🌊","🍧","🍦","🧊","❄️","☃️","🌨️","🌧️","⛲","🍾","🥂","🌈","✨","💫","🫗","🔮","🧪"],
+    dormir: ["😴","💤","🛌","🛏️","🌙","🌛","🌜","🌚","🧸","🕯️","🌌","⭐","✨","🌟","☁️","🫧","🦉","🐨","🌠","🪐","🌃","🎐","🪄","🔮","👑","🌈","🧚","🪶","🕊️","🦢","🪺","🌙"],
+    jouer: ["⚽","🏀","🎾","🏓","🏸","🎳","🎯","🎲","🧩","🪀","🪁","🎮","🕹️","🎨","🖍️","🎭","🎡","🎢","🎠","🎪","🎉","🎊","🥳","🎆","🏆","🥇","🎖️","🏅","🌟","✨","🎇","🎁"],
+    copains: ["🐶","🐱","🐰","🐹","🐻","🐼","🐨","🦊","🐸","🐵","🐔","🐧","🦄","🐴","🐷","🐮","🦋","🐝","🐢","🐬","🦁","🐯","🦒","🐘","🧑‍🤝‍🧑","👫","👭","👬","💞","❤️","🫂","🎈"],
+    soigner: ["🩹","💊","🌡️","🩺","🧴","🧼","🪥","🧽","🧻","🚿","🛁","🧺","🩸","💉","🧬","🔬","🍀","🌿","🌱","🍃","🧘","🧘‍♀️","☮️","🕉️","💚","🫶","🩷","✨","🌈","🦋","🕊️","👼"],
+  };
+
+  const GIFT_TIERS = ["commune", "rare", "epique", "legendaire"];
+  const GIFT_TIER_RANK = { commune: 0, rare: 1, epique: 2, legendaire: 3 };
+  /* Nombre de fiches dues ce jour-là (hauteur de la barre) nécessaire pour
+     qu'un cadeau de ce niveau apparaisse sur la colonne. */
+  const GIFT_TIER_DUE_THRESHOLDS = { commune: 5, rare: 15, epique: 30, legendaire: 50 };
+  /* Points de besoin rendus à l'ouverture, selon le niveau du cadeau. */
+  const GIFT_TIER_BOOST = { commune: 15, rare: 25, epique: 40, legendaire: 60 };
+
+  const HEALTHY_NEED_THRESHOLD = 50; // seuil "besoin bien rempli"
+  const NEED_DECAY_PER_DAY = 10; // baisse quotidienne de chaque besoin
+
+  /** Étapes de croissance, débloquées par nombre cumulé de "bons jours"
+   *  (pas forcément consécutifs — un jour moins bon met juste en pause). */
+  const GROWTH_STAGES = [
+    { minGoodDays: 0, emoji: "🥚", name: "Œuf" },
+    { minGoodDays: 3, emoji: "🐣", name: "Poussin" },
+    { minGoodDays: 7, emoji: "🐥", name: "Bébé" },
+    { minGoodDays: 14, emoji: "🐦", name: "Ado" },
+    { minGoodDays: 30, emoji: "🦋", name: "Adulte" },
+    { minGoodDays: 60, emoji: "🦄", name: "Légende" },
+  ];
+
+  function defaultTamaState() {
+    const needs = {};
+    NEED_KEYS.forEach((k) => (needs[k] = 80));
+    const today = todayISODate();
+    return {
+      needs,
+      goodDaysCount: 0,
+      lastDecayDate: today,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+  }
+
+  let tamaState = null;
+  /** { "<subjectId>::<dateISO>": { tier, opened, need, emoji, openedAt } } */
+  let tamaGifts = {};
+  let tamaSyncUnsub = null;
+
+  function todayISODate() {
+    return startOfDay(new Date()).toISOString().slice(0, 10);
+  }
+
+  function loadTamaState() {
+    try {
+      const raw = localStorage.getItem(TAMA_STATE_KEY);
+      tamaState = raw ? JSON.parse(raw) : null;
+    } catch {
+      tamaState = null;
+    }
+    if (!tamaState || !tamaState.needs) {
+      tamaState = defaultTamaState();
+      saveTamaState(); // sinon rien n'est persisté avant une première action
+    }
+  }
+
+  function saveTamaState() {
+    tamaState.updatedAt = new Date().toISOString();
+    localStorage.setItem(TAMA_STATE_KEY, JSON.stringify(tamaState));
+  }
+
+  function loadTamaGifts() {
+    try {
+      const raw = localStorage.getItem(TAMA_GIFTS_KEY);
+      tamaGifts = raw ? JSON.parse(raw) : {};
+    } catch {
+      tamaGifts = {};
+    }
+  }
+
+  function saveTamaGifts() {
+    localStorage.setItem(TAMA_GIFTS_KEY, JSON.stringify(tamaGifts));
+  }
+
+  /** Fait avancer l'horloge du compagnon jusqu'à aujourd'hui : pour chaque
+   *  jour calendaire écoulé depuis le dernier passage, vérifie si la
+   *  veille était un "bon jour" (tous les besoins bien remplis) avant de
+   *  faire baisser les besoins. Plafonné pour éviter une boucle infinie si
+   *  l'appli reste fermée très longtemps. */
+  function applyTamaUpkeep() {
+    const today = todayISODate();
+    let cursor = tamaState.lastDecayDate || today;
+    let iterations = 0;
+    let changed = false;
+    while (cursor < today && iterations < 730) {
+      const healthy = NEED_KEYS.every((k) => (tamaState.needs[k] || 0) >= HEALTHY_NEED_THRESHOLD);
+      if (healthy) tamaState.goodDaysCount = (tamaState.goodDaysCount || 0) + 1;
+      NEED_KEYS.forEach((k) => {
+        tamaState.needs[k] = Math.max(0, (tamaState.needs[k] || 0) - NEED_DECAY_PER_DAY);
+      });
+      const d = new Date(cursor + "T00:00:00");
+      d.setDate(d.getDate() + 1);
+      cursor = d.toISOString().slice(0, 10);
+      iterations += 1;
+      changed = true;
+    }
+    tamaState.lastDecayDate = today;
+    if (changed) saveTamaState();
+  }
+
+  function tamaStageIndex() {
+    let idx = 0;
+    GROWTH_STAGES.forEach((s, i) => {
+      if ((tamaState.goodDaysCount || 0) >= s.minGoodDays) idx = i;
+    });
+    return idx;
+  }
+
+  function tamaStage() {
+    return GROWTH_STAGES[tamaStageIndex()];
+  }
+
+  function tamaNextStage() {
+    return GROWTH_STAGES[tamaStageIndex() + 1] || null;
+  }
+
+  function tamaAverageNeed() {
+    const sum = NEED_KEYS.reduce((acc, k) => acc + (tamaState.needs[k] || 0), 0);
+    return sum / NEED_KEYS.length;
+  }
+
+  function tamaMood() {
+    const avg = tamaAverageNeed();
+    if (avg >= 80) return { emoji: "🤩", label: "Ravi" };
+    if (avg >= 60) return { emoji: "😊", label: "Content" };
+    if (avg >= 40) return { emoji: "😐", label: "Neutre" };
+    if (avg >= 20) return { emoji: "😟", label: "Grognon" };
+    return { emoji: "😢", label: "Triste" };
+  }
+
+  /** Le besoin le plus urgent à combler, avec un peu d'aléatoire pour ne
+   *  pas être totalement prévisible (le plus bas 7 fois sur 10, sinon le
+   *  deuxième plus bas). */
+  function tamaNeediestKey() {
+    const sorted = [...NEED_KEYS].sort((a, b) => (tamaState.needs[a] || 0) - (tamaState.needs[b] || 0));
+    if (sorted.length > 1 && Math.random() > 0.7) return sorted[1];
+    return sorted[0];
+  }
+
+  /** Emoji jamais tiré pour ce besoin si possible, dans la tranche de
+   *  rareté du cadeau ; retombe sur tout le pool du besoin si épuisée. */
+  function pickTamaEmoji(need, tier) {
+    const pool = NEED_EMOJI_POOLS[need] || NEED_EMOJI_POOLS.manger;
+    const rank = GIFT_TIER_RANK[tier] || 0;
+    const slice = pool.slice(rank * 8, rank * 8 + 8);
+    const used = new Set(
+      Object.values(tamaGifts)
+        .filter((g) => g.opened && g.need === need)
+        .map((g) => g.emoji)
+    );
+    const free = slice.filter((e) => !used.has(e));
+    if (free.length > 0) return free[Math.floor(Math.random() * free.length)];
+    const freeAny = pool.filter((e) => !used.has(e));
+    if (freeAny.length > 0) return freeAny[Math.floor(Math.random() * freeAny.length)];
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  function tamaGiftKey(subjectId, dateISO) {
+    return `${subjectId}::${dateISO}`;
+  }
+
+  /** Repère, dans les buckets d'un histogramme (matière en cours), les
+   *  jours dont la barre vient d'atteindre un nouveau palier, et crée ou
+   *  fait évoluer le cadeau correspondant. Retourne la map
+   *  dateISO -> {tier, opened} des cadeaux de cette matière, pour l'overlay
+   *  du mini graphique. */
+  function registerTamaGiftsFromBuckets(subjectId, buckets) {
+    let changed = false;
+    const map = {};
+    buckets.forEach((b) => {
+      const dateISO = b.date.toISOString().slice(0, 10);
+      let reachedTier = null;
+      for (const t of GIFT_TIERS) {
+        if (b.count >= GIFT_TIER_DUE_THRESHOLDS[t]) reachedTier = t;
+      }
+      const key = tamaGiftKey(subjectId, dateISO);
+      const existing = tamaGifts[key];
+      if (reachedTier) {
+        if (!existing) {
+          tamaGifts[key] = { tier: reachedTier, opened: false };
+          changed = true;
+        } else if (!existing.opened && GIFT_TIER_RANK[reachedTier] > GIFT_TIER_RANK[existing.tier]) {
+          existing.tier = reachedTier;
+          changed = true;
+        }
+      }
+      const entry = tamaGifts[key];
+      if (entry) map[dateISO] = entry;
+    });
+    if (changed) {
+      saveTamaGifts();
+      if (Sync.isConfigured()) pushTamaBlob();
+    }
+    return map;
+  }
+
+  /** Ouvre le cadeau du jour `dateISO` pour la matière `subjectId` : gonfle
+   *  le besoin le plus urgent et fige l'emoji obtenu. */
+  function collectTamaGift(subjectId, dateISO) {
+    const key = tamaGiftKey(subjectId, dateISO);
+    const entry = tamaGifts[key];
+    if (!entry || entry.opened) return null;
+    const need = tamaNeediestKey();
+    const emoji = pickTamaEmoji(need, entry.tier);
+    tamaState.needs[need] = Math.min(100, (tamaState.needs[need] || 0) + GIFT_TIER_BOOST[entry.tier]);
+    entry.opened = true;
+    entry.need = need;
+    entry.emoji = emoji;
+    entry.openedAt = new Date().toISOString();
+    saveTamaGifts();
+    saveTamaState();
+    if (Sync.isConfigured()) pushTamaBlob();
+    return { need, emoji, tier: entry.tier };
+  }
+
+  /** Y a-t-il un cadeau reconnu mais pas encore ouvert (toutes matières
+   *  confondues) ? Sert au petit point de notification sur l'onglet. */
+  function hasPendingTamaGift() {
+    return Object.values(tamaGifts).some((g) => !g.opened);
+  }
+
+  function refreshTamaTabIcon() {
+    const iconEl = el("tab-tamagotchi-icon");
+    const stage = tamaStage();
+    if (iconEl) iconEl.textContent = stage.emoji;
+    const tabEl = el("tab-tamagotchi");
+    if (tabEl) tabEl.classList.toggle("has-pending-gift", hasPendingTamaGift());
+    const moodEmojiEl = el("tama-mood-emoji");
+    if (moodEmojiEl) moodEmojiEl.textContent = tamaMood().emoji;
+  }
+
+  /* ---------------------------------------------------------
+     Synchro multi-appareils de l'état du compagnon (état + cadeaux
+     regroupés dans un seul blob JSON, voir js/sync.js).
+  --------------------------------------------------------- */
+  function mergeTamaGifts(remoteGifts) {
+    let changed = false;
+    for (const [key, remote] of Object.entries(remoteGifts || {})) {
+      const local = tamaGifts[key];
+      if (!local) {
+        tamaGifts[key] = remote;
+        changed = true;
+      } else if (!local.opened && remote.opened) {
+        tamaGifts[key] = remote; // l'autre appareil l'a ouvert en premier
+        changed = true;
+      } else if (!local.opened && !remote.opened && GIFT_TIER_RANK[remote.tier] > GIFT_TIER_RANK[local.tier]) {
+        local.tier = remote.tier;
+        changed = true;
+      }
+    }
+    if (changed) saveTamaGifts();
+    return changed;
+  }
+
+  async function pushTamaBlob() {
+    if (!Sync.isConfigured()) return false;
+    return Sync.pushTamaState({ pet: tamaState, gifts: tamaGifts });
+  }
+
+  async function pullAndMergeTama() {
+    if (!Sync.isConfigured()) return;
+    const remote = await Sync.pullTamaState();
+    if (!remote) return;
+    mergeTamaGifts(remote.gifts);
+    // État du compagnon : on garde le plus récemment mis à jour dans son
+    // ensemble (besoins + jours cumulés forment un tout cohérent, les
+    // fusionner champ à champ donnerait un état incohérent).
+    if (remote.pet && new Date(remote.pet.updatedAt || 0) > new Date(tamaState.updatedAt || 0)) {
+      tamaState = remote.pet;
+      saveTamaState();
+    }
+    await pushTamaBlob();
   }
 
   const exportBtn = el("export-btn");
@@ -535,7 +773,7 @@
     renderManageList();
     renderStats();
     renderReviewChart();
-    refreshRewardsIndicator();
+    refreshTamaTabIcon();
   }
 
   /** Toutes les fiches non supprimées de la matière actuellement active. */
@@ -790,7 +1028,7 @@
       reviewQueue.push(updated);
     }
 
-    refreshRewardsIndicator();
+    refreshTamaTabIcon();
     renderStats();
     renderManageList();
   }
@@ -860,7 +1098,7 @@
       sessionTotalDue += 1;
     }
 
-    refreshRewardsIndicator();
+    refreshTamaTabIcon();
     renderStats();
     renderManageList();
   }
@@ -1203,10 +1441,12 @@
   /** Dessine un histogramme "fiches dues par jour" dans les éléments fournis.
    *  Factorisé pour être partagé entre le grand graphique de l'onglet Stats
    *  et le mini graphique de la page Réviser (matière en cours). */
-  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, days, maxBarPx) {
+  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, days, maxBarPx, giftOpts) {
     if (!chartEl) return;
     const buckets = computeDueHistogram(pool, days);
     const max = Math.max(0, ...buckets.map((b) => b.count));
+    const giftMap = giftOpts ? registerTamaGiftsFromBuckets(giftOpts.subjectId, buckets) : null;
+    if (giftOpts) refreshTamaTabIcon();
 
     // Compte précédent par jour (mémorisé sur l'élément lui-même) : sert à
     // repérer, après un nouveau rendu, quelles colonnes ont réellement changé
@@ -1272,6 +1512,25 @@
       col.appendChild(value);
       col.appendChild(bar);
       col.appendChild(label);
+
+      if (giftMap) {
+        const dateISO = b.date.toISOString().slice(0, 10);
+        const gift = giftMap[dateISO];
+        if (gift && !gift.opened) {
+          const badge = document.createElement("button");
+          badge.type = "button";
+          badge.className = `chart-gift chart-gift--${gift.tier}`;
+          badge.textContent = "🎁";
+          badge.title = "Cadeau à aller chercher — touche pour l'ouvrir";
+          badge.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const result = collectTamaGift(giftOpts.subjectId, dateISO);
+            if (result && giftOpts.onCollect) giftOpts.onCollect(result, badge);
+          });
+          col.appendChild(badge);
+        }
+      }
+
       frag.appendChild(col);
     });
     chartEl.appendChild(frag);
@@ -1301,131 +1560,91 @@
   }
 
   /* ---------------------------------------------------------
-     Vue Récompenses : rendu du tableau délais x rareté
+     Vue Tamagotchi : état du compagnon, ses besoins, son environnement
   --------------------------------------------------------- */
-  const rewardsGridEl = el("rewards-grid");
+  const tamaHeroEmojiEl = el("tama-hero-emoji");
+  const tamaHeroNameEl = el("tama-hero-name");
+  const tamaMoodLineEl = el("tama-mood-line");
+  const tamaProgressNoteEl = el("tama-progress-note");
+  const tamaNeedsListEl = el("tama-needs-list");
+  const tamaEnvTextEl = el("tama-env-text");
 
-  function formatRewardDays(days) {
-    if (days < 90) return `${days} j`;
-    if (days < 730) return `${Math.round(days / 30)} mois`;
-    return `${(days / 365).toFixed(days % 365 === 0 ? 0 : 1)} an(s)`;
-  }
-
-  /** Y a-t-il au moins une case débloquée mais pas encore ouverte ?
-   *  Détermine si l'onglet 🎁 doit être grisé ou non. */
-  function hasPendingRewardToOpen() {
-    for (const days of REWARD_DAY_MILESTONES) {
-      const reached = cardsReachingDays(days);
-      if (reached < 1) continue; // aucune case de cette ligne n'est débloquée
-      for (const tier of REWARD_TIERS) {
-        if (reached < REWARD_TIER_THRESHOLDS[tier]) break;
-        if (!rewardsOpened[rewardCellKey(days, tier)]) return true;
-      }
+  /** Petite phrase d'ambiance générée à partir du besoin le plus bas et de
+   *  l'humeur générale — c'est "l'environnement" du compagnon. */
+  function tamaEnvironmentText() {
+    const mood = tamaMood();
+    const sorted = [...NEED_KEYS].sort((a, b) => (tamaState.needs[a] || 0) - (tamaState.needs[b] || 0));
+    const lowest = sorted[0];
+    const lowestVal = tamaState.needs[lowest] || 0;
+    const stage = tamaStage();
+    const place =
+      tamaStageIndex() <= 1
+        ? "dans son petit nid douillet"
+        : tamaStageIndex() <= 3
+        ? "dans son coin bien à lui"
+        : "dans son grand espace, entouré de ses trouvailles";
+    let sentence = `${stage.name} passe son temps ${place}.`;
+    if (lowestVal < 30) {
+      sentence += ` Il a surtout besoin qu'on pense à "${NEED_LABELS[lowest]}" — ${NEED_ICONS[lowest]}`;
+    } else if (mood.label === "Ravi" || mood.label === "Content") {
+      sentence += ` Il a l'air bien entouré en ce moment.`;
+    } else {
+      sentence += ` Un cadeau ou deux lui feraient du bien.`;
     }
-    return false;
+    return sentence;
   }
 
-  function refreshRewardsIndicator() {
-    const tabEl = el("tab-rewards");
-    if (tabEl) tabEl.classList.toggle("is-empty", !hasPendingRewardToOpen());
-  }
+  function renderTamagotchiView() {
+    applyTamaUpkeep();
+    const stage = tamaStage();
+    const next = tamaNextStage();
+    const mood = tamaMood();
 
-  function renderRewardsView() {
-    if (!rewardsGridEl) return;
-    rewardsGridEl.innerHTML = "";
-    const frag = document.createDocumentFragment();
+    if (tamaHeroEmojiEl) tamaHeroEmojiEl.textContent = stage.emoji;
+    if (tamaHeroNameEl) tamaHeroNameEl.textContent = stage.name;
+    if (tamaMoodLineEl) tamaMoodLineEl.textContent = `${mood.emoji} ${mood.label}`;
 
-    REWARD_DAY_MILESTONES.forEach((days) => {
-      const reached = cardsReachingDays(days);
-      const row = document.createElement("div");
-      row.className = "rewards-row";
+    if (tamaProgressNoteEl) {
+      const good = tamaState.goodDaysCount || 0;
+      tamaProgressNoteEl.textContent = next
+        ? `${good}/${next.minGoodDays} bons jours pour devenir ${next.name} ${next.emoji}`
+        : `${good} bons jours cumulés — stade maximum atteint`;
+    }
 
-      const label = document.createElement("div");
-      label.className = "rewards-cell rewards-cell--day";
-      label.textContent = formatRewardDays(days);
-      row.appendChild(label);
+    if (tamaNeedsListEl) {
+      tamaNeedsListEl.innerHTML = "";
+      const frag = document.createDocumentFragment();
+      NEED_KEYS.forEach((key) => {
+        const value = Math.round(tamaState.needs[key] || 0);
+        const row = document.createElement("div");
+        row.className = "tama-need-row";
 
-      REWARD_TIERS.forEach((tier) => {
-        const key = rewardCellKey(days, tier);
-        const entry = rewardsOpened[key];
-        const unlocked = reached >= REWARD_TIER_THRESHOLDS[tier];
-        const cell = document.createElement("button");
-        cell.type = "button";
-        cell.dataset.days = String(days);
-        cell.dataset.tier = tier;
+        const label = document.createElement("span");
+        label.className = "tama-need-label";
+        label.textContent = `${NEED_ICONS[key]} ${NEED_LABELS[key]}`;
 
-        if (entry) {
-          cell.className = `reward-cell reward-cell--opened reward-cell--tier-${tier}`;
-          cell.disabled = true;
-          cell.innerHTML = `<span class="reward-emoji">${entry.emoji}</span>`;
-          cell.title = `${REWARD_TIER_LABELS[tier]} — obtenue à ${formatRewardDays(days)} de report`;
-        } else if (unlocked) {
-          cell.className = "reward-cell reward-cell--unlocked";
-          cell.innerHTML = `<span class="reward-emoji">🎁</span>`;
-          cell.title = `${REWARD_TIER_LABELS[tier]} débloquée — touche pour ouvrir`;
-        } else {
-          cell.className = "reward-cell reward-cell--locked";
-          cell.disabled = true;
-          cell.innerHTML = `<span class="reward-lock">🔒</span>`;
-          const need = REWARD_TIER_THRESHOLDS[tier];
-          cell.title =
-            need === 1
-              ? `Se débloque dès qu'une fiche atteint ${formatRewardDays(days)} — ${REWARD_TIER_LABELS[tier]}`
-              : `Se débloque quand ${need} fiches ont atteint ${formatRewardDays(days)} — ${REWARD_TIER_LABELS[tier]} (${reached}/${need})`;
-        }
+        const barWrap = document.createElement("div");
+        barWrap.className = "tama-need-bar";
+        const fill = document.createElement("div");
+        fill.className =
+          "tama-need-fill" + (value < 30 ? " is-low" : value < HEALTHY_NEED_THRESHOLD ? " is-mid" : "");
+        fill.style.width = `${Math.max(2, value)}%`;
+        barWrap.appendChild(fill);
 
-        row.appendChild(cell);
+        const valueEl = document.createElement("span");
+        valueEl.className = "tama-need-value";
+        valueEl.textContent = `${value}`;
+
+        row.appendChild(label);
+        row.appendChild(barWrap);
+        row.appendChild(valueEl);
+        frag.appendChild(row);
       });
-
-      frag.appendChild(row);
-    });
-
-    rewardsGridEl.appendChild(frag);
-  }
-
-  if (rewardsGridEl) {
-    rewardsGridEl.addEventListener("click", (e) => {
-      const cell = e.target.closest(".reward-cell--unlocked");
-      if (!cell) return;
-      const days = Number(cell.dataset.days);
-      const tier = cell.dataset.tier;
-      const key = rewardCellKey(days, tier);
-      if (rewardsOpened[key]) return;
-
-      rewardsOpened[key] = { emoji: pickUniqueRewardEmoji(tier), openedAt: new Date().toISOString() };
-      saveRewardsOpened();
-      if (Sync.isConfigured()) Sync.pushRewardState(rewardsOpened);
-      renderRewardsView();
-      refreshRewardsIndicator();
-
-      const opened = rewardsGridEl.querySelector(`.reward-cell[data-days="${days}"][data-tier="${tier}"]`);
-      if (opened) opened.classList.add("reward-cell--just-opened");
-    });
-  }
-
-  /** Fusionne un état de récompenses distant (venant de Supabase) avec
-   *  l'état local : une case déjà ouverte ici garde son emoji (déjà
-   *  affiché à la personne, on ne le change pas sous ses yeux), une case
-   *  ouverte seulement en distant est adoptée telle quelle. */
-  function mergeRewardsOpened(remoteMap) {
-    let changed = false;
-    for (const [key, entry] of Object.entries(remoteMap || {})) {
-      if (!rewardsOpened[key]) {
-        rewardsOpened[key] = entry;
-        changed = true;
-      }
+      tamaNeedsListEl.appendChild(frag);
     }
-    if (changed) saveRewardsOpened();
-    return changed;
-  }
 
-  async function syncRewardsWithRemote() {
-    if (!Sync.isConfigured()) return;
-    const remote = await Sync.pullRewardState();
-    mergeRewardsOpened(remote);
-    // Renvoie l'état fusionné pour que l'autre appareil récupère aussi les
-    // ouvertures faites hors-ligne sur celui-ci.
-    await Sync.pushRewardState(rewardsOpened);
+    if (tamaEnvTextEl) tamaEnvTextEl.textContent = tamaEnvironmentText();
+    refreshTamaTabIcon();
   }
 
   statsSubjectSelectEl.addEventListener("change", () => {
@@ -1463,8 +1682,24 @@
       reviewChartWrapEl,
       pool,
       reviewChartRangeDays,
-      REVIEW_CHART_MAX_BAR_PX
+      REVIEW_CHART_MAX_BAR_PX,
+      { subjectId: currentSubjectId, onCollect: showTamaGiftToast }
     );
+  }
+
+  /** Petit toast qui confirme ce que le cadeau vient d'apporter au
+   *  compagnon, affiché près du graphique sans changer la mise en page. */
+  function showTamaGiftToast(result, anchorEl) {
+    refreshTamaTabIcon();
+    renderReviewChart(); // fait disparaître le badge tout juste ouvert
+    if (el("view-tamagotchi") && el("view-tamagotchi").classList.contains("is-active")) {
+      renderTamagotchiView();
+    }
+    const toast = document.createElement("div");
+    toast.className = "tama-toast";
+    toast.textContent = `${result.emoji} +${NEED_LABELS[result.need]}`;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 1600);
   }
 
   /** Tape sur le mini graphique : passe à l'échelle supérieure (boucle). */
@@ -1597,12 +1832,22 @@
         renderReviewChart();
       }
       if (view === "stats") renderStats();
-      if (view === "rewards") renderRewardsView();
+      if (view === "tamagotchi") renderTamagotchiView();
       if (view === "sync") renderSyncView();
       if (view === "settings") renderSettingsView();
       renderDuePill();
     });
   });
+
+  /** Le smiley d'humeur du haut de la page Réviser ouvre directement
+   *  l'onglet Tamagotchi (raccourci, sans dupliquer la logique de nav). */
+  const tamaMoodBtnEl = el("tama-mood-btn");
+  if (tamaMoodBtnEl) {
+    tamaMoodBtnEl.addEventListener("click", () => {
+      const tamaTab = el("tab-tamagotchi");
+      if (tamaTab) tamaTab.click();
+    });
+  }
 
   /* ---------------------------------------------------------
      Vue Sync : formulaire de connexion + statut
@@ -1886,11 +2131,11 @@
   async function connectSync() {
     if (!Sync.isConfigured()) return;
     if (unsubscribeRealtime) unsubscribeRealtime();
-    if (rewardsSyncUnsub) rewardsSyncUnsub();
+    if (tamaSyncUnsub) tamaSyncUnsub();
 
     await reconcileWithRemote();
     await Sync.flushPending((id) => cards.find((c) => c.id === id));
-    await syncRewardsWithRemote();
+    await pullAndMergeTama();
 
     unsubscribeRealtime = Sync.subscribeRealtime(async (remote) => {
       await mergeRemoteCard(remote);
@@ -1906,11 +2151,16 @@
       }
     });
 
-    rewardsSyncUnsub = Sync.subscribeRewardRealtime((remoteMap) => {
-      const changed = mergeRewardsOpened(remoteMap);
-      if (changed) {
-        if (el("view-rewards") && el("view-rewards").classList.contains("is-active")) renderRewardsView();
-        refreshRewardsIndicator();
+    tamaSyncUnsub = Sync.subscribeTamaRealtime((remoteBlob) => {
+      const changed = mergeTamaGifts(remoteBlob.gifts);
+      if (remoteBlob.pet && new Date(remoteBlob.pet.updatedAt || 0) > new Date(tamaState.updatedAt || 0)) {
+        tamaState = remoteBlob.pet;
+        saveTamaState();
+      }
+      if (changed || remoteBlob.pet) {
+        refreshTamaTabIcon();
+        if (el("view-tamagotchi") && el("view-tamagotchi").classList.contains("is-active")) renderTamagotchiView();
+        renderReviewChart();
       }
     });
 
@@ -1979,7 +2229,9 @@
     loadBonusDaysSettings();
     loadBonusAgainMode();
     loadHibernateDays();
-    loadRewardsOpened();
+    loadTamaState();
+    loadTamaGifts();
+    applyTamaUpkeep();
     renderSettingsView();
     await loadSubjects();
     cards = await DB.getAll();
