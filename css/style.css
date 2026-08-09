@@ -931,6 +931,7 @@ textarea, input {
 }
 
 .chart-col {
+  position: relative;
   flex: 1 1 0;
   min-width: 0;
   display: flex;
@@ -1273,33 +1274,76 @@ textarea, input {
 
 .tama-hint { margin-bottom: 8px; }
 
-/* Cadeau posé sur une barre de l'histogramme mini (page Réviser) : superposé
-   en haut de la colonne, sans changer sa hauteur ni celle de la page. */
-.chart-col { position: relative; }
-
-.chart-gift {
+/* Objectif-cadeau posé sur une barre de l'histogramme mini (page Réviser) :
+   une ligne pointillée matérialise la hauteur à atteindre, le cadeau posé
+   dessus reste grisé/verrouillé tant qu'elle n'est pas atteinte, et
+   s'illumine (cliquable) dès que la barre la rejoint ou la dépasse. */
+.chart-goal {
   position: absolute;
-  top: -3px;
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 3;
   background: none;
   border: none;
-  font-size: 15px;
-  line-height: 1;
-  padding: 2px;
-  cursor: pointer;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
-  animation: chart-gift-pulse 1.6s ease-in-out infinite;
-  z-index: 2;
+  padding: 0;
 }
 
-.chart-gift--rare { font-size: 16px; }
-.chart-gift--epique { font-size: 17px; }
-.chart-gift--legendaire { font-size: 18px; filter: drop-shadow(0 0 4px var(--amber)); }
+.chart-goal-gift {
+  font-size: 14px;
+  line-height: 1;
+}
 
-@keyframes chart-gift-pulse {
-  0%, 100% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.15); }
+.chart-goal-line {
+  width: 24px;
+  height: 0;
+  border-top: 2px dashed var(--ink-soft);
+  margin-top: 2px;
+}
+
+.chart-goal-progress {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+/* Verrouillé : discret, en attente — motive à continuer sans distraire. */
+.chart-goal.is-locked .chart-goal-gift {
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+
+/* Prêt à ouvrir : la ligne devient pleine et colorée selon la rareté, le
+   cadeau pulse pour attirer l'œil, et tout redevient cliquable. */
+.chart-goal.is-ready {
+  cursor: pointer;
+}
+
+.chart-goal.is-ready .chart-goal-line {
+  border-top-style: solid;
+  border-top-color: var(--amber);
+}
+
+.chart-goal.is-ready .chart-goal-gift {
+  animation: chart-goal-pulse 1.6s ease-in-out infinite;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+.chart-goal--tier-rare.is-ready .chart-goal-line { border-top-color: var(--blue); }
+.chart-goal--tier-epique.is-ready .chart-goal-line { border-top-color: #8a5fd1; }
+.chart-goal--tier-legendaire.is-ready .chart-goal-line { border-top-color: var(--amber); }
+.chart-goal--tier-legendaire.is-ready .chart-goal-gift {
+  filter: drop-shadow(0 0 4px var(--amber));
+  font-size: 16px;
+}
+
+@keyframes chart-goal-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
 }
 
 /* Toast de confirmation à l'ouverture d'un cadeau : discret, en bas d'écran,

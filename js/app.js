@@ -300,6 +300,7 @@
     const slice = pool.slice(rank * 8, rank * 8 + 8);
     const used = new Set(
       Object.values(tamaGifts)
+        .flatMap((dateEntry) => Object.values(dateEntry))
         .filter((g) => g.opened && g.need === need)
         .map((g) => g.emoji)
     );
@@ -314,72 +315,49 @@
     return `${subjectId}::${dateISO}`;
   }
 
-  /** Repère, dans les buckets d'un histogramme (matière en cours), les
-   *  jours dont la barre vient d'atteindre un nouveau palier, et crée ou
-   *  fait évoluer le cadeau correspondant. Retourne la map
-   *  dateISO -> {tier, opened} des cadeaux de cette matière, pour l'overlay
-   *  du mini graphique. */
-  function registerTamaGiftsFromBuckets(subjectId, buckets) {
-    let changed = false;
-    const map = {};
-    buckets.forEach((b) => {
-      const dateISO = b.date.toISOString().slice(0, 10);
-      let reachedTier = null;
-      for (const t of GIFT_TIERS) {
-        if (b.count >= GIFT_TIER_DUE_THRESHOLDS[t]) reachedTier = t;
-      }
-      const key = tamaGiftKey(subjectId, dateISO);
-      const existing = tamaGifts[key];
-      if (reachedTier) {
-        if (!existing) {
-          tamaGifts[key] = { tier: reachedTier, opened: false };
-          changed = true;
-        } else if (!existing.opened && GIFT_TIER_RANK[reachedTier] > GIFT_TIER_RANK[existing.tier]) {
-          existing.tier = reachedTier;
-          changed = true;
-        }
-      }
-      const entry = tamaGifts[key];
-      if (entry) map[dateISO] = entry;
-    });
-    if (changed) {
-      saveTamaGifts();
-      if (Sync.isConfigured()) pushTamaBlob();
+  /** Le prochain palier à viser pour ce jour : le premier niveau (dans
+   *  l'ordre commune -> légendaire) pas encore ouvert. `null` si les 4
+   *  niveaux de ce jour ont déjà été récoltés. */
+  function tamaNextGoalTier(subjectId, dateISO) {
+    const entry = tamaGifts[tamaGiftKey(subjectId, dateISO)];
+    for (const t of GIFT_TIERS) {
+      if (!entry || !entry[t] || !entry[t].opened) return t;
     }
-    return map;
+    return null;
   }
 
-  /** Ouvre le cadeau du jour `dateISO` pour la matière `subjectId` : gonfle
-   *  le besoin le plus urgent et fige l'emoji obtenu. */
-  function collectTamaGift(subjectId, dateISO) {
+  /** Ouvre le palier `tier` du jour `dateISO` pour la matière `subjectId` :
+   *  gonfle le besoin le plus urgent et fige l'emoji obtenu. Refuse si ce
+   *  palier est déjà ouvert (protège contre un double-clic ou un état
+   *  distant arrivé entre-temps). */
+  function collectTamaGift(subjectId, dateISO, tier) {
     const key = tamaGiftKey(subjectId, dateISO);
+    if (!tamaGifts[key]) tamaGifts[key] = {};
     const entry = tamaGifts[key];
-    if (!entry || entry.opened) return null;
+    if (entry[tier] && entry[tier].opened) return null;
+
     const need = tamaNeediestKey();
-    const emoji = pickTamaEmoji(need, entry.tier);
-    tamaState.needs[need] = Math.min(100, (tamaState.needs[need] || 0) + GIFT_TIER_BOOST[entry.tier]);
-    entry.opened = true;
-    entry.need = need;
-    entry.emoji = emoji;
-    entry.openedAt = new Date().toISOString();
+    const emoji = pickTamaEmoji(need, tier);
+    tamaState.needs[need] = Math.min(100, (tamaState.needs[need] || 0) + GIFT_TIER_BOOST[tier]);
+    entry[tier] = { opened: true, need, emoji, openedAt: new Date().toISOString() };
     saveTamaGifts();
     saveTamaState();
     if (Sync.isConfigured()) pushTamaBlob();
-    return { need, emoji, tier: entry.tier };
+    return { need, emoji, tier };
   }
 
-  /** Y a-t-il un cadeau reconnu mais pas encore ouvert (toutes matières
-   *  confondues) ? Sert au petit point de notification sur l'onglet. */
-  function hasPendingTamaGift() {
-    return Object.values(tamaGifts).some((g) => !g.opened);
-  }
+  /** Un objectif est-il actuellement atteint et prêt à être récolté, dans le
+   *  graphique actuellement affiché ? Mis à jour à chaque rendu du mini
+   *  histogramme de la page Réviser ; sert au petit point de notification
+   *  sur l'onglet Tamagotchi. */
+  let reviewChartHasReadyGoal = false;
 
   function refreshTamaTabIcon() {
     const iconEl = el("tab-tamagotchi-icon");
     const stage = tamaStage();
     if (iconEl) iconEl.textContent = stage.emoji;
     const tabEl = el("tab-tamagotchi");
-    if (tabEl) tabEl.classList.toggle("has-pending-gift", hasPendingTamaGift());
+    if (tabEl) tabEl.classList.toggle("has-pending-gift", reviewChartHasReadyGoal);
     const moodEmojiEl = el("tama-mood-emoji");
     if (moodEmojiEl) moodEmojiEl.textContent = tamaMood().emoji;
   }
@@ -390,17 +368,14 @@
   --------------------------------------------------------- */
   function mergeTamaGifts(remoteGifts) {
     let changed = false;
-    for (const [key, remote] of Object.entries(remoteGifts || {})) {
+    for (const [key, remoteEntry] of Object.entries(remoteGifts || {})) {
+      if (!tamaGifts[key]) tamaGifts[key] = {};
       const local = tamaGifts[key];
-      if (!local) {
-        tamaGifts[key] = remote;
-        changed = true;
-      } else if (!local.opened && remote.opened) {
-        tamaGifts[key] = remote; // l'autre appareil l'a ouvert en premier
-        changed = true;
-      } else if (!local.opened && !remote.opened && GIFT_TIER_RANK[remote.tier] > GIFT_TIER_RANK[local.tier]) {
-        local.tier = remote.tier;
-        changed = true;
+      for (const [tier, remoteTier] of Object.entries(remoteEntry || {})) {
+        if (remoteTier.opened && (!local[tier] || !local[tier].opened)) {
+          local[tier] = remoteTier; // l'autre appareil l'a ouvert en premier
+          changed = true;
+        }
       }
     }
     if (changed) saveTamaGifts();
@@ -1445,8 +1420,11 @@
     if (!chartEl) return;
     const buckets = computeDueHistogram(pool, days);
     const max = Math.max(0, ...buckets.map((b) => b.count));
-    const giftMap = giftOpts ? registerTamaGiftsFromBuckets(giftOpts.subjectId, buckets) : null;
-    if (giftOpts) refreshTamaTabIcon();
+    // Les objectifs-cadeaux n'ont de sens que sur les échelles rapprochées
+    // (15 / 30 jours) : au-delà, les colonnes sont trop tassées pour rester
+    // lisibles avec un repère en plus.
+    const showGoals = !!giftOpts && days <= 31;
+    if (giftOpts) reviewChartHasReadyGoal = false;
 
     // Compte précédent par jour (mémorisé sur l'élément lui-même) : sert à
     // repérer, après un nouveau rendu, quelles colonnes ont réellement changé
@@ -1513,21 +1491,45 @@
       col.appendChild(bar);
       col.appendChild(label);
 
-      if (giftMap) {
+      if (showGoals && b.count > 0) {
         const dateISO = b.date.toISOString().slice(0, 10);
-        const gift = giftMap[dateISO];
-        if (gift && !gift.opened) {
-          const badge = document.createElement("button");
-          badge.type = "button";
-          badge.className = `chart-gift chart-gift--${gift.tier}`;
-          badge.textContent = "🎁";
-          badge.title = "Cadeau à aller chercher — touche pour l'ouvrir";
-          badge.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const result = collectTamaGift(giftOpts.subjectId, dateISO);
-            if (result && giftOpts.onCollect) giftOpts.onCollect(result, badge);
-          });
-          col.appendChild(badge);
+        const tier = tamaNextGoalTier(giftOpts.subjectId, dateISO);
+        if (tier) {
+          const threshold = GIFT_TIER_DUE_THRESHOLDS[tier];
+          const ready = b.count >= threshold;
+          if (ready) reviewChartHasReadyGoal = true;
+          const targetPx = Math.min(maxBarPx, Math.max(2, Math.round((threshold / scaleMax) * maxBarPx)));
+
+          const goal = document.createElement(ready ? "button" : "div");
+          if (ready) goal.type = "button";
+          goal.className = `chart-goal chart-goal--tier-${tier} ${ready ? "is-ready" : "is-locked"}`;
+          goal.style.bottom = `${targetPx}px`;
+          goal.title = ready
+            ? "Objectif atteint — touche pour ouvrir le cadeau"
+            : `Encore ${threshold - b.count} fiche(s) ce jour-là pour ouvrir ce cadeau (objectif : ${threshold})`;
+
+          const line = document.createElement("span");
+          line.className = "chart-goal-line";
+          const emoji = document.createElement("span");
+          emoji.className = "chart-goal-gift";
+          emoji.textContent = "🎁";
+          goal.appendChild(emoji);
+          goal.appendChild(line);
+          if (!ready) {
+            const progress = document.createElement("span");
+            progress.className = "chart-goal-progress";
+            progress.textContent = `${b.count}/${threshold}`;
+            goal.appendChild(progress);
+          }
+
+          if (ready) {
+            goal.addEventListener("click", (e) => {
+              e.stopPropagation();
+              const result = collectTamaGift(giftOpts.subjectId, dateISO, tier);
+              if (result && giftOpts.onCollect) giftOpts.onCollect(result, goal);
+            });
+          }
+          col.appendChild(goal);
         }
       }
 
@@ -1535,6 +1537,7 @@
     });
     chartEl.appendChild(frag);
     chartEl._prevCounts = buckets.map((b) => b.count);
+    if (giftOpts) refreshTamaTabIcon();
   }
 
   function renderDueChart() {
