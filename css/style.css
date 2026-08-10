@@ -1170,56 +1170,103 @@ textarea, input {
   box-shadow: 0 0 0 2px var(--desk);
 }
 
-.tama-hero-card {
+.tama-pets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.tama-pet-card {
   background: var(--paper);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-deep);
-  padding: 24px 16px 20px;
-  text-align: center;
-  margin-bottom: 20px;
+  overflow: hidden;
 }
 
-.tama-hero-emoji {
+.tama-pet-card.is-sick { box-shadow: var(--shadow-deep), inset 0 0 0 2px var(--terracotta); }
+
+.tama-pet-head {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: none;
+  border: none;
+  text-align: left;
+}
+
+.tama-pet-emoji {
   display: block;
-  font-size: 56px;
   line-height: 1;
-  margin-bottom: 6px;
+  text-align: center;
 }
 
-.tama-hero-name {
+.tama-pet-info { min-width: 0; }
+
+.tama-pet-name {
   font-family: var(--font-type);
-  font-size: 20px;
+  font-size: 15px;
   color: var(--ink);
-  margin: 0 0 4px;
-}
-
-.tama-mood-line {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--ink-soft);
-  margin: 0 0 10px;
-}
-
-.tama-progress-note {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--ink-soft);
-  background: var(--paper-2);
-  border-radius: 999px;
-  padding: 6px 12px;
-  display: inline-block;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.tama-needs-list {
-  background: var(--paper);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-deep);
-  padding: 14px 16px;
-  margin-bottom: 20px;
+.tama-pet-mood {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  margin: 2px 0 0;
+}
+
+.tama-pet-hint {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-soft);
+  margin: 2px 0 0;
+}
+
+.tama-pet-chevron {
+  font-size: 10px;
+  color: var(--ink-soft);
+}
+
+.tama-pet-panel {
+  padding: 4px 14px 16px;
+  border-top: 1px solid var(--paper-3);
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.tama-sick-box {
+  background: rgba(180, 96, 74, 0.12);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tama-sick-box p {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.tama-cure-btn { align-self: flex-start; }
+
+.tama-need-mini-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
 }
 
 .tama-need-row {
@@ -1262,14 +1309,109 @@ textarea, input {
   text-align: right;
 }
 
-.tama-env-card {
-  background: var(--paper);
+.tama-feed-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
   color: var(--ink-soft);
+  margin: 4px 0 0;
+}
+
+.tama-feed-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tama-feed-row-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+.tama-feed-row-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tama-feed-item {
+  font-size: 13px;
+  background: var(--paper-2);
+  border: 1px solid var(--paper-3);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.tama-feed-item:active { background: var(--paper-3); }
+
+.tama-feed-empty {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-soft);
+  opacity: 0.7;
+}
+
+.tama-egg-progress { margin: 0 0 18px; }
+
+.tama-inventory-list {
+  background: var(--paper);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-deep);
   padding: 14px 16px;
-  line-height: 1.5;
-  margin: 0 0 16px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tama-inv-group { display: flex; flex-direction: column; gap: 6px; }
+
+.tama-inv-group-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+.tama-inv-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tama-inv-chip {
+  font-size: 13px;
+  background: var(--paper-2);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.tama-species-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  background: var(--paper);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-deep);
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.tama-species-cell {
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  background: var(--paper-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.tama-species-cell.is-hidden {
+  opacity: 0.35;
+  font-size: 16px;
+  color: var(--ink-soft);
 }
 
 .tama-hint { margin-bottom: 8px; }

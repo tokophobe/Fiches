@@ -100,27 +100,46 @@
   }
 
   /* ---------------------------------------------------------
-     Tamagotchi : un compagnon qui grandit fiche après fiche.
+     Tamagotchi : un foyer de compagnons qui grandissent fiche après fiche.
 
-     Mécanique des cadeaux : sur le mini histogramme de la page Réviser
-     (fiches dues par jour, matière en cours), dès qu'une colonne atteint
-     un certain nombre de fiches dues ce jour-là, un petit cadeau 🎁
-     apparaît sur cette barre — à aller chercher d'un coup de pouce.
-     L'ouvrir tire un emoji dans le pool du besoin le plus bas du moment
-     (manger / boire / dormir / jouer / copains / se soigner) : le type
-     d'emoji obtenu détermine donc quel besoin est comblé.
+     Plusieurs compagnons peuvent cohabiter (jusqu'à MAX_PETS). Chacun
+     commence en œuf 🥚 et révèle son espèce à l'éclosion (premier palier
+     de croissance) : chat, dragon, licorne... à découvrir au fil du temps
+     (voir `discoveredSpecies`). Un nouvel œuf apparaît tous les
+     `EGG_CARDS_THRESHOLD` fiches créées, toutes matières confondues,
+     jusqu'à la capacité du foyer.
 
-     Le compagnon grandit dès qu'il a cumulé assez de "bons jours" —
-     des jours où tous ses besoins sont restés bien remplis. Un jour
-     moins bon ne le fait pas régresser, il met juste sa croissance en
-     pause : rien de punitif, juste un encouragement à revenir régulièrement.
+     Mécanique des cadeaux : sur le mini histogramme de la page Réviser,
+     certains jours (tirés au hasard, et stables toute la semaine) cachent
+     un cadeau 🎁 à un palier de rareté donné — une ligne pointillée en
+     marque la hauteur à atteindre. Ouvrir un cadeau ne nourrit plus un
+     compagnon au hasard : il rejoint le garde-manger (`tamaInventory`),
+     et c'est la personne qui choisit ensuite quel compagnon en profite
+     (page Tamagotchi, bouton "Nourrir").
+
+     Besoins spéciaux :
+       - "copains" a un plancher qui monte avec le nombre de compagnons du
+         foyer (ils se tiennent compagnie) — les cadeaux copains restent un
+         bonus ponctuel.
+       - "soigner" sert à guérir une maladie contagieuse : plus le foyer
+         est grand, plus le risque quotidien qu'un compagnon tombe malade
+         est élevé (et plus il y a de risque de contagion en cascade s'il
+         n'est pas soigné). Un compagnon malade ne compte jamais comme un
+         "bon jour" tant qu'il n'est pas guéri avec un médicament du
+         garde-manger.
+
+     Le foyer grandit dès qu'il cumule assez de "bons jours" par
+     compagnon (tous ses besoins bien remplis, et pas malade). Un jour
+     moins bon ne fait pas régresser, il met juste la croissance en
+     pause : rien de punitif, juste un encouragement à revenir souvent.
 
      État synchronisé (une ligne JSON par code de synchro, voir js/sync.js) :
-     `tamaState` (besoins, jours cumulés, dates) et `tamaGifts` (cadeaux
-     déjà repérés/ouverts, par matière + date).
+     `tamaState` (compagnons, compteurs), `tamaInventory` (garde-manger) et
+     `tamaGifts` (cadeaux repérés/ouverts, par matière + date).
   --------------------------------------------------------- */
   const TAMA_STATE_KEY = "fiches_tama_state";
   const TAMA_GIFTS_KEY = "fiches_tama_gifts";
+  const TAMA_INVENTORY_KEY = "fiches_tama_inventory";
 
   const NEED_KEYS = ["manger", "boire", "dormir", "jouer", "copains", "soigner"];
   const NEED_LABELS = {
@@ -141,8 +160,7 @@
   };
 
   /* 6 besoins x 32 emoji, découpés en 4 tranches de 8 (commune / rare /
-     épique / légendaire) : la tranche pioche selon la rareté du cadeau,
-     le besoin selon ce qui manque le plus au compagnon à ce moment-là. */
+     épique / légendaire) : la tranche pioche selon la rareté du cadeau. */
   const NEED_EMOJI_POOLS = {
     manger: ["🍎","🍏","🍊","🍋","🍌","🍉","🍇","🍓","🍒","🍑","🥭","🍍","🥥","🥝","🍅","🥑","🥕","🌽","🥒","🥦","🍞","🥐","🥖","🧀","🍕","🍔","🍣","🍰","🎂","🍫","🍩","🍯"],
     boire: ["☕","🍵","🧃","🥤","🥛","🧋","🍶","🫖","🥥","🍹","🧉","🍯","🫙","🚰","💧","🌊","🍧","🍦","🧊","❄️","☃️","🌨️","🌧️","⛲","🍾","🥂","🌈","✨","💫","🫗","🔮","🧪"],
@@ -155,45 +173,132 @@
   const GIFT_TIERS = ["commune", "rare", "epique", "legendaire"];
   const GIFT_TIER_RANK = { commune: 0, rare: 1, epique: 2, legendaire: 3 };
   /* Nombre de fiches dues ce jour-là (hauteur de la barre) nécessaire pour
-     qu'un cadeau de ce niveau apparaisse sur la colonne. */
+     ouvrir un cadeau de ce niveau. */
   const GIFT_TIER_DUE_THRESHOLDS = { commune: 5, rare: 15, epique: 30, legendaire: 50 };
-  /* Points de besoin rendus à l'ouverture, selon le niveau du cadeau. */
+  /* Points de besoin rendus quand on nourrit un compagnon avec cet item. */
   const GIFT_TIER_BOOST = { commune: 15, rare: 25, epique: 40, legendaire: 60 };
+  /* Poids de tirage des paliers pour un jour-cadeau aléatoire : la plupart
+     des cadeaux sont modestes, les légendaires restent rares. */
+  const GIFT_TIER_WEIGHTS = { commune: 50, rare: 30, epique: 15, legendaire: 5 };
+  /* Une case sur ~4 jours visibles cache un cadeau ; se retire toutes les
+     semaines (voir tamaWeekSalt) pour renouveler la chasse. */
+  const GIFT_DAY_CHANCE = 0.28;
 
   const HEALTHY_NEED_THRESHOLD = 50; // seuil "besoin bien rempli"
   const NEED_DECAY_PER_DAY = 10; // baisse quotidienne de chaque besoin
+  const SICK_NEED_DECAY_MULT = 2; // "soigner" baisse deux fois plus vite si malade
 
-  /** Étapes de croissance, débloquées par nombre cumulé de "bons jours"
-   *  (pas forcément consécutifs — un jour moins bon met juste en pause). */
+  /** Étapes de croissance, débloquées par nombre cumulé de "bons jours" du
+   *  compagnon (pas forcément consécutifs — un jour moins bon met juste
+   *  en pause). Le rendu utilise l'emoji de l'espèce, mis à l'échelle. */
   const GROWTH_STAGES = [
-    { minGoodDays: 0, emoji: "🥚", name: "Œuf" },
-    { minGoodDays: 3, emoji: "🐣", name: "Poussin" },
-    { minGoodDays: 7, emoji: "🐥", name: "Bébé" },
-    { minGoodDays: 14, emoji: "🐦", name: "Ado" },
-    { minGoodDays: 30, emoji: "🦋", name: "Adulte" },
-    { minGoodDays: 60, emoji: "🦄", name: "Légende" },
+    { minGoodDays: 0, name: "Œuf", scale: 1, revealsSpecies: false },
+    { minGoodDays: 3, name: "Bébé", scale: 0.6, revealsSpecies: true },
+    { minGoodDays: 7, name: "Ado", scale: 0.8, revealsSpecies: true },
+    { minGoodDays: 14, name: "Adulte", scale: 1, revealsSpecies: true },
+    { minGoodDays: 30, name: "Sage", scale: 1.15, revealsSpecies: true },
+    { minGoodDays: 60, name: "Légende", scale: 1.3, revealsSpecies: true },
   ];
 
-  function defaultTamaState() {
+  /** Espèces à découvrir à l'éclosion (tirage uniforme). */
+  const SPECIES = [
+    { id: "chat", name: "Chat", emoji: "🐱" },
+    { id: "chien", name: "Chien", emoji: "🐶" },
+    { id: "lapin", name: "Lapin", emoji: "🐰" },
+    { id: "renard", name: "Renard", emoji: "🦊" },
+    { id: "panda", name: "Panda", emoji: "🐼" },
+    { id: "koala", name: "Koala", emoji: "🐨" },
+    { id: "lion", name: "Lion", emoji: "🦁" },
+    { id: "tortue", name: "Tortue", emoji: "🐢" },
+    { id: "pingouin", name: "Pingouin", emoji: "🐧" },
+    { id: "poulpe", name: "Poulpe", emoji: "🐙" },
+    { id: "dragon", name: "Dragon", emoji: "🐲" },
+    { id: "licorne", name: "Licorne", emoji: "🦄" },
+  ];
+
+  const MAX_PETS = 8;
+  /** Nombre de nouvelles fiches créées (toutes matières confondues) pour
+   *  débloquer un nouvel œuf. */
+  const EGG_CARDS_THRESHOLD = 100;
+
+  function speciesById(id) {
+    return SPECIES.find((s) => s.id === id) || null;
+  }
+
+  function uidTama() {
+    return `pet_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+  }
+
+  function defaultNeeds() {
     const needs = {};
     NEED_KEYS.forEach((k) => (needs[k] = 80));
+    return needs;
+  }
+
+  function makeEgg() {
+    const now = new Date().toISOString();
+    return {
+      id: uidTama(),
+      hatched: false,
+      species: null,
+      goodDaysCount: 0,
+      sick: false,
+      sickSince: null,
+      needs: defaultNeeds(),
+      createdAt: now,
+      updatedAt: now,
+    };
+  }
+
+  function defaultTamaState() {
     const today = todayISODate();
     return {
-      needs,
-      goodDaysCount: 0,
+      pets: [makeEgg()],
+      discoveredSpecies: [],
+      cardsCreatedTotal: 0,
+      cardsSinceLastEgg: 0,
       lastDecayDate: today,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
   }
 
+  function defaultTamaInventory() {
+    const inv = {};
+    NEED_KEYS.forEach((k) => (inv[k] = {}));
+    return inv;
+  }
+
   let tamaState = null;
+  /** { need: { emoji: quantité } } — le garde-manger du foyer. */
+  let tamaInventory = {};
   /** { "<subjectId>::<dateISO>": { tier, opened, need, emoji, openedAt } } */
   let tamaGifts = {};
   let tamaSyncUnsub = null;
 
   function todayISODate() {
     return startOfDay(new Date()).toISOString().slice(0, 10);
+  }
+
+  /** Migration légère depuis l'ancien format mono-compagnon (v25 et avant) :
+   *  transforme l'unique compagnon en le premier membre du foyer. */
+  function migrateLegacyTamaState(old) {
+    const pet = makeEgg();
+    pet.needs = { ...defaultNeeds(), ...(old.needs || {}) };
+    pet.goodDaysCount = old.goodDaysCount || 0;
+    if (pet.goodDaysCount >= 3) {
+      pet.hatched = true;
+      pet.species = SPECIES[Math.floor(Math.random() * SPECIES.length)].id;
+    }
+    return {
+      pets: [pet],
+      discoveredSpecies: pet.species ? [pet.species] : [],
+      cardsCreatedTotal: 0,
+      cardsSinceLastEgg: 0,
+      lastDecayDate: old.lastDecayDate || todayISODate(),
+      createdAt: old.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
   }
 
   function loadTamaState() {
@@ -203,7 +308,10 @@
     } catch {
       tamaState = null;
     }
-    if (!tamaState || !tamaState.needs) {
+    if (tamaState && !Array.isArray(tamaState.pets) && tamaState.needs) {
+      tamaState = migrateLegacyTamaState(tamaState);
+      saveTamaState();
+    } else if (!tamaState || !Array.isArray(tamaState.pets) || tamaState.pets.length === 0) {
       tamaState = defaultTamaState();
       saveTamaState(); // sinon rien n'est persisté avant une première action
     }
@@ -212,6 +320,22 @@
   function saveTamaState() {
     tamaState.updatedAt = new Date().toISOString();
     localStorage.setItem(TAMA_STATE_KEY, JSON.stringify(tamaState));
+  }
+
+  function loadTamaInventory() {
+    try {
+      const raw = localStorage.getItem(TAMA_INVENTORY_KEY);
+      tamaInventory = raw ? JSON.parse(raw) : defaultTamaInventory();
+    } catch {
+      tamaInventory = defaultTamaInventory();
+    }
+    NEED_KEYS.forEach((k) => {
+      if (!tamaInventory[k]) tamaInventory[k] = {};
+    });
+  }
+
+  function saveTamaInventory() {
+    localStorage.setItem(TAMA_INVENTORY_KEY, JSON.stringify(tamaInventory));
   }
 
   function loadTamaGifts() {
@@ -227,21 +351,62 @@
     localStorage.setItem(TAMA_GIFTS_KEY, JSON.stringify(tamaGifts));
   }
 
-  /** Fait avancer l'horloge du compagnon jusqu'à aujourd'hui : pour chaque
-   *  jour calendaire écoulé depuis le dernier passage, vérifie si la
-   *  veille était un "bon jour" (tous les besoins bien remplis) avant de
-   *  faire baisser les besoins. Plafonné pour éviter une boucle infinie si
-   *  l'appli reste fermée très longtemps. */
+  /** Appelée après toute création de fiche (formulaire ou import). Fait
+   *  progresser le compteur d'œufs et en ajoute un nouveau tous les
+   *  `EGG_CARDS_THRESHOLD`, tant que le foyer n'est pas plein. */
+  function registerNewCardsCreated(count) {
+    if (!count || count < 1 || !tamaState) return;
+    tamaState.cardsCreatedTotal = (tamaState.cardsCreatedTotal || 0) + count;
+    tamaState.cardsSinceLastEgg = (tamaState.cardsSinceLastEgg || 0) + count;
+    let hatched = false;
+    while (tamaState.cardsSinceLastEgg >= EGG_CARDS_THRESHOLD) {
+      tamaState.cardsSinceLastEgg -= EGG_CARDS_THRESHOLD;
+      if (tamaState.pets.length < MAX_PETS) {
+        tamaState.pets.push(makeEgg());
+        hatched = true;
+      }
+      // Foyer déjà plein : le compteur repart quand même de zéro, plutôt
+      // que de rester bloqué juste sous le seuil pour toujours.
+    }
+    saveTamaState();
+    if (Sync.isConfigured()) pushTamaBlob();
+    if (hatched) refreshTamaTabIcon();
+  }
+
+  /** Fait avancer l'horloge du foyer jusqu'à aujourd'hui : pour chaque jour
+   *  calendaire écoulé, vérifie pour chaque compagnon si la veille était un
+   *  "bon jour" (besoins bien remplis ET pas malade) avant de faire baisser
+   *  les besoins, et fait rouler les dés de contagion. Plafonné pour éviter
+   *  une boucle infinie si l'appli reste fermée très longtemps. */
   function applyTamaUpkeep() {
     const today = todayISODate();
     let cursor = tamaState.lastDecayDate || today;
     let iterations = 0;
     let changed = false;
     while (cursor < today && iterations < 730) {
-      const healthy = NEED_KEYS.every((k) => (tamaState.needs[k] || 0) >= HEALTHY_NEED_THRESHOLD);
-      if (healthy) tamaState.goodDaysCount = (tamaState.goodDaysCount || 0) + 1;
-      NEED_KEYS.forEach((k) => {
-        tamaState.needs[k] = Math.max(0, (tamaState.needs[k] || 0) - NEED_DECAY_PER_DAY);
+      const pets = tamaState.pets;
+      const sickCount = pets.filter((p) => p.sick).length;
+      pets.forEach((pet) => {
+        const healthy = !pet.sick && NEED_KEYS.every((k) => tamaEffectiveNeed(pet, k) >= HEALTHY_NEED_THRESHOLD);
+        if (healthy) pet.goodDaysCount = (pet.goodDaysCount || 0) + 1;
+
+        NEED_KEYS.forEach((k) => {
+          const mult = k === "soigner" && pet.sick ? SICK_NEED_DECAY_MULT : 1;
+          pet.needs[k] = Math.max(0, (pet.needs[k] || 0) - NEED_DECAY_PER_DAY * mult);
+        });
+
+        // Contagion : plus le foyer est grand, plus le risque quotidien est
+        // élevé ; une maladie déjà présente dans le foyer l'amplifie encore
+        // (vraie gestion de foyer nombreux, comme demandé).
+        if (!pet.sick && pet.hatched) {
+          const baseRisk = 0.02 * Math.max(0, pets.length - 1);
+          const outbreakRisk = sickCount > 0 ? 0.12 : 0;
+          const risk = Math.min(0.6, baseRisk + outbreakRisk);
+          if (Math.random() < risk) {
+            pet.sick = true;
+            pet.sickSince = cursor;
+          }
+        }
       });
       const d = new Date(cursor + "T00:00:00");
       d.setDate(d.getDate() + 1);
@@ -253,29 +418,48 @@
     if (changed) saveTamaState();
   }
 
-  function tamaStageIndex() {
+  function tamaPetStageIndex(pet) {
     let idx = 0;
     GROWTH_STAGES.forEach((s, i) => {
-      if ((tamaState.goodDaysCount || 0) >= s.minGoodDays) idx = i;
+      if ((pet.goodDaysCount || 0) >= s.minGoodDays) idx = i;
     });
     return idx;
   }
 
-  function tamaStage() {
-    return GROWTH_STAGES[tamaStageIndex()];
+  function tamaPetStage(pet) {
+    return GROWTH_STAGES[tamaPetStageIndex(pet)];
   }
 
-  function tamaNextStage() {
-    return GROWTH_STAGES[tamaStageIndex() + 1] || null;
+  function tamaPetNextStage(pet) {
+    return GROWTH_STAGES[tamaPetStageIndex(pet) + 1] || null;
   }
 
-  function tamaAverageNeed() {
-    const sum = NEED_KEYS.reduce((acc, k) => acc + (tamaState.needs[k] || 0), 0);
+  /** Révèle l'espèce d'un compagnon à son premier palier passé (appelé à
+   *  chaque rendu de la page Tamagotchi, sans coût si déjà révélée). */
+  function ensureSpeciesRevealed(pet) {
+    const stage = tamaPetStage(pet);
+    if (stage.revealsSpecies && !pet.hatched) {
+      pet.hatched = true;
+      const choice = SPECIES[Math.floor(Math.random() * SPECIES.length)];
+      pet.species = choice.id;
+      if (!tamaState.discoveredSpecies.includes(choice.id)) {
+        tamaState.discoveredSpecies.push(choice.id);
+      }
+      saveTamaState();
+      if (Sync.isConfigured()) pushTamaBlob();
+      return true;
+    }
+    return false;
+  }
+
+  function tamaPetAverageNeed(pet) {
+    const sum = NEED_KEYS.reduce((acc, k) => acc + tamaEffectiveNeed(pet, k), 0);
     return sum / NEED_KEYS.length;
   }
 
-  function tamaMood() {
-    const avg = tamaAverageNeed();
+  function tamaPetMood(pet) {
+    if (pet.sick) return { emoji: "🤒", label: "Malade" };
+    const avg = tamaPetAverageNeed(pet);
     if (avg >= 80) return { emoji: "🤩", label: "Ravi" };
     if (avg >= 60) return { emoji: "😊", label: "Content" };
     if (avg >= 40) return { emoji: "😐", label: "Neutre" };
@@ -283,108 +467,225 @@
     return { emoji: "😢", label: "Triste" };
   }
 
-  /** Le besoin le plus urgent à combler, avec un peu d'aléatoire pour ne
-   *  pas être totalement prévisible (le plus bas 7 fois sur 10, sinon le
-   *  deuxième plus bas). */
-  function tamaNeediestKey() {
-    const sorted = [...NEED_KEYS].sort((a, b) => (tamaState.needs[a] || 0) - (tamaState.needs[b] || 0));
-    if (sorted.length > 1 && Math.random() > 0.7) return sorted[1];
-    return sorted[0];
+  /** Plancher du besoin "copains", qui monte avec la taille du foyer : à 1
+   *  compagnon il compte surtout sur les cadeaux, à 8 il est presque toujours
+   *  bien entouré. Affiché comme la valeur effective du besoin. */
+  function tamaSocialFloor() {
+    const n = (tamaState.pets || []).length;
+    return Math.min(90, 10 * n);
   }
 
-  /** Emoji jamais tiré pour ce besoin si possible, dans la tranche de
-   *  rareté du cadeau ; retombe sur tout le pool du besoin si épuisée. */
-  function pickTamaEmoji(need, tier) {
-    const pool = NEED_EMOJI_POOLS[need] || NEED_EMOJI_POOLS.manger;
-    const rank = GIFT_TIER_RANK[tier] || 0;
-    const slice = pool.slice(rank * 8, rank * 8 + 8);
-    const used = new Set(
-      Object.values(tamaGifts)
-        .flatMap((dateEntry) => Object.values(dateEntry))
-        .filter((g) => g.opened && g.need === need)
-        .map((g) => g.emoji)
+  function tamaEffectiveNeed(pet, key) {
+    const raw = pet.needs[key] || 0;
+    if (key === "copains") return Math.max(raw, tamaSocialFloor());
+    return raw;
+  }
+
+  /** Household : y a-t-il un compagnon qui a besoin d'attention (besoin bas
+   *  ou malade) ? Sert au petit point de notification sur l'onglet. */
+  function tamaHouseholdNeedsAttention() {
+    return (tamaState.pets || []).some(
+      (p) => p.sick || NEED_KEYS.some((k) => tamaEffectiveNeed(p, k) < 30)
     );
-    const free = slice.filter((e) => !used.has(e));
-    if (free.length > 0) return free[Math.floor(Math.random() * free.length)];
-    const freeAny = pool.filter((e) => !used.has(e));
-    if (freeAny.length > 0) return freeAny[Math.floor(Math.random() * freeAny.length)];
-    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  /** Le compagnon le plus "pressant" à afficher en priorité : malade
+   *  d'abord, puis le moins bien nourri en moyenne. */
+  function tamaMostUrgentPet() {
+    const pets = tamaState.pets || [];
+    if (pets.length === 0) return null;
+    const sick = pets.find((p) => p.sick);
+    if (sick) return sick;
+    return [...pets].sort((a, b) => tamaPetAverageNeed(a) - tamaPetAverageNeed(b))[0];
+  }
+
+  /** Petit générateur pseudo-aléatoire déterministe (mulberry32) : sert à
+   *  décider quels jours de l'histogramme cachent un cadeau, de façon
+   *  stable pour tout le monde tant que la graine ne change pas. */
+  function seededRandom(seedStr) {
+    let h = 1779033703 ^ seedStr.length;
+    for (let i = 0; i < seedStr.length; i++) {
+      h = Math.imul(h ^ seedStr.charCodeAt(i), 3432918353);
+      h = (h << 13) | (h >>> 19);
+    }
+    return function () {
+      h = Math.imul(h ^ (h >>> 16), 2246822519);
+      h = Math.imul(h ^ (h >>> 13), 3266489917);
+      h ^= h >>> 16;
+      return (h >>> 0) / 4294967296;
+    };
+  }
+
+  /** Numéro de semaine ISO approximatif : sert de "graine" qui change une
+   *  fois par semaine, pour renouveler les jours-cadeaux sans qu'ils ne se
+   *  redessinent différemment à chaque rafraîchissement. */
+  function tamaWeekSalt(date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dayNum = Math.floor((d - new Date(Date.UTC(d.getUTCFullYear(), 0, 1))) / 86400000);
+    return `${d.getUTCFullYear()}-w${Math.floor(dayNum / 7)}`;
+  }
+
+  /** Détermine si le jour `dateISO` (pour cette matière) cache un cadeau
+   *  cette semaine, et à quel palier — tirage déterministe, stable tant que
+   *  la semaine ne change pas. Retourne `null` si ce jour n'a pas de cadeau. */
+  function tamaGoalForDate(subjectId, dateISO) {
+    const key = tamaGiftKey(subjectId, dateISO);
+    const existing = tamaGifts[key];
+    if (existing && existing.opened) return null; // déjà récolté cette semaine
+
+    const rand = seededRandom(`${subjectId}|${dateISO}|${tamaWeekSalt(new Date())}`);
+    const hasGift = rand() < GIFT_DAY_CHANCE;
+    if (!hasGift) return null;
+
+    const roll = rand() * 100;
+    let acc = 0;
+    let tier = GIFT_TIERS[0];
+    for (const t of GIFT_TIERS) {
+      acc += GIFT_TIER_WEIGHTS[t];
+      if (roll < acc) {
+        tier = t;
+        break;
+      }
+    }
+    return tier;
   }
 
   function tamaGiftKey(subjectId, dateISO) {
     return `${subjectId}::${dateISO}`;
   }
 
-  /** Le prochain palier à viser pour ce jour : le premier niveau (dans
-   *  l'ordre commune -> légendaire) pas encore ouvert. `null` si les 4
-   *  niveaux de ce jour ont déjà été récoltés. */
-  function tamaNextGoalTier(subjectId, dateISO) {
-    const entry = tamaGifts[tamaGiftKey(subjectId, dateISO)];
-    for (const t of GIFT_TIERS) {
-      if (!entry || !entry[t] || !entry[t].opened) return t;
-    }
-    return null;
-  }
-
-  /** Ouvre le palier `tier` du jour `dateISO` pour la matière `subjectId` :
-   *  gonfle le besoin le plus urgent et fige l'emoji obtenu. Refuse si ce
-   *  palier est déjà ouvert (protège contre un double-clic ou un état
-   *  distant arrivé entre-temps). */
+  /** Ouvre le cadeau du jour `dateISO` pour la matière `subjectId` : ajoute
+   *  un item au garde-manger du foyer (ne nourrit plus personne
+   *  directement — à distribuer ensuite depuis la page Tamagotchi). */
   function collectTamaGift(subjectId, dateISO, tier) {
     const key = tamaGiftKey(subjectId, dateISO);
-    if (!tamaGifts[key]) tamaGifts[key] = {};
-    const entry = tamaGifts[key];
-    if (entry[tier] && entry[tier].opened) return null;
+    if (tamaGifts[key] && tamaGifts[key].opened) return null;
 
-    const need = tamaNeediestKey();
-    const emoji = pickTamaEmoji(need, tier);
-    tamaState.needs[need] = Math.min(100, (tamaState.needs[need] || 0) + GIFT_TIER_BOOST[tier]);
-    entry[tier] = { opened: true, need, emoji, openedAt: new Date().toISOString() };
+    const need = NEED_KEYS[Math.floor(Math.random() * NEED_KEYS.length)];
+    const pool = NEED_EMOJI_POOLS[need];
+    const rank = GIFT_TIER_RANK[tier] || 0;
+    const slice = pool.slice(rank * 8, rank * 8 + 8);
+    const emoji = slice[Math.floor(Math.random() * slice.length)];
+
+    if (!tamaInventory[need]) tamaInventory[need] = {};
+    tamaInventory[need][emoji] = (tamaInventory[need][emoji] || 0) + 1;
+    saveTamaInventory();
+
+    tamaGifts[key] = { tier, opened: true, need, emoji, openedAt: new Date().toISOString() };
     saveTamaGifts();
-    saveTamaState();
     if (Sync.isConfigured()) pushTamaBlob();
     return { need, emoji, tier };
+  }
+
+  /** Nourrit le compagnon `petId` avec un item du garde-manger : retire
+   *  l'item du stock et gonfle le besoin correspondant. Le niveau de
+   *  l'item (déduit de sa position dans le pool du besoin) détermine le
+   *  boost, comme pour un cadeau. */
+  function feedPetFromInventory(petId, need, emoji) {
+    const stock = tamaInventory[need] || {};
+    if (!stock[emoji] || stock[emoji] < 1) return false;
+    const pet = tamaState.pets.find((p) => p.id === petId);
+    if (!pet) return false;
+
+    const pool = NEED_EMOJI_POOLS[need] || [];
+    const idx = pool.indexOf(emoji);
+    const tier = GIFT_TIERS[Math.min(3, Math.max(0, Math.floor(idx / 8)))] || "commune";
+    pet.needs[need] = Math.min(100, (pet.needs[need] || 0) + GIFT_TIER_BOOST[tier]);
+    pet.updatedAt = new Date().toISOString();
+
+    stock[emoji] -= 1;
+    if (stock[emoji] <= 0) delete stock[emoji];
+    saveTamaInventory();
+    saveTamaState();
+    if (Sync.isConfigured()) pushTamaBlob();
+    return true;
+  }
+
+  /** Guérit le compagnon `petId` en consommant un médicament du
+   *  garde-manger ("soigner"). Retourne `false` si aucun n'est disponible. */
+  function curePetFromInventory(petId) {
+    const stock = tamaInventory.soigner || {};
+    const availableEmoji = Object.keys(stock).find((e) => stock[e] > 0);
+    if (!availableEmoji) return false;
+    const pet = tamaState.pets.find((p) => p.id === petId);
+    if (!pet || !pet.sick) return false;
+
+    stock[availableEmoji] -= 1;
+    if (stock[availableEmoji] <= 0) delete stock[availableEmoji];
+    saveTamaInventory();
+
+    pet.sick = false;
+    pet.sickSince = null;
+    pet.needs.soigner = Math.min(100, (pet.needs.soigner || 0) + 30);
+    pet.updatedAt = new Date().toISOString();
+    saveTamaState();
+    if (Sync.isConfigured()) pushTamaBlob();
+    return true;
   }
 
   /** Un objectif est-il actuellement atteint et prêt à être récolté, dans le
    *  graphique actuellement affiché ? Mis à jour à chaque rendu du mini
    *  histogramme de la page Réviser ; sert au petit point de notification
-   *  sur l'onglet Tamagotchi. */
+   *  sur l'onglet Tamagotchi (avec l'attention requise par le foyer). */
   let reviewChartHasReadyGoal = false;
 
   function refreshTamaTabIcon() {
     const iconEl = el("tab-tamagotchi-icon");
-    const stage = tamaStage();
-    if (iconEl) iconEl.textContent = stage.emoji;
+    const pet = tamaMostUrgentPet();
+    if (iconEl && pet) {
+      const stage = tamaPetStage(pet);
+      const species = pet.species ? speciesById(pet.species) : null;
+      iconEl.textContent = pet.sick ? "🤒" : species ? species.emoji : "🥚";
+      iconEl.style.fontSize = stage.revealsSpecies ? `${13 * stage.scale}px` : "13px";
+    }
     const tabEl = el("tab-tamagotchi");
-    if (tabEl) tabEl.classList.toggle("has-pending-gift", reviewChartHasReadyGoal);
+    if (tabEl) {
+      tabEl.classList.toggle("has-pending-gift", reviewChartHasReadyGoal || tamaHouseholdNeedsAttention());
+    }
     const moodEmojiEl = el("tama-mood-emoji");
-    if (moodEmojiEl) moodEmojiEl.textContent = tamaMood().emoji;
+    if (moodEmojiEl && pet) moodEmojiEl.textContent = tamaPetMood(pet).emoji;
   }
 
   /* ---------------------------------------------------------
-     Synchro multi-appareils de l'état du compagnon (état + cadeaux
-     regroupés dans un seul blob JSON, voir js/sync.js).
+     Synchro multi-appareils de l'état du foyer (compagnons + garde-manger
+     + cadeaux regroupés dans un seul blob JSON, voir js/sync.js).
   --------------------------------------------------------- */
   function mergeTamaGifts(remoteGifts) {
     let changed = false;
-    for (const [key, remoteEntry] of Object.entries(remoteGifts || {})) {
-      if (!tamaGifts[key]) tamaGifts[key] = {};
+    for (const [key, remote] of Object.entries(remoteGifts || {})) {
       const local = tamaGifts[key];
-      for (const [tier, remoteTier] of Object.entries(remoteEntry || {})) {
-        if (remoteTier.opened && (!local[tier] || !local[tier].opened)) {
-          local[tier] = remoteTier; // l'autre appareil l'a ouvert en premier
-          changed = true;
-        }
+      if (remote.opened && (!local || !local.opened)) {
+        tamaGifts[key] = remote; // l'autre appareil l'a ouvert en premier
+        changed = true;
       }
     }
     if (changed) saveTamaGifts();
     return changed;
   }
 
+  /** Fusionne le garde-manger distant avec le local : on garde toujours le
+   *  plus grand des deux stocks pour chaque item (au pire on sur-compte
+   *  légèrement après une resynchro tardive, jamais on ne perd un item déjà
+   *  gagné sur un appareil). */
+  function mergeTamaInventory(remoteInv) {
+    let changed = false;
+    for (const need of NEED_KEYS) {
+      const remoteStock = (remoteInv && remoteInv[need]) || {};
+      if (!tamaInventory[need]) tamaInventory[need] = {};
+      for (const [emoji, qty] of Object.entries(remoteStock)) {
+        if ((tamaInventory[need][emoji] || 0) < qty) {
+          tamaInventory[need][emoji] = qty;
+          changed = true;
+        }
+      }
+    }
+    if (changed) saveTamaInventory();
+    return changed;
+  }
+
   async function pushTamaBlob() {
     if (!Sync.isConfigured()) return false;
-    return Sync.pushTamaState({ pet: tamaState, gifts: tamaGifts });
+    return Sync.pushTamaState({ pet: tamaState, inventory: tamaInventory, gifts: tamaGifts });
   }
 
   async function pullAndMergeTama() {
@@ -392,8 +693,9 @@
     const remote = await Sync.pullTamaState();
     if (!remote) return;
     mergeTamaGifts(remote.gifts);
-    // État du compagnon : on garde le plus récemment mis à jour dans son
-    // ensemble (besoins + jours cumulés forment un tout cohérent, les
+    mergeTamaInventory(remote.inventory);
+    // État du foyer : on garde le plus récemment mis à jour dans son
+    // ensemble (compagnons + compteurs forment un tout cohérent, les
     // fusionner champ à champ donnerait un état incohérent).
     if (remote.pet && new Date(remote.pet.updatedAt || 0) > new Date(tamaState.updatedAt || 0)) {
       tamaState = remote.pet;
@@ -1137,6 +1439,7 @@
       const card = newCard(question, answer);
       await persist(card);
       cards.push(card);
+      registerNewCardsCreated(1);
     }
 
     cardForm.reset();
@@ -1336,6 +1639,7 @@
 
       await DB.bulkPut(normalized);
       cards.push(...normalized);
+      registerNewCardsCreated(normalized.length);
       if (Sync.isConfigured()) {
         for (const card of normalized) {
           Sync.pushCard(card);
@@ -1493,7 +1797,7 @@
 
       if (showGoals && b.count > 0) {
         const dateISO = b.date.toISOString().slice(0, 10);
-        const tier = tamaNextGoalTier(giftOpts.subjectId, dateISO);
+        const tier = tamaGoalForDate(giftOpts.subjectId, dateISO);
         if (tier) {
           const threshold = GIFT_TIER_DUE_THRESHOLDS[tier];
           const ready = b.count >= threshold;
@@ -1563,69 +1867,146 @@
   }
 
   /* ---------------------------------------------------------
-     Vue Tamagotchi : état du compagnon, ses besoins, son environnement
+     Vue Tamagotchi : le foyer, ses besoins, son garde-manger
   --------------------------------------------------------- */
-  const tamaHeroEmojiEl = el("tama-hero-emoji");
-  const tamaHeroNameEl = el("tama-hero-name");
-  const tamaMoodLineEl = el("tama-mood-line");
-  const tamaProgressNoteEl = el("tama-progress-note");
-  const tamaNeedsListEl = el("tama-needs-list");
-  const tamaEnvTextEl = el("tama-env-text");
+  const tamaPetsListEl = el("tama-pets-list");
+  const tamaEggProgressEl = el("tama-egg-progress");
+  const tamaInventoryListEl = el("tama-inventory-list");
+  const tamaSpeciesGridEl = el("tama-species-grid");
 
-  /** Petite phrase d'ambiance générée à partir du besoin le plus bas et de
-   *  l'humeur générale — c'est "l'environnement" du compagnon. */
-  function tamaEnvironmentText() {
-    const mood = tamaMood();
-    const sorted = [...NEED_KEYS].sort((a, b) => (tamaState.needs[a] || 0) - (tamaState.needs[b] || 0));
-    const lowest = sorted[0];
-    const lowestVal = tamaState.needs[lowest] || 0;
-    const stage = tamaStage();
-    const place =
-      tamaStageIndex() <= 1
-        ? "dans son petit nid douillet"
-        : tamaStageIndex() <= 3
-        ? "dans son coin bien à lui"
-        : "dans son grand espace, entouré de ses trouvailles";
-    let sentence = `${stage.name} passe son temps ${place}.`;
-    if (lowestVal < 30) {
-      sentence += ` Il a surtout besoin qu'on pense à "${NEED_LABELS[lowest]}" — ${NEED_ICONS[lowest]}`;
-    } else if (mood.label === "Ravi" || mood.label === "Content") {
-      sentence += ` Il a l'air bien entouré en ce moment.`;
-    } else {
-      sentence += ` Un cadeau ou deux lui feraient du bien.`;
-    }
-    return sentence;
+  let tamaExpandedPetId = null;
+
+  function tamaPetDisplayName(pet) {
+    if (!pet.hatched) return "Œuf";
+    const species = speciesById(pet.species);
+    const stage = tamaPetStage(pet);
+    return species ? `${species.name} (${stage.name})` : stage.name;
   }
 
-  function renderTamagotchiView() {
-    applyTamaUpkeep();
-    const stage = tamaStage();
-    const next = tamaNextStage();
-    const mood = tamaMood();
+  function tamaPetEmoji(pet) {
+    if (!pet.hatched) return "🥚";
+    const species = speciesById(pet.species);
+    return species ? species.emoji : "🥚";
+  }
 
-    if (tamaHeroEmojiEl) tamaHeroEmojiEl.textContent = stage.emoji;
-    if (tamaHeroNameEl) tamaHeroNameEl.textContent = stage.name;
-    if (tamaMoodLineEl) tamaMoodLineEl.textContent = `${mood.emoji} ${mood.label}`;
+  /** Construit le petit panneau "à manger" pour un besoin donné : un bouton
+   *  par item disponible dans le garde-manger (vide si rien en stock). */
+  function buildFeedRow(pet, need) {
+    const row = document.createElement("div");
+    row.className = "tama-feed-row";
 
-    if (tamaProgressNoteEl) {
-      const good = tamaState.goodDaysCount || 0;
-      tamaProgressNoteEl.textContent = next
-        ? `${good}/${next.minGoodDays} bons jours pour devenir ${next.name} ${next.emoji}`
-        : `${good} bons jours cumulés — stade maximum atteint`;
+    const label = document.createElement("span");
+    label.className = "tama-feed-row-label";
+    label.textContent = `${NEED_ICONS[need]} ${NEED_LABELS[need]}`;
+    row.appendChild(label);
+
+    const items = document.createElement("div");
+    items.className = "tama-feed-row-items";
+    const stock = tamaInventory[need] || {};
+    const entries = Object.entries(stock).filter(([, qty]) => qty > 0);
+    if (entries.length === 0) {
+      const empty = document.createElement("span");
+      empty.className = "tama-feed-empty";
+      empty.textContent = "Garde-manger vide";
+      items.appendChild(empty);
+    } else {
+      entries.forEach(([emoji, qty]) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "tama-feed-item";
+        btn.textContent = `${emoji} ×${qty}`;
+        btn.addEventListener("click", () => {
+          feedPetFromInventory(pet.id, need, emoji);
+          renderTamagotchiView();
+        });
+        items.appendChild(btn);
+      });
     }
+    row.appendChild(items);
+    return row;
+  }
 
-    if (tamaNeedsListEl) {
-      tamaNeedsListEl.innerHTML = "";
-      const frag = document.createDocumentFragment();
+  function renderPetCard(pet) {
+    const card = document.createElement("div");
+    card.className = "tama-pet-card" + (pet.sick ? " is-sick" : "");
+
+    const head = document.createElement("button");
+    head.type = "button";
+    head.className = "tama-pet-head";
+    head.addEventListener("click", () => {
+      tamaExpandedPetId = tamaExpandedPetId === pet.id ? null : pet.id;
+      renderTamagotchiView();
+    });
+
+    const stage = tamaPetStage(pet);
+    const emojiEl = document.createElement("span");
+    emojiEl.className = "tama-pet-emoji";
+    emojiEl.textContent = tamaPetEmoji(pet);
+    emojiEl.style.fontSize = `${40 * stage.scale}px`;
+    head.appendChild(emojiEl);
+
+    const info = document.createElement("div");
+    info.className = "tama-pet-info";
+    const name = document.createElement("p");
+    name.className = "tama-pet-name";
+    name.textContent = tamaPetDisplayName(pet);
+    const mood = tamaPetMood(pet);
+    const moodLine = document.createElement("p");
+    moodLine.className = "tama-pet-mood";
+    moodLine.textContent = `${mood.emoji} ${mood.label}`;
+    info.appendChild(name);
+    info.appendChild(moodLine);
+    if (!pet.hatched) {
+      const next = tamaPetNextStage(pet);
+      const hint = document.createElement("p");
+      hint.className = "tama-pet-hint";
+      hint.textContent = next ? `${pet.goodDaysCount || 0}/${next.minGoodDays} bons jours avant l'éclosion` : "";
+      info.appendChild(hint);
+    }
+    head.appendChild(info);
+
+    const chevron = document.createElement("span");
+    chevron.className = "tama-pet-chevron";
+    chevron.textContent = tamaExpandedPetId === pet.id ? "▲" : "▼";
+    head.appendChild(chevron);
+
+    card.appendChild(head);
+
+    if (tamaExpandedPetId === pet.id) {
+      const panel = document.createElement("div");
+      panel.className = "tama-pet-panel";
+
+      if (pet.sick) {
+        const sickBox = document.createElement("div");
+        sickBox.className = "tama-sick-box";
+        const hasMed = Object.values(tamaInventory.soigner || {}).some((q) => q > 0);
+        const msg = document.createElement("p");
+        msg.textContent = hasMed
+          ? "Malade — un médicament du garde-manger peut le guérir."
+          : "Malade — il faut un médicament 💊 (cadeau du besoin \"Se soigner\") pour le guérir.";
+        sickBox.appendChild(msg);
+        const cureBtn = document.createElement("button");
+        cureBtn.type = "button";
+        cureBtn.className = "btn-primary tama-cure-btn";
+        cureBtn.textContent = "Soigner";
+        cureBtn.disabled = !hasMed;
+        cureBtn.addEventListener("click", () => {
+          curePetFromInventory(pet.id);
+          renderTamagotchiView();
+        });
+        sickBox.appendChild(cureBtn);
+        panel.appendChild(sickBox);
+      }
+
+      const needsWrap = document.createElement("div");
+      needsWrap.className = "tama-need-mini-list";
       NEED_KEYS.forEach((key) => {
-        const value = Math.round(tamaState.needs[key] || 0);
+        const value = Math.round(tamaEffectiveNeed(pet, key));
         const row = document.createElement("div");
-        row.className = "tama-need-row";
-
+        row.className = "tama-need-row tama-need-row--mini";
         const label = document.createElement("span");
         label.className = "tama-need-label";
         label.textContent = `${NEED_ICONS[key]} ${NEED_LABELS[key]}`;
-
         const barWrap = document.createElement("div");
         barWrap.className = "tama-need-bar";
         const fill = document.createElement("div");
@@ -1633,22 +2014,107 @@
           "tama-need-fill" + (value < 30 ? " is-low" : value < HEALTHY_NEED_THRESHOLD ? " is-mid" : "");
         fill.style.width = `${Math.max(2, value)}%`;
         barWrap.appendChild(fill);
-
         const valueEl = document.createElement("span");
         valueEl.className = "tama-need-value";
         valueEl.textContent = `${value}`;
-
         row.appendChild(label);
         row.appendChild(barWrap);
         row.appendChild(valueEl);
-        frag.appendChild(row);
+        needsWrap.appendChild(row);
       });
-      tamaNeedsListEl.appendChild(frag);
+      panel.appendChild(needsWrap);
+
+      const feedTitle = document.createElement("p");
+      feedTitle.className = "tama-feed-title";
+      feedTitle.textContent = "Nourrir depuis le garde-manger";
+      panel.appendChild(feedTitle);
+
+      ["manger", "boire", "dormir", "jouer", "copains"].forEach((need) => {
+        panel.appendChild(buildFeedRow(pet, need));
+      });
+
+      card.appendChild(panel);
     }
 
-    if (tamaEnvTextEl) tamaEnvTextEl.textContent = tamaEnvironmentText();
-    refreshTamaTabIcon();
+    return card;
   }
+
+  function renderTamagotchiView() {
+    applyTamaUpkeep();
+    let anyRevealed = false;
+    tamaState.pets.forEach((p) => {
+      if (ensureSpeciesRevealed(p)) anyRevealed = true;
+    });
+
+    if (tamaPetsListEl) {
+      tamaPetsListEl.innerHTML = "";
+      const frag = document.createDocumentFragment();
+      tamaState.pets.forEach((pet) => frag.appendChild(renderPetCard(pet)));
+      tamaPetsListEl.appendChild(frag);
+    }
+
+    if (tamaEggProgressEl) {
+      if (tamaState.pets.length >= MAX_PETS) {
+        tamaEggProgressEl.textContent = `Foyer complet (${MAX_PETS} compagnons) — profite d'eux avant d'agrandir !`;
+      } else {
+        const remaining = EGG_CARDS_THRESHOLD - (tamaState.cardsSinceLastEgg || 0);
+        tamaEggProgressEl.textContent = `${remaining} nouvelle(s) fiche(s) avant un nouvel œuf (tous sujets confondus)`;
+      }
+    }
+
+    if (tamaInventoryListEl) {
+      tamaInventoryListEl.innerHTML = "";
+      const frag = document.createDocumentFragment();
+      let anyItem = false;
+      NEED_KEYS.forEach((need) => {
+        const stock = tamaInventory[need] || {};
+        const entries = Object.entries(stock).filter(([, qty]) => qty > 0);
+        if (entries.length === 0) return;
+        anyItem = true;
+        const group = document.createElement("div");
+        group.className = "tama-inv-group";
+        const title = document.createElement("span");
+        title.className = "tama-inv-group-title";
+        title.textContent = `${NEED_ICONS[need]} ${NEED_LABELS[need]}`;
+        group.appendChild(title);
+        const chips = document.createElement("div");
+        chips.className = "tama-inv-chips";
+        entries.forEach(([emoji, qty]) => {
+          const chip = document.createElement("span");
+          chip.className = "tama-inv-chip";
+          chip.textContent = `${emoji} ×${qty}`;
+          chips.appendChild(chip);
+        });
+        group.appendChild(chips);
+        frag.appendChild(group);
+      });
+      if (!anyItem) {
+        const empty = document.createElement("p");
+        empty.className = "field-hint";
+        empty.textContent = "Rien pour l'instant — ouvre des cadeaux sur l'histogramme de la page Réviser.";
+        frag.appendChild(empty);
+      }
+      tamaInventoryListEl.appendChild(frag);
+    }
+
+    if (tamaSpeciesGridEl) {
+      tamaSpeciesGridEl.innerHTML = "";
+      const frag = document.createDocumentFragment();
+      SPECIES.forEach((s) => {
+        const discovered = tamaState.discoveredSpecies.includes(s.id);
+        const cell = document.createElement("div");
+        cell.className = "tama-species-cell" + (discovered ? "" : " is-hidden");
+        cell.textContent = discovered ? s.emoji : "❔";
+        cell.title = discovered ? s.name : "Pas encore découvert";
+        frag.appendChild(cell);
+      });
+      tamaSpeciesGridEl.appendChild(frag);
+    }
+
+    refreshTamaTabIcon();
+    if (anyRevealed) renderReviewChart();
+  }
+
 
   statsSubjectSelectEl.addEventListener("change", () => {
     statsSubjectFilter = statsSubjectSelectEl.value;
@@ -2155,12 +2621,13 @@
     });
 
     tamaSyncUnsub = Sync.subscribeTamaRealtime((remoteBlob) => {
-      const changed = mergeTamaGifts(remoteBlob.gifts);
+      const changedGifts = mergeTamaGifts(remoteBlob.gifts);
+      const changedInv = mergeTamaInventory(remoteBlob.inventory);
       if (remoteBlob.pet && new Date(remoteBlob.pet.updatedAt || 0) > new Date(tamaState.updatedAt || 0)) {
         tamaState = remoteBlob.pet;
         saveTamaState();
       }
-      if (changed || remoteBlob.pet) {
+      if (changedGifts || changedInv || remoteBlob.pet) {
         refreshTamaTabIcon();
         if (el("view-tamagotchi") && el("view-tamagotchi").classList.contains("is-active")) renderTamagotchiView();
         renderReviewChart();
@@ -2233,6 +2700,7 @@
     loadBonusAgainMode();
     loadHibernateDays();
     loadTamaState();
+    loadTamaInventory();
     loadTamaGifts();
     applyTamaUpkeep();
     renderSettingsView();

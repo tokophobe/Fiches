@@ -199,26 +199,24 @@
 
     <!-- VUE TAMAGOTCHI -->
     <section id="view-tamagotchi" class="view" aria-labelledby="tab-tamagotchi">
-      <h2 class="section-title">Ton compagnon</h2>
+      <h2 class="section-title">Ton foyer</h2>
 
-      <div class="tama-hero-card">
-        <span class="tama-hero-emoji" id="tama-hero-emoji">🥚</span>
-        <p class="tama-hero-name" id="tama-hero-name">Œuf</p>
-        <p class="tama-mood-line" id="tama-mood-line">😐 Neutre</p>
-        <p class="tama-progress-note" id="tama-progress-note"></p>
-      </div>
+      <div class="tama-pets-list" id="tama-pets-list"></div>
+      <p class="field-hint tama-egg-progress" id="tama-egg-progress"></p>
 
-      <h3 class="settings-block-title">Ses besoins</h3>
-      <div class="tama-needs-list" id="tama-needs-list"></div>
+      <h3 class="settings-block-title">Garde-manger</h3>
+      <div class="tama-inventory-list" id="tama-inventory-list"></div>
 
-      <h3 class="settings-block-title">Son environnement</h3>
-      <p class="field-hint tama-env-card" id="tama-env-text"></p>
+      <h3 class="settings-block-title">Espèces découvertes</h3>
+      <div class="tama-species-grid" id="tama-species-grid"></div>
 
       <p class="field-hint tama-hint">
-        Une ligne pointillée sur l'histogramme de la page Réviser indique la
-        hauteur à atteindre pour débloquer un cadeau 🎁 ce jour-là. Il reste
-        grisé tant que la barre n'a pas rejoint la ligne, puis s'illumine —
-        touche-le pour le récolter et combler l'un de ses besoins.
+        Certains jours de l'histogramme de la page Réviser cachent un cadeau
+        🎁 (aléatoire, renouvelé chaque semaine) : une ligne pointillée
+        marque la hauteur à atteindre. Une fois récolté, l'item rejoint le
+        garde-manger — choisis ensuite ici quel compagnon en profite.
+        Tous les 100 fiches créées (toutes matières confondues), un nouvel
+        œuf rejoint le foyer.
       </p>
     </section>
 
