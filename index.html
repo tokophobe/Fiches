@@ -199,24 +199,28 @@
 
     <!-- VUE TAMAGOTCHI -->
     <section id="view-tamagotchi" class="view" aria-labelledby="tab-tamagotchi">
-      <h2 class="section-title">Ton foyer</h2>
+      <div class="tama-gifts-tray" id="tama-gifts-tray" hidden></div>
 
       <div class="tama-pets-list" id="tama-pets-list"></div>
-      <p class="field-hint tama-egg-progress" id="tama-egg-progress"></p>
+      <p class="field-hint tama-empty-hint" id="tama-empty-hint" hidden>
+        Le foyer est vide pour l'instant — ouvre un cadeau depuis
+        l'histogramme de la page Réviser pour faire arriver un premier œuf.
+      </p>
 
-      <h3 class="settings-block-title">Garde-manger</h3>
-      <div class="tama-inventory-list" id="tama-inventory-list"></div>
-
-      <h3 class="settings-block-title">Espèces découvertes</h3>
-      <div class="tama-species-grid" id="tama-species-grid"></div>
+      <h3 class="settings-block-title">Trophées</h3>
+      <p class="field-hint settings-block-hint">
+        Tous les animaux que tu as déjà menés jusqu'au bout, pour toujours —
+        même si le compagnon lui-même a fini par disparaître.
+      </p>
+      <div class="tama-trophies-grid" id="tama-trophies-grid"></div>
 
       <p class="field-hint tama-hint">
-        Certains jours de l'histogramme de la page Réviser cachent un cadeau
-        🎁 (aléatoire, renouvelé chaque semaine) : une ligne pointillée
-        marque la hauteur à atteindre. Une fois récolté, l'item rejoint le
-        garde-manger — choisis ensuite ici quel compagnon en profite.
-        Tous les 100 fiches créées (toutes matières confondues), un nouvel
-        œuf rejoint le foyer.
+        Chaque compagnon n'a qu'une seule jauge de vie, qui baisse tout
+        seule avec le temps : l'anneau autour de lui va du rouge (basse) au
+        vert (pleine), et il grossit avec elle. À zéro, il redescend d'un
+        stade (œuf → œuf au plat, qui disparaît le lendemain). Au maximum,
+        il grandit encore, jusqu'à devenir un bel animal. Les cadeaux de
+        l'histogramme de la page Réviser atterrissent ici, à ouvrir toi-même.
       </p>
     </section>
 
@@ -331,6 +335,23 @@
         <label class="field settings-bonus-field">
           <span>Nombre de jours</span>
           <input type="number" id="setting-hibernate-days" min="1" max="365" step="1" inputmode="numeric" />
+        </label>
+      </div>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Cadeaux du Tamagotchi 🎁</h3>
+        <p class="field-hint settings-block-hint">
+          Quand un cadeau contient de la nourriture (et non un œuf), le
+          nombre de points de vie donnés suit une loi normale : réglez ici sa
+          moyenne et son écart-type.
+        </p>
+        <label class="field settings-bonus-field">
+          <span>Moyenne (points de vie)</span>
+          <input type="number" id="setting-tama-gift-mean" min="1" max="200" step="1" inputmode="numeric" />
+        </label>
+        <label class="field settings-bonus-field">
+          <span>Écart-type</span>
+          <input type="number" id="setting-tama-gift-std" min="0" max="100" step="1" inputmode="numeric" />
         </label>
       </div>
     </section>

@@ -1170,251 +1170,127 @@ textarea, input {
   box-shadow: 0 0 0 2px var(--desk);
 }
 
+/* Foyer : les compagnons flottent librement, sans carte ni cadre — juste
+   leur anneau de vie (couleur + longueur = pourcentage de vie) autour
+   d'eux, dispersés façon flex avec un léger tangage recalculé à chaque
+   visite pour un rendu plus naturel qu'une grille bien rangée. */
 .tama-pets-list {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 22px 16px;
+  padding: 18px 6px 22px;
+}
+
+.tama-pet-tile {
+  display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.tama-pet-card {
-  background: var(--paper);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-deep);
-  overflow: hidden;
-}
-
-.tama-pet-card.is-sick { box-shadow: var(--shadow-deep), inset 0 0 0 2px var(--terracotta); }
-
-.tama-pet-head {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 52px 1fr auto;
   align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  background: none;
-  border: none;
-  text-align: left;
-}
-
-.tama-pet-emoji {
-  display: block;
-  line-height: 1;
-  text-align: center;
-}
-
-.tama-pet-info { min-width: 0; }
-
-.tama-pet-name {
-  font-family: var(--font-type);
-  font-size: 15px;
-  color: var(--ink);
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.tama-pet-mood {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  color: var(--ink-soft);
-  margin: 2px 0 0;
-}
-
-.tama-pet-hint {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  color: var(--ink-soft);
-  margin: 2px 0 0;
-}
-
-.tama-pet-chevron {
-  font-size: 10px;
-  color: var(--ink-soft);
-}
-
-.tama-pet-panel {
-  padding: 4px 14px 16px;
-  border-top: 1px solid var(--paper-3);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.tama-sick-box {
-  background: rgba(180, 96, 74, 0.12);
-  border-radius: 10px;
-  padding: 10px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.tama-sick-box p {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  color: var(--ink-soft);
-  line-height: 1.4;
-}
-
-.tama-cure-btn { align-self: flex-start; }
-
-.tama-need-mini-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding-top: 8px;
-}
-
-.tama-need-row {
-  display: grid;
-  grid-template-columns: 92px 1fr 28px;
-  align-items: center;
-  gap: 10px;
-}
-
-.tama-need-label {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  color: var(--ink-soft);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.tama-need-bar {
-  height: 8px;
-  border-radius: 999px;
-  background: var(--paper-3);
-  overflow: hidden;
-}
-
-.tama-need-fill {
-  height: 100%;
-  border-radius: 999px;
-  background: var(--sage);
-  transition: width 0.3s ease;
-}
-
-.tama-need-fill.is-mid { background: var(--amber); }
-.tama-need-fill.is-low { background: var(--terracotta); }
-
-.tama-need-value {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--ink-soft);
-  text-align: right;
-}
-
-.tama-feed-title {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--ink-soft);
-  margin: 4px 0 0;
-}
-
-.tama-feed-row {
-  display: flex;
-  flex-direction: column;
   gap: 4px;
+  transition: transform 0.4s ease;
 }
 
-.tama-feed-row-label {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--ink-soft);
+.tama-pet-tile--flash .tama-pet-ring {
+  animation: tama-pet-flash 0.9s ease;
 }
 
-.tama-feed-row-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+@keyframes tama-pet-flash {
+  0%, 100% { filter: none; }
+  40% { filter: brightness(1.6) drop-shadow(0 0 10px var(--amber)); }
 }
 
-.tama-feed-item {
-  font-size: 13px;
-  background: var(--paper-2);
-  border: 1px solid var(--paper-3);
-  border-radius: 999px;
-  padding: 4px 10px;
-}
-
-.tama-feed-item:active { background: var(--paper-3); }
-
-.tama-feed-empty {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  color: var(--ink-soft);
-  opacity: 0.7;
-}
-
-.tama-egg-progress { margin: 0 0 18px; }
-
-.tama-inventory-list {
-  background: var(--paper);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-deep);
-  padding: 14px 16px;
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.tama-inv-group { display: flex; flex-direction: column; gap: 6px; }
-
-.tama-inv-group-title {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--ink-soft);
-}
-
-.tama-inv-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.tama-inv-chip {
-  font-size: 13px;
-  background: var(--paper-2);
-  border-radius: 999px;
-  padding: 4px 10px;
-}
-
-.tama-species-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 8px;
-  background: var(--paper);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-deep);
-  padding: 14px;
-  margin-bottom: 16px;
-}
-
-.tama-species-cell {
-  aspect-ratio: 1 / 1;
-  border-radius: 10px;
-  background: var(--paper-2);
+.tama-pet-ring {
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  transition: width 0.3s ease, height 0.3s ease, background 0.4s ease;
 }
 
-.tama-species-cell.is-hidden {
-  opacity: 0.35;
-  font-size: 16px;
+.tama-pet-inner {
+  border-radius: 50%;
+  background: var(--desk);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: width 0.3s ease, height 0.3s ease, font-size 0.3s ease;
+}
+
+.tama-pet-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
   color: var(--ink-soft);
+  opacity: 0.75;
+  white-space: nowrap;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tama-empty-hint { text-align: center; margin: 30px 12px; }
+
+/* Pile de cadeaux à ouvrir : posée en haut de la page, disparaît d'elle-même
+   quand elle est vide. */
+.tama-gifts-tray {
+  background: var(--paper);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-deep);
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+
+.tama-gifts-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin: 0 0 8px;
+}
+
+.tama-gifts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tama-gift-box {
+  font-size: 22px;
+  background: var(--paper-2);
+  border: 2px solid var(--paper-3);
+  border-radius: 12px;
+  padding: 6px 10px;
+  animation: chart-goal-pulse 1.6s ease-in-out infinite;
+}
+
+.tama-gift-box.chart-goal--tier-rare { border-color: var(--blue); }
+.tama-gift-box.chart-goal--tier-epique { border-color: #8a5fd1; }
+.tama-gift-box.chart-goal--tier-legendaire { border-color: var(--amber); }
+
+/* Trophées : figés, façon photo encadrée — volontairement différents des
+   compagnons vivants (qui eux n'ont aucun cadre). */
+.tama-trophies-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tama-trophy-frame {
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  background: var(--paper-2);
+  border: 1px solid var(--paper-3);
+  box-shadow: inset 0 0 0 3px var(--desk), 0 2px 4px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  filter: grayscale(0.35) saturate(0.8);
 }
 
 .tama-hint { margin-bottom: 8px; }
+
 
 /* Objectif-cadeau posé sur une barre de l'histogramme mini (page Réviser) :
    une ligne pointillée matérialise la hauteur à atteindre, le cadeau posé
