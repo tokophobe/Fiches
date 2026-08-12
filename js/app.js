@@ -155,12 +155,24 @@
   const STAGE_ORDER = ["oeuf", "poussin_oeuf", "poussin", "chenille", "papillon", "animal"];
   const STAGE_DEFS = {
     oeuf: { name: "Œuf", emoji: "🥚", start: 20, max: 100, baseSize: 34 },
-    poussin_oeuf: { name: "Poussin (éclosion)", emoji: "🐣", start: 30, max: 150, baseSize: 38 },
+    poussin_oeuf: { name: "Poussin (éclosion)", emoji: "🐥", start: 30, max: 150, baseSize: 38 },
     poussin: { name: "Poussin", emoji: "🐤", start: 40, max: 200, baseSize: 42 },
     chenille: { name: "Chenille", emoji: "🐛", start: 50, max: 250, baseSize: 46 },
     papillon: { name: "Papillon", emoji: "🦋", start: 60, max: 300, baseSize: 50 },
     animal: { name: "Animal", emoji: null, start: 70, max: 350, baseSize: 58 },
   };
+
+  /** Noms attribués par l'appli à chaque nouveau compagnon (jamais choisis
+   *  par la personne) — un nom différent pour chaque compagnon actuellement
+   *  vivant dans le foyer. */
+  const PET_NAME_POOL = [
+    "Nougat", "Praline", "Biscotte", "Pixel", "Cannelle", "Griotte", "Réglisse",
+    "Câpre", "Nashi", "Pruneau", "Coquelicot", "Chamallow", "Éclair", "Bretzel",
+    "Churro", "Wasabi", "Miso", "Sushi", "Fondant", "Praliné", "Marmelade",
+    "Guimauve", "Meringue", "Financier", "Sablé", "Cajou", "Pistache",
+    "Noisette", "Amande", "Cornichon", "Radis", "Groseille", "Mirabelle",
+    "Poivron", "Safran", "Muscade", "Popcorn", "Biscuit", "Caramel", "Sorbet",
+  ];
   const BROKEN_EGG_EMOJI = "🍳";
   const LIFE_DECAY_PER_HOUR = 1;
   const BROKEN_EGG_LINGER_HOURS = 24;
@@ -186,9 +198,6 @@
     { id: "licorne", name: "Licorne", emoji: "🦄" },
   ];
 
-  const GIFT_TIERS = ["commune", "rare", "epique", "legendaire"];
-  const GIFT_TIER_LABELS = { commune: "Commune", rare: "Rare", epique: "Épique", legendaire: "Légendaire" };
-
   function speciesById(id) {
     return SPECIES.find((s) => s.id === id) || null;
   }
@@ -201,10 +210,24 @@
     return startOfDay(new Date()).toISOString().slice(0, 10);
   }
 
-  function makeEgg() {
+  /** Choisit un nom pour un nouveau compagnon, différent de tous les noms
+   *  actuellement portés par les autres compagnons vivants du foyer. Si le
+   *  pool est épuisé (beaucoup de compagnons en même temps), on numérote. */
+  function pickPetName(existingPets) {
+    const used = new Set((existingPets || []).map((p) => p.name).filter(Boolean));
+    const free = PET_NAME_POOL.filter((n) => !used.has(n));
+    if (free.length > 0) return free[Math.floor(Math.random() * free.length)];
+    const base = PET_NAME_POOL[Math.floor(Math.random() * PET_NAME_POOL.length)];
+    let i = 2;
+    while (used.has(`${base} ${i}`)) i += 1;
+    return `${base} ${i}`;
+  }
+
+  function makeEgg(existingPets) {
     const now = new Date().toISOString();
     return {
       id: uidTama(),
+      name: pickPetName(existingPets),
       stage: "oeuf",
       life: STAGE_DEFS.oeuf.start,
       species: null,
@@ -217,22 +240,41 @@
   function defaultTamaState() {
     const today = todayISODate();
     return {
-      pets: [makeEgg()],
+      pets: [makeEgg([])],
+      foods: [], // { id, emoji, total, remaining, x, y, eatenBy, createdAt } — posées dans le pré
       trophies: [], // { species, dateReached }
-      pendingGifts: [], // { id, tier, source, createdAt } — à ouvrir sur la page Tamagotchi
+      pendingGifts: [], // { id, source, createdAt } — à ouvrir sur la page Tamagotchi
       zeroBonusGivenDates: {}, // { subjectId: dateISO }
       lastGiftCollectedDate: null,
       lastBookkeepingDate: today,
       catchupCredits: 0,
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      // Volontairement très ancien (et non "maintenant") : un foyer neuf
+      // créé localement (première ouverture sur un appareil qui n'a encore
+      // jamais synchronisé) ne doit JAMAIS être considéré comme "plus
+      // récent" qu'un état déjà présent côté serveur lors de la première
+      // connexion — sinon ce foyer vide écraserait la vraie progression
+      // distante (voir pullAndMergeTama).
+      updatedAt: new Date(0).toISOString(),
     };
   }
 
   let tamaState = null;
-  /** { "<subjectId>::<tier>": { targetDate, threshold, tier, createdAt } } */
+  /** { "<subjectId>": { threshold, createdAt } } */
   let tamaGoals = {};
   let tamaSyncUnsub = null;
+
+  /** Écrit l'état en local SANS toucher `updatedAt` — à réserver aux cas où
+   *  l'écriture ne reflète pas une "vraie" nouvelle progression (création
+   *  du foyer par défaut, migration de forme des données) : la comparer
+   *  aux timestamps distants lors de la prochaine synchro doit continuer à
+   *  refléter la dernière fois où quelque chose s'est *réellement* passé,
+   *  pas la dernière fois où l'appli a juste été ouverte. Pour toute vraie
+   *  évolution du foyer (temps qui passe, cadeau, repas...), utiliser
+   *  saveTamaState() à la place. */
+  function persistTamaStateOnly() {
+    localStorage.setItem(TAMA_STATE_KEY, JSON.stringify(tamaState));
+  }
 
   /** Migration depuis les anciens formats (v25 mono-compagnon à besoins, ou
    *  v26 foyer à besoins/inventaire) : on repart d'un foyer neuf plutôt que
@@ -247,11 +289,21 @@
     const looksCurrent = tamaState && Array.isArray(tamaState.pets) && tamaState.pets.every((p) => p.stage);
     if (!looksCurrent) {
       tamaState = defaultTamaState();
-      saveTamaState();
+      persistTamaStateOnly();
     }
     if (!tamaState.trophies) tamaState.trophies = [];
     if (!tamaState.pendingGifts) tamaState.pendingGifts = [];
     if (!tamaState.zeroBonusGivenDates) tamaState.zeroBonusGivenDates = {};
+    if (!tamaState.foods) tamaState.foods = [];
+    // Migration : compagnons créés avant l'introduction des noms.
+    let namedSomeone = false;
+    tamaState.pets.forEach((p) => {
+      if (!p.name) {
+        p.name = pickPetName(tamaState.pets);
+        namedSomeone = true;
+      }
+    });
+    if (namedSomeone) persistTamaStateOnly();
   }
 
   function saveTamaState() {
@@ -259,10 +311,24 @@
     localStorage.setItem(TAMA_STATE_KEY, JSON.stringify(tamaState));
   }
 
+  /** Ne garde que les clés au nouveau format (une par matière). Les clés
+   *  composites "subjectId::tier" d'avant la simplification des cadeaux
+   *  sont abandonnées : un nouvel objectif propre est recalculé pour
+   *  chaque matière au prochain rendu de son histogramme. */
+  function sanitizeTamaGoals(goals) {
+    const clean = {};
+    for (const [key, value] of Object.entries(goals || {})) {
+      if (!key.includes("::") && value && typeof value.threshold === "number") {
+        clean[key] = value;
+      }
+    }
+    return clean;
+  }
+
   function loadTamaGoals() {
     try {
       const raw = localStorage.getItem(TAMA_GOALS_KEY);
-      tamaGoals = raw ? JSON.parse(raw) : {};
+      tamaGoals = sanitizeTamaGoals(raw ? JSON.parse(raw) : {});
     } catch {
       tamaGoals = {};
     }
@@ -284,10 +350,14 @@
 
   function setGiftMean(v) {
     localStorage.setItem(TAMA_GIFT_MEAN_KEY, String(v));
+    touchAppSettingsTimestamp();
+    if (Sync.isConfigured()) pushTamaBlob();
   }
 
   function setGiftStd(v) {
     localStorage.setItem(TAMA_GIFT_STD_KEY, String(v));
+    touchAppSettingsTimestamp();
+    if (Sync.isConfigured()) pushTamaBlob();
   }
 
   /** Tirage gaussien (Box-Muller) centré sur `mean`, d'écart-type `std`. */
@@ -384,8 +454,7 @@
     tamaState.lastBookkeepingDate = today;
     while (tamaState.catchupCredits > 0) {
       tamaState.catchupCredits -= 1;
-      const tier = GIFT_TIERS[Math.floor(Math.random() * GIFT_TIERS.length)];
-      tamaState.pendingGifts.push({ id: uidTama(), tier, source: "catchup", createdAt: new Date().toISOString() });
+      tamaState.pendingGifts.push({ id: uidTama(), source: "catchup", createdAt: new Date().toISOString() });
       changed = true;
     }
 
@@ -450,29 +519,47 @@
     return 1 / (1 + weighted * weighted);
   }
 
+  /** Capacité de vie restante d'un compagnon avant qu'il n'ait "plus
+   *  besoin" de nourriture pour l'instant : illimitée tant qu'il peut
+   *  encore grandir/évoluer, plafonnée au maximum du stade une fois au
+   *  stade final ("animal") — le surplus de nourriture reste alors
+   *  disponible dans le pré pour le prochain compagnon qui la trouvera. */
+  function tamaPetCapacity(pet) {
+    if (pet.stage === "broken") return 0;
+    if (pet.stage === "animal") return Math.max(0, STAGE_DEFS.animal.max - pet.life);
+    return Infinity;
+  }
+
   /** Résout le contenu d'un cadeau : un œuf tout neuf, ou de la nourriture
-   *  donnée à un compagnon vivant tiré au hasard (quantité de vie selon une
-   *  loi normale réglable). Retourne de quoi afficher ce qui vient de se
-   *  passer. */
+   *  posée au hasard dans le pré (quantité totale selon une loi normale
+   *  réglable) — c'est le premier compagnon qui tombera dessus en se
+   *  baladant qui la mangera (voir stepTamaSimulation). */
   function resolveTamaGift() {
     const alive = tamaState.pets.filter((p) => p.stage !== "broken");
     const pEgg = alive.length === 0 ? 1 : tamaEggProbability();
 
     if (Math.random() < pEgg) {
-      const pet = makeEgg();
+      const pet = makeEgg(tamaState.pets);
       tamaState.pets.push(pet);
       saveTamaState();
-      return { type: "egg", petId: pet.id };
+      return { type: "egg", petId: pet.id, petName: pet.name };
     }
 
-    const pet = alive[Math.floor(Math.random() * alive.length)];
     const emoji = FOOD_EMOJI_POOL[Math.floor(Math.random() * FOOD_EMOJI_POOL.length)];
     const points = Math.max(1, Math.round(normalRandom(getGiftMean(), getGiftStd())));
-    applyHourlyDecay(pet, Date.now());
-    pet.life += points;
-    normalizePetLife(pet);
+    const food = {
+      id: uidTama(),
+      emoji,
+      total: points,
+      remaining: points,
+      x: 12 + Math.random() * 76,
+      y: 18 + Math.random() * 64,
+      eatenBy: null,
+      createdAt: new Date().toISOString(),
+    };
+    tamaState.foods.push(food);
     saveTamaState();
-    return { type: "food", petId: pet.id, emoji, points };
+    return { type: "food", emoji, points, foodId: food.id };
   }
 
   /** Ouvre un cadeau de la pile "à ouvrir" (page Tamagotchi uniquement). */
@@ -486,66 +573,43 @@
     return result;
   }
 
-  function tamaGoalKey(subjectId, tier) {
-    return `${subjectId}::${tier}`;
-  }
-
-  /** Crée (si besoin) l'objectif en cours pour cette matière et cette
-   *  catégorie : une échéance entre 3 et 15 jours, un palier compris entre
-   *  la valeur actuelle de la barre à cette échéance et la moyenne des
-   *  barres d'aujourd'hui jusqu'à cette échéance — donc toujours strictement
-   *  au-dessus de la valeur actuelle. `goalBuckets` doit couvrir au moins
-   *  16 jours (voir renderReviewChart). */
-  function ensureTamaGoal(subjectId, tier, goalBuckets) {
-    const key = tamaGoalKey(subjectId, tier);
-    if (tamaGoals[key]) return tamaGoals[key];
-
-    const maxOffset = Math.min(15, goalBuckets.length - 1);
-    const minOffset = Math.min(3, maxOffset);
-    const offset = minOffset + Math.floor(Math.random() * (maxOffset - minOffset + 1));
-    const bucket = goalBuckets[offset];
-    const range = goalBuckets.slice(0, offset + 1);
-    const avg = range.reduce((a, b) => a + b.count, 0) / range.length;
-    const current = bucket.count;
-    const upper = Math.max(avg, current + 1);
-    const threshold = Math.max(current + 1, Math.round(current + Math.random() * (upper - current)));
-
-    const goal = {
-      tier,
-      targetDate: bucket.date.toISOString().slice(0, 10),
-      threshold,
-      createdAt: new Date().toISOString(),
-    };
-    tamaGoals[key] = goal;
+  /** Objectif-cadeau en cours pour une matière : une seule ligne à
+   *  franchir, fixée à 80% de la barre la plus haute au moment où elle est
+   *  tracée. `goalBuckets` doit couvrir au moins 16 jours (voir
+   *  renderReviewChart), indépendamment du zoom actuellement affiché, pour
+   *  que le seuil ne dépende pas de l'échelle regardée sur le moment. */
+  function ensureSubjectGoal(subjectId, goalBuckets) {
+    if (tamaGoals[subjectId]) return tamaGoals[subjectId];
+    const max = Math.max(0, ...goalBuckets.map((b) => b.count));
+    const threshold = Math.max(0, Math.floor(max * 0.8));
+    const goal = { threshold, createdAt: new Date().toISOString() };
+    tamaGoals[subjectId] = goal;
     saveTamaGoals();
     return goal;
   }
 
-  /** Récolte l'objectif atteint : il part dans la pile "à ouvrir" du
-   *  Tamagotchi, et un nouvel objectif est immédiatement recalculé pour
-   *  cette même matière + catégorie. */
-  function collectTamaGoal(subjectId, tier) {
-    const key = tamaGoalKey(subjectId, tier);
-    if (!tamaGoals[key]) return;
-    delete tamaGoals[key];
+  /** Récolte l'objectif atteint pour une matière : il part dans la pile "à
+   *  ouvrir" du Tamagotchi, et un nouvel objectif est immédiatement
+   *  recalculé (nouvelle ligne à 80% du nouveau maximum). */
+  function collectSubjectGoal(subjectId) {
+    if (!tamaGoals[subjectId]) return;
+    delete tamaGoals[subjectId];
     saveTamaGoals();
-    tamaState.pendingGifts.push({ id: uidTama(), tier, source: "goal", createdAt: new Date().toISOString() });
+    tamaState.pendingGifts.push({ id: uidTama(), source: "goal", createdAt: new Date().toISOString() });
     tamaState.lastGiftCollectedDate = todayISODate();
     saveTamaState();
     if (Sync.isConfigured()) pushTamaBlob();
     refreshTamaTabIcon();
   }
 
-  /** Cadeau bonus (un par catégorie) quand la file du jour tombe à zéro
-   *  pour la matière en cours — une fois par jour et par matière. */
+  /** Cadeau bonus quand la file du jour tombe à zéro pour la matière en
+   *  cours — une seule fois par jour et par matière. */
   function maybeGrantZeroDueBonus(subjectId, dueTodayCount) {
     if (dueTodayCount !== 0) return;
     const today = todayISODate();
     if (tamaState.zeroBonusGivenDates[subjectId] === today) return;
     tamaState.zeroBonusGivenDates[subjectId] = today;
-    GIFT_TIERS.forEach((tier) => {
-      tamaState.pendingGifts.push({ id: uidTama(), tier, source: "zero-bonus", createdAt: new Date().toISOString() });
-    });
+    tamaState.pendingGifts.push({ id: uidTama(), source: "zero-bonus", createdAt: new Date().toISOString() });
     tamaState.lastGiftCollectedDate = today;
     saveTamaState();
     if (Sync.isConfigured()) pushTamaBlob();
@@ -558,22 +622,27 @@
    *  sur l'onglet Tamagotchi (avec la pile de cadeaux en attente). */
   let reviewChartHasReadyGoal = false;
 
+  /** L'icône de l'onglet Tamagotchi fait double usage : elle affiche
+   *  l'humeur du compagnon qui va le moins bien (comme l'ancien bouton du
+   *  header, retiré), sauf s'il y a un cadeau en attente — auquel cas
+   *  celui-ci prend la priorité, pour rester bien visible. */
   function refreshTamaTabIcon() {
     const iconEl = el("tab-tamagotchi-icon");
+    const pending = (tamaState.pendingGifts || []).length;
     if (iconEl) {
-      const pending = (tamaState.pendingGifts || []).length;
-      iconEl.textContent = pending > 0 ? "🎁" : "🐣";
+      if (pending > 0) {
+        iconEl.textContent = "🎁";
+      } else {
+        const worst = [...tamaState.pets]
+          .filter((p) => p.stage !== "broken")
+          .sort((a, b) => tamaPetLifeFraction(a) - tamaPetLifeFraction(b))[0];
+        iconEl.textContent = worst ? tamaPetDisplayEmoji(worst) : "🥚";
+      }
     }
     const tabEl = el("tab-tamagotchi");
     if (tabEl) {
-      tabEl.classList.toggle("has-pending-gift", (tamaState.pendingGifts || []).length > 0);
-    }
-    const moodEmojiEl = el("tama-mood-emoji");
-    if (moodEmojiEl) {
-      const worst = [...tamaState.pets]
-        .filter((p) => p.stage !== "broken")
-        .sort((a, b) => tamaPetLifeFraction(a) - tamaPetLifeFraction(b))[0];
-      moodEmojiEl.textContent = worst ? tamaPetDisplayEmoji(worst) : "🥚";
+      tabEl.classList.toggle("has-pending-gift", pending > 0);
+      tabEl.title = pending > 0 ? "Un cadeau t'attend !" : "Humeur du compagnon";
     }
   }
 
@@ -583,7 +652,7 @@
   --------------------------------------------------------- */
   function mergeTamaGoals(remoteGoals) {
     let changed = false;
-    for (const [key, remote] of Object.entries(remoteGoals || {})) {
+    for (const [key, remote] of Object.entries(sanitizeTamaGoals(remoteGoals))) {
       if (!tamaGoals[key]) {
         tamaGoals[key] = remote;
         changed = true;
@@ -593,23 +662,90 @@
     return changed;
   }
 
+  /** Réglages persistés localement (jours de rattrapage, mode "encore",
+   *  jours avant hibernation, moyenne/écart-type des cadeaux) : embarqués
+   *  dans le même blob que le foyer Tamagotchi pour voyager d'un appareil
+   *  à l'autre — et donc survivre à un changement d'hébergement/URL entre
+   *  deux versions livrées, pas seulement au localStorage d'un appareil. */
+  function collectAppSettings() {
+    return {
+      bonusDays: bonusDaysSettings,
+      bonusAgainMode,
+      hibernateDays,
+      giftMean: getGiftMean(),
+      giftStd: getGiftStd(),
+      updatedAt: getAppSettingsTimestamp(),
+    };
+  }
+
+  function applyAppSettings(settings) {
+    if (!settings) return;
+    if (settings.bonusDays) {
+      bonusDaysSettings = settings.bonusDays;
+      localStorage.setItem(BONUS_DAYS_KEY, JSON.stringify(bonusDaysSettings));
+    }
+    if (settings.bonusAgainMode) {
+      bonusAgainMode = settings.bonusAgainMode;
+      localStorage.setItem(BONUS_AGAIN_MODE_KEY, bonusAgainMode);
+    }
+    if (Number.isFinite(settings.hibernateDays)) {
+      hibernateDays = clampHibernateDays(settings.hibernateDays, DEFAULT_HIBERNATE_DAYS);
+      localStorage.setItem(HIBERNATE_DAYS_KEY, String(hibernateDays));
+    }
+    if (Number.isFinite(settings.giftMean)) localStorage.setItem(TAMA_GIFT_MEAN_KEY, String(settings.giftMean));
+    if (Number.isFinite(settings.giftStd)) localStorage.setItem(TAMA_GIFT_STD_KEY, String(settings.giftStd));
+    if (settings.updatedAt) localStorage.setItem(APP_SETTINGS_TS_KEY, settings.updatedAt);
+    renderSettingsView();
+  }
+
+  /** Vrai tant que cet appareil n'a jamais terminé de premier tirage
+   *  ("pull") réussi de l'état distant. Sert de garde-fou au tout premier
+   *  branchement de la synchro sur un appareil neuf (ou après effacement
+   *  des données) : dans ce cas précis, on adopte TOUJOURS l'état distant
+   *  tel quel, sans comparaison de date — un foyer local qui vient d'être
+   *  créé localement (donc sans aucun historique réel) ne doit jamais
+   *  pouvoir "gagner" face à une vraie progression déjà synchronisée,
+   *  même si son horodatage local paraît plus récent. C'est précisément
+   *  ce qui provoquait la remise à zéro constatée en connectant un second
+   *  appareil : le foyer flambant neuf du second appareil écrasait le
+   *  foyer distant, qui écrasait ensuite le premier appareil à son tour. */
+  const TAMA_SYNCED_ONCE_KEY = "fiches_tama_synced_once";
+
   async function pushTamaBlob() {
     if (!Sync.isConfigured()) return false;
-    return Sync.pushTamaState({ pet: tamaState, goals: tamaGoals });
+    return Sync.pushTamaState({ pet: tamaState, goals: tamaGoals, settings: collectAppSettings() });
   }
 
   async function pullAndMergeTama() {
     if (!Sync.isConfigured()) return;
     const remote = await Sync.pullTamaState();
-    if (!remote) return;
-    mergeTamaGoals(remote.goals);
-    // État du foyer : on garde le plus récemment mis à jour dans son
-    // ensemble (compagnons + compteurs forment un tout cohérent, les
-    // fusionner champ à champ donnerait un état incohérent).
-    if (remote.pet && new Date(remote.pet.updatedAt || 0) > new Date(tamaState.updatedAt || 0)) {
-      tamaState = remote.pet;
-      saveTamaState();
+    const firstSyncOnThisDevice = !localStorage.getItem(TAMA_SYNCED_ONCE_KEY);
+
+    if (remote) {
+      mergeTamaGoals(remote.goals);
+      // État du foyer : on garde le plus récemment mis à jour dans son
+      // ensemble (compagnons + compteurs forment un tout cohérent, les
+      // fusionner champ à champ donnerait un état incohérent) — sauf lors
+      // du tout premier branchement sur cet appareil, où le distant gagne
+      // toujours (voir note ci-dessus).
+      const adoptRemotePet =
+        firstSyncOnThisDevice ||
+        new Date(remote.pet && remote.pet.updatedAt || 0) > new Date(tamaState.updatedAt || 0);
+      if (remote.pet && adoptRemotePet) {
+        tamaState = remote.pet;
+        if (!tamaState.foods) tamaState.foods = [];
+        saveTamaState();
+      }
+      // Réglages : même logique.
+      if (remote.settings) {
+        const adoptRemoteSettings =
+          firstSyncOnThisDevice ||
+          new Date(remote.settings.updatedAt || 0) > new Date(getAppSettingsTimestamp());
+        if (adoptRemoteSettings) applyAppSettings(remote.settings);
+      }
     }
+
+    localStorage.setItem(TAMA_SYNCED_ONCE_KEY, "1");
     await pushTamaBlob();
   }
 
@@ -1116,7 +1252,10 @@
       return;
     }
 
-    // Mode bonus : on continue avec des fiches piochées au hasard.
+    // Mode bonus : on continue avec des fiches piochées au hasard. Le
+    // popup de bascule ne doit s'afficher qu'une fois, à l'entrée en
+    // révision libre — pas à chaque nouvelle fiche piochée une fois dedans.
+    const enteringBonusMode = !isBonusMode;
     isBonusMode = true;
     currentCard = pickRandomBonusCard(pool, currentCard ? currentCard.id : null);
     emptyStateEl.hidden = true;
@@ -1127,6 +1266,9 @@
     questionTextEl.textContent = currentCard.question;
     answerTextEl.textContent = currentCard.answer;
     reviewProgressEl.textContent = "Fiches du jour terminées — révision libre";
+    if (enteringBonusMode) {
+      showTamaToast("🔁 Fiches du jour terminées — passage en révision libre", false);
+    }
 
     updateRatingPreviews();
     renderDuePill();
@@ -1411,6 +1553,10 @@
       q.className = "card-row-q";
       q.textContent = card.question;
 
+      const a = document.createElement("p");
+      a.className = "card-row-a";
+      a.textContent = card.answer;
+
       const meta = document.createElement("p");
       meta.className = "card-row-meta";
       meta.textContent = SM2.isDue(card)
@@ -1418,6 +1564,7 @@
         : `prochaine question dans ${formatInterval(daysUntil(card.dueDate))}`;
 
       main.appendChild(q);
+      main.appendChild(a);
       main.appendChild(meta);
 
       const actions = document.createElement("div");
@@ -1631,25 +1778,22 @@
     if (!chartEl) return;
     const buckets = computeDueHistogram(pool, days);
     const max = Math.max(0, ...buckets.map((b) => b.count));
-    // Les objectifs-cadeaux n'ont de sens que sur les échelles rapprochées
+    // L'objectif-cadeau n'a de sens que sur les échelles rapprochées
     // (15 / 30 jours) : au-delà, les colonnes sont trop tassées pour rester
     // lisibles avec un repère en plus.
     const showGoals = !!giftOpts && days <= 31;
     if (giftOpts) reviewChartHasReadyGoal = false;
 
-    // Un objectif par catégorie (commune/rare/épique/légendaire), toujours
-    // présent, calculé sur une fenêtre d'au moins 16 jours indépendante du
-    // zoom actuellement affiché (sinon l'échéance 3-15 j pourrait tomber
-    // hors des données récupérées).
-    let goalsByDate = null;
+    // Un seul objectif par matière, sur une fenêtre d'au moins 16 jours
+    // indépendante du zoom actuellement affiché (sinon le seuil dépendrait
+    // de l'échelle regardée sur le moment).
+    let goal = null;
+    let goalReady = false;
     if (showGoals) {
       const goalBuckets = days >= 16 ? buckets : computeDueHistogram(pool, 16);
-      goalsByDate = {};
-      GIFT_TIERS.forEach((tier) => {
-        const goal = ensureTamaGoal(giftOpts.subjectId, tier, goalBuckets);
-        if (!goalsByDate[goal.targetDate]) goalsByDate[goal.targetDate] = [];
-        goalsByDate[goal.targetDate].push(goal);
-      });
+      goal = ensureSubjectGoal(giftOpts.subjectId, goalBuckets);
+      goalReady = goalBuckets.every((b) => b.count <= goal.threshold);
+      if (goalReady) reviewChartHasReadyGoal = true;
     }
 
     // Compte précédent par jour (mémorisé sur l'élément lui-même) : sert à
@@ -1717,53 +1861,40 @@
       col.appendChild(bar);
       col.appendChild(label);
 
-      if (goalsByDate) {
-        const dateISO = b.date.toISOString().slice(0, 10);
-        const goalsHere = goalsByDate[dateISO];
-        if (goalsHere) {
-          goalsHere.forEach((goal) => {
-            const ready = b.count >= goal.threshold;
-            if (ready) reviewChartHasReadyGoal = true;
-            const targetPx = Math.min(maxBarPx, Math.max(2, Math.round((goal.threshold / scaleMax) * maxBarPx)));
-
-            const marker = document.createElement(ready ? "button" : "div");
-            if (ready) marker.type = "button";
-            marker.className = `chart-goal chart-goal--tier-${goal.tier} ${ready ? "is-ready" : "is-locked"}`;
-            marker.style.bottom = `${targetPx}px`;
-            marker.title = ready
-              ? `${GIFT_TIER_LABELS[goal.tier]} — objectif atteint, touche pour l'envoyer sur la page Tamagotchi`
-              : `${GIFT_TIER_LABELS[goal.tier]} — encore ${goal.threshold - b.count} fiche(s) ce jour-là (objectif : ${goal.threshold})`;
-
-            const line = document.createElement("span");
-            line.className = "chart-goal-line";
-            const emoji = document.createElement("span");
-            emoji.className = "chart-goal-gift";
-            emoji.textContent = "🎁";
-            marker.appendChild(emoji);
-            marker.appendChild(line);
-            if (!ready) {
-              const progress = document.createElement("span");
-              progress.className = "chart-goal-progress";
-              progress.textContent = `${b.count}/${goal.threshold}`;
-              marker.appendChild(progress);
-            }
-
-            if (ready) {
-              marker.addEventListener("click", (e) => {
-                e.stopPropagation();
-                collectTamaGoal(giftOpts.subjectId, goal.tier);
-                if (giftOpts.onCollect) giftOpts.onCollect(goal.tier, marker);
-              });
-            }
-            col.appendChild(marker);
-          });
-        }
-      }
-
       frag.appendChild(col);
     });
     chartEl.appendChild(frag);
     chartEl._prevCounts = buckets.map((b) => b.count);
+
+    // Ligne d'objectif unique, sur toute la largeur du graphique (y compris
+    // la partie qui déborde hors écran si l'histogramme est plus large que
+    // sa carte) : cliquable dès que toutes les barres sont retombées à son
+    // niveau ou en dessous.
+    if (goal) {
+      const targetPx = Math.min(maxBarPx, Math.max(0, Math.round((goal.threshold / scaleMax) * maxBarPx)));
+      const marker = document.createElement(goalReady ? "button" : "div");
+      if (goalReady) marker.type = "button";
+      marker.className = `chart-goal-bar ${goalReady ? "is-ready" : "is-locked"}`;
+      marker.style.bottom = `${targetPx}px`;
+      marker.title = goalReady
+        ? "Objectif atteint — touche pour envoyer le cadeau sur la page Tamagotchi"
+        : `Objectif : faire retomber toutes les barres à ${goal.threshold} fiche(s) ou moins`;
+
+      const emoji = document.createElement("span");
+      emoji.className = "chart-goal-bar-gift";
+      emoji.textContent = "🎁";
+      marker.appendChild(emoji);
+
+      if (goalReady) {
+        marker.addEventListener("click", (e) => {
+          e.stopPropagation();
+          collectSubjectGoal(giftOpts.subjectId);
+          if (giftOpts.onCollect) giftOpts.onCollect(marker);
+        });
+      }
+      chartEl.appendChild(marker);
+    }
+
     if (giftOpts) refreshTamaTabIcon();
   }
 
@@ -1818,12 +1949,6 @@
 
     const tile = document.createElement("div");
     tile.className = "tama-pet-tile";
-    // Placement "un peu au hasard" + léger tangage, recalculés à chaque
-    // rendu de la page (donc à chaque visite) pour un rendu plus naturel.
-    const jitterX = (Math.random() - 0.5) * 18;
-    const jitterY = (Math.random() - 0.5) * 22;
-    const rotate = (Math.random() - 0.5) * 16;
-    tile.style.transform = `translate(${jitterX}px, ${jitterY}px) rotate(${rotate}deg)`;
 
     const ring = document.createElement("div");
     ring.className = "tama-pet-ring";
@@ -1844,8 +1969,60 @@
 
     const label = document.createElement("span");
     label.className = "tama-pet-label";
-    label.textContent = pet.stage === "broken" ? "Œuf au plat" : `${tamaPetDisplayName(pet)} · ${tamaPetAgeLabel(pet)}`;
+    label.textContent = pet.stage === "broken" ? "Œuf au plat" : `${pet.name} · ${tamaPetDisplayName(pet)}`;
     tile.appendChild(label);
+
+    return tile;
+  }
+
+  /** Rafraîchit un tama-pet-tile déjà présent dans le DOM sans le recréer
+   *  (anneau de vie, émoji, étiquette) — utilisé par la boucle de
+   *  simulation à chaque battement, beaucoup moins coûteux qu'un rendu
+   *  complet de la vue à chaque frame. */
+  function updatePetTileVisual(pet, tile) {
+    const size = tamaPetSizePx(pet);
+    const ringSize = size + 14;
+    const frac = pet.stage === "broken" ? 1 : tamaPetLifeFraction(pet);
+    const color = tamaPetRingColor(pet);
+
+    const ring = tile.querySelector(".tama-pet-ring");
+    const inner = tile.querySelector(".tama-pet-inner");
+    const label = tile.querySelector(".tama-pet-label");
+    if (ring) {
+      ring.style.width = `${ringSize}px`;
+      ring.style.height = `${ringSize}px`;
+      ring.style.background = pet.stage === "broken"
+        ? "rgba(255,255,255,0.12)"
+        : `conic-gradient(${color} ${Math.round(frac * 360)}deg, rgba(255,255,255,0.12) 0)`;
+    }
+    if (inner) {
+      inner.style.width = `${size}px`;
+      inner.style.height = `${size}px`;
+      inner.style.fontSize = `${Math.round(size * 0.62)}px`;
+      inner.textContent = tamaPetDisplayEmoji(pet);
+    }
+    if (label) {
+      label.textContent = pet.stage === "broken" ? "Œuf au plat" : `${pet.name} · ${tamaPetDisplayName(pet)}`;
+    }
+  }
+
+  function renderFoodTile(food) {
+    const tile = document.createElement("div");
+    tile.className = "tama-food";
+    tile.dataset.foodId = food.id;
+
+    const emoji = document.createElement("span");
+    emoji.className = "tama-food-emoji";
+    emoji.textContent = food.emoji;
+    tile.appendChild(emoji);
+
+    const track = document.createElement("div");
+    track.className = "tama-food-bar-track";
+    const fill = document.createElement("div");
+    fill.className = "tama-food-bar-fill";
+    fill.style.width = `${Math.max(0, Math.min(100, (food.remaining / food.total) * 100))}%`;
+    track.appendChild(fill);
+    tile.appendChild(track);
 
     return tile;
   }
@@ -1867,40 +2044,230 @@
     pending.forEach((gift) => {
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = `tama-gift-box chart-goal--tier-${gift.tier}`;
+      btn.className = "tama-gift-box";
       btn.textContent = "🎁";
-      btn.title = `${GIFT_TIER_LABELS[gift.tier]} — touche pour ouvrir`;
+      btn.title = "Touche pour ouvrir";
       btn.addEventListener("click", () => openGiftWithAnimation(gift.id, btn));
       row.appendChild(btn);
     });
     tamaGiftsTrayEl.appendChild(row);
   }
 
+  /** Affiche un message de confirmation bien visible, en bas d'écran.
+   *  `big` = variante plus grande / plus longue (ouverture de cadeau). */
+  function showTamaToast(message, big) {
+    const toast = document.createElement("div");
+    toast.className = big ? "tama-toast tama-toast--gift" : "tama-toast";
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), big ? 4500 : 3400);
+  }
+
   /** Ouvre un cadeau de la pile et affiche en direct ce qui vient de se
-   *  passer (nouvel œuf, ou nourriture donnée à tel compagnon). */
+   *  passer (nouvel œuf, ou nourriture posée quelque part dans le pré). */
   function openGiftWithAnimation(giftId, anchorEl) {
     const result = openPendingTamaGift(giftId);
     if (!result) return;
 
-    const toast = document.createElement("div");
-    toast.className = "tama-toast";
-    toast.textContent =
+    showTamaToast(
       result.type === "egg"
-        ? "🥚 Un nouvel œuf a rejoint le foyer !"
-        : `${result.emoji} +${result.points} donné à un compagnon`;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 1800);
+        ? `🥚 Un nouvel œuf a rejoint le foyer !`
+        : `${result.emoji} Nourriture posée dans le pré — un compagnon va la trouver`,
+      true
+    );
 
     renderTamagotchiView();
 
-    // Met brièvement en évidence le compagnon qui vient de recevoir de quoi.
+    // Met brièvement en évidence ce qui vient d'apparaître.
     requestAnimationFrame(() => {
-      const tile = tamaPetsListEl && tamaPetsListEl.querySelector(`[data-pet-id="${result.petId}"]`);
+      const selector = result.type === "egg"
+        ? `[data-pet-id="${result.petId}"]`
+        : `[data-food-id="${result.foodId}"]`;
+      const tile = tamaPetsListEl && tamaPetsListEl.querySelector(selector);
       if (tile) {
         tile.classList.add("tama-pet-tile--flash");
         setTimeout(() => tile.classList.remove("tama-pet-tile--flash"), 900);
       }
     });
+  }
+
+  /* ---------------------------------------------------------
+     Simulation du pré : déplacement continu, lent et aléatoire des
+     compagnons, évitement mutuel, et repérage/consommation de la
+     nourriture posée par les cadeaux. Ne tourne que pendant que la page
+     Tamagotchi est affichée (voir la navigation par onglets).
+  --------------------------------------------------------- */
+  let tamaSimTimer = null;
+  let petRuntime = {}; // id -> { x, y, vx, vy, nextTurnAt } — coordonnées en % du pré
+  const TAMA_TICK_MS = 220;
+  const TAMA_PEN_MIN_X = 8, TAMA_PEN_MAX_X = 92;
+  const TAMA_PEN_MIN_Y = 12, TAMA_PEN_MAX_Y = 88;
+  const TAMA_EAT_RATE_PER_SEC = 4; // points de vie transférés par seconde de "contact"
+
+  function ensurePetRuntime(pet) {
+    let rt = petRuntime[pet.id];
+    if (!rt) {
+      rt = {
+        x: TAMA_PEN_MIN_X + Math.random() * (TAMA_PEN_MAX_X - TAMA_PEN_MIN_X),
+        y: TAMA_PEN_MIN_Y + Math.random() * (TAMA_PEN_MAX_Y - TAMA_PEN_MIN_Y),
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        nextTurnAt: Date.now() + 1500 + Math.random() * 3000,
+      };
+      petRuntime[pet.id] = rt;
+    }
+    return rt;
+  }
+
+  /** Un battement de la simulation : fait avancer chaque compagnon d'un
+   *  petit pas, gère l'évitement mutuel, l'attraction douce vers la
+   *  nourriture la plus proche, et la consommation ("vases communicants"
+   *  entre la barre de nourriture restante et la vie du compagnon). */
+  function stepTamaSimulation() {
+    if (!tamaState || tamaState.pets.length === 0) return;
+    const alive = tamaState.pets.filter((p) => p.stage !== "broken");
+    const foods = tamaState.foods || [];
+    let dataChanged = false;
+    const dtSec = TAMA_TICK_MS / 1000;
+
+    alive.forEach((pet) => {
+      const rt = ensurePetRuntime(pet);
+
+      // Change de direction de temps en temps ("aléatoirement").
+      if (Date.now() > rt.nextTurnAt) {
+        rt.vx = (Math.random() - 0.5) * 0.5;
+        rt.vy = (Math.random() - 0.5) * 0.5;
+        rt.nextTurnAt = Date.now() + 2000 + Math.random() * 3500;
+      }
+
+      // Évitement mutuel ("sans se rentrer dedans") : légère répulsion vis-
+      // à-vis de chaque autre compagnon trop proche.
+      alive.forEach((other) => {
+        if (other === pet) return;
+        const ort = ensurePetRuntime(other);
+        const dx = rt.x - ort.x, dy = rt.y - ort.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 0.001;
+        const minDist = 14;
+        if (dist < minDist) {
+          rt.vx += (dx / dist) * 0.06;
+          rt.vy += (dy / dist) * 0.06;
+        }
+      });
+
+      // Légère attraction vers la nourriture disponible la plus proche —
+      // sans quoi, dans un pré assez grand, un compagnon pourrait ne
+      // jamais croiser la nourriture posée par hasard.
+      let nearestFood = null;
+      let nearestDist = Infinity;
+      foods.forEach((food) => {
+        if (food.eatenBy && food.eatenBy !== pet.id) return;
+        const dx = food.x - rt.x, dy = food.y - rt.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < nearestDist) {
+          nearestDist = dist;
+          nearestFood = food;
+        }
+      });
+      if (nearestFood && nearestDist > 3) {
+        const dx = nearestFood.x - rt.x, dy = nearestFood.y - rt.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 0.001;
+        rt.vx += (dx / dist) * 0.045;
+        rt.vy += (dy / dist) * 0.045;
+      }
+
+      // Vitesse plafonnée ("lentement").
+      const speed = Math.sqrt(rt.vx * rt.vx + rt.vy * rt.vy);
+      const maxSpeed = 0.85;
+      if (speed > maxSpeed) {
+        rt.vx = (rt.vx / speed) * maxSpeed;
+        rt.vy = (rt.vy / speed) * maxSpeed;
+      }
+
+      rt.x += rt.vx;
+      rt.y += rt.vy;
+      if (rt.x < TAMA_PEN_MIN_X) { rt.x = TAMA_PEN_MIN_X; rt.vx = Math.abs(rt.vx); }
+      if (rt.x > TAMA_PEN_MAX_X) { rt.x = TAMA_PEN_MAX_X; rt.vx = -Math.abs(rt.vx); }
+      if (rt.y < TAMA_PEN_MIN_Y) { rt.y = TAMA_PEN_MIN_Y; rt.vy = Math.abs(rt.vy); }
+      if (rt.y > TAMA_PEN_MAX_Y) { rt.y = TAMA_PEN_MAX_Y; rt.vy = -Math.abs(rt.vy); }
+
+      // "Tombe dessus" -> mange : la barre de nourriture se vide pendant
+      // que la vie du compagnon se remplit d'autant (vases communicants).
+      if (nearestFood && nearestDist <= 5) {
+        if (!nearestFood.eatenBy) nearestFood.eatenBy = pet.id;
+        if (nearestFood.eatenBy === pet.id) {
+          const capacity = tamaPetCapacity(pet);
+          if (capacity > 0) {
+            const bite = Math.min(nearestFood.remaining, capacity, TAMA_EAT_RATE_PER_SEC * dtSec);
+            if (bite > 0) {
+              pet.life += bite;
+              nearestFood.remaining -= bite;
+              normalizePetLife(pet);
+              dataChanged = true;
+            }
+          }
+          // Nourriture épuisée, ou compagnon repu (déjà au maximum du
+          // dernier stade) : elle disparaît — s'il en restait, elle reste
+          // disponible dans le pré pour un autre compagnon.
+          if (nearestFood.remaining <= 0.05) {
+            tamaState.foods = tamaState.foods.filter((f) => f.id !== nearestFood.id);
+            dataChanged = true;
+          } else if (tamaPetCapacity(pet) <= 0) {
+            nearestFood.eatenBy = null;
+          }
+        }
+      }
+    });
+
+    // Nettoyage des positions de compagnons disparus (œuf au plat effacé).
+    Object.keys(petRuntime).forEach((id) => {
+      if (!tamaState.pets.some((p) => p.id === id)) delete petRuntime[id];
+    });
+
+    renderPetPositions();
+    if (dataChanged) {
+      saveTamaState();
+      refreshTamaTabIcon();
+    }
+  }
+
+  /** Applique les positions courantes (calculées par stepTamaSimulation)
+   *  aux tuiles déjà présentes dans le DOM, et met à jour les barres de
+   *  nourriture — sans reconstruire la liste à chaque battement. */
+  function renderPetPositions() {
+    if (!tamaPetsListEl) return;
+    tamaState.pets.forEach((pet) => {
+      const tile = tamaPetsListEl.querySelector(`[data-pet-id="${pet.id}"]`);
+      if (!tile) return;
+      if (pet.stage === "broken") {
+        tile.style.left = "50%";
+        tile.style.top = "50%";
+      } else {
+        const rt = ensurePetRuntime(pet);
+        tile.style.left = `${rt.x}%`;
+        tile.style.top = `${rt.y}%`;
+      }
+      updatePetTileVisual(pet, tile);
+    });
+    (tamaState.foods || []).forEach((food) => {
+      const tile = tamaPetsListEl.querySelector(`[data-food-id="${food.id}"]`);
+      if (!tile) return;
+      tile.style.left = `${food.x}%`;
+      tile.style.top = `${food.y}%`;
+      const fill = tile.querySelector(".tama-food-bar-fill");
+      if (fill) fill.style.width = `${Math.max(0, Math.min(100, (food.remaining / food.total) * 100))}%`;
+    });
+  }
+
+  function startTamaSimulation() {
+    if (tamaSimTimer) return;
+    tamaSimTimer = setInterval(stepTamaSimulation, TAMA_TICK_MS);
+  }
+
+  function stopTamaSimulation() {
+    if (tamaSimTimer) {
+      clearInterval(tamaSimTimer);
+      tamaSimTimer = null;
+    }
   }
 
   function renderTamagotchiView() {
@@ -1913,6 +2280,15 @@
       tamaState.pets.forEach((pet) => {
         const tile = renderPetTile(pet);
         tile.dataset.petId = pet.id;
+        const rt = pet.stage === "broken" ? null : ensurePetRuntime(pet);
+        tile.style.left = rt ? `${rt.x}%` : "50%";
+        tile.style.top = rt ? `${rt.y}%` : "50%";
+        frag.appendChild(tile);
+      });
+      (tamaState.foods || []).forEach((food) => {
+        const tile = renderFoodTile(food);
+        tile.style.left = `${food.x}%`;
+        tile.style.top = `${food.y}%`;
         frag.appendChild(tile);
       });
       tamaPetsListEl.appendChild(frag);
@@ -1991,14 +2367,10 @@
 
   /** Petit toast qui confirme qu'un cadeau vient de partir dans la pile "à
    *  ouvrir" de la page Tamagotchi, sans changer la mise en page ici. */
-  function showTamaGiftToast(tier, anchorEl) {
+  function showTamaGiftToast() {
     refreshTamaTabIcon();
     renderReviewChart(); // fait disparaître le repère tout juste récolté, en affiche un nouveau
-    const toast = document.createElement("div");
-    toast.className = "tama-toast";
-    toast.textContent = `🎁 ${GIFT_TIER_LABELS[tier]} envoyé vers la page Tamagotchi`;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 1800);
+    showTamaToast("🎁 Cadeau envoyé vers la page Tamagotchi", false);
   }
 
   /** Tape sur le mini graphique : passe à l'échelle supérieure (boucle). */
@@ -2036,8 +2408,23 @@
     }
   }
 
+  const APP_SETTINGS_TS_KEY = "fiches_settings_ts";
+
+  /** Horodatage de la dernière modification locale des réglages — permet,
+   *  à la synchro, de savoir si les réglages distants sont plus récents
+   *  (et doivent donc être appliqués ici) ou l'inverse. */
+  function touchAppSettingsTimestamp() {
+    localStorage.setItem(APP_SETTINGS_TS_KEY, new Date().toISOString());
+  }
+
+  function getAppSettingsTimestamp() {
+    return localStorage.getItem(APP_SETTINGS_TS_KEY) || new Date(0).toISOString();
+  }
+
   function saveBonusDaysSettings() {
     localStorage.setItem(BONUS_DAYS_KEY, JSON.stringify(bonusDaysSettings));
+    touchAppSettingsTimestamp();
+    if (Sync.isConfigured()) pushTamaBlob();
   }
 
   function loadBonusAgainMode() {
@@ -2047,6 +2434,8 @@
 
   function saveBonusAgainMode() {
     localStorage.setItem(BONUS_AGAIN_MODE_KEY, bonusAgainMode);
+    touchAppSettingsTimestamp();
+    if (Sync.isConfigured()) pushTamaBlob();
   }
 
   function clampHibernateDays(value, fallback) {
@@ -2066,6 +2455,8 @@
 
   function saveHibernateDays() {
     localStorage.setItem(HIBERNATE_DAYS_KEY, String(hibernateDays));
+    touchAppSettingsTimestamp();
+    if (Sync.isConfigured()) pushTamaBlob();
   }
 
   function renderSettingsView() {
@@ -2152,18 +2543,14 @@
       if (view === "sync") renderSyncView();
       if (view === "settings") renderSettingsView();
       renderDuePill();
+
+      if (view === "tamagotchi") {
+        startTamaSimulation();
+      } else {
+        stopTamaSimulation();
+      }
     });
   });
-
-  /** Le smiley d'humeur du haut de la page Réviser ouvre directement
-   *  l'onglet Tamagotchi (raccourci, sans dupliquer la logique de nav). */
-  const tamaMoodBtnEl = el("tama-mood-btn");
-  if (tamaMoodBtnEl) {
-    tamaMoodBtnEl.addEventListener("click", () => {
-      const tamaTab = el("tab-tamagotchi");
-      if (tamaTab) tamaTab.click();
-    });
-  }
 
   /* ---------------------------------------------------------
      Vue Sync : formulaire de connexion + statut
@@ -2292,7 +2679,13 @@
       return;
     }
     if (unsubscribeRealtime) unsubscribeRealtime();
+    if (tamaSyncUnsub) tamaSyncUnsub();
     Sync.clearConfig();
+    // Si un code est reconnecté plus tard (même celui-ci ou un autre), on
+    // doit retraiter ça comme un tout premier branchement (voir
+    // pullAndMergeTama) plutôt que de comparer des horodatages locaux
+    // désormais hors-contexte.
+    localStorage.removeItem(TAMA_SYNCED_ONCE_KEY);
     syncForm.reset();
     renderSyncView();
     updateSyncStatus();
@@ -2471,7 +2864,11 @@
       const changedGoals = mergeTamaGoals(remoteBlob.goals);
       if (remoteBlob.pet && new Date(remoteBlob.pet.updatedAt || 0) > new Date(tamaState.updatedAt || 0)) {
         tamaState = remoteBlob.pet;
+        if (!tamaState.foods) tamaState.foods = [];
         saveTamaState();
+      }
+      if (remoteBlob.settings && new Date(remoteBlob.settings.updatedAt || 0) > new Date(getAppSettingsTimestamp())) {
+        applyAppSettings(remoteBlob.settings);
       }
       if (changedGoals || remoteBlob.pet) {
         refreshTamaTabIcon();

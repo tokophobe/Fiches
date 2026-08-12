@@ -321,7 +321,7 @@ textarea, input {
 .tab + .tab { margin-left: 14px; }
 
 .tab.tab--icon {
-  font-size: 16px;
+  font-size: 19px;
   padding: 8px 4px 10px;
 }
 
@@ -777,7 +777,7 @@ textarea, input {
   border-radius: 10px;
   padding: 12px 14px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   box-shadow: 0 6px 16px rgba(0,0,0,0.22);
   border-left: 3px solid var(--rule);
@@ -788,11 +788,22 @@ textarea, input {
 .card-row-q {
   font-family: var(--font-type);
   font-size: 14px;
+  font-weight: 600;
   color: var(--ink);
-  margin: 0 0 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin: 0 0 4px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.card-row-a {
+  font-family: var(--font-type);
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 0 0 6px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  border-left: 2px solid var(--paper-3);
+  padding-left: 8px;
 }
 
 .card-row-meta {
@@ -904,15 +915,19 @@ textarea, input {
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-deep);
   padding: 16px 12px 10px;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
 }
 
 .chart {
+  position: relative;
   display: flex;
   align-items: flex-end;
   height: 180px;
   gap: 2px;
-  width: 100%;
+  width: max-content;
 }
 
 /* Périodes longues (3 mois / 6 mois / 1 an) : trop de colonnes pour qu'un
@@ -930,10 +945,14 @@ textarea, input {
   display: none;
 }
 
+/* Largeur fixe par colonne (plutôt que "flex:1" réparti sur toute la
+   largeur visible) : au-delà d'un certain nombre de jours affichés, le
+   graphique déborde naturellement de sa carte et devient glissable
+   horizontalement au doigt (voir overflow-x sur .chart-wrap). */
 .chart-col {
   position: relative;
-  flex: 1 1 0;
-  min-width: 0;
+  flex: 0 0 24px;
+  width: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -941,6 +960,9 @@ textarea, input {
   height: 100%;
   gap: 4px;
 }
+
+.chart.chart--mini .chart-col { flex-basis: 18px; width: 18px; }
+.chart.chart--dense .chart-col { flex-basis: 7px; width: 7px; }
 
 .chart-bar {
   width: 100%;
@@ -1136,25 +1158,6 @@ textarea, input {
    TAMAGOTCHI
    ============================================================ */
 
-/* Bouton smiley dans le header : rond compact, même hauteur que les
-   autres pastilles du header, donc n'ajoute aucune hauteur à la page. */
-.tama-mood-btn {
-  flex-shrink: 0;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 1px solid rgba(247, 241, 225, 0.22);
-  background: rgba(247, 241, 225, 0.08);
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  line-height: 1;
-}
-
-.tama-mood-btn:hover { background: rgba(247, 241, 225, 0.16); }
-
 /* Icône 🎁 -> stade de croissance de l'onglet : petit point ambre quand un
    cadeau attend d'être récolté quelque part. */
 .tab--icon#tab-tamagotchi { position: relative; }
@@ -1170,25 +1173,30 @@ textarea, input {
   box-shadow: 0 0 0 2px var(--desk);
 }
 
-/* Foyer : les compagnons flottent librement, sans carte ni cadre — juste
-   leur anneau de vie (couleur + longueur = pourcentage de vie) autour
-   d'eux, dispersés façon flex avec un léger tangage recalculé à chaque
-   visite pour un rendu plus naturel qu'une grille bien rangée. */
+/* Foyer : un pré clos dans lequel les compagnons se déplacent tout seuls,
+   lentement et sans se chevaucher (voir la boucle JS stepTamaSimulation) ;
+   la nourriture gagnée y est posée au hasard et disparaît, mangée, quand un
+   compagnon passe dessus. Positionnement en absolu (%), donc le conteneur
+   a besoin d'une hauteur fixe. */
 .tama-pets-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 22px 16px;
-  padding: 18px 6px 22px;
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: linear-gradient(180deg, rgba(247,241,225,0.05), rgba(247,241,225,0.02));
+  border: 1px solid rgba(247, 241, 225, 0.1);
+  margin-bottom: 14px;
 }
 
 .tama-pet-tile {
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  transition: transform 0.4s ease;
+  gap: 3px;
+  transform: translate(-50%, -50%);
+  transition: left 0.5s linear, top 0.5s linear;
+  will-change: left, top;
 }
 
 .tama-pet-tile--flash .tama-pet-ring {
@@ -1198,6 +1206,41 @@ textarea, input {
 @keyframes tama-pet-flash {
   0%, 100% { filter: none; }
   40% { filter: brightness(1.6) drop-shadow(0 0 10px var(--amber)); }
+}
+
+/* Nourriture posée dans le pré : l'émoji, avec une mini-barre en dessous
+   qui se vide au fur et à mesure qu'un compagnon la mange (vases
+   communicants avec l'anneau de vie du compagnon, qui lui se remplit). */
+.tama-food {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  transform: translate(-50%, -50%);
+  font-size: 22px;
+  line-height: 1;
+  z-index: 2;
+  animation: tama-food-pop 0.3s ease;
+}
+
+@keyframes tama-food-pop {
+  from { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+  to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+.tama-food-bar-track {
+  width: 22px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(247, 241, 225, 0.18);
+  overflow: hidden;
+}
+
+.tama-food-bar-fill {
+  height: 100%;
+  background: var(--amber);
+  transition: width 0.25s linear;
 }
 
 .tama-pet-ring {
@@ -1257,15 +1300,11 @@ textarea, input {
 .tama-gift-box {
   font-size: 22px;
   background: var(--paper-2);
-  border: 2px solid var(--paper-3);
+  border: 2px solid var(--amber);
   border-radius: 12px;
   padding: 6px 10px;
   animation: chart-goal-pulse 1.6s ease-in-out infinite;
 }
-
-.tama-gift-box.chart-goal--tier-rare { border-color: var(--blue); }
-.tama-gift-box.chart-goal--tier-epique { border-color: #8a5fd1; }
-.tama-gift-box.chart-goal--tier-legendaire { border-color: var(--amber); }
 
 /* Trophées : figés, façon photo encadrée — volontairement différents des
    compagnons vivants (qui eux n'ont aucun cadre). */
@@ -1292,102 +1331,99 @@ textarea, input {
 .tama-hint { margin-bottom: 8px; }
 
 
-/* Objectif-cadeau posé sur une barre de l'histogramme mini (page Réviser) :
-   une ligne pointillée matérialise la hauteur à atteindre, le cadeau posé
-   dessus reste grisé/verrouillé tant qu'elle n'est pas atteinte, et
-   s'illumine (cliquable) dès que la barre la rejoint ou la dépasse. */
-.chart-goal {
+/* Objectif-cadeau de l'histogramme mini (page Réviser) : une seule ligne
+   horizontale, sur toute la largeur du graphique (y compris la partie qui
+   déborde hors écran), à 80% de la barre la plus haute au moment où
+   l'objectif a été fixé. Grisée/pointillée tant que des barres dépassent
+   encore, pleine et cliquable dès que toutes les barres sont retombées
+   à son niveau ou en dessous. */
+.chart-goal-bar {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 2px dashed var(--ink-soft);
   z-index: 3;
   background: none;
-  border: none;
   padding: 0;
+  cursor: default;
 }
 
-.chart-goal-gift {
-  font-size: 14px;
+.chart-goal-bar-gift {
+  position: absolute;
+  right: 6px;
+  top: -13px;
+  font-size: 15px;
   line-height: 1;
 }
 
-.chart-goal-line {
-  width: 24px;
-  height: 0;
-  border-top: 2px dashed var(--ink-soft);
-  margin-top: 2px;
-}
-
-.chart-goal-progress {
-  font-family: var(--font-mono);
-  font-size: 8px;
-  color: var(--ink-soft);
-  margin-top: 2px;
-  white-space: nowrap;
-}
-
-/* Verrouillé : discret, en attente — motive à continuer sans distraire. */
-.chart-goal.is-locked .chart-goal-gift {
-  filter: grayscale(1);
-  opacity: 0.55;
-}
-
-/* Prêt à ouvrir : la ligne devient pleine et colorée selon la rareté, le
-   cadeau pulse pour attirer l'œil, et tout redevient cliquable. */
-.chart-goal.is-ready {
+/* Prêt à ouvrir : la ligne devient pleine et ambrée, le cadeau pulse. */
+.chart-goal-bar.is-ready {
   cursor: pointer;
-}
-
-.chart-goal.is-ready .chart-goal-line {
   border-top-style: solid;
   border-top-color: var(--amber);
 }
 
-.chart-goal.is-ready .chart-goal-gift {
+.chart-goal-bar.is-ready .chart-goal-bar-gift {
   animation: chart-goal-pulse 1.6s ease-in-out infinite;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
 }
 
-.chart-goal--tier-rare.is-ready .chart-goal-line { border-top-color: var(--blue); }
-.chart-goal--tier-epique.is-ready .chart-goal-line { border-top-color: #8a5fd1; }
-.chart-goal--tier-legendaire.is-ready .chart-goal-line { border-top-color: var(--amber); }
-.chart-goal--tier-legendaire.is-ready .chart-goal-gift {
-  filter: drop-shadow(0 0 4px var(--amber));
-  font-size: 16px;
+.chart-goal-bar.is-locked .chart-goal-bar-gift {
+  filter: grayscale(1);
+  opacity: 0.55;
 }
 
 @keyframes chart-goal-pulse {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+  50% { transform: scale(1.25); }
 }
 
-/* Toast de confirmation à l'ouverture d'un cadeau : discret, en bas d'écran,
-   n'affecte la mise en page d'aucune vue. */
+/* Toast de confirmation (cadeau récolté / cadeau ouvert / passage en
+   révision libre) : bien visible, assez gros pour se lire d'un coup d'œil,
+   reste affiché assez longtemps avant de s'effacer. */
 .tama-toast {
   position: fixed;
   left: 50%;
-  bottom: 28px;
+  bottom: 40px;
   transform: translateX(-50%);
+  max-width: min(86vw, 360px);
+  text-align: center;
   background: var(--ink);
   color: var(--paper);
   font-family: var(--font-mono);
-  font-size: 13px;
-  padding: 10px 16px;
-  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 16px 22px;
+  border-radius: 16px;
   box-shadow: var(--shadow-deep);
   z-index: 50;
-  animation: tama-toast-in-out 1.6s ease forwards;
+  animation: tama-toast-in-out 3.4s ease forwards;
   pointer-events: none;
 }
 
+/* Toast d'ouverture de cadeau : encore plus grand, reste encore plus
+   longtemps — c'est le moment le plus satisfaisant du jeu. */
+.tama-toast--gift {
+  font-size: 18px;
+  padding: 20px 26px;
+  border-radius: 18px;
+  border: 2px solid var(--amber);
+  animation: tama-toast-in-out 4.5s ease forwards;
+}
+
+.tama-toast--gift .tama-toast-emoji {
+  display: block;
+  font-size: 34px;
+  margin-bottom: 6px;
+}
+
 @keyframes tama-toast-in-out {
-  0% { opacity: 0; transform: translate(-50%, 10px); }
-  15% { opacity: 1; transform: translate(-50%, 0); }
-  80% { opacity: 1; transform: translate(-50%, 0); }
-  100% { opacity: 0; transform: translate(-50%, -6px); }
+  0% { opacity: 0; transform: translate(-50%, 10px) scale(0.92); }
+  8% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  88% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -6px) scale(0.98); }
 }
 
 /* ============================================================
