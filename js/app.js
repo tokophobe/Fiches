@@ -2629,6 +2629,34 @@
     });
   }
 
+  /** Bouton de dépannage manuel : désinscrit le(s) service worker(s) et vide
+   *  le Cache Storage de l'appli, sans toucher IndexedDB (les fiches) ni
+   *  localStorage (réglages, foyer Tamagotchi). Sert de filet de sécurité
+   *  accessible sans les outils de développement, pour les cas où la
+   *  détection automatique de nouvelle version reste bloquée (observé sur
+   *  GitHub Pages, qui ne permet pas de fixer nous-mêmes les en-têtes de
+   *  cache HTTP — voir aussi updateViaCache: "none" plus bas). */
+  const settingHardResetEl = el("setting-hard-reset");
+  if (settingHardResetEl) {
+    settingHardResetEl.addEventListener("click", async () => {
+      settingHardResetEl.disabled = true;
+      settingHardResetEl.textContent = "Nettoyage en cours…";
+      try {
+        if (window.caches && caches.keys) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map((k) => caches.delete(k)));
+        }
+        if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map((r) => r.unregister()));
+        }
+      } catch (e) {
+        /* on recharge quand même : au pire, rien n'a pu être nettoyé */
+      }
+      window.location.reload();
+    });
+  }
+
   function wireBonusSettingInput(inputEl, rating) {
     if (!inputEl) return;
     inputEl.addEventListener("change", () => {
@@ -3074,7 +3102,15 @@
 
     window.addEventListener("load", () => {
       navigator.serviceWorker
-        .register("sw.js")
+        // `updateViaCache: "none"` : ignore complètement le cache HTTP du
+        // navigateur pour sw.js à CHAQUE vérification (pas seulement au
+        // bout de 24h comme le prévoit le comportement par défaut des
+        // navigateurs). Indispensable ici car GitHub Pages ne permet pas
+        // de fixer nous-mêmes les en-têtes de cache (contrairement à
+        // Netlify, voir le fichier _headers, sans effet sur GitHub Pages) :
+        // sans ce réglage, un sw.js mis en cache empêchait la détection de
+        // toute nouvelle version, et donc toute mise à jour, indéfiniment.
+        .register("sw.js", { updateViaCache: "none" })
         .then((registration) => {
           // Vérifie immédiatement s'il existe une version plus récente.
           registration.update();

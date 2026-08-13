@@ -423,6 +423,20 @@
           <input type="number" id="setting-tama-gift-qty-max" min="1" max="20" step="1" inputmode="numeric" />
         </label>
       </div>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Dépannage</h3>
+        <p class="field-hint settings-block-hint">
+          Si l'appli affiche un comportement bizarre ou obsolète après une
+          mise à jour (page blanche, ancienne version qui persiste...), ce
+          bouton vide le cache de l'appli et force le rechargement des
+          derniers fichiers, sans toucher à tes fiches (stockées à part,
+          en base de données locale).
+        </p>
+        <button type="button" class="btn btn--ghost" id="setting-hard-reset">
+          Vider le cache et recharger
+        </button>
+      </div>
     </section>
   </main>
 </div>
