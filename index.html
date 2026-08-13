@@ -18,6 +18,80 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
 
+<script>
+  /* Filet de sécurité anti-écran-blanc : posé tout en haut, avant tout
+     autre script, sans dépendance à rien du reste de l'appli. Si une
+     erreur JS survient N'IMPORTE OÙ pendant le chargement (dans app.js,
+     sync.js, etc.), elle plantait le script silencieusement — l'appli
+     restait juste bloquée sur l'écran de chargement vide, sans aucun
+     indice pour comprendre pourquoi. On affiche maintenant l'erreur
+     réelle, avec un bouton pour réessayer et un bouton pour repartir
+     d'une base saine (vide le cache + désinscrit le service worker),
+     utile si c'est LUI qui est resté coincé sur une version cassée. */
+  (function () {
+    var shown = false;
+    function showBootError(message) {
+      if (shown) return;
+      shown = true;
+      var box = document.createElement("div");
+      box.setAttribute(
+        "style",
+        "position:fixed;inset:0;z-index:999999;background:#1a2d26;color:#f7f1e1;" +
+          "font-family:ui-monospace,Menlo,Consolas,monospace;padding:24px;" +
+          "display:flex;flex-direction:column;gap:14px;overflow:auto;"
+      );
+      box.innerHTML =
+        '<h1 style="font-size:16px;margin:0 0 4px;">L\u2019appli n\u2019a pas pu d\u00e9marrer</h1>' +
+        '<p style="font-size:13px;line-height:1.5;margin:0;opacity:0.85;">Voici l\u2019erreur technique (utile \u00e0 transmettre) :</p>' +
+        '<pre style="font-size:11.5px;line-height:1.4;background:rgba(0,0,0,0.25);padding:10px;border-radius:8px;white-space:pre-wrap;word-break:break-word;margin:0;">' +
+        String(message).replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }) +
+        "</pre>" +
+        '<div style="display:flex;gap:10px;flex-wrap:wrap;">' +
+        '<button id="boot-err-reload" style="padding:10px 16px;border-radius:8px;border:none;background:#6f8b5c;color:#fff;font:inherit;font-size:13px;">Recharger</button>' +
+        '<button id="boot-err-reset" style="padding:10px 16px;border-radius:8px;border:none;background:#b6604a;color:#fff;font:inherit;font-size:13px;">R\u00e9initialiser (cache + service worker) et recharger</button>' +
+        "</div>";
+      document.documentElement.appendChild(box);
+      document.getElementById("boot-err-reload").addEventListener("click", function () {
+        location.reload();
+      });
+      document.getElementById("boot-err-reset").addEventListener("click", function () {
+        var jobs = [];
+        if (window.caches && caches.keys) {
+          jobs.push(caches.keys().then(function (keys) {
+            return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+          }));
+        }
+        if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+          jobs.push(navigator.serviceWorker.getRegistrations().then(function (regs) {
+            return Promise.all(regs.map(function (r) { return r.unregister(); }));
+          }));
+        }
+        Promise.all(jobs).finally(function () {
+          location.reload();
+        });
+      });
+    }
+    // Si rien n'est visiblement rendu 12s après le chargement du HTML (ex. :
+    // promesse jamais résolue, dépendance externe qui ne répond jamais),
+    // on affiche un message plutôt que de laisser un écran vide sans fin.
+    var watchdog = setTimeout(function () {
+      showBootError(
+        "L'appli met anormalement longtemps à démarrer (plus de 12s) et " +
+          "aucune erreur explicite n'a été détectée — probablement une requête " +
+          "réseau qui ne répond pas (ex. Supabase indisponible)."
+      );
+    }, 12000);
+    window.__clearBootWatchdog = function () { clearTimeout(watchdog); };
+    window.addEventListener("error", function (e) {
+      showBootError((e && e.message) || String(e));
+    });
+    window.addEventListener("unhandledrejection", function (e) {
+      var r = e && e.reason;
+      showBootError(r && r.stack ? r.stack : String(r));
+    });
+  })();
+</script>
+
 <link rel="stylesheet" href="css/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>

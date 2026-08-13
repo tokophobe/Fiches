@@ -3132,6 +3132,10 @@
     renderAll();
     startReviewSession();
     updateSyncStatus();
+    // L'essentiel de l'UI est rendu et interactif : on désarme le filet de
+    // sécurité anti-écran-blanc (voir le <script> tout en haut du <head>).
+    // La synchro Supabase qui suit peut échouer sans que ça bloque l'appli.
+    if (window.__clearBootWatchdog) window.__clearBootWatchdog();
     if (Sync.isConfigured()) {
       await connectSync();
       // Doublons "Général" : reconcileWithRemote() peut faire apparaître un
