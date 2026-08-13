@@ -3172,6 +3172,7 @@
     // sécurité anti-écran-blanc (voir le <script> tout en haut du <head>).
     // La synchro Supabase qui suit peut échouer sans que ça bloque l'appli.
     if (window.__clearBootWatchdog) window.__clearBootWatchdog();
+    if (window.__clearBootRetryFlag) window.__clearBootRetryFlag();
     if (Sync.isConfigured()) {
       await connectSync();
       // Doublons "Général" : reconcileWithRemote() peut faire apparaître un

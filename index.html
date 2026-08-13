@@ -83,12 +83,28 @@
     }, 12000);
     window.__clearBootWatchdog = function () { clearTimeout(watchdog); };
     window.addEventListener("error", function (e) {
-      showBootError((e && e.message) || String(e));
+      var msg = (e && e.message) || String(e);
+      // "Script error." sans aucun détail (ni fichier, ni ligne) est le
+      // symptôme d'un script qui n'a pas pu se charger correctement (accroc
+      // réseau ponctuel le plus souvent) plutôt qu'une vraie erreur de code
+      // — dans ce cas précis, un simple rechargement suffit presque
+      // toujours. On en tente donc UN, silencieusement, avant d'afficher
+      // quoi que ce soit ; s'il replante pareil juste après, on considère
+      // que ce n'est pas transitoire et on montre l'écran d'erreur.
+      if (msg === "Script error." && !e.filename && !sessionStorage.getItem("fiches_boot_retry")) {
+        sessionStorage.setItem("fiches_boot_retry", "1");
+        location.reload();
+        return;
+      }
+      showBootError(msg);
     });
     window.addEventListener("unhandledrejection", function (e) {
       var r = e && e.reason;
       showBootError(r && r.stack ? r.stack : String(r));
     });
+    window.__clearBootRetryFlag = function () {
+      try { sessionStorage.removeItem("fiches_boot_retry"); } catch (err) {}
+    };
   })();
 </script>
 
