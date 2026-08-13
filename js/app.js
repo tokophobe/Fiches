@@ -66,6 +66,21 @@
   const REVIEW_CHART_MAX_BAR_PX = 100;
   let reviewChartRangeDays = 15;
 
+  /* Échelles des histogrammes : `visible` = nombre de colonnes qui tiennent
+     sur la largeur de l'écran (calculé dynamiquement à partir de la largeur
+     réelle disponible), `total` = nombre de jours réellement chargés dans le
+     graphique, sur lesquels on peut ensuite défiler horizontalement. Avant,
+     les deux étaient confondus (un seul `days`), ce qui fait qu'à l'échelle
+     "3 mois" par exemple, il n'y avait justement que 3 mois de données —
+     aucun défilement possible au-delà. */
+  const RANGE_CONFIG = {
+    15: { visible: 15, total: 60 },     // 15 jours à l'écran, défilement sur 2 mois
+    30: { visible: 30, total: 120 },    // 1 mois à l'écran, défilement sur 4 mois
+    90: { visible: 90, total: 365 },    // 3 mois à l'écran, défilement sur 1 an
+    182: { visible: 180, total: 548 },  // 6 mois à l'écran, défilement sur 1,5 an
+    365: { visible: 360, total: 1095 }, // 1 an à l'écran, défilement sur 3 ans
+  };
+
   /* Réglages du mode bonus : nombre de jours dont chaque note recule la
      fiche en révision libre (persisté en local, indépendant par appareil). */
   const BONUS_DAYS_KEY = "fiches_bonus_days";
@@ -89,8 +104,9 @@
   const DEFAULT_HIBERNATE_DAYS = 7;
   let hibernateDays = DEFAULT_HIBERNATE_DAYS;
   const settingHibernateDaysEl = el("setting-hibernate-days");
-  const settingTamaGiftMeanEl = el("setting-tama-gift-mean");
-  const settingTamaGiftStdEl = el("setting-tama-gift-std");
+  const settingTamaFoodValueEl = el("setting-tama-food-value");
+  const settingTamaGiftQtyMinEl = el("setting-tama-gift-qty-min");
+  const settingTamaGiftQtyMaxEl = el("setting-tama-gift-qty-max");
 
   /** Appelée après chaque changement d'échéance issu d'une vraie révision
    *  (algorithme SM-2 normal ou mode bonus — pas l'hibernation, qui ne
@@ -141,8 +157,9 @@
   --------------------------------------------------------- */
   const TAMA_STATE_KEY = "fiches_tama_state";
   const TAMA_GOALS_KEY = "fiches_tama_goals";
-  const TAMA_GIFT_MEAN_KEY = "fiches_tama_gift_mean";
-  const TAMA_GIFT_STD_KEY = "fiches_tama_gift_std";
+  const TAMA_FOOD_VALUE_KEY = "fiches_tama_food_value";
+  const TAMA_GIFT_QTY_MIN_KEY = "fiches_tama_gift_qty_min";
+  const TAMA_GIFT_QTY_MAX_KEY = "fiches_tama_gift_qty_max";
 
   /** Un très large pool "nourriture et boissons" : n'importe quel emoji de
    *  repas, fruit, boisson chaude ou fraîche peut sortir d'un cadeau. */
@@ -338,35 +355,39 @@
     localStorage.setItem(TAMA_GOALS_KEY, JSON.stringify(tamaGoals));
   }
 
-  function getGiftMean() {
-    const v = Number(localStorage.getItem(TAMA_GIFT_MEAN_KEY));
+  /** Valeur nutritive : FIXE pour tout aliment (même valeur d'un cadeau à
+   *  l'autre) — c'est la quantité d'aliments par cadeau qui varie (voir
+   *  ci-dessous), pas leur valeur individuelle. Le but est qu'on puisse
+   *  reconnaître d'un coup d'œil qu'un aliment donné "vaut" toujours pareil. */
+  function getFoodValue() {
+    const v = Number(localStorage.getItem(TAMA_FOOD_VALUE_KEY));
     return Number.isFinite(v) && v > 0 ? v : 15;
   }
-
-  function getGiftStd() {
-    const v = Number(localStorage.getItem(TAMA_GIFT_STD_KEY));
-    return Number.isFinite(v) && v >= 0 ? v : 6;
-  }
-
-  function setGiftMean(v) {
-    localStorage.setItem(TAMA_GIFT_MEAN_KEY, String(v));
+  function setFoodValue(v) {
+    localStorage.setItem(TAMA_FOOD_VALUE_KEY, String(v));
     touchAppSettingsTimestamp();
     if (Sync.isConfigured()) pushTamaBlob();
   }
 
-  function setGiftStd(v) {
-    localStorage.setItem(TAMA_GIFT_STD_KEY, String(v));
+  /** Quantité d'aliments déposés dans le pré par un même cadeau de
+   *  nourriture : tirée uniformément entre ces deux bornes réglables. */
+  function getGiftQtyMin() {
+    const v = Number(localStorage.getItem(TAMA_GIFT_QTY_MIN_KEY));
+    return Number.isFinite(v) && v >= 1 ? v : 1;
+  }
+  function getGiftQtyMax() {
+    const v = Number(localStorage.getItem(TAMA_GIFT_QTY_MAX_KEY));
+    return Number.isFinite(v) && v >= 1 ? v : 3;
+  }
+  function setGiftQtyMin(v) {
+    localStorage.setItem(TAMA_GIFT_QTY_MIN_KEY, String(v));
     touchAppSettingsTimestamp();
     if (Sync.isConfigured()) pushTamaBlob();
   }
-
-  /** Tirage gaussien (Box-Muller) centré sur `mean`, d'écart-type `std`. */
-  function normalRandom(mean, std) {
-    let u = 0, v = 0;
-    while (u === 0) u = Math.random();
-    while (v === 0) v = Math.random();
-    const z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-    return mean + z * std;
+  function setGiftQtyMax(v) {
+    localStorage.setItem(TAMA_GIFT_QTY_MAX_KEY, String(v));
+    touchAppSettingsTimestamp();
+    if (Sync.isConfigured()) pushTamaBlob();
   }
 
   /** Recale un compagnon dont la vie vient de changer : fait redescendre
@@ -458,7 +479,10 @@
       changed = true;
     }
 
-    if (changed) saveTamaState();
+    if (changed) {
+      saveTamaState();
+      scheduleTamaPush();
+    }
   }
 
   /** Marque un œuf au plat comme "vu" par la personne : déclenche le compte
@@ -471,7 +495,10 @@
         changed = true;
       }
     });
-    if (changed) saveTamaState();
+    if (changed) {
+      saveTamaState();
+      scheduleTamaPush();
+    }
   }
 
   function tamaPetLifeFraction(pet) {
@@ -530,10 +557,11 @@
     return Infinity;
   }
 
-  /** Résout le contenu d'un cadeau : un œuf tout neuf, ou de la nourriture
-   *  posée au hasard dans le pré (quantité totale selon une loi normale
-   *  réglable) — c'est le premier compagnon qui tombera dessus en se
-   *  baladant qui la mangera (voir stepTamaSimulation). */
+  /** Résout le contenu d'un cadeau : un œuf tout neuf, ou une quantité
+   *  aléatoire (entre les bornes réglables) d'aliments — chacun à la même
+   *  valeur nutritive fixe (également réglable) — posés au hasard dans le
+   *  pré. C'est le premier compagnon qui tombera dessus en se baladant qui
+   *  les mangera (voir stepTamaSimulation). */
   function resolveTamaGift() {
     const alive = tamaState.pets.filter((p) => p.stage !== "broken");
     const pEgg = alive.length === 0 ? 1 : tamaEggProbability();
@@ -546,20 +574,27 @@
     }
 
     const emoji = FOOD_EMOJI_POOL[Math.floor(Math.random() * FOOD_EMOJI_POOL.length)];
-    const points = Math.max(1, Math.round(normalRandom(getGiftMean(), getGiftStd())));
-    const food = {
-      id: uidTama(),
-      emoji,
-      total: points,
-      remaining: points,
-      x: 12 + Math.random() * 76,
-      y: 18 + Math.random() * 64,
-      eatenBy: null,
-      createdAt: new Date().toISOString(),
-    };
-    tamaState.foods.push(food);
+    const value = getFoodValue();
+    const qtyMin = getGiftQtyMin();
+    const qtyMax = Math.max(qtyMin, getGiftQtyMax());
+    const qty = qtyMin + Math.floor(Math.random() * (qtyMax - qtyMin + 1));
+    const foodIds = [];
+    for (let i = 0; i < qty; i++) {
+      const food = {
+        id: uidTama(),
+        emoji,
+        total: value,
+        remaining: value,
+        x: 12 + Math.random() * 76,
+        y: 18 + Math.random() * 64,
+        eatenBy: null,
+        createdAt: new Date().toISOString(),
+      };
+      tamaState.foods.push(food);
+      foodIds.push(food.id);
+    }
     saveTamaState();
-    return { type: "food", emoji, points, foodId: food.id };
+    return { type: "food", emoji, qty, value, foodIds };
   }
 
   /** Ouvre un cadeau de la pile "à ouvrir" (page Tamagotchi uniquement). */
@@ -582,7 +617,12 @@
     if (tamaGoals[subjectId]) return tamaGoals[subjectId];
     const max = Math.max(0, ...goalBuckets.map((b) => b.count));
     const threshold = Math.max(0, Math.floor(max * 0.8));
-    const goal = { threshold, createdAt: new Date().toISOString() };
+    // `max` est conservé en plus de `threshold` : il sert à positionner la
+    // ligne d'objectif visuellement à 80% de la hauteur RENDUE de la barre
+    // la plus haute (voir renderHistogramInto), plutôt qu'à 80% de l'échelle
+    // arrondie du graphique (qui donnait une ligne bien plus basse que 80%,
+    // ex. 50% de hauteur pour un maximum de 7 fiches).
+    const goal = { threshold, max, createdAt: new Date().toISOString() };
     tamaGoals[subjectId] = goal;
     saveTamaGoals();
     return goal;
@@ -663,17 +703,19 @@
   }
 
   /** Réglages persistés localement (jours de rattrapage, mode "encore",
-   *  jours avant hibernation, moyenne/écart-type des cadeaux) : embarqués
-   *  dans le même blob que le foyer Tamagotchi pour voyager d'un appareil
-   *  à l'autre — et donc survivre à un changement d'hébergement/URL entre
-   *  deux versions livrées, pas seulement au localStorage d'un appareil. */
+   *  jours avant hibernation, valeur nutritive / quantité des cadeaux) :
+   *  embarqués dans le même blob que le foyer Tamagotchi pour voyager d'un
+   *  appareil à l'autre — et donc survivre à un changement d'hébergement/URL
+   *  entre deux versions livrées, pas seulement au localStorage d'un
+   *  appareil. */
   function collectAppSettings() {
     return {
       bonusDays: bonusDaysSettings,
       bonusAgainMode,
       hibernateDays,
-      giftMean: getGiftMean(),
-      giftStd: getGiftStd(),
+      foodValue: getFoodValue(),
+      giftQtyMin: getGiftQtyMin(),
+      giftQtyMax: getGiftQtyMax(),
       updatedAt: getAppSettingsTimestamp(),
     };
   }
@@ -692,8 +734,9 @@
       hibernateDays = clampHibernateDays(settings.hibernateDays, DEFAULT_HIBERNATE_DAYS);
       localStorage.setItem(HIBERNATE_DAYS_KEY, String(hibernateDays));
     }
-    if (Number.isFinite(settings.giftMean)) localStorage.setItem(TAMA_GIFT_MEAN_KEY, String(settings.giftMean));
-    if (Number.isFinite(settings.giftStd)) localStorage.setItem(TAMA_GIFT_STD_KEY, String(settings.giftStd));
+    if (Number.isFinite(settings.foodValue)) localStorage.setItem(TAMA_FOOD_VALUE_KEY, String(settings.foodValue));
+    if (Number.isFinite(settings.giftQtyMin)) localStorage.setItem(TAMA_GIFT_QTY_MIN_KEY, String(settings.giftQtyMin));
+    if (Number.isFinite(settings.giftQtyMax)) localStorage.setItem(TAMA_GIFT_QTY_MAX_KEY, String(settings.giftQtyMax));
     if (settings.updatedAt) localStorage.setItem(APP_SETTINGS_TS_KEY, settings.updatedAt);
     renderSettingsView();
   }
@@ -714,6 +757,44 @@
   async function pushTamaBlob() {
     if (!Sync.isConfigured()) return false;
     return Sync.pushTamaState({ pet: tamaState, goals: tamaGoals, settings: collectAppSettings() });
+  }
+
+  /** La simulation du foyer (déplacement, faim qui décroît, repas...) tourne
+   *  en continu toutes les 220ms (TAMA_TICK_MS) — pousser un blob complet à
+   *  chaque changement inonderait Supabase et gênerait la synchro des
+   *  fiches. `saveTamaState()` seul écrit en local à chaque tick, mais
+   *  jusqu'ici RIEN ne renvoyait ensuite ces changements vers le serveur :
+   *  décroissance de vie et repas ne se propageaient donc jamais à un autre
+   *  appareil (seuls les cadeaux ouverts et les réglages déclenchaient un
+   *  envoi). On regroupe donc les changements et on envoie au plus une fois
+   *  toutes les quelques secondes. */
+  const TAMA_PUSH_THROTTLE_MS = 6000;
+  let tamaPushTimer = null;
+  let tamaPushPending = false;
+  function scheduleTamaPush() {
+    if (!Sync.isConfigured()) return;
+    tamaPushPending = true;
+    if (tamaPushTimer) return; // déjà programmé, se déclenchera bientôt
+    tamaPushTimer = setTimeout(() => {
+      tamaPushTimer = null;
+      if (tamaPushPending) {
+        tamaPushPending = false;
+        pushTamaBlob();
+      }
+    }, TAMA_PUSH_THROTTLE_MS);
+  }
+  /** Envoie immédiatement s'il y a un changement en attente (ex. : la page
+   *  passe en arrière-plan) plutôt que d'attendre le prochain palier —
+   *  évite de perdre les toutes dernières secondes de simulation. */
+  function flushTamaPush() {
+    if (tamaPushTimer) {
+      clearTimeout(tamaPushTimer);
+      tamaPushTimer = null;
+    }
+    if (tamaPushPending) {
+      tamaPushPending = false;
+      pushTamaBlob();
+    }
   }
 
   async function pullAndMergeTama() {
@@ -1603,8 +1684,8 @@
 
       actions.appendChild(delBtn);
 
-      li.appendChild(main);
       li.appendChild(actions);
+      li.appendChild(main);
       cardListEl.appendChild(li);
     }
   }
@@ -1771,26 +1852,42 @@
     return buckets;
   }
 
+  /** Largeur de contenu réellement disponible dans une carte d'histogramme
+   *  (clientWidth moins le padding horizontal), utilisée pour calculer la
+   *  largeur de colonne qui fait tenir exactement N jours à l'écran. */
+  function chartAvailableWidth(wrapEl) {
+    if (!wrapEl || !wrapEl.clientWidth) return 300;
+    const style = getComputedStyle(wrapEl);
+    const paddingL = parseFloat(style.paddingLeft) || 0;
+    const paddingR = parseFloat(style.paddingRight) || 0;
+    return Math.max(60, wrapEl.clientWidth - paddingL - paddingR);
+  }
+
   /** Dessine un histogramme "fiches dues par jour" dans les éléments fournis.
    *  Factorisé pour être partagé entre le grand graphique de l'onglet Stats
    *  et le mini graphique de la page Réviser (matière en cours). */
-  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, days, maxBarPx, giftOpts) {
+  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, rangeKey, maxBarPx, giftOpts) {
     if (!chartEl) return;
+    const cfg = RANGE_CONFIG[rangeKey] || { visible: rangeKey, total: rangeKey };
+    const days = cfg.total;
     const buckets = computeDueHistogram(pool, days);
     const max = Math.max(0, ...buckets.map((b) => b.count));
     // L'objectif-cadeau n'a de sens que sur les échelles rapprochées
     // (15 / 30 jours) : au-delà, les colonnes sont trop tassées pour rester
     // lisibles avec un repère en plus.
-    const showGoals = !!giftOpts && days <= 31;
-    if (giftOpts) reviewChartHasReadyGoal = false;
+    const showGoals = !!giftOpts && cfg.visible <= 31;
+    // Réinitialisé à chaque rendu (y compris quand giftOpts est absent, ex.
+    // hors révision libre) pour ne jamais laisser l'icône d'onglet Tamagotchi
+    // afficher un "cadeau prêt" qui ne correspond plus au graphique affiché.
+    reviewChartHasReadyGoal = false;
 
-    // Un seul objectif par matière, sur une fenêtre d'au moins 16 jours
-    // indépendante du zoom actuellement affiché (sinon le seuil dépendrait
-    // de l'échelle regardée sur le moment).
+    // Un seul objectif par matière, sur une fenêtre fixe de 16 jours,
+    // indépendante du zoom / de l'échelle actuellement affichée (sinon le
+    // seuil dépendrait de la portion défilée regardée sur le moment).
     let goal = null;
     let goalReady = false;
     if (showGoals) {
-      const goalBuckets = days >= 16 ? buckets : computeDueHistogram(pool, 16);
+      const goalBuckets = computeDueHistogram(pool, 16);
       goal = ensureSubjectGoal(giftOpts.subjectId, goalBuckets);
       goalReady = goalBuckets.every((b) => b.count <= goal.threshold);
       if (goalReady) reviewChartHasReadyGoal = true;
@@ -1822,13 +1919,34 @@
     // palier et seules les barres réellement concernées bougent.
     const scaleMax = Math.max(5, Math.ceil(max / 5) * 5);
 
-    // Au-delà d'1 mois affiché (3 mois / 6 mois / 1 an), il y a trop de
-    // colonnes pour qu'un espace entre chaque barre reste visible : les
-    // barres finissent par disparaître entre les espaces. On les fait donc
-    // se toucher, et on retire les nombres qui n'ont de toute façon plus la
-    // place de s'afficher lisiblement.
-    const dense = days > 31;
+    // Au-delà d'1 mois affiché à l'écran (échelles 3 mois / 6 mois / 1 an),
+    // il y a trop de colonnes pour qu'un espace entre chaque barre reste
+    // visible : les barres finissent par disparaître entre les espaces. On
+    // les fait donc se toucher, et on retire les nombres qui n'ont de toute
+    // façon plus la place de s'afficher lisiblement. Basé sur le nombre de
+    // colonnes VISIBLES à l'écran (cfg.visible), pas sur le total chargé
+    // (cfg.total) qui sert uniquement au défilement.
+    const dense = cfg.visible > 31;
     chartEl.classList.toggle("chart--dense", dense);
+
+    // Largeur de colonne calculée pour que exactement `cfg.visible` colonnes
+    // tiennent sur la largeur visible de la carte (le nombre de colonnes
+    // réellement dessinées, `cfg.total`, déborde ensuite hors écran et se
+    // parcourt au doigt via overflow-x sur wrapEl). Fixé en `px` inline
+    // plutôt que par classe CSS pour ne jamais dépendre de l'ordre des
+    // règles dans la feuille de style (voir les soucis de spécificité passés
+    // avec les classes .chart--mini / .chart--dense).
+    const gapPx = dense ? 0 : 2;
+    const availPx = chartAvailableWidth(wrapEl || chartEl);
+    // Largeur minimale volontairement très faible (pas 3-4px) : sur les
+    // échelles les plus zoomées (6 mois / 1 an), faire tenir 180 ou 360
+    // colonnes sur un écran de ~330px de large exige des colonnes
+    // sub-pixel — les navigateurs les anti-aliassent très bien (elles se
+    // fondent en une bande de densité, ce qui est justement l'effet
+    // recherché à ces échelles). Un plancher plus haut (ex. 3px) ferait
+    // largement déborder le total hors de la largeur d'écran visée.
+    const colWidth = Math.max(0.6, (availPx - gapPx * (cfg.visible - 1)) / cfg.visible);
+    chartEl.style.gap = `${gapPx}px`;
 
     // Les dates par colonne ont été retirées (trop de bruit visuel) : seul
     // "Auj." reste, sur la première colonne. L'échelle affichée (15 j, 1
@@ -1840,6 +1958,8 @@
       const col = document.createElement("div");
       col.className =
         "chart-col" + (i === 0 ? " is-today" : "") + (changed ? " chart-col--changed" : "");
+      col.style.flex = `0 0 ${colWidth}px`;
+      col.style.width = `${colWidth}px`;
 
       const value = document.createElement("span");
       value.className = "chart-value";
@@ -1871,7 +1991,14 @@
     // sa carte) : cliquable dès que toutes les barres sont retombées à son
     // niveau ou en dessous.
     if (goal) {
-      const targetPx = Math.min(maxBarPx, Math.max(0, Math.round((goal.threshold / scaleMax) * maxBarPx)));
+      // Position de la ligne : 80% de la hauteur à laquelle s'afficherait
+      // (sur l'échelle ACTUELLE, scaleMax) une barre valant `goal.max`, le
+      // maximum au moment où l'objectif a été fixé — et non 80% de
+      // `scaleMax` lui-même, qui est arrondi au multiple de 5 supérieur et
+      // fait donc paraître la ligne bien plus basse que 80%.
+      const goalRefMax = typeof goal.max === "number" ? goal.max : goal.threshold / 0.8;
+      const goalBarPx = (goalRefMax / scaleMax) * maxBarPx;
+      const targetPx = Math.min(maxBarPx, Math.max(0, Math.round(goalBarPx * 0.8)));
       const marker = document.createElement(goalReady ? "button" : "div");
       if (goalReady) marker.type = "button";
       marker.className = `chart-goal-bar ${goalReady ? "is-ready" : "is-locked"}`;
@@ -1895,7 +2022,7 @@
       chartEl.appendChild(marker);
     }
 
-    if (giftOpts) refreshTamaTabIcon();
+    refreshTamaTabIcon();
   }
 
   function renderDueChart() {
@@ -1926,7 +2053,6 @@
   --------------------------------------------------------- */
   const tamaPetsListEl = el("tama-pets-list");
   const tamaGiftsTrayEl = el("tama-gifts-tray");
-  const tamaTrophiesGridEl = el("tama-trophies-grid");
   const tamaEmptyHintEl = el("tama-empty-hint");
 
   function tamaPetSizePx(pet) {
@@ -2072,7 +2198,7 @@
     showTamaToast(
       result.type === "egg"
         ? `🥚 Un nouvel œuf a rejoint le foyer !`
-        : `${result.emoji} Nourriture posée dans le pré — un compagnon va la trouver`,
+        : `${result.emoji} ${result.qty} aliment${result.qty > 1 ? "s" : ""} (+${result.value} chacun) posé${result.qty > 1 ? "s" : ""} dans le pré — un compagnon va les trouver`,
       true
     );
 
@@ -2080,13 +2206,20 @@
 
     // Met brièvement en évidence ce qui vient d'apparaître.
     requestAnimationFrame(() => {
-      const selector = result.type === "egg"
-        ? `[data-pet-id="${result.petId}"]`
-        : `[data-food-id="${result.foodId}"]`;
-      const tile = tamaPetsListEl && tamaPetsListEl.querySelector(selector);
-      if (tile) {
-        tile.classList.add("tama-pet-tile--flash");
-        setTimeout(() => tile.classList.remove("tama-pet-tile--flash"), 900);
+      if (result.type === "egg") {
+        const tile = tamaPetsListEl && tamaPetsListEl.querySelector(`[data-pet-id="${result.petId}"]`);
+        if (tile) {
+          tile.classList.add("tama-pet-tile--flash");
+          setTimeout(() => tile.classList.remove("tama-pet-tile--flash"), 900);
+        }
+      } else {
+        (result.foodIds || []).forEach((foodId) => {
+          const tile = tamaPetsListEl && tamaPetsListEl.querySelector(`[data-food-id="${foodId}"]`);
+          if (tile) {
+            tile.classList.add("tama-pet-tile--flash");
+            setTimeout(() => tile.classList.remove("tama-pet-tile--flash"), 900);
+          }
+        });
       }
     });
   }
@@ -2227,6 +2360,7 @@
     if (dataChanged) {
       saveTamaState();
       refreshTamaTabIcon();
+      scheduleTamaPush();
     }
   }
 
@@ -2255,6 +2389,15 @@
       tile.style.top = `${food.y}%`;
       const fill = tile.querySelector(".tama-food-bar-fill");
       if (fill) fill.style.width = `${Math.max(0, Math.min(100, (food.remaining / food.total) * 100))}%`;
+    });
+    // Nourriture épuisée (retirée de tamaState.foods dans stepTamaSimulation) :
+    // sa tuile DOM devait auparavant attendre un changement de page pour
+    // disparaître, puisque renderPetPositions ne faisait que mettre à jour
+    // les tuiles encore présentes dans l'état — jamais retirer celles qui ne
+    // le sont plus. On nettoie donc ici toute tuile de nourriture orpheline.
+    const liveFoodIds = new Set((tamaState.foods || []).map((f) => f.id));
+    tamaPetsListEl.querySelectorAll("[data-food-id]").forEach((tile) => {
+      if (!liveFoodIds.has(tile.dataset.foodId)) tile.remove();
     });
   }
 
@@ -2298,27 +2441,6 @@
 
     renderGiftsTray();
 
-    if (tamaTrophiesGridEl) {
-      tamaTrophiesGridEl.innerHTML = "";
-      const frag = document.createDocumentFragment();
-      if (tamaState.trophies.length === 0) {
-        const empty = document.createElement("p");
-        empty.className = "field-hint";
-        empty.textContent = "Aucun compagnon n'a encore atteint le stade animal.";
-        frag.appendChild(empty);
-      } else {
-        [...tamaState.trophies].reverse().forEach((t) => {
-          const species = speciesById(t.species);
-          const frame = document.createElement("div");
-          frame.className = "tama-trophy-frame";
-          frame.textContent = species ? species.emoji : "❓";
-          frame.title = species ? species.name : "";
-          frag.appendChild(frame);
-        });
-      }
-      tamaTrophiesGridEl.appendChild(frag);
-    }
-
     refreshTamaTabIcon();
   }
 
@@ -2353,6 +2475,11 @@
     if (reviewChartSubjectNameEl) reviewChartSubjectNameEl.textContent = subjectName(currentSubjectId);
     if (reviewChartScaleLabelEl) reviewChartScaleLabelEl.textContent = formatRangeShort(reviewChartRangeDays);
     const pool = subjectCards();
+    // La barre d'objectif-cadeau (et la possibilité de récolter un cadeau)
+    // n'a de sens qu'en révision libre (isBonusMode) : c'est seulement là
+    // qu'on continue de piocher des fiches déjà à jour pour faire "fondre"
+    // l'histogramme sous la ligne. En file du jour normale, on ne passe pas
+    // giftOpts pour que la ligne et le mécanisme de cadeau n'apparaissent pas.
     renderHistogramInto(
       reviewChartEl,
       reviewChartEmptyEl,
@@ -2360,7 +2487,7 @@
       pool,
       reviewChartRangeDays,
       REVIEW_CHART_MAX_BAR_PX,
-      { subjectId: currentSubjectId, onCollect: showTamaGiftToast }
+      isBonusMode ? { subjectId: currentSubjectId, onCollect: showTamaGiftToast } : null
     );
     maybeGrantZeroDueBonus(currentSubjectId, computeDueHistogram(pool, 1)[0].count);
   }
@@ -2465,22 +2592,40 @@
     if (settingBonusEasyEl) settingBonusEasyEl.value = bonusDaysSettings.easy;
     if (settingBonusAgainModeEl) settingBonusAgainModeEl.value = bonusAgainMode;
     if (settingHibernateDaysEl) settingHibernateDaysEl.value = hibernateDays;
-    if (settingTamaGiftMeanEl) settingTamaGiftMeanEl.value = getGiftMean();
-    if (settingTamaGiftStdEl) settingTamaGiftStdEl.value = getGiftStd();
+    if (settingTamaFoodValueEl) settingTamaFoodValueEl.value = getFoodValue();
+    if (settingTamaGiftQtyMinEl) settingTamaGiftQtyMinEl.value = getGiftQtyMin();
+    if (settingTamaGiftQtyMaxEl) settingTamaGiftQtyMaxEl.value = getGiftQtyMax();
   }
 
-  if (settingTamaGiftMeanEl) {
-    settingTamaGiftMeanEl.addEventListener("change", () => {
-      const v = Math.max(1, Math.round(Number(settingTamaGiftMeanEl.value)) || 15);
-      setGiftMean(v);
-      settingTamaGiftMeanEl.value = v;
+  if (settingTamaFoodValueEl) {
+    settingTamaFoodValueEl.addEventListener("change", () => {
+      const v = Math.max(1, Math.round(Number(settingTamaFoodValueEl.value)) || 15);
+      setFoodValue(v);
+      settingTamaFoodValueEl.value = v;
     });
   }
-  if (settingTamaGiftStdEl) {
-    settingTamaGiftStdEl.addEventListener("change", () => {
-      const v = Math.max(0, Math.round(Number(settingTamaGiftStdEl.value)) || 0);
-      setGiftStd(v);
-      settingTamaGiftStdEl.value = v;
+  if (settingTamaGiftQtyMinEl) {
+    settingTamaGiftQtyMinEl.addEventListener("change", () => {
+      let v = Math.max(1, Math.round(Number(settingTamaGiftQtyMinEl.value)) || 1);
+      // Le minimum ne doit jamais dépasser le maximum courant : on relève
+      // celui-ci plutôt que de laisser une plage invalide (min > max).
+      if (v > getGiftQtyMax()) {
+        setGiftQtyMax(v);
+        if (settingTamaGiftQtyMaxEl) settingTamaGiftQtyMaxEl.value = v;
+      }
+      setGiftQtyMin(v);
+      settingTamaGiftQtyMinEl.value = v;
+    });
+  }
+  if (settingTamaGiftQtyMaxEl) {
+    settingTamaGiftQtyMaxEl.addEventListener("change", () => {
+      let v = Math.max(1, Math.round(Number(settingTamaGiftQtyMaxEl.value)) || 3);
+      if (v < getGiftQtyMin()) {
+        setGiftQtyMin(v);
+        if (settingTamaGiftQtyMinEl) settingTamaGiftQtyMinEl.value = v;
+      }
+      setGiftQtyMax(v);
+      settingTamaGiftQtyMaxEl.value = v;
     });
   }
 
@@ -2888,6 +3033,29 @@
   });
   window.addEventListener("offline", updateSyncStatus);
 
+  // Envoie immédiatement tout changement du foyer Tamagotchi en attente
+  // (voir scheduleTamaPush) quand l'app passe en arrière-plan ou se ferme,
+  // pour ne pas perdre les dernières secondes de simulation (repas,
+  // décroissance de vie) côté serveur en cas de fermeture avant le prochain
+  // envoi groupé.
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") flushTamaPush();
+  });
+  window.addEventListener("pagehide", flushTamaPush);
+
+  // Redessine les histogrammes au redimensionnement / changement d'orientation
+  // (la largeur de colonne est calculée depuis la largeur réelle de l'écran,
+  // voir chartAvailableWidth) — avec un léger debounce pour éviter de
+  // redessiner à chaque pixel pendant un resize continu.
+  let chartResizeTimer = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(chartResizeTimer);
+    chartResizeTimer = setTimeout(() => {
+      if (el("view-stats") && el("view-stats").classList.contains("is-active")) renderDueChart();
+      if (el("view-review") && el("view-review").classList.contains("is-active")) renderReviewChart();
+    }, 150);
+  });
+
   /* ---------------------------------------------------------
      Service worker (hors-ligne + mise à jour automatique)
   --------------------------------------------------------- */
@@ -2966,6 +3134,15 @@
     updateSyncStatus();
     if (Sync.isConfigured()) {
       await connectSync();
+      // Doublons "Général" : reconcileWithRemote() peut faire apparaître un
+      // second sujet "Général" arrivé du serveur (fiches distantes sans
+      // matière) en plus de celui créé localement par défaut avant même que
+      // la synchro n'ait eu le temps de tourner (voir loadSubjects) — d'où
+      // la matière "Générale" qui apparaissait parfois à la toute première
+      // connexion. On redéduplique donc une fois la synchro effectuée.
+      await dedupeEmptySubjects();
+      renderSubjectSelect();
+      renderStatsSubjectSelect();
       // Ne relance pas startReviewSession() ici : reconcileWithRemote() a déjà
       // rafraîchi les données via renderAll(), et relancer une session ici
       // remélangeait la file et changeait la fiche affichée sous les yeux de

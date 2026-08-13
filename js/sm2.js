@@ -74,7 +74,22 @@ function sm2Next(state, rating) {
       // classique) : on différencie aussi ce palier.
       interval = quality === 3 ? 4 : quality === 4 ? 6 : 10;
     } else {
-      interval = Math.round(interval * newEasiness);
+      // À partir de la 3e répétition, se contenter de multiplier par le
+      // facteur de facilité (EF) donnait des écarts minuscules entre
+      // Difficile/Bien/Facile : l'EF varie peu d'une note à l'autre, donc
+      // après arrondi, les 3 boutons affichaient souvent le même nombre de
+      // jours (ou 1 jour d'écart). On applique des multiplicateurs distincts
+      // (à la manière d'Anki : "hard interval" et "easy bonus") en plus de
+      // l'EF pour garantir un écart net et croissant entre les 3 notes.
+      const HARD_FACTOR = 1.2;
+      const EASY_BONUS = 1.3;
+      if (quality === 3) {
+        interval = Math.round(interval * HARD_FACTOR);
+      } else if (quality === 4) {
+        interval = Math.round(interval * newEasiness);
+      } else {
+        interval = Math.round(interval * newEasiness * EASY_BONUS);
+      }
     }
   }
 

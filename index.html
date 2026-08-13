@@ -204,13 +204,6 @@
         l'histogramme de la page Réviser pour faire arriver un premier œuf.
       </p>
 
-      <h3 class="settings-block-title">Trophées</h3>
-      <p class="field-hint settings-block-hint">
-        Tous les animaux que tu as déjà menés jusqu'au bout, pour toujours —
-        même si le compagnon lui-même a fini par disparaître.
-      </p>
-      <div class="tama-trophies-grid" id="tama-trophies-grid"></div>
-
       <p class="field-hint tama-hint">
         Chaque compagnon n'a qu'une seule jauge de vie, qui baisse tout
         seule avec le temps : l'anneau autour de lui va du rouge (basse) au
@@ -338,17 +331,22 @@
       <div class="card-form">
         <h3 class="settings-block-title">Cadeaux du Tamagotchi 🎁</h3>
         <p class="field-hint settings-block-hint">
-          Quand un cadeau contient de la nourriture (et non un œuf), le
-          nombre de points de vie donnés suit une loi normale : réglez ici sa
-          moyenne et son écart-type.
+          Chaque aliment donne toujours le même nombre de points de vie (pour
+          qu'on puisse voir d'un coup d'œil si un aliment est nourrissant).
+          Un cadeau de nourriture dépose en revanche une quantité aléatoire
+          d'aliments dans le pré, entre ces deux bornes.
         </p>
         <label class="field settings-bonus-field">
-          <span>Moyenne (points de vie)</span>
-          <input type="number" id="setting-tama-gift-mean" min="1" max="200" step="1" inputmode="numeric" />
+          <span>Valeur nutritive d'un aliment (points de vie)</span>
+          <input type="number" id="setting-tama-food-value" min="1" max="200" step="1" inputmode="numeric" />
         </label>
         <label class="field settings-bonus-field">
-          <span>Écart-type</span>
-          <input type="number" id="setting-tama-gift-std" min="0" max="100" step="1" inputmode="numeric" />
+          <span>Quantité minimum par cadeau</span>
+          <input type="number" id="setting-tama-gift-qty-min" min="1" max="20" step="1" inputmode="numeric" />
+        </label>
+        <label class="field settings-bonus-field">
+          <span>Quantité maximum par cadeau</span>
+          <input type="number" id="setting-tama-gift-qty-max" min="1" max="20" step="1" inputmode="numeric" />
         </label>
       </div>
     </section>
