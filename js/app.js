@@ -461,9 +461,21 @@
     if (tamaState.pets.length !== before) changed = true;
 
     // Comptabilité des jours sans cadeau -> cadeaux de rattrapage cumulables.
+    // Bornée à 30 itérations (30 jours) : si `lastBookkeepingDate` arrivait
+    // corrompue ou aberrante (ex. via la synchro, une donnée ancienne ou mal
+    // formée), cette boucle pouvait auparavant tourner des dizaines de
+    // milliers de fois sans jamais lever d'erreur — un gel silencieux et
+    // total du navigateur (écran figé/blanc, aucun message, le
+    // "chien de garde" anti-écran-blanc lui-même ne peut pas se déclencher
+    // tant que la boucle synchrone ne rend pas la main). Au-delà de 30 jours
+    // d'écart, on saute directement à aujourd'hui plutôt que d'accumuler des
+    // centaines de cadeaux de rattrapage, ce qui n'aurait de toute façon
+    // aucun sens pour l'utilisateur.
     const today = todayISODate();
     let cursor = tamaState.lastBookkeepingDate || today;
-    while (cursor < today) {
+    let bookkeepingSteps = 0;
+    const MAX_BOOKKEEPING_STEPS = 30;
+    while (cursor < today && bookkeepingSteps < MAX_BOOKKEEPING_STEPS) {
       if (tamaState.lastGiftCollectedDate !== cursor) {
         tamaState.catchupCredits = (tamaState.catchupCredits || 0) + 1;
       }
@@ -471,8 +483,15 @@
       d.setDate(d.getDate() + 1);
       cursor = d.toISOString().slice(0, 10);
       changed = true;
+      bookkeepingSteps += 1;
     }
     tamaState.lastBookkeepingDate = today;
+    // Même logique de plafond pour la distribution des cadeaux accumulés :
+    // au-delà d'une trentaine, ça n'a plus de sens et ça bloquerait le rendu
+    // de la pile de cadeaux (voir renderGiftsTray) pour rien.
+    if (tamaState.catchupCredits > MAX_BOOKKEEPING_STEPS) {
+      tamaState.catchupCredits = MAX_BOOKKEEPING_STEPS;
+    }
     while (tamaState.catchupCredits > 0) {
       tamaState.catchupCredits -= 1;
       tamaState.pendingGifts.push({ id: uidTama(), source: "catchup", createdAt: new Date().toISOString() });
