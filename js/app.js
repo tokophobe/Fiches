@@ -181,14 +181,114 @@
 
   /** Noms attribués par l'appli à chaque nouveau compagnon (jamais choisis
    *  par la personne) — un nom différent pour chaque compagnon actuellement
-   *  vivant dans le foyer. */
+   *  vivant dans le foyer. Plus de 500 noms répartis par thème pour limiter
+   *  au maximum les répétitions même avec plusieurs compagnons à la fois. */
   const PET_NAME_POOL = [
+    // Gourmandises et sucreries
     "Nougat", "Praline", "Biscotte", "Pixel", "Cannelle", "Griotte", "Réglisse",
     "Câpre", "Nashi", "Pruneau", "Coquelicot", "Chamallow", "Éclair", "Bretzel",
     "Churro", "Wasabi", "Miso", "Sushi", "Fondant", "Praliné", "Marmelade",
     "Guimauve", "Meringue", "Financier", "Sablé", "Cajou", "Pistache",
     "Noisette", "Amande", "Cornichon", "Radis", "Groseille", "Mirabelle",
     "Poivron", "Safran", "Muscade", "Popcorn", "Biscuit", "Caramel", "Sorbet",
+    "Nectarine", "Abricot", "Framboise", "Myrtille", "Cassis", "Litchi",
+    "Kiwi", "Ananas", "Papaye", "Mangue", "Grenade", "Clémentine",
+    "Mandarine", "Kumquat", "Physalis", "Datte", "Figue", "Rhubarbe",
+    "Coing", "Nèfle", "Prunelle", "Airelle", "Sureau", "Pamplemousse",
+    "Bergamote", "Yuzu", "Combava", "Vanille", "Chocolat", "Nougatine",
+    "Calisson", "Berlingot", "Papillote", "Dragée", "Macaron", "Cupcake",
+    "Brownie", "Cookie", "Gaufre", "Crêpe", "Beignet", "Pancake", "Muffin",
+    "Cannelé", "Kouglof", "Croquant", "Nonnette", "Speculoos", "Panettone",
+    "Tiramisu", "Cheesecake", "Flan", "Clafoutis", "Frangipane", "Massepain",
+    "Nanan", "Chouquette", "Religieuse", "Paris-Brest", "Baba", "Savarin",
+    "Tartelette", "Gourmandise", "Confiserie", "Berlingot2", "Sucette",
+    "Guimauve2", "Barbapapa",
+    // Épices et aromates
+    "Curcuma", "Gingembre", "Cardamome", "Girofle", "Anis", "Fenouil",
+    "Basilic", "Thym", "Romarin", "Origan", "Sauge", "Persil", "Ciboulette",
+    "Estragon", "Coriandre", "Cumin", "Paprika", "Piment", "Poivre", "Sel",
+    "Menthe", "Lavande", "Verveine", "Camomille", "Tilleul", "Hibiscus",
+    "Jasmin", "Citronnelle", "Aneth", "Livèche", "Absinthe", "Armoise",
+    "Bourrache", "Consoude", "Achillée",
+    // Fleurs et plantes
+    "Pâquerette", "Pissenlit", "Trèfle", "Chardon", "Bruyère", "Genêt",
+    "Mimosa", "Glycine", "Iris", "Tulipe", "Pivoine", "Dahlia", "Bleuet",
+    "Violette", "Muguet", "PerceNeige", "Crocus", "Jonquille", "Narcisse",
+    "Freesia", "Camélia", "Azalée", "Rhododendron", "Magnolia",
+    "Chèvrefeuille", "Clématite", "Anémone", "Renoncule", "Ancolie",
+    "Delphinium", "Œillet", "Zinnia", "Cosmos", "Capucine", "Bégonia",
+    "Fuchsia", "Géranium", "Hortensia", "Lilas", "Jacinthe", "Amaryllis",
+    "Orchidée", "Edelweiss", "Gentiane", "Myosotis", "Digitale", "Volubilis",
+    "Belle-de-jour", "Immortelle", "Lotus", "Nénuphar", "Papyrus", "Fougère",
+    "Mousse", "Lichen", "Gui", "Houx", "Bambou", "Saule", "Chêne", "Érable",
+    "Bouleau", "Sapin", "Cèdre", "Séquoia", "Aubépine", "Prunellier",
+    "Sorbier", "Noisetier", "Charme", "Hêtre", "Frêne", "Platane",
+    // Minéraux, couleurs et matières douces
+    "Opale", "Jade", "Onyx", "Ambre", "Topaze", "Émeraude", "Saphir",
+    "Rubis", "Perle", "Nacre", "Cristal", "Quartz", "Grenat", "Corail",
+    "Turquoise", "Ivoire", "Argent", "Bronze", "Cuivre", "Étain", "Platine",
+    "Acier", "Plume", "Duvet", "Cocon", "Bulle", "Écume", "Rosée", "Brume",
+    "Buée", "Flocon", "Grelot", "Ruban", "Pompon", "Volute", "Étincelle",
+    "Lueur", "Éclat", "Reflet", "Murmure", "Soupir", "Frisson", "Câlin",
+    "Doudou", "Cocotte", "Velours", "Satin", "Soie", "Mousseline", "Dentelle",
+    "Organza", "Taffetas", "Cachemire", "Angora", "Mohair", "Feutrine",
+    // Petits objets, jouets et lieux
+    "Bilboquet", "Toupie", "Origami", "Confetti", "Ballon", "CerfVolant",
+    "Marionnette", "Diabolo", "Kaléidoscope", "Boussole", "Lanterne",
+    "Lampion", "Carillon", "Girouette", "Moulin", "Nichoir", "Cabane",
+    "Grenier", "Terrier", "Nid", "Coquille", "Galet", "Caillou", "Rocher",
+    "Ruisseau", "Cascade", "Source", "Étang", "Marais", "Clairière",
+    "Sentier", "Chemin", "Vallée", "Colline", "Sommet", "Falaise", "Grotte",
+    "Caverne", "Récif", "Lagune", "Archipel", "Presqu'île", "Îlot", "Dune",
+    "Oasis", "Mirage", "Horizon", "Méridien", "Zénith", "Aurore", "Crépuscule",
+    "Équinoxe", "Solstice", "Comète", "Météore", "Nébuleuse", "Constellation",
+    "Satellite", "Astéroïde", "Éclipse", "Firmament",
+    // Onomatopées, mots doux et esprits facétieux
+    "Bidule", "Trucmuche", "Farfelu", "Zigzag", "Gribouille", "Chatouille",
+    "Pagaille", "Cabriole", "Pirouette", "Galipette", "Frimousse", "Bouille",
+    "Minois", "Fripon", "Coquin", "Espiègle", "Guilleret", "Rigolo",
+    "Loufoque", "Farceur", "Polisson", "Chenapan", "Gredin", "Lutin",
+    "Farfadet", "Elfe", "Gnome", "Korrigan", "Follet", "Sylphe", "Ondine",
+    "Naïade", "Dryade", "Nymphe", "Sirène", "Griffon", "Phénix", "Pégase",
+    "Chimère", "Sphinx", "Hippogriffe", "Kraken", "Yéti", "Farandole",
+    "Sarabande", "Ribambelle", "Batifole", "Cabriolet", "Girondin", "Falbala",
+    "Tourbillon", "Vadrouille", "Gambade", "Cavalcade", "Sautillon",
+    "Trottinette", "Culbute", "Chamboule", "Vagabond", "Baladin", "Troubadour",
+    "Ménestrel", "Jongleur", "Acrobate", "Funambule", "Équilibriste",
+    "Prestidigitateur", "Illusionniste", "Magicien", "Sorcier", "Enchanteur",
+    "Devin", "Oracle", "Augure", "Présage", "Talisman", "Grigri", "Porte-bonheur",
+    // Mots doux additionnels et petits êtres
+    "Pompette", "Frisette", "Bouclette", "Pétale", "Bourgeon", "Germe",
+    "Pousse", "Rameau", "Brindille", "Feuillage", "Ramure", "Racine",
+    "Écorce", "Sève", "Nectar", "Pollen", "Etamine", "Corolle", "Calice",
+    "Pistil", "Bractée", "Involucre", "Stipule", "Vrille", "Tige", "Chaton",
+    "Épi", "Grain", "Semence", "Graine", "Noyau", "Pépin", "Zeste", "Écale",
+    "Coque", "Cosse", "Gousse", "Silique", "Baie", "Drupe", "Akène",
+    "Samare", "Capsule", "Follicule",
+    // Petits objets du quotidien, façon comptine
+    "Dé", "Bouton", "Perlette", "Épingle", "Aiguille", "Fil", "Écheveau",
+    "Pelote", "Bobine", "Fuseau", "Quenouille", "Métier", "Navette",
+    "Tricot", "Crochet", "Ourlet", "Fronce", "Pli", "Volant", "Falbala2",
+    "Jabot", "Col", "Manchette", "Empiècement", "Empeigne", "Semelle",
+    "Talon", "Boucle", "Lacet", "Cordon", "Ganse", "Passepoil", "Liseré",
+    "Galon", "Franges", "Pompon2", "Grelot2", "Sonnette", "Clochette",
+    "Cymbale", "Tambourin", "Castagnette", "Maracas", "Xylophone",
+    "Harmonica", "Ocarina", "Flûteau", "Pipeau", "Chalumeau",
+    // Petites gourmandises salées et pain
+    "Croûton", "Biscotte2", "Tartine", "Baguette", "Pain", "Toast",
+    "Crouton2", "Croustille", "Gressin", "Fougasse", "Chapata", "Naan",
+    "Pita", "Tortilla", "Falafel", "Houmous", "Tzatziki", "Guacamole",
+    "Salsa", "Pesto", "Chimichurri", "Vinaigrette", "Rémoulade",
+    // Mots-valises et petits noms rigolos
+    "Pompon3", "Choupinou", "Croquignou", "Mignoux", "Chouette2", "Câlinou",
+    "Doudoux", "Bibou", "Fripouille", "Coquinou", "Câlinet", "Poupoune",
+    "Chatoune", "Minoune", "Loulou", "Coco", "Zaza", "Titi", "Pompomette",
+    "Câpucine2", "Biboune", "Chouchou", "Pitchoune", "Marmiton", "Bambin",
+    "Poupon", "Bambino", "Chérubin", "Angelot", "Séraphin", "Étoilon",
+    "Lunette", "Soleillou", "Nuageon", "Plumette", "Ailette", "Papillote2",
+    "Cocorico", "Coucou", "Zinzin", "Guili", "Chatouilli", "Rigolette",
+    "Farfouille", "Gribouillis", "Barbouille", "Patouille", "Cabosse",
+    "Pomponette", "Frimoussette", "Câlinette",
   ];
   const BROKEN_EGG_EMOJI = "🍳";
   const LIFE_DECAY_PER_HOUR = 1;
@@ -199,7 +299,12 @@
   const GIFT_EGG_WEIGHTS = { oeuf: 15, poussin_oeuf: 8, poussin: 2, chenille: 1, papillon: 0.7, animal: 0.5 };
 
   /** Espèces à découvrir au stade "animal" (tirage uniforme, gravé dans les
-   *  trophées pour toujours, même si le compagnon disparaît ensuite). */
+   *  trophées pour toujours, même si le compagnon disparaît ensuite).
+   *  Couvre la quasi-totalité des emoji animaux usuels (mammifères,
+   *  oiseaux, mer, reptiles/insectes, créatures fantastiques) — 🐛 et 🦋
+   *  sont volontairement exclus : ils désignent déjà les stades de
+   *  croissance "chenille"/"papillon", les réutiliser comme espèces finales
+   *  aurait prêté à confusion. */
   const SPECIES = [
     { id: "chat", name: "Chat", emoji: "🐱" },
     { id: "chien", name: "Chien", emoji: "🐶" },
@@ -213,6 +318,83 @@
     { id: "poulpe", name: "Poulpe", emoji: "🐙" },
     { id: "dragon", name: "Dragon", emoji: "🐲" },
     { id: "licorne", name: "Licorne", emoji: "🦄" },
+    { id: "souris", name: "Souris", emoji: "🐭" },
+    { id: "hamster", name: "Hamster", emoji: "🐹" },
+    { id: "ours", name: "Ours", emoji: "🐻" },
+    { id: "tigre", name: "Tigre", emoji: "🐯" },
+    { id: "vache", name: "Vache", emoji: "🐮" },
+    { id: "cochon", name: "Cochon", emoji: "🐷" },
+    { id: "grenouille", name: "Grenouille", emoji: "🐸" },
+    { id: "singe", name: "Singe", emoji: "🐵" },
+    { id: "poule", name: "Poule", emoji: "🐔" },
+    { id: "oiseau", name: "Oiseau", emoji: "🐦" },
+    { id: "poussin", name: "Poussin", emoji: "🐤" },
+    { id: "canard", name: "Canard", emoji: "🦆" },
+    { id: "aigle", name: "Aigle", emoji: "🦅" },
+    { id: "hibou", name: "Hibou", emoji: "🦉" },
+    { id: "chauve_souris", name: "Chauve-souris", emoji: "🦇" },
+    { id: "loup", name: "Loup", emoji: "🐺" },
+    { id: "sanglier", name: "Sanglier", emoji: "🐗" },
+    { id: "cheval", name: "Cheval", emoji: "🐴" },
+    { id: "abeille", name: "Abeille", emoji: "🐝" },
+    { id: "escargot", name: "Escargot", emoji: "🐌" },
+    { id: "coccinelle", name: "Coccinelle", emoji: "🐞" },
+    { id: "fourmi", name: "Fourmi", emoji: "🐜" },
+    { id: "scarabee", name: "Scarabée", emoji: "🪲" },
+    { id: "araignee", name: "Araignée", emoji: "🕷️" },
+    { id: "scorpion", name: "Scorpion", emoji: "🦂" },
+    { id: "serpent", name: "Serpent", emoji: "🐍" },
+    { id: "lezard", name: "Lézard", emoji: "🦎" },
+    { id: "trex", name: "T-Rex", emoji: "🦖" },
+    { id: "sauropode", name: "Dinosaure", emoji: "🦕" },
+    { id: "calamar", name: "Calamar", emoji: "🦑" },
+    { id: "crevette", name: "Crevette", emoji: "🦐" },
+    { id: "homard", name: "Homard", emoji: "🦞" },
+    { id: "crabe", name: "Crabe", emoji: "🦀" },
+    { id: "poisson_globe", name: "Poisson-globe", emoji: "🐡" },
+    { id: "poisson_tropical", name: "Poisson tropical", emoji: "🐠" },
+    { id: "poisson", name: "Poisson", emoji: "🐟" },
+    { id: "dauphin", name: "Dauphin", emoji: "🐬" },
+    { id: "baleine", name: "Baleine", emoji: "🐳" },
+    { id: "requin", name: "Requin", emoji: "🦈" },
+    { id: "crocodile", name: "Crocodile", emoji: "🐊" },
+    { id: "leopard", name: "Léopard", emoji: "🐆" },
+    { id: "zebre", name: "Zèbre", emoji: "🦓" },
+    { id: "gorille", name: "Gorille", emoji: "🦍" },
+    { id: "orang_outan", name: "Orang-outan", emoji: "🦧" },
+    { id: "elephant", name: "Éléphant", emoji: "🐘" },
+    { id: "mammouth", name: "Mammouth", emoji: "🦣" },
+    { id: "hippopotame", name: "Hippopotame", emoji: "🦛" },
+    { id: "rhinoceros", name: "Rhinocéros", emoji: "🦏" },
+    { id: "dromadaire", name: "Dromadaire", emoji: "🐪" },
+    { id: "chameau", name: "Chameau", emoji: "🐫" },
+    { id: "girafe", name: "Girafe", emoji: "🦒" },
+    { id: "kangourou", name: "Kangourou", emoji: "🦘" },
+    { id: "bison", name: "Bison", emoji: "🦬" },
+    { id: "buffle", name: "Buffle", emoji: "🐃" },
+    { id: "belier", name: "Bélier", emoji: "🐏" },
+    { id: "mouton", name: "Mouton", emoji: "🐑" },
+    { id: "lama", name: "Lama", emoji: "🦙" },
+    { id: "chevre", name: "Chèvre", emoji: "🐐" },
+    { id: "cerf", name: "Cerf", emoji: "🦌" },
+    { id: "caniche", name: "Caniche", emoji: "🐩" },
+    { id: "coq", name: "Coq", emoji: "🐓" },
+    { id: "dinde", name: "Dinde", emoji: "🦃" },
+    { id: "dodo", name: "Dodo", emoji: "🦤" },
+    { id: "paon", name: "Paon", emoji: "🦚" },
+    { id: "perroquet", name: "Perroquet", emoji: "🦜" },
+    { id: "cygne", name: "Cygne", emoji: "🦢" },
+    { id: "flamant", name: "Flamant rose", emoji: "🦩" },
+    { id: "colombe", name: "Colombe", emoji: "🕊️" },
+    { id: "raton_laveur", name: "Raton laveur", emoji: "🦝" },
+    { id: "moufette", name: "Moufette", emoji: "🦨" },
+    { id: "blaireau", name: "Blaireau", emoji: "🦡" },
+    { id: "castor", name: "Castor", emoji: "🦫" },
+    { id: "loutre", name: "Loutre", emoji: "🦦" },
+    { id: "paresseux", name: "Paresseux", emoji: "🦥" },
+    { id: "rat", name: "Rat", emoji: "🐀" },
+    { id: "ecureuil", name: "Écureuil", emoji: "🐿️" },
+    { id: "herisson", name: "Hérisson", emoji: "🦔" },
   ];
 
   function speciesById(id) {
@@ -541,6 +723,23 @@
       return species ? species.name : "Animal";
     }
     return STAGE_DEFS[pet.stage].name;
+  }
+
+  /** Âge du compagnon depuis sa création (l'œuf initial), affiché sous son
+   *  nom à la place de l'espèce/du stade (retiré : superflu à côté du nom,
+   *  et ça élargissait inutilement l'étiquette — voir tamaPetDisplayName,
+   *  toujours utilisée ailleurs, ex. pour l'annonce d'un nouveau cadeau). */
+  function tamaPetAgeLabel(pet) {
+    const created = pet.createdAt ? new Date(pet.createdAt) : null;
+    if (!created || Number.isNaN(created.getTime())) return "";
+    const days = Math.max(0, Math.floor((Date.now() - created.getTime()) / 86400000));
+    if (days < 1) return "né aujourd'hui";
+    if (days === 1) return "1 jour";
+    if (days < 31) return `${days} jours`;
+    const months = Math.floor(days / 30);
+    if (months < 12) return months === 1 ? "1 mois" : `${months} mois`;
+    const years = Math.floor(months / 12);
+    return years === 1 ? "1 an" : `${years} ans`;
   }
 
   function tamaPetAgeLabel(pet) {
@@ -2114,7 +2313,16 @@
 
     const label = document.createElement("span");
     label.className = "tama-pet-label";
-    label.textContent = pet.stage === "broken" ? "Œuf au plat" : `${pet.name} · ${tamaPetDisplayName(pet)}`;
+    const nameLine = document.createElement("span");
+    nameLine.className = "tama-pet-label-name";
+    nameLine.textContent = pet.stage === "broken" ? "Œuf au plat" : pet.name;
+    label.appendChild(nameLine);
+    if (pet.stage !== "broken") {
+      const ageLine = document.createElement("span");
+      ageLine.className = "tama-pet-label-age";
+      ageLine.textContent = tamaPetAgeLabel(pet);
+      label.appendChild(ageLine);
+    }
     tile.appendChild(label);
 
     return tile;
@@ -2147,7 +2355,19 @@
       inner.textContent = tamaPetDisplayEmoji(pet);
     }
     if (label) {
-      label.textContent = pet.stage === "broken" ? "Œuf au plat" : `${pet.name} · ${tamaPetDisplayName(pet)}`;
+      const nameLine = label.querySelector(".tama-pet-label-name");
+      let ageLine = label.querySelector(".tama-pet-label-age");
+      if (nameLine) nameLine.textContent = pet.stage === "broken" ? "Œuf au plat" : pet.name;
+      if (pet.stage !== "broken") {
+        if (!ageLine) {
+          ageLine = document.createElement("span");
+          ageLine.className = "tama-pet-label-age";
+          label.appendChild(ageLine);
+        }
+        ageLine.textContent = tamaPetAgeLabel(pet);
+      } else if (ageLine) {
+        ageLine.remove();
+      }
     }
   }
 

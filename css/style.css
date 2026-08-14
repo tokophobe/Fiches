@@ -812,13 +812,22 @@ textarea, input {
   color: var(--ink-soft);
 }
 
+/* `.row-actions` est partagée entre deux mises en page différentes : les
+   rangées de fiches (colonne, actions en pleine largeur en haut) et les
+   rangées de matières (ligne horizontale, actions à droite). Le style
+   "pleine largeur + séparateur" ne doit s'appliquer qu'au premier cas —
+   l'avoir mis sur la classe generique cassait l'affichage du nom des
+   matières (poussé hors de vue par une largeur forcée à 100%). */
+.card-row .row-actions {
+  width: 100%;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(35,48,42,0.1);
+}
+
 .row-actions {
   display: flex;
   gap: 6px;
   flex-shrink: 0;
-  width: 100%;
-  padding-bottom: 6px;
-  border-bottom: 1px solid rgba(35,48,42,0.1);
 }
 
 .icon-btn {
@@ -1187,32 +1196,32 @@ textarea, input {
    a besoin d'une hauteur fixe. */
 .tama-pets-list {
   position: relative;
-  height: 420px;
+  height: 480px;
   overflow: hidden;
   border-radius: var(--radius-card);
-  /* Fond "pré" simple et naïf : un aplat vert herbe avec un dégradé doux
-     (plus clair en haut, plus sombre en bas, comme une pelouse vue de haut)
-     et de petits brins d'herbe dessinés au trait, répétés en motif —
-     volontairement schématique plutôt que réaliste. */
-  background-color: #7c9c5e;
+  /* Fond "pré" façon dessin d'enfant : un aplat vert et de grandes taches
+     irrégulières plus claires/foncées (peintes à main levée, pas un motif
+     répétitif géométrique) + quelques petites fleurs éparpillées. Beaucoup
+     plus naïf que l'ancien quadrillage de traits en diagonale. */
+  background-color: #8bb56a;
   background-image:
-    linear-gradient(180deg, rgba(255,255,255,0.10), rgba(0,0,0,0.08)),
-    repeating-linear-gradient(
-      100deg,
-      rgba(255,255,255,0.07) 0px,
-      rgba(255,255,255,0.07) 2px,
-      transparent 2px,
-      transparent 22px
-    ),
-    repeating-linear-gradient(
-      80deg,
-      rgba(35,48,42,0.10) 0px,
-      rgba(35,48,42,0.10) 2px,
-      transparent 2px,
-      transparent 18px
-    );
-  border: 1px solid rgba(35, 48, 42, 0.25);
-  box-shadow: inset 0 3px 10px rgba(0,0,0,0.15);
+    radial-gradient(ellipse 140px 80px at 10% 18%, rgba(255,255,255,0.12), transparent 72%),
+    radial-gradient(ellipse 170px 100px at 82% 12%, rgba(0,0,0,0.08), transparent 70%),
+    radial-gradient(ellipse 130px 90px at 28% 66%, rgba(255,255,255,0.10), transparent 72%),
+    radial-gradient(ellipse 190px 110px at 88% 72%, rgba(0,0,0,0.07), transparent 70%),
+    radial-gradient(ellipse 100px 60px at 55% 40%, rgba(255,255,255,0.08), transparent 72%),
+    radial-gradient(ellipse 120px 70px at 45% 92%, rgba(0,0,0,0.06), transparent 72%),
+    radial-gradient(circle 4px at 15% 35%, #fff6d8 96%, transparent 100%),
+    radial-gradient(circle 4px at 38% 58%, #fff6d8 96%, transparent 100%),
+    radial-gradient(circle 4px at 63% 22%, #ffdd8a 96%, transparent 100%),
+    radial-gradient(circle 4px at 78% 52%, #fff6d8 96%, transparent 100%),
+    radial-gradient(circle 4px at 24% 80%, #ffdd8a 96%, transparent 100%),
+    radial-gradient(circle 4px at 91% 34%, #fff6d8 96%, transparent 100%),
+    radial-gradient(circle 4px at 52% 84%, #ffdd8a 96%, transparent 100%),
+    radial-gradient(circle 4px at 8% 62%, #fff6d8 96%, transparent 100%),
+    radial-gradient(circle 4px at 70% 88%, #ffdd8a 96%, transparent 100%);
+  border: 3px solid #5c7a45;
+  box-shadow: inset 0 3px 10px rgba(0,0,0,0.12);
   margin-bottom: 14px;
 }
 
@@ -1290,18 +1299,36 @@ textarea, input {
 }
 
 .tama-pet-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
   font-family: var(--font-mono);
-  font-size: 11.5px;
-  font-weight: 600;
   color: var(--paper);
-  white-space: nowrap;
   max-width: 96px;
-  overflow: hidden;
-  text-overflow: ellipsis;
   background: rgba(26, 45, 38, 0.55);
-  padding: 1px 6px;
+  padding: 2px 6px;
   border-radius: 8px;
   text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+}
+
+.tama-pet-label-name {
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tama-pet-label-age {
+  font-size: 9px;
+  font-weight: 400;
+  opacity: 0.8;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tama-empty-hint { text-align: center; margin: 30px 12px; }
