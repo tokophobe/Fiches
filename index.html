@@ -134,6 +134,7 @@
 
   <div class="subject-bar">
     <select class="subject-select" id="subject-select" aria-label="Matière active"></select>
+    <span class="subject-algo-badge" id="subject-algo-badge" title="Mode d'apprentissage de cette matière"></span>
     <button class="subject-add-btn" id="add-subject-btn" type="button" title="Nouvelle matière">+</button>
   </div>
 
@@ -294,14 +295,25 @@
         l'histogramme de la page Réviser pour faire arriver un premier œuf.
       </p>
 
+      <div class="tama-pen-color-picker" id="tama-pen-color-picker">
+        <span class="tama-pen-color-label">Couleur du pré</span>
+        <div class="tama-pen-color-swatches" id="tama-pen-color-swatches"></div>
+      </div>
+
       <p class="field-hint tama-hint">
         Chaque compagnon n'a qu'une seule jauge de vie, qui baisse tout
         seule avec le temps : l'anneau autour de lui va du rouge (basse) au
         vert (pleine), et il grossit avec elle. À zéro, il redescend d'un
-        stade (œuf → œuf au plat, qui disparaît le lendemain). Au maximum,
-        il grandit encore, jusqu'à devenir un bel animal. Les cadeaux de
-        l'histogramme de la page Réviser atterrissent ici, à ouvrir toi-même.
+        stade (œuf → œuf au plat). Au maximum, il grandit encore, jusqu'à
+        devenir un bel animal, dont le nom et l'âge sont alors révélés. Les
+        cadeaux de l'histogramme de la page Réviser atterrissent ici, à
+        ouvrir toi-même.
       </p>
+
+      <div class="tama-memorial" id="tama-memorial" hidden>
+        <h3 class="settings-block-title">Ils nous ont quittés</h3>
+        <div class="tama-memorial-list" id="tama-memorial-list"></div>
+      </div>
     </section>
 
     <!-- VUE SYNC -->
@@ -452,6 +464,78 @@
           <span>Quantité maximum par cadeau</span>
           <input type="number" id="setting-tama-gift-qty-max" min="1" max="20" step="1" inputmode="numeric" />
         </label>
+      </div>
+    </section>
+
+    <!-- VUE MODE D'APPRENTISSAGE (par matière, ouverte depuis la page Gérer) -->
+    <section id="view-subject-algo" class="view">
+      <button class="btn btn--ghost btn--small" id="algo-back-btn" type="button">← Retour à Gérer</button>
+      <h2 class="view-title" id="algo-subject-title">Mode d'apprentissage</h2>
+      <p class="field-hint settings-block-hint">
+        Ces réglages ne s'appliquent qu'à cette matière. Au début, l'échéance
+        d'une fiche est de 1 jour. À chaque réponse, la nouvelle échéance est
+        le minimum entre le maximum réglé pour ce bouton et l'échéance
+        actuelle multipliée par son coefficient.
+      </p>
+
+      <div class="algo-mode-label" id="algo-mode-label">Mode actuel : —</div>
+
+      <div class="algo-preset-row">
+        <button class="btn btn--small" id="algo-preset-cool" type="button">Apprentissage cool</button>
+        <button class="btn btn--small" id="algo-preset-normal" type="button">Apprentissage normal</button>
+        <button class="btn btn--small" id="algo-preset-renforce" type="button">Apprentissage renforcé</button>
+      </div>
+
+      <h3 class="settings-block-title">Coefficients multiplicateurs (× 0,1, de 1 à 10)</h3>
+      <div class="algo-grid">
+        <label class="field settings-bonus-field">
+          <span>Encore (Ka)</span>
+          <input type="number" id="algo-ka" min="1" max="10" step="0.1" inputmode="decimal" />
+        </label>
+        <label class="field settings-bonus-field">
+          <span>Difficile (Kh)</span>
+          <input type="number" id="algo-kh" min="1" max="10" step="0.1" inputmode="decimal" />
+        </label>
+        <label class="field settings-bonus-field">
+          <span>Bien (Kg)</span>
+          <input type="number" id="algo-kg" min="1" max="10" step="0.1" inputmode="decimal" />
+        </label>
+        <label class="field settings-bonus-field">
+          <span>Facile (Ke)</span>
+          <input type="number" id="algo-ke" min="1" max="10" step="0.1" inputmode="decimal" />
+        </label>
+      </div>
+
+      <h3 class="settings-block-title">Maximums en jours (par unité, de 1 à 365)</h3>
+      <div class="algo-grid">
+        <label class="field settings-bonus-field">
+          <span>Encore (Ma)</span>
+          <input type="number" id="algo-ma" min="1" max="365" step="1" inputmode="numeric" />
+        </label>
+        <label class="field settings-bonus-field">
+          <span>Difficile (Mh)</span>
+          <input type="number" id="algo-mh" min="1" max="365" step="1" inputmode="numeric" />
+        </label>
+        <label class="field settings-bonus-field">
+          <span>Bien (Mg)</span>
+          <input type="number" id="algo-mg" min="1" max="365" step="1" inputmode="numeric" />
+        </label>
+        <label class="field settings-bonus-field">
+          <span>Facile (Me)</span>
+          <input type="number" id="algo-me" min="1" max="365" step="1" inputmode="numeric" />
+        </label>
+      </div>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Revoir les vieilles fiches</h3>
+        <p class="field-hint settings-block-hint">
+          Ramène l'échéance (et la date de prochaine interrogation) à 10
+          jours pour toutes les fiches de cette matière dont la prochaine
+          interrogation est prévue dans plus de 10 jours.
+        </p>
+        <button type="button" class="btn btn--ghost" id="algo-review-old-btn">
+          Revoir les vieilles fiches
+        </button>
       </div>
     </section>
   </main>

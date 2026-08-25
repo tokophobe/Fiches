@@ -218,6 +218,25 @@ textarea, input {
 
 .subject-add-btn:hover { background: rgba(247, 241, 225, 0.16); }
 
+/* Badge "mode d'apprentissage" (cool/normal/renforcé/personnalisé) de la
+   matière active — dans la barre existante plutôt qu'une ligne en plus,
+   pour ne pas grandir la page (voir item 7). Vide -> pas affiché du tout. */
+.subject-algo-badge {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-soft);
+  background: rgba(247, 241, 225, 0.75);
+  border-radius: 999px;
+  padding: 5px 9px;
+  white-space: nowrap;
+  max-width: 92px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subject-algo-badge:empty { display: none; }
+
 .subjects-panel { margin-bottom: 26px; }
 
 .subject-list {
@@ -1035,10 +1054,43 @@ textarea, input {
   color: var(--ink-soft);
 }
 
+/* ============================================================
+   MODE D'APPRENTISSAGE VIEW (par matière)
+   ============================================================ */
+.view-title {
+  font-family: var(--font-type);
+  font-size: 19px;
+  color: var(--paper);
+  margin: 10px 0 14px;
+}
+
+.algo-mode-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--paper);
+  background: rgba(247,241,225,0.1);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+}
+
+.algo-preset-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.algo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+  margin-bottom: 20px;
+}
+
 .settings-bonus-row {
   display: flex;
-  gap: 10px;
-}
+  gap: 10px;}
 
 .settings-bonus-field { flex: 1; margin-bottom: 0; }
 
@@ -1199,30 +1251,69 @@ textarea, input {
   height: 480px;
   overflow: hidden;
   border-radius: var(--radius-card);
-  /* Fond "pré" façon dessin d'enfant : un aplat vert et de grandes taches
-     irrégulières plus claires/foncées (peintes à main levée, pas un motif
-     répétitif géométrique) + quelques petites fleurs éparpillées. Beaucoup
-     plus naïf que l'ancien quadrillage de traits en diagonale. */
+  /* Fond uni, couleur choisie par l'utilisateur (nuancier sous le pré) et
+     appliquée ici en inline style par JS (voir applyTamaPenColor) — la
+     valeur ci-dessous n'est qu'un repli avant que le JS ne s'exécute. */
   background-color: #8bb56a;
-  background-image:
-    radial-gradient(ellipse 140px 80px at 10% 18%, rgba(255,255,255,0.12), transparent 72%),
-    radial-gradient(ellipse 170px 100px at 82% 12%, rgba(0,0,0,0.08), transparent 70%),
-    radial-gradient(ellipse 130px 90px at 28% 66%, rgba(255,255,255,0.10), transparent 72%),
-    radial-gradient(ellipse 190px 110px at 88% 72%, rgba(0,0,0,0.07), transparent 70%),
-    radial-gradient(ellipse 100px 60px at 55% 40%, rgba(255,255,255,0.08), transparent 72%),
-    radial-gradient(ellipse 120px 70px at 45% 92%, rgba(0,0,0,0.06), transparent 72%),
-    radial-gradient(circle 4px at 15% 35%, #fff6d8 96%, transparent 100%),
-    radial-gradient(circle 4px at 38% 58%, #fff6d8 96%, transparent 100%),
-    radial-gradient(circle 4px at 63% 22%, #ffdd8a 96%, transparent 100%),
-    radial-gradient(circle 4px at 78% 52%, #fff6d8 96%, transparent 100%),
-    radial-gradient(circle 4px at 24% 80%, #ffdd8a 96%, transparent 100%),
-    radial-gradient(circle 4px at 91% 34%, #fff6d8 96%, transparent 100%),
-    radial-gradient(circle 4px at 52% 84%, #ffdd8a 96%, transparent 100%),
-    radial-gradient(circle 4px at 8% 62%, #fff6d8 96%, transparent 100%),
-    radial-gradient(circle 4px at 70% 88%, #ffdd8a 96%, transparent 100%);
   border: 3px solid #5c7a45;
   box-shadow: inset 0 3px 10px rgba(0,0,0,0.12);
   margin-bottom: 14px;
+}
+
+.tama-pen-color-picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.tama-pen-color-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  flex-shrink: 0;
+}
+
+.tama-pen-color-swatches {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tama-pen-color-swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid rgba(35,48,42,0.25);
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.tama-pen-color-swatch.is-selected {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink);
+}
+
+.tama-pen-color-swatch--custom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
+  font-size: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.tama-pen-color-swatch--custom input[type="color"] {
+  position: absolute;
+  inset: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0;
 }
 
 .tama-pet-tile {
@@ -1272,6 +1363,9 @@ textarea, input {
   border-radius: 2px;
   background: rgba(247, 241, 225, 0.18);
   overflow: hidden;
+  /* Fine bordure noire : lisibilité sur n'importe quelle couleur de fond de
+     pré (voir le nuancier — item 6). */
+  border: 0.5px solid rgba(0, 0, 0, 0.55);
 }
 
 .tama-food-bar-fill {
@@ -1286,6 +1380,9 @@ textarea, input {
   align-items: center;
   justify-content: center;
   transition: width 0.3s ease, height 0.3s ease, background 0.4s ease;
+  /* Idem : fine bordure noire autour de l'anneau de vie, pour qu'il reste
+     lisible quelle que soit la couleur de fond choisie pour le pré. */
+  box-shadow: 0 0 0 0.75px rgba(0, 0, 0, 0.55);
 }
 
 .tama-pet-inner {
@@ -1367,6 +1464,51 @@ textarea, input {
 
 .tama-hint { margin-bottom: 8px; }
 
+/* Mémorial "Ils nous ont quittés" : liste permanente, du décès le plus
+   récent au plus ancien (voir archiveDeceasedPets). */
+.tama-memorial { margin-top: 18px; }
+
+.tama-memorial-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tama-memorial-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--paper);
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.tama-memorial-emoji {
+  font-size: 22px;
+  flex-shrink: 0;
+  filter: grayscale(0.4) saturate(0.7);
+  opacity: 0.85;
+}
+
+.tama-memorial-body { min-width: 0; flex: 1; }
+
+.tama-memorial-name {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+
+.tama-memorial-epitaph {
+  font-family: var(--font-type);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.4;
+  font-style: italic;
+}
+
 
 /* Objectif-cadeau de l'histogramme mini (page Réviser) : une seule ligne
    horizontale, sur toute la largeur du graphique (y compris la partie qui
@@ -1388,7 +1530,7 @@ textarea, input {
 
 .chart-goal-bar-gift {
   position: absolute;
-  right: 6px;
+  left: 6px;
   top: -13px;
   font-size: 15px;
   line-height: 1;

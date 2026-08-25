@@ -108,6 +108,112 @@
   const settingTamaGiftQtyMinEl = el("setting-tama-gift-qty-min");
   const settingTamaGiftQtyMaxEl = el("setting-tama-gift-qty-max");
 
+  /* ---------------------------------------------------------
+     Algorithme de répétition espacée "maison" (remplace SM-2) :
+     - échéance initiale = 1 jour ;
+     - à chaque réponse, nouvelle échéance = min(M[note], K[note] × échéance
+       actuelle) — calculée SANS arrondi et conservée ainsi en mémoire
+       (card.deadlineDaysRaw, 3 décimales) pour les calculs suivants ;
+     - seule la version arrondie à l'entier (card.interval) sert à fixer la
+       date de la prochaine interrogation et l'affichage.
+     Réglable par matière (Ka/Kh/Kg/Ke bornés 1–10 par dixièmes, Ma/Mh/Mg/Me
+     bornés 1–365 par unités), persisté en local sous une seule clé (map
+     subjectId -> réglages), donc conservé d'une version de l'appli à
+     l'autre comme le reste des réglages.
+     --------------------------------------------------------- */
+  const SUBJECT_ALGO_KEY = "fiches_subject_algo";
+  const ALGO_PRESETS = {
+    cool: { Ka: 3, Kh: 1.6, Kg: 2, Ke: 3.5, Ma: 3, Mh: 6, Mg: 60, Me: 300 },
+    normal: { Ka: 1.3, Kh: 1.5, Kg: 1.8, Ke: 2.4, Ma: 2, Mh: 3, Mg: 30, Me: 180 },
+    renforce: { Ka: 1, Kh: 1.3, Kg: 1.6, Ke: 1.9, Ma: 1, Mh: 2, Mg: 15, Me: 90 },
+  };
+  const ALGO_PRESET_LABELS = { cool: "Apprentissage cool", normal: "Apprentissage normal", renforce: "Apprentissage renforcé" };
+
+  function loadSubjectAlgoMap() {
+    try {
+      const raw = localStorage.getItem(SUBJECT_ALGO_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+  function saveSubjectAlgoMap(map) {
+    localStorage.setItem(SUBJECT_ALGO_KEY, JSON.stringify(map));
+    touchAppSettingsTimestamp();
+    if (Sync.isConfigured()) pushTamaBlob();
+  }
+  function clampAlgoK(v, fallback) {
+    const n = Math.round(Number(v) * 10) / 10;
+    return Number.isFinite(n) ? Math.min(10, Math.max(1, n)) : fallback;
+  }
+  function clampAlgoM(v, fallback) {
+    const n = Math.round(Number(v));
+    return Number.isFinite(n) ? Math.min(365, Math.max(1, n)) : fallback;
+  }
+  function getSubjectAlgoSettings(subjectId) {
+    const map = loadSubjectAlgoMap();
+    const raw = map[subjectId];
+    if (!raw) return { ...ALGO_PRESETS.normal };
+    return {
+      Ka: clampAlgoK(raw.Ka, ALGO_PRESETS.normal.Ka),
+      Kh: clampAlgoK(raw.Kh, ALGO_PRESETS.normal.Kh),
+      Kg: clampAlgoK(raw.Kg, ALGO_PRESETS.normal.Kg),
+      Ke: clampAlgoK(raw.Ke, ALGO_PRESETS.normal.Ke),
+      Ma: clampAlgoM(raw.Ma, ALGO_PRESETS.normal.Ma),
+      Mh: clampAlgoM(raw.Mh, ALGO_PRESETS.normal.Mh),
+      Mg: clampAlgoM(raw.Mg, ALGO_PRESETS.normal.Mg),
+      Me: clampAlgoM(raw.Me, ALGO_PRESETS.normal.Me),
+    };
+  }
+  function setSubjectAlgoSettings(subjectId, settings) {
+    const map = loadSubjectAlgoMap();
+    map[subjectId] = settings;
+    saveSubjectAlgoMap(map);
+  }
+  /** Le mode affiché (page Réviser, page Mode d'apprentissage) : le nom du
+   *  préréglage si les 8 valeurs correspondent exactement, sinon
+   *  "Personnalisé". */
+  function algoModeName(settings) {
+    for (const [key, preset] of Object.entries(ALGO_PRESETS)) {
+      const matches = ["Ka", "Kh", "Kg", "Ke", "Ma", "Mh", "Mg", "Me"].every(
+        (k) => Math.abs(settings[k] - preset[k]) < 1e-9
+      );
+      if (matches) return ALGO_PRESET_LABELS[key];
+    }
+    return "Personnalisé";
+  }
+
+  const ALGO_RATING_KEYS = { again: ["Ka", "Ma"], hard: ["Kh", "Mh"], good: ["Kg", "Mg"], easy: ["Ke", "Me"] };
+  /** Calcule la nouvelle échéance (non arrondie) pour une note donnée. */
+  function computeNextDeadlineRaw(currentRawDays, rating, settings) {
+    const [kKey, mKey] = ALGO_RATING_KEYS[rating];
+    return Math.min(settings[mKey], settings[kKey] * currentRawDays);
+  }
+  /** Échéance non arrondie actuellement en mémoire pour une fiche — 1 jour
+   *  par défaut pour une fiche neuve, ou reprise de `interval` (ancien champ
+   *  SM-2) pour ne pas repartir de zéro sur les fiches déjà existantes lors
+   *  de la migration vers ce nouvel algorithme. */
+  function currentDeadlineRaw(card) {
+    if (typeof card.deadlineDaysRaw === "number" && Number.isFinite(card.deadlineDaysRaw)) {
+      return card.deadlineDaysRaw;
+    }
+    return typeof card.interval === "number" && card.interval > 0 ? card.interval : 1;
+  }
+  /** Applique une note à une fiche avec le nouvel algorithme : renvoie les
+   *  champs à fusionner dans la fiche (échéance brute conservée à 3
+   *  décimales, échéance entière, et date de prochaine interrogation). */
+  function computeAlgoNext(card, rating, subjectId) {
+    const settings = getSubjectAlgoSettings(subjectId);
+    const rawBefore = currentDeadlineRaw(card);
+    const rawAfter = computeNextDeadlineRaw(rawBefore, rating, settings);
+    const rawAfterRounded3 = Math.round(rawAfter * 1000) / 1000;
+    const intervalDays = Math.max(1, Math.round(rawAfter));
+    const due = startOfDay(new Date());
+    due.setDate(due.getDate() + intervalDays);
+    return { deadlineDaysRaw: rawAfterRounded3, interval: intervalDays, dueDate: due.toISOString() };
+  }
+
+
   /** Appelée après chaque changement d'échéance issu d'une vraie révision
    *  (algorithme SM-2 normal ou mode bonus — pas l'hibernation, qui ne
    *  compte volontairement pas comme une révision). Met à jour le record
@@ -160,6 +266,7 @@
   const TAMA_FOOD_VALUE_KEY = "fiches_tama_food_value";
   const TAMA_GIFT_QTY_MIN_KEY = "fiches_tama_gift_qty_min";
   const TAMA_GIFT_QTY_MAX_KEY = "fiches_tama_gift_qty_max";
+  const TAMA_PEN_COLOR_KEY = "fiches_tama_pen_color";
 
   /** Un très large pool "nourriture et boissons" : n'importe quel emoji de
    *  repas, fruit, boisson chaude ou fraîche peut sortir d'un cadeau. */
@@ -292,11 +399,104 @@
   ];
   const BROKEN_EGG_EMOJI = "🍳";
   const LIFE_DECAY_PER_HOUR = 1;
-  const BROKEN_EGG_LINGER_HOURS = 24;
   /** Poids utilisés dans la probabilité d'obtenir un œuf plutôt qu'à manger
    *  (voir tamaEggProbability) : un foyer plein d'œufs/poussins pèse très
    *  lourd, un foyer d'animaux adultes presque rien. */
   const GIFT_EGG_WEIGHTS = { oeuf: 15, poussin_oeuf: 8, poussin: 2, chenille: 1, papillon: 0.7, animal: 0.5 };
+
+  /** Épitaphes rendant hommage aux compagnons disparus (section "Ils nous
+   *  ont quittés") : plutôt que d'écrire 500 phrases à la main, on combine
+   *  trois banques de courts fragments (constat de vie / legs / adieu) —
+   *  25×24×24 ≈ 14 400 combinaisons possibles, largement au-delà des 500
+   *  demandées, pour une poignée de fragments à maintenir. Une combinaison
+   *  est tirée UNE fois à la mort du compagnon et conservée telle quelle
+   *  (voir `pet.epitaph`), donc jamais recalculée ensuite.
+   */
+  const EPITAPH_A = [
+    "Il aura battu son record personnel de siestes trois jours de suite",
+    "Elle courait après les miettes plus vite que son ombre",
+    "Il a passé sa vie à confondre le nord et le sud du pré",
+    "Elle collectionnait les brins d'herbe sans jamais dire pourquoi",
+    "Il n'a jamais rattrapé le dernier aliment tombé au sol",
+    "Elle faisait semblant de dormir pour observer les autres",
+    "Il a inventé sa propre démarche, jamais reproduite depuis",
+    "Elle a essayé de manger un nuage, une fois, par principe",
+    "Il regardait toujours ailleurs au moment de la photo",
+    "Elle a fait le tour du pré exactement 4 217 fois",
+    "Il croyait dur comme fer être le plus rapide du foyer",
+    "Elle partageait sa nourriture, mais seulement les jours pairs",
+    "Il boudait dès qu'un autre compagnon arrivait en premier",
+    "Elle a dormi debout plus souvent qu'assise",
+    "Il saluait chaque lever de soleil d'un air très solennel",
+    "Elle refusait obstinément de manger deux fois la même chose",
+    "Il pensait que le pré était infiniment plus grand qu'il ne l'était",
+    "Elle a marché en rond si longtemps qu'on l'a crue perdue",
+    "Il avait un talent rare pour arriver juste après le repas",
+    "Elle observait les fiches révisées avec un intérêt profond",
+    "Il ne s'est jamais remis d'avoir raté un aliment doré",
+    "Elle prenait tout son temps, même pour ne rien faire",
+    "Il défendait fièrement un territoire large de trois pas",
+    "Elle a un jour dépassé tout le monde, une fois, brièvement",
+    "Il gardait toujours un œil sur le prochain cadeau à venir",
+  ];
+  const EPITAPH_B = [
+    "Sa collection de miettes restera dans les mémoires",
+    "Son style de course inimitable ne sera jamais égalé",
+    "Personne n'a jamais compris sa stratégie, et c'est très bien ainsi",
+    "Son sens de l'exploration aura marqué ce petit bout de pré",
+    "Sa capacité à dormir n'importe où force le respect",
+    "On se souviendra longtemps de son air toujours étonné",
+    "Sa passion pour les longues siestes fait déjà des émules",
+    "Son appétit légendaire restera un sujet de conversation",
+    "Sa façon bien à lui de regarder le monde manquera à tous",
+    "Son enthousiasme matinal, lui, ne manquera à personne le lundi",
+    "Sa curiosité sans limite l'aura mené jusqu'ici, et c'est beau",
+    "Son goût prononcé pour les détours restera une énigme",
+    "Sa patience légendaire face aux aliments récalcitrants inspire encore",
+    "Son indifférence royale aux autres compagnons avait quelque chose de noble",
+    "Sa manière unique de trébucher sur rien du tout fera date",
+    "Son air toujours un peu perdu cachait une grande sagesse, paraît-il",
+    "Sa ténacité à finir toujours dernier n'aura d'égal que sa bonne humeur",
+    "Son goût du risque (traverser le pré en diagonale) impressionnait",
+    "Sa loyauté envers son coin d'ombre préféré était sans faille",
+    "Son excellence en matière de siestes prolongées reste un modèle",
+    "Sa manie de tout renifler deux fois avant d'agir avait ses fans",
+    "Son grand sens du timing (toujours en retard) était presque une signature",
+    "Sa discrétion légendaire cachait en réalité un appétit féroce",
+    "Son goût immodéré pour les longues pauses inspire encore le respect",
+  ];
+  const EPITAPH_C = [
+    "Repose en paix, petit gourmand",
+    "On se souviendra de toi, aventurier du pré",
+    "Merci pour ces siestes partagées",
+    "Le pré est un peu plus calme sans toi",
+    "Bon vent, petit explorateur",
+    "Tu manqueras aux prochains cadeaux",
+    "Repose, tu l'as bien mérité",
+    "Que ton prochain pré soit rempli d'aliments dorés",
+    "Adieu, champion des longues siestes",
+    "On aura ri, on aura couru, merci pour tout",
+    "Le foyer se souvient de toi avec tendresse",
+    "Va rejoindre les grandes légendes du pré",
+    "Tu as marqué ce petit bout d'herbe à ta façon",
+    "Repose en paix, entre deux brins d'herbe",
+    "On garde le souvenir de tes petites bêtises",
+    "Bon repos, tu as bien gagné ta pause éternelle",
+    "Le pré n'oubliera pas ton passage",
+    "Merci d'avoir été toi, jusqu'au bout",
+    "Que la prochaine vie te réserve plus de cadeaux",
+    "Petit compagnon, tu resteras dans les mémoires du foyer",
+    "Repose, ta place au soleil t'attendra toujours",
+    "Adieu, tu auras égayé chaque jour passé ici",
+    "Le pré te dit merci et au revoir",
+    "Tu pars, mais l'écho de tes pas reste",
+  ];
+  function randomEpitaph() {
+    const a = EPITAPH_A[Math.floor(Math.random() * EPITAPH_A.length)];
+    const b = EPITAPH_B[Math.floor(Math.random() * EPITAPH_B.length)];
+    const c = EPITAPH_C[Math.floor(Math.random() * EPITAPH_C.length)];
+    return `${a}. ${b}. ${c}.`;
+  }
 
   /** Espèces à découvrir au stade "animal" (tirage uniforme, gravé dans les
    *  trophées pour toujours, même si le compagnon disparaît ensuite).
@@ -442,6 +642,7 @@
       pets: [makeEgg([])],
       foods: [], // { id, emoji, total, remaining, x, y, eatenBy, createdAt } — posées dans le pré
       trophies: [], // { species, dateReached }
+      memorial: [], // { id, name, emoji, ageAtDeathDays, deathAt, epitaph } — plus récent en premier
       pendingGifts: [], // { id, source, createdAt } — à ouvrir sur la page Tamagotchi
       zeroBonusGivenDates: {}, // { subjectId: dateISO }
       lastGiftCollectedDate: null,
@@ -494,6 +695,7 @@
     if (!tamaState.pendingGifts) tamaState.pendingGifts = [];
     if (!tamaState.zeroBonusGivenDates) tamaState.zeroBonusGivenDates = {};
     if (!tamaState.foods) tamaState.foods = [];
+    if (!tamaState.memorial) tamaState.memorial = [];
     // Migration : compagnons créés avant l'introduction des noms.
     let namedSomeone = false;
     tamaState.pets.forEach((p) => {
@@ -572,6 +774,55 @@
     if (Sync.isConfigured()) pushTamaBlob();
   }
 
+  /** Couleur de fond du pré : palette de teintes prédéfinies + un nuancier
+   *  libre (input type=color). Persistée dans localStorage (donc conservée
+   *  d'une version de l'appli à l'autre, seul le Cache Storage étant
+   *  vidé/reconstruit à chaque mise à jour) et synchronisée comme les
+   *  autres réglages via collectAppSettings/applyAppSettings. */
+  const TAMA_PEN_COLOR_PRESETS = ["#8bb56a", "#7ea8c9", "#e0a5c1", "#e8c877", "#a98bc9", "#d98c6b", "#7bbfae", "#c9c9c9"];
+  function getPenColor() {
+    return localStorage.getItem(TAMA_PEN_COLOR_KEY) || TAMA_PEN_COLOR_PRESETS[0];
+  }
+  function setPenColor(hex) {
+    localStorage.setItem(TAMA_PEN_COLOR_KEY, hex);
+    touchAppSettingsTimestamp();
+    if (Sync.isConfigured()) pushTamaBlob();
+    applyPenColor();
+    renderPenColorSwatches();
+  }
+  function applyPenColor() {
+    if (tamaPetsListEl) tamaPetsListEl.style.backgroundColor = getPenColor();
+  }
+  function renderPenColorSwatches() {
+    const wrap = el("tama-pen-color-swatches");
+    if (!wrap) return;
+    wrap.innerHTML = "";
+    const current = getPenColor();
+    const frag = document.createDocumentFragment();
+    TAMA_PEN_COLOR_PRESETS.forEach((hex) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "tama-pen-color-swatch" + (hex.toLowerCase() === current.toLowerCase() ? " is-selected" : "");
+      btn.style.background = hex;
+      btn.title = hex;
+      btn.addEventListener("click", () => setPenColor(hex));
+      frag.appendChild(btn);
+    });
+    // Nuancier libre : rond arc-en-ciel, sélectionné dès que la couleur
+    // actuelle n'est pas l'une des teintes prédéfinies ci-dessus.
+    const isCustom = !TAMA_PEN_COLOR_PRESETS.some((hex) => hex.toLowerCase() === current.toLowerCase());
+    const customWrap = document.createElement("label");
+    customWrap.className = "tama-pen-color-swatch tama-pen-color-swatch--custom" + (isCustom ? " is-selected" : "");
+    customWrap.title = "Couleur personnalisée";
+    const customInput = document.createElement("input");
+    customInput.type = "color";
+    customInput.value = isCustom ? current : "#888888";
+    customInput.addEventListener("input", () => setPenColor(customInput.value));
+    customWrap.appendChild(customInput);
+    frag.appendChild(customWrap);
+    wrap.appendChild(frag);
+  }
+
   /** Recale un compagnon dont la vie vient de changer : fait redescendre
    *  ou remonter en cascade d'autant de stades que nécessaire (utile après
    *  une longue absence, où plusieurs paliers peuvent être franchis d'un
@@ -582,7 +833,13 @@
       if (pet.stage === "oeuf" || pet.stage === "animal") {
         pet.stage = "broken";
         pet.life = 0;
-        pet.brokenSeenAt = null;
+        // Fige nom, âge et une épitaphe tirée une fois pour toutes au
+        // moment du décès — c'est cette version figée qui s'affiche
+        // ensuite (tuile "RIP" dans le pré, puis mémorial "Ils nous ont
+        // quittés"), qu'importe ce qui se passe après dans l'appli.
+        pet.deathAt = new Date().toISOString();
+        pet.ageAtDeathDays = tamaPetAgeDays(pet, pet.deathAt);
+        pet.epitaph = randomEpitaph();
         return;
       }
       const idx = STAGE_ORDER.indexOf(pet.stage);
@@ -621,6 +878,13 @@
    *  des œufs au plat vus depuis plus de 24h, et comptabilité quotidienne
    *  des cadeaux de rattrapage. Appelée à l'ouverture et à chaque rendu de
    *  la page Tamagotchi. */
+  /** Fait avancer l'horloge du foyer : vie de chaque compagnon vivant, et
+   *  comptabilité quotidienne des cadeaux de rattrapage. Les œufs au plat
+   *  (compagnons décédés) ne disparaissent plus tout seuls après 24h : ils
+   *  restent visibles dans le pré tant qu'on reste sur la page Tamagotchi,
+   *  et ne sont archivés dans le mémorial "Ils nous ont quittés" qu'au
+   *  moment où on quitte cette page (voir archiveDeceasedPets). Appelée à
+   *  l'ouverture et à chaque rendu de la page Tamagotchi. */
   function applyTamaUpkeep() {
     const now = Date.now();
     let changed = false;
@@ -631,16 +895,6 @@
         changed = true;
       }
     });
-
-    const before = tamaState.pets.length;
-    tamaState.pets = tamaState.pets.filter((pet) => {
-      if (pet.stage === "broken" && pet.brokenSeenAt) {
-        const elapsedH = (now - new Date(pet.brokenSeenAt).getTime()) / 3600000;
-        return elapsedH < BROKEN_EGG_LINGER_HOURS;
-      }
-      return true;
-    });
-    if (tamaState.pets.length !== before) changed = true;
 
     // Comptabilité des jours sans cadeau -> cadeaux de rattrapage cumulables.
     // Bornée à 30 itérations (30 jours) : si `lastBookkeepingDate` arrivait
@@ -688,18 +942,29 @@
 
   /** Marque un œuf au plat comme "vu" par la personne : déclenche le compte
    *  à rebours de 24h avant disparition. Appelé au rendu de la page. */
-  function markBrokenEggsSeen() {
-    let changed = false;
-    tamaState.pets.forEach((pet) => {
-      if (pet.stage === "broken" && !pet.brokenSeenAt) {
-        pet.brokenSeenAt = new Date().toISOString();
-        changed = true;
-      }
+  /** Appelée en quittant la page Tamagotchi (voir le gestionnaire de tabs
+   *  plus bas) : archive tout compagnon décédé ("œuf au plat") dans le
+   *  mémorial permanent `tamaState.memorial` (nom, emoji, âge au décès,
+   *  épitaphe déjà figée), puis le retire du pré. Résultat : un défunt
+   *  reste visible dans le pré tant qu'on ne quitte pas la page, mais
+   *  bascule ensuite dans "Ils nous ont quittés" pour de bon. */
+  function archiveDeceasedPets() {
+    const deceased = tamaState.pets.filter((pet) => pet.stage === "broken");
+    if (deceased.length === 0) return;
+    if (!Array.isArray(tamaState.memorial)) tamaState.memorial = [];
+    deceased.forEach((pet) => {
+      tamaState.memorial.unshift({
+        id: pet.id,
+        name: pet.name,
+        emoji: pet.species ? (speciesById(pet.species) || {}).emoji || BROKEN_EGG_EMOJI : BROKEN_EGG_EMOJI,
+        ageAtDeathDays: typeof pet.ageAtDeathDays === "number" ? pet.ageAtDeathDays : tamaPetAgeDays(pet, pet.deathAt),
+        deathAt: pet.deathAt || new Date().toISOString(),
+        epitaph: pet.epitaph || randomEpitaph(),
+      });
     });
-    if (changed) {
-      saveTamaState();
-      scheduleTamaPush();
-    }
+    tamaState.pets = tamaState.pets.filter((pet) => pet.stage !== "broken");
+    saveTamaState();
+    scheduleTamaPush();
   }
 
   function tamaPetLifeFraction(pet) {
@@ -729,10 +994,18 @@
    *  nom à la place de l'espèce/du stade (retiré : superflu à côté du nom,
    *  et ça élargissait inutilement l'étiquette — voir tamaPetDisplayName,
    *  toujours utilisée ailleurs, ex. pour l'annonce d'un nouveau cadeau). */
-  function tamaPetAgeLabel(pet) {
+  /** Âge du compagnon en jours entiers, depuis sa création (l'œuf initial).
+   *  `atISO` optionnel fige le calcul à un instant donné (utilisé pour
+   *  figer l'âge à l'instant du décès — voir normalizePetLife) ; sans lui,
+   *  calcule l'âge "maintenant". */
+  function tamaPetAgeDays(pet, atISO) {
     const created = pet.createdAt ? new Date(pet.createdAt) : null;
-    if (!created || Number.isNaN(created.getTime())) return "";
-    const days = Math.max(0, Math.floor((Date.now() - created.getTime()) / 86400000));
+    if (!created || Number.isNaN(created.getTime())) return 0;
+    const at = atISO ? new Date(atISO) : new Date();
+    return Math.max(0, Math.floor((at.getTime() - created.getTime()) / 86400000));
+  }
+
+  function formatAgeDays(days) {
     if (days < 1) return "né aujourd'hui";
     if (days === 1) return "1 jour";
     if (days < 31) return `${days} jours`;
@@ -742,12 +1015,12 @@
     return years === 1 ? "1 an" : `${years} ans`;
   }
 
+  /** Âge affiché sous le nom d'un compagnon — uniquement pertinent au stade
+   *  "animal" (voir item 4 : le nom et l'âge ne sont révélés qu'à ce
+   *  stade-là) ou pour un défunt (voir tamaPetAgeDays avec `deathAt`,
+   *  utilisé directement côté appelant plutôt que via cette fonction). */
   function tamaPetAgeLabel(pet) {
-    const ms = Date.now() - new Date(pet.createdAt).getTime();
-    const hours = ms / 3600000;
-    if (hours < 1) return "< 1 h";
-    if (hours < 48) return `${Math.floor(hours)} h`;
-    return `${Math.floor(hours / 24)} j`;
+    return formatAgeDays(tamaPetAgeDays(pet));
   }
 
   /** Probabilité d'obtenir un œuf (plutôt que de la nourriture) à
@@ -791,13 +1064,20 @@
       return { type: "egg", petId: pet.id, petName: pet.name };
     }
 
-    const emoji = FOOD_EMOJI_POOL[Math.floor(Math.random() * FOOD_EMOJI_POOL.length)];
     const value = getFoodValue();
     const qtyMin = getGiftQtyMin();
     const qtyMax = Math.max(qtyMin, getGiftQtyMax());
     const qty = qtyMin + Math.floor(Math.random() * (qtyMax - qtyMin + 1));
+    // Aliments différents les uns des autres au sein d'un même cadeau : on
+    // pioche `qty` emoji distincts dans le pool (mélange, puis on prend les
+    // `qty` premiers) plutôt qu'un seul emoji répété pour tout le cadeau.
+    // Si qty dépasse la taille du pool (peu probable), on boucle dessus.
+    const shuffledEmoji = [...FOOD_EMOJI_POOL].sort(() => Math.random() - 0.5);
     const foodIds = [];
+    let firstEmoji = null;
     for (let i = 0; i < qty; i++) {
+      const emoji = shuffledEmoji[i % shuffledEmoji.length];
+      if (i === 0) firstEmoji = emoji;
       const food = {
         id: uidTama(),
         emoji,
@@ -812,7 +1092,7 @@
       foodIds.push(food.id);
     }
     saveTamaState();
-    return { type: "food", emoji, qty, value, foodIds };
+    return { type: "food", emoji: firstEmoji, qty, value, foodIds };
   }
 
   /** Ouvre un cadeau de la pile "à ouvrir" (page Tamagotchi uniquement). */
@@ -834,7 +1114,10 @@
   function ensureSubjectGoal(subjectId, goalBuckets) {
     if (tamaGoals[subjectId]) return tamaGoals[subjectId];
     const max = Math.max(0, ...goalBuckets.map((b) => b.count));
-    const threshold = Math.max(0, Math.floor(max * 0.8));
+    // Arrondi au plus proche (et non systématiquement arrondi en dessous) :
+    // demandé pour que le seuil affiché corresponde vraiment à "80%",
+    // plutôt qu'à "80% ou un peu moins".
+    const threshold = Math.max(0, Math.round(max * 0.8));
     // `max` est conservé en plus de `threshold` : il sert à positionner la
     // ligne d'objectif visuellement à 80% de la hauteur RENDUE de la barre
     // la plus haute (voir renderHistogramInto), plutôt qu'à 80% de l'échelle
@@ -934,6 +1217,7 @@
       foodValue: getFoodValue(),
       giftQtyMin: getGiftQtyMin(),
       giftQtyMax: getGiftQtyMax(),
+      penColor: getPenColor(),
       updatedAt: getAppSettingsTimestamp(),
     };
   }
@@ -955,6 +1239,11 @@
     if (Number.isFinite(settings.foodValue)) localStorage.setItem(TAMA_FOOD_VALUE_KEY, String(settings.foodValue));
     if (Number.isFinite(settings.giftQtyMin)) localStorage.setItem(TAMA_GIFT_QTY_MIN_KEY, String(settings.giftQtyMin));
     if (Number.isFinite(settings.giftQtyMax)) localStorage.setItem(TAMA_GIFT_QTY_MAX_KEY, String(settings.giftQtyMax));
+    if (settings.penColor) {
+      localStorage.setItem(TAMA_PEN_COLOR_KEY, settings.penColor);
+      applyPenColor();
+      renderPenColorSwatches();
+    }
     if (settings.updatedAt) localStorage.setItem(APP_SETTINGS_TS_KEY, settings.updatedAt);
     renderSettingsView();
   }
@@ -1033,6 +1322,7 @@
       if (remote.pet && adoptRemotePet) {
         tamaState = remote.pet;
         if (!tamaState.foods) tamaState.foods = [];
+        if (!tamaState.memorial) tamaState.memorial = [];
         saveTamaState();
       }
       // Réglages : même logique.
@@ -1073,7 +1363,10 @@
       reviewCount: 0,
       updatedAt: now,
       deleted: false,
-      ...SM2.createSm2State(),
+      // Nouvel algorithme (remplace SM-2) : échéance initiale = 1 jour, non
+      // arrondie (voir computeAlgoNext / currentDeadlineRaw).
+      interval: 1,
+      deadlineDaysRaw: 1,
     };
   }
 
@@ -1206,12 +1499,20 @@
       const actions = document.createElement("div");
       actions.className = "row-actions";
 
+      const algoBtn = document.createElement("button");
+      algoBtn.type = "button";
+      algoBtn.className = "icon-btn";
+      algoBtn.textContent = "🎓 mode";
+      algoBtn.title = "Mode d'apprentissage de cette matière";
+      algoBtn.addEventListener("click", () => openSubjectAlgoView(s.id));
+
       const delBtn = document.createElement("button");
       delBtn.type = "button";
       delBtn.className = "icon-btn icon-btn--danger";
       delBtn.textContent = "suppr.";
       delBtn.addEventListener("click", () => deleteSubject(s.id));
 
+      actions.appendChild(algoBtn);
       actions.appendChild(delBtn);
 
       li.appendChild(nameBtn);
@@ -1219,6 +1520,125 @@
       li.appendChild(actions);
       subjectListEl.appendChild(li);
     }
+  }
+
+  /* ---------------------------------------------------------
+     Vue "Mode d'apprentissage" (par matière, ouverte depuis Gérer)
+  --------------------------------------------------------- */
+  let algoEditingSubjectId = null;
+
+  function loadAlgoFormIntoInputs(settings) {
+    el("algo-ka").value = settings.Ka;
+    el("algo-kh").value = settings.Kh;
+    el("algo-kg").value = settings.Kg;
+    el("algo-ke").value = settings.Ke;
+    el("algo-ma").value = settings.Ma;
+    el("algo-mh").value = settings.Mh;
+    el("algo-mg").value = settings.Mg;
+    el("algo-me").value = settings.Me;
+    el("algo-mode-label").textContent = `Mode actuel : ${algoModeName(settings)}`;
+  }
+
+  function readAlgoFormSettings() {
+    return {
+      Ka: clampAlgoK(el("algo-ka").value, ALGO_PRESETS.normal.Ka),
+      Kh: clampAlgoK(el("algo-kh").value, ALGO_PRESETS.normal.Kh),
+      Kg: clampAlgoK(el("algo-kg").value, ALGO_PRESETS.normal.Kg),
+      Ke: clampAlgoK(el("algo-ke").value, ALGO_PRESETS.normal.Ke),
+      Ma: clampAlgoM(el("algo-ma").value, ALGO_PRESETS.normal.Ma),
+      Mh: clampAlgoM(el("algo-mh").value, ALGO_PRESETS.normal.Mh),
+      Mg: clampAlgoM(el("algo-mg").value, ALGO_PRESETS.normal.Mg),
+      Me: clampAlgoM(el("algo-me").value, ALGO_PRESETS.normal.Me),
+    };
+  }
+
+  function saveAlgoFormAndRefresh() {
+    if (!algoEditingSubjectId) return;
+    const settings = readAlgoFormSettings();
+    setSubjectAlgoSettings(algoEditingSubjectId, settings);
+    loadAlgoFormIntoInputs(getSubjectAlgoSettings(algoEditingSubjectId));
+    updateRatingPreviews();
+    renderSubjectAlgoBadge();
+  }
+
+  function openSubjectAlgoView(subjectId) {
+    algoEditingSubjectId = subjectId;
+    const subject = subjects.find((s) => s.id === subjectId);
+    el("algo-subject-title").textContent = `Mode d'apprentissage — ${subject ? subject.name : ""}`;
+    loadAlgoFormIntoInputs(getSubjectAlgoSettings(subjectId));
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el("view-subject-algo").classList.add("is-active");
+  }
+
+  function closeSubjectAlgoView() {
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el("view-manage").classList.add("is-active");
+    document.querySelectorAll(".tab").forEach((t) => {
+      t.classList.remove("is-active");
+      t.setAttribute("aria-selected", "false");
+    });
+    const manageTab = document.querySelector('.tab[data-view="manage"]');
+    if (manageTab) {
+      manageTab.classList.add("is-active");
+      manageTab.setAttribute("aria-selected", "true");
+    }
+  }
+
+  const algoBackBtn = el("algo-back-btn");
+  if (algoBackBtn) algoBackBtn.addEventListener("click", closeSubjectAlgoView);
+
+  ["cool", "normal", "renforce"].forEach((key) => {
+    const btn = el(`algo-preset-${key}`);
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      if (!algoEditingSubjectId) return;
+      setSubjectAlgoSettings(algoEditingSubjectId, { ...ALGO_PRESETS[key] });
+      loadAlgoFormIntoInputs(getSubjectAlgoSettings(algoEditingSubjectId));
+      updateRatingPreviews();
+      renderSubjectAlgoBadge();
+    });
+  });
+
+  ["algo-ka", "algo-kh", "algo-kg", "algo-ke", "algo-ma", "algo-mh", "algo-mg", "algo-me"].forEach((id) => {
+    const input = el(id);
+    if (input) input.addEventListener("change", saveAlgoFormAndRefresh);
+  });
+
+  const algoReviewOldBtn = el("algo-review-old-btn");
+  if (algoReviewOldBtn) {
+    algoReviewOldBtn.addEventListener("click", async () => {
+      if (!algoEditingSubjectId) return;
+      const subject = subjects.find((s) => s.id === algoEditingSubjectId);
+      const today = startOfDay(new Date());
+      const targets = cards.filter((c) => {
+        if (c.deleted || c.subject !== algoEditingSubjectId || !c.dueDate) return false;
+        const daysAhead = Math.round((startOfDay(new Date(c.dueDate)).getTime() - today.getTime()) / 86400000);
+        return daysAhead > 10;
+      });
+      if (targets.length === 0) {
+        alert("Aucune fiche de cette matière n'a une prochaine interrogation prévue dans plus de 10 jours.");
+        return;
+      }
+      const msg =
+        `Attention : cette action va ramener l'échéance et la date de prochaine ` +
+        `interrogation à 10 jours pour ${targets.length} fiche${targets.length > 1 ? "s" : ""} ` +
+        `de « ${subject ? subject.name : ""} » (celles actuellement prévues dans plus de 10 jours). ` +
+        `Cette action est irréversible. Continuer ?`;
+      if (!confirm(msg)) return;
+
+      const due = new Date(today);
+      due.setDate(due.getDate() + 10);
+      for (const c of targets) {
+        const updated = touch({ ...c, interval: 10, deadlineDaysRaw: 10, dueDate: due.toISOString() });
+        await persist(updated);
+        const idx = cards.findIndex((x) => x.id === updated.id);
+        if (idx >= 0) cards[idx] = updated;
+      }
+      renderStats();
+      renderManageList();
+      renderDuePill();
+      alert(`${targets.length} fiche${targets.length > 1 ? "s" : ""} ramenée${targets.length > 1 ? "s" : ""} à 10 jours.`);
+    });
   }
 
   async function createSubjectFlow() {
@@ -1394,7 +1814,16 @@
     renderManageList();
     renderStats();
     renderReviewChart();
+    renderSubjectAlgoBadge();
     refreshTamaTabIcon();
+  }
+
+  /** Badge "mode d'apprentissage" de la matière active, affiché dans la
+   *  barre déjà existante en haut (voir item 7) — jamais de ligne en plus. */
+  function renderSubjectAlgoBadge() {
+    const badge = el("subject-algo-badge");
+    if (!badge) return;
+    badge.textContent = currentSubjectId ? algoModeName(getSubjectAlgoSettings(currentSubjectId)) : "";
   }
 
   /** Toutes les fiches non supprimées de la matière actuellement active. */
@@ -1586,10 +2015,11 @@
     }
     el("sub-again").textContent = "< 1 j";
     const previews = {};
-    for (const rating of ["hard", "good", "easy"]) {
-      const next = SM2.sm2Next(currentCard, rating);
+    for (const rating of ["again", "hard", "good", "easy"]) {
+      const next = computeAlgoNext(currentCard, rating, currentCard.subject);
       previews[rating] = formatInterval(next.interval);
     }
+    el("sub-again").textContent = previews.again;
     el("sub-hard").textContent = previews.hard;
     el("sub-good").textContent = previews.good;
     el("sub-easy").textContent = previews.easy;
@@ -1636,7 +2066,7 @@
   }
 
   async function rateScheduledCard(rating) {
-    const next = SM2.sm2Next(currentCard, rating);
+    const next = computeAlgoNext(currentCard, rating, currentCard.subject);
     const updated = touch({
       ...currentCard,
       ...next,
@@ -1763,6 +2193,14 @@
   if (hibernateCurrentBtn) {
     hibernateCurrentBtn.addEventListener("click", async () => {
       if (!currentCard) return;
+      // Confirmation avec explication : le nombre de jours vient du réglage
+      // (potentiellement modifié par la personne), donc on l'affiche
+      // explicitement plutôt que de supposer qu'elle s'en souvient.
+      const msg =
+        `Mettre cette fiche en hibernation ?\n\n` +
+        `Sa prochaine interrogation sera repoussée de ${hibernateDays} jour${hibernateDays > 1 ? "s" : ""} ` +
+        `(réglable dans Réglages), sans compter comme une révision — ni le calcul d'échéance, ni le statut de la fiche ne changent, elle est juste mise de côté pour plus tard.`;
+      if (!confirm(msg)) return;
       await hibernateCurrentCard();
     });
   }
@@ -2209,14 +2647,16 @@
     // sa carte) : cliquable dès que toutes les barres sont retombées à son
     // niveau ou en dessous.
     if (goal) {
-      // Position de la ligne : 80% de la hauteur à laquelle s'afficherait
-      // (sur l'échelle ACTUELLE, scaleMax) une barre valant `goal.max`, le
-      // maximum au moment où l'objectif a été fixé — et non 80% de
-      // `scaleMax` lui-même, qui est arrondi au multiple de 5 supérieur et
-      // fait donc paraître la ligne bien plus basse que 80%.
-      const goalRefMax = typeof goal.max === "number" ? goal.max : goal.threshold / 0.8;
-      const goalBarPx = (goalRefMax / scaleMax) * maxBarPx;
-      const targetPx = Math.min(maxBarPx, Math.max(0, Math.round(goalBarPx * 0.8)));
+      // Position de la ligne : EXACTEMENT la même formule que celle utilisée
+      // pour dessiner une vraie barre de hauteur `goal.threshold` (valeur
+      // entière) sur l'échelle actuelle — plancher de 3px et arrondi
+      // identiques — pour que la ligne tombe pile à la hauteur où une barre
+      // de ce compte s'afficherait, plutôt qu'un calcul en deux temps qui
+      // dérivait légèrement de cet alignement pixel-perfect.
+      const targetPx =
+        goal.threshold === 0
+          ? 3
+          : Math.max(3, Math.round((goal.threshold / scaleMax) * maxBarPx));
       const marker = document.createElement(goalReady ? "button" : "div");
       if (goalReady) marker.type = "button";
       marker.className = `chart-goal-bar ${goalReady ? "is-ready" : "is-locked"}`;
@@ -2272,6 +2712,8 @@
   const tamaPetsListEl = el("tama-pets-list");
   const tamaGiftsTrayEl = el("tama-gifts-tray");
   const tamaEmptyHintEl = el("tama-empty-hint");
+  const tamaMemorialEl = el("tama-memorial");
+  const tamaMemorialListEl = el("tama-memorial-list");
 
   function tamaPetSizePx(pet) {
     const def = STAGE_DEFS[pet.stage === "broken" ? "oeuf" : pet.stage];
@@ -2283,6 +2725,26 @@
     if (pet.stage === "broken") return "hsl(0, 0%, 55%)";
     const frac = tamaPetLifeFraction(pet);
     return `hsl(${Math.round(120 * frac)}, 70%, 45%)`;
+  }
+
+  /** Nom et âge affichés sous la tuile d'un compagnon :
+   *  - décédé ("broken") : nom précédé de "RIP" + âge FIGÉ au moment du
+   *    décès (voir normalizePetLife) — jamais recalculé ensuite ;
+   *  - stade "animal" : nom réel + âge courant (voir item 4 : avant ce
+   *    stade, ni l'un ni l'autre ne sont révélés) ;
+   *  - stades intermédiaires (œuf, poussin, chenille, papillon) : juste le
+   *    nom du stade, pas d'âge — laisse planer le mystère jusqu'à l'éclosion
+   *    en animal adulte. */
+  function tamaPetLabelLines(pet) {
+    if (pet.stage === "broken") {
+      const days =
+        typeof pet.ageAtDeathDays === "number" ? pet.ageAtDeathDays : tamaPetAgeDays(pet, pet.deathAt);
+      return { name: `RIP ${pet.name || "?"}`, age: formatAgeDays(days) };
+    }
+    if (pet.stage === "animal") {
+      return { name: pet.name, age: tamaPetAgeLabel(pet) };
+    }
+    return { name: STAGE_DEFS[pet.stage].name, age: null };
   }
 
   function renderPetTile(pet) {
@@ -2298,8 +2760,11 @@
     ring.className = "tama-pet-ring";
     ring.style.width = `${ringSize}px`;
     ring.style.height = `${ringSize}px`;
+    // Décédé : plus de barre de vie du tout (superflue — voir item 3), un
+    // simple cercle neutre et transparent pour garder la taille de la tuile
+    // cohérente avec les compagnons vivants.
     ring.style.background = pet.stage === "broken"
-      ? "rgba(255,255,255,0.12)"
+      ? "transparent"
       : `conic-gradient(${color} ${Math.round(frac * 360)}deg, rgba(255,255,255,0.12) 0)`;
 
     const inner = document.createElement("div");
@@ -2313,14 +2778,15 @@
 
     const label = document.createElement("span");
     label.className = "tama-pet-label";
+    const { name, age } = tamaPetLabelLines(pet);
     const nameLine = document.createElement("span");
     nameLine.className = "tama-pet-label-name";
-    nameLine.textContent = pet.stage === "broken" ? "Œuf au plat" : pet.name;
+    nameLine.textContent = name;
     label.appendChild(nameLine);
-    if (pet.stage !== "broken") {
+    if (age) {
       const ageLine = document.createElement("span");
       ageLine.className = "tama-pet-label-age";
-      ageLine.textContent = tamaPetAgeLabel(pet);
+      ageLine.textContent = age;
       label.appendChild(ageLine);
     }
     tile.appendChild(label);
@@ -2345,7 +2811,7 @@
       ring.style.width = `${ringSize}px`;
       ring.style.height = `${ringSize}px`;
       ring.style.background = pet.stage === "broken"
-        ? "rgba(255,255,255,0.12)"
+        ? "transparent"
         : `conic-gradient(${color} ${Math.round(frac * 360)}deg, rgba(255,255,255,0.12) 0)`;
     }
     if (inner) {
@@ -2357,14 +2823,15 @@
     if (label) {
       const nameLine = label.querySelector(".tama-pet-label-name");
       let ageLine = label.querySelector(".tama-pet-label-age");
-      if (nameLine) nameLine.textContent = pet.stage === "broken" ? "Œuf au plat" : pet.name;
-      if (pet.stage !== "broken") {
+      const { name, age } = tamaPetLabelLines(pet);
+      if (nameLine) nameLine.textContent = name;
+      if (age) {
         if (!ageLine) {
           ageLine = document.createElement("span");
           ageLine.className = "tama-pet-label-age";
           label.appendChild(ageLine);
         }
-        ageLine.textContent = tamaPetAgeLabel(pet);
+        ageLine.textContent = age;
       } else if (ageLine) {
         ageLine.remove();
       }
@@ -2652,9 +3119,46 @@
     }
   }
 
+  /** Section "Ils nous ont quittés" : mémorial permanent des compagnons
+   *  décédés, du plus récent au plus ancien (voir archiveDeceasedPets). */
+  function renderTamaMemorial() {
+    if (!tamaMemorialEl || !tamaMemorialListEl) return;
+    const entries = Array.isArray(tamaState.memorial) ? tamaState.memorial : [];
+    tamaMemorialEl.hidden = entries.length === 0;
+    if (entries.length === 0) return;
+
+    tamaMemorialListEl.innerHTML = "";
+    const frag = document.createDocumentFragment();
+    entries.forEach((entry) => {
+      const row = document.createElement("div");
+      row.className = "tama-memorial-row";
+
+      const emoji = document.createElement("span");
+      emoji.className = "tama-memorial-emoji";
+      emoji.textContent = entry.emoji || BROKEN_EGG_EMOJI;
+      row.appendChild(emoji);
+
+      const body = document.createElement("div");
+      body.className = "tama-memorial-body";
+
+      const nameLine = document.createElement("div");
+      nameLine.className = "tama-memorial-name";
+      nameLine.textContent = `${entry.name || "?"} · ${formatAgeDays(entry.ageAtDeathDays || 0)}`;
+      body.appendChild(nameLine);
+
+      const epitaph = document.createElement("div");
+      epitaph.className = "tama-memorial-epitaph";
+      epitaph.textContent = entry.epitaph || "";
+      body.appendChild(epitaph);
+
+      row.appendChild(body);
+      frag.appendChild(row);
+    });
+    tamaMemorialListEl.appendChild(frag);
+  }
+
   function renderTamagotchiView() {
     applyTamaUpkeep();
-    markBrokenEggsSeen();
 
     if (tamaPetsListEl) {
       tamaPetsListEl.innerHTML = "";
@@ -2679,6 +3183,9 @@
     if (tamaEmptyHintEl) tamaEmptyHintEl.hidden = tamaState.pets.length > 0;
 
     renderGiftsTray();
+    renderTamaMemorial();
+    applyPenColor();
+    renderPenColorSwatches();
 
     refreshTamaTabIcon();
   }
@@ -2931,6 +3438,9 @@
   --------------------------------------------------------- */
   document.querySelectorAll(".tab").forEach((tab) => {
     tab.addEventListener("click", () => {
+      const previousView = document.querySelector(".view.is-active");
+      const wasOnTamagotchi = previousView && previousView.id === "view-tamagotchi";
+
       document.querySelectorAll(".tab").forEach((t) => {
         t.classList.remove("is-active");
         t.setAttribute("aria-selected", "false");
@@ -2939,6 +3449,13 @@
       tab.setAttribute("aria-selected", "true");
 
       const view = tab.dataset.view;
+      // Quitter la page Tamagotchi archive les compagnons décédés dans le
+      // mémorial (voir archiveDeceasedPets) — ils ne réapparaîtront donc
+      // plus dans le pré au prochain passage sur cette page, seulement dans
+      // la section "Ils nous ont quittés", en dessous.
+      if (wasOnTamagotchi && view !== "tamagotchi") {
+        archiveDeceasedPets();
+      }
       document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
       el(`view-${view}`).classList.add("is-active");
 
@@ -3277,6 +3794,7 @@
       if (remoteBlob.pet && new Date(remoteBlob.pet.updatedAt || 0) > new Date(tamaState.updatedAt || 0)) {
         tamaState = remoteBlob.pet;
         if (!tamaState.foods) tamaState.foods = [];
+        if (!tamaState.memorial) tamaState.memorial = [];
         saveTamaState();
       }
       if (remoteBlob.settings && new Date(remoteBlob.settings.updatedAt || 0) > new Date(getAppSettingsTimestamp())) {
