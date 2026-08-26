@@ -218,17 +218,15 @@ textarea, input {
 
 .subject-add-btn:hover { background: rgba(247, 241, 225, 0.16); }
 
-/* Badge "mode d'apprentissage" (cool/normal/renforcé/personnalisé) de la
-   matière active — dans la barre existante plutôt qu'une ligne en plus,
-   pour ne pas grandir la page (voir item 7). Vide -> pas affiché du tout. */
+/* Mode d'apprentissage de la matière active : affiché à la suite du nom
+   (même conteneur que le sélecteur, pas de pastille séparée) avec une
+   couleur de police différente pour bien le distinguer sans pour autant
+   créer un second élément visuel isolé. Vide -> pas affiché du tout. */
 .subject-algo-badge {
   flex-shrink: 0;
   font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--ink-soft);
-  background: rgba(247, 241, 225, 0.75);
-  border-radius: 999px;
-  padding: 5px 9px;
+  font-size: 11px;
+  color: var(--amber);
   white-space: nowrap;
   max-width: 92px;
   overflow: hidden;
@@ -273,6 +271,12 @@ textarea, input {
   background: none;
   border: none;
   padding: 2px 0;
+}
+
+.subject-row-mode {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--terracotta);
 }
 
 .subject-row-count {
@@ -1072,6 +1076,59 @@ textarea, input {
   border-radius: 8px;
   padding: 8px 12px;
   margin-bottom: 12px;
+}
+
+.algo-mode-slider-wrap {
+  margin: 8px 0 24px;
+  padding: 0 4px;
+}
+
+.algo-mode-slider {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(247, 241, 225, 0.25);
+  margin: 18px 0 10px;
+}
+
+.algo-mode-slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 2px solid var(--paper);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  cursor: pointer;
+}
+
+.algo-mode-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 2px solid var(--paper);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  cursor: pointer;
+}
+
+.algo-mode-ticks {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-soft);
+}
+
+.algo-mode-ticks span:first-child { text-align: left; }
+.algo-mode-ticks span:last-child { text-align: right; }
+
+.algo-mode-ticks span.is-active {
+  color: var(--amber);
+  font-weight: 600;
 }
 
 .algo-preset-row {

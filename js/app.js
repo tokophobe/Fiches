@@ -127,7 +127,6 @@
     normal: { Ka: 1.3, Kh: 1.5, Kg: 1.8, Ke: 2.4, Ma: 2, Mh: 3, Mg: 30, Me: 180 },
     renforce: { Ka: 1, Kh: 1.3, Kg: 1.6, Ke: 1.9, Ma: 1, Mh: 2, Mg: 15, Me: 90 },
   };
-  const ALGO_PRESET_LABELS = { cool: "Apprentissage cool", normal: "Apprentissage normal", renforce: "Apprentissage renforcé" };
 
   function loadSubjectAlgoMap() {
     try {
@@ -170,17 +169,26 @@
     map[subjectId] = settings;
     saveSubjectAlgoMap(map);
   }
-  /** Le mode affiché (page Réviser, page Mode d'apprentissage) : le nom du
-   *  préréglage si les 8 valeurs correspondent exactement, sinon
-   *  "Personnalisé". */
-  function algoModeName(settings) {
+  /** Le mode d'une matière (clé technique + libellé) : le préréglage si les
+   *  8 valeurs correspondent exactement, sinon "personnalisé". */
+  const ALGO_MODE_ORDER = ["cool", "normal", "renforce", "custom"];
+  const ALGO_MODE_LABELS = {
+    cool: "Apprentissage cool",
+    normal: "Apprentissage normal",
+    renforce: "Apprentissage renforcé",
+    custom: "Personnalisé",
+  };
+  function algoModeKey(settings) {
     for (const [key, preset] of Object.entries(ALGO_PRESETS)) {
       const matches = ["Ka", "Kh", "Kg", "Ke", "Ma", "Mh", "Mg", "Me"].every(
         (k) => Math.abs(settings[k] - preset[k]) < 1e-9
       );
-      if (matches) return ALGO_PRESET_LABELS[key];
+      if (matches) return key;
     }
-    return "Personnalisé";
+    return "custom";
+  }
+  function algoModeName(settings) {
+    return ALGO_MODE_LABELS[algoModeKey(settings)];
   }
 
   const ALGO_RATING_KEYS = { again: ["Ka", "Ma"], hard: ["Kh", "Mh"], good: ["Kg", "Mg"], easy: ["Ke", "Me"] };
@@ -1346,6 +1354,30 @@
   const addSubjectBtn = el("add-subject-btn");
   const manageAddSubjectBtn = el("manage-add-subject-btn");
   const subjectListEl = el("subject-list");
+  // Capturée une seule fois, tout de suite : `.subject-bar` change de parent
+  // au fil de la navigation (voir relocateSubjectBar), donc une fois
+  // détachée du DOM, `el("subject-bar")` ne la retrouverait plus via
+  // getElementById. Cette référence directe reste valide quel que soit
+  // l'endroit où l'élément est physiquement rattaché.
+  const subjectBarEl = el("subject-bar");
+
+  /** Déplace la barre de sélection de matière dans le bon emplacement selon
+   *  la page active (voir item 1) : sous les onglets sur Réviser, juste
+   *  au-dessus du formulaire "Nouvelle fiche" sur Gérer, et absente
+   *  ailleurs (Stats a son propre sélecteur dédié ; Tamagotchi/Réglages/
+   *  Mode d'apprentissage n'en ont pas besoin). */
+  function relocateSubjectBar(view) {
+    if (!subjectBarEl) return;
+    if (view === "review") {
+      const slot = el("review-subject-slot");
+      if (slot) slot.appendChild(subjectBarEl);
+    } else if (view === "manage") {
+      const slot = el("manage-subject-slot");
+      if (slot) slot.appendChild(subjectBarEl);
+    } else if (subjectBarEl.parentNode) {
+      subjectBarEl.parentNode.removeChild(subjectBarEl);
+    }
+  }
 
   const uid = () =>
     `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -1487,9 +1519,16 @@
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
-      nameBtn.textContent = s.name;
       nameBtn.title = "Renommer";
       nameBtn.addEventListener("click", () => renameSubject(s.id));
+
+      const nameText = document.createElement("span");
+      nameText.textContent = s.name;
+      const modeText = document.createElement("span");
+      modeText.className = "subject-row-mode";
+      modeText.textContent = ` ${ALGO_MODE_SHORT_LABELS[algoModeKey(getSubjectAlgoSettings(s.id))]}`;
+      nameBtn.appendChild(nameText);
+      nameBtn.appendChild(modeText);
 
       const count = document.createElement("span");
       count.className = "subject-row-count";
@@ -1527,6 +1566,12 @@
   --------------------------------------------------------- */
   let algoEditingSubjectId = null;
 
+  function updateAlgoModeTicksHighlight(idx) {
+    document.querySelectorAll("#algo-mode-ticks span").forEach((tick) => {
+      tick.classList.toggle("is-active", Number(tick.dataset.idx) === idx);
+    });
+  }
+
   function loadAlgoFormIntoInputs(settings) {
     el("algo-ka").value = settings.Ka;
     el("algo-kh").value = settings.Kh;
@@ -1536,7 +1581,10 @@
     el("algo-mh").value = settings.Mh;
     el("algo-mg").value = settings.Mg;
     el("algo-me").value = settings.Me;
-    el("algo-mode-label").textContent = `Mode actuel : ${algoModeName(settings)}`;
+    const idx = ALGO_MODE_ORDER.indexOf(algoModeKey(settings));
+    const slider = el("algo-mode-slider");
+    if (slider) slider.value = String(idx);
+    updateAlgoModeTicksHighlight(idx);
   }
 
   function readAlgoFormSettings() {
@@ -1573,6 +1621,7 @@
   function closeSubjectAlgoView() {
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     el("view-manage").classList.add("is-active");
+    relocateSubjectBar("manage");
     document.querySelectorAll(".tab").forEach((t) => {
       t.classList.remove("is-active");
       t.setAttribute("aria-selected", "false");
@@ -1587,17 +1636,24 @@
   const algoBackBtn = el("algo-back-btn");
   if (algoBackBtn) algoBackBtn.addEventListener("click", closeSubjectAlgoView);
 
-  ["cool", "normal", "renforce"].forEach((key) => {
-    const btn = el(`algo-preset-${key}`);
-    if (!btn) return;
-    btn.addEventListener("click", () => {
-      if (!algoEditingSubjectId) return;
+  const algoModeSliderEl = el("algo-mode-slider");
+  if (algoModeSliderEl) {
+    algoModeSliderEl.addEventListener("input", () => {
+      const idx = Number(algoModeSliderEl.value);
+      updateAlgoModeTicksHighlight(idx);
+      const key = ALGO_MODE_ORDER[idx];
+      // "Personnalisé" n'a pas de valeurs propres à appliquer : le curseur
+      // s'y positionne tout seul dès que les 8 réglages ne correspondent
+      // plus à aucun préréglage (voir loadAlgoFormIntoInputs) — le glisser
+      // manuellement dessus ne fait donc rien de plus qu'afficher l'état
+      // actuel, déjà personnalisé.
+      if (key === "custom" || !algoEditingSubjectId) return;
       setSubjectAlgoSettings(algoEditingSubjectId, { ...ALGO_PRESETS[key] });
       loadAlgoFormIntoInputs(getSubjectAlgoSettings(algoEditingSubjectId));
       updateRatingPreviews();
       renderSubjectAlgoBadge();
     });
-  });
+  }
 
   ["algo-ka", "algo-kh", "algo-kg", "algo-ke", "algo-ma", "algo-mh", "algo-mg", "algo-me"].forEach((id) => {
     const input = el(id);
@@ -1818,12 +1874,18 @@
     refreshTamaTabIcon();
   }
 
+  const ALGO_MODE_SHORT_LABELS = { cool: "Cool", normal: "Normal", renforce: "Renforcé", custom: "Personnalisé" };
   /** Badge "mode d'apprentissage" de la matière active, affiché dans la
-   *  barre déjà existante en haut (voir item 7) — jamais de ligne en plus. */
+   *  barre déjà existante en haut (voir item 7) — jamais de ligne en plus.
+   *  Libellé court (juste "Normal", pas "Apprentissage normal") : la place
+   *  disponible à côté du sélecteur est trop réduite pour le nom complet,
+   *  qui se faisait tronquer en "Apprentissage n…", peu lisible. */
   function renderSubjectAlgoBadge() {
     const badge = el("subject-algo-badge");
     if (!badge) return;
-    badge.textContent = currentSubjectId ? algoModeName(getSubjectAlgoSettings(currentSubjectId)) : "";
+    badge.textContent = currentSubjectId
+      ? ALGO_MODE_SHORT_LABELS[algoModeKey(getSubjectAlgoSettings(currentSubjectId))]
+      : "";
   }
 
   /** Toutes les fiches non supprimées de la matière actuellement active. */
@@ -2508,6 +2570,11 @@
     return buckets;
   }
 
+  const MONTH_SHORT = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
+  function formatShortDateLabel(date) {
+    return `${date.getDate()} ${MONTH_SHORT[date.getMonth()]}`;
+  }
+
   /** Largeur de contenu réellement disponible dans une carte d'histogramme
    *  (clientWidth moins le padding horizontal), utilisée pour calculer la
    *  largeur de colonne qui fait tenir exactement N jours à l'écran. */
@@ -2631,7 +2698,23 @@
 
       const label = document.createElement("span");
       label.className = "chart-label";
-      label.textContent = i === 0 ? "Auj." : "";
+      // "Auj." prioritaire sur la colonne d'aujourd'hui ; sinon, repères de
+      // date à date fixe pour se répérer dans le défilement : le 1er ET le
+      // 15 du mois sur les échelles rapprochées (15j / 1 mois), seulement
+      // le 1er du mois sur les échelles larges (3 mois / 6 mois / 1 an) où
+      // le 15 ajouterait surtout du bruit visuel vu la densité des colonnes.
+      if (i === 0) {
+        label.textContent = "Auj.";
+      } else {
+        const dom = b.date.getDate();
+        const fineScale = rangeKey === 15 || rangeKey === 30;
+        const coarseScale = rangeKey === 90 || rangeKey === 182 || rangeKey === 365;
+        if ((fineScale && (dom === 1 || dom === 15)) || (coarseScale && dom === 1)) {
+          label.textContent = formatShortDateLabel(b.date);
+        } else {
+          label.textContent = "";
+        }
+      }
 
       col.appendChild(value);
       col.appendChild(bar);
@@ -2686,7 +2769,20 @@
   function renderDueChart() {
     const pool = statsScopeCards();
     renderHistogramInto(dueChartEl, chartEmptyEl, el("chart-wrap"), pool, statsRangeDays, CHART_MAX_BAR_PX);
+    if (statsRangeSelectEl) statsRangeSelectEl.value = String(statsRangeDays);
   }
+
+  /** Tape sur l'histogramme de la page Stats : passe à l'échelle
+   *  supérieure (boucle), comme sur le mini graphique de la page Réviser
+   *  (voir cycleReviewChartRange) — et met à jour le menu déroulant
+   *  au-dessus pour rester cohérent avec l'échelle réellement affichée. */
+  function cycleStatsChartRange() {
+    const idx = REVIEW_CHART_STEPS.indexOf(statsRangeDays);
+    statsRangeDays = REVIEW_CHART_STEPS[(idx + 1) % REVIEW_CHART_STEPS.length];
+    renderDueChart();
+  }
+  const statsChartWrapEl = el("chart-wrap");
+  if (statsChartWrapEl) statsChartWrapEl.addEventListener("click", cycleStatsChartRange);
 
   /** Fiches (de `pool`) dont la dernière révision remonte à aujourd'hui. */
   function reviewedTodayCount(pool) {
@@ -3458,6 +3554,7 @@
       }
       document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
       el(`view-${view}`).classList.add("is-active");
+      relocateSubjectBar(view);
 
       if (view === "review") {
         if (!reviewSessionStarted) {
@@ -3922,6 +4019,7 @@
       }
     }
     renderSubjectSelect();
+    relocateSubjectBar("review");
     renderAll();
     startReviewSession();
     updateSyncStatus();

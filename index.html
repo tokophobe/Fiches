@@ -132,12 +132,6 @@
     </div>
   </header>
 
-  <div class="subject-bar">
-    <select class="subject-select" id="subject-select" aria-label="Matière active"></select>
-    <span class="subject-algo-badge" id="subject-algo-badge" title="Mode d'apprentissage de cette matière"></span>
-    <button class="subject-add-btn" id="add-subject-btn" type="button" title="Nouvelle matière">+</button>
-  </div>
-
   <nav class="tabs" role="tablist" aria-label="Navigation">
     <button class="tab is-active" role="tab" aria-selected="true" data-view="review">Réviser</button>
     <button class="tab" role="tab" aria-selected="false" data-view="manage">Gérer</button>
@@ -150,6 +144,13 @@
   <main>
     <!-- VUE RÉVISION -->
     <section id="view-review" class="view is-active" aria-labelledby="tab-review">
+      <div id="review-subject-slot">
+        <div class="subject-bar" id="subject-bar">
+          <select class="subject-select" id="subject-select" aria-label="Matière active"></select>
+          <span class="subject-algo-badge" id="subject-algo-badge" title="Mode d'apprentissage de cette matière"></span>
+          <button class="subject-add-btn" id="add-subject-btn" type="button" title="Nouvelle matière">+</button>
+        </div>
+      </div>
       <p class="review-progress sr-only" id="review-progress" aria-live="polite"></p>
 
       <div class="stage" id="stage">
@@ -216,6 +217,8 @@
         </div>
         <ul class="subject-list" id="subject-list"></ul>
       </div>
+
+      <div id="manage-subject-slot"></div>
 
       <form class="card-form" id="card-form">
         <h2 class="section-title">Nouvelle fiche</h2>
@@ -478,12 +481,14 @@
         actuelle multipliée par son coefficient.
       </p>
 
-      <div class="algo-mode-label" id="algo-mode-label">Mode actuel : —</div>
-
-      <div class="algo-preset-row">
-        <button class="btn btn--small" id="algo-preset-cool" type="button">Apprentissage cool</button>
-        <button class="btn btn--small" id="algo-preset-normal" type="button">Apprentissage normal</button>
-        <button class="btn btn--small" id="algo-preset-renforce" type="button">Apprentissage renforcé</button>
+      <div class="algo-mode-slider-wrap">
+        <input type="range" id="algo-mode-slider" min="0" max="3" step="1" value="1" class="algo-mode-slider" />
+        <div class="algo-mode-ticks" id="algo-mode-ticks">
+          <span data-idx="0">Cool</span>
+          <span data-idx="1">Normal</span>
+          <span data-idx="2">Renforcé</span>
+          <span data-idx="3">Personnalisé</span>
+        </div>
       </div>
 
       <h3 class="settings-block-title">Coefficients multiplicateurs (× 0,1, de 1 à 10)</h3>
