@@ -137,7 +137,6 @@
     <button class="tab" role="tab" aria-selected="false" data-view="manage">Gérer</button>
     <button class="tab" role="tab" aria-selected="false" data-view="stats">Stats</button>
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
-    <button class="tab tab--icon" role="tab" aria-selected="false" data-view="tamagotchi" id="tab-tamagotchi" title="Tamagotchi" aria-label="Tamagotchi"><span id="tab-tamagotchi-icon">🥚</span></button>
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">⚙</button>
   </nav>
 
@@ -148,7 +147,6 @@
         <div class="subject-bar" id="subject-bar">
           <select class="subject-select" id="subject-select" aria-label="Matière active"></select>
           <span class="subject-algo-badge" id="subject-algo-badge" title="Mode d'apprentissage de cette matière"></span>
-          <button class="subject-add-btn" id="add-subject-btn" type="button" title="Nouvelle matière">+</button>
         </div>
       </div>
       <p class="review-progress sr-only" id="review-progress" aria-live="polite"></p>
@@ -288,37 +286,6 @@
       <p class="chart-empty" id="chart-empty" hidden>Rien à revoir sur cette période.</p>
     </section>
 
-    <!-- VUE TAMAGOTCHI -->
-    <section id="view-tamagotchi" class="view" aria-labelledby="tab-tamagotchi">
-      <div class="tama-gifts-tray" id="tama-gifts-tray" hidden></div>
-
-      <div class="tama-pets-list" id="tama-pets-list"></div>
-      <p class="field-hint tama-empty-hint" id="tama-empty-hint" hidden>
-        Le foyer est vide pour l'instant — ouvre un cadeau depuis
-        l'histogramme de la page Réviser pour faire arriver un premier œuf.
-      </p>
-
-      <div class="tama-pen-color-picker" id="tama-pen-color-picker">
-        <span class="tama-pen-color-label">Couleur du pré</span>
-        <div class="tama-pen-color-swatches" id="tama-pen-color-swatches"></div>
-      </div>
-
-      <p class="field-hint tama-hint">
-        Chaque compagnon n'a qu'une seule jauge de vie, qui baisse tout
-        seule avec le temps : l'anneau autour de lui va du rouge (basse) au
-        vert (pleine), et il grossit avec elle. À zéro, il redescend d'un
-        stade (œuf → œuf au plat). Au maximum, il grandit encore, jusqu'à
-        devenir un bel animal, dont le nom et l'âge sont alors révélés. Les
-        cadeaux de l'histogramme de la page Réviser atterrissent ici, à
-        ouvrir toi-même.
-      </p>
-
-      <div class="tama-memorial" id="tama-memorial" hidden>
-        <h3 class="settings-block-title">Ils nous ont quittés</h3>
-        <div class="tama-memorial-list" id="tama-memorial-list"></div>
-      </div>
-    </section>
-
     <!-- VUE SYNC -->
     <section id="view-sync" class="view" aria-labelledby="tab-sync">
 
@@ -401,7 +368,7 @@
         <p class="field-hint settings-block-hint">
           Une fois les fiches du jour terminées, tu peux continuer en révision
           libre. Chaque réponse recule alors la fiche du nombre de jours
-          choisi ci-dessous, sans passer par l'algorithme SM-2.
+          choisi ci-dessous, sans passer par l'algorithme des modes d'apprentissage.
         </p>
         <div class="settings-bonus-row">
           <label class="field settings-bonus-field">
@@ -446,28 +413,6 @@
           <input type="number" id="setting-hibernate-days" min="1" max="365" step="1" inputmode="numeric" />
         </label>
       </div>
-
-      <div class="card-form">
-        <h3 class="settings-block-title">Cadeaux du Tamagotchi 🎁</h3>
-        <p class="field-hint settings-block-hint">
-          Chaque aliment donne toujours le même nombre de points de vie (pour
-          qu'on puisse voir d'un coup d'œil si un aliment est nourrissant).
-          Un cadeau de nourriture dépose en revanche une quantité aléatoire
-          d'aliments dans le pré, entre ces deux bornes.
-        </p>
-        <label class="field settings-bonus-field">
-          <span>Valeur nutritive d'un aliment (points de vie)</span>
-          <input type="number" id="setting-tama-food-value" min="1" max="200" step="1" inputmode="numeric" />
-        </label>
-        <label class="field settings-bonus-field">
-          <span>Quantité minimum par cadeau</span>
-          <input type="number" id="setting-tama-gift-qty-min" min="1" max="20" step="1" inputmode="numeric" />
-        </label>
-        <label class="field settings-bonus-field">
-          <span>Quantité maximum par cadeau</span>
-          <input type="number" id="setting-tama-gift-qty-max" min="1" max="20" step="1" inputmode="numeric" />
-        </label>
-      </div>
     </section>
 
     <!-- VUE MODE D'APPRENTISSAGE (par matière, ouverte depuis la page Gérer) -->
@@ -475,10 +420,7 @@
       <button class="btn btn--ghost btn--small" id="algo-back-btn" type="button">← Retour à Gérer</button>
       <h2 class="view-title" id="algo-subject-title">Mode d'apprentissage</h2>
       <p class="field-hint settings-block-hint">
-        Ces réglages ne s'appliquent qu'à cette matière. Au début, l'échéance
-        d'une fiche est de 1 jour. À chaque réponse, la nouvelle échéance est
-        le minimum entre le maximum réglé pour ce bouton et l'échéance
-        actuelle multipliée par son coefficient.
+        Ces réglages ne s'appliquent qu'à cette matière.
       </p>
 
       <div class="algo-mode-slider-wrap">
@@ -491,54 +433,62 @@
         </div>
       </div>
 
-      <h3 class="settings-block-title">Coefficients multiplicateurs (× 0,1, de 1 à 10)</h3>
-      <div class="algo-grid">
+      <p class="field-hint settings-block-hint">
+        Au début, l'échéance d'une fiche est de 1 jour. À chaque réponse, la
+        nouvelle échéance est multipliée par les coefficients suivants :
+      </p>
+      <div class="algo-grid algo-grid--4">
         <label class="field settings-bonus-field">
-          <span>Encore (Ka)</span>
+          <span>Encore</span>
           <input type="number" id="algo-ka" min="1" max="10" step="0.1" inputmode="decimal" />
         </label>
         <label class="field settings-bonus-field">
-          <span>Difficile (Kh)</span>
+          <span>Difficile</span>
           <input type="number" id="algo-kh" min="1" max="10" step="0.1" inputmode="decimal" />
         </label>
         <label class="field settings-bonus-field">
-          <span>Bien (Kg)</span>
+          <span>Bien</span>
           <input type="number" id="algo-kg" min="1" max="10" step="0.1" inputmode="decimal" />
         </label>
         <label class="field settings-bonus-field">
-          <span>Facile (Ke)</span>
+          <span>Facile</span>
           <input type="number" id="algo-ke" min="1" max="10" step="0.1" inputmode="decimal" />
         </label>
       </div>
 
-      <h3 class="settings-block-title">Maximums en jours (par unité, de 1 à 365)</h3>
-      <div class="algo-grid">
+      <p class="field-hint settings-block-hint">
+        L'échéance est plafonnée par les valeurs en jours suivantes :
+      </p>
+      <div class="algo-grid algo-grid--4">
         <label class="field settings-bonus-field">
-          <span>Encore (Ma)</span>
+          <span>Encore</span>
           <input type="number" id="algo-ma" min="1" max="365" step="1" inputmode="numeric" />
         </label>
         <label class="field settings-bonus-field">
-          <span>Difficile (Mh)</span>
+          <span>Difficile</span>
           <input type="number" id="algo-mh" min="1" max="365" step="1" inputmode="numeric" />
         </label>
         <label class="field settings-bonus-field">
-          <span>Bien (Mg)</span>
+          <span>Bien</span>
           <input type="number" id="algo-mg" min="1" max="365" step="1" inputmode="numeric" />
         </label>
         <label class="field settings-bonus-field">
-          <span>Facile (Me)</span>
+          <span>Facile</span>
           <input type="number" id="algo-me" min="1" max="365" step="1" inputmode="numeric" />
         </label>
       </div>
 
-      <div class="card-form">
+      <h3 class="settings-block-title">Échéances successives (aperçu)</h3>
+      <div id="algo-chart-wrap"></div>
+
+      <div class="card-form algo-review-old-block">
         <h3 class="settings-block-title">Revoir les vieilles fiches</h3>
         <p class="field-hint settings-block-hint">
           Ramène l'échéance (et la date de prochaine interrogation) à 10
           jours pour toutes les fiches de cette matière dont la prochaine
           interrogation est prévue dans plus de 10 jours.
         </p>
-        <button type="button" class="btn btn--ghost" id="algo-review-old-btn">
+        <button type="button" class="btn algo-review-old-btn" id="algo-review-old-btn">
           Revoir les vieilles fiches
         </button>
       </div>

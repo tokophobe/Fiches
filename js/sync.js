@@ -302,76 +302,6 @@ function subscribeRewardRealtime(onRemoteChange) {
   return () => c.removeChannel(channel);
 }
 
-/* ---------------------------------------------------------
-   État du Tamagotchi (page "Tamagotchi") : réutilise la même ligne/table
-   que l'ancien système de récompenses (`reward_state`, une ligne par code
-   de synchro), dans une nouvelle colonne `tamagotchi` séparée de l'ancienne
-   colonne `opened` — pas de migration destructrice nécessaire. Le blob
-   contient à la fois l'état du compagnon (`pet`) et ses cadeaux (`gifts`).
---------------------------------------------------------- */
-async function pullTamaState() {
-  const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return null;
-
-  const { data, error } = await c
-    .from("reward_state")
-    .select("tamagotchi")
-    .eq("sync_code", code)
-    .maybeSingle();
-
-  if (error) {
-    if (isMissingColumnError(error, "tamagotchi")) {
-      console.warn("Sync: colonne tamagotchi pas encore reconnue côté Supabase (exécute la migration SQL)");
-    } else {
-      console.warn("Sync: échec du chargement du compagnon distant", error.message);
-    }
-    return null;
-  }
-  return (data && data.tamagotchi) || null;
-}
-
-async function pushTamaState(blob) {
-  const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return false;
-
-  const { error } = await c.from("reward_state").upsert({
-    sync_code: code,
-    tamagotchi: blob,
-    updated_at: new Date().toISOString(),
-  });
-
-  if (error) {
-    if (isMissingColumnError(error, "tamagotchi")) {
-      console.warn("Sync: colonne tamagotchi pas encore reconnue côté Supabase (exécute la migration SQL)");
-    } else {
-      console.warn("Sync: échec de l'envoi du compagnon", error.message);
-    }
-    return false;
-  }
-  return true;
-}
-
-function subscribeTamaRealtime(onRemoteChange) {
-  const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return () => {};
-
-  const channel = c
-    .channel(`tama-state-${code}`)
-    .on(
-      "postgres_changes",
-      { event: "*", schema: "public", table: "reward_state", filter: `sync_code=eq.${code}` },
-      (payload) => {
-        if (payload.new && payload.new.tamagotchi) onRemoteChange(payload.new.tamagotchi);
-      }
-    )
-    .subscribe();
-
-  return () => c.removeChannel(channel);
-}
-
 window.Sync = {
   generateSyncCode,
   getConfig,
@@ -385,9 +315,6 @@ window.Sync = {
   pullRewardState,
   pushRewardState,
   subscribeRewardRealtime,
-  pullTamaState,
-  pushTamaState,
-  subscribeTamaRealtime,
   pendingCount: () => getPending().length,
   getLastError: () => lastError,
 };
