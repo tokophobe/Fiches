@@ -143,11 +143,12 @@
   <main>
     <!-- VUE RÉVISION -->
     <section id="view-review" class="view is-active" aria-labelledby="tab-review">
-      <div id="review-subject-slot">
-        <div class="subject-bar" id="subject-bar">
-          <select class="subject-select" id="subject-select" aria-label="Matière active"></select>
-          <span class="subject-algo-badge" id="subject-algo-badge" title="Mode d'apprentissage de cette matière"></span>
-        </div>
+      <div class="subject-bar" id="subject-bar">
+        <select class="subject-select" id="subject-select" aria-label="Matière active"></select>
+        <span class="subject-bar-count" id="subject-bar-count"></span>
+        <button type="button" class="subject-bar-algo-btn" id="subject-bar-algo-btn" title="Mode d'apprentissage de cette matière">
+          🎓 <span id="subject-bar-algo-label"></span>
+        </button>
       </div>
       <p class="review-progress sr-only" id="review-progress" aria-live="polite"></p>
 
@@ -216,10 +217,11 @@
         <ul class="subject-list" id="subject-list"></ul>
       </div>
 
-      <div id="manage-subject-slot"></div>
-
       <form class="card-form" id="card-form">
-        <h2 class="section-title">Nouvelle fiche</h2>
+        <div class="card-form-header">
+          <h2 class="section-title">Nouvelle fiche</h2>
+          <select class="subject-select subject-select--compact" id="manage-subject-select" aria-label="Matière pour la nouvelle fiche"></select>
+        </div>
         <label class="field">
           <span>Question</span>
           <textarea id="input-question" rows="3" required placeholder="Ex. Capitale de l'Islande ?"></textarea>
@@ -234,22 +236,7 @@
         </div>
       </form>
 
-      <div class="list-header">
-        <h2 class="section-title">Fiches de cette matière (<span id="total-count">0</span>)</h2>
-        <div class="io-buttons">
-          <button class="btn btn--small" id="export-btn" type="button">Exporter</button>
-          <label class="btn btn--small btn--file">
-            Importer
-            <input type="file" id="import-input" accept="application/json" hidden />
-          </label>
-        </div>
-      </div>
-      <div class="import-target-row">
-        <label class="import-target-label" for="import-target-select">Importer dans :</label>
-        <select class="import-target-select" id="import-target-select" aria-label="Matière cible pour l'import"></select>
-      </div>
-      <p class="import-note">Un import ajoute toujours de nouvelles fiches — il ne modifie ni ne supprime jamais celles déjà présentes.</p>
-
+      <h2 class="section-title card-list-title">Fiches de cette matière (<span id="total-count">0</span>)</h2>
       <ul class="card-list" id="card-list"></ul>
     </section>
 
@@ -364,6 +351,26 @@
       <h2 class="section-title">Réglages</h2>
 
       <div class="card-form">
+        <h3 class="settings-block-title">Import / export de fiches</h3>
+        <p class="field-hint settings-block-hint">
+          L'export concerne la matière actuellement sélectionnée sur la page
+          Réviser (« <span id="settings-io-subject-name">—</span> », <span id="settings-io-count">0</span> fiche(s)).
+        </p>
+        <div class="io-buttons">
+          <button class="btn btn--small" id="export-btn" type="button">Exporter</button>
+          <label class="btn btn--small btn--file">
+            Importer
+            <input type="file" id="import-input" accept="application/json" hidden />
+          </label>
+        </div>
+        <div class="import-target-row">
+          <label class="import-target-label" for="import-target-select">Importer dans :</label>
+          <select class="import-target-select" id="import-target-select" aria-label="Matière cible pour l'import"></select>
+        </div>
+        <p class="import-note">Un import ajoute toujours de nouvelles fiches — il ne modifie ni ne supprime jamais celles déjà présentes.</p>
+      </div>
+
+      <div class="card-form">
         <h3 class="settings-block-title">Mode bonus — recul des fiches (en jours)</h3>
         <p class="field-hint settings-block-hint">
           Une fois les fiches du jour terminées, tu peux continuer en révision
@@ -433,64 +440,74 @@
         </div>
       </div>
 
-      <p class="field-hint settings-block-hint">
-        Au début, l'échéance d'une fiche est de 1 jour. À chaque réponse, la
-        nouvelle échéance est multipliée par les coefficients suivants :
-      </p>
-      <div class="algo-grid algo-grid--4">
-        <label class="field settings-bonus-field">
-          <span>Encore</span>
-          <input type="number" id="algo-ka" min="1" max="10" step="0.1" inputmode="decimal" />
-        </label>
-        <label class="field settings-bonus-field">
-          <span>Difficile</span>
-          <input type="number" id="algo-kh" min="1" max="10" step="0.1" inputmode="decimal" />
-        </label>
-        <label class="field settings-bonus-field">
-          <span>Bien</span>
-          <input type="number" id="algo-kg" min="1" max="10" step="0.1" inputmode="decimal" />
-        </label>
-        <label class="field settings-bonus-field">
-          <span>Facile</span>
-          <input type="number" id="algo-ke" min="1" max="10" step="0.1" inputmode="decimal" />
-        </label>
-      </div>
-
-      <p class="field-hint settings-block-hint">
-        L'échéance est plafonnée par les valeurs en jours suivantes :
-      </p>
-      <div class="algo-grid algo-grid--4">
-        <label class="field settings-bonus-field">
-          <span>Encore</span>
-          <input type="number" id="algo-ma" min="1" max="365" step="1" inputmode="numeric" />
-        </label>
-        <label class="field settings-bonus-field">
-          <span>Difficile</span>
-          <input type="number" id="algo-mh" min="1" max="365" step="1" inputmode="numeric" />
-        </label>
-        <label class="field settings-bonus-field">
-          <span>Bien</span>
-          <input type="number" id="algo-mg" min="1" max="365" step="1" inputmode="numeric" />
-        </label>
-        <label class="field settings-bonus-field">
-          <span>Facile</span>
-          <input type="number" id="algo-me" min="1" max="365" step="1" inputmode="numeric" />
-        </label>
-      </div>
-
       <h3 class="settings-block-title">Échéances successives (aperçu)</h3>
       <div id="algo-chart-wrap"></div>
 
-      <div class="card-form algo-review-old-block">
-        <h3 class="settings-block-title">Revoir les vieilles fiches</h3>
+      <button type="button" class="btn btn--ghost algo-advanced-toggle" id="algo-advanced-toggle">
+        Paramétrages avancés ▾
+      </button>
+
+      <div id="algo-advanced-panel" hidden>
         <p class="field-hint settings-block-hint">
-          Ramène l'échéance (et la date de prochaine interrogation) à 10
-          jours pour toutes les fiches de cette matière dont la prochaine
-          interrogation est prévue dans plus de 10 jours.
+          Au début, l'échéance d'une fiche est de 1 jour. À chaque réponse, la
+          nouvelle échéance est multipliée par les coefficients suivants :
         </p>
-        <button type="button" class="btn algo-review-old-btn" id="algo-review-old-btn">
-          Revoir les vieilles fiches
+        <div class="algo-grid algo-grid--4">
+          <label class="field settings-bonus-field">
+            <span>× Encore</span>
+            <input type="number" id="algo-ka" min="1" max="10" step="0.1" inputmode="decimal" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>× Difficile</span>
+            <input type="number" id="algo-kh" min="1" max="10" step="0.1" inputmode="decimal" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>× Bien</span>
+            <input type="number" id="algo-kg" min="1" max="10" step="0.1" inputmode="decimal" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>× Facile</span>
+            <input type="number" id="algo-ke" min="1" max="10" step="0.1" inputmode="decimal" />
+          </label>
+        </div>
+
+        <p class="field-hint settings-block-hint">
+          L'échéance est plafonnée par les valeurs en jours suivantes :
+        </p>
+        <div class="algo-grid algo-grid--4">
+          <label class="field settings-bonus-field">
+            <span>&lt; Encore</span>
+            <input type="number" id="algo-ma" min="1" max="365" step="1" inputmode="numeric" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>&lt; Difficile</span>
+            <input type="number" id="algo-mh" min="1" max="365" step="1" inputmode="numeric" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>&lt; Bien</span>
+            <input type="number" id="algo-mg" min="1" max="365" step="1" inputmode="numeric" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>&lt; Facile</span>
+            <input type="number" id="algo-me" min="1" max="365" step="1" inputmode="numeric" />
+          </label>
+        </div>
+
+        <button type="button" class="btn btn--ghost" id="algo-reset-btn">
+          Revenir aux réglages d'origine
         </button>
+
+        <div class="card-form algo-review-old-block">
+          <h3 class="settings-block-title">Revoir les vieilles fiches</h3>
+          <p class="field-hint settings-block-hint">
+            Ramène l'échéance (et la date de prochaine interrogation) à 10
+            jours pour toutes les fiches de cette matière dont la prochaine
+            interrogation est prévue dans plus de 10 jours.
+          </p>
+          <button type="button" class="btn algo-review-old-btn" id="algo-review-old-btn">
+            Revoir les vieilles fiches
+          </button>
+        </div>
       </div>
     </section>
   </main>
