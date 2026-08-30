@@ -254,6 +254,43 @@ textarea, input {
 .subject-bar-algo-btn.is-renforce { color: var(--terracotta); background: rgba(182, 96, 74, 0.12); border-color: rgba(182, 96, 74, 0.4); }
 .subject-bar-algo-btn.is-custom { color: #e8c84a; background: rgba(232, 200, 74, 0.14); border-color: rgba(232, 200, 74, 0.45); }
 
+/* Sélecteur de plusieurs matières confondues (item 1). */
+.multi-subject-picker {
+  background: var(--paper);
+  border-radius: var(--radius-card);
+  padding: 14px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-deep);
+}
+
+.multi-subject-picker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 260px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.multi-subject-picker-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-type);
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.multi-subject-picker-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+.multi-subject-picker-actions {
+  display: flex;
+  gap: 8px;
+}
+
 .subjects-panel { margin-bottom: 26px; }
 
 .subject-list {
@@ -336,7 +373,10 @@ textarea, input {
 .import-target-label {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: rgba(247, 241, 225, 0.6);
+  /* Bug corrigé : cette couleur claire (pensée pour un fond sombre) rendait
+     le texte quasi invisible sur le fond clair de .card-form — le
+     sélecteur de matière semblait "flotter" sans étiquette visible. */
+  color: var(--ink-soft);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   flex-shrink: 0;
@@ -1292,6 +1332,15 @@ textarea, input {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.algo-chart-legend-checkbox {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  cursor: pointer;
 }
 
 .algo-chart-legend-dot {
@@ -1299,6 +1348,12 @@ textarea, input {
   width: 8px;
   height: 8px;
   border-radius: 50%;
+}
+
+.algo-chart-empty {
+  text-align: center;
+  padding: 40px 0;
+  margin: 0;
 }
 
 .settings-bonus-row {

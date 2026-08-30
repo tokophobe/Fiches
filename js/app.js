@@ -17,9 +17,30 @@
 
   /** @type {Array<{id:string,name:string,createdAt:string,updatedAt:string}>} liste des matières */
   let subjects = [];
-  /** id de la matière actuellement affichée */
+  /** id de la matière actuellement affichée — peut aussi être l'une des deux
+   *  valeurs sentinelles ci-dessous (item 1 : révision toutes matières /
+   *  sélection de plusieurs matières confondues). */
   let currentSubjectId = null;
   const CURRENT_SUBJECT_KEY = "fiches_current_subject";
+  const ALL_SUBJECTS_ID = "__all__";
+  const MULTI_SUBJECTS_ID = "__multi__";
+  const MULTI_SELECTION_KEY = "fiches_multi_subject_ids";
+  function isSentinelSubject(id) {
+    return id === ALL_SUBJECTS_ID || id === MULTI_SUBJECTS_ID;
+  }
+  function loadMultiSelection() {
+    try {
+      const raw = localStorage.getItem(MULTI_SELECTION_KEY);
+      const ids = raw ? JSON.parse(raw) : [];
+      // Ne garde que des matières qui existent toujours.
+      return Array.isArray(ids) ? ids.filter((id) => subjects.some((s) => s.id === id)) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+  function saveMultiSelection(ids) {
+    localStorage.setItem(MULTI_SELECTION_KEY, JSON.stringify(ids));
+  }
 
   const el = (id) => document.getElementById(id);
 
@@ -316,6 +337,11 @@
   }
 
   function subjectName(id) {
+    if (id === ALL_SUBJECTS_ID) return "Toutes les matières";
+    if (id === MULTI_SUBJECTS_ID) {
+      const n = loadMultiSelection().length;
+      return `Sélection (${n} matière${n > 1 ? "s" : ""})`;
+    }
     const s = subjects.find((x) => x.id === id);
     return s ? s.name : "Matière inconnue";
   }
@@ -334,7 +360,7 @@
     subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
 
     const saved = localStorage.getItem(CURRENT_SUBJECT_KEY);
-    if (saved && subjects.some((s) => s.id === saved)) {
+    if (saved && (isSentinelSubject(saved) || subjects.some((s) => s.id === saved))) {
       currentSubjectId = saved;
     } else {
       currentSubjectId = subjects[0].id;
@@ -395,11 +421,19 @@
           `<option value="${s.id}" ${s.id === currentSubjectId ? "selected" : ""}>${escapeHtml(s.name)}</option>`
       )
       .join("");
-    subjectSelectEl.innerHTML = opts;
+    // Options "toutes matières" / "sélection de matières" (item 1) — SEULE
+    // la page Réviser les propose : créer une fiche (Gérer) ou exporter
+    // (Réglages) exige toujours une matière réelle et précise.
+    const sentinelOpts =
+      `<option value="${ALL_SUBJECTS_ID}" ${currentSubjectId === ALL_SUBJECTS_ID ? "selected" : ""}>🔀 Toutes les matières</option>` +
+      `<option value="${MULTI_SUBJECTS_ID}" ${currentSubjectId === MULTI_SUBJECTS_ID ? "selected" : ""}>☑️ Sélection de matières…</option>`;
+    subjectSelectEl.innerHTML = opts + sentinelOpts;
     // Second sélecteur, en en-tête du formulaire "Nouvelle fiche" sur la
-    // page Gérer (voir item 7) : mêmes options, synchronisé avec le même
-    // `currentSubjectId` que celui de la page Réviser.
-    if (manageSubjectSelectEl) manageSubjectSelectEl.innerHTML = opts;
+    // page Gérer (voir item 7) : matières réelles uniquement.
+    if (manageSubjectSelectEl) {
+      manageSubjectSelectEl.innerHTML = opts;
+      if (!isSentinelSubject(currentSubjectId)) manageSubjectSelectEl.value = currentSubjectId;
+    }
 
     // Le sélecteur d'import propose en plus la création d'une nouvelle matière à la volée.
     const importOpts =
@@ -525,6 +559,11 @@
     }
     return out;
   }
+  /** État coché/décoché des 4 courbes (item 3) : persiste seulement le
+   *  temps de la session sur cette page, pas besoin de le sauvegarder
+   *  ailleurs — se réinitialise à "tout coché" à chaque ouverture. */
+  let algoChartVisible = { again: true, hard: true, good: true, easy: true };
+
   function renderAlgoPreviewChart() {
     const wrap = el("algo-chart-wrap");
     if (!wrap) return;
@@ -532,12 +571,35 @@
     const N = 8;
     const ratings = ["again", "hard", "good", "easy"];
     const seriesByRating = {};
-    let maxVal = 1;
     ratings.forEach((r) => {
-      const s = computeAlgoPreviewSeries(settings, r, N);
-      seriesByRating[r] = s;
-      maxVal = Math.max(maxVal, ...s);
+      seriesByRating[r] = computeAlgoPreviewSeries(settings, r, N);
     });
+    const visibleRatings = ratings.filter((r) => algoChartVisible[r]);
+    // L'échelle s'adapte aux seules courbes affichées (item 3) : décocher
+    // "Bien"/"Facile" (qui grimpent beaucoup plus haut) permet de mieux
+    // distinguer "Encore"/"Difficile", qui restent sinon écrasées en bas.
+    let maxVal = 1;
+    visibleRatings.forEach((r) => { maxVal = Math.max(maxVal, ...seriesByRating[r]); });
+
+    const legend = ratings
+      .map(
+        (r) => `<label class="algo-chart-legend-item">
+          <input type="checkbox" class="algo-chart-legend-checkbox" data-rating="${r}" ${algoChartVisible[r] ? "checked" : ""} />
+          <span class="algo-chart-legend-dot" style="background:${ALGO_CHART_COLORS[r]}"></span>${ALGO_CHART_RATING_LABELS[r]}
+        </label>`
+      )
+      .join("");
+
+    if (visibleRatings.length === 0) {
+      wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div><p class="field-hint algo-chart-empty">Coche au moins une courbe pour l'afficher.</p>`;
+      wrap.querySelectorAll(".algo-chart-legend-checkbox").forEach((cb) => {
+        cb.addEventListener("change", () => {
+          algoChartVisible[cb.dataset.rating] = cb.checked;
+          renderAlgoPreviewChart();
+        });
+      });
+      return;
+    }
 
     // Plus haut que la version précédente (item 5), pour la lisibilité.
     const W = 320, H = 260, padL = 30, padB = 22, padT = 14, padR = 12;
@@ -562,10 +624,10 @@
 
     // Léger décalage horizontal par courbe pour que les étiquettes de valeur
     // (item 5 : "indiquer à côté des points la valeur correspondante") ne se
-    // chevauchent pas trop entre les 4 courbes quand elles se rejoignent.
+    // chevauchent pas trop entre les courbes affichées quand elles se rejoignent.
     const labelDx = { again: -9, hard: -3, good: 3, easy: 9 };
 
-    ratings.forEach((r) => {
+    visibleRatings.forEach((r) => {
       const s = seriesByRating[r];
       const pts = s.map((v, i) => `${xPos(i)},${yPos(v)}`).join(" ");
       svg += `<polyline points="${pts}" fill="none" stroke="${ALGO_CHART_COLORS[r]}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
@@ -581,11 +643,13 @@
     }
     svg += `</svg>`;
 
-    const legend = ratings
-      .map((r) => `<span class="algo-chart-legend-item"><span class="algo-chart-legend-dot" style="background:${ALGO_CHART_COLORS[r]}"></span>${ALGO_CHART_RATING_LABELS[r]}</span>`)
-      .join("");
-
     wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${svg}`;
+    wrap.querySelectorAll(".algo-chart-legend-checkbox").forEach((cb) => {
+      cb.addEventListener("change", () => {
+        algoChartVisible[cb.dataset.rating] = cb.checked;
+        renderAlgoPreviewChart();
+      });
+    });
   }
 
   function readAlgoFormSettings() {
@@ -615,10 +679,17 @@
     renderSubjectAlgoBadge();
   }
 
-  function openSubjectAlgoView(subjectId) {
+  let algoOpenedFromView = "manage";
+
+  function openSubjectAlgoView(subjectId, fromView) {
     algoEditingSubjectId = subjectId;
+    algoOpenedFromView = fromView === "review" ? "review" : "manage";
+    // Les 4 courbes repartent toutes cochées à chaque ouverture (item 3).
+    algoChartVisible = { again: true, hard: true, good: true, easy: true };
     const subject = subjects.find((s) => s.id === subjectId);
     el("algo-subject-title").textContent = `Mode d'apprentissage — ${subject ? subject.name : ""}`;
+    const backBtn = el("algo-back-btn");
+    if (backBtn) backBtn.textContent = algoOpenedFromView === "review" ? "← Retour à Réviser" : "← Retour à Gérer";
     const cfg = getSubjectAlgoConfig(subjectId);
     loadAlgoFormIntoInputs(cfg.mode, cfg.profiles[cfg.mode]);
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
@@ -626,21 +697,22 @@
   }
 
   function closeSubjectAlgoView() {
+    const targetView = algoOpenedFromView === "review" ? "review" : "manage";
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
-    el("view-manage").classList.add("is-active");
+    el(`view-${targetView}`).classList.add("is-active");
     // Le mode affiché à côté de chaque matière (voir renderSubjectManageList)
     // n'était sinon jamais rafraîchi après un aller-retour sur la page Mode
     // d'apprentissage : la liste restait celle affichée AVANT toute
     // modification, d'où l'impression d'un mode figé sur "Normal".
-    renderSubjectManageList();
+    if (targetView === "manage") renderSubjectManageList();
     document.querySelectorAll(".tab").forEach((t) => {
       t.classList.remove("is-active");
       t.setAttribute("aria-selected", "false");
     });
-    const manageTab = document.querySelector('.tab[data-view="manage"]');
-    if (manageTab) {
-      manageTab.classList.add("is-active");
-      manageTab.setAttribute("aria-selected", "true");
+    const targetTab = document.querySelector(`.tab[data-view="${targetView}"]`);
+    if (targetTab) {
+      targetTab.classList.add("is-active");
+      targetTab.setAttribute("aria-selected", "true");
     }
   }
 
@@ -816,8 +888,9 @@
     if (el("view-stats").classList.contains("is-active")) renderStats();
   }
 
-  function switchSubject(id) {
-    if (id === currentSubjectId || !subjects.some((s) => s.id === id)) return;
+  function switchSubject(id, force) {
+    const sentinel = isSentinelSubject(id);
+    if ((id === currentSubjectId && !force) || (!sentinel && !subjects.some((s) => s.id === id))) return;
     currentSubjectId = id;
     localStorage.setItem(CURRENT_SUBJECT_KEY, id);
 
@@ -839,8 +912,69 @@
   }
 
   subjectSelectEl.addEventListener("change", () => {
+    if (subjectSelectEl.value === MULTI_SUBJECTS_ID) {
+      // On n'active pas encore le mode "sélection" tant que le choix des
+      // matières n'est pas confirmé — le select reste sur son ancienne
+      // valeur en attendant (voir openMultiSubjectPicker/confirm).
+      subjectSelectEl.value = currentSubjectId;
+      openMultiSubjectPicker();
+      return;
+    }
+    closeMultiSubjectPicker();
     switchSubject(subjectSelectEl.value);
   });
+
+  /* ---------------------------------------------------------
+     Sélection de plusieurs matières confondues (item 1)
+  --------------------------------------------------------- */
+  function openMultiSubjectPicker() {
+    const picker = el("multi-subject-picker");
+    const list = el("multi-subject-picker-list");
+    if (!picker || !list) return;
+    const selected = new Set(loadMultiSelection());
+    list.innerHTML = "";
+    const frag = document.createDocumentFragment();
+    subjects.forEach((s) => {
+      const label = document.createElement("label");
+      label.className = "multi-subject-picker-item";
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.value = s.id;
+      cb.checked = selected.has(s.id);
+      const span = document.createElement("span");
+      span.textContent = s.name;
+      label.appendChild(cb);
+      label.appendChild(span);
+      frag.appendChild(label);
+    });
+    list.appendChild(frag);
+    picker.hidden = false;
+  }
+
+  function closeMultiSubjectPicker() {
+    const picker = el("multi-subject-picker");
+    if (picker) picker.hidden = true;
+  }
+
+  const multiPickerCancelBtn = el("multi-subject-picker-cancel");
+  if (multiPickerCancelBtn) {
+    multiPickerCancelBtn.addEventListener("click", () => closeMultiSubjectPicker());
+  }
+
+  const multiPickerConfirmBtn = el("multi-subject-picker-confirm");
+  if (multiPickerConfirmBtn) {
+    multiPickerConfirmBtn.addEventListener("click", () => {
+      const checked = [...document.querySelectorAll("#multi-subject-picker-list input:checked")].map((cb) => cb.value);
+      if (checked.length === 0) {
+        alert("Choisis au moins une matière.");
+        return;
+      }
+      saveMultiSelection(checked);
+      closeMultiSubjectPicker();
+      renderSubjectSelect();
+      switchSubject(MULTI_SUBJECTS_ID, true);
+    });
+  }
 
   if (manageSubjectSelectEl) {
     manageSubjectSelectEl.addEventListener("change", () => {
@@ -936,14 +1070,23 @@
    *  — voir ALGO_MODE_COLORS), et le récapitulatif d'export/import dans
    *  Réglages (item 6). */
   function renderSubjectAlgoBadge() {
-    const key = currentSubjectId ? getSubjectAlgoMode(currentSubjectId) : "normal";
-    const n = currentSubjectId ? cards.filter((c) => !c.deleted && c.subject === currentSubjectId).length : 0;
+    const sentinel = isSentinelSubject(currentSubjectId);
+    const n = currentSubjectId ? subjectCards().length : 0;
 
     if (subjectBarCountEl) subjectBarCountEl.textContent = `${n} fiche${n > 1 ? "s" : ""}`;
-    if (subjectBarAlgoLabelEl) subjectBarAlgoLabelEl.textContent = ALGO_MODE_SHORT_LABELS[key];
     if (subjectBarAlgoBtn) {
-      Object.values(ALGO_MODE_KEY_TO_CLASS).forEach((c) => subjectBarAlgoBtn.classList.remove(c));
-      subjectBarAlgoBtn.classList.add(ALGO_MODE_KEY_TO_CLASS[key]);
+      // Pas de mode unique à afficher/éditer en mode "toutes matières" ou
+      // "sélection" (chaque fiche garde le mode de SA propre matière) —
+      // voir item 1.
+      subjectBarAlgoBtn.hidden = sentinel;
+    }
+    if (!sentinel) {
+      const key = currentSubjectId ? getSubjectAlgoMode(currentSubjectId) : "normal";
+      if (subjectBarAlgoLabelEl) subjectBarAlgoLabelEl.textContent = ALGO_MODE_SHORT_LABELS[key];
+      if (subjectBarAlgoBtn) {
+        Object.values(ALGO_MODE_KEY_TO_CLASS).forEach((c) => subjectBarAlgoBtn.classList.remove(c));
+        subjectBarAlgoBtn.classList.add(ALGO_MODE_KEY_TO_CLASS[key]);
+      }
     }
 
     const ioName = el("settings-io-subject-name");
@@ -954,12 +1097,22 @@
 
   if (subjectBarAlgoBtn) {
     subjectBarAlgoBtn.addEventListener("click", () => {
-      if (currentSubjectId) openSubjectAlgoView(currentSubjectId);
+      if (currentSubjectId && !isSentinelSubject(currentSubjectId)) openSubjectAlgoView(currentSubjectId, "review");
     });
   }
 
-  /** Toutes les fiches non supprimées de la matière actuellement active. */
+  /** Toutes les fiches non supprimées de la matière actuellement active —
+   *  gère aussi les deux modes "toutes matières" / "sélection de matières"
+   *  (item 1), chaque fiche gardant alors le mode d'apprentissage de SA
+   *  propre matière (voir computeAlgoNext, qui utilise card.subject). */
   function subjectCards() {
+    if (currentSubjectId === ALL_SUBJECTS_ID) {
+      return cards.filter((c) => !c.deleted);
+    }
+    if (currentSubjectId === MULTI_SUBJECTS_ID) {
+      const set = new Set(loadMultiSelection());
+      return cards.filter((c) => !c.deleted && set.has(c.subject));
+    }
     return cards.filter((c) => !c.deleted && c.subject === currentSubjectId);
   }
 
