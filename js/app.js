@@ -83,7 +83,7 @@
   const reviewChartToggleEl = el("review-chart-toggle");
   const reviewChartScaleLabelEl = el("review-chart-scale-label");
   const reviewChartSubjectNameEl = el("review-chart-subject-name");
-  const REVIEW_CHART_STEPS = [15, 30, 90, 182, 365];
+  const REVIEW_CHART_STEPS = [15, 30, 90, 365];
   const REVIEW_CHART_MAX_BAR_PX = 100;
   let reviewChartRangeDays = 15;
 
@@ -93,12 +93,11 @@
      graphique, sur lesquels on peut ensuite défiler horizontalement. Avant,
      les deux étaient confondus (un seul `days`), ce qui fait qu'à l'échelle
      "3 mois" par exemple, il n'y avait justement que 3 mois de données —
-     aucun défilement possible au-delà. */
+     aucun défilement possible au-delà. Échelle "6 mois" retirée (item 4). */
   const RANGE_CONFIG = {
     15: { visible: 15, total: 60 },     // 15 jours à l'écran, défilement sur 2 mois
     30: { visible: 30, total: 120 },    // 1 mois à l'écran, défilement sur 4 mois
     90: { visible: 90, total: 365 },    // 3 mois à l'écran, défilement sur 1 an
-    182: { visible: 180, total: 548 },  // 6 mois à l'écran, défilement sur 1,5 an
     365: { visible: 360, total: 1095 }, // 1 an à l'écran, défilement sur 3 ans
   };
 
@@ -346,6 +345,22 @@
     return s ? s.name : "Matière inconnue";
   }
 
+  /** Affiche la question d'une fiche — précédée de "Nom de la matière :" +
+   *  deux sauts de ligne UNIQUEMENT quand on révise plusieurs matières
+   *  confondues (item 2) : ça n'a pas d'intérêt quand une seule matière est
+   *  affichée à la fois, et ça ne doit jamais apparaître côté réponse.
+   *  Rafraîchit aussi le bouton mode d'apprentissage sur CETTE fiche
+   *  précise (sa propre matière), pas sur la sélection globale — utile en
+   *  mode "toutes matières"/"sélection", où chaque fiche peut appartenir à
+   *  une matière différente avec son propre mode. */
+  function renderQuestionText(card) {
+    if (!card) return;
+    questionTextEl.textContent = isSentinelSubject(currentSubjectId)
+      ? `${subjectName(card.subject)} :\n\n${card.question}`
+      : card.question;
+    renderSubjectAlgoBadge(card.subject);
+  }
+
   /** Exposé pour que sync.js puisse dénormaliser le nom de la matière sur chaque ligne envoyée. */
   window.getSubjectName = subjectName;
 
@@ -479,7 +494,7 @@
       // comme un bouton, sans élargir la ligne.
       const algoBtn = document.createElement("button");
       algoBtn.type = "button";
-      algoBtn.className = "subject-row-algo-btn";
+      algoBtn.className = `subject-row-algo-btn ${ALGO_MODE_KEY_TO_CLASS[getSubjectAlgoMode(s.id)]}`;
       algoBtn.innerHTML = `🎓 <span>${ALGO_MODE_SHORT_LABELS[getSubjectAlgoMode(s.id)]}</span>`;
       algoBtn.title = "Mode d'apprentissage de cette matière";
       algoBtn.addEventListener("click", () => openSubjectAlgoView(s.id));
@@ -1027,7 +1042,7 @@
     if (currentCard && currentCard.id === updated.id) {
       currentCard = updated;
       if (el("view-review").classList.contains("is-active")) {
-        questionTextEl.textContent = currentCard.question;
+        renderQuestionText(currentCard);
         answerTextEl.textContent = currentCard.answer;
         updateRatingPreviews();
       }
@@ -1069,23 +1084,29 @@
    *  Réviser (item 1, mêmes couleurs que le curseur du mode d'apprentissage
    *  — voir ALGO_MODE_COLORS), et le récapitulatif d'export/import dans
    *  Réglages (item 6). */
-  function renderSubjectAlgoBadge() {
+  /** `cardSubjectId` (optionnel) : quand on révise "toutes matières" ou une
+   *  "sélection", chaque fiche affichée a sa propre matière — c'est ELLE
+   *  qui doit déterminer le mode affiché/édité par le bouton, pas la
+   *  sélection globale (item 2). Sans cet argument (autres pages, ou mode
+   *  normal), on retombe sur `currentSubjectId` comme avant. */
+  function renderSubjectAlgoBadge(cardSubjectId) {
     const sentinel = isSentinelSubject(currentSubjectId);
     const n = currentSubjectId ? subjectCards().length : 0;
+    const effectiveSubjectId = sentinel && cardSubjectId ? cardSubjectId : currentSubjectId;
 
     if (subjectBarCountEl) subjectBarCountEl.textContent = `${n} fiche${n > 1 ? "s" : ""}`;
-    if (subjectBarAlgoBtn) {
-      // Pas de mode unique à afficher/éditer en mode "toutes matières" ou
-      // "sélection" (chaque fiche garde le mode de SA propre matière) —
-      // voir item 1.
-      subjectBarAlgoBtn.hidden = sentinel;
-    }
-    if (!sentinel) {
-      const key = currentSubjectId ? getSubjectAlgoMode(currentSubjectId) : "normal";
+    // Un vrai identifiant de matière (jamais un sentinel) est toujours
+    // disponible dès qu'une fiche est affichée à l'écran — le bouton reste
+    // donc visible et utile même en mode "toutes matières"/"sélection".
+    const showBtn = !sentinel || !!cardSubjectId;
+    if (subjectBarAlgoBtn) subjectBarAlgoBtn.hidden = !showBtn;
+    if (showBtn && effectiveSubjectId) {
+      const key = getSubjectAlgoMode(effectiveSubjectId);
       if (subjectBarAlgoLabelEl) subjectBarAlgoLabelEl.textContent = ALGO_MODE_SHORT_LABELS[key];
       if (subjectBarAlgoBtn) {
         Object.values(ALGO_MODE_KEY_TO_CLASS).forEach((c) => subjectBarAlgoBtn.classList.remove(c));
         subjectBarAlgoBtn.classList.add(ALGO_MODE_KEY_TO_CLASS[key]);
+        subjectBarAlgoBtn.dataset.subjectId = effectiveSubjectId;
       }
     }
 
@@ -1097,7 +1118,11 @@
 
   if (subjectBarAlgoBtn) {
     subjectBarAlgoBtn.addEventListener("click", () => {
-      if (currentSubjectId && !isSentinelSubject(currentSubjectId)) openSubjectAlgoView(currentSubjectId, "review");
+      // En mode "toutes matières"/"sélection", `dataset.subjectId` porte la
+      // vraie matière de la fiche actuellement affichée (voir
+      // renderSubjectAlgoBadge) ; sinon, la matière active classique.
+      const targetId = subjectBarAlgoBtn.dataset.subjectId || currentSubjectId;
+      if (targetId && !isSentinelSubject(targetId)) openSubjectAlgoView(targetId, "review");
     });
   }
 
@@ -1172,7 +1197,7 @@
       return;
     }
     currentCard = fresh;
-    questionTextEl.textContent = currentCard.question;
+    renderQuestionText(currentCard);
     answerTextEl.textContent = currentCard.answer;
     updateRatingPreviews();
   }
@@ -1237,7 +1262,7 @@
       // Les boutons d'évaluation restent affichés en permanence (côté
       // question comme côté réponse) : on ne les cache plus au retournement.
       ratingRowEl.hidden = false;
-      questionTextEl.textContent = currentCard.question;
+      renderQuestionText(currentCard);
       answerTextEl.textContent = currentCard.answer;
 
       const doneToday = sessionTotalDue - reviewQueue.length;
@@ -1276,7 +1301,7 @@
     editCurrentBtn.hidden = false;
     if (hibernateCurrentBtn) hibernateCurrentBtn.hidden = false;
     ratingRowEl.hidden = false;
-    questionTextEl.textContent = currentCard.question;
+    renderQuestionText(currentCard);
     answerTextEl.textContent = currentCard.answer;
     reviewProgressEl.textContent = "Fiches du jour terminées — révision libre";
     if (enteringBonusMode) {
@@ -1910,7 +1935,7 @@
       } else {
         const dom = b.date.getDate();
         const fineScale = rangeKey === 15 || rangeKey === 30;
-        const coarseScale = rangeKey === 90 || rangeKey === 182 || rangeKey === 365;
+        const coarseScale = rangeKey === 90 || rangeKey === 365;
         if ((fineScale && (dom === 1 || dom === 15)) || (coarseScale && dom === 1)) {
           label.textContent = formatShortDateLabel(b.date);
         } else {
@@ -1990,7 +2015,6 @@
       case 15: return "15 j";
       case 30: return "1 mois";
       case 90: return "3 mois";
-      case 182: return "6 mois";
       case 365: return "1 an";
       default: return `${days} j`;
     }

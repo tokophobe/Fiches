@@ -249,10 +249,24 @@ textarea, input {
   text-overflow: ellipsis;
 }
 
-.subject-bar-algo-btn.is-cool { color: var(--sage); background: rgba(111, 139, 92, 0.12); border-color: rgba(111, 139, 92, 0.4); }
-.subject-bar-algo-btn.is-normal { color: var(--amber); background: rgba(207, 154, 77, 0.12); border-color: rgba(207, 154, 77, 0.4); }
-.subject-bar-algo-btn.is-renforce { color: var(--terracotta); background: rgba(182, 96, 74, 0.12); border-color: rgba(182, 96, 74, 0.4); }
-.subject-bar-algo-btn.is-custom { color: #e8c84a; background: rgba(232, 200, 74, 0.14); border-color: rgba(232, 200, 74, 0.45); }
+/* Couleurs par mode, PLUS prononcées qu'avant (item 1 : jugées trop
+   "light") — texte en gras + fond et bordure nettement plus saturés.
+   Partagées par le bouton de la barre Réviser (.subject-bar-algo-btn) ET
+   celui de chaque ligne de matière sur la page Gérer (.subject-row-algo-btn). */
+.subject-bar-algo-btn.is-cool, .subject-row-algo-btn.is-cool {
+  color: #eaf2e4; background: var(--sage); border-color: var(--sage);
+}
+.subject-bar-algo-btn.is-normal, .subject-row-algo-btn.is-normal {
+  color: #2a1f0d; background: var(--amber); border-color: var(--amber);
+}
+.subject-bar-algo-btn.is-renforce, .subject-row-algo-btn.is-renforce {
+  color: #fbeae5; background: var(--terracotta); border-color: var(--terracotta);
+}
+.subject-bar-algo-btn.is-custom, .subject-row-algo-btn.is-custom {
+  color: #332b04; background: #e8c84a; border-color: #e8c84a;
+}
+
+.subject-bar-algo-btn:hover, .subject-row-algo-btn:hover { filter: brightness(1.08); }
 
 /* Sélecteur de plusieurs matières confondues (item 1). */
 .multi-subject-picker {
@@ -339,7 +353,10 @@ textarea, input {
 /* Bouton "mode d'apprentissage" fusionné avec son propre affichage (item 9) :
    un encadré net (fond + bordure) pour bien se lire comme un bouton distinct,
    volontairement compact pour ne pas élargir la ligne (texte court, voir
-   ALGO_MODE_SHORT_LABELS). */
+   ALGO_MODE_SHORT_LABELS). Couleur pilotée par une des 4 classes .is-*
+   ci-dessous (partagées avec le bouton de la page Réviser — item 1 :
+   avant, cette version-ci restait toujours en terracotta fixe, sans lien
+   avec le mode réel de la matière). */
 .subject-row-algo-btn {
   flex-shrink: 0;
   display: inline-flex;
@@ -347,12 +364,11 @@ textarea, input {
   gap: 3px;
   font-family: var(--font-mono);
   font-size: 10.5px;
-  color: var(--terracotta);
-  background: rgba(182, 96, 74, 0.1);
-  border: 1px solid rgba(182, 96, 74, 0.35);
+  font-weight: 700;
   border-radius: 8px;
   padding: 5px 7px;
   max-width: 84px;
+  border: 1.5px solid transparent;
 }
 
 .subject-row-algo-btn span {
@@ -360,8 +376,6 @@ textarea, input {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.subject-row-algo-btn:hover { background: rgba(182, 96, 74, 0.18); }
 
 .import-target-row {
   display: flex;
