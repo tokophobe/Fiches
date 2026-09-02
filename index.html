@@ -222,9 +222,22 @@
       <div class="subjects-panel">
         <div class="list-header">
           <h2 class="section-title">Matières</h2>
-          <button class="btn btn--small" id="manage-add-subject-btn" type="button">+ Nouvelle matière</button>
+          <div class="list-header-actions">
+            <button class="btn btn--small btn--ghost" id="manage-add-folder-btn" type="button">+ Dossier</button>
+            <button class="btn btn--small" id="manage-add-subject-btn" type="button">+ Nouvelle matière</button>
+          </div>
         </div>
+        <nav class="folder-breadcrumb" id="folder-breadcrumb" aria-label="Emplacement"></nav>
         <ul class="subject-list" id="subject-list"></ul>
+      </div>
+
+      <div class="move-picker" id="move-picker" hidden>
+        <p class="field-hint settings-block-hint" id="move-picker-title">Déplacer vers :</p>
+        <div class="move-picker-list" id="move-picker-list"></div>
+        <div class="multi-subject-picker-actions">
+          <button type="button" class="btn btn--small" id="move-picker-confirm">Déplacer ici</button>
+          <button type="button" class="btn btn--ghost btn--small" id="move-picker-cancel">Annuler</button>
+        </div>
       </div>
 
       <form class="card-form" id="card-form">

@@ -4,9 +4,10 @@
  */
 
 const DB_NAME = "fiches-db";
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 const STORE = "cards";
 const SUBJECT_STORE = "subjects";
+const FOLDER_STORE = "folders";
 let dbConnectionPromise = null;
 
 function openDb() {
@@ -28,6 +29,9 @@ function openDb() {
       }
       if (!db.objectStoreNames.contains(SUBJECT_STORE)) {
         db.createObjectStore(SUBJECT_STORE, { keyPath: "id" });
+      }
+      if (!db.objectStoreNames.contains(FOLDER_STORE)) {
+        db.createObjectStore(FOLDER_STORE, { keyPath: "id" });
       }
     };
     req.onsuccess = () => {
@@ -118,6 +122,24 @@ const DB = {
 
   async removeSubject(id) {
     await withStoreIn(SUBJECT_STORE, "readwrite", (store) => store.delete(id));
+  },
+
+  /* ---- dossiers (folders) ---- */
+
+  async getAllFolders() {
+    const db = await openDb();
+    const tx = db.transaction(FOLDER_STORE, "readonly");
+    const store = tx.objectStore(FOLDER_STORE);
+    return reqToPromise(store.getAll());
+  },
+
+  async putFolder(folder) {
+    await withStoreIn(FOLDER_STORE, "readwrite", (store) => store.put(folder));
+    return folder;
+  },
+
+  async removeFolder(id) {
+    await withStoreIn(FOLDER_STORE, "readwrite", (store) => store.delete(id));
   },
 };
 

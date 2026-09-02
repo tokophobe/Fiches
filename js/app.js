@@ -328,11 +328,52 @@
   }
 
   /* ---------------------------------------------------------
-     Matières (subjects)
+     Matières (subjects) et dossiers (folders) — item 1 : arborescence
   --------------------------------------------------------- */
-  function newSubject(name) {
+  /** @type {Array<{id:string,name:string,parentId:string|null,createdAt:string,updatedAt:string}>} */
+  let folders = [];
+  const ROOT_FOLDER_ID = null;
+
+  function newFolder(name, parentId) {
     const now = new Date().toISOString();
-    return { id: uid(), name: name.trim(), createdAt: now, updatedAt: now };
+    return { id: uid(), name: name.trim(), parentId: parentId || ROOT_FOLDER_ID, createdAt: now, updatedAt: now };
+  }
+
+  function newSubject(name, folderId) {
+    const now = new Date().toISOString();
+    return { id: uid(), name: name.trim(), folderId: folderId || ROOT_FOLDER_ID, createdAt: now, updatedAt: now };
+  }
+
+  /** Tous les descendants (sous-dossiers, à tous les niveaux) d'un dossier. */
+  function folderDescendantIds(folderId) {
+    const out = [];
+    const stack = [folderId];
+    while (stack.length) {
+      const id = stack.pop();
+      folders.forEach((f) => {
+        if (f.parentId === id) {
+          out.push(f.id);
+          stack.push(f.id);
+        }
+      });
+    }
+    return out;
+  }
+
+  /** Identifiants de toutes les matières contenues dans un dossier, y
+   *  compris dans ses sous-dossiers à n'importe quelle profondeur. */
+  function subjectIdsInFolder(folderId) {
+    const ids = new Set([folderId, ...folderDescendantIds(folderId)]);
+    return subjects.filter((s) => ids.has(s.folderId)).map((s) => s.id);
+  }
+
+  /** Un dossier ne peut être supprimé que s'il est vide (item 1) : ni
+   *  sous-dossier, ni matière directement dedans. */
+  function folderIsEmpty(folderId) {
+    return (
+      !folders.some((f) => f.parentId === folderId) &&
+      !subjects.some((s) => s.folderId === folderId)
+    );
   }
 
   function subjectName(id) {
@@ -367,6 +408,8 @@
   /** Charge les matières depuis IndexedDB ; en crée une par défaut si aucune n'existe encore. */
   async function loadSubjects() {
     subjects = await DB.getAllSubjects();
+    folders = await DB.getAllFolders();
+    subjects.forEach((s) => { if (s.folderId === undefined) s.folderId = ROOT_FOLDER_ID; });
     if (subjects.length === 0) {
       const general = newSubject("Général");
       await DB.putSubject(general);
@@ -468,9 +511,118 @@
     return div.innerHTML;
   }
 
+  /** Dossier actuellement "ouvert" dans la page Gérer (navigation, distincte
+   *  de la matière active choisie pour réviser/créer une fiche). */
+  let manageFolderBrowseId = ROOT_FOLDER_ID;
+
+  function folderPath(folderId) {
+    const path = [];
+    let cur = folderId;
+    while (cur) {
+      const f = folders.find((x) => x.id === cur);
+      if (!f) break;
+      path.unshift(f);
+      cur = f.parentId;
+    }
+    return path;
+  }
+
+  function renderFolderBreadcrumb() {
+    const bc = el("folder-breadcrumb");
+    if (!bc) return;
+    bc.innerHTML = "";
+    const path = folderPath(manageFolderBrowseId);
+    const rootBtn = document.createElement("button");
+    rootBtn.type = "button";
+    rootBtn.className = "folder-breadcrumb-item" + (!manageFolderBrowseId ? " is-current" : "");
+    rootBtn.textContent = "🗂️ Racine";
+    rootBtn.addEventListener("click", () => {
+      manageFolderBrowseId = ROOT_FOLDER_ID;
+      renderSubjectManageList();
+    });
+    bc.appendChild(rootBtn);
+    path.forEach((f) => {
+      const sep = document.createElement("span");
+      sep.className = "folder-breadcrumb-sep";
+      sep.textContent = "›";
+      bc.appendChild(sep);
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "folder-breadcrumb-item" + (f.id === manageFolderBrowseId ? " is-current" : "");
+      btn.textContent = f.name;
+      btn.addEventListener("click", () => {
+        manageFolderBrowseId = f.id;
+        renderSubjectManageList();
+      });
+      bc.appendChild(btn);
+    });
+  }
+
   function renderSubjectManageList() {
+    renderFolderBreadcrumb();
     subjectListEl.innerHTML = "";
-    for (const s of subjects) {
+
+    const childFolders = folders
+      .filter((f) => f.parentId === manageFolderBrowseId)
+      .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    const childSubjects = subjects
+      .filter((s) => s.folderId === manageFolderBrowseId)
+      .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+
+    childFolders.forEach((f) => {
+      const li = document.createElement("li");
+      li.className = "subject-row folder-row";
+
+      const nameBtn = document.createElement("button");
+      nameBtn.type = "button";
+      nameBtn.className = "subject-row-name";
+      nameBtn.title = "Ouvrir ce dossier";
+      nameBtn.textContent = `📁 ${f.name}`;
+      nameBtn.addEventListener("click", () => {
+        manageFolderBrowseId = f.id;
+        renderSubjectManageList();
+      });
+
+      const count = document.createElement("span");
+      count.className = "subject-row-count";
+      const n = subjectIdsInFolder(f.id).length;
+      count.textContent = `${n} matière${n > 1 ? "s" : ""}`;
+
+      const actions = document.createElement("div");
+      actions.className = "row-actions";
+
+      const renameBtn = document.createElement("button");
+      renameBtn.type = "button";
+      renameBtn.className = "icon-btn";
+      renameBtn.textContent = "✏️";
+      renameBtn.title = "Renommer ce dossier";
+      renameBtn.addEventListener("click", () => renameFolder(f.id));
+
+      const moveBtn = document.createElement("button");
+      moveBtn.type = "button";
+      moveBtn.className = "icon-btn";
+      moveBtn.textContent = "↔️";
+      moveBtn.title = "Déplacer ce dossier";
+      moveBtn.addEventListener("click", () => openMovePicker("folder", f.id));
+
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "icon-btn icon-btn--danger";
+      delBtn.textContent = "🗑️";
+      delBtn.title = "Supprimer ce dossier (doit être vide)";
+      delBtn.addEventListener("click", () => deleteFolder(f.id));
+
+      actions.appendChild(renameBtn);
+      actions.appendChild(moveBtn);
+      actions.appendChild(delBtn);
+
+      li.appendChild(nameBtn);
+      li.appendChild(count);
+      li.appendChild(actions);
+      subjectListEl.appendChild(li);
+    });
+
+    for (const s of childSubjects) {
       const li = document.createElement("li");
       li.className = "subject-row" + (s.id === currentSubjectId ? " is-active" : "");
 
@@ -499,6 +651,13 @@
       algoBtn.title = "Mode d'apprentissage de cette matière";
       algoBtn.addEventListener("click", () => openSubjectAlgoView(s.id));
 
+      const moveBtn = document.createElement("button");
+      moveBtn.type = "button";
+      moveBtn.className = "icon-btn";
+      moveBtn.textContent = "↔️";
+      moveBtn.title = "Déplacer cette matière";
+      moveBtn.addEventListener("click", () => openMovePicker("subject", s.id));
+
       const delBtn = document.createElement("button");
       delBtn.type = "button";
       delBtn.className = "icon-btn icon-btn--danger";
@@ -507,6 +666,7 @@
       delBtn.addEventListener("click", () => deleteSubject(s.id));
 
       actions.appendChild(algoBtn);
+      actions.appendChild(moveBtn);
       actions.appendChild(delBtn);
 
       li.appendChild(nameBtn);
@@ -514,7 +674,128 @@
       li.appendChild(actions);
       subjectListEl.appendChild(li);
     }
+
+    if (childFolders.length === 0 && childSubjects.length === 0) {
+      const empty = document.createElement("p");
+      empty.className = "field-hint";
+      empty.textContent = "Ce dossier est vide.";
+      subjectListEl.appendChild(empty);
+    }
   }
+
+  /* ---------------------------------------------------------
+     Gestion des dossiers (créer, renommer, supprimer, déplacer) — item 1
+  --------------------------------------------------------- */
+  async function createFolderFlow() {
+    const name = prompt("Nom du nouveau dossier :");
+    if (!name || !name.trim()) return;
+    const folder = newFolder(name, manageFolderBrowseId);
+    await DB.putFolder(folder);
+    folders.push(folder);
+    renderSubjectManageList();
+  }
+
+  async function renameFolder(folderId) {
+    const f = folders.find((x) => x.id === folderId);
+    if (!f) return;
+    const name = prompt("Nouveau nom du dossier :", f.name);
+    if (!name || !name.trim() || name.trim() === f.name) return;
+    f.name = name.trim();
+    f.updatedAt = new Date().toISOString();
+    await DB.putFolder(f);
+    renderSubjectManageList();
+  }
+
+  async function deleteFolder(folderId) {
+    if (!folderIsEmpty(folderId)) {
+      alert("Ce dossier n'est pas vide : déplace ou supprime d'abord ce qu'il contient.");
+      return;
+    }
+    const f = folders.find((x) => x.id === folderId);
+    if (!confirm(`Supprimer le dossier « ${f ? f.name : ""} » ?`)) return;
+    folders = folders.filter((x) => x.id !== folderId);
+    await DB.removeFolder(folderId);
+    renderSubjectManageList();
+  }
+
+  /* ---------------------------------------------------------
+     Déplacer un dossier ou une matière vers un autre dossier
+  --------------------------------------------------------- */
+  let movePickerKind = null; // "folder" | "subject"
+  let movePickerTargetId = null;
+
+  function openMovePicker(kind, targetId) {
+    movePickerKind = kind;
+    movePickerTargetId = targetId;
+    const picker = el("move-picker");
+    const list = el("move-picker-list");
+    const title = el("move-picker-title");
+    if (!picker || !list) return;
+
+    // Pour un dossier, on exclut lui-même et tous ses descendants de la
+    // liste des destinations possibles (on ne peut pas le déplacer dans
+    // lui-même ou l'un de ses propres sous-dossiers).
+    const excluded = kind === "folder" ? new Set([targetId, ...folderDescendantIds(targetId)]) : new Set();
+    const name = kind === "folder" ? (folders.find((f) => f.id === targetId) || {}).name : (subjects.find((s) => s.id === targetId) || {}).name;
+    if (title) title.textContent = `Déplacer « ${name || ""} » vers :`;
+
+    list.innerHTML = "";
+    const rootLabel = document.createElement("label");
+    rootLabel.className = "multi-subject-picker-item";
+    rootLabel.innerHTML = `<input type="radio" name="move-target" value="" checked /> <span>🗂️ Racine</span>`;
+    list.appendChild(rootLabel);
+
+    folders
+      .filter((f) => !excluded.has(f.id))
+      .sort((a, b) => a.name.localeCompare(b.name, "fr"))
+      .forEach((f) => {
+        const label = document.createElement("label");
+        label.className = "multi-subject-picker-item";
+        const path = folderPath(f.id).map((p) => p.name).join(" / ");
+        label.innerHTML = `<input type="radio" name="move-target" value="${f.id}" /> <span>📁 ${escapeHtml(path)}</span>`;
+        list.appendChild(label);
+      });
+
+    picker.hidden = false;
+  }
+
+  function closeMovePicker() {
+    const picker = el("move-picker");
+    if (picker) picker.hidden = true;
+    movePickerKind = null;
+    movePickerTargetId = null;
+  }
+
+  const movePickerCancelBtn = el("move-picker-cancel");
+  if (movePickerCancelBtn) movePickerCancelBtn.addEventListener("click", closeMovePicker);
+
+  const movePickerConfirmBtn = el("move-picker-confirm");
+  if (movePickerConfirmBtn) {
+    movePickerConfirmBtn.addEventListener("click", async () => {
+      const checked = document.querySelector('input[name="move-target"]:checked');
+      const destId = checked && checked.value ? checked.value : ROOT_FOLDER_ID;
+      if (movePickerKind === "folder") {
+        const f = folders.find((x) => x.id === movePickerTargetId);
+        if (f) {
+          f.parentId = destId;
+          f.updatedAt = new Date().toISOString();
+          await DB.putFolder(f);
+        }
+      } else if (movePickerKind === "subject") {
+        const s = subjects.find((x) => x.id === movePickerTargetId);
+        if (s) {
+          s.folderId = destId;
+          s.updatedAt = new Date().toISOString();
+          await DB.putSubject(s);
+        }
+      }
+      closeMovePicker();
+      renderSubjectManageList();
+    });
+  }
+
+  const manageAddFolderBtn = el("manage-add-folder-btn");
+  if (manageAddFolderBtn) manageAddFolderBtn.addEventListener("click", createFolderFlow);
 
   /* ---------------------------------------------------------
      Vue "Mode d'apprentissage" (par matière, ouverte depuis Gérer)
@@ -837,7 +1118,7 @@
   async function createSubjectFlow() {
     const name = prompt("Nom de la nouvelle matière :");
     if (!name || !name.trim()) return null;
-    const subject = newSubject(name);
+    const subject = newSubject(name, manageFolderBrowseId);
     await DB.putSubject(subject);
     subjects.push(subject);
     subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
@@ -942,27 +1223,54 @@
   /* ---------------------------------------------------------
      Sélection de plusieurs matières confondues (item 1)
   --------------------------------------------------------- */
+  /** Construit récursivement l'arbre dossiers/matières dans le sélecteur
+   *  multi-matières (item 1) : cocher un dossier inclut TOUTES les matières
+   *  qu'il contient (y compris dans ses sous-dossiers), sans avoir besoin
+   *  de les cocher une par une. */
+  function renderFolderTreeForPicker(container, parentId, depth, selectedSubjectIds) {
+    const childFolders = folders.filter((f) => f.parentId === parentId).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    const childSubjects = subjects.filter((s) => s.folderId === parentId).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    childFolders.forEach((f) => {
+      const ids = subjectIdsInFolder(f.id);
+      const label = document.createElement("label");
+      label.className = "multi-subject-picker-item";
+      label.style.paddingLeft = `${depth * 18}px`;
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.dataset.kind = "folder";
+      cb.value = f.id;
+      cb.checked = ids.length > 0 && ids.every((id) => selectedSubjectIds.has(id));
+      const span = document.createElement("span");
+      span.textContent = `📁 ${f.name}`;
+      label.appendChild(cb);
+      label.appendChild(span);
+      container.appendChild(label);
+      renderFolderTreeForPicker(container, f.id, depth + 1, selectedSubjectIds);
+    });
+    childSubjects.forEach((s) => {
+      const label = document.createElement("label");
+      label.className = "multi-subject-picker-item";
+      label.style.paddingLeft = `${depth * 18}px`;
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.dataset.kind = "subject";
+      cb.value = s.id;
+      cb.checked = selectedSubjectIds.has(s.id);
+      const span = document.createElement("span");
+      span.textContent = s.name;
+      label.appendChild(cb);
+      label.appendChild(span);
+      container.appendChild(label);
+    });
+  }
+
   function openMultiSubjectPicker() {
     const picker = el("multi-subject-picker");
     const list = el("multi-subject-picker-list");
     if (!picker || !list) return;
     const selected = new Set(loadMultiSelection());
     list.innerHTML = "";
-    const frag = document.createDocumentFragment();
-    subjects.forEach((s) => {
-      const label = document.createElement("label");
-      label.className = "multi-subject-picker-item";
-      const cb = document.createElement("input");
-      cb.type = "checkbox";
-      cb.value = s.id;
-      cb.checked = selected.has(s.id);
-      const span = document.createElement("span");
-      span.textContent = s.name;
-      label.appendChild(cb);
-      label.appendChild(span);
-      frag.appendChild(label);
-    });
-    list.appendChild(frag);
+    renderFolderTreeForPicker(list, ROOT_FOLDER_ID, 0, selected);
     picker.hidden = false;
   }
 
@@ -979,9 +1287,17 @@
   const multiPickerConfirmBtn = el("multi-subject-picker-confirm");
   if (multiPickerConfirmBtn) {
     multiPickerConfirmBtn.addEventListener("click", () => {
-      const checked = [...document.querySelectorAll("#multi-subject-picker-list input:checked")].map((cb) => cb.value);
+      const resultIds = new Set();
+      document.querySelectorAll("#multi-subject-picker-list input:checked").forEach((cb) => {
+        if (cb.dataset.kind === "folder") {
+          subjectIdsInFolder(cb.value).forEach((id) => resultIds.add(id));
+        } else {
+          resultIds.add(cb.value);
+        }
+      });
+      const checked = [...resultIds];
       if (checked.length === 0) {
-        alert("Choisis au moins une matière.");
+        alert("Choisis au moins une matière ou un dossier.");
         return;
       }
       saveMultiSelection(checked);
