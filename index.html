@@ -133,9 +133,10 @@
   </header>
 
   <nav class="tabs" role="tablist" aria-label="Navigation">
-    <button class="tab is-active" role="tab" aria-selected="true" data-view="review">Réviser</button>
-    <button class="tab" role="tab" aria-selected="false" data-view="manage">Gérer</button>
-    <button class="tab" role="tab" aria-selected="false" data-view="stats">Stats</button>
+    <button class="tab tab--icon is-active" role="tab" aria-selected="true" data-view="review" title="Réviser" aria-label="Réviser">🤓</button>
+    <button class="tab tab--icon" role="tab" aria-selected="false" data-view="manage" title="Gérer" aria-label="Gérer">🗃️</button>
+    <button class="tab tab--icon" role="tab" aria-selected="false" data-view="cards" title="Fiches" aria-label="Fiches">📄</button>
+    <button class="tab tab--icon" role="tab" aria-selected="false" data-view="stats" title="Stats" aria-label="Stats">📊</button>
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">⚙</button>
   </nav>
@@ -166,7 +167,7 @@
         <!-- empty state -->
         <div class="empty-state" id="empty-state" hidden>
           <p class="empty-title">Rien à réviser pour l'instant.</p>
-          <p class="empty-sub">Reviens plus tard, ou ajoute des fiches dans l'onglet « Gérer ».</p>
+          <p class="empty-sub">Reviens plus tard, ou ajoute des fiches dans l'onglet « Fiches ».</p>
         </div>
 
         <!-- card stack -->
@@ -239,11 +240,17 @@
           <button type="button" class="btn btn--ghost btn--small" id="move-picker-cancel">Annuler</button>
         </div>
       </div>
+    </section>
+
+    <!-- VUE FICHES -->
+    <section id="view-cards" class="view" aria-labelledby="tab-cards">
+      <div class="subject-bar" id="cards-subject-bar">
+        <select class="subject-select" id="cards-subject-select" aria-label="Matière pour les fiches"></select>
+      </div>
 
       <form class="card-form" id="card-form">
         <div class="card-form-header">
           <h2 class="section-title">Nouvelle fiche</h2>
-          <select class="subject-select subject-select--compact" id="manage-subject-select" aria-label="Matière pour la nouvelle fiche"></select>
         </div>
         <label class="field">
           <span>Question</span>
@@ -258,6 +265,11 @@
           <button type="button" class="btn btn--ghost" id="cancel-edit" hidden>Annuler</button>
         </div>
       </form>
+
+      <label class="field cards-search-field">
+        <span>Rechercher</span>
+        <input type="search" id="cards-search-input" placeholder="Mot-clé dans la question ou la réponse…" />
+      </label>
 
       <h2 class="section-title card-list-title">Fiches de cette matière (<span id="total-count">0</span>)</h2>
       <ul class="card-list" id="card-list"></ul>

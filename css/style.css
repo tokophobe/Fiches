@@ -891,6 +891,20 @@ textarea, input {
 
 .card-list-title { margin-bottom: 10px; }
 
+.cards-search-field {
+  margin-bottom: 18px;
+}
+
+.cards-search-field input {
+  font-family: var(--font-type);
+  font-size: 14px;
+  color: var(--paper);
+  background: rgba(247, 241, 225, 0.08);
+  border: 1px solid rgba(247, 241, 225, 0.2);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
 .field {
   display: flex;
   flex-direction: column;

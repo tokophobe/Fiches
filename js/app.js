@@ -297,7 +297,7 @@
   const importTargetSelect = el("import-target-select");
 
   const subjectSelectEl = el("subject-select");
-  const manageSubjectSelectEl = el("manage-subject-select");
+  const cardsSubjectSelectEl = el("cards-subject-select");
   const manageAddSubjectBtn = el("manage-add-subject-btn");
   const subjectListEl = el("subject-list");
   const subjectBarCountEl = el("subject-bar-count");
@@ -486,11 +486,11 @@
       `<option value="${ALL_SUBJECTS_ID}" ${currentSubjectId === ALL_SUBJECTS_ID ? "selected" : ""}>🔀 Toutes les matières</option>` +
       `<option value="${MULTI_SUBJECTS_ID}" ${currentSubjectId === MULTI_SUBJECTS_ID ? "selected" : ""}>☑️ Sélection de matières…</option>`;
     subjectSelectEl.innerHTML = opts + sentinelOpts;
-    // Second sélecteur, en en-tête du formulaire "Nouvelle fiche" sur la
-    // page Gérer (voir item 7) : matières réelles uniquement.
-    if (manageSubjectSelectEl) {
-      manageSubjectSelectEl.innerHTML = opts;
-      if (!isSentinelSubject(currentSubjectId)) manageSubjectSelectEl.value = currentSubjectId;
+    // Second sélecteur, en tête de la page Fiches (item 2) : matières
+    // réelles uniquement (pas de dossier ni de mode "toutes matières").
+    if (cardsSubjectSelectEl) {
+      cardsSubjectSelectEl.innerHTML = opts;
+      if (!isSentinelSubject(currentSubjectId)) cardsSubjectSelectEl.value = currentSubjectId;
     }
 
     // Le sélecteur d'import propose en plus la création d'une nouvelle matière à la volée.
@@ -1307,9 +1307,17 @@
     });
   }
 
-  if (manageSubjectSelectEl) {
-    manageSubjectSelectEl.addEventListener("change", () => {
-      switchSubject(manageSubjectSelectEl.value);
+  if (cardsSubjectSelectEl) {
+    cardsSubjectSelectEl.addEventListener("change", () => {
+      switchSubject(cardsSubjectSelectEl.value);
+    });
+  }
+
+  const cardsSearchInputEl = el("cards-search-input");
+  if (cardsSearchInputEl) {
+    cardsSearchInputEl.addEventListener("input", () => {
+      cardsSearchQuery = cardsSearchInputEl.value.trim();
+      renderManageList();
     });
   }
 
@@ -1666,7 +1674,7 @@
     if (!currentCard) return;
     editReturnToReview = true;
     enterEditMode(currentCard);
-    document.querySelector('.tab[data-view="manage"]').click();
+    document.querySelector('.tab[data-view="cards"]').click();
     inputQuestion.focus();
   });
 
@@ -1886,8 +1894,16 @@
     cancelEditBtn.hidden = true;
   }
 
+  let cardsSearchQuery = "";
+
   function renderManageList() {
-    const visible = subjectCards();
+    let visible = subjectCards();
+    if (cardsSearchQuery) {
+      const q = cardsSearchQuery.toLowerCase();
+      visible = visible.filter(
+        (c) => c.question.toLowerCase().includes(q) || c.answer.toLowerCase().includes(q)
+      );
+    }
     totalCountEl.textContent = String(visible.length);
     cardListEl.innerHTML = "";
     renderSubjectManageList();
@@ -1895,7 +1911,9 @@
     if (visible.length === 0) {
       const li = document.createElement("li");
       li.className = "list-empty";
-      li.textContent = "Aucune fiche pour l'instant. Ajoute la première ci-dessus.";
+      li.textContent = cardsSearchQuery
+        ? "Aucune fiche ne correspond à cette recherche."
+        : "Aucune fiche pour l'instant. Ajoute la première ci-dessus.";
       cardListEl.appendChild(li);
       return;
     }
