@@ -725,8 +725,15 @@ textarea, input {
   margin: 0;
   overflow-y: auto;
   flex: 1;
-  white-space: pre-line;
+  /* Le contenu vient désormais de contenteditable (item 13), qui porte déjà
+     ses propres <div>/<br> pour les retours à la ligne — laisser
+     "pre-line" aurait doublé les sauts de ligne des vieilles fiches en
+     texte brut (voir toDisplayHtml, qui convertit leurs "\n" en <br>). */
+  white-space: normal;
 }
+
+.card-text b, .card-text strong { font-weight: 700; }
+.card-text i, .card-text em { font-style: italic; }
 
 .tap-hint {
   font-family: var(--font-mono);
@@ -984,6 +991,86 @@ textarea, input {
   resize: vertical;
   text-transform: none;
   letter-spacing: normal;
+}
+
+/* Zone de texte éditable riche (item 13), remplace les <textarea> pour la
+   question/réponse — même habillage visuel qu'un textarea classique. */
+.rich-editor {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--paper-2);
+  border: 1px solid rgba(35, 48, 42, 0.15);
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-transform: none;
+  letter-spacing: normal;
+  min-height: 3.6em;
+  line-height: 1.5;
+  overflow-y: auto;
+}
+
+#input-answer.rich-editor { min-height: 6.5em; }
+
+.rich-editor:empty:before {
+  content: attr(data-placeholder);
+  color: rgba(35, 48, 42, 0.4);
+}
+
+.rich-editor:focus {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* Barre d'outils de mise en forme (item 13) : agit sur le champ (question
+   ou réponse) actuellement au focus. `onmousedown` + preventDefault côté JS
+   empêche de perdre la sélection de texte au clic sur un bouton. */
+.rich-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  background: var(--paper-2);
+  border-radius: 8px;
+  padding: 6px 8px;
+  margin-bottom: 10px;
+}
+
+.rt-btn {
+  min-width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid rgba(35, 48, 42, 0.15);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 13px;
+  font-family: var(--font-body);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+}
+
+.rt-btn:hover, .rt-btn:active { background: rgba(35, 48, 42, 0.1); }
+
+.rt-btn--highlight { font-size: 14px; }
+
+.rt-color-group {
+  display: inline-flex;
+  gap: 4px;
+  padding: 0 4px;
+  border-left: 1px solid rgba(35, 48, 42, 0.15);
+  border-right: 1px solid rgba(35, 48, 42, 0.15);
+  margin: 0 2px;
+}
+
+.rt-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--paper);
+  box-shadow: 0 0 0 1px rgba(35, 48, 42, 0.25);
+  padding: 0;
 }
 
 .field select {

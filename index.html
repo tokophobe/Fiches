@@ -271,13 +271,30 @@
         <div class="card-form-header">
           <h2 class="section-title">Nouvelle fiche</h2>
         </div>
+
+        <div class="rich-toolbar" id="rich-toolbar">
+          <button type="button" class="rt-btn" data-cmd="bold" title="Gras"><b>G</b></button>
+          <button type="button" class="rt-btn" data-cmd="italic" title="Italique"><i>I</i></button>
+          <button type="button" class="rt-btn" data-cmd="strikeThrough" title="Barré"><s>B</s></button>
+          <button type="button" class="rt-btn" data-cmd="underline" title="Souligné"><u>S</u></button>
+          <button type="button" class="rt-btn rt-btn--highlight" data-highlight="#f5e08a" title="Surligner">🖍️</button>
+          <span class="rt-color-group" role="group" aria-label="Couleur du texte">
+            <button type="button" class="rt-color" data-color="#23302a" style="background:#23302a" title="Texte foncé"></button>
+            <button type="button" class="rt-color" data-color="#b6604a" style="background:#b6604a" title="Texte terracotta"></button>
+            <button type="button" class="rt-color" data-color="#cf9a4d" style="background:#cf9a4d" title="Texte ambre"></button>
+            <button type="button" class="rt-color" data-color="#6f8b5c" style="background:#6f8b5c" title="Texte sauge"></button>
+            <button type="button" class="rt-color" data-color="#3e7c6b" style="background:#3e7c6b" title="Texte bleu-vert"></button>
+          </span>
+          <button type="button" class="rt-btn" id="rt-clear-btn" title="Effacer la mise en forme">⌫</button>
+        </div>
+
         <label class="field">
           <span>Question</span>
-          <textarea id="input-question" rows="3" required placeholder="Ex. Capitale de l'Islande ?"></textarea>
+          <div class="rich-editor" id="input-question" contenteditable="true" data-placeholder="Ex. Capitale de l'Islande ?" role="textbox" aria-multiline="true"></div>
         </label>
         <label class="field">
           <span>Réponse</span>
-          <textarea id="input-answer" rows="6" required placeholder="Ex. Reykjavik"></textarea>
+          <div class="rich-editor" id="input-answer" contenteditable="true" data-placeholder="Ex. Reykjavik" role="textbox" aria-multiline="true"></div>
         </label>
         <div class="form-actions">
           <button type="submit" class="btn btn--primary" id="submit-btn">Ajouter à la pile</button>

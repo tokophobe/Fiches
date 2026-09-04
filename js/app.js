@@ -64,6 +64,64 @@
   const cardListEl = el("card-list");
   const totalCountEl = el("total-count");
 
+  /* ---------------------------------------------------------
+     Barre d'outils de mise en forme riche (item 13) : agit sur le champ
+     (question ou réponse) qui avait le focus juste avant le clic sur un
+     bouton — `mousedown`+preventDefault empêche le clic de faire perdre
+     cette sélection avant que la commande ne s'applique.
+  --------------------------------------------------------- */
+  let lastFocusedEditor = null;
+  [inputQuestion, inputAnswer].forEach((editor) => {
+    if (!editor) return;
+    editor.addEventListener("focus", () => { lastFocusedEditor = editor; });
+  });
+
+  function focusLastEditor() {
+    const target = lastFocusedEditor || inputQuestion;
+    if (target) target.focus();
+    return target;
+  }
+
+  document.querySelectorAll(".rt-btn[data-cmd]").forEach((btn) => {
+    btn.addEventListener("mousedown", (e) => e.preventDefault());
+    btn.addEventListener("click", () => {
+      focusLastEditor();
+      document.execCommand(btn.dataset.cmd, false, null);
+    });
+  });
+
+  const rtHighlightBtn = document.querySelector(".rt-btn--highlight");
+  if (rtHighlightBtn) {
+    rtHighlightBtn.addEventListener("mousedown", (e) => e.preventDefault());
+    rtHighlightBtn.addEventListener("click", () => {
+      focusLastEditor();
+      const color = rtHighlightBtn.dataset.highlight;
+      // "hiliteColor" est la commande historique (Firefox) ; "backColor"
+      // est celle que Chrome/Safari reconnaissent pour le même effet sur
+      // une sélection de texte (pas tout le champ).
+      if (!document.execCommand("hiliteColor", false, color)) {
+        document.execCommand("backColor", false, color);
+      }
+    });
+  }
+
+  document.querySelectorAll(".rt-color[data-color]").forEach((btn) => {
+    btn.addEventListener("mousedown", (e) => e.preventDefault());
+    btn.addEventListener("click", () => {
+      focusLastEditor();
+      document.execCommand("foreColor", false, btn.dataset.color);
+    });
+  });
+
+  const rtClearBtn = el("rt-clear-btn");
+  if (rtClearBtn) {
+    rtClearBtn.addEventListener("mousedown", (e) => e.preventDefault());
+    rtClearBtn.addEventListener("click", () => {
+      focusLastEditor();
+      document.execCommand("removeFormat", false, null);
+    });
+  }
+
   const statTotal = el("stat-total");
   const statReviewedToday = el("stat-reviewed-today");
   const statsSubjectSelectEl = el("stats-subject-select");
@@ -505,9 +563,12 @@
    *  une matière différente avec son propre mode. */
   function renderQuestionText(card) {
     if (!card) return;
-    questionTextEl.textContent = isSentinelSubject(currentSubjectId)
-      ? `${subjectName(card.subject)} :\n\n${card.question}`
-      : card.question;
+    // Le préfixe "Nom de la matière :" reste toujours en texte échappé (pas
+    // question qu'un nom de matière contenant "<" casse l'affichage) ; la
+    // question elle-même passe par toDisplayHtml (item 13 : contenu riche).
+    questionTextEl.innerHTML = isSentinelSubject(currentSubjectId)
+      ? `${escapeHtml(subjectName(card.subject))} :<br><br>${toDisplayHtml(card.question)}`
+      : toDisplayHtml(card.question);
     renderSubjectAlgoBadge(card.subject);
     const constructionBtn = el("construction-current-btn");
     if (constructionBtn) {
@@ -626,6 +687,33 @@
     const div = document.createElement("div");
     div.textContent = str;
     return div.innerHTML;
+  }
+
+  /** Mise en forme riche (item 13) : question/réponse sont désormais du
+   *  HTML (produit par les champs contenteditable), pas du texte brut.
+   *  `toDisplayHtml` protège la compatibilité avec les fiches créées AVANT
+   *  ce changement — leur contenu, du texte brut, pourrait contenir des
+   *  caractères spéciaux HTML ("<", "&"...) qui casseraient l'affichage
+   *  s'ils étaient interprétés tels quels. Détecte si le contenu ressemble
+   *  déjà à du HTML volontaire (balises reconnues) ; sinon l'échappe et
+   *  convertit ses retours à la ligne en <br>. */
+  function looksLikeHtml(str) {
+    return /<\/?(b|i|u|s|strong|em|span|br|div|mark)\b/i.test(str || "");
+  }
+  function toDisplayHtml(raw) {
+    if (!raw) return "";
+    if (looksLikeHtml(raw)) return raw;
+    return escapeHtml(raw).replace(/\n/g, "<br>");
+  }
+  /** Texte brut d'un contenu HTML — pour la recherche par mot-clé et
+   *  l'export en clair, jamais pour l'affichage. */
+  function stripHtml(html) {
+    const div = document.createElement("div");
+    div.innerHTML = html || "";
+    return div.textContent || "";
+  }
+  function isRichEditorEmpty(el) {
+    return !el || stripHtml(el.innerHTML).trim() === "";
   }
 
   /** Dossier actuellement "ouvert" dans la page Gérer (navigation, distincte
@@ -1699,7 +1787,7 @@
       currentCard = updated;
       if (el("view-review").classList.contains("is-active")) {
         renderQuestionText(currentCard);
-        answerTextEl.textContent = currentCard.answer;
+        answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
         updateRatingPreviews();
       }
     }
@@ -1850,7 +1938,7 @@
     }
     currentCard = fresh;
     renderQuestionText(currentCard);
-    answerTextEl.textContent = currentCard.answer;
+    answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
     updateRatingPreviews();
   }
 
@@ -1915,7 +2003,7 @@
       // question comme côté réponse) : on ne les cache plus au retournement.
       ratingRowEl.hidden = false;
       renderQuestionText(currentCard);
-      answerTextEl.textContent = currentCard.answer;
+      answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
 
       const doneToday = sessionTotalDue - reviewQueue.length;
       reviewProgressEl.textContent = `${doneToday}/${sessionTotalDue} fiches revues aujourd'hui`;
@@ -1955,7 +2043,7 @@
     if (hibernateCurrentBtn) hibernateCurrentBtn.hidden = false;
     ratingRowEl.hidden = false;
     renderQuestionText(currentCard);
-    answerTextEl.textContent = currentCard.answer;
+    answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
     reviewProgressEl.textContent = "Fiches du jour terminées — révision libre";
     if (enteringBonusMode) {
       showToast("🔁 Fiches du jour terminées — passage en révision libre");
@@ -2176,14 +2264,27 @@
     });
   }
 
+  /** cardForm.reset() natif ne touche pas les champs contenteditable (item
+   *  13) — seuls les vrais éléments de formulaire (input/textarea/select).
+   *  On les vide donc à la main partout où l'ancien reset() était appelé. */
+  function resetCardForm() {
+    cardForm.reset();
+    if (inputQuestion) inputQuestion.innerHTML = "";
+    if (inputAnswer) inputAnswer.innerHTML = "";
+  }
+
   /* ---------------------------------------------------------
      Vue Gérer : formulaire + liste
   --------------------------------------------------------- */
   cardForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const question = inputQuestion.value.trim();
-    const answer = inputAnswer.value.trim();
-    if (!question || !answer) return;
+    // Les champs contenteditable ne supportent pas l'attribut HTML
+    // `required` natif : on vérifie donc à la main qu'ils ne sont pas vides
+    // (au sens texte, une fiche entièrement blanche ou juste un <br> ne
+    // doit pas compter comme "remplie").
+    if (isRichEditorEmpty(inputQuestion) || isRichEditorEmpty(inputAnswer)) return;
+    const question = inputQuestion.innerHTML.trim();
+    const answer = inputAnswer.innerHTML.trim();
 
     if (editingId) {
       const idx = cards.findIndex((c) => c.id === editingId);
@@ -2200,7 +2301,7 @@
       cards.push(card);
     }
 
-    cardForm.reset();
+    resetCardForm();
     renderAll();
 
     if (editReturnToReview) {
@@ -2214,15 +2315,15 @@
   cancelEditBtn.addEventListener("click", () => {
     editReturnToReview = false;
     exitEditMode();
-    cardForm.reset();
+    resetCardForm();
   });
 
   const deleteEditingCardBtn = el("delete-editing-card");
 
   function enterEditMode(card) {
     editingId = card.id;
-    inputQuestion.value = card.question;
-    inputAnswer.value = card.answer;
+    inputQuestion.innerHTML = toDisplayHtml(card.question);
+    inputAnswer.innerHTML = toDisplayHtml(card.answer);
     submitBtn.textContent = "Enregistrer les modifications";
     cancelEditBtn.hidden = false;
     if (deleteEditingCardBtn) deleteEditingCardBtn.hidden = false;
@@ -2243,7 +2344,7 @@
       const id = editingId;
       editReturnToReview = false;
       exitEditMode();
-      cardForm.reset();
+      resetCardForm();
       await deleteCard(id, true);
     });
   }
@@ -2258,8 +2359,11 @@
     }
     if (cardsSearchQuery) {
       const q = cardsSearchQuery.toLowerCase();
+      // Recherche sur le texte brut (item 13 : question/réponse sont
+      // maintenant du HTML) — sinon une mise en forme au milieu du mot
+      // recherché (ex. "Pa<b>ri</b>s") empêcherait de le retrouver.
       visible = visible.filter(
-        (c) => c.question.toLowerCase().includes(q) || c.answer.toLowerCase().includes(q)
+        (c) => stripHtml(c.question).toLowerCase().includes(q) || stripHtml(c.answer).toLowerCase().includes(q)
       );
     }
     totalCountEl.textContent = String(visible.length);
@@ -2301,11 +2405,11 @@
 
       const q = document.createElement("p");
       q.className = "card-row-q";
-      q.textContent = (card.underConstruction ? "🚧 " : "") + card.question;
+      q.innerHTML = (card.underConstruction ? "🚧 " : "") + toDisplayHtml(card.question);
 
       const a = document.createElement("p");
       a.className = "card-row-a";
-      a.textContent = card.answer;
+      a.innerHTML = toDisplayHtml(card.answer);
 
       const meta = document.createElement("p");
       meta.className = "card-row-meta";
