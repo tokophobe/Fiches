@@ -82,25 +82,26 @@ textarea, input {
   gap: 8px;
 }
 
-/* Le fanion ✎ est présenté comme une icône d'appli (fond "squircle" façon
-   icône d'écran d'accueil). */
+/* Mascotte (item 10) : icône SVG originale (petit robot volant, cerveau
+   griffonné derrière un hublot) plutôt que le crayon ✎ — présentée en
+   grand format "icône d'appli" maintenant que le libellé texte à côté a
+   été retiré pour lui laisser toute la place. */
 .brand-mark-wrap {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   background: linear-gradient(155deg, #2f4a3f, #142320);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.07);
 }
 
 .brand-mark {
-  color: var(--paper);
-  font-size: 16px;
-  transform: rotate(-8deg);
-  display: inline-block;
+  width: 34px;
+  height: 34px;
+  display: block;
 }
 
 .brand h1 {

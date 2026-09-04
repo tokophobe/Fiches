@@ -117,9 +117,26 @@
   <header class="topbar">
     <div class="brand">
       <span class="brand-mark-wrap">
-        <span class="brand-mark" aria-hidden="true">✎</span>
+        <svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M 30 38 C 14 32, 6 40, 10 48 C 16 46, 26 44, 34 42 Z" fill="#6f8b5c"/>
+          <path d="M 70 38 C 86 32, 94 40, 90 48 C 84 46, 74 44, 66 42 Z" fill="#6f8b5c"/>
+          <line x1="50" y1="10" x2="50" y2="20" stroke="#cf9a4d" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="50" cy="8" r="5" fill="#cf9a4d"/>
+          <path d="M 24 62 C 24 34, 76 34, 76 62 C 76 78, 64 84, 50 84 C 36 84, 24 78, 24 62 Z"
+                fill="#f7f1e1" stroke="#141d19" stroke-width="2.5"/>
+          <ellipse cx="50" cy="56" rx="21" ry="19" fill="#141d19"/>
+          <ellipse cx="50" cy="56" rx="17" ry="15.5" fill="#eee5cf"/>
+          <path d="M 41 52 C 41 47, 47 45, 50 48 C 53 45, 59 47, 59 52 C 61 53, 61 58, 58 59
+                   C 59 63, 55 66, 51 64 C 47 66, 43 63, 44 59 C 41 58, 41 53, 41 52 Z"
+                fill="none" stroke="#b6604a" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="44.5" cy="57" r="2.8" fill="#141d19"/>
+          <circle cx="55.5" cy="57" r="2.8" fill="#141d19"/>
+          <path d="M 45 65 C 47.5 68, 52.5 68, 55 65" fill="none" stroke="#141d19" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="27" cy="60" r="3.5" fill="#cf9a4d"/>
+          <circle cx="73" cy="60" r="3.5" fill="#cf9a4d"/>
+        </svg>
       </span>
-      <h1>Fiches</h1>
+      <h1 class="sr-only">Fiches</h1>
     </div>
     <div class="header-right">
       <button class="sync-status" id="sync-status" type="button" title="État de la synchronisation">
