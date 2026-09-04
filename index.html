@@ -505,60 +505,85 @@
         </div>
       </div>
 
-      <h3 class="settings-block-title">Échéances successives (aperçu)</h3>
+      <h3 class="settings-block-title settings-block-title--on-dark">Courbes du rythme d'apprentissage</h3>
+      <p class="field-hint settings-block-hint">
+        Le graphique ci-dessous montre l'évolution du délai d'interrogation
+        d'une fiche dans l'hypothèse où on la note toujours de la même
+        manière (Encore, Difficile, Bien ou Facile) :
+      </p>
       <div id="algo-chart-wrap"></div>
 
-      <button type="button" class="btn btn--ghost algo-advanced-toggle" id="algo-advanced-toggle">
+      <button type="button" class="btn algo-advanced-toggle" id="algo-advanced-toggle">
         Paramétrages avancés ▾
       </button>
 
       <div id="algo-advanced-panel" hidden>
         <p class="field-hint settings-block-hint">
           Au début, l'échéance d'une fiche est de 1 jour. À chaque réponse, la
-          nouvelle échéance est multipliée par les coefficients suivants :
+          nouvelle échéance est multipliée par le coefficient réglé ci-dessous :
         </p>
-        <div class="algo-grid algo-grid--4">
-          <label class="field settings-bonus-field">
-            <span>Encore</span>
-            <input type="number" id="algo-ka" min="1" max="10" step="0.1" inputmode="decimal" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>Difficile</span>
-            <input type="number" id="algo-kh" min="1" max="10" step="0.1" inputmode="decimal" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>Bien</span>
-            <input type="number" id="algo-kg" min="1" max="10" step="0.1" inputmode="decimal" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>Facile</span>
-            <input type="number" id="algo-ke" min="1" max="10" step="0.1" inputmode="decimal" />
-          </label>
+        <div class="algo-slider-field algo-slider-field--again">
+          <div class="algo-slider-field-head">
+            <span class="algo-slider-field-label">Encore</span>
+            <span class="algo-slider-field-value" id="algo-ka-value">× 1</span>
+          </div>
+          <input type="range" id="algo-ka" min="0" max="11" step="1" />
+        </div>
+        <div class="algo-slider-field algo-slider-field--hard">
+          <div class="algo-slider-field-head">
+            <span class="algo-slider-field-label">Difficile</span>
+            <span class="algo-slider-field-value" id="algo-kh-value">× 1</span>
+          </div>
+          <input type="range" id="algo-kh" min="0" max="11" step="1" />
+        </div>
+        <div class="algo-slider-field algo-slider-field--good">
+          <div class="algo-slider-field-head">
+            <span class="algo-slider-field-label">Bien</span>
+            <span class="algo-slider-field-value" id="algo-kg-value">× 1</span>
+          </div>
+          <input type="range" id="algo-kg" min="0" max="11" step="1" />
+        </div>
+        <div class="algo-slider-field algo-slider-field--easy">
+          <div class="algo-slider-field-head">
+            <span class="algo-slider-field-label">Facile</span>
+            <span class="algo-slider-field-value" id="algo-ke-value">× 1</span>
+          </div>
+          <input type="range" id="algo-ke" min="0" max="11" step="1" />
         </div>
 
         <p class="field-hint settings-block-hint">
-          L'échéance est plafonnée par les valeurs en jours suivantes :
+          L'échéance est plafonnée par la valeur en jours réglée ci-dessous :
         </p>
-        <div class="algo-grid algo-grid--4">
-          <label class="field settings-bonus-field">
-            <span>Encore</span>
-            <input type="number" id="algo-ma" min="1" max="365" step="1" inputmode="numeric" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>Difficile</span>
-            <input type="number" id="algo-mh" min="1" max="365" step="1" inputmode="numeric" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>Bien</span>
-            <input type="number" id="algo-mg" min="1" max="365" step="1" inputmode="numeric" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>Facile</span>
-            <input type="number" id="algo-me" min="1" max="365" step="1" inputmode="numeric" />
-          </label>
+        <div class="algo-slider-field algo-slider-field--again">
+          <div class="algo-slider-field-head">
+            <span class="algo-slider-field-label">Encore</span>
+            <span class="algo-slider-field-value" id="algo-ma-value">&lt; 1 j</span>
+          </div>
+          <input type="range" id="algo-ma" min="0" max="11" step="1" />
+        </div>
+        <div class="algo-slider-field algo-slider-field--hard">
+          <div class="algo-slider-field-head">
+            <span class="algo-slider-field-label">Difficile</span>
+            <span class="algo-slider-field-value" id="algo-mh-value">&lt; 1 j</span>
+          </div>
+          <input type="range" id="algo-mh" min="0" max="11" step="1" />
+        </div>
+        <div class="algo-slider-field algo-slider-field--good">
+          <div class="algo-slider-field-head">
+            <span class="algo-slider-field-label">Bien</span>
+            <span class="algo-slider-field-value" id="algo-mg-value">&lt; 1 j</span>
+          </div>
+          <input type="range" id="algo-mg" min="0" max="11" step="1" />
+        </div>
+        <div class="algo-slider-field algo-slider-field--easy">
+          <div class="algo-slider-field-head">
+            <span class="algo-slider-field-label">Facile</span>
+            <span class="algo-slider-field-value" id="algo-me-value">&lt; 1 j</span>
+          </div>
+          <input type="range" id="algo-me" min="0" max="11" step="1" />
         </div>
 
-        <button type="button" class="btn btn--ghost" id="algo-reset-btn">
+        <button type="button" class="btn algo-reset-btn-visible" id="algo-reset-btn">
           Revenir aux réglages d'origine
         </button>
       </div>
@@ -571,7 +596,7 @@
 
       <div class="algo-custom-picker-list" id="assign-mode-list"></div>
 
-      <h3 class="settings-block-title">Échéances successives (aperçu)</h3>
+      <h3 class="settings-block-title settings-block-title--on-dark">Échéances successives (aperçu)</h3>
       <div id="assign-chart-wrap"></div>
 
       <div class="card-form algo-review-old-block" id="assign-review-old-block">

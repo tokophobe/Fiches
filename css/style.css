@@ -1323,6 +1323,15 @@ textarea, input {
   margin: 10px 0 14px;
 }
 
+/* Variante de .settings-block-title pour un titre posé directement sur le
+   fond sombre de la page (pas dans une carte .card-form claire) — sans
+   cette variante, le texte héritait de la couleur sombre pensée pour les
+   cartes claires et devenait invisible (même bug que .import-target-label,
+   corrigé précédemment). */
+.settings-block-title--on-dark {
+  color: var(--paper);
+}
+
 .algo-mode-label {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -1436,16 +1445,106 @@ textarea, input {
   background: rgba(182, 96, 74, 0.12);
 }
 
-/* Bouton "Paramétrages avancés" (item 4) : masque/affiche les coefficients,
-   les maximums, et "Revoir les vieilles fiches". */
+/* Boutons "Paramétrages avancés" / "Revenir aux réglages d'origine" (item 9) :
+   avant de simples liens fantômes, peu perçus comme cliquables — passés en
+   boutons pleinement dessinés (fond + bordure nette). */
 .algo-advanced-toggle {
   width: 100%;
   margin: 4px 0 18px;
+  background: rgba(247, 241, 225, 0.1);
+  border: 1.5px solid rgba(247, 241, 225, 0.35);
+  color: var(--paper);
+  font-weight: 600;
 }
 
-#algo-reset-btn {
-  margin-top: 4px;
+.algo-advanced-toggle:hover { background: rgba(247, 241, 225, 0.18); }
+
+.algo-reset-btn-visible {
+  margin-top: 10px;
+  width: 100%;
+  background: rgba(247, 241, 225, 0.1);
+  border: 1.5px solid rgba(247, 241, 225, 0.35);
+  color: var(--paper);
+  font-weight: 600;
 }
+
+.algo-reset-btn-visible:hover { background: rgba(247, 241, 225, 0.18); }
+
+/* Curseurs à valeurs discrètes des coefficients/maximums (item 9) : mêmes
+   codes couleur que les boutons d'évaluation Encore/Difficile/Bien/Facile,
+   pour qu'on associe naturellement chaque réglage à sa note. */
+.algo-slider-field {
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border: 1.5px solid transparent;
+}
+
+.algo-slider-field-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.algo-slider-field-label {
+  font-family: var(--font-type);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.algo-slider-field-value {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.algo-slider-field input[type="range"] {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(247, 241, 225, 0.25);
+}
+
+.algo-slider-field input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--paper);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.35);
+  cursor: pointer;
+  background: var(--slider-color, var(--amber));
+}
+
+.algo-slider-field input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--paper);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.35);
+  cursor: pointer;
+  background: var(--slider-color, var(--amber));
+}
+
+.algo-slider-field--again { background: rgba(182, 96, 74, 0.14); border-color: rgba(182, 96, 74, 0.4); --slider-color: var(--terracotta); }
+.algo-slider-field--again .algo-slider-field-label,
+.algo-slider-field--again .algo-slider-field-value { color: var(--terracotta); }
+
+.algo-slider-field--hard { background: rgba(207, 154, 77, 0.14); border-color: rgba(207, 154, 77, 0.4); --slider-color: var(--amber); }
+.algo-slider-field--hard .algo-slider-field-label,
+.algo-slider-field--hard .algo-slider-field-value { color: var(--amber); }
+
+.algo-slider-field--good { background: rgba(111, 139, 92, 0.14); border-color: rgba(111, 139, 92, 0.4); --slider-color: var(--sage); }
+.algo-slider-field--good .algo-slider-field-label,
+.algo-slider-field--good .algo-slider-field-value { color: var(--sage); }
+
+.algo-slider-field--easy { background: rgba(62, 124, 107, 0.18); border-color: rgba(62, 124, 107, 0.45); --slider-color: var(--teal); }
+.algo-slider-field--easy .algo-slider-field-label,
+.algo-slider-field--easy .algo-slider-field-value { color: var(--teal); }
 
 /* Graphique d'aperçu des échéances (item 6). */
 #algo-chart-wrap, #assign-chart-wrap {
@@ -1454,6 +1553,24 @@ textarea, input {
   padding: 10px 8px 4px;
   margin-bottom: 8px;
 }
+
+/* Intitulés des axes (item 9), en HTML plutôt qu'en SVG pivoté pour rester
+   simple — l'ordonnée au-dessus à gauche, l'abscisse en dessous, centrée. */
+.algo-chart-axis-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+  padding: 0 4px 6px;
+}
+
+.algo-chart-axis-y, .algo-chart-axis-x {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #9aa89e;
+}
+
+.algo-chart-axis-x { text-align: center; }
 
 /* Sous-liste des modes personnalisés (page Modes d'apprentissage) et liste
    de choix d'affectation (page Gérer) — même look que les autres pickers. */

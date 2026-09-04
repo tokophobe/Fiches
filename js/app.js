@@ -160,14 +160,26 @@
   const ALGO_MODE_ORDER = ["cool", "normal", "renforce", "custom"];
   const ALGO_MODE_SHORT_LABELS = { cool: "Cool", normal: "Normal", renforce: "Renforcé", custom: "Personnalisé" };
   const ALGO_KEYS8 = ["Ka", "Kh", "Kg", "Ke", "Ma", "Mh", "Mg", "Me"];
+  // Valeurs discrètes disponibles pour les curseurs (item 9) — remplace les
+  // anciens champs numériques libres, plus pratiques à régler au doigt.
+  const ALGO_K_VALUES = [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.8, 2.1, 2.5, 3, 3.5];
+  const ALGO_M_VALUES = [1, 2, 3, 4, 6, 10, 15, 30, 60, 90, 180, 300];
+  function snapToNearest(value, list) {
+    let best = list[0], bestDist = Infinity;
+    for (const v of list) {
+      const d = Math.abs(v - value);
+      if (d < bestDist) { bestDist = d; best = v; }
+    }
+    return best;
+  }
 
   function clampAlgoK(v, fallback) {
-    const n = Math.round(Number(v) * 10) / 10;
-    return Number.isFinite(n) ? Math.min(10, Math.max(1, n)) : fallback;
+    const n = Number(v);
+    return snapToNearest(Number.isFinite(n) ? n : Number(fallback) || 1, ALGO_K_VALUES);
   }
   function clampAlgoM(v, fallback) {
-    const n = Math.round(Number(v));
-    return Number.isFinite(n) ? Math.min(365, Math.max(1, n)) : fallback;
+    const n = Number(v);
+    return snapToNearest(Number.isFinite(n) ? n : Number(fallback) || 1, ALGO_M_VALUES);
   }
   function clampModeProfile(raw, fallbackId) {
     const fb = BUILTIN_MODE_DEFAULTS[fallbackId] || BUILTIN_MODE_DEFAULTS.normal;
@@ -966,18 +978,30 @@
     });
   }
 
+  /** Place la valeur d'un mode sur son curseur discret (item 9) et met à
+   *  jour le texte affiché (préfixe × pour les coefficients, &lt; jours
+   *  pour les maximums). */
+  function setSliderField(id, value, list, prefix, suffix) {
+    const input = el(id);
+    const valueEl = el(`${id}-value`);
+    if (!input) return;
+    const idx = list.indexOf(value);
+    input.value = String(idx === -1 ? 0 : idx);
+    if (valueEl) valueEl.textContent = `${prefix} ${value}${suffix}`;
+  }
+
   function loadModeFormIntoInputs(modeId) {
     const modes = loadLearningModes();
     const m = modes[modeId] || modes.normal;
     algoEditingModeId = m.id;
-    el("algo-ka").value = m.Ka;
-    el("algo-kh").value = m.Kh;
-    el("algo-kg").value = m.Kg;
-    el("algo-ke").value = m.Ke;
-    el("algo-ma").value = m.Ma;
-    el("algo-mh").value = m.Mh;
-    el("algo-mg").value = m.Mg;
-    el("algo-me").value = m.Me;
+    setSliderField("algo-ka", m.Ka, ALGO_K_VALUES, "×", "");
+    setSliderField("algo-kh", m.Kh, ALGO_K_VALUES, "×", "");
+    setSliderField("algo-kg", m.Kg, ALGO_K_VALUES, "×", "");
+    setSliderField("algo-ke", m.Ke, ALGO_K_VALUES, "×", "");
+    setSliderField("algo-ma", m.Ma, ALGO_M_VALUES, "<", " j");
+    setSliderField("algo-mh", m.Mh, ALGO_M_VALUES, "<", " j");
+    setSliderField("algo-mg", m.Mg, ALGO_M_VALUES, "<", " j");
+    setSliderField("algo-me", m.Me, ALGO_M_VALUES, "<", " j");
     const idx = algoSliderIdxForMode(m.id);
     const slider = el("algo-mode-slider");
     if (slider) slider.value = String(idx);
@@ -1005,17 +1029,34 @@
     }
     return out;
   }
-  function buildPreviewChartHtml(settings) {
-    const N = 8;
-    const ratings = ["again", "hard", "good", "easy"];
-    const seriesByRating = {};
+  /** Étend le nombre de points du graphique (item 9) jusqu'à ce que les
+   *  courbes affichées atteignent leur plafond (deux valeurs arrondies
+   *  identiques de suite), plutôt qu'un nombre de points fixe — plafonné à
+   *  40 pour éviter un graphique interminable si un maximum est très élevé
+   *  par rapport à son coefficient. */
+  function computeNeededSteps(settings, ratings) {
+    const CAP = 40;
+    let needed = 4;
     ratings.forEach((r) => {
-      seriesByRating[r] = computeAlgoPreviewSeries(settings, r, N);
+      let raw = 1;
+      let prevRounded = null;
+      for (let n = 1; n <= CAP; n++) {
+        raw = computeNextDeadlineRaw(raw, r, settings);
+        const rounded = Math.max(1, Math.round(raw));
+        if (rounded === prevRounded) {
+          needed = Math.max(needed, n);
+          break;
+        }
+        prevRounded = rounded;
+        if (n === CAP) needed = Math.max(needed, CAP);
+      }
     });
-    const visibleRatings = ratings.filter((r) => algoChartVisible[r]);
-    let maxVal = 1;
-    visibleRatings.forEach((r) => { maxVal = Math.max(maxVal, ...seriesByRating[r]); });
+    return Math.max(4, Math.min(CAP, needed));
+  }
 
+  function buildPreviewChartHtml(settings) {
+    const ratings = ["again", "hard", "good", "easy"];
+    const visibleRatings = ratings.filter((r) => algoChartVisible[r]);
     const legend = ratings
       .map(
         (r) => `<label class="algo-chart-legend-item">
@@ -1029,12 +1070,23 @@
       return `<div class="algo-chart-legend">${legend}</div><p class="field-hint algo-chart-empty">Coche au moins une courbe pour l'afficher.</p>`;
     }
 
+    const N = computeNeededSteps(settings, visibleRatings);
+    const seriesByRating = {};
+    ratings.forEach((r) => {
+      seriesByRating[r] = computeAlgoPreviewSeries(settings, r, N);
+    });
+    let maxVal = 1;
+    visibleRatings.forEach((r) => { maxVal = Math.max(maxVal, ...seriesByRating[r]); });
+
     const W = 320, H = 260, padL = 30, padB = 22, padT = 14, padR = 12;
     const plotW = W - padL - padR;
     const plotH = H - padT - padB;
     const xPos = (i) => padL + (i / (N - 1)) * plotW;
     const yMax = Math.max(10, Math.ceil((maxVal * 1.08) / 10) * 10);
     const yPos = (v) => padT + (1 - v / yMax) * plotH;
+    // Au-delà d'une quinzaine de points, on n'étiquette plus qu'un point sur
+    // deux (ou plus) en abscisse pour ne pas les faire se chevaucher.
+    const xLabelStep = N <= 15 ? 1 : Math.ceil(N / 15);
 
     let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--desk);border-radius:8px;">`;
     svg += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
@@ -1052,17 +1104,26 @@
       const pts = s.map((v, i) => `${xPos(i)},${yPos(v)}`).join(" ");
       svg += `<polyline points="${pts}" fill="none" stroke="${ALGO_CHART_COLORS[r]}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
       s.forEach((v, i) => {
+        // Sur les longs graphiques, on n'étiquette la valeur qu'aux mêmes
+        // points que l'axe, plus le tout dernier (le plafond atteint).
+        if (i % xLabelStep !== 0 && i !== s.length - 1) return;
         const x = xPos(i), y = yPos(v);
         svg += `<circle cx="${x}" cy="${y}" r="2.4" fill="${ALGO_CHART_COLORS[r]}"/>`;
         svg += `<text x="${x + labelDx[r]}" y="${y - 5}" font-size="7.5" fill="${ALGO_CHART_COLORS[r]}" text-anchor="middle" font-family="var(--font-mono)">${v}</text>`;
       });
     });
-    for (let i = 0; i < N; i++) {
+    for (let i = 0; i < N; i += xLabelStep) {
       svg += `<text x="${xPos(i)}" y="${H - padB + 12}" font-size="8" fill="#9aa89e" text-anchor="middle">${i + 1}</text>`;
     }
     svg += `</svg>`;
 
-    return `<div class="algo-chart-legend">${legend}</div>${svg}`;
+    const axisLabels =
+      `<div class="algo-chart-axis-labels">` +
+      `<span class="algo-chart-axis-y">Délai d'interrogation en jours</span>` +
+      `<span class="algo-chart-axis-x">Nombre de fois qu'une fiche a été évaluée</span>` +
+      `</div>`;
+
+    return `<div class="algo-chart-legend">${legend}</div>${svg}${axisLabels}`;
   }
 
   function wireChartCheckboxes(wrap, onToggle) {
@@ -1082,15 +1143,16 @@
   }
 
   function readAlgoFormSettings() {
+    const idx = (id) => Math.round(Number(el(id).value)) || 0;
     return {
-      Ka: clampAlgoK(el("algo-ka").value, BUILTIN_MODE_DEFAULTS.normal.Ka),
-      Kh: clampAlgoK(el("algo-kh").value, BUILTIN_MODE_DEFAULTS.normal.Kh),
-      Kg: clampAlgoK(el("algo-kg").value, BUILTIN_MODE_DEFAULTS.normal.Kg),
-      Ke: clampAlgoK(el("algo-ke").value, BUILTIN_MODE_DEFAULTS.normal.Ke),
-      Ma: clampAlgoM(el("algo-ma").value, BUILTIN_MODE_DEFAULTS.normal.Ma),
-      Mh: clampAlgoM(el("algo-mh").value, BUILTIN_MODE_DEFAULTS.normal.Mh),
-      Mg: clampAlgoM(el("algo-mg").value, BUILTIN_MODE_DEFAULTS.normal.Mg),
-      Me: clampAlgoM(el("algo-me").value, BUILTIN_MODE_DEFAULTS.normal.Me),
+      Ka: ALGO_K_VALUES[idx("algo-ka")] ?? 1,
+      Kh: ALGO_K_VALUES[idx("algo-kh")] ?? 1,
+      Kg: ALGO_K_VALUES[idx("algo-kg")] ?? 1,
+      Ke: ALGO_K_VALUES[idx("algo-ke")] ?? 1,
+      Ma: ALGO_M_VALUES[idx("algo-ma")] ?? 1,
+      Mh: ALGO_M_VALUES[idx("algo-mh")] ?? 1,
+      Mg: ALGO_M_VALUES[idx("algo-mg")] ?? 1,
+      Me: ALGO_M_VALUES[idx("algo-me")] ?? 1,
     };
   }
 
@@ -1177,11 +1239,30 @@
     });
   }
 
-  ["algo-ka", "algo-kh", "algo-kg", "algo-ke", "algo-ma", "algo-mh", "algo-mg", "algo-me"].forEach((id) => {
+  const ALGO_FIELD_META = {
+    "algo-ka": { list: ALGO_K_VALUES, prefix: "×", suffix: "" },
+    "algo-kh": { list: ALGO_K_VALUES, prefix: "×", suffix: "" },
+    "algo-kg": { list: ALGO_K_VALUES, prefix: "×", suffix: "" },
+    "algo-ke": { list: ALGO_K_VALUES, prefix: "×", suffix: "" },
+    "algo-ma": { list: ALGO_M_VALUES, prefix: "<", suffix: " j" },
+    "algo-mh": { list: ALGO_M_VALUES, prefix: "<", suffix: " j" },
+    "algo-mg": { list: ALGO_M_VALUES, prefix: "<", suffix: " j" },
+    "algo-me": { list: ALGO_M_VALUES, prefix: "<", suffix: " j" },
+  };
+  Object.keys(ALGO_FIELD_META).forEach((id) => {
     const input = el(id);
     if (!input) return;
+    const meta = ALGO_FIELD_META[id];
+    const valueEl = el(`${id}-value`);
+    const updateReadout = () => {
+      const v = meta.list[Math.round(Number(input.value)) || 0];
+      if (valueEl) valueEl.textContent = `${meta.prefix} ${v}${meta.suffix}`;
+    };
+    input.addEventListener("input", () => {
+      updateReadout();
+      renderAlgoPreviewChart();
+    });
     input.addEventListener("change", saveModeFormAndRefresh);
-    input.addEventListener("input", renderAlgoPreviewChart);
   });
 
   const algoResetBtn = el("algo-reset-btn");
