@@ -666,6 +666,16 @@ textarea, input {
   font-size: 14px;
 }
 
+.card-construction-btn {
+  right: 118px;
+  font-size: 14px;
+}
+
+.card-icon-btn.is-active-construction {
+  background: rgba(207, 154, 77, 0.35);
+  color: var(--amber);
+}
+
 .rule-line {
   position: absolute;
   top: 54px;
@@ -889,7 +899,52 @@ textarea, input {
   font-size: 12px;
 }
 
-.card-list-title { margin-bottom: 10px; }
+.card-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.card-list-title { margin-bottom: 0; }
+
+.construction-filter-btn {
+  position: relative;
+  flex-shrink: 0;
+  background: rgba(247, 241, 225, 0.08);
+  border: 1px solid rgba(247, 241, 225, 0.2);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 15px;
+}
+
+.construction-filter-btn.is-active {
+  background: rgba(207, 154, 77, 0.25);
+  border-color: var(--amber);
+}
+
+.construction-filter-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--terracotta);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+
+.icon-btn.is-active-construction {
+  background: rgba(207, 154, 77, 0.25);
+}
 
 .cards-search-field {
   margin-bottom: 18px;

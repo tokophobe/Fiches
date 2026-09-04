@@ -188,6 +188,7 @@
             </div>
           </button>
           <button class="card-icon-btn card-hibernate-btn" id="hibernate-current-btn" type="button" hidden title="Mettre cette fiche en hibernation" aria-label="Mettre cette fiche en hibernation">💤</button>
+          <button class="card-icon-btn card-construction-btn" id="construction-current-btn" type="button" hidden title="Marquer/démarquer « chantier »" aria-label="Marquer ou démarquer cette fiche comme chantier">🚧</button>
           <button class="card-icon-btn card-edit-btn" id="edit-current-btn" type="button" hidden title="Modifier cette fiche" aria-label="Modifier cette fiche">✎</button>
         </div>
       </div>
@@ -264,6 +265,7 @@
         <div class="form-actions">
           <button type="submit" class="btn btn--primary" id="submit-btn">Ajouter à la pile</button>
           <button type="button" class="btn btn--ghost" id="cancel-edit" hidden>Annuler</button>
+          <button type="button" class="btn algo-review-old-btn" id="delete-editing-card" hidden>Supprimer cette fiche</button>
         </div>
       </form>
 
@@ -272,7 +274,13 @@
         <input type="search" id="cards-search-input" placeholder="Mot-clé dans la question ou la réponse…" />
       </label>
 
-      <h2 class="section-title card-list-title">Fiches de cette matière (<span id="total-count">0</span>)</h2>
+      <div class="card-list-header">
+        <h2 class="section-title card-list-title">Fiches de cette matière (<span id="total-count">0</span>)</h2>
+        <button type="button" class="construction-filter-btn" id="construction-filter-btn" title="N'afficher que les fiches « chantier »">
+          🚧
+          <span class="construction-filter-badge" id="construction-filter-badge" hidden>0</span>
+        </button>
+      </div>
       <ul class="card-list" id="card-list"></ul>
     </section>
 
@@ -306,6 +314,12 @@
         <div class="chart" id="due-chart"></div>
       </div>
       <p class="chart-empty" id="chart-empty" hidden>Rien à revoir sur cette période.</p>
+
+      <h3 class="chart-title">Fiches révisées par jour (historique)</h3>
+      <div class="chart-wrap" id="reviewed-chart-wrap">
+        <div class="chart" id="reviewed-chart"></div>
+      </div>
+      <p class="chart-empty" id="reviewed-chart-empty" hidden>Aucune fiche révisée sur cette période.</p>
     </section>
 
     <!-- VUE SYNC -->
@@ -440,18 +454,18 @@
            des réglages, et son bug d'affichage (étiquette invisible) est
            corrigé ci-dessous. -->
       <div class="card-form">
-        <h3 class="settings-block-title">Import / export de fiches</h3>
-        <p class="field-hint settings-block-hint">
-          L'export concerne la matière actuellement sélectionnée sur la page
-          Réviser (« <span id="settings-io-subject-name">—</span> », <span id="settings-io-count">0</span> fiche(s)).
-        </p>
-        <div class="io-buttons">
-          <button class="btn btn--small" id="export-btn" type="button">Exporter</button>
-          <label class="btn btn--small btn--file">
-            Importer
-            <input type="file" id="import-input" accept="application/json" hidden />
-          </label>
-        </div>
+        <h3 class="settings-block-title">Exporter des fiches</h3>
+        <p class="field-hint settings-block-hint">Choisis la matière à exporter :</p>
+        <select class="import-target-select" id="export-subject-select" aria-label="Matière à exporter"></select>
+        <button class="btn btn--small" id="export-btn" type="button">Exporter (<span id="settings-io-count">0</span> fiche(s))</button>
+      </div>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Importer des fiches</h3>
+        <label class="btn btn--small btn--file">
+          Choisir un fichier…
+          <input type="file" id="import-input" accept="application/json" hidden />
+        </label>
         <div class="import-target-row">
           <label class="import-target-label" for="import-target-select">Importer dans :</label>
           <select class="import-target-select" id="import-target-select" aria-label="Matière cible pour l'import"></select>

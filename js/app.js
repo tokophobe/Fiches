@@ -415,6 +415,8 @@
       reviewCount: 0,
       updatedAt: now,
       deleted: false,
+      // Chantier (item 16) : fiche marquée à corriger/compléter plus tard.
+      underConstruction: false,
       // Nouvel algorithme (remplace SM-2) : échéance initiale = 1 jour, non
       // arrondie (voir computeAlgoNext / currentDeadlineRaw).
       interval: 1,
@@ -495,6 +497,11 @@
       ? `${subjectName(card.subject)} :\n\n${card.question}`
       : card.question;
     renderSubjectAlgoBadge(card.subject);
+    const constructionBtn = el("construction-current-btn");
+    if (constructionBtn) {
+      constructionBtn.hidden = false;
+      constructionBtn.classList.toggle("is-active-construction", !!card.underConstruction);
+    }
   }
 
   /** Exposé pour que sync.js puisse dénormaliser le nom de la matière sur chaque ligne envoyée. */
@@ -599,6 +606,8 @@
     } else {
       importTargetSelect.value = currentSubjectId;
     }
+
+    renderExportSubjectSelect();
   }
 
   function escapeHtml(str) {
@@ -1555,6 +1564,14 @@
     });
   }
 
+  const constructionFilterBtn = el("construction-filter-btn");
+  if (constructionFilterBtn) {
+    constructionFilterBtn.addEventListener("click", () => {
+      cardsConstructionFilter = !cardsConstructionFilter;
+      renderManageList();
+    });
+  }
+
   manageAddSubjectBtn.addEventListener("click", async () => {
     const s = await createSubjectFlow();
     if (s) {
@@ -1668,10 +1685,6 @@
       }
     }
 
-    const ioName = el("settings-io-subject-name");
-    const ioCount = el("settings-io-count");
-    if (ioName) ioName.textContent = subjectName(currentSubjectId);
-    if (ioCount) ioCount.textContent = String(n);
   }
 
   if (subjectBarAlgoBtn) {
@@ -1841,6 +1854,7 @@
       cardStackEl.hidden = true;
       editCurrentBtn.hidden = true;
       if (hibernateCurrentBtn) hibernateCurrentBtn.hidden = true;
+      if (el("construction-current-btn")) el("construction-current-btn").hidden = true;
       ratingRowEl.hidden = true;
       reviewProgressEl.textContent = "";
       renderDuePill();
@@ -2072,6 +2086,15 @@
     });
   }
 
+  const constructionCurrentBtn = el("construction-current-btn");
+  if (constructionCurrentBtn) {
+    constructionCurrentBtn.addEventListener("click", async () => {
+      if (!currentCard) return;
+      await toggleUnderConstruction(currentCard.id);
+      constructionCurrentBtn.classList.toggle("is-active-construction", !!currentCard.underConstruction);
+    });
+  }
+
   /* ---------------------------------------------------------
      Vue Gérer : formulaire + liste
   --------------------------------------------------------- */
@@ -2113,12 +2136,15 @@
     cardForm.reset();
   });
 
+  const deleteEditingCardBtn = el("delete-editing-card");
+
   function enterEditMode(card) {
     editingId = card.id;
     inputQuestion.value = card.question;
     inputAnswer.value = card.answer;
     submitBtn.textContent = "Enregistrer les modifications";
     cancelEditBtn.hidden = false;
+    if (deleteEditingCardBtn) deleteEditingCardBtn.hidden = false;
     inputQuestion.focus();
   }
 
@@ -2126,12 +2152,29 @@
     editingId = null;
     submitBtn.textContent = "Ajouter à la pile";
     cancelEditBtn.hidden = true;
+    if (deleteEditingCardBtn) deleteEditingCardBtn.hidden = true;
+  }
+
+  if (deleteEditingCardBtn) {
+    deleteEditingCardBtn.addEventListener("click", async () => {
+      if (!editingId) return;
+      if (!confirm("Supprimer définitivement cette fiche ? Cette action est irréversible.")) return;
+      const id = editingId;
+      editReturnToReview = false;
+      exitEditMode();
+      cardForm.reset();
+      await deleteCard(id, true);
+    });
   }
 
   let cardsSearchQuery = "";
+  let cardsConstructionFilter = false;
 
   function renderManageList() {
     let visible = subjectCards();
+    if (cardsConstructionFilter) {
+      visible = visible.filter((c) => c.underConstruction);
+    }
     if (cardsSearchQuery) {
       const q = cardsSearchQuery.toLowerCase();
       visible = visible.filter(
@@ -2142,11 +2185,23 @@
     cardListEl.innerHTML = "";
     renderSubjectManageList();
 
+    // Badge de la pastille 🚧 : nombre de fiches "chantier" dans la matière
+    // actuelle (avant filtrage recherche/chantier, pour rester stable).
+    const constructionCount = subjectCards().filter((c) => c.underConstruction).length;
+    const badge = el("construction-filter-badge");
+    if (badge) {
+      badge.hidden = constructionCount === 0;
+      badge.textContent = String(constructionCount);
+    }
+    if (constructionFilterBtn) constructionFilterBtn.classList.toggle("is-active", cardsConstructionFilter);
+
     if (visible.length === 0) {
       const li = document.createElement("li");
       li.className = "list-empty";
       li.textContent = cardsSearchQuery
         ? "Aucune fiche ne correspond à cette recherche."
+        : cardsConstructionFilter
+        ? "Aucune fiche « chantier » dans cette matière."
         : "Aucune fiche pour l'instant. Ajoute la première ci-dessus.";
       cardListEl.appendChild(li);
       return;
@@ -2165,7 +2220,7 @@
 
       const q = document.createElement("p");
       q.className = "card-row-q";
-      q.textContent = card.question;
+      q.textContent = (card.underConstruction ? "🚧 " : "") + card.question;
 
       const a = document.createElement("p");
       a.className = "card-row-a";
@@ -2190,6 +2245,13 @@
       editBtn.textContent = "éditer";
       editBtn.addEventListener("click", () => enterEditMode(card));
 
+      const constructionBtn = document.createElement("button");
+      constructionBtn.className = "icon-btn" + (card.underConstruction ? " is-active-construction" : "");
+      constructionBtn.type = "button";
+      constructionBtn.textContent = "🚧";
+      constructionBtn.title = card.underConstruction ? "Retirer le statut « chantier »" : "Marquer « chantier » (fiche à corriger)";
+      constructionBtn.addEventListener("click", () => toggleUnderConstruction(card.id));
+
       const delBtn = document.createElement("button");
       delBtn.className = "icon-btn icon-btn--danger";
       delBtn.type = "button";
@@ -2197,6 +2259,7 @@
       delBtn.addEventListener("click", () => deleteCard(card.id));
 
       actions.appendChild(editBtn);
+      actions.appendChild(constructionBtn);
 
       if (subjects.length > 1) {
         const moveSelect = document.createElement("select");
@@ -2245,9 +2308,25 @@
     renderAll();
   }
 
-  async function deleteCard(id) {
+  /** Bascule le statut "chantier" (item 16) : fiche à corriger, signalée
+   *  par une petite barrière 🚧 partout où elle apparaît. */
+  async function toggleUnderConstruction(id) {
     const card = cards.find((c) => c.id === id);
     if (!card) return;
+    const updated = touch({ ...card, underConstruction: !card.underConstruction });
+    await persist(updated);
+    const idx = cards.findIndex((c) => c.id === id);
+    if (idx >= 0) cards[idx] = updated;
+    syncCardEverywhere(updated);
+    renderAll();
+  }
+
+  async function deleteCard(id, skipConfirm) {
+    const card = cards.find((c) => c.id === id);
+    if (!card) return;
+    if (!skipConfirm && !confirm("Supprimer définitivement cette fiche ? Cette action est irréversible.")) {
+      return;
+    }
     const updated = touch({ ...card, deleted: true });
     await persist(updated);
 
@@ -2261,11 +2340,35 @@
   }
 
   /* ---------------------------------------------------------
-     Import / export JSON
+     Import / export JSON (item 8 : sélecteur de matière dédié à l'export,
+     indépendant de la page Réviser).
   --------------------------------------------------------- */
+  const exportSubjectSelectEl = el("export-subject-select");
+  const settingsIoCountEl = el("settings-io-count");
+
+  function renderExportSubjectSelect() {
+    if (!exportSubjectSelectEl) return;
+    const prev = exportSubjectSelectEl.value;
+    exportSubjectSelectEl.innerHTML = subjects
+      .map((s) => `<option value="${s.id}">${escapeHtml(s.name)}</option>`)
+      .join("");
+    exportSubjectSelectEl.value = subjects.some((s) => s.id === prev) ? prev : currentSubjectId;
+    updateExportCount();
+  }
+  function updateExportCount() {
+    if (!settingsIoCountEl || !exportSubjectSelectEl) return;
+    const n = cards.filter((c) => !c.deleted && c.subject === exportSubjectSelectEl.value).length;
+    settingsIoCountEl.textContent = String(n);
+  }
+  if (exportSubjectSelectEl) {
+    exportSubjectSelectEl.addEventListener("change", updateExportCount);
+  }
+
   exportBtn.addEventListener("click", () => {
-    const subj = subjects.find((s) => s.id === currentSubjectId);
-    const blob = new Blob([JSON.stringify(subjectCards(), null, 2)], {
+    const exportSubjectId = exportSubjectSelectEl ? exportSubjectSelectEl.value : currentSubjectId;
+    const subj = subjects.find((s) => s.id === exportSubjectId);
+    const exportCards = cards.filter((c) => !c.deleted && c.subject === exportSubjectId);
+    const blob = new Blob([JSON.stringify(exportCards, null, 2)], {
       type: "application/json",
     });
     const url = URL.createObjectURL(blob);
@@ -2385,7 +2488,38 @@
     return buckets;
   }
 
+  /** Historique des fiches RÉVISÉES par jour passé (item 7) — analogue à
+   *  computeDueHistogram mais tournée vers le passé (index 0 = aujourd'hui,
+   *  index i = il y a i jours) et basée sur `lastReviewed` plutôt que
+   *  `dueDate`. Les dates portées par chaque case restent des vraies dates
+   *  (comme pour l'histogramme "à réviser"), donc `renderHistogramInto` -
+   *  qui ne fait que lire ces dates pour ses repères (Auj., jours de la
+   *  semaine, 1er du mois...) - fonctionne à l'identique sans rien changer. */
+  function computeReviewedHistogram(pool, days) {
+    const today = startOfDay(new Date());
+    const buckets = [];
+    for (let i = 0; i < days; i++) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      buckets.push({ date: d, count: 0 });
+    }
+    const horizon = new Date(today);
+    horizon.setDate(horizon.getDate() - days);
+
+    for (const c of pool) {
+      if (!c.lastReviewed) continue;
+      const rev = startOfDay(new Date(c.lastReviewed));
+      if (rev.getTime() > today.getTime()) continue;
+      if (rev.getTime() <= horizon.getTime()) continue;
+      const offset = Math.round((today.getTime() - rev.getTime()) / 86400000);
+      if (offset >= 0 && offset < days) buckets[offset].count += 1;
+    }
+    return buckets;
+  }
+
   const MONTH_SHORT = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
+  // Index 0 = dimanche (convention JS Date#getDay()).
+  const WEEKDAY_SHORT = ["dim", "lun", "mar", "mer", "jeu", "ven", "sam"];
   function formatShortDateLabel(date) {
     return `${date.getDate()} ${MONTH_SHORT[date.getMonth()]}`;
   }
@@ -2404,11 +2538,11 @@
   /** Dessine un histogramme "fiches dues par jour" dans les éléments fournis.
    *  Factorisé pour être partagé entre le grand graphique de l'onglet Stats
    *  et le mini graphique de la page Réviser (matière en cours). */
-  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, rangeKey, maxBarPx) {
+  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, rangeKey, maxBarPx, computeFn) {
     if (!chartEl) return;
     const cfg = RANGE_CONFIG[rangeKey] || { visible: rangeKey, total: rangeKey };
     const days = cfg.total;
-    const buckets = computeDueHistogram(pool, days);
+    const buckets = (computeFn || computeDueHistogram)(pool, days);
     const max = Math.max(0, ...buckets.map((b) => b.count));
 
     // Compte précédent par jour (mémorisé sur l'élément lui-même) : sert à
@@ -2493,22 +2627,24 @@
 
       const label = document.createElement("span");
       label.className = "chart-label";
-      // "Auj." prioritaire sur la colonne d'aujourd'hui ; sinon, repères de
-      // date à date fixe pour se répérer dans le défilement : le 1er ET le
-      // 15 du mois sur les échelles rapprochées (15j / 1 mois), seulement
-      // le 1er du mois sur les échelles larges (3 mois / 6 mois / 1 an) où
-      // le 15 ajouterait surtout du bruit visuel vu la densité des colonnes.
+      // "Auj." prioritaire sur la colonne d'aujourd'hui ; puis, sur les
+      // échelles rapprochées (15j / 1 mois), le jour de la semaine abrégé
+      // pour les 7 jours suivants (item 11) ; sinon, repères de date à date
+      // fixe pour se répérer dans le défilement : le 1er ET le 15 du mois
+      // sur les échelles rapprochées, seulement le 1er du mois sur les
+      // échelles larges (3 mois / 1 an) où le 15 ajouterait surtout du
+      // bruit visuel vu la densité des colonnes.
+      const dom = b.date.getDate();
+      const fineScale = rangeKey === 15 || rangeKey === 30;
+      const coarseScale = rangeKey === 90 || rangeKey === 365;
       if (i === 0) {
         label.textContent = "Auj.";
+      } else if (fineScale && i <= 7) {
+        label.textContent = WEEKDAY_SHORT[b.date.getDay()];
+      } else if ((fineScale && (dom === 1 || dom === 15)) || (coarseScale && dom === 1)) {
+        label.textContent = formatShortDateLabel(b.date);
       } else {
-        const dom = b.date.getDate();
-        const fineScale = rangeKey === 15 || rangeKey === 30;
-        const coarseScale = rangeKey === 90 || rangeKey === 365;
-        if ((fineScale && (dom === 1 || dom === 15)) || (coarseScale && dom === 1)) {
-          label.textContent = formatShortDateLabel(b.date);
-        } else {
-          label.textContent = "";
-        }
+        label.textContent = "";
       }
 
       col.appendChild(value);
@@ -2539,6 +2675,32 @@
   const statsChartWrapEl = el("chart-wrap");
   if (statsChartWrapEl) statsChartWrapEl.addEventListener("click", cycleStatsChartRange);
 
+  /** Second histogramme de la page Stats (item 7) : historique des fiches
+   *  révisées, plutôt que celles à venir — mêmes échelles (tap pour
+   *  cycler), état indépendant du premier graphique. */
+  let reviewedChartRangeDays = 15;
+  const reviewedChartEl = el("reviewed-chart");
+  const reviewedChartEmptyEl = el("reviewed-chart-empty");
+  const reviewedChartWrapEl = el("reviewed-chart-wrap");
+  function renderReviewedChart() {
+    const pool = statsScopeCards();
+    renderHistogramInto(
+      reviewedChartEl,
+      reviewedChartEmptyEl,
+      reviewedChartWrapEl,
+      pool,
+      reviewedChartRangeDays,
+      CHART_MAX_BAR_PX,
+      computeReviewedHistogram
+    );
+  }
+  function cycleReviewedChartRange() {
+    const idx = REVIEW_CHART_STEPS.indexOf(reviewedChartRangeDays);
+    reviewedChartRangeDays = REVIEW_CHART_STEPS[(idx + 1) % REVIEW_CHART_STEPS.length];
+    renderReviewedChart();
+  }
+  if (reviewedChartWrapEl) reviewedChartWrapEl.addEventListener("click", cycleReviewedChartRange);
+
   /** Fiches (de `pool`) dont la dernière révision remonte à aujourd'hui. */
   function reviewedTodayCount(pool) {
     const today = startOfDay(new Date()).getTime();
@@ -2554,6 +2716,7 @@
     statTotal.textContent = String(pool.length);
     if (statReviewedToday) statReviewedToday.textContent = String(reviewedTodayCount(pool));
     renderDueChart();
+    renderReviewedChart();
   }
 
   /** Affiche un message de confirmation bien visible, en bas d'écran. */
@@ -3103,7 +3266,7 @@
   window.addEventListener("resize", () => {
     clearTimeout(chartResizeTimer);
     chartResizeTimer = setTimeout(() => {
-      if (el("view-stats") && el("view-stats").classList.contains("is-active")) renderDueChart();
+      if (el("view-stats") && el("view-stats").classList.contains("is-active")) { renderDueChart(); renderReviewedChart(); }
       if (el("view-review") && el("view-review").classList.contains("is-active")) renderReviewChart();
     }, 150);
   });
