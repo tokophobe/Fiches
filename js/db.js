@@ -4,10 +4,11 @@
  */
 
 const DB_NAME = "fiches-db";
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 const STORE = "cards";
 const SUBJECT_STORE = "subjects";
 const FOLDER_STORE = "folders";
+const RATING_LOG_STORE = "ratingLog";
 let dbConnectionPromise = null;
 
 function openDb() {
@@ -32,6 +33,10 @@ function openDb() {
       }
       if (!db.objectStoreNames.contains(FOLDER_STORE)) {
         db.createObjectStore(FOLDER_STORE, { keyPath: "id" });
+      }
+      if (!db.objectStoreNames.contains(RATING_LOG_STORE)) {
+        const store = db.createObjectStore(RATING_LOG_STORE, { keyPath: "id" });
+        store.createIndex("at", "at", { unique: false });
       }
     };
     req.onsuccess = () => {
@@ -140,6 +145,19 @@ const DB = {
 
   async removeFolder(id) {
     await withStoreIn(FOLDER_STORE, "readwrite", (store) => store.delete(id));
+  },
+
+  /* ---- historique des notes données (item 15) ---- */
+
+  async addRatingLog(entry) {
+    await withStoreIn(RATING_LOG_STORE, "readwrite", (store) => store.put(entry));
+  },
+
+  async getAllRatingLog() {
+    const db = await openDb();
+    const tx = db.transaction(RATING_LOG_STORE, "readonly");
+    const store = tx.objectStore(RATING_LOG_STORE);
+    return reqToPromise(store.getAll());
   },
 };
 

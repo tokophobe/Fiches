@@ -1227,10 +1227,49 @@ textarea, input {
 /* ============================================================
    STATS VIEW
    ============================================================ */
+/* Gros logo de la mascotte en tête de page (item 15). */
+.stats-mascot {
+  display: block;
+  width: 84px;
+  height: 84px;
+  margin: 4px auto 12px;
+}
+
 .stats-controls {
   display: flex;
   gap: 8px;
   margin-bottom: 14px;
+}
+
+.ratings-period-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.ratings-period-tab {
+  flex: 1;
+  background: rgba(247, 241, 225, 0.08);
+  border: 1px solid rgba(247, 241, 225, 0.25);
+  color: var(--paper);
+  border-radius: 8px;
+  padding: 8px 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.ratings-period-tab.is-active {
+  background: var(--amber);
+  color: #2a1f0d;
+  border-color: var(--amber);
+  font-weight: 700;
+}
+
+#ratings-chart-wrap {
+  background: rgba(247, 241, 225, 0.05);
+  border-radius: 10px;
+  padding: 10px 8px 4px;
+  margin-bottom: 8px;
 }
 
 .stats-select {

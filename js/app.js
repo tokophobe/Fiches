@@ -2108,7 +2108,20 @@
     await rateCurrentCard(rating);
   });
 
+  /** Journal des notes données (item 15) : un evénement par notation, quel
+   *  que soit le mode (file du jour ou révision libre) — sert uniquement
+   *  aux statistiques "Notes données" de la page Stats, jamais à la
+   *  planification elle-même. */
+  let ratingLog = [];
+  async function logRating(card, rating) {
+    const entry = { id: uid(), cardId: card.id, subjectId: card.subject, rating, at: new Date().toISOString() };
+    ratingLog.push(entry);
+    await DB.addRatingLog(entry);
+  }
+
   async function rateCurrentCard(rating) {
+    if (!currentCard) return;
+    await logRating(currentCard, rating);
     if (isBonusMode) {
       await rateBonusCard(rating);
     } else {
@@ -2617,15 +2630,40 @@
   /* ---------------------------------------------------------
      Vue Stats
   --------------------------------------------------------- */
+  const STATS_MULTI_ID = "__stats_multi__";
+  const STATS_MULTI_SELECTION_KEY = "fiches_stats_multi_ids";
+  function loadStatsMultiSelection() {
+    try {
+      const raw = localStorage.getItem(STATS_MULTI_SELECTION_KEY);
+      const ids = raw ? JSON.parse(raw) : [];
+      return Array.isArray(ids) ? ids.filter((id) => subjects.some((s) => s.id === id)) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+  function saveStatsMultiSelection(ids) {
+    localStorage.setItem(STATS_MULTI_SELECTION_KEY, JSON.stringify(ids));
+  }
+
+  /** Étend le sélecteur Stats (item 15) : matières individuelles (comme
+   *  avant), mais aussi des dossiers entiers ("folder:<id>", toutes les
+   *  matières qu'ils contiennent, sous-dossiers compris) et une sélection
+   *  libre combinant plusieurs matières et/ou dossiers. */
   function renderStatsSubjectSelect() {
     if (!statsSubjectSelectEl) return;
     const prev = statsSubjectSelectEl.value || statsSubjectFilter;
+    const folderOpts = folders
+      .map((f) => ({ f, path: folderPath(f.id).map((p) => p.name).join(" / ") }))
+      .sort((a, b) => a.path.localeCompare(b.path, "fr"))
+      .map(({ f, path }) => `<option value="folder:${f.id}">📁 ${escapeHtml(path)}</option>`)
+      .join("");
     statsSubjectSelectEl.innerHTML =
       `<option value="${ALL_SUBJECTS}">Toutes catégories confondues</option>` +
-      subjects
-        .map((s) => `<option value="${s.id}">${escapeHtml(s.name)}</option>`)
-        .join("");
-    const valid = prev === ALL_SUBJECTS || subjects.some((s) => s.id === prev);
+      folderOpts +
+      subjects.map((s) => `<option value="${s.id}">${escapeHtml(s.name)}</option>`).join("") +
+      `<option value="${STATS_MULTI_ID}">☑️ Sélection de matières et dossiers…</option>`;
+    const isFolderOpt = typeof prev === "string" && prev.startsWith("folder:") && folders.some((f) => `folder:${f.id}` === prev);
+    const valid = prev === ALL_SUBJECTS || prev === STATS_MULTI_ID || isFolderOpt || subjects.some((s) => s.id === prev);
     statsSubjectFilter = valid ? prev : ALL_SUBJECTS;
     statsSubjectSelectEl.value = statsSubjectFilter;
   }
@@ -2635,7 +2673,67 @@
     if (statsSubjectFilter === ALL_SUBJECTS) {
       return cards.filter((c) => !c.deleted);
     }
+    if (statsSubjectFilter === STATS_MULTI_ID) {
+      const set = new Set(loadStatsMultiSelection());
+      return cards.filter((c) => !c.deleted && set.has(c.subject));
+    }
+    if (typeof statsSubjectFilter === "string" && statsSubjectFilter.startsWith("folder:")) {
+      const set = new Set(subjectIdsInFolder(statsSubjectFilter.slice(7)));
+      return cards.filter((c) => !c.deleted && set.has(c.subject));
+    }
     return cards.filter((c) => !c.deleted && c.subject === statsSubjectFilter);
+  }
+
+  /** Mêmes identifiants de matières que statsScopeCards, mais pour filtrer
+   *  le journal des notes (ratingLog), qui référence subjectId et non les
+   *  fiches elles-mêmes (une fiche déplacée entre-temps ne fausse donc pas
+   *  l'historique : chaque entrée garde la matière qu'elle avait au moment
+   *  de la notation). */
+  function statsScopeSubjectIds() {
+    if (statsSubjectFilter === ALL_SUBJECTS) return null; // signifie "toutes"
+    if (statsSubjectFilter === STATS_MULTI_ID) return new Set(loadStatsMultiSelection());
+    if (typeof statsSubjectFilter === "string" && statsSubjectFilter.startsWith("folder:")) {
+      return new Set(subjectIdsInFolder(statsSubjectFilter.slice(7)));
+    }
+    return new Set([statsSubjectFilter]);
+  }
+
+  function openStatsMultiPicker() {
+    const picker = el("stats-multi-picker");
+    const list = el("stats-multi-picker-list");
+    if (!picker || !list) return;
+    const selected = new Set(loadStatsMultiSelection());
+    list.innerHTML = "";
+    renderFolderTreeForPicker(list, ROOT_FOLDER_ID, 0, selected);
+    picker.hidden = false;
+  }
+  function closeStatsMultiPicker() {
+    const picker = el("stats-multi-picker");
+    if (picker) picker.hidden = true;
+  }
+  const statsMultiPickerCancelBtn = el("stats-multi-picker-cancel");
+  if (statsMultiPickerCancelBtn) statsMultiPickerCancelBtn.addEventListener("click", closeStatsMultiPicker);
+  const statsMultiPickerConfirmBtn = el("stats-multi-picker-confirm");
+  if (statsMultiPickerConfirmBtn) {
+    statsMultiPickerConfirmBtn.addEventListener("click", () => {
+      const resultIds = new Set();
+      document.querySelectorAll("#stats-multi-picker-list input:checked").forEach((cb) => {
+        if (cb.dataset.kind === "folder") {
+          subjectIdsInFolder(cb.value).forEach((id) => resultIds.add(id));
+        } else {
+          resultIds.add(cb.value);
+        }
+      });
+      if (resultIds.size === 0) {
+        alert("Choisis au moins une matière ou un dossier.");
+        return;
+      }
+      saveStatsMultiSelection([...resultIds]);
+      closeStatsMultiPicker();
+      statsSubjectFilter = STATS_MULTI_ID;
+      if (statsSubjectSelectEl) statsSubjectSelectEl.value = STATS_MULTI_ID;
+      renderStats();
+    });
   }
 
   function startOfDay(date) {
@@ -2902,7 +3000,132 @@
     if (statReviewedToday) statReviewedToday.textContent = String(reviewedTodayCount(pool));
     renderDueChart();
     renderReviewedChart();
+    renderRatingsChart();
   }
+
+  /** Histogramme "Notes données" (item 15) : Encore/Difficile/Bien/Facile,
+   *  sur trois périodes possibles (onglets) — Global (tout l'historique),
+   *  Aujourd'hui, ou les 7 derniers jours détaillés par jour de semaine.
+   *  Basé sur `ratingLog` (un événement par notation, indépendant de l'état
+   *  actuel des fiches) plutôt que sur les fiches elles-mêmes. */
+  let ratingsPeriod = "global";
+  const WEEKDAY_FULL = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+
+  function ratingLogInScope() {
+    const scopeIds = statsScopeSubjectIds();
+    return scopeIds === null ? ratingLog : ratingLog.filter((e) => scopeIds.has(e.subjectId));
+  }
+
+  function ratingCountsFor(entries) {
+    const counts = { again: 0, hard: 0, good: 0, easy: 0 };
+    entries.forEach((e) => {
+      if (counts[e.rating] !== undefined) counts[e.rating] += 1;
+    });
+    return counts;
+  }
+
+  function renderRatingsSimpleChart(wrap, entries, ratings) {
+    const counts = ratingCountsFor(entries);
+    const total = ratings.reduce((sum, r) => sum + counts[r], 0);
+    if (total === 0) {
+      wrap.innerHTML = `<p class="field-hint algo-chart-empty">Aucune note enregistrée sur cette période.</p>`;
+      return;
+    }
+    const max = Math.max(1, ...ratings.map((r) => counts[r]));
+    const yMax = Math.max(4, Math.ceil(max * 1.15));
+    const W = 320, H = 190, padL = 26, padB = 26, padT = 14, padR = 12;
+    const plotW = W - padL - padR, plotH = H - padT - padB;
+    const gap = plotW / ratings.length;
+    const barW = gap * 0.55;
+    const yPos = (v) => padT + (1 - v / yMax) * plotH;
+
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--desk);border-radius:8px;">`;
+    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
+    ratings.forEach((r, i) => {
+      const v = counts[r];
+      const h = (v / yMax) * plotH;
+      const x = padL + gap * i + (gap - barW) / 2;
+      const y = H - padB - h;
+      svg += `<rect x="${x}" y="${y}" width="${barW}" height="${Math.max(1, h)}" rx="4" fill="${ALGO_CHART_COLORS[r]}"/>`;
+      svg += `<text x="${x + barW / 2}" y="${y - 5}" font-size="10" fill="${ALGO_CHART_COLORS[r]}" text-anchor="middle" font-family="var(--font-mono)">${v}</text>`;
+      svg += `<text x="${x + barW / 2}" y="${H - padB + 14}" font-size="9" fill="#9aa89e" text-anchor="middle">${ALGO_CHART_RATING_LABELS[r]}</text>`;
+    });
+    svg += `</svg>`;
+    wrap.innerHTML = svg;
+  }
+
+  function renderRatingsWeekChart(wrap, entries, ratings) {
+    if (entries.length === 0) {
+      wrap.innerHTML = `<p class="field-hint algo-chart-empty">Aucune note enregistrée sur les 7 derniers jours.</p>`;
+      return;
+    }
+    const today = startOfDay(new Date());
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      days.push(d);
+    }
+    const perDay = days.map((d) => {
+      const dayEntries = entries.filter((e) => startOfDay(new Date(e.at)).getTime() === d.getTime());
+      return ratingCountsFor(dayEntries);
+    });
+    const max = Math.max(1, ...perDay.flatMap((c) => ratings.map((r) => c[r])));
+    const yMax = Math.max(4, Math.ceil(max * 1.15));
+
+    const W = 320, H = 210, padL = 22, padB = 34, padT = 14, padR = 8;
+    const plotW = W - padL - padR, plotH = H - padT - padB;
+    const dayW = plotW / 7;
+    const barW = (dayW * 0.78) / ratings.length;
+
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--desk);border-radius:8px;">`;
+    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
+    days.forEach((d, di) => {
+      const dayX = padL + dayW * di;
+      ratings.forEach((r, ri) => {
+        const v = perDay[di][r];
+        const h = (v / yMax) * plotH;
+        const x = dayX + (dayW - barW * ratings.length) / 2 + barW * ri;
+        const y = H - padB - h;
+        svg += `<rect x="${x}" y="${y}" width="${Math.max(1, barW - 1)}" height="${Math.max(v > 0 ? 1 : 0, h)}" rx="1.5" fill="${ALGO_CHART_COLORS[r]}"/>`;
+      });
+      // Jour de la semaine en toutes lettres (item 15), sur deux lignes si
+      // besoin (ex. "mercredi") pour rester lisible sur 7 colonnes étroites.
+      const label = WEEKDAY_FULL[d.getDay()];
+      svg += `<text x="${dayX + dayW / 2}" y="${H - padB + 13}" font-size="6.3" fill="#9aa89e" text-anchor="middle">${label}</text>`;
+    });
+    svg += `</svg>`;
+    const legend = ratings
+      .map((r) => `<span class="algo-chart-legend-item"><span class="algo-chart-legend-dot" style="background:${ALGO_CHART_COLORS[r]}"></span>${ALGO_CHART_RATING_LABELS[r]}</span>`)
+      .join("");
+    wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${svg}`;
+  }
+
+  function renderRatingsChart() {
+    const wrap = el("ratings-chart-wrap");
+    if (!wrap) return;
+    const scoped = ratingLogInScope();
+    const ratings = ["again", "hard", "good", "easy"];
+    if (ratingsPeriod === "week") {
+      renderRatingsWeekChart(wrap, scoped, ratings);
+      return;
+    }
+    let filtered = scoped;
+    if (ratingsPeriod === "today") {
+      const todayMs = startOfDay(new Date()).getTime();
+      filtered = scoped.filter((e) => startOfDay(new Date(e.at)).getTime() === todayMs);
+    }
+    renderRatingsSimpleChart(wrap, filtered, ratings);
+  }
+
+  document.querySelectorAll(".ratings-period-tab").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".ratings-period-tab").forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      ratingsPeriod = btn.dataset.period;
+      renderRatingsChart();
+    });
+  });
 
   /** Affiche un message de confirmation bien visible, en bas d'écran. */
   function showToast(message) {
@@ -2914,6 +3137,12 @@
   }
 
   statsSubjectSelectEl.addEventListener("change", () => {
+    if (statsSubjectSelectEl.value === STATS_MULTI_ID) {
+      statsSubjectSelectEl.value = statsSubjectFilter;
+      openStatsMultiPicker();
+      return;
+    }
+    closeStatsMultiPicker();
     statsSubjectFilter = statsSubjectSelectEl.value;
     renderStats();
   });
@@ -3521,6 +3750,7 @@
     renderSettingsView();
     await loadSubjects();
     cards = await DB.getAll();
+    ratingLog = await DB.getAllRatingLog();
     await migrateOrphanCards();
     await dedupeEmptySubjects();
     // Rattrape le record par-fiche pour les fiches existantes qui n'ont
