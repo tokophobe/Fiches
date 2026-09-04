@@ -302,7 +302,7 @@
       if (s.modeId === modeId) {
         s.modeId = "normal";
         s.updatedAt = new Date().toISOString();
-        await DB.putSubject(s);
+        await persistSubject(s);
       }
     }
   }
@@ -334,7 +334,7 @@
     if (!s) return;
     s.modeId = modeId;
     s.updatedAt = new Date().toISOString();
-    await DB.putSubject(s);
+    await persistSubject(s);
   }
   /** "quand on affecte un mode à un sous dossier ou un dossier, ça
    *  s'applique à toutes les matières contenues dedans" (item 1/2) : un
@@ -397,7 +397,7 @@
     }
     if (changed) {
       for (const s of subjects) {
-        await DB.putSubject(s);
+        await persistSubject(s);
       }
     }
   }
@@ -587,7 +587,7 @@
     subjects.forEach((s) => { if (s.folderId === undefined) s.folderId = ROOT_FOLDER_ID; });
     if (subjects.length === 0) {
       const general = newSubject("Général");
-      await DB.putSubject(general);
+      await persistSubject(general);
       subjects = [general];
     }
     await migrateSubjectModesIfNeeded();
@@ -705,12 +705,29 @@
     if (looksLikeHtml(raw)) return raw;
     return escapeHtml(raw).replace(/\n/g, "<br>");
   }
-  /** Texte brut d'un contenu HTML — pour la recherche par mot-clé et
-   *  l'export en clair, jamais pour l'affichage. */
+  /** Texte brut d'un contenu HTML — pour l'export en clair et la
+   *  vérification "champ vide", jamais pour l'affichage. */
   function stripHtml(html) {
     const div = document.createElement("div");
     div.innerHTML = html || "";
     return div.textContent || "";
+  }
+  /** Version rapide (regex, sans toucher au DOM) du même besoin, réservée
+   *  au filtrage de recherche (item 10) : `stripHtml` recréait un élément
+   *  DOM pour CHAQUE fiche à CHAQUE frappe, perceptible comme un
+   *  ralentissement dès que la matière contient beaucoup de fiches. Le
+   *  décodage d'entités reste volontairement sommaire — largement
+   *  suffisant pour un filtre de recherche. */
+  function stripHtmlFast(html) {
+    if (!html) return "";
+    return html
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
   }
   function isRichEditorEmpty(el) {
     return !el || stripHtml(el.innerHTML).trim() === "";
@@ -903,7 +920,7 @@
     const name = prompt("Nom du nouveau dossier :");
     if (!name || !name.trim()) return;
     const folder = newFolder(name, manageFolderBrowseId);
-    await DB.putFolder(folder);
+    await persistFolder(folder);
     folders.push(folder);
     renderSubjectManageList();
   }
@@ -915,7 +932,7 @@
     if (!name || !name.trim() || name.trim() === f.name) return;
     f.name = name.trim();
     f.updatedAt = new Date().toISOString();
-    await DB.putFolder(f);
+    await persistFolder(f);
     renderSubjectManageList();
   }
 
@@ -927,6 +944,7 @@
     const f = folders.find((x) => x.id === folderId);
     if (!confirm(`Supprimer le dossier « ${f ? f.name : ""} » ?`)) return;
     folders = folders.filter((x) => x.id !== folderId);
+    if (f) await pushFolderDeleted(f);
     await DB.removeFolder(folderId);
     renderSubjectManageList();
   }
@@ -992,14 +1010,14 @@
         if (f) {
           f.parentId = destId;
           f.updatedAt = new Date().toISOString();
-          await DB.putFolder(f);
+          await persistFolder(f);
         }
       } else if (movePickerKind === "subject") {
         const s = subjects.find((x) => x.id === movePickerTargetId);
         if (s) {
           s.folderId = destId;
           s.updatedAt = new Date().toISOString();
-          await DB.putSubject(s);
+          await persistSubject(s);
         }
       }
       closeMovePicker();
@@ -1531,7 +1549,7 @@
     const name = prompt("Nom de la nouvelle matière :");
     if (!name || !name.trim()) return null;
     const subject = newSubject(name, manageFolderBrowseId);
-    await DB.putSubject(subject);
+    await persistSubject(subject);
     subjects.push(subject);
     subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
     renderStatsSubjectSelect();
@@ -1545,7 +1563,7 @@
     if (!name || !name.trim() || name.trim() === s.name) return;
     s.name = name.trim();
     s.updatedAt = new Date().toISOString();
-    await DB.putSubject(s);
+    await persistSubject(s);
     subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
     renderSubjectSelect();
     renderSubjectManageList();
@@ -1578,6 +1596,7 @@
 
     await DB.removeSubject(id);
     subjects = subjects.filter((x) => x.id !== id);
+    await pushSubjectDeleted(s);
 
     if (currentSubjectId === id) {
       currentSubjectId = subjects[0].id;
@@ -1727,9 +1746,16 @@
 
   const cardsSearchInputEl = el("cards-search-input");
   if (cardsSearchInputEl) {
+    // Débounce (item 10) : sans lui, chaque frappe relançait un filtrage +
+    // un rendu complet de la liste — perceptible comme un ralentissement
+    // sur une matière avec beaucoup de fiches, en tapant vite.
+    let cardsSearchDebounce = null;
     cardsSearchInputEl.addEventListener("input", () => {
-      cardsSearchQuery = cardsSearchInputEl.value.trim();
-      renderManageList();
+      clearTimeout(cardsSearchDebounce);
+      cardsSearchDebounce = setTimeout(() => {
+        cardsSearchQuery = cardsSearchInputEl.value.trim();
+        renderManageList();
+      }, 180);
     });
   }
 
@@ -1766,6 +1792,37 @@
     await DB.put(card);
     if (Sync.isConfigured()) {
       Sync.pushCard(card).finally(updateSyncStatus);
+    }
+  }
+
+  /** Même principe que `persist` pour les fiches, mais pour les matières et
+   *  les dossiers (item 1/8) : jusqu'ici jamais vraiment synchronisés (une
+   *  matière créée ou déplacée sur un appareil n'apparaissait jamais, ou
+   *  pas correctement, sur les autres). */
+  async function persistSubject(subject) {
+    await DB.putSubject(subject);
+    if (Sync.isConfigured()) {
+      Sync.pushSubject(subject).finally(updateSyncStatus);
+    }
+  }
+  async function persistFolder(folder) {
+    await DB.putFolder(folder);
+    if (Sync.isConfigured()) {
+      Sync.pushFolder(folder).finally(updateSyncStatus);
+    }
+  }
+  /** Suppression douce envoyée aux autres appareils AVANT le retrait local
+   *  (voir schéma Supabase : "deleted": true plutôt qu'un vrai DELETE, pour
+   *  que le pull suivant sache retirer la matière/le dossier au lieu de le
+   *  voir réapparaître). */
+  async function pushSubjectDeleted(subject) {
+    if (Sync.isConfigured()) {
+      await Sync.pushSubject({ ...subject, deleted: true, updatedAt: new Date().toISOString() });
+    }
+  }
+  async function pushFolderDeleted(folder) {
+    if (Sync.isConfigured()) {
+      await Sync.pushFolder({ ...folder, deleted: true, updatedAt: new Date().toISOString() });
     }
   }
 
@@ -1990,7 +2047,14 @@
 
   function showNextCard() {
     isFlipped = false;
+    // Coupe l'animation de retournement pour CE changement de fiche (item
+    // 7 — bug corrigé : voir le commentaire CSS sur .no-flip-transition) —
+    // remise en place juste après (au prochain frame), pour que le
+    // prochain retournement volontaire (tap sur la fiche) reste bien animé.
+    flipCardEl.classList.add("no-flip-transition");
     flipCardEl.classList.remove("is-flipped");
+    void flipCardEl.offsetWidth; // force l'application de la classe avant la suite
+    requestAnimationFrame(() => flipCardEl.classList.remove("no-flip-transition"));
 
     if (reviewQueue.length > 0) {
       isBonusMode = false;
@@ -2376,7 +2440,7 @@
       // maintenant du HTML) — sinon une mise en forme au milieu du mot
       // recherché (ex. "Pa<b>ri</b>s") empêcherait de le retrouver.
       visible = visible.filter(
-        (c) => stripHtml(c.question).toLowerCase().includes(q) || stripHtml(c.answer).toLowerCase().includes(q)
+        (c) => stripHtmlFast(c.question).toLowerCase().includes(q) || stripHtmlFast(c.answer).toLowerCase().includes(q)
       );
     }
     totalCountEl.textContent = String(visible.length);
@@ -3382,6 +3446,8 @@
   const syncStatusTextEl = el("sync-status-text");
 
   let unsubscribeRealtime = null;
+  let unsubscribeSubjectsRealtime = null;
+  let unsubscribeFoldersRealtime = null;
   let syncAutoRetrying = false;
 
   function renderSyncView() {
@@ -3488,6 +3554,8 @@
       return;
     }
     if (unsubscribeRealtime) unsubscribeRealtime();
+    if (unsubscribeSubjectsRealtime) unsubscribeSubjectsRealtime();
+    if (unsubscribeFoldersRealtime) unsubscribeFoldersRealtime();
     Sync.clearConfig();
     syncForm.reset();
     renderSyncView();
@@ -3529,7 +3597,7 @@
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      await DB.putSubject(s);
+      await persistSubject(s);
       subjects.push(s);
       subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
       renderSubjectSelect();
@@ -3540,7 +3608,7 @@
     let general = subjects.find((s) => s.name === "Général");
     if (!general) {
       general = newSubject("Général");
-      await DB.putSubject(general);
+      await persistSubject(general);
       subjects.push(general);
       renderSubjectSelect();
       renderStatsSubjectSelect();
@@ -3618,7 +3686,90 @@
     renderDuePill();
   }
 
+  /** Fusionne une matière reçue de Supabase : adoptée si plus récente que
+   *  la version locale, retirée localement si marquée supprimée là-bas
+   *  (voir pushSubjectDeleted) — jamais l'inverse (une suppression locale
+   *  ne doit pas ressusciter une matière plus récente créée ailleurs). */
+  async function mergeRemoteSubject(remote) {
+    const idx = subjects.findIndex((s) => s.id === remote.id);
+    if (remote.deleted) {
+      if (idx >= 0) {
+        subjects.splice(idx, 1);
+        await DB.removeSubject(remote.id);
+        if (currentSubjectId === remote.id) {
+          currentSubjectId = subjects[0] ? subjects[0].id : null;
+        }
+      }
+      return;
+    }
+    const local = idx >= 0 ? subjects[idx] : null;
+    if (!local || new Date(remote.updatedAt || 0) > new Date(local.updatedAt || 0)) {
+      await DB.putSubject(remote);
+      if (idx >= 0) subjects[idx] = remote;
+      else subjects.push(remote);
+      subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    }
+  }
+
+  async function mergeRemoteFolder(remote) {
+    const idx = folders.findIndex((f) => f.id === remote.id);
+    if (remote.deleted) {
+      if (idx >= 0) {
+        folders.splice(idx, 1);
+        await DB.removeFolder(remote.id);
+      }
+      return;
+    }
+    const local = idx >= 0 ? folders[idx] : null;
+    if (!local || new Date(remote.updatedAt || 0) > new Date(local.updatedAt || 0)) {
+      await DB.putFolder(remote);
+      if (idx >= 0) folders[idx] = remote;
+      else folders.push(remote);
+    }
+  }
+
+  /** Même logique que reconcileWithRemote (fiches), pour les matières et
+   *  les dossiers (item 1/8). Dossiers d'abord : une matière peut référencer
+   *  un folderId qu'il vaut mieux avoir déjà en place. */
+  async function reconcileSubjectsAndFolders() {
+    const remoteFolders = await Sync.pullFolders();
+    const remoteFolderById = new Map(remoteFolders.map((r) => [r.id, r]));
+    for (const local of folders) {
+      const remote = remoteFolderById.get(local.id);
+      if (!remote || new Date(local.updatedAt || 0) > new Date(remote.updatedAt || 0)) {
+        Sync.pushFolder(local);
+      }
+    }
+    for (const remote of remoteFolders) {
+      await mergeRemoteFolder(remote);
+    }
+
+    const remoteSubjects = await Sync.pullSubjects();
+    const remoteSubjectById = new Map(remoteSubjects.map((r) => [r.id, r]));
+    for (const local of subjects) {
+      const remote = remoteSubjectById.get(local.id);
+      if (!remote || new Date(local.updatedAt || 0) > new Date(remote.updatedAt || 0)) {
+        Sync.pushSubject(local);
+      }
+    }
+    for (const remote of remoteSubjects) {
+      await mergeRemoteSubject(remote);
+    }
+
+    if (subjects.length === 0) {
+      const general = newSubject("Général");
+      await persistSubject(general);
+      subjects = [general];
+    }
+    if (!currentSubjectId || (!isSentinelSubject(currentSubjectId) && !subjects.some((s) => s.id === currentSubjectId))) {
+      currentSubjectId = subjects[0].id;
+    }
+  }
+
   async function reconcileWithRemote() {
+    await reconcileSubjectsAndFolders();
+    renderSubjectSelect();
+
     const remoteCards = await Sync.pullAll();
     const remoteById = new Map(remoteCards.map((r) => [r.id, r]));
 
@@ -3643,6 +3794,8 @@
   async function connectSync() {
     if (!Sync.isConfigured()) return;
     if (unsubscribeRealtime) unsubscribeRealtime();
+    if (unsubscribeSubjectsRealtime) unsubscribeSubjectsRealtime();
+    if (unsubscribeFoldersRealtime) unsubscribeFoldersRealtime();
 
     await reconcileWithRemote();
     await Sync.flushPending((id) => cards.find((c) => c.id === id));
@@ -3659,6 +3812,16 @@
         // Rien n'était affiché : on peut lancer une session sans rien perturber.
         startReviewSession();
       }
+    });
+
+    unsubscribeSubjectsRealtime = Sync.subscribeSubjectsRealtime(async (remote) => {
+      await mergeRemoteSubject(remote);
+      renderSubjectSelect();
+      renderAll();
+    });
+    unsubscribeFoldersRealtime = Sync.subscribeFoldersRealtime(async (remote) => {
+      await mergeRemoteFolder(remote);
+      renderSubjectManageList();
     });
 
     updateSyncStatus();

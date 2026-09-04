@@ -242,6 +242,147 @@ function subscribeRealtime(onRemoteChange) {
 }
 
 /* ---------------------------------------------------------
+   Matières et dossiers (item 1/8) : jusqu'ici jamais vraiment synchronisés
+   (seul le NOM de la matière était recopié sur chaque fiche) — un dossier
+   créé sur un appareil n'apparaissait donc jamais sur les autres, et le
+   classement en dossier / le mode d'apprentissage d'une matière ne
+   voyageaient pas non plus. Même schéma que les fiches : upsert avec file
+   d'attente si hors-ligne, suppression douce ("deleted": true) plutôt
+   qu'un vrai DELETE pour que les autres appareils sachent qu'une matière
+   ou un dossier a disparu au lieu de le voir réapparaître au prochain pull.
+--------------------------------------------------------- */
+function subjectToRow(subject, syncCode) {
+  return {
+    id: subject.id,
+    sync_code: syncCode,
+    name: subject.name,
+    folder_id: subject.folderId || null,
+    mode_id: subject.modeId || "normal",
+    created_at: subject.createdAt,
+    updated_at: subject.updatedAt || subject.createdAt,
+    deleted: Boolean(subject.deleted),
+  };
+}
+function rowToSubject(row) {
+  return {
+    id: row.id,
+    name: row.name,
+    folderId: row.folder_id || null,
+    modeId: row.mode_id || "normal",
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    deleted: Boolean(row.deleted),
+  };
+}
+
+function folderToRow(folder, syncCode) {
+  return {
+    id: folder.id,
+    sync_code: syncCode,
+    name: folder.name,
+    parent_id: folder.parentId || null,
+    created_at: folder.createdAt,
+    updated_at: folder.updatedAt || folder.createdAt,
+    deleted: Boolean(folder.deleted),
+  };
+}
+function rowToFolder(row) {
+  return {
+    id: row.id,
+    name: row.name,
+    parentId: row.parent_id || null,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    deleted: Boolean(row.deleted),
+  };
+}
+
+async function pullTable(tableName, rowMapper) {
+  const c = getClient();
+  const { code } = getConfig();
+  if (!c || !code) return [];
+  const all = [];
+  let from = 0;
+  while (true) {
+    const to = from + PULL_PAGE_SIZE - 1;
+    const { data, error } = await c.from(tableName).select("*").eq("sync_code", code).range(from, to);
+    if (error) {
+      console.warn(`Sync: échec du chargement distant (${tableName})`, error.message);
+      return all.map(rowMapper);
+    }
+    all.push(...data);
+    if (data.length < PULL_PAGE_SIZE) break;
+    from += PULL_PAGE_SIZE;
+  }
+  return all.map(rowMapper);
+}
+
+async function pullSubjects() {
+  return pullTable("subjects", rowToSubject);
+}
+async function pullFolders() {
+  return pullTable("folders", rowToFolder);
+}
+
+async function pushSubject(subject) {
+  const c = getClient();
+  const { code } = getConfig();
+  if (!c || !code) return false;
+  const { error } = await c.from("subjects").upsert(subjectToRow(subject, code));
+  if (error) {
+    console.warn("Sync: échec de l'envoi de la matière", error.message);
+    return false;
+  }
+  return true;
+}
+
+async function pushFolder(folder) {
+  const c = getClient();
+  const { code } = getConfig();
+  if (!c || !code) return false;
+  const { error } = await c.from("folders").upsert(folderToRow(folder, code));
+  if (error) {
+    console.warn("Sync: échec de l'envoi du dossier", error.message);
+    return false;
+  }
+  return true;
+}
+
+function subscribeSubjectsRealtime(onRemoteChange) {
+  const c = getClient();
+  const { code } = getConfig();
+  if (!c || !code) return () => {};
+  const channel = c
+    .channel(`subjects-${code}`)
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "subjects", filter: `sync_code=eq.${code}` },
+      (payload) => {
+        if (payload.new) onRemoteChange(rowToSubject(payload.new));
+      }
+    )
+    .subscribe();
+  return () => c.removeChannel(channel);
+}
+
+function subscribeFoldersRealtime(onRemoteChange) {
+  const c = getClient();
+  const { code } = getConfig();
+  if (!c || !code) return () => {};
+  const channel = c
+    .channel(`folders-${code}`)
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "folders", filter: `sync_code=eq.${code}` },
+      (payload) => {
+        if (payload.new) onRemoteChange(rowToFolder(payload.new));
+      }
+    )
+    .subscribe();
+  return () => c.removeChannel(channel);
+}
+
+/* ---------------------------------------------------------
    État des récompenses (page "Récompenses") : une seule ligne JSON par
    code de synchro, séparée des fiches. Contrairement aux fiches, il n'y a
    rien à fusionner champ par champ ici : on prend l'union des clés
@@ -315,6 +456,12 @@ window.Sync = {
   pullRewardState,
   pushRewardState,
   subscribeRewardRealtime,
+  pullSubjects,
+  pushSubject,
+  subscribeSubjectsRealtime,
+  pullFolders,
+  pushFolder,
+  subscribeFoldersRealtime,
   pendingCount: () => getPending().length,
   getLastError: () => lastError,
 };

@@ -611,6 +611,17 @@ textarea, input {
   text-align: left;
 }
 
+/* Coupe l'animation de retournement UNIQUEMENT au moment de passer à la
+   fiche suivante (item 7 — bug corrigé) : sans ça, remettre la fiche à
+   l'endroit en cours de rotation laissait entrevoir furtivement la réponse
+   de la fiche SUIVANTE (déjà substituée dans le DOM) avant la fin de
+   l'animation. L'animation reste intacte pour le retournement volontaire
+   (tap sur la fiche pour voir la réponse), qui ne pose jamais ce problème
+   puisque le contenu ne change pas pendant CE retournement-là. */
+.stack-card--front.no-flip-transition {
+  transition: none !important;
+}
+
 .stack-card--front.is-flipped {
   transform: rotateY(180deg);
 }
