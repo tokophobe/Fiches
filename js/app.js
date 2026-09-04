@@ -138,34 +138,29 @@
      subjectId -> réglages), donc conservé d'une version de l'appli à
      l'autre comme le reste des réglages.
      --------------------------------------------------------- */
-  const SUBJECT_ALGO_KEY = "fiches_subject_algo";
-  const ALGO_PRESETS = {
-    cool: { Ka: 3, Kh: 1.6, Kg: 2, Ke: 3.5, Ma: 3, Mh: 6, Mg: 60, Me: 300 },
-    normal: { Ka: 1.3, Kh: 1.5, Kg: 1.8, Ke: 2.4, Ma: 2, Mh: 3, Mg: 30, Me: 180 },
-    renforce: { Ka: 1, Kh: 1.3, Kg: 1.6, Ke: 1.9, Ma: 1, Mh: 2, Mg: 15, Me: 90 },
+  /* ---------------------------------------------------------
+     Modes d'apprentissage (item 2) : désormais des entités GLOBALES
+     (3 modes fixes + des modes personnalisés nommés, créés/modifiés/
+     supprimés librement), chacune affectée à une ou plusieurs matières
+     (ou affectée en bloc à un dossier entier, qui répercute alors le
+     changement sur toutes les matières qu'il contient). Modifier les
+     coefficients d'un mode affecte donc TOUTES les matières qui l'utilisent
+     — contrairement à l'ancien système où chaque matière avait ses 4
+     emplacements de réglages indépendants.
+  --------------------------------------------------------- */
+  const LEARNING_MODES_KEY = "fiches_learning_modes";
+  const BUILTIN_MODE_IDS = ["cool", "normal", "renforce"];
+  const BUILTIN_MODE_DEFAULTS = {
+    cool: { name: "Cool", Ka: 3, Kh: 1.6, Kg: 2, Ke: 3.5, Ma: 3, Mh: 6, Mg: 60, Me: 300 },
+    normal: { name: "Normal", Ka: 1.3, Kh: 1.5, Kg: 1.8, Ke: 2.4, Ma: 2, Mh: 3, Mg: 30, Me: 180 },
+    renforce: { name: "Renforcé", Ka: 1, Kh: 1.3, Kg: 1.6, Ke: 1.9, Ma: 1, Mh: 2, Mg: 15, Me: 90 },
   };
+  // Conservés pour compatibilité avec le code existant qui les référence
+  // encore (couleurs, libellés courts...).
   const ALGO_MODE_ORDER = ["cool", "normal", "renforce", "custom"];
-  const ALGO_MODE_LABELS = {
-    cool: "Apprentissage cool",
-    normal: "Apprentissage normal",
-    renforce: "Apprentissage renforcé",
-    custom: "Personnalisé",
-  };
   const ALGO_MODE_SHORT_LABELS = { cool: "Cool", normal: "Normal", renforce: "Renforcé", custom: "Personnalisé" };
   const ALGO_KEYS8 = ["Ka", "Kh", "Kg", "Ke", "Ma", "Mh", "Mg", "Me"];
 
-  function loadSubjectAlgoMap() {
-    try {
-      const raw = localStorage.getItem(SUBJECT_ALGO_KEY);
-      return raw ? JSON.parse(raw) : {};
-    } catch (e) {
-      return {};
-    }
-  }
-  function saveSubjectAlgoMap(map) {
-    localStorage.setItem(SUBJECT_ALGO_KEY, JSON.stringify(map));
-    touchAppSettingsTimestamp();
-  }
   function clampAlgoK(v, fallback) {
     const n = Math.round(Number(v) * 10) / 10;
     return Number.isFinite(n) ? Math.min(10, Math.max(1, n)) : fallback;
@@ -174,82 +169,182 @@
     const n = Math.round(Number(v));
     return Number.isFinite(n) ? Math.min(365, Math.max(1, n)) : fallback;
   }
-  function clampAlgoProfile(raw, fallbackKey) {
-    const fb = ALGO_PRESETS[fallbackKey] || ALGO_PRESETS.normal;
+  function clampModeProfile(raw, fallbackId) {
+    const fb = BUILTIN_MODE_DEFAULTS[fallbackId] || BUILTIN_MODE_DEFAULTS.normal;
     const out = {};
     ["Ka", "Kh", "Kg", "Ke"].forEach((k) => { out[k] = clampAlgoK(raw && raw[k], fb[k]); });
     ["Ma", "Mh", "Mg", "Me"].forEach((k) => { out[k] = clampAlgoM(raw && raw[k], fb[k]); });
     return out;
   }
 
-  /** Chaque matière a désormais 4 "emplacements" de réglages indépendants —
-   *  un par mode (cool / normal / renforcé / personnalisé) — plutôt qu'un
-   *  seul jeu de 8 valeurs. Modifier un coefficient pendant qu'on est sur
-   *  "Normal" garde le mode affiché sur "Normal" (avec la valeur modifiée
-   *  mémorisée dans CET emplacement) au lieu de basculer automatiquement
-   *  sur "Personnalisé" — chaque mode se personnalise et persiste pour
-   *  lui-même. "Personnalisé" est un 4e emplacement libre, sans valeurs
-   *  d'origine à restaurer (voir resetAlgoModeToDefault). */
-  function defaultSubjectAlgoConfig() {
-    return {
-      mode: "normal",
-      profiles: {
-        cool: { ...ALGO_PRESETS.cool },
-        normal: { ...ALGO_PRESETS.normal },
-        renforce: { ...ALGO_PRESETS.renforce },
-        custom: { ...ALGO_PRESETS.normal },
-      },
-    };
-  }
-
-  function getSubjectAlgoConfig(subjectId) {
-    const map = loadSubjectAlgoMap();
-    const raw = map[subjectId];
-    const def = defaultSubjectAlgoConfig();
-    if (!raw) return def;
-
-    // Migration depuis l'ancien format plat (une seule combinaison de 8
-    // valeurs par matière, avant l'introduction des 4 emplacements) : on la
-    // range dans l'emplacement dont elle se rapproche, ou "personnalisé".
-    if (raw.Ka !== undefined && !raw.profiles) {
-      let matchedKey = "custom";
-      for (const [key, preset] of Object.entries(ALGO_PRESETS)) {
-        if (ALGO_KEYS8.every((k) => Math.abs(raw[k] - preset[k]) < 1e-9)) {
-          matchedKey = key;
-          break;
-        }
-      }
-      const cfg = defaultSubjectAlgoConfig();
-      cfg.mode = matchedKey;
-      cfg.profiles[matchedKey] = clampAlgoProfile(raw, matchedKey);
-      return cfg;
+  /** Charge tous les modes (3 fixes + personnalisés), garantissant que les
+   *  3 fixes existent toujours (avec leurs valeurs éventuellement
+   *  modifiées, sinon leurs valeurs d'origine). */
+  function loadLearningModes() {
+    let stored = {};
+    try {
+      const raw = localStorage.getItem(LEARNING_MODES_KEY);
+      stored = raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      stored = {};
     }
-
-    const mode = ALGO_MODE_ORDER.includes(raw.mode) ? raw.mode : "normal";
-    const profiles = {};
-    ALGO_MODE_ORDER.forEach((k) => {
-      profiles[k] = clampAlgoProfile(raw.profiles && raw.profiles[k], k);
+    const modes = {};
+    BUILTIN_MODE_IDS.forEach((id) => {
+      modes[id] = {
+        id,
+        name: BUILTIN_MODE_DEFAULTS[id].name,
+        builtin: true,
+        ...clampModeProfile(stored[id], id),
+      };
     });
-    return { mode, profiles };
+    Object.values(stored).forEach((m) => {
+      if (m && m.id && !BUILTIN_MODE_IDS.includes(m.id)) {
+        modes[m.id] = { id: m.id, name: (m.name || "Sans nom").trim() || "Sans nom", builtin: false, ...clampModeProfile(m, "normal") };
+      }
+    });
+    return modes;
+  }
+  function saveLearningModes(modes) {
+    localStorage.setItem(LEARNING_MODES_KEY, JSON.stringify(modes));
+    touchAppSettingsTimestamp();
+  }
+  function createCustomMode(name, basedOnId) {
+    const modes = loadLearningModes();
+    const id = "custom-" + uid();
+    const base = modes[basedOnId] || modes.normal;
+    modes[id] = { id, name: (name || "Nouveau mode").trim(), builtin: false, ...clampModeProfile(base, "normal") };
+    saveLearningModes(modes);
+    return id;
+  }
+  function renameCustomMode(modeId, name) {
+    const modes = loadLearningModes();
+    if (!modes[modeId] || modes[modeId].builtin || !name || !name.trim()) return;
+    modes[modeId].name = name.trim();
+    saveLearningModes(modes);
+  }
+  async function deleteCustomMode(modeId) {
+    const modes = loadLearningModes();
+    if (!modes[modeId] || modes[modeId].builtin) return;
+    delete modes[modeId];
+    saveLearningModes(modes);
+    // Toute matière qui utilisait ce mode supprimé retombe sur "Normal".
+    for (const s of subjects) {
+      if (s.modeId === modeId) {
+        s.modeId = "normal";
+        s.updatedAt = new Date().toISOString();
+        await DB.putSubject(s);
+      }
+    }
+  }
+  function updateModeProfile(modeId, values) {
+    const modes = loadLearningModes();
+    if (!modes[modeId]) return;
+    Object.assign(modes[modeId], clampModeProfile(values, modeId));
+    saveLearningModes(modes);
   }
 
-  function setSubjectAlgoConfig(subjectId, config) {
-    const map = loadSubjectAlgoMap();
-    map[subjectId] = config;
-    saveSubjectAlgoMap(map);
+  /** Mode effectif d'une matière (objet complet, avec Ka..Me) — "Normal" si
+   *  la matière n'a pas encore de mode affecté ou si son mode a disparu. */
+  function getSubjectMode(subjectId) {
+    const s = subjects.find((x) => x.id === subjectId);
+    const modes = loadLearningModes();
+    const modeId = s && modes[s.modeId] ? s.modeId : "normal";
+    return modes[modeId];
   }
-
-  /** Réglages EFFECTIFS d'une matière : le profil de son mode actif — c'est
-   *  ce que l'algorithme de planification utilise réellement. */
   function getSubjectAlgoSettings(subjectId) {
-    const cfg = getSubjectAlgoConfig(subjectId);
-    return cfg.profiles[cfg.mode];
+    return getSubjectMode(subjectId);
   }
   function getSubjectAlgoMode(subjectId) {
-    return getSubjectAlgoConfig(subjectId).mode;
+    return getSubjectMode(subjectId).id;
   }
-  function algoModeName(key) {
-    return ALGO_MODE_LABELS[key] || ALGO_MODE_LABELS.normal;
+  /** Affecte un mode à une matière (utilisé aussi en boucle pour affecter un
+   *  dossier entier — voir assignModeToFolder). */
+  async function assignModeToSubject(subjectId, modeId) {
+    const s = subjects.find((x) => x.id === subjectId);
+    if (!s) return;
+    s.modeId = modeId;
+    s.updatedAt = new Date().toISOString();
+    await DB.putSubject(s);
+  }
+  /** "quand on affecte un mode à un sous dossier ou un dossier, ça
+   *  s'applique à toutes les matières contenues dedans" (item 1/2) : un
+   *  affectage en bloc, immédiat, pas une référence permanente au dossier —
+   *  déplacer ensuite une matière hors du dossier ne lui retire pas le mode
+   *  déjà affecté. */
+  async function assignModeToFolder(folderId, modeId) {
+    for (const id of subjectIdsInFolder(folderId)) {
+      await assignModeToSubject(id, modeId);
+    }
+  }
+
+  /** Migration ponctuelle depuis l'ancien système (4 emplacements de
+   *  réglages PAR MATIÈRE, clé localStorage "fiches_subject_algo") vers les
+   *  modes globaux nommés (item 2). Pour chaque matière ayant un réglage
+   *  dans l'ancien format : si son mode actif à l'époque correspondait
+   *  exactement à un préréglage fixe, elle est simplement affectée à ce
+   *  mode ; sinon (c'était un "Personnalisé" propre à cette matière), un
+   *  nouveau mode personnalisé est créé avec ces valeurs, nommé d'après la
+   *  matière, pour ne rien perdre de ses réglages existants. Ne s'exécute
+   *  qu'une fois (l'ancienne clé est ensuite supprimée). */
+  async function migrateSubjectModesIfNeeded() {
+    const OLD_KEY = "fiches_subject_algo";
+    let oldMap;
+    try {
+      const raw = localStorage.getItem(OLD_KEY);
+      oldMap = raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      oldMap = null;
+    }
+    let changed = false;
+    for (const s of subjects) {
+      if (s.modeId === undefined) {
+        s.modeId = "normal";
+        changed = true;
+      }
+    }
+    if (oldMap) {
+      for (const s of subjects) {
+        const old = oldMap[s.id];
+        if (!old || !old.profiles) continue;
+        const mode = old.mode && old.profiles[old.mode] ? old.profiles[old.mode] : old.profiles.normal;
+        if (!mode) continue;
+        let matched = null;
+        for (const key of BUILTIN_MODE_IDS) {
+          if (ALGO_KEYS8.every((k) => Math.abs(mode[k] - BUILTIN_MODE_DEFAULTS[key][k]) < 1e-9)) {
+            matched = key;
+            break;
+          }
+        }
+        if (matched) {
+          s.modeId = matched;
+        } else {
+          s.modeId = createCustomMode(`${s.name} (personnalisé)`, "normal");
+          updateModeProfile(s.modeId, mode);
+        }
+        changed = true;
+      }
+      localStorage.removeItem(OLD_KEY);
+    }
+    if (changed) {
+      for (const s of subjects) {
+        await DB.putSubject(s);
+      }
+    }
+  }
+
+  /** Clé CSS de couleur (is-cool/is-normal/is-renforce/is-custom) : tout
+   *  mode personnalisé (id "custom-xxxx", quel que soit son nom) retombe
+   *  sur la couleur "is-custom" (jaune) partagée par tous les modes maison. */
+  function algoModeCssKey(modeId) {
+    return BUILTIN_MODE_IDS.includes(modeId) ? modeId : "custom";
+  }
+  /** Nom affiché d'un mode — le vrai nom pour un mode personnalisé (créé et
+   *  nommé librement), le libellé court fixe pour les 3 modes intégrés. */
+  function modeDisplayName(modeId) {
+    const modes = loadLearningModes();
+    const m = modes[modeId];
+    if (m) return m.name;
+    return ALGO_MODE_SHORT_LABELS.normal;
   }
 
   const ALGO_RATING_KEYS = { again: ["Ka", "Ma"], hard: ["Kh", "Mh"], good: ["Kg", "Mg"], easy: ["Ke", "Me"] };
@@ -415,6 +510,7 @@
       await DB.putSubject(general);
       subjects = [general];
     }
+    await migrateSubjectModesIfNeeded();
     subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
 
     const saved = localStorage.getItem(CURRENT_SUBJECT_KEY);
@@ -605,6 +701,13 @@
       moveBtn.title = "Déplacer ce dossier";
       moveBtn.addEventListener("click", () => openMovePicker("folder", f.id));
 
+      const assignBtn = document.createElement("button");
+      assignBtn.type = "button";
+      assignBtn.className = "icon-btn";
+      assignBtn.textContent = "🎓";
+      assignBtn.title = "Affecter un mode d'apprentissage à toutes les matières de ce dossier";
+      assignBtn.addEventListener("click", () => openAssignView("folder", f.id, "manage"));
+
       const delBtn = document.createElement("button");
       delBtn.type = "button";
       delBtn.className = "icon-btn icon-btn--danger";
@@ -614,6 +717,7 @@
 
       actions.appendChild(renameBtn);
       actions.appendChild(moveBtn);
+      actions.appendChild(assignBtn);
       actions.appendChild(delBtn);
 
       li.appendChild(nameBtn);
@@ -646,8 +750,8 @@
       // comme un bouton, sans élargir la ligne.
       const algoBtn = document.createElement("button");
       algoBtn.type = "button";
-      algoBtn.className = `subject-row-algo-btn ${ALGO_MODE_KEY_TO_CLASS[getSubjectAlgoMode(s.id)]}`;
-      algoBtn.innerHTML = `🎓 <span>${ALGO_MODE_SHORT_LABELS[getSubjectAlgoMode(s.id)]}</span>`;
+      algoBtn.className = `subject-row-algo-btn ${ALGO_MODE_KEY_TO_CLASS[algoModeCssKey(getSubjectAlgoMode(s.id))]}`;
+      algoBtn.innerHTML = `🎓 <span>${modeDisplayName(getSubjectAlgoMode(s.id))}</span>`;
       algoBtn.title = "Mode d'apprentissage de cette matière";
       algoBtn.addEventListener("click", () => openSubjectAlgoView(s.id));
 
@@ -798,52 +902,89 @@
   if (manageAddFolderBtn) manageAddFolderBtn.addEventListener("click", createFolderFlow);
 
   /* ---------------------------------------------------------
-     Vue "Mode d'apprentissage" (par matière, ouverte depuis Gérer)
+     Vue globale "Modes d'apprentissage" (item 2) : édite un mode (3 fixes +
+     personnalisés créables/renommables/supprimables) — les réglages sont
+     globaux, partagés par toutes les matières qui utilisent ce mode.
   --------------------------------------------------------- */
-  let algoEditingSubjectId = null;
+  let algoEditingModeId = "normal";
+  /** État coché/décoché des 4 courbes (item 3), partagé par les deux
+   *  graphiques (édition globale + aperçu d'affectation). */
+  let algoChartVisible = { again: true, hard: true, good: true, easy: true };
 
   const ALGO_MODE_COLORS = { cool: "var(--sage)", normal: "var(--amber)", renforce: "var(--terracotta)", custom: "#e8c84a" };
+  function algoSliderIdxForMode(modeId) {
+    const i = BUILTIN_MODE_IDS.indexOf(modeId);
+    return i === -1 ? 3 : i;
+  }
   function updateAlgoModeTicksHighlight(idx) {
     document.querySelectorAll("#algo-mode-ticks span").forEach((tick) => {
       tick.classList.toggle("is-active", Number(tick.dataset.idx) === idx);
     });
     const slider = el("algo-mode-slider");
-    if (slider) slider.style.setProperty("--algo-slider-color", ALGO_MODE_COLORS[ALGO_MODE_ORDER[idx]] || "var(--amber)");
+    const key = ALGO_MODE_ORDER[idx];
+    if (slider) slider.style.setProperty("--algo-slider-color", ALGO_MODE_COLORS[key] || "var(--amber)");
     const ticksWrap = el("algo-mode-ticks");
-    if (ticksWrap) ticksWrap.style.setProperty("--algo-tick-color", ALGO_MODE_COLORS[ALGO_MODE_ORDER[idx]] || "var(--amber)");
+    if (ticksWrap) ticksWrap.style.setProperty("--algo-tick-color", ALGO_MODE_COLORS[key] || "var(--amber)");
   }
 
-  /** Charge dans le formulaire le profil d'UN mode donné (pas forcément
-   *  celui qui matche encore un préréglage : chaque mode garde ses propres
-   *  valeurs modifiées, voir getSubjectAlgoConfig). Le bouton "revenir aux
-   *  réglages d'origine" est masqué pour "Personnalisé", qui n'a pas de
-   *  valeurs d'origine à restaurer. */
-  function loadAlgoFormIntoInputs(mode, profile) {
-    el("algo-ka").value = profile.Ka;
-    el("algo-kh").value = profile.Kh;
-    el("algo-kg").value = profile.Kg;
-    el("algo-ke").value = profile.Ke;
-    el("algo-ma").value = profile.Ma;
-    el("algo-mh").value = profile.Mh;
-    el("algo-mg").value = profile.Mg;
-    el("algo-me").value = profile.Me;
-    const idx = ALGO_MODE_ORDER.indexOf(mode);
+  function renderCustomPickerList() {
+    const list = el("algo-custom-picker-list");
+    if (!list) return;
+    const modes = loadLearningModes();
+    const customs = Object.values(modes).filter((m) => !m.builtin).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    list.innerHTML = "";
+    if (customs.length === 0) {
+      const p = document.createElement("p");
+      p.className = "field-hint";
+      p.textContent = "Aucun mode personnalisé pour l'instant.";
+      list.appendChild(p);
+      return;
+    }
+    customs.forEach((m) => {
+      const label = document.createElement("label");
+      label.className = "multi-subject-picker-item";
+      const cb = document.createElement("input");
+      cb.type = "radio";
+      cb.name = "custom-mode-pick";
+      cb.value = m.id;
+      cb.checked = m.id === algoEditingModeId;
+      const span = document.createElement("span");
+      span.textContent = m.name;
+      label.appendChild(cb);
+      label.appendChild(span);
+      list.appendChild(label);
+      cb.addEventListener("change", () => loadModeFormIntoInputs(m.id));
+    });
+  }
+
+  function loadModeFormIntoInputs(modeId) {
+    const modes = loadLearningModes();
+    const m = modes[modeId] || modes.normal;
+    algoEditingModeId = m.id;
+    el("algo-ka").value = m.Ka;
+    el("algo-kh").value = m.Kh;
+    el("algo-kg").value = m.Kg;
+    el("algo-ke").value = m.Ke;
+    el("algo-ma").value = m.Ma;
+    el("algo-mh").value = m.Mh;
+    el("algo-mg").value = m.Mg;
+    el("algo-me").value = m.Me;
+    const idx = algoSliderIdxForMode(m.id);
     const slider = el("algo-mode-slider");
     if (slider) slider.value = String(idx);
     updateAlgoModeTicksHighlight(idx);
+    const customPicker = el("algo-custom-picker");
+    if (customPicker) customPicker.hidden = idx !== 3;
+    if (idx === 3) renderCustomPickerList();
     const resetBtn = el("algo-reset-btn");
-    if (resetBtn) resetBtn.hidden = mode === "custom";
+    if (resetBtn) resetBtn.hidden = !m.builtin;
     renderAlgoPreviewChart();
   }
 
-  /** Graphique d'aperçu (item 6) : 4 courbes montrant, pour chaque bouton de
-   *  notation, comment l'échéance évoluerait si on l'appuyait plusieurs fois
-   *  de suite depuis 1 jour — abscisse = nombre d'appuis, ordonnée =
-   *  échéance résultante (arrondie et plafonnée, comme affiché à l'écran).
-   *  Échelle LINÉAIRE (pas log, demandé explicitement — item 5) avec la
-   *  valeur écrite à côté de chaque point pour rester lisible malgré les
-   *  écarts importants entre les 4 courbes. Recalculé à chaque changement
-   *  d'un des 8 champs au-dessus. */
+  /** Construit le HTML (légende + SVG) d'un graphique d'aperçu pour un jeu
+   *  de réglages donné — partagé entre la page d'édition globale et la
+   *  page d'affectation (lecture seule). Échelle LINÉAIRE (pas log, item 5
+   *  d'une demande précédente), valeur écrite à côté de chaque point. */
   const ALGO_CHART_COLORS = { again: "var(--terracotta)", hard: "var(--amber)", good: "var(--sage)", easy: "var(--teal)" };
   const ALGO_CHART_RATING_LABELS = { again: "Encore", hard: "Difficile", good: "Bien", easy: "Facile" };
   function computeAlgoPreviewSeries(settings, rating, n) {
@@ -855,15 +996,7 @@
     }
     return out;
   }
-  /** État coché/décoché des 4 courbes (item 3) : persiste seulement le
-   *  temps de la session sur cette page, pas besoin de le sauvegarder
-   *  ailleurs — se réinitialise à "tout coché" à chaque ouverture. */
-  let algoChartVisible = { again: true, hard: true, good: true, easy: true };
-
-  function renderAlgoPreviewChart() {
-    const wrap = el("algo-chart-wrap");
-    if (!wrap) return;
-    const settings = readAlgoFormSettings();
+  function buildPreviewChartHtml(settings) {
     const N = 8;
     const ratings = ["again", "hard", "good", "easy"];
     const seriesByRating = {};
@@ -871,9 +1004,6 @@
       seriesByRating[r] = computeAlgoPreviewSeries(settings, r, N);
     });
     const visibleRatings = ratings.filter((r) => algoChartVisible[r]);
-    // L'échelle s'adapte aux seules courbes affichées (item 3) : décocher
-    // "Bien"/"Facile" (qui grimpent beaucoup plus haut) permet de mieux
-    // distinguer "Encore"/"Difficile", qui restent sinon écrasées en bas.
     let maxVal = 1;
     visibleRatings.forEach((r) => { maxVal = Math.max(maxVal, ...seriesByRating[r]); });
 
@@ -887,42 +1017,27 @@
       .join("");
 
     if (visibleRatings.length === 0) {
-      wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div><p class="field-hint algo-chart-empty">Coche au moins une courbe pour l'afficher.</p>`;
-      wrap.querySelectorAll(".algo-chart-legend-checkbox").forEach((cb) => {
-        cb.addEventListener("change", () => {
-          algoChartVisible[cb.dataset.rating] = cb.checked;
-          renderAlgoPreviewChart();
-        });
-      });
-      return;
+      return `<div class="algo-chart-legend">${legend}</div><p class="field-hint algo-chart-empty">Coche au moins une courbe pour l'afficher.</p>`;
     }
 
-    // Plus haut que la version précédente (item 5), pour la lisibilité.
     const W = 320, H = 260, padL = 30, padB = 22, padT = 14, padR = 12;
     const plotW = W - padL - padR;
     const plotH = H - padT - padB;
     const xPos = (i) => padL + (i / (N - 1)) * plotW;
-    // Échelle linéaire simple : 0 en bas, maxVal (arrondi à la dizaine
-    // supérieure) en haut.
     const yMax = Math.max(10, Math.ceil((maxVal * 1.08) / 10) * 10);
     const yPos = (v) => padT + (1 - v / yMax) * plotH;
 
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;">`;
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--desk);border-radius:8px;">`;
     svg += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
     svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
 
-    // 4 graduations horizontales réparties sur la hauteur (0, 1/3, 2/3, max).
     [0, yMax / 3, (2 * yMax) / 3, yMax].forEach((t) => {
       const y = yPos(t);
       svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(247,241,225,0.1)" stroke-width="1"/>`;
       svg += `<text x="${padL - 4}" y="${y + 3}" font-size="8" fill="#9aa89e" text-anchor="end">${Math.round(t)}</text>`;
     });
 
-    // Léger décalage horizontal par courbe pour que les étiquettes de valeur
-    // (item 5 : "indiquer à côté des points la valeur correspondante") ne se
-    // chevauchent pas trop entre les courbes affichées quand elles se rejoignent.
     const labelDx = { again: -9, hard: -3, good: 3, easy: 9 };
-
     visibleRatings.forEach((r) => {
       const s = seriesByRating[r];
       const pts = s.map((v, i) => `${xPos(i)},${yPos(v)}`).join(" ");
@@ -933,73 +1048,254 @@
         svg += `<text x="${x + labelDx[r]}" y="${y - 5}" font-size="7.5" fill="${ALGO_CHART_COLORS[r]}" text-anchor="middle" font-family="var(--font-mono)">${v}</text>`;
       });
     });
-
     for (let i = 0; i < N; i++) {
       svg += `<text x="${xPos(i)}" y="${H - padB + 12}" font-size="8" fill="#9aa89e" text-anchor="middle">${i + 1}</text>`;
     }
     svg += `</svg>`;
 
-    wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${svg}`;
+    return `<div class="algo-chart-legend">${legend}</div>${svg}`;
+  }
+
+  function wireChartCheckboxes(wrap, onToggle) {
     wrap.querySelectorAll(".algo-chart-legend-checkbox").forEach((cb) => {
       cb.addEventListener("change", () => {
         algoChartVisible[cb.dataset.rating] = cb.checked;
-        renderAlgoPreviewChart();
+        onToggle();
       });
     });
   }
 
+  function renderAlgoPreviewChart() {
+    const wrap = el("algo-chart-wrap");
+    if (!wrap) return;
+    wrap.innerHTML = buildPreviewChartHtml(readAlgoFormSettings());
+    wireChartCheckboxes(wrap, renderAlgoPreviewChart);
+  }
+
   function readAlgoFormSettings() {
     return {
-      Ka: clampAlgoK(el("algo-ka").value, ALGO_PRESETS.normal.Ka),
-      Kh: clampAlgoK(el("algo-kh").value, ALGO_PRESETS.normal.Kh),
-      Kg: clampAlgoK(el("algo-kg").value, ALGO_PRESETS.normal.Kg),
-      Ke: clampAlgoK(el("algo-ke").value, ALGO_PRESETS.normal.Ke),
-      Ma: clampAlgoM(el("algo-ma").value, ALGO_PRESETS.normal.Ma),
-      Mh: clampAlgoM(el("algo-mh").value, ALGO_PRESETS.normal.Mh),
-      Mg: clampAlgoM(el("algo-mg").value, ALGO_PRESETS.normal.Mg),
-      Me: clampAlgoM(el("algo-me").value, ALGO_PRESETS.normal.Me),
+      Ka: clampAlgoK(el("algo-ka").value, BUILTIN_MODE_DEFAULTS.normal.Ka),
+      Kh: clampAlgoK(el("algo-kh").value, BUILTIN_MODE_DEFAULTS.normal.Kh),
+      Kg: clampAlgoK(el("algo-kg").value, BUILTIN_MODE_DEFAULTS.normal.Kg),
+      Ke: clampAlgoK(el("algo-ke").value, BUILTIN_MODE_DEFAULTS.normal.Ke),
+      Ma: clampAlgoM(el("algo-ma").value, BUILTIN_MODE_DEFAULTS.normal.Ma),
+      Mh: clampAlgoM(el("algo-mh").value, BUILTIN_MODE_DEFAULTS.normal.Mh),
+      Mg: clampAlgoM(el("algo-mg").value, BUILTIN_MODE_DEFAULTS.normal.Mg),
+      Me: clampAlgoM(el("algo-me").value, BUILTIN_MODE_DEFAULTS.normal.Me),
     };
   }
 
-  /** Enregistre les valeurs saisies dans le profil du mode ACTUELLEMENT
-   *  affiché (sans changer ce mode — voir item 4 : modifier un champ pendant
-   *  qu'on est sur "Normal" garde "Normal" affiché, avec la valeur modifiée
-   *  mémorisée pour ce mode précisément, propre à cette matière). */
-  function saveAlgoFormAndRefresh() {
-    if (!algoEditingSubjectId) return;
-    const cfg = getSubjectAlgoConfig(algoEditingSubjectId);
-    cfg.profiles[cfg.mode] = readAlgoFormSettings();
-    setSubjectAlgoConfig(algoEditingSubjectId, cfg);
-    loadAlgoFormIntoInputs(cfg.mode, cfg.profiles[cfg.mode]);
-    updateRatingPreviews();
+  function saveModeFormAndRefresh() {
+    updateModeProfile(algoEditingModeId, readAlgoFormSettings());
+    loadModeFormIntoInputs(algoEditingModeId);
     renderSubjectAlgoBadge();
+    renderSubjectManageList();
   }
 
+  const algoModeSliderEl = el("algo-mode-slider");
+  if (algoModeSliderEl) {
+    algoModeSliderEl.addEventListener("input", () => {
+      const idx = Number(algoModeSliderEl.value);
+      updateAlgoModeTicksHighlight(idx);
+      const customPicker = el("algo-custom-picker");
+      if (idx < 3) {
+        if (customPicker) customPicker.hidden = true;
+        loadModeFormIntoInputs(BUILTIN_MODE_IDS[idx]);
+        return;
+      }
+      if (customPicker) customPicker.hidden = false;
+      const customs = Object.values(loadLearningModes()).filter((m) => !m.builtin);
+      if (customs.length === 0) {
+        const name = prompt("Nom du nouveau mode personnalisé :", "Mon mode");
+        if (name && name.trim()) {
+          const id = createCustomMode(name, algoEditingModeId);
+          renderCustomPickerList();
+          loadModeFormIntoInputs(id);
+        } else {
+          const prevIdx = algoSliderIdxForMode(algoEditingModeId);
+          algoModeSliderEl.value = String(prevIdx);
+          updateAlgoModeTicksHighlight(prevIdx);
+          if (customPicker) customPicker.hidden = true;
+        }
+      } else {
+        renderCustomPickerList();
+        loadModeFormIntoInputs(customs[0].id);
+      }
+    });
+  }
+
+  const algoCustomNewBtn = el("algo-custom-new-btn");
+  if (algoCustomNewBtn) {
+    algoCustomNewBtn.addEventListener("click", () => {
+      const name = prompt("Nom du nouveau mode personnalisé :");
+      if (!name || !name.trim()) return;
+      const id = createCustomMode(name, algoEditingModeId);
+      renderCustomPickerList();
+      loadModeFormIntoInputs(id);
+    });
+  }
+  const algoCustomRenameBtn = el("algo-custom-rename-btn");
+  if (algoCustomRenameBtn) {
+    algoCustomRenameBtn.addEventListener("click", () => {
+      const modes = loadLearningModes();
+      const m = modes[algoEditingModeId];
+      if (!m || m.builtin) return;
+      const name = prompt("Nouveau nom du mode :", m.name);
+      if (!name || !name.trim()) return;
+      renameCustomMode(algoEditingModeId, name);
+      renderCustomPickerList();
+      renderSubjectAlgoBadge();
+      renderSubjectManageList();
+    });
+  }
+  const algoCustomDeleteBtn = el("algo-custom-delete-btn");
+  if (algoCustomDeleteBtn) {
+    algoCustomDeleteBtn.addEventListener("click", async () => {
+      const modes = loadLearningModes();
+      const m = modes[algoEditingModeId];
+      if (!m || m.builtin) return;
+      if (!confirm(`Supprimer le mode « ${m.name} » ? Les matières qui l'utilisent repasseront en mode Normal.`)) return;
+      await deleteCustomMode(algoEditingModeId);
+      const remaining = Object.values(loadLearningModes()).filter((x) => !x.builtin);
+      if (remaining.length > 0) {
+        renderCustomPickerList();
+        loadModeFormIntoInputs(remaining[0].id);
+      } else {
+        loadModeFormIntoInputs("normal");
+      }
+      renderSubjectManageList();
+      renderSubjectAlgoBadge();
+    });
+  }
+
+  ["algo-ka", "algo-kh", "algo-kg", "algo-ke", "algo-ma", "algo-mh", "algo-mg", "algo-me"].forEach((id) => {
+    const input = el(id);
+    if (!input) return;
+    input.addEventListener("change", saveModeFormAndRefresh);
+    input.addEventListener("input", renderAlgoPreviewChart);
+  });
+
+  const algoResetBtn = el("algo-reset-btn");
+  if (algoResetBtn) {
+    algoResetBtn.addEventListener("click", () => {
+      const modes = loadLearningModes();
+      const m = modes[algoEditingModeId];
+      if (!m || !m.builtin) return;
+      if (!confirm(`Remettre le mode ${m.name} à ses valeurs d'origine ? Toutes les matières qui l'utilisent seront concernées.`)) return;
+      updateModeProfile(algoEditingModeId, BUILTIN_MODE_DEFAULTS[algoEditingModeId]);
+      loadModeFormIntoInputs(algoEditingModeId);
+      renderSubjectAlgoBadge();
+    });
+  }
+
+  const algoAdvancedToggle = el("algo-advanced-toggle");
+  const algoAdvancedPanel = el("algo-advanced-panel");
+  if (algoAdvancedToggle && algoAdvancedPanel) {
+    algoAdvancedToggle.addEventListener("click", () => {
+      const willShow = algoAdvancedPanel.hidden;
+      algoAdvancedPanel.hidden = !willShow;
+      algoAdvancedToggle.textContent = willShow ? "Paramétrages avancés ▴" : "Paramétrages avancés ▾";
+    });
+  }
+
+  /* ---------------------------------------------------------
+     Vue "Affecter un mode" (par matière OU par dossier entier — item 1/2),
+     ouverte depuis la page Gérer. Simple sélection parmi les modes déjà
+     définis (édités globalement sur la page Modes d'apprentissage) — plus
+     aucun réglage éditable ici.
+  --------------------------------------------------------- */
   let algoOpenedFromView = "manage";
+  let assignTargetKind = null; // "subject" | "folder"
+  let assignTargetId = null;
+  let assignCurrentModeId = "normal";
 
-  function openSubjectAlgoView(subjectId, fromView) {
-    algoEditingSubjectId = subjectId;
-    algoOpenedFromView = fromView === "review" ? "review" : "manage";
-    // Les 4 courbes repartent toutes cochées à chaque ouverture (item 3).
-    algoChartVisible = { again: true, hard: true, good: true, easy: true };
-    const subject = subjects.find((s) => s.id === subjectId);
-    el("algo-subject-title").textContent = `Mode d'apprentissage — ${subject ? subject.name : ""}`;
-    const backBtn = el("algo-back-btn");
-    if (backBtn) backBtn.textContent = algoOpenedFromView === "review" ? "← Retour à Réviser" : "← Retour à Gérer";
-    const cfg = getSubjectAlgoConfig(subjectId);
-    loadAlgoFormIntoInputs(cfg.mode, cfg.profiles[cfg.mode]);
-    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
-    el("view-subject-algo").classList.add("is-active");
+  function renderAssignChart(modeId) {
+    const wrap = el("assign-chart-wrap");
+    if (!wrap) return;
+    const modes = loadLearningModes();
+    const settings = modes[modeId] || modes.normal;
+    wrap.innerHTML = buildPreviewChartHtml(settings);
+    wireChartCheckboxes(wrap, () => renderAssignChart(assignCurrentModeId));
   }
 
-  function closeSubjectAlgoView() {
+  function renderAssignModeList(currentModeId) {
+    const list = el("assign-mode-list");
+    if (!list) return;
+    const modes = loadLearningModes();
+    const all = [
+      ...BUILTIN_MODE_IDS.map((id) => modes[id]),
+      ...Object.values(modes).filter((m) => !m.builtin).sort((a, b) => a.name.localeCompare(b.name, "fr")),
+    ];
+    list.innerHTML = "";
+    all.forEach((m) => {
+      const label = document.createElement("label");
+      label.className = "multi-subject-picker-item";
+      const cb = document.createElement("input");
+      cb.type = "radio";
+      cb.name = "assign-mode-pick";
+      cb.value = m.id;
+      cb.checked = m.id === currentModeId;
+      const span = document.createElement("span");
+      span.textContent = m.name;
+      label.appendChild(cb);
+      label.appendChild(span);
+      list.appendChild(label);
+      cb.addEventListener("change", async () => {
+        assignCurrentModeId = m.id;
+        if (assignTargetKind === "subject") {
+          await assignModeToSubject(assignTargetId, m.id);
+        } else if (assignTargetKind === "folder") {
+          await assignModeToFolder(assignTargetId, m.id);
+        }
+        renderAssignChart(m.id);
+        renderSubjectManageList();
+        renderSubjectAlgoBadge();
+      });
+    });
+  }
+
+  function openAssignView(kind, targetId, fromView) {
+    assignTargetKind = kind;
+    assignTargetId = targetId;
+    algoOpenedFromView = fromView === "review" ? "review" : "manage";
+    algoChartVisible = { again: true, hard: true, good: true, easy: true };
+
+    let title, currentModeId;
+    if (kind === "subject") {
+      const s = subjects.find((x) => x.id === targetId);
+      title = `Affecter un mode — ${s ? s.name : ""}`;
+      currentModeId = getSubjectAlgoMode(targetId);
+    } else {
+      const f = folders.find((x) => x.id === targetId);
+      title = `Affecter un mode — 📁 ${f ? f.name : ""}`;
+      currentModeId = "normal";
+    }
+    const titleEl = el("assign-target-title");
+    if (titleEl) titleEl.textContent = title;
+    assignCurrentModeId = currentModeId;
+    renderAssignModeList(currentModeId);
+    renderAssignChart(currentModeId);
+    const reviewOldBlock = el("assign-review-old-block");
+    if (reviewOldBlock) reviewOldBlock.hidden = kind !== "subject";
+
+    const backBtn = el("assign-back-btn");
+    if (backBtn) backBtn.textContent = algoOpenedFromView === "review" ? "← Retour à Réviser" : "← Retour à Gérer";
+
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el("view-mode-assign").classList.add("is-active");
+  }
+
+  // Conservé pour compatibilité avec les anciens appels (page Réviser) —
+  // ouvre désormais la vue d'affectation plutôt que d'édition directe,
+  // puisque les réglages ne se modifient plus matière par matière.
+  function openSubjectAlgoView(subjectId, fromView) {
+    openAssignView("subject", subjectId, fromView);
+  }
+
+  function closeAssignView() {
     const targetView = algoOpenedFromView === "review" ? "review" : "manage";
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     el(`view-${targetView}`).classList.add("is-active");
-    // Le mode affiché à côté de chaque matière (voir renderSubjectManageList)
-    // n'était sinon jamais rafraîchi après un aller-retour sur la page Mode
-    // d'apprentissage : la liste restait celle affichée AVANT toute
-    // modification, d'où l'impression d'un mode figé sur "Normal".
     if (targetView === "manage") renderSubjectManageList();
     document.querySelectorAll(".tab").forEach((t) => {
       t.classList.remove("is-active");
@@ -1012,80 +1308,17 @@
     }
   }
 
-  const algoBackBtn = el("algo-back-btn");
-  if (algoBackBtn) algoBackBtn.addEventListener("click", closeSubjectAlgoView);
-
-  // "Paramétrages avancés" : masque les coefficients/maximums et "Revoir
-  // les vieilles fiches" jusqu'à ce qu'on les demande explicitement — le
-  // curseur et le graphique suffisent pour l'usage courant (item 4).
-  const algoAdvancedToggle = el("algo-advanced-toggle");
-  const algoAdvancedPanel = el("algo-advanced-panel");
-  if (algoAdvancedToggle && algoAdvancedPanel) {
-    algoAdvancedToggle.addEventListener("click", () => {
-      const willShow = algoAdvancedPanel.hidden;
-      algoAdvancedPanel.hidden = !willShow;
-      algoAdvancedToggle.textContent = willShow ? "Paramétrages avancés ▴" : "Paramétrages avancés ▾";
-    });
-  }
-
-  const algoModeSliderEl = el("algo-mode-slider");
-  if (algoModeSliderEl) {
-    algoModeSliderEl.addEventListener("input", () => {
-      const idx = Number(algoModeSliderEl.value);
-      const key = ALGO_MODE_ORDER[idx];
-      updateAlgoModeTicksHighlight(idx);
-      if (!algoEditingSubjectId) return;
-      // Change le mode ACTIF de cette matière et recharge le profil que ce
-      // mode avait mémorisé (potentiellement déjà personnalisé) — jamais un
-      // préréglage figé, contrairement à avant (voir item 4).
-      const cfg = getSubjectAlgoConfig(algoEditingSubjectId);
-      cfg.mode = key;
-      setSubjectAlgoConfig(algoEditingSubjectId, cfg);
-      loadAlgoFormIntoInputs(key, cfg.profiles[key]);
-      updateRatingPreviews();
-      renderSubjectAlgoBadge();
-    });
-  }
-
-  ["algo-ka", "algo-kh", "algo-kg", "algo-ke", "algo-ma", "algo-mh", "algo-mg", "algo-me"].forEach((id) => {
-    const input = el(id);
-    if (!input) return;
-    input.addEventListener("change", saveAlgoFormAndRefresh);
-    // Le graphique (item 6) doit être "dynamique avec le changement des
-    // valeurs au-dessus" : recalculé à chaque frappe, sans attendre le
-    // blur/"change" (qui, lui, reste le seul déclencheur de la sauvegarde
-    // réelle des réglages — la saisie en cours n'est donc jamais perdue ni
-    // persistée prématurément si elle est encore invalide/incomplète).
-    input.addEventListener("input", renderAlgoPreviewChart);
-  });
-
-  // "Revenir aux réglages d'origine" (item 4) : remet le mode ACTUELLEMENT
-  // affiché à ses valeurs de préréglage d'origine pour cette matière —
-  // jamais proposé pour "Personnalisé", qui n'a pas d'origine (bouton
-  // masqué dans ce cas, voir loadAlgoFormIntoInputs).
-  const algoResetBtn = el("algo-reset-btn");
-  if (algoResetBtn) {
-    algoResetBtn.addEventListener("click", () => {
-      if (!algoEditingSubjectId) return;
-      const cfg = getSubjectAlgoConfig(algoEditingSubjectId);
-      if (cfg.mode === "custom") return;
-      if (!confirm(`Remettre le mode ${ALGO_MODE_SHORT_LABELS[cfg.mode]} à ses valeurs d'origine pour cette matière ?`)) return;
-      cfg.profiles[cfg.mode] = { ...ALGO_PRESETS[cfg.mode] };
-      setSubjectAlgoConfig(algoEditingSubjectId, cfg);
-      loadAlgoFormIntoInputs(cfg.mode, cfg.profiles[cfg.mode]);
-      updateRatingPreviews();
-      renderSubjectAlgoBadge();
-    });
-  }
+  const assignBackBtn = el("assign-back-btn");
+  if (assignBackBtn) assignBackBtn.addEventListener("click", closeAssignView);
 
   const algoReviewOldBtn = el("algo-review-old-btn");
   if (algoReviewOldBtn) {
     algoReviewOldBtn.addEventListener("click", async () => {
-      if (!algoEditingSubjectId) return;
-      const subject = subjects.find((s) => s.id === algoEditingSubjectId);
+      if (assignTargetKind !== "subject" || !assignTargetId) return;
+      const subject = subjects.find((s) => s.id === assignTargetId);
       const today = startOfDay(new Date());
       const targets = cards.filter((c) => {
-        if (c.deleted || c.subject !== algoEditingSubjectId || !c.dueDate) return false;
+        if (c.deleted || c.subject !== assignTargetId || !c.dueDate) return false;
         const daysAhead = Math.round((startOfDay(new Date(c.dueDate)).getTime() - today.getTime()) / 86400000);
         return daysAhead > 10;
       });
@@ -1114,6 +1347,7 @@
       alert(`${targets.length} fiche${targets.length > 1 ? "s" : ""} ramenée${targets.length > 1 ? "s" : ""} à 10 jours.`);
     });
   }
+
 
   async function createSubjectFlow() {
     const name = prompt("Nom de la nouvelle matière :");
@@ -1426,10 +1660,10 @@
     if (subjectBarAlgoBtn) subjectBarAlgoBtn.hidden = !showBtn;
     if (showBtn && effectiveSubjectId) {
       const key = getSubjectAlgoMode(effectiveSubjectId);
-      if (subjectBarAlgoLabelEl) subjectBarAlgoLabelEl.textContent = ALGO_MODE_SHORT_LABELS[key];
+      if (subjectBarAlgoLabelEl) subjectBarAlgoLabelEl.textContent = modeDisplayName(key);
       if (subjectBarAlgoBtn) {
         Object.values(ALGO_MODE_KEY_TO_CLASS).forEach((c) => subjectBarAlgoBtn.classList.remove(c));
-        subjectBarAlgoBtn.classList.add(ALGO_MODE_KEY_TO_CLASS[key]);
+        subjectBarAlgoBtn.classList.add(ALGO_MODE_KEY_TO_CLASS[algoModeCssKey(key)]);
         subjectBarAlgoBtn.dataset.subjectId = effectiveSubjectId;
       }
     }
@@ -2543,6 +2777,7 @@
         renderReviewChart();
       }
       if (view === "stats") renderStats();
+      if (view === "learning-modes") loadModeFormIntoInputs(algoEditingModeId || "normal");
       if (view === "sync") renderSyncView();
       if (view === "settings") renderSettingsView();
       renderDuePill();
