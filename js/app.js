@@ -282,6 +282,11 @@
   // Développeur plutôt que codées en dur dans la feuille de style.
   const DEFAULT_RATING_COLORS = { again: "#b6604a", hard: "#cf9a4d", good: "#6f8b5c", easy: "#3e7c6b" };
   const DEFAULT_MODE_COLORS = { cool: "#6f8b5c", normal: "#cf9a4d", renforce: "#b6604a", custom: "#e8c84a" };
+  // Fond de l'appli, fond du bouton "chantier" actif, fond de la pastille
+  // "0 à revoir" en mode bonus (items 3/4/8).
+  const DEFAULT_APP_BG_COLOR = "#1a2d26";
+  const DEFAULT_CONSTRUCTION_ACTIVE_COLOR = "#cf9a4d";
+  const DEFAULT_BONUS_PILL_COLOR = "#ffffff";
   const DEFAULT_ICONS = {
     hibernate: "💤", edit: "✎", construction: "🚧", undo: "◀️", folder: "📁",
   };
@@ -315,6 +320,9 @@
       navLabels: { ...DEFAULT_NAV_LABELS, ...(parsed.navLabels || {}) },
       ratingColors: { ...DEFAULT_RATING_COLORS, ...(parsed.ratingColors || {}) },
       modeColors: { ...DEFAULT_MODE_COLORS, ...(parsed.modeColors || {}) },
+      appBgColor: parsed.appBgColor || DEFAULT_APP_BG_COLOR,
+      constructionActiveColor: parsed.constructionActiveColor || DEFAULT_CONSTRUCTION_ACTIVE_COLOR,
+      bonusPillColor: parsed.bonusPillColor || DEFAULT_BONUS_PILL_COLOR,
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       factoryDefaults: {
@@ -365,6 +373,9 @@
     root.setProperty("--mode-normal-color", settings.modeColors.normal);
     root.setProperty("--mode-renforce-color", settings.modeColors.renforce);
     root.setProperty("--mode-custom-color", settings.modeColors.custom);
+    root.setProperty("--app-bg-color", settings.appBgColor);
+    root.setProperty("--construction-active-color", settings.constructionActiveColor);
+    root.setProperty("--due-pill-bonus-color", settings.bonusPillColor);
   }
 
   /** Applique les émoticônes des icônes de la fiche/de l'arborescence
@@ -2102,7 +2113,12 @@
     renderManageList();
     renderStats();
     renderReviewChart();
-    renderSubjectAlgoBadge();
+    // Passe systématiquement la matière de la fiche AFFICHÉE (item 2 —
+    // bug corrigé) : sans ça, en mode "toutes matières"/"sélection",
+    // l'appel masquait le badge de mode faute de savoir quelle matière
+    // afficher, avant qu'un autre rendu ne le réaffiche juste après — d'où
+    // le clignotement observé (par ex. en appuyant sur "chantier").
+    renderSubjectAlgoBadge(currentCard ? currentCard.subject : undefined);
   }
 
   /** Badge "mode d'apprentissage" de la matière active, affiché dans la
@@ -2430,6 +2446,13 @@
    *  révision, le mode bonus, le compteur de fiches dues, et l'entrée du
    *  journal des notes (pour ne pas fausser les statistiques après coup). */
   let lastRatingSnapshot = null;
+  /** Jeton incrémenté à chaque nouvelle vague déclenchée (item 1 — bug
+   *  corrigé) : si une deuxième notation arrive avant que l'animation de la
+   *  première ne soit terminée, les callbacks de fin d'animation de
+   *  l'ancienne vague se reconnaissent périmés et n'agissent plus (ne
+   *  remettent pas le graphique à l'échelle normale ni ne re-scrollent),
+   *  pour ne jamais interférer avec la vague la plus récente en cours. */
+  let reviewWaveToken = 0;
 
   function captureRatingSnapshot(ratingLogId) {
     lastRatingSnapshot = {
@@ -2605,6 +2628,10 @@
   async function hibernateCurrentCard() {
     const card = currentCard;
     if (!card) return;
+    // Annulable comme une notation (item 9 — bug corrigé : jusqu'ici
+    // l'hibernation n'était pas du tout capturée par "Annuler la dernière
+    // évaluation", qui restaurait alors le mauvais état).
+    captureRatingSnapshot(null);
     const today = startOfDay(new Date());
     const base = card.dueDate ? startOfDay(new Date(card.dueDate)) : today;
     const start = base.getTime() > today.getTime() ? base : today;
@@ -2626,6 +2653,9 @@
     renderManageList();
     renderDuePill();
     showNextCard();
+    // Même animation que pour une notation (item 9 — bug corrigé :
+    // l'hibernation n'animait jamais le graphique).
+    requestAnimationFrame(() => triggerReviewChartWave(0, updated.interval));
   }
 
   if (hibernateCurrentBtn) {
@@ -3896,6 +3926,8 @@
    *  échéance de la fiche. Revient à l'échelle normale une fois terminé. */
   function triggerReviewChartWave(fromIdx, toIdx) {
     if (!reviewChartEl) return;
+    reviewWaveToken += 1;
+    const myToken = reviewWaveToken;
     let cols = reviewChartEl.querySelectorAll(".chart-col");
     // Redessine avec assez de jours si le graphique est actuellement VIDE
     // (aucune fiche due dans la fenêtre normale — ex. une fiche isolée qui
@@ -3958,6 +3990,10 @@
         () => {
           bar.classList.remove(animClass);
           bar.style.animationDelay = "";
+          // Périmé : une vague plus récente a démarré entre-temps (deux
+          // notations rapprochées) — on laisse cette dernière gérer seule
+          // le retour à la normale, pour ne jamais lui marcher dessus.
+          if (myToken !== reviewWaveToken) return;
           // Une fois la barre cible revenue à la normale (donc toute
           // l'animation terminée), on ramène le graphique à sa position de
           // départ si on avait dû faire défiler pour la voir, et on repasse
@@ -4214,6 +4250,39 @@
     });
   }
 
+  /** Fond de l'appli, bouton "chantier" actif, pastille "0 à revoir"
+   *  (items 3/4/8). */
+  const devOtherColorIds = {
+    appBgColor: "dev-color-app-bg",
+    constructionActiveColor: "dev-color-construction-active",
+    bonusPillColor: "dev-color-bonus-pill",
+  };
+  function saveOtherColorsFromInputs() {
+    const settings = loadDevSettings();
+    Object.keys(devOtherColorIds).forEach((key) => {
+      const input = el(devOtherColorIds[key]);
+      if (input) settings[key] = input.value;
+    });
+    saveDevSettings(settings);
+    applyColorSettings();
+  }
+  Object.values(devOtherColorIds).forEach((id) => {
+    const input = el(id);
+    if (input) input.addEventListener("input", saveOtherColorsFromInputs);
+  });
+  const devOtherColorsResetBtn = el("dev-other-colors-reset");
+  if (devOtherColorsResetBtn) {
+    devOtherColorsResetBtn.addEventListener("click", () => {
+      const settings = loadDevSettings();
+      settings.appBgColor = DEFAULT_APP_BG_COLOR;
+      settings.constructionActiveColor = DEFAULT_CONSTRUCTION_ACTIVE_COLOR;
+      settings.bonusPillColor = DEFAULT_BONUS_PILL_COLOR;
+      saveDevSettings(settings);
+      applyColorSettings();
+      renderDevView();
+    });
+  }
+
   /** Liste éditable de couleurs de texte (item 2) : ajouter/renommer/
    *  changer la couleur/retirer, appliqué en direct à la barre d'outils de
    *  mise en forme des fiches. */
@@ -4345,6 +4414,11 @@
     ["cool", "normal", "renforce", "custom"].forEach((m) => {
       const input = el(`dev-color-mode-${m}`);
       if (input) input.value = modeColors[m];
+    });
+    const otherSettings = loadDevSettings();
+    Object.keys(devOtherColorIds).forEach((key) => {
+      const input = el(devOtherColorIds[key]);
+      if (input) input.value = otherSettings[key];
     });
     renderTextColorsEditor();
     renderFactoryDefaultsEditor();
