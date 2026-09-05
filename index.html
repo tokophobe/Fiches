@@ -269,7 +269,11 @@
     <!-- VUE FICHES -->
     <section id="view-cards" class="view" aria-labelledby="tab-cards">
       <div class="subject-bar" id="cards-subject-bar">
-        <select class="subject-select" id="cards-subject-select" aria-label="Matière pour les fiches"></select>
+        <button type="button" class="subject-select-btn" id="cards-subject-select-btn" aria-label="Choisir la matière de cette nouvelle fiche"></button>
+
+        <div class="subject-choice-menu subject-choice-menu--tree" id="cards-subject-choice-menu" hidden>
+          <div id="cards-subject-choice-tree"></div>
+        </div>
       </div>
 
       <form class="card-form" id="card-form">
@@ -327,12 +331,8 @@
       </div>
 
       <div class="multi-subject-picker" id="cards-multi-picker" hidden>
-        <p class="field-hint settings-block-hint">Choisis les matières et/ou dossiers à combiner :</p>
+        <p class="field-hint settings-block-hint">Coche des matières et/ou dossiers — les résultats se mettent à jour tout de suite :</p>
         <div class="multi-subject-picker-list" id="cards-multi-picker-list"></div>
-        <div class="multi-subject-picker-actions">
-          <button type="button" class="btn btn--small" id="cards-multi-picker-confirm">Valider</button>
-          <button type="button" class="btn btn--ghost btn--small" id="cards-multi-picker-cancel">Annuler</button>
-        </div>
       </div>
 
       <label class="field cards-search-field">
@@ -388,21 +388,23 @@
            haut de page, toujours visibles même en descendant. -->
       <div class="stats-controls stats-controls--sticky">
         <button type="button" class="subject-select-btn" id="stats-subject-select-btn" aria-label="Choisir les matières pour les statistiques"></button>
-        <select class="stats-select" id="stats-range-select" aria-label="Période affichée">
-          <option value="15">15 jours</option>
-          <option value="30">1 mois</option>
-          <option value="90">3 mois</option>
-          <option value="365">1 an</option>
-        </select>
-        <select class="stats-select" id="stats-period-select" aria-label="Période des statistiques de la journée">
-          <option value="today">Aujourd'hui</option>
-          <option value="yesterday">Hier</option>
-          <option value="week">Semaine dernière</option>
-          <option value="month">Mois dernier</option>
-          <option value="3months">3 derniers mois</option>
-          <option value="6months">6 derniers mois</option>
-          <option value="year">Sur un an</option>
-        </select>
+        <div class="stats-controls--sticky-row2">
+          <select class="stats-select" id="stats-range-select" aria-label="Période affichée">
+            <option value="15">15 jours</option>
+            <option value="30">1 mois</option>
+            <option value="90">3 mois</option>
+            <option value="365">1 an</option>
+          </select>
+          <select class="stats-select" id="stats-period-select" aria-label="Période des statistiques de la journée">
+            <option value="today">Aujourd'hui</option>
+            <option value="yesterday">Hier</option>
+            <option value="week">Semaine dernière</option>
+            <option value="month">Mois dernier</option>
+            <option value="3months">3 derniers mois</option>
+            <option value="6months">6 derniers mois</option>
+            <option value="year">Sur un an</option>
+          </select>
+        </div>
 
         <div class="subject-choice-menu" id="stats-scope-choice-menu" hidden>
           <button type="button" class="subject-choice-item" id="stats-scope-choice-all">Toutes les matières</button>
@@ -459,8 +461,8 @@
 
       <h3 class="chart-title">Évolution des notes dans le temps</h3>
       <p class="field-hint settings-block-hint">
-        Décoche une ou plusieurs notes pour ne voir que la part combinée de
-        celles qui restent cochées.
+        Répartition en pourcentage des 4 notes, tranche par tranche sur la
+        période choisie ci-dessus.
       </p>
       <div id="ratings-history-chart-wrap"></div>
     </section>
@@ -635,10 +637,19 @@
         utilisateur ne l'aura pas.
       </p>
 
-      <label class="settings-toggle-row">
-        <input type="checkbox" id="dev-hsl-mode-toggle" />
-        <span>Curseurs teinte / saturation / lumière pour toutes les couleurs ci-dessous</span>
-      </label>
+      <div class="card-form">
+        <h3 class="settings-block-title">Curseurs additionnels pour toutes les couleurs</h3>
+        <p class="field-hint settings-block-hint">
+          En plus du sélecteur natif de l'appareil (qui propose ses propres
+          onglets Grille/Spectre/Curseurs), affiche des curseurs juste en
+          dessous de chaque couleur ci-dessous.
+        </p>
+        <select class="stats-select" id="dev-color-slider-mode">
+          <option value="none">Aucun curseur additionnel</option>
+          <option value="rgb">Curseurs RVB (rouge/vert/bleu)</option>
+          <option value="tsl">Curseurs TSL (teinte/saturation/lumière)</option>
+        </select>
+      </div>
 
       <div class="card-form">
         <h3 class="settings-block-title">Boutons d'évaluation</h3>
@@ -796,6 +807,45 @@
           </label>
         </div>
         <button type="button" class="btn btn--ghost" id="dev-other-colors-reset">Revenir aux couleurs d'origine</button>
+      </div>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Textes, histogrammes et fonds de zones</h3>
+        <div class="algo-grid algo-grid--4">
+          <label class="field settings-bonus-field">
+            <span>Texte général (fond sombre)</span>
+            <input type="color" id="dev-color-main-text" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Texte des fiches</span>
+            <input type="color" id="dev-color-card-text" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Barres "à revoir"</span>
+            <input type="color" id="dev-color-due-bar" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Barre "aujourd'hui"</span>
+            <input type="color" id="dev-color-today-bar" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Fond des histogrammes (cartes)</span>
+            <input type="color" id="dev-color-chart-wrap-bg" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Fond des graphiques (dessin)</span>
+            <input type="color" id="dev-color-svg-chart-bg" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Fond des cadres (nouvelle fiche…)</span>
+            <input type="color" id="dev-color-card-form-bg" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Fond des zones de texte</span>
+            <input type="color" id="dev-color-rich-editor-bg" />
+          </label>
+        </div>
+        <button type="button" class="btn btn--ghost" id="dev-zone-colors-reset">Revenir aux couleurs d'origine</button>
       </div>
 
       <div class="card-form">

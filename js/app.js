@@ -286,6 +286,16 @@
   const DEFAULT_APP_BG_COLOR = "#1a2d26";
   const DEFAULT_CONSTRUCTION_ACTIVE_COLOR = "#cf9a4d";
   const DEFAULT_BONUS_PILL_COLOR = "#ffffff";
+  // Textes généraux, barres/fonds d'histogrammes, fonds de zones (item :
+  // étoffe encore le mode développeur).
+  const DEFAULT_MAIN_TEXT_COLOR = "#f7f1e1";
+  const DEFAULT_CARD_TEXT_COLOR = "#23302a";
+  const DEFAULT_DUE_BAR_COLOR = "#3e7c6b";
+  const DEFAULT_TODAY_BAR_COLOR = "#c44c44";
+  const DEFAULT_CHART_WRAP_BG_COLOR = "#f7f1e1";
+  const DEFAULT_SVG_CHART_BG_COLOR = "#1a2d26";
+  const DEFAULT_CARD_FORM_BG_COLOR = "#f7f1e1";
+  const DEFAULT_RICH_EDITOR_BG_COLOR = "#eee5cf";
   const DEFAULT_ICONS = {
     hibernate: "💤", edit: "✎", construction: "🚧", undo: "◀️", folder: "📁",
   };
@@ -323,6 +333,14 @@
       appBgColor: parsed.appBgColor || DEFAULT_APP_BG_COLOR,
       constructionActiveColor: parsed.constructionActiveColor || DEFAULT_CONSTRUCTION_ACTIVE_COLOR,
       bonusPillColor: parsed.bonusPillColor || DEFAULT_BONUS_PILL_COLOR,
+      mainTextColor: parsed.mainTextColor || DEFAULT_MAIN_TEXT_COLOR,
+      cardTextColor: parsed.cardTextColor || DEFAULT_CARD_TEXT_COLOR,
+      dueBarColor: parsed.dueBarColor || DEFAULT_DUE_BAR_COLOR,
+      todayBarColor: parsed.todayBarColor || DEFAULT_TODAY_BAR_COLOR,
+      chartWrapBgColor: parsed.chartWrapBgColor || DEFAULT_CHART_WRAP_BG_COLOR,
+      svgChartBgColor: parsed.svgChartBgColor || DEFAULT_SVG_CHART_BG_COLOR,
+      cardFormBgColor: parsed.cardFormBgColor || DEFAULT_CARD_FORM_BG_COLOR,
+      richEditorBgColor: parsed.richEditorBgColor || DEFAULT_RICH_EDITOR_BG_COLOR,
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       factoryDefaults: {
@@ -435,42 +453,69 @@
     return `#${toHex(r1)}${toHex(g1)}${toHex(b1)}`;
   }
 
-  const HSL_MODE_KEY = "fiches_hsl_color_mode";
-  function loadHslColorMode() {
-    return localStorage.getItem(HSL_MODE_KEY) === "true";
+  const COLOR_SLIDER_MODE_KEY = "fiches_color_slider_mode";
+  /** "none" | "rgb" | "tsl" — item : remplace la simple case à cocher par
+   *  un vrai choix entre deux jeux de curseurs personnalisés, en plus du
+   *  sélecteur natif de l'appareil (qui propose ses propres onglets
+   *  Grille/Spectre/Curseurs, mais ceux-là appartiennent à l'OS et ne
+   *  peuvent pas être renommés ni complétés depuis une page web). */
+  function loadColorSliderMode() {
+    const v = localStorage.getItem(COLOR_SLIDER_MODE_KEY);
+    return v === "rgb" || v === "tsl" ? v : "none";
   }
-  function saveHslColorMode(value) {
-    localStorage.setItem(HSL_MODE_KEY, String(value));
+  function saveColorSliderMode(value) {
+    localStorage.setItem(COLOR_SLIDER_MODE_KEY, value);
   }
 
-  /** Insère 3 curseurs H/S/L juste après CHAQUE sélecteur de couleur natif
-   *  de la page Développeur (item 17), synchronisés avec lui dans les deux
-   *  sens. Appelé après chaque rendu de la page (les pastilles de couleur
-   *  de texte / modes personnalisés étant elles-mêmes régénérées
-   *  dynamiquement). Sans effet si le réglage est désactivé. */
+  /** Insère 3 curseurs (RVB ou TSL selon le mode choisi) juste après CHAQUE
+   *  sélecteur de couleur natif de la page Développeur, synchronisés avec
+   *  lui dans les deux sens. Appelé après chaque rendu de la page (les
+   *  pastilles de couleur de texte / modes personnalisés étant elles-mêmes
+   *  régénérées dynamiquement). Sans effet si le mode est "none".
+   */
   function enhanceColorInputsWithHsl() {
+    const mode = loadColorSliderMode();
     document.querySelectorAll('#view-dev input[type="color"]').forEach((input) => {
       const existing = input.nextElementSibling;
       if (existing && existing.classList && existing.classList.contains("hsl-sliders")) {
         existing.remove();
       }
-      if (!loadHslColorMode()) return;
+      if (mode === "none") return;
       const wrap = document.createElement("span");
       wrap.className = "hsl-sliders";
-      const hsl = hexToHsl(input.value);
-      wrap.innerHTML = `
-        <span class="hsl-slider-row"><span>T</span><input type="range" min="0" max="360" value="${hsl.h}" data-c="h" /></span>
-        <span class="hsl-slider-row"><span>S</span><input type="range" min="0" max="100" value="${hsl.s}" data-c="s" /></span>
-        <span class="hsl-slider-row"><span>L</span><input type="range" min="0" max="100" value="${hsl.l}" data-c="l" /></span>
-      `;
-      input.insertAdjacentElement("afterend", wrap);
-      const sliders = { h: wrap.querySelector('[data-c="h"]'), s: wrap.querySelector('[data-c="s"]'), l: wrap.querySelector('[data-c="l"]') };
-      const applyFromSliders = () => {
-        const hex = hslToHex(Number(sliders.h.value), Number(sliders.s.value), Number(sliders.l.value));
-        input.value = hex;
-        input.dispatchEvent(new Event("input", { bubbles: true }));
-      };
-      Object.values(sliders).forEach((s) => s.addEventListener("input", applyFromSliders));
+      if (mode === "rgb") {
+        const r = parseInt(input.value.slice(1, 3), 16);
+        const g = parseInt(input.value.slice(3, 5), 16);
+        const bl = parseInt(input.value.slice(5, 7), 16);
+        wrap.innerHTML = `
+          <span class="hsl-slider-row"><span>R</span><input type="range" min="0" max="255" value="${r}" data-c="r" /></span>
+          <span class="hsl-slider-row"><span>V</span><input type="range" min="0" max="255" value="${g}" data-c="g" /></span>
+          <span class="hsl-slider-row"><span>B</span><input type="range" min="0" max="255" value="${bl}" data-c="b" /></span>
+        `;
+        input.insertAdjacentElement("afterend", wrap);
+        const sliders = { r: wrap.querySelector('[data-c="r"]'), g: wrap.querySelector('[data-c="g"]'), b: wrap.querySelector('[data-c="b"]') };
+        const applyFromSliders = () => {
+          const toHex = (v) => Number(v).toString(16).padStart(2, "0");
+          input.value = `#${toHex(sliders.r.value)}${toHex(sliders.g.value)}${toHex(sliders.b.value)}`;
+          input.dispatchEvent(new Event("input", { bubbles: true }));
+        };
+        Object.values(sliders).forEach((s) => s.addEventListener("input", applyFromSliders));
+      } else {
+        const hsl = hexToHsl(input.value);
+        wrap.innerHTML = `
+          <span class="hsl-slider-row"><span>T</span><input type="range" min="0" max="360" value="${hsl.h}" data-c="h" /></span>
+          <span class="hsl-slider-row"><span>S</span><input type="range" min="0" max="100" value="${hsl.s}" data-c="s" /></span>
+          <span class="hsl-slider-row"><span>L</span><input type="range" min="0" max="100" value="${hsl.l}" data-c="l" /></span>
+        `;
+        input.insertAdjacentElement("afterend", wrap);
+        const sliders = { h: wrap.querySelector('[data-c="h"]'), s: wrap.querySelector('[data-c="s"]'), l: wrap.querySelector('[data-c="l"]') };
+        const applyFromSliders = () => {
+          const hex = hslToHex(Number(sliders.h.value), Number(sliders.s.value), Number(sliders.l.value));
+          input.value = hex;
+          input.dispatchEvent(new Event("input", { bubbles: true }));
+        };
+        Object.values(sliders).forEach((s) => s.addEventListener("input", applyFromSliders));
+      }
     });
   }
 
@@ -488,6 +533,18 @@
     root.setProperty("--app-bg-color", settings.appBgColor);
     root.setProperty("--construction-active-color", settings.constructionActiveColor);
     root.setProperty("--due-pill-bonus-color", settings.bonusPillColor);
+    // Textes généraux (variables dédiées plutôt que de redéfinir --paper/
+    // --ink directement, qui servent aussi de FONDS à plein d'endroits —
+    // les réutiliser pour du texte aurait cassé ces fonds-là) + barres/
+    // fonds d'histogrammes + fonds de zones.
+    root.setProperty("--main-text-color", settings.mainTextColor);
+    root.setProperty("--card-text-color", settings.cardTextColor);
+    root.setProperty("--due-bar-color", settings.dueBarColor);
+    root.setProperty("--today-bar-color", settings.todayBarColor);
+    root.setProperty("--chart-wrap-bg-color", settings.chartWrapBgColor);
+    root.setProperty("--svg-chart-bg-color", settings.svgChartBgColor);
+    root.setProperty("--card-form-bg-color", settings.cardFormBgColor);
+    root.setProperty("--rich-editor-bg-color", settings.richEditorBgColor);
   }
 
   /** Applique les émoticônes des icônes de la fiche/de l'arborescence
@@ -763,7 +820,6 @@
   const importTargetSelect = el("import-target-select");
 
 
-  const cardsSubjectSelectEl = el("cards-subject-select");
   const manageAddSubjectBtn = el("manage-add-subject-btn");
   const subjectListEl = el("subject-list");
   const subjectBarCountEl = el("subject-bar-count");
@@ -969,10 +1025,13 @@
     // menu à 3 choix (#subject-choice-menu) ouvert au clic.
     if (subjectSelectBtn) subjectSelectBtn.textContent = subjectName(currentSubjectId);
     // Second sélecteur, en tête de la page Fiches (item 2) : matières
-    // réelles uniquement (pas de dossier ni de mode "toutes matières").
-    if (cardsSubjectSelectEl) {
-      cardsSubjectSelectEl.innerHTML = opts;
-      if (!isSentinelSubject(currentSubjectId)) cardsSubjectSelectEl.value = currentSubjectId;
+    // réelles uniquement (pas de dossier ni de mode "toutes matières"),
+    // même mise en forme que les autres boutons de sélection mais choix
+    // unique direct (pas de "toutes"/"sélection", ça n'aurait pas de sens
+    // pour la matière où atterrit une nouvelle fiche).
+    const cardsSubjectSelectBtnEl = el("cards-subject-select-btn");
+    if (cardsSubjectSelectBtnEl && !isSentinelSubject(currentSubjectId)) {
+      cardsSubjectSelectBtnEl.textContent = subjectName(currentSubjectId);
     }
 
     // Le sélecteur d'import propose en plus la création d'une nouvelle matière à la volée.
@@ -1527,7 +1586,7 @@
     // deux (ou plus) en abscisse pour ne pas les faire se chevaucher.
     const xLabelStep = N <= 15 ? 1 : Math.ceil(N / 15);
 
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--desk);border-radius:8px;">`;
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--svg-chart-bg-color, var(--desk));border-radius:8px;">`;
     svg += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
     svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
 
@@ -2129,11 +2188,60 @@
     });
   }
 
-  if (cardsSubjectSelectEl) {
-    cardsSubjectSelectEl.addEventListener("change", () => {
-      switchSubject(cardsSubjectSelectEl.value);
+  /** Arbre à choix unique (item : matière de création d'une nouvelle fiche
+   *  dans Fiches) — dossiers en simples en-têtes non cliquables, matières
+   *  en boutons ; clic = choix immédiat, pas de coche ni de confirmation. */
+  function renderSubjectTreeForSingleChoice(container, parentId, depth, onPick) {
+    const childFolders = folders
+      .filter((f) => f.parentId === parentId)
+      .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    const childSubjects = subjects
+      .filter((s) => s.folderId === parentId)
+      .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    childFolders.forEach((f) => {
+      const header = document.createElement("div");
+      header.className = "subject-choice-tree-folder";
+      header.style.paddingLeft = `${10 + depth * 14}px`;
+      header.textContent = `${folderIcon()} ${f.name}`;
+      container.appendChild(header);
+      renderSubjectTreeForSingleChoice(container, f.id, depth + 1, onPick);
+    });
+    childSubjects.forEach((s) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "subject-choice-tree-item";
+      btn.style.paddingLeft = `${12 + depth * 14}px`;
+      btn.textContent = s.name;
+      btn.addEventListener("click", () => onPick(s.id));
+      container.appendChild(btn);
     });
   }
+
+  function openCardsSubjectChoiceMenu() {
+    const menu = el("cards-subject-choice-menu");
+    const tree = el("cards-subject-choice-tree");
+    if (!menu || !tree) return;
+    tree.innerHTML = "";
+    renderSubjectTreeForSingleChoice(tree, ROOT_FOLDER_ID, 0, (subjectId) => {
+      closeCardsSubjectChoiceMenu();
+      switchSubject(subjectId);
+    });
+    menu.hidden = false;
+  }
+  function closeCardsSubjectChoiceMenu() {
+    const menu = el("cards-subject-choice-menu");
+    if (menu) menu.hidden = true;
+  }
+  const cardsSubjectSelectBtn = el("cards-subject-select-btn");
+  if (cardsSubjectSelectBtn) {
+    cardsSubjectSelectBtn.addEventListener("click", () => openCardsSubjectChoiceMenu());
+  }
+  document.addEventListener("click", (e) => {
+    const menu = el("cards-subject-choice-menu");
+    if (!menu || menu.hidden) return;
+    if (menu.contains(e.target) || e.target === cardsSubjectSelectBtn) return;
+    closeCardsSubjectChoiceMenu();
+  });
 
   const cardsSearchInputEl = el("cards-search-input");
   if (cardsSearchInputEl) {
@@ -3007,7 +3115,6 @@
   const cardsScopeSelectBtn = el("cards-scope-select-btn");
   if (cardsScopeSelectBtn) {
     cardsScopeSelectBtn.addEventListener("click", () => {
-      closeCardsMultiPicker();
       openCardsScopeChoiceMenu();
     });
   }
@@ -3031,7 +3138,12 @@
   if (cardsScopeChoiceSelectionBtn) {
     cardsScopeChoiceSelectionBtn.addEventListener("click", () => {
       closeCardsScopeChoiceMenu();
-      openCardsMultiPicker();
+      // Reste affiché tant que ce périmètre est actif (voir
+      // renderCardsMultiPickerIfActive, appelé depuis renderManageList) —
+      // plus besoin de "Valider", les résultats se mettent à jour dès
+      // qu'on coche/décoche.
+      cardsScopeFilter = CARDS_SCOPE_MULTI;
+      renderManageList();
     });
   }
   const cardsScopeChoiceCancelBtn = el("cards-scope-choice-cancel");
@@ -3045,55 +3157,43 @@
     closeCardsScopeChoiceMenu();
   });
 
-  function openCardsMultiPicker() {
+  /** Contrairement aux autres pickers de l'appli (qui se ferment après un
+   *  "Valider"), celui-ci reste affiché tant que le périmètre "Sélection de
+   *  matières et dossiers" est actif — cocher/décocher met à jour les
+   *  résultats de recherche tout de suite, sans étape de confirmation. */
+  function renderCardsMultiPickerIfActive() {
     const picker = el("cards-multi-picker");
     const list = el("cards-multi-picker-list");
     if (!picker || !list) return;
+    if (cardsScopeFilter !== CARDS_SCOPE_MULTI) {
+      picker.hidden = true;
+      return;
+    }
+    picker.hidden = false;
     const selected = new Set(loadCardsMultiSelection());
     list.innerHTML = "";
     renderFolderTreeForPicker(list, ROOT_FOLDER_ID, 0, selected);
-    picker.hidden = false;
-  }
-  function closeCardsMultiPicker() {
-    const picker = el("cards-multi-picker");
-    if (picker) picker.hidden = true;
-  }
-  const cardsMultiPickerCancelBtn = el("cards-multi-picker-cancel");
-  if (cardsMultiPickerCancelBtn) cardsMultiPickerCancelBtn.addEventListener("click", closeCardsMultiPicker);
-  const cardsMultiPickerConfirmBtn = el("cards-multi-picker-confirm");
-  if (cardsMultiPickerConfirmBtn) {
-    cardsMultiPickerConfirmBtn.addEventListener("click", () => {
-      const checkedFolders = [...document.querySelectorAll('#cards-multi-picker-list input[data-kind="folder"]:checked')];
-      const checkedSubjects = [...document.querySelectorAll('#cards-multi-picker-list input[data-kind="subject"]:checked')];
-      const resultIds = new Set();
-      checkedFolders.forEach((cb) => subjectIdsInFolder(cb.value).forEach((id) => resultIds.add(id)));
-      checkedSubjects.forEach((cb) => resultIds.add(cb.value));
-      if (resultIds.size === 0) {
-        alert("Choisis au moins une matière ou un dossier.");
-        return;
-      }
-      closeCardsMultiPicker();
-      // Même affichage intelligent que sur Réviser : une seule matière
-      // cochée -> son nom directement ; un seul dossier coché -> le nom du
-      // dossier ; mélange -> libellé générique.
-      if (checkedFolders.length === 0 && checkedSubjects.length === 1) {
-        cardsScopeFilter = checkedSubjects[0].value;
+    list.querySelectorAll("input").forEach((cb) => {
+      cb.addEventListener("change", () => {
+        const checkedFolders = [...list.querySelectorAll('input[data-kind="folder"]:checked')];
+        const checkedSubjects = [...list.querySelectorAll('input[data-kind="subject"]:checked')];
+        const resultIds = new Set();
+        checkedFolders.forEach((box) => subjectIdsInFolder(box.value).forEach((id) => resultIds.add(id)));
+        checkedSubjects.forEach((box) => resultIds.add(box.value));
+        saveCardsMultiSelection([...resultIds]);
+        if (checkedFolders.length === 1 && checkedSubjects.length === 0) {
+          saveCardsMultiLabel(folders.find((f) => f.id === checkedFolders[0].value)?.name || "");
+        } else {
+          saveCardsMultiLabel("");
+        }
         renderManageList();
-        return;
-      }
-      saveCardsMultiSelection([...resultIds]);
-      if (checkedFolders.length === 1 && checkedSubjects.length === 0) {
-        saveCardsMultiLabel(folders.find((f) => f.id === checkedFolders[0].value)?.name || "");
-      } else {
-        saveCardsMultiLabel("");
-      }
-      cardsScopeFilter = CARDS_SCOPE_MULTI;
-      renderManageList();
+      });
     });
   }
 
   function renderManageList() {
     renderCardsScopeSelect();
+    renderCardsMultiPickerIfActive();
     let visible = cardsScopeCards();
     const showSubjectNames = cardsScopeFilter !== CARDS_SCOPE_CURRENT;
     if (cardsConstructionFilter) {
@@ -3940,7 +4040,7 @@
     const barW = gap * 0.55;
     const yPos = (v) => padT + (1 - v / yMax) * plotH;
 
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--desk);border-radius:8px;">`;
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--svg-chart-bg-color, var(--desk));border-radius:8px;">`;
     svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
     ratings.forEach((r, i) => {
       const v = counts[r];
@@ -3995,7 +4095,7 @@
     const barW = (groupW * 0.78) / ratings.length;
     const yPos = (v) => padT + (1 - v / yMax) * plotH;
 
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--desk);border-radius:8px;">`;
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--svg-chart-bg-color, var(--desk));border-radius:8px;">`;
     svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
     const bucketMs = (end.getTime() - start.getTime()) / numGroups;
     for (let g = 0; g < numGroups; g++) {
@@ -4025,11 +4125,12 @@
      notes combiner dans une même barre (ex. cocher seulement 🙂 et 😎 pour
      voir leur part combinée plutôt que les 4 séparément).
   --------------------------------------------------------- */
-  // Item 11 : décochées par défaut — cocher une case ne la MASQUE plus,
-  // elle fusionne au contraire sa note avec les autres notes cochées en un
-  // seul segment combiné (voir computeRatingGroups).
-  let ratingsHistoryChecked = { again: false, hard: false, good: false, easy: false };
-
+  /* ---------------------------------------------------------
+     Évolution des notes dans le temps : histogramme à barres empilées en
+     pourcentage. La fusion par cases à cocher a été retirée (repli plus
+     simple : toujours les 4 notes séparées) au profit d'un pourcentage
+     affiché directement dans chaque segment.
+  --------------------------------------------------------- */
   function bucketEntriesByPeriod(entries, start, end, numBuckets) {
     const totalMs = end.getTime() - start.getTime();
     const bucketMs = totalMs / numBuckets;
@@ -4045,26 +4146,6 @@
     return buckets;
   }
 
-  /** Regroupe les 4 notes en segments à empiler (item 11) : chaque note
-   *  NON cochée reste son propre segment (comportement par défaut, les 4
-   *  séparées) ; toutes les notes COCHÉES fusionnent en un seul segment
-   *  combiné (coché seul = un groupe d'une seule note, sans effet visible). */
-  function computeRatingGroups(checked) {
-    const ratings = ["again", "hard", "good", "easy"];
-    const checkedList = ratings.filter((r) => checked[r]);
-    const groups = ratings
-      .filter((r) => !checked[r])
-      .map((r) => ({ ratings: [r], label: ALGO_CHART_RATING_LABELS[r], color: ALGO_CHART_COLORS[r] }));
-    if (checkedList.length > 0) {
-      groups.push({
-        ratings: checkedList,
-        label: checkedList.map((r) => ALGO_CHART_RATING_LABELS[r]).join(" + "),
-        color: ALGO_CHART_COLORS[checkedList[0]],
-      });
-    }
-    return groups;
-  }
-
   function renderRatingsHistoryChart() {
     const wrap = el("ratings-history-chart-wrap");
     if (!wrap) return;
@@ -4072,30 +4153,15 @@
     const { start, end } = periodToRange(statsPeriod);
     const filtered = filterEntriesByPeriod(scoped, statsPeriod);
     const ratings = ["again", "hard", "good", "easy"];
-    const groups = computeRatingGroups(ratingsHistoryChecked);
 
     const legend = ratings
       .map(
-        (r) => `<label class="algo-chart-legend-item">
-          <input type="checkbox" class="ratings-history-checkbox" data-rating="${r}" ${ratingsHistoryChecked[r] ? "checked" : ""} />
-          <span class="algo-chart-legend-dot" style="background:${ALGO_CHART_COLORS[r]}"></span>${ALGO_CHART_RATING_LABELS[r]}
-        </label>`
+        (r) => `<span class="algo-chart-legend-item"><span class="algo-chart-legend-dot" style="background:${ALGO_CHART_COLORS[r]}"></span>${ALGO_CHART_RATING_LABELS[r]}</span>`
       )
       .join("");
-    const legendHint = `<p class="field-hint algo-chart-hint">Coche plusieurs notes pour fusionner leurs barres en une seule.</p>`;
-
-    const wireCheckboxes = () => {
-      wrap.querySelectorAll(".ratings-history-checkbox").forEach((cb) => {
-        cb.addEventListener("change", () => {
-          ratingsHistoryChecked[cb.dataset.rating] = cb.checked;
-          renderRatingsHistoryChart();
-        });
-      });
-    };
 
     if (filtered.length === 0) {
-      wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${legendHint}<p class="field-hint algo-chart-empty">Aucune note enregistrée sur cette période.</p>`;
-      wireCheckboxes();
+      wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div><p class="field-hint algo-chart-empty">Aucune note enregistrée sur cette période.</p>`;
       return;
     }
 
@@ -4108,7 +4174,7 @@
     const barW = bucketW * 0.7;
     const bucketMs = (end.getTime() - start.getTime()) / NUM_BUCKETS;
 
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--desk);border-radius:8px;">`;
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--svg-chart-bg-color, var(--desk));border-radius:8px;">`;
     [0, 50, 100].forEach((pct) => {
       const y = padT + (1 - pct / 100) * plotH;
       svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(247,241,225,0.1)" stroke-width="1"/>`;
@@ -4117,7 +4183,7 @@
 
     buckets.forEach((b, i) => {
       const x = padL + bucketW * i + (bucketW - barW) / 2;
-      const total = groups.reduce((s, g) => s + g.ratings.reduce((s2, r) => s2 + b[r], 0), 0);
+      const total = ratings.reduce((s, r) => s + b[r], 0);
       // Repère de date sous chaque tranche (item 11 — axe des abscisses
       // enfin lisible : le début et la fin de chaque tranche temporelle).
       const bucketDate = new Date(start.getTime() + bucketMs * i);
@@ -4126,19 +4192,25 @@
       }
       if (total === 0) return;
       let yCursor = padT + plotH;
-      groups.forEach((g) => {
-        const count = g.ratings.reduce((s, r) => s + b[r], 0);
+      ratings.forEach((r) => {
+        const count = b[r];
+        if (count === 0) return;
         const share = count / total;
         const segH = share * plotH;
         const y = yCursor - segH;
-        if (segH > 0) svg += `<rect x="${x}" y="${y}" width="${barW}" height="${segH}" fill="${g.color}"/>`;
+        svg += `<rect x="${x}" y="${y}" width="${barW}" height="${segH}" fill="${ALGO_CHART_COLORS[r]}"/>`;
+        // Pourcentage affiché dans le segment (remplace les cases à cocher
+        // retirées) — seulement s'il y a assez de place pour rester lisible.
+        const pctLabel = Math.round(share * 100);
+        if (segH >= 10) {
+          svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${(y + segH / 2 + 2.5).toFixed(1)}" font-size="6.5" fill="var(--desk)" text-anchor="middle" font-weight="700">${pctLabel}%</text>`;
+        }
         yCursor = y;
       });
     });
     svg += `</svg>`;
 
-    wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${legendHint}${svg}<p class="algo-chart-axis-x">Temps, du début à la fin de la période choisie ci-dessus</p>`;
-    wireCheckboxes();
+    wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${svg}<p class="algo-chart-axis-x">Temps, du début à la fin de la période choisie ci-dessus</p>`;
   }
 
   /* ---------------------------------------------------------
@@ -4665,6 +4737,52 @@
     });
   }
 
+  /** Textes, barres/fonds d'histogrammes, fonds de zones (étoffe encore le
+   *  mode développeur). */
+  const devZoneColorIds = {
+    mainTextColor: "dev-color-main-text",
+    cardTextColor: "dev-color-card-text",
+    dueBarColor: "dev-color-due-bar",
+    todayBarColor: "dev-color-today-bar",
+    chartWrapBgColor: "dev-color-chart-wrap-bg",
+    svgChartBgColor: "dev-color-svg-chart-bg",
+    cardFormBgColor: "dev-color-card-form-bg",
+    richEditorBgColor: "dev-color-rich-editor-bg",
+  };
+  const DEV_ZONE_COLOR_DEFAULTS = {
+    mainTextColor: DEFAULT_MAIN_TEXT_COLOR,
+    cardTextColor: DEFAULT_CARD_TEXT_COLOR,
+    dueBarColor: DEFAULT_DUE_BAR_COLOR,
+    todayBarColor: DEFAULT_TODAY_BAR_COLOR,
+    chartWrapBgColor: DEFAULT_CHART_WRAP_BG_COLOR,
+    svgChartBgColor: DEFAULT_SVG_CHART_BG_COLOR,
+    cardFormBgColor: DEFAULT_CARD_FORM_BG_COLOR,
+    richEditorBgColor: DEFAULT_RICH_EDITOR_BG_COLOR,
+  };
+  function saveZoneColorsFromInputs() {
+    const settings = loadDevSettings();
+    Object.keys(devZoneColorIds).forEach((key) => {
+      const input = el(devZoneColorIds[key]);
+      if (input) settings[key] = input.value;
+    });
+    saveDevSettings(settings);
+    applyColorSettings();
+  }
+  Object.values(devZoneColorIds).forEach((id) => {
+    const input = el(id);
+    if (input) input.addEventListener("input", saveZoneColorsFromInputs);
+  });
+  const devZoneColorsResetBtn = el("dev-zone-colors-reset");
+  if (devZoneColorsResetBtn) {
+    devZoneColorsResetBtn.addEventListener("click", () => {
+      const settings = loadDevSettings();
+      Object.assign(settings, DEV_ZONE_COLOR_DEFAULTS);
+      saveDevSettings(settings);
+      applyColorSettings();
+      renderDevView();
+    });
+  }
+
   /** Liste éditable de couleurs de texte (item 2) : ajouter/renommer/
    *  changer la couleur/retirer, appliqué en direct à la barre d'outils de
    *  mise en forme des fiches. */
@@ -4803,8 +4921,8 @@
   }
 
   function renderDevView() {
-    const hslToggle = el("dev-hsl-mode-toggle");
-    if (hslToggle) hslToggle.checked = loadHslColorMode();
+    const colorSliderModeSelect = el("dev-color-slider-mode");
+    if (colorSliderModeSelect) colorSliderModeSelect.value = loadColorSliderMode();
     const labels = loadDevSettings().ratingLabels;
     ["again", "hard", "good", "easy"].forEach((r) => {
       const input = el(`dev-rating-${r}`);
@@ -4835,6 +4953,10 @@
       const input = el(devOtherColorIds[key]);
       if (input) input.value = otherSettings[key];
     });
+    Object.keys(devZoneColorIds).forEach((key) => {
+      const input = el(devZoneColorIds[key]);
+      if (input) input.value = otherSettings[key];
+    });
     renderTextColorsEditor();
     renderCustomModeColorsEditor();
     renderFactoryDefaultsEditor();
@@ -4844,10 +4966,10 @@
     // en tout dernier pour ne rater aucun d'entre eux.
     enhanceColorInputsWithHsl();
   }
-  const devHslModeToggle = el("dev-hsl-mode-toggle");
-  if (devHslModeToggle) {
-    devHslModeToggle.addEventListener("change", () => {
-      saveHslColorMode(devHslModeToggle.checked);
+  const devColorSliderModeSelect = el("dev-color-slider-mode");
+  if (devColorSliderModeSelect) {
+    devColorSliderModeSelect.addEventListener("change", () => {
+      saveColorSliderMode(devColorSliderModeSelect.value);
       enhanceColorInputsWithHsl();
     });
   }
