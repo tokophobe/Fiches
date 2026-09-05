@@ -409,13 +409,49 @@
       </div>
       <p class="chart-empty" id="reviewed-chart-empty" hidden>Aucune fiche révisée sur cette période.</p>
 
-      <h3 class="chart-title">Notes données (Encore / Difficile / Bien / Facile)</h3>
-      <div class="ratings-period-tabs" id="ratings-period-tabs">
-        <button type="button" class="ratings-period-tab is-active" data-period="global">Global</button>
-        <button type="button" class="ratings-period-tab" data-period="today">Aujourd'hui</button>
-        <button type="button" class="ratings-period-tab" data-period="week">7 derniers jours</button>
+      <!-- Item 6 : sélecteur de période partagé par les statistiques
+           ci-dessous (compte les créations/révisions, notes données, et
+           l'évolution dans le temps) — la matière/le dossier vient du
+           sélecteur déjà présent en haut de page. -->
+      <h3 class="chart-title">Statistiques de période</h3>
+      <select class="stats-select" id="stats-period-select" aria-label="Période des statistiques ci-dessous">
+        <option value="today">Aujourd'hui</option>
+        <option value="yesterday">Hier</option>
+        <option value="week">Semaine dernière</option>
+        <option value="month">Mois dernier</option>
+        <option value="3months">3 derniers mois</option>
+        <option value="6months">6 derniers mois</option>
+        <option value="year">Sur un an</option>
+      </select>
+
+      <div class="stat-grid">
+        <div class="stat-box">
+          <span class="stat-number" id="stat-created-period">0</span>
+          <span class="stat-label">fiches créées</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="stat-reviewed-period">0</span>
+          <span class="stat-label">fiches révisées</span>
+        </div>
       </div>
+
+      <h3 class="chart-title">🔥 Jours d'utilisation</h3>
+      <p class="field-hint settings-block-hint">
+        Un jour "chaud" = au moins une fiche notée ce jour-là. Toujours sur
+        les 30 derniers jours, quelle que soit la période choisie ci-dessus.
+      </p>
+      <div id="streak-summary" class="streak-summary"></div>
+      <div id="streak-chart-wrap" class="streak-chart-wrap"></div>
+
+      <h3 class="chart-title">Notes données (Encore / Difficile / Bien / Facile)</h3>
       <div id="ratings-chart-wrap"></div>
+
+      <h3 class="chart-title">Évolution des notes dans le temps</h3>
+      <p class="field-hint settings-block-hint">
+        Décoche une ou plusieurs notes pour ne voir que la part combinée de
+        celles qui restent cochées.
+      </p>
+      <div id="ratings-history-chart-wrap"></div>
     </section>
 
     <!-- VUE SYNC -->

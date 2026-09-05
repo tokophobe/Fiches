@@ -1379,36 +1379,52 @@ textarea, input {
   margin-bottom: 14px;
 }
 
-.ratings-period-tabs {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 10px;
-}
-
-.ratings-period-tab {
-  flex: 1;
-  background: rgba(247, 241, 225, 0.08);
-  border: 1px solid rgba(247, 241, 225, 0.25);
-  color: var(--paper);
-  border-radius: 8px;
-  padding: 8px 4px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-}
-
-.ratings-period-tab.is-active {
-  background: var(--amber);
-  color: #2a1f0d;
-  border-color: var(--amber);
-  font-weight: 700;
-}
-
-#ratings-chart-wrap {
+#ratings-chart-wrap, #ratings-history-chart-wrap {
   background: rgba(247, 241, 225, 0.05);
   border-radius: 10px;
   padding: 10px 8px 4px;
   margin-bottom: 8px;
 }
+
+/* Flammes / jours d'utilisation (item 6). */
+.streak-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+  color: var(--paper);
+}
+
+.streak-summary .streak-number {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--amber);
+}
+
+.streak-chart-wrap {
+  background: rgba(247, 241, 225, 0.05);
+  border-radius: 10px;
+  padding: 10px 8px;
+  margin-bottom: 8px;
+  overflow-x: auto;
+}
+
+.streak-row {
+  display: flex;
+  gap: 3px;
+}
+
+.streak-day {
+  width: 9px;
+  height: 22px;
+  border-radius: 2px;
+  background: var(--paper-3);
+  flex-shrink: 0;
+}
+
+.streak-day.is-hot { background: #e8873a; }
+.streak-day.is-today { outline: 1.5px solid var(--paper); outline-offset: 1px; }
 
 .stats-select {
   flex: 1;

@@ -3355,15 +3355,61 @@
     renderDueChart();
     renderReviewedChart();
     renderRatingsChart();
+    renderRatingsHistoryChart();
+    renderStreak();
+    renderPeriodCounts();
   }
 
-  /** Histogramme "Notes données" (item 15) : Encore/Difficile/Bien/Facile,
-   *  sur trois périodes possibles (onglets) — Global (tout l'historique),
-   *  Aujourd'hui, ou les 7 derniers jours détaillés par jour de semaine.
-   *  Basé sur `ratingLog` (un événement par notation, indépendant de l'état
-   *  actuel des fiches) plutôt que sur les fiches elles-mêmes. */
-  let ratingsPeriod = "global";
+  /** Histogramme "Notes données" — sur la période partagée choisie plus
+   *  haut (item 6 : aujourd'hui/hier/semaine/mois/3 mois/6 mois/an), au lieu
+   *  des 3 anciens onglets Global/Aujourd'hui/7 jours. Basé sur `ratingLog`
+   *  (un événement par notation, indépendant de l'état actuel des fiches)
+   *  plutôt que sur les fiches elles-mêmes. */
   const WEEKDAY_FULL = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+  let statsPeriod = "week";
+
+  /** Convertit un choix de période (item 6) en plage de dates [start, end[
+   *  — end exclusive (début du lendemain de la borne haute). */
+  function periodToRange(period) {
+    const today = startOfDay(new Date());
+    const end = new Date(today);
+    end.setDate(end.getDate() + 1);
+    const start = new Date(today);
+    switch (period) {
+      case "today":
+        break;
+      case "yesterday":
+        start.setDate(start.getDate() - 1);
+        end.setDate(end.getDate() - 1);
+        break;
+      case "week":
+        start.setDate(start.getDate() - 7);
+        break;
+      case "month":
+        start.setDate(start.getDate() - 30);
+        break;
+      case "3months":
+        start.setDate(start.getDate() - 90);
+        break;
+      case "6months":
+        start.setDate(start.getDate() - 180);
+        break;
+      case "year":
+        start.setDate(start.getDate() - 365);
+        break;
+      default:
+        start.setDate(start.getDate() - 7);
+    }
+    return { start, end };
+  }
+
+  function filterEntriesByPeriod(entries, period) {
+    const { start, end } = periodToRange(period);
+    return entries.filter((e) => {
+      const t = new Date(e.at).getTime();
+      return t >= start.getTime() && t < end.getTime();
+    });
+  }
 
   function ratingLogInScope() {
     const scopeIds = statsScopeSubjectIds();
@@ -3408,78 +3454,176 @@
     wrap.innerHTML = svg;
   }
 
-  function renderRatingsWeekChart(wrap, entries, ratings) {
-    if (entries.length === 0) {
-      wrap.innerHTML = `<p class="field-hint algo-chart-empty">Aucune note enregistrée sur les 7 derniers jours.</p>`;
-      return;
-    }
-    const today = startOfDay(new Date());
-    const days = [];
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date(today);
-      d.setDate(d.getDate() - i);
-      days.push(d);
-    }
-    const perDay = days.map((d) => {
-      const dayEntries = entries.filter((e) => startOfDay(new Date(e.at)).getTime() === d.getTime());
-      return ratingCountsFor(dayEntries);
-    });
-    const max = Math.max(1, ...perDay.flatMap((c) => ratings.map((r) => c[r])));
-    const yMax = Math.max(4, Math.ceil(max * 1.15));
-
-    const W = 320, H = 210, padL = 22, padB = 34, padT = 14, padR = 8;
-    const plotW = W - padL - padR, plotH = H - padT - padB;
-    const dayW = plotW / 7;
-    const barW = (dayW * 0.78) / ratings.length;
-
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--desk);border-radius:8px;">`;
-    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
-    days.forEach((d, di) => {
-      const dayX = padL + dayW * di;
-      ratings.forEach((r, ri) => {
-        const v = perDay[di][r];
-        const h = (v / yMax) * plotH;
-        const x = dayX + (dayW - barW * ratings.length) / 2 + barW * ri;
-        const y = H - padB - h;
-        svg += `<rect x="${x}" y="${y}" width="${Math.max(1, barW - 1)}" height="${Math.max(v > 0 ? 1 : 0, h)}" rx="1.5" fill="${ALGO_CHART_COLORS[r]}"/>`;
-      });
-      // Jour de la semaine en toutes lettres (item 15), sur deux lignes si
-      // besoin (ex. "mercredi") pour rester lisible sur 7 colonnes étroites.
-      const label = WEEKDAY_FULL[d.getDay()];
-      svg += `<text x="${dayX + dayW / 2}" y="${H - padB + 13}" font-size="6.3" fill="#9aa89e" text-anchor="middle">${label}</text>`;
-    });
-    svg += `</svg>`;
-    const legend = ratings
-      .map((r) => `<span class="algo-chart-legend-item"><span class="algo-chart-legend-dot" style="background:${ALGO_CHART_COLORS[r]}"></span>${ALGO_CHART_RATING_LABELS[r]}</span>`)
-      .join("");
-    wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${svg}`;
-  }
-
   function renderRatingsChart() {
     const wrap = el("ratings-chart-wrap");
     if (!wrap) return;
     const scoped = ratingLogInScope();
-    const ratings = ["again", "hard", "good", "easy"];
-    if (ratingsPeriod === "week") {
-      renderRatingsWeekChart(wrap, scoped, ratings);
-      return;
-    }
-    let filtered = scoped;
-    if (ratingsPeriod === "today") {
-      const todayMs = startOfDay(new Date()).getTime();
-      filtered = scoped.filter((e) => startOfDay(new Date(e.at)).getTime() === todayMs);
-    }
-    renderRatingsSimpleChart(wrap, filtered, ratings);
+    const filtered = filterEntriesByPeriod(scoped, statsPeriod);
+    renderRatingsSimpleChart(wrap, filtered, ["again", "hard", "good", "easy"]);
   }
 
-  document.querySelectorAll(".ratings-period-tab").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".ratings-period-tab").forEach((b) => b.classList.remove("is-active"));
-      btn.classList.add("is-active");
-      ratingsPeriod = btn.dataset.period;
-      renderRatingsChart();
+  /* ---------------------------------------------------------
+     Évolution des notes dans le temps (item 6) : histogramme à barres
+     empilées en pourcentage, avec des cases à cocher pour choisir quelles
+     notes combiner dans une même barre (ex. cocher seulement 🙂 et 😎 pour
+     voir leur part combinée plutôt que les 4 séparément).
+  --------------------------------------------------------- */
+  let ratingsHistoryVisible = { again: true, hard: true, good: true, easy: true };
+
+  function bucketEntriesByPeriod(entries, start, end, numBuckets) {
+    const totalMs = end.getTime() - start.getTime();
+    const bucketMs = totalMs / numBuckets;
+    const buckets = Array.from({ length: numBuckets }, () => ({ again: 0, hard: 0, good: 0, easy: 0 }));
+    entries.forEach((e) => {
+      const t = new Date(e.at).getTime();
+      if (t < start.getTime() || t >= end.getTime()) return;
+      let idx = Math.floor((t - start.getTime()) / bucketMs);
+      if (idx >= numBuckets) idx = numBuckets - 1;
+      if (idx < 0) idx = 0;
+      if (buckets[idx][e.rating] !== undefined) buckets[idx][e.rating] += 1;
     });
-  });
+    return buckets;
+  }
+
+  function renderRatingsHistoryChart() {
+    const wrap = el("ratings-history-chart-wrap");
+    if (!wrap) return;
+    const scoped = ratingLogInScope();
+    const { start, end } = periodToRange(statsPeriod);
+    const filtered = filterEntriesByPeriod(scoped, statsPeriod);
+    const ratings = ["again", "hard", "good", "easy"];
+    const visibleRatings = ratings.filter((r) => ratingsHistoryVisible[r]);
+
+    const legend = ratings
+      .map(
+        (r) => `<label class="algo-chart-legend-item">
+          <input type="checkbox" class="ratings-history-checkbox" data-rating="${r}" ${ratingsHistoryVisible[r] ? "checked" : ""} />
+          <span class="algo-chart-legend-dot" style="background:${ALGO_CHART_COLORS[r]}"></span>${ALGO_CHART_RATING_LABELS[r]}
+        </label>`
+      )
+      .join("");
+
+    const wireCheckboxes = () => {
+      wrap.querySelectorAll(".ratings-history-checkbox").forEach((cb) => {
+        cb.addEventListener("change", () => {
+          ratingsHistoryVisible[cb.dataset.rating] = cb.checked;
+          renderRatingsHistoryChart();
+        });
+      });
+    };
+
+    if (filtered.length === 0 || visibleRatings.length === 0) {
+      const msg = filtered.length === 0 ? "Aucune note enregistrée sur cette période." : "Coche au moins une note pour l'afficher.";
+      wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div><p class="field-hint algo-chart-empty">${msg}</p>`;
+      wireCheckboxes();
+      return;
+    }
+
+    const NUM_BUCKETS = 10;
+    const buckets = bucketEntriesByPeriod(filtered, start, end, NUM_BUCKETS);
+
+    const W = 320, H = 200, padL = 28, padB = 14, padT = 10, padR = 8;
+    const plotW = W - padL - padR, plotH = H - padT - padB;
+    const bucketW = plotW / NUM_BUCKETS;
+    const barW = bucketW * 0.7;
+
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--desk);border-radius:8px;">`;
+    [0, 50, 100].forEach((pct) => {
+      const y = padT + (1 - pct / 100) * plotH;
+      svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(247,241,225,0.1)" stroke-width="1"/>`;
+      svg += `<text x="${padL - 4}" y="${y + 3}" font-size="7" fill="#9aa89e" text-anchor="end">${pct}%</text>`;
+    });
+
+    buckets.forEach((b, i) => {
+      const x = padL + bucketW * i + (bucketW - barW) / 2;
+      const totalVisible = visibleRatings.reduce((s, r) => s + b[r], 0);
+      if (totalVisible === 0) return;
+      let yCursor = padT + plotH;
+      visibleRatings.forEach((r) => {
+        const share = b[r] / totalVisible;
+        const segH = share * plotH;
+        const y = yCursor - segH;
+        if (segH > 0) svg += `<rect x="${x}" y="${y}" width="${barW}" height="${segH}" fill="${ALGO_CHART_COLORS[r]}"/>`;
+        yCursor = y;
+      });
+    });
+    svg += `</svg>`;
+
+    wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${svg}`;
+    wireCheckboxes();
+  }
+
+  /* ---------------------------------------------------------
+     🔥 Flammes / jours d'utilisation (item 6) : toujours calculées sur les
+     30 derniers jours, indépendamment de la période choisie plus haut (un
+     "streak" n'a pas vraiment de sens limité à "aujourd'hui" par exemple).
+  --------------------------------------------------------- */
+  function computeStreakData(scopeIds) {
+    const today = startOfDay(new Date());
+    const days = [];
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      days.push(d);
+    }
+    const hotSet = new Set();
+    ratingLog.forEach((e) => {
+      if (scopeIds !== null && !scopeIds.has(e.subjectId)) return;
+      hotSet.add(startOfDay(new Date(e.at)).getTime());
+    });
+    const hotDays = days.map((d) => hotSet.has(d.getTime()));
+    let streak = 0;
+    for (let i = hotDays.length - 1; i >= 0; i--) {
+      if (hotDays[i]) streak++;
+      else break;
+    }
+    return { days, hotDays, streak };
+  }
+
+  function renderStreak() {
+    const summaryEl = el("streak-summary");
+    const streakChartEl = el("streak-chart-wrap");
+    if (!summaryEl || !streakChartEl) return;
+    const scopeIds = statsScopeSubjectIds();
+    const { days, hotDays, streak } = computeStreakData(scopeIds);
+    summaryEl.innerHTML = `<span class="streak-number">🔥 ${streak}</span><span>jour${streak > 1 ? "s" : ""} d'affilée</span>`;
+    const todayIdx = days.length - 1;
+    const cells = days
+      .map((d, i) => `<div class="streak-day${hotDays[i] ? " is-hot" : ""}${i === todayIdx ? " is-today" : ""}" title="${formatShortDateLabel(d)}"></div>`)
+      .join("");
+    streakChartEl.innerHTML = `<div class="streak-row">${cells}</div>`;
+  }
+
+  /* ---------------------------------------------------------
+     Compteurs "fiches créées" / "fiches révisées" sur la période choisie
+     (item 6).
+  --------------------------------------------------------- */
+  function renderPeriodCounts() {
+    const scopeIds = statsScopeSubjectIds();
+    const { start, end } = periodToRange(statsPeriod);
+    const createdCount = cards.filter((c) => {
+      if (c.deleted) return false;
+      if (scopeIds !== null && !scopeIds.has(c.subject)) return false;
+      const t = new Date(c.createdAt).getTime();
+      return t >= start.getTime() && t < end.getTime();
+    }).length;
+    const reviewedCount = filterEntriesByPeriod(ratingLogInScope(), statsPeriod).length;
+    const createdEl = el("stat-created-period");
+    const reviewedEl = el("stat-reviewed-period");
+    if (createdEl) createdEl.textContent = String(createdCount);
+    if (reviewedEl) reviewedEl.textContent = String(reviewedCount);
+  }
+
+  const statsPeriodSelectEl = el("stats-period-select");
+  if (statsPeriodSelectEl) {
+    statsPeriodSelectEl.value = statsPeriod;
+    statsPeriodSelectEl.addEventListener("change", () => {
+      statsPeriod = statsPeriodSelectEl.value;
+      renderRatingsChart();
+      renderRatingsHistoryChart();
+      renderPeriodCounts();
+    });
+  }
 
   /** Affiche un message de confirmation bien visible, en bas d'écran. */
   function showToast(message) {
