@@ -2054,6 +2054,33 @@ textarea, input {
   margin-bottom: 10px;
 }
 
+/* Curseurs teinte/saturation/lumière (item 17), affichés juste après
+   chaque sélecteur de couleur natif quand le réglage est activé. */
+.hsl-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.hsl-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hsl-slider-row span {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-soft);
+  width: 10px;
+}
+
+.hsl-slider-row input[type="range"] {
+  flex: 1;
+  height: 14px;
+}
+
 .dev-text-color-row {
   display: flex;
   align-items: center;

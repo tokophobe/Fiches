@@ -620,6 +620,11 @@
         utilisateur ne l'aura pas.
       </p>
 
+      <label class="settings-toggle-row">
+        <input type="checkbox" id="dev-hsl-mode-toggle" />
+        <span>Curseurs teinte / saturation / lumière pour toutes les couleurs ci-dessous</span>
+      </label>
+
       <div class="card-form">
         <h3 class="settings-block-title">Boutons d'évaluation</h3>
         <p class="field-hint settings-block-hint">Émoticône ou texte affiché sur chaque bouton de notation.</p>
@@ -748,6 +753,15 @@
           </label>
         </div>
         <button type="button" class="btn btn--ghost" id="dev-mode-colors-reset">Revenir aux couleurs d'origine</button>
+      </div>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Couleurs des modes personnalisés</h3>
+        <p class="field-hint settings-block-hint">
+          Chaque mode personnalisé créé peut avoir sa propre couleur (au
+          lieu de tous partager la couleur "Personnalisé" ci-dessus).
+        </p>
+        <div id="dev-custom-mode-colors"></div>
       </div>
 
       <div class="card-form">

@@ -320,6 +320,7 @@
       navLabels: { ...DEFAULT_NAV_LABELS, ...(parsed.navLabels || {}) },
       ratingColors: { ...DEFAULT_RATING_COLORS, ...(parsed.ratingColors || {}) },
       modeColors: { ...DEFAULT_MODE_COLORS, ...(parsed.modeColors || {}) },
+      customModeColors: { ...(parsed.customModeColors || {}) },
       appBgColor: parsed.appBgColor || DEFAULT_APP_BG_COLOR,
       constructionActiveColor: parsed.constructionActiveColor || DEFAULT_CONSTRUCTION_ACTIVE_COLOR,
       bonusPillColor: parsed.bonusPillColor || DEFAULT_BONUS_PILL_COLOR,
@@ -337,6 +338,42 @@
   }
   function getFactoryDefaults() {
     return loadDevSettings().factoryDefaults;
+  }
+
+  /** Couleur d'un mode personnalisé précis (item 16) — contrairement aux 3
+   *  modes fixes (une couleur chacun), TOUS les modes personnalisés
+   *  partageaient auparavant une seule et même couleur "custom". Chaque
+   *  mode personnalisé a maintenant la sienne, réglable depuis la page
+   *  Développeur, distincte de la couleur "custom" par défaut qui sert de
+   *  repli pour un mode qui n'a pas encore de couleur assignée. */
+  function getCustomModeColor(modeId) {
+    const settings = loadDevSettings();
+    return (settings.customModeColors || {})[modeId] || settings.modeColors.custom;
+  }
+  function setCustomModeColor(modeId, hex) {
+    const settings = loadDevSettings();
+    if (!settings.customModeColors) settings.customModeColors = {};
+    settings.customModeColors[modeId] = hex;
+    saveDevSettings(settings);
+  }
+
+  /** Applique la classe ET (pour un mode personnalisé) la couleur propre à
+   *  CE mode précis sur un badge de mode (item 16) — un seul endroit pour
+   *  les 2 emplacements où un badge de mode est affiché (page Gérer et
+   *  fiche de révision). */
+  function applyModeBadgeStyle(badgeEl, modeId) {
+    if (!badgeEl) return;
+    const key = algoModeCssKey(modeId);
+    Object.values(ALGO_MODE_KEY_TO_CLASS).forEach((c) => badgeEl.classList.remove(c));
+    badgeEl.classList.add(ALGO_MODE_KEY_TO_CLASS[key]);
+    if (key === "custom") {
+      const color = getCustomModeColor(modeId);
+      badgeEl.style.background = color;
+      badgeEl.style.borderColor = color;
+    } else {
+      badgeEl.style.background = "";
+      badgeEl.style.borderColor = "";
+    }
   }
 
   /** Applique les émoticônes/texte des boutons de notation (item 19) —
@@ -362,6 +399,82 @@
    *  variables CSS sur :root, que la feuille de style référence désormais
    *  (voir .stamp--again, .is-cool, etc.) — un seul endroit à mettre à
    *  jour pour que ça se répercute partout où ces couleurs sont utilisées. */
+  /** Conversions hex <-> TSL (teinte/saturation/lumière), item 17 — pour
+   *  proposer un réglage par curseurs H/S/L en plus (ou à la place) du
+   *  sélecteur natif <input type="color">, qui ne le propose pas partout
+   *  de la même façon selon le navigateur/l'OS. */
+  function hexToHsl(hex) {
+    const r = parseInt(hex.slice(1, 3), 16) / 255;
+    const g = parseInt(hex.slice(3, 5), 16) / 255;
+    const b = parseInt(hex.slice(5, 7), 16) / 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h = 0, s = 0;
+    const l = (max + min) / 2;
+    const d = max - min;
+    if (d !== 0) {
+      s = d / (1 - Math.abs(2 * l - 1));
+      switch (max) {
+        case r: h = 60 * (((g - b) / d) % 6); break;
+        case g: h = 60 * ((b - r) / d + 2); break;
+        case b: h = 60 * ((r - g) / d + 4); break;
+      }
+    }
+    if (h < 0) h += 360;
+    return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) };
+  }
+  function hslToHex(h, s, l) {
+    s /= 100;
+    l /= 100;
+    const c = (1 - Math.abs(2 * l - 1)) * s;
+    const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+    const m = l - c / 2;
+    let r1 = 0, g1 = 0, b1 = 0;
+    if (h < 60) { r1 = c; g1 = x; } else if (h < 120) { r1 = x; g1 = c; }
+    else if (h < 180) { g1 = c; b1 = x; } else if (h < 240) { g1 = x; b1 = c; }
+    else if (h < 300) { r1 = x; b1 = c; } else { r1 = c; b1 = x; }
+    const toHex = (v) => Math.round((v + m) * 255).toString(16).padStart(2, "0");
+    return `#${toHex(r1)}${toHex(g1)}${toHex(b1)}`;
+  }
+
+  const HSL_MODE_KEY = "fiches_hsl_color_mode";
+  function loadHslColorMode() {
+    return localStorage.getItem(HSL_MODE_KEY) === "true";
+  }
+  function saveHslColorMode(value) {
+    localStorage.setItem(HSL_MODE_KEY, String(value));
+  }
+
+  /** Insère 3 curseurs H/S/L juste après CHAQUE sélecteur de couleur natif
+   *  de la page Développeur (item 17), synchronisés avec lui dans les deux
+   *  sens. Appelé après chaque rendu de la page (les pastilles de couleur
+   *  de texte / modes personnalisés étant elles-mêmes régénérées
+   *  dynamiquement). Sans effet si le réglage est désactivé. */
+  function enhanceColorInputsWithHsl() {
+    document.querySelectorAll('#view-dev input[type="color"]').forEach((input) => {
+      const existing = input.nextElementSibling;
+      if (existing && existing.classList && existing.classList.contains("hsl-sliders")) {
+        existing.remove();
+      }
+      if (!loadHslColorMode()) return;
+      const wrap = document.createElement("span");
+      wrap.className = "hsl-sliders";
+      const hsl = hexToHsl(input.value);
+      wrap.innerHTML = `
+        <span class="hsl-slider-row"><span>T</span><input type="range" min="0" max="360" value="${hsl.h}" data-c="h" /></span>
+        <span class="hsl-slider-row"><span>S</span><input type="range" min="0" max="100" value="${hsl.s}" data-c="s" /></span>
+        <span class="hsl-slider-row"><span>L</span><input type="range" min="0" max="100" value="${hsl.l}" data-c="l" /></span>
+      `;
+      input.insertAdjacentElement("afterend", wrap);
+      const sliders = { h: wrap.querySelector('[data-c="h"]'), s: wrap.querySelector('[data-c="s"]'), l: wrap.querySelector('[data-c="l"]') };
+      const applyFromSliders = () => {
+        const hex = hslToHex(Number(sliders.h.value), Number(sliders.s.value), Number(sliders.l.value));
+        input.value = hex;
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      };
+      Object.values(sliders).forEach((s) => s.addEventListener("input", applyFromSliders));
+    });
+  }
+
   function applyColorSettings() {
     const settings = loadDevSettings();
     const root = document.documentElement.style;
@@ -1067,10 +1180,11 @@
       // comme un bouton, sans élargir la ligne.
       const algoBtn = document.createElement("button");
       algoBtn.type = "button";
-      algoBtn.className = `subject-row-algo-btn subject-row-algo-btn--compact ${ALGO_MODE_KEY_TO_CLASS[algoModeCssKey(getSubjectAlgoMode(s.id))]}`;
+      algoBtn.className = "subject-row-algo-btn subject-row-algo-btn--compact";
       algoBtn.innerHTML = `🎓`;
       algoBtn.title = `Mode d'apprentissage : ${modeDisplayName(getSubjectAlgoMode(s.id))}`;
       algoBtn.addEventListener("click", () => openSubjectAlgoView(s.id));
+      applyModeBadgeStyle(algoBtn, getSubjectAlgoMode(s.id));
 
       const delBtn = document.createElement("button");
       delBtn.type = "button";
@@ -2162,8 +2276,7 @@
     if (showBtn && effectiveSubjectId) {
       const key = getSubjectAlgoMode(effectiveSubjectId);
       if (cardAlgoBtn) {
-        Object.values(ALGO_MODE_KEY_TO_CLASS).forEach((c) => cardAlgoBtn.classList.remove(c));
-        cardAlgoBtn.classList.add(ALGO_MODE_KEY_TO_CLASS[algoModeCssKey(key)]);
+        applyModeBadgeStyle(cardAlgoBtn, key);
         cardAlgoBtn.dataset.subjectId = effectiveSubjectId;
         cardAlgoBtn.title = `Mode d'apprentissage : ${modeDisplayName(key)}`;
       }
@@ -4432,6 +4545,7 @@
         saveDevSettings(settings);
         applyTextColorPalette();
         renderTextColorsEditor();
+        enhanceColorInputsWithHsl();
       });
     });
   }
@@ -4443,6 +4557,7 @@
       saveDevSettings(settings);
       applyTextColorPalette();
       renderTextColorsEditor();
+      enhanceColorInputsWithHsl();
     });
   }
   const devTextColorsResetBtn = el("dev-text-colors-reset");
@@ -4453,6 +4568,7 @@
       saveDevSettings(settings);
       applyTextColorPalette();
       renderTextColorsEditor();
+      enhanceColorInputsWithHsl();
     });
   }
 
@@ -4460,6 +4576,34 @@
    *  valeurs discrètes que partout ailleurs (ALGO_K_VALUES/ALGO_M_VALUES),
    *  ici via de simples menus déroulants (page technique, pas besoin de
    *  curseurs tactiles soignés). */
+  /** Éditeur des couleurs des modes personnalisés (item 16) : une pastille
+   *  par mode réellement créé, à côté de son nom. */
+  function renderCustomModeColorsEditor() {
+    const wrap = el("dev-custom-mode-colors");
+    if (!wrap) return;
+    const modes = loadLearningModes();
+    const customModes = Object.values(modes).filter((m) => !m.builtin);
+    if (customModes.length === 0) {
+      wrap.innerHTML = `<p class="field-hint">Aucun mode personnalisé créé pour l'instant.</p>`;
+      return;
+    }
+    wrap.innerHTML = customModes
+      .map(
+        (m) => `<label class="field settings-bonus-field dev-custom-mode-color-row">
+          <span>${escapeHtml(m.name)}</span>
+          <input type="color" data-mode-id="${m.id}" class="dev-custom-mode-color-input" value="${getCustomModeColor(m.id)}" />
+        </label>`
+      )
+      .join("");
+    wrap.querySelectorAll(".dev-custom-mode-color-input").forEach((input) => {
+      input.addEventListener("input", () => {
+        setCustomModeColor(input.dataset.modeId, input.value);
+        renderSubjectManageList();
+        renderSubjectAlgoBadge(currentCard ? currentCard.subject : undefined);
+      });
+    });
+  }
+
   function renderFactoryDefaultsEditor() {
     const wrap = el("dev-factory-defaults");
     if (!wrap) return;
@@ -4498,6 +4642,8 @@
   }
 
   function renderDevView() {
+    const hslToggle = el("dev-hsl-mode-toggle");
+    if (hslToggle) hslToggle.checked = loadHslColorMode();
     const labels = loadDevSettings().ratingLabels;
     ["again", "hard", "good", "easy"].forEach((r) => {
       const input = el(`dev-rating-${r}`);
@@ -4529,7 +4675,20 @@
       if (input) input.value = otherSettings[key];
     });
     renderTextColorsEditor();
+    renderCustomModeColorsEditor();
     renderFactoryDefaultsEditor();
+    // Après TOUS les autres rendus ci-dessus (item 17) : ils régénèrent
+    // leurs propres <input type="color"> dynamiquement (palette de texte,
+    // modes personnalisés...), donc les curseurs T/S/L doivent être posés
+    // en tout dernier pour ne rater aucun d'entre eux.
+    enhanceColorInputsWithHsl();
+  }
+  const devHslModeToggle = el("dev-hsl-mode-toggle");
+  if (devHslModeToggle) {
+    devHslModeToggle.addEventListener("change", () => {
+      saveHslColorMode(devHslModeToggle.checked);
+      enhanceColorInputsWithHsl();
+    });
   }
 
   /** Bouton de dépannage manuel : désinscrit le(s) service worker(s) et vide
