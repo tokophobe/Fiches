@@ -3203,7 +3203,7 @@
   /** Dessine un histogramme "fiches dues par jour" dans les éléments fournis.
    *  Factorisé pour être partagé entre le grand graphique de l'onglet Stats
    *  et le mini graphique de la page Réviser (matière en cours). */
-  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, rangeKey, maxBarPx, computeFn, todayAtEnd) {
+  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, rangeKey, maxBarPx, computeFn, todayAtEnd, suppressChangeFlash) {
     if (!chartEl) return;
     const cfg = RANGE_CONFIG[rangeKey] || { visible: rangeKey, total: rangeKey };
     const days = cfg.total;
@@ -3278,7 +3278,12 @@
     // donc pas besoin de répéter chaque date individuelle ici.
     const frag = document.createDocumentFragment();
     buckets.forEach((b, i) => {
-      const changed = prevCounts !== null && prevCounts[i] !== b.count;
+      // Le mini graphique de Réviser (item 4) désactive ce flash "diff" :
+      // il a sa propre animation en vague bien plus riche (voir
+      // triggerReviewChartWave), et les deux en même temps se marchaient
+      // dessus — la case cible semblait "déjà" s'allumer dès le début,
+      // avant même que la vague ne l'atteigne.
+      const changed = !suppressChangeFlash && prevCounts !== null && prevCounts[i] !== b.count;
       const col = document.createElement("div");
       col.className =
         "chart-col" + (i === todayIdx ? " is-today" : "") + (changed ? " chart-col--changed" : "");
@@ -3721,7 +3726,10 @@
       reviewChartWrapEl,
       pool,
       reviewChartRangeDays,
-      REVIEW_CHART_MAX_BAR_PX
+      REVIEW_CHART_MAX_BAR_PX,
+      undefined,
+      false,
+      true // suppressChangeFlash (item 4) : la vague gère tout l'effet visuel
     );
   }
 
@@ -3732,29 +3740,66 @@
    *  si l'échelle actuelle du mini graphique ne montre pas encore jusqu'à
    *  `toIdx` (fiche renvoyée hors de l'écran affiché) ou si le graphique
    *  est vide (rien à animer). */
+  /** Anime en vague, de gauche à droite, toutes les colonnes entre
+   *  `fromIdx` (aujourd'hui) et `toIdx` (nouvelle date de la fiche notée) —
+   *  item 4/9 : chaque barre intermédiaire s'allume brièvement l'une après
+   *  l'autre (léger décalage croissant), et la barre CIBLE (nouvelle date)
+   *  ne s'allume qu'en DERNIER, une fois la vague arrivée jusqu'à elle —
+   *  puis reste allumée et haute environ 1,5 seconde avant de revenir à la
+   *  normale (corrige le bug où la cible s'allumait dès le début, avant
+   *  même que la vague ne l'atteigne). Si la cible est hors de l'écran
+   *  visible (défilement horizontal du mini graphique), on fait défiler
+   *  jusqu'à elle le temps de l'animation, puis on revient à la position
+   *  de départ. */
   function triggerReviewChartWave(fromIdx, toIdx) {
     if (!reviewChartEl) return;
     const cols = reviewChartEl.querySelectorAll(".chart-col");
     if (cols.length === 0) return;
     const lo = Math.max(0, Math.min(fromIdx, toIdx));
     const hi = Math.min(cols.length - 1, Math.max(fromIdx, toIdx));
-    const span = hi - lo;
     const STEP_MS = 55; // décalage entre deux barres consécutives de la vague
+
+    // Défilement horizontal si besoin pour voir toute l'animation jusqu'au
+    // bout (item 4) — le conteneur scrollable est reviewChartWrapEl.
+    const scroller = reviewChartWrapEl;
+    let scrolledAway = false;
+    const originalScrollLeft = scroller ? scroller.scrollLeft : 0;
+    if (scroller) {
+      const targetCol = cols[hi];
+      const targetLeft = targetCol.offsetLeft;
+      const targetRight = targetLeft + targetCol.offsetWidth;
+      const viewLeft = scroller.scrollLeft;
+      const viewRight = viewLeft + scroller.clientWidth;
+      if (targetRight > viewRight || targetLeft < viewLeft) {
+        scrolledAway = true;
+        const dest = Math.max(0, targetLeft - scroller.clientWidth * 0.7);
+        scroller.scrollTo({ left: dest, behavior: "smooth" });
+      }
+    }
+
     for (let i = lo; i <= hi; i++) {
       const bar = cols[i].querySelector(".chart-bar");
       if (!bar) continue;
+      const isTarget = i === hi;
       const delay = (i - lo) * STEP_MS;
       // Repart d'un état neutre avant de rejouer l'animation, au cas où une
       // vague précédente serait encore en cours sur cette même barre.
-      bar.classList.remove("chart-bar-wave");
+      bar.classList.remove("chart-bar-wave", "chart-bar-wave-hold");
       void bar.offsetWidth;
       bar.style.animationDelay = `${delay}ms`;
-      bar.classList.add("chart-bar-wave");
+      const animClass = isTarget ? "chart-bar-wave-hold" : "chart-bar-wave";
+      bar.classList.add(animClass);
       bar.addEventListener(
         "animationend",
         () => {
-          bar.classList.remove("chart-bar-wave");
+          bar.classList.remove(animClass);
           bar.style.animationDelay = "";
+          // Une fois la barre cible revenue à la normale (donc toute
+          // l'animation terminée), on ramène le graphique à sa position de
+          // départ si on avait dû faire défiler pour la voir.
+          if (isTarget && scrolledAway && scroller) {
+            scroller.scrollTo({ left: originalScrollLeft, behavior: "smooth" });
+          }
         },
         { once: true }
       );
