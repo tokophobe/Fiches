@@ -790,8 +790,12 @@ textarea, input {
   font-size: 14px;
 }
 
+/* Déplacé au coin inférieur droit de la fiche (item 7), plutôt que dans la
+   rangée d'icônes du haut. */
 .card-undo-btn {
-  right: 210px;
+  top: auto;
+  bottom: 10px;
+  right: 12px;
   font-size: 15px;
 }
 
@@ -1413,8 +1417,25 @@ textarea, input {
 
 .stats-controls {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 14px;
+}
+
+/* Item 14 : collés en haut de page pendant le défilement, toujours
+   visibles. Fond opaque nécessaire (sinon le contenu défilerait "à
+   travers" les réglages, illisible). */
+.stats-controls--sticky {
+  position: sticky;
+  top: 6px;
+  z-index: 15;
+  background: var(--app-bg-color, var(--desk));
+  padding: 8px 0;
+}
+
+.stats-controls--sticky .stats-select {
+  flex: 1 1 auto;
+  min-width: 100px;
 }
 
 #ratings-chart-wrap, #ratings-history-chart-wrap {
@@ -1440,25 +1461,43 @@ textarea, input {
   color: var(--amber);
 }
 
+/* Doivent tenir sur toute la largeur (item 10 — bug corrigé : on était
+   obligé de défiler pour voir les barres de droite) : largeur flexible au
+   lieu d'une largeur fixe par barre. */
 .streak-chart-wrap {
   background: rgba(247, 241, 225, 0.05);
   border-radius: 10px;
-  padding: 10px 8px;
+  padding: 10px 8px 4px;
   margin-bottom: 8px;
-  overflow-x: auto;
 }
 
 .streak-row {
   display: flex;
-  gap: 3px;
+  gap: 2px;
+  align-items: flex-end;
+}
+
+.streak-day-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
 
 .streak-day {
-  width: 9px;
+  width: 100%;
   height: 22px;
   border-radius: 2px;
   background: var(--paper-3);
-  flex-shrink: 0;
+}
+
+.streak-day-label {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  color: #9aa89e;
+  height: 9px;
 }
 
 .streak-day.is-hot { background: #e8873a; }
@@ -1968,6 +2007,14 @@ textarea, input {
   font-size: 10.5px;
   color: var(--paper);
   margin-bottom: 4px;
+  padding: 0 4px;
+}
+
+.algo-chart-hint {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #9aa89e;
+  margin: 0 0 6px;
   padding: 0 4px;
 }
 

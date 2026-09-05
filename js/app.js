@@ -1033,12 +1033,11 @@
       li.className = "subject-row" + (s.id === currentSubjectId ? " is-active" : "");
       li.style.paddingLeft = `${depth * 18}px`;
 
-      const nameBtn = document.createElement("button");
-      nameBtn.type = "button";
+      // Item 5 : le nom n'ouvre plus le renommage (bouton ✏️ dédié
+      // maintenant, comme pour les dossiers) — juste une étiquette.
+      const nameBtn = document.createElement("span");
       nameBtn.className = "subject-row-name";
-      nameBtn.title = "Renommer";
       nameBtn.textContent = s.name;
-      nameBtn.addEventListener("click", () => renameSubject(s.id));
 
       const count = document.createElement("span");
       count.className = "subject-row-count";
@@ -1047,6 +1046,21 @@
 
       const actions = document.createElement("div");
       actions.className = "row-actions";
+
+      // Même ordre que pour les dossiers (item 5) : ✏️, ↔️, 🎓, 🗑️.
+      const renameBtn = document.createElement("button");
+      renameBtn.type = "button";
+      renameBtn.className = "icon-btn";
+      renameBtn.textContent = "✏️";
+      renameBtn.title = "Renommer cette matière";
+      renameBtn.addEventListener("click", () => renameSubject(s.id));
+
+      const moveBtn = document.createElement("button");
+      moveBtn.type = "button";
+      moveBtn.className = "icon-btn";
+      moveBtn.textContent = "↔️";
+      moveBtn.title = "Déplacer cette matière";
+      moveBtn.addEventListener("click", () => openMovePicker("subject", s.id));
 
       // Bouton "mode" fusionné avec l'affichage du mode actuel (item 9) :
       // un encadré à part entière (pas juste du texte) pour bien se lire
@@ -1058,13 +1072,6 @@
       algoBtn.title = `Mode d'apprentissage : ${modeDisplayName(getSubjectAlgoMode(s.id))}`;
       algoBtn.addEventListener("click", () => openSubjectAlgoView(s.id));
 
-      const moveBtn = document.createElement("button");
-      moveBtn.type = "button";
-      moveBtn.className = "icon-btn";
-      moveBtn.textContent = "↔️";
-      moveBtn.title = "Déplacer cette matière";
-      moveBtn.addEventListener("click", () => openMovePicker("subject", s.id));
-
       const delBtn = document.createElement("button");
       delBtn.type = "button";
       delBtn.className = "icon-btn icon-btn--danger";
@@ -1072,8 +1079,9 @@
       delBtn.title = "Supprimer cette matière";
       delBtn.addEventListener("click", () => deleteSubject(s.id));
 
-      actions.appendChild(algoBtn);
+      actions.appendChild(renameBtn);
       actions.appendChild(moveBtn);
+      actions.appendChild(algoBtn);
       actions.appendChild(delBtn);
 
       li.appendChild(nameBtn);
@@ -3346,6 +3354,10 @@
   const MONTH_SHORT = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
   // Index 0 = dimanche (convention JS Date#getDay()).
   const WEEKDAY_SHORT = ["dim", "lun", "mar", "mer", "jeu", "ven", "sam"];
+  // Une seule lettre (item 13), utilisée à l'échelle "1 mois" spécifiquement
+  // — assez de colonnes sur cette échelle pour que "lun"/"mar" se chevauchent
+  // visuellement, une seule lettre reste lisible.
+  const WEEKDAY_SINGLE = ["D", "L", "M", "M", "J", "V", "S"];
   function formatShortDateLabel(date) {
     return `${date.getDate()} ${MONTH_SHORT[date.getMonth()]}`;
   }
@@ -3497,7 +3509,7 @@
       if (i === todayIdx) {
         label.textContent = "Auj.";
       } else if (fineScale && Math.abs(i - todayIdx) <= 7) {
-        label.textContent = WEEKDAY_SHORT[b.date.getDay()];
+        label.textContent = rangeKey === 30 ? WEEKDAY_SINGLE[b.date.getDay()] : WEEKDAY_SHORT[b.date.getDay()];
       } else if ((fineScale && (dom === 1 || dom === 15)) || (coarseScale && dom === 1)) {
         label.textContent = formatShortDateLabel(b.date);
       } else {
@@ -3675,8 +3687,64 @@
     const wrap = el("ratings-chart-wrap");
     if (!wrap) return;
     const scoped = ratingLogInScope();
+    const { start, end } = periodToRange(statsPeriod);
+    const spanDays = Math.round((end.getTime() - start.getTime()) / 86400000);
     const filtered = filterEntriesByPeriod(scoped, statsPeriod);
-    renderRatingsSimpleChart(wrap, filtered, ["again", "hard", "good", "easy"]);
+    // Item 12 : dès que l'échelle dépasse un seul jour, on revient à des
+    // barres groupées PAR JOUR (comme dans une version précédente) plutôt
+    // qu'un simple total agrégé sur toute la période — plus parlant pour
+    // voir l'évolution jour par jour.
+    if (spanDays <= 1) {
+      renderRatingsSimpleChart(wrap, filtered, ["again", "hard", "good", "easy"]);
+    } else {
+      renderRatingsGroupedChart(wrap, filtered, start, end, spanDays);
+    }
+  }
+
+  /** Barres groupées par jour (item 12), 4 barres (Encore/Difficile/Bien/
+   *  Facile) par jour — en jours individuels si la période ne dépasse pas
+   *  10 jours (ex. "Semaine dernière"), sinon regroupées en 10 tranches
+   *  pour rester lisible sur des périodes plus longues (mois, années). */
+  function renderRatingsGroupedChart(wrap, entries, start, end, spanDays) {
+    if (entries.length === 0) {
+      wrap.innerHTML = `<p class="field-hint algo-chart-empty">Aucune note enregistrée sur cette période.</p>`;
+      return;
+    }
+    const ratings = ["again", "hard", "good", "easy"];
+    const numGroups = Math.min(spanDays, 10);
+    const buckets = bucketEntriesByPeriod(entries, start, end, numGroups);
+    const counts = buckets.map((b) => ratings.map((r) => b[r]));
+    const max = Math.max(1, ...counts.flat());
+    const yMax = Math.max(4, Math.ceil(max * 1.15));
+
+    const W = 320, H = 200, padL = 24, padB = 22, padT = 12, padR = 8;
+    const plotW = W - padL - padR, plotH = H - padT - padB;
+    const groupW = plotW / numGroups;
+    const barW = (groupW * 0.78) / ratings.length;
+    const yPos = (v) => padT + (1 - v / yMax) * plotH;
+
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--desk);border-radius:8px;">`;
+    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
+    const bucketMs = (end.getTime() - start.getTime()) / numGroups;
+    for (let g = 0; g < numGroups; g++) {
+      const groupX = padL + groupW * g;
+      ratings.forEach((r, ri) => {
+        const v = counts[g][ri];
+        const h = (v / yMax) * plotH;
+        const x = groupX + (groupW - barW * ratings.length) / 2 + barW * ri;
+        const y = H - padB - h;
+        svg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${Math.max(1, barW - 1).toFixed(1)}" height="${Math.max(v > 0 ? 1 : 0, h).toFixed(1)}" rx="1.5" fill="${ALGO_CHART_COLORS[r]}"/>`;
+      });
+      const bucketDate = new Date(start.getTime() + bucketMs * g);
+      const label = numGroups <= 10 && spanDays <= 10 ? WEEKDAY_SHORT[bucketDate.getDay()] : formatShortDateLabel(bucketDate);
+      svg += `<text x="${(groupX + groupW / 2).toFixed(1)}" y="${H - padB + 12}" font-size="7" fill="#9aa89e" text-anchor="middle">${label}</text>`;
+    }
+    svg += `</svg>`;
+
+    const legend = ratings
+      .map((r) => `<span class="algo-chart-legend-item"><span class="algo-chart-legend-dot" style="background:${ALGO_CHART_COLORS[r]}"></span>${ALGO_CHART_RATING_LABELS[r]}</span>`)
+      .join("");
+    wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${svg}`;
   }
 
   /* ---------------------------------------------------------
@@ -3685,7 +3753,10 @@
      notes combiner dans une même barre (ex. cocher seulement 🙂 et 😎 pour
      voir leur part combinée plutôt que les 4 séparément).
   --------------------------------------------------------- */
-  let ratingsHistoryVisible = { again: true, hard: true, good: true, easy: true };
+  // Item 11 : décochées par défaut — cocher une case ne la MASQUE plus,
+  // elle fusionne au contraire sa note avec les autres notes cochées en un
+  // seul segment combiné (voir computeRatingGroups).
+  let ratingsHistoryChecked = { again: false, hard: false, good: false, easy: false };
 
   function bucketEntriesByPeriod(entries, start, end, numBuckets) {
     const totalMs = end.getTime() - start.getTime();
@@ -3702,6 +3773,26 @@
     return buckets;
   }
 
+  /** Regroupe les 4 notes en segments à empiler (item 11) : chaque note
+   *  NON cochée reste son propre segment (comportement par défaut, les 4
+   *  séparées) ; toutes les notes COCHÉES fusionnent en un seul segment
+   *  combiné (coché seul = un groupe d'une seule note, sans effet visible). */
+  function computeRatingGroups(checked) {
+    const ratings = ["again", "hard", "good", "easy"];
+    const checkedList = ratings.filter((r) => checked[r]);
+    const groups = ratings
+      .filter((r) => !checked[r])
+      .map((r) => ({ ratings: [r], label: ALGO_CHART_RATING_LABELS[r], color: ALGO_CHART_COLORS[r] }));
+    if (checkedList.length > 0) {
+      groups.push({
+        ratings: checkedList,
+        label: checkedList.map((r) => ALGO_CHART_RATING_LABELS[r]).join(" + "),
+        color: ALGO_CHART_COLORS[checkedList[0]],
+      });
+    }
+    return groups;
+  }
+
   function renderRatingsHistoryChart() {
     const wrap = el("ratings-history-chart-wrap");
     if (!wrap) return;
@@ -3709,29 +3800,29 @@
     const { start, end } = periodToRange(statsPeriod);
     const filtered = filterEntriesByPeriod(scoped, statsPeriod);
     const ratings = ["again", "hard", "good", "easy"];
-    const visibleRatings = ratings.filter((r) => ratingsHistoryVisible[r]);
+    const groups = computeRatingGroups(ratingsHistoryChecked);
 
     const legend = ratings
       .map(
         (r) => `<label class="algo-chart-legend-item">
-          <input type="checkbox" class="ratings-history-checkbox" data-rating="${r}" ${ratingsHistoryVisible[r] ? "checked" : ""} />
+          <input type="checkbox" class="ratings-history-checkbox" data-rating="${r}" ${ratingsHistoryChecked[r] ? "checked" : ""} />
           <span class="algo-chart-legend-dot" style="background:${ALGO_CHART_COLORS[r]}"></span>${ALGO_CHART_RATING_LABELS[r]}
         </label>`
       )
       .join("");
+    const legendHint = `<p class="field-hint algo-chart-hint">Coche plusieurs notes pour fusionner leurs barres en une seule.</p>`;
 
     const wireCheckboxes = () => {
       wrap.querySelectorAll(".ratings-history-checkbox").forEach((cb) => {
         cb.addEventListener("change", () => {
-          ratingsHistoryVisible[cb.dataset.rating] = cb.checked;
+          ratingsHistoryChecked[cb.dataset.rating] = cb.checked;
           renderRatingsHistoryChart();
         });
       });
     };
 
-    if (filtered.length === 0 || visibleRatings.length === 0) {
-      const msg = filtered.length === 0 ? "Aucune note enregistrée sur cette période." : "Coche au moins une note pour l'afficher.";
-      wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div><p class="field-hint algo-chart-empty">${msg}</p>`;
+    if (filtered.length === 0) {
+      wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${legendHint}<p class="field-hint algo-chart-empty">Aucune note enregistrée sur cette période.</p>`;
       wireCheckboxes();
       return;
     }
@@ -3739,10 +3830,11 @@
     const NUM_BUCKETS = 10;
     const buckets = bucketEntriesByPeriod(filtered, start, end, NUM_BUCKETS);
 
-    const W = 320, H = 200, padL = 28, padB = 14, padT = 10, padR = 8;
+    const W = 320, H = 210, padL = 28, padB = 24, padT = 10, padR = 8;
     const plotW = W - padL - padR, plotH = H - padT - padB;
     const bucketW = plotW / NUM_BUCKETS;
     const barW = bucketW * 0.7;
+    const bucketMs = (end.getTime() - start.getTime()) / NUM_BUCKETS;
 
     let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--desk);border-radius:8px;">`;
     [0, 50, 100].forEach((pct) => {
@@ -3753,20 +3845,27 @@
 
     buckets.forEach((b, i) => {
       const x = padL + bucketW * i + (bucketW - barW) / 2;
-      const totalVisible = visibleRatings.reduce((s, r) => s + b[r], 0);
-      if (totalVisible === 0) return;
+      const total = groups.reduce((s, g) => s + g.ratings.reduce((s2, r) => s2 + b[r], 0), 0);
+      // Repère de date sous chaque tranche (item 11 — axe des abscisses
+      // enfin lisible : le début et la fin de chaque tranche temporelle).
+      const bucketDate = new Date(start.getTime() + bucketMs * i);
+      if (i === 0 || i === NUM_BUCKETS - 1 || i === Math.floor(NUM_BUCKETS / 2)) {
+        svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${H - padB + 13}" font-size="7" fill="#9aa89e" text-anchor="middle">${formatShortDateLabel(bucketDate)}</text>`;
+      }
+      if (total === 0) return;
       let yCursor = padT + plotH;
-      visibleRatings.forEach((r) => {
-        const share = b[r] / totalVisible;
+      groups.forEach((g) => {
+        const count = g.ratings.reduce((s, r) => s + b[r], 0);
+        const share = count / total;
         const segH = share * plotH;
         const y = yCursor - segH;
-        if (segH > 0) svg += `<rect x="${x}" y="${y}" width="${barW}" height="${segH}" fill="${ALGO_CHART_COLORS[r]}"/>`;
+        if (segH > 0) svg += `<rect x="${x}" y="${y}" width="${barW}" height="${segH}" fill="${g.color}"/>`;
         yCursor = y;
       });
     });
     svg += `</svg>`;
 
-    wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${svg}`;
+    wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${legendHint}${svg}<p class="algo-chart-axis-x">Temps, du début à la fin de la période choisie ci-dessus</p>`;
     wireCheckboxes();
   }
 
@@ -3805,8 +3904,17 @@
     const { days, hotDays, streak } = computeStreakData(scopeIds);
     summaryEl.innerHTML = `<span class="streak-number">🔥 ${streak}</span><span>jour${streak > 1 ? "s" : ""} d'affilée</span>`;
     const todayIdx = days.length - 1;
+    // "Auj" sur la colonne d'aujourd'hui (item 10), une colonne par jour
+    // qui se partagent toute la largeur disponible (voir CSS) plutôt
+    // qu'une largeur fixe qui débordait et forçait à défiler.
     const cells = days
-      .map((d, i) => `<div class="streak-day${hotDays[i] ? " is-hot" : ""}${i === todayIdx ? " is-today" : ""}" title="${formatShortDateLabel(d)}"></div>`)
+      .map(
+        (d, i) =>
+          `<div class="streak-day-col">
+            <div class="streak-day${hotDays[i] ? " is-hot" : ""}${i === todayIdx ? " is-today" : ""}" title="${formatShortDateLabel(d)}"></div>
+            <span class="streak-day-label">${i === todayIdx ? "Auj" : ""}</span>
+          </div>`
+      )
       .join("");
     streakChartEl.innerHTML = `<div class="streak-row">${cells}</div>`;
   }
