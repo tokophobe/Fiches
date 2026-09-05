@@ -466,8 +466,6 @@
   const manageAddSubjectBtn = el("manage-add-subject-btn");
   const subjectListEl = el("subject-list");
   const subjectBarCountEl = el("subject-bar-count");
-  const subjectBarAlgoBtn = el("subject-bar-algo-btn");
-  const subjectBarAlgoLabelEl = el("subject-bar-algo-label");
 
   const uid = () =>
     `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -698,7 +696,7 @@
    *  déjà à du HTML volontaire (balises reconnues) ; sinon l'échappe et
    *  convertit ses retours à la ligne en <br>. */
   function looksLikeHtml(str) {
-    return /<\/?(b|i|u|s|strong|em|span|br|div|mark)\b/i.test(str || "");
+    return /<\/?(b|i|u|s|strong|em|span|br|div|mark|font)\b/i.test(str || "");
   }
   function toDisplayHtml(raw) {
     if (!raw) return "";
@@ -876,9 +874,9 @@
       // comme un bouton, sans élargir la ligne.
       const algoBtn = document.createElement("button");
       algoBtn.type = "button";
-      algoBtn.className = `subject-row-algo-btn ${ALGO_MODE_KEY_TO_CLASS[algoModeCssKey(getSubjectAlgoMode(s.id))]}`;
-      algoBtn.innerHTML = `🎓 <span>${modeDisplayName(getSubjectAlgoMode(s.id))}</span>`;
-      algoBtn.title = "Mode d'apprentissage de cette matière";
+      algoBtn.className = `subject-row-algo-btn subject-row-algo-btn--compact ${ALGO_MODE_KEY_TO_CLASS[algoModeCssKey(getSubjectAlgoMode(s.id))]}`;
+      algoBtn.innerHTML = `🎓`;
+      algoBtn.title = `Mode d'apprentissage : ${modeDisplayName(getSubjectAlgoMode(s.id))}`;
       algoBtn.addEventListener("click", () => openSubjectAlgoView(s.id));
 
       const moveBtn = document.createElement("button");
@@ -1890,6 +1888,8 @@
    *  qui doit déterminer le mode affiché/édité par le bouton, pas la
    *  sélection globale (item 2). Sans cet argument (autres pages, ou mode
    *  normal), on retombe sur `currentSubjectId` comme avant. */
+  const cardAlgoBtn = el("card-algo-btn");
+
   function renderSubjectAlgoBadge(cardSubjectId) {
     const sentinel = isSentinelSubject(currentSubjectId);
     const n = currentSubjectId ? subjectCards().length : 0;
@@ -1897,28 +1897,28 @@
 
     if (subjectBarCountEl) subjectBarCountEl.textContent = `${n} fiche${n > 1 ? "s" : ""}`;
     // Un vrai identifiant de matière (jamais un sentinel) est toujours
-    // disponible dès qu'une fiche est affichée à l'écran — le bouton reste
-    // donc visible et utile même en mode "toutes matières"/"sélection".
+    // disponible dès qu'une fiche est affichée à l'écran (item 17 : le
+    // badge de mode vit maintenant sur la fiche elle-même, plus à côté du
+    // sélecteur de matière — ça n'avait plus de sens avec le multi-matières).
     const showBtn = !sentinel || !!cardSubjectId;
-    if (subjectBarAlgoBtn) subjectBarAlgoBtn.hidden = !showBtn;
+    if (cardAlgoBtn) cardAlgoBtn.hidden = !showBtn;
     if (showBtn && effectiveSubjectId) {
       const key = getSubjectAlgoMode(effectiveSubjectId);
-      if (subjectBarAlgoLabelEl) subjectBarAlgoLabelEl.textContent = modeDisplayName(key);
-      if (subjectBarAlgoBtn) {
-        Object.values(ALGO_MODE_KEY_TO_CLASS).forEach((c) => subjectBarAlgoBtn.classList.remove(c));
-        subjectBarAlgoBtn.classList.add(ALGO_MODE_KEY_TO_CLASS[algoModeCssKey(key)]);
-        subjectBarAlgoBtn.dataset.subjectId = effectiveSubjectId;
+      if (cardAlgoBtn) {
+        Object.values(ALGO_MODE_KEY_TO_CLASS).forEach((c) => cardAlgoBtn.classList.remove(c));
+        cardAlgoBtn.classList.add(ALGO_MODE_KEY_TO_CLASS[algoModeCssKey(key)]);
+        cardAlgoBtn.dataset.subjectId = effectiveSubjectId;
+        cardAlgoBtn.title = `Mode d'apprentissage : ${modeDisplayName(key)}`;
       }
     }
-
   }
 
-  if (subjectBarAlgoBtn) {
-    subjectBarAlgoBtn.addEventListener("click", () => {
+  if (cardAlgoBtn) {
+    cardAlgoBtn.addEventListener("click", () => {
       // En mode "toutes matières"/"sélection", `dataset.subjectId` porte la
       // vraie matière de la fiche actuellement affichée (voir
       // renderSubjectAlgoBadge) ; sinon, la matière active classique.
-      const targetId = subjectBarAlgoBtn.dataset.subjectId || currentSubjectId;
+      const targetId = cardAlgoBtn.dataset.subjectId || currentSubjectId;
       if (targetId && !isSentinelSubject(targetId)) openSubjectAlgoView(targetId, "review");
     });
   }
@@ -1970,6 +1970,11 @@
     reviewSessionStarted = true;
     reviewQueue = shuffle(dueCards());
     sessionTotalDue = reviewQueue.length;
+    // Une nouvelle session invalide l'annulation en attente (item 2) : la
+    // fiche à restaurer n'est plus forcément dans la nouvelle file.
+    lastRatingSnapshot = null;
+    const undoBtn = el("undo-rating-btn");
+    if (undoBtn) undoBtn.hidden = true;
     showNextCard();
   }
 
@@ -2088,6 +2093,7 @@
       editCurrentBtn.hidden = true;
       if (hibernateCurrentBtn) hibernateCurrentBtn.hidden = true;
       if (el("construction-current-btn")) el("construction-current-btn").hidden = true;
+      if (cardAlgoBtn) cardAlgoBtn.hidden = true;
       ratingRowEl.hidden = true;
       reviewProgressEl.textContent = "";
       renderDuePill();
@@ -2110,7 +2116,7 @@
     answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
     reviewProgressEl.textContent = "Fiches du jour terminées — révision libre";
     if (enteringBonusMode) {
-      showToast("🔁 Fiches du jour terminées — passage en révision libre");
+      showCenterToast("🔁 Fiches du jour terminées — passage en révision libre");
     }
 
     updateRatingPreviews();
@@ -2181,11 +2187,77 @@
     const entry = { id: uid(), cardId: card.id, subjectId: card.subject, rating, at: new Date().toISOString() };
     ratingLog.push(entry);
     await DB.addRatingLog(entry);
+    return entry.id;
+  }
+
+  /** Annuler la dernière évaluation (item 2) : un seul niveau d'annulation
+   *  (pas d'historique complet), écrasé à chaque nouvelle notation.
+   *  Capture tout ce qui est modifié par une notation, pour tout restaurer
+   *  à l'identique : la fiche elle-même (avant notation), la file de
+   *  révision, le mode bonus, le compteur de fiches dues, et l'entrée du
+   *  journal des notes (pour ne pas fausser les statistiques après coup). */
+  let lastRatingSnapshot = null;
+
+  function captureRatingSnapshot(ratingLogId) {
+    lastRatingSnapshot = {
+      card: { ...currentCard },
+      reviewQueue: reviewQueue.map((c) => ({ ...c })),
+      isBonusMode,
+      sessionTotalDue,
+      ratingLogId,
+    };
+    const undoBtn = el("undo-rating-btn");
+    if (undoBtn) undoBtn.hidden = false;
+  }
+
+  async function undoLastRating() {
+    const snap = lastRatingSnapshot;
+    if (!snap) return;
+    lastRatingSnapshot = null;
+    const undoBtn = el("undo-rating-btn");
+    if (undoBtn) undoBtn.hidden = true;
+
+    // Restaure la fiche à son état d'avant notation.
+    await persist(snap.card);
+    const idx = cards.findIndex((c) => c.id === snap.card.id);
+    if (idx >= 0) cards[idx] = snap.card;
+
+    // Retire l'entrée correspondante du journal des notes (item 15/stats),
+    // pour qu'une évaluation annulée n'y apparaisse pas comme si elle avait
+    // eu lieu.
+    if (snap.ratingLogId) {
+      ratingLog = ratingLog.filter((e) => e.id !== snap.ratingLogId);
+      await DB.removeFromRatingLog(snap.ratingLogId);
+    }
+
+    reviewQueue = snap.reviewQueue;
+    isBonusMode = snap.isBonusMode;
+    sessionTotalDue = snap.sessionTotalDue;
+    currentCard = snap.card;
+
+    flipCardEl.classList.add("no-flip-transition");
+    flipCardEl.classList.remove("is-flipped");
+    void flipCardEl.offsetWidth;
+    requestAnimationFrame(() => flipCardEl.classList.remove("no-flip-transition"));
+    isFlipped = false;
+    renderQuestionText(currentCard);
+    answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
+    updateRatingPreviews();
+    renderReviewChart();
+    renderStats();
+    renderManageList();
+    renderDuePill();
+  }
+
+  const undoRatingBtn = el("undo-rating-btn");
+  if (undoRatingBtn) {
+    undoRatingBtn.addEventListener("click", undoLastRating);
   }
 
   async function rateCurrentCard(rating) {
     if (!currentCard) return;
-    await logRating(currentCard, rating);
+    const ratingLogId = await logRating(currentCard, rating);
+    captureRatingSnapshot(ratingLogId);
     if (isBonusMode) {
       await rateBonusCard(rating);
     } else {
@@ -3195,6 +3267,17 @@
   function showToast(message) {
     const toast = document.createElement("div");
     toast.className = "app-toast";
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3400);
+  }
+
+  /** Variante centrée à l'écran (item 3) pour les annonces plus
+   *  importantes qu'une simple confirmation discrète (ex. passage en
+   *  révision libre) — la version en bas d'écran passait trop inaperçue. */
+  function showCenterToast(message) {
+    const toast = document.createElement("div");
+    toast.className = "app-toast app-toast--center";
     toast.textContent = message;
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 3400);

@@ -254,20 +254,20 @@ textarea, input {
    "light") — texte en gras + fond et bordure nettement plus saturés.
    Partagées par le bouton de la barre Réviser (.subject-bar-algo-btn) ET
    celui de chaque ligne de matière sur la page Gérer (.subject-row-algo-btn). */
-.subject-bar-algo-btn.is-cool, .subject-row-algo-btn.is-cool {
+.subject-bar-algo-btn.is-cool, .subject-row-algo-btn.is-cool, .card-algo-btn.is-cool {
   color: #eaf2e4; background: var(--sage); border-color: var(--sage);
 }
-.subject-bar-algo-btn.is-normal, .subject-row-algo-btn.is-normal {
+.subject-bar-algo-btn.is-normal, .subject-row-algo-btn.is-normal, .card-algo-btn.is-normal {
   color: #2a1f0d; background: var(--amber); border-color: var(--amber);
 }
-.subject-bar-algo-btn.is-renforce, .subject-row-algo-btn.is-renforce {
+.subject-bar-algo-btn.is-renforce, .subject-row-algo-btn.is-renforce, .card-algo-btn.is-renforce {
   color: #fbeae5; background: var(--terracotta); border-color: var(--terracotta);
 }
-.subject-bar-algo-btn.is-custom, .subject-row-algo-btn.is-custom {
+.subject-bar-algo-btn.is-custom, .subject-row-algo-btn.is-custom, .card-algo-btn.is-custom {
   color: #332b04; background: #e8c84a; border-color: #e8c84a;
 }
 
-.subject-bar-algo-btn:hover, .subject-row-algo-btn:hover { filter: brightness(1.08); }
+.subject-bar-algo-btn:hover, .subject-row-algo-btn:hover, .card-algo-btn:hover { filter: brightness(1.08); }
 
 /* Sélecteur de plusieurs matières confondues (item 1). */
 .multi-subject-picker {
@@ -433,6 +433,24 @@ textarea, input {
   text-overflow: ellipsis;
 }
 
+/* Version compacte (item 16) : juste l'émoticône, sur un rond de la couleur
+   du mode — laisse davantage de place au nom de la matière/du dossier à
+   côté. */
+.subject-row-algo-btn--compact {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
+  font-size: 14px;
+  max-width: none;
+}
+
+/* Boutons resserrés entre eux sur une ligne de matière/dossier (item 16). */
+.subject-row .row-actions {
+  gap: 3px;
+}
+
 .import-target-row {
   display: flex;
   align-items: center;
@@ -584,7 +602,11 @@ textarea, input {
   position: absolute;
   inset: 0;
   border-radius: var(--radius-card);
-  background: var(--paper);
+  /* Blanc pur (pas var(--paper), la teinte crème habituelle) pour que la
+     mise en forme riche (couleurs de texte notamment) ressorte au mieux
+     (item 20) — ne change QUE cette face de fiche, pas les autres cartes
+     de l'appli qui gardent leur crème habituel. */
+  background: #ffffff;
 }
 
 .stack-card--back-2 {
@@ -678,8 +700,13 @@ textarea, input {
   font-size: 14px;
 }
 
-.card-construction-btn {
+.card-algo-btn {
   right: 118px;
+  font-size: 14px;
+}
+
+.card-construction-btn {
+  right: 164px;
   font-size: 14px;
 }
 
@@ -710,10 +737,14 @@ textarea, input {
   gap: 14px;
 }
 
-.card-face--question { background: var(--paper); }
+/* Blanc pur (pas var(--paper)/var(--paper-2), les teintes crème habituelles)
+   pour que la mise en forme riche (couleurs de texte notamment) ressorte
+   au mieux (item 20) — ne change QUE les faces de la fiche retournable,
+   pas les autres cartes de l'appli qui gardent leur crème habituel. */
+.card-face--question { background: #ffffff; }
 
 .card-face--answer {
-  background: var(--paper-2);
+  background: #ffffff;
   transform: rotateY(180deg);
   justify-content: flex-start;
 }
@@ -756,6 +787,23 @@ textarea, input {
 /* ============================================================
    RATING STAMPS
    ============================================================ */
+/* Bouton "annuler la dernière évaluation" (item 2) — discret, n'apparaît
+   qu'après avoir noté au moins une fiche pendant la session. */
+.undo-rating-btn {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  background: rgba(247, 241, 225, 0.08);
+  border: 1px solid rgba(247, 241, 225, 0.25);
+  color: var(--paper);
+  border-radius: 8px;
+  padding: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.undo-rating-btn:hover { background: rgba(247, 241, 225, 0.15); }
+
 .rating-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -787,10 +835,11 @@ textarea, input {
 
 .stamp-label {
   font-family: var(--font-type);
-  font-size: 13px;
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: 0.01em;
   white-space: nowrap;
+  line-height: 1;
 }
 
 .stamp-sub {
@@ -891,6 +940,13 @@ textarea, input {
 }
 
 .card-form .section-title { color: var(--ink); }
+
+/* Titre de la page Gérer (item 15) : plus long que l'ancien "Matières",
+   espace en dessous augmenté pour bien le séparer des boutons d'action. */
+.manage-title {
+  margin-bottom: 20px;
+}
+
 
 /* En-tête du formulaire "Nouvelle fiche" (item 7) : titre + sélecteur de
    matière compact sur la même ligne, sans indication de mode ici (juste le
@@ -1068,8 +1124,9 @@ textarea, input {
 
 .rt-color-group {
   display: inline-flex;
+  flex-wrap: wrap;
   gap: 4px;
-  padding: 0 4px;
+  padding: 4px;
   border-left: 1px solid rgba(35, 48, 42, 0.15);
   border-right: 1px solid rgba(35, 48, 42, 0.15);
   margin: 0 2px;
@@ -1950,4 +2007,26 @@ textarea, input {
 @media (prefers-reduced-motion: reduce) {
   .app-toast { animation: none; opacity: 1; }
 }
+
+/* Variante centrée à l'écran (item 3), pour une annonce qu'on ne doit pas
+   pouvoir manquer — plus grande, au milieu, fond plus opaque. */
+.app-toast--center {
+  left: 50%;
+  top: 50%;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  padding: 18px 26px;
+  max-width: 80vw;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.55);
+  animation: app-toast-center-in-out 3.4s ease forwards;
+}
+
+@keyframes app-toast-center-in-out {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  10% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+}
+
 

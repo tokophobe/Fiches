@@ -165,9 +165,6 @@
       <div class="subject-bar" id="subject-bar">
         <select class="subject-select" id="subject-select" aria-label="Matière active"></select>
         <span class="subject-bar-count" id="subject-bar-count"></span>
-        <button type="button" class="subject-bar-algo-btn" id="subject-bar-algo-btn" title="Mode d'apprentissage de cette matière">
-          🎓 <span id="subject-bar-algo-label"></span>
-        </button>
       </div>
 
       <div class="multi-subject-picker" id="multi-subject-picker" hidden>
@@ -205,26 +202,29 @@
             </div>
           </button>
           <button class="card-icon-btn card-hibernate-btn" id="hibernate-current-btn" type="button" hidden title="Mettre cette fiche en hibernation" aria-label="Mettre cette fiche en hibernation">💤</button>
+          <button type="button" class="card-icon-btn card-algo-btn" id="card-algo-btn" hidden title="Mode d'apprentissage de cette matière">🎓</button>
           <button class="card-icon-btn card-construction-btn" id="construction-current-btn" type="button" hidden title="Marquer/démarquer « chantier »" aria-label="Marquer ou démarquer cette fiche comme chantier">🚧</button>
           <button class="card-icon-btn card-edit-btn" id="edit-current-btn" type="button" hidden title="Modifier cette fiche" aria-label="Modifier cette fiche">✎</button>
         </div>
       </div>
 
+      <button type="button" class="undo-rating-btn" id="undo-rating-btn" hidden title="Revenir à la fiche précédente (annule la dernière évaluation)">◀️ Annuler la dernière évaluation</button>
+
       <div class="rating-row" id="rating-row" hidden>
         <button class="stamp stamp--again" data-rating="again" type="button">
-          <span class="stamp-label">Encore</span>
+          <span class="stamp-label">😵‍💫</span>
           <span class="stamp-sub" id="sub-again">&lt; 1 j</span>
         </button>
         <button class="stamp stamp--hard" data-rating="hard" type="button">
-          <span class="stamp-label">Difficile</span>
+          <span class="stamp-label">🤔</span>
           <span class="stamp-sub" id="sub-hard">—</span>
         </button>
         <button class="stamp stamp--good" data-rating="good" type="button">
-          <span class="stamp-label">Bien</span>
+          <span class="stamp-label">🙂</span>
           <span class="stamp-sub" id="sub-good">—</span>
         </button>
         <button class="stamp stamp--easy" data-rating="easy" type="button">
-          <span class="stamp-label">Facile</span>
+          <span class="stamp-label">😎</span>
           <span class="stamp-sub" id="sub-easy">—</span>
         </button>
       </div>
@@ -241,9 +241,9 @@
     <section id="view-manage" class="view" aria-labelledby="tab-manage">
       <div class="subjects-panel">
         <div class="list-header">
-          <h2 class="section-title">Matières</h2>
+          <h2 class="section-title manage-title">Organisation des dossiers et matières</h2>
           <div class="list-header-actions">
-            <button class="btn btn--small btn--ghost" id="manage-add-folder-btn" type="button">+ Dossier</button>
+            <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
             <button class="btn btn--small" id="manage-add-subject-btn" type="button">+ Nouvelle matière</button>
           </div>
         </div>
@@ -284,6 +284,12 @@
             <button type="button" class="rt-color" data-color="#cf9a4d" style="background:#cf9a4d" title="Texte ambre"></button>
             <button type="button" class="rt-color" data-color="#6f8b5c" style="background:#6f8b5c" title="Texte sauge"></button>
             <button type="button" class="rt-color" data-color="#3e7c6b" style="background:#3e7c6b" title="Texte bleu-vert"></button>
+            <button type="button" class="rt-color" data-color="#1f3a5f" style="background:#1f3a5f" title="Texte bleu marine"></button>
+            <button type="button" class="rt-color" data-color="#2a8fd8" style="background:#2a8fd8" title="Texte bleu ciel"></button>
+            <button type="button" class="rt-color" data-color="#c96a95" style="background:#c96a95" title="Texte rose"></button>
+            <button type="button" class="rt-color" data-color="#8a5fb3" style="background:#8a5fb3" title="Texte violet"></button>
+            <button type="button" class="rt-color" data-color="#d97f35" style="background:#d97f35" title="Texte orange"></button>
+            <button type="button" class="rt-color" data-color="#6b7280" style="background:#6b7280" title="Texte gris"></button>
           </span>
           <button type="button" class="rt-btn" id="rt-clear-btn" title="Effacer la mise en forme">⌫</button>
         </div>

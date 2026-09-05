@@ -159,6 +159,10 @@ const DB = {
     const store = tx.objectStore(RATING_LOG_STORE);
     return reqToPromise(store.getAll());
   },
+
+  async removeFromRatingLog(id) {
+    await withStoreIn(RATING_LOG_STORE, "readwrite", (store) => store.delete(id));
+  },
 };
 
 window.DB = DB;
