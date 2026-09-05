@@ -189,6 +189,46 @@ textarea, input {
   -webkit-appearance: none;
 }
 
+/* Bouton qui remplace le <select> natif sur Réviser (item 18) : ouvrir un
+   menu personnalisé à 3 choix plutôt que la liste native de TOUTES les
+   matières. Même habillage visuel que l'ancien select. */
+.subject-select-btn {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--paper);
+  background: rgba(247, 241, 225, 0.08);
+  border: 1px solid rgba(247, 241, 225, 0.22);
+  border-radius: 999px;
+  padding: 8px 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subject-select-btn::after {
+  content: " ▾";
+  opacity: 0.7;
+}
+
+/* Menu à 3 choix (item 18) : Toutes les matières / Sélection / Annuler —
+   jamais la liste complète de chaque matière une par une. */
+.subject-choice-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--paper);
+  border-radius: var(--radius-card);
+  padding: 14px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-deep);
+}
+
+.subject-choice-menu .btn { width: 100%; }
+
 .subject-select:focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 2px;
@@ -457,6 +497,15 @@ textarea, input {
   gap: 8px;
   margin: -2px 0 4px;
 }
+
+.cards-scope-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 14px;
+}
+
+.cards-scope-row .import-target-select { flex: 1; }
 
 .import-target-label {
   font-family: var(--font-mono);
@@ -1461,6 +1510,11 @@ textarea, input {
 }
 
 .chart-col.is-today .chart-bar { background: var(--rule); }
+
+/* Historique des fiches révisées (item 21) : bleu, pour bien le distinguer
+   du graphique "à revoir" juste au-dessus. */
+#reviewed-chart .chart-bar:not(.chart-bar--zero) { background: var(--blue); }
+#reviewed-chart .chart-col.is-today .chart-bar { background: var(--rule); }
 
 /* Jours sans aucune fiche due : couleur neutre (beige plus foncé que le fond
    de la carte), pour rester visible sans attirer l'œil comme une vraie donnée. */

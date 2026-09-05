@@ -163,8 +163,14 @@
     <!-- VUE RÉVISION -->
     <section id="view-review" class="view is-active" aria-labelledby="tab-review">
       <div class="subject-bar" id="subject-bar">
-        <select class="subject-select" id="subject-select" aria-label="Matière active"></select>
+        <button type="button" class="subject-select-btn" id="subject-select-btn" aria-label="Choisir les matières à réviser"></button>
         <span class="subject-bar-count" id="subject-bar-count"></span>
+      </div>
+
+      <div class="subject-choice-menu" id="subject-choice-menu" hidden>
+        <button type="button" class="btn" id="subject-choice-all">Toutes les matières</button>
+        <button type="button" class="btn" id="subject-choice-selection">Sélection des matières</button>
+        <button type="button" class="btn btn--ghost" id="subject-choice-cancel">Annuler</button>
       </div>
 
       <div class="multi-subject-picker" id="multi-subject-picker" hidden>
@@ -247,7 +253,6 @@
             <button class="btn btn--small" id="manage-add-subject-btn" type="button">+ Nouvelle matière</button>
           </div>
         </div>
-        <nav class="folder-breadcrumb" id="folder-breadcrumb" aria-label="Emplacement"></nav>
         <ul class="subject-list" id="subject-list"></ul>
       </div>
 
@@ -309,13 +314,27 @@
         </div>
       </form>
 
+      <div class="cards-scope-row">
+        <label class="import-target-label" for="cards-scope-select">Afficher / chercher dans :</label>
+        <select class="import-target-select" id="cards-scope-select" aria-label="Périmètre d'affichage et de recherche"></select>
+      </div>
+
+      <div class="multi-subject-picker" id="cards-multi-picker" hidden>
+        <p class="field-hint settings-block-hint">Choisis les matières et/ou dossiers à combiner :</p>
+        <div class="multi-subject-picker-list" id="cards-multi-picker-list"></div>
+        <div class="multi-subject-picker-actions">
+          <button type="button" class="btn btn--small" id="cards-multi-picker-confirm">Valider</button>
+          <button type="button" class="btn btn--ghost btn--small" id="cards-multi-picker-cancel">Annuler</button>
+        </div>
+      </div>
+
       <label class="field cards-search-field">
         <span>Rechercher</span>
         <input type="search" id="cards-search-input" placeholder="Mot-clé dans la question ou la réponse…" />
       </label>
 
       <div class="card-list-header">
-        <h2 class="section-title card-list-title">Fiches de cette matière (<span id="total-count">0</span>)</h2>
+        <h2 class="section-title card-list-title">Fiches (<span id="total-count">0</span>)</h2>
         <button type="button" class="construction-filter-btn" id="construction-filter-btn" title="N'afficher que les fiches « chantier »">
           🚧
           <span class="construction-filter-badge" id="construction-filter-badge" hidden>0</span>

@@ -41,6 +41,18 @@
   function saveMultiSelection(ids) {
     localStorage.setItem(MULTI_SELECTION_KEY, JSON.stringify(ids));
   }
+  const MULTI_SELECTION_LABEL_KEY = "fiches_multi_subject_label";
+  /** Libellé à afficher pour la sélection multi-matières (item 18) : le nom
+   *  du dossier si un seul dossier a été coché (rien d'autre), sinon vide
+   *  (générique "Sélection de matières"). Un seul SUJET coché ne passe même
+   *  plus par ce mécanisme : voir le confirm du picker, qui bascule alors
+   *  directement dessus. */
+  function loadMultiSelectionLabel() {
+    return localStorage.getItem(MULTI_SELECTION_LABEL_KEY) || "";
+  }
+  function saveMultiSelectionLabel(label) {
+    localStorage.setItem(MULTI_SELECTION_LABEL_KEY, label || "");
+  }
 
   const el = (id) => document.getElementById(id);
 
@@ -461,7 +473,7 @@
   const importInput = el("import-input");
   const importTargetSelect = el("import-target-select");
 
-  const subjectSelectEl = el("subject-select");
+
   const cardsSubjectSelectEl = el("cards-subject-select");
   const manageAddSubjectBtn = el("manage-add-subject-btn");
   const subjectListEl = el("subject-list");
@@ -544,8 +556,9 @@
   function subjectName(id) {
     if (id === ALL_SUBJECTS_ID) return "Toutes les matières";
     if (id === MULTI_SUBJECTS_ID) {
-      const n = loadMultiSelection().length;
-      return `Sélection (${n} matière${n > 1 ? "s" : ""})`;
+      // Item 18 : le nom du dossier si un seul dossier a été sélectionné,
+      // sinon le libellé générique.
+      return loadMultiSelectionLabel() || "Sélection de matières";
     }
     const s = subjects.find((x) => x.id === id);
     return s ? s.name : "Matière inconnue";
@@ -653,13 +666,11 @@
           `<option value="${s.id}" ${s.id === currentSubjectId ? "selected" : ""}>${escapeHtml(s.name)}</option>`
       )
       .join("");
-    // Options "toutes matières" / "sélection de matières" (item 1) — SEULE
-    // la page Réviser les propose : créer une fiche (Gérer) ou exporter
-    // (Réglages) exige toujours une matière réelle et précise.
-    const sentinelOpts =
-      `<option value="${ALL_SUBJECTS_ID}" ${currentSubjectId === ALL_SUBJECTS_ID ? "selected" : ""}>🔀 Toutes les matières</option>` +
-      `<option value="${MULTI_SUBJECTS_ID}" ${currentSubjectId === MULTI_SUBJECTS_ID ? "selected" : ""}>☑️ Sélection de matières…</option>`;
-    subjectSelectEl.innerHTML = opts + sentinelOpts;
+    // Réviser (item 18) : le bouton affiche le nom courant (matière,
+    // dossier, "Toutes les matières" ou "Sélection de matières") — plus de
+    // liste déroulante native listant chaque matière une par une, voir le
+    // menu à 3 choix (#subject-choice-menu) ouvert au clic.
+    if (subjectSelectBtn) subjectSelectBtn.textContent = subjectName(currentSubjectId);
     // Second sélecteur, en tête de la page Fiches (item 2) : matières
     // réelles uniquement (pas de dossier ni de mode "toutes matières").
     if (cardsSubjectSelectEl) {
@@ -731,10 +742,6 @@
     return !el || stripHtml(el.innerHTML).trim() === "";
   }
 
-  /** Dossier actuellement "ouvert" dans la page Gérer (navigation, distincte
-   *  de la matière active choisie pour réviser/créer une fiche). */
-  let manageFolderBrowseId = ROOT_FOLDER_ID;
-
   function folderPath(folderId) {
     const path = [];
     let cur = folderId;
@@ -747,61 +754,42 @@
     return path;
   }
 
-  function renderFolderBreadcrumb() {
-    const bc = el("folder-breadcrumb");
-    if (!bc) return;
-    bc.innerHTML = "";
-    const path = folderPath(manageFolderBrowseId);
-    const rootBtn = document.createElement("button");
-    rootBtn.type = "button";
-    rootBtn.className = "folder-breadcrumb-item" + (!manageFolderBrowseId ? " is-current" : "");
-    rootBtn.textContent = "🗂️ Racine";
-    rootBtn.addEventListener("click", () => {
-      manageFolderBrowseId = ROOT_FOLDER_ID;
-      renderSubjectManageList();
-    });
-    bc.appendChild(rootBtn);
-    path.forEach((f) => {
-      const sep = document.createElement("span");
-      sep.className = "folder-breadcrumb-sep";
-      sep.textContent = "›";
-      bc.appendChild(sep);
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "folder-breadcrumb-item" + (f.id === manageFolderBrowseId ? " is-current" : "");
-      btn.textContent = f.name;
-      btn.addEventListener("click", () => {
-        manageFolderBrowseId = f.id;
-        renderSubjectManageList();
-      });
-      bc.appendChild(btn);
-    });
+  /** Rendu en arborescence développée avec indentation (item 13) — même
+   *  présentation que le picker "sélection des matières" (voir
+   *  renderFolderTreeForPicker), plutôt que la navigation dossier par
+   *  dossier d'avant : tout est visible d'un coup, plus besoin de cliquer
+   *  pour "entrer" dans un dossier. Les nouvelles matières/dossiers sont
+   *  créés à la racine (déplaçables ensuite via ↔️). */
+  function renderSubjectManageList() {
+    subjectListEl.innerHTML = "";
+    renderTreeLevel(ROOT_FOLDER_ID, 0);
+    if (folders.length === 0 && subjects.length === 0) {
+      const empty = document.createElement("p");
+      empty.className = "field-hint";
+      empty.textContent = "Aucune matière pour l'instant.";
+      subjectListEl.appendChild(empty);
+    }
   }
 
-  function renderSubjectManageList() {
-    renderFolderBreadcrumb();
-    subjectListEl.innerHTML = "";
-
+  function renderTreeLevel(parentId, depth) {
     const childFolders = folders
-      .filter((f) => f.parentId === manageFolderBrowseId)
+      .filter((f) => f.parentId === parentId)
       .sort((a, b) => a.name.localeCompare(b.name, "fr"));
     const childSubjects = subjects
-      .filter((s) => s.folderId === manageFolderBrowseId)
+      .filter((s) => s.folderId === parentId)
       .sort((a, b) => a.name.localeCompare(b.name, "fr"));
 
     childFolders.forEach((f) => {
       const li = document.createElement("li");
       li.className = "subject-row folder-row";
+      li.style.paddingLeft = `${depth * 18}px`;
 
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
-      nameBtn.title = "Ouvrir ce dossier";
+      nameBtn.title = "Renommer ce dossier";
       nameBtn.textContent = `📁 ${f.name}`;
-      nameBtn.addEventListener("click", () => {
-        manageFolderBrowseId = f.id;
-        renderSubjectManageList();
-      });
+      nameBtn.addEventListener("click", () => renameFolder(f.id));
 
       const count = document.createElement("span");
       count.className = "subject-row-count";
@@ -848,11 +836,14 @@
       li.appendChild(count);
       li.appendChild(actions);
       subjectListEl.appendChild(li);
+
+      renderTreeLevel(f.id, depth + 1);
     });
 
     for (const s of childSubjects) {
       const li = document.createElement("li");
       li.className = "subject-row" + (s.id === currentSubjectId ? " is-active" : "");
+      li.style.paddingLeft = `${depth * 18}px`;
 
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
@@ -902,13 +893,6 @@
       li.appendChild(actions);
       subjectListEl.appendChild(li);
     }
-
-    if (childFolders.length === 0 && childSubjects.length === 0) {
-      const empty = document.createElement("p");
-      empty.className = "field-hint";
-      empty.textContent = "Ce dossier est vide.";
-      subjectListEl.appendChild(empty);
-    }
   }
 
   /* ---------------------------------------------------------
@@ -917,7 +901,10 @@
   async function createFolderFlow() {
     const name = prompt("Nom du nouveau dossier :");
     if (!name || !name.trim()) return;
-    const folder = newFolder(name, manageFolderBrowseId);
+    // Créé à la racine (item 13 : plus de notion de dossier "actuellement
+    // ouvert" avec l'arborescence désormais toujours dépliée en entier) —
+    // déplaçable ensuite avec ↔️.
+    const folder = newFolder(name, ROOT_FOLDER_ID);
     await persistFolder(folder);
     folders.push(folder);
     renderSubjectManageList();
@@ -1546,7 +1533,7 @@
   async function createSubjectFlow() {
     const name = prompt("Nom de la nouvelle matière :");
     if (!name || !name.trim()) return null;
-    const subject = newSubject(name, manageFolderBrowseId);
+    const subject = newSubject(name, ROOT_FOLDER_ID);
     await persistSubject(subject);
     subjects.push(subject);
     subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
@@ -1636,18 +1623,39 @@
     }
   }
 
-  subjectSelectEl.addEventListener("change", () => {
-    if (subjectSelectEl.value === MULTI_SUBJECTS_ID) {
-      // On n'active pas encore le mode "sélection" tant que le choix des
-      // matières n'est pas confirmé — le select reste sur son ancienne
-      // valeur en attendant (voir openMultiSubjectPicker/confirm).
-      subjectSelectEl.value = currentSubjectId;
+  const subjectSelectBtn = el("subject-select-btn");
+  const subjectChoiceMenu = el("subject-choice-menu");
+
+  function openSubjectChoiceMenu() {
+    if (subjectChoiceMenu) subjectChoiceMenu.hidden = false;
+  }
+  function closeSubjectChoiceMenu() {
+    if (subjectChoiceMenu) subjectChoiceMenu.hidden = true;
+  }
+  if (subjectSelectBtn) {
+    subjectSelectBtn.addEventListener("click", () => {
+      closeMultiSubjectPicker();
+      openSubjectChoiceMenu();
+    });
+  }
+  const subjectChoiceAllBtn = el("subject-choice-all");
+  if (subjectChoiceAllBtn) {
+    subjectChoiceAllBtn.addEventListener("click", () => {
+      closeSubjectChoiceMenu();
+      switchSubject(ALL_SUBJECTS_ID, true);
+    });
+  }
+  const subjectChoiceSelectionBtn = el("subject-choice-selection");
+  if (subjectChoiceSelectionBtn) {
+    subjectChoiceSelectionBtn.addEventListener("click", () => {
+      closeSubjectChoiceMenu();
       openMultiSubjectPicker();
-      return;
-    }
-    closeMultiSubjectPicker();
-    switchSubject(subjectSelectEl.value);
-  });
+    });
+  }
+  const subjectChoiceCancelBtn = el("subject-choice-cancel");
+  if (subjectChoiceCancelBtn) {
+    subjectChoiceCancelBtn.addEventListener("click", () => closeSubjectChoiceMenu());
+  }
 
   /* ---------------------------------------------------------
      Sélection de plusieurs matières confondues (item 1)
@@ -1710,28 +1718,40 @@
 
   const multiPickerCancelBtn = el("multi-subject-picker-cancel");
   if (multiPickerCancelBtn) {
+    // "Annuler" (item 18) : referme la fenêtre et reste sur le choix
+    // précédent, sans rien modifier.
     multiPickerCancelBtn.addEventListener("click", () => closeMultiSubjectPicker());
   }
 
   const multiPickerConfirmBtn = el("multi-subject-picker-confirm");
   if (multiPickerConfirmBtn) {
     multiPickerConfirmBtn.addEventListener("click", () => {
+      const checkedFolders = [...document.querySelectorAll('#multi-subject-picker-list input[data-kind="folder"]:checked')];
+      const checkedSubjects = [...document.querySelectorAll('#multi-subject-picker-list input[data-kind="subject"]:checked')];
       const resultIds = new Set();
-      document.querySelectorAll("#multi-subject-picker-list input:checked").forEach((cb) => {
-        if (cb.dataset.kind === "folder") {
-          subjectIdsInFolder(cb.value).forEach((id) => resultIds.add(id));
-        } else {
-          resultIds.add(cb.value);
-        }
-      });
-      const checked = [...resultIds];
-      if (checked.length === 0) {
+      checkedFolders.forEach((cb) => subjectIdsInFolder(cb.value).forEach((id) => resultIds.add(id)));
+      checkedSubjects.forEach((cb) => resultIds.add(cb.value));
+      if (resultIds.size === 0) {
         alert("Choisis au moins une matière ou un dossier.");
         return;
       }
-      saveMultiSelection(checked);
       closeMultiSubjectPicker();
-      renderSubjectSelect();
+
+      // Affichage intelligent (item 18) : une seule matière cochée -> on
+      // bascule directement dessus (son nom s'affiche naturellement,
+      // inutile de passer par le mode "sélection"). Un seul dossier coché
+      // (rien d'autre) -> le nom du DOSSIER s'affiche. Sinon, un mélange ->
+      // libellé générique "Sélection de matières".
+      if (checkedFolders.length === 0 && checkedSubjects.length === 1) {
+        switchSubject(checkedSubjects[0].value, true);
+        return;
+      }
+      saveMultiSelection([...resultIds]);
+      if (checkedFolders.length === 1 && checkedSubjects.length === 0) {
+        saveMultiSelectionLabel(folders.find((f) => f.id === checkedFolders[0].value)?.name || "");
+      } else {
+        saveMultiSelectionLabel("");
+      }
       switchSubject(MULTI_SUBJECTS_ID, true);
     });
   }
@@ -2498,11 +2518,122 @@
     });
   }
 
+  const CARDS_SCOPE_CURRENT = "__current__";
+  const CARDS_SCOPE_MULTI = "__cards_multi__";
+  const CARDS_SCOPE_MULTI_KEY = "fiches_cards_multi_ids";
+  let cardsScopeFilter = CARDS_SCOPE_CURRENT;
   let cardsSearchQuery = "";
   let cardsConstructionFilter = false;
 
+  function loadCardsMultiSelection() {
+    try {
+      const raw = localStorage.getItem(CARDS_SCOPE_MULTI_KEY);
+      const ids = raw ? JSON.parse(raw) : [];
+      return Array.isArray(ids) ? ids.filter((id) => subjects.some((s) => s.id === id)) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+  function saveCardsMultiSelection(ids) {
+    localStorage.setItem(CARDS_SCOPE_MULTI_KEY, JSON.stringify(ids));
+  }
+
+  /** Périmètre d'affichage/recherche de la page Fiches (item 12) — distinct
+   *  de la matière choisie pour la CRÉATION d'une nouvelle fiche
+   *  (`cardsSubjectSelectEl`, qui doit toujours rester une matière réelle
+   *  unique) : par défaut "cette matière" suit ce choix, mais peut être
+   *  élargi à un dossier entier, toutes les matières, ou une sélection
+   *  libre, sans changer où atterrit une nouvelle fiche. */
+  function cardsScopeCards() {
+    if (cardsScopeFilter === CARDS_SCOPE_CURRENT) return subjectCards();
+    if (cardsScopeFilter === ALL_SUBJECTS) return cards.filter((c) => !c.deleted);
+    if (cardsScopeFilter === CARDS_SCOPE_MULTI) {
+      const set = new Set(loadCardsMultiSelection());
+      return cards.filter((c) => !c.deleted && set.has(c.subject));
+    }
+    if (typeof cardsScopeFilter === "string" && cardsScopeFilter.startsWith("folder:")) {
+      const set = new Set(subjectIdsInFolder(cardsScopeFilter.slice(7)));
+      return cards.filter((c) => !c.deleted && set.has(c.subject));
+    }
+    return cards.filter((c) => !c.deleted && c.subject === cardsScopeFilter);
+  }
+
+  function renderCardsScopeSelect() {
+    const sel = el("cards-scope-select");
+    if (!sel) return;
+    const prev = sel.value || cardsScopeFilter;
+    const folderOpts = folders
+      .map((f) => ({ f, path: folderPath(f.id).map((p) => p.name).join(" / ") }))
+      .sort((a, b) => a.path.localeCompare(b.path, "fr"))
+      .map(({ f, path }) => `<option value="folder:${f.id}">📁 ${escapeHtml(path)}</option>`)
+      .join("");
+    sel.innerHTML =
+      `<option value="${CARDS_SCOPE_CURRENT}">Cette matière</option>` +
+      `<option value="${ALL_SUBJECTS}">Toutes les matières</option>` +
+      folderOpts +
+      subjects.map((s) => `<option value="${s.id}">${escapeHtml(s.name)}</option>`).join("") +
+      `<option value="${CARDS_SCOPE_MULTI}">☑️ Sélection de matières et dossiers…</option>`;
+    const isFolderOpt = typeof prev === "string" && prev.startsWith("folder:") && folders.some((f) => `folder:${f.id}` === prev);
+    const valid = prev === CARDS_SCOPE_CURRENT || prev === ALL_SUBJECTS || prev === CARDS_SCOPE_MULTI || isFolderOpt || subjects.some((s) => s.id === prev);
+    cardsScopeFilter = valid ? prev : CARDS_SCOPE_CURRENT;
+    sel.value = cardsScopeFilter;
+  }
+
+  function openCardsMultiPicker() {
+    const picker = el("cards-multi-picker");
+    const list = el("cards-multi-picker-list");
+    if (!picker || !list) return;
+    const selected = new Set(loadCardsMultiSelection());
+    list.innerHTML = "";
+    renderFolderTreeForPicker(list, ROOT_FOLDER_ID, 0, selected);
+    picker.hidden = false;
+  }
+  function closeCardsMultiPicker() {
+    const picker = el("cards-multi-picker");
+    if (picker) picker.hidden = true;
+  }
+  const cardsScopeSelectEl = el("cards-scope-select");
+  if (cardsScopeSelectEl) {
+    cardsScopeSelectEl.addEventListener("change", () => {
+      if (cardsScopeSelectEl.value === CARDS_SCOPE_MULTI) {
+        cardsScopeSelectEl.value = cardsScopeFilter;
+        openCardsMultiPicker();
+        return;
+      }
+      closeCardsMultiPicker();
+      cardsScopeFilter = cardsScopeSelectEl.value;
+      renderManageList();
+    });
+  }
+  const cardsMultiPickerCancelBtn = el("cards-multi-picker-cancel");
+  if (cardsMultiPickerCancelBtn) cardsMultiPickerCancelBtn.addEventListener("click", closeCardsMultiPicker);
+  const cardsMultiPickerConfirmBtn = el("cards-multi-picker-confirm");
+  if (cardsMultiPickerConfirmBtn) {
+    cardsMultiPickerConfirmBtn.addEventListener("click", () => {
+      const resultIds = new Set();
+      document.querySelectorAll("#cards-multi-picker-list input:checked").forEach((cb) => {
+        if (cb.dataset.kind === "folder") {
+          subjectIdsInFolder(cb.value).forEach((id) => resultIds.add(id));
+        } else {
+          resultIds.add(cb.value);
+        }
+      });
+      if (resultIds.size === 0) {
+        alert("Choisis au moins une matière ou un dossier.");
+        return;
+      }
+      saveCardsMultiSelection([...resultIds]);
+      closeCardsMultiPicker();
+      cardsScopeFilter = CARDS_SCOPE_MULTI;
+      if (cardsScopeSelectEl) cardsScopeSelectEl.value = CARDS_SCOPE_MULTI;
+      renderManageList();
+    });
+  }
+
   function renderManageList() {
-    let visible = subjectCards();
+    renderCardsScopeSelect();
+    let visible = cardsScopeCards();
+    const showSubjectNames = cardsScopeFilter !== CARDS_SCOPE_CURRENT;
     if (cardsConstructionFilter) {
       visible = visible.filter((c) => c.underConstruction);
     }
@@ -2519,9 +2650,9 @@
     cardListEl.innerHTML = "";
     renderSubjectManageList();
 
-    // Badge de la pastille 🚧 : nombre de fiches "chantier" dans la matière
-    // actuelle (avant filtrage recherche/chantier, pour rester stable).
-    const constructionCount = subjectCards().filter((c) => c.underConstruction).length;
+    // Badge de la pastille 🚧 : nombre de fiches "chantier" dans le
+    // périmètre actuel (avant filtrage recherche/chantier, pour rester stable).
+    const constructionCount = cardsScopeCards().filter((c) => c.underConstruction).length;
     const badge = el("construction-filter-badge");
     if (badge) {
       badge.hidden = constructionCount === 0;
@@ -2535,7 +2666,7 @@
       li.textContent = cardsSearchQuery
         ? "Aucune fiche ne correspond à cette recherche."
         : cardsConstructionFilter
-        ? "Aucune fiche « chantier » dans cette matière."
+        ? "Aucune fiche « chantier » dans ce périmètre."
         : "Aucune fiche pour l'instant. Ajoute la première ci-dessus.";
       cardListEl.appendChild(li);
       return;
@@ -2562,9 +2693,13 @@
 
       const meta = document.createElement("p");
       meta.className = "card-row-meta";
-      meta.textContent = SM2.isDue(card)
+      // Nom de la matière (item 11) : seulement utile quand la liste mélange
+      // plusieurs matières (dossier / toutes / sélection) — inutile et
+      // redondant quand on est déjà filtré sur "cette matière".
+      const dueLabel = SM2.isDue(card)
         ? "à revoir aujourd'hui"
         : `prochaine question dans ${formatInterval(daysUntil(card.dueDate))}`;
+      meta.textContent = showSubjectNames ? `${subjectName(card.subject)} — ${dueLabel}` : dueLabel;
 
       main.appendChild(q);
       main.appendChild(a);
@@ -2957,11 +3092,18 @@
   /** Dessine un histogramme "fiches dues par jour" dans les éléments fournis.
    *  Factorisé pour être partagé entre le grand graphique de l'onglet Stats
    *  et le mini graphique de la page Réviser (matière en cours). */
-  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, rangeKey, maxBarPx, computeFn) {
+  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, rangeKey, maxBarPx, computeFn, todayAtEnd) {
     if (!chartEl) return;
     const cfg = RANGE_CONFIG[rangeKey] || { visible: rangeKey, total: rangeKey };
     const days = cfg.total;
-    const buckets = (computeFn || computeDueHistogram)(pool, days);
+    let buckets = (computeFn || computeDueHistogram)(pool, days);
+    // Historique des fiches révisées (item 21) : présent à droite, passé à
+    // gauche — sens inverse du graphique "à revoir" (présent à gauche,
+    // futur à droite). On inverse simplement l'ordre des colonnes déjà
+    // calculées (index 0 = aujourd'hui devient la DERNIÈRE colonne) plutôt
+    // que de dupliquer toute la logique de calcul.
+    if (todayAtEnd) buckets = [...buckets].reverse();
+    const todayIdx = todayAtEnd ? buckets.length - 1 : 0;
     const max = Math.max(0, ...buckets.map((b) => b.count));
 
     // Compte précédent par jour (mémorisé sur l'élément lui-même) : sert à
@@ -3028,7 +3170,7 @@
       const changed = prevCounts !== null && prevCounts[i] !== b.count;
       const col = document.createElement("div");
       col.className =
-        "chart-col" + (i === 0 ? " is-today" : "") + (changed ? " chart-col--changed" : "");
+        "chart-col" + (i === todayIdx ? " is-today" : "") + (changed ? " chart-col--changed" : "");
       col.style.flex = `0 0 ${colWidth}px`;
       col.style.width = `${colWidth}px`;
 
@@ -3056,9 +3198,9 @@
       const dom = b.date.getDate();
       const fineScale = rangeKey === 15 || rangeKey === 30;
       const coarseScale = rangeKey === 90 || rangeKey === 365;
-      if (i === 0) {
+      if (i === todayIdx) {
         label.textContent = "Auj.";
-      } else if (fineScale && i <= 7) {
+      } else if (fineScale && Math.abs(i - todayIdx) <= 7) {
         label.textContent = WEEKDAY_SHORT[b.date.getDay()];
       } else if ((fineScale && (dom === 1 || dom === 15)) || (coarseScale && dom === 1)) {
         label.textContent = formatShortDateLabel(b.date);
@@ -3110,7 +3252,8 @@
       pool,
       reviewedChartRangeDays,
       CHART_MAX_BAR_PX,
-      computeReviewedHistogram
+      computeReviewedHistogram,
+      true // todayAtEnd (item 21) : présent à droite, passé à gauche
     );
   }
   function cycleReviewedChartRange() {
