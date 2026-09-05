@@ -233,6 +233,16 @@ textarea, input {
   box-shadow: var(--shadow-deep);
 }
 
+/* Bug corrigé (urgent) : `[hidden]` et `.subject-choice-menu` ont la même
+   spécificité CSS — sans ce correctif, `display: flex` déclaré juste
+   au-dessus l'emportait TOUJOURS sur `[hidden] { display: none }` (l'ordre
+   dans la feuille de style tranche à spécificité égale), donc le menu ne
+   disparaissait jamais vraiment après un choix, quel que soit le bouton
+   cliqué. Même famille de bug déjà rencontrée avec .rating-row. */
+.subject-choice-menu[hidden] {
+  display: none;
+}
+
 .subject-choice-item {
   text-align: left;
   background: none;
