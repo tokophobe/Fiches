@@ -208,14 +208,13 @@
               <p class="card-text" id="answer-text"></p>
             </div>
           </button>
+          <button class="card-icon-btn card-undo-btn" id="undo-rating-btn" type="button" hidden title="Revenir à la fiche précédente (annule la dernière évaluation)" aria-label="Annuler la dernière évaluation">◀️</button>
           <button class="card-icon-btn card-hibernate-btn" id="hibernate-current-btn" type="button" hidden title="Mettre cette fiche en hibernation" aria-label="Mettre cette fiche en hibernation">💤</button>
           <button type="button" class="card-icon-btn card-algo-btn" id="card-algo-btn" hidden title="Mode d'apprentissage de cette matière">🎓</button>
           <button class="card-icon-btn card-construction-btn" id="construction-current-btn" type="button" hidden title="Marquer/démarquer « chantier »" aria-label="Marquer ou démarquer cette fiche comme chantier">🚧</button>
           <button class="card-icon-btn card-edit-btn" id="edit-current-btn" type="button" hidden title="Modifier cette fiche" aria-label="Modifier cette fiche">✎</button>
         </div>
       </div>
-
-      <button type="button" class="undo-rating-btn" id="undo-rating-btn" hidden title="Revenir à la fiche précédente (annule la dernière évaluation)">◀️ Annuler la dernière évaluation</button>
 
       <div class="rating-row" id="rating-row" hidden>
         <button class="stamp stamp--again" data-rating="again" type="button">
@@ -530,6 +529,14 @@
     <!-- VUE RÉGLAGES -->
     <section id="view-settings" class="view" aria-labelledby="tab-settings">
       <h2 class="section-title">Réglages</h2>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Boutons d'évaluation</h3>
+        <label class="settings-toggle-row">
+          <input type="checkbox" id="setting-show-rating-days" />
+          <span>Afficher le nombre de jours à côté de chaque bouton</span>
+        </label>
+      </div>
 
       <div class="card-form">
         <h3 class="settings-block-title">Mode bonus — recul des fiches (en jours)</h3>

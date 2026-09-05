@@ -1188,27 +1188,30 @@
    *  identiques de suite), plutôt qu'un nombre de points fixe — plafonné à
    *  40 pour éviter un graphique interminable si un maximum est très élevé
    *  par rapport à son coefficient. */
+  /** Étend le nombre de points du graphique (item 4/10) jusqu'à ce que les
+   *  courbes affichées atteignent leur plafond — calculé analytiquement
+   *  (résout K^n ≥ M) plutôt qu'en itérant avec un plafond fixe : un
+   *  plafond fixe trop bas coupait certaines courbes à croissance lente
+   *  (petit coefficient, maximum élevé — ex. ×1,1 plafonné à 300 jours a
+   *  besoin d'une soixantaine de points pour vraiment atteindre son
+   *  plateau) avant qu'elles n'aient eu le temps de vraiment se stabiliser
+   *  — bug corrigé (item 10). */
   function computeNeededSteps(settings, ratings) {
-    const CAP = 40;
+    const ABSOLUTE_CAP = 64;
     let needed = 4;
     ratings.forEach((r) => {
-      let raw = 1;
-      let prevRounded = null;
-      for (let n = 1; n <= CAP; n++) {
-        raw = computeNextDeadlineRaw(raw, r, settings);
-        const rounded = Math.max(1, Math.round(raw));
-        if (rounded === prevRounded) {
-          // +2 points au-delà du début du plateau (item 4), pour bien
-          // montrer que la courbe est devenue horizontale plutôt que de
-          // s'arrêter net pile au moment où elle se stabilise.
-          needed = Math.max(needed, Math.min(CAP, n + 2));
-          break;
-        }
-        prevRounded = rounded;
-        if (n === CAP) needed = Math.max(needed, CAP);
-      }
+      const [kKey, mKey] = ALGO_RATING_KEYS[r];
+      const k = settings[kKey];
+      const m = settings[mKey];
+      // Coefficient ~1 : l'échéance ne grandit quasiment pas, le "plateau"
+      // est atteint dès le premier point.
+      const n = k <= 1.0001 ? 1 : Math.ceil(Math.log(m) / Math.log(k));
+      // +2 points au-delà du début du plateau, pour bien montrer que la
+      // courbe est devenue horizontale plutôt que de s'arrêter net pile au
+      // moment où elle se stabilise.
+      needed = Math.max(needed, Math.min(ABSOLUTE_CAP, n + 2));
     });
-    return Math.max(4, Math.min(CAP, needed));
+    return Math.max(4, Math.min(ABSOLUTE_CAP, needed));
   }
 
   function buildPreviewChartHtml(settings) {
@@ -1746,6 +1749,21 @@
       cb.dataset.kind = "folder";
       cb.value = f.id;
       cb.checked = ids.length > 0 && ids.every((id) => selectedSubjectIds.has(id));
+      // Cocher/décocher un dossier répercute le même état sur tout ce
+      // qu'il contient — sous-dossiers et matières, à toute profondeur
+      // (item 7).
+      cb.addEventListener("change", () => {
+        const descendantFolderIds = new Set(folderDescendantIds(f.id));
+        const descendantSubjectIds = new Set(subjectIdsInFolder(f.id));
+        container.querySelectorAll('input[type="checkbox"]').forEach((other) => {
+          if (other === cb) return;
+          if (other.dataset.kind === "folder" && descendantFolderIds.has(other.value)) {
+            other.checked = cb.checked;
+          } else if (other.dataset.kind === "subject" && descendantSubjectIds.has(other.value)) {
+            other.checked = cb.checked;
+          }
+        });
+      });
       const span = document.createElement("span");
       span.textContent = `📁 ${f.name}`;
       label.appendChild(cb);
@@ -3808,12 +3826,33 @@
     touchAppSettingsTimestamp();
   }
 
+  const SHOW_RATING_DAYS_KEY = "fiches_show_rating_days";
+  function loadShowRatingDays() {
+    const raw = localStorage.getItem(SHOW_RATING_DAYS_KEY);
+    return raw === null ? true : raw === "true";
+  }
+  function saveShowRatingDays(value) {
+    localStorage.setItem(SHOW_RATING_DAYS_KEY, String(value));
+  }
+  function applyShowRatingDays() {
+    const ratingRowEl = el("rating-row");
+    if (ratingRowEl) ratingRowEl.classList.toggle("hide-days", !loadShowRatingDays());
+  }
+  const settingShowRatingDaysEl = el("setting-show-rating-days");
+  if (settingShowRatingDaysEl) {
+    settingShowRatingDaysEl.addEventListener("change", () => {
+      saveShowRatingDays(settingShowRatingDaysEl.checked);
+      applyShowRatingDays();
+    });
+  }
+
   function renderSettingsView() {
     if (settingBonusHardEl) settingBonusHardEl.value = bonusDaysSettings.hard;
     if (settingBonusGoodEl) settingBonusGoodEl.value = bonusDaysSettings.good;
     if (settingBonusEasyEl) settingBonusEasyEl.value = bonusDaysSettings.easy;
     if (settingBonusAgainModeEl) settingBonusAgainModeEl.value = bonusAgainMode;
     if (settingHibernateDaysEl) settingHibernateDaysEl.value = hibernateDays;
+    if (settingShowRatingDaysEl) settingShowRatingDaysEl.checked = loadShowRatingDays();
   }
 
   /* ---------------------------------------------------------
@@ -4501,6 +4540,7 @@
     renderSettingsView();
     applyRatingLabels();
     applyNavLabels();
+    applyShowRatingDays();
     await loadSubjects();
     cards = await DB.getAll();
     ratingLog = await DB.getAllRatingLog();
