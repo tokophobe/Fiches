@@ -3243,9 +3243,18 @@
   /** Dessine un histogramme "fiches dues par jour" dans les éléments fournis.
    *  Factorisé pour être partagé entre le grand graphique de l'onglet Stats
    *  et le mini graphique de la page Réviser (matière en cours). */
-  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, rangeKey, maxBarPx, computeFn, todayAtEnd, suppressChangeFlash, mergedPastDays) {
+  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, rangeKey, maxBarPx, computeFn, todayAtEnd, suppressChangeFlash, mergedPastDays, minTotalDays) {
     if (!chartEl) return;
-    const cfg = RANGE_CONFIG[rangeKey] || { visible: rangeKey, total: rangeKey };
+    const baseCfg = RANGE_CONFIG[rangeKey] || { visible: rangeKey, total: rangeKey };
+    // Étend temporairement le nombre de colonnes générées (sans changer
+    // combien tiennent à l'écran) si on doit absolument pouvoir animer
+    // jusqu'à un jour au-delà de la fenêtre habituelle (voir
+    // triggerReviewChartWave) — sinon la vague ciblait la dernière colonne
+    // VISIBLE plutôt que la vraie nouvelle échéance de la fiche.
+    const cfg =
+      minTotalDays !== undefined && minTotalDays > baseCfg.total
+        ? { ...baseCfg, total: minTotalDays }
+        : baseCfg;
     const days = cfg.total;
     let buckets;
     let todayIdx;
@@ -3761,7 +3770,7 @@
     }
   }
 
-  function renderReviewChart() {
+  function renderReviewChart(minTotalDays) {
     if (!reviewChartEl) return;
     if (reviewChartSubjectNameEl) reviewChartSubjectNameEl.textContent = subjectName(currentSubjectId);
     if (reviewChartScaleLabelEl) reviewChartScaleLabelEl.textContent = formatRangeShort(reviewChartRangeDays);
@@ -3775,35 +3784,53 @@
       REVIEW_CHART_MAX_BAR_PX,
       undefined,
       false,
-      true // suppressChangeFlash (item 4) : la vague gère tout l'effet visuel
+      true, // suppressChangeFlash (item 4) : la vague gère tout l'effet visuel
+      undefined,
+      minTotalDays
     );
   }
 
-  /** Anime en vague, de gauche à droite, toutes les colonnes entre
-   *  `fromIdx` (aujourd'hui) et `toIdx` (nouvelle date de la fiche notée) —
-   *  item 9 : chaque barre s'allume l'une après l'autre (léger décalage) et
-   *  grossit brièvement avant de revenir à sa taille normale. Ne fait rien
-   *  si l'échelle actuelle du mini graphique ne montre pas encore jusqu'à
-   *  `toIdx` (fiche renvoyée hors de l'écran affiché) ou si le graphique
-   *  est vide (rien à animer). */
   /** Anime en vague, de gauche à droite, toutes les colonnes entre
    *  `fromIdx` (aujourd'hui) et `toIdx` (nouvelle date de la fiche notée) —
    *  item 4/9 : chaque barre intermédiaire s'allume brièvement l'une après
    *  l'autre (léger décalage croissant), et la barre CIBLE (nouvelle date)
    *  ne s'allume qu'en DERNIER, une fois la vague arrivée jusqu'à elle —
    *  puis reste allumée et haute environ 1,5 seconde avant de revenir à la
-   *  normale (corrige le bug où la cible s'allumait dès le début, avant
-   *  même que la vague ne l'atteigne). Si la cible est hors de l'écran
-   *  visible (défilement horizontal du mini graphique), on fait défiler
-   *  jusqu'à elle le temps de l'animation, puis on revient à la position
-   *  de départ. */
+   *  normale. Si la cible dépasse le nombre de jours actuellement RENDUS
+   *  (fréquent avec un mode à croissance rapide sur l'échelle "15 jours"
+   *  par défaut : quelques bonnes réponses suffisent à dépasser 60 jours),
+   *  le graphique est d'abord redessiné avec assez de colonnes pour
+   *  l'inclure vraiment — sans ça, la vague animait la dernière colonne
+   *  visible, une position qui n'avait rien à voir avec la vraie nouvelle
+   *  échéance de la fiche. Revient à l'échelle normale une fois terminé. */
   function triggerReviewChartWave(fromIdx, toIdx) {
     if (!reviewChartEl) return;
-    const cols = reviewChartEl.querySelectorAll(".chart-col");
+    let cols = reviewChartEl.querySelectorAll(".chart-col");
+    // Redessine avec assez de jours si le graphique est actuellement VIDE
+    // (aucune fiche due dans la fenêtre normale — ex. une fiche isolée qui
+    // vient justement de bondir à j+172, plus aucune autre due : le rendu
+    // normal masque tout le graphique) OU si la cible dépasse ce qui est
+    // déjà rendu. Sans ce test AVANT de vérifier "cols.length === 0", le
+    // cas "graphique vide" retournait immédiatement sans jamais tenter
+    // l'extension, et l'animation ne se déclenchait tout simplement pas.
+    if (cols.length === 0 || toIdx > cols.length - 1) {
+      renderReviewChart(toIdx + 3);
+      cols = reviewChartEl.querySelectorAll(".chart-col");
+    }
     if (cols.length === 0) return;
+
     const lo = Math.max(0, Math.min(fromIdx, toIdx));
     const hi = Math.min(cols.length - 1, Math.max(fromIdx, toIdx));
-    const STEP_MS = 55; // décalage entre deux barres consécutives de la vague
+    const span = hi - lo;
+    // Décalage entre deux barres consécutives de la vague — plafonné pour
+    // qu'une échéance lointaine (des dizaines, voire centaines de jours,
+    // avec un mode qui grandit vite) ne fasse pas durer le survol de
+    // toutes les barres intermédiaires plusieurs secondes avant même que
+    // la cible ne commence à s'allumer : la vague entière tient toujours
+    // dans MAX_SWEEP_MS, quel que soit le nombre de barres à traverser.
+    const MAX_SWEEP_MS = 650;
+    const STEP_MS = span > 0 ? Math.min(55, MAX_SWEEP_MS / span) : 55;
+    const wasExtended = cols.length > (RANGE_CONFIG[reviewChartRangeDays] || {}).total;
 
     // Défilement horizontal si besoin pour voir toute l'animation jusqu'au
     // bout (item 4) — le conteneur scrollable est reviewChartWrapEl.
@@ -3842,9 +3869,14 @@
           bar.style.animationDelay = "";
           // Une fois la barre cible revenue à la normale (donc toute
           // l'animation terminée), on ramène le graphique à sa position de
-          // départ si on avait dû faire défiler pour la voir.
-          if (isTarget && scrolledAway && scroller) {
-            scroller.scrollTo({ left: originalScrollLeft, behavior: "smooth" });
+          // départ si on avait dû faire défiler pour la voir, et on repasse
+          // à l'échelle normale si elle avait dû être temporairement étendue.
+          if (isTarget) {
+            if (wasExtended) {
+              renderReviewChart();
+            } else if (scrolledAway && scroller) {
+              scroller.scrollTo({ left: originalScrollLeft, behavior: "smooth" });
+            }
           }
         },
         { once: true }
