@@ -167,6 +167,52 @@ begin
   end if;
 end $$;
 
+-- Modes d'apprentissage (item 1, audit synchro) : jusqu'ici jamais
+-- synchronisés du tout — seul le "modeId" de chaque matière l'était (voir
+-- table subjects). Un mode personnalisé créé sur un appareil (nom + les 8
+-- coefficients/maximums) restait donc invisible sur les autres, qui
+-- retombaient silencieusement sur le mode "Normal" par défaut. Les 3 modes
+-- fixes (cool/normal/renforce) sont aussi synchronisés ici : si leurs
+-- valeurs sont personnalisées sur un appareil, ça doit se refléter partout.
+create table if not exists public.learning_modes (
+  id text primary key,
+  sync_code text not null,
+  name text not null,
+  builtin boolean not null default false,
+  ka numeric not null,
+  kh numeric not null,
+  kg numeric not null,
+  ke numeric not null,
+  ma integer not null,
+  mh integer not null,
+  mg integer not null,
+  me integer not null,
+  updated_at timestamptz not null default now(),
+  deleted boolean not null default false
+);
+
+create index if not exists learning_modes_sync_code_idx on public.learning_modes (sync_code);
+
+alter table public.learning_modes enable row level security;
+
+drop policy if exists "anon can read/write learning_modes" on public.learning_modes;
+create policy "anon can read/write learning_modes"
+  on public.learning_modes
+  for all
+  to anon
+  using (true)
+  with check (true);
+
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'learning_modes'
+  ) then
+    alter publication supabase_realtime add table public.learning_modes;
+  end if;
+end $$;
+
 -- Force PostgREST à recharger son cache de schéma tout de suite (sinon les
 -- nouvelles colonnes peuvent mettre quelques minutes à être reconnues par
 -- l'API, même après ce script).

@@ -383,6 +383,68 @@ function subscribeFoldersRealtime(onRemoteChange) {
 }
 
 /* ---------------------------------------------------------
+   Modes d'apprentissage (item 1, audit synchro) : jusqu'ici jamais
+   synchronisés du tout — seul le modeId de chaque matière l'était. Même
+   schéma que matières/dossiers : upsert, suppression douce, temps réel.
+--------------------------------------------------------- */
+function learningModeToRow(mode, syncCode) {
+  return {
+    id: mode.id,
+    sync_code: syncCode,
+    name: mode.name,
+    builtin: Boolean(mode.builtin),
+    ka: mode.Ka, kh: mode.Kh, kg: mode.Kg, ke: mode.Ke,
+    ma: mode.Ma, mh: mode.Mh, mg: mode.Mg, me: mode.Me,
+    updated_at: mode.updatedAt || new Date().toISOString(),
+    deleted: Boolean(mode.deleted),
+  };
+}
+function rowToLearningMode(row) {
+  return {
+    id: row.id,
+    name: row.name,
+    builtin: Boolean(row.builtin),
+    Ka: row.ka, Kh: row.kh, Kg: row.kg, Ke: row.ke,
+    Ma: row.ma, Mh: row.mh, Mg: row.mg, Me: row.me,
+    updatedAt: row.updated_at,
+    deleted: Boolean(row.deleted),
+  };
+}
+
+async function pullLearningModes() {
+  return pullTable("learning_modes", rowToLearningMode);
+}
+
+async function pushLearningMode(mode) {
+  const c = getClient();
+  const { code } = getConfig();
+  if (!c || !code) return false;
+  const { error } = await c.from("learning_modes").upsert(learningModeToRow(mode, code));
+  if (error) {
+    console.warn("Sync: échec de l'envoi du mode d'apprentissage", error.message);
+    return false;
+  }
+  return true;
+}
+
+function subscribeLearningModesRealtime(onRemoteChange) {
+  const c = getClient();
+  const { code } = getConfig();
+  if (!c || !code) return () => {};
+  const channel = c
+    .channel(`learning-modes-${code}`)
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "learning_modes", filter: `sync_code=eq.${code}` },
+      (payload) => {
+        if (payload.new) onRemoteChange(rowToLearningMode(payload.new));
+      }
+    )
+    .subscribe();
+  return () => c.removeChannel(channel);
+}
+
+/* ---------------------------------------------------------
    État des récompenses (page "Récompenses") : une seule ligne JSON par
    code de synchro, séparée des fiches. Contrairement aux fiches, il n'y a
    rien à fusionner champ par champ ici : on prend l'union des clés
@@ -462,6 +524,9 @@ window.Sync = {
   pullFolders,
   pushFolder,
   subscribeFoldersRealtime,
+  pullLearningModes,
+  pushLearningMode,
+  subscribeLearningModesRealtime,
   pendingCount: () => getPending().length,
   getLastError: () => lastError,
 };

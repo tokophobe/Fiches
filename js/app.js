@@ -339,12 +339,19 @@
         id,
         name: BUILTIN_MODE_DEFAULTS[id].name,
         builtin: true,
+        updatedAt: (stored[id] && stored[id].updatedAt) || new Date(0).toISOString(),
         ...clampModeProfile(stored[id], id),
       };
     });
     Object.values(stored).forEach((m) => {
       if (m && m.id && !BUILTIN_MODE_IDS.includes(m.id)) {
-        modes[m.id] = { id: m.id, name: (m.name || "Sans nom").trim() || "Sans nom", builtin: false, ...clampModeProfile(m, "normal") };
+        modes[m.id] = {
+          id: m.id,
+          name: (m.name || "Sans nom").trim() || "Sans nom",
+          builtin: false,
+          updatedAt: m.updatedAt || new Date(0).toISOString(),
+          ...clampModeProfile(m, "normal"),
+        };
       }
     });
     return modes;
@@ -353,25 +360,35 @@
     localStorage.setItem(LEARNING_MODES_KEY, JSON.stringify(modes));
     touchAppSettingsTimestamp();
   }
+  /** Enregistre localement ET envoie ce mode précis vers Supabase (item 1,
+   *  audit synchro : jusqu'ici jamais synchronisé du tout). */
+  function persistModeChange(modes, modeId) {
+    modes[modeId].updatedAt = new Date().toISOString();
+    saveLearningModes(modes);
+    if (Sync.isConfigured()) Sync.pushLearningMode(modes[modeId]);
+  }
+
   function createCustomMode(name, basedOnId) {
     const modes = loadLearningModes();
     const id = "custom-" + uid();
     const base = modes[basedOnId] || modes.normal;
     modes[id] = { id, name: (name || "Nouveau mode").trim(), builtin: false, ...clampModeProfile(base, "normal") };
-    saveLearningModes(modes);
+    persistModeChange(modes, id);
     return id;
   }
   function renameCustomMode(modeId, name) {
     const modes = loadLearningModes();
     if (!modes[modeId] || modes[modeId].builtin || !name || !name.trim()) return;
     modes[modeId].name = name.trim();
-    saveLearningModes(modes);
+    persistModeChange(modes, modeId);
   }
   async function deleteCustomMode(modeId) {
     const modes = loadLearningModes();
     if (!modes[modeId] || modes[modeId].builtin) return;
+    const deletedMode = { ...modes[modeId], deleted: true, updatedAt: new Date().toISOString() };
     delete modes[modeId];
     saveLearningModes(modes);
+    if (Sync.isConfigured()) Sync.pushLearningMode(deletedMode);
     // Toute matière qui utilisait ce mode supprimé retombe sur "Normal".
     for (const s of subjects) {
       if (s.modeId === modeId) {
@@ -385,7 +402,7 @@
     const modes = loadLearningModes();
     if (!modes[modeId]) return;
     Object.assign(modes[modeId], clampModeProfile(values, modeId));
-    saveLearningModes(modes);
+    persistModeChange(modes, modeId);
   }
 
   /** Mode effectif d'une matière (objet complet, avec Ka..Me) — "Normal" si
@@ -4167,6 +4184,7 @@
   let unsubscribeRealtime = null;
   let unsubscribeSubjectsRealtime = null;
   let unsubscribeFoldersRealtime = null;
+  let unsubscribeLearningModesRealtime = null;
   let syncAutoRetrying = false;
 
   function renderSyncView() {
@@ -4275,6 +4293,7 @@
     if (unsubscribeRealtime) unsubscribeRealtime();
     if (unsubscribeSubjectsRealtime) unsubscribeSubjectsRealtime();
     if (unsubscribeFoldersRealtime) unsubscribeFoldersRealtime();
+    if (unsubscribeLearningModesRealtime) unsubscribeLearningModesRealtime();
     Sync.clearConfig();
     syncForm.reset();
     renderSyncView();
@@ -4430,6 +4449,41 @@
     }
   }
 
+  /** Fusionne un mode d'apprentissage reçu de Supabase (item 1, audit
+   *  synchro) : jamais synchronisé avant — un mode personnalisé créé sur un
+   *  appareil restait invisible sur les autres, qui retombaient
+   *  silencieusement sur "Normal" pour toute matière qui l'utilisait. */
+  async function mergeRemoteLearningMode(remote) {
+    const modes = loadLearningModes();
+    if (remote.deleted) {
+      if (modes[remote.id] && !modes[remote.id].builtin) {
+        delete modes[remote.id];
+        saveLearningModes(modes);
+      }
+      return;
+    }
+    const local = modes[remote.id];
+    if (!local || new Date(remote.updatedAt || 0) > new Date(local.updatedAt || 0)) {
+      modes[remote.id] = { ...remote };
+      saveLearningModes(modes);
+    }
+  }
+
+  async function reconcileLearningModes() {
+    const remoteModes = await Sync.pullLearningModes();
+    const remoteById = new Map(remoteModes.map((r) => [r.id, r]));
+    const localModes = loadLearningModes();
+    for (const local of Object.values(localModes)) {
+      const remote = remoteById.get(local.id);
+      if (!remote || new Date(local.updatedAt || 0) > new Date(remote.updatedAt || 0)) {
+        Sync.pushLearningMode(local);
+      }
+    }
+    for (const remote of remoteModes) {
+      await mergeRemoteLearningMode(remote);
+    }
+  }
+
   async function mergeRemoteFolder(remote) {
     const idx = folders.findIndex((f) => f.id === remote.id);
     if (remote.deleted) {
@@ -4486,6 +4540,7 @@
   }
 
   async function reconcileWithRemote() {
+    await reconcileLearningModes();
     await reconcileSubjectsAndFolders();
     renderSubjectSelect();
 
@@ -4515,6 +4570,7 @@
     if (unsubscribeRealtime) unsubscribeRealtime();
     if (unsubscribeSubjectsRealtime) unsubscribeSubjectsRealtime();
     if (unsubscribeFoldersRealtime) unsubscribeFoldersRealtime();
+    if (unsubscribeLearningModesRealtime) unsubscribeLearningModesRealtime();
 
     await reconcileWithRemote();
     await Sync.flushPending((id) => cards.find((c) => c.id === id));
@@ -4541,6 +4597,11 @@
     unsubscribeFoldersRealtime = Sync.subscribeFoldersRealtime(async (remote) => {
       await mergeRemoteFolder(remote);
       renderSubjectManageList();
+    });
+    unsubscribeLearningModesRealtime = Sync.subscribeLearningModesRealtime(async (remote) => {
+      await mergeRemoteLearningMode(remote);
+      renderSubjectManageList();
+      renderSubjectAlgoBadge();
     });
 
     updateSyncStatus();
