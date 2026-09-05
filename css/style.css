@@ -329,16 +329,16 @@ textarea, input {
    Partagées par le bouton de la barre Réviser (.subject-bar-algo-btn) ET
    celui de chaque ligne de matière sur la page Gérer (.subject-row-algo-btn). */
 .subject-bar-algo-btn.is-cool, .subject-row-algo-btn.is-cool, .card-algo-btn.is-cool {
-  color: #eaf2e4; background: var(--sage); border-color: var(--sage);
+  color: #eaf2e4; background: var(--mode-cool-color, var(--sage)); border-color: var(--mode-cool-color, var(--sage));
 }
 .subject-bar-algo-btn.is-normal, .subject-row-algo-btn.is-normal, .card-algo-btn.is-normal {
-  color: #2a1f0d; background: var(--amber); border-color: var(--amber);
+  color: #2a1f0d; background: var(--mode-normal-color, var(--amber)); border-color: var(--mode-normal-color, var(--amber));
 }
 .subject-bar-algo-btn.is-renforce, .subject-row-algo-btn.is-renforce, .card-algo-btn.is-renforce {
-  color: #fbeae5; background: var(--terracotta); border-color: var(--terracotta);
+  color: #fbeae5; background: var(--mode-renforce-color, var(--terracotta)); border-color: var(--mode-renforce-color, var(--terracotta));
 }
 .subject-bar-algo-btn.is-custom, .subject-row-algo-btn.is-custom, .card-algo-btn.is-custom {
-  color: #332b04; background: #e8c84a; border-color: #e8c84a;
+  color: #332b04; background: var(--mode-custom-color, #e8c84a); border-color: var(--mode-custom-color, #e8c84a);
 }
 
 .subject-bar-algo-btn:hover, .subject-row-algo-btn:hover, .card-algo-btn:hover { filter: brightness(1.08); }
@@ -929,10 +929,10 @@ textarea, input {
 
 /* Fond uni de la couleur qui servait auparavant aux écritures, texte
    repassé en foncé (--desk) pour rester lisible sur ces teintes claires. */
-.stamp--again { background: var(--terracotta); color: var(--desk); }
-.stamp--hard  { background: var(--amber); color: var(--desk); }
-.stamp--good  { background: var(--sage); color: var(--desk); }
-.stamp--easy  { background: var(--teal); color: var(--desk); }
+.stamp--again { background: var(--rating-again-color, var(--terracotta)); color: var(--desk); }
+.stamp--hard  { background: var(--rating-hard-color, var(--amber)); color: var(--desk); }
+.stamp--good  { background: var(--rating-good-color, var(--sage)); color: var(--desk); }
+.stamp--easy  { background: var(--rating-easy-color, var(--teal)); color: var(--desk); }
 
 .stamp--again:hover { filter: brightness(1.1); }
 .stamp--hard:hover  { filter: brightness(1.1); }
@@ -1858,21 +1858,21 @@ textarea, input {
   background: var(--slider-color, var(--amber));
 }
 
-.algo-slider-field--again { background: rgba(182, 96, 74, 0.14); border-color: rgba(182, 96, 74, 0.4); --slider-color: var(--terracotta); }
+.algo-slider-field--again { background: rgba(182, 96, 74, 0.14); border-color: rgba(182, 96, 74, 0.4); --slider-color: var(--rating-again-color, var(--terracotta)); }
 .algo-slider-field--again .algo-slider-field-label,
-.algo-slider-field--again .algo-slider-field-value { color: var(--terracotta); }
+.algo-slider-field--again .algo-slider-field-value { color: var(--rating-again-color, var(--terracotta)); }
 
-.algo-slider-field--hard { background: rgba(207, 154, 77, 0.14); border-color: rgba(207, 154, 77, 0.4); --slider-color: var(--amber); }
+.algo-slider-field--hard { background: rgba(207, 154, 77, 0.14); border-color: rgba(207, 154, 77, 0.4); --slider-color: var(--rating-hard-color, var(--amber)); }
 .algo-slider-field--hard .algo-slider-field-label,
-.algo-slider-field--hard .algo-slider-field-value { color: var(--amber); }
+.algo-slider-field--hard .algo-slider-field-value { color: var(--rating-hard-color, var(--amber)); }
 
-.algo-slider-field--good { background: rgba(111, 139, 92, 0.14); border-color: rgba(111, 139, 92, 0.4); --slider-color: var(--sage); }
+.algo-slider-field--good { background: rgba(111, 139, 92, 0.14); border-color: rgba(111, 139, 92, 0.4); --slider-color: var(--rating-good-color, var(--sage)); }
 .algo-slider-field--good .algo-slider-field-label,
-.algo-slider-field--good .algo-slider-field-value { color: var(--sage); }
+.algo-slider-field--good .algo-slider-field-value { color: var(--rating-good-color, var(--sage)); }
 
-.algo-slider-field--easy { background: rgba(62, 124, 107, 0.18); border-color: rgba(62, 124, 107, 0.45); --slider-color: var(--teal); }
+.algo-slider-field--easy { background: rgba(62, 124, 107, 0.18); border-color: rgba(62, 124, 107, 0.45); --slider-color: var(--rating-easy-color, var(--teal)); }
 .algo-slider-field--easy .algo-slider-field-label,
-.algo-slider-field--easy .algo-slider-field-value { color: var(--teal); }
+.algo-slider-field--easy .algo-slider-field-value { color: var(--rating-easy-color, var(--teal)); }
 
 /* Graphique d'aperçu des échéances (item 6). */
 /* Graphique d'aperçu de la page d'édition des modes : collé en haut au
@@ -2000,6 +2000,41 @@ textarea, input {
   text-align: center;
   padding: 40px 0;
   margin: 0;
+}
+
+/* Éditeur de la palette de couleurs de texte (item 2, page Développeur). */
+.dev-text-colors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.dev-text-color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dev-text-color-swatch {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid rgba(35, 48, 42, 0.2);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.dev-text-color-label {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper-2);
+  border: 1px solid rgba(35, 48, 42, 0.15);
+  border-radius: 8px;
+  padding: 8px 10px;
 }
 
 .settings-toggle-row {

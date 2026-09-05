@@ -277,6 +277,30 @@
   const DEFAULT_NAV_LABELS = {
     review: "🤓", manage: "🗃️", cards: "📄", stats: "📊", "learning-modes": "🎓", settings: "⚙",
   };
+  // Couleurs des 4 notes (boutons d'évaluation + graphiques) et des 4 modes
+  // d'apprentissage (badges) — item 2 : rendues éditables depuis la page
+  // Développeur plutôt que codées en dur dans la feuille de style.
+  const DEFAULT_RATING_COLORS = { again: "#b6604a", hard: "#cf9a4d", good: "#6f8b5c", easy: "#3e7c6b" };
+  const DEFAULT_MODE_COLORS = { cool: "#6f8b5c", normal: "#cf9a4d", renforce: "#b6604a", custom: "#e8c84a" };
+  const DEFAULT_ICONS = {
+    hibernate: "💤", edit: "✎", construction: "🚧", undo: "◀️", folder: "📁",
+  };
+  // Palette de couleurs de texte proposée dans la mise en forme des fiches
+  // (item 20 puis étendue ici) — modifiable, y compris ajouter/retirer des
+  // couleurs, depuis la page Développeur.
+  const DEFAULT_TEXT_COLORS = [
+    { label: "Foncé", hex: "#23302a" },
+    { label: "Terracotta", hex: "#b6604a" },
+    { label: "Ambre", hex: "#cf9a4d" },
+    { label: "Sauge", hex: "#6f8b5c" },
+    { label: "Bleu-vert", hex: "#3e7c6b" },
+    { label: "Marine", hex: "#1f3a5f" },
+    { label: "Ciel", hex: "#2a8fd8" },
+    { label: "Rose", hex: "#c96a95" },
+    { label: "Violet", hex: "#8a5fb3" },
+    { label: "Orange", hex: "#d97f35" },
+    { label: "Gris", hex: "#6b7280" },
+  ];
 
   function loadDevSettings() {
     let parsed = {};
@@ -289,6 +313,10 @@
     return {
       ratingLabels: { ...DEFAULT_RATING_LABELS, ...(parsed.ratingLabels || {}) },
       navLabels: { ...DEFAULT_NAV_LABELS, ...(parsed.navLabels || {}) },
+      ratingColors: { ...DEFAULT_RATING_COLORS, ...(parsed.ratingColors || {}) },
+      modeColors: { ...DEFAULT_MODE_COLORS, ...(parsed.modeColors || {}) },
+      icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
+      textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       factoryDefaults: {
         cool: { ...BUILTIN_MODE_DEFAULTS.cool, ...((parsed.factoryDefaults || {}).cool || {}) },
         normal: { ...BUILTIN_MODE_DEFAULTS.normal, ...((parsed.factoryDefaults || {}).normal || {}) },
@@ -319,6 +347,64 @@
     Object.keys(labels).forEach((view) => {
       const tab = document.querySelector(`.tab[data-view="${view}"]`);
       if (tab) tab.textContent = labels[view];
+    });
+  }
+
+  /** Applique les couleurs des notes et des modes (item 2) : posées comme
+   *  variables CSS sur :root, que la feuille de style référence désormais
+   *  (voir .stamp--again, .is-cool, etc.) — un seul endroit à mettre à
+   *  jour pour que ça se répercute partout où ces couleurs sont utilisées. */
+  function applyColorSettings() {
+    const settings = loadDevSettings();
+    const root = document.documentElement.style;
+    root.setProperty("--rating-again-color", settings.ratingColors.again);
+    root.setProperty("--rating-hard-color", settings.ratingColors.hard);
+    root.setProperty("--rating-good-color", settings.ratingColors.good);
+    root.setProperty("--rating-easy-color", settings.ratingColors.easy);
+    root.setProperty("--mode-cool-color", settings.modeColors.cool);
+    root.setProperty("--mode-normal-color", settings.modeColors.normal);
+    root.setProperty("--mode-renforce-color", settings.modeColors.renforce);
+    root.setProperty("--mode-custom-color", settings.modeColors.custom);
+  }
+
+  /** Applique les émoticônes des icônes de la fiche/de l'arborescence
+   *  (item 2) : hibernation, édition, chantier, annuler, dossier. */
+  function applyIconSettings() {
+    const icons = loadDevSettings().icons;
+    const hib = el("hibernate-current-btn");
+    if (hib) hib.textContent = icons.hibernate;
+    const edit = el("edit-current-btn");
+    if (edit) edit.textContent = icons.edit;
+    const constr = el("construction-current-btn");
+    if (constr) constr.textContent = icons.construction;
+    const undo = el("undo-rating-btn");
+    if (undo) undo.textContent = icons.undo;
+    const filterIcon = el("construction-filter-icon");
+    if (filterIcon) filterIcon.textContent = icons.construction;
+  }
+
+  /** Regénère les pastilles de couleur de texte de la barre d'outils de
+   *  mise en forme (item 2/20) à partir de la palette réglable. */
+  function folderIcon() {
+    return loadDevSettings().icons.folder;
+  }
+
+  function applyTextColorPalette() {
+    const group = document.querySelector(".rt-color-group");
+    if (!group) return;
+    const colors = loadDevSettings().textColors;
+    group.innerHTML = colors
+      .map(
+        (c) =>
+          `<button type="button" class="rt-color" data-color="${c.hex}" style="background:${c.hex}" title="Texte ${escapeHtml(c.label)}"></button>`
+      )
+      .join("");
+    group.querySelectorAll(".rt-color[data-color]").forEach((btn) => {
+      btn.addEventListener("mousedown", (e) => e.preventDefault());
+      btn.addEventListener("click", () => {
+        focusLastEditor();
+        document.execCommand("foreColor", false, btn.dataset.color);
+      });
     });
   }
 
@@ -872,7 +958,7 @@
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
       nameBtn.title = expanded ? "Replier ce dossier" : "Déplier ce dossier";
-      nameBtn.textContent = `${expanded ? "▾" : "▸"} 📁 ${f.name}`;
+      nameBtn.textContent = `${expanded ? "▾" : "▸"} ${folderIcon()} ${f.name}`;
       nameBtn.addEventListener("click", () => {
         if (expandedManageFolders.has(f.id)) expandedManageFolders.delete(f.id);
         else expandedManageFolders.add(f.id);
@@ -1059,7 +1145,7 @@
         const label = document.createElement("label");
         label.className = "multi-subject-picker-item";
         const path = folderPath(f.id).map((p) => p.name).join(" / ");
-        label.innerHTML = `<input type="radio" name="move-target" value="${f.id}" /> <span>📁 ${escapeHtml(path)}</span>`;
+        label.innerHTML = `<input type="radio" name="move-target" value="${f.id}" /> <span>${folderIcon()} ${escapeHtml(path)}</span>`;
         list.appendChild(label);
       });
 
@@ -1200,7 +1286,12 @@
    *  de réglages donné — partagé entre la page d'édition globale et la
    *  page d'affectation (lecture seule). Échelle LINÉAIRE (pas log, item 5
    *  d'une demande précédente), valeur écrite à côté de chaque point. */
-  const ALGO_CHART_COLORS = { again: "var(--terracotta)", hard: "var(--amber)", good: "var(--sage)", easy: "var(--teal)" };
+  const ALGO_CHART_COLORS = {
+    again: "var(--rating-again-color, var(--terracotta))",
+    hard: "var(--rating-hard-color, var(--amber))",
+    good: "var(--rating-good-color, var(--sage))",
+    easy: "var(--rating-easy-color, var(--teal))",
+  };
   const ALGO_CHART_RATING_LABELS = { again: "Encore", hard: "Difficile", good: "Bien", easy: "Facile" };
   function computeAlgoPreviewSeries(settings, rating, n) {
     let raw = 1;
@@ -1548,7 +1639,7 @@
       currentModeId = getSubjectAlgoMode(targetId);
     } else {
       const f = folders.find((x) => x.id === targetId);
-      title = `Affecter un mode — 📁 ${f ? f.name : ""}`;
+      title = `Affecter un mode — ${folderIcon()} ${f ? f.name : ""}`;
       currentModeId = "normal";
     }
     const titleEl = el("assign-target-title");
@@ -1800,7 +1891,7 @@
         });
       });
       const span = document.createElement("span");
-      span.textContent = `📁 ${f.name}`;
+      span.textContent = `${folderIcon()} ${f.name}`;
       label.appendChild(cb);
       label.appendChild(span);
       container.appendChild(label);
@@ -2693,7 +2784,7 @@
     const folderOpts = folders
       .map((f) => ({ f, path: folderPath(f.id).map((p) => p.name).join(" / ") }))
       .sort((a, b) => a.path.localeCompare(b.path, "fr"))
-      .map(({ f, path }) => `<option value="folder:${f.id}">📁 ${escapeHtml(path)}</option>`)
+      .map(({ f, path }) => `<option value="folder:${f.id}">${folderIcon()} ${escapeHtml(path)}</option>`)
       .join("");
     sel.innerHTML =
       `<option value="${CARDS_SCOPE_CURRENT}">Cette matière</option>` +
@@ -2845,7 +2936,7 @@
       const constructionBtn = document.createElement("button");
       constructionBtn.className = "icon-btn" + (card.underConstruction ? " is-active-construction" : "");
       constructionBtn.type = "button";
-      constructionBtn.textContent = "🚧";
+      constructionBtn.textContent = loadDevSettings().icons.construction;
       constructionBtn.title = card.underConstruction ? "Retirer le statut « chantier »" : "Marquer « chantier » (fiche à corriger)";
       constructionBtn.addEventListener("click", () => toggleUnderConstruction(card.id));
 
@@ -3054,7 +3145,7 @@
     const folderOpts = folders
       .map((f) => ({ f, path: folderPath(f.id).map((p) => p.name).join(" / ") }))
       .sort((a, b) => a.path.localeCompare(b.path, "fr"))
-      .map(({ f, path }) => `<option value="folder:${f.id}">📁 ${escapeHtml(path)}</option>`)
+      .map(({ f, path }) => `<option value="folder:${f.id}">${folderIcon()} ${escapeHtml(path)}</option>`)
       .join("");
     statsSubjectSelectEl.innerHTML =
       `<option value="${ALL_SUBJECTS}">Toutes catégories confondues</option>` +
@@ -4047,6 +4138,147 @@
     });
   }
 
+  /* ---------------------------------------------------------
+     Icônes, couleurs des notes/modes, palette de texte (item 2) — étoffe
+     le mode développeur avec un maximum de choix d'émoticônes/couleurs.
+  --------------------------------------------------------- */
+  function saveIconsFromInputs() {
+    const settings = loadDevSettings();
+    Object.keys(DEFAULT_ICONS).forEach((k) => {
+      const input = el(`dev-icon-${k}`);
+      if (input && input.value.trim()) settings.icons[k] = input.value.trim();
+    });
+    saveDevSettings(settings);
+    applyIconSettings();
+  }
+  Object.keys(DEFAULT_ICONS).forEach((k) => {
+    const input = el(`dev-icon-${k}`);
+    if (input) input.addEventListener("change", saveIconsFromInputs);
+  });
+  const devIconsResetBtn = el("dev-icons-reset");
+  if (devIconsResetBtn) {
+    devIconsResetBtn.addEventListener("click", () => {
+      const settings = loadDevSettings();
+      settings.icons = { ...DEFAULT_ICONS };
+      saveDevSettings(settings);
+      applyIconSettings();
+      renderDevView();
+    });
+  }
+
+  function saveRatingColorsFromInputs() {
+    const settings = loadDevSettings();
+    ["again", "hard", "good", "easy"].forEach((r) => {
+      const input = el(`dev-color-${r}`);
+      if (input) settings.ratingColors[r] = input.value;
+    });
+    saveDevSettings(settings);
+    applyColorSettings();
+  }
+  ["again", "hard", "good", "easy"].forEach((r) => {
+    const input = el(`dev-color-${r}`);
+    if (input) input.addEventListener("input", saveRatingColorsFromInputs);
+  });
+  const devRatingColorsResetBtn = el("dev-rating-colors-reset");
+  if (devRatingColorsResetBtn) {
+    devRatingColorsResetBtn.addEventListener("click", () => {
+      const settings = loadDevSettings();
+      settings.ratingColors = { ...DEFAULT_RATING_COLORS };
+      saveDevSettings(settings);
+      applyColorSettings();
+      renderDevView();
+    });
+  }
+
+  function saveModeColorsFromInputs() {
+    const settings = loadDevSettings();
+    ["cool", "normal", "renforce", "custom"].forEach((m) => {
+      const input = el(`dev-color-mode-${m}`);
+      if (input) settings.modeColors[m] = input.value;
+    });
+    saveDevSettings(settings);
+    applyColorSettings();
+  }
+  ["cool", "normal", "renforce", "custom"].forEach((m) => {
+    const input = el(`dev-color-mode-${m}`);
+    if (input) input.addEventListener("input", saveModeColorsFromInputs);
+  });
+  const devModeColorsResetBtn = el("dev-mode-colors-reset");
+  if (devModeColorsResetBtn) {
+    devModeColorsResetBtn.addEventListener("click", () => {
+      const settings = loadDevSettings();
+      settings.modeColors = { ...DEFAULT_MODE_COLORS };
+      saveDevSettings(settings);
+      applyColorSettings();
+      renderDevView();
+    });
+  }
+
+  /** Liste éditable de couleurs de texte (item 2) : ajouter/renommer/
+   *  changer la couleur/retirer, appliqué en direct à la barre d'outils de
+   *  mise en forme des fiches. */
+  function renderTextColorsEditor() {
+    const wrap = el("dev-text-colors-list");
+    if (!wrap) return;
+    const colors = loadDevSettings().textColors;
+    wrap.innerHTML = colors
+      .map(
+        (c, i) => `<div class="dev-text-color-row" data-idx="${i}">
+          <input type="color" class="dev-text-color-swatch" value="${c.hex}" />
+          <input type="text" class="dev-text-color-label" value="${escapeHtml(c.label)}" maxlength="16" />
+          <button type="button" class="icon-btn icon-btn--danger dev-text-color-remove">🗑️</button>
+        </div>`
+      )
+      .join("");
+
+    function saveFromRows() {
+      const rows = [...wrap.querySelectorAll(".dev-text-color-row")];
+      const newColors = rows.map((row) => ({
+        hex: row.querySelector(".dev-text-color-swatch").value,
+        label: row.querySelector(".dev-text-color-label").value.trim() || "Couleur",
+      }));
+      const settings = loadDevSettings();
+      settings.textColors = newColors;
+      saveDevSettings(settings);
+      applyTextColorPalette();
+    }
+
+    wrap.querySelectorAll(".dev-text-color-swatch, .dev-text-color-label").forEach((input) => {
+      input.addEventListener("input", saveFromRows);
+    });
+    wrap.querySelectorAll(".dev-text-color-remove").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const settings = loadDevSettings();
+        const idx = Number(btn.closest(".dev-text-color-row").dataset.idx);
+        settings.textColors = settings.textColors.filter((_, i) => i !== idx);
+        if (settings.textColors.length === 0) settings.textColors = [{ ...DEFAULT_TEXT_COLORS[0] }];
+        saveDevSettings(settings);
+        applyTextColorPalette();
+        renderTextColorsEditor();
+      });
+    });
+  }
+  const devTextColorAddBtn = el("dev-text-color-add");
+  if (devTextColorAddBtn) {
+    devTextColorAddBtn.addEventListener("click", () => {
+      const settings = loadDevSettings();
+      settings.textColors = [...settings.textColors, { label: "Nouvelle", hex: "#888888" }];
+      saveDevSettings(settings);
+      applyTextColorPalette();
+      renderTextColorsEditor();
+    });
+  }
+  const devTextColorsResetBtn = el("dev-text-colors-reset");
+  if (devTextColorsResetBtn) {
+    devTextColorsResetBtn.addEventListener("click", () => {
+      const settings = loadDevSettings();
+      settings.textColors = DEFAULT_TEXT_COLORS.map((c) => ({ ...c }));
+      saveDevSettings(settings);
+      applyTextColorPalette();
+      renderTextColorsEditor();
+    });
+  }
+
   /** Éditeur des valeurs "usine" des 3 modes fixes (item 19) : mêmes 12
    *  valeurs discrètes que partout ailleurs (ALGO_K_VALUES/ALGO_M_VALUES),
    *  ici via de simples menus déroulants (page technique, pas besoin de
@@ -4099,6 +4331,22 @@
       const input = el(`dev-nav-${view}`);
       if (input) input.value = navLabels[view];
     });
+    const icons = loadDevSettings().icons;
+    Object.keys(DEFAULT_ICONS).forEach((k) => {
+      const input = el(`dev-icon-${k}`);
+      if (input) input.value = icons[k];
+    });
+    const ratingColors = loadDevSettings().ratingColors;
+    ["again", "hard", "good", "easy"].forEach((r) => {
+      const input = el(`dev-color-${r}`);
+      if (input) input.value = ratingColors[r];
+    });
+    const modeColors = loadDevSettings().modeColors;
+    ["cool", "normal", "renforce", "custom"].forEach((m) => {
+      const input = el(`dev-color-mode-${m}`);
+      if (input) input.value = modeColors[m];
+    });
+    renderTextColorsEditor();
     renderFactoryDefaultsEditor();
   }
 
@@ -4726,6 +4974,9 @@
     applyRatingLabels();
     applyNavLabels();
     applyShowRatingDays();
+    applyColorSettings();
+    applyIconSettings();
+    applyTextColorPalette();
     await loadSubjects();
     cards = await DB.getAll();
     ratingLog = await DB.getAllRatingLog();

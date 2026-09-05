@@ -336,7 +336,7 @@
       <div class="card-list-header">
         <h2 class="section-title card-list-title">Fiches (<span id="total-count">0</span>)</h2>
         <button type="button" class="construction-filter-btn" id="construction-filter-btn" title="N'afficher que les fiches « chantier »">
-          🚧
+          <span id="construction-filter-icon">🚧</span>
           <span class="construction-filter-badge" id="construction-filter-badge" hidden>0</span>
         </button>
       </div>
@@ -676,6 +676,88 @@
           </label>
         </div>
         <button type="button" class="btn btn--ghost" id="dev-nav-reset">Revenir aux icônes d'origine</button>
+      </div>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Icônes de la fiche et de l'arborescence</h3>
+        <div class="algo-grid algo-grid--4">
+          <label class="field settings-bonus-field">
+            <span>Hibernation</span>
+            <input type="text" id="dev-icon-hibernate" maxlength="4" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Éditer</span>
+            <input type="text" id="dev-icon-edit" maxlength="4" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Chantier</span>
+            <input type="text" id="dev-icon-construction" maxlength="4" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Annuler</span>
+            <input type="text" id="dev-icon-undo" maxlength="4" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Dossier</span>
+            <input type="text" id="dev-icon-folder" maxlength="4" />
+          </label>
+        </div>
+        <button type="button" class="btn btn--ghost" id="dev-icons-reset">Revenir aux icônes d'origine</button>
+      </div>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Couleurs des notes</h3>
+        <p class="field-hint settings-block-hint">Boutons d'évaluation, graphiques, curseurs des modes.</p>
+        <div class="algo-grid algo-grid--4">
+          <label class="field settings-bonus-field">
+            <span>Encore</span>
+            <input type="color" id="dev-color-again" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Difficile</span>
+            <input type="color" id="dev-color-hard" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Bien</span>
+            <input type="color" id="dev-color-good" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Facile</span>
+            <input type="color" id="dev-color-easy" />
+          </label>
+        </div>
+        <button type="button" class="btn btn--ghost" id="dev-rating-colors-reset">Revenir aux couleurs d'origine</button>
+      </div>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Couleurs des modes d'apprentissage</h3>
+        <div class="algo-grid algo-grid--4">
+          <label class="field settings-bonus-field">
+            <span>Cool</span>
+            <input type="color" id="dev-color-mode-cool" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Normal</span>
+            <input type="color" id="dev-color-mode-normal" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Renforcé</span>
+            <input type="color" id="dev-color-mode-renforce" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Personnalisé</span>
+            <input type="color" id="dev-color-mode-custom" />
+          </label>
+        </div>
+        <button type="button" class="btn btn--ghost" id="dev-mode-colors-reset">Revenir aux couleurs d'origine</button>
+      </div>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Palette de couleurs de texte</h3>
+        <p class="field-hint settings-block-hint">Proposée dans la mise en forme des fiches.</p>
+        <div id="dev-text-colors-list" class="dev-text-colors-list"></div>
+        <button type="button" class="btn btn--small" id="dev-text-color-add">+ Ajouter une couleur</button>
+        <button type="button" class="btn btn--ghost" id="dev-text-colors-reset">Revenir à la palette d'origine</button>
       </div>
 
       <div class="card-form">
