@@ -136,7 +136,6 @@
 
   const statTotal = el("stat-total");
   const statReviewedToday = el("stat-reviewed-today");
-  const statsSubjectSelectEl = el("stats-subject-select");
   const statsRangeSelectEl = el("stats-range-select");
   const dueChartEl = el("due-chart");
   const chartEmptyEl = el("chart-empty");
@@ -815,10 +814,18 @@
   function folderDescendantIds(folderId) {
     const out = [];
     const stack = [folderId];
+    // Garde-fou (bug corrigé) : si un cycle de dossiers existe jamais
+    // (ex. via une fusion de synchro malheureuse — deux appareils qui
+    // déplacent des dossiers l'un dans l'autre en même temps), cette
+    // boucle tournait à l'infini et figeait l'appli. "visited" empêche de
+    // retraiter deux fois le même dossier, cycle ou pas.
+    const visited = new Set();
     while (stack.length) {
       const id = stack.pop();
+      if (visited.has(id)) continue;
+      visited.add(id);
       folders.forEach((f) => {
-        if (f.parentId === id) {
+        if (f.parentId === id && !visited.has(f.id)) {
           out.push(f.id);
           stack.push(f.id);
         }
@@ -1035,7 +1042,13 @@
   function folderPath(folderId) {
     const path = [];
     let cur = folderId;
-    while (cur) {
+    // Même garde-fou anti-cycle qu'au-dessus (bug corrigé — c'est CETTE
+    // fonction précisément qui figeait l'appli sur la page Fiches : elle
+    // est appelée pour CHAQUE dossier à chaque fois que le sélecteur de
+    // périmètre de recherche se redessine).
+    const visited = new Set();
+    while (cur && !visited.has(cur)) {
+      visited.add(cur);
       const f = folders.find((x) => x.id === cur);
       if (!f) break;
       path.unshift(f);
@@ -1374,6 +1387,20 @@
       span.textContent = m.name;
       label.appendChild(cb);
       label.appendChild(span);
+      // Couleur propre à ce mode (item : réglable directement ici plutôt
+      // que seulement dans la page Développeur).
+      const colorInput = document.createElement("input");
+      colorInput.type = "color";
+      colorInput.className = "algo-custom-picker-color";
+      colorInput.value = getCustomModeColor(m.id);
+      colorInput.title = `Couleur du mode « ${m.name} »`;
+      colorInput.addEventListener("click", (e) => e.stopPropagation());
+      colorInput.addEventListener("input", () => {
+        setCustomModeColor(m.id, colorInput.value);
+        renderSubjectManageList();
+        renderSubjectAlgoBadge(currentCard ? currentCard.subject : undefined);
+      });
+      label.appendChild(colorInput);
       list.appendChild(label);
       cb.addEventListener("change", () => loadModeFormIntoInputs(m.id));
     });
@@ -2928,26 +2955,95 @@
     return cards.filter((c) => !c.deleted && c.subject === cardsScopeFilter);
   }
 
-  function renderCardsScopeSelect() {
-    const sel = el("cards-scope-select");
-    if (!sel) return;
-    const prev = sel.value || cardsScopeFilter;
-    const folderOpts = folders
-      .map((f) => ({ f, path: folderPath(f.id).map((p) => p.name).join(" / ") }))
-      .sort((a, b) => a.path.localeCompare(b.path, "fr"))
-      .map(({ f, path }) => `<option value="folder:${f.id}">${folderIcon()} ${escapeHtml(path)}</option>`)
-      .join("");
-    sel.innerHTML =
-      `<option value="${CARDS_SCOPE_CURRENT}">Cette matière</option>` +
-      `<option value="${ALL_SUBJECTS}">Toutes les matières</option>` +
-      folderOpts +
-      subjects.map((s) => `<option value="${s.id}">${escapeHtml(s.name)}</option>`).join("") +
-      `<option value="${CARDS_SCOPE_MULTI}">☑️ Sélection de matières et dossiers…</option>`;
-    const isFolderOpt = typeof prev === "string" && prev.startsWith("folder:") && folders.some((f) => `folder:${f.id}` === prev);
-    const valid = prev === CARDS_SCOPE_CURRENT || prev === ALL_SUBJECTS || prev === CARDS_SCOPE_MULTI || isFolderOpt || subjects.some((s) => s.id === prev);
-    cardsScopeFilter = valid ? prev : CARDS_SCOPE_CURRENT;
-    sel.value = cardsScopeFilter;
+  const CARDS_SCOPE_MULTI_LABEL_KEY = "fiches_cards_multi_label";
+  function loadCardsMultiLabel() {
+    return localStorage.getItem(CARDS_SCOPE_MULTI_LABEL_KEY) || "";
   }
+  function saveCardsMultiLabel(label) {
+    localStorage.setItem(CARDS_SCOPE_MULTI_LABEL_KEY, label || "");
+  }
+
+  /** Libellé affiché sur le bouton de périmètre (item : même principe que
+   *  Réviser). */
+  function cardsScopeLabel() {
+    if (cardsScopeFilter === CARDS_SCOPE_CURRENT) return subjectName(currentSubjectId);
+    if (cardsScopeFilter === ALL_SUBJECTS) return "Toutes les matières";
+    if (cardsScopeFilter === CARDS_SCOPE_MULTI) return loadCardsMultiLabel() || "Sélection de matières";
+    if (typeof cardsScopeFilter === "string" && cardsScopeFilter.startsWith("folder:")) {
+      const f = folders.find((x) => x.id === cardsScopeFilter.slice(7));
+      return f ? f.name : "Dossier inconnu";
+    }
+    const s = subjects.find((x) => x.id === cardsScopeFilter);
+    return s ? s.name : "Cette matière";
+  }
+
+  function renderCardsScopeSelect() {
+    const btn = el("cards-scope-select-btn");
+    if (!btn) return;
+    // Valide encore le périmètre choisi (dossier/matière supprimé entre
+    // temps ?), comme le faisait l'ancien <select>.
+    const isFolderOpt =
+      typeof cardsScopeFilter === "string" &&
+      cardsScopeFilter.startsWith("folder:") &&
+      folders.some((f) => `folder:${f.id}` === cardsScopeFilter);
+    const valid =
+      cardsScopeFilter === CARDS_SCOPE_CURRENT ||
+      cardsScopeFilter === ALL_SUBJECTS ||
+      cardsScopeFilter === CARDS_SCOPE_MULTI ||
+      isFolderOpt ||
+      subjects.some((s) => s.id === cardsScopeFilter);
+    if (!valid) cardsScopeFilter = CARDS_SCOPE_CURRENT;
+    btn.textContent = cardsScopeLabel();
+  }
+
+  function openCardsScopeChoiceMenu() {
+    const menu = el("cards-scope-choice-menu");
+    if (menu) menu.hidden = false;
+  }
+  function closeCardsScopeChoiceMenu() {
+    const menu = el("cards-scope-choice-menu");
+    if (menu) menu.hidden = true;
+  }
+  const cardsScopeSelectBtn = el("cards-scope-select-btn");
+  if (cardsScopeSelectBtn) {
+    cardsScopeSelectBtn.addEventListener("click", () => {
+      closeCardsMultiPicker();
+      openCardsScopeChoiceMenu();
+    });
+  }
+  const cardsScopeChoiceCurrentBtn = el("cards-scope-choice-current");
+  if (cardsScopeChoiceCurrentBtn) {
+    cardsScopeChoiceCurrentBtn.addEventListener("click", () => {
+      closeCardsScopeChoiceMenu();
+      cardsScopeFilter = CARDS_SCOPE_CURRENT;
+      renderManageList();
+    });
+  }
+  const cardsScopeChoiceAllBtn = el("cards-scope-choice-all");
+  if (cardsScopeChoiceAllBtn) {
+    cardsScopeChoiceAllBtn.addEventListener("click", () => {
+      closeCardsScopeChoiceMenu();
+      cardsScopeFilter = ALL_SUBJECTS;
+      renderManageList();
+    });
+  }
+  const cardsScopeChoiceSelectionBtn = el("cards-scope-choice-selection");
+  if (cardsScopeChoiceSelectionBtn) {
+    cardsScopeChoiceSelectionBtn.addEventListener("click", () => {
+      closeCardsScopeChoiceMenu();
+      openCardsMultiPicker();
+    });
+  }
+  const cardsScopeChoiceCancelBtn = el("cards-scope-choice-cancel");
+  if (cardsScopeChoiceCancelBtn) {
+    cardsScopeChoiceCancelBtn.addEventListener("click", () => closeCardsScopeChoiceMenu());
+  }
+  document.addEventListener("click", (e) => {
+    const menu = el("cards-scope-choice-menu");
+    if (!menu || menu.hidden) return;
+    if (menu.contains(e.target) || e.target === cardsScopeSelectBtn) return;
+    closeCardsScopeChoiceMenu();
+  });
 
   function openCardsMultiPicker() {
     const picker = el("cards-multi-picker");
@@ -2962,40 +3058,36 @@
     const picker = el("cards-multi-picker");
     if (picker) picker.hidden = true;
   }
-  const cardsScopeSelectEl = el("cards-scope-select");
-  if (cardsScopeSelectEl) {
-    cardsScopeSelectEl.addEventListener("change", () => {
-      if (cardsScopeSelectEl.value === CARDS_SCOPE_MULTI) {
-        cardsScopeSelectEl.value = cardsScopeFilter;
-        openCardsMultiPicker();
-        return;
-      }
-      closeCardsMultiPicker();
-      cardsScopeFilter = cardsScopeSelectEl.value;
-      renderManageList();
-    });
-  }
   const cardsMultiPickerCancelBtn = el("cards-multi-picker-cancel");
   if (cardsMultiPickerCancelBtn) cardsMultiPickerCancelBtn.addEventListener("click", closeCardsMultiPicker);
   const cardsMultiPickerConfirmBtn = el("cards-multi-picker-confirm");
   if (cardsMultiPickerConfirmBtn) {
     cardsMultiPickerConfirmBtn.addEventListener("click", () => {
+      const checkedFolders = [...document.querySelectorAll('#cards-multi-picker-list input[data-kind="folder"]:checked')];
+      const checkedSubjects = [...document.querySelectorAll('#cards-multi-picker-list input[data-kind="subject"]:checked')];
       const resultIds = new Set();
-      document.querySelectorAll("#cards-multi-picker-list input:checked").forEach((cb) => {
-        if (cb.dataset.kind === "folder") {
-          subjectIdsInFolder(cb.value).forEach((id) => resultIds.add(id));
-        } else {
-          resultIds.add(cb.value);
-        }
-      });
+      checkedFolders.forEach((cb) => subjectIdsInFolder(cb.value).forEach((id) => resultIds.add(id)));
+      checkedSubjects.forEach((cb) => resultIds.add(cb.value));
       if (resultIds.size === 0) {
         alert("Choisis au moins une matière ou un dossier.");
         return;
       }
-      saveCardsMultiSelection([...resultIds]);
       closeCardsMultiPicker();
+      // Même affichage intelligent que sur Réviser : une seule matière
+      // cochée -> son nom directement ; un seul dossier coché -> le nom du
+      // dossier ; mélange -> libellé générique.
+      if (checkedFolders.length === 0 && checkedSubjects.length === 1) {
+        cardsScopeFilter = checkedSubjects[0].value;
+        renderManageList();
+        return;
+      }
+      saveCardsMultiSelection([...resultIds]);
+      if (checkedFolders.length === 1 && checkedSubjects.length === 0) {
+        saveCardsMultiLabel(folders.find((f) => f.id === checkedFolders[0].value)?.name || "");
+      } else {
+        saveCardsMultiLabel("");
+      }
       cardsScopeFilter = CARDS_SCOPE_MULTI;
-      if (cardsScopeSelectEl) cardsScopeSelectEl.value = CARDS_SCOPE_MULTI;
       renderManageList();
     });
   }
@@ -3290,23 +3382,39 @@
    *  avant), mais aussi des dossiers entiers ("folder:<id>", toutes les
    *  matières qu'ils contiennent, sous-dossiers compris) et une sélection
    *  libre combinant plusieurs matières et/ou dossiers. */
+  const STATS_MULTI_LABEL_KEY = "fiches_stats_multi_label";
+  function loadStatsMultiLabel() {
+    return localStorage.getItem(STATS_MULTI_LABEL_KEY) || "";
+  }
+  function saveStatsMultiLabel(label) {
+    localStorage.setItem(STATS_MULTI_LABEL_KEY, label || "");
+  }
+
+  function statsScopeLabel() {
+    if (statsSubjectFilter === ALL_SUBJECTS) return "Toutes les matières";
+    if (statsSubjectFilter === STATS_MULTI_ID) return loadStatsMultiLabel() || "Sélection de matières";
+    if (typeof statsSubjectFilter === "string" && statsSubjectFilter.startsWith("folder:")) {
+      const f = folders.find((x) => x.id === statsSubjectFilter.slice(7));
+      return f ? f.name : "Dossier inconnu";
+    }
+    const s = subjects.find((x) => x.id === statsSubjectFilter);
+    return s ? s.name : "Toutes les matières";
+  }
+
   function renderStatsSubjectSelect() {
-    if (!statsSubjectSelectEl) return;
-    const prev = statsSubjectSelectEl.value || statsSubjectFilter;
-    const folderOpts = folders
-      .map((f) => ({ f, path: folderPath(f.id).map((p) => p.name).join(" / ") }))
-      .sort((a, b) => a.path.localeCompare(b.path, "fr"))
-      .map(({ f, path }) => `<option value="folder:${f.id}">${folderIcon()} ${escapeHtml(path)}</option>`)
-      .join("");
-    statsSubjectSelectEl.innerHTML =
-      `<option value="${ALL_SUBJECTS}">Toutes catégories confondues</option>` +
-      folderOpts +
-      subjects.map((s) => `<option value="${s.id}">${escapeHtml(s.name)}</option>`).join("") +
-      `<option value="${STATS_MULTI_ID}">☑️ Sélection de matières et dossiers…</option>`;
-    const isFolderOpt = typeof prev === "string" && prev.startsWith("folder:") && folders.some((f) => `folder:${f.id}` === prev);
-    const valid = prev === ALL_SUBJECTS || prev === STATS_MULTI_ID || isFolderOpt || subjects.some((s) => s.id === prev);
-    statsSubjectFilter = valid ? prev : ALL_SUBJECTS;
-    statsSubjectSelectEl.value = statsSubjectFilter;
+    const btn = el("stats-subject-select-btn");
+    if (!btn) return;
+    const isFolderOpt =
+      typeof statsSubjectFilter === "string" &&
+      statsSubjectFilter.startsWith("folder:") &&
+      folders.some((f) => `folder:${f.id}` === statsSubjectFilter);
+    const valid =
+      statsSubjectFilter === ALL_SUBJECTS ||
+      statsSubjectFilter === STATS_MULTI_ID ||
+      isFolderOpt ||
+      subjects.some((s) => s.id === statsSubjectFilter);
+    if (!valid) statsSubjectFilter = ALL_SUBJECTS;
+    btn.textContent = statsScopeLabel();
   }
 
   /** Fiches (non supprimées) dans le périmètre choisi pour l'onglet Stats. */
@@ -3352,27 +3460,75 @@
     const picker = el("stats-multi-picker");
     if (picker) picker.hidden = true;
   }
+
+  function openStatsScopeChoiceMenu() {
+    const menu = el("stats-scope-choice-menu");
+    if (menu) menu.hidden = false;
+  }
+  function closeStatsScopeChoiceMenu() {
+    const menu = el("stats-scope-choice-menu");
+    if (menu) menu.hidden = true;
+  }
+  const statsSubjectSelectBtn = el("stats-subject-select-btn");
+  if (statsSubjectSelectBtn) {
+    statsSubjectSelectBtn.addEventListener("click", () => {
+      closeStatsMultiPicker();
+      openStatsScopeChoiceMenu();
+    });
+  }
+  const statsScopeChoiceAllBtn = el("stats-scope-choice-all");
+  if (statsScopeChoiceAllBtn) {
+    statsScopeChoiceAllBtn.addEventListener("click", () => {
+      closeStatsScopeChoiceMenu();
+      statsSubjectFilter = ALL_SUBJECTS;
+      renderStats();
+    });
+  }
+  const statsScopeChoiceSelectionBtn = el("stats-scope-choice-selection");
+  if (statsScopeChoiceSelectionBtn) {
+    statsScopeChoiceSelectionBtn.addEventListener("click", () => {
+      closeStatsScopeChoiceMenu();
+      openStatsMultiPicker();
+    });
+  }
+  const statsScopeChoiceCancelBtn = el("stats-scope-choice-cancel");
+  if (statsScopeChoiceCancelBtn) {
+    statsScopeChoiceCancelBtn.addEventListener("click", () => closeStatsScopeChoiceMenu());
+  }
+  document.addEventListener("click", (e) => {
+    const menu = el("stats-scope-choice-menu");
+    if (!menu || menu.hidden) return;
+    if (menu.contains(e.target) || e.target === statsSubjectSelectBtn) return;
+    closeStatsScopeChoiceMenu();
+  });
+
   const statsMultiPickerCancelBtn = el("stats-multi-picker-cancel");
   if (statsMultiPickerCancelBtn) statsMultiPickerCancelBtn.addEventListener("click", closeStatsMultiPicker);
   const statsMultiPickerConfirmBtn = el("stats-multi-picker-confirm");
   if (statsMultiPickerConfirmBtn) {
     statsMultiPickerConfirmBtn.addEventListener("click", () => {
+      const checkedFolders = [...document.querySelectorAll('#stats-multi-picker-list input[data-kind="folder"]:checked')];
+      const checkedSubjects = [...document.querySelectorAll('#stats-multi-picker-list input[data-kind="subject"]:checked')];
       const resultIds = new Set();
-      document.querySelectorAll("#stats-multi-picker-list input:checked").forEach((cb) => {
-        if (cb.dataset.kind === "folder") {
-          subjectIdsInFolder(cb.value).forEach((id) => resultIds.add(id));
-        } else {
-          resultIds.add(cb.value);
-        }
-      });
+      checkedFolders.forEach((cb) => subjectIdsInFolder(cb.value).forEach((id) => resultIds.add(id)));
+      checkedSubjects.forEach((cb) => resultIds.add(cb.value));
       if (resultIds.size === 0) {
         alert("Choisis au moins une matière ou un dossier.");
         return;
       }
-      saveStatsMultiSelection([...resultIds]);
       closeStatsMultiPicker();
+      if (checkedFolders.length === 0 && checkedSubjects.length === 1) {
+        statsSubjectFilter = checkedSubjects[0].value;
+        renderStats();
+        return;
+      }
+      saveStatsMultiSelection([...resultIds]);
+      if (checkedFolders.length === 1 && checkedSubjects.length === 0) {
+        saveStatsMultiLabel(folders.find((f) => f.id === checkedFolders[0].value)?.name || "");
+      } else {
+        saveStatsMultiLabel("");
+      }
       statsSubjectFilter = STATS_MULTI_ID;
-      if (statsSubjectSelectEl) statsSubjectSelectEl.value = STATS_MULTI_ID;
       renderStats();
     });
   }
@@ -3694,7 +3850,10 @@
     renderStatsSubjectSelect();
     const pool = statsScopeCards();
     statTotal.textContent = String(pool.length);
-    if (statReviewedToday) statReviewedToday.textContent = String(reviewedTodayCount(pool));
+    // "Fiches revues" (renommé) répond maintenant à la matière/au dossier
+    // ET à la période choisis au-dessus, au lieu d'être toujours figé sur
+    // "aujourd'hui" sans tenir compte de la période sélectionnée.
+    if (statReviewedToday) statReviewedToday.textContent = String(filterEntriesByPeriod(ratingLogInScope(), statsPeriod).length);
     renderDueChart();
     renderRatingsChart();
     renderRatingsHistoryChart();
@@ -4013,8 +4172,9 @@
     const summaryEl = el("streak-summary");
     const streakChartEl = el("streak-chart-wrap");
     if (!summaryEl || !streakChartEl) return;
-    const scopeIds = statsScopeSubjectIds();
-    const { days, hotDays, streak } = computeStreakData(scopeIds);
+    // Toujours toutes matières confondues (item : indépendant des choix de
+    // matière/période plus bas sur la page).
+    const { days, hotDays, streak } = computeStreakData(null);
     summaryEl.innerHTML = `<span class="streak-number">🔥 ${streak}</span><span>jour${streak > 1 ? "s" : ""} d'affilée</span>`;
     const todayIdx = days.length - 1;
     // "Auj" sur la colonne d'aujourd'hui (item 10), une colonne par jour
@@ -4082,17 +4242,6 @@
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 3400);
   }
-
-  statsSubjectSelectEl.addEventListener("change", () => {
-    if (statsSubjectSelectEl.value === STATS_MULTI_ID) {
-      statsSubjectSelectEl.value = statsSubjectFilter;
-      openStatsMultiPicker();
-      return;
-    }
-    closeStatsMultiPicker();
-    statsSubjectFilter = statsSubjectSelectEl.value;
-    renderStats();
-  });
 
   statsRangeSelectEl.addEventListener("change", () => {
     statsRangeDays = Number(statsRangeSelectEl.value) || 15;
@@ -4205,30 +4354,42 @@
       void bar.offsetWidth;
       bar.style.animationDelay = `${delay}ms`;
       const animClass = isTarget ? "chart-bar-wave-hold" : "chart-bar-wave";
+      const animMs = isTarget ? 1800 : 450;
       bar.classList.add(animClass);
-      bar.addEventListener(
-        "animationend",
-        () => {
-          bar.classList.remove(animClass);
-          bar.style.animationDelay = "";
-          // Périmé : une vague plus récente a démarré entre-temps (deux
-          // notations rapprochées) — on laisse cette dernière gérer seule
-          // le retour à la normale, pour ne jamais lui marcher dessus.
-          if (myToken !== reviewWaveToken) return;
-          // Une fois la barre cible revenue à la normale (donc toute
-          // l'animation terminée), on ramène le graphique à sa position de
-          // départ si on avait dû faire défiler pour la voir, et on repasse
-          // à l'échelle normale si elle avait dû être temporairement étendue.
-          if (isTarget) {
-            if (wasExtended) {
-              renderReviewChart();
-            } else if (scrolledAway && scroller) {
-              scroller.scrollTo({ left: originalScrollLeft, behavior: "smooth" });
-            }
+      // "handled" évite que le retour à la normale se joue deux fois si
+      // à la fois "animationend" ET le filet de sécurité ci-dessous
+      // finissent par se déclencher tous les deux (bug corrigé — item :
+      // la pause ne se faisait pas toujours sur la dernière barre :
+      // "animationend" peut être manqué si quoi que ce soit d'autre
+      // redessine le graphique pile pendant l'animation, ce qui annule
+      // silencieusement l'événement sans jamais nettoyer la classe ni
+      // relancer le retour à la position de départ). Un setTimeout calé
+      // sur la durée exacte de l'animation agit en filet de sécurité,
+      // indépendant du DOM/de l'événement CSS.
+      let handled = false;
+      const finish = () => {
+        if (handled) return;
+        handled = true;
+        bar.classList.remove(animClass);
+        bar.style.animationDelay = "";
+        // Périmé : une vague plus récente a démarré entre-temps (deux
+        // notations rapprochées) — on laisse cette dernière gérer seule
+        // le retour à la normale, pour ne jamais lui marcher dessus.
+        if (myToken !== reviewWaveToken) return;
+        // Une fois la barre cible revenue à la normale (donc toute
+        // l'animation terminée), on ramène le graphique à sa position de
+        // départ si on avait dû faire défiler pour la voir, et on repasse
+        // à l'échelle normale si elle avait dû être temporairement étendue.
+        if (isTarget) {
+          if (wasExtended) {
+            renderReviewChart();
+          } else if (scrolledAway && scroller) {
+            scroller.scrollTo({ left: originalScrollLeft, behavior: "smooth" });
           }
-        },
-        { once: true }
-      );
+        }
+      };
+      bar.addEventListener("animationend", finish, { once: true });
+      setTimeout(finish, delay + animMs + 80);
     }
   }
 
@@ -5105,6 +5266,25 @@
     }
   }
 
+  /** Vérifie qu'accepter ce parentId ne créerait pas de cycle (dossier qui
+   *  finit par être son propre ancêtre) — peut arriver après une fusion de
+   *  synchro malheureuse (deux appareils qui déplacent des dossiers l'un
+   *  dans l'autre en même temps). Si un cycle serait créé, on rattache le
+   *  dossier à la racine à la place plutôt que de risquer de figer l'appli
+   *  partout où l'arborescence est parcourue. */
+  function wouldCreateFolderCycle(folderId, candidateParentId, folderList) {
+    let cur = candidateParentId;
+    const visited = new Set();
+    while (cur) {
+      if (cur === folderId || visited.has(cur)) return true;
+      visited.add(cur);
+      const f = folderList.find((x) => x.id === cur);
+      if (!f) break;
+      cur = f.parentId;
+    }
+    return false;
+  }
+
   async function mergeRemoteFolder(remote) {
     const idx = folders.findIndex((f) => f.id === remote.id);
     if (remote.deleted) {
@@ -5116,6 +5296,10 @@
     }
     const local = idx >= 0 ? folders[idx] : null;
     if (!local || new Date(remote.updatedAt || 0) > new Date(local.updatedAt || 0)) {
+      const candidateFolders = idx >= 0 ? folders.map((f, i) => (i === idx ? remote : f)) : [...folders, remote];
+      if (remote.parentId && wouldCreateFolderCycle(remote.id, remote.parentId, candidateFolders)) {
+        remote = { ...remote, parentId: ROOT_FOLDER_ID };
+      }
       await DB.putFolder(remote);
       if (idx >= 0) folders[idx] = remote;
       else folders.push(remote);

@@ -315,8 +315,15 @@
       </form>
 
       <div class="cards-scope-row">
-        <label class="import-target-label" for="cards-scope-select">Afficher / chercher dans :</label>
-        <select class="import-target-select" id="cards-scope-select" aria-label="Périmètre d'affichage et de recherche"></select>
+        <label class="import-target-label" for="cards-scope-select-btn">Afficher / chercher dans :</label>
+        <button type="button" class="subject-select-btn" id="cards-scope-select-btn" aria-label="Choisir le périmètre d'affichage et de recherche"></button>
+
+        <div class="subject-choice-menu" id="cards-scope-choice-menu" hidden>
+          <button type="button" class="subject-choice-item" id="cards-scope-choice-current">Cette matière</button>
+          <button type="button" class="subject-choice-item" id="cards-scope-choice-all">Toutes les matières</button>
+          <button type="button" class="subject-choice-item" id="cards-scope-choice-selection">Sélection de matières et dossiers</button>
+          <button type="button" class="subject-choice-item subject-choice-item--cancel" id="cards-scope-choice-cancel">Annuler</button>
+        </div>
       </div>
 
       <div class="multi-subject-picker" id="cards-multi-picker" hidden>
@@ -364,12 +371,23 @@
         <circle cx="73" cy="60" r="3.5" fill="#cf9a4d"/>
       </svg>
 
+      <!-- Tout en haut (repositionné) : indépendant des choix de matière/
+           période ci-dessous, toujours sur les 30 derniers jours, toutes
+           matières confondues. -->
+      <h3 class="chart-title">🔥 Jours d'utilisation</h3>
+      <p class="field-hint settings-block-hint">
+        Un jour "chaud" = au moins une fiche notée ce jour-là, toutes
+        matières confondues. Toujours sur les 30 derniers jours.
+      </p>
+      <div id="streak-summary" class="streak-summary"></div>
+      <div id="streak-chart-wrap" class="streak-chart-wrap"></div>
+
       <h2 class="section-title">Où en es-tu</h2>
 
       <!-- Item 14 : réglages (matière/dossier, échelle, période) collés en
            haut de page, toujours visibles même en descendant. -->
       <div class="stats-controls stats-controls--sticky">
-        <select class="stats-select" id="stats-subject-select" aria-label="Matière pour les statistiques"></select>
+        <button type="button" class="subject-select-btn" id="stats-subject-select-btn" aria-label="Choisir les matières pour les statistiques"></button>
         <select class="stats-select" id="stats-range-select" aria-label="Période affichée">
           <option value="15">15 jours</option>
           <option value="30">1 mois</option>
@@ -385,6 +403,12 @@
           <option value="6months">6 derniers mois</option>
           <option value="year">Sur un an</option>
         </select>
+
+        <div class="subject-choice-menu" id="stats-scope-choice-menu" hidden>
+          <button type="button" class="subject-choice-item" id="stats-scope-choice-all">Toutes les matières</button>
+          <button type="button" class="subject-choice-item" id="stats-scope-choice-selection">Sélection de matières et dossiers</button>
+          <button type="button" class="subject-choice-item subject-choice-item--cancel" id="stats-scope-choice-cancel">Annuler</button>
+        </div>
       </div>
 
       <div class="multi-subject-picker" id="stats-multi-picker" hidden>
@@ -403,18 +427,9 @@
         </div>
         <div class="stat-box">
           <span class="stat-number" id="stat-reviewed-today">0</span>
-          <span class="stat-label">revues aujourd'hui</span>
+          <span class="stat-label">fiches revues</span>
         </div>
       </div>
-
-      <!-- Item 10 : les flammes remontent tout en haut de la page. -->
-      <h3 class="chart-title">🔥 Jours d'utilisation</h3>
-      <p class="field-hint settings-block-hint">
-        Un jour "chaud" = au moins une fiche notée ce jour-là. Toujours sur
-        les 30 derniers jours, quelle que soit la période choisie ci-dessous.
-      </p>
-      <div id="streak-summary" class="streak-summary"></div>
-      <div id="streak-chart-wrap" class="streak-chart-wrap"></div>
 
       <h3 class="chart-title">Fiches à revoir / révisées par jour</h3>
       <p class="field-hint settings-block-hint">

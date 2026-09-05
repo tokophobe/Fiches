@@ -367,6 +367,16 @@ textarea, input {
   color: var(--ink);
 }
 
+.multi-subject-picker-item .algo-custom-picker-color {
+  margin-left: auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid rgba(35, 48, 42, 0.2);
+  padding: 0;
+  flex-shrink: 0;
+}
+
 .multi-subject-picker-item input[type="checkbox"],
 .multi-subject-picker-item input[type="radio"] {
   width: 16px;
@@ -534,9 +544,10 @@ textarea, input {
   align-items: center;
   gap: 8px;
   margin: 4px 0 14px;
+  position: relative;
 }
 
-.cards-scope-row .import-target-select { flex: 1; }
+.cards-scope-row .subject-select-btn { flex: 1; }
 
 .import-target-label {
   font-family: var(--font-mono);
@@ -1420,6 +1431,7 @@ textarea, input {
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 14px;
+  position: relative;
 }
 
 /* Item 14 : collés en haut de page pendant le défilement, toujours
@@ -1427,7 +1439,10 @@ textarea, input {
    travers" les réglages, illisible). */
 .stats-controls--sticky {
   position: sticky;
-  top: 6px;
+  /* Un peu plus bas que juste "env(safe-area-inset-top)" (bug corrigé) :
+     collé pile à cette valeur, les réglages tombaient dans la zone de
+     l'îlot dynamique / encoche sur iPhone, à moitié masqués. */
+  top: calc(env(safe-area-inset-top, 0px) + 50px);
   z-index: 15;
   background: var(--app-bg-color, var(--desk));
   padding: 8px 0;
