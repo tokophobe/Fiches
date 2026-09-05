@@ -977,6 +977,27 @@ textarea, input {
   100% { filter: brightness(1); box-shadow: none; }
 }
 
+/* Vague de barres qui s'allument successivement de gauche à droite, de la
+   colonne "aujourd'hui" jusqu'à la nouvelle date d'une fiche qu'on vient de
+   noter (item 9) — chaque barre grossit brièvement (scaleY, ancrée en bas)
+   avant de revenir à sa taille normale, avec un décalage croissant pour
+   donner l'effet de vague qui se propage. */
+.chart-bar {
+  transform-origin: bottom;
+}
+.chart-bar-wave {
+  animation: chart-bar-wave-anim 450ms ease-out;
+}
+@keyframes chart-bar-wave-anim {
+  0% { transform: scaleY(1); filter: brightness(1); box-shadow: none; }
+  35% { transform: scaleY(1.3); filter: brightness(1.7); box-shadow: 0 0 6px 1px var(--amber); }
+  100% { transform: scaleY(1); filter: brightness(1); box-shadow: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart-col--changed .chart-bar, .chart-bar-wave { animation: none; }
+}
+
 /* ============================================================
    MANAGE VIEW: form + list
    ============================================================ */

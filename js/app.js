@@ -221,9 +221,13 @@
   const LEARNING_MODES_KEY = "fiches_learning_modes";
   const BUILTIN_MODE_IDS = ["cool", "normal", "renforce"];
   const BUILTIN_MODE_DEFAULTS = {
-    cool: { name: "Cool", Ka: 3, Kh: 1.6, Kg: 2, Ke: 3.5, Ma: 3, Mh: 6, Mg: 60, Me: 300 },
-    normal: { name: "Normal", Ka: 1.3, Kh: 1.5, Kg: 1.8, Ke: 2.4, Ma: 2, Mh: 3, Mg: 30, Me: 180 },
-    renforce: { name: "Renforcé", Ka: 1, Kh: 1.3, Kg: 1.6, Ke: 1.9, Ma: 1, Mh: 2, Mg: 15, Me: 90 },
+    // Valeurs alignées sur les 12 choix disponibles pour les curseurs
+    // (ALGO_K_VALUES/ALGO_M_VALUES) — Kg=2, Ke=2.4 et Ke=1.9 n'existaient
+    // dans aucune des deux listes, ce qui faisait apparaître un curseur/menu
+    // vide (aucune valeur sélectionnée) au lieu de la vraie valeur d'origine.
+    cool: { name: "Cool", Ka: 3, Kh: 1.6, Kg: 2.1, Ke: 3.5, Ma: 3, Mh: 6, Mg: 60, Me: 300 },
+    normal: { name: "Normal", Ka: 1.3, Kh: 1.5, Kg: 1.8, Ke: 2.5, Ma: 2, Mh: 3, Mg: 30, Me: 180 },
+    renforce: { name: "Renforcé", Ka: 1, Kh: 1.3, Kg: 1.6, Ke: 1.8, Ma: 1, Mh: 2, Mg: 15, Me: 90 },
   };
   // Conservés pour compatibilité avec le code existant qui les référence
   // encore (couleurs, libellés courts...).
@@ -252,11 +256,70 @@
     return snapToNearest(Number.isFinite(n) ? n : Number(fallback) || 1, ALGO_M_VALUES);
   }
   function clampModeProfile(raw, fallbackId) {
-    const fb = BUILTIN_MODE_DEFAULTS[fallbackId] || BUILTIN_MODE_DEFAULTS.normal;
+    const factory = getFactoryDefaults();
+    const fb = factory[fallbackId] || factory.normal;
     const out = {};
     ["Ka", "Kh", "Kg", "Ke"].forEach((k) => { out[k] = clampAlgoK(raw && raw[k], fb[k]); });
     ["Ma", "Mh", "Mg", "Me"].forEach((k) => { out[k] = clampAlgoM(raw && raw[k], fb[k]); });
     return out;
+  }
+
+  /* ---------------------------------------------------------
+     Page Développeur (item 19) : réglages internes — émoticônes/texte des
+     boutons de notation et du menu principal, et les valeurs "usine" des
+     3 modes d'apprentissage fixes (celles vers lesquelles "Revenir aux
+     réglages d'origine" ramène, et celles d'une toute nouvelle
+     installation). Cachée derrière un simple onglet pour l'instant ; une
+     vraie séparation développeur/utilisateur viendra plus tard.
+  --------------------------------------------------------- */
+  const DEV_SETTINGS_KEY = "fiches_dev_settings";
+  const DEFAULT_RATING_LABELS = { again: "😵‍💫", hard: "🤔", good: "🙂", easy: "😎" };
+  const DEFAULT_NAV_LABELS = {
+    review: "🤓", manage: "🗃️", cards: "📄", stats: "📊", "learning-modes": "🎓", settings: "⚙",
+  };
+
+  function loadDevSettings() {
+    let parsed = {};
+    try {
+      const raw = localStorage.getItem(DEV_SETTINGS_KEY);
+      parsed = raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      parsed = {};
+    }
+    return {
+      ratingLabels: { ...DEFAULT_RATING_LABELS, ...(parsed.ratingLabels || {}) },
+      navLabels: { ...DEFAULT_NAV_LABELS, ...(parsed.navLabels || {}) },
+      factoryDefaults: {
+        cool: { ...BUILTIN_MODE_DEFAULTS.cool, ...((parsed.factoryDefaults || {}).cool || {}) },
+        normal: { ...BUILTIN_MODE_DEFAULTS.normal, ...((parsed.factoryDefaults || {}).normal || {}) },
+        renforce: { ...BUILTIN_MODE_DEFAULTS.renforce, ...((parsed.factoryDefaults || {}).renforce || {}) },
+      },
+    };
+  }
+  function saveDevSettings(settings) {
+    localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(settings));
+  }
+  function getFactoryDefaults() {
+    return loadDevSettings().factoryDefaults;
+  }
+
+  /** Applique les émoticônes/texte des boutons de notation (item 19) —
+   *  appelé au démarrage et après chaque modification sur la page
+   *  Développeur. */
+  function applyRatingLabels() {
+    const labels = loadDevSettings().ratingLabels;
+    ["again", "hard", "good", "easy"].forEach((r) => {
+      const el2 = document.querySelector(`.stamp--${r} .stamp-label`);
+      if (el2) el2.textContent = labels[r];
+    });
+  }
+  /** Applique les émoticônes/texte du menu principal (item 19). */
+  function applyNavLabels() {
+    const labels = loadDevSettings().navLabels;
+    Object.keys(labels).forEach((view) => {
+      const tab = document.querySelector(`.tab[data-view="${view}"]`);
+      if (tab) tab.textContent = labels[view];
+    });
   }
 
   /** Charge tous les modes (3 fixes + personnalisés), garantissant que les
@@ -1369,7 +1432,7 @@
       const m = modes[algoEditingModeId];
       if (!m || !m.builtin) return;
       if (!confirm(`Remettre le mode ${m.name} à ses valeurs d'origine ? Toutes les matières qui l'utilisent seront concernées.`)) return;
-      updateModeProfile(algoEditingModeId, BUILTIN_MODE_DEFAULTS[algoEditingModeId]);
+      updateModeProfile(algoEditingModeId, getFactoryDefaults()[algoEditingModeId]);
       loadModeFormIntoInputs(algoEditingModeId);
       renderSubjectAlgoBadge();
     });
@@ -2284,12 +2347,16 @@
     if (!currentCard) return;
     const ratingLogId = await logRating(currentCard, rating);
     captureRatingSnapshot(ratingLogId);
-    if (isBonusMode) {
-      await rateBonusCard(rating);
-    } else {
-      await rateScheduledCard(rating);
-    }
+    const updated = isBonusMode ? await rateBonusCard(rating) : await rateScheduledCard(rating);
     showNextCard();
+    // Anime le mini graphique (item 9) : la barre "aujourd'hui" et toutes
+    // les barres jusqu'à la nouvelle date de la fiche s'allument en vague,
+    // de gauche à droite. `requestAnimationFrame` laisse le temps au
+    // graphique (redessiné par showNextCard -> renderReviewChart) d'exister
+    // dans le DOM avant qu'on n'essaie de lui appliquer l'animation.
+    if (updated) {
+      requestAnimationFrame(() => triggerReviewChartWave(0, updated.interval));
+    }
   }
 
   async function rateScheduledCard(rating) {
@@ -2314,6 +2381,7 @@
 
     renderStats();
     renderManageList();
+    return updated;
   }
 
   /** Calcule la nouvelle échéance quand on répond "Encore" en mode bonus,
@@ -2383,6 +2451,7 @@
 
     renderStats();
     renderManageList();
+    return updated;
   }
 
   /** Bouton "hibernation" : repousse la prochaine interrogation d'une fiche
@@ -3476,6 +3545,42 @@
     );
   }
 
+  /** Anime en vague, de gauche à droite, toutes les colonnes entre
+   *  `fromIdx` (aujourd'hui) et `toIdx` (nouvelle date de la fiche notée) —
+   *  item 9 : chaque barre s'allume l'une après l'autre (léger décalage) et
+   *  grossit brièvement avant de revenir à sa taille normale. Ne fait rien
+   *  si l'échelle actuelle du mini graphique ne montre pas encore jusqu'à
+   *  `toIdx` (fiche renvoyée hors de l'écran affiché) ou si le graphique
+   *  est vide (rien à animer). */
+  function triggerReviewChartWave(fromIdx, toIdx) {
+    if (!reviewChartEl) return;
+    const cols = reviewChartEl.querySelectorAll(".chart-col");
+    if (cols.length === 0) return;
+    const lo = Math.max(0, Math.min(fromIdx, toIdx));
+    const hi = Math.min(cols.length - 1, Math.max(fromIdx, toIdx));
+    const span = hi - lo;
+    const STEP_MS = 55; // décalage entre deux barres consécutives de la vague
+    for (let i = lo; i <= hi; i++) {
+      const bar = cols[i].querySelector(".chart-bar");
+      if (!bar) continue;
+      const delay = (i - lo) * STEP_MS;
+      // Repart d'un état neutre avant de rejouer l'animation, au cas où une
+      // vague précédente serait encore en cours sur cette même barre.
+      bar.classList.remove("chart-bar-wave");
+      void bar.offsetWidth;
+      bar.style.animationDelay = `${delay}ms`;
+      bar.classList.add("chart-bar-wave");
+      bar.addEventListener(
+        "animationend",
+        () => {
+          bar.classList.remove("chart-bar-wave");
+          bar.style.animationDelay = "";
+        },
+        { once: true }
+      );
+    }
+  }
+
   /** Tape sur le mini graphique : passe à l'échelle supérieure (boucle). */
   function cycleReviewChartRange() {
     const idx = REVIEW_CHART_STEPS.indexOf(reviewChartRangeDays);
@@ -3567,6 +3672,112 @@
     if (settingHibernateDaysEl) settingHibernateDaysEl.value = hibernateDays;
   }
 
+  /* ---------------------------------------------------------
+     Page Développeur (item 19)
+  --------------------------------------------------------- */
+  function saveRatingLabelsFromInputs() {
+    const settings = loadDevSettings();
+    ["again", "hard", "good", "easy"].forEach((r) => {
+      const input = el(`dev-rating-${r}`);
+      if (input && input.value.trim()) settings.ratingLabels[r] = input.value.trim();
+    });
+    saveDevSettings(settings);
+    applyRatingLabels();
+  }
+  function saveNavLabelsFromInputs() {
+    const settings = loadDevSettings();
+    Object.keys(DEFAULT_NAV_LABELS).forEach((view) => {
+      const input = el(`dev-nav-${view}`);
+      if (input && input.value.trim()) settings.navLabels[view] = input.value.trim();
+    });
+    saveDevSettings(settings);
+    applyNavLabels();
+  }
+
+  ["again", "hard", "good", "easy"].forEach((r) => {
+    const input = el(`dev-rating-${r}`);
+    if (input) input.addEventListener("change", saveRatingLabelsFromInputs);
+  });
+  const devRatingResetBtn = el("dev-rating-reset");
+  if (devRatingResetBtn) {
+    devRatingResetBtn.addEventListener("click", () => {
+      const settings = loadDevSettings();
+      settings.ratingLabels = { ...DEFAULT_RATING_LABELS };
+      saveDevSettings(settings);
+      applyRatingLabels();
+      renderDevView();
+    });
+  }
+  Object.keys(DEFAULT_NAV_LABELS).forEach((view) => {
+    const input = el(`dev-nav-${view}`);
+    if (input) input.addEventListener("change", saveNavLabelsFromInputs);
+  });
+  const devNavResetBtn = el("dev-nav-reset");
+  if (devNavResetBtn) {
+    devNavResetBtn.addEventListener("click", () => {
+      const settings = loadDevSettings();
+      settings.navLabels = { ...DEFAULT_NAV_LABELS };
+      saveDevSettings(settings);
+      applyNavLabels();
+      renderDevView();
+    });
+  }
+
+  /** Éditeur des valeurs "usine" des 3 modes fixes (item 19) : mêmes 12
+   *  valeurs discrètes que partout ailleurs (ALGO_K_VALUES/ALGO_M_VALUES),
+   *  ici via de simples menus déroulants (page technique, pas besoin de
+   *  curseurs tactiles soignés). */
+  function renderFactoryDefaultsEditor() {
+    const wrap = el("dev-factory-defaults");
+    if (!wrap) return;
+    const factory = getFactoryDefaults();
+    const kOpts = ALGO_K_VALUES.map((v) => `<option value="${v}">${v}</option>`).join("");
+    const mOpts = ALGO_M_VALUES.map((v) => `<option value="${v}">${v}</option>`).join("");
+    wrap.innerHTML = BUILTIN_MODE_IDS.map((modeId) => {
+      const f = factory[modeId];
+      const fields = ["Ka", "Kh", "Kg", "Ke", "Ma", "Mh", "Mg", "Me"]
+        .map((k) => {
+          const isK = k.startsWith("K");
+          const opts = isK ? kOpts : mOpts;
+          return `<label class="field settings-bonus-field">
+            <span>${k}</span>
+            <select id="dev-factory-${modeId}-${k}" data-mode="${modeId}" data-key="${k}">${opts}</select>
+          </label>`;
+        })
+        .join("");
+      return `<h4 class="settings-block-title">${ALGO_MODE_SHORT_LABELS[modeId]}</h4><div class="algo-grid algo-grid--4">${fields}</div>`;
+    }).join("");
+
+    BUILTIN_MODE_IDS.forEach((modeId) => {
+      ["Ka", "Kh", "Kg", "Ke", "Ma", "Mh", "Mg", "Me"].forEach((k) => {
+        const sel = el(`dev-factory-${modeId}-${k}`);
+        if (sel) sel.value = String(factory[modeId][k]);
+      });
+    });
+
+    wrap.querySelectorAll("select").forEach((sel) => {
+      sel.addEventListener("change", () => {
+        const settings = loadDevSettings();
+        settings.factoryDefaults[sel.dataset.mode][sel.dataset.key] = Number(sel.value);
+        saveDevSettings(settings);
+      });
+    });
+  }
+
+  function renderDevView() {
+    const labels = loadDevSettings().ratingLabels;
+    ["again", "hard", "good", "easy"].forEach((r) => {
+      const input = el(`dev-rating-${r}`);
+      if (input) input.value = labels[r];
+    });
+    const navLabels = loadDevSettings().navLabels;
+    Object.keys(DEFAULT_NAV_LABELS).forEach((view) => {
+      const input = el(`dev-nav-${view}`);
+      if (input) input.value = navLabels[view];
+    });
+    renderFactoryDefaultsEditor();
+  }
+
   /** Bouton de dépannage manuel : désinscrit le(s) service worker(s) et vide
    *  le Cache Storage de l'appli, sans toucher IndexedDB (les fiches) ni
    *  localStorage (réglages). Sert de filet de sécurité
@@ -3651,6 +3862,7 @@
       }
       if (view === "stats") renderStats();
       if (view === "learning-modes") loadModeFormIntoInputs(algoEditingModeId || "normal");
+      if (view === "dev") renderDevView();
       if (view === "sync") renderSyncView();
       if (view === "settings") renderSettingsView();
       renderDuePill();
@@ -4143,6 +4355,8 @@
     loadBonusAgainMode();
     loadHibernateDays();
     renderSettingsView();
+    applyRatingLabels();
+    applyNavLabels();
     await loadSubjects();
     cards = await DB.getAll();
     ratingLog = await DB.getAllRatingLog();

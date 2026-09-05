@@ -157,6 +157,7 @@
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="learning-modes" title="Modes d'apprentissage" aria-label="Modes d'apprentissage">🎓</button>
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">⚙</button>
+    <button class="tab tab--icon" role="tab" aria-selected="false" data-view="dev" title="Développeur" aria-label="Développeur">🧑‍💻</button>
   </nav>
 
   <main>
@@ -566,6 +567,83 @@
           <select class="import-target-select" id="import-target-select" aria-label="Matière cible pour l'import"></select>
         </div>
         <p class="import-note">Un import ajoute toujours de nouvelles fiches — il ne modifie ni ne supprime jamais celles déjà présentes.</p>
+      </div>
+    </section>
+
+    <!-- VUE DÉVELOPPEUR (item 19) — réglages internes, cachés dans une
+         future version "utilisateur" de l'appli. -->
+    <section id="view-dev" class="view" aria-labelledby="tab-dev">
+      <h2 class="section-title">🧑‍💻 Développeur</h2>
+      <p class="field-hint settings-block-hint">
+        Réglages internes de l'appli. Dans une future version, cette page
+        n'existera que dans la variante développeur — la variante
+        utilisateur ne l'aura pas.
+      </p>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Boutons d'évaluation</h3>
+        <p class="field-hint settings-block-hint">Émoticône ou texte affiché sur chaque bouton de notation.</p>
+        <div class="algo-grid algo-grid--4">
+          <label class="field settings-bonus-field">
+            <span>Encore</span>
+            <input type="text" id="dev-rating-again" maxlength="8" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Difficile</span>
+            <input type="text" id="dev-rating-hard" maxlength="8" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Bien</span>
+            <input type="text" id="dev-rating-good" maxlength="8" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Facile</span>
+            <input type="text" id="dev-rating-easy" maxlength="8" />
+          </label>
+        </div>
+        <button type="button" class="btn btn--ghost" id="dev-rating-reset">Revenir aux émoticônes d'origine</button>
+      </div>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Menu principal</h3>
+        <p class="field-hint settings-block-hint">Émoticône ou texte affiché pour chaque page du menu.</p>
+        <div class="algo-grid algo-grid--4">
+          <label class="field settings-bonus-field">
+            <span>Réviser</span>
+            <input type="text" id="dev-nav-review" maxlength="8" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Gérer</span>
+            <input type="text" id="dev-nav-manage" maxlength="8" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Fiches</span>
+            <input type="text" id="dev-nav-cards" maxlength="8" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Stats</span>
+            <input type="text" id="dev-nav-stats" maxlength="8" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Modes</span>
+            <input type="text" id="dev-nav-learning-modes" maxlength="8" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Réglages</span>
+            <input type="text" id="dev-nav-settings" maxlength="8" />
+          </label>
+        </div>
+        <button type="button" class="btn btn--ghost" id="dev-nav-reset">Revenir aux icônes d'origine</button>
+      </div>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Paramètres usine des modes d'apprentissage</h3>
+        <p class="field-hint settings-block-hint">
+          Valeurs vers lesquelles "Revenir aux réglages d'origine" ramène
+          chaque mode fixe (Cool / Normal / Renforcé), et valeurs de départ
+          d'une toute nouvelle installation.
+        </p>
+        <div id="dev-factory-defaults"></div>
       </div>
     </section>
 
