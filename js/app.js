@@ -817,12 +817,15 @@
     return path;
   }
 
-  /** Rendu en arborescence développée avec indentation (item 13) — même
-   *  présentation que le picker "sélection des matières" (voir
-   *  renderFolderTreeForPicker), plutôt que la navigation dossier par
-   *  dossier d'avant : tout est visible d'un coup, plus besoin de cliquer
-   *  pour "entrer" dans un dossier. Les nouvelles matières/dossiers sont
+  /** Rendu en arborescence avec indentation, mais repliable (item 8) : un
+   *  compromis entre le picker toujours déplié (peu lisible dès qu'il y a
+   *  plusieurs niveaux) et la navigation dossier par dossier d'avant (un
+   *  clic pour "entrer", rien vu d'autre à la fois) — les dossiers sont
+   *  repliés par défaut, un clic sur leur nom les déplie ou replie sur
+   *  place, sans changer de page. Les nouvelles matières/dossiers sont
    *  créés à la racine (déplaçables ensuite via ↔️). */
+  const expandedManageFolders = new Set();
+
   function renderSubjectManageList() {
     subjectListEl.innerHTML = "";
     renderTreeLevel(ROOT_FOLDER_ID, 0);
@@ -843,6 +846,7 @@
       .sort((a, b) => a.name.localeCompare(b.name, "fr"));
 
     childFolders.forEach((f) => {
+      const expanded = expandedManageFolders.has(f.id);
       const li = document.createElement("li");
       li.className = "subject-row folder-row";
       li.style.paddingLeft = `${depth * 18}px`;
@@ -850,9 +854,13 @@
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
-      nameBtn.title = "Renommer ce dossier";
-      nameBtn.textContent = `📁 ${f.name}`;
-      nameBtn.addEventListener("click", () => renameFolder(f.id));
+      nameBtn.title = expanded ? "Replier ce dossier" : "Déplier ce dossier";
+      nameBtn.textContent = `${expanded ? "▾" : "▸"} 📁 ${f.name}`;
+      nameBtn.addEventListener("click", () => {
+        if (expandedManageFolders.has(f.id)) expandedManageFolders.delete(f.id);
+        else expandedManageFolders.add(f.id);
+        renderSubjectManageList();
+      });
 
       const count = document.createElement("span");
       count.className = "subject-row-count";
@@ -900,7 +908,10 @@
       li.appendChild(actions);
       subjectListEl.appendChild(li);
 
-      renderTreeLevel(f.id, depth + 1);
+      // Ne recurse dans ce dossier que s'il est déplié (item 8) — sinon on
+      // retombe sur l'arborescence toujours entièrement affichée d'avant,
+      // illisible dès que plusieurs niveaux de dossiers existent.
+      if (expanded) renderTreeLevel(f.id, depth + 1);
     });
 
     for (const s of childSubjects) {
@@ -1728,6 +1739,13 @@
   if (subjectChoiceCancelBtn) {
     subjectChoiceCancelBtn.addEventListener("click", () => closeSubjectChoiceMenu());
   }
+  // Cliquer n'importe où en dehors du menu le referme (item 6 : comportement
+  // attendu d'un vrai menu déroulant), sans rien changer au choix précédent.
+  document.addEventListener("click", (e) => {
+    if (!subjectChoiceMenu || subjectChoiceMenu.hidden) return;
+    if (subjectChoiceMenu.contains(e.target) || e.target === subjectSelectBtn) return;
+    closeSubjectChoiceMenu();
+  });
 
   /* ---------------------------------------------------------
      Sélection de plusieurs matières confondues (item 1)
