@@ -1135,7 +1135,10 @@
         raw = computeNextDeadlineRaw(raw, r, settings);
         const rounded = Math.max(1, Math.round(raw));
         if (rounded === prevRounded) {
-          needed = Math.max(needed, n);
+          // +2 points au-delà du début du plateau (item 4), pour bien
+          // montrer que la courbe est devenue horizontale plutôt que de
+          // s'arrêter net pile au moment où elle se stabilise.
+          needed = Math.max(needed, Math.min(CAP, n + 2));
           break;
         }
         prevRounded = rounded;
@@ -1208,13 +1211,16 @@
     }
     svg += `</svg>`;
 
-    const axisLabels =
-      `<div class="algo-chart-axis-labels">` +
+    // Ordonnée verticale à gauche du graphique (item 4), plutôt qu'une
+    // légende horizontale sous le graphique.
+    const body =
+      `<div class="algo-chart-body">` +
       `<span class="algo-chart-axis-y">Délai d'interrogation en jours</span>` +
-      `<span class="algo-chart-axis-x">Nombre de fois qu'une fiche a été évaluée</span>` +
-      `</div>`;
+      `<div class="algo-chart-svg-col">${svg}</div>` +
+      `</div>` +
+      `<div class="algo-chart-axis-x">Nombre de fois qu'une fiche a été évaluée</div>`;
 
-    return `<div class="algo-chart-legend">${legend}</div>${svg}${axisLabels}`;
+    return `<div class="algo-chart-legend">${legend}</div>${body}`;
   }
 
   function wireChartCheckboxes(wrap, onToggle) {

@@ -1723,9 +1723,9 @@ textarea, input {
    codes couleur que les boutons d'évaluation Encore/Difficile/Bien/Facile,
    pour qu'on associe naturellement chaque réglage à sa note. */
 .algo-slider-field {
-  border-radius: 10px;
-  padding: 10px 12px;
-  margin-bottom: 10px;
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin-bottom: 6px;
   border: 1.5px solid transparent;
 }
 
@@ -1733,7 +1733,7 @@ textarea, input {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 6px;
+  margin-bottom: 2px;
 }
 
 .algo-slider-field-label {
@@ -1796,21 +1796,48 @@ textarea, input {
 .algo-slider-field--easy .algo-slider-field-value { color: var(--teal); }
 
 /* Graphique d'aperçu des échéances (item 6). */
-#algo-chart-wrap, #assign-chart-wrap {
+/* Graphique d'aperçu de la page d'édition des modes : collé en haut au
+   défilement (item 4) — pour rester visible EN MÊME TEMPS qu'on manipule
+   les curseurs plus bas, sans avoir à faire l'aller-retour du regard. */
+#algo-chart-wrap {
+  position: sticky;
+  top: 6px;
+  z-index: 5;
+  background: var(--desk);
+  border-radius: 10px;
+  padding: 10px 8px 4px;
+  margin-bottom: 8px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+#assign-chart-wrap {
   background: rgba(247, 241, 225, 0.05);
   border-radius: 10px;
   padding: 10px 8px 4px;
   margin-bottom: 8px;
 }
 
-/* Intitulés des axes (item 9), en HTML plutôt qu'en SVG pivoté pour rester
-   simple — l'ordonnée au-dessus à gauche, l'abscisse en dessous, centrée. */
-.algo-chart-axis-labels {
+/* Intitulés des axes (item 4) : l'ordonnée pivotée à la verticale, collée
+   contre le bord gauche du graphique (comme un vrai graphique), l'abscisse
+   toujours en dessous, centrée. */
+.algo-chart-body {
   display: flex;
-  flex-direction: column;
+  align-items: stretch;
   gap: 2px;
-  margin-top: 4px;
-  padding: 0 4px 6px;
+}
+
+.algo-chart-axis-y {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: center;
+  white-space: nowrap;
+  align-self: center;
+  flex-shrink: 0;
+}
+
+.algo-chart-svg-col {
+  flex: 1;
+  min-width: 0;
 }
 
 .algo-chart-axis-y, .algo-chart-axis-x {
@@ -1819,7 +1846,7 @@ textarea, input {
   color: #9aa89e;
 }
 
-.algo-chart-axis-x { text-align: center; }
+.algo-chart-axis-x { text-align: center; margin-top: 4px; }
 
 /* Sous-liste des modes personnalisés (page Modes d'apprentissage) et liste
    de choix d'affectation (page Gérer) — même look que les autres pickers. */

@@ -1,4 +1,4 @@
-const CACHE_NAME = "fiches-cache-v54";
+const CACHE_NAME = "fiches-cache-v55";
 
 const CORE_ASSETS = [
   "./",
