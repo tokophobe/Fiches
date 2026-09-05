@@ -1581,8 +1581,9 @@ textarea, input {
 
 /* Historique des fiches révisées (item 21) : bleu, pour bien le distinguer
    du graphique "à revoir" juste au-dessus. */
-#reviewed-chart .chart-bar:not(.chart-bar--zero) { background: var(--blue); }
-#reviewed-chart .chart-col.is-today .chart-bar { background: var(--rule); }
+/* Barres "fiches révisées" dans l'histogramme fusionné (item 9) : bleu,
+   pour bien les distinguer des barres "fiches à revoir". */
+.chart-bar--reviewed:not(.chart-bar--zero) { background: var(--blue); }
 
 /* Jours sans aucune fiche due : couleur neutre (beige plus foncé que le fond
    de la carte), pour rester visible sans attirer l'œil comme une vraie donnée. */

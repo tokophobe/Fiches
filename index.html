@@ -396,17 +396,16 @@
         </div>
       </div>
 
-      <h3 class="chart-title">Fiches à revoir par jour</h3>
+      <h3 class="chart-title">Fiches à revoir / révisées par jour</h3>
+      <p class="field-hint settings-block-hint">
+        "Aujourd'hui" est calé à gauche : les fiches à revoir s'étalent vers
+        la droite, l'historique des fiches révisées apparaît en faisant
+        défiler vers la gauche.
+      </p>
       <div class="chart-wrap" id="chart-wrap">
         <div class="chart" id="due-chart"></div>
       </div>
       <p class="chart-empty" id="chart-empty" hidden>Rien à revoir sur cette période.</p>
-
-      <h3 class="chart-title">Fiches révisées par jour (historique)</h3>
-      <div class="chart-wrap" id="reviewed-chart-wrap">
-        <div class="chart" id="reviewed-chart"></div>
-      </div>
-      <p class="chart-empty" id="reviewed-chart-empty" hidden>Aucune fiche révisée sur cette période.</p>
 
       <!-- Item 6 : sélecteur de période partagé par les statistiques
            ci-dessous (compte les créations/révisions, notes données, et

@@ -3182,6 +3182,29 @@
     return buckets;
   }
 
+  /** Fusionne les deux histogrammes (item 9) en un seul, "aujourd'hui" fixé
+   *  à l'extrémité GAUCHE de la zone visible par défaut (comme l'ancien
+   *  graphique "à revoir" seul) : les jours à venir (fiches dues) s'étalent
+   *  normalement vers la droite, et l'historique des fiches RÉVISÉES
+   *  s'étend vers la gauche, hors champ par défaut — on ne le découvre
+   *  qu'en faisant défiler le graphique vers la gauche (voir le scroll
+   *  initial appliqué après le rendu). */
+  function computeMergedHistogram(pool, futureDays, pastDays) {
+    const dueBuckets = computeDueHistogram(pool, futureDays);
+    const reviewedBuckets = computeReviewedHistogram(pool, pastDays);
+    const merged = [];
+    // Passé, du plus ancien au plus récent — on saute l'indice 0 de
+    // reviewedBuckets ("aujourd'hui" côté révisé) puisque le jour même est
+    // déjà représenté par le premier bucket "due" juste après.
+    for (let i = pastDays - 1; i >= 1; i--) {
+      merged.push({ date: reviewedBuckets[i].date, count: reviewedBuckets[i].count, kind: "reviewed" });
+    }
+    dueBuckets.forEach((b, i) => {
+      merged.push({ date: b.date, count: b.count, kind: i === 0 ? "today" : "due" });
+    });
+    return merged;
+  }
+
   const MONTH_SHORT = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
   // Index 0 = dimanche (convention JS Date#getDay()).
   const WEEKDAY_SHORT = ["dim", "lun", "mar", "mer", "jeu", "ven", "sam"];
@@ -3203,18 +3226,28 @@
   /** Dessine un histogramme "fiches dues par jour" dans les éléments fournis.
    *  Factorisé pour être partagé entre le grand graphique de l'onglet Stats
    *  et le mini graphique de la page Réviser (matière en cours). */
-  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, rangeKey, maxBarPx, computeFn, todayAtEnd, suppressChangeFlash) {
+  function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, rangeKey, maxBarPx, computeFn, todayAtEnd, suppressChangeFlash, mergedPastDays) {
     if (!chartEl) return;
     const cfg = RANGE_CONFIG[rangeKey] || { visible: rangeKey, total: rangeKey };
     const days = cfg.total;
-    let buckets = (computeFn || computeDueHistogram)(pool, days);
-    // Historique des fiches révisées (item 21) : présent à droite, passé à
-    // gauche — sens inverse du graphique "à revoir" (présent à gauche,
-    // futur à droite). On inverse simplement l'ordre des colonnes déjà
-    // calculées (index 0 = aujourd'hui devient la DERNIÈRE colonne) plutôt
-    // que de dupliquer toute la logique de calcul.
-    if (todayAtEnd) buckets = [...buckets].reverse();
-    const todayIdx = todayAtEnd ? buckets.length - 1 : 0;
+    let buckets;
+    let todayIdx;
+    if (mergedPastDays !== undefined) {
+      // Histogramme fusionné (item 9) : "aujourd'hui" n'est ni au tout début
+      // ni à la toute fin du tableau, mais à un index calculé — voir
+      // computeMergedHistogram pour le détail de la construction.
+      buckets = computeMergedHistogram(pool, days, mergedPastDays);
+      todayIdx = mergedPastDays - 1;
+    } else {
+      buckets = (computeFn || computeDueHistogram)(pool, days);
+      // Historique des fiches révisées (item 21) : présent à droite, passé à
+      // gauche — sens inverse du graphique "à revoir" (présent à gauche,
+      // futur à droite). On inverse simplement l'ordre des colonnes déjà
+      // calculées (index 0 = aujourd'hui devient la DERNIÈRE colonne) plutôt
+      // que de dupliquer toute la logique de calcul.
+      if (todayAtEnd) buckets = [...buckets].reverse();
+      todayIdx = todayAtEnd ? buckets.length - 1 : 0;
+    }
     const max = Math.max(0, ...buckets.map((b) => b.count));
 
     // Compte précédent par jour (mémorisé sur l'élément lui-même) : sert à
@@ -3295,7 +3328,7 @@
       value.textContent = dense ? "" : b.count > 0 ? String(b.count) : "";
 
       const bar = document.createElement("div");
-      bar.className = "chart-bar" + (b.count === 0 ? " chart-bar--zero" : "");
+      bar.className = "chart-bar" + (b.count === 0 ? " chart-bar--zero" : "") + (b.kind === "reviewed" ? " chart-bar--reviewed" : "");
       // Les jours à zéro fiche gardent une petite barre témoin (couleur neutre)
       // pour rester visibles dans la grille, plutôt que de disparaître.
       const height =
@@ -3336,8 +3369,32 @@
 
   function renderDueChart() {
     const pool = statsScopeCards();
-    renderHistogramInto(dueChartEl, chartEmptyEl, el("chart-wrap"), pool, statsRangeDays, CHART_MAX_BAR_PX);
+    const cfg = RANGE_CONFIG[statsRangeDays] || { visible: statsRangeDays, total: statsRangeDays };
+    // Fenêtre d'historique (fiches révisées, vers la gauche) de la même
+    // ampleur que la fenêtre future (fiches à revoir, vers la droite) —
+    // item 9 : histogramme fusionné.
+    const pastDays = cfg.total;
+    renderHistogramInto(
+      dueChartEl,
+      chartEmptyEl,
+      el("chart-wrap"),
+      pool,
+      statsRangeDays,
+      CHART_MAX_BAR_PX,
+      undefined,
+      false,
+      false,
+      pastDays
+    );
     if (statsRangeSelectEl) statsRangeSelectEl.value = String(statsRangeDays);
+    // Cale "aujourd'hui" à l'extrémité GAUCHE de la zone visible par défaut
+    // (item 9) : l'historique des fiches révisées reste hors champ tant
+    // qu'on ne fait pas défiler volontairement vers la gauche.
+    requestAnimationFrame(() => {
+      const todayCol = dueChartEl.querySelector(".chart-col.is-today");
+      const wrap = el("chart-wrap");
+      if (todayCol && wrap) wrap.scrollLeft = todayCol.offsetLeft;
+    });
   }
 
   /** Tape sur l'histogramme de la page Stats : passe à l'échelle
@@ -3351,33 +3408,6 @@
   }
   const statsChartWrapEl = el("chart-wrap");
   if (statsChartWrapEl) statsChartWrapEl.addEventListener("click", cycleStatsChartRange);
-
-  /** Second histogramme de la page Stats (item 7) : historique des fiches
-   *  révisées, plutôt que celles à venir — mêmes échelles (tap pour
-   *  cycler), état indépendant du premier graphique. */
-  let reviewedChartRangeDays = 15;
-  const reviewedChartEl = el("reviewed-chart");
-  const reviewedChartEmptyEl = el("reviewed-chart-empty");
-  const reviewedChartWrapEl = el("reviewed-chart-wrap");
-  function renderReviewedChart() {
-    const pool = statsScopeCards();
-    renderHistogramInto(
-      reviewedChartEl,
-      reviewedChartEmptyEl,
-      reviewedChartWrapEl,
-      pool,
-      reviewedChartRangeDays,
-      CHART_MAX_BAR_PX,
-      computeReviewedHistogram,
-      true // todayAtEnd (item 21) : présent à droite, passé à gauche
-    );
-  }
-  function cycleReviewedChartRange() {
-    const idx = REVIEW_CHART_STEPS.indexOf(reviewedChartRangeDays);
-    reviewedChartRangeDays = REVIEW_CHART_STEPS[(idx + 1) % REVIEW_CHART_STEPS.length];
-    renderReviewedChart();
-  }
-  if (reviewedChartWrapEl) reviewedChartWrapEl.addEventListener("click", cycleReviewedChartRange);
 
   /** Fiches (de `pool`) dont la dernière révision remonte à aujourd'hui. */
   function reviewedTodayCount(pool) {
@@ -3394,7 +3424,6 @@
     statTotal.textContent = String(pool.length);
     if (statReviewedToday) statReviewedToday.textContent = String(reviewedTodayCount(pool));
     renderDueChart();
-    renderReviewedChart();
     renderRatingsChart();
     renderRatingsHistoryChart();
     renderStreak();
@@ -4533,7 +4562,7 @@
   window.addEventListener("resize", () => {
     clearTimeout(chartResizeTimer);
     chartResizeTimer = setTimeout(() => {
-      if (el("view-stats") && el("view-stats").classList.contains("is-active")) { renderDueChart(); renderReviewedChart(); }
+      if (el("view-stats") && el("view-stats").classList.contains("is-active")) { renderDueChart(); }
       if (el("view-review") && el("view-review").classList.contains("is-active")) renderReviewChart();
     }, 150);
   });
