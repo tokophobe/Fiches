@@ -78,6 +78,12 @@ textarea, input {
   gap: 8px;
 }
 
+.topbar-new-card-btn {
+  font-size: 13px;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
 /* Mascotte (item 10) : icône SVG originale (petit robot volant, cerveau
    griffonné derrière un hublot) plutôt que le crayon ✎ — présentée en
    grand format "icône d'appli" maintenant que le libellé texte à côté a
@@ -1500,7 +1506,7 @@ textarea, input {
      réglages restent bien en dessous et le fond ne laisse rien voir "à
      travers". */
   top: 0;
-  padding-top: calc(env(safe-area-inset-top, 0px) + 44px);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 22px);
   z-index: 15;
   background: var(--app-bg-color, var(--desk));
   padding-bottom: 10px;
@@ -1558,16 +1564,28 @@ textarea, input {
 .streak-summary {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  flex-wrap: nowrap;
+  gap: 4px;
   margin-bottom: 8px;
   font-family: var(--font-mono);
+  font-size: 13px;
   color: var(--paper);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.streak-summary .streak-number {
-  font-size: 22px;
+.streak-summary .streak-number-value {
   font-weight: 700;
   color: var(--amber);
+}
+
+/* Trait fin entre la fin d'un graphique et le titre du suivant (item 4) —
+   aide à comprendre que ce titre s'applique à ce qui vient APRÈS lui. */
+.stats-chart-divider {
+  border: none;
+  border-top: 1px solid rgba(247, 241, 225, 0.15);
+  margin: 22px 0 10px;
 }
 
 /* Doivent tenir sur toute la largeur (item 10 — bug corrigé : on était
@@ -2021,22 +2039,27 @@ textarea, input {
   background: var(--slider-color, var(--amber));
 }
 
-/* Item 6 — bug corrigé : les 4 encadrés reprennent tous la couleur du
-   MODE en cours d'édition (posée en JS sur #algo-advanced-panel via
-   --mode-editing-color, voir applyModeSliderColor), plutôt que 4 couleurs
-   fixes par note qui n'avaient aucun rapport avec le mode affecté. */
-.algo-slider-field--again, .algo-slider-field--hard,
-.algo-slider-field--good, .algo-slider-field--easy {
-  background: color-mix(in srgb, var(--mode-editing-color, var(--amber)) 14%, transparent);
-  border-color: color-mix(in srgb, var(--mode-editing-color, var(--amber)) 40%, transparent);
-  --slider-color: var(--mode-editing-color, var(--amber));
-}
-.algo-slider-field--again .algo-slider-field-label, .algo-slider-field--again .algo-slider-field-value,
-.algo-slider-field--hard .algo-slider-field-label, .algo-slider-field--hard .algo-slider-field-value,
-.algo-slider-field--good .algo-slider-field-label, .algo-slider-field--good .algo-slider-field-value,
-.algo-slider-field--easy .algo-slider-field-label, .algo-slider-field--easy .algo-slider-field-value {
-  color: var(--mode-editing-color, var(--amber));
-}
+/* Item 5 — retour aux couleurs des boutons d'évaluation (Encore/Difficile/
+   Bien/Facile), pas celles des modes d'apprentissage : demandé puis
+   reconsidéré, la couleur de la NOTE reste plus parlante ici puisque
+   chaque encadré correspond justement à une note précise. Le curseur
+   PRINCIPAL de choix du mode (Cool/Normal/Renforcé/Perso), lui, garde la
+   couleur du mode — ce n'est pas le même curseur. */
+.algo-slider-field--again { background: color-mix(in srgb, var(--rating-again-color, var(--terracotta)) 14%, transparent); border-color: color-mix(in srgb, var(--rating-again-color, var(--terracotta)) 40%, transparent); --slider-color: var(--rating-again-color, var(--terracotta)); }
+.algo-slider-field--again .algo-slider-field-label,
+.algo-slider-field--again .algo-slider-field-value { color: var(--rating-again-color, var(--terracotta)); }
+
+.algo-slider-field--hard { background: color-mix(in srgb, var(--rating-hard-color, var(--amber)) 14%, transparent); border-color: color-mix(in srgb, var(--rating-hard-color, var(--amber)) 40%, transparent); --slider-color: var(--rating-hard-color, var(--amber)); }
+.algo-slider-field--hard .algo-slider-field-label,
+.algo-slider-field--hard .algo-slider-field-value { color: var(--rating-hard-color, var(--amber)); }
+
+.algo-slider-field--good { background: color-mix(in srgb, var(--rating-good-color, var(--sage)) 14%, transparent); border-color: color-mix(in srgb, var(--rating-good-color, var(--sage)) 40%, transparent); --slider-color: var(--rating-good-color, var(--sage)); }
+.algo-slider-field--good .algo-slider-field-label,
+.algo-slider-field--good .algo-slider-field-value { color: var(--rating-good-color, var(--sage)); }
+
+.algo-slider-field--easy { background: color-mix(in srgb, var(--rating-easy-color, var(--teal)) 18%, transparent); border-color: color-mix(in srgb, var(--rating-easy-color, var(--teal)) 45%, transparent); --slider-color: var(--rating-easy-color, var(--teal)); }
+.algo-slider-field--easy .algo-slider-field-label,
+.algo-slider-field--easy .algo-slider-field-value { color: var(--rating-easy-color, var(--teal)); }
 
 /* Graphique d'aperçu des échéances (item 6). */
 /* Graphique d'aperçu de la page d'édition des modes : collé en haut au
@@ -2201,7 +2224,7 @@ textarea, input {
   border-radius: 10px;
   padding: 12px;
   box-shadow: var(--shadow-deep);
-  width: 190px;
+  width: 260px;
 }
 
 .color-popup-preview {

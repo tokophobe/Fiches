@@ -514,7 +514,7 @@
   function openColorPopup(input, anchorBtn) {
     const popup = ensureColorPopup();
     const rect = anchorBtn.getBoundingClientRect();
-    const popupWidth = 190;
+    const popupWidth = 260;
     popup.style.position = "fixed";
     popup.style.top = `${rect.bottom + 6}px`;
     popup.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - popupWidth - 8))}px`;
@@ -569,7 +569,13 @@
         });
       });
       popup.querySelectorAll(".color-popup-mode-btn").forEach((b) => {
-        b.addEventListener("click", () => {
+        b.addEventListener("click", (e) => {
+          // Bug corrigé (item 6) : sans stopPropagation, le clic remontait
+          // jusqu'au document APRÈS que render() ait déjà remplacé le
+          // contenu du popup (donc l'ancien bouton cliqué n'existait plus
+          // dans le DOM) — le test "clic en dehors du popup" se trompait
+          // et refermait le popup juste après l'avoir redessiné.
+          e.stopPropagation();
           saveColorSliderMode(b.dataset.mode);
           render();
         });
@@ -3135,9 +3141,14 @@
 
   // Bouton "+ Nouvelle fiche" (item 3) : fait apparaître le cadre de
   // création, masqué par défaut.
-  const newCardBtn = el("new-card-btn");
-  if (newCardBtn) {
-    newCardBtn.addEventListener("click", () => {
+  // Bouton "+ Nouvelle fiche" (item 7) : dans la barre du haut désormais,
+  // accessible depuis n'importe quelle page — bascule sur Fiches et fait
+  // apparaître le cadre de création.
+  const topbarNewCardBtn = el("topbar-new-card-btn");
+  if (topbarNewCardBtn) {
+    topbarNewCardBtn.addEventListener("click", () => {
+      const cardsTab = document.querySelector('.tab[data-view="cards"]');
+      if (cardsTab && !cardsTab.classList.contains("is-active")) cardsTab.click();
       cardForm.hidden = false;
       cancelEditBtn.hidden = false;
       if (inputQuestion) inputQuestion.focus();
@@ -4530,7 +4541,7 @@
     // Toujours toutes matières confondues (item : indépendant des choix de
     // matière/période plus bas sur la page).
     const { days, hotDays, streak } = computeStreakData(null);
-    summaryEl.innerHTML = `<span class="streak-number">🔥 Jours d'utilisation : ${streak}</span><span>jour${streak > 1 ? "s" : ""} d'affilée</span>`;
+    summaryEl.innerHTML = `🔥 Jours d'utilisation : <span class="streak-number-value">${streak}</span> jour${streak > 1 ? "s" : ""} d'affilée`;
     const todayIdx = days.length - 1;
     // "Auj" sur la colonne d'aujourd'hui (item 10), une colonne par jour
     // qui se partagent toute la largeur disponible (voir CSS) plutôt

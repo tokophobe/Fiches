@@ -117,6 +117,7 @@
   <header class="topbar">
     <div class="brand">
       <h1 class="sr-only">Fiches</h1>
+      <button type="button" class="btn btn--primary topbar-new-card-btn" id="topbar-new-card-btn">+ Nouvelle fiche</button>
     </div>
     <div class="header-right">
       <button class="sync-status" id="sync-status" type="button" title="État de la synchronisation">
@@ -248,18 +249,22 @@
 
     <!-- VUE FICHES -->
     <section id="view-cards" class="view" aria-labelledby="tab-cards">
-      <div class="subject-bar" id="cards-subject-bar">
-        <button type="button" class="subject-select-btn" id="cards-subject-select-btn" aria-label="Choisir la matière de cette nouvelle fiche"></button>
-        <button type="button" class="btn btn--primary cards-new-btn" id="new-card-btn">+ Nouvelle fiche</button>
-
-        <div class="subject-choice-menu subject-choice-menu--tree" id="cards-subject-choice-menu" hidden>
-          <div id="cards-subject-choice-tree"></div>
-        </div>
-      </div>
-
       <form class="card-form" id="card-form" hidden>
         <div class="card-form-header">
           <h2 class="section-title">Nouvelle fiche</h2>
+        </div>
+
+        <!-- Choix de la matière (item 7) : intégré au cadre de création
+             lui-même, plutôt qu'un sélecteur séparé au-dessus — l'accès à
+             la création se fait maintenant uniquement par le bouton en
+             haut de l'écran. -->
+        <div class="subject-bar" id="cards-subject-bar">
+          <label class="import-target-label" for="cards-subject-select-btn">Matière :</label>
+          <button type="button" class="subject-select-btn" id="cards-subject-select-btn" aria-label="Choisir la matière de cette nouvelle fiche"></button>
+
+          <div class="subject-choice-menu subject-choice-menu--tree" id="cards-subject-choice-menu" hidden>
+            <div id="cards-subject-choice-tree"></div>
+          </div>
         </div>
 
         <div class="rich-toolbar" id="rich-toolbar">
@@ -390,13 +395,22 @@
       </div>
       <p class="chart-empty" id="chart-empty" hidden>Rien à revoir sur cette période.</p>
 
+      <!-- Trait fin (item 4) : sépare la fin d'un graphique du TITRE du
+           suivant, pour qu'on associe bien ce titre à ce qui vient après
+           lui plutôt qu'à ce qui précède. -->
+      <hr class="stats-chart-divider" />
+
       <!-- 6e -->
       <h3 class="chart-title">Fiches créées</h3>
       <div id="created-chart-wrap"></div>
 
+      <hr class="stats-chart-divider" />
+
       <!-- 6f -->
       <h3 class="chart-title">Notes données (Encore / Difficile / Bien / Facile)</h3>
       <div id="ratings-chart-wrap"></div>
+
+      <hr class="stats-chart-divider" />
 
       <!-- 6g -->
       <h3 class="chart-title">Évolution des notes dans le temps</h3>
