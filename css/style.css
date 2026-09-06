@@ -2371,6 +2371,15 @@ button.topbar-new-card-btn {
   overflow-y: auto;
 }
 
+/* Bug corrigé (même famille que .chart/.subject-choice-menu avant) :
+   `display: grid` ci-dessus l'emportait TOUJOURS sur `[hidden]`
+   (spécificité égale, l'ordre dans la feuille de style tranche) — le
+   popup restait donc visuellement affiché même une fois "fermé" côté DOM
+   (l'attribut hidden était bien posé, mais sans effet visuel réel). */
+.icon-popup[hidden] {
+  display: none;
+}
+
 .icon-bank-btn.is-active {
   background: var(--amber);
   border-color: var(--amber);
