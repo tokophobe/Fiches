@@ -116,26 +116,6 @@
 <div class="desk">
   <header class="topbar">
     <div class="brand">
-      <span class="brand-mark-wrap">
-        <svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true">
-          <path d="M 30 38 C 14 32, 6 40, 10 48 C 16 46, 26 44, 34 42 Z" fill="#6f8b5c"/>
-          <path d="M 70 38 C 86 32, 94 40, 90 48 C 84 46, 74 44, 66 42 Z" fill="#6f8b5c"/>
-          <line x1="50" y1="10" x2="50" y2="20" stroke="#cf9a4d" stroke-width="3" stroke-linecap="round"/>
-          <circle cx="50" cy="8" r="5" fill="#cf9a4d"/>
-          <path d="M 24 62 C 24 34, 76 34, 76 62 C 76 78, 64 84, 50 84 C 36 84, 24 78, 24 62 Z"
-                fill="#f7f1e1" stroke="#141d19" stroke-width="2.5"/>
-          <ellipse cx="50" cy="56" rx="21" ry="19" fill="#141d19"/>
-          <ellipse cx="50" cy="56" rx="17" ry="15.5" fill="#eee5cf"/>
-          <path d="M 41 52 C 41 47, 47 45, 50 48 C 53 45, 59 47, 59 52 C 61 53, 61 58, 58 59
-                   C 59 63, 55 66, 51 64 C 47 66, 43 63, 44 59 C 41 58, 41 53, 41 52 Z"
-                fill="none" stroke="#b6604a" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="44.5" cy="57" r="2.8" fill="#141d19"/>
-          <circle cx="55.5" cy="57" r="2.8" fill="#141d19"/>
-          <path d="M 45 65 C 47.5 68, 52.5 68, 55 65" fill="none" stroke="#141d19" stroke-width="2.2" stroke-linecap="round"/>
-          <circle cx="27" cy="60" r="3.5" fill="#cf9a4d"/>
-          <circle cx="73" cy="60" r="3.5" fill="#cf9a4d"/>
-        </svg>
-      </span>
       <h1 class="sr-only">Fiches</h1>
     </div>
     <div class="header-right">
@@ -352,28 +332,9 @@
 
     <!-- VUE STATS -->
     <section id="view-stats" class="view" aria-labelledby="tab-stats">
-      <svg class="stats-mascot" viewBox="0 0 100 100" aria-hidden="true">
-        <path d="M 30 38 C 14 32, 6 40, 10 48 C 16 46, 26 44, 34 42 Z" fill="#6f8b5c"/>
-        <path d="M 70 38 C 86 32, 94 40, 90 48 C 84 46, 74 44, 66 42 Z" fill="#6f8b5c"/>
-        <line x1="50" y1="10" x2="50" y2="20" stroke="#cf9a4d" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="50" cy="8" r="5" fill="#cf9a4d"/>
-        <path d="M 24 62 C 24 34, 76 34, 76 62 C 76 78, 64 84, 50 84 C 36 84, 24 78, 24 62 Z"
-              fill="#f7f1e1" stroke="#141d19" stroke-width="2.5"/>
-        <ellipse cx="50" cy="56" rx="21" ry="19" fill="#141d19"/>
-        <ellipse cx="50" cy="56" rx="17" ry="15.5" fill="#eee5cf"/>
-        <path d="M 41 52 C 41 47, 47 45, 50 48 C 53 45, 59 47, 59 52 C 61 53, 61 58, 58 59
-                 C 59 63, 55 66, 51 64 C 47 66, 43 63, 44 59 C 41 58, 41 53, 41 52 Z"
-              fill="none" stroke="#b6604a" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="44.5" cy="57" r="2.8" fill="#141d19"/>
-        <circle cx="55.5" cy="57" r="2.8" fill="#141d19"/>
-        <path d="M 45 65 C 47.5 68, 52.5 68, 55 65" fill="none" stroke="#141d19" stroke-width="2.2" stroke-linecap="round"/>
-        <circle cx="27" cy="60" r="3.5" fill="#cf9a4d"/>
-        <circle cx="73" cy="60" r="3.5" fill="#cf9a4d"/>
-      </svg>
-
-      <!-- Tout en haut (repositionné) : indépendant des choix de matière/
-           période ci-dessous, toujours sur les 30 derniers jours, toutes
-           matières confondues. -->
+      <!-- Tout en haut : indépendant des choix de matière/période
+           ci-dessous, toujours sur les 30 derniers jours, toutes matières
+           confondues. -->
       <h3 class="chart-title">🔥 Jours d'utilisation</h3>
       <p class="field-hint settings-block-hint">
         Un jour "chaud" = au moins une fiche notée ce jour-là, toutes
@@ -382,19 +343,31 @@
       <div id="streak-summary" class="streak-summary"></div>
       <div id="streak-chart-wrap" class="streak-chart-wrap"></div>
 
-      <h2 class="section-title">Où en es-tu</h2>
+      <!-- Item 8 : remonté ici (entre les flammes et le choix de matière),
+           pour ne PAS rester collé quand on descend dans la page — tape
+           sur le graphique pour changer d'échelle, comme sur Réviser
+           (item 9 : plus de menu déroulant séparé), et sans l'échelle
+           "1 an" (item 8). -->
+      <h3 class="chart-title">Fiches à revoir / révisées par jour</h3>
+      <p class="field-hint settings-block-hint">
+        "Aujourd'hui" est calé à gauche : les fiches à revoir s'étalent vers
+        la droite, l'historique des fiches révisées apparaît en faisant
+        défiler vers la gauche. Tape sur le graphique pour changer d'échelle.
+      </p>
+      <div class="chart-wrap" id="chart-wrap">
+        <div class="chart" id="due-chart"></div>
+      </div>
+      <p class="chart-empty" id="chart-empty" hidden>Rien à revoir sur cette période.</p>
 
-      <!-- Item 14 : réglages (matière/dossier, échelle, période) collés en
-           haut de page, toujours visibles même en descendant. -->
+      <!-- Item 7 : espace réduit, "Où en es-tu" en bas de cet espace
+           (visible en descendant) plutôt qu'en haut. -->
+      <h2 class="section-title stats-section-title-lower">Où en es-tu</h2>
+
+      <!-- Item 14 : réglages (matière/dossier, période) collés en haut de
+           page, toujours visibles même en descendant. -->
       <div class="stats-controls stats-controls--sticky">
         <button type="button" class="subject-select-btn" id="stats-subject-select-btn" aria-label="Choisir les matières pour les statistiques"></button>
         <div class="stats-controls--sticky-row2">
-          <select class="stats-select" id="stats-range-select" aria-label="Période affichée">
-            <option value="15">15 jours</option>
-            <option value="30">1 mois</option>
-            <option value="90">3 mois</option>
-            <option value="365">1 an</option>
-          </select>
           <select class="stats-select" id="stats-period-select" aria-label="Période des statistiques de la journée">
             <option value="today">Aujourd'hui</option>
             <option value="yesterday">Hier</option>
@@ -432,17 +405,6 @@
           <span class="stat-label">fiches revues</span>
         </div>
       </div>
-
-      <h3 class="chart-title">Fiches à revoir / révisées par jour</h3>
-      <p class="field-hint settings-block-hint">
-        "Aujourd'hui" est calé à gauche : les fiches à revoir s'étalent vers
-        la droite, l'historique des fiches révisées apparaît en faisant
-        défiler vers la gauche.
-      </p>
-      <div class="chart-wrap" id="chart-wrap">
-        <div class="chart" id="due-chart"></div>
-      </div>
-      <p class="chart-empty" id="chart-empty" hidden>Rien à revoir sur cette période.</p>
 
       <h3 class="chart-title">Statistiques de période</h3>
       <div class="stat-grid">
@@ -843,6 +805,14 @@
           <label class="field settings-bonus-field">
             <span>Fond des zones de texte</span>
             <input type="color" id="dev-color-rich-editor-bg" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Fond de la fiche (recto/verso)</span>
+            <input type="color" id="dev-color-card-bg" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Barres vides des histogrammes</span>
+            <input type="color" id="dev-color-empty-bar" />
           </label>
         </div>
         <button type="button" class="btn btn--ghost" id="dev-zone-colors-reset">Revenir aux couleurs d'origine</button>

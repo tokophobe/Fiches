@@ -873,10 +873,10 @@ textarea, input {
    pour que la mise en forme riche (couleurs de texte notamment) ressorte
    au mieux (item 20) — ne change QUE les faces de la fiche retournable,
    pas les autres cartes de l'appli qui gardent leur crème habituel. */
-.card-face--question { background: #ffffff; }
+.card-face--question { background: var(--card-bg-color, #ffffff); }
 
 .card-face--answer {
-  background: #ffffff;
+  background: var(--card-bg-color, #ffffff);
   transform: rotateY(180deg);
   justify-content: flex-start;
 }
@@ -1640,6 +1640,14 @@ textarea, input {
   margin: 4px 0 10px;
 }
 
+/* Item 7 : espace réduit entre le graphique juste au-dessus et ce titre,
+   qui se retrouve donc "en bas" de l'espace au lieu d'"en haut" — visible
+   seulement en descendant un peu, pas collé aux flammes tout en haut. */
+.stats-section-title-lower {
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+
 .chart-wrap {
   background: var(--chart-wrap-bg-color, var(--paper));
   border-radius: var(--radius-card);
@@ -1711,8 +1719,8 @@ textarea, input {
 
 /* Jours sans aucune fiche due : couleur neutre (beige plus foncé que le fond
    de la carte), pour rester visible sans attirer l'œil comme une vraie donnée. */
-.chart-bar--zero { background: var(--paper-3); }
-.chart-col.is-today .chart-bar--zero { background: var(--paper-3); }
+.chart-bar--zero { background: var(--empty-bar-color, var(--paper-3)); }
+.chart-col.is-today .chart-bar--zero { background: var(--empty-bar-color, var(--paper-3)); }
 
 .chart-value {
   font-family: var(--font-mono);

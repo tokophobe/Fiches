@@ -136,7 +136,6 @@
 
   const statTotal = el("stat-total");
   const statReviewedToday = el("stat-reviewed-today");
-  const statsRangeSelectEl = el("stats-range-select");
   const dueChartEl = el("due-chart");
   const chartEmptyEl = el("chart-empty");
   const ALL_SUBJECTS = "__all__";
@@ -153,6 +152,9 @@
   const reviewChartScaleLabelEl = el("review-chart-scale-label");
   const reviewChartSubjectNameEl = el("review-chart-subject-name");
   const REVIEW_CHART_STEPS = [15, 30, 90, 365];
+  // Item 8 : pas de "1 an" pour l'histogramme fusionné de Stats
+  // spécifiquement (celui de Réviser garde ses 4 échelles).
+  const STATS_CHART_STEPS = [15, 30, 90];
   const REVIEW_CHART_MAX_BAR_PX = 100;
   let reviewChartRangeDays = 15;
 
@@ -296,6 +298,8 @@
   const DEFAULT_SVG_CHART_BG_COLOR = "#1a2d26";
   const DEFAULT_CARD_FORM_BG_COLOR = "#f7f1e1";
   const DEFAULT_RICH_EDITOR_BG_COLOR = "#eee5cf";
+  const DEFAULT_CARD_BG_COLOR = "#ffffff";
+  const DEFAULT_EMPTY_BAR_COLOR = "#ddcfa9";
   const DEFAULT_ICONS = {
     hibernate: "💤", edit: "✎", construction: "🚧", undo: "◀️", folder: "📁",
   };
@@ -341,6 +345,8 @@
       svgChartBgColor: parsed.svgChartBgColor || DEFAULT_SVG_CHART_BG_COLOR,
       cardFormBgColor: parsed.cardFormBgColor || DEFAULT_CARD_FORM_BG_COLOR,
       richEditorBgColor: parsed.richEditorBgColor || DEFAULT_RICH_EDITOR_BG_COLOR,
+      cardBgColor: parsed.cardBgColor || DEFAULT_CARD_BG_COLOR,
+      emptyBarColor: parsed.emptyBarColor || DEFAULT_EMPTY_BAR_COLOR,
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       factoryDefaults: {
@@ -545,6 +551,8 @@
     root.setProperty("--svg-chart-bg-color", settings.svgChartBgColor);
     root.setProperty("--card-form-bg-color", settings.cardFormBgColor);
     root.setProperty("--rich-editor-bg-color", settings.richEditorBgColor);
+    root.setProperty("--card-bg-color", settings.cardBgColor);
+    root.setProperty("--empty-bar-color", settings.emptyBarColor);
   }
 
   /** Applique les émoticônes des icônes de la fiche/de l'arborescence
@@ -3914,7 +3922,6 @@
       false,
       pastDays
     );
-    if (statsRangeSelectEl) statsRangeSelectEl.value = String(statsRangeDays);
     // Cale "aujourd'hui" à l'extrémité GAUCHE de la zone visible par défaut
     // (item 9) : l'historique des fiches révisées reste hors champ tant
     // qu'on ne fait pas défiler volontairement vers la gauche.
@@ -3926,12 +3933,12 @@
   }
 
   /** Tape sur l'histogramme de la page Stats : passe à l'échelle
-   *  supérieure (boucle), comme sur le mini graphique de la page Réviser
-   *  (voir cycleReviewChartRange) — et met à jour le menu déroulant
-   *  au-dessus pour rester cohérent avec l'échelle réellement affichée. */
+   *  supérieure (boucle) — item 9 : plus de menu déroulant séparé, tout
+   *  se règle au tap, comme sur le mini graphique de la page Réviser. Sans
+   *  "1 an" (item 8, voir STATS_CHART_STEPS). */
   function cycleStatsChartRange() {
-    const idx = REVIEW_CHART_STEPS.indexOf(statsRangeDays);
-    statsRangeDays = REVIEW_CHART_STEPS[(idx + 1) % REVIEW_CHART_STEPS.length];
+    const idx = STATS_CHART_STEPS.indexOf(statsRangeDays);
+    statsRangeDays = STATS_CHART_STEPS[(idx + 1) % STATS_CHART_STEPS.length];
     renderDueChart();
   }
   const statsChartWrapEl = el("chart-wrap");
@@ -4315,11 +4322,6 @@
     setTimeout(() => toast.remove(), 3400);
   }
 
-  statsRangeSelectEl.addEventListener("change", () => {
-    statsRangeDays = Number(statsRangeSelectEl.value) || 15;
-    renderDueChart();
-  });
-
   /* ---------------------------------------------------------
      Mini histogramme de la page Réviser (matière en cours)
   --------------------------------------------------------- */
@@ -4366,18 +4368,46 @@
    *  l'inclure vraiment — sans ça, la vague animait la dernière colonne
    *  visible, une position qui n'avait rien à voir avec la vraie nouvelle
    *  échéance de la fiche. Revient à l'échelle normale une fois terminé. */
-  function triggerReviewChartWave(fromIdx, toIdx) {
+  /** Attend qu'un défilement fluide (smooth) ait eu le temps de se
+   *  terminer visuellement avant de continuer — plus simple et plus fiable
+   *  d'un navigateur à l'autre qu'un événement "scrollend" (pas encore
+   *  supporté partout). */
+  function waitForSmoothScroll(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  /** Anime en vague, de gauche à droite, toutes les colonnes entre
+   *  `fromIdx` (aujourd'hui) et `toIdx` (nouvelle date de la fiche notée) —
+   *  chaque barre intermédiaire s'allume brièvement l'une après l'autre
+   *  (léger décalage croissant), et la barre CIBLE (nouvelle date) ne
+   *  s'allume qu'en DERNIER, une fois la vague arrivée jusqu'à elle — puis
+   *  reste allumée et haute environ 1,5 seconde avant de revenir à la
+   *  normale.
+   *
+   *  Réécriture complète (bug corrigé — l'animation restait imprévisible :
+   *  vitesse qui variait, pause parfois absente, et surtout un vrai
+   *  problème quand un défilement était nécessaire, la vague démarrant
+   *  AVANT que le défilement (asynchrone, ~300-400ms) n'ait fini, ce qui
+   *  faisait tout jouer en même temps de façon chaotique. Désormais tout
+   *  se déroule dans un ordre strict et prévisible :
+   *  1. Si besoin, on redessine le graphique en élargi (fiche qui dépasse
+   *     la fenêtre actuellement affichée).
+   *  2. Si besoin, on défile jusqu'à la position finale et on ATTEND que ce
+   *     défilement soit terminé avant de passer à la suite (plus jamais en
+   *     même temps que la vague).
+   *  3. La vague se joue, avec un minutage entièrement fixé À L'AVANCE
+   *     (calculé une seule fois, jamais recalculé en cours de route).
+   *  4. Un SEUL minuteur global (pas un par barre) nettoie tout et revient
+   *     à la position de départ, calé sur la durée totale exacte —
+   *     indépendant des événements CSS "animationend", qui pouvaient être
+   *     manqués si quoi que ce soit d'autre redessinait le graphique pile
+   *     pendant l'animation. */
+  async function triggerReviewChartWave(fromIdx, toIdx) {
     if (!reviewChartEl) return;
     reviewWaveToken += 1;
     const myToken = reviewWaveToken;
+
     let cols = reviewChartEl.querySelectorAll(".chart-col");
-    // Redessine avec assez de jours si le graphique est actuellement VIDE
-    // (aucune fiche due dans la fenêtre normale — ex. une fiche isolée qui
-    // vient justement de bondir à j+172, plus aucune autre due : le rendu
-    // normal masque tout le graphique) OU si la cible dépasse ce qui est
-    // déjà rendu. Sans ce test AVANT de vérifier "cols.length === 0", le
-    // cas "graphique vide" retournait immédiatement sans jamais tenter
-    // l'extension, et l'animation ne se déclenchait tout simplement pas.
     if (cols.length === 0 || toIdx > cols.length - 1) {
       renderReviewChart(toIdx + 3);
       cols = reviewChartEl.querySelectorAll(".chart-col");
@@ -4386,22 +4416,13 @@
 
     const lo = Math.max(0, Math.min(fromIdx, toIdx));
     const hi = Math.min(cols.length - 1, Math.max(fromIdx, toIdx));
-    const span = hi - lo;
-    // Décalage entre deux barres consécutives de la vague — plafonné pour
-    // qu'une échéance lointaine (des dizaines, voire centaines de jours,
-    // avec un mode qui grandit vite) ne fasse pas durer le survol de
-    // toutes les barres intermédiaires plusieurs secondes avant même que
-    // la cible ne commence à s'allumer : la vague entière tient toujours
-    // dans MAX_SWEEP_MS, quel que soit le nombre de barres à traverser.
-    const MAX_SWEEP_MS = 650;
-    const STEP_MS = span > 0 ? Math.min(55, MAX_SWEEP_MS / span) : 55;
     const wasExtended = cols.length > (RANGE_CONFIG[reviewChartRangeDays] || {}).total;
 
-    // Défilement horizontal si besoin pour voir toute l'animation jusqu'au
-    // bout (item 4) — le conteneur scrollable est reviewChartWrapEl.
+    // Étape 1/2 : défilement d'ABORD, jusqu'au bout, avant de commencer
+    // quoi que ce soit d'autre.
     const scroller = reviewChartWrapEl;
-    let scrolledAway = false;
     const originalScrollLeft = scroller ? scroller.scrollLeft : 0;
+    let scrolledAway = false;
     if (scroller) {
       const targetCol = cols[hi];
       const targetLeft = targetCol.offsetLeft;
@@ -4412,57 +4433,51 @@
         scrolledAway = true;
         const dest = Math.max(0, targetLeft - scroller.clientWidth * 0.7);
         scroller.scrollTo({ left: dest, behavior: "smooth" });
+        await waitForSmoothScroll(420);
       }
     }
+    // Une vague plus récente a démarré pendant qu'on attendait le
+    // défilement (nouvelle notation très rapprochée) : on s'efface,
+    // silencieusement, sans toucher à rien.
+    if (myToken !== reviewWaveToken) return;
 
+    // Étape 3 : minutage entièrement fixé à l'avance, une seule fois.
+    const span = hi - lo;
+    const MAX_SWEEP_MS = 650;
+    const STEP_MS = span > 0 ? Math.min(55, MAX_SWEEP_MS / span) : 55;
+    const HOLD_MS = 1800;
+    let maxTotalMs = 0;
     for (let i = lo; i <= hi; i++) {
       const bar = cols[i].querySelector(".chart-bar");
       if (!bar) continue;
       const isTarget = i === hi;
-      const delay = (i - lo) * STEP_MS;
-      // Repart d'un état neutre avant de rejouer l'animation, au cas où une
-      // vague précédente serait encore en cours sur cette même barre.
+      const delay = Math.round((i - lo) * STEP_MS);
+      const animMs = isTarget ? HOLD_MS : 450;
+      maxTotalMs = Math.max(maxTotalMs, delay + animMs);
       bar.classList.remove("chart-bar-wave", "chart-bar-wave-hold");
       void bar.offsetWidth;
       bar.style.animationDelay = `${delay}ms`;
-      const animClass = isTarget ? "chart-bar-wave-hold" : "chart-bar-wave";
-      const animMs = isTarget ? 1800 : 450;
-      bar.classList.add(animClass);
-      // "handled" évite que le retour à la normale se joue deux fois si
-      // à la fois "animationend" ET le filet de sécurité ci-dessous
-      // finissent par se déclencher tous les deux (bug corrigé — item :
-      // la pause ne se faisait pas toujours sur la dernière barre :
-      // "animationend" peut être manqué si quoi que ce soit d'autre
-      // redessine le graphique pile pendant l'animation, ce qui annule
-      // silencieusement l'événement sans jamais nettoyer la classe ni
-      // relancer le retour à la position de départ). Un setTimeout calé
-      // sur la durée exacte de l'animation agit en filet de sécurité,
-      // indépendant du DOM/de l'événement CSS.
-      let handled = false;
-      const finish = () => {
-        if (handled) return;
-        handled = true;
-        bar.classList.remove(animClass);
-        bar.style.animationDelay = "";
-        // Périmé : une vague plus récente a démarré entre-temps (deux
-        // notations rapprochées) — on laisse cette dernière gérer seule
-        // le retour à la normale, pour ne jamais lui marcher dessus.
-        if (myToken !== reviewWaveToken) return;
-        // Une fois la barre cible revenue à la normale (donc toute
-        // l'animation terminée), on ramène le graphique à sa position de
-        // départ si on avait dû faire défiler pour la voir, et on repasse
-        // à l'échelle normale si elle avait dû être temporairement étendue.
-        if (isTarget) {
-          if (wasExtended) {
-            renderReviewChart();
-          } else if (scrolledAway && scroller) {
-            scroller.scrollTo({ left: originalScrollLeft, behavior: "smooth" });
-          }
-        }
-      };
-      bar.addEventListener("animationend", finish, { once: true });
-      setTimeout(finish, delay + animMs + 80);
+      bar.classList.add(isTarget ? "chart-bar-wave-hold" : "chart-bar-wave");
     }
+
+    // Étape 4 : un seul minuteur global, calé sur la durée totale exacte —
+    // ni plus tôt (couperait la pause), ni plus tard (délai visible avant
+    // le retour à la normale).
+    setTimeout(() => {
+      if (myToken !== reviewWaveToken) return;
+      cols.forEach((col) => {
+        const bar = col.querySelector(".chart-bar");
+        if (bar) {
+          bar.classList.remove("chart-bar-wave", "chart-bar-wave-hold");
+          bar.style.animationDelay = "";
+        }
+      });
+      if (wasExtended) {
+        renderReviewChart();
+      } else if (scrolledAway && scroller) {
+        scroller.scrollTo({ left: originalScrollLeft, behavior: "smooth" });
+      }
+    }, maxTotalMs + 60);
   }
 
   /** Tape sur le mini graphique : passe à l'échelle supérieure (boucle). */
@@ -4748,6 +4763,8 @@
     svgChartBgColor: "dev-color-svg-chart-bg",
     cardFormBgColor: "dev-color-card-form-bg",
     richEditorBgColor: "dev-color-rich-editor-bg",
+    cardBgColor: "dev-color-card-bg",
+    emptyBarColor: "dev-color-empty-bar",
   };
   const DEV_ZONE_COLOR_DEFAULTS = {
     mainTextColor: DEFAULT_MAIN_TEXT_COLOR,
@@ -4758,6 +4775,8 @@
     svgChartBgColor: DEFAULT_SVG_CHART_BG_COLOR,
     cardFormBgColor: DEFAULT_CARD_FORM_BG_COLOR,
     richEditorBgColor: DEFAULT_RICH_EDITOR_BG_COLOR,
+    cardBgColor: DEFAULT_CARD_BG_COLOR,
+    emptyBarColor: DEFAULT_EMPTY_BAR_COLOR,
   };
   function saveZoneColorsFromInputs() {
     const settings = loadDevSettings();
