@@ -429,7 +429,12 @@
     const labels = loadDevSettings().navLabels;
     Object.keys(labels).forEach((view) => {
       const tab = document.querySelector(`.tab[data-view="${view}"]`);
-      if (tab) tab.textContent = labels[view];
+      // Ne touche à rien si CE tab précis n'a jamais été personnalisé
+      // (valeur encore égale au défaut) — les icônes SVG sobres posées en
+      // dur dans le HTML restent alors en place ; seule une vraie
+      // personnalisation faite dans la page Développeur remplace l'icône
+      // par le texte/l'émoticône choisi.
+      if (tab && labels[view] !== DEFAULT_NAV_LABELS[view]) tab.textContent = labels[view];
     });
   }
 

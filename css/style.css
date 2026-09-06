@@ -664,6 +664,18 @@ textarea, input {
 .tab.tab--icon {
   font-size: 19px;
   padding: 8px 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Icônes sobres en SVG (essai demandé) : un seul trait, suit la couleur du
+   texte du tab (currentColor), donc actif/inactif se gère tout seul sans
+   rien dupliquer en CSS. */
+.tab-icon-svg {
+  width: 22px;
+  height: 22px;
+  display: block;
 }
 
 .tab.is-active { color: var(--paper); }
