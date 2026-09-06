@@ -1523,6 +1523,16 @@ textarea, input {
   margin-bottom: 8px;
 }
 
+/* Vues défilables "par jour/semaine/mois" (items 10/11) : largeur fixe par
+   tranche, défilement horizontal — "aujourd'hui" toujours visible sans
+   défiler (dernière tranche, à droite). */
+.ratings-scroll-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  border-radius: 8px;
+}
+
 /* Flammes / jours d'utilisation (item 6). */
 .streak-summary {
   display: flex;
@@ -2140,31 +2150,85 @@ textarea, input {
   margin-bottom: 10px;
 }
 
-/* Curseurs teinte/saturation/lumière (item 17), affichés juste après
-   chaque sélecteur de couleur natif quand le réglage est activé. */
-.hsl-sliders {
+/* Popup de couleur personnalisé (item 2) : remplace le sélecteur natif
+   partout dans la page Développeur — pastille cliquable + popup avec
+   aperçu, curseurs (RVB ou TSL, choix mémorisé et modifiable dans le
+   popup lui-même), pas un réglage séparé ailleurs sur la page. */
+.color-swatch-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid rgba(35, 48, 42, 0.2);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.color-popup {
+  z-index: 60;
+  background: var(--paper);
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: var(--shadow-deep);
+  width: 190px;
+}
+
+.color-popup-preview {
+  width: 100%;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid rgba(35, 48, 42, 0.2);
+  margin-bottom: 8px;
+}
+
+.color-popup-sliders {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  margin-top: 4px;
+  gap: 4px;
 }
 
 .hsl-slider-row {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .hsl-slider-row span {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 10px;
   color: var(--ink-soft);
   width: 10px;
+  flex-shrink: 0;
 }
 
 .hsl-slider-row input[type="range"] {
   flex: 1;
-  height: 14px;
+  height: 18px;
+}
+
+.color-popup-mode-toggle {
+  display: flex;
+  gap: 4px;
+  margin-top: 10px;
+  border-top: 1px solid rgba(35, 48, 42, 0.12);
+  padding-top: 8px;
+}
+
+.color-popup-mode-btn {
+  flex: 1;
+  background: var(--paper-2);
+  border: 1px solid rgba(35, 48, 42, 0.15);
+  border-radius: 6px;
+  padding: 6px 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.color-popup-mode-btn.is-active {
+  background: var(--amber);
+  color: #2a1f0d;
+  border-color: var(--amber);
 }
 
 .dev-text-color-row {

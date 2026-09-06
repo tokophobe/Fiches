@@ -473,55 +473,121 @@
     localStorage.setItem(COLOR_SLIDER_MODE_KEY, value);
   }
 
-  /** Insère 3 curseurs (RVB ou TSL selon le mode choisi) juste après CHAQUE
-   *  sélecteur de couleur natif de la page Développeur, synchronisés avec
-   *  lui dans les deux sens. Appelé après chaque rendu de la page (les
-   *  pastilles de couleur de texte / modes personnalisés étant elles-mêmes
-   *  régénérées dynamiquement). Sans effet si le mode est "none".
-   */
-  function enhanceColorInputsWithHsl() {
-    const mode = loadColorSliderMode();
-    document.querySelectorAll('#view-dev input[type="color"]').forEach((input) => {
-      const existing = input.nextElementSibling;
-      if (existing && existing.classList && existing.classList.contains("hsl-sliders")) {
-        existing.remove();
-      }
-      if (mode === "none") return;
-      const wrap = document.createElement("span");
-      wrap.className = "hsl-sliders";
+  /** Remplace le sélecteur natif <input type="color"> par un popup
+   *  personnalisé (item 2 — clarifié : le choix RVB/TSL doit vivre DANS le
+   *  popup qui s'ouvre au clic sur une couleur, pas à côté sous forme de
+   *  réglage séparé). Chaque couleur de la page Développeur (et de la
+   *  page Modes d'apprentissage pour les modes personnalisés) devient une
+   *  pastille cliquable ; le popup contient l'aperçu, les curseurs
+   *  (RVB ou TSL selon le dernier choix fait, mémorisé), et un bouton pour
+   *  basculer entre les deux à tout moment. */
+  let colorPopupEl = null;
+  function ensureColorPopup() {
+    if (colorPopupEl) return colorPopupEl;
+    colorPopupEl = document.createElement("div");
+    colorPopupEl.className = "color-popup";
+    colorPopupEl.hidden = true;
+    document.body.appendChild(colorPopupEl);
+    document.addEventListener("click", (e) => {
+      if (colorPopupEl.hidden) return;
+      if (colorPopupEl.contains(e.target) || e.target.classList.contains("color-swatch-btn")) return;
+      colorPopupEl.hidden = true;
+    });
+    return colorPopupEl;
+  }
+
+  function openColorPopup(input, anchorBtn) {
+    const popup = ensureColorPopup();
+    const rect = anchorBtn.getBoundingClientRect();
+    const popupWidth = 190;
+    popup.style.position = "fixed";
+    popup.style.top = `${rect.bottom + 6}px`;
+    popup.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - popupWidth - 8))}px`;
+    popup.hidden = false;
+
+    function render() {
+      const mode = loadColorSliderMode() === "rgb" ? "rgb" : "tsl";
+      const hex = input.value;
+      let slidersHtml;
       if (mode === "rgb") {
-        const r = parseInt(input.value.slice(1, 3), 16);
-        const g = parseInt(input.value.slice(3, 5), 16);
-        const bl = parseInt(input.value.slice(5, 7), 16);
-        wrap.innerHTML = `
-          <span class="hsl-slider-row"><span>R</span><input type="range" min="0" max="255" value="${r}" data-c="r" /></span>
-          <span class="hsl-slider-row"><span>V</span><input type="range" min="0" max="255" value="${g}" data-c="g" /></span>
-          <span class="hsl-slider-row"><span>B</span><input type="range" min="0" max="255" value="${bl}" data-c="b" /></span>
+        const r = parseInt(hex.slice(1, 3), 16) || 0;
+        const g = parseInt(hex.slice(3, 5), 16) || 0;
+        const bch = parseInt(hex.slice(5, 7), 16) || 0;
+        slidersHtml = `
+          <div class="hsl-slider-row"><span>R</span><input type="range" min="0" max="255" value="${r}" data-c="r" /></div>
+          <div class="hsl-slider-row"><span>V</span><input type="range" min="0" max="255" value="${g}" data-c="v" /></div>
+          <div class="hsl-slider-row"><span>B</span><input type="range" min="0" max="255" value="${bch}" data-c="b" /></div>
         `;
-        input.insertAdjacentElement("afterend", wrap);
-        const sliders = { r: wrap.querySelector('[data-c="r"]'), g: wrap.querySelector('[data-c="g"]'), b: wrap.querySelector('[data-c="b"]') };
-        const applyFromSliders = () => {
-          const toHex = (v) => Number(v).toString(16).padStart(2, "0");
-          input.value = `#${toHex(sliders.r.value)}${toHex(sliders.g.value)}${toHex(sliders.b.value)}`;
-          input.dispatchEvent(new Event("input", { bubbles: true }));
-        };
-        Object.values(sliders).forEach((s) => s.addEventListener("input", applyFromSliders));
       } else {
-        const hsl = hexToHsl(input.value);
-        wrap.innerHTML = `
-          <span class="hsl-slider-row"><span>T</span><input type="range" min="0" max="360" value="${hsl.h}" data-c="h" /></span>
-          <span class="hsl-slider-row"><span>S</span><input type="range" min="0" max="100" value="${hsl.s}" data-c="s" /></span>
-          <span class="hsl-slider-row"><span>L</span><input type="range" min="0" max="100" value="${hsl.l}" data-c="l" /></span>
+        const hsl = hexToHsl(hex);
+        slidersHtml = `
+          <div class="hsl-slider-row"><span>T</span><input type="range" min="0" max="360" value="${hsl.h}" data-c="h" /></div>
+          <div class="hsl-slider-row"><span>S</span><input type="range" min="0" max="100" value="${hsl.s}" data-c="s" /></div>
+          <div class="hsl-slider-row"><span>L</span><input type="range" min="0" max="100" value="${hsl.l}" data-c="l" /></div>
         `;
-        input.insertAdjacentElement("afterend", wrap);
-        const sliders = { h: wrap.querySelector('[data-c="h"]'), s: wrap.querySelector('[data-c="s"]'), l: wrap.querySelector('[data-c="l"]') };
-        const applyFromSliders = () => {
-          const hex = hslToHex(Number(sliders.h.value), Number(sliders.s.value), Number(sliders.l.value));
-          input.value = hex;
-          input.dispatchEvent(new Event("input", { bubbles: true }));
-        };
-        Object.values(sliders).forEach((s) => s.addEventListener("input", applyFromSliders));
       }
+      popup.innerHTML = `
+        <div class="color-popup-preview" style="background:${hex}"></div>
+        <div class="color-popup-sliders">${slidersHtml}</div>
+        <div class="color-popup-mode-toggle">
+          <button type="button" class="color-popup-mode-btn${mode === "rgb" ? " is-active" : ""}" data-mode="rgb">RVB</button>
+          <button type="button" class="color-popup-mode-btn${mode === "tsl" ? " is-active" : ""}" data-mode="tsl">TSL</button>
+        </div>
+      `;
+      popup.querySelectorAll('input[type="range"]').forEach((slider) => {
+        slider.addEventListener("input", () => {
+          let newHex;
+          if (mode === "rgb") {
+            const toHex = (v) => Number(v).toString(16).padStart(2, "0");
+            newHex = `#${toHex(popup.querySelector('[data-c="r"]').value)}${toHex(popup.querySelector('[data-c="v"]').value)}${toHex(popup.querySelector('[data-c="b"]').value)}`;
+          } else {
+            newHex = hslToHex(
+              Number(popup.querySelector('[data-c="h"]').value),
+              Number(popup.querySelector('[data-c="s"]').value),
+              Number(popup.querySelector('[data-c="l"]').value)
+            );
+          }
+          input.value = newHex;
+          anchorBtn.style.background = newHex;
+          popup.querySelector(".color-popup-preview").style.background = newHex;
+          input.dispatchEvent(new Event("input", { bubbles: true }));
+        });
+      });
+      popup.querySelectorAll(".color-popup-mode-btn").forEach((b) => {
+        b.addEventListener("click", () => {
+          saveColorSliderMode(b.dataset.mode);
+          render();
+        });
+      });
+    }
+    render();
+  }
+
+  /** Transforme chaque <input type="color"> pertinent en pastille cliquable
+   *  ouvrant le popup ci-dessus — appelé après chaque rendu (les pastilles
+   *  de couleur de texte / modes personnalisés étant régénérées
+   *  dynamiquement). L'input natif reste dans le DOM (caché) : il continue
+   *  de porter la valeur et de déclencher les mêmes événements "input" que
+   *  tout le reste du code attend déjà. */
+  function enhanceColorInputsWithHsl() {
+    document.querySelectorAll('#view-dev input[type="color"], #algo-custom-picker-list input[type="color"]').forEach((input) => {
+      if (input.dataset.swatchUpgraded) {
+        const btn = input.nextElementSibling;
+        if (btn && btn.classList.contains("color-swatch-btn")) btn.style.background = input.value;
+        return;
+      }
+      input.dataset.swatchUpgraded = "true";
+      input.style.display = "none";
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "color-swatch-btn" + (input.className.includes("algo-custom-picker-color") ? " algo-custom-picker-color" : "");
+      btn.style.background = input.value;
+      btn.title = input.title || "";
+      input.insertAdjacentElement("afterend", btn);
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openColorPopup(input, btn);
+      });
     });
   }
 
@@ -1471,6 +1537,7 @@
       list.appendChild(label);
       cb.addEventListener("change", () => loadModeFormIntoInputs(m.id));
     });
+    enhanceColorInputsWithHsl();
   }
 
   /** Place la valeur d'un mode sur son curseur discret (item 9) et met à
@@ -4062,68 +4129,100 @@
     wrap.innerHTML = svg;
   }
 
+  let ratingsPeriod = "today";
+
+  /** Calcule numBuckets tranches de bucketDays jours chacune, la dernière
+   *  (index numBuckets-1) correspondant à AUJOURD'HUI — items 10/11 :
+   *  remplace les anciennes options "semaine dernière"/"mois dernier" par
+   *  des vues défilables (par jour/semaine/mois) sur une vingtaine de
+   *  tranches, plutôt qu'une fenêtre fixe. */
+  function computeScrollableBuckets(entries, numBuckets, bucketDays) {
+    const today = startOfDay(new Date());
+    const end = new Date(today);
+    end.setDate(end.getDate() + 1); // exclusive
+    const bucketMs = bucketDays * 86400000;
+    const rangeStart = new Date(end.getTime() - numBuckets * bucketMs);
+    const buckets = Array.from({ length: numBuckets }, () => ({ again: 0, hard: 0, good: 0, easy: 0 }));
+    entries.forEach((e) => {
+      const t = new Date(e.at).getTime();
+      if (t < rangeStart.getTime() || t >= end.getTime()) return;
+      let idx = Math.floor((t - rangeStart.getTime()) / bucketMs);
+      if (idx >= numBuckets) idx = numBuckets - 1;
+      if (idx < 0) idx = 0;
+      if (buckets[idx][e.rating] !== undefined) buckets[idx][e.rating] += 1;
+    });
+    return { buckets, rangeStart };
+  }
+
+  function scrollableBucketLabel(periodKind, date) {
+    if (periodKind === "byday") return WEEKDAY_SHORT[date.getDay()];
+    if (periodKind === "byweek") return formatShortDateLabel(date);
+    return MONTH_SHORT[date.getMonth()];
+  }
+
   function renderRatingsChart() {
     const wrap = el("ratings-chart-wrap");
     if (!wrap) return;
     const scoped = ratingLogInScope();
-    const { start, end } = periodToRange(statsPeriod);
-    const spanDays = Math.round((end.getTime() - start.getTime()) / 86400000);
-    const filtered = filterEntriesByPeriod(scoped, statsPeriod);
-    // Item 12 : dès que l'échelle dépasse un seul jour, on revient à des
-    // barres groupées PAR JOUR (comme dans une version précédente) plutôt
-    // qu'un simple total agrégé sur toute la période — plus parlant pour
-    // voir l'évolution jour par jour.
-    if (spanDays <= 1) {
+    if (ratingsPeriod === "today" || ratingsPeriod === "yesterday") {
+      const filtered = filterEntriesByPeriod(scoped, ratingsPeriod);
       renderRatingsSimpleChart(wrap, filtered, ["again", "hard", "good", "easy"]);
-    } else {
-      renderRatingsGroupedChart(wrap, filtered, start, end, spanDays);
-    }
-  }
-
-  /** Barres groupées par jour (item 12), 4 barres (Encore/Difficile/Bien/
-   *  Facile) par jour — en jours individuels si la période ne dépasse pas
-   *  10 jours (ex. "Semaine dernière"), sinon regroupées en 10 tranches
-   *  pour rester lisible sur des périodes plus longues (mois, années). */
-  function renderRatingsGroupedChart(wrap, entries, start, end, spanDays) {
-    if (entries.length === 0) {
-      wrap.innerHTML = `<p class="field-hint algo-chart-empty">Aucune note enregistrée sur cette période.</p>`;
       return;
     }
+    const bucketDaysMap = { byday: 1, byweek: 7, bymonth: 30 };
+    const bucketDays = bucketDaysMap[ratingsPeriod] || 1;
+    const NUM_BUCKETS = 20;
+    const { buckets, rangeStart } = computeScrollableBuckets(scoped, NUM_BUCKETS, bucketDays);
+    renderRatingsScrollableChart(wrap, buckets, rangeStart, bucketDays, ratingsPeriod);
+  }
+
+  /** Vue défilable (items 10/11) : "aujourd'hui" toujours visible sans
+   *  défiler (dernière tranche, à droite), on remonte dans le temps en
+   *  faisant défiler vers la gauche — largeur FIXE par tranche (pas de
+   *  redimensionnement à la largeur de l'écran) pour que le défilement ait
+   *  un sens. */
+  function renderRatingsScrollableChart(wrap, buckets, rangeStart, bucketDays, periodKind) {
     const ratings = ["again", "hard", "good", "easy"];
-    const numGroups = Math.min(spanDays, 10);
-    const buckets = bucketEntriesByPeriod(entries, start, end, numGroups);
-    const counts = buckets.map((b) => ratings.map((r) => b[r]));
-    const max = Math.max(1, ...counts.flat());
-    const yMax = Math.max(4, Math.ceil(max * 1.15));
-
-    const W = 320, H = 200, padL = 24, padB = 22, padT = 12, padR = 8;
-    const plotW = W - padL - padR, plotH = H - padT - padB;
-    const groupW = plotW / numGroups;
-    const barW = (groupW * 0.78) / ratings.length;
-    const yPos = (v) => padT + (1 - v / yMax) * plotH;
-
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--svg-chart-bg-color, var(--desk));border-radius:8px;">`;
-    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
-    const bucketMs = (end.getTime() - start.getTime()) / numGroups;
-    for (let g = 0; g < numGroups; g++) {
-      const groupX = padL + groupW * g;
-      ratings.forEach((r, ri) => {
-        const v = counts[g][ri];
-        const h = (v / yMax) * plotH;
-        const x = groupX + (groupW - barW * ratings.length) / 2 + barW * ri;
-        const y = H - padB - h;
-        svg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${Math.max(1, barW - 1).toFixed(1)}" height="${Math.max(v > 0 ? 1 : 0, h).toFixed(1)}" rx="1.5" fill="${ALGO_CHART_COLORS[r]}"/>`;
-      });
-      const bucketDate = new Date(start.getTime() + bucketMs * g);
-      const label = numGroups <= 10 && spanDays <= 10 ? WEEKDAY_SHORT[bucketDate.getDay()] : formatShortDateLabel(bucketDate);
-      svg += `<text x="${(groupX + groupW / 2).toFixed(1)}" y="${H - padB + 12}" font-size="7" fill="#9aa89e" text-anchor="middle">${label}</text>`;
-    }
-    svg += `</svg>`;
-
+    const numBuckets = buckets.length;
     const legend = ratings
       .map((r) => `<span class="algo-chart-legend-item"><span class="algo-chart-legend-dot" style="background:${ALGO_CHART_COLORS[r]}"></span>${ALGO_CHART_RATING_LABELS[r]}</span>`)
       .join("");
-    wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${svg}`;
+    const anyData = buckets.some((b) => ratings.some((r) => b[r] > 0));
+    if (!anyData) {
+      wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div><p class="field-hint algo-chart-empty">Aucune note enregistrée sur cette période.</p>`;
+      return;
+    }
+    const max = Math.max(1, ...buckets.flatMap((b) => ratings.map((r) => b[r])));
+    const yMax = Math.max(4, Math.ceil(max * 1.15));
+    const BUCKET_W = 46;
+    const padL = 22, padR = 8, padT = 10, padB = 20;
+    const H = 190;
+    const plotH = H - padT - padB;
+    const W = padL + padR + numBuckets * BUCKET_W;
+    const barW = (BUCKET_W * 0.7) / ratings.length;
+    const bucketMs = bucketDays * 86400000;
+
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:${W}px;height:auto;background:var(--svg-chart-bg-color, var(--desk));border-radius:8px;display:block;">`;
+    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
+    for (let i = 0; i < numBuckets; i++) {
+      const bucketX = padL + i * BUCKET_W;
+      const bucketDate = new Date(rangeStart.getTime() + i * bucketMs);
+      ratings.forEach((r, ri) => {
+        const v = buckets[i][r];
+        const h = (v / yMax) * plotH;
+        const x = bucketX + (BUCKET_W - barW * ratings.length) / 2 + barW * ri;
+        const y = H - padB - h;
+        svg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${Math.max(1, barW - 1).toFixed(1)}" height="${Math.max(v > 0 ? 1 : 0, h).toFixed(1)}" rx="1.5" fill="${ALGO_CHART_COLORS[r]}"/>`;
+      });
+      const isToday = i === numBuckets - 1;
+      const label = isToday ? "Auj" : scrollableBucketLabel(periodKind, bucketDate);
+      svg += `<text x="${(bucketX + BUCKET_W / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--paper)" : "#9aa89e"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
+    }
+    svg += `</svg>`;
+
+    wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div><div class="ratings-scroll-wrap">${svg}</div>`;
+    const scrollWrap = wrap.querySelector(".ratings-scroll-wrap");
+    if (scrollWrap) scrollWrap.scrollLeft = scrollWrap.scrollWidth;
   }
 
   /* ---------------------------------------------------------
@@ -4157,44 +4256,70 @@
     const wrap = el("ratings-history-chart-wrap");
     if (!wrap) return;
     const scoped = ratingLogInScope();
-    const { start, end } = periodToRange(statsPeriod);
-    const filtered = filterEntriesByPeriod(scoped, statsPeriod);
     const ratings = ["again", "hard", "good", "easy"];
-
     const legend = ratings
       .map(
         (r) => `<span class="algo-chart-legend-item"><span class="algo-chart-legend-dot" style="background:${ALGO_CHART_COLORS[r]}"></span>${ALGO_CHART_RATING_LABELS[r]}</span>`
       )
       .join("");
 
-    if (filtered.length === 0) {
+    // Items 10/11 : mêmes échelles que le graphique juste au-dessus —
+    // aujourd'hui/hier restent un simple découpage en 10 tranches sur la
+    // période ; par jour/semaine/mois deviennent des vues défilables sur
+    // 20 tranches, aujourd'hui toujours visible sans défiler.
+    let buckets, rangeStart, bucketMs, numBuckets, dateForBucket;
+    if (ratingsPeriod === "today" || ratingsPeriod === "yesterday") {
+      const { start, end } = periodToRange(ratingsPeriod);
+      const filtered = filterEntriesByPeriod(scoped, ratingsPeriod);
+      numBuckets = 10;
+      const built = bucketEntriesByPeriod(filtered, start, end, numBuckets);
+      buckets = built;
+      rangeStart = start;
+      bucketMs = (end.getTime() - start.getTime()) / numBuckets;
+      dateForBucket = (i) => new Date(rangeStart.getTime() + bucketMs * i);
+    } else {
+      const bucketDaysMap = { byday: 1, byweek: 7, bymonth: 30 };
+      const bucketDays = bucketDaysMap[ratingsPeriod] || 1;
+      numBuckets = 20;
+      const result = computeScrollableBuckets(scoped, numBuckets, bucketDays);
+      buckets = result.buckets;
+      rangeStart = result.rangeStart;
+      bucketMs = bucketDays * 86400000;
+      dateForBucket = (i) => new Date(rangeStart.getTime() + bucketMs * i);
+    }
+
+    const anyData = buckets.some((b) => ratings.some((r) => b[r] > 0));
+    if (!anyData) {
       wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div><p class="field-hint algo-chart-empty">Aucune note enregistrée sur cette période.</p>`;
       return;
     }
 
-    const NUM_BUCKETS = 10;
-    const buckets = bucketEntriesByPeriod(filtered, start, end, NUM_BUCKETS);
+    const scrollable = ratingsPeriod !== "today" && ratingsPeriod !== "yesterday";
+    const BUCKET_W = scrollable ? 46 : (320 - 28 - 8) / numBuckets;
+    const padL = scrollable ? 22 : 28, padR = 8, padT = 10, padB = scrollable ? 20 : 24;
+    const H = scrollable ? 190 : 210;
+    const plotH = H - padT - padB;
+    const W = scrollable ? padL + padR + numBuckets * BUCKET_W : 320;
+    const barW = BUCKET_W * (scrollable ? 0.7 : 0.7);
 
-    const W = 320, H = 210, padL = 28, padB = 24, padT = 10, padR = 8;
-    const plotW = W - padL - padR, plotH = H - padT - padB;
-    const bucketW = plotW / NUM_BUCKETS;
-    const barW = bucketW * 0.7;
-    const bucketMs = (end.getTime() - start.getTime()) / NUM_BUCKETS;
-
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--svg-chart-bg-color, var(--desk));border-radius:8px;">`;
-    [0, 50, 100].forEach((pct) => {
-      const y = padT + (1 - pct / 100) * plotH;
-      svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(247,241,225,0.1)" stroke-width="1"/>`;
-      svg += `<text x="${padL - 4}" y="${y + 3}" font-size="7" fill="#9aa89e" text-anchor="end">${pct}%</text>`;
-    });
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:${scrollable ? W + "px" : "100%"};height:auto;background:var(--svg-chart-bg-color, var(--desk));border-radius:8px;${scrollable ? "display:block;" : ""}">`;
+    if (!scrollable) {
+      [0, 50, 100].forEach((pct) => {
+        const y = padT + (1 - pct / 100) * plotH;
+        svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(247,241,225,0.1)" stroke-width="1"/>`;
+        svg += `<text x="${padL - 4}" y="${y + 3}" font-size="7" fill="#9aa89e" text-anchor="end">${pct}%</text>`;
+      });
+    }
 
     buckets.forEach((b, i) => {
-      const x = padL + bucketW * i + (bucketW - barW) / 2;
+      const x = padL + BUCKET_W * i + (BUCKET_W - barW) / 2;
       const total = ratings.reduce((s, r) => s + b[r], 0);
-      // Repère de date sous chaque tranche (item 11 — axe des abscisses
-      // enfin lisible : le début et la fin de chaque tranche temporelle).
-      const bucketDate = new Date(start.getTime() + bucketMs * i);
-      if (i === 0 || i === NUM_BUCKETS - 1 || i === Math.floor(NUM_BUCKETS / 2)) {
+      const bucketDate = dateForBucket(i);
+      const isToday = scrollable && i === numBuckets - 1;
+      if (scrollable) {
+        const label = isToday ? "Auj" : scrollableBucketLabel(ratingsPeriod, bucketDate);
+        svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--paper)" : "#9aa89e"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
+      } else if (i === 0 || i === numBuckets - 1 || i === Math.floor(numBuckets / 2)) {
         svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${H - padB + 13}" font-size="7" fill="#9aa89e" text-anchor="middle">${formatShortDateLabel(bucketDate)}</text>`;
       }
       if (total === 0) return;
@@ -4206,8 +4331,8 @@
         const segH = share * plotH;
         const y = yCursor - segH;
         svg += `<rect x="${x}" y="${y}" width="${barW}" height="${segH}" fill="${ALGO_CHART_COLORS[r]}"/>`;
-        // Pourcentage affiché dans le segment (remplace les cases à cocher
-        // retirées) — seulement s'il y a assez de place pour rester lisible.
+        // Pourcentage affiché dans le segment — seulement s'il y a assez de
+        // place pour rester lisible.
         const pctLabel = Math.round(share * 100);
         if (segH >= 10) {
           svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${(y + segH / 2 + 2.5).toFixed(1)}" font-size="6.5" fill="var(--desk)" text-anchor="middle" font-weight="700">${pctLabel}%</text>`;
@@ -4217,7 +4342,14 @@
     });
     svg += `</svg>`;
 
-    wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${svg}<p class="algo-chart-axis-x">Temps, du début à la fin de la période choisie ci-dessus</p>`;
+    const axisLabel = `<p class="algo-chart-axis-x">Temps, du début à la fin de la période choisie ci-dessus</p>`;
+    if (scrollable) {
+      wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div><div class="ratings-scroll-wrap">${svg}</div>${axisLabel}`;
+      const scrollWrap = wrap.querySelector(".ratings-scroll-wrap");
+      if (scrollWrap) scrollWrap.scrollLeft = scrollWrap.scrollWidth;
+    } else {
+      wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div>${svg}${axisLabel}`;
+    }
   }
 
   /* ---------------------------------------------------------
@@ -4296,9 +4428,20 @@
     statsPeriodSelectEl.value = statsPeriod;
     statsPeriodSelectEl.addEventListener("change", () => {
       statsPeriod = statsPeriodSelectEl.value;
+      renderPeriodCounts();
+    });
+  }
+
+  // Items 10/11 : période dédiée aux 2 graphiques de notes (indépendante
+  // du sélecteur ci-dessus, qui ne concerne plus que les compteurs
+  // "fiches créées/révisées").
+  const ratingsPeriodSelectEl = el("ratings-period-select");
+  if (ratingsPeriodSelectEl) {
+    ratingsPeriodSelectEl.value = ratingsPeriod;
+    ratingsPeriodSelectEl.addEventListener("change", () => {
+      ratingsPeriod = ratingsPeriodSelectEl.value;
       renderRatingsChart();
       renderRatingsHistoryChart();
-      renderPeriodCounts();
     });
   }
 
@@ -4940,8 +5083,6 @@
   }
 
   function renderDevView() {
-    const colorSliderModeSelect = el("dev-color-slider-mode");
-    if (colorSliderModeSelect) colorSliderModeSelect.value = loadColorSliderMode();
     const labels = loadDevSettings().ratingLabels;
     ["again", "hard", "good", "easy"].forEach((r) => {
       const input = el(`dev-rating-${r}`);
@@ -4984,13 +5125,6 @@
     // modes personnalisés...), donc les curseurs T/S/L doivent être posés
     // en tout dernier pour ne rater aucun d'entre eux.
     enhanceColorInputsWithHsl();
-  }
-  const devColorSliderModeSelect = el("dev-color-slider-mode");
-  if (devColorSliderModeSelect) {
-    devColorSliderModeSelect.addEventListener("change", () => {
-      saveColorSliderMode(devColorSliderModeSelect.value);
-      enhanceColorInputsWithHsl();
-    });
   }
 
   /** Bouton de dépannage manuel : désinscrit le(s) service worker(s) et vide

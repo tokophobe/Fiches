@@ -419,6 +419,13 @@
       </div>
 
       <h3 class="chart-title">Notes données (Encore / Difficile / Bien / Facile)</h3>
+      <select class="stats-select" id="ratings-period-select" aria-label="Période des graphiques de notes">
+        <option value="today">Aujourd'hui</option>
+        <option value="yesterday">Hier</option>
+        <option value="byday">Par jour</option>
+        <option value="byweek">Par semaine</option>
+        <option value="bymonth">Par mois</option>
+      </select>
       <div id="ratings-chart-wrap"></div>
 
       <h3 class="chart-title">Évolution des notes dans le temps</h3>
@@ -598,20 +605,6 @@
         n'existera que dans la variante développeur — la variante
         utilisateur ne l'aura pas.
       </p>
-
-      <div class="card-form">
-        <h3 class="settings-block-title">Curseurs additionnels pour toutes les couleurs</h3>
-        <p class="field-hint settings-block-hint">
-          En plus du sélecteur natif de l'appareil (qui propose ses propres
-          onglets Grille/Spectre/Curseurs), affiche des curseurs juste en
-          dessous de chaque couleur ci-dessous.
-        </p>
-        <select class="stats-select" id="dev-color-slider-mode">
-          <option value="none">Aucun curseur additionnel</option>
-          <option value="rgb">Curseurs RVB (rouge/vert/bleu)</option>
-          <option value="tsl">Curseurs TSL (teinte/saturation/lumière)</option>
-        </select>
-      </div>
 
       <div class="card-form">
         <h3 class="settings-block-title">Boutons d'évaluation</h3>
