@@ -306,6 +306,50 @@
     target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
     zap: '<polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>',
     book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5z"/><path d="M4 4.5v16"/>',
+    // Équivalents sobres des icônes déjà utilisées ailleurs dans l'appli
+    // (crayon, hibernation, chantier, annuler...).
+    pencil: '<path d="M17 3a2.83 2.83 0 0 1 4 4L7 21l-4 1 1-4z"/>',
+    sleep: '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/><line x1="9" y1="9" x2="13" y2="9"/><line x1="9" y1="9" x2="13" y2="9" transform="rotate(20 11 9)"/>',
+    cone: '<path d="M12 2l6 16H6z"/><line x1="8.2" y1="13" x2="15.8" y2="13"/><line x1="4" y1="21" x2="20" y2="21"/>',
+    undo: '<polyline points="9,14 4,9 9,4"/><path d="M4 9h11a5 5 0 0 1 5 5v1"/>',
+    trash: '<polyline points="3,6 5,6 21,6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>',
+    eye: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+    eyeOff: '<path d="M17.9 17.9A10.6 10.6 0 0 1 12 20c-7 0-11-8-11-8a19 19 0 0 1 4.2-5.4M9.9 4.2A9.7 9.7 0 0 1 12 4c7 0 11 8 11 8a19 19 0 0 1-2.2 3.1"/><line x1="1" y1="1" x2="23" y2="23"/>',
+    lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+    unlock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.6-1.8"/>',
+    bell: '<path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+    list: '<line x1="9" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="9" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>',
+    grid: '<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/>',
+    filter: '<polygon points="4,4 20,4 14,12 14,19 10,21 10,12"/>',
+    shuffle: '<polyline points="16,3 21,3 21,8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21,16 21,21 16,21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/>',
+    chevronLeft: '<polyline points="15,18 9,12 15,6"/>',
+    chevronRight: '<polyline points="9,18 15,12 9,6"/>',
+    refresh: '<polyline points="23,4 23,10 17,10"/><polyline points="1,20 1,14 7,14"/><path d="M3.5 9a9 9 0 0 1 14.8-3.4L23 10M1 14l4.7 4.4A9 9 0 0 0 20.5 15"/>',
+    share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/>',
+    link: '<path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/>',
+    mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,6 12,13 22,6"/>',
+    image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>',
+    thumbsUp: '<path d="M7 22V11l5-9 2 1v7h6a2 2 0 0 1 2 2l-1.5 7a2 2 0 0 1-2 1.5H7z"/>',
+    alertTriangle: '<path d="M10.3 3.9L1.8 18a1.7 1.7 0 0 0 1.5 2.5h17.4a1.7 1.7 0 0 0 1.5-2.5L13.7 3.9a1.7 1.7 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+    info: '<circle cx="12" cy="12" r="9"/><line x1="12" y1="16" x2="12" y2="11"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
+    shield: '<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/>',
+    gift: '<rect x="3" y="8" width="18" height="4"/><rect x="4" y="12" width="16" height="9"/><line x1="12" y1="8" x2="12" y2="21"/><path d="M12 8C10 3 5 4 5 6.5S8 8 12 8z"/><path d="M12 8c2-5 7-4 7-1.5S16 8 12 8z"/>',
+    award: '<circle cx="12" cy="8" r="6"/><polyline points="8.2,13.5 6,22 12,18 18,22 15.8,13.5"/>',
+    compass: '<circle cx="12" cy="12" r="9"/><polygon points="15,9 13,15 9,17 11,11"/>',
+    cloud: '<path d="M17 18H6a4 4 0 1 1 .7-7.9A6 6 0 0 1 18 9.5 4 4 0 0 1 17 18z"/>',
+    hash: '<line x1="5" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="19" y2="15"/><line x1="10" y1="4" x2="8" y2="20"/><line x1="16" y1="4" x2="14" y2="20"/>',
+    smile: '<circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+    userCheck: '<path d="M5 21v-2a4 4 0 0 1 4-4h3a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7" r="4"/><polyline points="17,11 19,13 23,9"/>',
+    globe: '<circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/>',
+    tool: '<path d="M14.7 6.3a4 4 0 0 0 5.4 5.4l-6 6a2 2 0 0 1-2.8 0l-3-3a2 2 0 0 1 0-2.8z"/><path d="M2 22l6-6"/>',
+    key: '<circle cx="8" cy="15" r="4"/><path d="M10.8 12.2L20 3l2 2-2 2 2 2-3 3-2-2-3.2 3.2"/>',
+    battery: '<rect x="2" y="7" width="18" height="10" rx="2"/><line x1="22" y1="10" x2="22" y2="14"/><line x1="6" y1="10" x2="6" y2="14"/>',
+    wifi: '<path d="M2 8.5a16 16 0 0 1 20 0"/><path d="M5.5 12a11 11 0 0 1 13 0"/><path d="M9 15.5a6 6 0 0 1 6 0"/><line x1="12" y1="19" x2="12.01" y2="19"/>',
+    thermometer: '<path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0z"/>',
+    scissors: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.1" y2="15.9"/><line x1="14.5" y1="14.5" x2="20" y2="20"/><line x1="8.1" y1="8.1" x2="12" y2="12"/>',
+    paperclip: '<path d="M21 11.5l-9.4 9.4a5 5 0 0 1-7-7L13 5.5a3.5 3.5 0 0 1 5 5L9.4 19a2 2 0 0 1-2.8-2.8L14 8.5"/>',
+    upload: '<path d="M12 3v13"/><polyline points="7,8 12,3 17,8"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/>',
+    download: '<path d="M12 3v13"/><polyline points="7,11 12,16 17,11"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/>',
   };
   function iconSvgMarkup(iconId, cls) {
     const inner = ICON_LIBRARY[iconId];
@@ -341,6 +385,11 @@
   const DEFAULT_ICONS = {
     hibernate: "💤", edit: "✎", construction: "🚧", undo: "◀️", folder: "📁",
   };
+  // Choix par défaut dans la banque d'icônes pour ces mêmes réglages
+  // (utilisé seulement pour les 4 premiers — le dossier reste en
+  // émoticône, utilisé comme simple texte à trop d'endroits pour basculer
+  // en SVG sans tout casser).
+  const DEFAULT_ICON_BANK_CHOICES = { hibernate: "sleep", edit: "pencil", construction: "cone", undo: "undo" };
   // Palette de couleurs de texte proposée dans la mise en forme des fiches
   // (item 20 puis étendue ici) — modifiable, y compris ajouter/retirer des
   // couleurs, depuis la page Développeur.
@@ -370,6 +419,7 @@
       ratingLabels: { ...DEFAULT_RATING_LABELS, ...(parsed.ratingLabels || {}) },
       navLabels: { ...DEFAULT_NAV_LABELS, ...(parsed.navLabels || {}) },
       navIcons: { ...DEFAULT_NAV_ICONS, ...(parsed.navIcons || {}) },
+      iconBank: { ...DEFAULT_ICON_BANK_CHOICES, ...(parsed.iconBank || {}) },
       ratingColors: { ...DEFAULT_RATING_COLORS, ...(parsed.ratingColors || {}) },
       modeColors: { ...DEFAULT_MODE_COLORS, ...(parsed.modeColors || {}) },
       customModeColors: { ...(parsed.customModeColors || {}) },
@@ -587,34 +637,55 @@
   }
 
   /** Éditeur des icônes du menu principal (banque d'icônes). */
-  function renderNavIconsEditor() {
-    const wrap = el("dev-nav-icons-list");
+  /** Éditeur générique "banque d'icônes" (item : réutilisé pour le menu
+   *  principal ET les icônes de la fiche/arborescence) — une ligne par
+   *  emplacement, avec un aperçu cliquable ouvrant la grille de choix. */
+  function renderIconBankPicker(wrapId, slots, titles, settingsKey, onApplied) {
+    const wrap = el(wrapId);
     if (!wrap) return;
     const settings = loadDevSettings();
-    const views = Object.keys(DEFAULT_NAV_ICONS);
-    const navViewTitles = { review: "Réviser", manage: "Gérer", cards: "Fiches", stats: "Stats", "learning-modes": "Modes", settings: "Réglages" };
-    wrap.innerHTML = views
+    wrap.innerHTML = slots
       .map(
-        (view) => `<div class="dev-nav-icon-row">
-          <span>${navViewTitles[view] || view}</span>
-          <button type="button" class="icon-picker-btn" data-view="${view}">${iconSvgMarkup(settings.navIcons[view], "icon-bank-svg")}</button>
+        (slot) => `<div class="dev-nav-icon-row">
+          <span>${titles[slot] || slot}</span>
+          <button type="button" class="icon-picker-btn" data-slot="${slot}">${iconSvgMarkup(settings[settingsKey][slot], "icon-bank-svg")}</button>
         </div>`
       )
       .join("");
     wrap.querySelectorAll(".icon-picker-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
-        const view = btn.dataset.view;
-        const current = loadDevSettings().navIcons[view];
+        const slot = btn.dataset.slot;
+        const current = loadDevSettings()[settingsKey][slot];
         openIconPopup(btn, current, (iconId) => {
           const s = loadDevSettings();
-          s.navIcons[view] = iconId;
+          s[settingsKey][slot] = iconId;
           saveDevSettings(s);
-          applyNavLabels();
-          renderNavIconsEditor();
+          onApplied();
+          renderIconBankPicker(wrapId, slots, titles, settingsKey, onApplied);
         });
       });
     });
+  }
+
+  function renderNavIconsEditor() {
+    renderIconBankPicker(
+      "dev-nav-icons-list",
+      Object.keys(DEFAULT_NAV_ICONS),
+      { review: "Réviser", manage: "Gérer", cards: "Fiches", stats: "Stats", "learning-modes": "Modes", settings: "Réglages" },
+      "navIcons",
+      applyNavLabels
+    );
+  }
+
+  function renderIconBankEditor() {
+    renderIconBankPicker(
+      "dev-icon-bank-list",
+      Object.keys(DEFAULT_ICON_BANK_CHOICES),
+      { hibernate: "Hibernation", edit: "Éditer", construction: "Chantier", undo: "Annuler" },
+      "iconBank",
+      applyIconSettings
+    );
   }
 
   function ensureColorPopup() {
@@ -765,17 +836,28 @@
   /** Applique les émoticônes des icônes de la fiche/de l'arborescence
    *  (item 2) : hibernation, édition, chantier, annuler, dossier. */
   function applyIconSettings() {
-    const icons = loadDevSettings().icons;
-    const hib = el("hibernate-current-btn");
-    if (hib) hib.textContent = icons.hibernate;
-    const edit = el("edit-current-btn");
-    if (edit) edit.textContent = icons.edit;
-    const constr = el("construction-current-btn");
-    if (constr) constr.textContent = icons.construction;
-    const undo = el("undo-rating-btn");
-    if (undo) undo.textContent = icons.undo;
-    const filterIcon = el("construction-filter-icon");
-    if (filterIcon) filterIcon.textContent = icons.construction;
+    const settings = loadDevSettings();
+    const icons = settings.icons;
+    const iconBank = settings.iconBank;
+    // Applique l'icône SVG de la banque si CE réglage précis n'a jamais
+    // été personnalisé en émoticône/texte (sinon la personnalisation reste
+    // prioritaire, comme pour le menu principal).
+    const applyOne = (elId, key) => {
+      const target = el(elId);
+      if (!target) return;
+      if (icons[key] !== DEFAULT_ICONS[key]) {
+        target.textContent = icons[key];
+      } else if (iconBank[key] && ICON_LIBRARY[iconBank[key]]) {
+        target.innerHTML = iconSvgMarkup(iconBank[key], "icon-inline-svg");
+      } else {
+        target.textContent = icons[key];
+      }
+    };
+    applyOne("hibernate-current-btn", "hibernate");
+    applyOne("edit-current-btn", "edit");
+    applyOne("construction-current-btn", "construction");
+    applyOne("undo-rating-btn", "undo");
+    applyOne("construction-filter-icon", "construction");
   }
 
   /** Regénère les pastilles de couleur de texte de la barre d'outils de
@@ -5429,6 +5511,7 @@
     renderTextColorsEditor();
     renderCustomModeColorsEditor();
     renderNavIconsEditor();
+    renderIconBankEditor();
     renderFactoryDefaultsEditor();
     // Après TOUS les autres rendus ci-dessus (item 17) : ils régénèrent
     // leurs propres <input type="color"> dynamiquement (palette de texte,

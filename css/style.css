@@ -80,7 +80,7 @@ textarea, input {
   gap: 8px;
 }
 
-.topbar-new-card-btn {
+button.topbar-new-card-btn {
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 600;
@@ -88,6 +88,10 @@ textarea, input {
   white-space: nowrap;
   border-radius: 999px;
   flex-shrink: 0;
+  background: #ffffff;
+  color: #1a1a1a;
+  border: none;
+  box-shadow: var(--shadow-deep);
 }
 
 /* Mascotte (item 10) : icône SVG originale (petit robot volant, cerveau
@@ -836,6 +840,11 @@ textarea, input {
   align-items: center;
   justify-content: center;
   transition: background 0.12s ease, color 0.12s ease;
+}
+
+.icon-inline-svg {
+  width: 18px;
+  height: 18px;
 }
 
 .card-icon-btn:hover {
