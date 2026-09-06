@@ -606,7 +606,14 @@
     iconPopupEl.className = "icon-popup";
     iconPopupEl.hidden = true;
     document.body.appendChild(iconPopupEl);
-    document.addEventListener("click", (e) => {
+    // "pointerdown" plutôt que "click" (bug corrigé) : sur iOS Safari, un
+    // clic sur un élément qui n'est pas nativement "cliquable" (un simple
+    // <body>/<div> sans gestionnaire dessus) ne remonte pas toujours
+    // fiablement jusqu'à un écouteur "click" posé sur document — le popup
+    // semblait alors ne jamais se refermer au clic en dehors.
+    // "pointerdown" est délivré de façon bien plus fiable, quel que soit
+    // l'élément visé.
+    document.addEventListener("pointerdown", (e) => {
       if (iconPopupEl.hidden) return;
       if (iconPopupEl.contains(e.target) || e.target.closest(".icon-picker-btn")) return;
       iconPopupEl.hidden = true;
@@ -694,7 +701,10 @@
     colorPopupEl.className = "color-popup";
     colorPopupEl.hidden = true;
     document.body.appendChild(colorPopupEl);
-    document.addEventListener("click", (e) => {
+    // Même correctif que le popup d'icônes : "pointerdown" plutôt que
+    // "click", plus fiable sur iOS Safari pour détecter un clic "en
+    // dehors".
+    document.addEventListener("pointerdown", (e) => {
       if (colorPopupEl.hidden) return;
       if (colorPopupEl.contains(e.target) || e.target.classList.contains("color-swatch-btn")) return;
       colorPopupEl.hidden = true;
@@ -2425,7 +2435,7 @@
   }
   // Cliquer n'importe où en dehors du menu le referme (item 6 : comportement
   // attendu d'un vrai menu déroulant), sans rien changer au choix précédent.
-  document.addEventListener("click", (e) => {
+  document.addEventListener("pointerdown", (e) => {
     if (!subjectChoiceMenu || subjectChoiceMenu.hidden) return;
     if (subjectChoiceMenu.contains(e.target) || e.target === subjectSelectBtn) return;
     closeSubjectChoiceMenu();
@@ -2586,7 +2596,7 @@
   if (cardsSubjectSelectBtn) {
     cardsSubjectSelectBtn.addEventListener("click", () => openCardsSubjectChoiceMenu());
   }
-  document.addEventListener("click", (e) => {
+  document.addEventListener("pointerdown", (e) => {
     const menu = el("cards-subject-choice-menu");
     if (!menu || menu.hidden) return;
     if (menu.contains(e.target) || e.target === cardsSubjectSelectBtn) return;
@@ -3546,7 +3556,7 @@
   if (cardsScopeChoiceCancelBtn) {
     cardsScopeChoiceCancelBtn.addEventListener("click", () => closeCardsScopeChoiceMenu());
   }
-  document.addEventListener("click", (e) => {
+  document.addEventListener("pointerdown", (e) => {
     const menu = el("cards-scope-choice-menu");
     if (!menu || menu.hidden) return;
     if (menu.contains(e.target) || e.target === cardsScopeSelectBtn) return;
@@ -3988,7 +3998,7 @@
   if (statsScopeChoiceCancelBtn) {
     statsScopeChoiceCancelBtn.addEventListener("click", () => closeStatsScopeChoiceMenu());
   }
-  document.addEventListener("click", (e) => {
+  document.addEventListener("pointerdown", (e) => {
     const menu = el("stats-scope-choice-menu");
     if (!menu || menu.hidden) return;
     if (menu.contains(e.target) || e.target === statsSubjectSelectBtn) return;
