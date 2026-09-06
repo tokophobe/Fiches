@@ -278,6 +278,44 @@
   const DEFAULT_NAV_LABELS = {
     review: "🤓", manage: "🗃️", cards: "📄", stats: "📊", "learning-modes": "🎓", settings: "⚙",
   };
+  /** Banque d'icônes monochromes (essai apprécié, étoffé sur demande) —
+   *  chaque entrée est le contenu interne d'un <svg viewBox="0 0 24 24">
+   *  (traits seulement, currentColor géré au niveau du SVG englobant),
+   *  pour rester cohérent avec le style sobre déjà en place sur le menu. */
+  const ICON_LIBRARY = {
+    cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
+    folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>',
+    file: '<path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M15 2v5h5"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/>',
+    barChart: '<line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/>',
+    gradCap: '<path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/>',
+    settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+    brain: '<path d="M9.5 2a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 1.5 5.5V17a3 3 0 0 0 3 3 2.5 2.5 0 0 0 2.5-2.5V4.5A2.5 2.5 0 0 0 9.5 2z"/><path d="M14.5 2a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-1.5 5.5V17a3 3 0 0 1-3 3 2.5 2.5 0 0 1-2.5-2.5V4.5A2.5 2.5 0 0 1 14.5 2z"/>',
+    star: '<path d="M12 2l3.1 6.6 7.2.9-5.3 5 1.4 7.1L12 18l-6.4 3.6 1.4-7.1-5.3-5 7.2-.9z"/>',
+    heart: '<path d="M12 21s-7-4.5-9.5-9C1 8 2 4 6 4c2 0 4 1.5 6 4 2-2.5 4-4 6-4 4 0 5 4 3.5 8-2.5 4.5-9.5 9-9.5 9z"/>',
+    bookmark: '<path d="M6 2h12v20l-6-4-6 4z"/>',
+    flag: '<path d="M4 22V3"/><path d="M4 4h14l-2 4 2 4H4"/>',
+    moon: '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.9" y1="4.9" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.1" y2="19.1"/><line x1="4.9" y1="19.1" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.1" y2="4.9"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 15,14"/>',
+    calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/>',
+    check: '<polyline points="4,12 9,17 20,6"/>',
+    plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+    search: '<circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+    home: '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>',
+    layers: '<path d="M12 2l9 5-9 5-9-5 9-5z"/><path d="M3 12l9 5 9-5"/><path d="M3 17l9 5 9-5"/>',
+    target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+    zap: '<polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>',
+    book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5z"/><path d="M4 4.5v16"/>',
+  };
+  function iconSvgMarkup(iconId, cls) {
+    const inner = ICON_LIBRARY[iconId];
+    if (!inner) return "";
+    return `<svg class="${cls || "tab-icon-svg"}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+  }
+  // Choix par défaut = les icônes déjà en place (essai précédent).
+  const DEFAULT_NAV_ICONS = {
+    review: "cards", manage: "folder", cards: "file", stats: "barChart", "learning-modes": "gradCap", settings: "settings",
+  };
   // Couleurs des 4 notes (boutons d'évaluation + graphiques) et des 4 modes
   // d'apprentissage (badges) — item 2 : rendues éditables depuis la page
   // Développeur plutôt que codées en dur dans la feuille de style.
@@ -331,6 +369,7 @@
     return {
       ratingLabels: { ...DEFAULT_RATING_LABELS, ...(parsed.ratingLabels || {}) },
       navLabels: { ...DEFAULT_NAV_LABELS, ...(parsed.navLabels || {}) },
+      navIcons: { ...DEFAULT_NAV_ICONS, ...(parsed.navIcons || {}) },
       ratingColors: { ...DEFAULT_RATING_COLORS, ...(parsed.ratingColors || {}) },
       modeColors: { ...DEFAULT_MODE_COLORS, ...(parsed.modeColors || {}) },
       customModeColors: { ...(parsed.customModeColors || {}) },
@@ -426,15 +465,20 @@
   }
   /** Applique les émoticônes/texte du menu principal (item 19). */
   function applyNavLabels() {
-    const labels = loadDevSettings().navLabels;
+    const settings = loadDevSettings();
+    const labels = settings.navLabels;
     Object.keys(labels).forEach((view) => {
       const tab = document.querySelector(`.tab[data-view="${view}"]`);
-      // Ne touche à rien si CE tab précis n'a jamais été personnalisé
-      // (valeur encore égale au défaut) — les icônes SVG sobres posées en
-      // dur dans le HTML restent alors en place ; seule une vraie
-      // personnalisation faite dans la page Développeur remplace l'icône
-      // par le texte/l'émoticône choisi.
-      if (tab && labels[view] !== DEFAULT_NAV_LABELS[view]) tab.textContent = labels[view];
+      if (!tab) return;
+      // Une vraie personnalisation texte/émoticône (page Développeur)
+      // l'emporte sur tout. Sinon, l'icône choisie dans la banque
+      // s'applique (par défaut, celle déjà en place).
+      if (labels[view] !== DEFAULT_NAV_LABELS[view]) {
+        tab.textContent = labels[view];
+      } else {
+        const iconId = settings.navIcons[view];
+        if (iconId && ICON_LIBRARY[iconId]) tab.innerHTML = iconSvgMarkup(iconId);
+      }
     });
   }
 
@@ -502,6 +546,77 @@
    *  (RVB ou TSL selon le dernier choix fait, mémorisé), et un bouton pour
    *  basculer entre les deux à tout moment. */
   let colorPopupEl = null;
+  /** Popup de sélection dans la banque d'icônes (grille), même principe
+   *  que le popup de couleur : un seul popup partagé, repositionné et
+   *  re-rempli à chaque ouverture. */
+  let iconPopupEl = null;
+  function ensureIconPopup() {
+    if (iconPopupEl) return iconPopupEl;
+    iconPopupEl = document.createElement("div");
+    iconPopupEl.className = "icon-popup";
+    iconPopupEl.hidden = true;
+    document.body.appendChild(iconPopupEl);
+    document.addEventListener("click", (e) => {
+      if (iconPopupEl.hidden) return;
+      if (iconPopupEl.contains(e.target) || e.target.closest(".icon-picker-btn")) return;
+      iconPopupEl.hidden = true;
+    });
+    return iconPopupEl;
+  }
+  function openIconPopup(anchorBtn, currentIconId, onPick) {
+    const popup = ensureIconPopup();
+    const rect = anchorBtn.getBoundingClientRect();
+    const popupWidth = 240;
+    popup.style.position = "fixed";
+    popup.style.top = `${rect.bottom + 6}px`;
+    popup.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - popupWidth - 8))}px`;
+    popup.hidden = false;
+    popup.innerHTML = Object.keys(ICON_LIBRARY)
+      .map(
+        (id) =>
+          `<button type="button" class="icon-bank-btn${id === currentIconId ? " is-active" : ""}" data-icon="${id}">${iconSvgMarkup(id, "icon-bank-svg")}</button>`
+      )
+      .join("");
+    popup.querySelectorAll(".icon-bank-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        onPick(btn.dataset.icon);
+        popup.hidden = true;
+      });
+    });
+  }
+
+  /** Éditeur des icônes du menu principal (banque d'icônes). */
+  function renderNavIconsEditor() {
+    const wrap = el("dev-nav-icons-list");
+    if (!wrap) return;
+    const settings = loadDevSettings();
+    const views = Object.keys(DEFAULT_NAV_ICONS);
+    const navViewTitles = { review: "Réviser", manage: "Gérer", cards: "Fiches", stats: "Stats", "learning-modes": "Modes", settings: "Réglages" };
+    wrap.innerHTML = views
+      .map(
+        (view) => `<div class="dev-nav-icon-row">
+          <span>${navViewTitles[view] || view}</span>
+          <button type="button" class="icon-picker-btn" data-view="${view}">${iconSvgMarkup(settings.navIcons[view], "icon-bank-svg")}</button>
+        </div>`
+      )
+      .join("");
+    wrap.querySelectorAll(".icon-picker-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const view = btn.dataset.view;
+        const current = loadDevSettings().navIcons[view];
+        openIconPopup(btn, current, (iconId) => {
+          const s = loadDevSettings();
+          s.navIcons[view] = iconId;
+          saveDevSettings(s);
+          applyNavLabels();
+          renderNavIconsEditor();
+        });
+      });
+    });
+  }
+
   function ensureColorPopup() {
     if (colorPopupEl) return colorPopupEl;
     colorPopupEl = document.createElement("div");
@@ -4973,6 +5088,7 @@
     devNavResetBtn.addEventListener("click", () => {
       const settings = loadDevSettings();
       settings.navLabels = { ...DEFAULT_NAV_LABELS };
+      settings.navIcons = { ...DEFAULT_NAV_ICONS };
       saveDevSettings(settings);
       applyNavLabels();
       renderDevView();
@@ -5312,6 +5428,7 @@
     });
     renderTextColorsEditor();
     renderCustomModeColorsEditor();
+    renderNavIconsEditor();
     renderFactoryDefaultsEditor();
     // Après TOUS les autres rendus ci-dessus (item 17) : ils régénèrent
     // leurs propres <input type="color"> dynamiquement (palette de texte,

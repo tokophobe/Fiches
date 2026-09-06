@@ -2313,6 +2313,61 @@ textarea, input {
   border-color: var(--amber);
 }
 
+/* Banque d'icônes (page Développeur) : une ligne par onglet, avec un
+   aperçu cliquable qui ouvre une grille de choix. */
+.dev-nav-icons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dev-nav-icon-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-type);
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.icon-picker-btn, .icon-bank-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  border: 1px solid rgba(35, 48, 42, 0.2);
+  background: var(--paper-2);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.icon-bank-svg {
+  width: 22px;
+  height: 22px;
+}
+
+.icon-popup {
+  z-index: 60;
+  background: var(--paper);
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: var(--shadow-deep);
+  width: 240px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.icon-bank-btn.is-active {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #2a1f0d;
+}
+
 .dev-text-color-row {
   display: flex;
   align-items: center;
