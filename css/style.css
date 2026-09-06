@@ -1678,6 +1678,16 @@ textarea, input {
   width: max-content;
 }
 
+/* Bug corrigé (même famille que .rating-row/.subject-choice-menu avant) :
+   sans ce correctif, `display: flex` ci-dessus l'emportait TOUJOURS sur
+   `[hidden] { display: none }` (spécificité égale, l'ordre dans la feuille
+   de style tranche) — le graphique gardait sa hauteur fixe de 180px même
+   masqué (aucune fiche à revoir sur la période), créant un grand vide
+   vide de sens avant le reste de la page. */
+.chart[hidden] {
+  display: none;
+}
+
 /* Périodes longues (3 mois / 6 mois / 1 an) : trop de colonnes pour qu'un
    espace entre chaque barre reste visible, donc les barres se touchent ;
    les nombres au-dessus (déjà vidés en JS) n'ont plus besoin de leur place. */
@@ -1990,21 +2000,22 @@ textarea, input {
   background: var(--slider-color, var(--amber));
 }
 
-.algo-slider-field--again { background: rgba(182, 96, 74, 0.14); border-color: rgba(182, 96, 74, 0.4); --slider-color: var(--rating-again-color, var(--terracotta)); }
-.algo-slider-field--again .algo-slider-field-label,
-.algo-slider-field--again .algo-slider-field-value { color: var(--rating-again-color, var(--terracotta)); }
-
-.algo-slider-field--hard { background: rgba(207, 154, 77, 0.14); border-color: rgba(207, 154, 77, 0.4); --slider-color: var(--rating-hard-color, var(--amber)); }
-.algo-slider-field--hard .algo-slider-field-label,
-.algo-slider-field--hard .algo-slider-field-value { color: var(--rating-hard-color, var(--amber)); }
-
-.algo-slider-field--good { background: rgba(111, 139, 92, 0.14); border-color: rgba(111, 139, 92, 0.4); --slider-color: var(--rating-good-color, var(--sage)); }
-.algo-slider-field--good .algo-slider-field-label,
-.algo-slider-field--good .algo-slider-field-value { color: var(--rating-good-color, var(--sage)); }
-
-.algo-slider-field--easy { background: rgba(62, 124, 107, 0.18); border-color: rgba(62, 124, 107, 0.45); --slider-color: var(--rating-easy-color, var(--teal)); }
-.algo-slider-field--easy .algo-slider-field-label,
-.algo-slider-field--easy .algo-slider-field-value { color: var(--rating-easy-color, var(--teal)); }
+/* Item 6 — bug corrigé : les 4 encadrés reprennent tous la couleur du
+   MODE en cours d'édition (posée en JS sur #algo-advanced-panel via
+   --mode-editing-color, voir applyModeSliderColor), plutôt que 4 couleurs
+   fixes par note qui n'avaient aucun rapport avec le mode affecté. */
+.algo-slider-field--again, .algo-slider-field--hard,
+.algo-slider-field--good, .algo-slider-field--easy {
+  background: color-mix(in srgb, var(--mode-editing-color, var(--amber)) 14%, transparent);
+  border-color: color-mix(in srgb, var(--mode-editing-color, var(--amber)) 40%, transparent);
+  --slider-color: var(--mode-editing-color, var(--amber));
+}
+.algo-slider-field--again .algo-slider-field-label, .algo-slider-field--again .algo-slider-field-value,
+.algo-slider-field--hard .algo-slider-field-label, .algo-slider-field--hard .algo-slider-field-value,
+.algo-slider-field--good .algo-slider-field-label, .algo-slider-field--good .algo-slider-field-value,
+.algo-slider-field--easy .algo-slider-field-label, .algo-slider-field--easy .algo-slider-field-value {
+  color: var(--mode-editing-color, var(--amber));
+}
 
 /* Graphique d'aperçu des échéances (item 6). */
 /* Graphique d'aperçu de la page d'édition des modes : collé en haut au

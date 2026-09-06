@@ -971,6 +971,34 @@
     return subjects.filter((s) => ids.has(s.folderId)).map((s) => s.id);
   }
 
+  /** Lit le résultat RÉEL d'un picker multi-matières/dossiers (bug corrigé
+   *  — items 2/4) : jusqu'ici, le résultat final était recalculé en
+   *  ré-étendant chaque dossier COCHÉ à toutes ses matières, ignorant
+   *  silencieusement toute matière qu'on avait décochée individuellement à
+   *  l'intérieur — décocher une matière précise pendant qu'un dossier
+   *  reste coché n'avait donc AUCUN effet. La seule source de vérité est
+   *  maintenant l'état réel de CHAQUE case à cocher "matière" (déjà
+   *  répercuté correctement par la cascade dossier -> descendants) ; les
+   *  dossiers cochés ne servent plus qu'à décider l'AFFICHAGE (le nom du
+   *  dossier si sa sélection correspond exactement à tout son contenu). */
+  function readMultiPickerResult(list) {
+    const resultIds = [...list.querySelectorAll('input[data-kind="subject"]:checked')].map((cb) => cb.value);
+    const checkedFolders = [...list.querySelectorAll('input[data-kind="folder"]:checked')];
+    let label = "";
+    if (resultIds.length === 1) {
+      label = null; // signale "une seule matière" à l'appelant (bascule directe)
+    } else if (checkedFolders.length === 1) {
+      const folderSubjectIds = subjectIdsInFolder(checkedFolders[0].value);
+      const matchesExactly =
+        resultIds.length === folderSubjectIds.length && folderSubjectIds.every((id) => resultIds.includes(id));
+      if (matchesExactly) {
+        const f = folders.find((x) => x.id === checkedFolders[0].value);
+        label = f ? f.name : "";
+      }
+    }
+    return { resultIds, singleSubjectId: resultIds.length === 1 ? resultIds[0] : null, label };
+  }
+
   /** Un dossier ne peut être supprimé que s'il est vide (item 1) : ni
    *  sous-dossier, ni matière directement dedans. */
   function folderIsEmpty(folderId) {
@@ -1552,10 +1580,28 @@
     if (valueEl) valueEl.textContent = `${prefix} ${value}${suffix}`;
   }
 
+  /** Couleur d'accent des curseurs de réglage d'un mode (item 6 — bug
+   *  corrigé) : reprend la couleur du mode en cours d'édition (Cool/
+   *  Normal/Renforcé/personnalisé), posée comme variable CSS sur le
+   *  conteneur des curseurs, plutôt que 4 couleurs fixes par note qui
+   *  n'avaient aucun rapport avec le mode affecté. */
+  function applyModeSliderColor(modeId) {
+    const panel = el("algo-advanced-panel");
+    if (!panel) return;
+    const key = algoModeCssKey(modeId);
+    const settings = loadDevSettings();
+    const color = key === "custom" ? getCustomModeColor(modeId) : settings.modeColors[key];
+    panel.style.setProperty("--mode-editing-color", color);
+  }
+
   function loadModeFormIntoInputs(modeId) {
     const modes = loadLearningModes();
     const m = modes[modeId] || modes.normal;
     algoEditingModeId = m.id;
+    // Les curseurs reprennent la couleur du mode en cours d'édition (item
+    // 6 — bug corrigé : ils étaient colorés par note (Encore/Difficile/
+    // Bien/Facile), sans rapport avec le mode réellement affecté).
+    applyModeSliderColor(m.id);
     setSliderField("algo-ka", m.Ka, ALGO_K_VALUES, "×", "");
     setSliderField("algo-kh", m.Kh, ALGO_K_VALUES, "×", "");
     setSliderField("algo-kg", m.Kg, ALGO_K_VALUES, "×", "");
@@ -1932,15 +1978,23 @@
       title = `Affecter un mode — ${s ? s.name : ""}`;
       currentModeId = getSubjectAlgoMode(targetId);
     } else {
+      // Pas de présélection pour un dossier (bug corrigé — item 3) : les
+      // matières qu'il contient peuvent très bien ne pas être en "Normal"
+      // du tout, présélectionner ce mode par défaut était trompeur.
       const f = folders.find((x) => x.id === targetId);
       title = `Affecter un mode — ${folderIcon()} ${f ? f.name : ""}`;
-      currentModeId = "normal";
+      currentModeId = null;
     }
     const titleEl = el("assign-target-title");
     if (titleEl) titleEl.textContent = title;
     assignCurrentModeId = currentModeId;
     renderAssignModeList(currentModeId);
-    renderAssignChart(currentModeId);
+    if (currentModeId) {
+      renderAssignChart(currentModeId);
+    } else {
+      const wrap = el("assign-chart-wrap");
+      if (wrap) wrap.innerHTML = `<p class="field-hint">Choisis un mode ci-dessus pour l'affecter à tout le dossier.</p>`;
+    }
     const reviewOldBlock = el("assign-review-old-block");
     if (reviewOldBlock) reviewOldBlock.hidden = kind !== "subject";
 
@@ -2233,32 +2287,25 @@
   const multiPickerConfirmBtn = el("multi-subject-picker-confirm");
   if (multiPickerConfirmBtn) {
     multiPickerConfirmBtn.addEventListener("click", () => {
-      const checkedFolders = [...document.querySelectorAll('#multi-subject-picker-list input[data-kind="folder"]:checked')];
-      const checkedSubjects = [...document.querySelectorAll('#multi-subject-picker-list input[data-kind="subject"]:checked')];
-      const resultIds = new Set();
-      checkedFolders.forEach((cb) => subjectIdsInFolder(cb.value).forEach((id) => resultIds.add(id)));
-      checkedSubjects.forEach((cb) => resultIds.add(cb.value));
-      if (resultIds.size === 0) {
+      const list = el("multi-subject-picker-list");
+      const { resultIds, singleSubjectId, label } = readMultiPickerResult(list);
+      if (resultIds.length === 0) {
         alert("Choisis au moins une matière ou un dossier.");
         return;
       }
       closeMultiSubjectPicker();
 
-      // Affichage intelligent (item 18) : une seule matière cochée -> on
+      // Affichage intelligent (item 18) : une seule matière au final -> on
       // bascule directement dessus (son nom s'affiche naturellement,
-      // inutile de passer par le mode "sélection"). Un seul dossier coché
-      // (rien d'autre) -> le nom du DOSSIER s'affiche. Sinon, un mélange ->
+      // inutile de passer par le mode "sélection"). Sélection qui
+      // correspond exactement à un seul dossier -> son nom. Sinon,
       // libellé générique "Sélection de matières".
-      if (checkedFolders.length === 0 && checkedSubjects.length === 1) {
-        switchSubject(checkedSubjects[0].value, true);
+      if (singleSubjectId) {
+        switchSubject(singleSubjectId, true);
         return;
       }
-      saveMultiSelection([...resultIds]);
-      if (checkedFolders.length === 1 && checkedSubjects.length === 0) {
-        saveMultiSelectionLabel(folders.find((f) => f.id === checkedFolders[0].value)?.name || "");
-      } else {
-        saveMultiSelectionLabel("");
-      }
+      saveMultiSelection(resultIds);
+      saveMultiSelectionLabel(label || "");
       switchSubject(MULTI_SUBJECTS_ID, true);
     });
   }
@@ -3250,17 +3297,14 @@
     renderFolderTreeForPicker(list, ROOT_FOLDER_ID, 0, selected);
     list.querySelectorAll("input").forEach((cb) => {
       cb.addEventListener("change", () => {
-        const checkedFolders = [...list.querySelectorAll('input[data-kind="folder"]:checked')];
-        const checkedSubjects = [...list.querySelectorAll('input[data-kind="subject"]:checked')];
-        const resultIds = new Set();
-        checkedFolders.forEach((box) => subjectIdsInFolder(box.value).forEach((id) => resultIds.add(id)));
-        checkedSubjects.forEach((box) => resultIds.add(box.value));
-        saveCardsMultiSelection([...resultIds]);
-        if (checkedFolders.length === 1 && checkedSubjects.length === 0) {
-          saveCardsMultiLabel(folders.find((f) => f.id === checkedFolders[0].value)?.name || "");
-        } else {
-          saveCardsMultiLabel("");
-        }
+        const { resultIds, singleSubjectId, label } = readMultiPickerResult(list);
+        saveCardsMultiSelection(resultIds);
+        // Une seule matière au final -> son nom directement (readMultiPickerResult
+        // renvoie label=null dans ce cas précis, réservé ailleurs à un vrai
+        // changement de matière active — ici on reste en mode "sélection"
+        // puisque les résultats se mettent à jour en direct, donc on
+        // affiche juste son nom au lieu du libellé générique).
+        saveCardsMultiLabel(singleSubjectId ? subjectName(singleSubjectId) : label || "");
         renderManageList();
       });
     });
@@ -3682,27 +3726,20 @@
   const statsMultiPickerConfirmBtn = el("stats-multi-picker-confirm");
   if (statsMultiPickerConfirmBtn) {
     statsMultiPickerConfirmBtn.addEventListener("click", () => {
-      const checkedFolders = [...document.querySelectorAll('#stats-multi-picker-list input[data-kind="folder"]:checked')];
-      const checkedSubjects = [...document.querySelectorAll('#stats-multi-picker-list input[data-kind="subject"]:checked')];
-      const resultIds = new Set();
-      checkedFolders.forEach((cb) => subjectIdsInFolder(cb.value).forEach((id) => resultIds.add(id)));
-      checkedSubjects.forEach((cb) => resultIds.add(cb.value));
-      if (resultIds.size === 0) {
+      const list = el("stats-multi-picker-list");
+      const { resultIds, singleSubjectId, label } = readMultiPickerResult(list);
+      if (resultIds.length === 0) {
         alert("Choisis au moins une matière ou un dossier.");
         return;
       }
       closeStatsMultiPicker();
-      if (checkedFolders.length === 0 && checkedSubjects.length === 1) {
-        statsSubjectFilter = checkedSubjects[0].value;
+      if (singleSubjectId) {
+        statsSubjectFilter = singleSubjectId;
         renderStats();
         return;
       }
-      saveStatsMultiSelection([...resultIds]);
-      if (checkedFolders.length === 1 && checkedSubjects.length === 0) {
-        saveStatsMultiLabel(folders.find((f) => f.id === checkedFolders[0].value)?.name || "");
-      } else {
-        saveStatsMultiLabel("");
-      }
+      saveStatsMultiSelection(resultIds);
+      saveStatsMultiLabel(label || "");
       statsSubjectFilter = STATS_MULTI_ID;
       renderStats();
     });
@@ -4478,8 +4515,22 @@
     }
   }
 
+  /** Empêche un rendu EXTÉRIEUR (ex. mise à jour reçue en temps réel d'un
+   *  autre appareil, ou tout autre appel à renderAll() qui passerait par
+   *  là) d'interrompre une vague en cours (bug corrigé — item 1 : c'était
+   *  la cause la plus probable des animations qui s'arrêtaient net ou ne
+   *  se voyaient pas du tout, y compris sur de courtes durées : n'importe
+   *  quel autre rendu survenant PENDANT l'animation remplaçait les
+   *  éléments DOM sur lesquels la vague était en train de jouer, la
+   *  coupant silencieusement). Les rendus déclenchés par la vague
+   *  ELLE-MÊME (extension temporaire, retour à la normale) passent outre
+   *  via reviewWaveInternalCall. */
+  let reviewWaveInProgress = false;
+  let reviewWaveInternalCall = false;
+
   function renderReviewChart(minTotalDays) {
     if (!reviewChartEl) return;
+    if (reviewWaveInProgress && !reviewWaveInternalCall) return;
     if (reviewChartSubjectNameEl) reviewChartSubjectNameEl.textContent = subjectName(currentSubjectId);
     if (reviewChartScaleLabelEl) reviewChartScaleLabelEl.textContent = formatRangeShort(reviewChartRangeDays);
     const pool = subjectCards();
@@ -4549,13 +4600,25 @@
     if (!reviewChartEl) return;
     reviewWaveToken += 1;
     const myToken = reviewWaveToken;
+    reviewWaveInProgress = true;
+
+    const bail = () => {
+      // Périmé (une vague plus récente a pris le relais) OU rien à animer :
+      // on relâche le verrou pour ne jamais bloquer les rendus suivants.
+      if (myToken === reviewWaveToken) reviewWaveInProgress = false;
+    };
 
     let cols = reviewChartEl.querySelectorAll(".chart-col");
     if (cols.length === 0 || toIdx > cols.length - 1) {
+      reviewWaveInternalCall = true;
       renderReviewChart(toIdx + 3);
+      reviewWaveInternalCall = false;
       cols = reviewChartEl.querySelectorAll(".chart-col");
     }
-    if (cols.length === 0) return;
+    if (cols.length === 0) {
+      bail();
+      return;
+    }
 
     const lo = Math.max(0, Math.min(fromIdx, toIdx));
     const hi = Math.min(cols.length - 1, Math.max(fromIdx, toIdx));
@@ -4605,7 +4668,9 @@
 
     // Étape 4 : un seul minuteur global, calé sur la durée totale exacte —
     // ni plus tôt (couperait la pause), ni plus tard (délai visible avant
-    // le retour à la normale).
+    // le retour à la normale). Relâche aussi le verrou anti-interruption :
+    // les rendus externes reçus PENDANT l'animation (et donc ignorés)
+    // pourront enfin s'appliquer.
     setTimeout(() => {
       if (myToken !== reviewWaveToken) return;
       cols.forEach((col) => {
@@ -4615,11 +4680,18 @@
           bar.style.animationDelay = "";
         }
       });
+      reviewWaveInternalCall = true;
       if (wasExtended) {
         renderReviewChart();
       } else if (scrolledAway && scroller) {
         scroller.scrollTo({ left: originalScrollLeft, behavior: "smooth" });
       }
+      reviewWaveInternalCall = false;
+      reviewWaveInProgress = false;
+      // Un rendu externe a pu être ignoré pendant l'animation (ex. fiche
+      // ajoutée/synchronisée par un autre appareil) : on rattrape avec un
+      // rendu normal maintenant que la voie est libre.
+      renderReviewChart();
     }, maxTotalMs + 60);
   }
 
