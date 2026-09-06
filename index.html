@@ -250,13 +250,14 @@
     <section id="view-cards" class="view" aria-labelledby="tab-cards">
       <div class="subject-bar" id="cards-subject-bar">
         <button type="button" class="subject-select-btn" id="cards-subject-select-btn" aria-label="Choisir la matière de cette nouvelle fiche"></button>
+        <button type="button" class="btn btn--primary cards-new-btn" id="new-card-btn">+ Nouvelle fiche</button>
 
         <div class="subject-choice-menu subject-choice-menu--tree" id="cards-subject-choice-menu" hidden>
           <div id="cards-subject-choice-tree"></div>
         </div>
       </div>
 
-      <form class="card-form" id="card-form">
+      <form class="card-form" id="card-form" hidden>
         <div class="card-form-header">
           <h2 class="section-title">Nouvelle fiche</h2>
         </div>
@@ -298,6 +299,8 @@
         </div>
       </form>
 
+      <h2 class="section-title cards-list-big-title">Liste des fiches</h2>
+
       <div class="cards-scope-row">
         <label class="import-target-label" for="cards-scope-select-btn">Afficher / chercher dans :</label>
         <button type="button" class="subject-select-btn" id="cards-scope-select-btn" aria-label="Choisir le périmètre d'affichage et de recherche"></button>
@@ -332,46 +335,31 @@
 
     <!-- VUE STATS -->
     <section id="view-stats" class="view" aria-labelledby="tab-stats">
-      <!-- Tout en haut : indépendant des choix de matière/période
-           ci-dessous, toujours sur les 30 derniers jours, toutes matières
-           confondues. -->
-      <h3 class="chart-title">🔥 Jours d'utilisation</h3>
-      <p class="field-hint settings-block-hint">
-        Un jour "chaud" = au moins une fiche notée ce jour-là, toutes
-        matières confondues. Toujours sur les 30 derniers jours.
-      </p>
+      <!-- 6a : toujours toutes matières confondues, en tout premier. -->
+      <div class="stat-grid">
+        <div class="stat-box">
+          <span class="stat-number" id="stat-total">0</span>
+          <span class="stat-label">fiches au total</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="stat-reviewed-today">0</span>
+          <span class="stat-label">fiches revues aujourd'hui</span>
+        </div>
+      </div>
+
+      <!-- 6b : paragraphe retiré, texte simplifié directement dans la ligne. -->
       <div id="streak-summary" class="streak-summary"></div>
       <div id="streak-chart-wrap" class="streak-chart-wrap"></div>
 
-      <!-- Item 8 : remonté ici (entre les flammes et le choix de matière),
-           pour ne PAS rester collé quand on descend dans la page — tape
-           sur le graphique pour changer d'échelle, comme sur Réviser
-           (item 9 : plus de menu déroulant séparé), et sans l'échelle
-           "1 an" (item 8). -->
-      <h3 class="chart-title">Fiches à revoir / révisées par jour</h3>
-      <p class="field-hint settings-block-hint">
-        "Aujourd'hui" est calé à gauche : les fiches à revoir s'étalent vers
-        la droite, l'historique des fiches révisées apparaît en faisant
-        défiler vers la gauche. Tape sur le graphique pour changer d'échelle.
-      </p>
-      <div class="chart-wrap" id="chart-wrap">
-        <div class="chart" id="due-chart"></div>
-      </div>
-      <p class="chart-empty" id="chart-empty" hidden>Rien à revoir sur cette période.</p>
-
-      <!-- Item 14 : réglages (matière/dossier, période) collés en haut de
-           page, toujours visibles même en descendant. -->
+      <!-- 6c : les deux réglages ci-dessous (matière/dossier + échelle)
+           s'appliquent à TOUT ce qui suit, collés en haut au défilement. -->
       <div class="stats-controls stats-controls--sticky">
         <button type="button" class="subject-select-btn" id="stats-subject-select-btn" aria-label="Choisir les matières pour les statistiques"></button>
         <div class="stats-controls--sticky-row2">
-          <select class="stats-select" id="stats-period-select" aria-label="Période des statistiques de la journée">
-            <option value="today">Aujourd'hui</option>
-            <option value="yesterday">Hier</option>
-            <option value="week">Semaine dernière</option>
-            <option value="month">Mois dernier</option>
-            <option value="3months">3 derniers mois</option>
-            <option value="6months">6 derniers mois</option>
-            <option value="year">Sur un an</option>
+          <select class="stats-select" id="stats-scale-select" aria-label="Échelle des statistiques">
+            <option value="byday">Par jour</option>
+            <option value="byweek">Par semaine</option>
+            <option value="bymonth">Par mois</option>
           </select>
         </div>
 
@@ -391,43 +379,29 @@
         </div>
       </div>
 
-      <div class="stat-grid">
-        <div class="stat-box">
-          <span class="stat-number" id="stat-total">0</span>
-          <span class="stat-label">fiches au total</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-number" id="stat-reviewed-today">0</span>
-          <span class="stat-label">fiches revues</span>
-        </div>
+      <!-- 6d -->
+      <h3 class="chart-title">Fiches à revoir / révisées par jour</h3>
+      <p class="field-hint settings-block-hint">
+        À gauche d'Aujourd'hui : le nombre de fiches révisées. À droite
+        d'Aujourd'hui : le nombre de fiches à revoir.
+      </p>
+      <div class="chart-wrap" id="chart-wrap">
+        <div class="chart" id="due-chart"></div>
       </div>
+      <p class="chart-empty" id="chart-empty" hidden>Rien à revoir sur cette période.</p>
 
-      <h3 class="chart-title">Statistiques de période</h3>
-      <div class="stat-grid">
-        <div class="stat-box">
-          <span class="stat-number" id="stat-created-period">0</span>
-          <span class="stat-label">fiches créées</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-number" id="stat-reviewed-period">0</span>
-          <span class="stat-label">fiches révisées</span>
-        </div>
-      </div>
+      <!-- 6e -->
+      <h3 class="chart-title">Fiches créées</h3>
+      <div id="created-chart-wrap"></div>
 
+      <!-- 6f -->
       <h3 class="chart-title">Notes données (Encore / Difficile / Bien / Facile)</h3>
-      <select class="stats-select" id="ratings-period-select" aria-label="Période des graphiques de notes">
-        <option value="today">Aujourd'hui</option>
-        <option value="yesterday">Hier</option>
-        <option value="byday">Par jour</option>
-        <option value="byweek">Par semaine</option>
-        <option value="bymonth">Par mois</option>
-      </select>
       <div id="ratings-chart-wrap"></div>
 
+      <!-- 6g -->
       <h3 class="chart-title">Évolution des notes dans le temps</h3>
       <p class="field-hint settings-block-hint">
-        Répartition en pourcentage des 4 notes, tranche par tranche sur la
-        période choisie ci-dessus.
+        Répartition en pourcentage des 4 notes, tranche par tranche.
       </p>
       <div id="ratings-history-chart-wrap"></div>
     </section>

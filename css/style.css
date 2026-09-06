@@ -172,6 +172,27 @@ textarea, input {
   position: relative;
 }
 
+/* Bouton "+ Nouvelle fiche" (item 3), à côté du sélecteur de matière —
+   ouvre le cadre de création, masqué par défaut. */
+.cards-new-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+/* "Liste des fiches" (item 4) : gros titre, plus grand qu'un section-title
+   normal, pour bien marquer le début de la partie "parcourir" de la page,
+   après la partie "créer" au-dessus. */
+.cards-list-big-title {
+  font-size: 22px;
+  font-family: var(--font-type);
+  color: var(--main-text-color, var(--paper));
+  letter-spacing: normal;
+  text-transform: none;
+  margin: 20px 0 14px;
+}
+
 .subject-select {
   flex: 1;
   min-width: 0;
@@ -1529,7 +1550,7 @@ textarea, input {
 .ratings-scroll-wrap {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-x;
+  touch-action: pan-x pan-y;
   border-radius: 8px;
 }
 
@@ -1666,7 +1687,7 @@ textarea, input {
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-x;
+  touch-action: pan-x pan-y;
 }
 
 .chart {

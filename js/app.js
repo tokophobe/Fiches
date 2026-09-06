@@ -357,7 +357,22 @@
     };
   }
   function saveDevSettings(settings) {
+    settings.updatedAt = new Date().toISOString();
     localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(settings));
+    scheduleDevSettingsPush();
+  }
+  // Poussée retardée (item 1 — synchro des réglages développeur) :
+  // beaucoup d'appels à saveDevSettings coup sur coup en bougeant un
+  // curseur de couleur enverraient sinon une requête réseau par pixel de
+  // déplacement — un seul envoi group  é, un court instant après la
+  // dernière modification.
+  let devSettingsPushTimer = null;
+  function scheduleDevSettingsPush() {
+    if (typeof Sync === "undefined" || !Sync.isConfigured || !Sync.isConfigured()) return;
+    clearTimeout(devSettingsPushTimer);
+    devSettingsPushTimer = setTimeout(() => {
+      Sync.pushDevSettings(loadDevSettings());
+    }, 900);
   }
   function getFactoryDefaults() {
     return loadDevSettings().factoryDefaults;
@@ -1518,9 +1533,14 @@
     });
     const slider = el("algo-mode-slider");
     const key = ALGO_MODE_ORDER[idx];
-    if (slider) slider.style.setProperty("--algo-slider-color", ALGO_MODE_COLORS[key] || "var(--amber)");
+    // Bug corrigé (item 2) : reprenait une constante figée (ALGO_MODE_COLORS),
+    // jamais connectée aux couleurs réellement réglables — le curseur
+    // ignorait donc toute personnalisation des couleurs de mode.
+    const settings = loadDevSettings();
+    const color = key === "custom" ? getCustomModeColor(algoEditingModeId) : settings.modeColors[key];
+    if (slider) slider.style.setProperty("--algo-slider-color", color);
     const ticksWrap = el("algo-mode-ticks");
-    if (ticksWrap) ticksWrap.style.setProperty("--algo-tick-color", ALGO_MODE_COLORS[key] || "var(--amber)");
+    if (ticksWrap) ticksWrap.style.setProperty("--algo-tick-color", color);
   }
 
   function renderCustomPickerList() {
@@ -3067,6 +3087,11 @@
     cardForm.reset();
     if (inputQuestion) inputQuestion.innerHTML = "";
     if (inputAnswer) inputAnswer.innerHTML = "";
+    // Le cadre disparaît après ajout/annulation (item 3) : masqué par
+    // défaut, il ne réapparaît qu'au clic sur "+ Nouvelle fiche" ou en
+    // modifiant une fiche existante (voir enterEditMode).
+    cardForm.hidden = true;
+    cancelEditBtn.hidden = true;
   }
 
   /* ---------------------------------------------------------
@@ -3108,6 +3133,18 @@
     }
   });
 
+  // Bouton "+ Nouvelle fiche" (item 3) : fait apparaître le cadre de
+  // création, masqué par défaut.
+  const newCardBtn = el("new-card-btn");
+  if (newCardBtn) {
+    newCardBtn.addEventListener("click", () => {
+      cardForm.hidden = false;
+      cancelEditBtn.hidden = false;
+      if (inputQuestion) inputQuestion.focus();
+      cardForm.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
   cancelEditBtn.addEventListener("click", () => {
     editReturnToReview = false;
     exitEditMode();
@@ -3117,6 +3154,7 @@
   const deleteEditingCardBtn = el("delete-editing-card");
 
   function enterEditMode(card) {
+    cardForm.hidden = false;
     editingId = card.id;
     inputQuestion.innerHTML = toDisplayHtml(card.question);
     inputAnswer.innerHTML = toDisplayHtml(card.answer);
@@ -4059,17 +4097,16 @@
 
   function renderStats() {
     renderStatsSubjectSelect();
-    const pool = statsScopeCards();
-    statTotal.textContent = String(pool.length);
-    // "Fiches revues" (renommé) répond maintenant à la matière/au dossier
-    // ET à la période choisis au-dessus, au lieu d'être toujours figé sur
-    // "aujourd'hui" sans tenir compte de la période sélectionnée.
-    if (statReviewedToday) statReviewedToday.textContent = String(filterEntriesByPeriod(ratingLogInScope(), statsPeriod).length);
+    // 6a : toujours toutes matières confondues, indépendant du sélecteur
+    // de matière ci-dessous (qui ne pilote que ce qui suit les flammes).
+    const allCards = cards.filter((c) => !c.deleted);
+    statTotal.textContent = String(allCards.length);
+    if (statReviewedToday) statReviewedToday.textContent = String(reviewedTodayCount(allCards));
     renderDueChart();
+    renderCreatedChart();
     renderRatingsChart();
     renderRatingsHistoryChart();
     renderStreak();
-    renderPeriodCounts();
   }
 
   /** Histogramme "Notes données" — sur la période partagée choisie plus
@@ -4166,7 +4203,7 @@
     wrap.innerHTML = svg;
   }
 
-  let ratingsPeriod = "today";
+  let ratingsPeriod = "byday";
 
   /** Calcule numBuckets tranches de bucketDays jours chacune, la dernière
    *  (index numBuckets-1) correspondant à AUJOURD'HUI — items 10/11 :
@@ -4260,6 +4297,76 @@
     wrap.innerHTML = `<div class="algo-chart-legend">${legend}</div><div class="ratings-scroll-wrap">${svg}</div>`;
     const scrollWrap = wrap.querySelector(".ratings-scroll-wrap");
     if (scrollWrap) scrollWrap.scrollLeft = scrollWrap.scrollWidth;
+  }
+
+  /** Version à une seule couleur du graphique défilable ci-dessus (item
+   *  6e — "Fiches créées"), un seul total par tranche plutôt que 4 notes
+   *  empilées. */
+  function renderSingleSeriesScrollableChart(wrap, values, rangeStart, bucketDays, periodKind, color, emptyMsg) {
+    const numBuckets = values.length;
+    const anyData = values.some((v) => v > 0);
+    if (!anyData) {
+      wrap.innerHTML = `<p class="field-hint algo-chart-empty">${emptyMsg}</p>`;
+      return;
+    }
+    const max = Math.max(1, ...values);
+    const yMax = Math.max(4, Math.ceil(max * 1.15));
+    const BUCKET_W = 46;
+    const padL = 22, padR = 8, padT = 10, padB = 20;
+    const H = 160;
+    const plotH = H - padT - padB;
+    const W = padL + padR + numBuckets * BUCKET_W;
+    const barW = BUCKET_W * 0.55;
+    const bucketMs = bucketDays * 86400000;
+
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:${W}px;height:auto;background:var(--svg-chart-bg-color, var(--desk));border-radius:8px;display:block;">`;
+    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
+    for (let i = 0; i < numBuckets; i++) {
+      const bucketX = padL + i * BUCKET_W;
+      const bucketDate = new Date(rangeStart.getTime() + i * bucketMs);
+      const v = values[i];
+      const h = (v / yMax) * plotH;
+      const x = bucketX + (BUCKET_W - barW) / 2;
+      const y = H - padB - h;
+      svg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${Math.max(v > 0 ? 1 : 0, h).toFixed(1)}" rx="1.5" fill="${color}"/>`;
+      if (v > 0) svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${(y - 3).toFixed(1)}" font-size="7" fill="#9aa89e" text-anchor="middle">${v}</text>`;
+      const isToday = i === numBuckets - 1;
+      const label = isToday ? "Auj" : scrollableBucketLabel(periodKind, bucketDate);
+      svg += `<text x="${(bucketX + BUCKET_W / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--paper)" : "#9aa89e"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
+    }
+    svg += `</svg>`;
+    wrap.innerHTML = `<div class="ratings-scroll-wrap">${svg}</div>`;
+    const scrollWrap2 = wrap.querySelector(".ratings-scroll-wrap");
+    if (scrollWrap2) scrollWrap2.scrollLeft = scrollWrap2.scrollWidth;
+  }
+
+  /** Histogramme "Fiches créées" (item 6e) : même principe défilable que
+   *  les graphiques de notes juste en dessous, piloté par la même échelle
+   *  partagée (byday/byweek/bymonth) et le même sélecteur de matière. */
+  function renderCreatedChart() {
+    const wrap = el("created-chart-wrap");
+    if (!wrap) return;
+    const bucketDaysMap = { byday: 1, byweek: 7, bymonth: 30 };
+    const bucketDays = bucketDaysMap[ratingsPeriod] || 1;
+    const NUM_BUCKETS = 20;
+    const today = startOfDay(new Date());
+    const end = new Date(today);
+    end.setDate(end.getDate() + 1);
+    const bucketMs = bucketDays * 86400000;
+    const rangeStart = new Date(end.getTime() - NUM_BUCKETS * bucketMs);
+    const scopeIds = statsScopeSubjectIds();
+    const values = Array.from({ length: NUM_BUCKETS }, () => 0);
+    cards.forEach((c) => {
+      if (c.deleted) return;
+      if (scopeIds !== null && !scopeIds.has(c.subject)) return;
+      const t = new Date(c.createdAt).getTime();
+      if (t < rangeStart.getTime() || t >= end.getTime()) return;
+      let idx = Math.floor((t - rangeStart.getTime()) / bucketMs);
+      if (idx >= NUM_BUCKETS) idx = NUM_BUCKETS - 1;
+      if (idx < 0) idx = 0;
+      values[idx] += 1;
+    });
+    renderSingleSeriesScrollableChart(wrap, values, rangeStart, bucketDays, ratingsPeriod, "var(--due-bar-color, var(--teal))", "Aucune fiche créée sur cette période.");
   }
 
   /* ---------------------------------------------------------
@@ -4423,7 +4530,7 @@
     // Toujours toutes matières confondues (item : indépendant des choix de
     // matière/période plus bas sur la page).
     const { days, hotDays, streak } = computeStreakData(null);
-    summaryEl.innerHTML = `<span class="streak-number">🔥 ${streak}</span><span>jour${streak > 1 ? "s" : ""} d'affilée</span>`;
+    summaryEl.innerHTML = `<span class="streak-number">🔥 Jours d'utilisation : ${streak}</span><span>jour${streak > 1 ? "s" : ""} d'affilée</span>`;
     const todayIdx = days.length - 1;
     // "Auj" sur la colonne d'aujourd'hui (item 10), une colonne par jour
     // qui se partagent toute la largeur disponible (voir CSS) plutôt
@@ -4441,42 +4548,17 @@
   }
 
   /* ---------------------------------------------------------
-     Compteurs "fiches créées" / "fiches révisées" sur la période choisie
-     (item 6).
+     Échelle partagée (byday/byweek/bymonth) pilotant le graphique
+     "à revoir/révisées", "fiches créées", "notes données" et
+     "évolution des notes" (item 6c).
   --------------------------------------------------------- */
-  function renderPeriodCounts() {
-    const scopeIds = statsScopeSubjectIds();
-    const { start, end } = periodToRange(statsPeriod);
-    const createdCount = cards.filter((c) => {
-      if (c.deleted) return false;
-      if (scopeIds !== null && !scopeIds.has(c.subject)) return false;
-      const t = new Date(c.createdAt).getTime();
-      return t >= start.getTime() && t < end.getTime();
-    }).length;
-    const reviewedCount = filterEntriesByPeriod(ratingLogInScope(), statsPeriod).length;
-    const createdEl = el("stat-created-period");
-    const reviewedEl = el("stat-reviewed-period");
-    if (createdEl) createdEl.textContent = String(createdCount);
-    if (reviewedEl) reviewedEl.textContent = String(reviewedCount);
-  }
-
-  const statsPeriodSelectEl = el("stats-period-select");
-  if (statsPeriodSelectEl) {
-    statsPeriodSelectEl.value = statsPeriod;
-    statsPeriodSelectEl.addEventListener("change", () => {
-      statsPeriod = statsPeriodSelectEl.value;
-      renderPeriodCounts();
-    });
-  }
-
-  // Items 10/11 : période dédiée aux 2 graphiques de notes (indépendante
-  // du sélecteur ci-dessus, qui ne concerne plus que les compteurs
-  // "fiches créées/révisées").
-  const ratingsPeriodSelectEl = el("ratings-period-select");
-  if (ratingsPeriodSelectEl) {
-    ratingsPeriodSelectEl.value = ratingsPeriod;
-    ratingsPeriodSelectEl.addEventListener("change", () => {
-      ratingsPeriod = ratingsPeriodSelectEl.value;
+  const statsScaleSelectEl = el("stats-scale-select");
+  if (statsScaleSelectEl) {
+    statsScaleSelectEl.value = ratingsPeriod;
+    statsScaleSelectEl.addEventListener("change", () => {
+      ratingsPeriod = statsScaleSelectEl.value;
+      renderDueChart();
+      renderCreatedChart();
       renderRatingsChart();
       renderRatingsHistoryChart();
     });
@@ -5314,6 +5396,7 @@
   let unsubscribeSubjectsRealtime = null;
   let unsubscribeFoldersRealtime = null;
   let unsubscribeLearningModesRealtime = null;
+  let unsubscribeDevSettingsRealtime = null;
   let syncAutoRetrying = false;
 
   function renderSyncView() {
@@ -5423,6 +5506,7 @@
     if (unsubscribeSubjectsRealtime) unsubscribeSubjectsRealtime();
     if (unsubscribeFoldersRealtime) unsubscribeFoldersRealtime();
     if (unsubscribeLearningModesRealtime) unsubscribeLearningModesRealtime();
+    if (unsubscribeDevSettingsRealtime) unsubscribeDevSettingsRealtime();
     Sync.clearConfig();
     syncForm.reset();
     renderSyncView();
@@ -5691,7 +5775,32 @@
     }
   }
 
+  /** Fusionne les réglages développeur reçus (item 1) : le plus récent
+   *  (comparé via updatedAt) l'emporte intégralement — contrairement aux
+   *  fiches, il n'y a pas de fusion champ par champ ici, un réglage de
+   *  couleurs est cohérent seulement pris comme un tout. */
+  async function reconcileDevSettings() {
+    const remote = await Sync.pullDevSettings();
+    const local = loadDevSettings();
+    if (!remote) {
+      // Rien côté serveur : on y pousse notre réglage local tel quel.
+      Sync.pushDevSettings(local);
+      return;
+    }
+    const remoteTime = new Date(remote.updatedAt || 0).getTime();
+    const localTime = new Date(local.updatedAt || 0).getTime();
+    if (remoteTime > localTime) {
+      localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
+      applyColorSettings();
+      applyIconSettings();
+      applyTextColorPalette();
+    } else if (localTime > remoteTime) {
+      Sync.pushDevSettings(local);
+    }
+  }
+
   async function reconcileWithRemote() {
+    await reconcileDevSettings();
     await reconcileLearningModes();
     await reconcileSubjectsAndFolders();
     renderSubjectSelect();
@@ -5723,6 +5832,7 @@
     if (unsubscribeSubjectsRealtime) unsubscribeSubjectsRealtime();
     if (unsubscribeFoldersRealtime) unsubscribeFoldersRealtime();
     if (unsubscribeLearningModesRealtime) unsubscribeLearningModesRealtime();
+    if (unsubscribeDevSettingsRealtime) unsubscribeDevSettingsRealtime();
 
     await reconcileWithRemote();
     await Sync.flushPending((id) => cards.find((c) => c.id === id));
@@ -5754,6 +5864,18 @@
       await mergeRemoteLearningMode(remote);
       renderSubjectManageList();
       renderSubjectAlgoBadge();
+    });
+    unsubscribeDevSettingsRealtime = Sync.subscribeDevSettingsRealtime((remote) => {
+      // Dernier écrit gagne (item 1) : un autre appareil vient de changer
+      // un réglage (couleur, icône...), on adopte tel quel si plus récent.
+      const local = loadDevSettings();
+      if (new Date(remote.updatedAt || 0) > new Date(local.updatedAt || 0)) {
+        localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
+        applyColorSettings();
+        applyIconSettings();
+        applyTextColorPalette();
+        if (el("view-dev") && el("view-dev").classList.contains("is-active")) renderDevView();
+      }
     });
 
     updateSyncStatus();

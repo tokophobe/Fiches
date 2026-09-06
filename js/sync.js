@@ -505,6 +505,68 @@ function subscribeRewardRealtime(onRemoteChange) {
   return () => c.removeChannel(channel);
 }
 
+/* ---------------------------------------------------------
+   Réglages du mode développeur (item 1 — couleurs, icônes, palette de
+   texte...) : jamais synchronisés jusqu'ici, chacun restait propre à
+   l'appareil. Même principe qu'au-dessus (reward_state) : une seule ligne
+   JSON par code de synchro, avec un horodatage pour le dernier écrit
+   gagne en cas de fusion.
+--------------------------------------------------------- */
+async function pullDevSettings() {
+  const c = getClient();
+  const { code } = getConfig();
+  if (!c || !code) return null;
+
+  const { data, error } = await c
+    .from("dev_settings")
+    .select("payload, updated_at")
+    .eq("sync_code", code)
+    .maybeSingle();
+
+  if (error) {
+    console.warn("Sync: échec du chargement des réglages développeur distants", error.message);
+    return null;
+  }
+  return data ? { payload: data.payload || {}, updatedAt: data.updated_at } : null;
+}
+
+async function pushDevSettings(payload) {
+  const c = getClient();
+  const { code } = getConfig();
+  if (!c || !code) return false;
+
+  const { error } = await c.from("dev_settings").upsert({
+    sync_code: code,
+    payload,
+    updated_at: new Date().toISOString(),
+  });
+
+  if (error) {
+    console.warn("Sync: échec de l'envoi des réglages développeur", error.message);
+    return false;
+  }
+  return true;
+}
+
+function subscribeDevSettingsRealtime(onRemoteChange) {
+  const c = getClient();
+  const { code } = getConfig();
+  if (!c || !code) return () => {};
+
+  const channel = c
+    .channel(`dev-settings-${code}`)
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "dev_settings", filter: `sync_code=eq.${code}` },
+      (payload) => {
+        if (payload.new && payload.new.payload) onRemoteChange({ payload: payload.new.payload, updatedAt: payload.new.updated_at });
+      }
+    )
+    .subscribe();
+
+  return () => c.removeChannel(channel);
+}
+
 window.Sync = {
   generateSyncCode,
   getConfig,
@@ -518,6 +580,9 @@ window.Sync = {
   pullRewardState,
   pushRewardState,
   subscribeRewardRealtime,
+  pullDevSettings,
+  pushDevSettings,
+  subscribeDevSettingsRealtime,
   pullSubjects,
   pushSubject,
   subscribeSubjectsRealtime,

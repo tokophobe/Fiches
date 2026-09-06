@@ -213,6 +213,36 @@ begin
   end if;
 end $$;
 
+-- Réglages du mode développeur (item 1 — audit synchro) : jusqu'ici
+-- jamais synchronisés du tout (couleurs, icônes, palette de texte, tout
+-- restait propre à chaque appareil). Une seule ligne JSON par code de
+-- synchro, même principe que reward_state.
+create table if not exists public.dev_settings (
+  sync_code text primary key,
+  payload jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.dev_settings enable row level security;
+
+drop policy if exists "anon can read/write dev_settings" on public.dev_settings;
+create policy "anon can read/write dev_settings"
+  on public.dev_settings
+  for all
+  to anon
+  using (true)
+  with check (true);
+
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'dev_settings'
+  ) then
+    alter publication supabase_realtime add table public.dev_settings;
+  end if;
+end $$;
+
 -- Force PostgREST à recharger son cache de schéma tout de suite (sinon les
 -- nouvelles colonnes peuvent mettre quelques minutes à être reconnues par
 -- l'API, même après ce script).
