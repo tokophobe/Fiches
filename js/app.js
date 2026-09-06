@@ -3094,15 +3094,28 @@
   /** cardForm.reset() natif ne touche pas les champs contenteditable (item
    *  13) — seuls les vrais éléments de formulaire (input/textarea/select).
    *  On les vide donc à la main partout où l'ancien reset() était appelé. */
+  /** Retenu pour "Retour" (item 2) : permet de revenir à l'onglet d'où on
+   *  venait, plutôt que toujours atterrir sur Fiches. */
+  let previousViewBeforeNewCard = "review";
+  function openNewCardView() {
+    const activeTab = document.querySelector(".tab.is-active");
+    previousViewBeforeNewCard = activeTab ? activeTab.dataset.view : "review";
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    const target = el("view-new-card");
+    if (target) target.classList.add("is-active");
+  }
+  function closeNewCardView(toView) {
+    const dest = toView || previousViewBeforeNewCard || "review";
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    const target = el(`view-${dest}`);
+    if (target) target.classList.add("is-active");
+    document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("is-active", t.dataset.view === dest));
+  }
+
   function resetCardForm() {
     cardForm.reset();
     if (inputQuestion) inputQuestion.innerHTML = "";
     if (inputAnswer) inputAnswer.innerHTML = "";
-    // Le cadre disparaît après ajout/annulation (item 3) : masqué par
-    // défaut, il ne réapparaît qu'au clic sur "+ Nouvelle fiche" ou en
-    // modifiant une fiche existante (voir enterEditMode).
-    cardForm.hidden = true;
-    cancelEditBtn.hidden = true;
   }
 
   /* ---------------------------------------------------------
@@ -3138,26 +3151,34 @@
 
     if (editReturnToReview) {
       editReturnToReview = false;
-      document.querySelector('.tab[data-view="review"]').click();
-    } else if (!currentCard) {
-      startReviewSession();
+      closeNewCardView("review");
+    } else {
+      closeNewCardView();
+      if (!currentCard) startReviewSession();
     }
   });
 
-  // Bouton "+ Nouvelle fiche" (item 3) : fait apparaître le cadre de
-  // création, masqué par défaut.
-  // Bouton "+ Nouvelle fiche" (item 7) : dans la barre du haut désormais,
-  // accessible depuis n'importe quelle page — bascule sur Fiches et fait
-  // apparaître le cadre de création.
+  // Bouton "+ Fiche" (item 7/2) : page indépendante désormais, accessible
+  // depuis n'importe quel endroit de l'appli — ne fait plus partie de la
+  // page Fiches (qui ne contient plus que la liste et la recherche).
   const topbarNewCardBtn = el("topbar-new-card-btn");
   if (topbarNewCardBtn) {
     topbarNewCardBtn.addEventListener("click", () => {
-      const cardsTab = document.querySelector('.tab[data-view="cards"]');
-      if (cardsTab && !cardsTab.classList.contains("is-active")) cardsTab.click();
-      cardForm.hidden = false;
+      exitEditMode();
+      resetCardForm();
       cancelEditBtn.hidden = false;
+      openNewCardView();
       if (inputQuestion) inputQuestion.focus();
-      cardForm.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  const newCardBackBtn = el("new-card-back-btn");
+  if (newCardBackBtn) {
+    newCardBackBtn.addEventListener("click", () => {
+      editReturnToReview = false;
+      exitEditMode();
+      resetCardForm();
+      closeNewCardView();
     });
   }
 
@@ -3165,12 +3186,13 @@
     editReturnToReview = false;
     exitEditMode();
     resetCardForm();
+    closeNewCardView();
   });
 
   const deleteEditingCardBtn = el("delete-editing-card");
 
   function enterEditMode(card) {
-    cardForm.hidden = false;
+    openNewCardView();
     editingId = card.id;
     inputQuestion.innerHTML = toDisplayHtml(card.question);
     inputAnswer.innerHTML = toDisplayHtml(card.answer);
@@ -3196,6 +3218,7 @@
       exitEditMode();
       resetCardForm();
       await deleteCard(id, true);
+      closeNewCardView();
     });
   }
 

@@ -117,7 +117,7 @@
   <header class="topbar">
     <div class="brand">
       <h1 class="sr-only">Fiches</h1>
-      <button type="button" class="btn btn--primary topbar-new-card-btn" id="topbar-new-card-btn">+ Nouvelle fiche</button>
+      <button type="button" class="btn btn--primary topbar-new-card-btn" id="topbar-new-card-btn">+ Fiche</button>
     </div>
     <div class="header-right">
       <button class="sync-status" id="sync-status" type="button" title="État de la synchronisation">
@@ -260,16 +260,19 @@
     </section>
 
     <!-- VUE FICHES -->
-    <section id="view-cards" class="view" aria-labelledby="tab-cards">
-      <form class="card-form" id="card-form" hidden>
+    <!-- VUE NOUVELLE FICHE : page indépendante, accessible uniquement via
+         le bouton "+ Fiche" en haut de l'écran (pas un onglet du menu). -->
+    <section id="view-new-card" class="view">
+      <div class="card-form-page-header">
+        <button type="button" class="btn btn--ghost new-card-back-btn" id="new-card-back-btn">← Retour</button>
+      </div>
+      <form class="card-form" id="card-form">
         <div class="card-form-header">
           <h2 class="section-title">Nouvelle fiche</h2>
         </div>
 
         <!-- Choix de la matière (item 7) : intégré au cadre de création
-             lui-même, plutôt qu'un sélecteur séparé au-dessus — l'accès à
-             la création se fait maintenant uniquement par le bouton en
-             haut de l'écran. -->
+             lui-même. -->
         <div class="subject-bar" id="cards-subject-bar">
           <label class="import-target-label" for="cards-subject-select-btn">Matière :</label>
           <button type="button" class="subject-select-btn" id="cards-subject-select-btn" aria-label="Choisir la matière de cette nouvelle fiche"></button>
@@ -315,7 +318,9 @@
           <button type="button" class="btn algo-review-old-btn" id="delete-editing-card" hidden>Supprimer cette fiche</button>
         </div>
       </form>
+    </section>
 
+    <section id="view-cards" class="view" aria-labelledby="tab-cards">
       <h2 class="section-title cards-list-big-title">Liste des fiches</h2>
 
       <div class="cards-scope-row">
