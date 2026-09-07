@@ -141,13 +141,13 @@ button.topbar-new-card-btn {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: none;
+  background: var(--sync-status-bg-color, transparent);
   border: 1px solid rgba(31, 41, 55, 0.2);
   border-radius: 999px;
   padding: 6px 10px;
   font-family: var(--font-mono);
   font-size: 11px;
-  color: rgba(31, 41, 55, 0.75);
+  color: var(--sync-text-color, rgba(31, 41, 55, 0.75));
 }
 
 .sync-dot {
@@ -240,8 +240,8 @@ button.topbar-new-card-btn {
   font-family: var(--font-mono);
   font-size: 13px;
   letter-spacing: 0.02em;
-  color: var(--ink);
-  background: rgba(31, 41, 55, 0.08);
+  color: var(--selector-text-color, var(--ink));
+  background: var(--subject-select-bg-color, rgba(31, 41, 55, 0.08));
   border: 1px solid rgba(31, 41, 55, 0.22);
   border-radius: 999px;
   padding: 8px 14px;
@@ -354,7 +354,7 @@ button.topbar-new-card-btn {
   height: 34px;
   border-radius: 50%;
   border: 1px solid rgba(31, 41, 55, 0.22);
-  background: rgba(31, 41, 55, 0.08);
+  background: var(--add-btn-bg-color, rgba(31, 41, 55, 0.08));
   color: var(--ink);
   font-size: 17px;
   line-height: 1;
@@ -496,7 +496,7 @@ button.topbar-new-card-btn {
   gap: 6px;
 }
 
-.folder-row .subject-row-name { color: var(--ink); font-weight: 600; }
+.folder-row .subject-row-name { color: var(--folder-subject-name-color, var(--ink)); font-weight: 600; }
 
 /* Sélecteur "déplacer vers" (dossiers/matières) — même look que le
    sélecteur de plusieurs matières confondues (item 1). */
@@ -529,7 +529,7 @@ button.topbar-new-card-btn {
 }
 
 .subject-row {
-  background: var(--paper);
+  background: var(--subject-row-bg-color, var(--paper));
   border-radius: 10px;
   padding: 10px 12px;
   display: flex;
@@ -540,12 +540,20 @@ button.topbar-new-card-btn {
 
 .subject-row.is-active { border-left: 3px solid var(--rule); }
 
+/* Fond des dossiers par niveau de profondeur (item 2h) — 0 = dossier
+   racine, 1/2/3 = sous-dossiers ; au-delà de 3, on réutilise la couleur
+   du niveau 3. */
+.folder-row.folder-row-depth-0 { background: var(--folder-bg-color, var(--paper)); }
+.folder-row.folder-row-depth-1 { background: var(--folder-l1-bg-color, var(--paper)); }
+.folder-row.folder-row-depth-2 { background: var(--folder-l2-bg-color, var(--paper)); }
+.folder-row.folder-row-depth-3 { background: var(--folder-l3-bg-color, var(--paper)); }
+
 .subject-row-name {
   flex: 1;
   min-width: 0;
   font-family: var(--font-type);
   font-size: 14px;
-  color: var(--ink);
+  color: var(--folder-subject-name-color, var(--ink));
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -730,7 +738,7 @@ button.topbar-new-card-btn {
   font-family: var(--font-type);
   font-size: 26px;
   font-weight: 600;
-  color: var(--main-text-color, var(--paper));
+  color: var(--home-title-color, var(--main-text-color, var(--paper)));
   text-align: center;
   margin: 10px 0 28px;
 }
@@ -748,7 +756,7 @@ button.topbar-new-card-btn {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: var(--paper);
+  background: var(--home-square-bg-color, var(--paper));
   border-radius: 20px;
   border: none;
   box-shadow: var(--shadow-deep);
@@ -780,6 +788,7 @@ button.topbar-new-card-btn {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--home-btn-bg-color, transparent);
 }
 
 .home-btn[hidden] {
@@ -967,7 +976,8 @@ button.topbar-new-card-btn {
 /* Bouton "révéler" (item 1c) : simple triangle à la place des 3 boutons
    secondaires repliés par défaut. */
 .card-reveal-btn {
-  right: 12px;
+  left: 12px;
+  right: auto;
   font-size: 13px;
 }
 
@@ -1046,6 +1056,12 @@ button.topbar-new-card-btn {
 
 .card-text b, .card-text strong { font-weight: 700; }
 .card-text i, .card-text em { font-style: italic; }
+
+/* Rappel de la matière sur la fiche en mode multi-matières (item 5) : gras
+   et plus grand que le reste du texte, plus de ":" final. */
+.card-subject-hint {
+  font-size: 1.15em;
+}
 
 .tap-hint {
   font-family: var(--font-mono);
@@ -1894,7 +1910,7 @@ button.topbar-new-card-btn {
    du graphique "à revoir" juste au-dessus. */
 /* Barres "fiches révisées" dans l'histogramme fusionné (item 9) : bleu,
    pour bien les distinguer des barres "fiches à revoir". */
-.chart-bar--reviewed:not(.chart-bar--zero) { background: var(--blue); }
+.chart-bar--reviewed:not(.chart-bar--zero) { background: var(--reviewed-bar-color, var(--blue)); }
 
 /* Jours sans aucune fiche due : couleur neutre (beige plus foncé que le fond
    de la carte), pour rester visible sans attirer l'œil comme une vraie donnée. */
@@ -1904,19 +1920,19 @@ button.topbar-new-card-btn {
 .chart-value {
   font-family: var(--font-mono);
   font-size: 9px;
-  color: var(--ink-soft);
+  color: var(--chart-value-color, var(--ink-soft));
   white-space: nowrap;
 }
 
 .chart-label {
   font-family: var(--font-mono);
   font-size: 9px;
-  color: var(--ink-soft);
+  color: var(--chart-label-color, var(--ink-soft));
   white-space: nowrap;
   height: 12px;
 }
 
-.chart-col.is-today .chart-label { color: var(--rule); font-weight: 600; }
+.chart-col.is-today .chart-label { color: var(--chart-today-label-color, var(--rule)); font-weight: 600; }
 
 .chart-empty {
   font-size: 13px;
@@ -2165,21 +2181,21 @@ button.topbar-new-card-btn {
    chaque encadré correspond justement à une note précise. Le curseur
    PRINCIPAL de choix du mode (Cool/Normal/Renforcé/Perso), lui, garde la
    couleur du mode — ce n'est pas le même curseur. */
-.algo-slider-field--again { background: color-mix(in srgb, var(--rating-again-color, var(--terracotta)) 14%, transparent); border-color: color-mix(in srgb, var(--rating-again-color, var(--terracotta)) 40%, transparent); --slider-color: var(--rating-again-color, var(--terracotta)); }
+.algo-slider-field--again { background: color-mix(in srgb, var(--terracotta) 14%, transparent); border-color: color-mix(in srgb, var(--terracotta) 40%, transparent); --slider-color: var(--terracotta); }
 .algo-slider-field--again .algo-slider-field-label,
-.algo-slider-field--again .algo-slider-field-value { color: var(--rating-again-color, var(--terracotta)); }
+.algo-slider-field--again .algo-slider-field-value { color: var(--terracotta); }
 
-.algo-slider-field--hard { background: color-mix(in srgb, var(--rating-hard-color, var(--amber)) 14%, transparent); border-color: color-mix(in srgb, var(--rating-hard-color, var(--amber)) 40%, transparent); --slider-color: var(--rating-hard-color, var(--amber)); }
+.algo-slider-field--hard { background: color-mix(in srgb, var(--amber) 14%, transparent); border-color: color-mix(in srgb, var(--amber) 40%, transparent); --slider-color: var(--amber); }
 .algo-slider-field--hard .algo-slider-field-label,
-.algo-slider-field--hard .algo-slider-field-value { color: var(--rating-hard-color, var(--amber)); }
+.algo-slider-field--hard .algo-slider-field-value { color: var(--amber); }
 
-.algo-slider-field--good { background: color-mix(in srgb, var(--rating-good-color, var(--sage)) 14%, transparent); border-color: color-mix(in srgb, var(--rating-good-color, var(--sage)) 40%, transparent); --slider-color: var(--rating-good-color, var(--sage)); }
+.algo-slider-field--good { background: color-mix(in srgb, var(--sage) 14%, transparent); border-color: color-mix(in srgb, var(--sage) 40%, transparent); --slider-color: var(--sage); }
 .algo-slider-field--good .algo-slider-field-label,
-.algo-slider-field--good .algo-slider-field-value { color: var(--rating-good-color, var(--sage)); }
+.algo-slider-field--good .algo-slider-field-value { color: var(--sage); }
 
-.algo-slider-field--easy { background: color-mix(in srgb, var(--rating-easy-color, var(--teal)) 18%, transparent); border-color: color-mix(in srgb, var(--rating-easy-color, var(--teal)) 45%, transparent); --slider-color: var(--rating-easy-color, var(--teal)); }
+.algo-slider-field--easy { background: color-mix(in srgb, var(--teal) 18%, transparent); border-color: color-mix(in srgb, var(--teal) 45%, transparent); --slider-color: var(--teal); }
 .algo-slider-field--easy .algo-slider-field-label,
-.algo-slider-field--easy .algo-slider-field-value { color: var(--rating-easy-color, var(--teal)); }
+.algo-slider-field--easy .algo-slider-field-value { color: var(--teal); }
 
 /* Graphique d'aperçu des échéances (item 6). */
 /* Graphique d'aperçu de la page d'édition des modes : collé en haut au
@@ -2338,6 +2354,17 @@ button.topbar-new-card-btn {
   flex-shrink: 0;
 }
 
+/* Damier pour représenter une couleur transparente (item 1). */
+.color-swatch-btn--transparent, .color-popup-preview--transparent {
+  background-image:
+    linear-gradient(45deg, #ccc 25%, transparent 25%),
+    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ccc 75%),
+    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-size: 10px 10px;
+  background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+}
+
 .color-popup {
   z-index: 60;
   background: var(--paper);
@@ -2378,6 +2405,52 @@ button.topbar-new-card-btn {
 .hsl-slider-row input[type="range"] {
   flex: 1;
   height: 18px;
+}
+
+.hsl-slider-value {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  width: 28px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.color-popup-sliders.is-disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.color-popup-hex-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+.color-popup-hex-input {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--paper-2);
+  border: 1px solid rgba(35, 48, 42, 0.15);
+  border-radius: 6px;
+  padding: 6px 8px;
+  min-width: 0;
+}
+
+.color-popup-transparent-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
 }
 
 .color-popup-mode-toggle {
@@ -2421,6 +2494,30 @@ button.topbar-new-card-btn {
   font-family: var(--font-type);
   font-size: 14px;
   color: var(--ink);
+}
+
+/* Listes "Couleurs des fonds" / "Couleurs des textes" (items 2h/2i) :
+   intitulé à gauche, pastille de couleur à droite, une ligne par réglage. */
+.dev-color-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.dev-color-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-family: var(--font-type);
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.dev-color-row span {
+  flex: 1;
+  min-width: 0;
 }
 
 .icon-picker-btn, .icon-bank-btn {
@@ -2579,7 +2676,7 @@ button.topbar-new-card-btn {
 .field-hint {
   font-family: var(--font-body);
   font-size: 12.5px;
-  color: var(--ink-soft);
+  color: var(--general-text-color, var(--ink-soft));
   text-transform: none;
   letter-spacing: normal;
   margin: -4px 0 14px;

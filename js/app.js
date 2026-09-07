@@ -393,6 +393,42 @@
   const DEFAULT_RICH_EDITOR_BG_COLOR = "#f4f7fb";
   const DEFAULT_CARD_BG_COLOR = "#ffffff";
   const DEFAULT_EMPTY_BAR_COLOR = "#dce4f0";
+  // Nouveaux réglages "Couleurs des fonds" / "Couleurs des textes" (items
+  // 2h/2i) : chacun a un nom de réglage direct, plus explicite que les
+  // anciennes clés génériques ci-dessus.
+  const DEFAULT_BG_COLORS = {
+    appBg: "#eef2f8",
+    homeSquareBg: "#ffffff",
+    cardFormBg: "#ffffff",
+    richEditorBg: "#f4f7fb",
+    homeBtnBg: "transparent",
+    cardBg: "#ffffff",
+    subjectSelectBg: "#f0f3f7",
+    syncStatusBg: "transparent",
+    folderBg: "#ffffff",
+    folderL1Bg: "#ffffff",
+    folderL2Bg: "#ffffff",
+    folderL3Bg: "#ffffff",
+    subjectRowBg: "#ffffff",
+    addBtnBg: "#f0f3f7",
+    chartWrapBg: "#ffffff",
+    svgChartBg: "#eef2f8",
+    dueBarColor: "#4a90d9",
+    todayBarColor: "#4a9fe0",
+    reviewedBarColor: "#4a90d9",
+  };
+  const DEFAULT_TEXT_COLORS_SET = {
+    homeTitle: "#1f2937",
+    titles: "#1f2937",
+    generalText: "#64748b",
+    folderSubjectNames: "#1f2937",
+    cardText: "#1f2937",
+    chartValues: "#6b7280",
+    chartLabels: "#6b7280",
+    chartTodayLabel: "#1f2937",
+    selectorText: "#1f2937",
+    syncText: "#64748b",
+  };
   const DEFAULT_ICONS = {
     hibernate: "💤", edit: "✎", construction: "🚧", undo: "◀️", folder: "📁",
   };
@@ -401,6 +437,9 @@
   // émoticône, utilisé comme simple texte à trop d'endroits pour basculer
   // en SVG sans tout casser).
   const DEFAULT_ICON_BANK_CHOICES = { hibernate: "sleep", edit: "pencil", construction: "cone", undo: "undo" };
+  // Icônes des boutons d'évaluation (item 2a) : plus d'émoticônes libres,
+  // uniquement la banque d'icônes sobres.
+  const DEFAULT_RATING_ICONS = { again: "refresh", hard: "alertTriangle", good: "thumbsUp", easy: "star" };
   // Palette de couleurs de texte proposée dans la mise en forme des fiches
   // (item 20 puis étendue ici) — modifiable, y compris ajouter/retirer des
   // couleurs, depuis la page Développeur.
@@ -430,6 +469,7 @@
       ratingLabels: { ...DEFAULT_RATING_LABELS, ...(parsed.ratingLabels || {}) },
       navLabels: { ...DEFAULT_NAV_LABELS, ...(parsed.navLabels || {}) },
       navIcons: { ...DEFAULT_NAV_ICONS, ...(parsed.navIcons || {}) },
+      ratingIcons: { ...DEFAULT_RATING_ICONS, ...(parsed.ratingIcons || {}) },
       iconBank: { ...DEFAULT_ICON_BANK_CHOICES, ...(parsed.iconBank || {}) },
       ratingColors: { ...DEFAULT_RATING_COLORS, ...(parsed.ratingColors || {}) },
       modeColors: { ...DEFAULT_MODE_COLORS, ...(parsed.modeColors || {}) },
@@ -447,6 +487,8 @@
       richEditorBgColor: parsed.richEditorBgColor || DEFAULT_RICH_EDITOR_BG_COLOR,
       cardBgColor: parsed.cardBgColor || DEFAULT_CARD_BG_COLOR,
       emptyBarColor: parsed.emptyBarColor || DEFAULT_EMPTY_BAR_COLOR,
+      bgColors: { ...DEFAULT_BG_COLORS, ...(parsed.bgColors || {}) },
+      textColorsSet: { ...DEFAULT_TEXT_COLORS_SET, ...(parsed.textColorsSet || {}) },
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       factoryDefaults: {
@@ -518,10 +560,11 @@
    *  appelé au démarrage et après chaque modification sur la page
    *  Développeur. */
   function applyRatingLabels() {
-    const labels = loadDevSettings().ratingLabels;
+    const settings = loadDevSettings();
+    const icons = settings.ratingIcons;
     ["again", "hard", "good", "easy"].forEach((r) => {
       const el2 = document.querySelector(`.stamp--${r} .stamp-label`);
-      if (el2) el2.textContent = labels[r];
+      if (el2 && icons[r] && ICON_LIBRARY[icons[r]]) el2.innerHTML = iconSvgMarkup(icons[r], "icon-inline-svg");
     });
   }
   /** Applique les émoticônes/texte du menu principal (item 19). */
@@ -686,13 +729,30 @@
     });
   }
 
+  /** Applique les icônes choisies aux carrés de la page d'accueil (item
+   *  2c) — même réglage "navIcons" que l'ancien menu principal, maintenant
+   *  invisible, mais bien réel pour l'accueil. */
+  function applyHomeIcons() {
+    const settings = loadDevSettings();
+    Object.keys(DEFAULT_NAV_ICONS).forEach((view) => {
+      const square = document.querySelector(`.home-square[data-go="${view}"] .home-square-icon`);
+      const iconId = settings.navIcons[view];
+      if (square && iconId && ICON_LIBRARY[iconId]) {
+        square.outerHTML = iconSvgMarkup(iconId, "home-square-icon");
+      }
+    });
+  }
+
   function renderNavIconsEditor() {
     renderIconBankPicker(
       "dev-nav-icons-list",
       Object.keys(DEFAULT_NAV_ICONS),
       { review: "Réviser", manage: "Gérer", cards: "Fiches", stats: "Stats", "learning-modes": "Modes", settings: "Réglages" },
       "navIcons",
-      applyNavLabels
+      () => {
+        applyNavLabels();
+        applyHomeIcons();
+      }
     );
   }
 
@@ -704,6 +764,93 @@
       "iconBank",
       applyIconSettings
     );
+  }
+
+  /** Icônes des boutons d'évaluation (item 2a) — plus d'émoticônes libres. */
+  function renderRatingIconsEditor() {
+    renderIconBankPicker(
+      "dev-rating-icons-list",
+      Object.keys(DEFAULT_RATING_ICONS),
+      { again: "Encore", hard: "Difficile", good: "Bien", easy: "Facile" },
+      "ratingIcons",
+      applyRatingLabels
+    );
+  }
+
+  /** Liste verticale intitulé/sélecteur de couleur (items 2h/2i) —
+   *  générique, réutilisée pour "Couleurs des fonds" et "Couleurs des
+   *  textes" : un ordre précis de clés, avec leur intitulé affiché. */
+  function renderColorListPicker(wrapId, order, titles, settingsKey, onApplied) {
+    const wrap = el(wrapId);
+    if (!wrap) return;
+    const settings = loadDevSettings();
+    wrap.innerHTML = order
+      .map(
+        (key) => `<div class="dev-color-row">
+          <span>${titles[key] || key}</span>
+          <input type="text" class="dev-color-value" data-key="${key}" value="${settings[settingsKey][key]}" />
+        </div>`
+      )
+      .join("");
+    wrap.querySelectorAll("input.dev-color-value").forEach((input) => {
+      input.addEventListener("input", () => {
+        const s = loadDevSettings();
+        s[settingsKey][input.dataset.key] = input.value;
+        saveDevSettings(s);
+        onApplied();
+      });
+    });
+    enhanceColorInputsWithHsl();
+  }
+
+  const BG_COLORS_ORDER = [
+    "appBg", "homeSquareBg", "cardFormBg", "richEditorBg", "homeBtnBg", "cardBg",
+    "subjectSelectBg", "syncStatusBg", "folderBg", "folderL1Bg", "folderL2Bg", "folderL3Bg",
+    "subjectRowBg", "addBtnBg", "chartWrapBg", "svgChartBg", "dueBarColor", "todayBarColor", "reviewedBarColor",
+  ];
+  const BG_COLORS_TITLES = {
+    appBg: "Fond de l'appli",
+    homeSquareBg: "Boutons de la page d'accueil",
+    cardFormBg: "Fond des cadres (blocs)",
+    richEditorBg: "Fond des zones de texte",
+    homeBtnBg: "Bouton home",
+    cardBg: "Fond des fiches (recto & verso)",
+    subjectSelectBg: "Fond des sélecteurs de matières",
+    syncStatusBg: "Fond de la pastille synchronisé",
+    folderBg: "Fond des dossiers",
+    folderL1Bg: "Fond des sous-dossiers de niveau 1",
+    folderL2Bg: "Fond des sous-dossiers de niveau 2",
+    folderL3Bg: "Fond des sous-dossiers de niveau 3",
+    subjectRowBg: "Fond des matières",
+    addBtnBg: "Fond des boutons (nouveau dossier / nouvelle matière)",
+    chartWrapBg: "Fond des histogrammes",
+    svgChartBg: "Fond des graphiques",
+    dueBarColor: "Barres « à revoir »",
+    todayBarColor: "Barre « Aujourd'hui »",
+    reviewedBarColor: "Barres « révisées »",
+  };
+  function renderBgColorsEditor() {
+    renderColorListPicker("dev-bg-colors-list", BG_COLORS_ORDER, BG_COLORS_TITLES, "bgColors", applyColorSettings);
+  }
+
+  const TEXT_COLORS_SET_ORDER = [
+    "homeTitle", "titles", "generalText", "folderSubjectNames", "cardText",
+    "chartValues", "chartLabels", "chartTodayLabel", "selectorText", "syncText",
+  ];
+  const TEXT_COLORS_SET_TITLES = {
+    homeTitle: "Titre de la page d'accueil",
+    titles: "Titres (toutes les pages)",
+    generalText: "Textes (autres que titres)",
+    folderSubjectNames: "Intitulés dossiers et matières",
+    cardText: "Texte fiches",
+    chartValues: "Valeurs graphiques",
+    chartLabels: "Étiquettes graphiques",
+    chartTodayLabel: "Étiquette « Aujourd'hui »",
+    selectorText: "Texte sélecteurs",
+    syncText: "Texte « synchroniser »",
+  };
+  function renderTextColorsSetEditor() {
+    renderColorListPicker("dev-text-colors-set-list", TEXT_COLORS_SET_ORDER, TEXT_COLORS_SET_TITLES, "textColorsSet", applyColorSettings);
   }
 
   function ensureColorPopup() {
@@ -734,35 +881,59 @@
 
     function render() {
       const mode = loadColorSliderMode() === "rgb" ? "rgb" : "tsl";
-      const hex = input.value;
+      const isTransparent = input.value === "transparent";
+      // La dernière couleur opaque connue sert de base aux curseurs même
+      // quand "Transparent" est actif (mémorisée sur l'input lui-même, pour
+      // ne pas perdre la teinte choisie si on décoche puis recoche).
+      const hex = isTransparent ? input.dataset.lastOpaque || "#000000" : input.value;
+      if (!isTransparent) input.dataset.lastOpaque = hex;
       let slidersHtml;
       if (mode === "rgb") {
         const r = parseInt(hex.slice(1, 3), 16) || 0;
         const g = parseInt(hex.slice(3, 5), 16) || 0;
         const bch = parseInt(hex.slice(5, 7), 16) || 0;
         slidersHtml = `
-          <div class="hsl-slider-row"><span>R</span><input type="range" min="0" max="255" value="${r}" data-c="r" /></div>
-          <div class="hsl-slider-row"><span>V</span><input type="range" min="0" max="255" value="${g}" data-c="v" /></div>
-          <div class="hsl-slider-row"><span>B</span><input type="range" min="0" max="255" value="${bch}" data-c="b" /></div>
+          <div class="hsl-slider-row"><span>R</span><input type="range" min="0" max="255" value="${r}" data-c="r" /><span class="hsl-slider-value" data-cv="r">${r}</span></div>
+          <div class="hsl-slider-row"><span>V</span><input type="range" min="0" max="255" value="${g}" data-c="v" /><span class="hsl-slider-value" data-cv="v">${g}</span></div>
+          <div class="hsl-slider-row"><span>B</span><input type="range" min="0" max="255" value="${bch}" data-c="b" /><span class="hsl-slider-value" data-cv="b">${bch}</span></div>
         `;
       } else {
         const hsl = hexToHsl(hex);
         slidersHtml = `
-          <div class="hsl-slider-row"><span>T</span><input type="range" min="0" max="360" value="${hsl.h}" data-c="h" /></div>
-          <div class="hsl-slider-row"><span>S</span><input type="range" min="0" max="100" value="${hsl.s}" data-c="s" /></div>
-          <div class="hsl-slider-row"><span>L</span><input type="range" min="0" max="100" value="${hsl.l}" data-c="l" /></div>
+          <div class="hsl-slider-row"><span>T</span><input type="range" min="0" max="360" value="${hsl.h}" data-c="h" /><span class="hsl-slider-value" data-cv="h">${hsl.h}</span></div>
+          <div class="hsl-slider-row"><span>S</span><input type="range" min="0" max="100" value="${hsl.s}" data-c="s" /><span class="hsl-slider-value" data-cv="s">${hsl.s}</span></div>
+          <div class="hsl-slider-row"><span>L</span><input type="range" min="0" max="100" value="${hsl.l}" data-c="l" /><span class="hsl-slider-value" data-cv="l">${hsl.l}</span></div>
         `;
       }
       popup.innerHTML = `
-        <div class="color-popup-preview" style="background:${hex}"></div>
-        <div class="color-popup-sliders">${slidersHtml}</div>
+        <div class="color-popup-preview${isTransparent ? " color-popup-preview--transparent" : ""}" style="${isTransparent ? "" : `background:${hex}`}"></div>
+        <label class="color-popup-hex-row">
+          <span>Hex</span>
+          <input type="text" class="color-popup-hex-input" value="${isTransparent ? "" : hex}" placeholder="${isTransparent ? "transparent" : "#rrggbb"}" maxlength="7" />
+        </label>
+        <div class="color-popup-sliders${isTransparent ? " is-disabled" : ""}">${slidersHtml}</div>
+        <label class="color-popup-transparent-row">
+          <input type="checkbox" id="color-popup-transparent-check" ${isTransparent ? "checked" : ""} />
+          <span>Transparent</span>
+        </label>
         <div class="color-popup-mode-toggle">
           <button type="button" class="color-popup-mode-btn${mode === "rgb" ? " is-active" : ""}" data-mode="rgb">RVB</button>
           <button type="button" class="color-popup-mode-btn${mode === "tsl" ? " is-active" : ""}" data-mode="tsl">TSL</button>
         </div>
       `;
+      const applyHex = (newHex) => {
+        input.value = newHex;
+        input.dataset.lastOpaque = newHex;
+        setSwatchVisual(anchorBtn, newHex);
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+        render();
+      };
       popup.querySelectorAll('input[type="range"]').forEach((slider) => {
         slider.addEventListener("input", () => {
+          // Affiche la valeur en direct à côté du curseur qu'on bouge,
+          // sans attendre le prochain rendu complet (item 1).
+          const valueSpan = popup.querySelector(`[data-cv="${slider.dataset.c}"]`);
+          if (valueSpan) valueSpan.textContent = slider.value;
           let newHex;
           if (mode === "rgb") {
             const toHex = (v) => Number(v).toString(16).padStart(2, "0");
@@ -775,11 +946,44 @@
             );
           }
           input.value = newHex;
-          anchorBtn.style.background = newHex;
-          popup.querySelector(".color-popup-preview").style.background = newHex;
+          input.dataset.lastOpaque = newHex;
+          setSwatchVisual(anchorBtn, newHex);
+          const preview = popup.querySelector(".color-popup-preview");
+          if (preview) {
+            preview.classList.remove("color-popup-preview--transparent");
+            preview.style.background = newHex;
+          }
+          const hexInput = popup.querySelector(".color-popup-hex-input");
+          if (hexInput) hexInput.value = newHex;
+          const transparentCheck = popup.querySelector("#color-popup-transparent-check");
+          if (transparentCheck) transparentCheck.checked = false;
           input.dispatchEvent(new Event("input", { bubbles: true }));
         });
       });
+      // Code hex tapé/collé directement (item 1).
+      const hexInput = popup.querySelector(".color-popup-hex-input");
+      if (hexInput) {
+        hexInput.addEventListener("change", () => {
+          const v = hexInput.value.trim();
+          if (/^#[0-9a-fA-F]{6}$/.test(v)) applyHex(v);
+          else hexInput.value = isTransparent ? "" : hex;
+        });
+      }
+      // Transparent (item 1) : bascule sans perdre la teinte choisie.
+      const transparentCheck = popup.querySelector("#color-popup-transparent-check");
+      if (transparentCheck) {
+        transparentCheck.addEventListener("change", () => {
+          if (transparentCheck.checked) {
+            input.value = "transparent";
+            setSwatchVisual(anchorBtn, "transparent");
+          } else {
+            input.value = input.dataset.lastOpaque || "#000000";
+            setSwatchVisual(anchorBtn, input.value);
+          }
+          input.dispatchEvent(new Event("input", { bubbles: true }));
+          render();
+        });
+      }
       popup.querySelectorAll(".color-popup-mode-btn").forEach((b) => {
         b.addEventListener("click", (e) => {
           // Bug corrigé (item 6) : sans stopPropagation, le clic remontait
@@ -796,17 +1000,19 @@
     render();
   }
 
-  /** Transforme chaque <input type="color"> pertinent en pastille cliquable
-   *  ouvrant le popup ci-dessus — appelé après chaque rendu (les pastilles
-   *  de couleur de texte / modes personnalisés étant régénérées
-   *  dynamiquement). L'input natif reste dans le DOM (caché) : il continue
-   *  de porter la valeur et de déclencher les mêmes événements "input" que
-   *  tout le reste du code attend déjà. */
+  /** Transforme chaque <input class="dev-color-value"> pertinent en
+   *  pastille cliquable ouvrant le popup ci-dessus — appelé après chaque
+   *  rendu (les pastilles de couleur des modes personnalisés étant
+   *  régénérées dynamiquement). L'input reste dans le DOM (caché) : il
+   *  continue de porter la valeur et de déclencher les mêmes événements
+   *  "input" que tout le reste du code attend déjà — en <input type="text">
+   *  plutôt que type="color" (item 1) pour pouvoir aussi porter la valeur
+   *  spéciale "transparent", que le sélecteur natif refuserait. */
   function enhanceColorInputsWithHsl() {
-    document.querySelectorAll('#view-dev input[type="color"], #algo-custom-picker-list input[type="color"]').forEach((input) => {
+    document.querySelectorAll('#view-dev input.dev-color-value, #algo-custom-picker-list input.dev-color-value').forEach((input) => {
       if (input.dataset.swatchUpgraded) {
         const btn = input.nextElementSibling;
-        if (btn && btn.classList.contains("color-swatch-btn")) btn.style.background = input.value;
+        if (btn && btn.classList.contains("color-swatch-btn")) setSwatchVisual(btn, input.value);
         return;
       }
       input.dataset.swatchUpgraded = "true";
@@ -814,7 +1020,7 @@
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "color-swatch-btn" + (input.className.includes("algo-custom-picker-color") ? " algo-custom-picker-color" : "");
-      btn.style.background = input.value;
+      setSwatchVisual(btn, input.value);
       btn.title = input.title || "";
       input.insertAdjacentElement("afterend", btn);
       btn.addEventListener("click", (e) => {
@@ -822,6 +1028,19 @@
         openColorPopup(input, btn);
       });
     });
+  }
+
+  /** Affiche un damier (case transparente) plutôt qu'un simple à-plat de
+   *  couleur quand la valeur est "transparent" (item 1 : couleur
+   *  transparente possible partout). */
+  function setSwatchVisual(btn, value) {
+    if (value === "transparent") {
+      btn.style.background = "";
+      btn.classList.add("color-swatch-btn--transparent");
+    } else {
+      btn.classList.remove("color-swatch-btn--transparent");
+      btn.style.background = value;
+    }
   }
 
   function applyColorSettings() {
@@ -838,20 +1057,53 @@
     root.setProperty("--app-bg-color", settings.appBgColor);
     root.setProperty("--construction-active-color", settings.constructionActiveColor);
     root.setProperty("--due-pill-bonus-color", settings.bonusPillColor);
-    // Textes généraux (variables dédiées plutôt que de redéfinir --paper/
-    // --ink directement, qui servent aussi de FONDS à plein d'endroits —
-    // les réutiliser pour du texte aurait cassé ces fonds-là) + barres/
-    // fonds d'histogrammes + fonds de zones.
-    root.setProperty("--main-text-color", settings.mainTextColor);
-    root.setProperty("--card-text-color", settings.cardTextColor);
-    root.setProperty("--due-bar-color", settings.dueBarColor);
-    root.setProperty("--today-bar-color", settings.todayBarColor);
-    root.setProperty("--chart-wrap-bg-color", settings.chartWrapBgColor);
-    root.setProperty("--svg-chart-bg-color", settings.svgChartBgColor);
-    root.setProperty("--card-form-bg-color", settings.cardFormBgColor);
-    root.setProperty("--rich-editor-bg-color", settings.richEditorBgColor);
-    root.setProperty("--card-bg-color", settings.cardBgColor);
     root.setProperty("--empty-bar-color", settings.emptyBarColor);
+    // Items 2h/2i : nouveaux blocs "Couleurs des fonds"/"Couleurs des
+    // textes", chacun avec son propre nom de réglage direct — remplacent
+    // les anciens réglages ci-dessus repris un par un (appBgColor,
+    // cardFormBgColor, richEditorBgColor, cardBgColor, chartWrapBgColor,
+    // svgChartBgColor, dueBarColor, todayBarColor, mainTextColor,
+    // cardTextColor), qui restent lus pour la compatibilité mais ne sont
+    // plus la source appliquée.
+    // Items 2h/2i : nouveaux blocs "Couleurs des fonds"/"Couleurs des
+    // textes", chacun avec son propre nom de réglage direct.
+    const bg = settings.bgColors;
+    root.setProperty("--home-square-bg-color", bg.homeSquareBg);
+    root.setProperty("--home-btn-bg-color", bg.homeBtnBg);
+    root.setProperty("--subject-select-bg-color", bg.subjectSelectBg);
+    root.setProperty("--sync-status-bg-color", bg.syncStatusBg);
+    root.setProperty("--folder-bg-color", bg.folderBg);
+    root.setProperty("--folder-l1-bg-color", bg.folderL1Bg);
+    root.setProperty("--folder-l2-bg-color", bg.folderL2Bg);
+    root.setProperty("--folder-l3-bg-color", bg.folderL3Bg);
+    root.setProperty("--subject-row-bg-color", bg.subjectRowBg);
+    root.setProperty("--add-btn-bg-color", bg.addBtnBg);
+    root.setProperty("--reviewed-bar-color", bg.reviewedBarColor);
+    // Les 4 réglages ci-dessous partagent leur nom avec d'anciennes clés
+    // (appBgColor/cardFormBgColor/richEditorBgColor/dueBarColor/
+    // todayBarColor/chartWrapBgColor/svgChartBgColor déjà posées plus haut)
+    // — bgColors sert désormais de source pour ceux-là aussi, pour n'avoir
+    // qu'un seul endroit où les régler dans la page développeur.
+    root.setProperty("--app-bg-color", bg.appBg);
+    root.setProperty("--card-form-bg-color", bg.cardFormBg);
+    root.setProperty("--rich-editor-bg-color", bg.richEditorBg);
+    root.setProperty("--card-bg-color", bg.cardBg);
+    root.setProperty("--chart-wrap-bg-color", bg.chartWrapBg);
+    root.setProperty("--svg-chart-bg-color", bg.svgChartBg);
+    root.setProperty("--due-bar-color", bg.dueBarColor);
+    root.setProperty("--today-bar-color", bg.todayBarColor);
+
+    const tx = settings.textColorsSet;
+    root.setProperty("--home-title-color", tx.homeTitle);
+    root.setProperty("--main-text-color", tx.titles);
+    root.setProperty("--general-text-color", tx.generalText);
+    root.setProperty("--folder-subject-name-color", tx.folderSubjectNames);
+    root.setProperty("--card-text-color", tx.cardText);
+    root.setProperty("--chart-value-color", tx.chartValues);
+    root.setProperty("--chart-label-color", tx.chartLabels);
+    root.setProperty("--chart-today-label-color", tx.chartTodayLabel);
+    root.setProperty("--selector-text-color", tx.selectorText);
+    root.setProperty("--sync-text-color", tx.syncText);
   }
 
   /** Applique les émoticônes des icônes de la fiche/de l'arborescence
@@ -1277,7 +1529,7 @@
     // question qu'un nom de matière contenant "<" casse l'affichage) ; la
     // question elle-même passe par toDisplayHtml (item 13 : contenu riche).
     questionTextEl.innerHTML = isSentinelSubject(currentSubjectId)
-      ? `${escapeHtml(subjectName(card.subject))} :<br><br>${toDisplayHtml(card.question)}`
+      ? `<strong class="card-subject-hint">${escapeHtml(subjectName(card.subject))}</strong><br><br>${toDisplayHtml(card.question)}`
       : toDisplayHtml(card.question);
     renderSubjectAlgoBadge(card.subject);
     const constructionBtn = el("construction-current-btn");
@@ -1493,7 +1745,7 @@
     childFolders.forEach((f) => {
       const expanded = expandedManageFolders.has(f.id);
       const li = document.createElement("li");
-      li.className = "subject-row folder-row";
+      li.className = `subject-row folder-row folder-row-depth-${Math.min(depth, 3)}`;
       li.style.paddingLeft = `${depth * 18}px`;
 
       const nameBtn = document.createElement("button");
@@ -1800,8 +2052,8 @@
       // Couleur propre à ce mode (item : réglable directement ici plutôt
       // que seulement dans la page Développeur).
       const colorInput = document.createElement("input");
-      colorInput.type = "color";
-      colorInput.className = "algo-custom-picker-color";
+      colorInput.type = "text";
+      colorInput.className = "algo-custom-picker-color dev-color-value";
       colorInput.value = getCustomModeColor(m.id);
       colorInput.title = `Couleur du mode « ${m.name} »`;
       colorInput.addEventListener("click", (e) => e.stopPropagation());
@@ -1881,6 +2133,15 @@
     good: "var(--rating-good-color, var(--sage))",
     easy: "var(--rating-easy-color, var(--teal))",
   };
+  // Le graphique d'aperçu de la page "Modes d'apprentissage" garde ses
+  // couleurs par défaut (item 2e), indépendamment du réglage "Couleurs des
+  // notes" qui ne doit affecter QUE les boutons d'évaluation.
+  const ALGO_PREVIEW_CHART_COLORS = {
+    again: "var(--terracotta)",
+    hard: "var(--amber)",
+    good: "var(--sage)",
+    easy: "var(--teal)",
+  };
   const ALGO_CHART_RATING_LABELS = { again: "Encore", hard: "Difficile", good: "Bien", easy: "Facile" };
   function computeAlgoPreviewSeries(settings, rating, n) {
     let raw = 1;
@@ -1929,7 +2190,7 @@
       .map(
         (r) => `<label class="algo-chart-legend-item">
           <input type="checkbox" class="algo-chart-legend-checkbox" data-rating="${r}" ${algoChartVisible[r] ? "checked" : ""} />
-          <span class="algo-chart-legend-dot" style="background:${ALGO_CHART_COLORS[r]}"></span>${ALGO_CHART_RATING_LABELS[r]}
+          <span class="algo-chart-legend-dot" style="background:${ALGO_PREVIEW_CHART_COLORS[r]}"></span>${ALGO_CHART_RATING_LABELS[r]}
         </label>`
       )
       .join("");
@@ -1963,25 +2224,25 @@
     [0, yMax / 3, (2 * yMax) / 3, yMax].forEach((t) => {
       const y = yPos(t);
       svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(31,41,55,0.1)" stroke-width="1"/>`;
-      svg += `<text x="${padL - 4}" y="${y + 3}" font-size="8" fill="#6b7280" text-anchor="end">${Math.round(t)}</text>`;
+      svg += `<text x="${padL - 4}" y="${y + 3}" font-size="8" fill="var(--chart-value-color, #6b7280)" text-anchor="end">${Math.round(t)}</text>`;
     });
 
     const labelDx = { again: -9, hard: -3, good: 3, easy: 9 };
     visibleRatings.forEach((r) => {
       const s = seriesByRating[r];
       const pts = s.map((v, i) => `${xPos(i)},${yPos(v)}`).join(" ");
-      svg += `<polyline points="${pts}" fill="none" stroke="${ALGO_CHART_COLORS[r]}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+      svg += `<polyline points="${pts}" fill="none" stroke="${ALGO_PREVIEW_CHART_COLORS[r]}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
       s.forEach((v, i) => {
         // Sur les longs graphiques, on n'étiquette la valeur qu'aux mêmes
         // points que l'axe, plus le tout dernier (le plafond atteint).
         if (i % xLabelStep !== 0 && i !== s.length - 1) return;
         const x = xPos(i), y = yPos(v);
-        svg += `<circle cx="${x}" cy="${y}" r="2.4" fill="${ALGO_CHART_COLORS[r]}"/>`;
-        svg += `<text x="${x + labelDx[r]}" y="${y - 5}" font-size="7.5" fill="${ALGO_CHART_COLORS[r]}" text-anchor="middle" font-family="var(--font-mono)">${v}</text>`;
+        svg += `<circle cx="${x}" cy="${y}" r="2.4" fill="${ALGO_PREVIEW_CHART_COLORS[r]}"/>`;
+        svg += `<text x="${x + labelDx[r]}" y="${y - 5}" font-size="7.5" fill="${ALGO_PREVIEW_CHART_COLORS[r]}" text-anchor="middle" font-family="var(--font-mono)">${v}</text>`;
       });
     });
     for (let i = 0; i < N; i += xLabelStep) {
-      svg += `<text x="${xPos(i)}" y="${H - padB + 12}" font-size="8" fill="#6b7280" text-anchor="middle">${i + 1}</text>`;
+      svg += `<text x="${xPos(i)}" y="${H - padB + 12}" font-size="8" fill="var(--chart-label-color, #6b7280)" text-anchor="middle">${i + 1}</text>`;
     }
     svg += `</svg>`;
 
@@ -4448,7 +4709,7 @@
       const y = H - padB - h;
       svg += `<rect x="${x}" y="${y}" width="${barW}" height="${Math.max(1, h)}" rx="4" fill="${ALGO_CHART_COLORS[r]}"/>`;
       svg += `<text x="${x + barW / 2}" y="${y - 5}" font-size="10" fill="${ALGO_CHART_COLORS[r]}" text-anchor="middle" font-family="var(--font-mono)">${v}</text>`;
-      svg += `<text x="${x + barW / 2}" y="${H - padB + 14}" font-size="9" fill="#6b7280" text-anchor="middle">${ALGO_CHART_RATING_LABELS[r]}</text>`;
+      svg += `<text x="${x + barW / 2}" y="${H - padB + 14}" font-size="9" fill="var(--chart-label-color, #6b7280)" text-anchor="middle">${ALGO_CHART_RATING_LABELS[r]}</text>`;
     });
     svg += `</svg>`;
     wrap.innerHTML = svg;
@@ -4541,7 +4802,7 @@
       });
       const isToday = i === numBuckets - 1;
       const label = isToday ? "Auj" : scrollableBucketLabel(periodKind, bucketDate);
-      svg += `<text x="${(bucketX + BUCKET_W / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--ink)" : "#6b7280"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
+      svg += `<text x="${(bucketX + BUCKET_W / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--chart-today-label-color, var(--ink))" : "var(--chart-label-color, #6b7280)"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
     }
     svg += `</svg>`;
 
@@ -4580,10 +4841,10 @@
       const x = bucketX + (BUCKET_W - barW) / 2;
       const y = H - padB - h;
       svg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${Math.max(v > 0 ? 1 : 0, h).toFixed(1)}" rx="1.5" fill="${color}"/>`;
-      if (v > 0) svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${(y - 3).toFixed(1)}" font-size="7" fill="#6b7280" text-anchor="middle">${v}</text>`;
+      if (v > 0) svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${(y - 3).toFixed(1)}" font-size="7" fill="var(--chart-value-color, #6b7280)" text-anchor="middle">${v}</text>`;
       const isToday = i === numBuckets - 1;
       const label = isToday ? "Auj" : scrollableBucketLabel(periodKind, bucketDate);
-      svg += `<text x="${(bucketX + BUCKET_W / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--ink)" : "#6b7280"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
+      svg += `<text x="${(bucketX + BUCKET_W / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--chart-today-label-color, var(--ink))" : "var(--chart-label-color, #6b7280)"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
     }
     svg += `</svg>`;
     wrap.innerHTML = `<div class="ratings-scroll-wrap">${svg}</div>`;
@@ -4702,7 +4963,7 @@
       [0, 50, 100].forEach((pct) => {
         const y = padT + (1 - pct / 100) * plotH;
         svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(31,41,55,0.1)" stroke-width="1"/>`;
-        svg += `<text x="${padL - 4}" y="${y + 3}" font-size="7" fill="#6b7280" text-anchor="end">${pct}%</text>`;
+        svg += `<text x="${padL - 4}" y="${y + 3}" font-size="7" fill="var(--chart-value-color, #6b7280)" text-anchor="end">${pct}%</text>`;
       });
     }
 
@@ -4713,9 +4974,9 @@
       const isToday = scrollable && i === numBuckets - 1;
       if (scrollable) {
         const label = isToday ? "Auj" : scrollableBucketLabel(ratingsPeriod, bucketDate);
-        svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--ink)" : "#6b7280"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
+        svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--chart-today-label-color, var(--ink))" : "var(--chart-label-color, #6b7280)"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
       } else if (i === 0 || i === numBuckets - 1 || i === Math.floor(numBuckets / 2)) {
-        svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${H - padB + 13}" font-size="7" fill="#6b7280" text-anchor="middle">${formatShortDateLabel(bucketDate)}</text>`;
+        svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${H - padB + 13}" font-size="7" fill="var(--chart-label-color, #6b7280)" text-anchor="middle">${formatShortDateLabel(bucketDate)}</text>`;
       }
       if (total === 0) return;
       let yCursor = padT + plotH;
@@ -5290,83 +5551,23 @@
     });
   }
 
-  /** Fond de l'appli, bouton "chantier" actif, pastille "0 à revoir"
-   *  (items 3/4/8). */
-  const devOtherColorIds = {
-    appBgColor: "dev-color-app-bg",
-    constructionActiveColor: "dev-color-construction-active",
-    bonusPillColor: "dev-color-bonus-pill",
-  };
-  function saveOtherColorsFromInputs() {
-    const settings = loadDevSettings();
-    Object.keys(devOtherColorIds).forEach((key) => {
-      const input = el(devOtherColorIds[key]);
-      if (input) settings[key] = input.value;
-    });
-    saveDevSettings(settings);
-    applyColorSettings();
-  }
-  Object.values(devOtherColorIds).forEach((id) => {
-    const input = el(id);
-    if (input) input.addEventListener("input", saveOtherColorsFromInputs);
-  });
-  const devOtherColorsResetBtn = el("dev-other-colors-reset");
-  if (devOtherColorsResetBtn) {
-    devOtherColorsResetBtn.addEventListener("click", () => {
+  /** Couleurs des fonds / des textes (items 2h/2i) — remplace les anciens
+   *  blocs "Autres couleurs"/"Textes, histogrammes et fonds de zones". */
+  const devBgColorsResetBtn = el("dev-bg-colors-reset");
+  if (devBgColorsResetBtn) {
+    devBgColorsResetBtn.addEventListener("click", () => {
       const settings = loadDevSettings();
-      settings.appBgColor = DEFAULT_APP_BG_COLOR;
-      settings.constructionActiveColor = DEFAULT_CONSTRUCTION_ACTIVE_COLOR;
-      settings.bonusPillColor = DEFAULT_BONUS_PILL_COLOR;
+      settings.bgColors = { ...DEFAULT_BG_COLORS };
       saveDevSettings(settings);
       applyColorSettings();
       renderDevView();
     });
   }
-
-  /** Textes, barres/fonds d'histogrammes, fonds de zones (étoffe encore le
-   *  mode développeur). */
-  const devZoneColorIds = {
-    mainTextColor: "dev-color-main-text",
-    cardTextColor: "dev-color-card-text",
-    dueBarColor: "dev-color-due-bar",
-    todayBarColor: "dev-color-today-bar",
-    chartWrapBgColor: "dev-color-chart-wrap-bg",
-    svgChartBgColor: "dev-color-svg-chart-bg",
-    cardFormBgColor: "dev-color-card-form-bg",
-    richEditorBgColor: "dev-color-rich-editor-bg",
-    cardBgColor: "dev-color-card-bg",
-    emptyBarColor: "dev-color-empty-bar",
-  };
-  const DEV_ZONE_COLOR_DEFAULTS = {
-    mainTextColor: DEFAULT_MAIN_TEXT_COLOR,
-    cardTextColor: DEFAULT_CARD_TEXT_COLOR,
-    dueBarColor: DEFAULT_DUE_BAR_COLOR,
-    todayBarColor: DEFAULT_TODAY_BAR_COLOR,
-    chartWrapBgColor: DEFAULT_CHART_WRAP_BG_COLOR,
-    svgChartBgColor: DEFAULT_SVG_CHART_BG_COLOR,
-    cardFormBgColor: DEFAULT_CARD_FORM_BG_COLOR,
-    richEditorBgColor: DEFAULT_RICH_EDITOR_BG_COLOR,
-    cardBgColor: DEFAULT_CARD_BG_COLOR,
-    emptyBarColor: DEFAULT_EMPTY_BAR_COLOR,
-  };
-  function saveZoneColorsFromInputs() {
-    const settings = loadDevSettings();
-    Object.keys(devZoneColorIds).forEach((key) => {
-      const input = el(devZoneColorIds[key]);
-      if (input) settings[key] = input.value;
-    });
-    saveDevSettings(settings);
-    applyColorSettings();
-  }
-  Object.values(devZoneColorIds).forEach((id) => {
-    const input = el(id);
-    if (input) input.addEventListener("input", saveZoneColorsFromInputs);
-  });
-  const devZoneColorsResetBtn = el("dev-zone-colors-reset");
-  if (devZoneColorsResetBtn) {
-    devZoneColorsResetBtn.addEventListener("click", () => {
+  const devTextColorsSetResetBtn = el("dev-text-colors-set-reset");
+  if (devTextColorsSetResetBtn) {
+    devTextColorsSetResetBtn.addEventListener("click", () => {
       const settings = loadDevSettings();
-      Object.assign(settings, DEV_ZONE_COLOR_DEFAULTS);
+      settings.textColorsSet = { ...DEFAULT_TEXT_COLORS_SET };
       saveDevSettings(settings);
       applyColorSettings();
       renderDevView();
@@ -5511,21 +5712,6 @@
   }
 
   function renderDevView() {
-    const labels = loadDevSettings().ratingLabels;
-    ["again", "hard", "good", "easy"].forEach((r) => {
-      const input = el(`dev-rating-${r}`);
-      if (input) input.value = labels[r];
-    });
-    const navLabels = loadDevSettings().navLabels;
-    Object.keys(DEFAULT_NAV_LABELS).forEach((view) => {
-      const input = el(`dev-nav-${view}`);
-      if (input) input.value = navLabels[view];
-    });
-    const icons = loadDevSettings().icons;
-    Object.keys(DEFAULT_ICONS).forEach((k) => {
-      const input = el(`dev-icon-${k}`);
-      if (input) input.value = icons[k];
-    });
     const ratingColors = loadDevSettings().ratingColors;
     ["again", "hard", "good", "easy"].forEach((r) => {
       const input = el(`dev-color-${r}`);
@@ -5536,26 +5722,19 @@
       const input = el(`dev-color-mode-${m}`);
       if (input) input.value = modeColors[m];
     });
-    const otherSettings = loadDevSettings();
-    Object.keys(devOtherColorIds).forEach((key) => {
-      const input = el(devOtherColorIds[key]);
-      if (input) input.value = otherSettings[key];
-    });
-    Object.keys(devZoneColorIds).forEach((key) => {
-      const input = el(devZoneColorIds[key]);
-      if (input) input.value = otherSettings[key];
-    });
-    renderTextColorsEditor();
-    renderCustomModeColorsEditor();
+    renderRatingIconsEditor();
     renderNavIconsEditor();
     renderIconBankEditor();
+    renderBgColorsEditor();
+    renderTextColorsSetEditor();
     renderFactoryDefaultsEditor();
-    // Après TOUS les autres rendus ci-dessus (item 17) : ils régénèrent
-    // leurs propres <input type="color"> dynamiquement (palette de texte,
-    // modes personnalisés...), donc les curseurs T/S/L doivent être posés
-    // en tout dernier pour ne rater aucun d'entre eux.
+    // Après TOUS les autres rendus ci-dessus : ils régénèrent leurs propres
+    // <input class="dev-color-value"> dynamiquement, donc les pastilles
+    // (et curseurs T/S/L) doivent être posées en tout dernier pour ne
+    // rater aucun d'entre eux.
     enhanceColorInputsWithHsl();
   }
+
 
   /** Bouton de dépannage manuel : désinscrit le(s) service worker(s) et vide
    *  le Cache Storage de l'appli, sans toucher IndexedDB (les fiches) ni
@@ -6282,6 +6461,7 @@
     renderSettingsView();
     applyRatingLabels();
     applyNavLabels();
+    applyHomeIcons();
     applyShowRatingDays();
     applyShowReviewChart();
     applyColorSettings();
