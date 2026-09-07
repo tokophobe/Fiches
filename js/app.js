@@ -73,6 +73,16 @@
   const inputAnswer = el("input-answer");
   const submitBtn = el("submit-btn");
   const cancelEditBtn = el("cancel-edit");
+  // Bouton "révéler" (item 1c) : les actions secondaires (chantier,
+  // hibernation, éditer) restent repliées tant qu'on n'a pas cliqué dessus.
+  const revealSecondaryIconsBtn = el("reveal-secondary-icons-btn");
+  const secondaryIconsWrap = el("secondary-icons-wrap");
+  if (revealSecondaryIconsBtn && secondaryIconsWrap) {
+    revealSecondaryIconsBtn.addEventListener("click", () => {
+      secondaryIconsWrap.hidden = !secondaryIconsWrap.hidden;
+      revealSecondaryIconsBtn.textContent = secondaryIconsWrap.hidden ? "▾" : "▴";
+    });
+  }
   const cardListEl = el("card-list");
   const totalCountEl = el("total-count");
 
@@ -367,21 +377,22 @@
   const DEFAULT_MODE_COLORS = { cool: "#6f8b5c", normal: "#cf9a4d", renforce: "#b6604a", custom: "#e8c84a" };
   // Fond de l'appli, fond du bouton "chantier" actif, fond de la pastille
   // "0 à revoir" en mode bonus (items 3/4/8).
-  const DEFAULT_APP_BG_COLOR = "#1a2d26";
+  const DEFAULT_APP_BG_COLOR = "#eef2f8";
   const DEFAULT_CONSTRUCTION_ACTIVE_COLOR = "#cf9a4d";
   const DEFAULT_BONUS_PILL_COLOR = "#ffffff";
   // Textes généraux, barres/fonds d'histogrammes, fonds de zones (item :
-  // étoffe encore le mode développeur).
-  const DEFAULT_MAIN_TEXT_COLOR = "#f7f1e1";
-  const DEFAULT_CARD_TEXT_COLOR = "#23302a";
-  const DEFAULT_DUE_BAR_COLOR = "#3e7c6b";
-  const DEFAULT_TODAY_BAR_COLOR = "#c44c44";
-  const DEFAULT_CHART_WRAP_BG_COLOR = "#f7f1e1";
-  const DEFAULT_SVG_CHART_BG_COLOR = "#1a2d26";
-  const DEFAULT_CARD_FORM_BG_COLOR = "#f7f1e1";
-  const DEFAULT_RICH_EDITOR_BG_COLOR = "#eee5cf";
+  // étoffe encore le mode développeur) — valeurs par défaut mises à jour
+  // pour le thème clair (item 1 : "futuriste naïf", blanc/gris/bleu ciel).
+  const DEFAULT_MAIN_TEXT_COLOR = "#1f2937";
+  const DEFAULT_CARD_TEXT_COLOR = "#1f2937";
+  const DEFAULT_DUE_BAR_COLOR = "#4a90d9";
+  const DEFAULT_TODAY_BAR_COLOR = "#4a9fe0";
+  const DEFAULT_CHART_WRAP_BG_COLOR = "#ffffff";
+  const DEFAULT_SVG_CHART_BG_COLOR = "#eef2f8";
+  const DEFAULT_CARD_FORM_BG_COLOR = "#ffffff";
+  const DEFAULT_RICH_EDITOR_BG_COLOR = "#f4f7fb";
   const DEFAULT_CARD_BG_COLOR = "#ffffff";
-  const DEFAULT_EMPTY_BAR_COLOR = "#ddcfa9";
+  const DEFAULT_EMPTY_BAR_COLOR = "#dce4f0";
   const DEFAULT_ICONS = {
     hibernate: "💤", edit: "✎", construction: "🚧", undo: "◀️", folder: "📁",
   };
@@ -1946,13 +1957,13 @@
     const xLabelStep = N <= 15 ? 1 : Math.ceil(N / 15);
 
     let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--svg-chart-bg-color, var(--desk));border-radius:8px;">`;
-    svg += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
-    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
+    svg += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="rgba(31,41,55,0.3)" stroke-width="1"/>`;
+    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(31,41,55,0.3)" stroke-width="1"/>`;
 
     [0, yMax / 3, (2 * yMax) / 3, yMax].forEach((t) => {
       const y = yPos(t);
-      svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(247,241,225,0.1)" stroke-width="1"/>`;
-      svg += `<text x="${padL - 4}" y="${y + 3}" font-size="8" fill="#9aa89e" text-anchor="end">${Math.round(t)}</text>`;
+      svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(31,41,55,0.1)" stroke-width="1"/>`;
+      svg += `<text x="${padL - 4}" y="${y + 3}" font-size="8" fill="#6b7280" text-anchor="end">${Math.round(t)}</text>`;
     });
 
     const labelDx = { again: -9, hard: -3, good: 3, easy: 9 };
@@ -1970,7 +1981,7 @@
       });
     });
     for (let i = 0; i < N; i += xLabelStep) {
-      svg += `<text x="${xPos(i)}" y="${H - padB + 12}" font-size="8" fill="#9aa89e" text-anchor="middle">${i + 1}</text>`;
+      svg += `<text x="${xPos(i)}" y="${H - padB + 12}" font-size="8" fill="#6b7280" text-anchor="middle">${i + 1}</text>`;
     }
     svg += `</svg>`;
 
@@ -3306,13 +3317,21 @@
   let previousViewBeforeNewCard = "review";
   function openNewCardView() {
     const activeTab = document.querySelector(".tab.is-active");
-    previousViewBeforeNewCard = activeTab ? activeTab.dataset.view : "review";
+    // Par défaut "home" (pas de tab actif = on venait de l'accueil, seul
+    // point d'entrée normal désormais vers "+ Ajouter une fiche").
+    previousViewBeforeNewCard = activeTab ? activeTab.dataset.view : "home";
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     const target = el("view-new-card");
     if (target) target.classList.add("is-active");
+    const homeBtnEl = el("home-btn");
+    if (homeBtnEl) homeBtnEl.hidden = false;
   }
   function closeNewCardView(toView) {
-    const dest = toView || previousViewBeforeNewCard || "review";
+    const dest = toView || previousViewBeforeNewCard || "home";
+    if (dest === "home") {
+      goHome();
+      return;
+    }
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     const target = el(`view-${dest}`);
     if (target) target.classList.add("is-active");
@@ -3364,20 +3383,6 @@
       if (!currentCard) startReviewSession();
     }
   });
-
-  // Bouton "+ Fiche" (item 7/2) : page indépendante désormais, accessible
-  // depuis n'importe quel endroit de l'appli — ne fait plus partie de la
-  // page Fiches (qui ne contient plus que la liste et la recherche).
-  const topbarNewCardBtn = el("topbar-new-card-btn");
-  if (topbarNewCardBtn) {
-    topbarNewCardBtn.addEventListener("click", () => {
-      exitEditMode();
-      resetCardForm();
-      cancelEditBtn.hidden = false;
-      openNewCardView();
-      if (inputQuestion) inputQuestion.focus();
-    });
-  }
 
   const newCardBackBtn = el("new-card-back-btn");
   if (newCardBackBtn) {
@@ -4435,7 +4440,7 @@
     const yPos = (v) => padT + (1 - v / yMax) * plotH;
 
     let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--svg-chart-bg-color, var(--desk));border-radius:8px;">`;
-    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
+    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(31,41,55,0.3)" stroke-width="1"/>`;
     ratings.forEach((r, i) => {
       const v = counts[r];
       const h = (v / yMax) * plotH;
@@ -4443,7 +4448,7 @@
       const y = H - padB - h;
       svg += `<rect x="${x}" y="${y}" width="${barW}" height="${Math.max(1, h)}" rx="4" fill="${ALGO_CHART_COLORS[r]}"/>`;
       svg += `<text x="${x + barW / 2}" y="${y - 5}" font-size="10" fill="${ALGO_CHART_COLORS[r]}" text-anchor="middle" font-family="var(--font-mono)">${v}</text>`;
-      svg += `<text x="${x + barW / 2}" y="${H - padB + 14}" font-size="9" fill="#9aa89e" text-anchor="middle">${ALGO_CHART_RATING_LABELS[r]}</text>`;
+      svg += `<text x="${x + barW / 2}" y="${H - padB + 14}" font-size="9" fill="#6b7280" text-anchor="middle">${ALGO_CHART_RATING_LABELS[r]}</text>`;
     });
     svg += `</svg>`;
     wrap.innerHTML = svg;
@@ -4523,7 +4528,7 @@
     const bucketMs = bucketDays * 86400000;
 
     let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:${W}px;height:auto;background:var(--svg-chart-bg-color, var(--desk));border-radius:8px;display:block;">`;
-    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
+    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(31,41,55,0.3)" stroke-width="1"/>`;
     for (let i = 0; i < numBuckets; i++) {
       const bucketX = padL + i * BUCKET_W;
       const bucketDate = new Date(rangeStart.getTime() + i * bucketMs);
@@ -4536,7 +4541,7 @@
       });
       const isToday = i === numBuckets - 1;
       const label = isToday ? "Auj" : scrollableBucketLabel(periodKind, bucketDate);
-      svg += `<text x="${(bucketX + BUCKET_W / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--paper)" : "#9aa89e"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
+      svg += `<text x="${(bucketX + BUCKET_W / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--ink)" : "#6b7280"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
     }
     svg += `</svg>`;
 
@@ -4566,7 +4571,7 @@
     const bucketMs = bucketDays * 86400000;
 
     let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:${W}px;height:auto;background:var(--svg-chart-bg-color, var(--desk));border-radius:8px;display:block;">`;
-    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(247,241,225,0.3)" stroke-width="1"/>`;
+    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(31,41,55,0.3)" stroke-width="1"/>`;
     for (let i = 0; i < numBuckets; i++) {
       const bucketX = padL + i * BUCKET_W;
       const bucketDate = new Date(rangeStart.getTime() + i * bucketMs);
@@ -4575,10 +4580,10 @@
       const x = bucketX + (BUCKET_W - barW) / 2;
       const y = H - padB - h;
       svg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${Math.max(v > 0 ? 1 : 0, h).toFixed(1)}" rx="1.5" fill="${color}"/>`;
-      if (v > 0) svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${(y - 3).toFixed(1)}" font-size="7" fill="#9aa89e" text-anchor="middle">${v}</text>`;
+      if (v > 0) svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${(y - 3).toFixed(1)}" font-size="7" fill="#6b7280" text-anchor="middle">${v}</text>`;
       const isToday = i === numBuckets - 1;
       const label = isToday ? "Auj" : scrollableBucketLabel(periodKind, bucketDate);
-      svg += `<text x="${(bucketX + BUCKET_W / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--paper)" : "#9aa89e"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
+      svg += `<text x="${(bucketX + BUCKET_W / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--ink)" : "#6b7280"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
     }
     svg += `</svg>`;
     wrap.innerHTML = `<div class="ratings-scroll-wrap">${svg}</div>`;
@@ -4696,8 +4701,8 @@
     if (!scrollable) {
       [0, 50, 100].forEach((pct) => {
         const y = padT + (1 - pct / 100) * plotH;
-        svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(247,241,225,0.1)" stroke-width="1"/>`;
-        svg += `<text x="${padL - 4}" y="${y + 3}" font-size="7" fill="#9aa89e" text-anchor="end">${pct}%</text>`;
+        svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(31,41,55,0.1)" stroke-width="1"/>`;
+        svg += `<text x="${padL - 4}" y="${y + 3}" font-size="7" fill="#6b7280" text-anchor="end">${pct}%</text>`;
       });
     }
 
@@ -4708,9 +4713,9 @@
       const isToday = scrollable && i === numBuckets - 1;
       if (scrollable) {
         const label = isToday ? "Auj" : scrollableBucketLabel(ratingsPeriod, bucketDate);
-        svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--paper)" : "#9aa89e"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
+        svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${H - padB + 11}" font-size="7" fill="${isToday ? "var(--ink)" : "#6b7280"}" text-anchor="middle" font-weight="${isToday ? "700" : "400"}">${label}</text>`;
       } else if (i === 0 || i === numBuckets - 1 || i === Math.floor(numBuckets / 2)) {
-        svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${H - padB + 13}" font-size="7" fill="#9aa89e" text-anchor="middle">${formatShortDateLabel(bucketDate)}</text>`;
+        svg += `<text x="${(x + barW / 2).toFixed(1)}" y="${H - padB + 13}" font-size="7" fill="#6b7280" text-anchor="middle">${formatShortDateLabel(bucketDate)}</text>`;
       }
       if (total === 0) return;
       let yCursor = padT + plotH;
@@ -5126,6 +5131,27 @@
     });
   }
 
+  // Histogramme de la page Réviser (item 1c) : masqué par défaut, un
+  // réglage l'affiche si on le souhaite.
+  const SHOW_REVIEW_CHART_KEY = "fiches_show_review_chart";
+  function loadShowReviewChart() {
+    return localStorage.getItem(SHOW_REVIEW_CHART_KEY) === "true";
+  }
+  function saveShowReviewChart(value) {
+    localStorage.setItem(SHOW_REVIEW_CHART_KEY, String(value));
+  }
+  function applyShowReviewChart() {
+    const section = el("review-chart-section");
+    if (section) section.hidden = !loadShowReviewChart();
+  }
+  const settingShowReviewChartEl = el("setting-show-review-chart");
+  if (settingShowReviewChartEl) {
+    settingShowReviewChartEl.addEventListener("change", () => {
+      saveShowReviewChart(settingShowReviewChartEl.checked);
+      applyShowReviewChart();
+    });
+  }
+
   function renderSettingsView() {
     if (settingBonusHardEl) settingBonusHardEl.value = bonusDaysSettings.hard;
     if (settingBonusGoodEl) settingBonusGoodEl.value = bonusDaysSettings.good;
@@ -5133,6 +5159,7 @@
     if (settingBonusAgainModeEl) settingBonusAgainModeEl.value = bonusAgainMode;
     if (settingHibernateDaysEl) settingHibernateDaysEl.value = hibernateDays;
     if (settingShowRatingDaysEl) settingShowRatingDaysEl.checked = loadShowRatingDays();
+    if (settingShowReviewChartEl) settingShowReviewChartEl.checked = loadShowReviewChart();
   }
 
   /* ---------------------------------------------------------
@@ -5589,8 +5616,11 @@
   }
 
   /* ---------------------------------------------------------
-     Navigation par onglets
+     Navigation par onglets (désormais déclenchée depuis les carrés de la
+     page d'accueil plutôt qu'un menu visible — item 1b/1c) — la logique
+     de bascule elle-même ne change pas, seul le déclencheur change.
   --------------------------------------------------------- */
+  const homeBtn = el("home-btn");
   document.querySelectorAll(".tab").forEach((tab) => {
     tab.addEventListener("click", () => {
       document.querySelectorAll(".tab").forEach((t) => {
@@ -5603,6 +5633,9 @@
       const view = tab.dataset.view;
       document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
       el(`view-${view}`).classList.add("is-active");
+      // Bouton "retour à l'accueil" (item 1e) : visible partout SAUF sur
+      // l'accueil lui-même.
+      if (homeBtn) homeBtn.hidden = false;
 
       if (view === "review") {
         if (!reviewSessionStarted) {
@@ -5620,6 +5653,39 @@
       renderDuePill();
     });
   });
+
+  /** Retourne à l'accueil (item 1e) — bouton toujours présent en haut de
+   *  chaque page, sauf sur l'accueil lui-même. */
+  function goHome() {
+    document.querySelectorAll(".tab").forEach((t) => {
+      t.classList.remove("is-active");
+      t.setAttribute("aria-selected", "false");
+    });
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el("view-home").classList.add("is-active");
+    if (homeBtn) homeBtn.hidden = true;
+  }
+  if (homeBtn) homeBtn.addEventListener("click", goHome);
+
+  // Carrés de la page d'accueil (item 1a) : réutilisent directement la
+  // logique des onglets ci-dessus (chaque carré déclenche le même
+  // .tab[data-view=...].click()) plutôt que de dupliquer la bascule de vue.
+  document.querySelectorAll(".home-square[data-go]").forEach((square) => {
+    square.addEventListener("click", () => {
+      const tab = document.querySelector(`.tab[data-view="${square.dataset.go}"]`);
+      if (tab) tab.click();
+    });
+  });
+  const homeNewCardBtn = el("home-new-card-btn");
+  if (homeNewCardBtn) {
+    homeNewCardBtn.addEventListener("click", () => {
+      exitEditMode();
+      resetCardForm();
+      cancelEditBtn.hidden = false;
+      openNewCardView();
+      if (inputQuestion) inputQuestion.focus();
+    });
+  }
 
   /* ---------------------------------------------------------
      Vue Sync : formulaire de connexion + statut
@@ -6217,6 +6283,7 @@
     applyRatingLabels();
     applyNavLabels();
     applyShowRatingDays();
+    applyShowReviewChart();
     applyColorSettings();
     applyIconSettings();
     applyTextColorPalette();

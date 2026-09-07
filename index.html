@@ -117,7 +117,9 @@
   <header class="topbar">
     <div class="brand">
       <h1 class="sr-only">Fiches</h1>
-      <button type="button" class="btn btn--primary topbar-new-card-btn" id="topbar-new-card-btn">+ Fiche</button>
+      <button type="button" class="btn btn--ghost home-btn" id="home-btn" title="Retour à l'accueil" aria-label="Retour à l'accueil" hidden>
+        <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+      </button>
     </div>
     <div class="header-right">
       <button class="sync-status" id="sync-status" type="button" title="État de la synchronisation">
@@ -130,7 +132,7 @@
     </div>
   </header>
 
-  <nav class="tabs" role="tablist" aria-label="Navigation">
+  <nav class="tabs" role="tablist" aria-label="Navigation" hidden>
     <button class="tab tab--icon is-active" role="tab" aria-selected="true" data-view="review" title="Réviser" aria-label="Réviser">
       <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
     </button>
@@ -154,8 +156,52 @@
   </nav>
 
   <main>
+    <!-- VUE ACCUEIL (item 1a) : nouvelle page centrale — on y repasse à
+         chaque fois pour aller d'une page à l'autre (item, confirmé). -->
+    <section id="view-home" class="view is-active">
+      <h1 class="home-title">Fiches</h1>
+      <div class="home-grid">
+        <button type="button" class="home-square" data-go="review">
+          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
+          <span>Réviser</span>
+        </button>
+        <button type="button" class="home-square" data-go="manage">
+          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
+          <span>Dossiers &amp; matières</span>
+        </button>
+        <button type="button" class="home-square" data-go="cards">
+          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M15 2v5h5"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+          <span>Fiches</span>
+        </button>
+        <button type="button" class="home-square home-square--accent" id="home-new-card-btn">
+          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Ajouter une fiche</span>
+        </button>
+        <button type="button" class="home-square" data-go="stats">
+          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+          <span>Statistiques</span>
+        </button>
+        <button type="button" class="home-square" data-go="learning-modes">
+          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/></svg>
+          <span>Modes d'apprentissage</span>
+        </button>
+        <button type="button" class="home-square" data-go="settings">
+          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Réglages</span>
+        </button>
+        <button type="button" class="home-square" data-go="sync">
+          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2.1l4 4-4 4"/><path d="M3 12v-2a4 4 0 0 1 4-4h14"/><path d="M7 21.9l-4-4 4-4"/><path d="M21 12v2a4 4 0 0 1-4 4H3"/></svg>
+          <span>Synchronisation</span>
+        </button>
+        <button type="button" class="home-square" data-go="dev">
+          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/></svg>
+          <span>Développeur</span>
+        </button>
+      </div>
+    </section>
+
     <!-- VUE RÉVISION -->
-    <section id="view-review" class="view is-active" aria-labelledby="tab-review">
+    <section id="view-review" class="view" aria-labelledby="tab-review">
       <div class="subject-bar" id="subject-bar">
         <button type="button" class="subject-select-btn" id="subject-select-btn" aria-label="Choisir les matières à réviser"></button>
         <span class="subject-bar-count" id="subject-bar-count"></span>
@@ -202,10 +248,15 @@
             </div>
           </button>
           <button class="card-icon-btn card-undo-btn" id="undo-rating-btn" type="button" hidden title="Revenir à la fiche précédente (annule la dernière évaluation)" aria-label="Annuler la dernière évaluation">◀️</button>
-          <button class="card-icon-btn card-hibernate-btn" id="hibernate-current-btn" type="button" hidden title="Mettre cette fiche en hibernation" aria-label="Mettre cette fiche en hibernation">💤</button>
           <button type="button" class="card-icon-btn card-algo-btn" id="card-algo-btn" hidden title="Mode d'apprentissage de cette matière">🎓</button>
-          <button class="card-icon-btn card-construction-btn" id="construction-current-btn" type="button" hidden title="Marquer/démarquer « chantier »" aria-label="Marquer ou démarquer cette fiche comme chantier">🚧</button>
-          <button class="card-icon-btn card-edit-btn" id="edit-current-btn" type="button" hidden title="Modifier cette fiche" aria-label="Modifier cette fiche">✎</button>
+          <!-- Boutons secondaires repliés par défaut (item 1c) : un simple
+               bouton "révéler" à la place, qui les fait apparaître. -->
+          <button class="card-icon-btn card-reveal-btn" id="reveal-secondary-icons-btn" type="button" title="Afficher les actions supplémentaires" aria-label="Afficher les actions supplémentaires (chantier, hibernation, éditer)">▾</button>
+          <div id="secondary-icons-wrap" hidden>
+            <button class="card-icon-btn card-hibernate-btn" id="hibernate-current-btn" type="button" hidden title="Mettre cette fiche en hibernation" aria-label="Mettre cette fiche en hibernation">💤</button>
+            <button class="card-icon-btn card-construction-btn" id="construction-current-btn" type="button" hidden title="Marquer/démarquer « chantier »" aria-label="Marquer ou démarquer cette fiche comme chantier">🚧</button>
+            <button class="card-icon-btn card-edit-btn" id="edit-current-btn" type="button" hidden title="Modifier cette fiche" aria-label="Modifier cette fiche">✎</button>
+          </div>
         </div>
       </div>
 
@@ -513,6 +564,14 @@
     <!-- VUE RÉGLAGES -->
     <section id="view-settings" class="view" aria-labelledby="tab-settings">
       <h2 class="section-title">Réglages</h2>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Page Réviser</h3>
+        <label class="settings-toggle-row">
+          <input type="checkbox" id="setting-show-review-chart" />
+          <span>Afficher l'histogramme sur la page Réviser</span>
+        </label>
+      </div>
 
       <div class="card-form">
         <h3 class="settings-block-title">Boutons d'évaluation</h3>

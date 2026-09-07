@@ -2,19 +2,25 @@
    TOKENS
    ============================================================ */
 :root {
-  --desk: #1a2d26;
-  --desk-2: #142320;
-  --paper: #f7f1e1;
-  --paper-2: #eee5cf;
-  --rule: #c44c44;
-  --ink: #23302a;
-  --ink-soft: #5c6d63;
+  /* Thème clair "futuriste naïf" (item 1) : blanc / gris / bleu ciel,
+     sur toute l'application. --desk (fond général) et --paper (fond des
+     cartes) sont maintenant tous deux clairs — --ink (texte foncé) reste
+     donc lisible partout, sur les deux, sans avoir besoin d'une couleur de
+     texte séparée par surface comme c'était le cas avec l'ancien thème
+     sombre. */
+  --desk: #eef2f8;
+  --desk-2: #e3e9f3;
+  --paper: #ffffff;
+  --paper-2: #f4f7fb;
+  --rule: #4a9fe0;
+  --ink: #1f2937;
+  --ink-soft: #64748b;
   --amber: #cf9a4d;
   --sage: #6f8b5c;
   --teal: #3e7c6b;
   --terracotta: #b6604a;
-  --blue: #4b7996;
-  --paper-3: #ddcfa9;
+  --blue: #4a90d9;
+  --paper-3: #dce4f0;
 
 /*--font-type: "Special Elite", "Arial", monospace;*/
   --font-type: sans-serif;
@@ -22,7 +28,7 @@
   --font-body: sans-serif;
   --font-mono: sans-serif;
   /*--font-mono: "IBM Plex Mono", "SFMono-Regular", monospace;*/
-  --shadow-deep: 0 18px 40px rgba(0, 0, 0, 0.35);
+  --shadow-deep: 0 10px 30px rgba(30, 60, 100, 0.12);
   --radius-card: 14px;
 }
 
@@ -122,7 +128,7 @@ button.topbar-new-card-btn {
   font-weight: 400;
   font-size: 22px;
   letter-spacing: 0.06em;
-  color: var(--paper);
+  color: var(--ink);
 }
 
 .header-right {
@@ -136,12 +142,12 @@ button.topbar-new-card-btn {
   align-items: center;
   gap: 6px;
   background: none;
-  border: 1px solid rgba(247, 241, 225, 0.2);
+  border: 1px solid rgba(31, 41, 55, 0.2);
   border-radius: 999px;
   padding: 6px 10px;
   font-family: var(--font-mono);
   font-size: 11px;
-  color: rgba(247, 241, 225, 0.75);
+  color: rgba(31, 41, 55, 0.75);
 }
 
 .sync-dot {
@@ -159,7 +165,7 @@ button.topbar-new-card-btn {
 .due-pill {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--desk);
+  color: var(--ink);
   background: var(--amber);
   border-radius: 999px;
   padding: 6px 12px;
@@ -174,7 +180,7 @@ button.topbar-new-card-btn {
    réglable depuis la page Développeur (item 8). */
 .due-pill.is-bonus {
   background: var(--due-pill-bonus-color, #ffffff) !important;
-  color: var(--desk) !important;
+  color: var(--ink) !important;
 }
 
 /* ============================================================
@@ -215,9 +221,9 @@ button.topbar-new-card-btn {
   font-family: var(--font-mono);
   font-size: 13px;
   letter-spacing: 0.02em;
-  color: var(--paper);
-  background: rgba(247, 241, 225, 0.08);
-  border: 1px solid rgba(247, 241, 225, 0.22);
+  color: var(--ink);
+  background: rgba(31, 41, 55, 0.08);
+  border: 1px solid rgba(31, 41, 55, 0.22);
   border-radius: 999px;
   padding: 8px 14px;
   appearance: none;
@@ -234,9 +240,9 @@ button.topbar-new-card-btn {
   font-family: var(--font-mono);
   font-size: 13px;
   letter-spacing: 0.02em;
-  color: var(--paper);
-  background: rgba(247, 241, 225, 0.08);
-  border: 1px solid rgba(247, 241, 225, 0.22);
+  color: var(--ink);
+  background: rgba(31, 41, 55, 0.08);
+  border: 1px solid rgba(31, 41, 55, 0.22);
   border-radius: 999px;
   padding: 8px 14px;
   white-space: nowrap;
@@ -347,9 +353,9 @@ button.topbar-new-card-btn {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  border: 1px solid rgba(247, 241, 225, 0.22);
-  background: rgba(247, 241, 225, 0.08);
-  color: var(--paper);
+  border: 1px solid rgba(31, 41, 55, 0.22);
+  background: rgba(31, 41, 55, 0.08);
+  color: var(--ink);
   font-size: 17px;
   line-height: 1;
   display: flex;
@@ -357,7 +363,7 @@ button.topbar-new-card-btn {
   justify-content: center;
 }
 
-.subject-add-btn:hover { background: rgba(247, 241, 225, 0.16); }
+.subject-add-btn:hover { background: rgba(31, 41, 55, 0.16); }
 
 /* Nombre de fiches + bouton mode d'apprentissage de la matière active, dans
    la barre de la page Réviser (item 1) — mêmes couleurs que le curseur du
@@ -366,7 +372,7 @@ button.topbar-new-card-btn {
   flex-shrink: 0;
   font-family: var(--font-mono);
   font-size: 10.5px;
-  color: var(--paper);
+  color: var(--ink);
   opacity: 0.75;
   white-space: nowrap;
 }
@@ -471,17 +477,17 @@ button.topbar-new-card-btn {
   border: none;
   font-family: var(--font-mono);
   font-size: 11.5px;
-  color: rgba(247, 241, 225, 0.65);
+  color: rgba(31, 41, 55, 0.65);
   padding: 2px 4px;
 }
 
 .folder-breadcrumb-item.is-current {
-  color: var(--paper);
+  color: var(--ink);
   font-weight: 700;
 }
 
 .folder-breadcrumb-sep {
-  color: rgba(247, 241, 225, 0.4);
+  color: rgba(31, 41, 55, 0.4);
   font-size: 11.5px;
 }
 
@@ -645,21 +651,29 @@ button.topbar-new-card-btn {
 .import-note {
   font-family: var(--font-mono);
   font-size: 10.5px;
-  color: rgba(247, 241, 225, 0.5);
+  color: rgba(31, 41, 55, 0.5);
   margin: 0 0 16px;
 }
 
 .tabs {
   display: flex;
   gap: 4px;
-  border-bottom: 1px solid rgba(247, 241, 225, 0.15);
+  border-bottom: 1px solid rgba(31, 41, 55, 0.15);
   margin-bottom: 20px;
+}
+
+/* Bug corrigé (même famille que .chart/.subject-choice-menu/.icon-popup
+   avant) : `display: flex` ci-dessus l'emportait sur `[hidden]` — le menu
+   principal est maintenant caché en dur (item 1b), ce correctif garantit
+   qu'il reste bien invisible. */
+.tabs[hidden] {
+  display: none;
 }
 
 .tab {
   background: none;
   border: none;
-  color: rgba(247, 241, 225, 0.55);
+  color: rgba(31, 41, 55, 0.55);
   font-family: var(--font-mono);
   font-size: 13px;
   letter-spacing: 0.04em;
@@ -688,7 +702,7 @@ button.topbar-new-card-btn {
   display: block;
 }
 
-.tab.is-active { color: var(--paper); }
+.tab.is-active { color: var(--ink); }
 
 .tab.is-active::after {
   content: "";
@@ -707,6 +721,69 @@ button.topbar-new-card-btn {
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   PAGE D'ACCUEIL (item 1a)
+   ============================================================ */
+.home-title {
+  font-family: var(--font-type);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--main-text-color, var(--paper));
+  text-align: center;
+  margin: 10px 0 28px;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.home-square {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--paper);
+  border-radius: 20px;
+  border: none;
+  box-shadow: var(--shadow-deep);
+  padding: 12px;
+  color: var(--ink);
+  text-align: center;
+}
+
+.home-square-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.home-square span {
+  font-family: var(--font-type);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.home-square--accent {
+  background: var(--blue);
+  color: #ffffff;
+}
+
+.home-btn {
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-btn[hidden] {
+  display: none;
 }
 
 .section-title {
@@ -745,7 +822,7 @@ button.topbar-new-card-btn {
 
 .empty-state {
   text-align: center;
-  color: rgba(247, 241, 225, 0.75);
+  color: rgba(31, 41, 55, 0.75);
   padding: 40px 20px;
 }
 
@@ -753,12 +830,12 @@ button.topbar-new-card-btn {
   font-family: var(--font-type);
   font-size: 17px;
   margin: 0 0 8px;
-  color: var(--paper);
+  color: var(--ink);
 }
 
 .empty-sub {
   font-size: 14px;
-  color: rgba(247, 241, 225, 0.55);
+  color: rgba(31, 41, 55, 0.55);
   margin: 0;
 }
 
@@ -885,6 +962,13 @@ button.topbar-new-card-btn {
 .card-construction-btn {
   right: 164px;
   font-size: 14px;
+}
+
+/* Bouton "révéler" (item 1c) : simple triangle à la place des 3 boutons
+   secondaires repliés par défaut. */
+.card-reveal-btn {
+  right: 12px;
+  font-size: 13px;
 }
 
 /* Déplacé au coin inférieur droit de la fiche (item 7), plutôt que dans la
@@ -1027,10 +1111,10 @@ button.topbar-new-card-btn {
 
 /* Fond uni de la couleur qui servait auparavant aux écritures, texte
    repassé en foncé (--desk) pour rester lisible sur ces teintes claires. */
-.stamp--again { background: var(--rating-again-color, var(--terracotta)); color: var(--desk); }
-.stamp--hard  { background: var(--rating-hard-color, var(--amber)); color: var(--desk); }
-.stamp--good  { background: var(--rating-good-color, var(--sage)); color: var(--desk); }
-.stamp--easy  { background: var(--rating-easy-color, var(--teal)); color: var(--desk); }
+.stamp--again { background: var(--rating-again-color, var(--terracotta)); color: var(--ink); }
+.stamp--hard  { background: var(--rating-hard-color, var(--amber)); color: var(--ink); }
+.stamp--good  { background: var(--rating-good-color, var(--sage)); color: var(--ink); }
+.stamp--easy  { background: var(--rating-easy-color, var(--teal)); color: var(--ink); }
 
 .stamp--again:hover { filter: brightness(1.1); }
 .stamp--hard:hover  { filter: brightness(1.1); }
@@ -1056,7 +1140,7 @@ button.topbar-new-card-btn {
   text-align: left;
   font-family: var(--font-mono);
   font-size: 11px;
-  color: rgba(247, 241, 225, 0.6);
+  color: rgba(31, 41, 55, 0.6);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -1072,8 +1156,8 @@ button.topbar-new-card-btn {
   margin-left: auto;
   font-family: var(--font-mono);
   font-size: 10px;
-  color: var(--paper);
-  background: rgba(247, 241, 225, 0.12);
+  color: var(--ink);
+  background: rgba(31, 41, 55, 0.12);
   border-radius: 999px;
   padding: 3px 9px;
   letter-spacing: 0.03em;
@@ -1205,8 +1289,8 @@ button.topbar-new-card-btn {
 .construction-filter-btn {
   position: relative;
   flex-shrink: 0;
-  background: rgba(247, 241, 225, 0.08);
-  border: 1px solid rgba(247, 241, 225, 0.2);
+  background: rgba(31, 41, 55, 0.08);
+  border: 1px solid rgba(31, 41, 55, 0.2);
   border-radius: 8px;
   padding: 6px 10px;
   font-size: 15px;
@@ -1246,9 +1330,9 @@ button.topbar-new-card-btn {
 .cards-search-field input {
   font-family: var(--font-type);
   font-size: 14px;
-  color: var(--paper);
-  background: rgba(247, 241, 225, 0.08);
-  border: 1px solid rgba(247, 241, 225, 0.2);
+  color: var(--ink);
+  background: rgba(31, 41, 55, 0.08);
+  border: 1px solid rgba(31, 41, 55, 0.2);
   border-radius: 10px;
   padding: 10px 12px;
 }
@@ -1397,7 +1481,7 @@ button.topbar-new-card-btn {
   border: 1px solid transparent;
   padding: 10px 16px;
   background: var(--desk);
-  color: var(--paper);
+  color: var(--ink);
 }
 
 .btn--primary { background: var(--rule); color: var(--paper); }
@@ -1505,7 +1589,7 @@ button.topbar-new-card-btn {
 
 .list-empty {
   text-align: center;
-  color: rgba(247,241,225,0.5);
+  color: rgba(31,41,55,0.5);
   font-size: 13px;
   padding: 20px 0;
 }
@@ -1565,7 +1649,7 @@ button.topbar-new-card-btn {
 .stats-controls--sticky .subject-select-btn {
   font-size: 15px;
   padding: 12px 16px;
-  background: rgba(247, 241, 225, 0.12);
+  background: rgba(31, 41, 55, 0.12);
   border-width: 1.5px;
 }
 
@@ -1580,7 +1664,7 @@ button.topbar-new-card-btn {
 }
 
 #ratings-chart-wrap, #ratings-history-chart-wrap {
-  background: rgba(247, 241, 225, 0.05);
+  background: rgba(31, 41, 55, 0.05);
   border-radius: 10px;
   padding: 10px 8px 4px;
   margin-bottom: 8px;
@@ -1605,7 +1689,7 @@ button.topbar-new-card-btn {
   margin-bottom: 8px;
   font-family: var(--font-mono);
   font-size: 13px;
-  color: var(--paper);
+  color: var(--ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1620,7 +1704,7 @@ button.topbar-new-card-btn {
    aide à comprendre que ce titre s'applique à ce qui vient APRÈS lui. */
 .stats-chart-divider {
   border: none;
-  border-top: 1px solid rgba(247, 241, 225, 0.15);
+  border-top: 1px solid rgba(31, 41, 55, 0.15);
   margin: 22px 0 10px;
 }
 
@@ -1628,7 +1712,7 @@ button.topbar-new-card-btn {
    obligé de défiler pour voir les barres de droite) : largeur flexible au
    lieu d'une largeur fixe par barre. */
 .streak-chart-wrap {
-  background: rgba(247, 241, 225, 0.05);
+  background: rgba(31, 41, 55, 0.05);
   border-radius: 10px;
   padding: 10px 8px 4px;
   margin-bottom: 8px;
@@ -1712,14 +1796,14 @@ button.topbar-new-card-btn {
 
 .stat-note {
   font-size: 13px;
-  color: rgba(247,241,225,0.55);
+  color: rgba(31,41,55,0.55);
   line-height: 1.5;
 }
 
 .chart-title {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: rgba(247, 241, 225, 0.6);
+  color: rgba(31, 41, 55, 0.6);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin: 4px 0 10px;
@@ -1836,7 +1920,7 @@ button.topbar-new-card-btn {
 
 .chart-empty {
   font-size: 13px;
-  color: rgba(247,241,225,0.55);
+  color: rgba(31,41,55,0.55);
   text-align: center;
   padding: 20px 0;
 }
@@ -1864,7 +1948,7 @@ button.topbar-new-card-btn {
 .view-title {
   font-family: var(--font-type);
   font-size: 19px;
-  color: var(--paper);
+  color: var(--ink);
   margin: 10px 0 14px;
 }
 
@@ -1874,14 +1958,14 @@ button.topbar-new-card-btn {
    cartes claires et devenait invisible (même bug que .import-target-label,
    corrigé précédemment). */
 .settings-block-title--on-dark {
-  color: var(--paper);
+  color: var(--ink);
 }
 
 .algo-mode-label {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--paper);
-  background: rgba(247,241,225,0.1);
+  color: var(--ink);
+  background: rgba(31,41,55,0.1);
   border-radius: 8px;
   padding: 8px 12px;
   margin-bottom: 12px;
@@ -1898,7 +1982,7 @@ button.topbar-new-card-btn {
   -webkit-appearance: none;
   height: 4px;
   border-radius: 2px;
-  background: rgba(247, 241, 225, 0.25);
+  background: rgba(31, 41, 55, 0.25);
   margin: 18px 0 10px;
   /* Couleur du curseur pilotée par cette variable, mise à jour en JS selon
      le mode actif (voir updateAlgoModeTicksHighlight) : vert = cool,
@@ -1996,24 +2080,24 @@ button.topbar-new-card-btn {
 .algo-advanced-toggle {
   width: 100%;
   margin: 4px 0 18px;
-  background: rgba(247, 241, 225, 0.1);
-  border: 1.5px solid rgba(247, 241, 225, 0.35);
-  color: var(--paper);
+  background: rgba(31, 41, 55, 0.1);
+  border: 1.5px solid rgba(31, 41, 55, 0.35);
+  color: var(--ink);
   font-weight: 600;
 }
 
-.algo-advanced-toggle:hover { background: rgba(247, 241, 225, 0.18); }
+.algo-advanced-toggle:hover { background: rgba(31, 41, 55, 0.18); }
 
 .algo-reset-btn-visible {
   margin-top: 10px;
   width: 100%;
-  background: rgba(247, 241, 225, 0.1);
-  border: 1.5px solid rgba(247, 241, 225, 0.35);
-  color: var(--paper);
+  background: rgba(31, 41, 55, 0.1);
+  border: 1.5px solid rgba(31, 41, 55, 0.35);
+  color: var(--ink);
   font-weight: 600;
 }
 
-.algo-reset-btn-visible:hover { background: rgba(247, 241, 225, 0.18); }
+.algo-reset-btn-visible:hover { background: rgba(31, 41, 55, 0.18); }
 
 /* Curseurs à valeurs discrètes des coefficients/maximums (item 9) : mêmes
    codes couleur que les boutons d'évaluation Encore/Difficile/Bien/Facile,
@@ -2050,7 +2134,7 @@ button.topbar-new-card-btn {
   -webkit-appearance: none;
   height: 4px;
   border-radius: 2px;
-  background: rgba(247, 241, 225, 0.25);
+  background: rgba(31, 41, 55, 0.25);
 }
 
 .algo-slider-field input[type="range"]::-webkit-slider-thumb {
@@ -2113,7 +2197,7 @@ button.topbar-new-card-btn {
 }
 
 #assign-chart-wrap {
-  background: rgba(247, 241, 225, 0.05);
+  background: rgba(31, 41, 55, 0.05);
   border-radius: 10px;
   padding: 10px 8px 4px;
   margin-bottom: 8px;
@@ -2192,7 +2276,7 @@ button.topbar-new-card-btn {
   flex-wrap: wrap;
   font-family: var(--font-mono);
   font-size: 10.5px;
-  color: var(--paper);
+  color: var(--ink);
   margin-bottom: 4px;
   padding: 0 4px;
 }
@@ -2457,7 +2541,7 @@ button.topbar-new-card-btn {
    SYNC VIEW
    ============================================================ */
 .sync-intro {
-  color: rgba(247, 241, 225, 0.7);
+  color: rgba(31, 41, 55, 0.7);
   font-size: 14px;
   line-height: 1.6;
   margin: 0 0 18px;
@@ -2465,7 +2549,7 @@ button.topbar-new-card-btn {
 
 .sync-intro code {
   font-family: var(--font-mono);
-  background: rgba(247, 241, 225, 0.12);
+  background: rgba(31, 41, 55, 0.12);
   padding: 1px 5px;
   border-radius: 4px;
   font-size: 12.5px;
