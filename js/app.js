@@ -21,6 +21,18 @@
    *  valeurs sentinelles ci-dessous (item 1 : révision toutes matières /
    *  sélection de plusieurs matières confondues). */
   let currentSubjectId = null;
+  // Matière ciblée par le cadre "Nouvelle fiche" (item 5) : indépendante de
+  // la matière affichée sur Réviser (currentSubjectId), et mémorisée d'une
+  // fiche à l'autre — bug corrigé au passage : le sélecteur du cadre de
+  // création n'était jusqu'ici relié à RIEN, la fiche partait toujours
+  // dans la matière active de Réviser, quoi qu'on ait choisi ici.
+  const NEW_CARD_SUBJECT_KEY = "fiches_new_card_subject_id";
+  let newCardSubjectId = localStorage.getItem(NEW_CARD_SUBJECT_KEY) || null;
+  function saveNewCardSubjectId(id) {
+    newCardSubjectId = id;
+    if (id) localStorage.setItem(NEW_CARD_SUBJECT_KEY, id);
+    else localStorage.removeItem(NEW_CARD_SUBJECT_KEY);
+  }
   const CURRENT_SUBJECT_KEY = "fiches_current_subject";
   const ALL_SUBJECTS_ID = "__all__";
   const MULTI_SUBJECTS_ID = "__multi__";
@@ -368,6 +380,12 @@
     paperclip: '<path d="M21 11.5l-9.4 9.4a5 5 0 0 1-7-7L13 5.5a3.5 3.5 0 0 1 5 5L9.4 19a2 2 0 0 1-2.8-2.8L14 8.5"/>',
     upload: '<path d="M12 3v13"/><polyline points="7,8 12,3 17,8"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/>',
     download: '<path d="M12 3v13"/><polyline points="7,11 12,16 17,11"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/>',
+    // Visages pour les boutons d'évaluation (item 3) : sobres, cohérents
+    // avec le reste de la banque, remplacent les émoticônes colorées.
+    faceSad: '<circle cx="12" cy="12" r="9"/><path d="M8 16s1.5-2.5 4-2.5 4 2.5 4 2.5"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+    faceNeutral: '<circle cx="12" cy="12" r="9"/><line x1="8" y1="15" x2="16" y2="15"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+    faceSmile: '<circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+    faceGrin: '<circle cx="12" cy="12" r="9"/><path d="M7.5 13c0 2 2 4.5 4.5 4.5s4.5-2.5 4.5-4.5z"/><line x1="7.5" y1="13" x2="16.5" y2="13"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
   };
   function iconSvgMarkup(iconId, cls) {
     const inner = ICON_LIBRARY[iconId];
@@ -382,6 +400,9 @@
   // d'apprentissage (badges) — item 2 : rendues éditables depuis la page
   // Développeur plutôt que codées en dur dans la feuille de style.
   const DEFAULT_RATING_COLORS = { again: "#b6604a", hard: "#cf9a4d", good: "#6f8b5c", easy: "#3e7c6b" };
+  // Fond partagé des 4 boutons d'évaluation (item 4) — une seule couleur,
+  // désormais séparée de la couleur de chaque note (qui teinte l'icône).
+  const DEFAULT_RATING_BTN_BG_COLOR = "#ffffff";
   const DEFAULT_MODE_COLORS = { cool: "#6f8b5c", normal: "#cf9a4d", renforce: "#b6604a", custom: "#e8c84a" };
   // Fond de l'appli, fond du bouton "chantier" actif, fond de la pastille
   // "0 à revoir" en mode bonus (items 3/4/8).
@@ -480,7 +501,7 @@
   const DEFAULT_ICON_BANK_CHOICES = { hibernate: "sleep", edit: "pencil", construction: "cone", undo: "undo" };
   // Icônes des boutons d'évaluation (item 2a) : plus d'émoticônes libres,
   // uniquement la banque d'icônes sobres.
-  const DEFAULT_RATING_ICONS = { again: "refresh", hard: "alertTriangle", good: "thumbsUp", easy: "star" };
+  const DEFAULT_RATING_ICONS = { again: "faceSad", hard: "faceNeutral", good: "faceSmile", easy: "faceGrin" };
   // Palette de couleurs de texte proposée dans la mise en forme des fiches
   // (item 20 puis étendue ici) — modifiable, y compris ajouter/retirer des
   // couleurs, depuis la page Développeur.
@@ -513,6 +534,7 @@
       ratingIcons: { ...DEFAULT_RATING_ICONS, ...(parsed.ratingIcons || {}) },
       iconBank: { ...DEFAULT_ICON_BANK_CHOICES, ...(parsed.iconBank || {}) },
       ratingColors: { ...DEFAULT_RATING_COLORS, ...(parsed.ratingColors || {}) },
+      ratingBtnBgColor: parsed.ratingBtnBgColor || DEFAULT_RATING_BTN_BG_COLOR,
       modeColors: { ...DEFAULT_MODE_COLORS, ...(parsed.modeColors || {}) },
       customModeColors: { ...(parsed.customModeColors || {}) },
       appBgColor: parsed.appBgColor || DEFAULT_APP_BG_COLOR,
@@ -1189,6 +1211,7 @@
     root.setProperty("--rating-hard-color", settings.ratingColors.hard);
     root.setProperty("--rating-good-color", settings.ratingColors.good);
     root.setProperty("--rating-easy-color", settings.ratingColors.easy);
+    root.setProperty("--rating-btn-bg-color", settings.ratingBtnBgColor);
     root.setProperty("--mode-cool-color", settings.modeColors.cool);
     root.setProperty("--mode-normal-color", settings.modeColors.normal);
     root.setProperty("--mode-renforce-color", settings.modeColors.renforce);
@@ -1776,8 +1799,8 @@
     // unique direct (pas de "toutes"/"sélection", ça n'aurait pas de sens
     // pour la matière où atterrit une nouvelle fiche).
     const cardsSubjectSelectBtnEl = el("cards-subject-select-btn");
-    if (cardsSubjectSelectBtnEl && !isSentinelSubject(currentSubjectId)) {
-      cardsSubjectSelectBtnEl.textContent = subjectName(currentSubjectId);
+    if (cardsSubjectSelectBtnEl) {
+      cardsSubjectSelectBtnEl.textContent = newCardSubjectId ? subjectName(newCardSubjectId) : "Sélection de la matière";
     }
 
     // Le sélecteur d'import propose en plus la création d'une nouvelle matière à la volée.
@@ -3004,7 +3027,9 @@
     tree.innerHTML = "";
     renderSubjectTreeForSingleChoice(tree, ROOT_FOLDER_ID, 0, (subjectId) => {
       closeCardsSubjectChoiceMenu();
-      switchSubject(subjectId);
+      saveNewCardSubjectId(subjectId);
+      const btn = el("cards-subject-select-btn");
+      if (btn) btn.textContent = subjectName(subjectId);
     });
     menu.hidden = false;
   }
@@ -3446,7 +3471,6 @@
     if (!currentCard) return;
     editReturnToReview = true;
     enterEditMode(currentCard);
-    document.querySelector('.tab[data-view="cards"]').click();
     inputQuestion.focus();
   });
 
@@ -3775,20 +3799,31 @@
         syncCardEverywhere(updated);
       }
       exitEditMode();
+      resetCardForm();
+      renderAll();
+      if (editReturnToReview) {
+        editReturnToReview = false;
+        closeNewCardView("review");
+      } else {
+        closeNewCardView();
+      }
     } else {
-      const card = newCard(question, answer);
+      // Item 5 : la matière est désormais obligatoire et explicite (bug
+      // corrigé — la fiche partait auparavant toujours dans la matière
+      // active de Réviser, sans lien avec ce sélecteur).
+      if (!newCardSubjectId || !subjects.some((s) => s.id === newCardSubjectId)) {
+        alert("Choisis d'abord une matière pour cette fiche.");
+        return;
+      }
+      const card = newCard(question, answer, newCardSubjectId);
       await persist(card);
       cards.push(card);
-    }
-
-    resetCardForm();
-    renderAll();
-
-    if (editReturnToReview) {
-      editReturnToReview = false;
-      closeNewCardView("review");
-    } else {
-      closeNewCardView();
+      renderAll();
+      // Item 5 : on reste sur cette page pour enchaîner la création d'une
+      // autre fiche, la matière choisie est conservée.
+      resetCardForm();
+      showToast("Fiche ajoutée");
+      if (inputQuestion) inputQuestion.focus();
       if (!currentCard) startReviewSession();
     }
   });
@@ -3804,10 +3839,18 @@
   }
 
   cancelEditBtn.addEventListener("click", () => {
-    editReturnToReview = false;
-    exitEditMode();
-    resetCardForm();
-    closeNewCardView();
+    if (editingId) {
+      // Annuler une MODIFICATION : rien à garder, on repart d'où on venait.
+      editReturnToReview = false;
+      exitEditMode();
+      resetCardForm();
+      closeNewCardView();
+    } else {
+      // Item 7 : annuler une CRÉATION efface juste le contenu (question/
+      // réponse), garde la matière choisie, et reste sur cette page.
+      resetCardForm();
+      if (inputQuestion) inputQuestion.focus();
+    }
   });
 
   const deleteEditingCardBtn = el("delete-editing-card");
@@ -5684,6 +5727,8 @@
       const input = el(`dev-color-${r}`);
       if (input) settings.ratingColors[r] = input.value;
     });
+    const bgInput = el("dev-color-rating-btn-bg");
+    if (bgInput) settings.ratingBtnBgColor = bgInput.value;
     saveDevSettings(settings);
     applyColorSettings();
   }
@@ -5691,11 +5736,14 @@
     const input = el(`dev-color-${r}`);
     if (input) input.addEventListener("input", saveRatingColorsFromInputs);
   });
+  const ratingBtnBgInputEl = el("dev-color-rating-btn-bg");
+  if (ratingBtnBgInputEl) ratingBtnBgInputEl.addEventListener("input", saveRatingColorsFromInputs);
   const devRatingColorsResetBtn = el("dev-rating-colors-reset");
   if (devRatingColorsResetBtn) {
     devRatingColorsResetBtn.addEventListener("click", () => {
       const settings = loadDevSettings();
       settings.ratingColors = { ...DEFAULT_RATING_COLORS };
+      settings.ratingBtnBgColor = DEFAULT_RATING_BTN_BG_COLOR;
       saveDevSettings(settings);
       applyColorSettings();
       renderDevView();
@@ -5898,11 +5946,14 @@
   }
 
   function renderDevView() {
-    const ratingColors = loadDevSettings().ratingColors;
+    const devSettings = loadDevSettings();
+    const ratingColors = devSettings.ratingColors;
     ["again", "hard", "good", "easy"].forEach((r) => {
       const input = el(`dev-color-${r}`);
       if (input) input.value = ratingColors[r];
     });
+    const ratingBtnBgInput = el("dev-color-rating-btn-bg");
+    if (ratingBtnBgInput) ratingBtnBgInput.value = devSettings.ratingBtnBgColor;
     const modeColors = loadDevSettings().modeColors;
     ["cool", "normal", "renforce", "custom"].forEach((m) => {
       const input = el(`dev-color-mode-${m}`);

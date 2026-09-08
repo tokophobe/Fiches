@@ -313,9 +313,6 @@
     <!-- VUE NOUVELLE FICHE : page indépendante, accessible uniquement via
          le bouton "+ Fiche" en haut de l'écran (pas un onglet du menu). -->
     <section id="view-new-card" class="view">
-      <div class="card-form-page-header">
-        <button type="button" class="btn btn--ghost new-card-back-btn" id="new-card-back-btn">← Retour</button>
-      </div>
       <form class="card-form" id="card-form">
         <div class="card-form-header">
           <h2 class="section-title">Nouvelle fiche</h2>
@@ -324,7 +321,6 @@
         <!-- Choix de la matière (item 7) : intégré au cadre de création
              lui-même. -->
         <div class="subject-bar" id="cards-subject-bar">
-          <label class="import-target-label" for="cards-subject-select-btn">Matière :</label>
           <button type="button" class="subject-select-btn" id="cards-subject-select-btn" aria-label="Choisir la matière de cette nouvelle fiche"></button>
 
           <div class="subject-choice-menu subject-choice-menu--tree" id="cards-subject-choice-menu" hidden>
@@ -356,7 +352,6 @@
         <button type="button" class="subject-select-btn" id="cards-scope-select-btn" aria-label="Choisir le périmètre d'affichage et de recherche"></button>
 
         <div class="subject-choice-menu" id="cards-scope-choice-menu" hidden>
-          <button type="button" class="subject-choice-item" id="cards-scope-choice-current">Cette matière</button>
           <button type="button" class="subject-choice-item" id="cards-scope-choice-all">Toutes les matières</button>
           <button type="button" class="subject-choice-item" id="cards-scope-choice-selection">Sélection de matières et dossiers</button>
           <button type="button" class="subject-choice-item subject-choice-item--cancel" id="cards-scope-choice-cancel">Annuler</button>
@@ -679,6 +674,12 @@
             <span>Facile</span>
             <input type="text" class="dev-color-value" id="dev-color-easy" />
           </label>
+        </div>
+        <!-- Item 4 : fond partagé des 4 boutons, séparé de la couleur de
+             chaque note (qui teinte désormais l'icône). -->
+        <div class="dev-color-row" style="margin-top:12px;">
+          <span>Fond des boutons (les 4)</span>
+          <input type="text" class="dev-color-value" id="dev-color-rating-btn-bg" />
         </div>
         <button type="button" class="btn btn--ghost" id="dev-rating-colors-reset">Revenir aux couleurs d'origine</button>
       </div>

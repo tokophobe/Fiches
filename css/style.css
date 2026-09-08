@@ -862,7 +862,7 @@ button.home-btn {
   position: relative;
   width: 100%;
   max-width: 380px;
-  height: 340px;
+  height: 460px;
   perspective: 1400px;
 }
 
@@ -896,7 +896,7 @@ button.home-btn {
   padding: 0;
   transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
-  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.3, 1);
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.3, 1);
   box-shadow: var(--shadow-card, var(--shadow-deep));
   text-align: left;
 }
@@ -1134,15 +1134,15 @@ button.home-btn {
 
 .stamp {
   border: 2px solid transparent;
-  border-radius: 8px;
-  padding: 8px 4px;
-  /* Ligne plutôt que colonne (item 5) : le nombre de jours à côté de
-     l'émoticône au lieu d'en dessous, pour des boutons moins hauts. */
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  padding: 4px;
   display: flex;
-  flex-direction: row;
-  align-items: baseline;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 2px;
   min-width: 0;
   transition: transform 0.12s ease, filter 0.12s ease;
   /* Élévation propre aux boutons : sans elle, l'ombre portée de la fiche
@@ -1162,20 +1162,28 @@ button.home-btn {
   line-height: 1;
 }
 
+.stamp-label .icon-inline-svg {
+  width: 26px;
+  height: 26px;
+  vertical-align: middle;
+}
+
 .stamp-sub {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   opacity: 0.9;
   white-space: nowrap;
 }
 
-/* Fond uni de la couleur qui servait auparavant aux écritures, texte
-   repassé en foncé (--desk) pour rester lisible sur ces teintes claires. */
-.stamp--again { background: var(--rating-again-color, var(--terracotta)); color: var(--ink); }
-.stamp--hard  { background: var(--rating-hard-color, var(--amber)); color: var(--ink); }
-.stamp--good  { background: var(--rating-good-color, var(--sage)); color: var(--ink); }
-.stamp--easy  { background: var(--rating-easy-color, var(--teal)); color: var(--ink); }
+/* Item 4 — bug corrigé/comportement changé sur demande : le réglage de
+   couleur d'une note ne teinte plus le FOND du bouton (partagé par les 4,
+   réglable à part), mais l'ICÔNE elle-même (currentColor, repris par le
+   SVG). */
+.stamp--again { background: var(--rating-btn-bg-color, var(--paper)); color: var(--rating-again-color, var(--terracotta)); }
+.stamp--hard  { background: var(--rating-btn-bg-color, var(--paper)); color: var(--rating-hard-color, var(--amber)); }
+.stamp--good  { background: var(--rating-btn-bg-color, var(--paper)); color: var(--rating-good-color, var(--sage)); }
+.stamp--easy  { background: var(--rating-btn-bg-color, var(--paper)); color: var(--rating-easy-color, var(--teal)); }
 
 .stamp--again:hover { filter: brightness(1.1); }
 .stamp--hard:hover  { filter: brightness(1.1); }
@@ -1435,12 +1443,12 @@ button.home-btn {
   padding: 10px 12px;
   text-transform: none;
   letter-spacing: normal;
-  min-height: 3.6em;
+  min-height: 7.2em;
   line-height: 1.5;
   overflow-y: auto;
 }
 
-#input-answer.rich-editor { min-height: 6.5em; }
+#input-answer.rich-editor { min-height: 13em; }
 
 .rich-editor:empty:before {
   content: attr(data-placeholder);
