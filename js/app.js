@@ -32,6 +32,7 @@
     newCardSubjectId = id;
     if (id) localStorage.setItem(NEW_CARD_SUBJECT_KEY, id);
     else localStorage.removeItem(NEW_CARD_SUBJECT_KEY);
+    scheduleDevSettingsPush();
   }
   const CURRENT_SUBJECT_KEY = "fiches_current_subject";
   const ALL_SUBJECTS_ID = "__all__";
@@ -580,8 +581,44 @@
     if (typeof Sync === "undefined" || !Sync.isConfigured || !Sync.isConfigured()) return;
     clearTimeout(devSettingsPushTimer);
     devSettingsPushTimer = setTimeout(() => {
-      Sync.pushDevSettings(loadDevSettings());
+      Sync.pushDevSettings({ ...loadDevSettings(), appPrefs: gatherAppPrefs() });
     }, 900);
+  }
+  /** Réglages de la page "Réglages" (item — jusqu'ici jamais synchronisés
+   *  du tout, contrairement aux couleurs/icônes) : mode bonus, jours
+   *  d'hibernation, affichage des jours sur les boutons, histogramme de
+   *  Réviser, matière mémorisée pour "Nouvelle fiche". Regroupés à part
+   *  ici et glissés dans le MÊME envoi que les réglages développeur (pas
+   *  besoin d'une deuxième table Supabase pour si peu de valeurs). */
+  function gatherAppPrefs() {
+    return {
+      bonusDays: localStorage.getItem("fiches_bonus_days"),
+      bonusAgainMode: localStorage.getItem("fiches_bonus_again_mode"),
+      hibernateDays: localStorage.getItem("fiches_hibernate_days"),
+      showRatingDays: localStorage.getItem("fiches_show_rating_days"),
+      showReviewChart: localStorage.getItem("fiches_show_review_chart"),
+      newCardSubjectId: localStorage.getItem("fiches_new_card_subject_id"),
+    };
+  }
+  function applyAppPrefsFromRemote(prefs) {
+    if (!prefs) return;
+    const setIfPresent = (key, value) => {
+      if (value === null || value === undefined) return;
+      localStorage.setItem(key, value);
+    };
+    setIfPresent("fiches_bonus_days", prefs.bonusDays);
+    setIfPresent("fiches_bonus_again_mode", prefs.bonusAgainMode);
+    setIfPresent("fiches_hibernate_days", prefs.hibernateDays);
+    setIfPresent("fiches_show_rating_days", prefs.showRatingDays);
+    setIfPresent("fiches_show_review_chart", prefs.showReviewChart);
+    setIfPresent("fiches_new_card_subject_id", prefs.newCardSubjectId);
+    loadBonusDaysSettings();
+    loadBonusAgainMode();
+    loadHibernateDays();
+    newCardSubjectId = localStorage.getItem("fiches_new_card_subject_id") || null;
+    applyShowRatingDays();
+    applyShowReviewChart();
+    renderSettingsView();
   }
   function getFactoryDefaults() {
     return loadDevSettings().factoryDefaults;
@@ -5558,6 +5595,7 @@
   function saveBonusDaysSettings() {
     localStorage.setItem(BONUS_DAYS_KEY, JSON.stringify(bonusDaysSettings));
     touchAppSettingsTimestamp();
+    scheduleDevSettingsPush();
   }
 
   function loadBonusAgainMode() {
@@ -5568,6 +5606,7 @@
   function saveBonusAgainMode() {
     localStorage.setItem(BONUS_AGAIN_MODE_KEY, bonusAgainMode);
     touchAppSettingsTimestamp();
+    scheduleDevSettingsPush();
   }
 
   function clampHibernateDays(value, fallback) {
@@ -5588,6 +5627,7 @@
   function saveHibernateDays() {
     localStorage.setItem(HIBERNATE_DAYS_KEY, String(hibernateDays));
     touchAppSettingsTimestamp();
+    scheduleDevSettingsPush();
   }
 
   const SHOW_RATING_DAYS_KEY = "fiches_show_rating_days";
@@ -5597,6 +5637,7 @@
   }
   function saveShowRatingDays(value) {
     localStorage.setItem(SHOW_RATING_DAYS_KEY, String(value));
+    scheduleDevSettingsPush();
   }
   function applyShowRatingDays() {
     const ratingRowEl = el("rating-row");
@@ -5618,6 +5659,7 @@
   }
   function saveShowReviewChart(value) {
     localStorage.setItem(SHOW_REVIEW_CHART_KEY, String(value));
+    scheduleDevSettingsPush();
   }
   function applyShowReviewChart() {
     const section = el("review-chart-section");
@@ -6508,6 +6550,26 @@
     }
   }
 
+  /** Applique TOUS les réglages du mode développeur d'un coup (item —
+   *  centralisé pour la synchro) : à chaque fois qu'on adopte des réglages
+   *  reçus d'un autre appareil, il faut rejouer exactement les mêmes
+   *  fonctions qu'au démarrage local, sinon certains réglages plus
+   *  récemment ajoutés (ombrage, disposition de l'accueil...) restent
+   *  ignorés après une synchro — c'était le bug : la fonction de synchro
+   *  n'avait pas été tenue à jour à chaque nouveau réglage ajouté. */
+  function applyAllDevSettings() {
+    applyRatingLabels();
+    applyNavLabels();
+    applyHomeIcons();
+    applyHomeLayout();
+    applyShowRatingDays();
+    applyShowReviewChart();
+    applyColorSettings();
+    applyShadowSettings();
+    applyIconSettings();
+    applyTextColorPalette();
+  }
+
   /** Fusionne les réglages développeur reçus (item 1) : le plus récent
    *  (comparé via updatedAt) l'emporte intégralement — contrairement aux
    *  fiches, il n'y a pas de fusion champ par champ ici, un réglage de
@@ -6517,18 +6579,17 @@
     const local = loadDevSettings();
     if (!remote) {
       // Rien côté serveur : on y pousse notre réglage local tel quel.
-      Sync.pushDevSettings(local);
+      Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() });
       return;
     }
     const remoteTime = new Date(remote.updatedAt || 0).getTime();
     const localTime = new Date(local.updatedAt || 0).getTime();
     if (remoteTime > localTime) {
       localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
-      applyColorSettings();
-      applyIconSettings();
-      applyTextColorPalette();
+      applyAllDevSettings();
+      applyAppPrefsFromRemote(remote.payload.appPrefs);
     } else if (localTime > remoteTime) {
-      Sync.pushDevSettings(local);
+      Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() });
     }
   }
 
@@ -6604,9 +6665,8 @@
       const local = loadDevSettings();
       if (new Date(remote.updatedAt || 0) > new Date(local.updatedAt || 0)) {
         localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
-        applyColorSettings();
-        applyIconSettings();
-        applyTextColorPalette();
+        applyAllDevSettings();
+        applyAppPrefsFromRemote(remote.payload.appPrefs);
         if (el("view-dev") && el("view-dev").classList.contains("is-active")) renderDevView();
       }
     });
@@ -6698,16 +6758,7 @@
     loadBonusAgainMode();
     loadHibernateDays();
     renderSettingsView();
-    applyRatingLabels();
-    applyNavLabels();
-    applyHomeIcons();
-    applyHomeLayout();
-    applyShowRatingDays();
-    applyShowReviewChart();
-    applyColorSettings();
-    applyShadowSettings();
-    applyIconSettings();
-    applyTextColorPalette();
+    applyAllDevSettings();
     await loadSubjects();
     cards = await DB.getAll();
     ratingLog = await DB.getAllRatingLog();
