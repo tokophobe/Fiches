@@ -160,41 +160,41 @@
          chaque fois pour aller d'une page à l'autre (item, confirmé). -->
     <section id="view-home" class="view is-active">
       <h1 class="home-title">Fiches</h1>
-      <div class="home-grid">
-        <button type="button" class="home-square" data-go="review">
-          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
+      <div class="home-scatter" id="home-scatter">
+        <button type="button" class="home-circle" data-key="review" data-go="review">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
           <span>Réviser</span>
         </button>
-        <button type="button" class="home-square" data-go="manage">
-          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
+        <button type="button" class="home-circle" data-key="manage" data-go="manage">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
           <span>Dossiers &amp; matières</span>
         </button>
-        <button type="button" class="home-square" data-go="cards">
-          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M15 2v5h5"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+        <button type="button" class="home-circle" data-key="cards" data-go="cards">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M15 2v5h5"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
           <span>Fiches</span>
         </button>
-        <button type="button" class="home-square home-square--accent" id="home-new-card-btn">
-          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <button type="button" class="home-circle home-circle--accent" data-key="addCard" id="home-new-card-btn">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           <span>Ajouter une fiche</span>
         </button>
-        <button type="button" class="home-square" data-go="stats">
-          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+        <button type="button" class="home-circle" data-key="stats" data-go="stats">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
           <span>Statistiques</span>
         </button>
-        <button type="button" class="home-square" data-go="learning-modes">
-          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/></svg>
+        <button type="button" class="home-circle" data-key="learningModes" data-go="learning-modes">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/></svg>
           <span>Modes d'apprentissage</span>
         </button>
-        <button type="button" class="home-square" data-go="settings">
-          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <button type="button" class="home-circle" data-key="settings" data-go="settings">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Réglages</span>
         </button>
-        <button type="button" class="home-square" data-go="sync">
-          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2.1l4 4-4 4"/><path d="M3 12v-2a4 4 0 0 1 4-4h14"/><path d="M7 21.9l-4-4 4-4"/><path d="M21 12v2a4 4 0 0 1-4 4H3"/></svg>
+        <button type="button" class="home-circle" data-key="sync" data-go="sync">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2.1l4 4-4 4"/><path d="M3 12v-2a4 4 0 0 1 4-4h14"/><path d="M7 21.9l-4-4 4-4"/><path d="M21 12v2a4 4 0 0 1-4 4H3"/></svg>
           <span>Synchronisation</span>
         </button>
-        <button type="button" class="home-square" data-go="dev">
-          <svg class="home-square-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/></svg>
+        <button type="button" class="home-circle" data-key="dev" data-go="dev">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/></svg>
           <span>Développeur</span>
         </button>
       </div>
@@ -204,7 +204,6 @@
     <section id="view-review" class="view" aria-labelledby="tab-review">
       <div class="subject-bar" id="subject-bar">
         <button type="button" class="subject-select-btn" id="subject-select-btn" aria-label="Choisir les matières à réviser"></button>
-        <span class="subject-bar-count" id="subject-bar-count"></span>
 
         <div class="subject-choice-menu" id="subject-choice-menu" hidden>
           <button type="button" class="subject-choice-item" id="subject-choice-all">Toutes les matières</button>
@@ -407,17 +406,20 @@
       <div class="stats-controls stats-controls--sticky">
         <button type="button" class="subject-select-btn" id="stats-subject-select-btn" aria-label="Choisir les matières pour les statistiques"></button>
         <div class="stats-controls--sticky-row2">
-          <select class="stats-select" id="stats-scale-select" aria-label="Échelle des statistiques">
-            <option value="byday">Par jour</option>
-            <option value="byweek">Par semaine</option>
-            <option value="bymonth">Par mois</option>
-          </select>
+          <button type="button" class="subject-select-btn" id="stats-scale-select-btn" aria-label="Choisir l'échelle des statistiques"></button>
         </div>
 
         <div class="subject-choice-menu" id="stats-scope-choice-menu" hidden>
           <button type="button" class="subject-choice-item" id="stats-scope-choice-all">Toutes les matières</button>
           <button type="button" class="subject-choice-item" id="stats-scope-choice-selection">Sélection de matières et dossiers</button>
           <button type="button" class="subject-choice-item subject-choice-item--cancel" id="stats-scope-choice-cancel">Annuler</button>
+        </div>
+
+        <div class="subject-choice-menu" id="stats-scale-choice-menu" hidden>
+          <button type="button" class="subject-choice-item" data-scale="byday">Par jour</button>
+          <button type="button" class="subject-choice-item" data-scale="byweek">Par semaine</button>
+          <button type="button" class="subject-choice-item" data-scale="bymonth">Par mois</button>
+          <button type="button" class="subject-choice-item subject-choice-item--cancel" id="stats-scale-choice-cancel">Annuler</button>
         </div>
       </div>
 
@@ -720,6 +722,21 @@
         <h3 class="settings-block-title">Couleurs des textes</h3>
         <div class="dev-color-list" id="dev-text-colors-set-list"></div>
         <button type="button" class="btn btn--ghost" id="dev-text-colors-set-reset">Revenir aux couleurs d'origine</button>
+      </div>
+
+      <!-- Item 5 : ombrage réglable élément par élément. -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Effets d'ombrage</h3>
+        <div id="dev-shadows-list" class="dev-shadows-list"></div>
+      </div>
+
+      <!-- Item 3 : disposition (position + diamètre) des cercles de
+           l'accueil. -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Disposition de la page d'accueil</h3>
+        <p class="field-hint settings-block-hint">Position X/Y (coin haut-gauche, en pixels) et diamètre de chaque cercle.</p>
+        <div id="dev-home-layout-list" class="dev-home-layout-list"></div>
+        <button type="button" class="btn btn--ghost" id="dev-home-layout-reset">Revenir à la disposition d'origine</button>
       </div>
 
       <!-- 2j : bloc "Palette de couleurs de texte" retiré (la barre d'outils

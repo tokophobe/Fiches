@@ -73,14 +73,22 @@
   const inputAnswer = el("input-answer");
   const submitBtn = el("submit-btn");
   const cancelEditBtn = el("cancel-edit");
-  // Bouton "révéler" (item 1c) : les actions secondaires (chantier,
-  // hibernation, éditer) restent repliées tant qu'on n'a pas cliqué dessus.
+  // Bouton "révéler" (item 7 — repositionné en haut à droite, popup
+  // vertical) : les actions secondaires (chantier, hibernation, éditer)
+  // restent repliées tant qu'on n'a pas cliqué dessus.
   const revealSecondaryIconsBtn = el("reveal-secondary-icons-btn");
   const secondaryIconsWrap = el("secondary-icons-wrap");
   if (revealSecondaryIconsBtn && secondaryIconsWrap) {
-    revealSecondaryIconsBtn.addEventListener("click", () => {
+    revealSecondaryIconsBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
       secondaryIconsWrap.hidden = !secondaryIconsWrap.hidden;
       revealSecondaryIconsBtn.textContent = secondaryIconsWrap.hidden ? "▾" : "▴";
+    });
+    document.addEventListener("pointerdown", (e) => {
+      if (secondaryIconsWrap.hidden) return;
+      if (secondaryIconsWrap.contains(e.target) || e.target === revealSecondaryIconsBtn) return;
+      secondaryIconsWrap.hidden = true;
+      revealSecondaryIconsBtn.textContent = "▾";
     });
   }
   const cardListEl = el("card-list");
@@ -429,6 +437,39 @@
     selectorText: "#1f2937",
     syncText: "#64748b",
   };
+  // Effet d'ombrage réglable élément par élément (item 5) — clé -> nom de
+  // variable CSS + intitulé affiché dans la page développeur. Tout activé
+  // par défaut (comportement actuel inchangé tant qu'on ne décoche rien).
+  const SHADOW_ELEMENTS = {
+    duePill: { varName: "--shadow-due-pill", title: "Pastille « à revoir »" },
+    homeSquare: { varName: "--shadow-home-square", title: "Boutons de la page d'accueil" },
+    card: { varName: "--shadow-card", title: "Fiches (recto & verso)" },
+    cardForm: { varName: "--shadow-card-form", title: "Cadres (blocs)" },
+    statBox: { varName: "--shadow-stat-box", title: "Cases de statistiques" },
+    chartWrap: { varName: "--shadow-chart-wrap", title: "Histogrammes" },
+    subjectRow: { varName: "--shadow-subject-row", title: "Matières et dossiers" },
+  };
+  const DEFAULT_SHADOWS = Object.fromEntries(Object.keys(SHADOW_ELEMENTS).map((k) => [k, true]));
+  // Disposition dispersée de la page d'accueil (item 3) : position (x,y en
+  // pixels, coin haut-gauche du cercle) + diamètre (px) par bouton — tailles
+  // différentes selon l'importance (Réviser le plus grand, Développeur le
+  // plus petit). Conçu pour un écran de référence ~390px de large.
+  const HOME_LAYOUT_TITLES = {
+    review: "Réviser", manage: "Dossiers & matières", cards: "Fiches", addCard: "Ajouter une fiche",
+    stats: "Statistiques", learningModes: "Modes d'apprentissage", settings: "Réglages",
+    sync: "Synchronisation", dev: "Développeur",
+  };
+  const DEFAULT_HOME_LAYOUT = {
+    review: { x: 15, y: 10, d: 155 },
+    addCard: { x: 205, y: 40, d: 110 },
+    cards: { x: 25, y: 200, d: 105 },
+    stats: { x: 225, y: 190, d: 100 },
+    learningModes: { x: 90, y: 300, d: 100 },
+    manage: { x: 235, y: 330, d: 95 },
+    settings: { x: 15, y: 430, d: 85 },
+    sync: { x: 145, y: 440, d: 95 },
+    dev: { x: 275, y: 465, d: 80 },
+  };
   const DEFAULT_ICONS = {
     hibernate: "💤", edit: "✎", construction: "🚧", undo: "◀️", folder: "📁",
   };
@@ -489,6 +530,10 @@
       emptyBarColor: parsed.emptyBarColor || DEFAULT_EMPTY_BAR_COLOR,
       bgColors: { ...DEFAULT_BG_COLORS, ...(parsed.bgColors || {}) },
       textColorsSet: { ...DEFAULT_TEXT_COLORS_SET, ...(parsed.textColorsSet || {}) },
+      shadows: { ...DEFAULT_SHADOWS, ...(parsed.shadows || {}) },
+      homeLayout: Object.fromEntries(
+        Object.keys(DEFAULT_HOME_LAYOUT).map((k) => [k, { ...DEFAULT_HOME_LAYOUT[k], ...((parsed.homeLayout || {})[k] || {}) }])
+      ),
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       factoryDefaults: {
@@ -735,10 +780,10 @@
   function applyHomeIcons() {
     const settings = loadDevSettings();
     Object.keys(DEFAULT_NAV_ICONS).forEach((view) => {
-      const square = document.querySelector(`.home-square[data-go="${view}"] .home-square-icon`);
+      const square = document.querySelector(`.home-circle[data-go="${view}"] .home-circle-icon`);
       const iconId = settings.navIcons[view];
       if (square && iconId && ICON_LIBRARY[iconId]) {
-        square.outerHTML = iconSvgMarkup(iconId, "home-square-icon");
+        square.outerHTML = iconSvgMarkup(iconId, "home-circle-icon");
       }
     });
   }
@@ -853,6 +898,80 @@
     renderColorListPicker("dev-text-colors-set-list", TEXT_COLORS_SET_ORDER, TEXT_COLORS_SET_TITLES, "textColorsSet", applyColorSettings);
   }
 
+  /** Applique (ou retire) l'ombrage de chaque élément réglable (item 5). */
+  /** Positionne chaque cercle de l'accueil selon x/y/diamètre réglés
+   *  (item 3). */
+  function applyHomeLayout() {
+    const layout = loadDevSettings().homeLayout;
+    document.querySelectorAll(".home-circle[data-key]").forEach((circle) => {
+      const pos = layout[circle.dataset.key];
+      if (!pos) return;
+      circle.style.left = `${pos.x}px`;
+      circle.style.top = `${pos.y}px`;
+      circle.style.width = `${pos.d}px`;
+      circle.style.height = `${pos.d}px`;
+    });
+  }
+
+  function renderHomeLayoutEditor() {
+    const wrap = el("dev-home-layout-list");
+    if (!wrap) return;
+    const settings = loadDevSettings();
+    wrap.innerHTML = Object.keys(DEFAULT_HOME_LAYOUT)
+      .map((key) => {
+        const pos = settings.homeLayout[key];
+        return `<div class="dev-home-layout-row">
+          <span class="dev-home-layout-title">${HOME_LAYOUT_TITLES[key] || key}</span>
+          <label>X <input type="number" class="dev-home-layout-input" data-key="${key}" data-field="x" value="${pos.x}" /></label>
+          <label>Y <input type="number" class="dev-home-layout-input" data-key="${key}" data-field="y" value="${pos.y}" /></label>
+          <label>Ø <input type="number" class="dev-home-layout-input" data-key="${key}" data-field="d" value="${pos.d}" /></label>
+        </div>`;
+      })
+      .join("");
+    wrap.querySelectorAll(".dev-home-layout-input").forEach((input) => {
+      input.addEventListener("input", () => {
+        const s = loadDevSettings();
+        s.homeLayout[input.dataset.key][input.dataset.field] = Number(input.value) || 0;
+        saveDevSettings(s);
+        applyHomeLayout();
+      });
+    });
+  }
+
+  function applyShadowSettings() {
+    const settings = loadDevSettings();
+    const root = document.documentElement.style;
+    Object.keys(SHADOW_ELEMENTS).forEach((key) => {
+      const varName = SHADOW_ELEMENTS[key].varName;
+      if (settings.shadows[key] === false) root.setProperty(varName, "none");
+      else root.removeProperty(varName);
+    });
+  }
+
+  function renderShadowsEditor() {
+    const wrap = el("dev-shadows-list");
+    if (!wrap) return;
+    const settings = loadDevSettings();
+    wrap.innerHTML = Object.keys(SHADOW_ELEMENTS)
+      .map((key) => {
+        const { title } = SHADOW_ELEMENTS[key];
+        const checked = settings.shadows[key] !== false;
+        return `<label class="settings-toggle-row">
+          <input type="checkbox" class="dev-shadow-toggle" data-key="${key}" ${checked ? "checked" : ""} />
+          <span>${title}</span>
+        </label>`;
+      })
+      .join("");
+    wrap.querySelectorAll(".dev-shadow-toggle").forEach((cb) => {
+      cb.addEventListener("change", () => {
+        const s = loadDevSettings();
+        s.shadows[cb.dataset.key] = cb.checked;
+        saveDevSettings(s);
+        applyShadowSettings();
+      });
+    });
+  }
+
   function ensureColorPopup() {
     if (colorPopupEl) return colorPopupEl;
     colorPopupEl = document.createElement("div");
@@ -870,6 +989,25 @@
     return colorPopupEl;
   }
 
+  /** Décompose une valeur de couleur (6 chiffres hex opaque, 8 chiffres
+   *  hex avec alpha, ou l'ancien mot-clé "transparent") en teinte opaque +
+   *  transparence 0-100 (item 2 : curseur réglable plutôt qu'un simple
+   *  interrupteur tout ou rien). */
+  function parseColorValue(value) {
+    if (value === "transparent") return { hex6: "#000000", alpha: 0 };
+    if (/^#[0-9a-fA-F]{8}$/i.test(value)) {
+      return { hex6: value.slice(0, 7), alpha: Math.round((parseInt(value.slice(7, 9), 16) / 255) * 100) };
+    }
+    if (/^#[0-9a-fA-F]{6}$/i.test(value)) return { hex6: value, alpha: 100 };
+    return { hex6: "#000000", alpha: 100 };
+  }
+  function buildColorValue(hex6, alpha) {
+    const a = Math.max(0, Math.min(100, Math.round(alpha)));
+    if (a >= 100) return hex6;
+    const aHex = Math.round((a / 100) * 255).toString(16).padStart(2, "0");
+    return `${hex6}${aHex}`;
+  }
+
   function openColorPopup(input, anchorBtn) {
     const popup = ensureColorPopup();
     const rect = anchorBtn.getBoundingClientRect();
@@ -881,12 +1019,7 @@
 
     function render() {
       const mode = loadColorSliderMode() === "rgb" ? "rgb" : "tsl";
-      const isTransparent = input.value === "transparent";
-      // La dernière couleur opaque connue sert de base aux curseurs même
-      // quand "Transparent" est actif (mémorisée sur l'input lui-même, pour
-      // ne pas perdre la teinte choisie si on décoche puis recoche).
-      const hex = isTransparent ? input.dataset.lastOpaque || "#000000" : input.value;
-      if (!isTransparent) input.dataset.lastOpaque = hex;
+      const { hex6: hex, alpha } = parseColorValue(input.value);
       let slidersHtml;
       if (mode === "rgb") {
         const r = parseInt(hex.slice(1, 3), 16) || 0;
@@ -906,29 +1039,31 @@
         `;
       }
       popup.innerHTML = `
-        <div class="color-popup-preview${isTransparent ? " color-popup-preview--transparent" : ""}" style="${isTransparent ? "" : `background:${hex}`}"></div>
+        <div class="color-popup-preview color-popup-preview--checker" style="--swatch-color:${hex6WithAlpha(hex, alpha)}"></div>
         <label class="color-popup-hex-row">
           <span>Hex</span>
-          <input type="text" class="color-popup-hex-input" value="${isTransparent ? "" : hex}" placeholder="${isTransparent ? "transparent" : "#rrggbb"}" maxlength="7" />
+          <input type="text" class="color-popup-hex-input" value="${hex}" placeholder="#rrggbb" maxlength="7" />
         </label>
-        <div class="color-popup-sliders${isTransparent ? " is-disabled" : ""}">${slidersHtml}</div>
-        <label class="color-popup-transparent-row">
-          <input type="checkbox" id="color-popup-transparent-check" ${isTransparent ? "checked" : ""} />
-          <span>Transparent</span>
-        </label>
+        <div class="color-popup-sliders">${slidersHtml}</div>
+        <div class="hsl-slider-row color-popup-alpha-row">
+          <span>Opacité</span>
+          <input type="range" min="0" max="100" value="${alpha}" id="color-popup-alpha" />
+          <span class="hsl-slider-value" id="color-popup-alpha-value">${alpha}%</span>
+        </div>
         <div class="color-popup-mode-toggle">
           <button type="button" class="color-popup-mode-btn${mode === "rgb" ? " is-active" : ""}" data-mode="rgb">RVB</button>
           <button type="button" class="color-popup-mode-btn${mode === "tsl" ? " is-active" : ""}" data-mode="tsl">TSL</button>
         </div>
       `;
-      const applyHex = (newHex) => {
-        input.value = newHex;
-        input.dataset.lastOpaque = newHex;
-        setSwatchVisual(anchorBtn, newHex);
+      const commit = (newHex6, newAlpha) => {
+        const value = buildColorValue(newHex6, newAlpha);
+        input.value = value;
+        setSwatchVisual(anchorBtn, value);
+        const preview = popup.querySelector(".color-popup-preview");
+        if (preview) preview.style.setProperty("--swatch-color", hex6WithAlpha(newHex6, newAlpha));
         input.dispatchEvent(new Event("input", { bubbles: true }));
-        render();
       };
-      popup.querySelectorAll('input[type="range"]').forEach((slider) => {
+      popup.querySelectorAll('input[type="range"]:not(#color-popup-alpha)').forEach((slider) => {
         slider.addEventListener("input", () => {
           // Affiche la valeur en direct à côté du curseur qu'on bouge,
           // sans attendre le prochain rendu complet (item 1).
@@ -945,43 +1080,32 @@
               Number(popup.querySelector('[data-c="l"]').value)
             );
           }
-          input.value = newHex;
-          input.dataset.lastOpaque = newHex;
-          setSwatchVisual(anchorBtn, newHex);
-          const preview = popup.querySelector(".color-popup-preview");
-          if (preview) {
-            preview.classList.remove("color-popup-preview--transparent");
-            preview.style.background = newHex;
-          }
           const hexInput = popup.querySelector(".color-popup-hex-input");
           if (hexInput) hexInput.value = newHex;
-          const transparentCheck = popup.querySelector("#color-popup-transparent-check");
-          if (transparentCheck) transparentCheck.checked = false;
-          input.dispatchEvent(new Event("input", { bubbles: true }));
+          const curAlpha = Number(popup.querySelector("#color-popup-alpha").value);
+          commit(newHex, curAlpha);
         });
       });
+      // Opacité (item 2) : curseur réglable de 0 à 100%, plutôt qu'un
+      // simple "transparent" tout ou rien.
+      const alphaSlider = popup.querySelector("#color-popup-alpha");
+      if (alphaSlider) {
+        alphaSlider.addEventListener("input", () => {
+          const valueSpan = popup.querySelector("#color-popup-alpha-value");
+          if (valueSpan) valueSpan.textContent = `${alphaSlider.value}%`;
+          const hexInput = popup.querySelector(".color-popup-hex-input");
+          const curHex = hexInput ? hexInput.value : hex;
+          commit(curHex, Number(alphaSlider.value));
+        });
+      }
       // Code hex tapé/collé directement (item 1).
       const hexInput = popup.querySelector(".color-popup-hex-input");
       if (hexInput) {
         hexInput.addEventListener("change", () => {
           const v = hexInput.value.trim();
-          if (/^#[0-9a-fA-F]{6}$/.test(v)) applyHex(v);
-          else hexInput.value = isTransparent ? "" : hex;
-        });
-      }
-      // Transparent (item 1) : bascule sans perdre la teinte choisie.
-      const transparentCheck = popup.querySelector("#color-popup-transparent-check");
-      if (transparentCheck) {
-        transparentCheck.addEventListener("change", () => {
-          if (transparentCheck.checked) {
-            input.value = "transparent";
-            setSwatchVisual(anchorBtn, "transparent");
-          } else {
-            input.value = input.dataset.lastOpaque || "#000000";
-            setSwatchVisual(anchorBtn, input.value);
-          }
-          input.dispatchEvent(new Event("input", { bubbles: true }));
-          render();
+          const curAlpha = Number(popup.querySelector("#color-popup-alpha").value);
+          if (/^#[0-9a-fA-F]{6}$/.test(v)) commit(v, curAlpha);
+          else hexInput.value = hex;
         });
       }
       popup.querySelectorAll(".color-popup-mode-btn").forEach((b) => {
@@ -1033,13 +1157,28 @@
   /** Affiche un damier (case transparente) plutôt qu'un simple à-plat de
    *  couleur quand la valeur est "transparent" (item 1 : couleur
    *  transparente possible partout). */
+  /** Convertit hex6 + opacité (0-100) en rgba() utilisable dans un style
+   *  inline (item 2 — curseur de transparence réglable). */
+  function hex6WithAlpha(hex6, alpha) {
+    const r = parseInt(hex6.slice(1, 3), 16) || 0;
+    const g = parseInt(hex6.slice(3, 5), 16) || 0;
+    const b = parseInt(hex6.slice(5, 7), 16) || 0;
+    return `rgba(${r}, ${g}, ${b}, ${Math.max(0, Math.min(100, alpha)) / 100})`;
+  }
+
+  /** Affiche un damier en dessous de la couleur dès qu'elle n'est pas
+   *  totalement opaque (item 2), pour que le niveau de transparence choisi
+   *  soit visible sur la pastille elle-même — pas seulement à 0%. */
   function setSwatchVisual(btn, value) {
-    if (value === "transparent") {
-      btn.style.background = "";
-      btn.classList.add("color-swatch-btn--transparent");
-    } else {
+    const { hex6, alpha } = parseColorValue(value);
+    if (alpha >= 100) {
       btn.classList.remove("color-swatch-btn--transparent");
-      btn.style.background = value;
+      btn.style.removeProperty("--swatch-color");
+      btn.style.background = hex6;
+    } else {
+      btn.classList.add("color-swatch-btn--transparent");
+      btn.style.background = "";
+      btn.style.setProperty("--swatch-color", hex6WithAlpha(hex6, alpha));
     }
   }
 
@@ -1108,6 +1247,21 @@
 
   /** Applique les émoticônes des icônes de la fiche/de l'arborescence
    *  (item 2) : hibernation, édition, chantier, annuler, dossier. */
+  /** Icône (émoticône personnalisée OU SVG de la banque) pour un réglage
+   *  précis parmi hibernate/edit/construction/undo (item 1 — bug corrigé) :
+   *  centralisé ici pour que TOUS les endroits de l'appli qui affichent
+   *  cette icône (la fiche de révision, mais aussi le bouton "chantier" de
+   *  chaque ligne dans la liste de Fiches) suivent bien le même réglage —
+   *  jusqu'ici seule la fiche de révision le faisait, la liste affichait
+   *  toujours l'émoticône brute. */
+  function getIconMarkupFor(key) {
+    const settings = loadDevSettings();
+    if (settings.icons[key] !== DEFAULT_ICONS[key]) return escapeHtml(settings.icons[key]);
+    const iconId = settings.iconBank[key];
+    if (iconId && ICON_LIBRARY[iconId]) return iconSvgMarkup(iconId, "icon-inline-svg");
+    return escapeHtml(settings.icons[key]);
+  }
+
   function applyIconSettings() {
     const settings = loadDevSettings();
     const icons = settings.icons;
@@ -1118,13 +1272,7 @@
     const applyOne = (elId, key) => {
       const target = el(elId);
       if (!target) return;
-      if (icons[key] !== DEFAULT_ICONS[key]) {
-        target.textContent = icons[key];
-      } else if (iconBank[key] && ICON_LIBRARY[iconBank[key]]) {
-        target.innerHTML = iconSvgMarkup(iconBank[key], "icon-inline-svg");
-      } else {
-        target.textContent = icons[key];
-      }
+      target.innerHTML = getIconMarkupFor(key);
     };
     applyOne("hibernate-current-btn", "hibernate");
     applyOne("edit-current-btn", "edit");
@@ -1752,7 +1900,7 @@
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
       nameBtn.title = expanded ? "Replier ce dossier" : "Déplier ce dossier";
-      nameBtn.textContent = `${expanded ? "▾" : "▸"} ${folderIcon()} ${f.name}`;
+      nameBtn.innerHTML = `${expanded ? "▾" : "▸"} ${iconSvgMarkup("folder", "icon-inline-svg")} ${escapeHtml(f.name)}`;
       nameBtn.addEventListener("click", () => {
         if (expandedManageFolders.has(f.id)) expandedManageFolders.delete(f.id);
         else expandedManageFolders.add(f.id);
@@ -1820,7 +1968,7 @@
       // maintenant, comme pour les dossiers) — juste une étiquette.
       const nameBtn = document.createElement("span");
       nameBtn.className = "subject-row-name";
-      nameBtn.textContent = s.name;
+      nameBtn.innerHTML = `${iconSvgMarkup("file", "icon-inline-svg")} ${escapeHtml(s.name)}`;
 
       const count = document.createElement("span");
       count.className = "subject-row-count";
@@ -3948,7 +4096,7 @@
       const constructionBtn = document.createElement("button");
       constructionBtn.className = "icon-btn" + (card.underConstruction ? " is-active-construction" : "");
       constructionBtn.type = "button";
-      constructionBtn.textContent = loadDevSettings().icons.construction;
+      constructionBtn.innerHTML = getIconMarkupFor("construction");
       constructionBtn.title = card.underConstruction ? "Retirer le statut « chantier »" : "Marquer « chantier » (fiche à corriger)";
       constructionBtn.addEventListener("click", () => toggleUnderConstruction(card.id));
 
@@ -4609,6 +4757,7 @@
 
   function renderStats() {
     renderStatsSubjectSelect();
+    renderStatsScaleSelect();
     // 6a : toujours toutes matières confondues, indépendant du sélecteur
     // de matière ci-dessous (qui ne pilote que ce qui suit les flammes).
     const allCards = cards.filter((c) => !c.deleted);
@@ -5062,19 +5211,45 @@
   /* ---------------------------------------------------------
      Échelle partagée (byday/byweek/bymonth) pilotant le graphique
      "à revoir/révisées", "fiches créées", "notes données" et
-     "évolution des notes" (item 6c).
+     "évolution des notes" (item 6c) — même bouton/menu que le sélecteur
+     de matière juste au-dessus (item 6), plutôt qu'un menu déroulant natif.
   --------------------------------------------------------- */
-  const statsScaleSelectEl = el("stats-scale-select");
-  if (statsScaleSelectEl) {
-    statsScaleSelectEl.value = ratingsPeriod;
-    statsScaleSelectEl.addEventListener("change", () => {
-      ratingsPeriod = statsScaleSelectEl.value;
+  const STATS_SCALE_TITLES = { byday: "Par jour", byweek: "Par semaine", bymonth: "Par mois" };
+  function renderStatsScaleSelect() {
+    const btn = el("stats-scale-select-btn");
+    if (btn) btn.textContent = STATS_SCALE_TITLES[ratingsPeriod] || "Par jour";
+  }
+  function openStatsScaleChoiceMenu() {
+    const menu = el("stats-scale-choice-menu");
+    if (menu) menu.hidden = false;
+  }
+  function closeStatsScaleChoiceMenu() {
+    const menu = el("stats-scale-choice-menu");
+    if (menu) menu.hidden = true;
+  }
+  const statsScaleSelectBtn = el("stats-scale-select-btn");
+  if (statsScaleSelectBtn) {
+    statsScaleSelectBtn.addEventListener("click", () => openStatsScaleChoiceMenu());
+  }
+  document.querySelectorAll('#stats-scale-choice-menu [data-scale]').forEach((btn) => {
+    btn.addEventListener("click", () => {
+      closeStatsScaleChoiceMenu();
+      ratingsPeriod = btn.dataset.scale;
+      renderStatsScaleSelect();
       renderDueChart();
       renderCreatedChart();
       renderRatingsChart();
       renderRatingsHistoryChart();
     });
-  }
+  });
+  const statsScaleChoiceCancelBtn = el("stats-scale-choice-cancel");
+  if (statsScaleChoiceCancelBtn) statsScaleChoiceCancelBtn.addEventListener("click", closeStatsScaleChoiceMenu);
+  document.addEventListener("pointerdown", (e) => {
+    const menu = el("stats-scale-choice-menu");
+    if (!menu || menu.hidden) return;
+    if (menu.contains(e.target) || e.target === statsScaleSelectBtn) return;
+    closeStatsScaleChoiceMenu();
+  });
 
   /** Affiche un message de confirmation bien visible, en bas d'écran. */
   function showToast(message) {
@@ -5574,6 +5749,17 @@
     });
   }
 
+  const devHomeLayoutResetBtn = el("dev-home-layout-reset");
+  if (devHomeLayoutResetBtn) {
+    devHomeLayoutResetBtn.addEventListener("click", () => {
+      const settings = loadDevSettings();
+      settings.homeLayout = JSON.parse(JSON.stringify(DEFAULT_HOME_LAYOUT));
+      saveDevSettings(settings);
+      applyHomeLayout();
+      renderDevView();
+    });
+  }
+
   /** Liste éditable de couleurs de texte (item 2) : ajouter/renommer/
    *  changer la couleur/retirer, appliqué en direct à la barre d'outils de
    *  mise en forme des fiches. */
@@ -5727,6 +5913,8 @@
     renderIconBankEditor();
     renderBgColorsEditor();
     renderTextColorsSetEditor();
+    renderShadowsEditor();
+    renderHomeLayoutEditor();
     renderFactoryDefaultsEditor();
     // Après TOUS les autres rendus ci-dessus : ils régénèrent leurs propres
     // <input class="dev-color-value"> dynamiquement, donc les pastilles
@@ -5849,7 +6037,7 @@
   // Carrés de la page d'accueil (item 1a) : réutilisent directement la
   // logique des onglets ci-dessus (chaque carré déclenche le même
   // .tab[data-view=...].click()) plutôt que de dupliquer la bascule de vue.
-  document.querySelectorAll(".home-square[data-go]").forEach((square) => {
+  document.querySelectorAll(".home-circle[data-go]").forEach((square) => {
     square.addEventListener("click", () => {
       const tab = document.querySelector(`.tab[data-view="${square.dataset.go}"]`);
       if (tab) tab.click();
@@ -6462,9 +6650,11 @@
     applyRatingLabels();
     applyNavLabels();
     applyHomeIcons();
+    applyHomeLayout();
     applyShowRatingDays();
     applyShowReviewChart();
     applyColorSettings();
+    applyShadowSettings();
     applyIconSettings();
     applyTextColorPalette();
     await loadSubjects();
