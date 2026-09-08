@@ -491,15 +491,15 @@
   const HOME_LAYOUT_LEGACY_REF_WIDTH = 354;
   const HOME_LAYOUT_LEGACY_REF_HEIGHT = 640;
   const DEFAULT_HOME_LAYOUT = {
-    review: { x: 4.2, y: 1.6, d: 155 },
-    addCard: { x: 57.9, y: 6.3, d: 110 },
-    cards: { x: 7.1, y: 31.3, d: 105 },
-    stats: { x: 63.6, y: 29.7, d: 100 },
-    learningModes: { x: 25.4, y: 46.9, d: 100 },
-    manage: { x: 66.4, y: 51.6, d: 95 },
-    settings: { x: 4.2, y: 67.2, d: 85 },
-    sync: { x: 41.0, y: 68.8, d: 95 },
-    dev: { x: 77.7, y: 72.7, d: 80 },
+    review: { x: 26.1, y: 13.7, d: 155 },
+    addCard: { x: 73.4, y: 14.9, d: 110 },
+    cards: { x: 21.9, y: 39.5, d: 105 },
+    stats: { x: 77.7, y: 37.5, d: 100 },
+    learningModes: { x: 39.5, y: 54.7, d: 100 },
+    manage: { x: 79.8, y: 59.0, d: 95 },
+    settings: { x: 16.2, y: 73.8, d: 85 },
+    sync: { x: 54.4, y: 76.2, d: 95 },
+    dev: { x: 89.0, y: 79.0, d: 80 },
   };
   const DEFAULT_ICONS = {
     hibernate: "💤", edit: "✎", construction: "🚧", undo: "◀️", folder: "📁",
@@ -534,21 +534,33 @@
    *  fois — repérable via l'absence du marqueur homeLayoutUnit. Les
    *  réglages déjà migrés, ou tout nouveau réglage refait depuis
    *  l'interface (déjà en pourcentage), passent au travers sans y
-   *  toucher. */
+   *  toucher. Gère aussi le passage du coin haut-gauche vers le centre du
+   *  cercle (homeLayoutAnchor) — deux migrations indépendantes, un
+   *  réglage peut avoir besoin de l'une, de l'autre, des deux, ou d'aucune. */
   function migrateHomeLayoutToPercent(parsed) {
     const stored = parsed.homeLayout || {};
-    const alreadyMigrated = parsed.homeLayoutUnit === "percent";
+    const unitMigrated = parsed.homeLayoutUnit === "percent";
+    const anchorMigrated = parsed.homeLayoutAnchor === "center";
     return Object.fromEntries(
       Object.keys(DEFAULT_HOME_LAYOUT).map((k) => {
         const def = DEFAULT_HOME_LAYOUT[k];
         const val = stored[k];
         if (!val) return [k, { ...def }];
-        if (alreadyMigrated) return [k, { ...def, ...val }];
         // Ancien format en pixels : convertit vers un pourcentage de la
         // largeur/hauteur de référence d'origine (~390px de large).
-        const x = val.x !== undefined ? (Number(val.x) / HOME_LAYOUT_LEGACY_REF_WIDTH) * 100 : def.x;
-        const y = val.y !== undefined ? (Number(val.y) / HOME_LAYOUT_LEGACY_REF_HEIGHT) * 100 : def.y;
+        let x = val.x !== undefined ? Number(val.x) : def.x;
+        let y = val.y !== undefined ? Number(val.y) : def.y;
         const d = val.d !== undefined ? Number(val.d) : def.d;
+        if (!unitMigrated) {
+          x = (x / HOME_LAYOUT_LEGACY_REF_WIDTH) * 100;
+          y = (y / HOME_LAYOUT_LEGACY_REF_HEIGHT) * 100;
+        }
+        if (!anchorMigrated) {
+          // Coin haut-gauche -> centre : on décale d'un demi-diamètre,
+          // converti en pourcentage des mêmes repères de référence.
+          x += (d / 2 / HOME_LAYOUT_LEGACY_REF_WIDTH) * 100;
+          y += (d / 2 / HOME_LAYOUT_LEGACY_REF_HEIGHT) * 100;
+        }
         return [k, { x, y, d }];
       })
     );
@@ -590,6 +602,7 @@
       shadows: { ...DEFAULT_SHADOWS, ...(parsed.shadows || {}) },
       homeLayout: migrateHomeLayoutToPercent(parsed),
       homeLayoutUnit: "percent",
+      homeLayoutAnchor: "center",
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       factoryDefaults: {
@@ -1000,11 +1013,15 @@
       if (!pos) return;
       // Pourcentage de la zone d'accueil (bug corrigé) : suit la largeur
       // réelle de l'écran au lieu d'un pixel fixe pensé pour un iPhone,
-      // qui décalait tout à gauche sur un PC plus large.
+      // qui décalait tout à gauche sur un PC plus large. X/Y visent
+      // maintenant le CENTRE du cercle (translate -50%/-50%), plus
+      // intuitif que le coin haut-gauche, surtout pour aligner des
+      // cercles de tailles différentes entre eux.
       circle.style.left = `${pos.x}%`;
       circle.style.top = `${pos.y}%`;
       circle.style.width = `${pos.d}px`;
       circle.style.height = `${pos.d}px`;
+      circle.style.transform = "translate(-50%, -50%)";
     });
   }
 
