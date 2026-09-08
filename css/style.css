@@ -1121,6 +1121,7 @@ button.home-btn {
 .rating-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
   gap: 6px;
   margin-top: 18px;
   position: relative;

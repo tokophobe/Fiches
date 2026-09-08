@@ -475,22 +475,31 @@
   // Disposition dispersée de la page d'accueil (item 3) : position (x,y en
   // pixels, coin haut-gauche du cercle) + diamètre (px) par bouton — tailles
   // différentes selon l'importance (Réviser le plus grand, Développeur le
-  // plus petit). Conçu pour un écran de référence ~390px de large.
+  // plus petit). Repères en pourcentage de la zone d'accueil (item — bug
+  // corrigé : des pixels fixes, pensés pour ~390px de large, décalaient
+  // tout vers la gauche sur un écran plus large comme un PC, puisque
+  // l'appli s'adapte elle en largeur — le pourcentage, lui, suit toujours
+  // la largeur réelle quel que soit l'appareil).
   const HOME_LAYOUT_TITLES = {
     review: "Réviser", manage: "Dossiers & matières", cards: "Fiches", addCard: "Ajouter une fiche",
     stats: "Statistiques", learningModes: "Modes d'apprentissage", settings: "Réglages",
     sync: "Synchronisation", dev: "Développeur",
   };
+  // Largeur/hauteur de référence utilisées uniquement pour convertir une
+  // seule fois d'anciens réglages enregistrés en pixels (avant ce
+  // correctif) vers des pourcentages équivalents.
+  const HOME_LAYOUT_LEGACY_REF_WIDTH = 354;
+  const HOME_LAYOUT_LEGACY_REF_HEIGHT = 640;
   const DEFAULT_HOME_LAYOUT = {
-    review: { x: 15, y: 10, d: 155 },
-    addCard: { x: 205, y: 40, d: 110 },
-    cards: { x: 25, y: 200, d: 105 },
-    stats: { x: 225, y: 190, d: 100 },
-    learningModes: { x: 90, y: 300, d: 100 },
-    manage: { x: 235, y: 330, d: 95 },
-    settings: { x: 15, y: 430, d: 85 },
-    sync: { x: 145, y: 440, d: 95 },
-    dev: { x: 275, y: 465, d: 80 },
+    review: { x: 4.2, y: 1.6, d: 155 },
+    addCard: { x: 57.9, y: 6.3, d: 110 },
+    cards: { x: 7.1, y: 31.3, d: 105 },
+    stats: { x: 63.6, y: 29.7, d: 100 },
+    learningModes: { x: 25.4, y: 46.9, d: 100 },
+    manage: { x: 66.4, y: 51.6, d: 95 },
+    settings: { x: 4.2, y: 67.2, d: 85 },
+    sync: { x: 41.0, y: 68.8, d: 95 },
+    dev: { x: 77.7, y: 72.7, d: 80 },
   };
   const DEFAULT_ICONS = {
     hibernate: "💤", edit: "✎", construction: "🚧", undo: "◀️", folder: "📁",
@@ -519,6 +528,31 @@
     { label: "Orange", hex: "#d97f35" },
     { label: "Gris", hex: "#6b7280" },
   ];
+
+  /** Convertit une disposition d'accueil enregistrée en pixels (avant le
+   *  correctif de cet item) vers des pourcentages équivalents, une seule
+   *  fois — repérable via l'absence du marqueur homeLayoutUnit. Les
+   *  réglages déjà migrés, ou tout nouveau réglage refait depuis
+   *  l'interface (déjà en pourcentage), passent au travers sans y
+   *  toucher. */
+  function migrateHomeLayoutToPercent(parsed) {
+    const stored = parsed.homeLayout || {};
+    const alreadyMigrated = parsed.homeLayoutUnit === "percent";
+    return Object.fromEntries(
+      Object.keys(DEFAULT_HOME_LAYOUT).map((k) => {
+        const def = DEFAULT_HOME_LAYOUT[k];
+        const val = stored[k];
+        if (!val) return [k, { ...def }];
+        if (alreadyMigrated) return [k, { ...def, ...val }];
+        // Ancien format en pixels : convertit vers un pourcentage de la
+        // largeur/hauteur de référence d'origine (~390px de large).
+        const x = val.x !== undefined ? (Number(val.x) / HOME_LAYOUT_LEGACY_REF_WIDTH) * 100 : def.x;
+        const y = val.y !== undefined ? (Number(val.y) / HOME_LAYOUT_LEGACY_REF_HEIGHT) * 100 : def.y;
+        const d = val.d !== undefined ? Number(val.d) : def.d;
+        return [k, { x, y, d }];
+      })
+    );
+  }
 
   function loadDevSettings() {
     let parsed = {};
@@ -554,9 +588,8 @@
       bgColors: { ...DEFAULT_BG_COLORS, ...(parsed.bgColors || {}) },
       textColorsSet: { ...DEFAULT_TEXT_COLORS_SET, ...(parsed.textColorsSet || {}) },
       shadows: { ...DEFAULT_SHADOWS, ...(parsed.shadows || {}) },
-      homeLayout: Object.fromEntries(
-        Object.keys(DEFAULT_HOME_LAYOUT).map((k) => [k, { ...DEFAULT_HOME_LAYOUT[k], ...((parsed.homeLayout || {})[k] || {}) }])
-      ),
+      homeLayout: migrateHomeLayoutToPercent(parsed),
+      homeLayoutUnit: "percent",
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       factoryDefaults: {
@@ -965,8 +998,11 @@
     document.querySelectorAll(".home-circle[data-key]").forEach((circle) => {
       const pos = layout[circle.dataset.key];
       if (!pos) return;
-      circle.style.left = `${pos.x}px`;
-      circle.style.top = `${pos.y}px`;
+      // Pourcentage de la zone d'accueil (bug corrigé) : suit la largeur
+      // réelle de l'écran au lieu d'un pixel fixe pensé pour un iPhone,
+      // qui décalait tout à gauche sur un PC plus large.
+      circle.style.left = `${pos.x}%`;
+      circle.style.top = `${pos.y}%`;
       circle.style.width = `${pos.d}px`;
       circle.style.height = `${pos.d}px`;
     });
@@ -981,9 +1017,9 @@
         const pos = settings.homeLayout[key];
         return `<div class="dev-home-layout-row">
           <span class="dev-home-layout-title">${HOME_LAYOUT_TITLES[key] || key}</span>
-          <label>X <input type="number" class="dev-home-layout-input" data-key="${key}" data-field="x" value="${pos.x}" /></label>
-          <label>Y <input type="number" class="dev-home-layout-input" data-key="${key}" data-field="y" value="${pos.y}" /></label>
-          <label>Ø <input type="number" class="dev-home-layout-input" data-key="${key}" data-field="d" value="${pos.d}" /></label>
+          <label>X % <input type="number" step="0.1" class="dev-home-layout-input" data-key="${key}" data-field="x" value="${Math.round(pos.x * 10) / 10}" /></label>
+          <label>Y % <input type="number" step="0.1" class="dev-home-layout-input" data-key="${key}" data-field="y" value="${Math.round(pos.y * 10) / 10}" /></label>
+          <label>Ø px <input type="number" class="dev-home-layout-input" data-key="${key}" data-field="d" value="${pos.d}" /></label>
         </div>`;
       })
       .join("");
