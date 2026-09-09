@@ -518,10 +518,12 @@
   // et position Y de son bord haut, position Y des boutons d'évaluation
   // (tous en % de l'écran), temps de retournement en secondes.
   const DEFAULT_REVIEW_LAYOUT = {
-    cardHeightPct: 39,
+    cardHeightPct: 45,
     cardWidthPct: 91,
     cardTopPct: 13,
-    ratingRowTopPct: 56,
+    ratingRowTopPct: 60,
+    scoreInfoTopPct: 70,
+    gaugeTopPct: 80,
     flipDurationSec: 0.7,
   };
   const DEFAULT_ICONS = {
@@ -1071,6 +1073,8 @@
     root.setProperty("--review-card-width", `${r.cardWidthPct}vw`);
     root.setProperty("--review-card-top", `${r.cardTopPct}vh`);
     root.setProperty("--review-rating-row-top", `${r.ratingRowTopPct}vh`);
+    root.setProperty("--review-score-info-top", `${r.scoreInfoTopPct}vh`);
+    root.setProperty("--review-gauge-top", `${r.gaugeTopPct}vh`);
     root.setProperty("--review-flip-duration", `${r.flipDurationSec}s`);
   }
 
@@ -1105,6 +1109,8 @@
     { key: "cardWidthPct", title: "Largeur de la fiche", unit: "% de l'écran" },
     { key: "cardTopPct", title: "Position Y du bord haut de la fiche", unit: "% de l'écran" },
     { key: "ratingRowTopPct", title: "Position Y des boutons d'évaluation", unit: "% de l'écran" },
+    { key: "scoreInfoTopPct", title: "Position Y des infos de score de la fiche", unit: "% de l'écran" },
+    { key: "gaugeTopPct", title: "Position Y de la jauge", unit: "% de l'écran" },
     { key: "flipDurationSec", title: "Temps de retournement de la fiche", unit: "secondes" },
   ];
   function renderReviewLayoutEditor() {
@@ -3584,8 +3590,8 @@
     const score = pool.length > 0 ? Math.round(pool.reduce((acc, c) => acc + computeCardScore(c), 0) / pool.length) : 0;
 
     const bounds = [0, settings.v1, settings.v2, settings.v3, settings.v4, 100];
-    const cx = 110, cy = 100, r = 90, strokeW = 22;
-    let svg = `<svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">`;
+    const cx = 128, cy = 106, r = 68, strokeW = 20;
+    let svg = `<svg viewBox="0 0 256 150" xmlns="http://www.w3.org/2000/svg">`;
     for (let i = 0; i < GAUGE_ZONES.length; i++) {
       const from = bounds[i];
       const to = bounds[i + 1];
@@ -3593,6 +3599,17 @@
       const startAngle = (from / 100) * 180;
       const endAngle = (to / 100) * 180;
       svg += `<path d="${describeArc(cx, cy, r, startAngle, endAngle)}" fill="none" stroke="${GAUGE_ZONES[i].color}" stroke-width="${strokeW}" />`;
+      // Item 3 : l'intitulé de chaque zone apparaît en face d'elle,
+      // directement sur la jauge — plus besoin de rappeler séparément le
+      // nom de la zone désignée par l'aiguille. Les deux zones extrêmes
+      // (proches de l'horizontale pure) gardent leur étiquette centrée
+      // sur le même rayon que les autres plutôt que collée au bord, pour
+      // ne pas sortir du cadre.
+      const midAngle = (startAngle + endAngle) / 2;
+      const labelR = r + strokeW / 2 + (midAngle < 15 || midAngle > 165 ? 9 : 12);
+      const labelPos = polarToCartesian(cx, cy, labelR, midAngle);
+      const anchor = midAngle < 75 ? "end" : midAngle > 105 ? "start" : "middle";
+      svg += `<text x="${labelPos.x.toFixed(1)}" y="${labelPos.y.toFixed(1)}" font-size="8" font-family="sans-serif" font-weight="700" fill="${GAUGE_ZONES[i].color}" text-anchor="${anchor}">${escapeHtml(GAUGE_ZONES[i].label)}</text>`;
     }
     // Aiguille : pointe vers le score actuel (0% = tout à gauche, 100% =
     // tout à droite), pivot au centre du demi-cercle.
@@ -3601,15 +3618,9 @@
     svg += `<circle cx="${cx}" cy="${cy}" r="6" fill="var(--ink, #1f2937)" />`;
     svg += `</svg>`;
 
-    let currentZone = GAUGE_ZONES[0];
-    for (let i = 0; i < GAUGE_ZONES.length; i++) {
-      if (score >= bounds[i]) currentZone = GAUGE_ZONES[i];
-    }
-
     wrap.innerHTML = `
       ${svg}
       <div class="review-gauge-value">${score}%</div>
-      <div class="review-gauge-label" style="color:${currentZone.color}">${currentZone.label}</div>
     `;
   }
 
