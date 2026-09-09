@@ -200,6 +200,18 @@ button.topbar-new-card-btn {
   position: relative;
 }
 
+/* Score de la matière/sélection en cours (item 2), à côté du sélecteur. */
+.review-subject-score {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  background: var(--paper-2);
+  border-radius: 999px;
+  padding: 6px 10px;
+  flex-shrink: 0;
+}
+
 /* Bouton "+ Nouvelle fiche" (item 3), à côté du sélecteur de matière —
    ouvre le cadre de création, masqué par défaut. */
 .cards-new-btn {
@@ -1144,6 +1156,72 @@ button.home-btn {
 
 .rating-row[hidden] { display: none; }
 
+/* Item 1d : délai/score, juste sous les boutons d'évaluation — même
+   positionnement fixe qu'eux (voir --review-rating-row-top), décalé de la
+   hauteur d'un bouton pour tomber juste en dessous. */
+.review-score-info {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(var(--review-rating-row-top, 76vh) + 92px);
+  width: var(--review-card-width, 91vw);
+  max-width: 560px;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--general-text-color, var(--ink-soft));
+  text-align: center;
+}
+
+.review-score-info[hidden] { display: none; }
+
+.review-score-info-current {
+  margin: 0 0 6px;
+}
+
+.review-score-info-current strong {
+  color: var(--ink);
+}
+
+.review-score-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.review-score-info-cell {
+  white-space: nowrap;
+}
+
+/* Jauge du score (item 2) : tout en bas de l'écran. */
+.review-gauge-wrap {
+  position: fixed;
+  left: 50%;
+  bottom: max(8px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: var(--review-card-width, 91vw);
+  max-width: 240px;
+  z-index: 2;
+  text-align: center;
+}
+
+.review-gauge-wrap svg {
+  width: 100%;
+  height: auto;
+}
+
+.review-gauge-label {
+  font-family: var(--font-type);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.review-gauge-value {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+}
+
 /* Réglage (item 5) : masque le nombre de jours à côté de chaque émoticône. */
 .rating-row.hide-days .stamp-sub { display: none; }
 
@@ -1601,6 +1679,7 @@ button.home-btn {
   gap: 8px;
   box-shadow: 0 6px 16px rgba(0,0,0,0.22);
   border-left: 3px solid var(--rule);
+  position: relative;
 }
 
 .card-row-main { flex: 1; min-width: 0; width: 100%; }
@@ -1624,6 +1703,20 @@ button.home-btn {
   overflow-wrap: break-word;
   border-left: 2px solid var(--paper-3);
   padding-left: 8px;
+}
+
+/* Score d'apprentissage (item 1c) : coin supérieur droit de chaque ligne. */
+.card-row-score {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  background: var(--paper-2);
+  border-radius: 999px;
+  padding: 3px 8px;
 }
 
 .card-row-meta {

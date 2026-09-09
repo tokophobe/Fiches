@@ -204,6 +204,7 @@
     <section id="view-review" class="view" aria-labelledby="tab-review">
       <div class="subject-bar" id="subject-bar">
         <button type="button" class="subject-select-btn" id="subject-select-btn" aria-label="Choisir les matières à réviser"></button>
+        <span class="review-subject-score" id="review-subject-score"></span>
 
         <div class="subject-choice-menu" id="subject-choice-menu" hidden>
           <button type="button" class="subject-choice-item" id="subject-choice-all">Toutes les matières</button>
@@ -278,12 +279,31 @@
         </button>
       </div>
 
+      <!-- Item 1d : délai précédent, score actuel, et pour chaque bouton
+           d'évaluation le futur délai + futur score associé. -->
+      <div class="review-score-info" id="review-score-info" hidden>
+        <p class="review-score-info-current">
+          Délai précédent : <strong id="score-info-prev-delay">—</strong>
+          &nbsp;·&nbsp;Score actuel : <strong id="score-info-current">—</strong>
+        </p>
+        <div class="review-score-info-grid">
+          <span class="review-score-info-cell" id="score-info-again">—</span>
+          <span class="review-score-info-cell" id="score-info-hard">—</span>
+          <span class="review-score-info-cell" id="score-info-good">—</span>
+          <span class="review-score-info-cell" id="score-info-easy">—</span>
+        </div>
+      </div>
+
       <div class="review-chart-section" id="review-chart-section">
         <div class="chart-wrap chart-wrap--mini" id="review-chart-wrap">
           <div class="chart chart--mini" id="review-due-chart"></div>
         </div>
         <p class="chart-empty" id="review-chart-empty" hidden>Rien à revoir sur cette période.</p>
       </div>
+
+      <!-- Item 2 : jauge du score de la matière/sélection en cours, tout en
+           bas de la page. -->
+      <div class="review-gauge-wrap" id="review-gauge-wrap"></div>
     </section>
 
     <!-- VUE GESTION -->
@@ -749,6 +769,51 @@
         <h3 class="settings-block-title">Disposition de la page Réviser</h3>
         <div class="dev-color-list" id="dev-review-layout-list"></div>
         <button type="button" class="btn btn--ghost" id="dev-review-layout-reset">Revenir à la disposition d'origine</button>
+      </div>
+
+      <!-- Item 1a/2 : score d'apprentissage des fiches, matières et
+           dossiers. -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Score des fiches</h3>
+        <p class="field-hint settings-block-hint">S = ((D-1)^P)/((D-1)^P+B), D = délai avant la prochaine interrogation (jours).</p>
+        <div class="algo-grid algo-grid--4">
+          <label class="field settings-bonus-field">
+            <span>P</span>
+            <input type="number" step="0.1" id="dev-score-p" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>B</span>
+            <input type="number" step="0.1" id="dev-score-b" />
+          </label>
+        </div>
+        <p class="field-hint settings-block-hint" style="margin-top:12px;">Seuils de la jauge (% de score) :</p>
+        <div class="algo-grid algo-grid--4">
+          <label class="field settings-bonus-field">
+            <span>V1 (Débutant → Fragile)</span>
+            <input type="number" id="dev-score-v1" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>V2 (Fragile → En bonne voie)</span>
+            <input type="number" id="dev-score-v2" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>V3 (En bonne voie → Maîtrisé)</span>
+            <input type="number" id="dev-score-v3" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>V4 (Maîtrisé → Acquis)</span>
+            <input type="number" id="dev-score-v4" />
+          </label>
+        </div>
+        <label class="settings-toggle-row" style="margin-top:12px;">
+          <input type="checkbox" id="dev-score-hide-info" />
+          <span>Masquer le délai/score sous les boutons d'évaluation (Réviser)</span>
+        </label>
+        <label class="settings-toggle-row">
+          <input type="checkbox" id="dev-score-hide-subject" />
+          <span>Masquer le score de la matière sur Réviser</span>
+        </label>
+        <button type="button" class="btn btn--ghost" id="dev-score-reset">Revenir aux réglages d'origine</button>
       </div>
 
       <!-- 2j : bloc "Palette de couleurs de texte" retiré (la barre d'outils

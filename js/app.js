@@ -473,6 +473,18 @@
     subjectRow: { varName: "--shadow-subject-row", title: "Matières et dossiers" },
   };
   const DEFAULT_SHADOWS = Object.fromEntries(Object.keys(SHADOW_ELEMENTS).map((k) => [k, true]));
+  // Score d'apprentissage des fiches (item 1) : S = ((D-1)^P)/((D-1)^P+B),
+  // D = délai (en jours) avant la prochaine interrogation.
+  const DEFAULT_CARD_SCORE_SETTINGS = {
+    p: 1.2,
+    b: 10,
+    v1: 10,
+    v2: 45,
+    v3: 65,
+    v4: 80,
+    hideReviewScoreInfo: false,
+    hideSubjectScoreOnReview: false,
+  };
   // Disposition dispersée de la page d'accueil (item 3) : position (x,y en
   // pixels, coin haut-gauche du cercle) + diamètre (px) par bouton — tailles
   // différentes selon l'importance (Réviser le plus grand, Développeur le
@@ -506,10 +518,10 @@
   // et position Y de son bord haut, position Y des boutons d'évaluation
   // (tous en % de l'écran), temps de retournement en secondes.
   const DEFAULT_REVIEW_LAYOUT = {
-    cardHeightPct: 55,
+    cardHeightPct: 39,
     cardWidthPct: 91,
-    cardTopPct: 18,
-    ratingRowTopPct: 76,
+    cardTopPct: 13,
+    ratingRowTopPct: 56,
     flipDurationSec: 0.7,
   };
   const DEFAULT_ICONS = {
@@ -615,6 +627,7 @@
       homeLayoutUnit: "percent",
       homeLayoutAnchor: "center",
       reviewLayout: { ...DEFAULT_REVIEW_LAYOUT, ...(parsed.reviewLayout || {}) },
+      cardScore: { ...DEFAULT_CARD_SCORE_SETTINGS, ...(parsed.cardScore || {}) },
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       factoryDefaults: {
@@ -1121,6 +1134,61 @@
       saveDevSettings(s);
       applyReviewLayout();
       renderDevView();
+    });
+  }
+
+  /** Score des fiches (items 1a/1d/2) : P, B, seuils de jauge V1-V4, et
+   *  les deux cases "masquer". */
+  function renderCardScoreEditor() {
+    const s = loadDevSettings().cardScore;
+    const pInput = el("dev-score-p");
+    const bInput = el("dev-score-b");
+    if (pInput) pInput.value = s.p;
+    if (bInput) bInput.value = s.b;
+    ["v1", "v2", "v3", "v4"].forEach((k) => {
+      const input = el(`dev-score-${k}`);
+      if (input) input.value = s[k];
+    });
+    const hideInfo = el("dev-score-hide-info");
+    if (hideInfo) hideInfo.checked = s.hideReviewScoreInfo;
+    const hideSubject = el("dev-score-hide-subject");
+    if (hideSubject) hideSubject.checked = s.hideSubjectScoreOnReview;
+  }
+  function saveCardScoreFromInputs() {
+    const settings = loadDevSettings();
+    const pInput = el("dev-score-p");
+    const bInput = el("dev-score-b");
+    if (pInput) settings.cardScore.p = Number(pInput.value) || DEFAULT_CARD_SCORE_SETTINGS.p;
+    if (bInput) settings.cardScore.b = Number(bInput.value) || DEFAULT_CARD_SCORE_SETTINGS.b;
+    ["v1", "v2", "v3", "v4"].forEach((k) => {
+      const input = el(`dev-score-${k}`);
+      if (input) settings.cardScore[k] = Number(input.value) || DEFAULT_CARD_SCORE_SETTINGS[k];
+    });
+    const hideInfo = el("dev-score-hide-info");
+    if (hideInfo) settings.cardScore.hideReviewScoreInfo = hideInfo.checked;
+    const hideSubject = el("dev-score-hide-subject");
+    if (hideSubject) settings.cardScore.hideSubjectScoreOnReview = hideSubject.checked;
+    saveDevSettings(settings);
+    renderManageList();
+    updateRatingPreviews();
+    renderReviewSubjectScore();
+    renderReviewGauge();
+  }
+  ["dev-score-p", "dev-score-b", "dev-score-v1", "dev-score-v2", "dev-score-v3", "dev-score-v4", "dev-score-hide-info", "dev-score-hide-subject"].forEach((id) => {
+    const input = el(id);
+    if (input) input.addEventListener("input", saveCardScoreFromInputs);
+  });
+  const devScoreResetBtn = el("dev-score-reset");
+  if (devScoreResetBtn) {
+    devScoreResetBtn.addEventListener("click", () => {
+      const settings = loadDevSettings();
+      settings.cardScore = { ...DEFAULT_CARD_SCORE_SETTINGS };
+      saveDevSettings(settings);
+      renderDevView();
+      renderManageList();
+      updateRatingPreviews();
+      renderReviewSubjectScore();
+      renderReviewGauge();
     });
   }
 
@@ -1700,6 +1768,19 @@
   /** Applique une note à une fiche avec le nouvel algorithme : renvoie les
    *  champs à fusionner dans la fiche (échéance brute conservée à 3
    *  décimales, échéance entière, et date de prochaine interrogation). */
+  /** Score d'apprentissage d'une fiche (item 1), de 0 à 100 (entier) :
+   *  S = ((D-1)^P)/((D-1)^P+B), D = délai actuel (en jours) avant la
+   *  prochaine interrogation. D est ramené à 1 minimum (fiche due
+   *  aujourd'hui ou en retard) pour éviter une puissance d'un nombre
+   *  négatif avec un exposant non entier (NaN sinon). */
+  function computeCardScore(card, intervalOverride) {
+    const settings = loadDevSettings().cardScore;
+    const D = Math.max(1, intervalOverride !== undefined ? intervalOverride : card.interval || 1);
+    const base = Math.pow(D - 1, settings.p);
+    const S = base / (base + settings.b);
+    return Math.round(S * 100);
+  }
+
   function computeAlgoNext(card, rating, subjectId) {
     const settings = getSubjectAlgoSettings(subjectId);
     const rawBefore = currentDeadlineRaw(card);
@@ -1801,6 +1882,28 @@
   function subjectIdsInFolder(folderId) {
     const ids = new Set([folderId, ...folderDescendantIds(folderId)]);
     return subjects.filter((s) => ids.has(s.folderId)).map((s) => s.id);
+  }
+
+  /** Score moyen d'une matière (item 2) : moyenne des scores de ses fiches
+   *  (non supprimées). null si la matière n'a aucune fiche — pas de score
+   *  à afficher dans ce cas plutôt qu'un 0% trompeur. */
+  function computeSubjectScore(subjectId) {
+    const own = cards.filter((c) => !c.deleted && c.subject === subjectId);
+    if (own.length === 0) return null;
+    const sum = own.reduce((acc, c) => acc + computeCardScore(c), 0);
+    return Math.round(sum / own.length);
+  }
+
+  /** Score moyen d'un dossier (item 2) : moyenne des scores de TOUTES les
+   *  fiches des matières qu'il contient, y compris dans ses sous-dossiers
+   *  — pas une moyenne des scores de matières (ce qui pondérerait à tort
+   *  une matière à 2 fiches autant qu'une à 200). */
+  function computeFolderScore(folderId) {
+    const subjectIds = subjectIdsInFolder(folderId);
+    const own = cards.filter((c) => !c.deleted && subjectIds.includes(c.subject));
+    if (own.length === 0) return null;
+    const sum = own.reduce((acc, c) => acc + computeCardScore(c), 0);
+    return Math.round(sum / own.length);
   }
 
   /** Lit le résultat RÉEL d'un picker multi-matières/dossiers (bug corrigé
@@ -2098,7 +2201,8 @@
       const count = document.createElement("span");
       count.className = "subject-row-count";
       const n = subjectIdsInFolder(f.id).length;
-      count.textContent = `${n} matière${n > 1 ? "s" : ""}`;
+      const folderScore = computeFolderScore(f.id);
+      count.textContent = `${n} matière${n > 1 ? "s" : ""}${folderScore !== null ? ` · ${folderScore}%` : ""}`;
 
       const actions = document.createElement("div");
       actions.className = "row-actions";
@@ -2171,7 +2275,8 @@
       const count = document.createElement("span");
       count.className = "subject-row-count";
       const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
-      count.textContent = `${n} fiche${n > 1 ? "s" : ""}`;
+      const subjScore = computeSubjectScore(s.id);
+      count.textContent = `${n} fiche${n > 1 ? "s" : ""}${subjScore !== null ? ` · ${subjScore}%` : ""}`;
 
       const actions = document.createElement("div");
       actions.className = "row-actions";
@@ -3009,6 +3114,8 @@
 
     renderSubjectSelect();
     renderAll();
+    renderReviewSubjectScore();
+    renderReviewGauge();
 
     if (el("view-review").classList.contains("is-active")) {
       startReviewSession();
@@ -3350,6 +3457,8 @@
     renderManageList();
     renderStats();
     renderReviewChart();
+    renderReviewSubjectScore();
+    renderReviewGauge();
     // Passe systématiquement la matière de la fiche AFFICHÉE (item 2 —
     // bug corrigé) : sans ça, en mode "toutes matières"/"sélection",
     // l'appel masquait le badge de mode faute de savoir quelle matière
@@ -3425,6 +3534,83 @@
 
   function dueCards() {
     return subjectCards().filter((c) => SM2.isDue(c));
+  }
+
+  /** Score de la matière/sélection en cours sur Réviser (item 2), à côté
+   *  du sélecteur — masquable depuis le mode développeur. */
+  function renderReviewSubjectScore() {
+    const el2 = el("review-subject-score");
+    if (!el2) return;
+    const settings = loadDevSettings().cardScore;
+    if (settings.hideSubjectScoreOnReview) {
+      el2.hidden = true;
+      return;
+    }
+    const pool = subjectCards();
+    if (pool.length === 0) {
+      el2.hidden = true;
+      return;
+    }
+    const avg = Math.round(pool.reduce((acc, c) => acc + computeCardScore(c), 0) / pool.length);
+    el2.hidden = false;
+    el2.textContent = `${avg}%`;
+  }
+
+  /** Jauge du score (item 2), demi-cercle façon jauge de carburant, avec
+   *  5 zones colorées (seuils V1-V4 réglables) et une aiguille pointant
+   *  le score de la matière/sélection en cours. */
+  const GAUGE_ZONES = [
+    { key: "v1", label: "Débutant", color: "#94a3b8" },
+    { key: "v2", label: "Fragile", color: "#7c93b3" },
+    { key: "v3", label: "En bonne voie", color: "#4a90d9" },
+    { key: "v4", label: "Maîtrisé", color: "#2f6fb0" },
+    { key: "end", label: "Acquis", color: "#5fae7c" },
+  ];
+  function polarToCartesian(cx, cy, r, angleDeg) {
+    const rad = ((angleDeg - 180) * Math.PI) / 180;
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  }
+  function describeArc(cx, cy, r, startAngle, endAngle) {
+    const start = polarToCartesian(cx, cy, r, endAngle);
+    const end = polarToCartesian(cx, cy, r, startAngle);
+    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+    return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArcFlag} 0 ${end.x} ${end.y}`;
+  }
+  function renderReviewGauge() {
+    const wrap = el("review-gauge-wrap");
+    if (!wrap) return;
+    const settings = loadDevSettings().cardScore;
+    const pool = subjectCards();
+    const score = pool.length > 0 ? Math.round(pool.reduce((acc, c) => acc + computeCardScore(c), 0) / pool.length) : 0;
+
+    const bounds = [0, settings.v1, settings.v2, settings.v3, settings.v4, 100];
+    const cx = 110, cy = 100, r = 90, strokeW = 22;
+    let svg = `<svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">`;
+    for (let i = 0; i < GAUGE_ZONES.length; i++) {
+      const from = bounds[i];
+      const to = bounds[i + 1];
+      if (to <= from) continue; // seuils mal ordonnés : zone vide, on saute
+      const startAngle = (from / 100) * 180;
+      const endAngle = (to / 100) * 180;
+      svg += `<path d="${describeArc(cx, cy, r, startAngle, endAngle)}" fill="none" stroke="${GAUGE_ZONES[i].color}" stroke-width="${strokeW}" />`;
+    }
+    // Aiguille : pointe vers le score actuel (0% = tout à gauche, 100% =
+    // tout à droite), pivot au centre du demi-cercle.
+    const needleTip = polarToCartesian(cx, cy, r - strokeW / 2 - 4, (Math.max(0, Math.min(100, score)) / 100) * 180);
+    svg += `<line x1="${cx}" y1="${cy}" x2="${needleTip.x.toFixed(1)}" y2="${needleTip.y.toFixed(1)}" stroke="var(--ink, #1f2937)" stroke-width="3" stroke-linecap="round" />`;
+    svg += `<circle cx="${cx}" cy="${cy}" r="6" fill="var(--ink, #1f2937)" />`;
+    svg += `</svg>`;
+
+    let currentZone = GAUGE_ZONES[0];
+    for (let i = 0; i < GAUGE_ZONES.length; i++) {
+      if (score >= bounds[i]) currentZone = GAUGE_ZONES[i];
+    }
+
+    wrap.innerHTML = `
+      ${svg}
+      <div class="review-gauge-value">${score}%</div>
+      <div class="review-gauge-label" style="color:${currentZone.color}">${currentZone.label}</div>
+    `;
   }
 
   function renderDuePill() {
@@ -3578,6 +3764,8 @@
       updateRatingPreviews();
       renderDuePill();
       renderReviewChart();
+      renderReviewSubjectScore();
+      renderReviewGauge();
       return;
     }
 
@@ -3593,9 +3781,12 @@
       if (el("construction-current-btn")) el("construction-current-btn").hidden = true;
       if (cardAlgoBtn) cardAlgoBtn.hidden = true;
       ratingRowEl.hidden = true;
+      if (el("review-score-info")) el("review-score-info").hidden = true;
       reviewProgressEl.textContent = "";
       renderDuePill();
       renderReviewChart();
+      renderReviewSubjectScore();
+      renderReviewGauge();
       return;
     }
 
@@ -3620,6 +3811,8 @@
     updateRatingPreviews();
     renderDuePill();
     renderReviewChart();
+    renderReviewSubjectScore();
+    renderReviewGauge();
   }
 
   function updateRatingPreviews() {
@@ -3630,18 +3823,51 @@
       el("sub-hard").textContent = `+${bonusDaysSettings.hard} j`;
       el("sub-good").textContent = `+${bonusDaysSettings.good} j`;
       el("sub-easy").textContent = `+${bonusDaysSettings.easy} j`;
+      updateReviewScoreInfo({
+        again: bonusAgainMode === "increment" ? 1 : 1,
+        hard: bonusDaysSettings.hard,
+        good: bonusDaysSettings.good,
+        easy: bonusDaysSettings.easy,
+      });
       return;
     }
     el("sub-again").textContent = "< 1 j";
     const previews = {};
+    const futureIntervals = {};
     for (const rating of ["again", "hard", "good", "easy"]) {
       const next = computeAlgoNext(currentCard, rating, currentCard.subject);
       previews[rating] = formatInterval(next.interval);
+      futureIntervals[rating] = next.interval;
     }
     el("sub-again").textContent = previews.again;
     el("sub-hard").textContent = previews.hard;
     el("sub-good").textContent = previews.good;
     el("sub-easy").textContent = previews.easy;
+    updateReviewScoreInfo(futureIntervals);
+  }
+
+  /** Item 1d : délai précédent, score actuel, et pour chaque note le futur
+   *  délai + futur score associé — masquable depuis le mode développeur. */
+  function updateReviewScoreInfo(futureIntervals) {
+    const wrap = el("review-score-info");
+    if (!wrap || !currentCard) return;
+    const settings = loadDevSettings().cardScore;
+    if (settings.hideReviewScoreInfo) {
+      wrap.hidden = true;
+      return;
+    }
+    wrap.hidden = false;
+    const prevDelay = Math.max(1, currentCard.interval || 1);
+    const currentScore = computeCardScore(currentCard);
+    el("score-info-prev-delay").textContent = `${prevDelay} j`;
+    el("score-info-current").textContent = `${currentScore}%`;
+    const labels = { again: "Encore", hard: "Difficile", good: "Bien", easy: "Facile" };
+    ["again", "hard", "good", "easy"].forEach((r) => {
+      const cell = el(`score-info-${r}`);
+      if (!cell) return;
+      const futureScore = computeCardScore(currentCard, futureIntervals[r]);
+      cell.textContent = `${labels[r]} : ${formatInterval(futureIntervals[r])} (${futureScore}%)`;
+    });
   }
 
   function formatInterval(days) {
@@ -4289,6 +4515,12 @@
     for (const card of sorted) {
       const li = document.createElement("li");
       li.className = "card-row";
+
+      // Score d'apprentissage (item 1c), coin supérieur droit de la ligne.
+      const scoreBadge = document.createElement("span");
+      scoreBadge.className = "card-row-score";
+      scoreBadge.textContent = `${computeCardScore(card)}%`;
+      li.appendChild(scoreBadge);
 
       const main = document.createElement("div");
       main.className = "card-row-main";
@@ -6184,6 +6416,7 @@
     renderShadowsEditor();
     renderHomeLayoutEditor();
     renderReviewLayoutEditor();
+    renderCardScoreEditor();
     renderFactoryDefaultsEditor();
     // Après TOUS les autres rendus ci-dessus : ils régénèrent leurs propres
     // <input class="dev-color-value"> dynamiquement, donc les pastilles
@@ -6280,6 +6513,8 @@
           syncCurrentCardFromStore();
         }
         renderReviewChart();
+        renderReviewSubjectScore();
+        renderReviewGauge();
       }
       if (view === "stats") renderStats();
       if (view === "learning-modes") loadModeFormIntoInputs(algoEditingModeId || "normal");
