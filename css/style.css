@@ -51,6 +51,12 @@ body {
 button {
   font-family: inherit;
   cursor: pointer;
+  /* Bug corrigé (item 5) : sans ça, le halo tactile par défaut du
+     navigateur (rectangulaire) s'affiche brièvement au clic, même sur des
+     boutons ronds — il ne respecte pas border-radius, d'où le "carré" qui
+     apparaît derrière les boutons de notation. Notre propre retour visuel
+     au clic (.stamp:active, etc.) reste inchangé. */
+  -webkit-tap-highlight-color: transparent;
 }
 
 textarea, input {
@@ -786,7 +792,7 @@ button.topbar-new-card-btn {
 }
 
 .home-circle--accent {
-  background: var(--blue);
+  background: var(--home-add-card-bg-color, var(--blue));
   color: #ffffff;
 }
 
@@ -859,11 +865,15 @@ button.home-btn {
 }
 
 .card-stack {
-  position: relative;
-  width: 100%;
-  max-width: 380px;
-  height: 460px;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: var(--review-card-top, 18vh);
+  width: var(--review-card-width, 91vw);
+  max-width: 560px;
+  height: var(--review-card-height, 55vh);
   perspective: 1400px;
+  z-index: 3;
 }
 
 .stack-card {
@@ -896,7 +906,7 @@ button.home-btn {
   padding: 0;
   transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
-  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.3, 1);
+  transition: transform var(--review-flip-duration, 0.7s) cubic-bezier(0.2, 0.7, 0.3, 1);
   box-shadow: var(--shadow-card, var(--shadow-deep));
   text-align: left;
 }
@@ -1086,7 +1096,7 @@ button.home-btn {
 
 .card-text {
   font-family: var(--font-type);
-  font-size: 19px;
+  font-size: var(--card-font-size, 19px);
   line-height: 1.5;
   color: var(--card-text-color, var(--ink));
   margin: 0;
@@ -1119,12 +1129,16 @@ button.home-btn {
    RATING STAMPS
    ============================================================ */
 .rating-row {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: var(--review-rating-row-top, 76vh);
+  width: var(--review-card-width, 91vw);
+  max-width: 560px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   justify-items: center;
   gap: 6px;
-  margin-top: 18px;
-  position: relative;
   z-index: 2;
 }
 

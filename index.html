@@ -546,6 +546,10 @@
           <input type="checkbox" id="setting-show-review-chart" />
           <span>Afficher l'histogramme sur la page Réviser</span>
         </label>
+        <label class="field" style="margin-top:12px;">
+          <span>Taille de la police des fiches (px)</span>
+          <input type="number" id="setting-card-font-size" min="10" max="40" />
+        </label>
       </div>
 
       <div class="card-form">
@@ -738,6 +742,13 @@
         <p class="field-hint settings-block-hint">Position X/Y (centre du cercle, en % de la largeur/hauteur de l'écran — s'adapte à chaque appareil) et diamètre en pixels.</p>
         <div id="dev-home-layout-list" class="dev-home-layout-list"></div>
         <button type="button" class="btn btn--ghost" id="dev-home-layout-reset">Revenir à la disposition d'origine</button>
+      </div>
+
+      <!-- Item 1b/1c : disposition de la page Réviser. -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Disposition de la page Réviser</h3>
+        <div class="dev-color-list" id="dev-review-layout-list"></div>
+        <button type="button" class="btn btn--ghost" id="dev-review-layout-reset">Revenir à la disposition d'origine</button>
       </div>
 
       <!-- 2j : bloc "Palette de couleurs de texte" retiré (la barre d'outils

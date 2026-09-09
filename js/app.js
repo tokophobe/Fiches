@@ -429,6 +429,7 @@
   const DEFAULT_BG_COLORS = {
     appBg: "#eef2f8",
     homeSquareBg: "#ffffff",
+    homeAddCardBg: "#4a90d9",
     cardFormBg: "#ffffff",
     richEditorBg: "#f4f7fb",
     homeBtnBg: "transparent",
@@ -500,6 +501,16 @@
     settings: { x: 16.2, y: 73.8, d: 85 },
     sync: { x: 54.4, y: 76.2, d: 95 },
     dev: { x: 89.0, y: 79.0, d: 80 },
+  };
+  // Disposition de la page Réviser (item 1c) : hauteur/largeur de la fiche
+  // et position Y de son bord haut, position Y des boutons d'évaluation
+  // (tous en % de l'écran), temps de retournement en secondes.
+  const DEFAULT_REVIEW_LAYOUT = {
+    cardHeightPct: 55,
+    cardWidthPct: 91,
+    cardTopPct: 18,
+    ratingRowTopPct: 76,
+    flipDurationSec: 0.7,
   };
   const DEFAULT_ICONS = {
     hibernate: "💤", edit: "✎", construction: "🚧", undo: "◀️", folder: "📁",
@@ -603,6 +614,7 @@
       homeLayout: migrateHomeLayoutToPercent(parsed),
       homeLayoutUnit: "percent",
       homeLayoutAnchor: "center",
+      reviewLayout: { ...DEFAULT_REVIEW_LAYOUT, ...(parsed.reviewLayout || {}) },
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       factoryDefaults: {
@@ -644,6 +656,7 @@
       showRatingDays: localStorage.getItem("fiches_show_rating_days"),
       showReviewChart: localStorage.getItem("fiches_show_review_chart"),
       newCardSubjectId: localStorage.getItem("fiches_new_card_subject_id"),
+      cardFontSize: localStorage.getItem("fiches_card_font_size"),
     };
   }
   function applyAppPrefsFromRemote(prefs) {
@@ -658,12 +671,14 @@
     setIfPresent("fiches_show_rating_days", prefs.showRatingDays);
     setIfPresent("fiches_show_review_chart", prefs.showReviewChart);
     setIfPresent("fiches_new_card_subject_id", prefs.newCardSubjectId);
+    setIfPresent("fiches_card_font_size", prefs.cardFontSize);
     loadBonusDaysSettings();
     loadBonusAgainMode();
     loadHibernateDays();
     newCardSubjectId = localStorage.getItem("fiches_new_card_subject_id") || null;
     applyShowRatingDays();
     applyShowReviewChart();
+    applyCardFontSize();
     renderSettingsView();
   }
   function getFactoryDefaults() {
@@ -954,13 +969,14 @@
   }
 
   const BG_COLORS_ORDER = [
-    "appBg", "homeSquareBg", "cardFormBg", "richEditorBg", "homeBtnBg", "cardBg",
+    "appBg", "homeSquareBg", "homeAddCardBg", "cardFormBg", "richEditorBg", "homeBtnBg", "cardBg",
     "subjectSelectBg", "syncStatusBg", "folderBg", "folderL1Bg", "folderL2Bg", "folderL3Bg",
     "subjectRowBg", "addBtnBg", "chartWrapBg", "svgChartBg", "dueBarColor", "todayBarColor", "reviewedBarColor",
   ];
   const BG_COLORS_TITLES = {
     appBg: "Fond de l'appli",
     homeSquareBg: "Boutons de la page d'accueil",
+    homeAddCardBg: "Bouton « Ajouter une fiche » de l'accueil",
     cardFormBg: "Fond des cadres (blocs)",
     richEditorBg: "Fond des zones de texte",
     homeBtnBg: "Bouton home",
@@ -1025,6 +1041,26 @@
     });
   }
 
+  /** Retourne le temps de retournement de fiche réglé (item 1c), en
+   *  millisecondes — utilisé à la fois pour la durée de transition CSS et
+   *  pour savoir combien de temps attendre en JS avant d'échanger le
+   *  contenu de la fiche (voir showNextCard). */
+  function getFlipDurationMs() {
+    return Math.max(150, Number(loadDevSettings().reviewLayout.flipDurationSec) * 1000 || 700);
+  }
+
+  /** Disposition de la page Réviser (item 1c) : taille/position de la
+   *  fiche et des boutons d'évaluation, toutes en % de l'écran. */
+  function applyReviewLayout() {
+    const r = loadDevSettings().reviewLayout;
+    const root = document.documentElement.style;
+    root.setProperty("--review-card-height", `${r.cardHeightPct}vh`);
+    root.setProperty("--review-card-width", `${r.cardWidthPct}vw`);
+    root.setProperty("--review-card-top", `${r.cardTopPct}vh`);
+    root.setProperty("--review-rating-row-top", `${r.ratingRowTopPct}vh`);
+    root.setProperty("--review-flip-duration", `${r.flipDurationSec}s`);
+  }
+
   function renderHomeLayoutEditor() {
     const wrap = el("dev-home-layout-list");
     if (!wrap) return;
@@ -1047,6 +1083,44 @@
         saveDevSettings(s);
         applyHomeLayout();
       });
+    });
+  }
+
+  /** Disposition de la page Réviser (item 1b/1c). */
+  const REVIEW_LAYOUT_FIELDS = [
+    { key: "cardHeightPct", title: "Hauteur de la fiche", unit: "% de l'écran" },
+    { key: "cardWidthPct", title: "Largeur de la fiche", unit: "% de l'écran" },
+    { key: "cardTopPct", title: "Position Y du bord haut de la fiche", unit: "% de l'écran" },
+    { key: "ratingRowTopPct", title: "Position Y des boutons d'évaluation", unit: "% de l'écran" },
+    { key: "flipDurationSec", title: "Temps de retournement de la fiche", unit: "secondes" },
+  ];
+  function renderReviewLayoutEditor() {
+    const wrap = el("dev-review-layout-list");
+    if (!wrap) return;
+    const settings = loadDevSettings();
+    wrap.innerHTML = REVIEW_LAYOUT_FIELDS.map(
+      ({ key, title, unit }) => `<div class="dev-color-row">
+        <span>${title} (${unit})</span>
+        <input type="number" step="${key === "flipDurationSec" ? "0.1" : "1"}" class="dev-review-layout-input" data-key="${key}" value="${settings.reviewLayout[key]}" style="width:70px;" />
+      </div>`
+    ).join("");
+    wrap.querySelectorAll(".dev-review-layout-input").forEach((input) => {
+      input.addEventListener("input", () => {
+        const s = loadDevSettings();
+        s.reviewLayout[input.dataset.key] = Number(input.value) || 0;
+        saveDevSettings(s);
+        applyReviewLayout();
+      });
+    });
+  }
+  const devReviewLayoutResetBtn = el("dev-review-layout-reset");
+  if (devReviewLayoutResetBtn) {
+    devReviewLayoutResetBtn.addEventListener("click", () => {
+      const s = loadDevSettings();
+      s.reviewLayout = { ...DEFAULT_REVIEW_LAYOUT };
+      saveDevSettings(s);
+      applyReviewLayout();
+      renderDevView();
     });
   }
 
@@ -1321,6 +1395,7 @@
     // textes", chacun avec son propre nom de réglage direct.
     const bg = settings.bgColors;
     root.setProperty("--home-square-bg-color", bg.homeSquareBg);
+    root.setProperty("--home-add-card-bg-color", bg.homeAddCardBg);
     root.setProperty("--home-btn-bg-color", bg.homeBtnBg);
     root.setProperty("--subject-select-bg-color", bg.subjectSelectBg);
     root.setProperty("--sync-status-bg-color", bg.syncStatusBg);
@@ -2079,9 +2154,19 @@
 
       // Item 5 : le nom n'ouvre plus le renommage (bouton ✏️ dédié
       // maintenant, comme pour les dossiers) — juste une étiquette.
-      const nameBtn = document.createElement("span");
+      // Item 4 (nouveau) : cliquer dessus envoie sur la page Fiches avec
+      // cette matière sélectionnée (uniquement pour les matières, pas les
+      // dossiers, qui gardent leur clic pour déplier/replier).
+      const nameBtn = document.createElement("button");
+      nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
       nameBtn.innerHTML = `${iconSvgMarkup("file", "icon-inline-svg")} ${escapeHtml(s.name)}`;
+      nameBtn.addEventListener("click", () => {
+        switchSubject(s.id);
+        cardsScopeFilter = CARDS_SCOPE_CURRENT;
+        const tab = document.querySelector('.tab[data-view="cards"]');
+        if (tab) tab.click();
+      });
 
       const count = document.createElement("span");
       count.className = "subject-row-count";
@@ -3451,16 +3536,29 @@
   }
 
   function showNextCard() {
+    const wasFlipped = isFlipped;
     isFlipped = false;
-    // Coupe l'animation de retournement pour CE changement de fiche (item
-    // 7 — bug corrigé : voir le commentaire CSS sur .no-flip-transition) —
-    // remise en place juste après (au prochain frame), pour que le
-    // prochain retournement volontaire (tap sur la fiche) reste bien animé.
-    flipCardEl.classList.add("no-flip-transition");
-    flipCardEl.classList.remove("is-flipped");
-    void flipCardEl.offsetWidth; // force l'application de la classe avant la suite
-    requestAnimationFrame(() => flipCardEl.classList.remove("no-flip-transition"));
 
+    if (wasFlipped) {
+      // Item 3 — bug corrigé (régression de mon précédent correctif, qui
+      // supprimait complètement l'animation pour éviter d'entrevoir la
+      // réponse de la fiche suivante) : on laisse maintenant la fiche
+      // vraiment se retourner (transition CSS normale), et on n'échange
+      // le contenu qu'une fois cette animation terminée — la fiche est
+      // alors immobile, face avant, aucun risque d'apercevoir la mauvaise
+      // réponse pendant la rotation.
+      flipCardEl.classList.remove("is-flipped");
+      setTimeout(finishShowNextCard, getFlipDurationMs());
+    } else {
+      flipCardEl.classList.add("no-flip-transition");
+      flipCardEl.classList.remove("is-flipped");
+      void flipCardEl.offsetWidth; // force l'application de la classe avant la suite
+      requestAnimationFrame(() => flipCardEl.classList.remove("no-flip-transition"));
+      finishShowNextCard();
+    }
+  }
+
+  function finishShowNextCard() {
     if (reviewQueue.length > 0) {
       isBonusMode = false;
       currentCard = reviewQueue[0];
@@ -5726,6 +5824,29 @@
     });
   }
 
+  // Taille de police des fiches (item 2) : réglable depuis Réglages.
+  const CARD_FONT_SIZE_KEY = "fiches_card_font_size";
+  const DEFAULT_CARD_FONT_SIZE = 19;
+  function loadCardFontSize() {
+    const raw = Number(localStorage.getItem(CARD_FONT_SIZE_KEY));
+    return raw > 0 ? raw : DEFAULT_CARD_FONT_SIZE;
+  }
+  function saveCardFontSize(value) {
+    localStorage.setItem(CARD_FONT_SIZE_KEY, String(value));
+    scheduleDevSettingsPush();
+  }
+  function applyCardFontSize() {
+    document.documentElement.style.setProperty("--card-font-size", `${loadCardFontSize()}px`);
+  }
+  const settingCardFontSizeEl = el("setting-card-font-size");
+  if (settingCardFontSizeEl) {
+    settingCardFontSizeEl.addEventListener("change", () => {
+      const v = Number(settingCardFontSizeEl.value) || DEFAULT_CARD_FONT_SIZE;
+      saveCardFontSize(v);
+      applyCardFontSize();
+    });
+  }
+
   function renderSettingsView() {
     if (settingBonusHardEl) settingBonusHardEl.value = bonusDaysSettings.hard;
     if (settingBonusGoodEl) settingBonusGoodEl.value = bonusDaysSettings.good;
@@ -5734,6 +5855,7 @@
     if (settingHibernateDaysEl) settingHibernateDaysEl.value = hibernateDays;
     if (settingShowRatingDaysEl) settingShowRatingDaysEl.checked = loadShowRatingDays();
     if (settingShowReviewChartEl) settingShowReviewChartEl.checked = loadShowReviewChart();
+    if (settingCardFontSizeEl) settingCardFontSizeEl.value = loadCardFontSize();
   }
 
   /* ---------------------------------------------------------
@@ -6061,6 +6183,7 @@
     renderTextColorsSetEditor();
     renderShadowsEditor();
     renderHomeLayoutEditor();
+    renderReviewLayoutEditor();
     renderFactoryDefaultsEditor();
     // Après TOUS les autres rendus ci-dessus : ils régénèrent leurs propres
     // <input class="dev-color-value"> dynamiquement, donc les pastilles
@@ -6615,6 +6738,7 @@
     applyNavLabels();
     applyHomeIcons();
     applyHomeLayout();
+    applyReviewLayout();
     applyShowRatingDays();
     applyShowReviewChart();
     applyColorSettings();
@@ -6812,6 +6936,7 @@
     loadHibernateDays();
     renderSettingsView();
     applyAllDevSettings();
+    applyCardFontSize();
     await loadSubjects();
     cards = await DB.getAll();
     ratingLog = await DB.getAllRatingLog();
