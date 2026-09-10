@@ -1066,15 +1066,31 @@
 
   /** Disposition de la page Réviser (item 1c) : taille/position de la
    *  fiche et des boutons d'évaluation, toutes en % de l'écran. */
+  /** Positions/tailles de la page Réviser en pixels, calculées en JS
+   *  (item — bug persistant malgré des corrections qui fonctionnaient en
+   *  test : très probablement `max()`/`calc()` imbriqués, mal supportés
+   *  sur certaines versions d'iOS Safari, silencieusement ignorés par le
+   *  navigateur si c'est le cas — la fiche retombait alors sur une
+   *  position par défaut qui pouvait chevaucher la barre de matière.
+   *  Cette version n'utilise plus AUCUNE fonction CSS de calcul : tout est
+   *  calculé ici en JavaScript ordinaire, puis posé en pixels bruts,
+   *  beaucoup plus difficile à mal interpréter pour un navigateur. */
   function applyReviewLayout() {
     const r = loadDevSettings().reviewLayout;
     const root = document.documentElement.style;
-    root.setProperty("--review-card-height", `${r.cardHeightPct}vh`);
-    root.setProperty("--review-card-width", `${r.cardWidthPct}vw`);
-    root.setProperty("--review-card-top", `${r.cardTopPct}vh`);
-    root.setProperty("--review-rating-row-top", `${r.ratingRowTopPct}vh`);
-    root.setProperty("--review-score-info-top", `${r.scoreInfoTopPct}vh`);
-    root.setProperty("--review-gauge-top", `${r.gaugeTopPct}vh`);
+    const vh = window.innerHeight / 100;
+    const vw = window.innerWidth / 100;
+    // Marge de sécurité fixe sous la barre du haut + la barre de matière
+    // (elle-même posée à 54px + l'encoche) — 110px couvre confortablement
+    // les deux sur la quasi-totalité des appareils.
+    const MIN_CARD_TOP_PX = 110;
+    const cardTopPx = Math.max(r.cardTopPct * vh, MIN_CARD_TOP_PX);
+    root.setProperty("--review-card-height", `${Math.round(r.cardHeightPct * vh)}px`);
+    root.setProperty("--review-card-width", `${Math.round(r.cardWidthPct * vw)}px`);
+    root.setProperty("--review-card-top", `${Math.round(cardTopPx)}px`);
+    root.setProperty("--review-rating-row-top", `${Math.round(r.ratingRowTopPct * vh)}px`);
+    root.setProperty("--review-score-info-top", `${Math.round(r.scoreInfoTopPct * vh)}px`);
+    root.setProperty("--review-gauge-top", `${Math.round(r.gaugeTopPct * vh)}px`);
     // Bug corrigé (item 2) : la durée CSS utilisait la valeur BRUTE du
     // réglage, alors que le calcul JS (voir getFlipDurationMs) applique un
     // minimum de 150ms — avec un réglage très court, la fiche changeait
@@ -6989,6 +7005,10 @@
     applyHomeIcons();
     applyHomeLayout();
     applyReviewLayout();
+    // Recalcule en pixels (item — passage de vh/vw à des pixels calculés en
+    // JS) à chaque rotation d'écran/redimensionnement, puisque ces valeurs
+    // ne s'adaptent plus toutes seules comme le faisaient vh/vw.
+    window.addEventListener("resize", applyReviewLayout);
     applyShowRatingDays();
     applyShowReviewChart();
     applyColorSettings();

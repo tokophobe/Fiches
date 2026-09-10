@@ -209,7 +209,7 @@ button.topbar-new-card-btn {
   top: calc(env(safe-area-inset-top, 0px) + 54px);
   left: 50%;
   transform: translateX(-50%);
-  width: var(--review-card-width, 91vw);
+  width: var(--review-card-width, 355px);
   max-width: 560px;
   z-index: 10;
   margin-bottom: 0;
@@ -895,16 +895,16 @@ button.home-btn {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  /* Bug corrigé (item 1, toujours pas résolu avec le z-index seul) :
-     quel que soit le réglage de position choisi, la fiche ne peut plus
-     jamais commencer AU-DESSUS de la barre de sélection de matière — pas
-     seulement "en dessous visuellement" (z-index, sensible à des bugs
-     d'affichage selon les navigateurs), mais réellement plus bas dans
-     l'espace, donc aucun chevauchement possible par construction. */
-  top: max(var(--review-card-top, 18vh), calc(env(safe-area-inset-top, 0px) + 96px));
-  width: var(--review-card-width, 91vw);
+  /* Bug corrigé (item 1) : la sécurité anti-chevauchement est maintenant
+     entièrement calculée en JS (voir applyReviewLayout) et posée en
+     pixels simples — plus de max()/calc() imbriqués ici, qui semblaient
+     mal interprétés sur certaines versions d'iOS Safari (la déclaration
+     entière est alors ignorée si le navigateur ne reconnaît pas la
+     syntaxe, laissant la fiche sans position "top" du tout). */
+  top: var(--review-card-top, 110px);
+  width: var(--review-card-width, 355px);
   max-width: 560px;
-  height: var(--review-card-height, 55vh);
+  height: var(--review-card-height, 380px);
   z-index: 3;
 }
 
@@ -1176,8 +1176,8 @@ button.home-btn {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  top: var(--review-rating-row-top, 76vh);
-  width: var(--review-card-width, 91vw);
+  top: var(--review-rating-row-top, 506px);
+  width: var(--review-card-width, 355px);
   max-width: 560px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1195,8 +1195,8 @@ button.home-btn {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  top: var(--review-score-info-top, 70vh);
-  width: var(--review-card-width, 91vw);
+  top: var(--review-score-info-top, 591px);
+  width: var(--review-card-width, 355px);
   max-width: 560px;
   z-index: 2;
   font-family: var(--font-mono);
@@ -1229,7 +1229,7 @@ button.home-btn {
 .review-gauge-wrap {
   position: fixed;
   left: 50%;
-  top: var(--review-gauge-top, 80vh);
+  top: var(--review-gauge-top, 675px);
   transform: translateX(-50%);
   width: var(--review-card-width, 91vw);
   max-width: 240px;
