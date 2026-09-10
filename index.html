@@ -233,20 +233,22 @@
 
         <!-- card stack -->
         <div class="card-stack" id="card-stack" hidden>
-          <div class="stack-card stack-card--back-2" aria-hidden="true"></div>
-          <div class="stack-card stack-card--back-1" aria-hidden="true"></div>
-          <button class="stack-card stack-card--front" id="flip-card" type="button" aria-label="Retourner la fiche">
-            <div class="rule-line"></div>
-            <div class="card-face card-face--question">
-              <span class="card-label">Question</span>
-              <p class="card-text" id="question-text"></p>
-              <span class="tap-hint">Touche la fiche pour voir la réponse</span>
-            </div>
-            <div class="card-face card-face--answer">
-              <span class="card-label card-label--answer">Réponse</span>
-              <p class="card-text" id="answer-text"></p>
-            </div>
-          </button>
+          <div class="card-stack-3d">
+            <div class="stack-card stack-card--back-2" aria-hidden="true"></div>
+            <div class="stack-card stack-card--back-1" aria-hidden="true"></div>
+            <button class="stack-card stack-card--front" id="flip-card" type="button" aria-label="Retourner la fiche">
+              <div class="rule-line"></div>
+              <div class="card-face card-face--question">
+                <span class="card-label">Question</span>
+                <p class="card-text" id="question-text"></p>
+                <span class="tap-hint">Touche la fiche pour voir la réponse</span>
+              </div>
+              <div class="card-face card-face--answer">
+                <span class="card-label card-label--answer">Réponse</span>
+                <p class="card-text" id="answer-text"></p>
+              </div>
+            </button>
+          </div>
           <button class="card-icon-btn card-undo-btn" id="undo-rating-btn" type="button" hidden title="Revenir à la fiche précédente (annule la dernière évaluation)" aria-label="Annuler la dernière évaluation">◀️</button>
           <button type="button" class="card-icon-btn card-algo-btn" id="card-algo-btn" hidden title="Mode d'apprentissage de cette matière">🎓</button>
           <!-- Boutons secondaires repliés par défaut (item 1c) : un simple

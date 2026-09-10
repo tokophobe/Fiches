@@ -905,8 +905,19 @@ button.home-btn {
   width: var(--review-card-width, 91vw);
   max-width: 560px;
   height: var(--review-card-height, 55vh);
-  perspective: 1400px;
   z-index: 3;
+}
+
+/* La perspective 3D (nécessaire au retournement) est maintenant posée ICI,
+   sur un élément interne séparé, plutôt que directement sur .card-stack
+   (positionné en fixed) — pour écarter tout risque que la combinaison
+   "position fixed" + "perspective" sur le MÊME élément perturbe l'ordre
+   d'empilement sur certains moteurs de rendu. */
+.card-stack-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1400px;
 }
 
 .stack-card {
