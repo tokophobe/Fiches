@@ -198,11 +198,21 @@ button.topbar-new-card-btn {
   gap: 8px;
   margin-bottom: 14px;
   position: relative;
-  /* Bug corrigé : la fiche (position fixe, voir .card-stack) pouvait
-     passer PAR-DESSUS cette barre si leurs zones se touchaient, la
-     rendant inaccessible — un z-index plus élevé la garde toujours au-
-     dessus, cliquable, quoi qu'il arrive. */
+}
+
+/* Bug corrigé (encore) : le z-index seul ne suffisait pas dans tous les
+   cas — passer cette barre en position fixe, ancrée juste sous la barre
+   du haut, garantit qu'elle ne peut plus jamais se retrouver sous la
+   fiche, quelle que soit la position réglée pour cette dernière. */
+#subject-bar {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 54px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--review-card-width, 91vw);
+  max-width: 560px;
   z-index: 10;
+  margin-bottom: 0;
 }
 
 /* Score de la matière/sélection en cours (item 2), à côté du sélecteur. */
@@ -885,7 +895,13 @@ button.home-btn {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  top: var(--review-card-top, 18vh);
+  /* Bug corrigé (item 1, toujours pas résolu avec le z-index seul) :
+     quel que soit le réglage de position choisi, la fiche ne peut plus
+     jamais commencer AU-DESSUS de la barre de sélection de matière — pas
+     seulement "en dessous visuellement" (z-index, sensible à des bugs
+     d'affichage selon les navigateurs), mais réellement plus bas dans
+     l'espace, donc aucun chevauchement possible par construction. */
+  top: max(var(--review-card-top, 18vh), calc(env(safe-area-inset-top, 0px) + 96px));
   width: var(--review-card-width, 91vw);
   max-width: 560px;
   height: var(--review-card-height, 55vh);

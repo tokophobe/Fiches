@@ -1075,7 +1075,13 @@
     root.setProperty("--review-rating-row-top", `${r.ratingRowTopPct}vh`);
     root.setProperty("--review-score-info-top", `${r.scoreInfoTopPct}vh`);
     root.setProperty("--review-gauge-top", `${r.gaugeTopPct}vh`);
-    root.setProperty("--review-flip-duration", `${r.flipDurationSec}s`);
+    // Bug corrigé (item 2) : la durée CSS utilisait la valeur BRUTE du
+    // réglage, alors que le calcul JS (voir getFlipDurationMs) applique un
+    // minimum de 150ms — avec un réglage très court, la fiche changeait
+    // alors de contenu à un instant qui ne correspondait plus du tout au
+    // milieu RÉEL de l'animation. Les deux utilisent maintenant exactement
+    // la même valeur, plafonnée de la même façon.
+    root.setProperty("--review-flip-duration", `${getFlipDurationMs() / 1000}s`);
   }
 
   function renderHomeLayoutEditor() {
@@ -3737,15 +3743,13 @@
     isFlipped = false;
 
     if (wasFlipped) {
-      // Item 3 — bug corrigé (régression de mon précédent correctif, qui
-      // supprimait complètement l'animation pour éviter d'entrevoir la
-      // réponse de la fiche suivante) : on laisse maintenant la fiche
-      // vraiment se retourner (transition CSS normale), et on n'échange
-      // le contenu qu'une fois cette animation terminée — la fiche est
-      // alors immobile, face avant, aucun risque d'apercevoir la mauvaise
-      // réponse pendant la rotation.
+      // Item 2 : le contenu change au MILIEU du retournement (la fiche est
+      // alors de profil, aucune face n'est vraiment visible) plutôt qu'à
+      // la toute fin — on ne voit donc plus le changement de question se
+      // produire, la fiche semble "révéler" la nouvelle question en
+      // continuant simplement son mouvement.
       flipCardEl.classList.remove("is-flipped");
-      setTimeout(finishShowNextCard, getFlipDurationMs());
+      setTimeout(finishShowNextCard, getFlipDurationMs() / 2);
     } else {
       flipCardEl.classList.add("no-flip-transition");
       flipCardEl.classList.remove("is-flipped");
