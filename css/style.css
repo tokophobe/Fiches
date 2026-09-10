@@ -457,6 +457,23 @@ button.topbar-new-card-btn {
   box-shadow: var(--shadow-deep);
 }
 
+/* Bug corrigé (même famille que #subject-bar) : ce panneau restait en
+   flux normal, donc se retrouvait derrière la fiche (position fixe) dès
+   qu'on choisissait "Sélection de matières" sur Réviser — seul son titre
+   dépassait, la liste à cocher elle-même était invisible. */
+#multi-subject-picker {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 92px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--review-card-width, 355px);
+  max-width: 560px;
+  max-height: 60vh;
+  overflow-y: auto;
+  z-index: 10;
+  margin-bottom: 0;
+}
+
 .multi-subject-picker-list {
   display: flex;
   flex-direction: column;
@@ -950,7 +967,15 @@ button.home-btn {
   padding: 0;
   transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
-  transition: transform var(--review-flip-duration, 0.7s) cubic-bezier(0.2, 0.7, 0.3, 1);
+  /* Bug corrigé (item 2) : l'ancienne courbe cubic-bezier(0.2,0.7,0.3,1)
+     est très fortement "avance rapide puis ralentit" — la rotation
+     atteignait déjà 90° (son point de bascule visuel) bien avant 50% du
+     TEMPS écoulé, donc échanger le contenu à la moitié du temps (voir
+     showNextCard) se produisait alors que la fiche était déjà presque
+     revenue face avant, d'où l'impression d'un changement "trop tardif,
+     presque à la fin". ease-in-out est symétrique : 50% du temps
+     correspond bien à 50% de la rotation visuelle. */
+  transition: transform var(--review-flip-duration, 0.7s) ease-in-out;
   box-shadow: var(--shadow-card, var(--shadow-deep));
   text-align: left;
 }
