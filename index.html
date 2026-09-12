@@ -122,6 +122,9 @@
       </button>
     </div>
     <div class="header-right">
+      <button type="button" class="night-mode-toggle-btn" id="night-mode-toggle-btn" title="Mode nuit" aria-label="Basculer le mode nuit">
+        <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
       <button class="sync-status" id="sync-status" type="button" title="État de la synchronisation">
         <span class="sync-dot" id="sync-dot"></span>
         <span id="sync-status-text">Local</span>
@@ -374,6 +377,9 @@
       <div class="multi-subject-picker" id="cards-multi-picker" hidden>
         <p class="field-hint settings-block-hint">Coche des matières et/ou dossiers — les résultats se mettent à jour tout de suite :</p>
         <div class="multi-subject-picker-list" id="cards-multi-picker-list"></div>
+        <div class="multi-subject-picker-actions">
+          <button type="button" class="btn btn--small" id="cards-multi-picker-done">Valider</button>
+        </div>
       </div>
 
       <label class="field cards-search-field">
@@ -476,35 +482,87 @@
       <div id="ratings-history-chart-wrap"></div>
     </section>
 
-    <!-- VUE CALENDRIER (item 9) -->
+    <!-- VUE CALENDRIER (item 9, revue item 2) -->
     <section id="view-calendar" class="view" aria-labelledby="tab-calendar">
       <h2 class="section-title">Calendrier</h2>
       <p class="field-hint settings-block-hint">Note ici tes échéances (contrôle, interrogation, partiels, bac...) liées à une matière ou un dossier. De quoi, plus tard, générer automatiquement un programme de révision.</p>
 
-      <form class="card-form" id="calendar-event-form">
-        <h3 class="settings-block-title">Ajouter un événement</h3>
+      <button type="button" class="btn btn--primary" id="calendar-add-event-btn" style="margin-bottom:14px;">+ Ajouter un événement</button>
+
+      <!-- Panneau d'ajout/modification (item 2) : caché tant qu'on n'a pas
+           cliqué sur le bouton ci-dessus. -->
+      <form class="card-form" id="calendar-event-form" hidden>
+        <h3 class="settings-block-title" id="calendar-event-form-title">Ajouter un événement</h3>
         <label class="field">
           <span>Titre</span>
           <input type="text" id="calendar-event-title" placeholder="Ex. Contrôle de chimie" required />
         </label>
         <label class="field">
           <span>Date</span>
-          <input type="date" id="calendar-event-date" required />
+          <button type="button" class="calendar-date-btn" id="calendar-event-date-btn">
+            <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span id="calendar-event-date-label">Choisir une date</span>
+          </button>
+          <input type="date" id="calendar-event-date" required style="position:absolute; opacity:0; pointer-events:none; width:1px; height:1px;" />
         </label>
-        <div class="subject-bar" id="calendar-event-subject-bar" style="position:static;">
-          <button type="button" class="subject-select-btn" id="calendar-event-subject-btn" aria-label="Choisir la matière ou le dossier lié">Aucune matière/dossier liés</button>
-          <div class="subject-choice-menu subject-choice-menu--tree" id="calendar-event-subject-menu" hidden>
-            <div id="calendar-event-subject-tree"></div>
-            <button type="button" class="subject-choice-item" id="calendar-event-subject-none">Aucun lien</button>
+        <button type="button" class="subject-select-btn" id="calendar-event-subject-btn" aria-label="Choisir la matière ou le dossier lié">Aucune matière/dossier liés</button>
+
+        <!-- Item 2 : panneau plein écran, comme les autres sélecteurs de
+             matières de l'appli (bug corrigé : celui-ci s'ouvrait hors
+             écran, en petit menu déroulant). -->
+        <div class="multi-subject-picker" id="calendar-event-subject-picker" hidden>
+          <p class="field-hint settings-block-hint">Choisis la matière ou le dossier lié :</p>
+          <div class="multi-subject-picker-list" id="calendar-event-subject-tree"></div>
+          <div class="multi-subject-picker-actions">
+            <button type="button" class="btn btn--small" id="calendar-event-subject-none">Aucun lien</button>
+            <button type="button" class="btn btn--ghost btn--small" id="calendar-event-subject-done">Fermer</button>
           </div>
         </div>
-        <button type="submit" class="btn btn--primary" style="margin-top:12px;">Ajouter à mon calendrier</button>
+
+        <div style="display:flex; gap:8px; margin-top:12px;">
+          <button type="submit" class="btn btn--primary" id="calendar-event-submit">Ajouter à mon calendrier</button>
+          <button type="button" class="btn btn--ghost" id="calendar-event-cancel">Annuler</button>
+        </div>
       </form>
 
-      <div class="card-form">
+      <!-- Item 2 : bascule d'affichage — liste / calendrier (2 mois) /
+           année. -->
+      <div class="calendar-view-toggle">
+        <button type="button" class="calendar-view-toggle-btn is-active" data-calview="list">Liste</button>
+        <button type="button" class="calendar-view-toggle-btn" data-calview="months">Calendrier</button>
+        <button type="button" class="calendar-view-toggle-btn" data-calview="year">Année</button>
+      </div>
+
+      <div class="card-form" id="calendar-list-view">
         <h3 class="settings-block-title">Événements à venir</h3>
         <ul class="card-list" id="calendar-event-list"></ul>
         <p class="chart-empty" id="calendar-event-empty" hidden>Aucun événement pour l'instant.</p>
+      </div>
+
+      <div class="card-form" id="calendar-months-view" hidden>
+        <div class="calendar-nav-row">
+          <button type="button" class="btn btn--ghost btn--small" id="calendar-months-prev">← Précédent</button>
+          <button type="button" class="btn btn--ghost btn--small" id="calendar-months-next">Suivant →</button>
+        </div>
+        <div id="calendar-months-grid"></div>
+      </div>
+
+      <div class="card-form" id="calendar-year-view" hidden>
+        <div class="calendar-nav-row">
+          <button type="button" class="btn btn--ghost btn--small" id="calendar-year-prev">← Année précédente</button>
+          <span id="calendar-year-label" style="font-weight:700;"></span>
+          <button type="button" class="btn btn--ghost btn--small" id="calendar-year-next">Année suivante →</button>
+        </div>
+        <div id="calendar-year-grid" class="calendar-year-grid"></div>
+      </div>
+
+      <!-- Popup listant les événements d'un jour cliqué (calendrier/année). -->
+      <div class="multi-subject-picker" id="calendar-day-popup" hidden>
+        <p class="field-hint settings-block-hint" id="calendar-day-popup-title"></p>
+        <ul class="card-list" id="calendar-day-popup-list"></ul>
+        <div class="multi-subject-picker-actions">
+          <button type="button" class="btn btn--ghost btn--small" id="calendar-day-popup-close">Fermer</button>
+        </div>
       </div>
     </section>
 
@@ -824,29 +882,15 @@
       <!-- 2e -->
       <div class="card-form">
         <h3 class="settings-block-title">Couleurs des notes</h3>
-        <div class="algo-grid algo-grid--4">
-          <label class="field settings-bonus-field">
-            <span>Encore</span>
-            <input type="text" class="dev-color-value" id="dev-color-again" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>Difficile</span>
-            <input type="text" class="dev-color-value" id="dev-color-hard" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>Bien</span>
-            <input type="text" class="dev-color-value" id="dev-color-good" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>Facile</span>
-            <input type="text" class="dev-color-value" id="dev-color-easy" />
-          </label>
-        </div>
+        <div class="dev-color-list" id="dev-rating-colors-list"></div>
         <!-- Item 4 : fond partagé des 4 boutons, séparé de la couleur de
              chaque note (qui teinte désormais l'icône). -->
-        <div class="dev-color-row" style="margin-top:12px;">
+        <div class="dev-color-row dev-color-row--daynight" style="margin-top:12px;">
           <span>Fond des boutons (les 4)</span>
-          <input type="text" class="dev-color-value" id="dev-color-rating-btn-bg" />
+          <span class="dev-color-daynight-pair">
+            <input type="text" class="dev-color-value" id="dev-color-rating-btn-bg" title="Mode jour" />
+            <input type="text" class="dev-color-value" id="dev-color-rating-btn-bg-night" title="Mode nuit" />
+          </span>
         </div>
         <button type="button" class="btn btn--ghost" id="dev-rating-colors-reset">Revenir aux couleurs d'origine</button>
       </div>
@@ -854,24 +898,7 @@
       <!-- 2f -->
       <div class="card-form">
         <h3 class="settings-block-title">Couleurs des modes d'apprentissage</h3>
-        <div class="algo-grid algo-grid--4">
-          <label class="field settings-bonus-field">
-            <span>Cool</span>
-            <input type="text" class="dev-color-value" id="dev-color-mode-cool" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>Normal</span>
-            <input type="text" class="dev-color-value" id="dev-color-mode-normal" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>Renforcé</span>
-            <input type="text" class="dev-color-value" id="dev-color-mode-renforce" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>Personnalisé</span>
-            <input type="text" class="dev-color-value" id="dev-color-mode-custom" />
-          </label>
-        </div>
+        <div class="dev-color-list" id="dev-mode-colors-list"></div>
         <button type="button" class="btn btn--ghost" id="dev-mode-colors-reset">Revenir aux couleurs d'origine</button>
       </div>
 

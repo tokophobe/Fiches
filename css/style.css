@@ -32,6 +32,20 @@
   --radius-card: 14px;
 }
 
+/* Item 4 : mode nuit — recouvre les jetons de base (texte/fonds neutres)
+   qui ne font pas partie des réglages de couleurs individuels du mode
+   développeur (ceux-là restent posés en style inline, prioritaires). */
+:root.is-night-mode {
+  --desk: #11151c;
+  --desk-2: #171d27;
+  --paper: #1c2330;
+  --paper-2: #232b3a;
+  --paper-3: #2a3447;
+  --rule: #4a9fe0;
+  --ink: #eef2f8;
+  --ink-soft: #93a1b5;
+}
+
 * { box-sizing: border-box; }
 
 html, body {
@@ -141,6 +155,24 @@ button.topbar-new-card-btn {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+/* Item 4 : bascule mode nuit/jour, en topbar. */
+.night-mode-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+}
+
+.night-mode-toggle-btn.is-active {
+  background: rgba(74, 144, 217, 0.18);
+  color: var(--blue);
 }
 
 .sync-status {
@@ -582,42 +614,68 @@ button.topbar-new-card-btn {
 .subject-row {
   background: var(--subject-row-bg-color, var(--paper));
   border-radius: 10px;
-  padding: 10px 12px;
+  box-shadow: var(--shadow-subject-row, 0 4px 12px rgba(0,0,0,0.18));
+  overflow: hidden;
+}
+
+/* Item 3 : effet de pile (comme les fiches de Réviser) pour montrer qu'un
+   dossier replié contient bien quelque chose — deux "tranches" simulées
+   par de simples ombres décalées, sans DOM supplémentaire. */
+.folder-row--stacked {
+  box-shadow:
+    var(--shadow-subject-row, 0 4px 12px rgba(0,0,0,0.18)),
+    0 8px 0 -2px rgba(255,255,255,0.9),
+    0 8px 0 -2px rgba(35,48,42,0.14),
+    0 15px 0 -5px rgba(255,255,255,0.9),
+    0 15px 0 -5px rgba(35,48,42,0.10);
+  margin-bottom: 16px !important;
+}
+
+/* Item 3 : contenu principal (à gauche) + jauge circulaire pleine hauteur
+   (à droite, permutée avec le badge de mode qui est monté sur la ligne 1). */
+.subject-row-body {
+  display: flex;
+  align-items: stretch;
+}
+
+.subject-row-main {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  box-shadow: var(--shadow-subject-row, 0 4px 12px rgba(0,0,0,0.18));
+  padding: 10px 8px 10px 12px;
 }
 
-/* Item 3 : ligne 2 — nombre de fiches/matières + actions à gauche, score
-   (avec sa mini-jauge) + mode d'apprentissage à droite. */
-.subject-row-line2 {
+.subject-row-line1 {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
 }
 
-.subject-row-line2-left, .subject-row-line2-right {
+.subject-row-line1 .subject-row-name { flex: 1; min-width: 0; }
+
+.subject-row-line2 {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.subject-row-score {
+.subject-row-gauge-col {
+  flex-shrink: 0;
+  width: 72px;
   display: flex;
   align-items: center;
-  gap: 2px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--ink-soft);
+  justify-content: center;
+  padding: 6px;
+  border-left: 1px solid rgba(0,0,0,0.06);
 }
 
-.subject-row-score svg {
-  width: 22px;
-  height: 14px;
-  flex-shrink: 0;
+.subject-row-gauge-ring {
+  width: 100%;
+  height: auto;
+  max-width: 60px;
 }
 
 .subject-row.is-active { border-left: 3px solid var(--rule); }
@@ -2184,6 +2242,136 @@ button.home-btn {
 
 .chart-col.is-today .chart-label { color: var(--chart-today-label-color, var(--rule)); font-weight: 600; }
 
+/* ============================================================
+   CALENDRIER (item 2/9)
+   ============================================================ */
+.calendar-date-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--rich-editor-bg-color, var(--paper-2));
+  border: 1px solid rgba(35, 48, 42, 0.15);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--ink);
+  text-align: left;
+}
+
+.calendar-view-toggle {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.calendar-view-toggle-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(35, 48, 42, 0.15);
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-family: var(--font-type);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.calendar-view-toggle-btn.is-active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #ffffff;
+}
+
+.calendar-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Grille des mois (item 2) : deux mini-mois affichés côte à côte (ou
+   empilés sur un écran étroit). */
+.calendar-months-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.calendar-mini-month {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.calendar-mini-month-title {
+  font-family: var(--font-type);
+  font-weight: 700;
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 6px;
+  text-transform: capitalize;
+}
+
+.calendar-mini-month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+  width: 100%;
+}
+
+.calendar-mini-month-dow {
+  font-size: 9px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+.calendar-day-cell {
+  aspect-ratio: 1;
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--ink);
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.calendar-day-cell.is-today { font-weight: 700; box-shadow: inset 0 0 0 1.5px var(--blue); }
+.calendar-day-cell.is-empty { visibility: hidden; }
+.calendar-day-cell.has-event { cursor: pointer; }
+
+.calendar-day-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--blue);
+  position: absolute;
+  bottom: 2px;
+}
+
+/* Grille année (item 2) : les 12 mois en mini-grilles plus compactes. */
+.calendar-year-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px 10px;
+}
+
+.calendar-year-grid .calendar-mini-month { min-width: 0; }
+.calendar-year-grid .calendar-mini-month-title { font-size: 11px; }
+.calendar-year-grid .calendar-day-cell { font-size: 8px; }
+
 .chart-empty {
   font-size: 13px;
   color: rgba(31,41,55,0.55);
@@ -2832,6 +3020,19 @@ button.home-btn {
   font-family: var(--font-type);
   font-size: 14px;
   color: var(--ink);
+}
+
+/* Item 4 : paire jour/nuit — deux pastilles côte à côte au lieu d'une
+   seule (jour puis nuit, dans l'ordre où les champs apparaissent) ; un
+   petit anneau distingue celle du mode nuit. */
+.dev-color-daynight-pair {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dev-color-daynight-pair input[data-variant="night"] ~ .color-swatch-btn {
+  box-shadow: 0 0 0 2px var(--ink-soft);
 }
 
 .dev-color-row span {

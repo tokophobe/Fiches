@@ -411,6 +411,7 @@
   // Fond partagé des 4 boutons d'évaluation (item 4) — une seule couleur,
   // désormais séparée de la couleur de chaque note (qui teinte l'icône).
   const DEFAULT_RATING_BTN_BG_COLOR = "#ffffff";
+  const DEFAULT_NIGHT_RATING_BTN_BG_COLOR = "#1c2330";
   const DEFAULT_MODE_COLORS = { cool: "#6f8b5c", normal: "#cf9a4d", renforce: "#b6604a", custom: "#e8c84a" };
   // Fond de l'appli, fond du bouton "chantier" actif, fond de la pastille
   // "0 à revoir" en mode bonus (items 3/4/8).
@@ -455,6 +456,30 @@
     todayBarColor: "#4a9fe0",
     reviewedBarColor: "#4a90d9",
   };
+  // Item 4 : couleurs de fond pour le mode nuit — un jeu de valeurs sombres
+  // parallèle, réglable séparément dans le mode développeur.
+  const DEFAULT_NIGHT_BG_COLORS = {
+    appBg: "#11151c",
+    homeSquareBg: "#1c2330",
+    homeAddCardBg: "#3a75b3",
+    cardFormBg: "#1c2330",
+    richEditorBg: "#232b3a",
+    homeBtnBg: "transparent",
+    cardBg: "#1c2330",
+    subjectSelectBg: "#232b3a",
+    syncStatusBg: "transparent",
+    folderBg: "#1c2330",
+    folderL1Bg: "#212939",
+    folderL2Bg: "#252e40",
+    folderL3Bg: "#2a3447",
+    subjectRowBg: "#1c2330",
+    addBtnBg: "#232b3a",
+    chartWrapBg: "#1c2330",
+    svgChartBg: "#11151c",
+    dueBarColor: "#5a9fe0",
+    todayBarColor: "#6bafef",
+    reviewedBarColor: "#5a9fe0",
+  };
   const DEFAULT_TEXT_COLORS_SET = {
     homeTitle: "#1f2937",
     titles: "#1f2937",
@@ -466,6 +491,18 @@
     chartTodayLabel: "#1f2937",
     selectorText: "#1f2937",
     syncText: "#64748b",
+  };
+  const DEFAULT_NIGHT_TEXT_COLORS_SET = {
+    homeTitle: "#eef2f8",
+    titles: "#eef2f8",
+    generalText: "#93a1b5",
+    folderSubjectNames: "#eef2f8",
+    cardText: "#eef2f8",
+    chartValues: "#93a1b5",
+    chartLabels: "#93a1b5",
+    chartTodayLabel: "#eef2f8",
+    selectorText: "#eef2f8",
+    syncText: "#93a1b5",
   };
   // Effet d'ombrage réglable élément par élément (item 5) — clé -> nom de
   // variable CSS + intitulé affiché dans la page développeur. Tout activé
@@ -662,6 +699,19 @@
       reviewLayout: { ...DEFAULT_REVIEW_LAYOUT, ...(parsed.reviewLayout || {}) },
       cardScore: { ...DEFAULT_CARD_SCORE_SETTINGS, ...(parsed.cardScore || {}) },
       gaugeColors: { ...DEFAULT_GAUGE_COLORS, ...(parsed.gaugeColors || {}) },
+      // Item 4 : mode nuit — un jeu de couleurs parallèle et réglable pour
+      // chacun des groupes ci-dessus, plus un simple drapeau on/off (dont
+      // l'état effectif est en réalité piloté par le bouton en topbar, pas
+      // ce réglage-ci, qui ne sert qu'à mémoriser le dernier choix).
+      nightMode: parsed.nightMode === true,
+      nightColors: {
+        bgColors: { ...DEFAULT_NIGHT_BG_COLORS, ...((parsed.nightColors || {}).bgColors || {}) },
+        textColorsSet: { ...DEFAULT_NIGHT_TEXT_COLORS_SET, ...((parsed.nightColors || {}).textColorsSet || {}) },
+        ratingColors: { ...DEFAULT_RATING_COLORS, ...((parsed.nightColors || {}).ratingColors || {}) },
+        ratingBtnBgColor: (parsed.nightColors || {}).ratingBtnBgColor || DEFAULT_NIGHT_RATING_BTN_BG_COLOR,
+        modeColors: { ...DEFAULT_MODE_COLORS, ...((parsed.nightColors || {}).modeColors || {}) },
+        gaugeColors: { ...DEFAULT_GAUGE_COLORS, ...((parsed.nightColors || {}).gaugeColors || {}) },
+      },
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       factoryDefaults: {
@@ -705,6 +755,7 @@
       newCardSubjectId: localStorage.getItem("fiches_new_card_subject_id"),
       cardFontSize: localStorage.getItem("fiches_card_font_size"),
       calendarEvents: localStorage.getItem("fiches_calendar_events"),
+      nightModeActive: localStorage.getItem("fiches_night_mode"),
     };
   }
   function applyAppPrefsFromRemote(prefs) {
@@ -721,6 +772,7 @@
     setIfPresent("fiches_new_card_subject_id", prefs.newCardSubjectId);
     setIfPresent("fiches_card_font_size", prefs.cardFontSize);
     setIfPresent("fiches_calendar_events", prefs.calendarEvents);
+    setIfPresent("fiches_night_mode", prefs.nightModeActive);
     loadBonusDaysSettings();
     loadBonusAgainMode();
     loadHibernateDays();
@@ -729,6 +781,10 @@
     applyShowReviewChart();
     applyCardFontSize();
     if (el("view-calendar") && el("view-calendar").classList.contains("is-active")) renderCalendarEvents();
+    applyColorSettings();
+    const nmBtn = el("night-mode-toggle-btn");
+    document.documentElement.classList.toggle("is-night-mode", isNightModeActive());
+    if (nmBtn) nmBtn.classList.toggle("is-active", isNightModeActive());
     renderSettingsView();
   }
   function getFactoryDefaults() {
@@ -1013,16 +1069,24 @@
     const settings = loadDevSettings();
     wrap.innerHTML = order
       .map(
-        (key) => `<div class="dev-color-row">
+        (key) => `<div class="dev-color-row dev-color-row--daynight">
           <span>${titles[key] || key}</span>
-          <input type="text" class="dev-color-value" data-key="${key}" value="${settings[settingsKey][key]}" />
+          <span class="dev-color-daynight-pair">
+            <input type="text" class="dev-color-value" data-key="${key}" data-variant="day" title="Mode jour" value="${settings[settingsKey][key]}" />
+            <input type="text" class="dev-color-value" data-key="${key}" data-variant="night" title="Mode nuit" value="${(settings.nightColors[settingsKey] || {})[key]}" />
+          </span>
         </div>`
       )
       .join("");
     wrap.querySelectorAll("input.dev-color-value").forEach((input) => {
       input.addEventListener("input", () => {
         const s = loadDevSettings();
-        s[settingsKey][input.dataset.key] = input.value;
+        if (input.dataset.variant === "night") {
+          if (!s.nightColors[settingsKey]) s.nightColors[settingsKey] = {};
+          s.nightColors[settingsKey][input.dataset.key] = input.value;
+        } else {
+          s[settingsKey][input.dataset.key] = input.value;
+        }
         saveDevSettings(s);
         onApplied();
       });
@@ -1259,6 +1323,7 @@
       const settings = loadDevSettings();
       settings.cardScore = { ...DEFAULT_CARD_SCORE_SETTINGS };
       settings.gaugeColors = { ...DEFAULT_GAUGE_COLORS };
+      settings.nightColors.gaugeColors = { ...DEFAULT_GAUGE_COLORS };
       saveDevSettings(settings);
       renderDevView();
       renderManageList();
@@ -1527,18 +1592,56 @@
     }
   }
 
+  // Item 4 : mode nuit — bouton en topbar, bascule quel jeu de couleurs
+  // (jour ou nuit, réglés séparément dans le mode développeur) est
+  // effectivement appliqué.
+  const NIGHT_MODE_KEY = "fiches_night_mode";
+  function isNightModeActive() {
+    return localStorage.getItem(NIGHT_MODE_KEY) === "true";
+  }
+  function effectiveColors(settings) {
+    if (!isNightModeActive()) {
+      return {
+        bgColors: settings.bgColors,
+        textColorsSet: settings.textColorsSet,
+        ratingColors: settings.ratingColors,
+        ratingBtnBgColor: settings.ratingBtnBgColor,
+        modeColors: settings.modeColors,
+        gaugeColors: settings.gaugeColors,
+      };
+    }
+    return settings.nightColors;
+  }
+  function setNightModeActive(value) {
+    localStorage.setItem(NIGHT_MODE_KEY, String(value));
+    document.documentElement.classList.toggle("is-night-mode", value);
+    scheduleDevSettingsPush();
+    applyColorSettings();
+    renderManageList();
+    renderReviewGauge();
+    const btn = el("night-mode-toggle-btn");
+    if (btn) btn.classList.toggle("is-active", value);
+  }
+  const nightModeToggleBtn = el("night-mode-toggle-btn");
+  if (nightModeToggleBtn) {
+    document.documentElement.classList.toggle("is-night-mode", isNightModeActive());
+    nightModeToggleBtn.classList.toggle("is-active", isNightModeActive());
+    nightModeToggleBtn.addEventListener("click", () => setNightModeActive(!isNightModeActive()));
+  }
+
   function applyColorSettings() {
     const settings = loadDevSettings();
+    const eff = effectiveColors(settings);
     const root = document.documentElement.style;
-    root.setProperty("--rating-again-color", settings.ratingColors.again);
-    root.setProperty("--rating-hard-color", settings.ratingColors.hard);
-    root.setProperty("--rating-good-color", settings.ratingColors.good);
-    root.setProperty("--rating-easy-color", settings.ratingColors.easy);
-    root.setProperty("--rating-btn-bg-color", settings.ratingBtnBgColor);
-    root.setProperty("--mode-cool-color", settings.modeColors.cool);
-    root.setProperty("--mode-normal-color", settings.modeColors.normal);
-    root.setProperty("--mode-renforce-color", settings.modeColors.renforce);
-    root.setProperty("--mode-custom-color", settings.modeColors.custom);
+    root.setProperty("--rating-again-color", eff.ratingColors.again);
+    root.setProperty("--rating-hard-color", eff.ratingColors.hard);
+    root.setProperty("--rating-good-color", eff.ratingColors.good);
+    root.setProperty("--rating-easy-color", eff.ratingColors.easy);
+    root.setProperty("--rating-btn-bg-color", eff.ratingBtnBgColor);
+    root.setProperty("--mode-cool-color", eff.modeColors.cool);
+    root.setProperty("--mode-normal-color", eff.modeColors.normal);
+    root.setProperty("--mode-renforce-color", eff.modeColors.renforce);
+    root.setProperty("--mode-custom-color", eff.modeColors.custom);
     root.setProperty("--app-bg-color", settings.appBgColor);
     root.setProperty("--construction-active-color", settings.constructionActiveColor);
     root.setProperty("--due-pill-bonus-color", settings.bonusPillColor);
@@ -1552,7 +1655,7 @@
     // plus la source appliquée.
     // Items 2h/2i : nouveaux blocs "Couleurs des fonds"/"Couleurs des
     // textes", chacun avec son propre nom de réglage direct.
-    const bg = settings.bgColors;
+    const bg = eff.bgColors;
     root.setProperty("--home-square-bg-color", bg.homeSquareBg);
     root.setProperty("--home-add-card-bg-color", bg.homeAddCardBg);
     root.setProperty("--home-btn-bg-color", bg.homeBtnBg);
@@ -1579,7 +1682,7 @@
     root.setProperty("--due-bar-color", bg.dueBarColor);
     root.setProperty("--today-bar-color", bg.todayBarColor);
 
-    const tx = settings.textColorsSet;
+    const tx = eff.textColorsSet;
     root.setProperty("--home-title-color", tx.homeTitle);
     root.setProperty("--main-text-color", tx.titles);
     root.setProperty("--general-text-color", tx.generalText);
@@ -2276,49 +2379,20 @@
   /** Ligne 2 partagée entre dossiers et matières (item 3) : à gauche le
    *  nombre de fiches/matières + les 3 actions, à droite le score (avec sa
    *  mini-jauge) + le mode d'apprentissage. */
-  function buildRowLine2({ countLabel, score, mode, onRename, onMove, onDelete, onAlgo, deleteTitle }) {
-    const line2 = document.createElement("div");
-    line2.className = "subject-row-line2";
+  /** Corps complet d'une ligne dossier/matière (item 3) : contenu
+   *  principal (titre + mode d'apprentissage sur la ligne 1, nombre de
+   *  fiches/matières + actions sur la ligne 2) à gauche, jauge circulaire
+   *  pleine hauteur (score à l'intérieur) à droite — la jauge et le mode
+   *  d'apprentissage ont permuté de place par rapport à avant, pour
+   *  laisser à l'intitulé (ligne 1) toute la largeur disponible plutôt que
+   *  de la partager avec la jauge sur la ligne 2. */
+  function buildRowBody({ nameBtnEl, countLabel, score, mode, onRename, onMove, onDelete, onAlgo, deleteTitle }) {
+    const main = document.createElement("div");
+    main.className = "subject-row-main";
 
-    const left = document.createElement("div");
-    left.className = "subject-row-line2-left";
-    const countEl = document.createElement("span");
-    countEl.className = "subject-row-count";
-    countEl.textContent = countLabel;
-    left.appendChild(countEl);
-
-    const renameBtn = document.createElement("button");
-    renameBtn.type = "button";
-    renameBtn.className = "icon-btn";
-    renameBtn.innerHTML = orgIconMarkup("orgRename");
-    renameBtn.title = "Renommer";
-    renameBtn.addEventListener("click", onRename);
-    left.appendChild(renameBtn);
-
-    const moveBtn = document.createElement("button");
-    moveBtn.type = "button";
-    moveBtn.className = "icon-btn";
-    moveBtn.innerHTML = orgIconMarkup("orgMove");
-    moveBtn.title = "Déplacer";
-    moveBtn.addEventListener("click", onMove);
-    left.appendChild(moveBtn);
-
-    const delBtn = document.createElement("button");
-    delBtn.type = "button";
-    delBtn.className = "icon-btn icon-btn--danger";
-    delBtn.innerHTML = orgIconMarkup("orgDelete");
-    delBtn.title = deleteTitle;
-    delBtn.addEventListener("click", onDelete);
-    left.appendChild(delBtn);
-
-    const right = document.createElement("div");
-    right.className = "subject-row-line2-right";
-    if (score !== null) {
-      const scoreEl = document.createElement("span");
-      scoreEl.className = "subject-row-score";
-      scoreEl.innerHTML = `${renderMiniGaugeSvg(score)}<span>${score}%</span>`;
-      right.appendChild(scoreEl);
-    }
+    const line1 = document.createElement("div");
+    line1.className = "subject-row-line1";
+    line1.appendChild(nameBtnEl);
     const algoBtn = document.createElement("button");
     algoBtn.type = "button";
     algoBtn.className = "subject-row-algo-btn subject-row-algo-btn--compact";
@@ -2328,11 +2402,51 @@
     algoBtn.title = `Mode d'apprentissage : ${modeDisplayName(mode)}`;
     algoBtn.addEventListener("click", onAlgo);
     applyModeBadgeStyle(algoBtn, mode);
-    right.appendChild(algoBtn);
+    line1.appendChild(algoBtn);
 
-    line2.appendChild(left);
-    line2.appendChild(right);
-    return line2;
+    const line2 = document.createElement("div");
+    line2.className = "subject-row-line2";
+    const countEl = document.createElement("span");
+    countEl.className = "subject-row-count";
+    countEl.textContent = countLabel;
+    line2.appendChild(countEl);
+
+    const renameBtn = document.createElement("button");
+    renameBtn.type = "button";
+    renameBtn.className = "icon-btn";
+    renameBtn.innerHTML = orgIconMarkup("orgRename");
+    renameBtn.title = "Renommer";
+    renameBtn.addEventListener("click", onRename);
+    line2.appendChild(renameBtn);
+
+    const moveBtn = document.createElement("button");
+    moveBtn.type = "button";
+    moveBtn.className = "icon-btn";
+    moveBtn.innerHTML = orgIconMarkup("orgMove");
+    moveBtn.title = "Déplacer";
+    moveBtn.addEventListener("click", onMove);
+    line2.appendChild(moveBtn);
+
+    const delBtn = document.createElement("button");
+    delBtn.type = "button";
+    delBtn.className = "icon-btn icon-btn--danger";
+    delBtn.innerHTML = orgIconMarkup("orgDelete");
+    delBtn.title = deleteTitle;
+    delBtn.addEventListener("click", onDelete);
+    line2.appendChild(delBtn);
+
+    main.appendChild(line1);
+    main.appendChild(line2);
+
+    const gaugeCol = document.createElement("div");
+    gaugeCol.className = "subject-row-gauge-col";
+    if (score !== null) gaugeCol.innerHTML = renderMiniGaugeRing(score);
+
+    const body = document.createElement("div");
+    body.className = "subject-row-body";
+    body.appendChild(main);
+    body.appendChild(gaugeCol);
+    return body;
   }
 
   function renderTreeLevel(parentId, depth) {
@@ -2362,9 +2476,16 @@
         renderSubjectManageList();
       });
 
+      const childCount = folders.filter((x) => x.parentId === f.id).length + subjects.filter((x) => x.folderId === f.id).length;
+      // Item 3 : effet de pile (comme les fiches de Réviser) quand ce
+      // dossier est replié ET n'est pas vide, pour montrer qu'il contient
+      // bien quelque chose en dessous.
+      if (!expanded && childCount > 0) li.classList.add("folder-row--stacked");
+
       const n = subjectIdsInFolder(f.id).length;
       const folderScore = computeFolderScore(f.id);
-      const line2 = buildRowLine2({
+      const body = buildRowBody({
+        nameBtnEl: nameBtn,
         countLabel: `${n} matière${n > 1 ? "s" : ""}`,
         score: folderScore,
         mode: "normal",
@@ -2375,8 +2496,7 @@
         deleteTitle: "Supprimer ce dossier (doit être vide)",
       });
 
-      li.appendChild(nameBtn);
-      li.appendChild(line2);
+      li.appendChild(body);
       subjectListEl.appendChild(li);
 
       // Ne recurse dans ce dossier que s'il est déplié (item 8) — sinon on
@@ -2408,7 +2528,8 @@
 
       const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
       const subjScore = computeSubjectScore(s.id);
-      const line2 = buildRowLine2({
+      const body = buildRowBody({
+        nameBtnEl: nameBtn,
         countLabel: `${n} fiche${n > 1 ? "s" : ""}`,
         score: subjScore,
         mode: getSubjectAlgoMode(s.id),
@@ -2419,8 +2540,7 @@
         deleteTitle: "Supprimer cette matière",
       });
 
-      li.appendChild(nameBtn);
-      li.appendChild(line2);
+      li.appendChild(body);
       subjectListEl.appendChild(li);
     }
   }
@@ -3681,7 +3801,7 @@
    *  ni étiquettes — voir renderMiniGaugeSvg). */
   function buildGaugeSvg(score, { withNeedle, withLabels, onlyFilledZones, size }) {
     const settings = loadDevSettings().cardScore;
-    const colors = loadDevSettings().gaugeColors;
+    const colors = effectiveColors(loadDevSettings()).gaugeColors;
     const bounds = gaugeBounds(settings);
     const s = Math.max(0, Math.min(100, score));
     const cx = size.cx, cy = size.cy, r = size.r, strokeW = size.strokeW;
@@ -3731,6 +3851,30 @@
       onlyFilledZones: true,
       size: { cx: 20, cy: 19, r: 14, strokeW: 5, vbW: 40, vbH: 24 },
     });
+  }
+  /** Jauge circulaire pleine hauteur (item 3), score écrit à l'intérieur —
+   *  couleur de l'anneau = zone actuelle du score, remplissage
+   *  proportionnel au score (pas les 6 zones comme sur Réviser, la forme
+   *  ronde/compacte s'y prête moins bien). */
+  function renderMiniGaugeRing(score) {
+    const settings = loadDevSettings().cardScore;
+    const colors = effectiveColors(loadDevSettings()).gaugeColors;
+    const bounds = gaugeBounds(settings);
+    let zoneKey = GAUGE_ZONE_DEFS[0].key;
+    for (let i = 0; i < GAUGE_ZONE_DEFS.length; i++) {
+      if (score >= bounds[i]) zoneKey = GAUGE_ZONE_DEFS[i].key;
+    }
+    const color = colors[zoneKey] || DEFAULT_GAUGE_COLORS[zoneKey];
+    const r = 26, cx = 30, cy = 30;
+    const circumference = 2 * Math.PI * r;
+    const dash = (Math.max(0, Math.min(100, score)) / 100) * circumference;
+    return `<svg viewBox="0 0 60 60" class="subject-row-gauge-ring">
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="6" />
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="6"
+        stroke-dasharray="${dash.toFixed(1)} ${circumference.toFixed(1)}" stroke-linecap="round"
+        transform="rotate(-90 ${cx} ${cy})" />
+      <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="700" fill="${color}" font-family="sans-serif">${score}%</text>
+    </svg>`;
   }
   function renderReviewGauge() {
     const wrap = el("review-gauge-wrap");
@@ -4551,10 +4695,19 @@
       closeCardsScopeChoiceMenu();
       // Reste affiché tant que ce périmètre est actif (voir
       // renderCardsMultiPickerIfActive, appelé depuis renderManageList) —
-      // plus besoin de "Valider", les résultats se mettent à jour dès
-      // qu'on coche/décoche.
+      // plus besoin de "Valider" pour VALIDER la sélection (mise à jour en
+      // direct), juste pour refermer le panneau plein écran (bug corrigé).
       cardsScopeFilter = CARDS_SCOPE_MULTI;
+      const picker = el("cards-multi-picker");
+      if (picker) delete picker.dataset.opened;
       renderManageList();
+    });
+  }
+  const cardsMultiPickerDoneBtn = el("cards-multi-picker-done");
+  if (cardsMultiPickerDoneBtn) {
+    cardsMultiPickerDoneBtn.addEventListener("click", () => {
+      const picker = el("cards-multi-picker");
+      if (picker) picker.hidden = true;
     });
   }
   const cardsScopeChoiceCancelBtn = el("cards-scope-choice-cancel");
@@ -4571,7 +4724,11 @@
   /** Contrairement aux autres pickers de l'appli (qui se ferment après un
    *  "Valider"), celui-ci reste affiché tant que le périmètre "Sélection de
    *  matières et dossiers" est actif — cocher/décocher met à jour les
-   *  résultats de recherche tout de suite, sans étape de confirmation. */
+   *  résultats de recherche tout de suite, sans étape de confirmation.
+   *  Bug corrigé : depuis que ce panneau occupe tout l'écran (comme les
+   *  deux autres), il fallait quand même un bouton pour le refermer et
+   *  retrouver la liste filtrée en dessous — "Valider" ici ne fait que
+   *  refermer le panneau, la sélection est déjà enregistrée au fil de l'eau. */
   function renderCardsMultiPickerIfActive() {
     const picker = el("cards-multi-picker");
     const list = el("cards-multi-picker-list");
@@ -4580,7 +4737,10 @@
       picker.hidden = true;
       return;
     }
-    picker.hidden = false;
+    if (!picker.dataset.opened) {
+      picker.hidden = false;
+      picker.dataset.opened = "1";
+    }
     const selected = new Set(loadCardsMultiSelection());
     list.innerHTML = "";
     renderFolderTreeForPicker(list, ROOT_FOLDER_ID, 0, selected);
@@ -6304,53 +6464,50 @@
     });
   }
 
-  function saveRatingColorsFromInputs() {
+  /** Couleurs des notes (item 4 — paires jour/nuit, via le même mécanisme
+   *  générique que fonds/textes/jauges). */
+  const RATING_COLORS_TITLES = { again: "Encore", hard: "Difficile", good: "Bien", easy: "Facile" };
+  function renderRatingColorsEditor() {
+    renderColorListPicker("dev-rating-colors-list", ["again", "hard", "good", "easy"], RATING_COLORS_TITLES, "ratingColors", applyColorSettings);
+  }
+  function saveRatingBtnBgFromInputs() {
     const settings = loadDevSettings();
-    ["again", "hard", "good", "easy"].forEach((r) => {
-      const input = el(`dev-color-${r}`);
-      if (input) settings.ratingColors[r] = input.value;
-    });
-    const bgInput = el("dev-color-rating-btn-bg");
-    if (bgInput) settings.ratingBtnBgColor = bgInput.value;
+    const dayInput = el("dev-color-rating-btn-bg");
+    const nightInput = el("dev-color-rating-btn-bg-night");
+    if (dayInput) settings.ratingBtnBgColor = dayInput.value;
+    if (nightInput) settings.nightColors.ratingBtnBgColor = nightInput.value;
     saveDevSettings(settings);
     applyColorSettings();
   }
-  ["again", "hard", "good", "easy"].forEach((r) => {
-    const input = el(`dev-color-${r}`);
-    if (input) input.addEventListener("input", saveRatingColorsFromInputs);
-  });
   const ratingBtnBgInputEl = el("dev-color-rating-btn-bg");
-  if (ratingBtnBgInputEl) ratingBtnBgInputEl.addEventListener("input", saveRatingColorsFromInputs);
+  if (ratingBtnBgInputEl) ratingBtnBgInputEl.addEventListener("input", saveRatingBtnBgFromInputs);
+  const ratingBtnBgNightInputEl = el("dev-color-rating-btn-bg-night");
+  if (ratingBtnBgNightInputEl) ratingBtnBgNightInputEl.addEventListener("input", saveRatingBtnBgFromInputs);
   const devRatingColorsResetBtn = el("dev-rating-colors-reset");
   if (devRatingColorsResetBtn) {
     devRatingColorsResetBtn.addEventListener("click", () => {
       const settings = loadDevSettings();
       settings.ratingColors = { ...DEFAULT_RATING_COLORS };
       settings.ratingBtnBgColor = DEFAULT_RATING_BTN_BG_COLOR;
+      settings.nightColors.ratingColors = { ...DEFAULT_RATING_COLORS };
+      settings.nightColors.ratingBtnBgColor = DEFAULT_NIGHT_RATING_BTN_BG_COLOR;
       saveDevSettings(settings);
       applyColorSettings();
       renderDevView();
     });
   }
 
-  function saveModeColorsFromInputs() {
-    const settings = loadDevSettings();
-    ["cool", "normal", "renforce", "custom"].forEach((m) => {
-      const input = el(`dev-color-mode-${m}`);
-      if (input) settings.modeColors[m] = input.value;
-    });
-    saveDevSettings(settings);
-    applyColorSettings();
+  /** Couleurs des modes d'apprentissage (item 4 — paires jour/nuit). */
+  const MODE_COLORS_TITLES = { cool: "Cool", normal: "Normal", renforce: "Renforcé", custom: "Personnalisé" };
+  function renderModeColorsEditor() {
+    renderColorListPicker("dev-mode-colors-list", ["cool", "normal", "renforce", "custom"], MODE_COLORS_TITLES, "modeColors", applyColorSettings);
   }
-  ["cool", "normal", "renforce", "custom"].forEach((m) => {
-    const input = el(`dev-color-mode-${m}`);
-    if (input) input.addEventListener("input", saveModeColorsFromInputs);
-  });
   const devModeColorsResetBtn = el("dev-mode-colors-reset");
   if (devModeColorsResetBtn) {
     devModeColorsResetBtn.addEventListener("click", () => {
       const settings = loadDevSettings();
       settings.modeColors = { ...DEFAULT_MODE_COLORS };
+      settings.nightColors.modeColors = { ...DEFAULT_MODE_COLORS };
       saveDevSettings(settings);
       applyColorSettings();
       renderDevView();
@@ -6530,18 +6687,12 @@
 
   function renderDevView() {
     const devSettings = loadDevSettings();
-    const ratingColors = devSettings.ratingColors;
-    ["again", "hard", "good", "easy"].forEach((r) => {
-      const input = el(`dev-color-${r}`);
-      if (input) input.value = ratingColors[r];
-    });
     const ratingBtnBgInput = el("dev-color-rating-btn-bg");
     if (ratingBtnBgInput) ratingBtnBgInput.value = devSettings.ratingBtnBgColor;
-    const modeColors = loadDevSettings().modeColors;
-    ["cool", "normal", "renforce", "custom"].forEach((m) => {
-      const input = el(`dev-color-mode-${m}`);
-      if (input) input.value = modeColors[m];
-    });
+    const ratingBtnBgNightInput = el("dev-color-rating-btn-bg-night");
+    if (ratingBtnBgNightInput) ratingBtnBgNightInput.value = devSettings.nightColors.ratingBtnBgColor;
+    renderRatingColorsEditor();
+    renderModeColorsEditor();
     renderRatingIconsEditor();
     renderNavIconsEditor();
     renderIconBankEditor();
@@ -6727,10 +6878,10 @@
   let syncAutoRetrying = false;
 
   /* ---------------------------------------------------------
-     Vue Calendrier (item 9) — événements liés à une matière/dossier,
-     pensés comme base pour une future génération de programme de
-     révision. Stockage simple en localStorage (pas encore dans IndexedDB,
-     le volume attendu est faible).
+     Vue Calendrier (item 9, revue item 2) — événements liés à une
+     matière/dossier, pensés comme base pour une future génération de
+     programme de révision. Stockage simple en localStorage (pas encore
+     dans IndexedDB, le volume attendu est faible).
   --------------------------------------------------------- */
   const CALENDAR_EVENTS_KEY = "fiches_calendar_events";
   function loadCalendarEvents() {
@@ -6746,6 +6897,10 @@
     scheduleDevSettingsPush();
   }
   let calendarEventLinkId = null; // "subject:ID" ou "folder:ID" ou null
+  let calendarEditingEventId = null; // null = ajout, sinon modification (item 2)
+  let calendarViewMode = "list"; // "list" | "months" | "year" (item 2)
+  let calendarMonthsAnchor = new Date();
+  let calendarYearAnchor = new Date().getFullYear();
 
   function calendarLinkLabel(linkId) {
     if (!linkId) return "Aucune matière/dossier liés";
@@ -6772,7 +6927,7 @@
         btn.textContent = `${folderIcon()} ${f.name}`;
         btn.addEventListener("click", () => {
           calendarEventLinkId = `folder:${f.id}`;
-          closeCalendarLinkMenu();
+          closeCalendarSubjectPicker();
         });
         container.appendChild(btn);
         walk(f.id, depth + 1);
@@ -6785,44 +6940,159 @@
         btn.textContent = s.name;
         btn.addEventListener("click", () => {
           calendarEventLinkId = `subject:${s.id}`;
-          closeCalendarLinkMenu();
+          closeCalendarSubjectPicker();
         });
         container.appendChild(btn);
       });
     }
     walk(ROOT_FOLDER_ID, 0);
   }
-  function closeCalendarLinkMenu() {
-    const menu = el("calendar-event-subject-menu");
-    if (menu) menu.hidden = true;
+  // Item 2 : panneau plein écran (bug corrigé : celui-ci s'ouvrait hors
+  // écran, en petit menu déroulant, comme le fixe aussi le correctif du
+  // panneau de la page Fiches).
+  function closeCalendarSubjectPicker() {
+    const picker = el("calendar-event-subject-picker");
+    if (picker) picker.hidden = true;
     const btn = el("calendar-event-subject-btn");
     if (btn) btn.textContent = calendarLinkLabel(calendarEventLinkId);
   }
   const calendarEventSubjectBtn = el("calendar-event-subject-btn");
   if (calendarEventSubjectBtn) {
     calendarEventSubjectBtn.addEventListener("click", () => {
-      const menu = el("calendar-event-subject-menu");
+      const picker = el("calendar-event-subject-picker");
       const tree = el("calendar-event-subject-tree");
-      if (!menu || !tree) return;
+      if (!picker || !tree) return;
       renderCalendarLinkTree(tree);
-      menu.hidden = false;
+      picker.hidden = false;
     });
   }
   const calendarEventSubjectNoneBtn = el("calendar-event-subject-none");
   if (calendarEventSubjectNoneBtn) {
     calendarEventSubjectNoneBtn.addEventListener("click", () => {
       calendarEventLinkId = null;
-      closeCalendarLinkMenu();
+      closeCalendarSubjectPicker();
     });
   }
-  document.addEventListener("pointerdown", (e) => {
-    const menu = el("calendar-event-subject-menu");
-    if (!menu || menu.hidden) return;
-    if (menu.contains(e.target) || e.target === calendarEventSubjectBtn) return;
-    menu.hidden = true;
-  });
+  const calendarEventSubjectDoneBtn = el("calendar-event-subject-done");
+  if (calendarEventSubjectDoneBtn) calendarEventSubjectDoneBtn.addEventListener("click", closeCalendarSubjectPicker);
 
-  function renderCalendarEvents() {
+  // Item 2 : le bouton de date ouvre le sélecteur natif (plus explicite
+  // qu'un simple champ texte) et affiche la date choisie en toutes lettres.
+  const calendarEventDateBtn = el("calendar-event-date-btn");
+  const calendarEventDateInput = el("calendar-event-date");
+  function formatCalendarDate(raw) {
+    const d = new Date(raw + "T00:00:00");
+    return d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+  }
+  if (calendarEventDateBtn && calendarEventDateInput) {
+    calendarEventDateBtn.addEventListener("click", () => {
+      if (calendarEventDateInput.showPicker) {
+        try {
+          calendarEventDateInput.showPicker();
+          return;
+        } catch {
+          /* repli sur le focus ci-dessous */
+        }
+      }
+      calendarEventDateInput.focus();
+    });
+    calendarEventDateInput.addEventListener("change", () => {
+      const label = el("calendar-event-date-label");
+      if (label && calendarEventDateInput.value) label.textContent = formatCalendarDate(calendarEventDateInput.value);
+    });
+  }
+
+  // Item 2 : le panneau d'ajout reste caché tant qu'on n'a pas cliqué sur
+  // "+ Ajouter un événement" — et sert aussi à MODIFIER un événement
+  // existant (même formulaire, prérempli).
+  function openCalendarEventForm(eventToEdit) {
+    const form = el("calendar-event-form");
+    if (!form) return;
+    form.hidden = false;
+    const title = el("calendar-event-form-title");
+    const submitBtn = el("calendar-event-submit");
+    if (eventToEdit) {
+      calendarEditingEventId = eventToEdit.id;
+      el("calendar-event-title").value = eventToEdit.title;
+      el("calendar-event-date").value = eventToEdit.date;
+      el("calendar-event-date-label").textContent = formatCalendarDate(eventToEdit.date);
+      calendarEventLinkId = eventToEdit.linkId || null;
+      el("calendar-event-subject-btn").textContent = calendarLinkLabel(calendarEventLinkId);
+      if (title) title.textContent = "Modifier l'événement";
+      if (submitBtn) submitBtn.textContent = "Enregistrer les modifications";
+    } else {
+      calendarEditingEventId = null;
+      form.reset();
+      el("calendar-event-date-label").textContent = "Choisir une date";
+      calendarEventLinkId = null;
+      el("calendar-event-subject-btn").textContent = calendarLinkLabel(null);
+      if (title) title.textContent = "Ajouter un événement";
+      if (submitBtn) submitBtn.textContent = "Ajouter à mon calendrier";
+    }
+  }
+  function closeCalendarEventForm() {
+    const form = el("calendar-event-form");
+    if (form) form.hidden = true;
+    calendarEditingEventId = null;
+  }
+  const calendarAddEventBtn = el("calendar-add-event-btn");
+  if (calendarAddEventBtn) calendarAddEventBtn.addEventListener("click", () => openCalendarEventForm(null));
+  const calendarEventCancelBtn = el("calendar-event-cancel");
+  if (calendarEventCancelBtn) calendarEventCancelBtn.addEventListener("click", closeCalendarEventForm);
+
+  const calendarEventForm = el("calendar-event-form");
+  if (calendarEventForm) {
+    calendarEventForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const titleInput = el("calendar-event-title");
+      const dateInput = el("calendar-event-date");
+      if (!titleInput.value.trim() || !dateInput.value) return;
+      const events = loadCalendarEvents();
+      if (calendarEditingEventId) {
+        const idx = events.findIndex((x) => x.id === calendarEditingEventId);
+        if (idx >= 0) events[idx] = { ...events[idx], title: titleInput.value.trim(), date: dateInput.value, linkId: calendarEventLinkId };
+      } else {
+        events.push({ id: uid(), title: titleInput.value.trim(), date: dateInput.value, linkId: calendarEventLinkId });
+      }
+      saveCalendarEvents(events);
+      const wasEditing = !!calendarEditingEventId;
+      closeCalendarEventForm();
+      renderCalendarEvents();
+      showToast(wasEditing ? "Événement modifié" : "Événement ajouté");
+    });
+  }
+
+  /** Ligne d'événement partagée (item 2) : liste ET popup de jour, avec
+   *  modifier + supprimer. */
+  function buildCalendarEventRow(ev, { onEdit, onDelete }) {
+    const li = document.createElement("li");
+    li.className = "card-row";
+    li.style.cssText = "flex-direction:row; align-items:center; justify-content:space-between;";
+    const main = document.createElement("div");
+    main.className = "card-row-main";
+    main.innerHTML = `<strong>${escapeHtml(ev.title)}</strong><br><span class="card-row-meta">${escapeHtml(formatCalendarDate(ev.date))}${ev.linkId ? ` · ${escapeHtml(calendarLinkLabel(ev.linkId))}` : ""}</span>`;
+    const actions = document.createElement("div");
+    actions.style.cssText = "display:flex; gap:4px; flex-shrink:0;";
+    const editBtn = document.createElement("button");
+    editBtn.type = "button";
+    editBtn.className = "icon-btn";
+    editBtn.innerHTML = iconSvgMarkup("pencil", "icon-inline-svg");
+    editBtn.title = "Modifier cet événement";
+    editBtn.addEventListener("click", onEdit);
+    const delBtn = document.createElement("button");
+    delBtn.type = "button";
+    delBtn.className = "icon-btn icon-btn--danger";
+    delBtn.innerHTML = iconSvgMarkup("trash", "icon-inline-svg");
+    delBtn.title = "Supprimer cet événement";
+    delBtn.addEventListener("click", onDelete);
+    actions.appendChild(editBtn);
+    actions.appendChild(delBtn);
+    li.appendChild(main);
+    li.appendChild(actions);
+    return li;
+  }
+
+  function renderCalendarListView() {
     const list = el("calendar-event-list");
     const empty = el("calendar-event-empty");
     if (!list) return;
@@ -6834,52 +7104,163 @@
     }
     if (empty) empty.hidden = true;
     events.forEach((ev) => {
-      const li = document.createElement("li");
-      li.className = "card-row";
-      li.style.cssText = "flex-direction:row; align-items:center; justify-content:space-between;";
-      const main = document.createElement("div");
-      main.className = "card-row-main";
-      const d = new Date(ev.date + "T00:00:00");
-      const dateLabel = d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
-      main.innerHTML = `<strong>${escapeHtml(ev.title)}</strong><br><span class="card-row-meta">${escapeHtml(dateLabel)}${ev.linkId ? ` · ${escapeHtml(calendarLinkLabel(ev.linkId))}` : ""}</span>`;
-      const delBtn = document.createElement("button");
-      delBtn.type = "button";
-      delBtn.className = "icon-btn icon-btn--danger";
-      delBtn.innerHTML = iconSvgMarkup("trash", "icon-inline-svg");
-      delBtn.title = "Supprimer cet événement";
-      delBtn.addEventListener("click", () => {
-        const remaining = loadCalendarEvents().filter((x) => x.id !== ev.id);
-        saveCalendarEvents(remaining);
-        renderCalendarEvents();
-      });
-      li.appendChild(main);
-      li.appendChild(delBtn);
-      list.appendChild(li);
+      list.appendChild(
+        buildCalendarEventRow(ev, {
+          onEdit: () => openCalendarEventForm(ev),
+          onDelete: () => {
+            saveCalendarEvents(loadCalendarEvents().filter((x) => x.id !== ev.id));
+            renderCalendarEvents();
+          },
+        })
+      );
     });
   }
 
-  const calendarEventForm = el("calendar-event-form");
-  if (calendarEventForm) {
-    calendarEventForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const titleInput = el("calendar-event-title");
-      const dateInput = el("calendar-event-date");
-      if (!titleInput.value.trim() || !dateInput.value) return;
-      const events = loadCalendarEvents();
-      events.push({
-        id: uid(),
-        title: titleInput.value.trim(),
-        date: dateInput.value,
-        linkId: calendarEventLinkId,
-      });
-      saveCalendarEvents(events);
-      calendarEventForm.reset();
-      calendarEventLinkId = null;
-      const btn = el("calendar-event-subject-btn");
-      if (btn) btn.textContent = calendarLinkLabel(null);
-      renderCalendarEvents();
-      showToast("Événement ajouté");
+  // Item 2 : affichages calendrier (2 mois) et année, avec des points sur
+  // les jours ayant un événement.
+  const CALENDAR_DOW_LABELS = ["L", "M", "M", "J", "V", "S", "D"];
+  function calendarEventsByDay(year, month) {
+    const map = {};
+    loadCalendarEvents().forEach((ev) => {
+      const d = new Date(ev.date + "T00:00:00");
+      if (d.getFullYear() === year && d.getMonth() === month) {
+        (map[d.getDate()] = map[d.getDate()] || []).push(ev);
+      }
     });
+    return map;
+  }
+  function buildMiniMonthEl(year, month, compact) {
+    const wrap = document.createElement("div");
+    wrap.className = "calendar-mini-month";
+    const title = document.createElement("div");
+    title.className = "calendar-mini-month-title";
+    title.textContent = new Date(year, month, 1).toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
+    wrap.appendChild(title);
+    const grid = document.createElement("div");
+    grid.className = "calendar-mini-month-grid";
+    if (!compact) {
+      CALENDAR_DOW_LABELS.forEach((l) => {
+        const dow = document.createElement("div");
+        dow.className = "calendar-mini-month-dow";
+        dow.textContent = l;
+        grid.appendChild(dow);
+      });
+    }
+    const firstDow = (new Date(year, month, 1).getDay() + 6) % 7; // lundi = 0
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const eventMap = calendarEventsByDay(year, month);
+    const today = new Date();
+    for (let i = 0; i < firstDow; i++) {
+      const cell = document.createElement("div");
+      cell.className = "calendar-day-cell is-empty";
+      grid.appendChild(cell);
+    }
+    for (let day = 1; day <= daysInMonth; day++) {
+      const cell = document.createElement("button");
+      cell.type = "button";
+      cell.className = "calendar-day-cell";
+      if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day) cell.classList.add("is-today");
+      cell.textContent = String(day);
+      if (eventMap[day]) {
+        cell.classList.add("has-event");
+        const dot = document.createElement("span");
+        dot.className = "calendar-day-dot";
+        cell.appendChild(dot);
+        cell.addEventListener("click", () => openCalendarDayPopup(year, month, day, eventMap[day]));
+      }
+      grid.appendChild(cell);
+    }
+    wrap.appendChild(grid);
+    return wrap;
+  }
+  function renderCalendarMonthsView() {
+    const grid = el("calendar-months-grid");
+    if (!grid) return;
+    grid.innerHTML = "";
+    const row = document.createElement("div");
+    row.className = "calendar-months-row";
+    const y = calendarMonthsAnchor.getFullYear();
+    const m = calendarMonthsAnchor.getMonth();
+    row.appendChild(buildMiniMonthEl(y, m, false));
+    const next = new Date(y, m + 1, 1);
+    row.appendChild(buildMiniMonthEl(next.getFullYear(), next.getMonth(), false));
+    grid.appendChild(row);
+  }
+  const calendarMonthsPrevBtn = el("calendar-months-prev");
+  if (calendarMonthsPrevBtn) {
+    calendarMonthsPrevBtn.addEventListener("click", () => {
+      calendarMonthsAnchor = new Date(calendarMonthsAnchor.getFullYear(), calendarMonthsAnchor.getMonth() - 1, 1);
+      renderCalendarMonthsView();
+    });
+  }
+  const calendarMonthsNextBtn = el("calendar-months-next");
+  if (calendarMonthsNextBtn) {
+    calendarMonthsNextBtn.addEventListener("click", () => {
+      calendarMonthsAnchor = new Date(calendarMonthsAnchor.getFullYear(), calendarMonthsAnchor.getMonth() + 1, 1);
+      renderCalendarMonthsView();
+    });
+  }
+  function renderCalendarYearView() {
+    const grid = el("calendar-year-grid");
+    const label = el("calendar-year-label");
+    if (!grid) return;
+    if (label) label.textContent = String(calendarYearAnchor);
+    grid.innerHTML = "";
+    for (let m = 0; m < 12; m++) grid.appendChild(buildMiniMonthEl(calendarYearAnchor, m, true));
+  }
+  const calendarYearPrevBtn = el("calendar-year-prev");
+  if (calendarYearPrevBtn) calendarYearPrevBtn.addEventListener("click", () => { calendarYearAnchor -= 1; renderCalendarYearView(); });
+  const calendarYearNextBtn = el("calendar-year-next");
+  if (calendarYearNextBtn) calendarYearNextBtn.addEventListener("click", () => { calendarYearAnchor += 1; renderCalendarYearView(); });
+
+  function openCalendarDayPopup(year, month, day, events) {
+    const popup = el("calendar-day-popup");
+    const title = el("calendar-day-popup-title");
+    const list = el("calendar-day-popup-list");
+    if (!popup || !list) return;
+    if (title) title.textContent = new Date(year, month, day).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    list.innerHTML = "";
+    events.forEach((ev) => {
+      list.appendChild(
+        buildCalendarEventRow(ev, {
+          onEdit: () => {
+            popup.hidden = true;
+            openCalendarEventForm(ev);
+          },
+          onDelete: () => {
+            saveCalendarEvents(loadCalendarEvents().filter((x) => x.id !== ev.id));
+            popup.hidden = true;
+            renderCalendarEvents();
+          },
+        })
+      );
+    });
+    popup.hidden = false;
+  }
+  const calendarDayPopupCloseBtn = el("calendar-day-popup-close");
+  if (calendarDayPopupCloseBtn) {
+    calendarDayPopupCloseBtn.addEventListener("click", () => {
+      const popup = el("calendar-day-popup");
+      if (popup) popup.hidden = true;
+    });
+  }
+
+  // Item 2 : bascule liste / calendrier / année.
+  document.querySelectorAll(".calendar-view-toggle-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      calendarViewMode = btn.dataset.calview;
+      document.querySelectorAll(".calendar-view-toggle-btn").forEach((b) => b.classList.toggle("is-active", b === btn));
+      if (el("calendar-list-view")) el("calendar-list-view").hidden = calendarViewMode !== "list";
+      if (el("calendar-months-view")) el("calendar-months-view").hidden = calendarViewMode !== "months";
+      if (el("calendar-year-view")) el("calendar-year-view").hidden = calendarViewMode !== "year";
+      renderCalendarEvents();
+    });
+  });
+
+  function renderCalendarEvents() {
+    renderCalendarListView();
+    renderCalendarMonthsView();
+    renderCalendarYearView();
   }
 
   function renderSyncView() {
