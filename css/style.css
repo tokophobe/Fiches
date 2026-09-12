@@ -449,36 +449,37 @@ button.topbar-new-card-btn {
 .subject-bar-algo-btn:hover, .subject-row-algo-btn:hover, .card-algo-btn:hover { filter: brightness(1.08); }
 
 /* Sélecteur de plusieurs matières confondues (item 1). */
+/* Item 1 : hauteur plein écran pour TOUS les panneaux de sélection
+   multi-matières (Réviser, Fiches, Stats), quelle que soit la taille de
+   l'écran — un vrai panneau plein écran plutôt qu'un encart de taille
+   variable selon le nombre de matières/dossiers à afficher. */
 .multi-subject-picker {
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+  width: 100%;
+  max-width: none;
   background: var(--paper);
-  border-radius: var(--radius-card);
+  border-radius: 0;
   padding: 14px;
-  margin-bottom: 14px;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 14px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
   box-shadow: var(--shadow-deep);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Bug corrigé (même famille que #subject-bar) : ce panneau restait en
-   flux normal, donc se retrouvait derrière la fiche (position fixe) dès
-   qu'on choisissait "Sélection de matières" sur Réviser — seul son titre
-   dépassait, la liste à cocher elle-même était invisible. */
-#multi-subject-picker {
-  position: fixed;
-  top: calc(env(safe-area-inset-top, 0px) + 92px);
-  left: 50%;
-  transform: translateX(-50%);
-  width: var(--review-card-width, 355px);
-  max-width: 560px;
-  max-height: 60vh;
-  overflow-y: auto;
-  z-index: 10;
-  margin-bottom: 0;
+.multi-subject-picker[hidden] {
+  display: none;
 }
 
 .multi-subject-picker-list {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 260px;
+  max-height: none;
   overflow-y: auto;
   margin-bottom: 12px;
 }
@@ -583,9 +584,40 @@ button.topbar-new-card-btn {
   border-radius: 10px;
   padding: 10px 12px;
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  gap: 6px;
   box-shadow: var(--shadow-subject-row, 0 4px 12px rgba(0,0,0,0.18));
+}
+
+/* Item 3 : ligne 2 — nombre de fiches/matières + actions à gauche, score
+   (avec sa mini-jauge) + mode d'apprentissage à droite. */
+.subject-row-line2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.subject-row-line2-left, .subject-row-line2-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.subject-row-score {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.subject-row-score svg {
+  width: 22px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 .subject-row.is-active { border-left: 3px solid var(--rule); }

@@ -1,6 +1,85 @@
 (() => {
   "use strict";
 
+  const ICON_LIBRARY = {
+    cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
+    folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>',
+    file: '<path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M15 2v5h5"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/>',
+    barChart: '<line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/>',
+    gradCap: '<path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/>',
+    settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+    brain: '<path d="M9.5 2a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 1.5 5.5V17a3 3 0 0 0 3 3 2.5 2.5 0 0 0 2.5-2.5V4.5A2.5 2.5 0 0 0 9.5 2z"/><path d="M14.5 2a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-1.5 5.5V17a3 3 0 0 1-3 3 2.5 2.5 0 0 1-2.5-2.5V4.5A2.5 2.5 0 0 1 14.5 2z"/>',
+    star: '<path d="M12 2l3.1 6.6 7.2.9-5.3 5 1.4 7.1L12 18l-6.4 3.6 1.4-7.1-5.3-5 7.2-.9z"/>',
+    heart: '<path d="M12 21s-7-4.5-9.5-9C1 8 2 4 6 4c2 0 4 1.5 6 4 2-2.5 4-4 6-4 4 0 5 4 3.5 8-2.5 4.5-9.5 9-9.5 9z"/>',
+    bookmark: '<path d="M6 2h12v20l-6-4-6 4z"/>',
+    flag: '<path d="M4 22V3"/><path d="M4 4h14l-2 4 2 4H4"/>',
+    moon: '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.9" y1="4.9" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.1" y2="19.1"/><line x1="4.9" y1="19.1" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.1" y2="4.9"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 15,14"/>',
+    calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/>',
+    check: '<polyline points="4,12 9,17 20,6"/>',
+    plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+    search: '<circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+    home: '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>',
+    layers: '<path d="M12 2l9 5-9 5-9-5 9-5z"/><path d="M3 12l9 5 9-5"/><path d="M3 17l9 5 9-5"/>',
+    target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+    zap: '<polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>',
+    book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5z"/><path d="M4 4.5v16"/>',
+    // Équivalents sobres des icônes déjà utilisées ailleurs dans l'appli
+    // (crayon, hibernation, chantier, annuler...).
+    pencil: '<path d="M17 3a2.83 2.83 0 0 1 4 4L7 21l-4 1 1-4z"/>',
+    sleep: '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/><line x1="9" y1="9" x2="13" y2="9"/><line x1="9" y1="9" x2="13" y2="9" transform="rotate(20 11 9)"/>',
+    cone: '<path d="M12 2l6 16H6z"/><line x1="8.2" y1="13" x2="15.8" y2="13"/><line x1="4" y1="21" x2="20" y2="21"/>',
+    undo: '<polyline points="9,14 4,9 9,4"/><path d="M4 9h11a5 5 0 0 1 5 5v1"/>',
+    trash: '<polyline points="3,6 5,6 21,6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>',
+    eye: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+    eyeOff: '<path d="M17.9 17.9A10.6 10.6 0 0 1 12 20c-7 0-11-8-11-8a19 19 0 0 1 4.2-5.4M9.9 4.2A9.7 9.7 0 0 1 12 4c7 0 11 8 11 8a19 19 0 0 1-2.2 3.1"/><line x1="1" y1="1" x2="23" y2="23"/>',
+    lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+    unlock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.6-1.8"/>',
+    bell: '<path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+    list: '<line x1="9" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="9" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>',
+    grid: '<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/>',
+    filter: '<polygon points="4,4 20,4 14,12 14,19 10,21 10,12"/>',
+    shuffle: '<polyline points="16,3 21,3 21,8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21,16 21,21 16,21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/>',
+    chevronLeft: '<polyline points="15,18 9,12 15,6"/>',
+    chevronRight: '<polyline points="9,18 15,12 9,6"/>',
+    chevronDown: '<polyline points="6,9 12,15 18,9"/>',
+    chevronUp: '<polyline points="18,15 12,9 6,15"/>',
+    refresh: '<polyline points="23,4 23,10 17,10"/><polyline points="1,20 1,14 7,14"/><path d="M3.5 9a9 9 0 0 1 14.8-3.4L23 10M1 14l4.7 4.4A9 9 0 0 0 20.5 15"/>',
+    share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/>',
+    link: '<path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/>',
+    mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,6 12,13 22,6"/>',
+    image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>',
+    thumbsUp: '<path d="M7 22V11l5-9 2 1v7h6a2 2 0 0 1 2 2l-1.5 7a2 2 0 0 1-2 1.5H7z"/>',
+    alertTriangle: '<path d="M10.3 3.9L1.8 18a1.7 1.7 0 0 0 1.5 2.5h17.4a1.7 1.7 0 0 0 1.5-2.5L13.7 3.9a1.7 1.7 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+    info: '<circle cx="12" cy="12" r="9"/><line x1="12" y1="16" x2="12" y2="11"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
+    shield: '<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/>',
+    gift: '<rect x="3" y="8" width="18" height="4"/><rect x="4" y="12" width="16" height="9"/><line x1="12" y1="8" x2="12" y2="21"/><path d="M12 8C10 3 5 4 5 6.5S8 8 12 8z"/><path d="M12 8c2-5 7-4 7-1.5S16 8 12 8z"/>',
+    award: '<circle cx="12" cy="8" r="6"/><polyline points="8.2,13.5 6,22 12,18 18,22 15.8,13.5"/>',
+    compass: '<circle cx="12" cy="12" r="9"/><polygon points="15,9 13,15 9,17 11,11"/>',
+    cloud: '<path d="M17 18H6a4 4 0 1 1 .7-7.9A6 6 0 0 1 18 9.5 4 4 0 0 1 17 18z"/>',
+    hash: '<line x1="5" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="19" y2="15"/><line x1="10" y1="4" x2="8" y2="20"/><line x1="16" y1="4" x2="14" y2="20"/>',
+    smile: '<circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+    userCheck: '<path d="M5 21v-2a4 4 0 0 1 4-4h3a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7" r="4"/><polyline points="17,11 19,13 23,9"/>',
+    globe: '<circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/>',
+    tool: '<path d="M14.7 6.3a4 4 0 0 0 5.4 5.4l-6 6a2 2 0 0 1-2.8 0l-3-3a2 2 0 0 1 0-2.8z"/><path d="M2 22l6-6"/>',
+    key: '<circle cx="8" cy="15" r="4"/><path d="M10.8 12.2L20 3l2 2-2 2 2 2-3 3-2-2-3.2 3.2"/>',
+    battery: '<rect x="2" y="7" width="18" height="10" rx="2"/><line x1="22" y1="10" x2="22" y2="14"/><line x1="6" y1="10" x2="6" y2="14"/>',
+    wifi: '<path d="M2 8.5a16 16 0 0 1 20 0"/><path d="M5.5 12a11 11 0 0 1 13 0"/><path d="M9 15.5a6 6 0 0 1 6 0"/><line x1="12" y1="19" x2="12.01" y2="19"/>',
+    thermometer: '<path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0z"/>',
+    scissors: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.1" y2="15.9"/><line x1="14.5" y1="14.5" x2="20" y2="20"/><line x1="8.1" y1="8.1" x2="12" y2="12"/>',
+    paperclip: '<path d="M21 11.5l-9.4 9.4a5 5 0 0 1-7-7L13 5.5a3.5 3.5 0 0 1 5 5L9.4 19a2 2 0 0 1-2.8-2.8L14 8.5"/>',
+    upload: '<path d="M12 3v13"/><polyline points="7,8 12,3 17,8"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/>',
+    download: '<path d="M12 3v13"/><polyline points="7,11 12,16 17,11"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/>',
+    move: '<line x1="3" y1="12" x2="21" y2="12"/><polyline points="8,6 3,12 8,18"/><polyline points="16,6 21,12 16,18"/>',
+    // Visages pour les boutons d'évaluation (item 3) : sobres, cohérents
+    // avec le reste de la banque, remplacent les émoticônes colorées.
+    faceSad: '<circle cx="12" cy="12" r="9"/><path d="M8 16s1.5-2.5 4-2.5 4 2.5 4 2.5"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+    faceNeutral: '<circle cx="12" cy="12" r="9"/><line x1="8" y1="15" x2="16" y2="15"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+    faceSmile: '<circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+    faceGrin: '<circle cx="12" cy="12" r="9"/><path d="M7.5 13c0 2 2 4.5 4.5 4.5s4.5-2.5 4.5-4.5z"/><line x1="7.5" y1="13" x2="16.5" y2="13"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+  };
+
   /** @type {Array<any>} cache mémoire de toutes les fiches */
   let cards = [];
   /** file de fiches dues pour la session de révision en cours */
@@ -92,16 +171,19 @@
   const revealSecondaryIconsBtn = el("reveal-secondary-icons-btn");
   const secondaryIconsWrap = el("secondary-icons-wrap");
   if (revealSecondaryIconsBtn && secondaryIconsWrap) {
+    // Item 6 : icônes épurées (banque d'icônes) plutôt que les caractères
+    // ▾/▴, à l'aller comme au retour.
+    revealSecondaryIconsBtn.innerHTML = iconSvgMarkup("chevronDown", "icon-inline-svg");
     revealSecondaryIconsBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       secondaryIconsWrap.hidden = !secondaryIconsWrap.hidden;
-      revealSecondaryIconsBtn.textContent = secondaryIconsWrap.hidden ? "▾" : "▴";
+      revealSecondaryIconsBtn.innerHTML = iconSvgMarkup(secondaryIconsWrap.hidden ? "chevronDown" : "chevronUp", "icon-inline-svg");
     });
     document.addEventListener("pointerdown", (e) => {
       if (secondaryIconsWrap.hidden) return;
       if (secondaryIconsWrap.contains(e.target) || e.target === revealSecondaryIconsBtn) return;
       secondaryIconsWrap.hidden = true;
-      revealSecondaryIconsBtn.textContent = "▾";
+      revealSecondaryIconsBtn.innerHTML = iconSvgMarkup("chevronDown", "icon-inline-svg");
     });
   }
   const cardListEl = el("card-list");
@@ -307,87 +389,12 @@
   const DEV_SETTINGS_KEY = "fiches_dev_settings";
   const DEFAULT_RATING_LABELS = { again: "😵‍💫", hard: "🤔", good: "🙂", easy: "😎" };
   const DEFAULT_NAV_LABELS = {
-    review: "🤓", manage: "🗃️", cards: "📄", stats: "📊", "learning-modes": "🎓", settings: "⚙",
+    review: "🤓", manage: "🗃️", cards: "📄", stats: "📊", settings: "⚙",
   };
   /** Banque d'icônes monochromes (essai apprécié, étoffé sur demande) —
    *  chaque entrée est le contenu interne d'un <svg viewBox="0 0 24 24">
    *  (traits seulement, currentColor géré au niveau du SVG englobant),
    *  pour rester cohérent avec le style sobre déjà en place sur le menu. */
-  const ICON_LIBRARY = {
-    cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
-    folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>',
-    file: '<path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M15 2v5h5"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/>',
-    barChart: '<line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/>',
-    gradCap: '<path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/>',
-    settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
-    brain: '<path d="M9.5 2a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 1.5 5.5V17a3 3 0 0 0 3 3 2.5 2.5 0 0 0 2.5-2.5V4.5A2.5 2.5 0 0 0 9.5 2z"/><path d="M14.5 2a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-1.5 5.5V17a3 3 0 0 1-3 3 2.5 2.5 0 0 1-2.5-2.5V4.5A2.5 2.5 0 0 1 14.5 2z"/>',
-    star: '<path d="M12 2l3.1 6.6 7.2.9-5.3 5 1.4 7.1L12 18l-6.4 3.6 1.4-7.1-5.3-5 7.2-.9z"/>',
-    heart: '<path d="M12 21s-7-4.5-9.5-9C1 8 2 4 6 4c2 0 4 1.5 6 4 2-2.5 4-4 6-4 4 0 5 4 3.5 8-2.5 4.5-9.5 9-9.5 9z"/>',
-    bookmark: '<path d="M6 2h12v20l-6-4-6 4z"/>',
-    flag: '<path d="M4 22V3"/><path d="M4 4h14l-2 4 2 4H4"/>',
-    moon: '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/>',
-    sun: '<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.9" y1="4.9" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.1" y2="19.1"/><line x1="4.9" y1="19.1" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.1" y2="4.9"/>',
-    clock: '<circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 15,14"/>',
-    calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/>',
-    check: '<polyline points="4,12 9,17 20,6"/>',
-    plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
-    search: '<circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
-    home: '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>',
-    layers: '<path d="M12 2l9 5-9 5-9-5 9-5z"/><path d="M3 12l9 5 9-5"/><path d="M3 17l9 5 9-5"/>',
-    target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
-    zap: '<polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>',
-    book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5z"/><path d="M4 4.5v16"/>',
-    // Équivalents sobres des icônes déjà utilisées ailleurs dans l'appli
-    // (crayon, hibernation, chantier, annuler...).
-    pencil: '<path d="M17 3a2.83 2.83 0 0 1 4 4L7 21l-4 1 1-4z"/>',
-    sleep: '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/><line x1="9" y1="9" x2="13" y2="9"/><line x1="9" y1="9" x2="13" y2="9" transform="rotate(20 11 9)"/>',
-    cone: '<path d="M12 2l6 16H6z"/><line x1="8.2" y1="13" x2="15.8" y2="13"/><line x1="4" y1="21" x2="20" y2="21"/>',
-    undo: '<polyline points="9,14 4,9 9,4"/><path d="M4 9h11a5 5 0 0 1 5 5v1"/>',
-    trash: '<polyline points="3,6 5,6 21,6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>',
-    eye: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
-    eyeOff: '<path d="M17.9 17.9A10.6 10.6 0 0 1 12 20c-7 0-11-8-11-8a19 19 0 0 1 4.2-5.4M9.9 4.2A9.7 9.7 0 0 1 12 4c7 0 11 8 11 8a19 19 0 0 1-2.2 3.1"/><line x1="1" y1="1" x2="23" y2="23"/>',
-    lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
-    unlock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.6-1.8"/>',
-    bell: '<path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/>',
-    list: '<line x1="9" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="9" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>',
-    grid: '<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/>',
-    filter: '<polygon points="4,4 20,4 14,12 14,19 10,21 10,12"/>',
-    shuffle: '<polyline points="16,3 21,3 21,8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21,16 21,21 16,21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/>',
-    chevronLeft: '<polyline points="15,18 9,12 15,6"/>',
-    chevronRight: '<polyline points="9,18 15,12 9,6"/>',
-    refresh: '<polyline points="23,4 23,10 17,10"/><polyline points="1,20 1,14 7,14"/><path d="M3.5 9a9 9 0 0 1 14.8-3.4L23 10M1 14l4.7 4.4A9 9 0 0 0 20.5 15"/>',
-    share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/>',
-    link: '<path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/>',
-    mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,6 12,13 22,6"/>',
-    image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>',
-    thumbsUp: '<path d="M7 22V11l5-9 2 1v7h6a2 2 0 0 1 2 2l-1.5 7a2 2 0 0 1-2 1.5H7z"/>',
-    alertTriangle: '<path d="M10.3 3.9L1.8 18a1.7 1.7 0 0 0 1.5 2.5h17.4a1.7 1.7 0 0 0 1.5-2.5L13.7 3.9a1.7 1.7 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
-    info: '<circle cx="12" cy="12" r="9"/><line x1="12" y1="16" x2="12" y2="11"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
-    shield: '<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/>',
-    gift: '<rect x="3" y="8" width="18" height="4"/><rect x="4" y="12" width="16" height="9"/><line x1="12" y1="8" x2="12" y2="21"/><path d="M12 8C10 3 5 4 5 6.5S8 8 12 8z"/><path d="M12 8c2-5 7-4 7-1.5S16 8 12 8z"/>',
-    award: '<circle cx="12" cy="8" r="6"/><polyline points="8.2,13.5 6,22 12,18 18,22 15.8,13.5"/>',
-    compass: '<circle cx="12" cy="12" r="9"/><polygon points="15,9 13,15 9,17 11,11"/>',
-    cloud: '<path d="M17 18H6a4 4 0 1 1 .7-7.9A6 6 0 0 1 18 9.5 4 4 0 0 1 17 18z"/>',
-    hash: '<line x1="5" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="19" y2="15"/><line x1="10" y1="4" x2="8" y2="20"/><line x1="16" y1="4" x2="14" y2="20"/>',
-    smile: '<circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
-    userCheck: '<path d="M5 21v-2a4 4 0 0 1 4-4h3a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7" r="4"/><polyline points="17,11 19,13 23,9"/>',
-    globe: '<circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/>',
-    tool: '<path d="M14.7 6.3a4 4 0 0 0 5.4 5.4l-6 6a2 2 0 0 1-2.8 0l-3-3a2 2 0 0 1 0-2.8z"/><path d="M2 22l6-6"/>',
-    key: '<circle cx="8" cy="15" r="4"/><path d="M10.8 12.2L20 3l2 2-2 2 2 2-3 3-2-2-3.2 3.2"/>',
-    battery: '<rect x="2" y="7" width="18" height="10" rx="2"/><line x1="22" y1="10" x2="22" y2="14"/><line x1="6" y1="10" x2="6" y2="14"/>',
-    wifi: '<path d="M2 8.5a16 16 0 0 1 20 0"/><path d="M5.5 12a11 11 0 0 1 13 0"/><path d="M9 15.5a6 6 0 0 1 6 0"/><line x1="12" y1="19" x2="12.01" y2="19"/>',
-    thermometer: '<path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0z"/>',
-    scissors: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.1" y2="15.9"/><line x1="14.5" y1="14.5" x2="20" y2="20"/><line x1="8.1" y1="8.1" x2="12" y2="12"/>',
-    paperclip: '<path d="M21 11.5l-9.4 9.4a5 5 0 0 1-7-7L13 5.5a3.5 3.5 0 0 1 5 5L9.4 19a2 2 0 0 1-2.8-2.8L14 8.5"/>',
-    upload: '<path d="M12 3v13"/><polyline points="7,8 12,3 17,8"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/>',
-    download: '<path d="M12 3v13"/><polyline points="7,11 12,16 17,11"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/>',
-    // Visages pour les boutons d'évaluation (item 3) : sobres, cohérents
-    // avec le reste de la banque, remplacent les émoticônes colorées.
-    faceSad: '<circle cx="12" cy="12" r="9"/><path d="M8 16s1.5-2.5 4-2.5 4 2.5 4 2.5"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
-    faceNeutral: '<circle cx="12" cy="12" r="9"/><line x1="8" y1="15" x2="16" y2="15"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
-    faceSmile: '<circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
-    faceGrin: '<circle cx="12" cy="12" r="9"/><path d="M7.5 13c0 2 2 4.5 4.5 4.5s4.5-2.5 4.5-4.5z"/><line x1="7.5" y1="13" x2="16.5" y2="13"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
-  };
   function iconSvgMarkup(iconId, cls) {
     const inner = ICON_LIBRARY[iconId];
     if (!inner) return "";
@@ -395,7 +402,7 @@
   }
   // Choix par défaut = les icônes déjà en place (essai précédent).
   const DEFAULT_NAV_ICONS = {
-    review: "cards", manage: "folder", cards: "file", stats: "barChart", "learning-modes": "gradCap", settings: "settings",
+    review: "cards", manage: "folder", cards: "file", stats: "barChart", settings: "settings",
   };
   // Couleurs des 4 notes (boutons d'évaluation + graphiques) et des 4 modes
   // d'apprentissage (badges) — item 2 : rendues éditables depuis la page
@@ -481,9 +488,29 @@
     v1: 10,
     v2: 45,
     v3: 65,
-    v4: 80,
+    v4: 75,
+    v5: 85,
     hideReviewScoreInfo: false,
     hideSubjectScoreOnReview: false,
+  };
+  // Zones de la jauge (item 4) : 6 zones désormais ("Bien" ajoutée entre
+  // "En bonne voie" et "Maîtrisé"), couleurs réglables depuis le mode
+  // développeur plutôt que fixes.
+  const GAUGE_ZONE_DEFS = [
+    { key: "debutant", boundKey: "v1", label: "Débutant" },
+    { key: "fragile", boundKey: "v2", label: "Fragile" },
+    { key: "enBonneVoie", boundKey: "v3", label: "En bonne voie" },
+    { key: "bien", boundKey: "v4", label: "Bien" },
+    { key: "maitrise", boundKey: "v5", label: "Maîtrisé" },
+    { key: "acquis", boundKey: null, label: "Acquis" },
+  ];
+  const DEFAULT_GAUGE_COLORS = {
+    debutant: "#94a3b8",
+    fragile: "#7c93b3",
+    enBonneVoie: "#4a90d9",
+    bien: "#3a7cc4",
+    maitrise: "#2f6fb0",
+    acquis: "#5fae7c",
   };
   // Disposition dispersée de la page d'accueil (item 3) : position (x,y en
   // pixels, coin haut-gauche du cercle) + diamètre (px) par bouton — tailles
@@ -495,7 +522,7 @@
   // la largeur réelle quel que soit l'appareil).
   const HOME_LAYOUT_TITLES = {
     review: "Réviser", manage: "Dossiers & matières", cards: "Fiches", addCard: "Ajouter une fiche",
-    stats: "Statistiques", learningModes: "Modes d'apprentissage", settings: "Réglages",
+    stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
     sync: "Synchronisation", dev: "Développeur",
   };
   // Largeur/hauteur de référence utilisées uniquement pour convertir une
@@ -508,8 +535,8 @@
     addCard: { x: 73.4, y: 14.9, d: 110 },
     cards: { x: 21.9, y: 39.5, d: 105 },
     stats: { x: 77.7, y: 37.5, d: 100 },
-    learningModes: { x: 39.5, y: 54.7, d: 100 },
     manage: { x: 79.8, y: 59.0, d: 95 },
+    calendar: { x: 39.5, y: 54.7, d: 100 },
     settings: { x: 16.2, y: 73.8, d: 85 },
     sync: { x: 54.4, y: 76.2, d: 95 },
     dev: { x: 89.0, y: 79.0, d: 80 },
@@ -534,6 +561,9 @@
   // émoticône, utilisé comme simple texte à trop d'endroits pour basculer
   // en SVG sans tout casser).
   const DEFAULT_ICON_BANK_CHOICES = { hibernate: "sleep", edit: "pencil", construction: "cone", undo: "undo" };
+  // Icônes de la page Organisation (item 3) : renommer/déplacer/supprimer,
+  // sobres, choisies dans la banque d'icônes.
+  const DEFAULT_ORG_ICON_BANK_CHOICES = { orgRename: "pencil", orgMove: "move", orgDelete: "trash" };
   // Icônes des boutons d'évaluation (item 2a) : plus d'émoticônes libres,
   // uniquement la banque d'icônes sobres.
   const DEFAULT_RATING_ICONS = { again: "faceSad", hard: "faceNeutral", good: "faceSmile", easy: "faceGrin" };
@@ -605,6 +635,7 @@
       navIcons: { ...DEFAULT_NAV_ICONS, ...(parsed.navIcons || {}) },
       ratingIcons: { ...DEFAULT_RATING_ICONS, ...(parsed.ratingIcons || {}) },
       iconBank: { ...DEFAULT_ICON_BANK_CHOICES, ...(parsed.iconBank || {}) },
+      orgIconBank: { ...DEFAULT_ORG_ICON_BANK_CHOICES, ...(parsed.orgIconBank || {}) },
       ratingColors: { ...DEFAULT_RATING_COLORS, ...(parsed.ratingColors || {}) },
       ratingBtnBgColor: parsed.ratingBtnBgColor || DEFAULT_RATING_BTN_BG_COLOR,
       modeColors: { ...DEFAULT_MODE_COLORS, ...(parsed.modeColors || {}) },
@@ -630,6 +661,7 @@
       homeLayoutAnchor: "center",
       reviewLayout: { ...DEFAULT_REVIEW_LAYOUT, ...(parsed.reviewLayout || {}) },
       cardScore: { ...DEFAULT_CARD_SCORE_SETTINGS, ...(parsed.cardScore || {}) },
+      gaugeColors: { ...DEFAULT_GAUGE_COLORS, ...(parsed.gaugeColors || {}) },
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       factoryDefaults: {
@@ -672,6 +704,7 @@
       showReviewChart: localStorage.getItem("fiches_show_review_chart"),
       newCardSubjectId: localStorage.getItem("fiches_new_card_subject_id"),
       cardFontSize: localStorage.getItem("fiches_card_font_size"),
+      calendarEvents: localStorage.getItem("fiches_calendar_events"),
     };
   }
   function applyAppPrefsFromRemote(prefs) {
@@ -687,6 +720,7 @@
     setIfPresent("fiches_show_review_chart", prefs.showReviewChart);
     setIfPresent("fiches_new_card_subject_id", prefs.newCardSubjectId);
     setIfPresent("fiches_card_font_size", prefs.cardFontSize);
+    setIfPresent("fiches_calendar_events", prefs.calendarEvents);
     loadBonusDaysSettings();
     loadBonusAgainMode();
     loadHibernateDays();
@@ -694,6 +728,7 @@
     applyShowRatingDays();
     applyShowReviewChart();
     applyCardFontSize();
+    if (el("view-calendar") && el("view-calendar").classList.contains("is-active")) renderCalendarEvents();
     renderSettingsView();
   }
   function getFactoryDefaults() {
@@ -927,7 +962,7 @@
     renderIconBankPicker(
       "dev-nav-icons-list",
       Object.keys(DEFAULT_NAV_ICONS),
-      { review: "Réviser", manage: "Gérer", cards: "Fiches", stats: "Stats", "learning-modes": "Modes", settings: "Réglages" },
+      { review: "Réviser", manage: "Gérer", cards: "Fiches", stats: "Stats", settings: "Réglages" },
       "navIcons",
       () => {
         applyNavLabels();
@@ -943,6 +978,18 @@
       { hibernate: "Hibernation", edit: "Éditer", construction: "Chantier", undo: "Annuler" },
       "iconBank",
       applyIconSettings
+    );
+  }
+
+  /** Icônes de la page Organisation (item 3) : renommer/déplacer/
+   *  supprimer. */
+  function renderOrgIconBankEditor() {
+    renderIconBankPicker(
+      "dev-org-icon-bank-list",
+      Object.keys(DEFAULT_ORG_ICON_BANK_CHOICES),
+      { orgRename: "Renommer", orgMove: "Déplacer", orgDelete: "Supprimer" },
+      "orgIconBank",
+      renderManageList
     );
   }
 
@@ -1173,7 +1220,7 @@
     const bInput = el("dev-score-b");
     if (pInput) pInput.value = s.p;
     if (bInput) bInput.value = s.b;
-    ["v1", "v2", "v3", "v4"].forEach((k) => {
+    ["v1", "v2", "v3", "v4", "v5"].forEach((k) => {
       const input = el(`dev-score-${k}`);
       if (input) input.value = s[k];
     });
@@ -1188,7 +1235,7 @@
     const bInput = el("dev-score-b");
     if (pInput) settings.cardScore.p = Number(pInput.value) || DEFAULT_CARD_SCORE_SETTINGS.p;
     if (bInput) settings.cardScore.b = Number(bInput.value) || DEFAULT_CARD_SCORE_SETTINGS.b;
-    ["v1", "v2", "v3", "v4"].forEach((k) => {
+    ["v1", "v2", "v3", "v4", "v5"].forEach((k) => {
       const input = el(`dev-score-${k}`);
       if (input) settings.cardScore[k] = Number(input.value) || DEFAULT_CARD_SCORE_SETTINGS[k];
     });
@@ -1202,7 +1249,7 @@
     renderReviewSubjectScore();
     renderReviewGauge();
   }
-  ["dev-score-p", "dev-score-b", "dev-score-v1", "dev-score-v2", "dev-score-v3", "dev-score-v4", "dev-score-hide-info", "dev-score-hide-subject"].forEach((id) => {
+  ["dev-score-p", "dev-score-b", "dev-score-v1", "dev-score-v2", "dev-score-v3", "dev-score-v4", "dev-score-v5", "dev-score-hide-info", "dev-score-hide-subject"].forEach((id) => {
     const input = el(id);
     if (input) input.addEventListener("input", saveCardScoreFromInputs);
   });
@@ -1211,6 +1258,7 @@
     devScoreResetBtn.addEventListener("click", () => {
       const settings = loadDevSettings();
       settings.cardScore = { ...DEFAULT_CARD_SCORE_SETTINGS };
+      settings.gaugeColors = { ...DEFAULT_GAUGE_COLORS };
       saveDevSettings(settings);
       renderDevView();
       renderManageList();
@@ -1218,6 +1266,21 @@
       renderReviewSubjectScore();
       renderReviewGauge();
     });
+  }
+
+  /** Couleurs des zones de la jauge (item 4). */
+  const GAUGE_COLORS_TITLES = Object.fromEntries(GAUGE_ZONE_DEFS.map((z) => [z.key, z.label]));
+  function renderGaugeColorsEditor() {
+    renderColorListPicker(
+      "dev-gauge-colors-list",
+      GAUGE_ZONE_DEFS.map((z) => z.key),
+      GAUGE_COLORS_TITLES,
+      "gaugeColors",
+      () => {
+        renderReviewGauge();
+        renderManageList();
+      }
+    );
   }
 
   function applyShadowSettings() {
@@ -2201,6 +2264,77 @@
     }
   }
 
+  /** Icône sobre pour un des 3 boutons d'action de l'Organisation (item 3),
+   *  reprend le même principe que getIconMarkupFor : reste en émoticône si
+   *  jamais personnalisée en tant que telle, sinon SVG de la banque. */
+  function orgIconMarkup(key) {
+    const iconId = loadDevSettings().orgIconBank[key];
+    if (iconId && ICON_LIBRARY[iconId]) return iconSvgMarkup(iconId, "icon-inline-svg");
+    return escapeHtml(DEFAULT_ORG_ICON_BANK_CHOICES[key] || "");
+  }
+
+  /** Ligne 2 partagée entre dossiers et matières (item 3) : à gauche le
+   *  nombre de fiches/matières + les 3 actions, à droite le score (avec sa
+   *  mini-jauge) + le mode d'apprentissage. */
+  function buildRowLine2({ countLabel, score, mode, onRename, onMove, onDelete, onAlgo, deleteTitle }) {
+    const line2 = document.createElement("div");
+    line2.className = "subject-row-line2";
+
+    const left = document.createElement("div");
+    left.className = "subject-row-line2-left";
+    const countEl = document.createElement("span");
+    countEl.className = "subject-row-count";
+    countEl.textContent = countLabel;
+    left.appendChild(countEl);
+
+    const renameBtn = document.createElement("button");
+    renameBtn.type = "button";
+    renameBtn.className = "icon-btn";
+    renameBtn.innerHTML = orgIconMarkup("orgRename");
+    renameBtn.title = "Renommer";
+    renameBtn.addEventListener("click", onRename);
+    left.appendChild(renameBtn);
+
+    const moveBtn = document.createElement("button");
+    moveBtn.type = "button";
+    moveBtn.className = "icon-btn";
+    moveBtn.innerHTML = orgIconMarkup("orgMove");
+    moveBtn.title = "Déplacer";
+    moveBtn.addEventListener("click", onMove);
+    left.appendChild(moveBtn);
+
+    const delBtn = document.createElement("button");
+    delBtn.type = "button";
+    delBtn.className = "icon-btn icon-btn--danger";
+    delBtn.innerHTML = orgIconMarkup("orgDelete");
+    delBtn.title = deleteTitle;
+    delBtn.addEventListener("click", onDelete);
+    left.appendChild(delBtn);
+
+    const right = document.createElement("div");
+    right.className = "subject-row-line2-right";
+    if (score !== null) {
+      const scoreEl = document.createElement("span");
+      scoreEl.className = "subject-row-score";
+      scoreEl.innerHTML = `${renderMiniGaugeSvg(score)}<span>${score}%</span>`;
+      right.appendChild(scoreEl);
+    }
+    const algoBtn = document.createElement("button");
+    algoBtn.type = "button";
+    algoBtn.className = "subject-row-algo-btn subject-row-algo-btn--compact";
+    // Item 7 : même icône sobre (banque) que reprendra la fiche de Réviser,
+    // plutôt que l'émoticône 🎓.
+    algoBtn.innerHTML = iconSvgMarkup("gradCap", "icon-inline-svg");
+    algoBtn.title = `Mode d'apprentissage : ${modeDisplayName(mode)}`;
+    algoBtn.addEventListener("click", onAlgo);
+    applyModeBadgeStyle(algoBtn, mode);
+    right.appendChild(algoBtn);
+
+    line2.appendChild(left);
+    line2.appendChild(right);
+    return line2;
+  }
+
   function renderTreeLevel(parentId, depth) {
     const childFolders = folders
       .filter((f) => f.parentId === parentId)
@@ -2213,7 +2347,9 @@
       const expanded = expandedManageFolders.has(f.id);
       const li = document.createElement("li");
       li.className = `subject-row folder-row folder-row-depth-${Math.min(depth, 3)}`;
-      li.style.paddingLeft = `${depth * 18}px`;
+      // Item 3 : c'est le CADRE (la ligne entière) qui s'indente désormais
+      // (margin-left), pas seulement le texte à l'intérieur (padding-left).
+      li.style.marginLeft = `${depth * 18}px`;
 
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
@@ -2226,51 +2362,21 @@
         renderSubjectManageList();
       });
 
-      const count = document.createElement("span");
-      count.className = "subject-row-count";
       const n = subjectIdsInFolder(f.id).length;
       const folderScore = computeFolderScore(f.id);
-      count.textContent = `${n} matière${n > 1 ? "s" : ""}${folderScore !== null ? ` · ${folderScore}%` : ""}`;
-
-      const actions = document.createElement("div");
-      actions.className = "row-actions";
-
-      const renameBtn = document.createElement("button");
-      renameBtn.type = "button";
-      renameBtn.className = "icon-btn";
-      renameBtn.textContent = "✏️";
-      renameBtn.title = "Renommer ce dossier";
-      renameBtn.addEventListener("click", () => renameFolder(f.id));
-
-      const moveBtn = document.createElement("button");
-      moveBtn.type = "button";
-      moveBtn.className = "icon-btn";
-      moveBtn.textContent = "↔️";
-      moveBtn.title = "Déplacer ce dossier";
-      moveBtn.addEventListener("click", () => openMovePicker("folder", f.id));
-
-      const assignBtn = document.createElement("button");
-      assignBtn.type = "button";
-      assignBtn.className = "icon-btn";
-      assignBtn.textContent = "🎓";
-      assignBtn.title = "Affecter un mode d'apprentissage à toutes les matières de ce dossier";
-      assignBtn.addEventListener("click", () => openAssignView("folder", f.id, "manage"));
-
-      const delBtn = document.createElement("button");
-      delBtn.type = "button";
-      delBtn.className = "icon-btn icon-btn--danger";
-      delBtn.textContent = "🗑️";
-      delBtn.title = "Supprimer ce dossier (doit être vide)";
-      delBtn.addEventListener("click", () => deleteFolder(f.id));
-
-      actions.appendChild(renameBtn);
-      actions.appendChild(moveBtn);
-      actions.appendChild(assignBtn);
-      actions.appendChild(delBtn);
+      const line2 = buildRowLine2({
+        countLabel: `${n} matière${n > 1 ? "s" : ""}`,
+        score: folderScore,
+        mode: "normal",
+        onRename: () => renameFolder(f.id),
+        onMove: () => openMovePicker("folder", f.id),
+        onDelete: () => deleteFolder(f.id),
+        onAlgo: () => openAssignView("folder", f.id, "manage"),
+        deleteTitle: "Supprimer ce dossier (doit être vide)",
+      });
 
       li.appendChild(nameBtn);
-      li.appendChild(count);
-      li.appendChild(actions);
+      li.appendChild(line2);
       subjectListEl.appendChild(li);
 
       // Ne recurse dans ce dossier que s'il est déplié (item 8) — sinon on
@@ -2282,12 +2388,12 @@
     for (const s of childSubjects) {
       const li = document.createElement("li");
       li.className = "subject-row" + (s.id === currentSubjectId ? " is-active" : "");
-      li.style.paddingLeft = `${depth * 18}px`;
+      li.style.marginLeft = `${depth * 18}px`;
 
-      // Item 5 : le nom n'ouvre plus le renommage (bouton ✏️ dédié
-      // maintenant, comme pour les dossiers) — juste une étiquette.
-      // Item 4 (nouveau) : cliquer dessus envoie sur la page Fiches avec
-      // cette matière sélectionnée (uniquement pour les matières, pas les
+      // Item 5 : le nom n'ouvre plus le renommage (bouton dédié maintenant,
+      // comme pour les dossiers) — juste une étiquette.
+      // Item 4 : cliquer dessus envoie sur la page Fiches avec cette
+      // matière sélectionnée (uniquement pour les matières, pas les
       // dossiers, qui gardent leur clic pour déplier/replier).
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
@@ -2300,59 +2406,25 @@
         if (tab) tab.click();
       });
 
-      const count = document.createElement("span");
-      count.className = "subject-row-count";
       const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
       const subjScore = computeSubjectScore(s.id);
-      count.textContent = `${n} fiche${n > 1 ? "s" : ""}${subjScore !== null ? ` · ${subjScore}%` : ""}`;
-
-      const actions = document.createElement("div");
-      actions.className = "row-actions";
-
-      // Même ordre que pour les dossiers (item 5) : ✏️, ↔️, 🎓, 🗑️.
-      const renameBtn = document.createElement("button");
-      renameBtn.type = "button";
-      renameBtn.className = "icon-btn";
-      renameBtn.textContent = "✏️";
-      renameBtn.title = "Renommer cette matière";
-      renameBtn.addEventListener("click", () => renameSubject(s.id));
-
-      const moveBtn = document.createElement("button");
-      moveBtn.type = "button";
-      moveBtn.className = "icon-btn";
-      moveBtn.textContent = "↔️";
-      moveBtn.title = "Déplacer cette matière";
-      moveBtn.addEventListener("click", () => openMovePicker("subject", s.id));
-
-      // Bouton "mode" fusionné avec l'affichage du mode actuel (item 9) :
-      // un encadré à part entière (pas juste du texte) pour bien se lire
-      // comme un bouton, sans élargir la ligne.
-      const algoBtn = document.createElement("button");
-      algoBtn.type = "button";
-      algoBtn.className = "subject-row-algo-btn subject-row-algo-btn--compact";
-      algoBtn.innerHTML = `🎓`;
-      algoBtn.title = `Mode d'apprentissage : ${modeDisplayName(getSubjectAlgoMode(s.id))}`;
-      algoBtn.addEventListener("click", () => openSubjectAlgoView(s.id));
-      applyModeBadgeStyle(algoBtn, getSubjectAlgoMode(s.id));
-
-      const delBtn = document.createElement("button");
-      delBtn.type = "button";
-      delBtn.className = "icon-btn icon-btn--danger";
-      delBtn.textContent = "🗑️";
-      delBtn.title = "Supprimer cette matière";
-      delBtn.addEventListener("click", () => deleteSubject(s.id));
-
-      actions.appendChild(renameBtn);
-      actions.appendChild(moveBtn);
-      actions.appendChild(algoBtn);
-      actions.appendChild(delBtn);
+      const line2 = buildRowLine2({
+        countLabel: `${n} fiche${n > 1 ? "s" : ""}`,
+        score: subjScore,
+        mode: getSubjectAlgoMode(s.id),
+        onRename: () => renameSubject(s.id),
+        onMove: () => openMovePicker("subject", s.id),
+        onDelete: () => deleteSubject(s.id),
+        onAlgo: () => openSubjectAlgoView(s.id),
+        deleteTitle: "Supprimer cette matière",
+      });
 
       li.appendChild(nameBtn);
-      li.appendChild(count);
-      li.appendChild(actions);
+      li.appendChild(line2);
       subjectListEl.appendChild(li);
     }
   }
+
 
   /* ---------------------------------------------------------
      Gestion des dossiers (créer, renommer, supprimer, déplacer) — item 1
@@ -3587,13 +3659,6 @@
   /** Jauge du score (item 2), demi-cercle façon jauge de carburant, avec
    *  5 zones colorées (seuils V1-V4 réglables) et une aiguille pointant
    *  le score de la matière/sélection en cours. */
-  const GAUGE_ZONES = [
-    { key: "v1", label: "Débutant", color: "#94a3b8" },
-    { key: "v2", label: "Fragile", color: "#7c93b3" },
-    { key: "v3", label: "En bonne voie", color: "#4a90d9" },
-    { key: "v4", label: "Maîtrisé", color: "#2f6fb0" },
-    { key: "end", label: "Acquis", color: "#5fae7c" },
-  ];
   function polarToCartesian(cx, cy, r, angleDeg) {
     const rad = ((angleDeg - 180) * Math.PI) / 180;
     return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
@@ -3604,42 +3669,80 @@
     const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
     return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArcFlag} 0 ${end.x} ${end.y}`;
   }
-  function renderReviewGauge() {
-    const wrap = el("review-gauge-wrap");
-    if (!wrap) return;
+  /** Limites (en %) des 6 zones de la jauge (item 4), à partir des seuils
+   *  réglés dans le mode développeur. */
+  function gaugeBounds(cardScoreSettings) {
+    return [0, cardScoreSettings.v1, cardScoreSettings.v2, cardScoreSettings.v3, cardScoreSettings.v4, cardScoreSettings.v5, 100];
+  }
+  /** Jauge SVG partagée (item 4/5), en demi-cercle façon jauge de
+   *  carburant — utilisée à la fois en grand sur Réviser (avec aiguille
+   *  triangulaire + étiquettes de zone) et en miniature dans la page
+   *  Organisation (juste les zones remplies jusqu'au score, sans aiguille
+   *  ni étiquettes — voir renderMiniGaugeSvg). */
+  function buildGaugeSvg(score, { withNeedle, withLabels, onlyFilledZones, size }) {
     const settings = loadDevSettings().cardScore;
-    const pool = subjectCards();
-    const score = pool.length > 0 ? Math.round(pool.reduce((acc, c) => acc + computeCardScore(c), 0) / pool.length) : 0;
-
-    const bounds = [0, settings.v1, settings.v2, settings.v3, settings.v4, 100];
-    const cx = 128, cy = 106, r = 68, strokeW = 20;
-    let svg = `<svg viewBox="0 0 256 150" xmlns="http://www.w3.org/2000/svg">`;
-    for (let i = 0; i < GAUGE_ZONES.length; i++) {
+    const colors = loadDevSettings().gaugeColors;
+    const bounds = gaugeBounds(settings);
+    const s = Math.max(0, Math.min(100, score));
+    const cx = size.cx, cy = size.cy, r = size.r, strokeW = size.strokeW;
+    let svg = `<svg viewBox="0 0 ${size.vbW} ${size.vbH}" xmlns="http://www.w3.org/2000/svg">`;
+    for (let i = 0; i < GAUGE_ZONE_DEFS.length; i++) {
       const from = bounds[i];
       const to = bounds[i + 1];
       if (to <= from) continue; // seuils mal ordonnés : zone vide, on saute
+      // Mini-jauge (item 3) : seules les zones ATTEINTES par le score sont
+      // dessinées, remplies jusqu'à ce score précis (pas jusqu'au bout de
+      // la zone) — pas d'aiguille séparée, ce sont les couleurs elles-
+      // mêmes qui avancent jusqu'au score.
+      if (onlyFilledZones && from >= s) continue;
+      const zoneEnd = onlyFilledZones ? Math.min(to, s) : to;
       const startAngle = (from / 100) * 180;
-      const endAngle = (to / 100) * 180;
-      svg += `<path d="${describeArc(cx, cy, r, startAngle, endAngle)}" fill="none" stroke="${GAUGE_ZONES[i].color}" stroke-width="${strokeW}" />`;
-      // Item 3 : l'intitulé de chaque zone apparaît en face d'elle,
-      // directement sur la jauge — plus besoin de rappeler séparément le
-      // nom de la zone désignée par l'aiguille. Les deux zones extrêmes
-      // (proches de l'horizontale pure) gardent leur étiquette centrée
-      // sur le même rayon que les autres plutôt que collée au bord, pour
-      // ne pas sortir du cadre.
-      const midAngle = (startAngle + endAngle) / 2;
-      const labelR = r + strokeW / 2 + (midAngle < 15 || midAngle > 165 ? 9 : 12);
-      const labelPos = polarToCartesian(cx, cy, labelR, midAngle);
-      const anchor = midAngle < 75 ? "end" : midAngle > 105 ? "start" : "middle";
-      svg += `<text x="${labelPos.x.toFixed(1)}" y="${labelPos.y.toFixed(1)}" font-size="8" font-family="sans-serif" font-weight="700" fill="${GAUGE_ZONES[i].color}" text-anchor="${anchor}">${escapeHtml(GAUGE_ZONES[i].label)}</text>`;
+      const endAngle = (zoneEnd / 100) * 180;
+      if (endAngle <= startAngle) continue;
+      const color = colors[GAUGE_ZONE_DEFS[i].key] || DEFAULT_GAUGE_COLORS[GAUGE_ZONE_DEFS[i].key];
+      svg += `<path d="${describeArc(cx, cy, r, startAngle, endAngle)}" fill="none" stroke="${color}" stroke-width="${strokeW}" />`;
+      if (withLabels) {
+        const midAngle = ((from / 100) * 180 + (to / 100) * 180) / 2;
+        const labelR = r + strokeW / 2 + (midAngle < 15 || midAngle > 165 ? 9 : 12);
+        const labelPos = polarToCartesian(cx, cy, labelR, midAngle);
+        const anchor = midAngle < 75 ? "end" : midAngle > 105 ? "start" : "middle";
+        svg += `<text x="${labelPos.x.toFixed(1)}" y="${labelPos.y.toFixed(1)}" font-size="8" font-family="sans-serif" font-weight="700" fill="${color}" text-anchor="${anchor}">${escapeHtml(GAUGE_ZONE_DEFS[i].label)}</text>`;
+      }
     }
-    // Aiguille : pointe vers le score actuel (0% = tout à gauche, 100% =
-    // tout à droite), pivot au centre du demi-cercle.
-    const needleTip = polarToCartesian(cx, cy, r - strokeW / 2 - 4, (Math.max(0, Math.min(100, score)) / 100) * 180);
-    svg += `<line x1="${cx}" y1="${cy}" x2="${needleTip.x.toFixed(1)}" y2="${needleTip.y.toFixed(1)}" stroke="var(--ink, #1f2937)" stroke-width="3" stroke-linecap="round" />`;
-    svg += `<circle cx="${cx}" cy="${cy}" r="6" fill="var(--ink, #1f2937)" />`;
+    if (withNeedle) {
+      // Item 5 : aiguille triangulaire (un fin triangle qui part du centre)
+      // plutôt qu'un simple trait.
+      const angle = (s / 100) * 180;
+      const tip = polarToCartesian(cx, cy, r - strokeW / 2 - 4, angle);
+      const baseA = polarToCartesian(cx, cy, 9, angle - 5);
+      const baseB = polarToCartesian(cx, cy, 9, angle + 5);
+      svg += `<polygon points="${tip.x.toFixed(1)},${tip.y.toFixed(1)} ${baseA.x.toFixed(1)},${baseA.y.toFixed(1)} ${baseB.x.toFixed(1)},${baseB.y.toFixed(1)}" fill="var(--ink, #1f2937)" />`;
+      svg += `<circle cx="${cx}" cy="${cy}" r="5" fill="var(--ink, #1f2937)" />`;
+    }
     svg += `</svg>`;
-
+    return svg;
+  }
+  /** Mini-jauge (item 3), utilisée dans la page Organisation à côté du
+   *  score de chaque dossier/matière. */
+  function renderMiniGaugeSvg(score) {
+    return buildGaugeSvg(score, {
+      withNeedle: false,
+      withLabels: false,
+      onlyFilledZones: true,
+      size: { cx: 20, cy: 19, r: 14, strokeW: 5, vbW: 40, vbH: 24 },
+    });
+  }
+  function renderReviewGauge() {
+    const wrap = el("review-gauge-wrap");
+    if (!wrap) return;
+    const pool = subjectCards();
+    const score = pool.length > 0 ? Math.round(pool.reduce((acc, c) => acc + computeCardScore(c), 0) / pool.length) : 0;
+    const svg = buildGaugeSvg(score, {
+      withNeedle: true,
+      withLabels: true,
+      onlyFilledZones: false,
+      size: { cx: 128, cy: 106, r: 68, strokeW: 20, vbW: 256, vbH: 150 },
+    });
     wrap.innerHTML = `
       ${svg}
       <div class="review-gauge-value">${score}%</div>
@@ -6442,12 +6545,14 @@
     renderRatingIconsEditor();
     renderNavIconsEditor();
     renderIconBankEditor();
+    renderOrgIconBankEditor();
     renderBgColorsEditor();
     renderTextColorsSetEditor();
     renderShadowsEditor();
     renderHomeLayoutEditor();
     renderReviewLayoutEditor();
     renderCardScoreEditor();
+    renderGaugeColorsEditor();
     renderFactoryDefaultsEditor();
     // Après TOUS les autres rendus ci-dessus : ils régénèrent leurs propres
     // <input class="dev-color-value"> dynamiquement, donc les pastilles
@@ -6548,10 +6653,15 @@
         renderReviewGauge();
       }
       if (view === "stats") renderStats();
-      if (view === "learning-modes") loadModeFormIntoInputs(algoEditingModeId || "normal");
       if (view === "dev") renderDevView();
       if (view === "sync") renderSyncView();
-      if (view === "settings") renderSettingsView();
+      if (view === "calendar") renderCalendarEvents();
+      if (view === "settings") {
+        renderSettingsView();
+        // Item 8 : le contenu de l'ancienne page "Modes d'apprentissage"
+        // vit maintenant dans Réglages — on le peuple à chaque ouverture.
+        loadModeFormIntoInputs(algoEditingModeId || "normal");
+      }
       renderDuePill();
     });
   });
@@ -6615,6 +6725,162 @@
   let unsubscribeLearningModesRealtime = null;
   let unsubscribeDevSettingsRealtime = null;
   let syncAutoRetrying = false;
+
+  /* ---------------------------------------------------------
+     Vue Calendrier (item 9) — événements liés à une matière/dossier,
+     pensés comme base pour une future génération de programme de
+     révision. Stockage simple en localStorage (pas encore dans IndexedDB,
+     le volume attendu est faible).
+  --------------------------------------------------------- */
+  const CALENDAR_EVENTS_KEY = "fiches_calendar_events";
+  function loadCalendarEvents() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(CALENDAR_EVENTS_KEY) || "[]");
+      return Array.isArray(raw) ? raw : [];
+    } catch {
+      return [];
+    }
+  }
+  function saveCalendarEvents(events) {
+    localStorage.setItem(CALENDAR_EVENTS_KEY, JSON.stringify(events));
+    scheduleDevSettingsPush();
+  }
+  let calendarEventLinkId = null; // "subject:ID" ou "folder:ID" ou null
+
+  function calendarLinkLabel(linkId) {
+    if (!linkId) return "Aucune matière/dossier liés";
+    const [type, id] = linkId.split(":");
+    if (type === "subject") return subjectName(id);
+    const f = folders.find((x) => x.id === id);
+    return f ? `${f.name} (dossier)` : "Aucune matière/dossier liés";
+  }
+
+  function renderCalendarLinkTree(container) {
+    container.innerHTML = "";
+    function walk(parentId, depth) {
+      const childFolders = folders
+        .filter((f) => f.parentId === parentId)
+        .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      const childSubjects = subjects
+        .filter((s) => s.folderId === parentId)
+        .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      childFolders.forEach((f) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "subject-choice-tree-folder";
+        btn.style.cssText = `padding-left:${10 + depth * 14}px; width:100%; text-align:left; background:none; border:none;`;
+        btn.textContent = `${folderIcon()} ${f.name}`;
+        btn.addEventListener("click", () => {
+          calendarEventLinkId = `folder:${f.id}`;
+          closeCalendarLinkMenu();
+        });
+        container.appendChild(btn);
+        walk(f.id, depth + 1);
+      });
+      childSubjects.forEach((s) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "subject-choice-tree-item";
+        btn.style.paddingLeft = `${12 + depth * 14}px`;
+        btn.textContent = s.name;
+        btn.addEventListener("click", () => {
+          calendarEventLinkId = `subject:${s.id}`;
+          closeCalendarLinkMenu();
+        });
+        container.appendChild(btn);
+      });
+    }
+    walk(ROOT_FOLDER_ID, 0);
+  }
+  function closeCalendarLinkMenu() {
+    const menu = el("calendar-event-subject-menu");
+    if (menu) menu.hidden = true;
+    const btn = el("calendar-event-subject-btn");
+    if (btn) btn.textContent = calendarLinkLabel(calendarEventLinkId);
+  }
+  const calendarEventSubjectBtn = el("calendar-event-subject-btn");
+  if (calendarEventSubjectBtn) {
+    calendarEventSubjectBtn.addEventListener("click", () => {
+      const menu = el("calendar-event-subject-menu");
+      const tree = el("calendar-event-subject-tree");
+      if (!menu || !tree) return;
+      renderCalendarLinkTree(tree);
+      menu.hidden = false;
+    });
+  }
+  const calendarEventSubjectNoneBtn = el("calendar-event-subject-none");
+  if (calendarEventSubjectNoneBtn) {
+    calendarEventSubjectNoneBtn.addEventListener("click", () => {
+      calendarEventLinkId = null;
+      closeCalendarLinkMenu();
+    });
+  }
+  document.addEventListener("pointerdown", (e) => {
+    const menu = el("calendar-event-subject-menu");
+    if (!menu || menu.hidden) return;
+    if (menu.contains(e.target) || e.target === calendarEventSubjectBtn) return;
+    menu.hidden = true;
+  });
+
+  function renderCalendarEvents() {
+    const list = el("calendar-event-list");
+    const empty = el("calendar-event-empty");
+    if (!list) return;
+    const events = loadCalendarEvents().slice().sort((a, b) => a.date.localeCompare(b.date));
+    list.innerHTML = "";
+    if (events.length === 0) {
+      if (empty) empty.hidden = false;
+      return;
+    }
+    if (empty) empty.hidden = true;
+    events.forEach((ev) => {
+      const li = document.createElement("li");
+      li.className = "card-row";
+      li.style.cssText = "flex-direction:row; align-items:center; justify-content:space-between;";
+      const main = document.createElement("div");
+      main.className = "card-row-main";
+      const d = new Date(ev.date + "T00:00:00");
+      const dateLabel = d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+      main.innerHTML = `<strong>${escapeHtml(ev.title)}</strong><br><span class="card-row-meta">${escapeHtml(dateLabel)}${ev.linkId ? ` · ${escapeHtml(calendarLinkLabel(ev.linkId))}` : ""}</span>`;
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "icon-btn icon-btn--danger";
+      delBtn.innerHTML = iconSvgMarkup("trash", "icon-inline-svg");
+      delBtn.title = "Supprimer cet événement";
+      delBtn.addEventListener("click", () => {
+        const remaining = loadCalendarEvents().filter((x) => x.id !== ev.id);
+        saveCalendarEvents(remaining);
+        renderCalendarEvents();
+      });
+      li.appendChild(main);
+      li.appendChild(delBtn);
+      list.appendChild(li);
+    });
+  }
+
+  const calendarEventForm = el("calendar-event-form");
+  if (calendarEventForm) {
+    calendarEventForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const titleInput = el("calendar-event-title");
+      const dateInput = el("calendar-event-date");
+      if (!titleInput.value.trim() || !dateInput.value) return;
+      const events = loadCalendarEvents();
+      events.push({
+        id: uid(),
+        title: titleInput.value.trim(),
+        date: dateInput.value,
+        linkId: calendarEventLinkId,
+      });
+      saveCalendarEvents(events);
+      calendarEventForm.reset();
+      calendarEventLinkId = null;
+      const btn = el("calendar-event-subject-btn");
+      if (btn) btn.textContent = calendarLinkLabel(null);
+      renderCalendarEvents();
+      showToast("Événement ajouté");
+    });
+  }
 
   function renderSyncView() {
     const configured = Sync.isConfigured();
