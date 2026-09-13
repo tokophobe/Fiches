@@ -315,6 +315,35 @@ button.topbar-new-card-btn {
   text-overflow: ellipsis;
 }
 
+/* Item 10 : affordance plus nette (ombre + chevron) pour bien signaler que
+   c'est une zone d'interaction, sans réintroduire de bordure (retirée
+   ailleurs sur demande). */
+.subject-select-btn--prominent {
+  position: relative;
+  padding-right: 34px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.subject-select-btn--prominent::after {
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-65%) rotate(45deg);
+  opacity: 0.6;
+}
+
+.cards-scope-summary {
+  font-family: var(--font-type);
+  font-size: 12px;
+  color: var(--general-text-color, var(--ink-soft));
+  margin: 6px 0 0;
+}
+
 .subject-select-btn::after {
   content: " ▾";
   opacity: 0.7;
@@ -1347,7 +1376,7 @@ button.home-btn {
   top: var(--review-gauge-top, 675px);
   transform: translateX(-50%);
   width: var(--review-card-width, 91vw);
-  max-width: 240px;
+  max-width: 200px;
   z-index: 2;
   text-align: center;
 }
@@ -2245,6 +2274,10 @@ button.home-btn {
 /* ============================================================
    CALENDRIER (item 2/9)
    ============================================================ */
+.calendar-date-field {
+  position: relative;
+}
+
 .calendar-date-btn {
   display: flex;
   align-items: center;
@@ -2258,6 +2291,21 @@ button.home-btn {
   font-size: 14px;
   color: var(--ink);
   text-align: left;
+}
+
+/* Item 3 : l'input natif recouvre tout le bouton, en transparence — c'est
+   lui qui reçoit réellement le clic/tap et ouvre son sélecteur de date,
+   fiable sur tous les navigateurs (contrairement à showPicker() appelé sur
+   un champ minuscule et non interactif). */
+.calendar-date-native-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  border: none;
+  padding: 0;
 }
 
 .calendar-view-toggle {
@@ -2295,11 +2343,20 @@ button.home-btn {
 
 /* Grille des mois (item 2) : deux mini-mois affichés côte à côte (ou
    empilés sur un écran étroit). */
-.calendar-months-row {
+/* Item 5 : les mois s'empilent verticalement, chacun sur toute la largeur
+   disponible plutôt que côte à côte. */
+.calendar-months-stack {
   display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 22px;
+  max-height: 70vh;
+  overflow-y: auto;
 }
+
+.calendar-months-stack .calendar-mini-month { max-width: none; }
+.calendar-months-stack .calendar-mini-month-grid { gap: 4px; }
+.calendar-months-stack .calendar-day-cell { font-size: 14px; }
+.calendar-months-stack .calendar-mini-month-title { font-size: 15px; }
 
 .calendar-mini-month {
   flex: 1 1 0;
@@ -2352,13 +2409,26 @@ button.home-btn {
 .calendar-day-cell.is-empty { visibility: hidden; }
 .calendar-day-cell.has-event { cursor: pointer; }
 
+/* Bug/gêne visuelle corrigée (item 6) : le point n'était pas centré
+   horizontalement (aucun repère left/transform), il pouvait donc déborder
+   sur un bord de la case, en particulier chevaucher l'anneau du jour
+   "aujourd'hui". Centré proprement ici, et agrandi dans la présentation
+   "Calendrier" (cases plus grandes, pleine largeur) pour mieux ressortir. */
 .calendar-day-dot {
   width: 4px;
   height: 4px;
   border-radius: 50%;
   background: var(--blue);
   position: absolute;
-  bottom: 2px;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.calendar-months-stack .calendar-day-dot {
+  width: 5px;
+  height: 5px;
+  bottom: 5px;
 }
 
 /* Grille année (item 2) : les 12 mois en mini-grilles plus compactes. */
@@ -2371,6 +2441,32 @@ button.home-btn {
 .calendar-year-grid .calendar-mini-month { min-width: 0; }
 .calendar-year-grid .calendar-mini-month-title { font-size: 11px; }
 .calendar-year-grid .calendar-day-cell { font-size: 8px; }
+
+/* Item 7 : programme de révision. */
+.revision-program-row {
+  display: block;
+  cursor: pointer;
+}
+
+.revision-program-row .card-row-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.revision-program-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.revision-program-bar-fill {
+  height: 100%;
+  background: var(--blue);
+  border-radius: 999px;
+}
 
 .chart-empty {
   font-size: 13px;

@@ -658,15 +658,24 @@
     );
   }
 
+  // Bug corrigé (item 9) : cette fonction est appelée TRÈS souvent (une
+  // fois par fiche pour son score, par exemple) et reconstruisait à chaque
+  // fois l'objet complet (JSON.parse + fusion de ~15 groupes de réglages)
+  // — sur une liste de nombreuses fiches, ça pouvait provoquer un vrai
+  // temps de gel. On ne refait ce travail que si le contenu brut de
+  // localStorage a changé depuis le dernier appel.
+  let _devSettingsCacheRaw;
+  let _devSettingsCache;
   function loadDevSettings() {
+    const raw = localStorage.getItem(DEV_SETTINGS_KEY);
+    if (_devSettingsCache && raw === _devSettingsCacheRaw) return _devSettingsCache;
     let parsed = {};
     try {
-      const raw = localStorage.getItem(DEV_SETTINGS_KEY);
       parsed = raw ? JSON.parse(raw) : {};
     } catch (e) {
       parsed = {};
     }
-    return {
+    const built = {
       ratingLabels: { ...DEFAULT_RATING_LABELS, ...(parsed.ratingLabels || {}) },
       navLabels: { ...DEFAULT_NAV_LABELS, ...(parsed.navLabels || {}) },
       navIcons: { ...DEFAULT_NAV_ICONS, ...(parsed.navIcons || {}) },
@@ -720,6 +729,9 @@
         renforce: { ...BUILTIN_MODE_DEFAULTS.renforce, ...((parsed.factoryDefaults || {}).renforce || {}) },
       },
     };
+    _devSettingsCacheRaw = raw;
+    _devSettingsCache = built;
+    return built;
   }
   function saveDevSettings(settings) {
     settings.updatedAt = new Date().toISOString();
@@ -1615,7 +1627,16 @@
   function setNightModeActive(value) {
     localStorage.setItem(NIGHT_MODE_KEY, String(value));
     document.documentElement.classList.toggle("is-night-mode", value);
-    scheduleDevSettingsPush();
+    // Bug corrigé (item 1) : ce réglage ne passait pas par saveDevSettings,
+    // donc son horodatage de synchro n'était jamais mis à jour — un échange
+    // de données (même sans rapport direct) pouvait alors réappliquer un
+    // état de synchro plus ancien et faire "clignoter" le bouton entre nuit
+    // et jour juste après l'avoir pressé. saveDevSettings met à jour cet
+    // horodatage à chaque fois, donc ce changement est toujours reconnu
+    // comme le plus récent.
+    const settings = loadDevSettings();
+    settings.nightMode = value;
+    saveDevSettings(settings);
     applyColorSettings();
     renderManageList();
     renderReviewGauge();
@@ -3876,21 +3897,59 @@
       <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="700" fill="${color}" font-family="sans-serif">${score}%</text>
     </svg>`;
   }
+  /** Jauge cercle complet (item 8) — reprend le principe préféré de la
+   *  page Organisation (anneau, score au centre), mais avec les 6 zones
+   *  colorées réparties sur tout le tour ET leurs intitulés autour, plus
+   *  un petit repère triangulaire indiquant la position exacte du score
+   *  sur l'anneau (à la place de l'aiguille du demi-cercle d'avant). */
+  function polarToCartesianFull(cx, cy, r, angleDeg) {
+    const rad = ((angleDeg - 90) * Math.PI) / 180;
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  }
+  function describeArcFull(cx, cy, r, startAngle, endAngle) {
+    const start = polarToCartesianFull(cx, cy, r, startAngle);
+    const end = polarToCartesianFull(cx, cy, r, endAngle);
+    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+    return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArcFlag} 1 ${end.x} ${end.y}`;
+  }
   function renderReviewGauge() {
     const wrap = el("review-gauge-wrap");
     if (!wrap) return;
     const pool = subjectCards();
     const score = pool.length > 0 ? Math.round(pool.reduce((acc, c) => acc + computeCardScore(c), 0) / pool.length) : 0;
-    const svg = buildGaugeSvg(score, {
-      withNeedle: true,
-      withLabels: true,
-      onlyFilledZones: false,
-      size: { cx: 128, cy: 106, r: 68, strokeW: 20, vbW: 256, vbH: 150 },
-    });
-    wrap.innerHTML = `
-      ${svg}
-      <div class="review-gauge-value">${score}%</div>
-    `;
+    const settings = loadDevSettings().cardScore;
+    const colors = effectiveColors(loadDevSettings()).gaugeColors;
+    const bounds = gaugeBounds(settings);
+    const cx = 140, cy = 130, r = 82, strokeW = 20;
+    let svg = `<svg viewBox="0 0 280 300" xmlns="http://www.w3.org/2000/svg">`;
+    for (let i = 0; i < GAUGE_ZONE_DEFS.length; i++) {
+      const from = bounds[i];
+      const to = bounds[i + 1];
+      if (to <= from) continue;
+      const startAngle = (from / 100) * 360;
+      const endAngle = (to / 100) * 360;
+      const color = colors[GAUGE_ZONE_DEFS[i].key] || DEFAULT_GAUGE_COLORS[GAUGE_ZONE_DEFS[i].key];
+      svg += `<path d="${describeArcFull(cx, cy, r, startAngle, endAngle)}" fill="none" stroke="${color}" stroke-width="${strokeW}" />`;
+      const midAngle = (startAngle + endAngle) / 2;
+      const labelPos = polarToCartesianFull(cx, cy, r + strokeW / 2 + 14, midAngle);
+      // L'ancrage du texte suit le côté du cercle où tombe l'étiquette,
+      // pour qu'elle s'écarte du bord plutôt que de le chevaucher.
+      let anchor = "middle";
+      if (midAngle > 15 && midAngle < 165) anchor = "start";
+      else if (midAngle > 195 && midAngle < 345) anchor = "end";
+      svg += `<text x="${labelPos.x.toFixed(1)}" y="${labelPos.y.toFixed(1)}" font-size="10" font-family="sans-serif" font-weight="700" fill="${color}" text-anchor="${anchor}" dominant-baseline="middle">${escapeHtml(GAUGE_ZONE_DEFS[i].label)}</text>`;
+    }
+    // Petit repère triangulaire sur l'anneau, à la position exacte du
+    // score (remplace l'aiguille du demi-cercle).
+    const markerAngle = (Math.max(0, Math.min(100, score)) / 100) * 360;
+    const tip = polarToCartesianFull(cx, cy, r + strokeW / 2 + 3, markerAngle);
+    const baseA = polarToCartesianFull(cx, cy, r + strokeW / 2 - 5, markerAngle - 4);
+    const baseB = polarToCartesianFull(cx, cy, r + strokeW / 2 - 5, markerAngle + 4);
+    svg += `<polygon points="${tip.x.toFixed(1)},${tip.y.toFixed(1)} ${baseA.x.toFixed(1)},${baseA.y.toFixed(1)} ${baseB.x.toFixed(1)},${baseB.y.toFixed(1)}" fill="var(--ink, #1f2937)" />`;
+    svg += `<text x="${cx}" y="${cy - 4}" text-anchor="middle" dominant-baseline="central" font-size="30" font-weight="700" fill="var(--ink, #1f2937)" font-family="sans-serif">${score}%</text>`;
+    svg += `<text x="${cx}" y="${cy + 20}" text-anchor="middle" dominant-baseline="central" font-size="11" font-family="sans-serif" fill="var(--ink-soft, #64748b)">score actuel</text>`;
+    svg += `</svg>`;
+    wrap.innerHTML = svg;
   }
 
   function renderDuePill() {
@@ -4657,6 +4716,19 @@
       subjects.some((s) => s.id === cardsScopeFilter);
     if (!valid) cardsScopeFilter = CARDS_SCOPE_CURRENT;
     btn.textContent = cardsScopeLabel();
+    // Item 10 : rappel des matières/dossiers réellement choisis quand la
+    // combinaison ne rentre pas dans un simple nom (le bouton lui-même
+    // affiche alors juste "Sélection de matières", trop vague).
+    const summaryEl = el("cards-scope-summary");
+    if (summaryEl) {
+      if (cardsScopeFilter === CARDS_SCOPE_MULTI) {
+        const names = loadCardsMultiSelection().map((id) => subjectName(id)).filter(Boolean);
+        summaryEl.textContent = names.length > 0 ? `Sélection actuelle : ${names.join(", ")}` : "";
+        summaryEl.hidden = names.length === 0;
+      } else {
+        summaryEl.hidden = true;
+      }
+    }
   }
 
   function openCardsScopeChoiceMenu() {
@@ -6807,6 +6879,7 @@
       if (view === "dev") renderDevView();
       if (view === "sync") renderSyncView();
       if (view === "calendar") renderCalendarEvents();
+      if (view === "revision-program") renderRevisionProgramList();
       if (view === "settings") {
         renderSettingsView();
         // Item 8 : le contenu de l'ancienne page "Modes d'apprentissage"
@@ -6978,24 +7051,15 @@
 
   // Item 2 : le bouton de date ouvre le sélecteur natif (plus explicite
   // qu'un simple champ texte) et affiche la date choisie en toutes lettres.
-  const calendarEventDateBtn = el("calendar-event-date-btn");
   const calendarEventDateInput = el("calendar-event-date");
   function formatCalendarDate(raw) {
     const d = new Date(raw + "T00:00:00");
     return d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
   }
-  if (calendarEventDateBtn && calendarEventDateInput) {
-    calendarEventDateBtn.addEventListener("click", () => {
-      if (calendarEventDateInput.showPicker) {
-        try {
-          calendarEventDateInput.showPicker();
-          return;
-        } catch {
-          /* repli sur le focus ci-dessous */
-        }
-      }
-      calendarEventDateInput.focus();
-    });
+  if (calendarEventDateInput) {
+    // Item 3 : plus besoin d'appeler showPicker() nous-mêmes — l'input
+    // natif recouvre directement tout le bouton (voir CSS), c'est donc lui
+    // qui reçoit le clic et ouvre son sélecteur de date lui-même.
     calendarEventDateInput.addEventListener("change", () => {
       const label = el("calendar-event-date-label");
       if (label && calendarEventDateInput.value) label.textContent = formatCalendarDate(calendarEventDateInput.value);
@@ -7084,7 +7148,11 @@
     delBtn.className = "icon-btn icon-btn--danger";
     delBtn.innerHTML = iconSvgMarkup("trash", "icon-inline-svg");
     delBtn.title = "Supprimer cet événement";
-    delBtn.addEventListener("click", onDelete);
+    // Item 4 : confirmation avant suppression, comme pour les fiches et
+    // les matières ailleurs dans l'appli.
+    delBtn.addEventListener("click", () => {
+      if (confirm(`Supprimer l'événement « ${ev.title} » ?`)) onDelete();
+    });
     actions.appendChild(editBtn);
     actions.appendChild(delBtn);
     li.appendChild(main);
@@ -7173,33 +7241,41 @@
     wrap.appendChild(grid);
     return wrap;
   }
+  // Item 5 : les mois s'empilent verticalement (pleine largeur) et on peut
+  // défiler aussi loin que l'on veut vers le futur — plus de pagination
+  // "précédent/suivant" à deux mois fixes.
+  let calendarMonthsRenderedCount = 3;
   function renderCalendarMonthsView() {
     const grid = el("calendar-months-grid");
     if (!grid) return;
     grid.innerHTML = "";
-    const row = document.createElement("div");
-    row.className = "calendar-months-row";
     const y = calendarMonthsAnchor.getFullYear();
     const m = calendarMonthsAnchor.getMonth();
-    row.appendChild(buildMiniMonthEl(y, m, false));
-    const next = new Date(y, m + 1, 1);
-    row.appendChild(buildMiniMonthEl(next.getFullYear(), next.getMonth(), false));
-    grid.appendChild(row);
+    for (let i = 0; i < calendarMonthsRenderedCount; i++) {
+      const d = new Date(y, m + i, 1);
+      grid.appendChild(buildMiniMonthEl(d.getFullYear(), d.getMonth(), false));
+    }
   }
-  const calendarMonthsPrevBtn = el("calendar-months-prev");
-  if (calendarMonthsPrevBtn) {
-    calendarMonthsPrevBtn.addEventListener("click", () => {
-      calendarMonthsAnchor = new Date(calendarMonthsAnchor.getFullYear(), calendarMonthsAnchor.getMonth() - 1, 1);
-      renderCalendarMonthsView();
+  const calendarMonthsView = el("calendar-months-grid");
+  if (calendarMonthsView) {
+    calendarMonthsView.addEventListener("scroll", () => {
+      const nearBottom = calendarMonthsView.scrollTop + calendarMonthsView.clientHeight >= calendarMonthsView.scrollHeight - 300;
+      if (nearBottom) {
+        calendarMonthsRenderedCount += 2;
+        renderCalendarMonthsView();
+      }
     });
   }
-  const calendarMonthsNextBtn = el("calendar-months-next");
-  if (calendarMonthsNextBtn) {
-    calendarMonthsNextBtn.addEventListener("click", () => {
-      calendarMonthsAnchor = new Date(calendarMonthsAnchor.getFullYear(), calendarMonthsAnchor.getMonth() + 1, 1);
+  // Repli : sur certains agencements, c'est la PAGE entière qui défile,
+  // pas ce panneau en particulier — on écoute donc aussi le scroll général.
+  window.addEventListener("scroll", () => {
+    if (calendarViewMode !== "months") return;
+    const nearBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 400;
+    if (nearBottom) {
+      calendarMonthsRenderedCount += 2;
       renderCalendarMonthsView();
-    });
-  }
+    }
+  });
   function renderCalendarYearView() {
     const grid = el("calendar-year-grid");
     const label = el("calendar-year-label");
@@ -7261,6 +7337,94 @@
     renderCalendarListView();
     renderCalendarMonthsView();
     renderCalendarYearView();
+  }
+
+  /* ---------------------------------------------------------
+     Vue Programme de révision (item 7) — étape intermédiaire avant
+     Réviser : conseille les matières/dossiers à exercer en priorité en
+     fonction des échéances du calendrier (les plus proches d'abord), avec
+     un objectif de score à atteindre. Version volontairement simple pour
+     l'instant : l'objectif est fixe (80%) et la priorité suit juste la
+     date de l'échéance la plus proche pour ce dossier/matière — assez pour
+     poser la structure, à affiner plus tard (item 7 du départ).
+  --------------------------------------------------------- */
+  const REVISION_PROGRAM_TARGET_SCORE = 80;
+  function computeRevisionProgramItems() {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const upcoming = loadCalendarEvents().filter((ev) => ev.linkId && ev.date >= todayStr);
+    // Un seul point de programme par matière/dossier : celui dont
+    // l'échéance est la plus proche fait foi.
+    const byLink = {};
+    upcoming.forEach((ev) => {
+      if (!byLink[ev.linkId] || ev.date < byLink[ev.linkId].date) byLink[ev.linkId] = ev;
+    });
+    const items = Object.values(byLink).map((ev) => {
+      const [type, id] = ev.linkId.split(":");
+      const isFolder = type === "folder";
+      const score = isFolder ? computeFolderScore(id) : computeSubjectScore(id);
+      const daysLeft = Math.round((new Date(ev.date + "T00:00:00") - new Date(todayStr + "T00:00:00")) / 86400000);
+      return {
+        linkId: ev.linkId,
+        type,
+        id,
+        label: calendarLinkLabel(ev.linkId),
+        eventTitle: ev.title,
+        eventDate: ev.date,
+        daysLeft,
+        score: score === null ? 0 : score,
+        target: REVISION_PROGRAM_TARGET_SCORE,
+      };
+    });
+    // Priorité (item 7) : échéance la plus proche d'abord, à égalité de
+    // date c'est l'écart au score cible qui départage (le plus loin de
+    // l'objectif remonte en premier).
+    items.sort((a, b) => a.daysLeft - b.daysLeft || (b.target - b.score) - (a.target - a.score));
+    return items;
+  }
+
+  function goToReviewFor(linkId) {
+    if (linkId) {
+      const [type, id] = linkId.split(":");
+      if (type === "subject") switchSubject(id);
+      // (Un dossier entier n'a pas d'équivalent direct de "matière
+      // courante" pour Réviser : on laisse la sélection telle quelle dans
+      // ce cas, plutôt que de deviner — affiné dans une prochaine étape.)
+    }
+    const tab = document.querySelector('.tab[data-view="review"]');
+    if (tab) tab.click();
+  }
+
+  function renderRevisionProgramList() {
+    const list = el("revision-program-list");
+    const empty = el("revision-program-empty");
+    if (!list) return;
+    const items = computeRevisionProgramItems();
+    list.innerHTML = "";
+    if (items.length === 0) {
+      if (empty) empty.hidden = false;
+      return;
+    }
+    if (empty) empty.hidden = true;
+    items.forEach((it) => {
+      const li = document.createElement("li");
+      li.className = "card-row revision-program-row";
+      const pct = Math.min(100, Math.round((it.score / it.target) * 100));
+      const dueLabel = it.daysLeft === 0 ? "aujourd'hui" : it.daysLeft === 1 ? "demain" : `dans ${it.daysLeft} j`;
+      li.innerHTML = `
+        <div class="card-row-main">
+          <strong>${escapeHtml(it.label)}</strong>
+          <span class="card-row-meta">« ${escapeHtml(it.eventTitle)} » — ${dueLabel} · score actuel ${it.score}% (objectif ${it.target}%)</span>
+          <div class="revision-program-bar"><div class="revision-program-bar-fill" style="width:${pct}%"></div></div>
+        </div>
+      `;
+      li.addEventListener("click", () => goToReviewFor(it.linkId));
+      list.appendChild(li);
+    });
+  }
+
+  const revisionProgramSkipBtn = el("revision-program-skip");
+  if (revisionProgramSkipBtn) {
+    revisionProgramSkipBtn.addEventListener("click", () => goToReviewFor(null));
   }
 
   function renderSyncView() {
@@ -7761,7 +7925,18 @@
         localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
         applyAllDevSettings();
         applyAppPrefsFromRemote(remote.payload.appPrefs);
-        if (el("view-dev") && el("view-dev").classList.contains("is-active")) renderDevView();
+        // Bug corrigé (items 1/2) : si l'utilisateur est EN TRAIN de taper
+        // dans un champ du mode développeur, reconstruire toute la liste
+        // (renderDevView) à cet instant précis lui fait perdre le focus en
+        // plein milieu de la frappe — ou, pour le mode nuit, fait
+        // clignoter l'état si l'écho de sa propre modification revient
+        // alors qu'il vient justement de la changer. On saute ce rendu
+        // tant qu'un champ de ce panneau a le focus ; il se remettra à
+        // jour de toute façon au prochain rendu normal (changement de
+        // page, nouvelle modification, etc.).
+        const devViewActive = el("view-dev") && el("view-dev").classList.contains("is-active");
+        const editingInDevView = document.activeElement && el("view-dev") && el("view-dev").contains(document.activeElement) && document.activeElement.tagName === "INPUT";
+        if (devViewActive && !editingInDevView) renderDevView();
       }
     });
 

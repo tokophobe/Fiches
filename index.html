@@ -150,6 +150,7 @@
     </button>
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
     <button class="tab" role="tab" aria-selected="false" data-view="calendar" hidden>Calendrier</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Programme</button>
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">
       <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
@@ -162,7 +163,7 @@
     <section id="view-home" class="view is-active">
       <h1 class="home-title">Fiches</h1>
       <div class="home-scatter" id="home-scatter">
-        <button type="button" class="home-circle" data-key="review" data-go="review">
+        <button type="button" class="home-circle" data-key="review" data-go="revision-program">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
           <span>Réviser</span>
         </button>
@@ -199,6 +200,17 @@
           <span>Développeur</span>
         </button>
       </div>
+    </section>
+
+    <!-- VUE PROGRAMME DE RÉVISION (item 7) : étape intermédiaire avant
+         Réviser, qui conseille par ordre de priorité les matières/dossiers
+         à exercer en fonction des échéances du calendrier. -->
+    <section id="view-revision-program" class="view" aria-labelledby="tab-revision-program">
+      <h2 class="section-title">Programme de révision</h2>
+      <p class="field-hint settings-block-hint">Conseillé en fonction de tes échéances du calendrier — objectif de score à atteindre avant chaque échéance.</p>
+      <ul class="card-list" id="revision-program-list"></ul>
+      <p class="chart-empty" id="revision-program-empty" hidden>Pas d'échéance à venir — programme aucune priorité particulière.</p>
+      <button type="button" class="btn btn--ghost" id="revision-program-skip" style="margin-top:14px; width:100%;">Ne pas suivre le programme → aller directement à Réviser</button>
     </section>
 
     <!-- VUE RÉVISION -->
@@ -365,7 +377,8 @@
 
       <div class="cards-scope-row">
         <label class="import-target-label" for="cards-scope-select-btn">Afficher / chercher dans :</label>
-        <button type="button" class="subject-select-btn" id="cards-scope-select-btn" aria-label="Choisir le périmètre d'affichage et de recherche"></button>
+        <button type="button" class="subject-select-btn subject-select-btn--prominent" id="cards-scope-select-btn" aria-label="Choisir le périmètre d'affichage et de recherche"></button>
+        <p class="cards-scope-summary" id="cards-scope-summary" hidden></p>
 
         <div class="subject-choice-menu" id="cards-scope-choice-menu" hidden>
           <button type="button" class="subject-choice-item" id="cards-scope-choice-all">Toutes les matières</button>
@@ -499,11 +512,20 @@
         </label>
         <label class="field">
           <span>Date</span>
-          <button type="button" class="calendar-date-btn" id="calendar-event-date-btn">
-            <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span id="calendar-event-date-label">Choisir une date</span>
-          </button>
-          <input type="date" id="calendar-event-date" required style="position:absolute; opacity:0; pointer-events:none; width:1px; height:1px;" />
+          <div class="calendar-date-field">
+            <button type="button" class="calendar-date-btn" id="calendar-event-date-btn" tabindex="-1">
+              <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span id="calendar-event-date-label">Choisir une date</span>
+            </button>
+            <!-- Item 3 : bug corrigé — l'ancien input caché (1px,
+                 pointer-events désactivés) empêchait showPicker() de
+                 fonctionner sur certains navigateurs. Il est maintenant
+                 posé EN TRANSPARENCE PAR-DESSUS le bouton, sur toute sa
+                 surface : le clic va donc directement au vrai input natif,
+                 qui ouvre son sélecteur de date lui-même, de façon fiable
+                 partout. -->
+            <input type="date" id="calendar-event-date" required class="calendar-date-native-input" />
+          </div>
         </label>
         <button type="button" class="subject-select-btn" id="calendar-event-subject-btn" aria-label="Choisir la matière ou le dossier lié">Aucune matière/dossier liés</button>
 
@@ -540,11 +562,8 @@
       </div>
 
       <div class="card-form" id="calendar-months-view" hidden>
-        <div class="calendar-nav-row">
-          <button type="button" class="btn btn--ghost btn--small" id="calendar-months-prev">← Précédent</button>
-          <button type="button" class="btn btn--ghost btn--small" id="calendar-months-next">Suivant →</button>
-        </div>
-        <div id="calendar-months-grid"></div>
+        <div id="calendar-months-grid" class="calendar-months-stack"></div>
+        <p class="field-hint settings-block-hint" id="calendar-months-loading" style="text-align:center;">Fais défiler pour voir la suite…</p>
       </div>
 
       <div class="card-form" id="calendar-year-view" hidden>
