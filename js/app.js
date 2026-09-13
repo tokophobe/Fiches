@@ -44,6 +44,7 @@
     chevronLeft: '<polyline points="15,18 9,12 15,6"/>',
     chevronRight: '<polyline points="9,18 15,12 9,6"/>',
     chevronDown: '<polyline points="6,9 12,15 18,9"/>',
+    code: '<polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/>',
     chevronUp: '<polyline points="18,15 12,9 6,15"/>',
     refresh: '<polyline points="23,4 23,10 17,10"/><polyline points="1,20 1,14 7,14"/><path d="M3.5 9a9 9 0 0 1 14.8-3.4L23 10M1 14l4.7 4.4A9 9 0 0 0 20.5 15"/>',
     share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/>',
@@ -94,17 +95,17 @@
   /** true dès que la toute première session de révision a été lancée (au chargement de l'appli) */
   let reviewSessionStarted = false;
 
-  /** @type {Array<{id:string,name:string,createdAt:string,updatedAt:string}>} liste des matières */
+  /** @type {Array<{id:string,name:string,createdAt:string,updatedAt:string}>} liste des boîtes */
   let subjects = [];
-  /** id de la matière actuellement affichée — peut aussi être l'une des deux
-   *  valeurs sentinelles ci-dessous (item 1 : révision toutes matières /
-   *  sélection de plusieurs matières confondues). */
+  /** id de la boîte actuellement affichée — peut aussi être l'une des deux
+   *  valeurs sentinelles ci-dessous (item 1 : révision toutes boîtes /
+   *  sélection de plusieurs boîtes confondues). */
   let currentSubjectId = null;
-  // Matière ciblée par le cadre "Nouvelle fiche" (item 5) : indépendante de
-  // la matière affichée sur Réviser (currentSubjectId), et mémorisée d'une
+  // Boîte ciblée par le cadre "Nouvelle fiche" (item 5) : indépendante de
+  // la boîte affichée sur Réviser (currentSubjectId), et mémorisée d'une
   // fiche à l'autre — bug corrigé au passage : le sélecteur du cadre de
   // création n'était jusqu'ici relié à RIEN, la fiche partait toujours
-  // dans la matière active de Réviser, quoi qu'on ait choisi ici.
+  // dans la boîte active de Réviser, quoi qu'on ait choisi ici.
   const NEW_CARD_SUBJECT_KEY = "fiches_new_card_subject_id";
   let newCardSubjectId = localStorage.getItem(NEW_CARD_SUBJECT_KEY) || null;
   function saveNewCardSubjectId(id) {
@@ -124,7 +125,7 @@
     try {
       const raw = localStorage.getItem(MULTI_SELECTION_KEY);
       const ids = raw ? JSON.parse(raw) : [];
-      // Ne garde que des matières qui existent toujours.
+      // Ne garde que des boîtes qui existent toujours.
       return Array.isArray(ids) ? ids.filter((id) => subjects.some((s) => s.id === id)) : [];
     } catch (e) {
       return [];
@@ -134,9 +135,9 @@
     localStorage.setItem(MULTI_SELECTION_KEY, JSON.stringify(ids));
   }
   const MULTI_SELECTION_LABEL_KEY = "fiches_multi_subject_label";
-  /** Libellé à afficher pour la sélection multi-matières (item 18) : le nom
+  /** Libellé à afficher pour la sélection multi-boîtes (item 18) : le nom
    *  du dossier si un seul dossier a été coché (rien d'autre), sinon vide
-   *  (générique "Sélection de matières"). Un seul SUJET coché ne passe même
+   *  (générique "Sélection de boîtes"). Un seul SUJET coché ne passe même
    *  plus par ce mécanisme : voir le confirm du picker, qui bascule alors
    *  directement dessus. */
   function loadMultiSelectionLabel() {
@@ -256,7 +257,7 @@
   let statsRangeDays = 15;
   const CHART_MAX_BAR_PX = 140;
 
-  /* Mini histogramme de la page Réviser (matière en cours). Échelle propre,
+  /* Mini histogramme de la page Réviser (boîte en cours). Échelle propre,
      changée en tapant dessus, indépendante du sélecteur de l'onglet Stats. */
   const reviewChartEl = el("review-due-chart");
   const reviewChartEmptyEl = el("review-chart-empty");
@@ -317,7 +318,7 @@
        (card.deadlineDaysRaw, 3 décimales) pour les calculs suivants ;
      - seule la version arrondie à l'entier (card.interval) sert à fixer la
        date de la prochaine interrogation et l'affichage.
-     Réglable par matière (Ka/Kh/Kg/Ke bornés 1–10 par dixièmes, Ma/Mh/Mg/Me
+     Réglable par boîte (Ka/Kh/Kg/Ke bornés 1–10 par dixièmes, Ma/Mh/Mg/Me
      bornés 1–365 par unités), persisté en local sous une seule clé (map
      subjectId -> réglages), donc conservé d'une version de l'appli à
      l'autre comme le reste des réglages.
@@ -325,11 +326,11 @@
   /* ---------------------------------------------------------
      Modes d'apprentissage (item 2) : désormais des entités GLOBALES
      (3 modes fixes + des modes personnalisés nommés, créés/modifiés/
-     supprimés librement), chacune affectée à une ou plusieurs matières
+     supprimés librement), chacune affectée à une ou plusieurs boîtes
      (ou affectée en bloc à un dossier entier, qui répercute alors le
-     changement sur toutes les matières qu'il contient). Modifier les
-     coefficients d'un mode affecte donc TOUTES les matières qui l'utilisent
-     — contrairement à l'ancien système où chaque matière avait ses 4
+     changement sur toutes les boîtes qu'il contient). Modifier les
+     coefficients d'un mode affecte donc TOUTES les boîtes qui l'utilisent
+     — contrairement à l'ancien système où chaque boîte avait ses 4
      emplacements de réglages indépendants.
   --------------------------------------------------------- */
   const LEARNING_MODES_KEY = "fiches_learning_modes";
@@ -403,6 +404,7 @@
   // Choix par défaut = les icônes déjà en place (essai précédent).
   const DEFAULT_NAV_ICONS = {
     review: "cards", manage: "folder", cards: "file", stats: "barChart", settings: "settings",
+    addCard: "plus", calendar: "calendar", sync: "refresh", dev: "code",
   };
   // Couleurs des 4 notes (boutons d'évaluation + graphiques) et des 4 modes
   // d'apprentissage (badges) — item 2 : rendues éditables depuis la page
@@ -514,7 +516,7 @@
     cardForm: { varName: "--shadow-card-form", title: "Cadres (blocs)" },
     statBox: { varName: "--shadow-stat-box", title: "Cases de statistiques" },
     chartWrap: { varName: "--shadow-chart-wrap", title: "Histogrammes" },
-    subjectRow: { varName: "--shadow-subject-row", title: "Matières et dossiers" },
+    subjectRow: { varName: "--shadow-subject-row", title: "Boîtes et dossiers" },
   };
   const DEFAULT_SHADOWS = Object.fromEntries(Object.keys(SHADOW_ELEMENTS).map((k) => [k, true]));
   // Score d'apprentissage des fiches (item 1) : S = ((D-1)^P)/((D-1)^P+B),
@@ -558,7 +560,7 @@
   // l'appli s'adapte elle en largeur — le pourcentage, lui, suit toujours
   // la largeur réelle quel que soit l'appareil).
   const HOME_LAYOUT_TITLES = {
-    review: "Réviser", manage: "Dossiers & matières", cards: "Fiches", addCard: "Ajouter une fiche",
+    review: "Réviser", manage: "Dossiers & boîtes", cards: "Fiches", addCard: "Ajouter une fiche",
     stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
     sync: "Synchronisation", dev: "Développeur",
   };
@@ -754,7 +756,7 @@
   /** Réglages de la page "Réglages" (item — jusqu'ici jamais synchronisés
    *  du tout, contrairement aux couleurs/icônes) : mode bonus, jours
    *  d'hibernation, affichage des jours sur les boutons, histogramme de
-   *  Réviser, matière mémorisée pour "Nouvelle fiche". Regroupés à part
+   *  Réviser, boîte mémorisée pour "Nouvelle fiche". Regroupés à part
    *  ici et glissés dans le MÊME envoi que les réglages développeur (pas
    *  besoin d'une deuxième table Supabase pour si peu de valeurs). */
   function gatherAppPrefs() {
@@ -1025,7 +1027,7 @@
   function applyHomeIcons() {
     const settings = loadDevSettings();
     Object.keys(DEFAULT_NAV_ICONS).forEach((view) => {
-      const square = document.querySelector(`.home-circle[data-go="${view}"] .home-circle-icon`);
+      const square = document.querySelector(`.home-circle[data-key="${view}"] .home-circle-icon`);
       const iconId = settings.navIcons[view];
       if (square && iconId && ICON_LIBRARY[iconId]) {
         square.outerHTML = iconSvgMarkup(iconId, "home-circle-icon");
@@ -1037,7 +1039,7 @@
     renderIconBankPicker(
       "dev-nav-icons-list",
       Object.keys(DEFAULT_NAV_ICONS),
-      { review: "Réviser", manage: "Gérer", cards: "Fiches", stats: "Stats", settings: "Réglages" },
+      { review: "Réviser", manage: "Gérer", cards: "Fiches", stats: "Stats", settings: "Réglages", addCard: "Ajouter une fiche", calendar: "Calendrier", sync: "Synchronisation", dev: "Développeur" },
       "navIcons",
       () => {
         applyNavLabels();
@@ -1126,14 +1128,14 @@
     richEditorBg: "Fond des zones de texte",
     homeBtnBg: "Bouton home",
     cardBg: "Fond des fiches (recto & verso)",
-    subjectSelectBg: "Fond des sélecteurs de matières",
+    subjectSelectBg: "Fond des sélecteurs de boîtes",
     syncStatusBg: "Fond de la pastille synchronisé",
     folderBg: "Fond des dossiers",
     folderL1Bg: "Fond des sous-dossiers de niveau 1",
     folderL2Bg: "Fond des sous-dossiers de niveau 2",
     folderL3Bg: "Fond des sous-dossiers de niveau 3",
-    subjectRowBg: "Fond des matières",
-    addBtnBg: "Fond des boutons (nouveau dossier / nouvelle matière)",
+    subjectRowBg: "Fond des boîtes",
+    addBtnBg: "Fond des boutons (nouveau dossier / nouvelle boîte)",
     chartWrapBg: "Fond des histogrammes",
     svgChartBg: "Fond des graphiques",
     dueBarColor: "Barres « à revoir »",
@@ -1152,7 +1154,7 @@
     homeTitle: "Titre de la page d'accueil",
     titles: "Titres (toutes les pages)",
     generalText: "Textes (autres que titres)",
-    folderSubjectNames: "Intitulés dossiers et matières",
+    folderSubjectNames: "Intitulés dossiers et boîtes",
     cardText: "Texte fiches",
     chartValues: "Valeurs graphiques",
     chartLabels: "Étiquettes graphiques",
@@ -1201,7 +1203,7 @@
    *  test : très probablement `max()`/`calc()` imbriqués, mal supportés
    *  sur certaines versions d'iOS Safari, silencieusement ignorés par le
    *  navigateur si c'est le cas — la fiche retombait alors sur une
-   *  position par défaut qui pouvait chevaucher la barre de matière.
+   *  position par défaut qui pouvait chevaucher la barre de boîte.
    *  Cette version n'utilise plus AUCUNE fonction CSS de calcul : tout est
    *  calculé ici en JavaScript ordinaire, puis posé en pixels bruts,
    *  beaucoup plus difficile à mal interpréter pour un navigateur. */
@@ -1210,7 +1212,7 @@
     const root = document.documentElement.style;
     const vh = window.innerHeight / 100;
     const vw = window.innerWidth / 100;
-    // Marge de sécurité fixe sous la barre du haut + la barre de matière
+    // Marge de sécurité fixe sous la barre du haut + la barre de boîte
     // (elle-même posée à 54px + l'encoche) — 110px couvre confortablement
     // les deux sur la quasi-totalité des appareils.
     const MIN_CARD_TOP_PX = 110;
@@ -1853,7 +1855,7 @@
     delete modes[modeId];
     saveLearningModes(modes);
     if (Sync.isConfigured()) Sync.pushLearningMode(deletedMode);
-    // Toute matière qui utilisait ce mode supprimé retombe sur "Normal".
+    // Toute boîte qui utilisait ce mode supprimé retombe sur "Normal".
     for (const s of subjects) {
       if (s.modeId === modeId) {
         s.modeId = "normal";
@@ -1869,8 +1871,8 @@
     persistModeChange(modes, modeId);
   }
 
-  /** Mode effectif d'une matière (objet complet, avec Ka..Me) — "Normal" si
-   *  la matière n'a pas encore de mode affecté ou si son mode a disparu. */
+  /** Mode effectif d'une boîte (objet complet, avec Ka..Me) — "Normal" si
+   *  la boîte n'a pas encore de mode affecté ou si son mode a disparu. */
   function getSubjectMode(subjectId) {
     const s = subjects.find((x) => x.id === subjectId);
     const modes = loadLearningModes();
@@ -1883,7 +1885,7 @@
   function getSubjectAlgoMode(subjectId) {
     return getSubjectMode(subjectId).id;
   }
-  /** Affecte un mode à une matière (utilisé aussi en boucle pour affecter un
+  /** Affecte un mode à une boîte (utilisé aussi en boucle pour affecter un
    *  dossier entier — voir assignModeToFolder). */
   async function assignModeToSubject(subjectId, modeId) {
     const s = subjects.find((x) => x.id === subjectId);
@@ -1893,9 +1895,9 @@
     await persistSubject(s);
   }
   /** "quand on affecte un mode à un sous dossier ou un dossier, ça
-   *  s'applique à toutes les matières contenues dedans" (item 1/2) : un
+   *  s'applique à toutes les boîtes contenues dedans" (item 1/2) : un
    *  affectage en bloc, immédiat, pas une référence permanente au dossier —
-   *  déplacer ensuite une matière hors du dossier ne lui retire pas le mode
+   *  déplacer ensuite une boîte hors du dossier ne lui retire pas le mode
    *  déjà affecté. */
   async function assignModeToFolder(folderId, modeId) {
     for (const id of subjectIdsInFolder(folderId)) {
@@ -1905,12 +1907,12 @@
 
   /** Migration ponctuelle depuis l'ancien système (4 emplacements de
    *  réglages PAR MATIÈRE, clé localStorage "fiches_subject_algo") vers les
-   *  modes globaux nommés (item 2). Pour chaque matière ayant un réglage
+   *  modes globaux nommés (item 2). Pour chaque boîte ayant un réglage
    *  dans l'ancien format : si son mode actif à l'époque correspondait
    *  exactement à un préréglage fixe, elle est simplement affectée à ce
-   *  mode ; sinon (c'était un "Personnalisé" propre à cette matière), un
+   *  mode ; sinon (c'était un "Personnalisé" propre à cette boîte), un
    *  nouveau mode personnalisé est créé avec ces valeurs, nommé d'après la
-   *  matière, pour ne rien perdre de ses réglages existants. Ne s'exécute
+   *  boîte, pour ne rien perdre de ses réglages existants. Ne s'exécute
    *  qu'une fois (l'ancienne clé est ensuite supprimée). */
   async function migrateSubjectModesIfNeeded() {
     const OLD_KEY = "fiches_subject_algo";
@@ -2061,7 +2063,7 @@
   }
 
   /* ---------------------------------------------------------
-     Matières (subjects) et dossiers (folders) — item 1 : arborescence
+     Boîtes (subjects) et dossiers (folders) — item 1 : arborescence
   --------------------------------------------------------- */
   /** @type {Array<{id:string,name:string,parentId:string|null,createdAt:string,updatedAt:string}>} */
   let folders = [];
@@ -2101,15 +2103,15 @@
     return out;
   }
 
-  /** Identifiants de toutes les matières contenues dans un dossier, y
+  /** Identifiants de toutes les boîtes contenues dans un dossier, y
    *  compris dans ses sous-dossiers à n'importe quelle profondeur. */
   function subjectIdsInFolder(folderId) {
     const ids = new Set([folderId, ...folderDescendantIds(folderId)]);
     return subjects.filter((s) => ids.has(s.folderId)).map((s) => s.id);
   }
 
-  /** Score moyen d'une matière (item 2) : moyenne des scores de ses fiches
-   *  (non supprimées). null si la matière n'a aucune fiche — pas de score
+  /** Score moyen d'une boîte (item 2) : moyenne des scores de ses fiches
+   *  (non supprimées). null si la boîte n'a aucune fiche — pas de score
    *  à afficher dans ce cas plutôt qu'un 0% trompeur. */
   function computeSubjectScore(subjectId) {
     const own = cards.filter((c) => !c.deleted && c.subject === subjectId);
@@ -2119,9 +2121,9 @@
   }
 
   /** Score moyen d'un dossier (item 2) : moyenne des scores de TOUTES les
-   *  fiches des matières qu'il contient, y compris dans ses sous-dossiers
-   *  — pas une moyenne des scores de matières (ce qui pondérerait à tort
-   *  une matière à 2 fiches autant qu'une à 200). */
+   *  fiches des boîtes qu'il contient, y compris dans ses sous-dossiers
+   *  — pas une moyenne des scores de boîtes (ce qui pondérerait à tort
+   *  une boîte à 2 fiches autant qu'une à 200). */
   function computeFolderScore(folderId) {
     const subjectIds = subjectIdsInFolder(folderId);
     const own = cards.filter((c) => !c.deleted && subjectIds.includes(c.subject));
@@ -2130,13 +2132,13 @@
     return Math.round(sum / own.length);
   }
 
-  /** Lit le résultat RÉEL d'un picker multi-matières/dossiers (bug corrigé
+  /** Lit le résultat RÉEL d'un picker multi-boîtes/dossiers (bug corrigé
    *  — items 2/4) : jusqu'ici, le résultat final était recalculé en
-   *  ré-étendant chaque dossier COCHÉ à toutes ses matières, ignorant
-   *  silencieusement toute matière qu'on avait décochée individuellement à
-   *  l'intérieur — décocher une matière précise pendant qu'un dossier
+   *  ré-étendant chaque dossier COCHÉ à toutes ses boîtes, ignorant
+   *  silencieusement toute boîte qu'on avait décochée individuellement à
+   *  l'intérieur — décocher une boîte précise pendant qu'un dossier
    *  reste coché n'avait donc AUCUN effet. La seule source de vérité est
-   *  maintenant l'état réel de CHAQUE case à cocher "matière" (déjà
+   *  maintenant l'état réel de CHAQUE case à cocher "boîte" (déjà
    *  répercuté correctement par la cascade dossier -> descendants) ; les
    *  dossiers cochés ne servent plus qu'à décider l'AFFICHAGE (le nom du
    *  dossier si sa sélection correspond exactement à tout son contenu). */
@@ -2145,7 +2147,7 @@
     const checkedFolders = [...list.querySelectorAll('input[data-kind="folder"]:checked')];
     let label = "";
     if (resultIds.length === 1) {
-      label = null; // signale "une seule matière" à l'appelant (bascule directe)
+      label = null; // signale "une seule boîte" à l'appelant (bascule directe)
     } else if (checkedFolders.length === 1) {
       const folderSubjectIds = subjectIdsInFolder(checkedFolders[0].value);
       const matchesExactly =
@@ -2159,7 +2161,7 @@
   }
 
   /** Un dossier ne peut être supprimé que s'il est vide (item 1) : ni
-   *  sous-dossier, ni matière directement dedans. */
+   *  sous-dossier, ni boîte directement dedans. */
   function folderIsEmpty(folderId) {
     return (
       !folders.some((f) => f.parentId === folderId) &&
@@ -2168,28 +2170,28 @@
   }
 
   function subjectName(id) {
-    if (id === ALL_SUBJECTS_ID) return "Toutes les matières";
+    if (id === ALL_SUBJECTS_ID) return "Toutes les boîtes";
     if (id === MULTI_SUBJECTS_ID) {
       // Item 18 : le nom du dossier si un seul dossier a été sélectionné,
       // sinon le libellé générique.
-      return loadMultiSelectionLabel() || "Sélection de matières";
+      return loadMultiSelectionLabel() || "Sélection de boîtes";
     }
     const s = subjects.find((x) => x.id === id);
-    return s ? s.name : "Matière inconnue";
+    return s ? s.name : "Boîte inconnue";
   }
 
-  /** Affiche la question d'une fiche — précédée de "Nom de la matière :" +
-   *  deux sauts de ligne UNIQUEMENT quand on révise plusieurs matières
-   *  confondues (item 2) : ça n'a pas d'intérêt quand une seule matière est
+  /** Affiche la question d'une fiche — précédée de "Nom de la boîte :" +
+   *  deux sauts de ligne UNIQUEMENT quand on révise plusieurs boîtes
+   *  confondues (item 2) : ça n'a pas d'intérêt quand une seule boîte est
    *  affichée à la fois, et ça ne doit jamais apparaître côté réponse.
    *  Rafraîchit aussi le bouton mode d'apprentissage sur CETTE fiche
-   *  précise (sa propre matière), pas sur la sélection globale — utile en
-   *  mode "toutes matières"/"sélection", où chaque fiche peut appartenir à
-   *  une matière différente avec son propre mode. */
+   *  précise (sa propre boîte), pas sur la sélection globale — utile en
+   *  mode "toutes boîtes"/"sélection", où chaque fiche peut appartenir à
+   *  une boîte différente avec son propre mode. */
   function renderQuestionText(card) {
     if (!card) return;
-    // Le préfixe "Nom de la matière :" reste toujours en texte échappé (pas
-    // question qu'un nom de matière contenant "<" casse l'affichage) ; la
+    // Le préfixe "Nom de la boîte :" reste toujours en texte échappé (pas
+    // question qu'un nom de boîte contenant "<" casse l'affichage) ; la
     // question elle-même passe par toDisplayHtml (item 13 : contenu riche).
     questionTextEl.innerHTML = isSentinelSubject(currentSubjectId)
       ? `<strong class="card-subject-hint">${escapeHtml(subjectName(card.subject))}</strong><br><br>${toDisplayHtml(card.question)}`
@@ -2202,10 +2204,10 @@
     }
   }
 
-  /** Exposé pour que sync.js puisse dénormaliser le nom de la matière sur chaque ligne envoyée. */
+  /** Exposé pour que sync.js puisse dénormaliser le nom de la boîte sur chaque ligne envoyée. */
   window.getSubjectName = subjectName;
 
-  /** Charge les matières depuis IndexedDB ; en crée une par défaut si aucune n'existe encore. */
+  /** Charge les boîtes depuis IndexedDB ; en crée une par défaut si aucune n'existe encore. */
   async function loadSubjects() {
     subjects = await DB.getAllSubjects();
     folders = await DB.getAllFolders();
@@ -2227,9 +2229,9 @@
     }
   }
 
-  /** Fiches créées avant l'introduction des matières (ou reçues d'un vieil export) :
-   *  on les rattache à une matière fixe et déterministe (la première par ordre
-   *  alphabétique) plutôt qu'à "la matière actuellement affichée", qui peut varier
+  /** Fiches créées avant l'introduction des boîtes (ou reçues d'un vieil export) :
+   *  on les rattache à une boîte fixe et déterministe (la première par ordre
+   *  alphabétique) plutôt qu'à "la boîte actuellement affichée", qui peut varier
    *  d'un appareil à l'autre et provoquer des reclassements imprévisibles lors
    *  de la synchronisation. */
   async function migrateOrphanCards() {
@@ -2244,11 +2246,11 @@
     }
   }
 
-  /** Nettoyage ponctuel (exécuté à chaque démarrage) : fusionne les matières
+  /** Nettoyage ponctuel (exécuté à chaque démarrage) : fusionne les boîtes
    *  strictement homonymes lorsque certaines n'ont aucune fiche — séquelle du
-   *  bug de synchronisation ci-dessus, qui pouvait laisser une matière
+   *  bug de synchronisation ci-dessus, qui pouvait laisser une boîte
    *  "Général" fantôme et vide sur un appareil après une synchro. On ne
-   *  touche jamais à une matière qui contient des fiches. */
+   *  touche jamais à une boîte qui contient des fiches. */
   async function dedupeEmptySubjects() {
     const byName = new Map();
     for (const s of subjects) {
@@ -2280,24 +2282,24 @@
           `<option value="${s.id}" ${s.id === currentSubjectId ? "selected" : ""}>${escapeHtml(s.name)}</option>`
       )
       .join("");
-    // Réviser (item 18) : le bouton affiche le nom courant (matière,
-    // dossier, "Toutes les matières" ou "Sélection de matières") — plus de
-    // liste déroulante native listant chaque matière une par une, voir le
+    // Réviser (item 18) : le bouton affiche le nom courant (boîte,
+    // dossier, "Toutes les boîtes" ou "Sélection de boîtes") — plus de
+    // liste déroulante native listant chaque boîte une par une, voir le
     // menu à 3 choix (#subject-choice-menu) ouvert au clic.
     if (subjectSelectBtn) subjectSelectBtn.textContent = subjectName(currentSubjectId);
-    // Second sélecteur, en tête de la page Fiches (item 2) : matières
-    // réelles uniquement (pas de dossier ni de mode "toutes matières"),
+    // Second sélecteur, en tête de la page Fiches (item 2) : boîtes
+    // réelles uniquement (pas de dossier ni de mode "toutes boîtes"),
     // même mise en forme que les autres boutons de sélection mais choix
     // unique direct (pas de "toutes"/"sélection", ça n'aurait pas de sens
-    // pour la matière où atterrit une nouvelle fiche).
+    // pour la boîte où atterrit une nouvelle fiche).
     const cardsSubjectSelectBtnEl = el("cards-subject-select-btn");
     if (cardsSubjectSelectBtnEl) {
-      cardsSubjectSelectBtnEl.textContent = newCardSubjectId ? subjectName(newCardSubjectId) : "Sélection de la matière";
+      cardsSubjectSelectBtnEl.textContent = newCardSubjectId ? subjectName(newCardSubjectId) : "Sélection de la boîte";
     }
 
-    // Le sélecteur d'import propose en plus la création d'une nouvelle matière à la volée.
+    // Le sélecteur d'import propose en plus la création d'une nouvelle boîte à la volée.
     const importOpts =
-      opts + `<option value="__new__">+ Nouvelle matière…</option>`;
+      opts + `<option value="__new__">+ Nouvelle boîte…</option>`;
     const prevImportTarget = importTargetSelect.value || currentSubjectId;
     importTargetSelect.innerHTML = importOpts;
     if ([...importTargetSelect.options].some((o) => o.value === prevImportTarget)) {
@@ -2341,7 +2343,7 @@
   /** Version rapide (regex, sans toucher au DOM) du même besoin, réservée
    *  au filtrage de recherche (item 10) : `stripHtml` recréait un élément
    *  DOM pour CHAQUE fiche à CHAQUE frappe, perceptible comme un
-   *  ralentissement dès que la matière contient beaucoup de fiches. Le
+   *  ralentissement dès que la boîte contient beaucoup de fiches. Le
    *  décodage d'entités reste volontairement sommaire — largement
    *  suffisant pour un filtre de recherche. */
   function stripHtmlFast(html) {
@@ -2382,7 +2384,7 @@
    *  plusieurs niveaux) et la navigation dossier par dossier d'avant (un
    *  clic pour "entrer", rien vu d'autre à la fois) — les dossiers sont
    *  repliés par défaut, un clic sur leur nom les déplie ou replie sur
-   *  place, sans changer de page. Les nouvelles matières/dossiers sont
+   *  place, sans changer de page. Les nouvelles boîtes/dossiers sont
    *  créés à la racine (déplaçables ensuite via ↔️). */
   const expandedManageFolders = new Set();
 
@@ -2392,7 +2394,7 @@
     if (folders.length === 0 && subjects.length === 0) {
       const empty = document.createElement("p");
       empty.className = "field-hint";
-      empty.textContent = "Aucune matière pour l'instant.";
+      empty.textContent = "Aucune boîte pour l'instant.";
       subjectListEl.appendChild(empty);
     }
   }
@@ -2406,12 +2408,12 @@
     return escapeHtml(DEFAULT_ORG_ICON_BANK_CHOICES[key] || "");
   }
 
-  /** Ligne 2 partagée entre dossiers et matières (item 3) : à gauche le
-   *  nombre de fiches/matières + les 3 actions, à droite le score (avec sa
+  /** Ligne 2 partagée entre dossiers et boîtes (item 3) : à gauche le
+   *  nombre de fiches/boîtes + les 3 actions, à droite le score (avec sa
    *  mini-jauge) + le mode d'apprentissage. */
-  /** Corps complet d'une ligne dossier/matière (item 3) : contenu
+  /** Corps complet d'une ligne dossier/boîte (item 3) : contenu
    *  principal (titre + mode d'apprentissage sur la ligne 1, nombre de
-   *  fiches/matières + actions sur la ligne 2) à gauche, jauge circulaire
+   *  fiches/boîtes + actions sur la ligne 2) à gauche, jauge circulaire
    *  pleine hauteur (score à l'intérieur) à droite — la jauge et le mode
    *  d'apprentissage ont permuté de place par rapport à avant, pour
    *  laisser à l'intitulé (ligne 1) toute la largeur disponible plutôt que
@@ -2519,28 +2521,42 @@
       nameBtn.innerHTML = `${iconSvgMarkup("folder", "icon-inline-svg")} ${escapeHtml(f.name)}`;
       nameBtn.addEventListener("click", () => {
         cardsScopeFilter = `folder:${f.id}`;
-        // Bug corrigé (item 9) : contrairement au clic sur une matière
+        // Bug corrigé (item 9) : contrairement au clic sur une boîte
         // (qui passe par switchSubject, lequel déclenche déjà un rendu
         // complet), rien ne rafraîchissait ici le sélecteur de périmètre
         // sur la page Fiches — elle affichait donc encore l'ancienne
-        // matière/le mode précédent au lieu de ce dossier.
+        // boîte/le mode précédent au lieu de ce dossier.
         renderManageList();
         const tab = document.querySelector('.tab[data-view="cards"]');
         if (tab) tab.click();
       });
 
       const childCount = folders.filter((x) => x.parentId === f.id).length + subjects.filter((x) => x.folderId === f.id).length;
-      // Item 3 : effet de pile (comme les fiches de Réviser) quand ce
+      // Item 1 : effet de pile (comme les fiches de Réviser) quand ce
       // dossier est replié ET n'est pas vide, pour montrer qu'il contient
-      // bien quelque chose en dessous.
-      if (!expanded && childCount > 0) li.classList.add("folder-row--stacked");
+      // bien quelque chose en dessous. Bug corrigé : un simple box-shadow
+      // était bien appliqué (vérifié pixel par pixel) mais quasi
+      // imperceptible — remplacé par de VRAIS éléments décoratifs,
+      // nettement plus étroits, qui débordent visiblement sur les côtés
+      // comme de vraies cartes empilées en dessous.
+      if (!expanded && childCount > 0) {
+        li.classList.add("folder-row--stacked");
+        const peek2 = document.createElement("div");
+        peek2.className = "folder-row-peek folder-row-peek--2";
+        peek2.setAttribute("aria-hidden", "true");
+        const peek1 = document.createElement("div");
+        peek1.className = "folder-row-peek folder-row-peek--1";
+        peek1.setAttribute("aria-hidden", "true");
+        li.appendChild(peek2);
+        li.appendChild(peek1);
+      }
 
       const n = subjectIdsInFolder(f.id).length;
       const folderScore = computeFolderScore(f.id);
       const body = buildRowBody({
         nameBtnEl: nameBtn,
         expandBtnEl: expandBtn,
-        countLabel: `${n} matière${n > 1 ? "s" : ""}`,
+        countLabel: `${n} boîte${n > 1 ? "s" : ""}`,
         score: folderScore,
         mode: "normal",
         onRename: () => renameFolder(f.id),
@@ -2567,7 +2583,7 @@
       // Item 5 : le nom n'ouvre plus le renommage (bouton dédié maintenant,
       // comme pour les dossiers) — juste une étiquette.
       // Item 4 : cliquer dessus envoie sur la page Fiches avec cette
-      // matière sélectionnée (uniquement pour les matières, pas les
+      // boîte sélectionnée (uniquement pour les boîtes, pas les
       // dossiers, qui gardent leur clic pour déplier/replier).
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
@@ -2591,7 +2607,7 @@
         onMove: () => openMovePicker("subject", s.id),
         onDelete: () => deleteSubject(s.id),
         onAlgo: () => openSubjectAlgoView(s.id),
-        deleteTitle: "Supprimer cette matière",
+        deleteTitle: "Supprimer cette boîte",
       });
 
       li.appendChild(body);
@@ -2641,7 +2657,7 @@
   }
 
   /* ---------------------------------------------------------
-     Déplacer un dossier ou une matière vers un autre dossier
+     Déplacer un dossier ou une boîte vers un autre dossier
   --------------------------------------------------------- */
   let movePickerKind = null; // "folder" | "subject"
   let movePickerTargetId = null;
@@ -2722,7 +2738,7 @@
   /* ---------------------------------------------------------
      Vue globale "Modes d'apprentissage" (item 2) : édite un mode (3 fixes +
      personnalisés créables/renommables/supprimables) — les réglages sont
-     globaux, partagés par toutes les matières qui utilisent ce mode.
+     globaux, partagés par toutes les boîtes qui utilisent ce mode.
   --------------------------------------------------------- */
   let algoEditingModeId = "normal";
   /** État coché/décoché des 4 courbes (item 3), partagé par les deux
@@ -3083,7 +3099,7 @@
       const modes = loadLearningModes();
       const m = modes[algoEditingModeId];
       if (!m || m.builtin) return;
-      if (!confirm(`Supprimer le mode « ${m.name} » ? Les matières qui l'utilisent repasseront en mode Normal.`)) return;
+      if (!confirm(`Supprimer le mode « ${m.name} » ? Les boîtes qui l'utilisent repasseront en mode Normal.`)) return;
       await deleteCustomMode(algoEditingModeId);
       const remaining = Object.values(loadLearningModes()).filter((x) => !x.builtin);
       if (remaining.length > 0) {
@@ -3129,7 +3145,7 @@
       const modes = loadLearningModes();
       const m = modes[algoEditingModeId];
       if (!m || !m.builtin) return;
-      if (!confirm(`Remettre le mode ${m.name} à ses valeurs d'origine ? Toutes les matières qui l'utilisent seront concernées.`)) return;
+      if (!confirm(`Remettre le mode ${m.name} à ses valeurs d'origine ? Toutes les boîtes qui l'utilisent seront concernées.`)) return;
       updateModeProfile(algoEditingModeId, getFactoryDefaults()[algoEditingModeId]);
       loadModeFormIntoInputs(algoEditingModeId);
       renderSubjectAlgoBadge();
@@ -3147,7 +3163,7 @@
   }
 
   /* ---------------------------------------------------------
-     Vue "Affecter un mode" (par matière OU par dossier entier — item 1/2),
+     Vue "Affecter un mode" (par boîte OU par dossier entier — item 1/2),
      ouverte depuis la page Gérer. Simple sélection parmi les modes déjà
      définis (édités globalement sur la page Modes d'apprentissage) — plus
      aucun réglage éditable ici.
@@ -3215,7 +3231,7 @@
       currentModeId = getSubjectAlgoMode(targetId);
     } else {
       // Pas de présélection pour un dossier (bug corrigé — item 3) : les
-      // matières qu'il contient peuvent très bien ne pas être en "Normal"
+      // boîtes qu'il contient peuvent très bien ne pas être en "Normal"
       // du tout, présélectionner ce mode par défaut était trompeur.
       const f = folders.find((x) => x.id === targetId);
       title = `Affecter un mode — ${folderIcon()} ${f ? f.name : ""}`;
@@ -3243,7 +3259,7 @@
 
   // Conservé pour compatibilité avec les anciens appels (page Réviser) —
   // ouvre désormais la vue d'affectation plutôt que d'édition directe,
-  // puisque les réglages ne se modifient plus matière par matière.
+  // puisque les réglages ne se modifient plus boîte par boîte.
   function openSubjectAlgoView(subjectId, fromView) {
     openAssignView("subject", subjectId, fromView);
   }
@@ -3279,7 +3295,7 @@
         return daysAhead > 10;
       });
       if (targets.length === 0) {
-        alert("Aucune fiche de cette matière n'a une prochaine interrogation prévue dans plus de 10 jours.");
+        alert("Aucune fiche de cette boîte n'a une prochaine interrogation prévue dans plus de 10 jours.");
         return;
       }
       const msg =
@@ -3306,7 +3322,7 @@
 
 
   async function createSubjectFlow() {
-    const name = prompt("Nom de la nouvelle matière :");
+    const name = prompt("Nom de la nouvelle boîte :");
     if (!name || !name.trim()) return null;
     const subject = newSubject(name, ROOT_FOLDER_ID);
     await persistSubject(subject);
@@ -3319,7 +3335,7 @@
   async function renameSubject(id) {
     const s = subjects.find((x) => x.id === id);
     if (!s) return;
-    const name = prompt("Nouveau nom de la matière :", s.name);
+    const name = prompt("Nouveau nom de la boîte :", s.name);
     if (!name || !name.trim() || name.trim() === s.name) return;
     s.name = name.trim();
     s.updatedAt = new Date().toISOString();
@@ -3333,7 +3349,7 @@
 
   async function deleteSubject(id) {
     if (subjects.length <= 1) {
-      alert("Impossible de supprimer la dernière matière restante.");
+      alert("Impossible de supprimer la dernière boîte restante.");
       return;
     }
     const s = subjects.find((x) => x.id === id);
@@ -3341,11 +3357,11 @@
     const n = cards.filter((c) => !c.deleted && c.subject === id).length;
     const confirmMsg =
       n > 0
-        ? `Supprimer la matière « ${s.name} » et ses ${n} fiche(s) ? Cette action est irréversible.`
-        : `Supprimer la matière « ${s.name} » ?`;
+        ? `Supprimer la boîte « ${s.name} » et ses ${n} fiche(s) ? Cette action est irréversible.`
+        : `Supprimer la boîte « ${s.name} » ?`;
     if (!confirm(confirmMsg)) return;
 
-    // Suppression douce des fiches de cette matière (cohérent avec la sync).
+    // Suppression douce des fiches de cette boîte (cohérent avec la sync).
     const toDelete = cards.filter((c) => !c.deleted && c.subject === id);
     for (const c of toDelete) {
       const updated = touch({ ...c, deleted: true });
@@ -3381,7 +3397,7 @@
     currentSubjectId = id;
     localStorage.setItem(CURRENT_SUBJECT_KEY, id);
 
-    // On repart d'une session de révision propre pour la nouvelle matière.
+    // On repart d'une session de révision propre pour la nouvelle boîte.
     reviewSessionStarted = false;
     reviewQueue = [];
     currentCard = null;
@@ -3442,10 +3458,10 @@
   });
 
   /* ---------------------------------------------------------
-     Sélection de plusieurs matières confondues (item 1)
+     Sélection de plusieurs boîtes confondues (item 1)
   --------------------------------------------------------- */
-  /** Construit récursivement l'arbre dossiers/matières dans le sélecteur
-   *  multi-matières (item 1) : cocher un dossier inclut TOUTES les matières
+  /** Construit récursivement l'arbre dossiers/boîtes dans le sélecteur
+   *  multi-boîtes (item 1) : cocher un dossier inclut TOUTES les boîtes
    *  qu'il contient (y compris dans ses sous-dossiers), sans avoir besoin
    *  de les cocher une par une. */
   function renderFolderTreeForPicker(container, parentId, depth, selectedSubjectIds) {
@@ -3462,7 +3478,7 @@
       cb.value = f.id;
       cb.checked = ids.length > 0 && ids.every((id) => selectedSubjectIds.has(id));
       // Cocher/décocher un dossier répercute le même état sur tout ce
-      // qu'il contient — sous-dossiers et matières, à toute profondeur
+      // qu'il contient — sous-dossiers et boîtes, à toute profondeur
       // (item 7).
       cb.addEventListener("change", () => {
         const descendantFolderIds = new Set(folderDescendantIds(f.id));
@@ -3528,16 +3544,16 @@
       const list = el("multi-subject-picker-list");
       const { resultIds, singleSubjectId, label } = readMultiPickerResult(list);
       if (resultIds.length === 0) {
-        alert("Choisis au moins une matière ou un dossier.");
+        alert("Choisis au moins une boîte ou un dossier.");
         return;
       }
       closeMultiSubjectPicker();
 
-      // Affichage intelligent (item 18) : une seule matière au final -> on
+      // Affichage intelligent (item 18) : une seule boîte au final -> on
       // bascule directement dessus (son nom s'affiche naturellement,
       // inutile de passer par le mode "sélection"). Sélection qui
       // correspond exactement à un seul dossier -> son nom. Sinon,
-      // libellé générique "Sélection de matières".
+      // libellé générique "Sélection de boîtes".
       if (singleSubjectId) {
         switchSubject(singleSubjectId, true);
         return;
@@ -3548,8 +3564,8 @@
     });
   }
 
-  /** Arbre à choix unique (item : matière de création d'une nouvelle fiche
-   *  dans Fiches) — dossiers en simples en-têtes non cliquables, matières
+  /** Arbre à choix unique (item : boîte de création d'une nouvelle fiche
+   *  dans Fiches) — dossiers en simples en-têtes non cliquables, boîtes
    *  en boutons ; clic = choix immédiat, pas de coche ni de confirmation. */
   function renderSubjectTreeForSingleChoice(container, parentId, depth, onPick) {
     const childFolders = folders
@@ -3609,7 +3625,7 @@
   if (cardsSearchInputEl) {
     // Débounce (item 10) : sans lui, chaque frappe relançait un filtrage +
     // un rendu complet de la liste — perceptible comme un ralentissement
-    // sur une matière avec beaucoup de fiches, en tapant vite.
+    // sur une boîte avec beaucoup de fiches, en tapant vite.
     let cardsSearchDebounce = null;
     cardsSearchInputEl.addEventListener("input", () => {
       clearTimeout(cardsSearchDebounce);
@@ -3660,9 +3676,9 @@
     }
   }
 
-  /** Même principe que `persist` pour les fiches, mais pour les matières et
+  /** Même principe que `persist` pour les fiches, mais pour les boîtes et
    *  les dossiers (item 1/8) : jusqu'ici jamais vraiment synchronisés (une
-   *  matière créée ou déplacée sur un appareil n'apparaissait jamais, ou
+   *  boîte créée ou déplacée sur un appareil n'apparaissait jamais, ou
    *  pas correctement, sur les autres). */
   async function persistSubject(subject) {
     await DB.putSubject(subject);
@@ -3678,7 +3694,7 @@
   }
   /** Suppression douce envoyée aux autres appareils AVANT le retrait local
    *  (voir schéma Supabase : "deleted": true plutôt qu'un vrai DELETE, pour
-   *  que le pull suivant sache retirer la matière/le dossier au lieu de le
+   *  que le pull suivant sache retirer la boîte/le dossier au lieu de le
    *  voir réapparaître). */
   async function pushSubjectDeleted(subject) {
     if (Sync.isConfigured()) {
@@ -3738,27 +3754,27 @@
     renderReviewChart();
     renderReviewSubjectScore();
     renderReviewGauge();
-    // Passe systématiquement la matière de la fiche AFFICHÉE (item 2 —
-    // bug corrigé) : sans ça, en mode "toutes matières"/"sélection",
-    // l'appel masquait le badge de mode faute de savoir quelle matière
+    // Passe systématiquement la boîte de la fiche AFFICHÉE (item 2 —
+    // bug corrigé) : sans ça, en mode "toutes boîtes"/"sélection",
+    // l'appel masquait le badge de mode faute de savoir quelle boîte
     // afficher, avant qu'un autre rendu ne le réaffiche juste après — d'où
     // le clignotement observé (par ex. en appuyant sur "chantier").
     renderSubjectAlgoBadge(currentCard ? currentCard.subject : undefined);
   }
 
-  /** Badge "mode d'apprentissage" de la matière active, affiché dans la
+  /** Badge "mode d'apprentissage" de la boîte active, affiché dans la
    *  barre déjà existante en haut (voir item 7) — jamais de ligne en plus.
    *  Libellé court (juste "Normal", pas "Apprentissage normal") : la place
    *  disponible à côté du sélecteur est trop réduite pour le nom complet,
    *  qui se faisait tronquer en "Apprentissage n…", peu lisible. */
   const ALGO_MODE_KEY_TO_CLASS = { cool: "is-cool", normal: "is-normal", renforce: "is-renforce", custom: "is-custom" };
-  /** Rafraîchit tout ce qui dépend de la matière active en dehors de sa
+  /** Rafraîchit tout ce qui dépend de la boîte active en dehors de sa
    *  propre page : le nombre de fiches + bouton mode dans la barre de
    *  Réviser (item 1, mêmes couleurs que le curseur du mode d'apprentissage
    *  — voir ALGO_MODE_COLORS), et le récapitulatif d'export/import dans
    *  Réglages (item 6). */
-  /** `cardSubjectId` (optionnel) : quand on révise "toutes matières" ou une
-   *  "sélection", chaque fiche affichée a sa propre matière — c'est ELLE
+  /** `cardSubjectId` (optionnel) : quand on révise "toutes boîtes" ou une
+   *  "sélection", chaque fiche affichée a sa propre boîte — c'est ELLE
    *  qui doit déterminer le mode affiché/édité par le bouton, pas la
    *  sélection globale (item 2). Sans cet argument (autres pages, ou mode
    *  normal), on retombe sur `currentSubjectId` comme avant. */
@@ -3770,10 +3786,10 @@
     const effectiveSubjectId = sentinel && cardSubjectId ? cardSubjectId : currentSubjectId;
 
     if (subjectBarCountEl) subjectBarCountEl.textContent = `${n} fiche${n > 1 ? "s" : ""}`;
-    // Un vrai identifiant de matière (jamais un sentinel) est toujours
+    // Un vrai identifiant de boîte (jamais un sentinel) est toujours
     // disponible dès qu'une fiche est affichée à l'écran (item 17 : le
     // badge de mode vit maintenant sur la fiche elle-même, plus à côté du
-    // sélecteur de matière — ça n'avait plus de sens avec le multi-matières).
+    // sélecteur de boîte — ça n'avait plus de sens avec le multi-boîtes).
     const showBtn = !sentinel || !!cardSubjectId;
     if (cardAlgoBtn) cardAlgoBtn.hidden = !showBtn;
     if (showBtn && effectiveSubjectId) {
@@ -3788,18 +3804,18 @@
 
   if (cardAlgoBtn) {
     cardAlgoBtn.addEventListener("click", () => {
-      // En mode "toutes matières"/"sélection", `dataset.subjectId` porte la
-      // vraie matière de la fiche actuellement affichée (voir
-      // renderSubjectAlgoBadge) ; sinon, la matière active classique.
+      // En mode "toutes boîtes"/"sélection", `dataset.subjectId` porte la
+      // vraie boîte de la fiche actuellement affichée (voir
+      // renderSubjectAlgoBadge) ; sinon, la boîte active classique.
       const targetId = cardAlgoBtn.dataset.subjectId || currentSubjectId;
       if (targetId && !isSentinelSubject(targetId)) openSubjectAlgoView(targetId, "review");
     });
   }
 
-  /** Toutes les fiches non supprimées de la matière actuellement active —
-   *  gère aussi les deux modes "toutes matières" / "sélection de matières"
+  /** Toutes les fiches non supprimées de la boîte actuellement active —
+   *  gère aussi les deux modes "toutes boîtes" / "sélection de boîtes"
    *  (item 1), chaque fiche gardant alors le mode d'apprentissage de SA
-   *  propre matière (voir computeAlgoNext, qui utilise card.subject). */
+   *  propre boîte (voir computeAlgoNext, qui utilise card.subject). */
   function subjectCards() {
     if (currentSubjectId === ALL_SUBJECTS_ID) {
       return cards.filter((c) => !c.deleted);
@@ -3815,7 +3831,7 @@
     return subjectCards().filter((c) => SM2.isDue(c));
   }
 
-  /** Score de la matière/sélection en cours sur Réviser (item 2), à côté
+  /** Score de la boîte/sélection en cours sur Réviser (item 2), à côté
    *  du sélecteur — masquable depuis le mode développeur. */
   function renderReviewSubjectScore() {
     const el2 = el("review-subject-score");
@@ -3837,7 +3853,7 @@
 
   /** Jauge du score (item 2), demi-cercle façon jauge de carburant, avec
    *  5 zones colorées (seuils V1-V4 réglables) et une aiguille pointant
-   *  le score de la matière/sélection en cours. */
+   *  le score de la boîte/sélection en cours. */
   function polarToCartesian(cx, cy, r, angleDeg) {
     const rad = ((angleDeg - 180) * Math.PI) / 180;
     return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
@@ -3902,7 +3918,7 @@
     return svg;
   }
   /** Mini-jauge (item 3), utilisée dans la page Organisation à côté du
-   *  score de chaque dossier/matière. */
+   *  score de chaque dossier/boîte. */
   function renderMiniGaugeSvg(score) {
     return buildGaugeSvg(score, {
       withNeedle: false,
@@ -4109,7 +4125,7 @@
   /** Mode bonus : pioche en priorité parmi les fiches du jour le plus chargé
    *  à venir, pour lisser la charge de révision future. Si aucun pic net ne
    *  se dégage, on retombe sur un tirage aléatoire classique sur toute la
-   *  matière. */
+   *  boîte. */
   function pickRandomBonusCard(pool, excludeId) {
     const busiestDay = findBusiestUpcomingDay(pool);
     if (busiestDay !== null) {
@@ -4629,11 +4645,11 @@
         closeNewCardView();
       }
     } else {
-      // Item 5 : la matière est désormais obligatoire et explicite (bug
-      // corrigé — la fiche partait auparavant toujours dans la matière
+      // Item 5 : la boîte est désormais obligatoire et explicite (bug
+      // corrigé — la fiche partait auparavant toujours dans la boîte
       // active de Réviser, sans lien avec ce sélecteur).
       if (!newCardSubjectId || !subjects.some((s) => s.id === newCardSubjectId)) {
-        alert("Choisis d'abord une matière pour cette fiche.");
+        alert("Choisis d'abord une boîte pour cette fiche.");
         return;
       }
       const card = newCard(question, answer, newCardSubjectId);
@@ -4641,7 +4657,7 @@
       cards.push(card);
       renderAll();
       // Item 5 : on reste sur cette page pour enchaîner la création d'une
-      // autre fiche, la matière choisie est conservée.
+      // autre fiche, la boîte choisie est conservée.
       resetCardForm();
       showToast("Fiche ajoutée");
       if (inputQuestion) inputQuestion.focus();
@@ -4668,7 +4684,7 @@
       closeNewCardView();
     } else {
       // Item 7 : annuler une CRÉATION efface juste le contenu (question/
-      // réponse), garde la matière choisie, et reste sur cette page.
+      // réponse), garde la boîte choisie, et reste sur cette page.
       resetCardForm();
       if (inputQuestion) inputQuestion.focus();
     }
@@ -4728,10 +4744,10 @@
   }
 
   /** Périmètre d'affichage/recherche de la page Fiches (item 12) — distinct
-   *  de la matière choisie pour la CRÉATION d'une nouvelle fiche
-   *  (`cardsSubjectSelectEl`, qui doit toujours rester une matière réelle
-   *  unique) : par défaut "cette matière" suit ce choix, mais peut être
-   *  élargi à un dossier entier, toutes les matières, ou une sélection
+   *  de la boîte choisie pour la CRÉATION d'une nouvelle fiche
+   *  (`cardsSubjectSelectEl`, qui doit toujours rester une boîte réelle
+   *  unique) : par défaut "cette boîte" suit ce choix, mais peut être
+   *  élargi à un dossier entier, toutes les boîtes, ou une sélection
    *  libre, sans changer où atterrit une nouvelle fiche. */
   function cardsScopeCards() {
     if (cardsScopeFilter === CARDS_SCOPE_CURRENT) return subjectCards();
@@ -4759,20 +4775,20 @@
    *  Réviser). */
   function cardsScopeLabel() {
     if (cardsScopeFilter === CARDS_SCOPE_CURRENT) return subjectName(currentSubjectId);
-    if (cardsScopeFilter === ALL_SUBJECTS) return "Toutes les matières";
-    if (cardsScopeFilter === CARDS_SCOPE_MULTI) return loadCardsMultiLabel() || "Sélection de matières";
+    if (cardsScopeFilter === ALL_SUBJECTS) return "Toutes les boîtes";
+    if (cardsScopeFilter === CARDS_SCOPE_MULTI) return loadCardsMultiLabel() || "Sélection de boîtes";
     if (typeof cardsScopeFilter === "string" && cardsScopeFilter.startsWith("folder:")) {
       const f = folders.find((x) => x.id === cardsScopeFilter.slice(7));
       return f ? f.name : "Dossier inconnu";
     }
     const s = subjects.find((x) => x.id === cardsScopeFilter);
-    return s ? s.name : "Cette matière";
+    return s ? s.name : "Cette boîte";
   }
 
   function renderCardsScopeSelect() {
     const btn = el("cards-scope-select-btn");
     if (!btn) return;
-    // Valide encore le périmètre choisi (dossier/matière supprimé entre
+    // Valide encore le périmètre choisi (dossier/boîte supprimé entre
     // temps ?), comme le faisait l'ancien <select>.
     const isFolderOpt =
       typeof cardsScopeFilter === "string" &&
@@ -4786,9 +4802,9 @@
       subjects.some((s) => s.id === cardsScopeFilter);
     if (!valid) cardsScopeFilter = CARDS_SCOPE_CURRENT;
     btn.textContent = cardsScopeLabel();
-    // Item 10 : rappel des matières/dossiers réellement choisis quand la
+    // Item 10 : rappel des boîtes/dossiers réellement choisis quand la
     // combinaison ne rentre pas dans un simple nom (le bouton lui-même
-    // affiche alors juste "Sélection de matières", trop vague).
+    // affiche alors juste "Sélection de boîtes", trop vague).
     const summaryEl = el("cards-scope-summary");
     if (summaryEl) {
       if (cardsScopeFilter === CARDS_SCOPE_MULTI) {
@@ -4865,7 +4881,7 @@
 
   /** Contrairement aux autres pickers de l'appli (qui se ferment après un
    *  "Valider"), celui-ci reste affiché tant que le périmètre "Sélection de
-   *  matières et dossiers" est actif — cocher/décocher met à jour les
+   *  boîtes et dossiers" est actif — cocher/décocher met à jour les
    *  résultats de recherche tout de suite, sans étape de confirmation.
    *  Bug corrigé : depuis que ce panneau occupe tout l'écran (comme les
    *  deux autres), il fallait quand même un bouton pour le refermer et
@@ -4890,9 +4906,9 @@
       cb.addEventListener("change", () => {
         const { resultIds, singleSubjectId, label } = readMultiPickerResult(list);
         saveCardsMultiSelection(resultIds);
-        // Une seule matière au final -> son nom directement (readMultiPickerResult
+        // Une seule boîte au final -> son nom directement (readMultiPickerResult
         // renvoie label=null dans ce cas précis, réservé ailleurs à un vrai
-        // changement de matière active — ici on reste en mode "sélection"
+        // changement de boîte active — ici on reste en mode "sélection"
         // puisque les résultats se mettent à jour en direct, donc on
         // affiche juste son nom au lieu du libellé générique).
         saveCardsMultiLabel(singleSubjectId ? subjectName(singleSubjectId) : label || "");
@@ -4971,9 +4987,9 @@
 
       const meta = document.createElement("p");
       meta.className = "card-row-meta";
-      // Nom de la matière (item 11) : seulement utile quand la liste mélange
-      // plusieurs matières (dossier / toutes / sélection) — inutile et
-      // redondant quand on est déjà filtré sur "cette matière".
+      // Nom de la boîte (item 11) : seulement utile quand la liste mélange
+      // plusieurs boîtes (dossier / toutes / sélection) — inutile et
+      // redondant quand on est déjà filtré sur "cette boîte".
       const dueLabel = SM2.isDue(card)
         ? "à revoir aujourd'hui"
         : `prochaine question dans ${formatInterval(daysUntil(card.dueDate))}`;
@@ -5011,7 +5027,7 @@
       if (subjects.length > 1) {
         const moveSelect = document.createElement("select");
         moveSelect.className = "icon-btn card-row-move";
-        moveSelect.title = "Déplacer vers une autre matière";
+        moveSelect.title = "Déplacer vers une autre boîte";
         moveSelect.innerHTML =
           `<option value="">déplacer…</option>` +
           subjects
@@ -5038,7 +5054,7 @@
     return Math.max(0, Math.ceil(ms / 86400000));
   }
 
-  /** Reclasse manuellement une fiche vers une autre matière (utile pour
+  /** Reclasse manuellement une fiche vers une autre boîte (utile pour
    *  corriger un classement erroné, ex. après une synchronisation). */
   async function moveCardToSubject(id, newSubjectId) {
     const card = cards.find((c) => c.id === id);
@@ -5087,7 +5103,7 @@
   }
 
   /* ---------------------------------------------------------
-     Import / export JSON (item 8 : sélecteur de matière dédié à l'export,
+     Import / export JSON (item 8 : sélecteur de boîte dédié à l'export,
      indépendant de la page Réviser).
   --------------------------------------------------------- */
   const exportSubjectSelectEl = el("export-subject-select");
@@ -5194,10 +5210,10 @@
     localStorage.setItem(STATS_MULTI_SELECTION_KEY, JSON.stringify(ids));
   }
 
-  /** Étend le sélecteur Stats (item 15) : matières individuelles (comme
+  /** Étend le sélecteur Stats (item 15) : boîtes individuelles (comme
    *  avant), mais aussi des dossiers entiers ("folder:<id>", toutes les
-   *  matières qu'ils contiennent, sous-dossiers compris) et une sélection
-   *  libre combinant plusieurs matières et/ou dossiers. */
+   *  boîtes qu'ils contiennent, sous-dossiers compris) et une sélection
+   *  libre combinant plusieurs boîtes et/ou dossiers. */
   const STATS_MULTI_LABEL_KEY = "fiches_stats_multi_label";
   function loadStatsMultiLabel() {
     return localStorage.getItem(STATS_MULTI_LABEL_KEY) || "";
@@ -5207,14 +5223,14 @@
   }
 
   function statsScopeLabel() {
-    if (statsSubjectFilter === ALL_SUBJECTS) return "Toutes les matières";
-    if (statsSubjectFilter === STATS_MULTI_ID) return loadStatsMultiLabel() || "Sélection de matières";
+    if (statsSubjectFilter === ALL_SUBJECTS) return "Toutes les boîtes";
+    if (statsSubjectFilter === STATS_MULTI_ID) return loadStatsMultiLabel() || "Sélection de boîtes";
     if (typeof statsSubjectFilter === "string" && statsSubjectFilter.startsWith("folder:")) {
       const f = folders.find((x) => x.id === statsSubjectFilter.slice(7));
       return f ? f.name : "Dossier inconnu";
     }
     const s = subjects.find((x) => x.id === statsSubjectFilter);
-    return s ? s.name : "Toutes les matières";
+    return s ? s.name : "Toutes les boîtes";
   }
 
   function renderStatsSubjectSelect() {
@@ -5249,10 +5265,10 @@
     return cards.filter((c) => !c.deleted && c.subject === statsSubjectFilter);
   }
 
-  /** Mêmes identifiants de matières que statsScopeCards, mais pour filtrer
+  /** Mêmes identifiants de boîtes que statsScopeCards, mais pour filtrer
    *  le journal des notes (ratingLog), qui référence subjectId et non les
    *  fiches elles-mêmes (une fiche déplacée entre-temps ne fausse donc pas
-   *  l'historique : chaque entrée garde la matière qu'elle avait au moment
+   *  l'historique : chaque entrée garde la boîte qu'elle avait au moment
    *  de la notation). */
   function statsScopeSubjectIds() {
     if (statsSubjectFilter === ALL_SUBJECTS) return null; // signifie "toutes"
@@ -5326,7 +5342,7 @@
       const list = el("stats-multi-picker-list");
       const { resultIds, singleSubjectId, label } = readMultiPickerResult(list);
       if (resultIds.length === 0) {
-        alert("Choisis au moins une matière ou un dossier.");
+        alert("Choisis au moins une boîte ou un dossier.");
         return;
       }
       closeStatsMultiPicker();
@@ -5453,7 +5469,7 @@
 
   /** Dessine un histogramme "fiches dues par jour" dans les éléments fournis.
    *  Factorisé pour être partagé entre le grand graphique de l'onglet Stats
-   *  et le mini graphique de la page Réviser (matière en cours). */
+   *  et le mini graphique de la page Réviser (boîte en cours). */
   function renderHistogramInto(chartEl, emptyEl, wrapEl, pool, rangeKey, maxBarPx, computeFn, todayAtEnd, suppressChangeFlash, mergedPastDays, minTotalDays) {
     if (!chartEl) return;
     const baseCfg = RANGE_CONFIG[rangeKey] || { visible: rangeKey, total: rangeKey };
@@ -5657,8 +5673,8 @@
   function renderStats() {
     renderStatsSubjectSelect();
     renderStatsScaleSelect();
-    // 6a : toujours toutes matières confondues, indépendant du sélecteur
-    // de matière ci-dessous (qui ne pilote que ce qui suit les flammes).
+    // 6a : toujours toutes boîtes confondues, indépendant du sélecteur
+    // de boîte ci-dessous (qui ne pilote que ce qui suit les flammes).
     const allCards = cards.filter((c) => !c.deleted);
     statTotal.textContent = String(allCards.length);
     if (statReviewedToday) statReviewedToday.textContent = String(reviewedTodayCount(allCards));
@@ -5902,7 +5918,7 @@
 
   /** Histogramme "Fiches créées" (item 6e) : même principe défilable que
    *  les graphiques de notes juste en dessous, piloté par la même échelle
-   *  partagée (byday/byweek/bymonth) et le même sélecteur de matière. */
+   *  partagée (byday/byweek/bymonth) et le même sélecteur de boîte. */
   function renderCreatedChart() {
     const wrap = el("created-chart-wrap");
     if (!wrap) return;
@@ -6087,8 +6103,8 @@
     const summaryEl = el("streak-summary");
     const streakChartEl = el("streak-chart-wrap");
     if (!summaryEl || !streakChartEl) return;
-    // Toujours toutes matières confondues (item : indépendant des choix de
-    // matière/période plus bas sur la page).
+    // Toujours toutes boîtes confondues (item : indépendant des choix de
+    // boîte/période plus bas sur la page).
     const { days, hotDays, streak } = computeStreakData(null);
     summaryEl.innerHTML = `🔥 Jours d'utilisation : <span class="streak-number-value">${streak}</span> jour${streak > 1 ? "s" : ""} d'affilée`;
     const todayIdx = days.length - 1;
@@ -6111,7 +6127,7 @@
      Échelle partagée (byday/byweek/bymonth) pilotant le graphique
      "à revoir/révisées", "fiches créées", "notes données" et
      "évolution des notes" (item 6c) — même bouton/menu que le sélecteur
-     de matière juste au-dessus (item 6), plutôt qu'un menu déroulant natif.
+     de boîte juste au-dessus (item 6), plutôt qu'un menu déroulant natif.
   --------------------------------------------------------- */
   const STATS_SCALE_TITLES = { byday: "Par jour", byweek: "Par semaine", bymonth: "Par mois" };
   function renderStatsScaleSelect() {
@@ -6171,7 +6187,7 @@
   }
 
   /* ---------------------------------------------------------
-     Mini histogramme de la page Réviser (matière en cours)
+     Mini histogramme de la page Réviser (boîte en cours)
   --------------------------------------------------------- */
   function formatRangeShort(days) {
     switch (days) {
@@ -7022,7 +7038,7 @@
 
   /* ---------------------------------------------------------
      Vue Calendrier (item 9, revue item 2) — événements liés à une
-     matière/dossier, pensés comme base pour une future génération de
+     boîte/dossier, pensés comme base pour une future génération de
      programme de révision. Stockage simple en localStorage (pas encore
      dans IndexedDB, le volume attendu est faible).
   --------------------------------------------------------- */
@@ -7046,11 +7062,11 @@
   let calendarYearAnchor = new Date().getFullYear();
 
   function calendarLinkLabel(linkId) {
-    if (!linkId) return "Aucune matière/dossier liés";
+    if (!linkId) return "Aucune boîte/dossier liés";
     const [type, id] = linkId.split(":");
     if (type === "subject") return subjectName(id);
     const f = folders.find((x) => x.id === id);
-    return f ? `${f.name} (dossier)` : "Aucune matière/dossier liés";
+    return f ? `${f.name} (dossier)` : "Aucune boîte/dossier liés";
   }
 
   function renderCalendarLinkTree(container) {
@@ -7219,7 +7235,7 @@
     delBtn.innerHTML = iconSvgMarkup("trash", "icon-inline-svg");
     delBtn.title = "Supprimer cet événement";
     // Item 4 : confirmation avant suppression, comme pour les fiches et
-    // les matières ailleurs dans l'appli.
+    // les boîtes ailleurs dans l'appli.
     delBtn.addEventListener("click", () => {
       if (confirm(`Supprimer l'événement « ${ev.title} » ?`)) onDelete();
     });
@@ -7298,12 +7314,27 @@
       cell.type = "button";
       cell.className = "calendar-day-cell";
       if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day) cell.classList.add("is-today");
-      cell.textContent = String(day);
+      const dayLabel = document.createElement("span");
+      dayLabel.className = "calendar-day-num";
+      dayLabel.textContent = String(day);
+      cell.appendChild(dayLabel);
       if (eventMap[day]) {
+        // Item 3 : jour en gras + légèrement entouré, en plus du point,
+        // pour qu'un jour avec événement(s) ressorte nettement mieux.
+        // Item 4 : un point par événement (jusqu'à 3, plus au-delà juste
+        // un point légèrement plus large en dernière position pour ne
+        // pas surcharger une petite case).
         cell.classList.add("has-event");
-        const dot = document.createElement("span");
-        dot.className = "calendar-day-dot";
-        cell.appendChild(dot);
+        const dotsWrap = document.createElement("span");
+        dotsWrap.className = "calendar-day-dots";
+        const count = Math.min(eventMap[day].length, 3);
+        for (let i = 0; i < count; i++) {
+          const dot = document.createElement("span");
+          dot.className = "calendar-day-dot";
+          if (eventMap[day].length > 3 && i === count - 1) dot.classList.add("calendar-day-dot--more");
+          dotsWrap.appendChild(dot);
+        }
+        cell.appendChild(dotsWrap);
         cell.addEventListener("click", () => openCalendarDayPopup(year, month, day, eventMap[day]));
       }
       grid.appendChild(cell);
@@ -7425,18 +7456,18 @@
 
   /* ---------------------------------------------------------
      Vue Programme de révision (item 7) — étape intermédiaire avant
-     Réviser : conseille les matières/dossiers à exercer en priorité en
+     Réviser : conseille les boîtes/dossiers à exercer en priorité en
      fonction des échéances du calendrier (les plus proches d'abord), avec
      un objectif de score à atteindre. Version volontairement simple pour
      l'instant : l'objectif est fixe (80%) et la priorité suit juste la
-     date de l'échéance la plus proche pour ce dossier/matière — assez pour
+     date de l'échéance la plus proche pour ce dossier/boîte — assez pour
      poser la structure, à affiner plus tard (item 7 du départ).
   --------------------------------------------------------- */
   const REVISION_PROGRAM_TARGET_SCORE = 80;
   function computeRevisionProgramItems() {
     const todayStr = new Date().toISOString().slice(0, 10);
     const upcoming = loadCalendarEvents().filter((ev) => ev.linkId && ev.date >= todayStr);
-    // Un seul point de programme par matière/dossier : celui dont
+    // Un seul point de programme par boîte/dossier : celui dont
     // l'échéance est la plus proche fait foi.
     const byLink = {};
     upcoming.forEach((ev) => {
@@ -7470,12 +7501,12 @@
     if (linkId) {
       const [type, id] = linkId.split(":");
       if (type === "subject") switchSubject(id);
-      // (Un dossier entier n'a pas d'équivalent direct de "matière
+      // (Un dossier entier n'a pas d'équivalent direct de "boîte
       // courante" pour Réviser : on laisse la sélection telle quelle dans
       // ce cas, plutôt que de deviner — affiné dans une prochaine étape.)
     } else {
       // Item 6 : "Ne pas suivre le programme" repart sur "Toutes les
-      // matières", plutôt que de laisser la dernière matière active
+      // boîtes", plutôt que de laisser la dernière boîte active
       // (potentiellement peu pertinente/oubliée depuis longtemps).
       switchSubject(ALL_SUBJECTS_ID);
     }
@@ -7630,22 +7661,22 @@
     updateSyncStatus();
   });
 
-  /** Trouve (ou crée) localement la matière référencée par une fiche distante, à partir de son id + nom dénormalisé. */
+  /** Trouve (ou crée) localement la boîte référencée par une fiche distante, à partir de son id + nom dénormalisé. */
   async function ensureLocalSubjectFor(remote) {
     if (remote.subject && subjects.some((s) => s.id === remote.subject)) {
       return remote.subject;
     }
     if (remote.subject) {
-      // Matière inconnue sur cet appareil (créée ailleurs) : on la recrée avec le même id
-      // pour que les deux appareils convergent vers la même matière.
-      const remoteName = remote.subjectName || "Matière importée";
+      // Boîte inconnue sur cet appareil (créée ailleurs) : on la recrée avec le même id
+      // pour que les deux appareils convergent vers la même boîte.
+      const remoteName = remote.subjectName || "Boîte importée";
 
-      // Évite les doublons "fantômes" : si une matière locale du même nom
+      // Évite les doublons "fantômes" : si une boîte locale du même nom
       // existe déjà mais n'a encore aucune fiche (typiquement le "Général"
       // créé automatiquement au tout premier lancement de l'appli, avant la
       // toute première synchronisation), on la remplace par celle du serveur
       // au lieu d'en garder deux — sinon chaque nouvel appareil qui se
-      // connecte fait apparaître une matière "Général" vide supplémentaire.
+      // connecte fait apparaître une boîte "Général" vide supplémentaire.
       const emptyDuplicate = subjects.find(
         (s) => s.id !== remote.subject && s.name === remoteName &&
           !cards.some((c) => c.subject === s.id && !c.deleted)
@@ -7672,7 +7703,7 @@
       renderStatsSubjectSelect();
       return s.id;
     }
-    // Fiche distante ancienne, sans matière renseignée : on la range dans "Général".
+    // Fiche distante ancienne, sans boîte renseignée : on la range dans "Général".
     let general = subjects.find((s) => s.name === "Général");
     if (!general) {
       general = newSubject("Général");
@@ -7685,8 +7716,8 @@
   }
 
   /** Fusionne une fiche reçue de Supabase (import initial ou temps réel).
-   *  Règle importante : une ligne distante sans matière renseignée (donnée
-   *  ancienne, d'avant l'introduction des matières) ne doit jamais dégrader
+   *  Règle importante : une ligne distante sans boîte renseignée (donnée
+   *  ancienne, d'avant l'introduction des boîtes) ne doit jamais dégrader
    *  une fiche déjà correctement classée localement — sinon une simple
    *  synchronisation peut faire "retomber" une fiche dans Général. */
   async function mergeRemoteCard(remote) {
@@ -7695,11 +7726,11 @@
 
     if (remote.deleted) {
       // Fiche supprimée : elle ne sera jamais affichée (partout on filtre sur
-      // !c.deleted), donc pas besoin de résoudre une vraie matière pour elle.
-      // Important : si on appelait ensureLocalSubjectFor ici, une matière
+      // !c.deleted), donc pas besoin de résoudre une vraie boîte pour elle.
+      // Important : si on appelait ensureLocalSubjectFor ici, une boîte
       // qu'on vient de supprimer localement (avec toutes ses fiches) serait
       // recréée dès qu'on récupère ces mêmes fiches (supprimées) depuis
-      // Supabase — c'est ce qui faisait "réapparaître" la matière supprimée
+      // Supabase — c'est ce qui faisait "réapparaître" la boîte supprimée
       // à chaque réouverture de l'appli.
       remote.subject = remote.subject || (local ? local.subject : null);
     } else if (remote.subject) {
@@ -7738,7 +7769,7 @@
     }
   }
 
-  /** Ajoute discrètement à la file en cours les fiches dues de la matière active
+  /** Ajoute discrètement à la file en cours les fiches dues de la boîte active
    *  qui viennent d'arriver par la sync, sans jamais changer la fiche affichée. */
   function mergeNewDueCardsIntoQueue() {
     if (!reviewSessionStarted || isBonusMode) return;
@@ -7754,10 +7785,10 @@
     renderDuePill();
   }
 
-  /** Fusionne une matière reçue de Supabase : adoptée si plus récente que
+  /** Fusionne une boîte reçue de Supabase : adoptée si plus récente que
    *  la version locale, retirée localement si marquée supprimée là-bas
    *  (voir pushSubjectDeleted) — jamais l'inverse (une suppression locale
-   *  ne doit pas ressusciter une matière plus récente créée ailleurs). */
+   *  ne doit pas ressusciter une boîte plus récente créée ailleurs). */
   async function mergeRemoteSubject(remote) {
     const idx = subjects.findIndex((s) => s.id === remote.id);
     if (remote.deleted) {
@@ -7782,7 +7813,7 @@
   /** Fusionne un mode d'apprentissage reçu de Supabase (item 1, audit
    *  synchro) : jamais synchronisé avant — un mode personnalisé créé sur un
    *  appareil restait invisible sur les autres, qui retombaient
-   *  silencieusement sur "Normal" pour toute matière qui l'utilisait. */
+   *  silencieusement sur "Normal" pour toute boîte qui l'utilisait. */
   async function mergeRemoteLearningMode(remote) {
     const modes = loadLearningModes();
     if (remote.deleted) {
@@ -7854,8 +7885,8 @@
     }
   }
 
-  /** Même logique que reconcileWithRemote (fiches), pour les matières et
-   *  les dossiers (item 1/8). Dossiers d'abord : une matière peut référencer
+  /** Même logique que reconcileWithRemote (fiches), pour les boîtes et
+   *  les dossiers (item 1/8). Dossiers d'abord : une boîte peut référencer
    *  un folderId qu'il vaut mieux avoir déjà en place. */
   async function reconcileSubjectsAndFolders() {
     const remoteFolders = await Sync.pullFolders();
@@ -8146,9 +8177,9 @@
       await connectSync();
       // Doublons "Général" : reconcileWithRemote() peut faire apparaître un
       // second sujet "Général" arrivé du serveur (fiches distantes sans
-      // matière) en plus de celui créé localement par défaut avant même que
+      // boîte) en plus de celui créé localement par défaut avant même que
       // la synchro n'ait eu le temps de tourner (voir loadSubjects) — d'où
-      // la matière "Générale" qui apparaissait parfois à la toute première
+      // la boîte "Générale" qui apparaissait parfois à la toute première
       // connexion. On redéduplique donc une fois la synchro effectuée.
       await dedupeEmptySubjects();
       renderSubjectSelect();

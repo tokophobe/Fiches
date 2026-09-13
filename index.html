@@ -169,7 +169,7 @@
         </button>
         <button type="button" class="home-circle" data-key="manage" data-go="manage">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
-          <span>Dossiers &amp; matières</span>
+          <span>Dossiers &amp; boîtes</span>
         </button>
         <button type="button" class="home-circle" data-key="cards" data-go="cards">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M15 2v5h5"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
@@ -203,7 +203,7 @@
     </section>
 
     <!-- VUE PROGRAMME DE RÉVISION (item 7) : étape intermédiaire avant
-         Réviser, qui conseille par ordre de priorité les matières/dossiers
+         Réviser, qui conseille par ordre de priorité les boîtes/dossiers
          à exercer en fonction des échéances du calendrier. -->
     <section id="view-revision-program" class="view" aria-labelledby="tab-revision-program">
       <h2 class="section-title">Programme de révision</h2>
@@ -216,18 +216,18 @@
     <!-- VUE RÉVISION -->
     <section id="view-review" class="view" aria-labelledby="tab-review">
       <div class="subject-bar" id="subject-bar">
-        <button type="button" class="subject-select-btn" id="subject-select-btn" aria-label="Choisir les matières à réviser"></button>
+        <button type="button" class="subject-select-btn" id="subject-select-btn" aria-label="Choisir les boîtes à réviser"></button>
         <span class="review-subject-score" id="review-subject-score"></span>
 
         <div class="subject-choice-menu" id="subject-choice-menu" hidden>
-          <button type="button" class="subject-choice-item" id="subject-choice-all">Toutes les matières</button>
-          <button type="button" class="subject-choice-item" id="subject-choice-selection">Sélection des matières</button>
+          <button type="button" class="subject-choice-item" id="subject-choice-all">Toutes les boîtes</button>
+          <button type="button" class="subject-choice-item" id="subject-choice-selection">Sélection des boîtes</button>
           <button type="button" class="subject-choice-item subject-choice-item--cancel" id="subject-choice-cancel">Annuler</button>
         </div>
       </div>
 
       <div class="multi-subject-picker" id="multi-subject-picker" hidden>
-        <p class="field-hint settings-block-hint">Choisis les matières à réviser confondues :</p>
+        <p class="field-hint settings-block-hint">Choisis les boîtes à réviser confondues :</p>
         <div class="multi-subject-picker-list" id="multi-subject-picker-list"></div>
         <div class="multi-subject-picker-actions">
           <button type="button" class="btn btn--small" id="multi-subject-picker-confirm">Valider</button>
@@ -263,7 +263,7 @@
             </button>
           </div>
           <button class="card-icon-btn card-undo-btn" id="undo-rating-btn" type="button" hidden title="Revenir à la fiche précédente (annule la dernière évaluation)" aria-label="Annuler la dernière évaluation">◀️</button>
-          <button type="button" class="card-icon-btn card-algo-btn" id="card-algo-btn" hidden title="Mode d'apprentissage de cette matière">🎓</button>
+          <button type="button" class="card-icon-btn card-algo-btn" id="card-algo-btn" hidden title="Mode d'apprentissage de cette boîte">🎓</button>
           <!-- Boutons secondaires repliés par défaut (item 1c) : un simple
                bouton "révéler" à la place, qui les fait apparaître. -->
           <button class="card-icon-btn card-reveal-btn" id="reveal-secondary-icons-btn" type="button" title="Afficher les actions supplémentaires" aria-label="Afficher les actions supplémentaires (chantier, hibernation, éditer)"></button>
@@ -309,7 +309,7 @@
         </div>
       </div>
 
-      <!-- Item 2 : jauge du score de la matière/sélection en cours, tout en
+      <!-- Item 2 : jauge du score de la boîte/sélection en cours, tout en
            bas de la page. -->
       <div class="review-gauge-wrap" id="review-gauge-wrap"></div>
     </section>
@@ -318,10 +318,10 @@
     <section id="view-manage" class="view" aria-labelledby="tab-manage">
       <div class="subjects-panel">
         <div class="list-header">
-          <h2 class="section-title manage-title">Organisation des dossiers et matières</h2>
+          <h2 class="section-title manage-title">Organisation des dossiers et boîtes</h2>
           <div class="list-header-actions">
             <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
-            <button class="btn btn--small" id="manage-add-subject-btn" type="button">+ Nouvelle matière</button>
+            <button class="btn btn--small" id="manage-add-subject-btn" type="button">+ Nouvelle boîte</button>
           </div>
         </div>
         <ul class="subject-list" id="subject-list"></ul>
@@ -346,10 +346,10 @@
           <h2 class="section-title">Nouvelle fiche</h2>
         </div>
 
-        <!-- Choix de la matière (item 7) : intégré au cadre de création
+        <!-- Choix de la boîte (item 7) : intégré au cadre de création
              lui-même. -->
         <div class="subject-bar" id="cards-subject-bar">
-          <button type="button" class="subject-select-btn" id="cards-subject-select-btn" aria-label="Choisir la matière de cette nouvelle fiche"></button>
+          <button type="button" class="subject-select-btn" id="cards-subject-select-btn" aria-label="Choisir la boîte de cette nouvelle fiche"></button>
 
           <div class="subject-choice-menu subject-choice-menu--tree" id="cards-subject-choice-menu" hidden>
             <div id="cards-subject-choice-tree"></div>
@@ -381,14 +381,14 @@
         <p class="cards-scope-summary" id="cards-scope-summary" hidden></p>
 
         <div class="subject-choice-menu" id="cards-scope-choice-menu" hidden>
-          <button type="button" class="subject-choice-item" id="cards-scope-choice-all">Toutes les matières</button>
-          <button type="button" class="subject-choice-item" id="cards-scope-choice-selection">Sélection de matières et dossiers</button>
+          <button type="button" class="subject-choice-item" id="cards-scope-choice-all">Toutes les boîtes</button>
+          <button type="button" class="subject-choice-item" id="cards-scope-choice-selection">Sélection de boîtes et dossiers</button>
           <button type="button" class="subject-choice-item subject-choice-item--cancel" id="cards-scope-choice-cancel">Annuler</button>
         </div>
       </div>
 
       <div class="multi-subject-picker" id="cards-multi-picker" hidden>
-        <p class="field-hint settings-block-hint">Coche des matières et/ou dossiers — les résultats se mettent à jour tout de suite :</p>
+        <p class="field-hint settings-block-hint">Coche des boîtes et/ou dossiers — les résultats se mettent à jour tout de suite :</p>
         <div class="multi-subject-picker-list" id="cards-multi-picker-list"></div>
         <div class="multi-subject-picker-actions">
           <button type="button" class="btn btn--small" id="cards-multi-picker-done">Valider</button>
@@ -412,7 +412,7 @@
 
     <!-- VUE STATS -->
     <section id="view-stats" class="view" aria-labelledby="tab-stats">
-      <!-- 6a : toujours toutes matières confondues, en tout premier. -->
+      <!-- 6a : toujours toutes boîtes confondues, en tout premier. -->
       <div class="stat-grid">
         <div class="stat-box">
           <span class="stat-number" id="stat-total">0</span>
@@ -428,17 +428,17 @@
       <div id="streak-summary" class="streak-summary"></div>
       <div id="streak-chart-wrap" class="streak-chart-wrap"></div>
 
-      <!-- 6c : les deux réglages ci-dessous (matière/dossier + échelle)
+      <!-- 6c : les deux réglages ci-dessous (boîte/dossier + échelle)
            s'appliquent à TOUT ce qui suit, collés en haut au défilement. -->
       <div class="stats-controls stats-controls--sticky">
-        <button type="button" class="subject-select-btn" id="stats-subject-select-btn" aria-label="Choisir les matières pour les statistiques"></button>
+        <button type="button" class="subject-select-btn" id="stats-subject-select-btn" aria-label="Choisir les boîtes pour les statistiques"></button>
         <div class="stats-controls--sticky-row2">
           <button type="button" class="subject-select-btn" id="stats-scale-select-btn" aria-label="Choisir l'échelle des statistiques"></button>
         </div>
 
         <div class="subject-choice-menu" id="stats-scope-choice-menu" hidden>
-          <button type="button" class="subject-choice-item" id="stats-scope-choice-all">Toutes les matières</button>
-          <button type="button" class="subject-choice-item" id="stats-scope-choice-selection">Sélection de matières et dossiers</button>
+          <button type="button" class="subject-choice-item" id="stats-scope-choice-all">Toutes les boîtes</button>
+          <button type="button" class="subject-choice-item" id="stats-scope-choice-selection">Sélection de boîtes et dossiers</button>
           <button type="button" class="subject-choice-item subject-choice-item--cancel" id="stats-scope-choice-cancel">Annuler</button>
         </div>
 
@@ -451,7 +451,7 @@
       </div>
 
       <div class="multi-subject-picker" id="stats-multi-picker" hidden>
-        <p class="field-hint settings-block-hint">Choisis les matières et/ou dossiers à combiner :</p>
+        <p class="field-hint settings-block-hint">Choisis les boîtes et/ou dossiers à combiner :</p>
         <div class="multi-subject-picker-list" id="stats-multi-picker-list"></div>
         <div class="multi-subject-picker-actions">
           <button type="button" class="btn btn--small" id="stats-multi-picker-confirm">Valider</button>
@@ -498,7 +498,7 @@
     <!-- VUE CALENDRIER (item 9, revue item 2) -->
     <section id="view-calendar" class="view" aria-labelledby="tab-calendar">
       <h2 class="section-title">Calendrier</h2>
-      <p class="field-hint settings-block-hint">Note ici tes échéances (contrôle, interrogation, partiels, bac...) liées à une matière ou un dossier. De quoi, plus tard, générer automatiquement un programme de révision.</p>
+      <p class="field-hint settings-block-hint">Note ici tes échéances (contrôle, interrogation, partiels, bac...) liées à une boîte ou un dossier. De quoi, plus tard, générer automatiquement un programme de révision.</p>
 
       <button type="button" class="btn btn--primary" id="calendar-add-event-btn" style="margin-bottom:14px;">+ Ajouter un événement</button>
 
@@ -527,13 +527,13 @@
             <input type="date" id="calendar-event-date" required class="calendar-date-native-input" />
           </div>
         </label>
-        <button type="button" class="subject-select-btn" id="calendar-event-subject-btn" aria-label="Choisir la matière ou le dossier lié">Aucune matière/dossier liés</button>
+        <button type="button" class="subject-select-btn" id="calendar-event-subject-btn" aria-label="Choisir la boîte ou le dossier lié">Aucune boîte/dossier liés</button>
 
         <!-- Item 2 : panneau plein écran, comme les autres sélecteurs de
-             matières de l'appli (bug corrigé : celui-ci s'ouvrait hors
+             boîtes de l'appli (bug corrigé : celui-ci s'ouvrait hors
              écran, en petit menu déroulant). -->
         <div class="multi-subject-picker" id="calendar-event-subject-picker" hidden>
-          <p class="field-hint settings-block-hint">Choisis la matière ou le dossier lié :</p>
+          <p class="field-hint settings-block-hint">Choisis la boîte ou le dossier lié :</p>
           <div class="multi-subject-picker-list" id="calendar-event-subject-tree"></div>
           <div class="multi-subject-picker-actions">
             <button type="button" class="btn btn--small" id="calendar-event-subject-none">Aucun lien</button>
@@ -734,8 +734,8 @@
            corrigé ci-dessous. -->
       <div class="card-form">
         <h3 class="settings-block-title">Exporter des fiches</h3>
-        <p class="field-hint settings-block-hint">Choisis la matière à exporter :</p>
-        <select class="import-target-select" id="export-subject-select" aria-label="Matière à exporter"></select>
+        <p class="field-hint settings-block-hint">Choisis la boîte à exporter :</p>
+        <select class="import-target-select" id="export-subject-select" aria-label="Boîte à exporter"></select>
         <button class="btn btn--small" id="export-btn" type="button">Exporter (<span id="settings-io-count">0</span> fiche(s))</button>
       </div>
 
@@ -747,7 +747,7 @@
         </label>
         <div class="import-target-row">
           <label class="import-target-label" for="import-target-select">Importer dans :</label>
-          <select class="import-target-select" id="import-target-select" aria-label="Matière cible pour l'import"></select>
+          <select class="import-target-select" id="import-target-select" aria-label="Boîte cible pour l'import"></select>
         </div>
         <p class="import-note">Un import ajoute toujours de nouvelles fiches — il ne modifie ni ne supprime jamais celles déjà présentes.</p>
       </div>
@@ -759,9 +759,9 @@
       <p class="field-hint settings-block-hint">
         Un mode d'apprentissage définit à quelle vitesse l'intervalle entre
         deux révisions d'une fiche augmente selon ta réponse (Encore,
-        Difficile, Bien, Facile). Chaque matière (ou dossier entier de
-        matières) se voit affecter un mode depuis la page Gérer. Modifier un
-        mode ici change donc le rythme de révision de TOUTES les matières
+        Difficile, Bien, Facile). Chaque boîte (ou dossier entier de
+        boîtes) se voit affecter un mode depuis la page Gérer. Modifier un
+        mode ici change donc le rythme de révision de TOUTES les boîtes
         qui l'utilisent actuellement.
       </p>
 
@@ -960,7 +960,7 @@
         <button type="button" class="btn btn--ghost" id="dev-review-layout-reset">Revenir à la disposition d'origine</button>
       </div>
 
-      <!-- Item 1a/2 : score d'apprentissage des fiches, matières et
+      <!-- Item 1a/2 : score d'apprentissage des fiches, boîtes et
            dossiers. -->
       <div class="card-form">
         <h3 class="settings-block-title">Score des fiches</h3>
@@ -1006,7 +1006,7 @@
         </label>
         <label class="settings-toggle-row">
           <input type="checkbox" id="dev-score-hide-subject" />
-          <span>Masquer le score de la matière sur Réviser</span>
+          <span>Masquer le score de la boîte sur Réviser</span>
         </label>
         <button type="button" class="btn btn--ghost" id="dev-score-reset">Revenir aux réglages d'origine</button>
       </div>
@@ -1029,7 +1029,7 @@
     <!-- VUE MODES D'APPRENTISSAGE (globale — item 2) -->
     
 
-    <!-- VUE AFFECTATION D'UN MODE (par matière ou par dossier, depuis Gérer) -->
+    <!-- VUE AFFECTATION D'UN MODE (par boîte ou par dossier, depuis Gérer) -->
     <section id="view-mode-assign" class="view">
       <button class="btn btn--ghost btn--small" id="assign-back-btn" type="button">← Retour à Gérer</button>
       <h2 class="view-title" id="assign-target-title">Affecter un mode</h2>
@@ -1043,7 +1043,7 @@
         <h3 class="settings-block-title">Revoir les vieilles fiches</h3>
         <p class="field-hint settings-block-hint">
           Ramène l'échéance (et la date de prochaine interrogation) à 10
-          jours pour toutes les fiches de cette matière dont la prochaine
+          jours pour toutes les fiches de cette boîte dont la prochaine
           interrogation est prévue dans plus de 10 jours.
         </p>
         <button type="button" class="btn algo-review-old-btn" id="algo-review-old-btn">

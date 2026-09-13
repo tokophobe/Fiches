@@ -247,7 +247,7 @@ button.topbar-new-card-btn {
   margin-bottom: 0;
 }
 
-/* Score de la matière/sélection en cours (item 2), à côté du sélecteur. */
+/* Score de la boîte/sélection en cours (item 2), à côté du sélecteur. */
 .review-subject-score {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -259,7 +259,7 @@ button.topbar-new-card-btn {
   flex-shrink: 0;
 }
 
-/* Bouton "+ Nouvelle fiche" (item 3), à côté du sélecteur de matière —
+/* Bouton "+ Nouvelle fiche" (item 3), à côté du sélecteur de boîte —
    ouvre le cadre de création, masqué par défaut. */
 .cards-new-btn {
   flex-shrink: 0;
@@ -297,7 +297,7 @@ button.topbar-new-card-btn {
 
 /* Bouton qui remplace le <select> natif sur Réviser (item 18) : ouvrir un
    menu personnalisé à 3 choix plutôt que la liste native de TOUTES les
-   matières. Même habillage visuel que l'ancien select. */
+   boîtes. Même habillage visuel que l'ancien select. */
 .subject-select-btn {
   flex: 1;
   min-width: 0;
@@ -349,7 +349,7 @@ button.topbar-new-card-btn {
   opacity: 0.7;
 }
 
-/* Menu à 3 choix (items 6/18) : Toutes les matières / Sélection / Annuler.
+/* Menu à 3 choix (items 6/18) : Toutes les boîtes / Sélection / Annuler.
    Repensé en petit menu déroulant compact (item 6) — ancré juste sous le
    bouton, comme un vrai menu, plutôt qu'une grande carte à 3 gros boutons
    empilés qui prenait toute la largeur de l'écran. */
@@ -397,8 +397,8 @@ button.topbar-new-card-btn {
   padding-top: 10px;
 }
 
-/* Variante "arborescence" du menu de choix (matière de création d'une
-   fiche, dans Fiches) : liste de matières organisée par dossier, à choix
+/* Variante "arborescence" du menu de choix (boîte de création d'une
+   fiche, dans Fiches) : liste de boîtes organisée par dossier, à choix
    unique — clic direct, pas de coche ni de confirmation. */
 .subject-choice-menu--tree {
   max-height: 60vh;
@@ -459,7 +459,7 @@ button.topbar-new-card-btn {
 
 .subject-add-btn:hover { background: rgba(31, 41, 55, 0.16); }
 
-/* Nombre de fiches + bouton mode d'apprentissage de la matière active, dans
+/* Nombre de fiches + bouton mode d'apprentissage de la boîte active, dans
    la barre de la page Réviser (item 1) — mêmes couleurs que le curseur du
    mode d'apprentissage (voir ALGO_MODE_COLORS en JS et .algo-mode-slider). */
 .subject-bar-count {
@@ -493,7 +493,7 @@ button.topbar-new-card-btn {
 /* Couleurs par mode, PLUS prononcées qu'avant (item 1 : jugées trop
    "light") — texte en gras + fond et bordure nettement plus saturés.
    Partagées par le bouton de la barre Réviser (.subject-bar-algo-btn) ET
-   celui de chaque ligne de matière sur la page Gérer (.subject-row-algo-btn). */
+   celui de chaque ligne de boîte sur la page Gérer (.subject-row-algo-btn). */
 .subject-bar-algo-btn.is-cool, .subject-row-algo-btn.is-cool, .card-algo-btn.is-cool {
   color: #eaf2e4; background: var(--mode-cool-color, var(--sage)); border-color: var(--mode-cool-color, var(--sage));
 }
@@ -509,11 +509,11 @@ button.topbar-new-card-btn {
 
 .subject-bar-algo-btn:hover, .subject-row-algo-btn:hover, .card-algo-btn:hover { filter: brightness(1.08); }
 
-/* Sélecteur de plusieurs matières confondues (item 1). */
+/* Sélecteur de plusieurs boîtes confondues (item 1). */
 /* Item 1 : hauteur plein écran pour TOUS les panneaux de sélection
-   multi-matières (Réviser, Fiches, Stats), quelle que soit la taille de
+   multi-boîtes (Réviser, Fiches, Stats), quelle que soit la taille de
    l'écran — un vrai panneau plein écran plutôt qu'un encart de taille
-   variable selon le nombre de matières/dossiers à afficher. */
+   variable selon le nombre de boîtes/dossiers à afficher. */
 .multi-subject-picker {
   position: fixed;
   inset: 0;
@@ -610,8 +610,8 @@ button.topbar-new-card-btn {
 
 .folder-row .subject-row-name { color: var(--folder-subject-name-color, var(--ink)); font-weight: 600; }
 
-/* Sélecteur "déplacer vers" (dossiers/matières) — même look que le
-   sélecteur de plusieurs matières confondues (item 1). */
+/* Sélecteur "déplacer vers" (dossiers/boîtes) — même look que le
+   sélecteur de plusieurs boîtes confondues (item 1). */
 .move-picker {
   background: var(--paper);
   border-radius: var(--radius-card);
@@ -651,20 +651,37 @@ button.topbar-new-card-btn {
    dossier replié contient bien quelque chose — deux "tranches" simulées
    par de simples ombres décalées, sans DOM supplémentaire. */
 .folder-row--stacked {
-  /* Bug corrigé (item 5) : les anciennes couleurs (quasi blanches) étaient
-     beaucoup trop proches du fond de l'appli pour être vraiment visibles,
-     et la marge réservée en dessous était trop juste — une partie de
-     l'ombre se retrouvait couverte par la ligne suivante (les éléments de
-     liste plus bas dans le DOM se peignent PAR-DESSUS une ombre qui
-     déborderait dans leur propre espace). Couleurs plus contrastées,
-     décalages plus resserrés, marge nettement augmentée pour que tout
-     tienne bien à l'intérieur, sans être recouvert. */
-  box-shadow:
-    var(--shadow-subject-row, 0 4px 12px rgba(0,0,0,0.18)),
-    0 6px 0 0 rgba(35,48,42,0.16),
-    0 12px 0 0 rgba(35,48,42,0.10);
-  margin-bottom: 28px !important;
+  /* Bug corrigé (item 1, definitivement) : un box-shadow, même avec un
+     spread négatif et de bonnes couleurs, restait quasi invisible une
+     fois rendu (vérifié pixel par pixel) — remplacé par de vrais éléments
+     enfants (voir .folder-row-peek), positionnés en dessous et
+     nettement plus étroits. Il faut donc repasser cette ligne précise en
+     overflow visible (elle seule, pas les autres lignes), sinon ces
+     enfants se feraient couper par la règle générale sur .subject-row.
+  */
+  overflow: visible;
+  position: relative;
+  margin-bottom: 30px !important;
 }
+
+.folder-row-peek {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  height: 14px;
+  border-radius: 0 0 10px 10px;
+  /* Bug enfin corrigé (item 1) : --paper-2 est presque exactement la même
+     teinte que le fond de l'appli (--desk) — la div était bien là, bien
+     positionnée, mais invisible car quasi la même couleur que ce qu'il y
+     a derrière. Une couleur nettement plus soutenue, différente des deux,
+     règle ça pour de bon. */
+  background: #b9c3d6;
+  z-index: -1;
+}
+
+.folder-row-peek--1 { top: calc(100% - 2px); }
+.folder-row-peek--2 { top: calc(100% + 8px); left: 20px; right: 20px; background: #cbd3e2; }
+
 
 /* Item 3 : contenu principal (à gauche) + jauge circulaire pleine hauteur
    (à droite, permutée avec le badge de mode qui est monté sur la ligne 1). */
@@ -678,8 +695,8 @@ button.topbar-new-card-btn {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 10px 8px 10px 12px;
+  gap: 3px;
+  padding: 6px 8px 6px 12px;
 }
 
 .subject-row-line1 {
@@ -762,7 +779,7 @@ button.topbar-new-card-btn {
    ALGO_MODE_SHORT_LABELS). Couleur pilotée par une des 4 classes .is-*
    ci-dessous (partagées avec le bouton de la page Réviser — item 1 :
    avant, cette version-ci restait toujours en terracotta fixe, sans lien
-   avec le mode réel de la matière). */
+   avec le mode réel de la boîte). */
 .subject-row-algo-btn {
   flex-shrink: 0;
   display: inline-flex;
@@ -784,11 +801,11 @@ button.topbar-new-card-btn {
 }
 
 /* Version compacte (item 16) : juste l'émoticône, sur un rond de la couleur
-   du mode — laisse davantage de place au nom de la matière/du dossier à
+   du mode — laisse davantage de place au nom de la boîte/du dossier à
    côté. */
 .subject-row-algo-btn--compact {
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   padding: 0;
   border-radius: 50%;
   justify-content: center;
@@ -796,7 +813,7 @@ button.topbar-new-card-btn {
   max-width: none;
 }
 
-/* Boutons resserrés entre eux sur une ligne de matière/dossier (item 16). */
+/* Boutons resserrés entre eux sur une ligne de boîte/dossier (item 16). */
 .subject-row .row-actions {
   gap: 3px;
 }
@@ -823,7 +840,7 @@ button.topbar-new-card-btn {
   font-size: 11px;
   /* Bug corrigé : cette couleur claire (pensée pour un fond sombre) rendait
      le texte quasi invisible sur le fond clair de .card-form — le
-     sélecteur de matière semblait "flotter" sans étiquette visible. */
+     sélecteur de boîte semblait "flotter" sans étiquette visible. */
   color: var(--ink-soft);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -1317,7 +1334,7 @@ button.home-btn {
 .card-text b, .card-text strong { font-weight: 700; }
 .card-text i, .card-text em { font-style: italic; }
 
-/* Rappel de la matière sur la fiche en mode multi-matières (item 5) : gras
+/* Rappel de la boîte sur la fiche en mode multi-boîtes (item 5) : gras
    et plus grand que le reste du texte, plus de ":" final. */
 .card-subject-hint {
   font-size: 1.15em;
@@ -1477,7 +1494,7 @@ button.home-btn {
 .stamp--easy:hover  { filter: brightness(1.1); }
 
 /* ============================================================
-   REVIEW: mini histogramme (matière en cours), en bas de la page
+   REVIEW: mini histogramme (boîte en cours), en bas de la page
    ============================================================ */
 .review-chart-section {
   margin-top: 8px;
@@ -1598,7 +1615,7 @@ button.home-btn {
 
 .card-form .section-title { color: var(--ink); }
 
-/* Titre de la page Gérer (item 15) : plus long que l'ancien "Matières",
+/* Titre de la page Gérer (item 15) : plus long que l'ancien "Boîtes",
    espace en dessous augmenté pour bien le séparer des boutons d'action. */
 .manage-title {
   margin-bottom: 20px;
@@ -1606,8 +1623,8 @@ button.home-btn {
 
 
 /* En-tête du formulaire "Nouvelle fiche" (item 7) : titre + sélecteur de
-   matière compact sur la même ligne, sans indication de mode ici (juste le
-   choix de la matière cible pour la fiche qu'on est en train de créer). */
+   boîte compact sur la même ligne, sans indication de mode ici (juste le
+   choix de la boîte cible pour la fiche qu'on est en train de créer). */
 .card-form-header {
   display: flex;
   align-items: center;
@@ -1920,10 +1937,10 @@ button.home-btn {
 
 /* `.row-actions` est partagée entre deux mises en page différentes : les
    rangées de fiches (colonne, actions en pleine largeur en haut) et les
-   rangées de matières (ligne horizontale, actions à droite). Le style
+   rangées de boîtes (ligne horizontale, actions à droite). Le style
    "pleine largeur + séparateur" ne doit s'appliquer qu'au premier cas —
    l'avoir mis sur la classe generique cassait l'affichage du nom des
-   matières (poussé hors de vue par une largeur forcée à 100%). */
+   boîtes (poussé hors de vue par une largeur forcée à 100%). */
 .card-row .row-actions {
   width: 100%;
   padding-bottom: 6px;
@@ -1942,7 +1959,7 @@ button.home-btn {
   color: var(--ink-soft);
   font-family: var(--font-mono);
   font-size: 12px;
-  padding: 4px 7px;
+  padding: 3px 6px;
   border-radius: 6px;
 }
 
@@ -2007,7 +2024,7 @@ button.home-btn {
   min-width: 100px;
 }
 
-/* Le bouton de choix de matière passe en premier et sur toute sa propre
+/* Le bouton de choix de boîte passe en premier et sur toute sa propre
    ligne (bug corrigé — bouton trop petit, peu lisible) : plus grand, plus
    de contraste, bien distinct des deux menus déroulants d'échelle/période
    qui restent sur la ligne suivante. */
@@ -2438,27 +2455,53 @@ button.home-btn {
 .calendar-day-cell.is-empty { visibility: hidden; }
 .calendar-day-cell.has-event { cursor: pointer; }
 
-/* Bug/gêne visuelle corrigée (item 6) : le point n'était pas centré
-   horizontalement (aucun repère left/transform), il pouvait donc déborder
-   sur un bord de la case, en particulier chevaucher l'anneau du jour
-   "aujourd'hui". Centré proprement ici, et agrandi dans la présentation
-   "Calendrier" (cases plus grandes, pleine largeur) pour mieux ressortir. */
-.calendar-day-dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--blue);
+/* Item 3 : un jour avec événement(s) ressort maintenant de 3 façons à la
+   fois (proposées puis retenues) — chiffre en gras, léger cerclage, ET
+   point(s) plus gros qu'avant (chacun de ces trois signaux, seul, restait
+   trop discret ou pouvait se confondre avec le cerclage du jour
+   "aujourd'hui"). */
+.calendar-day-cell.has-event .calendar-day-num {
+  font-weight: 700;
+}
+
+.calendar-day-cell.has-event {
+  box-shadow: inset 0 0 0 1.5px rgba(74, 144, 217, 0.35);
+  border-radius: 8px;
+}
+
+.calendar-day-cell.has-event.is-today {
+  box-shadow: inset 0 0 0 1.5px var(--blue);
+}
+
+/* Item 4 : plusieurs points côte à côte s'il y a plusieurs événements ce
+   jour-là (jusqu'à 3, au-delà le dernier point est juste un peu plus
+   large plutôt que d'en aligner un par événement sans fin). */
+.calendar-day-dots {
   position: absolute;
   bottom: 3px;
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
+  gap: 2px;
+  align-items: center;
 }
 
-.calendar-months-stack .calendar-day-dot {
+.calendar-day-dot {
   width: 5px;
   height: 5px;
-  bottom: 5px;
+  border-radius: 50%;
+  background: var(--blue);
+  flex-shrink: 0;
 }
+
+.calendar-day-dot--more {
+  width: 7px;
+  border-radius: 3px;
+}
+
+.calendar-months-stack .calendar-day-dots { bottom: 5px; gap: 3px; }
+.calendar-months-stack .calendar-day-dot { width: 6px; height: 6px; }
+.calendar-months-stack .calendar-day-dot--more { width: 9px; }
 
 /* Grille année (item 2) : les 12 mois en mini-grilles plus compactes. */
 .calendar-year-grid {
@@ -2522,7 +2565,7 @@ button.home-btn {
 }
 
 /* ============================================================
-   MODE D'APPRENTISSAGE VIEW (par matière)
+   MODE D'APPRENTISSAGE VIEW (par boîte)
    ============================================================ */
 .view-title {
   font-family: var(--font-type);

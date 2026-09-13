@@ -10,7 +10,7 @@ pose, et plus tu réponds juste, moins souvent elle te les repose
   icône en fond "squircle", badge en dégradé rouge avec liseré.
 - Mode bonus (révision libre) : le tirage lisse toujours la charge en
   piochant en priorité parmi les fiches du jour le plus chargé à venir.
-- Page **Réviser** : un mini-histogramme des échéances de la matière en
+- Page **Réviser** : un mini-histogramme des échéances de la boîte en
   cours apparaît en bas de page (taper dessus change l'échelle : 15 j
   → 1 mois → 3 mois → 6 mois → 1 an → boucle). Le compteur « fiches
   revues aujourd'hui » a été déplacé dans **Stats**, et le bouton
@@ -23,17 +23,17 @@ pose, et plus tu réponds juste, moins souvent elle te les repose
 Tout est stocké **en local sur ton appareil** (IndexedDB) — pas de
 compte, pas de serveur, ça marche hors-ligne une fois installée.
 
-## Matières
+## Boîtes
 
-L'appli gère plusieurs matières indépendantes (histoire, maths, etc.).
+L'appli gère plusieurs boîtes indépendantes (histoire, maths, etc.).
 Chacune a ses propres fiches, sa propre file de révision et ses propres
-stats. Le sélecteur en haut de l'écran permet de changer de matière à
+stats. Le sélecteur en haut de l'écran permet de changer de boîte à
 tout moment ; le bouton **+** en crée une nouvelle. Dans l'onglet
-**Gérer**, une section « Matières » permet de renommer ou supprimer une
-matière (la suppression retire aussi ses fiches — au moins une matière
+**Gérer**, une section « Boîtes » permet de renommer ou supprimer une
+boîte (la suppression retire aussi ses fiches — au moins une boîte
 doit toujours rester).
 
-Si tu utilises la synchronisation Supabase, la matière de chaque fiche
+Si tu utilises la synchronisation Supabase, la boîte de chaque fiche
 est propagée automatiquement entre appareils.
 
 ## Structure du projet
@@ -101,7 +101,7 @@ juste un **code de synchronisation** que tu entres sur chaque appareil.
 - Va dans **Project Settings → API** : note l'**URL du projet** et la clé
   **anon / public** (surtout pas la clé `service_role`, qui est secrète)
 
-*Projet Supabase déjà existant (créé avant l'ajout des matières ou de la
+*Projet Supabase déjà existant (créé avant l'ajout des boîtes ou de la
 page Tamagotchi) ?* Recolle et relance `supabase-schema.sql` une fois —
 les commandes sont sans risque à rejouer, elles ajoutent juste les
 colonnes et la table manquantes (dont `reward_state`, qui porte
