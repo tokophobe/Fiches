@@ -651,13 +651,19 @@ button.topbar-new-card-btn {
    dossier replié contient bien quelque chose — deux "tranches" simulées
    par de simples ombres décalées, sans DOM supplémentaire. */
 .folder-row--stacked {
+  /* Bug corrigé (item 5) : les anciennes couleurs (quasi blanches) étaient
+     beaucoup trop proches du fond de l'appli pour être vraiment visibles,
+     et la marge réservée en dessous était trop juste — une partie de
+     l'ombre se retrouvait couverte par la ligne suivante (les éléments de
+     liste plus bas dans le DOM se peignent PAR-DESSUS une ombre qui
+     déborderait dans leur propre espace). Couleurs plus contrastées,
+     décalages plus resserrés, marge nettement augmentée pour que tout
+     tienne bien à l'intérieur, sans être recouvert. */
   box-shadow:
     var(--shadow-subject-row, 0 4px 12px rgba(0,0,0,0.18)),
-    0 8px 0 -2px rgba(255,255,255,0.9),
-    0 8px 0 -2px rgba(35,48,42,0.14),
-    0 15px 0 -5px rgba(255,255,255,0.9),
-    0 15px 0 -5px rgba(35,48,42,0.10);
-  margin-bottom: 16px !important;
+    0 6px 0 0 rgba(35,48,42,0.16),
+    0 12px 0 0 rgba(35,48,42,0.10);
+  margin-bottom: 28px !important;
 }
 
 /* Item 3 : contenu principal (à gauche) + jauge circulaire pleine hauteur
@@ -681,6 +687,17 @@ button.topbar-new-card-btn {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+}
+
+/* Item 9 : bouton plier/déplier séparé du nom (qui navigue maintenant
+   vers Fiches) — juste la flèche, sans fond ni bordure propre. */
+.folder-row-expand-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  font-size: 13px;
+  padding: 4px 2px;
 }
 
 .subject-row-line1 .subject-row-name { flex: 1; min-width: 0; }
@@ -2365,6 +2382,18 @@ button.home-btn {
   overflow: hidden;
 }
 
+/* Bug corrigé (item 3) : cette règle datait de l'ancien agencement CÔTE À
+   CÔTE (flex-direction: row), où flex:1 1 0 servait à répartir la LARGEUR.
+   Dans le nouvel empilement VERTICAL (item 5), la même règle divisait la
+   HAUTEUR disponible entre tous les mois affichés — de plus en plus
+   écrasés à mesure que le défilement infini en ajoutait, jusqu'à devenir
+   invisibles (hauteur proche de zéro, contenu coupé par overflow:hidden).
+   Chaque mois reprend ici sa hauteur naturelle, sans grandir ni rétrécir. */
+.calendar-months-stack .calendar-mini-month {
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
 .calendar-mini-month-title {
   font-family: var(--font-type);
   font-weight: 700;
@@ -2444,7 +2473,6 @@ button.home-btn {
 
 /* Item 7 : programme de révision. */
 .revision-program-row {
-  display: block;
   cursor: pointer;
 }
 
@@ -2452,20 +2480,21 @@ button.home-btn {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
+  flex: 1;
 }
 
-.revision-program-bar {
-  height: 6px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  margin-top: 4px;
+/* Item 7 : jauge en anneau (même principe que la page Organisation), avec
+   un repère indiquant l'objectif à atteindre. */
+.revision-program-gauge-col {
+  flex-shrink: 0;
+  width: 62px;
+  margin-left: 10px;
 }
 
-.revision-program-bar-fill {
-  height: 100%;
-  background: var(--blue);
-  border-radius: 999px;
+.subject-row-gauge-ring--target {
+  width: 100%;
+  height: auto;
 }
 
 .chart-empty {

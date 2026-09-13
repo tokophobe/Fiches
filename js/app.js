@@ -784,7 +784,14 @@
     setIfPresent("fiches_new_card_subject_id", prefs.newCardSubjectId);
     setIfPresent("fiches_card_font_size", prefs.cardFontSize);
     setIfPresent("fiches_calendar_events", prefs.calendarEvents);
-    setIfPresent("fiches_night_mode", prefs.nightModeActive);
+    // Bug corrigé (item 1) : si l'utilisateur vient tout juste de changer
+    // ce réglage LUI-MÊME (les quelques secondes qui suivent), on ignore
+    // un écho de synchro qui reviendrait entre-temps avec l'ANCIENNE
+    // valeur — le contraire ferait clignoter le bouton juste après l'avoir
+    // pressé.
+    if (Date.now() - lastLocalNightModeChangeAt > 4000) {
+      setIfPresent("fiches_night_mode", prefs.nightModeActive);
+    }
     loadBonusDaysSettings();
     loadBonusAgainMode();
     loadHibernateDays();
@@ -1624,9 +1631,11 @@
     }
     return settings.nightColors;
   }
+  let lastLocalNightModeChangeAt = 0;
   function setNightModeActive(value) {
     localStorage.setItem(NIGHT_MODE_KEY, String(value));
     document.documentElement.classList.toggle("is-night-mode", value);
+    lastLocalNightModeChangeAt = Date.now();
     // Bug corrigé (item 1) : ce réglage ne passait pas par saveDevSettings,
     // donc son horodatage de synchro n'était jamais mis à jour — un échange
     // de données (même sans rapport direct) pouvait alors réappliquer un
@@ -2407,12 +2416,13 @@
    *  d'apprentissage ont permuté de place par rapport à avant, pour
    *  laisser à l'intitulé (ligne 1) toute la largeur disponible plutôt que
    *  de la partager avec la jauge sur la ligne 2. */
-  function buildRowBody({ nameBtnEl, countLabel, score, mode, onRename, onMove, onDelete, onAlgo, deleteTitle }) {
+  function buildRowBody({ nameBtnEl, expandBtnEl, countLabel, score, mode, onRename, onMove, onDelete, onAlgo, deleteTitle }) {
     const main = document.createElement("div");
     main.className = "subject-row-main";
 
     const line1 = document.createElement("div");
     line1.className = "subject-row-line1";
+    if (expandBtnEl) line1.appendChild(expandBtnEl);
     line1.appendChild(nameBtnEl);
     const algoBtn = document.createElement("button");
     algoBtn.type = "button";
@@ -2486,15 +2496,37 @@
       // (margin-left), pas seulement le texte à l'intérieur (padding-left).
       li.style.marginLeft = `${depth * 18}px`;
 
-      const nameBtn = document.createElement("button");
-      nameBtn.type = "button";
-      nameBtn.className = "subject-row-name";
-      nameBtn.title = expanded ? "Replier ce dossier" : "Déplier ce dossier";
-      nameBtn.innerHTML = `${expanded ? "▾" : "▸"} ${iconSvgMarkup("folder", "icon-inline-svg")} ${escapeHtml(f.name)}`;
-      nameBtn.addEventListener("click", () => {
+      // Item 9 : le nom du dossier navigue maintenant vers Fiches (filtré
+      // sur ce dossier), séparément d'un petit bouton dédié pour
+      // déplier/replier (l'ancien clic combiné empêchait d'ajouter cette
+      // navigation sans casser le pliage).
+      const expandBtn = document.createElement("button");
+      expandBtn.type = "button";
+      expandBtn.className = "folder-row-expand-btn";
+      expandBtn.title = expanded ? "Replier ce dossier" : "Déplier ce dossier";
+      expandBtn.textContent = expanded ? "▾" : "▸";
+      expandBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
         if (expandedManageFolders.has(f.id)) expandedManageFolders.delete(f.id);
         else expandedManageFolders.add(f.id);
         renderSubjectManageList();
+      });
+
+      const nameBtn = document.createElement("button");
+      nameBtn.type = "button";
+      nameBtn.className = "subject-row-name";
+      nameBtn.title = "Voir les fiches de ce dossier";
+      nameBtn.innerHTML = `${iconSvgMarkup("folder", "icon-inline-svg")} ${escapeHtml(f.name)}`;
+      nameBtn.addEventListener("click", () => {
+        cardsScopeFilter = `folder:${f.id}`;
+        // Bug corrigé (item 9) : contrairement au clic sur une matière
+        // (qui passe par switchSubject, lequel déclenche déjà un rendu
+        // complet), rien ne rafraîchissait ici le sélecteur de périmètre
+        // sur la page Fiches — elle affichait donc encore l'ancienne
+        // matière/le mode précédent au lieu de ce dossier.
+        renderManageList();
+        const tab = document.querySelector('.tab[data-view="cards"]');
+        if (tab) tab.click();
       });
 
       const childCount = folders.filter((x) => x.parentId === f.id).length + subjects.filter((x) => x.folderId === f.id).length;
@@ -2507,6 +2539,7 @@
       const folderScore = computeFolderScore(f.id);
       const body = buildRowBody({
         nameBtnEl: nameBtn,
+        expandBtnEl: expandBtn,
         countLabel: `${n} matière${n > 1 ? "s" : ""}`,
         score: folderScore,
         mode: "normal",
@@ -2573,13 +2606,14 @@
   async function createFolderFlow() {
     const name = prompt("Nom du nouveau dossier :");
     if (!name || !name.trim()) return;
-    // Créé à la racine (item 13 : plus de notion de dossier "actuellement
-    // ouvert" avec l'arborescence désormais toujours dépliée en entier) —
-    // déplaçable ensuite avec ↔️.
     const folder = newFolder(name, ROOT_FOLDER_ID);
     await persistFolder(folder);
     folders.push(folder);
     renderSubjectManageList();
+    // Item 8 : demande tout de suite où le ranger, plutôt que de le créer
+    // silencieusement à la racine en laissant l'utilisateur le déplacer
+    // ensuite lui-même via ↔️.
+    openMovePicker("folder", folder.id);
   }
 
   async function renameFolder(folderId) {
@@ -3599,6 +3633,10 @@
     if (s) {
       switchSubject(s.id);
       renderSubjectManageList();
+      // Item 8 : demande tout de suite où la ranger (uniquement depuis
+      // cette page — pas depuis le flux d'import, où ce serait hors
+      // contexte).
+      openMovePicker("subject", s.id);
     }
   });
 
@@ -3794,7 +3832,7 @@
     }
     const avg = Math.round(pool.reduce((acc, c) => acc + computeCardScore(c), 0) / pool.length);
     el2.hidden = false;
-    el2.textContent = `${avg}%`;
+    el2.textContent = `${avg}`;
   }
 
   /** Jauge du score (item 2), demi-cercle façon jauge de carburant, avec
@@ -3894,7 +3932,39 @@
       <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="6"
         stroke-dasharray="${dash.toFixed(1)} ${circumference.toFixed(1)}" stroke-linecap="round"
         transform="rotate(-90 ${cx} ${cy})" />
-      <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="700" fill="${color}" font-family="sans-serif">${score}%</text>
+      <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="700" fill="${color}" font-family="sans-serif">${score}</text>
+    </svg>`;
+  }
+  /** Même jauge en anneau (item 7), avec en plus un repère indiquant le
+   *  score OBJECTIF à atteindre — utilisée dans le programme de révision.
+   *  Cadre un peu plus large que la version compacte pour laisser la
+   *  place à l'étiquette de l'objectif à l'extérieur de l'anneau. */
+  function renderMiniGaugeRingWithTarget(score, target) {
+    const settings = loadDevSettings().cardScore;
+    const colors = effectiveColors(loadDevSettings()).gaugeColors;
+    const bounds = gaugeBounds(settings);
+    let zoneKey = GAUGE_ZONE_DEFS[0].key;
+    for (let i = 0; i < GAUGE_ZONE_DEFS.length; i++) {
+      if (score >= bounds[i]) zoneKey = GAUGE_ZONE_DEFS[i].key;
+    }
+    const color = colors[zoneKey] || DEFAULT_GAUGE_COLORS[zoneKey];
+    const r = 32, cx = 44, cy = 44, strokeW = 8;
+    const circumference = 2 * Math.PI * r;
+    const dash = (Math.max(0, Math.min(100, score)) / 100) * circumference;
+    const targetAngle = (Math.max(0, Math.min(100, target)) / 100) * 360;
+    const targetDot = polarToCartesianFull(cx, cy, r, targetAngle);
+    const targetLabelPos = polarToCartesianFull(cx, cy, r + strokeW / 2 + 11, targetAngle);
+    let anchor = "middle";
+    if (targetAngle > 15 && targetAngle < 165) anchor = "start";
+    else if (targetAngle > 195 && targetAngle < 345) anchor = "end";
+    return `<svg viewBox="0 0 88 88" class="subject-row-gauge-ring subject-row-gauge-ring--target">
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="${strokeW}" />
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${strokeW}"
+        stroke-dasharray="${dash.toFixed(1)} ${circumference.toFixed(1)}" stroke-linecap="round"
+        transform="rotate(-90 ${cx} ${cy})" />
+      <circle cx="${targetDot.x.toFixed(1)}" cy="${targetDot.y.toFixed(1)}" r="3.5" fill="var(--ink, #1f2937)" stroke="#fff" stroke-width="1.5" />
+      <text x="${targetLabelPos.x.toFixed(1)}" y="${targetLabelPos.y.toFixed(1)}" font-size="9" font-weight="700" font-family="sans-serif" fill="var(--ink-soft, #64748b)" text-anchor="${anchor}" dominant-baseline="middle">${target}</text>
+      <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="17" font-weight="700" fill="${color}" font-family="sans-serif">${score}</text>
     </svg>`;
   }
   /** Jauge cercle complet (item 8) — reprend le principe préféré de la
@@ -3946,7 +4016,7 @@
     const baseA = polarToCartesianFull(cx, cy, r + strokeW / 2 - 5, markerAngle - 4);
     const baseB = polarToCartesianFull(cx, cy, r + strokeW / 2 - 5, markerAngle + 4);
     svg += `<polygon points="${tip.x.toFixed(1)},${tip.y.toFixed(1)} ${baseA.x.toFixed(1)},${baseA.y.toFixed(1)} ${baseB.x.toFixed(1)},${baseB.y.toFixed(1)}" fill="var(--ink, #1f2937)" />`;
-    svg += `<text x="${cx}" y="${cy - 4}" text-anchor="middle" dominant-baseline="central" font-size="30" font-weight="700" fill="var(--ink, #1f2937)" font-family="sans-serif">${score}%</text>`;
+    svg += `<text x="${cx}" y="${cy - 4}" text-anchor="middle" dominant-baseline="central" font-size="30" font-weight="700" fill="var(--ink, #1f2937)" font-family="sans-serif">${score}</text>`;
     svg += `<text x="${cx}" y="${cy + 20}" text-anchor="middle" dominant-baseline="central" font-size="11" font-family="sans-serif" fill="var(--ink-soft, #64748b)">score actuel</text>`;
     svg += `</svg>`;
     wrap.innerHTML = svg;
@@ -4197,13 +4267,13 @@
     const prevDelay = Math.max(1, currentCard.interval || 1);
     const currentScore = computeCardScore(currentCard);
     el("score-info-prev-delay").textContent = `${prevDelay} j`;
-    el("score-info-current").textContent = `${currentScore}%`;
+    el("score-info-current").textContent = `${currentScore}`;
     const labels = { again: "Encore", hard: "Difficile", good: "Bien", easy: "Facile" };
     ["again", "hard", "good", "easy"].forEach((r) => {
       const cell = el(`score-info-${r}`);
       if (!cell) return;
       const futureScore = computeCardScore(currentCard, futureIntervals[r]);
-      cell.textContent = `${labels[r]} : ${formatInterval(futureIntervals[r])} (${futureScore}%)`;
+      cell.textContent = `${labels[r]} : ${formatInterval(futureIntervals[r])} (${futureScore})`;
     });
   }
 
@@ -4885,7 +4955,7 @@
       // Score d'apprentissage (item 1c), coin supérieur droit de la ligne.
       const scoreBadge = document.createElement("span");
       scoreBadge.className = "card-row-score";
-      scoreBadge.textContent = `${computeCardScore(card)}%`;
+      scoreBadge.textContent = `${computeCardScore(card)}`;
       li.appendChild(scoreBadge);
 
       const main = document.createElement("div");
@@ -7261,18 +7331,32 @@
     calendarMonthsView.addEventListener("scroll", () => {
       const nearBottom = calendarMonthsView.scrollTop + calendarMonthsView.clientHeight >= calendarMonthsView.scrollHeight - 300;
       if (nearBottom) {
-        calendarMonthsRenderedCount += 2;
+        calendarMonthsRenderedCount = Math.min(calendarMonthsRenderedCount + 2, 36);
         renderCalendarMonthsView();
       }
     });
   }
   // Repli : sur certains agencements, c'est la PAGE entière qui défile,
   // pas ce panneau en particulier — on écoute donc aussi le scroll général.
+  // Bug corrigé (item 2) : cet écouteur est GLOBAL et permanent, mais ne
+  // vérifiait que la variable d'état "calendarViewMode" — qui ne revient
+  // JAMAIS à sa valeur par défaut en quittant la page Calendrier. Résultat
+  // : après être passé une fois par "Calendrier" (vue mensuelle), N'IMPORTE
+  // QUEL scroll ailleurs dans l'appli (y compris le simple défilement
+  // provoqué par le clavier qui s'ouvre au clic dans un champ de
+  // recherche) relançait un rendu de calendrier de plus en plus lourd en
+  // arrière-plan, invisible, jusqu'à un vrai figement. On vérifie
+  // maintenant explicitement que la page Calendrier est bien la page
+  // ACTIVE, pas seulement que son dernier mode connu était "months".
   window.addEventListener("scroll", () => {
     if (calendarViewMode !== "months") return;
+    const calendarViewEl = el("view-calendar");
+    if (!calendarViewEl || !calendarViewEl.classList.contains("is-active")) return;
     const nearBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 400;
     if (nearBottom) {
-      calendarMonthsRenderedCount += 2;
+      // Garde-fou supplémentaire : inutile de charger des dizaines
+      // d'années d'avance même en cas d'usage légitime intensif.
+      calendarMonthsRenderedCount = Math.min(calendarMonthsRenderedCount + 2, 36);
       renderCalendarMonthsView();
     }
   });
@@ -7389,6 +7473,11 @@
       // (Un dossier entier n'a pas d'équivalent direct de "matière
       // courante" pour Réviser : on laisse la sélection telle quelle dans
       // ce cas, plutôt que de deviner — affiné dans une prochaine étape.)
+    } else {
+      // Item 6 : "Ne pas suivre le programme" repart sur "Toutes les
+      // matières", plutôt que de laisser la dernière matière active
+      // (potentiellement peu pertinente/oubliée depuis longtemps).
+      switchSubject(ALL_SUBJECTS_ID);
     }
     const tab = document.querySelector('.tab[data-view="review"]');
     if (tab) tab.click();
@@ -7408,14 +7497,14 @@
     items.forEach((it) => {
       const li = document.createElement("li");
       li.className = "card-row revision-program-row";
-      const pct = Math.min(100, Math.round((it.score / it.target) * 100));
+      li.style.cssText = "flex-direction:row; align-items:center; justify-content:space-between;";
       const dueLabel = it.daysLeft === 0 ? "aujourd'hui" : it.daysLeft === 1 ? "demain" : `dans ${it.daysLeft} j`;
       li.innerHTML = `
         <div class="card-row-main">
           <strong>${escapeHtml(it.label)}</strong>
-          <span class="card-row-meta">« ${escapeHtml(it.eventTitle)} » — ${dueLabel} · score actuel ${it.score}% (objectif ${it.target}%)</span>
-          <div class="revision-program-bar"><div class="revision-program-bar-fill" style="width:${pct}%"></div></div>
+          <span class="card-row-meta">« ${escapeHtml(it.eventTitle)} » — ${dueLabel}</span>
         </div>
+        <div class="revision-program-gauge-col">${renderMiniGaugeRingWithTarget(it.score, it.target)}</div>
       `;
       li.addEventListener("click", () => goToReviewFor(it.linkId));
       list.appendChild(li);
