@@ -515,11 +515,19 @@ button.topbar-new-card-btn {
    l'écran — un vrai panneau plein écran plutôt qu'un encart de taille
    variable selon le nombre de boîtes/dossiers à afficher. */
 .multi-subject-picker {
+  /* Items 5/6 : ce panneau plein écran ignorait le plafond de largeur
+     (560px, centré) qu'applique .desk à tout le reste de l'appli — sur un
+     écran large, il s'étalait donc bord à bord quand toutes les autres
+     pages restaient centrées dans leur colonne, une largeur visiblement
+     différente. Même plafond et même centrage ici. */
   position: fixed;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   height: 100dvh;
   width: 100%;
-  max-width: none;
+  max-width: 560px;
   background: var(--paper);
   border-radius: 0;
   padding: 14px;
@@ -668,7 +676,15 @@ button.topbar-new-card-btn {
   height: 14px;
   border-radius: 0 0 10px 10px;
   pointer-events: none;
-  z-index: -1;
+  /* Bug corrigé (item 1, cette fois pour de bon) : un z-index négatif sur
+     un pseudo-élément, dans un parent position:relative pris dans une
+     liste flex, est un grand classique des rendus instables sous Safari
+     iOS (le pseudo-élément peut apparaître le temps du tout premier
+     rendu, puis se retrouver recouvert dès qu'iOS recompose l'affichage
+     en GPU) — ce qui correspond exactement au symptôme "apparaît puis
+     disparaît" décrit. Aucun z-index n'est en réalité nécessaire ici : ces
+     couches sont sous la ligne, jamais superposées à son propre contenu,
+     l'ordre naturel de peinture suffit très bien. */
 }
 
 .folder-row--stacked::before {
@@ -730,7 +746,7 @@ button.topbar-new-card-btn {
 
 .subject-row-gauge-col {
   flex-shrink: 0;
-  width: 72px;
+  width: 112px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -738,10 +754,9 @@ button.topbar-new-card-btn {
   border-left: 1px solid rgba(0,0,0,0.06);
 }
 
-.subject-row-gauge-ring {
+.linear-gauge-svg {
   width: 100%;
   height: auto;
-  max-width: 60px;
 }
 
 .subject-row.is-active { border-left: 3px solid var(--rule); }
@@ -1413,7 +1428,7 @@ button.home-btn {
   top: var(--review-gauge-top, 675px);
   transform: translateX(-50%);
   width: var(--review-card-width, 91vw);
-  max-width: 200px;
+  max-width: 340px;
   z-index: 2;
   text-align: center;
 }
@@ -2544,12 +2559,6 @@ button.home-btn {
   flex-shrink: 0;
   width: 130px;
   margin-left: 6px;
-}
-
-.subject-row-gauge-ring--target {
-  width: 100%;
-  height: auto;
-  max-width: 130px;
 }
 
 .chart-empty {

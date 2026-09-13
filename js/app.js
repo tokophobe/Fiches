@@ -531,6 +531,9 @@
     v5: 85,
     hideReviewScoreInfo: false,
     hideSubjectScoreOnReview: false,
+    // Item 3 : taille de police du texte "Objectif : X" sur la jauge de
+    // la page Programme de révision, réglable dans le mode développeur.
+    programTargetFontSize: 8,
   };
   // Zones de la jauge (item 4) : 6 zones désormais ("Bien" ajoutée entre
   // "En bonne voie" et "Maîtrisé"), couleurs réglables depuis le mode
@@ -1309,6 +1312,8 @@
       const input = el(`dev-score-${k}`);
       if (input) input.value = s[k];
     });
+    const fontSizeInput = el("dev-score-program-target-font-size");
+    if (fontSizeInput) fontSizeInput.value = s.programTargetFontSize;
     const hideInfo = el("dev-score-hide-info");
     if (hideInfo) hideInfo.checked = s.hideReviewScoreInfo;
     const hideSubject = el("dev-score-hide-subject");
@@ -1324,6 +1329,8 @@
       const input = el(`dev-score-${k}`);
       if (input) settings.cardScore[k] = Number(input.value) || DEFAULT_CARD_SCORE_SETTINGS[k];
     });
+    const fontSizeInput = el("dev-score-program-target-font-size");
+    if (fontSizeInput) settings.cardScore.programTargetFontSize = Number(fontSizeInput.value) || DEFAULT_CARD_SCORE_SETTINGS.programTargetFontSize;
     const hideInfo = el("dev-score-hide-info");
     if (hideInfo) settings.cardScore.hideReviewScoreInfo = hideInfo.checked;
     const hideSubject = el("dev-score-hide-subject");
@@ -1333,8 +1340,9 @@
     updateRatingPreviews();
     renderReviewSubjectScore();
     renderReviewGauge();
+    renderRevisionProgramList();
   }
-  ["dev-score-p", "dev-score-b", "dev-score-v1", "dev-score-v2", "dev-score-v3", "dev-score-v4", "dev-score-v5", "dev-score-hide-info", "dev-score-hide-subject"].forEach((id) => {
+  ["dev-score-p", "dev-score-b", "dev-score-v1", "dev-score-v2", "dev-score-v3", "dev-score-v4", "dev-score-v5", "dev-score-program-target-font-size", "dev-score-hide-info", "dev-score-hide-subject"].forEach((id) => {
     const input = el(id);
     if (input) input.addEventListener("input", saveCardScoreFromInputs);
   });
@@ -2146,9 +2154,12 @@
     const resultIds = [...list.querySelectorAll('input[data-kind="subject"]:checked')].map((cb) => cb.value);
     const checkedFolders = [...list.querySelectorAll('input[data-kind="folder"]:checked')];
     let label = "";
-    if (resultIds.length === 1) {
-      label = null; // signale "une seule boîte" à l'appelant (bascule directe)
-    } else if (checkedFolders.length === 1) {
+    // Bug corrigé (item 2) : un dossier qui ne contient qu'UNE seule boîte
+    // tombait dans le cas "une seule boîte cochée" ci-dessous AVANT même
+    // d'être reconnu comme un dossier — le sélecteur affichait alors le
+    // nom de la boîte à l'intérieur plutôt que celui du dossier choisi.
+    // Il faut donc vérifier le dossier D'ABORD.
+    if (checkedFolders.length === 1) {
       const folderSubjectIds = subjectIdsInFolder(checkedFolders[0].value);
       const matchesExactly =
         resultIds.length === folderSubjectIds.length && folderSubjectIds.every((id) => resultIds.includes(id));
@@ -2157,7 +2168,10 @@
         label = f ? f.name : "";
       }
     }
-    return { resultIds, singleSubjectId: resultIds.length === 1 ? resultIds[0] : null, label };
+    if (!label && resultIds.length === 1) {
+      label = null; // signale "une seule boîte" à l'appelant (bascule directe)
+    }
+    return { resultIds, singleSubjectId: resultIds.length === 1 && label === null ? resultIds[0] : null, label };
   }
 
   /** Un dossier ne peut être supprimé que s'il est vide (item 1) : ni
@@ -3845,193 +3859,86 @@
     el2.textContent = `${avg}`;
   }
 
-  /** Jauge du score (item 2), demi-cercle façon jauge de carburant, avec
-   *  5 zones colorées (seuils V1-V4 réglables) et une aiguille pointant
-   *  le score de la boîte/sélection en cours. */
-  function polarToCartesian(cx, cy, r, angleDeg) {
-    const rad = ((angleDeg - 180) * Math.PI) / 180;
-    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
-  }
-  function describeArc(cx, cy, r, startAngle, endAngle) {
-    const start = polarToCartesian(cx, cy, r, endAngle);
-    const end = polarToCartesian(cx, cy, r, startAngle);
-    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-    return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArcFlag} 0 ${end.x} ${end.y}`;
-  }
-  /** Limites (en %) des 6 zones de la jauge (item 4), à partir des seuils
-   *  réglés dans le mode développeur. */
+  /** Item 4 : toutes les jauges (Organisation, Programme de révision,
+   *  Réviser) sont désormais des barres linéaires horizontales plutôt que
+   *  des anneaux/demi-cercles — même principe partout (couleur = zone
+   *  actuelle du score, remplissage proportionnel), avec en option les
+   *  points de zone + intitulés (Réviser) et/ou un repère d'objectif
+   *  (Programme de révision). */
+  /** Limites (en %) des 6 zones de la jauge, à partir des seuils réglés
+   *  dans le mode développeur. */
   function gaugeBounds(cardScoreSettings) {
     return [0, cardScoreSettings.v1, cardScoreSettings.v2, cardScoreSettings.v3, cardScoreSettings.v4, cardScoreSettings.v5, 100];
   }
-  /** Jauge SVG partagée (item 4/5), en demi-cercle façon jauge de
-   *  carburant — utilisée à la fois en grand sur Réviser (avec aiguille
-   *  triangulaire + étiquettes de zone) et en miniature dans la page
-   *  Organisation (juste les zones remplies jusqu'au score, sans aiguille
-   *  ni étiquettes — voir renderMiniGaugeSvg). */
-  function buildGaugeSvg(score, { withNeedle, withLabels, onlyFilledZones, size }) {
+  function currentGaugeZoneColor(score, colors, bounds) {
+    let zoneKey = GAUGE_ZONE_DEFS[0].key;
+    for (let i = 0; i < GAUGE_ZONE_DEFS.length; i++) {
+      if (score >= bounds[i]) zoneKey = GAUGE_ZONE_DEFS[i].key;
+    }
+    return colors[zoneKey] || DEFAULT_GAUGE_COLORS[zoneKey];
+  }
+  function buildLinearGaugeSvg(score, { width = 200, barHeight = 14, showZoneLabels = false, targetValue = null, targetFontSize = 8, scoreFontSize = 15 } = {}) {
     const settings = loadDevSettings().cardScore;
     const colors = effectiveColors(loadDevSettings()).gaugeColors;
     const bounds = gaugeBounds(settings);
-    const s = Math.max(0, Math.min(100, score));
-    const cx = size.cx, cy = size.cy, r = size.r, strokeW = size.strokeW;
-    let svg = `<svg viewBox="0 0 ${size.vbW} ${size.vbH}" xmlns="http://www.w3.org/2000/svg">`;
-    for (let i = 0; i < GAUGE_ZONE_DEFS.length; i++) {
-      const from = bounds[i];
-      const to = bounds[i + 1];
-      if (to <= from) continue; // seuils mal ordonnés : zone vide, on saute
-      // Mini-jauge (item 3) : seules les zones ATTEINTES par le score sont
-      // dessinées, remplies jusqu'à ce score précis (pas jusqu'au bout de
-      // la zone) — pas d'aiguille séparée, ce sont les couleurs elles-
-      // mêmes qui avancent jusqu'au score.
-      if (onlyFilledZones && from >= s) continue;
-      const zoneEnd = onlyFilledZones ? Math.min(to, s) : to;
-      const startAngle = (from / 100) * 180;
-      const endAngle = (zoneEnd / 100) * 180;
-      if (endAngle <= startAngle) continue;
-      const color = colors[GAUGE_ZONE_DEFS[i].key] || DEFAULT_GAUGE_COLORS[GAUGE_ZONE_DEFS[i].key];
-      svg += `<path d="${describeArc(cx, cy, r, startAngle, endAngle)}" fill="none" stroke="${color}" stroke-width="${strokeW}" />`;
-      if (withLabels) {
-        const midAngle = ((from / 100) * 180 + (to / 100) * 180) / 2;
-        const labelR = r + strokeW / 2 + (midAngle < 15 || midAngle > 165 ? 9 : 12);
-        const labelPos = polarToCartesian(cx, cy, labelR, midAngle);
-        const anchor = midAngle < 75 ? "end" : midAngle > 105 ? "start" : "middle";
-        svg += `<text x="${labelPos.x.toFixed(1)}" y="${labelPos.y.toFixed(1)}" font-size="8" font-family="sans-serif" font-weight="700" fill="${color}" text-anchor="${anchor}">${escapeHtml(GAUGE_ZONE_DEFS[i].label)}</text>`;
+    const color = currentGaugeZoneColor(score, colors, bounds);
+    const clampedScore = Math.max(0, Math.min(100, score));
+    const topPad = 20;
+    const bottomPad = showZoneLabels ? 26 : 4;
+    const height = topPad + barHeight + bottomPad;
+    const barY = topPad;
+    const fillW = Math.max((clampedScore / 100) * width, clampedScore > 0 ? barHeight : 0);
+
+    let svg = `<svg viewBox="0 0 ${width} ${height}" class="linear-gauge-svg">`;
+    svg += `<rect x="0" y="${barY}" width="${width}" height="${barHeight}" rx="${barHeight / 2}" fill="rgba(0,0,0,0.08)" />`;
+    if (fillW > 0) svg += `<rect x="0" y="${barY}" width="${fillW}" height="${barHeight}" rx="${barHeight / 2}" fill="${color}" />`;
+    const scoreX = Math.min(Math.max(fillW, 22), width - 4);
+    svg += `<text x="${scoreX}" y="${barY - 6}" text-anchor="middle" font-size="${scoreFontSize}" font-weight="700" fill="${color}" font-family="sans-serif">${score}</text>`;
+
+    if (showZoneLabels) {
+      for (let i = 0; i < GAUGE_ZONE_DEFS.length; i++) {
+        const from = bounds[i];
+        const to = bounds[i + 1];
+        if (to <= from) continue;
+        const xFrom = (from / 100) * width;
+        const xTo = (to / 100) * width;
+        const midX = (xFrom + xTo) / 2;
+        const zc = colors[GAUGE_ZONE_DEFS[i].key] || DEFAULT_GAUGE_COLORS[GAUGE_ZONE_DEFS[i].key];
+        if (i > 0) svg += `<line x1="${xFrom.toFixed(1)}" y1="${barY - 3}" x2="${xFrom.toFixed(1)}" y2="${barY + barHeight + 3}" stroke="rgba(0,0,0,0.18)" stroke-width="1" />`;
+        const anchor = i === 0 ? "start" : i === GAUGE_ZONE_DEFS.length - 1 ? "end" : "middle";
+        const labelX = i === 0 ? xFrom : i === GAUGE_ZONE_DEFS.length - 1 ? xTo : midX;
+        svg += `<text x="${labelX.toFixed(1)}" y="${barY + barHeight + 15}" text-anchor="${anchor}" font-size="9" font-family="sans-serif" font-weight="600" fill="${zc}">${escapeHtml(GAUGE_ZONE_DEFS[i].label)}</text>`;
       }
     }
-    if (withNeedle) {
-      // Item 5 : aiguille triangulaire (un fin triangle qui part du centre)
-      // plutôt qu'un simple trait.
-      const angle = (s / 100) * 180;
-      const tip = polarToCartesian(cx, cy, r - strokeW / 2 - 4, angle);
-      const baseA = polarToCartesian(cx, cy, 9, angle - 5);
-      const baseB = polarToCartesian(cx, cy, 9, angle + 5);
-      svg += `<polygon points="${tip.x.toFixed(1)},${tip.y.toFixed(1)} ${baseA.x.toFixed(1)},${baseA.y.toFixed(1)} ${baseB.x.toFixed(1)},${baseB.y.toFixed(1)}" fill="var(--ink, #1f2937)" />`;
-      svg += `<circle cx="${cx}" cy="${cy}" r="5" fill="var(--ink, #1f2937)" />`;
+    if (targetValue !== null) {
+      const tx = (Math.max(0, Math.min(100, targetValue)) / 100) * width;
+      const anchor = tx > width - 45 ? "end" : tx < 45 ? "start" : "middle";
+      svg += `<line x1="${tx.toFixed(1)}" y1="${barY - 5}" x2="${tx.toFixed(1)}" y2="${barY + barHeight + 5}" stroke="var(--ink, #1f2937)" stroke-width="2" />`;
+      svg += `<circle cx="${tx.toFixed(1)}" cy="${(barY - 5).toFixed(1)}" r="2.5" fill="var(--ink, #1f2937)" />`;
+      svg += `<text x="${tx.toFixed(1)}" y="${barY - 9}" text-anchor="${anchor}" font-size="${targetFontSize}" font-weight="700" fill="var(--ink-soft, #64748b)" font-family="sans-serif">Objectif : ${targetValue}</text>`;
     }
     svg += `</svg>`;
     return svg;
   }
-  /** Mini-jauge (item 3), utilisée dans la page Organisation à côté du
-   *  score de chaque dossier/boîte. */
-  function renderMiniGaugeSvg(score) {
-    return buildGaugeSvg(score, {
-      withNeedle: false,
-      withLabels: false,
-      onlyFilledZones: true,
-      size: { cx: 20, cy: 19, r: 14, strokeW: 5, vbW: 40, vbH: 24 },
-    });
-  }
-  /** Jauge circulaire pleine hauteur (item 3), score écrit à l'intérieur —
-   *  couleur de l'anneau = zone actuelle du score, remplissage
-   *  proportionnel au score (pas les 6 zones comme sur Réviser, la forme
-   *  ronde/compacte s'y prête moins bien). */
+  /** Jauge compacte (Organisation) : juste la barre + le score, sans
+   *  point de zone ni objectif. */
   function renderMiniGaugeRing(score) {
-    const settings = loadDevSettings().cardScore;
-    const colors = effectiveColors(loadDevSettings()).gaugeColors;
-    const bounds = gaugeBounds(settings);
-    let zoneKey = GAUGE_ZONE_DEFS[0].key;
-    for (let i = 0; i < GAUGE_ZONE_DEFS.length; i++) {
-      if (score >= bounds[i]) zoneKey = GAUGE_ZONE_DEFS[i].key;
-    }
-    const color = colors[zoneKey] || DEFAULT_GAUGE_COLORS[zoneKey];
-    const r = 26, cx = 30, cy = 30;
-    const circumference = 2 * Math.PI * r;
-    const dash = (Math.max(0, Math.min(100, score)) / 100) * circumference;
-    return `<svg viewBox="0 0 60 60" class="subject-row-gauge-ring">
-      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="6" />
-      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="6"
-        stroke-dasharray="${dash.toFixed(1)} ${circumference.toFixed(1)}" stroke-linecap="round"
-        transform="rotate(-90 ${cx} ${cy})" />
-      <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="700" fill="${color}" font-family="sans-serif">${score}</text>
-    </svg>`;
+    return buildLinearGaugeSvg(score, { width: 120, barHeight: 12, scoreFontSize: 13 });
   }
-  /** Même jauge en anneau (item 7), avec en plus un repère indiquant le
-   *  score OBJECTIF à atteindre — utilisée dans le programme de révision.
-   *  Cadre un peu plus large que la version compacte pour laisser la
-   *  place à l'étiquette de l'objectif à l'extérieur de l'anneau. */
+  /** Même jauge, avec en plus un repère indiquant le score OBJECTIF à
+   *  atteindre — utilisée dans le Programme de révision. */
   function renderMiniGaugeRingWithTarget(score, target) {
-    const settings = loadDevSettings().cardScore;
-    const colors = effectiveColors(loadDevSettings()).gaugeColors;
-    const bounds = gaugeBounds(settings);
-    let zoneKey = GAUGE_ZONE_DEFS[0].key;
-    for (let i = 0; i < GAUGE_ZONE_DEFS.length; i++) {
-      if (score >= bounds[i]) zoneKey = GAUGE_ZONE_DEFS[i].key;
-    }
-    const color = colors[zoneKey] || DEFAULT_GAUGE_COLORS[zoneKey];
-    const r = 30, cx = 120, cy = 45, strokeW = 8;
-    const circumference = 2 * Math.PI * r;
-    const dash = (Math.max(0, Math.min(100, score)) / 100) * circumference;
-    const targetAngle = (Math.max(0, Math.min(100, target)) / 100) * 360;
-    const targetDot = polarToCartesianFull(cx, cy, r, targetAngle);
-    const targetLabelPos = polarToCartesianFull(cx, cy, r + strokeW / 2 + 9, targetAngle);
-    let anchor = "middle";
-    if (targetAngle > 15 && targetAngle < 165) anchor = "start";
-    else if (targetAngle > 195 && targetAngle < 345) anchor = "end";
-    return `<svg viewBox="0 0 240 90" class="subject-row-gauge-ring subject-row-gauge-ring--target">
-      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="${strokeW}" />
-      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${strokeW}"
-        stroke-dasharray="${dash.toFixed(1)} ${circumference.toFixed(1)}" stroke-linecap="round"
-        transform="rotate(-90 ${cx} ${cy})" />
-      <circle cx="${targetDot.x.toFixed(1)}" cy="${targetDot.y.toFixed(1)}" r="3.5" fill="var(--ink, #1f2937)" stroke="#fff" stroke-width="1.5" />
-      <!-- Item 4 : "Objectif : X" en toutes lettres à côté du repère,
-           plutôt que le seul nombre. -->
-      <text x="${targetLabelPos.x.toFixed(1)}" y="${targetLabelPos.y.toFixed(1)}" font-size="8" font-weight="700" font-family="sans-serif" fill="var(--ink-soft, #64748b)" text-anchor="${anchor}" dominant-baseline="middle">Objectif : ${target}</text>
-      <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="17" font-weight="700" fill="${color}" font-family="sans-serif">${score}</text>
-    </svg>`;
+    const fontSize = loadDevSettings().cardScore.programTargetFontSize;
+    return buildLinearGaugeSvg(score, { width: 190, barHeight: 12, scoreFontSize: 13, targetValue: target, targetFontSize: fontSize });
   }
-  /** Jauge cercle complet (item 8) — reprend le principe préféré de la
-   *  page Organisation (anneau, score au centre), mais avec les 6 zones
-   *  colorées réparties sur tout le tour ET leurs intitulés autour, plus
-   *  un petit repère triangulaire indiquant la position exacte du score
-   *  sur l'anneau (à la place de l'aiguille du demi-cercle d'avant). */
-  function polarToCartesianFull(cx, cy, r, angleDeg) {
-    const rad = ((angleDeg - 90) * Math.PI) / 180;
-    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
-  }
-  function describeArcFull(cx, cy, r, startAngle, endAngle) {
-    const start = polarToCartesianFull(cx, cy, r, startAngle);
-    const end = polarToCartesianFull(cx, cy, r, endAngle);
-    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-    return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArcFlag} 1 ${end.x} ${end.y}`;
-  }
+  /** Grande jauge de la page Réviser : les 6 points de zone avec leurs
+   *  intitulés (Débutant, Fragile, etc.), comme le demandait l'item 4. */
   function renderReviewGauge() {
     const wrap = el("review-gauge-wrap");
     if (!wrap) return;
     const pool = subjectCards();
     const score = pool.length > 0 ? Math.round(pool.reduce((acc, c) => acc + computeCardScore(c), 0) / pool.length) : 0;
-    const settings = loadDevSettings().cardScore;
-    const colors = effectiveColors(loadDevSettings()).gaugeColors;
-    const bounds = gaugeBounds(settings);
-    const cx = 140, cy = 130, r = 82, strokeW = 20;
-    let svg = `<svg viewBox="0 0 280 300" xmlns="http://www.w3.org/2000/svg">`;
-    for (let i = 0; i < GAUGE_ZONE_DEFS.length; i++) {
-      const from = bounds[i];
-      const to = bounds[i + 1];
-      if (to <= from) continue;
-      const startAngle = (from / 100) * 360;
-      const endAngle = (to / 100) * 360;
-      const color = colors[GAUGE_ZONE_DEFS[i].key] || DEFAULT_GAUGE_COLORS[GAUGE_ZONE_DEFS[i].key];
-      svg += `<path d="${describeArcFull(cx, cy, r, startAngle, endAngle)}" fill="none" stroke="${color}" stroke-width="${strokeW}" />`;
-      const midAngle = (startAngle + endAngle) / 2;
-      const labelPos = polarToCartesianFull(cx, cy, r + strokeW / 2 + 14, midAngle);
-      // L'ancrage du texte suit le côté du cercle où tombe l'étiquette,
-      // pour qu'elle s'écarte du bord plutôt que de le chevaucher.
-      let anchor = "middle";
-      if (midAngle > 15 && midAngle < 165) anchor = "start";
-      else if (midAngle > 195 && midAngle < 345) anchor = "end";
-      svg += `<text x="${labelPos.x.toFixed(1)}" y="${labelPos.y.toFixed(1)}" font-size="10" font-family="sans-serif" font-weight="700" fill="${color}" text-anchor="${anchor}" dominant-baseline="middle">${escapeHtml(GAUGE_ZONE_DEFS[i].label)}</text>`;
-    }
-    // Petit repère triangulaire sur l'anneau, à la position exacte du
-    // score (remplace l'aiguille du demi-cercle).
-    const markerAngle = (Math.max(0, Math.min(100, score)) / 100) * 360;
-    const tip = polarToCartesianFull(cx, cy, r + strokeW / 2 + 3, markerAngle);
-    const baseA = polarToCartesianFull(cx, cy, r + strokeW / 2 - 5, markerAngle - 4);
-    const baseB = polarToCartesianFull(cx, cy, r + strokeW / 2 - 5, markerAngle + 4);
-    svg += `<polygon points="${tip.x.toFixed(1)},${tip.y.toFixed(1)} ${baseA.x.toFixed(1)},${baseA.y.toFixed(1)} ${baseB.x.toFixed(1)},${baseB.y.toFixed(1)}" fill="var(--ink, #1f2937)" />`;
-    svg += `<text x="${cx}" y="${cy - 4}" text-anchor="middle" dominant-baseline="central" font-size="30" font-weight="700" fill="var(--ink, #1f2937)" font-family="sans-serif">${score}</text>`;
-    svg += `<text x="${cx}" y="${cy + 20}" text-anchor="middle" dominant-baseline="central" font-size="11" font-family="sans-serif" fill="var(--ink-soft, #64748b)">score actuel</text>`;
-    svg += `</svg>`;
-    wrap.innerHTML = svg;
+    wrap.innerHTML = buildLinearGaugeSvg(score, { width: 300, barHeight: 18, showZoneLabels: true, scoreFontSize: 20 });
   }
 
   function renderDuePill() {
