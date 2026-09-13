@@ -547,12 +547,11 @@
         </div>
       </form>
 
-      <!-- Item 2 : bascule d'affichage — liste / calendrier (2 mois) /
-           année. -->
+      <!-- Item 3 : bascule d'affichage — liste / calendrier (mois en
+           défilement infini). Le format "année" a été retiré. -->
       <div class="calendar-view-toggle">
         <button type="button" class="calendar-view-toggle-btn is-active" data-calview="list">Liste</button>
         <button type="button" class="calendar-view-toggle-btn" data-calview="months">Calendrier</button>
-        <button type="button" class="calendar-view-toggle-btn" data-calview="year">Année</button>
       </div>
 
       <div class="card-form" id="calendar-list-view">
@@ -566,16 +565,7 @@
         <p class="field-hint settings-block-hint" id="calendar-months-loading" style="text-align:center;">Fais défiler pour voir la suite…</p>
       </div>
 
-      <div class="card-form" id="calendar-year-view" hidden>
-        <div class="calendar-nav-row">
-          <button type="button" class="btn btn--ghost btn--small" id="calendar-year-prev">← Année précédente</button>
-          <span id="calendar-year-label" style="font-weight:700;"></span>
-          <button type="button" class="btn btn--ghost btn--small" id="calendar-year-next">Année suivante →</button>
-        </div>
-        <div id="calendar-year-grid" class="calendar-year-grid"></div>
-      </div>
-
-      <!-- Popup listant les événements d'un jour cliqué (calendrier/année). -->
+      <!-- Popup listant les événements d'un jour cliqué. -->
       <div class="multi-subject-picker" id="calendar-day-popup" hidden>
         <p class="field-hint settings-block-hint" id="calendar-day-popup-title"></p>
         <ul class="card-list" id="calendar-day-popup-list"></ul>

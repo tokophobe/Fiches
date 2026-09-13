@@ -2539,17 +2539,11 @@
       // imperceptible — remplacé par de VRAIS éléments décoratifs,
       // nettement plus étroits, qui débordent visiblement sur les côtés
       // comme de vraies cartes empilées en dessous.
-      if (!expanded && childCount > 0) {
-        li.classList.add("folder-row--stacked");
-        const peek2 = document.createElement("div");
-        peek2.className = "folder-row-peek folder-row-peek--2";
-        peek2.setAttribute("aria-hidden", "true");
-        const peek1 = document.createElement("div");
-        peek1.className = "folder-row-peek folder-row-peek--1";
-        peek1.setAttribute("aria-hidden", "true");
-        li.appendChild(peek2);
-        li.appendChild(peek1);
-      }
+      // Item 1 : effet de pile en PUR CSS désormais (::before/::after),
+      // plus simple/robuste que des éléments enfants ajoutés en JS — ne
+      // dépend alors QUE de la présence de cette classe, sans aucune
+      // logique de rendu séparée qui pourrait le faire disparaître.
+      if (!expanded && childCount > 0) li.classList.add("folder-row--stacked");
 
       const n = subjectIdsInFolder(f.id).length;
       const folderScore = computeFolderScore(f.id);
@@ -3964,22 +3958,24 @@
       if (score >= bounds[i]) zoneKey = GAUGE_ZONE_DEFS[i].key;
     }
     const color = colors[zoneKey] || DEFAULT_GAUGE_COLORS[zoneKey];
-    const r = 32, cx = 44, cy = 44, strokeW = 8;
+    const r = 30, cx = 120, cy = 45, strokeW = 8;
     const circumference = 2 * Math.PI * r;
     const dash = (Math.max(0, Math.min(100, score)) / 100) * circumference;
     const targetAngle = (Math.max(0, Math.min(100, target)) / 100) * 360;
     const targetDot = polarToCartesianFull(cx, cy, r, targetAngle);
-    const targetLabelPos = polarToCartesianFull(cx, cy, r + strokeW / 2 + 11, targetAngle);
+    const targetLabelPos = polarToCartesianFull(cx, cy, r + strokeW / 2 + 9, targetAngle);
     let anchor = "middle";
     if (targetAngle > 15 && targetAngle < 165) anchor = "start";
     else if (targetAngle > 195 && targetAngle < 345) anchor = "end";
-    return `<svg viewBox="0 0 88 88" class="subject-row-gauge-ring subject-row-gauge-ring--target">
+    return `<svg viewBox="0 0 240 90" class="subject-row-gauge-ring subject-row-gauge-ring--target">
       <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="${strokeW}" />
       <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${strokeW}"
         stroke-dasharray="${dash.toFixed(1)} ${circumference.toFixed(1)}" stroke-linecap="round"
         transform="rotate(-90 ${cx} ${cy})" />
       <circle cx="${targetDot.x.toFixed(1)}" cy="${targetDot.y.toFixed(1)}" r="3.5" fill="var(--ink, #1f2937)" stroke="#fff" stroke-width="1.5" />
-      <text x="${targetLabelPos.x.toFixed(1)}" y="${targetLabelPos.y.toFixed(1)}" font-size="9" font-weight="700" font-family="sans-serif" fill="var(--ink-soft, #64748b)" text-anchor="${anchor}" dominant-baseline="middle">${target}</text>
+      <!-- Item 4 : "Objectif : X" en toutes lettres à côté du repère,
+           plutôt que le seul nombre. -->
+      <text x="${targetLabelPos.x.toFixed(1)}" y="${targetLabelPos.y.toFixed(1)}" font-size="8" font-weight="700" font-family="sans-serif" fill="var(--ink-soft, #64748b)" text-anchor="${anchor}" dominant-baseline="middle">Objectif : ${target}</text>
       <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="17" font-weight="700" fill="${color}" font-family="sans-serif">${score}</text>
     </svg>`;
   }
@@ -7451,7 +7447,6 @@
   function renderCalendarEvents() {
     renderCalendarListView();
     renderCalendarMonthsView();
-    renderCalendarYearView();
   }
 
   /* ---------------------------------------------------------
