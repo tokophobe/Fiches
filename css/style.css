@@ -505,19 +505,19 @@ button.topbar-new-card-btn {
    "light") — texte en gras + fond et bordure nettement plus saturés.
    Partagées par le bouton de la barre Réviser (.subject-bar-algo-btn) ET
    celui de chaque ligne de boîte sur la page Gérer (.subject-row-algo-btn). */
-/* Item 3 : c'est maintenant la couleur du PICTOGRAMME qui change selon le
-   mode, plus celle du fond (qui reste neutre) — l'inverse d'avant. */
+/* Item 1 (dernier lot) : fond transparent — plus aucun fond neutre non
+   plus, seul le pictogramme reste coloré selon le mode. */
 .subject-bar-algo-btn.is-cool, .subject-row-algo-btn.is-cool, .card-algo-btn.is-cool {
-  color: var(--mode-cool-color, var(--sage)); background: rgba(35,48,42,0.08); border-color: transparent;
+  color: var(--mode-cool-color, var(--sage)); background: transparent; border-color: transparent;
 }
 .subject-bar-algo-btn.is-normal, .subject-row-algo-btn.is-normal, .card-algo-btn.is-normal {
-  color: var(--mode-normal-color, var(--amber)); background: rgba(35,48,42,0.08); border-color: transparent;
+  color: var(--mode-normal-color, var(--amber)); background: transparent; border-color: transparent;
 }
 .subject-bar-algo-btn.is-renforce, .subject-row-algo-btn.is-renforce, .card-algo-btn.is-renforce {
-  color: var(--mode-renforce-color, var(--terracotta)); background: rgba(35,48,42,0.08); border-color: transparent;
+  color: var(--mode-renforce-color, var(--terracotta)); background: transparent; border-color: transparent;
 }
 .subject-bar-algo-btn.is-custom, .subject-row-algo-btn.is-custom, .card-algo-btn.is-custom {
-  color: var(--mode-custom-color, #e8c84a); background: rgba(35,48,42,0.08); border-color: transparent;
+  color: var(--mode-custom-color, #e8c84a); background: transparent; border-color: transparent;
 }
 
 .subject-bar-algo-btn:hover, .subject-row-algo-btn:hover, .card-algo-btn:hover { filter: brightness(1.08); }
@@ -672,30 +672,45 @@ button.topbar-new-card-btn {
 /* Item 3 : effet de pile (comme les fiches de Réviser) pour montrer qu'un
    dossier replié contient bien quelque chose — deux "tranches" simulées
    par de simples ombres décalées, sans DOM supplémentaire. */
+/* Item 3 (dernier lot) : un peu plus d'espace entre les dossiers
+   spécifiquement (pas les boîtes, qui gardent le simple espacement de la
+   liste). */
+.folder-row {
+  margin-bottom: 10px;
+}
+
 .folder-row--stacked {
-  /* Item 5 : nouveau rendu demandé — deux traits fins (pas un aplat)
-     formant un coin arrondi en bas à gauche, dans la couleur du dossier
-     lui-même, légèrement décalés en diagonale (bas-gauche) tout près du
-     bloc plutôt qu'en dessous sur toute la largeur. */
+  /* Item 2 (dernier lot) : deux traits plus fins et plus rapprochés du
+     bloc (au lieu d'un seul, plus large) — même principe de coin arrondi
+     en bas à gauche, dans la couleur du dossier. */
   position: relative;
-  margin-left: 6px !important;
-  margin-bottom: 6px !important;
+  margin-left: 5px !important;
+  margin-bottom: 12px !important;
+}
+
+.folder-row--stacked::before,
+.folder-row--stacked::after {
+  content: "";
+  position: absolute;
+  border-radius: 0 0 0 8px;
+  border-left: 1.5px solid var(--folder-bg-color, var(--paper));
+  border-bottom: 1.5px solid var(--folder-bg-color, var(--paper));
+  pointer-events: none;
 }
 
 .folder-row--stacked::before {
-  content: "";
-  position: absolute;
+  top: 3px;
+  left: -3px;
+  right: 3px;
+  bottom: -3px;
+}
+
+.folder-row--stacked::after {
   top: 6px;
   left: -6px;
   right: 6px;
   bottom: -6px;
-  border-radius: 0 0 0 10px;
-  border-left: 2px solid var(--folder-bg-color, var(--paper));
-  border-bottom: 2px solid var(--folder-bg-color, var(--paper));
-  pointer-events: none;
 }
-
-
 
 /* Item 4 : bloc sur une seule ligne — flèche de dépli, icône+nom, nombre,
    espace flexible, picto du mode, jauge courte, bouton d'actions. */
@@ -749,6 +764,41 @@ button.topbar-new-card-btn {
 .org-row-spacer {
   flex: 1;
   min-width: 6px;
+}
+
+/* Item 4 (dernier lot) : le nombre, le mode et la jauge se relaient dans
+   un emplacement UNIQUE à largeur fixe (celle de la jauge, la plus
+   large), synchronisés sur toutes les lignes en même temps via un
+   attribut posé sur <body> — ça règle aussi l'alignement vertical qui
+   dépendait avant de la largeur restante à chaque niveau de dossier. */
+.org-info-slot {
+  position: relative;
+  flex-shrink: 0;
+  width: 68px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.org-info-slot-item {
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+body[data-org-carousel-slot="0"] .org-info-slot-item[data-slot="0"],
+body[data-org-carousel-slot="1"] .org-info-slot-item[data-slot="1"],
+body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
+  display: flex;
+}
+
+.org-count {
+  font-family: var(--font-type);
+  font-size: 11px;
+  color: var(--ink-soft);
+  white-space: nowrap;
 }
 
 .org-mode-icon {
@@ -826,7 +876,11 @@ button.topbar-new-card-btn {
    bien montrer la hiérarchie, en gardant le même système plier/déplier. */
 .org-children {
   list-style: none;
-  margin: 0 8px 10px 14px;
+  /* Item 4 (dernier lot) : bug corrigé — une marge à DROITE ici décalait
+     le bord droit (jauge/mode/nombre/actions) d'un peu plus à chaque
+     niveau d'imbrication, cumulativement. Seule l'indentation à GAUCHE
+     doit varier avec la profondeur ; la droite reste fixe. */
+  margin: 0 0 10px 14px;
   padding: 0 0 0 10px;
   display: flex;
   flex-direction: column;

@@ -2522,15 +2522,26 @@
     }
     main.appendChild(nameBtnEl);
 
-    const countEl = document.createElement("span");
-    countEl.className = "org-count";
-    countEl.textContent = countLabel;
-    main.appendChild(countEl);
-
     const spacer = document.createElement("span");
     spacer.className = "org-row-spacer";
     main.appendChild(spacer);
 
+    // Item 4 (dernier lot) : le nombre, le mode et la jauge ne tiennent
+    // plus tous les trois à la fois — ils se relaient chacun leur tour,
+    // synchronisés sur toutes les lignes à la fois (voir orgCarouselSlot),
+    // pour laisser bien plus de place au nom du dossier/de la boîte.
+    const slot = document.createElement("span");
+    slot.className = "org-info-slot";
+
+    const countEl = document.createElement("span");
+    countEl.className = "org-info-slot-item org-count";
+    countEl.dataset.slot = "0";
+    countEl.textContent = countLabel;
+    slot.appendChild(countEl);
+
+    const algoWrap = document.createElement("span");
+    algoWrap.className = "org-info-slot-item";
+    algoWrap.dataset.slot = "1";
     const algoBtn = document.createElement("button");
     algoBtn.type = "button";
     algoBtn.className = "subject-row-algo-btn subject-row-algo-btn--compact org-mode-icon";
@@ -2538,14 +2549,17 @@
     algoBtn.title = `Mode d'apprentissage : ${modeDisplayName(mode)}`;
     algoBtn.addEventListener("click", onAlgo);
     applyModeBadgeStyle(algoBtn, mode);
-    main.appendChild(algoBtn);
+    algoWrap.appendChild(algoBtn);
+    slot.appendChild(algoWrap);
 
     if (score !== null) {
       const gaugeEl = document.createElement("span");
-      gaugeEl.className = "org-gauge-inline";
+      gaugeEl.className = "org-info-slot-item org-gauge-inline";
+      gaugeEl.dataset.slot = "2";
       gaugeEl.innerHTML = buildLinearGaugeSvg(score, { width: 70, barHeight: 8, scoreFontSize: 11 });
-      main.appendChild(gaugeEl);
+      slot.appendChild(gaugeEl);
     }
+    main.appendChild(slot);
 
     const deployBtn = document.createElement("button");
     deployBtn.type = "button";
@@ -2625,6 +2639,7 @@
       nameBtn.addEventListener("click", () => {
         switchSubject(subjectId);
         cardsScopeFilter = CARDS_SCOPE_CURRENT;
+        cardsEntryFromManage = true;
         const tab = document.querySelector('.tab[data-view="cards"]');
         if (tab) tab.click();
       });
@@ -2679,6 +2694,7 @@
       nameBtn.innerHTML = `${iconSvgMarkup("folder", "icon-inline-svg")} <span>${escapeHtml(f.name)}</span>`;
       nameBtn.addEventListener("click", () => {
         cardsScopeFilter = `folder:${f.id}`;
+        cardsEntryFromManage = true;
         renderManageList();
         const tab = document.querySelector('.tab[data-view="cards"]');
         if (tab) tab.click();
@@ -6630,6 +6646,43 @@
     });
   }
 
+  /* ---------------------------------------------------------
+     Item 4 (dernier lot) : défilement synchronisé (nombre / mode / jauge)
+     sur la page Organisation — durée réglable dans Réglages (mode
+     utilisateur, pas développeur). Un seul minuteur pilote un attribut sur
+     <body>, lu par CSS sur toutes les lignes à la fois : ça les garde
+     parfaitement synchronisées sans avoir à re-rendre quoi que ce soit.
+  --------------------------------------------------------- */
+  const ORG_CAROUSEL_INTERVAL_KEY = "fiches_org_carousel_interval_sec";
+  const DEFAULT_ORG_CAROUSEL_INTERVAL_SEC = 3;
+  const ORG_CAROUSEL_SLOT_COUNT = 3;
+  function loadOrgCarouselInterval() {
+    const raw = Number(localStorage.getItem(ORG_CAROUSEL_INTERVAL_KEY));
+    return raw > 0 ? raw : DEFAULT_ORG_CAROUSEL_INTERVAL_SEC;
+  }
+  function saveOrgCarouselInterval(value) {
+    localStorage.setItem(ORG_CAROUSEL_INTERVAL_KEY, String(value));
+    scheduleDevSettingsPush();
+  }
+  let orgCarouselTimer = null;
+  let orgCarouselSlot = 0;
+  function startOrgCarousel() {
+    if (orgCarouselTimer) clearInterval(orgCarouselTimer);
+    document.body.dataset.orgCarouselSlot = String(orgCarouselSlot);
+    orgCarouselTimer = setInterval(() => {
+      orgCarouselSlot = (orgCarouselSlot + 1) % ORG_CAROUSEL_SLOT_COUNT;
+      document.body.dataset.orgCarouselSlot = String(orgCarouselSlot);
+    }, loadOrgCarouselInterval() * 1000);
+  }
+  const settingOrgCarouselIntervalEl = el("setting-org-carousel-interval");
+  if (settingOrgCarouselIntervalEl) {
+    settingOrgCarouselIntervalEl.addEventListener("change", () => {
+      const v = Number(settingOrgCarouselIntervalEl.value) || DEFAULT_ORG_CAROUSEL_INTERVAL_SEC;
+      saveOrgCarouselInterval(v);
+      startOrgCarousel();
+    });
+  }
+
   function renderSettingsView() {
     if (settingBonusHardEl) settingBonusHardEl.value = bonusDaysSettings.hard;
     if (settingBonusGoodEl) settingBonusGoodEl.value = bonusDaysSettings.good;
@@ -6639,6 +6692,7 @@
     if (settingShowRatingDaysEl) settingShowRatingDaysEl.checked = loadShowRatingDays();
     if (settingShowReviewChartEl) settingShowReviewChartEl.checked = loadShowReviewChart();
     if (settingCardFontSizeEl) settingCardFontSizeEl.value = loadCardFontSize();
+    if (settingOrgCarouselIntervalEl) settingOrgCarouselIntervalEl.value = loadOrgCarouselInterval();
   }
 
   /* ---------------------------------------------------------
@@ -7077,7 +7131,18 @@
 
   /** Retourne à l'accueil (item 1e) — bouton toujours présent en haut de
    *  chaque page, sauf sur l'accueil lui-même. */
+  // Item 5 : quand on arrive sur Fiches en cliquant un dossier/une boîte
+  // depuis Organisation, le bouton Accueil de cette page ramène à
+  // Organisation plutôt qu'au véritable accueil — remis à false dès
+  // qu'on entre sur Fiches par un autre chemin (voir plus bas).
+  let cardsEntryFromManage = false;
   function goHome() {
+    if (cardsEntryFromManage && el("view-cards") && el("view-cards").classList.contains("is-active")) {
+      cardsEntryFromManage = false;
+      const tab = document.querySelector('.tab[data-view="manage"]');
+      if (tab) tab.click();
+      return;
+    }
     document.querySelectorAll(".tab").forEach((t) => {
       t.classList.remove("is-active");
       t.setAttribute("aria-selected", "false");
@@ -7093,6 +7158,9 @@
   // .tab[data-view=...].click()) plutôt que de dupliquer la bascule de vue.
   document.querySelectorAll(".home-circle[data-go]").forEach((square) => {
     square.addEventListener("click", () => {
+      // Item 5 : n'importe quel autre chemin vers Fiches (bouton d'accueil
+      // dédié, etc.) repart sur le comportement normal du bouton Accueil.
+      if (square.dataset.go === "cards") cardsEntryFromManage = false;
       const tab = document.querySelector(`.tab[data-view="${square.dataset.go}"]`);
       if (tab) tab.click();
     });
@@ -7316,18 +7384,16 @@
   function buildCalendarEventRow(ev, { onEdit, onDelete }) {
     const li = document.createElement("li");
     li.className = "card-row";
-    li.style.cssText = "flex-direction:row; align-items:center; justify-content:space-between;";
+    li.style.cssText = "flex-direction:row; align-items:center; justify-content:space-between; cursor:pointer;";
+    // Item 6 : cliquer sur l'événement l'ouvre directement en modification
+    // — plus besoin d'un bouton crayon séparé.
+    li.title = "Modifier cet événement";
+    li.addEventListener("click", onEdit);
     const main = document.createElement("div");
     main.className = "card-row-main";
     main.innerHTML = `<strong>${escapeHtml(ev.title)}</strong><br><span class="card-row-meta">${escapeHtml(formatCalendarDate(ev.date))}${ev.linkId ? ` · ${escapeHtml(calendarLinkLabel(ev.linkId))}` : ""}</span>`;
     const actions = document.createElement("div");
     actions.style.cssText = "display:flex; gap:4px; flex-shrink:0;";
-    const editBtn = document.createElement("button");
-    editBtn.type = "button";
-    editBtn.className = "icon-btn";
-    editBtn.innerHTML = iconSvgMarkup("pencil", "icon-inline-svg");
-    editBtn.title = "Modifier cet événement";
-    editBtn.addEventListener("click", onEdit);
     const delBtn = document.createElement("button");
     delBtn.type = "button";
     delBtn.className = "icon-btn icon-btn--danger";
@@ -7335,10 +7401,10 @@
     delBtn.title = "Supprimer cet événement";
     // Item 4 : confirmation avant suppression, comme pour les fiches et
     // les boîtes ailleurs dans l'appli.
-    delBtn.addEventListener("click", () => {
+    delBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
       if (confirm(`Supprimer l'événement « ${ev.title} » ?`)) onDelete();
     });
-    actions.appendChild(editBtn);
     actions.appendChild(delBtn);
     li.appendChild(main);
     li.appendChild(actions);
@@ -8267,6 +8333,7 @@
     renderSettingsView();
     applyAllDevSettings();
     applyCardFontSize();
+    startOrgCarousel();
     await loadSubjects();
     cards = await DB.getAll();
     ratingLog = await DB.getAllRatingLog();
