@@ -539,13 +539,19 @@
   // "En bonne voie" et "Maîtrisé"), couleurs réglables depuis le mode
   // développeur plutôt que fixes.
   const GAUGE_ZONE_DEFS = [
-    { key: "debutant", boundKey: "v1", label: "Débutant" },
-    { key: "fragile", boundKey: "v2", label: "Fragile" },
-    { key: "enBonneVoie", boundKey: "v3", label: "En bonne voie" },
-    { key: "bien", boundKey: "v4", label: "Bien" },
-    { key: "maitrise", boundKey: "v5", label: "Maîtrisé" },
-    { key: "acquis", boundKey: null, label: "Acquis" },
+    { key: "debutant", boundKey: "v1", label: "0 étoile", stars: 0 },
+    { key: "fragile", boundKey: "v2", label: "1 étoile", stars: 1 },
+    { key: "enBonneVoie", boundKey: "v3", label: "2 étoiles", stars: 2 },
+    { key: "bien", boundKey: "v4", label: "3 étoiles", stars: 3 },
+    { key: "maitrise", boundKey: "v5", label: "4 étoiles", stars: 4 },
+    { key: "acquis", boundKey: null, label: "5 étoiles", stars: 5 },
   ];
+  // Item 8 : intitulés des zones remplacés par des étoiles — une étoile
+  // grisée vide pour le tout premier niveau (0), puis 1 à 5 étoiles
+  // pleines, dans la couleur de la zone.
+  function gaugeZoneStarText(stars) {
+    return stars === 0 ? "☆" : "★".repeat(stars);
+  }
   const DEFAULT_GAUGE_COLORS = {
     debutant: "#94a3b8",
     fragile: "#7c93b3",
@@ -842,12 +848,16 @@
     Object.values(ALGO_MODE_KEY_TO_CLASS).forEach((c) => badgeEl.classList.remove(c));
     badgeEl.classList.add(ALGO_MODE_KEY_TO_CLASS[key]);
     if (key === "custom") {
+      // Item 3 : seule la couleur de l'icône reflète le mode personnalisé
+      // choisi, le fond reste neutre (comme les autres modes).
       const color = getCustomModeColor(modeId);
-      badgeEl.style.background = color;
-      badgeEl.style.borderColor = color;
+      badgeEl.style.background = "";
+      badgeEl.style.borderColor = "";
+      badgeEl.style.color = color;
     } else {
       badgeEl.style.background = "";
       badgeEl.style.borderColor = "";
+      badgeEl.style.color = "";
     }
   }
 
@@ -2404,7 +2414,7 @@
 
   function renderSubjectManageList() {
     subjectListEl.innerHTML = "";
-    renderTreeLevel(ROOT_FOLDER_ID, 0);
+    renderTreeLevel(ROOT_FOLDER_ID, 0, subjectListEl);
     if (folders.length === 0 && subjects.length === 0) {
       const empty = document.createElement("p");
       empty.className = "field-hint";
@@ -2413,90 +2423,116 @@
     }
   }
 
-  /** Icône sobre pour un des 3 boutons d'action de l'Organisation (item 3),
-   *  reprend le même principe que getIconMarkupFor : reste en émoticône si
-   *  jamais personnalisée en tant que telle, sinon SVG de la banque. */
+  /** Icône sobre pour un des 3 boutons d'action de l'Organisation, reprend
+   *  le même principe que getIconMarkupFor : reste en émoticône si jamais
+   *  personnalisée en tant que telle, sinon SVG de la banque. */
   function orgIconMarkup(key) {
     const iconId = loadDevSettings().orgIconBank[key];
     if (iconId && ICON_LIBRARY[iconId]) return iconSvgMarkup(iconId, "icon-inline-svg");
     return escapeHtml(DEFAULT_ORG_ICON_BANK_CHOICES[key] || "");
   }
 
-  /** Ligne 2 partagée entre dossiers et boîtes (item 3) : à gauche le
-   *  nombre de fiches/boîtes + les 3 actions, à droite le score (avec sa
-   *  mini-jauge) + le mode d'apprentissage. */
-  /** Corps complet d'une ligne dossier/boîte (item 3) : contenu
-   *  principal (titre + mode d'apprentissage sur la ligne 1, nombre de
-   *  fiches/boîtes + actions sur la ligne 2) à gauche, jauge circulaire
-   *  pleine hauteur (score à l'intérieur) à droite — la jauge et le mode
-   *  d'apprentissage ont permuté de place par rapport à avant, pour
-   *  laisser à l'intitulé (ligne 1) toute la largeur disponible plutôt que
-   *  de la partager avec la jauge sur la ligne 2. */
+  // Ferme n'importe quel popover d'actions ouvert (item 4) quand on clique
+  // ailleurs, ou avant d'en ouvrir un autre.
+  function closeAllOrgActionPopovers() {
+    document.querySelectorAll(".org-actions-popover").forEach((p) => (p.hidden = true));
+  }
+  document.addEventListener("pointerdown", (e) => {
+    if (e.target.closest(".org-deploy-btn") || e.target.closest(".org-actions-popover")) return;
+    closeAllOrgActionPopovers();
+  });
+
+  /** Ligne unique (item 4) pour un dossier ou une boîte : à gauche
+   *  triangle/flèche de dépli (dossiers), icône + nom, nombre de
+   *  fiches/boîtes ; à droite (de droite à gauche) le bouton de dépli des
+   *  actions (éditer/déplacer/supprimer, empilées verticalement dans un
+   *  petit panneau), la jauge (plus courte/fine), le picto du mode. */
   function buildRowBody({ nameBtnEl, expandBtnEl, countLabel, score, mode, onRename, onMove, onDelete, onAlgo, deleteTitle }) {
     const main = document.createElement("div");
-    main.className = "subject-row-main";
+    main.className = "org-row-main";
+    if (expandBtnEl) {
+      expandBtnEl.classList.add("org-expand-btn");
+      main.appendChild(expandBtnEl);
+    }
+    main.appendChild(nameBtnEl);
 
-    const line1 = document.createElement("div");
-    line1.className = "subject-row-line1";
-    if (expandBtnEl) line1.appendChild(expandBtnEl);
-    line1.appendChild(nameBtnEl);
+    const countEl = document.createElement("span");
+    countEl.className = "org-count";
+    countEl.textContent = countLabel;
+    main.appendChild(countEl);
+
+    const spacer = document.createElement("span");
+    spacer.className = "org-row-spacer";
+    main.appendChild(spacer);
+
     const algoBtn = document.createElement("button");
     algoBtn.type = "button";
-    algoBtn.className = "subject-row-algo-btn subject-row-algo-btn--compact";
-    // Item 7 : même icône sobre (banque) que reprendra la fiche de Réviser,
-    // plutôt que l'émoticône 🎓.
+    algoBtn.className = "subject-row-algo-btn subject-row-algo-btn--compact org-mode-icon";
     algoBtn.innerHTML = iconSvgMarkup("gradCap", "icon-inline-svg");
     algoBtn.title = `Mode d'apprentissage : ${modeDisplayName(mode)}`;
     algoBtn.addEventListener("click", onAlgo);
     applyModeBadgeStyle(algoBtn, mode);
-    line1.appendChild(algoBtn);
+    main.appendChild(algoBtn);
 
-    const line2 = document.createElement("div");
-    line2.className = "subject-row-line2";
-    const countEl = document.createElement("span");
-    countEl.className = "subject-row-count";
-    countEl.textContent = countLabel;
-    line2.appendChild(countEl);
+    if (score !== null) {
+      const gaugeEl = document.createElement("span");
+      gaugeEl.className = "org-gauge-inline";
+      gaugeEl.innerHTML = buildLinearGaugeSvg(score, { width: 70, barHeight: 8, scoreFontSize: 11 });
+      main.appendChild(gaugeEl);
+    }
 
+    const deployBtn = document.createElement("button");
+    deployBtn.type = "button";
+    deployBtn.className = "org-deploy-btn";
+    deployBtn.title = "Actions";
+    deployBtn.innerHTML = iconSvgMarkup("chevronDown", "icon-inline-svg");
+    const popover = document.createElement("div");
+    popover.className = "org-actions-popover";
+    popover.hidden = true;
     const renameBtn = document.createElement("button");
     renameBtn.type = "button";
-    renameBtn.className = "icon-btn";
-    renameBtn.innerHTML = orgIconMarkup("orgRename");
-    renameBtn.title = "Renommer";
-    renameBtn.addEventListener("click", onRename);
-    line2.appendChild(renameBtn);
-
+    renameBtn.className = "org-actions-popover-item";
+    renameBtn.innerHTML = `${orgIconMarkup("orgRename")}<span>Éditer</span>`;
+    renameBtn.addEventListener("click", () => {
+      closeAllOrgActionPopovers();
+      onRename();
+    });
     const moveBtn = document.createElement("button");
     moveBtn.type = "button";
-    moveBtn.className = "icon-btn";
-    moveBtn.innerHTML = orgIconMarkup("orgMove");
-    moveBtn.title = "Déplacer";
-    moveBtn.addEventListener("click", onMove);
-    line2.appendChild(moveBtn);
-
+    moveBtn.className = "org-actions-popover-item";
+    moveBtn.innerHTML = `${orgIconMarkup("orgMove")}<span>Déplacer</span>`;
+    moveBtn.addEventListener("click", () => {
+      closeAllOrgActionPopovers();
+      onMove();
+    });
     const delBtn = document.createElement("button");
     delBtn.type = "button";
-    delBtn.className = "icon-btn icon-btn--danger";
-    delBtn.innerHTML = orgIconMarkup("orgDelete");
+    delBtn.className = "org-actions-popover-item org-actions-popover-item--danger";
+    delBtn.innerHTML = `${orgIconMarkup("orgDelete")}<span>Supprimer</span>`;
     delBtn.title = deleteTitle;
-    delBtn.addEventListener("click", onDelete);
-    line2.appendChild(delBtn);
+    delBtn.addEventListener("click", () => {
+      closeAllOrgActionPopovers();
+      onDelete();
+    });
+    popover.appendChild(renameBtn);
+    popover.appendChild(moveBtn);
+    popover.appendChild(delBtn);
+    deployBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const willOpen = popover.hidden;
+      closeAllOrgActionPopovers();
+      popover.hidden = !willOpen;
+    });
+    main.appendChild(deployBtn);
 
-    main.appendChild(line1);
-    main.appendChild(line2);
-
-    const gaugeCol = document.createElement("div");
-    gaugeCol.className = "subject-row-gauge-col";
-    if (score !== null) gaugeCol.innerHTML = renderMiniGaugeRing(score);
-
-    const body = document.createElement("div");
-    body.className = "subject-row-body";
-    body.appendChild(main);
-    body.appendChild(gaugeCol);
-    return body;
+    const wrap = document.createElement("div");
+    wrap.className = "org-row-wrap";
+    wrap.appendChild(main);
+    wrap.appendChild(popover);
+    return wrap;
   }
 
-  function renderTreeLevel(parentId, depth) {
+  function renderTreeLevel(parentId, depth, container) {
     const childFolders = folders
       .filter((f) => f.parentId === parentId)
       .sort((a, b) => a.name.localeCompare(b.name, "fr"));
@@ -2508,19 +2544,13 @@
       const expanded = expandedManageFolders.has(f.id);
       const li = document.createElement("li");
       li.className = `subject-row folder-row folder-row-depth-${Math.min(depth, 3)}`;
-      // Item 3 : c'est le CADRE (la ligne entière) qui s'indente désormais
-      // (margin-left), pas seulement le texte à l'intérieur (padding-left).
-      li.style.marginLeft = `${depth * 18}px`;
 
-      // Item 9 : le nom du dossier navigue maintenant vers Fiches (filtré
-      // sur ce dossier), séparément d'un petit bouton dédié pour
-      // déplier/replier (l'ancien clic combiné empêchait d'ajouter cette
-      // navigation sans casser le pliage).
+      // Item 4 : flèche de dépli plus grosse et épurée (banque d'icônes),
+      // à la place du triangle texte.
       const expandBtn = document.createElement("button");
       expandBtn.type = "button";
-      expandBtn.className = "folder-row-expand-btn";
       expandBtn.title = expanded ? "Replier ce dossier" : "Déplier ce dossier";
-      expandBtn.textContent = expanded ? "▾" : "▸";
+      expandBtn.innerHTML = iconSvgMarkup(expanded ? "chevronDown" : "chevronRight", "icon-inline-svg");
       expandBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         if (expandedManageFolders.has(f.id)) expandedManageFolders.delete(f.id);
@@ -2532,31 +2562,17 @@
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
       nameBtn.title = "Voir les fiches de ce dossier";
-      nameBtn.innerHTML = `${iconSvgMarkup("folder", "icon-inline-svg")} ${escapeHtml(f.name)}`;
+      nameBtn.innerHTML = `${iconSvgMarkup("folder", "icon-inline-svg")} <span>${escapeHtml(f.name)}</span>`;
       nameBtn.addEventListener("click", () => {
         cardsScopeFilter = `folder:${f.id}`;
-        // Bug corrigé (item 9) : contrairement au clic sur une boîte
-        // (qui passe par switchSubject, lequel déclenche déjà un rendu
-        // complet), rien ne rafraîchissait ici le sélecteur de périmètre
-        // sur la page Fiches — elle affichait donc encore l'ancienne
-        // boîte/le mode précédent au lieu de ce dossier.
         renderManageList();
         const tab = document.querySelector('.tab[data-view="cards"]');
         if (tab) tab.click();
       });
 
       const childCount = folders.filter((x) => x.parentId === f.id).length + subjects.filter((x) => x.folderId === f.id).length;
-      // Item 1 : effet de pile (comme les fiches de Réviser) quand ce
-      // dossier est replié ET n'est pas vide, pour montrer qu'il contient
-      // bien quelque chose en dessous. Bug corrigé : un simple box-shadow
-      // était bien appliqué (vérifié pixel par pixel) mais quasi
-      // imperceptible — remplacé par de VRAIS éléments décoratifs,
-      // nettement plus étroits, qui débordent visiblement sur les côtés
-      // comme de vraies cartes empilées en dessous.
-      // Item 1 : effet de pile en PUR CSS désormais (::before/::after),
-      // plus simple/robuste que des éléments enfants ajoutés en JS — ne
-      // dépend alors QUE de la présence de cette classe, sans aucune
-      // logique de rendu séparée qui pourrait le faire disparaître.
+      // Item 5 : effet de pile quand ce dossier est replié ET n'est pas
+      // vide, pour montrer qu'il contient bien quelque chose en dessous.
       if (!expanded && childCount > 0) li.classList.add("folder-row--stacked");
 
       const n = subjectIdsInFolder(f.id).length;
@@ -2573,30 +2589,29 @@
         onAlgo: () => openAssignView("folder", f.id, "manage"),
         deleteTitle: "Supprimer ce dossier (doit être vide)",
       });
-
       li.appendChild(body);
-      subjectListEl.appendChild(li);
 
-      // Ne recurse dans ce dossier que s'il est déplié (item 8) — sinon on
-      // retombe sur l'arborescence toujours entièrement affichée d'avant,
-      // illisible dès que plusieurs niveaux de dossiers existent.
-      if (expanded) renderTreeLevel(f.id, depth + 1);
+      // Item 2 : les enfants sont maintenant imbriqués VISUELLEMENT dans le
+      // bloc du dossier parent (une <ul> nichée dedans), plutôt qu'une
+      // simple indentation à plat dans la même liste.
+      if (expanded) {
+        const childrenUl = document.createElement("ul");
+        childrenUl.className = "org-children";
+        li.appendChild(childrenUl);
+        renderTreeLevel(f.id, depth + 1, childrenUl);
+      }
+
+      container.appendChild(li);
     });
 
     for (const s of childSubjects) {
       const li = document.createElement("li");
       li.className = "subject-row" + (s.id === currentSubjectId ? " is-active" : "");
-      li.style.marginLeft = `${depth * 18}px`;
 
-      // Item 5 : le nom n'ouvre plus le renommage (bouton dédié maintenant,
-      // comme pour les dossiers) — juste une étiquette.
-      // Item 4 : cliquer dessus envoie sur la page Fiches avec cette
-      // boîte sélectionnée (uniquement pour les boîtes, pas les
-      // dossiers, qui gardent leur clic pour déplier/replier).
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
-      nameBtn.innerHTML = `${iconSvgMarkup("file", "icon-inline-svg")} ${escapeHtml(s.name)}`;
+      nameBtn.innerHTML = `${iconSvgMarkup("file", "icon-inline-svg")} <span>${escapeHtml(s.name)}</span>`;
       nameBtn.addEventListener("click", () => {
         switchSubject(s.id);
         cardsScopeFilter = CARDS_SCOPE_CURRENT;
@@ -2619,7 +2634,7 @@
       });
 
       li.appendChild(body);
-      subjectListEl.appendChild(li);
+      container.appendChild(li);
     }
   }
 
@@ -3803,6 +3818,9 @@
     if (showBtn && effectiveSubjectId) {
       const key = getSubjectAlgoMode(effectiveSubjectId);
       if (cardAlgoBtn) {
+        // Item 13 : icône épurée (banque) plutôt que l'émoticône 🎓, comme
+        // sur la page Organisation.
+        cardAlgoBtn.innerHTML = iconSvgMarkup("gradCap", "icon-inline-svg");
         applyModeBadgeStyle(cardAlgoBtn, key);
         cardAlgoBtn.dataset.subjectId = effectiveSubjectId;
         cardAlgoBtn.title = `Mode d'apprentissage : ${modeDisplayName(key)}`;
@@ -3877,45 +3895,69 @@
     }
     return colors[zoneKey] || DEFAULT_GAUGE_COLORS[zoneKey];
   }
-  function buildLinearGaugeSvg(score, { width = 200, barHeight = 14, showZoneLabels = false, targetValue = null, targetFontSize = 8, scoreFontSize = 15 } = {}) {
+  function buildLinearGaugeSvg(score, { width = 200, barHeight = 14, showZoneLabels = false, targetValue = null, targetFontSize = 8, scoreFontSize = 15, scoreOnLeft = false, targetLabel = "Objectif : ", targetStyle = "circle" } = {}) {
     const settings = loadDevSettings().cardScore;
     const colors = effectiveColors(loadDevSettings()).gaugeColors;
     const bounds = gaugeBounds(settings);
     const color = currentGaugeZoneColor(score, colors, bounds);
     const clampedScore = Math.max(0, Math.min(100, score));
-    const topPad = 20;
-    const bottomPad = showZoneLabels ? 26 : 4;
+    // Item 10 : le "objectif du jour" (triangle + texte au-dessus) a besoin
+    // de plus de marge en haut que le simple repère en cercle.
+    const topPad = targetValue !== null && targetStyle === "triangle" ? 34 : 20;
+    const bottomPad = showZoneLabels ? 30 : 4;
     const height = topPad + barHeight + bottomPad;
     const barY = topPad;
-    const fillW = Math.max((clampedScore / 100) * width, clampedScore > 0 ? barHeight : 0);
+    // Item 10 : le score se lit à gauche de la jauge — la barre elle-même
+    // est donc décalée pour lui laisser la place, plutôt que d'écrire le
+    // score PAR-DESSUS le début de la barre.
+    const leftPad = scoreOnLeft ? Math.max(28, scoreFontSize * 1.8) : 0;
+    const barX0 = leftPad;
+    const barWidth = width - leftPad;
+    const pctX = (pct) => barX0 + (Math.max(0, Math.min(100, pct)) / 100) * barWidth;
+    const fillW = Math.max((clampedScore / 100) * barWidth, clampedScore > 0 ? barHeight : 0);
 
     let svg = `<svg viewBox="0 0 ${width} ${height}" class="linear-gauge-svg">`;
-    svg += `<rect x="0" y="${barY}" width="${width}" height="${barHeight}" rx="${barHeight / 2}" fill="rgba(0,0,0,0.08)" />`;
-    if (fillW > 0) svg += `<rect x="0" y="${barY}" width="${fillW}" height="${barHeight}" rx="${barHeight / 2}" fill="${color}" />`;
-    const scoreX = Math.min(Math.max(fillW, 22), width - 4);
-    svg += `<text x="${scoreX}" y="${barY - 6}" text-anchor="middle" font-size="${scoreFontSize}" font-weight="700" fill="${color}" font-family="sans-serif">${score}</text>`;
+    svg += `<rect x="${barX0}" y="${barY}" width="${barWidth}" height="${barHeight}" rx="${barHeight / 2}" fill="rgba(0,0,0,0.08)" />`;
+    if (fillW > 0) svg += `<rect x="${barX0}" y="${barY}" width="${fillW}" height="${barHeight}" rx="${barHeight / 2}" fill="${color}" />`;
+    if (scoreOnLeft) {
+      svg += `<text x="0" y="${barY + barHeight / 2 + scoreFontSize * 0.35}" text-anchor="start" font-size="${scoreFontSize}" font-weight="700" fill="${color}" font-family="sans-serif">${score}</text>`;
+    } else {
+      const scoreX = Math.min(Math.max(barX0 + fillW, barX0 + 22), width - 4);
+      svg += `<text x="${scoreX}" y="${barY - 6}" text-anchor="middle" font-size="${scoreFontSize}" font-weight="700" fill="${color}" font-family="sans-serif">${score}</text>`;
+    }
 
     if (showZoneLabels) {
+      // Item 10 : les traits de niveau deviennent des ronds DIRECTEMENT sur
+      // la jauge (même diamètre que son épaisseur), contour noir, remplis
+      // de la couleur de la zone qu'ils terminent — avec les étoiles
+      // centrées horizontalement au-dessus de chaque rond (item 8).
+      const cr = barHeight / 2;
       for (let i = 0; i < GAUGE_ZONE_DEFS.length; i++) {
-        const from = bounds[i];
-        const to = bounds[i + 1];
-        if (to <= from) continue;
-        const xFrom = (from / 100) * width;
-        const xTo = (to / 100) * width;
-        const midX = (xFrom + xTo) / 2;
+        const boundary = bounds[i + 1];
+        if (boundary === undefined) continue;
+        const cx = pctX(boundary);
         const zc = colors[GAUGE_ZONE_DEFS[i].key] || DEFAULT_GAUGE_COLORS[GAUGE_ZONE_DEFS[i].key];
-        if (i > 0) svg += `<line x1="${xFrom.toFixed(1)}" y1="${barY - 3}" x2="${xFrom.toFixed(1)}" y2="${barY + barHeight + 3}" stroke="rgba(0,0,0,0.18)" stroke-width="1" />`;
-        const anchor = i === 0 ? "start" : i === GAUGE_ZONE_DEFS.length - 1 ? "end" : "middle";
-        const labelX = i === 0 ? xFrom : i === GAUGE_ZONE_DEFS.length - 1 ? xTo : midX;
-        svg += `<text x="${labelX.toFixed(1)}" y="${barY + barHeight + 15}" text-anchor="${anchor}" font-size="9" font-family="sans-serif" font-weight="600" fill="${zc}">${escapeHtml(GAUGE_ZONE_DEFS[i].label)}</text>`;
+        const clampedCx = Math.max(barX0 + cr, Math.min(barX0 + barWidth - cr, cx));
+        svg += `<circle cx="${clampedCx.toFixed(1)}" cy="${barY + barHeight / 2}" r="${cr}" fill="${zc}" stroke="#000" stroke-width="1.2" />`;
+        svg += `<text x="${clampedCx.toFixed(1)}" y="${barY + barHeight + 14}" text-anchor="middle" font-size="7" font-family="sans-serif" fill="${zc}">${gaugeZoneStarText(GAUGE_ZONE_DEFS[i].stars)}</text>`;
       }
     }
     if (targetValue !== null) {
-      const tx = (Math.max(0, Math.min(100, targetValue)) / 100) * width;
-      const anchor = tx > width - 45 ? "end" : tx < 45 ? "start" : "middle";
-      svg += `<line x1="${tx.toFixed(1)}" y1="${barY - 5}" x2="${tx.toFixed(1)}" y2="${barY + barHeight + 5}" stroke="var(--ink, #1f2937)" stroke-width="2" />`;
-      svg += `<circle cx="${tx.toFixed(1)}" cy="${(barY - 5).toFixed(1)}" r="2.5" fill="var(--ink, #1f2937)" />`;
-      svg += `<text x="${tx.toFixed(1)}" y="${barY - 9}" text-anchor="${anchor}" font-size="${targetFontSize}" font-weight="700" fill="var(--ink-soft, #64748b)" font-family="sans-serif">Objectif : ${targetValue}</text>`;
+      const tx = pctX(targetValue);
+      if (targetStyle === "triangle") {
+        // Item 10 : triangle noir juste au-dessus de la jauge, avec
+        // "Objectif du jour : X" écrit au-dessus du triangle.
+        const triY = barY - 4;
+        svg += `<polygon points="${tx.toFixed(1)},${triY} ${(tx - 6).toFixed(1)},${triY - 9} ${(tx + 6).toFixed(1)},${triY - 9}" fill="#000" />`;
+        const anchor = tx > barX0 + barWidth - 60 ? "end" : tx < barX0 + 60 ? "start" : "middle";
+        svg += `<text x="${tx.toFixed(1)}" y="${triY - 13}" text-anchor="${anchor}" font-size="${targetFontSize}" font-weight="700" fill="var(--ink, #1f2937)" font-family="sans-serif">${targetLabel}${targetValue}</text>`;
+      } else {
+        // Item 9 : simple rond noir directement sur la jauge, de diamètre
+        // égal à son épaisseur — sans trait en dessous.
+        svg += `<circle cx="${tx.toFixed(1)}" cy="${barY + barHeight / 2}" r="${barHeight / 2}" fill="#000" />`;
+        const anchor = tx > barX0 + barWidth - 45 ? "end" : tx < barX0 + 45 ? "start" : "middle";
+        svg += `<text x="${tx.toFixed(1)}" y="${barY - 6}" text-anchor="${anchor}" font-size="${targetFontSize}" font-weight="700" fill="var(--ink-soft, #64748b)" font-family="sans-serif">${targetLabel}${targetValue}</text>`;
+      }
     }
     svg += `</svg>`;
     return svg;
@@ -3933,12 +3975,28 @@
   }
   /** Grande jauge de la page Réviser : les 6 points de zone avec leurs
    *  intitulés (Débutant, Fragile, etc.), comme le demandait l'item 4. */
+  /** Item 10 : "objectif du jour" pour la jauge de Réviser — reprend la
+   *  même logique que le Programme de révision (échéance la plus proche
+   *  liée à la boîte actuellement révisée), affiché seulement quand une
+   *  boîte précise (pas "toutes"/sélection) est en cours et qu'elle a
+   *  effectivement une échéance à venir. */
+  function computeTodayTargetForCurrentSubject() {
+    if (!currentSubjectId || currentSubjectId === ALL_SUBJECTS_ID || currentSubjectId === MULTI_SUBJECTS_ID) return null;
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const linkId = `subject:${currentSubjectId}`;
+    const upcoming = loadCalendarEvents()
+      .filter((ev) => ev.linkId === linkId && ev.date >= todayStr)
+      .sort((a, b) => a.date.localeCompare(b.date));
+    if (upcoming.length === 0) return null;
+    return REVISION_PROGRAM_TARGET_SCORE;
+  }
   function renderReviewGauge() {
     const wrap = el("review-gauge-wrap");
     if (!wrap) return;
     const pool = subjectCards();
     const score = pool.length > 0 ? Math.round(pool.reduce((acc, c) => acc + computeCardScore(c), 0) / pool.length) : 0;
-    wrap.innerHTML = buildLinearGaugeSvg(score, { width: 300, barHeight: 18, showZoneLabels: true, scoreFontSize: 20 });
+    const target = computeTodayTargetForCurrentSubject();
+    wrap.innerHTML = buildLinearGaugeSvg(score, { width: 300, barHeight: 18, showZoneLabels: true, scoreFontSize: 20, scoreOnLeft: true, targetValue: target, targetLabel: "Objectif du jour : ", targetStyle: "triangle" });
   }
 
   function renderDuePill() {
@@ -4712,7 +4770,9 @@
     if (summaryEl) {
       if (cardsScopeFilter === CARDS_SCOPE_MULTI) {
         const names = loadCardsMultiSelection().map((id) => subjectName(id)).filter(Boolean);
-        summaryEl.textContent = names.length > 0 ? `Sélection actuelle : ${names.join(", ")}` : "";
+        // Item 11 : chaque dossier/boîte choisi sur sa propre ligne (liste
+        // verticale), plutôt qu'une seule ligne avec des virgules.
+        summaryEl.innerHTML = names.length > 0 ? names.map((n) => `<span class="cards-scope-summary-item">${escapeHtml(n)}</span>`).join("") : "";
         summaryEl.hidden = names.length === 0;
       } else {
         summaryEl.hidden = true;
@@ -4915,7 +4975,7 @@
       constructionBtn.className = "icon-btn" + (card.underConstruction ? " is-active-construction" : "");
       constructionBtn.type = "button";
       constructionBtn.innerHTML = getIconMarkupFor("construction");
-      constructionBtn.title = card.underConstruction ? "Retirer le statut « chantier »" : "Marquer « chantier » (fiche à corriger)";
+      constructionBtn.title = card.underConstruction ? "Retirer le signalement « à corriger »" : "Signaler comme fiche à corriger";
       constructionBtn.addEventListener("click", () => toggleUnderConstruction(card.id));
 
       const delBtn = document.createElement("button");
@@ -7402,10 +7462,20 @@
   function goToReviewFor(linkId) {
     if (linkId) {
       const [type, id] = linkId.split(":");
-      if (type === "subject") switchSubject(id);
-      // (Un dossier entier n'a pas d'équivalent direct de "boîte
-      // courante" pour Réviser : on laisse la sélection telle quelle dans
-      // ce cas, plutôt que de deviner — affiné dans une prochaine étape.)
+      if (type === "subject") {
+        switchSubject(id);
+      } else if (type === "folder") {
+        // Bug corrigé (item 7) : un dossier entier n'était jamais vraiment
+        // sélectionné (juste ignoré) — on bascule maintenant sur le mode
+        // "sélection de boîtes" avec TOUTES les boîtes de ce dossier (et
+        // sous-dossiers) déjà cochées, nommé d'après le dossier, exactement
+        // comme si on l'avait choisi à la main dans le sélecteur.
+        const ids = subjectIdsInFolder(id);
+        const f = folders.find((x) => x.id === id);
+        saveMultiSelection(ids);
+        saveMultiSelectionLabel(f ? f.name : "");
+        switchSubject(MULTI_SUBJECTS_ID, true);
+      }
     } else {
       // Item 6 : "Ne pas suivre le programme" repart sur "Toutes les
       // boîtes", plutôt que de laisser la dernière boîte active

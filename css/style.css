@@ -342,6 +342,17 @@ button.topbar-new-card-btn {
   font-size: 12px;
   color: var(--general-text-color, var(--ink-soft));
   margin: 6px 0 0;
+  /* Item 11 : force ce paragraphe sur sa propre ligne, sous le label et le
+     sélecteur (voir flex-wrap sur .cards-scope-row), avec un dossier/une
+     boîte par ligne plutôt qu'une liste séparée par des virgules. */
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cards-scope-summary-item {
+  display: block;
 }
 
 .subject-select-btn::after {
@@ -494,17 +505,19 @@ button.topbar-new-card-btn {
    "light") — texte en gras + fond et bordure nettement plus saturés.
    Partagées par le bouton de la barre Réviser (.subject-bar-algo-btn) ET
    celui de chaque ligne de boîte sur la page Gérer (.subject-row-algo-btn). */
+/* Item 3 : c'est maintenant la couleur du PICTOGRAMME qui change selon le
+   mode, plus celle du fond (qui reste neutre) — l'inverse d'avant. */
 .subject-bar-algo-btn.is-cool, .subject-row-algo-btn.is-cool, .card-algo-btn.is-cool {
-  color: #eaf2e4; background: var(--mode-cool-color, var(--sage)); border-color: var(--mode-cool-color, var(--sage));
+  color: var(--mode-cool-color, var(--sage)); background: rgba(35,48,42,0.08); border-color: transparent;
 }
 .subject-bar-algo-btn.is-normal, .subject-row-algo-btn.is-normal, .card-algo-btn.is-normal {
-  color: #2a1f0d; background: var(--mode-normal-color, var(--amber)); border-color: var(--mode-normal-color, var(--amber));
+  color: var(--mode-normal-color, var(--amber)); background: rgba(35,48,42,0.08); border-color: transparent;
 }
 .subject-bar-algo-btn.is-renforce, .subject-row-algo-btn.is-renforce, .card-algo-btn.is-renforce {
-  color: #fbeae5; background: var(--mode-renforce-color, var(--terracotta)); border-color: var(--mode-renforce-color, var(--terracotta));
+  color: var(--mode-renforce-color, var(--terracotta)); background: rgba(35,48,42,0.08); border-color: transparent;
 }
 .subject-bar-algo-btn.is-custom, .subject-row-algo-btn.is-custom, .card-algo-btn.is-custom {
-  color: #332b04; background: var(--mode-custom-color, #e8c84a); border-color: var(--mode-custom-color, #e8c84a);
+  color: var(--mode-custom-color, #e8c84a); background: rgba(35,48,42,0.08); border-color: transparent;
 }
 
 .subject-bar-algo-btn:hover, .subject-row-algo-btn:hover, .card-algo-btn:hover { filter: brightness(1.08); }
@@ -652,107 +665,153 @@ button.topbar-new-card-btn {
   background: var(--subject-row-bg-color, var(--paper));
   border-radius: 10px;
   box-shadow: var(--shadow-subject-row, 0 4px 12px rgba(0,0,0,0.18));
-  overflow: hidden;
+  /* Item 4 : overflow:hidden retiré — le panneau d'actions (déplier via
+     org-deploy-btn) doit pouvoir déborder du bloc pour s'afficher. */
 }
 
 /* Item 3 : effet de pile (comme les fiches de Réviser) pour montrer qu'un
    dossier replié contient bien quelque chose — deux "tranches" simulées
    par de simples ombres décalées, sans DOM supplémentaire. */
 .folder-row--stacked {
-  /* Item 1 : effet de pile en pur CSS (::before/::after) — plus aucune
-     div ajoutée en JS qui pourrait, selon le moment exact du rendu, ne
-     pas être recréée à un passage ultérieur ("apparaît puis disparaît").
-     Tant que cette classe est présente, les deux couches s'affichent,
-     point final : il n'y a plus de code de rendu séparé à synchroniser. */
-  overflow: visible;
+  /* Item 5 : nouveau rendu demandé — deux traits fins (pas un aplat)
+     formant un coin arrondi en bas à gauche, dans la couleur du dossier
+     lui-même, légèrement décalés en diagonale (bas-gauche) tout près du
+     bloc plutôt qu'en dessous sur toute la largeur. */
   position: relative;
-  margin-bottom: 30px !important;
-}
-
-.folder-row--stacked::before,
-.folder-row--stacked::after {
-  content: "";
-  position: absolute;
-  height: 14px;
-  border-radius: 0 0 10px 10px;
-  pointer-events: none;
-  /* Bug corrigé (item 1, cette fois pour de bon) : un z-index négatif sur
-     un pseudo-élément, dans un parent position:relative pris dans une
-     liste flex, est un grand classique des rendus instables sous Safari
-     iOS (le pseudo-élément peut apparaître le temps du tout premier
-     rendu, puis se retrouver recouvert dès qu'iOS recompose l'affichage
-     en GPU) — ce qui correspond exactement au symptôme "apparaît puis
-     disparaît" décrit. Aucun z-index n'est en réalité nécessaire ici : ces
-     couches sont sous la ligne, jamais superposées à son propre contenu,
-     l'ordre naturel de peinture suffit très bien. */
+  margin-left: 6px !important;
+  margin-bottom: 6px !important;
 }
 
 .folder-row--stacked::before {
-  top: calc(100% - 2px);
-  left: 10px;
-  right: 10px;
-  background: #b9c3d6;
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: -6px;
+  right: 6px;
+  bottom: -6px;
+  border-radius: 0 0 0 10px;
+  border-left: 2px solid var(--folder-bg-color, var(--paper));
+  border-bottom: 2px solid var(--folder-bg-color, var(--paper));
+  pointer-events: none;
 }
 
-.folder-row--stacked::after {
-  top: calc(100% + 8px);
-  left: 20px;
-  right: 20px;
-  background: #cbd3e2;
+
+
+/* Item 4 : bloc sur une seule ligne — flèche de dépli, icône+nom, nombre,
+   espace flexible, picto du mode, jauge courte, bouton d'actions. */
+.org-row-wrap {
+  position: relative;
 }
 
-
-/* Item 3 : contenu principal (à gauche) + jauge circulaire pleine hauteur
-   (à droite, permutée avec le badge de mode qui est monté sur la ligne 1). */
-.subject-row-body {
-  display: flex;
-  align-items: stretch;
-}
-
-.subject-row-main {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 6px 8px 6px 12px;
-}
-
-.subject-row-line1 {
+.org-row-main {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
+  padding: 8px 10px;
+  min-height: 40px;
 }
 
-/* Item 9 : bouton plier/déplier séparé du nom (qui navigue maintenant
-   vers Fiches) — juste la flèche, sans fond ni bordure propre. */
-.folder-row-expand-btn {
+.org-expand-btn {
   flex-shrink: 0;
   background: none;
   border: none;
   color: var(--ink-soft);
-  font-size: 13px;
-  padding: 4px 2px;
-}
-
-.subject-row-line1 .subject-row-name { flex: 1; min-width: 0; }
-
-.subject-row-line2 {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.subject-row-gauge-col {
-  flex-shrink: 0;
-  width: 112px;
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px;
-  border-left: 1px solid rgba(0,0,0,0.06);
 }
+.org-expand-btn svg { width: 18px; height: 18px; }
+
+.subject-row-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 30px;
+  overflow: hidden;
+}
+.subject-row-name span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.org-count {
+  flex-shrink: 0;
+  font-family: var(--font-type);
+  font-size: 11px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.org-row-spacer {
+  flex: 1;
+  min-width: 6px;
+}
+
+.org-mode-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.org-gauge-inline {
+  flex-shrink: 0;
+  width: 64px;
+  display: flex;
+  align-items: center;
+}
+
+.org-deploy-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.org-deploy-btn svg { width: 16px; height: 16px; }
+
+/* Item 4 : le bouton de dépli révèle éditer/déplacer/supprimer, empilés
+   verticalement, dans un petit panneau ancré au bloc. */
+.org-actions-popover {
+  position: absolute;
+  top: 100%;
+  right: 8px;
+  z-index: 5;
+  background: var(--paper);
+  border-radius: 10px;
+  box-shadow: var(--shadow-deep);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 140px;
+}
+
+.org-actions-popover[hidden] { display: none; }
+
+.org-actions-popover-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-family: var(--font-type);
+  font-size: 13px;
+  color: var(--ink);
+  text-align: left;
+}
+.org-actions-popover-item:hover { background: rgba(35,48,42,0.06); }
+.org-actions-popover-item--danger { color: var(--terracotta); }
+.org-actions-popover-item svg { width: 16px; height: 16px; flex-shrink: 0; }
 
 .linear-gauge-svg {
   width: 100%;
@@ -760,6 +819,20 @@ button.topbar-new-card-btn {
 }
 
 .subject-row.is-active { border-left: 3px solid var(--rule); }
+
+/* Item 2 : les dossiers/boîtes enfants sont maintenant imbriqués
+   visuellement DANS le bloc de leur dossier parent (au lieu d'une simple
+   indentation à plat), avec un léger retrait + une bordure gauche pour
+   bien montrer la hiérarchie, en gardant le même système plier/déplier. */
+.org-children {
+  list-style: none;
+  margin: 0 8px 10px 14px;
+  padding: 0 0 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-left: 2px solid rgba(0,0,0,0.08);
+}
 
 /* Fond des dossiers par niveau de profondeur (item 2h) — 0 = dossier
    racine, 1/2/3 = sous-dossiers ; au-delà de 3, on réutilise la couleur
@@ -846,6 +919,7 @@ button.topbar-new-card-btn {
 .cards-scope-row {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
   margin: 4px 0 14px;
   position: relative;
