@@ -2051,7 +2051,6 @@
   const importTargetSelect = el("import-target-select");
 
 
-  const manageAddSubjectBtn = el("manage-add-subject-btn");
   const subjectListEl = el("subject-list");
   const subjectBarCountEl = el("subject-bar-count");
 
@@ -2126,6 +2125,73 @@
   function subjectIdsInFolder(folderId) {
     const ids = new Set([folderId, ...folderDescendantIds(folderId)]);
     return subjects.filter((s) => ids.has(s.folderId)).map((s) => s.id);
+  }
+
+  /* ---------------------------------------------------------
+     Item 1 : fusion dossier / boîte. On ne crée plus que des dossiers —
+     un dossier VIDE devient automatiquement une boîte dès qu'on y ajoute
+     une première fiche, et inversement redevient un dossier dès que sa
+     dernière fiche est supprimée. Pour rester à faible risque (ne pas
+     toucher à la programmation des révisions ni à la synchro, qui
+     reposent sur les boîtes existantes), une boîte "née" de cette façon
+     PARTAGE le même identifiant que son dossier (deux enregistrements
+     distincts — un dossier, une boîte — juste avec le même id) plutôt que
+     d'être une nouvelle entité à part. Les boîtes créées avant cet item
+     restent des entités indépendantes classiques ; les deux cohabitent
+     sans souci, chacune reconnue différemment (voir folderSelfSubject).
+  --------------------------------------------------------- */
+  /** La boîte "auto-liée" à ce dossier (même id), si elle existe. */
+  function folderSelfSubject(folderId) {
+    return subjects.find((s) => s.id === folderId) || null;
+  }
+  /** Ce dossier est-il actuellement affiché comme une boîte (a une boîte
+   *  auto-liée ET au moins une fiche) ? */
+  function isFolderABoite(folderId) {
+    const s = folderSelfSubject(folderId);
+    if (!s) return false;
+    return cards.some((c) => !c.deleted && c.subject === s.id);
+  }
+  /** Un dossier est "vide" (éligible pour devenir une boîte) s'il n'a NI
+   *  sous-dossier NI boîte parmi ses enfants directs. */
+  function folderIsEmpty(folderId) {
+    const hasSubFolders = folders.some((f) => f.parentId === folderId);
+    const hasSubjectChildren = subjects.some((s) => s.folderId === folderId && !folders.some((f) => f.id === s.id));
+    return !hasSubFolders && !hasSubjectChildren;
+  }
+  /** Crée (si besoin) la boîte auto-liée à un dossier vide, prête à
+   *  recevoir des fiches — c'est cet appel qui fait "devenir boîte" un
+   *  dossier au sens de l'item 1. */
+  async function ensureFolderIsBoite(folderId) {
+    const existing = folderSelfSubject(folderId);
+    if (existing) return existing;
+    const f = folders.find((x) => x.id === folderId);
+    if (!f) return null;
+    const now = new Date().toISOString();
+    const s = { id: f.id, name: f.name, folderId: f.parentId, createdAt: now, updatedAt: now };
+    await persistSubject(s);
+    subjects.push(s);
+    return s;
+  }
+  /** Après suppression/déplacement d'une fiche : si la boîte concernée
+   *  est une boîte auto-liée et n'a plus aucune fiche, on la supprime pour
+   *  que son dossier redevienne un dossier normal (item 1, dernier point).
+   *  Ne touche jamais aux boîtes "classiques" (créées avant cet item),
+   *  qui peuvent rester vides sans redevenir quoi que ce soit d'autre. */
+  async function revertFolderIfBoiteEmptied(subjectId) {
+    const isSelfLinked = folders.some((f) => f.id === subjectId);
+    if (!isSelfLinked) return;
+    const stillHasCards = cards.some((c) => !c.deleted && c.subject === subjectId);
+    if (stillHasCards) return;
+    const idx = subjects.findIndex((s) => s.id === subjectId);
+    if (idx === -1) return;
+    const s = subjects[idx];
+    subjects.splice(idx, 1);
+    await DB.removeSubject(subjectId);
+    await pushSubjectDeleted(s);
+    if (currentSubjectId === subjectId && subjects.length > 0) {
+      currentSubjectId = subjects[0].id;
+      localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
+    }
   }
 
   /** Score moyen d'une boîte (item 2) : moyenne des scores de ses fiches
@@ -2536,11 +2602,59 @@
     const childFolders = folders
       .filter((f) => f.parentId === parentId)
       .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    // Item 1 : une boîte "auto-liée" (même id qu'un dossier) ne doit
+    // jamais être rendue ici comme boîte indépendante — c'est le dossier
+    // correspondant, plus bas, qui la représente.
     const childSubjects = subjects
-      .filter((s) => s.folderId === parentId)
+      .filter((s) => s.folderId === parentId && !folders.some((f) => f.id === s.id))
       .sort((a, b) => a.name.localeCompare(b.name, "fr"));
 
+    /** Ligne "boîte" (item 1) — utilisée aussi bien pour une boîte
+     *  classique (entité indépendante) que pour un dossier devenu boîte
+     *  (même id qu'une boîte auto-liée) : dans les deux cas, le nom, le
+     *  score, le mode et les actions viennent de l'ENTITÉ BOÎTE, mais une
+     *  boîte auto-liée supprime aussi son dossier associé. */
+    function appendBoiteRow(subjectId, displayName, isSelfLinkedFolder) {
+      const li = document.createElement("li");
+      li.className = "subject-row" + (subjectId === currentSubjectId ? " is-active" : "");
+
+      const nameBtn = document.createElement("button");
+      nameBtn.type = "button";
+      nameBtn.className = "subject-row-name";
+      nameBtn.innerHTML = `${iconSvgMarkup("file", "icon-inline-svg")} <span>${escapeHtml(displayName)}</span>`;
+      nameBtn.addEventListener("click", () => {
+        switchSubject(subjectId);
+        cardsScopeFilter = CARDS_SCOPE_CURRENT;
+        const tab = document.querySelector('.tab[data-view="cards"]');
+        if (tab) tab.click();
+      });
+
+      const n = cards.filter((c) => !c.deleted && c.subject === subjectId).length;
+      const subjScore = computeSubjectScore(subjectId);
+      const body = buildRowBody({
+        nameBtnEl: nameBtn,
+        countLabel: `${n} fiche${n > 1 ? "s" : ""}`,
+        score: subjScore,
+        mode: getSubjectAlgoMode(subjectId),
+        onRename: () => (isSelfLinkedFolder ? renameFolder(subjectId) : renameSubject(subjectId)),
+        onMove: () => openMovePicker(isSelfLinkedFolder ? "folder" : "subject", subjectId),
+        onDelete: () => deleteSubject(subjectId),
+        onAlgo: () => openSubjectAlgoView(subjectId),
+        deleteTitle: "Supprimer cette boîte",
+      });
+      li.appendChild(body);
+      container.appendChild(li);
+    }
+
     childFolders.forEach((f) => {
+      // Item 1 : ce dossier a une fiche → il EST une boîte, rendu comme
+      // telle (nom, score, mode, actions de boîte) plutôt que comme
+      // dossier — jamais de sous-dossier ni de repli pour une boîte.
+      if (isFolderABoite(f.id)) {
+        appendBoiteRow(f.id, f.name, true);
+        return;
+      }
+
       const expanded = expandedManageFolders.has(f.id);
       const li = document.createElement("li");
       li.className = `subject-row folder-row folder-row-depth-${Math.min(depth, 3)}`;
@@ -2605,36 +2719,7 @@
     });
 
     for (const s of childSubjects) {
-      const li = document.createElement("li");
-      li.className = "subject-row" + (s.id === currentSubjectId ? " is-active" : "");
-
-      const nameBtn = document.createElement("button");
-      nameBtn.type = "button";
-      nameBtn.className = "subject-row-name";
-      nameBtn.innerHTML = `${iconSvgMarkup("file", "icon-inline-svg")} <span>${escapeHtml(s.name)}</span>`;
-      nameBtn.addEventListener("click", () => {
-        switchSubject(s.id);
-        cardsScopeFilter = CARDS_SCOPE_CURRENT;
-        const tab = document.querySelector('.tab[data-view="cards"]');
-        if (tab) tab.click();
-      });
-
-      const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
-      const subjScore = computeSubjectScore(s.id);
-      const body = buildRowBody({
-        nameBtnEl: nameBtn,
-        countLabel: `${n} fiche${n > 1 ? "s" : ""}`,
-        score: subjScore,
-        mode: getSubjectAlgoMode(s.id),
-        onRename: () => renameSubject(s.id),
-        onMove: () => openMovePicker("subject", s.id),
-        onDelete: () => deleteSubject(s.id),
-        onAlgo: () => openSubjectAlgoView(s.id),
-        deleteTitle: "Supprimer cette boîte",
-      });
-
-      li.appendChild(body);
-      container.appendChild(li);
+      appendBoiteRow(s.id, s.name, false);
     }
   }
 
@@ -2663,10 +2748,24 @@
     f.name = name.trim();
     f.updatedAt = new Date().toISOString();
     await persistFolder(f);
+    // Item 1 : si ce dossier est actuellement une boîte (même id), son nom
+    // doit rester synchronisé avec elle.
+    const selfSubject = folderSelfSubject(folderId);
+    if (selfSubject) {
+      selfSubject.name = f.name;
+      selfSubject.updatedAt = f.updatedAt;
+      await persistSubject(selfSubject);
+    }
     renderSubjectManageList();
   }
 
   async function deleteFolder(folderId) {
+    // Item 1 : un dossier devenu boîte se supprime via deleteSubject (qui
+    // nettoie aussi ce dossier) — garde-fou si jamais atteint autrement.
+    if (isFolderABoite(folderId)) {
+      await deleteSubject(folderId);
+      return;
+    }
     if (!folderIsEmpty(folderId)) {
       alert("Ce dossier n'est pas vide : déplace ou supprime d'abord ce qu'il contient.");
       return;
@@ -2707,7 +2806,7 @@
     list.appendChild(rootLabel);
 
     folders
-      .filter((f) => !excluded.has(f.id))
+      .filter((f) => !excluded.has(f.id) && !isFolderABoite(f.id))
       .sort((a, b) => a.name.localeCompare(b.name, "fr"))
       .forEach((f) => {
         const label = document.createElement("label");
@@ -3396,6 +3495,15 @@
     await DB.removeSubject(id);
     subjects = subjects.filter((x) => x.id !== id);
     await pushSubjectDeleted(s);
+    // Item 1 : si cette boîte était auto-liée à un dossier (même id), on
+    // supprime aussi ce dossier — les deux ne font qu'un pour qui l'a
+    // créée.
+    const linkedFolder = folders.find((x) => x.id === id);
+    if (linkedFolder) {
+      folders = folders.filter((x) => x.id !== id);
+      await pushFolderDeleted(linkedFolder);
+      await DB.removeFolder(id);
+    }
 
     if (currentSubjectId === id) {
       currentSubjectId = subjects[0].id;
@@ -3590,14 +3698,47 @@
   /** Arbre à choix unique (item : boîte de création d'une nouvelle fiche
    *  dans Fiches) — dossiers en simples en-têtes non cliquables, boîtes
    *  en boutons ; clic = choix immédiat, pas de coche ni de confirmation. */
+  /** Item 1 : un dossier vide devient sélectionnable (il deviendra une
+   *  boîte au moment où on y ajoute la fiche), une boîte existante reste
+   *  sélectionnable comme avant, et un dossier non vide (qui contient déjà
+   *  un sous-dossier ou une boîte) n'apparaît plus du tout comme
+   *  destination possible — juste un repère non cliquable, comme avant. */
   function renderSubjectTreeForSingleChoice(container, parentId, depth, onPick) {
     const childFolders = folders
       .filter((f) => f.parentId === parentId)
       .sort((a, b) => a.name.localeCompare(b.name, "fr"));
     const childSubjects = subjects
-      .filter((s) => s.folderId === parentId)
+      .filter((s) => s.folderId === parentId && !folders.some((f) => f.id === s.id))
       .sort((a, b) => a.name.localeCompare(b.name, "fr"));
     childFolders.forEach((f) => {
+      if (isFolderABoite(f.id)) {
+        // Ce dossier EST une boîte (auto-liée) : un item cliquable, comme
+        // n'importe quelle autre boîte.
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "subject-choice-tree-item";
+        btn.style.paddingLeft = `${12 + depth * 14}px`;
+        btn.textContent = f.name;
+        btn.addEventListener("click", () => onPick(f.id));
+        container.appendChild(btn);
+        return;
+      }
+      if (folderIsEmpty(f.id)) {
+        // Dossier vide : sélectionnable, deviendra une boîte à cet instant.
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "subject-choice-tree-item subject-choice-tree-item--empty-folder";
+        btn.style.paddingLeft = `${12 + depth * 14}px`;
+        btn.innerHTML = `${folderIcon()} ${escapeHtml(f.name)} <span class="field-hint" style="display:inline;">(dossier vide)</span>`;
+        btn.addEventListener("click", async () => {
+          const s = await ensureFolderIsBoite(f.id);
+          if (s) onPick(s.id);
+        });
+        container.appendChild(btn);
+        return;
+      }
+      // Dossier non vide (sous-dossiers et/ou boîtes dedans) : simple
+      // repère, on ne peut pas y ranger une fiche directement (item 1).
       const header = document.createElement("div");
       header.className = "subject-choice-tree-folder";
       header.style.paddingLeft = `${10 + depth * 14}px`;
@@ -3667,17 +3808,9 @@
     });
   }
 
-  manageAddSubjectBtn.addEventListener("click", async () => {
-    const s = await createSubjectFlow();
-    if (s) {
-      switchSubject(s.id);
-      renderSubjectManageList();
-      // Item 8 : demande tout de suite où la ranger (uniquement depuis
-      // cette page — pas depuis le flux d'import, où ce serait hors
-      // contexte).
-      openMovePicker("subject", s.id);
-    }
-  });
+  // Item 1 : "+ Nouvelle boîte" retiré — une boîte ne naît plus que d'un
+  // dossier vide auquel on ajoute une première fiche (voir
+  // ensureFolderIsBoite, utilisé par le sélecteur de la page Fiches).
 
   importTargetSelect.addEventListener("change", async () => {
     if (importTargetSelect.value === "__new__") {
@@ -5059,6 +5192,9 @@
     const idx = cards.findIndex((c) => c.id === id);
     if (idx >= 0) cards[idx] = updated;
     reviewQueue = reviewQueue.filter((c) => c.id !== id);
+    // Item 1 : si c'était la dernière fiche d'une boîte "née" d'un dossier
+    // vide, ce dossier redevient un dossier normal.
+    await revertFolderIfBoiteEmptied(card.subject);
     if (currentCard && currentCard.id === id) {
       showNextCard();
     }
@@ -7908,10 +8044,6 @@
     applyHomeIcons();
     applyHomeLayout();
     applyReviewLayout();
-    // Recalcule en pixels (item — passage de vh/vw à des pixels calculés en
-    // JS) à chaque rotation d'écran/redimensionnement, puisque ces valeurs
-    // ne s'adaptent plus toutes seules comme le faisaient vh/vw.
-    window.addEventListener("resize", applyReviewLayout);
     applyShowRatingDays();
     applyShowReviewChart();
     applyColorSettings();
@@ -7919,6 +8051,20 @@
     applyIconSettings();
     applyTextColorPalette();
   }
+  // Bug corrigé (item 6) : cet écouteur vivait DANS applyAllDevSettings, qui
+  // peut s'exécuter plusieurs fois (démarrage, synchro) — il s'accumulait
+  // donc en plusieurs exemplaires. Pire : il recalculait la disposition de
+  // Réviser sur CHAQUE redimensionnement, y compris ceux causés par
+  // l'ouverture du clavier virtuel en tapant dans un tout autre champ (par
+  // ex. un réglage numérique du mode développeur) — le clavier réduit
+  // alors window.innerHeight, et les positions de la fiche (en pixels,
+  // calculées depuis cette hauteur réduite) restaient figées ainsi même
+  // une fois le clavier refermé : fiche minuscule, tout serré en haut de
+  // l'écran. Un seul écouteur, posé une fois pour toutes, qui ne
+  // recalcule que si Réviser est la page réellement affichée.
+  window.addEventListener("resize", () => {
+    if (el("view-review") && el("view-review").classList.contains("is-active")) applyReviewLayout();
+  });
 
   /** Fusionne les réglages développeur reçus (item 1) : le plus récent
    *  (comparé via updatedAt) l'emporte intégralement — contrairement aux
