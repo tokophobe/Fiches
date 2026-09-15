@@ -1,10 +1,17 @@
 (() => {
   "use strict";
 
+  // Version affichée dans Réglages (bouton "Vérifier les mises à jour") —
+  // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
+  // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
+  // version installée.
+  const APP_VERSION = "v125";
+
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
     folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>',
     file: '<path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M15 2v5h5"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/>',
+    stackedSheets: '<path d="M8 3h9l4 4v12a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M17 3v4h4"/><path d="M5 7v13a1 1 0 0 0 1 1h11"/><path d="M2 11v13a1 1 0 0 0 1 1h11"/>',
     barChart: '<line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/>',
     gradCap: '<path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/>',
     settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
@@ -457,6 +464,11 @@
     dueBarColor: "#4a90d9",
     todayBarColor: "#4a9fe0",
     reviewedBarColor: "#4a90d9",
+    // Item 10 (dernier lot) : fond du bouton "Ne pas suivre le programme".
+    skipProgramBg: "#fde8d7",
+    // Item 11 (dernier lot) : fond de la page d'accueil, indépendant du
+    // fond des autres pages (appBg).
+    homeBg: "#eef2f8",
   };
   // Item 4 : couleurs de fond pour le mode nuit — un jeu de valeurs sombres
   // parallèle, réglable séparément dans le mode développeur.
@@ -481,6 +493,8 @@
     dueBarColor: "#5a9fe0",
     todayBarColor: "#6bafef",
     reviewedBarColor: "#5a9fe0",
+    skipProgramBg: "#4a3524",
+    homeBg: "#11151c",
   };
   const DEFAULT_TEXT_COLORS_SET = {
     homeTitle: "#1f2937",
@@ -589,6 +603,9 @@
     sync: { x: 54.4, y: 76.2, d: 95 },
     dev: { x: 89.0, y: 79.0, d: 80 },
   };
+  // Items 1/2 (logo) : position (X/Y en %, centre du logo) et taille (px)
+  // du logo sur la page d'accueil.
+  const DEFAULT_HOME_LOGO = { x: 50, y: 7, size: 64 };
   // Disposition de la page Réviser (item 1c) : hauteur/largeur de la fiche
   // et position Y de son bord haut, position Y des boutons d'évaluation
   // (tous en % de l'écran), temps de retournement en secondes.
@@ -714,6 +731,7 @@
       textColorsSet: { ...DEFAULT_TEXT_COLORS_SET, ...(parsed.textColorsSet || {}) },
       shadows: { ...DEFAULT_SHADOWS, ...(parsed.shadows || {}) },
       homeLayout: migrateHomeLayoutToPercent(parsed),
+      homeLogo: { ...DEFAULT_HOME_LOGO, ...(parsed.homeLogo || {}) },
       homeLayoutUnit: "percent",
       homeLayoutAnchor: "center",
       reviewLayout: { ...DEFAULT_REVIEW_LAYOUT, ...(parsed.reviewLayout || {}) },
@@ -1129,12 +1147,14 @@
   }
 
   const BG_COLORS_ORDER = [
-    "appBg", "homeSquareBg", "homeAddCardBg", "cardFormBg", "richEditorBg", "homeBtnBg", "cardBg",
+    "appBg", "homeBg", "homeSquareBg", "homeAddCardBg", "cardFormBg", "richEditorBg", "homeBtnBg", "cardBg",
     "subjectSelectBg", "syncStatusBg", "folderBg", "folderL1Bg", "folderL2Bg", "folderL3Bg",
     "subjectRowBg", "addBtnBg", "chartWrapBg", "svgChartBg", "dueBarColor", "todayBarColor", "reviewedBarColor",
+    "skipProgramBg",
   ];
   const BG_COLORS_TITLES = {
-    appBg: "Fond de l'appli",
+    appBg: "Fond de l'appli (toutes pages sauf accueil)",
+    homeBg: "Fond de la page d'accueil",
     homeSquareBg: "Boutons de la page d'accueil",
     homeAddCardBg: "Bouton « Ajouter une fiche » de l'accueil",
     cardFormBg: "Fond des cadres (blocs)",
@@ -1154,6 +1174,7 @@
     dueBarColor: "Barres « à revoir »",
     todayBarColor: "Barre « Aujourd'hui »",
     reviewedBarColor: "Barres « révisées »",
+    skipProgramBg: "Fond du bouton « Ne pas suivre le programme »",
   };
   function renderBgColorsEditor() {
     renderColorListPicker("dev-bg-colors-list", BG_COLORS_ORDER, BG_COLORS_TITLES, "bgColors", applyColorSettings);
@@ -1199,6 +1220,13 @@
       circle.style.height = `${pos.d}px`;
       circle.style.transform = "translate(-50%, -50%)";
     });
+    // Items 1/2 (logo) : position/taille du logo sur la page d'accueil,
+    // réglables depuis le mode développeur.
+    const logo = loadDevSettings().homeLogo;
+    const root = document.documentElement.style;
+    root.setProperty("--home-logo-x", `${logo.x}%`);
+    root.setProperty("--home-logo-y", `${logo.y}%`);
+    root.setProperty("--home-logo-size", `${logo.size}px`);
   }
 
   /** Retourne le temps de retournement de fiche réglé (item 1c), en
@@ -1264,6 +1292,27 @@
       input.addEventListener("input", () => {
         const s = loadDevSettings();
         s.homeLayout[input.dataset.key][input.dataset.field] = Number(input.value) || 0;
+        saveDevSettings(s);
+        applyHomeLayout();
+      });
+    });
+  }
+
+  /** Items 1/2 : position/taille du logo sur la page d'accueil. */
+  function renderHomeLogoEditor() {
+    const wrap = el("dev-home-logo-list");
+    if (!wrap) return;
+    const logo = loadDevSettings().homeLogo;
+    wrap.innerHTML = `<div class="dev-home-layout-row">
+      <span class="dev-home-layout-title">Logo</span>
+      <label>X % <input type="number" step="0.1" class="dev-home-logo-input" data-field="x" value="${logo.x}" /></label>
+      <label>Y % <input type="number" step="0.1" class="dev-home-logo-input" data-field="y" value="${logo.y}" /></label>
+      <label>Taille px <input type="number" class="dev-home-logo-input" data-field="size" value="${logo.size}" /></label>
+    </div>`;
+    wrap.querySelectorAll(".dev-home-logo-input").forEach((input) => {
+      input.addEventListener("input", () => {
+        const s = loadDevSettings();
+        s.homeLogo[input.dataset.field] = Number(input.value) || 0;
         saveDevSettings(s);
         applyHomeLayout();
       });
@@ -1673,9 +1722,20 @@
     if (btn) btn.classList.toggle("is-active", value);
   }
   const nightModeToggleBtn = el("night-mode-toggle-btn");
+  // Item 7 (dernier lot) : l'appli s'ouvre en mode nuit ou jour selon
+  // l'heure réelle à chaque lancement — avant 7h ou après 20h, c'est la
+  // nuit. Le bouton reste utilisable ensuite pour changer d'avis le temps
+  // de cette session. Bug corrigé : appeler setNightModeActive() ICI (au
+  // moment où ce bouton s'initialise, tôt dans le script) atteignait des
+  // réglages déclarés plus bas (cardsScopeFilter) avant leur
+  // initialisation — l'appli ne démarrait plus du tout. On se contente
+  // ici d'un simple bascule de classe (sans dépendance), l'appel complet
+  // est déplacé dans la séquence de démarrage, en bas de fichier.
+  const hourNow = new Date().getHours();
+  const isNightByClock = hourNow < 7 || hourNow >= 20;
+  document.documentElement.classList.toggle("is-night-mode", isNightByClock);
   if (nightModeToggleBtn) {
-    document.documentElement.classList.toggle("is-night-mode", isNightModeActive());
-    nightModeToggleBtn.classList.toggle("is-active", isNightModeActive());
+    nightModeToggleBtn.classList.toggle("is-active", isNightByClock);
     nightModeToggleBtn.addEventListener("click", () => setNightModeActive(!isNightModeActive()));
   }
 
@@ -1718,6 +1778,8 @@
     root.setProperty("--subject-row-bg-color", bg.subjectRowBg);
     root.setProperty("--add-btn-bg-color", bg.addBtnBg);
     root.setProperty("--reviewed-bar-color", bg.reviewedBarColor);
+    root.setProperty("--skip-program-bg-color", bg.skipProgramBg);
+    root.setProperty("--home-bg-color", bg.homeBg);
     // Les 4 réglages ci-dessous partagent leur nom avec d'anciennes clés
     // (appBgColor/cardFormBgColor/richEditorBgColor/dueBarColor/
     // todayBarColor/chartWrapBgColor/svgChartBgColor déjà posées plus haut)
@@ -2487,6 +2549,24 @@
       empty.textContent = "Aucune boîte pour l'instant.";
       subjectListEl.appendChild(empty);
     }
+    // Item 4 (dernier lot) : les blocs enfants restent visuellement
+    // contenus dans leur parent (légèrement plus étroits, en particulier
+    // à droite) — ce calcul recale juste l'emplacement nombre/mode/jauge
+    // de chaque ligne pour qu'il tombe pile à la même position partout,
+    // sans avoir à sacrifier cet effet de blocs imbriqués.
+    requestAnimationFrame(alignOrgInfoSlots);
+  }
+
+  function alignOrgInfoSlots() {
+    if (!subjectListEl) return;
+    const rootRight = subjectListEl.getBoundingClientRect().right;
+    subjectListEl.querySelectorAll(".org-info-slot").forEach((slot) => {
+      slot.style.marginRight = "0px";
+      const rowMain = slot.closest(".org-row-main");
+      if (!rowMain) return;
+      const diff = rootRight - rowMain.getBoundingClientRect().right;
+      if (diff > 0.5) slot.style.marginRight = `-${diff.toFixed(1)}px`;
+    });
   }
 
   /** Icône sobre pour un des 3 boutons d'action de l'Organisation, reprend
@@ -2635,7 +2715,7 @@
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
-      nameBtn.innerHTML = `${iconSvgMarkup("file", "icon-inline-svg")} <span>${escapeHtml(displayName)}</span>`;
+      nameBtn.innerHTML = `${iconSvgMarkup("stackedSheets", "icon-inline-svg")} <span>${escapeHtml(displayName)}</span>`;
       nameBtn.addEventListener("click", () => {
         switchSubject(subjectId);
         cardsScopeFilter = CARDS_SCOPE_CURRENT;
@@ -6647,41 +6727,30 @@
   }
 
   /* ---------------------------------------------------------
-     Item 4 (dernier lot) : défilement synchronisé (nombre / mode / jauge)
-     sur la page Organisation — durée réglable dans Réglages (mode
-     utilisateur, pas développeur). Un seul minuteur pilote un attribut sur
-     <body>, lu par CSS sur toutes les lignes à la fois : ça les garde
-     parfaitement synchronisées sans avoir à re-rendre quoi que ce soit.
+     Item 3 (dernier lot) : plus d'auto-défilement — 3 pictos en haut de la
+     page choisissent MANUELLEMENT ce qui s'affiche (nombre / mode /
+     jauge), synchronisé sur toutes les lignes à la fois via un attribut
+     sur <body>, lu par CSS partout en même temps.
   --------------------------------------------------------- */
-  const ORG_CAROUSEL_INTERVAL_KEY = "fiches_org_carousel_interval_sec";
-  const DEFAULT_ORG_CAROUSEL_INTERVAL_SEC = 3;
-  const ORG_CAROUSEL_SLOT_COUNT = 3;
-  function loadOrgCarouselInterval() {
-    const raw = Number(localStorage.getItem(ORG_CAROUSEL_INTERVAL_KEY));
-    return raw > 0 ? raw : DEFAULT_ORG_CAROUSEL_INTERVAL_SEC;
+  const ORG_DISPLAY_KEY = "fiches_org_display_mode";
+  const ORG_DISPLAY_MODES = ["count", "mode", "gauge"];
+  function loadOrgDisplayMode() {
+    const raw = localStorage.getItem(ORG_DISPLAY_KEY);
+    return ORG_DISPLAY_MODES.includes(raw) ? raw : "count";
   }
-  function saveOrgCarouselInterval(value) {
-    localStorage.setItem(ORG_CAROUSEL_INTERVAL_KEY, String(value));
+  function setOrgDisplayMode(mode) {
+    if (!ORG_DISPLAY_MODES.includes(mode)) return;
+    localStorage.setItem(ORG_DISPLAY_KEY, mode);
+    document.body.dataset.orgCarouselSlot = String(ORG_DISPLAY_MODES.indexOf(mode));
+    document.querySelectorAll(".org-display-toggle-btn").forEach((b) => {
+      b.classList.toggle("is-active", b.dataset.orgDisplay === mode);
+    });
     scheduleDevSettingsPush();
   }
-  let orgCarouselTimer = null;
-  let orgCarouselSlot = 0;
-  function startOrgCarousel() {
-    if (orgCarouselTimer) clearInterval(orgCarouselTimer);
-    document.body.dataset.orgCarouselSlot = String(orgCarouselSlot);
-    orgCarouselTimer = setInterval(() => {
-      orgCarouselSlot = (orgCarouselSlot + 1) % ORG_CAROUSEL_SLOT_COUNT;
-      document.body.dataset.orgCarouselSlot = String(orgCarouselSlot);
-    }, loadOrgCarouselInterval() * 1000);
-  }
-  const settingOrgCarouselIntervalEl = el("setting-org-carousel-interval");
-  if (settingOrgCarouselIntervalEl) {
-    settingOrgCarouselIntervalEl.addEventListener("change", () => {
-      const v = Number(settingOrgCarouselIntervalEl.value) || DEFAULT_ORG_CAROUSEL_INTERVAL_SEC;
-      saveOrgCarouselInterval(v);
-      startOrgCarousel();
-    });
-  }
+  document.querySelectorAll(".org-display-toggle-btn").forEach((btn) => {
+    btn.addEventListener("click", () => setOrgDisplayMode(btn.dataset.orgDisplay));
+  });
+  setOrgDisplayMode(loadOrgDisplayMode());
 
   function renderSettingsView() {
     if (settingBonusHardEl) settingBonusHardEl.value = bonusDaysSettings.hard;
@@ -6692,7 +6761,6 @@
     if (settingShowRatingDaysEl) settingShowRatingDaysEl.checked = loadShowRatingDays();
     if (settingShowReviewChartEl) settingShowReviewChartEl.checked = loadShowReviewChart();
     if (settingCardFontSizeEl) settingCardFontSizeEl.value = loadCardFontSize();
-    if (settingOrgCarouselIntervalEl) settingOrgCarouselIntervalEl.value = loadOrgCarouselInterval();
   }
 
   /* ---------------------------------------------------------
@@ -7012,6 +7080,7 @@
     renderTextColorsSetEditor();
     renderShadowsEditor();
     renderHomeLayoutEditor();
+    renderHomeLogoEditor();
     renderReviewLayoutEditor();
     renderCardScoreEditor();
     renderGaugeColorsEditor();
@@ -7140,6 +7209,14 @@
     if (cardsEntryFromManage && el("view-cards") && el("view-cards").classList.contains("is-active")) {
       cardsEntryFromManage = false;
       const tab = document.querySelector('.tab[data-view="manage"]');
+      if (tab) tab.click();
+      return;
+    }
+    // Item 8 : Réviser se rejoint désormais toujours en passant par le
+    // Programme de révision — Accueil y ramène plutôt qu'au véritable
+    // accueil, cohérent avec ce chemin d'entrée unique.
+    if (el("view-review") && el("view-review").classList.contains("is-active")) {
+      const tab = document.querySelector('.tab[data-view="revision-program"]');
       if (tab) tab.click();
       return;
     }
@@ -8178,8 +8255,34 @@
       await mergeRemoteCard(remote);
     }
 
+    // Item 6 (dernier lot) : bug corrigé — la boîte "Général" créée
+    // automatiquement au tout premier lancement (avant toute connexion)
+    // restait ensuite comme un dossier fantôme vide une fois la vraie
+    // synchro établie, même quand elle apportait ses propres données.
+    await cleanupPlaceholderGeneral();
+
     renderAll();
     updateSyncStatus();
+  }
+
+  /** Supprime la boîte "Général" issue du tout premier démarrage si elle
+   *  est toujours vide une fois que de vraies données (autre boîte ou
+   *  dossier) sont là — sans jamais toucher une boîte "Général" que
+   *  l'utilisateur aurait lui-même gardée ou remplie. */
+  async function cleanupPlaceholderGeneral() {
+    const candidates = subjects.filter((s) => s.name === "Général" && s.folderId === ROOT_FOLDER_ID);
+    if (candidates.length !== 1) return; // rien à nettoyer, ou pas notre affaire (dédup gère les doublons)
+    const general = candidates[0];
+    const hasCards = cards.some((c) => c.subject === general.id && !c.deleted);
+    if (hasCards) return;
+    const hasOtherData = subjects.length > 1 || folders.length > 0;
+    if (!hasOtherData) return;
+    await DB.removeSubject(general.id);
+    subjects = subjects.filter((x) => x.id !== general.id);
+    if (currentSubjectId === general.id && subjects.length > 0) {
+      currentSubjectId = subjects[0].id;
+      localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
+    }
   }
 
   async function connectSync() {
@@ -8271,6 +8374,10 @@
   /* ---------------------------------------------------------
      Service worker (hors-ligne + mise à jour automatique)
   --------------------------------------------------------- */
+  const appVersionLabelEl = el("app-version-label");
+  if (appVersionLabelEl) appVersionLabelEl.textContent = `Version installée : ${APP_VERSION}`;
+  const checkUpdateBtn = el("check-update-btn");
+  const checkUpdateResultEl = el("check-update-result");
   if ("serviceWorker" in navigator) {
     let refreshing = false;
 
@@ -8309,11 +8416,38 @@
 
           // Filet de sécurité si l'appli reste ouverte longtemps en arrière-plan.
           setInterval(() => registration.update(), 60 * 60 * 1000);
+
+          // Bouton "Vérifier les mises à jour" (Réglages) : les
+          // déclencheurs automatiques ci-dessus ne se déclenchent pas
+          // toujours de façon fiable sur iPhone quand l'appli est
+          // rouverte depuis le multitâche plutôt qu'à froid — ce bouton
+          // permet de forcer la vérification et donne un retour explicite.
+          if (checkUpdateBtn) {
+            checkUpdateBtn.addEventListener("click", async () => {
+              if (checkUpdateResultEl) checkUpdateResultEl.textContent = "Vérification…";
+              try {
+                await registration.update();
+                // Si une mise à jour est trouvée, elle passe par "installing"
+                // puis "waiting"/"activating" — skipWaiting() côté sw.js
+                // l'active tout de suite, ce qui déclenche déjà
+                // controllerchange (rechargement automatique). On ne voit
+                // donc ce message QUE si aucune mise à jour n'a été trouvée.
+                setTimeout(() => {
+                  if (checkUpdateResultEl) checkUpdateResultEl.textContent = "Déjà à jour (aucune nouvelle version trouvée).";
+                }, 1200);
+              } catch {
+                if (checkUpdateResultEl) checkUpdateResultEl.textContent = "Échec de la vérification — vérifie ta connexion.";
+              }
+            });
+          }
         })
         .catch(() => {
           /* l'appli reste utilisable même si le SW échoue à s'enregistrer */
         });
     });
+  } else if (checkUpdateBtn) {
+    checkUpdateBtn.disabled = true;
+    if (checkUpdateResultEl) checkUpdateResultEl.textContent = "Non pris en charge par ce navigateur.";
   }
 
   function showUpdateToast() {
@@ -8333,7 +8467,8 @@
     renderSettingsView();
     applyAllDevSettings();
     applyCardFontSize();
-    startOrgCarousel();
+    // (Item 3 : l'affichage Organisation est initialisé plus haut, au
+    // moment où ses boutons pictos s'accrochent — plus besoin d'appel ici.)
     await loadSubjects();
     cards = await DB.getAll();
     ratingLog = await DB.getAllRatingLog();
@@ -8351,6 +8486,9 @@
     }
     renderSubjectSelect();
     renderAll();
+    // Item 7 : appel complet maintenant que tout est chargé (voir plus haut
+    // pour le pourquoi du report).
+    setNightModeActive(new Date().getHours() < 7 || new Date().getHours() >= 20);
     startReviewSession();
     updateSyncStatus();
     // L'essentiel de l'UI est rendu et interactif : on désarme le filet de

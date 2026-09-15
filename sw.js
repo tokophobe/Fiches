@@ -1,4 +1,4 @@
-const CACHE_NAME = "fiches-cache-v121";
+const CACHE_NAME = "fiches-cache-v125";
 
 const CORE_ASSETS = [
   "./",
@@ -13,6 +13,7 @@ const CORE_ASSETS = [
   "./icons/icon-512.png",
   "./icons/icon-maskable-192.png",
   "./icons/icon-maskable-512.png",
+  "./icons/logo.png",
 ];
 
 self.addEventListener("install", (event) => {

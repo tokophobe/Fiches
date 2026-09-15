@@ -117,6 +117,7 @@
   <header class="topbar">
     <div class="brand">
       <h1 class="sr-only">Fiches</h1>
+      <img src="./icons/logo.png" alt="" class="topbar-logo" id="topbar-logo" />
       <button type="button" class="btn btn--ghost home-btn" id="home-btn" title="Retour à l'accueil" aria-label="Retour à l'accueil" hidden>
         <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
       </button>
@@ -161,6 +162,7 @@
     <!-- VUE ACCUEIL (item 1a) : nouvelle page centrale — on y repasse à
          chaque fois pour aller d'une page à l'autre (item, confirmé). -->
     <section id="view-home" class="view is-active">
+      <img src="./icons/logo.png" alt="" id="home-logo" class="home-logo" />
       <h1 class="home-title">Fiches</h1>
       <div class="home-scatter" id="home-scatter">
         <button type="button" class="home-circle" data-key="review" data-go="revision-program">
@@ -210,7 +212,7 @@
       <p class="field-hint settings-block-hint">Conseillé en fonction de tes échéances du calendrier — objectif de score à atteindre avant chaque échéance.</p>
       <ul class="card-list" id="revision-program-list"></ul>
       <p class="chart-empty" id="revision-program-empty" hidden>Pas d'échéance à venir — programme aucune priorité particulière.</p>
-      <button type="button" class="btn btn--ghost" id="revision-program-skip" style="margin-top:14px; width:100%;">Ne pas suivre le programme → aller directement à Réviser</button>
+      <button type="button" class="revision-program-skip-btn" id="revision-program-skip">Ne pas suivre le programme → aller directement à Réviser</button>
     </section>
 
     <!-- VUE RÉVISION -->
@@ -318,7 +320,20 @@
     <section id="view-manage" class="view" aria-labelledby="tab-manage">
       <div class="subjects-panel">
         <div class="list-header">
-          <h2 class="section-title manage-title">Organisation des dossiers et boîtes</h2>
+          <!-- Item 3 (dernier lot) : titre retiré, remplacé par 3 pictos
+               qui choisissent CE QUI s'affiche à droite des blocs (au lieu
+               de tout faire tenir à la fois) — laisse plus de place au nom. -->
+          <div class="org-display-toggle" id="org-display-toggle">
+            <button type="button" class="org-display-toggle-btn is-active" data-org-display="count" title="Nombre de fiches/boîtes">
+              <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/></svg>
+            </button>
+            <button type="button" class="org-display-toggle-btn" data-org-display="mode" title="Mode d'apprentissage">
+              <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/></svg>
+            </button>
+            <button type="button" class="org-display-toggle-btn" data-org-display="gauge" title="Jauge de score">
+              <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="10" width="11" height="4" rx="2" fill="currentColor" stroke="none"/></svg>
+            </button>
+          </div>
           <div class="list-header-actions">
             <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
           </div>
@@ -651,19 +666,22 @@
     <section id="view-settings" class="view" aria-labelledby="tab-settings">
       <h2 class="section-title">Réglages</h2>
 
+      <!-- Mise à jour : bouton de vérification manuelle + version actuelle,
+           utile sur iPhone où l'appli (ajoutée à l'écran d'accueil) ne
+           relance pas toujours cette vérification toute seule en la
+           rouvrant depuis le multitâche plutôt qu'à froid. -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Mise à jour de l'appli</h3>
+        <p class="field-hint" id="app-version-label" style="margin-bottom:10px;"></p>
+        <button type="button" class="btn btn--ghost" id="check-update-btn">Vérifier les mises à jour</button>
+        <p class="field-hint" id="check-update-result" style="margin-top:8px;"></p>
+      </div>
+
       <div class="card-form">
         <h3 class="settings-block-title">Page Réviser</h3>
         <label class="field">
           <span>Taille de la police des fiches (px)</span>
           <input type="number" id="setting-card-font-size" min="10" max="40" />
-        </label>
-      </div>
-
-      <div class="card-form">
-        <h3 class="settings-block-title">Page Organisation</h3>
-        <label class="field">
-          <span>Durée d'affichage de chaque information (nombre / mode / score) en secondes</span>
-          <input type="number" id="setting-org-carousel-interval" min="1" max="30" step="0.5" />
         </label>
       </div>
 
@@ -948,6 +966,12 @@
         <p class="field-hint settings-block-hint">Position X/Y (centre du cercle, en % de la largeur/hauteur de l'écran — s'adapte à chaque appareil) et diamètre en pixels.</p>
         <div id="dev-home-layout-list" class="dev-home-layout-list"></div>
         <button type="button" class="btn btn--ghost" id="dev-home-layout-reset">Revenir à la disposition d'origine</button>
+      </div>
+
+      <!-- Items 1/2 : position/taille du logo. -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Logo (page d'accueil)</h3>
+        <div id="dev-home-logo-list"></div>
       </div>
 
       <!-- Item 1b/1c : disposition de la page Réviser. -->
