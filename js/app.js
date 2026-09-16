@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v125";
+  const APP_VERSION = "v126";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -605,7 +605,11 @@
   };
   // Items 1/2 (logo) : position (X/Y en %, centre du logo) et taille (px)
   // du logo sur la page d'accueil.
-  const DEFAULT_HOME_LOGO = { x: 50, y: 7, size: 64 };
+  const DEFAULT_HOME_LOGO = { x: 50, y: 7, size: 64, shadow: false };
+  // Items 1/2/6 (dernier lot) : logo affiché en haut du corps de chaque
+  // autre page (taille + ombre, indépendantes de celles de l'accueil).
+  const DEFAULT_BODY_LOGO = { size: 40, shadow: false };
+  const LOGO_SHADOW_FILTER = "drop-shadow(0 3px 5px rgba(0,0,0,0.35))";
   // Disposition de la page Réviser (item 1c) : hauteur/largeur de la fiche
   // et position Y de son bord haut, position Y des boutons d'évaluation
   // (tous en % de l'écran), temps de retournement en secondes.
@@ -628,7 +632,7 @@
   const DEFAULT_ICON_BANK_CHOICES = { hibernate: "sleep", edit: "pencil", construction: "cone", undo: "undo" };
   // Icônes de la page Organisation (item 3) : renommer/déplacer/supprimer,
   // sobres, choisies dans la banque d'icônes.
-  const DEFAULT_ORG_ICON_BANK_CHOICES = { orgRename: "pencil", orgMove: "move", orgDelete: "trash" };
+  const DEFAULT_ORG_ICON_BANK_CHOICES = { orgRename: "pencil", orgMove: "move", orgDelete: "trash", orgBoite: "stackedSheets" };
   // Icônes des boutons d'évaluation (item 2a) : plus d'émoticônes libres,
   // uniquement la banque d'icônes sobres.
   const DEFAULT_RATING_ICONS = { again: "faceSad", hard: "faceNeutral", good: "faceSmile", easy: "faceGrin" };
@@ -732,6 +736,7 @@
       shadows: { ...DEFAULT_SHADOWS, ...(parsed.shadows || {}) },
       homeLayout: migrateHomeLayoutToPercent(parsed),
       homeLogo: { ...DEFAULT_HOME_LOGO, ...(parsed.homeLogo || {}) },
+      bodyLogo: { ...DEFAULT_BODY_LOGO, ...(parsed.bodyLogo || {}) },
       homeLayoutUnit: "percent",
       homeLayoutAnchor: "center",
       reviewLayout: { ...DEFAULT_REVIEW_LAYOUT, ...(parsed.reviewLayout || {}) },
@@ -1095,7 +1100,7 @@
     renderIconBankPicker(
       "dev-org-icon-bank-list",
       Object.keys(DEFAULT_ORG_ICON_BANK_CHOICES),
-      { orgRename: "Renommer", orgMove: "Déplacer", orgDelete: "Supprimer" },
+      { orgRename: "Renommer", orgMove: "Déplacer", orgDelete: "Supprimer", orgBoite: "Icône des boîtes" },
       "orgIconBank",
       renderManageList
     );
@@ -1223,10 +1228,14 @@
     // Items 1/2 (logo) : position/taille du logo sur la page d'accueil,
     // réglables depuis le mode développeur.
     const logo = loadDevSettings().homeLogo;
+    const bodyLogo = loadDevSettings().bodyLogo;
     const root = document.documentElement.style;
     root.setProperty("--home-logo-x", `${logo.x}%`);
     root.setProperty("--home-logo-y", `${logo.y}%`);
     root.setProperty("--home-logo-size", `${logo.size}px`);
+    root.setProperty("--home-logo-shadow", logo.shadow ? LOGO_SHADOW_FILTER : "none");
+    root.setProperty("--body-logo-size", `${bodyLogo.size}px`);
+    root.setProperty("--body-logo-shadow", bodyLogo.shadow ? LOGO_SHADOW_FILTER : "none");
   }
 
   /** Retourne le temps de retournement de fiche réglé (item 1c), en
@@ -1252,7 +1261,16 @@
     const r = loadDevSettings().reviewLayout;
     const root = document.documentElement.style;
     const vh = window.innerHeight / 100;
-    const vw = window.innerWidth / 100;
+    // Bug corrigé (item 3, dernier lot) : ce calcul se basait sur la
+    // largeur TOTALE de la fenêtre (window.innerWidth) — correcte sur
+    // iPhone, où l'appli occupe tout l'écran, mais pas sur un écran large
+    // (PC), où .desk est plafonné à 560px et centré. La fiche calculait
+    // alors sa largeur en pourcentage d'un espace bien plus large que
+    // celui réellement disponible, et débordait jusqu'à occuper toute la
+    // largeur de la fenêtre. On se base maintenant sur la largeur RÉELLE
+    // de .desk, la même quel que soit l'appareil.
+    const deskWidth = document.querySelector(".desk")?.getBoundingClientRect().width || window.innerWidth;
+    const vw = deskWidth / 100;
     // Marge de sécurité fixe sous la barre du haut + la barre de boîte
     // (elle-même posée à 54px + l'encoche) — 110px couvre confortablement
     // les deux sur la quasi-totalité des appareils.
@@ -1303,11 +1321,16 @@
     const wrap = el("dev-home-logo-list");
     if (!wrap) return;
     const logo = loadDevSettings().homeLogo;
+    const bodyLogo = loadDevSettings().bodyLogo;
     wrap.innerHTML = `<div class="dev-home-layout-row">
-      <span class="dev-home-layout-title">Logo</span>
+      <span class="dev-home-layout-title">Logo (accueil)</span>
       <label>X % <input type="number" step="0.1" class="dev-home-logo-input" data-field="x" value="${logo.x}" /></label>
       <label>Y % <input type="number" step="0.1" class="dev-home-logo-input" data-field="y" value="${logo.y}" /></label>
       <label>Taille px <input type="number" class="dev-home-logo-input" data-field="size" value="${logo.size}" /></label>
+    </div>
+    <div class="dev-home-layout-row">
+      <span class="dev-home-layout-title">Logo (autres pages)</span>
+      <label>Taille px <input type="number" class="dev-body-logo-input" data-field="size" value="${bodyLogo.size}" /></label>
     </div>`;
     wrap.querySelectorAll(".dev-home-logo-input").forEach((input) => {
       input.addEventListener("input", () => {
@@ -1316,6 +1339,36 @@
         saveDevSettings(s);
         applyHomeLayout();
       });
+    });
+    wrap.querySelectorAll(".dev-body-logo-input").forEach((input) => {
+      input.addEventListener("input", () => {
+        const s = loadDevSettings();
+        s.bodyLogo[input.dataset.field] = Number(input.value) || 0;
+        saveDevSettings(s);
+        applyHomeLayout();
+      });
+    });
+  }
+
+  // Item 6 (dernier lot) : ombres du logo — réglages utilisateur
+  // (Réglages), la donnée reste dans devSettings pour réutiliser
+  // applyHomeLayout tel quel.
+  const settingBodyLogoShadowEl = el("setting-body-logo-shadow");
+  if (settingBodyLogoShadowEl) {
+    settingBodyLogoShadowEl.addEventListener("change", () => {
+      const s = loadDevSettings();
+      s.bodyLogo.shadow = settingBodyLogoShadowEl.checked;
+      saveDevSettings(s);
+      applyHomeLayout();
+    });
+  }
+  const settingHomeLogoShadowEl = el("setting-home-logo-shadow");
+  if (settingHomeLogoShadowEl) {
+    settingHomeLogoShadowEl.addEventListener("change", () => {
+      const s = loadDevSettings();
+      s.homeLogo.shadow = settingHomeLogoShadowEl.checked;
+      saveDevSettings(s);
+      applyHomeLayout();
     });
   }
 
@@ -2715,7 +2768,7 @@
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
-      nameBtn.innerHTML = `${iconSvgMarkup("stackedSheets", "icon-inline-svg")} <span>${escapeHtml(displayName)}</span>`;
+      nameBtn.innerHTML = `${orgIconMarkup("orgBoite")} <span>${escapeHtml(displayName)}</span>`;
       nameBtn.addEventListener("click", () => {
         switchSubject(subjectId);
         cardsScopeFilter = CARDS_SCOPE_CURRENT;
@@ -6761,6 +6814,8 @@
     if (settingShowRatingDaysEl) settingShowRatingDaysEl.checked = loadShowRatingDays();
     if (settingShowReviewChartEl) settingShowReviewChartEl.checked = loadShowReviewChart();
     if (settingCardFontSizeEl) settingCardFontSizeEl.value = loadCardFontSize();
+    if (settingBodyLogoShadowEl) settingBodyLogoShadowEl.checked = loadDevSettings().bodyLogo.shadow;
+    if (settingHomeLogoShadowEl) settingHomeLogoShadowEl.checked = loadDevSettings().homeLogo.shadow;
   }
 
   /* ---------------------------------------------------------
@@ -7172,6 +7227,10 @@
       // Bouton "retour à l'accueil" (item 1e) : visible partout SAUF sur
       // l'accueil lui-même.
       if (homeBtn) homeBtn.hidden = false;
+      // Items 1/2 (dernier lot) : le logo (en haut du corps de la page)
+      // n'apparaît que sur les pages autres que l'accueil, qui a déjà son
+      // propre grand logo.
+      if (el("body-logo")) el("body-logo").hidden = false;
 
       if (view === "review") {
         if (!reviewSessionStarted) {
@@ -7227,6 +7286,7 @@
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     el("view-home").classList.add("is-active");
     if (homeBtn) homeBtn.hidden = true;
+    if (el("body-logo")) el("body-logo").hidden = true;
   }
   if (homeBtn) homeBtn.addEventListener("click", goHome);
 

@@ -808,9 +808,15 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 }
 
 .org-gauge-inline {
+  /* Bug corrigé (item 5) : "display: flex" ici avait la MÊME spécificité
+     que .org-info-slot-item (qui gère l'affichage/masquage selon le
+     picto choisi) et, déclaré après dans la feuille de style, l'emportait
+     toujours — la jauge restait donc visible en permanence, quel que
+     soit le picto sélectionné. L'affichage est maintenant entièrement
+     piloté par .org-info-slot-item / son état actif.
+  */
   flex-shrink: 0;
   width: 64px;
-  display: flex;
   align-items: center;
 }
 
@@ -1115,22 +1121,39 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   height: auto;
   transform: translate(-50%, -50%);
   pointer-events: none;
+  filter: var(--home-logo-shadow, none);
 }
 
-.topbar-logo {
-  height: 24px;
-  width: 24px;
-  border-radius: 6px;
-  object-fit: cover;
-  margin-right: 4px;
+/* Items 1/2/6 (dernier lot) : logo en haut du corps de chaque page (sauf
+   l'accueil, masqué par JS selon la vue active — voir showLogoForView),
+   taille et ombre réglables séparément dans le mode développeur. */
+.body-logo {
+  display: block;
+  margin: 0 auto 12px;
+  width: var(--body-logo-size, 40px);
+  height: auto;
+  filter: var(--body-logo-shadow, none);
 }
+
+.body-logo[hidden] { display: none; }
+
 
 /* Disposition dispersée (item 3) : conteneur relatif assez haut pour
    contenir tous les cercles, chacun positionné en absolu via X/Y/diamètre
    réglables (posés en style inline par JS, depuis le mode développeur). */
 .home-scatter {
+  /* Bug corrigé (item 7, dernier lot) : la largeur suivait celle de
+     .desk (jusqu'à 560px sur PC), mais le diamètre des cercles reste fixe
+     en pixels — sur un conteneur plus large que l'iPhone où la
+     disposition a été réglée, l'espace ENTRE les cercles grandissait
+     proportionnellement plus que les cercles eux-mêmes, les éparpillant.
+     La zone garde maintenant une largeur fixe (comme la hauteur l'était
+     déjà) et se centre simplement si l'écran est plus large — la même
+     disposition partout, quel que soit l'appareil. */
   position: relative;
-  width: 100%;
+  width: 390px;
+  max-width: 100%;
+  margin: 0 auto;
   height: 640px;
 }
 

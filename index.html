@@ -117,7 +117,6 @@
   <header class="topbar">
     <div class="brand">
       <h1 class="sr-only">Fiches</h1>
-      <img src="./icons/logo.png" alt="" class="topbar-logo" id="topbar-logo" />
       <button type="button" class="btn btn--ghost home-btn" id="home-btn" title="Retour à l'accueil" aria-label="Retour à l'accueil" hidden>
         <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
       </button>
@@ -135,6 +134,12 @@
       </div>
     </div>
   </header>
+
+  <!-- Items 1/2 (dernier lot) : logo affiché en haut du CORPS de chaque
+       page (pas dans l'en-tête) — masqué uniquement sur l'accueil, qui a
+       déjà son propre grand logo. Taille réglable dans le mode
+       développeur (voir dev-body-logo-list). -->
+  <img src="./icons/logo.png" alt="" id="body-logo" class="body-logo" hidden />
 
   <nav class="tabs" role="tablist" aria-label="Navigation" hidden>
     <button class="tab tab--icon is-active" role="tab" aria-selected="true" data-view="review" title="Réviser" aria-label="Réviser">
@@ -675,6 +680,21 @@
         <p class="field-hint" id="app-version-label" style="margin-bottom:10px;"></p>
         <button type="button" class="btn btn--ghost" id="check-update-btn">Vérifier les mises à jour</button>
         <p class="field-hint" id="check-update-result" style="margin-top:8px;"></p>
+      </div>
+
+      <!-- Item 6 (dernier lot) : ombre du logo — réglage utilisateur, pas
+           développeur (la taille et la position, elles, restent dans le
+           mode développeur). -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Logo</h3>
+        <label class="settings-toggle-row">
+          <input type="checkbox" id="setting-body-logo-shadow" />
+          <span>Ombre sous le logo (toutes les pages)</span>
+        </label>
+        <label class="settings-toggle-row">
+          <input type="checkbox" id="setting-home-logo-shadow" />
+          <span>Ombre sous le logo (page d'accueil)</span>
+        </label>
       </div>
 
       <div class="card-form">
