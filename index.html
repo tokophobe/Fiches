@@ -139,7 +139,10 @@
        page (pas dans l'en-tête) — masqué uniquement sur l'accueil, qui a
        déjà son propre grand logo. Taille réglable dans le mode
        développeur (voir dev-body-logo-list). -->
-  <img src="./icons/logo.png" alt="" id="body-logo" class="body-logo" hidden />
+  <div class="body-logo-row" id="body-logo-row" hidden>
+    <img src="./icons/logo.png" alt="" id="body-logo" class="body-logo" />
+    <p class="body-logo-speech" id="body-logo-speech"></p>
+  </div>
 
   <nav class="tabs" role="tablist" aria-label="Navigation" hidden>
     <button class="tab tab--icon is-active" role="tab" aria-selected="true" data-view="review" title="Réviser" aria-label="Réviser">
@@ -224,7 +227,6 @@
     <section id="view-review" class="view" aria-labelledby="tab-review">
       <div class="subject-bar" id="subject-bar">
         <button type="button" class="subject-select-btn" id="subject-select-btn" aria-label="Choisir les boîtes à réviser"></button>
-        <span class="review-subject-score" id="review-subject-score"></span>
 
         <div class="subject-choice-menu" id="subject-choice-menu" hidden>
           <button type="button" class="subject-choice-item" id="subject-choice-all">Toutes les boîtes</button>
@@ -696,6 +698,16 @@
           <span>Ombre sous le logo (page d'accueil)</span>
         </label>
       </div>
+
+      <!-- Item 5 (dernier lot) : couleur unie de la pastille "à revoir". -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Pastille "à revoir"</h3>
+        <label class="field">
+          <span>Couleur</span>
+          <input type="color" id="setting-due-pill-color" />
+        </label>
+      </div>
+
 
       <div class="card-form">
         <h3 class="settings-block-title">Page Réviser</h3>

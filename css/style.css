@@ -698,6 +698,26 @@ button.topbar-new-card-btn {
   pointer-events: none;
 }
 
+/* Item 1 (dernier lot) : les traits de l'effet de pile reprennent la
+   couleur de fond RÉELLE du dossier concerné — qui varie avec la
+   profondeur (voir .folder-row-depth-N juste en dessous) — plutôt que
+   toujours celle du niveau racine. */
+.folder-row-depth-1.folder-row--stacked::before,
+.folder-row-depth-1.folder-row--stacked::after {
+  border-left-color: var(--folder-l1-bg-color, var(--paper));
+  border-bottom-color: var(--folder-l1-bg-color, var(--paper));
+}
+.folder-row-depth-2.folder-row--stacked::before,
+.folder-row-depth-2.folder-row--stacked::after {
+  border-left-color: var(--folder-l2-bg-color, var(--paper));
+  border-bottom-color: var(--folder-l2-bg-color, var(--paper));
+}
+.folder-row-depth-3.folder-row--stacked::before,
+.folder-row-depth-3.folder-row--stacked::after {
+  border-left-color: var(--folder-l3-bg-color, var(--paper));
+  border-bottom-color: var(--folder-l3-bg-color, var(--paper));
+}
+
 .folder-row--stacked::before {
   top: 3px;
   left: -3px;
@@ -884,17 +904,17 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
    bien montrer la hiérarchie, en gardant le même système plier/déplier. */
 .org-children {
   list-style: none;
-  /* Item 4 (dernier lot) : la marge/le padding à droite reviennent (effet
-     de blocs contenus dans le parent, demandé), et c'est maintenant un
-     calcul JS (voir alignOrgInfoSlots) qui recale précisément l'info-slot
-     de chaque ligne pour qu'il tombe pile à la même position, quel que
-     soit le niveau d'imbrication. */
+  /* Item 4 (lot précédent) : la marge/le padding à droite reviennent
+     (effet de blocs contenus dans le parent, demandé), et c'est
+     maintenant un calcul JS (voir alignOrgInfoSlots) qui recale
+     précisément l'info-slot de chaque ligne pour qu'il tombe pile à la
+     même position, quel que soit le niveau d'imbrication.
+     Item 1 (dernier lot) : trait vertical à gauche retiré. */
   margin: 0 8px 10px 14px;
   padding: 0 0 0 10px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  border-left: 2px solid rgba(0,0,0,0.08);
 }
 
 /* Fond des dossiers par niveau de profondeur (item 2h) — 0 = dossier
@@ -1127,15 +1147,35 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 /* Items 1/2/6 (dernier lot) : logo en haut du corps de chaque page (sauf
    l'accueil, masqué par JS selon la vue active — voir showLogoForView),
    taille et ombre réglables séparément dans le mode développeur. */
+/* Item 2 (dernier lot) : logo à GAUCHE (plus centré), avec une zone à sa
+   droite réservée pour que le robot "parle" — police monospace pour bien
+   distinguer ces messages du reste du texte, comme une console/un robot
+   qui s'exprime. */
+.body-logo-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.body-logo-row[hidden] { display: none; }
+
 .body-logo {
-  display: block;
-  margin: 0 auto 12px;
+  flex-shrink: 0;
   width: var(--body-logo-size, 40px);
   height: auto;
   filter: var(--body-logo-shadow, none);
 }
 
-.body-logo[hidden] { display: none; }
+.body-logo-speech {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--general-text-color, var(--ink-soft));
+}
+
 
 
 /* Disposition dispersée (item 3) : conteneur relatif assez haut pour
@@ -2759,6 +2799,10 @@ button.home-btn {
 /* Item 7 : programme de révision. */
 .revision-program-row {
   cursor: pointer;
+  /* Item 4 (dernier lot) : liseret bleu retiré, espacement augmenté entre
+     les blocs de cette page spécifiquement. */
+  border-left: none;
+  margin-bottom: 14px;
 }
 
 .revision-program-row .card-row-main {

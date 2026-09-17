@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v126";
+  const APP_VERSION = "v127";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -4285,6 +4285,12 @@
     const due = dueCards().length;
     dueCountEl.textContent = String(due);
 
+    // Item 5 (dernier lot) : la pastille ne s'affiche plus que sur la
+    // page Réviser (elle restait visible partout auparavant).
+    const onReview = el("view-review") && el("view-review").classList.contains("is-active");
+    duePillEl.hidden = !onReview;
+    if (!onReview) return;
+
     // Dès que le compteur atteint 0, la pastille passe en blanc (comme en
     // mode bonus) — que l'on soit ou non dans une session de révision.
     if (isBonusMode || due === 0) {
@@ -4295,10 +4301,9 @@
     }
 
     duePillEl.classList.remove("is-bonus");
-    const total = subjectCards().length;
-    const fraction = total === 0 ? 0 : due / total;
-    const hue = Math.round(120 - 120 * Math.min(1, Math.max(0, fraction)));
-    duePillEl.style.background = `hsl(${hue}, 62%, 42%)`;
+    // Item 5 : couleur unie et réglable (Réglages), plus de dégradé
+    // rouge → vert selon la proportion de fiches à revoir.
+    duePillEl.style.background = loadDuePillColor();
     duePillEl.style.color = "var(--paper)";
   }
 
@@ -4838,6 +4843,10 @@
     if (target) target.classList.add("is-active");
     const homeBtnEl = el("home-btn");
     if (homeBtnEl) homeBtnEl.hidden = false;
+    // Item 2 (dernier lot) : le logo (avec sa zone de parole) apparaît
+    // aussi sur "Ajouter une fiche", qui ne passe pas par le clic sur un
+    // onglet normal.
+    if (el("body-logo-row")) el("body-logo-row").hidden = false;
   }
   function closeNewCardView(toView) {
     const dest = toView || previousViewBeforeNewCard || "home";
@@ -6779,6 +6788,26 @@
     });
   }
 
+  // Item 5 (dernier lot) : couleur unie de la pastille "à revoir",
+  // réglable dans Réglages — remplace l'ancien dégradé rouge → vert.
+  const DUE_PILL_COLOR_KEY = "fiches_due_pill_color";
+  const DEFAULT_DUE_PILL_COLOR = "#c25b4a";
+  function loadDuePillColor() {
+    return localStorage.getItem(DUE_PILL_COLOR_KEY) || DEFAULT_DUE_PILL_COLOR;
+  }
+  function saveDuePillColor(value) {
+    localStorage.setItem(DUE_PILL_COLOR_KEY, value);
+    scheduleDevSettingsPush();
+  }
+  const settingDuePillColorEl = el("setting-due-pill-color");
+  if (settingDuePillColorEl) {
+    settingDuePillColorEl.value = loadDuePillColor();
+    settingDuePillColorEl.addEventListener("input", () => {
+      saveDuePillColor(settingDuePillColorEl.value);
+      renderDuePill();
+    });
+  }
+
   /* ---------------------------------------------------------
      Item 3 (dernier lot) : plus d'auto-défilement — 3 pictos en haut de la
      page choisissent MANUELLEMENT ce qui s'affiche (nombre / mode /
@@ -7230,7 +7259,7 @@
       // Items 1/2 (dernier lot) : le logo (en haut du corps de la page)
       // n'apparaît que sur les pages autres que l'accueil, qui a déjà son
       // propre grand logo.
-      if (el("body-logo")) el("body-logo").hidden = false;
+      if (el("body-logo-row")) el("body-logo-row").hidden = false;
 
       if (view === "review") {
         if (!reviewSessionStarted) {
@@ -7286,7 +7315,7 @@
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     el("view-home").classList.add("is-active");
     if (homeBtn) homeBtn.hidden = true;
-    if (el("body-logo")) el("body-logo").hidden = true;
+    if (el("body-logo-row")) el("body-logo-row").hidden = true;
   }
   if (homeBtn) homeBtn.addEventListener("click", goHome);
 
