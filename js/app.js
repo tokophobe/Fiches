@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v128";
+  const APP_VERSION = "v129";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -618,7 +618,18 @@
   function applyBodyLogoSpeech(view) {
     const speechEl = el("body-logo-speech");
     if (!speechEl) return;
-    speechEl.textContent = BODY_LOGO_SPEECH_BY_VIEW[view] || "";
+    const text = BODY_LOGO_SPEECH_BY_VIEW[view] || "";
+    if (speechEl.textContent === text) return;
+    speechEl.textContent = text;
+    // Item 2 (nouveau lot) : petite animation "pop" à chaque nouveau
+    // message, pour bien montrer que c'est un nouveau propos du robot.
+    speechEl.classList.remove("is-popping");
+    if (text) {
+      // Forcer un reflow pour pouvoir rejouer l'animation même si la
+      // classe venait juste d'être retirée.
+      void speechEl.offsetWidth;
+      speechEl.classList.add("is-popping");
+    }
   }
   const LOGO_SHADOW_FILTER = "drop-shadow(0 3px 5px rgba(0,0,0,0.35))";
   // Disposition de la page Réviser (item 1c) : hauteur/largeur de la fiche
@@ -2352,23 +2363,35 @@
    *  répercuté correctement par la cascade dossier -> descendants) ; les
    *  dossiers cochés ne servent plus qu'à décider l'AFFICHAGE (le nom du
    *  dossier si sa sélection correspond exactement à tout son contenu). */
-  function readMultiPickerResult(list) {
-    const resultIds = [...list.querySelectorAll('input[data-kind="subject"]:checked')].map((cb) => cb.value);
-    const checkedFolders = [...list.querySelectorAll('input[data-kind="folder"]:checked')];
+  /** Item 1 (nouveau lot) : la sélection est maintenant portée par un vrai
+   *  Set JS (mutable, transmis par référence aux sélecteurs), plutôt que
+   *  déduite des cases cochées dans le DOM — nécessaire depuis que les
+   *  dossiers peuvent rester repliés (leurs cases à cocher descendantes
+   *  n'existent alors pas dans le DOM). Cette fonction ne fait plus que
+   *  déterminer l'étiquette à afficher (nom d'un dossier si sa sélection
+   *  correspond exactement à tout son contenu, etc.) à partir de ce Set. */
+  function computeMultiPickerResult(selectedSubjectIds) {
+    const resultIds = [...selectedSubjectIds];
+    // Un dossier compte comme "coché" si TOUT son contenu (à toute
+    // profondeur) est dans la sélection — exactement le calcul utilisé
+    // pour cocher visuellement sa case dans l'arbre.
+    const checkedFolders = folders.filter((f) => {
+      if (isFolderABoite(f.id)) return false; // se comporte comme une boîte, pas comme un dossier
+      const ids = subjectIdsInFolder(f.id);
+      return ids.length > 0 && ids.every((id) => selectedSubjectIds.has(id));
+    });
     let label = "";
-    // Bug corrigé (item 2) : un dossier qui ne contient qu'UNE seule boîte
-    // tombait dans le cas "une seule boîte cochée" ci-dessous AVANT même
-    // d'être reconnu comme un dossier — le sélecteur affichait alors le
-    // nom de la boîte à l'intérieur plutôt que celui du dossier choisi.
-    // Il faut donc vérifier le dossier D'ABORD.
+    // Bug corrigé (item 2, lot précédent) : un dossier qui ne contient
+    // qu'UNE seule boîte tombait dans le cas "une seule boîte cochée"
+    // ci-dessous AVANT même d'être reconnu comme un dossier — le
+    // sélecteur affichait alors le nom de la boîte à l'intérieur plutôt
+    // que celui du dossier choisi. Il faut donc vérifier le dossier
+    // D'ABORD.
     if (checkedFolders.length === 1) {
-      const folderSubjectIds = subjectIdsInFolder(checkedFolders[0].value);
+      const folderSubjectIds = subjectIdsInFolder(checkedFolders[0].id);
       const matchesExactly =
         resultIds.length === folderSubjectIds.length && folderSubjectIds.every((id) => resultIds.includes(id));
-      if (matchesExactly) {
-        const f = folders.find((x) => x.id === checkedFolders[0].value);
-        label = f ? f.name : "";
-      }
+      if (matchesExactly) label = checkedFolders[0].name;
     }
     if (!label && resultIds.length === 1) {
       label = null; // signale "une seule boîte" à l'appelant (bascule directe)
@@ -2781,9 +2804,12 @@
       nameBtn.className = "subject-row-name";
       nameBtn.innerHTML = `${orgIconMarkup("orgBoite")} <span>${escapeHtml(displayName)}</span>`;
       nameBtn.title = "Réviser cette boîte";
-      // Item 7 (nouveau lot) : un clic sur une boîte mène directement à la
-      // page Réviser correspondante (au lieu de la page Fiches).
+      // Item 7 (lot précédent) : un clic sur une boîte mène directement à
+      // la page Réviser correspondante (au lieu de la page Fiches). Item 3
+      // (nouveau lot) : le bouton Accueil de Réviser doit alors ramener ici
+      // (Organisation) plutôt qu'au programme de révision.
       nameBtn.addEventListener("click", () => {
+        reviewEntryFromManage = true;
         goToReviewFor(`subject:${subjectId}`);
       });
 
@@ -2835,9 +2861,11 @@
       nameBtn.className = "subject-row-name";
       nameBtn.title = "Réviser ce dossier";
       nameBtn.innerHTML = `${iconSvgMarkup("folder", "icon-inline-svg")} <span>${escapeHtml(f.name)}</span>`;
-      // Item 7 (nouveau lot) : un clic sur un dossier mène directement à la
-      // page Réviser correspondante (au lieu de la page Fiches).
+      // Item 7 (lot précédent) : un clic sur un dossier mène directement à
+      // la page Réviser correspondante (au lieu de la page Fiches). Item 3
+      // (nouveau lot) : Accueil depuis Réviser ramène alors ici.
       nameBtn.addEventListener("click", () => {
+        reviewEntryFromManage = true;
         goToReviewFor(`folder:${f.id}`);
       });
 
@@ -3752,45 +3780,90 @@
    *  multi-boîtes (item 1) : cocher un dossier inclut TOUTES les boîtes
    *  qu'il contient (y compris dans ses sous-dossiers), sans avoir besoin
    *  de les cocher une par une. */
+  /** État plié/déplié des dossiers dans TOUS les sélecteurs de boîtes
+   *  (item 1, nouveau lot) — partagé entre eux, séparé de celui de la page
+   *  Organisation elle-même (expandedManageFolders), pour un comportement
+   *  d'ouverture/fermeture identique (dossiers repliés par défaut, chevron
+   *  qui plie/déplie, effet de pile) sans lier les deux pages entre elles. */
+  const pickerExpandedFolders = new Set();
+
   /** Construit une ligne de sélecteur dans le même style que les blocs de
-   *  la page Organisation (item 1, nouveau lot) : icône + nom sur une
-   *  ligne, compteur à droite, case à cocher devant. Réutilise les
-   *  classes CSS de la page Organisation pour un rendu identique. */
-  function buildPickerRow({ depth, isFolder, iconMarkup, nameText, countLabel, checked, dataKind, value }) {
+   *  la page Organisation (item 1) : flèche de dépli, icône + nom,
+   *  compteur, éventuelle case à cocher — identique à
+   *  buildRowBody/renderTreeLevel de la page Organisation, juste sans les
+   *  actions Éditer/Déplacer/Supprimer (pas de sens dans un sélecteur). */
+  function buildPickerRow({ depth, isFolder, iconMarkup, nameText, countLabel, expandable, expanded, onToggleExpand, selectControl, checked, dataKind, value, onRowSelect, rowSelectable }) {
     const li = document.createElement("li");
     li.className = "subject-row picker-row" + (isFolder ? ` folder-row folder-row-depth-${Math.min(depth, 3)}` : "");
-    const main = document.createElement("label");
+    const main = document.createElement(selectControl === "checkbox" ? "label" : "div");
     main.className = "org-row-main picker-row-main";
-    const cb = document.createElement("input");
-    cb.type = "checkbox";
-    cb.className = "picker-row-checkbox";
-    cb.dataset.kind = dataKind;
-    cb.value = value;
-    cb.checked = checked;
-    main.appendChild(cb);
+
+    if (expandable) {
+      const expandBtn = document.createElement("button");
+      expandBtn.type = "button";
+      expandBtn.className = "org-expand-btn";
+      expandBtn.title = expanded ? "Replier ce dossier" : "Déplier ce dossier";
+      expandBtn.innerHTML = iconSvgMarkup(expanded ? "chevronDown" : "chevronRight", "icon-inline-svg");
+      expandBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        onToggleExpand();
+      });
+      main.appendChild(expandBtn);
+    }
+
+    let cb = null;
+    if (selectControl === "checkbox") {
+      cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.className = "picker-row-checkbox";
+      cb.dataset.kind = dataKind;
+      cb.value = value;
+      cb.checked = checked;
+      main.appendChild(cb);
+    }
+
     const nameWrap = document.createElement("span");
     nameWrap.className = "subject-row-name";
     nameWrap.innerHTML = `${iconMarkup} <span>${escapeHtml(nameText)}</span>`;
     main.appendChild(nameWrap);
+
     const spacer = document.createElement("span");
     spacer.className = "org-row-spacer";
     main.appendChild(spacer);
+
     if (countLabel) {
       const count = document.createElement("span");
       count.className = "org-count";
       count.textContent = countLabel;
       main.appendChild(count);
     }
+
+    if (rowSelectable) {
+      main.classList.add("picker-row-main--selectable");
+      main.addEventListener("click", (e) => {
+        if (e.target.closest(".org-expand-btn")) return;
+        onRowSelect();
+      });
+    }
+
     li.appendChild(main);
     return { li, cb, main };
   }
 
-  /** Construit récursivement l'arbre dossiers/boîtes dans les sélecteurs
-   *  multi-boîtes (item 1) : cocher un dossier inclut TOUTES les boîtes
-   *  qu'il contient (y compris dans ses sous-dossiers), sans avoir besoin
-   *  de les cocher une par une. Présentation reprise à l'identique de la
-   *  page Organisation (blocs contenus dans leur dossier parent). */
-  function renderFolderTreeForPicker(container, parentId, depth, selectedSubjectIds) {
+  /** Construit récursivement l'arbre dossiers/boîtes utilisé par TOUS les
+   *  sélecteurs de boîtes de l'appli (item 1, nouveau lot) : Réviser,
+   *  Fiches (recherche), Stats, "Nouvelle fiche" et création d'un
+   *  événement de calendrier — présentation, plié/déplié et effet de pile
+   *  strictement identiques à la page Organisation.
+   *  - mode "multi" : case à cocher, cocher un dossier coche tout son
+   *    contenu (item 7 du lot précédent).
+   *  - mode "single" : clic direct sur le nom = choix immédiat. Les
+   *    dossiers non vides ne sont sélectionnables que si
+   *    folderAlwaysSelectable est vrai (événement de calendrier, qui peut
+   *    lier un dossier entier) ; sinon (choix de boîte pour une nouvelle
+   *    fiche) seuls une boîte ou un dossier VIDE (qui deviendra boîte) le
+   *    sont — un dossier non vide reste un simple repère à déplier. */
+  function renderFolderTreeForPicker(container, parentId, depth, ctx) {
     const childFolders = folders.filter((f) => f.parentId === parentId).sort((a, b) => a.name.localeCompare(b.name, "fr"));
     // Une boîte auto-liée (même id qu'un dossier) est rendue via la boucle
     // des dossiers ci-dessous — jamais listée deux fois ici (item 1).
@@ -3801,60 +3874,101 @@
     childFolders.forEach((f) => {
       if (isFolderABoite(f.id)) {
         const n = cards.filter((c) => !c.deleted && c.subject === f.id).length;
-        buildAndAppendBoiteRow(container, depth, f.id, f.name, n, selectedSubjectIds);
+        appendPickerBoiteRow(container, depth, f.id, f.name, n, ctx);
         return;
       }
+      const childCount = folders.filter((x) => x.parentId === f.id).length + subjects.filter((x) => x.folderId === f.id).length;
+      const expanded = pickerExpandedFolders.has(f.id);
       const ids = subjectIdsInFolder(f.id);
+      const isEmpty = folderIsEmpty(f.id);
+      const rowSelectable = ctx.mode === "single" && (ctx.folderAlwaysSelectable || isEmpty);
       const { li, cb } = buildPickerRow({
         depth,
         isFolder: true,
+        expandable: true,
+        expanded,
+        onToggleExpand: () => {
+          if (expanded) pickerExpandedFolders.delete(f.id);
+          else pickerExpandedFolders.add(f.id);
+          ctx.rerenderRoot();
+        },
         iconMarkup: iconSvgMarkup("folder", "icon-inline-svg"),
-        nameText: f.name,
+        nameText: f.name + (ctx.mode === "single" && isEmpty ? " (dossier vide)" : ""),
         countLabel: `${ids.length} boîte${ids.length > 1 ? "s" : ""}`,
-        checked: ids.length > 0 && ids.every((id) => selectedSubjectIds.has(id)),
+        selectControl: ctx.mode === "multi" ? "checkbox" : "none",
+        checked: ctx.mode === "multi" && ids.length > 0 && ids.every((id) => ctx.selectedSubjectIds.has(id)),
         dataKind: "folder",
         value: f.id,
+        rowSelectable,
+        onRowSelect: async () => {
+          if (ctx.folderAlwaysSelectable) {
+            ctx.onPick("folder", f.id);
+            return;
+          }
+          // Dossier vide (item 1 du lot précédent) : devient boîte à cet
+          // instant précis, puis se comporte comme n'importe quelle boîte.
+          const s = await ensureFolderIsBoite(f.id);
+          if (s) ctx.onPick("subject", s.id);
+        },
       });
-      // Cocher/décocher un dossier répercute le même état sur tout ce
-      // qu'il contient — sous-dossiers et boîtes, à toute profondeur
-      // (item 7) : comme les enfants sont maintenant de vrais descendants
-      // DOM (nichés dans le même <li>), un simple parcours suffit.
-      cb.addEventListener("change", () => {
-        li.querySelectorAll('input[type="checkbox"]').forEach((other) => {
-          if (other !== cb) other.checked = cb.checked;
+      if (!expanded && childCount > 0) li.classList.add("folder-row--stacked");
+      if (cb) {
+        // Item 1 (nouveau lot) : la sélection vit dans un vrai Set JS
+        // (ctx.selectedSubjectIds, muté en place puis re-rendu) plutôt que
+        // déduite des cases cochées visibles dans le DOM — nécessaire
+        // puisqu'un dossier replié peut cocher des boîtes qui n'ont pas
+        // (encore) de case affichée à l'écran.
+        cb.addEventListener("change", () => {
+          if (cb.checked) ids.forEach((id) => ctx.selectedSubjectIds.add(id));
+          else ids.forEach((id) => ctx.selectedSubjectIds.delete(id));
+          if (ctx.onSelectionChange) ctx.onSelectionChange();
+          ctx.rerenderRoot();
         });
-      });
-      const childrenUl = document.createElement("ul");
-      childrenUl.className = "org-children";
-      li.appendChild(childrenUl);
-      renderFolderTreeForPicker(childrenUl, f.id, depth + 1, selectedSubjectIds);
+      }
+      if (expanded) {
+        const childrenUl = document.createElement("ul");
+        childrenUl.className = "org-children";
+        li.appendChild(childrenUl);
+        renderFolderTreeForPicker(childrenUl, f.id, depth + 1, ctx);
+      }
       container.appendChild(li);
     });
 
     childSubjects.forEach((s) => {
       const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
-      buildAndAppendBoiteRow(container, depth, s.id, s.name, n, selectedSubjectIds);
+      appendPickerBoiteRow(container, depth, s.id, s.name, n, ctx);
     });
   }
 
-  function buildAndAppendBoiteRow(container, depth, subjectId, name, cardCount, selectedSubjectIds) {
-    const { li } = buildPickerRow({
+  function appendPickerBoiteRow(container, depth, subjectId, name, cardCount, ctx) {
+    const { li, cb } = buildPickerRow({
       depth,
       isFolder: false,
       iconMarkup: orgIconMarkup("orgBoite"),
       nameText: name,
       countLabel: `${cardCount} fiche${cardCount > 1 ? "s" : ""}`,
-      checked: selectedSubjectIds.has(subjectId),
+      selectControl: ctx.mode === "multi" ? "checkbox" : "none",
+      checked: ctx.mode === "multi" && ctx.selectedSubjectIds.has(subjectId),
       dataKind: "subject",
       value: subjectId,
+      rowSelectable: ctx.mode === "single",
+      onRowSelect: () => ctx.onPick("subject", subjectId),
     });
+    if (cb) {
+      cb.addEventListener("change", () => {
+        if (cb.checked) ctx.selectedSubjectIds.add(subjectId);
+        else ctx.selectedSubjectIds.delete(subjectId);
+        if (ctx.onSelectionChange) ctx.onSelectionChange();
+        ctx.rerenderRoot();
+      });
+    }
     container.appendChild(li);
   }
 
   /** Ajoute, tout en haut d'un sélecteur multi-boîtes, le pseudo-dossier
    *  racine "Toutes les boîtes" (item 1) : le cocher sélectionne tout,
    *  exactement comme cocher un dossier normal sélectionne son contenu. */
-  function prependAllBoxesRootRow(container, selectedSubjectIds) {
+  function prependAllBoxesRootRow(container, ctx) {
     const allIds = subjectIdsInFolder(ROOT_FOLDER_ID);
     const { li, cb } = buildPickerRow({
       depth: 0,
@@ -3862,26 +3976,48 @@
       iconMarkup: iconSvgMarkup("folder", "icon-inline-svg"),
       nameText: "Toutes les boîtes",
       countLabel: `${allIds.length} boîte${allIds.length > 1 ? "s" : ""}`,
-      checked: allIds.length > 0 && allIds.every((id) => selectedSubjectIds.has(id)),
+      selectControl: "checkbox",
+      checked: allIds.length > 0 && allIds.every((id) => ctx.selectedSubjectIds.has(id)),
       dataKind: "all",
       value: "",
     });
     li.classList.add("picker-row--all");
     cb.addEventListener("change", () => {
-      container.querySelectorAll('input[type="checkbox"]').forEach((other) => {
-        if (other !== cb) other.checked = cb.checked;
-      });
+      if (cb.checked) allIds.forEach((id) => ctx.selectedSubjectIds.add(id));
+      else allIds.forEach((id) => ctx.selectedSubjectIds.delete(id));
+      if (ctx.onSelectionChange) ctx.onSelectionChange();
+      ctx.rerenderRoot();
     });
     container.appendChild(li);
   }
 
-  /** Point d'entrée commun (item 1) pour peupler un sélecteur multi-boîtes
-   *  dans son style Organisation, pseudo-dossier racine inclus. */
-  function renderMultiBoitePicker(container, selectedSubjectIds) {
-    container.innerHTML = "";
-    container.classList.add("picker-tree");
-    prependAllBoxesRootRow(container, selectedSubjectIds);
-    renderFolderTreeForPicker(container, ROOT_FOLDER_ID, 0, selectedSubjectIds);
+  /** Point d'entrée commun (item 1) pour peupler un sélecteur MULTI-boîtes
+   *  dans son style Organisation, pseudo-dossier racine inclus. Le Set
+   *  passé en argument est muté EN PLACE au fil des cases cochées/décochées
+   *  — l'appelant le relit directement (plus besoin de relire le DOM). */
+  function renderMultiBoitePicker(container, selectedSubjectIds, onChange) {
+    const ctx = { mode: "multi", selectedSubjectIds, rerenderRoot: rerender, onSelectionChange: onChange };
+    function rerender() {
+      container.innerHTML = "";
+      container.classList.add("picker-tree");
+      prependAllBoxesRootRow(container, ctx);
+      renderFolderTreeForPicker(container, ROOT_FOLDER_ID, 0, ctx);
+    }
+    rerender();
+  }
+
+  /** Point d'entrée commun (item 1, nouveau lot) pour un sélecteur à choix
+   *  UNIQUE dans le même style Organisation — réutilisé par "Nouvelle
+   *  fiche" (folderAlwaysSelectable: false, boîtes/dossiers vides
+   *  seulement) et par la création d'un événement de calendrier
+   *  (folderAlwaysSelectable: true, un dossier entier est un lien valide). */
+  function renderSingleBoitePicker(container, onPick, folderAlwaysSelectable) {
+    function rerender() {
+      container.innerHTML = "";
+      container.classList.add("picker-tree");
+      renderFolderTreeForPicker(container, ROOT_FOLDER_ID, 0, { mode: "single", onPick, folderAlwaysSelectable, container, rerenderRoot: rerender });
+    }
+    rerender();
   }
 
   // Item 6 (nouveau lot) : quand ce sélecteur est ouvert depuis "Sélection
@@ -3889,12 +4025,16 @@
   // validée, aussi amener sur la page Réviser (pas seulement changer la
   // boîte en cours) — ce drapeau le signale au bouton "Valider".
   let multiPickerNavigateToReviewOnConfirm = false;
+  // Item 1 (nouveau lot) : la sélection en cours vit dans ce Set (muté en
+  // place par renderMultiBoitePicker au fil des cases cochées/décochées,
+  // y compris pour du contenu pas encore visible dans un dossier replié).
+  let multiPickerCurrentSelection = new Set();
   function openMultiSubjectPicker() {
     const picker = el("multi-subject-picker");
     const list = el("multi-subject-picker-list");
     if (!picker || !list) return;
-    const selected = new Set(loadMultiSelection());
-    renderMultiBoitePicker(list, selected);
+    multiPickerCurrentSelection = new Set(loadMultiSelection());
+    renderMultiBoitePicker(list, multiPickerCurrentSelection);
     picker.hidden = false;
   }
 
@@ -3916,8 +4056,7 @@
   const multiPickerConfirmBtn = el("multi-subject-picker-confirm");
   if (multiPickerConfirmBtn) {
     multiPickerConfirmBtn.addEventListener("click", () => {
-      const list = el("multi-subject-picker-list");
-      const { resultIds, singleSubjectId, label } = readMultiPickerResult(list);
+      const { resultIds, singleSubjectId, label } = computeMultiPickerResult(multiPickerCurrentSelection);
       if (resultIds.length === 0) {
         alert("Choisis au moins une boîte ou un dossier.");
         return;
@@ -3947,79 +4086,21 @@
     });
   }
 
-  /** Arbre à choix unique (item : boîte de création d'une nouvelle fiche
-   *  dans Fiches) — dossiers en simples en-têtes non cliquables, boîtes
-   *  en boutons ; clic = choix immédiat, pas de coche ni de confirmation. */
-  /** Item 1 : un dossier vide devient sélectionnable (il deviendra une
-   *  boîte au moment où on y ajoute la fiche), une boîte existante reste
-   *  sélectionnable comme avant, et un dossier non vide (qui contient déjà
-   *  un sous-dossier ou une boîte) n'apparaît plus du tout comme
-   *  destination possible — juste un repère non cliquable, comme avant. */
-  function renderSubjectTreeForSingleChoice(container, parentId, depth, onPick) {
-    const childFolders = folders
-      .filter((f) => f.parentId === parentId)
-      .sort((a, b) => a.name.localeCompare(b.name, "fr"));
-    const childSubjects = subjects
-      .filter((s) => s.folderId === parentId && !folders.some((f) => f.id === s.id))
-      .sort((a, b) => a.name.localeCompare(b.name, "fr"));
-    childFolders.forEach((f) => {
-      if (isFolderABoite(f.id)) {
-        // Ce dossier EST une boîte (auto-liée) : un item cliquable, comme
-        // n'importe quelle autre boîte.
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "subject-choice-tree-item";
-        btn.style.paddingLeft = `${12 + depth * 14}px`;
-        btn.textContent = f.name;
-        btn.addEventListener("click", () => onPick(f.id));
-        container.appendChild(btn);
-        return;
-      }
-      if (folderIsEmpty(f.id)) {
-        // Dossier vide : sélectionnable, deviendra une boîte à cet instant.
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "subject-choice-tree-item subject-choice-tree-item--empty-folder";
-        btn.style.paddingLeft = `${12 + depth * 14}px`;
-        btn.innerHTML = `${folderIcon()} ${escapeHtml(f.name)} <span class="field-hint" style="display:inline;">(dossier vide)</span>`;
-        btn.addEventListener("click", async () => {
-          const s = await ensureFolderIsBoite(f.id);
-          if (s) onPick(s.id);
-        });
-        container.appendChild(btn);
-        return;
-      }
-      // Dossier non vide (sous-dossiers et/ou boîtes dedans) : simple
-      // repère, on ne peut pas y ranger une fiche directement (item 1).
-      const header = document.createElement("div");
-      header.className = "subject-choice-tree-folder";
-      header.style.paddingLeft = `${10 + depth * 14}px`;
-      header.textContent = `${folderIcon()} ${f.name}`;
-      container.appendChild(header);
-      renderSubjectTreeForSingleChoice(container, f.id, depth + 1, onPick);
-    });
-    childSubjects.forEach((s) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "subject-choice-tree-item";
-      btn.style.paddingLeft = `${12 + depth * 14}px`;
-      btn.textContent = s.name;
-      btn.addEventListener("click", () => onPick(s.id));
-      container.appendChild(btn);
-    });
-  }
-
+  /** Item 1 (nouveau lot) : le choix de la boîte pour une nouvelle fiche
+   *  reprend maintenant le même sélecteur Organisation que partout
+   *  ailleurs (renderSingleBoitePicker) — seules une boîte, ou un dossier
+   *  VIDE (qui deviendra boîte à cet instant), sont sélectionnables ; un
+   *  dossier non vide ne sert qu'à déplier/replier, comme sur Organisation. */
   function openCardsSubjectChoiceMenu() {
     const menu = el("cards-subject-choice-menu");
     const tree = el("cards-subject-choice-tree");
     if (!menu || !tree) return;
-    tree.innerHTML = "";
-    renderSubjectTreeForSingleChoice(tree, ROOT_FOLDER_ID, 0, (subjectId) => {
+    renderSingleBoitePicker(tree, (kind, subjectId) => {
       closeCardsSubjectChoiceMenu();
       saveNewCardSubjectId(subjectId);
       const btn = el("cards-subject-select-btn");
       if (btn) btn.textContent = subjectName(subjectId);
-    });
+    }, false);
     menu.hidden = false;
   }
   function closeCardsSubjectChoiceMenu() {
@@ -5258,19 +5339,16 @@
       picker.dataset.opened = "1";
     }
     const selected = new Set(loadCardsMultiSelection());
-    renderMultiBoitePicker(list, selected);
-    list.querySelectorAll("input").forEach((cb) => {
-      cb.addEventListener("change", () => {
-        const { resultIds, singleSubjectId, label } = readMultiPickerResult(list);
-        saveCardsMultiSelection(resultIds);
-        // Une seule boîte au final -> son nom directement (readMultiPickerResult
-        // renvoie label=null dans ce cas précis, réservé ailleurs à un vrai
-        // changement de boîte active — ici on reste en mode "sélection"
-        // puisque les résultats se mettent à jour en direct, donc on
-        // affiche juste son nom au lieu du libellé générique).
-        saveCardsMultiLabel(singleSubjectId ? subjectName(singleSubjectId) : label || "");
-        renderManageList();
-      });
+    renderMultiBoitePicker(list, selected, () => {
+      const { resultIds, singleSubjectId, label } = computeMultiPickerResult(selected);
+      saveCardsMultiSelection(resultIds);
+      // Une seule boîte au final -> son nom directement (computeMultiPickerResult
+      // renvoie label=null dans ce cas précis, réservé ailleurs à un vrai
+      // changement de boîte active — ici on reste en mode "sélection"
+      // puisque les résultats se mettent à jour en direct, donc on
+      // affiche juste son nom au lieu du libellé générique).
+      saveCardsMultiLabel(singleSubjectId ? subjectName(singleSubjectId) : label || "");
+      renderManageList();
     });
   }
 
@@ -5639,12 +5717,13 @@
     return new Set([statsSubjectFilter]);
   }
 
+  let statsMultiPickerCurrentSelection = new Set();
   function openStatsMultiPicker() {
     const picker = el("stats-multi-picker");
     const list = el("stats-multi-picker-list");
     if (!picker || !list) return;
-    const selected = new Set(loadStatsMultiSelection());
-    renderMultiBoitePicker(list, selected);
+    statsMultiPickerCurrentSelection = new Set(loadStatsMultiSelection());
+    renderMultiBoitePicker(list, statsMultiPickerCurrentSelection);
     picker.hidden = false;
   }
   function closeStatsMultiPicker() {
@@ -5698,8 +5777,7 @@
   const statsMultiPickerConfirmBtn = el("stats-multi-picker-confirm");
   if (statsMultiPickerConfirmBtn) {
     statsMultiPickerConfirmBtn.addEventListener("click", () => {
-      const list = el("stats-multi-picker-list");
-      const { resultIds, singleSubjectId, label } = readMultiPickerResult(list);
+      const { resultIds, singleSubjectId, label } = computeMultiPickerResult(statsMultiPickerCurrentSelection);
       if (resultIds.length === 0) {
         alert("Choisis au moins une boîte ou un dossier.");
         return;
@@ -7396,6 +7474,12 @@
   // Organisation plutôt qu'au véritable accueil — remis à false dès
   // qu'on entre sur Fiches par un autre chemin (voir plus bas).
   let cardsEntryFromManage = false;
+  // Item 3 (nouveau lot) : si on est arrivé sur Réviser en cliquant un
+  // dossier/une boîte depuis Organisation, Accueil doit y ramener plutôt
+  // qu'au Programme de révision (comportement par défaut, conservé quand
+  // c'est bien par le Programme — ou "Sélection manuelle" — qu'on est
+  // passé).
+  let reviewEntryFromManage = false;
   function goHome() {
     if (cardsEntryFromManage && el("view-cards") && el("view-cards").classList.contains("is-active")) {
       cardsEntryFromManage = false;
@@ -7403,10 +7487,17 @@
       if (tab) tab.click();
       return;
     }
-    // Item 8 : Réviser se rejoint désormais toujours en passant par le
-    // Programme de révision — Accueil y ramène plutôt qu'au véritable
-    // accueil, cohérent avec ce chemin d'entrée unique.
+    // Item 8 (lot précédent) : Réviser se rejoint désormais toujours en
+    // passant par le Programme de révision (ou "Sélection manuelle") —
+    // Accueil y ramène par défaut. Item 3 (nouveau lot) : sauf si on est
+    // arrivé par Organisation, auquel cas Accueil y ramène plutôt.
     if (el("view-review") && el("view-review").classList.contains("is-active")) {
+      if (reviewEntryFromManage) {
+        reviewEntryFromManage = false;
+        const manageTab = document.querySelector('.tab[data-view="manage"]');
+        if (manageTab) manageTab.click();
+        return;
+      }
       const tab = document.querySelector('.tab[data-view="revision-program"]');
       if (tab) tab.click();
       return;
@@ -7505,46 +7596,12 @@
     return f ? `${f.name} (dossier)` : "Aucune boîte/dossier liés";
   }
 
-  function renderCalendarLinkTree(container) {
-    container.innerHTML = "";
-    function walk(parentId, depth) {
-      const childFolders = folders
-        .filter((f) => f.parentId === parentId)
-        .sort((a, b) => a.name.localeCompare(b.name, "fr"));
-      const childSubjects = subjects
-        .filter((s) => s.folderId === parentId)
-        .sort((a, b) => a.name.localeCompare(b.name, "fr"));
-      childFolders.forEach((f) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "subject-choice-tree-folder";
-        btn.style.cssText = `padding-left:${10 + depth * 14}px; width:100%; text-align:left; background:none; border:none;`;
-        btn.textContent = `${folderIcon()} ${f.name}`;
-        btn.addEventListener("click", () => {
-          calendarEventLinkId = `folder:${f.id}`;
-          closeCalendarSubjectPicker();
-        });
-        container.appendChild(btn);
-        walk(f.id, depth + 1);
-      });
-      childSubjects.forEach((s) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "subject-choice-tree-item";
-        btn.style.paddingLeft = `${12 + depth * 14}px`;
-        btn.textContent = s.name;
-        btn.addEventListener("click", () => {
-          calendarEventLinkId = `subject:${s.id}`;
-          closeCalendarSubjectPicker();
-        });
-        container.appendChild(btn);
-      });
-    }
-    walk(ROOT_FOLDER_ID, 0);
-  }
   // Item 2 : panneau plein écran (bug corrigé : celui-ci s'ouvrait hors
   // écran, en petit menu déroulant, comme le fixe aussi le correctif du
-  // panneau de la page Fiches).
+  // panneau de la page Fiches). Item 1 (nouveau lot) : rendu de l'arbre
+  // repris à l'identique des autres sélecteurs de boîtes (Organisation) —
+  // ici un dossier ENTIER reste un lien valide (même non vide), donc
+  // folderAlwaysSelectable est activé.
   function closeCalendarSubjectPicker() {
     const picker = el("calendar-event-subject-picker");
     if (picker) picker.hidden = true;
@@ -7557,7 +7614,10 @@
       const picker = el("calendar-event-subject-picker");
       const tree = el("calendar-event-subject-tree");
       if (!picker || !tree) return;
-      renderCalendarLinkTree(tree);
+      renderSingleBoitePicker(tree, (kind, id) => {
+        calendarEventLinkId = `${kind}:${id}`;
+        closeCalendarSubjectPicker();
+      }, true);
       picker.hidden = false;
     });
   }
@@ -7980,7 +8040,10 @@
         </div>
         <div class="revision-program-gauge-col">${renderMiniGaugeRingWithTarget(it.score, it.target)}</div>
       `;
-      li.addEventListener("click", () => goToReviewFor(it.linkId));
+      li.addEventListener("click", () => {
+        reviewEntryFromManage = false;
+        goToReviewFor(it.linkId);
+      });
       list.appendChild(li);
     });
   }
@@ -7991,6 +8054,7 @@
     // sélecteur de boîtes/dossiers (item 1), puis amène à la page Réviser
     // une fois la sélection validée (voir multiPickerNavigateToReviewOnConfirm).
     revisionProgramSkipBtn.addEventListener("click", () => {
+      reviewEntryFromManage = false;
       multiPickerNavigateToReviewOnConfirm = true;
       openMultiSubjectPicker();
     });
