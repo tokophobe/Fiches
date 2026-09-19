@@ -566,16 +566,15 @@ button.topbar-new-card-btn {
   margin-bottom: 12px;
 }
 
-/* Item 1 (nouveau lot) : les sélecteurs multi-boîtes (Réviser, Fiches,
-   Stats) se présentent maintenant comme la page Organisation — blocs avec
-   case à cocher, dans un conteneur qui n'est pas forcément un <ul>, d'où
-   ce reset de puces à appliquer partout où l'arbre est inséré. */
-.picker-tree,
-.picker-tree .org-children {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+/* Item 1 (nouveau lot) : les sélecteurs de boîtes reprennent maintenant le
+   rendu de la page Organisation À L'IDENTIQUE, y compris l'imbrication
+   visuelle des dossiers/boîtes enfants DANS le bloc de leur parent (voir
+   .org-children plus bas, dont la marge/le retrait ne sont PLUS écrasés
+   ici — bug corrigé : ce reset les mettait tous à plat, à la même
+   largeur, au lieu de les contenir dans leur dossier). Seul le conteneur
+   racine a besoin d'un reset de puces (déjà couvert par .subject-list
+   pour les <ul> utilisés par tous les sélecteurs). */
+.picker-tree { list-style: none; }
 .picker-tree .picker-row { list-style: none; }
 .picker-row-main {
   cursor: pointer;
