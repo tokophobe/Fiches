@@ -216,11 +216,9 @@
          Réviser, qui conseille par ordre de priorité les boîtes/dossiers
          à exercer en fonction des échéances du calendrier. -->
     <section id="view-revision-program" class="view" aria-labelledby="tab-revision-program">
-      <h2 class="section-title">Programme de révision</h2>
-      <p class="field-hint settings-block-hint">Conseillé en fonction de tes échéances du calendrier — objectif de score à atteindre avant chaque échéance.</p>
-      <ul class="card-list" id="revision-program-list"></ul>
+      <ul class="card-list card-list--tight" id="revision-program-list"></ul>
       <p class="chart-empty" id="revision-program-empty" hidden>Pas d'échéance à venir — programme aucune priorité particulière.</p>
-      <button type="button" class="revision-program-skip-btn" id="revision-program-skip">Ne pas suivre le programme → aller directement à Réviser</button>
+      <button type="button" class="revision-program-skip-btn" id="revision-program-skip">Sélection manuelle</button>
     </section>
 
     <!-- VUE RÉVISION -->
@@ -232,15 +230,6 @@
           <button type="button" class="subject-choice-item" id="subject-choice-all">Toutes les boîtes</button>
           <button type="button" class="subject-choice-item" id="subject-choice-selection">Sélection des boîtes</button>
           <button type="button" class="subject-choice-item subject-choice-item--cancel" id="subject-choice-cancel">Annuler</button>
-        </div>
-      </div>
-
-      <div class="multi-subject-picker" id="multi-subject-picker" hidden>
-        <p class="field-hint settings-block-hint">Choisis les boîtes à réviser confondues :</p>
-        <div class="multi-subject-picker-list" id="multi-subject-picker-list"></div>
-        <div class="multi-subject-picker-actions">
-          <button type="button" class="btn btn--small" id="multi-subject-picker-confirm">Valider</button>
-          <button type="button" class="btn btn--ghost btn--small" id="multi-subject-picker-cancel">Annuler</button>
         </div>
       </div>
 
@@ -323,13 +312,30 @@
       <div class="review-gauge-wrap" id="review-gauge-wrap"></div>
     </section>
 
+    <!-- Item 6 (nouveau lot) : ce sélecteur est déplacé HORS de la section
+         "view-review" — sinon, comme cette section est display:none tant
+         que l'onglet Réviser n'est pas actif, le panneau (pourtant en
+         position fixed, cocherait normalement s'afficher par dessus tout)
+         restait invisible quand on l'ouvrait depuis une autre page (ex.
+         "Sélection manuelle" du programme de révision). -->
+    <div class="multi-subject-picker" id="multi-subject-picker" hidden>
+      <p class="field-hint settings-block-hint">Choisis les boîtes à réviser confondues :</p>
+      <div class="multi-subject-picker-list" id="multi-subject-picker-list"></div>
+      <div class="multi-subject-picker-actions">
+        <button type="button" class="btn btn--small" id="multi-subject-picker-confirm">Valider</button>
+        <button type="button" class="btn btn--ghost btn--small" id="multi-subject-picker-cancel">Annuler</button>
+      </div>
+    </div>
+
     <!-- VUE GESTION -->
     <section id="view-manage" class="view" aria-labelledby="tab-manage">
       <div class="subjects-panel">
         <div class="list-header">
-          <!-- Item 3 (dernier lot) : titre retiré, remplacé par 3 pictos
-               qui choisissent CE QUI s'affiche à droite des blocs (au lieu
-               de tout faire tenir à la fois) — laisse plus de place au nom. -->
+          <!-- Item 3 (nouveau lot) : le bouton "+ Nouveau dossier" passe à
+               gauche, les 3 pictos d'affichage passent à droite. -->
+          <div class="list-header-actions">
+            <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
+          </div>
           <div class="org-display-toggle" id="org-display-toggle">
             <button type="button" class="org-display-toggle-btn is-active" data-org-display="count" title="Nombre de fiches/boîtes">
               <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/></svg>
@@ -340,9 +346,6 @@
             <button type="button" class="org-display-toggle-btn" data-org-display="gauge" title="Jauge de score">
               <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="10" width="11" height="4" rx="2" fill="currentColor" stroke="none"/></svg>
             </button>
-          </div>
-          <div class="list-header-actions">
-            <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
           </div>
         </div>
         <ul class="subject-list" id="subject-list"></ul>

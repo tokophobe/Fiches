@@ -566,6 +566,33 @@ button.topbar-new-card-btn {
   margin-bottom: 12px;
 }
 
+/* Item 1 (nouveau lot) : les sélecteurs multi-boîtes (Réviser, Fiches,
+   Stats) se présentent maintenant comme la page Organisation — blocs avec
+   case à cocher, dans un conteneur qui n'est pas forcément un <ul>, d'où
+   ce reset de puces à appliquer partout où l'arbre est inséré. */
+.picker-tree,
+.picker-tree .org-children {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.picker-tree .picker-row { list-style: none; }
+.picker-row-main {
+  cursor: pointer;
+  width: 100%;
+}
+.picker-row-checkbox {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--terracotta, #c25b4a);
+}
+.picker-row--all {
+  margin-bottom: 10px;
+}
+.picker-row--all .subject-row-name span { font-weight: 700; }
+
 .multi-subject-picker-item {
   display: flex;
   align-items: center;
@@ -781,9 +808,15 @@ button.topbar-new-card-btn {
   white-space: nowrap;
 }
 
+/* Item 2 (nouveau lot) : cet espaceur avait "flex:1" comme
+   .subject-row-name, donc l'espace disponible se partageait moitié-moitié
+   entre le nom et un vide inutile — le nom était tronqué bien plus tôt
+   qu'il n'était nécessaire. Il ne doit plus que combler un espace minimal,
+   tout le reste de la place revenant au nom (seul élément flex:1 restant). */
 .org-row-spacer {
-  flex: 1;
-  min-width: 6px;
+  flex: 0 0 auto;
+  min-width: 0;
+  width: 4px;
 }
 
 /* Item 4 (dernier lot) : le nombre, le mode et la jauge se relaient dans
@@ -2799,11 +2832,17 @@ button.home-btn {
 /* Item 7 : programme de révision. */
 .revision-program-row {
   cursor: pointer;
-  /* Item 4 (dernier lot) : liseret bleu retiré, espacement augmenté entre
-     les blocs de cette page spécifiquement. */
+  /* Item 4 (lot précédent) : liseret bleu retiré, espacement augmenté entre
+     les blocs de cette page spécifiquement. Item 5 (nouveau lot) : un peu
+     resserré par rapport à ce dernier réglage. */
   border-left: none;
-  margin-bottom: 14px;
+  margin-bottom: 9px;
 }
+
+/* Item 5 (nouveau lot) : titre de page et texte descriptif retirés — la
+   liste démarre donc directement en haut de la page, un peu de marge en
+   plus pour compenser l'absence de titre. */
+.card-list--tight { margin-top: 4px; }
 
 .revision-program-row .card-row-main {
   display: flex;
