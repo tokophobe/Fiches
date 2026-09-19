@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v129";
+  const APP_VERSION = "v130";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -2984,41 +2984,11 @@
     const name = kind === "folder" ? (folders.find((f) => f.id === targetId) || {}).name : (subjects.find((s) => s.id === targetId) || {}).name;
     if (title) title.textContent = `Déplacer « ${name || ""} » vers :`;
 
-    list.innerHTML = "";
-    const rootLabel = document.createElement("label");
-    rootLabel.className = "multi-subject-picker-item";
-    rootLabel.innerHTML = `<input type="radio" name="move-target" value="" checked /> <span>🗂️ Racine</span>`;
-    list.appendChild(rootLabel);
-
-    folders
-      .filter((f) => !excluded.has(f.id) && !isFolderABoite(f.id))
-      .sort((a, b) => a.name.localeCompare(b.name, "fr"))
-      .forEach((f) => {
-        const label = document.createElement("label");
-        label.className = "multi-subject-picker-item";
-        const path = folderPath(f.id).map((p) => p.name).join(" / ");
-        label.innerHTML = `<input type="radio" name="move-target" value="${f.id}" /> <span>${folderIcon()} ${escapeHtml(path)}</span>`;
-        list.appendChild(label);
-      });
-
-    picker.hidden = false;
-  }
-
-  function closeMovePicker() {
-    const picker = el("move-picker");
-    if (picker) picker.hidden = true;
-    movePickerKind = null;
-    movePickerTargetId = null;
-  }
-
-  const movePickerCancelBtn = el("move-picker-cancel");
-  if (movePickerCancelBtn) movePickerCancelBtn.addEventListener("click", closeMovePicker);
-
-  const movePickerConfirmBtn = el("move-picker-confirm");
-  if (movePickerConfirmBtn) {
-    movePickerConfirmBtn.addEventListener("click", async () => {
-      const checked = document.querySelector('input[name="move-target"]:checked');
-      const destId = checked && checked.value ? checked.value : ROOT_FOLDER_ID;
+    // Item 1 (3e lot) : ce sélecteur de destination utilise désormais le
+    // même arbre "façon Organisation" que tous les autres sélecteurs de
+    // boîtes de l'appli (icônes, compteurs, plié/déplié) — choix unique,
+    // dossiers seulement, exclusion de soi-même et de ses descendants.
+    renderMoveDestinationPicker(list, excluded, async (destId) => {
       if (movePickerKind === "folder") {
         const f = folders.find((x) => x.id === movePickerTargetId);
         if (f) {
@@ -3037,7 +3007,19 @@
       closeMovePicker();
       renderSubjectManageList();
     });
+
+    picker.hidden = false;
   }
+
+  function closeMovePicker() {
+    const picker = el("move-picker");
+    if (picker) picker.hidden = true;
+    movePickerKind = null;
+    movePickerTargetId = null;
+  }
+
+  const movePickerCancelBtn = el("move-picker-cancel");
+  if (movePickerCancelBtn) movePickerCancelBtn.addEventListener("click", closeMovePicker);
 
   const manageAddFolderBtn = el("manage-add-folder-btn");
   if (manageAddFolderBtn) manageAddFolderBtn.addEventListener("click", createFolderFlow);
@@ -3864,15 +3846,23 @@
    *    fiche) seuls une boîte ou un dossier VIDE (qui deviendra boîte) le
    *    sont — un dossier non vide reste un simple repère à déplier. */
   function renderFolderTreeForPicker(container, parentId, depth, ctx) {
-    const childFolders = folders.filter((f) => f.parentId === parentId).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    const excluded = ctx.excludedFolderIds;
+    let childFolders = folders.filter((f) => f.parentId === parentId).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    if (excluded) childFolders = childFolders.filter((f) => !excluded.has(f.id));
     // Une boîte auto-liée (même id qu'un dossier) est rendue via la boucle
-    // des dossiers ci-dessous — jamais listée deux fois ici (item 1).
-    const childSubjects = subjects
-      .filter((s) => s.folderId === parentId && !folders.some((f) => f.id === s.id))
-      .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    // des dossiers ci-dessous — jamais listée deux fois ici (item 1). Quand
+    // ctx.hideBoites est vrai (sélecteur de destination de déplacement),
+    // aucune boîte n'est un dossier valide où déplacer quoi que ce soit :
+    // on les masque entièrement, elles et les fiches qu'elles contiennent.
+    const childSubjects = ctx.hideBoites
+      ? []
+      : subjects
+          .filter((s) => s.folderId === parentId && !folders.some((f) => f.id === s.id))
+          .sort((a, b) => a.name.localeCompare(b.name, "fr"));
 
     childFolders.forEach((f) => {
       if (isFolderABoite(f.id)) {
+        if (ctx.hideBoites) return;
         const n = cards.filter((c) => !c.deleted && c.subject === f.id).length;
         appendPickerBoiteRow(container, depth, f.id, f.name, n, ctx);
         return;
@@ -4016,6 +4006,41 @@
       container.innerHTML = "";
       container.classList.add("picker-tree");
       renderFolderTreeForPicker(container, ROOT_FOLDER_ID, 0, { mode: "single", onPick, folderAlwaysSelectable, container, rerenderRoot: rerender });
+    }
+    rerender();
+  }
+
+  /** Sélecteur de destination pour "Déplacer vers..." (item 1, 3e lot) :
+   *  même arbre Organisation que les autres, mais dossiers UNIQUEMENT
+   *  (aucune boîte n'est une destination valide) et sans le(s) dossier(s)
+   *  exclu(s) (l'élément qu'on déplace, et ses descendants s'il s'agit d'un
+   *  dossier). Ajoute une ligne "Racine" tout en haut : la racine est une
+   *  destination valide mais n'existe pas dans le tableau `folders`. Choix
+   *  immédiat au clic, comme les autres sélecteurs à choix unique. */
+  function renderMoveDestinationPicker(container, excludedFolderIds, onPick) {
+    function rerender() {
+      container.innerHTML = "";
+      container.classList.add("picker-tree");
+      const { li } = buildPickerRow({
+        depth: 0,
+        isFolder: true,
+        iconMarkup: iconSvgMarkup("folder", "icon-inline-svg"),
+        nameText: "Racine",
+        selectControl: "none",
+        rowSelectable: true,
+        onRowSelect: () => onPick(ROOT_FOLDER_ID),
+      });
+      li.classList.add("picker-row--all");
+      container.appendChild(li);
+      renderFolderTreeForPicker(container, ROOT_FOLDER_ID, 0, {
+        mode: "single",
+        onPick: (kind, id) => onPick(id),
+        folderAlwaysSelectable: true,
+        hideBoites: true,
+        excludedFolderIds,
+        container,
+        rerenderRoot: rerender,
+      });
     }
     rerender();
   }

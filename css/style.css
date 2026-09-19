@@ -668,10 +668,7 @@ button.topbar-new-card-btn {
   box-shadow: var(--shadow-deep);
 }
 
-.move-picker-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+#move-picker-list {
   max-height: 260px;
   overflow-y: auto;
   margin-bottom: 12px;
