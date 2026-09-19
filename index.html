@@ -312,20 +312,6 @@
       <div class="review-gauge-wrap" id="review-gauge-wrap"></div>
     </section>
 
-    <!-- Item 6 (nouveau lot) : ce sélecteur est déplacé HORS de la section
-         "view-review" — sinon, comme cette section est display:none tant
-         que l'onglet Réviser n'est pas actif, le panneau (pourtant en
-         position fixed, cocherait normalement s'afficher par dessus tout)
-         restait invisible quand on l'ouvrait depuis une autre page (ex.
-         "Sélection manuelle" du programme de révision). -->
-    <div class="multi-subject-picker" id="multi-subject-picker" hidden>
-      <p class="field-hint settings-block-hint">Choisis les boîtes à réviser confondues :</p>
-      <div class="multi-subject-picker-list" id="multi-subject-picker-list"></div>
-      <div class="multi-subject-picker-actions">
-        <button type="button" class="btn btn--small" id="multi-subject-picker-confirm">Valider</button>
-        <button type="button" class="btn btn--ghost btn--small" id="multi-subject-picker-cancel">Annuler</button>
-      </div>
-    </div>
 
     <!-- VUE GESTION -->
     <section id="view-manage" class="view" aria-labelledby="tab-manage">
@@ -350,14 +336,6 @@
         </div>
         <ul class="subject-list" id="subject-list"></ul>
       </div>
-
-      <div class="move-picker" id="move-picker" hidden>
-        <p class="field-hint settings-block-hint" id="move-picker-title">Déplacer vers :</p>
-        <ul class="subject-list move-picker-tree" id="move-picker-list"></ul>
-        <div class="multi-subject-picker-actions">
-          <button type="button" class="btn btn--ghost btn--small" id="move-picker-cancel">Annuler</button>
-        </div>
-      </div>
     </section>
 
     <!-- VUE FICHES -->
@@ -373,10 +351,6 @@
              lui-même. -->
         <div class="subject-bar" id="cards-subject-bar">
           <button type="button" class="subject-select-btn subject-select-btn--prominent" id="cards-subject-select-btn" aria-label="Choisir la boîte de cette nouvelle fiche"></button>
-
-          <div class="subject-choice-menu subject-choice-menu--tree" id="cards-subject-choice-menu" hidden>
-            <div id="cards-subject-choice-tree"></div>
-          </div>
         </div>
 
         <label class="field">
@@ -407,14 +381,6 @@
           <button type="button" class="subject-choice-item" id="cards-scope-choice-all">Toutes les boîtes</button>
           <button type="button" class="subject-choice-item" id="cards-scope-choice-selection">Sélection de boîtes et dossiers</button>
           <button type="button" class="subject-choice-item subject-choice-item--cancel" id="cards-scope-choice-cancel">Annuler</button>
-        </div>
-      </div>
-
-      <div class="multi-subject-picker" id="cards-multi-picker" hidden>
-        <p class="field-hint settings-block-hint">Coche des boîtes et/ou dossiers — les résultats se mettent à jour tout de suite :</p>
-        <div class="multi-subject-picker-list" id="cards-multi-picker-list"></div>
-        <div class="multi-subject-picker-actions">
-          <button type="button" class="btn btn--small" id="cards-multi-picker-done">Valider</button>
         </div>
       </div>
 
@@ -470,15 +436,6 @@
           <button type="button" class="subject-choice-item" data-scale="byweek">Par semaine</button>
           <button type="button" class="subject-choice-item" data-scale="bymonth">Par mois</button>
           <button type="button" class="subject-choice-item subject-choice-item--cancel" id="stats-scale-choice-cancel">Annuler</button>
-        </div>
-      </div>
-
-      <div class="multi-subject-picker" id="stats-multi-picker" hidden>
-        <p class="field-hint settings-block-hint">Choisis les boîtes et/ou dossiers à combiner :</p>
-        <div class="multi-subject-picker-list" id="stats-multi-picker-list"></div>
-        <div class="multi-subject-picker-actions">
-          <button type="button" class="btn btn--small" id="stats-multi-picker-confirm">Valider</button>
-          <button type="button" class="btn btn--ghost btn--small" id="stats-multi-picker-cancel">Annuler</button>
         </div>
       </div>
 
@@ -551,18 +508,6 @@
           </div>
         </label>
         <button type="button" class="subject-select-btn" id="calendar-event-subject-btn" aria-label="Choisir la boîte ou le dossier lié">Aucune boîte/dossier liés</button>
-
-        <!-- Item 2 : panneau plein écran, comme les autres sélecteurs de
-             boîtes de l'appli (bug corrigé : celui-ci s'ouvrait hors
-             écran, en petit menu déroulant). -->
-        <div class="multi-subject-picker" id="calendar-event-subject-picker" hidden>
-          <p class="field-hint settings-block-hint">Choisis la boîte ou le dossier lié :</p>
-          <div class="multi-subject-picker-list" id="calendar-event-subject-tree"></div>
-          <div class="multi-subject-picker-actions">
-            <button type="button" class="btn btn--small" id="calendar-event-subject-none">Aucun lien</button>
-            <button type="button" class="btn btn--ghost btn--small" id="calendar-event-subject-done">Fermer</button>
-          </div>
-        </div>
 
         <div style="display:flex; gap:8px; margin-top:12px;">
           <button type="submit" class="btn btn--primary" id="calendar-event-submit">Ajouter à mon calendrier</button>
@@ -1108,6 +1053,27 @@
         <button type="button" class="btn algo-review-old-btn" id="algo-review-old-btn">
           Revoir les vieilles fiches
         </button>
+      </div>
+    </section>
+
+    <!-- VUE SÉLECTEUR DE BOÎTE(S) (item 1, 4e lot) : page UNIQUE et PARTAGÉE
+         par tous les endroits de l'appli où il faut choisir un ou plusieurs
+         dossiers/boîtes (Réviser, Fiches, Stats, Nouvelle fiche, Calendrier,
+         "Déplacer vers..." depuis Organisation) — une vraie page comme les
+         autres (même en-tête de l'appli visible au-dessus, même liste que
+         la page Organisation), et non plus un panneau flottant par-dessus
+         l'écran en cours. Seule différence visuelle autorisée : les cases à
+         cocher, affichées uniquement en mode multi-sélection. -->
+    <section id="view-boite-picker" class="view">
+      <div class="list-header boite-picker-header">
+        <button class="btn btn--ghost btn--small" id="boite-picker-back-btn" type="button">← Retour</button>
+      </div>
+      <h2 class="view-title" id="boite-picker-title">Choisir une boîte</h2>
+      <p class="field-hint settings-block-hint" id="boite-picker-hint" hidden></p>
+      <ul class="subject-list" id="boite-picker-list"></ul>
+      <div class="multi-subject-picker-actions boite-picker-actions" id="boite-picker-actions" hidden>
+        <button type="button" class="btn btn--small" id="boite-picker-confirm">Valider</button>
+        <button type="button" class="btn btn--ghost btn--small" id="boite-picker-none" hidden>Aucun lien</button>
       </div>
     </section>
   </main>

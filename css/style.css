@@ -658,20 +658,22 @@ button.topbar-new-card-btn {
 
 .folder-row .subject-row-name { color: var(--folder-subject-name-color, var(--ink)); font-weight: 600; }
 
-/* Sélecteur "déplacer vers" (dossiers/boîtes) — même look que le
-   sélecteur de plusieurs boîtes confondues (item 1). */
-.move-picker {
-  background: var(--paper);
-  border-radius: var(--radius-card);
-  padding: 14px;
-  margin-bottom: 14px;
-  box-shadow: var(--shadow-deep);
+/* Page unique de sélection de boîte(s) (item 1, 4e lot) : une VRAIE page
+   (#view-boite-picker), comme les autres pages de l'appli — même en-tête
+   d'appli visible au-dessus, même liste que la page Organisation — plutôt
+   qu'un panneau flottant par-dessus l'écran en cours. */
+.boite-picker-header {
+  margin-bottom: 4px;
 }
-
-#move-picker-list {
-  max-height: 260px;
-  overflow-y: auto;
-  margin-bottom: 12px;
+#boite-picker-title {
+  margin-top: 2px;
+}
+.boite-picker-actions {
+  margin-top: 14px;
+  position: sticky;
+  bottom: 0;
+  padding-top: 10px;
+  background: var(--paper);
 }
 
 .subjects-panel { margin-bottom: 26px; }

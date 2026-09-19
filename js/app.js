@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v130";
+  const APP_VERSION = "v131";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -2966,60 +2966,38 @@
   /* ---------------------------------------------------------
      Déplacer un dossier ou une boîte vers un autre dossier
   --------------------------------------------------------- */
-  let movePickerKind = null; // "folder" | "subject"
-  let movePickerTargetId = null;
-
   function openMovePicker(kind, targetId) {
-    movePickerKind = kind;
-    movePickerTargetId = targetId;
-    const picker = el("move-picker");
-    const list = el("move-picker-list");
-    const title = el("move-picker-title");
-    if (!picker || !list) return;
-
     // Pour un dossier, on exclut lui-même et tous ses descendants de la
     // liste des destinations possibles (on ne peut pas le déplacer dans
     // lui-même ou l'un de ses propres sous-dossiers).
     const excluded = kind === "folder" ? new Set([targetId, ...folderDescendantIds(targetId)]) : new Set();
     const name = kind === "folder" ? (folders.find((f) => f.id === targetId) || {}).name : (subjects.find((s) => s.id === targetId) || {}).name;
-    if (title) title.textContent = `Déplacer « ${name || ""} » vers :`;
 
-    // Item 1 (3e lot) : ce sélecteur de destination utilise désormais le
-    // même arbre "façon Organisation" que tous les autres sélecteurs de
-    // boîtes de l'appli (icônes, compteurs, plié/déplié) — choix unique,
-    // dossiers seulement, exclusion de soi-même et de ses descendants.
-    renderMoveDestinationPicker(list, excluded, async (destId) => {
-      if (movePickerKind === "folder") {
-        const f = folders.find((x) => x.id === movePickerTargetId);
-        if (f) {
-          f.parentId = destId;
-          f.updatedAt = new Date().toISOString();
-          await persistFolder(f);
+    openBoitePickerView({
+      mode: "single",
+      title: `Déplacer « ${name || ""} » vers :`,
+      excludedFolderIds: excluded,
+      onPick: async (kindPicked, destId) => {
+        if (kind === "folder") {
+          const f = folders.find((x) => x.id === targetId);
+          if (f) {
+            f.parentId = destId;
+            f.updatedAt = new Date().toISOString();
+            await persistFolder(f);
+          }
+        } else if (kind === "subject") {
+          const s = subjects.find((x) => x.id === targetId);
+          if (s) {
+            s.folderId = destId;
+            s.updatedAt = new Date().toISOString();
+            await persistSubject(s);
+          }
         }
-      } else if (movePickerKind === "subject") {
-        const s = subjects.find((x) => x.id === movePickerTargetId);
-        if (s) {
-          s.folderId = destId;
-          s.updatedAt = new Date().toISOString();
-          await persistSubject(s);
-        }
-      }
-      closeMovePicker();
-      renderSubjectManageList();
+        closeBoitePickerView();
+        renderSubjectManageList();
+      },
     });
-
-    picker.hidden = false;
   }
-
-  function closeMovePicker() {
-    const picker = el("move-picker");
-    if (picker) picker.hidden = true;
-    movePickerKind = null;
-    movePickerTargetId = null;
-  }
-
-  const movePickerCancelBtn = el("move-picker-cancel");
-  if (movePickerCancelBtn) movePickerCancelBtn.addEventListener("click", closeMovePicker);
 
   const manageAddFolderBtn = el("manage-add-folder-btn");
   if (manageAddFolderBtn) manageAddFolderBtn.addEventListener("click", createFolderFlow);
@@ -3725,7 +3703,6 @@
   }
   if (subjectSelectBtn) {
     subjectSelectBtn.addEventListener("click", () => {
-      closeMultiSubjectPicker();
       openSubjectChoiceMenu();
     });
   }
@@ -4045,69 +4022,137 @@
     rerender();
   }
 
+  /* ---------------------------------------------------------
+     Page UNIQUE de sélection de boîte(s) (item 1, 4e lot) : remplace tous
+     les anciens panneaux flottants (Réviser, Fiches, Stats, Nouvelle
+     fiche, Calendrier, "Déplacer vers..." depuis Organisation) par une
+     VRAIE page — #view-boite-picker devient la vue active exactement
+     comme n'importe quel autre onglet ou sous-page (view-mode-assign,
+     view-new-card), donc l'en-tête de l'appli (logo, bouton Home...) reste
+     visible au-dessus, et la liste dessous est rigoureusement celle
+     utilisée par la page Organisation. Au retour ("← Retour" ou choix
+     terminé), on réaffiche la vue d'où on venait. */
+  let boitePickerReturnViewId = "view-home";
+
+  function boitePickerActivateView(viewId) {
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    const target = el(viewId);
+    if (target) target.classList.add("is-active");
+    const shortName = viewId.replace(/^view-/, "");
+    document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("is-active", t.dataset.view === shortName));
+  }
+
+  /** ctx attendu :
+   *  - mode: "multi" | "single"
+   *  - title: titre affiché en haut de la page
+   *  - hint: phrase d'aide optionnelle sous le titre
+   *  - initialSelection (multi) : Set/array des ids déjà sélectionnés
+   *  - onConfirm(selectedSet) (multi) : appelé au clic sur "Valider"
+   *  - folderAlwaysSelectable, excludedFolderIds, hideBoites (single) :
+   *    mêmes réglages que renderFolderTreeForPicker/renderMoveDestinationPicker
+   *  - onPick(kind, id) (single) : appelé dès qu'une ligne est choisie
+   *  - showNoneButton + onNone (single, optionnel) : bouton "Aucun lien"
+   *    (utilisé par le sélecteur de la fiche calendrier). */
+  function openBoitePickerView(ctx) {
+    const view = el("view-boite-picker");
+    const list = el("boite-picker-list");
+    if (!view || !list) return;
+
+    const current = document.querySelector(".view.is-active");
+    boitePickerReturnViewId = current ? current.id : "view-home";
+
+    const titleEl = el("boite-picker-title");
+    if (titleEl) titleEl.textContent = ctx.title || "Choisir une boîte";
+    const hintEl = el("boite-picker-hint");
+    if (hintEl) {
+      hintEl.textContent = ctx.hint || "";
+      hintEl.hidden = !ctx.hint;
+    }
+
+    const actions = el("boite-picker-actions");
+    const confirmBtn = el("boite-picker-confirm");
+    const noneBtn = el("boite-picker-none");
+
+    if (ctx.mode === "multi") {
+      const selection = new Set(ctx.initialSelection || []);
+      renderMultiBoitePicker(list, selection);
+      if (actions) actions.hidden = false;
+      if (confirmBtn) {
+        confirmBtn.hidden = false;
+        confirmBtn.onclick = () => ctx.onConfirm(selection);
+      }
+      if (noneBtn) noneBtn.hidden = true;
+    } else {
+      if (ctx.excludedFolderIds) {
+        renderMoveDestinationPicker(list, ctx.excludedFolderIds, (destId) => ctx.onPick("folder", destId));
+      } else {
+        renderSingleBoitePicker(list, (kind, id) => ctx.onPick(kind, id), !!ctx.folderAlwaysSelectable);
+      }
+      if (confirmBtn) confirmBtn.hidden = true;
+      if (noneBtn) {
+        noneBtn.hidden = !ctx.showNoneButton;
+        noneBtn.onclick = ctx.showNoneButton ? ctx.onNone : null;
+      }
+      if (actions) actions.hidden = !ctx.showNoneButton;
+    }
+
+    boitePickerActivateView("view-boite-picker");
+    // Comme toute autre page indépendante (Nouvelle fiche, Affecter un
+    // mode...), l'en-tête de l'appli (bouton Accueil, logo) reste visible.
+    const homeBtnEl = el("home-btn");
+    if (homeBtnEl) homeBtnEl.hidden = false;
+    if (el("body-logo-row")) el("body-logo-row").hidden = false;
+  }
+
+  function closeBoitePickerView() {
+    boitePickerActivateView(boitePickerReturnViewId || "view-home");
+  }
+
+  const boitePickerBackBtn = el("boite-picker-back-btn");
+  if (boitePickerBackBtn) boitePickerBackBtn.addEventListener("click", () => closeBoitePickerView());
+
   // Item 6 (nouveau lot) : quand ce sélecteur est ouvert depuis "Sélection
   // manuelle" (programme de révision), il faut, une fois la sélection
   // validée, aussi amener sur la page Réviser (pas seulement changer la
   // boîte en cours) — ce drapeau le signale au bouton "Valider".
   let multiPickerNavigateToReviewOnConfirm = false;
-  // Item 1 (nouveau lot) : la sélection en cours vit dans ce Set (muté en
-  // place par renderMultiBoitePicker au fil des cases cochées/décochées,
-  // y compris pour du contenu pas encore visible dans un dossier replié).
-  let multiPickerCurrentSelection = new Set();
   function openMultiSubjectPicker() {
-    const picker = el("multi-subject-picker");
-    const list = el("multi-subject-picker-list");
-    if (!picker || !list) return;
-    multiPickerCurrentSelection = new Set(loadMultiSelection());
-    renderMultiBoitePicker(list, multiPickerCurrentSelection);
-    picker.hidden = false;
-  }
+    openBoitePickerView({
+      mode: "multi",
+      title: "Choisir les boîtes à réviser",
+      hint: "Choisis les boîtes à réviser confondues :",
+      initialSelection: loadMultiSelection(),
+      onConfirm: (selection) => {
+        const { resultIds, singleSubjectId, label } = computeMultiPickerResult(selection);
+        if (resultIds.length === 0) {
+          alert("Choisis au moins une boîte ou un dossier.");
+          return;
+        }
+        const shouldNavigateToReview = multiPickerNavigateToReviewOnConfirm;
+        multiPickerNavigateToReviewOnConfirm = false;
 
-  function closeMultiSubjectPicker() {
-    const picker = el("multi-subject-picker");
-    if (picker) picker.hidden = true;
-  }
-
-  const multiPickerCancelBtn = el("multi-subject-picker-cancel");
-  if (multiPickerCancelBtn) {
-    // "Annuler" (item 18) : referme la fenêtre et reste sur le choix
-    // précédent, sans rien modifier.
-    multiPickerCancelBtn.addEventListener("click", () => {
-      multiPickerNavigateToReviewOnConfirm = false;
-      closeMultiSubjectPicker();
-    });
-  }
-
-  const multiPickerConfirmBtn = el("multi-subject-picker-confirm");
-  if (multiPickerConfirmBtn) {
-    multiPickerConfirmBtn.addEventListener("click", () => {
-      const { resultIds, singleSubjectId, label } = computeMultiPickerResult(multiPickerCurrentSelection);
-      if (resultIds.length === 0) {
-        alert("Choisis au moins une boîte ou un dossier.");
-        return;
-      }
-      closeMultiSubjectPicker();
-      const shouldNavigateToReview = multiPickerNavigateToReviewOnConfirm;
-      multiPickerNavigateToReviewOnConfirm = false;
-
-      // Affichage intelligent (item 18) : une seule boîte au final -> on
-      // bascule directement dessus (son nom s'affiche naturellement,
-      // inutile de passer par le mode "sélection"). Sélection qui
-      // correspond exactement à un seul dossier -> son nom. Sinon,
-      // libellé générique "Sélection de boîtes".
-      if (singleSubjectId) {
-        switchSubject(singleSubjectId, true);
-      } else {
-        saveMultiSelection(resultIds);
-        saveMultiSelectionLabel(label || "");
-        switchSubject(MULTI_SUBJECTS_ID, true);
-      }
-      // Item 6 (nouveau lot) : "Sélection manuelle" (programme de révision)
-      // amène directement à la page Réviser une fois la sélection validée.
-      if (shouldNavigateToReview) {
-        const tab = document.querySelector('.tab[data-view="review"]');
-        if (tab) tab.click();
-      }
+        // Affichage intelligent (item 18) : une seule boîte au final -> on
+        // bascule directement dessus (son nom s'affiche naturellement,
+        // inutile de passer par le mode "sélection"). Sélection qui
+        // correspond exactement à un seul dossier -> son nom. Sinon,
+        // libellé générique "Sélection de boîtes".
+        if (singleSubjectId) {
+          switchSubject(singleSubjectId, true);
+        } else {
+          saveMultiSelection(resultIds);
+          saveMultiSelectionLabel(label || "");
+          switchSubject(MULTI_SUBJECTS_ID, true);
+        }
+        // Item 6 (nouveau lot) : "Sélection manuelle" (programme de
+        // révision) amène directement à la page Réviser une fois la
+        // sélection validée ; sinon on revient simplement à la page d'où
+        // on venait (ex. Réviser elle-même).
+        if (shouldNavigateToReview) {
+          boitePickerActivateView("view-review");
+        } else {
+          closeBoitePickerView();
+        }
+      },
     });
   }
 
@@ -4117,31 +4162,21 @@
    *  VIDE (qui deviendra boîte à cet instant), sont sélectionnables ; un
    *  dossier non vide ne sert qu'à déplier/replier, comme sur Organisation. */
   function openCardsSubjectChoiceMenu() {
-    const menu = el("cards-subject-choice-menu");
-    const tree = el("cards-subject-choice-tree");
-    if (!menu || !tree) return;
-    renderSingleBoitePicker(tree, (kind, subjectId) => {
-      closeCardsSubjectChoiceMenu();
-      saveNewCardSubjectId(subjectId);
-      const btn = el("cards-subject-select-btn");
-      if (btn) btn.textContent = subjectName(subjectId);
-    }, false);
-    menu.hidden = false;
-  }
-  function closeCardsSubjectChoiceMenu() {
-    const menu = el("cards-subject-choice-menu");
-    if (menu) menu.hidden = true;
+    openBoitePickerView({
+      mode: "single",
+      title: "Choisir la boîte de cette fiche",
+      onPick: (kind, subjectId) => {
+        saveNewCardSubjectId(subjectId);
+        const btn = el("cards-subject-select-btn");
+        if (btn) btn.textContent = subjectName(subjectId);
+        closeBoitePickerView();
+      },
+    });
   }
   const cardsSubjectSelectBtn = el("cards-subject-select-btn");
   if (cardsSubjectSelectBtn) {
     cardsSubjectSelectBtn.addEventListener("click", () => openCardsSubjectChoiceMenu());
   }
-  document.addEventListener("pointerdown", (e) => {
-    const menu = el("cards-subject-choice-menu");
-    if (!menu || menu.hidden) return;
-    if (menu.contains(e.target) || e.target === cardsSubjectSelectBtn) return;
-    closeCardsSubjectChoiceMenu();
-  });
 
   const cardsSearchInputEl = el("cards-search-input");
   if (cardsSearchInputEl) {
@@ -5315,21 +5350,29 @@
   if (cardsScopeChoiceSelectionBtn) {
     cardsScopeChoiceSelectionBtn.addEventListener("click", () => {
       closeCardsScopeChoiceMenu();
-      // Reste affiché tant que ce périmètre est actif (voir
-      // renderCardsMultiPickerIfActive, appelé depuis renderManageList) —
-      // plus besoin de "Valider" pour VALIDER la sélection (mise à jour en
-      // direct), juste pour refermer le panneau plein écran (bug corrigé).
-      cardsScopeFilter = CARDS_SCOPE_MULTI;
-      const picker = el("cards-multi-picker");
-      if (picker) delete picker.dataset.opened;
-      renderManageList();
-    });
-  }
-  const cardsMultiPickerDoneBtn = el("cards-multi-picker-done");
-  if (cardsMultiPickerDoneBtn) {
-    cardsMultiPickerDoneBtn.addEventListener("click", () => {
-      const picker = el("cards-multi-picker");
-      if (picker) picker.hidden = true;
+      openBoitePickerView({
+        mode: "multi",
+        title: "Choisir des boîtes et/ou dossiers",
+        hint: "Coche des boîtes et/ou dossiers à combiner :",
+        initialSelection: loadCardsMultiSelection(),
+        onConfirm: (selection) => {
+          const { resultIds, singleSubjectId, label } = computeMultiPickerResult(selection);
+          if (resultIds.length === 0) {
+            alert("Choisis au moins une boîte ou un dossier.");
+            return;
+          }
+          saveCardsMultiSelection(resultIds);
+          // Une seule boîte au final -> son nom directement
+          // (computeMultiPickerResult renvoie label=null dans ce cas,
+          // réservé ailleurs à un vrai changement de boîte active — ici on
+          // reste en mode "sélection", donc on affiche juste son nom au
+          // lieu du libellé générique).
+          saveCardsMultiLabel(singleSubjectId ? subjectName(singleSubjectId) : label || "");
+          cardsScopeFilter = CARDS_SCOPE_MULTI;
+          closeBoitePickerView();
+          renderManageList();
+        },
+      });
     });
   }
   const cardsScopeChoiceCancelBtn = el("cards-scope-choice-cancel");
@@ -5343,43 +5386,8 @@
     closeCardsScopeChoiceMenu();
   });
 
-  /** Contrairement aux autres pickers de l'appli (qui se ferment après un
-   *  "Valider"), celui-ci reste affiché tant que le périmètre "Sélection de
-   *  boîtes et dossiers" est actif — cocher/décocher met à jour les
-   *  résultats de recherche tout de suite, sans étape de confirmation.
-   *  Bug corrigé : depuis que ce panneau occupe tout l'écran (comme les
-   *  deux autres), il fallait quand même un bouton pour le refermer et
-   *  retrouver la liste filtrée en dessous — "Valider" ici ne fait que
-   *  refermer le panneau, la sélection est déjà enregistrée au fil de l'eau. */
-  function renderCardsMultiPickerIfActive() {
-    const picker = el("cards-multi-picker");
-    const list = el("cards-multi-picker-list");
-    if (!picker || !list) return;
-    if (cardsScopeFilter !== CARDS_SCOPE_MULTI) {
-      picker.hidden = true;
-      return;
-    }
-    if (!picker.dataset.opened) {
-      picker.hidden = false;
-      picker.dataset.opened = "1";
-    }
-    const selected = new Set(loadCardsMultiSelection());
-    renderMultiBoitePicker(list, selected, () => {
-      const { resultIds, singleSubjectId, label } = computeMultiPickerResult(selected);
-      saveCardsMultiSelection(resultIds);
-      // Une seule boîte au final -> son nom directement (computeMultiPickerResult
-      // renvoie label=null dans ce cas précis, réservé ailleurs à un vrai
-      // changement de boîte active — ici on reste en mode "sélection"
-      // puisque les résultats se mettent à jour en direct, donc on
-      // affiche juste son nom au lieu du libellé générique).
-      saveCardsMultiLabel(singleSubjectId ? subjectName(singleSubjectId) : label || "");
-      renderManageList();
-    });
-  }
-
   function renderManageList() {
     renderCardsScopeSelect();
-    renderCardsMultiPickerIfActive();
     let visible = cardsScopeCards();
     const showSubjectNames = cardsScopeFilter !== CARDS_SCOPE_CURRENT;
     if (cardsConstructionFilter) {
@@ -5742,18 +5750,30 @@
     return new Set([statsSubjectFilter]);
   }
 
-  let statsMultiPickerCurrentSelection = new Set();
   function openStatsMultiPicker() {
-    const picker = el("stats-multi-picker");
-    const list = el("stats-multi-picker-list");
-    if (!picker || !list) return;
-    statsMultiPickerCurrentSelection = new Set(loadStatsMultiSelection());
-    renderMultiBoitePicker(list, statsMultiPickerCurrentSelection);
-    picker.hidden = false;
-  }
-  function closeStatsMultiPicker() {
-    const picker = el("stats-multi-picker");
-    if (picker) picker.hidden = true;
+    openBoitePickerView({
+      mode: "multi",
+      title: "Choisir les boîtes pour les statistiques",
+      hint: "Choisis les boîtes et/ou dossiers à combiner :",
+      initialSelection: loadStatsMultiSelection(),
+      onConfirm: (selection) => {
+        const { resultIds, singleSubjectId, label } = computeMultiPickerResult(selection);
+        if (resultIds.length === 0) {
+          alert("Choisis au moins une boîte ou un dossier.");
+          return;
+        }
+        closeBoitePickerView();
+        if (singleSubjectId) {
+          statsSubjectFilter = singleSubjectId;
+          renderStats();
+          return;
+        }
+        saveStatsMultiSelection(resultIds);
+        saveStatsMultiLabel(label || "");
+        statsSubjectFilter = STATS_MULTI_ID;
+        renderStats();
+      },
+    });
   }
 
   function openStatsScopeChoiceMenu() {
@@ -5767,7 +5787,6 @@
   const statsSubjectSelectBtn = el("stats-subject-select-btn");
   if (statsSubjectSelectBtn) {
     statsSubjectSelectBtn.addEventListener("click", () => {
-      closeStatsMultiPicker();
       openStatsScopeChoiceMenu();
     });
   }
@@ -5797,28 +5816,6 @@
     closeStatsScopeChoiceMenu();
   });
 
-  const statsMultiPickerCancelBtn = el("stats-multi-picker-cancel");
-  if (statsMultiPickerCancelBtn) statsMultiPickerCancelBtn.addEventListener("click", closeStatsMultiPicker);
-  const statsMultiPickerConfirmBtn = el("stats-multi-picker-confirm");
-  if (statsMultiPickerConfirmBtn) {
-    statsMultiPickerConfirmBtn.addEventListener("click", () => {
-      const { resultIds, singleSubjectId, label } = computeMultiPickerResult(statsMultiPickerCurrentSelection);
-      if (resultIds.length === 0) {
-        alert("Choisis au moins une boîte ou un dossier.");
-        return;
-      }
-      closeStatsMultiPicker();
-      if (singleSubjectId) {
-        statsSubjectFilter = singleSubjectId;
-        renderStats();
-        return;
-      }
-      saveStatsMultiSelection(resultIds);
-      saveStatsMultiLabel(label || "");
-      statsSubjectFilter = STATS_MULTI_ID;
-      renderStats();
-    });
-  }
 
   function startOfDay(date) {
     const d = new Date(date);
@@ -7621,40 +7618,32 @@
     return f ? `${f.name} (dossier)` : "Aucune boîte/dossier liés";
   }
 
-  // Item 2 : panneau plein écran (bug corrigé : celui-ci s'ouvrait hors
-  // écran, en petit menu déroulant, comme le fixe aussi le correctif du
-  // panneau de la page Fiches). Item 1 (nouveau lot) : rendu de l'arbre
-  // repris à l'identique des autres sélecteurs de boîtes (Organisation) —
-  // ici un dossier ENTIER reste un lien valide (même non vide), donc
-  // folderAlwaysSelectable est activé.
-  function closeCalendarSubjectPicker() {
-    const picker = el("calendar-event-subject-picker");
-    if (picker) picker.hidden = true;
-    const btn = el("calendar-event-subject-btn");
-    if (btn) btn.textContent = calendarLinkLabel(calendarEventLinkId);
-  }
+  // Item 1 (4e lot) : ce sélecteur utilise désormais la page partagée
+  // #view-boite-picker (rendu de l'arbre identique à Organisation) — ici
+  // un dossier ENTIER reste un lien valide (même non vide), donc
+  // folderAlwaysSelectable est activé, et un bouton "Aucun lien" permet de
+  // retirer le lien existant.
   const calendarEventSubjectBtn = el("calendar-event-subject-btn");
   if (calendarEventSubjectBtn) {
     calendarEventSubjectBtn.addEventListener("click", () => {
-      const picker = el("calendar-event-subject-picker");
-      const tree = el("calendar-event-subject-tree");
-      if (!picker || !tree) return;
-      renderSingleBoitePicker(tree, (kind, id) => {
-        calendarEventLinkId = `${kind}:${id}`;
-        closeCalendarSubjectPicker();
-      }, true);
-      picker.hidden = false;
+      openBoitePickerView({
+        mode: "single",
+        title: "Choisir la boîte ou le dossier lié",
+        folderAlwaysSelectable: true,
+        showNoneButton: true,
+        onPick: (kind, id) => {
+          calendarEventLinkId = `${kind}:${id}`;
+          calendarEventSubjectBtn.textContent = calendarLinkLabel(calendarEventLinkId);
+          closeBoitePickerView();
+        },
+        onNone: () => {
+          calendarEventLinkId = null;
+          calendarEventSubjectBtn.textContent = calendarLinkLabel(null);
+          closeBoitePickerView();
+        },
+      });
     });
   }
-  const calendarEventSubjectNoneBtn = el("calendar-event-subject-none");
-  if (calendarEventSubjectNoneBtn) {
-    calendarEventSubjectNoneBtn.addEventListener("click", () => {
-      calendarEventLinkId = null;
-      closeCalendarSubjectPicker();
-    });
-  }
-  const calendarEventSubjectDoneBtn = el("calendar-event-subject-done");
-  if (calendarEventSubjectDoneBtn) calendarEventSubjectDoneBtn.addEventListener("click", closeCalendarSubjectPicker);
 
   // Item 2 : le bouton de date ouvre le sélecteur natif (plus explicite
   // qu'un simple champ texte) et affiche la date choisie en toutes lettres.
