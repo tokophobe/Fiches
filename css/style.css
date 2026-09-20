@@ -1230,9 +1230,15 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   width: 100%;
 }
 
-/* Round 4 : bouton "Suite" pour dérouler un message d'aide qui en compte
-   plusieurs, un peu comme un tuto — masqué sur le dernier message d'une
-   série (voir renderBodyLogoSpeechState). */
+/* Round 4 : boutons "Précédent"/"Suite" pour naviguer dans un message
+   d'aide qui en compte plusieurs, un peu comme un tuto — "Précédent" est
+   masqué sur le premier message, "Suite" sur le dernier (voir
+   renderBodyLogoSpeechState). */
+.body-logo-speech-nav {
+  display: flex;
+  gap: 8px;
+}
+.body-logo-speech-prev,
 .body-logo-speech-next {
   font-family: var(--font-type);
   font-size: 12px;
@@ -1244,6 +1250,7 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   color: var(--ink);
   cursor: pointer;
 }
+.body-logo-speech-prev[hidden],
 .body-logo-speech-next[hidden] { display: none; }
 
 /* Round 4 : petite bulle "aide" ronde, cliquable, affichée à côté du robot

@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v137";
+  const APP_VERSION = "v138";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -696,6 +696,7 @@
     const helpBtn = el("body-logo-help-btn");
     const speechEl = el("body-logo-speech");
     const textEl = el("body-logo-speech-text");
+    const prevBtn = el("body-logo-speech-prev");
     const nextBtn = el("body-logo-speech-next");
     if (!helpBtn || !speechEl || !textEl || !nextBtn) return;
     const hasMessages = bodyLogoSpeechMessages.length > 0;
@@ -712,6 +713,9 @@
       void speechEl.offsetWidth;
       speechEl.classList.add("is-popping");
     }
+    // Round 4, partie 3 : "Précédent" masqué sur le tout premier message,
+    // "Suite" masqué sur le dernier.
+    if (prevBtn) prevBtn.hidden = bodyLogoSpeechIndex <= 0;
     nextBtn.hidden = bodyLogoSpeechIndex >= bodyLogoSpeechMessages.length - 1;
   }
   const bodyLogoHelpBtn = el("body-logo-help-btn");
@@ -723,11 +727,19 @@
   }
   const bodyLogoSpeechEl = el("body-logo-speech");
   if (bodyLogoSpeechEl) {
-    // Cliquer sur la bulle elle-même la referme (sauf sur le bouton
-    // "Suite", qui a son propre comportement).
+    // Cliquer sur la bulle elle-même la referme (sauf sur les boutons
+    // "Précédent"/"Suite", qui ont leur propre comportement).
     bodyLogoSpeechEl.addEventListener("click", (e) => {
-      if (e.target.closest("#body-logo-speech-next")) return;
+      if (e.target.closest("#body-logo-speech-next") || e.target.closest("#body-logo-speech-prev")) return;
       renderBodyLogoSpeechState(false);
+    });
+  }
+  const bodyLogoSpeechPrevBtn = el("body-logo-speech-prev");
+  if (bodyLogoSpeechPrevBtn) {
+    bodyLogoSpeechPrevBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      bodyLogoSpeechIndex = Math.max(bodyLogoSpeechIndex - 1, 0);
+      renderBodyLogoSpeechState(true);
     });
   }
   const bodyLogoSpeechNextBtn = el("body-logo-speech-next");
@@ -897,6 +909,56 @@
     );
   }
 
+  // Round 4, partie 3 : réglages développeur PUBLIÉS par Stéphane pour
+  // tout le monde (table Supabase partagée en lecture, voir sync.js et
+  // supabase/dev_settings_public_schema.sql) — récupérés une fois au
+  // démarrage par loadPublicDevSettingsForEveryone(). null tant que rien
+  // n'a encore été récupéré (hors ligne, Sync non configurée, ou pas
+  // encore essayé) : dans ce cas, comportement inchangé (valeurs par
+  // défaut du code).
+  let publicDevSettingsOverride = null;
+  function isPlainDevSettingsObject(v) {
+    return Boolean(v) && typeof v === "object" && !Array.isArray(v);
+  }
+  /** Fusionne récursivement deux "couches" de réglages développeur :
+   *  toute clé présente dans `override` l'emporte sur `base`, mais si les
+   *  deux valeurs sont des objets simples (ex. nightColors.bgColors), on
+   *  fusionne leurs propres clés au lieu de remplacer tout le groupe —
+   *  un tableau (ex. une liste de messages d'aide) est, lui, toujours
+   *  remplacé en bloc, jamais fusionné élément par élément. */
+  function mergeDevSettingsLayer(base, override) {
+    const out = { ...(isPlainDevSettingsObject(base) ? base : {}) };
+    if (!isPlainDevSettingsObject(override)) return out;
+    Object.keys(override).forEach((key) => {
+      const b = out[key];
+      const o = override[key];
+      out[key] = isPlainDevSettingsObject(b) && isPlainDevSettingsObject(o) ? mergeDevSettingsLayer(b, o) : o;
+    });
+    return out;
+  }
+  /** Récupère (une fois, au démarrage) les réglages développeur publiés
+   *  pour tout le monde et les applique — appelée depuis connectSync(),
+   *  donc seulement quand la Sync est configurée (même condition que les
+   *  comptes Classes, qui partagent le même projet Supabase). */
+  async function loadPublicDevSettingsForEveryone() {
+    try {
+      const pub = await Sync.fetchPublicDevSettings();
+      if (pub) {
+        publicDevSettingsOverride = pub;
+        // Invalide le cache ci-dessous pour forcer une refusion au
+        // prochain loadDevSettings(), puis réapplique tout de suite (utile
+        // pour tous les utilisateurs qui n'ont eux-mêmes AUCUN réglage
+        // développeur local — la quasi-totalité des élèves/profs).
+        _devSettingsCacheRaw = undefined;
+        _devSettingsCache = undefined;
+        applyAllDevSettings();
+      }
+    } catch (e) {
+      /* hors ligne, ou pas encore de ligne publiée : on continue avec les
+         valeurs par défaut du code, comme avant cette fonctionnalité. */
+    }
+  }
+
   // Bug corrigé (item 9) : cette fonction est appelée TRÈS souvent (une
   // fois par fiche pour son score, par exemple) et reconstruisait à chaque
   // fois l'objet complet (JSON.parse + fusion de ~15 groupes de réglages)
@@ -913,6 +975,15 @@
       parsed = raw ? JSON.parse(raw) : {};
     } catch (e) {
       parsed = {};
+    }
+    // Round 4, partie 3 : les réglages publiés pour tout le monde
+    // s'insèrent ICI, comme une "sous-couche" entre les valeurs par
+    // défaut du code et les réglages strictement locaux à cet appareil —
+    // un réglage local reste prioritaire (utile à Stéphane, qui peut
+    // préparer un changement avant de le publier), mais tout le monde
+    // d'autre en hérite tant qu'il n'a pas ses propres réglages locaux.
+    if (publicDevSettingsOverride) {
+      parsed = mergeDevSettingsLayer(publicDevSettingsOverride, parsed);
     }
     const built = {
       ratingLabels: { ...DEFAULT_RATING_LABELS, ...(parsed.ratingLabels || {}) },
@@ -975,10 +1046,30 @@
         normal: { ...BUILTIN_MODE_DEFAULTS.normal, ...((parsed.factoryDefaults || {}).normal || {}) },
         renforce: { ...BUILTIN_MODE_DEFAULTS.renforce, ...((parsed.factoryDefaults || {}).renforce || {}) },
       },
+      // Bug corrigé (round 4, partie 3) : cette date n'était jusqu'ici
+      // JAMAIS recopiée dans l'objet fusionné, alors que
+      // reconcileDevSettings (synchro personnelle) s'en sert pour savoir
+      // si la version locale est plus récente que celle du serveur — la
+      // comparaison était donc toujours "locale = temps 0", donc toujours
+      // perdante face au serveur.
+      updatedAt: parsed.updatedAt,
     };
     _devSettingsCacheRaw = raw;
     _devSettingsCache = built;
     return built;
+  }
+  /** Round 4, partie 3 : réglages STRICTEMENT locaux à cet appareil, TELS
+   *  QUE STOCKÉS (sans les valeurs par défaut du code ni la "sous-couche"
+   *  publique — voir loadDevSettings) — à utiliser pour toute écriture
+   *  automatique (non déclenchée par une vraie personnalisation de
+   *  l'utilisateur dans le mode développeur), pour ne jamais figer par
+   *  erreur un instantané complet dans le stockage local. */
+  function loadRawDevSettingsOverride() {
+    try {
+      return JSON.parse(localStorage.getItem(DEV_SETTINGS_KEY)) || {};
+    } catch (e) {
+      return {};
+    }
   }
   function saveDevSettings(settings) {
     settings.updatedAt = new Date().toISOString();
@@ -1978,7 +2069,15 @@
     // et jour juste après l'avoir pressé. saveDevSettings met à jour cet
     // horodatage à chaque fois, donc ce changement est toujours reconnu
     // comme le plus récent.
-    const settings = loadDevSettings();
+    // Bug corrigé (round 4, partie 3) : cette fonction tourne à CHAQUE
+    // démarrage, pour tout le monde (elle fixe le mode nuit selon l'heure)
+    // — en repartant de loadDevSettings() (l'instantané COMPLET, valeurs
+    // par défaut + réglages publiés compris), elle figeait par erreur cet
+    // instantané entier dans le stockage strictement local dès le tout
+    // premier démarrage, ce qui bloquait ensuite toute réception d'un
+    // réglage publié pour tout le monde. On repart maintenant de ce qui
+    // est VRAIMENT propre à cet appareil, sans y mélanger le reste.
+    const settings = loadRawDevSettingsOverride();
     settings.nightMode = value;
     saveDevSettings(settings);
     applyColorSettings();
@@ -7747,6 +7846,33 @@
    *  détection automatique de nouvelle version reste bloquée (observé sur
    *  GitHub Pages, qui ne permet pas de fixer nous-mêmes les en-têtes de
    *  cache HTTP — voir aussi updateViaCache: "none" plus bas). */
+  const devPublishPublicBtn = el("dev-publish-public-btn");
+  const devPublishPublicResultEl = el("dev-publish-public-result");
+  if (devPublishPublicBtn) {
+    devPublishPublicBtn.addEventListener("click", async () => {
+      devPublishPublicBtn.disabled = true;
+      const originalLabel = devPublishPublicBtn.textContent;
+      devPublishPublicBtn.textContent = "Publication…";
+      if (devPublishPublicResultEl) devPublishPublicResultEl.textContent = "";
+      const settings = loadDevSettings();
+      const result = await Sync.pushPublicDevSettings(settings);
+      devPublishPublicBtn.disabled = false;
+      devPublishPublicBtn.textContent = originalLabel;
+      if (result && result.error) {
+        if (devPublishPublicResultEl) {
+          devPublishPublicResultEl.textContent = "Échec — connecte-toi avec ton compte (page Compte) puis réessaie.";
+        }
+        robotAlert("La publication a échoué. Vérifie que tu es bien connecté avec ton compte (page Compte), puis réessaie.");
+      } else {
+        publicDevSettingsOverride = settings;
+        if (devPublishPublicResultEl) {
+          devPublishPublicResultEl.textContent = "Publié — tout le monde recevra ces réglages à son prochain démarrage.";
+        }
+        robotAlert("Réglages publiés ! Toutes les installations (élèves, profs, nouveaux appareils) les recevront désormais au démarrage.");
+      }
+    });
+  }
+
   const devHideDevModeBtn = el("dev-hide-dev-mode-btn");
   if (devHideDevModeBtn) {
     devHideDevModeBtn.addEventListener("click", () => {
@@ -9536,20 +9662,35 @@
    *  fiches, il n'y a pas de fusion champ par champ ici, un réglage de
    *  couleurs est cohérent seulement pris comme un tout. */
   async function reconcileDevSettings() {
+    // Round 4, partie 3 : un appareil qui n'a JAMAIS personnalisé le mode
+    // développeur (immense majorité des élèves/profs, mais aussi
+    // Stéphane sur un tout nouvel appareil pas encore touché) n'a rien
+    // de "personnel" à synchroniser ici — le laisser participer quand
+    // même figerait, dès sa toute première connexion, un instantané
+    // complet (valeurs par défaut + réglages publics du moment) dans son
+    // stockage local, qui empêcherait ensuite toute future publication
+    // de s'y appliquer (voir loadDevSettings : le local l'emporte
+    // toujours sur le public). On ne pousse donc RIEN côté serveur tant
+    // qu'il n'y a pas de VRAIE personnalisation locale.
+    const hasLocalCustomization = localStorage.getItem(DEV_SETTINGS_KEY) !== null;
     const remote = await Sync.pullDevSettings();
     const local = loadDevSettings();
     if (!remote) {
-      // Rien côté serveur : on y pousse notre réglage local tel quel.
-      Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() });
+      if (hasLocalCustomization) {
+        // Rien côté serveur : on y pousse notre réglage local tel quel.
+        Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() });
+      }
       return;
     }
     const remoteTime = new Date(remote.updatedAt || 0).getTime();
-    const localTime = new Date(local.updatedAt || 0).getTime();
+    const localTime = hasLocalCustomization ? new Date(local.updatedAt || 0).getTime() : 0;
     if (remoteTime > localTime) {
+      // Un autre de TES appareils (même code de synchro) a poussé une
+      // vraie personnalisation plus récente : on l'adopte.
       localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
       applyAllDevSettings();
       applyAppPrefsFromRemote(remote.payload.appPrefs);
-    } else if (localTime > remoteTime) {
+    } else if (hasLocalCustomization && localTime > remoteTime) {
       Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() });
     }
   }
@@ -9614,6 +9755,11 @@
     if (unsubscribeFoldersRealtime) unsubscribeFoldersRealtime();
     if (unsubscribeLearningModesRealtime) unsubscribeLearningModesRealtime();
     if (unsubscribeDevSettingsRealtime) unsubscribeDevSettingsRealtime();
+
+    // Round 4, partie 3 : réglages développeur publiés pour tout le
+    // monde — récupérés AVANT le reste, pour que la synchro perso
+    // (reconcileWithRemote, juste après) parte déjà d'une base à jour.
+    await loadPublicDevSettingsForEveryone();
 
     await reconcileWithRemote();
     await Sync.flushPending((id) => cards.find((c) => c.id === id));

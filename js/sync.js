@@ -548,6 +548,52 @@ async function pushDevSettings(payload) {
   return true;
 }
 
+/* ---------------------------------------------------------
+   Round 4, partie 3 : réglages développeur PUBLIÉS pour tout le monde —
+   contrairement à dev_settings ci-dessus (une ligne par code de synchro,
+   propre à chaque personne), une seule ligne partagée, lue par TOUTE
+   installation de l'appli (élèves/profs des Classes compris, même sans
+   jamais avoir touché au mode développeur), et écrite uniquement par
+   Stéphane (RLS restreinte à son compte, voir
+   supabase/dev_settings_public_schema.sql). Permet à un réglage validé
+   dans le mode développeur de s'appliquer à tout le monde sans attendre
+   une nouvelle version de l'appli.
+--------------------------------------------------------- */
+async function fetchPublicDevSettings() {
+  const c = getClient();
+  if (!c) return null;
+  try {
+    const { data, error } = await c
+      .from("dev_settings_public")
+      .select("settings")
+      .eq("id", "global")
+      .maybeSingle();
+    if (error) {
+      console.warn("Sync: échec du chargement des réglages développeur publics", error.message);
+      return null;
+    }
+    return (data && data.settings) || null;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function pushPublicDevSettings(settings) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
+  try {
+    const { error } = await c.from("dev_settings_public").upsert({
+      id: "global",
+      settings,
+      updated_at: new Date().toISOString(),
+    });
+    if (error) return { error: error.message };
+    return { error: null };
+  } catch (e) {
+    return { error: String(e && e.message ? e.message : e) };
+  }
+}
+
 function subscribeDevSettingsRealtime(onRemoteChange) {
   const c = getClient();
   const { code } = getConfig();
@@ -796,6 +842,8 @@ window.Sync = {
   pullDevSettings,
   pushDevSettings,
   subscribeDevSettingsRealtime,
+  fetchPublicDevSettings,
+  pushPublicDevSettings,
   pullSubjects,
   pushSubject,
   subscribeSubjectsRealtime,

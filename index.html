@@ -149,7 +149,12 @@
     </button>
     <div class="body-logo-speech" id="body-logo-speech" hidden>
       <p class="body-logo-speech-text" id="body-logo-speech-text"></p>
-      <button type="button" class="body-logo-speech-next" id="body-logo-speech-next" hidden>Suite →</button>
+      <!-- Round 4, partie 3 : bouton "Précédent" en plus de "Suite", pour
+           revenir en arrière dans une série de plusieurs messages. -->
+      <div class="body-logo-speech-nav" id="body-logo-speech-nav">
+        <button type="button" class="body-logo-speech-prev" id="body-logo-speech-prev" hidden>← Précédent</button>
+        <button type="button" class="body-logo-speech-next" id="body-logo-speech-next" hidden>Suite →</button>
+      </div>
     </div>
   </div>
 
@@ -1211,6 +1216,22 @@
           "aide" sur cette page.
         </p>
         <div id="dev-help-messages-list" class="dev-help-messages-list"></div>
+      </div>
+
+      <!-- Round 4, partie 3 : publie TOUS les réglages ci-dessus (couleurs,
+           icônes, messages d'aide...) pour qu'ils s'appliquent à tout le
+           monde (élèves, profs, nouveaux appareils) dès leur prochain
+           démarrage, sans attendre une nouvelle version de l'appli. -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Publication</h3>
+        <p class="field-hint settings-block-hint">
+          Par défaut, tout ce que tu changes ci-dessus ne s'applique que sur
+          CET appareil. Ce bouton publie l'ensemble des réglages actuels
+          pour qu'ils deviennent ceux de tout le monde (nécessite d'être
+          connecté avec ton compte, page Compte).
+        </p>
+        <button type="button" class="btn" id="dev-publish-public-btn">Publier ces réglages pour tous les utilisateurs</button>
+        <p class="field-hint" id="dev-publish-public-result" style="margin-top:8px;"></p>
       </div>
 
       <!-- Round 4, partie 2 : le mode développeur reste dans l'appli mais
