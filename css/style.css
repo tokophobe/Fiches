@@ -3712,6 +3712,47 @@ button.home-btn {
   gap: 4px;
 }
 
+/* Round 4, partie 2 : éditeur des messages d'aide du robot, une textarea
+   par page (une ligne = un message). */
+.dev-help-messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dev-help-messages-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(31, 41, 55, 0.1);
+}
+
+.dev-help-messages-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.dev-help-messages-title {
+  font-family: var(--font-type);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.dev-help-messages-textarea {
+  width: 100%;
+  min-height: 64px;
+  resize: vertical;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1.5px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+}
+
 /* Grille de réglages X/Y/diamètre par cercle (item 3). */
 .dev-home-layout-list {
   display: flex;

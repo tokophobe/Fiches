@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v136";
+  const APP_VERSION = "v137";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -395,6 +395,29 @@
      vraie séparation développeur/utilisateur viendra plus tard.
   --------------------------------------------------------- */
   const DEV_SETTINGS_KEY = "fiches_dev_settings";
+  // Round 4, partie 2 : le mode développeur reste dans l'appli (pas de page
+  // séparée) mais n'est plus visible par défaut — il ne l'était pas assez
+  // caché jusqu'ici (bouton/onglet ordinaires, accessibles à n'importe qui,
+  // y compris les élèves/profs des Classes). Débloqué sur un appareil via
+  // un geste discret (7 appuis sur le numéro de version, page Réglages),
+  // mémorisé localement (jamais synchronisé, jamais transmis aux autres
+  // appareils/comptes).
+  const DEV_UNLOCK_KEY = "fiches_dev_unlocked";
+  function isDevUnlocked() {
+    return localStorage.getItem(DEV_UNLOCK_KEY) === "1";
+  }
+  function setDevUnlocked(v) {
+    if (v) localStorage.setItem(DEV_UNLOCK_KEY, "1");
+    else localStorage.removeItem(DEV_UNLOCK_KEY);
+    updateDevModeVisibility();
+  }
+  function updateDevModeVisibility() {
+    const unlocked = isDevUnlocked();
+    const devTab = document.querySelector('.tab[data-view="dev"]');
+    if (devTab) devTab.hidden = !unlocked;
+    const devCircle = document.querySelector('.home-circle[data-key="dev"]');
+    if (devCircle) devCircle.hidden = !unlocked;
+  }
   const DEFAULT_RATING_LABELS = { again: "😵‍💫", hard: "🤔", good: "🙂", easy: "😎" };
   const DEFAULT_NAV_LABELS = {
     review: "🤓", manage: "🗃️", cards: "📄", stats: "📊", settings: "⚙",
@@ -616,19 +639,56 @@
   // ou plusieurs messages d'aide selon la page — un tableau permet une
   // petite série façon tuto (voir bouton "Suite", round 4), une simple
   // chaîne reste acceptée pour un message unique.
-  const BODY_LOGO_SPEECH_BY_VIEW = {
+  const DEFAULT_HELP_MESSAGES_BY_VIEW = {
     manage: ["Lorsque tu mets une fiche dans un dossier vide, il se transforme alors en boîte à fiches."],
     "revision-program": ["A ta place, voici ce que je réviserais en priorité, dans l'ordre :"],
+    review: [],
+    cards: [],
+    stats: [],
+    sync: [],
+    calendar: [],
+    classes: [],
+    "classes-student": [],
+    "classes-teacher": [],
+    account: [],
+    settings: [],
+    dev: [],
+    "new-card": [],
+    "boite-picker": [],
+    "mode-assign": [],
+  };
+  // Round 4, partie 2 : intitulés amicaux de chaque page, pour l'éditeur du
+  // mode développeur — mêmes clés que DEFAULT_HELP_MESSAGES_BY_VIEW.
+  const HELP_VIEW_LABELS = {
+    review: "Réviser",
+    manage: "Gérer (Organisation)",
+    cards: "Fiches",
+    stats: "Statistiques",
+    sync: "Synchronisation",
+    calendar: "Calendrier",
+    "revision-program": "Programme de révision",
+    classes: "Classes (page d'accueil)",
+    "classes-student": "Classes — J'apprends",
+    "classes-teacher": "Classes — J'enseigne",
+    account: "Compte",
+    settings: "Réglages",
+    dev: "Développeur",
+    "new-card": "Nouvelle fiche",
+    "boite-picker": "Sélecteur de boîte(s)",
+    "mode-assign": "Affecter un mode",
   };
   // Round 4 : le robot ne dit plus rien par défaut — une petite bulle
   // "aide" cliquable apparaît à côté de lui quand la page a un message, et
   // c'est ce clic qui ouvre la bulle de parole (fermée à chaque changement
   // de page). Une série de plusieurs messages se parcourt avec "Suite".
+  // Round 4, partie 2 : les messages viennent maintenant des réglages
+  // développeur (éditables dans l'appli), avec les valeurs ci-dessus comme
+  // défaut tant que rien n'a été personnalisé.
   let bodyLogoSpeechMessages = [];
   let bodyLogoSpeechIndex = 0;
   function applyBodyLogoSpeech(view) {
-    const raw = BODY_LOGO_SPEECH_BY_VIEW[view];
-    bodyLogoSpeechMessages = Array.isArray(raw) ? raw : raw ? [raw] : [];
+    const raw = loadDevSettings().helpMessagesByView[view];
+    bodyLogoSpeechMessages = Array.isArray(raw) ? raw.filter((m) => m && m.trim()) : raw ? [raw] : [];
     bodyLogoSpeechIndex = 0;
     renderBodyLogoSpeechState(false);
   }
@@ -862,6 +922,12 @@
       iconBank: { ...DEFAULT_ICON_BANK_CHOICES, ...(parsed.iconBank || {}) },
       orgIconBank: { ...DEFAULT_ORG_ICON_BANK_CHOICES, ...(parsed.orgIconBank || {}) },
       ratingColors: { ...DEFAULT_RATING_COLORS, ...(parsed.ratingColors || {}) },
+      // Round 4, partie 2 : messages d'aide du robot par page, éditables
+      // dans le mode développeur. Fusion clé par clé comme les autres
+      // groupes : une page personnalisée (même avec un tableau vide,
+      // volontairement) remplace entièrement la valeur par défaut de
+      // cette page, elle ne se mélange pas avec elle.
+      helpMessagesByView: { ...DEFAULT_HELP_MESSAGES_BY_VIEW, ...(parsed.helpMessagesByView || {}) },
       ratingBtnBgColor: parsed.ratingBtnBgColor || DEFAULT_RATING_BTN_BG_COLOR,
       modeColors: { ...DEFAULT_MODE_COLORS, ...(parsed.modeColors || {}) },
       customModeColors: { ...(parsed.customModeColors || {}) },
@@ -3682,6 +3748,7 @@
 
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     el("view-mode-assign").classList.add("is-active");
+    applyBodyLogoSpeech("mode-assign");
   }
 
   // Conservé pour compatibilité avec les anciens appels (page Réviser) —
@@ -3705,6 +3772,7 @@
       targetTab.classList.add("is-active");
       targetTab.setAttribute("aria-selected", "true");
     }
+    applyBodyLogoSpeech(targetView);
   }
 
   const assignBackBtn = el("assign-back-btn");
@@ -4304,10 +4372,18 @@
     const homeBtnEl = el("home-btn");
     if (homeBtnEl) homeBtnEl.hidden = false;
     if (el("body-logo-row")) el("body-logo-row").hidden = false;
+    applyBodyLogoSpeech("boite-picker");
   }
 
   function closeBoitePickerView() {
-    boitePickerActivateView(boitePickerReturnViewId || "view-home");
+    const returnViewId = boitePickerReturnViewId || "view-home";
+    boitePickerActivateView(returnViewId);
+    // Round 4, partie 2 : en revenant sur la page d'où on est parti, la
+    // bulle d'aide doit refléter CETTE page, pas garder le message (ou
+    // l'absence de message) du sélecteur de boîte(s).
+    if (returnViewId !== "view-home") {
+      applyBodyLogoSpeech(returnViewId.replace(/^view-/, ""));
+    }
   }
 
   const boitePickerBackBtn = el("boite-picker-back-btn");
@@ -7621,11 +7697,46 @@
     renderCardScoreEditor();
     renderGaugeColorsEditor();
     renderFactoryDefaultsEditor();
+    renderHelpMessagesEditor();
     // Après TOUS les autres rendus ci-dessus : ils régénèrent leurs propres
     // <input class="dev-color-value"> dynamiquement, donc les pastilles
     // (et curseurs T/S/L) doivent être posées en tout dernier pour ne
     // rater aucun d'entre eux.
     enhanceColorInputsWithHsl();
+  }
+
+  /** Round 4, partie 2 : éditeur des messages d'aide du robot, une textarea
+   *  par page (une ligne = un message, dans l'ordre du bouton "Suite"). */
+  function renderHelpMessagesEditor() {
+    const wrap = el("dev-help-messages-list");
+    if (!wrap) return;
+    const settings = loadDevSettings();
+    const viewKeys = Object.keys(DEFAULT_HELP_MESSAGES_BY_VIEW);
+    wrap.innerHTML = viewKeys
+      .map((key) => {
+        const messages = settings.helpMessagesByView[key] || [];
+        const value = messages.join("\n");
+        return `<div class="dev-help-messages-row">
+          <span class="dev-help-messages-title">${HELP_VIEW_LABELS[key] || key}</span>
+          <textarea class="dev-help-messages-textarea" data-key="${key}" placeholder="Aucun message — pas de bulle d'aide sur cette page.">${value.replace(/</g, "&lt;")}</textarea>
+        </div>`;
+      })
+      .join("");
+    wrap.querySelectorAll(".dev-help-messages-textarea").forEach((textarea) => {
+      textarea.addEventListener("change", () => {
+        const s = loadDevSettings();
+        const lines = textarea.value.split("\n").map((l) => l.trim()).filter((l) => l.length > 0);
+        s.helpMessagesByView[textarea.dataset.key] = lines;
+        saveDevSettings(s);
+        // La page actuellement affichée peut être celle qu'on vient
+        // d'éditer : on rafraîchit sa bulle d'aide tout de suite plutôt
+        // que d'attendre le prochain changement de page.
+        const activeView = document.querySelector(".view.is-active");
+        if (activeView && activeView.id === `view-${textarea.dataset.key}`) {
+          applyBodyLogoSpeech(textarea.dataset.key);
+        }
+      });
+    });
   }
 
 
@@ -7636,6 +7747,15 @@
    *  détection automatique de nouvelle version reste bloquée (observé sur
    *  GitHub Pages, qui ne permet pas de fixer nous-mêmes les en-têtes de
    *  cache HTTP — voir aussi updateViaCache: "none" plus bas). */
+  const devHideDevModeBtn = el("dev-hide-dev-mode-btn");
+  if (devHideDevModeBtn) {
+    devHideDevModeBtn.addEventListener("click", () => {
+      setDevUnlocked(false);
+      const homeBtnEl = el("home-btn");
+      if (homeBtnEl) homeBtnEl.click();
+    });
+  }
+
   const settingHardResetEl = el("setting-hard-reset");
   if (settingHardResetEl) {
     settingHardResetEl.addEventListener("click", async () => {
@@ -8728,6 +8848,7 @@
   async function openClassesSubView(which) {
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     el(which === "teacher" ? "view-classes-teacher" : "view-classes-student").classList.add("is-active");
+    applyBodyLogoSpeech(which === "teacher" ? "classes-teacher" : "classes-student");
     if (which === "teacher") {
       await renderTeacherClasses();
     } else {
@@ -8738,6 +8859,7 @@
   function closeClassesSubView() {
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     el("view-classes").classList.add("is-active");
+    applyBodyLogoSpeech("classes");
     renderClassesView();
   }
   const classesGotoStudentBtn = el("classes-goto-student-btn");
@@ -9576,6 +9698,29 @@
   --------------------------------------------------------- */
   const appVersionLabelEl = el("app-version-label");
   if (appVersionLabelEl) appVersionLabelEl.textContent = `Version installée : ${APP_VERSION}`;
+  // Round 4, partie 2 : geste discret pour débloquer le mode développeur
+  // sur cet appareil (7 appuis rapides sur le numéro de version) — le
+  // bouton/onglet "Développeur" reste caché pour tout le monde tant que ce
+  // geste n'a pas été fait.
+  if (appVersionLabelEl) {
+    let devTapCount = 0;
+    let devTapTimer = null;
+    appVersionLabelEl.style.cursor = "pointer";
+    appVersionLabelEl.addEventListener("click", () => {
+      if (isDevUnlocked()) return;
+      devTapCount += 1;
+      clearTimeout(devTapTimer);
+      devTapTimer = setTimeout(() => {
+        devTapCount = 0;
+      }, 1500);
+      if (devTapCount >= 7) {
+        devTapCount = 0;
+        setDevUnlocked(true);
+        robotAlert("Mode développeur débloqué sur cet appareil.");
+      }
+    });
+  }
+  updateDevModeVisibility();
   const checkUpdateBtn = el("check-update-btn");
   const checkUpdateResultEl = el("check-update-result");
   if ("serviceWorker" in navigator) {
