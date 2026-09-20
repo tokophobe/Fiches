@@ -141,7 +141,16 @@
        développeur (voir dev-body-logo-list). -->
   <div class="body-logo-row" id="body-logo-row" hidden>
     <img src="./icons/logo.png" alt="" id="body-logo" class="body-logo" />
-    <p class="body-logo-speech" id="body-logo-speech"></p>
+    <!-- Round 4 : le robot ne parle plus tout seul par défaut — une petite
+         bulle "aide" cliquable apparaît à côté de lui quand cette page a un
+         message, et c'est ce clic qui affiche la bulle de parole complète. -->
+    <button type="button" class="body-logo-help-btn" id="body-logo-help-btn" title="Aide" hidden>
+      <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.2 9a2.8 2.8 0 0 1 5.4 1c0 1.8-2.6 2.2-2.6 3.8"/><circle cx="12" cy="17.3" r="0.9" fill="currentColor" stroke="none"/></svg>
+    </button>
+    <div class="body-logo-speech" id="body-logo-speech" hidden>
+      <p class="body-logo-speech-text" id="body-logo-speech-text"></p>
+      <button type="button" class="body-logo-speech-next" id="body-logo-speech-next" hidden>Suite →</button>
+    </div>
   </div>
 
   <!-- Round 3, item 3 : remplace toutes les alert()/confirm() natives par

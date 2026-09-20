@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v135";
+  const APP_VERSION = "v136";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -612,27 +612,71 @@
   // Items 1/2/6 (dernier lot) : logo affiché en haut du corps de chaque
   // autre page (taille + ombre, indépendantes de celles de l'accueil).
   const DEFAULT_BODY_LOGO = { size: 40, shadow: false };
-  // Items 4 et 5 (nouveau lot) : le robot (logo en haut du corps de page)
-  // peut porter un texte de "bulle de parole" différent selon la page.
+  // Items 4 et 5 : le robot (logo en haut du corps de page) peut porter un
+  // ou plusieurs messages d'aide selon la page — un tableau permet une
+  // petite série façon tuto (voir bouton "Suite", round 4), une simple
+  // chaîne reste acceptée pour un message unique.
   const BODY_LOGO_SPEECH_BY_VIEW = {
-    manage: "Lorsque tu mets une fiche dans un dossier vide, il se transforme alors en boîte à fiches.",
-    "revision-program": "A ta place, voici ce que je réviserais en priorité, dans l'ordre :",
+    manage: ["Lorsque tu mets une fiche dans un dossier vide, il se transforme alors en boîte à fiches."],
+    "revision-program": ["A ta place, voici ce que je réviserais en priorité, dans l'ordre :"],
   };
+  // Round 4 : le robot ne dit plus rien par défaut — une petite bulle
+  // "aide" cliquable apparaît à côté de lui quand la page a un message, et
+  // c'est ce clic qui ouvre la bulle de parole (fermée à chaque changement
+  // de page). Une série de plusieurs messages se parcourt avec "Suite".
+  let bodyLogoSpeechMessages = [];
+  let bodyLogoSpeechIndex = 0;
   function applyBodyLogoSpeech(view) {
+    const raw = BODY_LOGO_SPEECH_BY_VIEW[view];
+    bodyLogoSpeechMessages = Array.isArray(raw) ? raw : raw ? [raw] : [];
+    bodyLogoSpeechIndex = 0;
+    renderBodyLogoSpeechState(false);
+  }
+  function renderBodyLogoSpeechState(open) {
+    const helpBtn = el("body-logo-help-btn");
     const speechEl = el("body-logo-speech");
-    if (!speechEl) return;
-    const text = BODY_LOGO_SPEECH_BY_VIEW[view] || "";
-    if (speechEl.textContent === text) return;
-    speechEl.textContent = text;
-    // Item 2 (nouveau lot) : petite animation "pop" à chaque nouveau
-    // message, pour bien montrer que c'est un nouveau propos du robot.
-    speechEl.classList.remove("is-popping");
-    if (text) {
-      // Forcer un reflow pour pouvoir rejouer l'animation même si la
-      // classe venait juste d'être retirée.
+    const textEl = el("body-logo-speech-text");
+    const nextBtn = el("body-logo-speech-next");
+    if (!helpBtn || !speechEl || !textEl || !nextBtn) return;
+    const hasMessages = bodyLogoSpeechMessages.length > 0;
+    const isOpen = hasMessages && open;
+    helpBtn.hidden = !hasMessages || isOpen;
+    speechEl.hidden = !isOpen;
+    if (!isOpen) return;
+    const text = bodyLogoSpeechMessages[bodyLogoSpeechIndex] || "";
+    if (textEl.textContent !== text) {
+      textEl.textContent = text;
+      // Petite animation "pop" à chaque nouveau message, pour bien montrer
+      // que c'est un nouveau propos du robot.
+      speechEl.classList.remove("is-popping");
       void speechEl.offsetWidth;
       speechEl.classList.add("is-popping");
     }
+    nextBtn.hidden = bodyLogoSpeechIndex >= bodyLogoSpeechMessages.length - 1;
+  }
+  const bodyLogoHelpBtn = el("body-logo-help-btn");
+  if (bodyLogoHelpBtn) {
+    bodyLogoHelpBtn.addEventListener("click", () => {
+      bodyLogoSpeechIndex = 0;
+      renderBodyLogoSpeechState(true);
+    });
+  }
+  const bodyLogoSpeechEl = el("body-logo-speech");
+  if (bodyLogoSpeechEl) {
+    // Cliquer sur la bulle elle-même la referme (sauf sur le bouton
+    // "Suite", qui a son propre comportement).
+    bodyLogoSpeechEl.addEventListener("click", (e) => {
+      if (e.target.closest("#body-logo-speech-next")) return;
+      renderBodyLogoSpeechState(false);
+    });
+  }
+  const bodyLogoSpeechNextBtn = el("body-logo-speech-next");
+  if (bodyLogoSpeechNextBtn) {
+    bodyLogoSpeechNextBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      bodyLogoSpeechIndex = Math.min(bodyLogoSpeechIndex + 1, bodyLogoSpeechMessages.length - 1);
+      renderBodyLogoSpeechState(true);
+    });
   }
   /* Round 3, item 3 : le robot "parle" pour tous les messages de l'appli
    *  (information, avertissement, confirmation) — remplace les alert()/

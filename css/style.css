@@ -1206,7 +1206,10 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   position: relative;
   flex: 1;
   min-width: 0;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
   font-family: var(--font-mono);
   font-size: 13px;
   font-weight: 600;
@@ -1217,9 +1220,52 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   border-radius: 14px;
   padding: 9px 12px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  cursor: pointer;
 }
 
-.body-logo-speech:empty { display: none; }
+.body-logo-speech[hidden] { display: none; }
+
+.body-logo-speech-text {
+  margin: 0;
+  width: 100%;
+}
+
+/* Round 4 : bouton "Suite" pour dérouler un message d'aide qui en compte
+   plusieurs, un peu comme un tuto — masqué sur le dernier message d'une
+   série (voir renderBodyLogoSpeechState). */
+.body-logo-speech-next {
+  font-family: var(--font-type);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1.5px solid var(--speech-bubble-border-color, var(--rule));
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+}
+.body-logo-speech-next[hidden] { display: none; }
+
+/* Round 4 : petite bulle "aide" ronde, cliquable, affichée à côté du robot
+   quand la page a un message à proposer — le robot ne parle plus tout
+   seul par défaut, c'est ce bouton qui ouvre la bulle de parole. */
+.body-logo-help-btn {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--speech-bubble-text-color, var(--ink));
+  background: var(--speech-bubble-bg-color, var(--paper-2));
+  border: 1.5px solid var(--speech-bubble-border-color, var(--rule));
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  cursor: pointer;
+}
+.body-logo-help-btn svg { width: 16px; height: 16px; }
+.body-logo-help-btn[hidden] { display: none; }
 
 /* Pointe de la bulle, dirigée vers le robot (à gauche). */
 .body-logo-speech::before,
