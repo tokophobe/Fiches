@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v134";
+  const APP_VERSION = "v135";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -634,6 +634,84 @@
       speechEl.classList.add("is-popping");
     }
   }
+  /* Round 3, item 3 : le robot "parle" pour tous les messages de l'appli
+   *  (information, avertissement, confirmation) — remplace les alert()/
+   *  confirm() natifs du navigateur, jugés trop bruts et pas cohérents
+   *  avec le personnage du robot déjà utilisé ailleurs dans l'appli.
+   *  showRobotMessage(text, {buttons}) affiche la bulle en superposition
+   *  et résout une Promise avec la "value" du bouton cliqué (ou la touche
+   *  Échap, traitée comme une annulation). robotAlert/robotConfirm sont
+   *  des raccourcis pour les deux cas d'usage les plus courants. */
+  function showRobotMessage(text, opts) {
+    opts = opts || {};
+    const buttons = opts.buttons || [{ label: "OK", value: true, primary: true }];
+    const overlay = el("robot-modal-overlay");
+    const textEl = el("robot-modal-text");
+    const actions = el("robot-modal-actions");
+    if (!overlay || !textEl || !actions) {
+      // Repli très défensif si jamais le balisage manque (ne devrait pas
+      // arriver) : on ne bloque pas l'appli, on résout juste positivement.
+      return Promise.resolve(buttons[buttons.length - 1].value);
+    }
+    return new Promise((resolve) => {
+      textEl.textContent = text;
+      actions.innerHTML = "";
+      let settled = false;
+      function close(value) {
+        if (settled) return;
+        settled = true;
+        overlay.hidden = true;
+        document.removeEventListener("keydown", onKeydown, true);
+        resolve(value);
+      }
+      function onKeydown(e) {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          close(opts.cancelValue !== undefined ? opts.cancelValue : false);
+        }
+      }
+      buttons.forEach((b) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className =
+          "robot-modal-btn" +
+          (b.primary ? " robot-modal-btn--primary" : "") +
+          (b.danger ? " robot-modal-btn--danger" : "");
+        btn.textContent = b.label;
+        btn.addEventListener("click", () => close(b.value));
+        actions.appendChild(btn);
+      });
+      overlay.hidden = false;
+      document.addEventListener("keydown", onKeydown, true);
+      requestAnimationFrame(() => {
+        const first = actions.querySelector(".robot-modal-btn--primary") || actions.querySelector("button");
+        if (first) first.focus();
+      });
+    });
+  }
+  /** Remplace alert("...") : un seul bouton OK, résout quand il est fermé. */
+  function robotAlert(text) {
+    return showRobotMessage(text, { buttons: [{ label: "OK", value: true, primary: true }] });
+  }
+  /** Remplace confirm("...") : deux boutons, résout true/false. Le bouton
+   *  de confirmation est marqué "danger" (rouge) pour les actions
+   *  destructrices (suppressions), pour garder le même signal visuel
+   *  qu'ailleurs dans l'appli. */
+  function robotConfirm(text, opts) {
+    opts = opts || {};
+    return showRobotMessage(text, {
+      buttons: [
+        { label: opts.cancelLabel || "Annuler", value: false },
+        {
+          label: opts.okLabel || "Confirmer",
+          value: true,
+          primary: !opts.danger,
+          danger: !!opts.danger,
+        },
+      ],
+    });
+  }
+
   const LOGO_SHADOW_FILTER = "drop-shadow(0 3px 5px rgba(0,0,0,0.35))";
   // Disposition de la page Réviser (item 1c) : hauteur/largeur de la fiche
   // et position Y de son bord haut, position Y des boutons d'évaluation
@@ -2824,7 +2902,12 @@
         score: subjScore,
         mode: getSubjectAlgoMode(subjectId),
         onRename: () => (isSelfLinkedFolder ? renameFolder(subjectId) : renameSubject(subjectId)),
-        onMove: () => openMovePicker(isSelfLinkedFolder ? "folder" : "subject", subjectId),
+        onMove: async () => {
+          // Round 3, item 1 : une boîte partagée par un professeur reste
+          // là où LUI l'a organisée — on ne peut pas la déplacer ici.
+          if (!isSelfLinkedFolder && (await blockIfSharedReadonly(subjectId))) return;
+          openMovePicker(isSelfLinkedFolder ? "folder" : "subject", subjectId);
+        },
         onDelete: () => deleteSubject(subjectId),
         onAlgo: () => openSubjectAlgoView(subjectId),
         deleteTitle: "Supprimer cette boîte",
@@ -2863,7 +2946,12 @@
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
       nameBtn.title = "Réviser ce dossier";
-      nameBtn.innerHTML = `${iconSvgMarkup("folder", "icon-inline-svg")} <span>${escapeHtml(f.name)}</span>`;
+      // Round 3, item 1 : le dossier racine d'une classe (créé
+      // automatiquement chez l'élève) porte l'icône "classe" plutôt que
+      // l'icône dossier classique, pour qu'on le distingue au premier coup
+      // d'œil dans l'arborescence.
+      const folderIconMarkup = f.sharedClassRoot ? CLASSES_ROW_ICON : iconSvgMarkup("folder", "icon-inline-svg");
+      nameBtn.innerHTML = `${folderIconMarkup} <span>${escapeHtml(f.name)}</span>`;
       // Item 7 (lot précédent) : un clic sur un dossier mène directement à
       // la page Réviser correspondante (au lieu de la page Fiches). Item 3
       // (nouveau lot) : Accueil depuis Réviser ramène alors ici.
@@ -2885,9 +2973,21 @@
         countLabel: `${n} boîte${n > 1 ? "s" : ""}`,
         score: folderScore,
         mode: "normal",
-        onRename: () => renameFolder(f.id),
-        onMove: () => openMovePicker("folder", f.id),
-        onDelete: () => deleteFolder(f.id),
+        // Round 3, item 1 : un dossier de classe (racine ou reconstitué)
+        // reste organisé par le professeur — le mode d'apprentissage
+        // (onAlgo) reste, lui, un réglage personnel, donc autorisé.
+        onRename: async () => {
+          if (await blockIfSharedClassFolder(f.id)) return;
+          await renameFolder(f.id);
+        },
+        onMove: async () => {
+          if (await blockIfSharedClassFolder(f.id)) return;
+          openMovePicker("folder", f.id);
+        },
+        onDelete: async () => {
+          if (await blockIfSharedClassFolder(f.id)) return;
+          await deleteFolder(f.id);
+        },
         onAlgo: () => openAssignView("folder", f.id, "manage"),
         deleteTitle: "Supprimer ce dossier (doit être vide)",
       });
@@ -2944,6 +3044,9 @@
       selfSubject.updatedAt = f.updatedAt;
       await persistSubject(selfSubject);
     }
+    // Round 3, item 1 : ce renommage peut changer le chemin affiché d'une
+    // boîte partagée nichée plus bas dans ce dossier.
+    await pushSharedBoxUpdatesForAllSharedSubjects();
     renderSubjectManageList();
   }
 
@@ -2955,11 +3058,11 @@
       return;
     }
     if (!folderIsEmpty(folderId)) {
-      alert("Ce dossier n'est pas vide : déplace ou supprime d'abord ce qu'il contient.");
+      await robotAlert("Ce dossier n'est pas vide : déplace ou supprime d'abord ce qu'il contient.");
       return;
     }
     const f = folders.find((x) => x.id === folderId);
-    if (!confirm(`Supprimer le dossier « ${f ? f.name : ""} » ?`)) return;
+    if (!(await robotConfirm(`Supprimer le dossier « ${f ? f.name : ""} » ?`, { danger: true }))) return;
     folders = folders.filter((x) => x.id !== folderId);
     if (f) await pushFolderDeleted(f);
     await DB.removeFolder(folderId);
@@ -2974,6 +3077,13 @@
     // liste des destinations possibles (on ne peut pas le déplacer dans
     // lui-même ou l'un de ses propres sous-dossiers).
     const excluded = kind === "folder" ? new Set([targetId, ...folderDescendantIds(targetId)]) : new Set();
+    // Round 3, item 1 : le dossier racine d'une classe (et donc tout son
+    // sous-arbre, jamais atteint puisqu'on ne descend pas dedans) n'est
+    // jamais une destination valide — cette organisation appartient au
+    // professeur, on n'y dépose rien depuis ici.
+    folders.forEach((f) => {
+      if (f.sharedClassRoot) excluded.add(f.id);
+    });
     const name = kind === "folder" ? (folders.find((f) => f.id === targetId) || {}).name : (subjects.find((s) => s.id === targetId) || {}).name;
 
     openBoitePickerView({
@@ -2996,6 +3106,9 @@
             await persistSubject(s);
           }
         }
+        // Round 3, item 1 : ce déplacement peut changer le chemin affiché
+        // d'une (ou, pour un dossier déplacé, plusieurs) boîte(s) partagée(s).
+        await pushSharedBoxUpdatesForAllSharedSubjects();
         closeBoitePickerView();
         renderSubjectManageList();
       },
@@ -3369,7 +3482,7 @@
       const modes = loadLearningModes();
       const m = modes[algoEditingModeId];
       if (!m || m.builtin) return;
-      if (!confirm(`Supprimer le mode « ${m.name} » ? Les boîtes qui l'utilisent repasseront en mode Normal.`)) return;
+      if (!(await robotConfirm(`Supprimer le mode « ${m.name} » ? Les boîtes qui l'utilisent repasseront en mode Normal.`, { danger: true }))) return;
       await deleteCustomMode(algoEditingModeId);
       const remaining = Object.values(loadLearningModes()).filter((x) => !x.builtin);
       if (remaining.length > 0) {
@@ -3411,11 +3524,11 @@
 
   const algoResetBtn = el("algo-reset-btn");
   if (algoResetBtn) {
-    algoResetBtn.addEventListener("click", () => {
+    algoResetBtn.addEventListener("click", async () => {
       const modes = loadLearningModes();
       const m = modes[algoEditingModeId];
       if (!m || !m.builtin) return;
-      if (!confirm(`Remettre le mode ${m.name} à ses valeurs d'origine ? Toutes les boîtes qui l'utilisent seront concernées.`)) return;
+      if (!(await robotConfirm(`Remettre le mode ${m.name} à ses valeurs d'origine ? Toutes les boîtes qui l'utilisent seront concernées.`))) return;
       updateModeProfile(algoEditingModeId, getFactoryDefaults()[algoEditingModeId]);
       loadModeFormIntoInputs(algoEditingModeId);
       renderSubjectAlgoBadge();
@@ -3565,7 +3678,7 @@
         return daysAhead > 10;
       });
       if (targets.length === 0) {
-        alert("Aucune fiche de cette boîte n'a une prochaine interrogation prévue dans plus de 10 jours.");
+        await robotAlert("Aucune fiche de cette boîte n'a une prochaine interrogation prévue dans plus de 10 jours.");
         return;
       }
       const msg =
@@ -3573,7 +3686,7 @@
         `interrogation à 10 jours pour ${targets.length} fiche${targets.length > 1 ? "s" : ""} ` +
         `de « ${subject ? subject.name : ""} » (celles actuellement prévues dans plus de 10 jours). ` +
         `Cette action est irréversible. Continuer ?`;
-      if (!confirm(msg)) return;
+      if (!(await robotConfirm(msg, { danger: true }))) return;
 
       const due = new Date(today);
       due.setDate(due.getDate() + 10);
@@ -3586,7 +3699,7 @@
       renderStats();
       renderManageList();
       renderDuePill();
-      alert(`${targets.length} fiche${targets.length > 1 ? "s" : ""} ramenée${targets.length > 1 ? "s" : ""} à 10 jours.`);
+      await robotAlert(`${targets.length} fiche${targets.length > 1 ? "s" : ""} ramenée${targets.length > 1 ? "s" : ""} à 10 jours.`);
     });
   }
 
@@ -3611,16 +3724,32 @@
     const s = subjects.find((x) => x.id === subjectId);
     return !!(s && s.sharedBoxId);
   }
-  function blockIfSharedReadonly(subjectId) {
+  async function blockIfSharedReadonly(subjectId) {
     if (isSharedReadonlySubject(subjectId)) {
-      alert("Cette boîte est partagée par ton professeur : elle se met à jour toute seule, tu ne peux pas la modifier ici.");
+      await robotAlert("Cette boîte est partagée par ton professeur : elle se met à jour toute seule, tu ne peux pas la modifier ici.");
+      return true;
+    }
+    return false;
+  }
+  /** Round 3, item 1 : un dossier fait partie du miroir en lecture seule
+   *  d'une classe (dossier racine de la classe, ou sous-dossier reconstitué
+   *  pour suivre l'organisation du prof) si `sharedClassId` est posé dessus
+   *  — toute réorganisation y est bloquée, même logique que pour une boîte
+   *  partagée (voir isSharedReadonlySubject ci-dessus). */
+  function isSharedClassFolder(folderId) {
+    const f = folders.find((x) => x.id === folderId);
+    return !!(f && f.sharedClassId);
+  }
+  async function blockIfSharedClassFolder(folderId) {
+    if (isSharedClassFolder(folderId)) {
+      await robotAlert("Ce dossier fait partie d'une classe : son organisation est gérée par ton professeur, tu ne peux pas la modifier ici.");
       return true;
     }
     return false;
   }
 
   async function renameSubject(id) {
-    if (blockIfSharedReadonly(id)) return;
+    if (await blockIfSharedReadonly(id)) return;
     const s = subjects.find((x) => x.id === id);
     if (!s) return;
     const name = prompt("Nouveau nom de la boîte :", s.name);
@@ -3636,9 +3765,9 @@
   }
 
   async function deleteSubject(id) {
-    if (blockIfSharedReadonly(id)) return;
+    if (await blockIfSharedReadonly(id)) return;
     if (subjects.length <= 1) {
-      alert("Impossible de supprimer la dernière boîte restante.");
+      await robotAlert("Impossible de supprimer la dernière boîte restante.");
       return;
     }
     const s = subjects.find((x) => x.id === id);
@@ -3648,7 +3777,7 @@
       n > 0
         ? `Supprimer la boîte « ${s.name} » et ses ${n} fiche(s) ? Cette action est irréversible.`
         : `Supprimer la boîte « ${s.name} » ?`;
-    if (!confirm(confirmMsg)) return;
+    if (!(await robotConfirm(confirmMsg, { danger: true }))) return;
 
     // Suppression douce des fiches de cette boîte (cohérent avec la sync).
     const toDelete = cards.filter((c) => !c.deleted && c.subject === id);
@@ -3872,7 +4001,12 @@
       const expanded = pickerExpandedFolders.has(f.id);
       const ids = subjectIdsInFolder(f.id);
       const isEmpty = folderIsEmpty(f.id);
-      const rowSelectable = ctx.mode === "single" && (ctx.folderAlwaysSelectable || isEmpty);
+      // Round 3, item 1 : un dossier vide de classe ne doit jamais pouvoir
+      // devenir une boîte via ce raccourci (sélecteur "Nouvelle fiche") —
+      // seule une sélection "dossier entier" (folderAlwaysSelectable, ex.
+      // Réviser/événement de calendrier) reste possible dessus.
+      const rowSelectable =
+        ctx.mode === "single" && (ctx.folderAlwaysSelectable || (isEmpty && !f.sharedClassId));
       const { li, cb } = buildPickerRow({
         depth,
         isFolder: true,
@@ -4146,10 +4280,10 @@
       title: "Choisir les boîtes à réviser",
       hint: "Choisis les boîtes à réviser confondues :",
       initialSelection: loadMultiSelection(),
-      onConfirm: (selection) => {
+      onConfirm: async (selection) => {
         const { resultIds, singleSubjectId, label } = computeMultiPickerResult(selection);
         if (resultIds.length === 0) {
-          alert("Choisis au moins une boîte ou un dossier.");
+          await robotAlert("Choisis au moins une boîte ou un dossier.");
           return;
         }
         const shouldNavigateToReview = multiPickerNavigateToReviewOnConfirm;
@@ -4282,12 +4416,28 @@
     const subject = subjects.find((s) => s.id === subjectId);
     if (!subject || !subject.sharedShares || !subject.sharedShares.length) return;
     const boxCards = cards.filter((c) => !c.deleted && c.subject === subjectId);
+    // Round 3, item 1 : le chemin de dossiers actuel (côté prof) est
+    // repoussé en même temps que les fiches, pour que l'élève reconstitue
+    // la même arborescence même après une réorganisation.
+    const folderPathNames = folderPath(subject.folderId).map((f) => f.name);
     for (const share of subject.sharedShares) {
       try {
-        await Sync.classes.updateSharedBoxCards(share.boxId, boxCards);
+        await Sync.classes.updateSharedBoxCards(share.boxId, boxCards, folderPathNames);
       } catch (e) {
         console.warn("Classes: échec de la mise à jour de la boîte partagée", e);
       }
+    }
+  }
+  /** Round 3, item 1 : à appeler après tout changement de structure de
+   *  dossiers (renommage, déplacement) qui pourrait affecter le chemin
+   *  d'une ou plusieurs boîtes partagées — re-pousse toutes les boîtes
+   *  partagées d'un coup (simple et largement suffisant à cette échelle,
+   *  plutôt que de calculer précisément lesquelles sont concernées). */
+  async function pushSharedBoxUpdatesForAllSharedSubjects() {
+    if (!Sync.isConfigured()) return;
+    const sharedSubjects = subjects.filter((s) => s.sharedShares && s.sharedShares.length);
+    for (const s of sharedSubjects) {
+      await pushSharedBoxUpdatesForSubject(s.id);
     }
   }
   /** Suppression douce envoyée aux autres appareils AVANT le retrait local
@@ -5106,7 +5256,7 @@
         `Mettre cette fiche en hibernation ?\n\n` +
         `Sa prochaine interrogation sera repoussée de ${hibernateDays} jour${hibernateDays > 1 ? "s" : ""} ` +
         `(réglable dans Réglages), sans compter comme une révision — ni le calcul d'échéance, ni le statut de la fiche ne changent, elle est juste mise de côté pour plus tard.`;
-      if (!confirm(msg)) return;
+      if (!(await robotConfirm(msg))) return;
       await hibernateCurrentCard();
     });
   }
@@ -5176,7 +5326,7 @@
     if (editingId) {
       const idx = cards.findIndex((c) => c.id === editingId);
       if (idx >= 0) {
-        if (blockIfSharedReadonly(cards[idx].subject)) return;
+        if (await blockIfSharedReadonly(cards[idx].subject)) return;
         const updated = touch({ ...cards[idx], question, answer });
         await persist(updated);
         cards[idx] = updated;
@@ -5197,10 +5347,10 @@
       // corrigé — la fiche partait auparavant toujours dans la boîte
       // active de Réviser, sans lien avec ce sélecteur).
       if (!newCardSubjectId || !subjects.some((s) => s.id === newCardSubjectId)) {
-        alert("Choisis d'abord une boîte pour cette fiche.");
+        await robotAlert("Choisis d'abord une boîte pour cette fiche.");
         return;
       }
-      if (blockIfSharedReadonly(newCardSubjectId)) return;
+      if (await blockIfSharedReadonly(newCardSubjectId)) return;
       const card = newCard(question, answer, newCardSubjectId);
       await persist(card);
       cards.push(card);
@@ -5242,8 +5392,8 @@
 
   const deleteEditingCardBtn = el("delete-editing-card");
 
-  function enterEditMode(card) {
-    if (blockIfSharedReadonly(card.subject)) return;
+  async function enterEditMode(card) {
+    if (await blockIfSharedReadonly(card.subject)) return;
     openNewCardView();
     editingId = card.id;
     inputQuestion.innerHTML = toDisplayHtml(card.question);
@@ -5264,7 +5414,7 @@
   if (deleteEditingCardBtn) {
     deleteEditingCardBtn.addEventListener("click", async () => {
       if (!editingId) return;
-      if (!confirm("Supprimer définitivement cette fiche ? Cette action est irréversible.")) return;
+      if (!(await robotConfirm("Supprimer définitivement cette fiche ? Cette action est irréversible.", { danger: true }))) return;
       const id = editingId;
       editReturnToReview = false;
       exitEditMode();
@@ -5409,10 +5559,10 @@
         title: "Choisir des boîtes et/ou dossiers",
         hint: "Coche des boîtes et/ou dossiers à combiner :",
         initialSelection: loadCardsMultiSelection(),
-        onConfirm: (selection) => {
+        onConfirm: async (selection) => {
           const { resultIds, singleSubjectId, label } = computeMultiPickerResult(selection);
           if (resultIds.length === 0) {
-            alert("Choisis au moins une boîte ou un dossier.");
+            await robotAlert("Choisis au moins une boîte ou un dossier.");
             return;
           }
           saveCardsMultiSelection(resultIds);
@@ -5609,8 +5759,8 @@
   async function deleteCard(id, skipConfirm) {
     const card = cards.find((c) => c.id === id);
     if (!card) return;
-    if (blockIfSharedReadonly(card.subject)) return;
-    if (!skipConfirm && !confirm("Supprimer définitivement cette fiche ? Cette action est irréversible.")) {
+    if (await blockIfSharedReadonly(card.subject)) return;
+    if (!skipConfirm && !(await robotConfirm("Supprimer définitivement cette fiche ? Cette action est irréversible.", { danger: true }))) {
       return;
     }
     const updated = touch({ ...card, deleted: true });
@@ -5710,9 +5860,9 @@
       if (targetId === currentSubjectId) {
         startReviewSession();
       }
-      alert(`${normalized.length} fiche(s) ajoutée(s) à « ${subjectName(targetId)} ». Les fiches existantes n'ont pas été touchées.`);
+      await robotAlert(`${normalized.length} fiche(s) ajoutée(s) à « ${subjectName(targetId)} ». Les fiches existantes n'ont pas été touchées.`);
     } catch (err) {
-      alert("Import impossible : le fichier ne semble pas être un export valide.");
+      await robotAlert("Import impossible : le fichier ne semble pas être un export valide.");
     } finally {
       importInput.value = "";
       importTargetSelect.value = currentSubjectId;
@@ -5812,10 +5962,10 @@
       title: "Choisir les boîtes pour les statistiques",
       hint: "Choisis les boîtes et/ou dossiers à combiner :",
       initialSelection: loadStatsMultiSelection(),
-      onConfirm: (selection) => {
+      onConfirm: async (selection) => {
         const { resultIds, singleSubjectId, label } = computeMultiPickerResult(selection);
         if (resultIds.length === 0) {
-          alert("Choisis au moins une boîte ou un dossier.");
+          await robotAlert("Choisis au moins une boîte ou un dossier.");
           return;
         }
         closeBoitePickerView();
@@ -7723,7 +7873,7 @@
   // Item 2 : le panneau d'ajout reste caché tant qu'on n'a pas cliqué sur
   // "+ Ajouter un événement" — et sert aussi à MODIFIER un événement
   // existant (même formulaire, prérempli).
-  function openCalendarEventForm(eventToEdit) {
+  async function openCalendarEventForm(eventToEdit) {
     const form = el("calendar-event-form");
     if (!form) return;
     form.hidden = false;
@@ -7747,6 +7897,30 @@
       if (title) title.textContent = "Ajouter un événement";
       if (submitBtn) submitBtn.textContent = "Ajouter à mon calendrier";
     }
+    await populateCalendarEventClassSelect(eventToEdit);
+  }
+  /** Round 3, item 4 (squelette) : remplit le sélecteur "Partager avec une
+   *  classe" avec les classes dont l'utilisateur est prof — masqué s'il
+   *  n'en a aucune (rien à partager) ou si Sync/Compte ne sont pas prêts. */
+  async function populateCalendarEventClassSelect(eventToEdit) {
+    const field = el("calendar-event-class-field");
+    const select = el("calendar-event-class-select");
+    if (!field || !select) return;
+    if (!Sync.isConfigured() || !accountCurrentUser) {
+      field.hidden = true;
+      return;
+    }
+    const myClasses = await Sync.classes.listAsTeacher();
+    if (!myClasses.length) {
+      field.hidden = true;
+      select.value = "";
+      return;
+    }
+    field.hidden = false;
+    select.innerHTML =
+      `<option value="">Ne pas partager</option>` +
+      myClasses.map((k) => `<option value="${k.id}">${escapeHtml(k.name)}</option>`).join("");
+    select.value = eventToEdit && eventToEdit.classShare ? eventToEdit.classShare.classId : "";
   }
   function closeCalendarEventForm() {
     const form = el("calendar-event-form");
@@ -7760,18 +7934,48 @@
 
   const calendarEventForm = el("calendar-event-form");
   if (calendarEventForm) {
-    calendarEventForm.addEventListener("submit", (e) => {
+    calendarEventForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const titleInput = el("calendar-event-title");
       const dateInput = el("calendar-event-date");
       if (!titleInput.value.trim() || !dateInput.value) return;
+      const titleVal = titleInput.value.trim();
+      const dateVal = dateInput.value;
       const events = loadCalendarEvents();
+      const classSelect = el("calendar-event-class-select");
+      const selectedClassId = classSelect && !el("calendar-event-class-field").hidden ? classSelect.value : "";
+
+      let ev;
+      let idx = -1;
       if (calendarEditingEventId) {
-        const idx = events.findIndex((x) => x.id === calendarEditingEventId);
-        if (idx >= 0) events[idx] = { ...events[idx], title: titleInput.value.trim(), date: dateInput.value, linkId: calendarEventLinkId };
+        idx = events.findIndex((x) => x.id === calendarEditingEventId);
+        ev = idx >= 0 ? { ...events[idx], title: titleVal, date: dateVal, linkId: calendarEventLinkId } : null;
       } else {
-        events.push({ id: uid(), title: titleInput.value.trim(), date: dateInput.value, linkId: calendarEventLinkId });
+        ev = { id: uid(), title: titleVal, date: dateVal, linkId: calendarEventLinkId };
       }
+      if (!ev) return;
+
+      // Round 3, item 4 (squelette) : synchronise le partage avec la
+      // classe choisie (aucune, une nouvelle, ou la même déjà en place).
+      if (Sync.isConfigured() && ev.classShare && ev.classShare.classId !== selectedClassId) {
+        // Classe retirée ou changée : on retire d'abord l'ancien partage.
+        try { await Sync.classes.deleteSharedEvent(ev.classShare.remoteId); } catch (err) { /* best-effort */ }
+        delete ev.classShare;
+      }
+      if (Sync.isConfigured() && selectedClassId) {
+        if (ev.classShare && ev.classShare.classId === selectedClassId) {
+          await Sync.classes.updateSharedEvent(ev.classShare.remoteId, titleVal, dateVal);
+        } else {
+          const klass = (await Sync.classes.listAsTeacher()).find((k) => k.id === selectedClassId);
+          const { data, error } = await Sync.classes.shareEvent(selectedClassId, titleVal, dateVal);
+          if (!error && data) {
+            ev.classShare = { classId: selectedClassId, className: klass ? klass.name : "", remoteId: data.id };
+          }
+        }
+      }
+
+      if (idx >= 0) events[idx] = ev;
+      else events.push(ev);
       saveCalendarEvents(events);
       const wasEditing = !!calendarEditingEventId;
       closeCalendarEventForm();
@@ -7782,6 +7986,20 @@
 
   /** Ligne d'événement partagée (item 2) : liste ET popup de jour, avec
    *  modifier + supprimer. */
+  /** Round 3, item 4 (squelette) : un événement REÇU d'une classe (marqué
+   *  sharedEventId) est en lecture seule côté élève, même logique que pour
+   *  une boîte partagée — il se met à jour tout seul, on ne le modifie ni
+   *  ne le supprime ici. */
+  function isSharedReadonlyEvent(ev) {
+    return !!(ev && ev.sharedEventId);
+  }
+  async function blockIfSharedReadonlyEvent(ev) {
+    if (isSharedReadonlyEvent(ev)) {
+      await robotAlert("Cet événement est partagé par ton professeur : il se met à jour tout seul, tu ne peux pas le modifier ici.");
+      return true;
+    }
+    return false;
+  }
   function buildCalendarEventRow(ev, { onEdit, onDelete }) {
     const li = document.createElement("li");
     li.className = "card-row";
@@ -7789,10 +8007,18 @@
     // Item 6 : cliquer sur l'événement l'ouvre directement en modification
     // — plus besoin d'un bouton crayon séparé.
     li.title = "Modifier cet événement";
-    li.addEventListener("click", onEdit);
+    li.addEventListener("click", async () => {
+      if (await blockIfSharedReadonlyEvent(ev)) return;
+      onEdit();
+    });
     const main = document.createElement("div");
     main.className = "card-row-main";
-    main.innerHTML = `<strong>${escapeHtml(ev.title)}</strong><br><span class="card-row-meta">${escapeHtml(formatCalendarDate(ev.date))}${ev.linkId ? ` · ${escapeHtml(calendarLinkLabel(ev.linkId))}` : ""}</span>`;
+    const sharedBadge = ev.sharedClassName
+      ? ` <span class="classes-shared-badge">${escapeHtml(ev.sharedClassName)}</span>`
+      : ev.classShare
+      ? ` <span class="classes-shared-badge">Partagé : ${escapeHtml(ev.classShare.className)}</span>`
+      : "";
+    main.innerHTML = `<strong>${escapeHtml(ev.title)}</strong>${sharedBadge}<br><span class="card-row-meta">${escapeHtml(formatCalendarDate(ev.date))}${ev.linkId ? ` · ${escapeHtml(calendarLinkLabel(ev.linkId))}` : ""}</span>`;
     const actions = document.createElement("div");
     actions.style.cssText = "display:flex; gap:4px; flex-shrink:0;";
     const delBtn = document.createElement("button");
@@ -7802,9 +8028,10 @@
     delBtn.title = "Supprimer cet événement";
     // Item 4 : confirmation avant suppression, comme pour les fiches et
     // les boîtes ailleurs dans l'appli.
-    delBtn.addEventListener("click", (e) => {
+    delBtn.addEventListener("click", async (e) => {
       e.stopPropagation();
-      if (confirm(`Supprimer l'événement « ${ev.title} » ?`)) onDelete();
+      if (await blockIfSharedReadonlyEvent(ev)) return;
+      if (await robotConfirm(`Supprimer l'événement « ${ev.title} » ?`, { danger: true })) onDelete();
     });
     actions.appendChild(delBtn);
     li.appendChild(main);
@@ -7827,8 +8054,11 @@
       list.appendChild(
         buildCalendarEventRow(ev, {
           onEdit: () => openCalendarEventForm(ev),
-          onDelete: () => {
+          onDelete: async () => {
             saveCalendarEvents(loadCalendarEvents().filter((x) => x.id !== ev.id));
+            if (ev.classShare && Sync.isConfigured()) {
+              try { await Sync.classes.deleteSharedEvent(ev.classShare.remoteId); } catch (e) { /* best-effort */ }
+            }
             renderCalendarEvents();
           },
         })
@@ -7984,8 +8214,11 @@
             popup.hidden = true;
             openCalendarEventForm(ev);
           },
-          onDelete: () => {
+          onDelete: async () => {
             saveCalendarEvents(loadCalendarEvents().filter((x) => x.id !== ev.id));
+            if (ev.classShare && Sync.isConfigured()) {
+              try { await Sync.classes.deleteSharedEvent(ev.classShare.remoteId); } catch (e) { /* best-effort */ }
+            }
             popup.hidden = true;
             renderCalendarEvents();
           },
@@ -8231,8 +8464,8 @@
     retrySyncBtn.textContent = "Réessayer maintenant";
   });
 
-  disconnectBtn.addEventListener("click", () => {
-    if (!confirm("Se déconnecter ? Tes fiches restent sur cet appareil, mais ne seront plus synchronisées tant que tu ne reconnectes pas un code.")) {
+  disconnectBtn.addEventListener("click", async () => {
+    if (!(await robotConfirm("Se déconnecter ? Tes fiches restent sur cet appareil, mais ne seront plus synchronisées tant que tu ne reconnectes pas un code."))) {
       return;
     }
     if (unsubscribeRealtime) unsubscribeRealtime();
@@ -8262,7 +8495,6 @@
    *  ------------------------------------------------------------- */
   let accountCurrentUser = null;
   let classesAuthMode = "signin"; // "signin" | "signup"
-  let classesRoleTab = "eleve"; // "eleve" | "prof" — item 4
 
   /** Reflète l'état de connexion sur le bouton d'accueil (item 1/2) : son
    *  libellé change tout seul, avant même d'avoir ouvert la page Compte. */
@@ -8293,6 +8525,8 @@
       updateAccountHomeButton();
       if (el("view-account") && el("view-account").classList.contains("is-active")) renderAccountView();
       if (el("view-classes") && el("view-classes").classList.contains("is-active")) renderClassesView();
+      if (el("view-classes-student") && el("view-classes-student").classList.contains("is-active")) renderStudentClasses();
+      if (el("view-classes-teacher") && el("view-classes-teacher").classList.contains("is-active")) renderTeacherClasses();
       if (user) syncSharedBoxesForStudent();
     });
   }
@@ -8383,10 +8617,6 @@
     accountSignoutBtn.addEventListener("click", async () => {
       await Sync.auth.signOut();
       accountCurrentUser = null;
-      // Un changement de compte (ex. bascule prof <-> élève sur le même
-      // appareil pour tester) repart sur l'onglet "Élève" par défaut,
-      // plutôt que de garder l'onglet choisi par le compte précédent.
-      classesRoleTab = "eleve";
       updateAccountHomeButton();
       await renderAccountView();
     });
@@ -8416,6 +8646,10 @@
    *  `syncSharedBoxesForStudent`), et restent lecture seule + toujours à
    *  jour avec ce que fait le prof.
    *  ------------------------------------------------------------- */
+  /** Round 3, item 2 : la page Classes est désormais un simple palier
+   *  ("landing page") avec deux boutons ronds "J'apprends" / "J'enseigne",
+   *  chacun menant à sa propre page complète — remplace les deux anciens
+   *  onglets dans une seule page. */
   async function renderClassesView() {
     const needsSync = el("classes-needs-sync");
     const needsAccount = el("classes-needs-account");
@@ -8439,28 +8673,37 @@
     }
     needsAccount.hidden = true;
     mainBlock.hidden = false;
-    setClassesRoleTab(classesRoleTab);
 
+    // item 3 (lot précédent) : synchro automatique, sans action de
+    // l'élève, dès qu'on ouvre la page Classes (palier ou sous-page).
     await syncSharedBoxesForStudent();
-    await Promise.all([renderStudentClasses(), renderTeacherClasses()]);
   }
 
-  /** item 4 : deux onglets "Élève" / "Professeur" dans la page Classes. */
-  function setClassesRoleTab(role) {
-    classesRoleTab = role;
-    const tabEleve = el("classes-role-tab-eleve");
-    const tabProf = el("classes-role-tab-prof");
-    if (tabEleve) tabEleve.classList.toggle("is-active", role === "eleve");
-    if (tabProf) tabProf.classList.toggle("is-active", role === "prof");
-    const sectionEleve = el("classes-section-eleve");
-    const sectionProf = el("classes-section-prof");
-    if (sectionEleve) sectionEleve.hidden = role !== "eleve";
-    if (sectionProf) sectionProf.hidden = role !== "prof";
+  /** Bascule vers une des deux pages complètes "J'apprends" (which="student")
+   *  ou "J'enseigne" (which="teacher"), et y peuple la liste correspondante. */
+  async function openClassesSubView(which) {
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el(which === "teacher" ? "view-classes-teacher" : "view-classes-student").classList.add("is-active");
+    if (which === "teacher") {
+      await renderTeacherClasses();
+    } else {
+      await syncSharedBoxesForStudent();
+      await renderStudentClasses();
+    }
   }
-  const classesRoleTabEleve = el("classes-role-tab-eleve");
-  if (classesRoleTabEleve) classesRoleTabEleve.addEventListener("click", () => setClassesRoleTab("eleve"));
-  const classesRoleTabProf = el("classes-role-tab-prof");
-  if (classesRoleTabProf) classesRoleTabProf.addEventListener("click", () => setClassesRoleTab("prof"));
+  function closeClassesSubView() {
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el("view-classes").classList.add("is-active");
+    renderClassesView();
+  }
+  const classesGotoStudentBtn = el("classes-goto-student-btn");
+  if (classesGotoStudentBtn) classesGotoStudentBtn.addEventListener("click", () => openClassesSubView("student"));
+  const classesGotoTeacherBtn = el("classes-goto-teacher-btn");
+  if (classesGotoTeacherBtn) classesGotoTeacherBtn.addEventListener("click", () => openClassesSubView("teacher"));
+  const classesStudentBackBtn = el("classes-student-back-btn");
+  if (classesStudentBackBtn) classesStudentBackBtn.addEventListener("click", closeClassesSubView);
+  const classesTeacherBackBtn = el("classes-teacher-back-btn");
+  if (classesTeacherBackBtn) classesTeacherBackBtn.addEventListener("click", closeClassesSubView);
 
   /** Icône dédiée aux classes (item 5) — un petit groupe de personnes,
    *  dans le même style épuré (traits fins, coins arrondis) que les
@@ -8481,33 +8724,156 @@
     if (!accountCurrentUser) return;
     try {
       const myClasses = await Sync.classes.listAsStudent();
+      // Round 3, item 1 : dossiers de miroir de classe encore utiles à la
+      // fin de cette synchro (racine de chaque classe + tous les
+      // sous-dossiers reconstitués depuis les chemins reçus) — tout dossier
+      // marqué sharedClassId qui n'y figure plus a été vidé par le prof
+      // (boîte déplacée ailleurs/retirée) et peut être supprimé localement.
+      const usedMirrorFolderIds = new Set();
+      // Round 3, item 4 (squelette) : événements de calendrier reçus des
+      // classes suivies, mêmes id que côté prof (sharedEventId).
+      const remoteEventIds = new Set();
       for (const klass of myClasses) {
+        const rootId = await ensureClassMirrorFolder(klass);
+        usedMirrorFolderIds.add(rootId);
         const boxes = await Sync.classes.listSharedBoxes(klass.id);
         for (const box of boxes) {
-          await reconcileSharedBox(klass, box);
+          const pathNames = Array.isArray(box.folder_path) ? box.folder_path : [];
+          const targetFolderId = await ensureClassMirrorFolderPath(klass, rootId, pathNames, usedMirrorFolderIds);
+          await reconcileSharedBox(klass, box, targetFolderId);
+        }
+        const remoteEvents = await Sync.classes.listSharedEvents(klass.id);
+        for (const re of remoteEvents) {
+          remoteEventIds.add(re.id);
+          reconcileSharedEvent(klass, re);
         }
       }
+      pruneStaleSharedEvents(remoteEventIds);
+      await pruneStaleClassMirrorFolders(usedMirrorFolderIds);
       renderAll();
       renderSubjectManageList();
+      renderCalendarEvents();
     } catch (e) {
       console.warn("Classes: échec de la synchro des boîtes partagées", e);
     }
   }
 
-  async function reconcileSharedBox(klass, box) {
+  /** Round 3, item 4 (squelette) : ajoute ou met à jour, dans le calendrier
+   *  local (localStorage), la copie en lecture seule d'un événement partagé
+   *  par le prof — même id que côté prof (sharedEventId), pour repérer un
+   *  changement de titre/date au prochain passage. */
+  function reconcileSharedEvent(klass, re) {
+    const events = loadCalendarEvents();
+    const idx = events.findIndex((x) => x.sharedEventId === re.id);
+    if (idx >= 0) {
+      if (events[idx].title !== re.title || events[idx].date !== re.date) {
+        events[idx] = { ...events[idx], title: re.title, date: re.date };
+        saveCalendarEvents(events);
+      }
+    } else {
+      events.push({
+        id: uid(),
+        title: re.title,
+        date: re.date,
+        linkId: null,
+        sharedEventId: re.id,
+        sharedClassId: klass.id,
+        sharedClassName: klass.name,
+      });
+      saveCalendarEvents(events);
+    }
+  }
+  /** Le prof a retiré/supprimé l'événement partagé : suppression locale
+   *  (un événement reçu n'a pas de progression à préserver, contrairement
+   *  à une fiche — contrairement aux boîtes, un vrai delete suffit ici). */
+  function pruneStaleSharedEvents(remoteEventIds) {
+    const events = loadCalendarEvents();
+    const kept = events.filter((x) => !x.sharedEventId || remoteEventIds.has(x.sharedEventId));
+    if (kept.length !== events.length) saveCalendarEvents(kept);
+  }
+
+  /** Round 3, item 1 : dossier racine (auto-créé, une fois par classe) qui
+   *  représente une classe suivie dans l'arborescence Organisation — porte
+   *  l'icône "classe" (voir renderTreeLevel) et sert de racine à la
+   *  reconstitution de l'organisation du prof. */
+  async function ensureClassMirrorFolder(klass) {
+    let root = folders.find((f) => f.sharedClassId === klass.id && f.sharedClassRoot);
+    if (!root) {
+      root = newFolder(klass.name, ROOT_FOLDER_ID);
+      root.sharedClassId = klass.id;
+      root.sharedClassRoot = true;
+      await persistFolder(root);
+      folders.push(root);
+    } else if (root.name !== klass.name) {
+      root.name = klass.name;
+      root.updatedAt = new Date().toISOString();
+      await persistFolder(root);
+    }
+    return root.id;
+  }
+
+  /** Round 3, item 1 : recrée (ou réutilise) la chaîne de sous-dossiers
+   *  `pathNames` sous le dossier racine de la classe, chacun marqué
+   *  `sharedClassId` (donc en lecture seule côté élève) — reflète
+   *  l'organisation faite par le prof, sans que l'élève ait la main
+   *  dessus. Retourne l'id du dossier local où placer la boîte. */
+  async function ensureClassMirrorFolderPath(klass, rootId, pathNames, usedMirrorFolderIds) {
+    let parentId = rootId;
+    for (const name of pathNames) {
+      let f = folders.find((x) => x.sharedClassId === klass.id && x.parentId === parentId && x.name === name);
+      if (!f) {
+        f = newFolder(name, parentId);
+        f.sharedClassId = klass.id;
+        await persistFolder(f);
+        folders.push(f);
+      }
+      usedMirrorFolderIds.add(f.id);
+      parentId = f.id;
+    }
+    return parentId;
+  }
+
+  /** Round 3, item 1 : nettoie les dossiers de miroir de classe qu'une
+   *  réorganisation côté prof a rendus obsolètes (boîte déplacée ailleurs,
+   *  classe quittée...). Ne supprime que des dossiers effectivement vides
+   *  — une incohérence momentanée se corrige simplement au prochain appel. */
+  async function pruneStaleClassMirrorFolders(usedMirrorFolderIds) {
+    const stale = folders.filter((f) => f.sharedClassId && !usedMirrorFolderIds.has(f.id));
+    // Des enfants avant leurs parents, pour laisser folderIsEmpty() voir un
+    // dossier vidé de ses propres sous-dossiers obsolètes dans la même passe.
+    stale.sort((a, b) => folderPath(b.id).length - folderPath(a.id).length);
+    for (const f of stale) {
+      if (!folderIsEmpty(f.id)) continue;
+      folders = folders.filter((x) => x.id !== f.id);
+      await DB.removeFolder(f.id);
+    }
+  }
+
+  async function reconcileSharedBox(klass, box, targetFolderId) {
     let subject = subjects.find((s) => s.sharedBoxId === box.id);
     if (!subject) {
-      subject = newSubject(box.subject_name, ROOT_FOLDER_ID);
+      subject = newSubject(box.subject_name, targetFolderId != null ? targetFolderId : ROOT_FOLDER_ID);
       subject.sharedBoxId = box.id;
       subject.sharedClassId = klass.id;
       subject.sharedClassName = klass.name;
       await persistSubject(subject);
       subjects.push(subject);
-    } else if (subject.name !== box.subject_name) {
-      // Le prof a renommé sa boîte : la copie miroir suit.
-      subject.name = box.subject_name;
-      subject.updatedAt = new Date().toISOString();
-      await persistSubject(subject);
+    } else {
+      let changed = false;
+      if (subject.name !== box.subject_name) {
+        // Le prof a renommé sa boîte : la copie miroir suit.
+        subject.name = box.subject_name;
+        changed = true;
+      }
+      if (targetFolderId != null && subject.folderId !== targetFolderId) {
+        // Le prof a réorganisé ses dossiers : la copie miroir suit aussi.
+        subject.folderId = targetFolderId;
+        changed = true;
+      }
+      if (changed) {
+        subject.updatedAt = new Date().toISOString();
+        await persistSubject(subject);
+      }
     }
 
     const remoteCards = Array.isArray(box.cards) ? box.cards : [];
@@ -8570,7 +8936,7 @@
           : sharedBoxes
               .map(
                 (box) =>
-                  `<div class="classes-shared-box-row"><span>${escapeHtml(box.subject_name)} <span class="classes-card-count">(${(box.cards || []).length} fiche${(box.cards || []).length > 1 ? "s" : ""})</span></span><span class="classes-shared-badge">Dans tes boîtes</span></div>`
+                  `<div class="classes-shared-box-row"><span>${escapeHtml(box.subject_name)} <span class="classes-card-count">(${(box.cards || []).length} fiche${(box.cards || []).length > 1 ? "s" : ""})</span></span><span class="classes-shared-badge">Dans Organisation</span></div>`
               )
               .join("");
       li.innerHTML = `
@@ -8623,10 +8989,11 @@
             const subject = subjects.find((s) => s.id === subjectId);
             if (!subject) return;
             const boxCards = cards.filter((c) => !c.deleted && c.subject === subjectId);
-            const { data, error } = await Sync.classes.shareBox(klass.id, subject.name, boxCards);
+            const folderPathNames = folderPath(subject.folderId).map((f) => f.name);
+            const { data, error } = await Sync.classes.shareBox(klass.id, subject.name, boxCards, folderPathNames);
             closeBoitePickerView();
             if (error) {
-              alert("Erreur lors du partage : " + error);
+              await robotAlert("Erreur lors du partage : " + error);
               return;
             }
             // item 3 : on garde le lien boîte locale <-> boîte partagée,
@@ -8677,7 +9044,7 @@
       const { error } = await Sync.classes.create(name);
       classesCreateBtn.disabled = false;
       if (error) {
-        alert("Erreur : " + error);
+        await robotAlert("Erreur : " + error);
         return;
       }
       input.value = "";

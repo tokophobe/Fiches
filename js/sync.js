@@ -689,7 +689,11 @@ async function joinClassByCode(code) {
 // traduit par un nouvel id apparu/changé/disparu dans ce tableau), et côté
 // élève de savoir quelle fiche locale correspond à quelle fiche distante
 // sans jamais faire de copie figée.
-async function shareBoxToClass(classId, subjectName, cards) {
+// Round 3, item 1 : `folder_path` (tableau de noms de dossiers, de la
+// racine du prof jusqu'au dossier direct de la boîte) est repoussé en même
+// temps que les fiches, pour que l'élève puisse reconstituer la même
+// arborescence (en lecture seule) sous le dossier de sa classe.
+async function shareBoxToClass(classId, subjectName, cards, folderPath) {
   const c = getClient();
   const user = await authGetUser();
   if (!c || !user) return { error: "Non connecté." };
@@ -698,6 +702,7 @@ async function shareBoxToClass(classId, subjectName, cards) {
     shared_by: user.id,
     subject_name: subjectName,
     cards: cards.map((card) => ({ id: card.id, question: card.question, answer: card.answer })),
+    folder_path: Array.isArray(folderPath) ? folderPath : [],
   };
   const { data, error } = await c.from("shared_boxes").insert(row).select().single();
   return { data, error: error ? error.message : null };
@@ -720,16 +725,58 @@ async function listSharedBoxesForClass(classId) {
  *  suffisant pour la taille habituelle d'une boîte de fiches ; l'élève
  *  compare ensuite ce tableau à sa propre copie locale par id pour ne
  *  toucher qu'au contenu (question/réponse), jamais à sa progression. */
-async function updateSharedBoxCards(boxId, cards) {
+// Round 3, item 1 : `folderPath` est optionnel pour ne pas casser les
+// appels existants — quand fourni (le prof a réorganisé ses dossiers), il
+// est repoussé en même temps que les fiches, sinon seul `cards` est mis à
+// jour et le chemin de dossiers distant reste inchangé.
+async function updateSharedBoxCards(boxId, cards, folderPath) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée." };
+  const payload = {
+    cards: cards.map((card) => ({ id: card.id, question: card.question, answer: card.answer })),
+    updated_at: new Date().toISOString(),
+  };
+  if (Array.isArray(folderPath)) payload.folder_path = folderPath;
+  const { error } = await c.from("shared_boxes").update(payload).eq("id", boxId);
+  return { error: error ? error.message : null };
+}
+
+/* ---- Round 3, item 4 (squelette) : événements de calendrier partagés ---- */
+
+async function shareEventToClass(classId, title, date) {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { error: "Non connecté." };
+  const row = { class_id: classId, shared_by: user.id, title, date };
+  const { data, error } = await c.from("shared_events").insert(row).select().single();
+  return { data, error: error ? error.message : null };
+}
+
+async function listSharedEventsForClass(classId) {
+  const c = getClient();
+  if (!c) return [];
+  const { data, error } = await c.from("shared_events").select("*").eq("class_id", classId).order("date");
+  if (error) {
+    console.warn("Classes: échec du chargement des événements partagés", error.message);
+    return [];
+  }
+  return data || [];
+}
+
+async function updateSharedEvent(eventId, title, date) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée." };
   const { error } = await c
-    .from("shared_boxes")
-    .update({
-      cards: cards.map((card) => ({ id: card.id, question: card.question, answer: card.answer })),
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", boxId);
+    .from("shared_events")
+    .update({ title, date, updated_at: new Date().toISOString() })
+    .eq("id", eventId);
+  return { error: error ? error.message : null };
+}
+
+async function deleteSharedEvent(eventId) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée." };
+  const { error } = await c.from("shared_events").delete().eq("id", eventId);
   return { error: error ? error.message : null };
 }
 
@@ -776,5 +823,9 @@ window.Sync = {
     shareBox: shareBoxToClass,
     listSharedBoxes: listSharedBoxesForClass,
     updateSharedBoxCards,
+    shareEvent: shareEventToClass,
+    listSharedEvents: listSharedEventsForClass,
+    updateSharedEvent,
+    deleteSharedEvent,
   },
 };

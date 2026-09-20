@@ -1253,6 +1253,110 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   animation: speechBubblePop 0.32s ease-out;
 }
 
+/* Round 3, item 3 : messages du robot (remplace alert()/confirm()). Même
+   esprit visuel que la bulle de la page (logo + bulle en bande dessinée),
+   mais en superposition modale par-dessus tout le reste, avec un ou
+   plusieurs boutons d'action. */
+.robot-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.robot-modal-overlay[hidden] { display: none; }
+
+.robot-modal {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 420px;
+  width: 100%;
+  animation: speechBubblePop 0.22s ease-out;
+}
+
+.robot-modal-logo {
+  flex-shrink: 0;
+  width: 40px;
+  height: auto;
+  margin-top: 4px;
+}
+
+.robot-modal-bubble {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  background: var(--speech-bubble-bg-color, var(--paper-2));
+  border: 1.5px solid var(--speech-bubble-border-color, var(--rule));
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.35);
+}
+
+.robot-modal-bubble::before,
+.robot-modal-bubble::after {
+  content: "";
+  position: absolute;
+  left: -9px;
+  top: 16px;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 9px solid var(--speech-bubble-border-color, var(--rule));
+}
+.robot-modal-bubble::after {
+  left: -7px;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 8px solid var(--speech-bubble-bg-color, var(--paper-2));
+}
+
+.robot-modal-text {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--speech-bubble-text-color, var(--ink));
+  white-space: pre-line;
+}
+
+.robot-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.robot-modal-btn {
+  font-family: var(--font-type);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+}
+.robot-modal-btn:hover { filter: brightness(0.97); }
+
+.robot-modal-btn--primary {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.robot-modal-btn--danger {
+  background: var(--danger, #c0392b);
+  color: #fff;
+  border-color: var(--danger, #c0392b);
+}
+
 
 
 /* Disposition dispersée (item 3) : conteneur relatif assez haut pour
@@ -1310,6 +1414,41 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 .home-circle--accent {
   background: var(--home-add-card-bg-color, var(--blue));
   color: #ffffff;
+}
+
+/* Round 3, item 2 : page d'accueil Classes — deux gros boutons ronds
+   ("J'apprends" / "J'enseigne"), même esprit visuel que les boutons ronds
+   de l'accueil, mais rangés côte à côte dans le flux normal de la page
+   (pas de disposition dispersée réglable ici). */
+.classes-role-circles {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 32px 0;
+  flex-wrap: wrap;
+}
+
+.classes-role-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--home-square-bg-color, var(--paper));
+  border: none;
+  box-shadow: var(--shadow-home-square, var(--shadow-deep));
+  color: var(--ink);
+  font-family: var(--font-type);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.classes-role-circle-icon {
+  display: flex;
 }
 
 button.home-btn {
