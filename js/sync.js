@@ -683,6 +683,12 @@ async function joinClassByCode(code) {
 
 /* ---- boîtes partagées ---- */
 
+// item 3 (2e lot) : chaque carte garde son `id` local (côté prof) dans le
+// jsonb `cards` — c'est ce qui permet ensuite à `updateSharedBoxCards` de
+// pousser des mises à jour ciblées (ajout/modif/suppression d'une fiche se
+// traduit par un nouvel id apparu/changé/disparu dans ce tableau), et côté
+// élève de savoir quelle fiche locale correspond à quelle fiche distante
+// sans jamais faire de copie figée.
 async function shareBoxToClass(classId, subjectName, cards) {
   const c = getClient();
   const user = await authGetUser();
@@ -691,7 +697,7 @@ async function shareBoxToClass(classId, subjectName, cards) {
     class_id: classId,
     shared_by: user.id,
     subject_name: subjectName,
-    cards: cards.map((card) => ({ question: card.question, answer: card.answer })),
+    cards: cards.map((card) => ({ id: card.id, question: card.question, answer: card.answer })),
   };
   const { data, error } = await c.from("shared_boxes").insert(row).select().single();
   return { data, error: error ? error.message : null };
@@ -706,6 +712,25 @@ async function listSharedBoxesForClass(classId) {
     return [];
   }
   return data || [];
+}
+
+/** item 3 (2e lot) : le prof modifie sa boîte (ajout/modif/suppression de
+ *  fiches) -> on repousse l'intégralité du tableau `cards` (avec les mêmes
+ *  id qu'au partage initial) vers chaque boîte partagée liée. Simple et
+ *  suffisant pour la taille habituelle d'une boîte de fiches ; l'élève
+ *  compare ensuite ce tableau à sa propre copie locale par id pour ne
+ *  toucher qu'au contenu (question/réponse), jamais à sa progression. */
+async function updateSharedBoxCards(boxId, cards) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée." };
+  const { error } = await c
+    .from("shared_boxes")
+    .update({
+      cards: cards.map((card) => ({ id: card.id, question: card.question, answer: card.answer })),
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", boxId);
+  return { error: error ? error.message : null };
 }
 
 window.Sync = {
@@ -750,5 +775,6 @@ window.Sync = {
     join: joinClassByCode,
     shareBox: shareBoxToClass,
     listSharedBoxes: listSharedBoxesForClass,
+    updateSharedBoxCards,
   },
 };

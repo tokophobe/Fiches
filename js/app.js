@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v133";
+  const APP_VERSION = "v134";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -586,6 +586,7 @@
     review: "Réviser", manage: "Dossiers & boîtes", cards: "Fiches", addCard: "Ajouter une fiche",
     stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
     sync: "Synchronisation", dev: "Développeur", classes: "Classes",
+    account: "Compte",
   };
   // Largeur/hauteur de référence utilisées uniquement pour convertir une
   // seule fois d'anciens réglages enregistrés en pixels (avant ce
@@ -603,6 +604,7 @@
     sync: { x: 54.4, y: 76.2, d: 95 },
     dev: { x: 89.0, y: 79.0, d: 80 },
     classes: { x: 50.0, y: 90.0, d: 85 },
+    account: { x: 15.0, y: 90.0, d: 70 },
   };
   // Items 1/2 (logo) : position (X/Y en %, centre du logo) et taille (px)
   // du logo sur la page d'accueil.
@@ -3600,7 +3602,25 @@
     return subject;
   }
 
+  /** item 3 (2e lot, Classes) : une boîte reçue d'un prof (via une classe)
+   *  est un miroir en lecture seule — son contenu (fiches, nom) suit les
+   *  modifications du prof automatiquement, un élève ne peut donc ni le
+   *  renommer, ni le supprimer, ni ajouter/modifier/supprimer une fiche à
+   *  l'intérieur. Seule sa progression personnelle (SM-2) lui appartient. */
+  function isSharedReadonlySubject(subjectId) {
+    const s = subjects.find((x) => x.id === subjectId);
+    return !!(s && s.sharedBoxId);
+  }
+  function blockIfSharedReadonly(subjectId) {
+    if (isSharedReadonlySubject(subjectId)) {
+      alert("Cette boîte est partagée par ton professeur : elle se met à jour toute seule, tu ne peux pas la modifier ici.");
+      return true;
+    }
+    return false;
+  }
+
   async function renameSubject(id) {
+    if (blockIfSharedReadonly(id)) return;
     const s = subjects.find((x) => x.id === id);
     if (!s) return;
     const name = prompt("Nouveau nom de la boîte :", s.name);
@@ -3616,6 +3636,7 @@
   }
 
   async function deleteSubject(id) {
+    if (blockIfSharedReadonly(id)) return;
     if (subjects.length <= 1) {
       alert("Impossible de supprimer la dernière boîte restante.");
       return;
@@ -3836,11 +3857,13 @@
       ? []
       : subjects
           .filter((s) => s.folderId === parentId && !folders.some((f) => f.id === s.id))
+          .filter((s) => !ctx.excludeSubjectIds || !ctx.excludeSubjectIds.has(s.id))
           .sort((a, b) => a.name.localeCompare(b.name, "fr"));
 
     childFolders.forEach((f) => {
       if (isFolderABoite(f.id)) {
         if (ctx.hideBoites) return;
+        if (ctx.excludeSubjectIds && ctx.excludeSubjectIds.has(f.id)) return;
         const n = cards.filter((c) => !c.deleted && c.subject === f.id).length;
         appendPickerBoiteRow(container, depth, f.id, f.name, n, ctx);
         return;
@@ -3979,11 +4002,11 @@
    *  fiche" (folderAlwaysSelectable: false, boîtes/dossiers vides
    *  seulement) et par la création d'un événement de calendrier
    *  (folderAlwaysSelectable: true, un dossier entier est un lien valide). */
-  function renderSingleBoitePicker(container, onPick, folderAlwaysSelectable) {
+  function renderSingleBoitePicker(container, onPick, folderAlwaysSelectable, excludeSubjectIds) {
     function rerender() {
       container.innerHTML = "";
       container.classList.add("picker-tree");
-      renderFolderTreeForPicker(container, ROOT_FOLDER_ID, 0, { mode: "single", onPick, folderAlwaysSelectable, container, rerenderRoot: rerender });
+      renderFolderTreeForPicker(container, ROOT_FOLDER_ID, 0, { mode: "single", onPick, folderAlwaysSelectable, excludeSubjectIds, container, rerenderRoot: rerender });
     }
     rerender();
   }
@@ -4087,7 +4110,7 @@
       if (ctx.excludedFolderIds) {
         renderMoveDestinationPicker(list, ctx.excludedFolderIds, (destId) => ctx.onPick("folder", destId));
       } else {
-        renderSingleBoitePicker(list, (kind, id) => ctx.onPick(kind, id), !!ctx.folderAlwaysSelectable);
+        renderSingleBoitePicker(list, (kind, id) => ctx.onPick(kind, id), !!ctx.folderAlwaysSelectable, ctx.excludeSubjectIds);
       }
       if (confirmBtn) confirmBtn.hidden = true;
       if (noneBtn) {
@@ -4166,6 +4189,10 @@
     openBoitePickerView({
       mode: "single",
       title: "Choisir la boîte de cette fiche",
+      // item 3 (2e lot, Classes) : une boîte partagée par un prof est en
+      // lecture seule côté élève — on ne peut pas y ajouter de fiche
+      // manuellement, seul le prof la fait évoluer.
+      excludeSubjectIds: new Set(subjects.filter((s) => s.sharedBoxId).map((s) => s.id)),
       onPick: (kind, subjectId) => {
         saveNewCardSubjectId(subjectId);
         const btn = el("cards-subject-select-btn");
@@ -4240,6 +4267,27 @@
     await DB.putFolder(folder);
     if (Sync.isConfigured()) {
       Sync.pushFolder(folder).finally(updateSyncStatus);
+    }
+  }
+
+  /** item 3 (2e lot, Classes) : si cette boîte (côté prof) a été partagée à
+   *  une ou plusieurs classes (`subject.sharedShares`), on repousse
+   *  l'intégralité de son contenu actuel vers chaque boîte partagée liée —
+   *  c'est ce qui fait qu'un ajout/modif/suppression de fiche par le prof
+   *  se répercute ensuite chez les élèves (voir `syncSharedBoxesForStudent`
+   *  côté élève, qui compare ce même tableau par id). Ne fait rien si Sync
+   *  n'est pas configurée ou si la boîte n'est liée à aucune classe. */
+  async function pushSharedBoxUpdatesForSubject(subjectId) {
+    if (!Sync.isConfigured()) return;
+    const subject = subjects.find((s) => s.id === subjectId);
+    if (!subject || !subject.sharedShares || !subject.sharedShares.length) return;
+    const boxCards = cards.filter((c) => !c.deleted && c.subject === subjectId);
+    for (const share of subject.sharedShares) {
+      try {
+        await Sync.classes.updateSharedBoxCards(share.boxId, boxCards);
+      } catch (e) {
+        console.warn("Classes: échec de la mise à jour de la boîte partagée", e);
+      }
     }
   }
   /** Suppression douce envoyée aux autres appareils AVANT le retrait local
@@ -5128,10 +5176,12 @@
     if (editingId) {
       const idx = cards.findIndex((c) => c.id === editingId);
       if (idx >= 0) {
+        if (blockIfSharedReadonly(cards[idx].subject)) return;
         const updated = touch({ ...cards[idx], question, answer });
         await persist(updated);
         cards[idx] = updated;
         syncCardEverywhere(updated);
+        await pushSharedBoxUpdatesForSubject(updated.subject);
       }
       exitEditMode();
       resetCardForm();
@@ -5150,9 +5200,11 @@
         alert("Choisis d'abord une boîte pour cette fiche.");
         return;
       }
+      if (blockIfSharedReadonly(newCardSubjectId)) return;
       const card = newCard(question, answer, newCardSubjectId);
       await persist(card);
       cards.push(card);
+      await pushSharedBoxUpdatesForSubject(newCardSubjectId);
       renderAll();
       // Item 5 : on reste sur cette page pour enchaîner la création d'une
       // autre fiche, la boîte choisie est conservée.
@@ -5191,6 +5243,7 @@
   const deleteEditingCardBtn = el("delete-editing-card");
 
   function enterEditMode(card) {
+    if (blockIfSharedReadonly(card.subject)) return;
     openNewCardView();
     editingId = card.id;
     inputQuestion.innerHTML = toDisplayHtml(card.question);
@@ -5556,6 +5609,7 @@
   async function deleteCard(id, skipConfirm) {
     const card = cards.find((c) => c.id === id);
     if (!card) return;
+    if (blockIfSharedReadonly(card.subject)) return;
     if (!skipConfirm && !confirm("Supprimer définitivement cette fiche ? Cette action est irréversible.")) {
       return;
     }
@@ -5565,6 +5619,7 @@
     const idx = cards.findIndex((c) => c.id === id);
     if (idx >= 0) cards[idx] = updated;
     reviewQueue = reviewQueue.filter((c) => c.id !== id);
+    await pushSharedBoxUpdatesForSubject(card.subject);
     // Item 1 : si c'était la dernière fiche d'une boîte "née" d'un dossier
     // vide, ce dossier redevient un dossier normal.
     await revertFolderIfBoiteEmptied(card.subject);
@@ -7478,6 +7533,7 @@
       if (view === "stats") renderStats();
       if (view === "dev") renderDevView();
       if (view === "sync") renderSyncView();
+      if (view === "account") renderAccountView();
       if (view === "classes") renderClassesView();
       if (view === "calendar") renderCalendarEvents();
       if (view === "revision-program") renderRevisionProgramList();
@@ -8197,56 +8253,304 @@
      dans sync.js, et supabase/classes_schema.sql pour le schéma à créer
      une fois côté Supabase (même projet que la Sync).
   --------------------------------------------------------- */
-  let classesCurrentUser = null;
+  /** ---------------------------------------------------------------
+   *  Compte (page dédiée "Se connecter / Créer un compte") — item 1 :
+   *  toute la partie identité (connexion/inscription) vit ici, plus dans
+   *  Classes, qui suppose désormais qu'on est déjà connecté. `accountCurrentUser`
+   *  est LE point d'état global de connexion, lu aussi bien par la page
+   *  Compte que par la page Classes et par le bouton d'accueil.
+   *  ------------------------------------------------------------- */
+  let accountCurrentUser = null;
   let classesAuthMode = "signin"; // "signin" | "signup"
+  let classesRoleTab = "eleve"; // "eleve" | "prof" — item 4
 
-  async function renderClassesView() {
-    const needsSync = el("classes-needs-sync");
-    const authBlock = el("classes-auth-block");
-    const mainBlock = el("classes-main-block");
-    if (!needsSync || !authBlock || !mainBlock) return;
+  /** Reflète l'état de connexion sur le bouton d'accueil (item 1/2) : son
+   *  libellé change tout seul, avant même d'avoir ouvert la page Compte. */
+  function updateAccountHomeButton() {
+    const label = document.querySelector('.home-circle[data-key="account"] span');
+    if (label) label.textContent = accountCurrentUser ? "Mon compte" : "Se connecter";
+    const emailEl = el("account-user-email");
+    if (emailEl) emailEl.textContent = (accountCurrentUser && accountCurrentUser.email) || "";
+    const classesEmailEl = el("classes-connected-as");
+    if (classesEmailEl) {
+      classesEmailEl.hidden = !accountCurrentUser;
+      classesEmailEl.textContent = accountCurrentUser ? `Connecté en tant que ${accountCurrentUser.email}` : "";
+    }
+  }
 
+  /** item 2 : appelé une seule fois au démarrage — supabase-js garde la
+   *  session dans le stockage local du téléphone et la retrouve tout
+   *  seul ; il suffit de la lire ici pour que l'appli sache déjà "qui
+   *  c'est" sans repasser par un écran de connexion à chaque ouverture,
+   *  et de rester à l'écoute (`onChange`) pour le reste de la session. */
+  async function initAccountState() {
+    if (!Sync.isConfigured()) return;
+    accountCurrentUser = await Sync.auth.getUser();
+    updateAccountHomeButton();
+    if (accountCurrentUser) syncSharedBoxesForStudent();
+    Sync.auth.onChange((user) => {
+      accountCurrentUser = user;
+      updateAccountHomeButton();
+      if (el("view-account") && el("view-account").classList.contains("is-active")) renderAccountView();
+      if (el("view-classes") && el("view-classes").classList.contains("is-active")) renderClassesView();
+      if (user) syncSharedBoxesForStudent();
+    });
+  }
+
+  async function renderAccountView() {
+    const needsSync = el("account-needs-sync");
+    const authBlock = el("account-auth-block");
+    const connectedBlock = el("account-connected-block");
+    if (!needsSync || !authBlock || !connectedBlock) return;
     if (!Sync.isConfigured()) {
       needsSync.hidden = false;
       authBlock.hidden = true;
+      connectedBlock.hidden = true;
+      return;
+    }
+    needsSync.hidden = true;
+    accountCurrentUser = await Sync.auth.getUser();
+    updateAccountHomeButton();
+    if (!accountCurrentUser) {
+      authBlock.hidden = false;
+      connectedBlock.hidden = true;
+      return;
+    }
+    authBlock.hidden = true;
+    connectedBlock.hidden = false;
+  }
+
+  function setClassesAuthMode(mode) {
+    classesAuthMode = mode;
+    const tabIn = el("account-auth-tab-signin");
+    const tabUp = el("account-auth-tab-signup");
+    if (tabIn) tabIn.classList.toggle("is-active", mode === "signin");
+    if (tabUp) tabUp.classList.toggle("is-active", mode === "signup");
+    const submitBtn = el("account-auth-submit");
+    if (submitBtn) submitBtn.textContent = mode === "signin" ? "Se connecter" : "Créer le compte";
+    const note = el("account-auth-note");
+    if (note) note.hidden = true;
+  }
+  const accountAuthTabSignin = el("account-auth-tab-signin");
+  if (accountAuthTabSignin) accountAuthTabSignin.addEventListener("click", () => setClassesAuthMode("signin"));
+  const accountAuthTabSignup = el("account-auth-tab-signup");
+  if (accountAuthTabSignup) accountAuthTabSignup.addEventListener("click", () => setClassesAuthMode("signup"));
+
+  const accountAuthSubmitBtn = el("account-auth-submit");
+  if (accountAuthSubmitBtn) {
+    accountAuthSubmitBtn.addEventListener("click", async () => {
+      const emailInput = el("account-auth-email");
+      const passwordInput = el("account-auth-password");
+      const note = el("account-auth-note");
+      const email = (emailInput.value || "").trim();
+      const password = passwordInput.value || "";
+      if (!email || !password) {
+        if (note) {
+          note.hidden = false;
+          note.textContent = "Email et mot de passe requis.";
+        }
+        return;
+      }
+      accountAuthSubmitBtn.disabled = true;
+      const result =
+        classesAuthMode === "signin"
+          ? await Sync.auth.signIn(email, password)
+          : await Sync.auth.signUp(email, password);
+      accountAuthSubmitBtn.disabled = false;
+      if (result.error) {
+        if (note) {
+          note.hidden = false;
+          note.textContent = result.error;
+        }
+        return;
+      }
+      if (classesAuthMode === "signup") {
+        if (note) {
+          note.hidden = false;
+          note.textContent = "Compte créé — vérifie ta boîte mail si une confirmation est demandée, puis connecte-toi.";
+        }
+        setClassesAuthMode("signin");
+        return;
+      }
+      passwordInput.value = "";
+      await renderAccountView();
+      await syncSharedBoxesForStudent();
+    });
+  }
+
+  const accountSignoutBtn = el("account-signout-btn");
+  if (accountSignoutBtn) {
+    accountSignoutBtn.addEventListener("click", async () => {
+      await Sync.auth.signOut();
+      accountCurrentUser = null;
+      // Un changement de compte (ex. bascule prof <-> élève sur le même
+      // appareil pour tester) repart sur l'onglet "Élève" par défaut,
+      // plutôt que de garder l'onglet choisi par le compte précédent.
+      classesRoleTab = "eleve";
+      updateAccountHomeButton();
+      await renderAccountView();
+    });
+  }
+
+  const accountGotoSyncBtn = el("account-goto-sync-btn");
+  if (accountGotoSyncBtn) {
+    accountGotoSyncBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="sync"]');
+      if (tab) tab.click();
+    });
+  }
+
+  const accountGotoClassesBtn = el("account-goto-classes-btn");
+  if (accountGotoClassesBtn) {
+    accountGotoClassesBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="classes"]');
+      if (tab) tab.click();
+    });
+  }
+
+  /** ---------------------------------------------------------------
+   *  Classes — suppose maintenant qu'on est déjà connecté (voir Compte
+   *  ci-dessus). item 3 : plus aucune action manuelle côté élève — dès
+   *  qu'il fait partie d'une classe, les boîtes partagées de cette classe
+   *  apparaissent toutes seules dans ses boîtes (voir
+   *  `syncSharedBoxesForStudent`), et restent lecture seule + toujours à
+   *  jour avec ce que fait le prof.
+   *  ------------------------------------------------------------- */
+  async function renderClassesView() {
+    const needsSync = el("classes-needs-sync");
+    const needsAccount = el("classes-needs-account");
+    const mainBlock = el("classes-main-block");
+    if (!needsSync || !needsAccount || !mainBlock) return;
+
+    if (!Sync.isConfigured()) {
+      needsSync.hidden = false;
+      needsAccount.hidden = true;
       mainBlock.hidden = true;
       return;
     }
     needsSync.hidden = true;
 
-    classesCurrentUser = await Sync.auth.getUser();
-    if (!classesCurrentUser) {
-      authBlock.hidden = false;
+    accountCurrentUser = await Sync.auth.getUser();
+    updateAccountHomeButton();
+    if (!accountCurrentUser) {
+      needsAccount.hidden = false;
       mainBlock.hidden = true;
       return;
     }
-    authBlock.hidden = true;
+    needsAccount.hidden = true;
     mainBlock.hidden = false;
-    const emailEl = el("classes-user-email");
-    if (emailEl) emailEl.textContent = classesCurrentUser.email || "";
+    setClassesRoleTab(classesRoleTab);
 
+    await syncSharedBoxesForStudent();
     await Promise.all([renderStudentClasses(), renderTeacherClasses()]);
   }
 
-  /** Une boîte partagée reçue par un élève devient une copie locale
-   *  indépendante (son propre id, sa propre progression SM-2) — jamais
-   *  un lien vers la boîte du prof, pour que chacun révise à son rythme.
-   *  `sharedBoxId` sert uniquement à éviter de l'ajouter deux fois. */
-  async function importSharedBox(klass, box) {
-    if (subjects.some((s) => s.sharedBoxId === box.id)) return;
-    const subject = newSubject(box.subject_name, ROOT_FOLDER_ID);
-    subject.sharedBoxId = box.id;
-    subject.sharedClassId = klass.id;
-    subject.sharedClassName = klass.name;
-    await persistSubject(subject);
-    subjects.push(subject);
-    for (const c of box.cards || []) {
-      const card = newCard(c.question, c.answer, subject.id);
-      await persist(card);
-      cards.push(card);
+  /** item 4 : deux onglets "Élève" / "Professeur" dans la page Classes. */
+  function setClassesRoleTab(role) {
+    classesRoleTab = role;
+    const tabEleve = el("classes-role-tab-eleve");
+    const tabProf = el("classes-role-tab-prof");
+    if (tabEleve) tabEleve.classList.toggle("is-active", role === "eleve");
+    if (tabProf) tabProf.classList.toggle("is-active", role === "prof");
+    const sectionEleve = el("classes-section-eleve");
+    const sectionProf = el("classes-section-prof");
+    if (sectionEleve) sectionEleve.hidden = role !== "eleve";
+    if (sectionProf) sectionProf.hidden = role !== "prof";
+  }
+  const classesRoleTabEleve = el("classes-role-tab-eleve");
+  if (classesRoleTabEleve) classesRoleTabEleve.addEventListener("click", () => setClassesRoleTab("eleve"));
+  const classesRoleTabProf = el("classes-role-tab-prof");
+  if (classesRoleTabProf) classesRoleTabProf.addEventListener("click", () => setClassesRoleTab("prof"));
+
+  /** Icône dédiée aux classes (item 5) — un petit groupe de personnes,
+   *  dans le même style épuré (traits fins, coins arrondis) que les
+   *  autres pictos de l'appli. Utilisée sur le bouton d'accueil (HTML)
+   *  et ici, en tête de chaque ligne de classe. */
+  const CLASSES_ROW_ICON =
+    '<svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c0-3.6 2.5-6.2 5.5-6.2s5.5 2.6 5.5 6.2"/><circle cx="17" cy="9" r="2.2"/><path d="M15.3 14.3c2.5.5 4.2 2.7 4.2 5.7"/></svg>';
+
+  /** item 3 : un élève reçoit un MIROIR en lecture seule de la boîte du
+   *  prof, jamais une copie figée — appelé silencieusement (pas de bouton
+   *  à cliquer) au démarrage, à la connexion, et à chaque ouverture de la
+   *  page Classes. Le contenu (question/réponse) est comparé par id à ce
+   *  que le prof a en ligne : ajouté si nouveau, mis à jour si changé,
+   *  repassé en "supprimé" localement si le prof l'a retiré — la
+   *  progression SM-2 de chaque fiche, elle, n'est jamais touchée. */
+  async function syncSharedBoxesForStudent() {
+    if (!Sync.isConfigured()) return;
+    if (!accountCurrentUser) return;
+    try {
+      const myClasses = await Sync.classes.listAsStudent();
+      for (const klass of myClasses) {
+        const boxes = await Sync.classes.listSharedBoxes(klass.id);
+        for (const box of boxes) {
+          await reconcileSharedBox(klass, box);
+        }
+      }
+      renderAll();
+      renderSubjectManageList();
+    } catch (e) {
+      console.warn("Classes: échec de la synchro des boîtes partagées", e);
     }
-    renderAll();
-    renderSubjectManageList();
+  }
+
+  async function reconcileSharedBox(klass, box) {
+    let subject = subjects.find((s) => s.sharedBoxId === box.id);
+    if (!subject) {
+      subject = newSubject(box.subject_name, ROOT_FOLDER_ID);
+      subject.sharedBoxId = box.id;
+      subject.sharedClassId = klass.id;
+      subject.sharedClassName = klass.name;
+      await persistSubject(subject);
+      subjects.push(subject);
+    } else if (subject.name !== box.subject_name) {
+      // Le prof a renommé sa boîte : la copie miroir suit.
+      subject.name = box.subject_name;
+      subject.updatedAt = new Date().toISOString();
+      await persistSubject(subject);
+    }
+
+    const remoteCards = Array.isArray(box.cards) ? box.cards : [];
+    const remoteIds = new Set(remoteCards.map((c) => c.id).filter(Boolean));
+    const localCardsHere = cards.filter((c) => c.subject === subject.id);
+
+    for (const rc of remoteCards) {
+      if (!rc.id) continue;
+      // Comparaison bornée à CETTE boîte miroir (et pas juste par id global)
+      // : un id de fiche est unique en pratique (uid() aléatoire), mais
+      // rester borné à `subject.id` évite tout risque de confusion avec
+      // une fiche locale sans rapport qui porterait le même id.
+      const idx = cards.findIndex((c) => c.id === rc.id && c.subject === subject.id);
+      if (idx >= 0) {
+        const existing = cards[idx];
+        const contentChanged = existing.question !== (rc.question || "") || existing.answer !== (rc.answer || "");
+        if (existing.deleted || contentChanged) {
+          const updated = {
+            ...existing,
+            question: rc.question || "",
+            answer: rc.answer || "",
+            deleted: false,
+            updatedAt: new Date().toISOString(),
+          };
+          await persist(updated);
+          cards[idx] = updated;
+        }
+      } else {
+        const card = { ...newCard(rc.question || "", rc.answer || "", subject.id), id: rc.id };
+        await persist(card);
+        cards.push(card);
+      }
+    }
+    // Le prof a retiré une fiche : suppression douce locale (jamais un
+    // vrai delete, pour rester cohérent avec le reste de l'appli).
+    for (const c of localCardsHere) {
+      if (!c.deleted && !remoteIds.has(c.id)) {
+        const updated = touch({ ...c, deleted: true });
+        await persist(updated);
+        const idx = cards.findIndex((x) => x.id === c.id);
+        if (idx >= 0) cards[idx] = updated;
+      }
+    }
   }
 
   async function renderStudentClasses() {
@@ -8263,37 +8567,19 @@
       const boxesHtml =
         sharedBoxes.length === 0
           ? `<p class="field-hint">Aucune boîte partagée pour l'instant.</p>`
-          : "";
+          : sharedBoxes
+              .map(
+                (box) =>
+                  `<div class="classes-shared-box-row"><span>${escapeHtml(box.subject_name)} <span class="classes-card-count">(${(box.cards || []).length} fiche${(box.cards || []).length > 1 ? "s" : ""})</span></span><span class="classes-shared-badge">Dans tes boîtes</span></div>`
+              )
+              .join("");
       li.innerHTML = `
         <div class="classes-class-header">
-          <span class="subject-row-name">${orgIconMarkup("orgBoite")} <span>${escapeHtml(klass.name)}</span></span>
+          <span class="subject-row-name">${CLASSES_ROW_ICON} <span>${escapeHtml(klass.name)}</span></span>
         </div>
         <div class="classes-shared-boxes">${boxesHtml}</div>
       `;
       list.appendChild(li);
-      const boxesWrap = li.querySelector(".classes-shared-boxes");
-      sharedBoxes.forEach((box) => {
-        const already = subjects.some((s) => s.sharedBoxId === box.id);
-        const n = (box.cards || []).length;
-        const row = document.createElement("div");
-        row.className = "classes-shared-box-row";
-        row.innerHTML = `
-          <span>${escapeHtml(box.subject_name)} <span class="classes-card-count">(${n} fiche${n > 1 ? "s" : ""})</span></span>
-          <button type="button" class="btn btn--small">${already ? "Déjà ajoutée" : "Ajouter à mes boîtes"}</button>
-        `;
-        const btn = row.querySelector("button");
-        if (already) {
-          btn.disabled = true;
-        } else {
-          btn.addEventListener("click", async () => {
-            btn.disabled = true;
-            btn.textContent = "Ajout...";
-            await importSharedBox(klass, box);
-            btn.textContent = "Déjà ajoutée";
-          });
-        }
-        boxesWrap.appendChild(row);
-      });
     }
   }
 
@@ -8319,7 +8605,7 @@
               .join("");
       li.innerHTML = `
         <div class="classes-class-header">
-          <span class="subject-row-name">${orgIconMarkup("orgBoite")} <span>${escapeHtml(klass.name)}</span></span>
+          <span class="subject-row-name">${CLASSES_ROW_ICON} <span>${escapeHtml(klass.name)}</span></span>
           <span class="org-count">${count} élève${count > 1 ? "s" : ""}</span>
         </div>
         <p class="field-hint classes-invite-hint">Code d'invitation : <strong>${escapeHtml(klass.invite_code)}</strong></p>
@@ -8332,84 +8618,29 @@
           mode: "single",
           title: `Partager une boîte à « ${klass.name} »`,
           folderAlwaysSelectable: false,
+          excludeSubjectIds: new Set(subjects.filter((s) => s.sharedBoxId).map((s) => s.id)),
           onPick: async (kind, subjectId) => {
             const subject = subjects.find((s) => s.id === subjectId);
             if (!subject) return;
             const boxCards = cards.filter((c) => !c.deleted && c.subject === subjectId);
-            const { error } = await Sync.classes.shareBox(klass.id, subject.name, boxCards);
+            const { data, error } = await Sync.classes.shareBox(klass.id, subject.name, boxCards);
             closeBoitePickerView();
-            if (error) alert("Erreur lors du partage : " + error);
+            if (error) {
+              alert("Erreur lors du partage : " + error);
+              return;
+            }
+            // item 3 : on garde le lien boîte locale <-> boîte partagée,
+            // pour que les futures modifs de cette boîte (ajout/modif/
+            // suppression de fiches) se répercutent automatiquement.
+            subject.sharedShares = subject.sharedShares || [];
+            subject.sharedShares.push({ classId: klass.id, className: klass.name, boxId: data.id });
+            subject.updatedAt = new Date().toISOString();
+            await persistSubject(subject);
             renderTeacherClasses();
           },
         });
       });
     }
-  }
-
-  function setClassesAuthMode(mode) {
-    classesAuthMode = mode;
-    const tabIn = el("classes-auth-tab-signin");
-    const tabUp = el("classes-auth-tab-signup");
-    if (tabIn) tabIn.classList.toggle("is-active", mode === "signin");
-    if (tabUp) tabUp.classList.toggle("is-active", mode === "signup");
-    const submitBtn = el("classes-auth-submit");
-    if (submitBtn) submitBtn.textContent = mode === "signin" ? "Se connecter" : "Créer le compte";
-    const note = el("classes-auth-note");
-    if (note) note.hidden = true;
-  }
-  const classesAuthTabSignin = el("classes-auth-tab-signin");
-  if (classesAuthTabSignin) classesAuthTabSignin.addEventListener("click", () => setClassesAuthMode("signin"));
-  const classesAuthTabSignup = el("classes-auth-tab-signup");
-  if (classesAuthTabSignup) classesAuthTabSignup.addEventListener("click", () => setClassesAuthMode("signup"));
-
-  const classesAuthSubmitBtn = el("classes-auth-submit");
-  if (classesAuthSubmitBtn) {
-    classesAuthSubmitBtn.addEventListener("click", async () => {
-      const emailInput = el("classes-auth-email");
-      const passwordInput = el("classes-auth-password");
-      const note = el("classes-auth-note");
-      const email = (emailInput.value || "").trim();
-      const password = passwordInput.value || "";
-      if (!email || !password) {
-        if (note) {
-          note.hidden = false;
-          note.textContent = "Email et mot de passe requis.";
-        }
-        return;
-      }
-      classesAuthSubmitBtn.disabled = true;
-      const result =
-        classesAuthMode === "signin"
-          ? await Sync.auth.signIn(email, password)
-          : await Sync.auth.signUp(email, password);
-      classesAuthSubmitBtn.disabled = false;
-      if (result.error) {
-        if (note) {
-          note.hidden = false;
-          note.textContent = result.error;
-        }
-        return;
-      }
-      if (classesAuthMode === "signup") {
-        if (note) {
-          note.hidden = false;
-          note.textContent = "Compte créé — vérifie ta boîte mail si une confirmation est demandée, puis connecte-toi.";
-        }
-        setClassesAuthMode("signin");
-        return;
-      }
-      passwordInput.value = "";
-      await renderClassesView();
-    });
-  }
-
-  const classesSignoutBtn = el("classes-signout-btn");
-  if (classesSignoutBtn) {
-    classesSignoutBtn.addEventListener("click", async () => {
-      await Sync.auth.signOut();
-      classesCurrentUser = null;
-      await renderClassesView();
-    });
   }
 
   const classesJoinBtn = el("classes-join-btn");
@@ -8431,6 +8662,7 @@
       }
       if (note) note.hidden = true;
       input.value = "";
+      await syncSharedBoxesForStudent();
       await renderStudentClasses();
     });
   }
@@ -8457,6 +8689,14 @@
   if (classesGotoSyncBtn) {
     classesGotoSyncBtn.addEventListener("click", () => {
       const tab = document.querySelector('.tab[data-view="sync"]');
+      if (tab) tab.click();
+    });
+  }
+
+  const classesGotoAccountBtn = el("classes-goto-account-btn");
+  if (classesGotoAccountBtn) {
+    classesGotoAccountBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="account"]');
       if (tab) tab.click();
     });
   }
@@ -9046,22 +9286,37 @@
     if (window.__clearBootWatchdog) window.__clearBootWatchdog();
     if (window.__clearBootRetryFlag) window.__clearBootRetryFlag();
     if (Sync.isConfigured()) {
-      await connectSync();
-      // Doublons "Général" : reconcileWithRemote() peut faire apparaître un
-      // second sujet "Général" arrivé du serveur (fiches distantes sans
-      // boîte) en plus de celui créé localement par défaut avant même que
-      // la synchro n'ait eu le temps de tourner (voir loadSubjects) — d'où
-      // la boîte "Générale" qui apparaissait parfois à la toute première
-      // connexion. On redéduplique donc une fois la synchro effectuée.
-      await dedupeEmptySubjects();
-      renderSubjectSelect();
-      renderStatsSubjectSelect();
-      // Ne relance pas startReviewSession() ici : reconcileWithRemote() a déjà
-      // rafraîchi les données via renderAll(), et relancer une session ici
-      // remélangeait la file et changeait la fiche affichée sous les yeux de
-      // l'utilisateur, sans lien avec son évaluation. On ajoute juste
-      // discrètement les éventuelles nouvelles fiches dues à la file en cours.
-      mergeNewDueCardsIntoQueue();
+      // Correctif : ce bloc n'était protégé par aucun try/catch — un
+      // accroc réseau ponctuel pendant connectSync() (ou l'une des étapes
+      // suivantes) levait une exception qui interrompait silencieusement
+      // TOUT le reste du démarrage, y compris ce qui suit (dont, plus bas,
+      // la reconnexion automatique au compte Classes). On l'isole donc
+      // pour que la sync perso ne puisse plus jamais bloquer le reste.
+      try {
+        await connectSync();
+        // Doublons "Général" : reconcileWithRemote() peut faire apparaître un
+        // second sujet "Général" arrivé du serveur (fiches distantes sans
+        // boîte) en plus de celui créé localement par défaut avant même que
+        // la synchro n'ait eu le temps de tourner (voir loadSubjects) — d'où
+        // la boîte "Générale" qui apparaissait parfois à la toute première
+        // connexion. On redéduplique donc une fois la synchro effectuée.
+        await dedupeEmptySubjects();
+        renderSubjectSelect();
+        renderStatsSubjectSelect();
+        // Ne relance pas startReviewSession() ici : reconcileWithRemote() a déjà
+        // rafraîchi les données via renderAll(), et relancer une session ici
+        // remélangeait la file et changeait la fiche affichée sous les yeux de
+        // l'utilisateur, sans lien avec son évaluation. On ajoute juste
+        // discrètement les éventuelles nouvelles fiches dues à la file en cours.
+        mergeNewDueCardsIntoQueue();
+      } catch (e) {
+        console.warn("Sync perso : échec au démarrage (l'appli continue en local)", e);
+      }
     }
+    // Item 1/2 (Classes) : retrouve une éventuelle session déjà ouverte
+    // (compte Supabase persistant) et lance en tâche de fond la synchro
+    // des boîtes partagées d'un élève — indépendant du reste de la sync
+    // perso ci-dessus, peut échouer sans bloquer l'appli.
+    initAccountState();
   })();
 })();

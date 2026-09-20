@@ -59,13 +59,48 @@ alter table public.classes enable row level security;
 alter table public.class_members enable row level security;
 alter table public.shared_boxes enable row level security;
 
+-- ------------------------------------------------------------
+-- Fonctions `security definer` qui vérifient l'appartenance/le rôle SANS
+-- redéclencher les politiques RLS de la table qu'elles consultent.
+-- Indispensable : `classes` et `class_members` ont chacune besoin de
+-- regarder dans l'autre pour décider qui a le droit de lire quoi ; passer
+-- par une sous-requête RLS directe des deux côtés crée un cycle
+-- ("infinite recursion detected in policy for relation classes"). Ces
+-- fonctions cassent le cycle.
+-- ------------------------------------------------------------
+create or replace function public.is_teacher_of_class(p_class_id uuid)
+returns boolean
+language sql
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.classes where id = p_class_id and teacher_id = auth.uid()
+  );
+$$;
+
+grant execute on function public.is_teacher_of_class(uuid) to authenticated;
+
+create or replace function public.is_member_of_class(p_class_id uuid)
+returns boolean
+language sql
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.class_members where class_id = p_class_id and user_id = auth.uid()
+  );
+$$;
+
+grant execute on function public.is_member_of_class(uuid) to authenticated;
+
 -- classes : visible par son prof, et par ses membres (élèves) — jamais
 -- par un inconnu (donc pas de moyen de "deviner" un code en listant les
 -- classes existantes).
 create policy "classes_select_own_or_member" on public.classes
   for select using (
     teacher_id = auth.uid()
-    or id in (select class_id from public.class_members where user_id = auth.uid())
+    or public.is_member_of_class(id)
   );
 
 create policy "classes_insert_as_teacher" on public.classes
@@ -84,38 +119,34 @@ create policy "classes_delete_own" on public.classes
 create policy "class_members_select" on public.class_members
   for select using (
     user_id = auth.uid()
-    or class_id in (select id from public.classes where teacher_id = auth.uid())
+    or public.is_teacher_of_class(class_id)
   );
 
 create policy "class_members_delete" on public.class_members
   for delete using (
     user_id = auth.uid() -- un élève peut quitter une classe
-    or class_id in (select id from public.classes where teacher_id = auth.uid()) -- un prof peut retirer un élève
+    or public.is_teacher_of_class(class_id) -- un prof peut retirer un élève
   );
 
 -- shared_boxes : un prof gère celles de SES classes ; un élève voit
 -- celles des classes qu'il a rejointes.
 create policy "shared_boxes_select" on public.shared_boxes
   for select using (
-    class_id in (select id from public.classes where teacher_id = auth.uid())
-    or class_id in (select class_id from public.class_members where user_id = auth.uid())
+    public.is_teacher_of_class(class_id)
+    or public.is_member_of_class(class_id)
   );
 
 create policy "shared_boxes_insert_as_teacher" on public.shared_boxes
   for insert with check (
     shared_by = auth.uid()
-    and class_id in (select id from public.classes where teacher_id = auth.uid())
+    and public.is_teacher_of_class(class_id)
   );
 
 create policy "shared_boxes_update_as_teacher" on public.shared_boxes
-  for update using (
-    class_id in (select id from public.classes where teacher_id = auth.uid())
-  );
+  for update using (public.is_teacher_of_class(class_id));
 
 create policy "shared_boxes_delete_as_teacher" on public.shared_boxes
-  for delete using (
-    class_id in (select id from public.classes where teacher_id = auth.uid())
-  );
+  for delete using (public.is_teacher_of_class(class_id));
 
 -- ------------------------------------------------------------
 -- Rejoindre une classe par code d'invitation.

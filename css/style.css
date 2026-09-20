@@ -3918,6 +3918,15 @@ button.home-btn {
   font-size: 12px;
 }
 
+.classes-shared-badge {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--sage);
+  white-space: nowrap;
+}
+
 .classes-share-btn {
   margin-top: 6px;
 }
