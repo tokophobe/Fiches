@@ -3733,7 +3733,9 @@ button.home-btn {
 }
 
 .field input[type="url"],
-.field input[type="text"] {
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="password"] {
   font-family: var(--font-mono);
   font-size: 14px;
   color: var(--ink);
@@ -3797,6 +3799,127 @@ button.home-btn {
   padding: 10px 12px;
   margin: 0 0 16px;
   line-height: 1.5;
+}
+
+/* ============================================================
+   CLASSES VIEW
+   ============================================================ */
+.classes-auth-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.classes-auth-tabs .btn {
+  flex: 1;
+  opacity: 0.55;
+}
+
+.classes-auth-tabs .btn.is-active {
+  opacity: 1;
+  background: var(--sage);
+  color: var(--paper);
+}
+
+.classes-user-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--paper);
+  border-radius: var(--radius-card);
+  padding: 12px 16px;
+  box-shadow: var(--shadow-deep);
+  margin-bottom: 18px;
+}
+
+.classes-user-row span {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.classes-section {
+  margin-bottom: 26px;
+}
+
+.classes-section h3 {
+  font-family: var(--font-type);
+  font-size: 15px;
+  color: var(--ink);
+  margin: 0 0 10px;
+}
+
+.classes-join-row,
+.classes-create-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.classes-join-row input,
+.classes-create-row input {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper-2);
+  border: 1px solid rgba(35, 48, 42, 0.15);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.classes-class-row {
+  display: block;
+  padding: 14px 16px;
+}
+
+.classes-class-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.classes-invite-hint {
+  margin: 0 0 10px;
+}
+
+.classes-invite-hint strong {
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+
+.classes-shared-boxes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.classes-shared-box-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--paper-2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13.5px;
+}
+
+.classes-card-count {
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.classes-share-btn {
+  margin-top: 6px;
 }
 
 /* ============================================================

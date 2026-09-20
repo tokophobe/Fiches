@@ -160,6 +160,7 @@
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
     <button class="tab" role="tab" aria-selected="false" data-view="calendar" hidden>Calendrier</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Programme</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="classes" hidden>Classes</button>
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">
       <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
@@ -208,6 +209,10 @@
         <button type="button" class="home-circle" data-key="dev" data-go="dev">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/></svg>
           <span>Développeur</span>
+        </button>
+        <button type="button" class="home-circle" data-key="classes" data-go="classes">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/></svg>
+          <span>Classes</span>
         </button>
       </div>
     </section>
@@ -613,6 +618,73 @@
         <button type="button" class="btn btn--ghost" id="setting-hard-reset">
           Vider le cache et recharger
         </button>
+      </div>
+    </section>
+
+    <!-- VUE CLASSES (exploration) : partage prof -> élèves, distinct de la
+         synchro perso (code partagé) — nécessite un vrai compte (email +
+         mot de passe), sur le même projet Supabase que la Sync. -->
+    <section id="view-classes" class="view" aria-labelledby="tab-classes">
+      <h2 class="section-title">Classes</h2>
+
+      <div id="classes-needs-sync" hidden>
+        <p class="field-hint settings-block-hint">
+          Les Classes ont besoin que la Synchronisation soit configurée
+          d'abord (même projet Supabase), pour pouvoir créer un compte.
+        </p>
+        <button type="button" class="btn btn--small" id="classes-goto-sync-btn">Aller à Synchronisation</button>
+      </div>
+
+      <div id="classes-auth-block" hidden>
+        <p class="field-hint settings-block-hint">
+          Différent du code de synchro : un vrai compte, pour distinguer
+          qui est professeur et qui est élève.
+        </p>
+        <div class="card-form">
+          <div class="classes-auth-tabs" id="classes-auth-tabs">
+            <button type="button" class="btn btn--small is-active" id="classes-auth-tab-signin" data-mode="signin">Se connecter</button>
+            <button type="button" class="btn btn--small" id="classes-auth-tab-signup" data-mode="signup">Créer un compte</button>
+          </div>
+          <label class="field">
+            <span>Email</span>
+            <input type="email" id="classes-auth-email" autocomplete="email" />
+          </label>
+          <label class="field">
+            <span>Mot de passe</span>
+            <input type="password" id="classes-auth-password" autocomplete="current-password" />
+          </label>
+          <button type="button" class="btn btn--primary" id="classes-auth-submit">Se connecter</button>
+          <p class="field-hint" id="classes-auth-note" hidden></p>
+        </div>
+      </div>
+
+      <div id="classes-main-block" hidden>
+        <div class="classes-user-row">
+          <span id="classes-user-email"></span>
+          <button type="button" class="btn btn--ghost btn--small" id="classes-signout-btn">Se déconnecter</button>
+        </div>
+
+        <div class="classes-section">
+          <h3 class="settings-block-title">Mes classes — élève</h3>
+          <p class="field-hint settings-block-hint">Rejoins une classe avec le code donné par ton professeur.</p>
+          <div class="classes-join-row">
+            <input type="text" id="classes-join-code-input" placeholder="Code d'invitation" />
+            <button type="button" class="btn btn--small" id="classes-join-btn">Rejoindre</button>
+          </div>
+          <p class="field-hint" id="classes-join-note" hidden></p>
+          <ul class="subject-list" id="classes-student-list"></ul>
+          <p class="field-hint" id="classes-student-empty" hidden>Tu n'as encore rejoint aucune classe.</p>
+        </div>
+
+        <div class="classes-section">
+          <h3 class="settings-block-title">Mes classes — professeur</h3>
+          <div class="classes-create-row">
+            <input type="text" id="classes-create-name-input" placeholder="Nom de la classe" />
+            <button type="button" class="btn btn--small" id="classes-create-btn">Créer une classe</button>
+          </div>
+          <ul class="subject-list" id="classes-teacher-list"></ul>
+          <p class="field-hint" id="classes-teacher-empty" hidden>Tu n'as encore créé aucune classe.</p>
+        </div>
       </div>
     </section>
 

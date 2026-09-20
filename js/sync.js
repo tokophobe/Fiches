@@ -567,6 +567,147 @@ function subscribeDevSettingsRealtime(onRemoteChange) {
   return () => c.removeChannel(channel);
 }
 
+/* ---------------------------------------------------------
+   Classes (prof/élève) : contrairement à tout ce qui précède (un simple
+   "code" partagé, sans identité), ça a besoin d'un VRAI compte Supabase
+   Auth (email + mot de passe) — impossible de distinguer prof/élève ou
+   de protéger les données d'un prof sans ça. Utilise le même projet
+   Supabase (même url/key) que la synchro perso, donc Classes exige que
+   la Sync soit déjà configurée (voir supabase/classes_schema.sql pour le
+   schéma à créer une fois, côté Supabase).
+--------------------------------------------------------- */
+async function authSignUp(email, password) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
+  const { data, error } = await c.auth.signUp({ email, password });
+  return { data, error: error ? error.message : null };
+}
+
+async function authSignIn(email, password) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
+  const { data, error } = await c.auth.signInWithPassword({ email, password });
+  return { data, error: error ? error.message : null };
+}
+
+async function authSignOut() {
+  const c = getClient();
+  if (!c) return;
+  await c.auth.signOut();
+}
+
+async function authGetUser() {
+  const c = getClient();
+  if (!c) return null;
+  const { data } = await c.auth.getUser();
+  return (data && data.user) || null;
+}
+
+function authOnChange(callback) {
+  const c = getClient();
+  if (!c) return () => {};
+  const { data } = c.auth.onAuthStateChange((_event, session) => {
+    callback((session && session.user) || null);
+  });
+  return () => data.subscription.unsubscribe();
+}
+
+/* ---- classes : créer, lister, rejoindre ---- */
+
+function classInviteCode() {
+  // Même alphabet que generateSyncCode (sans caractères ambigus), format
+  // plus court car pensé pour être recopié à la main par un élève.
+  const bytes = new Uint8Array(6);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => CODE_ALPHABET[b % CODE_ALPHABET.length]).join("");
+}
+
+async function createClass(name) {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { error: "Non connecté." };
+  const row = {
+    name: (name || "").trim(),
+    teacher_id: user.id,
+    invite_code: classInviteCode(),
+  };
+  const { data, error } = await c.from("classes").insert(row).select().single();
+  return { data, error: error ? error.message : null };
+}
+
+async function listClassesAsTeacher() {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return [];
+  const { data, error } = await c.from("classes").select("*").eq("teacher_id", user.id).order("created_at");
+  if (error) {
+    console.warn("Classes: échec du chargement (prof)", error.message);
+    return [];
+  }
+  return data || [];
+}
+
+async function listClassesAsStudent() {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return [];
+  const { data, error } = await c
+    .from("class_members")
+    .select("class_id, role, classes(*)")
+    .eq("user_id", user.id);
+  if (error) {
+    console.warn("Classes: échec du chargement (élève)", error.message);
+    return [];
+  }
+  return (data || []).map((row) => row.classes).filter(Boolean);
+}
+
+async function classMemberCount(classId) {
+  const c = getClient();
+  if (!c) return 0;
+  const { data, error } = await c.rpc("class_member_count", { p_class_id: classId });
+  if (error) {
+    console.warn("Classes: échec du comptage des membres", error.message);
+    return 0;
+  }
+  return data || 0;
+}
+
+async function joinClassByCode(code) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée." };
+  const { data, error } = await c.rpc("join_class_by_code", { p_code: code });
+  if (error) return { error: error.message.includes("Code invalide") ? "Code invalide." : error.message };
+  return { data };
+}
+
+/* ---- boîtes partagées ---- */
+
+async function shareBoxToClass(classId, subjectName, cards) {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { error: "Non connecté." };
+  const row = {
+    class_id: classId,
+    shared_by: user.id,
+    subject_name: subjectName,
+    cards: cards.map((card) => ({ question: card.question, answer: card.answer })),
+  };
+  const { data, error } = await c.from("shared_boxes").insert(row).select().single();
+  return { data, error: error ? error.message : null };
+}
+
+async function listSharedBoxesForClass(classId) {
+  const c = getClient();
+  if (!c) return [];
+  const { data, error } = await c.from("shared_boxes").select("*").eq("class_id", classId).order("shared_at");
+  if (error) {
+    console.warn("Classes: échec du chargement des boîtes partagées", error.message);
+    return [];
+  }
+  return data || [];
+}
+
 window.Sync = {
   generateSyncCode,
   getConfig,
@@ -594,4 +735,20 @@ window.Sync = {
   subscribeLearningModesRealtime,
   pendingCount: () => getPending().length,
   getLastError: () => lastError,
+  auth: {
+    signUp: authSignUp,
+    signIn: authSignIn,
+    signOut: authSignOut,
+    getUser: authGetUser,
+    onChange: authOnChange,
+  },
+  classes: {
+    create: createClass,
+    listAsTeacher: listClassesAsTeacher,
+    listAsStudent: listClassesAsStudent,
+    memberCount: classMemberCount,
+    join: joinClassByCode,
+    shareBox: shareBoxToClass,
+    listSharedBoxes: listSharedBoxesForClass,
+  },
 };

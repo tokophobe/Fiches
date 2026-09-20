@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v132";
+  const APP_VERSION = "v133";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -585,7 +585,7 @@
   const HOME_LAYOUT_TITLES = {
     review: "Réviser", manage: "Dossiers & boîtes", cards: "Fiches", addCard: "Ajouter une fiche",
     stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
-    sync: "Synchronisation", dev: "Développeur",
+    sync: "Synchronisation", dev: "Développeur", classes: "Classes",
   };
   // Largeur/hauteur de référence utilisées uniquement pour convertir une
   // seule fois d'anciens réglages enregistrés en pixels (avant ce
@@ -602,6 +602,7 @@
     settings: { x: 16.2, y: 73.8, d: 85 },
     sync: { x: 54.4, y: 76.2, d: 95 },
     dev: { x: 89.0, y: 79.0, d: 80 },
+    classes: { x: 50.0, y: 90.0, d: 85 },
   };
   // Items 1/2 (logo) : position (X/Y en %, centre du logo) et taille (px)
   // du logo sur la page d'accueil.
@@ -7477,6 +7478,7 @@
       if (view === "stats") renderStats();
       if (view === "dev") renderDevView();
       if (view === "sync") renderSyncView();
+      if (view === "classes") renderClassesView();
       if (view === "calendar") renderCalendarEvents();
       if (view === "revision-program") renderRevisionProgramList();
       if (view === "settings") {
@@ -8187,6 +8189,277 @@
     renderSyncView();
     updateSyncStatus();
   });
+
+  /* ---------------------------------------------------------
+     Classes (exploration) : partage prof -> élèves. Contrairement à la
+     Sync perso (un simple code partagé, sans identité), nécessite un
+     vrai compte (email + mot de passe) — voir Sync.auth / Sync.classes
+     dans sync.js, et supabase/classes_schema.sql pour le schéma à créer
+     une fois côté Supabase (même projet que la Sync).
+  --------------------------------------------------------- */
+  let classesCurrentUser = null;
+  let classesAuthMode = "signin"; // "signin" | "signup"
+
+  async function renderClassesView() {
+    const needsSync = el("classes-needs-sync");
+    const authBlock = el("classes-auth-block");
+    const mainBlock = el("classes-main-block");
+    if (!needsSync || !authBlock || !mainBlock) return;
+
+    if (!Sync.isConfigured()) {
+      needsSync.hidden = false;
+      authBlock.hidden = true;
+      mainBlock.hidden = true;
+      return;
+    }
+    needsSync.hidden = true;
+
+    classesCurrentUser = await Sync.auth.getUser();
+    if (!classesCurrentUser) {
+      authBlock.hidden = false;
+      mainBlock.hidden = true;
+      return;
+    }
+    authBlock.hidden = true;
+    mainBlock.hidden = false;
+    const emailEl = el("classes-user-email");
+    if (emailEl) emailEl.textContent = classesCurrentUser.email || "";
+
+    await Promise.all([renderStudentClasses(), renderTeacherClasses()]);
+  }
+
+  /** Une boîte partagée reçue par un élève devient une copie locale
+   *  indépendante (son propre id, sa propre progression SM-2) — jamais
+   *  un lien vers la boîte du prof, pour que chacun révise à son rythme.
+   *  `sharedBoxId` sert uniquement à éviter de l'ajouter deux fois. */
+  async function importSharedBox(klass, box) {
+    if (subjects.some((s) => s.sharedBoxId === box.id)) return;
+    const subject = newSubject(box.subject_name, ROOT_FOLDER_ID);
+    subject.sharedBoxId = box.id;
+    subject.sharedClassId = klass.id;
+    subject.sharedClassName = klass.name;
+    await persistSubject(subject);
+    subjects.push(subject);
+    for (const c of box.cards || []) {
+      const card = newCard(c.question, c.answer, subject.id);
+      await persist(card);
+      cards.push(card);
+    }
+    renderAll();
+    renderSubjectManageList();
+  }
+
+  async function renderStudentClasses() {
+    const list = el("classes-student-list");
+    const empty = el("classes-student-empty");
+    if (!list) return;
+    list.innerHTML = "";
+    const myClasses = await Sync.classes.listAsStudent();
+    if (empty) empty.hidden = myClasses.length > 0;
+    for (const klass of myClasses) {
+      const sharedBoxes = await Sync.classes.listSharedBoxes(klass.id);
+      const li = document.createElement("li");
+      li.className = "subject-row classes-class-row";
+      const boxesHtml =
+        sharedBoxes.length === 0
+          ? `<p class="field-hint">Aucune boîte partagée pour l'instant.</p>`
+          : "";
+      li.innerHTML = `
+        <div class="classes-class-header">
+          <span class="subject-row-name">${orgIconMarkup("orgBoite")} <span>${escapeHtml(klass.name)}</span></span>
+        </div>
+        <div class="classes-shared-boxes">${boxesHtml}</div>
+      `;
+      list.appendChild(li);
+      const boxesWrap = li.querySelector(".classes-shared-boxes");
+      sharedBoxes.forEach((box) => {
+        const already = subjects.some((s) => s.sharedBoxId === box.id);
+        const n = (box.cards || []).length;
+        const row = document.createElement("div");
+        row.className = "classes-shared-box-row";
+        row.innerHTML = `
+          <span>${escapeHtml(box.subject_name)} <span class="classes-card-count">(${n} fiche${n > 1 ? "s" : ""})</span></span>
+          <button type="button" class="btn btn--small">${already ? "Déjà ajoutée" : "Ajouter à mes boîtes"}</button>
+        `;
+        const btn = row.querySelector("button");
+        if (already) {
+          btn.disabled = true;
+        } else {
+          btn.addEventListener("click", async () => {
+            btn.disabled = true;
+            btn.textContent = "Ajout...";
+            await importSharedBox(klass, box);
+            btn.textContent = "Déjà ajoutée";
+          });
+        }
+        boxesWrap.appendChild(row);
+      });
+    }
+  }
+
+  async function renderTeacherClasses() {
+    const list = el("classes-teacher-list");
+    const empty = el("classes-teacher-empty");
+    if (!list) return;
+    list.innerHTML = "";
+    const myClasses = await Sync.classes.listAsTeacher();
+    if (empty) empty.hidden = myClasses.length > 0;
+    for (const klass of myClasses) {
+      const [count, sharedBoxes] = await Promise.all([
+        Sync.classes.memberCount(klass.id),
+        Sync.classes.listSharedBoxes(klass.id),
+      ]);
+      const li = document.createElement("li");
+      li.className = "subject-row classes-class-row";
+      const boxesHtml =
+        sharedBoxes.length === 0
+          ? `<p class="field-hint">Aucune boîte partagée à cette classe pour l'instant.</p>`
+          : sharedBoxes
+              .map((box) => `<p class="field-hint">${escapeHtml(box.subject_name)} (${(box.cards || []).length} fiche${(box.cards || []).length > 1 ? "s" : ""})</p>`)
+              .join("");
+      li.innerHTML = `
+        <div class="classes-class-header">
+          <span class="subject-row-name">${orgIconMarkup("orgBoite")} <span>${escapeHtml(klass.name)}</span></span>
+          <span class="org-count">${count} élève${count > 1 ? "s" : ""}</span>
+        </div>
+        <p class="field-hint classes-invite-hint">Code d'invitation : <strong>${escapeHtml(klass.invite_code)}</strong></p>
+        <div class="classes-shared-boxes">${boxesHtml}</div>
+        <button type="button" class="btn btn--small classes-share-btn">Partager une boîte</button>
+      `;
+      list.appendChild(li);
+      li.querySelector(".classes-share-btn").addEventListener("click", () => {
+        openBoitePickerView({
+          mode: "single",
+          title: `Partager une boîte à « ${klass.name} »`,
+          folderAlwaysSelectable: false,
+          onPick: async (kind, subjectId) => {
+            const subject = subjects.find((s) => s.id === subjectId);
+            if (!subject) return;
+            const boxCards = cards.filter((c) => !c.deleted && c.subject === subjectId);
+            const { error } = await Sync.classes.shareBox(klass.id, subject.name, boxCards);
+            closeBoitePickerView();
+            if (error) alert("Erreur lors du partage : " + error);
+            renderTeacherClasses();
+          },
+        });
+      });
+    }
+  }
+
+  function setClassesAuthMode(mode) {
+    classesAuthMode = mode;
+    const tabIn = el("classes-auth-tab-signin");
+    const tabUp = el("classes-auth-tab-signup");
+    if (tabIn) tabIn.classList.toggle("is-active", mode === "signin");
+    if (tabUp) tabUp.classList.toggle("is-active", mode === "signup");
+    const submitBtn = el("classes-auth-submit");
+    if (submitBtn) submitBtn.textContent = mode === "signin" ? "Se connecter" : "Créer le compte";
+    const note = el("classes-auth-note");
+    if (note) note.hidden = true;
+  }
+  const classesAuthTabSignin = el("classes-auth-tab-signin");
+  if (classesAuthTabSignin) classesAuthTabSignin.addEventListener("click", () => setClassesAuthMode("signin"));
+  const classesAuthTabSignup = el("classes-auth-tab-signup");
+  if (classesAuthTabSignup) classesAuthTabSignup.addEventListener("click", () => setClassesAuthMode("signup"));
+
+  const classesAuthSubmitBtn = el("classes-auth-submit");
+  if (classesAuthSubmitBtn) {
+    classesAuthSubmitBtn.addEventListener("click", async () => {
+      const emailInput = el("classes-auth-email");
+      const passwordInput = el("classes-auth-password");
+      const note = el("classes-auth-note");
+      const email = (emailInput.value || "").trim();
+      const password = passwordInput.value || "";
+      if (!email || !password) {
+        if (note) {
+          note.hidden = false;
+          note.textContent = "Email et mot de passe requis.";
+        }
+        return;
+      }
+      classesAuthSubmitBtn.disabled = true;
+      const result =
+        classesAuthMode === "signin"
+          ? await Sync.auth.signIn(email, password)
+          : await Sync.auth.signUp(email, password);
+      classesAuthSubmitBtn.disabled = false;
+      if (result.error) {
+        if (note) {
+          note.hidden = false;
+          note.textContent = result.error;
+        }
+        return;
+      }
+      if (classesAuthMode === "signup") {
+        if (note) {
+          note.hidden = false;
+          note.textContent = "Compte créé — vérifie ta boîte mail si une confirmation est demandée, puis connecte-toi.";
+        }
+        setClassesAuthMode("signin");
+        return;
+      }
+      passwordInput.value = "";
+      await renderClassesView();
+    });
+  }
+
+  const classesSignoutBtn = el("classes-signout-btn");
+  if (classesSignoutBtn) {
+    classesSignoutBtn.addEventListener("click", async () => {
+      await Sync.auth.signOut();
+      classesCurrentUser = null;
+      await renderClassesView();
+    });
+  }
+
+  const classesJoinBtn = el("classes-join-btn");
+  if (classesJoinBtn) {
+    classesJoinBtn.addEventListener("click", async () => {
+      const input = el("classes-join-code-input");
+      const note = el("classes-join-note");
+      const code = (input.value || "").trim();
+      if (!code) return;
+      classesJoinBtn.disabled = true;
+      const { error } = await Sync.classes.join(code);
+      classesJoinBtn.disabled = false;
+      if (error) {
+        if (note) {
+          note.hidden = false;
+          note.textContent = error;
+        }
+        return;
+      }
+      if (note) note.hidden = true;
+      input.value = "";
+      await renderStudentClasses();
+    });
+  }
+
+  const classesCreateBtn = el("classes-create-btn");
+  if (classesCreateBtn) {
+    classesCreateBtn.addEventListener("click", async () => {
+      const input = el("classes-create-name-input");
+      const name = (input.value || "").trim();
+      if (!name) return;
+      classesCreateBtn.disabled = true;
+      const { error } = await Sync.classes.create(name);
+      classesCreateBtn.disabled = false;
+      if (error) {
+        alert("Erreur : " + error);
+        return;
+      }
+      input.value = "";
+      await renderTeacherClasses();
+    });
+  }
+
+  const classesGotoSyncBtn = el("classes-goto-sync-btn");
+  if (classesGotoSyncBtn) {
+    classesGotoSyncBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="sync"]');
+      if (tab) tab.click();
+    });
+  }
 
   /** Trouve (ou crée) localement la boîte référencée par une fiche distante, à partir de son id + nom dénormalisé. */
   async function ensureLocalSubjectFor(remote) {
