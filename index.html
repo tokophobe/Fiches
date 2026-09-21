@@ -188,6 +188,7 @@
     <button class="tab" role="tab" aria-selected="false" data-view="calendar" hidden>Calendrier</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Programme</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes" hidden>Classes</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="messages" hidden>Messagerie</button>
     <button class="tab" role="tab" aria-selected="false" data-view="account" hidden>Compte</button>
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">
       <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -245,6 +246,13 @@
         <button type="button" class="home-circle" data-key="account" data-go="account">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
           <span>Se connecter</span>
+        </button>
+        <!-- Round 6, item 5 : bouton Messagerie — pastille avec le nombre
+             de notifications non lues, masquée s'il n'y en a aucune. -->
+        <button type="button" class="home-circle" data-key="messages" data-go="messages">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Messagerie</span>
+          <span class="home-circle-badge" id="home-messages-badge" hidden>0</span>
         </button>
       </div>
     </section>
@@ -771,7 +779,10 @@
           <button type="button" class="btn btn--small" id="classes-join-btn">Rejoindre</button>
         </div>
         <p class="field-hint" id="classes-join-note" hidden></p>
-        <ul class="subject-list" id="classes-student-list"></ul>
+        <!-- Round 6, item 4 : les classes apparaissent en ronds (même
+             esprit que les boutons de l'accueil), chacun menant à sa page
+             dédiée (view-class-detail) plutôt qu'à une ligne dépliée ici. -->
+        <div class="classes-class-circles" id="classes-student-list"></div>
         <p class="field-hint" id="classes-student-empty" hidden>Tu n'as encore rejoint aucune classe.</p>
       </div>
     </section>
@@ -785,9 +796,52 @@
           <input type="text" id="classes-create-name-input" placeholder="Nom de la classe" />
           <button type="button" class="btn btn--small" id="classes-create-btn">Créer une classe</button>
         </div>
-        <ul class="subject-list" id="classes-teacher-list"></ul>
+        <div class="classes-class-circles" id="classes-teacher-list"></div>
         <p class="field-hint" id="classes-teacher-empty" hidden>Tu n'as encore créé aucune classe.</p>
       </div>
+    </section>
+
+    <!-- Round 6, item 4 : page dédiée à une classe (ouverte en cliquant
+         son rond, depuis J'apprends ou J'enseigne) — infos, arborescence
+         des boîtes partagées et liste des évènements à venir. -->
+    <section id="view-class-detail" class="view" aria-labelledby="tab-classes">
+      <button type="button" class="btn btn--ghost" id="class-detail-back-btn">← Retour</button>
+      <h2 class="section-title" id="class-detail-title">Classe</h2>
+      <div id="class-detail-stats"></div>
+      <p class="field-hint classes-invite-hint" id="class-detail-invite-row" hidden>Code d'invitation : <strong></strong></p>
+      <h3 class="settings-block-title">Boîtes partagées</h3>
+      <div id="class-detail-boxes"></div>
+      <button type="button" class="btn btn--small" id="class-detail-share-btn" hidden>Partager une boîte</button>
+      <h3 class="settings-block-title">Évènements à venir</h3>
+      <ul class="subject-list" id="class-detail-events"></ul>
+      <p class="field-hint" id="class-detail-events-empty" hidden>Aucun évènement à venir pour cette classe.</p>
+    </section>
+
+    <!-- Round 6, item 5 : messagerie — une discussion par classe, façon
+         groupe WhatsApp (prof + tous les élèves automatiquement membres). -->
+    <section id="view-messages" class="view" aria-labelledby="tab-messages">
+      <h2 class="section-title">Messagerie</h2>
+      <div id="messages-needs-account" hidden>
+        <p class="field-hint settings-block-hint">
+          Connecte-toi pour accéder à la messagerie de tes classes.
+        </p>
+        <button type="button" class="btn btn--small" id="messages-goto-account-btn">Aller à Se connecter</button>
+      </div>
+      <ul class="subject-list" id="messages-class-list"></ul>
+      <p class="field-hint" id="messages-empty" hidden>Rejoins ou crée une classe (page Classes) pour pouvoir discuter.</p>
+    </section>
+
+    <!-- Round 6, item 5 : fil de discussion d'une classe. Messages des
+         élèves alignés à gauche, ceux du prof à droite ; les messages de
+         l'utilisateur lui-même ressortent dans une couleur différente. -->
+    <section id="view-message-thread" class="view" aria-labelledby="tab-messages">
+      <button type="button" class="btn btn--ghost" id="message-thread-back-btn">← Retour à Messagerie</button>
+      <h2 class="section-title" id="message-thread-title">Discussion</h2>
+      <div class="message-thread-list" id="message-thread-list"></div>
+      <form class="message-thread-form" id="message-thread-form">
+        <input type="text" id="message-thread-input" placeholder="Écrire un message…" autocomplete="off" />
+        <button type="submit" class="btn btn--primary btn--small">Envoyer</button>
+      </form>
     </section>
 
     <!-- VUE RÉGLAGES -->

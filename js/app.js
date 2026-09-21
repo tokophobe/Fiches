@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v145";
+  const APP_VERSION = "v146";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -609,7 +609,7 @@
     review: "Réviser", manage: "Dossiers & boîtes", cards: "Fiches", addCard: "Ajouter une fiche",
     stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
     sync: "Synchronisation", dev: "Développeur", classes: "Classes",
-    account: "Compte",
+    account: "Compte", messages: "Messagerie",
   };
   // Largeur/hauteur de référence utilisées uniquement pour convertir une
   // seule fois d'anciens réglages enregistrés en pixels (avant ce
@@ -628,6 +628,11 @@
     dev: { x: 89.0, y: 79.0, d: 80 },
     classes: { x: 50.0, y: 90.0, d: 85 },
     account: { x: 15.0, y: 90.0, d: 70 },
+    // Round 6, item 5 : position par défaut du rond Messagerie — zone
+    // encore libre entre "Réviser" et "Ajouter une fiche" en haut, et
+    // "Fiches"/"Stats" en dessous ; ajustable comme les autres via le
+    // mode développeur si jamais ça chevauche un réglage personnalisé.
+    messages: { x: 50.0, y: 26.5, d: 90 },
   };
   // Items 1/2 (logo) : position (X/Y en %, centre du logo) et taille (px)
   // du logo sur la page d'accueil.
@@ -650,12 +655,15 @@
     classes: [],
     "classes-student": [],
     "classes-teacher": [],
+    "class-detail": [],
     account: [],
     settings: [],
     dev: [],
     "new-card": [],
     "boite-picker": [],
     "mode-assign": [],
+    messages: [],
+    "message-thread": [],
   };
   // Round 4, partie 2 : intitulés amicaux de chaque page, pour l'éditeur du
   // mode développeur — mêmes clés que DEFAULT_HELP_MESSAGES_BY_VIEW.
@@ -670,12 +678,15 @@
     classes: "Classes (page d'accueil)",
     "classes-student": "Classes — J'apprends",
     "classes-teacher": "Classes — J'enseigne",
+    "class-detail": "Classes — page d'une classe",
     account: "Compte",
     settings: "Réglages",
     dev: "Développeur",
     "new-card": "Nouvelle fiche",
     "boite-picker": "Sélecteur de boîte(s)",
     "mode-assign": "Affecter un mode",
+    messages: "Messagerie",
+    "message-thread": "Messagerie — discussion",
   };
   // Round 4 : le robot ne dit plus rien par défaut — une petite bulle
   // "aide" cliquable apparaît à côté de lui quand la page a un message, et
@@ -8058,6 +8069,7 @@
       if (view === "sync") renderSyncView();
       if (view === "account") renderAccountView();
       if (view === "classes") renderClassesView();
+      if (view === "messages") renderMessagesView();
       if (view === "calendar") renderCalendarEvents();
       if (view === "revision-program") renderRevisionProgramList();
       if (view === "settings") {
@@ -8951,6 +8963,12 @@
       classesEmailEl.hidden = !accountCurrentUser;
       classesEmailEl.textContent = accountCurrentUser ? `Connecté en tant que ${accountCurrentUser.email}` : "";
     }
+    // Round 6, item 5 : la pastille de notifications de la Messagerie doit
+    // rester à jour dès que l'état de connexion change (connexion,
+    // déconnexion, changement de Compte), pas seulement à l'ouverture de
+    // la page — c'est cette même fonction qui est appelée à chacun de ces
+    // moments (voir initAccountState / Sync.auth.onChange).
+    refreshMessagesBadge();
   }
 
   /** item 2 : appelé une seule fois au démarrage — supabase-js garde la
@@ -8970,6 +8988,7 @@
       if (el("view-classes") && el("view-classes").classList.contains("is-active")) renderClassesView();
       if (el("view-classes-student") && el("view-classes-student").classList.contains("is-active")) renderStudentClasses();
       if (el("view-classes-teacher") && el("view-classes-teacher").classList.contains("is-active")) renderTeacherClasses();
+      if (el("view-messages") && el("view-messages").classList.contains("is-active")) renderMessagesView();
       if (user) syncSharedBoxesForStudent();
       // Correctif (round 6) : les réglages dev perso (dont le mode nuit)
       // sont maintenant cloisonnés par Compte connecté (voir
@@ -9411,6 +9430,20 @@
     }
   }
 
+  /** Round 6, item 4 : les classes apparaissent désormais en ronds (même
+   *  esprit visuel que les boutons de l'accueil), chacun affichant le nom
+   *  de la classe, le nombre d'élèves et le nombre d'échéances en cours
+   *  (évènements à venir) — le détail (boîtes partagées, évènements...)
+   *  a été déplacé dans la page dédiée view-class-detail, ouverte au clic. */
+  function classCircleHtml(klass, count, upcoming) {
+    return `
+      ${CLASSES_ROW_ICON}
+      <span class="classes-class-circle-name">${escapeHtml(klass.name)}</span>
+      <span class="classes-class-circle-meta">${count} élève${count > 1 ? "s" : ""}</span>
+      <span class="classes-class-circle-meta">${upcoming} échéance${upcoming > 1 ? "s" : ""}</span>
+    `;
+  }
+
   async function renderStudentClasses() {
     const list = el("classes-student-list");
     const empty = el("classes-student-empty");
@@ -9419,25 +9452,14 @@
     const myClasses = await Sync.classes.listAsStudent();
     if (empty) empty.hidden = myClasses.length > 0;
     for (const klass of myClasses) {
-      const sharedBoxes = await Sync.classes.listSharedBoxes(klass.id);
-      const li = document.createElement("li");
-      li.className = "subject-row classes-class-row";
-      const boxesHtml =
-        sharedBoxes.length === 0
-          ? `<p class="field-hint">Aucune boîte partagée pour l'instant.</p>`
-          : sharedBoxes
-              .map(
-                (box) =>
-                  `<div class="classes-shared-box-row"><span>${escapeHtml(box.subject_name)} <span class="classes-card-count">(${(box.cards || []).length} fiche${(box.cards || []).length > 1 ? "s" : ""})</span></span><span class="classes-shared-badge">Dans Organisation</span></div>`
-              )
-              .join("");
-      li.innerHTML = `
-        <div class="classes-class-header">
-          <span class="subject-row-name">${CLASSES_ROW_ICON} <span>${escapeHtml(klass.name)}</span></span>
-        </div>
-        <div class="classes-shared-boxes">${boxesHtml}</div>
-      `;
-      list.appendChild(li);
+      const count = await Sync.classes.memberCount(klass.id);
+      const upcoming = classUpcomingEvents(klass.id, "student").length;
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "classes-class-circle";
+      btn.innerHTML = classCircleHtml(klass, count, upcoming);
+      btn.addEventListener("click", () => openClassDetailView(klass, "student"));
+      list.appendChild(btn);
     }
   }
 
@@ -9449,56 +9471,14 @@
     const myClasses = await Sync.classes.listAsTeacher();
     if (empty) empty.hidden = myClasses.length > 0;
     for (const klass of myClasses) {
-      const [count, sharedBoxes] = await Promise.all([
-        Sync.classes.memberCount(klass.id),
-        Sync.classes.listSharedBoxes(klass.id),
-      ]);
-      const li = document.createElement("li");
-      li.className = "subject-row classes-class-row";
-      const boxesHtml =
-        sharedBoxes.length === 0
-          ? `<p class="field-hint">Aucune boîte partagée à cette classe pour l'instant.</p>`
-          : sharedBoxes
-              .map((box) => `<p class="field-hint">${escapeHtml(box.subject_name)} (${(box.cards || []).length} fiche${(box.cards || []).length > 1 ? "s" : ""})</p>`)
-              .join("");
-      li.innerHTML = `
-        <div class="classes-class-header">
-          <span class="subject-row-name">${CLASSES_ROW_ICON} <span>${escapeHtml(klass.name)}</span></span>
-          <span class="org-count">${count} élève${count > 1 ? "s" : ""}</span>
-        </div>
-        <p class="field-hint classes-invite-hint">Code d'invitation : <strong>${escapeHtml(klass.invite_code)}</strong></p>
-        <div class="classes-shared-boxes">${boxesHtml}</div>
-        <button type="button" class="btn btn--small classes-share-btn">Partager une boîte</button>
-      `;
-      list.appendChild(li);
-      li.querySelector(".classes-share-btn").addEventListener("click", () => {
-        openBoitePickerView({
-          mode: "single",
-          title: `Partager une boîte à « ${klass.name} »`,
-          folderAlwaysSelectable: false,
-          excludeSubjectIds: new Set(subjects.filter((s) => s.sharedBoxId).map((s) => s.id)),
-          onPick: async (kind, subjectId) => {
-            const subject = subjects.find((s) => s.id === subjectId);
-            if (!subject) return;
-            const boxCards = cards.filter((c) => !c.deleted && c.subject === subjectId);
-            const folderPathNames = folderPath(subject.folderId).map((f) => f.name);
-            const { data, error } = await Sync.classes.shareBox(klass.id, subject.name, boxCards, folderPathNames);
-            closeBoitePickerView();
-            if (error) {
-              await robotAlert("Erreur lors du partage : " + error);
-              return;
-            }
-            // item 3 : on garde le lien boîte locale <-> boîte partagée,
-            // pour que les futures modifs de cette boîte (ajout/modif/
-            // suppression de fiches) se répercutent automatiquement.
-            subject.sharedShares = subject.sharedShares || [];
-            subject.sharedShares.push({ classId: klass.id, className: klass.name, boxId: data.id });
-            subject.updatedAt = new Date().toISOString();
-            await persistSubject(subject);
-            renderTeacherClasses();
-          },
-        });
-      });
+      const count = await Sync.classes.memberCount(klass.id);
+      const upcoming = classUpcomingEvents(klass.id, "teacher").length;
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "classes-class-circle";
+      btn.innerHTML = classCircleHtml(klass, count, upcoming);
+      btn.addEventListener("click", () => openClassDetailView(klass, "teacher"));
+      list.appendChild(btn);
     }
   }
 
@@ -9557,6 +9537,346 @@
     classesGotoAccountBtn.addEventListener("click", () => {
       const tab = document.querySelector('.tab[data-view="account"]');
       if (tab) tab.click();
+    });
+  }
+
+  /** ---------------------------------------------------------------
+   *  Round 6, item 4 : page dédiée à une classe, ouverte en cliquant son
+   *  rond depuis J'apprends ou J'enseigne — infos, arborescence des
+   *  boîtes partagées et liste des évènements à venir.
+   *  ------------------------------------------------------------- */
+  // {klass, role: "student"|"teacher"} de la classe actuellement ouverte,
+  // ou null si aucune (sert au bouton "Retour" pour savoir où revenir).
+  let classDetailContext = null;
+
+  /** Nombre d'évènements de calendrier à venir liés à cette classe — côté
+   *  prof (ev.classShare.classId) ou côté élève (ev.sharedClassId), selon
+   *  le rôle sous lequel la classe est consultée ici. */
+  function classUpcomingEvents(classId, role) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return loadCalendarEvents()
+      .filter((e) => {
+        if (role === "teacher") {
+          if (!e.classShare || e.classShare.classId !== classId) return false;
+        } else {
+          if (e.sharedClassId !== classId) return false;
+        }
+        if (!e.date) return false;
+        return new Date(e.date + "T00:00:00") >= today;
+      })
+      .sort((a, b) => a.date.localeCompare(b.date));
+  }
+
+  /** Regroupe une liste de boîtes partagées (chacune avec `folder_path`,
+   *  un tableau de noms de dossiers) en arbre, pour un rendu indenté sans
+   *  dépendre de l'arborescence Organisation (qui n'existe que côté prof
+   *  — côté élève, elle est reconstituée en local mais pas nécessairement
+   *  à jour au moment d'ouvrir cette page). */
+  function buildSharedBoxesTree(boxes) {
+    const root = { name: null, children: new Map(), boxes: [] };
+    for (const box of boxes) {
+      let node = root;
+      for (const segment of Array.isArray(box.folder_path) ? box.folder_path : []) {
+        if (!node.children.has(segment)) node.children.set(segment, { name: segment, children: new Map(), boxes: [] });
+        node = node.children.get(segment);
+      }
+      node.boxes.push(box);
+    }
+    return root;
+  }
+  function renderSharedBoxesTreeHtml(node, depth) {
+    let html = "";
+    for (const box of node.boxes) {
+      const n = (box.cards || []).length;
+      html += `<div class="classes-shared-box-row" style="padding-left:${depth * 16}px">${CLASSES_ROW_ICON}<span>${escapeHtml(box.subject_name)} <span class="classes-card-count">(${n} fiche${n > 1 ? "s" : ""})</span></span></div>`;
+    }
+    for (const child of node.children.values()) {
+      html += `<div class="classes-tree-folder" style="padding-left:${depth * 16}px;font-weight:600;">📁 ${escapeHtml(child.name)}</div>`;
+      html += renderSharedBoxesTreeHtml(child, depth + 1);
+    }
+    return html;
+  }
+
+  async function openClassDetailView(klass, role) {
+    classDetailContext = { klass, role };
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el("view-class-detail").classList.add("is-active");
+    applyBodyLogoSpeech("class-detail");
+    await renderClassDetailView();
+  }
+  function closeClassDetailView() {
+    const role = classDetailContext ? classDetailContext.role : "student";
+    classDetailContext = null;
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el(role === "teacher" ? "view-classes-teacher" : "view-classes-student").classList.add("is-active");
+    applyBodyLogoSpeech(role === "teacher" ? "classes-teacher" : "classes-student");
+  }
+  async function renderClassDetailView() {
+    if (!classDetailContext) return;
+    const { klass, role } = classDetailContext;
+    const titleEl = el("class-detail-title");
+    if (titleEl) titleEl.textContent = klass.name;
+
+    const [count, sharedBoxes] = await Promise.all([
+      Sync.classes.memberCount(klass.id),
+      Sync.classes.listSharedBoxes(klass.id),
+    ]);
+
+    const statsEl = el("class-detail-stats");
+    if (statsEl) statsEl.innerHTML = `<p class="field-hint">${count} élève${count > 1 ? "s" : ""}</p>`;
+
+    const inviteRow = el("class-detail-invite-row");
+    const shareBtn = el("class-detail-share-btn");
+    const isTeacher = role === "teacher";
+    if (inviteRow) {
+      inviteRow.hidden = !isTeacher;
+      const strong = inviteRow.querySelector("strong");
+      if (strong) strong.textContent = klass.invite_code || "";
+    }
+    if (shareBtn) shareBtn.hidden = !isTeacher;
+
+    const boxesEl = el("class-detail-boxes");
+    if (boxesEl) {
+      boxesEl.innerHTML =
+        sharedBoxes.length === 0
+          ? `<p class="field-hint">Aucune boîte partagée pour l'instant.</p>`
+          : renderSharedBoxesTreeHtml(buildSharedBoxesTree(sharedBoxes), 0);
+    }
+
+    const events = classUpcomingEvents(klass.id, role);
+    const eventsList = el("class-detail-events");
+    const eventsEmpty = el("class-detail-events-empty");
+    if (eventsList) {
+      eventsList.innerHTML = "";
+      for (const ev of events) {
+        const li = document.createElement("li");
+        li.className = "subject-row";
+        li.innerHTML = `<span>${escapeHtml(ev.title)}</span><span class="field-hint">${formatCalendarDate(ev.date)}</span>`;
+        eventsList.appendChild(li);
+      }
+    }
+    if (eventsEmpty) eventsEmpty.hidden = events.length > 0;
+  }
+
+  const classDetailBackBtn = el("class-detail-back-btn");
+  if (classDetailBackBtn) classDetailBackBtn.addEventListener("click", closeClassDetailView);
+
+  const classDetailShareBtn = el("class-detail-share-btn");
+  if (classDetailShareBtn) {
+    classDetailShareBtn.addEventListener("click", () => {
+      if (!classDetailContext) return;
+      const klass = classDetailContext.klass;
+      openBoitePickerView({
+        mode: "single",
+        title: `Partager une boîte à « ${klass.name} »`,
+        folderAlwaysSelectable: false,
+        excludeSubjectIds: new Set(subjects.filter((s) => s.sharedBoxId).map((s) => s.id)),
+        onPick: async (kind, subjectId) => {
+          const subject = subjects.find((s) => s.id === subjectId);
+          if (!subject) return;
+          const boxCards = cards.filter((c) => !c.deleted && c.subject === subjectId);
+          const folderPathNames = folderPath(subject.folderId).map((f) => f.name);
+          const { data, error } = await Sync.classes.shareBox(klass.id, subject.name, boxCards, folderPathNames);
+          closeBoitePickerView();
+          if (error) {
+            await robotAlert("Erreur lors du partage : " + error);
+            return;
+          }
+          subject.sharedShares = subject.sharedShares || [];
+          subject.sharedShares.push({ classId: klass.id, className: klass.name, boxId: data.id });
+          subject.updatedAt = new Date().toISOString();
+          await persistSubject(subject);
+          renderClassDetailView();
+        },
+      });
+    });
+  }
+
+  /** ---------------------------------------------------------------
+   *  Round 6, item 5 : messagerie par classe, façon groupe WhatsApp — le
+   *  prof et tous les élèves d'une classe sont automatiquement membres de
+   *  la même discussion. Messages des élèves alignés à gauche, ceux du
+   *  prof à droite (décidé selon l'expéditeur, pas selon qui regarde) ;
+   *  les messages de l'utilisateur lui-même ressortent en plus dans une
+   *  couleur différente.
+   *  ------------------------------------------------------------- */
+  const MESSAGES_LAST_READ_KEY = "fiches_messages_last_read";
+  function loadMessagesLastRead() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(MESSAGES_LAST_READ_KEY) || "{}");
+      return raw && typeof raw === "object" && !Array.isArray(raw) ? raw : {};
+    } catch {
+      return {};
+    }
+  }
+  function markClassMessagesRead(classId) {
+    const map = loadMessagesLastRead();
+    map[classId] = new Date().toISOString();
+    localStorage.setItem(MESSAGES_LAST_READ_KEY, JSON.stringify(map));
+  }
+
+  /** Met à jour la pastille de notifications du bouton d'accueil
+   *  "Messagerie" — appelée à chaque changement d'état de connexion (voir
+   *  updateAccountHomeButton) et après lecture/envoi d'un message. */
+  async function refreshMessagesBadge() {
+    const badge = el("home-messages-badge");
+    if (!badge) return;
+    if (!Sync.isConfigured() || !accountCurrentUser) {
+      badge.hidden = true;
+      return;
+    }
+    try {
+      const classes = await Sync.messages.listClasses();
+      const lastReadMap = loadMessagesLastRead();
+      let total = 0;
+      for (const k of classes) {
+        total += await Sync.messages.countUnread(k.id, lastReadMap[k.id]);
+      }
+      badge.hidden = total <= 0;
+      badge.textContent = total > 99 ? "99+" : String(total);
+    } catch (e) {
+      console.warn("Messagerie : échec du calcul des notifications", e);
+    }
+  }
+
+  async function renderMessagesView() {
+    const needsAccount = el("messages-needs-account");
+    const list = el("messages-class-list");
+    const empty = el("messages-empty");
+    if (!list) return;
+    if (!Sync.isConfigured() || !accountCurrentUser) {
+      if (needsAccount) needsAccount.hidden = false;
+      list.innerHTML = "";
+      if (empty) empty.hidden = true;
+      return;
+    }
+    if (needsAccount) needsAccount.hidden = true;
+    list.innerHTML = "";
+    const classes = await Sync.messages.listClasses();
+    if (empty) empty.hidden = classes.length > 0;
+    const lastReadMap = loadMessagesLastRead();
+    for (const klass of classes) {
+      const unread = await Sync.messages.countUnread(klass.id, lastReadMap[klass.id]);
+      const li = document.createElement("li");
+      li.className = "subject-row messages-class-row";
+      li.innerHTML = `
+        <span class="subject-row-name">${CLASSES_ROW_ICON} <span>${escapeHtml(klass.name)}</span></span>
+        ${unread > 0 ? `<span class="home-circle-badge messages-class-row-badge">${unread > 99 ? "99+" : unread}</span>` : ""}
+      `;
+      li.addEventListener("click", () => openMessageThread(klass));
+      list.appendChild(li);
+    }
+    refreshMessagesBadge();
+  }
+
+  // {klass} de la discussion actuellement ouverte, ou null.
+  let messageThreadContext = null;
+  let unsubscribeMessageThreadRealtime = null;
+  // Id des messages déjà affichés dans le fil ouvert — évite un doublon
+  // quand le message qu'on vient d'envoyer nous revient aussi par le
+  // canal temps réel (voir sendClassMessage plus bas).
+  let messageThreadRenderedIds = new Set();
+
+  function formatMessageTime(iso) {
+    try {
+      return new Date(iso).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+    } catch {
+      return "";
+    }
+  }
+  function messageBubbleHtml(msg, klass) {
+    const isMine = !!(accountCurrentUser && msg.sender_id === accountCurrentUser.id);
+    const isTeacherMsg = msg.sender_id === klass.teacher_id;
+    const side = isTeacherMsg ? "right" : "left";
+    const cls = ["message-bubble", `message-bubble--${side}`, isMine ? "message-bubble--mine" : ""].filter(Boolean).join(" ");
+    return `
+      <div class="${cls}">
+        ${!isMine ? `<span class="message-bubble-sender">${escapeHtml(msg.sender_email || "")}</span>` : ""}
+        <span class="message-bubble-body">${escapeHtml(msg.body || "")}</span>
+        <span class="message-bubble-time">${formatMessageTime(msg.created_at)}</span>
+      </div>
+    `;
+  }
+  function appendMessageToThread(msg) {
+    if (!msg || !msg.id || messageThreadRenderedIds.has(msg.id) || !messageThreadContext) return;
+    messageThreadRenderedIds.add(msg.id);
+    const listEl = el("message-thread-list");
+    if (!listEl) return;
+    listEl.insertAdjacentHTML("beforeend", messageBubbleHtml(msg, messageThreadContext.klass));
+    listEl.scrollTop = listEl.scrollHeight;
+  }
+  async function renderMessageThread() {
+    if (!messageThreadContext) return;
+    const { klass } = messageThreadContext;
+    const listEl = el("message-thread-list");
+    if (!listEl) return;
+    const messages = await Sync.messages.list(klass.id);
+    messageThreadRenderedIds = new Set(messages.map((m) => m.id));
+    listEl.innerHTML = messages.map((m) => messageBubbleHtml(m, klass)).join("");
+    listEl.scrollTop = listEl.scrollHeight;
+  }
+
+  async function openMessageThread(klass) {
+    messageThreadContext = { klass };
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el("view-message-thread").classList.add("is-active");
+    applyBodyLogoSpeech("message-thread");
+    const titleEl = el("message-thread-title");
+    if (titleEl) titleEl.textContent = klass.name;
+    await renderMessageThread();
+    markClassMessagesRead(klass.id);
+    refreshMessagesBadge();
+    if (unsubscribeMessageThreadRealtime) {
+      unsubscribeMessageThreadRealtime();
+      unsubscribeMessageThreadRealtime = null;
+    }
+    unsubscribeMessageThreadRealtime = Sync.messages.subscribeRealtime(klass.id, (msg) => {
+      appendMessageToThread(msg);
+      markClassMessagesRead(klass.id);
+      refreshMessagesBadge();
+    });
+  }
+  function closeMessageThread() {
+    if (unsubscribeMessageThreadRealtime) {
+      unsubscribeMessageThreadRealtime();
+      unsubscribeMessageThreadRealtime = null;
+    }
+    messageThreadContext = null;
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el("view-messages").classList.add("is-active");
+    applyBodyLogoSpeech("messages");
+    renderMessagesView();
+  }
+
+  const messagesGotoAccountBtn = el("messages-goto-account-btn");
+  if (messagesGotoAccountBtn) {
+    messagesGotoAccountBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="account"]');
+      if (tab) tab.click();
+    });
+  }
+  const messageThreadBackBtn = el("message-thread-back-btn");
+  if (messageThreadBackBtn) messageThreadBackBtn.addEventListener("click", closeMessageThread);
+
+  const messageThreadForm = el("message-thread-form");
+  if (messageThreadForm) {
+    messageThreadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!messageThreadContext) return;
+      const input = el("message-thread-input");
+      const body = (input.value || "").trim();
+      if (!body) return;
+      input.value = "";
+      const { data, error } = await Sync.messages.send(messageThreadContext.klass.id, body);
+      if (error) {
+        await robotAlert("Erreur d'envoi : " + error);
+        return;
+      }
+      if (data) {
+        appendMessageToThread(data);
+        markClassMessagesRead(messageThreadContext.klass.id);
+      }
     });
   }
 

@@ -879,6 +879,84 @@ async function deleteSharedEvent(eventId) {
   return { error: error ? error.message : null };
 }
 
+/* ---- Round 6, item 5 : messagerie par classe (façon groupe WhatsApp) ---- */
+
+/** Liste, en une seule fois, toutes les classes où l'utilisateur peut
+ *  discuter — celles qu'il enseigne ET celles qu'il suit — avec
+ *  `teacher_id` conservé sur chaque classe (sert côté appli à décider
+ *  l'alignement gauche/droite d'un message sans requête supplémentaire). */
+async function listMessageClasses() {
+  const [asTeacher, asStudent] = await Promise.all([listClassesAsTeacher(), listClassesAsStudent()]);
+  const byId = new Map();
+  asTeacher.forEach((k) => byId.set(k.id, k));
+  asStudent.forEach((k) => {
+    if (!byId.has(k.id)) byId.set(k.id, k);
+  });
+  return Array.from(byId.values());
+}
+
+async function listClassMessages(classId, sinceIso) {
+  const c = getClient();
+  if (!c) return [];
+  let q = c.from("class_messages").select("*").eq("class_id", classId).order("created_at");
+  if (sinceIso) q = q.gt("created_at", sinceIso);
+  const { data, error } = await q;
+  if (error) {
+    console.warn("Messagerie : échec du chargement des messages", error.message);
+    return [];
+  }
+  return data || [];
+}
+
+async function sendClassMessage(classId, body) {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { error: "Non connecté." };
+  const trimmed = (body || "").trim();
+  if (!trimmed) return { error: "Message vide." };
+  const row = { class_id: classId, sender_id: user.id, sender_email: user.email || "", body: trimmed };
+  const { data, error } = await c.from("class_messages").insert(row).select().single();
+  return { data, error: error ? error.message : null };
+}
+
+/** Nombre de messages reçus depuis `sinceIso` (dernière lecture locale de
+ *  CETTE classe) — sert à la pastille de notifications, sans avoir à
+ *  rapatrier le contenu des messages déjà connus. `sinceIso` absent =
+ *  jamais lu, donc tous les messages comptent. */
+async function countUnreadClassMessages(classId, sinceIso) {
+  const c = getClient();
+  if (!c) return 0;
+  let q = c.from("class_messages").select("id", { count: "exact", head: true }).eq("class_id", classId);
+  if (sinceIso) q = q.gt("created_at", sinceIso);
+  const { count, error } = await q;
+  if (error) {
+    console.warn("Messagerie : échec du comptage des messages non lus", error.message);
+    return 0;
+  }
+  return count || 0;
+}
+
+/** Filtre serveur borné à une seule colonne (comme pour les autres canaux
+ *  temps réel de cette appli, voir subscribeDevSettingsRealtime) : ici
+ *  `class_id` seul suffit, aucun filtrage client supplémentaire n'est
+ *  nécessaire (les droits de lecture sont de toute façon déjà garantis
+ *  par la RLS côté serveur). */
+function subscribeClassMessagesRealtime(classId, onNewMessage) {
+  const c = getClient();
+  if (!c) return () => {};
+  const channel = c
+    .channel(`class-messages-${classId}`)
+    .on(
+      "postgres_changes",
+      { event: "INSERT", schema: "public", table: "class_messages", filter: `class_id=eq.${classId}` },
+      (payload) => {
+        if (payload.new) onNewMessage(payload.new);
+      }
+    )
+    .subscribe();
+  return () => c.removeChannel(channel);
+}
+
 window.Sync = {
   generateSyncCode,
   getConfig,
@@ -928,5 +1006,12 @@ window.Sync = {
     listSharedEvents: listSharedEventsForClass,
     updateSharedEvent,
     deleteSharedEvent,
+  },
+  messages: {
+    listClasses: listMessageClasses,
+    list: listClassMessages,
+    send: sendClassMessage,
+    countUnread: countUnreadClassMessages,
+    subscribeRealtime: subscribeClassMessagesRealtime,
   },
 };
