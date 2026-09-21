@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v142";
+  const APP_VERSION = "v143";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -835,6 +835,16 @@
   // ci-dessous a été réglée à l'origine — déductible des anciennes valeurs
   // par défaut du CSS (ex. 675px de haut de jauge / 80% = 844).
   const REVIEW_LAYOUT_REF_HEIGHT = 844;
+  // Largeur de référence associée (390px = largeur de ce même iPhone
+  // standard 13/14/15). Corrige un ratio largeur/hauteur incohérent entre
+  // PC et iPhone (round 5, correctif 5) : la hauteur de référence était
+  // déjà plafonnée ci-dessus, mais la largeur (voir applyReviewLayout)
+  // restait calculée sur la largeur RÉELLE de .desk, qui va jusqu'à 560px
+  // sur PC (voir .desk en CSS) contre ~390px sur iPhone — la fiche
+  // s'étalait donc proportionnellement plus en largeur qu'en hauteur sur
+  // un grand écran. Les deux dimensions se basent maintenant sur le même
+  // gabarit fixe 390×844, centré quel que soit l'écran.
+  const REVIEW_LAYOUT_REF_WIDTH = 390;
   // Disposition de la page Réviser (item 1c) : hauteur/largeur de la fiche
   // et position Y de son bord haut, position Y des boutons d'évaluation
   // (tous en % de l'écran), temps de retournement en secondes.
@@ -1631,8 +1641,14 @@
     // celui réellement disponible, et débordait jusqu'à occuper toute la
     // largeur de la fenêtre. On se base maintenant sur la largeur RÉELLE
     // de .desk, la même quel que soit l'appareil.
+    // Correctif 5 (ratio largeur/hauteur) : .desk peut aller jusqu'à 560px
+    // sur PC (voir CSS) contre ~390px sur iPhone, donc utiliser sa largeur
+    // réelle telle quelle déformait le ratio par rapport à la hauteur
+    // (plafonnée, elle, à REVIEW_LAYOUT_REF_HEIGHT). On plafonne de la même
+    // façon la largeur à REVIEW_LAYOUT_REF_WIDTH, pour retomber sur le même
+    // gabarit fixe 390×844 sur tout écran au moins aussi grand.
     const deskWidth = document.querySelector(".desk")?.getBoundingClientRect().width || window.innerWidth;
-    const vw = deskWidth / 100;
+    const vw = Math.min(deskWidth, REVIEW_LAYOUT_REF_WIDTH) / 100;
     // Marge de sécurité fixe sous la barre du haut + la barre de boîte
     // (elle-même posée à 54px + l'encoche) — 110px couvre confortablement
     // les deux sur la quasi-totalité des appareils.
