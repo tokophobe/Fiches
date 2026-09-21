@@ -43,7 +43,7 @@ drop policy if exists "anon can read/write cards" on public.cards;
 create policy "anon can read/write cards"
   on public.cards
   for all
-  to anon
+  to anon, authenticated
   using (true)
   with check (true);
 
@@ -86,7 +86,7 @@ drop policy if exists "anon can read/write subjects" on public.subjects;
 create policy "anon can read/write subjects"
   on public.subjects
   for all
-  to anon
+  to anon, authenticated
   using (true)
   with check (true);
 
@@ -120,7 +120,7 @@ drop policy if exists "anon can read/write folders" on public.folders;
 create policy "anon can read/write folders"
   on public.folders
   for all
-  to anon
+  to anon, authenticated
   using (true)
   with check (true);
 
@@ -153,7 +153,7 @@ drop policy if exists "anon can read/write reward_state" on public.reward_state;
 create policy "anon can read/write reward_state"
   on public.reward_state
   for all
-  to anon
+  to anon, authenticated
   using (true)
   with check (true);
 
@@ -199,7 +199,7 @@ drop policy if exists "anon can read/write learning_modes" on public.learning_mo
 create policy "anon can read/write learning_modes"
   on public.learning_modes
   for all
-  to anon
+  to anon, authenticated
   using (true)
   with check (true);
 
@@ -229,7 +229,7 @@ drop policy if exists "anon can read/write dev_settings" on public.dev_settings;
 create policy "anon can read/write dev_settings"
   on public.dev_settings
   for all
-  to anon
+  to anon, authenticated
   using (true)
   with check (true);
 

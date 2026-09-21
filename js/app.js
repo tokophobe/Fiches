@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v138";
+  const APP_VERSION = "v139";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -7859,10 +7859,15 @@
       devPublishPublicBtn.disabled = false;
       devPublishPublicBtn.textContent = originalLabel;
       if (result && result.error) {
+        // Round 4, partie 3 (correctif) : on affiche désormais le texte
+        // d'erreur réel renvoyé par Supabase (au lieu d'un message générique
+        // qui masquait la vraie cause), pour pouvoir diagnostiquer ce genre
+        // de souci sans avoir à ouvrir la console.
         if (devPublishPublicResultEl) {
-          devPublishPublicResultEl.textContent = "Échec — connecte-toi avec ton compte (page Compte) puis réessaie.";
+          devPublishPublicResultEl.textContent =
+            "Échec — " + result.error + " (vérifie aussi que tu es connecté avec ton compte, page Compte).";
         }
-        robotAlert("La publication a échoué. Vérifie que tu es bien connecté avec ton compte (page Compte), puis réessaie.");
+        robotAlert("La publication a échoué : " + result.error);
       } else {
         publicDevSettingsOverride = settings;
         if (devPublishPublicResultEl) {
