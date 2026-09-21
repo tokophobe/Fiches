@@ -512,34 +512,68 @@ function subscribeRewardRealtime(onRemoteChange) {
    JSON par code de synchro, avec un horodatage pour le dernier écrit
    gagne en cas de fusion.
 --------------------------------------------------------- */
-async function pullDevSettings() {
+/** Correctif (round 6, demande de Stéphane) : `dev_settings` n'avait
+ *  jusqu'ici qu'UNE ligne par code de synchro (sync_code = clé primaire),
+ *  totalement indépendante du Compte Supabase Auth éventuellement
+ *  connecté par-dessus. Deux Comptes différents (ex. un compte prof et
+ *  un compte élève de test) utilisant le même code de synchro perso
+ *  partageaient donc automatiquement ces réglages (dont le mode nuit,
+ *  qui en fait partie — voir app.js), y compris en temps réel. La table
+ *  a maintenant une clé composite (sync_code, account_email) — voir
+ *  supabase/fix_dev_settings_account_scope.sql — et `accountEmail`
+ *  (chaîne vide si aucun Compte connecté, pour ne rien changer à qui
+ *  n'utilise que la synchro perso) doit être fourni par l'appelant
+ *  (voir currentAccountEmailForSync dans app.js). */
+async function pullDevSettings(accountEmail) {
   const c = getClient();
   const { code } = getConfig();
   if (!c || !code) return null;
+  const email = accountEmail || "";
 
   const { data, error } = await c
     .from("dev_settings")
     .select("payload, updated_at")
     .eq("sync_code", code)
+    .eq("account_email", email)
     .maybeSingle();
 
   if (error) {
     console.warn("Sync: échec du chargement des réglages développeur distants", error.message);
     return null;
   }
-  return data ? { payload: data.payload || {}, updatedAt: data.updated_at } : null;
+  if (data) return { payload: data.payload || {}, updatedAt: data.updated_at };
+
+  // Migration en douceur (round 6) : un Compte fraîchement connecté n'a
+  // encore aucune ligne à SON nom — on reprend une fois l'ancienne ligne
+  // "sans Compte" (account_email = '') comme point de départ plutôt que
+  // de repartir de zéro, pour ne pas faire disparaître les réglages déjà
+  // personnalisés par Stéphane avant l'introduction de ce cloisonnement.
+  if (email !== "") {
+    const { data: legacy, error: legacyError } = await c
+      .from("dev_settings")
+      .select("payload, updated_at")
+      .eq("sync_code", code)
+      .eq("account_email", "")
+      .maybeSingle();
+    if (!legacyError && legacy) return { payload: legacy.payload || {}, updatedAt: legacy.updated_at };
+  }
+  return null;
 }
 
-async function pushDevSettings(payload) {
+async function pushDevSettings(payload, accountEmail) {
   const c = getClient();
   const { code } = getConfig();
   if (!c || !code) return false;
 
-  const { error } = await c.from("dev_settings").upsert({
-    sync_code: code,
-    payload,
-    updated_at: new Date().toISOString(),
-  });
+  const { error } = await c.from("dev_settings").upsert(
+    {
+      sync_code: code,
+      account_email: accountEmail || "",
+      payload,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "sync_code,account_email" }
+  );
 
   if (error) {
     console.warn("Sync: échec de l'envoi des réglages développeur", error.message);
@@ -594,18 +628,27 @@ async function pushPublicDevSettings(settings) {
   }
 }
 
-function subscribeDevSettingsRealtime(onRemoteChange) {
+function subscribeDevSettingsRealtime(onRemoteChange, accountEmail) {
   const c = getClient();
   const { code } = getConfig();
   if (!c || !code) return () => {};
+  const email = accountEmail || "";
 
+  // Le filtre Realtime de Supabase (`postgres_changes`) ne peut porter que
+  // sur UNE colonne à la fois — on garde donc le filtre serveur sur
+  // sync_code (comme avant, limite déjà le volume aux lignes de CE code de
+  // synchro) et on vérifie account_email côté client avant de prévenir
+  // l'appelant (round 6) : sinon un changement fait par un AUTRE Compte
+  // partageant le même code de synchro perso continuerait de remonter ici.
   const channel = c
-    .channel(`dev-settings-${code}`)
+    .channel(`dev-settings-${code}-${email || "none"}`)
     .on(
       "postgres_changes",
       { event: "*", schema: "public", table: "dev_settings", filter: `sync_code=eq.${code}` },
       (payload) => {
-        if (payload.new && payload.new.payload) onRemoteChange({ payload: payload.new.payload, updatedAt: payload.new.updated_at });
+        if (!payload.new || !payload.new.payload) return;
+        if ((payload.new.account_email || "") !== email) return;
+        onRemoteChange({ payload: payload.new.payload, updatedAt: payload.new.updated_at });
       }
     )
     .subscribe();
@@ -802,9 +845,19 @@ async function listSharedEventsForClass(classId) {
   const c = getClient();
   if (!c) return [];
   const { data, error } = await c.from("shared_events").select("*").eq("class_id", classId).order("date");
+  // Bug corrigé (item 3, demande de Stéphane) : cette fonction ravalait
+  // auparavant TOUTE erreur (accroc réseau, jeton d'authentification pas
+  // encore rafraîchi, etc.) en un simple tableau vide, indiscernable d'une
+  // classe qui n'a VRAIMENT plus aucun événement partagé. Côté appelant
+  // (syncSharedBoxesForStudent), un tableau vide déclenchait la suppression
+  // locale de tous les événements déjà reçus de cette classe — un simple
+  // accroc réseau pendant une synchro en tâche de fond suffisait donc à
+  // faire "disparaître" un événement partagé, sans que l'élève n'ait rien
+  // supprimé lui-même. On lève maintenant l'erreur pour que l'appelant
+  // puisse distinguer "vraiment aucun événement" de "échec de la requête".
   if (error) {
     console.warn("Classes: échec du chargement des événements partagés", error.message);
-    return [];
+    throw new Error(error.message);
   }
   return data || [];
 }

@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v143";
+  const APP_VERSION = "v145";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -1101,8 +1101,12 @@
   function scheduleDevSettingsPush() {
     if (typeof Sync === "undefined" || !Sync.isConfigured || !Sync.isConfigured()) return;
     clearTimeout(devSettingsPushTimer);
-    devSettingsPushTimer = setTimeout(() => {
-      Sync.pushDevSettings({ ...loadDevSettings(), appPrefs: gatherAppPrefs() });
+    devSettingsPushTimer = setTimeout(async () => {
+      // Cloisonné par Compte connecté depuis le round 6 (voir
+      // currentAccountEmailForSync) — corrige une fuite entre deux
+      // Comptes utilisant le même code de synchro perso.
+      const accountEmail = await currentAccountEmailForSync();
+      Sync.pushDevSettings({ ...loadDevSettings(), appPrefs: gatherAppPrefs() }, accountEmail);
     }, 900);
   }
   /** Réglages de la page "Réglages" (item — jusqu'ici jamais synchronisés
@@ -8291,6 +8295,22 @@
       myClasses.map((k) => `<option value="${k.id}">${escapeHtml(k.name)}</option>`).join("");
     select.value = eventToEdit && eventToEdit.classShare ? eventToEdit.classShare.classId : "";
   }
+  /** Garde-fou supplémentaire (round 6, "attention qu'un élève ne puisse
+   *  rien modifier de ce qui est partagé par un prof") : la corbeille
+   *  n'est déjà PAS affichée pour un événement reçu (isReceived, voir
+   *  buildCalendarEventRow) et le clic sur la ligne est déjà bloqué par
+   *  blockIfSharedReadonlyEvent — mais on ajoute ici une deuxième
+   *  barrière, directement à la source de la suppression elle-même,
+   *  pour qu'un événement marqué `sharedEventId` reste structurellement
+   *  impossible à supprimer par ce chemin, même si un futur appel
+   *  oubliait la vérification côté interface. */
+  async function deleteOwnCalendarEvent(ev) {
+    if (isSharedReadonlyEvent(ev)) return;
+    saveCalendarEvents(loadCalendarEvents().filter((x) => x.id !== ev.id));
+    if (ev.classShare && Sync.isConfigured()) {
+      try { await Sync.classes.deleteSharedEvent(ev.classShare.remoteId); } catch (e) { /* best-effort */ }
+    }
+  }
   function closeCalendarEventForm() {
     const form = el("calendar-event-form");
     if (form) form.hidden = true;
@@ -8371,38 +8391,59 @@
   }
   function buildCalendarEventRow(ev, { onEdit, onDelete }) {
     const li = document.createElement("li");
-    li.className = "card-row";
+    // Item 2 (demande de Stéphane) : distinction visuelle nette entre un
+    // événement PERSONNEL (aucune classe liée), un événement PARTAGÉ PAR
+    // MOI (côté prof, ev.classShare) et un événement REÇU d'un prof (côté
+    // élève, ev.sharedEventId, lecture seule) — liseré de couleur + fond
+    // légèrement teinté distincts pour chacun (voir style.css), en plus du
+    // badge texte déjà existant.
+    const isReceived = isSharedReadonlyEvent(ev);
+    const isSharedByMe = !!ev.classShare;
+    li.className =
+      "card-row" +
+      (isReceived ? " calendar-event-row--received" : isSharedByMe ? " calendar-event-row--shared-mine" : "");
     li.style.cssText = "flex-direction:row; align-items:center; justify-content:space-between; cursor:pointer;";
     // Item 6 : cliquer sur l'événement l'ouvre directement en modification
     // — plus besoin d'un bouton crayon séparé.
-    li.title = "Modifier cet événement";
+    li.title = isReceived ? "Événement partagé par ton professeur (lecture seule)" : "Modifier cet événement";
     li.addEventListener("click", async () => {
       if (await blockIfSharedReadonlyEvent(ev)) return;
       onEdit();
     });
     const main = document.createElement("div");
     main.className = "card-row-main";
-    const sharedBadge = ev.sharedClassName
-      ? ` <span class="classes-shared-badge">${escapeHtml(ev.sharedClassName)}</span>`
-      : ev.classShare
+    const sharedBadge = isReceived
+      ? ` <span class="classes-shared-badge classes-shared-badge--received">${iconSvgMarkup("lock", "icon-inline-svg")} ${escapeHtml(ev.sharedClassName)}</span>`
+      : isSharedByMe
       ? ` <span class="classes-shared-badge">Partagé : ${escapeHtml(ev.classShare.className)}</span>`
       : "";
     main.innerHTML = `<strong>${escapeHtml(ev.title)}</strong>${sharedBadge}<br><span class="card-row-meta">${escapeHtml(formatCalendarDate(ev.date))}${ev.linkId ? ` · ${escapeHtml(calendarLinkLabel(ev.linkId))}` : ""}</span>`;
     const actions = document.createElement("div");
     actions.style.cssText = "display:flex; gap:4px; flex-shrink:0;";
-    const delBtn = document.createElement("button");
-    delBtn.type = "button";
-    delBtn.className = "icon-btn icon-btn--danger";
-    delBtn.innerHTML = iconSvgMarkup("trash", "icon-inline-svg");
-    delBtn.title = "Supprimer cet événement";
-    // Item 4 : confirmation avant suppression, comme pour les fiches et
-    // les boîtes ailleurs dans l'appli.
-    delBtn.addEventListener("click", async (e) => {
-      e.stopPropagation();
-      if (await blockIfSharedReadonlyEvent(ev)) return;
-      if (await robotConfirm(`Supprimer l'événement « ${ev.title} » ?`, { danger: true })) onDelete();
-    });
-    actions.appendChild(delBtn);
+    if (isReceived) {
+      // Un événement reçu ne peut pas être supprimé (voir
+      // blockIfSharedReadonlyEvent) : plus de bouton corbeille trompeur ici
+      // (auparavant présent mais toujours bloqué au clic), remplacé par un
+      // simple cadenas qui rappelle pourquoi, sans action au clic.
+      const lockBadge = document.createElement("span");
+      lockBadge.className = "icon-btn icon-btn--static";
+      lockBadge.title = "Géré par ton professeur";
+      lockBadge.innerHTML = iconSvgMarkup("lock", "icon-inline-svg");
+      actions.appendChild(lockBadge);
+    } else {
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "icon-btn icon-btn--danger";
+      delBtn.innerHTML = iconSvgMarkup("trash", "icon-inline-svg");
+      delBtn.title = "Supprimer cet événement";
+      // Item 4 : confirmation avant suppression, comme pour les fiches et
+      // les boîtes ailleurs dans l'appli.
+      delBtn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        if (await robotConfirm(`Supprimer l'événement « ${ev.title} » ?`, { danger: true })) onDelete();
+      });
+      actions.appendChild(delBtn);
+    }
     li.appendChild(main);
     li.appendChild(actions);
     return li;
@@ -8424,10 +8465,7 @@
         buildCalendarEventRow(ev, {
           onEdit: () => openCalendarEventForm(ev),
           onDelete: async () => {
-            saveCalendarEvents(loadCalendarEvents().filter((x) => x.id !== ev.id));
-            if (ev.classShare && Sync.isConfigured()) {
-              try { await Sync.classes.deleteSharedEvent(ev.classShare.remoteId); } catch (e) { /* best-effort */ }
-            }
+            await deleteOwnCalendarEvent(ev);
             renderCalendarEvents();
           },
         })
@@ -8496,6 +8534,15 @@
         for (let i = 0; i < count; i++) {
           const dot = document.createElement("span");
           dot.className = "calendar-day-dot";
+          // Item 2 (demande de Stéphane) : point de couleur différente pour
+          // un événement lié à une classe (reçu OU partagé par moi), pour
+          // repérer un jour de classe d'un simple coup d'œil sur la grille,
+          // avant même d'ouvrir le jour.
+          const dayEv = eventMap[day][i];
+          // Round 6 : couleur différente reçu (sauge) / partagé par moi
+          // (bleu), même distinction qu'en vue liste (voir style.css).
+          if (dayEv && dayEv.sharedEventId) dot.classList.add("calendar-day-dot--shared");
+          else if (dayEv && dayEv.classShare) dot.classList.add("calendar-day-dot--shared-mine");
           if (eventMap[day].length > 3 && i === count - 1) dot.classList.add("calendar-day-dot--more");
           dotsWrap.appendChild(dot);
         }
@@ -8584,10 +8631,7 @@
             openCalendarEventForm(ev);
           },
           onDelete: async () => {
-            saveCalendarEvents(loadCalendarEvents().filter((x) => x.id !== ev.id));
-            if (ev.classShare && Sync.isConfigured()) {
-              try { await Sync.classes.deleteSharedEvent(ev.classShare.remoteId); } catch (e) { /* best-effort */ }
-            }
+            await deleteOwnCalendarEvent(ev);
             popup.hidden = true;
             renderCalendarEvents();
           },
@@ -8865,6 +8909,36 @@
   let accountCurrentUser = null;
   let classesAuthMode = "signin"; // "signin" | "signup"
 
+  /** Correctif (round 6, demande de Stéphane) : les réglages développeur
+   *  personnels (couleurs, icônes... y compris le mode nuit, qui en fait
+   *  partie intégrante — voir setNightModeActive) n'étaient synchronisés
+   *  QUE par code de synchro perso (`dev_settings.sync_code`),
+   *  totalement indépendant du Compte Supabase Auth connecté. Deux
+   *  Comptes différents (ex. un compte prof et un compte élève de test)
+   *  utilisant le MÊME code de synchro perso partageaient donc
+   *  automatiquement ces réglages, y compris en temps réel (abonnement
+   *  Realtime) — même avant tout clic sur "Publier", qui lui ne concerne
+   *  qu'un canal totalement différent (dev_settings_public, round 4).
+   *  Ce canal personnel est maintenant cloisonné par (code de synchro +
+   *  Compte connecté) : `Sync.auth.getUser()` est interrogé directement
+   *  ici, plutôt que de lire la variable `accountCurrentUser`, qui n'est
+   *  pas forcément déjà résolue au tout premier démarrage (connectSync()
+   *  s'exécute avant initAccountState(), voir plus bas) — pour être sûr
+   *  d'avoir la valeur à jour à chaque appel. Chaîne vide si aucun
+   *  Compte n'est connecté, pour ne rien changer à quelqu'un qui
+   *  n'utilise que la synchro perso sans jamais toucher aux
+   *  Comptes/Classes (comportement identique à avant round 6 dans ce cas).
+   */
+  async function currentAccountEmailForSync() {
+    if (!Sync.isConfigured()) return "";
+    try {
+      const u = await Sync.auth.getUser();
+      return u && u.email ? u.email.toLowerCase() : "";
+    } catch (e) {
+      return "";
+    }
+  }
+
   /** Reflète l'état de connexion sur le bouton d'accueil (item 1/2) : son
    *  libellé change tout seul, avant même d'avoir ouvert la page Compte. */
   function updateAccountHomeButton() {
@@ -8897,6 +8971,26 @@
       if (el("view-classes-student") && el("view-classes-student").classList.contains("is-active")) renderStudentClasses();
       if (el("view-classes-teacher") && el("view-classes-teacher").classList.contains("is-active")) renderTeacherClasses();
       if (user) syncSharedBoxesForStudent();
+      // Correctif (round 6) : les réglages dev perso (dont le mode nuit)
+      // sont maintenant cloisonnés par Compte connecté (voir
+      // currentAccountEmailForSync) — un changement de Compte EN COURS DE
+      // SESSION (connexion, déconnexion, changement de compte) doit donc
+      // recharger et se réabonner avec le bon cloisonnement, sinon
+      // l'appareil resterait accroché aux réglages de l'ancien Compte (ou
+      // d'aucun Compte) jusqu'au prochain redémarrage complet de l'appli.
+      if (Sync.isConfigured()) {
+        (async () => {
+          try {
+            await reconcileDevSettings();
+            applyAllDevSettings();
+            await subscribeDevSettingsForCurrentAccount();
+          } catch (e) {
+            // Best-effort : un accroc réseau ici ne doit jamais faire
+            // planter le reste de la gestion du changement de Compte.
+            console.warn("Réglages dev : échec du rechargement après changement de Compte", e);
+          }
+        })();
+      }
     });
   }
 
@@ -9104,6 +9198,12 @@
       // Round 3, item 4 (squelette) : événements de calendrier reçus des
       // classes suivies, mêmes id que côté prof (sharedEventId).
       const remoteEventIds = new Set();
+      // Bug corrigé (item 3, demande de Stéphane) : liste des classes pour
+      // lesquelles la récupération des événements partagés a VRAIMENT
+      // réussi cette fois-ci — sert à ne purger localement que les
+      // événements des classes effectivement interrogées avec succès (voir
+      // pruneStaleSharedEvents ci-dessous et le correctif dans sync.js).
+      const fetchedEventClassIds = new Set();
       for (const klass of myClasses) {
         const rootId = await ensureClassMirrorFolder(klass);
         usedMirrorFolderIds.add(rootId);
@@ -9113,13 +9213,24 @@
           const targetFolderId = await ensureClassMirrorFolderPath(klass, rootId, pathNames, usedMirrorFolderIds);
           await reconcileSharedBox(klass, box, targetFolderId);
         }
-        const remoteEvents = await Sync.classes.listSharedEvents(klass.id);
-        for (const re of remoteEvents) {
-          remoteEventIds.add(re.id);
-          reconcileSharedEvent(klass, re);
+        try {
+          const remoteEvents = await Sync.classes.listSharedEvents(klass.id);
+          fetchedEventClassIds.add(klass.id);
+          for (const re of remoteEvents) {
+            remoteEventIds.add(re.id);
+            reconcileSharedEvent(klass, re);
+          }
+        } catch (e) {
+          // Échec ponctuel (réseau, jeton...) : on ne touche à AUCUN
+          // événement déjà reçu de cette classe plutôt que de risquer de
+          // les supprimer localement à tort — voir le correctif dans
+          // sync.js (listSharedEventsForClass lève désormais une erreur au
+          // lieu de rendre un tableau vide indiscernable d'une absence
+          // réelle d'événements).
+          console.warn("Classes: échec du chargement des événements partagés pour cette classe, ignorée pour cette synchro", e);
         }
       }
-      pruneStaleSharedEvents(remoteEventIds);
+      pruneStaleSharedEvents(remoteEventIds, fetchedEventClassIds);
       await pruneStaleClassMirrorFolders(usedMirrorFolderIds);
       renderAll();
       renderSubjectManageList();
@@ -9157,9 +9268,19 @@
   /** Le prof a retiré/supprimé l'événement partagé : suppression locale
    *  (un événement reçu n'a pas de progression à préserver, contrairement
    *  à une fiche — contrairement aux boîtes, un vrai delete suffit ici). */
-  function pruneStaleSharedEvents(remoteEventIds) {
+  function pruneStaleSharedEvents(remoteEventIds, fetchedEventClassIds) {
     const events = loadCalendarEvents();
-    const kept = events.filter((x) => !x.sharedEventId || remoteEventIds.has(x.sharedEventId));
+    const kept = events.filter((x) => {
+      if (!x.sharedEventId) return true;
+      // Bug corrigé (item 3, demande de Stéphane) : si la récupération des
+      // événements de CETTE classe a échoué cette fois-ci (réseau, jeton
+      // pas encore prêt...), on garde l'événement tel quel plutôt que de le
+      // supprimer — sinon un simple accroc réseau pendant une synchro
+      // silencieuse en tâche de fond suffisait à faire disparaître un
+      // événement partagé, sans qu'un élève n'ait rien supprimé lui-même.
+      if (!fetchedEventClassIds.has(x.sharedClassId)) return true;
+      return remoteEventIds.has(x.sharedEventId);
+    });
     if (kept.length !== events.length) saveCalendarEvents(kept);
   }
 
@@ -9751,26 +9872,31 @@
     // de s'y appliquer (voir loadDevSettings : le local l'emporte
     // toujours sur le public). On ne pousse donc RIEN côté serveur tant
     // qu'il n'y a pas de VRAIE personnalisation locale.
+    // Cloisonné par Compte connecté depuis le round 6 (voir
+    // currentAccountEmailForSync) — corrige une fuite entre deux Comptes
+    // utilisant le même code de synchro perso.
+    const accountEmail = await currentAccountEmailForSync();
     const hasLocalCustomization = localStorage.getItem(DEV_SETTINGS_KEY) !== null;
-    const remote = await Sync.pullDevSettings();
+    const remote = await Sync.pullDevSettings(accountEmail);
     const local = loadDevSettings();
     if (!remote) {
       if (hasLocalCustomization) {
         // Rien côté serveur : on y pousse notre réglage local tel quel.
-        Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() });
+        Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() }, accountEmail);
       }
       return;
     }
     const remoteTime = new Date(remote.updatedAt || 0).getTime();
     const localTime = hasLocalCustomization ? new Date(local.updatedAt || 0).getTime() : 0;
     if (remoteTime > localTime) {
-      // Un autre de TES appareils (même code de synchro) a poussé une
-      // vraie personnalisation plus récente : on l'adopte.
+      // Un autre de TES appareils (même code de synchro ET même Compte
+      // connecté) a poussé une vraie personnalisation plus récente : on
+      // l'adopte.
       localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
       applyAllDevSettings();
       applyAppPrefsFromRemote(remote.payload.appPrefs);
     } else if (hasLocalCustomization && localTime > remoteTime) {
-      Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() });
+      Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() }, accountEmail);
     }
   }
 
@@ -9871,30 +9997,57 @@
       renderSubjectManageList();
       renderSubjectAlgoBadge();
     });
-    unsubscribeDevSettingsRealtime = Sync.subscribeDevSettingsRealtime((remote) => {
-      // Dernier écrit gagne (item 1) : un autre appareil vient de changer
-      // un réglage (couleur, icône...), on adopte tel quel si plus récent.
-      const local = loadDevSettings();
-      if (new Date(remote.updatedAt || 0) > new Date(local.updatedAt || 0)) {
-        localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
-        applyAllDevSettings();
-        applyAppPrefsFromRemote(remote.payload.appPrefs);
-        // Bug corrigé (items 1/2) : si l'utilisateur est EN TRAIN de taper
-        // dans un champ du mode développeur, reconstruire toute la liste
-        // (renderDevView) à cet instant précis lui fait perdre le focus en
-        // plein milieu de la frappe — ou, pour le mode nuit, fait
-        // clignoter l'état si l'écho de sa propre modification revient
-        // alors qu'il vient justement de la changer. On saute ce rendu
-        // tant qu'un champ de ce panneau a le focus ; il se remettra à
-        // jour de toute façon au prochain rendu normal (changement de
-        // page, nouvelle modification, etc.).
-        const devViewActive = el("view-dev") && el("view-dev").classList.contains("is-active");
-        const editingInDevView = document.activeElement && el("view-dev") && el("view-dev").contains(document.activeElement) && document.activeElement.tagName === "INPUT";
-        if (devViewActive && !editingInDevView) renderDevView();
-      }
-    });
+    await subscribeDevSettingsForCurrentAccount();
 
     updateSyncStatus();
+  }
+
+  /** Callback de l'abonnement Realtime aux réglages développeur perso —
+   *  factorisé (round 6) pour être réutilisé aussi bien au démarrage
+   *  (connectSync) qu'à un changement de Compte en cours de session (voir
+   *  subscribeDevSettingsForCurrentAccount / Sync.auth.onChange). */
+  function handleRemoteDevSettings(remote) {
+    // Dernier écrit gagne (item 1) : un autre appareil vient de changer
+    // un réglage (couleur, icône...), on adopte tel quel si plus récent.
+    const local = loadDevSettings();
+    if (new Date(remote.updatedAt || 0) > new Date(local.updatedAt || 0)) {
+      localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
+      applyAllDevSettings();
+      applyAppPrefsFromRemote(remote.payload.appPrefs);
+      // Bug corrigé (items 1/2) : si l'utilisateur est EN TRAIN de taper
+      // dans un champ du mode développeur, reconstruire toute la liste
+      // (renderDevView) à cet instant précis lui fait perdre le focus en
+      // plein milieu de la frappe — ou, pour le mode nuit, fait
+      // clignoter l'état si l'écho de sa propre modification revient
+      // alors qu'il vient justement de la changer. On saute ce rendu
+      // tant qu'un champ de ce panneau a le focus ; il se remettra à
+      // jour de toute façon au prochain rendu normal (changement de
+      // page, nouvelle modification, etc.).
+      const devViewActive = el("view-dev") && el("view-dev").classList.contains("is-active");
+      const editingInDevView = document.activeElement && el("view-dev") && el("view-dev").contains(document.activeElement) && document.activeElement.tagName === "INPUT";
+      if (devViewActive && !editingInDevView) renderDevView();
+    }
+  }
+  /** (Ré)abonne le canal Realtime des réglages développeur perso avec le
+   *  Compte ACTUELLEMENT connecté (round 6) — désabonne d'abord l'ancien
+   *  abonnement s'il y en avait un, pour ne jamais en garder deux en
+   *  parallèle (ex. juste après un changement de Compte). */
+  async function subscribeDevSettingsForCurrentAccount() {
+    if (unsubscribeDevSettingsRealtime) {
+      unsubscribeDevSettingsRealtime();
+      unsubscribeDevSettingsRealtime = null;
+    }
+    if (!Sync.isConfigured()) return;
+    try {
+      const accountEmail = await currentAccountEmailForSync();
+      unsubscribeDevSettingsRealtime = Sync.subscribeDevSettingsRealtime(handleRemoteDevSettings, accountEmail);
+    } catch (e) {
+      // Best-effort, comme le reste de la synchro temps réel : sans
+      // abonnement Realtime, les réglages dev restent quand même à jour
+      // au prochain reconcileDevSettings() (démarrage, changement de
+      // Compte, ouverture de la page Développeur...).
+      console.warn("Réglages dev : échec de l'abonnement temps réel", e);
+    }
   }
 
   window.addEventListener("online", () => {

@@ -215,12 +215,17 @@ end $$;
 
 -- Réglages du mode développeur (item 1 — audit synchro) : jusqu'ici
 -- jamais synchronisés du tout (couleurs, icônes, palette de texte, tout
--- restait propre à chaque appareil). Une seule ligne JSON par code de
--- synchro, même principe que reward_state.
+-- restait propre à chaque appareil). Une ligne JSON par code de synchro
+-- ET par Compte connecté (round 6 : account_email = '' si aucun Compte
+-- n'est connecté), même principe que reward_state sinon — voir
+-- fix_dev_settings_account_scope.sql pour le pourquoi du cloisonnement
+-- par Compte.
 create table if not exists public.dev_settings (
-  sync_code text primary key,
+  sync_code text not null,
+  account_email text not null default '',
   payload jsonb not null default '{}'::jsonb,
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  primary key (sync_code, account_email)
 );
 
 alter table public.dev_settings enable row level security;

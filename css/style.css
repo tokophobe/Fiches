@@ -3074,6 +3074,21 @@ button.home-btn {
   border-radius: 3px;
 }
 
+/* Item 2 (demande de Stéphane, affinée round 6) : un point d'une couleur
+   différente pour un événement lié à une classe, pour le repérer sans
+   même ouvrir le jour — et depuis round 6, une couleur DIFFÉRENTE selon
+   que je l'ai partagé moi-même (bleu, même famille que le liseré
+   "shared-mine" en vue liste) ou que je l'ai reçu d'un prof (sauge, même
+   couleur que le badge "Partagé"/liseré "received" en vue liste) — pour
+   que la distinction propre/partagé, déjà nette en vue liste, le soit
+   aussi d'un simple coup d'œil sur la grille du mois. */
+.calendar-day-dot--shared {
+  background: var(--sage);
+}
+.calendar-day-dot--shared-mine {
+  background: var(--blue);
+}
+
 .calendar-months-stack .calendar-day-dots { bottom: 5px; gap: 3px; }
 .calendar-months-stack .calendar-day-dot { width: 6px; height: 6px; }
 .calendar-months-stack .calendar-day-dot--more { width: 9px; }
@@ -4174,6 +4189,38 @@ button.home-btn {
   color: var(--sage);
   white-space: nowrap;
 }
+
+.classes-shared-badge--received {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.classes-shared-badge--received .icon-inline-svg {
+  width: 11px;
+  height: 11px;
+}
+
+/* Item 2, page Calendrier (demande de Stéphane) : distinguer d'un coup
+   d'œil un événement personnel (pas de liseré), un événement que J'AI
+   partagé avec une classe (liseré bleu, même famille que le reste de
+   l'appli), et un événement REÇU d'un prof, en lecture seule (liseré
+   sauge + fond légèrement teinté, même couleur que le badge "Partagé"). */
+.calendar-event-row--shared-mine {
+  border-left: 3px solid var(--blue);
+  padding-left: 9px;
+}
+.calendar-event-row--received {
+  border-left: 3px solid var(--sage);
+  padding-left: 9px;
+  background: rgba(111, 139, 92, 0.08);
+  cursor: default;
+}
+
+.icon-btn--static {
+  cursor: default;
+  opacity: 0.55;
+}
+.icon-btn--static:hover { background: none; }
 
 .classes-share-btn {
   margin-top: 6px;
