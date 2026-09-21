@@ -1423,9 +1423,24 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
      proportionnellement plus que les cercles eux-mêmes, les éparpillant.
      La zone garde maintenant une largeur fixe (comme la hauteur l'était
      déjà) et se centre simplement si l'écran est plus large — la même
-     disposition partout, quel que soit l'appareil. */
+     disposition partout, quel que soit l'appareil.
+     Bug corrigé (round 5) : cette largeur fixe était réglée à 390px — la
+     largeur de VIEWPORT d'un iPhone standard, mais pas celle réellement
+     disponible ICI : #view-home ajoute ses propres 18px de padding de
+     chaque côté (36px au total), donc sur CE même iPhone, .home-scatter
+     ne disposait en réalité que de 354px (390 - 36), forçant max-width:
+     100% à la compresser sous les 390px visés. Sur PC, où bien plus de
+     place est disponible, elle atteignait ses 390px pleins et entiers.
+     Deux largeurs réellement différentes entre iPhone et PC, alors que le
+     but même de cette zone est d'en garder une seule ! 354px est la
+     largeur réellement utilisable sur un iPhone standard compte tenu de
+     ce padding (c'est d'ailleurs la valeur historique utilisée par
+     l'ancienne conversion pixels → pourcentages, voir
+     HOME_LAYOUT_LEGACY_REF_WIDTH dans app.js) — désormais utilisée
+     directement ici, pour que la zone fasse RÉELLEMENT la même largeur
+     partout, y compris sur l'iPhone d'origine. */
   position: relative;
-  width: 390px;
+  width: 354px;
   max-width: 100%;
   margin: 0 auto;
   height: 640px;

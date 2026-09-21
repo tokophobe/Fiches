@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v139";
+  const APP_VERSION = "v141";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -829,6 +829,12 @@
   }
 
   const LOGO_SHADOW_FILTER = "drop-shadow(0 3px 5px rgba(0,0,0,0.35))";
+  // Hauteur de référence utilisée pour calculer les % verticaux de la page
+  // Réviser (voir applyReviewLayout) : 844px est la hauteur de l'iPhone
+  // standard 13/14/15 (390×844) sur lequel toute la disposition par défaut
+  // ci-dessous a été réglée à l'origine — déductible des anciennes valeurs
+  // par défaut du CSS (ex. 675px de haut de jauge / 80% = 844).
+  const REVIEW_LAYOUT_REF_HEIGHT = 844;
   // Disposition de la page Réviser (item 1c) : hauteur/largeur de la fiche
   // et position Y de son bord haut, position Y des boutons d'évaluation
   // (tous en % de l'écran), temps de retournement en secondes.
@@ -1534,7 +1540,31 @@
     const logo = loadDevSettings().homeLogo;
     const bodyLogo = loadDevSettings().bodyLogo;
     const root = document.documentElement.style;
-    root.setProperty("--home-logo-x", `${logo.x}%`);
+    // Bug corrigé (round 5) : le logo est positionné en absolu par rapport
+    // à #view-home (dont la largeur suit .desk — jusqu'à 560px sur PC,
+    // la largeur réelle de l'écran sur iPhone), alors que les cercles
+    // ci-dessus sont positionnés par rapport à .home-scatter (largeur
+    // FIXE, 390px au maximum, la même partout). Tant que le logo restait
+    // pile centré (x=50%) ça ne se voyait pas, mais dès qu'on le décale,
+    // son offset horizontal n'était pas calculé sur la même base que les
+    // cercles, donc pas le même écart entre iPhone et PC. On calcule donc
+    // maintenant son "left" en pixels à partir de la zone .home-scatter
+    // elle-même (centrée dans #view-home) plutôt que de laisser le
+    // navigateur résoudre un pourcentage contre #view-home. La position
+    // verticale (Y), elle, n'a pas ce problème — la hauteur de #view-home
+    // (titre + zone des cercles, hauteur fixe) est déjà stable d'un
+    // appareil à l'autre — donc reste en %, inchangée.
+    const homeScatterEl = document.querySelector(".home-scatter");
+    const viewHomeEl = el("view-home");
+    if (homeScatterEl && viewHomeEl) {
+      const scatterRect = homeScatterEl.getBoundingClientRect();
+      const viewHomeRect = viewHomeEl.getBoundingClientRect();
+      const scatterLeftOffset = scatterRect.left - viewHomeRect.left;
+      const logoLeftPx = scatterLeftOffset + (logo.x / 100) * scatterRect.width;
+      root.setProperty("--home-logo-x", `${Math.round(logoLeftPx)}px`);
+    } else {
+      root.setProperty("--home-logo-x", `${logo.x}%`);
+    }
     root.setProperty("--home-logo-y", `${logo.y}%`);
     root.setProperty("--home-logo-size", `${logo.size}px`);
     root.setProperty("--home-logo-shadow", logo.shadow ? LOGO_SHADOW_FILTER : "none");
@@ -1564,7 +1594,22 @@
   function applyReviewLayout() {
     const r = loadDevSettings().reviewLayout;
     const root = document.documentElement.style;
-    const vh = window.innerHeight / 100;
+    // Bug corrigé (round 4, partie 4) : ce calcul se basait sur la hauteur
+    // RÉELLE de la fenêtre (window.innerHeight) — cohérent tant qu'on reste
+    // sur le même iPhone que celui utilisé pour régler la disposition, mais
+    // plus du tout dès qu'on change d'appareil : un PC (fenêtre bien plus
+    // haute), ou même un autre iPhone plus grand/petit, donnait alors des %
+    // calculés sur un total différent, donc des positions visuellement
+    // décalées par rapport à ce qui avait été réglé. Comme pour la largeur
+    // juste en dessous (déjà plafonnée à celle de .desk), on plafonne
+    // maintenant la hauteur de référence à REVIEW_LAYOUT_REF_HEIGHT (la
+    // hauteur de l'appareil sur lequel la disposition par défaut a été
+    // pensée) : sur tout écran AU MOINS aussi haut (PC, iPhone Pro Max...),
+    // le calcul retombe toujours sur la même référence fixe, donc le même
+    // rendu que sur l'iPhone d'origine. Sur un écran plus petit qu'elle
+    // (vieux téléphone, fenêtre PC réduite), on garde la hauteur réelle
+    // comme avant, pour ne rien faire déborder.
+    const vh = Math.min(window.innerHeight, REVIEW_LAYOUT_REF_HEIGHT) / 100;
     // Bug corrigé (item 3, dernier lot) : ce calcul se basait sur la
     // largeur TOTALE de la fenêtre (window.innerWidth) — correcte sur
     // iPhone, où l'appli occupe tout l'écran, mais pas sur un écran large
