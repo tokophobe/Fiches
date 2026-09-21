@@ -1188,6 +1188,37 @@
         <button type="button" class="btn btn--ghost" id="dev-review-layout-reset">Revenir à la disposition d'origine</button>
       </div>
 
+      <!-- Nouvel algorithme de révision (remplace SM-2/les modes K-M) :
+           NDI = maxi(DD*COEF_DD ; TE*COEF_TE), borné à
+           [PLANCHER ; mini(PLAFOND ; DD*COEF_DD)] ; PERS = NDI*ABAT. -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Algorithme de révision</h3>
+        <p class="field-hint settings-block-hint">NDI = maxi(DD×COEF_DD ; TE×COEF_TE), borné entre PLANCHER et mini(PLAFOND ; DD×COEF_DD). PERS = NDI×ABAT. Un bouton par colonne : Encore / Difficile / Bien / Excellent.</p>
+        <div id="dev-revision-algo-list"></div>
+        <label class="field settings-bonus-field" style="margin-top:12px;">
+          <span>Délai initial à la création d'une fiche (minutes)</span>
+          <input type="number" step="1" id="dev-revision-algo-initial-delay" />
+        </label>
+        <p class="field-hint settings-block-hint" style="margin-top:12px;">Paliers des jauges de persistance (en jours) :</p>
+        <div class="algo-grid algo-grid--4">
+          <label class="field settings-bonus-field">
+            <span>Palier court terme</span>
+            <input type="number" step="0.1" id="dev-revision-algo-palierCourtTermeJ" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Palier moyen terme</span>
+            <input type="number" step="0.1" id="dev-revision-algo-palierMoyenTermeJ" />
+          </label>
+          <label class="field settings-bonus-field">
+            <span>Palier long terme</span>
+            <input type="number" step="0.1" id="dev-revision-algo-palierLongTermeJ" />
+          </label>
+        </div>
+        <p class="field-hint settings-block-hint" style="margin-top:12px;">Couleurs de la jauge de persistance (gris clair → vert foncé) :</p>
+        <div class="dev-color-list" id="dev-pers-gauge-colors-list"></div>
+        <button type="button" class="btn btn--ghost" id="dev-revision-algo-reset" style="margin-top:12px;">Revenir aux valeurs par défaut</button>
+      </div>
+
       <!-- Item 1a/2 : score d'apprentissage des fiches, boîtes et
            dossiers. -->
       <div class="card-form">

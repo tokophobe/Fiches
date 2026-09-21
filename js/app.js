@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v146";
+  const APP_VERSION = "v147";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -597,6 +597,63 @@
     maitrise: "#2f6fb0",
     acquis: "#5fae7c",
   };
+
+  // Nouvel algorithme de révision (remplace entièrement le système de
+  // modes K/M "again/hard/good/easy" ci-dessus pour le calcul de
+  // l'échéance — celui-ci reste en mémoire pour compat mais n'est plus
+  // utilisé par computeAlgoNext). Chaque fiche porte désormais :
+  //  - dd   : dernier délai d'interrogation appliqué (en MINUTES)
+  //  - pers : persistance de la fiche (en MINUTES)
+  // Chaque bouton (index 0=Encore, 1=Difficile, 2=Bien, 3=Excellent) porte
+  // COEF_TE/COEF_DD/PLAFOND/PLANCHER/ABAT. À l'évaluation :
+  //   TE = temps écoulé (minutes) depuis la dernière interrogation
+  //   NDI = maxi(DD*COEF_DD ; TE*COEF_TE), borné à
+  //         [PLANCHER ; mini(PLAFOND ; DD*COEF_DD)]
+  //   PERS = NDI*ABAT
+  // Remarque (signalée à l'utilisateur, décision explicitement reportée) :
+  // avec cette formule de plafond telle que donnée, mini(PLAFOND ; DD*COEF_DD)
+  // est mathématiquement toujours <= DD*COEF_DD, qui est lui-même toujours
+  // <= maxi(...) — donc TE*COEF_TE n'a, en l'état, aucune influence sur le
+  // résultat final. Implémenté ici littéralement tel que spécifié ; à
+  // corriger une fois la question tranchée avec l'utilisateur.
+  const REVISION_ALGO_RATING_ORDER = ["again", "hard", "good", "easy"];
+  const REVISION_ALGO_RATING_LABELS = {
+    again: "Encore (indice 0)",
+    hard: "Difficile (indice 1)",
+    good: "Bien (indice 2)",
+    easy: "Excellent (indice 3)",
+  };
+  const DEFAULT_REVISION_ALGO_SETTINGS = {
+    coefTe: [0, 0, 1.4, 2],
+    coefDd: [0, 0, 1.1, 1.2],
+    // PLAFOND/PLANCHER en MINUTES.
+    plafondMin: [7, 15, 43200, 86400],
+    plancherMin: [7, 15, 45, 240],
+    abat: [0, 0.1, 0.66, 0.8],
+    // Délai initial (minutes) appliqué à la création d'une fiche.
+    initialDelayMin: 5,
+    // Paliers des jauges — saisis en JOURS dans le mode développeur,
+    // convertis en minutes au moment des calculs (voir revisionAlgoPaliersMin).
+    palierCourtTermeJ: 2,
+    palierMoyenTermeJ: 8,
+    palierLongTermeJ: 30,
+  };
+  // Jauge "persistance" (4 segments) qui remplace l'ancienne jauge de score
+  // 0-100 dans les 3 emplacements où elle apparaissait (Organisation,
+  // Réviser, Programme de révision).
+  const DEFAULT_PERS_GAUGE_COLORS = {
+    court: "#d9dde3", // gris clair : PERS < PALIER_COURT_TERME
+    moyen: "#a7e3b0", // vert clair : entre COURT et MOYEN
+    long: "#4caf6b", // vert : entre MOYEN et LONG
+    tresLong: "#1f7a44", // vert foncé : PERS > PALIER_LONG_TERME
+  };
+  const PERS_GAUGE_ZONE_ORDER = ["court", "moyen", "long", "tresLong"];
+  const PERS_GAUGE_ZONE_LABELS = {
+    court: "Court terme",
+    moyen: "Moyen terme",
+    long: "Long terme",
+    tresLong: "Très long terme",
+  };
   // Disposition dispersée de la page d'accueil (item 3) : position (x,y en
   // pixels, coin haut-gauche du cercle) + diamètre (px) par bouton — tailles
   // différentes selon l'importance (Réviser le plus grand, Développeur le
@@ -1053,6 +1110,23 @@
       reviewLayout: { ...DEFAULT_REVIEW_LAYOUT, ...(parsed.reviewLayout || {}) },
       cardScore: { ...DEFAULT_CARD_SCORE_SETTINGS, ...(parsed.cardScore || {}) },
       gaugeColors: { ...DEFAULT_GAUGE_COLORS, ...(parsed.gaugeColors || {}) },
+      // Clonage explicite des tableaux (coefTe/coefDd/plafondMin/plancherMin/
+      // abat) — bug corrigé : un simple spread superficiel partageait la
+      // même référence de tableau que DEFAULT_REVISION_ALGO_SETTINGS quand
+      // aucun réglage n'était encore enregistré, donc modifier UN index
+      // depuis le mode développeur mutait silencieusement les valeurs PAR
+      // DÉFAUT elles-mêmes — et "Revenir aux valeurs par défaut" n'avait
+      // alors plus aucun effet (il recopiait ce même tableau déjà corrompu).
+      revisionAlgo: {
+        ...DEFAULT_REVISION_ALGO_SETTINGS,
+        ...(parsed.revisionAlgo || {}),
+        coefTe: [...((parsed.revisionAlgo || {}).coefTe || DEFAULT_REVISION_ALGO_SETTINGS.coefTe)],
+        coefDd: [...((parsed.revisionAlgo || {}).coefDd || DEFAULT_REVISION_ALGO_SETTINGS.coefDd)],
+        plafondMin: [...((parsed.revisionAlgo || {}).plafondMin || DEFAULT_REVISION_ALGO_SETTINGS.plafondMin)],
+        plancherMin: [...((parsed.revisionAlgo || {}).plancherMin || DEFAULT_REVISION_ALGO_SETTINGS.plancherMin)],
+        abat: [...((parsed.revisionAlgo || {}).abat || DEFAULT_REVISION_ALGO_SETTINGS.abat)],
+      },
+      persGaugeColors: { ...DEFAULT_PERS_GAUGE_COLORS, ...(parsed.persGaugeColors || {}) },
       // Item 4 : mode nuit — un jeu de couleurs parallèle et réglable pour
       // chacun des groupes ci-dessus, plus un simple drapeau on/off (dont
       // l'état effectif est en réalité piloté par le bouton en topbar, pas
@@ -1805,6 +1879,106 @@
     });
   }
 
+  /** Nouvel algorithme de révision : COEF_TE/COEF_DD/PLAFOND/PLANCHER/ABAT
+   *  par bouton (indices 0-3), délai initial, et les 3 paliers (en jours)
+   *  des jauges de persistance. */
+  const REVISION_ALGO_FIELD_DEFS = [
+    { key: "coefTe", title: "COEF_TE (coefficient sur le temps écoulé)", step: "0.01" },
+    { key: "coefDd", title: "COEF_DD (coefficient sur le dernier délai)", step: "0.01" },
+    { key: "plafondMin", title: "PLAFOND (délai maximal, en minutes)", step: "1" },
+    { key: "plancherMin", title: "PLANCHER (délai minimal, en minutes)", step: "1" },
+    { key: "abat", title: "ABAT (abattement pour la persistance)", step: "0.01" },
+  ];
+  function renderRevisionAlgoEditor() {
+    const wrap = el("dev-revision-algo-list");
+    if (wrap) {
+      const settings = loadDevSettings().revisionAlgo;
+      wrap.innerHTML = REVISION_ALGO_FIELD_DEFS.map(
+        ({ key, title, step }) => `<div class="dev-color-row">
+          <span>${title}</span>
+          <span class="algo-grid algo-grid--4" style="flex:1;">
+            ${REVISION_ALGO_RATING_ORDER.map(
+              (rating, idx) =>
+                `<label class="field settings-bonus-field">
+                  <span>${REVISION_ALGO_RATING_LABELS[rating]}</span>
+                  <input type="number" step="${step}" class="dev-revision-algo-input" data-key="${key}" data-idx="${idx}" value="${settings[key][idx]}" />
+                </label>`
+            ).join("")}
+          </span>
+        </div>`
+      ).join("");
+      wrap.querySelectorAll(".dev-revision-algo-input").forEach((input) => {
+        input.addEventListener("input", () => {
+          const s = loadDevSettings();
+          const idx = Number(input.dataset.idx);
+          s.revisionAlgo[input.dataset.key][idx] = Number(input.value) || 0;
+          saveDevSettings(s);
+          updateRatingPreviews();
+        });
+      });
+    }
+    const initialInput = el("dev-revision-algo-initial-delay");
+    if (initialInput) initialInput.value = loadDevSettings().revisionAlgo.initialDelayMin;
+    ["palierCourtTermeJ", "palierMoyenTermeJ", "palierLongTermeJ"].forEach((k) => {
+      const input = el(`dev-revision-algo-${k}`);
+      if (input) input.value = loadDevSettings().revisionAlgo[k];
+    });
+  }
+  function saveRevisionAlgoFromInputs() {
+    const settings = loadDevSettings();
+    const initialInput = el("dev-revision-algo-initial-delay");
+    if (initialInput) settings.revisionAlgo.initialDelayMin = Number(initialInput.value) || DEFAULT_REVISION_ALGO_SETTINGS.initialDelayMin;
+    ["palierCourtTermeJ", "palierMoyenTermeJ", "palierLongTermeJ"].forEach((k) => {
+      const input = el(`dev-revision-algo-${k}`);
+      if (input) settings.revisionAlgo[k] = Number(input.value) || DEFAULT_REVISION_ALGO_SETTINGS[k];
+    });
+    saveDevSettings(settings);
+    renderManageList();
+    updateRatingPreviews();
+    renderReviewGauge();
+    renderRevisionProgramList();
+  }
+  ["dev-revision-algo-initial-delay", "dev-revision-algo-palierCourtTermeJ", "dev-revision-algo-palierMoyenTermeJ", "dev-revision-algo-palierLongTermeJ"].forEach((id) => {
+    const input = el(id);
+    if (input) input.addEventListener("input", saveRevisionAlgoFromInputs);
+  });
+  const devRevisionAlgoResetBtn = el("dev-revision-algo-reset");
+  if (devRevisionAlgoResetBtn) {
+    devRevisionAlgoResetBtn.addEventListener("click", () => {
+      const settings = loadDevSettings();
+      settings.revisionAlgo = { ...DEFAULT_REVISION_ALGO_SETTINGS };
+      settings.persGaugeColors = { ...DEFAULT_PERS_GAUGE_COLORS };
+      saveDevSettings(settings);
+      renderDevView();
+      renderManageList();
+      updateRatingPreviews();
+      renderReviewGauge();
+      renderRevisionProgramList();
+    });
+  }
+  function renderPersGaugeColorsEditor() {
+    const wrap = el("dev-pers-gauge-colors-list");
+    if (!wrap) return;
+    const settings = loadDevSettings();
+    wrap.innerHTML = PERS_GAUGE_ZONE_ORDER.map(
+      (key) => `<div class="dev-color-row">
+        <span>${PERS_GAUGE_ZONE_LABELS[key]}</span>
+        <input type="text" class="dev-pers-gauge-color-input" data-key="${key}" value="${settings.persGaugeColors[key]}" />
+      </div>`
+    ).join("");
+    wrap.querySelectorAll(".dev-pers-gauge-color-input").forEach((input) => {
+      input.addEventListener("input", () => {
+        const s = loadDevSettings();
+        s.persGaugeColors[input.dataset.key] = input.value;
+        saveDevSettings(s);
+        renderManageList();
+        renderReviewGauge();
+        renderRevisionProgramList();
+      });
+    });
+    enhanceColorInputsWithHsl();
+  }
+
   /** Score des fiches (items 1a/1d/2) : P, B, seuils de jauge V1-V4, et
    *  les deux cases "masquer". */
   function renderCardScoreEditor() {
@@ -2541,15 +2715,65 @@
     return Math.round(S * 100);
   }
 
+  /** Nouvel algorithme de révision (remplace le système de modes K/M
+   *  ci-dessus pour le CALCUL de l'échéance — celui-ci reste en mémoire,
+   *  encore éditable dans le mode développeur, mais n'influence plus la
+   *  planification réelle : décision à trancher avec l'utilisateur). Voir
+   *  DEFAULT_REVISION_ALGO_SETTINGS pour le détail de la formule. */
+  function revisionAlgoPaliersMin(settings) {
+    return {
+      court: (settings.palierCourtTermeJ || 0) * 1440,
+      moyen: (settings.palierMoyenTermeJ || 0) * 1440,
+      long: (settings.palierLongTermeJ || 0) * 1440,
+    };
+  }
+  /** Palier (court/moyen/long/tresLong) dans lequel tombe la persistance
+   *  (en minutes) d'une fiche — utilisé par la jauge à 4 segments. */
+  function classifyPersBracket(persMin, settings) {
+    const p = revisionAlgoPaliersMin(settings);
+    if (persMin < p.court) return "court";
+    if (persMin < p.moyen) return "moyen";
+    if (persMin < p.long) return "long";
+    return "tresLong";
+  }
+  /** Temps écoulé (minutes) depuis la dernière interrogation d'une fiche
+   *  — depuis sa création si elle n'a encore jamais été révisée. */
+  function cardElapsedMinutes(card, now) {
+    const ref = card.lastReviewed || card.createdAt;
+    if (!ref) return 0;
+    return Math.max(0, (now.getTime() - new Date(ref).getTime()) / 60000);
+  }
   function computeAlgoNext(card, rating, subjectId) {
-    const settings = getSubjectAlgoSettings(subjectId);
-    const rawBefore = currentDeadlineRaw(card);
-    const rawAfter = computeNextDeadlineRaw(rawBefore, rating, settings);
-    const rawAfterRounded3 = Math.round(rawAfter * 1000) / 1000;
-    const intervalDays = Math.max(1, Math.round(rawAfter));
-    const due = startOfDay(new Date());
-    due.setDate(due.getDate() + intervalDays);
-    return { deadlineDaysRaw: rawAfterRounded3, interval: intervalDays, dueDate: due.toISOString() };
+    const settings = loadDevSettings().revisionAlgo;
+    const idx = REVISION_ALGO_RATING_ORDER.indexOf(rating);
+    if (idx < 0) return { dd: settings.initialDelayMin, pers: 0, interval: 1, dueDate: new Date().toISOString() };
+    const now = new Date();
+    const dd = typeof card.dd === "number" && Number.isFinite(card.dd) ? card.dd : settings.initialDelayMin;
+    const te = cardElapsedMinutes(card, now);
+    const coefTe = settings.coefTe[idx] || 0;
+    const coefDd = settings.coefDd[idx] || 0;
+    const plafond = settings.plafondMin[idx];
+    const plancher = settings.plancherMin[idx];
+    const abat = settings.abat[idx] || 0;
+
+    const ddTerm = dd * coefDd;
+    const raw = Math.max(ddTerm, te * coefTe);
+    const ceiling = Math.min(plafond, ddTerm);
+    let ndi = Math.min(raw, ceiling);
+    if (ndi < plancher) ndi = plancher;
+    const pers = ndi * abat;
+
+    const due = new Date(now.getTime() + ndi * 60000);
+    // `interval` (jours, arrondi) et `deadlineDaysRaw` sont dérivés pour la
+    // compatibilité des affichages/fonctions encore en jours (histogrammes,
+    // score legacy) — ils ne pilotent plus la planification elle-même.
+    return {
+      dd: Math.round(ndi * 100) / 100,
+      pers: Math.round(pers * 100) / 100,
+      interval: Math.max(0, Math.round(ndi / 1440)),
+      deadlineDaysRaw: Math.round((ndi / 1440) * 1000) / 1000,
+      dueDate: due.toISOString(),
+    };
   }
 
 
@@ -2574,24 +2798,30 @@
     `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 
   function newCard(question, answer, subjectId = currentSubjectId) {
-    const now = new Date().toISOString();
+    const now = new Date();
+    const nowIso = now.toISOString();
+    const initialDelayMin = loadDevSettings().revisionAlgo.initialDelayMin;
+    const due = new Date(now.getTime() + initialDelayMin * 60000);
     return {
       id: uid(),
       subject: subjectId,
       question,
       answer,
-      createdAt: now,
-      dueDate: now, // due immédiatement
+      createdAt: nowIso,
+      dueDate: due.toISOString(), // maintenant + délai initial (5 min par défaut)
       lastReviewed: null,
       reviewCount: 0,
-      updatedAt: now,
+      updatedAt: nowIso,
       deleted: false,
       // Chantier (item 16) : fiche marquée à corriger/compléter plus tard.
       underConstruction: false,
-      // Nouvel algorithme (remplace SM-2) : échéance initiale = 1 jour, non
-      // arrondie (voir computeAlgoNext / currentDeadlineRaw).
-      interval: 1,
-      deadlineDaysRaw: 1,
+      // Nouvel algorithme de révision : dd/pers en MINUTES (voir
+      // computeAlgoNext). `interval`/`deadlineDaysRaw` (jours) restent
+      // dérivés pour compat avec les affichages non encore migrés.
+      dd: initialDelayMin,
+      pers: 0,
+      interval: 0,
+      deadlineDaysRaw: Math.round((initialDelayMin / 1440) * 1000) / 1000,
     };
   }
 
@@ -2730,6 +2960,19 @@
     if (own.length === 0) return null;
     const sum = own.reduce((acc, c) => acc + computeCardScore(c), 0);
     return Math.round(sum / own.length);
+  }
+
+  /** Nouvelle jauge de persistance (remplace le score 0-100 dans les 3
+   *  emplacements où il s'affichait) : renvoie le POOL de fiches d'une
+   *  boîte/dossier (ou null si vide), à passer à buildPersGaugeSvg. */
+  function subjectCardsPool(subjectId) {
+    const own = cards.filter((c) => !c.deleted && c.subject === subjectId);
+    return own.length > 0 ? own : null;
+  }
+  function folderCardsPool(folderId) {
+    const subjectIds = subjectIdsInFolder(folderId);
+    const own = cards.filter((c) => !c.deleted && subjectIds.includes(c.subject));
+    return own.length > 0 ? own : null;
   }
 
   /** Lit le résultat RÉEL d'un picker multi-boîtes/dossiers (bug corrigé
@@ -3059,7 +3302,7 @@
    *  fiches/boîtes ; à droite (de droite à gauche) le bouton de dépli des
    *  actions (éditer/déplacer/supprimer, empilées verticalement dans un
    *  petit panneau), la jauge (plus courte/fine), le picto du mode. */
-  function buildRowBody({ nameBtnEl, expandBtnEl, countLabel, score, mode, onRename, onMove, onDelete, onAlgo, deleteTitle }) {
+  function buildRowBody({ nameBtnEl, expandBtnEl, countLabel, score: persPool, mode, onRename, onMove, onDelete, onAlgo, deleteTitle }) {
     const main = document.createElement("div");
     main.className = "org-row-main";
     if (expandBtnEl) {
@@ -3098,11 +3341,11 @@
     algoWrap.appendChild(algoBtn);
     slot.appendChild(algoWrap);
 
-    if (score !== null) {
+    if (persPool !== null) {
       const gaugeEl = document.createElement("span");
       gaugeEl.className = "org-info-slot-item org-gauge-inline";
       gaugeEl.dataset.slot = "2";
-      gaugeEl.innerHTML = buildLinearGaugeSvg(score, { width: 70, barHeight: 8, scoreFontSize: 11 });
+      gaugeEl.innerHTML = buildPersGaugeSvg(persPool, { width: 70, barHeight: 8 });
       slot.appendChild(gaugeEl);
     }
     main.appendChild(slot);
@@ -3193,7 +3436,7 @@
       });
 
       const n = cards.filter((c) => !c.deleted && c.subject === subjectId).length;
-      const subjScore = computeSubjectScore(subjectId);
+      const subjScore = subjectCardsPool(subjectId);
       const body = buildRowBody({
         nameBtnEl: nameBtn,
         countLabel: `${n} fiche${n > 1 ? "s" : ""}`,
@@ -3264,7 +3507,7 @@
       if (!expanded && childCount > 0) li.classList.add("folder-row--stacked");
 
       const n = subjectIdsInFolder(f.id).length;
-      const folderScore = computeFolderScore(f.id);
+      const folderScore = folderCardsPool(f.id);
       const body = buildRowBody({
         nameBtnEl: nameBtn,
         expandBtnEl: expandBtn,
@@ -4995,6 +5238,45 @@
     svg += `</svg>`;
     return svg;
   }
+  /** Nouvelle jauge de persistance (remplace la jauge de score 0-100 dans
+   *  les 3 emplacements où elle apparaissait — Organisation, Réviser,
+   *  Programme de révision) : une barre à 4 segments contigus, proportionnels
+   *  au nombre de fiches du `pool` dont la persistance (PERS, en minutes)
+   *  tombe dans chacun des 4 paliers réglables (gris clair/vert clair/vert/
+   *  vert foncé). `pool` peut être null/vide : jauge grise pleine. */
+  function buildPersGaugeSvg(pool, { width = 200, barHeight = 14, showLabels = false } = {}) {
+    const settings = loadDevSettings();
+    const colors = settings.persGaugeColors;
+    const list = pool || [];
+    const counts = { court: 0, moyen: 0, long: 0, tresLong: 0 };
+    for (const c of list) {
+      const persMin = typeof c.pers === "number" ? c.pers : 0;
+      counts[classifyPersBracket(persMin, settings.revisionAlgo)] += 1;
+    }
+    const total = list.length;
+    const barY = 2;
+    const height = barY * 2 + barHeight + (showLabels ? 14 : 0);
+    let svg = `<svg viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">`;
+    svg += `<rect x="0" y="${barY}" width="${width}" height="${barHeight}" rx="${barHeight / 2}" fill="${colors.court}" />`;
+    if (total > 0) {
+      let x = 0;
+      for (const key of PERS_GAUGE_ZONE_ORDER) {
+        const w = (counts[key] / total) * width;
+        if (w > 0) {
+          svg += `<rect x="${x.toFixed(1)}" y="${barY}" width="${w.toFixed(1)}" height="${barHeight}" fill="${colors[key]}" />`;
+        }
+        x += w;
+      }
+      // Coins arrondis par-dessus (masque le rectangle plein sous-jacent).
+      svg += `<rect x="0" y="${barY}" width="${width}" height="${barHeight}" rx="${barHeight / 2}" fill="none" stroke="var(--paper, #fff)" stroke-width="0" />`;
+    }
+    if (showLabels) {
+      const pct = (key) => (total > 0 ? Math.round((counts[key] / total) * 100) : 0);
+      svg += `<text x="0" y="${barY + barHeight + 12}" font-size="9" font-family="sans-serif" fill="var(--ink-soft, #64748b)">${PERS_GAUGE_ZONE_ORDER.map((k) => `${PERS_GAUGE_ZONE_LABELS[k]} ${pct(k)}%`).join(" · ")}</text>`;
+    }
+    svg += `</svg>`;
+    return svg;
+  }
   /** Jauge compacte (Organisation) : juste la barre + le score, sans
    *  point de zone ni objectif. */
   function renderMiniGaugeRing(score) {
@@ -5027,9 +5309,7 @@
     const wrap = el("review-gauge-wrap");
     if (!wrap) return;
     const pool = subjectCards();
-    const score = pool.length > 0 ? Math.round(pool.reduce((acc, c) => acc + computeCardScore(c), 0) / pool.length) : 0;
-    const target = computeTodayTargetForCurrentSubject();
-    wrap.innerHTML = buildLinearGaugeSvg(score, { width: 300, barHeight: 18, showZoneLabels: true, scoreFontSize: 20, scoreOnLeft: true, targetValue: target, targetLabel: "Objectif du jour : ", targetStyle: "triangle" });
+    wrap.innerHTML = buildPersGaugeSvg(pool, { width: 300, barHeight: 18, showLabels: true });
   }
 
   function renderDuePill() {
@@ -5253,24 +5533,29 @@
       });
       return;
     }
-    el("sub-again").textContent = "< 1 j";
+    el("sub-again").textContent = "…";
     const previews = {};
-    const futureIntervals = {};
+    const futureDelaysMin = {};
     for (const rating of ["again", "hard", "good", "easy"]) {
       const next = computeAlgoNext(currentCard, rating, currentCard.subject);
-      previews[rating] = formatInterval(next.interval);
-      futureIntervals[rating] = next.interval;
+      previews[rating] = formatDelayMinutes(next.dd);
+      futureDelaysMin[rating] = next.dd;
     }
     el("sub-again").textContent = previews.again;
     el("sub-hard").textContent = previews.hard;
     el("sub-good").textContent = previews.good;
     el("sub-easy").textContent = previews.easy;
-    updateReviewScoreInfo(futureIntervals);
+    updateReviewScoreInfo(futureDelaysMin);
   }
 
-  /** Item 1d : délai précédent, score actuel, et pour chaque note le futur
-   *  délai + futur score associé — masquable depuis le mode développeur. */
-  function updateReviewScoreInfo(futureIntervals) {
+  /** Item 1d : délai précédent et, pour chaque note, le futur délai — sous
+   *  le nouvel algorithme de révision (minutes), masquable depuis le mode
+   *  développeur. Le "score" 0-100 historique n'a plus grand sens sous ce
+   *  nouvel algorithme (délais très majoritairement sous 1 jour) : cette
+   *  ligne n'affiche donc plus que les délais, pas de score — voir aussi
+   *  la nouvelle jauge de persistance (buildPersGaugeSvg) qui remplace
+   *  l'ancienne jauge de score ailleurs dans l'appli. */
+  function updateReviewScoreInfo(futureDelaysMin) {
     const wrap = el("review-score-info");
     if (!wrap || !currentCard) return;
     const settings = loadDevSettings().cardScore;
@@ -5279,17 +5564,29 @@
       return;
     }
     wrap.hidden = false;
-    const prevDelay = Math.max(1, currentCard.interval || 1);
-    const currentScore = computeCardScore(currentCard);
-    el("score-info-prev-delay").textContent = `${prevDelay} j`;
-    el("score-info-current").textContent = `${currentScore}`;
-    const labels = { again: "Encore", hard: "Difficile", good: "Bien", easy: "Facile" };
+    const prevDelay = typeof currentCard.dd === "number" ? currentCard.dd : currentCard.interval * 1440 || 0;
+    el("score-info-prev-delay").textContent = formatDelayMinutes(prevDelay);
+    el("score-info-current").textContent = "";
+    const labels = { again: "Encore", hard: "Difficile", good: "Bien", easy: "Excellent" };
     ["again", "hard", "good", "easy"].forEach((r) => {
       const cell = el(`score-info-${r}`);
       if (!cell) return;
-      const futureScore = computeCardScore(currentCard, futureIntervals[r]);
-      cell.textContent = `${labels[r]} : ${formatInterval(futureIntervals[r])} (${futureScore})`;
+      cell.textContent = `${labels[r]} : ${formatDelayMinutes(futureDelaysMin[r])}`;
     });
+  }
+
+  /** Formatage minute/heure/jour-aware du délai d'interrogation (nouvel
+   *  algorithme de révision, granularité minute) — remplace formatInterval
+   *  (jours uniquement) pour les aperçus sous les boutons d'évaluation. */
+  function formatDelayMinutes(minutes) {
+    const m = Math.round(minutes || 0);
+    if (m < 60) return `${m} min`;
+    if (m < 1440) {
+      const h = Math.round(m / 60);
+      return `${h} h`;
+    }
+    const j = Math.round(m / 1440);
+    return `${j} j`;
   }
 
   function formatInterval(days) {
@@ -7882,6 +8179,8 @@
     renderHomeLayoutEditor();
     renderHomeLogoEditor();
     renderReviewLayoutEditor();
+    renderRevisionAlgoEditor();
+    renderPersGaugeColorsEditor();
     renderCardScoreEditor();
     renderGaugeColorsEditor();
     renderFactoryDefaultsEditor();
@@ -8699,8 +8998,14 @@
     const items = Object.values(byLink).map((ev) => {
       const [type, id] = ev.linkId.split(":");
       const isFolder = type === "folder";
-      const score = isFolder ? computeFolderScore(id) : computeSubjectScore(id);
+      const pool = isFolder ? folderCardsPool(id) : subjectCardsPool(id);
       const daysLeft = Math.round((new Date(ev.date + "T00:00:00") - new Date(todayStr + "T00:00:00")) / 86400000);
+      // Nouvel algorithme : plus de score 0-100 — le "score" utilisé pour
+      // le tri à égalité de date devient la proportion (%) de fiches déjà
+      // en persistance moyen/long/très long terme (donc pas "court terme").
+      const list = pool || [];
+      const wellPersisted = list.filter((c) => classifyPersBracket(typeof c.pers === "number" ? c.pers : 0, loadDevSettings().revisionAlgo) !== "court").length;
+      const score = list.length > 0 ? Math.round((wellPersisted / list.length) * 100) : 0;
       return {
         linkId: ev.linkId,
         type,
@@ -8709,7 +9014,8 @@
         eventTitle: ev.title,
         eventDate: ev.date,
         daysLeft,
-        score: score === null ? 0 : score,
+        pool,
+        score,
         target: REVISION_PROGRAM_TARGET_SCORE,
       };
     });
@@ -8768,7 +9074,7 @@
           <strong>${escapeHtml(it.label)}</strong>
           <span class="card-row-meta">« ${escapeHtml(it.eventTitle)} » — ${dueLabel}</span>
         </div>
-        <div class="revision-program-gauge-col">${renderMiniGaugeRingWithTarget(it.score, it.target)}</div>
+        <div class="revision-program-gauge-col">${buildPersGaugeSvg(it.pool, { width: 190, barHeight: 12 })}</div>
       `;
       li.addEventListener("click", () => {
         reviewEntryFromManage = false;
