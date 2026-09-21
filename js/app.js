@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v141";
+  const APP_VERSION = "v142";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -1544,27 +1544,40 @@
     // à #view-home (dont la largeur suit .desk — jusqu'à 560px sur PC,
     // la largeur réelle de l'écran sur iPhone), alors que les cercles
     // ci-dessus sont positionnés par rapport à .home-scatter (largeur
-    // FIXE, 390px au maximum, la même partout). Tant que le logo restait
-    // pile centré (x=50%) ça ne se voyait pas, mais dès qu'on le décale,
-    // son offset horizontal n'était pas calculé sur la même base que les
-    // cercles, donc pas le même écart entre iPhone et PC. On calcule donc
-    // maintenant son "left" en pixels à partir de la zone .home-scatter
-    // elle-même (centrée dans #view-home) plutôt que de laisser le
-    // navigateur résoudre un pourcentage contre #view-home. La position
-    // verticale (Y), elle, n'a pas ce problème — la hauteur de #view-home
-    // (titre + zone des cercles, hauteur fixe) est déjà stable d'un
-    // appareil à l'autre — donc reste en %, inchangée.
-    const homeScatterEl = document.querySelector(".home-scatter");
-    const viewHomeEl = el("view-home");
-    if (homeScatterEl && viewHomeEl) {
-      const scatterRect = homeScatterEl.getBoundingClientRect();
-      const viewHomeRect = viewHomeEl.getBoundingClientRect();
-      const scatterLeftOffset = scatterRect.left - viewHomeRect.left;
-      const logoLeftPx = scatterLeftOffset + (logo.x / 100) * scatterRect.width;
-      root.setProperty("--home-logo-x", `${Math.round(logoLeftPx)}px`);
-    } else {
-      root.setProperty("--home-logo-x", `${logo.x}%`);
-    }
+    // FIXE, 354px au maximum, la même partout — voir HOME_SCATTER_MAX_WIDTH
+    // ci-dessous, doit rester synchronisé avec le "width" de .home-scatter
+    // dans style.css). Tant que le logo restait pile centré (x=50%) ça ne
+    // se voyait pas, mais dès qu'on le décale, son offset horizontal
+    // n'était pas calculé sur la même base que les cercles, donc pas le
+    // même écart entre iPhone et PC.
+    // Bug corrigé (round 5, 2e passage) : un premier correctif mesurait la
+    // position RÉELLE de .home-scatter sur la page (getBoundingClientRect)
+    // — correct uniquement quand la page d'accueil est actuellement
+    // affichée. Or applyHomeLayout() s'exécute aussi à chaque changement
+    // dans l'éditeur du mode développeur, PAGE DÉVELOPPEUR ACTIVE — la
+    // page d'accueil est alors masquée (display:none), et un élément
+    // masqué a un rectangle de 0×0 : le calcul retombait sur une valeur
+    // dégénérée, ce qui rendait le glissement du réglage X sans aucun
+    // effet visible tant qu'on ne retournait pas manuellement sur
+    // l'accueil (et donnait des résultats différents iPhone/PC selon la
+    // page qui se trouvait être affichée au moment du calcul). Recalculé
+    // maintenant uniquement à partir de la largeur de .desk (TOUJOURS
+    // visible, quelle que soit la page affichée) et des mêmes règles que
+    // le CSS de .home-scatter (largeur dispo = .desk moins les 18px de
+    // padding de #view-home de chaque côté, plafonnée à 354px) — plus
+    // aucune dépendance à ce qui est affiché à l'écran au moment du calcul.
+    const HOME_SCATTER_MAX_WIDTH = 354;
+    const VIEW_HOME_SIDE_PADDING = 18;
+    const deskWidthForLogo = document.querySelector(".desk")?.getBoundingClientRect().width || window.innerWidth;
+    const viewHomeContentWidth = Math.max(0, deskWidthForLogo - VIEW_HOME_SIDE_PADDING * 2);
+    const scatterWidthForLogo = Math.min(HOME_SCATTER_MAX_WIDTH, viewHomeContentWidth);
+    // "left" d'un élément en position absolue se mesure depuis le bord
+    // EXTÉRIEUR de la boîte de padding du référent (#view-home), donc
+    // depuis avant son propre padding — il faut le rajouter ici pour que
+    // 0px corresponde bien au tout début de la zone de contenu.
+    const scatterLeftOffset = VIEW_HOME_SIDE_PADDING + (viewHomeContentWidth - scatterWidthForLogo) / 2;
+    const logoLeftPx = scatterLeftOffset + (logo.x / 100) * scatterWidthForLogo;
+    root.setProperty("--home-logo-x", `${Math.round(logoLeftPx)}px`);
     root.setProperty("--home-logo-y", `${logo.y}%`);
     root.setProperty("--home-logo-size", `${logo.size}px`);
     root.setProperty("--home-logo-shadow", logo.shadow ? LOGO_SHADOW_FILTER : "none");
