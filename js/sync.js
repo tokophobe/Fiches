@@ -879,6 +879,39 @@ async function deleteSharedEvent(eventId) {
   return { error: error ? error.message : null };
 }
 
+/* ---- Round 8 : Bibliothèque — collections de fiches partagées
+   publiquement (table `library_collections`, lecture publique, écriture
+   réservée à l'auteur). Contrairement à `shared_boxes` (partage avec une
+   classe, miroir en lecture seule mis à jour en direct), il n'y a ici
+   aucune notion de mise à jour continue : une collection publiée est une
+   COPIE figée au moment du partage, reprise ensuite en copie indépendante
+   par quiconque la "prend". ---- */
+
+async function shareCollectionToLibrary(name, cards) {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { error: "Non connecté." };
+  const row = {
+    owner_id: user.id,
+    owner_email: user.email || "",
+    name,
+    cards: cards.map((card) => ({ id: card.id, question: card.question, answer: card.answer })),
+  };
+  const { data, error } = await c.from("library_collections").insert(row).select().single();
+  return { data, error: error ? error.message : null };
+}
+
+async function listLibraryCollections() {
+  const c = getClient();
+  if (!c) return [];
+  const { data, error } = await c.from("library_collections").select("*").order("shared_at", { ascending: false });
+  if (error) {
+    console.warn("Bibliothèque : échec du chargement des collections partagées", error.message);
+    return [];
+  }
+  return data || [];
+}
+
 /* ---- Round 6, item 5 : messagerie par classe (façon groupe WhatsApp) ---- */
 
 /** Liste, en une seule fois, toutes les classes où l'utilisateur peut
@@ -1013,5 +1046,9 @@ window.Sync = {
     send: sendClassMessage,
     countUnread: countUnreadClassMessages,
     subscribeRealtime: subscribeClassMessagesRealtime,
+  },
+  library: {
+    share: shareCollectionToLibrary,
+    list: listLibraryCollections,
   },
 };

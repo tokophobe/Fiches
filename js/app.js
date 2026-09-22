@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v147";
+  const APP_VERSION = "v148";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -663,10 +663,10 @@
   // l'appli s'adapte elle en largeur — le pourcentage, lui, suit toujours
   // la largeur réelle quel que soit l'appareil).
   const HOME_LAYOUT_TITLES = {
-    review: "Réviser", manage: "Dossiers & boîtes", cards: "Fiches", addCard: "Ajouter une fiche",
+    review: "Réviser", manage: "Mes collections", cards: "Fiches", addCard: "Ajouter une fiche",
     stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
     sync: "Synchronisation", dev: "Développeur", classes: "Classes",
-    account: "Compte", messages: "Messagerie",
+    account: "Compte", messages: "Messagerie", library: "Bibliothèque",
   };
   // Largeur/hauteur de référence utilisées uniquement pour convertir une
   // seule fois d'anciens réglages enregistrés en pixels (avant ce
@@ -690,6 +690,9 @@
     // "Fiches"/"Stats" en dessous ; ajustable comme les autres via le
     // mode développeur si jamais ça chevauche un réglage personnalisé.
     messages: { x: 50.0, y: 26.5, d: 90 },
+    // Nouvelle Bibliothèque (partage public de collections) : zone libre à
+    // gauche, entre "Fiches" et "Réglages".
+    library: { x: 16.0, y: 54.0, d: 90 },
   };
   // Items 1/2 (logo) : position (X/Y en %, centre du logo) et taille (px)
   // du logo sur la page d'accueil.
@@ -721,12 +724,13 @@
     "mode-assign": [],
     messages: [],
     "message-thread": [],
+    library: ["Ici, tu peux prendre des collections de fiches partagées par d'autres — elles s'ajoutent à tes collections, avec cette icône en réseau pour les reconnaître."],
   };
   // Round 4, partie 2 : intitulés amicaux de chaque page, pour l'éditeur du
   // mode développeur — mêmes clés que DEFAULT_HELP_MESSAGES_BY_VIEW.
   const HELP_VIEW_LABELS = {
     review: "Réviser",
-    manage: "Gérer (Organisation)",
+    manage: "Mes collections (Organisation)",
     cards: "Fiches",
     stats: "Statistiques",
     sync: "Synchronisation",
@@ -744,6 +748,7 @@
     "mode-assign": "Affecter un mode",
     messages: "Messagerie",
     "message-thread": "Messagerie — discussion",
+    library: "Bibliothèque",
   };
   // Round 4 : le robot ne dit plus rien par défaut — une petite bulle
   // "aide" cliquable apparaît à côté de lui quand la page a un message, et
@@ -3302,7 +3307,7 @@
    *  fiches/boîtes ; à droite (de droite à gauche) le bouton de dépli des
    *  actions (éditer/déplacer/supprimer, empilées verticalement dans un
    *  petit panneau), la jauge (plus courte/fine), le picto du mode. */
-  function buildRowBody({ nameBtnEl, expandBtnEl, countLabel, score: persPool, mode, onRename, onMove, onDelete, onAlgo, deleteTitle }) {
+  function buildRowBody({ nameBtnEl, expandBtnEl, countLabel, score: persPool, mode, onRename, onMove, onDelete, onAlgo, onShare, deleteTitle }) {
     const main = document.createElement("div");
     main.className = "org-row-main";
     if (expandBtnEl) {
@@ -3385,6 +3390,19 @@
     });
     popover.appendChild(renameBtn);
     popover.appendChild(moveBtn);
+    // Partager dans la bibliothèque (uniquement pour une boîte — voir
+    // appendBoiteRow, qui est le seul appelant à fournir `onShare`).
+    if (onShare) {
+      const shareBtn = document.createElement("button");
+      shareBtn.type = "button";
+      shareBtn.className = "org-actions-popover-item";
+      shareBtn.innerHTML = `${iconSvgMarkup("share", "icon-inline-svg")}<span>Partager dans la bibliothèque</span>`;
+      shareBtn.addEventListener("click", () => {
+        closeAllOrgActionPopovers();
+        onShare();
+      });
+      popover.appendChild(shareBtn);
+    }
     popover.appendChild(delBtn);
     deployBtn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -3421,10 +3439,15 @@
       const li = document.createElement("li");
       li.className = "subject-row" + (subjectId === currentSubjectId ? " is-active" : "");
 
+      const subjectForIcon = subjects.find((x) => x.id === subjectId);
+      // Icône en réseau (au lieu de l'icône de boîte habituelle) pour une
+      // collection prise dans la Bibliothèque — pour la reconnaître d'un
+      // coup d'œil dans Mes collections, comme demandé.
+      const boiteIconMarkup = subjectForIcon && subjectForIcon.fromLibrary ? iconSvgMarkup("share", "icon-inline-svg") : orgIconMarkup("orgBoite");
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
-      nameBtn.innerHTML = `${orgIconMarkup("orgBoite")} <span>${escapeHtml(displayName)}</span>`;
+      nameBtn.innerHTML = `${boiteIconMarkup} <span>${escapeHtml(displayName)}</span>`;
       nameBtn.title = "Réviser cette boîte";
       // Item 7 (lot précédent) : un clic sur une boîte mène directement à
       // la page Réviser correspondante (au lieu de la page Fiches). Item 3
@@ -3451,6 +3474,7 @@
         },
         onDelete: () => deleteSubject(subjectId),
         onAlgo: () => openSubjectAlgoView(subjectId),
+        onShare: () => shareSubjectToLibrary(subjectId),
         deleteTitle: "Supprimer cette boîte",
       });
       li.appendChild(body);
@@ -8369,6 +8393,7 @@
       if (view === "account") renderAccountView();
       if (view === "classes") renderClassesView();
       if (view === "messages") renderMessagesView();
+      if (view === "library") renderLibraryView();
       if (view === "calendar") renderCalendarEvents();
       if (view === "revision-program") renderRevisionProgramList();
       if (view === "settings") {
@@ -10074,6 +10099,111 @@
       list.appendChild(li);
     }
     refreshMessagesBadge();
+  }
+
+  /** Bibliothèque : collections de fiches partagées publiquement (table
+   *  Supabase `library_collections`, lecture publique). Contrairement à
+   *  une boîte partagée avec une classe (miroir en lecture seule, mis à
+   *  jour en direct), "Prendre" ici fait une COPIE INDÉPENDANTE, à un
+   *  instant T, comme un modèle qu'on reprend et qu'on peut ensuite
+   *  modifier librement — cohérent avec l'usage "bibliothèque". */
+  async function renderLibraryView() {
+    const needsSync = el("library-needs-sync");
+    const list = el("library-list");
+    const empty = el("library-empty");
+    if (!list) return;
+    if (!Sync.isConfigured()) {
+      if (needsSync) needsSync.hidden = false;
+      list.innerHTML = "";
+      if (empty) empty.hidden = true;
+      return;
+    }
+    if (needsSync) needsSync.hidden = true;
+    list.innerHTML = `<li class="field-hint">Chargement…</li>`;
+    const collections = await Sync.library.list();
+    list.innerHTML = "";
+    if (empty) empty.hidden = collections.length > 0;
+    for (const col of collections) {
+      const n = Array.isArray(col.cards) ? col.cards.length : 0;
+      const li = document.createElement("li");
+      li.className = "subject-row library-row";
+      li.innerHTML = `
+        <span class="subject-row-name">${iconSvgMarkup("share", "icon-inline-svg")} <span>${escapeHtml(col.name)}</span></span>
+        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""} — par ${escapeHtml(col.owner_email || "quelqu'un")}</span>
+        <button type="button" class="btn btn--small library-take-btn">Prendre</button>
+      `;
+      const takeBtn = li.querySelector(".library-take-btn");
+      if (takeBtn) {
+        takeBtn.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          takeBtn.disabled = true;
+          await takeLibraryCollection(col);
+          takeBtn.disabled = false;
+        });
+      }
+      list.appendChild(li);
+    }
+  }
+
+  /** Copie une collection de la bibliothèque dans Mes collections : une
+   *  nouvelle boîte (`fromLibrary: true`, icône en réseau — voir
+   *  `appendBoiteRow`), avec une copie indépendante de chaque fiche
+   *  (nouveaux id locaux, via `newCard` — pas de lien maintenu avec la
+   *  collection d'origine, contrairement aux boîtes partagées par
+   *  classe). */
+  async function takeLibraryCollection(col) {
+    const cardsToCopy = Array.isArray(col.cards) ? col.cards : [];
+    if (cardsToCopy.length === 0) {
+      await robotAlert("Cette collection ne contient aucune fiche.");
+      return;
+    }
+    const subject = newSubject(col.name, ROOT_FOLDER_ID);
+    subject.fromLibrary = true;
+    subject.libraryOriginId = col.id || null;
+    await persistSubject(subject);
+    subjects.push(subject);
+    subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    for (const rc of cardsToCopy) {
+      const card = newCard(rc.question || "", rc.answer || "", subject.id);
+      await persist(card);
+      cards.push(card);
+    }
+    renderStatsSubjectSelect();
+    renderSubjectSelect();
+    renderSubjectManageList();
+    renderStats();
+    await robotAlert(`« ${subject.name} » a été ajoutée à Mes collections (${cardsToCopy.length} fiche${cardsToCopy.length > 1 ? "s" : ""}).`);
+  }
+
+  /** Partage une boîte existante dans la bibliothèque publique : nécessite
+   *  d'être connecté avec un Compte (sert d'identité/attribution, comme
+   *  pour le partage avec une classe). Simple copie à l'instant du partage
+   *  — republier après modification n'est pas proposé pour l'instant (pas
+   *  demandé), contrairement aux boîtes partagées avec une classe. */
+  async function shareSubjectToLibrary(subjectId) {
+    const s = subjects.find((x) => x.id === subjectId);
+    if (!s) return;
+    if (!Sync.isConfigured()) {
+      await robotAlert("Active d'abord la synchronisation (page Synchronisation) pour pouvoir partager dans la bibliothèque.");
+      return;
+    }
+    if (!accountCurrentUser) {
+      await robotAlert("Connecte-toi avec un Compte (page Compte) pour partager dans la bibliothèque.");
+      return;
+    }
+    const boxCards = cards.filter((c) => !c.deleted && c.subject === subjectId);
+    if (boxCards.length === 0) {
+      await robotAlert("Cette boîte est vide : ajoute des fiches avant de la partager.");
+      return;
+    }
+    const name = prompt("Nom de la collection à partager :", s.name);
+    if (!name || !name.trim()) return;
+    const { error } = await Sync.library.share(name.trim(), boxCards);
+    if (error) {
+      await robotAlert(`Le partage a échoué : ${error}`);
+      return;
+    }
+    await robotAlert(`« ${name.trim()} » a été partagée dans la bibliothèque.`);
   }
 
   // {klass} de la discussion actuellement ouverte, ou null.

@@ -175,7 +175,7 @@
     <button class="tab tab--icon is-active" role="tab" aria-selected="true" data-view="review" title="Réviser" aria-label="Réviser">
       <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
     </button>
-    <button class="tab tab--icon" role="tab" aria-selected="false" data-view="manage" title="Gérer" aria-label="Gérer">
+    <button class="tab tab--icon" role="tab" aria-selected="false" data-view="manage" title="Mes collections" aria-label="Mes collections">
       <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
     </button>
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="cards" title="Fiches" aria-label="Fiches">
@@ -189,6 +189,7 @@
     <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Programme</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes" hidden>Classes</button>
     <button class="tab" role="tab" aria-selected="false" data-view="messages" hidden>Messagerie</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="library" hidden>Bibliothèque</button>
     <button class="tab" role="tab" aria-selected="false" data-view="account" hidden>Compte</button>
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">
       <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -209,7 +210,7 @@
         </button>
         <button type="button" class="home-circle" data-key="manage" data-go="manage">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
-          <span>Dossiers &amp; boîtes</span>
+          <span>Mes collections</span>
         </button>
         <button type="button" class="home-circle" data-key="cards" data-go="cards">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M15 2v5h5"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
@@ -253,6 +254,10 @@
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <span>Messagerie</span>
           <span class="home-circle-badge" id="home-messages-badge" hidden>0</span>
+        </button>
+        <button type="button" class="home-circle" data-key="library" data-go="library">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
+          <span>Bibliothèque</span>
         </button>
       </div>
     </section>
@@ -842,6 +847,19 @@
         <input type="text" id="message-thread-input" placeholder="Écrire un message…" autocomplete="off" />
         <button type="submit" class="btn btn--primary btn--small">Envoyer</button>
       </form>
+    </section>
+
+    <!-- Bibliothèque : collections de fiches partagées publiquement,
+         "prendre" en copie une collection l'ajoute à Mes collections avec
+         une icône en réseau distincte. -->
+    <section id="view-library" class="view" aria-labelledby="tab-library">
+      <h2 class="section-title">Bibliothèque</h2>
+      <p class="field-hint settings-block-hint">Des collections de fiches partagées par d'autres utilisateurs. Prends-en une : elle s'ajoute à tes collections (avec l'icône en réseau, pour la reconnaître).</p>
+      <div id="library-needs-sync" hidden>
+        <p class="field-hint settings-block-hint">Active la synchronisation (page Synchronisation) pour accéder à la bibliothèque.</p>
+      </div>
+      <ul class="subject-list" id="library-list"></ul>
+      <p class="field-hint" id="library-empty" hidden>Aucune collection partagée pour l'instant.</p>
     </section>
 
     <!-- VUE RÉGLAGES -->

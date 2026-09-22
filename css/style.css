@@ -1601,6 +1601,27 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   position: static;
 }
 
+/* Round 8 : Bibliothèque — une ligne par collection partagée, avec son
+   nombre de fiches/auteur et un bouton "Prendre" bien visible. */
+.library-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  flex-wrap: wrap;
+}
+.library-row .subject-row-name {
+  flex: 1 1 auto;
+  min-width: 120px;
+}
+.library-row .card-row-meta {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.library-row .library-take-btn {
+  flex: 0 0 auto;
+}
+
 /* Round 6, item 5 : fil de discussion — façon groupe WhatsApp. Les
    messages des élèves sont alignés à gauche, ceux du prof à droite (voir
    .message-bubble--left / --right, décidées côté JS selon l'expéditeur,
