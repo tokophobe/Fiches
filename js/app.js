@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v149";
+  const APP_VERSION = "v150";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -839,6 +839,7 @@
     const overlay = el("robot-modal-overlay");
     const textEl = el("robot-modal-text");
     const actions = el("robot-modal-actions");
+    const inputEl = el("robot-modal-input");
     if (!overlay || !textEl || !actions) {
       // Repli très défensif si jamais le balisage manque (ne devrait pas
       // arriver) : on ne bloque pas l'appli, on résout juste positivement.
@@ -847,6 +848,17 @@
     return new Promise((resolve) => {
       textEl.textContent = text;
       actions.innerHTML = "";
+      // Round 10, item 6 : variante "prompt" — un champ de saisie apparaît
+      // au-dessus des boutons, et le bouton principal résout avec sa
+      // valeur (trim) plutôt qu'avec `value` tel quel.
+      const hasInput = !!opts.input;
+      if (inputEl) {
+        inputEl.hidden = !hasInput;
+        if (hasInput) {
+          inputEl.value = opts.input.defaultValue || "";
+          inputEl.placeholder = opts.input.placeholder || "";
+        }
+      }
       let settled = false;
       function close(value) {
         if (settled) return;
@@ -859,6 +871,10 @@
         if (e.key === "Escape") {
           e.preventDefault();
           close(opts.cancelValue !== undefined ? opts.cancelValue : false);
+        } else if (hasInput && e.key === "Enter") {
+          e.preventDefault();
+          const primaryBtn = actions.querySelector(".robot-modal-btn--primary");
+          if (primaryBtn) primaryBtn.click();
         }
       }
       buttons.forEach((b) => {
@@ -869,15 +885,36 @@
           (b.primary ? " robot-modal-btn--primary" : "") +
           (b.danger ? " robot-modal-btn--danger" : "");
         btn.textContent = b.label;
-        btn.addEventListener("click", () => close(b.value));
+        btn.addEventListener("click", () => {
+          if (hasInput && b.value === true) close((inputEl.value || "").trim() || null);
+          else close(b.value);
+        });
         actions.appendChild(btn);
       });
       overlay.hidden = false;
       document.addEventListener("keydown", onKeydown, true);
       requestAnimationFrame(() => {
+        if (hasInput && inputEl) {
+          inputEl.focus();
+          inputEl.select();
+          return;
+        }
         const first = actions.querySelector(".robot-modal-btn--primary") || actions.querySelector("button");
         if (first) first.focus();
       });
+    });
+  }
+  /** Remplace prompt("...") : un champ de saisie + Annuler/Valider, résout
+   *  avec le texte saisi (trim) ou `null` si annulé/vide — même signature
+   *  d'usage qu'un prompt() natif (`await robotPrompt(question, défaut)`). */
+  function robotPrompt(text, defaultValue) {
+    return showRobotMessage(text, {
+      input: { defaultValue: defaultValue || "" },
+      cancelValue: null,
+      buttons: [
+        { label: "Annuler", value: null },
+        { label: "Valider", value: true, primary: true },
+      ],
     });
   }
   /** Remplace alert("...") : un seul bouton OK, résout quand il est fermé. */
@@ -3425,15 +3462,31 @@
   }
 
   function renderTreeLevel(parentId, depth, container) {
-    const childFolders = folders
-      .filter((f) => f.parentId === parentId)
-      .sort((a, b) => a.name.localeCompare(b.name, "fr"));
-    // Item 1 : une boîte "auto-liée" (même id qu'un dossier) ne doit
-    // jamais être rendue ici comme boîte indépendante — c'est le dossier
-    // correspondant, plus bas, qui la représente.
-    const childSubjects = subjects
-      .filter((s) => s.folderId === parentId && !folders.some((f) => f.id === s.id))
-      .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    // Round 10, item 1 : à la racine, les classes (dossier racine d'une
+    // classe suivie) doivent toujours apparaître APRÈS les dossiers et
+    // collections propres de l'utilisateur — auparavant, tout était trié
+    // ensemble par ordre alphabétique, donc une classe pouvait se
+    // retrouver mélangée au milieu. On ne sépare qu'au niveau racine : les
+    // sous-dossiers d'une classe sont de toute façon reconstitués SOUS son
+    // dossier racine (voir ensureClassMirrorFolderPath), l'ordre n'y a donc
+    // pas de sens à changer.
+    const isRootLevel = parentId === ROOT_FOLDER_ID;
+    let childFolders = folders.filter((f) => f.parentId === parentId);
+    let childSubjects = subjects.filter((s) => s.folderId === parentId && !folders.some((f) => f.id === s.id));
+    if (isRootLevel) {
+      const ownFolders = childFolders.filter((f) => !f.sharedClassId && !f.sharedClassRoot).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      const classFolders = childFolders.filter((f) => f.sharedClassId || f.sharedClassRoot).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      childFolders = [...ownFolders, ...classFolders];
+      const ownSubjects = childSubjects.filter((s) => !s.sharedBoxId).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      const classSubjects = childSubjects.filter((s) => s.sharedBoxId).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      childSubjects = [...ownSubjects, ...classSubjects];
+    } else {
+      childFolders = childFolders.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      // Item 1 : une boîte "auto-liée" (même id qu'un dossier) ne doit
+      // jamais être rendue ici comme boîte indépendante — c'est le dossier
+      // correspondant, plus bas, qui la représente.
+      childSubjects = childSubjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    }
 
     /** Ligne "boîte" (item 1) — utilisée aussi bien pour une boîte
      *  classique (entité indépendante) que pour un dossier devenu boîte
@@ -3479,7 +3532,14 @@
         },
         onDelete: () => deleteSubject(subjectId),
         onAlgo: () => openSubjectAlgoView(subjectId),
-        onShare: () => shareSubjectToLibrary(subjectId),
+        // Round 10, item 2 : ni une boîte de classe ni une collection prise
+        // dans la Bibliothèque ne peuvent être repartagées — l'action
+        // "Partager" disparaît carrément du popover pour ces boîtes-là,
+        // plutôt que d'être cliquable pour finir bloquée par un message.
+        onShare:
+          subjectForIcon && (subjectForIcon.sharedBoxId || (subjectForIcon.fromLibrary && subjectForIcon.libraryOriginId))
+            ? null
+            : () => shareSubjectToLibrary(subjectId),
         deleteTitle: "Supprimer cette boîte",
       });
       li.appendChild(body);
@@ -3586,7 +3646,7 @@
      Gestion des dossiers (créer, renommer, supprimer, déplacer) — item 1
   --------------------------------------------------------- */
   async function createFolderFlow() {
-    const name = prompt("Nom du nouveau dossier :");
+    const name = await robotPrompt("Nom du nouveau dossier :");
     if (!name || !name.trim()) return;
     const folder = newFolder(name, ROOT_FOLDER_ID);
     await persistFolder(folder);
@@ -3601,7 +3661,7 @@
   async function renameFolder(folderId) {
     const f = folders.find((x) => x.id === folderId);
     if (!f) return;
-    const name = prompt("Nouveau nom du dossier :", f.name);
+    const name = await robotPrompt("Nouveau nom du dossier :", f.name);
     if (!name || !name.trim() || name.trim() === f.name) return;
     f.name = name.trim();
     f.updatedAt = new Date().toISOString();
@@ -3992,7 +4052,7 @@
 
   const algoModeSliderEl = el("algo-mode-slider");
   if (algoModeSliderEl) {
-    algoModeSliderEl.addEventListener("input", () => {
+    algoModeSliderEl.addEventListener("input", async () => {
       const idx = Number(algoModeSliderEl.value);
       updateAlgoModeTicksHighlight(idx);
       const customPicker = el("algo-custom-picker");
@@ -4004,7 +4064,7 @@
       if (customPicker) customPicker.hidden = false;
       const customs = Object.values(loadLearningModes()).filter((m) => !m.builtin);
       if (customs.length === 0) {
-        const name = prompt("Nom du nouveau mode personnalisé :", "Mon mode");
+        const name = await robotPrompt("Nom du nouveau mode personnalisé :", "Mon mode");
         if (name && name.trim()) {
           const id = createCustomMode(name, algoEditingModeId);
           renderCustomPickerList();
@@ -4024,8 +4084,8 @@
 
   const algoCustomNewBtn = el("algo-custom-new-btn");
   if (algoCustomNewBtn) {
-    algoCustomNewBtn.addEventListener("click", () => {
-      const name = prompt("Nom du nouveau mode personnalisé :");
+    algoCustomNewBtn.addEventListener("click", async () => {
+      const name = await robotPrompt("Nom du nouveau mode personnalisé :");
       if (!name || !name.trim()) return;
       const id = createCustomMode(name, algoEditingModeId);
       renderCustomPickerList();
@@ -4034,11 +4094,11 @@
   }
   const algoCustomRenameBtn = el("algo-custom-rename-btn");
   if (algoCustomRenameBtn) {
-    algoCustomRenameBtn.addEventListener("click", () => {
+    algoCustomRenameBtn.addEventListener("click", async () => {
       const modes = loadLearningModes();
       const m = modes[algoEditingModeId];
       if (!m || m.builtin) return;
-      const name = prompt("Nouveau nom du mode :", m.name);
+      const name = await robotPrompt("Nouveau nom du mode :", m.name);
       if (!name || !name.trim()) return;
       renameCustomMode(algoEditingModeId, name);
       renderCustomPickerList();
@@ -4277,7 +4337,7 @@
 
 
   async function createSubjectFlow() {
-    const name = prompt("Nom de la nouvelle boîte :");
+    const name = await robotPrompt("Nom de la nouvelle boîte :");
     if (!name || !name.trim()) return null;
     const subject = newSubject(name, ROOT_FOLDER_ID);
     await persistSubject(subject);
@@ -4320,11 +4380,34 @@
     return false;
   }
 
+  /** Round 10, item 2 : une collection PRISE dans la Bibliothèque devient
+   *  elle aussi un miroir en lecture seule (même principe que
+   *  isSharedReadonlySubject pour une boîte de classe, voir plus haut) —
+   *  son contenu suit les modifications de l'auteur automatiquement (voir
+   *  reconcileLibraryCollection/syncLibraryMirrorsForUser plus bas), donc
+   *  on ne peut ni la renommer ni la repartager. Contrairement à une boîte
+   *  de classe, en revanche : (a) elle reste déplaçable entre dossiers
+   *  (demandé explicitement), et (b) "Supprimer" reste possible — ça la
+   *  retire seulement de Mes collections, sans toucher à la collection
+   *  publique dans la Bibliothèque (voir deleteSubject plus bas). */
+  function isLibraryMirrorSubject(subjectId) {
+    const s = subjects.find((x) => x.id === subjectId);
+    return !!(s && s.fromLibrary && s.libraryOriginId);
+  }
+  async function blockIfLibraryMirror(subjectId, action) {
+    if (isLibraryMirrorSubject(subjectId)) {
+      await robotAlert(`Cette collection vient de la Bibliothèque : elle se met à jour toute seule, tu ne peux pas la ${action} ici.`);
+      return true;
+    }
+    return false;
+  }
+
   async function renameSubject(id) {
     if (await blockIfSharedReadonly(id)) return;
+    if (await blockIfLibraryMirror(id, "renommer")) return;
     const s = subjects.find((x) => x.id === id);
     if (!s) return;
-    const name = prompt("Nouveau nom de la boîte :", s.name);
+    const name = await robotPrompt("Nouveau nom de la boîte :", s.name);
     if (!name || !name.trim() || name.trim() === s.name) return;
     s.name = name.trim();
     s.updatedAt = new Date().toISOString();
@@ -4344,12 +4427,14 @@
     }
     const s = subjects.find((x) => x.id === id);
     if (!s) return;
+    const isLibMirror = isLibraryMirrorSubject(id);
     const n = cards.filter((c) => !c.deleted && c.subject === id).length;
-    const confirmMsg =
-      n > 0
+    const confirmMsg = isLibMirror
+      ? `Retirer « ${s.name} » de Mes collections ? Elle restera disponible dans la Bibliothèque, tu pourras la reprendre plus tard.`
+      : n > 0
         ? `Supprimer la boîte « ${s.name} » et ses ${n} fiche(s) ? Cette action est irréversible.`
         : `Supprimer la boîte « ${s.name} » ?`;
-    if (!(await robotConfirm(confirmMsg, { danger: true }))) return;
+    if (!(await robotConfirm(confirmMsg, { danger: !isLibMirror, okLabel: isLibMirror ? "Retirer" : undefined }))) return;
 
     // Suppression douce des fiches de cette boîte (cohérent avec la sync).
     const toDelete = cards.filter((c) => !c.deleted && c.subject === id);
@@ -8399,6 +8484,12 @@
       if (view === "classes") renderClassesView();
       if (view === "messages") renderMessagesView();
       if (view === "library") renderLibraryView();
+      // Round 10, item 2 : resynchronise les collections prises dans la
+      // Bibliothèque en ouvrant Mes collections — indépendant d'un Compte
+      // connecté (prendre une collection publique n'en demande pas), donc
+      // appelé ici plutôt que via syncSharedBoxesForStudent (qui lui exige
+      // un Compte, pour les boîtes de classe).
+      if (view === "manage") syncLibraryMirrorsForUser().then(() => renderSubjectManageList());
       if (view === "calendar") renderCalendarEvents();
       if (view === "revision-program") renderRevisionProgramList();
       if (view === "settings") {
@@ -8587,7 +8678,12 @@
   // Item 2 : le panneau d'ajout reste caché tant qu'on n'a pas cliqué sur
   // "+ Ajouter un événement" — et sert aussi à MODIFIER un événement
   // existant (même formulaire, prérempli).
-  async function openCalendarEventForm(eventToEdit) {
+  /** Round 10, item 5 : `presetClassId` optionnel, utilisé quand le
+   *  formulaire est ouvert depuis le bouton "Ajouter un évènement" de la
+   *  page d'une classe (voir classDetailAddEventBtn plus bas) — pré-
+   *  sélectionne cette classe dans "Partager avec une classe" sans que
+   *  l'utilisateur n'ait à la rechoisir. */
+  async function openCalendarEventForm(eventToEdit, presetClassId) {
     const form = el("calendar-event-form");
     if (!form) return;
     form.hidden = false;
@@ -8611,12 +8707,12 @@
       if (title) title.textContent = "Ajouter un événement";
       if (submitBtn) submitBtn.textContent = "Ajouter à mon calendrier";
     }
-    await populateCalendarEventClassSelect(eventToEdit);
+    await populateCalendarEventClassSelect(eventToEdit, presetClassId);
   }
   /** Round 3, item 4 (squelette) : remplit le sélecteur "Partager avec une
    *  classe" avec les classes dont l'utilisateur est prof — masqué s'il
    *  n'en a aucune (rien à partager) ou si Sync/Compte ne sont pas prêts. */
-  async function populateCalendarEventClassSelect(eventToEdit) {
+  async function populateCalendarEventClassSelect(eventToEdit, presetClassId) {
     const field = el("calendar-event-class-field");
     const select = el("calendar-event-class-select");
     if (!field || !select) return;
@@ -8634,7 +8730,7 @@
     select.innerHTML =
       `<option value="">Ne pas partager</option>` +
       myClasses.map((k) => `<option value="${k.id}">${escapeHtml(k.name)}</option>`).join("");
-    select.value = eventToEdit && eventToEdit.classShare ? eventToEdit.classShare.classId : "";
+    select.value = eventToEdit && eventToEdit.classShare ? eventToEdit.classShare.classId : presetClassId || "";
   }
   /** Garde-fou supplémentaire (round 6, "attention qu'un élève ne puisse
    *  rien modifier de ce qui est partagé par un prof") : la corbeille
@@ -8700,6 +8796,11 @@
           const { data, error } = await Sync.classes.shareEvent(selectedClassId, titleVal, dateVal);
           if (!error && data) {
             ev.classShare = { classId: selectedClassId, className: klass ? klass.name : "", remoteId: data.id };
+            // Round 10, item 10 : message automatique dans la messagerie de
+            // la classe quand un prof y ajoute un évènement.
+            try {
+              await Sync.messages.send(selectedClassId, `📅 Nouvel évènement : « ${titleVal} » le ${formatCalendarDate(dateVal)}.`);
+            } catch (e) { /* best-effort, ne doit jamais bloquer la création de l'évènement */ }
           }
         }
       }
@@ -9370,6 +9471,16 @@
     }
     authBlock.hidden = true;
     connectedBlock.hidden = false;
+    // Round 10, item 7 : préremplit nom/prénom depuis les métadonnées du
+    // compte (déjà connues si renseignées à l'inscription, ou lors d'un
+    // enregistrement précédent depuis cette page).
+    const meta = accountCurrentUser.user_metadata || {};
+    const firstEl = el("account-profile-firstname");
+    const lastEl = el("account-profile-lastname");
+    if (firstEl) firstEl.value = meta.first_name || "";
+    if (lastEl) lastEl.value = meta.last_name || "";
+    const profileNote = el("account-profile-note");
+    if (profileNote) profileNote.hidden = true;
   }
 
   function setClassesAuthMode(mode) {
@@ -9382,6 +9493,12 @@
     if (submitBtn) submitBtn.textContent = mode === "signin" ? "Se connecter" : "Créer le compte";
     const note = el("account-auth-note");
     if (note) note.hidden = true;
+    // Round 10, item 7 : nom/prénom demandés uniquement à la création du
+    // compte, masqués en mode "Se connecter".
+    const firstField = el("account-auth-firstname-field");
+    const lastField = el("account-auth-lastname-field");
+    if (firstField) firstField.hidden = mode !== "signup";
+    if (lastField) lastField.hidden = mode !== "signup";
   }
   const accountAuthTabSignin = el("account-auth-tab-signin");
   if (accountAuthTabSignin) accountAuthTabSignin.addEventListener("click", () => setClassesAuthMode("signin"));
@@ -9407,7 +9524,12 @@
       const result =
         classesAuthMode === "signin"
           ? await Sync.auth.signIn(email, password)
-          : await Sync.auth.signUp(email, password);
+          : await Sync.auth.signUp(
+              email,
+              password,
+              (el("account-auth-firstname").value || "").trim(),
+              (el("account-auth-lastname").value || "").trim()
+            );
       accountAuthSubmitBtn.disabled = false;
       if (result.error) {
         if (note) {
@@ -9437,6 +9559,26 @@
       accountCurrentUser = null;
       updateAccountHomeButton();
       await renderAccountView();
+    });
+  }
+
+  /** Round 10, item 7 : nom/prénom modifiables après coup depuis la page
+   *  Mon Compte (comptes créés avant ce round, ou correction d'une
+   *  saisie), via Sync.auth.updateProfile (métadonnées Supabase Auth). */
+  const accountProfileSaveBtn = el("account-profile-save-btn");
+  if (accountProfileSaveBtn) {
+    accountProfileSaveBtn.addEventListener("click", async () => {
+      const note = el("account-profile-note");
+      const firstName = (el("account-profile-firstname").value || "").trim();
+      const lastName = (el("account-profile-lastname").value || "").trim();
+      accountProfileSaveBtn.disabled = true;
+      const result = await Sync.auth.updateProfile(firstName, lastName);
+      accountProfileSaveBtn.disabled = false;
+      if (note) {
+        note.hidden = false;
+        note.textContent = result.error ? `Échec de l'enregistrement : ${result.error}` : "Enregistré.";
+      }
+      if (!result.error) accountCurrentUser = await Sync.auth.getUser();
     });
   }
 
@@ -9587,11 +9729,87 @@
       }
       pruneStaleSharedEvents(remoteEventIds, fetchedEventClassIds);
       await pruneStaleClassMirrorFolders(usedMirrorFolderIds);
+      // Round 10, item 2 : les collections prises dans la Bibliothèque sont
+      // maintenant, elles aussi, des miroirs en lecture seule — synchronisées
+      // aux mêmes moments que les boîtes de classe (connexion, reprise,
+      // intervalle), puisque cette fonction est déjà appelée à tous ces
+      // moments-là.
+      await syncLibraryMirrorsForUser();
       renderAll();
       renderSubjectManageList();
       renderCalendarEvents();
     } catch (e) {
       console.warn("Classes: échec de la synchro des boîtes partagées", e);
+    }
+  }
+
+  /** Round 10, item 2 : reconciliation périodique d'un miroir de
+   *  bibliothèque — même principe que reconcileSharedBox (classes) plus
+   *  haut, mais sans notion de dossier/chemin à reconstituer : la
+   *  collection reste où l'utilisateur l'a rangée dans Mes collections,
+   *  elle reste déplaçable entre dossiers (demandé explicitement, à la
+   *  différence des boîtes de classe). */
+  async function reconcileLibraryCollection(subject, col) {
+    // Collection introuvable (p. ex. supprimée côté auteur) : on laisse la
+    // copie locale telle quelle, sans la supprimer toute seule — aucune
+    // suppression automatique n'a été demandée pour ce cas.
+    if (!col) return;
+    let changed = false;
+    if (col.name && subject.name !== col.name) {
+      subject.name = col.name;
+      changed = true;
+    }
+    if (changed) {
+      subject.updatedAt = new Date().toISOString();
+      await persistSubject(subject);
+    }
+    const remoteCards = Array.isArray(col.cards) ? col.cards : [];
+    const remoteIds = new Set(remoteCards.map((c) => c.id).filter(Boolean));
+    const localCardsHere = cards.filter((c) => c.subject === subject.id);
+
+    for (const rc of remoteCards) {
+      if (!rc.id) continue;
+      const idx = cards.findIndex((c) => c.id === rc.id && c.subject === subject.id);
+      if (idx >= 0) {
+        const existing = cards[idx];
+        const contentChanged = existing.question !== (rc.question || "") || existing.answer !== (rc.answer || "");
+        if (existing.deleted || contentChanged) {
+          const updated = { ...existing, question: rc.question || "", answer: rc.answer || "", deleted: false, updatedAt: new Date().toISOString() };
+          await persist(updated);
+          cards[idx] = updated;
+        }
+      } else {
+        const card = { ...newCard(rc.question || "", rc.answer || "", subject.id), id: rc.id };
+        await persist(card);
+        cards.push(card);
+      }
+    }
+    for (const c of localCardsHere) {
+      if (!c.deleted && !remoteIds.has(c.id)) {
+        const updated = touch({ ...c, deleted: true });
+        await persist(updated);
+        const idx = cards.findIndex((x) => x.id === c.id);
+        if (idx >= 0) cards[idx] = updated;
+      }
+    }
+  }
+
+  /** Parcourt toutes les collections locales prises dans la Bibliothèque et
+   *  les recale sur leur source (nom + fiches) — une collection supprimée
+   *  localement (voir deleteSubject) n'est plus dans `subjects`, donc plus
+   *  jamais reconsidérée ici : la suppression locale reste bien
+   *  définitive côté appareil, sans jamais "revenir toute seule". */
+  async function syncLibraryMirrorsForUser() {
+    if (!Sync.isConfigured()) return;
+    const mirrors = subjects.filter((s) => s.fromLibrary && s.libraryOriginId);
+    if (mirrors.length === 0) return;
+    for (const subject of mirrors) {
+      try {
+        const col = await Sync.library.get(subject.libraryOriginId);
+        await reconcileLibraryCollection(subject, col);
+      } catch (e) {
+        console.warn("Bibliothèque : échec de la synchro d'une collection prise", e);
+      }
     }
   }
 
@@ -9971,6 +10189,10 @@
       if (strong) strong.textContent = klass.invite_code || "";
     }
     if (shareBtn) shareBtn.hidden = !isTeacher;
+    const shareLibraryBtn = el("class-detail-share-library-btn");
+    if (shareLibraryBtn) shareLibraryBtn.hidden = !isTeacher;
+    const addEventBtn = el("class-detail-add-event-btn");
+    if (addEventBtn) addEventBtn.hidden = !isTeacher;
 
     const boxesEl = el("class-detail-boxes");
     if (boxesEl) {
@@ -10023,9 +10245,70 @@
           subject.sharedShares.push({ classId: klass.id, className: klass.name, boxId: data.id });
           subject.updatedAt = new Date().toISOString();
           await persistSubject(subject);
+          // Round 10, item 10 : message automatique dans la messagerie de
+          // la classe quand un prof y partage une boîte.
+          try {
+            await Sync.messages.send(klass.id, `📚 « ${subject.name} » a été partagée dans la classe.`);
+          } catch (e) { /* best-effort */ }
           renderClassDetailView();
         },
       });
+    });
+  }
+
+  /** Round 10, item 4 : un prof peut aussi partager directement une
+   *  collection de la Bibliothèque dans sa classe, sans l'avoir d'abord
+   *  reprise dans ses propres boîtes — réutilise Sync.classes.shareBox tel
+   *  quel (il ne lui importe pas d'où viennent le nom/les fiches). Choix
+   *  fait via les boutons du robot (une entrée par collection), plutôt
+   *  qu'un nouvel écran dédié — reste simple pour le nombre de collections
+   *  attendu. */
+  const classDetailShareLibraryBtn = el("class-detail-share-library-btn");
+  if (classDetailShareLibraryBtn) {
+    classDetailShareLibraryBtn.addEventListener("click", async () => {
+      if (!classDetailContext) return;
+      const klass = classDetailContext.klass;
+      const collections = await Sync.library.list();
+      if (collections.length === 0) {
+        await robotAlert("La Bibliothèque ne contient encore aucune collection à partager.");
+        return;
+      }
+      const buttons = collections.map((col) => ({
+        label: `${col.name} (${Array.isArray(col.cards) ? col.cards.length : 0} fiches, par ${col.owner_email || "quelqu'un"})`,
+        value: col.id,
+      }));
+      buttons.push({ label: "Annuler", value: null });
+      const chosenId = await showRobotMessage(`Partager quelle collection de la Bibliothèque à « ${klass.name} » ?`, {
+        buttons,
+        cancelValue: null,
+      });
+      if (!chosenId) return;
+      const col = collections.find((c) => c.id === chosenId);
+      if (!col) return;
+      const { data, error } = await Sync.classes.shareBox(klass.id, col.name, Array.isArray(col.cards) ? col.cards : [], []);
+      if (error) {
+        await robotAlert("Erreur lors du partage : " + error);
+        return;
+      }
+      try {
+        await Sync.messages.send(klass.id, `📚 « ${col.name} » a été partagée dans la classe (depuis la Bibliothèque).`);
+      } catch (e) { /* best-effort */ }
+      renderClassDetailView();
+    });
+  }
+
+  /** Round 10, item 5 : créer un évènement directement depuis la page de la
+   *  classe — réutilise le formulaire existant de Calendrier (bascule vers
+   *  cette page, puis ouvre le formulaire avec cette classe déjà présélectionnée
+   *  dans "Partager avec une classe"), plutôt que de dupliquer un formulaire. */
+  const classDetailAddEventBtn = el("class-detail-add-event-btn");
+  if (classDetailAddEventBtn) {
+    classDetailAddEventBtn.addEventListener("click", () => {
+      if (!classDetailContext) return;
+      const klass = classDetailContext.klass;
+      const calendarTab = document.querySelector('.tab[data-view="calendar"]');
+      if (calendarTab) calendarTab.click();
+      openCalendarEventForm(null, klass.id);
     });
   }
 
@@ -10093,11 +10376,27 @@
     if (empty) empty.hidden = classes.length > 0;
     const lastReadMap = loadMessagesLastRead();
     for (const klass of classes) {
-      const unread = await Sync.messages.countUnread(klass.id, lastReadMap[klass.id]);
+      // Round 10, item 11 : date/heure du dernier message reçu ou envoyé,
+      // affichée sous le nom de la classe. Un accroc réseau sur la lecture
+      // du dernier message ne doit jamais empêcher la ligne de s'afficher
+      // (juste sans cette date en plus).
+      // Les deux lectures sont indépendantes : un accroc sur l'une ne doit
+      // pas priver l'autre de son résultat (sinon la pastille de non-lus
+      // retomberait à 0 juste parce que la date du dernier message a
+      // échoué à charger, ou l'inverse).
+      const [unreadResult, lastMsgResult] = await Promise.allSettled([
+        Sync.messages.countUnread(klass.id, lastReadMap[klass.id]),
+        Sync.messages.getLastMessage(klass.id),
+      ]);
+      const unread = unreadResult.status === "fulfilled" ? unreadResult.value : 0;
+      const lastMsg = lastMsgResult.status === "fulfilled" ? lastMsgResult.value : null;
       const li = document.createElement("li");
       li.className = "subject-row messages-class-row";
       li.innerHTML = `
-        <span class="subject-row-name">${CLASSES_ROW_ICON} <span>${escapeHtml(klass.name)}</span></span>
+        <span class="messages-class-row-meta">
+          <span class="subject-row-name">${CLASSES_ROW_ICON} <span>${escapeHtml(klass.name)}</span></span>
+          ${lastMsg && lastMsg.created_at ? `<span class="messages-class-row-last">${formatMessageTime(lastMsg.created_at)}</span>` : ""}
+        </span>
         ${unread > 0 ? `<span class="home-circle-badge messages-class-row-badge">${unread > 99 ? "99+" : unread}</span>` : ""}
       `;
       li.addEventListener("click", () => openMessageThread(klass));
@@ -10107,55 +10406,93 @@
   }
 
   /** Bibliothèque : collections de fiches partagées publiquement (table
-   *  Supabase `library_collections`, lecture publique). Contrairement à
-   *  une boîte partagée avec une classe (miroir en lecture seule, mis à
-   *  jour en direct), "Prendre" ici fait une COPIE INDÉPENDANTE, à un
-   *  instant T, comme un modèle qu'on reprend et qu'on peut ensuite
-   *  modifier librement — cohérent avec l'usage "bibliothèque". */
+   *  Supabase `library_collections`, lecture publique). Round 10, item 2 :
+   *  "Prendre" fait maintenant un miroir en LECTURE SEULE, mis à jour en
+   *  direct — même principe que les boîtes de classe (voir
+   *  reconcileLibraryCollection/syncLibraryMirrorsForUser) — plutôt qu'une
+   *  copie figée comme avant. */
+  let libraryCollectionsCache = [];
+  let librarySearchQuery = "";
+
   async function renderLibraryView() {
     const needsSync = el("library-needs-sync");
     const list = el("library-list");
     const empty = el("library-empty");
+    const searchInput = el("library-search-input");
     if (!list) return;
     if (!Sync.isConfigured()) {
       if (needsSync) needsSync.hidden = false;
       list.innerHTML = "";
       if (empty) empty.hidden = true;
+      if (searchInput) searchInput.hidden = true;
       return;
     }
     if (needsSync) needsSync.hidden = true;
+    if (searchInput) searchInput.hidden = false;
     list.innerHTML = `<li class="field-hint">Chargement…</li>`;
-    const collections = await Sync.library.list();
+    libraryCollectionsCache = await Sync.library.list();
+    renderLibraryList();
+  }
+
+  /** Round 10, item 3 : filtrage local par mots-clés (nom de la collection
+   *  ou email de l'auteur), sans re-requêter à chaque frappe — séparée de
+   *  renderLibraryView pour être appelée seule depuis l'écouteur de saisie
+   *  et après une prise (pour rafraîchir "Déjà pris" sans re-télécharger). */
+  function renderLibraryList() {
+    const list = el("library-list");
+    const empty = el("library-empty");
+    if (!list) return;
+    const q = librarySearchQuery.trim().toLowerCase();
+    const collections = q
+      ? libraryCollectionsCache.filter(
+          (col) => (col.name || "").toLowerCase().includes(q) || (col.owner_email || "").toLowerCase().includes(q)
+        )
+      : libraryCollectionsCache;
     list.innerHTML = "";
-    if (empty) empty.hidden = collections.length > 0;
+    if (empty) empty.hidden = libraryCollectionsCache.length > 0;
+    if (libraryCollectionsCache.length > 0 && collections.length === 0) {
+      list.innerHTML = `<li class="field-hint">Aucun résultat pour « ${escapeHtml(librarySearchQuery.trim())} ».</li>`;
+      return;
+    }
     for (const col of collections) {
       const n = Array.isArray(col.cards) ? col.cards.length : 0;
+      // Round 10, item 6 : "Déjà pris" (désactivé, fond différent) si une
+      // collection de Mes collections est déjà un miroir de celle-ci.
+      const alreadyTaken = subjects.some((s) => s.fromLibrary && s.libraryOriginId === col.id);
       const li = document.createElement("li");
       li.className = "subject-row library-row";
       li.innerHTML = `
         <span class="subject-row-name">${iconSvgMarkup("share", "icon-inline-svg")} <span>${escapeHtml(col.name)}</span></span>
         <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""} — par ${escapeHtml(col.owner_email || "quelqu'un")}</span>
-        <button type="button" class="btn btn--small library-take-btn">Prendre</button>
+        <button type="button" class="btn btn--small library-take-btn${alreadyTaken ? " library-take-btn--taken" : ""}" ${alreadyTaken ? "disabled" : ""}>${alreadyTaken ? "Déjà pris" : "Prendre"}</button>
       `;
       const takeBtn = li.querySelector(".library-take-btn");
-      if (takeBtn) {
+      if (takeBtn && !alreadyTaken) {
         takeBtn.addEventListener("click", async (e) => {
           e.stopPropagation();
           takeBtn.disabled = true;
           await takeLibraryCollection(col);
-          takeBtn.disabled = false;
+          renderLibraryList();
         });
       }
       list.appendChild(li);
     }
   }
 
-  /** Copie une collection de la bibliothèque dans Mes collections : une
-   *  nouvelle boîte (`fromLibrary: true`, icône en réseau — voir
-   *  `appendBoiteRow`), avec une copie indépendante de chaque fiche
-   *  (nouveaux id locaux, via `newCard` — pas de lien maintenu avec la
-   *  collection d'origine, contrairement aux boîtes partagées par
-   *  classe). */
+  const librarySearchInputEl = el("library-search-input");
+  if (librarySearchInputEl) {
+    librarySearchInputEl.addEventListener("input", () => {
+      librarySearchQuery = librarySearchInputEl.value || "";
+      renderLibraryList();
+    });
+  }
+
+  /** Prend une collection de la bibliothèque : une nouvelle boîte dans Mes
+   *  collections (`fromLibrary: true`, icône en réseau — voir
+   *  `appendBoiteRow`), miroir en lecture seule à partir de maintenant
+   *  (round 10, item 2) — les fiches gardent le même id que dans la
+   *  collection publiée (comme pour une boîte de classe), ce qui permet à
+   *  `reconcileLibraryCollection` de la garder à jour ensuite. */
   async function takeLibraryCollection(col) {
     const cardsToCopy = Array.isArray(col.cards) ? col.cards : [];
     if (cardsToCopy.length === 0) {
@@ -10169,7 +10506,8 @@
     subjects.push(subject);
     subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
     for (const rc of cardsToCopy) {
-      const card = newCard(rc.question || "", rc.answer || "", subject.id);
+      if (!rc.id) continue;
+      const card = { ...newCard(rc.question || "", rc.answer || "", subject.id), id: rc.id };
       await persist(card);
       cards.push(card);
     }
@@ -10177,17 +10515,22 @@
     renderSubjectSelect();
     renderSubjectManageList();
     renderStats();
-    await robotAlert(`« ${subject.name} » a été ajoutée à Mes collections (${cardsToCopy.length} fiche${cardsToCopy.length > 1 ? "s" : ""}).`);
+    await robotAlert(
+      `« ${subject.name} » a été ajoutée à Mes collections (${cardsToCopy.length} fiche${cardsToCopy.length > 1 ? "s" : ""}). Elle se met à jour automatiquement si son auteur la modifie ; tu peux la déplacer dans un dossier, mais pas la modifier ni la repartager.`
+    );
   }
 
   /** Partage une boîte existante dans la bibliothèque publique : nécessite
    *  d'être connecté avec un Compte (sert d'identité/attribution, comme
-   *  pour le partage avec une classe). Simple copie à l'instant du partage
-   *  — republier après modification n'est pas proposé pour l'instant (pas
-   *  demandé), contrairement aux boîtes partagées avec une classe. */
+   *  pour le partage avec une classe). Round 10, item 2 : une boîte déjà
+   *  en lecture seule (miroir de classe ou de bibliothèque) ne peut plus
+   *  être proposée au partage — voir aussi appendBoiteRow, qui n'affiche
+   *  plus du tout l'action "Partager" pour ces boîtes-là. */
   async function shareSubjectToLibrary(subjectId) {
     const s = subjects.find((x) => x.id === subjectId);
     if (!s) return;
+    if (await blockIfSharedReadonly(subjectId)) return;
+    if (await blockIfLibraryMirror(subjectId, "partager à nouveau")) return;
     if (!Sync.isConfigured()) {
       await robotAlert("Active d'abord la synchronisation (page Synchronisation) pour pouvoir partager dans la bibliothèque.");
       return;
@@ -10201,7 +10544,7 @@
       await robotAlert("Cette boîte est vide : ajoute des fiches avant de la partager.");
       return;
     }
-    const name = prompt("Nom de la collection à partager :", s.name);
+    const name = await robotPrompt("Nom de la collection à partager :", s.name);
     if (!name || !name.trim()) return;
     const { error } = await Sync.library.share(name.trim(), boxCards);
     if (error) {

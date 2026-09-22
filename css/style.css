@@ -1378,6 +1378,22 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   white-space: pre-line;
 }
 
+/* Round 10, item 6 : champ de saisie de la variante "prompt" du robot. */
+.robot-modal-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-type);
+  font-size: 14px;
+}
+.robot-modal-input[hidden] { display: none; }
+
 .robot-modal-actions {
   display: flex;
   flex-wrap: wrap;
@@ -1460,7 +1476,14 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   padding: 8px;
   color: var(--ink);
   text-align: center;
-  overflow: hidden;
+  /* Round 10, item 9 : `overflow: hidden` rognait la pastille de
+     notifications (.home-circle-badge), positionnée près du bord du
+     rond — passage à `visible` pour qu'elle ressorte bien à l'extérieur,
+     comme une pastille de notifications classique. Le rond restant lui-
+     même rond (border-radius) et son icône/texte centrés à l'intérieur,
+     ce changement n'affecte que ce qui dépasse volontairement (la
+     pastille). */
+  overflow: visible;
 }
 
 .home-circle-icon {
@@ -1620,6 +1643,53 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 }
 .library-row .library-take-btn {
   flex: 0 0 auto;
+}
+/* Round 10, item 6 : une collection déjà prise affiche "Déjà pris",
+   désactivé, dans une couleur de fond différente du bouton "Prendre"
+   actif — pour la reconnaître sans avoir à cliquer dessus. */
+.library-row .library-take-btn--taken {
+  background: var(--paper-alt, #e4e7ec);
+  color: var(--ink);
+  opacity: 0.75;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* Round 10, item 3 : champ de recherche de la Bibliothèque. */
+.library-search-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 10px 0 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color, #d8dce3);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-type);
+  font-size: 14px;
+}
+
+/* Round 10, item 11 : date/heure du dernier message, sous le nom de la
+   classe, dans la liste des discussions. */
+.messages-class-row-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.messages-class-row-last {
+  font-size: 11px;
+  opacity: 0.65;
+}
+
+/* Round 10, items 4/5 : boutons d'action de la page de détail d'une
+   classe, côte à côte plutôt qu'empilés au hasard. */
+.classes-detail-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 8px 0 16px;
 }
 
 /* Round 6, item 5 : fil de discussion — façon groupe WhatsApp. Les

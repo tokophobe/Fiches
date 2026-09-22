@@ -166,6 +166,10 @@
       <img src="./icons/logo.png" alt="" class="robot-modal-logo" />
       <div class="robot-modal-bubble">
         <p class="robot-modal-text" id="robot-modal-text"></p>
+        <!-- Round 10, item 6 : variante "prompt" (saisie d'un nom), pour
+             remplacer les derniers prompt() natifs restants — masqué pour
+             un simple message/confirmation. -->
+        <input type="text" class="robot-modal-input" id="robot-modal-input" hidden />
         <div class="robot-modal-actions" id="robot-modal-actions"></div>
       </div>
     </div>
@@ -702,6 +706,16 @@
             <button type="button" class="btn btn--small is-active" id="account-auth-tab-signin" data-mode="signin">Se connecter</button>
             <button type="button" class="btn btn--small" id="account-auth-tab-signup" data-mode="signup">Créer un compte</button>
           </div>
+          <!-- Round 10, item 7 : nom/prénom demandés uniquement à la
+               création du compte (masqués en mode "Se connecter"). -->
+          <label class="field" id="account-auth-firstname-field" hidden>
+            <span>Prénom</span>
+            <input type="text" id="account-auth-firstname" autocomplete="given-name" />
+          </label>
+          <label class="field" id="account-auth-lastname-field" hidden>
+            <span>Nom</span>
+            <input type="text" id="account-auth-lastname" autocomplete="family-name" />
+          </label>
           <label class="field">
             <span>Email</span>
             <input type="email" id="account-auth-email" autocomplete="email" />
@@ -719,6 +733,20 @@
         <div class="classes-user-row">
           <span id="account-user-email"></span>
           <button type="button" class="btn btn--ghost btn--small" id="account-signout-btn">Se déconnecter</button>
+        </div>
+        <!-- Round 10, item 7 : nom/prénom modifiables après coup, pour les
+             comptes créés avant ce round ou pour corriger une saisie. -->
+        <div class="card-form">
+          <label class="field">
+            <span>Prénom</span>
+            <input type="text" id="account-profile-firstname" autocomplete="given-name" />
+          </label>
+          <label class="field">
+            <span>Nom</span>
+            <input type="text" id="account-profile-lastname" autocomplete="family-name" />
+          </label>
+          <button type="button" class="btn btn--small" id="account-profile-save-btn">Enregistrer</button>
+          <p class="field-hint" id="account-profile-note" hidden></p>
         </div>
         <button type="button" class="btn btn--small" id="account-goto-classes-btn">Aller à Classes</button>
       </div>
@@ -816,10 +844,19 @@
       <p class="field-hint classes-invite-hint" id="class-detail-invite-row" hidden>Code d'invitation : <strong></strong></p>
       <h3 class="settings-block-title">Boîtes partagées</h3>
       <div id="class-detail-boxes"></div>
-      <button type="button" class="btn btn--small" id="class-detail-share-btn" hidden>Partager une boîte</button>
+      <div class="classes-detail-actions">
+        <button type="button" class="btn btn--small" id="class-detail-share-btn" hidden>Partager une boîte</button>
+        <!-- Round 10, item 4 : un prof peut aussi partager directement une
+             collection de la Bibliothèque, sans l'avoir d'abord reprise
+             dans ses propres boîtes. -->
+        <button type="button" class="btn btn--small" id="class-detail-share-library-btn" hidden>Partager depuis la Bibliothèque</button>
+      </div>
       <h3 class="settings-block-title">Évènements à venir</h3>
       <ul class="subject-list" id="class-detail-events"></ul>
       <p class="field-hint" id="class-detail-events-empty" hidden>Aucun évènement à venir pour cette classe.</p>
+      <!-- Round 10, item 5 : créer un évènement directement depuis la page
+           de la classe (au lieu de passer par Calendrier). -->
+      <button type="button" class="btn btn--small" id="class-detail-add-event-btn" hidden>Ajouter un évènement</button>
     </section>
 
     <!-- Round 6, item 5 : messagerie — une discussion par classe, façon
@@ -858,6 +895,9 @@
       <div id="library-needs-sync" hidden>
         <p class="field-hint settings-block-hint">Active la synchronisation (page Synchronisation) pour accéder à la bibliothèque.</p>
       </div>
+      <!-- Round 10, item 3 : recherche par mots-clés (nom de la collection
+           ou email de son auteur). -->
+      <input type="search" id="library-search-input" class="library-search-input" placeholder="Rechercher une collection…" />
       <ul class="subject-list" id="library-list"></ul>
       <p class="field-hint" id="library-empty" hidden>Aucune collection partagée pour l'instant.</p>
     </section>

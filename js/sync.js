@@ -665,10 +665,28 @@ function subscribeDevSettingsRealtime(onRemoteChange, accountEmail) {
    la Sync soit déjà configurée (voir supabase/classes_schema.sql pour le
    schéma à créer une fois, côté Supabase).
 --------------------------------------------------------- */
-async function authSignUp(email, password) {
+// Round 10 : nom/prénom demandés à la création d'un compte, stockés dans les
+// métadonnées du compte Supabase Auth (`user_metadata`) — pas besoin d'une
+// table dédiée, récupérables ensuite via authGetUser() -> user.user_metadata.
+async function authSignUp(email, password, firstName, lastName) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
-  const { data, error } = await c.auth.signUp({ email, password });
+  const options = {};
+  if (firstName || lastName) {
+    options.data = { first_name: (firstName || "").trim(), last_name: (lastName || "").trim() };
+  }
+  const { data, error } = await c.auth.signUp({ email, password, options });
+  return { data, error: error ? error.message : null };
+}
+
+/** Permet aussi de renseigner/corriger nom-prénom après coup, depuis la page
+ *  Mon Compte, pour les comptes déjà créés avant ce round. */
+async function authUpdateProfile(firstName, lastName) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
+  const { data, error } = await c.auth.updateUser({
+    data: { first_name: (firstName || "").trim(), last_name: (lastName || "").trim() },
+  });
   return { data, error: error ? error.message : null };
 }
 
@@ -912,6 +930,21 @@ async function listLibraryCollections() {
   return data || [];
 }
 
+/** Round 10, item 2 : une collection prise dans la Bibliothèque devient un
+ *  miroir en lecture seule (même principe que shared_boxes pour une classe)
+ *  plutôt qu'une copie figée — il faut donc pouvoir relire une collection
+ *  précise par son id pour la reconcilier périodiquement côté client. */
+async function getLibraryCollection(id) {
+  const c = getClient();
+  if (!c || !id) return null;
+  const { data, error } = await c.from("library_collections").select("*").eq("id", id).maybeSingle();
+  if (error) {
+    console.warn("Bibliothèque : échec du rechargement d'une collection", error.message);
+    return null;
+  }
+  return data || null;
+}
+
 /* ---- Round 6, item 5 : messagerie par classe (façon groupe WhatsApp) ---- */
 
 /** Liste, en une seule fois, toutes les classes où l'utilisateur peut
@@ -967,6 +1000,28 @@ async function countUnreadClassMessages(classId, sinceIso) {
     return 0;
   }
   return count || 0;
+}
+
+/** Round 10, item 11 : date/heure du dernier message d'une classe, pour
+ *  l'afficher dans le bloc de la discussion (liste Messagerie). Une requête
+ *  par classe, comme `countUnreadClassMessages` déjà appelé juste à côté
+ *  dans la même boucle (`renderMessagesView`) — même précédent N+1, pas de
+ *  souci de volume pour le nombre de classes usuel d'un compte. */
+async function getLastClassMessage(classId) {
+  const c = getClient();
+  if (!c) return null;
+  const { data, error } = await c
+    .from("class_messages")
+    .select("created_at")
+    .eq("class_id", classId)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) {
+    console.warn("Messagerie : échec de la lecture du dernier message", error.message);
+    return null;
+  }
+  return data || null;
 }
 
 /** Filtre serveur borné à une seule colonne (comme pour les autres canaux
@@ -1025,6 +1080,7 @@ window.Sync = {
     signOut: authSignOut,
     getUser: authGetUser,
     onChange: authOnChange,
+    updateProfile: authUpdateProfile,
   },
   classes: {
     create: createClass,
@@ -1046,9 +1102,11 @@ window.Sync = {
     send: sendClassMessage,
     countUnread: countUnreadClassMessages,
     subscribeRealtime: subscribeClassMessagesRealtime,
+    getLastMessage: getLastClassMessage,
   },
   library: {
     share: shareCollectionToLibrary,
     list: listLibraryCollections,
+    get: getLibraryCollection,
   },
 };
