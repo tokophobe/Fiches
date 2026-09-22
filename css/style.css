@@ -592,6 +592,28 @@ button.topbar-new-card-btn {
 }
 .picker-row--all .subject-row-name span { font-weight: 700; }
 
+/* Round 11, item 1 : intitulés de section dans le sélecteur "Partager une
+   boîte" (Depuis la Bibliothèque / Mes boîtes) — mêmes codes que
+   .settings-block-title mais plus discret, pour rester léger dans une
+   liste qui peut être longue. */
+.picker-section-title {
+  list-style: none;
+  font-family: var(--font-type);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ink-light, #7a7266);
+  margin: 6px 0 2px;
+  padding-top: 4px;
+  border-top: 1px solid var(--border, #e2dccf);
+}
+.picker-section-title:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
 .multi-subject-picker-item {
   display: flex;
   align-items: center;

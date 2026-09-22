@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v150";
+  const APP_VERSION = "v151";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -4793,10 +4793,42 @@
    *  fiche" (folderAlwaysSelectable: false, boîtes/dossiers vides
    *  seulement) et par la création d'un événement de calendrier
    *  (folderAlwaysSelectable: true, un dossier entier est un lien valide). */
-  function renderSingleBoitePicker(container, onPick, folderAlwaysSelectable, excludeSubjectIds) {
+  function renderSingleBoitePicker(container, onPick, folderAlwaysSelectable, excludeSubjectIds, libraryOptions) {
     function rerender() {
       container.innerHTML = "";
       container.classList.add("picker-tree");
+      // Round 11, item 1 : quand des collections de la Bibliothèque sont
+      // proposées (partage vers une classe), elles apparaissent en tête,
+      // sous leur propre intitulé, AVANT l'arbre des boîtes perso — avec la
+      // même icône en réseau que partout ailleurs dans l'appli pour une
+      // collection de la Bibliothèque (voir appendBoiteRow/renderLibraryList),
+      // pas l'icône de boîte habituelle.
+      if (libraryOptions && libraryOptions.length > 0) {
+        const sectionTitle = document.createElement("li");
+        sectionTitle.className = "picker-section-title";
+        sectionTitle.textContent = "Depuis la Bibliothèque";
+        container.appendChild(sectionTitle);
+        libraryOptions.forEach((col) => {
+          const n = Array.isArray(col.cards) ? col.cards.length : 0;
+          const { li } = buildPickerRow({
+            depth: 0,
+            isFolder: false,
+            iconMarkup: iconSvgMarkup("share", "icon-inline-svg"),
+            nameText: col.name,
+            countLabel: `${n} fiche${n > 1 ? "s" : ""} — ${col.owner_email || "quelqu'un"}`,
+            selectControl: "none",
+            dataKind: "library",
+            value: col.id,
+            rowSelectable: true,
+            onRowSelect: () => onPick("library", col.id),
+          });
+          container.appendChild(li);
+        });
+        const boxesTitle = document.createElement("li");
+        boxesTitle.className = "picker-section-title";
+        boxesTitle.textContent = "Mes boîtes";
+        container.appendChild(boxesTitle);
+      }
       renderFolderTreeForPicker(container, ROOT_FOLDER_ID, 0, { mode: "single", onPick, folderAlwaysSelectable, excludeSubjectIds, container, rerenderRoot: rerender });
     }
     rerender();
@@ -4901,7 +4933,7 @@
       if (ctx.excludedFolderIds) {
         renderMoveDestinationPicker(list, ctx.excludedFolderIds, (destId) => ctx.onPick("folder", destId));
       } else {
-        renderSingleBoitePicker(list, (kind, id) => ctx.onPick(kind, id), !!ctx.folderAlwaysSelectable, ctx.excludeSubjectIds);
+        renderSingleBoitePicker(list, (kind, id) => ctx.onPick(kind, id), !!ctx.folderAlwaysSelectable, ctx.excludeSubjectIds, ctx.libraryOptions);
       }
       if (confirmBtn) confirmBtn.hidden = true;
       if (noneBtn) {
@@ -10189,8 +10221,6 @@
       if (strong) strong.textContent = klass.invite_code || "";
     }
     if (shareBtn) shareBtn.hidden = !isTeacher;
-    const shareLibraryBtn = el("class-detail-share-library-btn");
-    if (shareLibraryBtn) shareLibraryBtn.hidden = !isTeacher;
     const addEventBtn = el("class-detail-add-event-btn");
     if (addEventBtn) addEventBtn.hidden = !isTeacher;
 
@@ -10222,78 +10252,61 @@
 
   const classDetailShareBtn = el("class-detail-share-btn");
   if (classDetailShareBtn) {
-    classDetailShareBtn.addEventListener("click", () => {
+    classDetailShareBtn.addEventListener("click", async () => {
       if (!classDetailContext) return;
       const klass = classDetailContext.klass;
+      // Round 11, item 1 : le bouton dédié "Partager depuis la
+      // Bibliothèque" (round 10) est retiré — ce même sélecteur "Partager
+      // une boîte" propose maintenant, en plus des boîtes perso, les
+      // collections de la Bibliothèque comme options (ctx.libraryOptions).
+      const libraryOptions = await Sync.library.list();
       openBoitePickerView({
         mode: "single",
         title: `Partager une boîte à « ${klass.name} »`,
         folderAlwaysSelectable: false,
         excludeSubjectIds: new Set(subjects.filter((s) => s.sharedBoxId).map((s) => s.id)),
-        onPick: async (kind, subjectId) => {
-          const subject = subjects.find((s) => s.id === subjectId);
-          if (!subject) return;
-          const boxCards = cards.filter((c) => !c.deleted && c.subject === subjectId);
-          const folderPathNames = folderPath(subject.folderId).map((f) => f.name);
-          const { data, error } = await Sync.classes.shareBox(klass.id, subject.name, boxCards, folderPathNames);
+        libraryOptions,
+        onPick: async (kind, id) => {
+          let name, boxCards, folderPathNames, afterShare;
+          if (kind === "library") {
+            const col = libraryOptions.find((c) => c.id === id);
+            if (!col) return;
+            name = col.name;
+            boxCards = Array.isArray(col.cards) ? col.cards : [];
+            folderPathNames = [];
+            afterShare = async () => {
+              try {
+                await Sync.messages.send(klass.id, `📚 « ${name} » a été partagée dans la classe (depuis la Bibliothèque).`);
+              } catch (e) { /* best-effort */ }
+            };
+          } else {
+            const subject = subjects.find((s) => s.id === id);
+            if (!subject) return;
+            name = subject.name;
+            boxCards = cards.filter((c) => !c.deleted && c.subject === id);
+            folderPathNames = folderPath(subject.folderId).map((f) => f.name);
+            afterShare = async (data) => {
+              subject.sharedShares = subject.sharedShares || [];
+              subject.sharedShares.push({ classId: klass.id, className: klass.name, boxId: data.id });
+              subject.updatedAt = new Date().toISOString();
+              await persistSubject(subject);
+              // Round 10, item 10 : message automatique dans la messagerie
+              // de la classe quand un prof y partage une boîte.
+              try {
+                await Sync.messages.send(klass.id, `📚 « ${name} » a été partagée dans la classe.`);
+              } catch (e) { /* best-effort */ }
+            };
+          }
+          const { data, error } = await Sync.classes.shareBox(klass.id, name, boxCards, folderPathNames);
           closeBoitePickerView();
           if (error) {
             await robotAlert("Erreur lors du partage : " + error);
             return;
           }
-          subject.sharedShares = subject.sharedShares || [];
-          subject.sharedShares.push({ classId: klass.id, className: klass.name, boxId: data.id });
-          subject.updatedAt = new Date().toISOString();
-          await persistSubject(subject);
-          // Round 10, item 10 : message automatique dans la messagerie de
-          // la classe quand un prof y partage une boîte.
-          try {
-            await Sync.messages.send(klass.id, `📚 « ${subject.name} » a été partagée dans la classe.`);
-          } catch (e) { /* best-effort */ }
+          await afterShare(data);
           renderClassDetailView();
         },
       });
-    });
-  }
-
-  /** Round 10, item 4 : un prof peut aussi partager directement une
-   *  collection de la Bibliothèque dans sa classe, sans l'avoir d'abord
-   *  reprise dans ses propres boîtes — réutilise Sync.classes.shareBox tel
-   *  quel (il ne lui importe pas d'où viennent le nom/les fiches). Choix
-   *  fait via les boutons du robot (une entrée par collection), plutôt
-   *  qu'un nouvel écran dédié — reste simple pour le nombre de collections
-   *  attendu. */
-  const classDetailShareLibraryBtn = el("class-detail-share-library-btn");
-  if (classDetailShareLibraryBtn) {
-    classDetailShareLibraryBtn.addEventListener("click", async () => {
-      if (!classDetailContext) return;
-      const klass = classDetailContext.klass;
-      const collections = await Sync.library.list();
-      if (collections.length === 0) {
-        await robotAlert("La Bibliothèque ne contient encore aucune collection à partager.");
-        return;
-      }
-      const buttons = collections.map((col) => ({
-        label: `${col.name} (${Array.isArray(col.cards) ? col.cards.length : 0} fiches, par ${col.owner_email || "quelqu'un"})`,
-        value: col.id,
-      }));
-      buttons.push({ label: "Annuler", value: null });
-      const chosenId = await showRobotMessage(`Partager quelle collection de la Bibliothèque à « ${klass.name} » ?`, {
-        buttons,
-        cancelValue: null,
-      });
-      if (!chosenId) return;
-      const col = collections.find((c) => c.id === chosenId);
-      if (!col) return;
-      const { data, error } = await Sync.classes.shareBox(klass.id, col.name, Array.isArray(col.cards) ? col.cards : [], []);
-      if (error) {
-        await robotAlert("Erreur lors du partage : " + error);
-        return;
-      }
-      try {
-        await Sync.messages.send(klass.id, `📚 « ${col.name} » a été partagée dans la classe (depuis la Bibliothèque).`);
-      } catch (e) { /* best-effort */ }
-      renderClassDetailView();
     });
   }
 
