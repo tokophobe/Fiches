@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v148";
+  const APP_VERSION = "v149";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -608,14 +608,16 @@
   // COEF_TE/COEF_DD/PLAFOND/PLANCHER/ABAT. À l'évaluation :
   //   TE = temps écoulé (minutes) depuis la dernière interrogation
   //   NDI = maxi(DD*COEF_DD ; TE*COEF_TE), borné à
-  //         [PLANCHER ; mini(PLAFOND ; DD*COEF_DD)]
+  //         [PLANCHER ; mini(PLAFOND ; DD*COEF_TE)]
   //   PERS = NDI*ABAT
-  // Remarque (signalée à l'utilisateur, décision explicitement reportée) :
-  // avec cette formule de plafond telle que donnée, mini(PLAFOND ; DD*COEF_DD)
-  // est mathématiquement toujours <= DD*COEF_DD, qui est lui-même toujours
-  // <= maxi(...) — donc TE*COEF_TE n'a, en l'état, aucune influence sur le
-  // résultat final. Implémenté ici littéralement tel que spécifié ; à
-  // corriger une fois la question tranchée avec l'utilisateur.
+  // Remarque (round 9, correctif demandé par l'utilisateur) : la formule
+  // d'origine plafonnait avec DD*COEF_DD, qui est toujours <= DD*COEF_DD
+  // lui-même <= maxi(...) — TE*COEF_TE n'avait donc jamais d'influence sur
+  // le résultat. Corrigé en plafonnant avec DD*COEF_TE à la place : quand
+  // TE*COEF_TE dépasse DD*COEF_DD mais reste sous ce nouveau plafond (donc,
+  // en gros, tant que TE <= DD), TE pilote directement le résultat ; au-delà
+  // (TE > DD), le résultat sature à DD*COEF_TE (borné par PLAFOND), pour
+  // éviter qu'une révision très en retard fasse s'envoler l'intervalle.
   const REVISION_ALGO_RATING_ORDER = ["again", "hard", "good", "easy"];
   const REVISION_ALGO_RATING_LABELS = {
     again: "Encore (indice 0)",
@@ -2763,7 +2765,10 @@
 
     const ddTerm = dd * coefDd;
     const raw = Math.max(ddTerm, te * coefTe);
-    const ceiling = Math.min(plafond, ddTerm);
+    // Plafond basé sur DD*COEF_TE (et non DD*COEF_DD) — correctif demandé
+    // par l'utilisateur pour que TE*COEF_TE cesse d'être mathématiquement
+    // inerte (voir le commentaire au-dessus de REVISION_ALGO_RATING_ORDER).
+    const ceiling = Math.min(plafond, dd * coefTe);
     let ndi = Math.min(raw, ceiling);
     if (ndi < plancher) ndi = plancher;
     const pers = ndi * abat;
