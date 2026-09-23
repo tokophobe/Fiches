@@ -114,6 +114,15 @@
 <body>
 
 <div class="desk">
+  <!-- Round 15, item 5 : topbar + titre de page + robot (logo "corps de
+       page") regroupés dans un bandeau qui reste FIXE quand la page
+       défile — corrige le bug où le robot (et donc la bulle de la modale
+       robot, positionnée juste sous lui en JS) pouvait sortir de l'écran
+       si on avait scrollé, rendant messages/boutons inatteignables. La
+       hauteur réelle de ce bandeau est mesurée en JS (ResizeObserver) et
+       posée en variable CSS (--sticky-header-h) pour pousser le contenu
+       en dessous d'autant. -->
+  <div class="app-sticky-header" id="app-sticky-header">
   <header class="topbar">
     <div class="brand">
       <h1 class="sr-only">Fiches</h1>
@@ -123,10 +132,21 @@
     </div>
     <div class="header-right">
       <!-- Round 14 : petit logo "darwin" dans le bandeau du haut, entre le
-           bouton Accueil et le bouton mode nuit. -->
-      <img src="./icons/darwin-logo.png" alt="darwin" id="topbar-darwin-logo" class="topbar-darwin-logo" />
+           bouton Accueil et le bouton mode nuit. Round 15, item 2 : passé
+           d'une image <img> à un <div> avec mask-image, pour pouvoir le
+           recolorer en CSS (--darwin-logo-color) plutôt que rester figé
+           en noir. -->
+      <div id="topbar-darwin-logo" class="topbar-darwin-logo" role="img" aria-label="darwin"></div>
       <button type="button" class="night-mode-toggle-btn" id="night-mode-toggle-btn" title="Mode nuit" aria-label="Basculer le mode nuit">
         <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <!-- Round 15, item 6 : aide contextuelle — en plus de la bulle
+           d'aide par page déjà existante (body-logo-help-btn), ce bouton
+           bascule un mode "pointer" : le prochain clic sur un élément de
+           la page est intercepté et le robot explique cet élément-là au
+           lieu de déclencher son action normale. -->
+      <button type="button" class="contextual-help-toggle-btn" id="contextual-help-toggle-btn" title="Aide sur un élément : touche ce bouton puis l'élément qui t'intéresse" aria-label="Aide contextuelle">
+        <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.2 9a2.8 2.8 0 0 1 5.4 1c0 1.8-2.6 2.2-2.6 3.8"/><circle cx="12" cy="17.3" r="0.9" fill="currentColor" stroke="none"/></svg>
       </button>
       <button class="sync-status" id="sync-status" type="button" title="État de la synchronisation">
         <span class="sync-dot" id="sync-dot"></span>
@@ -137,6 +157,20 @@
       </div>
     </div>
   </header>
+
+  <!-- Round 15, item 1 : nom de la page courante, tout en haut, centré,
+       au-dessus du robot — posé en JS (PAGE_TITLES / MutationObserver sur
+       .view.is-active, voir js/app.js) pour rester correct quelle que
+       soit la façon dont on arrive sur la page. -->
+  <div class="page-title-bar">
+    <h2 class="page-title" id="page-title"></h2>
+  </div>
+
+  <!-- Round 15, item 6 (suite) : petite bannière de guidage, affichée
+       uniquement pendant que l'aide contextuelle est active. -->
+  <div class="contextual-help-hint" id="contextual-help-hint" hidden>
+    Touche un élément de la page pour voir son aide (Échap pour annuler).
+  </div>
 
   <!-- Items 1/2 (dernier lot) : logo affiché en haut du CORPS de chaque
        page (pas dans l'en-tête) — masqué uniquement sur l'accueil, qui a
@@ -160,6 +194,8 @@
       </div>
     </div>
   </div>
+  </div>
+  <!-- /Round 15 : fin du bandeau fixe (#app-sticky-header). -->
 
   <!-- Round 3, item 3 : remplace toutes les alert()/confirm() natives par
        un message "dit" par le robot (même esprit que la bulle de la page,
@@ -219,12 +255,15 @@
       <img src="./icons/logo.png" alt="" id="home-logo" class="home-logo" />
       <!-- Round 14 : logo "darwin" affiché en plus du robot, position/
            taille/ombre réglables en mode développeur (dev-darwin-logo-list). -->
-      <img src="./icons/darwin-logo.png" alt="darwin" id="darwin-home-logo" class="darwin-home-logo" />
+      <!-- Round 15, item 2 : <div> masqué (mask-image) plutôt qu'<img>,
+           pour pouvoir recolorer le logo en CSS (--darwin-logo-color). -->
+      <div id="darwin-home-logo" class="darwin-home-logo" role="img" aria-label="darwin"></div>
       <!-- Round 14 : texte sous le logo darwin — contenu/position/taille
            réglables en mode développeur (dev-darwin-text-list) ; masqué
            tant qu'aucun texte n'est saisi. -->
       <p id="darwin-home-text" class="darwin-home-text" hidden></p>
-      <h1 class="home-title">Fiches</h1>
+      <!-- Round 15, item 3 : le titre texte "Fiches" est retiré (remplacé
+           par le logo darwin) — à la demande de Stéphane. -->
       <div class="home-scatter" id="home-scatter">
         <button type="button" class="home-circle home-circle--accent" data-key="addCard" id="home-new-card-btn">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>

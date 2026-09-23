@@ -158,11 +158,68 @@ button.topbar-new-card-btn {
 }
 
 /* Round 14 : petit logo "darwin" dans le bandeau du haut, entre le
-   bouton Accueil et le bouton mode nuit — taille fixe, discrète. */
+   bouton Accueil et le bouton mode nuit — taille fixe, discrète.
+   Round 15, item 2 : recoloré via mask-image (le fichier source est un
+   dessin noir sur transparent) plutôt qu'affiché tel quel en <img>, pour
+   pouvoir choisir sa couleur en CSS (--darwin-logo-color, réglée en mode
+   développeur — voir dev-darwin-logo-list). Même technique que
+   .darwin-home-logo ci-dessous, même variable de couleur : les deux
+   suivent toujours la même teinte. */
 .topbar-darwin-logo {
   height: 22px;
   width: auto;
+  aspect-ratio: 600 / 239;
   display: block;
+  background-color: var(--darwin-logo-color, #4a90d9);
+  -webkit-mask-image: url("../icons/darwin-logo.png");
+  mask-image: url("../icons/darwin-logo.png");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+/* Round 15, item 6 : bouton "aide contextuelle" — même famille visuelle
+   que le bouton mode nuit juste à côté. */
+.contextual-help-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+}
+.contextual-help-toggle-btn.is-active {
+  background: rgba(74, 144, 217, 0.18);
+  color: var(--blue);
+}
+
+/* Round 15, item 6 (suite) : bannière affichée pendant qu'on choisit
+   l'élément à expliquer — posée dans le bandeau fixe, toujours visible. */
+.contextual-help-hint {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--blue);
+  background: rgba(74, 144, 217, 0.12);
+  border: 1.5px dashed var(--blue);
+  border-radius: 10px;
+  padding: 7px 10px;
+  margin: 0 0 10px;
+}
+.contextual-help-hint[hidden] { display: none; }
+
+/* Pendant l'aide contextuelle, le curseur (PC) signale le mode "pointer"
+   sur toute la page — sans intercepter les clics eux-mêmes, gérés en JS. */
+body.is-contextual-help-picking,
+body.is-contextual-help-picking * {
+  cursor: help !important;
 }
 
 /* Item 4 : bascule mode nuit/jour, en topbar. */
@@ -230,6 +287,50 @@ button.topbar-new-card-btn {
 }
 
 /* ============================================================
+   BANDEAU DU HAUT FIXE (round 15, item 5)
+   ============================================================
+   Regroupe topbar + titre de page + robot (logo body-logo) et le
+   maintient toujours visible pendant que la page défile — corrige le bug
+   où le robot pouvait sortir de l'écran, rendant la bulle de la modale
+   robot (positionnée juste sous lui, voir positionRobotModal en JS)
+   inatteignable. Même technique que #subject-bar plus bas dans ce
+   fichier (position fixe, centrée comme .desk) plutôt que
+   `position: sticky`, déjà écartée ailleurs dans ce projet pour cette
+   raison. La hauteur réelle est mesurée en JS (ResizeObserver) et posée
+   dans --sticky-header-h, utilisée pour pousser <main> d'autant. */
+.app-sticky-header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 560px;
+  z-index: 40;
+  background: var(--app-bg-color, var(--desk));
+  padding: max(18px, env(safe-area-inset-top)) 18px 8px;
+}
+
+main {
+  padding-top: var(--sticky-header-h, 96px);
+}
+
+/* Round 15, item 1 : nom de la page courante, centré, au-dessus du robot
+   (posé par updatePageTitle en JS à chaque changement de vue). */
+.page-title-bar {
+  margin: 0 0 10px;
+}
+.page-title {
+  margin: 0;
+  font-family: var(--font-type);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: var(--ink-soft);
+}
+.page-title:empty { display: none; }
+
+/* ============================================================
    MATIÈRES (subjects)
    ============================================================ */
 .subject-bar {
@@ -243,10 +344,14 @@ button.topbar-new-card-btn {
 /* Bug corrigé (encore) : le z-index seul ne suffisait pas dans tous les
    cas — passer cette barre en position fixe, ancrée juste sous la barre
    du haut, garantit qu'elle ne peut plus jamais se retrouver sous la
-   fiche, quelle que soit la position réglée pour cette dernière. */
+   fiche, quelle que soit la position réglée pour cette dernière.
+   Round 15 : ancrée sous le NOUVEAU bandeau fixe (topbar + titre + robot,
+   --sticky-header-h, mesuré en JS) plutôt qu'un décalage fixe de 54px,
+   qui ne correspond plus à sa hauteur réelle depuis l'ajout du titre de
+   page et du bandeau sticky. */
 #subject-bar {
   position: fixed;
-  top: calc(env(safe-area-inset-top, 0px) + 54px);
+  top: calc(var(--sticky-header-h, 96px) + 8px);
   left: 50%;
   transform: translateX(-50%);
   width: var(--review-card-width, 355px);
@@ -1211,16 +1316,28 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 
 /* Round 14 : logo "darwin", affiché en plus du robot sur l'accueil —
    même principe de positionnement (variables posées par
-   applyHomeLayout), réglages séparés du logo robot ci-dessus. */
+   applyHomeLayout), réglages séparés du logo robot ci-dessus.
+   Round 15, item 2 : recoloré via mask-image (voir .topbar-darwin-logo
+   plus haut pour l'explication) — même variable --darwin-logo-color que
+   la petite version du bandeau, réglable en mode développeur. */
 .darwin-home-logo {
   position: absolute;
   left: var(--darwin-logo-x, 50%);
   top: var(--darwin-logo-y, 12%);
   width: var(--darwin-logo-size, 90px);
-  height: auto;
+  aspect-ratio: 600 / 239;
   transform: translate(-50%, -50%);
   pointer-events: none;
   filter: var(--darwin-logo-shadow, none);
+  background-color: var(--darwin-logo-color, #4a90d9);
+  -webkit-mask-image: url("../icons/darwin-logo.png");
+  mask-image: url("../icons/darwin-logo.png");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
 }
 
 /* Round 14 : texte sous le logo darwin — contenu/position/taille

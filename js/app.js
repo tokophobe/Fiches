@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v154";
+  const APP_VERSION = "v156";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -709,7 +709,10 @@
   // Placé par défaut sous les cercles (zone dédiée par le padding-bottom
   // supplémentaire de #view-home, voir css/style.css), pour ne chevaucher
   // aucun cercle avec la disposition par défaut.
-  const DEFAULT_DARWIN_LOGO = { x: 50, y: 88, size: 70, shadow: false };
+  // Round 15, item 2 : couleur du logo darwin (partagée avec sa petite
+  // version dans le bandeau du haut) — bleu par défaut (--blue), le noir
+  // d'origine ayant été jugé trop dur ; réglable en mode développeur.
+  const DEFAULT_DARWIN_LOGO = { x: 50, y: 88, size: 70, shadow: false, color: "#4a90d9" };
   // Round 14 : texte optionnel sous le logo darwin — contenu/position/
   // taille réglables en mode développeur ; vide par défaut (masqué tant
   // que rien n'est saisi).
@@ -1835,6 +1838,10 @@
     root.setProperty("--darwin-logo-y", `${darwinLogo.y}%`);
     root.setProperty("--darwin-logo-size", `${darwinLogo.size}px`);
     root.setProperty("--darwin-logo-shadow", darwinLogo.shadow ? LOGO_SHADOW_FILTER : "none");
+    // Round 15, item 2 : couleur du logo darwin (topbar + accueil, même
+    // variable pour les deux — voir .topbar-darwin-logo/.darwin-home-logo
+    // en CSS).
+    root.setProperty("--darwin-logo-color", darwinLogo.color || "#4a90d9");
     const darwinTextLeftPx = scatterLeftOffset + (darwinText.x / 100) * scatterWidthForLogo;
     root.setProperty("--darwin-text-x", `${Math.round(darwinTextLeftPx)}px`);
     root.setProperty("--darwin-text-y", `${darwinText.y}%`);
@@ -1901,17 +1908,32 @@
     // gabarit fixe 390×844 sur tout écran au moins aussi grand.
     const deskWidth = document.querySelector(".desk")?.getBoundingClientRect().width || window.innerWidth;
     const vw = Math.min(deskWidth, REVIEW_LAYOUT_REF_WIDTH) / 100;
-    // Marge de sécurité fixe sous la barre du haut + la barre de boîte
-    // (elle-même posée à 54px + l'encoche) — 110px couvre confortablement
-    // les deux sur la quasi-totalité des appareils.
-    const MIN_CARD_TOP_PX = 110;
-    const cardTopPx = Math.max(r.cardTopPct * vh, MIN_CARD_TOP_PX);
+    // Marge de sécurité sous la barre du haut + la barre de boîte (round
+    // 15 : le bandeau du haut est désormais fixe et sa hauteur réelle
+    // varie — titre de page, bulle d'aide ouverte, etc. — --sticky-
+    // header-h, mesurée en JS via ResizeObserver, remplace donc la valeur
+    // fixe utilisée avant ; +60px couvre la barre de boîte elle-même
+    // (posée juste sous ce bandeau) plus une marge confortable.
+    const stickyHeaderH =
+      parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--sticky-header-h")) || 96;
+    const MIN_CARD_TOP_PX = stickyHeaderH + 60;
+    const cardTopPctPx = r.cardTopPct * vh;
+    const cardTopPx = Math.max(cardTopPctPx, MIN_CARD_TOP_PX);
+    // Round 15 (suite) : quand le plancher ci-dessus pousse la fiche plus
+    // bas que sa position en % d'origine, la barre de notation/le résumé
+    // de score/la jauge (positionnés chacun par leur propre % de l'écran,
+    // indépendamment de la fiche) doivent redescendre d'AUTANT — sinon ils
+    // restent à leur ancienne hauteur et se retrouvent sous la fiche,
+    // désormais plus basse (bug constaté : bouton de notation caché sous
+    // la fiche). Même décalage appliqué aux quatre pour garder leur
+    // espacement relatif d'origine.
+    const extraOffsetPx = cardTopPx - cardTopPctPx;
     root.setProperty("--review-card-height", `${Math.round(r.cardHeightPct * vh)}px`);
     root.setProperty("--review-card-width", `${Math.round(r.cardWidthPct * vw)}px`);
     root.setProperty("--review-card-top", `${Math.round(cardTopPx)}px`);
-    root.setProperty("--review-rating-row-top", `${Math.round(r.ratingRowTopPct * vh)}px`);
-    root.setProperty("--review-score-info-top", `${Math.round(r.scoreInfoTopPct * vh)}px`);
-    root.setProperty("--review-gauge-top", `${Math.round(r.gaugeTopPct * vh)}px`);
+    root.setProperty("--review-rating-row-top", `${Math.round(r.ratingRowTopPct * vh + extraOffsetPx)}px`);
+    root.setProperty("--review-score-info-top", `${Math.round(r.scoreInfoTopPct * vh + extraOffsetPx)}px`);
+    root.setProperty("--review-gauge-top", `${Math.round(r.gaugeTopPct * vh + extraOffsetPx)}px`);
     // Bug corrigé (item 2) : la durée CSS utilisait la valeur BRUTE du
     // réglage, alors que le calcul JS (voir getFlipDurationMs) applique un
     // minimum de 150ms — avec un réglage très court, la fiche changeait
@@ -1996,6 +2018,12 @@
     <label class="settings-toggle-row">
       <input type="checkbox" id="dev-darwin-logo-shadow" ${logo.shadow ? "checked" : ""} />
       <span>Ombre sous le logo darwin</span>
+    </label>
+    <!-- Round 15, item 2 : couleur du logo darwin (topbar + accueil),
+         noir d'origine jugé trop dur — bleu par défaut, réglable ici. -->
+    <label class="field">
+      <span>Couleur du logo darwin</span>
+      <input type="color" id="dev-darwin-logo-color" value="${logo.color || "#4a90d9"}" />
     </label>`;
     wrap.querySelectorAll(".dev-darwin-logo-input").forEach((input) => {
       input.addEventListener("input", () => {
@@ -2010,6 +2038,15 @@
       shadowEl.addEventListener("change", () => {
         const s = loadDevSettings();
         s.darwinLogo.shadow = shadowEl.checked;
+        saveDevSettings(s);
+        applyHomeLayout();
+      });
+    }
+    const colorEl = el("dev-darwin-logo-color");
+    if (colorEl) {
+      colorEl.addEventListener("input", () => {
+        const s = loadDevSettings();
+        s.darwinLogo.color = colorEl.value;
         saveDevSettings(s);
         applyHomeLayout();
       });
@@ -8725,6 +8762,146 @@
       renderDuePill();
     });
   });
+
+  /** Round 15, item 1 : nom de la page affiché tout en haut, centré,
+   *  au-dessus du robot — déduit de la vue actuellement active
+   *  (.view.is-active) plutôt que patché à chaque point du code qui
+   *  change de page (il y en a plusieurs) : un MutationObserver sur la
+   *  classe de chaque .view couvre tous les chemins de bascule, présents
+   *  et futurs, sans rien dupliquer. */
+  const PAGE_TITLES = {
+    home: "Accueil",
+    "revision-program": "Programme",
+    review: "Réviser",
+    manage: "Mon bureau",
+    "new-card": "Nouvelle fiche",
+    cards: "Fiches",
+    stats: "Statistiques",
+    calendar: "Calendrier",
+    sync: "Synchronisation",
+    account: "Mon compte",
+    "school-hub": "École",
+    classes: "Classes",
+    "classes-student": "Classes",
+    "classes-join": "Rejoindre une classe",
+    "classes-teacher": "Classes",
+    "classes-create": "Créer une classe",
+    "class-detail": "Classe",
+    messages: "Messagerie",
+    "message-thread": "Messagerie",
+    library: "Bibliothèque",
+    settings: "Réglages",
+    dev: "Développeur",
+    "mode-assign": "Affecter un mode",
+    "boite-picker": "Sélection",
+  };
+  function updatePageTitle() {
+    const activeView = document.querySelector(".view.is-active");
+    const titleEl = el("page-title");
+    if (!titleEl) return;
+    const key = activeView ? activeView.id.replace(/^view-/, "") : "";
+    titleEl.textContent = PAGE_TITLES[key] || "";
+  }
+  document.querySelectorAll(".view").forEach((v) => {
+    new MutationObserver(updatePageTitle).observe(v, { attributes: true, attributeFilter: ["class"] });
+  });
+  updatePageTitle();
+
+  /** Round 15, item 5 : hauteur RÉELLE du bandeau fixe (topbar + titre de
+   *  page + robot), mesurée en JS et posée en variable CSS
+   *  (--sticky-header-h) pour pousser <main> d'autant — la hauteur varie
+   *  selon la page (titre plus ou moins long, robot présent ou non sur
+   *  l'accueil...) donc ne peut pas être une constante fixe en CSS.
+   *  ResizeObserver se redéclenche tout seul à chaque changement de
+   *  hauteur du bandeau, sans avoir besoin d'être rappelé manuellement à
+   *  chaque endroit qui pourrait la faire varier. */
+  (function () {
+    const header = el("app-sticky-header");
+    if (!header || typeof ResizeObserver === "undefined") return;
+    const rootStyle = document.documentElement.style;
+    function syncStickyHeaderHeight() {
+      rootStyle.setProperty("--sticky-header-h", `${Math.ceil(header.getBoundingClientRect().height)}px`);
+      // La fiche (page Réviser) a sa marge haute minimale calculée à
+      // partir de cette même hauteur (voir applyReviewLayout) — on la
+      // resynchronise ici pour rester cohérent si le bandeau change de
+      // taille (rotation d'écran, titre qui passe sur 2 lignes...).
+      if (typeof applyReviewLayout === "function") applyReviewLayout();
+    }
+    new ResizeObserver(syncStickyHeaderHeight).observe(header);
+    syncStickyHeaderHeight();
+  })();
+
+  /** Round 15, item 6 : aide CONTEXTUELLE — en plus de la bulle d'aide
+   *  générique par page (body-logo-help-btn, déjà existante), ce bouton
+   *  bascule un mode "pointer" : le PROCHAIN clic sur n'importe quel
+   *  élément de la page est intercepté (au lieu de déclencher son action
+   *  normale) et le robot affiche une explication pour CET élément-là.
+   *  L'explication est celle déjà portée par l'élément (attribut
+   *  data-help dédié en priorité, sinon aria-label/title/texte déjà
+   *  utilisés partout dans l'appli pour l'accessibilité) — pas besoin de
+   *  tout redocumenter à la main pour que ce soit déjà utile partout. */
+  function getContextualHelpText(target) {
+    const withData = target.closest("[data-help]");
+    if (withData) return withData.getAttribute("data-help");
+    const interactive = target.closest(
+      "button, a, input, select, textarea, [role='button'], .home-circle, .tab"
+    );
+    if (!interactive) return null;
+    const aria = interactive.getAttribute("aria-label");
+    if (aria && aria.trim()) return aria.trim();
+    const title = interactive.getAttribute("title");
+    if (title && title.trim()) return title.trim();
+    const span = interactive.querySelector("span");
+    if (span && span.textContent && span.textContent.trim()) return span.textContent.trim();
+    const text = interactive.textContent && interactive.textContent.trim();
+    if (text) return text.slice(0, 140);
+    return null;
+  }
+  let contextualHelpActive = false;
+  function stopContextualHelp() {
+    contextualHelpActive = false;
+    document.body.classList.remove("is-contextual-help-picking");
+    const btn = el("contextual-help-toggle-btn");
+    if (btn) btn.classList.remove("is-active");
+    const hint = el("contextual-help-hint");
+    if (hint) hint.hidden = true;
+    document.removeEventListener("click", onContextualHelpClick, true);
+    document.removeEventListener("keydown", onContextualHelpKeydown, true);
+  }
+  function onContextualHelpClick(e) {
+    // Le bouton qui active/désactive ce mode, et la bannière de guidage,
+    // ne doivent pas se déclencher eux-mêmes comme cible d'aide.
+    if (e.target.closest("#contextual-help-toggle-btn") || e.target.closest("#contextual-help-hint")) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+    const text = getContextualHelpText(e.target);
+    stopContextualHelp();
+    robotAlert(
+      text ||
+        "Je n'ai pas encore d'explication toute prête pour cet élément précis — mais n'hésite pas à me demander directement !"
+    );
+  }
+  function onContextualHelpKeydown(e) {
+    if (e.key === "Escape") stopContextualHelp();
+  }
+  function startContextualHelp() {
+    contextualHelpActive = true;
+    document.body.classList.add("is-contextual-help-picking");
+    const btn = el("contextual-help-toggle-btn");
+    if (btn) btn.classList.add("is-active");
+    const hint = el("contextual-help-hint");
+    if (hint) hint.hidden = false;
+    document.addEventListener("click", onContextualHelpClick, true);
+    document.addEventListener("keydown", onContextualHelpKeydown, true);
+  }
+  const contextualHelpToggleBtn = el("contextual-help-toggle-btn");
+  if (contextualHelpToggleBtn) {
+    contextualHelpToggleBtn.addEventListener("click", () => {
+      if (contextualHelpActive) stopContextualHelp();
+      else startContextualHelp();
+    });
+  }
 
   /** Retourne à l'accueil (item 1e) — bouton toujours présent en haut de
    *  chaque page, sauf sur l'accueil lui-même. */
