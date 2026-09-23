@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v156";
+  const APP_VERSION = "v157";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -1169,6 +1169,7 @@
   async function loadPublicDevSettingsForEveryone() {
     try {
       const pub = await Sync.fetchPublicDevSettings();
+      console.log("[DIAG] loadPublicDevSettingsForEveryone: pub=", pub ? { keys: Object.keys(pub), updatedAt: pub.updatedAt } : null);
       if (pub) {
         publicDevSettingsOverride = pub;
         // Invalide le cache ci-dessous pour forcer une refusion au
@@ -9806,11 +9807,17 @@
    *  Comptes/Classes (comportement identique à avant round 6 dans ce cas).
    */
   async function currentAccountEmailForSync() {
-    if (!Sync.isConfigured()) return "";
+    if (!Sync.isConfigured()) {
+      console.log("[DIAG] currentAccountEmailForSync: Sync non configurée -> \"\"");
+      return "";
+    }
     try {
       const u = await Sync.auth.getUser();
-      return u && u.email ? u.email.toLowerCase() : "";
+      const email = u && u.email ? u.email.toLowerCase() : "";
+      console.log("[DIAG] currentAccountEmailForSync: getUser() ->", u, "email retenu:", JSON.stringify(email));
+      return email;
     } catch (e) {
+      console.log("[DIAG] currentAccountEmailForSync: erreur getUser()", e);
       return "";
     }
   }
@@ -11472,24 +11479,38 @@
     const hasLocalCustomization = localStorage.getItem(DEV_SETTINGS_KEY) !== null;
     const remote = await Sync.pullDevSettings(accountEmail);
     const local = loadDevSettings();
+    console.log(
+      "[DIAG] reconcileDevSettings: accountEmail=", JSON.stringify(accountEmail),
+      "hasLocalCustomization=", hasLocalCustomization,
+      "remote=", remote ? { updatedAt: remote.updatedAt, payloadKeys: Object.keys(remote.payload || {}) } : null,
+      "local.updatedAt=", local.updatedAt
+    );
     if (!remote) {
       if (hasLocalCustomization) {
         // Rien côté serveur : on y pousse notre réglage local tel quel.
+        console.log("[DIAG] reconcileDevSettings: aucun remote -> push du local vers le serveur");
         Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() }, accountEmail);
+      } else {
+        console.log("[DIAG] reconcileDevSettings: aucun remote et aucun local -> rien à faire");
       }
       return;
     }
     const remoteTime = new Date(remote.updatedAt || 0).getTime();
     const localTime = hasLocalCustomization ? new Date(local.updatedAt || 0).getTime() : 0;
+    console.log("[DIAG] reconcileDevSettings: remoteTime=", remoteTime, "localTime=", localTime);
     if (remoteTime > localTime) {
       // Un autre de TES appareils (même code de synchro ET même Compte
       // connecté) a poussé une vraie personnalisation plus récente : on
       // l'adopte.
+      console.log("[DIAG] reconcileDevSettings: adoption du remote (plus récent) dans localStorage");
       localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
       applyAllDevSettings();
       applyAppPrefsFromRemote(remote.payload.appPrefs);
     } else if (hasLocalCustomization && localTime > remoteTime) {
+      console.log("[DIAG] reconcileDevSettings: le local est plus récent -> push vers le serveur (écrase le remote !)");
       Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() }, accountEmail);
+    } else {
+      console.log("[DIAG] reconcileDevSettings: égalité de temps, rien ne bouge");
     }
   }
 
