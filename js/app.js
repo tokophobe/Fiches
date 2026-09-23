@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v152";
+  const APP_VERSION = "v153";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -432,9 +432,13 @@
     return `<svg class="${cls || "tab-icon-svg"}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
   }
   // Choix par défaut = les icônes déjà en place (essai précédent).
+  // Round 13 : "cards" et "sync" ne sont plus des cercles d'accueil (Fiches
+  // se rejoint désormais via Mon bureau, Synchronisation via Mon compte) —
+  // retirés d'ici pour ne plus proposer une icône éditable pour un cercle
+  // qui n'existe plus sur l'accueil.
   const DEFAULT_NAV_ICONS = {
-    review: "cards", manage: "folder", cards: "file", stats: "barChart", settings: "settings",
-    addCard: "plus", calendar: "calendar", sync: "refresh", dev: "code",
+    review: "cards", manage: "folder", stats: "barChart", settings: "settings",
+    addCard: "plus", calendar: "calendar", dev: "code",
   };
   // Couleurs des 4 notes (boutons d'évaluation + graphiques) et des 4 modes
   // d'apprentissage (badges) — item 2 : rendues éditables depuis la page
@@ -664,37 +668,33 @@
   // tout vers la gauche sur un écran plus large comme un PC, puisque
   // l'appli s'adapte elle en largeur — le pourcentage, lui, suit toujours
   // la largeur réelle quel que soit l'appareil).
+  // Round 13 : "cards", "sync", "messages" et "library" ne sont plus des
+  // cercles d'accueil (retirés du DOM — voir index.html) ; conservés ici
+  // uniquement s'ils restent référencés ailleurs, sinon retirés. Libellés
+  // mis à jour pour "manage" (Mon bureau) et "classes" (École).
   const HOME_LAYOUT_TITLES = {
-    review: "Réviser", manage: "Mes collections", cards: "Fiches", addCard: "Ajouter une fiche",
+    review: "Réviser", manage: "Mon bureau", addCard: "Ajouter une fiche",
     stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
-    sync: "Synchronisation", dev: "Développeur", classes: "Classes",
-    account: "Compte", messages: "Messagerie", library: "Bibliothèque",
+    dev: "Développeur", classes: "École", account: "Compte",
   };
   // Largeur/hauteur de référence utilisées uniquement pour convertir une
   // seule fois d'anciens réglages enregistrés en pixels (avant ce
   // correctif) vers des pourcentages équivalents.
   const HOME_LAYOUT_LEGACY_REF_WIDTH = 354;
   const HOME_LAYOUT_LEGACY_REF_HEIGHT = 640;
+  // Round 13 : 9 cercles d'accueil seulement (cards/sync/messages/library
+  // retirés — voir index.html) ; positions reprises au plus proche de
+  // l'ancien agencement.
   const DEFAULT_HOME_LAYOUT = {
-    review: { x: 26.1, y: 13.7, d: 155 },
     addCard: { x: 73.4, y: 14.9, d: 110 },
-    cards: { x: 21.9, y: 39.5, d: 105 },
-    stats: { x: 77.7, y: 37.5, d: 100 },
+    review: { x: 26.1, y: 13.7, d: 155 },
     manage: { x: 79.8, y: 59.0, d: 95 },
+    classes: { x: 50.0, y: 26.5, d: 95 },
     calendar: { x: 39.5, y: 54.7, d: 100 },
+    stats: { x: 77.7, y: 37.5, d: 100 },
     settings: { x: 16.2, y: 73.8, d: 85 },
-    sync: { x: 54.4, y: 76.2, d: 95 },
-    dev: { x: 89.0, y: 79.0, d: 80 },
-    classes: { x: 50.0, y: 90.0, d: 85 },
     account: { x: 15.0, y: 90.0, d: 70 },
-    // Round 6, item 5 : position par défaut du rond Messagerie — zone
-    // encore libre entre "Réviser" et "Ajouter une fiche" en haut, et
-    // "Fiches"/"Stats" en dessous ; ajustable comme les autres via le
-    // mode développeur si jamais ça chevauche un réglage personnalisé.
-    messages: { x: 50.0, y: 26.5, d: 90 },
-    // Nouvelle Bibliothèque (partage public de collections) : zone libre à
-    // gauche, entre "Fiches" et "Réglages".
-    library: { x: 16.0, y: 54.0, d: 90 },
+    dev: { x: 89.0, y: 79.0, d: 80 },
   };
   // Items 1/2 (logo) : position (X/Y en %, centre du logo) et taille (px)
   // du logo sur la page d'accueil.
@@ -1611,7 +1611,7 @@
     renderIconBankPicker(
       "dev-nav-icons-list",
       Object.keys(DEFAULT_NAV_ICONS),
-      { review: "Réviser", manage: "Gérer", cards: "Fiches", stats: "Stats", settings: "Réglages", addCard: "Ajouter une fiche", calendar: "Calendrier", sync: "Synchronisation", dev: "Développeur" },
+      { review: "Réviser", manage: "Gérer", stats: "Stats", settings: "Réglages", addCard: "Ajouter une fiche", calendar: "Calendrier", dev: "Développeur" },
       "navIcons",
       () => {
         applyNavLabels();
@@ -3589,14 +3589,14 @@
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
       nameBtn.innerHTML = `${boiteIconMarkup} <span>${escapeHtml(displayName)}</span>`;
-      nameBtn.title = "Réviser cette boîte";
-      // Item 7 (lot précédent) : un clic sur une boîte mène directement à
-      // la page Réviser correspondante (au lieu de la page Fiches). Item 3
-      // (nouveau lot) : le bouton Accueil de Réviser doit alors ramener ici
-      // (Organisation) plutôt qu'au programme de révision.
+      nameBtn.title = "Voir les fiches de cette boîte";
+      // Round 13, item 3-2 : un clic sur une boîte mène désormais à la page
+      // Fiches (au lieu de Réviser) — le bouton Accueil depuis Fiches
+      // ramène alors ici (Mon bureau) plutôt qu'au véritable accueil
+      // (cardsEntryFromManage, déjà géré par goHome()).
       nameBtn.addEventListener("click", () => {
-        reviewEntryFromManage = true;
-        goToReviewFor(`subject:${subjectId}`);
+        cardsEntryFromManage = true;
+        goToCardsFor(`subject:${subjectId}`);
       });
 
       const n = cards.filter((c) => !c.deleted && c.subject === subjectId).length;
@@ -3658,19 +3658,19 @@
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
-      nameBtn.title = "Réviser ce dossier";
+      nameBtn.title = "Voir les fiches de ce dossier";
       // Round 3, item 1 : le dossier racine d'une classe (créé
       // automatiquement chez l'élève) porte l'icône "classe" plutôt que
       // l'icône dossier classique, pour qu'on le distingue au premier coup
       // d'œil dans l'arborescence.
       const folderIconMarkup = f.sharedClassRoot ? CLASSES_ROW_ICON : iconSvgMarkup("folder", "icon-inline-svg");
       nameBtn.innerHTML = `${folderIconMarkup} <span>${escapeHtml(f.name)}</span>`;
-      // Item 7 (lot précédent) : un clic sur un dossier mène directement à
-      // la page Réviser correspondante (au lieu de la page Fiches). Item 3
-      // (nouveau lot) : Accueil depuis Réviser ramène alors ici.
+      // Round 13, item 3-2 : un clic sur un dossier mène désormais à la
+      // page Fiches (au lieu de Réviser) — Accueil depuis Fiches ramène
+      // alors ici.
       nameBtn.addEventListener("click", () => {
-        reviewEntryFromManage = true;
-        goToReviewFor(`folder:${f.id}`);
+        cardsEntryFromManage = true;
+        goToCardsFor(`folder:${f.id}`);
       });
 
       const childCount = folders.filter((x) => x.parentId === f.id).length + subjects.filter((x) => x.folderId === f.id).length;
@@ -8596,6 +8596,7 @@
       if (view === "dev") renderDevView();
       if (view === "sync") renderSyncView();
       if (view === "account") renderAccountView();
+      if (view === "school-hub") refreshMessagesBadge();
       if (view === "classes") renderClassesView();
       if (view === "messages") renderMessagesView();
       if (view === "library") renderLibraryView();
@@ -8634,6 +8635,17 @@
     if (cardsEntryFromManage && el("view-cards") && el("view-cards").classList.contains("is-active")) {
       cardsEntryFromManage = false;
       const tab = document.querySelector('.tab[data-view="manage"]');
+      if (tab) tab.click();
+      return;
+    }
+    // Round 13, item 4 : Classes et Messagerie ne se rejoignent plus que
+    // via le nouveau hub École — Accueil y ramène plutôt qu'au véritable
+    // accueil, comme pour Organisation/Fiches ci-dessus.
+    if (
+      (el("view-classes") && el("view-classes").classList.contains("is-active")) ||
+      (el("view-messages") && el("view-messages").classList.contains("is-active"))
+    ) {
+      const tab = document.querySelector('.tab[data-view="school-hub"]');
       if (tab) tab.click();
       return;
     }
@@ -9299,6 +9311,21 @@
     if (tab) tab.click();
   }
 
+  // Round 13, item 3-2 : mène à la page Fiches, filtrée sur le
+  // dossier/la boîte cliqué·e depuis Mon bureau — mirroring de
+  // goToReviewFor ci-dessus, mais vers "cards" plutôt que "review".
+  // cardsScopeFilter accepte déjà un id de boîte littéral ou une chaîne
+  // "folder:<id>" (cardsScopeCards, plus bas) : rien à changer côté
+  // filtrage, juste le déclenchement.
+  function goToCardsFor(linkId) {
+    if (!linkId) return;
+    const [type, id] = linkId.split(":");
+    cardsScopeFilter = type === "folder" ? `folder:${id}` : id;
+    renderManageList();
+    const tab = document.querySelector('.tab[data-view="cards"]');
+    if (tab) tab.click();
+  }
+
   function renderRevisionProgramList() {
     const list = el("revision-program-list");
     const empty = el("revision-program-empty");
@@ -9708,6 +9735,43 @@
   const accountGotoClassesBtn = el("account-goto-classes-btn");
   if (accountGotoClassesBtn) {
     accountGotoClassesBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="classes"]');
+      if (tab) tab.click();
+    });
+  }
+
+  // Round 13, item 8 : bouton "Synchronisation" toujours visible sur Mon
+  // compte (avant : uniquement proposé quand la synchro n'était pas encore
+  // configurée).
+  const accountGotoSyncBtn2 = el("account-goto-sync-btn2");
+  if (accountGotoSyncBtn2) {
+    accountGotoSyncBtn2.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="sync"]');
+      if (tab) tab.click();
+    });
+  }
+
+  // Round 13, item 3-1 : bouton "Bibliothèque" sur Mon bureau.
+  const manageGotoLibraryBtn = el("manage-goto-library-btn");
+  if (manageGotoLibraryBtn) {
+    manageGotoLibraryBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="library"]');
+      if (tab) tab.click();
+    });
+  }
+
+  // Round 13, item 4 : hub École — deux boutons ronds vers Messagerie et
+  // Mes classes.
+  const schoolHubMessagesBtn = el("school-hub-messages-btn");
+  if (schoolHubMessagesBtn) {
+    schoolHubMessagesBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="messages"]');
+      if (tab) tab.click();
+    });
+  }
+  const schoolHubClassesBtn = el("school-hub-classes-btn");
+  if (schoolHubClassesBtn) {
+    schoolHubClassesBtn.addEventListener("click", () => {
       const tab = document.querySelector('.tab[data-view="classes"]');
       if (tab) tab.click();
     });
@@ -10151,6 +10215,21 @@
     }
   }
 
+  // Round 13 : "rejoindre une classe" vit maintenant dans une page dédiée
+  // (view-classes-join), ouverte/fermée depuis la page Élève.
+  function openClassesJoinView() {
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el("view-classes-join").classList.add("is-active");
+  }
+  function closeClassesJoinView() {
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el("view-classes-student").classList.add("is-active");
+  }
+  const classesGotoJoinBtn = el("classes-goto-join-btn");
+  if (classesGotoJoinBtn) classesGotoJoinBtn.addEventListener("click", openClassesJoinView);
+  const classesJoinBackBtn = el("classes-join-back-btn");
+  if (classesJoinBackBtn) classesJoinBackBtn.addEventListener("click", closeClassesJoinView);
+
   const classesJoinBtn = el("classes-join-btn");
   if (classesJoinBtn) {
     classesJoinBtn.addEventListener("click", async () => {
@@ -10172,8 +10251,24 @@
       input.value = "";
       await syncSharedBoxesForStudent();
       await renderStudentClasses();
+      closeClassesJoinView();
     });
   }
+
+  // Round 13 : "créer une classe" vit maintenant dans une page dédiée
+  // (view-classes-create), ouverte/fermée depuis la page Enseignant.
+  function openClassesCreateView() {
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el("view-classes-create").classList.add("is-active");
+  }
+  function closeClassesCreateView() {
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el("view-classes-teacher").classList.add("is-active");
+  }
+  const classesGotoCreateBtn = el("classes-goto-create-btn");
+  if (classesGotoCreateBtn) classesGotoCreateBtn.addEventListener("click", openClassesCreateView);
+  const classesCreateBackBtn = el("classes-create-back-btn");
+  if (classesCreateBackBtn) classesCreateBackBtn.addEventListener("click", closeClassesCreateView);
 
   const classesCreateBtn = el("classes-create-btn");
   if (classesCreateBtn) {
@@ -10190,6 +10285,7 @@
       }
       input.value = "";
       await renderTeacherClasses();
+      closeClassesCreateView();
     });
   }
 
@@ -10434,11 +10530,16 @@
   /** Met à jour la pastille de notifications du bouton d'accueil
    *  "Messagerie" — appelée à chaque changement d'état de connexion (voir
    *  updateAccountHomeButton) et après lecture/envoi d'un message. */
+  // Round 13, item 4 : la pastille de notifications de messagerie migre du
+  // cercle d'accueil "Messagerie" (retiré) vers le cercle "École" et
+  // apparaît aussi sur le bouton rond "Messagerie" du nouveau hub École.
   async function refreshMessagesBadge() {
-    const badge = el("home-messages-badge");
-    if (!badge) return;
+    const homeBadge = el("home-school-badge");
+    const hubBadge = el("school-hub-messages-badge");
+    if (!homeBadge && !hubBadge) return;
     if (!Sync.isConfigured() || !accountCurrentUser) {
-      badge.hidden = true;
+      if (homeBadge) homeBadge.hidden = true;
+      if (hubBadge) hubBadge.hidden = true;
       return;
     }
     try {
@@ -10448,8 +10549,15 @@
       for (const k of classes) {
         total += await Sync.messages.countUnread(k.id, lastReadMap[k.id]);
       }
-      badge.hidden = total <= 0;
-      badge.textContent = total > 99 ? "99+" : String(total);
+      const text = total > 99 ? "99+" : String(total);
+      if (homeBadge) {
+        homeBadge.hidden = total <= 0;
+        homeBadge.textContent = text;
+      }
+      if (hubBadge) {
+        hubBadge.hidden = total <= 0;
+        hubBadge.textContent = text;
+      }
     } catch (e) {
       console.warn("Messagerie : échec du calcul des notifications", e);
     }

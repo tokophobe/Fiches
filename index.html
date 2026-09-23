@@ -196,7 +196,10 @@
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
     <button class="tab" role="tab" aria-selected="false" data-view="calendar" hidden>Calendrier</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Programme</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="school-hub" hidden>École</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes" hidden>Classes</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="classes-join" hidden>Rejoindre une classe</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="classes-create" hidden>Créer une classe</button>
     <button class="tab" role="tab" aria-selected="false" data-view="messages" hidden>Messagerie</button>
     <button class="tab" role="tab" aria-selected="false" data-view="library" hidden>Bibliothèque</button>
     <button class="tab" role="tab" aria-selected="false" data-view="account" hidden>Compte</button>
@@ -213,21 +216,35 @@
       <img src="./icons/logo.png" alt="" id="home-logo" class="home-logo" />
       <h1 class="home-title">Fiches</h1>
       <div class="home-scatter" id="home-scatter">
+        <button type="button" class="home-circle home-circle--accent" data-key="addCard" id="home-new-card-btn">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Ajouter une fiche</span>
+        </button>
         <button type="button" class="home-circle" data-key="review" data-go="revision-program">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
           <span>Réviser</span>
         </button>
+        <!-- Round 13, item 3 : "Mon bureau" remplace "Mes collections" (même
+             data-key/data-go pour ne rien casser des maps de mise en page/
+             icônes) ; la page elle-même gagne un accès Bibliothèque et fait
+             mener les clics de ligne vers Fiches (cf. #view-manage). -->
         <button type="button" class="home-circle" data-key="manage" data-go="manage">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
-          <span>Mes collections</span>
+          <span>Mon bureau</span>
         </button>
-        <button type="button" class="home-circle" data-key="cards" data-go="cards">
-          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M15 2v5h5"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
-          <span>Fiches</span>
+        <!-- Round 13, item 4 : "École" remplace "Classes" et mène désormais
+             au nouveau hub (#view-school-hub) plutôt qu'à la page Classes
+             directement ; conserve data-key="classes" pour ne pas casser
+             DEFAULT_HOME_LAYOUT, mais data-go pointe vers le hub. La pastille
+             de messagerie migre ici. -->
+        <button type="button" class="home-circle" data-key="classes" data-go="school-hub">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c0-3.6 2.5-6.2 5.5-6.2s5.5 2.6 5.5 6.2"/><circle cx="17" cy="9" r="2.2"/><path d="M15.3 14.3c2.5.5 4.2 2.7 4.2 5.7"/></svg>
+          <span>École</span>
+          <span class="home-circle-badge" id="home-school-badge" hidden>0</span>
         </button>
-        <button type="button" class="home-circle home-circle--accent" data-key="addCard" id="home-new-card-btn">
-          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          <span>Ajouter une fiche</span>
+        <button type="button" class="home-circle" data-key="calendar" data-go="calendar">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Calendrier</span>
         </button>
         <button type="button" class="home-circle" data-key="stats" data-go="stats">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
@@ -237,36 +254,16 @@
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Réglages</span>
         </button>
-        <button type="button" class="home-circle" data-key="sync" data-go="sync">
-          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2.1l4 4-4 4"/><path d="M3 12v-2a4 4 0 0 1 4-4h14"/><path d="M7 21.9l-4-4 4-4"/><path d="M21 12v2a4 4 0 0 1-4 4H3"/></svg>
-          <span>Synchronisation</span>
-        </button>
-        <button type="button" class="home-circle" data-key="calendar" data-go="calendar">
-          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          <span>Calendrier</span>
-        </button>
-        <button type="button" class="home-circle" data-key="dev" data-go="dev">
-          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/></svg>
-          <span>Développeur</span>
-        </button>
-        <button type="button" class="home-circle" data-key="classes" data-go="classes">
-          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c0-3.6 2.5-6.2 5.5-6.2s5.5 2.6 5.5 6.2"/><circle cx="17" cy="9" r="2.2"/><path d="M15.3 14.3c2.5.5 4.2 2.7 4.2 5.7"/></svg>
-          <span>Classes</span>
-        </button>
+        <!-- Round 13, item 8 : "Mon compte" (libellé toujours géré
+             dynamiquement par updateAccountHomeButton — Se connecter/Mon
+             compte) gagne un accès à la Synchronisation (cf. #view-account). -->
         <button type="button" class="home-circle" data-key="account" data-go="account">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
           <span>Se connecter</span>
         </button>
-        <!-- Round 6, item 5 : bouton Messagerie — pastille avec le nombre
-             de notifications non lues, masquée s'il n'y en a aucune. -->
-        <button type="button" class="home-circle" data-key="messages" data-go="messages">
-          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <span>Messagerie</span>
-          <span class="home-circle-badge" id="home-messages-badge" hidden>0</span>
-        </button>
-        <button type="button" class="home-circle" data-key="library" data-go="library">
-          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
-          <span>Bibliothèque</span>
+        <button type="button" class="home-circle" data-key="dev" data-go="dev">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/></svg>
+          <span>Développeur</span>
         </button>
       </div>
     </section>
@@ -380,6 +377,13 @@
                gauche, les 3 pictos d'affichage passent à droite. -->
           <div class="list-header-actions">
             <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
+            <!-- Round 13, item 3-1 : accès à la Bibliothèque depuis Mon
+                 bureau, même gabarit que "+ Nouveau dossier" et icône déjà
+                 utilisée pour les collections partagées/Bibliothèque. -->
+            <button class="btn btn--small" id="manage-goto-library-btn" type="button">
+              <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
+              Bibliothèque
+            </button>
           </div>
           <div class="org-display-toggle" id="org-display-toggle">
             <button type="button" class="org-display-toggle-btn is-active" data-org-display="count" title="Nombre de fiches/boîtes">
@@ -693,6 +697,12 @@
     <section id="view-account" class="view" aria-labelledby="tab-account">
       <h2 class="section-title">Compte</h2>
 
+      <!-- Round 13, item 8 : accès à la Synchronisation toujours visible
+           (avant : seulement affiché quand la synchro n'était pas encore
+           configurée) — nécessaire maintenant que le cercle d'accueil
+           dédié "Synchronisation" a été retiré. -->
+      <button type="button" class="btn btn--ghost btn--small" id="account-goto-sync-btn2">Synchronisation</button>
+
       <div id="account-needs-sync" hidden>
         <p class="field-hint settings-block-hint">
           Un compte a besoin que la Synchronisation soit configurée
@@ -761,6 +771,29 @@
          connecté (voir Compte ci-dessus) — une boîte partagée par un prof
          apparaît toute seule (miroir en lecture seule, toujours à jour)
          dans les boîtes d'un élève dès qu'il fait partie de la classe. -->
+    <!-- Round 13, item 4 : nouveau palier "École" — deux boutons ronds
+         (même esprit que la page Classes) : Messagerie et Mes classes.
+         Le cercle d'accueil "École" mène ici plutôt que directement sur
+         la page Classes. -->
+    <section id="view-school-hub" class="view" aria-labelledby="tab-school-hub">
+      <h2 class="section-title">École</h2>
+      <div class="classes-role-circles" id="school-hub-circles">
+        <button type="button" class="classes-role-circle" id="school-hub-messages-btn">
+          <span class="classes-role-circle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </span>
+          <span>Messagerie</span>
+          <span class="home-circle-badge" id="school-hub-messages-badge" hidden>0</span>
+        </button>
+        <button type="button" class="classes-role-circle" id="school-hub-classes-btn">
+          <span class="classes-role-circle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c0-3.6 2.5-6.2 5.5-6.2s5.5 2.6 5.5 6.2"/><circle cx="17" cy="9" r="2.2"/><path d="M15.3 14.3c2.5.5 4.2 2.7 4.2 5.7"/></svg>
+          </span>
+          <span>Mes classes</span>
+        </button>
+      </div>
+    </section>
+
     <section id="view-classes" class="view" aria-labelledby="tab-classes">
       <h2 class="section-title">Classes</h2>
 
@@ -790,33 +823,33 @@
             <span class="classes-role-circle-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M12 5 2 9l10 4 10-4-10-4Z"/><path d="M6 11v5c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-5"/></svg>
             </span>
-            <span>J'apprends</span>
+            <span>Élève</span>
           </button>
           <button type="button" class="classes-role-circle" id="classes-goto-teacher-btn">
             <span class="classes-role-circle-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M7 9.5 10.5 12 7 14.5"/></svg>
             </span>
-            <span>J'enseigne</span>
+            <span>Enseignant</span>
           </button>
         </div>
       </div>
     </section>
 
-    <!-- Round 3, item 2 : page "J'apprends" (anciennement l'onglet Élève). -->
+    <!-- Round 3, item 2 : page "Élève" (anciennement "J'apprends"). Round 13 :
+         la fonction "rejoindre une classe" est déportée dans une page
+         dédiée (view-classes-join), accessible ici par un bouton rond. -->
     <section id="view-classes-student" class="view" aria-labelledby="tab-classes">
       <button type="button" class="btn btn--ghost" id="classes-student-back-btn">← Retour à Classes</button>
-      <h2 class="section-title">J'apprends</h2>
+      <h2 class="section-title">Élève</h2>
       <div class="classes-section" id="classes-section-eleve">
-        <p class="field-hint settings-block-hint">
-          Rejoins une classe avec le code donné par ton professeur — les
-          boîtes qu'il partage avec cette classe apparaissent ensuite
-          automatiquement dans tes boîtes (Organisation), toujours à jour.
-        </p>
-        <div class="classes-join-row">
-          <input type="text" id="classes-join-code-input" placeholder="Code d'invitation" />
-          <button type="button" class="btn btn--small" id="classes-join-btn">Rejoindre</button>
+        <div class="classes-role-circles" id="classes-student-actions">
+          <button type="button" class="classes-role-circle" id="classes-goto-join-btn">
+            <span class="classes-role-circle-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+            <span>Rejoindre une classe</span>
+          </button>
         </div>
-        <p class="field-hint" id="classes-join-note" hidden></p>
         <!-- Round 6, item 4 : les classes apparaissent en ronds (même
              esprit que les boutons de l'accueil), chacun menant à sa page
              dédiée (view-class-detail) plutôt qu'à une ligne dépliée ici. -->
@@ -825,17 +858,52 @@
       </div>
     </section>
 
-    <!-- Round 3, item 2 : page "J'enseigne" (anciennement l'onglet Professeur). -->
+    <!-- Round 13 : page dédiée "Rejoindre une classe", extraite de la page
+         Élève. -->
+    <section id="view-classes-join" class="view" aria-labelledby="tab-classes">
+      <button type="button" class="btn btn--ghost" id="classes-join-back-btn">← Retour à Élève</button>
+      <h2 class="section-title">Rejoindre une classe</h2>
+      <p class="field-hint settings-block-hint">
+        Rejoins une classe avec le code donné par ton professeur — les
+        boîtes qu'il partage avec cette classe apparaissent ensuite
+        automatiquement dans tes boîtes (Organisation), toujours à jour.
+      </p>
+      <div class="classes-join-row">
+        <input type="text" id="classes-join-code-input" placeholder="Code d'invitation" />
+        <button type="button" class="btn btn--small" id="classes-join-btn">Rejoindre</button>
+      </div>
+      <p class="field-hint" id="classes-join-note" hidden></p>
+    </section>
+
+    <!-- Round 3, item 2 : page "Enseignant" (anciennement "J'enseigne").
+         Round 13 : la fonction "créer une classe" est déportée dans une
+         page dédiée (view-classes-create), accessible ici par un bouton
+         rond. -->
     <section id="view-classes-teacher" class="view" aria-labelledby="tab-classes">
       <button type="button" class="btn btn--ghost" id="classes-teacher-back-btn">← Retour à Classes</button>
-      <h2 class="section-title">J'enseigne</h2>
+      <h2 class="section-title">Enseignant</h2>
       <div class="classes-section" id="classes-section-prof">
-        <div class="classes-create-row">
-          <input type="text" id="classes-create-name-input" placeholder="Nom de la classe" />
-          <button type="button" class="btn btn--small" id="classes-create-btn">Créer une classe</button>
+        <div class="classes-role-circles" id="classes-teacher-actions">
+          <button type="button" class="classes-role-circle" id="classes-goto-create-btn">
+            <span class="classes-role-circle-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+            <span>Créer une classe</span>
+          </button>
         </div>
         <div class="classes-class-circles" id="classes-teacher-list"></div>
         <p class="field-hint" id="classes-teacher-empty" hidden>Tu n'as encore créé aucune classe.</p>
+      </div>
+    </section>
+
+    <!-- Round 13 : page dédiée "Créer une classe", extraite de la page
+         Enseignant. -->
+    <section id="view-classes-create" class="view" aria-labelledby="tab-classes">
+      <button type="button" class="btn btn--ghost" id="classes-create-back-btn">← Retour à Enseignant</button>
+      <h2 class="section-title">Créer une classe</h2>
+      <div class="classes-create-row">
+        <input type="text" id="classes-create-name-input" placeholder="Nom de la classe" />
+        <button type="button" class="btn btn--small" id="classes-create-btn">Créer une classe</button>
       </div>
     </section>
 
