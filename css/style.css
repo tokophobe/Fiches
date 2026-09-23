@@ -157,6 +157,14 @@ button.topbar-new-card-btn {
   gap: 8px;
 }
 
+/* Round 14 : petit logo "darwin" dans le bandeau du haut, entre le
+   bouton Accueil et le bouton mode nuit — taille fixe, discrète. */
+.topbar-darwin-logo {
+  height: 22px;
+  width: auto;
+  display: block;
+}
+
 /* Item 4 : bascule mode nuit/jour, en topbar. */
 .night-mode-toggle-btn {
   display: flex;
@@ -1164,7 +1172,11 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   position: relative;
   background: var(--home-bg-color, transparent);
   margin: calc(-1 * max(18px, env(safe-area-inset-top))) -18px calc(-1 * max(28px, env(safe-area-inset-bottom)));
-  padding: max(18px, env(safe-area-inset-top)) 18px max(28px, env(safe-area-inset-bottom));
+  /* Round 14 : 130px de marge basse supplémentaire, réservée au logo
+     darwin + son texte, sous les cercles — évite qu'ils chevauchent la
+     disposition existante par défaut (réglable ensuite en mode
+     développeur, X/Y/taille). */
+  padding: max(18px, env(safe-area-inset-top)) 18px calc(max(28px, env(safe-area-inset-bottom)) + 130px);
 }
 
 @keyframes fade-in {
@@ -1196,6 +1208,39 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   pointer-events: none;
   filter: var(--home-logo-shadow, none);
 }
+
+/* Round 14 : logo "darwin", affiché en plus du robot sur l'accueil —
+   même principe de positionnement (variables posées par
+   applyHomeLayout), réglages séparés du logo robot ci-dessus. */
+.darwin-home-logo {
+  position: absolute;
+  left: var(--darwin-logo-x, 50%);
+  top: var(--darwin-logo-y, 12%);
+  width: var(--darwin-logo-size, 90px);
+  height: auto;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  filter: var(--darwin-logo-shadow, none);
+}
+
+/* Round 14 : texte sous le logo darwin — contenu/position/taille
+   réglables en mode développeur, masqué tant qu'aucun texte n'est
+   saisi (voir applyHomeLayout). */
+.darwin-home-text {
+  position: absolute;
+  left: var(--darwin-text-x, 50%);
+  top: var(--darwin-text-y, 18%);
+  transform: translate(-50%, -50%);
+  width: max-content;
+  max-width: 90%;
+  margin: 0;
+  text-align: center;
+  font-size: var(--darwin-text-size, 12px);
+  color: var(--home-title-color, var(--main-text-color, var(--paper)));
+  pointer-events: none;
+}
+
+.darwin-home-text[hidden] { display: none; }
 
 /* Items 1/2/6 (dernier lot) : logo en haut du corps de chaque page (sauf
    l'accueil, masqué par JS selon la vue active — voir showLogoForView),

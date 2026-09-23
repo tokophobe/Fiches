@@ -122,6 +122,9 @@
       </button>
     </div>
     <div class="header-right">
+      <!-- Round 14 : petit logo "darwin" dans le bandeau du haut, entre le
+           bouton Accueil et le bouton mode nuit. -->
+      <img src="./icons/darwin-logo.png" alt="darwin" id="topbar-darwin-logo" class="topbar-darwin-logo" />
       <button type="button" class="night-mode-toggle-btn" id="night-mode-toggle-btn" title="Mode nuit" aria-label="Basculer le mode nuit">
         <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       </button>
@@ -214,6 +217,13 @@
          chaque fois pour aller d'une page à l'autre (item, confirmé). -->
     <section id="view-home" class="view is-active">
       <img src="./icons/logo.png" alt="" id="home-logo" class="home-logo" />
+      <!-- Round 14 : logo "darwin" affiché en plus du robot, position/
+           taille/ombre réglables en mode développeur (dev-darwin-logo-list). -->
+      <img src="./icons/darwin-logo.png" alt="darwin" id="darwin-home-logo" class="darwin-home-logo" />
+      <!-- Round 14 : texte sous le logo darwin — contenu/position/taille
+           réglables en mode développeur (dev-darwin-text-list) ; masqué
+           tant qu'aucun texte n'est saisi. -->
+      <p id="darwin-home-text" class="darwin-home-text" hidden></p>
       <h1 class="home-title">Fiches</h1>
       <div class="home-scatter" id="home-scatter">
         <button type="button" class="home-circle home-circle--accent" data-key="addCard" id="home-new-card-btn">
@@ -1310,6 +1320,23 @@
       <div class="card-form">
         <h3 class="settings-block-title">Logo (page d'accueil)</h3>
         <div id="dev-home-logo-list"></div>
+      </div>
+
+      <!-- Round 14 : logo "darwin" affiché en plus du robot sur l'accueil
+           — position/taille/ombre entièrement réglables ici (à la
+           différence du logo robot ci-dessus, dont l'ombre reste un
+           réglage utilisateur dans Réglages). -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Logo darwin (page d'accueil)</h3>
+        <div id="dev-darwin-logo-list"></div>
+      </div>
+
+      <!-- Round 14 : texte sous le logo darwin — contenu, position et
+           taille réglables ici. Laissé vide par défaut (masqué tant
+           qu'aucun texte n'est saisi). -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Texte sous le logo darwin (page d'accueil)</h3>
+        <div id="dev-darwin-text-list"></div>
       </div>
 
       <!-- Item 1b/1c : disposition de la page Réviser. -->

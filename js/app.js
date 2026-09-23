@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v153";
+  const APP_VERSION = "v154";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -702,6 +702,18 @@
   // Items 1/2/6 (dernier lot) : logo affiché en haut du corps de chaque
   // autre page (taille + ombre, indépendantes de celles de l'accueil).
   const DEFAULT_BODY_LOGO = { size: 40, shadow: false };
+  // Round 14 : logo "darwin" affiché en plus du robot sur l'accueil —
+  // position/taille/ombre TOUTES réglables en mode développeur (à la
+  // différence du logo robot ci-dessus, dont l'ombre est un réglage
+  // utilisateur séparé dans Réglages).
+  // Placé par défaut sous les cercles (zone dédiée par le padding-bottom
+  // supplémentaire de #view-home, voir css/style.css), pour ne chevaucher
+  // aucun cercle avec la disposition par défaut.
+  const DEFAULT_DARWIN_LOGO = { x: 50, y: 88, size: 70, shadow: false };
+  // Round 14 : texte optionnel sous le logo darwin — contenu/position/
+  // taille réglables en mode développeur ; vide par défaut (masqué tant
+  // que rien n'est saisi).
+  const DEFAULT_DARWIN_TEXT = { x: 50, y: 95, size: 11, content: "" };
   // Items 4 et 5 : le robot (logo en haut du corps de page) peut porter un
   // ou plusieurs messages d'aide selon la page — un tableau permet une
   // petite série façon tuto (voir bouton "Suite", round 4), une simple
@@ -1232,6 +1244,8 @@
       homeLayout: migrateHomeLayoutToPercent(parsed),
       homeLogo: { ...DEFAULT_HOME_LOGO, ...(parsed.homeLogo || {}) },
       bodyLogo: { ...DEFAULT_BODY_LOGO, ...(parsed.bodyLogo || {}) },
+      darwinLogo: { ...DEFAULT_DARWIN_LOGO, ...(parsed.darwinLogo || {}) },
+      darwinText: { ...DEFAULT_DARWIN_TEXT, ...(parsed.darwinText || {}) },
       homeLayoutUnit: "percent",
       homeLayoutAnchor: "center",
       reviewLayout: { ...DEFAULT_REVIEW_LAYOUT, ...(parsed.reviewLayout || {}) },
@@ -1809,6 +1823,28 @@
     root.setProperty("--home-logo-shadow", logo.shadow ? LOGO_SHADOW_FILTER : "none");
     root.setProperty("--body-logo-size", `${bodyLogo.size}px`);
     root.setProperty("--body-logo-shadow", bodyLogo.shadow ? LOGO_SHADOW_FILTER : "none");
+
+    // Round 14 : logo "darwin" + texte sous lui, même système de
+    // coordonnées que le logo robot ci-dessus (X/Y en % de la même zone,
+    // converti en px pour X pour la même raison — voir les commentaires
+    // au-dessus).
+    const darwinLogo = loadDevSettings().darwinLogo;
+    const darwinText = loadDevSettings().darwinText;
+    const darwinLogoLeftPx = scatterLeftOffset + (darwinLogo.x / 100) * scatterWidthForLogo;
+    root.setProperty("--darwin-logo-x", `${Math.round(darwinLogoLeftPx)}px`);
+    root.setProperty("--darwin-logo-y", `${darwinLogo.y}%`);
+    root.setProperty("--darwin-logo-size", `${darwinLogo.size}px`);
+    root.setProperty("--darwin-logo-shadow", darwinLogo.shadow ? LOGO_SHADOW_FILTER : "none");
+    const darwinTextLeftPx = scatterLeftOffset + (darwinText.x / 100) * scatterWidthForLogo;
+    root.setProperty("--darwin-text-x", `${Math.round(darwinTextLeftPx)}px`);
+    root.setProperty("--darwin-text-y", `${darwinText.y}%`);
+    root.setProperty("--darwin-text-size", `${darwinText.size}px`);
+    const darwinTextEl = el("darwin-home-text");
+    if (darwinTextEl) {
+      const content = (darwinText.content || "").trim();
+      darwinTextEl.textContent = content;
+      darwinTextEl.hidden = content.length === 0;
+    }
   }
 
   /** Retourne le temps de retournement de fiche réglé (item 1c), en
@@ -1938,6 +1974,76 @@
       input.addEventListener("input", () => {
         const s = loadDevSettings();
         s.bodyLogo[input.dataset.field] = Number(input.value) || 0;
+        saveDevSettings(s);
+        applyHomeLayout();
+      });
+    });
+  }
+
+  // Round 14 : logo "darwin" — position/taille/ombre TOUTES réglables
+  // ici (contrairement au logo robot, dont seule l'ombre vit dans
+  // Réglages ; voir DEFAULT_DARWIN_LOGO plus haut).
+  function renderDarwinLogoEditor() {
+    const wrap = el("dev-darwin-logo-list");
+    if (!wrap) return;
+    const logo = loadDevSettings().darwinLogo;
+    wrap.innerHTML = `<div class="dev-home-layout-row">
+      <span class="dev-home-layout-title">Logo darwin</span>
+      <label>X % <input type="number" step="0.1" class="dev-darwin-logo-input" data-field="x" value="${logo.x}" /></label>
+      <label>Y % <input type="number" step="0.1" class="dev-darwin-logo-input" data-field="y" value="${logo.y}" /></label>
+      <label>Taille px <input type="number" class="dev-darwin-logo-input" data-field="size" value="${logo.size}" /></label>
+    </div>
+    <label class="settings-toggle-row">
+      <input type="checkbox" id="dev-darwin-logo-shadow" ${logo.shadow ? "checked" : ""} />
+      <span>Ombre sous le logo darwin</span>
+    </label>`;
+    wrap.querySelectorAll(".dev-darwin-logo-input").forEach((input) => {
+      input.addEventListener("input", () => {
+        const s = loadDevSettings();
+        s.darwinLogo[input.dataset.field] = Number(input.value) || 0;
+        saveDevSettings(s);
+        applyHomeLayout();
+      });
+    });
+    const shadowEl = el("dev-darwin-logo-shadow");
+    if (shadowEl) {
+      shadowEl.addEventListener("change", () => {
+        const s = loadDevSettings();
+        s.darwinLogo.shadow = shadowEl.checked;
+        saveDevSettings(s);
+        applyHomeLayout();
+      });
+    }
+  }
+
+  // Round 14 : texte sous le logo darwin — contenu/position/taille.
+  function renderDarwinTextEditor() {
+    const wrap = el("dev-darwin-text-list");
+    if (!wrap) return;
+    const text = loadDevSettings().darwinText;
+    wrap.innerHTML = `<label class="field">
+      <span>Texte (vide = masqué)</span>
+      <input type="text" id="dev-darwin-text-content" value="${escapeHtml(text.content || "")}" placeholder="Ex. Fiches by darwin" />
+    </label>
+    <div class="dev-home-layout-row">
+      <span class="dev-home-layout-title">Position</span>
+      <label>X % <input type="number" step="0.1" class="dev-darwin-text-input" data-field="x" value="${text.x}" /></label>
+      <label>Y % <input type="number" step="0.1" class="dev-darwin-text-input" data-field="y" value="${text.y}" /></label>
+      <label>Taille px <input type="number" class="dev-darwin-text-input" data-field="size" value="${text.size}" /></label>
+    </div>`;
+    const contentEl = el("dev-darwin-text-content");
+    if (contentEl) {
+      contentEl.addEventListener("input", () => {
+        const s = loadDevSettings();
+        s.darwinText.content = contentEl.value;
+        saveDevSettings(s);
+        applyHomeLayout();
+      });
+    }
+    wrap.querySelectorAll(".dev-darwin-text-input").forEach((input) => {
+      input.addEventListener("input", () => {
+        const s = loadDevSettings();
+        s.darwinText[input.dataset.field] = Number(input.value) || 0;
         saveDevSettings(s);
         applyHomeLayout();
       });
@@ -8407,6 +8513,8 @@
     renderShadowsEditor();
     renderHomeLayoutEditor();
     renderHomeLogoEditor();
+    renderDarwinLogoEditor();
+    renderDarwinTextEditor();
     renderReviewLayoutEditor();
     renderRevisionAlgoEditor();
     renderPersGaugeColorsEditor();
