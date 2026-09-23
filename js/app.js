@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v151";
+  const APP_VERSION = "v152";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -825,6 +825,87 @@
       renderBodyLogoSpeechState(true);
     });
   }
+  /** Round 11 (suite de l'item 6, round 10) : Stéphane a signalé qu'un
+   *  second robot, distinct de celui déjà affiché en haut de la page
+   *  (#body-logo hors accueil, #home-logo sur l'accueil), apparaissait
+   *  dans la modale — un logo dupliqué codé en dur dans son balisage. Ici,
+   *  on repère plutôt le robot RÉELLEMENT visible à l'écran à cet instant
+   *  et on épingle la bulle juste en dessous de lui (ou au-dessus, s'il
+   *  n'y a pas la place en bas de l'écran), en le faisant ressortir
+   *  au-dessus de l'assombrissement (même z-index que la bulle) — c'est
+   *  bien LUI qui "parle", l'effet d'assombrissement du reste de la page
+   *  restant identique à avant. Repli (très rare, ex. tout premier rendu
+   *  avant que la page ait affiché un logo) : bulle centrée sans flèche,
+   *  comme avant round 11 mais toujours sans logo dupliqué. */
+  let robotModalHighlightedLogo = null;
+  function clearRobotModalHighlight() {
+    if (robotModalHighlightedLogo) {
+      robotModalHighlightedLogo.classList.remove("robot-modal-anchor-highlight");
+      robotModalHighlightedLogo = null;
+    }
+  }
+  function findVisibleRobotLogo() {
+    const homeView = el("view-home");
+    if (homeView && homeView.classList.contains("is-active")) {
+      const homeLogo = el("home-logo");
+      if (homeLogo && homeLogo.offsetParent !== null) return homeLogo;
+    }
+    const bodyLogoRow = el("body-logo-row");
+    if (bodyLogoRow && !bodyLogoRow.hidden) {
+      const bodyLogo = el("body-logo");
+      if (bodyLogo && bodyLogo.offsetParent !== null) return bodyLogo;
+    }
+    return null;
+  }
+  function positionRobotModal() {
+    const modal = el("robot-modal");
+    const bubble = el("robot-modal-bubble");
+    if (!modal || !bubble) return;
+    clearRobotModalHighlight();
+    const logo = findVisibleRobotLogo();
+    bubble.classList.remove("robot-modal-bubble--arrow-top", "robot-modal-bubble--arrow-bottom");
+    if (!logo) {
+      modal.classList.remove("robot-modal--anchored");
+      modal.style.position = "";
+      modal.style.left = "";
+      modal.style.top = "";
+      modal.style.width = "";
+      return;
+    }
+    const rect = logo.getBoundingClientRect();
+    const margin = 12;
+    const maxWidth = Math.min(420, window.innerWidth - margin * 2);
+    let left = rect.left - 8;
+    left = Math.max(margin, Math.min(left, window.innerWidth - maxWidth - margin));
+    const spaceBelow = window.innerHeight - rect.bottom;
+    let top;
+    modal.style.transform = "";
+    if (spaceBelow >= 140 || rect.top < 140) {
+      top = rect.bottom + 14;
+      bubble.classList.add("robot-modal-bubble--arrow-top");
+    } else {
+      // Pas assez de place en dessous (le robot est bas dans la page) :
+      // la bulle remonte au-dessus de lui à la place.
+      top = Math.max(margin, rect.top - 14);
+      modal.style.transform = "translateY(-100%)";
+      bubble.classList.add("robot-modal-bubble--arrow-bottom");
+    }
+    modal.classList.add("robot-modal--anchored");
+    modal.style.position = "fixed";
+    modal.style.left = left + "px";
+    modal.style.top = top + "px";
+    modal.style.width = maxWidth + "px";
+    const arrowX = Math.max(16, Math.min(rect.left + rect.width / 2 - left, maxWidth - 16));
+    bubble.style.setProperty("--robot-arrow-x", arrowX + "px");
+    logo.classList.add("robot-modal-anchor-highlight");
+    robotModalHighlightedLogo = logo;
+  }
+  // Repositionne si la fenêtre change de taille (rotation d'écran, resize
+  // PC) pendant qu'un message du robot est affiché.
+  window.addEventListener("resize", () => {
+    const overlay = el("robot-modal-overlay");
+    if (overlay && !overlay.hidden) positionRobotModal();
+  });
   /* Round 3, item 3 : le robot "parle" pour tous les messages de l'appli
    *  (information, avertissement, confirmation) — remplace les alert()/
    *  confirm() natifs du navigateur, jugés trop bruts et pas cohérents
@@ -864,6 +945,7 @@
         if (settled) return;
         settled = true;
         overlay.hidden = true;
+        clearRobotModalHighlight();
         document.removeEventListener("keydown", onKeydown, true);
         resolve(value);
       }
@@ -892,6 +974,7 @@
         actions.appendChild(btn);
       });
       overlay.hidden = false;
+      positionRobotModal();
       document.addEventListener("keydown", onKeydown, true);
       requestAnimationFrame(() => {
         if (hasInput && inputEl) {

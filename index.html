@@ -160,11 +160,16 @@
 
   <!-- Round 3, item 3 : remplace toutes les alert()/confirm() natives par
        un message "dit" par le robot (même esprit que la bulle de la page,
-       mais en superposition modale, avec bouton(s) d'action). -->
+       mais en superposition modale, avec bouton(s) d'action).
+       Round 11 (suite item 6) : n'affiche plus son propre logo dupliqué —
+       la bulle est repositionnée en JS (positionRobotModal, js/app.js)
+       juste sous le robot déjà présent en haut de la page (#body-logo ou
+       #home-logo selon la vue), qui reste éclairé au-dessus de
+       l'assombrissement plutôt que d'être recouvert par un second robot
+       flottant au centre de l'écran. -->
   <div class="robot-modal-overlay" id="robot-modal-overlay" hidden>
-    <div class="robot-modal" role="alertdialog" aria-modal="true">
-      <img src="./icons/logo.png" alt="" class="robot-modal-logo" />
-      <div class="robot-modal-bubble">
+    <div class="robot-modal" id="robot-modal" role="alertdialog" aria-modal="true">
+      <div class="robot-modal-bubble" id="robot-modal-bubble">
         <p class="robot-modal-text" id="robot-modal-text"></p>
         <!-- Round 10, item 6 : variante "prompt" (saisie d'un nom), pour
              remplacer les derniers prompt() natifs restants — masqué pour
