@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v160";
+  const APP_VERSION = "v161";
 
   // --- Diagnostic temporaire (à retirer une fois le bug de synchro des
   // réglages développeur résolu) : les [DIAG] passent aussi par ici pour
@@ -45,6 +45,37 @@
     overlay.appendChild(pre);
     document.body.appendChild(overlay);
   }
+  // Bouton de récupération temporaire : recopie les réglages "publiés
+  // pour tous" (canal dev_settings_public, resté intact tout au long du
+  // dépannage — même horodatage à chaque vérification) par-dessus les
+  // réglages PERSONNELS de Stéphane (canal dev_settings, probablement
+  // écrasé par erreur pendant le dépannage par un push automatique d'un
+  // ancien réglage local) — à la fois en local et sur le serveur, pour
+  // repartir d'une base saine des deux côtés.
+  async function restoreFromPublished() {
+    if (typeof publicDevSettingsOverride === "undefined" || !publicDevSettingsOverride) {
+      window.alert("Aucun réglage publié n'a pu être chargé pour l'instant (vérifie la connexion). Réessaie dans quelques secondes.");
+      return;
+    }
+    const restored = { ...publicDevSettingsOverride, updatedAt: new Date().toISOString() };
+    localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(restored));
+    _devSettingsCacheRaw = undefined;
+    _devSettingsCache = undefined;
+    applyAllDevSettings();
+    let pushResult = "non tenté (Sync non configurée)";
+    try {
+      if (Sync.isConfigured()) {
+        const accountEmail = await currentAccountEmailForSync();
+        const ok = await Sync.pushDevSettings({ ...restored, appPrefs: gatherAppPrefs() }, accountEmail);
+        pushResult = ok ? "réussi" : "échoué";
+      }
+    } catch (e) {
+      pushResult = "erreur : " + String(e && e.message ? e.message : e);
+    }
+    window.alert(
+      "Réglages restaurés depuis la version publiée, appliqués localement.\nEnvoi vers le serveur (copie personnelle) : " + pushResult
+    );
+  }
   window.addEventListener("load", () => {
     const btn = document.createElement("button");
     btn.textContent = "🔍 Diagnostic";
@@ -52,6 +83,17 @@
       "position:fixed;bottom:12px;right:12px;z-index:99999;background:#e74c3c;color:#fff;border:none;border-radius:8px;padding:10px 14px;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.3);";
     btn.addEventListener("click", showDiagOverlay);
     document.body.appendChild(btn);
+
+    const restoreBtn = document.createElement("button");
+    restoreBtn.textContent = "♻️ Restaurer publiés";
+    restoreBtn.style.cssText =
+      "position:fixed;bottom:12px;left:12px;z-index:99999;background:#2980b9;color:#fff;border:none;border-radius:8px;padding:10px 14px;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.3);";
+    restoreBtn.addEventListener("click", () => {
+      if (window.confirm("Remplacer tes réglages personnels (local + serveur) par la dernière version publiée pour tous ?")) {
+        restoreFromPublished();
+      }
+    });
+    document.body.appendChild(restoreBtn);
   });
 
   const ICON_LIBRARY = {
