@@ -5,96 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v161";
-
-  // --- Diagnostic temporaire (à retirer une fois le bug de synchro des
-  // réglages développeur résolu) : les [DIAG] passent aussi par ici pour
-  // pouvoir être affichés directement à l'écran (utile sur iPhone, où la
-  // console du navigateur n'est pas accessible sans Mac). ---
-  window.__fichesDiag = [];
-  function diagLog(...parts) {
-    const line = parts
-      .map((p) => (typeof p === "string" ? p : JSON.stringify(p)))
-      .join(" ");
-    window.__fichesDiag.push(line);
-    console.log("[DIAG]", ...parts);
-  }
-  function showDiagOverlay() {
-    // Correctif : la fenêtre alert() native tronquait le texte au
-    // copier-coller sur iPhone (limite de sélection). On affiche donc un
-    // vrai panneau à l'écran, DIRECTEMENT LISIBLE (et donc capturable par
-    // une ou plusieurs captures d'écran, en faisant défiler si besoin) —
-    // plus besoin de copier-coller du tout.
-    const existing = document.getElementById("diag-overlay");
-    if (existing) existing.remove();
-    const text = window.__fichesDiag.length
-      ? window.__fichesDiag.join("\n\n---\n\n")
-      : "(aucune trace de diagnostic pour l'instant)";
-    const overlay = document.createElement("div");
-    overlay.id = "diag-overlay";
-    overlay.style.cssText =
-      "position:fixed;inset:0;z-index:100000;background:#111;color:#0f0;font:12px/1.5 monospace;overflow:auto;padding:16px;white-space:pre-wrap;word-break:break-word;";
-    const closeBtn = document.createElement("button");
-    closeBtn.textContent = "✕ Fermer";
-    closeBtn.style.cssText =
-      "position:sticky;top:0;display:block;margin-bottom:12px;background:#e74c3c;color:#fff;border:none;border-radius:8px;padding:10px 14px;font-size:14px;";
-    closeBtn.addEventListener("click", () => overlay.remove());
-    const pre = document.createElement("div");
-    pre.textContent = text;
-    overlay.appendChild(closeBtn);
-    overlay.appendChild(pre);
-    document.body.appendChild(overlay);
-  }
-  // Bouton de récupération temporaire : recopie les réglages "publiés
-  // pour tous" (canal dev_settings_public, resté intact tout au long du
-  // dépannage — même horodatage à chaque vérification) par-dessus les
-  // réglages PERSONNELS de Stéphane (canal dev_settings, probablement
-  // écrasé par erreur pendant le dépannage par un push automatique d'un
-  // ancien réglage local) — à la fois en local et sur le serveur, pour
-  // repartir d'une base saine des deux côtés.
-  async function restoreFromPublished() {
-    if (typeof publicDevSettingsOverride === "undefined" || !publicDevSettingsOverride) {
-      window.alert("Aucun réglage publié n'a pu être chargé pour l'instant (vérifie la connexion). Réessaie dans quelques secondes.");
-      return;
-    }
-    const restored = { ...publicDevSettingsOverride, updatedAt: new Date().toISOString() };
-    localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(restored));
-    _devSettingsCacheRaw = undefined;
-    _devSettingsCache = undefined;
-    applyAllDevSettings();
-    let pushResult = "non tenté (Sync non configurée)";
-    try {
-      if (Sync.isConfigured()) {
-        const accountEmail = await currentAccountEmailForSync();
-        const ok = await Sync.pushDevSettings({ ...restored, appPrefs: gatherAppPrefs() }, accountEmail);
-        pushResult = ok ? "réussi" : "échoué";
-      }
-    } catch (e) {
-      pushResult = "erreur : " + String(e && e.message ? e.message : e);
-    }
-    window.alert(
-      "Réglages restaurés depuis la version publiée, appliqués localement.\nEnvoi vers le serveur (copie personnelle) : " + pushResult
-    );
-  }
-  window.addEventListener("load", () => {
-    const btn = document.createElement("button");
-    btn.textContent = "🔍 Diagnostic";
-    btn.style.cssText =
-      "position:fixed;bottom:12px;right:12px;z-index:99999;background:#e74c3c;color:#fff;border:none;border-radius:8px;padding:10px 14px;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.3);";
-    btn.addEventListener("click", showDiagOverlay);
-    document.body.appendChild(btn);
-
-    const restoreBtn = document.createElement("button");
-    restoreBtn.textContent = "♻️ Restaurer publiés";
-    restoreBtn.style.cssText =
-      "position:fixed;bottom:12px;left:12px;z-index:99999;background:#2980b9;color:#fff;border:none;border-radius:8px;padding:10px 14px;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.3);";
-    restoreBtn.addEventListener("click", () => {
-      if (window.confirm("Remplacer tes réglages personnels (local + serveur) par la dernière version publiée pour tous ?")) {
-        restoreFromPublished();
-      }
-    });
-    document.body.appendChild(restoreBtn);
-  });
+  const APP_VERSION = "v162";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -1224,55 +1135,40 @@
     );
   }
 
-  // Round 4, partie 3 : réglages développeur PUBLIÉS par Stéphane pour
-  // tout le monde (table Supabase partagée en lecture, voir sync.js et
-  // supabase/dev_settings_public_schema.sql) — récupérés une fois au
-  // démarrage par loadPublicDevSettingsForEveryone(). null tant que rien
-  // n'a encore été récupéré (hors ligne, Sync non configurée, ou pas
-  // encore essayé) : dans ce cas, comportement inchangé (valeurs par
-  // défaut du code).
-  let publicDevSettingsOverride = null;
-  function isPlainDevSettingsObject(v) {
-    return Boolean(v) && typeof v === "object" && !Array.isArray(v);
-  }
-  /** Fusionne récursivement deux "couches" de réglages développeur :
-   *  toute clé présente dans `override` l'emporte sur `base`, mais si les
-   *  deux valeurs sont des objets simples (ex. nightColors.bgColors), on
-   *  fusionne leurs propres clés au lieu de remplacer tout le groupe —
-   *  un tableau (ex. une liste de messages d'aide) est, lui, toujours
-   *  remplacé en bloc, jamais fusionné élément par élément. */
-  function mergeDevSettingsLayer(base, override) {
-    const out = { ...(isPlainDevSettingsObject(base) ? base : {}) };
-    if (!isPlainDevSettingsObject(override)) return out;
-    Object.keys(override).forEach((key) => {
-      const b = out[key];
-      const o = override[key];
-      out[key] = isPlainDevSettingsObject(b) && isPlainDevSettingsObject(o) ? mergeDevSettingsLayer(b, o) : o;
-    });
-    return out;
-  }
-  /** Récupère (une fois, au démarrage) les réglages développeur publiés
-   *  pour tout le monde et les applique — appelée depuis connectSync(),
-   *  donc seulement quand la Sync est configurée (même condition que les
-   *  comptes Classes, qui partagent le même projet Supabase). */
-  async function loadPublicDevSettingsForEveryone() {
-    try {
-      const pub = await Sync.fetchPublicDevSettings();
-      diagLog("loadPublicDevSettingsForEveryone: pub=", pub ? { keys: Object.keys(pub), updatedAt: pub.updatedAt } : null);
-      if (pub) {
-        publicDevSettingsOverride = pub;
-        // Invalide le cache ci-dessous pour forcer une refusion au
-        // prochain loadDevSettings(), puis réapplique tout de suite (utile
-        // pour tous les utilisateurs qui n'ont eux-mêmes AUCUN réglage
-        // développeur local — la quasi-totalité des élèves/profs).
+  // Round 16 : SIMPLIFICATION demandée par Stéphane suite au bug de
+  // synchro du round 15 (deux canaux séparés — réglages "personnels" par
+  // (code de synchro + Compte) ET réglages "publiés pour tous" — avec une
+  // logique de fusion "le plus récent gagne" fragile, qui a fini par
+  // laisser un ancien réglage local écraser silencieusement la bonne
+  // version publiée). Il n'existe plus maintenant qu'UNE seule source de
+  // vérité : la table Supabase `dev_settings_public` (une seule ligne,
+  // id="global"), que seul le Compte de Stéphane peut modifier (RLS).
+  // - `localStorage` ne sert plus qu'à AFFICHER quelque chose hors ligne
+  //   (miroir du dernier contenu connu du serveur) — il n'est plus jamais
+  //   considéré comme "plus à jour" que le serveur : dès qu'une connexion
+  //   est possible, le serveur écrase toujours le local, sans comparaison
+  //   de date. Plus de notion de "réglage personnel" ni de cloisonnement
+  //   par Compte : tout le monde (élèves, profs, Stéphane lui-même sur
+  //   n'importe quel appareil) voit exactement la même chose.
+  // - Modifier un réglage en mode développeur (saveDevSettings) écrit
+  //   directement vers ce même canal public : plus besoin d'un bouton
+  //   "Publier" séparé, chaque changement est déjà la version de tout le
+  //   monde.
+  function syncDevSettingsFromServer() {
+    return Sync.fetchPublicDevSettings()
+      .then((pub) => {
+        if (!pub) return;
+        localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(pub));
         _devSettingsCacheRaw = undefined;
         _devSettingsCache = undefined;
         applyAllDevSettings();
-      }
-    } catch (e) {
-      /* hors ligne, ou pas encore de ligne publiée : on continue avec les
-         valeurs par défaut du code, comme avant cette fonctionnalité. */
-    }
+        applyAppPrefsFromRemote(pub.appPrefs);
+      })
+      .catch(() => {
+        /* hors ligne, ou pas encore de ligne publiée : on continue avec ce
+           qui est déjà en localStorage (ou les valeurs par défaut du code
+           si l'appli n'a encore jamais pu se connecter du tout). */
+      });
   }
 
   // Bug corrigé (item 9) : cette fonction est appelée TRÈS souvent (une
@@ -1292,15 +1188,9 @@
     } catch (e) {
       parsed = {};
     }
-    // Round 4, partie 3 : les réglages publiés pour tout le monde
-    // s'insèrent ICI, comme une "sous-couche" entre les valeurs par
-    // défaut du code et les réglages strictement locaux à cet appareil —
-    // un réglage local reste prioritaire (utile à Stéphane, qui peut
-    // préparer un changement avant de le publier), mais tout le monde
-    // d'autre en hérite tant qu'il n'a pas ses propres réglages locaux.
-    if (publicDevSettingsOverride) {
-      parsed = mergeDevSettingsLayer(publicDevSettingsOverride, parsed);
-    }
+    // Round 16 : plus de fusion avec une "couche publique" séparée —
+    // `localStorage` est directement le miroir de la seule source de
+    // vérité (`dev_settings_public`, voir syncDevSettingsFromServer).
     const built = {
       ratingLabels: { ...DEFAULT_RATING_LABELS, ...(parsed.ratingLabels || {}) },
       navLabels: { ...DEFAULT_NAV_LABELS, ...(parsed.navLabels || {}) },
@@ -1381,12 +1271,8 @@
         normal: { ...BUILTIN_MODE_DEFAULTS.normal, ...((parsed.factoryDefaults || {}).normal || {}) },
         renforce: { ...BUILTIN_MODE_DEFAULTS.renforce, ...((parsed.factoryDefaults || {}).renforce || {}) },
       },
-      // Bug corrigé (round 4, partie 3) : cette date n'était jusqu'ici
-      // JAMAIS recopiée dans l'objet fusionné, alors que
-      // reconcileDevSettings (synchro personnelle) s'en sert pour savoir
-      // si la version locale est plus récente que celle du serveur — la
-      // comparaison était donc toujours "locale = temps 0", donc toujours
-      // perdante face au serveur.
+      // Horodatage de la dernière modification (posé par saveDevSettings) —
+      // affiché nulle part mais conservé pour référence/débogage.
       updatedAt: parsed.updatedAt,
     };
     _devSettingsCacheRaw = raw;
@@ -1414,18 +1300,17 @@
   // Poussée retardée (item 1 — synchro des réglages développeur) :
   // beaucoup d'appels à saveDevSettings coup sur coup en bougeant un
   // curseur de couleur enverraient sinon une requête réseau par pixel de
-  // déplacement — un seul envoi group  é, un court instant après la
-  // dernière modification.
+  // déplacement — un seul envoi groupé, un court instant après la
+  // dernière modification. Round 16 : envoi direct vers l'UNIQUE canal
+  // partagé (`dev_settings_public`) — plus de notion de Compte à
+  // résoudre au préalable, ni de bouton "Publier" séparé : ce qui est
+  // sauvegardé ici EST déjà la version que tout le monde va recevoir.
   let devSettingsPushTimer = null;
   function scheduleDevSettingsPush() {
     if (typeof Sync === "undefined" || !Sync.isConfigured || !Sync.isConfigured()) return;
     clearTimeout(devSettingsPushTimer);
     devSettingsPushTimer = setTimeout(async () => {
-      // Cloisonné par Compte connecté depuis le round 6 (voir
-      // currentAccountEmailForSync) — corrige une fuite entre deux
-      // Comptes utilisant le même code de synchro perso.
-      const accountEmail = await currentAccountEmailForSync();
-      Sync.pushDevSettings({ ...loadDevSettings(), appPrefs: gatherAppPrefs() }, accountEmail);
+      await Sync.pushPublicDevSettings({ ...loadDevSettings(), appPrefs: gatherAppPrefs() });
     }, 900);
   }
   /** Réglages de la page "Réglages" (item — jusqu'ici jamais synchronisés
@@ -8698,37 +8583,11 @@
    *  détection automatique de nouvelle version reste bloquée (observé sur
    *  GitHub Pages, qui ne permet pas de fixer nous-mêmes les en-têtes de
    *  cache HTTP — voir aussi updateViaCache: "none" plus bas). */
-  const devPublishPublicBtn = el("dev-publish-public-btn");
-  const devPublishPublicResultEl = el("dev-publish-public-result");
-  if (devPublishPublicBtn) {
-    devPublishPublicBtn.addEventListener("click", async () => {
-      devPublishPublicBtn.disabled = true;
-      const originalLabel = devPublishPublicBtn.textContent;
-      devPublishPublicBtn.textContent = "Publication…";
-      if (devPublishPublicResultEl) devPublishPublicResultEl.textContent = "";
-      const settings = loadDevSettings();
-      const result = await Sync.pushPublicDevSettings(settings);
-      devPublishPublicBtn.disabled = false;
-      devPublishPublicBtn.textContent = originalLabel;
-      if (result && result.error) {
-        // Round 4, partie 3 (correctif) : on affiche désormais le texte
-        // d'erreur réel renvoyé par Supabase (au lieu d'un message générique
-        // qui masquait la vraie cause), pour pouvoir diagnostiquer ce genre
-        // de souci sans avoir à ouvrir la console.
-        if (devPublishPublicResultEl) {
-          devPublishPublicResultEl.textContent =
-            "Échec — " + result.error + " (vérifie aussi que tu es connecté avec ton compte, page Compte).";
-        }
-        robotAlert("La publication a échoué : " + result.error);
-      } else {
-        publicDevSettingsOverride = settings;
-        if (devPublishPublicResultEl) {
-          devPublishPublicResultEl.textContent = "Publié — tout le monde recevra ces réglages à son prochain démarrage.";
-        }
-        robotAlert("Réglages publiés ! Toutes les installations (élèves, profs, nouveaux appareils) les recevront désormais au démarrage.");
-      }
-    });
-  }
+  // Round 16 : le bouton "Publier pour tous les utilisateurs" a été retiré —
+  // chaque sauvegarde dans le mode développeur écrit désormais directement
+  // dans dev_settings_public (voir scheduleDevSettingsPush), donc toute
+  // modification est automatiquement "publiée" pour tout le monde sans
+  // étape manuelle supplémentaire.
 
   const devHideDevModeBtn = el("dev-hide-dev-mode-btn");
   if (devHideDevModeBtn) {
@@ -9875,42 +9734,6 @@
   let accountCurrentUser = null;
   let classesAuthMode = "signin"; // "signin" | "signup"
 
-  /** Correctif (round 6, demande de Stéphane) : les réglages développeur
-   *  personnels (couleurs, icônes... y compris le mode nuit, qui en fait
-   *  partie intégrante — voir setNightModeActive) n'étaient synchronisés
-   *  QUE par code de synchro perso (`dev_settings.sync_code`),
-   *  totalement indépendant du Compte Supabase Auth connecté. Deux
-   *  Comptes différents (ex. un compte prof et un compte élève de test)
-   *  utilisant le MÊME code de synchro perso partageaient donc
-   *  automatiquement ces réglages, y compris en temps réel (abonnement
-   *  Realtime) — même avant tout clic sur "Publier", qui lui ne concerne
-   *  qu'un canal totalement différent (dev_settings_public, round 4).
-   *  Ce canal personnel est maintenant cloisonné par (code de synchro +
-   *  Compte connecté) : `Sync.auth.getUser()` est interrogé directement
-   *  ici, plutôt que de lire la variable `accountCurrentUser`, qui n'est
-   *  pas forcément déjà résolue au tout premier démarrage (connectSync()
-   *  s'exécute avant initAccountState(), voir plus bas) — pour être sûr
-   *  d'avoir la valeur à jour à chaque appel. Chaîne vide si aucun
-   *  Compte n'est connecté, pour ne rien changer à quelqu'un qui
-   *  n'utilise que la synchro perso sans jamais toucher aux
-   *  Comptes/Classes (comportement identique à avant round 6 dans ce cas).
-   */
-  async function currentAccountEmailForSync() {
-    if (!Sync.isConfigured()) {
-      diagLog("currentAccountEmailForSync: Sync non configurée -> \"\"");
-      return "";
-    }
-    try {
-      const u = await Sync.auth.getUser();
-      const email = u && u.email ? u.email.toLowerCase() : "";
-      diagLog("currentAccountEmailForSync: getUser() ->", u, "email retenu:", JSON.stringify(email));
-      return email;
-    } catch (e) {
-      diagLog("currentAccountEmailForSync: erreur getUser()", e);
-      return "";
-    }
-  }
-
   /** Reflète l'état de connexion sur le bouton d'accueil (item 1/2) : son
    *  libellé change tout seul, avant même d'avoir ouvert la page Compte. */
   function updateAccountHomeButton() {
@@ -9950,26 +9773,11 @@
       if (el("view-classes-teacher") && el("view-classes-teacher").classList.contains("is-active")) renderTeacherClasses();
       if (el("view-messages") && el("view-messages").classList.contains("is-active")) renderMessagesView();
       if (user) syncSharedBoxesForStudent();
-      // Correctif (round 6) : les réglages dev perso (dont le mode nuit)
-      // sont maintenant cloisonnés par Compte connecté (voir
-      // currentAccountEmailForSync) — un changement de Compte EN COURS DE
-      // SESSION (connexion, déconnexion, changement de compte) doit donc
-      // recharger et se réabonner avec le bon cloisonnement, sinon
-      // l'appareil resterait accroché aux réglages de l'ancien Compte (ou
-      // d'aucun Compte) jusqu'au prochain redémarrage complet de l'appli.
-      if (Sync.isConfigured()) {
-        (async () => {
-          try {
-            await reconcileDevSettings();
-            applyAllDevSettings();
-            await subscribeDevSettingsForCurrentAccount();
-          } catch (e) {
-            // Best-effort : un accroc réseau ici ne doit jamais faire
-            // planter le reste de la gestion du changement de Compte.
-            console.warn("Réglages dev : échec du rechargement après changement de Compte", e);
-          }
-        })();
-      }
+      // Round 16 : les réglages développeur ne sont plus cloisonnés par
+      // Compte (un seul canal partagé pour tout le monde, voir
+      // syncDevSettingsFromServer) — un changement de Compte connecté
+      // n'a donc plus besoin de recharger ni de se réabonner à quoi que
+      // ce soit ici.
     });
   }
 
@@ -11546,75 +11354,7 @@
     if (el("view-review") && el("view-review").classList.contains("is-active")) applyReviewLayout();
   });
 
-  /** Fusionne les réglages développeur reçus (item 1) : le plus récent
-   *  (comparé via updatedAt) l'emporte intégralement — contrairement aux
-   *  fiches, il n'y a pas de fusion champ par champ ici, un réglage de
-   *  couleurs est cohérent seulement pris comme un tout. */
-  async function reconcileDevSettings() {
-    // Round 4, partie 3 : un appareil qui n'a JAMAIS personnalisé le mode
-    // développeur (immense majorité des élèves/profs, mais aussi
-    // Stéphane sur un tout nouvel appareil pas encore touché) n'a rien
-    // de "personnel" à synchroniser ici — le laisser participer quand
-    // même figerait, dès sa toute première connexion, un instantané
-    // complet (valeurs par défaut + réglages publics du moment) dans son
-    // stockage local, qui empêcherait ensuite toute future publication
-    // de s'y appliquer (voir loadDevSettings : le local l'emporte
-    // toujours sur le public). On ne pousse donc RIEN côté serveur tant
-    // qu'il n'y a pas de VRAIE personnalisation locale.
-    // Cloisonné par Compte connecté depuis le round 6 (voir
-    // currentAccountEmailForSync) — corrige une fuite entre deux Comptes
-    // utilisant le même code de synchro perso.
-    // Correctif (diagnostic) : cette fonction n'était protégée par AUCUN
-    // try/catch — une exception levée ici (accroc réseau, etc.)
-    // interrompait silencieusement tout le reste de reconcileWithRemote()
-    // (fiches, dossiers, modes d'apprentissage...) sans laisser aucune
-    // trace exploitable. On isole désormais l'erreur pour pouvoir enfin
-    // la voir, au lieu de la laisser simplement tout bloquer en silence.
-    try {
-      const accountEmail = await currentAccountEmailForSync();
-      const hasLocalCustomization = localStorage.getItem(DEV_SETTINGS_KEY) !== null;
-      const remote = await Sync.pullDevSettings(accountEmail);
-      const local = loadDevSettings();
-      diagLog(
-        "reconcileDevSettings: accountEmail=", JSON.stringify(accountEmail),
-        "hasLocalCustomization=", hasLocalCustomization,
-        "remote=", remote ? { updatedAt: remote.updatedAt, payloadKeys: Object.keys(remote.payload || {}) } : null,
-        "local.updatedAt=", local.updatedAt
-      );
-      if (!remote) {
-        if (hasLocalCustomization) {
-          // Rien côté serveur : on y pousse notre réglage local tel quel.
-          diagLog("reconcileDevSettings: aucun remote -> push du local vers le serveur");
-          Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() }, accountEmail);
-        } else {
-          diagLog("reconcileDevSettings: aucun remote et aucun local -> rien à faire");
-        }
-        return;
-      }
-      const remoteTime = new Date(remote.updatedAt || 0).getTime();
-      const localTime = hasLocalCustomization ? new Date(local.updatedAt || 0).getTime() : 0;
-      diagLog("reconcileDevSettings: remoteTime=", remoteTime, "localTime=", localTime);
-      if (remoteTime > localTime) {
-        // Un autre de TES appareils (même code de synchro ET même Compte
-        // connecté) a poussé une vraie personnalisation plus récente : on
-        // l'adopte.
-        diagLog("reconcileDevSettings: adoption du remote (plus récent) dans localStorage");
-        localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
-        applyAllDevSettings();
-        applyAppPrefsFromRemote(remote.payload.appPrefs);
-      } else if (hasLocalCustomization && localTime > remoteTime) {
-        diagLog("reconcileDevSettings: le local est plus récent -> push vers le serveur (écrase le remote !)");
-        Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() }, accountEmail);
-      } else {
-        diagLog("reconcileDevSettings: égalité de temps, rien ne bouge");
-      }
-    } catch (e) {
-      diagLog("reconcileDevSettings: EXCEPTION -> ", String(e && e.stack ? e.stack : e));
-    }
-  }
-
   async function reconcileWithRemote() {
-    await reconcileDevSettings();
     await reconcileLearningModes();
     await reconcileSubjectsAndFolders();
     renderSubjectSelect();
@@ -11674,10 +11414,9 @@
     if (unsubscribeLearningModesRealtime) unsubscribeLearningModesRealtime();
     if (unsubscribeDevSettingsRealtime) unsubscribeDevSettingsRealtime();
 
-    // Round 4, partie 3 : réglages développeur publiés pour tout le
-    // monde — récupérés AVANT le reste, pour que la synchro perso
-    // (reconcileWithRemote, juste après) parte déjà d'une base à jour.
-    await loadPublicDevSettingsForEveryone();
+    // Round 16 : réglages développeur (canal unique, partagé par tout le
+    // monde) — récupérés AVANT le reste.
+    await syncDevSettingsFromServer();
 
     await reconcileWithRemote();
     await Sync.flushPending((id) => cards.find((c) => c.id === id));
@@ -11710,55 +11449,49 @@
       renderSubjectManageList();
       renderSubjectAlgoBadge();
     });
-    await subscribeDevSettingsForCurrentAccount();
+    subscribeDevSettingsPublicRealtime();
 
     updateSyncStatus();
   }
 
-  /** Callback de l'abonnement Realtime aux réglages développeur perso —
-   *  factorisé (round 6) pour être réutilisé aussi bien au démarrage
-   *  (connectSync) qu'à un changement de Compte en cours de session (voir
-   *  subscribeDevSettingsForCurrentAccount / Sync.auth.onChange). */
+  /** Callback de l'abonnement Realtime au canal UNIQUE des réglages
+   *  développeur (round 16) — un autre appareil de Stéphane (le seul à
+   *  pouvoir écrire, RLS) vient de changer un réglage : on l'adopte tel
+   *  quel, sans comparaison de date (il n'y a plus qu'une seule source de
+   *  vérité, donc plus de conflit possible à trancher). */
   function handleRemoteDevSettings(remote) {
-    // Dernier écrit gagne (item 1) : un autre appareil vient de changer
-    // un réglage (couleur, icône...), on adopte tel quel si plus récent.
-    const local = loadDevSettings();
-    if (new Date(remote.updatedAt || 0) > new Date(local.updatedAt || 0)) {
-      localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
-      applyAllDevSettings();
-      applyAppPrefsFromRemote(remote.payload.appPrefs);
-      // Bug corrigé (items 1/2) : si l'utilisateur est EN TRAIN de taper
-      // dans un champ du mode développeur, reconstruire toute la liste
-      // (renderDevView) à cet instant précis lui fait perdre le focus en
-      // plein milieu de la frappe — ou, pour le mode nuit, fait
-      // clignoter l'état si l'écho de sa propre modification revient
-      // alors qu'il vient justement de la changer. On saute ce rendu
-      // tant qu'un champ de ce panneau a le focus ; il se remettra à
-      // jour de toute façon au prochain rendu normal (changement de
-      // page, nouvelle modification, etc.).
-      const devViewActive = el("view-dev") && el("view-dev").classList.contains("is-active");
-      const editingInDevView = document.activeElement && el("view-dev") && el("view-dev").contains(document.activeElement) && document.activeElement.tagName === "INPUT";
-      if (devViewActive && !editingInDevView) renderDevView();
-    }
+    localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
+    _devSettingsCacheRaw = undefined;
+    _devSettingsCache = undefined;
+    applyAllDevSettings();
+    applyAppPrefsFromRemote(remote.payload.appPrefs);
+    // Bug corrigé (items 1/2, toujours valable) : si l'utilisateur est EN
+    // TRAIN de taper dans un champ du mode développeur, reconstruire toute
+    // la liste (renderDevView) à cet instant précis lui fait perdre le
+    // focus en plein milieu de la frappe — ou, pour le mode nuit, fait
+    // clignoter l'état si l'écho de sa propre modification revient juste
+    // après l'avoir changé. On saute ce rendu tant qu'un champ de ce
+    // panneau a le focus ; il se remettra à jour de toute façon au
+    // prochain rendu normal (changement de page, nouvelle modification...).
+    const devViewActive = el("view-dev") && el("view-dev").classList.contains("is-active");
+    const editingInDevView = document.activeElement && el("view-dev") && el("view-dev").contains(document.activeElement) && document.activeElement.tagName === "INPUT";
+    if (devViewActive && !editingInDevView) renderDevView();
   }
-  /** (Ré)abonne le canal Realtime des réglages développeur perso avec le
-   *  Compte ACTUELLEMENT connecté (round 6) — désabonne d'abord l'ancien
-   *  abonnement s'il y en avait un, pour ne jamais en garder deux en
-   *  parallèle (ex. juste après un changement de Compte). */
-  async function subscribeDevSettingsForCurrentAccount() {
+  /** (Ré)abonne le canal Realtime unique des réglages développeur —
+   *  désabonne d'abord l'ancien abonnement s'il y en avait un, pour ne
+   *  jamais en garder deux en parallèle. */
+  function subscribeDevSettingsPublicRealtime() {
     if (unsubscribeDevSettingsRealtime) {
       unsubscribeDevSettingsRealtime();
       unsubscribeDevSettingsRealtime = null;
     }
     if (!Sync.isConfigured()) return;
     try {
-      const accountEmail = await currentAccountEmailForSync();
-      unsubscribeDevSettingsRealtime = Sync.subscribeDevSettingsRealtime(handleRemoteDevSettings, accountEmail);
+      unsubscribeDevSettingsRealtime = Sync.subscribePublicDevSettingsRealtime(handleRemoteDevSettings);
     } catch (e) {
       // Best-effort, comme le reste de la synchro temps réel : sans
       // abonnement Realtime, les réglages dev restent quand même à jour
-      // au prochain reconcileDevSettings() (démarrage, changement de
-      // Compte, ouverture de la page Développeur...).
+      // au prochain démarrage (syncDevSettingsFromServer).
       console.warn("Réglages dev : échec de l'abonnement temps réel", e);
     }
   }
