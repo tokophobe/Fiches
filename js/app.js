@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v158";
+  const APP_VERSION = "v159";
 
   // --- Diagnostic temporaire (à retirer une fois le bug de synchro des
   // réglages développeur résolu) : les [DIAG] passent aussi par ici pour
@@ -11502,42 +11502,52 @@
     // Cloisonné par Compte connecté depuis le round 6 (voir
     // currentAccountEmailForSync) — corrige une fuite entre deux Comptes
     // utilisant le même code de synchro perso.
-    const accountEmail = await currentAccountEmailForSync();
-    const hasLocalCustomization = localStorage.getItem(DEV_SETTINGS_KEY) !== null;
-    const remote = await Sync.pullDevSettings(accountEmail);
-    const local = loadDevSettings();
-    diagLog(
-      "reconcileDevSettings: accountEmail=", JSON.stringify(accountEmail),
-      "hasLocalCustomization=", hasLocalCustomization,
-      "remote=", remote ? { updatedAt: remote.updatedAt, payloadKeys: Object.keys(remote.payload || {}) } : null,
-      "local.updatedAt=", local.updatedAt
-    );
-    if (!remote) {
-      if (hasLocalCustomization) {
-        // Rien côté serveur : on y pousse notre réglage local tel quel.
-        diagLog("reconcileDevSettings: aucun remote -> push du local vers le serveur");
+    // Correctif (diagnostic) : cette fonction n'était protégée par AUCUN
+    // try/catch — une exception levée ici (accroc réseau, etc.)
+    // interrompait silencieusement tout le reste de reconcileWithRemote()
+    // (fiches, dossiers, modes d'apprentissage...) sans laisser aucune
+    // trace exploitable. On isole désormais l'erreur pour pouvoir enfin
+    // la voir, au lieu de la laisser simplement tout bloquer en silence.
+    try {
+      const accountEmail = await currentAccountEmailForSync();
+      const hasLocalCustomization = localStorage.getItem(DEV_SETTINGS_KEY) !== null;
+      const remote = await Sync.pullDevSettings(accountEmail);
+      const local = loadDevSettings();
+      diagLog(
+        "reconcileDevSettings: accountEmail=", JSON.stringify(accountEmail),
+        "hasLocalCustomization=", hasLocalCustomization,
+        "remote=", remote ? { updatedAt: remote.updatedAt, payloadKeys: Object.keys(remote.payload || {}) } : null,
+        "local.updatedAt=", local.updatedAt
+      );
+      if (!remote) {
+        if (hasLocalCustomization) {
+          // Rien côté serveur : on y pousse notre réglage local tel quel.
+          diagLog("reconcileDevSettings: aucun remote -> push du local vers le serveur");
+          Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() }, accountEmail);
+        } else {
+          diagLog("reconcileDevSettings: aucun remote et aucun local -> rien à faire");
+        }
+        return;
+      }
+      const remoteTime = new Date(remote.updatedAt || 0).getTime();
+      const localTime = hasLocalCustomization ? new Date(local.updatedAt || 0).getTime() : 0;
+      diagLog("reconcileDevSettings: remoteTime=", remoteTime, "localTime=", localTime);
+      if (remoteTime > localTime) {
+        // Un autre de TES appareils (même code de synchro ET même Compte
+        // connecté) a poussé une vraie personnalisation plus récente : on
+        // l'adopte.
+        diagLog("reconcileDevSettings: adoption du remote (plus récent) dans localStorage");
+        localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
+        applyAllDevSettings();
+        applyAppPrefsFromRemote(remote.payload.appPrefs);
+      } else if (hasLocalCustomization && localTime > remoteTime) {
+        diagLog("reconcileDevSettings: le local est plus récent -> push vers le serveur (écrase le remote !)");
         Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() }, accountEmail);
       } else {
-        diagLog("reconcileDevSettings: aucun remote et aucun local -> rien à faire");
+        diagLog("reconcileDevSettings: égalité de temps, rien ne bouge");
       }
-      return;
-    }
-    const remoteTime = new Date(remote.updatedAt || 0).getTime();
-    const localTime = hasLocalCustomization ? new Date(local.updatedAt || 0).getTime() : 0;
-    diagLog("reconcileDevSettings: remoteTime=", remoteTime, "localTime=", localTime);
-    if (remoteTime > localTime) {
-      // Un autre de TES appareils (même code de synchro ET même Compte
-      // connecté) a poussé une vraie personnalisation plus récente : on
-      // l'adopte.
-      diagLog("reconcileDevSettings: adoption du remote (plus récent) dans localStorage");
-      localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
-      applyAllDevSettings();
-      applyAppPrefsFromRemote(remote.payload.appPrefs);
-    } else if (hasLocalCustomization && localTime > remoteTime) {
-      diagLog("reconcileDevSettings: le local est plus récent -> push vers le serveur (écrase le remote !)");
-      Sync.pushDevSettings({ ...local, appPrefs: gatherAppPrefs() }, accountEmail);
-    } else {
-      diagLog("reconcileDevSettings: égalité de temps, rien ne bouge");
+    } catch (e) {
+      diagLog("reconcileDevSettings: EXCEPTION -> ", String(e && e.stack ? e.stack : e));
     }
   }
 

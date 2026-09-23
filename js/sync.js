@@ -530,34 +530,44 @@ async function pullDevSettings(accountEmail) {
   if (!c || !code) return null;
   const email = accountEmail || "";
 
-  const { data, error } = await c
-    .from("dev_settings")
-    .select("payload, updated_at")
-    .eq("sync_code", code)
-    .eq("account_email", email)
-    .maybeSingle();
-
-  if (error) {
-    console.warn("Sync: échec du chargement des réglages développeur distants", error.message);
-    return null;
-  }
-  if (data) return { payload: data.payload || {}, updatedAt: data.updated_at };
-
-  // Migration en douceur (round 6) : un Compte fraîchement connecté n'a
-  // encore aucune ligne à SON nom — on reprend une fois l'ancienne ligne
-  // "sans Compte" (account_email = '') comme point de départ plutôt que
-  // de repartir de zéro, pour ne pas faire disparaître les réglages déjà
-  // personnalisés par Stéphane avant l'introduction de ce cloisonnement.
-  if (email !== "") {
-    const { data: legacy, error: legacyError } = await c
+  // Correctif (diagnostic round 15) : cette fonction n'était protégée par
+  // aucun try/catch — une exception levée par le client Supabase (accroc
+  // réseau, requête abandonnée, etc., par opposition à un simple champ
+  // `error` renvoyé proprement) remontait telle quelle jusqu'à l'appelant
+  // et pouvait interrompre silencieusement tout le reste de la synchro.
+  try {
+    const { data, error } = await c
       .from("dev_settings")
       .select("payload, updated_at")
       .eq("sync_code", code)
-      .eq("account_email", "")
+      .eq("account_email", email)
       .maybeSingle();
-    if (!legacyError && legacy) return { payload: legacy.payload || {}, updatedAt: legacy.updated_at };
+
+    if (error) {
+      console.warn("Sync: échec du chargement des réglages développeur distants", error.message);
+      return null;
+    }
+    if (data) return { payload: data.payload || {}, updatedAt: data.updated_at };
+
+    // Migration en douceur (round 6) : un Compte fraîchement connecté n'a
+    // encore aucune ligne à SON nom — on reprend une fois l'ancienne ligne
+    // "sans Compte" (account_email = '') comme point de départ plutôt que
+    // de repartir de zéro, pour ne pas faire disparaître les réglages déjà
+    // personnalisés par Stéphane avant l'introduction de ce cloisonnement.
+    if (email !== "") {
+      const { data: legacy, error: legacyError } = await c
+        .from("dev_settings")
+        .select("payload, updated_at")
+        .eq("sync_code", code)
+        .eq("account_email", "")
+        .maybeSingle();
+      if (!legacyError && legacy) return { payload: legacy.payload || {}, updatedAt: legacy.updated_at };
+    }
+    return null;
+  } catch (e) {
+    console.warn("Sync: exception lors du chargement des réglages développeur distants", e);
+    return null;
   }
-  return null;
 }
 
 async function pushDevSettings(payload, accountEmail) {
