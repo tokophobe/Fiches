@@ -79,12 +79,22 @@ textarea, input {
 
 /* Fond uni (item 4) : le quadrillage a été retiré — juste une couleur
    pleine, réglable depuis la page Développeur (--app-bg-color). */
+/* Bug corrigé (round 17, item 3) : le padding-top valait ici aussi
+   max(18px, safe-area) — pertinent tant que la topbar était le premier
+   élément normal de .desk. Depuis le bandeau fixe (round 15, item 5,
+   #app-sticky-header en position: fixed, donc sorti du flux), ce padding
+   s'appliquait en trop directement à <main> (premier élément restant
+   dans le flux), EN PLUS du padding-top que <main> reçoit déjà pour sa
+   propre hauteur exacte (--sticky-header-h, qui inclut déjà la même
+   marge de sécurité) — d'où le contenu décalé trop bas sous le bandeau,
+   signalé par Stéphane. Le padding du haut n'a donc plus lieu d'être ici
+   (le bandeau fixe gère lui-même sa propre marge de sécurité). */
 .desk {
   min-height: 100vh;
   min-height: 100dvh;
   max-width: 560px;
   margin: 0 auto;
-  padding: max(18px, env(safe-area-inset-top)) 18px max(28px, env(safe-area-inset-bottom));
+  padding: 0 18px max(28px, env(safe-area-inset-bottom));
   background-color: var(--app-bg-color, var(--desk));
 }
 
@@ -97,7 +107,11 @@ textarea, input {
   justify-content: space-between;
   flex-wrap: nowrap;
   gap: 6px;
-  padding: 6px 2px 18px;
+  /* Round 17, item 1/3 : marge basse réduite (18px -> 6px) — le bandeau
+     fixe doit rester le plus bas possible en hauteur ; sans le titre de
+     page (retiré) juste en dessous, une aussi grande marge n'avait plus
+     lieu d'être. */
+  padding: 6px 2px 6px;
 }
 
 .brand {
@@ -180,6 +194,11 @@ button.topbar-new-card-btn {
   -webkit-mask-size: contain;
   mask-size: contain;
 }
+/* Round 17, item 1 : masqué sur l'accueil (qui a déjà son propre grand
+   logo darwin) — `display: block` ci-dessus l'emporterait sinon sur
+   `[hidden]` (même spécificité, notre règle vient après dans la
+   feuille), comme pour les autres éléments similaires de ce fichier. */
+.topbar-darwin-logo[hidden] { display: none; }
 
 /* Round 15, item 6 : bouton "aide contextuelle" — même famille visuelle
    que le bouton mode nuit juste à côté. */
@@ -307,28 +326,24 @@ body.is-contextual-help-picking * {
   max-width: 560px;
   z-index: 40;
   background: var(--app-bg-color, var(--desk));
-  padding: max(18px, env(safe-area-inset-top)) 18px 8px;
+  /* Round 17, item 1/3 : marge basse réduite (8px -> 4px) — bandeau le
+     plus court possible en hauteur, comme demandé. */
+  padding: max(18px, env(safe-area-inset-top)) 18px 4px;
 }
 
 main {
   padding-top: var(--sticky-header-h, 96px);
 }
 
-/* Round 15, item 1 : nom de la page courante, centré, au-dessus du robot
-   (posé par updatePageTitle en JS à chaque changement de vue). */
-.page-title-bar {
-  margin: 0 0 10px;
+/* Round 17, item 3 : bloc d'actions de "Mon bureau" (+ Nouveau dossier,
+   Bibliothèque, pictos d'affichage), intégré au bandeau fixe plutôt que
+   de défiler avec la liste — visible uniquement sur cette page (bascule
+   en JS, voir onActiveViewChanged). */
+.manage-sticky-actions {
+  margin-top: 4px;
 }
-.page-title {
-  margin: 0;
-  font-family: var(--font-type);
-  font-weight: 600;
-  font-size: 15px;
-  letter-spacing: 0.04em;
-  text-align: center;
-  color: var(--ink-soft);
-}
-.page-title:empty { display: none; }
+.manage-sticky-actions[hidden] { display: none; }
+.manage-sticky-actions .list-header { margin-bottom: 0; }
 
 /* ============================================================
    MATIÈRES (subjects)

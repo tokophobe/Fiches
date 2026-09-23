@@ -135,8 +135,11 @@
            bouton Accueil et le bouton mode nuit. Round 15, item 2 : passé
            d'une image <img> à un <div> avec mask-image, pour pouvoir le
            recolorer en CSS (--darwin-logo-color) plutôt que rester figé
-           en noir. -->
-      <div id="topbar-darwin-logo" class="topbar-darwin-logo" role="img" aria-label="darwin"></div>
+           en noir. Round 17, item 1 : masqué sur l'accueil UNIQUEMENT
+           (qui a déjà son propre grand logo darwin) — bascule en JS,
+           voir onActiveViewChanged ; commence masqué car l'accueil est
+           la page de départ. -->
+      <div id="topbar-darwin-logo" class="topbar-darwin-logo" role="img" aria-label="darwin" hidden></div>
       <button type="button" class="night-mode-toggle-btn" id="night-mode-toggle-btn" title="Mode nuit" aria-label="Basculer le mode nuit">
         <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       </button>
@@ -158,12 +161,38 @@
     </div>
   </header>
 
-  <!-- Round 15, item 1 : nom de la page courante, tout en haut, centré,
-       au-dessus du robot — posé en JS (PAGE_TITLES / MutationObserver sur
-       .view.is-active, voir js/app.js) pour rester correct quelle que
-       soit la façon dont on arrive sur la page. -->
-  <div class="page-title-bar">
-    <h2 class="page-title" id="page-title"></h2>
+  <!-- Round 17, item 3 : le titre de page (round 15, item 1) a été retiré
+       — jugé inutile et prenant de la place ; JS conserve tout de même le
+       nom de la page courante à jour dans <title> (onglet du navigateur),
+       voir onActiveViewChanged, js/app.js. -->
+
+  <!-- Round 17, item 3 (suite) : sur "Mon bureau" uniquement, les actions
+       de la liste (+ Nouveau dossier, Bibliothèque, les 3 pictos
+       d'affichage) sont intégrées ICI, dans le bandeau fixe, plutôt que de
+       défiler avec le contenu — déplacées depuis #view-manage (mêmes id,
+       simplement déplacés, pas dupliqués). Bascule en JS
+       (onActiveViewChanged). -->
+  <div class="manage-sticky-actions" id="manage-sticky-actions" hidden>
+    <div class="list-header">
+      <div class="list-header-actions">
+        <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
+        <button class="btn btn--small" id="manage-goto-library-btn" type="button">
+          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
+          Bibliothèque
+        </button>
+      </div>
+      <div class="org-display-toggle" id="org-display-toggle">
+        <button type="button" class="org-display-toggle-btn is-active" data-org-display="count" title="Nombre de fiches/boîtes">
+          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/></svg>
+        </button>
+        <button type="button" class="org-display-toggle-btn" data-org-display="mode" title="Mode d'apprentissage">
+          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/></svg>
+        </button>
+        <button type="button" class="org-display-toggle-btn" data-org-display="gauge" title="Jauge de score">
+          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="10" width="11" height="4" rx="2" fill="currentColor" stroke="none"/></svg>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Round 15, item 6 (suite) : petite bannière de guidage, affichée
@@ -180,9 +209,14 @@
     <img src="./icons/logo.png" alt="" id="body-logo" class="body-logo" />
     <!-- Round 4 : le robot ne parle plus tout seul par défaut — une petite
          bulle "aide" cliquable apparaît à côté de lui quand cette page a un
-         message, et c'est ce clic qui affiche la bulle de parole complète. -->
+         message, et c'est ce clic qui affiche la bulle de parole complète.
+         Round 17, item 2 : icône changée pour une bulle de parole (plutôt
+         qu'un "?" dans un rond, devenu ambigu depuis l'ajout du bouton
+         d'aide CONTEXTUELLE du bandeau, round 15, qui a la même forme) —
+         plus cohérent avec ce que ce bouton fait réellement (ouvrir une
+         bulle de parole), et visuellement distinct du "?" contextuel. -->
     <button type="button" class="body-logo-help-btn" id="body-logo-help-btn" title="Aide" hidden>
-      <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.2 9a2.8 2.8 0 0 1 5.4 1c0 1.8-2.6 2.2-2.6 3.8"/><circle cx="12" cy="17.3" r="0.9" fill="currentColor" stroke="none"/></svg>
+      <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4 8.3 8.3 0 0 1-3.8-.9L3 21l1.9-5.8a8.3 8.3 0 0 1-.9-3.7A8.4 8.4 0 1 1 21 11.5z"/><circle cx="8.3" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="12.6" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="16.9" cy="11.5" r="1" fill="currentColor" stroke="none"/></svg>
     </button>
     <div class="body-logo-speech" id="body-logo-speech" hidden>
       <p class="body-logo-speech-text" id="body-logo-speech-text"></p>
@@ -420,32 +454,11 @@
 
     <!-- VUE GESTION -->
     <section id="view-manage" class="view" aria-labelledby="tab-manage">
+      <!-- Round 17, item 3 : le bloc d'actions (+ Nouveau dossier,
+           Bibliothèque, pictos d'affichage) a été déplacé dans le bandeau
+           fixe (#manage-sticky-actions, voir plus haut) — il ne défile
+           donc plus avec la liste ci-dessous. -->
       <div class="subjects-panel">
-        <div class="list-header">
-          <!-- Item 3 (nouveau lot) : le bouton "+ Nouveau dossier" passe à
-               gauche, les 3 pictos d'affichage passent à droite. -->
-          <div class="list-header-actions">
-            <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
-            <!-- Round 13, item 3-1 : accès à la Bibliothèque depuis Mon
-                 bureau, même gabarit que "+ Nouveau dossier" et icône déjà
-                 utilisée pour les collections partagées/Bibliothèque. -->
-            <button class="btn btn--small" id="manage-goto-library-btn" type="button">
-              <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
-              Bibliothèque
-            </button>
-          </div>
-          <div class="org-display-toggle" id="org-display-toggle">
-            <button type="button" class="org-display-toggle-btn is-active" data-org-display="count" title="Nombre de fiches/boîtes">
-              <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/></svg>
-            </button>
-            <button type="button" class="org-display-toggle-btn" data-org-display="mode" title="Mode d'apprentissage">
-              <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/></svg>
-            </button>
-            <button type="button" class="org-display-toggle-btn" data-org-display="gauge" title="Jauge de score">
-              <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="10" width="11" height="4" rx="2" fill="currentColor" stroke="none"/></svg>
-            </button>
-          </div>
-        </div>
         <ul class="subject-list" id="subject-list"></ul>
       </div>
     </section>

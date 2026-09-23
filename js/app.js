@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v162";
+  const APP_VERSION = "v163";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -5203,8 +5203,23 @@
         // révision) amène directement à la page Réviser une fois la
         // sélection validée ; sinon on revient simplement à la page d'où
         // on venait (ex. Réviser elle-même).
+        // Bug corrigé (round 17, item 4) : `boitePickerActivateView`
+        // bascule juste les classes CSS "is-active" — contrairement au
+        // clic sur l'onglet Réviser (voir plus bas, ".tab" click), elle
+        // ne (re)démarre PAS la session de révision. Comme switchSubject
+        // ci-dessus vient de vider la file (reviewQueue = [], voir
+        // switchSubject) SANS la reconstruire (la page Réviser n'était
+        // pas encore active à cet instant-là, condition ratée), la page
+        // s'affichait donc avec une file vide ("rien à réviser" sur
+        // iPhone) ou une fiche non réinitialisée correctement (fiche qui
+        // ne pivote pas, observé sur PC). Cliquer le VRAI onglet Réviser
+        // (comme partout ailleurs, voir goToReviewFor) plutôt que
+        // basculer les classes à la main garantit exactement le même
+        // chemin que n'importe quelle autre arrivée sur cette page.
         if (shouldNavigateToReview) {
-          boitePickerActivateView("view-review");
+          const reviewTab = document.querySelector('.tab[data-view="review"]');
+          if (reviewTab) reviewTab.click();
+          else boitePickerActivateView("view-review");
         } else {
           closeBoitePickerView();
         }
@@ -8712,12 +8727,18 @@
     });
   });
 
-  /** Round 15, item 1 : nom de la page affiché tout en haut, centré,
-   *  au-dessus du robot — déduit de la vue actuellement active
-   *  (.view.is-active) plutôt que patché à chaque point du code qui
-   *  change de page (il y en a plusieurs) : un MutationObserver sur la
-   *  classe de chaque .view couvre tous les chemins de bascule, présents
-   *  et futurs, sans rien dupliquer. */
+  /** Round 15, item 1 : nom de la page affiché tout en haut — retiré à
+   *  visuellement au round 17, item 3 (jugé inutile, prenait de la
+   *  place), mais la liste reste utile pour garder l'onglet du navigateur
+   *  à jour (<title>), et le principe (déduit de la vue actuellement
+   *  active, via un MutationObserver sur .view.is-active plutôt que
+   *  patché à chaque point du code qui change de page) est réutilisé
+   *  ci-dessous (round 17) pour d'autres bascules liées à la page
+   *  courante : logo darwin du bandeau (masqué sur l'accueil, item 1) et
+   *  bloc d'actions de "Mon bureau" intégré au bandeau (item 3). Un seul
+   *  point d'entrée couvre TOUS les chemins de bascule de page (clic
+   *  d'onglet, goHome, sélecteur de boîte(s)...), sans avoir à les
+   *  patcher un par un. */
   const PAGE_TITLES = {
     home: "Accueil",
     "revision-program": "Programme",
@@ -8744,17 +8765,23 @@
     "mode-assign": "Affecter un mode",
     "boite-picker": "Sélection",
   };
-  function updatePageTitle() {
+  const topbarDarwinLogoEl = el("topbar-darwin-logo");
+  const manageStickyActionsEl = el("manage-sticky-actions");
+  function onActiveViewChanged() {
     const activeView = document.querySelector(".view.is-active");
-    const titleEl = el("page-title");
-    if (!titleEl) return;
     const key = activeView ? activeView.id.replace(/^view-/, "") : "";
-    titleEl.textContent = PAGE_TITLES[key] || "";
+    document.title = PAGE_TITLES[key] ? `${PAGE_TITLES[key]} — Fiches` : "Fiches";
+    // Round 17, item 1 : logo darwin du bandeau masqué UNIQUEMENT sur
+    // l'accueil (qui a déjà son propre grand logo darwin).
+    if (topbarDarwinLogoEl) topbarDarwinLogoEl.hidden = key === "home";
+    // Round 17, item 3 : bloc d'actions de "Mon bureau" visible
+    // UNIQUEMENT sur cette page.
+    if (manageStickyActionsEl) manageStickyActionsEl.hidden = key !== "manage";
   }
   document.querySelectorAll(".view").forEach((v) => {
-    new MutationObserver(updatePageTitle).observe(v, { attributes: true, attributeFilter: ["class"] });
+    new MutationObserver(onActiveViewChanged).observe(v, { attributes: true, attributeFilter: ["class"] });
   });
-  updatePageTitle();
+  onActiveViewChanged();
 
   /** Round 15, item 5 : hauteur RÉELLE du bandeau fixe (topbar + titre de
    *  page + robot), mesurée en JS et posée en variable CSS
