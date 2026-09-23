@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v159";
+  const APP_VERSION = "v160";
 
   // --- Diagnostic temporaire (à retirer une fois le bug de synchro des
   // réglages développeur résolu) : les [DIAG] passent aussi par ici pour
@@ -20,10 +20,30 @@
     console.log("[DIAG]", ...parts);
   }
   function showDiagOverlay() {
+    // Correctif : la fenêtre alert() native tronquait le texte au
+    // copier-coller sur iPhone (limite de sélection). On affiche donc un
+    // vrai panneau à l'écran, DIRECTEMENT LISIBLE (et donc capturable par
+    // une ou plusieurs captures d'écran, en faisant défiler si besoin) —
+    // plus besoin de copier-coller du tout.
+    const existing = document.getElementById("diag-overlay");
+    if (existing) existing.remove();
     const text = window.__fichesDiag.length
-      ? window.__fichesDiag.join("\n\n")
+      ? window.__fichesDiag.join("\n\n---\n\n")
       : "(aucune trace de diagnostic pour l'instant)";
-    window.alert(text);
+    const overlay = document.createElement("div");
+    overlay.id = "diag-overlay";
+    overlay.style.cssText =
+      "position:fixed;inset:0;z-index:100000;background:#111;color:#0f0;font:12px/1.5 monospace;overflow:auto;padding:16px;white-space:pre-wrap;word-break:break-word;";
+    const closeBtn = document.createElement("button");
+    closeBtn.textContent = "✕ Fermer";
+    closeBtn.style.cssText =
+      "position:sticky;top:0;display:block;margin-bottom:12px;background:#e74c3c;color:#fff;border:none;border-radius:8px;padding:10px 14px;font-size:14px;";
+    closeBtn.addEventListener("click", () => overlay.remove());
+    const pre = document.createElement("div");
+    pre.textContent = text;
+    overlay.appendChild(closeBtn);
+    overlay.appendChild(pre);
+    document.body.appendChild(overlay);
   }
   window.addEventListener("load", () => {
     const btn = document.createElement("button");
