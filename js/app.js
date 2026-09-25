@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v165";
+  const APP_VERSION = "v166";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -673,7 +673,7 @@
   // uniquement s'ils restent référencés ailleurs, sinon retirés. Libellés
   // mis à jour pour "manage" (Mon bureau) et "classes" (École).
   const HOME_LAYOUT_TITLES = {
-    review: "Réviser", manage: "Mon bureau", addCard: "Ajouter une fiche",
+    review: "Réviser", manage: "Fiches", addCard: "Ajouter une fiche",
     stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
     dev: "Développeur", classes: "École", account: "Compte",
   };
@@ -728,7 +728,9 @@
     cards: [],
     stats: [],
     sync: [],
-    calendar: [],
+    // Round 18, item 12 : texte d'intro déplacé de la page vers le robot
+    // (message d'aide par défaut, éditable en mode développeur).
+    calendar: ["Note ici tes échéances (contrôle, interrogation, partiels, bac...) liées à une boîte ou un dossier. De quoi, plus tard, générer automatiquement un programme de révision."],
     classes: [],
     "classes-student": [],
     "classes-teacher": [],
@@ -738,6 +740,7 @@
     dev: [],
     "new-card": [],
     "boite-picker": [],
+    "calendar-event-form": [],
     "mode-assign": [],
     messages: [],
     "message-thread": [],
@@ -762,6 +765,7 @@
     dev: "Développeur",
     "new-card": "Nouvelle fiche",
     "boite-picker": "Sélecteur de boîte(s)",
+    "calendar-event-form": "Calendrier — ajouter/modifier un événement",
     "mode-assign": "Affecter un mode",
     messages: "Messagerie",
     "message-thread": "Messagerie — discussion",
@@ -818,9 +822,23 @@
   const bodyLogoSpeechEl = el("body-logo-speech");
   if (bodyLogoSpeechEl) {
     // Cliquer sur la bulle elle-même la referme (sauf sur les boutons
-    // "Précédent"/"Suite", qui ont leur propre comportement).
+    // "Précédent"/"Suite"/"Fermer", qui ont leur propre comportement).
     bodyLogoSpeechEl.addEventListener("click", (e) => {
-      if (e.target.closest("#body-logo-speech-next") || e.target.closest("#body-logo-speech-prev")) return;
+      if (
+        e.target.closest("#body-logo-speech-next") ||
+        e.target.closest("#body-logo-speech-prev") ||
+        e.target.closest("#body-logo-speech-close")
+      )
+        return;
+      renderBodyLogoSpeechState(false);
+    });
+  }
+  // Round 18, item 6 : bouton fermer explicite, en plus du clic sur la
+  // bulle elle-même (peu évident sans le savoir).
+  const bodyLogoSpeechCloseBtn = el("body-logo-speech-close");
+  if (bodyLogoSpeechCloseBtn) {
+    bodyLogoSpeechCloseBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
       renderBodyLogoSpeechState(false);
     });
   }
@@ -3384,6 +3402,52 @@
     }
   }
 
+  /** Round 18, item 3 (suite) : nettoie les doublons de boîtes MIROIR
+   *  (boîte de classe partagée ou collection prise en Bibliothèque) déjà
+   *  créés par le bug de synchros concurrentes corrigé ci-dessus (voir
+   *  syncSharedBoxesForStudent) — sans ce nettoyage, les utilisateurs déjà
+   *  touchés garderaient leurs doublons pour toujours. Regroupe par
+   *  sharedBoxId puis par libraryOriginId ; garde la plus ancienne de
+   *  chaque groupe (celle que les autres écrans référencent déjà le plus
+   *  souvent) et supprime les autres, dont le contenu est par définition
+   *  un miroir identique de la même source distante. */
+  async function dedupeDuplicateMirrorSubjects() {
+    const groupsByKey = (keyFn) => {
+      const map = new Map();
+      for (const s of subjects) {
+        const key = keyFn(s);
+        if (!key) continue;
+        if (!map.has(key)) map.set(key, []);
+        map.get(key).push(s);
+      }
+      return map;
+    };
+    const allGroups = [
+      ...groupsByKey((s) => s.sharedBoxId).values(),
+      ...groupsByKey((s) => s.libraryOriginId).values(),
+    ];
+    for (const group of allGroups) {
+      if (group.length < 2) continue;
+      const sorted = [...group].sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
+      const keep = sorted[0];
+      for (const dup of sorted.slice(1)) {
+        const toDelete = cards.filter((c) => !c.deleted && c.subject === dup.id);
+        for (const c of toDelete) {
+          const updated = touch({ ...c, deleted: true });
+          await persist(updated);
+          const idx = cards.findIndex((x) => x.id === c.id);
+          if (idx >= 0) cards[idx] = updated;
+        }
+        await DB.removeSubject(dup.id);
+        subjects = subjects.filter((x) => x.id !== dup.id);
+        if (currentSubjectId === dup.id) {
+          currentSubjectId = keep.id;
+          localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
+        }
+      }
+    }
+  }
+
   function renderSubjectSelect() {
     const opts = subjects
       .map(
@@ -3919,7 +3983,12 @@
 
     openBoitePickerView({
       mode: "single",
-      title: `Déplacer « ${name || ""} » vers :`,
+      // Round 18, item 7 : ce message est désormais donné par le robot
+      // (bulle de parole) plutôt qu'en simple titre de page, et le bouton
+      // de retour de cette page devient "Annuler" (on choisit une
+      // destination, on ne "revient" pas en arrière).
+      robotMessage: `Déplacer « ${name || ""} » vers :`,
+      backLabel: "Annuler",
       excludedFolderIds: excluded,
       onPick: async (kindPicked, destId) => {
         if (kind === "folder") {
@@ -5110,16 +5179,36 @@
     boitePickerReturnViewId = current ? current.id : "view-home";
 
     const titleEl = el("boite-picker-title");
-    if (titleEl) titleEl.textContent = ctx.title || "Choisir une boîte";
+    // Round 18, item 7/13 : quand ctx.robotMessage est fourni, c'est le
+    // ROBOT qui annonce ce texte (bulle de parole) plutôt qu'un simple
+    // titre de page — le titre visuel est alors masqué pour ne pas se
+    // répéter (le texte reste tout de même posé dedans, pour l'accessibilité).
+    if (titleEl) {
+      titleEl.textContent = ctx.title || ctx.robotMessage || "Choisir une boîte";
+      titleEl.hidden = !!ctx.robotMessage;
+    }
     const hintEl = el("boite-picker-hint");
     if (hintEl) {
       hintEl.textContent = ctx.hint || "";
       hintEl.hidden = !ctx.hint;
     }
+    const backBtnEl = el("boite-picker-back-btn");
+    if (backBtnEl) backBtnEl.textContent = ctx.backLabel || "← Retour";
 
     const actions = el("boite-picker-actions");
     const confirmBtn = el("boite-picker-confirm");
     const noneBtn = el("boite-picker-none");
+
+    // Round 18, item 13 : le bouton "Aucun lien" (déplacé au-dessus de la
+    // liste, voir index.html) est maintenant indépendant de la barre
+    // d'actions du bas (qui ne porte plus que "Valider", mode multi) —
+    // disponible aussi bien en mode "single" (Calendrier, avant) qu'en
+    // mode "multi" (Calendrier, maintenant qu'on peut lier plusieurs
+    // boîtes/dossiers à la fois).
+    if (noneBtn) {
+      noneBtn.hidden = !ctx.showNoneButton;
+      noneBtn.onclick = ctx.showNoneButton ? ctx.onNone : null;
+    }
 
     if (ctx.mode === "multi") {
       const selection = new Set(ctx.initialSelection || []);
@@ -5129,7 +5218,6 @@
         confirmBtn.hidden = false;
         confirmBtn.onclick = () => ctx.onConfirm(selection);
       }
-      if (noneBtn) noneBtn.hidden = true;
     } else {
       if (ctx.excludedFolderIds) {
         renderMoveDestinationPicker(list, ctx.excludedFolderIds, (destId) => ctx.onPick("folder", destId));
@@ -5137,11 +5225,7 @@
         renderSingleBoitePicker(list, (kind, id) => ctx.onPick(kind, id), !!ctx.folderAlwaysSelectable, ctx.excludeSubjectIds, ctx.libraryOptions);
       }
       if (confirmBtn) confirmBtn.hidden = true;
-      if (noneBtn) {
-        noneBtn.hidden = !ctx.showNoneButton;
-        noneBtn.onclick = ctx.showNoneButton ? ctx.onNone : null;
-      }
-      if (actions) actions.hidden = !ctx.showNoneButton;
+      if (actions) actions.hidden = true;
     }
 
     boitePickerActivateView("view-boite-picker");
@@ -5150,7 +5234,17 @@
     const homeBtnEl = el("home-btn");
     if (homeBtnEl) homeBtnEl.hidden = false;
     if (el("body-logo-row")) el("body-logo-row").hidden = false;
-    applyBodyLogoSpeech("boite-picker");
+    if (ctx.robotMessage) {
+      // Round 18, item 7/13 : message ponctuel et dynamique (nom du
+      // dossier/de la boîte concernée), affiché tout de suite (pas besoin
+      // de cliquer sur le bouton d'aide) plutôt que le message générique
+      // habituel de cette page.
+      bodyLogoSpeechMessages = [ctx.robotMessage];
+      bodyLogoSpeechIndex = 0;
+      renderBodyLogoSpeechState(true);
+    } else {
+      applyBodyLogoSpeech("boite-picker");
+    }
   }
 
   function closeBoitePickerView() {
@@ -5662,7 +5756,7 @@
     const todayStr = new Date().toISOString().slice(0, 10);
     const linkId = `subject:${currentSubjectId}`;
     const upcoming = loadCalendarEvents()
-      .filter((ev) => ev.linkId === linkId && ev.date >= todayStr)
+      .filter((ev) => eventLinkIds(ev).includes(linkId) && ev.date >= todayStr)
       .sort((a, b) => a.date.localeCompare(b.date));
     if (upcoming.length === 0) return null;
     return REVISION_PROGRAM_TARGET_SCORE;
@@ -8743,7 +8837,7 @@
     home: "Accueil",
     "revision-program": "Programme",
     review: "Réviser",
-    manage: "Mon bureau",
+    manage: "Fiches",
     "new-card": "Nouvelle fiche",
     cards: "Fiches",
     stats: "Statistiques",
@@ -8764,6 +8858,7 @@
     dev: "Développeur",
     "mode-assign": "Affecter un mode",
     "boite-picker": "Sélection",
+    "calendar-event-form": "Événement",
   };
   const topbarDarwinLogoEl = el("topbar-darwin-logo");
   const manageStickyActionsEl = el("manage-sticky-actions");
@@ -9005,7 +9100,14 @@
     localStorage.setItem(CALENDAR_EVENTS_KEY, JSON.stringify(events));
     scheduleDevSettingsPush();
   }
-  let calendarEventLinkId = null; // "subject:ID" ou "folder:ID" ou null
+  // Round 18, item 13 : un événement peut désormais être lié à PLUSIEURS
+  // boîtes/dossiers à la fois — `calendarEventLinkIds` est un Set
+  // d'identifiants "subject:ID" (cocher un dossier dans le sélecteur
+  // multi-choix coche automatiquement toutes les boîtes qu'il contient,
+  // même mécanisme que "Sélection de boîtes" en Réviser). Ancien format
+  // "folder:ID" conservé en LECTURE pour les événements déjà enregistrés
+  // avant ce round (voir eventLinkIds ci-dessous).
+  let calendarEventLinkIds = new Set();
   let calendarEditingEventId = null; // null = ajout, sinon modification (item 2)
   let calendarViewMode = "list"; // "list" | "months" | "year" (item 2)
   let calendarMonthsAnchor = new Date();
@@ -9018,28 +9120,49 @@
     const f = folders.find((x) => x.id === id);
     return f ? `${f.name} (dossier)` : "Aucune boîte/dossier liés";
   }
+  /** Round 18, item 13 : libellé du bouton pour un ENSEMBLE de liens
+   *  (0, 1 ou plusieurs boîtes) — "Aucune boîte/dossier liés" si vide, le
+   *  nom direct s'il n'y en a qu'un, sinon un décompte. */
+  function calendarLinkIdsLabel(linkIds) {
+    const arr = Array.from(linkIds || []);
+    if (arr.length === 0) return "Aucune boîte/dossier liés";
+    if (arr.length === 1) return calendarLinkLabel(arr[0]);
+    return `${arr.length} boîtes liées`;
+  }
+  /** Round 18, item 13 (compat) : renvoie la liste des liens "subject:ID"
+   *  d'un événement, qu'il ait été enregistré avant ce round (un seul
+   *  `linkId`, éventuellement "folder:ID") ou depuis (`linkIds`, un
+   *  tableau de "subject:ID"). */
+  function eventLinkIds(ev) {
+    if (Array.isArray(ev.linkIds)) return ev.linkIds;
+    return ev.linkId ? [ev.linkId] : [];
+  }
 
   // Item 1 (4e lot) : ce sélecteur utilise désormais la page partagée
-  // #view-boite-picker (rendu de l'arbre identique à Organisation) — ici
-  // un dossier ENTIER reste un lien valide (même non vide), donc
-  // folderAlwaysSelectable est activé, et un bouton "Aucun lien" permet de
-  // retirer le lien existant.
+  // #view-boite-picker (rendu de l'arbre identique à Organisation), en
+  // mode multi-choix (round 18, item 13) — cocher un dossier lie toutes
+  // les boîtes qu'il contient ; le bouton "Aucun lien" (au-dessus de la
+  // liste) vide la sélection entière.
   const calendarEventSubjectBtn = el("calendar-event-subject-btn");
   if (calendarEventSubjectBtn) {
     calendarEventSubjectBtn.addEventListener("click", () => {
       openBoitePickerView({
-        mode: "single",
-        title: "Choisir la boîte ou le dossier lié",
-        folderAlwaysSelectable: true,
+        mode: "multi",
+        // Round 18, item 13 : ce message est donné par le robot plutôt
+        // qu'en simple titre de page.
+        robotMessage: "Choisir la boîte ou le dossier lié",
+        // Le picker multi-choix travaille avec des ids de BOÎTE nus (pas
+        // le préfixe "subject:") — voir renderMultiBoitePicker.
+        initialSelection: Array.from(calendarEventLinkIds).map((linkId) => linkId.split(":")[1]),
         showNoneButton: true,
-        onPick: (kind, id) => {
-          calendarEventLinkId = `${kind}:${id}`;
-          calendarEventSubjectBtn.textContent = calendarLinkLabel(calendarEventLinkId);
+        onConfirm: (selection) => {
+          calendarEventLinkIds = new Set(Array.from(selection).map((id) => `subject:${id}`));
+          calendarEventSubjectBtn.textContent = calendarLinkIdsLabel(calendarEventLinkIds);
           closeBoitePickerView();
         },
         onNone: () => {
-          calendarEventLinkId = null;
-          calendarEventSubjectBtn.textContent = calendarLinkLabel(null);
+          calendarEventLinkIds = new Set();
+          calendarEventSubjectBtn.textContent = calendarLinkIdsLabel(calendarEventLinkIds);
           closeBoitePickerView();
         },
       });
@@ -9074,7 +9197,17 @@
   async function openCalendarEventForm(eventToEdit, presetClassId) {
     const form = el("calendar-event-form");
     if (!form) return;
-    form.hidden = false;
+    // Round 18, item 13 : le formulaire vit maintenant dans sa propre
+    // page (#view-calendar-event-form) plutôt que dans un panneau déplié
+    // sur la page Calendrier elle-même.
+    boitePickerActivateView("view-calendar-event-form");
+    // Comme toute autre page indépendante (Nouvelle fiche, Sélecteur de
+    // boîte(s)...), l'en-tête de l'appli (bouton Accueil, logo) reste
+    // visible.
+    const homeBtnEl = el("home-btn");
+    if (homeBtnEl) homeBtnEl.hidden = false;
+    if (el("body-logo-row")) el("body-logo-row").hidden = false;
+    applyBodyLogoSpeech("calendar-event-form");
     const title = el("calendar-event-form-title");
     const submitBtn = el("calendar-event-submit");
     if (eventToEdit) {
@@ -9082,16 +9215,16 @@
       el("calendar-event-title").value = eventToEdit.title;
       el("calendar-event-date").value = eventToEdit.date;
       el("calendar-event-date-label").textContent = formatCalendarDate(eventToEdit.date);
-      calendarEventLinkId = eventToEdit.linkId || null;
-      el("calendar-event-subject-btn").textContent = calendarLinkLabel(calendarEventLinkId);
+      calendarEventLinkIds = new Set(eventLinkIds(eventToEdit));
+      el("calendar-event-subject-btn").textContent = calendarLinkIdsLabel(calendarEventLinkIds);
       if (title) title.textContent = "Modifier l'événement";
       if (submitBtn) submitBtn.textContent = "Enregistrer les modifications";
     } else {
       calendarEditingEventId = null;
       form.reset();
       el("calendar-event-date-label").textContent = "Choisir une date";
-      calendarEventLinkId = null;
-      el("calendar-event-subject-btn").textContent = calendarLinkLabel(null);
+      calendarEventLinkIds = new Set();
+      el("calendar-event-subject-btn").textContent = calendarLinkIdsLabel(calendarEventLinkIds);
       if (title) title.textContent = "Ajouter un événement";
       if (submitBtn) submitBtn.textContent = "Ajouter à mon calendrier";
     }
@@ -9137,8 +9270,12 @@
     }
   }
   function closeCalendarEventForm() {
-    const form = el("calendar-event-form");
-    if (form) form.hidden = true;
+    // Round 18, item 13 : retour à la page Calendrier (toujours son point
+    // d'entrée, y compris depuis la page d'une classe — voir
+    // classDetailAddEventBtn plus bas, qui bascule d'abord sur l'onglet
+    // Calendrier avant d'ouvrir ce formulaire).
+    boitePickerActivateView("view-calendar");
+    applyBodyLogoSpeech("calendar");
     calendarEditingEventId = null;
   }
   const calendarAddEventBtn = el("calendar-add-event-btn");
@@ -9161,11 +9298,16 @@
 
       let ev;
       let idx = -1;
+      // Round 18, item 13 : plusieurs liens possibles désormais — stockés
+      // sous `linkIds` (tableau), l'ancien champ `linkId` (un seul) est
+      // supprimé pour ne pas laisser une valeur périmée traîner à côté.
+      const linkIdsArr = Array.from(calendarEventLinkIds);
       if (calendarEditingEventId) {
         idx = events.findIndex((x) => x.id === calendarEditingEventId);
-        ev = idx >= 0 ? { ...events[idx], title: titleVal, date: dateVal, linkId: calendarEventLinkId } : null;
+        ev = idx >= 0 ? { ...events[idx], title: titleVal, date: dateVal, linkIds: linkIdsArr } : null;
+        if (ev) delete ev.linkId;
       } else {
-        ev = { id: uid(), title: titleVal, date: dateVal, linkId: calendarEventLinkId };
+        ev = { id: uid(), title: titleVal, date: dateVal, linkIds: linkIdsArr };
       }
       if (!ev) return;
 
@@ -9247,7 +9389,9 @@
       : isSharedByMe
       ? ` <span class="classes-shared-badge">Partagé : ${escapeHtml(ev.classShare.className)}</span>`
       : "";
-    main.innerHTML = `<strong>${escapeHtml(ev.title)}</strong>${sharedBadge}<br><span class="card-row-meta">${escapeHtml(formatCalendarDate(ev.date))}${ev.linkId ? ` · ${escapeHtml(calendarLinkLabel(ev.linkId))}` : ""}</span>`;
+    const evLinkIds = eventLinkIds(ev);
+    const linksLabel = evLinkIds.length > 0 ? ` · ${escapeHtml(calendarLinkIdsLabel(evLinkIds))}` : "";
+    main.innerHTML = `<strong>${escapeHtml(ev.title)}</strong>${sharedBadge}<br><span class="card-row-meta">${escapeHtml(formatCalendarDate(ev.date))}${linksLabel}</span>`;
     const actions = document.createElement("div");
     actions.style.cssText = "display:flex; gap:4px; flex-shrink:0;";
     if (isReceived) {
@@ -9507,15 +9651,20 @@
   const REVISION_PROGRAM_TARGET_SCORE = 80;
   function computeRevisionProgramItems() {
     const todayStr = new Date().toISOString().slice(0, 10);
-    const upcoming = loadCalendarEvents().filter((ev) => ev.linkId && ev.date >= todayStr);
+    const upcoming = loadCalendarEvents().filter((ev) => eventLinkIds(ev).length > 0 && ev.date >= todayStr);
     // Un seul point de programme par boîte/dossier : celui dont
-    // l'échéance est la plus proche fait foi.
+    // l'échéance est la plus proche fait foi. Round 18, item 13 : un
+    // événement peut maintenant porter PLUSIEURS liens — chacun devient
+    // son propre point de programme (comme si c'était autant d'événements
+    // distincts, un par boîte/dossier concerné).
     const byLink = {};
     upcoming.forEach((ev) => {
-      if (!byLink[ev.linkId] || ev.date < byLink[ev.linkId].date) byLink[ev.linkId] = ev;
+      eventLinkIds(ev).forEach((linkId) => {
+        if (!byLink[linkId] || ev.date < byLink[linkId].ev.date) byLink[linkId] = { ev, linkId };
+      });
     });
-    const items = Object.values(byLink).map((ev) => {
-      const [type, id] = ev.linkId.split(":");
+    const items = Object.values(byLink).map(({ ev, linkId }) => {
+      const [type, id] = linkId.split(":");
       const isFolder = type === "folder";
       const pool = isFolder ? folderCardsPool(id) : subjectCardsPool(id);
       const daysLeft = Math.round((new Date(ev.date + "T00:00:00") - new Date(todayStr + "T00:00:00")) / 86400000);
@@ -9526,10 +9675,10 @@
       const wellPersisted = list.filter((c) => classifyPersBracket(typeof c.pers === "number" ? c.pers : 0, loadDevSettings().revisionAlgo) !== "court").length;
       const score = list.length > 0 ? Math.round((wellPersisted / list.length) * 100) : 0;
       return {
-        linkId: ev.linkId,
+        linkId,
         type,
         id,
-        label: calendarLinkLabel(ev.linkId),
+        label: calendarLinkLabel(linkId),
         eventTitle: ev.title,
         eventDate: ev.date,
         daysLeft,
@@ -9768,11 +9917,8 @@
     if (label) label.textContent = accountCurrentUser ? "Mon compte" : "Se connecter";
     const emailEl = el("account-user-email");
     if (emailEl) emailEl.textContent = (accountCurrentUser && accountCurrentUser.email) || "";
-    const classesEmailEl = el("classes-connected-as");
-    if (classesEmailEl) {
-      classesEmailEl.hidden = !accountCurrentUser;
-      classesEmailEl.textContent = accountCurrentUser ? `Connecté en tant que ${accountCurrentUser.email}` : "";
-    }
+    // Round 18, item 10 : ligne "Connecté en tant que [email]" (page
+    // Classes) retirée, y compris sa mise à jour ici.
     // Round 6, item 5 : la pastille de notifications de la Messagerie doit
     // rester à jour dès que l'état de connexion change (connexion,
     // déconnexion, changement de Compte), pas seulement à l'ouverture de
@@ -9839,6 +9985,10 @@
     if (lastEl) lastEl.value = meta.last_name || "";
     const profileNote = el("account-profile-note");
     if (profileNote) profileNote.hidden = true;
+    // Round 18, item 16 : crédit de jetons (affichage seul, cf. commentaire
+    // HTML sur account-token-balance-row).
+    const tokenEl = el("account-token-balance");
+    if (tokenEl) tokenEl.textContent = String(meta.token_balance || 0);
   }
 
   function setClassesAuthMode(mode) {
@@ -9948,13 +10098,8 @@
     });
   }
 
-  const accountGotoClassesBtn = el("account-goto-classes-btn");
-  if (accountGotoClassesBtn) {
-    accountGotoClassesBtn.addEventListener("click", () => {
-      const tab = document.querySelector('.tab[data-view="classes"]');
-      if (tab) tab.click();
-    });
-  }
+  // Round 18, item 17 : bouton "Aller à Classes" (Mon compte) retiré, y
+  // compris son gestionnaire de clic (voir index.html).
 
   // Round 13, item 8 : bouton "Synchronisation" toujours visible sur Mon
   // compte (avant : uniquement proposé quand la synchro n'était pas encore
@@ -10047,20 +10192,13 @@
       await renderStudentClasses();
     }
   }
-  function closeClassesSubView() {
-    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
-    el("view-classes").classList.add("is-active");
-    applyBodyLogoSpeech("classes");
-    renderClassesView();
-  }
+  // Round 18, item 11 : boutons "← Retour à Classes" (Élève/Enseignant)
+  // retirés, y compris closeClassesSubView (n'était plus utilisée que par
+  // eux).
   const classesGotoStudentBtn = el("classes-goto-student-btn");
   if (classesGotoStudentBtn) classesGotoStudentBtn.addEventListener("click", () => openClassesSubView("student"));
   const classesGotoTeacherBtn = el("classes-goto-teacher-btn");
   if (classesGotoTeacherBtn) classesGotoTeacherBtn.addEventListener("click", () => openClassesSubView("teacher"));
-  const classesStudentBackBtn = el("classes-student-back-btn");
-  if (classesStudentBackBtn) classesStudentBackBtn.addEventListener("click", closeClassesSubView);
-  const classesTeacherBackBtn = el("classes-teacher-back-btn");
-  if (classesTeacherBackBtn) classesTeacherBackBtn.addEventListener("click", closeClassesSubView);
 
   /** Icône dédiée aux classes (item 5) — un petit groupe de personnes,
    *  dans le même style épuré (traits fins, coins arrondis) que les
@@ -10076,7 +10214,29 @@
    *  que le prof a en ligne : ajouté si nouveau, mis à jour si changé,
    *  repassé en "supprimé" localement si le prof l'a retiré — la
    *  progression SM-2 de chaque fiche, elle, n'est jamais touchée. */
+  // Round 18, item 3 : bug corrigé — "des boîtes qui se multiplient".
+  // Cause : Sync.auth.onChange (Supabase) peut déclencher plusieurs
+  // événements truthy coup sur coup pour une seule connexion réelle
+  // (session initiale retrouvée au démarrage + événement immédiat du
+  // listener qui vient de s'abonner, ou un cycle déconnexion/reconnexion
+  // rapide) — chaque appel de syncSharedBoxesForStudent() tournait alors
+  // EN PARALLÈLE des autres. Comme reconcileSharedBox() décide de créer
+  // une nouvelle boîte miroir en cherchant d'abord dans le tableau
+  // `subjects` en mémoire, deux appels concurrents pouvaient tous les
+  // deux ne rien y trouver (l'un n'avait pas encore fini de pousser sa
+  // création) et créer chacun sa propre copie de la même boîte partagée.
+  // On sérialise donc les appels : un appel démarré pendant qu'un autre
+  // est encore en cours réutilise la même promesse au lieu d'en relancer
+  // un second en parallèle.
+  let syncSharedBoxesForStudentInFlight = null;
   async function syncSharedBoxesForStudent() {
+    if (syncSharedBoxesForStudentInFlight) return syncSharedBoxesForStudentInFlight;
+    syncSharedBoxesForStudentInFlight = syncSharedBoxesForStudentImpl().finally(() => {
+      syncSharedBoxesForStudentInFlight = null;
+    });
+    return syncSharedBoxesForStudentInFlight;
+  }
+  async function syncSharedBoxesForStudentImpl() {
     if (!Sync.isConfigured()) return;
     if (!accountCurrentUser) return;
     try {
@@ -10130,6 +10290,9 @@
       // intervalle), puisque cette fonction est déjà appelée à tous ces
       // moments-là.
       await syncLibraryMirrorsForUser();
+      // Round 18, item 3 (suite) : nettoie d'éventuels doublons déjà créés
+      // (avant ce correctif, ou par une synchro externe) à chaque passage.
+      await dedupeDuplicateMirrorSubjects();
       renderAll();
       renderSubjectManageList();
       renderCalendarEvents();
@@ -10815,7 +10978,7 @@
       li.innerHTML = `
         <span class="messages-class-row-meta">
           <span class="subject-row-name">${CLASSES_ROW_ICON} <span>${escapeHtml(klass.name)}</span></span>
-          ${lastMsg && lastMsg.created_at ? `<span class="messages-class-row-last">${formatMessageTime(lastMsg.created_at)}</span>` : ""}
+          ${lastMsg && lastMsg.created_at ? `<span class="messages-class-row-last">${formatSmartMessageTime(lastMsg.created_at)}</span>` : ""}
         </span>
         ${unread > 0 ? `<span class="home-circle-badge messages-class-row-badge">${unread > 99 ? "99+" : unread}</span>` : ""}
       `;
@@ -10832,25 +10995,73 @@
    *  reconcileLibraryCollection/syncLibraryMirrorsForUser) — plutôt qu'une
    *  copie figée comme avant. */
   let libraryCollectionsCache = [];
+  let libraryRatingsCache = [];
   let librarySearchQuery = "";
+  let libraryLevelFilter = "";
+
+  // Round 18, item 15 : niveaux scolaires proposés au partage et au tri —
+  // liste reprise telle que demandée ("6ème, 5ème,..., 2nd, 1ère,
+  // Terminale, ... prépa, BTS, IUT, licence etc...").
+  const LIBRARY_LEVELS = [
+    "6ème", "5ème", "4ème", "3ème",
+    "2nde", "1ère", "Terminale",
+    "Prépa", "BTS", "IUT", "Licence", "Master", "Autre",
+  ];
+
+  /** Moyenne (arrondie au demi-point) et nombre de notes d'une collection,
+   *  à partir du cache de toutes les notes (une seule requête pour toute
+   *  la Bibliothèque, voir renderLibraryView). */
+  function libraryCollectionRatingStats(collectionId) {
+    const ratings = libraryRatingsCache.filter((r) => r.collection_id === collectionId);
+    if (ratings.length === 0) return { avg: 0, count: 0 };
+    const sum = ratings.reduce((acc, r) => acc + (r.rating || 0), 0);
+    return { avg: Math.round((sum / ratings.length) * 2) / 2, count: ratings.length };
+  }
+
+  /** 5 étoiles cliquables (notation) ou en lecture seule (moyenne
+   *  affichée) selon `onRate`. */
+  function libraryStarsHtml(avg, count, interactiveId) {
+    let stars = "";
+    for (let i = 1; i <= 5; i++) {
+      const filled = i <= Math.round(avg);
+      stars += `<span class="library-star${filled ? " library-star--filled" : ""}" data-star="${i}">${filled ? "★" : "☆"}</span>`;
+    }
+    const countLabel = count > 0 ? ` <span class="library-star-count">(${count})</span>` : "";
+    return `<span class="library-stars"${interactiveId ? ` data-rate-collection="${interactiveId}"` : ""}>${stars}</span>${countLabel}`;
+  }
 
   async function renderLibraryView() {
     const needsSync = el("library-needs-sync");
     const list = el("library-list");
     const empty = el("library-empty");
     const searchInput = el("library-search-input");
+    const levelFilter = el("library-level-filter");
     if (!list) return;
     if (!Sync.isConfigured()) {
       if (needsSync) needsSync.hidden = false;
       list.innerHTML = "";
       if (empty) empty.hidden = true;
       if (searchInput) searchInput.hidden = true;
+      if (levelFilter) levelFilter.hidden = true;
       return;
     }
     if (needsSync) needsSync.hidden = true;
     if (searchInput) searchInput.hidden = false;
+    if (levelFilter) {
+      levelFilter.hidden = false;
+      if (levelFilter.options.length <= 1) {
+        LIBRARY_LEVELS.forEach((lvl) => {
+          const opt = document.createElement("option");
+          opt.value = lvl;
+          opt.textContent = lvl;
+          levelFilter.appendChild(opt);
+        });
+      }
+    }
     list.innerHTML = `<li class="field-hint">Chargement…</li>`;
-    libraryCollectionsCache = await Sync.library.list();
+    const [collections, ratings] = await Promise.all([Sync.library.list(), Sync.library.listRatings()]);
+    libraryCollectionsCache = collections;
+    libraryRatingsCache = ratings;
     renderLibraryList();
   }
 
@@ -10863,15 +11074,22 @@
     const empty = el("library-empty");
     if (!list) return;
     const q = librarySearchQuery.trim().toLowerCase();
-    const collections = q
-      ? libraryCollectionsCache.filter(
-          (col) => (col.name || "").toLowerCase().includes(q) || (col.owner_email || "").toLowerCase().includes(q)
-        )
-      : libraryCollectionsCache;
+    let collections = libraryCollectionsCache;
+    if (libraryLevelFilter) collections = collections.filter((col) => (col.level || "") === libraryLevelFilter);
+    if (q) {
+      collections = collections.filter((col) => {
+        const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim();
+        return (
+          (col.name || "").toLowerCase().includes(q) ||
+          ownerName.toLowerCase().includes(q) ||
+          (col.owner_email || "").toLowerCase().includes(q)
+        );
+      });
+    }
     list.innerHTML = "";
     if (empty) empty.hidden = libraryCollectionsCache.length > 0;
     if (libraryCollectionsCache.length > 0 && collections.length === 0) {
-      list.innerHTML = `<li class="field-hint">Aucun résultat pour « ${escapeHtml(librarySearchQuery.trim())} ».</li>`;
+      list.innerHTML = `<li class="field-hint">Aucun résultat.</li>`;
       return;
     }
     for (const col of collections) {
@@ -10879,11 +11097,20 @@
       // Round 10, item 6 : "Déjà pris" (désactivé, fond différent) si une
       // collection de Mes collections est déjà un miroir de celle-ci.
       const alreadyTaken = subjects.some((s) => s.fromLibrary && s.libraryOriginId === col.id);
+      // Round 18, item 15 : prénom/nom plutôt que l'email brut (repli sur
+      // l'email pour les collections partagées avant ce round, quand le
+      // prénom/nom de l'auteur n'était pas encore connu).
+      const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || col.owner_email || "quelqu'un";
+      const priceTokens = Number(col.price_tokens) || 0;
+      const priceLabel = priceTokens > 0 ? `🪙 ${priceTokens} jeton${priceTokens > 1 ? "s" : ""}` : "Gratuit";
+      const levelLabel = col.level ? ` · ${escapeHtml(col.level)}` : "";
+      const { avg, count } = libraryCollectionRatingStats(col.id);
       const li = document.createElement("li");
       li.className = "subject-row library-row";
       li.innerHTML = `
         <span class="subject-row-name">${iconSvgMarkup("share", "icon-inline-svg")} <span>${escapeHtml(col.name)}</span></span>
-        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""} — par ${escapeHtml(col.owner_email || "quelqu'un")}</span>
+        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""} — par ${escapeHtml(ownerName)}${levelLabel} · ${priceLabel}</span>
+        <span class="library-rating-row">${libraryStarsHtml(avg, count, col.id)}</span>
         <button type="button" class="btn btn--small library-take-btn${alreadyTaken ? " library-take-btn--taken" : ""}" ${alreadyTaken ? "disabled" : ""}>${alreadyTaken ? "Déjà pris" : "Prendre"}</button>
       `;
       const takeBtn = li.querySelector(".library-take-btn");
@@ -10895,6 +11122,23 @@
           renderLibraryList();
         });
       }
+      const starsEl = li.querySelector(".library-stars");
+      if (starsEl) {
+        starsEl.querySelectorAll(".library-star").forEach((starBtn) => {
+          starBtn.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            if (!accountCurrentUser) {
+              await robotAlert("Connecte-toi avec un Compte (page Compte) pour noter une collection.");
+              return;
+            }
+            const value = Number(starBtn.dataset.star) || 0;
+            if (!value) return;
+            await Sync.library.rate(col.id, value);
+            libraryRatingsCache = await Sync.library.listRatings();
+            renderLibraryList();
+          });
+        });
+      }
       list.appendChild(li);
     }
   }
@@ -10903,6 +11147,13 @@
   if (librarySearchInputEl) {
     librarySearchInputEl.addEventListener("input", () => {
       librarySearchQuery = librarySearchInputEl.value || "";
+      renderLibraryList();
+    });
+  }
+  const libraryLevelFilterEl = el("library-level-filter");
+  if (libraryLevelFilterEl) {
+    libraryLevelFilterEl.addEventListener("change", () => {
+      libraryLevelFilter = libraryLevelFilterEl.value || "";
       renderLibraryList();
     });
   }
@@ -10966,7 +11217,19 @@
     }
     const name = await robotPrompt("Nom de la collection à partager :", s.name);
     if (!name || !name.trim()) return;
-    const { error } = await Sync.library.share(name.trim(), boxCards);
+    // Round 18, item 15 : niveau scolaire et prix en jetons (0 = gratuit),
+    // demandés à la suite — pas de champ dédié pour l'instant, robotPrompt
+    // ne gère qu'un champ à la fois (voir showRobotMessage).
+    const level = await robotPrompt(
+      `Niveau scolaire de cette collection (facultatif) : ${LIBRARY_LEVELS.join(", ")}…`,
+      ""
+    );
+    const priceRaw = await robotPrompt("Prix en jetons (laisser vide ou 0 pour gratuit) :", "0");
+    const priceTokens = Math.max(0, Math.round(Number((priceRaw || "0").replace(",", ".")) || 0));
+    const { error } = await Sync.library.share(name.trim(), boxCards, {
+      level: (level || "").trim(),
+      priceTokens,
+    });
     if (error) {
       await robotAlert(`Le partage a échoué : ${error}`);
       return;
@@ -10982,9 +11245,23 @@
   // canal temps réel (voir sendClassMessage plus bas).
   let messageThreadRenderedIds = new Set();
 
-  function formatMessageTime(iso) {
+  // Round 18, item 9 : formatage "intelligent" façon WhatsApp — l'heure
+  // seule aujourd'hui, le nom du jour ("Hier", "Mardi"...) cette semaine,
+  // la date complète au-delà.
+  function formatSmartMessageTime(iso) {
     try {
-      return new Date(iso).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+      const d = new Date(iso);
+      const now = new Date();
+      const startOfDay = (x) => new Date(x.getFullYear(), x.getMonth(), x.getDate());
+      const diffDays = Math.round((startOfDay(now) - startOfDay(d)) / 86400000);
+      const time = d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+      if (diffDays === 0) return time;
+      if (diffDays === 1) return "Hier";
+      if (diffDays > 1 && diffDays < 7) {
+        const day = d.toLocaleDateString("fr-FR", { weekday: "long" });
+        return day.charAt(0).toUpperCase() + day.slice(1);
+      }
+      return d.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: diffDays >= 365 ? "numeric" : undefined });
     } catch {
       return "";
     }
@@ -10998,7 +11275,7 @@
       <div class="${cls}">
         ${!isMine ? `<span class="message-bubble-sender">${escapeHtml(msg.sender_email || "")}</span>` : ""}
         <span class="message-bubble-body">${escapeHtml(msg.body || "")}</span>
-        <span class="message-bubble-time">${formatMessageTime(msg.created_at)}</span>
+        <span class="message-bubble-time">${formatSmartMessageTime(msg.created_at)}</span>
       </div>
     `;
   }

@@ -330,6 +330,19 @@ body.is-contextual-help-picking * {
      plus court possible en hauteur, comme demandé. */
   padding: max(18px, env(safe-area-inset-top)) 18px 4px;
 }
+/* Round 18, item 5 : bug corrigé — le robot restait grisé sous
+   l'assombrissement de la bulle de message (.robot-modal-overlay,
+   z-index:2000) alors même que le code JS lui posait déjà une classe
+   "au-dessus" (.robot-modal-anchor-highlight, z-index:2001, round 11).
+   La raison : ce bandeau (position:fixed + z-index explicite) forme sa
+   PROPRE zone d'empilement — aucun z-index posé sur un enfant (le robot,
+   #body-logo) ne peut jamais en sortir, son plafond reste le z-index du
+   bandeau lui-même (40), bien en-dessous de l'assombrissement. Le
+   bandeau entier passe donc au-dessus UNIQUEMENT pendant que le robot
+   qu'il contient est mis en avant. */
+.app-sticky-header:has(.robot-modal-anchor-highlight) {
+  z-index: 2002;
+}
 
 main {
   padding-top: var(--sticky-header-h, 96px);
@@ -344,6 +357,21 @@ main {
 }
 .manage-sticky-actions[hidden] { display: none; }
 .manage-sticky-actions .list-header { margin-bottom: 0; }
+/* Round 18, item 2 : ces boutons, désormais posés sur le bandeau fixe
+   juste sous le robot, n'ont plus besoin de fond plein — un simple
+   contour discret suffit et laisse le bandeau plus léger. */
+.manage-sticky-actions .btn {
+  background: transparent;
+  border-color: rgba(35,48,42,0.22);
+  color: var(--ink-soft);
+}
+.manage-sticky-actions .org-display-toggle-btn {
+  background: transparent;
+}
+.manage-sticky-actions .org-display-toggle-btn.is-active {
+  background: var(--blue);
+  color: #ffffff;
+}
 
 /* ============================================================
    MATIÈRES (subjects)
@@ -452,7 +480,16 @@ main {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
-.subject-select-btn--prominent::after {
+/* Round 18, item 14 : bug corrigé — cette règle et `.subject-select-btn::after`
+   (plus bas) ciblent le même pseudo-élément ::after avec la même
+   spécificité ; comme cette dernière règle vient APRÈS dans la feuille de
+   style, sa déclaration `content: " ▾"` gagnait pour la propriété content
+   tout en gardant la géométrie du chevron ci-dessous (bordures en L,
+   rotation 45°) posée ici — résultat : un caractère de texte affiché
+   coincé dans une petite boîte tournée à 45°, visuellement bizarre.
+   Sélecteur composé (deux classes sur le même élément) pour gagner en
+   spécificité quel que soit l'ordre dans le fichier. */
+.subject-select-btn.subject-select-btn--prominent::after {
   content: "";
   position: absolute;
   right: 14px;
@@ -816,6 +853,11 @@ main {
 }
 #boite-picker-title {
   margin-top: 2px;
+}
+/* Round 18, item 13 : bouton "Aucun lien" au-dessus de la liste. */
+.boite-picker-none-btn {
+  display: block;
+  margin: 4px 0 12px;
 }
 .boite-picker-actions {
   margin-top: 14px;
@@ -1427,6 +1469,28 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 .body-logo-speech-text {
   margin: 0;
   width: 100%;
+  /* Round 18, item 6 : marge pour ne pas passer sous le bouton fermer. */
+  padding-right: 20px;
+}
+
+/* Round 18, item 6 : bouton fermer explicite, en haut à droite de la
+   bulle. */
+.body-logo-speech-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  border: none;
+  background: transparent;
+  color: var(--speech-bubble-text-color, var(--ink));
+  opacity: 0.55;
+  font-size: 13px;
+  line-height: 1;
+  padding: 4px;
+  cursor: pointer;
+}
+.body-logo-speech-close:hover,
+.body-logo-speech-close:focus-visible {
+  opacity: 1;
 }
 
 /* Round 4 : boutons "Précédent"/"Suite" pour naviguer dans un message
@@ -1766,6 +1830,12 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  /* Round 18, item 4 : bug corrigé — sans position:relative ici, la
+     pastille de notifications (.home-circle-badge, position:absolute)
+     n'avait aucun ancêtre positionné à proximité et se retrouvait placée
+     n'importe où (invisible en pratique) sur le bouton "Messagerie" de la
+     page École, qui utilise ce même bouton rond. */
+  position: relative;
 }
 
 .classes-role-circle-icon {
@@ -1837,7 +1907,14 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   font-family: var(--font-type);
   font-size: 10.5px;
   font-weight: 700;
-  line-height: 18px;
+  /* Round 18, item 4 : bug corrigé — `line-height: 18px` seul ne centre
+     pas vraiment le chiffre (métrique de la police, pas de son cadre) ;
+     un centrage flex garantit un centrage pixel-parfait quel que soit le
+     nombre de chiffres. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
   text-align: center;
 }
 
@@ -1868,11 +1945,37 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   min-width: 120px;
 }
 .library-row .card-row-meta {
-  flex: 0 0 auto;
-  white-space: nowrap;
+  flex: 1 1 100%;
+  white-space: normal;
 }
 .library-row .library-take-btn {
   flex: 0 0 auto;
+}
+/* Round 18, item 15 : notation par étoiles d'une collection. */
+.library-rating-row {
+  flex: 1 1 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.library-stars {
+  display: inline-flex;
+  gap: 2px;
+}
+.library-star {
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  color: var(--ink-soft, #8a8f99);
+  user-select: none;
+}
+.library-star--filled {
+  color: #e0a734;
+}
+.library-star-count {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-left: 2px;
 }
 /* Round 10, item 6 : une collection déjà prise affiche "Déjà pris",
    désactivé, dans une couleur de fond différente du bouton "Prendre"
@@ -1891,6 +1994,21 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   width: 100%;
   box-sizing: border-box;
   margin: 10px 0 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color, #d8dce3);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-type);
+  font-size: 14px;
+}
+
+/* Round 18, item 15 : tri par niveau scolaire de la Bibliothèque. */
+.library-level-filter {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 14px;
   padding: 10px 14px;
   border-radius: 12px;
   border: 1px solid var(--border-color, #d8dce3);
@@ -1931,57 +2049,63 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 .message-thread-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
   max-height: 60vh;
   overflow-y: auto;
   padding: 4px 2px 12px;
   margin-bottom: 10px;
 }
 
+/* Round 18, item 9 : refonte façon WhatsApp — blocs plus grands et
+   aérés, fond transparent (plus de rectangle plein coloré derrière
+   chaque message) et un simple trait de séparation discret entre les
+   messages, plutôt que des bulles empilées avec des coins arrondis et
+   une ombre. */
 .message-bubble {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  max-width: 78%;
-  padding: 8px 12px;
-  border-radius: 14px;
-  background: var(--paper);
-  box-shadow: var(--shadow-deep);
+  gap: 3px;
+  max-width: 88%;
+  padding: 12px 4px;
+  background: transparent;
   font-family: var(--font-type);
+  border-bottom: 1px solid var(--rule-soft, rgba(35,48,42,0.1));
+}
+.message-thread-list .message-bubble:last-child {
+  border-bottom: none;
 }
 
 .message-bubble--left {
   align-self: flex-start;
-  border-bottom-left-radius: 4px;
+  text-align: left;
 }
 
 .message-bubble--right {
   align-self: flex-end;
-  border-bottom-right-radius: 4px;
+  text-align: right;
 }
 
-.message-bubble--mine {
-  background: var(--blue);
-  color: #ffffff;
+.message-bubble--mine .message-bubble-sender,
+.message-bubble--mine .message-bubble-time {
+  color: var(--blue);
 }
 
 .message-bubble-sender {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   opacity: 0.75;
 }
 
 .message-bubble-body {
-  font-size: 14px;
-  line-height: 1.35;
+  font-size: 15px;
+  line-height: 1.45;
   white-space: pre-wrap;
   overflow-wrap: break-word;
 }
 
 .message-bubble-time {
-  align-self: flex-end;
-  font-size: 9.5px;
-  opacity: 0.65;
+  font-size: 10px;
+  opacity: 0.55;
 }
 
 .message-thread-form {
@@ -2730,6 +2854,12 @@ button.home-btn {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+/* Round 18, item 18 : bug corrigé — .field pose display:flex, qui gagnait
+   sur la règle native [hidden] (même spécificité, mais la feuille de
+   style de l'appli passe après celle du navigateur) : un champ .field
+   masqué (ex. Prénom/Nom en mode "Se connecter") restait donc affiché
+   malgré son attribut hidden. */
+.field[hidden] { display: none; }
 
 .field textarea {
   font-family: var(--font-body);
@@ -4581,6 +4711,14 @@ button.home-btn {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Round 18, item 16 : crédit de jetons de l'utilisateur. */
+.account-token-balance {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 16px;
 }
 
 .classes-section {

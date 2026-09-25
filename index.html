@@ -166,35 +166,6 @@
        nom de la page courante à jour dans <title> (onglet du navigateur),
        voir onActiveViewChanged, js/app.js. -->
 
-  <!-- Round 17, item 3 (suite) : sur "Mon bureau" uniquement, les actions
-       de la liste (+ Nouveau dossier, Bibliothèque, les 3 pictos
-       d'affichage) sont intégrées ICI, dans le bandeau fixe, plutôt que de
-       défiler avec le contenu — déplacées depuis #view-manage (mêmes id,
-       simplement déplacés, pas dupliqués). Bascule en JS
-       (onActiveViewChanged). -->
-  <div class="manage-sticky-actions" id="manage-sticky-actions" hidden>
-    <div class="list-header">
-      <div class="list-header-actions">
-        <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
-        <button class="btn btn--small" id="manage-goto-library-btn" type="button">
-          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
-          Bibliothèque
-        </button>
-      </div>
-      <div class="org-display-toggle" id="org-display-toggle">
-        <button type="button" class="org-display-toggle-btn is-active" data-org-display="count" title="Nombre de fiches/boîtes">
-          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/></svg>
-        </button>
-        <button type="button" class="org-display-toggle-btn" data-org-display="mode" title="Mode d'apprentissage">
-          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/></svg>
-        </button>
-        <button type="button" class="org-display-toggle-btn" data-org-display="gauge" title="Jauge de score">
-          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="10" width="11" height="4" rx="2" fill="currentColor" stroke="none"/></svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
   <!-- Round 15, item 6 (suite) : petite bannière de guidage, affichée
        uniquement pendant que l'aide contextuelle est active. -->
   <div class="contextual-help-hint" id="contextual-help-hint" hidden>
@@ -219,12 +190,44 @@
       <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4 8.3 8.3 0 0 1-3.8-.9L3 21l1.9-5.8a8.3 8.3 0 0 1-.9-3.7A8.4 8.4 0 1 1 21 11.5z"/><circle cx="8.3" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="12.6" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="16.9" cy="11.5" r="1" fill="currentColor" stroke="none"/></svg>
     </button>
     <div class="body-logo-speech" id="body-logo-speech" hidden>
+      <!-- Round 18, item 6 : bouton fermer explicite — cliquer sur la
+           bulle la refermait déjà, mais ce n'était pas évident sans le
+           savoir. -->
+      <button type="button" class="body-logo-speech-close" id="body-logo-speech-close" title="Fermer" aria-label="Fermer">✕</button>
       <p class="body-logo-speech-text" id="body-logo-speech-text"></p>
       <!-- Round 4, partie 3 : bouton "Précédent" en plus de "Suite", pour
            revenir en arrière dans une série de plusieurs messages. -->
       <div class="body-logo-speech-nav" id="body-logo-speech-nav">
         <button type="button" class="body-logo-speech-prev" id="body-logo-speech-prev" hidden>← Précédent</button>
         <button type="button" class="body-logo-speech-next" id="body-logo-speech-next" hidden>Suite →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Round 18, item 2 : le bloc d'actions de "Fiches" (+ Nouveau dossier,
+       Bibliothèque, les 3 pictos d'affichage), déjà intégré au bandeau
+       fixe (round 17), est déplacé SOUS le robot (body-logo-row) plutôt
+       qu'au-dessus — mêmes id, simplement déplacé. Couleur de fond des
+       boutons retirée (voir css/style.css). -->
+  <div class="manage-sticky-actions" id="manage-sticky-actions" hidden>
+    <div class="list-header">
+      <div class="list-header-actions">
+        <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
+        <button class="btn btn--small" id="manage-goto-library-btn" type="button">
+          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
+          Bibliothèque
+        </button>
+      </div>
+      <div class="org-display-toggle" id="org-display-toggle">
+        <button type="button" class="org-display-toggle-btn is-active" data-org-display="count" title="Nombre de fiches/boîtes">
+          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/></svg>
+        </button>
+        <button type="button" class="org-display-toggle-btn" data-org-display="mode" title="Mode d'apprentissage">
+          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/></svg>
+        </button>
+        <button type="button" class="org-display-toggle-btn" data-org-display="gauge" title="Jauge de score">
+          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="10" width="11" height="4" rx="2" fill="currentColor" stroke="none"/></svg>
+        </button>
       </div>
     </div>
   </div>
@@ -313,7 +316,9 @@
              mener les clics de ligne vers Fiches (cf. #view-manage). -->
         <button type="button" class="home-circle" data-key="manage" data-go="manage">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
-          <span>Mon bureau</span>
+          <!-- Round 18, item 1 : "Mon bureau" -> "Fiches" (même data-key/
+               data-go, pour ne rien casser). -->
+          <span>Fiches</span>
         </button>
         <!-- Round 13, item 4 : "École" remplace "Classes" et mène désormais
              au nouveau hub (#view-school-hub) plutôt qu'à la page Classes
@@ -602,54 +607,14 @@
 
     <!-- VUE CALENDRIER (item 9, revue item 2) -->
     <section id="view-calendar" class="view" aria-labelledby="tab-calendar">
-      <h2 class="section-title">Calendrier</h2>
-      <p class="field-hint settings-block-hint">Note ici tes échéances (contrôle, interrogation, partiels, bac...) liées à une boîte ou un dossier. De quoi, plus tard, générer automatiquement un programme de révision.</p>
+      <!-- Round 18, item 12 : titre et texte d'intro retirés — le texte
+           d'intro est maintenant porté par le robot (message d'aide par
+           défaut de cette page, voir DEFAULT_HELP_MESSAGES_BY_VIEW). -->
 
+      <!-- Round 18, item 13 : "+ Ajouter un événement" ouvre maintenant
+           une page à part entière (#view-calendar-event-form ci-dessous),
+           au lieu de déplier un panneau sur cette même page. -->
       <button type="button" class="btn btn--primary" id="calendar-add-event-btn" style="margin-bottom:14px;">+ Ajouter un événement</button>
-
-      <!-- Panneau d'ajout/modification (item 2) : caché tant qu'on n'a pas
-           cliqué sur le bouton ci-dessus. -->
-      <form class="card-form" id="calendar-event-form" hidden>
-        <h3 class="settings-block-title" id="calendar-event-form-title">Ajouter un événement</h3>
-        <label class="field">
-          <span>Titre</span>
-          <input type="text" id="calendar-event-title" placeholder="Ex. Contrôle de chimie" required />
-        </label>
-        <label class="field">
-          <span>Date</span>
-          <div class="calendar-date-field">
-            <button type="button" class="calendar-date-btn" id="calendar-event-date-btn" tabindex="-1">
-              <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              <span id="calendar-event-date-label">Choisir une date</span>
-            </button>
-            <!-- Item 3 : bug corrigé — l'ancien input caché (1px,
-                 pointer-events désactivés) empêchait showPicker() de
-                 fonctionner sur certains navigateurs. Il est maintenant
-                 posé EN TRANSPARENCE PAR-DESSUS le bouton, sur toute sa
-                 surface : le clic va donc directement au vrai input natif,
-                 qui ouvre son sélecteur de date lui-même, de façon fiable
-                 partout. -->
-            <input type="date" id="calendar-event-date" required class="calendar-date-native-input" />
-          </div>
-        </label>
-        <button type="button" class="subject-select-btn" id="calendar-event-subject-btn" aria-label="Choisir la boîte ou le dossier lié">Aucune boîte/dossier liés</button>
-
-        <!-- Round 3, item 4 (squelette) : un prof peut partager cet
-             événement avec une de ses classes — n'apparaît que si Sync est
-             configurée, connecté(e), et prof d'au moins une classe (rempli
-             par JS à l'ouverture du formulaire). -->
-        <label class="field" id="calendar-event-class-field" hidden>
-          <span>Partager avec une classe (optionnel)</span>
-          <select id="calendar-event-class-select">
-            <option value="">Ne pas partager</option>
-          </select>
-        </label>
-
-        <div style="display:flex; gap:8px; margin-top:12px;">
-          <button type="submit" class="btn btn--primary" id="calendar-event-submit">Ajouter à mon calendrier</button>
-          <button type="button" class="btn btn--ghost" id="calendar-event-cancel">Annuler</button>
-        </div>
-      </form>
 
       <!-- Item 3 : bascule d'affichage — liste / calendrier (mois en
            défilement infini). Le format "année" a été retiré. -->
@@ -677,6 +642,58 @@
           <button type="button" class="btn btn--ghost btn--small" id="calendar-day-popup-close">Fermer</button>
         </div>
       </div>
+    </section>
+
+    <!-- Round 18, item 13 : page dédiée pour ajouter/modifier un
+         événement de calendrier — avant, un panneau qui se dépliait sur
+         la page Calendrier elle-même (voir openCalendarEventForm,
+         js/app.js). -->
+    <section id="view-calendar-event-form" class="view">
+      <form class="card-form" id="calendar-event-form">
+        <h3 class="settings-block-title" id="calendar-event-form-title">Ajouter un événement</h3>
+        <label class="field">
+          <span>Titre</span>
+          <input type="text" id="calendar-event-title" placeholder="Ex. Contrôle de chimie" required />
+        </label>
+        <label class="field">
+          <span>Date</span>
+          <div class="calendar-date-field">
+            <button type="button" class="calendar-date-btn" id="calendar-event-date-btn" tabindex="-1">
+              <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span id="calendar-event-date-label">Choisir une date</span>
+            </button>
+            <!-- Item 3 : bug corrigé — l'ancien input caché (1px,
+                 pointer-events désactivés) empêchait showPicker() de
+                 fonctionner sur certains navigateurs. Il est maintenant
+                 posé EN TRANSPARENCE PAR-DESSUS le bouton, sur toute sa
+                 surface : le clic va donc directement au vrai input natif,
+                 qui ouvre son sélecteur de date lui-même, de façon fiable
+                 partout. -->
+            <input type="date" id="calendar-event-date" required class="calendar-date-native-input" />
+          </div>
+        </label>
+        <!-- Round 18, item 13 : bouton plus visible (même style que le
+             sélecteur "Sélection de la boîte" de Nouvelle fiche) — avant,
+             un simple lien texte discret. Sélection MULTIPLE désormais
+             possible (voir calendarEventSubjectBtn, js/app.js). -->
+        <button type="button" class="subject-select-btn subject-select-btn--prominent" id="calendar-event-subject-btn" aria-label="Choisir la boîte ou le dossier lié">Aucune boîte/dossier liés</button>
+
+        <!-- Round 3, item 4 (squelette) : un prof peut partager cet
+             événement avec une de ses classes — n'apparaît que si Sync est
+             configurée, connecté(e), et prof d'au moins une classe (rempli
+             par JS à l'ouverture du formulaire). -->
+        <label class="field" id="calendar-event-class-field" hidden>
+          <span>Partager avec une classe (optionnel)</span>
+          <select id="calendar-event-class-select">
+            <option value="">Ne pas partager</option>
+          </select>
+        </label>
+
+        <div style="display:flex; gap:8px; margin-top:12px;">
+          <button type="submit" class="btn btn--primary" id="calendar-event-submit">Ajouter à mon calendrier</button>
+          <button type="button" class="btn btn--ghost" id="calendar-event-cancel">Annuler</button>
+        </div>
+      </form>
     </section>
 
     <!-- VUE SYNC -->
@@ -811,6 +828,12 @@
           <span id="account-user-email"></span>
           <button type="button" class="btn btn--ghost btn--small" id="account-signout-btn">Se déconnecter</button>
         </div>
+        <!-- Round 18, item 16 : crédit de jetons de l'utilisateur (affichage
+             seul pour l'instant — l'achat de jetons est prévu pour plus
+             tard, comme demandé). Stocké dans les métadonnées du compte
+             Supabase Auth (`user_metadata.token_balance`), même principe
+             que prénom/nom (round 10). -->
+        <p class="account-token-balance" id="account-token-balance-row">🪙 <span id="account-token-balance">0</span> jeton(s)</p>
         <!-- Round 10, item 7 : nom/prénom modifiables après coup, pour les
              comptes créés avant ce round ou pour corriger une saisie. -->
         <div class="card-form">
@@ -825,7 +848,8 @@
           <button type="button" class="btn btn--small" id="account-profile-save-btn">Enregistrer</button>
           <p class="field-hint" id="account-profile-note" hidden></p>
         </div>
-        <button type="button" class="btn btn--small" id="account-goto-classes-btn">Aller à Classes</button>
+        <!-- Round 18, item 17 : bouton "Aller à Classes" retiré (l'accès
+             se fait déjà depuis École sur l'accueil). -->
       </div>
     </section>
 
@@ -838,7 +862,9 @@
          Le cercle d'accueil "École" mène ici plutôt que directement sur
          la page Classes. -->
     <section id="view-school-hub" class="view" aria-labelledby="tab-school-hub">
-      <h2 class="section-title">École</h2>
+      <!-- Round 18, item 8 : titre "École" retiré (les titres de page ont
+           déjà été retirés partout ailleurs au round 17 ; celui-ci avait
+           été oublié). -->
       <div class="classes-role-circles" id="school-hub-circles">
         <button type="button" class="classes-role-circle" id="school-hub-messages-btn">
           <span class="classes-role-circle-icon">
@@ -875,7 +901,8 @@
       </div>
 
       <div id="classes-main-block" hidden>
-        <p class="field-hint" id="classes-connected-as" hidden></p>
+        <!-- Round 18, item 10 : ligne "Connecté en tant que [email]"
+             retirée (déjà visible dans Mon compte). -->
 
         <!-- Round 3, item 2 : deux boutons ronds (même esprit que ceux de
              l'accueil) plutôt que deux onglets — chacun mène à sa propre
@@ -901,7 +928,8 @@
          la fonction "rejoindre une classe" est déportée dans une page
          dédiée (view-classes-join), accessible ici par un bouton rond. -->
     <section id="view-classes-student" class="view" aria-labelledby="tab-classes">
-      <button type="button" class="btn btn--ghost" id="classes-student-back-btn">← Retour à Classes</button>
+      <!-- Round 18, item 11 : bouton "← Retour à Classes" retiré (le
+           bouton Accueil du bandeau suffit à revenir en arrière). -->
       <h2 class="section-title">Élève</h2>
       <div class="classes-section" id="classes-section-eleve">
         <div class="classes-role-circles" id="classes-student-actions">
@@ -942,7 +970,7 @@
          page dédiée (view-classes-create), accessible ici par un bouton
          rond. -->
     <section id="view-classes-teacher" class="view" aria-labelledby="tab-classes">
-      <button type="button" class="btn btn--ghost" id="classes-teacher-back-btn">← Retour à Classes</button>
+      <!-- Round 18, item 11 : bouton "← Retour à Classes" retiré. -->
       <h2 class="section-title">Enseignant</h2>
       <div class="classes-section" id="classes-section-prof">
         <div class="classes-role-circles" id="classes-teacher-actions">
@@ -1031,8 +1059,12 @@
         <p class="field-hint settings-block-hint">Active la synchronisation (page Synchronisation) pour accéder à la bibliothèque.</p>
       </div>
       <!-- Round 10, item 3 : recherche par mots-clés (nom de la collection
-           ou email de son auteur). -->
+           ou nom de son auteur). -->
       <input type="search" id="library-search-input" class="library-search-input" placeholder="Rechercher une collection…" />
+      <!-- Round 18, item 15 : tri par niveau scolaire. -->
+      <select id="library-level-filter" class="library-level-filter">
+        <option value="">Tous niveaux</option>
+      </select>
       <ul class="subject-list" id="library-list"></ul>
       <p class="field-hint" id="library-empty" hidden>Aucune collection partagée pour l'instant.</p>
     </section>
@@ -1573,10 +1605,14 @@
       </div>
       <h2 class="view-title" id="boite-picker-title">Choisir une boîte</h2>
       <p class="field-hint settings-block-hint" id="boite-picker-hint" hidden></p>
+      <!-- Round 18, item 13 : bouton "Aucun lien" remonté AU-DESSUS de la
+           liste (avant : tout en bas, sous la liste, trop discret) —
+           c'est le premier choix qu'on voit, avant de parcourir les
+           dossiers/boîtes. -->
+      <button type="button" class="btn btn--ghost btn--small boite-picker-none-btn" id="boite-picker-none" hidden>Aucun lien</button>
       <ul class="subject-list" id="boite-picker-list"></ul>
       <div class="multi-subject-picker-actions boite-picker-actions" id="boite-picker-actions" hidden>
         <button type="button" class="btn btn--small" id="boite-picker-confirm">Valider</button>
-        <button type="button" class="btn btn--ghost btn--small" id="boite-picker-none" hidden>Aucun lien</button>
       </div>
     </section>
   </main>

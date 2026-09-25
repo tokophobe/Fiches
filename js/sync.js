@@ -847,18 +847,55 @@ async function deleteSharedEvent(eventId) {
    COPIE figée au moment du partage, reprise ensuite en copie indépendante
    par quiconque la "prend". ---- */
 
-async function shareCollectionToLibrary(name, cards) {
+/** Round 18, item 15 : `extra` peut contenir `level` (niveau scolaire,
+ *  texte libre parmi une liste proposée côté appli) et `priceTokens`
+ *  (0 = gratuit). Le prénom/nom de l'auteur est repris de ses métadonnées
+ *  de compte (mêmes que celles affichées dans Mon compte), pour pouvoir
+ *  afficher "par Prénom Nom" dans la Bibliothèque plutôt qu'un email. */
+async function shareCollectionToLibrary(name, cards, extra) {
   const c = getClient();
   const user = await authGetUser();
   if (!c || !user) return { error: "Non connecté." };
+  extra = extra || {};
+  const meta = user.user_metadata || {};
   const row = {
     owner_id: user.id,
     owner_email: user.email || "",
+    owner_first_name: meta.first_name || "",
+    owner_last_name: meta.last_name || "",
     name,
+    level: extra.level || "",
+    price_tokens: Number.isFinite(extra.priceTokens) ? extra.priceTokens : 0,
     cards: cards.map((card) => ({ id: card.id, question: card.question, answer: card.answer })),
   };
   const { data, error } = await c.from("library_collections").insert(row).select().single();
   return { data, error: error ? error.message : null };
+}
+
+/** Note (ou remplace sa note existante pour) une collection, 1 à 5
+ *  étoiles. */
+async function rateLibraryCollection(collectionId, rating) {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { error: "Non connecté." };
+  const { error } = await c
+    .from("library_ratings")
+    .upsert({ collection_id: collectionId, user_id: user.id, rating }, { onConflict: "collection_id,user_id" });
+  return { error: error ? error.message : null };
+}
+
+/** Récupère toutes les notes de toutes les collections en un seul appel
+ *  (plutôt qu'une requête par collection affichée) : l'appli calcule
+ *  ensuite la moyenne par collection côté client. */
+async function listLibraryRatings() {
+  const c = getClient();
+  if (!c) return [];
+  const { data, error } = await c.from("library_ratings").select("collection_id, user_id, rating");
+  if (error) {
+    console.warn("Bibliothèque : échec du chargement des notes", error.message);
+    return [];
+  }
+  return data || [];
 }
 
 async function listLibraryCollections() {
@@ -1048,5 +1085,7 @@ window.Sync = {
     share: shareCollectionToLibrary,
     list: listLibraryCollections,
     get: getLibraryCollection,
+    rate: rateLibraryCollection,
+    listRatings: listLibraryRatings,
   },
 };
