@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v166";
+  const APP_VERSION = "v167";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -910,11 +910,23 @@
     const maxWidth = Math.min(420, window.innerWidth - margin * 2);
     let left = rect.left - 8;
     left = Math.max(margin, Math.min(left, window.innerWidth - maxWidth - margin));
-    const spaceBelow = window.innerHeight - rect.bottom;
+    // Round 19, item 9 : bug corrigé — sur certaines pages (ex.
+    // "Fiches"/organisation, dont le bandeau fixe est plus haut que sur
+    // les autres : il y intègre en plus + Nouveau dossier/Bibliothèque/
+    // les 3 pictos, sous le robot), le bas RÉEL du robot ne correspond
+    // plus au bas RÉEL du bandeau fixe — la bulle, positionnée juste sous
+    // le robot, se retrouvait donc partiellement sous ce contenu
+    // supplémentaire du bandeau (qui reste, lui, au-dessus en z-index).
+    // On ne descend donc jamais la bulle plus haut que le vrai bas du
+    // bandeau fixe entier, quel que soit son contenu.
+    const stickyHeader = el("app-sticky-header");
+    const headerBottom = stickyHeader ? stickyHeader.getBoundingClientRect().bottom : rect.bottom;
+    const effectiveTop = Math.max(rect.bottom, headerBottom);
+    const spaceBelow = window.innerHeight - effectiveTop;
     let top;
     modal.style.transform = "";
     if (spaceBelow >= 140 || rect.top < 140) {
-      top = rect.bottom + 14;
+      top = effectiveTop + 14;
       bubble.classList.add("robot-modal-bubble--arrow-top");
     } else {
       // Pas assez de place en dessous (le robot est bas dans la page) :
@@ -1222,7 +1234,33 @@
       // groupes : une page personnalisée (même avec un tableau vide,
       // volontairement) remplace entièrement la valeur par défaut de
       // cette page, elle ne se mélange pas avec elle.
-      helpMessagesByView: { ...DEFAULT_HELP_MESSAGES_BY_VIEW, ...(parsed.helpMessagesByView || {}) },
+      // Round 19, item 2 : correctif d'un vrai bug — `saveDevSettings`
+      // écrit toujours l'objet `helpMessagesByView` COMPLET (toutes les
+      // pages, pas seulement celle éditée), donc éditer N'IMPORTE QUEL
+      // réglage développeur ne serait-ce qu'une fois fige, ce jour-là, un
+      // instantané de TOUTES les pages — y compris celles jamais
+      // vraiment personnalisées, restées à `[]` (valeur par défaut de
+      // l'époque). Si un nouveau texte par défaut est ajouté PLUS TARD
+      // pour l'une de ces pages (ex. l'intro du Calendrier, round 18,
+      // item 12), cet instantané figé (`[]`) masque silencieusement le
+      // nouveau texte pour toujours, sur ce compte. Un tableau stocké
+      // vide alors que le texte par défaut actuel ne l'est pas ne peut
+      // donc pas être une vraie personnalisation volontaire (l'éditeur
+      // n'a alors jamais affiché ce nouveau texte à effacer) — on
+      // l'ignore et on retombe sur le texte par défaut à jour.
+      helpMessagesByView: (() => {
+        const stored = parsed.helpMessagesByView || {};
+        const cleaned = {};
+        Object.keys(stored).forEach((key) => {
+          const storedVal = stored[key];
+          const storedEmpty = !Array.isArray(storedVal) || storedVal.length === 0;
+          const defaultVal = DEFAULT_HELP_MESSAGES_BY_VIEW[key];
+          const defaultNonEmpty = Array.isArray(defaultVal) && defaultVal.length > 0;
+          if (storedEmpty && defaultNonEmpty) return; // instantané figé obsolète, ignoré
+          cleaned[key] = storedVal;
+        });
+        return { ...DEFAULT_HELP_MESSAGES_BY_VIEW, ...cleaned };
+      })(),
       ratingBtnBgColor: parsed.ratingBtnBgColor || DEFAULT_RATING_BTN_BG_COLOR,
       modeColors: { ...DEFAULT_MODE_COLORS, ...(parsed.modeColors || {}) },
       customModeColors: { ...(parsed.customModeColors || {}) },
@@ -3716,6 +3754,19 @@
       const willOpen = popover.hidden;
       closeAllOrgActionPopovers();
       popover.hidden = !willOpen;
+      // Round 19, item 8 : bug corrigé — le menu s'ouvrait toujours VERS
+      // LE BAS (top:100%) ; pour un bloc tout en bas de la liste, il
+      // dépassait alors du bas de l'écran, tronqué, sans que la page ne
+      // défile pour le révéler. On mesure la place réellement disponible
+      // sous le bouton juste avant l'ouverture, et on bascule le menu
+      // au-dessus du bouton (voir .org-actions-popover--flip-up) s'il n'y
+      // a pas assez de place en dessous.
+      if (willOpen) {
+        const btnRect = deployBtn.getBoundingClientRect();
+        const estimatedHeight = popover.offsetHeight || popover.children.length * 40 + 12;
+        const spaceBelow = window.innerHeight - btnRect.bottom;
+        popover.classList.toggle("org-actions-popover--flip-up", spaceBelow < estimatedHeight + 12);
+      }
     });
     main.appendChild(deployBtn);
 
@@ -5199,15 +5250,20 @@
     const confirmBtn = el("boite-picker-confirm");
     const noneBtn = el("boite-picker-none");
 
-    // Round 18, item 13 : le bouton "Aucun lien" (déplacé au-dessus de la
-    // liste, voir index.html) est maintenant indépendant de la barre
-    // d'actions du bas (qui ne porte plus que "Valider", mode multi) —
-    // disponible aussi bien en mode "single" (Calendrier, avant) qu'en
-    // mode "multi" (Calendrier, maintenant qu'on peut lier plusieurs
-    // boîtes/dossiers à la fois).
+    // Round 18, item 13 : le bouton (déplacé au-dessus de la liste, voir
+    // index.html) est maintenant indépendant de la barre d'actions du bas
+    // (qui ne porte plus que "Valider", mode multi) — disponible aussi
+    // bien en mode "single" (Calendrier, avant) qu'en mode "multi"
+    // (Calendrier, maintenant qu'on peut lier plusieurs boîtes/dossiers à
+    // la fois).
+    // Round 19, item 3 : renommé "Tout désélectionner" en mode multi —
+    // vide la sélection SANS quitter la page (avant : fermait la page
+    // comme "Aucun lien", ce qui obligeait à rouvrir le sélecteur pour
+    // vérifier qu'il était bien vide). Le mode "single" garde l'ancien
+    // comportement (ctx.onNone, ferme la page), pas concerné ici.
     if (noneBtn) {
       noneBtn.hidden = !ctx.showNoneButton;
-      noneBtn.onclick = ctx.showNoneButton ? ctx.onNone : null;
+      noneBtn.textContent = ctx.mode === "multi" ? "Tout désélectionner" : "Aucun lien";
     }
 
     if (ctx.mode === "multi") {
@@ -5218,7 +5274,16 @@
         confirmBtn.hidden = false;
         confirmBtn.onclick = () => ctx.onConfirm(selection);
       }
+      if (noneBtn) {
+        noneBtn.onclick = ctx.showNoneButton
+          ? () => {
+              selection.clear();
+              renderMultiBoitePicker(list, selection);
+            }
+          : null;
+      }
     } else {
+      if (noneBtn) noneBtn.onclick = ctx.showNoneButton ? ctx.onNone : null;
       if (ctx.excludedFolderIds) {
         renderMoveDestinationPicker(list, ctx.excludedFolderIds, (destId) => ctx.onPick("folder", destId));
       } else {
@@ -9983,6 +10048,20 @@
     const lastEl = el("account-profile-lastname");
     if (firstEl) firstEl.value = meta.first_name || "";
     if (lastEl) lastEl.value = meta.last_name || "";
+    // Round 19, item 5 : niveau scolaire, même liste que le filtre de la
+    // Bibliothèque (LIBRARY_LEVELS) — options peuplées une seule fois.
+    const levelEl = el("account-profile-school-level");
+    if (levelEl) {
+      if (levelEl.options.length <= 1) {
+        LIBRARY_LEVELS.forEach((lvl) => {
+          const opt = document.createElement("option");
+          opt.value = lvl;
+          opt.textContent = lvl;
+          levelEl.appendChild(opt);
+        });
+      }
+      levelEl.value = meta.school_level || "";
+    }
     const profileNote = el("account-profile-note");
     if (profileNote) profileNote.hidden = true;
     // Round 18, item 16 : crédit de jetons (affichage seul, cf. commentaire
@@ -10079,12 +10158,20 @@
       const note = el("account-profile-note");
       const firstName = (el("account-profile-firstname").value || "").trim();
       const lastName = (el("account-profile-lastname").value || "").trim();
+      const schoolLevelEl = el("account-profile-school-level");
+      const schoolLevel = schoolLevelEl ? schoolLevelEl.value || "" : "";
       accountProfileSaveBtn.disabled = true;
       const result = await Sync.auth.updateProfile(firstName, lastName);
+      // Round 19, item 5 : niveau scolaire, enregistré à la suite (deux
+      // appels distincts à updateUser plutôt qu'un seul, pour ne pas
+      // toucher à authUpdateProfile — déjà utilisé ailleurs avec seulement
+      // prénom/nom, voir shareSubjectToLibrary).
+      const levelResult = !result.error ? await Sync.auth.updateSchoolLevel(schoolLevel) : {};
       accountProfileSaveBtn.disabled = false;
       if (note) {
         note.hidden = false;
-        note.textContent = result.error ? `Échec de l'enregistrement : ${result.error}` : "Enregistré.";
+        const err = result.error || levelResult.error;
+        note.textContent = err ? `Échec de l'enregistrement : ${err}` : "Enregistré.";
       }
       if (!result.error) accountCurrentUser = await Sync.auth.getUser();
     });
@@ -10998,6 +11085,11 @@
   let libraryRatingsCache = [];
   let librarySearchQuery = "";
   let libraryLevelFilter = "";
+  // Round 19, item 5 : le préréglage automatique depuis le profil ne doit
+  // se faire qu'UNE FOIS (au premier passage sur la page pendant cette
+  // session) — sans ça, il écraserait à chaque réouverture un choix que
+  // l'utilisateur aurait fait exprès entre-temps.
+  let libraryLevelFilterAutoApplied = false;
 
   // Round 18, item 15 : niveaux scolaires proposés au partage et au tri —
   // liste reprise telle que demandée ("6ème, 5ème,..., 2nd, 1ère,
@@ -11036,6 +11128,7 @@
     const empty = el("library-empty");
     const searchInput = el("library-search-input");
     const levelFilter = el("library-level-filter");
+    const tokenRow = el("library-token-balance-row");
     if (!list) return;
     if (!Sync.isConfigured()) {
       if (needsSync) needsSync.hidden = false;
@@ -11043,10 +11136,25 @@
       if (empty) empty.hidden = true;
       if (searchInput) searchInput.hidden = true;
       if (levelFilter) levelFilter.hidden = true;
+      if (tokenRow) tokenRow.hidden = true;
       return;
     }
     if (needsSync) needsSync.hidden = true;
     if (searchInput) searchInput.hidden = false;
+    // Round 19, items 5/6 : un seul appel pour le crédit de jetons ET le
+    // préréglage du niveau scolaire, plutôt qu'un par fonctionnalité.
+    const freshUser = (await Sync.auth.getUser()) || accountCurrentUser;
+    // Round 19, item 6 : crédit de jetons, visible seulement une fois
+    // connecté (comme dans Mon compte).
+    if (tokenRow) {
+      if (freshUser) {
+        tokenRow.hidden = false;
+        const tokenEl = el("library-token-balance");
+        if (tokenEl) tokenEl.textContent = String((freshUser.user_metadata || {}).token_balance || 0);
+      } else {
+        tokenRow.hidden = true;
+      }
+    }
     if (levelFilter) {
       levelFilter.hidden = false;
       if (levelFilter.options.length <= 1) {
@@ -11056,6 +11164,17 @@
           opt.textContent = lvl;
           levelFilter.appendChild(opt);
         });
+      }
+      // Round 19, item 5 : préréglage automatique sur le niveau scolaire
+      // du profil, une seule fois — l'utilisateur garde la main ensuite
+      // (le filtre reste un simple <select>, modifiable à tout moment).
+      if (!libraryLevelFilterAutoApplied) {
+        libraryLevelFilterAutoApplied = true;
+        const profileLevel = ((freshUser && freshUser.user_metadata) || {}).school_level || "";
+        if (profileLevel && LIBRARY_LEVELS.includes(profileLevel)) {
+          libraryLevelFilter = profileLevel;
+          levelFilter.value = profileLevel;
+        }
       }
     }
     list.innerHTML = `<li class="field-hint">Chargement…</li>`;
@@ -11139,8 +11258,124 @@
           });
         });
       }
+      // Round 19, item 11 : le reste de la ligne ouvre la page de détail
+      // de la collection (bouton "Prendre" et étoiles gardent leur clic
+      // propre grâce à e.stopPropagation() ci-dessus).
+      li.addEventListener("click", () => openLibraryDetailView(col));
       list.appendChild(li);
     }
+  }
+
+  /** Round 19, item 11 : page de détail d'une collection partagée — nom,
+   *  auteur, niveau, nombre de fiches, prix, notation — puis un bouton vers
+   *  un aperçu épuré des fiches (question/réponse uniquement). */
+  let libraryDetailCollection = null;
+
+  function openLibraryDetailView(col) {
+    libraryDetailCollection = col;
+    const n = Array.isArray(col.cards) ? col.cards.length : 0;
+    const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || col.owner_email || "quelqu'un";
+    const priceTokens = Number(col.price_tokens) || 0;
+    const priceLabel = priceTokens > 0 ? `🪙 ${priceTokens} jeton${priceTokens > 1 ? "s" : ""}` : "Gratuit";
+    const { avg, count } = libraryCollectionRatingStats(col.id);
+
+    const titleEl = el("library-detail-title");
+    if (titleEl) titleEl.textContent = col.name || "Collection";
+    const metaEl = el("library-detail-meta");
+    if (metaEl) {
+      metaEl.innerHTML = `
+        ${n} fiche${n > 1 ? "s" : ""}<br>
+        Par ${escapeHtml(ownerName)}${col.level ? ` · ${escapeHtml(col.level)}` : ""}<br>
+        ${priceLabel}
+      `;
+    }
+    const ratingEl = el("library-detail-rating");
+    if (ratingEl) {
+      ratingEl.innerHTML = libraryStarsHtml(avg, count, col.id);
+      const starsEl = ratingEl.querySelector(".library-stars");
+      if (starsEl) {
+        starsEl.querySelectorAll(".library-star").forEach((starBtn) => {
+          starBtn.addEventListener("click", async () => {
+            if (!accountCurrentUser) {
+              await robotAlert("Connecte-toi avec un Compte (page Compte) pour noter une collection.");
+              return;
+            }
+            const value = Number(starBtn.dataset.star) || 0;
+            if (!value) return;
+            await Sync.library.rate(col.id, value);
+            libraryRatingsCache = await Sync.library.listRatings();
+            openLibraryDetailView(col);
+            renderLibraryList();
+          });
+        });
+      }
+    }
+    const alreadyTaken = subjects.some((s) => s.fromLibrary && s.libraryOriginId === col.id);
+    const takeBtn = el("library-detail-take-btn");
+    if (takeBtn) {
+      takeBtn.disabled = alreadyTaken;
+      takeBtn.textContent = alreadyTaken ? "Déjà pris" : "Prendre";
+      takeBtn.onclick = alreadyTaken
+        ? null
+        : async () => {
+            takeBtn.disabled = true;
+            await takeLibraryCollection(col);
+            renderLibraryList();
+            takeBtn.textContent = "Déjà pris";
+          };
+    }
+
+    boitePickerActivateView("view-library-detail");
+    const homeBtnEl = el("home-btn");
+    if (homeBtnEl) homeBtnEl.hidden = false;
+    if (el("body-logo-row")) el("body-logo-row").hidden = false;
+  }
+
+  function closeLibraryDetailView() {
+    boitePickerActivateView("view-library");
+    applyBodyLogoSpeech("library");
+  }
+
+  /** Round 19, item 11 : aperçu épuré des fiches d'une collection — juste
+   *  question/réponse pour chaque fiche, sans les actions habituelles de
+   *  la page "Fiches" (éditer, hiberner, algo...). */
+  function openLibraryCardsView(col) {
+    const titleEl = el("library-cards-title");
+    if (titleEl) titleEl.textContent = col.name || "Fiches";
+    const listEl = el("library-cards-list");
+    if (listEl) {
+      const cards = Array.isArray(col.cards) ? col.cards : [];
+      listEl.innerHTML =
+        cards
+          .map(
+            (c) => `
+        <li class="library-card-item">
+          <p class="library-card-question">${toDisplayHtml(c.question || "")}</p>
+          <p class="library-card-answer">${toDisplayHtml(c.answer || "")}</p>
+        </li>
+      `
+          )
+          .join("") || `<li class="field-hint">Aucune fiche dans cette collection.</li>`;
+    }
+    boitePickerActivateView("view-library-cards");
+    const homeBtnEl = el("home-btn");
+    if (homeBtnEl) homeBtnEl.hidden = false;
+    if (el("body-logo-row")) el("body-logo-row").hidden = false;
+  }
+
+  function closeLibraryCardsView() {
+    boitePickerActivateView("view-library-detail");
+  }
+
+  const libraryDetailBackBtn = el("library-detail-back-btn");
+  if (libraryDetailBackBtn) libraryDetailBackBtn.addEventListener("click", () => closeLibraryDetailView());
+  const libraryCardsBackBtn = el("library-cards-back-btn");
+  if (libraryCardsBackBtn) libraryCardsBackBtn.addEventListener("click", () => closeLibraryCardsView());
+  const libraryDetailViewCardsBtn = el("library-detail-view-cards-btn");
+  if (libraryDetailViewCardsBtn) {
+    libraryDetailViewCardsBtn.addEventListener("click", () => {
+      if (libraryDetailCollection) openLibraryCardsView(libraryDetailCollection);
+    });
   }
 
   const librarySearchInputEl = el("library-search-input");
@@ -11214,6 +11449,30 @@
     if (boxCards.length === 0) {
       await robotAlert("Cette boîte est vide : ajoute des fiches avant de la partager.");
       return;
+    }
+    // Round 19, item 4 : bug corrigé — la Bibliothèque affiche encore
+    // l'email de l'auteur au lieu de son prénom/nom, alors même que la
+    // migration SQL a été exécutée. Cause réelle : le prénom/nom affiché
+    // vient des métadonnées du COMPTE (Mon compte), lues au moment du
+    // partage — la migration SQL ne fait qu'ajouter les colonnes, elle ne
+    // peut pas deviner rétroactivement un prénom/nom jamais renseigné. Si
+    // le compte n'a encore ni prénom ni nom, on les demande ici, une
+    // bonne fois, avant de continuer le partage (et on les enregistre
+    // dans Mon compte au passage, comme le fait déjà cette page) — sans
+    // ça, le partage continuerait sinon à retomber sur l'email pour
+    // toujours, sans que Stéphane comprenne pourquoi.
+    const freshUser = (await Sync.auth.getUser()) || accountCurrentUser;
+    const freshMeta = (freshUser && freshUser.user_metadata) || {};
+    if (!freshMeta.first_name && !freshMeta.last_name) {
+      const firstName = await robotPrompt(
+        "Pour être crédité·e par ton nom plutôt que ton email dans la Bibliothèque, quel est ton prénom ? (facultatif, laisse vide pour garder l'email)",
+        ""
+      );
+      const lastName = firstName && firstName.trim() ? await robotPrompt("Et ton nom ?", "") : "";
+      if (firstName && firstName.trim()) {
+        await Sync.auth.updateProfile(firstName.trim(), (lastName || "").trim());
+        accountCurrentUser = await Sync.auth.getUser();
+      }
     }
     const name = await robotPrompt("Nom de la collection à partager :", s.name);
     if (!name || !name.trim()) return;

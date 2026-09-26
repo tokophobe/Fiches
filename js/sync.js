@@ -632,6 +632,23 @@ async function authUpdateProfile(firstName, lastName) {
   return { data, error: error ? error.message : null };
 }
 
+/** Round 19, item 5 : niveau scolaire de l'utilisateur, même principe que
+ *  prénom/nom (métadonnées du compte Supabase Auth, `user_metadata.
+ *  school_level`) — permet de préremplir automatiquement le filtre de
+ *  niveau de la Bibliothèque. Appel séparé de authUpdateProfile (utilisé
+ *  seul ailleurs, ex. shareSubjectToLibrary) — `updateUser({data})` FUSIONNE
+ *  avec les métadonnées existantes côté client Supabase (contrairement à
+ *  l'API admin, qui les remplace), donc les deux appels ne s'écrasent pas
+ *  l'un l'autre. */
+async function authUpdateSchoolLevel(level) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
+  const { data, error } = await c.auth.updateUser({
+    data: { school_level: level || "" },
+  });
+  return { data, error: error ? error.message : null };
+}
+
 async function authSignIn(email, password) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
@@ -1058,6 +1075,7 @@ window.Sync = {
     getUser: authGetUser,
     onChange: authOnChange,
     updateProfile: authUpdateProfile,
+    updateSchoolLevel: authUpdateSchoolLevel,
   },
   classes: {
     create: createClass,

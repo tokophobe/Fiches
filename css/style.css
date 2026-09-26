@@ -357,12 +357,11 @@ main {
 }
 .manage-sticky-actions[hidden] { display: none; }
 .manage-sticky-actions .list-header { margin-bottom: 0; }
-/* Round 18, item 2 : ces boutons, désormais posés sur le bandeau fixe
-   juste sous le robot, n'ont plus besoin de fond plein — un simple
-   contour discret suffit et laisse le bandeau plus léger. */
+/* Round 18, item 2 / round 19, item 10 : ces boutons, posés sur le
+   bandeau fixe juste sous le robot, n'ont plus ni fond plein ni cadre —
+   simple texte/icône, comme tous les boutons secondaires de l'appli. */
 .manage-sticky-actions .btn {
   background: transparent;
-  border-color: rgba(35,48,42,0.22);
   color: var(--ink-soft);
 }
 .manage-sticky-actions .org-display-toggle-btn {
@@ -854,17 +853,27 @@ main {
 #boite-picker-title {
   margin-top: 2px;
 }
-/* Round 18, item 13 : bouton "Aucun lien" au-dessus de la liste. */
-.boite-picker-none-btn {
-  display: block;
-  margin: 4px 0 12px;
-}
+/* Round 19, item 3 : bouton "Aucun lien"/"Tout désélectionner", sur la
+   même ligne que "Retour" (à droite, voir .list-header justify-content),
+   plutôt que sur sa propre ligne au-dessus de la liste (round 18). */
+/* Round 19, item 7 : deux bugs corrigés — (1) le bouton "Valider" restait
+   minuscule et collé à gauche dans une grande zone blanche vide (le
+   conteneur .multi-subject-picker-actions est un simple flex sans
+   flex:1 sur son unique bouton) ; (2) collé pile au bord bas du
+   viewport (sticky bottom:0, sans marge de sécurité), donc rogné par la
+   barre d'outils de Safari iOS ou le bandeau d'accueil, sans plus rien à
+   faire défiler pour l'atteindre. Le bouton occupe maintenant toute la
+   largeur (zone de clic bien visible) et une marge de sécurité en bas
+   (env(safe-area-inset-bottom)) garde toujours un peu d'air sous lui. */
 .boite-picker-actions {
   margin-top: 14px;
   position: sticky;
   bottom: 0;
-  padding-top: 10px;
+  padding: 10px 0 max(14px, env(safe-area-inset-bottom));
   background: var(--paper);
+}
+.boite-picker-actions .btn {
+  flex: 1;
 }
 
 .subjects-panel { margin-bottom: 26px; }
@@ -1094,6 +1103,14 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 }
 
 .org-actions-popover[hidden] { display: none; }
+
+/* Round 19, item 8 : variante ouverte vers le HAUT (au-dessus du bouton)
+   plutôt que vers le bas, posée dynamiquement en JS quand il n'y a pas
+   assez de place sous le bouton (bloc tout en bas de la liste). */
+.org-actions-popover--flip-up {
+  top: auto;
+  bottom: 100%;
+}
 
 .org-actions-popover-item {
   display: flex;
@@ -1919,12 +1936,26 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 }
 
 /* Réutilisée telle quelle pour la pastille de non-lus dans la liste des
-   discussions (view-messages), en position normale plutôt qu'absolue. */
+   discussions (view-messages), en position normale plutôt qu'absolue.
+   Round 19, item 1 : la refonte façon WhatsApp (round 18, item 9)
+   concernait en fait CETTE liste des discussions (l'accueil de la
+   Messagerie), pas le fil d'une discussion ouverte (voir .message-bubble
+   plus bas, qui reprend sa présentation en bulles d'origine) — blocs
+   plus grands et aérés, fond transparent, simple trait de séparation
+   discret entre deux discussions plutôt qu'un bloc "carte" par ligne. */
 .messages-class-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--rule-soft, rgba(35,48,42,0.1));
+  padding: 14px 6px;
+}
+#messages-class-list .messages-class-row:last-child {
+  border-bottom: none;
 }
 
 .messages-class-row-badge {
@@ -1939,6 +1970,10 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   gap: 10px;
   padding: 10px 12px;
   flex-wrap: wrap;
+  /* Round 19, item 11 : la ligne entière ouvre la page de détail de la
+     collection (les boutons "Prendre"/étoiles gardent leur propre clic,
+     via e.stopPropagation()). */
+  cursor: pointer;
 }
 .library-row .subject-row-name {
   flex: 1 1 auto;
@@ -1988,6 +2023,41 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   box-shadow: none;
 }
 
+/* Round 19, item 11 : page de détail d'une collection partagée. */
+.library-detail-meta,
+#library-detail-meta {
+  line-height: 1.6;
+  margin: 10px 0 14px;
+}
+#library-detail-rating {
+  margin-bottom: 18px;
+}
+
+/* Round 19, item 11 : aperçu épuré des fiches — juste question/réponse,
+   sans les icônes/actions habituelles de la page "Fiches". */
+.library-cards-list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.library-card-item {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--paper);
+  box-shadow: var(--shadow-card, none);
+}
+.library-card-question {
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+.library-card-answer {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
 /* Round 10, item 3 : champ de recherche de la Bibliothèque. */
 .library-search-input {
   display: block;
@@ -2019,16 +2089,24 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 }
 
 /* Round 10, item 11 : date/heure du dernier message, sous le nom de la
-   classe, dans la liste des discussions. */
+   classe, dans la liste des discussions. Round 19, item 1 : un peu plus
+   d'air entre le nom et la date, dans l'esprit WhatsApp. */
 .messages-class-row-meta {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2px;
+  gap: 4px;
 }
 .messages-class-row-last {
-  font-size: 11px;
+  font-size: 12px;
   opacity: 0.65;
+}
+/* Round 19, item 1 : la liste des discussions n'a plus de "cartes"
+   séparées par un espace (voir .messages-class-row, transparent avec un
+   simple trait de séparation) — l'espacement par défaut de .subject-list
+   romprait ce trait continu. */
+#messages-class-list {
+  gap: 0;
 }
 
 /* Round 10, items 4/5 : boutons d'action de la page de détail d'une
@@ -2049,63 +2127,63 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 .message-thread-list {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 8px;
   max-height: 60vh;
   overflow-y: auto;
   padding: 4px 2px 12px;
   margin-bottom: 10px;
 }
 
-/* Round 18, item 9 : refonte façon WhatsApp — blocs plus grands et
-   aérés, fond transparent (plus de rectangle plein coloré derrière
-   chaque message) et un simple trait de séparation discret entre les
-   messages, plutôt que des bulles empilées avec des coins arrondis et
-   une ombre. */
+/* Round 19, item 1 : la refonte façon WhatsApp du round 18 (item 9)
+   avait été appliquée ici PAR ERREUR — elle visait en fait la liste des
+   discussions (voir .messages-class-row plus haut). Le fil d'une
+   discussion ouverte reprend donc sa présentation en bulles d'origine
+   (coins arrondis, fond plein, ombre légère, alignées à gauche/droite
+   selon l'expéditeur). */
 .message-bubble {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  max-width: 88%;
-  padding: 12px 4px;
-  background: transparent;
+  gap: 2px;
+  max-width: 78%;
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: var(--shadow-deep);
   font-family: var(--font-type);
-  border-bottom: 1px solid var(--rule-soft, rgba(35,48,42,0.1));
-}
-.message-thread-list .message-bubble:last-child {
-  border-bottom: none;
 }
 
 .message-bubble--left {
   align-self: flex-start;
-  text-align: left;
+  border-bottom-left-radius: 4px;
 }
 
 .message-bubble--right {
   align-self: flex-end;
-  text-align: right;
+  border-bottom-right-radius: 4px;
 }
 
-.message-bubble--mine .message-bubble-sender,
-.message-bubble--mine .message-bubble-time {
-  color: var(--blue);
+.message-bubble--mine {
+  background: var(--blue);
+  color: #ffffff;
 }
 
 .message-bubble-sender {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   opacity: 0.75;
 }
 
 .message-bubble-body {
-  font-size: 15px;
-  line-height: 1.45;
+  font-size: 14px;
+  line-height: 1.35;
   white-space: pre-wrap;
   overflow-wrap: break-word;
 }
 
 .message-bubble-time {
-  font-size: 10px;
-  opacity: 0.55;
+  align-self: flex-end;
+  font-size: 9.5px;
+  opacity: 0.65;
 }
 
 .message-thread-form {
@@ -2993,6 +3071,11 @@ button.home-btn {
   flex: 1 1 100%;
 }
 
+/* Round 19, item 10 : cadre ET fond retirés sur les boutons SECONDAIRES
+   (tous, sauf ".btn--primary" — l'action principale d'une page, qui
+   garde son fond plein pour rester repérable comme LE bouton à cliquer,
+   voir la question posée à Stéphane). Un bouton secondaire n'est donc
+   plus qu'un texte/icône, sans chip visuel derrière. */
 .btn {
   font-family: var(--font-mono);
   font-size: 12.5px;
@@ -3001,12 +3084,12 @@ button.home-btn {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 10px 16px;
-  background: var(--desk);
+  background: transparent;
   color: var(--ink);
 }
 
 .btn--primary { background: var(--rule); color: var(--paper); }
-.btn--ghost { background: transparent; border-color: rgba(35,48,42,0.3); color: var(--ink-soft); }
+.btn--ghost { background: transparent; color: var(--ink-soft); }
 .btn--small { padding: 7px 12px; font-size: 11.5px; }
 .btn--file { display: inline-flex; align-items: center; }
 

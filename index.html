@@ -672,11 +672,17 @@
             <input type="date" id="calendar-event-date" required class="calendar-date-native-input" />
           </div>
         </label>
-        <!-- Round 18, item 13 : bouton plus visible (même style que le
-             sélecteur "Sélection de la boîte" de Nouvelle fiche) — avant,
-             un simple lien texte discret. Sélection MULTIPLE désormais
-             possible (voir calendarEventSubjectBtn, js/app.js). -->
-        <button type="button" class="subject-select-btn subject-select-btn--prominent" id="calendar-event-subject-btn" aria-label="Choisir la boîte ou le dossier lié">Aucune boîte/dossier liés</button>
+        <!-- Round 18, item 13 : bouton plus visible (avant : un simple
+             lien texte discret). Sélection MULTIPLE désormais possible
+             (voir calendarEventSubjectBtn, js/app.js). Round 19, item 3 :
+             même forme que les autres champs de cette page (titre
+             au-dessus, même habillage que le bouton Date) plutôt que le
+             style "pilule" du sélecteur de Nouvelle fiche, qui détonnait
+             ici. -->
+        <label class="field">
+          <span>Boîte(s)/dossier(s) liés (optionnel)</span>
+          <button type="button" class="calendar-date-btn" id="calendar-event-subject-btn" aria-label="Choisir la boîte ou le dossier lié">Aucune boîte/dossier liés</button>
+        </label>
 
         <!-- Round 3, item 4 (squelette) : un prof peut partager cet
              événement avec une de ses classes — n'apparaît que si Sync est
@@ -689,7 +695,9 @@
           </select>
         </label>
 
-        <div style="display:flex; gap:8px; margin-top:12px;">
+        <!-- Round 19, item 3 : marge homogène avec les autres champs de la
+             page (12px, comme .field) plutôt qu'une valeur ad hoc. -->
+        <div class="form-actions" style="margin-top:0;">
           <button type="submit" class="btn btn--primary" id="calendar-event-submit">Ajouter à mon calendrier</button>
           <button type="button" class="btn btn--ghost" id="calendar-event-cancel">Annuler</button>
         </div>
@@ -844,6 +852,15 @@
           <label class="field">
             <span>Nom</span>
             <input type="text" id="account-profile-lastname" autocomplete="family-name" />
+          </label>
+          <!-- Round 19, item 5 : niveau scolaire, même liste que le filtre
+               de la Bibliothèque (voir LIBRARY_LEVELS, js/app.js) —
+               préremplit automatiquement ce filtre. -->
+          <label class="field">
+            <span>Niveau scolaire</span>
+            <select id="account-profile-school-level">
+              <option value="">Non renseigné</option>
+            </select>
           </label>
           <button type="button" class="btn btn--small" id="account-profile-save-btn">Enregistrer</button>
           <p class="field-hint" id="account-profile-note" hidden></p>
@@ -1054,7 +1071,13 @@
          une icône en réseau distincte. -->
     <section id="view-library" class="view" aria-labelledby="tab-library">
       <h2 class="section-title">Bibliothèque</h2>
-      <p class="field-hint settings-block-hint">Des collections de fiches partagées par d'autres utilisateurs. Prends-en une : elle s'ajoute à tes collections (avec l'icône en réseau, pour la reconnaître).</p>
+      <!-- Round 19, item 6 : texte d'intro retiré — redondant avec la
+           bulle d'aide du robot pour cette page (voir
+           DEFAULT_HELP_MESSAGES_BY_VIEW.library, js/app.js). -->
+      <!-- Round 19, item 6 : crédit de jetons de l'utilisateur, aussi
+           visible ici (déjà dans Mon compte, round 18) — pratique pour
+           savoir combien on peut dépenser sans changer de page. -->
+      <p class="account-token-balance" id="library-token-balance-row" hidden>🪙 <span id="library-token-balance">0</span> jeton(s)</p>
       <div id="library-needs-sync" hidden>
         <p class="field-hint settings-block-hint">Active la synchronisation (page Synchronisation) pour accéder à la bibliothèque.</p>
       </div>
@@ -1600,20 +1623,47 @@
          l'écran en cours. Seule différence visuelle autorisée : les cases à
          cocher, affichées uniquement en mode multi-sélection. -->
     <section id="view-boite-picker" class="view">
+      <!-- Round 19, item 3 : le bouton "Aucun lien"/"Tout désélectionner"
+           rejoint "Retour" sur la même ligne, à droite, plutôt que
+           d'occuper sa propre ligne au-dessus de la liste. -->
       <div class="list-header boite-picker-header">
         <button class="btn btn--ghost btn--small" id="boite-picker-back-btn" type="button">← Retour</button>
+        <button type="button" class="btn btn--ghost btn--small boite-picker-none-btn" id="boite-picker-none" hidden>Aucun lien</button>
       </div>
       <h2 class="view-title" id="boite-picker-title">Choisir une boîte</h2>
       <p class="field-hint settings-block-hint" id="boite-picker-hint" hidden></p>
-      <!-- Round 18, item 13 : bouton "Aucun lien" remonté AU-DESSUS de la
-           liste (avant : tout en bas, sous la liste, trop discret) —
-           c'est le premier choix qu'on voit, avant de parcourir les
-           dossiers/boîtes. -->
-      <button type="button" class="btn btn--ghost btn--small boite-picker-none-btn" id="boite-picker-none" hidden>Aucun lien</button>
       <ul class="subject-list" id="boite-picker-list"></ul>
       <div class="multi-subject-picker-actions boite-picker-actions" id="boite-picker-actions" hidden>
         <button type="button" class="btn btn--small" id="boite-picker-confirm">Valider</button>
       </div>
+    </section>
+
+    <!-- Round 19, item 11 : page de détail d'une collection partagée de la
+         Bibliothèque, ouverte en cliquant sur sa ligne (les boutons
+         "Prendre"/étoiles de la ligne gardent leur comportement propre,
+         voir renderLibraryList). -->
+    <section id="view-library-detail" class="view">
+      <div class="list-header">
+        <button class="btn btn--ghost btn--small" id="library-detail-back-btn" type="button">← Retour</button>
+      </div>
+      <h2 class="view-title" id="library-detail-title">Collection</h2>
+      <p class="card-row-meta" id="library-detail-meta"></p>
+      <p class="library-rating-row" id="library-detail-rating"></p>
+      <div class="form-actions">
+        <button type="button" class="btn btn--primary" id="library-detail-view-cards-btn">Voir les fiches</button>
+        <button type="button" class="btn btn--small" id="library-detail-take-btn">Prendre</button>
+      </div>
+    </section>
+
+    <!-- Round 19, item 11 : aperçu épuré des fiches d'une collection
+         partagée — juste question/réponse, sans les actions habituelles de
+         la page "Fiches" (éditer, hiberner, algo...). -->
+    <section id="view-library-cards" class="view">
+      <div class="list-header">
+        <button class="btn btn--ghost btn--small" id="library-cards-back-btn" type="button">← Retour</button>
+      </div>
+      <h2 class="view-title" id="library-cards-title">Fiches</h2>
+      <ul class="library-cards-list" id="library-cards-list"></ul>
     </section>
   </main>
 </div>
