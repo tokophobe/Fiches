@@ -2032,6 +2032,17 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 #library-detail-rating {
   margin-bottom: 18px;
 }
+/* Round 20, item 2 : résumé (en avant, un peu plus marqué) et description
+   (texte courant) d'une collection partagée. */
+#library-detail-summary {
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+#library-detail-description {
+  color: var(--ink-soft);
+  white-space: pre-wrap;
+  margin: 0 0 14px;
+}
 
 /* Round 19, item 11 : aperçu épuré des fiches — juste question/réponse,
    sans les icônes/actions habituelles de la page "Fiches". */
@@ -2056,6 +2067,25 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 .library-card-answer {
   margin: 0;
   color: var(--ink-soft);
+  /* Round 20, item 3 : dissuade un copier-coller en masse (pas une
+     protection absolue) en plus de la troncature déjà appliquée côté JS. */
+  user-select: none;
+  -webkit-user-select: none;
+}
+.library-cards-note {
+  margin: 4px 0 0;
+}
+
+/* Round 20, item 4 : bouton "Mes partages" — état actif marqué comme les
+   autres boutons "toggle" de l'appli (fond plein le temps qu'il est
+   enfoncé), pour rester lisible même sans cadre (round 19, item 10). */
+.library-mine-toggle {
+  display: block;
+  margin: 10px 0 14px;
+}
+.library-mine-toggle.is-active {
+  background: var(--rule);
+  color: var(--paper);
 }
 
 /* Round 10, item 3 : champ de recherche de la Bibliothèque. */
@@ -4913,6 +4943,46 @@ button.home-btn {
   padding-left: 9px;
   background: rgba(111, 139, 92, 0.08);
   cursor: default;
+}
+
+/* Round 20, item 1 : le style épuré de la liste des discussions (round 19,
+   item 1 — .messages-class-row) est repris ici pour la liste des
+   évènements à venir du Calendrier : fond transparent, plus d'ombre/cadre
+   "carte", simple trait de séparation discret entre deux évènements. Les
+   liserés de couleur distinguant personnel/partagé/reçu (ci-dessus)
+   restent inchangés, seul le fond de "carte" disparaît. Le cadre blanc
+   ENGLOBANT toute la liste (`.card-form`, réutilisée un peu partout dans
+   l'appli pour d'autres pages) disparaît aussi ICI spécifiquement, pour
+   que "Événements à venir" ressemble à la liste des discussions (pas de
+   grand cadre), sans toucher `.card-form` ailleurs. */
+#calendar-list-view.card-form {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+#calendar-event-list.card-list {
+  gap: 0;
+}
+#calendar-event-list .card-row {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--rule-soft, rgba(35,48,42,0.1));
+  padding: 14px 6px;
+}
+#calendar-event-list .card-row:last-child {
+  border-bottom: none;
+}
+/* Spécificité : #calendar-event-list (ID) l'emporte sur les classes de
+   liseré ci-dessus pour le `padding` — leur `padding-left` est donc
+   redonné ici pour ne pas être écrasé par le padding uniforme du style
+   épuré. */
+#calendar-event-list .calendar-event-row--shared-mine {
+  padding-left: 9px;
+}
+#calendar-event-list .calendar-event-row--received {
+  padding-left: 9px;
+  background: rgba(111, 139, 92, 0.08);
 }
 
 .icon-btn--static {

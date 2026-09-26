@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v167";
+  const APP_VERSION = "v168";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -8708,6 +8708,7 @@
     renderGaugeColorsEditor();
     renderFactoryDefaultsEditor();
     renderHelpMessagesEditor();
+    renderDevLibraryModerationEditor();
     // Après TOUS les autres rendus ci-dessus : ils régénèrent leurs propres
     // <input class="dev-color-value"> dynamiquement, donc les pastilles
     // (et curseurs T/S/L) doivent être posées en tout dernier pour ne
@@ -11090,6 +11091,9 @@
   // session) — sans ça, il écraserait à chaque réouverture un choix que
   // l'utilisateur aurait fait exprès entre-temps.
   let libraryLevelFilterAutoApplied = false;
+  // Round 20, item 4 : filtre "Mes partages" — ne montre que MES propres
+  // collections partagées (comparaison sur owner_id).
+  let libraryOnlyMine = false;
 
   // Round 18, item 15 : niveaux scolaires proposés au partage et au tri —
   // liste reprise telle que demandée ("6ème, 5ème,..., 2nd, 1ère,
@@ -11155,6 +11159,20 @@
         tokenRow.hidden = true;
       }
     }
+    // Round 20, item 4 : bouton "Mes partages", visible seulement une fois
+    // connecté (rien à filtrer sinon) ; se désactive tout seul en se
+    // déconnectant, pour ne pas laisser un filtre actif mais invisible.
+    const mineToggle = el("library-mine-toggle");
+    if (mineToggle) {
+      if (freshUser) {
+        mineToggle.hidden = false;
+      } else {
+        mineToggle.hidden = true;
+        libraryOnlyMine = false;
+      }
+      mineToggle.classList.toggle("is-active", libraryOnlyMine);
+      mineToggle.setAttribute("aria-pressed", String(libraryOnlyMine));
+    }
     if (levelFilter) {
       levelFilter.hidden = false;
       if (levelFilter.options.length <= 1) {
@@ -11194,6 +11212,11 @@
     if (!list) return;
     const q = librarySearchQuery.trim().toLowerCase();
     let collections = libraryCollectionsCache;
+    // Round 20, item 4 : "Mes partages" — ne garde que MES collections
+    // (comparaison sur owner_id, pas sur le nom/email, plus fiable).
+    if (libraryOnlyMine && accountCurrentUser) {
+      collections = collections.filter((col) => col.owner_id === accountCurrentUser.id);
+    }
     if (libraryLevelFilter) collections = collections.filter((col) => (col.level || "") === libraryLevelFilter);
     if (q) {
       collections = collections.filter((col) => {
@@ -11289,6 +11312,19 @@
         ${priceLabel}
       `;
     }
+    // Round 20, item 2 : résumé/description, restitués ici tels que saisis
+    // au partage — masqués quand absents (collections d'avant ce round, ou
+    // champs laissés vides).
+    const summaryEl = el("library-detail-summary");
+    if (summaryEl) {
+      summaryEl.hidden = !col.summary;
+      summaryEl.textContent = col.summary || "";
+    }
+    const descriptionEl = el("library-detail-description");
+    if (descriptionEl) {
+      descriptionEl.hidden = !col.description;
+      descriptionEl.textContent = col.description || "";
+    }
     const ratingEl = el("library-detail-rating");
     if (ratingEl) {
       ratingEl.innerHTML = libraryStarsHtml(avg, count, col.id);
@@ -11339,24 +11375,44 @@
   /** Round 19, item 11 : aperçu épuré des fiches d'une collection — juste
    *  question/réponse pour chaque fiche, sans les actions habituelles de
    *  la page "Fiches" (éditer, hiberner, algo...). */
+  /** Round 20, item 3 : l'aperçu épuré ("Voir les fiches") ne montre plus
+   *  la réponse en entier — sans quoi n'importe qui pourrait s'en faire
+   *  une copie gratuite fiche par fiche sans jamais "Prendre" la
+   *  collection. La réponse est tronquée à peu près à sa moitié (coupée
+   *  au dernier espace pour rester lisible), suivie de "…" ; le texte est
+   *  aussi rendu non sélectionnable (dissuasif contre un copier-coller en
+   *  masse, pas une protection absolue — un aperçu reste un aperçu). */
+  function libraryPreviewAnswerHtml(raw) {
+    const plain = stripHtml(toDisplayHtml(raw || "")).trim();
+    if (!plain) return "";
+    const half = Math.max(20, Math.ceil(plain.length / 2));
+    if (plain.length <= half) return escapeHtml(plain);
+    let cut = plain.slice(0, half);
+    const lastSpace = cut.lastIndexOf(" ");
+    if (lastSpace > 10) cut = cut.slice(0, lastSpace);
+    return `${escapeHtml(cut)}…`;
+  }
+
   function openLibraryCardsView(col) {
     const titleEl = el("library-cards-title");
     if (titleEl) titleEl.textContent = col.name || "Fiches";
     const listEl = el("library-cards-list");
+    const cards = Array.isArray(col.cards) ? col.cards : [];
     if (listEl) {
-      const cards = Array.isArray(col.cards) ? col.cards : [];
       listEl.innerHTML =
         cards
           .map(
             (c) => `
         <li class="library-card-item">
           <p class="library-card-question">${toDisplayHtml(c.question || "")}</p>
-          <p class="library-card-answer">${toDisplayHtml(c.answer || "")}</p>
+          <p class="library-card-answer">${libraryPreviewAnswerHtml(c.answer || "")}</p>
         </li>
       `
           )
           .join("") || `<li class="field-hint">Aucune fiche dans cette collection.</li>`;
     }
+    const noteEl = el("library-cards-note");
+    if (noteEl) noteEl.hidden = cards.length === 0;
     boitePickerActivateView("view-library-cards");
     const homeBtnEl = el("home-btn");
     if (homeBtnEl) homeBtnEl.hidden = false;
@@ -11378,6 +11434,57 @@
     });
   }
 
+  /** Round 20, item 6 : mode développeur — liste toutes les collections de
+   *  la Bibliothèque (n'importe quel auteur) avec un bouton "Supprimer"
+   *  chacune, pour de la modération (contenu inapproprié, doublon signalé
+   *  par un utilisateur...). Repose sur la policy RLS dédiée côté base
+   *  (voir supabase/library_collections_summary_share_migration.sql), qui
+   *  n'autorise cette suppression que pour le compte de Stéphane. */
+  async function renderDevLibraryModerationEditor() {
+    const list = el("dev-library-moderation-list");
+    if (!list) return;
+    if (!Sync.isConfigured()) {
+      list.innerHTML = `<li class="field-hint">Active la synchronisation pour accéder à la Bibliothèque.</li>`;
+      return;
+    }
+    list.innerHTML = `<li class="field-hint">Chargement…</li>`;
+    const collections = await Sync.library.list();
+    list.innerHTML = "";
+    if (collections.length === 0) {
+      list.innerHTML = `<li class="field-hint">Aucune collection partagée.</li>`;
+      return;
+    }
+    collections.forEach((col) => {
+      const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || col.owner_email || "quelqu'un";
+      const n = Array.isArray(col.cards) ? col.cards.length : 0;
+      const li = document.createElement("li");
+      li.className = "subject-row library-row";
+      li.style.cursor = "default";
+      li.innerHTML = `
+        <span class="subject-row-name">${escapeHtml(col.name)}</span>
+        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""} — par ${escapeHtml(ownerName)}</span>
+      `;
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "btn btn--small";
+      delBtn.textContent = "Supprimer";
+      delBtn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        if (!(await robotConfirm(`Supprimer définitivement « ${col.name} » (par ${ownerName}) de la Bibliothèque ?`, { danger: true }))) return;
+        const { error } = await Sync.library.delete(col.id);
+        if (error) {
+          await robotAlert(`La suppression a échoué : ${error}`);
+          return;
+        }
+        renderDevLibraryModerationEditor();
+      });
+      li.appendChild(delBtn);
+      list.appendChild(li);
+    });
+  }
+  const devLibraryRefreshBtn = el("dev-library-refresh-btn");
+  if (devLibraryRefreshBtn) devLibraryRefreshBtn.addEventListener("click", () => renderDevLibraryModerationEditor());
+
   const librarySearchInputEl = el("library-search-input");
   if (librarySearchInputEl) {
     librarySearchInputEl.addEventListener("input", () => {
@@ -11389,6 +11496,15 @@
   if (libraryLevelFilterEl) {
     libraryLevelFilterEl.addEventListener("change", () => {
       libraryLevelFilter = libraryLevelFilterEl.value || "";
+      renderLibraryList();
+    });
+  }
+  const libraryMineToggleEl = el("library-mine-toggle");
+  if (libraryMineToggleEl) {
+    libraryMineToggleEl.addEventListener("click", () => {
+      libraryOnlyMine = !libraryOnlyMine;
+      libraryMineToggleEl.classList.toggle("is-active", libraryOnlyMine);
+      libraryMineToggleEl.setAttribute("aria-pressed", String(libraryOnlyMine));
       renderLibraryList();
     });
   }
@@ -11474,27 +11590,91 @@
         accountCurrentUser = await Sync.auth.getUser();
       }
     }
-    const name = await robotPrompt("Nom de la collection à partager :", s.name);
-    if (!name || !name.trim()) return;
-    // Round 18, item 15 : niveau scolaire et prix en jetons (0 = gratuit),
-    // demandés à la suite — pas de champ dédié pour l'instant, robotPrompt
-    // ne gère qu'un champ à la fois (voir showRobotMessage).
-    const level = await robotPrompt(
-      `Niveau scolaire de cette collection (facultatif) : ${LIBRARY_LEVELS.join(", ")}…`,
-      ""
-    );
-    const priceRaw = await robotPrompt("Prix en jetons (laisser vide ou 0 pour gratuit) :", "0");
-    const priceTokens = Math.max(0, Math.round(Number((priceRaw || "0").replace(",", ".")) || 0));
-    const { error } = await Sync.library.share(name.trim(), boxCards, {
-      level: (level || "").trim(),
-      priceTokens,
-    });
-    if (error) {
-      await robotAlert(`Le partage a échoué : ${error}`);
+    // Round 20, item 5 : empêche de partager deux fois la même boîte (elle
+    // apparaissait alors en double dans la Bibliothèque) — vérifié côté
+    // serveur (par id de boîte d'origine), pas seulement localement, pour
+    // rester valable même après un changement d'appareil.
+    const existing = await Sync.library.findBySourceSubject(subjectId);
+    if (existing) {
+      await robotAlert(`Cette boîte a déjà été partagée dans la Bibliothèque sous le nom « ${existing.name} ». Une même boîte ne peut être partagée qu'une seule fois.`);
       return;
     }
-    await robotAlert(`« ${name.trim()} » a été partagée dans la bibliothèque.`);
+    // Round 20, item 2 : tous les champs du partage (nom, niveau, résumé,
+    // description, prix) réunis sur une page dédiée plutôt qu'une série de
+    // fenêtres du robot enchaînées (source d'un bug d'affichage signalé
+    // par Stéphane sur l'enchaînement précédent).
+    openLibraryShareView(s, boxCards);
   }
+
+  /** Round 20, item 2 : page dédiée de partage d'une boîte vers la
+   *  Bibliothèque — remplace l'ancien enchaînement de robotPrompt
+   *  (nom → niveau → prix), qui présentait un bug d'affichage signalé par
+   *  Stéphane, par un vrai formulaire avec tous les champs en même temps
+   *  (nom, niveau scolaire en liste déroulante, résumé, description, prix
+   *  en jetons). */
+  function openLibraryShareView(subject, boxCards) {
+    const nameEl = el("library-share-name");
+    const levelEl = el("library-share-level");
+    const summaryEl = el("library-share-summary");
+    const descriptionEl = el("library-share-description");
+    const priceEl = el("library-share-price");
+    if (nameEl) nameEl.value = subject.name || "";
+    if (levelEl) {
+      if (levelEl.options.length <= 1) {
+        LIBRARY_LEVELS.forEach((lvl) => {
+          const opt = document.createElement("option");
+          opt.value = lvl;
+          opt.textContent = lvl;
+          levelEl.appendChild(opt);
+        });
+      }
+      levelEl.value = "";
+    }
+    if (summaryEl) summaryEl.value = "";
+    if (descriptionEl) descriptionEl.value = "";
+    if (priceEl) priceEl.value = "0";
+    boitePickerActivateView("view-library-share");
+    const homeBtnEl = el("home-btn");
+    if (homeBtnEl) homeBtnEl.hidden = false;
+    if (el("body-logo-row")) el("body-logo-row").hidden = false;
+
+    const form = el("library-share-form");
+    if (form) {
+      form.onsubmit = async (e) => {
+        e.preventDefault();
+        const name = (nameEl && nameEl.value || "").trim();
+        if (!name) {
+          await robotAlert("Le nom de la collection est obligatoire.");
+          return;
+        }
+        const priceTokens = Math.max(0, Math.round(Number(((priceEl && priceEl.value) || "0").replace(",", ".")) || 0));
+        const submitBtn = el("library-share-submit");
+        if (submitBtn) submitBtn.disabled = true;
+        const { error } = await Sync.library.share(name, boxCards, {
+          level: (levelEl && levelEl.value) || "",
+          summary: ((summaryEl && summaryEl.value) || "").trim(),
+          description: ((descriptionEl && descriptionEl.value) || "").trim(),
+          priceTokens,
+          sourceSubjectId: subject.id,
+        });
+        if (submitBtn) submitBtn.disabled = false;
+        if (error) {
+          await robotAlert(`Le partage a échoué : ${error}`);
+          return;
+        }
+        closeLibraryShareView();
+        await robotAlert(`« ${name} » a été partagée dans la bibliothèque.`);
+      };
+    }
+  }
+
+  function closeLibraryShareView() {
+    boitePickerActivateView("view-manage");
+    applyBodyLogoSpeech("manage");
+  }
+
+  const libraryShareBackBtn = el("library-share-back-btn");
+  if (libraryShareBackBtn) libraryShareBackBtn.addEventListener("click", () => closeLibraryShareView());
 
   // {klass} de la discussion actuellement ouverte, ou null.
   let messageThreadContext = null;

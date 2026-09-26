@@ -883,10 +883,51 @@ async function shareCollectionToLibrary(name, cards, extra) {
     name,
     level: extra.level || "",
     price_tokens: Number.isFinite(extra.priceTokens) ? extra.priceTokens : 0,
+    // Round 20, item 2 : résumé (une phrase) + description (plus longue),
+    // saisis sur la nouvelle page dédiée de partage.
+    summary: extra.summary || "",
+    description: extra.description || "",
+    // Round 20, item 5 : mémorise la boîte d'origine, pour pouvoir
+    // vérifier avant un futur partage qu'elle n'a pas déjà été publiée.
+    source_subject_id: extra.sourceSubjectId || null,
     cards: cards.map((card) => ({ id: card.id, question: card.question, answer: card.answer })),
   };
   const { data, error } = await c.from("library_collections").insert(row).select().single();
   return { data, error: error ? error.message : null };
+}
+
+/** Round 20, item 5 : cherche si CET utilisateur a déjà partagé CETTE
+ *  boîte précise dans la Bibliothèque (par id de boîte d'origine), pour
+ *  empêcher un second partage qui ferait doublon dans la liste. Les
+ *  collections partagées avant ce round n'ont pas `source_subject_id`
+ *  renseigné — elles ne sont donc jamais trouvées ici (pas de blocage
+ *  rétroactif, comportement accepté). */
+async function findLibraryCollectionBySourceSubject(subjectId) {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user || !subjectId) return null;
+  const { data, error } = await c
+    .from("library_collections")
+    .select("id, name")
+    .eq("owner_id", user.id)
+    .eq("source_subject_id", subjectId)
+    .maybeSingle();
+  if (error) {
+    console.warn("Bibliothèque : échec de la vérification de partage existant", error.message);
+    return null;
+  }
+  return data || null;
+}
+
+/** Round 20, item 6 : suppression d'une collection par le développeur
+ *  (modération) — voir la policy RLS dédiée côté base, qui autorise ceci
+ *  uniquement pour le compte de Stéphane, en plus de la policy existante
+ *  qui permet à chaque auteur de supprimer les siennes. */
+async function deleteLibraryCollection(id) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
+  const { error } = await c.from("library_collections").delete().eq("id", id);
+  return { error: error ? error.message : null };
 }
 
 /** Note (ou remplace sa note existante pour) une collection, 1 à 5
@@ -1105,5 +1146,7 @@ window.Sync = {
     get: getLibraryCollection,
     rate: rateLibraryCollection,
     listRatings: listLibraryRatings,
+    findBySourceSubject: findLibraryCollectionBySourceSubject,
+    delete: deleteLibraryCollection,
   },
 };

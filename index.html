@@ -1088,6 +1088,10 @@
       <select id="library-level-filter" class="library-level-filter">
         <option value="">Tous niveaux</option>
       </select>
+      <!-- Round 20, item 4 : filtre "Mes partages" — ne montre que les
+           collections partagées par l'utilisateur connecté. Masqué tant
+           qu'aucun Compte n'est connecté (rien à filtrer sinon). -->
+      <button type="button" class="btn btn--small library-mine-toggle" id="library-mine-toggle" hidden aria-pressed="false">Mes partages</button>
       <ul class="subject-list" id="library-list"></ul>
       <p class="field-hint" id="library-empty" hidden>Aucune collection partagée pour l'instant.</p>
     </section>
@@ -1573,6 +1577,20 @@
            désormais automatiquement enregistrée pour tout le monde (une
            seule source de vérité côté serveur), sans étape manuelle. -->
 
+      <!-- Round 20, item 6 : modération de la Bibliothèque — le
+           développeur peut supprimer n'importe quelle collection
+           partagée (pas seulement les siennes), utile en cas de contenu
+           inapproprié ou de doublon signalé. -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Bibliothèque — modération</h3>
+        <p class="field-hint settings-block-hint">
+          Supprime définitivement une collection partagée, quel que soit
+          son auteur.
+        </p>
+        <button type="button" class="btn btn--ghost" id="dev-library-refresh-btn">Charger les collections partagées</button>
+        <ul class="subject-list dev-library-moderation-list" id="dev-library-moderation-list"></ul>
+      </div>
+
       <!-- Round 4, partie 2 : le mode développeur reste dans l'appli mais
            n'est visible que sur les appareils débloqués (7 appuis sur le
            numéro de version, page Réglages) — ce bouton permet de le
@@ -1648,6 +1666,11 @@
       </div>
       <h2 class="view-title" id="library-detail-title">Collection</h2>
       <p class="card-row-meta" id="library-detail-meta"></p>
+      <!-- Round 20, item 2 : résumé (une phrase) et description (plus
+           longue), saisis au partage, restitués ici. Masqués si absents
+           (collections partagées avant ce round, ou champs laissés vides). -->
+      <p class="library-detail-summary" id="library-detail-summary" hidden></p>
+      <p class="library-detail-description" id="library-detail-description" hidden></p>
       <p class="library-rating-row" id="library-detail-rating"></p>
       <div class="form-actions">
         <button type="button" class="btn btn--primary" id="library-detail-view-cards-btn">Voir les fiches</button>
@@ -1663,7 +1686,48 @@
         <button class="btn btn--ghost btn--small" id="library-cards-back-btn" type="button">← Retour</button>
       </div>
       <h2 class="view-title" id="library-cards-title">Fiches</h2>
+      <!-- Round 20, item 3 : explique pourquoi les réponses sont
+           tronquées (sinon ça pourrait passer pour un bug). -->
+      <p class="field-hint library-cards-note" id="library-cards-note" hidden>Aperçu tronqué — prends cette collection (bouton "Prendre") pour voir les réponses complètes.</p>
       <ul class="library-cards-list" id="library-cards-list"></ul>
+    </section>
+
+    <!-- Round 20, item 2 : page dédiée pour partager une boîte dans la
+         Bibliothèque — remplace l'ancien enchaînement de fenêtres du robot
+         (nom → niveau → prix), qui présentait un bug d'affichage, par un
+         vrai formulaire avec tous les champs réunis (nom, niveau scolaire
+         en liste déroulante — même liste que le filtre de la Bibliothèque
+         — résumé, description, prix en jetons). -->
+    <section id="view-library-share" class="view">
+      <form class="card-form" id="library-share-form">
+        <h3 class="settings-block-title">Partager dans la bibliothèque</h3>
+        <label class="field">
+          <span>Nom de la collection</span>
+          <input type="text" id="library-share-name" required />
+        </label>
+        <label class="field">
+          <span>Niveau scolaire (optionnel)</span>
+          <select id="library-share-level">
+            <option value="">Non renseigné</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Résumé (une phrase, optionnel)</span>
+          <input type="text" id="library-share-summary" maxlength="140" placeholder="Ex. Vocabulaire d'anglais niveau 5ème" />
+        </label>
+        <label class="field">
+          <span>Description (optionnel)</span>
+          <textarea id="library-share-description" rows="4" placeholder="Quelques lignes pour présenter cette collection…"></textarea>
+        </label>
+        <label class="field">
+          <span>Prix en jetons (0 = gratuit)</span>
+          <input type="number" id="library-share-price" min="0" step="1" value="0" inputmode="numeric" />
+        </label>
+        <div class="form-actions" style="margin-top:0;">
+          <button type="submit" class="btn btn--primary" id="library-share-submit">Partager</button>
+          <button type="button" class="btn btn--ghost" id="library-share-back-btn">Annuler</button>
+        </div>
+      </form>
     </section>
   </main>
 </div>
