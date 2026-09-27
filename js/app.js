@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v168";
+  const APP_VERSION = "v169";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -55,6 +55,12 @@
     chevronUp: '<polyline points="18,15 12,9 6,15"/>',
     refresh: '<polyline points="23,4 23,10 17,10"/><polyline points="1,20 1,14 7,14"/><path d="M3.5 9a9 9 0 0 1 14.8-3.4L23 10M1 14l4.7 4.4A9 9 0 0 0 20.5 15"/>',
     share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/>',
+    // Round 21, item 5 : pièce de jeton — un cercle simple (contour de
+    // pièce) + un repère central, pour rester dans le même style
+    // monochrome/traits que le reste de la banque plutôt qu'un émoji
+    // (dont la couleur ne peut pas se régler en CSS) ; coloré en "or" via
+    // `color` sur l'élément englobant (voir .token-chip).
+    coin: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><path d="M12 8.3v7.4"/>',
     link: '<path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/>',
     mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,6 12,13 22,6"/>',
     image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>',
@@ -9166,6 +9172,25 @@
     localStorage.setItem(CALENDAR_EVENTS_KEY, JSON.stringify(events));
     scheduleDevSettingsPush();
   }
+  /** Round 21, item 3 : un élève peut désormais supprimer un évènement
+   *  REÇU d'un prof une fois sa date passée (voir deleteOwnCalendarEvent).
+   *  Comme cet évènement est un miroir resynchronisé à chaque passage
+   *  (reconcileSharedEvent le recrée tant que le prof ne l'a pas retiré
+   *  lui-même), une suppression locale simple ne "tiendrait" pas — l'id
+   *  distant (`sharedEventId`) est donc gardé dans une liste locale
+   *  d'évènements "écartés par l'élève", vérifiée avant toute recréation. */
+  const CALENDAR_DISMISSED_SHARED_KEY = "fiches_calendar_dismissed_shared_events";
+  function loadDismissedSharedEventIds() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(CALENDAR_DISMISSED_SHARED_KEY) || "[]");
+      return new Set(Array.isArray(raw) ? raw : []);
+    } catch {
+      return new Set();
+    }
+  }
+  function saveDismissedSharedEventIds(set) {
+    localStorage.setItem(CALENDAR_DISMISSED_SHARED_KEY, JSON.stringify(Array.from(set)));
+  }
   // Round 18, item 13 : un événement peut désormais être lié à PLUSIEURS
   // boîtes/dossiers à la fois — `calendarEventLinkIds` est un Set
   // d'identifiants "subject:ID" (cocher un dossier dans le sélecteur
@@ -9202,6 +9227,41 @@
   function eventLinkIds(ev) {
     if (Array.isArray(ev.linkIds)) return ev.linkIds;
     return ev.linkId ? [ev.linkId] : [];
+  }
+  /** Round 21, item 1 : noms des boîtes/dossiers liés à un évènement, un par
+   *  ligne sous "Fiches à réviser :" (remplace le libellé condensé
+   *  `calendarLinkIdsLabel`, gardé pour le bouton du formulaire). */
+  function eventLinkedBoxNames(ev) {
+    return eventLinkIds(ev).map((linkId) => calendarLinkLabel(linkId));
+  }
+
+  /** Round 21, item 1 : nombre de jours (entiers, signé) entre AUJOURD'HUI
+   *  (heure locale, minuit) et la date de l'évènement — base du "compte à
+   *  rebours" affiché à droite de chaque évènement. */
+  function calendarDiffDays(dateStr) {
+    const target = new Date(dateStr + "T00:00:00");
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return Math.round((target.getTime() - today.getTime()) / 86400000);
+  }
+  /** Round 21, item 1 : "compte à rebours" en toutes lettres (demande de
+   *  Stéphane) — granularité qui se resserre à l'approche de la date :
+   *  mois, puis semaines, puis "15 jours" (quinzaine, expression courante),
+   *  puis jour par jour, demain, aujourd'hui, passé. */
+  function calendarCountdownLabel(dateStr) {
+    const diff = calendarDiffDays(dateStr);
+    if (diff < 0) return "Passé";
+    if (diff === 0) return "Aujourd'hui";
+    if (diff === 1) return "Demain";
+    if (diff <= 13) return `Dans ${diff} jours`;
+    if (diff <= 15) return "Dans 15 jours";
+    if (diff < 30) {
+      const weeks = Math.max(2, Math.round(diff / 7));
+      return `Dans ${weeks} semaines`;
+    }
+    if (diff < 60) return "Dans 1 mois";
+    const months = Math.round(diff / 30);
+    return `Dans ${months} mois`;
   }
 
   // Item 1 (4e lot) : ce sélecteur utilise désormais la page partagée
@@ -9276,6 +9336,8 @@
     applyBodyLogoSpeech("calendar-event-form");
     const title = el("calendar-event-form-title");
     const submitBtn = el("calendar-event-submit");
+    // Round 21, item 2 : champ "Commentaires" (libre, optionnel).
+    const commentInput = el("calendar-event-comment");
     if (eventToEdit) {
       calendarEditingEventId = eventToEdit.id;
       el("calendar-event-title").value = eventToEdit.title;
@@ -9283,6 +9345,7 @@
       el("calendar-event-date-label").textContent = formatCalendarDate(eventToEdit.date);
       calendarEventLinkIds = new Set(eventLinkIds(eventToEdit));
       el("calendar-event-subject-btn").textContent = calendarLinkIdsLabel(calendarEventLinkIds);
+      if (commentInput) commentInput.value = eventToEdit.comment || "";
       if (title) title.textContent = "Modifier l'événement";
       if (submitBtn) submitBtn.textContent = "Enregistrer les modifications";
     } else {
@@ -9291,6 +9354,7 @@
       el("calendar-event-date-label").textContent = "Choisir une date";
       calendarEventLinkIds = new Set();
       el("calendar-event-subject-btn").textContent = calendarLinkIdsLabel(calendarEventLinkIds);
+      if (commentInput) commentInput.value = "";
       if (title) title.textContent = "Ajouter un événement";
       if (submitBtn) submitBtn.textContent = "Ajouter à mon calendrier";
     }
@@ -9321,15 +9385,29 @@
   }
   /** Garde-fou supplémentaire (round 6, "attention qu'un élève ne puisse
    *  rien modifier de ce qui est partagé par un prof") : la corbeille
-   *  n'est déjà PAS affichée pour un événement reçu (isReceived, voir
-   *  buildCalendarEventRow) et le clic sur la ligne est déjà bloqué par
-   *  blockIfSharedReadonlyEvent — mais on ajoute ici une deuxième
-   *  barrière, directement à la source de la suppression elle-même,
-   *  pour qu'un événement marqué `sharedEventId` reste structurellement
-   *  impossible à supprimer par ce chemin, même si un futur appel
-   *  oubliait la vérification côté interface. */
+   *  n'est déjà PAS affichée pour un événement reçu NON PASSÉ (isReceived,
+   *  voir buildCalendarEventRow) et le clic sur la ligne est déjà bloqué
+   *  par blockIfSharedReadonlyEvent — mais on ajoute ici une deuxième
+   *  barrière, directement à la source de la suppression elle-même, pour
+   *  qu'un événement marqué `sharedEventId` reste structurellement
+   *  impossible à MODIFIER par ce chemin, même si un futur appel oubliait
+   *  la vérification côté interface.
+   *  Round 21, item 3 : un évènement reçu peut en revanche être supprimé
+   *  par l'élève UNE FOIS SA DATE PASSÉE (demande de Stéphane) — dans ce
+   *  cas, on retire la copie locale et on mémorise son id distant pour
+   *  qu'il ne soit plus jamais recréé par la resynchro (voir
+   *  reconcileSharedEvent). Rien n'est supprimé côté prof : sa propre
+   *  copie n'est pas touchée. */
   async function deleteOwnCalendarEvent(ev) {
-    if (isSharedReadonlyEvent(ev)) return;
+    if (isSharedReadonlyEvent(ev)) {
+      if (calendarDiffDays(ev.date) < 0 && ev.sharedEventId) {
+        const dismissed = loadDismissedSharedEventIds();
+        dismissed.add(ev.sharedEventId);
+        saveDismissedSharedEventIds(dismissed);
+        saveCalendarEvents(loadCalendarEvents().filter((x) => x.id !== ev.id));
+      }
+      return;
+    }
     saveCalendarEvents(loadCalendarEvents().filter((x) => x.id !== ev.id));
     if (ev.classShare && Sync.isConfigured()) {
       try { await Sync.classes.deleteSharedEvent(ev.classShare.remoteId); } catch (e) { /* best-effort */ }
@@ -9344,6 +9422,94 @@
     applyBodyLogoSpeech("calendar");
     calendarEditingEventId = null;
   }
+
+  /** Round 21, item 3 : page de présentation d'un évènement — tous ses
+   *  éléments proprement mis en forme (titre, badge, compte à rebours,
+   *  boîtes liées, commentaire), avec un bouton "Modifier" qui n'apparaît
+   *  que si l'évènement est effectivement modifiable, et un bouton
+   *  "Supprimer" repris des mêmes règles que la ligne de liste
+   *  (buildCalendarEventRow) : un évènement reçu d'un prof ne peut être ni
+   *  modifié ni supprimé, SAUF suppression une fois sa date passée. */
+  let calendarDetailEvent = null;
+  function openCalendarEventDetailView(ev) {
+    calendarDetailEvent = ev;
+    const isReceived = isSharedReadonlyEvent(ev);
+    const isSharedByMe = !!ev.classShare;
+    const isPast = calendarDiffDays(ev.date) < 0;
+
+    const titleEl = el("calendar-detail-title");
+    if (titleEl) titleEl.textContent = ev.title;
+    const badgeEl = el("calendar-detail-badge");
+    if (badgeEl) {
+      if (isReceived) {
+        badgeEl.hidden = false;
+        badgeEl.className = "classes-shared-badge classes-shared-badge--received";
+        badgeEl.innerHTML = `${iconSvgMarkup("lock", "icon-inline-svg")} ${escapeHtml(ev.sharedClassName || "")}`;
+      } else if (isSharedByMe) {
+        badgeEl.hidden = false;
+        badgeEl.className = "classes-shared-badge";
+        badgeEl.textContent = `Partagé : ${ev.classShare.className || ""}`;
+      } else {
+        badgeEl.hidden = true;
+      }
+    }
+    const dateEl = el("calendar-detail-date");
+    if (dateEl) {
+      dateEl.textContent = `${formatCalendarDate(ev.date)} — ${calendarCountdownLabel(ev.date)}`;
+    }
+    const boxesWrap = el("calendar-detail-boxes");
+    const boxesList = el("calendar-detail-boxes-list");
+    const boxNames = eventLinkedBoxNames(ev);
+    if (boxesWrap && boxesList) {
+      boxesWrap.hidden = boxNames.length === 0;
+      boxesList.innerHTML = boxNames.map((n) => `<li>${escapeHtml(n)}</li>`).join("");
+    }
+    const commentWrap = el("calendar-detail-comment-wrap");
+    const commentEl = el("calendar-detail-comment");
+    if (commentWrap && commentEl) {
+      commentWrap.hidden = !ev.comment;
+      commentEl.textContent = ev.comment || "";
+    }
+    const editBtn = el("calendar-detail-edit-btn");
+    if (editBtn) editBtn.hidden = isReceived;
+    const deleteBtn = el("calendar-detail-delete-btn");
+    const lockNote = el("calendar-detail-lock-note");
+    if (deleteBtn) deleteBtn.hidden = isReceived && !isPast;
+    if (lockNote) lockNote.hidden = !(isReceived && !isPast);
+
+    boitePickerActivateView("view-calendar-event-detail");
+    const homeBtnEl = el("home-btn");
+    if (homeBtnEl) homeBtnEl.hidden = false;
+    if (el("body-logo-row")) el("body-logo-row").hidden = false;
+  }
+  function closeCalendarEventDetailView() {
+    boitePickerActivateView("view-calendar");
+    applyBodyLogoSpeech("calendar");
+    calendarDetailEvent = null;
+  }
+  const calendarDetailBackBtn = el("calendar-detail-back-btn");
+  if (calendarDetailBackBtn) calendarDetailBackBtn.addEventListener("click", closeCalendarEventDetailView);
+  const calendarDetailEditBtn = el("calendar-detail-edit-btn");
+  if (calendarDetailEditBtn) {
+    calendarDetailEditBtn.addEventListener("click", async () => {
+      if (!calendarDetailEvent) return;
+      if (await blockIfSharedReadonlyEvent(calendarDetailEvent)) return;
+      openCalendarEventForm(calendarDetailEvent);
+    });
+  }
+  const calendarDetailDeleteBtn = el("calendar-detail-delete-btn");
+  if (calendarDetailDeleteBtn) {
+    calendarDetailDeleteBtn.addEventListener("click", async () => {
+      if (!calendarDetailEvent) return;
+      const ev = calendarDetailEvent;
+      if (await robotConfirm(`Supprimer l'événement « ${ev.title} » ?`, { danger: true })) {
+        await deleteOwnCalendarEvent(ev);
+        closeCalendarEventDetailView();
+        renderCalendarEvents();
+      }
+    });
+  }
+
   const calendarAddEventBtn = el("calendar-add-event-btn");
   if (calendarAddEventBtn) calendarAddEventBtn.addEventListener("click", () => openCalendarEventForm(null));
   const calendarEventCancelBtn = el("calendar-event-cancel");
@@ -9358,6 +9524,9 @@
       if (!titleInput.value.trim() || !dateInput.value) return;
       const titleVal = titleInput.value.trim();
       const dateVal = dateInput.value;
+      // Round 21, item 2 : champ "Commentaires", libre et optionnel.
+      const commentInput = el("calendar-event-comment");
+      const commentVal = commentInput ? commentInput.value.trim() : "";
       const events = loadCalendarEvents();
       const classSelect = el("calendar-event-class-select");
       const selectedClassId = classSelect && !el("calendar-event-class-field").hidden ? classSelect.value : "";
@@ -9370,10 +9539,10 @@
       const linkIdsArr = Array.from(calendarEventLinkIds);
       if (calendarEditingEventId) {
         idx = events.findIndex((x) => x.id === calendarEditingEventId);
-        ev = idx >= 0 ? { ...events[idx], title: titleVal, date: dateVal, linkIds: linkIdsArr } : null;
+        ev = idx >= 0 ? { ...events[idx], title: titleVal, date: dateVal, linkIds: linkIdsArr, comment: commentVal } : null;
         if (ev) delete ev.linkId;
       } else {
-        ev = { id: uid(), title: titleVal, date: dateVal, linkIds: linkIdsArr };
+        ev = { id: uid(), title: titleVal, date: dateVal, linkIds: linkIdsArr, comment: commentVal };
       }
       if (!ev) return;
 
@@ -9427,44 +9596,53 @@
     }
     return false;
   }
-  function buildCalendarEventRow(ev, { onEdit, onDelete }) {
+  /** Round 21, item 1 (refonte) : plus de liseré de couleur sur le côté —
+   *  la distinction personnel/partagé/reçu ne repose plus que sur le badge
+   *  texte. La date est remplacée par un compte à rebours affiché à
+   *  droite, et la liste des boîtes/dossiers liés ("Fiches à réviser :")
+   *  s'affiche désormais en clair sous le titre, une par ligne, plutôt
+   *  qu'en un libellé condensé dans le "meta".
+   *  Round 21, item 3 : cliquer sur la ligne ouvre maintenant une page de
+   *  PRÉSENTATION de l'évènement (voir openCalendarEventDetailView), pas
+   *  directement le formulaire de modification — le bouton "Modifier" de
+   *  cette page fait ensuite ce que faisait ce clic auparavant. La
+   *  suppression reste possible directement depuis la ligne (corbeille),
+   *  désormais aussi pour un évènement REÇU une fois sa date passée. */
+  function buildCalendarEventRow(ev, { onOpen, onDelete }) {
     const li = document.createElement("li");
-    // Item 2 (demande de Stéphane) : distinction visuelle nette entre un
-    // événement PERSONNEL (aucune classe liée), un événement PARTAGÉ PAR
-    // MOI (côté prof, ev.classShare) et un événement REÇU d'un prof (côté
-    // élève, ev.sharedEventId, lecture seule) — liseré de couleur + fond
-    // légèrement teinté distincts pour chacun (voir style.css), en plus du
-    // badge texte déjà existant.
     const isReceived = isSharedReadonlyEvent(ev);
     const isSharedByMe = !!ev.classShare;
-    li.className =
-      "card-row" +
-      (isReceived ? " calendar-event-row--received" : isSharedByMe ? " calendar-event-row--shared-mine" : "");
-    li.style.cssText = "flex-direction:row; align-items:center; justify-content:space-between; cursor:pointer;";
-    // Item 6 : cliquer sur l'événement l'ouvre directement en modification
-    // — plus besoin d'un bouton crayon séparé.
-    li.title = isReceived ? "Événement partagé par ton professeur (lecture seule)" : "Modifier cet événement";
-    li.addEventListener("click", async () => {
-      if (await blockIfSharedReadonlyEvent(ev)) return;
-      onEdit();
-    });
+    const isPast = calendarDiffDays(ev.date) < 0;
+    li.className = "card-row calendar-event-row" + (isReceived ? " calendar-event-row--received" : "");
+    li.style.cssText = "flex-direction:row; align-items:flex-start; justify-content:space-between; cursor:pointer;";
+    li.title = "Voir le détail de cet évènement";
+    li.addEventListener("click", () => onOpen());
     const main = document.createElement("div");
-    main.className = "card-row-main";
+    main.className = "card-row-main calendar-event-main";
     const sharedBadge = isReceived
       ? ` <span class="classes-shared-badge classes-shared-badge--received">${iconSvgMarkup("lock", "icon-inline-svg")} ${escapeHtml(ev.sharedClassName)}</span>`
       : isSharedByMe
       ? ` <span class="classes-shared-badge">Partagé : ${escapeHtml(ev.classShare.className)}</span>`
       : "";
-    const evLinkIds = eventLinkIds(ev);
-    const linksLabel = evLinkIds.length > 0 ? ` · ${escapeHtml(calendarLinkIdsLabel(evLinkIds))}` : "";
-    main.innerHTML = `<strong>${escapeHtml(ev.title)}</strong>${sharedBadge}<br><span class="card-row-meta">${escapeHtml(formatCalendarDate(ev.date))}${linksLabel}</span>`;
+    const boxNames = eventLinkedBoxNames(ev);
+    const boxesHtml =
+      boxNames.length > 0
+        ? `<div class="calendar-event-boxes"><p class="calendar-event-boxes-label">Fiches à réviser :</p><ul class="calendar-event-boxes-list">${boxNames
+            .map((n) => `<li>${escapeHtml(n)}</li>`)
+            .join("")}</ul></div>`
+        : "";
+    main.innerHTML = `
+      <div class="calendar-event-top-row">
+        <strong>${escapeHtml(ev.title)}</strong>${sharedBadge}
+        <span class="calendar-event-countdown${isPast ? " calendar-event-countdown--past" : ""}">${calendarCountdownLabel(ev.date)}</span>
+      </div>
+      ${boxesHtml}
+    `;
     const actions = document.createElement("div");
     actions.style.cssText = "display:flex; gap:4px; flex-shrink:0;";
-    if (isReceived) {
-      // Un événement reçu ne peut pas être supprimé (voir
-      // blockIfSharedReadonlyEvent) : plus de bouton corbeille trompeur ici
-      // (auparavant présent mais toujours bloqué au clic), remplacé par un
-      // simple cadenas qui rappelle pourquoi, sans action au clic.
+    if (isReceived && !isPast) {
+      // Toujours en lecture seule tant que la date n'est pas passée (voir
+      // deleteOwnCalendarEvent) : simple cadenas, sans action au clic.
       const lockBadge = document.createElement("span");
       lockBadge.className = "icon-btn icon-btn--static";
       lockBadge.title = "Géré par ton professeur";
@@ -9503,7 +9681,7 @@
     events.forEach((ev) => {
       list.appendChild(
         buildCalendarEventRow(ev, {
-          onEdit: () => openCalendarEventForm(ev),
+          onOpen: () => openCalendarEventDetailView(ev),
           onDelete: async () => {
             await deleteOwnCalendarEvent(ev);
             renderCalendarEvents();
@@ -9666,9 +9844,9 @@
     events.forEach((ev) => {
       list.appendChild(
         buildCalendarEventRow(ev, {
-          onEdit: () => {
+          onOpen: () => {
             popup.hidden = true;
-            openCalendarEventForm(ev);
+            openCalendarEventDetailView(ev);
           },
           onDelete: async () => {
             await deleteOwnCalendarEvent(ev);
@@ -10464,6 +10642,10 @@
    *  par le prof — même id que côté prof (sharedEventId), pour repérer un
    *  changement de titre/date au prochain passage. */
   function reconcileSharedEvent(klass, re) {
+    // Round 21, item 3 : un évènement passé, déjà supprimé par l'élève, ne
+    // doit plus jamais être recréé tant que le prof ne l'a pas lui-même
+    // modifié/retiré puis re-partagé (nouvel id côté prof).
+    if (loadDismissedSharedEventIds().has(re.id)) return;
     const events = loadCalendarEvents();
     const idx = events.findIndex((x) => x.sharedEventId === re.id);
     if (idx >= 0) {
@@ -11244,24 +11426,39 @@
       // prénom/nom de l'auteur n'était pas encore connu).
       const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || col.owner_email || "quelqu'un";
       const priceTokens = Number(col.price_tokens) || 0;
-      const priceLabel = priceTokens > 0 ? `🪙 ${priceTokens} jeton${priceTokens > 1 ? "s" : ""}` : "Gratuit";
+      const priceLabel = priceTokens > 0 ? `${priceTokens} jeton${priceTokens > 1 ? "s" : ""}` : "Gratuit";
       const levelLabel = col.level ? ` · ${escapeHtml(col.level)}` : "";
       const { avg, count } = libraryCollectionRatingStats(col.id);
       const li = document.createElement("li");
       li.className = "subject-row library-row";
+      // Round 21, item 6 : étoiles déplacées sur la même ligne que le nom
+      // (alignées à droite du bloc) ; le bouton "Prendre" affiche
+      // maintenant directement le prix (ou "Gratuit") et un bouton
+      // "Détails" explicite mène à la page de détail (round 19, item 11 —
+      // le reste de la ligne l'ouvre aussi, comme avant).
       li.innerHTML = `
-        <span class="subject-row-name">${iconSvgMarkup("share", "icon-inline-svg")} <span>${escapeHtml(col.name)}</span></span>
-        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""} — par ${escapeHtml(ownerName)}${levelLabel} · ${priceLabel}</span>
-        <span class="library-rating-row">${libraryStarsHtml(avg, count, col.id)}</span>
-        <button type="button" class="btn btn--small library-take-btn${alreadyTaken ? " library-take-btn--taken" : ""}" ${alreadyTaken ? "disabled" : ""}>${alreadyTaken ? "Déjà pris" : "Prendre"}</button>
+        <div class="library-row-head">
+          <span class="subject-row-name">${iconSvgMarkup("share", "icon-inline-svg")} <span>${escapeHtml(col.name)}</span></span>
+          <span class="library-rating-row">${libraryStarsHtml(avg, count, col.id)}</span>
+        </div>
+        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""} — par ${escapeHtml(ownerName)}${levelLabel}</span>
+        <div class="library-row-actions">
+          <button type="button" class="btn btn--small library-price-btn${alreadyTaken ? " library-price-btn--taken" : ""}" ${alreadyTaken ? "disabled" : ""}>${alreadyTaken ? "Déjà pris" : priceLabel}</button>
+          <button type="button" class="btn btn--small btn--ghost library-details-btn">Détails</button>
+        </div>
       `;
-      const takeBtn = li.querySelector(".library-take-btn");
-      if (takeBtn && !alreadyTaken) {
-        takeBtn.addEventListener("click", async (e) => {
+      const priceBtn = li.querySelector(".library-price-btn");
+      if (priceBtn && !alreadyTaken) {
+        priceBtn.addEventListener("click", async (e) => {
           e.stopPropagation();
-          takeBtn.disabled = true;
-          await takeLibraryCollection(col);
-          renderLibraryList();
+          await confirmAndTakeLibraryCollection(col, () => renderLibraryList());
+        });
+      }
+      const detailsBtn = li.querySelector(".library-details-btn");
+      if (detailsBtn) {
+        detailsBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openLibraryDetailView(col);
         });
       }
       const starsEl = li.querySelector(".library-stars");
@@ -11282,8 +11479,8 @@
         });
       }
       // Round 19, item 11 : le reste de la ligne ouvre la page de détail
-      // de la collection (bouton "Prendre" et étoiles gardent leur clic
-      // propre grâce à e.stopPropagation() ci-dessus).
+      // de la collection (les boutons gardent leur clic propre grâce à
+      // e.stopPropagation() ci-dessus).
       li.addEventListener("click", () => openLibraryDetailView(col));
       list.appendChild(li);
     }
@@ -11347,17 +11544,23 @@
       }
     }
     const alreadyTaken = subjects.some((s) => s.fromLibrary && s.libraryOriginId === col.id);
+    // Round 21, item 6 : même bouton "prix" que dans la liste, avec la
+    // même confirmation d'achat (voir confirmAndTakeLibraryCollection).
     const takeBtn = el("library-detail-take-btn");
     if (takeBtn) {
+      takeBtn.classList.add("library-price-btn");
+      takeBtn.classList.toggle("library-price-btn--taken", alreadyTaken);
       takeBtn.disabled = alreadyTaken;
-      takeBtn.textContent = alreadyTaken ? "Déjà pris" : "Prendre";
+      takeBtn.textContent = alreadyTaken ? "Déjà pris" : priceLabel;
       takeBtn.onclick = alreadyTaken
         ? null
         : async () => {
-            takeBtn.disabled = true;
-            await takeLibraryCollection(col);
-            renderLibraryList();
-            takeBtn.textContent = "Déjà pris";
+            await confirmAndTakeLibraryCollection(col, () => {
+              renderLibraryList();
+              takeBtn.disabled = true;
+              takeBtn.classList.add("library-price-btn--taken");
+              takeBtn.textContent = "Déjà pris";
+            });
           };
     }
 
@@ -11382,14 +11585,23 @@
    *  au dernier espace pour rester lisible), suivie de "…" ; le texte est
    *  aussi rendu non sélectionnable (dissuasif contre un copier-coller en
    *  masse, pas une protection absolue — un aperçu reste un aperçu). */
+  /** Round 21, item 7 : correctif — le plancher de 20 caractères (round 20)
+   *  faisait qu'une réponse courte (≤ 20 caractères, ou jusqu'à 40 selon le
+   *  cas) échappait entièrement à la troncature. Stéphane a signalé que
+   *  certaines réponses n'étaient donc PAS tronquées. La règle est
+   *  maintenant appliquée SANS EXCEPTION : chaque réponse est coupée à sa
+   *  moitié exacte (nombre de caractères divisé par deux, arrondi au-dessus),
+   *  quelle que soit sa longueur — seule la coupe au dernier espace (pour
+   *  rester lisible) reste une adaptation mineure, sans jamais revenir en
+   *  arrière jusqu'à annuler la troncature elle-même. */
   function libraryPreviewAnswerHtml(raw) {
     const plain = stripHtml(toDisplayHtml(raw || "")).trim();
     if (!plain) return "";
-    const half = Math.max(20, Math.ceil(plain.length / 2));
-    if (plain.length <= half) return escapeHtml(plain);
+    const half = Math.ceil(plain.length / 2);
+    if (half <= 0) return "";
     let cut = plain.slice(0, half);
     const lastSpace = cut.lastIndexOf(" ");
-    if (lastSpace > 10) cut = cut.slice(0, lastSpace);
+    if (lastSpace > half * 0.4) cut = cut.slice(0, lastSpace);
     return `${escapeHtml(cut)}…`;
   }
 
@@ -11540,6 +11752,49 @@
     await robotAlert(
       `« ${subject.name} » a été ajoutée à Mes collections (${cardsToCopy.length} fiche${cardsToCopy.length > 1 ? "s" : ""}). Elle se met à jour automatiquement si son auteur la modifie ; tu peux la déplacer dans un dossier, mais pas la modifier ni la repartager.`
     );
+  }
+
+  /** Round 21, item 6 : demande de Stéphane — le bouton "Prendre" affiche
+   *  désormais le prix et, au clic, demande confirmation pour l'achat
+   *  ("veux-tu acheter cette collection pour N jetons ?"). Le crédit de
+   *  jetons (métadonnées du Compte, round 18 item 16) est vérifié et
+   *  débité AVANT de prendre la collection ; rien n'est déduit si
+   *  l'utilisateur annule, n'a pas assez de jetons, ou si la prise elle-
+   *  même échoue. Un `onDone` optionnel est appelé après une prise
+   *  réussie (mise à jour de l'affichage à l'appelant). */
+  async function confirmAndTakeLibraryCollection(col, onDone) {
+    if (!accountCurrentUser) {
+      await robotAlert("Connecte-toi avec un Compte (page Compte) pour prendre une collection de la Bibliothèque.");
+      return;
+    }
+    const priceTokens = Number(col.price_tokens) || 0;
+    const confirmMsg =
+      priceTokens > 0
+        ? `Acheter « ${col.name} » pour ${priceTokens} jeton${priceTokens > 1 ? "s" : ""} ?`
+        : `Prendre « ${col.name} » gratuitement ?`;
+    if (!(await robotConfirm(confirmMsg))) return;
+    if (priceTokens > 0) {
+      const freshUser = (await Sync.auth.getUser()) || accountCurrentUser;
+      const balance = Number((freshUser.user_metadata || {}).token_balance) || 0;
+      if (balance < priceTokens) {
+        await robotAlert(`Solde de jetons insuffisant : il te faut ${priceTokens} jeton${priceTokens > 1 ? "s" : ""}, tu en as ${balance}.`);
+        return;
+      }
+      const { error } = await Sync.auth.updateTokenBalance(balance - priceTokens);
+      if (error) {
+        await robotAlert(`Le débit des jetons a échoué : ${error}`);
+        return;
+      }
+      accountCurrentUser = await Sync.auth.getUser();
+      // Reflète le nouveau solde partout où il est affiché, sans attendre
+      // un rechargement de page.
+      const accTokenEl = el("account-token-balance");
+      if (accTokenEl) accTokenEl.textContent = String(balance - priceTokens);
+      const libTokenEl = el("library-token-balance");
+      if (libTokenEl) libTokenEl.textContent = String(balance - priceTokens);
+    }
+    await takeLibraryCollection(col);
+    if (onDone) onDone();
   }
 
   /** Partage une boîte existante dans la bibliothèque publique : nécessite

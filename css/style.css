@@ -1071,6 +1071,17 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   width: 64px;
   align-items: center;
 }
+/* Round 21, item 4 : la jauge de persistance (buildPersGaugeSvg) est
+   dessinée avec une largeur FIXE en pixels (70) légèrement supérieure à ce
+   conteneur (64px) — elle débordait donc systématiquement de son bloc.
+   Le SVG suit maintenant la largeur réelle de son conteneur (comme
+   `.review-gauge-wrap svg` le fait déjà pour la grande jauge de Réviser),
+   `height: auto` préservant ses proportions internes (viewBox). */
+.org-gauge-inline svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 
 .org-deploy-btn {
   flex-shrink: 0;
@@ -1963,32 +1974,41 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 }
 
 /* Round 8 : Bibliothèque — une ligne par collection partagée, avec son
-   nombre de fiches/auteur et un bouton "Prendre" bien visible. */
+   nombre de fiches/auteur et un bouton "Prendre" bien visible.
+   Round 21, item 6 : réagencée — nom + étoiles sur la même ligne (étoiles
+   alignées à droite), méta en dessous, puis une rangée d'actions avec le
+   prix (remplace "Prendre") et un bouton "Détails" explicite. */
 .library-row {
+  display: block;
+  padding: 12px;
+  /* La ligne entière ouvre toujours la page de détail au clic (les
+     boutons ci-dessous gardent leur propre clic via e.stopPropagation()). */
+  cursor: pointer;
+}
+.library-row-head {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  flex-wrap: wrap;
-  /* Round 19, item 11 : la ligne entière ouvre la page de détail de la
-     collection (les boutons "Prendre"/étoiles gardent leur propre clic,
-     via e.stopPropagation()). */
-  cursor: pointer;
+  justify-content: space-between;
+  gap: 8px;
 }
 .library-row .subject-row-name {
   flex: 1 1 auto;
-  min-width: 120px;
+  min-width: 0;
 }
 .library-row .card-row-meta {
-  flex: 1 1 100%;
+  display: block;
   white-space: normal;
+  margin: 4px 0 0;
 }
-.library-row .library-take-btn {
-  flex: 0 0 auto;
+.library-row-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
 }
-/* Round 18, item 15 : notation par étoiles d'une collection. */
+/* Round 18, item 15 : notation par étoiles d'une collection. Round 21,
+   item 6 : maintenant alignées à droite, sur la ligne du nom. */
 .library-rating-row {
-  flex: 1 1 100%;
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -2012,10 +2032,23 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   color: var(--ink-soft);
   margin-left: 2px;
 }
+/* Round 21, item 6 : le bouton "Prendre" affiche maintenant le prix
+   directement (ou "Gratuit") — coloré comme un bouton d'action principale
+   pour rester bien visible, même s'il n'est plus l'unique bouton de la
+   ligne (voir aussi .library-details-btn). */
+/* Spécificité : `.btn { background: transparent }` est déclarée PLUS LOIN
+   dans cette feuille de style (round 19, item 10) — à spécificité égale,
+   c'est donc elle qui l'emporterait sur `.library-price-btn` seule. Le
+   sélecteur combiné `.btn.library-price-btn` (2 classes) a une spécificité
+   plus élevée et règle ce piège une bonne fois pour toutes. */
+.btn.library-price-btn {
+  background: var(--rule);
+  color: var(--paper);
+}
 /* Round 10, item 6 : une collection déjà prise affiche "Déjà pris",
-   désactivé, dans une couleur de fond différente du bouton "Prendre"
-   actif — pour la reconnaître sans avoir à cliquer dessus. */
-.library-row .library-take-btn--taken {
+   désactivé, dans une couleur de fond différente du bouton actif — pour
+   la reconnaître sans avoir à cliquer dessus. */
+.btn.library-price-btn.library-price-btn--taken {
   background: var(--paper-alt, #e4e7ec);
   color: var(--ink);
   opacity: 0.75;
@@ -2076,16 +2109,67 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   margin: 4px 0 0;
 }
 
-/* Round 20, item 4 : bouton "Mes partages" — état actif marqué comme les
-   autres boutons "toggle" de l'appli (fond plein le temps qu'il est
-   enfoncé), pour rester lisible même sans cadre (round 19, item 10). */
+/* Round 20, item 4 : bouton "Mes partages". Round 21, item 6 : redessiné
+   en véritable interrupteur ("toggle" demandé par Stéphane) — un petit
+   rail + curseur glissant, plutôt qu'un bouton qui change de fond. */
 .library-mine-toggle {
-  display: block;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   margin: 10px 0 14px;
+  padding: 6px 10px 6px 40px;
+  border: 1px solid var(--rule-soft, rgba(35, 48, 42, 0.15));
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--font-type);
+  font-size: 12.5px;
+}
+.library-mine-toggle::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(35, 48, 42, 0.18);
+  transition: background 0.15s;
+}
+.library-mine-toggle::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  transition: left 0.15s;
 }
 .library-mine-toggle.is-active {
+  color: var(--ink);
+  font-weight: 700;
+}
+.library-mine-toggle.is-active::before {
   background: var(--rule);
-  color: var(--paper);
+}
+.library-mine-toggle.is-active::after {
+  left: 19px;
+}
+
+/* Round 21, item 6 : titre "Bibliothèque" + crédit de jetons sur la même
+   ligne, le crédit aligné à droite. */
+.library-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
 }
 
 /* Round 10, item 3 : champ de recherche de la Bibliothèque. */
@@ -3123,6 +3207,14 @@ button.home-btn {
 .btn--small { padding: 7px 12px; font-size: 11.5px; }
 .btn--file { display: inline-flex; align-items: center; }
 
+/* Round 21, item 1 : "+ Ajouter un événement" perd son fond/contour plein
+   malgré sa classe .btn--primary (demande explicite de Stéphane pour CE
+   bouton précis) — simple texte/icône coloré, comme un bouton secondaire. */
+#calendar-add-event-btn {
+  background: transparent;
+  color: var(--rule);
+}
+
 .list-header {
   display: flex;
   align-items: center;
@@ -3636,22 +3728,27 @@ button.home-btn {
   margin-bottom: 14px;
 }
 
+/* Round 21, item 1 : l'élément NON sélectionné perd son fond/contour
+   (simple texte, comme les boutons secondaires depuis le round 19) ; le
+   sélectionné garde le fond blanc qu'avaient AVANT les deux boutons
+   (`var(--paper)`, "le fond blanc actuel" de la demande de Stéphane) et
+   passe en gras plutôt qu'en fond bleu plein. */
 .calendar-view-toggle-btn {
   flex: 1;
   padding: 8px;
   border-radius: 8px;
-  border: 1px solid rgba(35, 48, 42, 0.15);
-  background: var(--paper);
+  border: none;
+  background: transparent;
   color: var(--ink-soft);
   font-family: var(--font-type);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .calendar-view-toggle-btn.is-active {
-  background: var(--blue);
-  border-color: var(--blue);
-  color: #ffffff;
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 700;
 }
 
 .calendar-nav-row {
@@ -3873,6 +3970,14 @@ button.home-btn {
   flex-shrink: 0;
   width: 130px;
   margin-left: 6px;
+}
+/* Round 21, item 4 : même correctif de débordement que .org-gauge-inline —
+   la jauge est dessinée avec une largeur fixe de 190px, supérieure aux
+   130px de ce bloc. */
+.revision-program-gauge-col svg {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .chart-empty {
@@ -4827,11 +4932,28 @@ button.home-btn {
 }
 
 /* Round 18, item 16 : crédit de jetons de l'utilisateur. */
-.account-token-balance {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink);
+/* Round 21, item 5 : design plus épuré du crédit de jetons — remplace
+   .account-token-balance (ancien nom, gardé en commentaire pour mémoire).
+   Plus léger visuellement (pas de fond/cadre), icône pièce recolorée en
+   "or" plutôt que l'émoji 🪙 d'origine (couleur non réglable en CSS). */
+.token-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-type);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #a9790a;
   margin: 0 0 16px;
+}
+.token-chip-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: #d4af37;
+}
+#library-token-balance-row.token-chip {
+  margin: 0;
 }
 
 .classes-section {
@@ -4929,32 +5051,24 @@ button.home-btn {
   height: 11px;
 }
 
-/* Item 2, page Calendrier (demande de Stéphane) : distinguer d'un coup
-   d'œil un événement personnel (pas de liseré), un événement que J'AI
-   partagé avec une classe (liseré bleu, même famille que le reste de
-   l'appli), et un événement REÇU d'un prof, en lecture seule (liseré
-   sauge + fond légèrement teinté, même couleur que le badge "Partagé"). */
-.calendar-event-row--shared-mine {
-  border-left: 3px solid var(--blue);
-  padding-left: 9px;
-}
+/* Round 21, item 1 : la barre de couleur latérale ("liseré") a été retirée
+   (demande de Stéphane) — un évènement REÇU d'un prof reste repérable via
+   son badge texte + un fond légèrement teinté, sans plus aucune bordure
+   colorée sur le côté. Un événement partagé PAR MOI (ex-liseré bleu) ne se
+   distingue plus que par son badge "Partagé : X", comme un évènement reçu
+   se distingue du sien. */
 .calendar-event-row--received {
-  border-left: 3px solid var(--sage);
-  padding-left: 9px;
   background: rgba(111, 139, 92, 0.08);
-  cursor: default;
 }
 
 /* Round 20, item 1 : le style épuré de la liste des discussions (round 19,
    item 1 — .messages-class-row) est repris ici pour la liste des
    évènements à venir du Calendrier : fond transparent, plus d'ombre/cadre
-   "carte", simple trait de séparation discret entre deux évènements. Les
-   liserés de couleur distinguant personnel/partagé/reçu (ci-dessus)
-   restent inchangés, seul le fond de "carte" disparaît. Le cadre blanc
-   ENGLOBANT toute la liste (`.card-form`, réutilisée un peu partout dans
-   l'appli pour d'autres pages) disparaît aussi ICI spécifiquement, pour
-   que "Événements à venir" ressemble à la liste des discussions (pas de
-   grand cadre), sans toucher `.card-form` ailleurs. */
+   "carte", simple trait de séparation discret entre deux évènements. Le
+   cadre blanc ENGLOBANT toute la liste (`.card-form`, réutilisée un peu
+   partout dans l'appli pour d'autres pages) disparaît aussi ICI
+   spécifiquement, pour que "Événements à venir" ressemble à la liste des
+   discussions (pas de grand cadre), sans toucher `.card-form` ailleurs. */
 #calendar-list-view.card-form {
   background: transparent;
   box-shadow: none;
@@ -4967,22 +5081,70 @@ button.home-btn {
   background: transparent;
   box-shadow: none;
   border-radius: 0;
+  /* Round 21, item 1 : c'est CETTE règle qui posait la "barre bleue" que
+     Stéphane demandait de retirer — `.card-row` (base, réutilisée pour les
+     fiches ailleurs dans l'appli) porte un `border-left: 3px solid
+     var(--rule)` par défaut (`--rule` est un bleu, #4a9fe0). Retiré
+     seulement ICI (liste du Calendrier), sans toucher `.card-row`
+     ailleurs. */
+  border-left: none;
   border-bottom: 1px solid var(--rule-soft, rgba(35,48,42,0.1));
   padding: 14px 6px;
 }
 #calendar-event-list .card-row:last-child {
   border-bottom: none;
 }
-/* Spécificité : #calendar-event-list (ID) l'emporte sur les classes de
-   liseré ci-dessus pour le `padding` — leur `padding-left` est donc
-   redonné ici pour ne pas être écrasé par le padding uniforme du style
-   épuré. */
-#calendar-event-list .calendar-event-row--shared-mine {
-  padding-left: 9px;
+
+/* Round 21, item 1 : nouvelle structure d'une ligne d'évènement — titre +
+   compte à rebours sur la même ligne (compte à rebours aligné à droite),
+   puis la liste des boîtes/dossiers liés en dessous. */
+.calendar-event-main {
+  width: 100%;
 }
-#calendar-event-list .calendar-event-row--received {
-  padding-left: 9px;
-  background: rgba(111, 139, 92, 0.08);
+.calendar-event-top-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.calendar-event-countdown {
+  flex-shrink: 0;
+  font-family: var(--font-type);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.calendar-event-countdown--past {
+  color: var(--terracotta);
+}
+.calendar-event-boxes {
+  margin-top: 6px;
+}
+.calendar-event-boxes-label {
+  margin: 0 0 2px;
+  font-family: var(--font-type);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+.calendar-event-boxes-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+.calendar-event-boxes-list li {
+  padding: 1px 0;
+}
+
+/* Round 21, item 3 : page de présentation d'un évènement. */
+.calendar-detail-comment {
+  font-size: 13.5px;
+  color: var(--ink);
+  white-space: pre-wrap;
+  margin: 0 0 14px;
 }
 
 .icon-btn--static {

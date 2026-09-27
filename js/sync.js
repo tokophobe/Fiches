@@ -649,6 +649,21 @@ async function authUpdateSchoolLevel(level) {
   return { data, error: error ? error.message : null };
 }
 
+/** Round 21, item 6 : nouveau solde de jetons après un achat dans la
+ *  Bibliothèque (voir confirmAndTakeLibraryCollection, js/app.js) — même
+ *  principe que school_level/token_balance (round 18/19), simple
+ *  métadonnée du Compte, pas de vraie table de transactions (le crédit
+ *  reste un système informel, cf. round 18 item 16 : pas encore de moyen
+ *  d'ACHETER des jetons, seulement de les dépenser ici). */
+async function authUpdateTokenBalance(newBalance) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
+  const { data, error } = await c.auth.updateUser({
+    data: { token_balance: Math.max(0, Number(newBalance) || 0) },
+  });
+  return { data, error: error ? error.message : null };
+}
+
 async function authSignIn(email, password) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
@@ -1117,6 +1132,7 @@ window.Sync = {
     onChange: authOnChange,
     updateProfile: authUpdateProfile,
     updateSchoolLevel: authUpdateSchoolLevel,
+    updateTokenBalance: authUpdateTokenBalance,
   },
   classes: {
     create: createClass,

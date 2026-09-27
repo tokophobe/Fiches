@@ -684,6 +684,13 @@
           <button type="button" class="calendar-date-btn" id="calendar-event-subject-btn" aria-label="Choisir la boîte ou le dossier lié">Aucune boîte/dossier liés</button>
         </label>
 
+        <!-- Round 21, item 2 : champ libre pour des précisions (salle,
+             matériel à apporter, chapitres concernés...), optionnel. -->
+        <label class="field">
+          <span>Commentaires (optionnel)</span>
+          <textarea id="calendar-event-comment" rows="3" placeholder="Précisions sur cet évènement…"></textarea>
+        </label>
+
         <!-- Round 3, item 4 (squelette) : un prof peut partager cet
              événement avec une de ses classes — n'apparaît que si Sync est
              configurée, connecté(e), et prof d'au moins une classe (rempli
@@ -702,6 +709,33 @@
           <button type="button" class="btn btn--ghost" id="calendar-event-cancel">Annuler</button>
         </div>
       </form>
+    </section>
+
+    <!-- Round 21, item 3 : page de présentation d'un évènement — tous ses
+         éléments proprement mis en forme, avant d'aller sur la page de
+         modification (bouton "Modifier" ci-dessous, masqué pour un
+         évènement reçu d'un prof — voir openCalendarEventDetailView,
+         js/app.js). -->
+    <section id="view-calendar-event-detail" class="view">
+      <div class="list-header">
+        <button class="btn btn--ghost btn--small" id="calendar-detail-back-btn" type="button">← Retour</button>
+      </div>
+      <h2 class="view-title" id="calendar-detail-title">Évènement</h2>
+      <p class="classes-shared-badge" id="calendar-detail-badge" hidden></p>
+      <p class="card-row-meta" id="calendar-detail-date"></p>
+      <div id="calendar-detail-boxes" hidden>
+        <p class="calendar-event-boxes-label">Fiches à réviser :</p>
+        <ul class="calendar-event-boxes-list" id="calendar-detail-boxes-list"></ul>
+      </div>
+      <div id="calendar-detail-comment-wrap" hidden>
+        <p class="settings-block-title" style="margin-bottom:4px;">Commentaires</p>
+        <p class="calendar-detail-comment" id="calendar-detail-comment"></p>
+      </div>
+      <p class="field-hint" id="calendar-detail-lock-note" hidden>Cet évènement est géré par ton professeur : tu pourras le supprimer une fois sa date passée.</p>
+      <div class="form-actions">
+        <button type="button" class="btn btn--primary" id="calendar-detail-edit-btn">Modifier</button>
+        <button type="button" class="btn btn--ghost" id="calendar-detail-delete-btn">Supprimer</button>
+      </div>
     </section>
 
     <!-- VUE SYNC -->
@@ -841,7 +875,10 @@
              tard, comme demandé). Stocké dans les métadonnées du compte
              Supabase Auth (`user_metadata.token_balance`), même principe
              que prénom/nom (round 10). -->
-        <p class="account-token-balance" id="account-token-balance-row">🪙 <span id="account-token-balance">0</span> jeton(s)</p>
+        <!-- Round 21, item 5 : design plus épuré — icône pièce recolorée
+             en "or" (voir .token-chip, css/style.css) au lieu de l'émoji
+             🪙, dont la couleur ne peut pas se régler en CSS. -->
+        <p class="token-chip" id="account-token-balance-row"><svg class="token-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><path d="M12 8.3v7.4"/></svg><span id="account-token-balance">0</span> jeton(s)</p>
         <!-- Round 10, item 7 : nom/prénom modifiables après coup, pour les
              comptes créés avant ce round ou pour corriger une saisie. -->
         <div class="card-form">
@@ -1070,28 +1107,32 @@
          "prendre" en copie une collection l'ajoute à Mes collections avec
          une icône en réseau distincte. -->
     <section id="view-library" class="view" aria-labelledby="tab-library">
-      <h2 class="section-title">Bibliothèque</h2>
+      <!-- Round 21, item 6 : le titre et le crédit de jetons partagent
+           maintenant la même ligne, le crédit aligné à droite. -->
+      <div class="library-title-row">
+        <h2 class="section-title" style="margin:0;">Bibliothèque</h2>
+        <p class="token-chip" id="library-token-balance-row" hidden><svg class="token-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><path d="M12 8.3v7.4"/></svg><span id="library-token-balance">0</span> jeton(s)</p>
+      </div>
       <!-- Round 19, item 6 : texte d'intro retiré — redondant avec la
            bulle d'aide du robot pour cette page (voir
            DEFAULT_HELP_MESSAGES_BY_VIEW.library, js/app.js). -->
-      <!-- Round 19, item 6 : crédit de jetons de l'utilisateur, aussi
-           visible ici (déjà dans Mon compte, round 18) — pratique pour
-           savoir combien on peut dépenser sans changer de page. -->
-      <p class="account-token-balance" id="library-token-balance-row" hidden>🪙 <span id="library-token-balance">0</span> jeton(s)</p>
       <div id="library-needs-sync" hidden>
         <p class="field-hint settings-block-hint">Active la synchronisation (page Synchronisation) pour accéder à la bibliothèque.</p>
       </div>
-      <!-- Round 10, item 3 : recherche par mots-clés (nom de la collection
-           ou nom de son auteur). -->
-      <input type="search" id="library-search-input" class="library-search-input" placeholder="Rechercher une collection…" />
+      <!-- Round 21, item 6 : ordre interverti (niveau d'abord, recherche
+           ensuite), demande de Stéphane. -->
       <!-- Round 18, item 15 : tri par niveau scolaire. -->
       <select id="library-level-filter" class="library-level-filter">
         <option value="">Tous niveaux</option>
       </select>
+      <!-- Round 10, item 3 : recherche par mots-clés (nom de la collection
+           ou nom de son auteur). -->
+      <input type="search" id="library-search-input" class="library-search-input" placeholder="Rechercher une collection…" />
       <!-- Round 20, item 4 : filtre "Mes partages" — ne montre que les
            collections partagées par l'utilisateur connecté. Masqué tant
-           qu'aucun Compte n'est connecté (rien à filtrer sinon). -->
-      <button type="button" class="btn btn--small library-mine-toggle" id="library-mine-toggle" hidden aria-pressed="false">Mes partages</button>
+           qu'aucun Compte n'est connecté (rien à filtrer sinon). Round 21,
+           item 6 : redessiné en interrupteur (toggle), voir css/style.css. -->
+      <button type="button" class="library-mine-toggle" id="library-mine-toggle" hidden aria-pressed="false">Mes partages</button>
       <ul class="subject-list" id="library-list"></ul>
       <p class="field-hint" id="library-empty" hidden>Aucune collection partagée pour l'instant.</p>
     </section>
