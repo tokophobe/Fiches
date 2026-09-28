@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v171";
+  const APP_VERSION = "v172";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -11933,6 +11933,143 @@
       list.appendChild(li);
     });
   }
+  /* ---- Boîtes toutes prêtes pour la Bibliothèque (packs/bibliotheque.json).
+     Chaque boîte du pack reçoit un id de boîte fixe ("pack-<clé>") : un
+     second import ne crée jamais de doublon (même sur un autre appareil,
+     grâce à la synchro), et la publication réutilise le contrôle existant
+     "déjà partagée ?" par id de boîte d'origine. ---- */
+  const LIBRARY_PACK_PREFIX = "pack-";
+  let libraryPackCache = null;
+
+  async function loadLibraryPack() {
+    if (libraryPackCache) return libraryPackCache;
+    const res = await fetch("./packs/bibliotheque.json", { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    libraryPackCache = await res.json();
+    return libraryPackCache;
+  }
+
+  function libraryPackSubjectId(box) {
+    return `${LIBRARY_PACK_PREFIX}${box.key}`;
+  }
+
+  function setLibraryPackStatus(text) {
+    const s = el("dev-library-pack-status");
+    if (s) s.textContent = text || "";
+  }
+
+  async function importLibraryPack() {
+    let pack;
+    try {
+      pack = await loadLibraryPack();
+    } catch (e) {
+      await robotAlert(`Impossible de charger les boîtes toutes prêtes (${e.message}).`);
+      return;
+    }
+    const boxes = Array.isArray(pack.boxes) ? pack.boxes : [];
+    const toImport = boxes.filter((b) => !subjects.some((s) => s.id === libraryPackSubjectId(b)));
+    if (toImport.length === 0) {
+      await robotAlert("Toutes les boîtes toutes prêtes sont déjà dans Mes collections.");
+      return;
+    }
+    const nCards = toImport.reduce((acc, b) => acc + (b.cards || []).length, 0);
+    if (!(await robotConfirm(`Importer ${toImport.length} boîte${toImport.length > 1 ? "s" : ""} (${nCards} fiches) dans le dossier « ${pack.folderName} » ?`))) return;
+
+    let folder = folders.find((f) => !f.deleted && f.parentId === ROOT_FOLDER_ID && f.name === pack.folderName);
+    if (!folder) {
+      folder = newFolder(pack.folderName, ROOT_FOLDER_ID);
+      await persistFolder(folder);
+      folders.push(folder);
+    }
+    for (const box of toImport) {
+      const subject = newSubject(box.name, folder.id);
+      subject.id = libraryPackSubjectId(box);
+      await persistSubject(subject);
+      subjects.push(subject);
+      for (const c of box.cards || []) {
+        const card = newCard(c.question || "", c.answer || "", subject.id);
+        await persist(card);
+        cards.push(card);
+      }
+    }
+    subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    renderStatsSubjectSelect();
+    renderSubjectSelect();
+    renderSubjectManageList();
+    renderStats();
+    setLibraryPackStatus(`${toImport.length} boîte(s) importée(s) dans « ${pack.folderName} ».`);
+    await robotAlert(`${toImport.length} boîte${toImport.length > 1 ? "s" : ""} importée${toImport.length > 1 ? "s" : ""} dans « ${pack.folderName} ». Relis-les puis reviens ici pour les publier.`);
+  }
+
+  async function publishLibraryPack() {
+    if (!Sync.isConfigured()) {
+      await robotAlert("Active d'abord la synchronisation (page Synchronisation) pour publier dans la Bibliothèque.");
+      return;
+    }
+    if (!accountCurrentUser) {
+      await robotAlert("Connecte-toi avec ton Compte (page Compte) pour publier à ton nom.");
+      return;
+    }
+    let pack;
+    try {
+      pack = await loadLibraryPack();
+    } catch (e) {
+      await robotAlert(`Impossible de charger les boîtes toutes prêtes (${e.message}).`);
+      return;
+    }
+    const freshUser = (await Sync.auth.getUser()) || accountCurrentUser;
+    const meta = (freshUser && freshUser.user_metadata) || {};
+    if (!meta.first_name && !meta.last_name) {
+      await robotAlert("Renseigne d'abord ton prénom et ton nom dans Mon compte : ils seront affichés comme auteur dans la Bibliothèque.");
+      return;
+    }
+    const local = (pack.boxes || [])
+      .map((box) => ({ box, subject: subjects.find((s) => s.id === libraryPackSubjectId(box)) }))
+      .filter((x) => x.subject);
+    if (local.length === 0) {
+      await robotAlert("Importe d'abord les boîtes toutes prêtes (bouton au-dessus).");
+      return;
+    }
+    const author = `${meta.first_name || ""} ${meta.last_name || ""}`.trim();
+    if (!(await robotConfirm(`Publier ${local.length} boîte${local.length > 1 ? "s" : ""} dans la Bibliothèque, au nom de ${author} ? Celles déjà publiées seront ignorées.`))) return;
+
+    let published = 0;
+    let skipped = 0;
+    const failures = [];
+    for (const { box, subject } of local) {
+      setLibraryPackStatus(`Publication de « ${subject.name} »…`);
+      const existing = await Sync.library.findBySourceSubject(subject.id);
+      if (existing) {
+        skipped++;
+        continue;
+      }
+      const boxCards = cards.filter((c) => !c.deleted && c.subject === subject.id);
+      if (boxCards.length === 0) {
+        skipped++;
+        continue;
+      }
+      const { error } = await Sync.library.share(subject.name, boxCards, {
+        level: box.level || "",
+        summary: box.summary || "",
+        description: box.description || "",
+        priceTokens: Number(box.priceTokens) || 0,
+        sourceSubjectId: subject.id,
+      });
+      if (error) failures.push(`${subject.name} : ${error}`);
+      else published++;
+    }
+    const lines = [`${published} boîte${published > 1 ? "s" : ""} publiée${published > 1 ? "s" : ""}.`];
+    if (skipped) lines.push(`${skipped} déjà publiée${skipped > 1 ? "s" : ""} ou vide${skipped > 1 ? "s" : ""}, ignorée${skipped > 1 ? "s" : ""}.`);
+    if (failures.length) lines.push(`Échecs :\n${failures.join("\n")}`);
+    setLibraryPackStatus(lines.join(" "));
+    await robotAlert(lines.join("\n"));
+  }
+
+  const devLibraryPackImportBtn = el("dev-library-pack-import-btn");
+  if (devLibraryPackImportBtn) devLibraryPackImportBtn.addEventListener("click", () => importLibraryPack());
+  const devLibraryPackPublishBtn = el("dev-library-pack-publish-btn");
+  if (devLibraryPackPublishBtn) devLibraryPackPublishBtn.addEventListener("click", () => publishLibraryPack());
+
   const devLibraryRefreshBtn = el("dev-library-refresh-btn");
   if (devLibraryRefreshBtn) devLibraryRefreshBtn.addEventListener("click", () => renderDevLibraryModerationEditor());
 
@@ -12127,6 +12264,20 @@
     if (summaryEl) summaryEl.value = "";
     if (descriptionEl) descriptionEl.value = "";
     if (priceEl) priceEl.value = "0";
+    // Boîte toute prête : pré-remplit niveau, résumé, description et prix
+    // depuis packs/bibliotheque.json (modifiables avant de publier).
+    if (String(subject.id || "").startsWith(LIBRARY_PACK_PREFIX)) {
+      loadLibraryPack()
+        .then((pack) => {
+          const box = (pack.boxes || []).find((b) => libraryPackSubjectId(b) === subject.id);
+          if (!box) return;
+          if (levelEl && box.level) levelEl.value = box.level;
+          if (summaryEl && !summaryEl.value) summaryEl.value = box.summary || "";
+          if (descriptionEl && !descriptionEl.value) descriptionEl.value = box.description || "";
+          if (priceEl) priceEl.value = String(Number(box.priceTokens) || 0);
+        })
+        .catch(() => {});
+    }
     boitePickerActivateView("view-library-share");
     const homeBtnEl = el("home-btn");
     if (homeBtnEl) homeBtnEl.hidden = false;

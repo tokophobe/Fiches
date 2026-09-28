@@ -1,0 +1,1604 @@
+{
+ "version": 1,
+ "folderName": "Boîtes Bibliothèque",
+ "boxes": [
+  {
+   "key": "anglais-verbes-irreguliers",
+   "name": "Anglais — Les verbes irréguliers essentiels",
+   "level": "4ème",
+   "summary": "Les 59 verbes irréguliers anglais les plus utilisés : base verbale, prétérit et participe passé.",
+   "description": "Pour chaque fiche, le verbe à l'infinitif et sa traduction : retrouve le prétérit et le participe passé. Liste de référence du collège, utile jusqu'au bac. Astuce : révise à voix haute, dans l'ordre base — prétérit — participe.",
+   "cards": [
+    {
+     "question": "to be (être)\nPrétérit et participe passé ?",
+     "answer": "be — was / were — been\n(être)"
+    },
+    {
+     "question": "to become (devenir)\nPrétérit et participe passé ?",
+     "answer": "become — became — become\n(devenir)"
+    },
+    {
+     "question": "to begin (commencer)\nPrétérit et participe passé ?",
+     "answer": "begin — began — begun\n(commencer)"
+    },
+    {
+     "question": "to break (casser)\nPrétérit et participe passé ?",
+     "answer": "break — broke — broken\n(casser)"
+    },
+    {
+     "question": "to bring (apporter)\nPrétérit et participe passé ?",
+     "answer": "bring — brought — brought\n(apporter)"
+    },
+    {
+     "question": "to build (construire)\nPrétérit et participe passé ?",
+     "answer": "build — built — built\n(construire)"
+    },
+    {
+     "question": "to buy (acheter)\nPrétérit et participe passé ?",
+     "answer": "buy — bought — bought\n(acheter)"
+    },
+    {
+     "question": "to catch (attraper)\nPrétérit et participe passé ?",
+     "answer": "catch — caught — caught\n(attraper)"
+    },
+    {
+     "question": "to choose (choisir)\nPrétérit et participe passé ?",
+     "answer": "choose — chose — chosen\n(choisir)"
+    },
+    {
+     "question": "to come (venir)\nPrétérit et participe passé ?",
+     "answer": "come — came — come\n(venir)"
+    },
+    {
+     "question": "to cost (coûter)\nPrétérit et participe passé ?",
+     "answer": "cost — cost — cost\n(coûter)"
+    },
+    {
+     "question": "to cut (couper)\nPrétérit et participe passé ?",
+     "answer": "cut — cut — cut\n(couper)"
+    },
+    {
+     "question": "to do (faire)\nPrétérit et participe passé ?",
+     "answer": "do — did — done\n(faire)"
+    },
+    {
+     "question": "to draw (dessiner)\nPrétérit et participe passé ?",
+     "answer": "draw — drew — drawn\n(dessiner)"
+    },
+    {
+     "question": "to drink (boire)\nPrétérit et participe passé ?",
+     "answer": "drink — drank — drunk\n(boire)"
+    },
+    {
+     "question": "to drive (conduire)\nPrétérit et participe passé ?",
+     "answer": "drive — drove — driven\n(conduire)"
+    },
+    {
+     "question": "to eat (manger)\nPrétérit et participe passé ?",
+     "answer": "eat — ate — eaten\n(manger)"
+    },
+    {
+     "question": "to fall (tomber)\nPrétérit et participe passé ?",
+     "answer": "fall — fell — fallen\n(tomber)"
+    },
+    {
+     "question": "to feel (ressentir, se sentir)\nPrétérit et participe passé ?",
+     "answer": "feel — felt — felt\n(ressentir, se sentir)"
+    },
+    {
+     "question": "to find (trouver)\nPrétérit et participe passé ?",
+     "answer": "find — found — found\n(trouver)"
+    },
+    {
+     "question": "to fly (voler (dans les airs))\nPrétérit et participe passé ?",
+     "answer": "fly — flew — flown\n(voler (dans les airs))"
+    },
+    {
+     "question": "to forget (oublier)\nPrétérit et participe passé ?",
+     "answer": "forget — forgot — forgotten\n(oublier)"
+    },
+    {
+     "question": "to get (obtenir, devenir)\nPrétérit et participe passé ?",
+     "answer": "get — got — got (US : gotten)\n(obtenir, devenir)"
+    },
+    {
+     "question": "to give (donner)\nPrétérit et participe passé ?",
+     "answer": "give — gave — given\n(donner)"
+    },
+    {
+     "question": "to go (aller)\nPrétérit et participe passé ?",
+     "answer": "go — went — gone\n(aller)"
+    },
+    {
+     "question": "to have (avoir)\nPrétérit et participe passé ?",
+     "answer": "have — had — had\n(avoir)"
+    },
+    {
+     "question": "to hear (entendre)\nPrétérit et participe passé ?",
+     "answer": "hear — heard — heard\n(entendre)"
+    },
+    {
+     "question": "to keep (garder)\nPrétérit et participe passé ?",
+     "answer": "keep — kept — kept\n(garder)"
+    },
+    {
+     "question": "to know (savoir, connaître)\nPrétérit et participe passé ?",
+     "answer": "know — knew — known\n(savoir, connaître)"
+    },
+    {
+     "question": "to leave (partir, quitter, laisser)\nPrétérit et participe passé ?",
+     "answer": "leave — left — left\n(partir, quitter, laisser)"
+    },
+    {
+     "question": "to lose (perdre)\nPrétérit et participe passé ?",
+     "answer": "lose — lost — lost\n(perdre)"
+    },
+    {
+     "question": "to make (fabriquer, faire)\nPrétérit et participe passé ?",
+     "answer": "make — made — made\n(fabriquer, faire)"
+    },
+    {
+     "question": "to meet (rencontrer)\nPrétérit et participe passé ?",
+     "answer": "meet — met — met\n(rencontrer)"
+    },
+    {
+     "question": "to pay (payer)\nPrétérit et participe passé ?",
+     "answer": "pay — paid — paid\n(payer)"
+    },
+    {
+     "question": "to put (mettre, poser)\nPrétérit et participe passé ?",
+     "answer": "put — put — put\n(mettre, poser)"
+    },
+    {
+     "question": "to read (lire)\nPrétérit et participe passé ?",
+     "answer": "read — read — read\n(lire (prétérit et participe se prononcent « red »))"
+    },
+    {
+     "question": "to ride (aller à (vélo, cheval))\nPrétérit et participe passé ?",
+     "answer": "ride — rode — ridden\n(aller à (vélo, cheval))"
+    },
+    {
+     "question": "to run (courir)\nPrétérit et participe passé ?",
+     "answer": "run — ran — run\n(courir)"
+    },
+    {
+     "question": "to say (dire)\nPrétérit et participe passé ?",
+     "answer": "say — said — said\n(dire)"
+    },
+    {
+     "question": "to see (voir)\nPrétérit et participe passé ?",
+     "answer": "see — saw — seen\n(voir)"
+    },
+    {
+     "question": "to sell (vendre)\nPrétérit et participe passé ?",
+     "answer": "sell — sold — sold\n(vendre)"
+    },
+    {
+     "question": "to send (envoyer)\nPrétérit et participe passé ?",
+     "answer": "send — sent — sent\n(envoyer)"
+    },
+    {
+     "question": "to sing (chanter)\nPrétérit et participe passé ?",
+     "answer": "sing — sang — sung\n(chanter)"
+    },
+    {
+     "question": "to sit (s'asseoir)\nPrétérit et participe passé ?",
+     "answer": "sit — sat — sat\n(s'asseoir)"
+    },
+    {
+     "question": "to sleep (dormir)\nPrétérit et participe passé ?",
+     "answer": "sleep — slept — slept\n(dormir)"
+    },
+    {
+     "question": "to speak (parler)\nPrétérit et participe passé ?",
+     "answer": "speak — spoke — spoken\n(parler)"
+    },
+    {
+     "question": "to spend (dépenser, passer (du temps))\nPrétérit et participe passé ?",
+     "answer": "spend — spent — spent\n(dépenser, passer (du temps))"
+    },
+    {
+     "question": "to stand (être debout)\nPrétérit et participe passé ?",
+     "answer": "stand — stood — stood\n(être debout)"
+    },
+    {
+     "question": "to swim (nager)\nPrétérit et participe passé ?",
+     "answer": "swim — swam — swum\n(nager)"
+    },
+    {
+     "question": "to take (prendre)\nPrétérit et participe passé ?",
+     "answer": "take — took — taken\n(prendre)"
+    },
+    {
+     "question": "to teach (enseigner)\nPrétérit et participe passé ?",
+     "answer": "teach — taught — taught\n(enseigner)"
+    },
+    {
+     "question": "to tell (dire, raconter)\nPrétérit et participe passé ?",
+     "answer": "tell — told — told\n(dire, raconter)"
+    },
+    {
+     "question": "to think (penser)\nPrétérit et participe passé ?",
+     "answer": "think — thought — thought\n(penser)"
+    },
+    {
+     "question": "to throw (lancer, jeter)\nPrétérit et participe passé ?",
+     "answer": "throw — threw — thrown\n(lancer, jeter)"
+    },
+    {
+     "question": "to understand (comprendre)\nPrétérit et participe passé ?",
+     "answer": "understand — understood — understood\n(comprendre)"
+    },
+    {
+     "question": "to wake ((se) réveiller)\nPrétérit et participe passé ?",
+     "answer": "wake — woke — woken\n((se) réveiller)"
+    },
+    {
+     "question": "to wear (porter (un vêtement))\nPrétérit et participe passé ?",
+     "answer": "wear — wore — worn\n(porter (un vêtement))"
+    },
+    {
+     "question": "to win (gagner)\nPrétérit et participe passé ?",
+     "answer": "win — won — won\n(gagner)"
+    },
+    {
+     "question": "to write (écrire)\nPrétérit et participe passé ?",
+     "answer": "write — wrote — written\n(écrire)"
+    }
+   ],
+   "priceTokens": 0
+  },
+  {
+   "key": "histoire-dates-brevet",
+   "name": "Histoire — Les dates clés du Brevet",
+   "level": "3ème",
+   "summary": "Les grandes dates du programme d'histoire de 3ème, de 1914 à nos jours.",
+   "description": "Guerres mondiales, régimes totalitaires, Seconde Guerre mondiale et génocides, guerre froide, décolonisation, construction européenne et Ve République. Chaque fiche donne un événement : retrouve sa date, avec une phrase de contexte.",
+   "cards": [
+    {
+     "question": "Début de la Première Guerre mondiale : quelle date ?",
+     "answer": "1914 (août)\nL'Allemagne déclare la guerre à la Russie puis à la France."
+    },
+    {
+     "question": "Bataille de Verdun : quelle date ?",
+     "answer": "1916 (février à décembre)\nSymbole de la guerre d'usure et de la violence de masse."
+    },
+    {
+     "question": "Génocide des Arméniens : quelle date ?",
+     "answer": "1915-1916\nPerpétré par le gouvernement jeune-turc de l'Empire ottoman."
+    },
+    {
+     "question": "Révolutions russes et prise du pouvoir par les bolcheviks : quelle date ?",
+     "answer": "1917\nRévolution de février, puis prise du pouvoir par Lénine et les bolcheviks en octobre."
+    },
+    {
+     "question": "Armistice de la Première Guerre mondiale : quelle date ?",
+     "answer": "11 novembre 1918"
+    },
+    {
+     "question": "Traité de Versailles : quelle date ?",
+     "answer": "28 juin 1919\nL'Allemagne est jugée responsable de la guerre et doit payer des réparations."
+    },
+    {
+     "question": "Staline prend la tête de l'URSS : quelle date ?",
+     "answer": "À partir de 1924 (mort de Lénine), il s'impose seul vers 1928-1929."
+    },
+    {
+     "question": "Krach de Wall Street (« jeudi noir ») : quelle date ?",
+     "answer": "24 octobre 1929\nDébut de la grande crise économique des années 1930."
+    },
+    {
+     "question": "Hitler nommé chancelier : quelle date ?",
+     "answer": "30 janvier 1933"
+    },
+    {
+     "question": "Lois de Nuremberg : quelle date ?",
+     "answer": "1935\nExcluent les Juifs de la citoyenneté allemande."
+    },
+    {
+     "question": "Victoire du Front populaire en France : quelle date ?",
+     "answer": "1936 (Léon Blum)\nCongés payés (2 semaines) et semaine de 40 heures."
+    },
+    {
+     "question": "Nuit de Cristal : quelle date ?",
+     "answer": "9-10 novembre 1938\nPogrom contre les Juifs dans toute l'Allemagne."
+    },
+    {
+     "question": "Début de la Seconde Guerre mondiale : quelle date ?",
+     "answer": "1er septembre 1939 : l'Allemagne envahit la Pologne.\n3 septembre : la France et le Royaume-Uni déclarent la guerre."
+    },
+    {
+     "question": "Appel du général de Gaulle : quelle date ?",
+     "answer": "18 juin 1940, depuis Londres (BBC)."
+    },
+    {
+     "question": "Vote des pleins pouvoirs à Pétain : quelle date ?",
+     "answer": "10 juillet 1940\nFin de la IIIe République, début du régime de Vichy."
+    },
+    {
+     "question": "Opération Barbarossa (invasion de l'URSS) : quelle date ?",
+     "answer": "22 juin 1941"
+    },
+    {
+     "question": "Attaque de Pearl Harbor : quelle date ?",
+     "answer": "7 décembre 1941\nLes États-Unis entrent en guerre."
+    },
+    {
+     "question": "Conférence de Wannsee : quelle date ?",
+     "answer": "20 janvier 1942\nOrganisation de la « solution finale » (extermination des Juifs d'Europe)."
+    },
+    {
+     "question": "Rafle du Vél' d'Hiv : quelle date ?",
+     "answer": "16-17 juillet 1942\nPlus de 13 000 Juifs arrêtés à Paris par la police française."
+    },
+    {
+     "question": "Victoire soviétique à Stalingrad : quelle date ?",
+     "answer": "2 février 1943 (capitulation allemande)\nTournant de la guerre à l'Est."
+    },
+    {
+     "question": "Création du Conseil national de la Résistance (CNR) : quelle date ?",
+     "answer": "27 mai 1943 (présidé par Jean Moulin)\nSon programme est adopté le 15 mars 1944."
+    },
+    {
+     "question": "Débarquement en Normandie : quelle date ?",
+     "answer": "6 juin 1944"
+    },
+    {
+     "question": "Droit de vote des femmes en France : quelle date ?",
+     "answer": "Ordonnance du 21 avril 1944\nPremier vote en 1945."
+    },
+    {
+     "question": "Libération de Paris : quelle date ?",
+     "answer": "25 août 1944"
+    },
+    {
+     "question": "Capitulation de l'Allemagne : quelle date ?",
+     "answer": "8 mai 1945"
+    },
+    {
+     "question": "Bombes atomiques sur Hiroshima et Nagasaki : quelle date ?",
+     "answer": "6 et 9 août 1945"
+    },
+    {
+     "question": "Fin de la Seconde Guerre mondiale (capitulation du Japon) : quelle date ?",
+     "answer": "2 septembre 1945"
+    },
+    {
+     "question": "Création de l'ONU : quelle date ?",
+     "answer": "1945 (Charte signée le 26 juin à San Francisco)"
+    },
+    {
+     "question": "Création de la Sécurité sociale : quelle date ?",
+     "answer": "1945 (ordonnances d'octobre 1945)"
+    },
+    {
+     "question": "Début de la guerre froide : doctrine Truman et plan Marshall : quelle date ?",
+     "answer": "1947"
+    },
+    {
+     "question": "Blocus de Berlin : quelle date ?",
+     "answer": "1948-1949\nPremière grande crise de la guerre froide."
+    },
+    {
+     "question": "Création de l'OTAN : quelle date ?",
+     "answer": "1949"
+    },
+    {
+     "question": "Indépendance de l'Inde : quelle date ?",
+     "answer": "1947"
+    },
+    {
+     "question": "Défaite française de Diên Biên Phu : quelle date ?",
+     "answer": "1954\nFin de la guerre d'Indochine."
+    },
+    {
+     "question": "Guerre d'Algérie : quelle date ?",
+     "answer": "1954-1962"
+    },
+    {
+     "question": "Traité de Rome (création de la CEE) : quelle date ?",
+     "answer": "25 mars 1957"
+    },
+    {
+     "question": "Naissance de la Ve République : quelle date ?",
+     "answer": "1958 (Constitution du 4 octobre 1958)"
+    },
+    {
+     "question": "Construction du mur de Berlin : quelle date ?",
+     "answer": "13 août 1961"
+    },
+    {
+     "question": "Crise des missiles de Cuba : quelle date ?",
+     "answer": "Octobre 1962"
+    },
+    {
+     "question": "Accords d'Évian et indépendance de l'Algérie : quelle date ?",
+     "answer": "Accords : 18 mars 1962\nIndépendance : 5 juillet 1962"
+    },
+    {
+     "question": "Élection du président de la République au suffrage universel direct : quelle date ?",
+     "answer": "Adoptée par référendum en 1962\nPremière élection ainsi en 1965."
+    },
+    {
+     "question": "Mai 68 : quelle date ?",
+     "answer": "Mai 1968 : révolte étudiante et grève générale en France."
+    },
+    {
+     "question": "Majorité abaissée à 18 ans : quelle date ?",
+     "answer": "1974"
+    },
+    {
+     "question": "Loi Veil (dépénalisation de l'IVG) : quelle date ?",
+     "answer": "17 janvier 1975"
+    },
+    {
+     "question": "Première alternance de la Ve République (élection de François Mitterrand) : quelle date ?",
+     "answer": "10 mai 1981"
+    },
+    {
+     "question": "Abolition de la peine de mort en France : quelle date ?",
+     "answer": "9 octobre 1981 (loi portée par Robert Badinter)"
+    },
+    {
+     "question": "Lois de décentralisation (lois Defferre) : quelle date ?",
+     "answer": "1982"
+    },
+    {
+     "question": "Chute du mur de Berlin : quelle date ?",
+     "answer": "9 novembre 1989"
+    },
+    {
+     "question": "Disparition de l'URSS : quelle date ?",
+     "answer": "25 décembre 1991"
+    },
+    {
+     "question": "Traité de Maastricht (création de l'Union européenne) : quelle date ?",
+     "answer": "1992"
+    },
+    {
+     "question": "Mise en circulation des pièces et billets en euros : quelle date ?",
+     "answer": "1er janvier 2002"
+    },
+    {
+     "question": "Attentats du 11 septembre : quelle date ?",
+     "answer": "11 septembre 2001, aux États-Unis."
+    }
+   ],
+   "priceTokens": 0
+  },
+  {
+   "key": "geographie-capitales",
+   "name": "Géographie — Pays et capitales du monde",
+   "level": "Autre",
+   "summary": "68 pays et leur capitale, avec les pièges classiques (Canberra, Ottawa, Brasília, Ankara…).",
+   "description": "Tous continents confondus, des plus connues aux plus piégeuses. Quand la capitale n'est pas la plus grande ville ou qu'un pays a plusieurs capitales, la fiche le précise. Pour tous les niveaux, du collège à la culture générale.",
+   "cards": [
+    {
+     "question": "Capitale : Afghanistan ?",
+     "answer": "Kaboul"
+    },
+    {
+     "question": "Capitale : Afrique du Sud ?",
+     "answer": "Pretoria (capitale administrative)\nLe Cap est la capitale législative, Bloemfontein la capitale judiciaire."
+    },
+    {
+     "question": "Capitale : Algérie ?",
+     "answer": "Alger"
+    },
+    {
+     "question": "Capitale : Allemagne ?",
+     "answer": "Berlin"
+    },
+    {
+     "question": "Capitale : Arabie saoudite ?",
+     "answer": "Riyad"
+    },
+    {
+     "question": "Capitale : Argentine ?",
+     "answer": "Buenos Aires"
+    },
+    {
+     "question": "Capitale : Australie ?",
+     "answer": "Canberra (et non Sydney !)"
+    },
+    {
+     "question": "Capitale : Autriche ?",
+     "answer": "Vienne"
+    },
+    {
+     "question": "Capitale : Belgique ?",
+     "answer": "Bruxelles"
+    },
+    {
+     "question": "Capitale : Bolivie ?",
+     "answer": "Sucre (capitale constitutionnelle)\nLe gouvernement siège à La Paz."
+    },
+    {
+     "question": "Capitale : Brésil ?",
+     "answer": "Brasília (et non Rio de Janeiro !)"
+    },
+    {
+     "question": "Capitale : Cameroun ?",
+     "answer": "Yaoundé"
+    },
+    {
+     "question": "Capitale : Canada ?",
+     "answer": "Ottawa (et non Toronto ni Montréal !)"
+    },
+    {
+     "question": "Capitale : Chili ?",
+     "answer": "Santiago"
+    },
+    {
+     "question": "Capitale : Chine ?",
+     "answer": "Pékin (Beijing)"
+    },
+    {
+     "question": "Capitale : Colombie ?",
+     "answer": "Bogota"
+    },
+    {
+     "question": "Capitale : Corée du Sud ?",
+     "answer": "Séoul"
+    },
+    {
+     "question": "Capitale : Côte d'Ivoire ?",
+     "answer": "Yamoussoukro (capitale politique)\nAbidjan est la capitale économique."
+    },
+    {
+     "question": "Capitale : Croatie ?",
+     "answer": "Zagreb"
+    },
+    {
+     "question": "Capitale : Cuba ?",
+     "answer": "La Havane"
+    },
+    {
+     "question": "Capitale : Danemark ?",
+     "answer": "Copenhague"
+    },
+    {
+     "question": "Capitale : Égypte ?",
+     "answer": "Le Caire"
+    },
+    {
+     "question": "Capitale : Espagne ?",
+     "answer": "Madrid"
+    },
+    {
+     "question": "Capitale : États-Unis ?",
+     "answer": "Washington (et non New York !)"
+    },
+    {
+     "question": "Capitale : Éthiopie ?",
+     "answer": "Addis-Abeba"
+    },
+    {
+     "question": "Capitale : Finlande ?",
+     "answer": "Helsinki"
+    },
+    {
+     "question": "Capitale : Grèce ?",
+     "answer": "Athènes"
+    },
+    {
+     "question": "Capitale : Hongrie ?",
+     "answer": "Budapest"
+    },
+    {
+     "question": "Capitale : Inde ?",
+     "answer": "New Delhi"
+    },
+    {
+     "question": "Capitale : Indonésie ?",
+     "answer": "Jakarta\n(Un transfert vers une nouvelle capitale, Nusantara, est en cours.)"
+    },
+    {
+     "question": "Capitale : Irak ?",
+     "answer": "Bagdad"
+    },
+    {
+     "question": "Capitale : Iran ?",
+     "answer": "Téhéran"
+    },
+    {
+     "question": "Capitale : Irlande ?",
+     "answer": "Dublin"
+    },
+    {
+     "question": "Capitale : Islande ?",
+     "answer": "Reykjavik"
+    },
+    {
+     "question": "Capitale : Italie ?",
+     "answer": "Rome"
+    },
+    {
+     "question": "Capitale : Japon ?",
+     "answer": "Tokyo"
+    },
+    {
+     "question": "Capitale : Kazakhstan ?",
+     "answer": "Astana"
+    },
+    {
+     "question": "Capitale : Kenya ?",
+     "answer": "Nairobi"
+    },
+    {
+     "question": "Capitale : Liban ?",
+     "answer": "Beyrouth"
+    },
+    {
+     "question": "Capitale : Madagascar ?",
+     "answer": "Antananarivo"
+    },
+    {
+     "question": "Capitale : Mali ?",
+     "answer": "Bamako"
+    },
+    {
+     "question": "Capitale : Maroc ?",
+     "answer": "Rabat (et non Casablanca !)"
+    },
+    {
+     "question": "Capitale : Mexique ?",
+     "answer": "Mexico"
+    },
+    {
+     "question": "Capitale : Mongolie ?",
+     "answer": "Oulan-Bator"
+    },
+    {
+     "question": "Capitale : Nigeria ?",
+     "answer": "Abuja (et non Lagos !)"
+    },
+    {
+     "question": "Capitale : Norvège ?",
+     "answer": "Oslo"
+    },
+    {
+     "question": "Capitale : Nouvelle-Zélande ?",
+     "answer": "Wellington (et non Auckland !)"
+    },
+    {
+     "question": "Capitale : Pakistan ?",
+     "answer": "Islamabad"
+    },
+    {
+     "question": "Capitale : Pays-Bas ?",
+     "answer": "Amsterdam\nLe gouvernement et le Parlement siègent à La Haye."
+    },
+    {
+     "question": "Capitale : Pérou ?",
+     "answer": "Lima"
+    },
+    {
+     "question": "Capitale : Philippines ?",
+     "answer": "Manille"
+    },
+    {
+     "question": "Capitale : Pologne ?",
+     "answer": "Varsovie"
+    },
+    {
+     "question": "Capitale : Portugal ?",
+     "answer": "Lisbonne"
+    },
+    {
+     "question": "Capitale : République démocratique du Congo ?",
+     "answer": "Kinshasa"
+    },
+    {
+     "question": "Capitale : Roumanie ?",
+     "answer": "Bucarest"
+    },
+    {
+     "question": "Capitale : Royaume-Uni ?",
+     "answer": "Londres"
+    },
+    {
+     "question": "Capitale : Russie ?",
+     "answer": "Moscou"
+    },
+    {
+     "question": "Capitale : Sénégal ?",
+     "answer": "Dakar"
+    },
+    {
+     "question": "Capitale : Suède ?",
+     "answer": "Stockholm"
+    },
+    {
+     "question": "Capitale : Suisse ?",
+     "answer": "Berne (ville fédérale — et non Genève ni Zurich !)"
+    },
+    {
+     "question": "Capitale : Syrie ?",
+     "answer": "Damas"
+    },
+    {
+     "question": "Capitale : Tchéquie ?",
+     "answer": "Prague"
+    },
+    {
+     "question": "Capitale : Thaïlande ?",
+     "answer": "Bangkok"
+    },
+    {
+     "question": "Capitale : Tunisie ?",
+     "answer": "Tunis"
+    },
+    {
+     "question": "Capitale : Turquie ?",
+     "answer": "Ankara (et non Istanbul !)"
+    },
+    {
+     "question": "Capitale : Ukraine ?",
+     "answer": "Kiev (Kyiv)"
+    },
+    {
+     "question": "Capitale : Venezuela ?",
+     "answer": "Caracas"
+    },
+    {
+     "question": "Capitale : Vietnam ?",
+     "answer": "Hanoï"
+    }
+   ],
+   "priceTokens": 0
+  },
+  {
+   "key": "francais-figures-de-style",
+   "name": "Français — Les figures de style",
+   "level": "2nde",
+   "summary": "Les 30 figures de style à connaître pour analyser un texte, avec définition et exemple.",
+   "description": "Figures d'analogie, d'opposition, d'amplification et d'atténuation, de substitution, de construction et de sonorité. Chaque fiche donne le nom de la figure : retrouve sa définition, puis vérifie avec l'exemple (souvent tiré d'un auteur classique). Utile du collège au bac de français.",
+   "cards": [
+    {
+     "question": "La comparaison : définition et exemple ?",
+     "answer": "Rapproche deux éléments à l'aide d'un outil de comparaison (comme, tel, pareil à, ressembler à…).\nEx. : « Mon cœur, comme un oiseau, voltigeait tout joyeux » (Baudelaire)."
+    },
+    {
+     "question": "La métaphore : définition et exemple ?",
+     "answer": "Rapproche deux éléments SANS outil de comparaison.\nEx. : « La Nature est un temple où de vivants piliers / Laissent parfois sortir de confuses paroles » (Baudelaire)."
+    },
+    {
+     "question": "La métaphore filée : définition et exemple ?",
+     "answer": "Métaphore prolongée sur plusieurs mots ou phrases qui développent la même image.\nEx. : un texte qui décrit la ville comme une mer : vagues de foule, flots de voitures, écume des lumières."
+    },
+    {
+     "question": "La personnification : définition et exemple ?",
+     "answer": "Attribue des caractéristiques humaines à un objet, un animal ou une idée.\nEx. : « Le vent hurle dans la nuit. »"
+    },
+    {
+     "question": "L'allégorie : définition et exemple ?",
+     "answer": "Représente une idée abstraite par un être ou un objet concret, souvent avec une majuscule.\nEx. : la Mort représentée avec sa faux ; la Liberté guidant le peuple."
+    },
+    {
+     "question": "L'hyperbole : définition et exemple ?",
+     "answer": "Exagère pour frapper les esprits.\nEx. : « Je meurs de faim », « Je te l'ai dit mille fois »."
+    },
+    {
+     "question": "La litote : définition et exemple ?",
+     "answer": "Dit moins pour suggérer plus.\nEx. : « Va, je ne te hais point » (Corneille, Le Cid) = je t'aime."
+    },
+    {
+     "question": "L'euphémisme : définition et exemple ?",
+     "answer": "Atténue une réalité pénible ou choquante.\nEx. : « Il nous a quittés » pour « il est mort »."
+    },
+    {
+     "question": "L'antiphrase : définition et exemple ?",
+     "answer": "Dit le contraire de ce que l'on pense, souvent par ironie.\nEx. : « Bravo, c'est vraiment malin ! » après une bêtise."
+    },
+    {
+     "question": "L'oxymore : définition et exemple ?",
+     "answer": "Associe dans un même groupe de mots deux termes de sens contraire.\nEx. : « Cette obscure clarté qui tombe des étoiles » (Corneille, Le Cid)."
+    },
+    {
+     "question": "L'antithèse : définition et exemple ?",
+     "answer": "Oppose deux idées ou deux mots dans une même phrase ou un même passage.\nEx. : « Je vis, je meurs ; je me brûle et me noie » (Louise Labé)."
+    },
+    {
+     "question": "Le chiasme : définition et exemple ?",
+     "answer": "Construction en miroir A-B / B-A.\nEx. : « Il faut manger pour vivre et non pas vivre pour manger » (Molière, L'Avare)."
+    },
+    {
+     "question": "L'anaphore : définition et exemple ?",
+     "answer": "Répétition d'un même mot ou groupe de mots en début de vers, de phrase ou de proposition.\nEx. : « Rome, l'unique objet de mon ressentiment ! / Rome, à qui vient ton bras d'immoler mon amant ! » (Corneille, Horace)."
+    },
+    {
+     "question": "La gradation : définition et exemple ?",
+     "answer": "Succession de termes d'intensité croissante (ou décroissante).\nEx. : « Va, cours, vole, et nous venge » (Corneille, Le Cid)."
+    },
+    {
+     "question": "L'accumulation (ou énumération) : définition et exemple ?",
+     "answer": "Juxtaposition de nombreux termes de même nature, pour créer un effet d'abondance.\nEx. : « Adieu veau, vache, cochon, couvée » (La Fontaine)."
+    },
+    {
+     "question": "La métonymie : définition et exemple ?",
+     "answer": "Désigne une chose par un terme qui lui est logiquement lié (contenant pour contenu, auteur pour œuvre, lieu pour institution…).\nEx. : « boire un verre », « lire un Zola », « l'Élysée a annoncé »."
+    },
+    {
+     "question": "La synecdoque : définition et exemple ?",
+     "answer": "Désigne le tout par une partie (ou l'inverse).\nEx. : « une voile à l'horizon » pour un bateau."
+    },
+    {
+     "question": "La périphrase : définition et exemple ?",
+     "answer": "Remplace un mot par une expression plus longue qui le décrit.\nEx. : « la Ville Lumière » pour Paris, « le roi des animaux » pour le lion."
+    },
+    {
+     "question": "L'antonomase : définition et exemple ?",
+     "answer": "Emploie un nom propre comme nom commun (ou l'inverse).\nEx. : « C'est un harpagon » (un avare), « un don Juan » (un séducteur)."
+    },
+    {
+     "question": "L'allitération : définition et exemple ?",
+     "answer": "Répétition d'un même son CONSONNE.\nEx. : « Pour qui sont ces serpents qui sifflent sur vos têtes ? » (Racine, Andromaque) — son [s]."
+    },
+    {
+     "question": "L'assonance : définition et exemple ?",
+     "answer": "Répétition d'un même son VOYELLE.\nEx. : « Tout m'afflige et me nuit et conspire à me nuire » (Racine, Phèdre) — son [i]."
+    },
+    {
+     "question": "La paronomase : définition et exemple ?",
+     "answer": "Rapproche des mots aux sonorités proches mais au sens différent.\nEx. : « Qui se ressemble s'assemble »."
+    },
+    {
+     "question": "Le parallélisme : définition et exemple ?",
+     "answer": "Reprend la même construction de phrase pour mettre des idées en relation.\nEx. : « Je suis venu, j'ai vu, j'ai vaincu. »"
+    },
+    {
+     "question": "Le zeugma : définition et exemple ?",
+     "answer": "Rattache à un même mot deux éléments de nature différente (souvent concret et abstrait).\nEx. : « Vêtu de probité candide et de lin blanc » (Hugo, Booz endormi)."
+    },
+    {
+     "question": "Le pléonasme : définition et exemple ?",
+     "answer": "Répétition d'une idée déjà exprimée : faute (« monter en haut ») ou effet d'insistance.\nEx. : « Je l'ai vu, dis-je, vu, de mes propres yeux vu » (Molière, Tartuffe)."
+    },
+    {
+     "question": "L'hypallage : définition et exemple ?",
+     "answer": "Attribue à un mot une qualité qui se rapporte logiquement à un autre mot de la phrase.\nEx. : « Ils allaient obscurs sous la nuit solitaire » (Virgile) — ce sont eux qui sont seuls, la nuit qui est obscure."
+    },
+    {
+     "question": "L'apostrophe : définition et exemple ?",
+     "answer": "S'adresse directement à une personne ou une chose, présente ou absente.\nEx. : « Ô temps ! suspends ton vol » (Lamartine, Le Lac)."
+    },
+    {
+     "question": "La question rhétorique : définition et exemple ?",
+     "answer": "Question posée sans attendre de réponse, car la réponse est évidente : elle sert à affirmer.\nEx. : « Qui ne rêve pas d'être libre ? »"
+    },
+    {
+     "question": "La prétérition : définition et exemple ?",
+     "answer": "Annonce qu'on ne va pas parler de quelque chose… tout en en parlant.\nEx. : « Je ne vous dirai pas qu'il a menti, ni qu'il a triché… »"
+    },
+    {
+     "question": "L'ellipse : définition et exemple ?",
+     "answer": "Supprime des mots ou des éléments du récit, sans nuire à la compréhension.\nEx. : « À chacun son métier » (verbe sous-entendu)."
+    }
+   ],
+   "priceTokens": 0
+  },
+  {
+   "key": "maths-formules-college",
+   "name": "Maths — Formules et théorèmes du collège",
+   "level": "3ème",
+   "summary": "Identités remarquables, Pythagore, Thalès, trigonométrie, aires, volumes et puissances pour le Brevet.",
+   "description": "Toutes les formules à savoir par cœur pour le Brevet : calcul littéral, géométrie, trigonométrie, aires et volumes, puissances, fractions, fonctions, pourcentages et probabilités, avec quelques exemples d'application.",
+   "cards": [
+    {
+     "question": "Identité remarquable : (a + b)² = ?",
+     "answer": "a² + 2ab + b²"
+    },
+    {
+     "question": "Identité remarquable : (a − b)² = ?",
+     "answer": "a² − 2ab + b²"
+    },
+    {
+     "question": "Identité remarquable : (a + b)(a − b) = ?",
+     "answer": "a² − b²"
+    },
+    {
+     "question": "Développer (2x + 3)²",
+     "answer": "4x² + 12x + 9\n(avec (a + b)² : a = 2x, b = 3)"
+    },
+    {
+     "question": "Développer (x − 5)²",
+     "answer": "x² − 10x + 25"
+    },
+    {
+     "question": "Factoriser x² − 49",
+     "answer": "(x − 7)(x + 7)\n(avec a² − b² = (a − b)(a + b))"
+    },
+    {
+     "question": "Factoriser x² + 6x + 9",
+     "answer": "(x + 3)²"
+    },
+    {
+     "question": "Équation produit nul : A × B = 0 équivaut à ?",
+     "answer": "A = 0 ou B = 0"
+    },
+    {
+     "question": "Théorème de Pythagore",
+     "answer": "Si le triangle ABC est rectangle en A, alors BC² = AB² + AC²\n(BC est l'hypoténuse, le côté opposé à l'angle droit)."
+    },
+    {
+     "question": "Réciproque du théorème de Pythagore",
+     "answer": "Si BC² = AB² + AC², alors le triangle ABC est rectangle en A."
+    },
+    {
+     "question": "Théorème de Thalès",
+     "answer": "Si les droites (BM) et (CN) sont sécantes en A et que (MN) // (BC), alors :\nAM/AB = AN/AC = MN/BC"
+    },
+    {
+     "question": "Trigonométrie : cosinus d'un angle aigu dans un triangle rectangle",
+     "answer": "cos = côté adjacent / hypoténuse\n(« CAH » dans SOH CAH TOA)"
+    },
+    {
+     "question": "Trigonométrie : sinus d'un angle aigu dans un triangle rectangle",
+     "answer": "sin = côté opposé / hypoténuse\n(« SOH »)"
+    },
+    {
+     "question": "Trigonométrie : tangente d'un angle aigu dans un triangle rectangle",
+     "answer": "tan = côté opposé / côté adjacent\n(« TOA »)"
+    },
+    {
+     "question": "Somme des angles d'un triangle",
+     "answer": "180°"
+    },
+    {
+     "question": "Périmètre d'un cercle de rayon r",
+     "answer": "2 × π × r"
+    },
+    {
+     "question": "Aire d'un disque de rayon r",
+     "answer": "π × r²"
+    },
+    {
+     "question": "Aire d'un triangle",
+     "answer": "base × hauteur / 2"
+    },
+    {
+     "question": "Aire d'un trapèze",
+     "answer": "(grande base + petite base) × hauteur / 2"
+    },
+    {
+     "question": "Aire d'un parallélogramme",
+     "answer": "base × hauteur"
+    },
+    {
+     "question": "Volume d'un pavé droit",
+     "answer": "Longueur × largeur × hauteur"
+    },
+    {
+     "question": "Volume d'un cylindre de rayon r et de hauteur h",
+     "answer": "π × r² × h"
+    },
+    {
+     "question": "Volume d'une pyramide ou d'un cône",
+     "answer": "aire de la base × hauteur / 3"
+    },
+    {
+     "question": "Volume d'une boule de rayon r",
+     "answer": "(4/3) × π × r³"
+    },
+    {
+     "question": "Aire d'une sphère de rayon r",
+     "answer": "4 × π × r²"
+    },
+    {
+     "question": "Puissances : aⁿ × aᵐ = ?",
+     "answer": "aⁿ⁺ᵐ"
+    },
+    {
+     "question": "Puissances : aⁿ / aᵐ = ?",
+     "answer": "aⁿ⁻ᵐ"
+    },
+    {
+     "question": "Puissances : (aⁿ)ᵐ = ?",
+     "answer": "aⁿˣᵐ (on multiplie les exposants)"
+    },
+    {
+     "question": "Puissances : a⁰ et a⁻ⁿ (a ≠ 0)",
+     "answer": "a⁰ = 1\na⁻ⁿ = 1 / aⁿ"
+    },
+    {
+     "question": "Écriture scientifique d'un nombre",
+     "answer": "a × 10ⁿ, avec 1 ≤ a < 10 et n entier.\nEx. : 45 300 = 4,53 × 10⁴"
+    },
+    {
+     "question": "Addition de deux fractions : a/b + c/d = ?",
+     "answer": "(a × d + b × c) / (b × d)\n(on met d'abord au même dénominateur)"
+    },
+    {
+     "question": "Diviser par une fraction",
+     "answer": "C'est multiplier par son inverse :\n(a/b) ÷ (c/d) = (a/b) × (d/c)"
+    },
+    {
+     "question": "Fonction linéaire",
+     "answer": "f(x) = a × x\nReprésentée par une droite passant par l'origine. Traduit une situation de proportionnalité."
+    },
+    {
+     "question": "Fonction affine",
+     "answer": "f(x) = a × x + b\nReprésentée par une droite ; a est le coefficient directeur, b l'ordonnée à l'origine."
+    },
+    {
+     "question": "Coefficient directeur d'une droite passant par A(x₁ ; y₁) et B(x₂ ; y₂)",
+     "answer": "a = (y₂ − y₁) / (x₂ − x₁)"
+    },
+    {
+     "question": "Augmenter une quantité de t %",
+     "answer": "On la multiplie par (1 + t/100).\nEx. : +20 % → × 1,2"
+    },
+    {
+     "question": "Diminuer une quantité de t %",
+     "answer": "On la multiplie par (1 − t/100).\nEx. : −15 % → × 0,85"
+    },
+    {
+     "question": "Vitesse moyenne",
+     "answer": "v = d / t\nd'où d = v × t et t = d / v"
+    },
+    {
+     "question": "Probabilité d'un événement A (situation d'équiprobabilité)",
+     "answer": "P(A) = nombre d'issues favorables / nombre d'issues possibles\nToujours entre 0 et 1 ; P(non A) = 1 − P(A)."
+    },
+    {
+     "question": "Nombre premier",
+     "answer": "Nombre entier qui a exactement deux diviseurs : 1 et lui-même.\nEx. : 2, 3, 5, 7, 11, 13… (1 n'est pas premier)."
+    },
+    {
+     "question": "Racines carrées : √(a × b) et (√a)² (a, b ≥ 0)",
+     "answer": "√(a × b) = √a × √b\n(√a)² = a"
+    },
+    {
+     "question": "Médiane d'une série statistique",
+     "answer": "Valeur qui partage la série ordonnée en deux groupes de même effectif : au moins la moitié des valeurs lui sont inférieures ou égales, au moins la moitié supérieures ou égales."
+    }
+   ],
+   "priceTokens": 0
+  },
+  {
+   "key": "maths-derivees",
+   "name": "Maths — Les dérivées usuelles",
+   "level": "1ère",
+   "summary": "Dérivées des fonctions de référence, règles de calcul, tangente et variations, avec exemples corrigés.",
+   "description": "Programme de spécialité maths de Première : nombre dérivé, tangente, dérivées usuelles, opérations (somme, produit, quotient, g(ax + b)), lien avec les variations. Quelques exemples corrigés pour s'entraîner, et en fin de boîte les dérivées vues en Terminale (ln, sin, cos, fonctions composées).",
+   "cards": [
+    {
+     "question": "Nombre dérivé de f en a (définition)",
+     "answer": "f'(a) = limite, quand h tend vers 0, de [f(a + h) − f(a)] / h\n(limite du taux d'accroissement)."
+    },
+    {
+     "question": "Équation de la tangente à la courbe de f au point d'abscisse a",
+     "answer": "y = f'(a)(x − a) + f(a)"
+    },
+    {
+     "question": "Dérivée d'une constante k",
+     "answer": "0"
+    },
+    {
+     "question": "Dérivée de x",
+     "answer": "1"
+    },
+    {
+     "question": "Dérivée de x²",
+     "answer": "2x"
+    },
+    {
+     "question": "Dérivée de x³",
+     "answer": "3x²"
+    },
+    {
+     "question": "Dérivée de xⁿ (n entier ≥ 1)",
+     "answer": "n xⁿ⁻¹"
+    },
+    {
+     "question": "Dérivée de 1/x (x ≠ 0)",
+     "answer": "−1/x²"
+    },
+    {
+     "question": "Dérivée de √x (x > 0)",
+     "answer": "1 / (2√x)\n(√x n'est pas dérivable en 0)"
+    },
+    {
+     "question": "Dérivée de eˣ",
+     "answer": "eˣ"
+    },
+    {
+     "question": "Dérivée de e^(ax + b)",
+     "answer": "a e^(ax + b)"
+    },
+    {
+     "question": "Dérivée d'une somme u + v",
+     "answer": "u' + v'"
+    },
+    {
+     "question": "Dérivée de k × u (k constante)",
+     "answer": "k × u'"
+    },
+    {
+     "question": "Dérivée d'un produit u × v",
+     "answer": "u'v + uv'"
+    },
+    {
+     "question": "Dérivée de 1/v (v ≠ 0)",
+     "answer": "−v' / v²"
+    },
+    {
+     "question": "Dérivée d'un quotient u/v (v ≠ 0)",
+     "answer": "(u'v − uv') / v²"
+    },
+    {
+     "question": "Dérivée de g(ax + b)",
+     "answer": "a × g'(ax + b)"
+    },
+    {
+     "question": "Lien entre signe de f' et variations de f sur un intervalle",
+     "answer": "f' ≥ 0 → f croissante\nf' ≤ 0 → f décroissante\nf' = 0 → f constante"
+    },
+    {
+     "question": "Extremum local d'une fonction dérivable",
+     "answer": "Si f' s'annule en changeant de signe en a, alors f admet un extremum local en a (maximum si f' passe de + à −, minimum si de − à +)."
+    },
+    {
+     "question": "Dériver f(x) = 3x² − 5x + 2",
+     "answer": "f'(x) = 6x − 5"
+    },
+    {
+     "question": "Dériver f(x) = x³ − 3x",
+     "answer": "f'(x) = 3x² − 3 = 3(x − 1)(x + 1)"
+    },
+    {
+     "question": "Dériver f(x) = (2x + 1)eˣ",
+     "answer": "f'(x) = 2eˣ + (2x + 1)eˣ = (2x + 3)eˣ\n(produit u × v)"
+    },
+    {
+     "question": "Dériver f(x) = e^(−2x)",
+     "answer": "f'(x) = −2 e^(−2x)"
+    },
+    {
+     "question": "Dériver f(x) = x / (x + 1)",
+     "answer": "f'(x) = [1 × (x + 1) − x × 1] / (x + 1)² = 1 / (x + 1)²"
+    },
+    {
+     "question": "Dériver f(x) = 1 / (x² + 1)",
+     "answer": "f'(x) = −2x / (x² + 1)²"
+    },
+    {
+     "question": "Dériver f(x) = √(3x + 1)",
+     "answer": "f'(x) = 3 / (2√(3x + 1))\n(forme g(ax + b))"
+    },
+    {
+     "question": "Terminale : dérivée de ln(x) (x > 0)",
+     "answer": "1/x"
+    },
+    {
+     "question": "Terminale : dérivée de sin(x) et cos(x)",
+     "answer": "sin' = cos\ncos' = −sin"
+    },
+    {
+     "question": "Terminale : dérivée de e^u et de uⁿ",
+     "answer": "(e^u)' = u' e^u\n(uⁿ)' = n u' uⁿ⁻¹"
+    },
+    {
+     "question": "Terminale : dérivée de ln(u) (u > 0)",
+     "answer": "u' / u"
+    }
+   ],
+   "priceTokens": 0
+  },
+  {
+   "key": "physique-chimie-seconde",
+   "name": "Physique-chimie — Formules et constantes de Seconde",
+   "level": "2nde",
+   "summary": "Les formules, lois et constantes indispensables de physique-chimie en Seconde.",
+   "description": "Mouvement et forces, solutions et dilutions, quantité de matière, structure de l'atome, électricité, ondes, optique et son. Chaque fiche rappelle la formule avec les unités à utiliser.",
+   "cards": [
+    {
+     "question": "Vitesse moyenne : formule et unités",
+     "answer": "v = d / Δt\nv en m/s, d en m, Δt en s."
+    },
+    {
+     "question": "Convertir des m/s en km/h",
+     "answer": "On multiplie par 3,6.\nEx. : 10 m/s = 36 km/h"
+    },
+    {
+     "question": "Principe d'inertie",
+     "answer": "Si les forces qui s'exercent sur un système se compensent (ou s'il n'en subit aucune), il est immobile ou en mouvement rectiligne uniforme — et réciproquement."
+    },
+    {
+     "question": "Poids d'un objet",
+     "answer": "P = m × g\nP en N, m en kg, g ≈ 9,81 N/kg sur Terre."
+    },
+    {
+     "question": "Force d'interaction gravitationnelle entre deux corps A et B",
+     "answer": "F = G × mA × mB / d²\nG = 6,67 × 10⁻¹¹ N·m²·kg⁻², d en m, masses en kg."
+    },
+    {
+     "question": "Masse volumique",
+     "answer": "ρ = m / V\nEn kg/m³ ou g/mL. Eau : 1,0 g/mL = 1 000 kg/m³."
+    },
+    {
+     "question": "Concentration en masse d'un soluté",
+     "answer": "Cm = m(soluté) / V(solution)\nEn g/L."
+    },
+    {
+     "question": "Dilution : conservation de la quantité de soluté",
+     "answer": "C_mère × V_mère = C_fille × V_fille\nFacteur de dilution : F = C_mère / C_fille = V_fille / V_mère"
+    },
+    {
+     "question": "Quantité de matière à partir de la masse",
+     "answer": "n = m / M\nn en mol, m en g, M (masse molaire) en g/mol."
+    },
+    {
+     "question": "Constante d'Avogadro et nombre d'entités",
+     "answer": "N_A ≈ 6,02 × 10²³ mol⁻¹\nN = n × N_A"
+    },
+    {
+     "question": "Notation symbolique d'un noyau : ᴬ_Z X",
+     "answer": "Z = numéro atomique (nombre de protons)\nA = nombre de masse (nombre de nucléons)\nNombre de neutrons = A − Z"
+    },
+    {
+     "question": "Ordres de grandeur : taille d'un atome et d'un noyau",
+     "answer": "Atome : environ 10⁻¹⁰ m\nNoyau : environ 10⁻¹⁵ m (100 000 fois plus petit)"
+    },
+    {
+     "question": "Charge élémentaire",
+     "answer": "e ≈ 1,6 × 10⁻¹⁹ C\nProton : +e ; électron : −e"
+    },
+    {
+     "question": "Masse d'un nucléon",
+     "answer": "Environ 1,67 × 10⁻²⁷ kg (proton ≈ neutron).\nL'électron est environ 2 000 fois plus léger."
+    },
+    {
+     "question": "Règles du duet et de l'octet",
+     "answer": "Les atomes évoluent pour acquérir la configuration électronique du gaz noble le plus proche : 2 électrons sur la couche externe (duet, pour H, Li…) ou 8 (octet)."
+    },
+    {
+     "question": "Cation et anion",
+     "answer": "Cation : ion positif (l'atome a perdu un ou des électrons), ex. Na⁺.\nAnion : ion négatif (a gagné des électrons), ex. Cl⁻."
+    },
+    {
+     "question": "Transformation physique, chimique ou nucléaire ?",
+     "answer": "Physique : changement d'état, les espèces sont conservées.\nChimique : de nouvelles espèces se forment, les éléments sont conservés.\nNucléaire : les noyaux (donc les éléments) changent."
+    },
+    {
+     "question": "Loi d'Ohm",
+     "answer": "U = R × I\nU en V, R en Ω, I en A."
+    },
+    {
+     "question": "Loi des nœuds",
+     "answer": "La somme des intensités des courants qui arrivent à un nœud est égale à la somme de celles qui en repartent."
+    },
+    {
+     "question": "Loi des mailles",
+     "answer": "Dans une maille, la somme des tensions (orientées dans un même sens de parcours) est nulle."
+    },
+    {
+     "question": "Puissance électrique reçue par un dipôle",
+     "answer": "P = U × I\nP en W."
+    },
+    {
+     "question": "Énergie électrique",
+     "answer": "E = P × Δt\nE en J (P en W, Δt en s) ou en Wh (P en W, Δt en h).\n1 Wh = 3 600 J"
+    },
+    {
+     "question": "Vitesse de la lumière dans le vide",
+     "answer": "c ≈ 3,00 × 10⁸ m/s"
+    },
+    {
+     "question": "Vitesse du son dans l'air",
+     "answer": "Environ 340 m/s (à 20 °C). Le son ne se propage pas dans le vide."
+    },
+    {
+     "question": "Période et fréquence d'un signal",
+     "answer": "f = 1 / T\nf en Hz, T en s."
+    },
+    {
+     "question": "Domaine des longueurs d'onde de la lumière visible",
+     "answer": "De 400 nm (violet) à 800 nm (rouge) environ."
+    },
+    {
+     "question": "Loi de Snell-Descartes pour la réfraction",
+     "answer": "n₁ × sin i₁ = n₂ × sin i₂\nn : indice de réfraction du milieu, i : angle avec la normale."
+    },
+    {
+     "question": "Indice de réfraction d'un milieu",
+     "answer": "n = c / v\nv : vitesse de la lumière dans ce milieu (n ≥ 1, sans unité)."
+    },
+    {
+     "question": "Grandissement d'une lentille convergente",
+     "answer": "γ = A'B' / AB = OA' / OA\n(valeurs algébriques ; γ < 0 : image renversée)"
+    },
+    {
+     "question": "Niveau d'intensité sonore : unité et seuil de danger",
+     "answer": "En décibels (dB). Au-delà de 85 dB environ, l'exposition prolongée présente un risque pour l'audition."
+    }
+   ],
+   "priceTokens": 0
+  },
+  {
+   "key": "philosophie-bac",
+   "name": "Philosophie — Notions, repères et citations du bac",
+   "level": "Terminale",
+   "summary": "Les 17 notions, les repères conceptuels et une vingtaine de citations d'auteurs pour la dissertation et l'explication de texte.",
+   "description": "Tout le vocabulaire du programme de philosophie de Terminale générale : la liste des notions, les principaux repères (légal/légitime, persuader/convaincre, en fait/en droit…) et des citations d'auteurs classiques avec leur œuvre et les notions qu'elles éclairent.",
+   "cards": [
+    {
+     "question": "Les 17 notions du programme de philosophie (Terminale générale)",
+     "answer": "L'art, le bonheur, la conscience, le devoir, l'État, l'inconscient, la justice, le langage, la liberté, la nature, la raison, la religion, la science, la technique, le temps, le travail, la vérité."
+    },
+    {
+     "question": "Repère : légal / légitime",
+     "answer": "Légal : conforme à la loi en vigueur.\nLégitime : juste au regard de la morale ou d'un principe supérieur. Une loi peut être légale sans être légitime."
+    },
+    {
+     "question": "Repère : persuader / convaincre",
+     "answer": "Convaincre : emporter l'adhésion par des arguments rationnels.\nPersuader : emporter l'adhésion en jouant sur les émotions, les désirs."
+    },
+    {
+     "question": "Repère : croire / savoir",
+     "answer": "Savoir : connaissance fondée et justifiée, qu'on peut démontrer ou prouver.\nCroire : tenir pour vrai sans preuve suffisante."
+    },
+    {
+     "question": "Repère : expliquer / comprendre",
+     "answer": "Expliquer : rendre compte d'un phénomène par ses causes (sciences de la nature).\nComprendre : saisir le sens, les intentions (sciences humaines)."
+    },
+    {
+     "question": "Repère : en fait / en droit",
+     "answer": "En fait : ce qui est, ce qui se constate.\nEn droit : ce qui doit être, ce qui est légitime ou fondé."
+    },
+    {
+     "question": "Repère : origine / fondement",
+     "answer": "Origine : point de départ dans le temps (question historique).\nFondement : ce qui justifie, légitime (question de valeur)."
+    },
+    {
+     "question": "Repère : obligation / contrainte",
+     "answer": "Contrainte : force extérieure qui s'impose (on ne peut pas faire autrement).\nObligation : devoir que l'on reconnaît librement (on pourrait désobéir)."
+    },
+    {
+     "question": "Repère : contingent / nécessaire / possible",
+     "answer": "Nécessaire : ne peut pas ne pas être.\nContingent : pourrait ne pas être ou être autrement.\nPossible : n'est pas contradictoire, peut être."
+    },
+    {
+     "question": "Repère : cause / fin",
+     "answer": "Cause : ce qui produit un effet (le « pourquoi » en amont).\nFin : le but visé (le « pour quoi » en aval)."
+    },
+    {
+     "question": "Repère : moyen / fin",
+     "answer": "Moyen : ce qui sert à atteindre quelque chose.\nFin : ce qui est visé pour soi-même. Kant : traiter l'humanité toujours aussi comme une fin, jamais simplement comme un moyen."
+    },
+    {
+     "question": "Repère : absolu / relatif",
+     "answer": "Absolu : qui ne dépend de rien d'autre, vaut sans condition.\nRelatif : qui dépend d'autre chose (d'un point de vue, d'une époque…)."
+    },
+    {
+     "question": "Repère : universel / général / particulier / singulier",
+     "answer": "Universel : vaut pour tous, sans exception possible.\nGénéral : vaut pour la plupart.\nParticulier : vaut pour une partie.\nSingulier : ne concerne qu'un seul individu."
+    },
+    {
+     "question": "Repère : transcendant / immanent",
+     "answer": "Transcendant : qui est au-delà, extérieur et supérieur (ex. un Dieu hors du monde).\nImmanent : qui est intérieur, contenu dans la chose même."
+    },
+    {
+     "question": "Repère : médiat / immédiat",
+     "answer": "Immédiat : sans intermédiaire, direct.\nMédiat : qui passe par un intermédiaire (raisonnement, outil, langage…)."
+    },
+    {
+     "question": "Repère : intuitif / discursif",
+     "answer": "Intuitif : connaissance saisie directement, d'un seul coup.\nDiscursif : connaissance obtenue par étapes, par un raisonnement."
+    },
+    {
+     "question": "Repère : idéal / réel",
+     "answer": "Réel : ce qui existe effectivement.\nIdéal : ce qui n'existe qu'en idée, modèle de perfection vers lequel on tend."
+    },
+    {
+     "question": "Repère : en acte / en puissance (Aristote)",
+     "answer": "En puissance : ce qu'une chose peut devenir (le gland est un chêne en puissance).\nEn acte : ce qu'elle est effectivement, réalisée."
+    },
+    {
+     "question": "Repère : essentiel / accidentel",
+     "answer": "Essentiel : qui appartient à la nature d'une chose, sans quoi elle ne serait plus elle-même.\nAccidentel : qui pourrait être autrement sans qu'elle cesse d'être ce qu'elle est."
+    },
+    {
+     "question": "Repère : exemple / preuve",
+     "answer": "Un exemple illustre une idée ; il ne la prouve pas. Une preuve établit la vérité (démonstration, expérience). Un seul contre-exemple suffit à réfuter une thèse générale."
+    },
+    {
+     "question": "Descartes : « Je pense, donc je suis »",
+     "answer": "Discours de la méthode (1637).\nNotions : la conscience, la vérité. Le cogito est la première certitude qui résiste au doute."
+    },
+    {
+     "question": "Pascal : « L'homme n'est qu'un roseau, le plus faible de la nature ; mais c'est un roseau pensant »",
+     "answer": "Pensées.\nNotion : la conscience. La grandeur de l'homme tient à sa pensée : il sait qu'il est mortel."
+    },
+    {
+     "question": "Freud : « Le moi n'est pas maître dans sa propre maison »",
+     "answer": "Une difficulté de la psychanalyse (1917).\nNotion : l'inconscient. Notre vie psychique nous échappe en partie."
+    },
+    {
+     "question": "Rousseau : « L'obéissance à la loi qu'on s'est prescrite est liberté »",
+     "answer": "Du contrat social (1762), livre I, chapitre 8.\nNotions : la liberté, l'État."
+    },
+    {
+     "question": "Kant : l'impératif catégorique",
+     "answer": "« Agis uniquement d'après la maxime qui fait que tu peux vouloir en même temps qu'elle devienne une loi universelle. »\nFondements de la métaphysique des mœurs (1785). Notion : le devoir."
+    },
+    {
+     "question": "Sartre : « L'homme est condamné à être libre »",
+     "answer": "L'existentialisme est un humanisme (1946).\nNotion : la liberté. L'homme ne peut pas échapper à ses choix ni à sa responsabilité."
+    },
+    {
+     "question": "Spinoza : l'illusion du libre arbitre",
+     "answer": "Les hommes se croient libres parce qu'ils ont conscience de leurs actions, mais ignorent les causes qui les déterminent.\nÉthique (1677), partie II. Notion : la liberté."
+    },
+    {
+     "question": "Aristote : « L'homme est par nature un animal politique »",
+     "answer": "Politique, livre I.\nNotions : l'État, la nature. L'homme ne s'accomplit qu'au sein de la cité."
+    },
+    {
+     "question": "Max Weber : définition de l'État",
+     "answer": "L'État revendique avec succès « le monopole de la violence physique légitime » sur un territoire.\nLe Savant et le Politique (1919)."
+    },
+    {
+     "question": "Épicure : le bonheur",
+     "answer": "Le bonheur est l'ataraxie (absence de troubles de l'âme) et l'aponie (absence de douleur du corps), obtenues en limitant ses désirs aux désirs naturels et nécessaires.\nLettre à Ménécée."
+    },
+    {
+     "question": "Descartes : « nous rendre comme maîtres et possesseurs de la nature »",
+     "answer": "Discours de la méthode (1637), 6e partie.\nNotions : la technique, la science, la nature."
+    },
+    {
+     "question": "Bachelard : « L'opinion pense mal ; elle ne pense pas »",
+     "answer": "La Formation de l'esprit scientifique (1938).\nNotion : la science. La science se construit contre l'opinion (obstacle épistémologique)."
+    },
+    {
+     "question": "Popper : le critère de scientificité",
+     "answer": "Une théorie est scientifique si elle est réfutable (falsifiable) : on peut concevoir une expérience qui la contredirait.\nNotions : la science, la vérité."
+    },
+    {
+     "question": "Saint Augustin : qu'est-ce que le temps ?",
+     "answer": "« Si personne ne me le demande, je le sais ; si je veux l'expliquer à qui me le demande, je ne le sais plus. »\nConfessions, livre XI. Notion : le temps."
+    },
+    {
+     "question": "Hegel : la dialectique du maître et de l'esclave",
+     "answer": "Par le travail, l'esclave transforme la nature et se transforme lui-même : il prend conscience de lui et devient le vrai maître.\nPhénoménologie de l'esprit (1807). Notion : le travail."
+    },
+    {
+     "question": "Kant : définition du beau",
+     "answer": "« Est beau ce qui plaît universellement sans concept. »\nCritique de la faculté de juger (1790). Notion : l'art."
+    },
+    {
+     "question": "Marx : « La religion est l'opium du peuple »",
+     "answer": "Critique de la philosophie du droit de Hegel (1843-1844).\nNotion : la religion. Elle console des souffrances réelles au lieu de les combattre."
+    },
+    {
+     "question": "Platon : l'allégorie de la caverne",
+     "answer": "République, livre VII.\nNotions : la vérité, la raison. Les hommes prennent des ombres pour la réalité ; la philosophie est une sortie difficile vers la lumière du vrai."
+    },
+    {
+     "question": "Kant : « Sapere aude ! »",
+     "answer": "« Aie le courage de te servir de ton propre entendement. » Devise des Lumières.\nQu'est-ce que les Lumières ? (1784). Notions : la raison, la liberté."
+    }
+   ],
+   "priceTokens": 0
+  },
+  {
+   "key": "svt-cellule-adn-seconde",
+   "name": "SVT — Cellule, ADN et biodiversité",
+   "level": "2nde",
+   "summary": "La cellule, le métabolisme, l'ADN et les gènes, la biodiversité et l'évolution : l'essentiel de SVT en Seconde.",
+   "description": "Organisation de la cellule, photosynthèse et respiration, enzymes, structure de l'ADN et vocabulaire de la génétique (gène, allèle, chromosome, mutation), niveaux de biodiversité, sélection naturelle et dérive génétique.",
+   "cards": [
+    {
+     "question": "Qu'est-ce que la cellule ?",
+     "answer": "L'unité structurale et fonctionnelle de tout être vivant. Tout être vivant est formé d'une ou de plusieurs cellules."
+    },
+    {
+     "question": "Organisme unicellulaire / pluricellulaire",
+     "answer": "Unicellulaire : formé d'une seule cellule (bactérie, levure, paramécie).\nPluricellulaire : formé de nombreuses cellules (plantes, animaux)."
+    },
+    {
+     "question": "Éléments communs à toutes les cellules",
+     "answer": "Une membrane plasmique, un cytoplasme et de l'ADN (information génétique)."
+    },
+    {
+     "question": "Cellule eucaryote / procaryote",
+     "answer": "Eucaryote : ADN enfermé dans un noyau (animaux, végétaux, champignons).\nProcaryote : pas de noyau, ADN libre dans le cytoplasme (bactéries)."
+    },
+    {
+     "question": "Spécificités de la cellule végétale",
+     "answer": "Une paroi (cellulose), des chloroplastes (photosynthèse) et une grande vacuole."
+    },
+    {
+     "question": "Rôle de la mitochondrie",
+     "answer": "Siège de la respiration cellulaire : produit l'énergie utilisable par la cellule à partir de la matière organique et du dioxygène."
+    },
+    {
+     "question": "Rôle du chloroplaste",
+     "answer": "Siège de la photosynthèse, dans les cellules chlorophylliennes des végétaux."
+    },
+    {
+     "question": "Photosynthèse : bilan",
+     "answer": "6 CO₂ + 6 H₂O → C₆H₁₂O₆ + 6 O₂ (grâce à l'énergie lumineuse)\nProduction de matière organique (glucose) et rejet de dioxygène."
+    },
+    {
+     "question": "Respiration cellulaire : bilan",
+     "answer": "C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O + énergie"
+    },
+    {
+     "question": "Qu'est-ce que le métabolisme ?",
+     "answer": "L'ensemble des réactions chimiques qui se déroulent dans une cellule ou un organisme ; il dépend de l'information génétique et de l'environnement."
+    },
+    {
+     "question": "Qu'est-ce qu'une enzyme ?",
+     "answer": "Une protéine qui catalyse (accélère) une réaction chimique du métabolisme. Elle est spécifique de sa réaction et son activité dépend de la température et du pH."
+    },
+    {
+     "question": "ADN : que signifie le sigle et quelle est sa structure ?",
+     "answer": "Acide désoxyribonucléique.\nUne double hélice formée de deux brins de nucléotides enroulés."
+    },
+    {
+     "question": "Les quatre nucléotides de l'ADN",
+     "answer": "A (adénine), T (thymine), C (cytosine), G (guanine)."
+    },
+    {
+     "question": "Règle de complémentarité des bases de l'ADN",
+     "answer": "A s'associe avec T, C s'associe avec G.\nConnaître un brin permet de déduire l'autre."
+    },
+    {
+     "question": "Qui a établi la structure en double hélice de l'ADN ?",
+     "answer": "James Watson et Francis Crick en 1953, à partir notamment des clichés de diffraction aux rayons X de Rosalind Franklin."
+    },
+    {
+     "question": "Qu'est-ce qu'un gène ?",
+     "answer": "Une portion d'ADN, située à un endroit précis d'un chromosome, qui porte l'information nécessaire à la fabrication d'une protéine."
+    },
+    {
+     "question": "Qu'est-ce qu'un allèle ?",
+     "answer": "Une version d'un gène. Les allèles d'un même gène diffèrent par leur séquence de nucléotides."
+    },
+    {
+     "question": "Qu'est-ce qu'un chromosome ?",
+     "answer": "Une molécule d'ADN associée à des protéines. L'espèce humaine possède 46 chromosomes, soit 23 paires."
+    },
+    {
+     "question": "Génotype / phénotype",
+     "answer": "Génotype : ensemble des allèles d'un individu.\nPhénotype : ensemble de ses caractères observables (à l'échelle de l'organisme, de la cellule ou de la molécule)."
+    },
+    {
+     "question": "Qu'est-ce qu'une mutation ?",
+     "answer": "Une modification de la séquence de nucléotides de l'ADN. Elle est à l'origine de nouveaux allèles, donc de la diversité génétique."
+    },
+    {
+     "question": "Que montre l'universalité de l'ADN ?",
+     "answer": "Tous les êtres vivants utilisent l'ADN comme support de l'information génétique : c'est un argument en faveur d'une origine commune (parenté) des êtres vivants."
+    },
+    {
+     "question": "Les trois niveaux de la biodiversité",
+     "answer": "La diversité des écosystèmes, la diversité des espèces et la diversité génétique (au sein d'une même espèce)."
+    },
+    {
+     "question": "Qu'est-ce qu'une espèce ?",
+     "answer": "Un ensemble d'individus qui se ressemblent et qui peuvent se reproduire entre eux en donnant une descendance fertile."
+    },
+    {
+     "question": "La sélection naturelle",
+     "answer": "Les individus porteurs de caractères avantageux dans un milieu donné survivent et se reproduisent davantage : ces caractères deviennent plus fréquents au fil des générations.\nThéorie de Darwin (L'Origine des espèces, 1859)."
+    },
+    {
+     "question": "La dérive génétique",
+     "answer": "Variation aléatoire de la fréquence des allèles d'une génération à l'autre, due au hasard de la reproduction. Son effet est plus fort dans les petites populations."
+    },
+    {
+     "question": "Qu'est-ce que le microbiote ?",
+     "answer": "L'ensemble des micro-organismes (surtout des bactéries) qui vivent dans un organisme, par exemple dans l'intestin. Il joue un rôle dans la digestion et la défense de l'organisme."
+    },
+    {
+     "question": "Ordres de grandeur : taille d'une cellule et d'une bactérie",
+     "answer": "Cellule animale ou végétale : de 10 à 100 µm environ.\nBactérie : environ 1 µm.\n(1 µm = 10⁻⁶ m = 0,001 mm)"
+    }
+   ],
+   "priceTokens": 0
+  }
+ ]
+}
