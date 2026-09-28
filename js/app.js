@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v170";
+  const APP_VERSION = "v171";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -1390,7 +1390,19 @@
       showReviewChart: localStorage.getItem("fiches_show_review_chart"),
       newCardSubjectId: localStorage.getItem("fiches_new_card_subject_id"),
       cardFontSize: localStorage.getItem("fiches_card_font_size"),
-      calendarEvents: localStorage.getItem("fiches_calendar_events"),
+      // Round 22, item 4 : bug corrigé — RETIRÉ d'ici. Cette fonction
+      // alimente le canal `dev_settings_public` (une seule ligne "global",
+      // voir Sync.pushPublicDevSettings côté sync.js), conçu pour des
+      // réglages d'affichage VALIDÉS PAR STÉPHANE et partagés à toute
+      // installation de l'appli — pas pour des données personnelles. Les
+      // évènements du calendrier y transitaient par erreur : n'importe
+      // quelle installation de l'appli (y compris sans Compte connecté,
+      // y compris celle d'un autre utilisateur) les recevait donc au
+      // démarrage (voir syncDevSettingsFromServer), ce qui est exactement
+      // le bug signalé ("j'avais tous mes évènements alors que je n'étais
+      // pas connecté"). Les évènements sont maintenant stockés localement
+      // par Compte connecté (voir CALENDAR_EVENTS_KEY / loadCalendarEvents)
+      // plutôt que diffusés à tout le monde par ce canal.
       nightModeActive: localStorage.getItem("fiches_night_mode"),
     };
   }
@@ -1407,7 +1419,11 @@
     setIfPresent("fiches_show_review_chart", prefs.showReviewChart);
     setIfPresent("fiches_new_card_subject_id", prefs.newCardSubjectId);
     setIfPresent("fiches_card_font_size", prefs.cardFontSize);
-    setIfPresent("fiches_calendar_events", prefs.calendarEvents);
+    // Round 22, item 4 : "fiches_calendar_events" n'est plus appliqué
+    // depuis ce canal public partagé (voir le commentaire dans
+    // gatherAppPrefs ci-dessus) — un ancien blob `prefs.calendarEvents`
+    // encore présent côté serveur (poussé par une version antérieure de
+    // l'appli) est donc désormais ignoré ici plutôt que réappliqué.
     // Bug corrigé (item 1) : si l'utilisateur vient tout juste de changer
     // ce réglage LUI-MÊME (les quelques secondes qui suivent), on ignore
     // un écho de synchro qui reviendrait entre-temps avec l'ANCIENNE
@@ -5214,6 +5230,21 @@
     if (target) target.classList.add("is-active");
     const shortName = viewId.replace(/^view-/, "");
     document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("is-active", t.dataset.view === shortName));
+    // Round 22, item 7 : bug corrigé — contrairement au clic sur un onglet
+    // normal (et à goHome()), cette fonction ne touchait jusqu'ici ni le
+    // bouton "Accueil" du bandeau ni la ligne du robot (logo + bulle
+    // d'aide). Conséquence concrète : en revenant à l'accueil PAR le
+    // sélecteur de boîte(s) lui-même (son propre bouton "Annuler"/retour,
+    // voir closeBoitePickerView — ex. sélecteur ouvert directement depuis
+    // l'accueil), la bulle du robot du sélecteur restait affichée à
+    // l'écran au lieu de disparaître avec le reste du bandeau, puisque
+    // rien ne masquait plus la ligne qui la contient. On réplique donc ici
+    // exactement ce que fait déjà tout autre chemin de navigation pour ces
+    // deux éléments, quelle que soit la vue de destination.
+    const homeBtnEl = el("home-btn");
+    if (homeBtnEl) homeBtnEl.hidden = shortName === "home";
+    const bodyLogoRowEl = el("body-logo-row");
+    if (bodyLogoRowEl) bodyLogoRowEl.hidden = shortName === "home";
   }
 
   /** ctx attendu :
@@ -5326,6 +5357,15 @@
     // l'absence de message) du sélecteur de boîte(s).
     if (returnViewId !== "view-home") {
       applyBodyLogoSpeech(returnViewId.replace(/^view-/, ""));
+    } else {
+      // Round 22, item 7 : même en repartant vers l'accueil (qui n'affiche
+      // de toute façon plus le robot, voir le correctif de
+      // boitePickerActivateView ci-dessus), on vide le message du
+      // sélecteur pour ne rien laisser trainer en mémoire pour la
+      // prochaine fois.
+      bodyLogoSpeechMessages = [];
+      bodyLogoSpeechIndex = 0;
+      renderBodyLogoSpeechState(false);
     }
   }
 
@@ -5783,8 +5823,22 @@
     const total = list.length;
     const barY = 2;
     const height = barY * 2 + barHeight + (showLabels ? 14 : 0);
+    // Round 22, item 1 : les extrémités de la barre (gauche ET droite)
+    // doivent être arrondies, comme sur l'image de référence — les
+    // segments individuels restent carrés entre eux (jointures nettes),
+    // seuls les deux bouts de la barre entière sont ronds. Un simple
+    // `rx` sur chaque `<rect>` de segment ne suffit pas (seul le
+    // segment tout à droite se retrouverait arrondi, et seulement
+    // partiellement puisqu'un rect avec `rx` est arrondi des DEUX
+    // côtés) : la barre entière est donc dessinée dans un groupe
+    // découpé (`clip-path`) par un rectangle à coins arrondis de la
+    // largeur totale, qui masque proprement les coins carrés des
+    // rectangles de segments qui dépassent de cette forme.
+    const clipId = `pers-gauge-clip-${Math.random().toString(36).slice(2, 9)}`;
     let svg = `<svg viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">`;
-    svg += `<rect x="0" y="${barY}" width="${width}" height="${barHeight}" rx="${barHeight / 2}" fill="${colors.court}" />`;
+    svg += `<defs><clipPath id="${clipId}"><rect x="0" y="${barY}" width="${width}" height="${barHeight}" rx="${barHeight / 2}" /></clipPath></defs>`;
+    svg += `<g clip-path="url(#${clipId})">`;
+    svg += `<rect x="0" y="${barY}" width="${width}" height="${barHeight}" fill="${colors.court}" />`;
     if (total > 0) {
       let x = 0;
       for (const key of PERS_GAUGE_ZONE_ORDER) {
@@ -5794,9 +5848,8 @@
         }
         x += w;
       }
-      // Coins arrondis par-dessus (masque le rectangle plein sous-jacent).
-      svg += `<rect x="0" y="${barY}" width="${width}" height="${barHeight}" rx="${barHeight / 2}" fill="none" stroke="var(--paper, #fff)" stroke-width="0" />`;
     }
+    svg += `</g>`;
     if (showLabels) {
       const pct = (key) => (total > 0 ? Math.round((counts[key] / total) * 100) : 0);
       svg += `<text x="0" y="${barY + barHeight + 12}" font-size="9" font-family="sans-serif" fill="var(--ink-soft, #64748b)">${PERS_GAUGE_ZONE_ORDER.map((k) => `${PERS_GAUGE_ZONE_LABELS[k]} ${pct(k)}%`).join(" · ")}</text>`;
@@ -8838,6 +8891,16 @@
   const homeBtn = el("home-btn");
   document.querySelectorAll(".tab").forEach((tab) => {
     tab.addEventListener("click", () => {
+      // Round 22, item 4 : connexion obligatoire — masquer les cercles
+      // d'accueil (voir CSS body.is-login-locked) suffit contre un usage
+      // normal, mais un onglet reste techniquement cliquable par un autre
+      // chemin (ex. resté en mémoire depuis avant la déconnexion). On
+      // referme donc systématiquement sur le verrou ici aussi, sauf vers
+      // les deux pages que le verrou lui-même autorise (Compte/Synchro).
+      if (appLoginLocked && tab.dataset.view !== "account" && tab.dataset.view !== "sync") {
+        enforceLoginGate();
+        return;
+      }
       document.querySelectorAll(".tab").forEach((t) => {
         t.classList.remove("is-active");
         t.setAttribute("aria-selected", "false");
@@ -9060,6 +9123,14 @@
   // passé).
   let reviewEntryFromManage = false;
   function goHome() {
+    // Round 22, item 4 : connexion obligatoire — tant que l'appli est
+    // verrouillée, "Accueil" ne doit jamais en sortir (le bouton lui-même
+    // est déjà masqué par enforceLoginGate(), ceci est une défense
+    // supplémentaire si jamais goHome() est appelé autrement).
+    if (appLoginLocked) {
+      enforceLoginGate();
+      return;
+    }
     if (cardsEntryFromManage && el("view-cards") && el("view-cards").classList.contains("is-active")) {
       cardsEntryFromManage = false;
       const tab = document.querySelector('.tab[data-view="manage"]');
@@ -9100,6 +9171,14 @@
     el("view-home").classList.add("is-active");
     if (homeBtn) homeBtn.hidden = true;
     if (el("body-logo-row")) el("body-logo-row").hidden = true;
+    // Round 22, item 7 : filet de sécurité en plus du masquage de la ligne
+    // ci-dessus — vide aussi le message de la bulle du robot elle-même
+    // (pas seulement son conteneur), pour qu'aucune page suivante n'hérite
+    // par erreur d'un message resté en mémoire depuis avant ce retour à
+    // l'accueil.
+    bodyLogoSpeechMessages = [];
+    bodyLogoSpeechIndex = 0;
+    renderBodyLogoSpeechState(false);
   }
   if (homeBtn) homeBtn.addEventListener("click", goHome);
 
@@ -9108,6 +9187,11 @@
   // .tab[data-view=...].click()) plutôt que de dupliquer la bascule de vue.
   document.querySelectorAll(".home-circle[data-go]").forEach((square) => {
     square.addEventListener("click", () => {
+      // Round 22, item 4 : même garde-fou que sur les onglets eux-mêmes.
+      if (appLoginLocked && square.dataset.go !== "account" && square.dataset.go !== "sync") {
+        enforceLoginGate();
+        return;
+      }
       // Item 5 : n'importe quel autre chemin vers Fiches (bouton d'accueil
       // dédié, etc.) repart sur le comportement normal du bouton Accueil.
       if (square.dataset.go === "cards") cardsEntryFromManage = false;
@@ -9160,17 +9244,47 @@
      dans IndexedDB, le volume attendu est faible).
   --------------------------------------------------------- */
   const CALENDAR_EVENTS_KEY = "fiches_calendar_events";
+  /** Round 22, item 4 : bug corrigé — les évènements étaient soit (a) dans
+   *  cet espace localStorage UNIQUE par appareil (donc partagés entre
+   *  n'importe quels Comptes utilisés sur le même téléphone), soit (b, le
+   *  vrai coupable du bug signalé par Stéphane) diffusés à TOUTE
+   *  installation de l'appli via le canal `dev_settings_public` (voir le
+   *  correctif dans gatherAppPrefs/applyAppPrefsFromRemote plus haut).
+   *  Ils sont maintenant propres au Compte connecté (il y en a toujours un
+   *  dès que l'appli est utilisable, voir enforceLoginGate) : chaque
+   *  Compte a sa propre clé localStorage, dérivée de son identifiant
+   *  Supabase Auth. */
+  function calendarEventsStorageKey() {
+    const uid = accountCurrentUser && accountCurrentUser.id;
+    return uid ? `${CALENDAR_EVENTS_KEY}__${uid}` : CALENDAR_EVENTS_KEY;
+  }
   function loadCalendarEvents() {
+    const key = calendarEventsStorageKey();
+    // Migration ponctuelle, une seule fois par Compte : reprend les
+    // évènements de l'ancien espace partagé (ex. les siens, créés avant ce
+    // round) plutôt que de les perdre silencieusement au premier lancement
+    // sous le nouveau stockage par Compte.
+    if (accountCurrentUser && key !== CALENDAR_EVENTS_KEY && localStorage.getItem(key) === null) {
+      const legacy = localStorage.getItem(CALENDAR_EVENTS_KEY);
+      if (legacy !== null) {
+        localStorage.setItem(key, legacy);
+        // Migration à USAGE UNIQUE (pas juste une copie) : l'ancien espace
+        // partagé est vidé aussitôt repris par un premier Compte, pour
+        // qu'un DEUXIÈME Compte se connectant ensuite sur ce même appareil
+        // ne récupère pas à son tour les mêmes évènements (qui ne sont pas
+        // les siens).
+        localStorage.removeItem(CALENDAR_EVENTS_KEY);
+      }
+    }
     try {
-      const raw = JSON.parse(localStorage.getItem(CALENDAR_EVENTS_KEY) || "[]");
+      const raw = JSON.parse(localStorage.getItem(key) || "[]");
       return Array.isArray(raw) ? raw : [];
     } catch {
       return [];
     }
   }
   function saveCalendarEvents(events) {
-    localStorage.setItem(CALENDAR_EVENTS_KEY, JSON.stringify(events));
-    scheduleDevSettingsPush();
+    localStorage.setItem(calendarEventsStorageKey(), JSON.stringify(events));
   }
   /** Round 21, item 3 : un élève peut désormais supprimer un évènement
    *  REÇU d'un prof une fois sa date passée (voir deleteOwnCalendarEvent).
@@ -9180,16 +9294,22 @@
    *  distant (`sharedEventId`) est donc gardé dans une liste locale
    *  d'évènements "écartés par l'élève", vérifiée avant toute recréation. */
   const CALENDAR_DISMISSED_SHARED_KEY = "fiches_calendar_dismissed_shared_events";
+  // Round 22, item 4 : même correctif que calendarEventsStorageKey —
+  // propre au Compte connecté plutôt qu'à l'appareil.
+  function dismissedSharedEventsStorageKey() {
+    const uid = accountCurrentUser && accountCurrentUser.id;
+    return uid ? `${CALENDAR_DISMISSED_SHARED_KEY}__${uid}` : CALENDAR_DISMISSED_SHARED_KEY;
+  }
   function loadDismissedSharedEventIds() {
     try {
-      const raw = JSON.parse(localStorage.getItem(CALENDAR_DISMISSED_SHARED_KEY) || "[]");
+      const raw = JSON.parse(localStorage.getItem(dismissedSharedEventsStorageKey()) || "[]");
       return new Set(Array.isArray(raw) ? raw : []);
     } catch {
       return new Set();
     }
   }
   function saveDismissedSharedEventIds(set) {
-    localStorage.setItem(CALENDAR_DISMISSED_SHARED_KEY, JSON.stringify(Array.from(set)));
+    localStorage.setItem(dismissedSharedEventsStorageKey(), JSON.stringify(Array.from(set)));
   }
   // Round 18, item 13 : un événement peut désormais être lié à PLUSIEURS
   // boîtes/dossiers à la fois — `calendarEventLinkIds` est un Set
@@ -9614,7 +9734,11 @@
     const isSharedByMe = !!ev.classShare;
     const isPast = calendarDiffDays(ev.date) < 0;
     li.className = "card-row calendar-event-row" + (isReceived ? " calendar-event-row--received" : "");
-    li.style.cssText = "flex-direction:row; align-items:flex-start; justify-content:space-between; cursor:pointer;";
+    // Round 22, item 5 : la poubelle (ou le cadenas) passe en bas à
+    // droite du bloc plutôt qu'en haut à droite, à côté du titre — la
+    // ligne bascule donc en colonne (contenu en haut, actions dessous,
+    // alignées à droite) plutôt qu'en rangée.
+    li.style.cssText = "flex-direction:column; align-items:stretch; cursor:pointer;";
     li.title = "Voir le détail de cet évènement";
     li.addEventListener("click", () => onOpen());
     const main = document.createElement("div");
@@ -9639,7 +9763,7 @@
       ${boxesHtml}
     `;
     const actions = document.createElement("div");
-    actions.style.cssText = "display:flex; gap:4px; flex-shrink:0;";
+    actions.style.cssText = "display:flex; gap:4px; flex-shrink:0; justify-content:flex-end; margin-top:6px;";
     if (isReceived && !isPast) {
       // Toujours en lecture seule tant que la date n'est pas passée (voir
       // deleteOwnCalendarEvent) : simple cadenas, sans action au clic.
@@ -10135,6 +10259,13 @@
     syncForm.reset();
     renderSyncView();
     updateSyncStatus();
+    // Round 22, item 4 : la Synchronisation étant le prérequis technique
+    // d'un Compte (même projet Supabase), la déconnecter revient aussi à
+    // perdre la connexion au Compte — reverrouille donc l'appli plutôt que
+    // de laisser croire qu'elle reste utilisable.
+    accountCurrentUser = null;
+    updateAccountHomeButton();
+    enforceLoginGate();
   });
 
   /* ---------------------------------------------------------
@@ -10153,6 +10284,64 @@
    *  ------------------------------------------------------------- */
   let accountCurrentUser = null;
   let classesAuthMode = "signin"; // "signin" | "signup"
+  // Round 22, item 4 : connexion obligatoire — décision explicite de
+  // Stéphane ("le but c'est que l'appli soit utilisée par des milliers
+  // d'utilisateurs, il faut donc que chacun ait ses propres évènements et
+  // aussi dossiers et boites"). `appLoginLocked` reflète si l'appli est
+  // actuellement verrouillée (aucun Compte connecté) — lu par goHome() et
+  // les clics de navigation pour refuser d'en sortir tant que ce n'est pas
+  // résolu.
+  let appLoginLocked = false;
+
+  /** Verrouille (ou déverrouille) l'appli selon l'état de connexion :
+   *  masque toute la navigation (cercles d'accueil sauf "Compte", bouton
+   *  Accueil) et force la page Synchronisation (si même ça manque encore)
+   *  ou Compte (connexion/inscription) tant qu'aucun Compte Supabase Auth
+   *  n'est connecté. C'est ce même mécanisme, appliqué de façon générale à
+   *  TOUTE la navigation plutôt qu'à un seul chemin, qui corrige le bug
+   *  d'origine signalé par Stéphane ("j'avais tous mes évènements alors
+   *  que je n'étais pas connecté") : sans Compte connecté, il n'y a tout
+   *  simplement plus d'usage possible de l'appli, donc plus moyen de voir
+   *  les évènements (ou fiches/dossiers/boîtes) de quelqu'un d'autre resté
+   *  ouvert sur le même appareil. Appelée au démarrage, après
+   *  connexion/inscription/déconnexion (Compte ou Sync), et par
+   *  Sync.auth.onChange en défense supplémentaire. */
+  function enforceLoginGate() {
+    const shouldLock = !accountCurrentUser;
+    const wasLocked = appLoginLocked;
+    appLoginLocked = shouldLock;
+    document.body.classList.toggle("is-login-locked", shouldLock);
+    // Round 22, item 4 : à la levée du verrou (connexion/inscription tout
+    // juste réussie), la page Compte forcée jusqu'ici n'a plus de bouton
+    // Accueil pour en sortir (masqué pendant le verrou) — on ramène donc
+    // directement à l'accueil plutôt que de laisser la personne bloquée
+    // là où le verrou l'avait placée.
+    if (wasLocked && !shouldLock) {
+      goHome();
+      return;
+    }
+    // Un Compte a besoin de la Synchronisation configurée d'abord (même
+    // projet Supabase, voir account-needs-sync) — on force donc cette page
+    // en premier si ce n'est pas encore fait, sinon la page Compte.
+    const targetView = Sync.isConfigured() ? "account" : "sync";
+    const accountBanner = el("account-login-gate-banner");
+    if (accountBanner) accountBanner.hidden = !shouldLock || targetView !== "account";
+    const syncBanner = el("sync-login-gate-banner");
+    if (syncBanner) syncBanner.hidden = !shouldLock || targetView !== "sync";
+    if (!shouldLock) return;
+    document.querySelectorAll(".tab").forEach((t) => {
+      const isTarget = t.dataset.view === targetView;
+      t.classList.toggle("is-active", isTarget);
+      t.setAttribute("aria-selected", String(isTarget));
+    });
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    const target = el(`view-${targetView}`);
+    if (target) target.classList.add("is-active");
+    if (homeBtn) homeBtn.hidden = true;
+    if (el("body-logo-row")) el("body-logo-row").hidden = true;
+    if (targetView === "account") renderAccountView();
+    else renderSyncView();
+  }
 
   /** Reflète l'état de connexion sur le bouton d'accueil (item 1/2) : son
    *  libellé change tout seul, avant même d'avoir ouvert la page Compte. */
@@ -10195,6 +10384,12 @@
       // syncDevSettingsFromServer) — un changement de Compte connecté
       // n'a donc plus besoin de recharger ni de se réabonner à quoi que
       // ce soit ici.
+      // Round 22, item 4 : filet de sécurité — reflète tout changement de
+      // Compte (déconnexion externe, session expirée...) sur le verrou de
+      // connexion obligatoire, même si ce changement n'est pas passé par
+      // les boutons Se connecter/Créer un compte/Se déconnecter ci-dessous
+      // (qui l'appellent déjà directement).
+      enforceLoginGate();
     });
   }
 
@@ -10315,6 +10510,12 @@
       passwordInput.value = "";
       await renderAccountView();
       await syncSharedBoxesForStudent();
+      // Round 22, item 4 : lève le verrou de connexion obligatoire tout de
+      // suite après une connexion réussie (renderAccountView() ci-dessus a
+      // déjà rafraîchi accountCurrentUser) — sans attendre un éventuel
+      // déclenchement de Sync.auth.onChange, pas garanti selon la
+      // bibliothèque/le contexte.
+      enforceLoginGate();
     });
   }
 
@@ -10325,6 +10526,10 @@
       accountCurrentUser = null;
       updateAccountHomeButton();
       await renderAccountView();
+      // Round 22, item 4 : reverrouille immédiatement l'appli (connexion
+      // obligatoire) — sans Compte connecté, plus aucun usage n'est
+      // possible, y compris rester sur une autre page déjà ouverte.
+      enforceLoginGate();
     });
   }
 
@@ -11286,26 +11491,74 @@
     "Prépa", "BTS", "IUT", "Licence", "Master", "Autre",
   ];
 
-  /** Moyenne (arrondie au demi-point) et nombre de notes d'une collection,
-   *  à partir du cache de toutes les notes (une seule requête pour toute
-   *  la Bibliothèque, voir renderLibraryView). */
-  function libraryCollectionRatingStats(collectionId) {
+  /** Nombre de pouces levés pour une collection, et si le Compte connecté
+   *  fait partie des personnes ayant déjà mis un pouce — à partir du cache
+   *  de toutes les notes (une seule requête pour toute la Bibliothèque,
+   *  voir renderLibraryView). Round 22, item 8 : remplace l'ancienne
+   *  moyenne 1-5 étoiles — chaque ligne de `library_ratings` (mise par
+   *  `Sync.library.rate(id, 1)`) vaut désormais un simple "pouce", sans
+   *  changement de schéma côté Supabase. */
+  function libraryCollectionLikeStats(collectionId) {
     const ratings = libraryRatingsCache.filter((r) => r.collection_id === collectionId);
-    if (ratings.length === 0) return { avg: 0, count: 0 };
-    const sum = ratings.reduce((acc, r) => acc + (r.rating || 0), 0);
-    return { avg: Math.round((sum / ratings.length) * 2) / 2, count: ratings.length };
+    const liked = !!(accountCurrentUser && ratings.some((r) => r.user_id === accountCurrentUser.id));
+    return { count: ratings.length, liked };
   }
 
-  /** 5 étoiles cliquables (notation) ou en lecture seule (moyenne
-   *  affichée) selon `onRate`. */
-  function libraryStarsHtml(avg, count, interactiveId) {
-    let stars = "";
-    for (let i = 1; i <= 5; i++) {
-      const filled = i <= Math.round(avg);
-      stars += `<span class="library-star${filled ? " library-star--filled" : ""}" data-star="${i}">${filled ? "★" : "☆"}</span>`;
+  /** Pouce (vers le haut uniquement) cliquable pour liker/unliker une
+   *  collection, avec le nombre total de personnes l'ayant déjà mis.
+   *  Round 22, item 8 : remplace les 5 étoiles (libraryStarsHtml). */
+  function libraryThumbHtml(count, liked, interactiveId) {
+    const icon = iconSvgMarkup("thumbsUp", "icon-inline-svg");
+    const countLabel = count > 0 ? ` <span class="library-thumb-count">${count}</span>` : "";
+    return `<span class="library-thumb${liked ? " library-thumb--active" : ""}"${interactiveId ? ` data-like-collection="${interactiveId}"` : ""} title="${liked ? "Retirer mon pouce" : "Mettre un pouce"}">${icon}${countLabel}</span>`;
+  }
+
+  /** Round 22, item 6 : icône de pièce d'or réaliste (dégradé radial +
+   *  anneau en relief + reflet) pour le bouton de prix de la Bibliothèque —
+   *  remplace l'icône plate monochrome `coin` de ICON_LIBRARY (round 21),
+   *  jugée trop peu réaliste ("il faut vraiment que ça ressemble à une
+   *  pièce en or"). Un `<radialGradient>` a besoin de plusieurs couleurs et
+   *  d'un id unique par instance, ce que le pochoir `currentColor` à un
+   *  seul trait de ICON_LIBRARY ne permet pas — d'où ce petit SVG à part. */
+  function libraryCoinIconSvg(size) {
+    const s = size || 15;
+    const gid = `lib-coin-grad-${Math.random().toString(36).slice(2, 9)}`;
+    return `<svg class="library-coin-icon" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true">
+      <defs>
+        <radialGradient id="${gid}" cx="35%" cy="30%" r="75%">
+          <stop offset="0%" stop-color="#fff3c4" />
+          <stop offset="45%" stop-color="#f3c545" />
+          <stop offset="100%" stop-color="#b8860b" />
+        </radialGradient>
+      </defs>
+      <circle cx="12" cy="12" r="10" fill="url(#${gid})" stroke="#8a6103" stroke-width="1" />
+      <circle cx="12" cy="12" r="7.3" fill="none" stroke="#8a6103" stroke-width="0.8" opacity="0.55" />
+      <ellipse cx="9" cy="8.3" rx="3.1" ry="1.7" fill="#ffffff" opacity="0.45" />
+    </svg>`;
+  }
+
+  /** Round 22, item 6 : libellé du bouton de prix — icône pièce + nombre,
+   *  sans le mot "jeton" (demande explicite de Stéphane), ou "Gratuit" en
+   *  texte simple (pas d'icône, rien à payer). */
+  function libraryPriceButtonHtml(priceTokens) {
+    return priceTokens > 0 ? `${libraryCoinIconSvg()}${priceTokens}` : "Gratuit";
+  }
+
+  /** Bascule le pouce du Compte connecté sur une collection (pose s'il n'y
+   *  était pas, retire s'il y était déjà), puis rafraîchit le cache de
+   *  notes et rappelle `onDone` pour ré-afficher le nombre à jour. */
+  async function toggleLibraryLike(col, liked, onDone) {
+    if (!accountCurrentUser) {
+      await robotAlert("Connecte-toi avec un Compte (page Compte) pour mettre un pouce à une collection.");
+      return;
     }
-    const countLabel = count > 0 ? ` <span class="library-star-count">(${count})</span>` : "";
-    return `<span class="library-stars"${interactiveId ? ` data-rate-collection="${interactiveId}"` : ""}>${stars}</span>${countLabel}`;
+    if (liked) {
+      await Sync.library.unrate(col.id);
+    } else {
+      await Sync.library.rate(col.id, 1);
+    }
+    libraryRatingsCache = await Sync.library.listRatings();
+    onDone();
   }
 
   async function renderLibraryView() {
@@ -11426,24 +11679,23 @@
       // prénom/nom de l'auteur n'était pas encore connu).
       const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || col.owner_email || "quelqu'un";
       const priceTokens = Number(col.price_tokens) || 0;
-      const priceLabel = priceTokens > 0 ? `${priceTokens} jeton${priceTokens > 1 ? "s" : ""}` : "Gratuit";
       const levelLabel = col.level ? ` · ${escapeHtml(col.level)}` : "";
-      const { avg, count } = libraryCollectionRatingStats(col.id);
+      const { count: likeCount, liked } = libraryCollectionLikeStats(col.id);
       const li = document.createElement("li");
       li.className = "subject-row library-row";
-      // Round 21, item 6 : étoiles déplacées sur la même ligne que le nom
-      // (alignées à droite du bloc) ; le bouton "Prendre" affiche
-      // maintenant directement le prix (ou "Gratuit") et un bouton
-      // "Détails" explicite mène à la page de détail (round 19, item 11 —
-      // le reste de la ligne l'ouvre aussi, comme avant).
+      // Round 21, item 6 : notation déplacée sur la même ligne que le nom
+      // (alignée à droite du bloc). Round 22, item 6/8 : le bouton de prix
+      // (icône pièce + nombre, sans le mot "jeton") passe en bas à droite
+      // du bloc, à côté de "Détails" ; les 5 étoiles sont remplacées par un
+      // pouce cliquable (voir libraryThumbHtml).
       li.innerHTML = `
         <div class="library-row-head">
           <span class="subject-row-name">${iconSvgMarkup("share", "icon-inline-svg")} <span>${escapeHtml(col.name)}</span></span>
-          <span class="library-rating-row">${libraryStarsHtml(avg, count, col.id)}</span>
+          <span class="library-rating-row">${libraryThumbHtml(likeCount, liked, col.id)}</span>
         </div>
         <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""} — par ${escapeHtml(ownerName)}${levelLabel}</span>
         <div class="library-row-actions">
-          <button type="button" class="btn btn--small library-price-btn${alreadyTaken ? " library-price-btn--taken" : ""}" ${alreadyTaken ? "disabled" : ""}>${alreadyTaken ? "Déjà pris" : priceLabel}</button>
+          <button type="button" class="btn btn--small library-price-btn${alreadyTaken ? " library-price-btn--taken" : ""}" ${alreadyTaken ? "disabled" : ""}>${alreadyTaken ? "Déjà pris" : libraryPriceButtonHtml(priceTokens)}</button>
           <button type="button" class="btn btn--small btn--ghost library-details-btn">Détails</button>
         </div>
       `;
@@ -11461,21 +11713,11 @@
           openLibraryDetailView(col);
         });
       }
-      const starsEl = li.querySelector(".library-stars");
-      if (starsEl) {
-        starsEl.querySelectorAll(".library-star").forEach((starBtn) => {
-          starBtn.addEventListener("click", async (e) => {
-            e.stopPropagation();
-            if (!accountCurrentUser) {
-              await robotAlert("Connecte-toi avec un Compte (page Compte) pour noter une collection.");
-              return;
-            }
-            const value = Number(starBtn.dataset.star) || 0;
-            if (!value) return;
-            await Sync.library.rate(col.id, value);
-            libraryRatingsCache = await Sync.library.listRatings();
-            renderLibraryList();
-          });
+      const thumbEl = li.querySelector(".library-thumb");
+      if (thumbEl) {
+        thumbEl.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          await toggleLibraryLike(col, liked, () => renderLibraryList());
         });
       }
       // Round 19, item 11 : le reste de la ligne ouvre la page de détail
@@ -11496,8 +11738,11 @@
     const n = Array.isArray(col.cards) ? col.cards.length : 0;
     const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || col.owner_email || "quelqu'un";
     const priceTokens = Number(col.price_tokens) || 0;
-    const priceLabel = priceTokens > 0 ? `🪙 ${priceTokens} jeton${priceTokens > 1 ? "s" : ""}` : "Gratuit";
-    const { avg, count } = libraryCollectionRatingStats(col.id);
+    // Round 22, item 6 : icône pièce + nombre, sans le mot "jeton" (voir
+    // libraryPriceButtonHtml, partagé avec la liste et le bouton "Prendre"
+    // ci-dessous).
+    const priceLabel = libraryPriceButtonHtml(priceTokens);
+    const { count, liked } = libraryCollectionLikeStats(col.id);
 
     const titleEl = el("library-detail-title");
     if (titleEl) titleEl.textContent = col.name || "Collection";
@@ -11524,19 +11769,11 @@
     }
     const ratingEl = el("library-detail-rating");
     if (ratingEl) {
-      ratingEl.innerHTML = libraryStarsHtml(avg, count, col.id);
-      const starsEl = ratingEl.querySelector(".library-stars");
-      if (starsEl) {
-        starsEl.querySelectorAll(".library-star").forEach((starBtn) => {
-          starBtn.addEventListener("click", async () => {
-            if (!accountCurrentUser) {
-              await robotAlert("Connecte-toi avec un Compte (page Compte) pour noter une collection.");
-              return;
-            }
-            const value = Number(starBtn.dataset.star) || 0;
-            if (!value) return;
-            await Sync.library.rate(col.id, value);
-            libraryRatingsCache = await Sync.library.listRatings();
+      ratingEl.innerHTML = libraryThumbHtml(count, liked, col.id);
+      const thumbEl = ratingEl.querySelector(".library-thumb");
+      if (thumbEl) {
+        thumbEl.addEventListener("click", async () => {
+          await toggleLibraryLike(col, liked, () => {
             openLibraryDetailView(col);
             renderLibraryList();
           });
@@ -11546,12 +11783,14 @@
     const alreadyTaken = subjects.some((s) => s.fromLibrary && s.libraryOriginId === col.id);
     // Round 21, item 6 : même bouton "prix" que dans la liste, avec la
     // même confirmation d'achat (voir confirmAndTakeLibraryCollection).
+    // Round 22, item 6 : innerHTML (pas textContent) car le libellé
+    // contient maintenant l'icône SVG de la pièce.
     const takeBtn = el("library-detail-take-btn");
     if (takeBtn) {
       takeBtn.classList.add("library-price-btn");
       takeBtn.classList.toggle("library-price-btn--taken", alreadyTaken);
       takeBtn.disabled = alreadyTaken;
-      takeBtn.textContent = alreadyTaken ? "Déjà pris" : priceLabel;
+      takeBtn.innerHTML = alreadyTaken ? "Déjà pris" : priceLabel;
       takeBtn.onclick = alreadyTaken
         ? null
         : async () => {
@@ -11559,7 +11798,7 @@
               renderLibraryList();
               takeBtn.disabled = true;
               takeBtn.classList.add("library-price-btn--taken");
-              takeBtn.textContent = "Déjà pris";
+              takeBtn.innerHTML = "Déjà pris";
             });
           };
     }
@@ -12695,6 +12934,12 @@
     // (compte Supabase persistant) et lance en tâche de fond la synchro
     // des boîtes partagées d'un élève — indépendant du reste de la sync
     // perso ci-dessus, peut échouer sans bloquer l'appli.
-    initAccountState();
+    // Round 22, item 4 : attendu (pas "fire-and-forget" comme avant) pour
+    // pouvoir appliquer tout de suite après le verrou de connexion
+    // obligatoire (voir enforceLoginGate) — sans quoi l'appli serait
+    // brièvement utilisable, sans connexion, entre l'affichage de
+    // l'accueil et la résolution de cette promesse.
+    await initAccountState();
+    enforceLoginGate();
   })();
 })();

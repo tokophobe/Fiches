@@ -13,6 +13,15 @@
   --paper: #ffffff;
   --paper-2: #f4f7fb;
   --rule: #4a9fe0;
+  /* Round 22, item 3 : jeton dédié pour les traits de séparation discrets
+     (liste du Calendrier, liste des discussions de Messagerie) — utilisé
+     avant seulement via la valeur de repli codée en dur des règles CSS
+     concernées (`rgba(35,48,42,0.1)`, jamais redéfinie nulle part), donc
+     invisible en mode nuit (fond sombre, trait quasi noir à 10% d'opacité).
+     Défini ici pour le thème clair ET redéfini plus bas pour le mode nuit
+     (voir :root.is-night-mode) avec une valeur claire, pour rester visible
+     sur les deux fonds. */
+  --rule-soft: rgba(31, 41, 55, 0.14);
   --ink: #1f2937;
   --ink-soft: #64748b;
   --amber: #cf9a4d;
@@ -44,6 +53,9 @@
   --rule: #4a9fe0;
   --ink: #eef2f8;
   --ink-soft: #93a1b5;
+  /* Round 22, item 3 : trait clair (au lieu du sombre du thème jour),
+     assez visible sur le fond sombre du mode nuit. */
+  --rule-soft: rgba(238, 242, 248, 0.18);
 }
 
 * { box-sizing: border-box; }
@@ -1460,6 +1472,24 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 
 .body-logo-row[hidden] { display: none; }
 
+/* Round 22, item 4 : connexion obligatoire — tant qu'aucun Compte n'est
+   connecté (voir enforceLoginGate dans app.js), tous les cercles d'accueil
+   SAUF "Compte" sont masqués (celui-ci reste le seul chemin possible, pour
+   se connecter ou créer un compte). Défense en profondeur : en pratique
+   enforceLoginGate() force déjà une autre page que l'accueil pendant le
+   verrou, donc ces cercles ne sont normalement même pas à l'écran, mais
+   cette règle évite un flash indésirable si jamais l'accueil réapparaît
+   brièvement avant que le JS n'ait fini de rediriger. */
+body.is-login-locked .home-circle:not([data-key="account"]) { display: none; }
+.account-login-gate-banner {
+  color: var(--warn-text, #8a4b12);
+  background: var(--warn-bg, rgba(224, 167, 52, 0.16));
+  border: 1px solid var(--warn-border, rgba(224, 167, 52, 0.4));
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-weight: 600;
+}
+
 .body-logo {
   flex-shrink: 0;
   width: var(--body-logo-size, 40px);
@@ -2004,46 +2034,71 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   display: flex;
   gap: 8px;
   margin-top: 8px;
+  /* Round 22, item 6 : le bouton de prix (et "Détails" à côté) passe en
+     bas à droite du bloc plutôt qu'aligné à gauche. */
+  justify-content: flex-end;
 }
 /* Round 18, item 15 : notation par étoiles d'une collection. Round 21,
-   item 6 : maintenant alignées à droite, sur la ligne du nom. */
+   item 6 : alignées à droite, sur la ligne du nom. Round 22, item 8 :
+   les 5 étoiles sont remplacées par un simple pouce (vers le haut
+   uniquement), cliquable pour "liker"/"unliker", avec le nombre de
+   personnes ayant mis un pouce. */
 .library-rating-row {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: 4px;
 }
-.library-stars {
+.library-thumb {
   display: inline-flex;
-  gap: 2px;
-}
-.library-star {
+  align-items: center;
+  gap: 4px;
   cursor: pointer;
-  font-size: 17px;
-  line-height: 1;
   color: var(--ink-soft, #8a8f99);
   user-select: none;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1;
 }
-.library-star--filled {
-  color: #e0a734;
+.library-thumb .icon-inline-svg {
+  width: 16px;
+  height: 16px;
+  vertical-align: -3px;
 }
-.library-star-count {
-  font-size: 12px;
-  color: var(--ink-soft);
-  margin-left: 2px;
+/* Pouce "activé" (l'utilisateur courant a liké) : rempli et vert plutôt
+   qu'un simple contour, pour qu'on distingue son propre vote du total. */
+.library-thumb--active {
+  color: #2f8f4e;
+}
+.library-thumb--active .icon-inline-svg {
+  fill: currentColor;
+}
+.library-thumb-count {
+  font-size: 12.5px;
 }
 /* Round 21, item 6 : le bouton "Prendre" affiche maintenant le prix
    directement (ou "Gratuit") — coloré comme un bouton d'action principale
    pour rester bien visible, même s'il n'est plus l'unique bouton de la
-   ligne (voir aussi .library-details-btn). */
+   ligne (voir aussi .library-details-btn). Round 22, item 6 : refonte
+   "boutique" — pastille dorée en pilule avec icône de pièce réaliste
+   (dégradé, voir libraryCoinIconSvg) plutôt que le mot "jeton". */
 /* Spécificité : `.btn { background: transparent }` est déclarée PLUS LOIN
    dans cette feuille de style (round 19, item 10) — à spécificité égale,
    c'est donc elle qui l'emporterait sur `.library-price-btn` seule. Le
    sélecteur combiné `.btn.library-price-btn` (2 classes) a une spécificité
    plus élevée et règle ce piège une bonne fois pour toutes. */
 .btn.library-price-btn {
-  background: var(--rule);
-  color: var(--paper);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #f9e28c 0%, #e0a734 55%, #b8860b 100%);
+  color: #4a3200;
+  border-radius: 999px;
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(184, 134, 11, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.btn.library-price-btn .library-coin-icon {
+  flex-shrink: 0;
 }
 /* Round 10, item 6 : une collection déjà prise affiche "Déjà pris",
    désactivé, dans une couleur de fond différente du bouton actif — pour
@@ -3726,6 +3781,14 @@ button.home-btn {
   display: flex;
   gap: 6px;
   margin-bottom: 14px;
+  /* Round 22, item 2 : Stéphane a demandé de remettre un cadre autour
+     de ce sélecteur (retiré par erreur au round 21, item 1, qui ne
+     visait que la couleur de fond de chaque bouton) — un cadre discret
+     autour du GROUPE des deux boutons, façon sélecteur segmenté, plutôt
+     que sur chaque bouton séparément. */
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 3px;
 }
 
 /* Round 21, item 1 : l'élément NON sélectionné perd son fond/contour

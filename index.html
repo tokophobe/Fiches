@@ -741,6 +741,14 @@
     <!-- VUE SYNC -->
     <section id="view-sync" class="view" aria-labelledby="tab-sync">
 
+      <!-- Round 22, item 4 : connexion obligatoire — un Compte a besoin de
+           cette étape technique d'abord (même projet Supabase), donc c'est
+           ELLE qui est forcée en tout premier tant qu'elle manque (voir
+           enforceLoginGate dans app.js). -->
+      <p class="field-hint settings-block-hint account-login-gate-banner" id="sync-login-gate-banner" hidden>
+        🔒 Connexion obligatoire : configure d'abord la Synchronisation ci-dessous (nécessaire pour créer ou rejoindre un Compte), puis crée ton Compte.
+      </p>
+
       <div id="sync-unconfigured">
         <h2 class="section-title">Synchroniser tes fiches</h2>
         <p class="sync-intro">
@@ -817,6 +825,14 @@
          connecté depuis cette page. -->
     <section id="view-account" class="view" aria-labelledby="tab-account">
       <h2 class="section-title">Compte</h2>
+
+      <!-- Round 22, item 4 : connexion obligatoire — affiché uniquement
+           tant qu'aucun Compte n'est connecté (voir enforceLoginGate dans
+           app.js), pour que ce ne soit jamais perçu comme une étape
+           facultative. -->
+      <p class="field-hint settings-block-hint account-login-gate-banner" id="account-login-gate-banner" hidden>
+        🔒 Connexion obligatoire : crée un compte ou connecte-toi ci-dessous pour utiliser Fiches.
+      </p>
 
       <!-- Round 13, item 8 : accès à la Synchronisation toujours visible
            (avant : seulement affiché quand la synchro n'était pas encore

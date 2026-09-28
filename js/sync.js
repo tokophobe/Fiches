@@ -945,8 +945,12 @@ async function deleteLibraryCollection(id) {
   return { error: error ? error.message : null };
 }
 
-/** Note (ou remplace sa note existante pour) une collection, 1 à 5
- *  étoiles. */
+/** Note (ou remplace sa note existante pour) une collection. Round 22,
+ *  item 8 : le système est passé de 5 étoiles à un simple pouce — chaque
+ *  ligne de `library_ratings` vaut désormais "j'ai mis un pouce" (appelée
+ *  avec `rating = 1`), sans changement de schéma côté Supabase (la colonne
+ *  `rating` existe toujours, elle est juste ignorée à l'affichage — seul
+ *  le NOMBRE de lignes pour une collection compte maintenant). */
 async function rateLibraryCollection(collectionId, rating) {
   const c = getClient();
   const user = await authGetUser();
@@ -954,6 +958,21 @@ async function rateLibraryCollection(collectionId, rating) {
   const { error } = await c
     .from("library_ratings")
     .upsert({ collection_id: collectionId, user_id: user.id, rating }, { onConflict: "collection_id,user_id" });
+  return { error: error ? error.message : null };
+}
+
+/** Round 22, item 8 : retire le pouce du Compte connecté sur une
+ *  collection (bascule inverse de rateLibraryCollection, pour un pouce qui
+ *  ne se pose qu'à l'unité — pas de "note à zéro", on supprime la ligne). */
+async function unrateLibraryCollection(collectionId) {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { error: "Non connecté." };
+  const { error } = await c
+    .from("library_ratings")
+    .delete()
+    .eq("collection_id", collectionId)
+    .eq("user_id", user.id);
   return { error: error ? error.message : null };
 }
 
@@ -1161,6 +1180,7 @@ window.Sync = {
     list: listLibraryCollections,
     get: getLibraryCollection,
     rate: rateLibraryCollection,
+    unrate: unrateLibraryCollection,
     listRatings: listLibraryRatings,
     findBySourceSubject: findLibraryCollectionBySourceSubject,
     delete: deleteLibraryCollection,
