@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v173";
+  const APP_VERSION = "v174";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -3725,13 +3725,6 @@
     if (track) track.style.animationDuration = `${Math.max(5, distance / MARQUEE_SPEED_PX_PER_S).toFixed(1)}s`;
   }
 
-  function applyManageNameMarquees() {
-    if (!subjectListEl) return;
-    subjectListEl.querySelectorAll(".subject-row-name > span").forEach((sp) => applyMarquee(sp));
-  }
-  window.addEventListener("resize", () => {
-    if (el("view-manage") && el("view-manage").classList.contains("is-active")) applyManageNameMarquees();
-  });
 
   function renderSubjectManageList() {
     subjectListEl.innerHTML = "";
@@ -3753,10 +3746,7 @@
     // à droite) — ce calcul recale juste l'emplacement nombre/mode/jauge
     // de chaque ligne pour qu'il tombe pile à la même position partout,
     // sans avoir à sacrifier cet effet de blocs imbriqués.
-    requestAnimationFrame(() => {
-      alignOrgInfoSlots();
-      applyManageNameMarquees();
-    });
+    requestAnimationFrame(alignOrgInfoSlots);
   }
 
   function alignOrgInfoSlots() {
@@ -9060,7 +9050,10 @@
       if (view === "dev") renderDevView();
       if (view === "sync") renderSyncView();
       if (view === "account") renderAccountView();
-      if (view === "school-hub") refreshMessagesBadge();
+      if (view === "school-hub") {
+        refreshMessagesBadge();
+        refreshCalendarHubBadge();
+      }
       if (view === "classes") renderClassesView();
       if (view === "messages") renderMessagesView();
       if (view === "library") renderLibraryView();
@@ -9280,7 +9273,8 @@
     // accueil, comme pour Organisation/Fiches ci-dessus.
     if (
       (el("view-classes") && el("view-classes").classList.contains("is-active")) ||
-      (el("view-messages") && el("view-messages").classList.contains("is-active"))
+      (el("view-messages") && el("view-messages").classList.contains("is-active")) ||
+      (el("view-calendar") && el("view-calendar").classList.contains("is-active"))
     ) {
       const tab = document.querySelector('.tab[data-view="school-hub"]');
       if (tab) tab.click();
@@ -9553,6 +9547,16 @@
     return loadCalendarEvents()
       .filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0 && calendarEventHasNoBox(ev))
       .sort((a, b) => a.date.localeCompare(b.date));
+  }
+
+  /** Pastille grise du bouton Calendrier (hub École) : nombre
+   *  d'évènements à venir (aujourd'hui compris). */
+  function refreshCalendarHubBadge() {
+    const badge = el("school-hub-calendar-badge");
+    if (!badge) return;
+    const n = loadCalendarEvents().filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0).length;
+    badge.hidden = n <= 0;
+    badge.textContent = n > 99 ? "99+" : String(n);
   }
 
   // Bandeau défilant d'alerte en haut de l'accueil. Pas d'alerte tant que
@@ -10307,35 +10311,182 @@
     if (tab) tab.click();
   }
 
+  /* ---------------------------------------------------------
+     Programme de révision : UN bloc par évènement à venir (le plus proche
+     d'abord), avec les boîtes/dossiers liés présentés en arborescence
+     (comme l'explorateur de Fiches) et des cases à cocher pour choisir ce
+     qu'on révise. Tout est coché par défaut ; un dossier coche/décoche
+     tout ce qu'il contient. "Réviser" lance une session sur la sélection.
+  --------------------------------------------------------- */
+  // Boîtes décochées par évènement (mémorisées le temps de la session de
+  // l'appli, pour retrouver ses choix en revenant sur la page).
+  const revisionProgramUnchecked = new Map();
+
+  function upcomingEventsWithBoxes() {
+    return loadCalendarEvents()
+      .filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0 && !calendarEventHasNoBox(ev))
+      .sort((a, b) => a.date.localeCompare(b.date));
+  }
+
+  /** Arbre d'un lien d'évènement : { kind: "box", id, name } ou
+   *  { kind: "folder", id, name, children: [...] } — un dossier devenu
+   *  boîte (même id qu'une boîte, voir isFolderABoite) est une boîte. */
+  function revisionTreeForFolder(folderId) {
+    const f = folders.find((x) => x.id === folderId);
+    const children = [];
+    folders
+      .filter((x) => x.parentId === folderId && !x.deleted)
+      .sort((a, b) => a.name.localeCompare(b.name, "fr"))
+      .forEach((sub) => {
+        if (isFolderABoite(sub.id)) children.push({ kind: "box", id: sub.id, name: sub.name });
+        else {
+          const node = revisionTreeForFolder(sub.id);
+          if (node.children.length > 0) children.push(node);
+        }
+      });
+    subjects
+      .filter((x) => x.folderId === folderId && !x.deleted && !folders.some((ff) => ff.id === x.id))
+      .sort((a, b) => a.name.localeCompare(b.name, "fr"))
+      .forEach((x) => children.push({ kind: "box", id: x.id, name: x.name }));
+    return { kind: "folder", id: folderId, name: f ? f.name : "Dossier", children };
+  }
+  function revisionTreeForEvent(ev) {
+    const roots = [];
+    eventLinkIds(ev).forEach((linkId) => {
+      if (!calendarLinkExists(linkId)) return;
+      const [type, id] = linkId.split(":");
+      if (type === "subject") {
+        const subj = subjects.find((x) => x.id === id);
+        roots.push({ kind: "box", id, name: subj ? subj.name : subjectName(id) });
+      } else if (type === "folder") {
+        if (isFolderABoite(id)) {
+          const f = folders.find((x) => x.id === id);
+          roots.push({ kind: "box", id, name: f ? f.name : subjectName(id) });
+        } else {
+          roots.push(revisionTreeForFolder(id));
+        }
+      }
+    });
+    return roots;
+  }
+  function revisionTreeBoxIds(nodes, out) {
+    out = out || [];
+    nodes.forEach((n) => {
+      if (n.kind === "box") {
+        if (!out.includes(n.id)) out.push(n.id);
+      } else revisionTreeBoxIds(n.children, out);
+    });
+    return out;
+  }
+
   function renderRevisionProgramList() {
     const list = el("revision-program-list");
     const empty = el("revision-program-empty");
     if (!list) return;
-    const items = computeRevisionProgramItems();
+    const events = upcomingEventsWithBoxes();
     list.innerHTML = "";
-    if (items.length === 0) {
+    if (events.length === 0) {
       if (empty) empty.hidden = false;
       return;
     }
     if (empty) empty.hidden = true;
-    items.forEach((it) => {
-      const li = document.createElement("li");
-      li.className = "card-row revision-program-row";
-      li.style.cssText = "flex-direction:row; align-items:center; justify-content:space-between;";
-      const dueLabel = it.daysLeft === 0 ? "aujourd'hui" : it.daysLeft === 1 ? "demain" : `dans ${it.daysLeft} j`;
-      li.innerHTML = `
-        <div class="card-row-main">
-          <strong>${escapeHtml(it.label)}</strong>
-          <span class="card-row-meta">« ${escapeHtml(it.eventTitle)} » — ${dueLabel}</span>
-        </div>
-        <div class="revision-program-gauge-col">${buildPersGaugeSvg(it.pool, { width: 190, barHeight: 12 })}</div>
-      `;
-      li.addEventListener("click", () => {
-        reviewEntryFromManage = false;
-        goToReviewFor(it.linkId);
+    events.forEach((ev) => list.appendChild(buildRevisionEventBlock(ev)));
+  }
+
+  function buildRevisionEventBlock(ev) {
+    const tree = revisionTreeForEvent(ev);
+    const allIds = revisionTreeBoxIds(tree);
+    if (!revisionProgramUnchecked.has(ev.id)) revisionProgramUnchecked.set(ev.id, new Set());
+    const unchecked = revisionProgramUnchecked.get(ev.id);
+    const isChecked = (id) => !unchecked.has(id);
+
+    const li = document.createElement("li");
+    li.className = "revision-event-block";
+    const diff = calendarDiffDays(ev.date);
+    li.innerHTML = `
+      <div class="revision-event-head">
+        <span class="revision-event-title">${escapeHtml(ev.title || "Évènement")}</span>
+        <span class="revision-event-when${diff <= 3 ? " is-soon" : ""}">${calendarCountdownLabel(ev.date)}</span>
+      </div>
+      <div class="revision-event-date">${formatCalendarDate(ev.date)}</div>
+      <div class="revision-event-tree"></div>
+      <div class="revision-event-gauge"></div>
+      <button type="button" class="btn btn--primary revision-event-go"></button>
+    `;
+    const treeEl = li.querySelector(".revision-event-tree");
+    const gaugeEl = li.querySelector(".revision-event-gauge");
+    const goBtn = li.querySelector(".revision-event-go");
+
+    function selectedIds() {
+      return allIds.filter(isChecked);
+    }
+    function nodeState(node) {
+      const ids = node.kind === "box" ? [node.id] : revisionTreeBoxIds(node.children);
+      const n = ids.filter(isChecked).length;
+      return n === 0 ? "none" : n === ids.length ? "all" : "some";
+    }
+    function refresh() {
+      treeEl.querySelectorAll("input[type=checkbox]").forEach((cb) => {
+        const node = cb._node;
+        const st = nodeState(node);
+        cb.checked = st === "all";
+        cb.indeterminate = st === "some";
       });
-      list.appendChild(li);
+      const ids = selectedIds();
+      const pool = cards.filter((c) => !c.deleted && ids.includes(c.subject));
+      gaugeEl.innerHTML = pool.length > 0 ? buildPersGaugeSvg(pool, { width: 260, barHeight: 10 }) : "";
+      goBtn.disabled = pool.length === 0;
+      goBtn.textContent =
+        ids.length === 0
+          ? "Coche au moins une boîte"
+          : pool.length === 0
+          ? "Aucune fiche dans la sélection"
+          : `Réviser la sélection (${pool.length} fiche${pool.length > 1 ? "s" : ""})`;
+    }
+    function toggleNode(node, checked) {
+      const ids = node.kind === "box" ? [node.id] : revisionTreeBoxIds(node.children);
+      ids.forEach((id) => (checked ? unchecked.delete(id) : unchecked.add(id)));
+      refresh();
+    }
+    function renderNodes(nodes, depth) {
+      nodes.forEach((node) => {
+        const row = document.createElement("label");
+        row.className = "revision-tree-row" + (node.kind === "folder" ? " revision-tree-row--folder" : "");
+        row.style.setProperty("--depth", depth);
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb._node = node;
+        cb.addEventListener("change", () => toggleNode(node, cb.checked));
+        row.appendChild(cb);
+        const icon = node.kind === "folder" ? iconSvgMarkup("folder", "icon-inline-svg") : orgIconMarkup("orgBoite");
+        const n = node.kind === "box" ? cards.filter((c) => !c.deleted && c.subject === node.id).length : null;
+        row.insertAdjacentHTML(
+          "beforeend",
+          `<span class="revision-tree-icon">${icon}</span><span class="revision-tree-name">${escapeHtml(node.name)}</span>${
+            n !== null ? `<span class="revision-tree-count">${n} fiche${n > 1 ? "s" : ""}</span>` : ""
+          }`
+        );
+        treeEl.appendChild(row);
+        if (node.kind === "folder") renderNodes(node.children, depth + 1);
+      });
+    }
+    renderNodes(tree, 0);
+    goBtn.addEventListener("click", () => {
+      const ids = selectedIds();
+      if (ids.length === 0) return;
+      reviewEntryFromManage = false;
+      if (ids.length === 1) {
+        switchSubject(ids[0]);
+      } else {
+        saveMultiSelection(ids);
+        saveMultiSelectionLabel(ev.title || "Sélection");
+        switchSubject(MULTI_SUBJECTS_ID, true);
+      }
+      const tab = document.querySelector('.tab[data-view="review"]');
+      if (tab) tab.click();
     });
+    refresh();
+    return li;
   }
 
   const revisionProgramSkipBtn = el("revision-program-skip");
@@ -10826,6 +10977,13 @@
       if (tab) tab.click();
     });
   }
+  const schoolHubCalendarBtn = el("school-hub-calendar-btn");
+  if (schoolHubCalendarBtn) {
+    schoolHubCalendarBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="calendar"]');
+      if (tab) tab.click();
+    });
+  }
   const schoolHubClassesBtn = el("school-hub-classes-btn");
   if (schoolHubClassesBtn) {
     schoolHubClassesBtn.addEventListener("click", () => {
@@ -11248,11 +11406,17 @@
    *  (évènements à venir) — le détail (boîtes partagées, évènements...)
    *  a été déplacé dans la page dédiée view-class-detail, ouverte au clic. */
   function classCircleHtml(klass, count, upcoming) {
+    // Lisibilité : une carte par classe (nom en clair, infos sur une ligne
+    // dessous) plutôt qu'un petit rond à trois lignes de texte.
+    const meta = [`${count} élève${count > 1 ? "s" : ""}`];
+    meta.push(upcoming > 0 ? `${upcoming} échéance${upcoming > 1 ? "s" : ""} à venir` : "aucune échéance");
     return `
-      ${CLASSES_ROW_ICON}
-      <span class="classes-class-circle-name">${escapeHtml(klass.name)}</span>
-      <span class="classes-class-circle-meta">${count} élève${count > 1 ? "s" : ""}</span>
-      <span class="classes-class-circle-meta">${upcoming} échéance${upcoming > 1 ? "s" : ""}</span>
+      <span class="class-card-icon">${CLASSES_ROW_ICON}</span>
+      <span class="class-card-main">
+        <span class="class-card-name">${escapeHtml(klass.name)}</span>
+        <span class="class-card-meta">${meta.join(" · ")}</span>
+      </span>
+      ${iconSvgMarkup("chevronRight", "class-card-chevron")}
     `;
   }
 
@@ -11263,12 +11427,13 @@
     list.innerHTML = "";
     const myClasses = await Sync.classes.listAsStudent();
     if (empty) empty.hidden = myClasses.length > 0;
+    if (list.previousElementSibling) list.previousElementSibling.hidden = myClasses.length === 0;
     for (const klass of myClasses) {
       const count = await Sync.classes.memberCount(klass.id);
       const upcoming = classUpcomingEvents(klass.id, "student").length;
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "classes-class-circle";
+      btn.className = "class-card";
       btn.innerHTML = classCircleHtml(klass, count, upcoming);
       btn.addEventListener("click", () => openClassDetailView(klass, "student"));
       list.appendChild(btn);
@@ -11282,12 +11447,13 @@
     list.innerHTML = "";
     const myClasses = await Sync.classes.listAsTeacher();
     if (empty) empty.hidden = myClasses.length > 0;
+    if (list.previousElementSibling) list.previousElementSibling.hidden = myClasses.length === 0;
     for (const klass of myClasses) {
       const count = await Sync.classes.memberCount(klass.id);
       const upcoming = classUpcomingEvents(klass.id, "teacher").length;
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "classes-class-circle";
+      btn.className = "class-card";
       btn.innerHTML = classCircleHtml(klass, count, upcoming);
       btn.addEventListener("click", () => openClassDetailView(klass, "teacher"));
       list.appendChild(btn);
@@ -11430,14 +11596,16 @@
     return root;
   }
   function renderSharedBoxesTreeHtml(node, depth) {
+    // Même logique visuelle que l'explorateur de Fiches : dossiers d'abord,
+    // puis boîtes ; nom aligné à gauche, nombre de fiches à droite.
     let html = "";
+    for (const child of node.children.values()) {
+      html += `<div class="class-tree-row class-tree-row--folder" style="--depth:${depth}">${iconSvgMarkup("folder", "class-tree-icon")}<span class="class-tree-name">${escapeHtml(child.name)}</span></div>`;
+      html += renderSharedBoxesTreeHtml(child, depth + 1);
+    }
     for (const box of node.boxes) {
       const n = (box.cards || []).length;
-      html += `<div class="classes-shared-box-row" style="padding-left:${depth * 16}px">${CLASSES_ROW_ICON}<span>${escapeHtml(box.subject_name)} <span class="classes-card-count">(${n} fiche${n > 1 ? "s" : ""})</span></span></div>`;
-    }
-    for (const child of node.children.values()) {
-      html += `<div class="classes-tree-folder" style="padding-left:${depth * 16}px;font-weight:600;">📁 ${escapeHtml(child.name)}</div>`;
-      html += renderSharedBoxesTreeHtml(child, depth + 1);
+      html += `<div class="class-tree-row" style="--depth:${depth}">${orgIconMarkup("orgBoite")}<span class="class-tree-name">${escapeHtml(box.subject_name)}</span><span class="class-tree-count">${n} fiche${n > 1 ? "s" : ""}</span></div>`;
     }
     return html;
   }
@@ -11467,16 +11635,18 @@
       Sync.classes.listSharedBoxes(klass.id),
     ]);
 
-    const statsEl = el("class-detail-stats");
-    if (statsEl) statsEl.innerHTML = `<p class="field-hint">${count} élève${count > 1 ? "s" : ""}</p>`;
-
-    const inviteRow = el("class-detail-invite-row");
     const shareBtn = el("class-detail-share-btn");
     const isTeacher = role === "teacher";
-    if (inviteRow) {
-      inviteRow.hidden = !isTeacher;
-      const strong = inviteRow.querySelector("strong");
-      if (strong) strong.textContent = klass.invite_code || "";
+    const statsEl = el("class-detail-stats");
+    if (statsEl) {
+      const chips = [
+        `<span class="class-chip">${isTeacher ? "Enseignant" : "Élève"}</span>`,
+        `<span class="class-chip">${count} élève${count > 1 ? "s" : ""}</span>`,
+      ];
+      if (isTeacher && klass.invite_code) {
+        chips.push(`<span class="class-chip class-chip--code">Code : <strong>${escapeHtml(klass.invite_code)}</strong></span>`);
+      }
+      statsEl.innerHTML = chips.join("");
     }
     if (shareBtn) shareBtn.hidden = !isTeacher;
     const addEventBtn = el("class-detail-add-event-btn");
@@ -11486,7 +11656,7 @@
     if (boxesEl) {
       boxesEl.innerHTML =
         sharedBoxes.length === 0
-          ? `<p class="field-hint">Aucune boîte partagée pour l'instant.</p>`
+          ? `<p class="class-detail-empty">Aucune boîte partagée pour l'instant.</p>`
           : renderSharedBoxesTreeHtml(buildSharedBoxesTree(sharedBoxes), 0);
     }
 
@@ -11497,8 +11667,8 @@
       eventsList.innerHTML = "";
       for (const ev of events) {
         const li = document.createElement("li");
-        li.className = "subject-row";
-        li.innerHTML = `<span>${escapeHtml(ev.title)}</span><span class="field-hint">${formatCalendarDate(ev.date)}</span>`;
+        li.className = "class-event-row";
+        li.innerHTML = `<span class="class-event-title">${escapeHtml(ev.title)}</span><span class="class-event-when"><span>${formatCalendarDate(ev.date)}</span><span class="class-event-countdown">${calendarCountdownLabel(ev.date)}</span></span>`;
         eventsList.appendChild(li);
       }
     }

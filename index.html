@@ -341,10 +341,6 @@
           <span>École</span>
           <span class="home-circle-badge" id="home-school-badge" hidden>0</span>
         </button>
-        <button type="button" class="home-circle" data-key="calendar" data-go="calendar">
-          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          <span>Calendrier</span>
-        </button>
         <button type="button" class="home-circle" data-key="stats" data-go="stats">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
           <span>Statistiques</span>
@@ -371,8 +367,8 @@
          Réviser, qui conseille par ordre de priorité les boîtes/dossiers
          à exercer en fonction des échéances du calendrier. -->
     <section id="view-revision-program" class="view" aria-labelledby="tab-revision-program">
-      <ul class="card-list card-list--tight" id="revision-program-list"></ul>
-      <p class="chart-empty" id="revision-program-empty" hidden>Pas d'échéance à venir — programme aucune priorité particulière.</p>
+      <ul class="revision-event-list" id="revision-program-list"></ul>
+      <p class="chart-empty" id="revision-program-empty" hidden>Aucun évènement à venir avec des boîtes associées.</p>
       <button type="button" class="revision-program-skip-btn" id="revision-program-skip">Sélection manuelle</button>
     </section>
 
@@ -960,6 +956,14 @@
           </span>
           <span>Mes classes</span>
         </button>
+        <button type="button" class="classes-role-circle" id="school-hub-calendar-btn">
+          <span class="classes-role-circle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </span>
+          <span>Calendrier</span>
+          <!-- Nombre d'évènements à venir (pastille grise, informative). -->
+          <span class="home-circle-badge home-circle-badge--neutral" id="school-hub-calendar-badge" hidden>0</span>
+        </button>
       </div>
     </section>
 
@@ -1050,7 +1054,8 @@
         <!-- Round 6, item 4 : les classes apparaissent en ronds (même
              esprit que les boutons de l'accueil), chacun menant à sa page
              dédiée (view-class-detail) plutôt qu'à une ligne dépliée ici. -->
-        <div class="classes-class-circles" id="classes-student-list"></div>
+        <h3 class="class-list-heading">Mes classes</h3>
+        <div class="class-card-list" id="classes-student-list"></div>
         <p class="field-hint" id="classes-student-empty" hidden>Tu n'as encore rejoint aucune classe.</p>
       </div>
     </section>
@@ -1088,7 +1093,8 @@
             <span>Créer une classe</span>
           </button>
         </div>
-        <div class="classes-class-circles" id="classes-teacher-list"></div>
+        <h3 class="class-list-heading">Mes classes</h3>
+        <div class="class-card-list" id="classes-teacher-list"></div>
         <p class="field-hint" id="classes-teacher-empty" hidden>Tu n'as encore créé aucune classe.</p>
       </div>
     </section>
@@ -1109,24 +1115,29 @@
          des boîtes partagées et liste des évènements à venir. -->
     <section id="view-class-detail" class="view" aria-labelledby="tab-classes">
       <button type="button" class="btn btn--ghost" id="class-detail-back-btn">← Retour</button>
-      <h2 class="section-title" id="class-detail-title">Classe</h2>
-      <div id="class-detail-stats"></div>
-      <p class="field-hint classes-invite-hint" id="class-detail-invite-row" hidden>Code d'invitation : <strong></strong></p>
-      <h3 class="settings-block-title">Boîtes partagées</h3>
-      <div id="class-detail-boxes"></div>
-      <div class="classes-detail-actions">
-        <!-- Round 11, item 1 : ce bouton propose maintenant aussi bien les
-             boîtes perso que les collections de la Bibliothèque (voir
-             renderSingleBoitePicker) — le bouton dédié du round 10 a été
-             retiré. -->
-        <button type="button" class="btn btn--small" id="class-detail-share-btn" hidden>Partager une boîte</button>
+      <!-- En-tête : nom de la classe + pastilles d'infos (rôle, élèves,
+           code d'invitation côté enseignant). -->
+      <div class="class-detail-header">
+        <h2 class="class-detail-name" id="class-detail-title">Classe</h2>
+        <div class="class-detail-chips" id="class-detail-stats"></div>
       </div>
-      <h3 class="settings-block-title">Évènements à venir</h3>
-      <ul class="subject-list" id="class-detail-events"></ul>
-      <p class="field-hint" id="class-detail-events-empty" hidden>Aucun évènement à venir pour cette classe.</p>
-      <!-- Round 10, item 5 : créer un évènement directement depuis la page
-           de la classe (au lieu de passer par Calendrier). -->
-      <button type="button" class="btn btn--small" id="class-detail-add-event-btn" hidden>Ajouter un évènement</button>
+      <div class="class-detail-section">
+        <div class="class-detail-section-head">
+          <h3>Boîtes partagées</h3>
+          <!-- Propose aussi bien les boîtes perso que les collections de la
+               Librairie (voir renderSingleBoitePicker). -->
+          <button type="button" class="class-detail-section-action" id="class-detail-share-btn" hidden>+ Partager</button>
+        </div>
+        <div class="class-tree" id="class-detail-boxes"></div>
+      </div>
+      <div class="class-detail-section">
+        <div class="class-detail-section-head">
+          <h3>Évènements à venir</h3>
+          <button type="button" class="class-detail-section-action" id="class-detail-add-event-btn" hidden>+ Ajouter</button>
+        </div>
+        <ul class="class-event-list" id="class-detail-events"></ul>
+        <p class="class-detail-empty" id="class-detail-events-empty" hidden>Aucun évènement à venir pour cette classe.</p>
+      </div>
     </section>
 
     <!-- Round 6, item 5 : messagerie — une discussion par classe, façon
