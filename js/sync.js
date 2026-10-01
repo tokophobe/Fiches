@@ -928,7 +928,7 @@ async function findLibraryCollectionBySourceSubject(subjectId) {
     .eq("source_subject_id", subjectId)
     .maybeSingle();
   if (error) {
-    console.warn("Bibliothèque : échec de la vérification de partage existant", error.message);
+    console.warn("Librairie : échec de la vérification de partage existant", error.message);
     return null;
   }
   return data || null;
@@ -984,7 +984,7 @@ async function listLibraryRatings() {
   if (!c) return [];
   const { data, error } = await c.from("library_ratings").select("collection_id, user_id, rating");
   if (error) {
-    console.warn("Bibliothèque : échec du chargement des notes", error.message);
+    console.warn("Librairie : échec du chargement des notes", error.message);
     return [];
   }
   return data || [];
@@ -995,7 +995,7 @@ async function listLibraryCollections() {
   if (!c) return [];
   const { data, error } = await c.from("library_collections").select("*").order("shared_at", { ascending: false });
   if (error) {
-    console.warn("Bibliothèque : échec du chargement des collections partagées", error.message);
+    console.warn("Librairie : échec du chargement des collections partagées", error.message);
     return [];
   }
   return data || [];
@@ -1010,7 +1010,7 @@ async function getLibraryCollection(id) {
   if (!c || !id) return null;
   const { data, error } = await c.from("library_collections").select("*").eq("id", id).maybeSingle();
   if (error) {
-    console.warn("Bibliothèque : échec du rechargement d'une collection", error.message);
+    console.warn("Librairie : échec du rechargement d'une collection", error.message);
     return null;
   }
   return data || null;

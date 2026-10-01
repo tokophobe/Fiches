@@ -5298,3 +5298,104 @@ button.home-btn {
 }
 
 
+
+/* Pastilles de notifications : `display: flex` (centrage du chiffre)
+   l'emportait sur l'attribut `hidden` — la pastille restait affichée avec
+   « 0 ». Sélecteur plus spécifique pour que `hidden` soit respecté. */
+.home-circle-badge[hidden],
+.construction-filter-badge[hidden] {
+  display: none;
+}
+
+/* Bandeau défilant (applyMarquee, js/app.js) : texte trop long pour sa
+   place → deux copies côte à côte qui défilent de droite à gauche en
+   boucle (translation de -50 % = exactement une copie + son espacement). */
+.is-marquee {
+  overflow: hidden;
+  text-overflow: clip !important;
+  white-space: nowrap;
+}
+.is-marquee .marquee-track {
+  display: inline-flex;
+  width: max-content;
+  overflow: visible;
+  animation-name: marquee-scroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: 1.2s;
+  will-change: transform;
+}
+.is-marquee .marquee-item {
+  flex-shrink: 0;
+  overflow: visible;
+  text-overflow: clip;
+  padding-right: 3em;
+}
+@keyframes marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .is-marquee .marquee-track { animation: none; }
+}
+
+/* Calendrier : alerte "aucune boîte associée" sur un évènement à venir. */
+.calendar-event-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 6px 0 0;
+  font-family: var(--font-type);
+  font-size: 12px;
+  line-height: 1.35;
+  color: #c2410c;
+}
+.calendar-event-warning .icon-inline-svg {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+}
+
+/* Accueil : bandeau défilant d'alerte, tout en haut de la page. */
+.home-warning-ticker {
+  width: 100%;
+  margin: 2px 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid rgba(194, 65, 12, 0.35);
+  border-radius: 999px;
+  background: rgba(255, 237, 213, 0.92);
+  color: #c2410c;
+  font-family: var(--font-type);
+  font-size: 12.5px;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+}
+.home-warning-ticker[hidden] { display: none; }
+.home-warning-ticker-icon {
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+}
+.home-warning-ticker-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.home-warning-ticker .is-marquee .marquee-track { animation-delay: 0s; }
+:root.is-night-mode .home-warning-ticker { background: rgba(124, 45, 18, 0.55); color: #fdba74; border-color: rgba(253, 186, 116, 0.35); }
+:root.is-night-mode .calendar-event-warning { color: #fdba74; }
+
+.library-mine-toggle[hidden] { display: none; }
+
+/* Fondu discret aux deux bords d'un texte qui défile. */
+.is-marquee {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 10px, #000 calc(100% - 14px), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 10px, #000 calc(100% - 14px), transparent 100%);
+}

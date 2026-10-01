@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v172";
+  const APP_VERSION = "v173";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -729,6 +729,8 @@
   // chaîne reste acceptée pour un message unique.
   const DEFAULT_HELP_MESSAGES_BY_VIEW = {
     manage: ["Lorsque tu mets une fiche dans un dossier vide, il se transforme alors en boîte à fiches."],
+    "manage-creations": ["Ici, seulement les boîtes que tu as créées toi-même. L'interrupteur ne garde que celles publiées dans la Librairie."],
+    "fiches-hub": [],
     "revision-program": ["A ta place, voici ce que je réviserais en priorité, dans l'ordre :"],
     review: [],
     cards: [],
@@ -756,7 +758,9 @@
   // mode développeur — mêmes clés que DEFAULT_HELP_MESSAGES_BY_VIEW.
   const HELP_VIEW_LABELS = {
     review: "Réviser",
-    manage: "Mes collections (Organisation)",
+    manage: "Mes fiches de révision (Organisation)",
+    "manage-creations": "Mes créations de fiches",
+    "fiches-hub": "Fiches (choix)",
     cards: "Fiches",
     stats: "Statistiques",
     sync: "Synchronisation",
@@ -775,7 +779,7 @@
     "mode-assign": "Affecter un mode",
     messages: "Messagerie",
     "message-thread": "Messagerie — discussion",
-    library: "Bibliothèque",
+    library: "Librairie",
   };
   // Round 4 : le robot ne dit plus rien par défaut — une petite bulle
   // "aide" cliquable apparaît à côté de lui quand la page a un message, et
@@ -3621,13 +3625,127 @@
    *  créés à la racine (déplaçables ensuite via ↔️). */
   const expandedManageFolders = new Set();
 
+  /* ---- Page Fiches : deux façons d'afficher l'organisation.
+     "all"       : Mes fiches de révision (tout, comme avant).
+     "creations" : Mes créations de fiches — seulement les boîtes créées
+                   par l'utilisateur (ni boîtes de classe, ni collections
+                   prises dans la Librairie), avec un interrupteur pour ne
+                   garder que celles publiées dans la Librairie. ---- */
+  let manageMode = "all";
+  let manageOnlyPublished = false;
+  let myPublishedSourceIds = new Set();
+  let myPublishedLegacyNames = new Set();
+
+  function isOwnCreatedSubject(s) {
+    return !!s && !s.deleted && !s.sharedBoxId && !s.fromLibrary;
+  }
+  function isSubjectPublishedInLibrary(s) {
+    if (!s) return false;
+    // Collections partagées avant le lien vers la boîte d'origine (round
+    // 20) : reconnues par leur nom, faute de mieux.
+    return myPublishedSourceIds.has(s.id) || myPublishedLegacyNames.has(s.name);
+  }
+  function subjectPassesManageFilter(subjectId) {
+    if (manageMode !== "creations") return true;
+    const s = subjects.find((x) => x.id === subjectId);
+    if (!isOwnCreatedSubject(s)) return false;
+    return manageOnlyPublished ? isSubjectPublishedInLibrary(s) : true;
+  }
+  function folderPassesManageFilter(folderId) {
+    if (manageMode !== "creations") return true;
+    const f = folders.find((x) => x.id === folderId);
+    if (!f || f.sharedClassId || f.sharedClassRoot) return false;
+    if (isFolderABoite(folderId)) return subjectPassesManageFilter(folderId);
+    const inside = subjectIdsInFolder(folderId);
+    const boitesInside = folderDescendantIds(folderId).filter((id) => isFolderABoite(id));
+    if (inside.some(subjectPassesManageFilter) || boitesInside.some(subjectPassesManageFilter)) return true;
+    // Dossier vide (le sien) : visible tant qu'on ne filtre pas sur les
+    // boîtes publiées — il pourra recevoir de nouvelles créations.
+    return !manageOnlyPublished && inside.length === 0 && boitesInside.length === 0;
+  }
+
+  async function refreshMyPublishedSubjects() {
+    myPublishedSourceIds = new Set();
+    myPublishedLegacyNames = new Set();
+    if (!Sync.isConfigured() || !accountCurrentUser) return;
+    try {
+      const cols = await Sync.library.list();
+      cols
+        .filter((c) => c.owner_id === accountCurrentUser.id)
+        .forEach((c) => {
+          if (c.source_subject_id) myPublishedSourceIds.add(c.source_subject_id);
+          else if (c.name) myPublishedLegacyNames.add(c.name);
+        });
+    } catch (e) {
+      console.warn("Librairie : échec du chargement de mes publications", e);
+    }
+  }
+
+  function updateManagePublishedToggle() {
+    const t = el("manage-published-toggle");
+    if (!t) return;
+    t.hidden = manageMode !== "creations" || !accountCurrentUser;
+    t.classList.toggle("is-active", manageOnlyPublished);
+    t.setAttribute("aria-pressed", String(manageOnlyPublished));
+  }
+
+  function openManageInMode(mode) {
+    manageMode = mode;
+    if (mode !== "creations") manageOnlyPublished = false;
+    updateManagePublishedToggle();
+    const tab = document.querySelector('.tab[data-view="manage"]');
+    if (tab) tab.click();
+    if (mode === "creations") {
+      refreshMyPublishedSubjects().then(() => {
+        if (manageMode === "creations") renderSubjectManageList();
+      });
+    }
+  }
+
+  /** Bandeau défilant (texte qui défile de droite à gauche, en boucle).
+   *  Deux copies du texte côte à côte, translatées de -50 % : la boucle est
+   *  continue, sans à-coup. `always` : défile même si le texte tient (bandeau
+   *  d'alerte de l'accueil) ; sinon, seulement s'il dépasse (noms de boîtes). */
+  const MARQUEE_SPEED_PX_PER_S = 32;
+  function applyMarquee(textEl, options) {
+    if (!textEl) return;
+    const always = !!(options && options.always);
+    const text = textEl.dataset.marqueeText != null ? textEl.dataset.marqueeText : textEl.textContent;
+    textEl.dataset.marqueeText = text;
+    textEl.classList.remove("is-marquee");
+    textEl.textContent = text;
+    if (!text) return;
+    if (!always && (textEl.clientWidth === 0 || textEl.scrollWidth <= textEl.clientWidth + 1)) return;
+    textEl.classList.add("is-marquee");
+    const safe = escapeHtml(text);
+    textEl.innerHTML = `<span class="marquee-track"><span class="marquee-item">${safe}</span><span class="marquee-item" aria-hidden="true">${safe}</span></span>`;
+    const item = textEl.querySelector(".marquee-item");
+    const track = textEl.querySelector(".marquee-track");
+    const distance = item ? item.getBoundingClientRect().width : 0;
+    if (track) track.style.animationDuration = `${Math.max(5, distance / MARQUEE_SPEED_PX_PER_S).toFixed(1)}s`;
+  }
+
+  function applyManageNameMarquees() {
+    if (!subjectListEl) return;
+    subjectListEl.querySelectorAll(".subject-row-name > span").forEach((sp) => applyMarquee(sp));
+  }
+  window.addEventListener("resize", () => {
+    if (el("view-manage") && el("view-manage").classList.contains("is-active")) applyManageNameMarquees();
+  });
+
   function renderSubjectManageList() {
     subjectListEl.innerHTML = "";
     renderTreeLevel(ROOT_FOLDER_ID, 0, subjectListEl);
-    if (folders.length === 0 && subjects.length === 0) {
+    updateManagePublishedToggle();
+    if ((folders.length === 0 && subjects.length === 0) || subjectListEl.children.length === 0) {
       const empty = document.createElement("p");
       empty.className = "field-hint";
-      empty.textContent = "Aucune boîte pour l'instant.";
+      empty.textContent =
+        manageMode !== "creations"
+          ? "Aucune boîte pour l'instant."
+          : manageOnlyPublished
+          ? "Aucune de tes boîtes n'est encore publiée dans la Librairie."
+          : "Tu n'as pas encore créé de boîte.";
       subjectListEl.appendChild(empty);
     }
     // Item 4 (dernier lot) : les blocs enfants restent visuellement
@@ -3635,7 +3753,10 @@
     // à droite) — ce calcul recale juste l'emplacement nombre/mode/jauge
     // de chaque ligne pour qu'il tombe pile à la même position partout,
     // sans avoir à sacrifier cet effet de blocs imbriqués.
-    requestAnimationFrame(alignOrgInfoSlots);
+    requestAnimationFrame(() => {
+      alignOrgInfoSlots();
+      applyManageNameMarquees();
+    });
   }
 
   function alignOrgInfoSlots() {
@@ -3763,7 +3884,7 @@
       const shareBtn = document.createElement("button");
       shareBtn.type = "button";
       shareBtn.className = "org-actions-popover-item";
-      shareBtn.innerHTML = `${iconSvgMarkup("share", "icon-inline-svg")}<span>Partager dans la bibliothèque</span>`;
+      shareBtn.innerHTML = `${iconSvgMarkup("share", "icon-inline-svg")}<span>Partager dans la librairie</span>`;
       shareBtn.addEventListener("click", () => {
         closeAllOrgActionPopovers();
         onShare();
@@ -3824,6 +3945,11 @@
       // jamais être rendue ici comme boîte indépendante — c'est le dossier
       // correspondant, plus bas, qui la représente.
       childSubjects = childSubjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    }
+    // Mes créations de fiches : seulement les boîtes de l'utilisateur.
+    if (manageMode === "creations") {
+      childFolders = childFolders.filter((f) => folderPassesManageFilter(f.id));
+      childSubjects = childSubjects.filter((x) => subjectPassesManageFilter(x.id));
     }
 
     /** Ligne "boîte" (item 1) — utilisée aussi bien pour une boîte
@@ -4739,7 +4865,7 @@
   }
   async function blockIfLibraryMirror(subjectId, action) {
     if (isLibraryMirrorSubject(subjectId)) {
-      await robotAlert(`Cette collection vient de la Bibliothèque : elle se met à jour toute seule, tu ne peux pas la ${action} ici.`);
+      await robotAlert(`Cette collection vient de la Librairie : elle se met à jour toute seule, tu ne peux pas la ${action} ici.`);
       return true;
     }
     return false;
@@ -4773,7 +4899,7 @@
     const isLibMirror = isLibraryMirrorSubject(id);
     const n = cards.filter((c) => !c.deleted && c.subject === id).length;
     const confirmMsg = isLibMirror
-      ? `Retirer « ${s.name} » de Mes collections ? Elle restera disponible dans la Bibliothèque, tu pourras la reprendre plus tard.`
+      ? `Retirer « ${s.name} » de Mes collections ? Elle restera disponible dans la Librairie, tu pourras la reprendre plus tard.`
       : n > 0
         ? `Supprimer la boîte « ${s.name} » et ses ${n} fiche(s) ? Cette action est irréversible.`
         : `Supprimer la boîte « ${s.name} » ?`;
@@ -5149,7 +5275,7 @@
       if (libraryOptions && libraryOptions.length > 0) {
         const sectionTitle = document.createElement("li");
         sectionTitle.className = "picker-section-title";
-        sectionTitle.textContent = "Depuis la Bibliothèque";
+        sectionTitle.textContent = "Depuis la Librairie";
         container.appendChild(sectionTitle);
         libraryOptions.forEach((col) => {
           const n = Array.isArray(col.cards) ? col.cards.length : 0;
@@ -8918,7 +9044,7 @@
       // n'apparaît que sur les pages autres que l'accueil, qui a déjà son
       // propre grand logo.
       if (el("body-logo-row")) el("body-logo-row").hidden = false;
-      applyBodyLogoSpeech(view);
+      applyBodyLogoSpeech(view === "manage" && manageMode === "creations" ? "manage-creations" : view);
 
       if (view === "review") {
         if (!reviewSessionStarted) {
@@ -8980,6 +9106,7 @@
     sync: "Synchronisation",
     account: "Mon compte",
     "school-hub": "École",
+    "fiches-hub": "Fiches",
     classes: "Classes",
     "classes-student": "Classes",
     "classes-join": "Rejoindre une classe",
@@ -8988,7 +9115,7 @@
     "class-detail": "Classe",
     messages: "Messagerie",
     "message-thread": "Messagerie",
-    library: "Bibliothèque",
+    library: "Librairie",
     settings: "Réglages",
     dev: "Développeur",
     "mode-assign": "Affecter un mode",
@@ -9007,6 +9134,7 @@
     // Round 17, item 3 : bloc d'actions de "Mon bureau" visible
     // UNIQUEMENT sur cette page.
     if (manageStickyActionsEl) manageStickyActionsEl.hidden = key !== "manage";
+    setTimeout(refreshHomeEventWarning, 0);
   }
   document.querySelectorAll(".view").forEach((v) => {
     new MutationObserver(onActiveViewChanged).observe(v, { attributes: true, attributeFilter: ["class"] });
@@ -9137,6 +9265,16 @@
       if (tab) tab.click();
       return;
     }
+    // Mes fiches de révision / Mes créations / Librairie se rejoignent par
+    // le hub Fiches : Accueil y ramène.
+    if (
+      (el("view-manage") && el("view-manage").classList.contains("is-active")) ||
+      (el("view-library") && el("view-library").classList.contains("is-active"))
+    ) {
+      const tab = document.querySelector('.tab[data-view="fiches-hub"]');
+      if (tab) tab.click();
+      return;
+    }
     // Round 13, item 4 : Classes et Messagerie ne se rejoignent plus que
     // via le nouveau hub École — Accueil y ramène plutôt qu'au véritable
     // accueil, comme pour Organisation/Fiches ci-dessus.
@@ -9199,6 +9337,17 @@
       if (tab) tab.click();
     });
   });
+  const homeEventWarningBtn = el("home-event-warning");
+  if (homeEventWarningBtn) {
+    homeEventWarningBtn.addEventListener("click", () => {
+      if (appLoginLocked) {
+        enforceLoginGate();
+        return;
+      }
+      const tab = document.querySelector('.tab[data-view="calendar"]');
+      if (tab) tab.click();
+    });
+  }
   const homeNewCardBtn = el("home-new-card-btn");
   if (homeNewCardBtn) {
     homeNewCardBtn.addEventListener("click", () => {
@@ -9285,6 +9434,7 @@
   }
   function saveCalendarEvents(events) {
     localStorage.setItem(calendarEventsStorageKey(), JSON.stringify(events));
+    if (el("view-home") && el("view-home").classList.contains("is-active")) setTimeout(refreshHomeEventWarning, 0);
   }
   /** Round 21, item 3 : un élève peut désormais supprimer un évènement
    *  REÇU d'un prof une fois sa date passée (voir deleteOwnCalendarEvent).
@@ -9382,6 +9532,52 @@
     if (diff < 60) return "Dans 1 mois";
     const months = Math.round(diff / 30);
     return `Dans ${months} mois`;
+  }
+
+  /** Un évènement est "sans boîte" s'il n'a aucun lien, ou seulement des
+   *  liens vers des boîtes/dossiers qui n'existent plus. */
+  function calendarLinkExists(linkId) {
+    if (!linkId) return false;
+    const [type, id] = linkId.split(":");
+    if (type === "subject") return subjects.some((x) => x.id === id && !x.deleted);
+    if (type === "folder") return folders.some((x) => x.id === id && !x.deleted);
+    return false;
+  }
+  function calendarEventHasNoBox(ev) {
+    return !eventLinkIds(ev).some(calendarLinkExists);
+  }
+  /** Évènements à venir (aujourd'hui compris) sans boîte associée, du plus
+   *  proche au plus lointain — base de l'alerte du Calendrier et du bandeau
+   *  défilant de l'accueil. */
+  function upcomingEventsWithoutBox() {
+    return loadCalendarEvents()
+      .filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0 && calendarEventHasNoBox(ev))
+      .sort((a, b) => a.date.localeCompare(b.date));
+  }
+
+  // Bandeau défilant d'alerte en haut de l'accueil. Pas d'alerte tant que
+  // les boîtes ne sont pas chargées (sinon tous les liens paraîtraient
+  // cassés au démarrage).
+  let homeEventWarningReady = false;
+  function refreshHomeEventWarning() {
+    const wrap = el("home-event-warning");
+    const textEl = el("home-event-warning-text");
+    if (!wrap || !textEl) return;
+    const onHome = !!(el("view-home") && el("view-home").classList.contains("is-active"));
+    const list = homeEventWarningReady && onHome ? upcomingEventsWithoutBox() : [];
+    if (list.length === 0) {
+      wrap.hidden = true;
+      return;
+    }
+    const fmt = (d) => new Date(d + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+    const items = list.map((ev) => `« ${ev.title || "Sans titre"} » (${fmt(ev.date)})`).join(", ");
+    const text =
+      list.length === 1
+        ? `L'évènement ${items} n'a pas de boîte associée : ajoute les fiches à réviser dans le Calendrier.`
+        : `${list.length} évènements n'ont pas de boîte associée : ${items}. Ajoute les fiches à réviser dans le Calendrier.`;
+    wrap.hidden = false;
+    textEl.dataset.marqueeText = text;
+    applyMarquee(textEl, { always: true });
   }
 
   // Item 1 (4e lot) : ce sélecteur utilise désormais la page partagée
@@ -9755,12 +9951,19 @@
             .map((n) => `<li>${escapeHtml(n)}</li>`)
             .join("")}</ul></div>`
         : "";
+    // Alerte : évènement à venir sans boîte associée (rien à réviser pour
+    // s'y préparer — il n'apparaît pas non plus dans le Programme).
+    const noBoxWarningHtml =
+      !isPast && calendarEventHasNoBox(ev)
+        ? `<p class="calendar-event-warning">${iconSvgMarkup("alertTriangle", "icon-inline-svg")}<span>Aucune boîte associée : ajoute les fiches à réviser pour cet évènement.</span></p>`
+        : "";
     main.innerHTML = `
       <div class="calendar-event-top-row">
         <strong>${escapeHtml(ev.title)}</strong>${sharedBadge}
         <span class="calendar-event-countdown${isPast ? " calendar-event-countdown--past" : ""}">${calendarCountdownLabel(ev.date)}</span>
       </div>
       ${boxesHtml}
+      ${noBoxWarningHtml}
     `;
     const actions = document.createElement("div");
     actions.style.cssText = "display:flex; gap:4px; flex-shrink:0; justify-content:flex-end; margin-top:6px;";
@@ -10373,6 +10576,8 @@
     Sync.auth.onChange((user) => {
       accountCurrentUser = user;
       updateAccountHomeButton();
+      // Les évènements du calendrier sont propres à chaque Compte.
+      refreshHomeEventWarning();
       if (el("view-account") && el("view-account").classList.contains("is-active")) renderAccountView();
       if (el("view-classes") && el("view-classes").classList.contains("is-active")) renderClassesView();
       if (el("view-classes-student") && el("view-classes-student").classList.contains("is-active")) renderStudentClasses();
@@ -10589,6 +10794,26 @@
     manageGotoLibraryBtn.addEventListener("click", () => {
       const tab = document.querySelector('.tab[data-view="library"]');
       if (tab) tab.click();
+    });
+  }
+
+  // Hub Fiches : Mes fiches de révision / Mes créations de fiches / Librairie.
+  const fichesHubRevisionBtn = el("fiches-hub-revision-btn");
+  if (fichesHubRevisionBtn) fichesHubRevisionBtn.addEventListener("click", () => openManageInMode("all"));
+  const fichesHubCreationsBtn = el("fiches-hub-creations-btn");
+  if (fichesHubCreationsBtn) fichesHubCreationsBtn.addEventListener("click", () => openManageInMode("creations"));
+  const fichesHubLibraryBtn = el("fiches-hub-library-btn");
+  if (fichesHubLibraryBtn) {
+    fichesHubLibraryBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="library"]');
+      if (tab) tab.click();
+    });
+  }
+  const managePublishedToggle = el("manage-published-toggle");
+  if (managePublishedToggle) {
+    managePublishedToggle.addEventListener("click", () => {
+      manageOnlyPublished = !manageOnlyPublished;
+      renderSubjectManageList();
     });
   }
 
@@ -10837,7 +11062,7 @@
         const col = await Sync.library.get(subject.libraryOriginId);
         await reconcileLibraryCollection(subject, col);
       } catch (e) {
-        console.warn("Bibliothèque : échec de la synchro d'une collection prise", e);
+        console.warn("Librairie : échec de la synchro d'une collection prise", e);
       }
     }
   }
@@ -11309,7 +11534,7 @@
             folderPathNames = [];
             afterShare = async () => {
               try {
-                await Sync.messages.send(klass.id, `📚 « ${name} » a été partagée dans la classe (depuis la Bibliothèque).`);
+                await Sync.messages.send(klass.id, `📚 « ${name} » a été partagée dans la classe (depuis la Librairie).`);
               } catch (e) { /* best-effort */ }
             };
           } else {
@@ -11895,7 +12120,7 @@
     const list = el("dev-library-moderation-list");
     if (!list) return;
     if (!Sync.isConfigured()) {
-      list.innerHTML = `<li class="field-hint">Active la synchronisation pour accéder à la Bibliothèque.</li>`;
+      list.innerHTML = `<li class="field-hint">Active la synchronisation pour accéder à la Librairie.</li>`;
       return;
     }
     list.innerHTML = `<li class="field-hint">Chargement…</li>`;
@@ -11921,7 +12146,7 @@
       delBtn.textContent = "Supprimer";
       delBtn.addEventListener("click", async (e) => {
         e.stopPropagation();
-        if (!(await robotConfirm(`Supprimer définitivement « ${col.name} » (par ${ownerName}) de la Bibliothèque ?`, { danger: true }))) return;
+        if (!(await robotConfirm(`Supprimer définitivement « ${col.name} » (par ${ownerName}) de la Librairie ?`, { danger: true }))) return;
         const { error } = await Sync.library.delete(col.id);
         if (error) {
           await robotAlert(`La suppression a échoué : ${error}`);
@@ -11975,7 +12200,7 @@
     const nCards = toImport.reduce((acc, b) => acc + (b.cards || []).length, 0);
     if (!(await robotConfirm(`Importer ${toImport.length} boîte${toImport.length > 1 ? "s" : ""} (${nCards} fiches) dans le dossier « ${pack.folderName} » ?`))) return;
 
-    let folder = folders.find((f) => !f.deleted && f.parentId === ROOT_FOLDER_ID && f.name === pack.folderName);
+    let folder = folders.find((f) => !f.deleted && f.parentId === ROOT_FOLDER_ID && (f.name === pack.folderName || f.name === "Boîtes Bibliothèque"));
     if (!folder) {
       folder = newFolder(pack.folderName, ROOT_FOLDER_ID);
       await persistFolder(folder);
@@ -12003,7 +12228,7 @@
 
   async function publishLibraryPack() {
     if (!Sync.isConfigured()) {
-      await robotAlert("Active d'abord la synchronisation (page Synchronisation) pour publier dans la Bibliothèque.");
+      await robotAlert("Active d'abord la synchronisation (page Synchronisation) pour publier dans la Librairie.");
       return;
     }
     if (!accountCurrentUser) {
@@ -12020,7 +12245,7 @@
     const freshUser = (await Sync.auth.getUser()) || accountCurrentUser;
     const meta = (freshUser && freshUser.user_metadata) || {};
     if (!meta.first_name && !meta.last_name) {
-      await robotAlert("Renseigne d'abord ton prénom et ton nom dans Mon compte : ils seront affichés comme auteur dans la Bibliothèque.");
+      await robotAlert("Renseigne d'abord ton prénom et ton nom dans Mon compte : ils seront affichés comme auteur dans la Librairie.");
       return;
     }
     const local = (pack.boxes || [])
@@ -12031,7 +12256,7 @@
       return;
     }
     const author = `${meta.first_name || ""} ${meta.last_name || ""}`.trim();
-    if (!(await robotConfirm(`Publier ${local.length} boîte${local.length > 1 ? "s" : ""} dans la Bibliothèque, au nom de ${author} ? Celles déjà publiées seront ignorées.`))) return;
+    if (!(await robotConfirm(`Publier ${local.length} boîte${local.length > 1 ? "s" : ""} dans la Librairie, au nom de ${author} ? Celles déjà publiées seront ignorées.`))) return;
 
     let published = 0;
     let skipped = 0;
@@ -12056,7 +12281,10 @@
         sourceSubjectId: subject.id,
       });
       if (error) failures.push(`${subject.name} : ${error}`);
-      else published++;
+      else {
+        published++;
+        myPublishedSourceIds.add(subject.id);
+      }
     }
     const lines = [`${published} boîte${published > 1 ? "s" : ""} publiée${published > 1 ? "s" : ""}.`];
     if (skipped) lines.push(`${skipped} déjà publiée${skipped > 1 ? "s" : ""} ou vide${skipped > 1 ? "s" : ""}, ignorée${skipped > 1 ? "s" : ""}.`);
@@ -12140,7 +12368,7 @@
    *  réussie (mise à jour de l'affichage à l'appelant). */
   async function confirmAndTakeLibraryCollection(col, onDone) {
     if (!accountCurrentUser) {
-      await robotAlert("Connecte-toi avec un Compte (page Compte) pour prendre une collection de la Bibliothèque.");
+      await robotAlert("Connecte-toi avec un Compte (page Compte) pour prendre une collection de la Librairie.");
       return;
     }
     const priceTokens = Number(col.price_tokens) || 0;
@@ -12185,11 +12413,11 @@
     if (await blockIfSharedReadonly(subjectId)) return;
     if (await blockIfLibraryMirror(subjectId, "partager à nouveau")) return;
     if (!Sync.isConfigured()) {
-      await robotAlert("Active d'abord la synchronisation (page Synchronisation) pour pouvoir partager dans la bibliothèque.");
+      await robotAlert("Active d'abord la synchronisation (page Synchronisation) pour pouvoir partager dans la librairie.");
       return;
     }
     if (!accountCurrentUser) {
-      await robotAlert("Connecte-toi avec un Compte (page Compte) pour partager dans la bibliothèque.");
+      await robotAlert("Connecte-toi avec un Compte (page Compte) pour partager dans la librairie.");
       return;
     }
     const boxCards = cards.filter((c) => !c.deleted && c.subject === subjectId);
@@ -12212,7 +12440,7 @@
     const freshMeta = (freshUser && freshUser.user_metadata) || {};
     if (!freshMeta.first_name && !freshMeta.last_name) {
       const firstName = await robotPrompt(
-        "Pour être crédité·e par ton nom plutôt que ton email dans la Bibliothèque, quel est ton prénom ? (facultatif, laisse vide pour garder l'email)",
+        "Pour être crédité·e par ton nom plutôt que ton email dans la Librairie, quel est ton prénom ? (facultatif, laisse vide pour garder l'email)",
         ""
       );
       const lastName = firstName && firstName.trim() ? await robotPrompt("Et ton nom ?", "") : "";
@@ -12227,7 +12455,7 @@
     // rester valable même après un changement d'appareil.
     const existing = await Sync.library.findBySourceSubject(subjectId);
     if (existing) {
-      await robotAlert(`Cette boîte a déjà été partagée dans la Bibliothèque sous le nom « ${existing.name} ». Une même boîte ne peut être partagée qu'une seule fois.`);
+      await robotAlert(`Cette boîte a déjà été partagée dans la Librairie sous le nom « ${existing.name} ». Une même boîte ne peut être partagée qu'une seule fois.`);
       return;
     }
     // Round 20, item 2 : tous les champs du partage (nom, niveau, résumé,
@@ -12307,8 +12535,10 @@
           await robotAlert(`Le partage a échoué : ${error}`);
           return;
         }
+        myPublishedSourceIds.add(subject.id);
         closeLibraryShareView();
-        await robotAlert(`« ${name} » a été partagée dans la bibliothèque.`);
+        renderSubjectManageList();
+        await robotAlert(`« ${name} » a été partagée dans la librairie.`);
       };
     }
   }
@@ -13092,5 +13322,7 @@
     // l'accueil et la résolution de cette promesse.
     await initAccountState();
     enforceLoginGate();
+    homeEventWarningReady = true;
+    refreshHomeEventWarning();
   })();
 })();
