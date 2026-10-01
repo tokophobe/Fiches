@@ -1599,6 +1599,992 @@
     }
    ],
    "priceTokens": 0
+  },
+  {
+   "key": "brevet-histoire-notions-personnages",
+   "name": "Brevet — Histoire : notions et personnages clés",
+   "level": "3ème",
+   "summary": "Le vocabulaire et les grands personnages du programme d'histoire de 3ème, pour compléter les dates.",
+   "description": "Guerre totale, totalitarismes, génocides, Vichy, Résistance, guerre froide, décolonisation et Ve République : chaque fiche donne une notion ou un personnage à définir. À réviser avec la boîte « Les dates clés du Brevet ».",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Guerre totale : de quoi / de qui s'agit-il ?",
+     "answer": "Guerre qui mobilise toutes les ressources d'un pays (humaines, économiques, morales) et qui touche aussi les civils. Ex. : les deux guerres mondiales."
+    },
+    {
+     "question": "Les « poilus » : de quoi / de qui s'agit-il ?",
+     "answer": "Surnom des soldats français de la Première Guerre mondiale."
+    },
+    {
+     "question": "Union sacrée : de quoi / de qui s'agit-il ?",
+     "answer": "Rassemblement de tous les partis politiques français pour soutenir l'effort de guerre, dès août 1914."
+    },
+    {
+     "question": "Génocide : de quoi / de qui s'agit-il ?",
+     "answer": "Extermination planifiée d'un peuple, en raison de ce qu'il est. Ex. : génocide des Arméniens (1915-1916), Shoah, génocide des Tziganes."
+    },
+    {
+     "question": "Shoah : de quoi / de qui s'agit-il ?",
+     "answer": "Génocide des Juifs d'Europe par les nazis (environ 6 millions de victimes), notamment dans les centres de mise à mort comme Auschwitz-Birkenau."
+    },
+    {
+     "question": "Camp de concentration / centre de mise à mort : de quoi / de qui s'agit-il ?",
+     "answer": "Camp de concentration : on y enferme et fait travailler les opposants et « indésirables » jusqu'à épuisement.\nCentre de mise à mort (camp d'extermination) : conçu pour tuer immédiatement, surtout les Juifs, dans des chambres à gaz."
+    },
+    {
+     "question": "Régime totalitaire : de quoi / de qui s'agit-il ?",
+     "answer": "Régime où un parti unique et un chef contrôlent toute la société : propagande, terreur, culte du chef, embrigadement de la jeunesse. Ex. : URSS de Staline, Allemagne nazie."
+    },
+    {
+     "question": "Propagande : de quoi / de qui s'agit-il ?",
+     "answer": "Ensemble des moyens utilisés par un pouvoir pour diffuser ses idées et contrôler les esprits (affiches, radio, cinéma, presse)."
+    },
+    {
+     "question": "Lénine : de quoi / de qui s'agit-il ?",
+     "answer": "Chef des bolcheviks, il prend le pouvoir en Russie en octobre 1917 et fonde l'URSS (1922). Mort en 1924."
+    },
+    {
+     "question": "Staline : de quoi / de qui s'agit-il ?",
+     "answer": "Dirige l'URSS de la fin des années 1920 à sa mort en 1953 : collectivisation, terreur de masse (goulag, Grande Terreur de 1936-1938)."
+    },
+    {
+     "question": "Hitler : de quoi / de qui s'agit-il ?",
+     "answer": "Chef du parti nazi, nommé chancelier en 1933, il instaure une dictature totalitaire et déclenche la Seconde Guerre mondiale. Responsable de la Shoah."
+    },
+    {
+     "question": "Léon Blum : de quoi / de qui s'agit-il ?",
+     "answer": "Chef du gouvernement du Front populaire en 1936 : congés payés, semaine de 40 heures."
+    },
+    {
+     "question": "Philippe Pétain : de quoi / de qui s'agit-il ?",
+     "answer": "Maréchal, chef de l'État français (régime de Vichy) de 1940 à 1944 ; il engage la France dans la collaboration avec l'Allemagne nazie."
+    },
+    {
+     "question": "Charles de Gaulle : de quoi / de qui s'agit-il ?",
+     "answer": "Chef de la France libre (appel du 18 juin 1940), chef du Gouvernement provisoire à la Libération, fondateur de la Ve République (1958) et président de 1959 à 1969."
+    },
+    {
+     "question": "Jean Moulin : de quoi / de qui s'agit-il ?",
+     "answer": "Résistant envoyé par de Gaulle pour unifier la Résistance intérieure ; premier président du Conseil national de la Résistance (1943). Arrêté et mort en 1943."
+    },
+    {
+     "question": "Collaboration : de quoi / de qui s'agit-il ?",
+     "answer": "Politique de coopération du régime de Vichy avec l'Allemagne nazie (économique, policière : participation aux rafles de Juifs)."
+    },
+    {
+     "question": "Résistance : de quoi / de qui s'agit-il ?",
+     "answer": "Ensemble des actions menées contre l'occupant et le régime de Vichy : renseignement, sabotage, presse clandestine, maquis. Résistance extérieure (France libre) et intérieure."
+    },
+    {
+     "question": "Régime de Vichy et « Révolution nationale » : de quoi / de qui s'agit-il ?",
+     "answer": "Régime autoritaire dirigé par Pétain (1940-1944), dont la devise « Travail, Famille, Patrie » remplace « Liberté, Égalité, Fraternité »."
+    },
+    {
+     "question": "Guerre froide : de quoi / de qui s'agit-il ?",
+     "answer": "Affrontement indirect (1947-1991) entre les États-Unis et l'URSS, sans conflit armé direct entre eux : course aux armements, crises, guerres locales."
+    },
+    {
+     "question": "« Rideau de fer » : de quoi / de qui s'agit-il ?",
+     "answer": "Expression de Churchill (1946) désignant la frontière qui sépare l'Europe de l'Ouest, libérale, de l'Europe de l'Est, sous domination soviétique."
+    },
+    {
+     "question": "Les deux blocs de la guerre froide : de quoi / de qui s'agit-il ?",
+     "answer": "Bloc de l'Ouest : États-Unis, démocratie libérale, capitalisme, OTAN (1949).\nBloc de l'Est : URSS, communisme, Pacte de Varsovie (1955)."
+    },
+    {
+     "question": "Dissuasion nucléaire : de quoi / de qui s'agit-il ?",
+     "answer": "Posséder l'arme nucléaire pour empêcher l'adversaire d'attaquer, par la peur d'une riposte destructrice."
+    },
+    {
+     "question": "Kennedy et Khrouchtchev : de quoi / de qui s'agit-il ?",
+     "answer": "Dirigeants des États-Unis et de l'URSS lors de la crise des missiles de Cuba (octobre 1962)."
+    },
+    {
+     "question": "Gorbatchev : de quoi / de qui s'agit-il ?",
+     "answer": "Dernier dirigeant de l'URSS (1985-1991) : réformes (perestroïka, glasnost) ; l'URSS disparaît en décembre 1991."
+    },
+    {
+     "question": "Décolonisation : de quoi / de qui s'agit-il ?",
+     "answer": "Processus par lequel les colonies obtiennent leur indépendance, surtout après 1945, de façon négociée (Inde, 1947) ou par la guerre (Indochine, Algérie)."
+    },
+    {
+     "question": "Gandhi : de quoi / de qui s'agit-il ?",
+     "answer": "Leader de l'indépendance de l'Inde, prônant la non-violence. Indépendance obtenue en 1947."
+    },
+    {
+     "question": "Tiers-monde et non-alignement : de quoi / de qui s'agit-il ?",
+     "answer": "Tiers-monde : pays pauvres, souvent nouvellement indépendants. Conférence de Bandung (1955) : ces pays refusent de s'aligner sur l'un des deux blocs."
+    },
+    {
+     "question": "Robert Schuman et Jean Monnet : de quoi / de qui s'agit-il ?",
+     "answer": "« Pères de l'Europe » : à l'origine de la CECA (1951), première étape de la construction européenne."
+    },
+    {
+     "question": "Ve République : de quoi / de qui s'agit-il ?",
+     "answer": "Régime politique de la France depuis 1958, avec un exécutif fort (président). Le président est élu au suffrage universel direct depuis 1962 (premier scrutin en 1965)."
+    },
+    {
+     "question": "Simone Veil : de quoi / de qui s'agit-il ?",
+     "answer": "Ministre de la Santé, rescapée d'Auschwitz : loi de 1975 dépénalisant l'IVG. Première présidente du Parlement européen élu (1979)."
+    },
+    {
+     "question": "François Mitterrand : de quoi / de qui s'agit-il ?",
+     "answer": "Président de la République de 1981 à 1995 : première alternance de gauche sous la Ve République, abolition de la peine de mort (1981)."
+    },
+    {
+     "question": "Alternance politique : de quoi / de qui s'agit-il ?",
+     "answer": "Passage du pouvoir d'une majorité politique à une autre, par des élections. Première sous la Ve République : 1981."
+    },
+    {
+     "question": "Les Trente Glorieuses : de quoi / de qui s'agit-il ?",
+     "answer": "Période de forte croissance économique en France, de 1945 au milieu des années 1970 (choc pétrolier de 1973)."
+    }
+   ]
+  },
+  {
+   "key": "brevet-geographie-notions",
+   "name": "Brevet — Géographie : notions et repères",
+   "level": "3ème",
+   "summary": "Les notions de géographie de 3ème : aires urbaines, espaces productifs, aménagement, outre-mer, Union européenne.",
+   "description": "Tout le vocabulaire du programme de géographie de 3ème : dynamiques des aires urbaines, espaces productifs et de faible densité, aménagement du territoire, territoires ultramarins, la France et l'Union européenne, avec des exemples à citer dans une copie.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Aire urbaine : définition ?",
+     "answer": "Ensemble formé par une ville-centre, sa banlieue et sa couronne périurbaine, dont une grande partie des actifs travaillent dans le pôle urbain.\n(L'INSEE parle depuis 2020 d'« aire d'attraction des villes ».)"
+    },
+    {
+     "question": "Ville-centre, banlieue, couronne périurbaine : définition ?",
+     "answer": "Ville-centre : cœur historique de l'agglomération.\nBanlieue : communes urbanisées autour de la ville-centre.\nCouronne périurbaine : communes plus rurales autour, où vivent des actifs travaillant dans le pôle."
+    },
+    {
+     "question": "Périurbanisation : définition ?",
+     "answer": "Extension des villes vers les campagnes environnantes, liée à l'installation de citadins dans des communes périphériques (maisons individuelles)."
+    },
+    {
+     "question": "Étalement urbain : définition ?",
+     "answer": "Progression de la surface urbanisée au détriment des espaces agricoles et naturels."
+    },
+    {
+     "question": "Mobilités pendulaires : définition ?",
+     "answer": "Déplacements quotidiens entre le domicile et le lieu de travail (ou d'études)."
+    },
+    {
+     "question": "Métropole / métropolisation : définition ?",
+     "answer": "Métropole : grande ville qui concentre population, activités de commandement et fonctions rares.\nMétropolisation : concentration croissante des richesses et des pouvoirs dans ces grandes villes."
+    },
+    {
+     "question": "Gentrification : définition ?",
+     "answer": "Installation de populations aisées dans un quartier populaire, qui fait monter les prix et pousse les habitants modestes à partir."
+    },
+    {
+     "question": "Espace productif : définition ?",
+     "answer": "Espace mis en valeur par les activités économiques pour produire des richesses : agricole, industriel, touristique, de services."
+    },
+    {
+     "question": "Technopôle : définition ?",
+     "answer": "Espace regroupant entreprises de haute technologie, centres de recherche et universités. Ex. : Sophia Antipolis (près de Nice)."
+    },
+    {
+     "question": "Zone industrialo-portuaire (ZIP) : définition ?",
+     "answer": "Espace industriel installé dans un grand port, qui profite de l'arrivée des matières premières par la mer. Ex. : Fos-sur-Mer (Marseille), Le Havre."
+    },
+    {
+     "question": "Agriculture productiviste : définition ?",
+     "answer": "Agriculture qui cherche à produire le plus possible grâce à la mécanisation, aux engrais et aux pesticides. Ex. : la Beauce (céréales)."
+    },
+    {
+     "question": "Label AOC / AOP : définition ?",
+     "answer": "Appellation d'origine contrôlée / protégée : garantit qu'un produit vient d'un territoire précis et respecte un savoir-faire. Ex. : Roquefort, Champagne."
+    },
+    {
+     "question": "Littoralisation : définition ?",
+     "answer": "Concentration des populations et des activités sur les littoraux."
+    },
+    {
+     "question": "Espace de faible densité : définition ?",
+     "answer": "Espace peu peuplé (moins de 30 habitants/km² environ), souvent rural ou montagnard. En France : la « diagonale des faibles densités », des Ardennes aux Landes."
+    },
+    {
+     "question": "Aménagement du territoire : définition ?",
+     "answer": "Actions de l'État, des collectivités et de l'Union européenne pour organiser le territoire et réduire les inégalités entre régions (transports, services, emplois)."
+    },
+    {
+     "question": "Acteurs de l'aménagement ?",
+     "answer": "État, collectivités territoriales (régions, départements, communes), Union européenne, entreprises, associations, habitants."
+    },
+    {
+     "question": "Collectivités territoriales : définition ?",
+     "answer": "Communes, départements et régions, qui gèrent certaines compétences au niveau local (décentralisation, lois de 1982)."
+    },
+    {
+     "question": "Nombre de régions en France ?",
+     "answer": "18 régions : 13 en métropole et 5 en outre-mer (depuis la réforme de 2016)."
+    },
+    {
+     "question": "Les 5 DROM (départements et régions d'outre-mer) ?",
+     "answer": "Guadeloupe, Martinique, Guyane, La Réunion, Mayotte."
+    },
+    {
+     "question": "Territoires ultramarins : atouts et contraintes ?",
+     "answer": "Atouts : ZEE immense, biodiversité, tourisme, base spatiale de Kourou (Guyane).\nContraintes : éloignement, insularité, risques naturels, chômage élevé, dépendance vis-à-vis de la métropole."
+    },
+    {
+     "question": "Zone économique exclusive (ZEE) : définition ?",
+     "answer": "Espace maritime jusqu'à 200 milles marins (370 km) des côtes, où un État exploite seul les ressources. Celle de la France est la 2e du monde, grâce à l'outre-mer."
+    },
+    {
+     "question": "Union européenne : nombre de pays membres ?",
+     "answer": "27 États membres (depuis la sortie du Royaume-Uni, en 2020)."
+    },
+    {
+     "question": "Espace Schengen : définition ?",
+     "answer": "Espace de libre circulation des personnes, sans contrôle systématique aux frontières intérieures (accords de 1985)."
+    },
+    {
+     "question": "Zone euro : définition ?",
+     "answer": "Ensemble des pays de l'UE qui utilisent l'euro (mis en circulation en 2002). 21 pays en 2026."
+    },
+    {
+     "question": "Politique régionale de l'UE : définition ?",
+     "answer": "L'UE finance des projets pour réduire les inégalités entre régions, grâce aux fonds européens (ex. FEDER)."
+    },
+    {
+     "question": "Régions ultrapériphériques (RUP) : définition ?",
+     "answer": "Territoires de l'UE éloignés du continent européen, qui reçoivent des aides spécifiques. Ex. : les DROM français, les Canaries, les Açores."
+    },
+    {
+     "question": "Espace transfrontalier : définition ?",
+     "answer": "Espace de part et d'autre d'une frontière, avec de nombreux échanges (travailleurs frontaliers). Ex. : autour de Genève, Lille-Courtrai-Tournai."
+    },
+    {
+     "question": "Population de la France ?",
+     "answer": "Environ 68 millions d'habitants (dont un peu plus de 2 millions en outre-mer)."
+    }
+   ]
+  },
+  {
+   "key": "brevet-emc",
+   "name": "Brevet — EMC : valeurs, institutions et citoyenneté",
+   "level": "3ème",
+   "summary": "Enseignement moral et civique : symboles et valeurs de la République, institutions de la Ve République, droits et devoirs du citoyen.",
+   "description": "Devise et symboles, laïcité, grands textes (DDHC, DUDH, CIDE), fonctionnement des institutions (président, Gouvernement, Parlement), vote et citoyenneté européenne, justice, discriminations et engagement : l'essentiel de l'EMC pour l'épreuve d'histoire-géographie-EMC du Brevet.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Devise de la République française ?",
+     "answer": "« Liberté, Égalité, Fraternité »"
+    },
+    {
+     "question": "Les symboles de la République ?",
+     "answer": "Le drapeau tricolore (bleu, blanc, rouge), La Marseillaise (hymne national), Marianne, la devise, le 14 Juillet (fête nationale)."
+    },
+    {
+     "question": "La Marseillaise ?",
+     "answer": "Chant écrit par Rouget de Lisle en 1792, devenu hymne national."
+    },
+    {
+     "question": "Article 1er de la Constitution ?",
+     "answer": "« La France est une République indivisible, laïque, démocratique et sociale. »"
+    },
+    {
+     "question": "La laïcité ?",
+     "answer": "Principe de séparation entre les religions et l'État : l'État est neutre, respecte toutes les croyances et garantit la liberté de croire ou de ne pas croire. Loi du 9 décembre 1905."
+    },
+    {
+     "question": "Déclaration des droits de l'homme et du citoyen (DDHC) ?",
+     "answer": "26 août 1789. Elle proclame des droits naturels : liberté, égalité devant la loi, propriété, sûreté, résistance à l'oppression."
+    },
+    {
+     "question": "Déclaration universelle des droits de l'homme ?",
+     "answer": "Adoptée par l'ONU le 10 décembre 1948, à Paris."
+    },
+    {
+     "question": "Convention internationale des droits de l'enfant ?",
+     "answer": "Adoptée par l'ONU en 1989 : droit à l'éducation, à la santé, à être protégé, à être entendu…"
+    },
+    {
+     "question": "Constitution de la Ve République ?",
+     "answer": "Texte fondamental adopté en 1958 (4 octobre) qui organise les pouvoirs et garantit les droits et libertés."
+    },
+    {
+     "question": "La séparation des pouvoirs ?",
+     "answer": "Législatif (voter les lois), exécutif (les appliquer), judiciaire (juger). Idée défendue par Montesquieu pour éviter la tyrannie."
+    },
+    {
+     "question": "Le président de la République ?",
+     "answer": "Élu pour 5 ans (quinquennat) au suffrage universel direct. Il nomme le Premier ministre, est chef des armées, peut dissoudre l'Assemblée nationale et recourir au référendum."
+    },
+    {
+     "question": "Le Gouvernement ?",
+     "answer": "Dirigé par le Premier ministre, il détermine et conduit la politique de la nation. Il est responsable devant l'Assemblée nationale (motion de censure)."
+    },
+    {
+     "question": "Le Parlement ?",
+     "answer": "Assemblée nationale (577 députés élus pour 5 ans au suffrage universel direct) et Sénat (348 sénateurs élus au suffrage indirect pour 6 ans). Il vote la loi et contrôle le Gouvernement."
+    },
+    {
+     "question": "Suffrage universel direct / indirect ?",
+     "answer": "Direct : les citoyens élisent eux-mêmes leurs représentants (président, députés).\nIndirect : des élus (« grands électeurs ») élisent les représentants (sénateurs)."
+    },
+    {
+     "question": "Référendum ?",
+     "answer": "Vote par lequel les citoyens répondent directement par oui ou non à une question posée (ex. 2005, traité constitutionnel européen)."
+    },
+    {
+     "question": "Conditions pour voter en France ?",
+     "answer": "Être de nationalité française, avoir 18 ans, jouir de ses droits civiques et être inscrit sur les listes électorales."
+    },
+    {
+     "question": "Citoyenneté européenne ?",
+     "answer": "Créée par le traité de Maastricht (1992) : un citoyen de l'UE peut voter et être élu aux élections municipales et européennes dans le pays de l'UE où il réside."
+    },
+    {
+     "question": "Recensement et Journée défense et citoyenneté (JDC) ?",
+     "answer": "Recensement obligatoire à 16 ans en mairie, puis participation à la JDC. Le service militaire est suspendu depuis 1997."
+    },
+    {
+     "question": "Les droits de l'enfant… et du collégien ?",
+     "answer": "Liberté d'expression dans le respect d'autrui, droit à l'éducation, droit d'être représenté (délégués de classe, conseil d'administration)."
+    },
+    {
+     "question": "Limites à la liberté d'expression ?",
+     "answer": "Elle ne permet pas la diffamation, l'injure, l'incitation à la haine ou à la violence, l'apologie du terrorisme ou le harcèlement."
+    },
+    {
+     "question": "Discrimination ?",
+     "answer": "Traitement défavorable d'une personne en raison d'un critère interdit par la loi (origine, sexe, handicap, religion, orientation sexuelle…). C'est un délit."
+    },
+    {
+     "question": "Défenseur des droits ?",
+     "answer": "Autorité indépendante qui défend les droits des citoyens face aux administrations et lutte contre les discriminations. On peut la saisir gratuitement."
+    },
+    {
+     "question": "Présomption d'innocence ?",
+     "answer": "Toute personne est considérée comme innocente tant que sa culpabilité n'a pas été prouvée par un tribunal."
+    },
+    {
+     "question": "Contravention, délit, crime ?",
+     "answer": "Contravention : infraction légère (tribunal de police).\nDélit : infraction plus grave (tribunal correctionnel).\nCrime : infraction la plus grave (cour d'assises)."
+    },
+    {
+     "question": "Majorité civile et majorité pénale ?",
+     "answer": "18 ans. Avant, un mineur peut être jugé par des juridictions spécialisées (juge des enfants, tribunal pour enfants), avec des peines adaptées."
+    },
+    {
+     "question": "Parité ?",
+     "answer": "Égal accès des femmes et des hommes aux mandats électoraux et fonctions électives (loi de 2000)."
+    },
+    {
+     "question": "Association « loi 1901 » ?",
+     "answer": "Groupement de personnes qui mettent en commun leurs activités dans un but autre que le profit. Forme d'engagement citoyen."
+    },
+    {
+     "question": "Esprit critique face à l'information ?",
+     "answer": "Identifier la source, croiser les informations, distinguer fait et opinion, repérer les fausses nouvelles (« fake news »)."
+    },
+    {
+     "question": "Défense nationale ?",
+     "answer": "Elle protège le territoire et la population : armées, dissuasion nucléaire, mais aussi engagement des citoyens. La France participe à des opérations extérieures (ONU, OTAN, UE)."
+    }
+   ]
+  },
+  {
+   "key": "brevet-francais-grammaire",
+   "name": "Brevet — Français : grammaire et orthographe",
+   "level": "3ème",
+   "summary": "Classes et fonctions grammaticales, propositions, voix, modes et temps, accords et homophones pour le Brevet.",
+   "description": "Toute la grammaire attendue à l'épreuve de français du Brevet : classes de mots, fonctions dans la phrase, types de propositions, voix active et passive, modes et valeurs des temps, discours rapporté, accord du participe passé et homophones fréquents. Chaque fiche donne une définition et un exemple.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Les classes grammaticales variables ?",
+     "answer": "Nom, déterminant, adjectif, pronom, verbe."
+    },
+    {
+     "question": "Les classes grammaticales invariables ?",
+     "answer": "Adverbe, préposition, conjonction de coordination, conjonction de subordination, interjection."
+    },
+    {
+     "question": "Les conjonctions de coordination ?",
+     "answer": "Mais, ou, et, donc, or, ni, car."
+    },
+    {
+     "question": "Les principales conjonctions de subordination ?",
+     "answer": "Que, quand, comme, si, lorsque, puisque, quoique, parce que, afin que, bien que…"
+    },
+    {
+     "question": "Les pronoms relatifs ?",
+     "answer": "Qui, que, quoi, dont, où, lequel (et ses composés : auquel, duquel…)."
+    },
+    {
+     "question": "Fonction sujet ?",
+     "answer": "Indique qui fait l'action ou de qui on parle ; il commande l'accord du verbe.\nOn le trouve avec « C'est… qui ».\nEx. : « Les élèves révisent. »"
+    },
+    {
+     "question": "Complément d'objet direct (COD) ?",
+     "answer": "Complète le verbe sans préposition. Question « qui ? / quoi ? » après le verbe.\nEx. : « Il lit un roman. »"
+    },
+    {
+     "question": "Complément d'objet indirect (COI) ?",
+     "answer": "Complète le verbe avec une préposition (à, de…).\nEx. : « Elle parle à son frère. » « Il se souvient de cette journée. »"
+    },
+    {
+     "question": "Attribut du sujet ?",
+     "answer": "Donne une caractéristique du sujet, par l'intermédiaire d'un verbe d'état.\nEx. : « Le ciel paraît menaçant. »"
+    },
+    {
+     "question": "Les verbes d'état ?",
+     "answer": "Être, paraître, sembler, devenir, demeurer, rester, avoir l'air, passer pour…"
+    },
+    {
+     "question": "Complément circonstanciel (CC) ?",
+     "answer": "Précise les circonstances de l'action (temps, lieu, manière, cause, but…). On peut généralement le déplacer ou le supprimer.\nEx. : « Demain, nous partirons en train. »"
+    },
+    {
+     "question": "Complément d'agent ?",
+     "answer": "Dans une phrase à la voix passive, indique qui fait l'action ; introduit par « par » ou « de ».\nEx. : « La souris est mangée par le chat. »"
+    },
+    {
+     "question": "Épithète ?",
+     "answer": "Adjectif placé directement à côté du nom qu'il qualifie, sans verbe.\nEx. : « un vieux château »"
+    },
+    {
+     "question": "Apposition ?",
+     "answer": "Mot ou groupe de mots séparé du nom par une virgule (ou deux-points) qui apporte une précision.\nEx. : « Victor Hugo, grand poète, est né en 1802. »"
+    },
+    {
+     "question": "Complément du nom ?",
+     "answer": "Complète un nom, le plus souvent à l'aide d'une préposition.\nEx. : « une tasse de thé », « la maison de mon oncle »"
+    },
+    {
+     "question": "Phrase simple / phrase complexe ?",
+     "answer": "Simple : un seul verbe conjugué (une seule proposition).\nComplexe : plusieurs verbes conjugués (plusieurs propositions)."
+    },
+    {
+     "question": "Propositions juxtaposées, coordonnées, subordonnées ?",
+     "answer": "Juxtaposées : reliées par une ponctuation ( , ; : ).\nCoordonnées : reliées par une conjonction de coordination.\nSubordonnée : dépend d'une proposition principale."
+    },
+    {
+     "question": "Proposition subordonnée relative ?",
+     "answer": "Introduite par un pronom relatif, elle complète un nom (son antécédent).\nEx. : « Le livre que tu m'as prêté est passionnant. »"
+    },
+    {
+     "question": "Proposition subordonnée conjonctive complétive ?",
+     "answer": "Introduite par « que », elle est le plus souvent COD du verbe principal.\nEx. : « Je pense qu'il viendra. »"
+    },
+    {
+     "question": "Proposition subordonnée circonstancielle ?",
+     "answer": "Introduite par une conjonction de subordination, elle exprime une circonstance : temps, cause, conséquence, but, concession, condition, comparaison.\nEx. : « Il est resté chez lui parce qu'il pleuvait. »"
+    },
+    {
+     "question": "Subordonnée interrogative indirecte ?",
+     "answer": "Rapporte une question au discours indirect, après un verbe comme demander ou se demander.\nEx. : « Je me demande s'il viendra. »"
+    },
+    {
+     "question": "Voix active / voix passive ?",
+     "answer": "Active : le sujet fait l'action. « Le chat mange la souris. »\nPassive : le sujet subit l'action ; verbe être + participe passé. « La souris est mangée par le chat. »"
+    },
+    {
+     "question": "Accord du participe passé avec « être » ?",
+     "answer": "Il s'accorde avec le sujet.\nEx. : « Elles sont parties. »"
+    },
+    {
+     "question": "Accord du participe passé avec « avoir » ?",
+     "answer": "Il ne s'accorde pas avec le sujet, mais avec le COD si celui-ci est placé AVANT le verbe.\nEx. : « Les pommes que j'ai mangées. » / « J'ai mangé les pommes. »"
+    },
+    {
+     "question": "Les modes personnels ?",
+     "answer": "Indicatif, subjonctif, impératif (et conditionnel, souvent présenté comme un mode)."
+    },
+    {
+     "question": "Les modes impersonnels ?",
+     "answer": "Infinitif, participe, gérondif (en + participe présent)."
+    },
+    {
+     "question": "Valeurs du présent de l'indicatif ?",
+     "answer": "Présent d'énonciation (au moment où l'on parle), de vérité générale, d'habitude, de narration (récit au passé rendu plus vivant)."
+    },
+    {
+     "question": "Passé simple et imparfait dans un récit ?",
+     "answer": "Passé simple : actions de premier plan, ponctuelles, qui font avancer le récit.\nImparfait : arrière-plan, descriptions, actions longues ou habituelles."
+    },
+    {
+     "question": "Les quatre types de phrases ?",
+     "answer": "Déclarative, interrogative, injonctive (ou impérative), exclamative."
+    },
+    {
+     "question": "Discours direct / indirect ?",
+     "answer": "Direct : paroles rapportées telles quelles, avec guillemets ou tirets. « Il dit : \"Je viendrai.\" »\nIndirect : paroles intégrées dans une subordonnée, sans guillemets. « Il dit qu'il viendra. »"
+    },
+    {
+     "question": "Discours indirect libre ?",
+     "answer": "Paroles ou pensées rapportées sans guillemets ni verbe introducteur, mais avec les temps et personnes du récit.\nEx. : « Il s'arrêta. Viendrait-elle enfin ? »"
+    },
+    {
+     "question": "Homophones : a / à ?",
+     "answer": "« a » : verbe avoir (on peut le remplacer par « avait »).\n« à » : préposition.\nEx. : « Il a un cadeau à offrir. »"
+    },
+    {
+     "question": "Homophones : ces / ses / c'est / s'est ?",
+     "answer": "ces : démonstratif (ceux-là) ; ses : possessif (les siens) ; c'est : cela est ; s'est : verbe pronominal (se + être)."
+    },
+    {
+     "question": "Homophones : -é / -er ?",
+     "answer": "On remplace par un verbe du 3e groupe (vendre / vendu) : « vendre » → -er (infinitif) ; « vendu » → -é (participe passé).\nEx. : « Il veut manger » / « Il a mangé »."
+    }
+   ]
+  },
+  {
+   "key": "brevet-francais-analyse",
+   "name": "Brevet — Français : outils d'analyse littéraire",
+   "level": "3ème",
+   "summary": "Narration, genres, registres, poésie, théâtre, argumentation et mouvements littéraires pour l'épreuve de français.",
+   "description": "Le vocabulaire indispensable pour répondre aux questions de compréhension et d'analyse du Brevet : point de vue et narrateur, schéma narratif, autobiographie, registres, versification, théâtre, argumentation et grands mouvements littéraires. À compléter avec la boîte « Les figures de style ».",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Narrateur et point de vue (focalisation) ?",
+     "answer": "Focalisation interne : on voit par les yeux d'un personnage.\nFocalisation externe : on voit de l'extérieur, comme une caméra.\nFocalisation zéro (narrateur omniscient) : le narrateur sait tout (pensées, passé, avenir des personnages)."
+    },
+    {
+     "question": "Narrateur interne / externe ?",
+     "answer": "Interne : le narrateur est un personnage de l'histoire (récit à la 1re personne).\nExterne : le narrateur ne participe pas à l'histoire (récit à la 3e personne)."
+    },
+    {
+     "question": "Le schéma narratif ?",
+     "answer": "Situation initiale → élément perturbateur → péripéties → élément de résolution → situation finale."
+    },
+    {
+     "question": "Les quatre grands types de textes ?",
+     "answer": "Narratif (raconter), descriptif (décrire), explicatif (faire comprendre), argumentatif (convaincre)."
+    },
+    {
+     "question": "Roman / nouvelle ?",
+     "answer": "Roman : long récit de fiction en prose, avec de nombreux personnages et péripéties.\nNouvelle : récit court, peu de personnages, souvent une chute (fin surprenante)."
+    },
+    {
+     "question": "L'autobiographie ?",
+     "answer": "Récit qu'une personne réelle fait de sa propre vie. Le « pacte autobiographique » (Philippe Lejeune) : auteur = narrateur = personnage principal, et engagement de dire la vérité."
+    },
+    {
+     "question": "Mémoires / journal intime / autoportrait ?",
+     "answer": "Mémoires : récit de sa vie lié aux grands événements de son temps.\nJournal intime : écrit au jour le jour, daté.\nAutoportrait : description de soi plutôt que récit chronologique."
+    },
+    {
+     "question": "Registre comique ?",
+     "answer": "Vise à faire rire : comique de mots, de gestes, de situation, de caractère, de répétition."
+    },
+    {
+     "question": "Registre tragique ?",
+     "answer": "Montre un personnage écrasé par un destin (une fatalité) auquel il ne peut échapper ; suscite terreur et pitié."
+    },
+    {
+     "question": "Registre pathétique ?",
+     "answer": "Cherche à émouvoir le lecteur, à susciter la pitié face à la souffrance d'un personnage."
+    },
+    {
+     "question": "Registre lyrique ?",
+     "answer": "Expression des sentiments personnels (amour, mélancolie, joie…) ; 1re personne, exclamations, champ lexical des émotions."
+    },
+    {
+     "question": "Registre épique ?",
+     "answer": "Raconte des exploits héroïques ; amplification, hyperboles, combats, héros hors du commun."
+    },
+    {
+     "question": "Registre fantastique ?",
+     "answer": "Un événement surnaturel fait irruption dans un monde réaliste ; le personnage (et le lecteur) hésite entre une explication rationnelle et une explication surnaturelle."
+    },
+    {
+     "question": "Registre polémique / satirique / ironique ?",
+     "answer": "Polémique : attaque vivement une idée ou une personne.\nSatirique : se moque pour dénoncer les défauts d'une société.\nIronique : dit le contraire de ce que l'on pense pour critiquer."
+    },
+    {
+     "question": "Le vers : alexandrin, décasyllabe, octosyllabe ?",
+     "answer": "Alexandrin : 12 syllabes.\nDécasyllabe : 10 syllabes.\nOctosyllabe : 8 syllabes."
+    },
+    {
+     "question": "Rimes plates, croisées, embrassées ?",
+     "answer": "Plates (ou suivies) : AABB.\nCroisées : ABAB.\nEmbrassées : ABBA."
+    },
+    {
+     "question": "Le sonnet ?",
+     "answer": "Poème de 14 vers : deux quatrains (strophes de 4 vers) puis deux tercets (strophes de 3 vers)."
+    },
+    {
+     "question": "Enjambement ?",
+     "answer": "La phrase déborde d'un vers sur le vers suivant, sans pause à la fin du vers."
+    },
+    {
+     "question": "Le « e » muet et la diérèse ?",
+     "answer": "Le « e » muet compte comme une syllabe devant une consonne ; il ne compte pas devant une voyelle (élision) ni en fin de vers.\nDiérèse : prononcer en deux syllabes deux voyelles qui se suivent (« li-on » au lieu de « lion »)."
+    },
+    {
+     "question": "Vers libre / poème en prose ?",
+     "answer": "Vers libre : vers sans régularité de mètre ni de rime.\nPoème en prose : poème sans vers, en paragraphes (Baudelaire, Le Spleen de Paris)."
+    },
+    {
+     "question": "Théâtre : didascalie ?",
+     "answer": "Indication de mise en scène écrite par l'auteur (en italique), qui n'est pas prononcée par les acteurs."
+    },
+    {
+     "question": "Théâtre : réplique, tirade, monologue, aparté ?",
+     "answer": "Réplique : ce que dit un personnage en réponse à un autre.\nTirade : longue réplique.\nMonologue : personnage seul en scène qui parle.\nAparté : paroles qu'un personnage prononce pour lui-même, que les autres sont censés ne pas entendre."
+    },
+    {
+     "question": "Théâtre : scène d'exposition, nœud, dénouement ?",
+     "answer": "Exposition : présente les personnages et la situation au début.\nNœud : conflit principal.\nDénouement : résolution du conflit à la fin."
+    },
+    {
+     "question": "Comédie / tragédie ?",
+     "answer": "Comédie : personnages ordinaires, fin heureuse, vise à faire rire et à corriger les mœurs (Molière).\nTragédie : personnages nobles, fin malheureuse, destin inévitable (Racine, Corneille)."
+    },
+    {
+     "question": "Quiproquo ?",
+     "answer": "Malentendu : un personnage prend une personne ou une chose pour une autre. Ressort comique fréquent au théâtre."
+    },
+    {
+     "question": "Argumentation : thèse, argument, exemple ?",
+     "answer": "Thèse : l'opinion défendue.\nArgument : raison qui justifie la thèse.\nExemple : fait concret qui illustre l'argument."
+    },
+    {
+     "question": "Connecteurs logiques ?",
+     "answer": "Addition (de plus, en outre), opposition (mais, cependant, pourtant), cause (car, en effet), conséquence (donc, ainsi), conclusion (enfin, en conclusion)."
+    },
+    {
+     "question": "L'humanisme (XVIe siècle) ?",
+     "answer": "Mouvement de la Renaissance qui place l'homme au centre, redécouvre l'Antiquité et valorise le savoir. Auteurs : Rabelais, Montaigne, Ronsard, Du Bellay."
+    },
+    {
+     "question": "Le classicisme (XVIIe siècle) ?",
+     "answer": "Recherche de l'ordre, de la mesure et de la raison ; règle des trois unités au théâtre. Auteurs : Molière, Racine, Corneille, La Fontaine."
+    },
+    {
+     "question": "Les Lumières (XVIIIe siècle) ?",
+     "answer": "Combat contre l'intolérance et l'injustice par la raison et le savoir. Auteurs : Voltaire, Montesquieu, Diderot, Rousseau."
+    },
+    {
+     "question": "Le romantisme (XIXe siècle) ?",
+     "answer": "Expression des sentiments, du moi, de la nature, de la mélancolie, engagement politique. Auteurs : Victor Hugo, Lamartine, Musset."
+    },
+    {
+     "question": "Le réalisme et le naturalisme (XIXe siècle) ?",
+     "answer": "Réalisme : représenter fidèlement la réalité et la société (Balzac, Flaubert, Maupassant).\nNaturalisme : réalisme plus scientifique, influence du milieu et de l'hérédité (Zola)."
+    },
+    {
+     "question": "Le surréalisme (XXe siècle) ?",
+     "answer": "Mouvement qui explore le rêve, l'inconscient et le hasard, par l'écriture automatique. André Breton (Manifeste du surréalisme, 1924), Éluard, Aragon."
+    }
+   ]
+  },
+  {
+   "key": "brevet-physique-chimie",
+   "name": "Brevet — Physique-chimie : l'essentiel du cycle 4",
+   "level": "3ème",
+   "summary": "Atomes et ions, pH, tests chimiques, changements d'état, mouvements, énergie, électricité, lumière et son.",
+   "description": "Toutes les connaissances de physique-chimie du cycle 4 utiles pour l'épreuve de sciences du Brevet : formules avec unités, tests d'identification, lois de l'électricité et ordres de grandeur.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Constitution d'un atome ?",
+     "answer": "Un noyau (protons chargés +, neutrons neutres) entouré d'électrons (chargés −). L'atome est électriquement neutre : autant de protons que d'électrons."
+    },
+    {
+     "question": "Qu'est-ce qu'un ion ?",
+     "answer": "Un atome (ou groupe d'atomes) qui a perdu ou gagné un ou plusieurs électrons.\nCation : ion positif (électrons perdus), ex. Na⁺.\nAnion : ion négatif (électrons gagnés), ex. Cl⁻."
+    },
+    {
+     "question": "Échelle de pH ?",
+     "answer": "pH < 7 : solution acide.\npH = 7 : solution neutre.\npH > 7 : solution basique.\nPlus le pH est petit, plus la solution est acide."
+    },
+    {
+     "question": "Ions responsables de l'acidité et de la basicité ?",
+     "answer": "Ion hydrogène H⁺ : acidité.\nIon hydroxyde HO⁻ : basicité."
+    },
+    {
+     "question": "Dilution d'une solution acide ?",
+     "answer": "Ajouter de l'eau à une solution acide fait augmenter son pH, qui se rapproche de 7 (la solution devient moins acide)."
+    },
+    {
+     "question": "Test de l'eau ?",
+     "answer": "Le sulfate de cuivre anhydre, blanc, devient bleu en présence d'eau."
+    },
+    {
+     "question": "Test du dioxyde de carbone ?",
+     "answer": "L'eau de chaux se trouble (devient blanchâtre) en présence de dioxyde de carbone."
+    },
+    {
+     "question": "Test du dioxygène ?",
+     "answer": "Une bûchette incandescente se rallume (se ravive) au contact du dioxygène."
+    },
+    {
+     "question": "Test du dihydrogène ?",
+     "answer": "Une flamme approchée provoque une petite détonation (« le gaz aboie »)."
+    },
+    {
+     "question": "Tests des ions avec la soude (hydroxyde de sodium) ?",
+     "answer": "Cu²⁺ (cuivre II) : précipité bleu.\nFe²⁺ (fer II) : précipité vert.\nFe³⁺ (fer III) : précipité rouille (orangé)."
+    },
+    {
+     "question": "Test des ions chlorure Cl⁻ ?",
+     "answer": "Avec le nitrate d'argent : précipité blanc qui noircit à la lumière."
+    },
+    {
+     "question": "Conservation de la masse (Lavoisier) ?",
+     "answer": "Lors d'une transformation chimique, la masse totale des réactifs est égale à la masse totale des produits : les atomes se réarrangent, rien ne se perd, rien ne se crée."
+    },
+    {
+     "question": "Combustion du carbone ?",
+     "answer": "Carbone + dioxygène → dioxyde de carbone\nC + O₂ → CO₂"
+    },
+    {
+     "question": "Combustion du méthane ?",
+     "answer": "Méthane + dioxygène → dioxyde de carbone + eau\nCH₄ + 2 O₂ → CO₂ + 2 H₂O"
+    },
+    {
+     "question": "Les changements d'état ?",
+     "answer": "Solide → liquide : fusion.\nLiquide → solide : solidification.\nLiquide → gaz : vaporisation.\nGaz → liquide : liquéfaction.\nSolide → gaz : sublimation.\nGaz → solide : condensation."
+    },
+    {
+     "question": "Changement d'état : masse et volume ?",
+     "answer": "La masse se conserve ; le volume change (sauf cas particulier)."
+    },
+    {
+     "question": "Températures de changement d'état de l'eau pure ?",
+     "answer": "Fusion/solidification : 0 °C.\nÉbullition : 100 °C (à la pression atmosphérique normale)."
+    },
+    {
+     "question": "Masse volumique ?",
+     "answer": "ρ = m / V\nEn g/cm³, g/L ou kg/m³. Eau : 1 g/cm³ = 1 kg/L = 1 000 kg/m³."
+    },
+    {
+     "question": "Vitesse moyenne ?",
+     "answer": "v = d / t\nv en m/s (d en m, t en s) ou en km/h (d en km, t en h).\n1 m/s = 3,6 km/h."
+    },
+    {
+     "question": "Types de mouvements ?",
+     "answer": "Selon la trajectoire : rectiligne, circulaire, curviligne.\nSelon la vitesse : uniforme (constante), accéléré, ralenti."
+    },
+    {
+     "question": "Relativité du mouvement ?",
+     "answer": "Un mouvement se décrit toujours par rapport à un objet de référence (le référentiel). Un passager est immobile par rapport au train, mais en mouvement par rapport au quai."
+    },
+    {
+     "question": "Poids et masse ?",
+     "answer": "Masse (kg) : quantité de matière, la même partout ; se mesure avec une balance.\nPoids (N) : force d'attraction de la planète ; se mesure avec un dynamomètre.\nP = m × g"
+    },
+    {
+     "question": "Intensité de pesanteur g ?",
+     "answer": "Sur Terre : g ≈ 9,8 N/kg.\nSur la Lune : g ≈ 1,6 N/kg (environ 6 fois moins)."
+    },
+    {
+     "question": "Gravitation universelle ?",
+     "answer": "Deux corps qui ont une masse s'attirent. Cette attraction est d'autant plus forte que les masses sont grandes et que la distance est petite. Elle explique le mouvement des planètes autour du Soleil."
+    },
+    {
+     "question": "Énergie cinétique ?",
+     "answer": "Ec = ½ × m × v²\nEc en joules (J), m en kg, v en m/s. Elle dépend surtout de la vitesse (au carré) : distance de freinage."
+    },
+    {
+     "question": "Conversions d'énergie ?",
+     "answer": "Une énergie ne se crée pas, elle se convertit d'une forme à une autre (une partie est souvent « perdue » en chaleur).\nEx. : chute d'un objet : énergie de position → énergie cinétique."
+    },
+    {
+     "question": "Sources d'énergie renouvelables / non renouvelables ?",
+     "answer": "Renouvelables : solaire, éolien, hydraulique, géothermie, biomasse.\nNon renouvelables : pétrole, gaz, charbon (fossiles), uranium (nucléaire)."
+    },
+    {
+     "question": "Loi d'Ohm ?",
+     "answer": "U = R × I\nU en volts (V), R en ohms (Ω), I en ampères (A)."
+    },
+    {
+     "question": "Puissance électrique ?",
+     "answer": "P = U × I\nP en watts (W)."
+    },
+    {
+     "question": "Énergie électrique ?",
+     "answer": "E = P × t\nE en joules (P en W, t en s) ou en kilowattheures (P en kW, t en h)."
+    },
+    {
+     "question": "Circuit en série ?",
+     "answer": "Même intensité partout ; la tension du générateur est égale à la somme des tensions aux bornes des dipôles. Si une lampe grille, tout s'éteint."
+    },
+    {
+     "question": "Circuit en dérivation ?",
+     "answer": "Même tension aux bornes de chaque branche ; l'intensité dans la branche principale est la somme des intensités des branches dérivées."
+    },
+    {
+     "question": "Brancher un ampèremètre / un voltmètre ?",
+     "answer": "Ampèremètre (intensité) : en série.\nVoltmètre (tension) : en dérivation, aux bornes du dipôle."
+    },
+    {
+     "question": "Vitesse de la lumière ?",
+     "answer": "Environ 300 000 km/s (3 × 10⁸ m/s) dans le vide."
+    },
+    {
+     "question": "Année-lumière ?",
+     "answer": "Distance parcourue par la lumière en un an : environ 9 500 milliards de km (9,5 × 10¹² km). C'est une distance, pas une durée."
+    },
+    {
+     "question": "Le son : propagation et vitesse ?",
+     "answer": "Le son a besoin d'un milieu matériel pour se propager (pas dans le vide). Vitesse dans l'air : environ 340 m/s ; plus rapide dans l'eau et les solides."
+    },
+    {
+     "question": "Fréquence d'un son ?",
+     "answer": "Nombre de vibrations par seconde, en hertz (Hz). L'oreille humaine perçoit environ de 20 Hz à 20 000 Hz. Son grave : fréquence basse ; aigu : fréquence élevée."
+    },
+    {
+     "question": "Les planètes du système solaire, dans l'ordre ?",
+     "answer": "Mercure, Vénus, Terre, Mars, Jupiter, Saturne, Uranus, Neptune."
+    }
+   ]
+  },
+  {
+   "key": "brevet-svt",
+   "name": "Brevet — SVT : l'essentiel du cycle 4",
+   "level": "3ème",
+   "summary": "Génétique, immunité, système nerveux, nutrition, évolution, Terre et climat : l'essentiel de SVT pour le Brevet.",
+   "description": "Chromosomes, gènes et allèles, mitose, méiose et fécondation, défenses de l'organisme et vaccination, message nerveux, digestion et effort physique, évolution et classification, tectonique, risques et climat. Les connaissances attendues pour l'épreuve de sciences du Brevet.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Nombre de chromosomes dans une cellule humaine ?",
+     "answer": "46 chromosomes, soit 23 paires, dont une paire de chromosomes sexuels (XX chez la femme, XY chez l'homme)."
+    },
+    {
+     "question": "Qu'est-ce qu'un caryotype ?",
+     "answer": "La photographie des chromosomes d'une cellule, rangés par paires et par taille."
+    },
+    {
+     "question": "Gène et allèle ?",
+     "answer": "Gène : portion d'ADN qui détermine un caractère héréditaire.\nAllèles : différentes versions d'un même gène (ex. groupes sanguins A, B, O)."
+    },
+    {
+     "question": "Allèle dominant / récessif ?",
+     "answer": "Dominant : s'exprime dès qu'il est présent.\nRécessif : ne s'exprime que s'il est présent en deux exemplaires (sur les deux chromosomes de la paire)."
+    },
+    {
+     "question": "La mitose ?",
+     "answer": "Division d'une cellule en deux cellules filles identiques, avec le même nombre de chromosomes (46). Permet la croissance et le renouvellement des cellules."
+    },
+    {
+     "question": "La méiose ?",
+     "answer": "Division qui produit les gamètes (spermatozoïdes, ovules), qui ne contiennent qu'un chromosome de chaque paire (23)."
+    },
+    {
+     "question": "La fécondation ?",
+     "answer": "Union d'un spermatozoïde et d'un ovule : la cellule-œuf retrouve 46 chromosomes. Elle crée une combinaison unique d'allèles."
+    },
+    {
+     "question": "Pourquoi chaque individu est-il unique ?",
+     "answer": "Grâce à la méiose (répartition au hasard des chromosomes dans les gamètes) et à la fécondation (rencontre au hasard des gamètes), sauf vrais jumeaux."
+    },
+    {
+     "question": "Les barrières naturelles de l'organisme ?",
+     "answer": "La peau et les muqueuses, qui empêchent la plupart des micro-organismes d'entrer."
+    },
+    {
+     "question": "La réaction inflammatoire ?",
+     "answer": "Réaction rapide après une contamination : rougeur, chaleur, gonflement, douleur. Les phagocytes arrivent sur place."
+    },
+    {
+     "question": "La phagocytose ?",
+     "answer": "Les phagocytes (globules blancs) englobent puis digèrent les micro-organismes. Réaction immédiate et non spécifique."
+    },
+    {
+     "question": "Lymphocytes B et T ?",
+     "answer": "Lymphocytes B : produisent des anticorps qui neutralisent un antigène précis.\nLymphocytes T : détruisent les cellules infectées.\nRéaction spécifique, plus lente."
+    },
+    {
+     "question": "Antigène / anticorps ?",
+     "answer": "Antigène : molécule reconnue comme étrangère par l'organisme.\nAnticorps : molécule produite par les lymphocytes B, qui se fixe spécifiquement sur un antigène."
+    },
+    {
+     "question": "La vaccination ?",
+     "answer": "On injecte un microbe inactivé (ou une partie de microbe) : l'organisme fabrique des lymphocytes mémoire et réagira vite en cas de vraie contamination. Jenner (variole, 1796), Pasteur (rage, 1885)."
+    },
+    {
+     "question": "Antibiotiques ?",
+     "answer": "Médicaments qui tuent les bactéries, inefficaces contre les virus. Leur usage excessif favorise l'apparition de bactéries résistantes (antibiorésistance)."
+    },
+    {
+     "question": "Antiseptique ?",
+     "answer": "Produit qui tue les microbes à la surface de la peau ou d'une plaie, pour éviter une infection."
+    },
+    {
+     "question": "Le VIH ?",
+     "answer": "Virus responsable du sida : il détruit des lymphocytes T, ce qui affaiblit tout le système immunitaire."
+    },
+    {
+     "question": "Le trajet du message nerveux ?",
+     "answer": "Récepteur sensoriel → nerf sensitif → centre nerveux (cerveau ou moelle épinière) → nerf moteur → muscle (effecteur)."
+    },
+    {
+     "question": "Qu'est-ce qu'une synapse ?",
+     "answer": "Zone de contact entre deux neurones, où le message nerveux est transmis grâce à des neurotransmetteurs (molécules chimiques)."
+    },
+    {
+     "question": "Effets de l'alcool et des drogues sur le système nerveux ?",
+     "answer": "Ils perturbent la transmission du message nerveux au niveau des synapses : réflexes ralentis, troubles de la vigilance, risque de dépendance."
+    },
+    {
+     "question": "Où les nutriments passent-ils dans le sang ?",
+     "answer": "Dans l'intestin grêle, à travers la paroi très fine et très repliée (villosités intestinales) : c'est l'absorption intestinale."
+    },
+    {
+     "question": "Rôle des enzymes digestives ?",
+     "answer": "Elles découpent les aliments en nutriments (petites molécules) utilisables par l'organisme."
+    },
+    {
+     "question": "Effets d'un effort physique ?",
+     "answer": "Augmentation de la fréquence cardiaque et de la fréquence respiratoire, pour apporter plus de dioxygène et de nutriments aux muscles et évacuer le CO₂."
+    },
+    {
+     "question": "Le microbiote intestinal ?",
+     "answer": "Ensemble des micro-organismes (surtout des bactéries) vivant dans l'intestin. Il aide à la digestion et protège contre certains microbes."
+    },
+    {
+     "question": "L'ovulation ?",
+     "answer": "Libération d'un ovule par un ovaire, environ au 14e jour d'un cycle de 28 jours."
+    },
+    {
+     "question": "La sélection naturelle ?",
+     "answer": "Les individus porteurs de caractères avantageux dans leur milieu survivent et se reproduisent davantage : ces caractères deviennent plus fréquents au fil des générations. Darwin, 1859."
+    },
+    {
+     "question": "Classification du vivant ?",
+     "answer": "On classe les êtres vivants en groupes emboîtés selon les attributs (caractères) qu'ils partagent, ce qui traduit leur degré de parenté."
+    },
+    {
+     "question": "Crise biologique ?",
+     "answer": "Disparition rapide d'un grand nombre d'espèces. Ex. : la crise de la fin du Crétacé, il y a 66 millions d'années (disparition des dinosaures non aviens)."
+    },
+    {
+     "question": "La tectonique des plaques ?",
+     "answer": "La lithosphère est découpée en plaques qui se déplacent de quelques centimètres par an. Leurs limites concentrent séismes et volcans."
+    },
+    {
+     "question": "Volcan effusif / explosif ?",
+     "answer": "Effusif : lave fluide qui coule (coulées), ex. Piton de la Fournaise.\nExplosif : lave visqueuse, explosions, nuées ardentes, ex. montagne Pelée."
+    },
+    {
+     "question": "Aléa, enjeu, risque ?",
+     "answer": "Aléa : phénomène naturel possible (séisme, crue).\nEnjeu : population et biens exposés.\nRisque = aléa × enjeux."
+    },
+    {
+     "question": "Météo / climat ?",
+     "answer": "Météo : temps qu'il fait à un endroit à un moment donné (court terme).\nClimat : moyenne des conditions météo sur au moins 30 ans."
+    },
+    {
+     "question": "L'effet de serre ?",
+     "answer": "Certains gaz de l'atmosphère (CO₂, méthane, vapeur d'eau) retiennent une partie de la chaleur émise par la Terre. Les activités humaines renforcent ce phénomène → réchauffement climatique."
+    },
+    {
+     "question": "Producteurs, consommateurs, décomposeurs ?",
+     "answer": "Producteurs : végétaux chlorophylliens (photosynthèse).\nConsommateurs : animaux qui mangent d'autres êtres vivants.\nDécomposeurs : champignons, bactéries qui recyclent la matière morte en matière minérale."
+    }
+   ]
   }
  ]
 }
