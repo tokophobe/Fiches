@@ -158,6 +158,10 @@ Pour le modifier :
    dans l'onglet « listes », matrices à partir de la cellule C3).
 2. Remplace `data/taxonomie.xlsx` sur le site (même nom, même dossier).
 
+Matières : elles sont proposées d'après la spécialité choisie (onglet
+« spécialités-matières »). Pour un niveau qui n'a aucune spécialité (CP à
+3ème), elles viennent directement de l'onglet « niveaux-matières ».
+
 C'est tout : pas besoin de nouvelle version de l'appli. Elle relit le
 fichier à chaque ouverture (le service worker le prend toujours sur le
 réseau d'abord). Pour vérifier : Réglages développeur → « Librairie —

@@ -46,6 +46,9 @@
     { parent: "niveaux", child: "annees" },
     { parent: "niveaux", child: "specialites" },
     { parent: "specialites", child: "matieres" },
+    // Round 24 : matières rattachées directement à un niveau, pour les
+    // niveaux sans spécialité (CP → 3ème). Onglet facultatif.
+    { parent: "niveaux", child: "matieres" },
   ];
 
   /* Champs proposés à l'utilisateur, dans l'ordre d'affichage. `parent` =
@@ -56,7 +59,9 @@
     { key: "niveau", label: "Niveau", list: "niveaux", parent: "cycle" },
     { key: "annee", label: "Année", list: "annees", parent: "niveau" },
     { key: "specialite", label: "Spécialité", list: "specialites", parent: "niveau" },
-    { key: "matiere", label: "Matière", list: "matieres", parent: "specialite" },
+    // Matières : d'après la spécialité choisie ; si le niveau n'a AUCUNE
+    // spécialité, directement d'après le niveau (onglet "niveaux-matières").
+    { key: "matiere", label: "Matière", list: "matieres", parent: "specialite", fallbackParent: "niveau" },
   ];
 
   function norm(s) {
@@ -318,9 +323,13 @@
     if (!tax || !f) return [];
     const all = tax.lists[f.list] || [];
     if (!f.parent) return all;
-    const parentId = sel && sel[f.parent];
+    let parentKey = f.parent;
+    if (f.fallbackParent && !(sel && sel[f.parent]) && options(tax, f.parent, sel).length === 0) {
+      parentKey = f.fallbackParent;
+    }
+    const parentId = sel && sel[parentKey];
     if (!parentId) return [];
-    const pf = fieldDef(f.parent);
+    const pf = fieldDef(parentKey);
     const ids = (tax.links[`${pf.list}>${f.list}`] || {})[parentId] || [];
     const set = new Set(ids);
     return all.filter((it) => set.has(it.id));
