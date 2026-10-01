@@ -1,4 +1,4 @@
-const CACHE_NAME = "fiches-cache-v175";
+const CACHE_NAME = "fiches-cache-v176";
 
 const CORE_ASSETS = [
   "./",
@@ -8,6 +8,8 @@ const CORE_ASSETS = [
   "./js/sm2.js",
   "./js/db.js",
   "./js/sync.js",
+  "./js/taxonomy.js",
+  "./data/taxonomie.xlsx",
   "./js/app.js",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
@@ -50,6 +52,24 @@ self.addEventListener("fetch", (event) => {
   // police. Sert à limiter le repli "hors-ligne -> sers index.html" au SEUL
   // cas où ça a du sens.
   const isNavigation = request.mode === "navigate" || request.destination === "document";
+
+  // Round 23 : la taxonomie Excel doit pouvoir être remplacée sur le site
+  // SANS nouvelle version de l'appli — réseau d'abord (copie fraîche mise
+  // en cache), cache seulement hors-ligne.
+  if (isCoreAsset && url.pathname.endsWith("/data/taxonomie.xlsx")) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(request, { ignoreSearch: true }).then((c) => c || Response.error()))
+    );
+    return;
+  }
 
   if (isCoreAsset) {
     event.respondWith(

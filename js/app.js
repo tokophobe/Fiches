@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v175";
+  const APP_VERSION = "v176";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -11867,7 +11867,13 @@
   let libraryCollectionsCache = [];
   let libraryRatingsCache = [];
   let librarySearchQuery = "";
-  let libraryLevelFilter = "";
+  // Round 23 : filtres en cascade (taxonomie Excel) + tags, remplacent
+  // l'ancien filtre "niveau" unique. `libraryTaxFilter` = { categorie: id,
+  // cycle: id, ... } ; `libraryTagFilter` = tags exigés (TOUS).
+  let libraryTaxFilter = {};
+  let libraryTagFilter = [];
+  let libraryFilterCascade = null;
+  let libraryFilterTagInput = null;
   // Round 19, item 5 : le préréglage automatique depuis le profil ne doit
   // se faire qu'UNE FOIS (au premier passage sur la page pendant cette
   // session) — sans ça, il écraserait à chaque réouverture un choix que
@@ -11885,6 +11891,352 @@
     "2nde", "1ère", "Terminale",
     "Prépa", "BTS", "IUT", "Licence", "Master", "Autre",
   ];
+
+  /* ---------------- Round 23 : taxonomie + tags ----------------
+     La taxonomie (catégorie → cycle → niveau → année / spécialité →
+     matière) est lue dans data/taxonomie.xlsx par js/taxonomy.js. Une
+     collection publiée garde, pour chaque champ, l'id ET le libellé
+     ({ id, label }) : l'id sert au filtrage, le libellé à l'affichage et de
+     repli si un id change un jour dans l'Excel. */
+
+  // Anciennes valeurs de LIBRARY_LEVELS -> libellé de niveau dans l'Excel.
+  const LEGACY_LEVEL_TO_NIVEAU = { "prépa": "CPGE", "iut": "BUT" };
+
+  /** Sélection d'ids ({ categorie: id, ... }) -> valeur stockée
+   *  ({ categorie: { id, label }, ... }). */
+  function taxonomyValueFromSelection(sel) {
+    const tax = Taxonomy.get();
+    const out = {};
+    Taxonomy.FIELDS.forEach((f) => {
+      const item = sel && sel[f.key] ? Taxonomy.findItem(tax, f.key, sel[f.key]) : null;
+      if (item) out[f.key] = { id: item.id, label: item.label };
+    });
+    return out;
+  }
+
+  /** Ancien champ `level` (avant la taxonomie) -> sélection d'ids,
+   *  remontée jusqu'à la catégorie. "Autre" ou inconnu -> {}. */
+  function legacyLevelSelection(level) {
+    const tax = Taxonomy.get();
+    if (!tax || !level) return {};
+    const key = Taxonomy.norm(level);
+    const niveau = Taxonomy.findByLabel(tax, "niveau", LEGACY_LEVEL_TO_NIVEAU[key] || level);
+    return niveau ? Taxonomy.selectionFromNiveau(tax, niveau.id) : {};
+  }
+
+  /** Classement d'une collection publiée ({ categorie: { id, label }, ... }) —
+   *  repli sur l'ancien champ `level` pour les collections d'avant. */
+  function collectionTaxonomy(col) {
+    const t = col && col.taxonomy;
+    if (t && typeof t === "object" && Object.keys(t).length > 0) return t;
+    return taxonomyValueFromSelection(legacyLevelSelection(col && col.level));
+  }
+
+  /** Libellé court pour la liste : niveau (+ année) · matière, ou à défaut
+   *  le champ le plus précis disponible. */
+  function taxonomyShortLabel(t) {
+    if (!t) return "";
+    const parts = [];
+    if (t.niveau) parts.push(t.annee ? `${t.niveau.label} (${t.annee.label})` : t.niveau.label);
+    if (t.matiere) parts.push(t.matiere.label);
+    else if (t.specialite) parts.push(t.specialite.label);
+    if (parts.length === 0) {
+      const last = [...Taxonomy.FIELDS].reverse().find((f) => t[f.key]);
+      if (last) parts.push(t[last.key].label);
+    }
+    return parts.join(" · ");
+  }
+
+  /** Chemin complet pour la page de détail. */
+  function taxonomyFullLabel(t) {
+    if (!t) return "";
+    return Taxonomy.FIELDS.filter((f) => t[f.key]).map((f) => t[f.key].label).join(" › ");
+  }
+
+  /** Une collection correspond-elle aux filtres de taxonomie choisis ?
+   *  Comparaison par id, avec repli sur le libellé. */
+  function collectionMatchesTaxFilter(col, filterSel) {
+    const keys = Object.keys(filterSel || {}).filter((k) => filterSel[k]);
+    if (keys.length === 0) return true;
+    const t = collectionTaxonomy(col);
+    const tax = Taxonomy.get();
+    return keys.every((k) => {
+      const v = t[k];
+      if (!v) return false;
+      if (v.id === filterSel[k]) return true;
+      const item = Taxonomy.findItem(tax, k, filterSel[k]);
+      return !!item && Taxonomy.norm(item.label) === Taxonomy.norm(v.label);
+    });
+  }
+
+  /** Classement d'une boîte toute prête (packs/bibliotheque.json) :
+   *  `taxonomy` en libellés ({ niveau: "4ème", specialite: "...", matiere:
+   *  "anglais" }) si présent, sinon l'ancien `level`. Chaque libellé n'est
+   *  retenu que s'il est cohérent avec ceux déjà retenus au-dessus. */
+  function libraryPackSelection(box) {
+    const tax = Taxonomy.get();
+    if (!tax || !box) return {};
+    const labels = box.taxonomy && typeof box.taxonomy === "object" ? box.taxonomy : {};
+    let sel = labels.niveau ? legacyLevelSelection(labels.niveau) : legacyLevelSelection(box.level);
+    Taxonomy.FIELDS.forEach((f) => {
+      if (!labels[f.key] || sel[f.key]) return;
+      const item = Taxonomy.options(tax, f.key, sel).find((o) => Taxonomy.norm(o.label) === Taxonomy.norm(labels[f.key]));
+      if (item) sel = { ...sel, [f.key]: item.id };
+    });
+    return sel;
+  }
+
+  /** Message d'erreur Supabase plus parlant quand la migration du round 23
+   *  (colonnes taxonomy/tags) n'a pas encore été exécutée. */
+  function libraryShareErrorHint(error) {
+    const msg = String(error || "");
+    if (/taxonomy|tags/i.test(msg) && /column|colonne|schema/i.test(msg)) {
+      return `${msg}\n(La base n'a pas encore les colonnes « taxonomy »/« tags » : exécute supabase/library_collections_taxonomy_tags_migration.sql dans Supabase.)`;
+    }
+    return msg;
+  }
+
+  /** Tag normalisé : minuscules, espaces simples, sans "#" initial. */
+  function normalizeTag(raw) {
+    return String(raw || "")
+      .replace(/^#+/, "")
+      .replace(/[,;]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase()
+      .slice(0, 40);
+  }
+
+  function collectionTags(col) {
+    return Array.isArray(col && col.tags) ? col.tags.map(normalizeTag).filter(Boolean) : [];
+  }
+
+  /** Tous les tags déjà utilisés dans la Librairie, du plus fréquent au
+   *  moins fréquent — source de la saisie semi-automatique. */
+  function libraryKnownTags() {
+    const counts = new Map();
+    libraryCollectionsCache.forEach((col) => {
+      new Set(collectionTags(col)).forEach((t) => counts.set(t, (counts.get(t) || 0) + 1));
+    });
+    return [...counts.entries()]
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "fr"))
+      .map(([tag, count]) => ({ tag, count }));
+  }
+
+  const TAX_ALL_LABELS = {
+    categorie: "Toutes catégories",
+    cycle: "Tous cycles",
+    niveau: "Tous niveaux",
+    annee: "Toutes années",
+    specialite: "Toutes spécialités",
+    matiere: "Toutes matières",
+  };
+
+  /** Champs en cascade. mode "publish" : un champ par ligne avec son
+   *  libellé, "Choisir…" en tête ; mode "filter" : selects compacts sur deux
+   *  colonnes, "Tous…" en tête. Un champ sans aucun choix possible (parent
+   *  non choisi, ou pas de correspondance dans l'Excel) est masqué. */
+  function createTaxonomyCascade(container, opts) {
+    const mode = (opts && opts.mode) || "publish";
+    let sel = { ...((opts && opts.sel) || {}) };
+    function draw() {
+      const tax = Taxonomy.get();
+      container.innerHTML = "";
+      Taxonomy.FIELDS.forEach((f) => {
+        const options = Taxonomy.options(tax, f.key, sel);
+        if (sel[f.key] && !options.some((o) => o.id === sel[f.key])) delete sel[f.key];
+        if (options.length === 0) return;
+        const select = document.createElement("select");
+        select.dataset.taxKey = f.key;
+        const first = document.createElement("option");
+        first.value = "";
+        first.textContent = mode === "filter" ? TAX_ALL_LABELS[f.key] || "Tous" : "Choisir…";
+        select.appendChild(first);
+        options.forEach((o) => {
+          const opt = document.createElement("option");
+          opt.value = o.id;
+          opt.textContent = o.label;
+          select.appendChild(opt);
+        });
+        select.value = sel[f.key] || "";
+        select.addEventListener("change", () => {
+          if (select.value) sel[f.key] = select.value;
+          else delete sel[f.key];
+          draw();
+          if (opts && opts.onChange) opts.onChange({ ...sel });
+        });
+        if (mode === "filter") {
+          select.className = "library-taxonomy-select";
+          select.setAttribute("aria-label", f.label);
+          select.classList.toggle("is-set", !!sel[f.key]);
+          container.appendChild(select);
+        } else {
+          const label = document.createElement("label");
+          label.className = "field taxonomy-field";
+          const span = document.createElement("span");
+          span.textContent = f.label;
+          label.appendChild(span);
+          label.appendChild(select);
+          container.appendChild(label);
+        }
+      });
+    }
+    draw();
+    return {
+      getSelection: () => ({ ...sel }),
+      setSelection: (next) => {
+        sel = { ...(next || {}) };
+        draw();
+      },
+      /** Libellés des champs affichés mais pas encore remplis. */
+      missingFields: () => {
+        const tax = Taxonomy.get();
+        return Taxonomy.FIELDS.filter((f) => !sel[f.key] && Taxonomy.options(tax, f.key, sel).length > 0).map((f) => f.label);
+      },
+      redraw: draw,
+    };
+  }
+
+  /** Saisie de tags en "pastilles" avec suggestions. `getSuggestions()`
+   *  renvoie [{ tag, count }] ; `allowNew` = accepte un tag inédit (publication)
+   *  ou seulement des tags existants (recherche). */
+  function createTagInput(container, opts) {
+    const allowNew = !!(opts && opts.allowNew);
+    let tags = ((opts && opts.tags) || []).map(normalizeTag).filter(Boolean);
+    container.innerHTML = `
+      <div class="tag-input-box">
+        <span class="tag-input-chips"></span>
+        <input type="text" class="tag-input-field" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" placeholder="${escapeHtml((opts && opts.placeholder) || "Ajouter un tag…")}" />
+      </div>
+      <ul class="tag-suggestions" hidden></ul>`;
+    const chipsEl = container.querySelector(".tag-input-chips");
+    const input = container.querySelector(".tag-input-field");
+    const sugEl = container.querySelector(".tag-suggestions");
+    const notify = () => opts && opts.onChange && opts.onChange([...tags]);
+    function drawChips() {
+      chipsEl.innerHTML = "";
+      tags.forEach((t) => {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "tag-chip tag-chip--removable";
+        chip.innerHTML = `#${escapeHtml(t)} <span class="tag-chip-x" aria-hidden="true">×</span>`;
+        chip.setAttribute("aria-label", `Retirer le tag ${t}`);
+        chip.addEventListener("click", (e) => {
+          e.preventDefault();
+          tags = tags.filter((x) => x !== t);
+          drawChips();
+          notify();
+        });
+        chipsEl.appendChild(chip);
+      });
+    }
+    function suggestions() {
+      const q = normalizeTag(input.value);
+      const known = ((opts && opts.getSuggestions && opts.getSuggestions()) || []).filter((s) => !tags.includes(s.tag));
+      const starts = known.filter((s) => !q || s.tag.startsWith(q));
+      const contains = q ? known.filter((s) => !s.tag.startsWith(q) && s.tag.includes(q)) : [];
+      const list = [...starts, ...contains].slice(0, 8);
+      return { q, list };
+    }
+    function drawSuggestions() {
+      const { q, list } = suggestions();
+      sugEl.innerHTML = "";
+      const showNew = allowNew && q && !tags.includes(q) && !list.some((s) => s.tag === q);
+      if (list.length === 0 && !showNew) {
+        if (q && !allowNew) {
+          sugEl.innerHTML = `<li class="tag-suggestion tag-suggestion--empty">Aucun tag existant</li>`;
+          sugEl.hidden = false;
+        } else {
+          sugEl.hidden = true;
+        }
+        return;
+      }
+      list.forEach((s) => {
+        const li = document.createElement("li");
+        li.className = "tag-suggestion";
+        li.innerHTML = `#${escapeHtml(s.tag)} <span class="tag-suggestion-count">${s.count}</span>`;
+        li.addEventListener("mousedown", (e) => e.preventDefault());
+        li.addEventListener("click", () => addTag(s.tag));
+        sugEl.appendChild(li);
+      });
+      if (showNew) {
+        const li = document.createElement("li");
+        li.className = "tag-suggestion tag-suggestion--new";
+        li.textContent = `+ nouveau tag « ${q} »`;
+        li.addEventListener("mousedown", (e) => e.preventDefault());
+        li.addEventListener("click", () => addTag(q));
+        sugEl.appendChild(li);
+      }
+      sugEl.hidden = false;
+    }
+    function addTag(raw) {
+      const t = normalizeTag(raw);
+      if (!t) return;
+      if (!tags.includes(t)) tags.push(t);
+      input.value = "";
+      drawChips();
+      drawSuggestions();
+      input.focus();
+      notify();
+    }
+    /** Valide le texte en cours : tag tel quel (publication) ou meilleure
+     *  suggestion existante (recherche). */
+    function commitTyped() {
+      const q = normalizeTag(input.value);
+      if (!q) return false;
+      if (allowNew) {
+        addTag(q);
+        return true;
+      }
+      const { list } = suggestions();
+      const exact = list.find((s) => s.tag === q);
+      if (exact || list[0]) {
+        addTag((exact || list[0]).tag);
+        return true;
+      }
+      return false;
+    }
+    input.addEventListener("input", () => {
+      if (/[,;]/.test(input.value)) {
+        input.value.split(/[,;]/).slice(0, -1).forEach((part) => {
+          if (allowNew) addTag(part);
+        });
+        input.value = input.value.split(/[,;]/).pop();
+      }
+      drawSuggestions();
+    });
+    input.addEventListener("focus", drawSuggestions);
+    input.addEventListener("blur", () => setTimeout(() => (sugEl.hidden = true), 150));
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        // Entrée ne doit jamais soumettre le formulaire de partage.
+        e.preventDefault();
+        commitTyped();
+      } else if (e.key === "Backspace" && !input.value && tags.length > 0) {
+        tags.pop();
+        drawChips();
+        notify();
+      }
+    });
+    drawChips();
+    return {
+      /** Tags choisis, plus le texte en cours de saisie (publication) pour
+       *  ne pas perdre un tag tapé sans avoir appuyé sur Entrée. */
+      getTags: () => {
+        const pending = allowNew ? normalizeTag(input.value) : "";
+        return pending && !tags.includes(pending) ? [...tags, pending] : [...tags];
+      },
+      setTags: (next) => {
+        tags = (next || []).map(normalizeTag).filter(Boolean);
+        input.value = "";
+        drawChips();
+      },
+    };
+  }
+
+  function tagChipsHtml(tags) {
+    return tags.map((t) => `<span class="tag-chip">#${escapeHtml(t)}</span>`).join("");
+  }
 
   /** Nombre de pouces levés pour une collection, et si le Compte connecté
    *  fait partie des personnes ayant déjà mis un pouce — à partir du cache
@@ -11961,7 +12313,8 @@
     const list = el("library-list");
     const empty = el("library-empty");
     const searchInput = el("library-search-input");
-    const levelFilter = el("library-level-filter");
+    const taxFilterEl = el("library-filter-taxonomy");
+    const tagFilterEl = el("library-filter-tags");
     const tokenRow = el("library-token-balance-row");
     if (!list) return;
     if (!Sync.isConfigured()) {
@@ -11969,7 +12322,8 @@
       list.innerHTML = "";
       if (empty) empty.hidden = true;
       if (searchInput) searchInput.hidden = true;
-      if (levelFilter) levelFilter.hidden = true;
+      if (taxFilterEl) taxFilterEl.hidden = true;
+      if (tagFilterEl) tagFilterEl.hidden = true;
       if (tokenRow) tokenRow.hidden = true;
       return;
     }
@@ -12003,29 +12357,49 @@
       mineToggle.classList.toggle("is-active", libraryOnlyMine);
       mineToggle.setAttribute("aria-pressed", String(libraryOnlyMine));
     }
-    if (levelFilter) {
-      levelFilter.hidden = false;
-      if (levelFilter.options.length <= 1) {
-        LIBRARY_LEVELS.forEach((lvl) => {
-          const opt = document.createElement("option");
-          opt.value = lvl;
-          opt.textContent = lvl;
-          levelFilter.appendChild(opt);
-        });
-      }
-      // Round 19, item 5 : préréglage automatique sur le niveau scolaire
-      // du profil, une seule fois — l'utilisateur garde la main ensuite
-      // (le filtre reste un simple <select>, modifiable à tout moment).
+    list.innerHTML = `<li class="field-hint">Chargement…</li>`;
+    // Round 23 : la taxonomie (Excel) est chargée en même temps que les
+    // collections — nécessaire aux filtres ET au classement des anciennes
+    // collections (champ `level`).
+    await Taxonomy.load();
+    if (taxFilterEl) {
+      taxFilterEl.hidden = false;
+      // Round 19, item 5 (adapté) : préréglage une seule fois sur le niveau
+      // scolaire du profil, converti en niveau de la taxonomie.
       if (!libraryLevelFilterAutoApplied) {
         libraryLevelFilterAutoApplied = true;
         const profileLevel = ((freshUser && freshUser.user_metadata) || {}).school_level || "";
-        if (profileLevel && LIBRARY_LEVELS.includes(profileLevel)) {
-          libraryLevelFilter = profileLevel;
-          levelFilter.value = profileLevel;
-        }
+        const preset = legacyLevelSelection(profileLevel);
+        if (preset.niveau) libraryTaxFilter = preset;
+      }
+      if (!libraryFilterCascade) {
+        libraryFilterCascade = createTaxonomyCascade(taxFilterEl, {
+          mode: "filter",
+          sel: libraryTaxFilter,
+          onChange: (sel) => {
+            libraryTaxFilter = sel;
+            renderLibraryList();
+          },
+        });
+      } else {
+        libraryFilterCascade.setSelection(libraryTaxFilter);
       }
     }
-    list.innerHTML = `<li class="field-hint">Chargement…</li>`;
+    if (tagFilterEl) {
+      tagFilterEl.hidden = false;
+      if (!libraryFilterTagInput) {
+        libraryFilterTagInput = createTagInput(tagFilterEl, {
+          allowNew: false,
+          tags: libraryTagFilter,
+          placeholder: "Filtrer par tags…",
+          getSuggestions: libraryKnownTags,
+          onChange: (tags) => {
+            libraryTagFilter = tags;
+            renderLibraryList();
+          },
+        });
+      }
+    }
     const [collections, ratings] = await Promise.all([Sync.library.list(), Sync.library.listRatings()]);
     libraryCollectionsCache = collections;
     libraryRatingsCache = ratings;
@@ -12047,14 +12421,24 @@
     if (libraryOnlyMine && accountCurrentUser) {
       collections = collections.filter((col) => col.owner_id === accountCurrentUser.id);
     }
-    if (libraryLevelFilter) collections = collections.filter((col) => (col.level || "") === libraryLevelFilter);
+    collections = collections.filter((col) => collectionMatchesTaxFilter(col, libraryTaxFilter));
+    if (libraryTagFilter.length > 0) {
+      collections = collections.filter((col) => {
+        const t = collectionTags(col);
+        return libraryTagFilter.every((tag) => t.includes(tag));
+      });
+    }
     if (q) {
       collections = collections.filter((col) => {
         const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim();
+        // Round 23 : la recherche texte porte aussi sur les tags et le
+        // classement (ex. "anglais", "terminale").
         return (
           (col.name || "").toLowerCase().includes(q) ||
           ownerName.toLowerCase().includes(q) ||
-          (col.owner_email || "").toLowerCase().includes(q)
+          (col.owner_email || "").toLowerCase().includes(q) ||
+          collectionTags(col).some((t) => t.includes(q)) ||
+          taxonomyFullLabel(collectionTaxonomy(col)).toLowerCase().includes(q)
         );
       });
     }
@@ -12074,7 +12458,9 @@
       // prénom/nom de l'auteur n'était pas encore connu).
       const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || col.owner_email || "quelqu'un";
       const priceTokens = Number(col.price_tokens) || 0;
-      const levelLabel = col.level ? ` · ${escapeHtml(col.level)}` : "";
+      const taxLabel = taxonomyShortLabel(collectionTaxonomy(col));
+      const levelLabel = taxLabel ? ` · ${escapeHtml(taxLabel)}` : "";
+      const rowTags = collectionTags(col);
       const { count: likeCount, liked } = libraryCollectionLikeStats(col.id);
       const li = document.createElement("li");
       li.className = "subject-row library-row";
@@ -12089,6 +12475,7 @@
           <span class="library-rating-row">${libraryThumbHtml(likeCount, liked, col.id)}</span>
         </div>
         <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""} — par ${escapeHtml(ownerName)}${levelLabel}</span>
+        ${rowTags.length ? `<span class="tag-chips tag-chips--row">${tagChipsHtml(rowTags)}</span>` : ""}
         <div class="library-row-actions">
           <button type="button" class="btn btn--small library-price-btn${alreadyTaken ? " library-price-btn--taken" : ""}" ${alreadyTaken ? "disabled" : ""}>${alreadyTaken ? "Déjà pris" : libraryPriceButtonHtml(priceTokens)}</button>
           <button type="button" class="btn btn--small btn--ghost library-details-btn">Détails</button>
@@ -12145,9 +12532,22 @@
     if (metaEl) {
       metaEl.innerHTML = `
         ${n} fiche${n > 1 ? "s" : ""}<br>
-        Par ${escapeHtml(ownerName)}${col.level ? ` · ${escapeHtml(col.level)}` : ""}<br>
+        Par ${escapeHtml(ownerName)}<br>
         ${priceLabel}
       `;
+    }
+    // Round 23 : classement complet (catégorie › … › matière) et tags.
+    const detailTax = taxonomyFullLabel(collectionTaxonomy(col));
+    const taxEl = el("library-detail-taxonomy");
+    if (taxEl) {
+      taxEl.hidden = !detailTax;
+      taxEl.textContent = detailTax;
+    }
+    const detailTags = collectionTags(col);
+    const tagsEl = el("library-detail-tags");
+    if (tagsEl) {
+      tagsEl.hidden = detailTags.length === 0;
+      tagsEl.innerHTML = tagChipsHtml(detailTags);
     }
     // Round 20, item 2 : résumé/description, restitués ici tels que saisis
     // au partage — masqués quand absents (collections d'avant ce round, ou
@@ -12443,14 +12843,17 @@
         skipped++;
         continue;
       }
+      const taxonomy = taxonomyValueFromSelection(libraryPackSelection(box));
       const { error } = await Sync.library.share(subject.name, boxCards, {
-        level: box.level || "",
+        level: taxonomy.niveau ? taxonomy.niveau.label : box.level || "",
+        taxonomy,
+        tags: Array.isArray(box.tags) ? box.tags.map(normalizeTag).filter(Boolean) : [],
         summary: box.summary || "",
         description: box.description || "",
         priceTokens: Number(box.priceTokens) || 0,
         sourceSubjectId: subject.id,
       });
-      if (error) failures.push(`${subject.name} : ${error}`);
+      if (error) failures.push(`${subject.name} : ${libraryShareErrorHint(error)}`);
       else {
         published++;
         myPublishedSourceIds.add(subject.id);
@@ -12468,6 +12871,29 @@
   const devLibraryPackPublishBtn = el("dev-library-pack-publish-btn");
   if (devLibraryPackPublishBtn) devLibraryPackPublishBtn.addEventListener("click", () => publishLibraryPack());
 
+  /** Round 23 : état de la taxonomie lue dans l'Excel (réglages dév.). */
+  function renderDevTaxonomyStatus(tax) {
+    const status = el("dev-taxonomy-status");
+    if (!status || !tax) return;
+    const L = tax.lists || {};
+    const n = (k) => (L[k] || []).length;
+    const when = tax.loadedAt ? new Date(tax.loadedAt).toLocaleString("fr-FR") : "?";
+    status.textContent = tax.error
+      ? `Lecture impossible : ${tax.error}`
+      : `${n("categories")} catégories, ${n("cycles")} cycles, ${n("niveaux")} niveaux, ${n("annees")} années, ${n("specialites")} spécialités, ${n("matieres")} matières — lu le ${when}.`;
+  }
+  const devTaxonomyReloadBtn = el("dev-taxonomy-reload-btn");
+  if (devTaxonomyReloadBtn) {
+    devTaxonomyReloadBtn.addEventListener("click", async () => {
+      const status = el("dev-taxonomy-status");
+      if (status) status.textContent = "Lecture…";
+      const tax = await Taxonomy.load(true);
+      renderDevTaxonomyStatus(tax);
+      if (libraryFilterCascade) libraryFilterCascade.redraw();
+    });
+    Taxonomy.load().then(renderDevTaxonomyStatus);
+  }
+
   const devLibraryRefreshBtn = el("dev-library-refresh-btn");
   if (devLibraryRefreshBtn) devLibraryRefreshBtn.addEventListener("click", () => renderDevLibraryModerationEditor());
 
@@ -12475,13 +12901,6 @@
   if (librarySearchInputEl) {
     librarySearchInputEl.addEventListener("input", () => {
       librarySearchQuery = librarySearchInputEl.value || "";
-      renderLibraryList();
-    });
-  }
-  const libraryLevelFilterEl = el("library-level-filter");
-  if (libraryLevelFilterEl) {
-    libraryLevelFilterEl.addEventListener("change", () => {
-      libraryLevelFilter = libraryLevelFilterEl.value || "";
       renderLibraryList();
     });
   }
@@ -12641,23 +13060,30 @@
    *  Stéphane, par un vrai formulaire avec tous les champs en même temps
    *  (nom, niveau scolaire en liste déroulante, résumé, description, prix
    *  en jetons). */
-  function openLibraryShareView(subject, boxCards) {
+  let libraryShareCascade = null;
+  let libraryShareTagInput = null;
+  async function openLibraryShareView(subject, boxCards) {
     const nameEl = el("library-share-name");
-    const levelEl = el("library-share-level");
+    const taxEl = el("library-share-taxonomy");
+    const tagsEl = el("library-share-tags");
     const summaryEl = el("library-share-summary");
     const descriptionEl = el("library-share-description");
     const priceEl = el("library-share-price");
     if (nameEl) nameEl.value = subject.name || "";
-    if (levelEl) {
-      if (levelEl.options.length <= 1) {
-        LIBRARY_LEVELS.forEach((lvl) => {
-          const opt = document.createElement("option");
-          opt.value = lvl;
-          opt.textContent = lvl;
-          levelEl.appendChild(opt);
-        });
-      }
-      levelEl.value = "";
+    // Round 23 : taxonomie (Excel) + tags. Les collections déjà publiées
+    // sont chargées si besoin, pour proposer leurs tags en saisie
+    // semi-automatique.
+    await Promise.all([
+      Taxonomy.load(),
+      libraryCollectionsCache.length ? null : Sync.library.list().then((cols) => (libraryCollectionsCache = cols)),
+    ]);
+    if (taxEl) libraryShareCascade = createTaxonomyCascade(taxEl, { mode: "publish", sel: {} });
+    if (tagsEl) {
+      libraryShareTagInput = createTagInput(tagsEl, {
+        allowNew: true,
+        placeholder: "Ex. vocabulaire, bac, verbes…",
+        getSuggestions: libraryKnownTags,
+      });
     }
     if (summaryEl) summaryEl.value = "";
     if (descriptionEl) descriptionEl.value = "";
@@ -12669,7 +13095,10 @@
         .then((pack) => {
           const box = (pack.boxes || []).find((b) => libraryPackSubjectId(b) === subject.id);
           if (!box) return;
-          if (levelEl && box.level) levelEl.value = box.level;
+          // Classement : `taxonomy` du pack ({ niveau: "4ème", matiere:
+          // "anglais", ... } en libellés) s'il existe, sinon l'ancien `level`.
+          if (libraryShareCascade) libraryShareCascade.setSelection(libraryPackSelection(box));
+          if (libraryShareTagInput && Array.isArray(box.tags)) libraryShareTagInput.setTags(box.tags);
           if (summaryEl && !summaryEl.value) summaryEl.value = box.summary || "";
           if (descriptionEl && !descriptionEl.value) descriptionEl.value = box.description || "";
           if (priceEl) priceEl.value = String(Number(box.priceTokens) || 0);
@@ -12690,11 +13119,23 @@
           await robotAlert("Le nom de la collection est obligatoire.");
           return;
         }
+        // Round 23 : tous les champs de classement affichés sont obligatoires.
+        const missing = libraryShareCascade ? libraryShareCascade.missingFields() : [];
+        if (missing.length > 0) {
+          await robotAlert(`Complète le classement de la collection : ${missing.join(", ")}.`);
+          return;
+        }
+        const taxonomy = taxonomyValueFromSelection(libraryShareCascade ? libraryShareCascade.getSelection() : {});
+        const tags = libraryShareTagInput ? libraryShareTagInput.getTags() : [];
         const priceTokens = Math.max(0, Math.round(Number(((priceEl && priceEl.value) || "0").replace(",", ".")) || 0));
         const submitBtn = el("library-share-submit");
         if (submitBtn) submitBtn.disabled = true;
         const { error } = await Sync.library.share(name, boxCards, {
-          level: (levelEl && levelEl.value) || "",
+          // `level` reste rempli (libellé du niveau) pour les versions
+          // précédentes de l'appli, qui ne lisent que ce champ.
+          level: taxonomy.niveau ? taxonomy.niveau.label : "",
+          taxonomy,
+          tags,
           summary: ((summaryEl && summaryEl.value) || "").trim(),
           description: ((descriptionEl && descriptionEl.value) || "").trim(),
           priceTokens,
@@ -12702,9 +13143,10 @@
         });
         if (submitBtn) submitBtn.disabled = false;
         if (error) {
-          await robotAlert(`Le partage a échoué : ${error}`);
+          await robotAlert(`Le partage a échoué : ${libraryShareErrorHint(error)}`);
           return;
         }
+        libraryCollectionsCache = [];
         myPublishedSourceIds.add(subject.id);
         closeLibraryShareView();
         renderSubjectManageList();

@@ -905,6 +905,10 @@ async function shareCollectionToLibrary(name, cards, extra) {
     // Round 20, item 5 : mémorise la boîte d'origine, pour pouvoir
     // vérifier avant un futur partage qu'elle n'a pas déjà été publiée.
     source_subject_id: extra.sourceSubjectId || null,
+    // Round 23 : classement d'après la taxonomie Excel ({ categorie:
+    // { id, label }, cycle: ..., matiere: ... }) et tags libres.
+    taxonomy: extra.taxonomy || {},
+    tags: Array.isArray(extra.tags) ? extra.tags : [],
     cards: cards.map((card) => ({ id: card.id, question: card.question, answer: card.answer })),
   };
   const { data, error } = await c.from("library_collections").insert(row).select().single();

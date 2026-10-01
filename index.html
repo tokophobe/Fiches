@@ -1186,9 +1186,11 @@
       <!-- Round 21, item 6 : ordre interverti (niveau d'abord, recherche
            ensuite), demande de Stéphane. -->
       <!-- Round 18, item 15 : tri par niveau scolaire. -->
-      <select id="library-level-filter" class="library-level-filter">
-        <option value="">Tous niveaux</option>
-      </select>
+      <!-- Round 23 : filtres en cascade d'après la taxonomie Excel
+           (data/taxonomie.xlsx, voir js/taxonomy.js) — remplacent l'ancien
+           filtre "niveau" unique — puis filtre par tags. -->
+      <div class="library-taxonomy-filters" id="library-filter-taxonomy"></div>
+      <div class="tag-input tag-input--filter" id="library-filter-tags"></div>
       <!-- Round 10, item 3 : recherche par mots-clés (nom de la collection
            ou nom de son auteur). -->
       <input type="search" id="library-search-input" class="library-search-input" placeholder="Rechercher une collection…" />
@@ -1702,6 +1704,20 @@
         <p class="field-hint" id="dev-library-pack-status"></p>
       </div>
 
+      <!-- Round 23 : taxonomie lue dans data/taxonomie.xlsx (voir
+           js/taxonomy.js) — permet de vérifier qu'un Excel remplacé sur le
+           site a bien été relu. -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Librairie — taxonomie (Excel)</h3>
+        <p class="field-hint settings-block-hint">
+          Classement proposé au partage et dans les filtres, lu dans
+          data/taxonomie.xlsx. Pour le modifier : remplace ce fichier sur le
+          site, puis appuie sur « Relire l'Excel ».
+        </p>
+        <button type="button" class="btn btn--ghost" id="dev-taxonomy-reload-btn">Relire l'Excel</button>
+        <p class="field-hint" id="dev-taxonomy-status"></p>
+      </div>
+
       <div class="card-form">
         <h3 class="settings-block-title">Librairie — modération</h3>
         <p class="field-hint settings-block-hint">
@@ -1790,6 +1806,8 @@
       <!-- Round 20, item 2 : résumé (une phrase) et description (plus
            longue), saisis au partage, restitués ici. Masqués si absents
            (collections partagées avant ce round, ou champs laissés vides). -->
+      <p class="library-detail-taxonomy" id="library-detail-taxonomy" hidden></p>
+      <div class="tag-chips" id="library-detail-tags" hidden></div>
       <p class="library-detail-summary" id="library-detail-summary" hidden></p>
       <p class="library-detail-description" id="library-detail-description" hidden></p>
       <p class="library-rating-row" id="library-detail-rating"></p>
@@ -1826,12 +1844,15 @@
           <span>Nom de la collection</span>
           <input type="text" id="library-share-name" required />
         </label>
-        <label class="field">
-          <span>Niveau scolaire (optionnel)</span>
-          <select id="library-share-level">
-            <option value="">Non renseigné</option>
-          </select>
-        </label>
+        <!-- Round 23 : classement obligatoire d'après la taxonomie Excel
+             (catégorie → cycle → niveau → année → spécialité → matière ;
+             un champ n'apparaît que s'il a des choix possibles) + tags
+             libres avec saisie semi-automatique. -->
+        <div id="library-share-taxonomy"></div>
+        <div class="field">
+          <span>Tags (optionnel)</span>
+          <div class="tag-input" id="library-share-tags"></div>
+        </div>
         <label class="field">
           <span>Résumé (une phrase, optionnel)</span>
           <input type="text" id="library-share-summary" maxlength="140" placeholder="Ex. Vocabulaire d'anglais niveau 5ème" />
@@ -1856,6 +1877,7 @@
 <script src="js/sm2.js"></script>
 <script src="js/db.js"></script>
 <script src="js/sync.js"></script>
+<script src="js/taxonomy.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

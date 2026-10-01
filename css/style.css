@@ -5724,3 +5724,149 @@ button.home-btn {
   margin-top: 8px;
 }
 .revision-event-go:disabled { opacity: 0.5; }
+
+/* ============================================================
+   Round 23 : Librairie — classement en cascade (taxonomie Excel) et tags.
+   ============================================================ */
+/* Filtres de recherche : selects compacts sur deux colonnes, qui
+   n'apparaissent qu'au fur et à mesure (champ enfant visible une fois le
+   parent choisi). */
+.library-taxonomy-filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0 0 10px;
+}
+.library-taxonomy-filters[hidden] { display: none; }
+.library-taxonomy-select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 9px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color, #d8dce3);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-type);
+  font-size: 14px;
+  text-overflow: ellipsis;
+}
+.library-taxonomy-select.is-set {
+  border-color: var(--blue);
+  box-shadow: inset 0 0 0 1px var(--blue);
+}
+
+/* Saisie de tags en pastilles + suggestions. */
+.tag-input {
+  position: relative;
+  text-transform: none;
+  letter-spacing: normal;
+}
+.tag-input[hidden] { display: none; }
+.tag-input--filter { margin: 0 0 4px; }
+.tag-input-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color, #d8dce3);
+  background: var(--paper);
+  box-sizing: border-box;
+  width: 100%;
+}
+.card-form .tag-input-box {
+  border-radius: 8px;
+  border-color: rgba(35, 48, 42, 0.15);
+  background: var(--paper-2);
+}
+.tag-input-chips { display: contents; }
+.tag-input-field {
+  flex: 1 1 120px;
+  min-width: 100px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-type);
+  font-size: 14px;
+  padding: 4px 2px;
+}
+.tag-suggestions {
+  position: absolute;
+  z-index: 30;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--paper);
+  border: 1px solid var(--rule-soft);
+  border-radius: 12px;
+  box-shadow: var(--shadow-deep);
+  max-height: 240px;
+  overflow-y: auto;
+}
+.tag-suggestions[hidden] { display: none; }
+.tag-suggestion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-family: var(--font-type);
+  font-size: 14px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.tag-suggestion:hover { background: var(--paper-2); }
+.tag-suggestion-count { font-size: 12px; color: var(--ink-soft); }
+.tag-suggestion--new { color: var(--blue); }
+.tag-suggestion--empty { color: var(--ink-soft); cursor: default; }
+
+.tag-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.tag-chips[hidden] { display: none; }
+.tag-chips--row { margin-top: 4px; }
+#library-detail-tags { margin: 0 0 10px; }
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(74, 144, 217, 0.12);
+  color: var(--blue);
+  font-family: var(--font-type);
+  font-size: 12px;
+  line-height: 1.6;
+  text-transform: none;
+  letter-spacing: normal;
+}
+button.tag-chip { cursor: pointer; font-size: 13px; padding: 3px 9px; }
+.tag-chip-x { opacity: 0.7; font-size: 14px; line-height: 1; }
+
+.library-detail-taxonomy {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 0 0 8px;
+}
+/* Le champ de saisie des tags ne doit pas reprendre le cadre des
+   `.field input[type="text"]` (il est déjà dans le cadre .tag-input-box). */
+.tag-input-box input.tag-input-field[type="text"] {
+  flex: 1 1 120px;
+  width: auto;
+  min-width: 100px;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 4px 2px;
+  font-family: var(--font-type);
+  font-size: 14px;
+}
