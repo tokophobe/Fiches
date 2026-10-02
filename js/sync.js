@@ -257,7 +257,6 @@ function subjectToRow(subject, syncCode) {
     sync_code: syncCode,
     name: subject.name,
     folder_id: subject.folderId || null,
-    mode_id: subject.modeId || "normal",
     created_at: subject.createdAt,
     updated_at: subject.updatedAt || subject.createdAt,
     deleted: Boolean(subject.deleted),
@@ -268,7 +267,6 @@ function rowToSubject(row) {
     id: row.id,
     name: row.name,
     folderId: row.folder_id || null,
-    modeId: row.mode_id || "normal",
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     deleted: Boolean(row.deleted),
@@ -376,68 +374,6 @@ function subscribeFoldersRealtime(onRemoteChange) {
       { event: "*", schema: "public", table: "folders", filter: `sync_code=eq.${code}` },
       (payload) => {
         if (payload.new) onRemoteChange(rowToFolder(payload.new));
-      }
-    )
-    .subscribe();
-  return () => c.removeChannel(channel);
-}
-
-/* ---------------------------------------------------------
-   Modes d'apprentissage (item 1, audit synchro) : jusqu'ici jamais
-   synchronisés du tout — seul le modeId de chaque matière l'était. Même
-   schéma que matières/dossiers : upsert, suppression douce, temps réel.
---------------------------------------------------------- */
-function learningModeToRow(mode, syncCode) {
-  return {
-    id: mode.id,
-    sync_code: syncCode,
-    name: mode.name,
-    builtin: Boolean(mode.builtin),
-    ka: mode.Ka, kh: mode.Kh, kg: mode.Kg, ke: mode.Ke,
-    ma: mode.Ma, mh: mode.Mh, mg: mode.Mg, me: mode.Me,
-    updated_at: mode.updatedAt || new Date().toISOString(),
-    deleted: Boolean(mode.deleted),
-  };
-}
-function rowToLearningMode(row) {
-  return {
-    id: row.id,
-    name: row.name,
-    builtin: Boolean(row.builtin),
-    Ka: row.ka, Kh: row.kh, Kg: row.kg, Ke: row.ke,
-    Ma: row.ma, Mh: row.mh, Mg: row.mg, Me: row.me,
-    updatedAt: row.updated_at,
-    deleted: Boolean(row.deleted),
-  };
-}
-
-async function pullLearningModes() {
-  return pullTable("learning_modes", rowToLearningMode);
-}
-
-async function pushLearningMode(mode) {
-  const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return false;
-  const { error } = await c.from("learning_modes").upsert(learningModeToRow(mode, code));
-  if (error) {
-    console.warn("Sync: échec de l'envoi du mode d'apprentissage", error.message);
-    return false;
-  }
-  return true;
-}
-
-function subscribeLearningModesRealtime(onRemoteChange) {
-  const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return () => {};
-  const channel = c
-    .channel(`learning-modes-${code}`)
-    .on(
-      "postgres_changes",
-      { event: "*", schema: "public", table: "learning_modes", filter: `sync_code=eq.${code}` },
-      (payload) => {
-        if (payload.new) onRemoteChange(rowToLearningMode(payload.new));
       }
     )
     .subscribe();
@@ -834,13 +770,47 @@ async function updateSharedBoxCards(boxId, cards, folderPath) {
 
 /* ---- Round 3, item 4 (squelette) : événements de calendrier partagés ---- */
 
+/** Round 26, item 2 : identité du professeur affichée côté élève —
+ *  "Prénom Nom" des métadonnées du compte, repli sur l'email. */
+function teacherDisplayName(user) {
+  const meta = (user && user.user_metadata) || {};
+  return `${meta.first_name || ""} ${meta.last_name || ""}`.trim() || (user && user.email) || "";
+}
+/** La colonne `shared_by_name` n'existe qu'après la migration
+ *  supabase/shared_events_teacher_name_migration.sql : sans elle, on
+ *  réessaie sans ce champ plutôt que de bloquer le partage. */
+function isMissingTeacherNameColumn(error) {
+  return !!error && /shared_by_name/i.test(error.message || "");
+}
+
 async function shareEventToClass(classId, title, date) {
   const c = getClient();
   const user = await authGetUser();
   if (!c || !user) return { error: "Non connecté." };
-  const row = { class_id: classId, shared_by: user.id, title, date };
-  const { data, error } = await c.from("shared_events").insert(row).select().single();
+  const row = { class_id: classId, shared_by: user.id, title, date, shared_by_name: teacherDisplayName(user) };
+  let { data, error } = await c.from("shared_events").insert(row).select().single();
+  if (isMissingTeacherNameColumn(error)) {
+    delete row.shared_by_name;
+    ({ data, error } = await c.from("shared_events").insert(row).select().single());
+  }
   return { data, error: error ? error.message : null };
+}
+
+/** Round 26, item 2 : complète le nom du professeur sur SES évènements
+ *  partagés avant la migration (nom vide) — appelé au démarrage, sans
+ *  effet si la colonne n'existe pas encore. */
+async function backfillMySharedEventsTeacherName() {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return;
+  const name = teacherDisplayName(user);
+  if (!name) return;
+  const { error } = await c
+    .from("shared_events")
+    .update({ shared_by_name: name })
+    .eq("shared_by", user.id)
+    .eq("shared_by_name", "");
+  if (error && !isMissingTeacherNameColumn(error)) console.warn("Évènements partagés : nom du professeur non complété", error.message);
 }
 
 async function listSharedEventsForClass(classId) {
@@ -867,10 +837,13 @@ async function listSharedEventsForClass(classId) {
 async function updateSharedEvent(eventId, title, date) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée." };
-  const { error } = await c
-    .from("shared_events")
-    .update({ title, date, updated_at: new Date().toISOString() })
-    .eq("id", eventId);
+  const user = await authGetUser();
+  const fields = { title, date, updated_at: new Date().toISOString(), shared_by_name: teacherDisplayName(user) };
+  let { error } = await c.from("shared_events").update(fields).eq("id", eventId);
+  if (isMissingTeacherNameColumn(error)) {
+    delete fields.shared_by_name;
+    ({ error } = await c.from("shared_events").update(fields).eq("id", eventId));
+  }
   return { error: error ? error.message : null };
 }
 
@@ -1152,9 +1125,6 @@ window.Sync = {
   pullFolders,
   pushFolder,
   subscribeFoldersRealtime,
-  pullLearningModes,
-  pushLearningMode,
-  subscribeLearningModesRealtime,
   pendingCount: () => getPending().length,
   getLastError: () => lastError,
   auth: {
@@ -1181,6 +1151,7 @@ window.Sync = {
     listSharedEvents: listSharedEventsForClass,
     updateSharedEvent,
     deleteSharedEvent,
+    backfillSharedEventsTeacherName: backfillMySharedEventsTeacherName,
   },
   messages: {
     listClasses: listMessageClasses,

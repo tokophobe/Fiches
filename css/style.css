@@ -646,9 +646,7 @@ main {
 
 .subject-add-btn:hover { background: rgba(31, 41, 55, 0.16); }
 
-/* Nombre de fiches + bouton mode d'apprentissage de la boîte active, dans
-   la barre de la page Réviser (item 1) — mêmes couleurs que le curseur du
-   mode d'apprentissage (voir ALGO_MODE_COLORS en JS et .algo-mode-slider). */
+/* Nombre de fiches de la boîte active, dans la barre de la page Réviser. */
 .subject-bar-count {
   flex-shrink: 0;
   font-family: var(--font-mono);
@@ -657,46 +655,6 @@ main {
   opacity: 0.75;
   white-space: nowrap;
 }
-
-.subject-bar-algo-btn {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  border-radius: 8px;
-  padding: 6px 8px;
-  max-width: 88px;
-  border: 1px solid transparent;
-}
-
-.subject-bar-algo-btn span {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Couleurs par mode, PLUS prononcées qu'avant (item 1 : jugées trop
-   "light") — texte en gras + fond et bordure nettement plus saturés.
-   Partagées par le bouton de la barre Réviser (.subject-bar-algo-btn) ET
-   celui de chaque ligne de boîte sur la page Gérer (.subject-row-algo-btn). */
-/* Item 1 (dernier lot) : fond transparent — plus aucun fond neutre non
-   plus, seul le pictogramme reste coloré selon le mode. */
-.subject-bar-algo-btn.is-cool, .subject-row-algo-btn.is-cool, .card-algo-btn.is-cool {
-  color: var(--mode-cool-color, var(--sage)); background: transparent; border-color: transparent;
-}
-.subject-bar-algo-btn.is-normal, .subject-row-algo-btn.is-normal, .card-algo-btn.is-normal {
-  color: var(--mode-normal-color, var(--amber)); background: transparent; border-color: transparent;
-}
-.subject-bar-algo-btn.is-renforce, .subject-row-algo-btn.is-renforce, .card-algo-btn.is-renforce {
-  color: var(--mode-renforce-color, var(--terracotta)); background: transparent; border-color: transparent;
-}
-.subject-bar-algo-btn.is-custom, .subject-row-algo-btn.is-custom, .card-algo-btn.is-custom {
-  color: var(--mode-custom-color, #e8c84a); background: transparent; border-color: transparent;
-}
-
-.subject-bar-algo-btn:hover, .subject-row-algo-btn:hover, .card-algo-btn:hover { filter: brightness(1.08); }
 
 /* Sélecteur de plusieurs boîtes confondues (item 1). */
 /* Item 1 : hauteur plein écran pour TOUS les panneaux de sélection
@@ -797,16 +755,6 @@ main {
   font-family: var(--font-type);
   font-size: 14px;
   color: var(--ink);
-}
-
-.multi-subject-picker-item .algo-custom-picker-color {
-  margin-left: auto;
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  border: 1px solid rgba(35, 48, 42, 0.2);
-  padding: 0;
-  flex-shrink: 0;
 }
 
 .multi-subject-picker-item input[type="checkbox"],
@@ -1082,12 +1030,6 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   white-space: nowrap;
 }
 
-.org-mode-icon {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-}
-
 .org-gauge-inline {
   /* Bug corrigé (item 5) : "display: flex" ici avait la MÊME spécificité
      que .org-info-slot-item (qui gère l'affichage/masquage selon le
@@ -1225,46 +1167,6 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   font-size: 10.5px;
   color: var(--ink-soft);
   flex-shrink: 0;
-}
-
-/* Bouton "mode d'apprentissage" fusionné avec son propre affichage (item 9) :
-   un encadré net (fond + bordure) pour bien se lire comme un bouton distinct,
-   volontairement compact pour ne pas élargir la ligne (texte court, voir
-   ALGO_MODE_SHORT_LABELS). Couleur pilotée par une des 4 classes .is-*
-   ci-dessous (partagées avec le bouton de la page Réviser — item 1 :
-   avant, cette version-ci restait toujours en terracotta fixe, sans lien
-   avec le mode réel de la boîte). */
-.subject-row-algo-btn {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  font-weight: 700;
-  border-radius: 8px;
-  padding: 5px 7px;
-  max-width: 84px;
-  border: 1.5px solid transparent;
-}
-
-.subject-row-algo-btn span {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Version compacte (item 16) : juste l'émoticône, sur un rond de la couleur
-   du mode — laisse davantage de place au nom de la boîte/du dossier à
-   côté. */
-.subject-row-algo-btn--compact {
-  width: 26px;
-  height: 26px;
-  padding: 0;
-  border-radius: 50%;
-  justify-content: center;
-  font-size: 14px;
-  max-width: none;
 }
 
 /* Boutons resserrés entre eux sur une ligne de boîte/dossier (item 16). */
@@ -1794,8 +1696,6 @@ body.is-login-locked .home-circle:not([data-key="account"]) { display: none; }
   color: #fff;
   border-color: var(--danger, #c0392b);
 }
-
-
 
 /* Disposition dispersée (item 3) : conteneur relatif assez haut pour
    contenir tous les cercles, chacun positionné en absolu via X/Y/diamètre
@@ -2602,11 +2502,6 @@ button.home-btn {
   font-size: 14px;
 }
 
-.card-algo-btn {
-  right: 54px;
-  font-size: 14px;
-}
-
 .card-construction-btn {
   font-size: 14px;
 }
@@ -3018,7 +2913,6 @@ button.home-btn {
 .manage-title {
   margin-bottom: 20px;
 }
-
 
 /* En-tête du formulaire "Nouvelle fiche" (item 7) : titre + sélecteur de
    boîte compact sur la même ligne, sans indication de mode ici (juste le
@@ -4067,7 +3961,6 @@ button.home-btn {
   padding: 20px 0;
 }
 
-
 /* ============================================================
    RÉGLAGES VIEW
    ============================================================ */
@@ -4085,7 +3978,7 @@ button.home-btn {
 }
 
 /* ============================================================
-   MODE D'APPRENTISSAGE VIEW (par boîte)
+   Titres de page / de bloc
    ============================================================ */
 .view-title {
   font-family: var(--font-type);
@@ -4101,80 +3994,6 @@ button.home-btn {
    corrigé précédemment). */
 .settings-block-title--on-dark {
   color: var(--ink);
-}
-
-.algo-mode-label {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--ink);
-  background: rgba(31,41,55,0.1);
-  border-radius: 8px;
-  padding: 8px 12px;
-  margin-bottom: 12px;
-}
-
-.algo-mode-slider-wrap {
-  margin: 8px 0 24px;
-  padding: 0 4px;
-}
-
-.algo-mode-slider {
-  width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(31, 41, 55, 0.25);
-  margin: 18px 0 10px;
-  /* Couleur du curseur pilotée par cette variable, mise à jour en JS selon
-     le mode actif (voir updateAlgoModeTicksHighlight) : vert = cool,
-     orange = normal, rouge = renforcé, jaune = personnalisé. */
-  --algo-slider-color: var(--amber);
-}
-
-.algo-mode-slider::-webkit-slider-thumb {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--algo-slider-color);
-  border: 2px solid var(--paper);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
-  cursor: pointer;
-}
-
-.algo-mode-slider::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--algo-slider-color);
-  border: 2px solid var(--paper);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
-  cursor: pointer;
-}
-
-.algo-mode-ticks {
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  color: var(--ink-soft);
-}
-
-.algo-mode-ticks span:first-child { text-align: left; }
-.algo-mode-ticks span:last-child { text-align: right; }
-
-.algo-mode-ticks span.is-active {
-  color: var(--algo-tick-color, var(--amber));
-  font-weight: 600;
-}
-
-.algo-preset-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
 }
 
 .algo-grid {
@@ -4200,12 +4019,6 @@ button.home-btn {
   font-size: 14px;
 }
 
-/* Bloc "Revoir les vieilles fiches" nettement séparé du reste (interligne
-   plus généreuse), bouton mis en évidence en rouge — action irréversible. */
-.algo-review-old-block {
-  margin-top: 34px;
-}
-
 .algo-review-old-btn {
   background: transparent;
   border: 2px solid var(--terracotta);
@@ -4214,144 +4027,6 @@ button.home-btn {
 
 .algo-review-old-btn:hover {
   background: rgba(182, 96, 74, 0.12);
-}
-
-/* Boutons "Paramétrages avancés" / "Revenir aux réglages d'origine" (item 9) :
-   avant de simples liens fantômes, peu perçus comme cliquables — passés en
-   boutons pleinement dessinés (fond + bordure nette). */
-.algo-advanced-toggle {
-  width: 100%;
-  margin: 4px 0 18px;
-  background: rgba(31, 41, 55, 0.1);
-  border: 1.5px solid rgba(31, 41, 55, 0.35);
-  color: var(--ink);
-  font-weight: 600;
-}
-
-.algo-advanced-toggle:hover { background: rgba(31, 41, 55, 0.18); }
-
-.algo-reset-btn-visible {
-  margin-top: 10px;
-  width: 100%;
-  background: rgba(31, 41, 55, 0.1);
-  border: 1.5px solid rgba(31, 41, 55, 0.35);
-  color: var(--ink);
-  font-weight: 600;
-}
-
-.algo-reset-btn-visible:hover { background: rgba(31, 41, 55, 0.18); }
-
-/* Curseurs à valeurs discrètes des coefficients/maximums (item 9) : mêmes
-   codes couleur que les boutons d'évaluation Encore/Difficile/Bien/Facile,
-   pour qu'on associe naturellement chaque réglage à sa note. */
-.algo-slider-field {
-  border-radius: 8px;
-  padding: 6px 10px;
-  margin-bottom: 6px;
-  border: 1.5px solid transparent;
-}
-
-.algo-slider-field-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 2px;
-}
-
-.algo-slider-field-label {
-  font-family: var(--font-type);
-  font-weight: 700;
-  font-size: 13px;
-}
-
-.algo-slider-field-value {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.algo-slider-field input[type="range"] {
-  width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(31, 41, 55, 0.25);
-}
-
-.algo-slider-field input[type="range"]::-webkit-slider-thumb {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 2px solid var(--paper);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.35);
-  cursor: pointer;
-  background: var(--slider-color, var(--amber));
-}
-
-.algo-slider-field input[type="range"]::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 2px solid var(--paper);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.35);
-  cursor: pointer;
-  background: var(--slider-color, var(--amber));
-}
-
-/* Item 5 — retour aux couleurs des boutons d'évaluation (Encore/Difficile/
-   Bien/Facile), pas celles des modes d'apprentissage : demandé puis
-   reconsidéré, la couleur de la NOTE reste plus parlante ici puisque
-   chaque encadré correspond justement à une note précise. Le curseur
-   PRINCIPAL de choix du mode (Cool/Normal/Renforcé/Perso), lui, garde la
-   couleur du mode — ce n'est pas le même curseur. */
-.algo-slider-field--again { background: color-mix(in srgb, var(--terracotta) 14%, transparent); border-color: color-mix(in srgb, var(--terracotta) 40%, transparent); --slider-color: var(--terracotta); }
-.algo-slider-field--again .algo-slider-field-label,
-.algo-slider-field--again .algo-slider-field-value { color: var(--terracotta); }
-
-.algo-slider-field--hard { background: color-mix(in srgb, var(--amber) 14%, transparent); border-color: color-mix(in srgb, var(--amber) 40%, transparent); --slider-color: var(--amber); }
-.algo-slider-field--hard .algo-slider-field-label,
-.algo-slider-field--hard .algo-slider-field-value { color: var(--amber); }
-
-.algo-slider-field--good { background: color-mix(in srgb, var(--sage) 14%, transparent); border-color: color-mix(in srgb, var(--sage) 40%, transparent); --slider-color: var(--sage); }
-.algo-slider-field--good .algo-slider-field-label,
-.algo-slider-field--good .algo-slider-field-value { color: var(--sage); }
-
-.algo-slider-field--easy { background: color-mix(in srgb, var(--teal) 18%, transparent); border-color: color-mix(in srgb, var(--teal) 45%, transparent); --slider-color: var(--teal); }
-.algo-slider-field--easy .algo-slider-field-label,
-.algo-slider-field--easy .algo-slider-field-value { color: var(--teal); }
-
-/* Graphique d'aperçu des échéances (item 6). */
-/* Graphique d'aperçu de la page d'édition des modes : collé en haut au
-   défilement (item 4) — pour rester visible EN MÊME TEMPS qu'on manipule
-   les curseurs plus bas, sans avoir à faire l'aller-retour du regard. */
-#algo-chart-wrap {
-  position: sticky;
-  top: 6px;
-  z-index: 5;
-  background: var(--desk);
-  border-radius: 10px;
-  padding: 10px 8px 4px;
-  margin-bottom: 8px;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
-}
-
-#assign-chart-wrap {
-  background: rgba(31, 41, 55, 0.05);
-  border-radius: 10px;
-  padding: 10px 8px 4px;
-  margin-bottom: 8px;
-}
-
-/* Intitulés des axes (item 4) : l'ordonnée pivotée à la verticale, collée
-   contre le bord gauche du graphique (comme un vrai graphique), l'abscisse
-   toujours en dessous, centrée. */
-.algo-chart-body {
-  display: flex;
-  align-items: stretch;
-  gap: 2px;
 }
 
 .algo-chart-axis-y {
@@ -4363,11 +4038,6 @@ button.home-btn {
   flex-shrink: 0;
 }
 
-.algo-chart-svg-col {
-  flex: 1;
-  min-width: 0;
-}
-
 .algo-chart-axis-y, .algo-chart-axis-x {
   font-family: var(--font-mono);
   font-size: 9px;
@@ -4375,42 +4045,6 @@ button.home-btn {
 }
 
 .algo-chart-axis-x { text-align: center; margin-top: 4px; }
-
-/* Sous-liste des modes personnalisés (page Modes d'apprentissage) et liste
-   de choix d'affectation (page Gérer) — même look que les autres pickers. */
-.algo-custom-picker {
-  background: var(--paper);
-  border-radius: var(--radius-card);
-  padding: 12px 14px;
-  margin-bottom: 18px;
-}
-
-.algo-custom-picker-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-height: 220px;
-  overflow-y: auto;
-  margin-bottom: 10px;
-}
-
-.algo-custom-picker-actions {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-#assign-mode-list {
-  background: var(--paper);
-  border-radius: var(--radius-card);
-  padding: 12px 14px;
-  margin-bottom: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-height: 260px;
-  overflow-y: auto;
-}
 
 .algo-chart-legend {
   display: flex;
@@ -4420,14 +4054,6 @@ button.home-btn {
   font-size: 10.5px;
   color: var(--ink);
   margin-bottom: 4px;
-  padding: 0 4px;
-}
-
-.algo-chart-hint {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  color: #9aa89e;
-  margin: 0 0 6px;
   padding: 0 4px;
 }
 
@@ -5314,8 +4940,6 @@ button.home-btn {
   100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
 }
 
-
-
 /* Pastilles de notifications : `display: flex` (centrage du chiffre)
    l'emportait sur l'attribut `hidden` — la pastille restait affichée avec
    « 0 ». Sélecteur plus spécifique pour que `hidden` soit respecté. */
@@ -5920,3 +5544,31 @@ button.tag-chip { cursor: pointer; font-size: 13px; padding: 3px 9px; }
   font-weight: 600;
   color: var(--ink);
 }
+
+/* Round 26, item 3 : bandeau d'alertes en carrousel (homeTickerRun,
+   js/app.js) — une ligne à la fois, défilement horizontal puis glissement
+   vertical vers l'alerte suivante. */
+.home-warning-ticker-text {
+  position: relative;
+  align-self: stretch;
+  display: block;
+}
+.home-ticker-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  will-change: transform;
+}
+.home-warning-ticker-text.is-overflowing {
+  -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 14px), transparent 100%);
+  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 14px), transparent 100%);
+}
+
+/* Round 26, item 2 : origine d'un évènement (classe · professeur) sur sa
+   propre ligne, sous le titre, pour ne plus écraser celui-ci. */
+.calendar-event-origin { margin: 2px 0 0; }
+.calendar-event-origin .classes-shared-badge { margin-left: 0; }

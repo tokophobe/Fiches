@@ -262,9 +262,6 @@
         <button type="button" class="org-display-toggle-btn is-active" data-org-display="count" title="Nombre de fiches/boîtes">
           <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/></svg>
         </button>
-        <button type="button" class="org-display-toggle-btn" data-org-display="mode" title="Mode d'apprentissage">
-          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/></svg>
-        </button>
         <button type="button" class="org-display-toggle-btn" data-org-display="gauge" title="Jauge de score">
           <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="10" width="11" height="4" rx="2" fill="currentColor" stroke="none"/></svg>
         </button>
@@ -469,7 +466,6 @@
             </button>
           </div>
           <button class="card-icon-btn card-undo-btn" id="undo-rating-btn" type="button" hidden title="Revenir à la fiche précédente (annule la dernière évaluation)" aria-label="Annuler la dernière évaluation">◀️</button>
-          <button type="button" class="card-icon-btn card-algo-btn" id="card-algo-btn" hidden title="Mode d'apprentissage de cette boîte">🎓</button>
           <!-- Boutons secondaires repliés par défaut (item 1c) : un simple
                bouton "révéler" à la place, qui les fait apparaître. -->
           <button class="card-icon-btn card-reveal-btn" id="reveal-secondary-icons-btn" type="button" title="Afficher les actions supplémentaires" aria-label="Afficher les actions supplémentaires (chantier, hibernation, éditer)"></button>
@@ -1335,7 +1331,7 @@
         <p class="field-hint settings-block-hint">
           Une fois les fiches du jour terminées, tu peux continuer en révision
           libre. Chaque réponse recule alors la fiche du nombre de jours
-          choisi ci-dessous, sans passer par l'algorithme des modes d'apprentissage.
+          choisi ci-dessous, sans passer par l'algorithme de révision.
         </p>
         <div class="settings-bonus-row">
           <label class="field settings-bonus-field">
@@ -1387,7 +1383,11 @@
       <div class="card-form">
         <h3 class="settings-block-title">Exporter des fiches</h3>
         <p class="field-hint settings-block-hint">Choisis la boîte à exporter :</p>
-        <select class="import-target-select" id="export-subject-select" aria-label="Boîte à exporter"></select>
+        <!-- Round 26, item 4 : choix de la boîte par l'explorateur (page de
+             sélection), plus par une liste déroulante — le <select> masqué
+             garde seulement la valeur choisie. -->
+        <button type="button" class="calendar-date-btn picker-open-btn" id="export-subject-btn">Choisir la boîte…</button>
+        <select class="import-target-select" id="export-subject-select" aria-label="Boîte à exporter" hidden></select>
         <button class="btn btn--small" id="export-btn" type="button">Exporter (<span id="settings-io-count">0</span> fiche(s))</button>
       </div>
 
@@ -1399,126 +1399,12 @@
         </label>
         <div class="import-target-row">
           <label class="import-target-label" for="import-target-select">Importer dans :</label>
-          <select class="import-target-select" id="import-target-select" aria-label="Boîte cible pour l'import"></select>
+          <button type="button" class="calendar-date-btn picker-open-btn" id="import-target-btn">Choisir la boîte…</button>
+          <select class="import-target-select" id="import-target-select" aria-label="Boîte cible pour l'import" hidden></select>
         </div>
         <p class="import-note">Un import ajoute toujours de nouvelles fiches — il ne modifie ni ne supprime jamais celles déjà présentes.</p>
       </div>
     
-      <!-- Contenu déplacé depuis l'ancienne page "Modes d'apprentissage" (item 8). -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Modes d'apprentissage</h3>
-      <h2 class="view-title">Paramétrage des modes d'apprentissage</h2>
-      <p class="field-hint settings-block-hint">
-        Un mode d'apprentissage définit à quelle vitesse l'intervalle entre
-        deux révisions d'une fiche augmente selon ta réponse (Encore,
-        Difficile, Bien, Facile). Chaque boîte (ou dossier entier de
-        boîtes) se voit affecter un mode depuis la page Gérer. Modifier un
-        mode ici change donc le rythme de révision de TOUTES les boîtes
-        qui l'utilisent actuellement.
-      </p>
-
-      <div class="algo-mode-slider-wrap">
-        <input type="range" id="algo-mode-slider" min="0" max="3" step="1" value="1" class="algo-mode-slider" />
-        <div class="algo-mode-ticks" id="algo-mode-ticks">
-          <span data-idx="0">Cool</span>
-          <span data-idx="1">Normal</span>
-          <span data-idx="2">Renforcé</span>
-          <span data-idx="3">Personnalisé</span>
-        </div>
-      </div>
-
-      <div id="algo-custom-picker" class="algo-custom-picker" hidden>
-        <div class="algo-custom-picker-list" id="algo-custom-picker-list"></div>
-        <div class="algo-custom-picker-actions">
-          <button type="button" class="btn btn--small" id="algo-custom-new-btn">+ Nouveau mode</button>
-          <button type="button" class="btn btn--ghost btn--small" id="algo-custom-rename-btn">Renommer</button>
-          <button type="button" class="btn btn--ghost btn--small" id="algo-custom-delete-btn">Supprimer</button>
-        </div>
-      </div>
-
-      <h3 class="settings-block-title settings-block-title--on-dark">Courbes du rythme d'apprentissage</h3>
-      <p class="field-hint settings-block-hint">
-        Le graphique ci-dessous montre l'évolution du délai d'interrogation
-        d'une fiche dans l'hypothèse où on la note toujours de la même
-        manière (Encore, Difficile, Bien ou Facile) :
-      </p>
-      <div id="algo-chart-wrap"></div>
-
-      <button type="button" class="btn algo-advanced-toggle" id="algo-advanced-toggle">
-        Paramétrages avancés ▾
-      </button>
-
-      <div id="algo-advanced-panel" hidden>
-        <p class="field-hint settings-block-hint">
-          Au début, l'échéance d'une fiche est de 1 jour. À chaque réponse, la
-          nouvelle échéance est multipliée par le coefficient réglé ci-dessous :
-        </p>
-        <div class="algo-slider-field algo-slider-field--again">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Encore</span>
-            <span class="algo-slider-field-value" id="algo-ka-value">× 1</span>
-          </div>
-          <input type="range" id="algo-ka" min="0" max="11" step="1" />
-        </div>
-        <div class="algo-slider-field algo-slider-field--hard">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Difficile</span>
-            <span class="algo-slider-field-value" id="algo-kh-value">× 1</span>
-          </div>
-          <input type="range" id="algo-kh" min="0" max="11" step="1" />
-        </div>
-        <div class="algo-slider-field algo-slider-field--good">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Bien</span>
-            <span class="algo-slider-field-value" id="algo-kg-value">× 1</span>
-          </div>
-          <input type="range" id="algo-kg" min="0" max="11" step="1" />
-        </div>
-        <div class="algo-slider-field algo-slider-field--easy">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Facile</span>
-            <span class="algo-slider-field-value" id="algo-ke-value">× 1</span>
-          </div>
-          <input type="range" id="algo-ke" min="0" max="11" step="1" />
-        </div>
-
-        <p class="field-hint settings-block-hint">
-          L'échéance est plafonnée par la valeur en jours réglée ci-dessous :
-        </p>
-        <div class="algo-slider-field algo-slider-field--again">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Encore</span>
-            <span class="algo-slider-field-value" id="algo-ma-value">&lt; 1 j</span>
-          </div>
-          <input type="range" id="algo-ma" min="0" max="11" step="1" />
-        </div>
-        <div class="algo-slider-field algo-slider-field--hard">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Difficile</span>
-            <span class="algo-slider-field-value" id="algo-mh-value">&lt; 1 j</span>
-          </div>
-          <input type="range" id="algo-mh" min="0" max="11" step="1" />
-        </div>
-        <div class="algo-slider-field algo-slider-field--good">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Bien</span>
-            <span class="algo-slider-field-value" id="algo-mg-value">&lt; 1 j</span>
-          </div>
-          <input type="range" id="algo-mg" min="0" max="11" step="1" />
-        </div>
-        <div class="algo-slider-field algo-slider-field--easy">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Facile</span>
-            <span class="algo-slider-field-value" id="algo-me-value">&lt; 1 j</span>
-          </div>
-          <input type="range" id="algo-me" min="0" max="11" step="1" />
-        </div>
-
-        <button type="button" class="btn algo-reset-btn-visible" id="algo-reset-btn">
-          Revenir aux réglages d'origine
-        </button>
-      </div>
-    </div>
 </section>
 
     <!-- VUE DÉVELOPPEUR (item 19) — réglages internes, cachés dans une
@@ -1565,16 +1451,6 @@
         </div>
         <button type="button" class="btn btn--ghost" id="dev-rating-colors-reset">Revenir aux couleurs d'origine</button>
       </div>
-
-      <!-- 2f -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Couleurs des modes d'apprentissage</h3>
-        <div class="dev-color-list" id="dev-mode-colors-list"></div>
-        <button type="button" class="btn btn--ghost" id="dev-mode-colors-reset">Revenir aux couleurs d'origine</button>
-      </div>
-
-      <!-- 2g : bloc "Couleurs des modes personnalisés" retiré (déjà réglable
-           directement dans la page Modes d'apprentissage). -->
 
       <!-- 2h -->
       <div class="card-form">
@@ -1724,17 +1600,6 @@
       <!-- 2j : bloc "Palette de couleurs de texte" retiré (la barre d'outils
            de mise en forme des fiches qui l'utilisait a été retirée). -->
 
-      <!-- 2k -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Paramètres usine des modes d'apprentissage</h3>
-        <p class="field-hint settings-block-hint">
-          Valeurs vers lesquelles "Revenir aux réglages d'origine" ramène
-          chaque mode fixe (Cool / Normal / Renforcé), et valeurs de départ
-          d'une toute nouvelle installation.
-        </p>
-        <div id="dev-factory-defaults"></div>
-      </div>
-
       <!-- Round 4, partie 2 : messages d'aide du robot, éditables ici pour
            chaque page de l'appli (plutôt que codés en dur), avec plusieurs
            messages possibles par page (un par ligne = un message, façon
@@ -1828,32 +1693,6 @@
           numéro de version, dans Réglages).
         </p>
         <button type="button" class="btn btn--ghost" id="dev-hide-dev-mode-btn">Recacher le mode développeur sur cet appareil</button>
-      </div>
-    </section>
-
-    <!-- VUE MODES D'APPRENTISSAGE (globale — item 2) -->
-    
-
-    <!-- VUE AFFECTATION D'UN MODE (par boîte ou par dossier, depuis Gérer) -->
-    <section id="view-mode-assign" class="view">
-      <button class="btn btn--ghost btn--small" id="assign-back-btn" type="button">← Retour à Gérer</button>
-      <h2 class="view-title" id="assign-target-title">Affecter un mode</h2>
-
-      <div class="algo-custom-picker-list" id="assign-mode-list"></div>
-
-      <h3 class="settings-block-title settings-block-title--on-dark">Échéances successives (aperçu)</h3>
-      <div id="assign-chart-wrap"></div>
-
-      <div class="card-form algo-review-old-block" id="assign-review-old-block">
-        <h3 class="settings-block-title">Revoir les vieilles fiches</h3>
-        <p class="field-hint settings-block-hint">
-          Ramène l'échéance (et la date de prochaine interrogation) à 10
-          jours pour toutes les fiches de cette boîte dont la prochaine
-          interrogation est prévue dans plus de 10 jours.
-        </p>
-        <button type="button" class="btn algo-review-old-btn" id="algo-review-old-btn">
-          Revoir les vieilles fiches
-        </button>
       </div>
     </section>
 

@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v178";
+  const APP_VERSION = "v179";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -323,81 +323,25 @@
   let hibernateDays = DEFAULT_HIBERNATE_DAYS;
   const settingHibernateDaysEl = el("setting-hibernate-days");
 
-  /* ---------------------------------------------------------
-     Algorithme de répétition espacée "maison" (remplace SM-2) :
-     - échéance initiale = 1 jour ;
-     - à chaque réponse, nouvelle échéance = min(M[note], K[note] × échéance
-       actuelle) — calculée SANS arrondi et conservée ainsi en mémoire
-       (card.deadlineDaysRaw, 3 décimales) pour les calculs suivants ;
-     - seule la version arrondie à l'entier (card.interval) sert à fixer la
-       date de la prochaine interrogation et l'affichage.
-     Réglable par boîte (Ka/Kh/Kg/Ke bornés 1–10 par dixièmes, Ma/Mh/Mg/Me
-     bornés 1–365 par unités), persisté en local sous une seule clé (map
-     subjectId -> réglages), donc conservé d'une version de l'appli à
-     l'autre comme le reste des réglages.
-     --------------------------------------------------------- */
-  /* ---------------------------------------------------------
-     Modes d'apprentissage (item 2) : désormais des entités GLOBALES
-     (3 modes fixes + des modes personnalisés nommés, créés/modifiés/
-     supprimés librement), chacune affectée à une ou plusieurs boîtes
-     (ou affectée en bloc à un dossier entier, qui répercute alors le
-     changement sur toutes les boîtes qu'il contient). Modifier les
-     coefficients d'un mode affecte donc TOUTES les boîtes qui l'utilisent
-     — contrairement à l'ancien système où chaque boîte avait ses 4
-     emplacements de réglages indépendants.
-  --------------------------------------------------------- */
-  const LEARNING_MODES_KEY = "fiches_learning_modes";
-  const BUILTIN_MODE_IDS = ["cool", "normal", "renforce"];
-  const BUILTIN_MODE_DEFAULTS = {
-    // Valeurs alignées sur les 12 choix disponibles pour les curseurs
-    // (ALGO_K_VALUES/ALGO_M_VALUES) — Kg=2, Ke=2.4 et Ke=1.9 n'existaient
-    // dans aucune des deux listes, ce qui faisait apparaître un curseur/menu
-    // vide (aucune valeur sélectionnée) au lieu de la vraie valeur d'origine.
-    cool: { name: "Cool", Ka: 3, Kh: 1.6, Kg: 2.1, Ke: 3.5, Ma: 3, Mh: 6, Mg: 60, Me: 300 },
-    normal: { name: "Normal", Ka: 1.3, Kh: 1.5, Kg: 1.8, Ke: 2.5, Ma: 2, Mh: 3, Mg: 30, Me: 180 },
-    renforce: { name: "Renforcé", Ka: 1, Kh: 1.3, Kg: 1.6, Ke: 1.8, Ma: 1, Mh: 2, Mg: 15, Me: 90 },
+  // Round 26, item 5 : les modes d'apprentissage (Cool/Normal/Renforcé/
+  // personnalisés, coefficients K/M par boîte) sont abandonnés — la
+  // planification passe entièrement par le nouvel algorithme global
+  // (computeAlgoNext, réglages "revisionAlgo" du mode développeur).
+  // Couleurs/libellés des 4 notes dans les graphiques de Statistiques
+  // (conservés : ils étaient définis avec l'ancienne page des modes).
+  const ALGO_CHART_COLORS = {
+    again: "var(--rating-again-color, var(--terracotta))",
+    hard: "var(--rating-hard-color, var(--amber))",
+    good: "var(--rating-good-color, var(--sage))",
+    easy: "var(--rating-easy-color, var(--teal))",
   };
-  // Conservés pour compatibilité avec le code existant qui les référence
-  // encore (couleurs, libellés courts...).
-  const ALGO_MODE_ORDER = ["cool", "normal", "renforce", "custom"];
-  const ALGO_MODE_SHORT_LABELS = { cool: "Cool", normal: "Normal", renforce: "Renforcé", custom: "Personnalisé" };
-  const ALGO_KEYS8 = ["Ka", "Kh", "Kg", "Ke", "Ma", "Mh", "Mg", "Me"];
-  // Valeurs discrètes disponibles pour les curseurs (item 9) — remplace les
-  // anciens champs numériques libres, plus pratiques à régler au doigt.
-  const ALGO_K_VALUES = [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.8, 2.1, 2.5, 3, 3.5];
-  const ALGO_M_VALUES = [1, 2, 3, 4, 6, 10, 15, 30, 60, 90, 180, 300];
-  function snapToNearest(value, list) {
-    let best = list[0], bestDist = Infinity;
-    for (const v of list) {
-      const d = Math.abs(v - value);
-      if (d < bestDist) { bestDist = d; best = v; }
-    }
-    return best;
-  }
+  const ALGO_CHART_RATING_LABELS = { again: "Encore", hard: "Difficile", good: "Bien", easy: "Facile" };
 
-  function clampAlgoK(v, fallback) {
-    const n = Number(v);
-    return snapToNearest(Number.isFinite(n) ? n : Number(fallback) || 1, ALGO_K_VALUES);
-  }
-  function clampAlgoM(v, fallback) {
-    const n = Number(v);
-    return snapToNearest(Number.isFinite(n) ? n : Number(fallback) || 1, ALGO_M_VALUES);
-  }
-  function clampModeProfile(raw, fallbackId) {
-    const factory = getFactoryDefaults();
-    const fb = factory[fallbackId] || factory.normal;
-    const out = {};
-    ["Ka", "Kh", "Kg", "Ke"].forEach((k) => { out[k] = clampAlgoK(raw && raw[k], fb[k]); });
-    ["Ma", "Mh", "Mg", "Me"].forEach((k) => { out[k] = clampAlgoM(raw && raw[k], fb[k]); });
-    return out;
-  }
 
   /* ---------------------------------------------------------
      Page Développeur (item 19) : réglages internes — émoticônes/texte des
-     boutons de notation et du menu principal, et les valeurs "usine" des
-     3 modes d'apprentissage fixes (celles vers lesquelles "Revenir aux
-     réglages d'origine" ramène, et celles d'une toute nouvelle
-     installation). Cachée derrière un simple onglet pour l'instant ; une
+     boutons de notation et du menu principal, couleurs, algorithme de
+     révision… Cachée derrière un simple onglet pour l'instant ; une
      vraie séparation développeur/utilisateur viendra plus tard.
   --------------------------------------------------------- */
   const DEV_SETTINGS_KEY = "fiches_dev_settings";
@@ -446,15 +390,14 @@
     review: "cards", manage: "folder", stats: "barChart", settings: "settings",
     addCard: "plus", calendar: "calendar", dev: "code",
   };
-  // Couleurs des 4 notes (boutons d'évaluation + graphiques) et des 4 modes
-  // d'apprentissage (badges) — item 2 : rendues éditables depuis la page
-  // Développeur plutôt que codées en dur dans la feuille de style.
+  // Couleurs des 4 notes (boutons d'évaluation + graphiques) — item 2 :
+  // rendues éditables depuis la page Développeur plutôt que codées en dur
+  // dans la feuille de style.
   const DEFAULT_RATING_COLORS = { again: "#b6604a", hard: "#cf9a4d", good: "#6f8b5c", easy: "#3e7c6b" };
   // Fond partagé des 4 boutons d'évaluation (item 4) — une seule couleur,
   // désormais séparée de la couleur de chaque note (qui teinte l'icône).
   const DEFAULT_RATING_BTN_BG_COLOR = "#ffffff";
   const DEFAULT_NIGHT_RATING_BTN_BG_COLOR = "#1c2330";
-  const DEFAULT_MODE_COLORS = { cool: "#6f8b5c", normal: "#cf9a4d", renforce: "#b6604a", custom: "#e8c84a" };
   // Fond de l'appli, fond du bouton "chantier" actif, fond de la pastille
   // "0 à revoir" en mode bonus (items 3/4/8).
   const DEFAULT_APP_BG_COLOR = "#eef2f8";
@@ -750,7 +693,6 @@
     "new-card": [],
     "boite-picker": [],
     "calendar-event-form": [],
-    "mode-assign": [],
     messages: [],
     "message-thread": [],
     library: ["Ici, tu peux prendre des collections de fiches partagées par d'autres — elles s'ajoutent à tes collections, avec cette icône en réseau pour les reconnaître."],
@@ -778,7 +720,6 @@
     "new-card": "Nouvelle fiche",
     "boite-picker": "Sélecteur de boîte(s)",
     "calendar-event-form": "Calendrier — ajouter/modifier un événement",
-    "mode-assign": "Affecter un mode",
     messages: "Messagerie",
     "message-thread": "Messagerie — discussion",
     library: "Librairie",
@@ -1274,8 +1215,6 @@
         return { ...DEFAULT_HELP_MESSAGES_BY_VIEW, ...cleaned };
       })(),
       ratingBtnBgColor: parsed.ratingBtnBgColor || DEFAULT_RATING_BTN_BG_COLOR,
-      modeColors: { ...DEFAULT_MODE_COLORS, ...(parsed.modeColors || {}) },
-      customModeColors: { ...(parsed.customModeColors || {}) },
       appBgColor: parsed.appBgColor || DEFAULT_APP_BG_COLOR,
       constructionActiveColor: parsed.constructionActiveColor || DEFAULT_CONSTRUCTION_ACTIVE_COLOR,
       bonusPillColor: parsed.bonusPillColor || DEFAULT_BONUS_PILL_COLOR,
@@ -1329,16 +1268,10 @@
         textColorsSet: { ...DEFAULT_NIGHT_TEXT_COLORS_SET, ...((parsed.nightColors || {}).textColorsSet || {}) },
         ratingColors: { ...DEFAULT_RATING_COLORS, ...((parsed.nightColors || {}).ratingColors || {}) },
         ratingBtnBgColor: (parsed.nightColors || {}).ratingBtnBgColor || DEFAULT_NIGHT_RATING_BTN_BG_COLOR,
-        modeColors: { ...DEFAULT_MODE_COLORS, ...((parsed.nightColors || {}).modeColors || {}) },
         gaugeColors: { ...DEFAULT_GAUGE_COLORS, ...((parsed.nightColors || {}).gaugeColors || {}) },
       },
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
-      factoryDefaults: {
-        cool: { ...BUILTIN_MODE_DEFAULTS.cool, ...((parsed.factoryDefaults || {}).cool || {}) },
-        normal: { ...BUILTIN_MODE_DEFAULTS.normal, ...((parsed.factoryDefaults || {}).normal || {}) },
-        renforce: { ...BUILTIN_MODE_DEFAULTS.renforce, ...((parsed.factoryDefaults || {}).renforce || {}) },
-      },
       // Horodatage de la dernière modification (posé par saveDevSettings) —
       // affiché nulle part mais conservé pour référence/débogage.
       updatedAt: parsed.updatedAt,
@@ -1452,49 +1385,8 @@
     if (nmBtn) nmBtn.classList.toggle("is-active", isNightModeActive());
     renderSettingsView();
   }
-  function getFactoryDefaults() {
-    return loadDevSettings().factoryDefaults;
-  }
 
-  /** Couleur d'un mode personnalisé précis (item 16) — contrairement aux 3
-   *  modes fixes (une couleur chacun), TOUS les modes personnalisés
-   *  partageaient auparavant une seule et même couleur "custom". Chaque
-   *  mode personnalisé a maintenant la sienne, réglable depuis la page
-   *  Développeur, distincte de la couleur "custom" par défaut qui sert de
-   *  repli pour un mode qui n'a pas encore de couleur assignée. */
-  function getCustomModeColor(modeId) {
-    const settings = loadDevSettings();
-    return (settings.customModeColors || {})[modeId] || settings.modeColors.custom;
-  }
-  function setCustomModeColor(modeId, hex) {
-    const settings = loadDevSettings();
-    if (!settings.customModeColors) settings.customModeColors = {};
-    settings.customModeColors[modeId] = hex;
-    saveDevSettings(settings);
-  }
 
-  /** Applique la classe ET (pour un mode personnalisé) la couleur propre à
-   *  CE mode précis sur un badge de mode (item 16) — un seul endroit pour
-   *  les 2 emplacements où un badge de mode est affiché (page Gérer et
-   *  fiche de révision). */
-  function applyModeBadgeStyle(badgeEl, modeId) {
-    if (!badgeEl) return;
-    const key = algoModeCssKey(modeId);
-    Object.values(ALGO_MODE_KEY_TO_CLASS).forEach((c) => badgeEl.classList.remove(c));
-    badgeEl.classList.add(ALGO_MODE_KEY_TO_CLASS[key]);
-    if (key === "custom") {
-      // Item 3 : seule la couleur de l'icône reflète le mode personnalisé
-      // choisi, le fond reste neutre (comme les autres modes).
-      const color = getCustomModeColor(modeId);
-      badgeEl.style.background = "";
-      badgeEl.style.borderColor = "";
-      badgeEl.style.color = color;
-    } else {
-      badgeEl.style.background = "";
-      badgeEl.style.borderColor = "";
-      badgeEl.style.color = "";
-    }
-  }
 
   /** Applique les émoticônes/texte des boutons de notation (item 19) —
    *  appelé au démarrage et après chaque modification sur la page
@@ -1526,7 +1418,7 @@
     });
   }
 
-  /** Applique les couleurs des notes et des modes (item 2) : posées comme
+  /** Applique les couleurs des notes (item 2) : posées comme
    *  variables CSS sur :root, que la feuille de style référence désormais
    *  (voir .stamp--again, .is-cool, etc.) — un seul endroit à mettre à
    *  jour pour que ça se répercute partout où ces couleurs sont utilisées. */
@@ -1584,8 +1476,7 @@
   /** Remplace le sélecteur natif <input type="color"> par un popup
    *  personnalisé (item 2 — clarifié : le choix RVB/TSL doit vivre DANS le
    *  popup qui s'ouvre au clic sur une couleur, pas à côté sous forme de
-   *  réglage séparé). Chaque couleur de la page Développeur (et de la
-   *  page Modes d'apprentissage pour les modes personnalisés) devient une
+   *  réglage séparé). Chaque couleur de la page Développeur devient une
    *  pastille cliquable ; le popup contient l'aperçu, les curseurs
    *  (RVB ou TSL selon le dernier choix fait, mémorisé), et un bouton pour
    *  basculer entre les deux à tout moment. */
@@ -2643,7 +2534,6 @@
         textColorsSet: settings.textColorsSet,
         ratingColors: settings.ratingColors,
         ratingBtnBgColor: settings.ratingBtnBgColor,
-        modeColors: settings.modeColors,
         gaugeColors: settings.gaugeColors,
       };
     }
@@ -2705,10 +2595,6 @@
     root.setProperty("--rating-good-color", eff.ratingColors.good);
     root.setProperty("--rating-easy-color", eff.ratingColors.easy);
     root.setProperty("--rating-btn-bg-color", eff.ratingBtnBgColor);
-    root.setProperty("--mode-cool-color", eff.modeColors.cool);
-    root.setProperty("--mode-normal-color", eff.modeColors.normal);
-    root.setProperty("--mode-renforce-color", eff.modeColors.renforce);
-    root.setProperty("--mode-custom-color", eff.modeColors.custom);
     root.setProperty("--app-bg-color", settings.appBgColor);
     root.setProperty("--construction-active-color", settings.constructionActiveColor);
     root.setProperty("--due-pill-bonus-color", settings.bonusPillColor);
@@ -2825,209 +2711,11 @@
     });
   }
 
-  /** Charge tous les modes (3 fixes + personnalisés), garantissant que les
-   *  3 fixes existent toujours (avec leurs valeurs éventuellement
-   *  modifiées, sinon leurs valeurs d'origine). */
-  function loadLearningModes() {
-    let stored = {};
-    try {
-      const raw = localStorage.getItem(LEARNING_MODES_KEY);
-      stored = raw ? JSON.parse(raw) : {};
-    } catch (e) {
-      stored = {};
-    }
-    const modes = {};
-    BUILTIN_MODE_IDS.forEach((id) => {
-      modes[id] = {
-        id,
-        name: BUILTIN_MODE_DEFAULTS[id].name,
-        builtin: true,
-        updatedAt: (stored[id] && stored[id].updatedAt) || new Date(0).toISOString(),
-        ...clampModeProfile(stored[id], id),
-      };
-    });
-    Object.values(stored).forEach((m) => {
-      if (m && m.id && !BUILTIN_MODE_IDS.includes(m.id)) {
-        modes[m.id] = {
-          id: m.id,
-          name: (m.name || "Sans nom").trim() || "Sans nom",
-          builtin: false,
-          updatedAt: m.updatedAt || new Date(0).toISOString(),
-          ...clampModeProfile(m, "normal"),
-        };
-      }
-    });
-    return modes;
-  }
-  function saveLearningModes(modes) {
-    localStorage.setItem(LEARNING_MODES_KEY, JSON.stringify(modes));
-    touchAppSettingsTimestamp();
-  }
-  /** Enregistre localement ET envoie ce mode précis vers Supabase (item 1,
-   *  audit synchro : jusqu'ici jamais synchronisé du tout). */
-  function persistModeChange(modes, modeId) {
-    modes[modeId].updatedAt = new Date().toISOString();
-    saveLearningModes(modes);
-    if (Sync.isConfigured()) Sync.pushLearningMode(modes[modeId]);
-  }
 
-  function createCustomMode(name, basedOnId) {
-    const modes = loadLearningModes();
-    const id = "custom-" + uid();
-    const base = modes[basedOnId] || modes.normal;
-    modes[id] = { id, name: (name || "Nouveau mode").trim(), builtin: false, ...clampModeProfile(base, "normal") };
-    persistModeChange(modes, id);
-    return id;
-  }
-  function renameCustomMode(modeId, name) {
-    const modes = loadLearningModes();
-    if (!modes[modeId] || modes[modeId].builtin || !name || !name.trim()) return;
-    modes[modeId].name = name.trim();
-    persistModeChange(modes, modeId);
-  }
-  async function deleteCustomMode(modeId) {
-    const modes = loadLearningModes();
-    if (!modes[modeId] || modes[modeId].builtin) return;
-    const deletedMode = { ...modes[modeId], deleted: true, updatedAt: new Date().toISOString() };
-    delete modes[modeId];
-    saveLearningModes(modes);
-    if (Sync.isConfigured()) Sync.pushLearningMode(deletedMode);
-    // Toute boîte qui utilisait ce mode supprimé retombe sur "Normal".
-    for (const s of subjects) {
-      if (s.modeId === modeId) {
-        s.modeId = "normal";
-        s.updatedAt = new Date().toISOString();
-        await persistSubject(s);
-      }
-    }
-  }
-  function updateModeProfile(modeId, values) {
-    const modes = loadLearningModes();
-    if (!modes[modeId]) return;
-    Object.assign(modes[modeId], clampModeProfile(values, modeId));
-    persistModeChange(modes, modeId);
-  }
 
-  /** Mode effectif d'une boîte (objet complet, avec Ka..Me) — "Normal" si
-   *  la boîte n'a pas encore de mode affecté ou si son mode a disparu. */
-  function getSubjectMode(subjectId) {
-    const s = subjects.find((x) => x.id === subjectId);
-    const modes = loadLearningModes();
-    const modeId = s && modes[s.modeId] ? s.modeId : "normal";
-    return modes[modeId];
-  }
-  function getSubjectAlgoSettings(subjectId) {
-    return getSubjectMode(subjectId);
-  }
-  function getSubjectAlgoMode(subjectId) {
-    return getSubjectMode(subjectId).id;
-  }
-  /** Affecte un mode à une boîte (utilisé aussi en boucle pour affecter un
-   *  dossier entier — voir assignModeToFolder). */
-  async function assignModeToSubject(subjectId, modeId) {
-    const s = subjects.find((x) => x.id === subjectId);
-    if (!s) return;
-    s.modeId = modeId;
-    s.updatedAt = new Date().toISOString();
-    await persistSubject(s);
-  }
-  /** "quand on affecte un mode à un sous dossier ou un dossier, ça
-   *  s'applique à toutes les boîtes contenues dedans" (item 1/2) : un
-   *  affectage en bloc, immédiat, pas une référence permanente au dossier —
-   *  déplacer ensuite une boîte hors du dossier ne lui retire pas le mode
-   *  déjà affecté. */
-  async function assignModeToFolder(folderId, modeId) {
-    for (const id of subjectIdsInFolder(folderId)) {
-      await assignModeToSubject(id, modeId);
-    }
-  }
 
-  /** Migration ponctuelle depuis l'ancien système (4 emplacements de
-   *  réglages PAR MATIÈRE, clé localStorage "fiches_subject_algo") vers les
-   *  modes globaux nommés (item 2). Pour chaque boîte ayant un réglage
-   *  dans l'ancien format : si son mode actif à l'époque correspondait
-   *  exactement à un préréglage fixe, elle est simplement affectée à ce
-   *  mode ; sinon (c'était un "Personnalisé" propre à cette boîte), un
-   *  nouveau mode personnalisé est créé avec ces valeurs, nommé d'après la
-   *  boîte, pour ne rien perdre de ses réglages existants. Ne s'exécute
-   *  qu'une fois (l'ancienne clé est ensuite supprimée). */
-  async function migrateSubjectModesIfNeeded() {
-    const OLD_KEY = "fiches_subject_algo";
-    let oldMap;
-    try {
-      const raw = localStorage.getItem(OLD_KEY);
-      oldMap = raw ? JSON.parse(raw) : null;
-    } catch (e) {
-      oldMap = null;
-    }
-    let changed = false;
-    for (const s of subjects) {
-      if (s.modeId === undefined) {
-        s.modeId = "normal";
-        changed = true;
-      }
-    }
-    if (oldMap) {
-      for (const s of subjects) {
-        const old = oldMap[s.id];
-        if (!old || !old.profiles) continue;
-        const mode = old.mode && old.profiles[old.mode] ? old.profiles[old.mode] : old.profiles.normal;
-        if (!mode) continue;
-        let matched = null;
-        for (const key of BUILTIN_MODE_IDS) {
-          if (ALGO_KEYS8.every((k) => Math.abs(mode[k] - BUILTIN_MODE_DEFAULTS[key][k]) < 1e-9)) {
-            matched = key;
-            break;
-          }
-        }
-        if (matched) {
-          s.modeId = matched;
-        } else {
-          s.modeId = createCustomMode(`${s.name} (personnalisé)`, "normal");
-          updateModeProfile(s.modeId, mode);
-        }
-        changed = true;
-      }
-      localStorage.removeItem(OLD_KEY);
-    }
-    if (changed) {
-      for (const s of subjects) {
-        await persistSubject(s);
-      }
-    }
-  }
 
-  /** Clé CSS de couleur (is-cool/is-normal/is-renforce/is-custom) : tout
-   *  mode personnalisé (id "custom-xxxx", quel que soit son nom) retombe
-   *  sur la couleur "is-custom" (jaune) partagée par tous les modes maison. */
-  function algoModeCssKey(modeId) {
-    return BUILTIN_MODE_IDS.includes(modeId) ? modeId : "custom";
-  }
-  /** Nom affiché d'un mode — le vrai nom pour un mode personnalisé (créé et
-   *  nommé librement), le libellé court fixe pour les 3 modes intégrés. */
-  function modeDisplayName(modeId) {
-    const modes = loadLearningModes();
-    const m = modes[modeId];
-    if (m) return m.name;
-    return ALGO_MODE_SHORT_LABELS.normal;
-  }
 
-  const ALGO_RATING_KEYS = { again: ["Ka", "Ma"], hard: ["Kh", "Mh"], good: ["Kg", "Mg"], easy: ["Ke", "Me"] };
-  /** Calcule la nouvelle échéance (non arrondie) pour une note donnée. */
-  function computeNextDeadlineRaw(currentRawDays, rating, settings) {
-    const [kKey, mKey] = ALGO_RATING_KEYS[rating];
-    return Math.min(settings[mKey], settings[kKey] * currentRawDays);
-  }
-  /** Échéance non arrondie actuellement en mémoire pour une fiche — 1 jour
-   *  par défaut pour une fiche neuve, ou reprise de `interval` (ancien champ
-   *  SM-2) pour ne pas repartir de zéro sur les fiches déjà existantes lors
-   *  de la migration vers ce nouvel algorithme. */
-  function currentDeadlineRaw(card) {
-    if (typeof card.deadlineDaysRaw === "number" && Number.isFinite(card.deadlineDaysRaw)) {
-      return card.deadlineDaysRaw;
-    }
-    return typeof card.interval === "number" && card.interval > 0 ? card.interval : 1;
-  }
   /** Applique une note à une fiche avec le nouvel algorithme : renvoie les
    *  champs à fusionner dans la fiche (échéance brute conservée à 3
    *  décimales, échéance entière, et date de prochaine interrogation). */
@@ -3376,11 +3064,7 @@
   /** Affiche la question d'une fiche — précédée de "Nom de la boîte :" +
    *  deux sauts de ligne UNIQUEMENT quand on révise plusieurs boîtes
    *  confondues (item 2) : ça n'a pas d'intérêt quand une seule boîte est
-   *  affichée à la fois, et ça ne doit jamais apparaître côté réponse.
-   *  Rafraîchit aussi le bouton mode d'apprentissage sur CETTE fiche
-   *  précise (sa propre boîte), pas sur la sélection globale — utile en
-   *  mode "toutes boîtes"/"sélection", où chaque fiche peut appartenir à
-   *  une boîte différente avec son propre mode. */
+   *  affichée à la fois, et ça ne doit jamais apparaître côté réponse. */
   function renderQuestionText(card) {
     if (!card) return;
     // Le préfixe "Nom de la boîte :" reste toujours en texte échappé (pas
@@ -3389,7 +3073,7 @@
     questionTextEl.innerHTML = isSentinelSubject(currentSubjectId)
       ? `<strong class="card-subject-hint">${escapeHtml(subjectName(card.subject))}</strong><br><br>${toDisplayHtml(card.question)}`
       : toDisplayHtml(card.question);
-    renderSubjectAlgoBadge(card.subject);
+    renderSubjectBarCount();
     const constructionBtn = el("construction-current-btn");
     if (constructionBtn) {
       constructionBtn.hidden = false;
@@ -3410,7 +3094,6 @@
       await persistSubject(general);
       subjects = [general];
     }
-    await migrateSubjectModesIfNeeded();
     subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
 
     const saved = localStorage.getItem(CURRENT_SUBJECT_KEY);
@@ -3546,6 +3229,7 @@
     } else {
       importTargetSelect.value = currentSubjectId;
     }
+    if (typeof updateImportTargetLabel === "function") updateImportTargetLabel();
 
     renderExportSubjectSelect();
   }
@@ -3786,8 +3470,9 @@
    *  triangle/flèche de dépli (dossiers), icône + nom, nombre de
    *  fiches/boîtes ; à droite (de droite à gauche) le bouton de dépli des
    *  actions (éditer/déplacer/supprimer, empilées verticalement dans un
-   *  petit panneau), la jauge (plus courte/fine), le picto du mode. */
-  function buildRowBody({ nameBtnEl, expandBtnEl, countLabel, score: persPool, mode, onRename, onMove, onDelete, onAlgo, onShare, deleteTitle }) {
+   *  petit panneau), la jauge (plus courte/fine). Round 26, item 5 : le
+   *  picto du mode d'apprentissage (abandonné) est retiré. */
+  function buildRowBody({ nameBtnEl, expandBtnEl, countLabel, score: persPool, onRename, onMove, onDelete, onShare, deleteTitle }) {
     const main = document.createElement("div");
     main.className = "org-row-main";
     if (expandBtnEl) {
@@ -3813,23 +3498,10 @@
     countEl.textContent = countLabel;
     slot.appendChild(countEl);
 
-    const algoWrap = document.createElement("span");
-    algoWrap.className = "org-info-slot-item";
-    algoWrap.dataset.slot = "1";
-    const algoBtn = document.createElement("button");
-    algoBtn.type = "button";
-    algoBtn.className = "subject-row-algo-btn subject-row-algo-btn--compact org-mode-icon";
-    algoBtn.innerHTML = iconSvgMarkup("gradCap", "icon-inline-svg");
-    algoBtn.title = `Mode d'apprentissage : ${modeDisplayName(mode)}`;
-    algoBtn.addEventListener("click", onAlgo);
-    applyModeBadgeStyle(algoBtn, mode);
-    algoWrap.appendChild(algoBtn);
-    slot.appendChild(algoWrap);
-
     if (persPool !== null) {
       const gaugeEl = document.createElement("span");
       gaugeEl.className = "org-info-slot-item org-gauge-inline";
-      gaugeEl.dataset.slot = "2";
+      gaugeEl.dataset.slot = "1";
       gaugeEl.innerHTML = buildPersGaugeSvg(persPool, { width: 70, barHeight: 8 });
       slot.appendChild(gaugeEl);
     }
@@ -3978,7 +3650,6 @@
         nameBtnEl: nameBtn,
         countLabel: `${n} fiche${n > 1 ? "s" : ""}`,
         score: subjScore,
-        mode: getSubjectAlgoMode(subjectId),
         onRename: () => (isSelfLinkedFolder ? renameFolder(subjectId) : renameSubject(subjectId)),
         onMove: async () => {
           // Round 3, item 1 : une boîte partagée par un professeur reste
@@ -3987,7 +3658,6 @@
           openMovePicker(isSelfLinkedFolder ? "folder" : "subject", subjectId);
         },
         onDelete: () => deleteSubject(subjectId),
-        onAlgo: () => openSubjectAlgoView(subjectId),
         // Round 10, item 2 : ni une boîte de classe ni une collection prise
         // dans la Bibliothèque ne peuvent être repartagées — l'action
         // "Partager" disparaît carrément du popover pour ces boîtes-là,
@@ -4058,10 +3728,8 @@
         expandBtnEl: expandBtn,
         countLabel: `${n} boîte${n > 1 ? "s" : ""}`,
         score: folderScore,
-        mode: "normal",
         // Round 3, item 1 : un dossier de classe (racine ou reconstitué)
-        // reste organisé par le professeur — le mode d'apprentissage
-        // (onAlgo) reste, lui, un réglage personnel, donc autorisé.
+        // reste organisé par le professeur.
         onRename: async () => {
           if (await blockIfSharedClassFolder(f.id)) return;
           await renameFolder(f.id);
@@ -4074,7 +3742,6 @@
           if (await blockIfSharedClassFolder(f.id)) return;
           await deleteFolder(f.id);
         },
-        onAlgo: () => openAssignView("folder", f.id, "manage"),
         deleteTitle: "Supprimer ce dossier (doit être vide)",
       });
       li.appendChild(body);
@@ -4208,594 +3875,6 @@
 
   const manageAddFolderBtn = el("manage-add-folder-btn");
   if (manageAddFolderBtn) manageAddFolderBtn.addEventListener("click", createFolderFlow);
-
-  /* ---------------------------------------------------------
-     Vue globale "Modes d'apprentissage" (item 2) : édite un mode (3 fixes +
-     personnalisés créables/renommables/supprimables) — les réglages sont
-     globaux, partagés par toutes les boîtes qui utilisent ce mode.
-  --------------------------------------------------------- */
-  let algoEditingModeId = "normal";
-  /** État coché/décoché des 4 courbes (item 3), partagé par les deux
-   *  graphiques (édition globale + aperçu d'affectation). */
-  let algoChartVisible = { again: true, hard: true, good: true, easy: true };
-
-  const ALGO_MODE_COLORS = { cool: "var(--sage)", normal: "var(--amber)", renforce: "var(--terracotta)", custom: "#e8c84a" };
-  function algoSliderIdxForMode(modeId) {
-    const i = BUILTIN_MODE_IDS.indexOf(modeId);
-    return i === -1 ? 3 : i;
-  }
-  function updateAlgoModeTicksHighlight(idx) {
-    document.querySelectorAll("#algo-mode-ticks span").forEach((tick) => {
-      tick.classList.toggle("is-active", Number(tick.dataset.idx) === idx);
-    });
-    const slider = el("algo-mode-slider");
-    const key = ALGO_MODE_ORDER[idx];
-    // Bug corrigé (item 2) : reprenait une constante figée (ALGO_MODE_COLORS),
-    // jamais connectée aux couleurs réellement réglables — le curseur
-    // ignorait donc toute personnalisation des couleurs de mode.
-    const settings = loadDevSettings();
-    const color = key === "custom" ? getCustomModeColor(algoEditingModeId) : settings.modeColors[key];
-    if (slider) slider.style.setProperty("--algo-slider-color", color);
-    const ticksWrap = el("algo-mode-ticks");
-    if (ticksWrap) ticksWrap.style.setProperty("--algo-tick-color", color);
-  }
-
-  function renderCustomPickerList() {
-    const list = el("algo-custom-picker-list");
-    if (!list) return;
-    const modes = loadLearningModes();
-    const customs = Object.values(modes).filter((m) => !m.builtin).sort((a, b) => a.name.localeCompare(b.name, "fr"));
-    list.innerHTML = "";
-    if (customs.length === 0) {
-      const p = document.createElement("p");
-      p.className = "field-hint";
-      p.textContent = "Aucun mode personnalisé pour l'instant.";
-      list.appendChild(p);
-      return;
-    }
-    customs.forEach((m) => {
-      const label = document.createElement("label");
-      label.className = "multi-subject-picker-item";
-      const cb = document.createElement("input");
-      cb.type = "radio";
-      cb.name = "custom-mode-pick";
-      cb.value = m.id;
-      cb.checked = m.id === algoEditingModeId;
-      const span = document.createElement("span");
-      span.textContent = m.name;
-      label.appendChild(cb);
-      label.appendChild(span);
-      // Couleur propre à ce mode (item : réglable directement ici plutôt
-      // que seulement dans la page Développeur).
-      const colorInput = document.createElement("input");
-      colorInput.type = "text";
-      colorInput.className = "algo-custom-picker-color dev-color-value";
-      colorInput.value = getCustomModeColor(m.id);
-      colorInput.title = `Couleur du mode « ${m.name} »`;
-      colorInput.addEventListener("click", (e) => e.stopPropagation());
-      colorInput.addEventListener("input", () => {
-        setCustomModeColor(m.id, colorInput.value);
-        renderSubjectManageList();
-        renderSubjectAlgoBadge(currentCard ? currentCard.subject : undefined);
-      });
-      label.appendChild(colorInput);
-      list.appendChild(label);
-      cb.addEventListener("change", () => loadModeFormIntoInputs(m.id));
-    });
-    enhanceColorInputsWithHsl();
-  }
-
-  /** Place la valeur d'un mode sur son curseur discret (item 9) et met à
-   *  jour le texte affiché (préfixe × pour les coefficients, &lt; jours
-   *  pour les maximums). */
-  function setSliderField(id, value, list, prefix, suffix) {
-    const input = el(id);
-    const valueEl = el(`${id}-value`);
-    if (!input) return;
-    const idx = list.indexOf(value);
-    input.value = String(idx === -1 ? 0 : idx);
-    if (valueEl) valueEl.textContent = `${prefix} ${value}${suffix}`;
-  }
-
-  /** Couleur d'accent des curseurs de réglage d'un mode (item 6 — bug
-   *  corrigé) : reprend la couleur du mode en cours d'édition (Cool/
-   *  Normal/Renforcé/personnalisé), posée comme variable CSS sur le
-   *  conteneur des curseurs, plutôt que 4 couleurs fixes par note qui
-   *  n'avaient aucun rapport avec le mode affecté. */
-  function applyModeSliderColor(modeId) {
-    const panel = el("algo-advanced-panel");
-    if (!panel) return;
-    const key = algoModeCssKey(modeId);
-    const settings = loadDevSettings();
-    const color = key === "custom" ? getCustomModeColor(modeId) : settings.modeColors[key];
-    panel.style.setProperty("--mode-editing-color", color);
-  }
-
-  function loadModeFormIntoInputs(modeId) {
-    const modes = loadLearningModes();
-    const m = modes[modeId] || modes.normal;
-    algoEditingModeId = m.id;
-    // Les curseurs reprennent la couleur du mode en cours d'édition (item
-    // 6 — bug corrigé : ils étaient colorés par note (Encore/Difficile/
-    // Bien/Facile), sans rapport avec le mode réellement affecté).
-    applyModeSliderColor(m.id);
-    setSliderField("algo-ka", m.Ka, ALGO_K_VALUES, "×", "");
-    setSliderField("algo-kh", m.Kh, ALGO_K_VALUES, "×", "");
-    setSliderField("algo-kg", m.Kg, ALGO_K_VALUES, "×", "");
-    setSliderField("algo-ke", m.Ke, ALGO_K_VALUES, "×", "");
-    setSliderField("algo-ma", m.Ma, ALGO_M_VALUES, "<", " j");
-    setSliderField("algo-mh", m.Mh, ALGO_M_VALUES, "<", " j");
-    setSliderField("algo-mg", m.Mg, ALGO_M_VALUES, "<", " j");
-    setSliderField("algo-me", m.Me, ALGO_M_VALUES, "<", " j");
-    const idx = algoSliderIdxForMode(m.id);
-    const slider = el("algo-mode-slider");
-    if (slider) slider.value = String(idx);
-    updateAlgoModeTicksHighlight(idx);
-    const customPicker = el("algo-custom-picker");
-    if (customPicker) customPicker.hidden = idx !== 3;
-    if (idx === 3) renderCustomPickerList();
-    const resetBtn = el("algo-reset-btn");
-    if (resetBtn) resetBtn.hidden = !m.builtin;
-    renderAlgoPreviewChart();
-  }
-
-  /** Construit le HTML (légende + SVG) d'un graphique d'aperçu pour un jeu
-   *  de réglages donné — partagé entre la page d'édition globale et la
-   *  page d'affectation (lecture seule). Échelle LINÉAIRE (pas log, item 5
-   *  d'une demande précédente), valeur écrite à côté de chaque point. */
-  const ALGO_CHART_COLORS = {
-    again: "var(--rating-again-color, var(--terracotta))",
-    hard: "var(--rating-hard-color, var(--amber))",
-    good: "var(--rating-good-color, var(--sage))",
-    easy: "var(--rating-easy-color, var(--teal))",
-  };
-  // Le graphique d'aperçu de la page "Modes d'apprentissage" garde ses
-  // couleurs par défaut (item 2e), indépendamment du réglage "Couleurs des
-  // notes" qui ne doit affecter QUE les boutons d'évaluation.
-  const ALGO_PREVIEW_CHART_COLORS = {
-    again: "var(--terracotta)",
-    hard: "var(--amber)",
-    good: "var(--sage)",
-    easy: "var(--teal)",
-  };
-  const ALGO_CHART_RATING_LABELS = { again: "Encore", hard: "Difficile", good: "Bien", easy: "Facile" };
-  function computeAlgoPreviewSeries(settings, rating, n) {
-    let raw = 1;
-    const out = [];
-    for (let i = 0; i < n; i++) {
-      raw = computeNextDeadlineRaw(raw, rating, settings);
-      out.push(Math.max(1, Math.round(raw)));
-    }
-    return out;
-  }
-  /** Étend le nombre de points du graphique (item 9) jusqu'à ce que les
-   *  courbes affichées atteignent leur plafond (deux valeurs arrondies
-   *  identiques de suite), plutôt qu'un nombre de points fixe — plafonné à
-   *  40 pour éviter un graphique interminable si un maximum est très élevé
-   *  par rapport à son coefficient. */
-  /** Étend le nombre de points du graphique (item 4/10) jusqu'à ce que les
-   *  courbes affichées atteignent leur plafond — calculé analytiquement
-   *  (résout K^n ≥ M) plutôt qu'en itérant avec un plafond fixe : un
-   *  plafond fixe trop bas coupait certaines courbes à croissance lente
-   *  (petit coefficient, maximum élevé — ex. ×1,1 plafonné à 300 jours a
-   *  besoin d'une soixantaine de points pour vraiment atteindre son
-   *  plateau) avant qu'elles n'aient eu le temps de vraiment se stabiliser
-   *  — bug corrigé (item 10). */
-  function computeNeededSteps(settings, ratings) {
-    const ABSOLUTE_CAP = 64;
-    let needed = 4;
-    ratings.forEach((r) => {
-      const [kKey, mKey] = ALGO_RATING_KEYS[r];
-      const k = settings[kKey];
-      const m = settings[mKey];
-      // Coefficient ~1 : l'échéance ne grandit quasiment pas, le "plateau"
-      // est atteint dès le premier point.
-      const n = k <= 1.0001 ? 1 : Math.ceil(Math.log(m) / Math.log(k));
-      // +2 points au-delà du début du plateau, pour bien montrer que la
-      // courbe est devenue horizontale plutôt que de s'arrêter net pile au
-      // moment où elle se stabilise.
-      needed = Math.max(needed, Math.min(ABSOLUTE_CAP, n + 2));
-    });
-    return Math.max(4, Math.min(ABSOLUTE_CAP, needed));
-  }
-
-  function buildPreviewChartHtml(settings) {
-    const ratings = ["again", "hard", "good", "easy"];
-    const visibleRatings = ratings.filter((r) => algoChartVisible[r]);
-    const legend = ratings
-      .map(
-        (r) => `<label class="algo-chart-legend-item">
-          <input type="checkbox" class="algo-chart-legend-checkbox" data-rating="${r}" ${algoChartVisible[r] ? "checked" : ""} />
-          <span class="algo-chart-legend-dot" style="background:${ALGO_PREVIEW_CHART_COLORS[r]}"></span>${ALGO_CHART_RATING_LABELS[r]}
-        </label>`
-      )
-      .join("");
-
-    if (visibleRatings.length === 0) {
-      return `<div class="algo-chart-legend">${legend}</div><p class="field-hint algo-chart-empty">Coche au moins une courbe pour l'afficher.</p>`;
-    }
-
-    const N = computeNeededSteps(settings, visibleRatings);
-    const seriesByRating = {};
-    ratings.forEach((r) => {
-      seriesByRating[r] = computeAlgoPreviewSeries(settings, r, N);
-    });
-    let maxVal = 1;
-    visibleRatings.forEach((r) => { maxVal = Math.max(maxVal, ...seriesByRating[r]); });
-
-    const W = 320, H = 260, padL = 30, padB = 22, padT = 14, padR = 12;
-    const plotW = W - padL - padR;
-    const plotH = H - padT - padB;
-    const xPos = (i) => padL + (i / (N - 1)) * plotW;
-    const yMax = Math.max(10, Math.ceil((maxVal * 1.08) / 10) * 10);
-    const yPos = (v) => padT + (1 - v / yMax) * plotH;
-    // Au-delà d'une quinzaine de points, on n'étiquette plus qu'un point sur
-    // deux (ou plus) en abscisse pour ne pas les faire se chevaucher.
-    const xLabelStep = N <= 15 ? 1 : Math.ceil(N / 15);
-
-    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--svg-chart-bg-color, var(--desk));border-radius:8px;">`;
-    svg += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="rgba(31,41,55,0.3)" stroke-width="1"/>`;
-    svg += `<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="rgba(31,41,55,0.3)" stroke-width="1"/>`;
-
-    [0, yMax / 3, (2 * yMax) / 3, yMax].forEach((t) => {
-      const y = yPos(t);
-      svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(31,41,55,0.1)" stroke-width="1"/>`;
-      svg += `<text x="${padL - 4}" y="${y + 3}" font-size="8" fill="var(--chart-value-color, #6b7280)" text-anchor="end">${Math.round(t)}</text>`;
-    });
-
-    const labelDx = { again: -9, hard: -3, good: 3, easy: 9 };
-    visibleRatings.forEach((r) => {
-      const s = seriesByRating[r];
-      const pts = s.map((v, i) => `${xPos(i)},${yPos(v)}`).join(" ");
-      svg += `<polyline points="${pts}" fill="none" stroke="${ALGO_PREVIEW_CHART_COLORS[r]}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
-      s.forEach((v, i) => {
-        // Sur les longs graphiques, on n'étiquette la valeur qu'aux mêmes
-        // points que l'axe, plus le tout dernier (le plafond atteint).
-        if (i % xLabelStep !== 0 && i !== s.length - 1) return;
-        const x = xPos(i), y = yPos(v);
-        svg += `<circle cx="${x}" cy="${y}" r="2.4" fill="${ALGO_PREVIEW_CHART_COLORS[r]}"/>`;
-        svg += `<text x="${x + labelDx[r]}" y="${y - 5}" font-size="7.5" fill="${ALGO_PREVIEW_CHART_COLORS[r]}" text-anchor="middle" font-family="var(--font-mono)">${v}</text>`;
-      });
-    });
-    for (let i = 0; i < N; i += xLabelStep) {
-      svg += `<text x="${xPos(i)}" y="${H - padB + 12}" font-size="8" fill="var(--chart-label-color, #6b7280)" text-anchor="middle">${i + 1}</text>`;
-    }
-    svg += `</svg>`;
-
-    // Ordonnée verticale à gauche du graphique (item 4), plutôt qu'une
-    // légende horizontale sous le graphique.
-    const body =
-      `<div class="algo-chart-body">` +
-      `<span class="algo-chart-axis-y">Délai d'interrogation en jours</span>` +
-      `<div class="algo-chart-svg-col">${svg}</div>` +
-      `</div>` +
-      `<div class="algo-chart-axis-x">Nombre de fois qu'une fiche a été évaluée</div>`;
-
-    return `<div class="algo-chart-legend">${legend}</div>${body}`;
-  }
-
-  function wireChartCheckboxes(wrap, onToggle) {
-    wrap.querySelectorAll(".algo-chart-legend-checkbox").forEach((cb) => {
-      cb.addEventListener("change", () => {
-        algoChartVisible[cb.dataset.rating] = cb.checked;
-        onToggle();
-      });
-    });
-  }
-
-  function renderAlgoPreviewChart() {
-    const wrap = el("algo-chart-wrap");
-    if (!wrap) return;
-    wrap.innerHTML = buildPreviewChartHtml(readAlgoFormSettings());
-    wireChartCheckboxes(wrap, renderAlgoPreviewChart);
-  }
-
-  function readAlgoFormSettings() {
-    const idx = (id) => Math.round(Number(el(id).value)) || 0;
-    return {
-      Ka: ALGO_K_VALUES[idx("algo-ka")] ?? 1,
-      Kh: ALGO_K_VALUES[idx("algo-kh")] ?? 1,
-      Kg: ALGO_K_VALUES[idx("algo-kg")] ?? 1,
-      Ke: ALGO_K_VALUES[idx("algo-ke")] ?? 1,
-      Ma: ALGO_M_VALUES[idx("algo-ma")] ?? 1,
-      Mh: ALGO_M_VALUES[idx("algo-mh")] ?? 1,
-      Mg: ALGO_M_VALUES[idx("algo-mg")] ?? 1,
-      Me: ALGO_M_VALUES[idx("algo-me")] ?? 1,
-    };
-  }
-
-  function saveModeFormAndRefresh() {
-    updateModeProfile(algoEditingModeId, readAlgoFormSettings());
-    loadModeFormIntoInputs(algoEditingModeId);
-    renderSubjectAlgoBadge();
-    renderSubjectManageList();
-  }
-
-  const algoModeSliderEl = el("algo-mode-slider");
-  if (algoModeSliderEl) {
-    algoModeSliderEl.addEventListener("input", async () => {
-      const idx = Number(algoModeSliderEl.value);
-      updateAlgoModeTicksHighlight(idx);
-      const customPicker = el("algo-custom-picker");
-      if (idx < 3) {
-        if (customPicker) customPicker.hidden = true;
-        loadModeFormIntoInputs(BUILTIN_MODE_IDS[idx]);
-        return;
-      }
-      if (customPicker) customPicker.hidden = false;
-      const customs = Object.values(loadLearningModes()).filter((m) => !m.builtin);
-      if (customs.length === 0) {
-        const name = await robotPrompt("Nom du nouveau mode personnalisé :", "Mon mode");
-        if (name && name.trim()) {
-          const id = createCustomMode(name, algoEditingModeId);
-          renderCustomPickerList();
-          loadModeFormIntoInputs(id);
-        } else {
-          const prevIdx = algoSliderIdxForMode(algoEditingModeId);
-          algoModeSliderEl.value = String(prevIdx);
-          updateAlgoModeTicksHighlight(prevIdx);
-          if (customPicker) customPicker.hidden = true;
-        }
-      } else {
-        renderCustomPickerList();
-        loadModeFormIntoInputs(customs[0].id);
-      }
-    });
-  }
-
-  const algoCustomNewBtn = el("algo-custom-new-btn");
-  if (algoCustomNewBtn) {
-    algoCustomNewBtn.addEventListener("click", async () => {
-      const name = await robotPrompt("Nom du nouveau mode personnalisé :");
-      if (!name || !name.trim()) return;
-      const id = createCustomMode(name, algoEditingModeId);
-      renderCustomPickerList();
-      loadModeFormIntoInputs(id);
-    });
-  }
-  const algoCustomRenameBtn = el("algo-custom-rename-btn");
-  if (algoCustomRenameBtn) {
-    algoCustomRenameBtn.addEventListener("click", async () => {
-      const modes = loadLearningModes();
-      const m = modes[algoEditingModeId];
-      if (!m || m.builtin) return;
-      const name = await robotPrompt("Nouveau nom du mode :", m.name);
-      if (!name || !name.trim()) return;
-      renameCustomMode(algoEditingModeId, name);
-      renderCustomPickerList();
-      renderSubjectAlgoBadge();
-      renderSubjectManageList();
-    });
-  }
-  const algoCustomDeleteBtn = el("algo-custom-delete-btn");
-  if (algoCustomDeleteBtn) {
-    algoCustomDeleteBtn.addEventListener("click", async () => {
-      const modes = loadLearningModes();
-      const m = modes[algoEditingModeId];
-      if (!m || m.builtin) return;
-      if (!(await robotConfirm(`Supprimer le mode « ${m.name} » ? Les boîtes qui l'utilisent repasseront en mode Normal.`, { danger: true }))) return;
-      await deleteCustomMode(algoEditingModeId);
-      const remaining = Object.values(loadLearningModes()).filter((x) => !x.builtin);
-      if (remaining.length > 0) {
-        renderCustomPickerList();
-        loadModeFormIntoInputs(remaining[0].id);
-      } else {
-        loadModeFormIntoInputs("normal");
-      }
-      renderSubjectManageList();
-      renderSubjectAlgoBadge();
-    });
-  }
-
-  const ALGO_FIELD_META = {
-    "algo-ka": { list: ALGO_K_VALUES, prefix: "×", suffix: "" },
-    "algo-kh": { list: ALGO_K_VALUES, prefix: "×", suffix: "" },
-    "algo-kg": { list: ALGO_K_VALUES, prefix: "×", suffix: "" },
-    "algo-ke": { list: ALGO_K_VALUES, prefix: "×", suffix: "" },
-    "algo-ma": { list: ALGO_M_VALUES, prefix: "<", suffix: " j" },
-    "algo-mh": { list: ALGO_M_VALUES, prefix: "<", suffix: " j" },
-    "algo-mg": { list: ALGO_M_VALUES, prefix: "<", suffix: " j" },
-    "algo-me": { list: ALGO_M_VALUES, prefix: "<", suffix: " j" },
-  };
-  Object.keys(ALGO_FIELD_META).forEach((id) => {
-    const input = el(id);
-    if (!input) return;
-    const meta = ALGO_FIELD_META[id];
-    const valueEl = el(`${id}-value`);
-    const updateReadout = () => {
-      const v = meta.list[Math.round(Number(input.value)) || 0];
-      if (valueEl) valueEl.textContent = `${meta.prefix} ${v}${meta.suffix}`;
-    };
-    input.addEventListener("input", () => {
-      updateReadout();
-      renderAlgoPreviewChart();
-    });
-    input.addEventListener("change", saveModeFormAndRefresh);
-  });
-
-  const algoResetBtn = el("algo-reset-btn");
-  if (algoResetBtn) {
-    algoResetBtn.addEventListener("click", async () => {
-      const modes = loadLearningModes();
-      const m = modes[algoEditingModeId];
-      if (!m || !m.builtin) return;
-      if (!(await robotConfirm(`Remettre le mode ${m.name} à ses valeurs d'origine ? Toutes les boîtes qui l'utilisent seront concernées.`))) return;
-      updateModeProfile(algoEditingModeId, getFactoryDefaults()[algoEditingModeId]);
-      loadModeFormIntoInputs(algoEditingModeId);
-      renderSubjectAlgoBadge();
-    });
-  }
-
-  const algoAdvancedToggle = el("algo-advanced-toggle");
-  const algoAdvancedPanel = el("algo-advanced-panel");
-  if (algoAdvancedToggle && algoAdvancedPanel) {
-    algoAdvancedToggle.addEventListener("click", () => {
-      const willShow = algoAdvancedPanel.hidden;
-      algoAdvancedPanel.hidden = !willShow;
-      algoAdvancedToggle.textContent = willShow ? "Paramétrages avancés ▴" : "Paramétrages avancés ▾";
-    });
-  }
-
-  /* ---------------------------------------------------------
-     Vue "Affecter un mode" (par boîte OU par dossier entier — item 1/2),
-     ouverte depuis la page Gérer. Simple sélection parmi les modes déjà
-     définis (édités globalement sur la page Modes d'apprentissage) — plus
-     aucun réglage éditable ici.
-  --------------------------------------------------------- */
-  let algoOpenedFromView = "manage";
-  let assignTargetKind = null; // "subject" | "folder"
-  let assignTargetId = null;
-  let assignCurrentModeId = "normal";
-
-  function renderAssignChart(modeId) {
-    const wrap = el("assign-chart-wrap");
-    if (!wrap) return;
-    const modes = loadLearningModes();
-    const settings = modes[modeId] || modes.normal;
-    wrap.innerHTML = buildPreviewChartHtml(settings);
-    wireChartCheckboxes(wrap, () => renderAssignChart(assignCurrentModeId));
-  }
-
-  function renderAssignModeList(currentModeId) {
-    const list = el("assign-mode-list");
-    if (!list) return;
-    const modes = loadLearningModes();
-    const all = [
-      ...BUILTIN_MODE_IDS.map((id) => modes[id]),
-      ...Object.values(modes).filter((m) => !m.builtin).sort((a, b) => a.name.localeCompare(b.name, "fr")),
-    ];
-    list.innerHTML = "";
-    all.forEach((m) => {
-      const label = document.createElement("label");
-      label.className = "multi-subject-picker-item";
-      const cb = document.createElement("input");
-      cb.type = "radio";
-      cb.name = "assign-mode-pick";
-      cb.value = m.id;
-      cb.checked = m.id === currentModeId;
-      const span = document.createElement("span");
-      span.textContent = m.name;
-      label.appendChild(cb);
-      label.appendChild(span);
-      list.appendChild(label);
-      cb.addEventListener("change", async () => {
-        assignCurrentModeId = m.id;
-        if (assignTargetKind === "subject") {
-          await assignModeToSubject(assignTargetId, m.id);
-        } else if (assignTargetKind === "folder") {
-          await assignModeToFolder(assignTargetId, m.id);
-        }
-        renderAssignChart(m.id);
-        renderSubjectManageList();
-        renderSubjectAlgoBadge();
-      });
-    });
-  }
-
-  function openAssignView(kind, targetId, fromView) {
-    assignTargetKind = kind;
-    assignTargetId = targetId;
-    algoOpenedFromView = fromView === "review" ? "review" : "manage";
-    algoChartVisible = { again: true, hard: true, good: true, easy: true };
-
-    let title, currentModeId;
-    if (kind === "subject") {
-      const s = subjects.find((x) => x.id === targetId);
-      title = `Affecter un mode — ${s ? s.name : ""}`;
-      currentModeId = getSubjectAlgoMode(targetId);
-    } else {
-      // Pas de présélection pour un dossier (bug corrigé — item 3) : les
-      // boîtes qu'il contient peuvent très bien ne pas être en "Normal"
-      // du tout, présélectionner ce mode par défaut était trompeur.
-      const f = folders.find((x) => x.id === targetId);
-      title = `Affecter un mode — ${folderIcon()} ${f ? f.name : ""}`;
-      currentModeId = null;
-    }
-    const titleEl = el("assign-target-title");
-    if (titleEl) titleEl.textContent = title;
-    assignCurrentModeId = currentModeId;
-    renderAssignModeList(currentModeId);
-    if (currentModeId) {
-      renderAssignChart(currentModeId);
-    } else {
-      const wrap = el("assign-chart-wrap");
-      if (wrap) wrap.innerHTML = `<p class="field-hint">Choisis un mode ci-dessus pour l'affecter à tout le dossier.</p>`;
-    }
-    const reviewOldBlock = el("assign-review-old-block");
-    if (reviewOldBlock) reviewOldBlock.hidden = kind !== "subject";
-
-    const backBtn = el("assign-back-btn");
-    if (backBtn) backBtn.textContent = algoOpenedFromView === "review" ? "← Retour à Réviser" : "← Retour à Gérer";
-
-    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
-    el("view-mode-assign").classList.add("is-active");
-    applyBodyLogoSpeech("mode-assign");
-  }
-
-  // Conservé pour compatibilité avec les anciens appels (page Réviser) —
-  // ouvre désormais la vue d'affectation plutôt que d'édition directe,
-  // puisque les réglages ne se modifient plus boîte par boîte.
-  function openSubjectAlgoView(subjectId, fromView) {
-    openAssignView("subject", subjectId, fromView);
-  }
-
-  function closeAssignView() {
-    const targetView = algoOpenedFromView === "review" ? "review" : "manage";
-    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
-    el(`view-${targetView}`).classList.add("is-active");
-    if (targetView === "manage") renderSubjectManageList();
-    document.querySelectorAll(".tab").forEach((t) => {
-      t.classList.remove("is-active");
-      t.setAttribute("aria-selected", "false");
-    });
-    const targetTab = document.querySelector(`.tab[data-view="${targetView}"]`);
-    if (targetTab) {
-      targetTab.classList.add("is-active");
-      targetTab.setAttribute("aria-selected", "true");
-    }
-    applyBodyLogoSpeech(targetView);
-  }
-
-  const assignBackBtn = el("assign-back-btn");
-  if (assignBackBtn) assignBackBtn.addEventListener("click", closeAssignView);
-
-  const algoReviewOldBtn = el("algo-review-old-btn");
-  if (algoReviewOldBtn) {
-    algoReviewOldBtn.addEventListener("click", async () => {
-      if (assignTargetKind !== "subject" || !assignTargetId) return;
-      const subject = subjects.find((s) => s.id === assignTargetId);
-      const today = startOfDay(new Date());
-      const targets = cards.filter((c) => {
-        if (c.deleted || c.subject !== assignTargetId || !c.dueDate) return false;
-        const daysAhead = Math.round((startOfDay(new Date(c.dueDate)).getTime() - today.getTime()) / 86400000);
-        return daysAhead > 10;
-      });
-      if (targets.length === 0) {
-        await robotAlert("Aucune fiche de cette boîte n'a une prochaine interrogation prévue dans plus de 10 jours.");
-        return;
-      }
-      const msg =
-        `Attention : cette action va ramener l'échéance et la date de prochaine ` +
-        `interrogation à 10 jours pour ${targets.length} fiche${targets.length > 1 ? "s" : ""} ` +
-        `de « ${subject ? subject.name : ""} » (celles actuellement prévues dans plus de 10 jours). ` +
-        `Cette action est irréversible. Continuer ?`;
-      if (!(await robotConfirm(msg, { danger: true }))) return;
-
-      const due = new Date(today);
-      due.setDate(due.getDate() + 10);
-      for (const c of targets) {
-        const updated = touch({ ...c, interval: 10, deadlineDaysRaw: 10, dueDate: due.toISOString() });
-        await persist(updated);
-        const idx = cards.findIndex((x) => x.id === updated.id);
-        if (idx >= 0) cards[idx] = updated;
-      }
-      renderStats();
-      renderManageList();
-      renderDuePill();
-      await robotAlert(`${targets.length} fiche${targets.length > 1 ? "s" : ""} ramenée${targets.length > 1 ? "s" : ""} à 10 jours.`);
-    });
-  }
-
 
   async function createSubjectFlow() {
     const name = await robotPrompt("Nom de la nouvelle boîte :");
@@ -5335,7 +4414,7 @@
      les anciens panneaux flottants (Réviser, Fiches, Stats, Nouvelle
      fiche, Calendrier, "Déplacer vers..." depuis Organisation) par une
      VRAIE page — #view-boite-picker devient la vue active exactement
-     comme n'importe quel autre onglet ou sous-page (view-mode-assign,
+     comme n'importe quel autre onglet ou sous-page (
      view-new-card), donc l'en-tête de l'appli (logo, bouton Home...) reste
      visible au-dessus, et la liste dessous est rigoureusement celle
      utilisée par la page Organisation. Au retour ("← Retour" ou choix
@@ -5738,71 +4817,20 @@
     renderReviewChart();
     renderReviewSubjectScore();
     renderReviewGauge();
-    // Passe systématiquement la boîte de la fiche AFFICHÉE (item 2 —
-    // bug corrigé) : sans ça, en mode "toutes boîtes"/"sélection",
-    // l'appel masquait le badge de mode faute de savoir quelle boîte
-    // afficher, avant qu'un autre rendu ne le réaffiche juste après — d'où
-    // le clignotement observé (par ex. en appuyant sur "chantier").
-    renderSubjectAlgoBadge(currentCard ? currentCard.subject : undefined);
+    renderSubjectBarCount();
   }
 
-  /** Badge "mode d'apprentissage" de la boîte active, affiché dans la
-   *  barre déjà existante en haut (voir item 7) — jamais de ligne en plus.
-   *  Libellé court (juste "Normal", pas "Apprentissage normal") : la place
-   *  disponible à côté du sélecteur est trop réduite pour le nom complet,
-   *  qui se faisait tronquer en "Apprentissage n…", peu lisible. */
-  const ALGO_MODE_KEY_TO_CLASS = { cool: "is-cool", normal: "is-normal", renforce: "is-renforce", custom: "is-custom" };
-  /** Rafraîchit tout ce qui dépend de la boîte active en dehors de sa
-   *  propre page : le nombre de fiches + bouton mode dans la barre de
-   *  Réviser (item 1, mêmes couleurs que le curseur du mode d'apprentissage
-   *  — voir ALGO_MODE_COLORS), et le récapitulatif d'export/import dans
-   *  Réglages (item 6). */
-  /** `cardSubjectId` (optionnel) : quand on révise "toutes boîtes" ou une
-   *  "sélection", chaque fiche affichée a sa propre boîte — c'est ELLE
-   *  qui doit déterminer le mode affiché/édité par le bouton, pas la
-   *  sélection globale (item 2). Sans cet argument (autres pages, ou mode
-   *  normal), on retombe sur `currentSubjectId` comme avant. */
-  const cardAlgoBtn = el("card-algo-btn");
-
-  function renderSubjectAlgoBadge(cardSubjectId) {
-    const sentinel = isSentinelSubject(currentSubjectId);
+  /** Nombre de fiches de la boîte active, dans la barre de Réviser.
+   *  Round 26, item 5 : l'ancien badge "mode d'apprentissage" (bouton sur
+   *  la fiche) est retiré avec les modes. */
+  function renderSubjectBarCount() {
     const n = currentSubjectId ? subjectCards().length : 0;
-    const effectiveSubjectId = sentinel && cardSubjectId ? cardSubjectId : currentSubjectId;
-
     if (subjectBarCountEl) subjectBarCountEl.textContent = `${n} fiche${n > 1 ? "s" : ""}`;
-    // Un vrai identifiant de boîte (jamais un sentinel) est toujours
-    // disponible dès qu'une fiche est affichée à l'écran (item 17 : le
-    // badge de mode vit maintenant sur la fiche elle-même, plus à côté du
-    // sélecteur de boîte — ça n'avait plus de sens avec le multi-boîtes).
-    const showBtn = !sentinel || !!cardSubjectId;
-    if (cardAlgoBtn) cardAlgoBtn.hidden = !showBtn;
-    if (showBtn && effectiveSubjectId) {
-      const key = getSubjectAlgoMode(effectiveSubjectId);
-      if (cardAlgoBtn) {
-        // Item 13 : icône épurée (banque) plutôt que l'émoticône 🎓, comme
-        // sur la page Organisation.
-        cardAlgoBtn.innerHTML = iconSvgMarkup("gradCap", "icon-inline-svg");
-        applyModeBadgeStyle(cardAlgoBtn, key);
-        cardAlgoBtn.dataset.subjectId = effectiveSubjectId;
-        cardAlgoBtn.title = `Mode d'apprentissage : ${modeDisplayName(key)}`;
-      }
-    }
-  }
-
-  if (cardAlgoBtn) {
-    cardAlgoBtn.addEventListener("click", () => {
-      // En mode "toutes boîtes"/"sélection", `dataset.subjectId` porte la
-      // vraie boîte de la fiche actuellement affichée (voir
-      // renderSubjectAlgoBadge) ; sinon, la boîte active classique.
-      const targetId = cardAlgoBtn.dataset.subjectId || currentSubjectId;
-      if (targetId && !isSentinelSubject(targetId)) openSubjectAlgoView(targetId, "review");
-    });
   }
 
   /** Toutes les fiches non supprimées de la boîte actuellement active —
    *  gère aussi les deux modes "toutes boîtes" / "sélection de boîtes"
-   *  (item 1), chaque fiche gardant alors le mode d'apprentissage de SA
-   *  propre boîte (voir computeAlgoNext, qui utilise card.subject). */
+   *  (item 1). */
   function subjectCards() {
     if (currentSubjectId === ALL_SUBJECTS_ID) {
       return cards.filter((c) => !c.deleted);
@@ -6179,7 +5207,6 @@
       editCurrentBtn.hidden = true;
       if (hibernateCurrentBtn) hibernateCurrentBtn.hidden = true;
       if (el("construction-current-btn")) el("construction-current-btn").hidden = true;
-      if (cardAlgoBtn) cardAlgoBtn.hidden = true;
       ratingRowEl.hidden = true;
       if (el("review-score-info")) el("review-score-info").hidden = true;
       reviewProgressEl.textContent = "";
@@ -6999,21 +6026,16 @@
       actions.appendChild(editBtn);
       actions.appendChild(constructionBtn);
 
-      if (subjects.length > 1) {
-        const moveSelect = document.createElement("select");
-        moveSelect.className = "icon-btn card-row-move";
-        moveSelect.title = "Déplacer vers une autre boîte";
-        moveSelect.innerHTML =
-          `<option value="">déplacer…</option>` +
-          subjects
-            .filter((s) => s.id !== card.subject)
-            .map((s) => `<option value="${s.id}">${escapeHtml(s.name)}</option>`)
-            .join("");
-        moveSelect.addEventListener("change", async () => {
-          if (!moveSelect.value) return;
-          await moveCardToSubject(card.id, moveSelect.value);
-        });
-        actions.appendChild(moveSelect);
+      // Round 26, item 4 : "déplacer" ouvre l'explorateur (page de
+      // sélection, comme partout ailleurs) au lieu d'une liste déroulante.
+      if (subjects.length > 1 || folders.length > 0) {
+        const moveBtn = document.createElement("button");
+        moveBtn.type = "button";
+        moveBtn.className = "icon-btn card-row-move";
+        moveBtn.title = "Déplacer vers une autre boîte";
+        moveBtn.textContent = "déplacer";
+        moveBtn.addEventListener("click", () => openCardMovePicker(card.id));
+        actions.appendChild(moveBtn);
       }
 
       actions.appendChild(delBtn);
@@ -7027,6 +6049,34 @@
   function daysUntil(dueDateIso) {
     const ms = new Date(dueDateIso).getTime() - Date.now();
     return Math.max(0, Math.ceil(ms / 86400000));
+  }
+
+  /** Round 26, item 4 : choix de la boîte de destination d'une fiche dans
+   *  l'explorateur. Exclut sa boîte actuelle et les boîtes en lecture
+   *  seule (classe, Librairie) ; un dossier vide choisi devient boîte. */
+  function openCardMovePicker(cardId) {
+    const card = cards.find((c) => c.id === cardId);
+    if (!card) return;
+    const excluded = new Set(subjects.filter((s) => s.sharedBoxId || s.fromLibrary).map((s) => s.id));
+    excluded.add(card.subject);
+    const label = (card.question || "").replace(/\s+/g, " ").trim();
+    openBoitePickerView({
+      mode: "single",
+      robotMessage: `Déplacer la fiche « ${label.length > 40 ? label.slice(0, 40) + "…" : label} » vers :`,
+      excludeSubjectIds: excluded,
+      onPick: async (kind, id) => {
+        let destId = id;
+        if (kind === "folder") {
+          const s = await ensureFolderIsBoite(id);
+          if (!s) return;
+          destId = s.id;
+        }
+        const fromId = card.subject;
+        closeBoitePickerView();
+        await moveCardToSubject(cardId, destId);
+        await revertFolderIfBoiteEmptied(fromId);
+      },
+    });
   }
 
   /** Reclasse manuellement une fiche vers une autre boîte (utile pour
@@ -7102,6 +6152,51 @@
     if (!settingsIoCountEl || !exportSubjectSelectEl) return;
     const n = cards.filter((c) => !c.deleted && c.subject === exportSubjectSelectEl.value).length;
     settingsIoCountEl.textContent = String(n);
+    const btn = el("export-subject-btn");
+    if (btn) btn.textContent = exportSubjectSelectEl.value ? subjectName(exportSubjectSelectEl.value) : "Choisir la boîte…";
+  }
+  /** Round 26, item 4 : export et import choisissent leur boîte dans
+   *  l'explorateur (la liste déroulante masquée garde la valeur). */
+  function openIoSubjectPicker(selectEl, robotMessage, excludeReadonly, onDone) {
+    openBoitePickerView({
+      mode: "single",
+      robotMessage,
+      excludeSubjectIds: excludeReadonly ? new Set(subjects.filter((s) => s.sharedBoxId || s.fromLibrary).map((s) => s.id)) : undefined,
+      onPick: async (kind, id) => {
+        let subjId = id;
+        if (kind === "folder") {
+          const s = await ensureFolderIsBoite(id);
+          if (!s) return;
+          subjId = s.id;
+          renderSubjectSelect();
+        }
+        if (![...selectEl.options].some((o) => o.value === subjId)) {
+          const opt = document.createElement("option");
+          opt.value = subjId;
+          opt.textContent = subjectName(subjId);
+          selectEl.appendChild(opt);
+        }
+        selectEl.value = subjId;
+        closeBoitePickerView();
+        onDone();
+      },
+    });
+  }
+  const exportSubjectBtnEl = el("export-subject-btn");
+  if (exportSubjectBtnEl && exportSubjectSelectEl) {
+    exportSubjectBtnEl.addEventListener("click", () =>
+      openIoSubjectPicker(exportSubjectSelectEl, "Quelle boîte exporter ?", false, updateExportCount)
+    );
+  }
+  function updateImportTargetLabel() {
+    const btn = el("import-target-btn");
+    if (btn) btn.textContent = importTargetSelect.value && importTargetSelect.value !== "__new__" ? subjectName(importTargetSelect.value) : "Choisir la boîte…";
+  }
+  const importTargetBtnEl = el("import-target-btn");
+  if (importTargetBtnEl) {
+    importTargetBtnEl.addEventListener("click", () =>
+      openIoSubjectPicker(importTargetSelect, "Dans quelle boîte importer les fiches ?", true, updateImportTargetLabel)
+    );
   }
   if (exportSubjectSelectEl) {
     exportSubjectSelectEl.addEventListener("change", updateExportCount);
@@ -8526,7 +7621,9 @@
      sur <body>, lu par CSS partout en même temps.
   --------------------------------------------------------- */
   const ORG_DISPLAY_KEY = "fiches_org_display_mode";
-  const ORG_DISPLAY_MODES = ["count", "mode", "gauge"];
+  // Round 26, item 5 : affichage "mode" retiré (modes d'apprentissage
+  // abandonnés) — un ancien choix "mode" retombe sur "count".
+  const ORG_DISPLAY_MODES = ["count", "gauge"];
   function loadOrgDisplayMode() {
     const raw = localStorage.getItem(ORG_DISPLAY_KEY);
     return ORG_DISPLAY_MODES.includes(raw) ? raw : "count";
@@ -8671,23 +7768,6 @@
     });
   }
 
-  /** Couleurs des modes d'apprentissage (item 4 — paires jour/nuit). */
-  const MODE_COLORS_TITLES = { cool: "Cool", normal: "Normal", renforce: "Renforcé", custom: "Personnalisé" };
-  function renderModeColorsEditor() {
-    renderColorListPicker("dev-mode-colors-list", ["cool", "normal", "renforce", "custom"], MODE_COLORS_TITLES, "modeColors", applyColorSettings);
-  }
-  const devModeColorsResetBtn = el("dev-mode-colors-reset");
-  if (devModeColorsResetBtn) {
-    devModeColorsResetBtn.addEventListener("click", () => {
-      const settings = loadDevSettings();
-      settings.modeColors = { ...DEFAULT_MODE_COLORS };
-      settings.nightColors.modeColors = { ...DEFAULT_MODE_COLORS };
-      saveDevSettings(settings);
-      applyColorSettings();
-      renderDevView();
-    });
-  }
-
   /** Couleurs des fonds / des textes (items 2h/2i) — remplace les anciens
    *  blocs "Autres couleurs"/"Textes, histogrammes et fonds de zones". */
   const devBgColorsResetBtn = el("dev-bg-colors-reset");
@@ -8790,75 +7870,6 @@
     });
   }
 
-  /** Éditeur des valeurs "usine" des 3 modes fixes (item 19) : mêmes 12
-   *  valeurs discrètes que partout ailleurs (ALGO_K_VALUES/ALGO_M_VALUES),
-   *  ici via de simples menus déroulants (page technique, pas besoin de
-   *  curseurs tactiles soignés). */
-  /** Éditeur des couleurs des modes personnalisés (item 16) : une pastille
-   *  par mode réellement créé, à côté de son nom. */
-  function renderCustomModeColorsEditor() {
-    const wrap = el("dev-custom-mode-colors");
-    if (!wrap) return;
-    const modes = loadLearningModes();
-    const customModes = Object.values(modes).filter((m) => !m.builtin);
-    if (customModes.length === 0) {
-      wrap.innerHTML = `<p class="field-hint">Aucun mode personnalisé créé pour l'instant.</p>`;
-      return;
-    }
-    wrap.innerHTML = customModes
-      .map(
-        (m) => `<label class="field settings-bonus-field dev-custom-mode-color-row">
-          <span>${escapeHtml(m.name)}</span>
-          <input type="color" data-mode-id="${m.id}" class="dev-custom-mode-color-input" value="${getCustomModeColor(m.id)}" />
-        </label>`
-      )
-      .join("");
-    wrap.querySelectorAll(".dev-custom-mode-color-input").forEach((input) => {
-      input.addEventListener("input", () => {
-        setCustomModeColor(input.dataset.modeId, input.value);
-        renderSubjectManageList();
-        renderSubjectAlgoBadge(currentCard ? currentCard.subject : undefined);
-      });
-    });
-  }
-
-  function renderFactoryDefaultsEditor() {
-    const wrap = el("dev-factory-defaults");
-    if (!wrap) return;
-    const factory = getFactoryDefaults();
-    const kOpts = ALGO_K_VALUES.map((v) => `<option value="${v}">${v}</option>`).join("");
-    const mOpts = ALGO_M_VALUES.map((v) => `<option value="${v}">${v}</option>`).join("");
-    wrap.innerHTML = BUILTIN_MODE_IDS.map((modeId) => {
-      const f = factory[modeId];
-      const fields = ["Ka", "Kh", "Kg", "Ke", "Ma", "Mh", "Mg", "Me"]
-        .map((k) => {
-          const isK = k.startsWith("K");
-          const opts = isK ? kOpts : mOpts;
-          return `<label class="field settings-bonus-field">
-            <span>${k}</span>
-            <select id="dev-factory-${modeId}-${k}" data-mode="${modeId}" data-key="${k}">${opts}</select>
-          </label>`;
-        })
-        .join("");
-      return `<h4 class="settings-block-title">${ALGO_MODE_SHORT_LABELS[modeId]}</h4><div class="algo-grid algo-grid--4">${fields}</div>`;
-    }).join("");
-
-    BUILTIN_MODE_IDS.forEach((modeId) => {
-      ["Ka", "Kh", "Kg", "Ke", "Ma", "Mh", "Mg", "Me"].forEach((k) => {
-        const sel = el(`dev-factory-${modeId}-${k}`);
-        if (sel) sel.value = String(factory[modeId][k]);
-      });
-    });
-
-    wrap.querySelectorAll("select").forEach((sel) => {
-      sel.addEventListener("change", () => {
-        const settings = loadDevSettings();
-        settings.factoryDefaults[sel.dataset.mode][sel.dataset.key] = Number(sel.value);
-        saveDevSettings(settings);
-      });
-    });
-  }
-
   function renderDevView() {
     const devSettings = loadDevSettings();
     const ratingBtnBgInput = el("dev-color-rating-btn-bg");
@@ -8866,7 +7877,6 @@
     const ratingBtnBgNightInput = el("dev-color-rating-btn-bg-night");
     if (ratingBtnBgNightInput) ratingBtnBgNightInput.value = devSettings.nightColors.ratingBtnBgColor;
     renderRatingColorsEditor();
-    renderModeColorsEditor();
     renderRatingIconsEditor();
     renderNavIconsEditor();
     renderIconBankEditor();
@@ -8883,7 +7893,6 @@
     renderPersGaugeColorsEditor();
     renderCardScoreEditor();
     renderGaugeColorsEditor();
-    renderFactoryDefaultsEditor();
     renderHelpMessagesEditor();
     renderDevLibraryModerationEditor();
     // Après TOUS les autres rendus ci-dessus : ils régénèrent leurs propres
@@ -9068,12 +8077,7 @@
       if (view === "calendar") renderCalendarEvents();
       if (view === "revision-program") renderRevisionProgramList();
       if (view === "review-hub") renderReviewHub();
-      if (view === "settings") {
-        renderSettingsView();
-        // Item 8 : le contenu de l'ancienne page "Modes d'apprentissage"
-        // vit maintenant dans Réglages — on le peuple à chaque ouverture.
-        loadModeFormIntoInputs(algoEditingModeId || "normal");
-      }
+      if (view === "settings") renderSettingsView();
       renderDuePill();
     });
   });
@@ -9115,7 +8119,6 @@
     library: "Librairie",
     settings: "Réglages",
     dev: "Développeur",
-    "mode-assign": "Affecter un mode",
     "boite-picker": "Sélection",
     "calendar-event-form": "Événement",
   };
@@ -9354,9 +8357,7 @@
         enforceLoginGate();
         return;
       }
-      const target = homeEventWarningBtn.dataset.target === "account" ? "account" : "calendar";
-      const tab = document.querySelector(`.tab[data-view="${target}"]`);
-      if (tab) tab.click();
+      homeTickerOpenCurrent();
     });
   }
   const homeNewCardBtn = el("home-new-card-btn");
@@ -9393,7 +8394,6 @@
   let unsubscribeRealtime = null;
   let unsubscribeSubjectsRealtime = null;
   let unsubscribeFoldersRealtime = null;
-  let unsubscribeLearningModesRealtime = null;
   let unsubscribeDevSettingsRealtime = null;
   let syncAutoRetrying = false;
 
@@ -9580,36 +8580,146 @@
   // les boîtes ne sont pas chargées (sinon tous les liens paraîtraient
   // cassés au démarrage).
   let homeEventWarningReady = false;
+  /* Round 26, item 3 : bandeau d'alertes de l'accueil en "carrousel".
+     Chaque alerte s'affiche seule : courte pause au début, défilement
+     horizontal jusqu'à la fin du texte s'il dépasse, courte pause à la fin,
+     puis glissement vertical vers l'alerte suivante (et ainsi de suite, en
+     boucle). Un appui mène là où l'alerte AFFICHÉE à ce moment-là le dit
+     (Mon compte pour les usages, la fiche de l'évènement concerné pour un
+     évènement sans boîte). */
+  const HOME_TICKER_PAUSE_MS = 1500;
+  const HOME_TICKER_SPEED_PX_PER_S = 32;
+  const HOME_TICKER_SLIDE_MS = 450;
+  const homeTicker = { items: [], key: "", index: 0, token: 0, timer: null, current: null };
+
+  function homeTickerItems() {
+    const onHome = !!(el("view-home") && el("view-home").classList.contains("is-active"));
+    if (!onHome) return [];
+    const items = [];
+    const usages = currentUsages();
+    if (usages && usages.length === 0) {
+      items.push({
+        text: "Dis-moi comment tu utilises l'appli : choisis un ou plusieurs usages (élève, enseignant, usage personnel) dans Mon compte.",
+        target: { kind: "account" },
+      });
+    }
+    if (homeEventWarningReady) {
+      const fmt = (d) => new Date(d + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+      upcomingEventsWithoutBox().forEach((ev) => {
+        items.push({
+          text: `L'évènement « ${ev.title || "Sans titre"} » (${fmt(ev.date)}) n'a pas de boîte associée : ajoute les fiches à réviser.`,
+          target: { kind: "event", eventId: ev.id },
+        });
+      });
+    }
+    return items;
+  }
+
+  function homeTickerStop() {
+    homeTicker.token++;
+    clearTimeout(homeTicker.timer);
+    homeTicker.timer = null;
+  }
+  function homeTickerWait(ms, token) {
+    return new Promise((resolve) => {
+      homeTicker.timer = setTimeout(() => resolve(token === homeTicker.token), ms);
+    });
+  }
+  function homeTickerReducedMotion() {
+    return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }
+  function homeTickerMakeLine(item) {
+    const line = document.createElement("span");
+    line.className = "home-ticker-line";
+    line.textContent = item.text;
+    return line;
+  }
+  /** Boucle d'affichage, annulée dès que `token` change (nouvelle liste,
+   *  départ de l'accueil). */
+  async function homeTickerRun(token) {
+    const textEl = el("home-event-warning-text");
+    if (!textEl) return;
+    const reduce = homeTickerReducedMotion();
+    textEl.innerHTML = "";
+    let line = homeTickerMakeLine(homeTicker.items[homeTicker.index]);
+    textEl.appendChild(line);
+    homeTicker.current = homeTicker.items[homeTicker.index];
+    while (token === homeTicker.token) {
+      const overflow = Math.max(0, line.scrollWidth - textEl.clientWidth);
+      textEl.classList.toggle("is-overflowing", overflow > 0);
+      if (!(await homeTickerWait(HOME_TICKER_PAUSE_MS, token))) return;
+      if (overflow > 0 && !reduce) {
+        const duration = (overflow / HOME_TICKER_SPEED_PX_PER_S) * 1000;
+        line.style.transition = `transform ${duration}ms linear`;
+        line.style.transform = `translateX(-${overflow + 8}px)`;
+        if (!(await homeTickerWait(duration, token))) return;
+        if (!(await homeTickerWait(HOME_TICKER_PAUSE_MS, token))) return;
+      } else if (!(await homeTickerWait(HOME_TICKER_PAUSE_MS, token))) {
+        return;
+      }
+      // Alerte suivante (ou la même, revenue au début s'il n'y en a qu'une).
+      homeTicker.index = (homeTicker.index + 1) % homeTicker.items.length;
+      const next = homeTickerMakeLine(homeTicker.items[homeTicker.index]);
+      if (homeTicker.items.length > 1 && !reduce) {
+        next.style.transform = "translateY(100%)";
+        textEl.appendChild(next);
+        // force le calcul de la position de départ avant la transition
+        void next.offsetHeight;
+        line.style.transition = `transform ${HOME_TICKER_SLIDE_MS}ms ease, opacity ${HOME_TICKER_SLIDE_MS}ms ease`;
+        next.style.transition = `transform ${HOME_TICKER_SLIDE_MS}ms ease`;
+        line.style.transform = `${line.style.transform || ""} translateY(-100%)`;
+        line.style.opacity = "0";
+        next.style.transform = "translateY(0)";
+        homeTicker.current = homeTicker.items[homeTicker.index];
+        if (!(await homeTickerWait(HOME_TICKER_SLIDE_MS, token))) return;
+        line.remove();
+      } else {
+        textEl.innerHTML = "";
+        textEl.appendChild(next);
+        homeTicker.current = homeTicker.items[homeTicker.index];
+      }
+      line = next;
+    }
+  }
+
   function refreshHomeEventWarning() {
     const wrap = el("home-event-warning");
     const textEl = el("home-event-warning-text");
     if (!wrap || !textEl) return;
-    const onHome = !!(el("view-home") && el("view-home").classList.contains("is-active"));
-    const list = homeEventWarningReady && onHome ? upcomingEventsWithoutBox() : [];
-    // Round 25, item 3 : aucun usage choisi -> invitation dans le même
-    // bandeau (un appui mène alors à Mon compte plutôt qu'au Calendrier).
-    const usages = currentUsages();
-    const needsUsage = onHome && !!usages && usages.length === 0;
-    wrap.dataset.target = needsUsage ? "account" : "calendar";
-    if (list.length === 0 && !needsUsage) {
+    const items = homeTickerItems();
+    const key = JSON.stringify(items);
+    if (items.length === 0) {
+      homeTickerStop();
+      homeTicker.items = [];
+      homeTicker.key = "";
+      homeTicker.current = null;
       wrap.hidden = true;
       return;
     }
-    const fmt = (d) => new Date(d + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
-    const items = list.map((ev) => `« ${ev.title || "Sans titre"} » (${fmt(ev.date)})`).join(", ");
-    const eventsText =
-      list.length === 0
-        ? ""
-        : list.length === 1
-        ? `L'évènement ${items} n'a pas de boîte associée : ajoute les fiches à réviser dans le Calendrier.`
-        : `${list.length} évènements n'ont pas de boîte associée : ${items}. Ajoute les fiches à réviser dans le Calendrier.`;
-    const usageText = needsUsage
-      ? "Dis-moi comment tu utilises l'appli : choisis un ou plusieurs usages (élève, enseignant, usage personnel) dans Mon compte."
-      : "";
-    const text = [usageText, eventsText].filter(Boolean).join("   •   ");
     wrap.hidden = false;
-    textEl.dataset.marqueeText = text;
-    applyMarquee(textEl, { always: true });
+    // Même liste qu'avant, déjà en cours : on ne relance pas (évite un
+    // retour au début à chaque rafraîchissement de l'accueil).
+    if (key === homeTicker.key && homeTicker.timer) return;
+    homeTickerStop();
+    homeTicker.items = items;
+    homeTicker.key = key;
+    homeTicker.index = 0;
+    homeTickerRun(homeTicker.token);
+  }
+
+  /** Appui sur le bandeau : destination de l'alerte affichée. */
+  function homeTickerOpenCurrent() {
+    const item = homeTicker.current || homeTicker.items[0];
+    if (!item) return;
+    if (item.target.kind === "account") {
+      const tab = document.querySelector('.tab[data-view="account"]');
+      if (tab) tab.click();
+      return;
+    }
+    const calTab = document.querySelector('.tab[data-view="calendar"]');
+    if (calTab) calTab.click();
+    const ev = loadCalendarEvents().find((x) => x.id === item.target.eventId);
+    if (ev) openCalendarEventDetailView(ev);
   }
 
   // Item 1 (4e lot) : ce sélecteur utilise désormais la page partagée
@@ -9778,6 +8888,13 @@
    *  "Supprimer" repris des mêmes règles que la ligne de liste
    *  (buildCalendarEventRow) : un évènement reçu d'un prof ne peut être ni
    *  modifié ni supprimé, SAUF suppression une fois sa date passée. */
+  /** Round 26, item 2 : origine d'un évènement reçu — classe + professeur
+   *  ("Maths 4B · par Mme Durand"), classe seule si le nom n'est pas connu. */
+  function sharedEventOriginLabel(ev) {
+    const cls = ev.sharedClassName || "";
+    const who = ev.sharedByName || "";
+    return who ? `${cls}${cls ? " · " : ""}par ${who}` : cls;
+  }
   let calendarDetailEvent = null;
   function openCalendarEventDetailView(ev) {
     calendarDetailEvent = ev;
@@ -9792,7 +8909,7 @@
       if (isReceived) {
         badgeEl.hidden = false;
         badgeEl.className = "classes-shared-badge classes-shared-badge--received";
-        badgeEl.innerHTML = `${iconSvgMarkup("lock", "icon-inline-svg")} ${escapeHtml(ev.sharedClassName || "")}`;
+        badgeEl.innerHTML = `${iconSvgMarkup("lock", "icon-inline-svg")} ${escapeHtml(sharedEventOriginLabel(ev))}`;
       } else if (isSharedByMe) {
         badgeEl.hidden = false;
         badgeEl.className = "classes-shared-badge";
@@ -9972,7 +9089,7 @@
     const main = document.createElement("div");
     main.className = "card-row-main calendar-event-main";
     const sharedBadge = isReceived
-      ? ` <span class="classes-shared-badge classes-shared-badge--received">${iconSvgMarkup("lock", "icon-inline-svg")} ${escapeHtml(ev.sharedClassName)}</span>`
+      ? ` <span class="classes-shared-badge classes-shared-badge--received">${iconSvgMarkup("lock", "icon-inline-svg")} ${escapeHtml(sharedEventOriginLabel(ev))}</span>`
       : isSharedByMe
       ? ` <span class="classes-shared-badge">Partagé : ${escapeHtml(ev.classShare.className)}</span>`
       : "";
@@ -9991,9 +9108,10 @@
         : "";
     main.innerHTML = `
       <div class="calendar-event-top-row">
-        <strong>${escapeHtml(ev.title)}</strong>${sharedBadge}
+        <strong>${escapeHtml(ev.title)}</strong>
         <span class="calendar-event-countdown${isPast ? " calendar-event-countdown--past" : ""}">${calendarCountdownLabel(ev.date)}</span>
       </div>
+      ${sharedBadge ? `<div class="calendar-event-origin">${sharedBadge}</div>` : ""}
       ${boxesHtml}
       ${noBoxWarningHtml}
     `;
@@ -10672,7 +9790,6 @@
     if (unsubscribeRealtime) unsubscribeRealtime();
     if (unsubscribeSubjectsRealtime) unsubscribeSubjectsRealtime();
     if (unsubscribeFoldersRealtime) unsubscribeFoldersRealtime();
-    if (unsubscribeLearningModesRealtime) unsubscribeLearningModesRealtime();
     if (unsubscribeDevSettingsRealtime) unsubscribeDevSettingsRealtime();
     Sync.clearConfig();
     syncForm.reset();
@@ -10884,6 +10001,10 @@
     accountCurrentUser = await Sync.auth.getUser();
     updateAccountHomeButton();
     if (accountCurrentUser) syncSharedBoxesForStudent();
+    // Round 26, item 2 : complète le nom du prof sur ses anciens partages.
+    if (accountCurrentUser && Sync.classes.backfillSharedEventsTeacherName) {
+      Sync.classes.backfillSharedEventsTeacherName().catch(() => {});
+    }
     Sync.auth.onChange((user) => {
       accountCurrentUser = user;
       updateAccountHomeButton();
@@ -11151,6 +10272,17 @@
   const schoolHubClassesBtn = el("school-hub-classes-btn");
   if (schoolHubClassesBtn) {
     schoolHubClassesBtn.addEventListener("click", () => {
+      // Round 26, item 1 : bug corrigé — avec un seul usage élève OU
+      // enseignant, la page Classes s'affichait un instant avant la bascule
+      // (la décision n'était prise qu'après le chargement asynchrone du
+      // compte). Quand le compte est déjà connu, on va maintenant
+      // directement sur la bonne page, sans jamais afficher Classes.
+      const shortcut = Sync.isConfigured() && accountCurrentUser ? classesShortcutRole() : null;
+      if (shortcut) {
+        applyBodyLogoSpeech(shortcut === "teacher" ? "classes-teacher" : "classes-student");
+        openClassesSubView(shortcut);
+        return;
+      }
       const tab = document.querySelector('.tab[data-view="classes"]');
       if (tab) tab.click();
     });
@@ -11173,6 +10305,9 @@
     const needsAccount = el("classes-needs-account");
     const mainBlock = el("classes-main-block");
     if (!needsSync || !needsAccount || !mainBlock) return;
+    // Round 26, item 1 : masqué d'emblée si un raccourci est probable (le
+    // bloc pouvait rester visible depuis une visite précédente).
+    if (classesShortcutRole()) mainBlock.hidden = true;
 
     if (!Sync.isConfigured()) {
       needsSync.hidden = false;
@@ -11190,16 +10325,19 @@
       return;
     }
     needsAccount.hidden = true;
-    mainBlock.hidden = false;
 
     // Round 25, item 3 : usage élève OU enseignant (pas les deux) -> la
     // page Classes est court-circuitée, on arrive directement sur la page
-    // correspondante (qui fait elle-même la synchro côté élève).
+    // correspondante (qui fait elle-même la synchro côté élève). Round 26,
+    // item 1 : les boutons Élève/Enseignant ne sont affichés qu'APRÈS cette
+    // décision, pour ne jamais les faire apparaître un instant.
     const shortcut = classesShortcutRole();
     if (shortcut && el("view-classes") && el("view-classes").classList.contains("is-active")) {
+      mainBlock.hidden = true;
       await openClassesSubView(shortcut);
       return;
     }
+    mainBlock.hidden = false;
 
     // item 3 (lot précédent) : synchro automatique, sans action de
     // l'élève, dès qu'on ouvre la page Classes (palier ou sous-page).
@@ -11409,9 +10547,13 @@
     if (loadDismissedSharedEventIds().has(re.id)) return;
     const events = loadCalendarEvents();
     const idx = events.findIndex((x) => x.sharedEventId === re.id);
+    // Round 26, item 2 : identité du professeur (vide pour un évènement
+    // partagé avant la migration, tant que le prof n'a pas rouvert l'appli).
+    const teacherName = re.shared_by_name || "";
     if (idx >= 0) {
-      if (events[idx].title !== re.title || events[idx].date !== re.date) {
-        events[idx] = { ...events[idx], title: re.title, date: re.date };
+      const cur = events[idx];
+      if (cur.title !== re.title || cur.date !== re.date || (cur.sharedByName || "") !== teacherName || cur.sharedClassName !== klass.name) {
+        events[idx] = { ...cur, title: re.title, date: re.date, sharedByName: teacherName, sharedClassName: klass.name };
         saveCalendarEvents(events);
       }
     } else {
@@ -11423,6 +10565,7 @@
         sharedEventId: re.id,
         sharedClassId: klass.id,
         sharedClassName: klass.name,
+        sharedByName: teacherName,
       });
       saveCalendarEvents(events);
     }
@@ -13686,40 +12829,7 @@
     }
   }
 
-  /** Fusionne un mode d'apprentissage reçu de Supabase (item 1, audit
-   *  synchro) : jamais synchronisé avant — un mode personnalisé créé sur un
-   *  appareil restait invisible sur les autres, qui retombaient
-   *  silencieusement sur "Normal" pour toute boîte qui l'utilisait. */
-  async function mergeRemoteLearningMode(remote) {
-    const modes = loadLearningModes();
-    if (remote.deleted) {
-      if (modes[remote.id] && !modes[remote.id].builtin) {
-        delete modes[remote.id];
-        saveLearningModes(modes);
-      }
-      return;
-    }
-    const local = modes[remote.id];
-    if (!local || new Date(remote.updatedAt || 0) > new Date(local.updatedAt || 0)) {
-      modes[remote.id] = { ...remote };
-      saveLearningModes(modes);
-    }
-  }
 
-  async function reconcileLearningModes() {
-    const remoteModes = await Sync.pullLearningModes();
-    const remoteById = new Map(remoteModes.map((r) => [r.id, r]));
-    const localModes = loadLearningModes();
-    for (const local of Object.values(localModes)) {
-      const remote = remoteById.get(local.id);
-      if (!remote || new Date(local.updatedAt || 0) > new Date(remote.updatedAt || 0)) {
-        Sync.pushLearningMode(local);
-      }
-    }
-    for (const remote of remoteModes) {
-      await mergeRemoteLearningMode(remote);
-    }
-  }
 
   /** Vérifie qu'accepter ce parentId ne créerait pas de cycle (dossier qui
    *  finit par être son propre ancêtre) — peut arriver après une fusion de
@@ -13835,7 +12945,6 @@
   });
 
   async function reconcileWithRemote() {
-    await reconcileLearningModes();
     await reconcileSubjectsAndFolders();
     renderSubjectSelect();
 
@@ -13891,7 +13000,6 @@
     if (unsubscribeRealtime) unsubscribeRealtime();
     if (unsubscribeSubjectsRealtime) unsubscribeSubjectsRealtime();
     if (unsubscribeFoldersRealtime) unsubscribeFoldersRealtime();
-    if (unsubscribeLearningModesRealtime) unsubscribeLearningModesRealtime();
     if (unsubscribeDevSettingsRealtime) unsubscribeDevSettingsRealtime();
 
     // Round 16 : réglages développeur (canal unique, partagé par tout le
@@ -13923,11 +13031,6 @@
     unsubscribeFoldersRealtime = Sync.subscribeFoldersRealtime(async (remote) => {
       await mergeRemoteFolder(remote);
       renderSubjectManageList();
-    });
-    unsubscribeLearningModesRealtime = Sync.subscribeLearningModesRealtime(async (remote) => {
-      await mergeRemoteLearningMode(remote);
-      renderSubjectManageList();
-      renderSubjectAlgoBadge();
     });
     subscribeDevSettingsPublicRealtime();
 
