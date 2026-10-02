@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v177";
+  const APP_VERSION = "v178";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -731,6 +731,7 @@
     manage: ["Lorsque tu mets une fiche dans un dossier vide, il se transforme alors en boîte à fiches."],
     "manage-creations": ["Ici, seulement les boîtes que tu as créées toi-même. L'interrupteur ne garde que celles publiées dans la Librairie."],
     "fiches-hub": [],
+    "review-hub": [],
     "revision-program": ["A ta place, voici ce que je réviserais en priorité, dans l'ordre :"],
     review: [],
     cards: [],
@@ -765,6 +766,7 @@
     stats: "Statistiques",
     sync: "Synchronisation",
     calendar: "Calendrier",
+    "review-hub": "Réviser (choix)",
     "revision-program": "Programme de révision",
     classes: "Classes (page d'accueil)",
     "classes-student": "Classes — J'apprends",
@@ -9065,6 +9067,7 @@
       if (view === "manage") syncLibraryMirrorsForUser().then(() => renderSubjectManageList());
       if (view === "calendar") renderCalendarEvents();
       if (view === "revision-program") renderRevisionProgramList();
+      if (view === "review-hub") renderReviewHub();
       if (view === "settings") {
         renderSettingsView();
         // Item 8 : le contenu de l'ancienne page "Modes d'apprentissage"
@@ -9089,6 +9092,7 @@
    *  patcher un par un. */
   const PAGE_TITLES = {
     home: "Accueil",
+    "review-hub": "Réviser",
     "revision-program": "Programme",
     review: "Réviser",
     manage: "Fiches",
@@ -9243,6 +9247,9 @@
   // c'est bien par le Programme — ou "Sélection manuelle" — qu'on est
   // passé).
   let reviewEntryFromManage = false;
+  // Round 25, item 2 : Réviser atteint via "Révisions conseillées" (true)
+  // ou via "Sélection manuelle" (false) — décide où ramène Accueil.
+  let reviewEntryFromProgram = false;
   function goHome() {
     // Round 22, item 4 : connexion obligatoire — tant que l'appli est
     // verrouillée, "Accueil" ne doit jamais en sortir (le bouton lui-même
@@ -9274,7 +9281,9 @@
     if (
       (el("view-classes") && el("view-classes").classList.contains("is-active")) ||
       (el("view-messages") && el("view-messages").classList.contains("is-active")) ||
-      (el("view-calendar") && el("view-calendar").classList.contains("is-active"))
+      // Round 25, item 3 : en mode « Calendrier à l'accueil », le
+      // Calendrier ramène au véritable accueil (le hub École n'y mène plus).
+      (el("view-calendar") && el("view-calendar").classList.contains("is-active") && !homeCalendarModeActive())
     ) {
       const tab = document.querySelector('.tab[data-view="school-hub"]');
       if (tab) tab.click();
@@ -9291,7 +9300,14 @@
         if (manageTab) manageTab.click();
         return;
       }
-      const tab = document.querySelector('.tab[data-view="revision-program"]');
+      // Round 25, item 2 : retour au Programme si on y est passé, sinon au
+      // palier Réviser (Sélection manuelle).
+      const tab = document.querySelector(`.tab[data-view="${reviewEntryFromProgram ? "revision-program" : "review-hub"}"]`);
+      if (tab) tab.click();
+      return;
+    }
+    if (el("view-revision-program") && el("view-revision-program").classList.contains("is-active")) {
+      const tab = document.querySelector('.tab[data-view="review-hub"]');
       if (tab) tab.click();
       return;
     }
@@ -9338,7 +9354,8 @@
         enforceLoginGate();
         return;
       }
-      const tab = document.querySelector('.tab[data-view="calendar"]');
+      const target = homeEventWarningBtn.dataset.target === "account" ? "account" : "calendar";
+      const tab = document.querySelector(`.tab[data-view="${target}"]`);
       if (tab) tab.click();
     });
   }
@@ -9569,16 +9586,27 @@
     if (!wrap || !textEl) return;
     const onHome = !!(el("view-home") && el("view-home").classList.contains("is-active"));
     const list = homeEventWarningReady && onHome ? upcomingEventsWithoutBox() : [];
-    if (list.length === 0) {
+    // Round 25, item 3 : aucun usage choisi -> invitation dans le même
+    // bandeau (un appui mène alors à Mon compte plutôt qu'au Calendrier).
+    const usages = currentUsages();
+    const needsUsage = onHome && !!usages && usages.length === 0;
+    wrap.dataset.target = needsUsage ? "account" : "calendar";
+    if (list.length === 0 && !needsUsage) {
       wrap.hidden = true;
       return;
     }
     const fmt = (d) => new Date(d + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
     const items = list.map((ev) => `« ${ev.title || "Sans titre"} » (${fmt(ev.date)})`).join(", ");
-    const text =
-      list.length === 1
+    const eventsText =
+      list.length === 0
+        ? ""
+        : list.length === 1
         ? `L'évènement ${items} n'a pas de boîte associée : ajoute les fiches à réviser dans le Calendrier.`
         : `${list.length} évènements n'ont pas de boîte associée : ${items}. Ajoute les fiches à réviser dans le Calendrier.`;
+    const usageText = needsUsage
+      ? "Dis-moi comment tu utilises l'appli : choisis un ou plusieurs usages (élève, enseignant, usage personnel) dans Mon compte."
+      : "";
+    const text = [usageText, eventsText].filter(Boolean).join("   •   ");
     wrap.hidden = false;
     textEl.dataset.marqueeText = text;
     applyMarquee(textEl, { always: true });
@@ -10475,6 +10503,7 @@
       const ids = selectedIds();
       if (ids.length === 0) return;
       reviewEntryFromManage = false;
+      reviewEntryFromProgram = true;
       if (ids.length === 1) {
         switchSubject(ids[0]);
       } else {
@@ -10489,13 +10518,49 @@
     return li;
   }
 
-  const revisionProgramSkipBtn = el("revision-program-skip");
-  if (revisionProgramSkipBtn) {
-    // Item 6 (nouveau lot) : "Sélection manuelle" ouvre directement le
-    // sélecteur de boîtes/dossiers (item 1), puis amène à la page Réviser
-    // une fois la sélection validée (voir multiPickerNavigateToReviewOnConfirm).
-    revisionProgramSkipBtn.addEventListener("click", () => {
+  /** Round 25, item 2 : palier Réviser. "Révisions conseillées" n'est
+   *  utilisable que s'il existe au moins un évènement à venir AVEC des
+   *  boîtes associées (sinon le programme serait vide) — désactivé sinon,
+   *  avec la raison sous le libellé, répétée par le robot au clic. */
+  function reviewHubAdvisedBlockReason() {
+    const upcoming = loadCalendarEvents().filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0);
+    if (upcoming.length === 0) return "Aucun évènement à venir dans le calendrier.";
+    if (upcomingEventsWithBoxes().length === 0) return "Aucun évènement à venir n'a de boîte associée.";
+    return "";
+  }
+  function renderReviewHub() {
+    const btn = el("review-hub-advised-btn");
+    const note = el("review-hub-advised-note");
+    if (!btn) return;
+    const reason = reviewHubAdvisedBlockReason();
+    btn.classList.toggle("is-disabled", !!reason);
+    btn.setAttribute("aria-disabled", reason ? "true" : "false");
+    if (note) {
+      note.hidden = !reason;
+      note.textContent = reason;
+    }
+  }
+  const reviewHubAdvisedBtn = el("review-hub-advised-btn");
+  if (reviewHubAdvisedBtn) {
+    reviewHubAdvisedBtn.addEventListener("click", async () => {
+      const reason = reviewHubAdvisedBlockReason();
+      if (reason) {
+        renderReviewHub();
+        await robotAlert(`${reason} Ajoute une échéance (et les boîtes à réviser) dans le Calendrier pour que je te propose un programme.`);
+        return;
+      }
+      const tab = document.querySelector('.tab[data-view="revision-program"]');
+      if (tab) tab.click();
+    });
+  }
+  const reviewHubManualBtn = el("review-hub-manual-btn");
+  if (reviewHubManualBtn) {
+    // Équivalent de l'ancien bouton "Sélection manuelle" du Programme :
+    // ouvre le sélecteur de boîtes/dossiers, puis Réviser une fois validé
+    // (voir multiPickerNavigateToReviewOnConfirm).
+    reviewHubManualBtn.addEventListener("click", () => {
       reviewEntryFromManage = false;
+      reviewEntryFromProgram = false;
       multiPickerNavigateToReviewOnConfirm = true;
       openMultiSubjectPicker();
     });
@@ -10699,6 +10764,99 @@
 
   /** Reflète l'état de connexion sur le bouton d'accueil (item 1/2) : son
    *  libellé change tout seul, avant même d'avoir ouvert la page Compte. */
+  /* ---------------- Round 25, item 3 : usages ----------------
+     `user_metadata.usages` ⊂ ["eleve", "enseignant", "perso"], au moins un
+     une fois choisis. null = pas de Compte connu (on ne change rien). */
+  const USAGE_KEYS = ["eleve", "enseignant", "perso"];
+  function currentUsages() {
+    if (!accountCurrentUser) return null;
+    const u = (accountCurrentUser.user_metadata || {}).usages;
+    return Array.isArray(u) ? u.filter((k) => USAGE_KEYS.includes(k)) : [];
+  }
+  /** Ni élève ni enseignant (y compris aucun usage choisi) : le bouton
+   *  d'accueil École devient Calendrier. */
+  function homeCalendarModeActive() {
+    const u = currentUsages();
+    return !!u && !u.includes("eleve") && !u.includes("enseignant");
+  }
+  /** Élève OU (exclusif) enseignant : Classes mène directement à la page
+   *  correspondante. */
+  function classesShortcutRole() {
+    const u = currentUsages();
+    if (!u) return null;
+    const eleve = u.includes("eleve");
+    const prof = u.includes("enseignant");
+    if (eleve && !prof) return "student";
+    if (prof && !eleve) return "teacher";
+    return null;
+  }
+  let homeSchoolCircleOriginal = null;
+  function applyUsageEffects() {
+    const circle = document.querySelector('.home-circle[data-key="classes"]');
+    if (circle) {
+      if (!homeSchoolCircleOriginal) {
+        homeSchoolCircleOriginal = { html: circle.innerHTML, go: circle.dataset.go };
+      }
+      const calendarMode = homeCalendarModeActive();
+      if (calendarMode && circle.dataset.go !== "calendar") {
+        const iconId = (loadDevSettings().navIcons || {}).calendar || DEFAULT_NAV_ICONS.calendar;
+        circle.innerHTML = `${iconSvgMarkup(ICON_LIBRARY[iconId] ? iconId : "calendar", "home-circle-icon")}<span>Calendrier</span><span class="home-circle-badge home-circle-badge--neutral" id="home-calendar-badge" hidden>0</span>`;
+        circle.dataset.go = "calendar";
+      } else if (!calendarMode && circle.dataset.go === "calendar") {
+        circle.innerHTML = homeSchoolCircleOriginal.html;
+        circle.dataset.go = homeSchoolCircleOriginal.go;
+      }
+      const calBadge = el("home-calendar-badge");
+      if (calBadge) {
+        const n = loadCalendarEvents().filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0).length;
+        calBadge.hidden = n <= 0;
+        calBadge.textContent = n > 99 ? "99+" : String(n);
+      }
+    }
+    refreshHomeEventWarning();
+  }
+  function renderAccountUsages() {
+    const wrap = el("account-usages");
+    if (!wrap) return;
+    const u = currentUsages() || [];
+    wrap.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+      cb.checked = u.includes(cb.value);
+    });
+    const note = el("account-usages-note");
+    if (note) {
+      note.hidden = u.length > 0;
+      note.textContent = u.length > 0 ? "" : "Choisis au moins un usage.";
+    }
+  }
+  const accountUsagesWrap = el("account-usages");
+  if (accountUsagesWrap) {
+    accountUsagesWrap.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+      cb.addEventListener("change", async () => {
+        const checked = [...accountUsagesWrap.querySelectorAll('input[type="checkbox"]')].filter((x) => x.checked).map((x) => x.value);
+        if (checked.length === 0) {
+          cb.checked = true;
+          await robotAlert("Garde au moins un usage : élève, enseignant ou usage personnel.");
+          return;
+        }
+        const note = el("account-usages-note");
+        const res = await Sync.auth.updateMetadata({ usages: checked });
+        if (res && res.error) {
+          if (note) {
+            note.hidden = false;
+            note.textContent = `Échec de l'enregistrement : ${res.error}`;
+          }
+          return;
+        }
+        accountCurrentUser = (await Sync.auth.getUser()) || accountCurrentUser;
+        if (note) {
+          note.hidden = false;
+          note.textContent = "Enregistré.";
+        }
+        applyUsageEffects();
+      });
+    });
+  }
+
   function updateAccountHomeButton() {
     const label = document.querySelector('.home-circle[data-key="account"] span');
     if (label) label.textContent = accountCurrentUser ? "Mon compte" : "Se connecter";
@@ -10712,6 +10870,8 @@
     // la page — c'est cette même fonction qui est appelée à chacun de ces
     // moments (voir initAccountState / Sync.auth.onChange).
     refreshMessagesBadge();
+    // Round 25, item 3 : même moments -> bouton École/Calendrier + bandeau.
+    applyUsageEffects();
   }
 
   /** item 2 : appelé une seule fois au démarrage — supabase-js garde la
@@ -10749,6 +10909,7 @@
     });
   }
 
+  let accountSchoolCascade = null;
   async function renderAccountView() {
     const needsSync = el("account-needs-sync");
     const authBlock = el("account-auth-block");
@@ -10778,19 +10939,19 @@
     const lastEl = el("account-profile-lastname");
     if (firstEl) firstEl.value = meta.first_name || "";
     if (lastEl) lastEl.value = meta.last_name || "";
-    // Round 19, item 5 : niveau scolaire, même liste que le filtre de la
-    // Bibliothèque (LIBRARY_LEVELS) — options peuplées une seule fois.
-    const levelEl = el("account-profile-school-level");
-    if (levelEl) {
-      if (levelEl.options.length <= 1) {
-        LIBRARY_LEVELS.forEach((lvl) => {
-          const opt = document.createElement("option");
-          opt.value = lvl;
-          opt.textContent = lvl;
-          levelEl.appendChild(opt);
-        });
-      }
-      levelEl.value = meta.school_level || "";
+    // Round 25, item 3 : usages.
+    renderAccountUsages();
+    // Round 25, item 4 : niveau scolaire en cascade d'après la taxonomie
+    // (remplace la liste courte LIBRARY_LEVELS du round 19).
+    const schoolTaxEl = el("account-school-taxonomy");
+    if (schoolTaxEl) {
+      await Taxonomy.load();
+      accountSchoolCascade = createTaxonomyCascade(schoolTaxEl, {
+        mode: "profile",
+        sel: profileSchoolSelection(meta),
+        hiddenKeys: ["categorie"],
+        excludeKeys: ["matiere"],
+      });
     }
     const profileNote = el("account-profile-note");
     if (profileNote) profileNote.hidden = true;
@@ -10898,15 +11059,18 @@
       const note = el("account-profile-note");
       const firstName = (el("account-profile-firstname").value || "").trim();
       const lastName = (el("account-profile-lastname").value || "").trim();
-      const schoolLevelEl = el("account-profile-school-level");
-      const schoolLevel = schoolLevelEl ? schoolLevelEl.value || "" : "";
+      // Round 25, item 4 : niveau scolaire détaillé (`school_taxonomy`,
+      // { cycle: { id, label }, niveau: ..., annee: ..., specialite: ... })
+      // + `school_level` (libellé du niveau) gardé pour compatibilité.
+      const schoolTaxonomy = taxonomyValueFromSelection(accountSchoolCascade ? accountSchoolCascade.getSelection() : {});
+      delete schoolTaxonomy.matiere;
+      const hasSchool = !!(schoolTaxonomy.cycle || schoolTaxonomy.niveau);
+      const schoolLevel = schoolTaxonomy.niveau ? schoolTaxonomy.niveau.label : "";
       accountProfileSaveBtn.disabled = true;
       const result = await Sync.auth.updateProfile(firstName, lastName);
-      // Round 19, item 5 : niveau scolaire, enregistré à la suite (deux
-      // appels distincts à updateUser plutôt qu'un seul, pour ne pas
-      // toucher à authUpdateProfile — déjà utilisé ailleurs avec seulement
-      // prénom/nom, voir shareSubjectToLibrary).
-      const levelResult = !result.error ? await Sync.auth.updateSchoolLevel(schoolLevel) : {};
+      const levelResult = !result.error
+        ? await Sync.auth.updateMetadata({ school_level: schoolLevel, school_taxonomy: hasSchool ? schoolTaxonomy : {} })
+        : {};
       accountProfileSaveBtn.disabled = false;
       if (note) {
         note.hidden = false;
@@ -11027,6 +11191,15 @@
     }
     needsAccount.hidden = true;
     mainBlock.hidden = false;
+
+    // Round 25, item 3 : usage élève OU enseignant (pas les deux) -> la
+    // page Classes est court-circuitée, on arrive directement sur la page
+    // correspondante (qui fait elle-même la synchro côté élève).
+    const shortcut = classesShortcutRole();
+    if (shortcut && el("view-classes") && el("view-classes").classList.contains("is-active")) {
+      await openClassesSubView(shortcut);
+      return;
+    }
 
     // item 3 (lot précédent) : synchro automatique, sans action de
     // l'élève, dès qu'on ouvre la page Classes (palier ou sous-page).
@@ -11996,6 +12169,37 @@
     return msg;
   }
 
+  /** Round 25, item 4 : id de la catégorie « école & études » (celle du
+   *  niveau scolaire du profil) — repérée par son libellé, sinon la
+   *  première catégorie qui a des cycles. */
+  function schoolCategoryId() {
+    const tax = Taxonomy.get();
+    if (!tax) return null;
+    const cats = tax.lists.categories || [];
+    const byLabel = cats.find((c) => Taxonomy.norm(c.label).startsWith("ecole"));
+    const withCycles = cats.find((c) => Taxonomy.options(tax, "cycle", { categorie: c.id }).length > 0);
+    return (byLabel || withCycles || {}).id || null;
+  }
+
+  /** Niveau scolaire du profil -> sélection d'ids (catégorie école
+   *  comprise, jamais de matière). Repli sur l'ancien `school_level`. */
+  function profileSchoolSelection(meta) {
+    meta = meta || {};
+    const t = meta.school_taxonomy;
+    let sel = {};
+    if (t && typeof t === "object" && Object.keys(t).length > 0) {
+      Taxonomy.FIELDS.forEach((f) => {
+        if (t[f.key] && t[f.key].id) sel[f.key] = t[f.key].id;
+      });
+    } else {
+      sel = legacyLevelSelection(meta.school_level);
+    }
+    delete sel.matiere;
+    const catId = schoolCategoryId();
+    if (catId) sel.categorie = catId;
+    return sel;
+  }
+
   /** Tag normalisé : minuscules, espaces simples, sans "#" initial. */
   function normalizeTag(raw) {
     return String(raw || "")
@@ -12038,19 +12242,28 @@
    *  non choisi, ou pas de correspondance dans l'Excel) est masqué. */
   function createTaxonomyCascade(container, opts) {
     const mode = (opts && opts.mode) || "publish";
+    // Round 25 : `hiddenKeys` = champs fixés d'avance, non affichés (ex.
+    // catégorie « école & études » du profil) ; `excludeKeys` = champs
+    // jamais proposés (ex. matière dans le profil).
+    const hiddenKeys = (opts && opts.hiddenKeys) || [];
+    const excludeKeys = (opts && opts.excludeKeys) || [];
     let sel = { ...((opts && opts.sel) || {}) };
     function draw() {
       const tax = Taxonomy.get();
       container.innerHTML = "";
       Taxonomy.FIELDS.forEach((f) => {
+        if (excludeKeys.includes(f.key)) {
+          delete sel[f.key];
+          return;
+        }
         const options = Taxonomy.options(tax, f.key, sel);
         if (sel[f.key] && !options.some((o) => o.id === sel[f.key])) delete sel[f.key];
-        if (options.length === 0) return;
+        if (options.length === 0 || hiddenKeys.includes(f.key)) return;
         const select = document.createElement("select");
         select.dataset.taxKey = f.key;
         const first = document.createElement("option");
         first.value = "";
-        first.textContent = mode === "filter" ? TAX_ALL_LABELS[f.key] || "Tous" : "Choisir…";
+        first.textContent = mode === "filter" ? TAX_ALL_LABELS[f.key] || "Tous" : mode === "profile" ? "Non renseigné" : "Choisir…";
         select.appendChild(first);
         options.forEach((o) => {
           const opt = document.createElement("option");
@@ -12091,7 +12304,9 @@
       /** Libellés des champs affichés mais pas encore remplis. */
       missingFields: () => {
         const tax = Taxonomy.get();
-        return Taxonomy.FIELDS.filter((f) => !sel[f.key] && Taxonomy.options(tax, f.key, sel).length > 0).map((f) => f.label);
+        return Taxonomy.FIELDS.filter(
+          (f) => !excludeKeys.includes(f.key) && !sel[f.key] && Taxonomy.options(tax, f.key, sel).length > 0
+        ).map((f) => f.label);
       },
       redraw: draw,
     };
@@ -12368,9 +12583,10 @@
       // scolaire du profil, converti en niveau de la taxonomie.
       if (!libraryLevelFilterAutoApplied) {
         libraryLevelFilterAutoApplied = true;
-        const profileLevel = ((freshUser && freshUser.user_metadata) || {}).school_level || "";
-        const preset = legacyLevelSelection(profileLevel);
-        if (preset.niveau) libraryTaxFilter = preset;
+        // Round 25, item 4 : niveau scolaire détaillé du profil (cycle,
+        // niveau, année, spécialité), repli sur l'ancien school_level.
+        const preset = profileSchoolSelection((freshUser && freshUser.user_metadata) || {});
+        if (preset.cycle || preset.niveau) libraryTaxFilter = preset;
       }
       if (!libraryFilterCascade) {
         libraryFilterCascade = createTaxonomyCascade(taxFilterEl, {
@@ -12870,6 +13086,40 @@
   if (devLibraryPackImportBtn) devLibraryPackImportBtn.addEventListener("click", () => importLibraryPack());
   const devLibraryPackPublishBtn = el("dev-library-pack-publish-btn");
   if (devLibraryPackPublishBtn) devLibraryPackPublishBtn.addEventListener("click", () => publishLibraryPack());
+
+  /** Round 25, item 1 : réglage du zoom automatique (par appareil). */
+  function renderDevAutoZoom() {
+    const z = window.__fichesAutoZoom;
+    const input = el("dev-autozoom-ref");
+    const status = el("dev-autozoom-status");
+    if (!z || !input) return;
+    input.value = String(z.refWidth());
+    if (status) {
+      const shortSide = Math.min(screen.width, screen.height);
+      const ref = z.refWidth();
+      status.textContent =
+        ref > 0 && shortSide < 600
+          ? `Écran : ${shortSide} px de large → zoom ${Math.round((shortSide / ref) * 100)} %.`
+          : `Écran : ${shortSide} px de large → pas de zoom automatique.`;
+    }
+  }
+  const devAutoZoomSaveBtn = el("dev-autozoom-save-btn");
+  if (devAutoZoomSaveBtn) {
+    devAutoZoomSaveBtn.addEventListener("click", () => {
+      const z = window.__fichesAutoZoom;
+      const input = el("dev-autozoom-ref");
+      if (!z || !input) return;
+      const v = Math.max(0, Math.min(1000, parseInt(input.value, 10) || 0));
+      try {
+        localStorage.setItem(z.key, String(v));
+      } catch {
+        /* stockage indisponible */
+      }
+      z.apply();
+      renderDevAutoZoom();
+    });
+    renderDevAutoZoom();
+  }
 
   /** Round 23 : état de la taxonomie lue dans l'Excel (réglages dév.). */
   function renderDevTaxonomyStatus(tax) {

@@ -3,6 +3,39 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<!-- Round 25, item 1 : zoom automatique. Sur un téléphone en portrait, la
+     page est mise en page pour une largeur de référence (390 px, celle de
+     l'iPhone 13/14/15 sur lequel tout a été réglé) puis le navigateur
+     l'agrandit/la réduit tout seul pour remplir exactement la largeur de
+     l'écran : même rendu sur un iPhone SE (≈ 96 %) qu'un Pro Max (≈ 110 %).
+     Rien ne change sur ordinateur/tablette (largeur ≥ 600 px).
+     Réglable (ou désactivable avec 0) dans Développeur — par appareil. -->
+<script>
+(function () {
+  var KEY = "fiches-autozoom-ref";
+  function refWidth() {
+    try {
+      var v = localStorage.getItem(KEY);
+      if (v !== null && v !== "") return Math.max(0, parseInt(v, 10) || 0);
+    } catch (e) {}
+    return 390;
+  }
+  function apply() {
+    var meta = document.querySelector('meta[name="viewport"]');
+    if (!meta) return;
+    var ref = refWidth();
+    var shortSide = Math.min(screen.width, screen.height);
+    var portrait = !window.matchMedia || window.matchMedia("(orientation: portrait)").matches;
+    var content = ref > 0 && shortSide < 600 && portrait
+      ? "width=" + ref + ", viewport-fit=cover"
+      : "width=device-width, initial-scale=1, viewport-fit=cover";
+    if (meta.getAttribute("content") !== content) meta.setAttribute("content", content);
+  }
+  apply();
+  window.__fichesAutoZoom = { apply: apply, key: KEY, refWidth: refWidth };
+  window.addEventListener("orientationchange", function () { setTimeout(apply, 60); });
+})();
+</script>
 <title>Fiches — révision espacée</title>
 <meta name="description" content="Crée des fiches question / réponse et révise-les avec la répétition espacée." />
 
@@ -281,6 +314,7 @@
     </button>
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
     <button class="tab" role="tab" aria-selected="false" data-view="calendar" hidden>Calendrier</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="review-hub" hidden>Réviser</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Programme</button>
     <button class="tab" role="tab" aria-selected="false" data-view="school-hub" hidden>École</button>
     <button class="tab" role="tab" aria-selected="false" data-view="fiches-hub" hidden>Fiches</button>
@@ -317,7 +351,7 @@
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           <span>Ajouter une fiche</span>
         </button>
-        <button type="button" class="home-circle" data-key="review" data-go="revision-program">
+        <button type="button" class="home-circle" data-key="review" data-go="review-hub">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
           <span>Réviser</span>
         </button>
@@ -363,13 +397,36 @@
       </div>
     </section>
 
+    <!-- Round 25, item 2 : palier "Réviser" (même graphisme que les hubs
+         École/Fiches) — Révisions conseillées (programme d'après le
+         Calendrier, désactivé sans évènement à venir) ou Sélection
+         manuelle (sélecteur de boîtes/dossiers). -->
+    <section id="view-review-hub" class="view" aria-labelledby="tab-review-hub">
+      <div class="classes-role-circles" id="review-hub-circles">
+        <button type="button" class="classes-role-circle" id="review-hub-advised-btn">
+          <span class="classes-role-circle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m8.5 15.5 2.2 2.2 4.8-4.8"/></svg>
+          </span>
+          <span>Révisions conseillées</span>
+          <span class="classes-role-circle-note" id="review-hub-advised-note" hidden></span>
+        </button>
+        <button type="button" class="classes-role-circle" id="review-hub-manual-btn">
+          <span class="classes-role-circle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="m14.5 17.5 2 2 4-4"/></svg>
+          </span>
+          <span>Sélection manuelle</span>
+        </button>
+      </div>
+    </section>
+
     <!-- VUE PROGRAMME DE RÉVISION (item 7) : étape intermédiaire avant
          Réviser, qui conseille par ordre de priorité les boîtes/dossiers
          à exercer en fonction des échéances du calendrier. -->
     <section id="view-revision-program" class="view" aria-labelledby="tab-revision-program">
       <ul class="revision-event-list" id="revision-program-list"></ul>
       <p class="chart-empty" id="revision-program-empty" hidden>Aucun évènement à venir avec des boîtes associées.</p>
-      <button type="button" class="revision-program-skip-btn" id="revision-program-skip">Sélection manuelle</button>
+      <!-- Round 25, item 2 : bouton "Sélection manuelle" déplacé sur le
+           palier Réviser (#view-review-hub). -->
     </section>
 
     <!-- VUE RÉVISION -->
@@ -904,6 +961,21 @@
         <p class="token-chip" id="account-token-balance-row"><svg class="token-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><path d="M12 8.3v7.4"/></svg><span id="account-token-balance">0</span> jeton(s)</p>
         <!-- Round 10, item 7 : nom/prénom modifiables après coup, pour les
              comptes créés avant ce round ou pour corriger une saisie. -->
+        <!-- Round 25, item 3 : usages de l'appli (au moins un). Enregistrés
+             dès qu'on coche/décoche (métadonnées du compte, `usages`). Ils
+             décident du bouton d'accueil École/Calendrier et du raccourci
+             Classes → Élève/Enseignant. -->
+        <div class="card-form">
+          <div class="field">
+            <span>J'utilise l'appli…</span>
+            <div class="usage-options" id="account-usages">
+              <label class="usage-option"><input type="checkbox" value="eleve" /> <span>en tant qu'élève</span></label>
+              <label class="usage-option"><input type="checkbox" value="enseignant" /> <span>en tant qu'enseignant</span></label>
+              <label class="usage-option"><input type="checkbox" value="perso" /> <span>pour un usage personnel</span></label>
+            </div>
+          </div>
+          <p class="field-hint" id="account-usages-note" hidden></p>
+        </div>
         <div class="card-form">
           <label class="field">
             <span>Prénom</span>
@@ -916,12 +988,11 @@
           <!-- Round 19, item 5 : niveau scolaire, même liste que le filtre
                de la Bibliothèque (voir LIBRARY_LEVELS, js/app.js) —
                préremplit automatiquement ce filtre. -->
-          <label class="field">
-            <span>Niveau scolaire</span>
-            <select id="account-profile-school-level">
-              <option value="">Non renseigné</option>
-            </select>
-          </label>
+          <!-- Round 25, item 4 : niveau scolaire d'après la taxonomie Excel
+               (cycle → niveau → année → spécialité ; catégorie toujours
+               « école & études », pas de matière). -->
+          <h4 class="account-school-title">Niveau scolaire</h4>
+          <div class="account-school-taxonomy" id="account-school-taxonomy"></div>
           <button type="button" class="btn btn--small" id="account-profile-save-btn">Enregistrer</button>
           <p class="field-hint" id="account-profile-note" hidden></p>
         </div>
@@ -1702,6 +1773,23 @@
         <button type="button" class="btn btn--ghost" id="dev-library-pack-import-btn">Importer les boîtes toutes prêtes</button>
         <button type="button" class="btn btn--ghost" id="dev-library-pack-publish-btn">Publier ces boîtes dans la Librairie</button>
         <p class="field-hint" id="dev-library-pack-status"></p>
+      </div>
+
+      <!-- Round 25, item 1 : zoom automatique (voir script en tête de page). -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Zoom automatique (téléphone)</h3>
+        <p class="field-hint settings-block-hint">
+          La page est dessinée pour cette largeur, puis agrandie ou réduite
+          pour remplir l'écran du téléphone. 390 = réglage d'origine ;
+          plus petit = tout paraît plus gros ; 0 = désactivé. Propre à cet
+          appareil.
+        </p>
+        <label class="field">
+          <span>Largeur de référence (px)</span>
+          <input type="text" inputmode="numeric" id="dev-autozoom-ref" />
+        </label>
+        <button type="button" class="btn btn--small" id="dev-autozoom-save-btn">Appliquer</button>
+        <p class="field-hint" id="dev-autozoom-status"></p>
       </div>
 
       <!-- Round 23 : taxonomie lue dans data/taxonomie.xlsx (voir

@@ -649,6 +649,16 @@ async function authUpdateSchoolLevel(level) {
   return { data, error: error ? error.message : null };
 }
 
+/** Round 25 : écriture générique de métadonnées du compte (usages,
+ *  niveau scolaire détaillé…). `updateUser({data})` fusionne avec les
+ *  métadonnées existantes. */
+async function authUpdateMetadata(fields) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
+  const { data, error } = await c.auth.updateUser({ data: fields || {} });
+  return { data, error: error ? error.message : null };
+}
+
 /** Round 21, item 6 : nouveau solde de jetons après un achat dans la
  *  Bibliothèque (voir confirmAndTakeLibraryCollection, js/app.js) — même
  *  principe que school_level/token_balance (round 18/19), simple
@@ -1155,6 +1165,7 @@ window.Sync = {
     onChange: authOnChange,
     updateProfile: authUpdateProfile,
     updateSchoolLevel: authUpdateSchoolLevel,
+    updateMetadata: authUpdateMetadata,
     updateTokenBalance: authUpdateTokenBalance,
   },
   classes: {
