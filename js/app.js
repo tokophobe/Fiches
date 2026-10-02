@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v179";
+  const APP_VERSION = "v180";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -8764,6 +8764,33 @@
     // Item 3 : plus besoin d'appeler showPicker() nous-mêmes — l'input
     // natif recouvre directement tout le bouton (voir CSS), c'est donc lui
     // qui reçoit le clic et ouvre son sélecteur de date lui-même.
+    // Round 27 : bug corrigé sur ordinateur — l'input transparent n'ouvre
+    // son calendrier que si l'on clique pile sur sa petite icône (au bord
+    // droit) ; ailleurs, le clic sélectionnait juste le jour/mois/année
+    // (invisibles), donc "rien ne se passait". Avec une souris, on ouvre
+    // maintenant explicitement le calendrier (showPicker) quel que soit
+    // l'endroit cliqué. Le toucher (iPhone) n'est pas concerné : il
+    // ouvrait déjà le sélecteur natif tout seul.
+    const isMousePointer = () => !!(window.matchMedia && window.matchMedia("(pointer: fine)").matches);
+    calendarEventDateInput.addEventListener("click", (e) => {
+      if (!isMousePointer() || typeof calendarEventDateInput.showPicker !== "function") return;
+      try {
+        e.preventDefault();
+        calendarEventDateInput.showPicker();
+      } catch {
+        /* navigateur qui refuse showPicker : comportement natif inchangé */
+      }
+    });
+    calendarEventDateInput.addEventListener("keydown", (e) => {
+      if ((e.key === "Enter" || e.key === " ") && typeof calendarEventDateInput.showPicker === "function") {
+        try {
+          e.preventDefault();
+          calendarEventDateInput.showPicker();
+        } catch {
+          /* idem */
+        }
+      }
+    });
     calendarEventDateInput.addEventListener("change", () => {
       const label = el("calendar-event-date-label");
       if (label && calendarEventDateInput.value) label.textContent = formatCalendarDate(calendarEventDateInput.value);
