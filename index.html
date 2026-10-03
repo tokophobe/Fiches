@@ -3,6 +3,39 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<!-- Round 25, item 1 : zoom automatique. Sur un téléphone en portrait, la
+     page est mise en page pour une largeur de référence (390 px, celle de
+     l'iPhone 13/14/15 sur lequel tout a été réglé) puis le navigateur
+     l'agrandit/la réduit tout seul pour remplir exactement la largeur de
+     l'écran : même rendu sur un iPhone SE (≈ 96 %) qu'un Pro Max (≈ 110 %).
+     Rien ne change sur ordinateur/tablette (largeur ≥ 600 px).
+     Réglable (ou désactivable avec 0) dans Développeur — par appareil. -->
+<script>
+(function () {
+  var KEY = "fiches-autozoom-ref";
+  function refWidth() {
+    try {
+      var v = localStorage.getItem(KEY);
+      if (v !== null && v !== "") return Math.max(0, parseInt(v, 10) || 0);
+    } catch (e) {}
+    return 390;
+  }
+  function apply() {
+    var meta = document.querySelector('meta[name="viewport"]');
+    if (!meta) return;
+    var ref = refWidth();
+    var shortSide = Math.min(screen.width, screen.height);
+    var portrait = !window.matchMedia || window.matchMedia("(orientation: portrait)").matches;
+    var content = ref > 0 && shortSide < 600 && portrait
+      ? "width=" + ref + ", viewport-fit=cover"
+      : "width=device-width, initial-scale=1, viewport-fit=cover";
+    if (meta.getAttribute("content") !== content) meta.setAttribute("content", content);
+  }
+  apply();
+  window.__fichesAutoZoom = { apply: apply, key: KEY, refWidth: refWidth };
+  window.addEventListener("orientationchange", function () { setTimeout(apply, 60); });
+})();
+</script>
 <title>Fiches — révision espacée</title>
 <meta name="description" content="Crée des fiches question / réponse et révise-les avec la répétition espacée." />
 
@@ -161,6 +194,13 @@
     </div>
   </header>
 
+  <!-- Accueil uniquement — bandeau défilant d'alerte : évènements à venir sans boîte associée
+         (voir refreshHomeEventWarning). Un appui mène au Calendrier. -->
+    <button type="button" class="home-warning-ticker" id="home-event-warning" data-go-calendar hidden>
+      <svg class="icon-inline-svg home-warning-ticker-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L1.8 18a1.7 1.7 0 0 0 1.5 2.5h17.4a1.7 1.7 0 0 0 1.5-2.5L13.7 3.9a1.7 1.7 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span class="home-warning-ticker-text" id="home-event-warning-text"></span>
+    </button>
+
   <!-- Round 17, item 3 : le titre de page (round 15, item 1) a été retiré
        — jugé inutile et prenant de la place ; JS conserve tout de même le
        nom de la page courante à jour dans <title> (onglet du navigateur),
@@ -215,21 +255,21 @@
         <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
         <button class="btn btn--small" id="manage-goto-library-btn" type="button">
           <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
-          Bibliothèque
+          Librairie
         </button>
       </div>
       <div class="org-display-toggle" id="org-display-toggle">
         <button type="button" class="org-display-toggle-btn is-active" data-org-display="count" title="Nombre de fiches/boîtes">
           <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/></svg>
         </button>
-        <button type="button" class="org-display-toggle-btn" data-org-display="mode" title="Mode d'apprentissage">
-          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/></svg>
-        </button>
         <button type="button" class="org-display-toggle-btn" data-org-display="gauge" title="Jauge de score">
           <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="10" width="11" height="4" rx="2" fill="currentColor" stroke="none"/></svg>
         </button>
       </div>
     </div>
+    <!-- Mes créations de fiches : n'afficher que les boîtes publiées dans
+         la Librairie (même interrupteur que "Mes partages"). -->
+    <button type="button" class="library-mine-toggle manage-published-toggle" id="manage-published-toggle" hidden aria-pressed="false">Publiées dans la librairie</button>
   </div>
   </div>
   <!-- /Round 15 : fin du bandeau fixe (#app-sticky-header). -->
@@ -271,13 +311,15 @@
     </button>
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
     <button class="tab" role="tab" aria-selected="false" data-view="calendar" hidden>Calendrier</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="review-hub" hidden>Réviser</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Programme</button>
     <button class="tab" role="tab" aria-selected="false" data-view="school-hub" hidden>École</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="fiches-hub" hidden>Fiches</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes" hidden>Classes</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes-join" hidden>Rejoindre une classe</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes-create" hidden>Créer une classe</button>
     <button class="tab" role="tab" aria-selected="false" data-view="messages" hidden>Messagerie</button>
-    <button class="tab" role="tab" aria-selected="false" data-view="library" hidden>Bibliothèque</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="library" hidden>Librairie</button>
     <button class="tab" role="tab" aria-selected="false" data-view="account" hidden>Compte</button>
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">
       <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -306,7 +348,7 @@
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           <span>Ajouter une fiche</span>
         </button>
-        <button type="button" class="home-circle" data-key="review" data-go="revision-program">
+        <button type="button" class="home-circle" data-key="review" data-go="review-hub">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
           <span>Réviser</span>
         </button>
@@ -314,7 +356,7 @@
              data-key/data-go pour ne rien casser des maps de mise en page/
              icônes) ; la page elle-même gagne un accès Bibliothèque et fait
              mener les clics de ligne vers Fiches (cf. #view-manage). -->
-        <button type="button" class="home-circle" data-key="manage" data-go="manage">
+        <button type="button" class="home-circle" data-key="manage" data-go="fiches-hub">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
           <!-- Round 18, item 1 : "Mon bureau" -> "Fiches" (même data-key/
                data-go, pour ne rien casser). -->
@@ -329,10 +371,6 @@
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c0-3.6 2.5-6.2 5.5-6.2s5.5 2.6 5.5 6.2"/><circle cx="17" cy="9" r="2.2"/><path d="M15.3 14.3c2.5.5 4.2 2.7 4.2 5.7"/></svg>
           <span>École</span>
           <span class="home-circle-badge" id="home-school-badge" hidden>0</span>
-        </button>
-        <button type="button" class="home-circle" data-key="calendar" data-go="calendar">
-          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          <span>Calendrier</span>
         </button>
         <button type="button" class="home-circle" data-key="stats" data-go="stats">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
@@ -356,13 +394,36 @@
       </div>
     </section>
 
+    <!-- Round 25, item 2 : palier "Réviser" (même graphisme que les hubs
+         École/Fiches) — Révisions conseillées (programme d'après le
+         Calendrier, désactivé sans évènement à venir) ou Sélection
+         manuelle (sélecteur de boîtes/dossiers). -->
+    <section id="view-review-hub" class="view" aria-labelledby="tab-review-hub">
+      <div class="classes-role-circles" id="review-hub-circles">
+        <button type="button" class="classes-role-circle" id="review-hub-advised-btn">
+          <span class="classes-role-circle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m8.5 15.5 2.2 2.2 4.8-4.8"/></svg>
+          </span>
+          <span>Révisions conseillées</span>
+          <span class="classes-role-circle-note" id="review-hub-advised-note" hidden></span>
+        </button>
+        <button type="button" class="classes-role-circle" id="review-hub-manual-btn">
+          <span class="classes-role-circle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="m14.5 17.5 2 2 4-4"/></svg>
+          </span>
+          <span>Sélection manuelle</span>
+        </button>
+      </div>
+    </section>
+
     <!-- VUE PROGRAMME DE RÉVISION (item 7) : étape intermédiaire avant
          Réviser, qui conseille par ordre de priorité les boîtes/dossiers
          à exercer en fonction des échéances du calendrier. -->
     <section id="view-revision-program" class="view" aria-labelledby="tab-revision-program">
-      <ul class="card-list card-list--tight" id="revision-program-list"></ul>
-      <p class="chart-empty" id="revision-program-empty" hidden>Pas d'échéance à venir — programme aucune priorité particulière.</p>
-      <button type="button" class="revision-program-skip-btn" id="revision-program-skip">Sélection manuelle</button>
+      <ul class="revision-event-list" id="revision-program-list"></ul>
+      <p class="chart-empty" id="revision-program-empty" hidden>Aucun évènement à venir avec des boîtes associées.</p>
+      <!-- Round 25, item 2 : bouton "Sélection manuelle" déplacé sur le
+           palier Réviser (#view-review-hub). -->
     </section>
 
     <!-- VUE RÉVISION -->
@@ -405,7 +466,6 @@
             </button>
           </div>
           <button class="card-icon-btn card-undo-btn" id="undo-rating-btn" type="button" hidden title="Revenir à la fiche précédente (annule la dernière évaluation)" aria-label="Annuler la dernière évaluation">◀️</button>
-          <button type="button" class="card-icon-btn card-algo-btn" id="card-algo-btn" hidden title="Mode d'apprentissage de cette boîte">🎓</button>
           <!-- Boutons secondaires repliés par défaut (item 1c) : un simple
                bouton "révéler" à la place, qui les fait apparaître. -->
           <button class="card-icon-btn card-reveal-btn" id="reveal-secondary-icons-btn" type="button" title="Afficher les actions supplémentaires" aria-label="Afficher les actions supplémentaires (chantier, hibernation, éditer)"></button>
@@ -897,6 +957,21 @@
         <p class="token-chip" id="account-token-balance-row"><svg class="token-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><path d="M12 8.3v7.4"/></svg><span id="account-token-balance">0</span> jeton(s)</p>
         <!-- Round 10, item 7 : nom/prénom modifiables après coup, pour les
              comptes créés avant ce round ou pour corriger une saisie. -->
+        <!-- Round 25, item 3 : usages de l'appli (au moins un). Enregistrés
+             dès qu'on coche/décoche (métadonnées du compte, `usages`). Ils
+             décident du bouton d'accueil École/Calendrier et du raccourci
+             Classes → Élève/Enseignant. -->
+        <div class="card-form">
+          <div class="field">
+            <span>J'utilise l'appli…</span>
+            <div class="usage-options" id="account-usages">
+              <label class="usage-option"><input type="checkbox" value="eleve" /> <span>en tant qu'élève</span></label>
+              <label class="usage-option"><input type="checkbox" value="enseignant" /> <span>en tant qu'enseignant</span></label>
+              <label class="usage-option"><input type="checkbox" value="perso" /> <span>pour un usage personnel</span></label>
+            </div>
+          </div>
+          <p class="field-hint" id="account-usages-note" hidden></p>
+        </div>
         <div class="card-form">
           <label class="field">
             <span>Prénom</span>
@@ -909,12 +984,11 @@
           <!-- Round 19, item 5 : niveau scolaire, même liste que le filtre
                de la Bibliothèque (voir LIBRARY_LEVELS, js/app.js) —
                préremplit automatiquement ce filtre. -->
-          <label class="field">
-            <span>Niveau scolaire</span>
-            <select id="account-profile-school-level">
-              <option value="">Non renseigné</option>
-            </select>
-          </label>
+          <!-- Round 25, item 4 : niveau scolaire d'après la taxonomie Excel
+               (cycle → niveau → année → spécialité ; catégorie toujours
+               « école & études », pas de matière). -->
+          <h4 class="account-school-title">Niveau scolaire</h4>
+          <div class="account-school-taxonomy" id="account-school-taxonomy"></div>
           <button type="button" class="btn btn--small" id="account-profile-save-btn">Enregistrer</button>
           <p class="field-hint" id="account-profile-note" hidden></p>
         </div>
@@ -948,6 +1022,40 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c0-3.6 2.5-6.2 5.5-6.2s5.5 2.6 5.5 6.2"/><circle cx="17" cy="9" r="2.2"/><path d="M15.3 14.3c2.5.5 4.2 2.7 4.2 5.7"/></svg>
           </span>
           <span>Mes classes</span>
+        </button>
+        <button type="button" class="classes-role-circle" id="school-hub-calendar-btn">
+          <span class="classes-role-circle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </span>
+          <span>Calendrier</span>
+          <!-- Nombre d'évènements à venir (pastille grise, informative). -->
+          <span class="home-circle-badge home-circle-badge--neutral" id="school-hub-calendar-badge" hidden>0</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Palier "Fiches" (même principe graphique que le hub École) :
+         Mes fiches de révision (organisation complète), Mes créations de
+         fiches (seulement les boîtes créées par l'utilisateur), Librairie. -->
+    <section id="view-fiches-hub" class="view" aria-labelledby="tab-fiches-hub">
+      <div class="classes-role-circles" id="fiches-hub-circles">
+        <button type="button" class="classes-role-circle" id="fiches-hub-revision-btn">
+          <span class="classes-role-circle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="4" y="6" width="14" height="15" rx="2"/><path d="M8 3h10a2 2 0 0 1 2 2v12"/><line x1="4" y1="13.5" x2="18" y2="13.5"/></svg>
+          </span>
+          <span>Mes fiches de révision</span>
+        </button>
+        <button type="button" class="classes-role-circle" id="fiches-hub-creations-btn">
+          <span class="classes-role-circle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+          </span>
+          <span>Mes créations de fiches</span>
+        </button>
+        <button type="button" class="classes-role-circle" id="fiches-hub-library-btn">
+          <span class="classes-role-circle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="4" height="16" rx="1"/><rect x="9" y="4" width="4" height="16" rx="1"/><path d="M15.2 5.2l3.8-1 3.6 14.6-3.8 1z"/></svg>
+          </span>
+          <span>Librairie</span>
         </button>
       </div>
     </section>
@@ -1013,7 +1121,8 @@
         <!-- Round 6, item 4 : les classes apparaissent en ronds (même
              esprit que les boutons de l'accueil), chacun menant à sa page
              dédiée (view-class-detail) plutôt qu'à une ligne dépliée ici. -->
-        <div class="classes-class-circles" id="classes-student-list"></div>
+        <h3 class="class-list-heading">Mes classes</h3>
+        <div class="class-card-list" id="classes-student-list"></div>
         <p class="field-hint" id="classes-student-empty" hidden>Tu n'as encore rejoint aucune classe.</p>
       </div>
     </section>
@@ -1051,7 +1160,8 @@
             <span>Créer une classe</span>
           </button>
         </div>
-        <div class="classes-class-circles" id="classes-teacher-list"></div>
+        <h3 class="class-list-heading">Mes classes</h3>
+        <div class="class-card-list" id="classes-teacher-list"></div>
         <p class="field-hint" id="classes-teacher-empty" hidden>Tu n'as encore créé aucune classe.</p>
       </div>
     </section>
@@ -1072,24 +1182,29 @@
          des boîtes partagées et liste des évènements à venir. -->
     <section id="view-class-detail" class="view" aria-labelledby="tab-classes">
       <button type="button" class="btn btn--ghost" id="class-detail-back-btn">← Retour</button>
-      <h2 class="section-title" id="class-detail-title">Classe</h2>
-      <div id="class-detail-stats"></div>
-      <p class="field-hint classes-invite-hint" id="class-detail-invite-row" hidden>Code d'invitation : <strong></strong></p>
-      <h3 class="settings-block-title">Boîtes partagées</h3>
-      <div id="class-detail-boxes"></div>
-      <div class="classes-detail-actions">
-        <!-- Round 11, item 1 : ce bouton propose maintenant aussi bien les
-             boîtes perso que les collections de la Bibliothèque (voir
-             renderSingleBoitePicker) — le bouton dédié du round 10 a été
-             retiré. -->
-        <button type="button" class="btn btn--small" id="class-detail-share-btn" hidden>Partager une boîte</button>
+      <!-- En-tête : nom de la classe + pastilles d'infos (rôle, élèves,
+           code d'invitation côté enseignant). -->
+      <div class="class-detail-header">
+        <h2 class="class-detail-name" id="class-detail-title">Classe</h2>
+        <div class="class-detail-chips" id="class-detail-stats"></div>
       </div>
-      <h3 class="settings-block-title">Évènements à venir</h3>
-      <ul class="subject-list" id="class-detail-events"></ul>
-      <p class="field-hint" id="class-detail-events-empty" hidden>Aucun évènement à venir pour cette classe.</p>
-      <!-- Round 10, item 5 : créer un évènement directement depuis la page
-           de la classe (au lieu de passer par Calendrier). -->
-      <button type="button" class="btn btn--small" id="class-detail-add-event-btn" hidden>Ajouter un évènement</button>
+      <div class="class-detail-section">
+        <div class="class-detail-section-head">
+          <h3>Boîtes partagées</h3>
+          <!-- Propose aussi bien les boîtes perso que les collections de la
+               Librairie (voir renderSingleBoitePicker). -->
+          <button type="button" class="class-detail-section-action" id="class-detail-share-btn" hidden>+ Partager</button>
+        </div>
+        <div class="class-tree" id="class-detail-boxes"></div>
+      </div>
+      <div class="class-detail-section">
+        <div class="class-detail-section-head">
+          <h3>Évènements à venir</h3>
+          <button type="button" class="class-detail-section-action" id="class-detail-add-event-btn" hidden>+ Ajouter</button>
+        </div>
+        <ul class="class-event-list" id="class-detail-events"></ul>
+        <p class="class-detail-empty" id="class-detail-events-empty" hidden>Aucun évènement à venir pour cette classe.</p>
+      </div>
     </section>
 
     <!-- Round 6, item 5 : messagerie — une discussion par classe, façon
@@ -1126,21 +1241,23 @@
       <!-- Round 21, item 6 : le titre et le crédit de jetons partagent
            maintenant la même ligne, le crédit aligné à droite. -->
       <div class="library-title-row">
-        <h2 class="section-title" style="margin:0;">Bibliothèque</h2>
+        <h2 class="section-title" style="margin:0;">Librairie</h2>
         <p class="token-chip" id="library-token-balance-row" hidden><svg class="token-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><path d="M12 8.3v7.4"/></svg><span id="library-token-balance">0</span> jeton(s)</p>
       </div>
       <!-- Round 19, item 6 : texte d'intro retiré — redondant avec la
            bulle d'aide du robot pour cette page (voir
            DEFAULT_HELP_MESSAGES_BY_VIEW.library, js/app.js). -->
       <div id="library-needs-sync" hidden>
-        <p class="field-hint settings-block-hint">Active la synchronisation (page Synchronisation) pour accéder à la bibliothèque.</p>
+        <p class="field-hint settings-block-hint">Active la synchronisation (page Synchronisation) pour accéder à la librairie.</p>
       </div>
       <!-- Round 21, item 6 : ordre interverti (niveau d'abord, recherche
            ensuite), demande de Stéphane. -->
       <!-- Round 18, item 15 : tri par niveau scolaire. -->
-      <select id="library-level-filter" class="library-level-filter">
-        <option value="">Tous niveaux</option>
-      </select>
+      <!-- Round 23 : filtres en cascade d'après la taxonomie Excel
+           (data/taxonomie.xlsx, voir js/taxonomy.js) — remplacent l'ancien
+           filtre "niveau" unique — puis filtre par tags. -->
+      <div class="library-taxonomy-filters" id="library-filter-taxonomy"></div>
+      <div class="tag-input tag-input--filter" id="library-filter-tags"></div>
       <!-- Round 10, item 3 : recherche par mots-clés (nom de la collection
            ou nom de son auteur). -->
       <input type="search" id="library-search-input" class="library-search-input" placeholder="Rechercher une collection…" />
@@ -1214,7 +1331,7 @@
         <p class="field-hint settings-block-hint">
           Une fois les fiches du jour terminées, tu peux continuer en révision
           libre. Chaque réponse recule alors la fiche du nombre de jours
-          choisi ci-dessous, sans passer par l'algorithme des modes d'apprentissage.
+          choisi ci-dessous, sans passer par l'algorithme de révision.
         </p>
         <div class="settings-bonus-row">
           <label class="field settings-bonus-field">
@@ -1266,7 +1383,11 @@
       <div class="card-form">
         <h3 class="settings-block-title">Exporter des fiches</h3>
         <p class="field-hint settings-block-hint">Choisis la boîte à exporter :</p>
-        <select class="import-target-select" id="export-subject-select" aria-label="Boîte à exporter"></select>
+        <!-- Round 26, item 4 : choix de la boîte par l'explorateur (page de
+             sélection), plus par une liste déroulante — le <select> masqué
+             garde seulement la valeur choisie. -->
+        <button type="button" class="calendar-date-btn picker-open-btn" id="export-subject-btn">Choisir la boîte…</button>
+        <select class="import-target-select" id="export-subject-select" aria-label="Boîte à exporter" hidden></select>
         <button class="btn btn--small" id="export-btn" type="button">Exporter (<span id="settings-io-count">0</span> fiche(s))</button>
       </div>
 
@@ -1278,126 +1399,12 @@
         </label>
         <div class="import-target-row">
           <label class="import-target-label" for="import-target-select">Importer dans :</label>
-          <select class="import-target-select" id="import-target-select" aria-label="Boîte cible pour l'import"></select>
+          <button type="button" class="calendar-date-btn picker-open-btn" id="import-target-btn">Choisir la boîte…</button>
+          <select class="import-target-select" id="import-target-select" aria-label="Boîte cible pour l'import" hidden></select>
         </div>
         <p class="import-note">Un import ajoute toujours de nouvelles fiches — il ne modifie ni ne supprime jamais celles déjà présentes.</p>
       </div>
     
-      <!-- Contenu déplacé depuis l'ancienne page "Modes d'apprentissage" (item 8). -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Modes d'apprentissage</h3>
-      <h2 class="view-title">Paramétrage des modes d'apprentissage</h2>
-      <p class="field-hint settings-block-hint">
-        Un mode d'apprentissage définit à quelle vitesse l'intervalle entre
-        deux révisions d'une fiche augmente selon ta réponse (Encore,
-        Difficile, Bien, Facile). Chaque boîte (ou dossier entier de
-        boîtes) se voit affecter un mode depuis la page Gérer. Modifier un
-        mode ici change donc le rythme de révision de TOUTES les boîtes
-        qui l'utilisent actuellement.
-      </p>
-
-      <div class="algo-mode-slider-wrap">
-        <input type="range" id="algo-mode-slider" min="0" max="3" step="1" value="1" class="algo-mode-slider" />
-        <div class="algo-mode-ticks" id="algo-mode-ticks">
-          <span data-idx="0">Cool</span>
-          <span data-idx="1">Normal</span>
-          <span data-idx="2">Renforcé</span>
-          <span data-idx="3">Personnalisé</span>
-        </div>
-      </div>
-
-      <div id="algo-custom-picker" class="algo-custom-picker" hidden>
-        <div class="algo-custom-picker-list" id="algo-custom-picker-list"></div>
-        <div class="algo-custom-picker-actions">
-          <button type="button" class="btn btn--small" id="algo-custom-new-btn">+ Nouveau mode</button>
-          <button type="button" class="btn btn--ghost btn--small" id="algo-custom-rename-btn">Renommer</button>
-          <button type="button" class="btn btn--ghost btn--small" id="algo-custom-delete-btn">Supprimer</button>
-        </div>
-      </div>
-
-      <h3 class="settings-block-title settings-block-title--on-dark">Courbes du rythme d'apprentissage</h3>
-      <p class="field-hint settings-block-hint">
-        Le graphique ci-dessous montre l'évolution du délai d'interrogation
-        d'une fiche dans l'hypothèse où on la note toujours de la même
-        manière (Encore, Difficile, Bien ou Facile) :
-      </p>
-      <div id="algo-chart-wrap"></div>
-
-      <button type="button" class="btn algo-advanced-toggle" id="algo-advanced-toggle">
-        Paramétrages avancés ▾
-      </button>
-
-      <div id="algo-advanced-panel" hidden>
-        <p class="field-hint settings-block-hint">
-          Au début, l'échéance d'une fiche est de 1 jour. À chaque réponse, la
-          nouvelle échéance est multipliée par le coefficient réglé ci-dessous :
-        </p>
-        <div class="algo-slider-field algo-slider-field--again">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Encore</span>
-            <span class="algo-slider-field-value" id="algo-ka-value">× 1</span>
-          </div>
-          <input type="range" id="algo-ka" min="0" max="11" step="1" />
-        </div>
-        <div class="algo-slider-field algo-slider-field--hard">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Difficile</span>
-            <span class="algo-slider-field-value" id="algo-kh-value">× 1</span>
-          </div>
-          <input type="range" id="algo-kh" min="0" max="11" step="1" />
-        </div>
-        <div class="algo-slider-field algo-slider-field--good">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Bien</span>
-            <span class="algo-slider-field-value" id="algo-kg-value">× 1</span>
-          </div>
-          <input type="range" id="algo-kg" min="0" max="11" step="1" />
-        </div>
-        <div class="algo-slider-field algo-slider-field--easy">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Facile</span>
-            <span class="algo-slider-field-value" id="algo-ke-value">× 1</span>
-          </div>
-          <input type="range" id="algo-ke" min="0" max="11" step="1" />
-        </div>
-
-        <p class="field-hint settings-block-hint">
-          L'échéance est plafonnée par la valeur en jours réglée ci-dessous :
-        </p>
-        <div class="algo-slider-field algo-slider-field--again">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Encore</span>
-            <span class="algo-slider-field-value" id="algo-ma-value">&lt; 1 j</span>
-          </div>
-          <input type="range" id="algo-ma" min="0" max="11" step="1" />
-        </div>
-        <div class="algo-slider-field algo-slider-field--hard">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Difficile</span>
-            <span class="algo-slider-field-value" id="algo-mh-value">&lt; 1 j</span>
-          </div>
-          <input type="range" id="algo-mh" min="0" max="11" step="1" />
-        </div>
-        <div class="algo-slider-field algo-slider-field--good">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Bien</span>
-            <span class="algo-slider-field-value" id="algo-mg-value">&lt; 1 j</span>
-          </div>
-          <input type="range" id="algo-mg" min="0" max="11" step="1" />
-        </div>
-        <div class="algo-slider-field algo-slider-field--easy">
-          <div class="algo-slider-field-head">
-            <span class="algo-slider-field-label">Facile</span>
-            <span class="algo-slider-field-value" id="algo-me-value">&lt; 1 j</span>
-          </div>
-          <input type="range" id="algo-me" min="0" max="11" step="1" />
-        </div>
-
-        <button type="button" class="btn algo-reset-btn-visible" id="algo-reset-btn">
-          Revenir aux réglages d'origine
-        </button>
-      </div>
-    </div>
 </section>
 
     <!-- VUE DÉVELOPPEUR (item 19) — réglages internes, cachés dans une
@@ -1444,16 +1451,6 @@
         </div>
         <button type="button" class="btn btn--ghost" id="dev-rating-colors-reset">Revenir aux couleurs d'origine</button>
       </div>
-
-      <!-- 2f -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Couleurs des modes d'apprentissage</h3>
-        <div class="dev-color-list" id="dev-mode-colors-list"></div>
-        <button type="button" class="btn btn--ghost" id="dev-mode-colors-reset">Revenir aux couleurs d'origine</button>
-      </div>
-
-      <!-- 2g : bloc "Couleurs des modes personnalisés" retiré (déjà réglable
-           directement dans la page Modes d'apprentissage). -->
 
       <!-- 2h -->
       <div class="card-form">
@@ -1603,17 +1600,6 @@
       <!-- 2j : bloc "Palette de couleurs de texte" retiré (la barre d'outils
            de mise en forme des fiches qui l'utilisait a été retirée). -->
 
-      <!-- 2k -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Paramètres usine des modes d'apprentissage</h3>
-        <p class="field-hint settings-block-hint">
-          Valeurs vers lesquelles "Revenir aux réglages d'origine" ramène
-          chaque mode fixe (Cool / Normal / Renforcé), et valeurs de départ
-          d'une toute nouvelle installation.
-        </p>
-        <div id="dev-factory-defaults"></div>
-      </div>
-
       <!-- Round 4, partie 2 : messages d'aide du robot, éditables ici pour
            chaque page de l'appli (plutôt que codés en dur), avec plusieurs
            messages possibles par page (un par ligne = un message, façon
@@ -1638,8 +1624,55 @@
            développeur peut supprimer n'importe quelle collection
            partagée (pas seulement les siennes), utile en cas de contenu
            inapproprié ou de doublon signalé. -->
+      <!-- Boîtes toutes prêtes (packs/bibliotheque.json) : import dans un
+           dossier de Mes collections pour relecture, puis publication en
+           une fois dans la Bibliothèque, au nom du Compte connecté. -->
       <div class="card-form">
-        <h3 class="settings-block-title">Bibliothèque — modération</h3>
+        <h3 class="settings-block-title">Librairie — boîtes toutes prêtes</h3>
+        <p class="field-hint settings-block-hint">
+          1. Importe les boîtes dans le dossier « Boîtes Librairie » pour
+          les relire (tu peux corriger les fiches). 2. Publie-les toutes dans
+          la Librairie, à ton nom. Une boîte déjà publiée n'est jamais
+          publiée deux fois.
+        </p>
+        <button type="button" class="btn btn--ghost" id="dev-library-pack-import-btn">Importer les boîtes toutes prêtes</button>
+        <button type="button" class="btn btn--ghost" id="dev-library-pack-publish-btn">Publier ces boîtes dans la Librairie</button>
+        <p class="field-hint" id="dev-library-pack-status"></p>
+      </div>
+
+      <!-- Round 25, item 1 : zoom automatique (voir script en tête de page). -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Zoom automatique (téléphone)</h3>
+        <p class="field-hint settings-block-hint">
+          La page est dessinée pour cette largeur, puis agrandie ou réduite
+          pour remplir l'écran du téléphone. 390 = réglage d'origine ;
+          plus petit = tout paraît plus gros ; 0 = désactivé. Propre à cet
+          appareil.
+        </p>
+        <label class="field">
+          <span>Largeur de référence (px)</span>
+          <input type="text" inputmode="numeric" id="dev-autozoom-ref" />
+        </label>
+        <button type="button" class="btn btn--small" id="dev-autozoom-save-btn">Appliquer</button>
+        <p class="field-hint" id="dev-autozoom-status"></p>
+      </div>
+
+      <!-- Round 23 : taxonomie lue dans data/taxonomie.xlsx (voir
+           js/taxonomy.js) — permet de vérifier qu'un Excel remplacé sur le
+           site a bien été relu. -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Librairie — taxonomie (Excel)</h3>
+        <p class="field-hint settings-block-hint">
+          Classement proposé au partage et dans les filtres, lu dans
+          data/taxonomie.xlsx. Pour le modifier : remplace ce fichier sur le
+          site, puis appuie sur « Relire l'Excel ».
+        </p>
+        <button type="button" class="btn btn--ghost" id="dev-taxonomy-reload-btn">Relire l'Excel</button>
+        <p class="field-hint" id="dev-taxonomy-status"></p>
+      </div>
+
+      <div class="card-form">
+        <h3 class="settings-block-title">Librairie — modération</h3>
         <p class="field-hint settings-block-hint">
           Supprime définitivement une collection partagée, quel que soit
           son auteur.
@@ -1660,32 +1693,6 @@
           numéro de version, dans Réglages).
         </p>
         <button type="button" class="btn btn--ghost" id="dev-hide-dev-mode-btn">Recacher le mode développeur sur cet appareil</button>
-      </div>
-    </section>
-
-    <!-- VUE MODES D'APPRENTISSAGE (globale — item 2) -->
-    
-
-    <!-- VUE AFFECTATION D'UN MODE (par boîte ou par dossier, depuis Gérer) -->
-    <section id="view-mode-assign" class="view">
-      <button class="btn btn--ghost btn--small" id="assign-back-btn" type="button">← Retour à Gérer</button>
-      <h2 class="view-title" id="assign-target-title">Affecter un mode</h2>
-
-      <div class="algo-custom-picker-list" id="assign-mode-list"></div>
-
-      <h3 class="settings-block-title settings-block-title--on-dark">Échéances successives (aperçu)</h3>
-      <div id="assign-chart-wrap"></div>
-
-      <div class="card-form algo-review-old-block" id="assign-review-old-block">
-        <h3 class="settings-block-title">Revoir les vieilles fiches</h3>
-        <p class="field-hint settings-block-hint">
-          Ramène l'échéance (et la date de prochaine interrogation) à 10
-          jours pour toutes les fiches de cette boîte dont la prochaine
-          interrogation est prévue dans plus de 10 jours.
-        </p>
-        <button type="button" class="btn algo-review-old-btn" id="algo-review-old-btn">
-          Revoir les vieilles fiches
-        </button>
       </div>
     </section>
 
@@ -1726,6 +1733,8 @@
       <!-- Round 20, item 2 : résumé (une phrase) et description (plus
            longue), saisis au partage, restitués ici. Masqués si absents
            (collections partagées avant ce round, ou champs laissés vides). -->
+      <p class="library-detail-taxonomy" id="library-detail-taxonomy" hidden></p>
+      <div class="tag-chips" id="library-detail-tags" hidden></div>
       <p class="library-detail-summary" id="library-detail-summary" hidden></p>
       <p class="library-detail-description" id="library-detail-description" hidden></p>
       <p class="library-rating-row" id="library-detail-rating"></p>
@@ -1757,17 +1766,20 @@
          — résumé, description, prix en jetons). -->
     <section id="view-library-share" class="view">
       <form class="card-form" id="library-share-form">
-        <h3 class="settings-block-title">Partager dans la bibliothèque</h3>
+        <h3 class="settings-block-title">Partager dans la librairie</h3>
         <label class="field">
           <span>Nom de la collection</span>
           <input type="text" id="library-share-name" required />
         </label>
-        <label class="field">
-          <span>Niveau scolaire (optionnel)</span>
-          <select id="library-share-level">
-            <option value="">Non renseigné</option>
-          </select>
-        </label>
+        <!-- Round 23 : classement obligatoire d'après la taxonomie Excel
+             (catégorie → cycle → niveau → année → spécialité → matière ;
+             un champ n'apparaît que s'il a des choix possibles) + tags
+             libres avec saisie semi-automatique. -->
+        <div id="library-share-taxonomy"></div>
+        <div class="field">
+          <span>Tags (optionnel)</span>
+          <div class="tag-input" id="library-share-tags"></div>
+        </div>
         <label class="field">
           <span>Résumé (une phrase, optionnel)</span>
           <input type="text" id="library-share-summary" maxlength="140" placeholder="Ex. Vocabulaire d'anglais niveau 5ème" />
@@ -1792,6 +1804,7 @@
 <script src="js/sm2.js"></script>
 <script src="js/db.js"></script>
 <script src="js/sync.js"></script>
+<script src="js/taxonomy.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

@@ -257,7 +257,6 @@ function subjectToRow(subject, syncCode) {
     sync_code: syncCode,
     name: subject.name,
     folder_id: subject.folderId || null,
-    mode_id: subject.modeId || "normal",
     created_at: subject.createdAt,
     updated_at: subject.updatedAt || subject.createdAt,
     deleted: Boolean(subject.deleted),
@@ -268,7 +267,6 @@ function rowToSubject(row) {
     id: row.id,
     name: row.name,
     folderId: row.folder_id || null,
-    modeId: row.mode_id || "normal",
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     deleted: Boolean(row.deleted),
@@ -376,68 +374,6 @@ function subscribeFoldersRealtime(onRemoteChange) {
       { event: "*", schema: "public", table: "folders", filter: `sync_code=eq.${code}` },
       (payload) => {
         if (payload.new) onRemoteChange(rowToFolder(payload.new));
-      }
-    )
-    .subscribe();
-  return () => c.removeChannel(channel);
-}
-
-/* ---------------------------------------------------------
-   Modes d'apprentissage (item 1, audit synchro) : jusqu'ici jamais
-   synchronisés du tout — seul le modeId de chaque matière l'était. Même
-   schéma que matières/dossiers : upsert, suppression douce, temps réel.
---------------------------------------------------------- */
-function learningModeToRow(mode, syncCode) {
-  return {
-    id: mode.id,
-    sync_code: syncCode,
-    name: mode.name,
-    builtin: Boolean(mode.builtin),
-    ka: mode.Ka, kh: mode.Kh, kg: mode.Kg, ke: mode.Ke,
-    ma: mode.Ma, mh: mode.Mh, mg: mode.Mg, me: mode.Me,
-    updated_at: mode.updatedAt || new Date().toISOString(),
-    deleted: Boolean(mode.deleted),
-  };
-}
-function rowToLearningMode(row) {
-  return {
-    id: row.id,
-    name: row.name,
-    builtin: Boolean(row.builtin),
-    Ka: row.ka, Kh: row.kh, Kg: row.kg, Ke: row.ke,
-    Ma: row.ma, Mh: row.mh, Mg: row.mg, Me: row.me,
-    updatedAt: row.updated_at,
-    deleted: Boolean(row.deleted),
-  };
-}
-
-async function pullLearningModes() {
-  return pullTable("learning_modes", rowToLearningMode);
-}
-
-async function pushLearningMode(mode) {
-  const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return false;
-  const { error } = await c.from("learning_modes").upsert(learningModeToRow(mode, code));
-  if (error) {
-    console.warn("Sync: échec de l'envoi du mode d'apprentissage", error.message);
-    return false;
-  }
-  return true;
-}
-
-function subscribeLearningModesRealtime(onRemoteChange) {
-  const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return () => {};
-  const channel = c
-    .channel(`learning-modes-${code}`)
-    .on(
-      "postgres_changes",
-      { event: "*", schema: "public", table: "learning_modes", filter: `sync_code=eq.${code}` },
-      (payload) => {
-        if (payload.new) onRemoteChange(rowToLearningMode(payload.new));
       }
     )
     .subscribe();
@@ -649,6 +585,16 @@ async function authUpdateSchoolLevel(level) {
   return { data, error: error ? error.message : null };
 }
 
+/** Round 25 : écriture générique de métadonnées du compte (usages,
+ *  niveau scolaire détaillé…). `updateUser({data})` fusionne avec les
+ *  métadonnées existantes. */
+async function authUpdateMetadata(fields) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
+  const { data, error } = await c.auth.updateUser({ data: fields || {} });
+  return { data, error: error ? error.message : null };
+}
+
 /** Round 21, item 6 : nouveau solde de jetons après un achat dans la
  *  Bibliothèque (voir confirmAndTakeLibraryCollection, js/app.js) — même
  *  principe que school_level/token_balance (round 18/19), simple
@@ -824,13 +770,47 @@ async function updateSharedBoxCards(boxId, cards, folderPath) {
 
 /* ---- Round 3, item 4 (squelette) : événements de calendrier partagés ---- */
 
+/** Round 26, item 2 : identité du professeur affichée côté élève —
+ *  "Prénom Nom" des métadonnées du compte, repli sur l'email. */
+function teacherDisplayName(user) {
+  const meta = (user && user.user_metadata) || {};
+  return `${meta.first_name || ""} ${meta.last_name || ""}`.trim() || (user && user.email) || "";
+}
+/** La colonne `shared_by_name` n'existe qu'après la migration
+ *  supabase/shared_events_teacher_name_migration.sql : sans elle, on
+ *  réessaie sans ce champ plutôt que de bloquer le partage. */
+function isMissingTeacherNameColumn(error) {
+  return !!error && /shared_by_name/i.test(error.message || "");
+}
+
 async function shareEventToClass(classId, title, date) {
   const c = getClient();
   const user = await authGetUser();
   if (!c || !user) return { error: "Non connecté." };
-  const row = { class_id: classId, shared_by: user.id, title, date };
-  const { data, error } = await c.from("shared_events").insert(row).select().single();
+  const row = { class_id: classId, shared_by: user.id, title, date, shared_by_name: teacherDisplayName(user) };
+  let { data, error } = await c.from("shared_events").insert(row).select().single();
+  if (isMissingTeacherNameColumn(error)) {
+    delete row.shared_by_name;
+    ({ data, error } = await c.from("shared_events").insert(row).select().single());
+  }
   return { data, error: error ? error.message : null };
+}
+
+/** Round 26, item 2 : complète le nom du professeur sur SES évènements
+ *  partagés avant la migration (nom vide) — appelé au démarrage, sans
+ *  effet si la colonne n'existe pas encore. */
+async function backfillMySharedEventsTeacherName() {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return;
+  const name = teacherDisplayName(user);
+  if (!name) return;
+  const { error } = await c
+    .from("shared_events")
+    .update({ shared_by_name: name })
+    .eq("shared_by", user.id)
+    .eq("shared_by_name", "");
+  if (error && !isMissingTeacherNameColumn(error)) console.warn("Évènements partagés : nom du professeur non complété", error.message);
 }
 
 async function listSharedEventsForClass(classId) {
@@ -857,10 +837,13 @@ async function listSharedEventsForClass(classId) {
 async function updateSharedEvent(eventId, title, date) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée." };
-  const { error } = await c
-    .from("shared_events")
-    .update({ title, date, updated_at: new Date().toISOString() })
-    .eq("id", eventId);
+  const user = await authGetUser();
+  const fields = { title, date, updated_at: new Date().toISOString(), shared_by_name: teacherDisplayName(user) };
+  let { error } = await c.from("shared_events").update(fields).eq("id", eventId);
+  if (isMissingTeacherNameColumn(error)) {
+    delete fields.shared_by_name;
+    ({ error } = await c.from("shared_events").update(fields).eq("id", eventId));
+  }
   return { error: error ? error.message : null };
 }
 
@@ -905,6 +888,10 @@ async function shareCollectionToLibrary(name, cards, extra) {
     // Round 20, item 5 : mémorise la boîte d'origine, pour pouvoir
     // vérifier avant un futur partage qu'elle n'a pas déjà été publiée.
     source_subject_id: extra.sourceSubjectId || null,
+    // Round 23 : classement d'après la taxonomie Excel ({ categorie:
+    // { id, label }, cycle: ..., matiere: ... }) et tags libres.
+    taxonomy: extra.taxonomy || {},
+    tags: Array.isArray(extra.tags) ? extra.tags : [],
     cards: cards.map((card) => ({ id: card.id, question: card.question, answer: card.answer })),
   };
   const { data, error } = await c.from("library_collections").insert(row).select().single();
@@ -928,7 +915,7 @@ async function findLibraryCollectionBySourceSubject(subjectId) {
     .eq("source_subject_id", subjectId)
     .maybeSingle();
   if (error) {
-    console.warn("Bibliothèque : échec de la vérification de partage existant", error.message);
+    console.warn("Librairie : échec de la vérification de partage existant", error.message);
     return null;
   }
   return data || null;
@@ -984,7 +971,7 @@ async function listLibraryRatings() {
   if (!c) return [];
   const { data, error } = await c.from("library_ratings").select("collection_id, user_id, rating");
   if (error) {
-    console.warn("Bibliothèque : échec du chargement des notes", error.message);
+    console.warn("Librairie : échec du chargement des notes", error.message);
     return [];
   }
   return data || [];
@@ -995,7 +982,7 @@ async function listLibraryCollections() {
   if (!c) return [];
   const { data, error } = await c.from("library_collections").select("*").order("shared_at", { ascending: false });
   if (error) {
-    console.warn("Bibliothèque : échec du chargement des collections partagées", error.message);
+    console.warn("Librairie : échec du chargement des collections partagées", error.message);
     return [];
   }
   return data || [];
@@ -1010,7 +997,7 @@ async function getLibraryCollection(id) {
   if (!c || !id) return null;
   const { data, error } = await c.from("library_collections").select("*").eq("id", id).maybeSingle();
   if (error) {
-    console.warn("Bibliothèque : échec du rechargement d'une collection", error.message);
+    console.warn("Librairie : échec du rechargement d'une collection", error.message);
     return null;
   }
   return data || null;
@@ -1138,9 +1125,6 @@ window.Sync = {
   pullFolders,
   pushFolder,
   subscribeFoldersRealtime,
-  pullLearningModes,
-  pushLearningMode,
-  subscribeLearningModesRealtime,
   pendingCount: () => getPending().length,
   getLastError: () => lastError,
   auth: {
@@ -1151,6 +1135,7 @@ window.Sync = {
     onChange: authOnChange,
     updateProfile: authUpdateProfile,
     updateSchoolLevel: authUpdateSchoolLevel,
+    updateMetadata: authUpdateMetadata,
     updateTokenBalance: authUpdateTokenBalance,
   },
   classes: {
@@ -1166,6 +1151,7 @@ window.Sync = {
     listSharedEvents: listSharedEventsForClass,
     updateSharedEvent,
     deleteSharedEvent,
+    backfillSharedEventsTeacherName: backfillMySharedEventsTeacherName,
   },
   messages: {
     listClasses: listMessageClasses,

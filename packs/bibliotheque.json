@@ -2585,6 +2585,4411 @@
      "answer": "Producteurs : végétaux chlorophylliens (photosynthèse).\nConsommateurs : animaux qui mangent d'autres êtres vivants.\nDécomposeurs : champignons, bactéries qui recyclent la matière morte en matière minérale."
     }
    ]
+  },
+  {
+   "key": "bac-philo-auteurs-oeuvres",
+   "name": "Philosophie — Auteurs et œuvres majeurs",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "philosophie"
+   },
+   "tags": [
+    "bac",
+    "philosophie",
+    "auteurs"
+   ],
+   "summary": "Une vingtaine de grands philosophes : époque, œuvre principale et idée-force à retenir.",
+   "description": "Pour situer un auteur dans une copie : son siècle, son œuvre de référence et l'idée qu'on peut mobiliser dans une dissertation ou une explication de texte. Complète la boîte « Notions, repères et citations ».",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Platon — époque et œuvres",
+     "answer": "Philosophe grec (vers 428-348 av. J.-C.), disciple de Socrate.\nŒuvres : dialogues (La République, Le Banquet, Gorgias, Phédon…).\nIdée-force : distinguer le monde sensible (apparences) du monde intelligible (Idées) ; la philosophie conduit de l'opinion à la vérité."
+    },
+    {
+     "question": "Aristote — époque et œuvres",
+     "answer": "Philosophe grec (384-322 av. J.-C.), élève de Platon.\nŒuvres : Éthique à Nicomaque, Politique, Métaphysique.\nIdée-force : le bonheur est l'activité de l'âme conforme à la vertu ; l'homme est un « animal politique »."
+    },
+    {
+     "question": "Épicure — idée-force",
+     "answer": "Philosophe grec (341-270 av. J.-C.). Lettre à Ménécée.\nLe bonheur = plaisir au sens d'absence de douleur (aponie) et de trouble (ataraxie). Il faut trier les désirs (naturels et nécessaires / naturels non nécessaires / ni naturels ni nécessaires). « La mort n'est rien pour nous »."
+    },
+    {
+     "question": "Les stoïciens (Épictète, Marc Aurèle, Sénèque) — idée-force",
+     "answer": "Distinguer ce qui dépend de nous (jugements, désirs) de ce qui n'en dépend pas (corps, biens, réputation). Le sage vit en accord avec la nature et la raison.\nÉpictète, Manuel ; Marc Aurèle, Pensées pour moi-même ; Sénèque, Lettres à Lucilius."
+    },
+    {
+     "question": "Saint Augustin — idée-force",
+     "answer": "Théologien (354-430). Les Confessions.\nRéflexion sur le temps (il n'existe que dans l'âme : mémoire du passé, attention au présent, attente du futur) et sur la volonté et le mal."
+    },
+    {
+     "question": "Montaigne — idée-force",
+     "answer": "Humaniste du XVIe siècle (1533-1592). Les Essais.\nScepticisme (« Que sais-je ? »), connaissance de soi, critique de l'ethnocentrisme (« Des cannibales » : « chacun appelle barbarie ce qui n'est pas de son usage »)."
+    },
+    {
+     "question": "Machiavel — idée-force",
+     "answer": "Penseur florentin (1469-1527). Le Prince (1532).\nLa politique est autonome par rapport à la morale : le prince doit savoir « ne pas être bon » pour conserver l'État ; il lui faut virtù et sens de la fortune (occasion)."
+    },
+    {
+     "question": "Hobbes — idée-force",
+     "answer": "Philosophe anglais (1588-1679). Léviathan (1651).\nÀ l'état de nature, « guerre de chacun contre chacun » ; « l'homme est un loup pour l'homme ». Les hommes passent un contrat et confient le pouvoir à un souverain absolu pour garantir leur sécurité."
+    },
+    {
+     "question": "Locke — idée-force",
+     "answer": "Philosophe anglais (1632-1704). Second traité du gouvernement civil (1690).\nLes hommes ont des droits naturels (vie, liberté, propriété) ; l'État existe pour les protéger. Droit de résistance au pouvoir tyrannique. Empirisme : l'esprit est une « table rase »."
+    },
+    {
+     "question": "Spinoza — idée-force",
+     "answer": "Philosophe hollandais (1632-1677). Éthique (1677), Traité théologico-politique.\nTout est déterminé (Dieu ou la Nature) ; le libre arbitre est une illusion. La liberté consiste à comprendre les causes qui nous déterminent. Le désir est l'essence de l'homme."
+    },
+    {
+     "question": "Hume — idée-force",
+     "answer": "Philosophe écossais (1711-1776). Enquête sur l'entendement humain.\nEmpirisme : toutes nos idées viennent de l'expérience. La causalité n'est qu'une habitude de l'esprit (critique de l'induction)."
+    },
+    {
+     "question": "Rousseau — idée-force",
+     "answer": "Philosophe genevois (1712-1778). Du contrat social, Discours sur l'origine de l'inégalité, Émile.\nL'homme naît bon, la société le corrompt ; perfectibilité. La souveraineté appartient au peuple, exprimée par la volonté générale."
+    },
+    {
+     "question": "Kant — idée-force",
+     "answer": "Philosophe allemand (1724-1804). Critique de la raison pure, Fondements de la métaphysique des mœurs, Critique de la faculté de juger.\nLimites de la connaissance (on ne connaît que les phénomènes) ; morale du devoir (impératif catégorique) ; la personne est une fin en soi."
+    },
+    {
+     "question": "Hegel — idée-force",
+     "answer": "Philosophe allemand (1770-1831). Phénoménologie de l'esprit, Principes de la philosophie du droit.\nL'histoire est le déploiement rationnel de l'Esprit (« ruse de la raison ») ; dialectique ; dialectique du maître et de l'esclave ; l'État comme réalisation de la liberté."
+    },
+    {
+     "question": "Marx — idée-force",
+     "answer": "Philosophe allemand (1818-1883). Manifeste du Parti communiste (avec Engels, 1848), Le Capital.\nMatérialisme historique : les conditions matérielles déterminent la conscience ; l'histoire est celle de la lutte des classes ; critique de l'aliénation du travail."
+    },
+    {
+     "question": "Nietzsche — idée-force",
+     "answer": "Philosophe allemand (1844-1900). Ainsi parlait Zarathoustra, Généalogie de la morale, Le Gai Savoir.\nCritique de la morale chrétienne (« morale d'esclaves »), « Dieu est mort », volonté de puissance, critique de la vérité comme valeur absolue."
+    },
+    {
+     "question": "Freud — idée-force",
+     "answer": "Médecin autrichien (1856-1939), fondateur de la psychanalyse. L'Interprétation du rêve, Introduction à la psychanalyse.\nL'inconscient psychique (refoulement) ; trois instances : ça, moi, surmoi ; le rêve est la réalisation déguisée d'un désir."
+    },
+    {
+     "question": "Bergson — idée-force",
+     "answer": "Philosophe français (1859-1941). Essai sur les données immédiates de la conscience, L'Évolution créatrice.\nLa durée vécue (temps de la conscience) s'oppose au temps mesuré, spatialisé ; l'homme est homo faber ; le langage fige la pensée."
+    },
+    {
+     "question": "Sartre — idée-force",
+     "answer": "Philosophe français (1905-1980). L'Être et le Néant, L'existentialisme est un humanisme.\n« L'existence précède l'essence » : l'homme se définit par ses actes, il est totalement libre et responsable ; la mauvaise foi consiste à se mentir sur sa liberté."
+    },
+    {
+     "question": "Hannah Arendt — idée-force",
+     "answer": "Philosophe germano-américaine (1906-1975). Les Origines du totalitarisme, Condition de l'homme moderne, Eichmann à Jérusalem.\nAnalyse du totalitarisme ; distinction travail / œuvre / action ; « banalité du mal »."
+    },
+    {
+     "question": "Simone de Beauvoir — idée-force",
+     "answer": "Philosophe française (1908-1986). Le Deuxième Sexe (1949).\n« On ne naît pas femme : on le devient » : la condition féminine est une construction sociale et historique, non une nature."
+    },
+    {
+     "question": "Alain — idée-force",
+     "answer": "Philosophe français (Émile Chartier, 1868-1951). Propos.\nPhilosophie de la volonté et du jugement ; « penser, c'est dire non » ; le bonheur est un devoir et dépend de notre volonté."
+    }
+   ]
+  },
+  {
+   "key": "bac-philo-definir-notions",
+   "name": "Philosophie — Définir les 17 notions",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "philosophie"
+   },
+   "tags": [
+    "bac",
+    "philosophie",
+    "notions",
+    "définitions"
+   ],
+   "summary": "Une définition simple et un problème classique pour chacune des 17 notions du programme.",
+   "description": "Pour bien démarrer une dissertation : définir précisément la notion et repérer la tension qui en fait un problème philosophique. Chaque fiche donne une définition de travail et une question type du bac.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "L'art — définition et problème",
+     "answer": "Activité humaine qui produit des œuvres destinées à être contemplées pour elles-mêmes (et non pour leur utilité).\nProblème : le beau est-il objectif ou affaire de goût ? L'art imite-t-il la nature ou crée-t-il ?"
+    },
+    {
+     "question": "Le bonheur — définition et problème",
+     "answer": "État de satisfaction complète et durable.\nProblème : dépend-il de nous ou des circonstances ? Faut-il le chercher dans le plaisir ou dans la vertu ? Est-il un idéal de l'imagination (Kant) ?"
+    },
+    {
+     "question": "La conscience — définition et problème",
+     "answer": "Connaissance immédiate que le sujet a de lui-même et du monde (conscience réfléchie : savoir qu'on sait).\nProblème : la conscience de soi est-elle une connaissance de soi ? Suis-je transparent à moi-même ?"
+    },
+    {
+     "question": "Le devoir — définition et problème",
+     "answer": "Obligation morale ou légale qui s'impose à la volonté.\nProblème : le devoir s'oppose-t-il à la liberté ou en est-il l'expression (autonomie) ? Agir par devoir ou conformément au devoir (Kant) ?"
+    },
+    {
+     "question": "L'État — définition et problème",
+     "answer": "Institution qui exerce le pouvoir politique souverain sur un territoire et une population (monopole de la violence légitime, Weber).\nProblème : l'État garantit-il la liberté ou la menace ?"
+    },
+    {
+     "question": "L'inconscient — définition et problème",
+     "answer": "Ce qui, dans le psychisme, échappe à la conscience ; chez Freud, ensemble de représentations refoulées qui agissent sur nous.\nProblème : l'hypothèse de l'inconscient supprime-t-elle la responsabilité ?"
+    },
+    {
+     "question": "La justice — définition et problème",
+     "answer": "Vertu qui consiste à rendre à chacun ce qui lui est dû ; institution qui applique le droit.\nProblème : le juste se réduit-il au légal ? Égalité (stricte) ou équité (proportionnelle) ?"
+    },
+    {
+     "question": "Le langage — définition et problème",
+     "answer": "Faculté d'exprimer et de communiquer la pensée au moyen de signes (une langue en est une réalisation).\nProblème : le langage traduit-il la pensée ou la trahit-il ? Peut-on penser sans mots ?"
+    },
+    {
+     "question": "La liberté — définition et problème",
+     "answer": "Pouvoir d'agir ou de choisir sans contrainte ; libre arbitre ; autonomie (se donner sa propre loi).\nProblème : sommes-nous vraiment libres ou déterminés ? La liberté consiste-t-elle à faire ce que l'on veut ?"
+    },
+    {
+     "question": "La nature — définition et problème",
+     "answer": "Ensemble de ce qui existe sans intervention humaine ; essence d'une chose (« nature humaine »).\nProblème : l'homme est-il un être de nature ou de culture ? Doit-il maîtriser ou respecter la nature ?"
+    },
+    {
+     "question": "La raison — définition et problème",
+     "answer": "Faculté de penser de façon logique, de juger, de connaître le vrai et de distinguer le bien du mal.\nProblème : la raison peut-elle tout connaître ? S'oppose-t-elle aux passions ?"
+    },
+    {
+     "question": "La religion — définition et problème",
+     "answer": "Ensemble de croyances et de pratiques relatives au sacré, qui relient les membres d'une communauté.\nProblème : la foi s'oppose-t-elle à la raison ? La religion est-elle une illusion (Freud) ou un besoin humain ?"
+    },
+    {
+     "question": "La science — définition et problème",
+     "answer": "Connaissance rationnelle, méthodique et vérifiable des phénomènes.\nProblème : la science atteint-elle la vérité ? Qu'est-ce qui fait qu'une théorie est scientifique (Popper : réfutabilité) ?"
+    },
+    {
+     "question": "La technique — définition et problème",
+     "answer": "Ensemble des procédés et outils par lesquels l'homme transforme la nature pour satisfaire ses besoins.\nProblème : la technique libère-t-elle l'homme ou l'asservit-elle ? Tout ce qui est techniquement possible est-il souhaitable ?"
+    },
+    {
+     "question": "Le temps — définition et problème",
+     "answer": "Milieu dans lequel les événements se succèdent (passé, présent, futur) ; durée vécue.\nProblème : le temps est-il réel ou seulement vécu ? Peut-on échapper au temps ?"
+    },
+    {
+     "question": "Le travail — définition et problème",
+     "answer": "Activité par laquelle l'homme transforme la nature pour produire ce dont il a besoin.\nProblème : le travail est-il une contrainte (tripalium) ou un moyen de se réaliser (Hegel) ? Aliénation (Marx)."
+    },
+    {
+     "question": "La vérité — définition et problème",
+     "answer": "Accord de la pensée avec le réel (vérité-correspondance) ou cohérence logique d'un raisonnement.\nProblème : la vérité est-elle accessible ? Toute vérité est-elle bonne à dire ? Existe-t-il plusieurs vérités ?"
+    },
+    {
+     "question": "Les 3 grandes étapes d'une introduction de dissertation",
+     "answer": "1. Amorce + définition des termes du sujet.\n2. Problématique : tension, paradoxe que soulève le sujet.\n3. Annonce du plan (souvent en 2 ou 3 parties)."
+    }
+   ]
+  },
+  {
+   "key": "bac-francais-mouvements-litteraires",
+   "name": "Français — Les mouvements littéraires",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "français"
+   },
+   "tags": [
+    "bac",
+    "français",
+    "épreuve anticipée",
+    "histoire littéraire"
+   ],
+   "summary": "Du Moyen Âge au XXe siècle : dates, caractéristiques et auteurs phares de chaque mouvement.",
+   "description": "Pour situer un texte au bac de français (épreuve anticipée de 1ère) : chaque fiche donne l'époque, les traits essentiels d'un mouvement et quelques auteurs et œuvres de référence.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "L'humanisme",
+     "answer": "XVIe siècle (Renaissance).\nConfiance en l'homme et en l'éducation, retour aux textes antiques, esprit critique.\nRabelais (Gargantua), Montaigne (Essais), Érasme, Du Bellay."
+    },
+    {
+     "question": "La Pléiade",
+     "answer": "XVIe siècle (vers 1549-1560).\nGroupe de poètes qui veut enrichir et illustrer la langue française en imitant les Anciens ; sonnet, ode.\nRonsard, Du Bellay (Défense et illustration de la langue française, Les Regrets)."
+    },
+    {
+     "question": "Le baroque",
+     "answer": "Fin XVIe - début XVIIe siècle.\nMouvement, instabilité, illusion, métamorphose, goût de l'ostentation et de la mort.\nAgrippa d'Aubigné, Corneille (L'Illusion comique), Théophile de Viau."
+    },
+    {
+     "question": "Le classicisme",
+     "answer": "XVIIe siècle (vers 1660-1680), règne de Louis XIV.\nOrdre, mesure, raison, imitation des Anciens, « plaire et instruire », règles du théâtre (trois unités, bienséance, vraisemblance).\nRacine, Molière, La Fontaine, Boileau, Madame de La Fayette."
+    },
+    {
+     "question": "Les Lumières",
+     "answer": "XVIIIe siècle.\nRaison, critique de l'absolutisme et de l'intolérance religieuse, progrès, bonheur, diffusion du savoir (Encyclopédie).\nVoltaire (Candide), Montesquieu (Lettres persanes), Diderot, Rousseau."
+    },
+    {
+     "question": "Le romantisme",
+     "answer": "1re moitié du XIXe siècle (vers 1820-1850).\nExpression du « moi », lyrisme, sentiments, nature, mélancolie (« mal du siècle »), engagement, liberté de l'art (drame romantique).\nHugo (Hernani, Les Contemplations), Lamartine, Musset, Vigny, Chateaubriand."
+    },
+    {
+     "question": "Le réalisme",
+     "answer": "Milieu du XIXe siècle (vers 1850).\nReprésenter la réalité telle qu'elle est, y compris la vie ordinaire et les milieux modestes ; souci du détail vrai.\nBalzac (La Comédie humaine), Stendhal, Flaubert (Madame Bovary), Maupassant."
+    },
+    {
+     "question": "Le naturalisme",
+     "answer": "Fin du XIXe siècle (vers 1870-1890).\nProlonge le réalisme avec une méthode quasi scientifique : influence de l'hérédité et du milieu.\nZola (Les Rougon-Macquart : L'Assommoir, Germinal), Maupassant (proche)."
+    },
+    {
+     "question": "Le Parnasse",
+     "answer": "2e moitié du XIXe siècle.\n« L'art pour l'art » : recherche de la beauté formelle, refus du lyrisme personnel et de l'engagement.\nThéophile Gautier (Émaux et camées), Leconte de Lisle, Heredia."
+    },
+    {
+     "question": "Le symbolisme",
+     "answer": "Fin du XIXe siècle (vers 1880).\nSuggérer plutôt que décrire, correspondances entre les sens, musicalité, mystère.\nBaudelaire (précurseur, Les Fleurs du mal), Verlaine, Rimbaud, Mallarmé."
+    },
+    {
+     "question": "Le surréalisme",
+     "answer": "1920-1940 environ (après Dada).\nLibérer l'inconscient et l'imaginaire, écriture automatique, rêve, images inattendues, révolte.\nAndré Breton (Manifeste du surréalisme, 1924 ; Nadja), Paul Éluard, Louis Aragon, Robert Desnos."
+    },
+    {
+     "question": "L'existentialisme et l'absurde (littérature)",
+     "answer": "Années 1940-1950.\nL'homme sans essence, libre et responsable (Sartre) ; l'absurde de la condition humaine et la révolte (Camus).\nSartre (La Nausée, Huis clos), Camus (L'Étranger, Le Mythe de Sisyphe)."
+    },
+    {
+     "question": "Le théâtre de l'absurde",
+     "answer": "Années 1950.\nPersonnages et dialogues dénués de sens apparent, langage qui tourne à vide, absence d'action.\nIonesco (La Cantatrice chauve, Rhinocéros), Beckett (En attendant Godot)."
+    },
+    {
+     "question": "Le Nouveau Roman",
+     "answer": "Années 1950-1960.\nRemise en cause du roman traditionnel : intrigue et personnage affaiblis, descriptions minutieuses.\nAlain Robbe-Grillet, Nathalie Sarraute, Michel Butor (La Modification), Marguerite Duras."
+    },
+    {
+     "question": "La préciosité",
+     "answer": "XVIIe siècle (salons, vers 1650).\nRaffinement du langage et des manières, périphrases recherchées, analyse des sentiments.\nMadeleine de Scudéry ; moquée par Molière (Les Précieuses ridicules)."
+    },
+    {
+     "question": "La littérature d'idées : genres de l'argumentation",
+     "answer": "Essai, apologue (fable, conte philosophique, utopie), lettre ouverte, discours, pamphlet, dialogue.\nArgumentation directe (essai) ou indirecte (apologue : on argumente par un récit)."
+    }
+   ]
+  },
+  {
+   "key": "bac-francais-versification-poesie",
+   "name": "Français — Versification et poésie",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "français"
+   },
+   "tags": [
+    "bac",
+    "français",
+    "épreuve anticipée",
+    "poésie"
+   ],
+   "summary": "Mètres, rimes, strophes, formes fixes et effets de rythme pour analyser un poème.",
+   "description": "Le vocabulaire technique indispensable pour commenter un poème à l'écrit comme à l'oral du bac de français.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Alexandrin",
+     "answer": "Vers de 12 syllabes, le plus utilisé en poésie classique.\nSouvent coupé en deux hémistiches de 6 syllabes par la césure."
+    },
+    {
+     "question": "Décasyllabe et octosyllabe",
+     "answer": "Décasyllabe : vers de 10 syllabes (souvent coupé 4/6).\nOctosyllabe : vers de 8 syllabes."
+    },
+    {
+     "question": "Vers pair / vers impair",
+     "answer": "Pair : nombre pair de syllabes (8, 10, 12…).\nImpair : 5, 7, 9, 11 syllabes ; recherché par Verlaine pour sa musicalité (« De la musique avant toute chose, / Et pour cela préfère l'Impair »)."
+    },
+    {
+     "question": "Le « e » muet (ou caduc) en fin de mot",
+     "answer": "Il se prononce devant une consonne : « u-ne-for-me ».\nIl ne se prononce pas devant une voyelle (élision) ni en fin de vers."
+    },
+    {
+     "question": "Diérèse / synérèse",
+     "answer": "Diérèse : on prononce en deux syllabes deux voyelles qui se suivent (« pass-i-on »), souvent pour mettre un mot en valeur.\nSynérèse : on les prononce en une seule (« pas-sion »)."
+    },
+    {
+     "question": "Rimes plates, croisées, embrassées",
+     "answer": "Plates (suivies) : AABB.\nCroisées : ABAB.\nEmbrassées : ABBA."
+    },
+    {
+     "question": "Rime pauvre, suffisante, riche",
+     "answer": "Pauvre : un seul son commun (ami / pari).\nSuffisante : deux sons communs (beauté / clarté : « t-é »).\nRiche : trois sons ou plus (étoile / toile)."
+    },
+    {
+     "question": "Rime masculine / féminine",
+     "answer": "Féminine : se termine par un « e » muet (rose / chose).\nMasculine : toutes les autres.\nEn poésie classique, on les alterne."
+    },
+    {
+     "question": "Enjambement, rejet, contre-rejet",
+     "answer": "Enjambement : la phrase déborde d'un vers sur le suivant.\nRejet : un élément bref rejeté au début du vers suivant (mis en valeur).\nContre-rejet : un élément bref placé en fin de vers, qui annonce la phrase du vers suivant."
+    },
+    {
+     "question": "Césure et hémistiche",
+     "answer": "Césure : pause à l'intérieur du vers (au milieu de l'alexandrin, après la 6e syllabe).\nHémistiche : chacune des deux moitiés d'un vers coupé par la césure."
+    },
+    {
+     "question": "Le sonnet",
+     "answer": "Forme fixe de 14 vers : deux quatrains puis deux tercets.\nSouvent en alexandrins, rimes ABBA ABBA CCD EED (ou CCD EDE). Le dernier vers est la « chute ».\nRonsard, Du Bellay, Baudelaire, Heredia."
+    },
+    {
+     "question": "Quatrain, tercet, distique, quintil",
+     "answer": "Strophes de 4 vers (quatrain), 3 vers (tercet), 2 vers (distique), 5 vers (quintil)."
+    },
+    {
+     "question": "Vers libre / poème en prose",
+     "answer": "Vers libre : vers sans mètre ni rime réguliers (Apollinaire, Éluard).\nPoème en prose : poème sans vers, en paragraphes (Aloysius Bertrand, Baudelaire, Le Spleen de Paris ; Rimbaud, Illuminations)."
+    },
+    {
+     "question": "Allitération / assonance",
+     "answer": "Allitération : répétition d'un même son consonne (« Pour qui sont ces serpents qui sifflent sur vos têtes ? » — Racine).\nAssonance : répétition d'un même son voyelle."
+    },
+    {
+     "question": "Le registre lyrique",
+     "answer": "Expression des sentiments personnels (amour, mélancolie, mort, nature) ; 1re personne, ponctuation expressive, musicalité.\nLamartine, « Le Lac » ; Hugo, Les Contemplations."
+    },
+    {
+     "question": "Le registre élégiaque",
+     "answer": "Plainte mélancolique liée à une perte, un deuil, un amour perdu ; variante du lyrisme.\nHugo, « Demain, dès l'aube… »."
+    },
+    {
+     "question": "Le blason",
+     "answer": "Poème qui fait l'éloge (ou la satire, « contre-blason ») d'une partie du corps.\nTrès pratiqué au XVIe siècle (Clément Marot)."
+    },
+    {
+     "question": "La fonction du poète selon Hugo",
+     "answer": "Le poète « mage » ou « phare » qui guide le peuple et éclaire l'avenir (« Fonction du poète », Les Rayons et les Ombres)."
+    }
+   ]
+  },
+  {
+   "key": "bac-francais-theatre-roman",
+   "name": "Français — Théâtre et roman : vocabulaire d'analyse",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "français"
+   },
+   "tags": [
+    "bac",
+    "français",
+    "épreuve anticipée",
+    "théâtre",
+    "roman"
+   ],
+   "summary": "Double énonciation, types de répliques, focalisations, temps du récit : les outils d'analyse.",
+   "description": "Toutes les notions utiles pour commenter un extrait de théâtre ou de roman au bac de français.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Double énonciation",
+     "answer": "Au théâtre, les paroles s'adressent à la fois aux personnages sur scène et au public."
+    },
+    {
+     "question": "Didascalie",
+     "answer": "Indication scénique écrite par l'auteur (en italique) : gestes, ton, décor, entrées et sorties."
+    },
+    {
+     "question": "Réplique, tirade, monologue",
+     "answer": "Réplique : prise de parole d'un personnage.\nTirade : longue réplique devant d'autres personnages.\nMonologue : personnage seul en scène qui se parle à lui-même."
+    },
+    {
+     "question": "Stichomythie",
+     "answer": "Échange rapide de répliques très courtes (souvent d'un vers chacune), qui traduit un affrontement ou une vive émotion."
+    },
+    {
+     "question": "Aparté",
+     "answer": "Réplique qu'un personnage dit pour lui-même (et pour le public), que les autres personnages sont censés ne pas entendre."
+    },
+    {
+     "question": "Quiproquo",
+     "answer": "Malentendu : un personnage prend une chose ou une personne pour une autre ; ressort comique."
+    },
+    {
+     "question": "Exposition, nœud, dénouement",
+     "answer": "Exposition : début qui présente personnages et situation.\nNœud : conflit, obstacles.\nDénouement : résolution finale (heureuse en comédie, souvent la mort en tragédie)."
+    },
+    {
+     "question": "Les trois unités du théâtre classique",
+     "answer": "Unité de temps (24 heures), de lieu (un seul lieu) et d'action (une seule intrigue principale).\n« Qu'en un lieu, qu'en un jour, un seul fait accompli / Tienne jusqu'à la fin le théâtre rempli » (Boileau)."
+    },
+    {
+     "question": "Tragédie / comédie / drame",
+     "answer": "Tragédie : personnages nobles, fatalité, fin malheureuse, terreur et pitié (catharsis).\nComédie : personnages ordinaires, défauts ridiculisés, fin heureuse, « corriger les mœurs par le rire ».\nDrame romantique : mélange des genres et des tons (Hugo, Musset)."
+    },
+    {
+     "question": "Les types de comique",
+     "answer": "De mots (jeux de mots), de gestes (coups, chutes), de situation (quiproquo), de caractère (défaut d'un personnage : l'avare, le misanthrope), de répétition."
+    },
+    {
+     "question": "Point de vue (focalisation) interne",
+     "answer": "Le narrateur ne sait que ce que voit, pense et ressent un personnage : on découvre le récit à travers son regard."
+    },
+    {
+     "question": "Point de vue externe",
+     "answer": "Le narrateur décrit de l'extérieur, comme une caméra, sans accès aux pensées des personnages."
+    },
+    {
+     "question": "Point de vue omniscient (focalisation zéro)",
+     "answer": "Le narrateur sait tout : pensées de tous les personnages, passé, avenir."
+    },
+    {
+     "question": "Narrateur interne / externe",
+     "answer": "Narrateur-personnage (récit à la 1re personne) ou narrateur extérieur à l'histoire (récit à la 3e personne)."
+    },
+    {
+     "question": "Valeur de l'imparfait et du passé simple dans un récit",
+     "answer": "Passé simple : actions de premier plan, ponctuelles, qui font avancer le récit.\nImparfait : arrière-plan (description, habitude, action en cours)."
+    },
+    {
+     "question": "Ellipse, sommaire, scène, pause",
+     "answer": "Rythme du récit :\nEllipse : on passe sous silence une période.\nSommaire : longue période résumée.\nScène : temps du récit ≈ temps de l'histoire (dialogues).\nPause : le récit s'arrête (description, commentaire)."
+    },
+    {
+     "question": "Analepse / prolepse",
+     "answer": "Analepse : retour en arrière (flash-back).\nProlepse : anticipation d'un événement futur."
+    },
+    {
+     "question": "Incipit / excipit",
+     "answer": "Incipit : les premières lignes d'une œuvre (doit informer et donner envie de lire).\nExcipit : les dernières lignes."
+    },
+    {
+     "question": "Discours direct, indirect, indirect libre",
+     "answer": "Direct : paroles rapportées telles quelles (guillemets).\nIndirect : rapportées dans une subordonnée (« Il dit qu'il viendrait »).\nIndirect libre : paroles ou pensées intégrées au récit sans subordination ni guillemets."
+    },
+    {
+     "question": "Le personnage-type et l'antihéros",
+     "answer": "Personnage-type : incarne un caractère (l'avare, le valet rusé).\nAntihéros : personnage principal sans qualités héroïques (médiocre, passif)."
+    }
+   ]
+  },
+  {
+   "key": "bac-francais-grammaire-oral",
+   "name": "Français — Grammaire pour l'oral du bac",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "français"
+   },
+   "tags": [
+    "bac",
+    "français",
+    "épreuve anticipée",
+    "grammaire",
+    "oral"
+   ],
+   "summary": "Les points du programme de grammaire : interrogation, négation, subordonnées, valeurs des temps et des modes.",
+   "description": "La question de grammaire de l'oral de français porte sur une phrase ou un court passage du texte. Ces fiches reprennent les notions du programme de 1ère avec des exemples.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Interrogation totale / partielle",
+     "answer": "Totale : la réponse est oui ou non (« Viens-tu ? »).\nPartielle : porte sur un élément, avec un mot interrogatif (« Où vas-tu ? »)."
+    },
+    {
+     "question": "Les trois façons de marquer l'interrogation directe",
+     "answer": "Intonation seule (« Tu viens ? »).\n« Est-ce que » (« Est-ce que tu viens ? »).\nInversion du sujet (« Viens-tu ? »)."
+    },
+    {
+     "question": "Interrogation directe / indirecte",
+     "answer": "Directe : question posée telle quelle, avec point d'interrogation.\nIndirecte : question dans une subordonnée interrogative, sans point d'interrogation (« Je me demande s'il viendra »)."
+    },
+    {
+     "question": "Négation totale / partielle",
+     "answer": "Totale : porte sur toute la phrase (ne… pas, ne… point).\nPartielle : porte sur un élément (ne… jamais, ne… personne, ne… rien, ne… plus, ne… aucun)."
+    },
+    {
+     "question": "Négation restrictive (« ne… que »)",
+     "answer": "Ce n'est pas une vraie négation : elle signifie « seulement » (« Il ne mange que des pommes »)."
+    },
+    {
+     "question": "Le « ne » explétif",
+     "answer": "« Ne » qui n'a pas de valeur négative, après certains verbes ou conjonctions (« Je crains qu'il ne vienne », « avant qu'il ne parte »)."
+    },
+    {
+     "question": "Proposition subordonnée relative",
+     "answer": "Introduite par un pronom relatif (qui, que, dont, où, lequel…), complète un nom (son antécédent).\nRelative déterminative (indispensable au sens) ou explicative (entre virgules, supprimable)."
+    },
+    {
+     "question": "Proposition subordonnée complétive",
+     "answer": "Introduite par « que » (ou si, interrogative indirecte), elle est le plus souvent COD d'un verbe (« Je pense qu'il viendra »)."
+    },
+    {
+     "question": "Proposition subordonnée circonstancielle",
+     "answer": "Introduite par une conjonction de subordination (quand, parce que, si, bien que, afin que…), elle exprime une circonstance : temps, cause, conséquence, but, concession, condition, comparaison."
+    },
+    {
+     "question": "Cause / conséquence / but : conjonctions",
+     "answer": "Cause : parce que, puisque, comme.\nConséquence : si bien que, de sorte que, si… que.\nBut : pour que, afin que (+ subjonctif)."
+    },
+    {
+     "question": "Concession / opposition",
+     "answer": "Concession : bien que, quoique, même si (on admet un fait sans en tirer la conséquence attendue).\nOpposition : alors que, tandis que."
+    },
+    {
+     "question": "Valeurs du présent de l'indicatif",
+     "answer": "D'énonciation (moment où l'on parle), de vérité générale, d'habitude, de narration (présent historique), futur proche, passé proche."
+    },
+    {
+     "question": "Valeurs du conditionnel",
+     "answer": "Mode : hypothèse/irréel, politesse, souhait, information non confirmée.\nTemps : futur dans le passé (« Il disait qu'il viendrait »)."
+    },
+    {
+     "question": "Emplois du subjonctif",
+     "answer": "Après des verbes de volonté, de sentiment, de doute (« Je veux qu'il vienne »), certaines conjonctions (bien que, pour que, avant que), dans une indépendante d'ordre ou de souhait (« Qu'il entre ! »)."
+    },
+    {
+     "question": "Proposition indépendante, principale, subordonnée",
+     "answer": "Indépendante : ne dépend d'aucune autre et n'en a aucune qui dépende d'elle.\nPrincipale : a une subordonnée qui dépend d'elle.\nSubordonnée : dépend d'une principale."
+    },
+    {
+     "question": "Juxtaposition / coordination / subordination",
+     "answer": "Juxtaposition : propositions séparées par une ponctuation (virgule, point-virgule).\nCoordination : reliées par une conjonction de coordination (mais, ou, et, donc, or, ni, car).\nSubordination : une proposition dépend d'une autre."
+    },
+    {
+     "question": "Les classes grammaticales variables / invariables",
+     "answer": "Variables : nom, déterminant, adjectif, pronom, verbe.\nInvariables : adverbe, préposition, conjonction, interjection."
+    },
+    {
+     "question": "Fonctions par rapport au nom",
+     "answer": "Épithète, complément du nom, apposition, proposition subordonnée relative."
+    }
+   ]
+  },
+  {
+   "key": "bac-francais-methodologie",
+   "name": "Français — Méthodes : commentaire, dissertation, oral",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "français"
+   },
+   "tags": [
+    "bac",
+    "français",
+    "épreuve anticipée",
+    "méthode"
+   ],
+   "summary": "Déroulé des épreuves écrites et orales du bac de français et les étapes de chaque exercice.",
+   "description": "Pour ne rien oublier le jour J : durée des épreuves, attentes du correcteur et structure du commentaire, de la dissertation et de l'oral.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Épreuve écrite anticipée de français (voie générale)",
+     "answer": "Durée : 4 heures.\nAu choix : commentaire de texte OU dissertation sur une œuvre au programme et son parcours associé."
+    },
+    {
+     "question": "Épreuve orale de français : déroulé",
+     "answer": "Préparation : 30 min. Passage : 20 min.\n1re partie (12 min, sur 12 points) : lecture, explication linéaire d'un texte de la liste, question de grammaire.\n2e partie (8 min, sur 8 points) : présentation d'une œuvre choisie et entretien avec l'examinateur."
+    },
+    {
+     "question": "Explication linéaire : principe",
+     "answer": "On suit le texte dans l'ordre, mouvement par mouvement, en analysant les procédés d'écriture et leurs effets au service d'un projet de lecture (problématique)."
+    },
+    {
+     "question": "Introduction d'une explication de texte à l'oral",
+     "answer": "Présentation de l'auteur et de l'œuvre, situation du passage, lecture expressive, projet de lecture (problématique), annonce des mouvements du texte."
+    },
+    {
+     "question": "Commentaire : structure",
+     "answer": "Introduction (amorce, présentation, problématique, annonce du plan), développement en 2 ou 3 axes (avec sous-parties), conclusion (bilan + ouverture)."
+    },
+    {
+     "question": "Commentaire : la règle d'or des citations",
+     "answer": "Toute idée s'appuie sur une citation précise du texte, suivie de l'analyse d'un procédé et de son effet (« procédé → citation → interprétation »)."
+    },
+    {
+     "question": "Dissertation : les plans possibles",
+     "answer": "Dialectique (thèse / antithèse / synthèse), analytique (causes / conséquences…), thématique (différents aspects de la question)."
+    },
+    {
+     "question": "Dissertation : un paragraphe argumentatif",
+     "answer": "Idée directrice (argument) + explication + exemple précis tiré de l'œuvre au programme (et/ou d'autres lectures) + phrase de conclusion ou transition."
+    },
+    {
+     "question": "Problématique : définition",
+     "answer": "Question qui pose le problème soulevé par le sujet ou le texte, et à laquelle le devoir répond progressivement."
+    },
+    {
+     "question": "Conclusion : ses deux parties",
+     "answer": "1. Bilan : réponse claire à la problématique.\n2. Ouverture : élargissement vers une autre œuvre, un autre auteur ou une question proche."
+    },
+    {
+     "question": "Procédé d'écriture : définition",
+     "answer": "Choix d'écriture identifiable (figure de style, champ lexical, temps verbal, rythme, ponctuation…) qui produit un effet de sens."
+    },
+    {
+     "question": "Champ lexical",
+     "answer": "Ensemble des mots qui se rapportent à un même thème dans un texte (ex. champ lexical de la mort)."
+    },
+    {
+     "question": "Les registres à citer dans une analyse",
+     "answer": "Lyrique, pathétique, tragique, comique, épique, satirique, polémique, fantastique, didactique, élégiaque."
+    },
+    {
+     "question": "Registre épique",
+     "answer": "Grandit les héros et les actions : exploits, combats, hyperboles, pluriels, lexique guerrier. Exemple : Hugo, La Légende des siècles."
+    },
+    {
+     "question": "Registre pathétique / tragique",
+     "answer": "Pathétique : suscite la pitié devant la souffrance.\nTragique : montre un personnage écrasé par un destin auquel il ne peut échapper (fatalité)."
+    },
+    {
+     "question": "Registres satirique et polémique",
+     "answer": "Satirique : se moque d'une personne, d'un groupe ou d'une institution pour la critiquer.\nPolémique : attaque vive dans un débat d'idées (pamphlet)."
+    }
+   ]
+  },
+  {
+   "key": "bac-histoire-annees-30",
+   "name": "Histoire — La crise des années 1930 et les totalitarismes",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "histoire"
+   },
+   "tags": [
+    "bac",
+    "histoire",
+    "entre-deux-guerres",
+    "totalitarismes"
+   ],
+   "summary": "Krach de 1929, New Deal, régimes fasciste, nazi et stalinien, Front populaire.",
+   "description": "Thème 1 de Terminale : fragilités des démocraties, totalitarismes et Seconde Guerre mondiale (1929-1945). Dates, notions et acteurs à connaître.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Krach de Wall Street",
+     "answer": "Jeudi 24 octobre 1929 (« jeudi noir ») : effondrement de la Bourse de New York, point de départ de la grande dépression."
+    },
+    {
+     "question": "Mécanismes de la crise de 1929",
+     "answer": "Spéculation boursière à crédit → krach → faillites bancaires → effondrement du crédit, de la production et de la consommation → chômage de masse. La crise se diffuse au monde par le rapatriement des capitaux américains et le protectionnisme."
+    },
+    {
+     "question": "Le New Deal",
+     "answer": "Politique de F. D. Roosevelt (président élu en 1932) : intervention de l'État dans l'économie, grands travaux, aides sociales, Social Security Act (1935)."
+    },
+    {
+     "question": "Totalitarisme : définition",
+     "answer": "Régime qui cherche à contrôler totalement la société et les individus : parti unique, chef charismatique, idéologie officielle, propagande, terreur policière, embrigadement de la jeunesse, économie contrôlée."
+    },
+    {
+     "question": "Mussolini et le fascisme",
+     "answer": "Marche sur Rome (octobre 1922) : Mussolini devient chef du gouvernement ; dictature installée en 1925-1926. Le Duce exalte la nation, la force et l'État."
+    },
+    {
+     "question": "Accession de Hitler au pouvoir",
+     "answer": "Nommé chancelier le 30 janvier 1933 (légalement, par le président Hindenburg) ; pleins pouvoirs en mars 1933 ; Führer après la mort de Hindenburg (août 1934)."
+    },
+    {
+     "question": "Idéologie nazie",
+     "answer": "Racisme et antisémitisme (théorie de la « race aryenne »), nationalisme, recherche d'un « espace vital » à l'Est, culte du chef, rejet de la démocratie."
+    },
+    {
+     "question": "Lois de Nuremberg",
+     "answer": "1935 : excluent les Juifs de la citoyenneté allemande et interdisent les mariages entre Juifs et non-Juifs."
+    },
+    {
+     "question": "Nuit de Cristal",
+     "answer": "9-10 novembre 1938 : pogrom organisé par les nazis contre les Juifs d'Allemagne (synagogues incendiées, magasins pillés, milliers d'arrestations)."
+    },
+    {
+     "question": "Staline et l'URSS",
+     "answer": "Au pouvoir après la mort de Lénine (1924), seul maître vers 1928-1929 : collectivisation des terres, plans quinquennaux, culte de la personnalité, terreur."
+    },
+    {
+     "question": "Les Grandes Purges et le Goulag",
+     "answer": "Grande Terreur (1936-1938) : procès de Moscou, centaines de milliers d'exécutions. Goulag : système de camps de travail forcé."
+    },
+    {
+     "question": "Holodomor",
+     "answer": "Famine de 1932-1933 en Ukraine, aggravée par la politique soviétique de collectivisation et de réquisitions : plusieurs millions de morts."
+    },
+    {
+     "question": "6 février 1934",
+     "answer": "Manifestation des ligues d'extrême droite à Paris qui tourne à l'émeute ; perçue par la gauche comme une menace fasciste → rapprochement des partis de gauche."
+    },
+    {
+     "question": "Le Front populaire",
+     "answer": "Victoire électorale de la coalition de gauche (SFIO, radicaux, communistes) en mai 1936 ; Léon Blum président du Conseil."
+    },
+    {
+     "question": "Accords de Matignon (1936)",
+     "answer": "Juin 1936 : hausses de salaires, conventions collectives, délégués du personnel. Lois suivantes : 2 semaines de congés payés, semaine de 40 heures."
+    },
+    {
+     "question": "Guerre d'Espagne",
+     "answer": "1936-1939 : nationalistes de Franco (aidés par Hitler et Mussolini) contre républicains (aidés par l'URSS et les Brigades internationales). Bombardement de Guernica (1937). Victoire de Franco."
+    },
+    {
+     "question": "Accords de Munich",
+     "answer": "Septembre 1938 : la France et le Royaume-Uni acceptent l'annexion des Sudètes (Tchécoslovaquie) par l'Allemagne ; symbole de la politique d'apaisement."
+    },
+    {
+     "question": "Pacte germano-soviétique",
+     "answer": "23 août 1939 : pacte de non-agression entre Hitler et Staline, avec un protocole secret de partage de la Pologne."
+    },
+    {
+     "question": "Anschluss",
+     "answer": "Mars 1938 : annexion de l'Autriche par l'Allemagne nazie."
+    }
+   ]
+  },
+  {
+   "key": "bac-histoire-seconde-guerre",
+   "name": "Histoire — La Seconde Guerre mondiale",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "histoire"
+   },
+   "tags": [
+    "bac",
+    "histoire",
+    "seconde guerre mondiale",
+    "dates"
+   ],
+   "summary": "Phases de la guerre, génocide des Juifs et des Tsiganes, France de Vichy et Résistance.",
+   "description": "Une guerre d'anéantissement (1939-1945) : grandes dates, tournants, Shoah, collaboration et Résistance en France.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Début de la Seconde Guerre mondiale",
+     "answer": "1er septembre 1939 : invasion de la Pologne par l'Allemagne. Le 3 septembre, le Royaume-Uni et la France déclarent la guerre à l'Allemagne."
+    },
+    {
+     "question": "Guerre éclair (Blitzkrieg) et défaite française",
+     "answer": "Mai-juin 1940 : offensive allemande à l'Ouest ; armistice signé par Pétain le 22 juin 1940."
+    },
+    {
+     "question": "Appel du 18 juin 1940",
+     "answer": "Appel du général de Gaulle, depuis Londres sur la BBC, à poursuivre le combat : naissance de la France libre."
+    },
+    {
+     "question": "Régime de Vichy",
+     "answer": "10 juillet 1940 : les parlementaires votent les pleins pouvoirs à Pétain. « État français », fin de la IIIe République ; « Révolution nationale » (Travail, Famille, Patrie)."
+    },
+    {
+     "question": "Collaboration",
+     "answer": "Entrevue de Montoire (octobre 1940) entre Pétain et Hitler. Vichy collabore : statuts des Juifs (oct. 1940 et juin 1941), Milice, STO (1943), participation aux déportations."
+    },
+    {
+     "question": "Rafle du Vel d'Hiv",
+     "answer": "16-17 juillet 1942 : arrestation à Paris par la police française de plus de 13 000 Juifs, dont plus de 4 000 enfants, en vue de leur déportation."
+    },
+    {
+     "question": "Bataille d'Angleterre",
+     "answer": "Été-automne 1940 : la Royal Air Force résiste à la Luftwaffe ; Hitler renonce à envahir le Royaume-Uni."
+    },
+    {
+     "question": "Opération Barbarossa",
+     "answer": "22 juin 1941 : invasion de l'URSS par l'Allemagne. Guerre d'anéantissement à l'Est."
+    },
+    {
+     "question": "Pearl Harbor",
+     "answer": "7 décembre 1941 : attaque japonaise contre la base américaine d'Hawaï ; entrée en guerre des États-Unis."
+    },
+    {
+     "question": "Shoah : les deux phases",
+     "answer": "1. « Shoah par balles » : massacres par les Einsatzgruppen à l'Est (à partir de 1941).\n2. Centres de mise à mort (chambres à gaz) : Auschwitz-Birkenau, Treblinka, Sobibor… Environ 6 millions de Juifs assassinés."
+    },
+    {
+     "question": "Conférence de Wannsee",
+     "answer": "20 janvier 1942 : réunion de hauts responsables nazis pour organiser la mise en œuvre de la « solution finale » (extermination des Juifs d'Europe)."
+    },
+    {
+     "question": "Génocide des Tsiganes",
+     "answer": "Les nazis ont aussi exterminé les Tsiganes (Roms, Sinti) : plusieurs centaines de milliers de victimes."
+    },
+    {
+     "question": "Tournants de la guerre (1942-1943)",
+     "answer": "Midway (juin 1942, Pacifique), El-Alamein (oct.-nov. 1942, Afrique du Nord), Stalingrad (capitulation allemande en février 1943)."
+    },
+    {
+     "question": "Conseil national de la Résistance (CNR)",
+     "answer": "Créé en mai 1943 par Jean Moulin, envoyé de De Gaulle, pour unifier la Résistance intérieure. Programme (mars 1944) : Sécurité sociale, nationalisations, droit de vote des femmes…"
+    },
+    {
+     "question": "Débarquement de Normandie",
+     "answer": "6 juin 1944 (opération Overlord). Libération de Paris : 25 août 1944."
+    },
+    {
+     "question": "Fin de la guerre en Europe",
+     "answer": "8 mai 1945 : capitulation de l'Allemagne."
+    },
+    {
+     "question": "Fin de la guerre en Asie",
+     "answer": "Bombes atomiques sur Hiroshima (6 août 1945) et Nagasaki (9 août 1945) ; capitulation du Japon le 2 septembre 1945."
+    },
+    {
+     "question": "Bilan humain de la guerre",
+     "answer": "Plus de 60 millions de morts, dont une majorité de civils ; l'URSS est le pays le plus touché (environ 25 millions de morts)."
+    },
+    {
+     "question": "Procès de Nuremberg",
+     "answer": "1945-1946 : jugement des principaux dirigeants nazis ; apparition de la notion de « crime contre l'humanité »."
+    },
+    {
+     "question": "Droit de vote des femmes en France",
+     "answer": "Accordé par l'ordonnance du 21 avril 1944 ; premier vote en avril 1945 (municipales)."
+    }
+   ]
+  },
+  {
+   "key": "bac-histoire-monde-bipolaire",
+   "name": "Histoire — Un monde bipolaire (1945-1970)",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "histoire"
+   },
+   "tags": [
+    "bac",
+    "histoire",
+    "guerre froide",
+    "dates"
+   ],
+   "summary": "ONU, guerre froide, crises de Berlin et de Cuba, construction européenne, naissance d'Israël.",
+   "description": "Thème 2 de Terminale : la multiplication des acteurs internationaux dans un monde bipolaire, de 1945 au début des années 1970.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Création de l'ONU",
+     "answer": "Charte signée à San Francisco le 26 juin 1945 ; objectif : maintenir la paix et la sécurité internationales. 5 membres permanents au Conseil de sécurité avec droit de veto (États-Unis, URSS, Royaume-Uni, France, Chine)."
+    },
+    {
+     "question": "Accords de Bretton Woods",
+     "answer": "Juillet 1944 : nouveau système monétaire international fondé sur le dollar ; création du FMI et de la Banque mondiale."
+    },
+    {
+     "question": "Guerre froide : définition",
+     "answer": "Affrontement indirect (1947-1991) entre les États-Unis et l'URSS, deux superpuissances aux modèles opposés, sans conflit armé direct entre elles, avec la menace nucléaire."
+    },
+    {
+     "question": "Doctrine Truman et doctrine Jdanov",
+     "answer": "1947. Truman : endiguement (containment) du communisme ; plan Marshall d'aide à l'Europe.\nJdanov : le monde est divisé en deux camps, « impérialiste » et « anti-impérialiste »."
+    },
+    {
+     "question": "Blocus de Berlin",
+     "answer": "Juin 1948 - mai 1949 : Staline bloque l'accès terrestre à Berlin-Ouest ; pont aérien américain. Conséquence : création de la RFA puis de la RDA (1949)."
+    },
+    {
+     "question": "OTAN et pacte de Varsovie",
+     "answer": "OTAN : alliance militaire occidentale créée en 1949.\nPacte de Varsovie : alliance des pays communistes créée en 1955."
+    },
+    {
+     "question": "Guerre de Corée",
+     "answer": "1950-1953 : la Corée du Nord communiste envahit le Sud ; intervention de l'ONU (États-Unis) et de la Chine. Retour au statu quo sur le 38e parallèle."
+    },
+    {
+     "question": "Construction du mur de Berlin",
+     "answer": "Août 1961 : la RDA construit un mur pour stopper la fuite de ses habitants vers l'Ouest. Symbole de la guerre froide."
+    },
+    {
+     "question": "Crise de Cuba",
+     "answer": "Octobre 1962 : l'URSS installe des missiles nucléaires à Cuba ; blocus américain ; Khrouchtchev retire les missiles. Ensuite : « téléphone rouge » et détente."
+    },
+    {
+     "question": "Proclamation de la RPC",
+     "answer": "1er octobre 1949 : Mao Zedong proclame la République populaire de Chine."
+    },
+    {
+     "question": "Naissance de l'État d'Israël",
+     "answer": "Plan de partage de la Palestine voté par l'ONU (novembre 1947) ; proclamation de l'État d'Israël le 14 mai 1948, suivie de la première guerre israélo-arabe."
+    },
+    {
+     "question": "Traité de Rome",
+     "answer": "25 mars 1957 : création de la CEE (Communauté économique européenne) par 6 pays : France, RFA, Italie, Belgique, Pays-Bas, Luxembourg."
+    },
+    {
+     "question": "CECA",
+     "answer": "Communauté européenne du charbon et de l'acier, créée en 1951 (traité de Paris) sur proposition de Robert Schuman (déclaration du 9 mai 1950)."
+    },
+    {
+     "question": "Guerre du Vietnam",
+     "answer": "Engagement américain massif à partir de 1964-1965 contre le Nord-Vietnam communiste ; retrait américain en 1973 ; réunification du pays sous régime communiste en 1975."
+    },
+    {
+     "question": "Printemps de Prague",
+     "answer": "1968 : tentative de « socialisme à visage humain » en Tchécoslovaquie, écrasée par les chars du pacte de Varsovie (août 1968)."
+    },
+    {
+     "question": "Conférence de Bandung",
+     "answer": "Avril 1955 : réunion de pays d'Asie et d'Afrique ; affirmation du tiers-monde, condamnation du colonialisme. Mouvement des non-alignés (1961)."
+    },
+    {
+     "question": "Crise de Suez",
+     "answer": "1956 : Nasser nationalise le canal de Suez ; intervention franco-britannico-israélienne, arrêtée sous la pression des États-Unis et de l'URSS."
+    }
+   ]
+  },
+  {
+   "key": "bac-histoire-decolonisation",
+   "name": "Histoire — Les décolonisations",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "histoire"
+   },
+   "tags": [
+    "bac",
+    "histoire",
+    "décolonisation"
+   ],
+   "summary": "Indépendances en Asie et en Afrique, guerre d'Indochine, guerre d'Algérie.",
+   "description": "Les grandes étapes de la décolonisation après 1945 et le cas de l'empire colonial français.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Décolonisation : définition",
+     "answer": "Processus par lequel les colonies accèdent à l'indépendance, de façon négociée ou au terme d'une guerre."
+    },
+    {
+     "question": "Indépendance de l'Inde",
+     "answer": "15 août 1947 : indépendance de l'Inde et partition avec le Pakistan, accompagnée de violences et de déplacements massifs. Rôle de Gandhi (non-violence) et de Nehru."
+    },
+    {
+     "question": "Indépendance de l'Indonésie",
+     "answer": "Proclamée en 1945 par Soekarno, reconnue par les Pays-Bas en 1949 après une guerre."
+    },
+    {
+     "question": "Guerre d'Indochine",
+     "answer": "1946-1954 : la France contre le Viet Minh d'Hô Chi Minh. Défaite française à Diên Biên Phu (mai 1954). Accords de Genève (juillet 1954) : Vietnam coupé en deux au 17e parallèle."
+    },
+    {
+     "question": "Début de la guerre d'Algérie",
+     "answer": "1er novembre 1954 : attentats de la « Toussaint rouge » organisés par le FLN."
+    },
+    {
+     "question": "Fin de la guerre d'Algérie",
+     "answer": "Accords d'Évian (18 mars 1962), cessez-le-feu le 19 mars ; indépendance de l'Algérie proclamée le 5 juillet 1962."
+    },
+    {
+     "question": "Indépendances du Maroc et de la Tunisie",
+     "answer": "1956, de manière négociée avec la France."
+    },
+    {
+     "question": "Indépendances de l'Afrique subsaharienne française",
+     "answer": "Surtout en 1960 (« année de l'Afrique ») : Sénégal, Côte d'Ivoire, Mali, Madagascar, Cameroun…"
+    },
+    {
+     "question": "Le retour de De Gaulle lié à l'Algérie",
+     "answer": "Crise du 13 mai 1958 à Alger → De Gaulle rappelé au pouvoir → naissance de la Ve République."
+    },
+    {
+     "question": "Le tiers-monde",
+     "answer": "Expression d'Alfred Sauvy (1952) désignant les pays pauvres, souvent nouvellement indépendants, qui veulent peser entre les deux blocs."
+    },
+    {
+     "question": "Les « pieds-noirs » et les harkis",
+     "answer": "Pieds-noirs : Français d'Algérie, rapatriés en masse en 1962.\nHarkis : Algériens supplétifs de l'armée française, massacrés ou abandonnés pour beaucoup en 1962."
+    },
+    {
+     "question": "Le néocolonialisme",
+     "answer": "Maintien d'une domination économique et politique d'une ancienne puissance coloniale sur ses anciennes colonies (« Françafrique »)."
+    },
+    {
+     "question": "Dernière grande décolonisation portugaise",
+     "answer": "1974-1975 : après la révolution des Œillets, indépendance de l'Angola, du Mozambique, de la Guinée-Bissau."
+    }
+   ]
+  },
+  {
+   "key": "bac-histoire-1970-1991",
+   "name": "Histoire — Les remises en cause (1970-1991)",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "histoire"
+   },
+   "tags": [
+    "bac",
+    "histoire",
+    "chocs pétroliers",
+    "fin de la guerre froide"
+   ],
+   "summary": "Chocs pétroliers, démocratisations, révolution iranienne, chute du mur de Berlin et fin de l'URSS.",
+   "description": "Thème 3 de Terminale : les remises en cause économiques, politiques et sociales des années 1970 à 1991.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Premier choc pétrolier",
+     "answer": "1973 : après la guerre du Kippour, l'OPEP quadruple le prix du pétrole ; fin des Trente Glorieuses, stagflation (inflation + chômage)."
+    },
+    {
+     "question": "Second choc pétrolier",
+     "answer": "1979, lié à la révolution iranienne."
+    },
+    {
+     "question": "Les Trente Glorieuses",
+     "answer": "Expression de Jean Fourastié : période de forte croissance dans les pays développés, de 1945 à 1973 environ."
+    },
+    {
+     "question": "Néolibéralisme",
+     "answer": "Politiques de réduction du rôle de l'État, privatisations, dérégulation : Margaret Thatcher (Royaume-Uni, 1979) et Ronald Reagan (États-Unis, 1981)."
+    },
+    {
+     "question": "Révolution iranienne",
+     "answer": "1979 : chute du Shah ; l'ayatollah Khomeyni instaure une République islamique ; montée de l'islamisme politique."
+    },
+    {
+     "question": "Démocratisation de l'Europe du Sud",
+     "answer": "Portugal (révolution des Œillets, 1974), Grèce (chute des colonels, 1974), Espagne (mort de Franco en 1975, Constitution de 1978)."
+    },
+    {
+     "question": "Intervention soviétique en Afghanistan",
+     "answer": "Décembre 1979 - 1989 : enlisement de l'Armée rouge face aux moudjahidines aidés par les États-Unis."
+    },
+    {
+     "question": "Solidarność",
+     "answer": "Syndicat polonais indépendant fondé en 1980 autour de Lech Wałęsa ; opposition au régime communiste."
+    },
+    {
+     "question": "Gorbatchev",
+     "answer": "Au pouvoir en URSS en 1985 ; réformes : perestroïka (restructuration économique) et glasnost (transparence)."
+    },
+    {
+     "question": "Chute du mur de Berlin",
+     "answer": "9 novembre 1989. Réunification de l'Allemagne : 3 octobre 1990."
+    },
+    {
+     "question": "Fin de l'URSS",
+     "answer": "Décembre 1991 : dissolution de l'URSS ; démission de Gorbatchev le 25 décembre 1991. Fin de la guerre froide."
+    },
+    {
+     "question": "Lois sociétales en France (années 1970-1980)",
+     "answer": "Majorité à 18 ans (1974), loi Veil sur l'IVG (1975), abolition de la peine de mort (1981, Robert Badinter), dépénalisation de l'homosexualité (1982)."
+    },
+    {
+     "question": "Élection de François Mitterrand",
+     "answer": "10 mai 1981 : première alternance de gauche sous la Ve République."
+    },
+    {
+     "question": "Massacre de la place Tian'anmen",
+     "answer": "Juin 1989 : répression sanglante du mouvement étudiant prodémocratie à Pékin."
+    },
+    {
+     "question": "Désindustrialisation",
+     "answer": "Recul des emplois industriels (sidérurgie, textile, mines) dans les pays anciennement industrialisés à partir des années 1970 ; chômage de masse."
+    }
+   ]
+  },
+  {
+   "key": "bac-histoire-depuis-1990",
+   "name": "Histoire — Le monde, l'Europe et la France depuis 1990",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "histoire"
+   },
+   "tags": [
+    "bac",
+    "histoire",
+    "monde contemporain"
+   ],
+   "summary": "Nouvel ordre mondial, 11 septembre 2001, construction européenne, fin de l'apartheid.",
+   "description": "Thème 4 de Terminale : nouvelles conflictualités, approfondissement de l'Union européenne, évolutions de la République française.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Guerre du Golfe",
+     "answer": "1990-1991 : l'Irak envahit le Koweït ; coalition internationale sous mandat de l'ONU menée par les États-Unis."
+    },
+    {
+     "question": "Traité de Maastricht",
+     "answer": "Signé en 1992 : crée l'Union européenne, la citoyenneté européenne et prévoit la monnaie unique."
+    },
+    {
+     "question": "Mise en circulation de l'euro",
+     "answer": "Monnaie créée en 1999 ; pièces et billets en circulation le 1er janvier 2002."
+    },
+    {
+     "question": "Élargissement de l'UE à l'Est",
+     "answer": "2004 : entrée de 10 pays, dont 8 anciens pays communistes (Pologne, Hongrie, République tchèque…)."
+    },
+    {
+     "question": "Brexit",
+     "answer": "Référendum britannique de juin 2016 ; sortie effective du Royaume-Uni de l'UE le 31 janvier 2020."
+    },
+    {
+     "question": "Guerres de Yougoslavie",
+     "answer": "1991-1999 : éclatement de la Yougoslavie ; massacre de Srebrenica (1995), génocide reconnu par la justice internationale."
+    },
+    {
+     "question": "Génocide des Tutsi au Rwanda",
+     "answer": "Avril-juillet 1994 : environ 800 000 victimes."
+    },
+    {
+     "question": "Fin de l'apartheid",
+     "answer": "Libération de Nelson Mandela (1990), abolition des lois de l'apartheid (1991) ; Mandela élu président de l'Afrique du Sud (1994)."
+    },
+    {
+     "question": "Attentats du 11 septembre 2001",
+     "answer": "Attaques d'Al-Qaïda contre le World Trade Center et le Pentagone ; près de 3 000 morts. Riposte américaine en Afghanistan (2001)."
+    },
+    {
+     "question": "Guerre d'Irak",
+     "answer": "2003 : intervention américaine sans mandat de l'ONU ; chute de Saddam Hussein."
+    },
+    {
+     "question": "Printemps arabes",
+     "answer": "À partir de décembre 2010 en Tunisie : soulèvements contre les régimes autoritaires (Tunisie, Égypte, Libye, Syrie…)."
+    },
+    {
+     "question": "Annexion de la Crimée et invasion de l'Ukraine",
+     "answer": "Annexion de la Crimée par la Russie en 2014 ; invasion à grande échelle de l'Ukraine le 24 février 2022."
+    },
+    {
+     "question": "Parité en politique (France)",
+     "answer": "Révision constitutionnelle de 1999 et loi de 2000 favorisant l'égal accès des femmes et des hommes aux mandats électoraux."
+    },
+    {
+     "question": "Mariage pour tous (France)",
+     "answer": "Loi de 2013 ouvrant le mariage aux couples de même sexe."
+    },
+    {
+     "question": "Quinquennat",
+     "answer": "Référendum de 2000 : le mandat présidentiel passe de 7 à 5 ans (appliqué dès 2002)."
+    }
+   ]
+  },
+  {
+   "key": "bac-histoire-ve-republique",
+   "name": "Histoire — La Ve République",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "histoire"
+   },
+   "tags": [
+    "bac",
+    "histoire",
+    "EMC",
+    "institutions",
+    "France"
+   ],
+   "summary": "Naissance, institutions, présidents et grandes étapes de la Ve République.",
+   "description": "Les repères essentiels sur la Ve République : Constitution de 1958, élection présidentielle, cohabitations, présidents successifs.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Constitution de la Ve République",
+     "answer": "Approuvée par référendum le 28 septembre 1958, promulguée le 4 octobre 1958. Rédigée sous l'impulsion de De Gaulle et de Michel Debré."
+    },
+    {
+     "question": "Élection du président au suffrage universel direct",
+     "answer": "Réforme adoptée par référendum en 1962 ; première élection au suffrage universel direct en 1965."
+    },
+    {
+     "question": "Pouvoirs propres du président",
+     "answer": "Recours au référendum (art. 11), dissolution de l'Assemblée nationale (art. 12), pleins pouvoirs en cas de crise grave (art. 16), nomination du Premier ministre, saisine du Conseil constitutionnel."
+    },
+    {
+     "question": "Article 49.3",
+     "answer": "Permet au gouvernement de faire adopter un texte sans vote, sauf si une motion de censure est votée par l'Assemblée nationale."
+    },
+    {
+     "question": "Mai 1968",
+     "answer": "Révolte étudiante puis grève générale ouvrière ; accords de Grenelle ; De Gaulle dissout l'Assemblée et remporte les élections de juin 1968."
+    },
+    {
+     "question": "Départ de De Gaulle",
+     "answer": "Avril 1969 : démission après l'échec du référendum sur la régionalisation et la réforme du Sénat."
+    },
+    {
+     "question": "Les présidents de la Ve République (1959-1995)",
+     "answer": "De Gaulle (1959-1969), Pompidou (1969-1974), Giscard d'Estaing (1974-1981), Mitterrand (1981-1995)."
+    },
+    {
+     "question": "Les présidents de la Ve République depuis 1995",
+     "answer": "Chirac (1995-2007), Sarkozy (2007-2012), Hollande (2012-2017), Macron (depuis 2017)."
+    },
+    {
+     "question": "Cohabitation : définition et exemples",
+     "answer": "Président et majorité parlementaire de bords opposés : Mitterrand-Chirac (1986-1988), Mitterrand-Balladur (1993-1995), Chirac-Jospin (1997-2002)."
+    },
+    {
+     "question": "Lois de décentralisation",
+     "answer": "1982-1983 (lois Defferre) : transfert de compétences de l'État vers les collectivités territoriales (communes, départements, régions)."
+    },
+    {
+     "question": "Le Conseil constitutionnel",
+     "answer": "Vérifie la conformité des lois à la Constitution ; depuis 2008, la question prioritaire de constitutionnalité (QPC) permet à un justiciable de le saisir indirectement."
+    },
+    {
+     "question": "Le Parlement",
+     "answer": "Bicaméral : Assemblée nationale (députés élus au suffrage universel direct, 5 ans) et Sénat (sénateurs élus au suffrage indirect, 6 ans)."
+    }
+   ]
+  },
+  {
+   "key": "bac-geo-mers-oceans",
+   "name": "Géographie — Mers et océans",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "géographie"
+   },
+   "tags": [
+    "bac",
+    "géographie",
+    "mondialisation",
+    "maritimisation"
+   ],
+   "summary": "Maritimisation, routes, détroits, ZEE et rivalités en mer.",
+   "description": "Thème 1 de Terminale : mers et océans au cœur de la mondialisation. Notions, chiffres-clés et lieux à connaître.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Maritimisation",
+     "answer": "Place croissante des mers et océans dans l'économie mondiale : environ 80 à 90 % du commerce mondial (en volume) passe par la mer."
+    },
+    {
+     "question": "Littoralisation",
+     "answer": "Concentration des populations et des activités sur les littoraux."
+    },
+    {
+     "question": "Conteneurisation",
+     "answer": "Transport des marchandises dans des boîtes standardisées (conteneurs EVP : équivalent vingt pieds), qui facilite le transbordement et baisse les coûts."
+    },
+    {
+     "question": "ZEE (zone économique exclusive)",
+     "answer": "Espace maritime jusqu'à 200 milles marins (environ 370 km) des côtes, où l'État exploite seul les ressources. Définie par la convention de Montego Bay (1982)."
+    },
+    {
+     "question": "Mer territoriale",
+     "answer": "Bande de 12 milles marins (environ 22 km) où l'État côtier est souverain."
+    },
+    {
+     "question": "Haute mer",
+     "answer": "Espace au-delà des ZEE, libre d'accès (environ 60 % de la surface des océans) ; traité de l'ONU sur la haute mer adopté en 2023."
+    },
+    {
+     "question": "Convention de Montego Bay",
+     "answer": "Convention des Nations unies sur le droit de la mer (1982) : définit mer territoriale, ZEE, plateau continental, haute mer."
+    },
+    {
+     "question": "La ZEE de la France",
+     "answer": "Environ 10-11 millions de km², 2e ZEE du monde (après celle des États-Unis), grâce surtout aux outre-mer."
+    },
+    {
+     "question": "Les grands détroits stratégiques",
+     "answer": "Malacca, Ormuz, Bab-el-Mandeb, Gibraltar, Pas-de-Calais, Bosphore ; canaux de Suez et de Panama."
+    },
+    {
+     "question": "Les grands ports mondiaux",
+     "answer": "Surtout en Asie : Shanghai (1er port à conteneurs), Singapour, Ningbo-Zhoushan, Shenzhen… En Europe : Rotterdam, Anvers, Hambourg."
+    },
+    {
+     "question": "Façade maritime",
+     "answer": "Littoral ouvert sur la mer, regroupant plusieurs grands ports et leur arrière-pays (ex. Northern Range en Europe du Nord, du Havre à Hambourg)."
+    },
+    {
+     "question": "Hinterland / avant-pays",
+     "answer": "Hinterland : arrière-pays desservi par un port.\nAvant-pays (foreland) : espaces maritimes et ports avec lesquels il est relié."
+    },
+    {
+     "question": "Câbles sous-marins",
+     "answer": "Ils transportent la grande majorité (plus de 95 %) des communications numériques intercontinentales."
+    },
+    {
+     "question": "Menaces sur les océans",
+     "answer": "Surpêche, pollution plastique (« continents de plastique »), réchauffement et acidification, marées noires."
+    },
+    {
+     "question": "Piraterie maritime",
+     "answer": "Actes de violence contre des navires ; foyers : golfe d'Aden, golfe de Guinée, détroit de Malacca."
+    }
+   ]
+  },
+  {
+   "key": "bac-geo-dynamiques-territoriales",
+   "name": "Géographie — Mondialisation et dynamiques territoriales",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "géographie"
+   },
+   "tags": [
+    "bac",
+    "géographie",
+    "mondialisation",
+    "territoires"
+   ],
+   "summary": "Acteurs, flux, métropolisation, inégalités et vocabulaire de la mondialisation.",
+   "description": "Thème 2 de Terminale : dynamiques territoriales, coopérations et tensions dans la mondialisation.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Mondialisation : définition",
+     "answer": "Mise en relation des différents territoires du monde par l'intensification des échanges (marchandises, capitaux, personnes, informations)."
+    },
+    {
+     "question": "FTN (firme transnationale)",
+     "answer": "Entreprise qui exerce ses activités dans plusieurs pays (filiales) ; acteur majeur de la mondialisation."
+    },
+    {
+     "question": "DIPP",
+     "answer": "Division internationale des processus productifs : les étapes de fabrication d'un produit sont réparties entre plusieurs pays selon leurs avantages (coûts, compétences)."
+    },
+    {
+     "question": "IDE",
+     "answer": "Investissement direct à l'étranger : capitaux investis par une entreprise pour créer ou acheter une entreprise dans un autre pays."
+    },
+    {
+     "question": "Métropolisation",
+     "answer": "Concentration des populations, des activités et des pouvoirs de commandement dans les grandes villes (métropoles)."
+    },
+    {
+     "question": "Ville mondiale",
+     "answer": "Métropole qui exerce des fonctions de commandement à l'échelle mondiale (finance, sièges sociaux, culture) : New York, Londres, Tokyo, Paris."
+    },
+    {
+     "question": "Interface",
+     "answer": "Zone de contact entre deux espaces différents qui favorise les échanges (littoral, frontière)."
+    },
+    {
+     "question": "Les acteurs de la mondialisation",
+     "answer": "États, FTN, organisations internationales (OMC, FMI, ONU), ONG, individus (migrants, touristes), organisations criminelles."
+    },
+    {
+     "question": "OMC",
+     "answer": "Organisation mondiale du commerce, créée en 1995 (succède au GATT) : favorise le libre-échange et règle les différends commerciaux."
+    },
+    {
+     "question": "Paradis fiscal",
+     "answer": "Territoire à fiscalité très faible et opaque, qui attire les capitaux étrangers."
+    },
+    {
+     "question": "Pays émergents / BRICS",
+     "answer": "Pays en forte croissance qui s'insèrent dans la mondialisation. BRICS : Brésil, Russie, Inde, Chine, Afrique du Sud (élargi en 2024 à d'autres pays)."
+    },
+    {
+     "question": "Délocalisation",
+     "answer": "Transfert d'activités de production vers un pays où les coûts (souvent salariaux) sont plus bas."
+    },
+    {
+     "question": "Relocalisation et régionalisation",
+     "answer": "Retour de productions dans le pays d'origine ou proche (nearshoring), notamment après la crise du Covid-19, pour sécuriser les chaînes d'approvisionnement."
+    },
+    {
+     "question": "Marge / périphérie",
+     "answer": "Espace peu intégré à la mondialisation, dominé par les centres (ex. pays les moins avancés, espaces enclavés)."
+    },
+    {
+     "question": "Frontière : fonctions",
+     "answer": "Délimiter un territoire et la souveraineté d'un État, contrôler les flux (barrière), mais aussi favoriser les échanges (interface)."
+    }
+   ]
+  },
+  {
+   "key": "bac-geo-france-ue",
+   "name": "Géographie — La France et l'Union européenne",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "géographie"
+   },
+   "tags": [
+    "bac",
+    "géographie",
+    "France",
+    "Union européenne"
+   ],
+   "summary": "Territoires français dans l'UE et la mondialisation, politiques européennes, coopérations transfrontalières.",
+   "description": "Thème conclusif de Terminale : la France, ses régions et l'Union européenne dans la mondialisation.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Nombre d'États membres de l'UE",
+     "answer": "27 depuis le Brexit (2020)."
+    },
+    {
+     "question": "Espace Schengen",
+     "answer": "Espace de libre circulation des personnes sans contrôle aux frontières intérieures ; accord signé en 1985, appliqué à partir de 1995."
+    },
+    {
+     "question": "Zone euro",
+     "answer": "Pays de l'UE qui ont adopté l'euro : 21 pays depuis l'entrée de la Bulgarie le 1er janvier 2026 (la Croatie l'avait adopté en 2023)."
+    },
+    {
+     "question": "Politique de cohésion (fonds structurels)",
+     "answer": "Politique européenne de réduction des écarts de développement entre régions (FEDER, FSE)."
+    },
+    {
+     "question": "PAC",
+     "answer": "Politique agricole commune, créée en 1962 : soutien aux agriculteurs, sécurité alimentaire ; aujourd'hui aussi objectifs environnementaux."
+    },
+    {
+     "question": "RUP (régions ultrapériphériques)",
+     "answer": "Régions de l'UE situées loin du continent européen ; pour la France : Guadeloupe, Martinique, Guyane, La Réunion, Mayotte, Saint-Martin."
+    },
+    {
+     "question": "Eurorégion / coopération transfrontalière",
+     "answer": "Coopération entre régions de part et d'autre d'une frontière (ex. Grand Est avec l'Allemagne, la Suisse, le Luxembourg) ; travailleurs frontaliers."
+    },
+    {
+     "question": "Les métropoles françaises",
+     "answer": "Paris domine (macrocéphalie) ; métropoles régionales : Lyon, Marseille, Toulouse, Lille, Bordeaux, Nantes…"
+    },
+    {
+     "question": "Les grands ports français",
+     "answer": "Marseille-Fos (1er port français), Le Havre (HAROPA avec Rouen et Paris), Dunkerque."
+    },
+    {
+     "question": "Institutions européennes : Commission",
+     "answer": "Propose les lois européennes, veille à leur application ; siège à Bruxelles."
+    },
+    {
+     "question": "Institutions européennes : Parlement européen",
+     "answer": "Élu au suffrage universel direct tous les 5 ans ; vote les lois avec le Conseil de l'UE ; siège à Strasbourg."
+    },
+    {
+     "question": "Institutions européennes : Conseil européen et Conseil de l'UE",
+     "answer": "Conseil européen : chefs d'État et de gouvernement, fixe les grandes orientations.\nConseil de l'UE : ministres des États, vote les lois avec le Parlement."
+    },
+    {
+     "question": "Banque centrale européenne",
+     "answer": "Siège à Francfort ; conduit la politique monétaire de la zone euro."
+    }
+   ]
+  },
+  {
+   "key": "bac-emc-terminale",
+   "name": "EMC — Démocratie, citoyenneté et valeurs",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "EMC"
+   },
+   "tags": [
+    "bac",
+    "EMC",
+    "citoyenneté",
+    "institutions"
+   ],
+   "summary": "Principes républicains, laïcité, droits fondamentaux, démocratie et engagement.",
+   "description": "Enseignement moral et civique : les notions et textes de référence sur la démocratie, la République et la citoyenneté.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Devise de la République",
+     "answer": "« Liberté, Égalité, Fraternité » (article 2 de la Constitution de 1958)."
+    },
+    {
+     "question": "Article 1er de la Constitution",
+     "answer": "« La France est une République indivisible, laïque, démocratique et sociale. »"
+    },
+    {
+     "question": "Laïcité : définition",
+     "answer": "Séparation des Églises et de l'État, neutralité de l'État, liberté de conscience et libre exercice des cultes. Loi du 9 décembre 1905."
+    },
+    {
+     "question": "DDHC",
+     "answer": "Déclaration des droits de l'homme et du citoyen, 26 août 1789. Article 1er : « Les hommes naissent et demeurent libres et égaux en droits. »"
+    },
+    {
+     "question": "Déclaration universelle des droits de l'homme",
+     "answer": "Adoptée par l'Assemblée générale de l'ONU le 10 décembre 1948 à Paris (rôle de René Cassin)."
+    },
+    {
+     "question": "Démocratie directe / représentative",
+     "answer": "Directe : les citoyens votent eux-mêmes les lois (référendum).\nReprésentative : ils élisent des représentants qui décident en leur nom."
+    },
+    {
+     "question": "Séparation des pouvoirs",
+     "answer": "Théorisée par Montesquieu (De l'esprit des lois, 1748) : législatif (voter les lois), exécutif (les appliquer), judiciaire (juger)."
+    },
+    {
+     "question": "État de droit",
+     "answer": "État dans lequel tous, y compris les gouvernants, sont soumis au droit, avec une hiérarchie des normes et une justice indépendante."
+    },
+    {
+     "question": "Citoyenneté : droits et devoirs",
+     "answer": "Droits : voter, être élu, libertés fondamentales.\nDevoirs : respecter la loi, payer l'impôt, participer à la défense, être juré si on est tiré au sort."
+    },
+    {
+     "question": "Conditions pour voter en France",
+     "answer": "Avoir la nationalité française, 18 ans, jouir de ses droits civiques et être inscrit sur les listes électorales. Les citoyens de l'UE peuvent voter aux municipales et aux européennes."
+    },
+    {
+     "question": "Le Défenseur des droits",
+     "answer": "Autorité indépendante (créée en 2011) chargée de défendre les droits des citoyens face aux administrations, de lutter contre les discriminations, de défendre les droits de l'enfant."
+    },
+    {
+     "question": "Liberté d'expression : limites",
+     "answer": "Elle est limitée par la loi : interdiction de la diffamation, de l'injure, de l'incitation à la haine ou à la violence, de l'apologie du terrorisme."
+    },
+    {
+     "question": "Discrimination",
+     "answer": "Traitement défavorable d'une personne en raison d'un critère interdit par la loi (origine, sexe, handicap, religion, orientation sexuelle…). Puni par le Code pénal."
+    },
+    {
+     "question": "Bioéthique",
+     "answer": "Réflexion sur les questions morales posées par les progrès de la médecine et de la biologie (PMA, fin de vie, génétique) ; lois de bioéthique révisées régulièrement."
+    },
+    {
+     "question": "Engagement : formes",
+     "answer": "Vote, militantisme politique ou syndical, associations, bénévolat, service civique, réserve militaire, pétitions."
+    },
+    {
+     "question": "Service national universel / JDC",
+     "answer": "La Journée défense et citoyenneté (JDC) est obligatoire pour tous les jeunes Français entre 16 et 25 ans."
+    }
+   ]
+  },
+  {
+   "key": "bac-maths-suites",
+   "name": "Maths — Suites et récurrence",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "mathématiques"
+   },
+   "tags": [
+    "bac",
+    "mathématiques",
+    "suites",
+    "spécialité"
+   ],
+   "summary": "Suites arithmétiques et géométriques, récurrence, limites et théorèmes de convergence.",
+   "description": "Programme de spécialité mathématiques de Terminale : formules à connaître par cœur et énoncés des théorèmes sur les suites.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Suite arithmétique : terme général",
+     "answer": "uₙ = u₀ + n·r\n(ou uₙ = uₚ + (n − p)·r)"
+    },
+    {
+     "question": "Suite géométrique : terme général",
+     "answer": "uₙ = u₀ × qⁿ\n(ou uₙ = uₚ × qⁿ⁻ᵖ)"
+    },
+    {
+     "question": "Somme 1 + 2 + … + n",
+     "answer": "n(n + 1) / 2"
+    },
+    {
+     "question": "Somme 1 + q + q² + … + qⁿ (q ≠ 1)",
+     "answer": "(1 − qⁿ⁺¹) / (1 − q)"
+    },
+    {
+     "question": "Somme des termes d'une suite arithmétique",
+     "answer": "Nombre de termes × (premier terme + dernier terme) / 2"
+    },
+    {
+     "question": "Raisonnement par récurrence : les étapes",
+     "answer": "1. Initialisation : P(n₀) est vraie.\n2. Hérédité : si P(n) est vraie pour un n ≥ n₀, alors P(n + 1) est vraie.\n3. Conclusion : P(n) est vraie pour tout n ≥ n₀."
+    },
+    {
+     "question": "Limite de qⁿ selon q",
+     "answer": "q > 1 : qⁿ → +∞\nq = 1 : qⁿ = 1\n−1 < q < 1 : qⁿ → 0\nq ≤ −1 : pas de limite"
+    },
+    {
+     "question": "Suite convergente : définition",
+     "answer": "(uₙ) converge vers ℓ si tout intervalle ouvert contenant ℓ contient tous les termes de la suite à partir d'un certain rang."
+    },
+    {
+     "question": "Théorème de convergence monotone",
+     "answer": "Toute suite croissante et majorée converge.\nToute suite décroissante et minorée converge."
+    },
+    {
+     "question": "Suite croissante non majorée",
+     "answer": "Elle tend vers +∞."
+    },
+    {
+     "question": "Théorème des gendarmes",
+     "answer": "Si vₙ ≤ uₙ ≤ wₙ à partir d'un certain rang et si (vₙ) et (wₙ) convergent vers la même limite ℓ, alors (uₙ) converge vers ℓ."
+    },
+    {
+     "question": "Théorème de comparaison",
+     "answer": "Si uₙ ≤ vₙ à partir d'un certain rang et uₙ → +∞, alors vₙ → +∞.\n(De même si vₙ → −∞, alors uₙ → −∞.)"
+    },
+    {
+     "question": "Étudier le sens de variation d'une suite",
+     "answer": "Signe de uₙ₊₁ − uₙ ; ou comparer uₙ₊₁/uₙ à 1 si les termes sont strictement positifs ; ou étudier f si uₙ = f(n) ; ou par récurrence."
+    },
+    {
+     "question": "Suite définie par uₙ₊₁ = f(uₙ), f continue : limite",
+     "answer": "Si (uₙ) converge vers ℓ et f est continue en ℓ, alors ℓ est solution de f(ℓ) = ℓ (point fixe)."
+    },
+    {
+     "question": "Formes indéterminées",
+     "answer": "∞ − ∞ ; 0 × ∞ ; ∞/∞ ; 0/0"
+    },
+    {
+     "question": "Lever une indéterminée pour un polynôme ou une fraction rationnelle en +∞",
+     "answer": "Factoriser par le terme de plus haut degré (au numérateur et au dénominateur)."
+    },
+    {
+     "question": "Inégalité de Bernoulli",
+     "answer": "Pour a > 0 et n entier naturel : (1 + a)ⁿ ≥ 1 + na (se démontre par récurrence)."
+    },
+    {
+     "question": "Suite majorée : définition",
+     "answer": "Il existe un réel M tel que uₙ ≤ M pour tout n."
+    }
+   ]
+  },
+  {
+   "key": "bac-maths-limites-continuite",
+   "name": "Maths — Limites de fonctions et continuité",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "mathématiques"
+   },
+   "tags": [
+    "bac",
+    "mathématiques",
+    "fonctions",
+    "spécialité"
+   ],
+   "summary": "Limites usuelles, asymptotes, croissances comparées, théorème des valeurs intermédiaires.",
+   "description": "Spécialité mathématiques de Terminale : calculer des limites, interpréter graphiquement, utiliser la continuité.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Asymptote horizontale",
+     "answer": "Si lim f(x) = ℓ quand x → +∞ (ou −∞), la droite y = ℓ est asymptote horizontale à la courbe."
+    },
+    {
+     "question": "Asymptote verticale",
+     "answer": "Si lim f(x) = ±∞ quand x → a, la droite x = a est asymptote verticale."
+    },
+    {
+     "question": "Limites de 1/x en 0",
+     "answer": "En 0⁺ : +∞\nEn 0⁻ : −∞"
+    },
+    {
+     "question": "Limites de eˣ",
+     "answer": "En +∞ : +∞\nEn −∞ : 0"
+    },
+    {
+     "question": "Limites de ln(x)",
+     "answer": "En +∞ : +∞\nEn 0⁺ : −∞"
+    },
+    {
+     "question": "Croissances comparées (exponentielle)",
+     "answer": "eˣ / xⁿ → +∞ en +∞\nxⁿ eˣ → 0 en −∞"
+    },
+    {
+     "question": "Croissances comparées (logarithme)",
+     "answer": "ln(x) / x → 0 en +∞\nx ln(x) → 0 en 0⁺"
+    },
+    {
+     "question": "Limite de (eˣ − 1)/x en 0",
+     "answer": "1 (c'est le nombre dérivé de exp en 0)"
+    },
+    {
+     "question": "Limite de ln(1 + x)/x en 0",
+     "answer": "1"
+    },
+    {
+     "question": "Limite de sin(x)/x en 0",
+     "answer": "1"
+    },
+    {
+     "question": "Limite d'une fonction composée",
+     "answer": "Si lim u(x) = b quand x → a et lim g(X) = c quand X → b, alors lim g(u(x)) = c quand x → a."
+    },
+    {
+     "question": "Continuité : définition",
+     "answer": "f est continue en a si lim f(x) = f(a) quand x → a. Graphiquement : courbe tracée « sans lever le crayon »."
+    },
+    {
+     "question": "Dérivabilité et continuité",
+     "answer": "Toute fonction dérivable sur un intervalle y est continue (la réciproque est fausse : |x| est continue mais non dérivable en 0)."
+    },
+    {
+     "question": "Théorème des valeurs intermédiaires",
+     "answer": "Si f est continue sur [a ; b], alors pour tout k compris entre f(a) et f(b), l'équation f(x) = k a au moins une solution dans [a ; b]."
+    },
+    {
+     "question": "Corollaire du TVI (bijection)",
+     "answer": "Si f est continue et strictement monotone sur [a ; b], alors pour tout k entre f(a) et f(b), l'équation f(x) = k a une unique solution dans [a ; b]."
+    },
+    {
+     "question": "Comment approcher la solution de f(x) = k",
+     "answer": "Par balayage ou dichotomie (algorithme), en encadrant la solution avec une précision donnée."
+    },
+    {
+     "question": "Fonction composée : dérivée de g(u(x))",
+     "answer": "(g ∘ u)'(x) = u'(x) × g'(u(x))"
+    }
+   ]
+  },
+  {
+   "key": "bac-maths-exp-ln",
+   "name": "Maths — Exponentielle et logarithme népérien",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "mathématiques"
+   },
+   "tags": [
+    "bac",
+    "mathématiques",
+    "exponentielle",
+    "logarithme",
+    "spécialité"
+   ],
+   "summary": "Propriétés algébriques, dérivées, équations et inéquations avec exp et ln.",
+   "description": "Toutes les règles de calcul sur les fonctions exponentielle et logarithme népérien du programme de spécialité.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Définition de exp",
+     "answer": "Unique fonction dérivable sur ℝ telle que f' = f et f(0) = 1."
+    },
+    {
+     "question": "e^(a + b), e^(a − b), (e^a)ⁿ",
+     "answer": "e^(a + b) = e^a × e^b\ne^(a − b) = e^a / e^b\n(e^a)ⁿ = e^(na)"
+    },
+    {
+     "question": "e^(−x)",
+     "answer": "1 / eˣ"
+    },
+    {
+     "question": "Signe de eˣ",
+     "answer": "eˣ > 0 pour tout réel x."
+    },
+    {
+     "question": "e^a = e^b ⟺ ? ; e^a < e^b ⟺ ?",
+     "answer": "e^a = e^b ⟺ a = b\ne^a < e^b ⟺ a < b (exp est strictement croissante)"
+    },
+    {
+     "question": "Définition de ln",
+     "answer": "Pour x > 0, ln(x) est l'unique réel y tel que e^y = x. ln est la réciproque de exp."
+    },
+    {
+     "question": "ln(1), ln(e)",
+     "answer": "ln(1) = 0\nln(e) = 1"
+    },
+    {
+     "question": "ln(ab), ln(a/b), ln(1/a)",
+     "answer": "ln(ab) = ln(a) + ln(b)\nln(a/b) = ln(a) − ln(b)\nln(1/a) = −ln(a)\n(a > 0, b > 0)"
+    },
+    {
+     "question": "ln(aⁿ), ln(√a)",
+     "answer": "ln(aⁿ) = n ln(a)\nln(√a) = ½ ln(a)"
+    },
+    {
+     "question": "e^(ln x) et ln(e^x)",
+     "answer": "e^(ln x) = x pour x > 0\nln(eˣ) = x pour tout réel x"
+    },
+    {
+     "question": "Signe de ln(x)",
+     "answer": "ln(x) < 0 si 0 < x < 1\nln(x) = 0 si x = 1\nln(x) > 0 si x > 1"
+    },
+    {
+     "question": "Dérivée de ln(x) et de ln(u(x))",
+     "answer": "(ln x)' = 1/x\n(ln u)' = u'/u (u > 0)"
+    },
+    {
+     "question": "Dérivée de e^(u(x))",
+     "answer": "u' × e^u"
+    },
+    {
+     "question": "Résoudre eˣ = 5",
+     "answer": "x = ln(5)"
+    },
+    {
+     "question": "Résoudre ln(x) = 3",
+     "answer": "x = e³ (avec x > 0)"
+    },
+    {
+     "question": "Résoudre une inéquation qⁿ < a (0 < q < 1)",
+     "answer": "n ln(q) < ln(a) ⟺ n > ln(a)/ln(q) (on change le sens car ln(q) < 0)."
+    },
+    {
+     "question": "Équation fonctionnelle de ln",
+     "answer": "ln(ab) = ln(a) + ln(b) : le logarithme transforme les produits en sommes."
+    },
+    {
+     "question": "Fonction ln : variations et convexité",
+     "answer": "Strictement croissante sur ]0 ; +∞[, concave."
+    },
+    {
+     "question": "Fonction exp : variations et convexité",
+     "answer": "Strictement croissante sur ℝ, convexe ; sa courbe est au-dessus de sa tangente en 0 : eˣ ≥ x + 1."
+    },
+    {
+     "question": "Logarithme décimal log",
+     "answer": "log(x) = ln(x) / ln(10) ; log(10ⁿ) = n."
+    }
+   ]
+  },
+  {
+   "key": "bac-maths-convexite-trigo",
+   "name": "Maths — Convexité et fonctions trigonométriques",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "mathématiques"
+   },
+   "tags": [
+    "bac",
+    "mathématiques",
+    "convexité",
+    "trigonométrie",
+    "spécialité"
+   ],
+   "summary": "Dérivée seconde, convexité, point d'inflexion ; sinus et cosinus.",
+   "description": "Spécialité mathématiques de Terminale : étudier la convexité d'une fonction et les fonctions sin et cos.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Fonction convexe : définition graphique",
+     "answer": "Sa courbe est au-dessus de chacune de ses tangentes (et en dessous de ses cordes)."
+    },
+    {
+     "question": "Convexité et dérivée seconde",
+     "answer": "f convexe sur I ⟺ f'' ≥ 0 sur I (⟺ f' croissante sur I).\nf concave ⟺ f'' ≤ 0 (⟺ f' décroissante)."
+    },
+    {
+     "question": "Point d'inflexion",
+     "answer": "Point où la courbe traverse sa tangente : la convexité change. Si f'' s'annule en changeant de signe en a, le point d'abscisse a est un point d'inflexion."
+    },
+    {
+     "question": "Exemples de fonctions convexes / concaves",
+     "answer": "Convexes : x², eˣ.\nConcaves : ln(x), √x.\nx³ : concave sur ]−∞ ; 0], convexe sur [0 ; +∞[ (inflexion en 0)."
+    },
+    {
+     "question": "Inégalité de convexité classique",
+     "answer": "ln(x) ≤ x − 1 pour x > 0 (courbe de ln sous sa tangente en 1)."
+    },
+    {
+     "question": "Valeurs remarquables de cos et sin",
+     "answer": "0 : cos = 1, sin = 0\nπ/6 : cos = √3/2, sin = 1/2\nπ/4 : cos = sin = √2/2\nπ/3 : cos = 1/2, sin = √3/2\nπ/2 : cos = 0, sin = 1"
+    },
+    {
+     "question": "cos² x + sin² x",
+     "answer": "= 1"
+    },
+    {
+     "question": "Parité et périodicité de sin et cos",
+     "answer": "cos est paire, sin est impaire.\nToutes deux sont 2π-périodiques."
+    },
+    {
+     "question": "Dérivées de sin et cos",
+     "answer": "sin' = cos\ncos' = −sin"
+    },
+    {
+     "question": "Dérivées de sin(ax + b) et cos(ax + b)",
+     "answer": "a cos(ax + b)\n−a sin(ax + b)"
+    },
+    {
+     "question": "cos(π − x), sin(π − x)",
+     "answer": "cos(π − x) = −cos x\nsin(π − x) = sin x"
+    },
+    {
+     "question": "cos(−x), sin(−x)",
+     "answer": "cos(−x) = cos x\nsin(−x) = −sin x"
+    },
+    {
+     "question": "Résoudre cos x = cos a",
+     "answer": "x = a + 2kπ ou x = −a + 2kπ (k entier)"
+    },
+    {
+     "question": "Résoudre sin x = sin a",
+     "answer": "x = a + 2kπ ou x = π − a + 2kπ (k entier)"
+    }
+   ]
+  },
+  {
+   "key": "bac-maths-integrales",
+   "name": "Maths — Primitives, intégrales et équations différentielles",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "mathématiques"
+   },
+   "tags": [
+    "bac",
+    "mathématiques",
+    "intégrales",
+    "primitives",
+    "spécialité"
+   ],
+   "summary": "Primitives usuelles, propriétés de l'intégrale, intégration par parties, y' = ay + b.",
+   "description": "Spécialité mathématiques de Terminale : calcul intégral et équations différentielles.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Primitive : définition",
+     "answer": "F est une primitive de f sur I si F est dérivable sur I et F' = f. Deux primitives diffèrent d'une constante."
+    },
+    {
+     "question": "Primitives de xⁿ (n ≠ −1)",
+     "answer": "xⁿ⁺¹ / (n + 1)"
+    },
+    {
+     "question": "Primitive de 1/x (x > 0)",
+     "answer": "ln(x)"
+    },
+    {
+     "question": "Primitive de 1/x² (x ≠ 0)",
+     "answer": "−1/x"
+    },
+    {
+     "question": "Primitive de 1/√x (x > 0)",
+     "answer": "2√x"
+    },
+    {
+     "question": "Primitives de eˣ et e^(ax+b)",
+     "answer": "eˣ\n(1/a) e^(ax+b)"
+    },
+    {
+     "question": "Primitives de sin x et cos x",
+     "answer": "∫ sin = −cos\n∫ cos = sin"
+    },
+    {
+     "question": "Primitives de u'·e^u, u'/u, u'·uⁿ",
+     "answer": "e^u\nln(u) (si u > 0)\nuⁿ⁺¹/(n + 1)"
+    },
+    {
+     "question": "Intégrale et primitive",
+     "answer": "∫ₐᵇ f(x) dx = F(b) − F(a), où F est une primitive de f."
+    },
+    {
+     "question": "Interprétation géométrique de l'intégrale",
+     "answer": "Si f est continue et positive sur [a ; b], ∫ₐᵇ f(x) dx est l'aire (en unités d'aire) du domaine entre la courbe, l'axe des abscisses et les droites x = a et x = b."
+    },
+    {
+     "question": "Relation de Chasles",
+     "answer": "Intégrale de a à c = intégrale de a à b + intégrale de b à c :\n∫ₐᶜ f = ∫ₐᵇ f + ∫ (de b à c) f"
+    },
+    {
+     "question": "Linéarité de l'intégrale",
+     "answer": "∫(αf + βg) = α∫f + β∫g"
+    },
+    {
+     "question": "Positivité et croissance de l'intégrale",
+     "answer": "Si f ≥ 0 sur [a ; b] (a ≤ b), alors ∫ₐᵇ f ≥ 0.\nSi f ≤ g, alors ∫ₐᵇ f ≤ ∫ₐᵇ g."
+    },
+    {
+     "question": "Valeur moyenne d'une fonction",
+     "answer": "μ = (1/(b − a)) ∫ₐᵇ f(x) dx"
+    },
+    {
+     "question": "Intégration par parties",
+     "answer": "∫ₐᵇ u v' = [u v]ₐᵇ − ∫ₐᵇ u' v"
+    },
+    {
+     "question": "Aire entre deux courbes (f ≥ g sur [a ; b])",
+     "answer": "∫ₐᵇ (f(x) − g(x)) dx"
+    },
+    {
+     "question": "Solutions de y' = ay",
+     "answer": "y(x) = C e^(ax), C réel."
+    },
+    {
+     "question": "Solutions de y' = ay + b (a ≠ 0)",
+     "answer": "y(x) = C e^(ax) − b/a, C réel.\n(−b/a est la solution constante.)"
+    },
+    {
+     "question": "Solutions de y' = ay + f",
+     "answer": "Solution générale = solution particulière de y' = ay + f + solutions de y' = ay."
+    }
+   ]
+  },
+  {
+   "key": "bac-maths-probabilites",
+   "name": "Maths — Dénombrement et probabilités",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "mathématiques"
+   },
+   "tags": [
+    "bac",
+    "mathématiques",
+    "probabilités",
+    "dénombrement",
+    "spécialité"
+   ],
+   "summary": "Combinaisons, probabilités conditionnelles, loi binomiale, espérance, variance, Bienaymé-Tchebychev.",
+   "description": "Spécialité mathématiques de Terminale : combinatoire, conditionnement et variables aléatoires.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Nombre de k-uplets (listes avec répétition) d'un ensemble à n éléments",
+     "answer": "nᵏ"
+    },
+    {
+     "question": "Nombre d'arrangements (k-uplets d'éléments distincts)",
+     "answer": "n! / (n − k)! = n × (n − 1) × … × (n − k + 1)"
+    },
+    {
+     "question": "Nombre de permutations d'un ensemble à n éléments",
+     "answer": "n!"
+    },
+    {
+     "question": "Nombre de combinaisons de k éléments parmi n",
+     "answer": "(n k), lu « k parmi n » = n! / (k!(n − k)!)"
+    },
+    {
+     "question": "Relation de Pascal",
+     "answer": "(n k) + (n k+1) = (n+1 k+1)"
+    },
+    {
+     "question": "Nombre de parties d'un ensemble à n éléments",
+     "answer": "2ⁿ"
+    },
+    {
+     "question": "Probabilité conditionnelle P_A(B)",
+     "answer": "P_A(B) = P(A ∩ B) / P(A) (P(A) ≠ 0)"
+    },
+    {
+     "question": "Formule des probabilités totales (A, Ā)",
+     "answer": "P(B) = P(A ∩ B) + P(Ā ∩ B) = P(A)·P_A(B) + P(Ā)·P_Ā(B)"
+    },
+    {
+     "question": "Événements indépendants",
+     "answer": "P(A ∩ B) = P(A) × P(B)"
+    },
+    {
+     "question": "Épreuve et schéma de Bernoulli",
+     "answer": "Épreuve de Bernoulli : 2 issues (succès de probabilité p, échec 1 − p).\nSchéma de Bernoulli : n répétitions identiques et indépendantes."
+    },
+    {
+     "question": "Loi binomiale B(n, p) : P(X = k)",
+     "answer": "(n k) pᵏ (1 − p)ⁿ⁻ᵏ"
+    },
+    {
+     "question": "Espérance, variance et écart-type de B(n, p)",
+     "answer": "E(X) = np\nV(X) = np(1 − p)\nσ(X) = √(np(1 − p))"
+    },
+    {
+     "question": "Espérance d'une variable aléatoire",
+     "answer": "E(X) = Σ xᵢ P(X = xᵢ)"
+    },
+    {
+     "question": "Linéarité de l'espérance, variance de aX + b",
+     "answer": "E(aX + b) = aE(X) + b\nV(aX + b) = a²V(X)\nE(X + Y) = E(X) + E(Y)"
+    },
+    {
+     "question": "Variance d'une somme de variables indépendantes",
+     "answer": "V(X + Y) = V(X) + V(Y)"
+    },
+    {
+     "question": "Inégalité de Bienaymé-Tchebychev",
+     "answer": "P(|X − E(X)| ≥ δ) ≤ V(X) / δ² (δ > 0)"
+    },
+    {
+     "question": "Inégalité de concentration (moyenne de n variables)",
+     "answer": "Pour Mₙ moyenne de n variables indépendantes de même loi (espérance μ, variance V) : P(|Mₙ − μ| ≥ δ) ≤ V / (nδ²)"
+    },
+    {
+     "question": "Loi faible des grands nombres",
+     "answer": "La moyenne Mₙ d'un échantillon de taille n converge en probabilité vers l'espérance μ : P(|Mₙ − μ| ≥ δ) → 0 quand n → +∞."
+    }
+   ]
+  },
+  {
+   "key": "bac-maths-geometrie-espace",
+   "name": "Maths — Géométrie dans l'espace",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "mathématiques"
+   },
+   "tags": [
+    "bac",
+    "mathématiques",
+    "géométrie",
+    "vecteurs",
+    "spécialité"
+   ],
+   "summary": "Vecteurs, produit scalaire, représentations paramétriques, équations de plans, projetés orthogonaux.",
+   "description": "Spécialité mathématiques de Terminale : vecteurs, droites et plans de l'espace.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Vecteurs colinéaires",
+     "answer": "u⃗ et v⃗ sont colinéaires s'il existe un réel k tel que v⃗ = k u⃗ (ou u⃗ = 0⃗)."
+    },
+    {
+     "question": "Vecteurs coplanaires",
+     "answer": "u⃗, v⃗, w⃗ sont coplanaires s'il existe des réels a et b tels que w⃗ = a u⃗ + b v⃗ (u⃗, v⃗ non colinéaires)."
+    },
+    {
+     "question": "Représentation paramétrique d'une droite",
+     "answer": "Droite passant par A(xA ; yA ; zA) et de vecteur directeur u⃗(a ; b ; c) :\nx = xA + ta ; y = yA + tb ; z = zA + tc (t réel)"
+    },
+    {
+     "question": "Produit scalaire en repère orthonormé",
+     "answer": "u⃗ · v⃗ = xx' + yy' + zz'"
+    },
+    {
+     "question": "Norme d'un vecteur",
+     "answer": "‖u⃗‖ = √(x² + y² + z²)"
+    },
+    {
+     "question": "Vecteurs orthogonaux",
+     "answer": "u⃗ · v⃗ = 0"
+    },
+    {
+     "question": "Produit scalaire et angle",
+     "answer": "u⃗ · v⃗ = ‖u⃗‖ × ‖v⃗‖ × cos(u⃗, v⃗)"
+    },
+    {
+     "question": "Vecteur normal à un plan",
+     "answer": "Vecteur non nul orthogonal à deux vecteurs non colinéaires du plan."
+    },
+    {
+     "question": "Équation cartésienne d'un plan",
+     "answer": "Plan de vecteur normal n⃗(a ; b ; c) : ax + by + cz + d = 0."
+    },
+    {
+     "question": "Droite orthogonale à un plan",
+     "answer": "Une droite est orthogonale à un plan si elle est orthogonale à deux droites sécantes de ce plan (son vecteur directeur est normal au plan)."
+    },
+    {
+     "question": "Positions relatives de deux droites de l'espace",
+     "answer": "Coplanaires (sécantes ou parallèles) ou non coplanaires."
+    },
+    {
+     "question": "Positions relatives d'une droite et d'un plan",
+     "answer": "Droite incluse dans le plan, strictement parallèle, ou sécante (un point d'intersection)."
+    },
+    {
+     "question": "Projeté orthogonal d'un point M sur un plan P",
+     "answer": "Point H de P tel que MH⃗ est normal à P ; MH est la distance de M au plan."
+    },
+    {
+     "question": "Distance entre deux points A et B",
+     "answer": "AB = √((xB − xA)² + (yB − yA)² + (zB − zA)²)"
+    },
+    {
+     "question": "Milieu d'un segment [AB]",
+     "answer": "((xA + xB)/2 ; (yA + yB)/2 ; (zA + zB)/2)"
+    },
+    {
+     "question": "Volume d'une pyramide et d'un tétraèdre",
+     "answer": "V = (1/3) × aire de la base × hauteur"
+    }
+   ]
+  },
+  {
+   "key": "bac-maths-epreuve-anticipee",
+   "name": "Maths — Automatismes (épreuve anticipée de 1ère)",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "mathématiques"
+   },
+   "tags": [
+    "bac",
+    "mathématiques",
+    "automatismes",
+    "épreuve anticipée"
+   ],
+   "summary": "Calcul numérique et littéral, pourcentages, puissances, fonctions de référence : les automatismes à maîtriser.",
+   "description": "Questions rapides d'automatismes, comme dans la première partie de l'épreuve anticipée de mathématiques de fin de Première. À réviser sans calculatrice.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Augmentation de t % : coefficient multiplicateur",
+     "answer": "1 + t/100 (ex. +20 % → × 1,2)"
+    },
+    {
+     "question": "Diminution de t % : coefficient multiplicateur",
+     "answer": "1 − t/100 (ex. −15 % → × 0,85)"
+    },
+    {
+     "question": "Hausse de 20 % puis baisse de 20 % : évolution globale",
+     "answer": "1,2 × 0,8 = 0,96 → baisse de 4 %"
+    },
+    {
+     "question": "Taux réciproque d'une hausse de 25 %",
+     "answer": "Coefficient 1/1,25 = 0,8 → baisse de 20 %"
+    },
+    {
+     "question": "Taux d'évolution entre V₀ et V₁",
+     "answer": "(V₁ − V₀) / V₀"
+    },
+    {
+     "question": "Prendre 30 % de 70",
+     "answer": "0,3 × 70 = 21"
+    },
+    {
+     "question": "aⁿ × aᵐ, aⁿ / aᵐ, (aⁿ)ᵐ",
+     "answer": "aⁿ⁺ᵐ ; aⁿ⁻ᵐ ; aⁿᵐ"
+    },
+    {
+     "question": "a⁰ et a⁻ⁿ",
+     "answer": "a⁰ = 1 ; a⁻ⁿ = 1/aⁿ (a ≠ 0)"
+    },
+    {
+     "question": "Identités remarquables",
+     "answer": "(a + b)² = a² + 2ab + b²\n(a − b)² = a² − 2ab + b²\n(a + b)(a − b) = a² − b²"
+    },
+    {
+     "question": "Factoriser x² − 9",
+     "answer": "(x − 3)(x + 3)"
+    },
+    {
+     "question": "Développer (2x − 1)²",
+     "answer": "4x² − 4x + 1"
+    },
+    {
+     "question": "Diviser par une fraction",
+     "answer": "a/b ÷ c/d = a/b × d/c"
+    },
+    {
+     "question": "Calculer 1/3 + 1/6",
+     "answer": "2/6 + 1/6 = 3/6 = 1/2"
+    },
+    {
+     "question": "Racines d'un trinôme ax² + bx + c",
+     "answer": "Δ = b² − 4ac.\nΔ > 0 : x = (−b ± √Δ)/(2a) ; Δ = 0 : x = −b/(2a) ; Δ < 0 : pas de racine réelle."
+    },
+    {
+     "question": "Coefficient directeur de la droite passant par A et B",
+     "answer": "m = (yB − yA) / (xB − xA)"
+    },
+    {
+     "question": "Équation réduite d'une droite",
+     "answer": "y = mx + p (m : coefficient directeur, p : ordonnée à l'origine)"
+    },
+    {
+     "question": "Résoudre 3x − 7 = 2",
+     "answer": "x = 3"
+    },
+    {
+     "question": "Résoudre −2x < 6",
+     "answer": "x > −3 (on change le sens en divisant par un nombre négatif)"
+    },
+    {
+     "question": "Moyenne pondérée",
+     "answer": "(Σ nᵢxᵢ) / (Σ nᵢ)"
+    },
+    {
+     "question": "Probabilité d'un événement en équiprobabilité",
+     "answer": "Nombre d'issues favorables / nombre d'issues possibles"
+    },
+    {
+     "question": "Convertir 2,5 h en heures et minutes",
+     "answer": "2 h 30 min"
+    },
+    {
+     "question": "Vitesse, distance, durée",
+     "answer": "v = d / t ; 90 km/h = 25 m/s"
+    },
+    {
+     "question": "Écriture scientifique de 0,000 45",
+     "answer": "4,5 × 10⁻⁴"
+    },
+    {
+     "question": "Image et antécédent",
+     "answer": "Si f(2) = 5 : 5 est l'image de 2 ; 2 est un antécédent de 5."
+    },
+    {
+     "question": "Signe de ax + b (a > 0)",
+     "answer": "Négatif avant −b/a, positif après."
+    }
+   ]
+  },
+  {
+   "key": "bac-pc-mecanique",
+   "name": "Physique — Mécanique : mouvements et lois de Newton",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "physique"
+   },
+   "tags": [
+    "bac",
+    "physique-chimie",
+    "mécanique",
+    "spécialité"
+   ],
+   "summary": "Vitesse, accélération, lois de Newton, chute libre, mouvement circulaire, satellites.",
+   "description": "Spécialité physique-chimie de Terminale : décrire un mouvement et le prévoir avec les lois de Newton.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Vecteur vitesse et vecteur accélération",
+     "answer": "v⃗ = dOM⃗/dt\na⃗ = dv⃗/dt"
+    },
+    {
+     "question": "Première loi de Newton (principe d'inertie)",
+     "answer": "Dans un référentiel galiléen, si ΣF⃗ = 0⃗, le centre de masse est au repos ou en mouvement rectiligne uniforme (et réciproquement)."
+    },
+    {
+     "question": "Deuxième loi de Newton",
+     "answer": "Dans un référentiel galiléen : ΣF⃗ = m a⃗ (m constante)."
+    },
+    {
+     "question": "Troisième loi de Newton",
+     "answer": "Principe des actions réciproques : F⃗(A/B) = −F⃗(B/A)."
+    },
+    {
+     "question": "Chute libre : définition et accélération",
+     "answer": "Mouvement sous la seule action du poids : a⃗ = g⃗ (g ≈ 9,81 m·s⁻² à la surface de la Terre)."
+    },
+    {
+     "question": "Équations horaires d'un projectile lancé avec v₀ sous un angle α",
+     "answer": "x(t) = v₀ cos(α) t\nz(t) = −½ g t² + v₀ sin(α) t (+ z₀)\nTrajectoire parabolique."
+    },
+    {
+     "question": "Mouvement circulaire uniforme : accélération",
+     "answer": "Centripète (dirigée vers le centre), de norme a = v²/R."
+    },
+    {
+     "question": "Base de Frenet : expression de l'accélération",
+     "answer": "a⃗ = (dv/dt) t⃗ + (v²/R) n⃗"
+    },
+    {
+     "question": "Loi de la gravitation universelle",
+     "answer": "F = G × mA × mB / d²\nG ≈ 6,67 × 10⁻¹¹ N·m²·kg⁻²"
+    },
+    {
+     "question": "Vitesse d'un satellite en orbite circulaire",
+     "answer": "v = √(GM / r) (r : rayon de l'orbite, M : masse de l'astre)"
+    },
+    {
+     "question": "Troisième loi de Kepler",
+     "answer": "T² / r³ = 4π² / (GM) : constante pour tous les satellites d'un même astre."
+    },
+    {
+     "question": "Satellite géostationnaire",
+     "answer": "Orbite circulaire dans le plan de l'équateur, période égale à celle de rotation de la Terre (environ 23 h 56 min) : il paraît immobile depuis le sol (altitude ≈ 36 000 km)."
+    },
+    {
+     "question": "Énergie cinétique",
+     "answer": "Ec = ½ m v²"
+    },
+    {
+     "question": "Énergie potentielle de pesanteur",
+     "answer": "Epp = m g z (z vers le haut)"
+    },
+    {
+     "question": "Énergie mécanique et sa conservation",
+     "answer": "Em = Ec + Ep ; conservée si les forces non conservatives (frottements) ne travaillent pas."
+    },
+    {
+     "question": "Théorème de l'énergie cinétique",
+     "answer": "ΔEc = Σ W(F⃗) (somme des travaux des forces)."
+    },
+    {
+     "question": "Travail d'une force constante",
+     "answer": "W(F⃗) = F⃗ · AB⃗ = F × AB × cos α"
+    },
+    {
+     "question": "Particule chargée dans un champ électrique uniforme",
+     "answer": "F⃗ = q E⃗ ; dans un condensateur plan, E = U/d."
+    },
+    {
+     "question": "Poussée d'Archimède",
+     "answer": "Force verticale vers le haut égale au poids du fluide déplacé : Π = ρ_fluide × V_immergé × g."
+    }
+   ]
+  },
+  {
+   "key": "bac-pc-ondes-lumiere",
+   "name": "Physique — Ondes, son et lumière",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "physique"
+   },
+   "tags": [
+    "bac",
+    "physique-chimie",
+    "ondes",
+    "optique",
+    "spécialité"
+   ],
+   "summary": "Intensité sonore, effet Doppler, diffraction, interférences, effet photoélectrique, lunette.",
+   "description": "Spécialité physique-chimie de Terminale : propriétés des ondes et de la lumière.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Célérité, longueur d'onde, période",
+     "answer": "λ = v × T = v / f"
+    },
+    {
+     "question": "Niveau d'intensité sonore",
+     "answer": "L = 10 log(I / I₀), avec I₀ = 1,0 × 10⁻¹² W·m⁻² (seuil d'audibilité). L en dB."
+    },
+    {
+     "question": "Doubler l'intensité sonore",
+     "answer": "Augmente le niveau sonore de 3 dB (10 log 2 ≈ 3)."
+    },
+    {
+     "question": "Atténuation géométrique / par absorption",
+     "answer": "Géométrique : l'intensité diminue avec la distance (I = P / (4πr²) pour une source ponctuelle).\nPar absorption : une partie de l'énergie est absorbée par le milieu."
+    },
+    {
+     "question": "Effet Doppler",
+     "answer": "Décalage de fréquence perçue quand la source et le récepteur sont en mouvement relatif : fréquence plus élevée quand la source s'approche, plus basse quand elle s'éloigne."
+    },
+    {
+     "question": "Diffraction : condition et écart angulaire",
+     "answer": "Elle est marquée quand l'ouverture a est de l'ordre de λ.\nθ = λ / a (θ en radians, demi-écart angulaire de la tache centrale)."
+    },
+    {
+     "question": "Interférences : conditions",
+     "answer": "Deux ondes cohérentes (même fréquence, déphasage constant).\nConstructives si la différence de marche δ = kλ ; destructives si δ = (k + ½)λ."
+    },
+    {
+     "question": "Interfrange (fentes d'Young)",
+     "answer": "i = λ D / b (D : distance fentes-écran, b : écart entre les fentes)"
+    },
+    {
+     "question": "Énergie d'un photon",
+     "answer": "E = h ν = h c / λ\nh = 6,63 × 10⁻³⁴ J·s"
+    },
+    {
+     "question": "Effet photoélectrique",
+     "answer": "Émission d'électrons par un métal éclairé, seulement si l'énergie des photons hν dépasse le travail d'extraction W : Ec max = hν − W. Preuve de l'aspect corpusculaire de la lumière (Einstein, 1905)."
+    },
+    {
+     "question": "Dualité onde-particule",
+     "answer": "La lumière (et la matière) présente à la fois un aspect ondulatoire (diffraction, interférences) et corpusculaire (photons). Longueur d'onde de de Broglie : λ = h / p."
+    },
+    {
+     "question": "Lunette astronomique afocale",
+     "answer": "Le foyer image de l'objectif coïncide avec le foyer objet de l'oculaire : l'image finale est à l'infini.\nGrossissement G = f'objectif / f'oculaire."
+    },
+    {
+     "question": "Relation de conjugaison d'une lentille mince",
+     "answer": "1/OA' − 1/OA = 1/f' (valeurs algébriques)."
+    },
+    {
+     "question": "Grandissement",
+     "answer": "γ = A'B' / AB = OA' / OA"
+    },
+    {
+     "question": "Domaine du visible",
+     "answer": "Environ 400 nm (violet) à 800 nm (rouge)."
+    },
+    {
+     "question": "Célérité de la lumière dans le vide",
+     "answer": "c ≈ 3,00 × 10⁸ m·s⁻¹"
+    }
+   ]
+  },
+  {
+   "key": "bac-pc-thermo-electricite",
+   "name": "Physique — Thermodynamique et circuits RC",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "physique"
+   },
+   "tags": [
+    "bac",
+    "physique-chimie",
+    "thermodynamique",
+    "électricité",
+    "spécialité"
+   ],
+   "summary": "Énergie interne, transferts thermiques, gaz parfait, loi de Newton du refroidissement, dipôle RC.",
+   "description": "Spécialité physique-chimie de Terminale : bilans d'énergie et évolution temporelle d'un circuit RC.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Premier principe de la thermodynamique",
+     "answer": "ΔU = W + Q (variation d'énergie interne = travail + transfert thermique reçus)."
+    },
+    {
+     "question": "Variation d'énergie interne d'un solide ou liquide",
+     "answer": "ΔU = m c ΔT (c : capacité thermique massique)."
+    },
+    {
+     "question": "Capacité thermique massique de l'eau",
+     "answer": "c ≈ 4,18 × 10³ J·kg⁻¹·K⁻¹ (4,18 kJ pour élever 1 kg d'eau de 1 °C)."
+    },
+    {
+     "question": "Les trois modes de transfert thermique",
+     "answer": "Conduction (de proche en proche, sans déplacement de matière), convection (avec déplacement de matière), rayonnement (ondes électromagnétiques)."
+    },
+    {
+     "question": "Flux thermique et résistance thermique",
+     "answer": "Φ = (T₁ − T₂) / R_th (en W)"
+    },
+    {
+     "question": "Loi phénoménologique de Newton (refroidissement)",
+     "answer": "Le flux échangé est proportionnel à l'écart de température : Φ = h S (T_ext − T). La température évolue de façon exponentielle vers T_ext."
+    },
+    {
+     "question": "Équation d'état du gaz parfait",
+     "answer": "P V = n R T (R = 8,314 J·mol⁻¹·K⁻¹, T en kelvins, P en Pa, V en m³)."
+    },
+    {
+     "question": "Conversion degrés Celsius → kelvins",
+     "answer": "T(K) = θ(°C) + 273,15"
+    },
+    {
+     "question": "Loi de Wien",
+     "answer": "λmax × T = 2,90 × 10⁻³ m·K : plus un corps est chaud, plus la longueur d'onde de son maximum d'émission λmax est petite."
+    },
+    {
+     "question": "Charge d'un condensateur",
+     "answer": "q = C × u_C (C en farads)."
+    },
+    {
+     "question": "Intensité et charge",
+     "answer": "i = dq/dt = C × du_C/dt"
+    },
+    {
+     "question": "Constante de temps d'un circuit RC",
+     "answer": "τ = R × C (en secondes)."
+    },
+    {
+     "question": "Charge d'un condensateur (échelon E)",
+     "answer": "u_C(t) = E (1 − e^(−t/τ)). À t = τ : 63 % de E ; à t = 5τ : charge quasi complète."
+    },
+    {
+     "question": "Décharge d'un condensateur",
+     "answer": "u_C(t) = E e^(−t/τ). À t = τ : 37 % de la tension initiale."
+    },
+    {
+     "question": "Équation différentielle de la charge RC",
+     "answer": "RC du_C/dt + u_C = E"
+    },
+    {
+     "question": "Énergie stockée dans un condensateur",
+     "answer": "E = ½ C u²"
+    }
+   ]
+  },
+  {
+   "key": "bac-chimie-acide-base",
+   "name": "Chimie — Acides, bases et pH",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "chimie"
+   },
+   "tags": [
+    "bac",
+    "physique-chimie",
+    "acide-base",
+    "spécialité"
+   ],
+   "summary": "pH, Ka et pKa, diagrammes de prédominance, titrages, solutions tampons.",
+   "description": "Spécialité physique-chimie de Terminale : transformations acide-base et dosages.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Acide et base selon Brønsted",
+     "answer": "Acide : espèce capable de céder un ion H⁺.\nBase : espèce capable de capter un ion H⁺."
+    },
+    {
+     "question": "Couple acide/base",
+     "answer": "AH / A⁻ : AH = A⁻ + H⁺"
+    },
+    {
+     "question": "Définition du pH",
+     "answer": "pH = −log([H₃O⁺] / c°) ; [H₃O⁺] = c° × 10⁻ᵖᴴ (c° = 1 mol·L⁻¹)."
+    },
+    {
+     "question": "Produit ionique de l'eau",
+     "answer": "Ke = [H₃O⁺][HO⁻] = 1,0 × 10⁻¹⁴ à 25 °C ; pKe = 14."
+    },
+    {
+     "question": "Solution acide / neutre / basique à 25 °C",
+     "answer": "pH < 7 : acide ; pH = 7 : neutre ; pH > 7 : basique."
+    },
+    {
+     "question": "Constante d'acidité Ka",
+     "answer": "Ka = [A⁻][H₃O⁺] / [AH] (concentrations divisées par c°) ; pKa = −log Ka."
+    },
+    {
+     "question": "Relation pH / pKa",
+     "answer": "pH = pKa + log([A⁻] / [AH])"
+    },
+    {
+     "question": "Diagramme de prédominance",
+     "answer": "pH < pKa : l'acide AH prédomine.\npH > pKa : la base A⁻ prédomine.\npH = pKa : [AH] = [A⁻]."
+    },
+    {
+     "question": "Acide fort / acide faible",
+     "answer": "Fort : réaction totale avec l'eau (pH = −log c pour un monoacide).\nFaible : réaction limitée (équilibre), taux d'avancement final < 1."
+    },
+    {
+     "question": "Solution tampon",
+     "answer": "Solution dont le pH varie peu par dilution modérée ou ajout modéré d'acide ou de base ; mélange d'un acide faible et de sa base conjuguée en quantités proches (pH ≈ pKa)."
+    },
+    {
+     "question": "Équivalence d'un titrage",
+     "answer": "Les réactifs ont été introduits dans les proportions stœchiométriques ; le réactif titré est entièrement consommé.\nPour aA + bB : n(A)/a = n(B)/b."
+    },
+    {
+     "question": "Repérer l'équivalence d'un titrage pH-métrique",
+     "answer": "Saut de pH : méthode des tangentes ou maximum de la dérivée dpH/dV."
+    },
+    {
+     "question": "Titrage conductimétrique : principe",
+     "answer": "On suit la conductivité σ ; l'équivalence correspond au changement de pente de la courbe σ = f(V)."
+    },
+    {
+     "question": "Loi de Kohlrausch",
+     "answer": "σ = Σ λᵢ [Xᵢ] (conductivités molaires ioniques × concentrations)."
+    },
+    {
+     "question": "Indicateur coloré : choix",
+     "answer": "Sa zone de virage doit contenir le pH à l'équivalence."
+    },
+    {
+     "question": "Quotient de réaction et constante d'équilibre",
+     "answer": "Qr évolue vers K : si Qr < K, sens direct ; si Qr > K, sens inverse ; à l'équilibre Qr = K."
+    }
+   ]
+  },
+  {
+   "key": "bac-chimie-cinetique-redox",
+   "name": "Chimie — Cinétique, oxydoréduction et piles",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "chimie"
+   },
+   "tags": [
+    "bac",
+    "physique-chimie",
+    "cinétique",
+    "oxydoréduction",
+    "spécialité"
+   ],
+   "summary": "Vitesse de réaction, facteurs cinétiques, catalyse, demi-équations, piles, électrolyse.",
+   "description": "Spécialité physique-chimie de Terminale : suivi temporel des transformations et électrochimie.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Vitesse volumique de disparition d'un réactif",
+     "answer": "v = −d[R]/dt (en mol·L⁻¹·s⁻¹)"
+    },
+    {
+     "question": "Facteurs cinétiques",
+     "answer": "Température, concentration des réactifs, catalyseur, surface de contact, solvant."
+    },
+    {
+     "question": "Catalyseur",
+     "answer": "Espèce qui accélère une réaction sans être consommée ni modifier l'état final. Catalyse homogène, hétérogène, enzymatique."
+    },
+    {
+     "question": "Temps de demi-réaction t½",
+     "answer": "Durée au bout de laquelle l'avancement atteint la moitié de sa valeur finale."
+    },
+    {
+     "question": "Loi de vitesse d'ordre 1",
+     "answer": "v = k[A] ⟹ [A](t) = [A]₀ e^(−kt) ; t½ = ln 2 / k (indépendant de [A]₀)."
+    },
+    {
+     "question": "Oxydant et réducteur",
+     "answer": "Oxydant : espèce capable de capter un ou des électrons.\nRéducteur : espèce capable de céder un ou des électrons."
+    },
+    {
+     "question": "Oxydation / réduction",
+     "answer": "Oxydation : perte d'électrons (le réducteur est oxydé).\nRéduction : gain d'électrons (l'oxydant est réduit)."
+    },
+    {
+     "question": "Demi-équation électronique : méthode",
+     "answer": "Équilibrer l'élément, puis O avec H₂O, H avec H⁺, puis les charges avec e⁻."
+    },
+    {
+     "question": "Pile : définition",
+     "answer": "Convertisseur d'énergie chimique en énergie électrique, siège d'une réaction d'oxydoréduction spontanée ; électrons transférés par le circuit extérieur."
+    },
+    {
+     "question": "Anode / cathode",
+     "answer": "Anode : siège de l'oxydation (pôle − d'une pile).\nCathode : siège de la réduction (pôle + d'une pile)."
+    },
+    {
+     "question": "Rôle du pont salin",
+     "answer": "Assurer la neutralité électrique des solutions et fermer le circuit (circulation d'ions)."
+    },
+    {
+     "question": "Capacité électrique d'une pile",
+     "answer": "Q = n(e⁻) × F = I × Δt\nF = 96 500 C·mol⁻¹ (constante de Faraday)."
+    },
+    {
+     "question": "Électrolyse",
+     "answer": "Transformation forcée (non spontanée) imposée par un générateur : conversion d'énergie électrique en énergie chimique (ex. recharge d'un accumulateur, production de dihydrogène)."
+    },
+    {
+     "question": "Radioactivité : loi de décroissance",
+     "answer": "N(t) = N₀ e^(−λt) ; demi-vie t½ = ln 2 / λ."
+    },
+    {
+     "question": "Activité d'un échantillon radioactif",
+     "answer": "A = λN (en becquerels, Bq : désintégrations par seconde)."
+    }
+   ]
+  },
+  {
+   "key": "bac-chimie-organique",
+   "name": "Chimie — Chimie organique",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "chimie"
+   },
+   "tags": [
+    "bac",
+    "physique-chimie",
+    "chimie organique",
+    "spécialité"
+   ],
+   "summary": "Groupes caractéristiques, familles, nomenclature, mécanismes, rendement d'une synthèse.",
+   "description": "Spécialité physique-chimie : reconnaître les familles organiques et analyser une synthèse.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Groupe hydroxyle / famille",
+     "answer": "–OH → alcools (suffixe « -ol »)."
+    },
+    {
+     "question": "Groupe carbonyle / familles",
+     "answer": "C=O → aldéhydes (« -al », en bout de chaîne) et cétones (« -one »)."
+    },
+    {
+     "question": "Groupe carboxyle / famille",
+     "answer": "–COOH → acides carboxyliques (« acide …-oïque »)."
+    },
+    {
+     "question": "Groupe ester / famille",
+     "answer": "–COO– → esters (« …-oate de …-yle »)."
+    },
+    {
+     "question": "Groupe amine et amide",
+     "answer": "Amine : –N– (ex. –NH₂, « -amine »).\nAmide : –CO–N– (« -amide »)."
+    },
+    {
+     "question": "Formule topologique",
+     "answer": "Représentation où les liaisons carbone-carbone sont des segments ; les atomes de C et les H qui leur sont liés ne sont pas écrits."
+    },
+    {
+     "question": "Isomères",
+     "answer": "Espèces de même formule brute mais de formules développées (ou spatiales) différentes."
+    },
+    {
+     "question": "Catégories de réactions",
+     "answer": "Substitution, addition, élimination."
+    },
+    {
+     "question": "Site donneur / accepteur de doublet",
+     "answer": "Donneur : atome riche en électrons (doublet non liant, liaison multiple, charge −).\nAccepteur : atome pauvre en électrons (charge +, δ+)."
+    },
+    {
+     "question": "Flèche courbe dans un mécanisme",
+     "answer": "Elle représente le déplacement d'un doublet d'électrons, d'un site donneur vers un site accepteur."
+    },
+    {
+     "question": "Rendement d'une synthèse",
+     "answer": "η = n(produit obtenu) / n(produit maximal théorique)"
+    },
+    {
+     "question": "Estérification",
+     "answer": "Acide carboxylique + alcool ⇌ ester + eau ; réaction lente et limitée ; catalysée par un acide. On améliore le rendement avec un excès de réactif ou en éliminant l'eau."
+    },
+    {
+     "question": "Chauffage à reflux : intérêt",
+     "answer": "Accélérer la réaction (température élevée) sans perte de matière (les vapeurs sont condensées et retombent dans le ballon)."
+    },
+    {
+     "question": "Contrôler la pureté d'un produit",
+     "answer": "Mesure de la température de fusion (banc Kofler), chromatographie sur couche mince (CCM), spectroscopie IR."
+    },
+    {
+     "question": "Spectroscopie IR : bandes caractéristiques",
+     "answer": "O–H alcool : bande large vers 3 200-3 400 cm⁻¹.\nC=O : bande fine et intense vers 1 650-1 750 cm⁻¹.\nO–H acide : bande très large 2 500-3 200 cm⁻¹."
+    },
+    {
+     "question": "Polymère",
+     "answer": "Macromolécule formée par la répétition d'un motif ; obtenue par polymérisation (addition ou condensation)."
+    }
+   ]
+  },
+  {
+   "key": "bac-svt-genetique-evolution",
+   "name": "SVT — Génétique et évolution",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "SVT"
+   },
+   "tags": [
+    "bac",
+    "SVT",
+    "génétique",
+    "évolution",
+    "spécialité"
+   ],
+   "summary": "Méiose, brassages, mutations, sélection naturelle, dérive génétique, spéciation.",
+   "description": "Spécialité SVT de Terminale : origine de la diversité génétique et mécanismes de l'évolution.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Méiose : rôle",
+     "answer": "Division cellulaire qui produit 4 cellules haploïdes (gamètes) à partir d'une cellule diploïde ; deux divisions successives."
+    },
+    {
+     "question": "Brassage interchromosomique",
+     "answer": "Lors de l'anaphase I, répartition aléatoire et indépendante des chromosomes homologues de chaque paire."
+    },
+    {
+     "question": "Brassage intrachromosomique",
+     "answer": "Échange de portions de chromatides entre chromosomes homologues (crossing-over) en prophase I."
+    },
+    {
+     "question": "Fécondation : rôle dans la diversité",
+     "answer": "Réunion aléatoire de deux gamètes : rétablit la diploïdie et amplifie le brassage."
+    },
+    {
+     "question": "Croisement test (test-cross)",
+     "answer": "Croisement d'un individu avec un homozygote récessif pour déterminer son génotype ou mettre en évidence des gènes liés (proportions de phénotypes recombinés)."
+    },
+    {
+     "question": "Gènes indépendants / gènes liés",
+     "answer": "Indépendants (sur des chromosomes différents) : test-cross donne 4 phénotypes en proportions égales (25 %).\nLiés : majorité de phénotypes parentaux, minorité de recombinés (crossing-over)."
+    },
+    {
+     "question": "Mutation",
+     "answer": "Modification de la séquence d'ADN : substitution, délétion, insertion. Source de nouveaux allèles. Seules les mutations des cellules germinales sont transmises à la descendance."
+    },
+    {
+     "question": "Duplication de gènes et famille multigénique",
+     "answer": "Une duplication suivie de mutations indépendantes produit des gènes apparentés (ex. gènes des globines, des opsines)."
+    },
+    {
+     "question": "Sélection naturelle",
+     "answer": "Les individus porteurs d'allèles avantageux dans un milieu donné ont plus de descendants : la fréquence de ces allèles augmente (Darwin)."
+    },
+    {
+     "question": "Dérive génétique",
+     "answer": "Variation aléatoire des fréquences alléliques d'une génération à l'autre, d'autant plus forte que la population est petite."
+    },
+    {
+     "question": "Modèle de Hardy-Weinberg",
+     "answer": "Dans une population idéale (grande, panmictique, sans mutation, migration ni sélection), les fréquences alléliques et génotypiques restent constantes : p² + 2pq + q² = 1."
+    },
+    {
+     "question": "Spéciation",
+     "answer": "Formation de nouvelles espèces à partir d'une population, souvent après un isolement reproducteur (géographique, comportemental…)."
+    },
+    {
+     "question": "Espèce : définition",
+     "answer": "Ensemble d'individus capables de se reproduire entre eux et d'avoir une descendance fertile (définition biologique)."
+    },
+    {
+     "question": "Transferts horizontaux de gènes",
+     "answer": "Transmission de gènes entre organismes sans reproduction (ex. entre bactéries, par virus)."
+    },
+    {
+     "question": "Symbiose et endosymbiose",
+     "answer": "Les mitochondries et les chloroplastes proviennent de bactéries intégrées dans une cellule ancestrale (endosymbiose)."
+    },
+    {
+     "question": "Phylogénie : principe",
+     "answer": "Les espèces qui partagent le plus de caractères dérivés (innovations évolutives) ont un ancêtre commun plus récent."
+    },
+    {
+     "question": "L'Homme et les grands singes",
+     "answer": "L'Homme partage un ancêtre commun récent avec le chimpanzé (environ 7 millions d'années) ; Homo sapiens apparaît en Afrique il y a environ 300 000 ans."
+    }
+   ]
+  },
+  {
+   "key": "bac-svt-geologie",
+   "name": "SVT — Géologie : temps, roches et tectonique",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "SVT"
+   },
+   "tags": [
+    "bac",
+    "SVT",
+    "géologie",
+    "spécialité"
+   ],
+   "summary": "Chronologie relative et absolue, radiochronologie, subduction, collision, magmatisme.",
+   "description": "Spécialité SVT de Terminale : à la recherche du passé géologique de notre planète.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Principe de superposition",
+     "answer": "Une couche sédimentaire est plus récente que celle qu'elle recouvre (sauf déformation)."
+    },
+    {
+     "question": "Principe de recoupement",
+     "answer": "Une structure (faille, filon) qui en recoupe une autre lui est postérieure."
+    },
+    {
+     "question": "Principe d'inclusion",
+     "answer": "Les éléments inclus dans une roche sont plus anciens qu'elle."
+    },
+    {
+     "question": "Principe de continuité",
+     "answer": "Une même couche a le même âge sur toute son étendue."
+    },
+    {
+     "question": "Fossile stratigraphique",
+     "answer": "Fossile d'espèce à large répartition géographique et courte durée de vie, utilisé pour dater et corréler des couches."
+    },
+    {
+     "question": "Radiochronologie : principe",
+     "answer": "Décroissance radioactive d'un élément père en élément fils à vitesse constante : N(t) = N₀ e^(−λt) ; t½ = ln 2 / λ."
+    },
+    {
+     "question": "Couples utilisés en datation absolue",
+     "answer": "Carbone 14 (jusqu'à ≈ 50 000 ans), potassium-argon (K/Ar), rubidium-strontium (Rb/Sr, méthode des isochrones), uranium-plomb (U/Pb)."
+    },
+    {
+     "question": "Méthode des isochrones (Rb/Sr)",
+     "answer": "La pente de la droite ⁸⁷Sr/⁸⁶Sr = f(⁸⁷Rb/⁸⁶Sr) vaut e^(λt) − 1 et permet de calculer l'âge t."
+    },
+    {
+     "question": "Âge de la Terre",
+     "answer": "Environ 4,56 milliards d'années."
+    },
+    {
+     "question": "Subduction",
+     "answer": "Plongement d'une lithosphère océanique dense sous une autre plaque ; marqueurs : fosse océanique, séismes (plan de Wadati-Benioff), volcanisme explosif."
+    },
+    {
+     "question": "Métamorphisme de la croûte océanique en subduction",
+     "answer": "Augmentation de pression et température : métagabbros à faciès schiste vert → schiste bleu (glaucophane) → éclogite (grenat, jadéite)."
+    },
+    {
+     "question": "Collision continentale",
+     "answer": "Affrontement de deux lithosphères continentales après fermeture d'un océan : formation de chaînes de montagnes (Alpes, Himalaya). Marqueurs : plis, failles inverses, nappes de charriage, ophiolites."
+    },
+    {
+     "question": "Ophiolites",
+     "answer": "Fragments de lithosphère océanique charriés sur un continent (ex. Chenaillet dans les Alpes) : témoins d'un ancien océan."
+    },
+    {
+     "question": "Magmatisme de subduction",
+     "answer": "Déshydratation de la plaque plongeante → fusion partielle de la péridotite du manteau → magma andésitique, volcans explosifs, granitoïdes."
+    },
+    {
+     "question": "Croûte continentale / océanique",
+     "answer": "Continentale : granitique, épaisse (30-70 km), peu dense, âgée.\nOcéanique : basalte et gabbro, fine (≈ 7 km), plus dense, jeune (< 200 Ma)."
+    },
+    {
+     "question": "Grandes crises biologiques",
+     "answer": "Extinctions massives (ex. fin du Permien vers −252 Ma, fin du Crétacé vers −66 Ma avec la disparition des dinosaures non aviens) qui servent de limites à l'échelle des temps géologiques."
+    }
+   ]
+  },
+  {
+   "key": "bac-svt-corps-humain",
+   "name": "SVT — Corps humain : immunité, nerfs, muscles, glycémie",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "SVT"
+   },
+   "tags": [
+    "bac",
+    "SVT",
+    "corps humain",
+    "immunologie",
+    "spécialité"
+   ],
+   "summary": "Réponse immunitaire, vaccination, réflexe myotatique, contraction musculaire, régulation de la glycémie.",
+   "description": "Spécialité SVT de Terminale : comportements, mouvement, système immunitaire et régulations.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Immunité innée",
+     "answer": "Réponse immédiate, non spécifique, héritée : réaction inflammatoire (rougeur, chaleur, gonflement, douleur), phagocytose par les macrophages et granulocytes."
+    },
+    {
+     "question": "Immunité adaptative",
+     "answer": "Réponse plus lente, spécifique d'un antigène, avec mémoire : lymphocytes B et T."
+    },
+    {
+     "question": "Rôle des lymphocytes B",
+     "answer": "Après activation, se différencient en plasmocytes qui produisent des anticorps."
+    },
+    {
+     "question": "Anticorps : structure et rôle",
+     "answer": "Immunoglobulines en Y (2 chaînes lourdes, 2 légères) ; se fixent spécifiquement sur l'antigène → complexe immun, éliminé par phagocytose."
+    },
+    {
+     "question": "Rôle des lymphocytes T CD8",
+     "answer": "Deviennent des lymphocytes T cytotoxiques qui détruisent les cellules infectées."
+    },
+    {
+     "question": "Rôle des lymphocytes T CD4",
+     "answer": "Deviennent des lymphocytes T auxiliaires (LTh) qui sécrètent des interleukines stimulant la prolifération des LB et LT CD8."
+    },
+    {
+     "question": "Cellule présentatrice de l'antigène",
+     "answer": "Cellule dendritique (ou macrophage) qui présente l'antigène aux lymphocytes T dans les ganglions : lien entre immunité innée et adaptative."
+    },
+    {
+     "question": "Mémoire immunitaire et vaccination",
+     "answer": "La vaccination provoque une première réponse sans maladie et crée des cellules mémoire : lors d'une vraie infection, la réponse secondaire est plus rapide, plus forte et plus durable."
+    },
+    {
+     "question": "Réflexe myotatique",
+     "answer": "Contraction réflexe d'un muscle en réponse à son propre étirement. Arc réflexe : récepteur (fuseau neuromusculaire) → neurone sensoriel → moelle épinière (synapse) → motoneurone → muscle effecteur."
+    },
+    {
+     "question": "Message nerveux",
+     "answer": "Codé en fréquence de potentiels d'action le long de l'axone ; codé en concentration de neurotransmetteur au niveau de la synapse."
+    },
+    {
+     "question": "Synapse chimique",
+     "answer": "Arrivée du potentiel d'action → libération de neurotransmetteur (ex. acétylcholine à la jonction neuromusculaire) → fixation sur des récepteurs → nouveau message dans la cellule postsynaptique."
+    },
+    {
+     "question": "Contraction musculaire : mécanisme",
+     "answer": "Glissement des filaments d'actine sur les filaments de myosine, consommant de l'ATP, déclenché par la libération de Ca²⁺ dans la cellule musculaire."
+    },
+    {
+     "question": "Régénération de l'ATP",
+     "answer": "Respiration cellulaire (mitochondries, avec O₂, rendement élevé) ou fermentation (sans O₂, faible rendement, produit de l'acide lactique)."
+    },
+    {
+     "question": "Glycémie normale",
+     "answer": "Environ 1 g/L de sang (0,8 à 1,2 g/L à jeun)."
+    },
+    {
+     "question": "Insuline",
+     "answer": "Hormone hypoglycémiante produite par les cellules β des îlots de Langerhans du pancréas ; favorise le stockage du glucose (glycogène dans le foie et les muscles)."
+    },
+    {
+     "question": "Glucagon",
+     "answer": "Hormone hyperglycémiante produite par les cellules α du pancréas ; stimule la libération de glucose par le foie."
+    },
+    {
+     "question": "Diabète de type 1 / type 2",
+     "answer": "Type 1 : destruction auto-immune des cellules β, plus de production d'insuline.\nType 2 : résistance des cellules cibles à l'insuline (facteurs génétiques et mode de vie)."
+    },
+    {
+     "question": "Stress aigu",
+     "answer": "Réponse de l'organisme via l'adrénaline (médullosurrénale) puis le cortisol (corticosurrénale) ; mobilise l'énergie."
+    }
+   ]
+  },
+  {
+   "key": "bac-svt-plantes-climat",
+   "name": "SVT — Plantes et climats du passé",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "SVT"
+   },
+   "tags": [
+    "bac",
+    "SVT",
+    "plantes",
+    "climat",
+    "spécialité"
+   ],
+   "summary": "Vie fixée des plantes, photosynthèse, reproduction, paléoclimats et effet de serre.",
+   "description": "Spécialité SVT de Terminale : l'organisation des plantes et la reconstitution des climats passés.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Photosynthèse : bilan",
+     "answer": "6 CO₂ + 6 H₂O → C₆H₁₂O₆ + 6 O₂ (avec énergie lumineuse), dans les chloroplastes."
+    },
+    {
+     "question": "Surfaces d'échanges d'une plante",
+     "answer": "Feuilles (grande surface, stomates pour les gaz), racines et poils absorbants (eau et ions minéraux)."
+    },
+    {
+     "question": "Sève brute / sève élaborée",
+     "answer": "Sève brute : eau et ions minéraux, des racines vers les feuilles, dans le xylème.\nSève élaborée : sucres produits par la photosynthèse, dans le phloème."
+    },
+    {
+     "question": "Pollinisation",
+     "answer": "Transport du pollen des étamines au pistil d'une fleur, par le vent ou les animaux (souvent les insectes : coévolution plante-pollinisateur)."
+    },
+    {
+     "question": "Dissémination des graines",
+     "answer": "Par le vent, l'eau, les animaux (fruits consommés, accrochés) : permet la colonisation de nouveaux milieux par des organismes fixés."
+    },
+    {
+     "question": "Défenses des plantes",
+     "answer": "Structures (épines, cuticule), molécules toxiques ou répulsives, signaux d'alerte chimiques."
+    },
+    {
+     "question": "Domestication des plantes",
+     "answer": "Sélection par l'Homme, depuis environ 10 000 ans, de caractères utiles (grains plus gros, non dispersés…) ; réduit la diversité génétique."
+    },
+    {
+     "question": "Paléothermomètre isotopique δ¹⁸O (glaces polaires)",
+     "answer": "Dans les glaces, un δ¹⁸O plus bas (plus négatif) indique une période plus froide."
+    },
+    {
+     "question": "Indices des climats passés",
+     "answer": "Pollens fossiles, carottes de glace (bulles d'air, isotopes), sédiments marins (foraminifères), coraux, moraines glaciaires."
+    },
+    {
+     "question": "Paramètres de Milankovitch",
+     "answer": "Variations de l'orbite et de l'axe de la Terre (excentricité, obliquité, précession) qui expliquent l'alternance des périodes glaciaires et interglaciaires."
+    },
+    {
+     "question": "Dernier maximum glaciaire",
+     "answer": "Il y a environ 20 000 ans : calottes de glace étendues, niveau marin environ 120 m plus bas qu'aujourd'hui."
+    },
+    {
+     "question": "Effet de serre",
+     "answer": "Certains gaz (H₂O, CO₂, CH₄) absorbent le rayonnement infrarouge émis par la Terre et le réémettent en partie vers le sol, ce qui la réchauffe."
+    },
+    {
+     "question": "Réchauffement actuel",
+     "answer": "Environ +1,1 à +1,2 °C par rapport à l'époque préindustrielle, principalement dû aux émissions humaines de gaz à effet de serre (rapports du GIEC)."
+    }
+   ]
+  },
+  {
+   "key": "bac-ens-scientifique-terminale",
+   "name": "Enseignement scientifique — L'essentiel de Terminale",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "enseignement scientifique"
+   },
+   "tags": [
+    "bac",
+    "enseignement scientifique",
+    "tronc commun"
+   ],
+   "summary": "Science, climat et société ; le futur des énergies ; une histoire du vivant.",
+   "description": "Tronc commun de Terminale : les connaissances essentielles des trois thèmes du programme.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Gaz à effet de serre principaux",
+     "answer": "Vapeur d'eau (H₂O), dioxyde de carbone (CO₂), méthane (CH₄), protoxyde d'azote (N₂O)."
+    },
+    {
+     "question": "Le GIEC",
+     "answer": "Groupe d'experts intergouvernemental sur l'évolution du climat, créé en 1988 : synthétise les connaissances scientifiques sur le changement climatique."
+    },
+    {
+     "question": "Concentration en CO₂ atmosphérique",
+     "answer": "Environ 280 ppm avant l'ère industrielle ; plus de 420 ppm aujourd'hui."
+    },
+    {
+     "question": "Rétroaction positive : exemple",
+     "answer": "Fonte des glaces → la surface réfléchit moins le rayonnement solaire (albédo plus faible) → réchauffement accru → davantage de fonte."
+    },
+    {
+     "question": "Albédo",
+     "answer": "Fraction du rayonnement solaire réfléchie par une surface (≈ 0,3 pour la Terre en moyenne ; élevé pour la neige)."
+    },
+    {
+     "question": "Accord de Paris",
+     "answer": "COP21, 2015 : contenir le réchauffement nettement en dessous de 2 °C, en poursuivant l'action pour le limiter à 1,5 °C."
+    },
+    {
+     "question": "Puissance et énergie",
+     "answer": "E = P × Δt ; 1 kWh = 3,6 × 10⁶ J."
+    },
+    {
+     "question": "Effet Joule",
+     "answer": "Énergie dissipée sous forme de chaleur dans un conducteur : P = R I²."
+    },
+    {
+     "question": "Énergies renouvelables / non renouvelables",
+     "answer": "Renouvelables : solaire, éolien, hydraulique, biomasse, géothermie.\nNon renouvelables : fossiles (pétrole, gaz, charbon) et nucléaire (uranium)."
+    },
+    {
+     "question": "Rendement d'un convertisseur",
+     "answer": "η = énergie utile / énergie reçue (toujours < 1)."
+    },
+    {
+     "question": "Cellule photovoltaïque",
+     "answer": "Convertit l'énergie lumineuse en énergie électrique grâce à un semi-conducteur (silicium)."
+    },
+    {
+     "question": "Pourquoi transporter l'électricité en haute tension",
+     "answer": "Pour une même puissance, I est plus faible, donc les pertes par effet Joule (RI²) sont réduites."
+    },
+    {
+     "question": "Mix énergétique",
+     "answer": "Répartition des différentes sources d'énergie primaire utilisées dans un pays."
+    },
+    {
+     "question": "Datation par le carbone 14 : demi-vie",
+     "answer": "Environ 5 730 ans ; datation jusqu'à environ 50 000 ans."
+    },
+    {
+     "question": "Les fossiles : intérêt pour l'histoire du vivant",
+     "answer": "Témoins d'espèces disparues, ils permettent de dater et de reconstituer l'évolution."
+    },
+    {
+     "question": "Lignée humaine : idée clé",
+     "answer": "Pas d'évolution linéaire mais un buissonnement : plusieurs espèces d'Homo ont coexisté (Néandertal, Sapiens, Denisova…)."
+    },
+    {
+     "question": "Modèle logistique / exponentiel d'une population",
+     "answer": "Exponentiel : croissance sans limite (ressources illimitées).\nLogistique : la croissance ralentit et se stabilise à la capacité maximale du milieu."
+    },
+    {
+     "question": "Intelligence artificielle : apprentissage automatique",
+     "answer": "Un algorithme apprend à partir d'exemples (données d'entraînement) à classer ou prédire, sans programmation explicite de chaque règle."
+    }
+   ]
+  },
+  {
+   "key": "bac-ses-croissance-commerce",
+   "name": "SES — Croissance, commerce international, environnement",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "SES"
+   },
+   "tags": [
+    "bac",
+    "SES",
+    "économie",
+    "spécialité"
+   ],
+   "summary": "Sources de la croissance, PGF, progrès technique, avantages comparatifs, FTN, politiques climatiques.",
+   "description": "Spécialité SES de Terminale (science économique) : les définitions et mécanismes attendus au bac.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Croissance économique : définition et mesure",
+     "answer": "Augmentation durable de la production de biens et services d'un pays ; mesurée par le taux de variation du PIB en volume (réel)."
+    },
+    {
+     "question": "PIB",
+     "answer": "Produit intérieur brut : somme des valeurs ajoutées produites par les unités résidentes (+ impôts sur les produits − subventions)."
+    },
+    {
+     "question": "Facteurs de production",
+     "answer": "Le travail et le capital (physique). Leur accumulation contribue à la croissance."
+    },
+    {
+     "question": "Productivité globale des facteurs (PGF)",
+     "answer": "Part de la croissance qui n'est pas expliquée par l'augmentation des quantités de travail et de capital ; reflète surtout le progrès technique."
+    },
+    {
+     "question": "Progrès technique : rôle",
+     "answer": "Il accroît la productivité et donc la croissance ; il est endogène (résulte d'investissements en R&D, en capital humain, en infrastructures)."
+    },
+    {
+     "question": "Destruction créatrice (Schumpeter)",
+     "answer": "Les innovations font disparaître des activités anciennes et en créent de nouvelles."
+    },
+    {
+     "question": "Institutions et croissance",
+     "answer": "Droits de propriété, État de droit, stabilité politique favorisent l'investissement et l'innovation."
+    },
+    {
+     "question": "Limites écologiques de la croissance",
+     "answer": "Épuisement des ressources, pollutions, réchauffement climatique ; le PIB ne mesure pas les dégradations de l'environnement."
+    },
+    {
+     "question": "Avantage comparatif (Ricardo)",
+     "answer": "Un pays a intérêt à se spécialiser dans la production où il est relativement le plus efficace (coût d'opportunité le plus faible) et à échanger."
+    },
+    {
+     "question": "Dotations factorielles (HOS)",
+     "answer": "Un pays se spécialise dans les productions qui utilisent intensément le facteur dont il est abondamment doté."
+    },
+    {
+     "question": "Commerce intra-branche",
+     "answer": "Échange de produits similaires entre pays comparables, expliqué par la différenciation des produits et la demande de diversité."
+    },
+    {
+     "question": "Fragmentation de la chaîne de valeur",
+     "answer": "Les FTN répartissent les étapes de production entre différents pays selon les coûts et les compétences (chaîne de valeur mondiale)."
+    },
+    {
+     "question": "Effets du commerce sur les inégalités",
+     "answer": "Gains globaux, mais inégalités au sein des pays : les travailleurs peu qualifiés des pays développés peuvent y perdre."
+    },
+    {
+     "question": "Instruments des politiques climatiques",
+     "answer": "Réglementation (normes), taxation (taxe carbone), subventions à l'innovation verte, marché de quotas d'émission."
+    },
+    {
+     "question": "Marché de quotas d'émission",
+     "answer": "Les pouvoirs publics fixent un plafond d'émissions et distribuent des droits à polluer échangeables ; le prix incite à réduire les émissions."
+    },
+    {
+     "question": "Externalité négative",
+     "answer": "Effet néfaste d'une activité sur un tiers sans compensation monétaire (ex. pollution) ; justifie l'intervention publique."
+    },
+    {
+     "question": "Bien commun",
+     "answer": "Bien non excluable mais rival (ex. ressources halieutiques) ; risque de surexploitation (« tragédie des communs »)."
+    }
+   ]
+  },
+  {
+   "key": "bac-ses-chomage-finance-europe",
+   "name": "SES — Chômage, crises financières, politiques européennes",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "SES"
+   },
+   "tags": [
+    "bac",
+    "SES",
+    "économie",
+    "spécialité"
+   ],
+   "summary": "Mesure et causes du chômage, crises financières, politique monétaire et budgétaire en zone euro.",
+   "description": "Spécialité SES de Terminale : marché du travail, finance et intégration européenne.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Chômeur au sens du BIT",
+     "answer": "Personne en âge de travailler, sans emploi, disponible dans les 15 jours et ayant cherché activement un emploi au cours du mois précédent."
+    },
+    {
+     "question": "Taux de chômage",
+     "answer": "Nombre de chômeurs / population active × 100."
+    },
+    {
+     "question": "Population active",
+     "answer": "Personnes en emploi + chômeurs."
+    },
+    {
+     "question": "Chômage structurel / conjoncturel",
+     "answer": "Structurel : lié au fonctionnement du marché du travail (rigidités, inadéquation des qualifications).\nConjoncturel : lié à un ralentissement de l'activité (insuffisance de la demande)."
+    },
+    {
+     "question": "Appariement et chômage",
+     "answer": "Difficulté à faire correspondre offres et demandes d'emploi (qualifications, géographie, information) : chômage frictionnel et d'inadéquation."
+    },
+    {
+     "question": "Asymétries d'information sur le marché du travail",
+     "answer": "Salaire d'efficience : l'employeur verse un salaire supérieur à celui d'équilibre pour attirer et motiver les meilleurs salariés, ce qui peut créer du chômage."
+    },
+    {
+     "question": "Politiques de lutte contre le chômage",
+     "answer": "Soutien de la demande globale, baisse du coût du travail, formation, flexibilisation du marché du travail."
+    },
+    {
+     "question": "Bulle spéculative",
+     "answer": "Hausse auto-entretenue du prix d'un actif au-delà de sa valeur fondamentale, alimentée par les anticipations ; finit par éclater (krach)."
+    },
+    {
+     "question": "Crise des subprimes",
+     "answer": "2007-2008 : crise des crédits immobiliers à risque aux États-Unis, faillite de Lehman Brothers (sept. 2008), crise financière puis récession mondiale."
+    },
+    {
+     "question": "Panique bancaire",
+     "answer": "Retraits massifs de dépôts par crainte de faillite d'une banque ; peut se propager à tout le système (risque systémique)."
+    },
+    {
+     "question": "Régulation bancaire",
+     "answer": "Ratios de fonds propres (accords de Bâle), supervision des banques, garantie des dépôts."
+    },
+    {
+     "question": "Politique monétaire de la zone euro",
+     "answer": "Conduite par la BCE ; objectif principal : stabilité des prix (inflation proche de 2 % à moyen terme) ; instrument principal : les taux directeurs."
+    },
+    {
+     "question": "Politique budgétaire",
+     "answer": "Utilisation du budget de l'État (dépenses, impôts) pour agir sur l'activité ; reste nationale dans la zone euro, encadrée par des règles (pacte de stabilité : déficit < 3 % du PIB, dette < 60 %)."
+    },
+    {
+     "question": "Choc asymétrique",
+     "answer": "Choc qui touche un seul ou quelques pays d'une zone monétaire ; difficile à gérer avec une politique monétaire commune."
+    },
+    {
+     "question": "Marché unique européen",
+     "answer": "Libre circulation des marchandises, des services, des capitaux et des personnes (depuis 1993)."
+    },
+    {
+     "question": "Politique de la concurrence",
+     "answer": "Menée par la Commission européenne : contrôle des concentrations, sanction des ententes et des abus de position dominante, contrôle des aides d'État."
+    }
+   ]
+  },
+  {
+   "key": "bac-ses-sociologie",
+   "name": "SES — Structure sociale, mobilité, école",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "SES"
+   },
+   "tags": [
+    "bac",
+    "SES",
+    "sociologie",
+    "spécialité"
+   ],
+   "summary": "PCS, classes sociales, mobilité sociale, école et inégalités, travail.",
+   "description": "Spécialité SES de Terminale (sociologie) : les notions et auteurs attendus.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "PCS",
+     "answer": "Professions et catégories socioprofessionnelles (INSEE) : nomenclature qui classe la population selon la profession, le statut, la qualification. 6 groupes d'actifs."
+    },
+    {
+     "question": "Classes sociales chez Marx",
+     "answer": "Définies par la place dans les rapports de production (bourgeoisie propriétaire des moyens de production / prolétariat) ; classe « en soi » et « pour soi » (conscience de classe)."
+    },
+    {
+     "question": "Stratification chez Weber",
+     "answer": "Trois dimensions : économique (classes), sociale (groupes de statut, prestige), politique (partis)."
+    },
+    {
+     "question": "Moyennisation",
+     "answer": "Thèse d'un rapprochement des modes de vie autour d'une vaste classe moyenne (Mendras, « toupie »)."
+    },
+    {
+     "question": "Mobilité sociale intergénérationnelle",
+     "answer": "Changement de position sociale d'un individu par rapport à celle de ses parents."
+    },
+    {
+     "question": "Table de destinée / table de recrutement",
+     "answer": "Destinée : que deviennent les fils (enfants) d'un groupe social d'origine ? (lecture en ligne)\nRecrutement : d'où viennent les membres d'un groupe social ? (lecture en colonne)."
+    },
+    {
+     "question": "Mobilité structurelle",
+     "answer": "Mobilité due à l'évolution de la structure des emplois entre deux générations (ex. recul des agriculteurs)."
+    },
+    {
+     "question": "Reproduction sociale (Bourdieu)",
+     "answer": "Transmission des positions sociales par le capital économique, culturel et social ; l'école légitime les inégalités en valorisant la culture des classes dominantes."
+    },
+    {
+     "question": "Capital culturel",
+     "answer": "Ensemble des ressources culturelles (diplômes, savoirs, pratiques) transmises notamment par la famille."
+    },
+    {
+     "question": "Paradoxe d'Anderson",
+     "answer": "Les enfants peuvent avoir un diplôme plus élevé que leurs parents sans accéder à une position sociale plus élevée (inflation des diplômes)."
+    },
+    {
+     "question": "Massification / démocratisation scolaire",
+     "answer": "Massification : hausse du nombre d'élèves scolarisés plus longtemps.\nDémocratisation : réduction des inégalités d'accès selon l'origine sociale (démocratisation « ségrégative » selon Merle)."
+    },
+    {
+     "question": "Stratégies des familles (Boudon)",
+     "answer": "Choix scolaires selon un calcul coûts/avantages qui diffère selon la position sociale : les inégalités se cumulent à chaque palier d'orientation."
+    },
+    {
+     "question": "Mutations du travail",
+     "answer": "Tertiarisation, féminisation, salarisation, montée des qualifications, polarisation des emplois, travail des plateformes."
+    },
+    {
+     "question": "Organisation taylorienne du travail",
+     "answer": "Division verticale (conception / exécution) et horizontale (tâches parcellisées), salaire au rendement."
+    },
+    {
+     "question": "Intégration sociale (Durkheim)",
+     "answer": "Solidarité mécanique (sociétés traditionnelles, similitudes) / solidarité organique (sociétés modernes, complémentarité liée à la division du travail)."
+    }
+   ]
+  },
+  {
+   "key": "bac-ses-politique-justice",
+   "name": "SES — Engagement, justice sociale, environnement",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "SES"
+   },
+   "tags": [
+    "bac",
+    "SES",
+    "science politique",
+    "regards croisés",
+    "spécialité"
+   ],
+   "summary": "Engagement politique, paradoxe de l'action collective, inégalités, justice sociale, action publique pour l'environnement.",
+   "description": "Spécialité SES de Terminale : science politique et regards croisés.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Paradoxe de l'action collective (Olson)",
+     "answer": "Un individu rationnel a intérêt à ne pas participer à une action collective dont il profitera quand même (« passager clandestin »)."
+    },
+    {
+     "question": "Incitations sélectives",
+     "answer": "Avantages réservés aux participants pour surmonter le paradoxe d'Olson (ex. services offerts aux adhérents d'un syndicat)."
+    },
+    {
+     "question": "Rétributions symboliques de l'engagement",
+     "answer": "Satisfactions non matérielles : sociabilité, reconnaissance, identité, sentiment d'utilité."
+    },
+    {
+     "question": "Répertoire d'action collective (Tilly)",
+     "answer": "Ensemble des moyens de protestation disponibles à une époque : grève, manifestation, pétition, occupation, boycott, mobilisation numérique."
+    },
+    {
+     "question": "Nouveaux mouvements sociaux",
+     "answer": "Mobilisations depuis les années 1970 sur des enjeux qualitatifs (écologie, féminisme, droits des minorités), moins centrées sur le travail."
+    },
+    {
+     "question": "Coefficient de Gini",
+     "answer": "Indicateur d'inégalité compris entre 0 (égalité parfaite) et 1 (inégalité maximale)."
+    },
+    {
+     "question": "Rapport interdécile D9/D1",
+     "answer": "Rapport entre le revenu au-dessus duquel se situent les 10 % les plus riches et celui en dessous duquel se situent les 10 % les plus pauvres."
+    },
+    {
+     "question": "Courbe de Lorenz",
+     "answer": "Représente la part cumulée des revenus (ou patrimoines) détenue par une part cumulée de la population ; plus elle s'éloigne de la diagonale, plus les inégalités sont fortes."
+    },
+    {
+     "question": "Égalité des droits, des chances, des situations",
+     "answer": "Droits : mêmes droits pour tous.\nChances : mêmes possibilités de réussite au départ.\nSituations : réduction des écarts de revenus et de conditions de vie."
+    },
+    {
+     "question": "Redistribution : horizontale / verticale",
+     "answer": "Horizontale : selon les risques (malades / bien-portants…).\nVerticale : des plus aisés vers les plus modestes."
+    },
+    {
+     "question": "Impôt progressif",
+     "answer": "Le taux d'imposition augmente avec le revenu (ex. impôt sur le revenu en France)."
+    },
+    {
+     "question": "Discrimination positive",
+     "answer": "Mesures accordant un traitement préférentiel temporaire à un groupe défavorisé pour réduire les inégalités."
+    },
+    {
+     "question": "Problème public",
+     "answer": "Situation transformée en enjeu nécessitant une action publique, grâce à des acteurs (lanceurs d'alerte, ONG, experts, médias, partis) qui la font mettre à l'agenda."
+    },
+    {
+     "question": "Mise à l'agenda",
+     "answer": "Processus par lequel un problème public est pris en charge par les autorités politiques."
+    },
+    {
+     "question": "Les COP",
+     "answer": "Conférences des parties de la convention-cadre des Nations unies sur les changements climatiques : négociations internationales annuelles sur le climat."
+    }
+   ]
+  },
+  {
+   "key": "bac-hggsp-terminale",
+   "name": "HGGSP — Concepts et thèmes de Terminale",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "HGGSP"
+   },
+   "tags": [
+    "bac",
+    "HGGSP",
+    "géopolitique",
+    "spécialité"
+   ],
+   "summary": "Espaces conquis (océan, espace), guerre et paix, histoire et mémoires, patrimoine, environnement, connaissance.",
+   "description": "Spécialité histoire-géographie, géopolitique et sciences politiques de Terminale : notions et exemples de référence.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Les 6 thèmes de Terminale en HGGSP",
+     "answer": "1. De nouveaux espaces de conquête (océan, espace).\n2. Faire la guerre, faire la paix.\n3. Histoire et mémoires.\n4. Identifier, protéger et valoriser le patrimoine.\n5. L'environnement, entre exploitation et protection.\n6. L'enjeu de la connaissance."
+    },
+    {
+     "question": "Clausewitz : définition de la guerre",
+     "answer": "« La guerre est la simple continuation de la politique par d'autres moyens » (De la guerre, 1832)."
+    },
+    {
+     "question": "Traités de Westphalie",
+     "answer": "1648 : fin de la guerre de Trente Ans ; fondent l'ordre international sur des États souverains égaux (système westphalien)."
+    },
+    {
+     "question": "Guerre irrégulière / asymétrique",
+     "answer": "Conflit opposant des acteurs de puissance très inégale (armée régulière contre guérilla, groupe terroriste)."
+    },
+    {
+     "question": "Al-Qaïda et Daech",
+     "answer": "Organisations terroristes djihadistes ; Daech proclame un « califat » en Irak et en Syrie en 2014, défait territorialement en 2017-2019."
+    },
+    {
+     "question": "Histoire / mémoire",
+     "answer": "Histoire : connaissance du passé fondée sur une démarche critique et des sources.\nMémoire : souvenir subjectif et sélectif d'un groupe, souvent affectif."
+    },
+    {
+     "question": "Justice transitionnelle",
+     "answer": "Ensemble de mesures (tribunaux, commissions vérité et réconciliation, réparations) après des crimes de masse ; ex. gacaca au Rwanda."
+    },
+    {
+     "question": "Tribunaux pénaux internationaux",
+     "answer": "TPIY (ex-Yougoslavie, 1993), TPIR (Rwanda, 1994) ; Cour pénale internationale permanente créée par le statut de Rome (1998), en fonction depuis 2002."
+    },
+    {
+     "question": "Traité de l'espace",
+     "answer": "1967 : l'espace extra-atmosphérique ne peut faire l'objet d'appropriation nationale ; usage pacifique."
+    },
+    {
+     "question": "Course à l'espace",
+     "answer": "Spoutnik (URSS, 1957), Gagarine premier homme dans l'espace (1961), Apollo 11 et les premiers pas sur la Lune (juillet 1969)."
+    },
+    {
+     "question": "New Space",
+     "answer": "Arrivée d'acteurs privés dans le secteur spatial (SpaceX, Blue Origin) avec baisse des coûts de lancement."
+    },
+    {
+     "question": "Patrimoine mondial de l'UNESCO",
+     "answer": "Convention de 1972 ; liste des biens culturels et naturels de valeur universelle exceptionnelle."
+    },
+    {
+     "question": "Anthropocène",
+     "answer": "Proposition de nouvelle époque géologique marquée par l'impact des activités humaines sur la planète."
+    },
+    {
+     "question": "Société de la connaissance",
+     "answer": "Société où la production, la diffusion et l'usage des connaissances sont au cœur de l'économie et du pouvoir."
+    },
+    {
+     "question": "Cyberespace : enjeux",
+     "answer": "Espace de communication numérique, nouveau champ de conflictualité (cyberattaques, désinformation, espionnage) et de puissance."
+    },
+    {
+     "question": "Soft power / hard power",
+     "answer": "Soft power (Joseph Nye) : capacité d'influence par l'attractivité (culture, valeurs).\nHard power : puissance par la contrainte (militaire, économique)."
+    }
+   ]
+  },
+  {
+   "key": "bac-hlp-terminale",
+   "name": "HLP — Humanités, littérature et philosophie",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "HLP"
+   },
+   "tags": [
+    "bac",
+    "HLP",
+    "littérature",
+    "philosophie",
+    "spécialité"
+   ],
+   "summary": "La recherche de soi, l'humanité en question : œuvres, auteurs et concepts.",
+   "description": "Spécialité HLP de Terminale : les deux grands thèmes et leurs références incontournables.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Les deux thèmes de HLP en Terminale",
+     "answer": "1. La recherche de soi (du romantisme au XXe siècle).\n2. L'humanité en question (période contemporaine)."
+    },
+    {
+     "question": "Recherche de soi : les trois axes",
+     "answer": "Éducation, transmission et émancipation ; les expressions de la sensibilité ; les métamorphoses du moi."
+    },
+    {
+     "question": "Humanité en question : les trois axes",
+     "answer": "Création, continuités et ruptures ; histoire et violence ; l'humain et ses limites."
+    },
+    {
+     "question": "Rousseau, Les Confessions",
+     "answer": "Autobiographie (publiée à partir de 1782, après la mort de l'auteur) : « Je forme une entreprise qui n'eut jamais d'exemple » ; se montrer « dans toute la vérité de la nature »."
+    },
+    {
+     "question": "Musset, La Confession d'un enfant du siècle",
+     "answer": "1836 : roman qui décrit le « mal du siècle » de la génération née sous l'Empire."
+    },
+    {
+     "question": "Rimbaud : « Je est un autre »",
+     "answer": "Lettre du Voyant (1871) : le poète découvre en lui une altérité ; se faire voyant par un « dérèglement de tous les sens »."
+    },
+    {
+     "question": "Proust, À la recherche du temps perdu",
+     "answer": "Mémoire involontaire (la madeleine) qui fait resurgir le passé ; le moi se reconstruit par l'écriture."
+    },
+    {
+     "question": "Primo Levi, Si c'est un homme",
+     "answer": "1947 : témoignage sur Auschwitz et la déshumanisation dans les camps."
+    },
+    {
+     "question": "Hannah Arendt, la banalité du mal",
+     "answer": "Eichmann à Jérusalem (1963) : le mal extrême peut être commis par des individus ordinaires qui ont renoncé à penser."
+    },
+    {
+     "question": "Hans Jonas, Le Principe responsabilité",
+     "answer": "1979 : « Agis de façon que les effets de ton action soient compatibles avec la permanence d'une vie authentiquement humaine sur terre »."
+    },
+    {
+     "question": "Transhumanisme",
+     "answer": "Courant qui veut améliorer les capacités humaines par la technique (allonger la vie, augmenter le corps et l'intelligence)."
+    },
+    {
+     "question": "Descartes : les animaux-machines",
+     "answer": "Les animaux seraient de simples mécanismes sans pensée (Discours de la méthode, 5e partie) ; critique de cette thèse par Montaigne avant lui et de nombreux auteurs après."
+    },
+    {
+     "question": "Lévi-Strauss : « Le barbare, c'est d'abord l'homme qui croit à la barbarie »",
+     "answer": "Race et histoire (1952) : critique de l'ethnocentrisme."
+    },
+    {
+     "question": "Camus, Les Justes / L'Homme révolté",
+     "answer": "Réflexion sur la violence politique et ses limites : peut-on tuer au nom de la justice ?"
+    }
+   ]
+  },
+  {
+   "key": "bac-nsi-structures-algos",
+   "name": "NSI — Structures de données et algorithmique",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "NSI"
+   },
+   "tags": [
+    "bac",
+    "NSI",
+    "informatique",
+    "algorithmique",
+    "spécialité"
+   ],
+   "summary": "Piles, files, arbres, graphes, récursivité, complexité, diviser pour régner, programmation dynamique.",
+   "description": "Spécialité NSI de Terminale : structures de données et algorithmes au programme.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Pile (stack)",
+     "answer": "Structure LIFO (Last In, First Out) : le dernier élément ajouté est le premier retiré. Opérations : empiler, dépiler, est_vide."
+    },
+    {
+     "question": "File (queue)",
+     "answer": "Structure FIFO (First In, First Out) : le premier élément ajouté est le premier retiré. Opérations : enfiler, défiler, est_vide."
+    },
+    {
+     "question": "Liste chaînée",
+     "answer": "Suite de maillons contenant une valeur et un lien vers le maillon suivant."
+    },
+    {
+     "question": "Dictionnaire",
+     "answer": "Ensemble de couples clé-valeur ; accès par clé en temps moyen constant (table de hachage)."
+    },
+    {
+     "question": "Arbre binaire : vocabulaire",
+     "answer": "Racine, nœuds, feuilles (sans enfant), sous-arbres gauche et droit ; taille = nombre de nœuds ; hauteur = profondeur maximale."
+    },
+    {
+     "question": "Arbre binaire de recherche (ABR)",
+     "answer": "Pour chaque nœud : les clés du sous-arbre gauche sont inférieures, celles du sous-arbre droit supérieures. Recherche en O(h)."
+    },
+    {
+     "question": "Parcours d'arbre en profondeur",
+     "answer": "Préfixe (racine, gauche, droite), infixe (gauche, racine, droite : ordre croissant dans un ABR), suffixe (gauche, droite, racine)."
+    },
+    {
+     "question": "Parcours en largeur",
+     "answer": "Visite niveau par niveau ; utilise une file."
+    },
+    {
+     "question": "Graphe : représentations",
+     "answer": "Matrice d'adjacence ou listes d'adjacence (dictionnaire de voisins). Graphe orienté ou non, pondéré ou non."
+    },
+    {
+     "question": "Parcours en profondeur (DFS) / largeur (BFS) d'un graphe",
+     "answer": "DFS : utilise une pile (ou la récursivité).\nBFS : utilise une file ; donne les plus courts chemins en nombre d'arêtes."
+    },
+    {
+     "question": "Fonction récursive",
+     "answer": "Fonction qui s'appelle elle-même ; nécessite un cas de base qui arrête les appels."
+    },
+    {
+     "question": "Complexité : tri par sélection/insertion vs tri fusion",
+     "answer": "Sélection, insertion : O(n²).\nTri fusion : O(n log n)."
+    },
+    {
+     "question": "Recherche dichotomique",
+     "answer": "Dans un tableau trié, on compare à l'élément du milieu et on divise l'intervalle par 2 : O(log n)."
+    },
+    {
+     "question": "Diviser pour régner",
+     "answer": "Découper le problème en sous-problèmes indépendants plus petits, les résoudre (souvent récursivement), puis combiner (ex. tri fusion)."
+    },
+    {
+     "question": "Programmation dynamique",
+     "answer": "Résoudre des sous-problèmes qui se chevauchent une seule fois en mémorisant leurs résultats (mémoïsation) ; ex. rendu de monnaie, alignement de séquences."
+    },
+    {
+     "question": "Algorithme glouton",
+     "answer": "Faire à chaque étape le choix localement optimal ; ne donne pas toujours la solution optimale globale."
+    },
+    {
+     "question": "Recherche textuelle : Boyer-Moore",
+     "answer": "Algorithme qui compare le motif de droite à gauche et décale le motif de plusieurs positions grâce à une table de sauts."
+    },
+    {
+     "question": "Programmation orientée objet : vocabulaire",
+     "answer": "Classe (modèle), objet (instance), attributs (données), méthodes (fonctions), constructeur __init__ en Python."
+    }
+   ]
+  },
+  {
+   "key": "bac-nsi-bdd-reseaux",
+   "name": "NSI — Bases de données, réseaux et systèmes",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "NSI"
+   },
+   "tags": [
+    "bac",
+    "NSI",
+    "informatique",
+    "SQL",
+    "réseaux",
+    "spécialité"
+   ],
+   "summary": "Modèle relationnel, SQL, processus, routage (RIP, OSPF), sécurisation des communications.",
+   "description": "Spécialité NSI de Terminale : bases de données, architectures matérielles, systèmes d'exploitation et réseaux.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Modèle relationnel : vocabulaire",
+     "answer": "Relation (table), attribut (colonne), n-uplet / enregistrement (ligne), domaine (type des valeurs), schéma relationnel."
+    },
+    {
+     "question": "Clé primaire",
+     "answer": "Attribut (ou ensemble d'attributs) qui identifie de façon unique chaque enregistrement d'une table."
+    },
+    {
+     "question": "Clé étrangère",
+     "answer": "Attribut qui fait référence à la clé primaire d'une autre table ; assure l'intégrité référentielle."
+    },
+    {
+     "question": "SQL : sélectionner des données",
+     "answer": "SELECT colonnes FROM table WHERE condition ORDER BY colonne;"
+    },
+    {
+     "question": "SQL : jointure",
+     "answer": "SELECT … FROM table1 JOIN table2 ON table1.cle = table2.cle_etrangere;"
+    },
+    {
+     "question": "SQL : insérer, modifier, supprimer",
+     "answer": "INSERT INTO t (a, b) VALUES (1, 2);\nUPDATE t SET a = 3 WHERE … ;\nDELETE FROM t WHERE … ;"
+    },
+    {
+     "question": "SQL : agrégation",
+     "answer": "COUNT, SUM, AVG, MIN, MAX ; ex. SELECT COUNT(*) FROM eleves;\nDISTINCT pour éliminer les doublons."
+    },
+    {
+     "question": "SGBD",
+     "answer": "Système de gestion de bases de données : gère le stockage, les accès concurrents, la sécurité et l'intégrité des données."
+    },
+    {
+     "question": "Processus : états",
+     "answer": "Prêt, élu (en cours d'exécution), bloqué. L'ordonnanceur du système d'exploitation décide quel processus s'exécute."
+    },
+    {
+     "question": "Interblocage (deadlock)",
+     "answer": "Situation où plusieurs processus s'attendent mutuellement pour des ressources, et aucun ne peut progresser."
+    },
+    {
+     "question": "Protocole RIP",
+     "answer": "Protocole de routage à vecteur de distances : choisit la route avec le moins de sauts (routeurs traversés) ; maximum 15 sauts."
+    },
+    {
+     "question": "Protocole OSPF",
+     "answer": "Protocole de routage à état de liens : choisit la route de plus faible coût, le coût dépendant du débit (coût = 10⁸ / débit en bit/s) ; algorithme de Dijkstra."
+    },
+    {
+     "question": "Adresse IP et masque",
+     "answer": "IPv4 : 4 octets (ex. 192.168.1.10/24) ; le masque (/24) indique la partie réseau de l'adresse."
+    },
+    {
+     "question": "Chiffrement symétrique / asymétrique",
+     "answer": "Symétrique : la même clé chiffre et déchiffre (rapide ; ex. AES).\nAsymétrique : clé publique pour chiffrer, clé privée pour déchiffrer (ex. RSA)."
+    },
+    {
+     "question": "HTTPS",
+     "answer": "HTTP sécurisé par TLS : authentification du serveur par certificat, échange de clé asymétrique puis chiffrement symétrique des échanges."
+    },
+    {
+     "question": "Système sur puce (SoC)",
+     "answer": "Circuit intégré regroupant processeur, mémoire, contrôleurs (ex. smartphones) : compact et économe en énergie."
+    }
+   ]
+  },
+  {
+   "key": "bac-anglais-argumenter",
+   "name": "Anglais — Connecteurs et expressions pour argumenter",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "anglais"
+   },
+   "tags": [
+    "bac",
+    "anglais",
+    "langues vivantes",
+    "expression écrite",
+    "oral"
+   ],
+   "summary": "Connecteurs logiques, expressions d'opinion et tournures utiles pour l'écrit et l'oral du bac.",
+   "description": "Langue vivante A ou B : le vocabulaire pour structurer une argumentation en anglais. Question en français, réponse en anglais.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Tout d'abord / Ensuite / Enfin",
+     "answer": "First of all / Then, Moreover / Finally, Last but not least"
+    },
+    {
+     "question": "Cependant / Néanmoins",
+     "answer": "However / Nevertheless / Yet"
+    },
+    {
+     "question": "Bien que",
+     "answer": "Although / Even though"
+    },
+    {
+     "question": "Alors que (opposition)",
+     "answer": "Whereas / While"
+    },
+    {
+     "question": "De plus / En outre",
+     "answer": "Furthermore / Moreover / In addition"
+    },
+    {
+     "question": "Par conséquent / Donc",
+     "answer": "Therefore / Consequently / As a result / Thus"
+    },
+    {
+     "question": "Parce que / À cause de",
+     "answer": "Because / Since, As — because of / due to (+ nom)"
+    },
+    {
+     "question": "Afin de / Pour que",
+     "answer": "In order to / So as to — so that"
+    },
+    {
+     "question": "D'une part… d'autre part",
+     "answer": "On the one hand… on the other hand"
+    },
+    {
+     "question": "En conclusion / Pour résumer",
+     "answer": "To conclude / In conclusion / To sum up / All in all"
+    },
+    {
+     "question": "À mon avis / Selon moi",
+     "answer": "In my opinion / As far as I'm concerned / From my point of view"
+    },
+    {
+     "question": "Je suis d'accord / pas d'accord avec",
+     "answer": "I agree with / I disagree with (attention : pas de « I am agree »)"
+    },
+    {
+     "question": "Il semble que",
+     "answer": "It seems that"
+    },
+    {
+     "question": "Il est indéniable que",
+     "answer": "There is no denying that / It is undeniable that"
+    },
+    {
+     "question": "Par exemple / Tel que",
+     "answer": "For instance / For example — such as"
+    },
+    {
+     "question": "En d'autres termes",
+     "answer": "In other words"
+    },
+    {
+     "question": "De nos jours",
+     "answer": "Nowadays / These days"
+    },
+    {
+     "question": "Le document traite de…",
+     "answer": "The document deals with… / is about… / focuses on…"
+    },
+    {
+     "question": "L'auteur souligne que…",
+     "answer": "The author highlights / underlines / stresses that…"
+    },
+    {
+     "question": "Les 8 axes du programme de langues (cycle terminal)",
+     "answer": "Identités et échanges ; Espace privé et espace public ; Art et pouvoir ; Citoyenneté et mondes virtuels ; Fictions et réalités ; Innovations scientifiques et responsabilité ; Diversité et inclusion ; Territoire et mémoire."
+    },
+    {
+     "question": "Faux ami : actually",
+     "answer": "« En fait », et non « actuellement » (= currently, nowadays)."
+    },
+    {
+     "question": "Faux ami : eventually",
+     "answer": "« Finalement », et non « éventuellement » (= possibly)."
+    }
+   ]
+  },
+  {
+   "key": "bac-espagnol-bac",
+   "name": "Espagnol — Expressions et grammaire utiles au bac",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "espagnol"
+   },
+   "tags": [
+    "bac",
+    "espagnol",
+    "langues vivantes",
+    "grammaire"
+   ],
+   "summary": "Connecteurs, expressions d'opinion, subjonctif, ser/estar, concordance des temps.",
+   "description": "Langue vivante (A ou B) : les tournures et règles les plus utiles pour l'écrit et l'oral en espagnol.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Cependant / Pourtant",
+     "answer": "Sin embargo / No obstante"
+    },
+    {
+     "question": "Bien que",
+     "answer": "Aunque (+ subjonctif si hypothèse, + indicatif si fait réel)"
+    },
+    {
+     "question": "C'est pourquoi / Donc",
+     "answer": "Por eso / Por lo tanto / Así que"
+    },
+    {
+     "question": "De plus",
+     "answer": "Además"
+    },
+    {
+     "question": "Alors que (opposition)",
+     "answer": "Mientras que"
+    },
+    {
+     "question": "À mon avis",
+     "answer": "En mi opinión / A mi parecer / Para mí"
+    },
+    {
+     "question": "Je pense que… / Je ne pense pas que…",
+     "answer": "Creo que + indicatif / No creo que + subjonctif"
+    },
+    {
+     "question": "Il faut que…",
+     "answer": "Hay que + infinitif (général) / Es necesario que + subjonctif"
+    },
+    {
+     "question": "Ser ou estar ?",
+     "answer": "Ser : identité, nature, caractéristique permanente, heure, origine.\nEstar : état passager, localisation, résultat (estar + participe), forme progressive (estar + gérondif)."
+    },
+    {
+     "question": "Obligation personnelle",
+     "answer": "Tener que + infinitif (Tengo que estudiar)."
+    },
+    {
+     "question": "Cuando + futur en français",
+     "answer": "Cuando + subjonctif présent (Cuando llegues, te llamaré)."
+    },
+    {
+     "question": "Para que (pour que) : mode",
+     "answer": "Toujours suivi du subjonctif (para que comprendas)."
+    },
+    {
+     "question": "Concordance des temps",
+     "answer": "Principale au passé → subjonctif imparfait dans la subordonnée (Quería que vinieras)."
+    },
+    {
+     "question": "Si + imparfait (hypothèse)",
+     "answer": "Si + subjonctif imparfait, conditionnel (Si tuviera tiempo, viajaría)."
+    },
+    {
+     "question": "Traduire « on »",
+     "answer": "Se + verbe à la 3e personne (Se dice que…) ou 3e personne du pluriel (Dicen que…)."
+    },
+    {
+     "question": "Le document montre / présente",
+     "answer": "El documento muestra / presenta / trata de…"
+    },
+    {
+     "question": "Enfin / Pour conclure",
+     "answer": "Por último / Para concluir / En conclusión"
+    },
+    {
+     "question": "D'un côté… de l'autre",
+     "answer": "Por un lado… por otro lado"
+    }
+   ]
+  },
+  {
+   "key": "bac-allemand-bac",
+   "name": "Allemand — Expressions et grammaire utiles au bac",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "allemand"
+   },
+   "tags": [
+    "bac",
+    "allemand",
+    "langues vivantes",
+    "grammaire"
+   ],
+   "summary": "Connecteurs et place du verbe, subordonnées, expressions d'opinion, cas.",
+   "description": "Langue vivante (A ou B) : les tournures et règles les plus utiles pour l'écrit et l'oral en allemand.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Place du verbe dans la principale",
+     "answer": "Le verbe conjugué est en 2e position (Heute gehe ich ins Kino)."
+    },
+    {
+     "question": "Place du verbe dans la subordonnée",
+     "answer": "Le verbe conjugué est à la fin (…, weil ich müde bin)."
+    },
+    {
+     "question": "Parce que",
+     "answer": "weil (verbe à la fin) / denn (verbe en 2e position, conjonction de coordination)"
+    },
+    {
+     "question": "Bien que",
+     "answer": "obwohl (verbe à la fin)"
+    },
+    {
+     "question": "Que / si (interrogation indirecte)",
+     "answer": "dass (verbe à la fin) / ob (verbe à la fin)"
+    },
+    {
+     "question": "Quand (une fois, passé) / quand (chaque fois)",
+     "answer": "als (une seule fois dans le passé) / wenn (répétition, présent, futur, condition)"
+    },
+    {
+     "question": "Cependant / pourtant",
+     "answer": "aber, jedoch, trotzdem (adverbe : inversion sujet-verbe)"
+    },
+    {
+     "question": "C'est pourquoi / donc",
+     "answer": "deshalb / deswegen / also (inversion : Deshalb bleibe ich zu Hause)"
+    },
+    {
+     "question": "À mon avis",
+     "answer": "Meiner Meinung nach / Ich bin der Meinung, dass… / Ich finde, dass…"
+    },
+    {
+     "question": "D'une part… d'autre part",
+     "answer": "Einerseits… andererseits"
+    },
+    {
+     "question": "Pour + infinitif / pour que",
+     "answer": "um… zu + infinitif / damit (verbe à la fin)"
+    },
+    {
+     "question": "Prépositions toujours suivies du datif",
+     "answer": "aus, bei, mit, nach, seit, von, zu (+ gegenüber)"
+    },
+    {
+     "question": "Prépositions toujours suivies de l'accusatif",
+     "answer": "durch, für, gegen, ohne, um (+ bis)"
+    },
+    {
+     "question": "Prépositions mixtes (datif / accusatif)",
+     "answer": "in, an, auf, über, unter, vor, hinter, neben, zwischen : accusatif s'il y a changement de lieu (direction), datif pour une position (lieu)."
+    },
+    {
+     "question": "Subjonctif II (irréel)",
+     "answer": "würde + infinitif ou formes propres (wäre, hätte) : Wenn ich Zeit hätte, würde ich reisen."
+    },
+    {
+     "question": "Le texte parle de…",
+     "answer": "Der Text handelt von… (+ datif) / Es geht um… (+ accusatif)"
+    },
+    {
+     "question": "Pour conclure",
+     "answer": "Zusammenfassend / Abschließend kann man sagen, dass…"
+    }
+   ]
+  },
+  {
+   "key": "bac-philo-methode",
+   "name": "Philosophie — Méthode de la dissertation et de l'explication",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "philosophie"
+   },
+   "tags": [
+    "bac",
+    "philosophie",
+    "méthode"
+   ],
+   "summary": "Analyser un sujet, construire une problématique, bâtir un plan, expliquer un texte.",
+   "description": "Épreuve de philosophie (4 heures) : trois sujets au choix, deux dissertations et une explication de texte. Les étapes à suivre et les erreurs à éviter.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Épreuve de philosophie du bac : format",
+     "answer": "4 heures ; au choix : deux sujets de dissertation ou une explication de texte. Coefficient 8 en voie générale."
+    },
+    {
+     "question": "Analyser un sujet de dissertation",
+     "answer": "Définir chaque terme, repérer les présupposés, reformuler la question, chercher les sens possibles et les tensions."
+    },
+    {
+     "question": "Problématique de dissertation",
+     "answer": "Montrer pourquoi la question pose problème : deux réponses qui semblent également justifiées, ou un paradoxe ; la formuler en une ou deux questions."
+    },
+    {
+     "question": "Erreur classique : le hors-sujet",
+     "answer": "Traiter de la notion en général (« le bonheur ») au lieu de la question précise posée (« Le bonheur dépend-il de nous ? »)."
+    },
+    {
+     "question": "Plan dialectique : principe",
+     "answer": "1. On examine une première réponse et ses arguments.\n2. On en montre les limites et on examine la thèse opposée.\n3. On dépasse l'opposition (distinction, nouvelle définition)."
+    },
+    {
+     "question": "Un bon exemple en philosophie",
+     "answer": "Précis, analysé (pas seulement cité) et au service d'un argument : expérience commune, référence littéraire, historique, scientifique."
+    },
+    {
+     "question": "Utiliser une référence philosophique",
+     "answer": "Expliquer la thèse de l'auteur avec ses propres mots et montrer en quoi elle éclaire le sujet ; une citation seule ne prouve rien."
+    },
+    {
+     "question": "Explication de texte : objectif",
+     "answer": "Dégager la thèse du texte, le problème auquel il répond et la façon dont l'argumentation la construit, puis en évaluer la portée."
+    },
+    {
+     "question": "Explication de texte : introduction",
+     "answer": "Thème, question à laquelle répond le texte, thèse de l'auteur, enjeu, annonce du mouvement du texte (ses grandes étapes)."
+    },
+    {
+     "question": "Explication de texte : développement",
+     "answer": "Suivre l'ordre du texte, expliquer les concepts, les exemples et les liens logiques (connecteurs), en citant précisément."
+    },
+    {
+     "question": "Erreur classique en explication de texte",
+     "answer": "Paraphraser (répéter le texte avec d'autres mots) ou réciter un cours sur l'auteur au lieu d'expliquer ce texte précis."
+    },
+    {
+     "question": "Conclusion d'une dissertation",
+     "answer": "Répondre clairement à la question posée en rappelant le chemin parcouru ; ouverture facultative."
+    }
+   ]
+  },
+  {
+   "key": "bac-hggsp-reperes",
+   "name": "HGGSP — Repères chronologiques de Terminale",
+   "level": "Terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "HGGSP"
+   },
+   "tags": [
+    "bac",
+    "HGGSP",
+    "dates",
+    "spécialité"
+   ],
+   "summary": "Les grandes dates des six thèmes de Terminale en HGGSP.",
+   "description": "Spécialité HGGSP de Terminale : une date ou un événement par fiche, avec son importance.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "1648",
+     "answer": "Traités de Westphalie : fin de la guerre de Trente Ans, naissance de l'ordre international fondé sur la souveraineté des États."
+    },
+    {
+     "question": "1815",
+     "answer": "Congrès de Vienne : réorganisation de l'Europe après la chute de Napoléon, recherche d'un équilibre des puissances (« concert européen »)."
+    },
+    {
+     "question": "1945",
+     "answer": "Création de l'ONU (Charte de San Francisco, juin 1945)."
+    },
+    {
+     "question": "1957",
+     "answer": "Lancement de Spoutnik 1 par l'URSS : premier satellite artificiel, début de la course à l'espace."
+    },
+    {
+     "question": "1969",
+     "answer": "Apollo 11 : Neil Armstrong et Buzz Aldrin marchent sur la Lune (21 juillet 1969, heure française)."
+    },
+    {
+     "question": "1972",
+     "answer": "Convention de l'UNESCO sur le patrimoine mondial ; conférence de Stockholm sur l'environnement."
+    },
+    {
+     "question": "1982",
+     "answer": "Convention de Montego Bay sur le droit de la mer."
+    },
+    {
+     "question": "1987",
+     "answer": "Rapport Brundtland : définition du développement durable."
+    },
+    {
+     "question": "1992",
+     "answer": "Sommet de la Terre à Rio de Janeiro."
+    },
+    {
+     "question": "1997",
+     "answer": "Protocole de Kyoto : premiers engagements chiffrés de réduction des gaz à effet de serre."
+    },
+    {
+     "question": "1998",
+     "answer": "Statut de Rome créant la Cour pénale internationale (en fonction depuis 2002)."
+    },
+    {
+     "question": "2001",
+     "answer": "Attentats du 11 septembre ; intervention en Afghanistan."
+    },
+    {
+     "question": "2015",
+     "answer": "Accord de Paris sur le climat (COP21)."
+    },
+    {
+     "question": "1995",
+     "answer": "Discours de Jacques Chirac au Vel d'Hiv reconnaissant la responsabilité de l'État français dans la déportation des Juifs ; exemple de « politique mémorielle » (thème Histoire et mémoires)."
+    }
+   ]
   }
  ]
 }
