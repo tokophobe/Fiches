@@ -646,7 +646,9 @@ main {
 
 .subject-add-btn:hover { background: rgba(31, 41, 55, 0.16); }
 
-/* Nombre de fiches de la boîte active, dans la barre de la page Réviser. */
+/* Nombre de fiches + bouton mode d'apprentissage de la boîte active, dans
+   la barre de la page Réviser (item 1) — mêmes couleurs que le curseur du
+   mode d'apprentissage (voir ALGO_MODE_COLORS en JS et .algo-mode-slider). */
 .subject-bar-count {
   flex-shrink: 0;
   font-family: var(--font-mono);
@@ -655,6 +657,46 @@ main {
   opacity: 0.75;
   white-space: nowrap;
 }
+
+.subject-bar-algo-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  border-radius: 8px;
+  padding: 6px 8px;
+  max-width: 88px;
+  border: 1px solid transparent;
+}
+
+.subject-bar-algo-btn span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Couleurs par mode, PLUS prononcées qu'avant (item 1 : jugées trop
+   "light") — texte en gras + fond et bordure nettement plus saturés.
+   Partagées par le bouton de la barre Réviser (.subject-bar-algo-btn) ET
+   celui de chaque ligne de boîte sur la page Gérer (.subject-row-algo-btn). */
+/* Item 1 (dernier lot) : fond transparent — plus aucun fond neutre non
+   plus, seul le pictogramme reste coloré selon le mode. */
+.subject-bar-algo-btn.is-cool, .subject-row-algo-btn.is-cool, .card-algo-btn.is-cool {
+  color: var(--mode-cool-color, var(--sage)); background: transparent; border-color: transparent;
+}
+.subject-bar-algo-btn.is-normal, .subject-row-algo-btn.is-normal, .card-algo-btn.is-normal {
+  color: var(--mode-normal-color, var(--amber)); background: transparent; border-color: transparent;
+}
+.subject-bar-algo-btn.is-renforce, .subject-row-algo-btn.is-renforce, .card-algo-btn.is-renforce {
+  color: var(--mode-renforce-color, var(--terracotta)); background: transparent; border-color: transparent;
+}
+.subject-bar-algo-btn.is-custom, .subject-row-algo-btn.is-custom, .card-algo-btn.is-custom {
+  color: var(--mode-custom-color, #e8c84a); background: transparent; border-color: transparent;
+}
+
+.subject-bar-algo-btn:hover, .subject-row-algo-btn:hover, .card-algo-btn:hover { filter: brightness(1.08); }
 
 /* Sélecteur de plusieurs boîtes confondues (item 1). */
 /* Item 1 : hauteur plein écran pour TOUS les panneaux de sélection
@@ -757,6 +799,16 @@ main {
   color: var(--ink);
 }
 
+.multi-subject-picker-item .algo-custom-picker-color {
+  margin-left: auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid rgba(35, 48, 42, 0.2);
+  padding: 0;
+  flex-shrink: 0;
+}
+
 .multi-subject-picker-item input[type="checkbox"],
 .multi-subject-picker-item input[type="radio"] {
   width: 16px;
@@ -801,10 +853,7 @@ main {
   gap: 6px;
 }
 
-/* Seul le nom du dossier lui-même est en semi-gras : les boîtes rangées
-   dedans (li imbriqués) gardent la graisse normale, comme à la racine —
-   sinon une même boîte changeait d'aspect selon l'endroit où elle est. */
-.folder-row > .org-row-wrap > .org-row-main > .subject-row-name { color: var(--folder-subject-name-color, var(--ink)); font-weight: 600; }
+.folder-row .subject-row-name { color: var(--folder-subject-name-color, var(--ink)); font-weight: 600; }
 
 /* Page unique de sélection de boîte(s) (item 1, 4e lot) : une VRAIE page
    (#view-boite-picker), comme les autres pages de l'appli — même en-tête
@@ -961,20 +1010,6 @@ main {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-/* Organisation (Mes fiches de révision / Mes créations) : intitulé
-   complet, sur plusieurs lignes si besoin, plutôt que tronqué. */
-.org-row-main > .subject-row-name {
-  white-space: normal;
-  overflow: visible;
-  line-height: 1.25;
-}
-.org-row-main > .subject-row-name > span {
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-  overflow-wrap: break-word;
-}
-.org-row-main > .subject-row-name > svg { flex-shrink: 0; }
 
 .org-count {
   flex-shrink: 0;
@@ -1028,6 +1063,12 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   font-size: 11px;
   color: var(--ink-soft);
   white-space: nowrap;
+}
+
+.org-mode-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
 }
 
 .org-gauge-inline {
@@ -1167,6 +1208,46 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
   font-size: 10.5px;
   color: var(--ink-soft);
   flex-shrink: 0;
+}
+
+/* Bouton "mode d'apprentissage" fusionné avec son propre affichage (item 9) :
+   un encadré net (fond + bordure) pour bien se lire comme un bouton distinct,
+   volontairement compact pour ne pas élargir la ligne (texte court, voir
+   ALGO_MODE_SHORT_LABELS). Couleur pilotée par une des 4 classes .is-*
+   ci-dessous (partagées avec le bouton de la page Réviser — item 1 :
+   avant, cette version-ci restait toujours en terracotta fixe, sans lien
+   avec le mode réel de la boîte). */
+.subject-row-algo-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 5px 7px;
+  max-width: 84px;
+  border: 1.5px solid transparent;
+}
+
+.subject-row-algo-btn span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Version compacte (item 16) : juste l'émoticône, sur un rond de la couleur
+   du mode — laisse davantage de place au nom de la boîte/du dossier à
+   côté. */
+.subject-row-algo-btn--compact {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
+  font-size: 14px;
+  max-width: none;
 }
 
 /* Boutons resserrés entre eux sur une ligne de boîte/dossier (item 16). */
@@ -1696,6 +1777,8 @@ body.is-login-locked .home-circle:not([data-key="account"]) { display: none; }
   color: #fff;
   border-color: var(--danger, #c0392b);
 }
+
+
 
 /* Disposition dispersée (item 3) : conteneur relatif assez haut pour
    contenir tous les cercles, chacun positionné en absolu via X/Y/diamètre
@@ -2502,6 +2585,11 @@ button.home-btn {
   font-size: 14px;
 }
 
+.card-algo-btn {
+  right: 54px;
+  font-size: 14px;
+}
+
 .card-construction-btn {
   font-size: 14px;
 }
@@ -2913,6 +3001,7 @@ button.home-btn {
 .manage-title {
   margin-bottom: 20px;
 }
+
 
 /* En-tête du formulaire "Nouvelle fiche" (item 7) : titre + sélecteur de
    boîte compact sur la même ligne, sans indication de mode ici (juste le
@@ -3961,6 +4050,7 @@ button.home-btn {
   padding: 20px 0;
 }
 
+
 /* ============================================================
    RÉGLAGES VIEW
    ============================================================ */
@@ -3978,7 +4068,7 @@ button.home-btn {
 }
 
 /* ============================================================
-   Titres de page / de bloc
+   MODE D'APPRENTISSAGE VIEW (par boîte)
    ============================================================ */
 .view-title {
   font-family: var(--font-type);
@@ -3994,6 +4084,80 @@ button.home-btn {
    corrigé précédemment). */
 .settings-block-title--on-dark {
   color: var(--ink);
+}
+
+.algo-mode-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink);
+  background: rgba(31,41,55,0.1);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+}
+
+.algo-mode-slider-wrap {
+  margin: 8px 0 24px;
+  padding: 0 4px;
+}
+
+.algo-mode-slider {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(31, 41, 55, 0.25);
+  margin: 18px 0 10px;
+  /* Couleur du curseur pilotée par cette variable, mise à jour en JS selon
+     le mode actif (voir updateAlgoModeTicksHighlight) : vert = cool,
+     orange = normal, rouge = renforcé, jaune = personnalisé. */
+  --algo-slider-color: var(--amber);
+}
+
+.algo-mode-slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--algo-slider-color);
+  border: 2px solid var(--paper);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  cursor: pointer;
+}
+
+.algo-mode-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--algo-slider-color);
+  border: 2px solid var(--paper);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  cursor: pointer;
+}
+
+.algo-mode-ticks {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-soft);
+}
+
+.algo-mode-ticks span:first-child { text-align: left; }
+.algo-mode-ticks span:last-child { text-align: right; }
+
+.algo-mode-ticks span.is-active {
+  color: var(--algo-tick-color, var(--amber));
+  font-weight: 600;
+}
+
+.algo-preset-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
 .algo-grid {
@@ -4019,6 +4183,12 @@ button.home-btn {
   font-size: 14px;
 }
 
+/* Bloc "Revoir les vieilles fiches" nettement séparé du reste (interligne
+   plus généreuse), bouton mis en évidence en rouge — action irréversible. */
+.algo-review-old-block {
+  margin-top: 34px;
+}
+
 .algo-review-old-btn {
   background: transparent;
   border: 2px solid var(--terracotta);
@@ -4027,6 +4197,144 @@ button.home-btn {
 
 .algo-review-old-btn:hover {
   background: rgba(182, 96, 74, 0.12);
+}
+
+/* Boutons "Paramétrages avancés" / "Revenir aux réglages d'origine" (item 9) :
+   avant de simples liens fantômes, peu perçus comme cliquables — passés en
+   boutons pleinement dessinés (fond + bordure nette). */
+.algo-advanced-toggle {
+  width: 100%;
+  margin: 4px 0 18px;
+  background: rgba(31, 41, 55, 0.1);
+  border: 1.5px solid rgba(31, 41, 55, 0.35);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.algo-advanced-toggle:hover { background: rgba(31, 41, 55, 0.18); }
+
+.algo-reset-btn-visible {
+  margin-top: 10px;
+  width: 100%;
+  background: rgba(31, 41, 55, 0.1);
+  border: 1.5px solid rgba(31, 41, 55, 0.35);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.algo-reset-btn-visible:hover { background: rgba(31, 41, 55, 0.18); }
+
+/* Curseurs à valeurs discrètes des coefficients/maximums (item 9) : mêmes
+   codes couleur que les boutons d'évaluation Encore/Difficile/Bien/Facile,
+   pour qu'on associe naturellement chaque réglage à sa note. */
+.algo-slider-field {
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  border: 1.5px solid transparent;
+}
+
+.algo-slider-field-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.algo-slider-field-label {
+  font-family: var(--font-type);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.algo-slider-field-value {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.algo-slider-field input[type="range"] {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(31, 41, 55, 0.25);
+}
+
+.algo-slider-field input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--paper);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.35);
+  cursor: pointer;
+  background: var(--slider-color, var(--amber));
+}
+
+.algo-slider-field input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--paper);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.35);
+  cursor: pointer;
+  background: var(--slider-color, var(--amber));
+}
+
+/* Item 5 — retour aux couleurs des boutons d'évaluation (Encore/Difficile/
+   Bien/Facile), pas celles des modes d'apprentissage : demandé puis
+   reconsidéré, la couleur de la NOTE reste plus parlante ici puisque
+   chaque encadré correspond justement à une note précise. Le curseur
+   PRINCIPAL de choix du mode (Cool/Normal/Renforcé/Perso), lui, garde la
+   couleur du mode — ce n'est pas le même curseur. */
+.algo-slider-field--again { background: color-mix(in srgb, var(--terracotta) 14%, transparent); border-color: color-mix(in srgb, var(--terracotta) 40%, transparent); --slider-color: var(--terracotta); }
+.algo-slider-field--again .algo-slider-field-label,
+.algo-slider-field--again .algo-slider-field-value { color: var(--terracotta); }
+
+.algo-slider-field--hard { background: color-mix(in srgb, var(--amber) 14%, transparent); border-color: color-mix(in srgb, var(--amber) 40%, transparent); --slider-color: var(--amber); }
+.algo-slider-field--hard .algo-slider-field-label,
+.algo-slider-field--hard .algo-slider-field-value { color: var(--amber); }
+
+.algo-slider-field--good { background: color-mix(in srgb, var(--sage) 14%, transparent); border-color: color-mix(in srgb, var(--sage) 40%, transparent); --slider-color: var(--sage); }
+.algo-slider-field--good .algo-slider-field-label,
+.algo-slider-field--good .algo-slider-field-value { color: var(--sage); }
+
+.algo-slider-field--easy { background: color-mix(in srgb, var(--teal) 18%, transparent); border-color: color-mix(in srgb, var(--teal) 45%, transparent); --slider-color: var(--teal); }
+.algo-slider-field--easy .algo-slider-field-label,
+.algo-slider-field--easy .algo-slider-field-value { color: var(--teal); }
+
+/* Graphique d'aperçu des échéances (item 6). */
+/* Graphique d'aperçu de la page d'édition des modes : collé en haut au
+   défilement (item 4) — pour rester visible EN MÊME TEMPS qu'on manipule
+   les curseurs plus bas, sans avoir à faire l'aller-retour du regard. */
+#algo-chart-wrap {
+  position: sticky;
+  top: 6px;
+  z-index: 5;
+  background: var(--desk);
+  border-radius: 10px;
+  padding: 10px 8px 4px;
+  margin-bottom: 8px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+#assign-chart-wrap {
+  background: rgba(31, 41, 55, 0.05);
+  border-radius: 10px;
+  padding: 10px 8px 4px;
+  margin-bottom: 8px;
+}
+
+/* Intitulés des axes (item 4) : l'ordonnée pivotée à la verticale, collée
+   contre le bord gauche du graphique (comme un vrai graphique), l'abscisse
+   toujours en dessous, centrée. */
+.algo-chart-body {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
 }
 
 .algo-chart-axis-y {
@@ -4038,6 +4346,11 @@ button.home-btn {
   flex-shrink: 0;
 }
 
+.algo-chart-svg-col {
+  flex: 1;
+  min-width: 0;
+}
+
 .algo-chart-axis-y, .algo-chart-axis-x {
   font-family: var(--font-mono);
   font-size: 9px;
@@ -4045,6 +4358,42 @@ button.home-btn {
 }
 
 .algo-chart-axis-x { text-align: center; margin-top: 4px; }
+
+/* Sous-liste des modes personnalisés (page Modes d'apprentissage) et liste
+   de choix d'affectation (page Gérer) — même look que les autres pickers. */
+.algo-custom-picker {
+  background: var(--paper);
+  border-radius: var(--radius-card);
+  padding: 12px 14px;
+  margin-bottom: 18px;
+}
+
+.algo-custom-picker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.algo-custom-picker-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+#assign-mode-list {
+  background: var(--paper);
+  border-radius: var(--radius-card);
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 260px;
+  overflow-y: auto;
+}
 
 .algo-chart-legend {
   display: flex;
@@ -4054,6 +4403,14 @@ button.home-btn {
   font-size: 10.5px;
   color: var(--ink);
   margin-bottom: 4px;
+  padding: 0 4px;
+}
+
+.algo-chart-hint {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #9aa89e;
+  margin: 0 0 6px;
   padding: 0 4px;
 }
 
@@ -4940,635 +5297,4 @@ button.home-btn {
   100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
 }
 
-/* Pastilles de notifications : `display: flex` (centrage du chiffre)
-   l'emportait sur l'attribut `hidden` — la pastille restait affichée avec
-   « 0 ». Sélecteur plus spécifique pour que `hidden` soit respecté. */
-.home-circle-badge[hidden],
-.construction-filter-badge[hidden] {
-  display: none;
-}
 
-/* Bandeau défilant (applyMarquee, js/app.js) : texte trop long pour sa
-   place → deux copies côte à côte qui défilent de droite à gauche en
-   boucle (translation de -50 % = exactement une copie + son espacement). */
-.is-marquee {
-  overflow: hidden;
-  text-overflow: clip !important;
-  white-space: nowrap;
-}
-.is-marquee .marquee-track {
-  display: inline-flex;
-  width: max-content;
-  overflow: visible;
-  animation-name: marquee-scroll;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-delay: 1.2s;
-  will-change: transform;
-}
-.is-marquee .marquee-item {
-  flex-shrink: 0;
-  overflow: visible;
-  text-overflow: clip;
-  padding-right: 3em;
-}
-@keyframes marquee-scroll {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .is-marquee .marquee-track { animation: none; }
-}
-
-/* Calendrier : alerte "aucune boîte associée" sur un évènement à venir. */
-.calendar-event-warning {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-  margin: 6px 0 0;
-  font-family: var(--font-type);
-  font-size: 12px;
-  line-height: 1.35;
-  color: #c2410c;
-}
-.calendar-event-warning .icon-inline-svg {
-  flex-shrink: 0;
-  width: 14px;
-  height: 14px;
-  margin-top: 1px;
-}
-
-/* Accueil : bandeau défilant d'alerte, tout en haut de la page. */
-.home-warning-ticker {
-  width: 100%;
-  margin: 2px 0 6px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 28px;
-  padding: 0 10px;
-  border: 1px solid rgba(194, 65, 12, 0.35);
-  border-radius: 999px;
-  background: rgba(255, 237, 213, 0.92);
-  color: #c2410c;
-  font-family: var(--font-type);
-  font-size: 11px;
-  text-align: left;
-  cursor: pointer;
-  overflow: hidden;
-}
-.home-warning-ticker[hidden] { display: none; }
-.home-warning-ticker-icon {
-  flex-shrink: 0;
-  width: 15px;
-  height: 15px;
-}
-.home-warning-ticker-text {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-}
-.home-warning-ticker .is-marquee .marquee-track { animation-delay: 0s; }
-:root.is-night-mode .home-warning-ticker { background: rgba(124, 45, 18, 0.55); color: #fdba74; border-color: rgba(253, 186, 116, 0.35); }
-:root.is-night-mode .calendar-event-warning { color: #fdba74; }
-
-.library-mine-toggle[hidden] { display: none; }
-
-/* Fondu discret aux deux bords d'un texte qui défile. */
-.is-marquee {
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 10px, #000 calc(100% - 14px), transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0, #000 10px, #000 calc(100% - 14px), transparent 100%);
-}
-
-/* Pastille informative (pas une alerte) : nombre d'évènements à venir. */
-.home-circle-badge.home-circle-badge--neutral {
-  background: #94a3b8;
-  color: #ffffff;
-}
-
-/* ============================================================
-   Classes — mise en page plus lisible (listes en cartes, page d'une
-   classe en sections).
-   ============================================================ */
-.class-list-heading {
-  margin: 22px 2px 8px;
-  font-family: var(--font-type);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
-.class-card-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.class-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 12px 14px;
-  border: none;
-  border-radius: 12px;
-  background: var(--paper);
-  box-shadow: 0 2px 8px rgba(30, 60, 100, 0.08);
-  color: var(--ink);
-  font-family: var(--font-type);
-  text-align: left;
-  cursor: pointer;
-}
-.class-card-icon {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--paper-2);
-  color: var(--ink-soft);
-}
-.class-card-icon svg { width: 20px; height: 20px; }
-.class-card-main {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.class-card-name {
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.25;
-  overflow-wrap: break-word;
-}
-.class-card-meta {
-  font-size: 12.5px;
-  color: var(--ink-soft);
-}
-.class-card-chevron {
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-  color: var(--ink-soft);
-}
-
-/* Page d'une classe */
-.class-detail-header {
-  margin: 6px 2px 16px;
-}
-.class-detail-name {
-  margin: 0 0 8px;
-  font-family: var(--font-type);
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--ink);
-}
-.class-detail-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.class-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: var(--paper);
-  border: 1px solid var(--rule-soft);
-  font-family: var(--font-type);
-  font-size: 12px;
-  color: var(--ink-soft);
-}
-.class-chip--code strong {
-  color: var(--ink);
-  letter-spacing: 0.04em;
-}
-.class-detail-section {
-  margin-bottom: 14px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: var(--paper);
-  box-shadow: 0 2px 8px rgba(30, 60, 100, 0.08);
-}
-.class-detail-section-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-.class-detail-section-head h3 {
-  margin: 0;
-  font-family: var(--font-type);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
-.class-detail-section-action {
-  padding: 4px 10px;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--rule);
-  font-family: var(--font-type);
-  font-size: 12.5px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.class-detail-section-action[hidden] { display: none; }
-.class-detail-empty {
-  margin: 4px 0 2px;
-  font-family: var(--font-type);
-  font-size: 13px;
-  color: var(--ink-soft);
-}
-.class-tree-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 0 7px calc(var(--depth, 0) * 18px);
-  border-top: 1px solid var(--rule-soft);
-  font-family: var(--font-type);
-  font-size: 14px;
-  color: var(--ink);
-}
-.class-tree-row:first-child { border-top: none; }
-.class-tree-row svg,
-.class-tree-icon {
-  flex-shrink: 0;
-  width: 17px;
-  height: 17px;
-  color: var(--ink-soft);
-}
-.class-tree-row--folder { font-weight: 600; }
-.class-tree-name {
-  flex: 1;
-  min-width: 0;
-  line-height: 1.25;
-  overflow-wrap: break-word;
-}
-.class-tree-count {
-  flex-shrink: 0;
-  font-size: 12px;
-  color: var(--ink-soft);
-}
-.class-event-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.class-event-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 0;
-  border-top: 1px solid var(--rule-soft);
-  font-family: var(--font-type);
-}
-.class-event-row:first-child { border-top: none; }
-.class-event-title {
-  flex: 1;
-  min-width: 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink);
-  line-height: 1.25;
-}
-.class-event-when {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 1px;
-  font-size: 12px;
-  color: var(--ink-soft);
-}
-.class-event-countdown {
-  font-weight: 600;
-}
-
-/* ============================================================
-   Programme de révision : un bloc par évènement, arborescence à cocher.
-   ============================================================ */
-.revision-event-list {
-  list-style: none;
-  margin: 0 0 12px;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.revision-event-block {
-  padding: 12px 14px 14px;
-  border-radius: 12px;
-  background: var(--paper);
-  box-shadow: 0 2px 8px rgba(30, 60, 100, 0.08);
-  font-family: var(--font-type);
-}
-.revision-event-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-}
-.revision-event-title {
-  flex: 1;
-  min-width: 0;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.25;
-}
-.revision-event-when {
-  flex-shrink: 0;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--ink-soft);
-}
-.revision-event-when.is-soon { color: #c2410c; }
-:root.is-night-mode .revision-event-when.is-soon { color: #fdba74; }
-.revision-event-date {
-  margin: 2px 0 8px;
-  font-size: 12px;
-  color: var(--ink-soft);
-}
-.revision-tree-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 0 7px calc(var(--depth, 0) * 20px);
-  border-top: 1px solid var(--rule-soft);
-  font-size: 14px;
-  color: var(--ink);
-  cursor: pointer;
-}
-.revision-tree-row input[type="checkbox"] {
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-  margin: 0;
-  accent-color: var(--rule);
-}
-.revision-tree-icon {
-  flex-shrink: 0;
-  display: flex;
-  color: var(--ink-soft);
-}
-.revision-tree-icon svg { width: 17px; height: 17px; }
-.revision-tree-row--folder { font-weight: 600; }
-.revision-tree-name {
-  flex: 1;
-  min-width: 0;
-  line-height: 1.25;
-  overflow-wrap: break-word;
-}
-.revision-tree-count {
-  flex-shrink: 0;
-  font-size: 12px;
-  color: var(--ink-soft);
-}
-.revision-event-gauge {
-  margin: 10px 0 4px;
-  display: flex;
-  justify-content: center;
-}
-.revision-event-gauge:empty { display: none; }
-.revision-event-go {
-  display: block;
-  width: 100%;
-  margin-top: 8px;
-}
-.revision-event-go:disabled { opacity: 0.5; }
-
-/* ============================================================
-   Round 23 : Librairie — classement en cascade (taxonomie Excel) et tags.
-   ============================================================ */
-/* Filtres de recherche : selects compacts sur deux colonnes, qui
-   n'apparaissent qu'au fur et à mesure (champ enfant visible une fois le
-   parent choisi). */
-.library-taxonomy-filters {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin: 0 0 10px;
-}
-.library-taxonomy-filters[hidden] { display: none; }
-.library-taxonomy-select {
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-  padding: 9px 10px;
-  border-radius: 12px;
-  border: 1px solid var(--border-color, #d8dce3);
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font-type);
-  font-size: 14px;
-  text-overflow: ellipsis;
-}
-.library-taxonomy-select.is-set {
-  border-color: var(--blue);
-  box-shadow: inset 0 0 0 1px var(--blue);
-}
-
-/* Saisie de tags en pastilles + suggestions. */
-.tag-input {
-  position: relative;
-  text-transform: none;
-  letter-spacing: normal;
-}
-.tag-input[hidden] { display: none; }
-.tag-input--filter { margin: 0 0 4px; }
-.tag-input-box {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 8px;
-  border-radius: 12px;
-  border: 1px solid var(--border-color, #d8dce3);
-  background: var(--paper);
-  box-sizing: border-box;
-  width: 100%;
-}
-.card-form .tag-input-box {
-  border-radius: 8px;
-  border-color: rgba(35, 48, 42, 0.15);
-  background: var(--paper-2);
-}
-.tag-input-chips { display: contents; }
-.tag-input-field {
-  flex: 1 1 120px;
-  min-width: 100px;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: var(--ink);
-  font-family: var(--font-type);
-  font-size: 14px;
-  padding: 4px 2px;
-}
-.tag-suggestions {
-  position: absolute;
-  z-index: 30;
-  left: 0;
-  right: 0;
-  top: calc(100% + 4px);
-  margin: 0;
-  padding: 4px;
-  list-style: none;
-  background: var(--paper);
-  border: 1px solid var(--rule-soft);
-  border-radius: 12px;
-  box-shadow: var(--shadow-deep);
-  max-height: 240px;
-  overflow-y: auto;
-}
-.tag-suggestions[hidden] { display: none; }
-.tag-suggestion {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 9px 10px;
-  border-radius: 8px;
-  font-family: var(--font-type);
-  font-size: 14px;
-  color: var(--ink);
-  cursor: pointer;
-}
-.tag-suggestion:hover { background: var(--paper-2); }
-.tag-suggestion-count { font-size: 12px; color: var(--ink-soft); }
-.tag-suggestion--new { color: var(--blue); }
-.tag-suggestion--empty { color: var(--ink-soft); cursor: default; }
-
-.tag-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-.tag-chips[hidden] { display: none; }
-.tag-chips--row { margin-top: 4px; }
-#library-detail-tags { margin: 0 0 10px; }
-.tag-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  border: none;
-  background: rgba(74, 144, 217, 0.12);
-  color: var(--blue);
-  font-family: var(--font-type);
-  font-size: 12px;
-  line-height: 1.6;
-  text-transform: none;
-  letter-spacing: normal;
-}
-button.tag-chip { cursor: pointer; font-size: 13px; padding: 3px 9px; }
-.tag-chip-x { opacity: 0.7; font-size: 14px; line-height: 1; }
-
-.library-detail-taxonomy {
-  font-size: 13px;
-  color: var(--ink-soft);
-  margin: 0 0 8px;
-}
-/* Le champ de saisie des tags ne doit pas reprendre le cadre des
-   `.field input[type="text"]` (il est déjà dans le cadre .tag-input-box). */
-.tag-input-box input.tag-input-field[type="text"] {
-  flex: 1 1 120px;
-  width: auto;
-  min-width: 100px;
-  border: none;
-  background: transparent;
-  box-shadow: none;
-  padding: 4px 2px;
-  font-family: var(--font-type);
-  font-size: 14px;
-}
-
-/* ============================================================
-   Round 25, item 2 : palier Réviser — bouton rond désactivé (reste
-   cliquable pour que le robot explique pourquoi) + raison sous le libellé.
-   ============================================================ */
-.classes-role-circle.is-disabled {
-  opacity: 0.5;
-  box-shadow: none;
-  border: 1px dashed var(--rule-soft);
-}
-.classes-role-circle-note {
-  max-width: 112px;
-  font-size: 10.5px;
-  font-weight: 400;
-  line-height: 1.25;
-  color: var(--ink-soft);
-  text-align: center;
-}
-.classes-role-circle-note[hidden] { display: none; }
-
-/* Round 25, item 3 : usages (Mon compte). */
-.usage-options {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  text-transform: none;
-  letter-spacing: normal;
-}
-.usage-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  background: var(--paper-2);
-  border: 1px solid rgba(35, 48, 42, 0.15);
-  font-family: var(--font-type);
-  font-size: 14px;
-  color: var(--ink);
-  cursor: pointer;
-}
-.usage-option input { width: 18px; height: 18px; margin: 0; accent-color: var(--blue); }
-.usage-option:has(input:checked) { border-color: var(--blue); }
-.account-school-title {
-  margin: 18px 0 10px;
-  font-family: var(--font-type);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-/* Round 26, item 3 : bandeau d'alertes en carrousel (homeTickerRun,
-   js/app.js) — une ligne à la fois, défilement horizontal puis glissement
-   vertical vers l'alerte suivante. */
-.home-warning-ticker-text {
-  position: relative;
-  align-self: stretch;
-  display: block;
-}
-.home-ticker-line {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  will-change: transform;
-}
-.home-warning-ticker-text.is-overflowing {
-  -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 14px), transparent 100%);
-  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 14px), transparent 100%);
-}
-
-/* Round 26, item 2 : origine d'un évènement (classe · professeur) sur sa
-   propre ligne, sous le titre, pour ne plus écraser celui-ci. */
-.calendar-event-origin { margin: 2px 0 0; }
-.calendar-event-origin .classes-shared-badge { margin-left: 0; }

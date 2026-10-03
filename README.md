@@ -144,32 +144,6 @@ Le fichier `_headers` (reconnu par Netlify) empêche en plus la mise en
 cache de `sw.js` et `index.html` côté serveur, pour que la vérification
 soit toujours fiable.
 
-## Taxonomie de la Librairie (fichier Excel)
-
-Le classement proposé quand on publie une boîte dans la Librairie
-(catégorie → cycle → niveau → année → spécialité → matière) et les filtres
-de recherche sont lus **directement** dans `data/taxonomie.xlsx`.
-
-Pour le modifier :
-
-1. Ouvre `data/taxonomie.xlsx` dans Excel et modifie-le (onglet « listes »
-   + les matrices de correspondance : une cellule non vide = lien).
-   Garde les mêmes noms d'onglets et la même disposition (ids/libellés
-   dans l'onglet « listes », matrices à partir de la cellule C3).
-2. Remplace `data/taxonomie.xlsx` sur le site (même nom, même dossier).
-
-Matières : elles sont proposées d'après la spécialité choisie (onglet
-« spécialités-matières »). Pour un niveau qui n'a aucune spécialité (CP à
-3ème), elles viennent directement de l'onglet « niveaux-matières ».
-
-C'est tout : pas besoin de nouvelle version de l'appli. Elle relit le
-fichier à chaque ouverture (le service worker le prend toujours sur le
-réseau d'abord). Pour vérifier : Réglages développeur → « Librairie —
-taxonomie (Excel) » → « Relire l'Excel », qui affiche ce qui a été lu.
-
-Évite de changer les ids d'éléments déjà utilisés : les collections
-publiées gardent l'id et le libellé de leur classement.
-
 ## Comment fonctionne la répétition espacée
 
 Chaque fiche a trois valeurs : un facteur de facilité, un intervalle
