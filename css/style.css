@@ -1776,6 +1776,13 @@ body.is-login-locked .home-circle:not([data-key="account"]) { display: none; }
   color: #ffffff;
 }
 
+/* Round 30 : bouton « Librairie » de l'accueil — couleur propre, réglable
+   en mode développeur (Couleurs des fonds). */
+.home-circle--library {
+  background: var(--home-library-bg-color, #8a63c9);
+  color: #ffffff;
+}
+
 /* Round 3, item 2 : page d'accueil Classes — deux gros boutons ronds
    ("J'apprends" / "J'enseigne"), même esprit visuel que les boutons ronds
    de l'accueil, mais rangés côte à côte dans le flux normal de la page
@@ -5585,4 +5592,41 @@ button.tag-chip { cursor: pointer; font-size: 13px; padding: 3px 9px; }
   padding: 10px;
   margin: 0 0 10px;
   color: var(--ink);
+}
+
+/* ============================================================
+   Round 30 : page « Mes créations de fiches » (présentation Librairie).
+   ============================================================ */
+.creations-create-btn {
+  display: block;
+  width: 100%;
+  margin: 10px 0 12px;
+}
+.creations-status {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--paper-alt, #e4e7ec);
+  color: var(--ink-soft, #5b6472);
+}
+.creations-status--published {
+  background: #e3f1e6;
+  color: #2f6b3c;
+}
+.creations-row--out {
+  opacity: 0.88;
+}
+.creations-row--out .creations-place {
+  font-style: italic;
+}
+/* « Publier » : même pastille que le prix, en bleu (action à faire). */
+.btn.library-price-btn.creations-publish-btn--todo {
+  background: var(--blue, #4a90d9);
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(74, 144, 217, 0.45);
+}
+.creations-revisions-btn {
+  white-space: nowrap;
 }

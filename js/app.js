@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v182";
+  const APP_VERSION = "v183";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -388,7 +388,7 @@
   // qui n'existe plus sur l'accueil.
   const DEFAULT_NAV_ICONS = {
     review: "cards", manage: "folder", stats: "barChart", settings: "settings",
-    addCard: "plus", calendar: "calendar", dev: "code",
+    addCard: "plus", calendar: "calendar", dev: "code", library: "book",
   };
   // Couleurs des 4 notes (boutons d'évaluation + graphiques) — item 2 :
   // rendues éditables depuis la page Développeur plutôt que codées en dur
@@ -423,6 +423,9 @@
     appBg: "#eef2f8",
     homeSquareBg: "#ffffff",
     homeAddCardBg: "#4a90d9",
+    // Round 30 : bouton « Librairie » de l'accueil (déplacé depuis Fiches),
+    // avec sa propre couleur.
+    homeLibraryBg: "#8a63c9",
     cardFormBg: "#ffffff",
     richEditorBg: "#f4f7fb",
     homeBtnBg: "transparent",
@@ -452,6 +455,7 @@
     appBg: "#11151c",
     homeSquareBg: "#1c2330",
     homeAddCardBg: "#3a75b3",
+    homeLibraryBg: "#6d4fa3",
     cardFormBg: "#1c2330",
     richEditorBg: "#232b3a",
     homeBtnBg: "transparent",
@@ -625,6 +629,7 @@
     review: "Réviser", manage: "Fiches", addCard: "Ajouter une fiche",
     stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
     dev: "Développeur", classes: "École", account: "Compte",
+    library: "Librairie",
   };
   // Largeur/hauteur de référence utilisées uniquement pour convertir une
   // seule fois d'anciens réglages enregistrés en pixels (avant ce
@@ -644,6 +649,8 @@
     settings: { x: 16.2, y: 73.8, d: 85 },
     account: { x: 15.0, y: 90.0, d: 70 },
     dev: { x: 89.0, y: 79.0, d: 80 },
+    // Round 30 : Librairie, déplacée de la page Fiches vers l'accueil.
+    library: { x: 17.0, y: 40.0, d: 90 },
   };
   // Items 1/2 (logo) : position (X/Y en %, centre du logo) et taille (px)
   // du logo sur la page d'accueil.
@@ -671,8 +678,9 @@
   // petite série façon tuto (voir bouton "Suite", round 4), une simple
   // chaîne reste acceptée pour un message unique.
   const DEFAULT_HELP_MESSAGES_BY_VIEW = {
-    manage: ["Lorsque tu mets une fiche dans un dossier vide, il se transforme alors en boîte à fiches."],
+    manage: ["Range ici tes boîtes dans des dossiers. Pour créer une nouvelle boîte, passe par « Mes créations de fiches »."],
     "manage-creations": ["Ici, seulement les boîtes que tu as créées toi-même. L'interrupteur ne garde que celles publiées dans la Librairie."],
+    creations: ["Ici, toutes les boîtes que tu as créées. Publie-les dans la Librairie, ou ajoute-les à tes révisions pour les ranger dans Mes fiches de révision."],
     "fiches-hub": [],
     "review-hub": [],
     "revision-program": ["A ta place, voici ce que je réviserais en priorité, dans l'ordre :"],
@@ -702,7 +710,8 @@
   const HELP_VIEW_LABELS = {
     review: "Réviser",
     manage: "Mes fiches de révision (Organisation)",
-    "manage-creations": "Mes créations de fiches",
+    "manage-creations": "Mes créations de fiches (ancienne page)",
+    creations: "Mes créations de fiches",
     "fiches-hub": "Fiches (choix)",
     cards: "Fiches",
     stats: "Statistiques",
@@ -1578,7 +1587,7 @@
     renderIconBankPicker(
       "dev-nav-icons-list",
       Object.keys(DEFAULT_NAV_ICONS),
-      { review: "Réviser", manage: "Gérer", stats: "Stats", settings: "Réglages", addCard: "Ajouter une fiche", calendar: "Calendrier", dev: "Développeur" },
+      { review: "Réviser", manage: "Gérer", stats: "Stats", settings: "Réglages", addCard: "Ajouter une fiche", calendar: "Calendrier", dev: "Développeur", library: "Librairie" },
       "navIcons",
       () => {
         applyNavLabels();
@@ -1655,7 +1664,7 @@
   }
 
   const BG_COLORS_ORDER = [
-    "appBg", "homeBg", "homeSquareBg", "homeAddCardBg", "cardFormBg", "richEditorBg", "homeBtnBg", "cardBg",
+    "appBg", "homeBg", "homeSquareBg", "homeAddCardBg", "homeLibraryBg", "cardFormBg", "richEditorBg", "homeBtnBg", "cardBg",
     "subjectSelectBg", "syncStatusBg", "folderBg", "folderL1Bg", "folderL2Bg", "folderL3Bg",
     "subjectRowBg", "addBtnBg", "chartWrapBg", "svgChartBg", "dueBarColor", "todayBarColor", "reviewedBarColor",
     "skipProgramBg",
@@ -1665,6 +1674,7 @@
     homeBg: "Fond de la page d'accueil",
     homeSquareBg: "Boutons de la page d'accueil",
     homeAddCardBg: "Bouton « Ajouter une fiche » de l'accueil",
+    homeLibraryBg: "Bouton « Librairie » de l'accueil",
     cardFormBg: "Fond des cadres (blocs)",
     richEditorBg: "Fond des zones de texte",
     homeBtnBg: "Bouton home",
@@ -2611,6 +2621,7 @@
     const bg = eff.bgColors;
     root.setProperty("--home-square-bg-color", bg.homeSquareBg);
     root.setProperty("--home-add-card-bg-color", bg.homeAddCardBg);
+    root.setProperty("--home-library-bg-color", bg.homeLibraryBg || DEFAULT_BG_COLORS.homeLibraryBg);
     root.setProperty("--home-btn-bg-color", bg.homeBtnBg);
     root.setProperty("--subject-select-bg-color", bg.subjectSelectBg);
     root.setProperty("--sync-status-bg-color", bg.syncStatusBg);
@@ -2890,7 +2901,26 @@
    *  compris dans ses sous-dossiers à n'importe quelle profondeur. */
   function subjectIdsInFolder(folderId) {
     const ids = new Set([folderId, ...folderDescendantIds(folderId)]);
-    return subjects.filter((s) => ids.has(s.folderId)).map((s) => s.id);
+    return subjects.filter((s) => ids.has(s.folderId) && isSubjectInRevisions(s)).map((s) => s.id);
+  }
+
+  /* Round 30 : une boîte peut exister SANS être dans « Mes fiches de
+     révision » (créée depuis Mes créations de fiches et pas encore rangée,
+     ou retirée de mes révisions). Elle garde ses fiches et reste visible
+     dans Mes créations, mais n'apparaît plus dans l'organisation, les
+     sélecteurs ni les révisions (drapeau `outOfRevisions`, synchronisé
+     avec le reste de la boîte). */
+  function isSubjectInRevisions(s) {
+    return !!s && !s.outOfRevisions;
+  }
+  function isSubjectIdInRevisions(id) {
+    const s = subjects.find((x) => x.id === id);
+    return !s || !s.outOfRevisions;
+  }
+  /** Fiches non supprimées des boîtes présentes dans mes révisions. */
+  function revisionCards() {
+    const out = new Set(subjects.filter((s) => s.outOfRevisions).map((s) => s.id));
+    return cards.filter((c) => !c.deleted && !out.has(c.subject));
   }
 
   /* ---------------------------------------------------------
@@ -2915,13 +2945,15 @@
   function isFolderABoite(folderId) {
     const s = folderSelfSubject(folderId);
     if (!s) return false;
-    return cards.some((c) => !c.deleted && c.subject === s.id);
+    // Round 30 : un dossier-boîte vidé de ses fiches reste une boîte
+    // (keepAsBox) — on ne transforme plus un dossier en boîte, ni l'inverse.
+    return !!s.keepAsBox || cards.some((c) => !c.deleted && c.subject === s.id);
   }
   /** Un dossier est "vide" (éligible pour devenir une boîte) s'il n'a NI
    *  sous-dossier NI boîte parmi ses enfants directs. */
   function folderIsEmpty(folderId) {
     const hasSubFolders = folders.some((f) => f.parentId === folderId);
-    const hasSubjectChildren = subjects.some((s) => s.folderId === folderId && !folders.some((f) => f.id === s.id));
+    const hasSubjectChildren = subjects.some((s) => s.folderId === folderId && isSubjectInRevisions(s) && !folders.some((f) => f.id === s.id));
     return !hasSubFolders && !hasSubjectChildren;
   }
   /** Crée (si besoin) la boîte auto-liée à un dossier vide, prête à
@@ -2948,16 +2980,13 @@
     if (!isSelfLinked) return;
     const stillHasCards = cards.some((c) => !c.deleted && c.subject === subjectId);
     if (stillHasCards) return;
-    const idx = subjects.findIndex((s) => s.id === subjectId);
-    if (idx === -1) return;
-    const s = subjects[idx];
-    subjects.splice(idx, 1);
-    await DB.removeSubject(subjectId);
-    await pushSubjectDeleted(s);
-    if (currentSubjectId === subjectId && subjects.length > 0) {
-      currentSubjectId = subjects[0].id;
-      localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
-    }
+    const s = subjects.find((x) => x.id === subjectId);
+    if (!s || s.keepAsBox) return;
+    // Round 30 : un dossier ne se transforme plus en boîte (et donc ne
+    // redevient plus dossier) : la boîte vidée reste une boîte.
+    s.keepAsBox = true;
+    s.updatedAt = new Date().toISOString();
+    await persistSubject(s);
   }
 
   /** Score moyen d'une boîte (item 2) : moyenne des scores de ses fiches
@@ -3595,7 +3624,7 @@
     // pas de sens à changer.
     const isRootLevel = parentId === ROOT_FOLDER_ID;
     let childFolders = folders.filter((f) => f.parentId === parentId);
-    let childSubjects = subjects.filter((s) => s.folderId === parentId && !folders.some((f) => f.id === s.id));
+    let childSubjects = subjects.filter((s) => s.folderId === parentId && isSubjectInRevisions(s) && !folders.some((f) => f.id === s.id));
     if (isRootLevel) {
       const ownFolders = childFolders.filter((f) => !f.sharedClassId && !f.sharedClassRoot).sort((a, b) => a.name.localeCompare(b.name, "fr"));
       const classFolders = childFolders.filter((f) => f.sharedClassId || f.sharedClassRoot).sort((a, b) => a.name.localeCompare(b.name, "fr"));
@@ -3641,6 +3670,7 @@
       // (cardsEntryFromManage, déjà géré par goHome()).
       nameBtn.addEventListener("click", () => {
         cardsEntryFromManage = true;
+        cardsEntryFromCreations = false;
         goToCardsFor(`subject:${subjectId}`);
       });
 
@@ -3665,7 +3695,10 @@
         onShare:
           subjectForIcon && (subjectForIcon.sharedBoxId || (subjectForIcon.fromLibrary && subjectForIcon.libraryOriginId))
             ? null
-            : () => shareSubjectToLibrary(subjectId),
+            : () => {
+                libraryShareReturnView = "manage";
+                shareSubjectToLibrary(subjectId);
+              },
         deleteTitle: "Supprimer cette boîte",
       });
       li.appendChild(body);
@@ -3716,7 +3749,7 @@
         goToCardsFor(`folder:${f.id}`);
       });
 
-      const childCount = folders.filter((x) => x.parentId === f.id).length + subjects.filter((x) => x.folderId === f.id).length;
+      const childCount = folders.filter((x) => x.parentId === f.id).length + subjects.filter((x) => x.folderId === f.id && isSubjectInRevisions(x)).length;
       // Item 5 : effet de pile quand ce dossier est replié ET n'est pas
       // vide, pour montrer qu'il contient bien quelque chose en dessous.
       if (!expanded && childCount > 0) li.classList.add("folder-row--stacked");
@@ -4182,7 +4215,7 @@
     const childSubjects = ctx.hideBoites
       ? []
       : subjects
-          .filter((s) => s.folderId === parentId && !folders.some((f) => f.id === s.id))
+          .filter((s) => s.folderId === parentId && isSubjectInRevisions(s) && !folders.some((f) => f.id === s.id))
           .filter((s) => !ctx.excludeSubjectIds || !ctx.excludeSubjectIds.has(s.id))
           .sort((a, b) => a.name.localeCompare(b.name, "fr"));
 
@@ -4194,7 +4227,7 @@
         appendPickerBoiteRow(container, depth, f.id, f.name, n, ctx);
         return;
       }
-      const childCount = folders.filter((x) => x.parentId === f.id).length + subjects.filter((x) => x.folderId === f.id).length;
+      const childCount = folders.filter((x) => x.parentId === f.id).length + subjects.filter((x) => x.folderId === f.id && isSubjectInRevisions(x)).length;
       const expanded = pickerExpandedFolders.has(f.id);
       const ids = subjectIdsInFolder(f.id);
       const isEmpty = folderIsEmpty(f.id);
@@ -4202,8 +4235,10 @@
       // devenir une boîte via ce raccourci (sélecteur "Nouvelle fiche") —
       // seule une sélection "dossier entier" (folderAlwaysSelectable, ex.
       // Réviser/événement de calendrier) reste possible dessus.
-      const rowSelectable =
-        ctx.mode === "single" && (ctx.folderAlwaysSelectable || (isEmpty && !f.sharedClassId));
+      // Round 30 : un dossier (même vide) ne se transforme plus en boîte —
+      // il n'est sélectionnable que là où un dossier entier est un choix
+      // valable (évènement de calendrier, destination d'un déplacement).
+      const rowSelectable = ctx.mode === "single" && !!ctx.folderAlwaysSelectable;
       const { li, cb } = buildPickerRow({
         depth,
         isFolder: true,
@@ -4215,7 +4250,7 @@
           ctx.rerenderRoot();
         },
         iconMarkup: iconSvgMarkup("folder", "icon-inline-svg"),
-        nameText: f.name + (ctx.mode === "single" && isEmpty ? " (dossier vide)" : ""),
+        nameText: f.name,
         countLabel: `${ids.length} boîte${ids.length > 1 ? "s" : ""}`,
         selectControl: ctx.mode === "multi" ? "checkbox" : "none",
         checked: ctx.mode === "multi" && ids.length > 0 && ids.every((id) => ctx.selectedSubjectIds.has(id)),
@@ -4223,14 +4258,7 @@
         value: f.id,
         rowSelectable,
         onRowSelect: async () => {
-          if (ctx.folderAlwaysSelectable) {
-            ctx.onPick("folder", f.id);
-            return;
-          }
-          // Dossier vide (item 1 du lot précédent) : devient boîte à cet
-          // instant précis, puis se comporte comme n'importe quelle boîte.
-          const s = await ensureFolderIsBoite(f.id);
-          if (s) ctx.onPick("subject", s.id);
+          if (ctx.folderAlwaysSelectable) ctx.onPick("folder", f.id);
         },
       });
       if (!expanded && childCount > 0) li.classList.add("folder-row--stacked");
@@ -4333,7 +4361,7 @@
    *  fiche" (folderAlwaysSelectable: false, boîtes/dossiers vides
    *  seulement) et par la création d'un événement de calendrier
    *  (folderAlwaysSelectable: true, un dossier entier est un lien valide). */
-  function renderSingleBoitePicker(container, onPick, folderAlwaysSelectable, excludeSubjectIds, libraryOptions) {
+  function renderSingleBoitePicker(container, onPick, folderAlwaysSelectable, excludeSubjectIds, libraryOptions, includeOutOfRevisions) {
     function rerender() {
       container.innerHTML = "";
       container.classList.add("picker-tree");
@@ -4370,6 +4398,23 @@
         container.appendChild(boxesTitle);
       }
       renderFolderTreeForPicker(container, ROOT_FOLDER_ID, 0, { mode: "single", onPick, folderAlwaysSelectable, excludeSubjectIds, container, rerenderRoot: rerender });
+      // Round 30 : mes boîtes hors révisions (Mes créations de fiches, pas
+      // encore rangées) restent des destinations possibles pour une fiche.
+      if (includeOutOfRevisions) {
+        const outs = subjects
+          .filter((x) => x.outOfRevisions && !x.deleted && (!excludeSubjectIds || !excludeSubjectIds.has(x.id)))
+          .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+        if (outs.length > 0) {
+          const t = document.createElement("li");
+          t.className = "picker-section-title";
+          t.textContent = "Hors de mes révisions";
+          container.appendChild(t);
+          outs.forEach((x) => {
+            const n = cards.filter((c) => !c.deleted && c.subject === x.id).length;
+            appendPickerBoiteRow(container, 0, x.id, x.name, n, { mode: "single", onPick });
+          });
+        }
+      }
     }
     rerender();
   }
@@ -4521,7 +4566,7 @@
       if (ctx.excludedFolderIds) {
         renderMoveDestinationPicker(list, ctx.excludedFolderIds, (destId) => ctx.onPick("folder", destId));
       } else {
-        renderSingleBoitePicker(list, (kind, id) => ctx.onPick(kind, id), !!ctx.folderAlwaysSelectable, ctx.excludeSubjectIds, ctx.libraryOptions);
+        renderSingleBoitePicker(list, (kind, id) => ctx.onPick(kind, id), !!ctx.folderAlwaysSelectable, ctx.excludeSubjectIds, ctx.libraryOptions, !!ctx.includeOutOfRevisions);
       }
       if (confirmBtn) confirmBtn.hidden = true;
       if (actions) actions.hidden = true;
@@ -4549,6 +4594,7 @@
   function closeBoitePickerView() {
     const returnViewId = boitePickerReturnViewId || "view-home";
     boitePickerActivateView(returnViewId);
+    if (returnViewId === "view-creations") renderCreationsList();
     // Round 4, partie 2 : en revenant sur la page d'où on est parti, la
     // bulle d'aide doit refléter CETTE page, pas garder le message (ou
     // l'absence de message) du sélecteur de boîte(s).
@@ -4638,6 +4684,7 @@
     openBoitePickerView({
       mode: "single",
       title: "Choisir la boîte de cette fiche",
+      includeOutOfRevisions: true,
       // item 3 (2e lot, Classes) : une boîte partagée par un prof est en
       // lecture seule côté élève — on ne peut pas y ajouter de fiche
       // manuellement, seul le prof la fait évoluer.
@@ -4833,11 +4880,11 @@
    *  (item 1). */
   function subjectCards() {
     if (currentSubjectId === ALL_SUBJECTS_ID) {
-      return cards.filter((c) => !c.deleted);
+      return revisionCards();
     }
     if (currentSubjectId === MULTI_SUBJECTS_ID) {
       const set = new Set(loadMultiSelection());
-      return cards.filter((c) => !c.deleted && set.has(c.subject));
+      return revisionCards().filter((c) => set.has(c.subject));
     }
     return cards.filter((c) => !c.deleted && c.subject === currentSubjectId);
   }
@@ -5782,7 +5829,7 @@
    *  libre, sans changer où atterrit une nouvelle fiche. */
   function cardsScopeCards() {
     if (cardsScopeFilter === CARDS_SCOPE_CURRENT) return subjectCards();
-    if (cardsScopeFilter === ALL_SUBJECTS) return cards.filter((c) => !c.deleted);
+    if (cardsScopeFilter === ALL_SUBJECTS) return revisionCards();
     if (cardsScopeFilter === CARDS_SCOPE_MULTI) {
       const set = new Set(loadCardsMultiSelection());
       return cards.filter((c) => !c.deleted && set.has(c.subject));
@@ -6064,6 +6111,7 @@
       mode: "single",
       robotMessage: `Déplacer la fiche « ${label.length > 40 ? label.slice(0, 40) + "…" : label} » vers :`,
       excludeSubjectIds: excluded,
+      includeOutOfRevisions: true,
       onPick: async (kind, id) => {
         let destId = id;
         if (kind === "folder") {
@@ -6327,7 +6375,7 @@
   /** Fiches (non supprimées) dans le périmètre choisi pour l'onglet Stats. */
   function statsScopeCards() {
     if (statsSubjectFilter === ALL_SUBJECTS) {
-      return cards.filter((c) => !c.deleted);
+      return revisionCards();
     }
     if (statsSubjectFilter === STATS_MULTI_ID) {
       const set = new Set(loadStatsMultiSelection());
@@ -6738,7 +6786,7 @@
     renderStatsScaleSelect();
     // 6a : toujours toutes boîtes confondues, indépendant du sélecteur
     // de boîte ci-dessous (qui ne pilote que ce qui suit les flammes).
-    const allCards = cards.filter((c) => !c.deleted);
+    const allCards = revisionCards();
     statTotal.textContent = String(allCards.length);
     if (statReviewedToday) statReviewedToday.textContent = String(reviewedTodayCount(allCards));
     renderDueChart();
@@ -8068,6 +8116,7 @@
       if (view === "classes") renderClassesView();
       if (view === "messages") renderMessagesView();
       if (view === "library") renderLibraryView();
+      if (view === "creations") renderCreationsView();
       // Round 10, item 2 : resynchronise les collections prises dans la
       // Bibliothèque en ouvrant Mes collections — indépendant d'un Compte
       // connecté (prendre une collection publique n'en demande pas), donc
@@ -8108,6 +8157,7 @@
     account: "Mon compte",
     "school-hub": "École",
     "fiches-hub": "Fiches",
+    creations: "Mes créations",
     classes: "Classes",
     "classes-student": "Classes",
     "classes-join": "Rejoindre une classe",
@@ -8268,11 +8318,18 @@
       if (tab) tab.click();
       return;
     }
-    // Mes fiches de révision / Mes créations / Librairie se rejoignent par
-    // le hub Fiches : Accueil y ramène.
+    if (cardsEntryFromCreations && el("view-cards") && el("view-cards").classList.contains("is-active")) {
+      cardsEntryFromCreations = false;
+      const tab = document.querySelector('.tab[data-view="creations"]');
+      if (tab) tab.click();
+      return;
+    }
+    // Mes fiches de révision / Mes créations se rejoignent par le hub
+    // Fiches : Accueil y ramène. Round 30 : la Librairie, elle, est
+    // désormais sur l'accueil (Accueil y ramène directement).
     if (
       (el("view-manage") && el("view-manage").classList.contains("is-active")) ||
-      (el("view-library") && el("view-library").classList.contains("is-active"))
+      (el("view-creations") && el("view-creations").classList.contains("is-active"))
     ) {
       const tab = document.querySelector('.tab[data-view="fiches-hub"]');
       if (tab) tab.click();
@@ -8345,7 +8402,10 @@
       }
       // Item 5 : n'importe quel autre chemin vers Fiches (bouton d'accueil
       // dédié, etc.) repart sur le comportement normal du bouton Accueil.
-      if (square.dataset.go === "cards") cardsEntryFromManage = false;
+      if (square.dataset.go === "cards") {
+        cardsEntryFromManage = false;
+        cardsEntryFromCreations = false;
+      }
       const tab = document.querySelector(`.tab[data-view="${square.dataset.go}"]`);
       if (tab) tab.click();
     });
@@ -8574,6 +8634,7 @@
     const [type, id] = linkId.split(":");
     if (type === "subject") return subjectName(id);
     const f = folders.find((x) => x.id === id);
+    if (!f && subjects.some((x) => x.id === id)) return subjectName(id);
     return f ? `${f.name} (dossier)` : "Aucune boîte/dossier liés";
   }
   /** Round 18, item 13 : libellé du bouton pour un ENSEMBLE de liens
@@ -8635,7 +8696,7 @@
     if (!linkId) return false;
     const [type, id] = linkId.split(":");
     if (type === "subject") return subjects.some((x) => x.id === id && !x.deleted);
-    if (type === "folder") return folders.some((x) => x.id === id && !x.deleted);
+    if (type === "folder") return folders.some((x) => x.id === id && !x.deleted) || subjects.some((x) => x.id === id && !x.deleted);
     return false;
   }
   function calendarEventHasNoBox(ev) {
@@ -9602,7 +9663,7 @@
         }
       });
     subjects
-      .filter((x) => x.folderId === folderId && !x.deleted && !folders.some((ff) => ff.id === x.id))
+      .filter((x) => x.folderId === folderId && !x.deleted && isSubjectInRevisions(x) && !folders.some((ff) => ff.id === x.id))
       .sort((a, b) => a.name.localeCompare(b.name, "fr"))
       .forEach((x) => children.push({ kind: "box", id: x.id, name: x.name }));
     return { kind: "folder", id: folderId, name: f ? f.name : "Dossier", children };
@@ -9614,8 +9675,16 @@
       const [type, id] = linkId.split(":");
       if (type === "subject") {
         const subj = subjects.find((x) => x.id === id);
+        if (subj && !isSubjectInRevisions(subj)) return;
         roots.push({ kind: "box", id, name: subj ? subj.name : subjectName(id) });
       } else if (type === "folder") {
+        // Round 30 : un dossier-boîte retiré de mes révisions n'a plus de
+        // dossier (la boîte seule subsiste) — le lien vise alors la boîte.
+        const selfBox = subjects.find((x) => x.id === id);
+        if (!folders.some((x) => x.id === id) && selfBox) {
+          if (isSubjectInRevisions(selfBox)) roots.push({ kind: "box", id, name: selfBox.name });
+          return;
+        }
         if (isFolderABoite(id)) {
           const f = folders.find((x) => x.id === id);
           roots.push({ kind: "box", id, name: f ? f.name : subjectName(id) });
@@ -10357,7 +10426,12 @@
   const fichesHubRevisionBtn = el("fiches-hub-revision-btn");
   if (fichesHubRevisionBtn) fichesHubRevisionBtn.addEventListener("click", () => openManageInMode("all"));
   const fichesHubCreationsBtn = el("fiches-hub-creations-btn");
-  if (fichesHubCreationsBtn) fichesHubCreationsBtn.addEventListener("click", () => openManageInMode("creations"));
+  if (fichesHubCreationsBtn) {
+    fichesHubCreationsBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="creations"]');
+      if (tab) tab.click();
+    });
+  }
   const fichesHubLibraryBtn = el("fiches-hub-library-btn");
   if (fichesHubLibraryBtn) {
     fichesHubLibraryBtn.addEventListener("click", () => {
@@ -11130,6 +11204,7 @@
         folderAlwaysSelectable: false,
         excludeSubjectIds: new Set(subjects.filter((s) => s.sharedBoxId).map((s) => s.id)),
         libraryOptions,
+        includeOutOfRevisions: true,
         onPick: async (kind, id) => {
           let name, boxCards, folderPathNames, afterShare;
           if (kind === "library") {
@@ -12083,9 +12158,15 @@
     if (el("body-logo-row")) el("body-logo-row").hidden = false;
   }
 
+  // Round 30 : la fiche détaillée d'une collection s'ouvre aussi depuis Mes
+  // créations de fiches (bouton prix d'une boîte publiée).
+  let libraryDetailReturnView = "library";
   function closeLibraryDetailView() {
-    boitePickerActivateView("view-library");
-    applyBodyLogoSpeech("library");
+    const back = libraryDetailReturnView || "library";
+    libraryDetailReturnView = "library";
+    boitePickerActivateView(`view-${back}`);
+    applyBodyLogoSpeech(back);
+    if (back === "creations") renderCreationsList();
   }
 
   /** Round 19, item 11 : aperçu épuré des fiches d'une collection — juste
@@ -12594,7 +12675,8 @@
     // description, prix) réunis sur une page dédiée plutôt qu'une série de
     // fenêtres du robot enchaînées (source d'un bug d'affichage signalé
     // par Stéphane sur l'enchaînement précédent).
-    openLibraryShareView(s, boxCards);
+    await openLibraryShareView(s, boxCards);
+    return true;
   }
 
   /** Round 20, item 2 : page dédiée de partage d'une boîte vers la
@@ -12693,18 +12775,313 @@
         myPublishedSourceIds.add(subject.id);
         closeLibraryShareView();
         renderSubjectManageList();
+        if (el("view-creations") && el("view-creations").classList.contains("is-active")) renderCreationsView();
         await robotAlert(`« ${name} » a été partagée dans la librairie.`);
       };
     }
   }
 
+  // Round 30 : la publication se lance surtout depuis Mes créations de
+  // fiches — on y revient (plutôt que sur Mes fiches de révision).
+  let libraryShareReturnView = "manage";
   function closeLibraryShareView() {
-    boitePickerActivateView("view-manage");
-    applyBodyLogoSpeech("manage");
+    const back = libraryShareReturnView || "manage";
+    libraryShareReturnView = "manage";
+    boitePickerActivateView(`view-${back}`);
+    applyBodyLogoSpeech(back);
+    if (back === "creations") renderCreationsList();
   }
 
   const libraryShareBackBtn = el("library-share-back-btn");
   if (libraryShareBackBtn) libraryShareBackBtn.addEventListener("click", () => closeLibraryShareView());
+
+  /* ---------------------------------------------------------
+     Round 30 : page « Mes créations de fiches » — même présentation et
+     mêmes filtres que la Librairie, pour les boîtes créées par
+     l'utilisateur (ni boîtes de classe, ni collections prises dans la
+     Librairie). Une boîte n'a de classement (taxonomie, tags) qu'une fois
+     publiée : les filtres de classement ne retiennent donc que des boîtes
+     publiées ; la recherche texte porte aussi sur le nom.
+     - « + Créer une boîte » : nom, puis l'explorateur s'ouvre pour la
+       ranger dans Mes fiches de révision (« Plus tard » possible).
+     - Bouton prix (« Gratuit » / jetons) si publiée, sinon « Publier ».
+     - « Ajouter à mes révisions » / « Retirer de mes révisions ».
+     - Interrupteur « Publiées dans la librairie » (ex-« Mes partages »).
+  --------------------------------------------------------- */
+  let creationsTaxFilter = {};
+  let creationsTagFilter = [];
+  let creationsSearchQuery = "";
+  let creationsOnlyPublished = false;
+  let creationsFilterCascade = null;
+  let creationsFilterTagInput = null;
+  let creationsMyCollections = [];
+  let cardsEntryFromCreations = false;
+
+  function creationsSubjects() {
+    return subjects
+      .filter((s) => {
+        if (!isOwnCreatedSubject(s)) return false;
+        // Boîte « auto-liée » à un dossier qui n'est pas (ou plus) une
+        // boîte : simple trace technique, pas une création.
+        if (folders.some((f) => f.id === s.id) && !isFolderABoite(s.id)) return false;
+        return true;
+      })
+      .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+  }
+  function creationsCollectionFor(s) {
+    return (
+      creationsMyCollections.find((c) => c.source_subject_id === s.id) ||
+      creationsMyCollections.find((c) => !c.source_subject_id && c.name === s.name) ||
+      null
+    );
+  }
+  /** Emplacement d'une boîte dans Mes fiches de révision (« Racine »,
+   *  « Maths › Algèbre »…), ou null si elle n'y est pas. */
+  function creationsPlaceLabel(s) {
+    if (!isSubjectInRevisions(s)) return null;
+    const f = folders.find((x) => x.id === s.id);
+    const parentId = f ? f.parentId : s.folderId;
+    const path = folderPath(parentId || ROOT_FOLDER_ID).map((x) => x.name);
+    return path.length ? path.join(" › ") : "Racine";
+  }
+
+  async function renderCreationsView() {
+    const taxFilterEl = el("creations-filter-taxonomy");
+    const tagFilterEl = el("creations-filter-tags");
+    const toggle = el("creations-published-toggle");
+    const online = Sync.isConfigured() && !!accountCurrentUser;
+    if (toggle) {
+      toggle.hidden = !online;
+      if (!online) creationsOnlyPublished = false;
+      toggle.classList.toggle("is-active", creationsOnlyPublished);
+      toggle.setAttribute("aria-pressed", String(creationsOnlyPublished));
+    }
+    if (taxFilterEl) taxFilterEl.hidden = !online;
+    if (tagFilterEl) tagFilterEl.hidden = !online;
+    // Affichage immédiat avec ce qu'on sait déjà, puis mise à jour une fois
+    // les publications (et la taxonomie) chargées.
+    renderCreationsList();
+    if (!online) {
+      creationsMyCollections = [];
+      renderCreationsList();
+      return;
+    }
+    try {
+      const [cols] = await Promise.all([Sync.library.list(), Taxonomy.load()]);
+      libraryCollectionsCache = cols;
+      creationsMyCollections = cols.filter((c) => c.owner_id === accountCurrentUser.id);
+      myPublishedSourceIds = new Set();
+      myPublishedLegacyNames = new Set();
+      creationsMyCollections.forEach((c) => {
+        if (c.source_subject_id) myPublishedSourceIds.add(c.source_subject_id);
+        else if (c.name) myPublishedLegacyNames.add(c.name);
+      });
+    } catch (e) {
+      console.warn("Mes créations : échec du chargement des publications", e);
+    }
+    if (taxFilterEl && !creationsFilterCascade) {
+      creationsFilterCascade = createTaxonomyCascade(taxFilterEl, {
+        mode: "filter",
+        sel: creationsTaxFilter,
+        onChange: (sel) => {
+          creationsTaxFilter = sel;
+          renderCreationsList();
+        },
+      });
+    }
+    if (tagFilterEl && !creationsFilterTagInput) {
+      creationsFilterTagInput = createTagInput(tagFilterEl, {
+        allowNew: false,
+        tags: creationsTagFilter,
+        placeholder: "Filtrer par tags…",
+        getSuggestions: libraryKnownTags,
+        onChange: (tags) => {
+          creationsTagFilter = tags;
+          renderCreationsList();
+        },
+      });
+    }
+    renderCreationsList();
+  }
+
+  function renderCreationsList() {
+    const list = el("creations-list");
+    const empty = el("creations-empty");
+    if (!list) return;
+    const all = creationsSubjects();
+    let items = all.map((s) => ({ s, col: creationsCollectionFor(s) }));
+    if (creationsOnlyPublished) items = items.filter((it) => it.col);
+    const taxActive = Object.keys(creationsTaxFilter || {}).some((k) => creationsTaxFilter[k]);
+    if (taxActive) items = items.filter((it) => it.col && collectionMatchesTaxFilter(it.col, creationsTaxFilter));
+    if (creationsTagFilter.length > 0) {
+      items = items.filter((it) => {
+        if (!it.col) return false;
+        const t = collectionTags(it.col);
+        return creationsTagFilter.every((tag) => t.includes(tag));
+      });
+    }
+    const q = creationsSearchQuery.trim().toLowerCase();
+    if (q) {
+      items = items.filter(({ s, col }) =>
+        (s.name || "").toLowerCase().includes(q) ||
+        (col && (col.name || "").toLowerCase().includes(q)) ||
+        (col && collectionTags(col).some((t) => t.includes(q))) ||
+        (col && taxonomyFullLabel(collectionTaxonomy(col)).toLowerCase().includes(q))
+      );
+    }
+    list.innerHTML = "";
+    if (empty) empty.hidden = all.length > 0;
+    if (all.length > 0 && items.length === 0) {
+      list.innerHTML = `<li class="field-hint">${creationsOnlyPublished && !taxActive && !q && !creationsTagFilter.length ? "Aucune de tes boîtes n'est encore publiée dans la Librairie." : "Aucun résultat."}</li>`;
+      return;
+    }
+    for (const { s, col } of items) {
+      const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
+      const inRev = isSubjectInRevisions(s);
+      const place = creationsPlaceLabel(s);
+      const taxLabel = col ? taxonomyShortLabel(collectionTaxonomy(col)) : "";
+      const rowTags = col ? collectionTags(col) : [];
+      const priceTokens = col ? Number(col.price_tokens) || 0 : 0;
+      const li = document.createElement("li");
+      li.className = "subject-row library-row creations-row" + (inRev ? "" : " creations-row--out");
+      li.dataset.subjectId = s.id;
+      li.innerHTML = `
+        <div class="library-row-head">
+          <span class="subject-row-name">${orgIconMarkup("orgBoite")} <span>${escapeHtml(s.name)}</span></span>
+          <span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>
+        </div>
+        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""}${taxLabel ? ` · ${escapeHtml(taxLabel)}` : ""}</span>
+        <span class="card-row-meta creations-place">${place ? `Dans mes révisions : ${escapeHtml(place)}` : "Hors de mes révisions"}</span>
+        ${rowTags.length ? `<span class="tag-chips tag-chips--row">${tagChipsHtml(rowTags)}</span>` : ""}
+        <div class="library-row-actions">
+          <button type="button" class="btn btn--small library-price-btn creations-publish-btn${col ? "" : " creations-publish-btn--todo"}">${col ? libraryPriceButtonHtml(priceTokens) : "Publier"}</button>
+          <button type="button" class="btn btn--small btn--ghost creations-revisions-btn">${inRev ? "Retirer de mes révisions" : "Ajouter à mes révisions"}</button>
+        </div>
+      `;
+      li.querySelector(".creations-publish-btn").addEventListener("click", async (e) => {
+        e.stopPropagation();
+        if (col) {
+          libraryDetailReturnView = "creations";
+          openLibraryDetailView(col);
+          return;
+        }
+        libraryShareReturnView = "creations";
+        // Publication impossible (pas de fiche, pas de compte…) : la page
+        // de partage ne s'est pas ouverte, on garde le retour par défaut.
+        const opened = await shareSubjectToLibrary(s.id);
+        if (!opened) libraryShareReturnView = "manage";
+      });
+      li.querySelector(".creations-revisions-btn").addEventListener("click", async (e) => {
+        e.stopPropagation();
+        if (inRev) await removeSubjectFromRevisions(s.id);
+        else openAddToRevisionsPicker(s.id);
+      });
+      // Le reste de la ligne ouvre les fiches de la boîte (Accueil ramène ici).
+      li.addEventListener("click", () => {
+        cardsEntryFromCreations = true;
+        cardsEntryFromManage = false;
+        goToCardsFor(`subject:${s.id}`);
+      });
+      list.appendChild(li);
+    }
+  }
+
+  /** Range une boîte dans Mes fiches de révision : l'explorateur s'ouvre
+   *  sur les dossiers (Racine comprise) pour choisir où la mettre. */
+  function openAddToRevisionsPicker(subjectId, opts) {
+    const s = subjects.find((x) => x.id === subjectId);
+    if (!s) return;
+    const excluded = new Set();
+    folders.forEach((f) => {
+      if (f.sharedClassRoot) excluded.add(f.id);
+    });
+    openBoitePickerView({
+      mode: "single",
+      robotMessage: `Dans quel dossier de Mes fiches de révision ranger « ${s.name} » ?`,
+      backLabel: opts && opts.justCreated ? "Plus tard" : "Annuler",
+      excludedFolderIds: excluded,
+      onPick: async (_kind, destId) => {
+        s.folderId = destId;
+        s.outOfRevisions = false;
+        s.updatedAt = new Date().toISOString();
+        await persistSubject(s);
+        closeBoitePickerView();
+        renderSubjectManageList();
+        renderStatsSubjectSelect();
+        renderCreationsList();
+        showToast("Boîte ajoutée à tes révisions");
+      },
+    });
+  }
+
+  /** Retire une boîte de Mes fiches de révision (après confirmation) :
+   *  elle reste dans Mes créations avec ses fiches et leur progression. */
+  async function removeSubjectFromRevisions(subjectId) {
+    const s = subjects.find((x) => x.id === subjectId);
+    if (!s) return;
+    const ok = await robotConfirm(
+      `Retirer « ${s.name} » de tes révisions ? Elle n'apparaîtra plus dans Mes fiches de révision ni dans tes révisions, mais reste ici, dans Mes créations, avec toutes ses fiches et leur progression. Tu pourras l'y remettre quand tu veux.`,
+      { okLabel: "Retirer" }
+    );
+    if (!ok) return;
+    const now = new Date().toISOString();
+    // Dossier devenu boîte (ancien fonctionnement) : on retire le dossier,
+    // la boîte (même id, mêmes fiches) continue seule.
+    const f = folders.find((x) => x.id === s.id);
+    if (f) {
+      for (const child of folders.filter((x) => x.parentId === f.id)) {
+        child.parentId = f.parentId || ROOT_FOLDER_ID;
+        child.updatedAt = now;
+        await persistFolder(child);
+      }
+      s.folderId = f.parentId || ROOT_FOLDER_ID;
+      folders = folders.filter((x) => x.id !== f.id);
+      await pushFolderDeleted(f);
+      await DB.removeFolder(f.id);
+    }
+    s.outOfRevisions = true;
+    s.updatedAt = now;
+    await persistSubject(s);
+    if (currentSubjectId === s.id) switchSubject(ALL_SUBJECTS_ID, true);
+    renderSubjectManageList();
+    renderStatsSubjectSelect();
+    renderCreationsList();
+    showToast("Boîte retirée de tes révisions");
+  }
+
+  async function createBoxFromCreations() {
+    const name = await robotPrompt("Nom de la nouvelle boîte :");
+    if (!name || !name.trim()) return;
+    const subject = newSubject(name, ROOT_FOLDER_ID);
+    // Pas encore rangée : elle entre dans Mes fiches de révision quand on
+    // choisit son dossier (tout de suite, ou plus tard).
+    subject.outOfRevisions = true;
+    await persistSubject(subject);
+    subjects.push(subject);
+    subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    renderStatsSubjectSelect();
+    renderCreationsList();
+    openAddToRevisionsPicker(subject.id, { justCreated: true });
+  }
+
+  const creationsCreateBtn = el("creations-create-btn");
+  if (creationsCreateBtn) creationsCreateBtn.addEventListener("click", () => createBoxFromCreations());
+  const creationsSearchInput = el("creations-search-input");
+  if (creationsSearchInput) {
+    creationsSearchInput.addEventListener("input", () => {
+      creationsSearchQuery = creationsSearchInput.value;
+      renderCreationsList();
+    });
+  }
+  const creationsPublishedToggle = el("creations-published-toggle");
+  if (creationsPublishedToggle) {
+    creationsPublishedToggle.addEventListener("click", () => {
+      creationsOnlyPublished = !creationsOnlyPublished;
+      creationsPublishedToggle.classList.toggle("is-active", creationsOnlyPublished);
+      creationsPublishedToggle.setAttribute("aria-pressed", String(creationsOnlyPublished));
+      renderCreationsList();
+    });
+  }
 
   // {klass} de la discussion actuellement ouverte, ou null.
   let messageThreadContext = null;

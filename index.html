@@ -257,10 +257,6 @@
     <div class="list-header">
       <div class="list-header-actions">
         <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
-        <button class="btn btn--small" id="manage-goto-library-btn" type="button">
-          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
-          Librairie
-        </button>
       </div>
       <div class="org-display-toggle" id="org-display-toggle">
         <button type="button" class="org-display-toggle-btn is-active" data-org-display="count" title="Nombre de fiches/boîtes">
@@ -271,9 +267,6 @@
         </button>
       </div>
     </div>
-    <!-- Mes créations de fiches : n'afficher que les boîtes publiées dans
-         la Librairie (même interrupteur que "Mes partages"). -->
-    <button type="button" class="library-mine-toggle manage-published-toggle" id="manage-published-toggle" hidden aria-pressed="false">Publiées dans la librairie</button>
   </div>
   </div>
   <!-- /Round 15 : fin du bandeau fixe (#app-sticky-header). -->
@@ -319,6 +312,7 @@
     <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Programme</button>
     <button class="tab" role="tab" aria-selected="false" data-view="school-hub" hidden>École</button>
     <button class="tab" role="tab" aria-selected="false" data-view="fiches-hub" hidden>Fiches</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="creations" hidden>Mes créations</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes" hidden>Classes</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes-join" hidden>Rejoindre une classe</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes-create" hidden>Créer une classe</button>
@@ -375,6 +369,13 @@
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c0-3.6 2.5-6.2 5.5-6.2s5.5 2.6 5.5 6.2"/><circle cx="17" cy="9" r="2.2"/><path d="M15.3 14.3c2.5.5 4.2 2.7 4.2 5.7"/></svg>
           <span>École</span>
           <span class="home-circle-badge" id="home-school-badge" hidden>0</span>
+        </button>
+        <!-- Round 30 : la Librairie quitte la page Fiches pour l'accueil,
+             avec sa propre couleur (mode développeur → Couleurs des fonds →
+             Bouton « Librairie » de l'accueil). -->
+        <button type="button" class="home-circle home-circle--library" data-key="library" data-go="library">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="4" height="16" rx="1"/><rect x="9" y="4" width="4" height="16" rx="1"/><path d="M15.2 5.2l3.8-1 3.6 14.6-3.8 1z"/></svg>
+          <span>Librairie</span>
         </button>
         <button type="button" class="home-circle" data-key="stats" data-go="stats">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
@@ -1044,13 +1045,24 @@
           </span>
           <span>Mes créations de fiches</span>
         </button>
-        <button type="button" class="classes-role-circle" id="fiches-hub-library-btn">
-          <span class="classes-role-circle-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="4" height="16" rx="1"/><rect x="9" y="4" width="4" height="16" rx="1"/><path d="M15.2 5.2l3.8-1 3.6 14.6-3.8 1z"/></svg>
-          </span>
-          <span>Librairie</span>
-        </button>
       </div>
+    </section>
+
+    <!-- Round 30 : Mes créations de fiches — présentation façon Librairie
+         (mêmes filtres), avec « Créer une boîte », « Publier » et
+         « Ajouter à / Retirer de mes révisions ». Une boîte n'a de
+         classement qu'une fois publiée. -->
+    <section id="view-creations" class="view" aria-labelledby="tab-creations">
+      <div class="library-title-row">
+        <h2 class="section-title" style="margin:0;">Mes créations de fiches</h2>
+      </div>
+      <button type="button" class="btn btn--primary creations-create-btn" id="creations-create-btn">+ Créer une boîte</button>
+      <div class="library-taxonomy-filters" id="creations-filter-taxonomy" hidden></div>
+      <div class="tag-input tag-input--filter" id="creations-filter-tags" hidden></div>
+      <input type="search" id="creations-search-input" class="library-search-input" placeholder="Rechercher une boîte…" />
+      <button type="button" class="library-mine-toggle" id="creations-published-toggle" hidden aria-pressed="false">Publiées dans la librairie</button>
+      <ul class="subject-list" id="creations-list"></ul>
+      <p class="field-hint" id="creations-empty" hidden>Tu n'as pas encore créé de boîte.</p>
     </section>
 
     <section id="view-classes" class="view" aria-labelledby="tab-classes">
@@ -1254,11 +1266,6 @@
       <!-- Round 10, item 3 : recherche par mots-clés (nom de la collection
            ou nom de son auteur). -->
       <input type="search" id="library-search-input" class="library-search-input" placeholder="Rechercher une collection…" />
-      <!-- Round 20, item 4 : filtre "Mes partages" — ne montre que les
-           collections partagées par l'utilisateur connecté. Masqué tant
-           qu'aucun Compte n'est connecté (rien à filtrer sinon). Round 21,
-           item 6 : redessiné en interrupteur (toggle), voir css/style.css. -->
-      <button type="button" class="library-mine-toggle" id="library-mine-toggle" hidden aria-pressed="false">Mes partages</button>
       <ul class="subject-list" id="library-list"></ul>
       <p class="field-hint" id="library-empty" hidden>Aucune collection partagée pour l'instant.</p>
     </section>
