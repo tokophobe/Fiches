@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v185";
+  const APP_VERSION = "v186";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -12971,12 +12971,13 @@
           <span class="subject-row-name">${orgIconMarkup("orgBoite")} <span>${escapeHtml(s.name)}</span></span>
           <span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>
         </div>
-        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""}${taxLabel ? ` · ${escapeHtml(taxLabel)}` : ""}</span>
+        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""}${taxLabel ? ` · ${escapeHtml(taxLabel)}` : col ? "" : ` · <span class="creations-unclassified">à classer</span>`}</span>
         <span class="card-row-meta creations-place">${place ? `Dans mes révisions : ${escapeHtml(place)}` : "Hors de mes révisions"}</span>
         ${rowTags.length ? `<span class="tag-chips tag-chips--row">${tagChipsHtml(rowTags)}</span>` : ""}
         <div class="library-row-actions">
           <button type="button" class="btn btn--small library-price-btn creations-publish-btn${col ? "" : " creations-publish-btn--todo"}">${col ? libraryPriceButtonHtml(priceTokens) : "Publier"}</button>
           <button type="button" class="btn btn--small btn--ghost creations-revisions-btn">${inRev ? "Retirer de mes révisions" : "Ajouter à mes révisions"}</button>
+          <button type="button" class="btn btn--small btn--ghost creations-more-btn" title="Autres actions" aria-label="Autres actions">⋯</button>
         </div>
       `;
       li.querySelector(".creations-publish-btn").addEventListener("click", async (e) => {
@@ -12996,6 +12997,10 @@
         e.stopPropagation();
         if (inRev) await removeSubjectFromRevisions(s.id);
         else openAddToRevisionsPicker(s.id);
+      });
+      li.querySelector(".creations-more-btn").addEventListener("click", async (e) => {
+        e.stopPropagation();
+        await openCreationsMoreMenu(s.id, !!col);
       });
       // Le reste de la ligne ouvre les fiches de la boîte (Accueil ramène ici).
       li.addEventListener("click", () => {
@@ -13092,6 +13097,70 @@
     showToast("Boîte retirée de tes révisions");
   }
 
+  /* Round 32 : « ⋯ » d'une boîte de Mes créations — classer (ou modifier
+     le classement, tant qu'elle n'est pas publiée : une fois publiée, c'est
+     le classement de la publication qui fait foi) et supprimer
+     définitivement. */
+  async function openCreationsMoreMenu(subjectId, published) {
+    const s = subjects.find((x) => x.id === subjectId);
+    if (!s) return;
+    const hasTax = s.taxonomy && Object.keys(s.taxonomy).length > 0;
+    const buttons = [{ label: "Annuler", value: null }];
+    if (!published) buttons.push({ label: hasTax ? "Modifier le classement" : "Classer la boîte", value: "classify" });
+    buttons.push({ label: "Supprimer la boîte", value: "delete", danger: true });
+    const choice = await showRobotMessage(`« ${s.name} » :`, { buttons });
+    if (choice === "classify") await openBoxEditView(subjectId);
+    else if (choice === "delete") await deleteSubjectFromCreations(subjectId, published);
+  }
+
+  async function deleteSubjectFromCreations(subjectId, published) {
+    const s = subjects.find((x) => x.id === subjectId);
+    if (!s) return;
+    if (published) {
+      const goOn = await robotConfirm(
+        `« ${s.name} » est publiée dans la Librairie : la supprimer ici ne la retire pas de la Librairie (ceux qui l'ont prise la gardent). Continuer ?`,
+        { okLabel: "Continuer" }
+      );
+      if (!goOn) return;
+    }
+    await deleteSubject(subjectId);
+    renderCreationsList();
+  }
+
+  function taxonomySelectionFromValue(t) {
+    const sel = {};
+    if (t && typeof t === "object") {
+      Object.keys(t).forEach((k) => {
+        if (t[k] && t[k].id) sel[k] = t[k].id;
+      });
+    }
+    return sel;
+  }
+
+  /** Même page que la création, pour classer une boîte existante (ou
+   *  changer son classement / son nom). */
+  let boxEditSubjectId = null;
+  async function openBoxEditView(subjectId) {
+    const s = subjects.find((x) => x.id === subjectId);
+    if (!s) return;
+    boxEditSubjectId = subjectId;
+    const nameEl = el("box-create-name");
+    const taxEl = el("box-create-taxonomy");
+    const titleEl = el("box-create-title");
+    const submitEl = el("box-create-submit");
+    if (titleEl) titleEl.textContent = "Classer la boîte";
+    if (submitEl) submitEl.textContent = "Enregistrer";
+    if (nameEl) nameEl.value = s.name;
+    boitePickerActivateView("view-box-create");
+    applyBodyLogoSpeech("box-create");
+    if (taxEl) {
+      taxEl.innerHTML = `<p class="field-hint">Chargement du classement…</p>`;
+      await Taxonomy.load();
+      taxEl.innerHTML = "";
+      boxCreateCascade = createTaxonomyCascade(taxEl, { mode: "publish", sel: taxonomySelectionFromValue(s.taxonomy) });
+    }
+  }
+
   /* Round 31 : création d'une boîte sur une page dédiée — nom + classement
      (taxonomie, tous les champs affichés obligatoires, comme à la
      publication). Puis : « Ajouter cette boîte à tes révisions ? » — oui :
@@ -13101,6 +13170,9 @@
   async function createBoxFromCreations() {
     const nameEl = el("box-create-name");
     const taxEl = el("box-create-taxonomy");
+    boxEditSubjectId = null;
+    if (el("box-create-title")) el("box-create-title").textContent = "Créer une boîte";
+    if (el("box-create-submit")) el("box-create-submit").textContent = "Créer";
     if (nameEl) nameEl.value = "";
     boitePickerActivateView("view-box-create");
     applyBodyLogoSpeech("box-create");
@@ -13113,6 +13185,7 @@
     if (nameEl) nameEl.focus();
   }
   function closeBoxCreateView() {
+    boxEditSubjectId = null;
     boitePickerActivateView("view-creations");
     applyBodyLogoSpeech("creations");
     renderCreationsList();
@@ -13130,6 +13203,32 @@
       const missing = boxCreateCascade ? boxCreateCascade.missingFields() : [];
       if (missing.length > 0) {
         await robotAlert(`Complète le classement de la boîte : ${missing.join(", ")}.`);
+        return;
+      }
+      if (boxEditSubjectId) {
+        const s = subjects.find((x) => x.id === boxEditSubjectId);
+        boxEditSubjectId = null;
+        if (s) {
+          const now = new Date().toISOString();
+          s.taxonomy = taxonomyValueFromSelection(boxCreateCascade ? boxCreateCascade.getSelection() : {});
+          if (name !== s.name) {
+            s.name = name;
+            // Ancien dossier-boîte : le dossier porte le même nom.
+            const f = folders.find((x) => x.id === s.id);
+            if (f) {
+              f.name = name;
+              f.updatedAt = now;
+              await persistFolder(f);
+            }
+            subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+          }
+          s.updatedAt = now;
+          await persistSubject(s);
+          renderSubjectManageList();
+          renderStatsSubjectSelect();
+        }
+        closeBoxCreateView();
+        showToast("Boîte classée");
         return;
       }
       const subject = newSubject(name, ROOT_FOLDER_ID);
