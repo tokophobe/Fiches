@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v186";
+  const APP_VERSION = "v187";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -1151,21 +1151,212 @@
   //   directement vers ce même canal public : plus besoin d'un bouton
   //   "Publier" séparé, chaque changement est déjà la version de tout le
   //   monde.
+  /* Round 33 : réglages partagés entre appareils — bug corrigé. Avant,
+     chaque appareil ne relisait le serveur qu'au DÉMARRAGE de l'appli (pas
+     au retour depuis l'arrière-plan, fréquent sur iPhone), et chaque
+     modification renvoyait l'objet COMPLET des réglages de l'appareil :
+     un appareil resté sur d'anciens réglages écrasait donc, à sa
+     prochaine modification, tout ce qui avait été changé ailleurs (ex.
+     couleurs réglées sur le PC, puis un bouton déplacé sur l'iPhone →
+     les couleurs du PC disparaissent du serveur).
+     Désormais : on garde la dernière version reçue du serveur (« base ») ;
+     les changements faits sur l'appareil = différence entre la base et
+     les réglages locaux ; à chaque envoi, on relit le serveur et on n'y
+     applique QUE ces changements. Relecture aussi au retour au premier
+     plan, et à chaque changement temps réel. */
+  const DEV_SETTINGS_BASE_KEY = "fiches_dev_settings_base";
+  const devSyncStatus = { at: null, error: null, pending: false };
+  let devSyncChain = Promise.resolve();
+  function devSyncQueue(fn) {
+    devSyncChain = devSyncChain.then(fn, fn).catch((e) => console.warn("Réglages : synchro", e));
+    return devSyncChain;
+  }
+  function devIsPlainObj(v) {
+    return !!v && typeof v === "object" && !Array.isArray(v);
+  }
+  const DEV_DIFF_IGNORED = new Set(["updatedAt", "appPrefs", "appPrefsOwner"]);
+  /** Liste des changements [chemin, valeur, supprimé] de `base` à `local`. */
+  function devSettingsDiff(base, local, path, out) {
+    path = path || [];
+    out = out || [];
+    const b = devIsPlainObj(base) ? base : {};
+    const l = devIsPlainObj(local) ? local : {};
+    new Set([...Object.keys(b), ...Object.keys(l)]).forEach((key) => {
+      if (path.length === 0 && DEV_DIFF_IGNORED.has(key)) return;
+      const bv = b[key];
+      const lv = l[key];
+      if (devIsPlainObj(bv) && devIsPlainObj(lv)) devSettingsDiff(bv, lv, path.concat(key), out);
+      else if (JSON.stringify(bv) !== JSON.stringify(lv)) out.push([path.concat(key), lv === undefined ? null : lv, lv === undefined]);
+    });
+    return out;
+  }
+  function devSettingsApplyPatch(target, patch) {
+    const out = JSON.parse(JSON.stringify(devIsPlainObj(target) ? target : {}));
+    patch.forEach(([p, v, del]) => {
+      let o = out;
+      for (let n = 0; n < p.length - 1; n++) {
+        if (!devIsPlainObj(o[p[n]])) o[p[n]] = {};
+        o = o[p[n]];
+      }
+      if (del) delete o[p[p.length - 1]];
+      else o[p[p.length - 1]] = JSON.parse(JSON.stringify(v));
+    });
+    return out;
+  }
+  function readDevSettingsBase() {
+    const raw = localStorage.getItem(DEV_SETTINGS_BASE_KEY);
+    if (raw === null) return null;
+    try {
+      return JSON.parse(raw) || {};
+    } catch (e) {
+      return null;
+    }
+  }
+  /** Changements faits sur cet appareil depuis la dernière version reçue
+   *  du serveur (comparés sur les réglages complets, valeurs par défaut
+   *  comprises, pour qu'une nouvelle valeur par défaut ne passe pas pour
+   *  une modification). null = pas encore de base (1er lancement). */
+  function localDevSettingsChanges() {
+    const base = readDevSettingsBase();
+    if (base === null) return null;
+    if (base && base.__firstMergePending) {
+      // 1er lancement de cette version sur un appareil en mode développeur :
+      // tous ses réglages qui diffèrent du serveur sont fusionnés (voir
+      // adoptServerDevSettings), rien n'est perdu.
+      const real = { ...base };
+      delete real.__firstMergePending;
+      return devSettingsDiff(buildDevSettings(real), buildDevSettings(loadRawDevSettingsOverride()));
+    }
+    return devSettingsDiff(buildDevSettings(base), buildDevSettings(loadRawDevSettingsOverride()));
+  }
+  function storeLocalDevSettings(obj) {
+    localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(obj));
+    _devSettingsCacheRaw = undefined;
+    _devSettingsCache = undefined;
+  }
+  /** Réglages de la page Réglages (bonus, hibernation…) : propres au compte
+   *  qui les a envoyés — jamais appliqués chez un autre compte. */
+  function applyOwnAppPrefs(settings) {
+    if (!settings || !settings.appPrefs) return;
+    const uidNow = Sync.currentUid && Sync.currentUid();
+    if (!settings.appPrefsOwner || settings.appPrefsOwner !== uidNow) return;
+    applyAppPrefsFromRemote(settings.appPrefs);
+  }
+  function refreshDevViewIfIdle() {
+    const devView = el("view-dev");
+    if (!devView || !devView.classList.contains("is-active")) return;
+    const ae = document.activeElement;
+    if (ae && devView.contains(ae) && (ae.tagName === "INPUT" || ae.tagName === "TEXTAREA" || ae.tagName === "SELECT")) return;
+    renderDevView();
+  }
+  /** Adopte une version du serveur en y réappliquant les changements
+   *  locaux pas encore envoyés. Renvoie true s'il en reste à envoyer. */
+  function adoptServerDevSettings(serverRaw) {
+    const server = devIsPlainObj(serverRaw) ? serverRaw : {};
+    // Round 33 : 1er lancement de cette version (pas encore de « base ») sur
+    // un appareil où le mode développeur est déverrouillé — ses réglages
+    // n'avaient peut-être jamais atteint le serveur (ancien bug) : on les
+    // fusionne avec ceux du serveur au lieu de les écraser. Ailleurs (élèves…),
+    // le serveur fait foi, comme avant.
+    if (readDevSettingsBase() === null && isDevUnlocked() && localStorage.getItem(DEV_SETTINGS_KEY)) {
+      localStorage.setItem(DEV_SETTINGS_BASE_KEY, JSON.stringify({ ...server, __firstMergePending: true }));
+    }
+    const changes = localDevSettingsChanges();
+    const merged = changes && changes.length ? devSettingsApplyPatch(server, changes) : server;
+    localStorage.setItem(DEV_SETTINGS_BASE_KEY, JSON.stringify(server));
+    storeLocalDevSettings(merged);
+    applyAllDevSettings();
+    applyOwnAppPrefs(server);
+    refreshDevViewIfIdle();
+    return !!(changes && changes.length);
+  }
   function syncDevSettingsFromServer() {
-    return Sync.fetchPublicDevSettings()
-      .then((pub) => {
-        if (!pub) return;
-        localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(pub));
-        _devSettingsCacheRaw = undefined;
-        _devSettingsCache = undefined;
+    return devSyncQueue(async () => {
+      if (typeof Sync === "undefined" || !Sync.isConfigured()) return;
+      const res = await Sync.fetchPublicDevSettingsResult();
+      if (res.error) {
+        devSyncStatus.error = `lecture impossible (${res.error})`;
+        renderDevSyncStatus();
+        return;
+      }
+      if (!res.settings) {
+        // Rien encore sur le serveur : on garde ce qu'on a (envoyé à la
+        // prochaine modification).
+        renderDevSyncStatus();
+        return;
+      }
+      const pending = adoptServerDevSettings(res.settings);
+      devSyncStatus.error = null;
+      devSyncStatus.at = new Date();
+      if (pending) await pushDevSettingsNow(true);
+      renderDevSyncStatus();
+    });
+  }
+  /** Envoi : relit le serveur, y applique les changements de cet appareil,
+   *  puis renvoie le tout (et adopte localement le résultat). */
+  async function pushDevSettingsNow(alreadyQueued) {
+    const run = async () => {
+      if (typeof Sync === "undefined" || !Sync.isConfigured()) return;
+      const res = await Sync.fetchPublicDevSettingsResult();
+      if (res.error) {
+        devSyncStatus.error = `envoi impossible (${res.error})`;
+        devSyncStatus.pending = true;
+        renderDevSyncStatus();
+        return;
+      }
+      const server = devIsPlainObj(res.settings) ? res.settings : {};
+      let changes = localDevSettingsChanges();
+      // 1er envoi sans base connue : l'appareil fait foi (ancien comportement).
+      if (changes === null) changes = devSettingsDiff(buildDevSettings(server), buildDevSettings(loadRawDevSettingsOverride()));
+      // Objet complet (valeurs par défaut comprises, marqueurs de format
+      // de la disposition de l'accueil…) : le serveur reste lisible tel quel.
+      const merged = devSettingsApplyPatch(buildDevSettings(server), changes);
+      merged.updatedAt = new Date().toISOString();
+      merged.appPrefs = gatherAppPrefs();
+      merged.appPrefsOwner = (Sync.currentUid && Sync.currentUid()) || null;
+      const { error } = await Sync.pushPublicDevSettings(merged);
+      if (error) {
+        // Refusé (ex. compte sans droit d'écriture) ou hors ligne : on garde
+        // les changements de l'appareil, à renvoyer plus tard.
+        localStorage.setItem(DEV_SETTINGS_BASE_KEY, JSON.stringify(server));
+        storeLocalDevSettings(devSettingsApplyPatch(server, changes));
         applyAllDevSettings();
-        applyAppPrefsFromRemote(pub.appPrefs);
-      })
-      .catch(() => {
-        /* hors ligne, ou pas encore de ligne publiée : on continue avec ce
-           qui est déjà en localStorage (ou les valeurs par défaut du code
-           si l'appli n'a encore jamais pu se connecter du tout). */
-      });
+        devSyncStatus.error = `envoi refusé (${error})`;
+        devSyncStatus.pending = true;
+      } else {
+        localStorage.setItem(DEV_SETTINGS_BASE_KEY, JSON.stringify(merged));
+        storeLocalDevSettings(merged);
+        applyAllDevSettings();
+        devSyncStatus.error = null;
+        devSyncStatus.pending = false;
+        devSyncStatus.at = new Date();
+      }
+      renderDevSyncStatus();
+    };
+    if (alreadyQueued) return run();
+    return devSyncQueue(run);
+  }
+  function renderDevSyncStatus() {
+    const out = el("dev-settings-sync-status");
+    if (!out) return;
+    if (typeof Sync === "undefined" || !Sync.isConfigured()) {
+      out.textContent = "Synchronisation non configurée : réglages gardés sur cet appareil.";
+      return;
+    }
+    const changes = localDevSettingsChanges();
+    const nPending = changes ? changes.length : 0;
+    if (devSyncStatus.error) {
+      out.textContent = `⚠ ${devSyncStatus.error}${nPending ? ` — ${nPending} changement(s) en attente sur cet appareil` : ""}.`;
+      out.classList.add("is-error");
+      return;
+    }
+    out.classList.remove("is-error");
+    const time = devSyncStatus.at ? devSyncStatus.at.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }) : null;
+    out.textContent = nPending
+      ? `${nPending} changement(s) en cours d'envoi…`
+      : time
+      ? `À jour avec le serveur (dernière synchro à ${time}).`
+      : "En attente de la première synchro…";
   }
 
   // Bug corrigé (item 9) : cette fonction est appelée TRÈS souvent (une
@@ -1185,9 +1376,16 @@
     } catch (e) {
       parsed = {};
     }
-    // Round 16 : plus de fusion avec une "couche publique" séparée —
-    // `localStorage` est directement le miroir de la seule source de
-    // vérité (`dev_settings_public`, voir syncDevSettingsFromServer).
+    const built = buildDevSettings(parsed);
+    _devSettingsCacheRaw = raw;
+    _devSettingsCache = built;
+    return built;
+  }
+  /** Réglages complets (valeurs par défaut du code + personnalisations)
+   *  à partir d'un objet stocké — sans effet de bord (round 33 : sert
+   *  aussi à comparer deux versions des réglages). */
+  function buildDevSettings(parsed) {
+    parsed = parsed && typeof parsed === "object" ? parsed : {};
     const built = {
       ratingLabels: { ...DEFAULT_RATING_LABELS, ...(parsed.ratingLabels || {}) },
       navLabels: { ...DEFAULT_NAV_LABELS, ...(parsed.navLabels || {}) },
@@ -1290,8 +1488,6 @@
       // affiché nulle part mais conservé pour référence/débogage.
       updatedAt: parsed.updatedAt,
     };
-    _devSettingsCacheRaw = raw;
-    _devSettingsCache = built;
     return built;
   }
   /** Round 4, partie 3 : réglages STRICTEMENT locaux à cet appareil, TELS
@@ -1324,10 +1520,33 @@
   function scheduleDevSettingsPush() {
     if (typeof Sync === "undefined" || !Sync.isConfigured || !Sync.isConfigured()) return;
     clearTimeout(devSettingsPushTimer);
-    devSettingsPushTimer = setTimeout(async () => {
-      await Sync.pushPublicDevSettings({ ...loadDevSettings(), appPrefs: gatherAppPrefs() });
+    devSettingsPushTimer = setTimeout(() => {
+      devSettingsPushTimer = null;
+      pushDevSettingsNow();
     }, 900);
+    renderDevSyncStatus();
   }
+  // Round 33 : au retour au premier plan (iPhone : l'appli n'est souvent pas
+  // relancée), on relit les réglages partagés ; en passant en arrière-plan,
+  // on envoie tout de suite ce qui attendait encore.
+  let devSettingsLastResumeSync = 0;
+  function onDevSettingsVisibility() {
+    if (document.visibilityState === "hidden") {
+      if (devSettingsPushTimer) {
+        clearTimeout(devSettingsPushTimer);
+        devSettingsPushTimer = null;
+        pushDevSettingsNow();
+      }
+      return;
+    }
+    if (Date.now() - devSettingsLastResumeSync < 5000) return;
+    devSettingsLastResumeSync = Date.now();
+    syncDevSettingsFromServer();
+  }
+  document.addEventListener("visibilitychange", onDevSettingsVisibility);
+  window.addEventListener("pageshow", (e) => {
+    if (e.persisted) onDevSettingsVisibility();
+  });
   /** Réglages de la page "Réglages" (item — jusqu'ici jamais synchronisés
    *  du tout, contrairement aux couleurs/icônes) : mode bonus, jours
    *  d'hibernation, affichage des jours sur les boutons, histogramme de
@@ -8111,7 +8330,10 @@
         renderReviewGauge();
       }
       if (view === "stats") renderStats();
-      if (view === "dev") renderDevView();
+      if (view === "dev") {
+      renderDevView();
+      renderDevSyncStatus();
+    }
       if (view === "sync") renderSyncView();
       if (view === "account") renderAccountView();
       if (view === "school-hub") {
@@ -13785,11 +14007,16 @@
    *  quel, sans comparaison de date (il n'y a plus qu'une seule source de
    *  vérité, donc plus de conflit possible à trancher). */
   function handleRemoteDevSettings(remote) {
-    localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(remote.payload));
-    _devSettingsCacheRaw = undefined;
-    _devSettingsCache = undefined;
-    applyAllDevSettings();
-    applyAppPrefsFromRemote(remote.payload.appPrefs);
+    // Round 33 : on réapplique les changements locaux pas encore envoyés
+    // par-dessus la version reçue (au lieu de les écraser).
+    devSyncQueue(async () => {
+      const pending = adoptServerDevSettings(remote.payload);
+      devSyncStatus.at = new Date();
+      devSyncStatus.error = null;
+      if (pending) await pushDevSettingsNow(true);
+      renderDevSyncStatus();
+    });
+    return;
     // Bug corrigé (items 1/2, toujours valable) : si l'utilisateur est EN
     // TRAIN de taper dans un champ du mode développeur, reconstruire toute
     // la liste (renderDevView) à cet instant précis lui fait perdre le

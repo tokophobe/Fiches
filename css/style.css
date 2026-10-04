@@ -5649,3 +5649,9 @@ body.is-view-library {
   font-size: 16px;
   line-height: 1;
 }
+
+/* Round 33 : état de la synchro des réglages (mode développeur). */
+#dev-settings-sync-status.is-error {
+  color: var(--red, #b6604a);
+  font-weight: 600;
+}

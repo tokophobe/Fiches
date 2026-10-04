@@ -539,15 +539,31 @@ async function fetchPublicDevSettings() {
   }
 }
 
+/** Round 33 : comme fetchPublicDevSettings, mais distingue « pas encore de
+ *  réglages publiés » ({settings:null}) d'une erreur ({error}). */
+async function fetchPublicDevSettingsResult() {
+  const c = getClient();
+  if (!c) return { settings: null, error: "Sync non configurée" };
+  try {
+    const { data, error } = await c.from("dev_settings_public").select("settings").eq("id", "global").maybeSingle();
+    if (error) return { settings: null, error: error.message || String(error) };
+    return { settings: (data && data.settings) || null, error: null };
+  } catch (e) {
+    return { settings: null, error: String(e && e.message ? e.message : e) };
+  }
+}
+
 async function pushPublicDevSettings(settings) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
   try {
-    const { error } = await c.from("dev_settings_public").upsert({
-      id: "global",
-      settings,
-      updated_at: new Date().toISOString(),
-    });
+    const row = { id: "global", settings, updated_at: new Date().toISOString() };
+    const uid = currentUid();
+    if (uid) row.updated_by = uid;
+    // .select() : sans droit d'écriture, la règle de sécurité peut « réussir »
+    // sans rien écrire — on vérifie qu'une ligne est bien revenue.
+    const { data, error } = await c.from("dev_settings_public").upsert(row).select("id");
+    if (!error && Array.isArray(data) && data.length === 0) return { error: "écriture refusée par le serveur (compte sans droit d'écriture ?)" };
     if (error) return { error: error.message };
     return { error: null };
   } catch (e) {
@@ -1173,6 +1189,7 @@ window.Sync = {
   flushPending,
   subscribeRealtime,
   fetchPublicDevSettings,
+  fetchPublicDevSettingsResult,
   pushPublicDevSettings,
   subscribePublicDevSettingsRealtime,
   pullSubjects,
