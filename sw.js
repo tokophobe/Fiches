@@ -1,10 +1,12 @@
-const CACHE_NAME = "fiches-cache-v181";
+const CACHE_NAME = "fiches-cache-v182";
 
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
   "./css/style.css",
+  "./js/config.js",
+  "./js/user-scope.js",
   "./js/sm2.js",
   "./js/db.js",
   "./js/sync.js",
@@ -56,7 +58,9 @@ self.addEventListener("fetch", (event) => {
   // Round 23 : la taxonomie Excel doit pouvoir être remplacée sur le site
   // SANS nouvelle version de l'appli — réseau d'abord (copie fraîche mise
   // en cache), cache seulement hors-ligne.
-  if (isCoreAsset && url.pathname.endsWith("/data/taxonomie.xlsx")) {
+  // Round 29 : js/config.js (serveur intégré) se modifie aussi sur le site
+  // sans nouvelle version — même traitement que la taxonomie.
+  if (isCoreAsset && (url.pathname.endsWith("/data/taxonomie.xlsx") || url.pathname.endsWith("/js/config.js"))) {
     event.respondWith(
       fetch(request)
         .then((response) => {

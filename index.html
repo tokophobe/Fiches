@@ -2,6 +2,10 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
+<!-- Round 29 : chargés avant tout le reste — serveur intégré, puis
+     cloisonnement des données locales par compte. -->
+<script src="js/config.js"></script>
+<script src="js/user-scope.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <!-- Round 25, item 1 : zoom automatique. Sur un téléphone en portrait, la
      page est mise en page pour une largeur de référence (390 px, celle de
@@ -806,18 +810,20 @@
            ELLE qui est forcée en tout premier tant qu'elle manque (voir
            enforceLoginGate dans app.js). -->
       <p class="field-hint settings-block-hint account-login-gate-banner" id="sync-login-gate-banner" hidden>
-        🔒 Connexion obligatoire : configure d'abord la Synchronisation ci-dessous (nécessaire pour créer ou rejoindre un Compte), puis crée ton Compte.
+        🔒 Connexion obligatoire : indique d'abord le serveur ci-dessous, puis crée ton compte ou connecte-toi.
       </p>
 
+      <!-- Round 29 : plus de « code de synchronisation » — les données
+           appartiennent au compte connecté. Ce formulaire ne sert plus qu'à
+           indiquer le serveur quand il n'est pas intégré à l'appli
+           (js/config.js). -->
       <div id="sync-unconfigured">
-        <h2 class="section-title">Synchroniser tes fiches</h2>
+        <h2 class="section-title">Relier l'appli au serveur</h2>
         <p class="sync-intro">
-          Relie l'appli à un projet Supabase gratuit pour retrouver les mêmes
-          fiches sur tous tes appareils. Marche à suivre complète dans le
-          <code>README.md</code> du projet (créer un projet, exécuter
-          <code>supabase-schema.sql</code>, puis coller les infos ci-dessous).
+          L'adresse du serveur n'est pas encore intégrée à l'appli
+          (js/config.js). Indique ici l'URL et la clé publique du projet
+          Supabase, puis connecte-toi avec ton compte.
         </p>
-
         <form class="card-form" id="sync-form">
           <label class="field">
             <span>URL du projet Supabase</span>
@@ -827,40 +833,27 @@
             <span>Clé publique (anon/public)</span>
             <input type="text" id="sync-key" required placeholder="eyJhbGciOi..." />
           </label>
-          <label class="field">
-            <span>Code de synchronisation</span>
-            <div class="code-row">
-              <input type="text" id="sync-code" required placeholder="XXXX-XXXX" />
-              <button type="button" class="btn btn--small" id="generate-code-btn">Générer</button>
-            </div>
-          </label>
-          <p class="field-hint">
-            Nouveau ? Clique « Générer » puis note le code. Sur ton autre
-            appareil, entre exactement le même code pour rejoindre le même
-            espace.
-          </p>
           <div class="form-actions">
-            <button type="submit" class="btn btn--primary">Connecter</button>
+            <button type="submit" class="btn btn--primary">Enregistrer</button>
           </div>
         </form>
       </div>
 
       <div id="sync-configured" hidden>
-        <h2 class="section-title">Connecté</h2>
+        <h2 class="section-title">Synchronisation</h2>
         <div class="sync-card">
-          <span class="card-label">Ton code de synchronisation</span>
-          <p class="sync-code-display" id="current-sync-code">—</p>
-          <button class="btn btn--small" id="copy-code-btn" type="button">Copier le code</button>
+          <span class="card-label">Tes données sont rattachées à ton compte</span>
+          <p class="sync-code-display" id="current-sync-account">—</p>
         </div>
         <p class="sync-intro">
-          Entre ce même code sur tes autres appareils, dans cet onglet, pour
-          qu'ils partagent les mêmes fiches.
+          Connecte-toi avec ce même compte sur tes autres appareils pour y
+          retrouver toutes tes fiches, boîtes, dossiers et évènements.
         </p>
         <p class="sync-pending" id="sync-pending-note" hidden></p>
         <p class="sync-error" id="sync-error-note" hidden></p>
         <div class="form-actions">
           <button class="btn btn--small" id="retry-sync-btn" type="button">Réessayer maintenant</button>
-          <button class="btn btn--ghost" id="disconnect-btn" type="button">Se déconnecter de cet espace</button>
+          <button class="btn btn--ghost" id="disconnect-btn" type="button">Changer de serveur</button>
         </div>
       </div>
 
@@ -1638,6 +1631,19 @@
         <button type="button" class="btn btn--ghost" id="dev-library-pack-import-btn">Importer les boîtes toutes prêtes</button>
         <button type="button" class="btn btn--ghost" id="dev-library-pack-publish-btn">Publier ces boîtes dans la Librairie</button>
         <p class="field-hint" id="dev-library-pack-status"></p>
+      </div>
+
+      <!-- Round 29 : configuration du serveur à intégrer à l'appli. -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Configuration du serveur</h3>
+        <p class="field-hint settings-block-hint">
+          Pour que les nouveaux utilisateurs n'aient qu'à créer leur compte,
+          copie ce texte dans le fichier js/config.js de l'appli (sur le
+          site), à la place du contenu actuel.
+        </p>
+        <pre class="dev-config-snippet" id="dev-config-snippet"></pre>
+        <button type="button" class="btn btn--small" id="dev-config-copy-btn">Copier</button>
+        <p class="field-hint" id="dev-config-status"></p>
       </div>
 
       <!-- Round 25, item 1 : zoom automatique (voir script en tête de page). -->

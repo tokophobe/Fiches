@@ -144,6 +144,29 @@ Le fichier `_headers` (reconnu par Netlify) empêche en plus la mise en
 cache de `sw.js` et `index.html` côté serveur, pour que la vérification
 soit toujours fiable.
 
+## Comptes : chacun ses données
+
+Depuis la v159, toutes les données personnelles (fiches, boîtes, dossiers,
+calendrier) appartiennent au **compte** connecté. On se connecte sur
+n'importe quel appareil et on retrouve tout ; personne d'autre ne peut les
+voir, même sur le même appareil (chaque compte a son propre espace local,
+et changer de compte recharge l'appli sur le bon espace).
+
+Mise en place d'un serveur (une fois) :
+
+1. Créer un projet Supabase, puis exécuter dans l'éditeur SQL, dans l'ordre :
+   `supabase-schema.sql`, `supabase/fix_personal_sync_rls_scope.sql`, les
+   scripts `supabase/*_schema.sql` / `*_migration.sql` (classes, librairie…),
+   et enfin `supabase/account_scoping_migration.sql`.
+2. Renseigner l'URL du projet et sa clé publique « anon » dans
+   `js/config.js` (Réglages développeur → « Configuration du serveur »
+   affiche le texte exact à coller). Les utilisateurs n'ont alors plus qu'à
+   créer leur compte.
+
+La clé « anon » est publique par conception : ce sont les règles de
+sécurité de la base (RLS, « chacun ne lit et n'écrit que ses lignes ») qui
+protègent les données.
+
 ## Taxonomie de la Librairie (fichier Excel)
 
 Le classement proposé quand on publie une boîte dans la Librairie

@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v181";
+  const APP_VERSION = "v182";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -8379,10 +8379,7 @@
   const syncForm = el("sync-form");
   const syncUrlInput = el("sync-url");
   const syncKeyInput = el("sync-key");
-  const syncCodeInput = el("sync-code");
-  const generateCodeBtn = el("generate-code-btn");
-  const currentSyncCodeEl = el("current-sync-code");
-  const copyCodeBtn = el("copy-code-btn");
+  const currentSyncAccountEl = el("current-sync-account");
   const disconnectBtn = el("disconnect-btn");
   const syncPendingNoteEl = el("sync-pending-note");
   const syncErrorNoteEl = el("sync-error-note");
@@ -8415,7 +8412,10 @@
    *  Compte a sa propre clé localStorage, dérivée de son identifiant
    *  Supabase Auth. */
   function calendarEventsStorageKey() {
-    const uid = accountCurrentUser && accountCurrentUser.id;
+    // Round 29 : l'id du compte est connu dès le démarrage (session
+    // enregistrée sur l'appareil, voir js/user-scope.js), sans attendre
+    // la réponse du serveur.
+    const uid = (window.UserScope && window.UserScope.uid) || (accountCurrentUser && accountCurrentUser.id);
     return uid ? `${CALENDAR_EVENTS_KEY}__${uid}` : CALENDAR_EVENTS_KEY;
   }
   function loadCalendarEvents() {
@@ -8424,7 +8424,7 @@
     // évènements de l'ancien espace partagé (ex. les siens, créés avant ce
     // round) plutôt que de les perdre silencieusement au premier lancement
     // sous le nouveau stockage par Compte.
-    if (accountCurrentUser && key !== CALENDAR_EVENTS_KEY && localStorage.getItem(key) === null) {
+    if (key !== CALENDAR_EVENTS_KEY && localStorage.getItem(key) === null) {
       const legacy = localStorage.getItem(CALENDAR_EVENTS_KEY);
       if (legacy !== null) {
         localStorage.setItem(key, legacy);
@@ -8443,9 +8443,93 @@
       return [];
     }
   }
+  /** Round 29 : enregistrement local + envoi au serveur des seuls
+   *  évènements ajoutés, modifiés ou supprimés (comparés à la version
+   *  précédente), horodatés pour la fusion entre appareils. */
   function saveCalendarEvents(events) {
+    const before = new Map(loadCalendarEvents().map((ev) => [ev.id, ev]));
+    const strip = (ev) => JSON.stringify({ ...ev, updatedAt: undefined });
+    const now = new Date().toISOString();
+    const changed = [];
+    events.forEach((ev) => {
+      const prev = before.get(ev.id);
+      if (!prev || strip(prev) !== strip(ev)) {
+        ev.updatedAt = now;
+        changed.push(ev);
+      }
+      before.delete(ev.id);
+    });
+    const removed = [...before.values()].map((ev) => ({ ...ev, updatedAt: now }));
+    saveCalendarEventsLocal(events);
+    changed.forEach((ev) => pushCalendarEventSafe(ev, false));
+    removed.forEach((ev) => pushCalendarEventSafe(ev, true));
+  }
+  function saveCalendarEventsLocal(events) {
     localStorage.setItem(calendarEventsStorageKey(), JSON.stringify(events));
     if (el("view-home") && el("view-home").classList.contains("is-active")) setTimeout(refreshHomeEventWarning, 0);
+  }
+  /* File d'attente des évènements à renvoyer (hors-ligne), par compte. */
+  const CALENDAR_PENDING_KEY = "fiches_calendar_pending";
+  function loadCalendarPending() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(CALENDAR_PENDING_KEY) || "[]");
+      return Array.isArray(raw) ? raw : [];
+    } catch {
+      return [];
+    }
+  }
+  function saveCalendarPending(list) {
+    localStorage.setItem(CALENDAR_PENDING_KEY, JSON.stringify(list));
+  }
+  async function pushCalendarEventSafe(ev, deleted) {
+    if (!Sync.isConfigured() || !Sync.currentUid()) return;
+    const ok = await Sync.pushCalendarEvent(ev, deleted);
+    const pending = loadCalendarPending().filter((x) => x.ev.id !== ev.id);
+    if (!ok) pending.push({ ev, deleted: !!deleted });
+    saveCalendarPending(pending);
+  }
+  async function flushCalendarPending() {
+    for (const { ev, deleted } of loadCalendarPending()) await pushCalendarEventSafe(ev, deleted);
+  }
+  /** Fusion d'un évènement venu du serveur : le plus récent gagne. */
+  function mergeRemoteCalendarEvent(remote) {
+    const events = loadCalendarEvents();
+    const idx = events.findIndex((x) => x.id === remote.id);
+    const local = idx >= 0 ? events[idx] : null;
+    const newer = !local || new Date(remote.updatedAt || 0) >= new Date(local.updatedAt || 0);
+    if (!newer) return false;
+    if (remote.deleted) {
+      if (idx < 0) return false;
+      events.splice(idx, 1);
+    } else {
+      const clean = { ...remote };
+      delete clean.deleted;
+      if (idx >= 0) {
+        if (JSON.stringify(local) === JSON.stringify(clean)) return false;
+        events[idx] = clean;
+      } else {
+        events.push(clean);
+      }
+    }
+    saveCalendarEventsLocal(events);
+    return true;
+  }
+  /** Au démarrage de la synchro : récupère les évènements du compte et
+   *  envoie ceux de l'appareil que le serveur n'a pas encore. */
+  async function reconcileCalendarWithRemote() {
+    if (!Sync.isConfigured() || !Sync.currentUid()) return;
+    const remote = await Sync.pullCalendarEvents();
+    const remoteIds = new Set(remote.map((r) => r.id));
+    remote.forEach((r) => mergeRemoteCalendarEvent(r));
+    for (const ev of loadCalendarEvents()) {
+      if (!remoteIds.has(ev.id)) {
+        if (!ev.updatedAt) ev.updatedAt = new Date().toISOString();
+        await pushCalendarEventSafe(ev, false);
+      }
+    }
+    await flushCalendarPending();
+    if (el("view-calendar") && el("view-calendar").classList.contains("is-active")) renderCalendarEvents();
+    refreshHomeEventWarning();
   }
   /** Round 21, item 3 : un élève peut désormais supprimer un évènement
    *  REÇU d'un prof une fois sa date passée (voir deleteOwnCalendarEvent).
@@ -8458,7 +8542,7 @@
   // Round 22, item 4 : même correctif que calendarEventsStorageKey —
   // propre au Compte connecté plutôt qu'à l'appareil.
   function dismissedSharedEventsStorageKey() {
-    const uid = accountCurrentUser && accountCurrentUser.id;
+    const uid = (window.UserScope && window.UserScope.uid) || (accountCurrentUser && accountCurrentUser.id);
     return uid ? `${CALENDAR_DISMISSED_SHARED_KEY}__${uid}` : CALENDAR_DISMISSED_SHARED_KEY;
   }
   function loadDismissedSharedEventIds() {
@@ -9717,7 +9801,16 @@
     syncConfiguredEl.hidden = !configured;
 
     if (configured) {
-      currentSyncCodeEl.textContent = Sync.getConfig().code;
+      if (currentSyncAccountEl) {
+        currentSyncAccountEl.textContent = accountCurrentUser ? accountCurrentUser.email || "" : "Aucun compte connecté";
+      }
+      // Le serveur intégré à l'appli (js/config.js) ne se change pas ici.
+      if (disconnectBtn) disconnectBtn.hidden = !!Sync.getConfig().builtIn;
+      if (Sync.accountMigrationMissing()) {
+        syncErrorNoteEl.hidden = false;
+        syncErrorNoteEl.textContent = "La base Supabase n'est pas à jour pour les comptes : exécute supabase/account_scoping_migration.sql.";
+        return;
+      }
       const pending = Sync.pendingCount();
       syncPendingNoteEl.hidden = pending === 0;
       syncPendingNoteEl.textContent = `${pending} fiche(s) en attente d'envoi (dès que la connexion revient).`;
@@ -9772,30 +9865,16 @@
     document.querySelector('.tab[data-view="sync"]').click();
   });
 
-  generateCodeBtn.addEventListener("click", () => {
-    syncCodeInput.value = Sync.generateSyncCode();
-  });
-
   syncForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     Sync.saveConfig({
       url: syncUrlInput.value,
       key: syncKeyInput.value,
-      code: syncCodeInput.value,
     });
-    await connectSync();
-    renderSyncView();
-  });
-
-  copyCodeBtn.addEventListener("click", async () => {
-    const code = Sync.getConfig().code;
-    try {
-      await navigator.clipboard.writeText(code);
-      copyCodeBtn.textContent = "Copié !";
-      setTimeout(() => (copyCodeBtn.textContent = "Copier le code"), 1500);
-    } catch {
-      /* presse-papier indisponible, tant pis */
-    }
+    // Round 29 : serveur renseigné -> on passe à la connexion au compte
+    // (rechargement : le client Supabase et l'espace local repartent
+    // proprement).
+    window.location.reload();
   });
 
   retrySyncBtn.addEventListener("click", async () => {
@@ -9811,8 +9890,13 @@
   });
 
   disconnectBtn.addEventListener("click", async () => {
-    if (!(await robotConfirm("Se déconnecter ? Tes fiches restent sur cet appareil, mais ne seront plus synchronisées tant que tu ne reconnectes pas un code."))) {
+    if (!(await robotConfirm("Changer de serveur ? Tu seras déconnecté de ton compte sur cet appareil."))) {
       return;
+    }
+    try {
+      await Sync.auth.signOut();
+    } catch (e) {
+      /* déjà déconnecté */
     }
     if (unsubscribeRealtime) unsubscribeRealtime();
     if (unsubscribeSubjectsRealtime) unsubscribeSubjectsRealtime();
@@ -10033,6 +10117,15 @@
       Sync.classes.backfillSharedEventsTeacherName().catch(() => {});
     }
     Sync.auth.onChange((user) => {
+      // Round 29 : chaque compte a son propre espace de données sur
+      // l'appareil (voir js/user-scope.js) — changer de compte (connexion,
+      // déconnexion, autre compte) recharge l'appli sur le bon espace.
+      const newUid = user ? user.id : null;
+      const bootUid = (window.UserScope && window.UserScope.uid) || null;
+      if (newUid !== bootUid) {
+        setTimeout(() => window.location.reload(), 150);
+        return;
+      }
       accountCurrentUser = user;
       updateAccountHomeButton();
       // Les évènements du calendrier sont propres à chaque Compte.
@@ -12257,6 +12350,36 @@
   const devLibraryPackPublishBtn = el("dev-library-pack-publish-btn");
   if (devLibraryPackPublishBtn) devLibraryPackPublishBtn.addEventListener("click", () => publishLibraryPack());
 
+  /** Round 29 : contenu de js/config.js à partir du serveur de cet appareil. */
+  function devConfigSnippet() {
+    const { url, key } = Sync.getConfig();
+    return `window.FICHES_CONFIG = {\n  supabaseUrl: ${JSON.stringify(url)},\n  supabaseAnonKey: ${JSON.stringify(key)},\n};\n`;
+  }
+  function renderDevConfigSnippet() {
+    const pre = el("dev-config-snippet");
+    const status = el("dev-config-status");
+    if (!pre) return;
+    pre.textContent = devConfigSnippet();
+    if (status) {
+      status.textContent = Sync.getConfig().builtIn
+        ? "Le serveur est déjà intégré à l'appli (js/config.js)."
+        : "Pas encore intégré : les nouveaux utilisateurs devraient saisir le serveur eux-mêmes.";
+    }
+  }
+  const devConfigCopyBtn = el("dev-config-copy-btn");
+  if (devConfigCopyBtn) {
+    devConfigCopyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(devConfigSnippet());
+        devConfigCopyBtn.textContent = "Copié !";
+        setTimeout(() => (devConfigCopyBtn.textContent = "Copier"), 1500);
+      } catch {
+        /* presse-papier indisponible : le texte reste sélectionnable */
+      }
+    });
+    renderDevConfigSnippet();
+  }
+
   /** Round 25, item 1 : réglage du zoom automatique (par appareil). */
   function renderDevAutoZoom() {
     const z = window.__fichesAutoZoom;
@@ -13022,8 +13145,22 @@
     }
   }
 
+  let unsubscribeCalendarRealtime = null;
+  let accountMigrationWarned = false;
+  /** Round 29 : la base Supabase n'a pas encore les colonnes owner_id /
+   *  payload — prévient une fois par session (le robot le dit clairement). */
+  function warnIfAccountMigrationMissing() {
+    if (accountMigrationWarned || !Sync.accountMigrationMissing()) return;
+    accountMigrationWarned = true;
+    robotAlert(
+      "La base Supabase n'est pas encore à jour pour les comptes : exécute supabase/account_scoping_migration.sql dans l'éditeur SQL de Supabase. En attendant, tes fiches restent sur cet appareil."
+    );
+  }
+
   async function connectSync() {
-    if (!Sync.isConfigured()) return;
+    // Round 29 : les données appartiennent au compte — sans compte
+    // connecté, rien à synchroniser.
+    if (!Sync.isConfigured() || !Sync.currentUid()) return;
     if (unsubscribeRealtime) unsubscribeRealtime();
     if (unsubscribeSubjectsRealtime) unsubscribeSubjectsRealtime();
     if (unsubscribeFoldersRealtime) unsubscribeFoldersRealtime();
@@ -13035,6 +13172,20 @@
 
     await reconcileWithRemote();
     await Sync.flushPending((id) => cards.find((c) => c.id === id));
+    // Round 29 : calendrier synchronisé par compte.
+    try {
+      await reconcileCalendarWithRemote();
+    } catch (e) {
+      console.warn("Calendrier : synchro impossible", e);
+    }
+    if (unsubscribeCalendarRealtime) unsubscribeCalendarRealtime();
+    unsubscribeCalendarRealtime = Sync.subscribeCalendarRealtime((remote) => {
+      if (mergeRemoteCalendarEvent(remote)) {
+        if (el("view-calendar") && el("view-calendar").classList.contains("is-active")) renderCalendarEvents();
+        refreshHomeEventWarning();
+      }
+    });
+    warnIfAccountMigrationMissing();
 
     unsubscribeRealtime = Sync.subscribeRealtime(async (remote) => {
       await mergeRemoteCard(remote);
@@ -13236,6 +13387,51 @@
     document.body.appendChild(toast);
   }
 
+  /** Round 29 : à la première ouverture d'un compte sur cet appareil, si
+   *  l'ancienne base commune (d'avant les comptes) contient des fiches, on
+   *  propose de les rattacher à ce compte. Acceptées : copiées dans
+   *  l'espace du compte (puis synchronisées), et l'ancienne base est
+   *  effacée pour qu'aucun autre compte ne les récupère. Refusées : laissées
+   *  de côté (proposées au prochain compte qui se connecte ici). */
+  async function offerLegacyLocalData() {
+    const scope = window.UserScope;
+    if (!scope || !scope.uid) return;
+    const doneKey = `fiches_legacy_offer_done__u_${scope.uid}`;
+    if (scope.rawGet(doneKey) === "1") return;
+    const legacy = await DB.readLegacy();
+    const realCards = legacy ? legacy.cards.filter((c) => !c.deleted) : [];
+    if (!legacy || realCards.length === 0) {
+      scope.rawSet(doneKey, "1");
+      return;
+    }
+    const nBoxes = legacy.subjects.filter((x) => !x.deleted).length;
+    const ok = await robotConfirm(
+      `Cet appareil contient ${realCards.length} fiche${realCards.length > 1 ? "s" : ""} (${nBoxes} boîte${nBoxes > 1 ? "s" : ""}) créée${realCards.length > 1 ? "s" : ""} avant les comptes, rattachée${realCards.length > 1 ? "s" : ""} à aucun compte. Les ajouter à ton compte ?`,
+      { okLabel: "Les ajouter", cancelLabel: "Non" }
+    );
+    scope.rawSet(doneKey, "1");
+    if (!ok) return;
+    const now = new Date().toISOString();
+    // Horodatage frais : ces fiches doivent partir vers le serveur au
+    // prochain échange, comme des modifications récentes.
+    const touchAll = (list) => list.map((x) => ({ ...x, updatedAt: x.updatedAt || now }));
+    await DB.importAll({
+      cards: touchAll(legacy.cards),
+      subjects: touchAll(legacy.subjects),
+      folders: touchAll(legacy.folders),
+      ratingLog: legacy.ratingLog,
+    });
+    // Réglages personnels de l'ancien espace commun -> espace du compte.
+    scope.userKeys.forEach((k) => {
+      const old = scope.rawGet(k);
+      if (old !== null && localStorage.getItem(k) === null) localStorage.setItem(k, old);
+      scope.rawRemove(k);
+    });
+    await DB.deleteLegacy();
+    // Les fiches reprises partiront vers le serveur avec le reste (voir
+    // reconcileWithRemote : tout ce qui manque côté serveur y est envoyé).
+  }
+
   /* ---------------------------------------------------------
      Démarrage
   --------------------------------------------------------- */
@@ -13248,6 +13444,12 @@
     applyCardFontSize();
     // (Item 3 : l'affichage Organisation est initialisé plus haut, au
     // moment où ses boutons pictos s'accrochent — plus besoin d'appel ici.)
+    // Round 29 : données d'avant les comptes restées sur l'appareil.
+    try {
+      await offerLegacyLocalData();
+    } catch (e) {
+      console.warn("Reprise des anciennes données locales impossible", e);
+    }
     await loadSubjects();
     cards = await DB.getAll();
     ratingLog = await DB.getAllRatingLog();

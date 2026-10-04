@@ -1,13 +1,16 @@
 /**
  * Synchronisation multi-appareils via Supabase.
  *
- * Principe : pas de compte utilisateur. Un "code de synchronisation"
- * choisi par la personne fait office de mot de passe partagé — le même
- * code entré sur deux appareils fait apparaître les mêmes fiches.
+ * Round 29 : les données personnelles (fiches, boîtes, dossiers,
+ * calendrier) appartiennent au COMPTE connecté (colonne owner_id = id du
+ * compte Supabase Auth), et les règles de sécurité de la base (RLS) ne
+ * laissent chacun lire et écrire que les siennes. L'ancien « code de
+ * synchronisation » n'est plus utilisé (les données qui y étaient
+ * rattachées ont été reprises par la migration
+ * supabase/account_scoping_migration.sql).
  *
- * L'app reste 100% utilisable sans configuration : tant que Sync n'est
- * pas configuré, tout continue à fonctionner uniquement en local
- * (voir db.js).
+ * L'adresse et la clé publique du projet viennent de js/config.js (ou, à
+ * défaut, de la page Synchronisation de l'appareil).
  */
 
 const LS_KEYS = {
@@ -26,24 +29,48 @@ function generateSyncCode() {
   return `${chars.slice(0, 4).join("")}-${chars.slice(4, 8).join("")}`;
 }
 
+function builtInConfig() {
+  const cfg = window.FICHES_CONFIG || {};
+  return { url: (cfg.supabaseUrl || "").trim(), key: (cfg.supabaseAnonKey || "").trim() };
+}
+
 function getConfig() {
+  const built = builtInConfig();
   return {
-    url: localStorage.getItem(LS_KEYS.url) || "",
-    key: localStorage.getItem(LS_KEYS.key) || "",
+    url: built.url || localStorage.getItem(LS_KEYS.url) || "",
+    key: built.key || localStorage.getItem(LS_KEYS.key) || "",
+    // Ancien code de synchronisation (avant les comptes), gardé en lecture
+    // seule pour information.
     code: localStorage.getItem(LS_KEYS.code) || "",
+    builtIn: Boolean(built.url && built.key),
   };
 }
 
 function isConfigured() {
-  const { url, key, code } = getConfig();
-  return Boolean(url && key && code);
+  const { url, key } = getConfig();
+  return Boolean(url && key);
 }
 
-function saveConfig({ url, key, code }) {
-  localStorage.setItem(LS_KEYS.url, url.trim());
-  localStorage.setItem(LS_KEYS.key, key.trim());
-  localStorage.setItem(LS_KEYS.code, code.trim());
+function saveConfig({ url, key }) {
+  localStorage.setItem(LS_KEYS.url, (url || "").trim());
+  localStorage.setItem(LS_KEYS.key, (key || "").trim());
   client = null; // force la recréation du client au prochain appel
+}
+
+/** Id du compte connecté sur cet appareil (voir js/user-scope.js). */
+function currentUid() {
+  return (window.UserScope && window.UserScope.uid) || null;
+}
+
+/** Erreur typique quand la migration Supabase du round 29 n'a pas encore
+ *  été exécutée (colonnes owner_id/payload inconnues). */
+function isAccountMigrationMissing(error) {
+  const msg = String((error && error.message) || error || "");
+  return /owner_id|payload/.test(msg) && /column|schema cache|colonne/i.test(msg);
+}
+let accountMigrationMissing = false;
+function noteError(error) {
+  if (isAccountMigrationMissing(error)) accountMigrationMissing = true;
 }
 
 function clearConfig() {
@@ -63,10 +90,32 @@ function getClient() {
 /* ---------------------------------------------------------
    Conversion carte locale <-> ligne Supabase (snake_case)
 --------------------------------------------------------- */
-function cardToRow(card, syncCode) {
+/** Copie JSON de l'objet complet (tous ses champs, y compris ceux qui n'ont
+ *  pas de colonne dédiée : échéance du nouvel algorithme, chantier,
+ *  origine Librairie/classe…) — pour retrouver EXACTEMENT ses données sur
+ *  un autre appareil. */
+function asPayload(obj) {
+  try {
+    return JSON.parse(JSON.stringify(obj));
+  } catch {
+    return null;
+  }
+}
+/** Fusionne le payload complet et les colonnes (les colonnes priment). */
+function withPayload(row, mapped) {
+  const base = row && row.payload && typeof row.payload === "object" ? row.payload : {};
+  const out = { ...base };
+  Object.keys(mapped).forEach((k) => {
+    if (mapped[k] !== undefined) out[k] = mapped[k];
+  });
+  return out;
+}
+
+function cardToRow(card, uid) {
   return {
     id: card.id,
-    sync_code: syncCode,
+    owner_id: uid,
+    payload: asPayload(card),
     subject: card.subject || null,
     subject_name:
       typeof window.getSubjectName === "function" ? window.getSubjectName(card.subject) : null,
@@ -86,7 +135,7 @@ function cardToRow(card, syncCode) {
 }
 
 function rowToCard(row) {
-  return {
+  return withPayload(row, {
     id: row.id,
     subject: row.subject || null,
     subjectName: row.subject_name || null,
@@ -102,7 +151,7 @@ function rowToCard(row) {
     maxIntervalReached: row.max_interval_reached || 0,
     updatedAt: row.updated_at,
     deleted: Boolean(row.deleted),
-  };
+  });
 }
 
 /* ---------------------------------------------------------
@@ -137,8 +186,8 @@ const PULL_PAGE_SIZE = 1000; // limite par défaut de PostgREST par requête
 
 async function pullAll() {
   const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return [];
+  const uid = currentUid();
+  if (!c || !uid) return [];
 
   const all = [];
   let from = 0;
@@ -148,12 +197,13 @@ async function pullAll() {
     const { data, error } = await c
       .from("cards")
       .select("*")
-      .eq("sync_code", code)
+      .eq("owner_id", uid)
       .range(from, to);
 
     if (error) {
       console.warn("Sync: échec du chargement distant", error.message);
       lastError = error.message;
+      noteError(error);
       // On garde ce qui a déjà été récupéré plutôt que de tout jeter :
       // mieux vaut une synchro partielle que rien du tout.
       return all.map(rowToCard);
@@ -172,11 +222,11 @@ let lastError = "";
 
 async function pushCard(card) {
   const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return false;
+  const uid = currentUid();
+  if (!c || !uid) return false;
 
-  let row = cardToRow(card, code);
-  let { error } = await c.from("cards").upsert(row);
+  let row = cardToRow(card, uid);
+  let { error } = await c.from("cards").upsert(row, { onConflict: "owner_id,id" });
 
   // Cas connu : la colonne max_interval_reached vient d'être ajoutée en
   // SQL mais le cache de schéma de PostgREST n'a pas encore été rafraîchi
@@ -188,12 +238,13 @@ async function pushCard(card) {
   if (error && isMissingColumnError(error, "max_interval_reached")) {
     console.warn("Sync: colonne max_interval_reached pas encore reconnue, envoi sans elle");
     const { max_interval_reached, ...rowWithoutRewards } = row;
-    ({ error } = await c.from("cards").upsert(rowWithoutRewards));
+    ({ error } = await c.from("cards").upsert(rowWithoutRewards, { onConflict: "owner_id,id" }));
   }
 
   if (error) {
     console.warn("Sync: échec de l'envoi, mis en attente", error.message);
     lastError = error.message;
+    noteError(error);
     addPending(card.id);
     return false;
   }
@@ -224,14 +275,14 @@ async function flushPending(getCardById) {
 
 function subscribeRealtime(onRemoteChange) {
   const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return () => {};
+  const uid = currentUid();
+  if (!c || !uid) return () => {};
 
   const channel = c
-    .channel(`cards-${code}`)
+    .channel(`cards-${uid}`)
     .on(
       "postgres_changes",
-      { event: "*", schema: "public", table: "cards", filter: `sync_code=eq.${code}` },
+      { event: "*", schema: "public", table: "cards", filter: `owner_id=eq.${uid}` },
       (payload) => {
         if (payload.new) onRemoteChange(rowToCard(payload.new));
       }
@@ -251,10 +302,11 @@ function subscribeRealtime(onRemoteChange) {
    qu'un vrai DELETE pour que les autres appareils sachent qu'une matière
    ou un dossier a disparu au lieu de le voir réapparaître au prochain pull.
 --------------------------------------------------------- */
-function subjectToRow(subject, syncCode) {
+function subjectToRow(subject, uid) {
   return {
     id: subject.id,
-    sync_code: syncCode,
+    owner_id: uid,
+    payload: asPayload(subject),
     name: subject.name,
     folder_id: subject.folderId || null,
     created_at: subject.createdAt,
@@ -263,20 +315,21 @@ function subjectToRow(subject, syncCode) {
   };
 }
 function rowToSubject(row) {
-  return {
+  return withPayload(row, {
     id: row.id,
     name: row.name,
     folderId: row.folder_id || null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     deleted: Boolean(row.deleted),
-  };
+  });
 }
 
-function folderToRow(folder, syncCode) {
+function folderToRow(folder, uid) {
   return {
     id: folder.id,
-    sync_code: syncCode,
+    owner_id: uid,
+    payload: asPayload(folder),
     name: folder.name,
     parent_id: folder.parentId || null,
     created_at: folder.createdAt,
@@ -285,27 +338,28 @@ function folderToRow(folder, syncCode) {
   };
 }
 function rowToFolder(row) {
-  return {
+  return withPayload(row, {
     id: row.id,
     name: row.name,
     parentId: row.parent_id || null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     deleted: Boolean(row.deleted),
-  };
+  });
 }
 
 async function pullTable(tableName, rowMapper) {
   const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return [];
+  const uid = currentUid();
+  if (!c || !uid) return [];
   const all = [];
   let from = 0;
   while (true) {
     const to = from + PULL_PAGE_SIZE - 1;
-    const { data, error } = await c.from(tableName).select("*").eq("sync_code", code).range(from, to);
+    const { data, error } = await c.from(tableName).select("*").eq("owner_id", uid).range(from, to);
     if (error) {
       console.warn(`Sync: échec du chargement distant (${tableName})`, error.message);
+      noteError(error);
       return all.map(rowMapper);
     }
     all.push(...data);
@@ -324,10 +378,11 @@ async function pullFolders() {
 
 async function pushSubject(subject) {
   const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return false;
-  const { error } = await c.from("subjects").upsert(subjectToRow(subject, code));
+  const uid = currentUid();
+  if (!c || !uid) return false;
+  const { error } = await c.from("subjects").upsert(subjectToRow(subject, uid), { onConflict: "owner_id,id" });
   if (error) {
+    noteError(error);
     console.warn("Sync: échec de l'envoi de la matière", error.message);
     return false;
   }
@@ -336,10 +391,11 @@ async function pushSubject(subject) {
 
 async function pushFolder(folder) {
   const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return false;
-  const { error } = await c.from("folders").upsert(folderToRow(folder, code));
+  const uid = currentUid();
+  if (!c || !uid) return false;
+  const { error } = await c.from("folders").upsert(folderToRow(folder, uid), { onConflict: "owner_id,id" });
   if (error) {
+    noteError(error);
     console.warn("Sync: échec de l'envoi du dossier", error.message);
     return false;
   }
@@ -348,13 +404,13 @@ async function pushFolder(folder) {
 
 function subscribeSubjectsRealtime(onRemoteChange) {
   const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return () => {};
+  const uid = currentUid();
+  if (!c || !uid) return () => {};
   const channel = c
-    .channel(`subjects-${code}`)
+    .channel(`subjects-${uid}`)
     .on(
       "postgres_changes",
-      { event: "*", schema: "public", table: "subjects", filter: `sync_code=eq.${code}` },
+      { event: "*", schema: "public", table: "subjects", filter: `owner_id=eq.${uid}` },
       (payload) => {
         if (payload.new) onRemoteChange(rowToSubject(payload.new));
       }
@@ -365,13 +421,13 @@ function subscribeSubjectsRealtime(onRemoteChange) {
 
 function subscribeFoldersRealtime(onRemoteChange) {
   const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return () => {};
+  const uid = currentUid();
+  if (!c || !uid) return () => {};
   const channel = c
-    .channel(`folders-${code}`)
+    .channel(`folders-${uid}`)
     .on(
       "postgres_changes",
-      { event: "*", schema: "public", table: "folders", filter: `sync_code=eq.${code}` },
+      { event: "*", schema: "public", table: "folders", filter: `owner_id=eq.${uid}` },
       (payload) => {
         if (payload.new) onRemoteChange(rowToFolder(payload.new));
       }
@@ -381,63 +437,52 @@ function subscribeFoldersRealtime(onRemoteChange) {
 }
 
 /* ---------------------------------------------------------
-   État des récompenses (page "Récompenses") : une seule ligne JSON par
-   code de synchro, séparée des fiches. Contrairement aux fiches, il n'y a
-   rien à fusionner champ par champ ici : on prend l'union des clés
-   "case ouverte" des deux côtés (voir mergeRewardsOpened côté app.js).
+   Round 29 : calendrier synchronisé par compte (table calendar_events).
+   Chaque évènement est stocké en entier (payload JSON), avec suppression
+   douce pour que les autres appareils la voient passer.
 --------------------------------------------------------- */
-async function pullRewardState() {
-  const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return {};
-
-  const { data, error } = await c
-    .from("reward_state")
-    .select("opened")
-    .eq("sync_code", code)
-    .maybeSingle();
-
-  if (error) {
-    console.warn("Sync: échec du chargement des récompenses distantes", error.message);
-    return {};
-  }
-  return (data && data.opened) || {};
+function rowToCalendarEvent(row) {
+  return withPayload(row, { id: row.id, updatedAt: row.updated_at, deleted: Boolean(row.deleted) });
 }
-
-async function pushRewardState(openedMap) {
+async function pullCalendarEvents() {
+  return pullTable("calendar_events", rowToCalendarEvent);
+}
+async function pushCalendarEvent(ev, deleted) {
   const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return false;
-
-  const { error } = await c.from("reward_state").upsert({
-    sync_code: code,
-    opened: openedMap,
-    updated_at: new Date().toISOString(),
-  });
-
+  const uid = currentUid();
+  if (!c || !uid || !ev || !ev.id) return false;
+  const { error } = await c.from("calendar_events").upsert(
+    {
+      id: ev.id,
+      owner_id: uid,
+      payload: asPayload(ev),
+      updated_at: ev.updatedAt || new Date().toISOString(),
+      deleted: Boolean(deleted),
+    },
+    { onConflict: "owner_id,id" }
+  );
   if (error) {
-    console.warn("Sync: échec de l'envoi des récompenses", error.message);
+    console.warn("Sync: échec de l'envoi d'un évènement", error.message);
+    lastError = error.message;
+    noteError(error);
     return false;
   }
   return true;
 }
-
-function subscribeRewardRealtime(onRemoteChange) {
+function subscribeCalendarRealtime(onRemoteChange) {
   const c = getClient();
-  const { code } = getConfig();
-  if (!c || !code) return () => {};
-
+  const uid = currentUid();
+  if (!c || !uid) return () => {};
   const channel = c
-    .channel(`reward-state-${code}`)
+    .channel(`calendar-${uid}`)
     .on(
       "postgres_changes",
-      { event: "*", schema: "public", table: "reward_state", filter: `sync_code=eq.${code}` },
+      { event: "*", schema: "public", table: "calendar_events", filter: `owner_id=eq.${uid}` },
       (payload) => {
-        if (payload.new && payload.new.opened) onRemoteChange(payload.new.opened);
+        if (payload.new) onRemoteChange(rowToCalendarEvent(payload.new));
       }
     )
     .subscribe();
-
   return () => c.removeChannel(channel);
 }
 
@@ -626,8 +671,22 @@ async function authSignOut() {
 async function authGetUser() {
   const c = getClient();
   if (!c) return null;
-  const { data } = await c.auth.getUser();
-  return (data && data.user) || null;
+  // Round 29 : getUser() interroge le serveur ; hors-ligne (ou réseau
+  // capricieux), on se rabat sur la session enregistrée sur l'appareil
+  // plutôt que de considérer la personne comme déconnectée.
+  try {
+    const { data, error } = await c.auth.getUser();
+    if (data && data.user) return data.user;
+    if (error && /invalid|expired|not found|jwt/i.test(error.message || "") && navigator.onLine) return null;
+  } catch (e) {
+    /* hors-ligne : repli ci-dessous */
+  }
+  try {
+    const { data } = await c.auth.getSession();
+    return (data && data.session && data.session.user) || null;
+  } catch (e) {
+    return null;
+  }
 }
 
 function authOnChange(callback) {
@@ -1113,13 +1172,15 @@ window.Sync = {
   pushCard,
   flushPending,
   subscribeRealtime,
-  pullRewardState,
-  pushRewardState,
-  subscribeRewardRealtime,
   fetchPublicDevSettings,
   pushPublicDevSettings,
   subscribePublicDevSettingsRealtime,
   pullSubjects,
+  pullCalendarEvents,
+  pushCalendarEvent,
+  subscribeCalendarRealtime,
+  currentUid,
+  accountMigrationMissing: () => accountMigrationMissing,
   pushSubject,
   subscribeSubjectsRealtime,
   pullFolders,

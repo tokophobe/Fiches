@@ -5572,3 +5572,17 @@ button.tag-chip { cursor: pointer; font-size: 13px; padding: 3px 9px; }
    propre ligne, sous le titre, pour ne plus écraser celui-ci. */
 .calendar-event-origin { margin: 2px 0 0; }
 .calendar-event-origin .classes-shared-badge { margin-left: 0; }
+
+/* Round 29 : contenu de js/config.js à copier (Réglages développeur). */
+.dev-config-snippet {
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 11px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule-soft);
+  border-radius: 8px;
+  padding: 10px;
+  margin: 0 0 10px;
+  color: var(--ink);
+}
