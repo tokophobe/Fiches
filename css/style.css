@@ -5630,3 +5630,9 @@ button.tag-chip { cursor: pointer; font-size: 13px; padding: 3px 9px; }
 .creations-revisions-btn {
   white-space: nowrap;
 }
+
+/* Round 31 : fond propre à la page Librairie (mode développeur →
+   Couleurs des fonds → Fond de la page Librairie). */
+body.is-view-library {
+  --app-bg-color: var(--library-page-bg-color);
+}

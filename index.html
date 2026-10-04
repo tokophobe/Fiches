@@ -1065,6 +1065,23 @@
       <p class="field-hint" id="creations-empty" hidden>Tu n'as pas encore créé de boîte.</p>
     </section>
 
+    <!-- Round 31 : création d'une boîte (nom + classement), depuis Mes
+         créations de fiches. -->
+    <section id="view-box-create" class="view">
+      <form class="card-form" id="box-create-form">
+        <h3 class="settings-block-title">Créer une boîte</h3>
+        <label class="field">
+          <span>Nom de la boîte</span>
+          <input type="text" id="box-create-name" required />
+        </label>
+        <div id="box-create-taxonomy"></div>
+        <div class="form-actions" style="margin-top:0;">
+          <button type="submit" class="btn btn--primary" id="box-create-submit">Créer</button>
+          <button type="button" class="btn btn--ghost" id="box-create-cancel-btn">Annuler</button>
+        </div>
+      </form>
+    </section>
+
     <section id="view-classes" class="view" aria-labelledby="tab-classes">
       <h2 class="section-title">Classes</h2>
 
@@ -1266,6 +1283,11 @@
       <!-- Round 10, item 3 : recherche par mots-clés (nom de la collection
            ou nom de son auteur). -->
       <input type="search" id="library-search-input" class="library-search-input" placeholder="Rechercher une collection…" />
+      <!-- Round 20, item 4 : filtre "Mes partages" — ne montre que les
+           collections partagées par l'utilisateur connecté. Masqué tant
+           qu'aucun Compte n'est connecté (rien à filtrer sinon). Round 21,
+           item 6 : redessiné en interrupteur (toggle), voir css/style.css. -->
+      <button type="button" class="library-mine-toggle" id="library-mine-toggle" hidden aria-pressed="false">Mes partages</button>
       <ul class="subject-list" id="library-list"></ul>
       <p class="field-hint" id="library-empty" hidden>Aucune collection partagée pour l'instant.</p>
     </section>

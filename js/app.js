@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v183";
+  const APP_VERSION = "v185";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -426,6 +426,8 @@
     // Round 30 : bouton « Librairie » de l'accueil (déplacé depuis Fiches),
     // avec sa propre couleur.
     homeLibraryBg: "#8a63c9",
+    // Round 31 : fond de la page Librairie (par défaut, celui des autres pages).
+    libraryPageBg: "#eef2f8",
     cardFormBg: "#ffffff",
     richEditorBg: "#f4f7fb",
     homeBtnBg: "transparent",
@@ -456,6 +458,7 @@
     homeSquareBg: "#1c2330",
     homeAddCardBg: "#3a75b3",
     homeLibraryBg: "#6d4fa3",
+    libraryPageBg: "#11151c",
     cardFormBg: "#1c2330",
     richEditorBg: "#232b3a",
     homeBtnBg: "transparent",
@@ -680,6 +683,7 @@
   const DEFAULT_HELP_MESSAGES_BY_VIEW = {
     manage: ["Range ici tes boîtes dans des dossiers. Pour créer une nouvelle boîte, passe par « Mes créations de fiches »."],
     "manage-creations": ["Ici, seulement les boîtes que tu as créées toi-même. L'interrupteur ne garde que celles publiées dans la Librairie."],
+    "box-create": ["Donne un nom à ta boîte et classe-la : ce classement servira aux filtres, et sera repris si tu la publies dans la Librairie."],
     creations: ["Ici, toutes les boîtes que tu as créées. Publie-les dans la Librairie, ou ajoute-les à tes révisions pour les ranger dans Mes fiches de révision."],
     "fiches-hub": [],
     "review-hub": [],
@@ -712,6 +716,7 @@
     manage: "Mes fiches de révision (Organisation)",
     "manage-creations": "Mes créations de fiches (ancienne page)",
     creations: "Mes créations de fiches",
+    "box-create": "Mes créations — créer une boîte",
     "fiches-hub": "Fiches (choix)",
     cards: "Fiches",
     stats: "Statistiques",
@@ -1664,7 +1669,7 @@
   }
 
   const BG_COLORS_ORDER = [
-    "appBg", "homeBg", "homeSquareBg", "homeAddCardBg", "homeLibraryBg", "cardFormBg", "richEditorBg", "homeBtnBg", "cardBg",
+    "appBg", "homeBg", "homeSquareBg", "homeAddCardBg", "homeLibraryBg", "libraryPageBg", "cardFormBg", "richEditorBg", "homeBtnBg", "cardBg",
     "subjectSelectBg", "syncStatusBg", "folderBg", "folderL1Bg", "folderL2Bg", "folderL3Bg",
     "subjectRowBg", "addBtnBg", "chartWrapBg", "svgChartBg", "dueBarColor", "todayBarColor", "reviewedBarColor",
     "skipProgramBg",
@@ -1675,6 +1680,7 @@
     homeSquareBg: "Boutons de la page d'accueil",
     homeAddCardBg: "Bouton « Ajouter une fiche » de l'accueil",
     homeLibraryBg: "Bouton « Librairie » de l'accueil",
+    libraryPageBg: "Fond de la page Librairie",
     cardFormBg: "Fond des cadres (blocs)",
     richEditorBg: "Fond des zones de texte",
     homeBtnBg: "Bouton home",
@@ -2622,6 +2628,7 @@
     root.setProperty("--home-square-bg-color", bg.homeSquareBg);
     root.setProperty("--home-add-card-bg-color", bg.homeAddCardBg);
     root.setProperty("--home-library-bg-color", bg.homeLibraryBg || DEFAULT_BG_COLORS.homeLibraryBg);
+    root.setProperty("--library-page-bg-color", bg.libraryPageBg || bg.appBg);
     root.setProperty("--home-btn-bg-color", bg.homeBtnBg);
     root.setProperty("--subject-select-bg-color", bg.subjectSelectBg);
     root.setProperty("--sync-status-bg-color", bg.syncStatusBg);
@@ -3501,7 +3508,7 @@
    *  actions (éditer/déplacer/supprimer, empilées verticalement dans un
    *  petit panneau), la jauge (plus courte/fine). Round 26, item 5 : le
    *  picto du mode d'apprentissage (abandonné) est retiré. */
-  function buildRowBody({ nameBtnEl, expandBtnEl, countLabel, score: persPool, onRename, onMove, onDelete, onShare, deleteTitle }) {
+  function buildRowBody({ nameBtnEl, expandBtnEl, countLabel, score: persPool, onRename, onMove, onDelete, onShare, deleteTitle, deleteLabel }) {
     const main = document.createElement("div");
     main.className = "org-row-main";
     if (expandBtnEl) {
@@ -3563,7 +3570,7 @@
     const delBtn = document.createElement("button");
     delBtn.type = "button";
     delBtn.className = "org-actions-popover-item org-actions-popover-item--danger";
-    delBtn.innerHTML = `${orgIconMarkup("orgDelete")}<span>Supprimer</span>`;
+    delBtn.innerHTML = `${orgIconMarkup("orgDelete")}<span>${escapeHtml(deleteLabel || "Supprimer")}</span>`;
     delBtn.title = deleteTitle;
     delBtn.addEventListener("click", () => {
       closeAllOrgActionPopovers();
@@ -3687,19 +3694,17 @@
           if (!isSelfLinkedFolder && (await blockIfSharedReadonly(subjectId))) return;
           openMovePicker(isSelfLinkedFolder ? "folder" : "subject", subjectId);
         },
-        onDelete: () => deleteSubject(subjectId),
-        // Round 10, item 2 : ni une boîte de classe ni une collection prise
-        // dans la Bibliothèque ne peuvent être repartagées — l'action
-        // "Partager" disparaît carrément du popover pour ces boîtes-là,
-        // plutôt que d'être cliquable pour finir bloquée par un message.
-        onShare:
-          subjectForIcon && (subjectForIcon.sharedBoxId || (subjectForIcon.fromLibrary && subjectForIcon.libraryOriginId))
-            ? null
-            : () => {
-                libraryShareReturnView = "manage";
-                shareSubjectToLibrary(subjectId);
-              },
-        deleteTitle: "Supprimer cette boîte",
+        // Round 31 : « Supprimer » devient « Retirer de mes révisions » — une
+        // boîte à soi n'est pas supprimée, elle reste dans Mes créations de
+        // fiches et garde en mémoire son emplacement (proposé si on l'y
+        // remet). Boîte de classe / collection de la Librairie : même
+        // libellé, effet inchangé (bloqué / retirée, reprenable en Librairie).
+        onDelete: () => (isOwnCreatedSubject(subjectForIcon) ? removeSubjectFromRevisions(subjectId) : deleteSubject(subjectId)),
+        // Round 31 : « Partager dans la librairie » retiré de ce menu — la
+        // publication se fait depuis Mes créations de fiches.
+        onShare: null,
+        deleteLabel: "Retirer de mes révisions",
+        deleteTitle: "Retirer cette boîte de mes révisions (elle n'est pas supprimée)",
       });
       li.appendChild(body);
       container.appendChild(li);
@@ -8158,6 +8163,7 @@
     "school-hub": "École",
     "fiches-hub": "Fiches",
     creations: "Mes créations",
+    "box-create": "Nouvelle boîte",
     classes: "Classes",
     "classes-student": "Classes",
     "classes-join": "Rejoindre une classe",
@@ -8184,6 +8190,8 @@
     // Round 17, item 3 : bloc d'actions de "Mon bureau" visible
     // UNIQUEMENT sur cette page.
     if (manageStickyActionsEl) manageStickyActionsEl.hidden = key !== "manage";
+    // Round 31 : fond propre à la page Librairie (voir css, body.is-view-library).
+    document.body.classList.toggle("is-view-library", key === "library");
     setTimeout(refreshHomeEventWarning, 0);
   }
   document.querySelectorAll(".view").forEach((v) => {
@@ -12702,7 +12710,14 @@
       Taxonomy.load(),
       libraryCollectionsCache.length ? null : Sync.library.list().then((cols) => (libraryCollectionsCache = cols)),
     ]);
-    if (taxEl) libraryShareCascade = createTaxonomyCascade(taxEl, { mode: "publish", sel: {} });
+    // Round 31 : classement choisi à la création de la boîte, repris d'office.
+    const createdSel = {};
+    if (subject.taxonomy && typeof subject.taxonomy === "object") {
+      Object.keys(subject.taxonomy).forEach((k) => {
+        if (subject.taxonomy[k] && subject.taxonomy[k].id) createdSel[k] = subject.taxonomy[k].id;
+      });
+    }
+    if (taxEl) libraryShareCascade = createTaxonomyCascade(taxEl, { mode: "publish", sel: createdSel });
     if (tagsEl) {
       libraryShareTagInput = createTagInput(tagsEl, {
         allowNew: true,
@@ -12828,6 +12843,12 @@
       })
       .sort((a, b) => a.name.localeCompare(b.name, "fr"));
   }
+  /** Classement d'une boîte : celui de sa publication s'il y en a une,
+   *  sinon celui choisi à sa création (round 31). */
+  function creationsTaxonomyOf(s, col) {
+    if (col) return collectionTaxonomy(col);
+    return s && s.taxonomy && typeof s.taxonomy === "object" ? s.taxonomy : {};
+  }
   function creationsCollectionFor(s) {
     return (
       creationsMyCollections.find((c) => c.source_subject_id === s.id) ||
@@ -12912,7 +12933,7 @@
     let items = all.map((s) => ({ s, col: creationsCollectionFor(s) }));
     if (creationsOnlyPublished) items = items.filter((it) => it.col);
     const taxActive = Object.keys(creationsTaxFilter || {}).some((k) => creationsTaxFilter[k]);
-    if (taxActive) items = items.filter((it) => it.col && collectionMatchesTaxFilter(it.col, creationsTaxFilter));
+    if (taxActive) items = items.filter((it) => collectionMatchesTaxFilter({ taxonomy: creationsTaxonomyOf(it.s, it.col) }, creationsTaxFilter));
     if (creationsTagFilter.length > 0) {
       items = items.filter((it) => {
         if (!it.col) return false;
@@ -12926,7 +12947,7 @@
         (s.name || "").toLowerCase().includes(q) ||
         (col && (col.name || "").toLowerCase().includes(q)) ||
         (col && collectionTags(col).some((t) => t.includes(q))) ||
-        (col && taxonomyFullLabel(collectionTaxonomy(col)).toLowerCase().includes(q))
+        taxonomyFullLabel(creationsTaxonomyOf(s, col)).toLowerCase().includes(q)
       );
     }
     list.innerHTML = "";
@@ -12939,7 +12960,7 @@
       const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
       const inRev = isSubjectInRevisions(s);
       const place = creationsPlaceLabel(s);
-      const taxLabel = col ? taxonomyShortLabel(collectionTaxonomy(col)) : "";
+      const taxLabel = taxonomyShortLabel(creationsTaxonomyOf(s, col));
       const rowTags = col ? collectionTags(col) : [];
       const priceTokens = col ? Number(col.price_tokens) || 0 : 0;
       const li = document.createElement("li");
@@ -12988,9 +13009,26 @@
 
   /** Range une boîte dans Mes fiches de révision : l'explorateur s'ouvre
    *  sur les dossiers (Racine comprise) pour choisir où la mettre. */
-  function openAddToRevisionsPicker(subjectId, opts) {
+  async function openAddToRevisionsPicker(subjectId, opts) {
     const s = subjects.find((x) => x.id === subjectId);
     if (!s) return;
+    // Round 31 : ancien emplacement (boîte retirée des révisions) proposé
+    // d'abord, s'il existe toujours.
+    const place = s.revisionsPlace;
+    if (place && !(opts && opts.justCreated)) {
+      const pf = place.folderId ? folders.find((x) => x.id === place.folderId && !x.deleted && !x.sharedClassId) : null;
+      if (!place.folderId || pf) {
+        const path = place.folderId ? folderPath(place.folderId).map((x) => x.name).join(" › ") : "Racine";
+        const back = await robotConfirm(`Remettre « ${s.name} » à son ancien emplacement : ${path} ?`, {
+          okLabel: "Oui, à cet endroit",
+          cancelLabel: "Choisir un autre dossier",
+        });
+        if (back) {
+          await putSubjectBackInRevisions(s, place.folderId || ROOT_FOLDER_ID);
+          return;
+        }
+      }
+    }
     const excluded = new Set();
     folders.forEach((f) => {
       if (f.sharedClassRoot) excluded.add(f.id);
@@ -12998,20 +13036,23 @@
     openBoitePickerView({
       mode: "single",
       robotMessage: `Dans quel dossier de Mes fiches de révision ranger « ${s.name} » ?`,
-      backLabel: opts && opts.justCreated ? "Plus tard" : "Annuler",
+      backLabel: "Annuler",
       excludedFolderIds: excluded,
       onPick: async (_kind, destId) => {
-        s.folderId = destId;
-        s.outOfRevisions = false;
-        s.updatedAt = new Date().toISOString();
-        await persistSubject(s);
         closeBoitePickerView();
-        renderSubjectManageList();
-        renderStatsSubjectSelect();
-        renderCreationsList();
-        showToast("Boîte ajoutée à tes révisions");
+        await putSubjectBackInRevisions(s, destId);
       },
     });
+  }
+  async function putSubjectBackInRevisions(s, destId) {
+    s.folderId = destId;
+    s.outOfRevisions = false;
+    s.updatedAt = new Date().toISOString();
+    await persistSubject(s);
+    renderSubjectManageList();
+    renderStatsSubjectSelect();
+    renderCreationsList();
+    showToast("Boîte ajoutée à tes révisions");
   }
 
   /** Retire une boîte de Mes fiches de révision (après confirmation) :
@@ -13020,7 +13061,7 @@
     const s = subjects.find((x) => x.id === subjectId);
     if (!s) return;
     const ok = await robotConfirm(
-      `Retirer « ${s.name} » de tes révisions ? Elle n'apparaîtra plus dans Mes fiches de révision ni dans tes révisions, mais reste ici, dans Mes créations, avec toutes ses fiches et leur progression. Tu pourras l'y remettre quand tu veux.`,
+      `Retirer « ${s.name} » de tes révisions ? Elle n'apparaîtra plus dans Mes fiches de révision ni dans tes révisions, mais elle n'est pas supprimée : elle reste dans Mes créations de fiches, avec toutes ses fiches et leur progression. Tu pourras l'y remettre quand tu veux, à la même place.`,
       { okLabel: "Retirer" }
     );
     if (!ok) return;
@@ -13040,6 +13081,8 @@
       await DB.removeFolder(f.id);
     }
     s.outOfRevisions = true;
+    // Emplacement mémorisé, reproposé si on la remet dans les révisions.
+    s.revisionsPlace = { folderId: s.folderId || ROOT_FOLDER_ID };
     s.updatedAt = now;
     await persistSubject(s);
     if (currentSubjectId === s.id) switchSubject(ALL_SUBJECTS_ID, true);
@@ -13049,20 +13092,65 @@
     showToast("Boîte retirée de tes révisions");
   }
 
+  /* Round 31 : création d'une boîte sur une page dédiée — nom + classement
+     (taxonomie, tous les champs affichés obligatoires, comme à la
+     publication). Puis : « Ajouter cette boîte à tes révisions ? » — oui :
+     choix du dossier dans l'arborescence ; non : elle reste hors
+     révisions, dans Mes créations. */
+  let boxCreateCascade = null;
   async function createBoxFromCreations() {
-    const name = await robotPrompt("Nom de la nouvelle boîte :");
-    if (!name || !name.trim()) return;
-    const subject = newSubject(name, ROOT_FOLDER_ID);
-    // Pas encore rangée : elle entre dans Mes fiches de révision quand on
-    // choisit son dossier (tout de suite, ou plus tard).
-    subject.outOfRevisions = true;
-    await persistSubject(subject);
-    subjects.push(subject);
-    subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
-    renderStatsSubjectSelect();
-    renderCreationsList();
-    openAddToRevisionsPicker(subject.id, { justCreated: true });
+    const nameEl = el("box-create-name");
+    const taxEl = el("box-create-taxonomy");
+    if (nameEl) nameEl.value = "";
+    boitePickerActivateView("view-box-create");
+    applyBodyLogoSpeech("box-create");
+    if (taxEl) {
+      taxEl.innerHTML = `<p class="field-hint">Chargement du classement…</p>`;
+      await Taxonomy.load();
+      taxEl.innerHTML = "";
+      boxCreateCascade = createTaxonomyCascade(taxEl, { mode: "publish", sel: {} });
+    }
+    if (nameEl) nameEl.focus();
   }
+  function closeBoxCreateView() {
+    boitePickerActivateView("view-creations");
+    applyBodyLogoSpeech("creations");
+    renderCreationsList();
+  }
+  const boxCreateForm = el("box-create-form");
+  if (boxCreateForm) {
+    boxCreateForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const nameEl = el("box-create-name");
+      const name = ((nameEl && nameEl.value) || "").trim();
+      if (!name) {
+        await robotAlert("Donne un nom à ta boîte.");
+        return;
+      }
+      const missing = boxCreateCascade ? boxCreateCascade.missingFields() : [];
+      if (missing.length > 0) {
+        await robotAlert(`Complète le classement de la boîte : ${missing.join(", ")}.`);
+        return;
+      }
+      const subject = newSubject(name, ROOT_FOLDER_ID);
+      subject.taxonomy = taxonomyValueFromSelection(boxCreateCascade ? boxCreateCascade.getSelection() : {});
+      // Pas encore rangée : elle entre dans Mes fiches de révision quand on
+      // choisit son dossier (tout de suite, ou plus tard).
+      subject.outOfRevisions = true;
+      await persistSubject(subject);
+      subjects.push(subject);
+      subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      renderStatsSubjectSelect();
+      closeBoxCreateView();
+      const add = await robotConfirm(`Boîte « ${name} » créée. Veux-tu l'ajouter à tes révisions ?`, {
+        okLabel: "Oui",
+        cancelLabel: "Non, pas maintenant",
+      });
+      if (add) openAddToRevisionsPicker(subject.id, { justCreated: true });
+    });
+  }
+  const boxCreateCancelBtn = el("box-create-cancel-btn");
+  if (boxCreateCancelBtn) boxCreateCancelBtn.addEventListener("click", () => closeBoxCreateView());
 
   const creationsCreateBtn = el("creations-create-btn");
   if (creationsCreateBtn) creationsCreateBtn.addEventListener("click", () => createBoxFromCreations());
