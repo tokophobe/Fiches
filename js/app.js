@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v188";
+  const APP_VERSION = "v189";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -1253,8 +1253,35 @@
   }
   /** Adopte une version du serveur en y réappliquant les changements
    *  locaux pas encore envoyés. Renvoie true s'il en reste à envoyer. */
+  /* Round 35 : les réglages développeur sont COMMUNS à tous les
+     utilisateurs et ne se modifient que depuis le compte développeur (celui
+     qui a envoyé la dernière version : `updated_by`). Sur tout autre
+     compte, la version du serveur s'applique toujours telle quelle — un
+     appareil où l'on aurait bricolé des réglages en local (mode
+     développeur ouvert sur un 2e compte, par exemple) ne garde plus ses
+     propres valeurs « en attente » à vie. */
+  let devSettingsWriterUid = null;
+  function isDevSettingsWriter() {
+    const uidNow = (Sync.currentUid && Sync.currentUid()) || null;
+    return !devSettingsWriterUid || (uidNow && uidNow === devSettingsWriterUid);
+  }
+  function isDevPermissionError(msg) {
+    return /row-level security|refus|permission|not allowed|42501/i.test(String(msg || ""));
+  }
+  function forceServerDevSettings(serverRaw) {
+    const server = devIsPlainObj(serverRaw) ? serverRaw : {};
+    localStorage.setItem(DEV_SETTINGS_BASE_KEY, JSON.stringify(server));
+    storeLocalDevSettings(server);
+    applyAllDevSettings();
+    applyOwnAppPrefs(server);
+    refreshDevViewIfIdle();
+  }
   function adoptServerDevSettings(serverRaw) {
     const server = devIsPlainObj(serverRaw) ? serverRaw : {};
+    if (!isDevSettingsWriter()) {
+      forceServerDevSettings(server);
+      return false;
+    }
     // Round 33 : 1er lancement de cette version (pas encore de « base ») sur
     // un appareil où le mode développeur est déverrouillé — ses réglages
     // n'avaient peut-être jamais atteint le serveur (ancien bug) : on les
@@ -1281,6 +1308,7 @@
         renderDevSyncStatus();
         return;
       }
+      if (res.updatedBy) devSettingsWriterUid = res.updatedBy;
       if (!res.settings) {
         // Rien encore sur le serveur : on garde ce qu'on a (envoyé à la
         // prochaine modification).
@@ -1297,7 +1325,8 @@
   /** Envoi : relit le serveur, y applique les changements de cet appareil,
    *  puis renvoie le tout (et adopte localement le résultat). */
   async function pushDevSettingsNow(alreadyQueued) {
-    const run = async () => {
+    const run = async (attempt) => {
+      attempt = attempt || 0;
       if (typeof Sync === "undefined" || !Sync.isConfigured()) return;
       const res = await Sync.fetchPublicDevSettingsResult();
       if (res.error) {
@@ -1307,6 +1336,15 @@
         return;
       }
       const server = devIsPlainObj(res.settings) ? res.settings : {};
+      if (res.updatedBy) devSettingsWriterUid = res.updatedBy;
+      if (res.settings && !isDevSettingsWriter()) {
+        // Pas le compte développeur : rien à envoyer, réglages communs rétablis.
+        forceServerDevSettings(server);
+        devSyncStatus.error = "ce compte ne peut pas modifier les réglages communs (réservé au compte développeur) — réglages communs rétablis";
+        devSyncStatus.pending = false;
+        renderDevSyncStatus();
+        return;
+      }
       let changes = localDevSettingsChanges();
       // 1er envoi sans base connue : l'appareil fait foi (ancien comportement).
       if (changes === null) changes = devSettingsDiff(buildDevSettings(server), buildDevSettings(loadRawDevSettingsOverride()));
@@ -1316,16 +1354,32 @@
       merged.updatedAt = new Date().toISOString();
       merged.appPrefs = gatherAppPrefs();
       merged.appPrefsOwner = (Sync.currentUid && Sync.currentUid()) || null;
-      const { error } = await Sync.pushPublicDevSettings(merged);
-      if (error) {
-        // Refusé (ex. compte sans droit d'écriture) ou hors ligne : on garde
-        // les changements de l'appareil, à renvoyer plus tard.
+      const pushRes = await Sync.pushPublicDevSettings(merged, res.settings ? res.updatedAt : null);
+      // Un autre appareil a écrit entre notre lecture et notre envoi : on
+      // recommence (relecture + fusion), pour ne rien écraser.
+      if (pushRes.conflict) {
+        if (attempt < 4) return run(attempt + 1);
+        devSyncStatus.error = "envoi impossible (le serveur change trop souvent, réessai plus tard)";
+        devSyncStatus.pending = true;
+        renderDevSyncStatus();
+        return;
+      }
+      const error = pushRes.error;
+      if (error && isDevPermissionError(error)) {
+        // Compte sans droit d'écriture : les réglages communs s'appliquent.
+        forceServerDevSettings(server);
+        devSyncStatus.error = "ce compte ne peut pas modifier les réglages communs (réservé au compte développeur) — réglages communs rétablis";
+        devSyncStatus.pending = false;
+      } else if (error) {
+        // Hors ligne / erreur passagère : on garde les changements de
+        // l'appareil, à renvoyer plus tard.
         localStorage.setItem(DEV_SETTINGS_BASE_KEY, JSON.stringify(server));
         storeLocalDevSettings(devSettingsApplyPatch(server, changes));
         applyAllDevSettings();
         devSyncStatus.error = `envoi refusé (${error})`;
         devSyncStatus.pending = true;
       } else {
+        devSettingsWriterUid = (Sync.currentUid && Sync.currentUid()) || devSettingsWriterUid;
         localStorage.setItem(DEV_SETTINGS_BASE_KEY, JSON.stringify(merged));
         storeLocalDevSettings(merged);
         applyAllDevSettings();
@@ -1335,8 +1389,8 @@
       }
       renderDevSyncStatus();
     };
-    if (alreadyQueued) return run();
-    return devSyncQueue(run);
+    if (alreadyQueued) return run(0);
+    return devSyncQueue(() => run(0));
   }
   function renderDevSyncStatus() {
     const out = el("dev-settings-sync-status");
@@ -14143,6 +14197,7 @@
     // Round 33 : on réapplique les changements locaux pas encore envoyés
     // par-dessus la version reçue (au lieu de les écraser).
     devSyncQueue(async () => {
+      if (remote.updatedBy) devSettingsWriterUid = remote.updatedBy;
       const pending = adoptServerDevSettings(remote.payload);
       devSyncStatus.at = new Date();
       devSyncStatus.error = null;

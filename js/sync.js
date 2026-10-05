@@ -545,21 +545,34 @@ async function fetchPublicDevSettingsResult() {
   const c = getClient();
   if (!c) return { settings: null, error: "Sync non configurée" };
   try {
-    const { data, error } = await c.from("dev_settings_public").select("settings").eq("id", "global").maybeSingle();
+    const { data, error } = await c.from("dev_settings_public").select("settings, updated_by, updated_at").eq("id", "global").maybeSingle();
     if (error) return { settings: null, error: error.message || String(error) };
-    return { settings: (data && data.settings) || null, error: null };
+    return { settings: (data && data.settings) || null, updatedBy: (data && data.updated_by) || null, updatedAt: (data && data.updated_at) || null, error: null };
   } catch (e) {
     return { settings: null, error: String(e && e.message ? e.message : e) };
   }
 }
 
-async function pushPublicDevSettings(settings) {
+async function pushPublicDevSettings(settings, expectedUpdatedAt) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
   try {
     const row = { id: "global", settings, updated_at: new Date().toISOString() };
     const uid = currentUid();
     if (uid) row.updated_by = uid;
+    // Round 35 : écriture conditionnelle — seulement si personne n'a écrit
+    // depuis notre lecture (sinon : conflit, on relit et on refait la fusion).
+    if (expectedUpdatedAt) {
+      const { data, error } = await c
+        .from("dev_settings_public")
+        .update(row)
+        .eq("id", "global")
+        .eq("updated_at", expectedUpdatedAt)
+        .select("id");
+      if (error) return { error: error.message };
+      if (Array.isArray(data) && data.length === 0) return { error: null, conflict: true };
+      return { error: null, updatedAt: row.updated_at };
+    }
     // .select() : sans droit d'écriture, la règle de sécurité peut « réussir »
     // sans rien écrire — on vérifie qu'une ligne est bien revenue.
     const { data, error } = await c.from("dev_settings_public").upsert(row).select("id");
@@ -587,7 +600,7 @@ function subscribePublicDevSettingsRealtime(onRemoteChange) {
       { event: "*", schema: "public", table: "dev_settings_public", filter: "id=eq.global" },
       (payload) => {
         if (!payload.new || !payload.new.settings) return;
-        onRemoteChange({ payload: payload.new.settings, updatedAt: payload.new.updated_at });
+        onRemoteChange({ payload: payload.new.settings, updatedAt: payload.new.updated_at, updatedBy: payload.new.updated_by || null });
       }
     )
     .subscribe();

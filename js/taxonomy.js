@@ -332,7 +332,17 @@
     const pf = fieldDef(parentKey);
     const ids = (tax.links[`${pf.list}>${f.list}`] || {})[parentId] || [];
     const set = new Set(ids);
-    return all.filter((it) => set.has(it.id));
+    const out = all.filter((it) => set.has(it.id));
+    // Round 35 : spécialités et matières par ordre alphabétique ; niveaux
+    // aussi, mais seulement pour les études supérieures (ailleurs, l'ordre
+    // de l'Excel suit la scolarité : CP, CE1… 6ème, 5ème…).
+    let alpha = key === "specialite" || key === "matiere";
+    if (key === "niveau") {
+      const cyc = findItem(tax, "cycle", sel && sel.cycle);
+      alpha = !!cyc && norm(cyc.label).indexOf("superieur") >= 0;
+    }
+    if (alpha) out.sort((a, b) => a.label.localeCompare(b.label, "fr", { sensitivity: "base", numeric: true }));
+    return out;
   }
 
   function findItem(tax, key, id) {
