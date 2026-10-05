@@ -1060,9 +1060,21 @@
       <div class="library-taxonomy-filters" id="creations-filter-taxonomy" hidden></div>
       <div class="tag-input tag-input--filter" id="creations-filter-tags" hidden></div>
       <input type="search" id="creations-search-input" class="library-search-input" placeholder="Rechercher une boîte…" />
-      <button type="button" class="library-mine-toggle" id="creations-published-toggle" hidden aria-pressed="false">Publiées dans la librairie</button>
+      <!-- Round 34 : filtres d'état, combinables (un de chaque ligne). -->
+      <div class="creations-status-chips" id="creations-status-chips">
+        <button type="button" class="creations-chip" data-group="pub" data-value="published" aria-pressed="false">Publiées</button>
+        <button type="button" class="creations-chip" data-group="pub" data-value="unpublished" aria-pressed="false">Non publiées</button>
+        <button type="button" class="creations-chip" data-group="rev" data-value="in" aria-pressed="false">Dans mes révisions</button>
+        <button type="button" class="creations-chip" data-group="rev" data-value="out" aria-pressed="false">Pas dans mes révisions</button>
+      </div>
       <ul class="subject-list" id="creations-list"></ul>
       <p class="field-hint" id="creations-empty" hidden>Tu n'as pas encore créé de boîte.</p>
+    </section>
+
+    <!-- Round 34 : page détaillée d'une boîte de Mes créations. -->
+    <section id="view-creation-detail" class="view">
+      <button type="button" class="btn btn--ghost btn--small creation-detail-back" id="creation-detail-back-btn">← Mes créations</button>
+      <div class="card-form" id="creation-detail-body"></div>
     </section>
 
     <!-- Round 31 : création d'une boîte (nom + classement), depuis Mes

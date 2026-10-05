@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v187";
+  const APP_VERSION = "v188";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -683,6 +683,7 @@
   const DEFAULT_HELP_MESSAGES_BY_VIEW = {
     manage: ["Range ici tes boîtes dans des dossiers. Pour créer une nouvelle boîte, passe par « Mes créations de fiches »."],
     "manage-creations": ["Ici, seulement les boîtes que tu as créées toi-même. L'interrupteur ne garde que celles publiées dans la Librairie."],
+    "creation-detail": [],
     "box-create": ["Donne un nom à ta boîte et classe-la : ce classement servira aux filtres, et sera repris si tu la publies dans la Librairie."],
     creations: ["Ici, toutes les boîtes que tu as créées. Publie-les dans la Librairie, ou ajoute-les à tes révisions pour les ranger dans Mes fiches de révision."],
     "fiches-hub": [],
@@ -717,6 +718,7 @@
     "manage-creations": "Mes créations de fiches (ancienne page)",
     creations: "Mes créations de fiches",
     "box-create": "Mes créations — créer une boîte",
+    "creation-detail": "Mes créations — page d'une boîte",
     "fiches-hub": "Fiches (choix)",
     cards: "Fiches",
     stats: "Statistiques",
@@ -3344,18 +3346,16 @@
     subjects = await DB.getAllSubjects();
     folders = await DB.getAllFolders();
     subjects.forEach((s) => { if (s.folderId === undefined) s.folderId = ROOT_FOLDER_ID; });
-    if (subjects.length === 0) {
-      const general = newSubject("Général");
-      await persistSubject(general);
-      subjects = [general];
-    }
+    // Round 34 : plus de boîte « Général » créée d'office quand il n'y en a
+    // aucune (elle revenait à chaque démarrage / nouvelle version). Les
+    // boîtes se créent depuis Mes créations de fiches.
     subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
 
     const saved = localStorage.getItem(CURRENT_SUBJECT_KEY);
     if (saved && (isSentinelSubject(saved) || subjects.some((s) => s.id === saved))) {
       currentSubjectId = saved;
     } else {
-      currentSubjectId = subjects[0].id;
+      currentSubjectId = subjects[0] ? subjects[0].id : ALL_SUBJECTS_ID;
       localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
     }
   }
@@ -3368,6 +3368,12 @@
   async function migrateOrphanCards() {
     const orphans = cards.filter((c) => !c.subject);
     if (orphans.length === 0) return;
+    // Des fiches sans boîte : là seulement, une boîte « Général » les accueille.
+    if (subjects.length === 0) {
+      const general = newSubject("Général");
+      await persistSubject(general);
+      subjects = [general];
+    }
     const target = subjects[0].id;
     const fixed = orphans.map((c) => touch({ ...c, subject: target }));
     await DB.bulkPut(fixed);
@@ -3396,14 +3402,42 @@
       const keep = withCards[0] || group[0];
       const toRemove = group.filter((s) => s.id !== keep.id && !withCards.includes(s));
       for (const s of toRemove) {
-        await DB.removeSubject(s.id);
-        subjects = subjects.filter((x) => x.id !== s.id);
+        await removeSubjectEverywhere(s);
         if (currentSubjectId === s.id) {
           currentSubjectId = keep.id;
           localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
         }
       }
     }
+  }
+  /** Round 34 : retrait d'une boîte vide AUSSI sur le serveur (suppression
+   *  douce). Avant, les nettoyages ne la retiraient que de l'appareil : la
+   *  synchro suivante la faisait revenir (la boîte « Général » fantôme). */
+  async function removeSubjectEverywhere(s) {
+    await DB.removeSubject(s.id);
+    subjects = subjects.filter((x) => x.id !== s.id);
+    await pushSubjectDeleted(s);
+  }
+  /** Round 34 : boîtes « Général » créées automatiquement par les anciennes
+   *  versions (vides, jamais classées ni publiées) — retirées partout. */
+  async function purgeAutoGeneralBoxes() {
+    const autos = subjects.filter(
+      (s) =>
+        s.name === "Général" &&
+        !s.deleted &&
+        !s.sharedBoxId &&
+        !s.fromLibrary &&
+        !(s.taxonomy && Object.keys(s.taxonomy).length) &&
+        !folders.some((f) => f.id === s.id) &&
+        !myPublishedSourceIds.has(s.id) &&
+        !cards.some((c) => c.subject === s.id && !c.deleted)
+    );
+    for (const s of autos) await removeSubjectEverywhere(s);
+    if (autos.length && (!currentSubjectId || (!isSentinelSubject(currentSubjectId) && !subjects.some((x) => x.id === currentSubjectId)))) {
+      currentSubjectId = subjects[0] ? subjects[0].id : ALL_SUBJECTS_ID;
+      localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
+    }
+    return autos.length;
   }
 
   /** Round 18, item 3 (suite) : nettoie les doublons de boîtes MIROIR
@@ -4218,10 +4252,6 @@
 
   async function deleteSubject(id) {
     if (await blockIfSharedReadonly(id)) return;
-    if (subjects.length <= 1) {
-      await robotAlert("Impossible de supprimer la dernière boîte restante.");
-      return;
-    }
     const s = subjects.find((x) => x.id === id);
     if (!s) return;
     const isLibMirror = isLibraryMirrorSubject(id);
@@ -4256,7 +4286,7 @@
     }
 
     if (currentSubjectId === id) {
-      currentSubjectId = subjects[0].id;
+      currentSubjectId = subjects[0] ? subjects[0].id : ALL_SUBJECTS_ID;
       localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
       reviewSessionStarted = false;
     }
@@ -4487,6 +4517,11 @@
       });
       if (!expanded && childCount > 0) li.classList.add("folder-row--stacked");
       if (cb) {
+        // Round 34 : dossier dont une partie seulement est sélectionnée →
+        // case partiellement cochée.
+        const nSel = ids.filter((id) => ctx.selectedSubjectIds.has(id)).length;
+        cb.indeterminate = nSel > 0 && nSel < ids.length;
+        if (cb.indeterminate) li.classList.add("picker-row--partial");
         // Item 1 (nouveau lot) : la sélection vit dans un vrai Set JS
         // (ctx.selectedSubjectIds, muté en place puis re-rendu) plutôt que
         // déduite des cases cochées visibles dans le DOM — nécessaire
@@ -4556,6 +4591,10 @@
       value: "",
     });
     li.classList.add("picker-row--all");
+    {
+      const nSel = allIds.filter((id) => ctx.selectedSubjectIds.has(id)).length;
+      cb.indeterminate = nSel > 0 && nSel < allIds.length;
+    }
     cb.addEventListener("change", () => {
       if (cb.checked) allIds.forEach((id) => ctx.selectedSubjectIds.add(id));
       else allIds.forEach((id) => ctx.selectedSubjectIds.delete(id));
@@ -4819,6 +4858,7 @@
     const returnViewId = boitePickerReturnViewId || "view-home";
     boitePickerActivateView(returnViewId);
     if (returnViewId === "view-creations") renderCreationsList();
+    if (returnViewId === "view-creation-detail") renderCreationDetail();
     // Round 4, partie 2 : en revenant sur la page d'où on est parti, la
     // bulle d'aide doit refléter CETTE page, pas garder le message (ou
     // l'absence de message) du sélecteur de boîte(s).
@@ -8386,6 +8426,7 @@
     "fiches-hub": "Fiches",
     creations: "Mes créations",
     "box-create": "Nouvelle boîte",
+    "creation-detail": "Boîte",
     classes: "Classes",
     "classes-student": "Classes",
     "classes-join": "Rejoindre une classe",
@@ -8550,6 +8591,14 @@
     }
     if (cardsEntryFromCreations && el("view-cards") && el("view-cards").classList.contains("is-active")) {
       cardsEntryFromCreations = false;
+      const tab = document.querySelector('.tab[data-view="creations"]');
+      if (tab) tab.click();
+      // Round 34 : retour sur la page détaillée de la boîte d'où l'on venait.
+      if (creationDetailSubjectId && subjects.some((x) => x.id === creationDetailSubjectId)) openCreationDetail(creationDetailSubjectId);
+      return;
+    }
+    if (el("view-creation-detail") && el("view-creation-detail").classList.contains("is-active")) {
+      creationDetailSubjectId = null;
       const tab = document.querySelector('.tab[data-view="creations"]');
       if (tab) tab.click();
       return;
@@ -12397,6 +12446,7 @@
     boitePickerActivateView(`view-${back}`);
     applyBodyLogoSpeech(back);
     if (back === "creations") renderCreationsList();
+    if (back === "creation-detail") renderCreationDetail();
   }
 
   /** Round 19, item 11 : aperçu épuré des fiches d'une collection — juste
@@ -13013,6 +13063,7 @@
         closeLibraryShareView();
         renderSubjectManageList();
         if (el("view-creations") && el("view-creations").classList.contains("is-active")) renderCreationsView();
+        if (el("view-creation-detail") && el("view-creation-detail").classList.contains("is-active")) renderCreationsView().then(renderCreationDetail);
         await robotAlert(`« ${name} » a été partagée dans la librairie.`);
       };
     }
@@ -13027,6 +13078,7 @@
     boitePickerActivateView(`view-${back}`);
     applyBodyLogoSpeech(back);
     if (back === "creations") renderCreationsList();
+    if (back === "creation-detail") renderCreationDetail();
   }
 
   const libraryShareBackBtn = el("library-share-back-btn");
@@ -13068,7 +13120,10 @@
   /** Classement d'une boîte : celui de sa publication s'il y en a une,
    *  sinon celui choisi à sa création (round 31). */
   function creationsTaxonomyOf(s, col) {
-    if (col) return collectionTaxonomy(col);
+    if (col) {
+      const t = collectionTaxonomy(col);
+      if (t && Object.keys(t).length) return t;
+    }
     return s && s.taxonomy && typeof s.taxonomy === "object" ? s.taxonomy : {};
   }
   function creationsCollectionFor(s) {
@@ -13147,13 +13202,30 @@
     renderCreationsList();
   }
 
+  // Round 34 : filtres d'état (publication × révisions), combinables.
+  let creationsPubFilter = ""; // "" | "published" | "unpublished"
+  let creationsRevFilter = ""; // "" | "in" | "out"
+  let creationDetailSubjectId = null;
+
+  function updateCreationsStatusChips() {
+    document.querySelectorAll("#creations-status-chips .creations-chip").forEach((chip) => {
+      const on = chip.dataset.group === "pub" ? creationsPubFilter === chip.dataset.value : creationsRevFilter === chip.dataset.value;
+      chip.classList.toggle("is-active", on);
+      chip.setAttribute("aria-pressed", String(on));
+    });
+  }
+
   function renderCreationsList() {
     const list = el("creations-list");
     const empty = el("creations-empty");
     if (!list) return;
+    updateCreationsStatusChips();
     const all = creationsSubjects();
     let items = all.map((s) => ({ s, col: creationsCollectionFor(s) }));
-    if (creationsOnlyPublished) items = items.filter((it) => it.col);
+    if (creationsOnlyPublished || creationsPubFilter === "published") items = items.filter((it) => it.col);
+    if (creationsPubFilter === "unpublished") items = items.filter((it) => !it.col);
+    if (creationsRevFilter === "in") items = items.filter((it) => isSubjectInRevisions(it.s));
+    if (creationsRevFilter === "out") items = items.filter((it) => !isSubjectInRevisions(it.s));
     const taxActive = Object.keys(creationsTaxFilter || {}).some((k) => creationsTaxFilter[k]);
     if (taxActive) items = items.filter((it) => collectionMatchesTaxFilter({ taxonomy: creationsTaxonomyOf(it.s, it.col) }, creationsTaxFilter));
     if (creationsTagFilter.length > 0) {
@@ -13175,64 +13247,124 @@
     list.innerHTML = "";
     if (empty) empty.hidden = all.length > 0;
     if (all.length > 0 && items.length === 0) {
-      list.innerHTML = `<li class="field-hint">${creationsOnlyPublished && !taxActive && !q && !creationsTagFilter.length ? "Aucune de tes boîtes n'est encore publiée dans la Librairie." : "Aucun résultat."}</li>`;
+      list.innerHTML = `<li class="field-hint">Aucun résultat.</li>`;
       return;
     }
+    // Round 34 : bloc épuré — nom, pastille, nombre de fiches, classement
+    // complet (ou « à classer ») ; le détail est sur la page de la boîte.
     for (const { s, col } of items) {
       const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
-      const inRev = isSubjectInRevisions(s);
-      const place = creationsPlaceLabel(s);
-      const taxLabel = taxonomyShortLabel(creationsTaxonomyOf(s, col));
-      const rowTags = col ? collectionTags(col) : [];
-      const priceTokens = col ? Number(col.price_tokens) || 0 : 0;
+      const taxFull = taxonomyFullLabel(creationsTaxonomyOf(s, col));
       const li = document.createElement("li");
-      li.className = "subject-row library-row creations-row" + (inRev ? "" : " creations-row--out");
+      li.className = "subject-row library-row creations-row";
       li.dataset.subjectId = s.id;
       li.innerHTML = `
         <div class="library-row-head">
           <span class="subject-row-name">${orgIconMarkup("orgBoite")} <span>${escapeHtml(s.name)}</span></span>
           <span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>
         </div>
-        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""}${taxLabel ? ` · ${escapeHtml(taxLabel)}` : col ? "" : ` · <span class="creations-unclassified">à classer</span>`}</span>
-        <span class="card-row-meta creations-place">${place ? `Dans mes révisions : ${escapeHtml(place)}` : "Hors de mes révisions"}</span>
-        ${rowTags.length ? `<span class="tag-chips tag-chips--row">${tagChipsHtml(rowTags)}</span>` : ""}
-        <div class="library-row-actions">
-          <button type="button" class="btn btn--small library-price-btn creations-publish-btn${col ? "" : " creations-publish-btn--todo"}">${col ? libraryPriceButtonHtml(priceTokens) : "Publier"}</button>
-          <button type="button" class="btn btn--small btn--ghost creations-revisions-btn">${inRev ? "Retirer de mes révisions" : "Ajouter à mes révisions"}</button>
-          <button type="button" class="btn btn--small btn--ghost creations-more-btn" title="Autres actions" aria-label="Autres actions">⋯</button>
-        </div>
+        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""}</span>
+        <span class="card-row-meta creations-tax">${taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`}</span>
       `;
-      li.querySelector(".creations-publish-btn").addEventListener("click", async (e) => {
-        e.stopPropagation();
-        if (col) {
-          libraryDetailReturnView = "creations";
-          openLibraryDetailView(col);
-          return;
-        }
-        libraryShareReturnView = "creations";
-        // Publication impossible (pas de fiche, pas de compte…) : la page
-        // de partage ne s'est pas ouverte, on garde le retour par défaut.
-        const opened = await shareSubjectToLibrary(s.id);
-        if (!opened) libraryShareReturnView = "manage";
-      });
-      li.querySelector(".creations-revisions-btn").addEventListener("click", async (e) => {
-        e.stopPropagation();
-        if (inRev) await removeSubjectFromRevisions(s.id);
-        else openAddToRevisionsPicker(s.id);
-      });
-      li.querySelector(".creations-more-btn").addEventListener("click", async (e) => {
-        e.stopPropagation();
-        await openCreationsMoreMenu(s.id, !!col);
-      });
-      // Le reste de la ligne ouvre les fiches de la boîte (Accueil ramène ici).
-      li.addEventListener("click", () => {
-        cardsEntryFromCreations = true;
-        cardsEntryFromManage = false;
-        goToCardsFor(`subject:${s.id}`);
-      });
+      li.addEventListener("click", () => openCreationDetail(s.id));
       list.appendChild(li);
     }
   }
+
+  /* Round 34 : page détaillée d'une boîte de Mes créations — toutes ses
+     infos et toutes ses actions (voir les fiches, publier, révisions,
+     classer, supprimer). */
+  function openCreationDetail(subjectId) {
+    creationDetailSubjectId = subjectId;
+    renderCreationDetail();
+    boitePickerActivateView("view-creation-detail");
+    applyBodyLogoSpeech("creation-detail");
+  }
+  function closeCreationDetail() {
+    creationDetailSubjectId = null;
+    boitePickerActivateView("view-creations");
+    applyBodyLogoSpeech("creations");
+    renderCreationsList();
+  }
+  function renderCreationDetail() {
+    const wrap = el("creation-detail-body");
+    if (!wrap) return;
+    const s = subjects.find((x) => x.id === creationDetailSubjectId);
+    if (!s) {
+      wrap.innerHTML = `<p class="field-hint">Cette boîte n'existe plus.</p>`;
+      return;
+    }
+    const col = creationsCollectionFor(s);
+    const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
+    const inRev = isSubjectInRevisions(s);
+    const place = creationsPlaceLabel(s);
+    const taxFull = taxonomyFullLabel(creationsTaxonomyOf(s, col));
+    const tags = col ? collectionTags(col) : [];
+    const priceTokens = col ? Number(col.price_tokens) || 0 : 0;
+    const created = s.createdAt ? new Date(s.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "";
+    const pool = subjectCardsPool(s.id);
+    const remembered = !inRev && s.revisionsPlace ? (s.revisionsPlace.folderId ? folderPath(s.revisionsPlace.folderId).map((x) => x.name).join(" › ") : "Racine") : "";
+    wrap.innerHTML = `
+      <div class="creation-detail-head">
+        <h2 class="section-title creation-detail-title">${escapeHtml(s.name)}</h2>
+        <span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>
+      </div>
+      <dl class="creation-detail-info">
+        <dt>Fiches</dt><dd>${n} fiche${n > 1 ? "s" : ""}</dd>
+        <dt>Classement</dt><dd>${taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`}</dd>
+        <dt>Mes révisions</dt><dd>${place ? escapeHtml(place) : `Hors de mes révisions${remembered ? ` <span class="field-hint">(avant : ${escapeHtml(remembered)})</span>` : ""}`}</dd>
+        ${col ? `<dt>Librairie</dt><dd>${priceTokens > 0 ? `${priceTokens} jeton${priceTokens > 1 ? "s" : ""}` : "Gratuite"}${col.name && col.name !== s.name ? ` · publiée sous le nom « ${escapeHtml(col.name)} »` : ""}</dd>` : ""}
+        ${tags.length ? `<dt>Tags</dt><dd><span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span></dd>` : ""}
+        ${created ? `<dt>Créée le</dt><dd>${escapeHtml(created)}</dd>` : ""}
+      </dl>
+      ${pool ? `<div class="creation-detail-gauge">${buildPersGaugeSvg(pool, { width: 260, barHeight: 10 })}</div>` : ""}
+      <div class="creation-detail-actions">
+        <button type="button" class="btn btn--primary" data-act="cards">Voir les fiches</button>
+        <button type="button" class="btn library-price-btn creations-publish-btn${col ? "" : " creations-publish-btn--todo"}" data-act="publish">${col ? `Voir dans la Librairie · ${libraryPriceButtonHtml(priceTokens)}` : "Publier dans la Librairie"}</button>
+        <button type="button" class="btn btn--ghost" data-act="revisions">${inRev ? "Retirer de mes révisions" : "Ajouter à mes révisions"}</button>
+        ${col ? "" : `<button type="button" class="btn btn--ghost" data-act="classify">${taxFull ? "Modifier le classement / le nom" : "Classer la boîte"}</button>`}
+        <button type="button" class="btn btn--ghost creation-detail-delete" data-act="delete">Supprimer la boîte</button>
+      </div>
+    `;
+    wrap.querySelectorAll("[data-act]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const act = btn.dataset.act;
+        if (act === "cards") {
+          cardsEntryFromCreations = true;
+          cardsEntryFromManage = false;
+          goToCardsFor(`subject:${s.id}`);
+        } else if (act === "publish") {
+          if (col) {
+            libraryDetailReturnView = "creation-detail";
+            openLibraryDetailView(col);
+            return;
+          }
+          libraryShareReturnView = "creation-detail";
+          const opened = await shareSubjectToLibrary(s.id);
+          if (!opened) libraryShareReturnView = "manage";
+        } else if (act === "revisions") {
+          if (inRev) await removeSubjectFromRevisions(s.id);
+          else await openAddToRevisionsPicker(s.id);
+          renderCreationDetail();
+        } else if (act === "classify") {
+          await openBoxEditView(s.id);
+        } else if (act === "delete") {
+          const before = subjects.length;
+          await deleteSubjectFromCreations(s.id, !!col);
+          if (subjects.length < before) closeCreationDetail();
+        }
+      });
+    });
+  }
+  const creationDetailBackBtn = el("creation-detail-back-btn");
+  if (creationDetailBackBtn) creationDetailBackBtn.addEventListener("click", () => closeCreationDetail());
+  document.querySelectorAll("#creations-status-chips .creations-chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      if (chip.dataset.group === "pub") creationsPubFilter = creationsPubFilter === chip.dataset.value ? "" : chip.dataset.value;
+      else creationsRevFilter = creationsRevFilter === chip.dataset.value ? "" : chip.dataset.value;
+      renderCreationsList();
+    });
+  });
 
   /** Range une boîte dans Mes fiches de révision : l'explorateur s'ouvre
    *  sur les dossiers (Racine comprise) pour choisir où la mettre. */
@@ -13390,6 +13522,7 @@
      révisions, dans Mes créations. */
   let boxCreateCascade = null;
   async function createBoxFromCreations() {
+    creationDetailSubjectId = null;
     const nameEl = el("box-create-name");
     const taxEl = el("box-create-taxonomy");
     boxEditSubjectId = null;
@@ -13408,6 +13541,12 @@
   }
   function closeBoxCreateView() {
     boxEditSubjectId = null;
+    if (creationDetailSubjectId && subjects.some((x) => x.id === creationDetailSubjectId)) {
+      boitePickerActivateView("view-creation-detail");
+      applyBodyLogoSpeech("creation-detail");
+      renderCreationDetail();
+      return;
+    }
     boitePickerActivateView("view-creations");
     applyBodyLogoSpeech("creations");
     renderCreationsList();
@@ -13751,7 +13890,7 @@
         subjects.splice(idx, 1);
         await DB.removeSubject(remote.id);
         if (currentSubjectId === remote.id) {
-          currentSubjectId = subjects[0] ? subjects[0].id : null;
+          currentSubjectId = subjects[0] ? subjects[0].id : ALL_SUBJECTS_ID;
         }
       }
       return;
@@ -13835,13 +13974,8 @@
       await mergeRemoteSubject(remote);
     }
 
-    if (subjects.length === 0) {
-      const general = newSubject("Général");
-      await persistSubject(general);
-      subjects = [general];
-    }
     if (!currentSubjectId || (!isSentinelSubject(currentSubjectId) && !subjects.some((s) => s.id === currentSubjectId))) {
-      currentSubjectId = subjects[0].id;
+      currentSubjectId = subjects[0] ? subjects[0].id : ALL_SUBJECTS_ID;
     }
   }
 
@@ -13923,8 +14057,7 @@
     if (hasCards) return;
     const hasOtherData = subjects.length > 1 || folders.length > 0;
     if (!hasOtherData) return;
-    await DB.removeSubject(general.id);
-    subjects = subjects.filter((x) => x.id !== general.id);
+    await removeSubjectEverywhere(general);
     if (currentSubjectId === general.id && subjects.length > 0) {
       currentSubjectId = subjects[0].id;
       localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
@@ -14246,6 +14379,7 @@
     ratingLog = await DB.getAllRatingLog();
     await migrateOrphanCards();
     await dedupeEmptySubjects();
+    await purgeAutoGeneralBoxes();
     // Rattrape le record par-fiche pour les fiches existantes qui n'ont
     // pas encore ce champ (ex. créées avant cette fonctionnalité, ou
     // importées) : sans ça leurs paliers déjà mérités resteraient invisibles.
@@ -14284,6 +14418,7 @@
         // la boîte "Générale" qui apparaissait parfois à la toute première
         // connexion. On redéduplique donc une fois la synchro effectuée.
         await dedupeEmptySubjects();
+        await purgeAutoGeneralBoxes();
         renderSubjectSelect();
         renderStatsSubjectSelect();
         // Ne relance pas startReviewSession() ici : reconcileWithRemote() a déjà

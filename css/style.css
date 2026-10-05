@@ -5655,3 +5655,75 @@ body.is-view-library {
   color: var(--red, #b6604a);
   font-weight: 600;
 }
+
+/* ============================================================
+   Round 34 : Mes créations — filtres d'état + page détaillée.
+   ============================================================ */
+.creations-status-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 12px;
+}
+.creations-chip {
+  border: 1px solid var(--line, #d5dce6);
+  background: var(--paper, #ffffff);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.creations-chip.is-active {
+  background: var(--blue, #4a90d9);
+  border-color: var(--blue, #4a90d9);
+  color: #ffffff;
+}
+.creations-row .creations-tax {
+  color: var(--ink-soft, #5b6472);
+}
+.creation-detail-back {
+  margin: 4px 0 10px;
+}
+.creation-detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.creation-detail-title {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.creation-detail-info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 12px;
+  margin: 0 0 12px;
+  font-size: 14px;
+}
+.creation-detail-info dt {
+  color: var(--ink-soft, #5b6472);
+  font-weight: 600;
+}
+.creation-detail-info dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.creation-detail-gauge {
+  margin: 4px 0 14px;
+}
+.creation-detail-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.creation-detail-actions .btn {
+  width: 100%;
+  justify-content: center;
+}
+.btn.creation-detail-delete {
+  color: var(--red, #b6604a);
+}
