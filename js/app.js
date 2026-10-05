@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v189";
+  const APP_VERSION = "v190";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -10747,6 +10747,10 @@
   }
 
   // Round 13, item 3-1 : bouton "Bibliothèque" sur Mon bureau.
+  // Round 36 : serveur intégré à l'appli (js/config.js) → rien à régler
+  // côté utilisateur : le raccourci « Synchronisation » de la page Compte
+  // n'a plus lieu d'être (il ne ferait que dérouter un nouvel utilisateur).
+  if (Sync.getConfig && Sync.getConfig().builtIn && el("account-goto-sync-btn2")) el("account-goto-sync-btn2").hidden = true;
   const manageGotoLibraryBtn = el("manage-goto-library-btn");
   if (manageGotoLibraryBtn) {
     manageGotoLibraryBtn.addEventListener("click", () => {

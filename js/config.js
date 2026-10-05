@@ -11,10 +11,13 @@
    Astuce : Réglages développeur → « Configuration du serveur » affiche le
    contenu exact à coller ici, repris de cet appareil.
 
+   Round 36 : valeurs du projet de Stéphane intégrées (toutes les
+   livraisons suivantes les gardent).
+
    Tant que ces deux valeurs sont vides, l'appli utilise celles saisies
    dans la page Synchronisation de l'appareil (ancien fonctionnement).
    ============================================================ */
 window.FICHES_CONFIG = {
-  supabaseUrl: "",
-  supabaseAnonKey: "",
+  supabaseUrl: "https://pyqffmweflicfpbniroz.supabase.co",
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB5cWZmbXdlZmxpY2ZwYm5pcm96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyMTkxMzksImV4cCI6MjEwMDc5NTEzOX0.R8wXf53YGnAMoCInWax1y1yHPX6BRTBV5Ui2u-pDj4k",
 };
