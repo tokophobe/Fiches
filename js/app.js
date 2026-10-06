@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v190";
+  const APP_VERSION = "v191";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -12662,7 +12662,8 @@
     const boxes = Array.isArray(pack.boxes) ? pack.boxes : [];
     const toImport = boxes.filter((b) => !subjects.some((s) => s.id === libraryPackSubjectId(b)));
     if (toImport.length === 0) {
-      await robotAlert("Toutes les boîtes toutes prêtes sont déjà dans Mes collections.");
+      const n = await classifyImportedPackSubjects(boxes);
+      await robotAlert(`Toutes les boîtes toutes prêtes sont déjà dans Mes collections.${n ? ` ${n} ont reçu leur classement.` : ""}`);
       return;
     }
     const nCards = toImport.reduce((acc, b) => acc + (b.cards || []).length, 0);
@@ -12674,17 +12675,25 @@
       await persistFolder(folder);
       folders.push(folder);
     }
+    await Taxonomy.load();
+    const newCards = [];
+    let done = 0;
     for (const box of toImport) {
       const subject = newSubject(box.name, folder.id);
       subject.id = libraryPackSubjectId(box);
+      // Round 37 : la boîte arrive déjà classée (classement du pack).
+      subject.taxonomy = taxonomyValueFromSelection(libraryPackSelection(box));
       await persistSubject(subject);
       subjects.push(subject);
-      for (const c of box.cards || []) {
-        const card = newCard(c.question || "", c.answer || "", subject.id);
-        await persist(card);
-        cards.push(card);
-      }
+      for (const c of box.cards || []) newCards.push(newCard(c.question || "", c.answer || "", subject.id));
+      done++;
+      if (done % 20 === 0) setLibraryPackStatus(`Import : ${done} / ${toImport.length} boîtes…`);
     }
+    // Round 37 : fiches enregistrées et envoyées en une fois (plus rapide).
+    await DB.bulkPut(newCards);
+    newCards.forEach((card) => cards.push(card));
+    if (Sync.isConfigured()) Sync.pushCardsBulk(newCards).finally(updateSyncStatus);
+    await classifyImportedPackSubjects(boxes);
     subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
     renderStatsSubjectSelect();
     renderSubjectSelect();
@@ -12692,6 +12701,24 @@
     renderStats();
     setLibraryPackStatus(`${toImport.length} boîte(s) importée(s) dans « ${pack.folderName} ».`);
     await robotAlert(`${toImport.length} boîte${toImport.length > 1 ? "s" : ""} importée${toImport.length > 1 ? "s" : ""} dans « ${pack.folderName} ». Relis-les puis reviens ici pour les publier.`);
+  }
+
+  /** Round 37 : donne aux boîtes toutes prêtes déjà importées le classement
+   *  du pack si elles n'en ont pas (ou un incomplet). */
+  async function classifyImportedPackSubjects(boxes) {
+    await Taxonomy.load();
+    let n = 0;
+    for (const box of boxes) {
+      const s = subjects.find((x) => x.id === libraryPackSubjectId(box));
+      if (!s) continue;
+      const tax = taxonomyValueFromSelection(libraryPackSelection(box));
+      if (JSON.stringify(s.taxonomy || {}) === JSON.stringify(tax)) continue;
+      s.taxonomy = tax;
+      s.updatedAt = new Date().toISOString();
+      await persistSubject(s);
+      n++;
+    }
+    return n;
   }
 
   async function publishLibraryPack() {
@@ -12724,16 +12751,40 @@
       return;
     }
     const author = `${meta.first_name || ""} ${meta.last_name || ""}`.trim();
-    if (!(await robotConfirm(`Publier ${local.length} boîte${local.length > 1 ? "s" : ""} dans la Librairie, au nom de ${author} ? Celles déjà publiées seront ignorées.`))) return;
+    if (!(await robotConfirm(`Publier ${local.length} boîte${local.length > 1 ? "s" : ""} dans la Librairie, au nom de ${author} ? Celles déjà publiées y gardent leur place, mais leur classement et leurs tags sont mis à jour.`))) return;
 
+    await Taxonomy.load();
+    await classifyImportedPackSubjects(pack.boxes || []);
+    // Round 37 : mes collections déjà publiées (pour mettre à jour leur
+    // classement au lieu de les ignorer).
+    let mine = [];
+    try {
+      mine = (await Sync.library.list()).filter((c) => c.owner_id === accountCurrentUser.id);
+    } catch (e) {
+      mine = [];
+    }
     let published = 0;
     let skipped = 0;
+    let updated = 0;
     const failures = [];
     for (const { box, subject } of local) {
       setLibraryPackStatus(`Publication de « ${subject.name} »…`);
-      const existing = await Sync.library.findBySourceSubject(subject.id);
+      const existing = mine.find((c) => c.source_subject_id === subject.id) || mine.find((c) => !c.source_subject_id && c.name === subject.name);
       if (existing) {
-        skipped++;
+        const taxonomy = taxonomyValueFromSelection(libraryPackSelection(box));
+        const tags = Array.isArray(box.tags) ? box.tags.map(normalizeTag).filter(Boolean) : [];
+        const sameTax = JSON.stringify(collectionTaxonomy(existing)) === JSON.stringify(taxonomy) && existing.taxonomy && Object.keys(existing.taxonomy).length;
+        const sameTags = JSON.stringify(collectionTags(existing)) === JSON.stringify(tags);
+        if (sameTax && (sameTags || !tags.length)) {
+          skipped++;
+          continue;
+        }
+        const fields = { taxonomy, level: taxonomy.niveau ? taxonomy.niveau.label : box.level || existing.level || "" };
+        if (tags.length) fields.tags = tags;
+        if (!existing.source_subject_id) fields.source_subject_id = subject.id;
+        const { error } = await Sync.library.updateMeta(existing.id, fields);
+        if (error) failures.push(`${subject.name} : ${libraryShareErrorHint(error)}`);
+        else updated++;
         continue;
       }
       const boxCards = cards.filter((c) => !c.deleted && c.subject === subject.id);
@@ -12758,7 +12809,8 @@
       }
     }
     const lines = [`${published} boîte${published > 1 ? "s" : ""} publiée${published > 1 ? "s" : ""}.`];
-    if (skipped) lines.push(`${skipped} déjà publiée${skipped > 1 ? "s" : ""} ou vide${skipped > 1 ? "s" : ""}, ignorée${skipped > 1 ? "s" : ""}.`);
+    if (updated) lines.push(`${updated} déjà publiée${updated > 1 ? "s" : ""} : classement et tags mis à jour.`);
+    if (skipped) lines.push(`${skipped} déjà publiée${skipped > 1 ? "s" : ""} et à jour (ou vide${skipped > 1 ? "s" : ""}), inchangée${skipped > 1 ? "s" : ""}.`);
     if (failures.length) lines.push(`Échecs :\n${failures.join("\n")}`);
     setLibraryPackStatus(lines.join(" "));
     await robotAlert(lines.join("\n"));

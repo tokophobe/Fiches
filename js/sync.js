@@ -376,6 +376,39 @@ async function pullFolders() {
   return pullTable("folders", rowToFolder);
 }
 
+/** Round 37 : envoi groupé (import des boîtes toutes prêtes : des
+ *  milliers de fiches d'un coup — une requête par lot de 200 au lieu
+ *  d'une par fiche). En cas d'échec, les fiches du lot passent en attente. */
+async function pushCardsBulk(cardList) {
+  const c = getClient();
+  const uid = currentUid();
+  if (!c || !uid || !cardList.length) return false;
+  let allOk = true;
+  for (let i = 0; i < cardList.length; i += 200) {
+    const chunk = cardList.slice(i, i + 200);
+    const { error } = await c.from("cards").upsert(chunk.map((card) => cardToRow(card, uid)), { onConflict: "owner_id,id" });
+    if (error) {
+      allOk = false;
+      lastError = error.message;
+      noteError(error);
+      chunk.forEach((card) => addPending(card.id));
+    }
+  }
+  return allOk;
+}
+
+/** Round 37 : met à jour le classement (et la présentation) d'une de MES
+ *  collections déjà publiées — la règle d'accès « owner » le permet. */
+async function updateLibraryCollectionMeta(id, fields) {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { error: "non connecté" };
+  const { data, error } = await c.from("library_collections").update(fields).eq("id", id).eq("owner_id", user.id).select("id");
+  if (error) return { error: error.message };
+  if (Array.isArray(data) && data.length === 0) return { error: "mise à jour refusée" };
+  return { error: null };
+}
+
 async function pushSubject(subject) {
   const c = getClient();
   const uid = currentUid();
@@ -1252,6 +1285,7 @@ window.Sync = {
     subscribeRealtime: subscribeClassMessagesRealtime,
     getLastMessage: getLastClassMessage,
   },
+  pushCardsBulk,
   library: {
     share: shareCollectionToLibrary,
     list: listLibraryCollections,
@@ -1260,6 +1294,7 @@ window.Sync = {
     unrate: unrateLibraryCollection,
     listRatings: listLibraryRatings,
     findBySourceSubject: findLibraryCollectionBySourceSubject,
+    updateMeta: updateLibraryCollectionMeta,
     delete: deleteLibraryCollection,
   },
 };
