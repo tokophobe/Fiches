@@ -566,6 +566,9 @@
 
     <section id="view-cards" class="view" aria-labelledby="tab-cards">
       <h2 class="section-title cards-list-big-title">Liste des fiches</h2>
+      <!-- Round 39 : boîte ouverte depuis Mes créations — bouton rond
+           « + Ajouter une fiche », et plus de sélecteur de périmètre. -->
+      <div class="round-add-card-wrap" id="cards-add-card-wrap" hidden></div>
 
       <div class="cards-scope-row">
         <label class="import-target-label" for="cards-scope-select-btn">Afficher / chercher dans :</label>
@@ -1070,6 +1073,7 @@
     <!-- Round 34 : page détaillée d'une boîte de Mes créations. -->
     <section id="view-creation-detail" class="view">
       <button type="button" class="btn btn--ghost btn--small creation-detail-back" id="creation-detail-back-btn">← Mes créations</button>
+      <div class="round-add-card-wrap" id="creation-detail-add"></div>
       <div class="card-form" id="creation-detail-body"></div>
     </section>
 
@@ -1765,7 +1769,7 @@
       <p class="field-hint settings-block-hint" id="boite-picker-hint" hidden></p>
       <ul class="subject-list" id="boite-picker-list"></ul>
       <div class="multi-subject-picker-actions boite-picker-actions" id="boite-picker-actions" hidden>
-        <button type="button" class="btn btn--small" id="boite-picker-confirm">Valider</button>
+        <button type="button" class="btn btn--primary" id="boite-picker-confirm">Valider</button>
       </div>
     </section>
 

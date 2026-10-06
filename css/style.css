@@ -352,9 +352,8 @@ body.is-contextual-help-picking * {
    bandeau lui-même (40), bien en-dessous de l'assombrissement. Le
    bandeau entier passe donc au-dessus UNIQUEMENT pendant que le robot
    qu'il contient est mis en avant. */
-.app-sticky-header:has(.robot-modal-anchor-highlight) {
-  z-index: 2002;
-}
+/* Round 39 : plus de bandeau entier au-dessus du voile — seule une copie
+   du robot l'est (voir showRobotLogoClone, js/app.js). */
 
 main {
   padding-top: var(--sticky-header-h, 96px);
@@ -832,8 +831,10 @@ main {
   margin-top: 14px;
   position: sticky;
   bottom: 0;
-  padding: 10px 0 max(14px, env(safe-area-inset-bottom));
-  background: var(--paper);
+  padding: 18px 0 max(14px, env(safe-area-inset-bottom));
+  /* Round 39 : plus de grand cadre opaque sous le bouton — simple fondu
+     vers le fond de la page, pour que la liste passe dessous proprement. */
+  background: linear-gradient(to bottom, transparent, var(--app-bg-color, var(--desk)) 45%);
 }
 .boite-picker-actions .btn {
   flex: 1;
@@ -5726,4 +5727,43 @@ body.is-view-library {
 }
 .btn.creation-detail-delete {
   color: var(--red, #b6604a);
+}
+
+/* Round 39 : copie du robot affichée au-dessus de l'assombrissement. */
+.robot-modal-logo-clone {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.65));
+}
+
+/* Round 39 : bouton rond « + Ajouter une fiche » (page d'une boîte et ses
+   fiches) — même esprit que le bouton « Ajouter une fiche » de l'accueil. */
+.round-add-card-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 4px 0 14px;
+}
+.round-add-card-wrap[hidden] { display: none; }
+.round-add-card-btn {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: var(--home-add-card-bg-color, var(--blue, #4a90d9));
+  color: #ffffff;
+  box-shadow: var(--shadow-home-square, 0 6px 16px rgba(0, 0, 0, 0.22));
+  font-family: var(--font-type);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.15;
+  cursor: pointer;
+}
+.round-add-card-btn span {
+  max-width: 80%;
+}
+.round-add-card-btn:active {
+  transform: scale(0.96);
 }

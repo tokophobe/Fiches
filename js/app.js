@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v192";
+  const APP_VERSION = "v193";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -119,6 +119,8 @@
   // fiche à l'autre — bug corrigé au passage : le sélecteur du cadre de
   // création n'était jusqu'ici relié à RIEN, la fiche partait toujours
   // dans la boîte active de Réviser, quoi qu'on ait choisi ici.
+  // Round 39 : déclaré tôt (utilisé par renderManageList dès le démarrage).
+  let cardsEntryFromCreations = false;
   const NEW_CARD_SUBJECT_KEY = "fiches_new_card_subject_id";
   let newCardSubjectId = localStorage.getItem(NEW_CARD_SUBJECT_KEY) || null;
   function saveNewCardSubjectId(id) {
@@ -842,9 +844,33 @@
   let robotModalHighlightedLogo = null;
   function clearRobotModalHighlight() {
     if (robotModalHighlightedLogo) {
-      robotModalHighlightedLogo.classList.remove("robot-modal-anchor-highlight");
+      robotModalHighlightedLogo.style.visibility = "";
       robotModalHighlightedLogo = null;
     }
+    const clone = document.getElementById("robot-modal-logo-clone");
+    if (clone) clone.remove();
+  }
+  /* Round 39 : seul le robot reste éclairé au-dessus de l'assombrissement
+     (avant, tout le bandeau du haut passait devant). On pose une copie du
+     robot, en position fixe, exactement à sa place et au-dessus du voile ;
+     l'original reste dans le bandeau, assombri avec le reste. */
+  function showRobotLogoClone(logo, rect) {
+    const clone = logo.cloneNode(true);
+    clone.id = "robot-modal-logo-clone";
+    clone.querySelectorAll("[id]").forEach((n) => n.removeAttribute("id"));
+    clone.classList.add("robot-modal-logo-clone");
+    Object.assign(clone.style, {
+      position: "fixed",
+      left: rect.left + "px",
+      top: rect.top + "px",
+      width: rect.width + "px",
+      height: rect.height + "px",
+      margin: "0",
+      zIndex: "2003",
+      pointerEvents: "none",
+    });
+    document.body.appendChild(clone);
+    logo.style.visibility = "hidden";
   }
   function findVisibleRobotLogo() {
     const homeView = el("view-home");
@@ -888,9 +914,9 @@
     // supplémentaire du bandeau (qui reste, lui, au-dessus en z-index).
     // On ne descend donc jamais la bulle plus haut que le vrai bas du
     // bandeau fixe entier, quel que soit son contenu.
-    const stickyHeader = el("app-sticky-header");
-    const headerBottom = stickyHeader ? stickyHeader.getBoundingClientRect().bottom : rect.bottom;
-    const effectiveTop = Math.max(rect.bottom, headerBottom);
+    // Round 39 : le bandeau est maintenant assombri comme le reste — la
+    // bulle peut se placer juste sous le robot.
+    const effectiveTop = rect.bottom;
     const spaceBelow = window.innerHeight - effectiveTop;
     let top;
     modal.style.transform = "";
@@ -911,7 +937,7 @@
     modal.style.width = maxWidth + "px";
     const arrowX = Math.max(16, Math.min(rect.left + rect.width / 2 - left, maxWidth - 16));
     bubble.style.setProperty("--robot-arrow-x", arrowX + "px");
-    logo.classList.add("robot-modal-anchor-highlight");
+    showRobotLogoClone(logo, rect);
     robotModalHighlightedLogo = logo;
   }
   // Repositionne si la fenêtre change de taille (rotation d'écran, resize
@@ -4868,6 +4894,7 @@
       if (actions) actions.hidden = false;
       if (confirmBtn) {
         confirmBtn.hidden = false;
+        confirmBtn.textContent = ctx.confirmLabel || "Valider";
         confirmBtn.onclick = () => ctx.onConfirm(selection);
       }
       if (noneBtn) {
@@ -4943,6 +4970,8 @@
       mode: "multi",
       title: "Choisir les boîtes à réviser",
       hint: "Choisis les boîtes à réviser confondues :",
+      // Round 39 : depuis « Sélection manuelle », le bouton lance directement la révision.
+      confirmLabel: multiPickerNavigateToReviewOnConfirm ? "Lancer la révision" : "Valider",
       initialSelection: loadMultiSelection(),
       onConfirm: async (selection) => {
         const { resultIds, singleSubjectId, label } = computeMultiPickerResult(selection);
@@ -5971,6 +6000,34 @@
   /** Retenu pour "Retour" (item 2) : permet de revenir à l'onglet d'où on
    *  venait, plutôt que toujours atterrir sur Fiches. */
   let previousViewBeforeNewCard = "review";
+  /* Round 39 : « + Ajouter une fiche » depuis une boîte (page de la boîte
+     dans Mes créations, ou ses fiches) — la boîte est déjà connue : pas de
+     sélecteur de boîte sur la page de création, et retour à la page d'où
+     l'on vient. Le choix mémorisé pour « Ajouter une fiche » de l'accueil
+     n'est pas modifié. */
+  let newCardFixedSubject = null; // { id, prevSubjectId, returnView }
+  function openNewCardForSubject(subjectId, returnView) {
+    if (!subjects.some((x) => x.id === subjectId)) return;
+    exitEditMode();
+    resetCardForm();
+    newCardFixedSubject = { id: subjectId, prevSubjectId: newCardSubjectId, returnView };
+    newCardSubjectId = subjectId;
+    const bar = el("cards-subject-bar");
+    if (bar) bar.hidden = true;
+    if (cancelEditBtn) cancelEditBtn.hidden = false;
+    openNewCardView();
+    previousViewBeforeNewCard = returnView;
+    if (inputQuestion) inputQuestion.focus();
+  }
+  function releaseNewCardFixedSubject() {
+    if (!newCardFixedSubject) return;
+    newCardSubjectId = newCardFixedSubject.prevSubjectId;
+    newCardFixedSubject = null;
+    const bar = el("cards-subject-bar");
+    if (bar) bar.hidden = false;
+    const btn = el("cards-subject-select-btn");
+    if (btn) btn.textContent = newCardSubjectId ? subjectName(newCardSubjectId) : "Sélection de la boîte";
+  }
   function openNewCardView() {
     const activeTab = document.querySelector(".tab.is-active");
     // Par défaut "home" (pas de tab actif = on venait de l'accueil, seul
@@ -5989,6 +6046,14 @@
   }
   function closeNewCardView(toView) {
     const dest = toView || previousViewBeforeNewCard || "home";
+    releaseNewCardFixedSubject();
+    if (dest === "creation-detail") {
+      boitePickerActivateView("view-creation-detail");
+      applyBodyLogoSpeech("creation-detail");
+      renderCreationDetail();
+      return;
+    }
+    if (dest === "cards") renderManageList();
     if (dest === "home") {
       goHome();
       return;
@@ -6286,6 +6351,20 @@
   });
 
   function renderManageList() {
+    // Round 39 : fiches d'une boîte ouverte depuis Mes créations — bouton
+    // rond « + Ajouter une fiche » et pas de sélecteur de périmètre.
+    {
+      const fromBox = cardsEntryFromCreations && subjects.some((x) => x.id === cardsScopeFilter);
+      const addWrap = el("cards-add-card-wrap");
+      const scopeRow = document.querySelector("#view-cards .cards-scope-row");
+      if (scopeRow) scopeRow.hidden = fromBox;
+      if (addWrap) {
+        addWrap.hidden = !fromBox;
+        if (fromBox && !addWrap.firstChild) addWrap.innerHTML = roundAddCardButtonHtml();
+        const b = addWrap.querySelector("button");
+        if (b) b.onclick = () => openNewCardForSubject(cardsScopeFilter, "cards");
+      }
+    }
     renderCardsScopeSelect();
     let visible = cardsScopeCards();
     const showSubjectNames = cardsScopeFilter !== CARDS_SCOPE_CURRENT;
@@ -8643,6 +8722,10 @@
       if (tab) tab.click();
       return;
     }
+    if (newCardFixedSubject && el("view-new-card") && el("view-new-card").classList.contains("is-active")) {
+      closeNewCardView();
+      return;
+    }
     if (cardsEntryFromCreations && el("view-cards") && el("view-cards").classList.contains("is-active")) {
       cardsEntryFromCreations = false;
       const tab = document.querySelector('.tab[data-view="creations"]');
@@ -8756,6 +8839,7 @@
   const homeNewCardBtn = el("home-new-card-btn");
   if (homeNewCardBtn) {
     homeNewCardBtn.addEventListener("click", () => {
+      releaseNewCardFixedSubject();
       exitEditMode();
       resetCardForm();
       cancelEditBtn.hidden = false;
@@ -13214,7 +13298,6 @@
   let creationsFilterCascade = null;
   let creationsFilterTagInput = null;
   let creationsMyCollections = [];
-  let cardsEntryFromCreations = false;
 
   function creationsSubjects() {
     return subjects
@@ -13381,6 +13464,15 @@
     }
   }
 
+  /** Round 39 : bouton rond « + Ajouter une fiche » (page d'une boîte et
+   *  liste de ses fiches). */
+  function roundAddCardButtonHtml() {
+    return `<button type="button" class="round-add-card-btn" aria-label="Ajouter une fiche dans cette boîte">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span>Ajouter une fiche</span>
+    </button>`;
+  }
+
   /* Round 34 : page détaillée d'une boîte de Mes créations — toutes ses
      infos et toutes ses actions (voir les fiches, publier, révisions,
      classer, supprimer). */
@@ -13414,6 +13506,9 @@
     const created = s.createdAt ? new Date(s.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "";
     const pool = subjectCardsPool(s.id);
     const remembered = !inRev && s.revisionsPlace ? (s.revisionsPlace.folderId ? folderPath(s.revisionsPlace.folderId).map((x) => x.name).join(" › ") : "Racine") : "";
+    const addWrap = el("creation-detail-add");
+    if (addWrap) addWrap.innerHTML = roundAddCardButtonHtml();
+    if (addWrap) addWrap.querySelector("button").onclick = () => openNewCardForSubject(s.id, "creation-detail");
     wrap.innerHTML = `
       <div class="creation-detail-head">
         <h2 class="section-title creation-detail-title">${escapeHtml(s.name)}</h2>
@@ -13429,8 +13524,8 @@
       </dl>
       ${pool ? `<div class="creation-detail-gauge">${buildPersGaugeSvg(pool, { width: 260, barHeight: 10 })}</div>` : ""}
       <div class="creation-detail-actions">
-        <button type="button" class="btn btn--primary" data-act="cards">Voir les fiches</button>
-        <button type="button" class="btn library-price-btn creations-publish-btn${col ? "" : " creations-publish-btn--todo"}" data-act="publish">${col ? `Voir dans la Librairie · ${libraryPriceButtonHtml(priceTokens)}` : "Publier dans la Librairie"}</button>
+        <button type="button" class="btn btn--ghost" data-act="cards">Voir les fiches</button>
+        <button type="button" class="btn btn--ghost" data-act="publish">${col ? `Voir dans la Librairie · ${priceTokens > 0 ? `${priceTokens} jeton${priceTokens > 1 ? "s" : ""}` : "gratuite"}` : "Publier dans la Librairie"}</button>
         <button type="button" class="btn btn--ghost" data-act="revisions">${inRev ? "Retirer de mes révisions" : "Ajouter à mes révisions"}</button>
         ${col ? "" : `<button type="button" class="btn btn--ghost" data-act="classify">${taxFull ? "Modifier le classement / le nom" : "Classer la boîte"}</button>`}
         <button type="button" class="btn btn--ghost creation-detail-delete" data-act="delete">Supprimer la boîte</button>
@@ -13439,7 +13534,9 @@
     wrap.querySelectorAll("[data-act]").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const act = btn.dataset.act;
-        if (act === "cards") {
+        if (act === "addcard") {
+          openNewCardForSubject(s.id, "creation-detail");
+        } else if (act === "cards") {
           cardsEntryFromCreations = true;
           cardsEntryFromManage = false;
           goToCardsFor(`subject:${s.id}`);
