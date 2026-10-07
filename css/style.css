@@ -5881,3 +5881,17 @@ body.is-view-library {
 .classes-role-circle[hidden],
 .home-circle-badge[hidden],
 .cards-scope-row[hidden] { display: none !important; }
+
+/* Round 42 : deux parties dans « Révisions conseillées ». */
+.revision-section-title {
+  margin: 18px 2px 8px;
+  font-family: var(--font-type);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+}
+#view-revision-program > .revision-section-title:first-child { margin-top: 4px; }
+.revision-section-hint { margin: -4px 2px 10px; }
+.revision-reinforce-more:not([hidden]) { display: block; margin: 0 auto 16px; }
+.dev-revision-algo-input.is-invalid { border-color: #dc2626; box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2); }
+.dev-revision-algo-error { color: #b91c1c; margin-top: 8px; }

@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v195";
+  const APP_VERSION = "v196";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -174,7 +174,8 @@
   const answerTextEl = el("answer-text");
   const ratingRowEl = el("rating-row");
   const editCurrentBtn = el("edit-current-btn");
-  const hibernateCurrentBtn = el("hibernate-current-btn");
+  // Round 42 : hibernation supprimée (bouton retiré de la page).
+  const hibernateCurrentBtn = null;
 
   const cardForm = el("card-form");
   const inputQuestion = el("input-question");
@@ -560,63 +561,56 @@
     acquis: "#5fae7c",
   };
 
-  // Nouvel algorithme de révision (remplace entièrement le système de
-  // modes K/M "again/hard/good/easy" ci-dessus pour le calcul de
-  // l'échéance — celui-ci reste en mémoire pour compat mais n'est plus
-  // utilisé par computeAlgoNext). Chaque fiche porte désormais :
-  //  - dd   : dernier délai d'interrogation appliqué (en MINUTES)
-  //  - pers : persistance de la fiche (en MINUTES)
-  // Chaque bouton (index 0=Encore, 1=Difficile, 2=Bien, 3=Excellent) porte
-  // COEF_TE/COEF_DD/PLAFOND/PLANCHER/ABAT. À l'évaluation :
-  //   TE = temps écoulé (minutes) depuis la dernière interrogation
-  //   NDI = maxi(DD*COEF_DD ; TE*COEF_TE), borné à
-  //         [PLANCHER ; mini(PLAFOND ; DD*COEF_TE)]
-  //   PERS = NDI*ABAT
-  // Remarque (round 9, correctif demandé par l'utilisateur) : la formule
-  // d'origine plafonnait avec DD*COEF_DD, qui est toujours <= DD*COEF_DD
-  // lui-même <= maxi(...) — TE*COEF_TE n'avait donc jamais d'influence sur
-  // le résultat. Corrigé en plafonnant avec DD*COEF_TE à la place : quand
-  // TE*COEF_TE dépasse DD*COEF_DD mais reste sous ce nouveau plafond (donc,
-  // en gros, tant que TE <= DD), TE pilote directement le résultat ; au-delà
-  // (TE > DD), le résultat sature à DD*COEF_TE (borné par PLAFOND), pour
-  // éviter qu'une révision très en retard fasse s'envoler l'intervalle.
+  // Algorithme de révision v2 (round 42, spécification « algo_new3 »
+  // validée par Stéphane le 7 octobre). Toutes les durées en MINUTES.
+  // Chaque fiche porte :
+  //  - dd         : dernier délai d'interrogation appliqué
+  //  - lastReviewed : date de la dernière interrogation (TE = maintenant − elle)
+  //  - lastRating : dernière note (0 à 3) — jauge 4 couleurs
+  //  - inSprint / ddBeforeSprint / sprintNext / sprintUntil : mode sprint
+  // Boutons : 0 = je ne sais pas (again), 1 = vague idée (hard),
+  // 2 = je sais (good), 3 = je sais parfaitement (easy).
+  //  Mode fond : NDI = (DD − TE) + TE × COEF_FOND, borné [PLANCHER ; PLAFOND]
+  //  Mode sprint (au moins une échéance à venir pour la boîte) :
+  //    NDI = mini(D_P_ECH − D_P_ECH / COEF_SPRINT ; NDI fond), D_P_ECH =
+  //    temps restant jusqu'à 8 h le jour de l'échéance la plus proche
+  //    (le jour même : 30 min fixes).
   const REVISION_ALGO_RATING_ORDER = ["again", "hard", "good", "easy"];
   const REVISION_ALGO_RATING_LABELS = {
-    again: "Encore (indice 0)",
-    hard: "Difficile (indice 1)",
-    good: "Bien (indice 2)",
-    easy: "Excellent (indice 3)",
+    again: "0 — Je ne sais pas",
+    hard: "1 — Vague idée",
+    good: "2 — Je sais",
+    easy: "3 — Parfaitement",
   };
+  const REVISION_ALGO_VERSION = 2;
   const DEFAULT_REVISION_ALGO_SETTINGS = {
-    coefTe: [0, 0, 1.4, 2],
-    coefDd: [0, 0, 1.1, 1.2],
-    // PLAFOND/PLANCHER en MINUTES.
-    plafondMin: [7, 15, 43200, 86400],
-    plancherMin: [7, 15, 45, 240],
-    abat: [0, 0.1, 0.66, 0.8],
-    // Délai initial (minutes) appliqué à la création d'une fiche.
-    initialDelayMin: 5,
-    // Paliers des jauges — saisis en JOURS dans le mode développeur,
-    // convertis en minutes au moment des calculs (voir revisionAlgoPaliersMin).
-    palierCourtTermeJ: 2,
-    palierMoyenTermeJ: 8,
-    palierLongTermeJ: 30,
+    version: REVISION_ALGO_VERSION,
+    coefSprint: [1.03, 1.05, 2, 3],
+    coefFond: [0, 0, 2, 3],
+    plancherMin: [4320, 1440, 4320, 7200],
+    plafondMin: [4320, 1440, 43200, 172800],
   };
-  // Jauge "persistance" (4 segments) qui remplace l'ancienne jauge de score
-  // 0-100 dans les 3 emplacements où elle apparaissait (Organisation,
-  // Réviser, Programme de révision).
+  // Heure (locale) de référence d'une échéance, et délai fixe le jour même.
+  const SPRINT_EVENT_HOUR = 8;
+  const SPRINT_EVENT_DAY_DELAY_MIN = 30;
+  // Nombre minimal d'autres fiches entre deux passages d'une même fiche.
+  const SESSION_MIN_GAP = 10;
+  // Jauge 4 couleurs : proportion des fiches selon leur dernière note
+  // (jamais notée = 0). Dégradé du gris vers un joli vert. Les clés
+  // historiques (court/moyen/long/tresLong) sont gardées pour la synchro
+  // des réglages et correspondent aux notes 0/1/2/3.
   const DEFAULT_PERS_GAUGE_COLORS = {
-    court: "#d9dde3", // gris clair : PERS < PALIER_COURT_TERME
-    moyen: "#a7e3b0", // vert clair : entre COURT et MOYEN
-    long: "#4caf6b", // vert : entre MOYEN et LONG
-    tresLong: "#1f7a44", // vert foncé : PERS > PALIER_LONG_TERME
+    court: "#B8BEC6", // 0 — gris
+    moyen: "#9DB5A2", // 1 — gris-vert
+    long: "#86D69B", // 2 — vert clair
+    tresLong: "#22C55E", // 3 — vert vif
   };
   const PERS_GAUGE_ZONE_ORDER = ["court", "moyen", "long", "tresLong"];
   const PERS_GAUGE_ZONE_LABELS = {
-    court: "Court terme",
-    moyen: "Moyen terme",
-    long: "Long terme",
-    tresLong: "Très long terme",
+    court: "Je ne sais pas",
+    moyen: "Vague idée",
+    long: "Je sais",
+    tresLong: "Parfait",
   };
   // Disposition dispersée de la page d'accueil (item 3) : position (x,y en
   // pixels, coin haut-gauche du cercle) + diamètre (px) par bouton — tailles
@@ -1470,6 +1464,24 @@
   /** Réglages complets (valeurs par défaut du code + personnalisations)
    *  à partir d'un objet stocké — sans effet de bord (round 33 : sert
    *  aussi à comparer deux versions des réglages). */
+  /** Réglages de l'algorithme v2, normalisés (4 valeurs numériques par
+   *  paramètre). Toute version antérieure repart des valeurs par défaut. */
+  function buildRevisionAlgoSettings(raw) {
+    const d = DEFAULT_REVISION_ALGO_SETTINGS;
+    const ok = raw && raw.version === REVISION_ALGO_VERSION;
+    const arr = (key) =>
+      d[key].map((def, i) => {
+        const v = ok && Array.isArray(raw[key]) ? Number(raw[key][i]) : NaN;
+        return Number.isFinite(v) ? v : def;
+      });
+    return {
+      version: REVISION_ALGO_VERSION,
+      coefSprint: arr("coefSprint"),
+      coefFond: arr("coefFond"),
+      plancherMin: arr("plancherMin"),
+      plafondMin: arr("plafondMin"),
+    };
+  }
   function buildDevSettings(parsed) {
     parsed = parsed && typeof parsed === "object" ? parsed : {};
     const built = {
@@ -1539,23 +1551,15 @@
       reviewLayout: { ...DEFAULT_REVIEW_LAYOUT, ...(parsed.reviewLayout || {}) },
       cardScore: { ...DEFAULT_CARD_SCORE_SETTINGS, ...(parsed.cardScore || {}) },
       gaugeColors: { ...DEFAULT_GAUGE_COLORS, ...(parsed.gaugeColors || {}) },
-      // Clonage explicite des tableaux (coefTe/coefDd/plafondMin/plancherMin/
-      // abat) — bug corrigé : un simple spread superficiel partageait la
-      // même référence de tableau que DEFAULT_REVISION_ALGO_SETTINGS quand
-      // aucun réglage n'était encore enregistré, donc modifier UN index
-      // depuis le mode développeur mutait silencieusement les valeurs PAR
-      // DÉFAUT elles-mêmes — et "Revenir aux valeurs par défaut" n'avait
-      // alors plus aucun effet (il recopiait ce même tableau déjà corrompu).
-      revisionAlgo: {
-        ...DEFAULT_REVISION_ALGO_SETTINGS,
-        ...(parsed.revisionAlgo || {}),
-        coefTe: [...((parsed.revisionAlgo || {}).coefTe || DEFAULT_REVISION_ALGO_SETTINGS.coefTe)],
-        coefDd: [...((parsed.revisionAlgo || {}).coefDd || DEFAULT_REVISION_ALGO_SETTINGS.coefDd)],
-        plafondMin: [...((parsed.revisionAlgo || {}).plafondMin || DEFAULT_REVISION_ALGO_SETTINGS.plafondMin)],
-        plancherMin: [...((parsed.revisionAlgo || {}).plancherMin || DEFAULT_REVISION_ALGO_SETTINGS.plancherMin)],
-        abat: [...((parsed.revisionAlgo || {}).abat || DEFAULT_REVISION_ALGO_SETTINGS.abat)],
-      },
-      persGaugeColors: { ...DEFAULT_PERS_GAUGE_COLORS, ...(parsed.persGaugeColors || {}) },
+      // Round 42 : nouvel algorithme. D'anciens réglages (version < 2,
+      // coefTe/coefDd/abat…) sont remplacés par les valeurs par défaut,
+      // couleurs de la jauge comprises. Tableaux clonés (jamais partagés
+      // avec les valeurs par défaut).
+      revisionAlgo: buildRevisionAlgoSettings(parsed.revisionAlgo),
+      persGaugeColors:
+        parsed.revisionAlgo && parsed.revisionAlgo.version === REVISION_ALGO_VERSION
+          ? { ...DEFAULT_PERS_GAUGE_COLORS, ...(parsed.persGaugeColors || {}) }
+          : { ...DEFAULT_PERS_GAUGE_COLORS },
       // Item 4 : mode nuit — un jeu de couleurs parallèle et réglable pour
       // chacun des groupes ci-dessus, plus un simple drapeau on/off (dont
       // l'état effectif est en réalité piloté par le bouton en topbar, pas
@@ -1913,8 +1917,8 @@
   function renderIconBankEditor() {
     renderIconBankPicker(
       "dev-icon-bank-list",
-      Object.keys(DEFAULT_ICON_BANK_CHOICES),
-      { hibernate: "Hibernation", edit: "Éditer", construction: "Signaler", undo: "Annuler" },
+      Object.keys(DEFAULT_ICON_BANK_CHOICES).filter((k) => k !== "hibernate"),
+      { edit: "Éditer", construction: "Signaler", undo: "Annuler" },
       "iconBank",
       applyIconSettings
     );
@@ -2424,21 +2428,30 @@
     });
   }
 
-  /** Nouvel algorithme de révision : COEF_TE/COEF_DD/PLAFOND/PLANCHER/ABAT
-   *  par bouton (indices 0-3), délai initial, et les 3 paliers (en jours)
-   *  des jauges de persistance. */
+  /** Algorithme v2 : COEF_SPRINT / COEF_FOND / PLANCHER_FOND / PLAFOND_FOND
+   *  par bouton (indices 0-3). Contrôles : COEF_SPRINT > 1, PLANCHER ≤
+   *  PLAFOND, valeurs positives — une valeur refusée n'est pas enregistrée
+   *  (champ en rouge, message sous le tableau). */
   const REVISION_ALGO_FIELD_DEFS = [
-    { key: "coefTe", title: "COEF_TE (coefficient sur le temps écoulé)", step: "0.01" },
-    { key: "coefDd", title: "COEF_DD (coefficient sur le dernier délai)", step: "0.01" },
-    { key: "plafondMin", title: "PLAFOND (délai maximal, en minutes)", step: "1" },
-    { key: "plancherMin", title: "PLANCHER (délai minimal, en minutes)", step: "1" },
-    { key: "abat", title: "ABAT (abattement pour la persistance)", step: "0.01" },
+    { key: "coefSprint", title: "COEF_SPRINT (mode sprint, > 1)", step: "0.01" },
+    { key: "coefFond", title: "COEF_FOND (mode fond)", step: "0.01" },
+    { key: "plancherMin", title: "PLANCHER_FOND (minutes)", step: "1" },
+    { key: "plafondMin", title: "PLAFOND_FOND (minutes)", step: "1" },
   ];
+  function revisionAlgoValueError(algo, key, idx, value) {
+    if (!Number.isFinite(value) || value < 0) return "Valeur positive attendue.";
+    if (key === "coefSprint" && value <= 1) return "COEF_SPRINT doit être strictement supérieur à 1.";
+    if (key === "plancherMin" && value > algo.plafondMin[idx]) return "Le PLANCHER ne peut pas dépasser le PLAFOND.";
+    if (key === "plafondMin" && value < algo.plancherMin[idx]) return "Le PLAFOND ne peut pas être inférieur au PLANCHER.";
+    if ((key === "plancherMin" || key === "plafondMin") && value < 1) return "1 minute minimum.";
+    return "";
+  }
   function renderRevisionAlgoEditor() {
     const wrap = el("dev-revision-algo-list");
-    if (wrap) {
-      const settings = loadDevSettings().revisionAlgo;
-      wrap.innerHTML = REVISION_ALGO_FIELD_DEFS.map(
+    if (!wrap) return;
+    const settings = loadDevSettings().revisionAlgo;
+    wrap.innerHTML =
+      REVISION_ALGO_FIELD_DEFS.map(
         ({ key, title, step }) => `<div class="dev-color-row">
           <span>${title}</span>
           <span class="algo-grid algo-grid--4" style="flex:1;">
@@ -2451,47 +2464,32 @@
             ).join("")}
           </span>
         </div>`
-      ).join("");
-      wrap.querySelectorAll(".dev-revision-algo-input").forEach((input) => {
-        input.addEventListener("input", () => {
-          const s = loadDevSettings();
-          const idx = Number(input.dataset.idx);
-          s.revisionAlgo[input.dataset.key][idx] = Number(input.value) || 0;
-          saveDevSettings(s);
-          updateRatingPreviews();
-        });
+      ).join("") + `<p class="field-hint dev-revision-algo-error" id="dev-revision-algo-error" hidden></p>`;
+    const errEl = el("dev-revision-algo-error");
+    wrap.querySelectorAll(".dev-revision-algo-input").forEach((input) => {
+      input.addEventListener("input", () => {
+        const s = loadDevSettings();
+        const idx = Number(input.dataset.idx);
+        const key = input.dataset.key;
+        const value = input.value === "" ? NaN : Number(input.value);
+        const err = revisionAlgoValueError(s.revisionAlgo, key, idx, value);
+        input.classList.toggle("is-invalid", !!err);
+        if (errEl) {
+          errEl.hidden = !err;
+          errEl.textContent = err ? `${REVISION_ALGO_RATING_LABELS[REVISION_ALGO_RATING_ORDER[idx]]} : ${err} (non enregistré)` : "";
+        }
+        if (err) return;
+        s.revisionAlgo[key][idx] = value;
+        saveDevSettings(s);
+        updateRatingPreviews();
       });
-    }
-    const initialInput = el("dev-revision-algo-initial-delay");
-    if (initialInput) initialInput.value = loadDevSettings().revisionAlgo.initialDelayMin;
-    ["palierCourtTermeJ", "palierMoyenTermeJ", "palierLongTermeJ"].forEach((k) => {
-      const input = el(`dev-revision-algo-${k}`);
-      if (input) input.value = loadDevSettings().revisionAlgo[k];
     });
   }
-  function saveRevisionAlgoFromInputs() {
-    const settings = loadDevSettings();
-    const initialInput = el("dev-revision-algo-initial-delay");
-    if (initialInput) settings.revisionAlgo.initialDelayMin = Number(initialInput.value) || DEFAULT_REVISION_ALGO_SETTINGS.initialDelayMin;
-    ["palierCourtTermeJ", "palierMoyenTermeJ", "palierLongTermeJ"].forEach((k) => {
-      const input = el(`dev-revision-algo-${k}`);
-      if (input) settings.revisionAlgo[k] = Number(input.value) || DEFAULT_REVISION_ALGO_SETTINGS[k];
-    });
-    saveDevSettings(settings);
-    renderManageList();
-    updateRatingPreviews();
-    renderReviewGauge();
-    renderRevisionProgramList();
-  }
-  ["dev-revision-algo-initial-delay", "dev-revision-algo-palierCourtTermeJ", "dev-revision-algo-palierMoyenTermeJ", "dev-revision-algo-palierLongTermeJ"].forEach((id) => {
-    const input = el(id);
-    if (input) input.addEventListener("input", saveRevisionAlgoFromInputs);
-  });
   const devRevisionAlgoResetBtn = el("dev-revision-algo-reset");
   if (devRevisionAlgoResetBtn) {
     devRevisionAlgoResetBtn.addEventListener("click", () => {
       const settings = loadDevSettings();
-      settings.revisionAlgo = { ...DEFAULT_REVISION_ALGO_SETTINGS };
+      settings.revisionAlgo = buildRevisionAlgoSettings(null);
       settings.persGaugeColors = { ...DEFAULT_PERS_GAUGE_COLORS };
       saveDevSettings(settings);
       renderDevView();
@@ -3059,70 +3057,200 @@
     return Math.round(S * 100);
   }
 
-  /** Nouvel algorithme de révision (remplace le système de modes K/M
-   *  ci-dessus pour le CALCUL de l'échéance — celui-ci reste en mémoire,
-   *  encore éditable dans le mode développeur, mais n'influence plus la
-   *  planification réelle : décision à trancher avec l'utilisateur). Voir
-   *  DEFAULT_REVISION_ALGO_SETTINGS pour le détail de la formule. */
-  function revisionAlgoPaliersMin(settings) {
-    return {
-      court: (settings.palierCourtTermeJ || 0) * 1440,
-      moyen: (settings.palierMoyenTermeJ || 0) * 1440,
-      long: (settings.palierLongTermeJ || 0) * 1440,
-    };
+  /* ---------------------------------------------------------
+     Algorithme de révision v2 (round 42) — voir
+     DEFAULT_REVISION_ALGO_SETTINGS pour la spécification.
+  --------------------------------------------------------- */
+  function ratingIndex(rating) {
+    return REVISION_ALGO_RATING_ORDER.indexOf(rating);
   }
-  /** Palier (court/moyen/long/tresLong) dans lequel tombe la persistance
-   *  (en minutes) d'une fiche — utilisé par la jauge à 4 segments. */
-  function classifyPersBracket(persMin, settings) {
-    const p = revisionAlgoPaliersMin(settings);
-    if (persMin < p.court) return "court";
-    if (persMin < p.moyen) return "moyen";
-    if (persMin < p.long) return "long";
-    return "tresLong";
+  /** Dernière note (0-3) des fiches qui n'ont pas encore `lastRating`
+   *  (notées avant ce round) : reprise du journal des notes, sinon 0. */
+  let lastRatingFromLogCache = { len: -1, map: new Map() };
+  function lastRatingFromLog() {
+    if (lastRatingFromLogCache.len === ratingLog.length) return lastRatingFromLogCache.map;
+    const map = new Map();
+    const sorted = [...ratingLog].sort((x, y) => String(x.at).localeCompare(String(y.at)));
+    sorted.forEach((e) => {
+      const i = ratingIndex(e.rating);
+      if (i >= 0) map.set(e.cardId, i);
+    });
+    lastRatingFromLogCache = { len: ratingLog.length, map };
+    return map;
   }
-  /** Temps écoulé (minutes) depuis la dernière interrogation d'une fiche
-   *  — depuis sa création si elle n'a encore jamais été révisée. */
+  function cardLastRating(card) {
+    if (typeof card.lastRating === "number" && card.lastRating >= 0 && card.lastRating <= 3) return card.lastRating;
+    const fromLog = lastRatingFromLog().get(card.id);
+    return typeof fromLog === "number" ? fromLog : 0;
+  }
+  /** Temps écoulé (minutes) depuis la dernière interrogation — 0 pour une
+   *  fiche jamais interrogée. */
   function cardElapsedMinutes(card, now) {
-    const ref = card.lastReviewed || card.createdAt;
-    if (!ref) return 0;
-    return Math.max(0, (now.getTime() - new Date(ref).getTime()) / 60000);
+    if (!card.lastReviewed) return 0;
+    return Math.max(0, (now.getTime() - new Date(card.lastReviewed).getTime()) / 60000);
   }
-  function computeAlgoNext(card, rating, subjectId) {
-    const settings = loadDevSettings().revisionAlgo;
-    const idx = REVISION_ALGO_RATING_ORDER.indexOf(rating);
-    if (idx < 0) return { dd: settings.initialDelayMin, pers: 0, interval: 1, dueDate: new Date().toISOString() };
-    const now = new Date();
-    const dd = typeof card.dd === "number" && Number.isFinite(card.dd) ? card.dd : settings.initialDelayMin;
+  function localDateStr(d) {
+    const x = d || new Date();
+    return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, "0")}-${String(x.getDate()).padStart(2, "0")}`;
+  }
+  /** Échéances à venir (pas encore terminées : une échéance se termine le
+   *  lendemain de sa date) par boîte : Map id de boîte -> { next, last }
+   *  (dates "AAAA-MM-JJ"). Mis en cache quelques secondes, invalidé à chaque
+   *  enregistrement du calendrier. */
+  let subjectEventsCache = null;
+  function invalidateSubjectEventsCache() {
+    subjectEventsCache = null;
+  }
+  function subjectEventsMap() {
+    const today = localDateStr();
+    if (subjectEventsCache && subjectEventsCache.today === today && Date.now() - subjectEventsCache.at < 5000) {
+      return subjectEventsCache.map;
+    }
+    const map = new Map();
+    loadCalendarEvents()
+      .filter((ev) => ev && ev.date && ev.date >= today && eventLinkIds(ev).length > 0)
+      .forEach((ev) => {
+        revisionTreeBoxIds(revisionTreeForEvent(ev)).forEach((id) => {
+          const cur = map.get(id);
+          if (!cur) map.set(id, { next: ev.date, last: ev.date });
+          else {
+            if (ev.date < cur.next) cur.next = ev.date;
+            if (ev.date > cur.last) cur.last = ev.date;
+          }
+        });
+      });
+    subjectEventsCache = { today, at: Date.now(), map };
+    return map;
+  }
+  function eventReferenceTime(dateStr) {
+    const [y, m, d] = dateStr.split("-").map(Number);
+    return new Date(y, m - 1, d, SPRINT_EVENT_HOUR, 0, 0, 0);
+  }
+  function dayAfter(dateStr) {
+    const [y, m, d] = dateStr.split("-").map(Number);
+    return new Date(y, m - 1, d + 1, 0, 0, 0, 0);
+  }
+
+  /** Délai (minutes) en mode fond pour l'indice de note `idx`. */
+  function fondDelayMinutes(card, idx, settings, now) {
+    const dd = typeof card.dd === "number" && Number.isFinite(card.dd) ? Math.max(0, card.dd) : 0;
     const te = cardElapsedMinutes(card, now);
-    const coefTe = settings.coefTe[idx] || 0;
-    const coefDd = settings.coefDd[idx] || 0;
-    const plafond = settings.plafondMin[idx];
-    const plancher = settings.plancherMin[idx];
-    const abat = settings.abat[idx] || 0;
+    const raw = dd - te + te * (settings.coefFond[idx] || 0);
+    return Math.min(settings.plafondMin[idx], Math.max(settings.plancherMin[idx], raw));
+  }
 
-    const ddTerm = dd * coefDd;
-    const raw = Math.max(ddTerm, te * coefTe);
-    // Plafond basé sur DD*COEF_TE (et non DD*COEF_DD) — correctif demandé
-    // par l'utilisateur pour que TE*COEF_TE cesse d'être mathématiquement
-    // inerte (voir le commentaire au-dessus de REVISION_ALGO_RATING_ORDER).
-    const ceiling = Math.min(plafond, dd * coefTe);
-    let ndi = Math.min(raw, ceiling);
-    if (ndi < plancher) ndi = plancher;
-    const pers = ndi * abat;
-
+  /** Nouveau délai et champs à fusionner dans la fiche après la note
+   *  `rating`. `mode` vaut "fond" ou "sprint". */
+  function computeAlgoNext(card, rating) {
+    const settings = loadDevSettings().revisionAlgo;
+    const now = new Date();
+    let idx = ratingIndex(rating);
+    if (idx < 0) idx = 0;
+    const fond = fondDelayMinutes(card, idx, settings, now);
+    let ndi = fond;
+    let mode = "fond";
+    const ev = subjectEventsMap().get(card.subject);
+    if (ev) {
+      mode = "sprint";
+      const dpEch = (eventReferenceTime(ev.next).getTime() - now.getTime()) / 60000;
+      const coef = settings.coefSprint[idx];
+      let sprint;
+      if (dpEch <= 0) sprint = SPRINT_EVENT_DAY_DELAY_MIN;
+      else if (coef > 1) sprint = dpEch - dpEch / coef;
+      else sprint = fond;
+      ndi = Math.min(sprint, fond);
+    }
+    ndi = Math.max(1, ndi);
     const due = new Date(now.getTime() + ndi * 60000);
-    // `interval` (jours, arrondi) et `deadlineDaysRaw` sont dérivés pour la
-    // compatibilité des affichages/fonctions encore en jours (histogrammes,
-    // score legacy) — ils ne pilotent plus la planification elle-même.
-    return {
+    const out = {
       dd: Math.round(ndi * 100) / 100,
-      pers: Math.round(pers * 100) / 100,
       interval: Math.max(0, Math.round(ndi / 1440)),
       deadlineDaysRaw: Math.round((ndi / 1440) * 1000) / 1000,
       dueDate: due.toISOString(),
+      lastRating: idx,
+      mode,
     };
+    if (ev && !card.inSprint) {
+      // Entrée en sprint au moment de la note (le calendrier n'avait pas
+      // encore été rapproché) : on mémorise le délai d'avant.
+      out.inSprint = true;
+      out.ddBeforeSprint = card.dd > 0 ? card.dd : null;
+      out.sprintNext = ev.next;
+      out.sprintUntil = ev.last;
+    } else if (ev) {
+      out.sprintNext = ev.next;
+      out.sprintUntil = ev.last;
+    }
+    return out;
   }
 
+  /** Rapproche l'état sprint/fond de toutes les fiches de mes révisions
+   *  avec le calendrier :
+   *   - entrée en sprint (ou nouvelle échéance plus proche) : délai actuel
+   *     mémorisé, fiche à interroger tout de suite ;
+   *   - plus aucune échéance à venir : retour en fond, prochaine
+   *     interrogation = fin de la dernière échéance (le lendemain de sa
+   *     date) + délai d'avant le sprint (ou plancher de la dernière note).
+   *  Ne réécrit que les fiches qui changent. */
+  let reconcilingSprint = false;
+  async function reconcileSprintState() {
+    if (reconcilingSprint) return 0;
+    reconcilingSprint = true;
+    try {
+      invalidateSubjectEventsCache();
+      const map = subjectEventsMap();
+      const settings = loadDevSettings().revisionAlgo;
+      const now = new Date();
+      const nowIso = now.toISOString();
+      const changed = [];
+      revisionCards().forEach((card) => {
+        const ev = map.get(card.subject);
+        let upd = null;
+        if (ev) {
+          if (!card.inSprint) {
+            upd = { inSprint: true, ddBeforeSprint: card.dd > 0 ? card.dd : null, sprintNext: ev.next, sprintUntil: ev.last };
+            if (!card.dueDate || new Date(card.dueDate) > now) upd.dueDate = nowIso;
+          } else if (card.sprintNext !== ev.next || card.sprintUntil !== ev.last) {
+            upd = { sprintNext: ev.next, sprintUntil: ev.last };
+            // Nouvelle échéance plus proche que celle connue : tout de suite.
+            if ((!card.sprintNext || ev.next < card.sprintNext) && (!card.dueDate || new Date(card.dueDate) > now)) {
+              upd.dueDate = nowIso;
+            }
+          }
+        } else if (card.inSprint) {
+          const end = card.sprintUntil ? dayAfter(card.sprintUntil) : now;
+          const base = end < now ? end : now;
+          const delay =
+            typeof card.ddBeforeSprint === "number" && card.ddBeforeSprint > 0
+              ? card.ddBeforeSprint
+              : settings.plancherMin[cardLastRating(card)];
+          upd = {
+            inSprint: false,
+            ddBeforeSprint: null,
+            sprintNext: null,
+            sprintUntil: null,
+            dd: delay,
+            interval: Math.max(0, Math.round(delay / 1440)),
+            dueDate: new Date(base.getTime() + delay * 60000).toISOString(),
+          };
+        }
+        if (upd) changed.push(touch({ ...card, ...upd }));
+      });
+      if (changed.length === 0) return 0;
+      const byId = new Map(changed.map((c) => [c.id, c]));
+      cards = cards.map((c) => byId.get(c.id) || c);
+      if (currentCard && byId.has(currentCard.id)) currentCard = byId.get(currentCard.id);
+      reviewQueue = reviewQueue.map((c) => byId.get(c.id) || c);
+      await DB.bulkPut(changed);
+      if (Sync.isConfigured()) Sync.pushCardsBulk(changed).finally(updateSyncStatus);
+      return changed.length;
+    } catch (e) {
+      console.warn("Sprint : rapprochement impossible", e);
+      return 0;
+    } finally {
+      reconcilingSprint = false;
+    }
+  }
 
   /** Appelée après chaque changement d'échéance issu d'une vraie révision
    *  (algorithme SM-2 normal ou mode bonus — pas l'hibernation, qui ne
@@ -3147,28 +3275,24 @@
   function newCard(question, answer, subjectId = currentSubjectId) {
     const now = new Date();
     const nowIso = now.toISOString();
-    const initialDelayMin = loadDevSettings().revisionAlgo.initialDelayMin;
-    const due = new Date(now.getTime() + initialDelayMin * 60000);
     return {
       id: uid(),
       subject: subjectId,
       question,
       answer,
       createdAt: nowIso,
-      dueDate: due.toISOString(), // maintenant + délai initial (5 min par défaut)
+      dueDate: nowIso, // round 42 : une nouvelle fiche est à interroger tout de suite
       lastReviewed: null,
       reviewCount: 0,
       updatedAt: nowIso,
       deleted: false,
       // Chantier (item 16) : fiche marquée à corriger/compléter plus tard.
       underConstruction: false,
-      // Nouvel algorithme de révision : dd/pers en MINUTES (voir
-      // computeAlgoNext). `interval`/`deadlineDaysRaw` (jours) restent
-      // dérivés pour compat avec les affichages non encore migrés.
-      dd: initialDelayMin,
-      pers: 0,
+      // Algorithme v2 : dd en MINUTES (voir computeAlgoNext) ; jamais
+      // notée (lastRating absent = 0 pour la jauge).
+      dd: 0,
       interval: 0,
-      deadlineDaysRaw: Math.round((initialDelayMin / 1440) * 1000) / 1000,
+      deadlineDaysRaw: 0,
     };
   }
 
@@ -5363,10 +5487,11 @@
     const settings = loadDevSettings();
     const colors = settings.persGaugeColors;
     const list = pool || [];
+    // Round 42 : proportion des fiches selon leur DERNIÈRE NOTE (0 à 3,
+    // jamais notée = 0) — dégradé gris -> vert vif.
     const counts = { court: 0, moyen: 0, long: 0, tresLong: 0 };
     for (const c of list) {
-      const persMin = typeof c.pers === "number" ? c.pers : 0;
-      counts[classifyPersBracket(persMin, settings.revisionAlgo)] += 1;
+      counts[PERS_GAUGE_ZONE_ORDER[cardLastRating(c)]] += 1;
     }
     const total = list.length;
     const barY = 2;
@@ -5469,16 +5594,101 @@
   /* ---------------------------------------------------------
      Vue Réviser
   --------------------------------------------------------- */
+  /* ---------------------------------------------------------
+     Séance de révision continue (round 42) : tant qu'on répond, l'appli
+     continue. Ordre : d'abord les fiches dues (la plus en retard en
+     premier), puis les fiches notées 0 ou 1 dans la séance et pas encore
+     revues deux fois, puis toutes les autres par date prévue. Au moins
+     SESSION_MIN_GAP autres fiches entre deux passages d'une même fiche
+     (ou toutes les autres s'il y en a moins). Plus de révision libre ni de
+     mode bonus.
+  --------------------------------------------------------- */
+  function freshSessionState() {
+    return {
+      seen: new Map(), // id -> nombre de passages notés dans la séance
+      low: new Set(), // fiches notées 0 ou 1 dans la séance
+      recent: [], // derniers ids notés (règle des 10 fiches)
+      dueAtStart: new Set(),
+      dueDoneToastShown: false,
+      proposalShown: false,
+      proposalArmed: false,
+    };
+  }
+  let sessionState = freshSessionState();
+  function cloneSessionState(st) {
+    return {
+      ...st,
+      seen: new Map(st.seen),
+      low: new Set(st.low),
+      recent: [...st.recent],
+      dueAtStart: new Set(st.dueAtStart),
+    };
+  }
+
   function startReviewSession() {
     reviewSessionStarted = true;
-    reviewQueue = shuffle(dueCards());
-    sessionTotalDue = reviewQueue.length;
+    // Rapprochement sprint/fond avec le calendrier : la partie en mémoire
+    // est synchrone (seul l'enregistrement est asynchrone), les fiches
+    // dues ci-dessous en tiennent donc déjà compte.
+    reconcileSprintState();
+    const due = dueCards();
+    sessionState = freshSessionState();
+    due.forEach((c) => sessionState.dueAtStart.add(c.id));
+    reviewQueue = due;
+    sessionTotalDue = due.length;
+    currentCard = null;
     // Une nouvelle session invalide l'annulation en attente (item 2) : la
     // fiche à restaurer n'est plus forcément dans la nouvelle file.
     lastRatingSnapshot = null;
     const undoBtn = el("undo-rating-btn");
     if (undoBtn) undoBtn.hidden = true;
     showNextCard();
+  }
+
+  function cardDueTime(c) {
+    return c.dueDate ? new Date(c.dueDate).getTime() : 0;
+  }
+  /** Prochaine fiche de la séance parmi `pool` (voir ci-dessus). */
+  function pickNextSessionCard(pool) {
+    if (pool.length === 0) return null;
+    const gap = Math.min(SESSION_MIN_GAP, pool.length - 1);
+    const blocked = new Set(gap > 0 ? sessionState.recent.slice(-gap) : []);
+    let candidates = pool.filter((c) => !blocked.has(c.id));
+    if (candidates.length === 0) candidates = pool;
+    const now = Date.now();
+    const tier = (c) => {
+      if (cardDueTime(c) <= now) return 0;
+      if (sessionState.low.has(c.id) && (sessionState.seen.get(c.id) || 0) < 2) return 1;
+      return 2;
+    };
+    let best = null;
+    let bestTier = 9;
+    let bestDue = Infinity;
+    candidates.forEach((c) => {
+      const t = tier(c);
+      const d = cardDueTime(c);
+      if (t < bestTier || (t === bestTier && d < bestDue)) {
+        best = c;
+        bestTier = t;
+        bestDue = d;
+      }
+    });
+    return best;
+  }
+  /** Texte de progression sous la fiche. */
+  function renderSessionProgress() {
+    const remaining = reviewQueue.length;
+    if (sessionTotalDue > 0 && remaining > 0) {
+      reviewProgressEl.textContent = `${sessionTotalDue - remaining}/${sessionTotalDue} fiches dues revues`;
+    } else if (sessionTotalDue > 0) {
+      reviewProgressEl.textContent = "Fiches dues terminées — tu continues en avance";
+      if (!sessionState.dueDoneToastShown) {
+        sessionState.dueDoneToastShown = true;
+        showCenterToast("✅ Fiches dues terminées — tu continues en avance");
+      }
+    } else {
+      reviewProgressEl.textContent = "Aucune fiche due — tu révises en avance";
+    }
   }
 
   function shuffle(arr) {
@@ -5495,9 +5705,7 @@
     if (!currentCard) return;
     const fresh = cards.find((c) => c.id === currentCard.id && !c.deleted);
     if (!fresh) {
-      if (!isBonusMode) {
-        reviewQueue = reviewQueue.filter((c) => c.id !== currentCard.id);
-      }
+      reviewQueue = reviewQueue.filter((c) => c.id !== currentCard.id);
       showNextCard();
       return;
     }
@@ -5505,52 +5713,6 @@
     renderQuestionText(currentCard);
     answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
     updateRatingPreviews();
-  }
-
-  /** Repère, parmi les prochaines échéances de `pool`, le jour calendaire
-   *  qui concentre le plus de fiches (la barre la plus haute du graphique).
-   *  Renvoie le timestamp (00:00) de ce jour, ou null si aucun jour ne
-   *  ressort (pas d'échéance future, ou aucun jour avec plus d'une fiche). */
-  function findBusiestUpcomingDay(pool) {
-    const counts = new Map();
-    for (const c of pool) {
-      if (!c.dueDate) continue;
-      const day = startOfDay(new Date(c.dueDate)).getTime();
-      counts.set(day, (counts.get(day) || 0) + 1);
-    }
-    let bestDay = null;
-    let bestCount = 1; // on ne "lisse" que s'il y a un vrai pic (>= 2 fiches)
-    for (const [day, count] of counts) {
-      if (count > bestCount) {
-        bestCount = count;
-        bestDay = day;
-      }
-    }
-    return bestDay;
-  }
-
-  /** Mode bonus : pioche en priorité parmi les fiches du jour le plus chargé
-   *  à venir, pour lisser la charge de révision future. Si aucun pic net ne
-   *  se dégage, on retombe sur un tirage aléatoire classique sur toute la
-   *  boîte. */
-  function pickRandomBonusCard(pool, excludeId) {
-    const busiestDay = findBusiestUpcomingDay(pool);
-    if (busiestDay !== null) {
-      const fromBusiestDay = pool.filter(
-        (c) => c.dueDate && startOfDay(new Date(c.dueDate)).getTime() === busiestDay
-      );
-      const filtered =
-        fromBusiestDay.length > 1
-          ? fromBusiestDay.filter((c) => c.id !== excludeId)
-          : fromBusiestDay;
-      if (filtered.length > 0) {
-        return filtered[Math.floor(Math.random() * filtered.length)];
-      }
-    }
-
-    const candidates =
-      pool.length > 1 ? pool.filter((c) => c.id !== excludeId) : pool;
-    return candidates[Math.floor(Math.random() * candidates.length)];
   }
 
   function showNextCard() {
@@ -5575,39 +5737,13 @@
   }
 
   function finishShowNextCard() {
-    if (reviewQueue.length > 0) {
-      isBonusMode = false;
-      currentCard = reviewQueue[0];
-      emptyStateEl.hidden = true;
-      cardStackEl.hidden = false;
-      editCurrentBtn.hidden = false;
-      if (hibernateCurrentBtn) hibernateCurrentBtn.hidden = false;
-      // Les boutons d'évaluation restent affichés en permanence (côté
-      // question comme côté réponse) : on ne les cache plus au retournement.
-      ratingRowEl.hidden = false;
-      renderQuestionText(currentCard);
-      answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
-
-      const doneToday = sessionTotalDue - reviewQueue.length;
-      reviewProgressEl.textContent = `${doneToday}/${sessionTotalDue} fiches revues aujourd'hui`;
-
-      updateRatingPreviews();
-      renderDuePill();
-      renderReviewChart();
-      renderReviewSubjectScore();
-      renderReviewGauge();
-      return;
-    }
-
-    // Plus rien de programmé pour aujourd'hui.
+    isBonusMode = false;
     const pool = subjectCards();
     if (pool.length === 0) {
-      isBonusMode = false;
       currentCard = null;
       emptyStateEl.hidden = false;
       cardStackEl.hidden = true;
       editCurrentBtn.hidden = true;
-      if (hibernateCurrentBtn) hibernateCurrentBtn.hidden = true;
       if (el("construction-current-btn")) el("construction-current-btn").hidden = true;
       ratingRowEl.hidden = true;
       if (el("review-score-info")) el("review-score-info").hidden = true;
@@ -5618,25 +5754,16 @@
       renderReviewGauge();
       return;
     }
-
-    // Mode bonus : on continue avec des fiches piochées au hasard. Le
-    // popup de bascule ne doit s'afficher qu'une fois, à l'entrée en
-    // révision libre — pas à chaque nouvelle fiche piochée une fois dedans.
-    const enteringBonusMode = !isBonusMode;
-    isBonusMode = true;
-    currentCard = pickRandomBonusCard(pool, currentCard ? currentCard.id : null);
+    currentCard = pickNextSessionCard(pool);
     emptyStateEl.hidden = true;
     cardStackEl.hidden = false;
     editCurrentBtn.hidden = false;
-    if (hibernateCurrentBtn) hibernateCurrentBtn.hidden = false;
+    // Les boutons d'évaluation restent affichés en permanence (côté
+    // question comme côté réponse) : on ne les cache plus au retournement.
     ratingRowEl.hidden = false;
     renderQuestionText(currentCard);
     answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
-    reviewProgressEl.textContent = "Fiches du jour terminées — révision libre";
-    if (enteringBonusMode) {
-      showCenterToast("🔁 Fiches du jour terminées — passage en révision libre");
-    }
-
+    renderSessionProgress();
     updateRatingPreviews();
     renderDuePill();
     renderReviewChart();
@@ -5646,25 +5773,11 @@
 
   function updateRatingPreviews() {
     if (!currentCard) return;
-    if (isBonusMode) {
-      el("sub-again").textContent =
-        bonusAgainMode === "increment" ? "+1 j" : "→ demain";
-      el("sub-hard").textContent = `+${bonusDaysSettings.hard} j`;
-      el("sub-good").textContent = `+${bonusDaysSettings.good} j`;
-      el("sub-easy").textContent = `+${bonusDaysSettings.easy} j`;
-      updateReviewScoreInfo({
-        again: bonusAgainMode === "increment" ? 1 : 1,
-        hard: bonusDaysSettings.hard,
-        good: bonusDaysSettings.good,
-        easy: bonusDaysSettings.easy,
-      });
-      return;
-    }
     el("sub-again").textContent = "…";
     const previews = {};
     const futureDelaysMin = {};
     for (const rating of ["again", "hard", "good", "easy"]) {
-      const next = computeAlgoNext(currentCard, rating, currentCard.subject);
+      const next = computeAlgoNext(currentCard, rating);
       previews[rating] = formatDelayMinutes(next.dd);
       futureDelaysMin[rating] = next.dd;
     }
@@ -5694,7 +5807,7 @@
     const prevDelay = typeof currentCard.dd === "number" ? currentCard.dd : currentCard.interval * 1440 || 0;
     el("score-info-prev-delay").textContent = formatDelayMinutes(prevDelay);
     el("score-info-current").textContent = "";
-    const labels = { again: "Encore", hard: "Difficile", good: "Bien", easy: "Excellent" };
+    const labels = { again: "Je ne sais pas", hard: "Vague idée", good: "Je sais", easy: "Parfait" };
     ["again", "hard", "good", "easy"].forEach((r) => {
       const cell = el(`score-info-${r}`);
       if (!cell) return;
@@ -5778,7 +5891,7 @@
     lastRatingSnapshot = {
       card: { ...currentCard },
       reviewQueue: reviewQueue.map((c) => ({ ...c })),
-      isBonusMode,
+      sessionState: cloneSessionState(sessionState),
       sessionTotalDue,
       ratingLogId,
     };
@@ -5807,7 +5920,7 @@
     }
 
     reviewQueue = snap.reviewQueue;
-    isBonusMode = snap.isBonusMode;
+    if (snap.sessionState) sessionState = snap.sessionState;
     sessionTotalDue = snap.sessionTotalDue;
     currentCard = snap.card;
 
@@ -5834,20 +5947,26 @@
     if (!currentCard) return;
     const ratingLogId = await logRating(currentCard, rating);
     captureRatingSnapshot(ratingLogId);
-    const updated = isBonusMode ? await rateBonusCard(rating) : await rateScheduledCard(rating);
+    const updated = await rateScheduledCard(rating);
+    // Suivi de la séance (règle des 10 fiches, fiches à revoir deux fois,
+    // proposition de passer à la boîte suivante).
+    const id = updated.id;
+    sessionState.seen.set(id, (sessionState.seen.get(id) || 0) + 1);
+    if (ratingIndex(rating) <= 1) sessionState.low.add(id);
+    sessionState.recent.push(id);
+    if (sessionState.recent.length > 50) sessionState.recent.splice(0, sessionState.recent.length - 50);
+    reviewQueue = reviewQueue.filter((c) => c.id !== id);
     showNextCard();
     // Anime le mini graphique (item 9) : la barre "aujourd'hui" et toutes
     // les barres jusqu'à la nouvelle date de la fiche s'allument en vague,
-    // de gauche à droite. `requestAnimationFrame` laisse le temps au
-    // graphique (redessiné par showNextCard -> renderReviewChart) d'exister
-    // dans le DOM avant qu'on n'essaie de lui appliquer l'animation.
-    if (updated) {
-      requestAnimationFrame(() => triggerReviewChartWave(0, updated.interval));
-    }
+    // de gauche à droite.
+    requestAnimationFrame(() => triggerReviewChartWave(0, updated.interval));
+    maybeProposeNextBox();
   }
 
   async function rateScheduledCard(rating) {
-    const next = computeAlgoNext(currentCard, rating, currentCard.subject);
+    const next = computeAlgoNext(currentCard, rating);
+    delete next.mode;
     const updated = touch({
       ...currentCard,
       ...next,
@@ -5860,137 +5979,87 @@
     const idx = cards.findIndex((c) => c.id === updated.id);
     if (idx >= 0) cards[idx] = updated;
 
-    reviewQueue.shift();
-    // "Encore" remet la fiche en fin de file pour cette session
-    if (rating === "again") {
-      reviewQueue.push(updated);
-    }
-
     renderStats();
     renderManageList();
     return updated;
   }
 
-  /** Calcule la nouvelle échéance quand on répond "Encore" en mode bonus,
-   *  selon le réglage choisi :
-   *   - "fixed"     : toujours le lendemain (date fixe), quelle que soit
-   *                   l'échéance actuelle de la fiche.
-   *   - "increment" : un jour de plus par rapport à l'échéance actuelle de
-   *                   la fiche (ou à aujourd'hui si elle est déjà passée) —
-   *                   plusieurs "Encore" successifs éloignent donc la fiche
-   *                   un peu plus à chaque fois. */
-  function nextBonusAgainDueDate(card, today) {
-    if (bonusAgainMode === "increment") {
-      const base = card.dueDate ? startOfDay(new Date(card.dueDate)) : today;
-      const start = base.getTime() > today.getTime() ? base : today;
-      const due = new Date(start);
-      due.setDate(due.getDate() + 1);
-      return due;
+  /* ---------------------------------------------------------
+     « Dois-je continuer ? » (round 42) : une fois toutes les fiches dues
+     vues et les fiches notées 0 ou 1 dans la séance revues deux fois, le
+     robot propose la boîte suivante des révisions conseillées (ou dit que
+     tout est fait). S'il continue, il ne repropose que lorsque la condition
+     redevient vraie après de nouvelles fiches ratées.
+  --------------------------------------------------------- */
+  function sessionProposalConditionMet() {
+    const alive = new Set(subjectCards().map((c) => c.id));
+    for (const id of sessionState.dueAtStart) {
+      if (alive.has(id) && !(sessionState.seen.get(id) >= 1)) return false;
     }
-    const due = new Date(today);
-    due.setDate(due.getDate() + 1);
-    return due;
-  }
-
-  /** Mode bonus (révision libre) : la date d'interrogation est reculée à partir
-   *  de la prochaine interrogation déjà programmée pour cette fiche (et non à
-   *  partir d'aujourd'hui), pour ne pas raccourcir l'intervalle d'une fiche
-   *  révisée en avance. Si cette échéance est déjà passée (fiche en retard),
-   *  on repart d'aujourd'hui. "Encore" recule la fiche d'au moins un jour
-   *  (voir nextBonusAgainDueDate), sans toucher au facteur de facilité SM-2 —
-   *  elle n'est donc plus jamais remise à "due aujourd'hui" par erreur. */
-  async function rateBonusCard(rating) {
-    const today = startOfDay(new Date());
-    let due;
-
-    if (rating === "again") {
-      due = nextBonusAgainDueDate(currentCard, today);
-    } else {
-      const bonusDays = bonusDaysSettings[rating];
-      if (bonusDays === undefined) return;
-      const scheduledDue = currentCard.dueDate ? startOfDay(new Date(currentCard.dueDate)) : today;
-      const base = scheduledDue.getTime() > today.getTime() ? scheduledDue : today;
-      due = new Date(base);
-      due.setDate(due.getDate() + bonusDays);
+    for (const id of sessionState.low) {
+      if (alive.has(id) && (sessionState.seen.get(id) || 0) < 2) return false;
     }
-
-    const updated = touch({
-      ...currentCard,
-      interval: Math.round((due.getTime() - today.getTime()) / 86400000),
-      dueDate: due.toISOString(),
-      lastReviewed: new Date().toISOString(),
-      reviewCount: (currentCard.reviewCount || 0) + 1,
+    return true;
+  }
+  /** Boîtes des révisions conseillées dans l'ordre : échéances proches
+   *  (cases cochées), puis « Renforcer mes connaissances ». */
+  function advisedBoxOrder() {
+    const out = [];
+    upcomingEventsWithBoxes().forEach((ev) => {
+      const unchecked = revisionProgramUnchecked.get(ev.id) || new Set();
+      revisionTreeBoxIds(revisionTreeForEvent(ev)).forEach((id) => {
+        if (!unchecked.has(id) && !out.includes(id)) out.push(id);
+      });
     });
-    trackCardInterval(updated, updated.interval);
-    await persist(updated);
-
-    const idx = cards.findIndex((c) => c.id === updated.id);
-    if (idx >= 0) cards[idx] = updated;
-
-    // Comportement bizarre corrigé : si malgré tout la fiche redevient due
-    // aujourd'hui (ou reste en retard), on la remet dans la file normale au
-    // lieu de rester en mode bonus avec un compteur "à revoir" qui n'est
-    // plus à zéro.
-    if (SM2.isDue(updated)) {
-      reviewQueue.push(updated);
-      sessionTotalDue += 1;
+    computeReinforceItems().forEach((it) => {
+      if (!out.includes(it.id)) out.push(it.id);
+    });
+    return out;
+  }
+  function nextAdvisedBox() {
+    const inScope = new Set(subjectCards().map((c) => c.subject));
+    for (const id of advisedBoxOrder()) {
+      if (inScope.has(id)) continue;
+      const due = cards.filter((c) => !c.deleted && c.subject === id && SM2.isDue(c)).length;
+      if (due > 0) return { id, name: subjectName(id), due };
     }
-
-    renderStats();
-    renderManageList();
-    return updated;
+    return null;
   }
-
-  /** Bouton "hibernation" : repousse la prochaine interrogation d'une fiche
-   *  de plusieurs jours (réglable) sans que ça compte comme une révision —
-   *  ni passage par SM-2, ni lastReviewed touché. Fonctionne aussi bien en
-   *  file normale qu'en mode bonus. */
-  async function hibernateCurrentCard() {
-    const card = currentCard;
-    if (!card) return;
-    // Annulable comme une notation (item 9 — bug corrigé : jusqu'ici
-    // l'hibernation n'était pas du tout capturée par "Annuler la dernière
-    // évaluation", qui restaurait alors le mauvais état).
-    captureRatingSnapshot(null);
-    const today = startOfDay(new Date());
-    const base = card.dueDate ? startOfDay(new Date(card.dueDate)) : today;
-    const start = base.getTime() > today.getTime() ? base : today;
-    const due = new Date(start);
-    due.setDate(due.getDate() + hibernateDays);
-
-    const updated = touch({
-      ...card,
-      dueDate: due.toISOString(),
-      interval: Math.round((due.getTime() - today.getTime()) / 86400000),
-    });
-    await persist(updated);
-
-    const idx = cards.findIndex((c) => c.id === updated.id);
-    if (idx >= 0) cards[idx] = updated;
-
-    reviewQueue = reviewQueue.filter((c) => c.id !== updated.id);
-    renderStats();
-    renderManageList();
-    renderDuePill();
-    showNextCard();
-    // Même animation que pour une notation (item 9 — bug corrigé :
-    // l'hibernation n'animait jamais le graphique).
-    requestAnimationFrame(() => triggerReviewChartWave(0, updated.interval));
-  }
-
-  if (hibernateCurrentBtn) {
-    hibernateCurrentBtn.addEventListener("click", async () => {
-      if (!currentCard) return;
-      // Confirmation avec explication : le nombre de jours vient du réglage
-      // (potentiellement modifié par la personne), donc on l'affiche
-      // explicitement plutôt que de supposer qu'elle s'en souvient.
-      const msg =
-        `Mettre cette fiche en hibernation ?\n\n` +
-        `Sa prochaine interrogation sera repoussée de ${hibernateDays} jour${hibernateDays > 1 ? "s" : ""} ` +
-        `(réglable dans Réglages), sans compter comme une révision — ni le calcul d'échéance, ni le statut de la fiche ne changent, elle est juste mise de côté pour plus tard.`;
-      if (!(await robotConfirm(msg))) return;
-      await hibernateCurrentCard();
-    });
+  let proposalOpen = false;
+  async function maybeProposeNextBox() {
+    if (proposalOpen || !currentCard) return;
+    const met = sessionProposalConditionMet();
+    if (!met) {
+      if (sessionState.proposalShown) sessionState.proposalArmed = true;
+      return;
+    }
+    if (sessionState.proposalShown && !sessionState.proposalArmed) return;
+    sessionState.proposalShown = true;
+    sessionState.proposalArmed = false;
+    const scope = currentSubjectId === ALL_SUBJECTS_ID || currentSubjectId === MULTI_SUBJECTS_ID ? "de ta sélection" : "de cette boîte";
+    const head =
+      sessionState.low.size > 0
+        ? `Bravo ! Tu as vu toutes les fiches dues ${scope}, et revu deux fois celles que tu ne savais pas.`
+        : `Bravo ! Tu as vu toutes les fiches dues ${scope}.`;
+    const next = nextAdvisedBox();
+    proposalOpen = true;
+    try {
+      if (next) {
+        const ok = await robotConfirm(
+          `${head}\n\nJe te propose de passer à la boîte suivante des révisions conseillées : « ${next.name} » (${next.due} fiche${next.due > 1 ? "s" : ""} à revoir).`,
+          { okLabel: "Passer à cette boîte", cancelLabel: "Continuer ici" }
+        );
+        if (ok) {
+          reviewEntryFromManage = false;
+          reviewEntryFromProgram = true;
+          switchSubject(next.id);
+        }
+      } else {
+        await robotAlert(`${head}\n\nTes révisions conseillées sont terminées pour le moment : tu peux t'arrêter là, ou continuer à réviser en avance.`);
+      }
+    } finally {
+      proposalOpen = false;
+    }
   }
 
   const constructionCurrentBtn = el("construction-current-btn");
@@ -8971,6 +9040,17 @@
   }
   function saveCalendarEventsLocal(events) {
     localStorage.setItem(calendarEventsStorageKey(), JSON.stringify(events));
+    // Round 42 : une échéance créée, modifiée ou supprimée fait entrer ou
+    // sortir des fiches du mode sprint.
+    invalidateSubjectEventsCache();
+    if (Array.isArray(cards) && cards.length > 0) {
+      reconcileSprintState().then((n) => {
+        if (n > 0) {
+          renderAll();
+          mergeNewDueCardsIntoQueue();
+        }
+      });
+    }
     if (el("view-home") && el("view-home").classList.contains("is-active")) setTimeout(refreshHomeEventWarning, 0);
   }
   /* File d'attente des évènements à renvoyer (hors-ligne), par compte. */
@@ -10015,7 +10095,8 @@
       // le tri à égalité de date devient la proportion (%) de fiches déjà
       // en persistance moyen/long/très long terme (donc pas "court terme").
       const list = pool || [];
-      const wellPersisted = list.filter((c) => classifyPersBracket(typeof c.pers === "number" ? c.pers : 0, loadDevSettings().revisionAlgo) !== "court").length;
+      // Round 42 : part des fiches dont la dernière note est 2 ou 3.
+      const wellPersisted = list.filter((c) => cardLastRating(c) >= 2).length;
       const score = list.length > 0 ? Math.round((wellPersisted / list.length) * 100) : 0;
       return {
         linkId,
@@ -10161,12 +10242,90 @@
     if (!list) return;
     const events = upcomingEventsWithBoxes();
     list.innerHTML = "";
-    if (events.length === 0) {
-      if (empty) empty.hidden = false;
-      return;
-    }
-    if (empty) empty.hidden = true;
+    if (empty) empty.hidden = events.length > 0;
     events.forEach((ev) => list.appendChild(buildRevisionEventBlock(ev)));
+    renderReinforceList();
+  }
+
+  /* Round 42 : 2e partie des révisions conseillées, « Renforcer mes
+     connaissances » — les boîtes de mes révisions qui ne sont pas déjà
+     dans la 1re partie, triées par retard relatif moyen de leurs fiches :
+     (maintenant − date prévue) / max(DD ; 1 jour), positif en retard,
+     négatif en avance. */
+  const REINFORCE_PAGE_SIZE = 10;
+  let reinforceShown = REINFORCE_PAGE_SIZE;
+  function computeReinforceItems() {
+    const inEvents = new Set();
+    upcomingEventsWithBoxes().forEach((ev) => revisionTreeBoxIds(revisionTreeForEvent(ev)).forEach((id) => inEvents.add(id)));
+    const now = Date.now();
+    const bySubject = new Map();
+    revisionCards().forEach((c) => {
+      if (inEvents.has(c.subject)) return;
+      let arr = bySubject.get(c.subject);
+      if (!arr) bySubject.set(c.subject, (arr = []));
+      arr.push(c);
+    });
+    const items = [];
+    bySubject.forEach((pool, id) => {
+      const subj = subjects.find((x) => x.id === id);
+      if (!subj || subj.deleted) return;
+      let sum = 0;
+      let due = 0;
+      pool.forEach((c) => {
+        const dd = Math.max(typeof c.dd === "number" && c.dd > 0 ? c.dd : 0, 1440);
+        const late = (now - cardDueTime(c)) / 60000;
+        sum += late / dd;
+        if (cardDueTime(c) <= now) due += 1;
+      });
+      items.push({ id, name: subj.name, pool, due, lateness: sum / pool.length });
+    });
+    items.sort((a, b) => b.lateness - a.lateness || a.name.localeCompare(b.name, "fr"));
+    return items;
+  }
+  function renderReinforceList() {
+    const list = el("revision-reinforce-list");
+    const empty = el("revision-reinforce-empty");
+    const more = el("revision-reinforce-more");
+    if (!list) return;
+    const items = computeReinforceItems();
+    list.innerHTML = "";
+    if (empty) empty.hidden = items.length > 0;
+    items.slice(0, reinforceShown).forEach((it) => {
+      const li = document.createElement("li");
+      li.className = "revision-event-block revision-reinforce-block";
+      li.dataset.subjectId = it.id;
+      const n = it.pool.length;
+      li.innerHTML = `
+        <div class="revision-event-head">
+          <span class="revision-event-title">${escapeHtml(it.name)}</span>
+          <span class="revision-event-when${it.due > 0 ? " is-soon" : ""}">${
+            it.due > 0 ? `${it.due} fiche${it.due > 1 ? "s" : ""} à revoir` : "À jour"
+          }</span>
+        </div>
+        <div class="revision-event-date">${n} fiche${n > 1 ? "s" : ""}</div>
+        <div class="revision-event-gauge">${buildPersGaugeSvg(it.pool, { width: 260, barHeight: 10 })}</div>
+        <button type="button" class="btn btn--primary revision-event-go">Réviser cette boîte</button>
+      `;
+      li.querySelector(".revision-event-go").addEventListener("click", () => {
+        reviewEntryFromManage = false;
+        reviewEntryFromProgram = true;
+        switchSubject(it.id);
+        const tab = document.querySelector('.tab[data-view="review"]');
+        if (tab) tab.click();
+      });
+      list.appendChild(li);
+    });
+    if (more) {
+      more.hidden = items.length <= reinforceShown;
+      more.textContent = `Voir plus de boîtes (${items.length - Math.min(reinforceShown, items.length)} autres)`;
+    }
+  }
+  const reinforceMoreBtn = el("revision-reinforce-more");
+  if (reinforceMoreBtn) {
+    reinforceMoreBtn.addEventListener("click", () => {
+      reinforceShown += REINFORCE_PAGE_SIZE;
+      renderReinforceList();
+    });
   }
 
   function buildRevisionEventBlock(ev) {
@@ -10271,9 +10430,9 @@
    *  boîtes associées (sinon le programme serait vide) — désactivé sinon,
    *  avec la raison sous le libellé, répétée par le robot au clic. */
   function reviewHubAdvisedBlockReason() {
-    const upcoming = loadCalendarEvents().filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0);
-    if (upcoming.length === 0) return "Aucun évènement à venir dans le calendrier.";
-    if (upcomingEventsWithBoxes().length === 0) return "Aucun évènement à venir n'a de boîte associée.";
+    // Round 42 : la page a aussi « Renforcer mes connaissances », utile même
+    // sans échéance — bloquée seulement s'il n'y a aucune fiche à réviser.
+    if (revisionCards().length === 0) return "Tu n'as encore aucune fiche dans tes révisions.";
     return "";
   }
   function renderReviewHub() {
@@ -10294,7 +10453,7 @@
       const reason = reviewHubAdvisedBlockReason();
       if (reason) {
         renderReviewHub();
-        await robotAlert(`${reason} Ajoute une échéance (et les boîtes à réviser) dans le Calendrier pour que je te propose un programme.`);
+        await robotAlert(`${reason} Ajoute des boîtes à tes révisions pour que je te propose un programme.`);
         return;
       }
       const tab = document.querySelector('.tab[data-view="revision-program"]');
@@ -14343,16 +14502,20 @@
   /** Ajoute discrètement à la file en cours les fiches dues de la boîte active
    *  qui viennent d'arriver par la sync, sans jamais changer la fiche affichée. */
   function mergeNewDueCardsIntoQueue() {
-    if (!reviewSessionStarted || isBonusMode) return;
+    if (!reviewSessionStarted) return;
+    // Round 42 : la fiche affichée est choisie à chaque question parmi
+    // toutes les fiches de la boîte ; on ajoute seulement aux « fiches
+    // dues » de la séance celles arrivées par la sync et pas encore vues.
     const queueIds = new Set(reviewQueue.map((c) => c.id));
     const currentId = currentCard ? currentCard.id : null;
     const newlyDue = dueCards().filter(
-      (c) => c.id !== currentId && !queueIds.has(c.id)
+      (c) => c.id !== currentId && !queueIds.has(c.id) && !sessionState.seen.has(c.id) && !sessionState.dueAtStart.has(c.id)
     );
     if (newlyDue.length === 0) return;
+    newlyDue.forEach((c) => sessionState.dueAtStart.add(c.id));
     reviewQueue.push(...newlyDue);
     sessionTotalDue += newlyDue.length;
-    reviewProgressEl.textContent = `${sessionTotalDue - reviewQueue.length}/${sessionTotalDue} fiches revues aujourd'hui`;
+    renderSessionProgress();
     renderDuePill();
   }
 
@@ -14897,6 +15060,7 @@
         // connexion. On redéduplique donc une fois la synchro effectuée.
         await dedupeEmptySubjects();
         await purgeAutoGeneralBoxes();
+        await reconcileSprintState();
         renderSubjectSelect();
         renderStatsSubjectSelect();
         // Ne relance pas startReviewSession() ici : reconcileWithRemote() a déjà

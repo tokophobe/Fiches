@@ -427,8 +427,14 @@
          Réviser, qui conseille par ordre de priorité les boîtes/dossiers
          à exercer en fonction des échéances du calendrier. -->
     <section id="view-revision-program" class="view" aria-labelledby="tab-revision-program">
+      <h2 class="revision-section-title">Préparer les échéances proches</h2>
       <ul class="revision-event-list" id="revision-program-list"></ul>
-      <p class="chart-empty" id="revision-program-empty" hidden>Aucun évènement à venir avec des boîtes associées.</p>
+      <p class="chart-empty" id="revision-program-empty" hidden>Aucune échéance à venir avec des boîtes associées.</p>
+      <h2 class="revision-section-title">Renforcer mes connaissances</h2>
+      <p class="field-hint revision-section-hint">Les boîtes sur lesquelles tu es le plus en retard d'abord.</p>
+      <ul class="revision-event-list" id="revision-reinforce-list"></ul>
+      <p class="chart-empty" id="revision-reinforce-empty" hidden>Aucune autre boîte dans tes révisions.</p>
+      <button type="button" class="btn btn--ghost revision-reinforce-more" id="revision-reinforce-more" hidden>Voir plus de boîtes</button>
       <!-- Round 25, item 2 : bouton "Sélection manuelle" déplacé sur le
            palier Réviser (#view-review-hub). -->
     </section>
@@ -475,10 +481,9 @@
           <button class="card-icon-btn card-undo-btn" id="undo-rating-btn" type="button" hidden title="Revenir à la fiche précédente (annule la dernière évaluation)" aria-label="Annuler la dernière évaluation">◀️</button>
           <!-- Boutons secondaires repliés par défaut (item 1c) : un simple
                bouton "révéler" à la place, qui les fait apparaître. -->
-          <button class="card-icon-btn card-reveal-btn" id="reveal-secondary-icons-btn" type="button" title="Afficher les actions supplémentaires" aria-label="Afficher les actions supplémentaires (signaler, hibernation, éditer)"></button>
+          <button class="card-icon-btn card-reveal-btn" id="reveal-secondary-icons-btn" type="button" title="Afficher les actions supplémentaires" aria-label="Afficher les actions supplémentaires (signaler, éditer)"></button>
           <div id="secondary-icons-wrap" hidden>
-            <button class="card-icon-btn card-hibernate-btn" id="hibernate-current-btn" type="button" hidden title="Mettre cette fiche en hibernation" aria-label="Mettre cette fiche en hibernation">💤</button>
-            <button class="card-icon-btn card-construction-btn" id="construction-current-btn" type="button" hidden title="Signaler cette fiche" aria-label="Signaler cette fiche">🚩</button>
+                        <button class="card-icon-btn card-construction-btn" id="construction-current-btn" type="button" hidden title="Signaler cette fiche" aria-label="Signaler cette fiche">🚩</button>
             <button class="card-icon-btn card-edit-btn" id="edit-current-btn" type="button" hidden title="Modifier cette fiche" aria-label="Modifier cette fiche">✎</button>
           </div>
         </div>
@@ -1410,7 +1415,7 @@
         </label>
       </div>
 
-      <div class="card-form">
+      <div class="card-form" hidden>
         <h3 class="settings-block-title">Mode bonus — recul des fiches (en jours)</h3>
         <p class="field-hint settings-block-hint">
           Une fois les fiches du jour terminées, tu peux continuer en révision
@@ -1433,7 +1438,7 @@
         </div>
       </div>
 
-      <div class="card-form">
+      <div class="card-form" hidden>
         <h3 class="settings-block-title">Mode bonus — bouton « Encore »</h3>
         <p class="field-hint settings-block-hint">
           Que se passe-t-il quand tu réponds « Encore » à une fiche en
@@ -1448,7 +1453,7 @@
         </label>
       </div>
 
-      <div class="card-form">
+      <div class="card-form" hidden>
         <h3 class="settings-block-title">Hibernation 💤</h3>
         <p class="field-hint settings-block-hint">
           Le bouton hibernation, à côté du crayon sur une fiche, repousse sa
@@ -1601,33 +1606,12 @@
         <button type="button" class="btn btn--ghost" id="dev-review-layout-reset">Revenir à la disposition d'origine</button>
       </div>
 
-      <!-- Nouvel algorithme de révision (remplace SM-2/les modes K-M) :
-           NDI = maxi(DD*COEF_DD ; TE*COEF_TE), borné à
-           [PLANCHER ; mini(PLAFOND ; DD*COEF_DD)] ; PERS = NDI*ABAT. -->
+      <!-- Round 42 : algorithme de révision v2 (fond / sprint). -->
       <div class="card-form">
         <h3 class="settings-block-title">Algorithme de révision</h3>
-        <p class="field-hint settings-block-hint">NDI = maxi(DD×COEF_DD ; TE×COEF_TE), borné entre PLANCHER et mini(PLAFOND ; DD×COEF_DD). PERS = NDI×ABAT. Un bouton par colonne : Encore / Difficile / Bien / Excellent.</p>
+        <p class="field-hint settings-block-hint">Délais en minutes. Mode fond : NDI = (DD − TE) + TE × COEF_FOND, borné entre PLANCHER_FOND et PLAFOND_FOND. Mode sprint (boîte liée à une échéance à venir) : NDI = mini(D_P_ECH − D_P_ECH / COEF_SPRINT ; NDI fond), D_P_ECH comptée jusqu'à 8 h le jour de l'échéance la plus proche (30 min le jour même).</p>
         <div id="dev-revision-algo-list"></div>
-        <label class="field settings-bonus-field" style="margin-top:12px;">
-          <span>Délai initial à la création d'une fiche (minutes)</span>
-          <input type="number" step="1" id="dev-revision-algo-initial-delay" />
-        </label>
-        <p class="field-hint settings-block-hint" style="margin-top:12px;">Paliers des jauges de persistance (en jours) :</p>
-        <div class="algo-grid algo-grid--4">
-          <label class="field settings-bonus-field">
-            <span>Palier court terme</span>
-            <input type="number" step="0.1" id="dev-revision-algo-palierCourtTermeJ" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>Palier moyen terme</span>
-            <input type="number" step="0.1" id="dev-revision-algo-palierMoyenTermeJ" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>Palier long terme</span>
-            <input type="number" step="0.1" id="dev-revision-algo-palierLongTermeJ" />
-          </label>
-        </div>
-        <p class="field-hint settings-block-hint" style="margin-top:12px;">Couleurs de la jauge de persistance (gris clair → vert foncé) :</p>
+        <p class="field-hint settings-block-hint" style="margin-top:12px;">Couleurs de la jauge (dernière note de chaque fiche, jamais notée = 0) :</p>
         <div class="dev-color-list" id="dev-pers-gauge-colors-list"></div>
         <button type="button" class="btn btn--ghost" id="dev-revision-algo-reset" style="margin-top:12px;">Revenir aux valeurs par défaut</button>
       </div>
