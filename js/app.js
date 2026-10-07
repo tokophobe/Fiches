@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v194";
+  const APP_VERSION = "v195";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -631,7 +631,7 @@
   // uniquement s'ils restent référencés ailleurs, sinon retirés. Libellés
   // mis à jour pour "manage" (Mon bureau) et "classes" (École).
   const HOME_LAYOUT_TITLES = {
-    review: "Réviser", manage: "Fiches", addCard: "Ajouter une fiche",
+    review: "Réviser", manage: "Gérer mes fiches", addCard: "Ajouter une fiche",
     stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
     dev: "Développeur", classes: "École", account: "Compte",
     library: "Librairie",
@@ -686,6 +686,8 @@
     manage: ["Range ici tes boîtes dans des dossiers. Pour créer une nouvelle boîte, passe par « Mes créations de fiches »."],
     "manage-creations": ["Ici, seulement les boîtes que tu as créées toi-même. L'interrupteur ne garde que celles publiées dans la Librairie."],
     "creation-detail": [],
+    "report-card": ["Explique à l'auteur ce qui ne va pas dans cette fiche : il recevra ton message et pourra la corriger."],
+    reports: ["Voici les fiches que d'autres utilisateurs t'ont signalées. Corrige-les, puis marque le signalement comme traité."],
     "box-create": ["Donne un nom à ta boîte et classe-la : ce classement servira aux filtres, et sera repris si tu la publies dans la Librairie."],
     creations: ["Ici, toutes les boîtes que tu as créées. Publie-les dans la Librairie, ou ajoute-les à tes révisions pour les ranger dans Mes fiches de révision."],
     "fiches-hub": [],
@@ -721,7 +723,9 @@
     creations: "Mes créations de fiches",
     "box-create": "Mes créations — créer une boîte",
     "creation-detail": "Mes créations — page d'une boîte",
-    "fiches-hub": "Fiches (choix)",
+    "report-card": "Signaler une fiche à son auteur",
+    reports: "Signalements reçus",
+    "fiches-hub": "Gérer mes fiches (choix)",
     cards: "Fiches",
     stats: "Statistiques",
     sync: "Synchronisation",
@@ -1093,13 +1097,13 @@
     flipDurationSec: 0.7,
   };
   const DEFAULT_ICONS = {
-    hibernate: "💤", edit: "✎", construction: "🚧", undo: "◀️", folder: "📁",
+    hibernate: "💤", edit: "✎", construction: "🚩", undo: "◀️", folder: "📁",
   };
   // Choix par défaut dans la banque d'icônes pour ces mêmes réglages
   // (utilisé seulement pour les 4 premiers — le dossier reste en
   // émoticône, utilisé comme simple texte à trop d'endroits pour basculer
   // en SVG sans tout casser).
-  const DEFAULT_ICON_BANK_CHOICES = { hibernate: "sleep", edit: "pencil", construction: "cone", undo: "undo" };
+  const DEFAULT_ICON_BANK_CHOICES = { hibernate: "sleep", edit: "pencil", construction: "flag", undo: "undo" };
   // Icônes de la page Organisation (item 3) : renommer/déplacer/supprimer,
   // sobres, choisies dans la banque d'icônes.
   const DEFAULT_ORG_ICON_BANK_CHOICES = { orgRename: "pencil", orgMove: "move", orgDelete: "trash", orgBoite: "stackedSheets" };
@@ -1570,6 +1574,10 @@
       // affiché nulle part mais conservé pour référence/débogage.
       updatedAt: parsed.updatedAt,
     };
+    // Round 41 : le mode « chantier » devient « signaler » — anciennes
+    // icônes (barrière / cône) remplacées par le drapeau.
+    if (built.icons && built.icons.construction === "🚧") built.icons.construction = "🚩";
+    if (built.iconBank && built.iconBank.construction === "cone") built.iconBank.construction = "flag";
     return built;
   }
   /** Round 4, partie 3 : réglages STRICTEMENT locaux à cet appareil, TELS
@@ -1906,7 +1914,7 @@
     renderIconBankPicker(
       "dev-icon-bank-list",
       Object.keys(DEFAULT_ICON_BANK_CHOICES),
-      { hibernate: "Hibernation", edit: "Éditer", construction: "Chantier", undo: "Annuler" },
+      { hibernate: "Hibernation", edit: "Éditer", construction: "Signaler", undo: "Annuler" },
       "iconBank",
       applyIconSettings
     );
@@ -5989,7 +5997,7 @@
   if (constructionCurrentBtn) {
     constructionCurrentBtn.addEventListener("click", async () => {
       if (!currentCard) return;
-      await toggleUnderConstruction(currentCard.id);
+      await signalCard(currentCard.id);
       constructionCurrentBtn.classList.toggle("is-active-construction", !!currentCard.underConstruction);
     });
   }
@@ -6356,8 +6364,15 @@
     {
       const fromBox = cardsEntryFromCreations && subjects.some((x) => x.id === cardsScopeFilter);
       const addWrap = el("cards-add-card-wrap");
+      // Round 41 : plus de sélecteur de périmètre — juste le nom du dossier
+      // ou de la boîte.
       const scopeRow = document.querySelector("#view-cards .cards-scope-row");
-      if (scopeRow) scopeRow.hidden = fromBox;
+      if (scopeRow) scopeRow.hidden = true;
+      const scopeTitle = el("cards-scope-title");
+      if (scopeTitle) {
+        const isFolder = typeof cardsScopeFilter === "string" && cardsScopeFilter.startsWith("folder:");
+        scopeTitle.innerHTML = `${isFolder ? iconSvgMarkup("folder", "icon-inline-svg") : orgIconMarkup("orgBoite")} <span>${escapeHtml(cardsScopeLabel())}</span>`;
+      }
       if (addWrap) {
         addWrap.hidden = !fromBox;
         if (fromBox && !addWrap.firstChild) addWrap.innerHTML = roundAddCardButtonHtml();
@@ -6400,7 +6415,7 @@
       li.textContent = cardsSearchQuery
         ? "Aucune fiche ne correspond à cette recherche."
         : cardsConstructionFilter
-        ? "Aucune fiche « chantier » dans ce périmètre."
+        ? "Aucune fiche signalée dans ce périmètre."
         : "Aucune fiche pour l'instant. Ajoute la première ci-dessus.";
       cardListEl.appendChild(li);
       return;
@@ -6425,7 +6440,7 @@
 
       const q = document.createElement("p");
       q.className = "card-row-q";
-      q.innerHTML = (card.underConstruction ? "🚧 " : "") + toDisplayHtml(card.question);
+      q.innerHTML = (card.underConstruction ? "🚩 " : "") + toDisplayHtml(card.question);
 
       const a = document.createElement("p");
       a.className = "card-row-a";
@@ -6458,8 +6473,8 @@
       constructionBtn.className = "icon-btn" + (card.underConstruction ? " is-active-construction" : "");
       constructionBtn.type = "button";
       constructionBtn.innerHTML = getIconMarkupFor("construction");
-      constructionBtn.title = card.underConstruction ? "Retirer le signalement « à corriger »" : "Signaler comme fiche à corriger";
-      constructionBtn.addEventListener("click", () => toggleUnderConstruction(card.id));
+      constructionBtn.title = isReadonlyMirrorCard(card) ? "Signaler cette fiche à son auteur" : card.underConstruction ? "Retirer le signalement" : "Signaler cette fiche (à corriger)";
+      constructionBtn.addEventListener("click", () => signalCard(card.id));
 
       const delBtn = document.createElement("button");
       delBtn.className = "icon-btn icon-btn--danger";
@@ -8517,6 +8532,8 @@
       if (view === "messages") renderMessagesView();
       if (view === "library") renderLibraryView();
       if (view === "creations") renderCreationsView();
+      if (view === "reports") renderReportsView();
+      if (view === "fiches-hub") refreshReportsBadge();
       // Round 10, item 2 : resynchronise les collections prises dans la
       // Bibliothèque en ouvrant Mes collections — indépendant d'un Compte
       // connecté (prendre une collection publique n'en demande pas), donc
@@ -8556,10 +8573,12 @@
     sync: "Synchronisation",
     account: "Mon compte",
     "school-hub": "École",
-    "fiches-hub": "Fiches",
+    "fiches-hub": "Gérer mes fiches",
     creations: "Mes créations",
     "box-create": "Nouvelle boîte",
     "creation-detail": "Boîte",
+    "report-card": "Signaler",
+    reports: "Signalements",
     classes: "Classes",
     "classes-student": "Classes",
     "classes-join": "Rejoindre une classe",
@@ -8732,6 +8751,15 @@
       if (tab) tab.click();
       // Round 34 : retour sur la page détaillée de la boîte d'où l'on venait.
       if (creationDetailSubjectId && subjects.some((x) => x.id === creationDetailSubjectId)) openCreationDetail(creationDetailSubjectId);
+      return;
+    }
+    if (el("view-reports") && el("view-reports").classList.contains("is-active")) {
+      const tab = document.querySelector('.tab[data-view="fiches-hub"]');
+      if (tab) tab.click();
+      return;
+    }
+    if (el("view-report-card") && el("view-report-card").classList.contains("is-active")) {
+      closeReportCardView();
       return;
     }
     if (el("view-creation-detail") && el("view-creation-detail").classList.contains("is-active")) {
@@ -9214,6 +9242,11 @@
         const duration = (overflow / HOME_TICKER_SPEED_PX_PER_S) * 1000;
         line.style.transition = `transform ${duration}ms linear`;
         line.style.transform = `translateX(-${overflow + 8}px)`;
+        if (!(await homeTickerWait(duration, token))) return;
+        if (!(await homeTickerWait(HOME_TICKER_PAUSE_MS, token))) return;
+        // Round 41 : puis retour vers la gauche du texte (début du message),
+        // et nouvelle pause avant le message suivant.
+        line.style.transform = "translateX(0)";
         if (!(await homeTickerWait(duration, token))) return;
         if (!(await homeTickerWait(HOME_TICKER_PAUSE_MS, token))) return;
       } else if (!(await homeTickerWait(HOME_TICKER_PAUSE_MS, token))) {
@@ -11694,18 +11727,38 @@
    *  couleur différente.
    *  ------------------------------------------------------------- */
   const MESSAGES_LAST_READ_KEY = "fiches_messages_last_read";
+  /* Round 41 : « messages lus » gardés AUSSI dans le compte (métadonnées
+     de l'utilisateur), pas seulement sur l'appareil : avant, une
+     reconnexion (ou un autre appareil/navigateur) faisait réapparaître des
+     notifications pour des messages déjà lus. On garde, par discussion, la
+     date la plus récente entre l'appareil et le compte. */
   function loadMessagesLastRead() {
+    let local = {};
     try {
       const raw = JSON.parse(localStorage.getItem(MESSAGES_LAST_READ_KEY) || "{}");
-      return raw && typeof raw === "object" && !Array.isArray(raw) ? raw : {};
+      local = raw && typeof raw === "object" && !Array.isArray(raw) ? raw : {};
     } catch {
-      return {};
+      local = {};
     }
+    const remote = (accountCurrentUser && accountCurrentUser.user_metadata && accountCurrentUser.user_metadata.messages_last_read) || {};
+    const merged = { ...local };
+    Object.keys(remote).forEach((k) => {
+      if (!merged[k] || String(remote[k]) > String(merged[k])) merged[k] = remote[k];
+    });
+    return merged;
   }
+  let messagesLastReadPushTimer = null;
   function markClassMessagesRead(classId) {
     const map = loadMessagesLastRead();
     map[classId] = new Date().toISOString();
     localStorage.setItem(MESSAGES_LAST_READ_KEY, JSON.stringify(map));
+    if (accountCurrentUser) {
+      accountCurrentUser.user_metadata = { ...(accountCurrentUser.user_metadata || {}), messages_last_read: map };
+      clearTimeout(messagesLastReadPushTimer);
+      messagesLastReadPushTimer = setTimeout(() => {
+        if (Sync.auth && Sync.auth.updateMetadata) Sync.auth.updateMetadata({ messages_last_read: map }).catch(() => {});
+      }, 800);
+    }
   }
 
   /** Met à jour la pastille de notifications du bouton d'accueil
@@ -11715,6 +11768,7 @@
   // cercle d'accueil "Messagerie" (retiré) vers le cercle "École" et
   // apparaît aussi sur le bouton rond "Messagerie" du nouveau hub École.
   async function refreshMessagesBadge() {
+    refreshReportsBadge().catch(() => {});
     const homeBadge = el("home-school-badge");
     const hubBadge = el("school-hub-messages-badge");
     if (!homeBadge && !hubBadge) return;
@@ -13821,6 +13875,222 @@
 
   const creationsCreateBtn = el("creations-create-btn");
   if (creationsCreateBtn) creationsCreateBtn.addEventListener("click", () => createBoxFromCreations());
+
+  /* ---------------------------------------------------------
+     Round 41 : « Signaler » (ex-mode chantier).
+     - Fiche à soi : même comportement qu'avant (la fiche est marquée 🚩,
+       à corriger ; un nouvel appui retire la marque).
+     - Fiche de quelqu'un d'autre (boîte de classe, collection de la
+       Librairie) : une page s'ouvre pour écrire à l'auteur ; il reçoit le
+       message dans « Gérer mes fiches » → « Signalements ».
+  --------------------------------------------------------- */
+  function isReadonlyMirrorCard(card) {
+    const s = card && subjects.find((x) => x.id === card.subject);
+    return !!(s && (s.sharedBoxId || (s.fromLibrary && s.libraryOriginId)));
+  }
+  async function signalCard(cardId) {
+    const card = cards.find((c) => c.id === cardId);
+    if (!card) return;
+    if (isReadonlyMirrorCard(card)) {
+      await openReportCardView(card);
+      return;
+    }
+    await toggleUnderConstruction(cardId);
+  }
+
+  let reportCardContext = null; // { card, row, returnViewId }
+  async function openReportCardView(card) {
+    const s = subjects.find((x) => x.id === card.subject);
+    if (!s) return;
+    if (!Sync.isConfigured() || !accountCurrentUser) {
+      await robotAlert("Connecte-toi à ton compte pour signaler une fiche à son auteur.");
+      return;
+    }
+    let row = null;
+    let authorLabel = "";
+    try {
+      if (s.fromLibrary && s.libraryOriginId) {
+        const col = await Sync.library.get(s.libraryOriginId);
+        if (col && col.owner_id) {
+          row = { author_id: col.owner_id, source_kind: "library", source_id: String(col.id) };
+          authorLabel = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || "l'auteur de la collection";
+        }
+      } else if (s.sharedBoxId) {
+        const authorId = await Sync.reports.sharedBoxAuthor(s.sharedBoxId);
+        if (authorId) {
+          row = { author_id: authorId, source_kind: "class", source_id: String(s.sharedBoxId) };
+          authorLabel = s.sharedClassName ? `le professeur de « ${s.sharedClassName} »` : "ton professeur";
+        }
+      }
+    } catch (e) {
+      row = null;
+    }
+    if (!row) {
+      await robotAlert("Impossible de retrouver l'auteur de cette fiche (hors ligne ?). Réessaie plus tard.");
+      return;
+    }
+    if (row.author_id === accountCurrentUser.id) {
+      // Sa propre collection prise en Librairie : simple marque locale.
+      await toggleUnderConstruction(card.id);
+      return;
+    }
+    const current = document.querySelector(".view.is-active");
+    reportCardContext = { card, row: { ...row, box_name: s.name }, returnViewId: current ? current.id : "view-home" };
+    const meta = el("report-card-meta");
+    if (meta) meta.textContent = `Boîte « ${s.name} » — ton message sera envoyé à ${authorLabel}.`;
+    const preview = el("report-card-preview");
+    if (preview) {
+      preview.innerHTML = `<div class="report-card-q">${toDisplayHtml(card.question)}</div><div class="report-card-a">${toDisplayHtml(card.answer)}</div>`;
+    }
+    const msg = el("report-card-message");
+    if (msg) msg.value = "";
+    boitePickerActivateView("view-report-card");
+    const homeBtnEl = el("home-btn");
+    if (homeBtnEl) homeBtnEl.hidden = false;
+    if (el("body-logo-row")) el("body-logo-row").hidden = false;
+    applyBodyLogoSpeech("report-card");
+    if (msg) msg.focus();
+  }
+  function closeReportCardView() {
+    const back = (reportCardContext && reportCardContext.returnViewId) || "view-home";
+    reportCardContext = null;
+    if (back === "view-home") {
+      goHome();
+      return;
+    }
+    boitePickerActivateView(back);
+    applyBodyLogoSpeech(back.replace(/^view-/, ""));
+  }
+  const reportCardForm = el("report-card-form");
+  if (reportCardForm) {
+    reportCardForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!reportCardContext) return;
+      const msgEl = el("report-card-message");
+      const message = ((msgEl && msgEl.value) || "").trim();
+      if (!message) {
+        await robotAlert("Écris quelques mots pour expliquer à l'auteur ce qui ne va pas.");
+        return;
+      }
+      const meta = (accountCurrentUser && accountCurrentUser.user_metadata) || {};
+      const reporterName = `${meta.first_name || ""} ${meta.last_name || ""}`.trim() || (accountCurrentUser && accountCurrentUser.email) || "";
+      const { card, row } = reportCardContext;
+      const submitBtn = el("report-card-submit");
+      if (submitBtn) submitBtn.disabled = true;
+      const { error } = await Sync.reports.send({
+        ...row,
+        reporter_name: reporterName,
+        card_id: card.id,
+        card_question: stripHtmlFast(card.question).slice(0, 1000),
+        card_answer: stripHtmlFast(card.answer).slice(0, 1000),
+        message,
+      });
+      if (submitBtn) submitBtn.disabled = false;
+      if (error) {
+        await robotAlert(/card_reports|schema cache|relation/i.test(error) ? "Les signalements ne sont pas encore activés sur le serveur (supabase/card_reports_migration.sql)." : `Le signalement n'a pas pu être envoyé : ${error}`);
+        return;
+      }
+      closeReportCardView();
+      showToast("Signalement envoyé à l'auteur");
+    });
+  }
+  const reportCardCancel = el("report-card-cancel");
+  if (reportCardCancel) reportCardCancel.addEventListener("click", () => closeReportCardView());
+
+  /* Côté auteur : bouton rond « Signalements » (Gérer mes fiches), pastille
+     rouge des signalements non lus (aussi sur « Gérer mes fiches » de
+     l'accueil), et page qui les liste. */
+  async function refreshReportsBadge() {
+    const hubBtn = el("fiches-hub-reports-btn");
+    const hubBadge = el("fiches-hub-reports-badge");
+    const homeBadge = el("home-reports-badge");
+    if (!Sync.isConfigured() || !accountCurrentUser || !Sync.reports) {
+      if (hubBtn) hubBtn.hidden = true;
+      if (homeBadge) homeBadge.hidden = true;
+      return;
+    }
+    const { open, unread } = await Sync.reports.countMine();
+    const text = unread > 99 ? "99+" : String(unread);
+    if (hubBtn) hubBtn.hidden = open <= 0;
+    if (hubBadge) {
+      hubBadge.hidden = unread <= 0;
+      hubBadge.textContent = text;
+    }
+    if (homeBadge) {
+      homeBadge.hidden = unread <= 0;
+      homeBadge.textContent = text;
+    }
+  }
+  function formatReportDate(iso) {
+    try {
+      return new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
+    } catch {
+      return "";
+    }
+  }
+  async function renderReportsView() {
+    const list = el("reports-list");
+    const empty = el("reports-empty");
+    if (!list) return;
+    list.innerHTML = `<li class="field-hint">Chargement…</li>`;
+    const reports = await Sync.reports.listMine();
+    list.innerHTML = "";
+    if (empty) empty.hidden = reports.length > 0;
+    reports.forEach((r) => {
+      const local = cards.find((c) => c.id === r.card_id && !c.deleted && !isReadonlyMirrorCard(c));
+      const li = document.createElement("li");
+      li.className = "subject-row report-row" + (r.read_at ? "" : " report-row--unread");
+      li.innerHTML = `
+        <div class="report-row-head">
+          <span class="report-row-box">${orgIconMarkup("orgBoite")} ${escapeHtml(r.box_name || "Boîte")}</span>
+          <span class="report-row-date">${escapeHtml(formatReportDate(r.created_at))}</span>
+        </div>
+        <div class="report-row-card"><span class="report-row-label">Fiche :</span> ${escapeHtml(r.card_question || "")}</div>
+        <blockquote class="report-row-message">${escapeHtml(r.message || "")}</blockquote>
+        <div class="report-row-from">— ${escapeHtml(r.reporter_name || "un utilisateur")}</div>
+        <div class="library-row-actions">
+          ${local ? `<button type="button" class="btn btn--small btn--ghost" data-act="edit">Corriger la fiche</button>` : ""}
+          <button type="button" class="btn btn--small btn--ghost" data-act="done">Marquer comme traité</button>
+        </div>`;
+      const editBtn = li.querySelector('[data-act="edit"]');
+      if (editBtn) editBtn.addEventListener("click", () => enterEditMode(local));
+      li.querySelector('[data-act="done"]').addEventListener("click", async () => {
+        const { error } = await Sync.reports.resolve(r.id);
+        if (error) {
+          await robotAlert(`Impossible de marquer ce signalement comme traité : ${error}`);
+          return;
+        }
+        li.remove();
+        if (empty) empty.hidden = list.children.length > 0;
+        refreshReportsBadge();
+      });
+      list.appendChild(li);
+    });
+    const unreadIds = reports.filter((r) => !r.read_at).map((r) => r.id);
+    if (unreadIds.length) {
+      await Sync.reports.markRead(unreadIds);
+      refreshReportsBadge();
+    }
+  }
+  const fichesHubReportsBtn = el("fiches-hub-reports-btn");
+  if (fichesHubReportsBtn) {
+    fichesHubReportsBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="reports"]');
+      if (tab) tab.click();
+    });
+  }
+
+  const creationsSearchToggle = el("creations-search-toggle");
+  if (creationsSearchToggle) {
+    creationsSearchToggle.addEventListener("click", () => {
+      const panel = el("creations-search-panel");
+      if (!panel) return;
+      panel.hidden = !panel.hidden;
+      creationsSearchToggle.setAttribute("aria-expanded", String(!panel.hidden));
+      creationsSearchToggle.classList.toggle("is-open", !panel.hidden);
+      if (!panel.hidden && el("creations-search-input")) el("creations-search-input").focus();
+    });
+  }
   const creationsSearchInput = el("creations-search-input");
   if (creationsSearchInput) {
     creationsSearchInput.addEventListener("input", () => {

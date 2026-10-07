@@ -311,8 +311,9 @@
     <button class="tab" role="tab" aria-selected="false" data-view="review-hub" hidden>Réviser</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Programme</button>
     <button class="tab" role="tab" aria-selected="false" data-view="school-hub" hidden>École</button>
-    <button class="tab" role="tab" aria-selected="false" data-view="fiches-hub" hidden>Fiches</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="fiches-hub" hidden>Gérer mes fiches</button>
     <button class="tab" role="tab" aria-selected="false" data-view="creations" hidden>Mes créations</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="reports" hidden>Signalements</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes" hidden>Classes</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes-join" hidden>Rejoindre une classe</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes-create" hidden>Créer une classe</button>
@@ -356,9 +357,10 @@
              mener les clics de ligne vers Fiches (cf. #view-manage). -->
         <button type="button" class="home-circle" data-key="manage" data-go="fiches-hub">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
-          <!-- Round 18, item 1 : "Mon bureau" -> "Fiches" (même data-key/
-               data-go, pour ne rien casser). -->
-          <span>Fiches</span>
+          <!-- Round 18, item 1 : "Mon bureau" -> "Fiches" ; round 41 :
+               "Fiches" -> "Gérer mes fiches" (même data-key/data-go). -->
+          <span>Gérer mes fiches</span>
+          <span class="home-circle-badge" id="home-reports-badge" hidden>0</span>
         </button>
         <!-- Round 13, item 4 : "École" remplace "Classes" et mène désormais
              au nouveau hub (#view-school-hub) plutôt qu'à la page Classes
@@ -473,10 +475,10 @@
           <button class="card-icon-btn card-undo-btn" id="undo-rating-btn" type="button" hidden title="Revenir à la fiche précédente (annule la dernière évaluation)" aria-label="Annuler la dernière évaluation">◀️</button>
           <!-- Boutons secondaires repliés par défaut (item 1c) : un simple
                bouton "révéler" à la place, qui les fait apparaître. -->
-          <button class="card-icon-btn card-reveal-btn" id="reveal-secondary-icons-btn" type="button" title="Afficher les actions supplémentaires" aria-label="Afficher les actions supplémentaires (chantier, hibernation, éditer)"></button>
+          <button class="card-icon-btn card-reveal-btn" id="reveal-secondary-icons-btn" type="button" title="Afficher les actions supplémentaires" aria-label="Afficher les actions supplémentaires (signaler, hibernation, éditer)"></button>
           <div id="secondary-icons-wrap" hidden>
             <button class="card-icon-btn card-hibernate-btn" id="hibernate-current-btn" type="button" hidden title="Mettre cette fiche en hibernation" aria-label="Mettre cette fiche en hibernation">💤</button>
-            <button class="card-icon-btn card-construction-btn" id="construction-current-btn" type="button" hidden title="Signaler comme fiche à corriger" aria-label="Signaler ou retirer cette fiche comme à corriger">🚧</button>
+            <button class="card-icon-btn card-construction-btn" id="construction-current-btn" type="button" hidden title="Signaler cette fiche" aria-label="Signaler cette fiche">🚩</button>
             <button class="card-icon-btn card-edit-btn" id="edit-current-btn" type="button" hidden title="Modifier cette fiche" aria-label="Modifier cette fiche">✎</button>
           </div>
         </div>
@@ -570,7 +572,10 @@
            « + Ajouter une fiche », et plus de sélecteur de périmètre. -->
       <div class="round-add-card-wrap" id="cards-add-card-wrap" hidden></div>
 
-      <div class="cards-scope-row">
+      <!-- Round 41 : à la place de « Afficher / chercher dans » + sélecteur,
+           juste le nom du dossier ou de la boîte concernée. -->
+      <p class="cards-scope-title" id="cards-scope-title"></p>
+      <div class="cards-scope-row" hidden>
         <label class="import-target-label" for="cards-scope-select-btn">Afficher / chercher dans :</label>
         <button type="button" class="subject-select-btn subject-select-btn--prominent" id="cards-scope-select-btn" aria-label="Choisir le périmètre d'affichage et de recherche"></button>
         <p class="cards-scope-summary" id="cards-scope-summary" hidden></p>
@@ -583,14 +588,14 @@
       </div>
 
       <label class="field cards-search-field">
-        <span>Rechercher</span>
+        <span>Rechercher une fiche</span>
         <input type="search" id="cards-search-input" placeholder="Mot-clé dans la question ou la réponse…" />
       </label>
 
       <div class="card-list-header">
         <h2 class="section-title card-list-title">Fiches (<span id="total-count">0</span>)</h2>
-        <button type="button" class="construction-filter-btn" id="construction-filter-btn" title="N'afficher que les fiches « chantier »">
-          <span id="construction-filter-icon">🚧</span>
+        <button type="button" class="construction-filter-btn" id="construction-filter-btn" title="N'afficher que les fiches signalées">
+          <span id="construction-filter-icon">🚩</span>
           <span class="construction-filter-badge" id="construction-filter-badge" hidden>0</span>
         </button>
       </div>
@@ -1044,6 +1049,15 @@
           </span>
           <span>Mes créations de fiches</span>
         </button>
+        <!-- Round 41 : signalements reçus (fiches de mes boîtes partagées ou
+             publiées, signalées par d'autres) — visible seulement s'il y en a. -->
+        <button type="button" class="classes-role-circle fiches-hub-reports-btn" id="fiches-hub-reports-btn" hidden>
+          <span class="classes-role-circle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M4 22V3"/><path d="M4 4h14l-2 4 2 4H4"/></svg>
+          </span>
+          <span>Signalements</span>
+          <span class="home-circle-badge" id="fiches-hub-reports-badge" hidden>0</span>
+        </button>
       </div>
     </section>
 
@@ -1055,10 +1069,21 @@
       <div class="library-title-row">
         <h2 class="section-title" style="margin:0;">Mes créations de fiches</h2>
       </div>
-      <button type="button" class="btn btn--primary creations-create-btn" id="creations-create-btn">+ Créer une boîte</button>
-      <div class="library-taxonomy-filters" id="creations-filter-taxonomy" hidden></div>
-      <div class="tag-input tag-input--filter" id="creations-filter-tags" hidden></div>
-      <input type="search" id="creations-search-input" class="library-search-input" placeholder="Rechercher une boîte…" />
+      <!-- Round 41 : même bouton rond que « + Ajouter une fiche ». -->
+      <div class="round-add-card-wrap">
+        <button type="button" class="round-add-card-btn" id="creations-create-btn" aria-label="Créer une boîte">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Créer une boîte</span>
+        </button>
+      </div>
+      <!-- Round 41 : filtres de classement, tags et mots clés repliés derrière
+           « Rechercher une boîte » (les puces d'état restent visibles). -->
+      <button type="button" class="creations-search-toggle" id="creations-search-toggle" aria-expanded="false">Rechercher une boîte</button>
+      <div class="creations-search-panel" id="creations-search-panel" hidden>
+        <div class="library-taxonomy-filters" id="creations-filter-taxonomy" hidden></div>
+        <div class="tag-input tag-input--filter" id="creations-filter-tags" hidden></div>
+        <input type="search" id="creations-search-input" class="library-search-input" placeholder="Mots clés" aria-label="Mots clés" />
+      </div>
       <!-- Round 34 : filtres d'état, combinables (un de chaque ligne). -->
       <div class="creations-status-chips" id="creations-status-chips">
         <button type="button" class="creations-chip" data-group="pub" data-value="published" aria-pressed="false">Publiées</button>
@@ -1068,6 +1093,31 @@
       </div>
       <ul class="subject-list" id="creations-list"></ul>
       <p class="field-hint" id="creations-empty" hidden>Tu n'as pas encore créé de boîte.</p>
+    </section>
+
+    <!-- Round 41 : signaler une fiche à son auteur (fiche d'une boîte de
+         classe ou d'une collection de la Librairie). -->
+    <section id="view-report-card" class="view">
+      <form class="card-form" id="report-card-form">
+        <h3 class="settings-block-title">Signaler une fiche à son auteur</h3>
+        <p class="field-hint" id="report-card-meta"></p>
+        <div class="report-card-preview" id="report-card-preview"></div>
+        <label class="field">
+          <span>Ton message à l'auteur</span>
+          <textarea id="report-card-message" rows="5" maxlength="2000" placeholder="Explique ce qui ne va pas : erreur, faute, réponse incomplète…"></textarea>
+        </label>
+        <div class="form-actions" style="margin-top:0;">
+          <button type="submit" class="btn btn--primary" id="report-card-submit">Envoyer</button>
+          <button type="button" class="btn btn--ghost" id="report-card-cancel">Annuler</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Round 41 : signalements reçus par l'auteur. -->
+    <section id="view-reports" class="view" aria-labelledby="tab-reports">
+      <h2 class="section-title">Signalements</h2>
+      <ul class="subject-list" id="reports-list"></ul>
+      <p class="field-hint" id="reports-empty" hidden>Aucun signalement en attente.</p>
     </section>
 
     <!-- Round 34 : page détaillée d'une boîte de Mes créations. -->

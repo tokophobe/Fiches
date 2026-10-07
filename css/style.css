@@ -5767,3 +5767,117 @@ body.is-view-library {
 .round-add-card-btn:active {
   transform: scale(0.96);
 }
+
+/* Round 41 : nom du dossier / de la boîte en tête de la liste des fiches. */
+.cards-scope-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.cards-scope-title .icon-inline-svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Round 41 : lien « Rechercher une boîte » (Mes créations). */
+.creations-search-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 4px 0;
+  margin: 0 0 8px;
+  color: var(--blue, #4a90d9);
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.creations-search-toggle::after {
+  content: "▾";
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+.creations-search-toggle.is-open::after {
+  transform: rotate(180deg);
+}
+.creations-search-panel[hidden] { display: none; }
+
+/* ============================================================
+   Round 41 : signaler une fiche / signalements reçus.
+   ============================================================ */
+.classes-role-circle { position: relative; }
+.classes-role-circle .home-circle-badge {
+  top: 6px;
+  right: 10px;
+}
+.report-card-preview {
+  border: 1px solid var(--rule, #d5dce6);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 8px 0 12px;
+  background: var(--paper-2, #f4f7fb);
+}
+.report-card-q {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.report-card-a {
+  color: var(--ink-soft, #5b6472);
+}
+.report-row {
+  padding: 12px 14px;
+}
+.report-row--unread {
+  border-left: 4px solid var(--red, #c0392b);
+}
+.report-row-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-weight: 700;
+}
+.report-row-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.report-row-date {
+  flex-shrink: 0;
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--ink-soft, #5b6472);
+}
+.report-row-card {
+  margin-top: 6px;
+  font-size: 14px;
+}
+.report-row-label {
+  color: var(--ink-soft, #5b6472);
+}
+.report-row-message {
+  margin: 8px 0 4px;
+  padding: 8px 10px;
+  border-left: 3px solid var(--blue, #4a90d9);
+  background: var(--paper-2, #f4f7fb);
+  border-radius: 6px;
+  font-style: italic;
+}
+.report-row-from {
+  font-size: 12px;
+  color: var(--ink-soft, #5b6472);
+}
+.classes-role-circle[hidden],
+.home-circle-badge[hidden],
+.cards-scope-row[hidden] { display: none !important; }

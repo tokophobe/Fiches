@@ -376,6 +376,64 @@ async function pullFolders() {
   return pullTable("folders", rowToFolder);
 }
 
+/* ---------------------------------------------------------
+   Round 41 : signalements de fiches à leur auteur (table card_reports,
+   voir supabase/card_reports_migration.sql). L'élève qui signale une fiche
+   d'une boîte de classe ou d'une collection de la Librairie écrit un
+   message ; l'auteur le reçoit (bouton « Signalements »).
+--------------------------------------------------------- */
+async function sendCardReport(report) {
+  const c = getClient();
+  const uid = currentUid();
+  if (!c || !uid) return { error: "non connecté" };
+  const { error } = await c.from("card_reports").insert({ ...report, reporter_id: uid });
+  return { error: error ? error.message : null };
+}
+async function listMyCardReports() {
+  const c = getClient();
+  const uid = currentUid();
+  if (!c || !uid) return [];
+  const { data, error } = await c
+    .from("card_reports")
+    .select("*")
+    .eq("author_id", uid)
+    .eq("resolved", false)
+    .order("created_at", { ascending: false });
+  if (error) {
+    console.warn("Signalements : lecture impossible", error.message);
+    return [];
+  }
+  return data || [];
+}
+async function countMyCardReports() {
+  const c = getClient();
+  const uid = currentUid();
+  if (!c || !uid) return { open: 0, unread: 0 };
+  const { data, error } = await c.from("card_reports").select("id, read_at").eq("author_id", uid).eq("resolved", false);
+  if (error) return { open: 0, unread: 0 };
+  return { open: (data || []).length, unread: (data || []).filter((r) => !r.read_at).length };
+}
+async function markCardReportsRead(ids) {
+  const c = getClient();
+  if (!c || !ids || !ids.length) return { error: null };
+  const { error } = await c.from("card_reports").update({ read_at: new Date().toISOString() }).in("id", ids);
+  return { error: error ? error.message : null };
+}
+async function resolveCardReport(id) {
+  const c = getClient();
+  if (!c) return { error: "non connecté" };
+  const { error } = await c.from("card_reports").update({ resolved: true, read_at: new Date().toISOString() }).eq("id", id);
+  return { error: error ? error.message : null };
+}
+/** Auteur d'une boîte partagée à une classe (le prof qui l'a partagée). */
+async function sharedBoxAuthor(boxId) {
+  const c = getClient();
+  if (!c || !boxId) return null;
+  const { data, error } = await c.from("shared_boxes").select("shared_by").eq("id", boxId).maybeSingle();
+  if (error || !data) return null;
+  return data.shared_by || null;
+}
+
 /** Round 37 : envoi groupé (import des boîtes toutes prêtes : des
  *  milliers de fiches d'un coup — une requête par lot de 200 au lieu
  *  d'une par fiche). En cas d'échec, les fiches du lot passent en attente. */
@@ -1173,6 +1231,9 @@ async function countUnreadClassMessages(classId, sinceIso) {
   if (!c) return 0;
   let q = c.from("class_messages").select("id", { count: "exact", head: true }).eq("class_id", classId);
   if (sinceIso) q = q.gt("created_at", sinceIso);
+  // Round 41 : ses propres messages ne sont jamais « non lus ».
+  const meId = currentUid();
+  if (meId) q = q.neq("sender_id", meId);
   const { count, error } = await q;
   if (error) {
     console.warn("Messagerie : échec du comptage des messages non lus", error.message);
@@ -1286,6 +1347,14 @@ window.Sync = {
     getLastMessage: getLastClassMessage,
   },
   pushCardsBulk,
+  reports: {
+    send: sendCardReport,
+    listMine: listMyCardReports,
+    countMine: countMyCardReports,
+    markRead: markCardReportsRead,
+    resolve: resolveCardReport,
+    sharedBoxAuthor,
+  },
   library: {
     share: shareCollectionToLibrary,
     list: listLibraryCollections,
