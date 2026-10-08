@@ -6176,3 +6176,142 @@ body.layout-v2 #view-class-detail .class-detail-section-action {
    les sous-niveaux (seul le retrait à gauche reste) : les flèches de menu
    s'alignent toutes sur le bord droit. */
 body.layout-v2 #view-manage .org-children { margin-right: 0; }
+
+/* ==================================================================
+   Round 46 : couleur unique des actions (celle de « + NOUVEAU DOSSIER »),
+   « ← Retour » sous le robot, titres à droite, page des fiches épurée,
+   Révisions conseillées en deux parties bien distinctes.
+   ================================================================== */
+:root { --action-color: var(--ink-soft); }
+
+/* « ← Retour » sous le robot, même style que « + NOUVEAU DOSSIER ». */
+.nav-back-row { display: flex; margin: -6px 0 4px; }
+.nav-back-row:has(.nav-back-link[hidden]) { display: none; }
+.nav-back-link {
+  color: var(--action-color);
+  font-size: 11.5px;
+  padding: 4px 2px;
+}
+/* Titre de la page aligné à droite. */
+.page-header-title { text-align: right; }
+
+/* --- Plus de bleu dans les boutons et liens texte ---------------- */
+/* Liens texte / boutons secondaires. */
+#calendar-add-event-btn,
+.class-detail-section-action,
+#creations-search-toggle,
+.creations-search-toggle,
+.body-logo-speech-prev,
+.body-logo-speech-next,
+body.layout-v2 #view-creations .round-add-card-btn,
+body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) .classes-role-circle,
+body.layout-v2 #view-revision-program .revision-event-go,
+body.layout-v2 #view-class-detail .class-detail-section-action {
+  color: var(--action-color);
+}
+.class-detail-section-action { border-color: var(--rule-soft); }
+.creations-search-toggle {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 6px 2px;
+}
+/* Boutons pleins : même gris, texte clair. */
+.btn--primary,
+.revision-event-go,
+#boite-picker-confirm,
+#submit-btn,
+.round-add-card-btn,
+#home-new-card-btn,
+.org-display-toggle-btn.is-active,
+.manage-sticky-actions .org-display-toggle-btn.is-active {
+  background: var(--action-color);
+  color: var(--paper);
+}
+body.layout-v2 #view-creations .round-add-card-btn,
+body.layout-v2 #view-revision-program .revision-event-go { background: transparent; }
+.body-logo-help-btn { border-color: var(--action-color); color: var(--action-color); }
+.classes-role-circle--v2 { outline-color: var(--action-color); }
+.usage-option:has(input:checked), .usage-option.is-selected { border-color: var(--action-color); }
+.creations-chip.is-active, .creations-chip[aria-pressed="true"] { border-color: var(--action-color); color: var(--action-color); }
+
+/* --- Page des fiches d'une boîte / d'un dossier : style épuré ---- */
+#view-cards .card-list { gap: 0; }
+#view-cards .card-row {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  border-left: none;
+  border-bottom: 1px solid var(--rule-soft);
+  padding: 14px 6px;
+}
+#view-cards .card-row:last-child { border-bottom: none; }
+#view-cards .card-row-a { border-left: none; padding-left: 0; }
+#view-cards .card-row-score { background: transparent; top: 14px; right: 6px; }
+#view-cards .card-list-header .card-list-title { font-size: 15px; font-weight: 400; }
+
+/* --- Réviser : boîte de la fiche en cours + jauge moyenne ---------- */
+#view-review .subject-select-btn,
+#view-review #subject-choice-menu { display: none !important; }
+#view-review .review-gauge-wrap { display: none; }
+.review-current-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+.review-current-box[hidden] { display: none; }
+.review-current-box-name {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-type);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--main-text-color, var(--ink));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.review-current-box-gauge { flex-shrink: 0; display: flex; }
+
+/* --- Révisions conseillées : deux parties bien distinctes ---------- */
+#view-revision-program .revision-section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 26px 0 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--paper-2, rgba(31, 41, 55, 0.06));
+  border-left: 4px solid var(--action-color);
+}
+#view-revision-program .revision-section-title:first-child { margin-top: 4px; }
+#view-revision-program .revision-section-title::before {
+  flex-shrink: 0;
+  font-size: 16px;
+  text-transform: none;
+}
+#view-revision-program .revision-section-title:first-of-type::before { content: "📅"; }
+#view-revision-program .revision-section-title:not(:first-of-type)::before { content: "💪"; }
+#view-revision-program .revision-section-hint { margin: -4px 4px 10px; }
+body.layout-v2 #view-revision-program .revision-section-title {
+  margin: 26px 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+body.layout-v2 #view-revision-program .revision-section-title:first-child { margin-top: 4px; }
+.revision-event-gauge, .creation-detail-gauge { display: flex; justify-content: flex-start; }

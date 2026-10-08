@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v199";
+  const APP_VERSION = "v200";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -3542,9 +3542,10 @@
     // Le préfixe "Nom de la boîte :" reste toujours en texte échappé (pas
     // question qu'un nom de boîte contenant "<" casse l'affichage) ; la
     // question elle-même passe par toDisplayHtml (item 13 : contenu riche).
-    questionTextEl.innerHTML = isSentinelSubject(currentSubjectId)
-      ? `<strong class="card-subject-hint">${escapeHtml(subjectName(card.subject))}</strong><br><br>${toDisplayHtml(card.question)}`
-      : toDisplayHtml(card.question);
+    // Round 46 : le nom de la boîte n'est plus dans la fiche mais au-dessus
+    // (à la place du sélecteur de boîtes), avec sa jauge.
+    questionTextEl.innerHTML = toDisplayHtml(card.question);
+    renderReviewCurrentBox(card);
     renderSubjectBarCount();
     const constructionBtn = el("construction-current-btn");
     if (constructionBtn) {
@@ -4217,9 +4218,11 @@
       // Round 13, item 3-2 : un clic sur un dossier mène désormais à la
       // page Fiches (au lieu de Réviser) — Accueil depuis Fiches ramène
       // alors ici.
+      // Round 46 : un clic sur le nom du dossier le déplie / replie (comme
+      // la flèche) au lieu d'ouvrir la liste de ses fiches.
+      nameBtn.title = "Déplier / replier ce dossier";
       nameBtn.addEventListener("click", () => {
-        cardsEntryFromManage = true;
-        goToCardsFor(`folder:${f.id}`);
+        if (expandBtn) expandBtn.click();
       });
 
       const childCount = folders.filter((x) => x.parentId === f.id).length + subjects.filter((x) => x.folderId === f.id && isSubjectInRevisions(x)).length;
@@ -5562,10 +5565,28 @@
     return REVISION_PROGRAM_TARGET_SCORE;
   }
   function renderReviewGauge() {
+    // Round 46 : plus de grande jauge sous la fiche — jauge moyenne de la
+    // boîte de la fiche en cours, à côté de son nom (renderReviewCurrentBox).
     const wrap = el("review-gauge-wrap");
-    if (!wrap) return;
-    const pool = subjectCards();
-    wrap.innerHTML = buildPersGaugeSvg(pool, { width: 300, barHeight: 18, showLabels: true });
+    if (wrap) wrap.innerHTML = "";
+    renderReviewCurrentBox(currentCard);
+  }
+  function renderReviewCurrentBox(card) {
+    const box = el("review-current-box");
+    if (!box) return;
+    const onReview = el("view-review") && el("view-review").classList.contains("is-active");
+    if (!card || card.deleted || (!onReview && !card)) {
+      box.hidden = true;
+      return;
+    }
+    box.hidden = false;
+    const nameEl = el("review-current-box-name");
+    if (nameEl) nameEl.textContent = subjectName(card.subject);
+    const gaugeEl = el("review-current-box-gauge");
+    if (gaugeEl) {
+      const pool = cards.filter((c) => !c.deleted && c.subject === card.subject);
+      gaugeEl.innerHTML = buildPersGaugeSvg(pool, { width: 120, barHeight: 10 });
+    }
   }
 
   function renderDuePill() {
@@ -5744,6 +5765,7 @@
     const pool = subjectCards();
     if (pool.length === 0) {
       currentCard = null;
+      if (el("review-current-box")) el("review-current-box").hidden = true;
       emptyStateEl.hidden = false;
       cardStackEl.hidden = true;
       editCurrentBtn.hidden = true;
@@ -10543,7 +10565,7 @@
           }</span>
         </div>
         <div class="revision-event-date">${n} fiche${n > 1 ? "s" : ""}</div>
-        <div class="revision-event-gauge">${buildPersGaugeSvg(it.pool, { width: 260, barHeight: 10 })}</div>
+        <div class="revision-event-gauge">${buildPersGaugeSvg(it.pool, { width: 70, barHeight: 8 })}</div>
         <button type="button" class="btn btn--primary revision-event-go">Réviser cette boîte</button>
       `;
       li.querySelector(".revision-event-go").addEventListener("click", () => {
@@ -10609,7 +10631,7 @@
       });
       const ids = selectedIds();
       const pool = cards.filter((c) => !c.deleted && ids.includes(c.subject));
-      gaugeEl.innerHTML = pool.length > 0 ? buildPersGaugeSvg(pool, { width: 260, barHeight: 10 }) : "";
+      gaugeEl.innerHTML = pool.length > 0 ? buildPersGaugeSvg(pool, { width: 70, barHeight: 8 }) : "";
       goBtn.disabled = pool.length === 0;
       goBtn.textContent =
         ids.length === 0
@@ -14154,7 +14176,7 @@
         ${tags.length ? `<dt>Tags</dt><dd><span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span></dd>` : ""}
         ${created ? `<dt>Créée le</dt><dd>${escapeHtml(created)}</dd>` : ""}
       </dl>
-      ${pool ? `<div class="creation-detail-gauge">${buildPersGaugeSvg(pool, { width: 260, barHeight: 10 })}</div>` : ""}
+      ${pool ? `<div class="creation-detail-gauge">${buildPersGaugeSvg(pool, { width: 70, barHeight: 8 })}</div>` : ""}
       <div class="creation-detail-actions">
         <button type="button" class="btn btn--ghost" data-act="cards">Voir les fiches</button>
         <button type="button" class="btn btn--ghost" data-act="publish">${col ? `Voir dans la Librairie · ${priceTokens > 0 ? `${priceTokens} jeton${priceTokens > 1 ? "s" : ""}` : "gratuite"}` : "Publier dans la Librairie"}</button>

@@ -166,9 +166,6 @@
       <button type="button" class="btn btn--ghost home-btn" id="home-btn" title="Retour à l'accueil" aria-label="Retour à l'accueil" hidden>
         <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
       </button>
-      <!-- Round 45 : même navigation sur toutes les pages — « ← Retour »
-           (page précédente) à côté du bouton Accueil (page d'accueil). -->
-      <button type="button" class="nav-back-link" id="nav-back-btn" title="Revenir à la page précédente" aria-label="Revenir à la page précédente" hidden>← Retour</button>
     </div>
     <div class="header-right">
       <!-- Round 14 : petit logo "darwin" dans le bandeau du haut, entre le
@@ -252,6 +249,10 @@
         <button type="button" class="body-logo-speech-next" id="body-logo-speech-next" hidden>Suite →</button>
       </div>
     </div>
+  </div>
+  <!-- Round 46 : « ← Retour » juste sous le robot (page précédente). -->
+  <div class="nav-back-row">
+    <button type="button" class="nav-back-link" id="nav-back-btn" title="Revenir à la page précédente" aria-label="Revenir à la page précédente" hidden>← Retour</button>
   </div>
 
   <!-- Round 18, item 2 : le bloc d'actions de "Fiches" (+ Nouveau dossier,
@@ -461,6 +462,12 @@
     <section id="view-review" class="view" aria-labelledby="tab-review">
       <div class="subject-bar" id="subject-bar">
         <button type="button" class="subject-select-btn" id="subject-select-btn" aria-label="Choisir les boîtes à réviser"></button>
+        <!-- Round 46 : à la place du sélecteur (masqué), la boîte de la fiche
+             en cours et sa jauge (taille moyenne). -->
+        <div class="review-current-box" id="review-current-box" hidden>
+          <span class="review-current-box-name" id="review-current-box-name"></span>
+          <span class="review-current-box-gauge" id="review-current-box-gauge"></span>
+        </div>
 
         <div class="subject-choice-menu" id="subject-choice-menu" hidden>
           <button type="button" class="subject-choice-item" id="subject-choice-all">Toutes les boîtes</button>
@@ -1118,14 +1125,15 @@
         <div class="library-taxonomy-filters" id="creations-filter-taxonomy" hidden></div>
         <div class="tag-input tag-input--filter" id="creations-filter-tags" hidden></div>
         <input type="search" id="creations-search-input" class="library-search-input" placeholder="Mots clés" aria-label="Mots clés" />
+        <!-- Round 34 : filtres d'état, combinables. Round 46 : rangés dans « Rechercher une boîte ». -->
+        <div class="creations-status-chips" id="creations-status-chips">
+          <button type="button" class="creations-chip" data-group="pub" data-value="published" aria-pressed="false">Publiées</button>
+          <button type="button" class="creations-chip" data-group="pub" data-value="unpublished" aria-pressed="false">Non publiées</button>
+          <button type="button" class="creations-chip" data-group="rev" data-value="in" aria-pressed="false">Dans mes révisions</button>
+          <button type="button" class="creations-chip" data-group="rev" data-value="out" aria-pressed="false">Pas dans mes révisions</button>
+        </div>
       </div>
-      <!-- Round 34 : filtres d'état, combinables (un de chaque ligne). -->
-      <div class="creations-status-chips" id="creations-status-chips">
-        <button type="button" class="creations-chip" data-group="pub" data-value="published" aria-pressed="false">Publiées</button>
-        <button type="button" class="creations-chip" data-group="pub" data-value="unpublished" aria-pressed="false">Non publiées</button>
-        <button type="button" class="creations-chip" data-group="rev" data-value="in" aria-pressed="false">Dans mes révisions</button>
-        <button type="button" class="creations-chip" data-group="rev" data-value="out" aria-pressed="false">Pas dans mes révisions</button>
-      </div>
+
       <ul class="subject-list" id="creations-list"></ul>
       <p class="field-hint" id="creations-empty" hidden>Tu n'as pas encore créé de boîte.</p>
     </section>
