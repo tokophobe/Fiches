@@ -6135,3 +6135,44 @@ body.layout-v2 #view-class-detail .class-detail-section-action {
   text-transform: uppercase;
   padding: 4px 0;
 }
+
+/* ==================================================================
+   Round 45 : navigation commune et titre de page à droite du robot.
+   ================================================================== */
+.nav-back-link {
+  align-self: center;
+  border: none;
+  background: transparent;
+  padding: 6px 4px;
+  color: var(--rule);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.nav-back-link[hidden] { display: none; }
+.brand { align-items: center; }
+/* Anciens boutons « ← Retour… » de certaines pages : remplacés par le lien
+   commun (ils restent dans la page, appelés par lui, pour leur ménage). */
+.nav-legacy-back { display: none !important; }
+/* Titres d'origine des pages, désormais affichés à droite du robot. */
+.page-title-moved { display: none !important; }
+.page-header-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-type);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--main-text-color, var(--ink));
+  overflow-wrap: break-word;
+}
+.page-header-title[hidden] { display: none; }
+
+/* Round 45 : « Mes fiches de révision 2 » — plus de retrait à droite pour
+   les sous-niveaux (seul le retrait à gauche reste) : les flèches de menu
+   s'alignent toutes sur le bord droit. */
+body.layout-v2 #view-manage .org-children { margin-right: 0; }

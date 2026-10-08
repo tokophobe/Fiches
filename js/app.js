@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v198";
+  const APP_VERSION = "v199";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -766,6 +766,9 @@
     const isOpen = hasMessages && open;
     helpBtn.hidden = !hasMessages || isOpen;
     speechEl.hidden = !isOpen;
+    // Round 45 : le titre de la page laisse sa place à la bulle du robot.
+    const pageTitleEl = el("page-header-title");
+    if (pageTitleEl) pageTitleEl.hidden = isOpen || !pageTitleEl.textContent;
     if (!isOpen) return;
     const text = bodyLogoSpeechMessages[bodyLogoSpeechIndex] || "";
     if (textEl.textContent !== text) {
@@ -8662,12 +8665,207 @@
     "boite-picker": "Sélection",
     "calendar-event-form": "Événement",
   };
+  /* ---------------------------------------------------------
+     Round 45 : navigation commune à toutes les pages.
+     - « ← Retour » (#nav-back-btn) : revient à la page précédente
+       (historique des pages visitées). Si la page a son propre bouton de
+       retour / d'annulation (il fait aussi le ménage : formulaire,
+       sélecteur…), c'est lui qui est utilisé ; ces anciens boutons
+       « ← Retour… » sont masqués.
+     - Accueil : toujours la page d'accueil (goHome).
+     - Titre de la page à droite du robot (#page-header-title) ; le titre
+       qui était dans la page est masqué (ou recopié s'il change, ex. nom
+       de la classe).
+  --------------------------------------------------------- */
+  const navStack = [];
+  let navLastKey = "home";
+  let navBackUntil = 0;
+  // Pages de passage (formulaires, sélecteurs) : jamais rouvertes par
+  // « ← Retour », on revient à la page d'avant.
+  const NAV_TRANSIENT = new Set(["boite-picker", "calendar-event-form", "new-card", "box-create", "report-card", "library-share", "classes-join", "classes-create"]);
+  const NAV_OWN_BACK = {
+    "calendar-event-detail": "calendar-detail-back-btn",
+    "creation-detail": "creation-detail-back-btn",
+    "classes-join": "classes-join-back-btn",
+    "classes-create": "classes-create-back-btn",
+    "class-detail": "class-detail-back-btn",
+    "message-thread": "message-thread-back-btn",
+    "boite-picker": "boite-picker-back-btn",
+    "library-detail": "library-detail-back-btn",
+    "library-cards": "library-cards-back-btn",
+    "calendar-event-form": "calendar-event-cancel",
+    "report-card": "report-card-cancel",
+    "box-create": "box-create-cancel-btn",
+    "library-share": "library-share-back-btn",
+  };
+  ["calendar-detail-back-btn", "creation-detail-back-btn", "classes-join-back-btn", "classes-create-back-btn", "class-detail-back-btn", "message-thread-back-btn", "boite-picker-back-btn", "library-detail-back-btn", "library-cards-back-btn"].forEach((id) => {
+    const b = el(id);
+    if (b) b.classList.add("nav-legacy-back");
+  });
+  function navOnViewChanged(key) {
+    if (!key || key === navLastKey) return;
+    if (key === "home") {
+      navStack.length = 0;
+    } else if (Date.now() < navBackUntil) {
+      const i = navStack.lastIndexOf(key);
+      if (i >= 0) navStack.length = i;
+    } else if (navLastKey && !NAV_TRANSIENT.has(navLastKey)) {
+      if (navStack[navStack.length - 1] !== navLastKey) navStack.push(navLastKey);
+      if (navStack.length > 40) navStack.splice(0, navStack.length - 40);
+    }
+    navLastKey = key;
+    // (classe CSS plutôt que appLoginLocked : cette fonction tourne dès le
+    // chargement, avant la déclaration de cette variable.)
+    const locked = document.body.classList.contains("is-login-locked");
+    const backBtn = el("nav-back-btn");
+    if (backBtn) backBtn.hidden = key === "home" || locked;
+    if (homeBtn && key !== "home" && !locked) homeBtn.hidden = false;
+    if (key !== "home" && el("body-logo-row")) el("body-logo-row").hidden = false;
+  }
+  function navActivate(key) {
+    if (key === "home") {
+      goHome();
+      return;
+    }
+    if (key === "classes-student" || key === "classes-teacher") {
+      openClassesSubView(key === "classes-teacher" ? "teacher" : "student");
+      return;
+    }
+    if (key === "class-detail" && classDetailContext) {
+      openClassDetailView(classDetailContext.klass, classDetailContext.role);
+      return;
+    }
+    if (key === "creation-detail" && creationDetailSubjectId && subjects.some((x) => x.id === creationDetailSubjectId)) {
+      openCreationDetail(creationDetailSubjectId);
+      return;
+    }
+    const tab = document.querySelector(`.tab[data-view="${key}"]`);
+    if (tab) {
+      tab.click();
+      return;
+    }
+    const target = el(`view-${key}`);
+    if (!target) {
+      goHome();
+      return;
+    }
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    target.classList.add("is-active");
+    applyBodyLogoSpeech(key);
+  }
+  function navBack() {
+    if (appLoginLocked) {
+      enforceLoginGate();
+      return;
+    }
+    const active = document.querySelector(".view.is-active");
+    const key = active ? active.id.replace(/^view-/, "") : "home";
+    if (key === "home") return;
+    navBackUntil = Date.now() + 600;
+    if (key === "cards") {
+      cardsEntryFromManage = false;
+      cardsEntryFromCreations = false;
+    }
+    const own = NAV_OWN_BACK[key] && el(NAV_OWN_BACK[key]);
+    if (own) {
+      own.click();
+      return;
+    }
+    if (key === "new-card") {
+      closeNewCardView();
+      return;
+    }
+    while (navStack.length && (NAV_TRANSIENT.has(navStack[navStack.length - 1]) || navStack[navStack.length - 1] === key)) navStack.pop();
+    if (navStack.length) {
+      navActivate(navStack[navStack.length - 1]);
+      return;
+    }
+    // Pas d'historique (ex. après un rechargement) : page « parente ».
+    goBackHierarchical();
+  }
+  const navBackBtn = el("nav-back-btn");
+  if (navBackBtn) navBackBtn.addEventListener("click", navBack);
+
+  /** Titre de la page : texte fixe, ou recopié d'un élément de la page
+   *  (`from`, qui est alors masqué) ; `hide` = titres d'origine à masquer. */
+  const PAGE_HEADER_TITLES = {
+    "review-hub": "Réviser",
+    "revision-program": "Révisions conseillées",
+    review: "Réviser",
+    manage: "Mes fiches de révision",
+    "new-card": { from: "#view-new-card .card-form-header h2.section-title" },
+    cards: { from: "#cards-scope-title", fallback: "Liste des fiches", hide: ["#view-cards .cards-list-big-title"] },
+    stats: "Statistiques",
+    calendar: "Calendrier",
+    "calendar-event-form": { from: "#calendar-event-form-title" },
+    "calendar-event-detail": { from: "#view-calendar-event-detail .view-title" },
+    sync: "Synchronisation",
+    account: { text: "Mon compte", hide: ["#view-account > h2.section-title"] },
+    "school-hub": "École",
+    "fiches-hub": "Gérer mes fiches",
+    creations: { text: "Mes créations de fiches", hide: ["#view-creations .library-title-row"] },
+    "box-create": { from: "#box-create-title" },
+    "creation-detail": "Ma boîte",
+    "report-card": { text: "Signaler une fiche", hide: ["#view-report-card .settings-block-title"] },
+    reports: { text: "Signalements", hide: ["#view-reports > h2.section-title"] },
+    classes: { text: "Mes classes", hide: ["#view-classes > h2.section-title"] },
+    "classes-student": { text: "Élève", hide: ["#view-classes-student > h2.section-title"] },
+    "classes-join": { text: "Rejoindre une classe", hide: ["#view-classes-join > h2.section-title"] },
+    "classes-teacher": { text: "Enseignant", hide: ["#view-classes-teacher > h2.section-title"] },
+    "classes-create": { text: "Créer une classe", hide: ["#view-classes-create > h2.section-title"] },
+    "class-detail": { from: "#class-detail-title" },
+    messages: { text: "Messagerie", hide: ["#view-messages > h2.section-title"] },
+    "message-thread": { from: "#message-thread-title" },
+    library: { text: "Librairie", hide: ["#view-library .library-title-row > h2.section-title"] },
+    settings: { text: "Réglages", hide: ["#view-settings > h2.section-title"] },
+    dev: { text: "Développeur", hide: ["#view-dev > h2.section-title"] },
+    "boite-picker": { from: "#boite-picker-title" },
+    "library-detail": { from: "#view-library-detail .view-title" },
+    "library-cards": { from: "#view-library-cards .view-title" },
+    "library-share": { from: "#view-library-share .settings-block-title" },
+  };
+  let pageHeaderKey = "";
+  function pageHeaderTitleText(key) {
+    const cfg = PAGE_HEADER_TITLES[key];
+    if (!cfg) return PAGE_TITLES[key] || "";
+    if (typeof cfg === "string") return cfg;
+    if (cfg.from) {
+      const src = document.querySelector(cfg.from);
+      const t = src ? src.textContent.trim() : "";
+      return t || cfg.fallback || PAGE_TITLES[key] || "";
+    }
+    return cfg.text || "";
+  }
+  function updatePageHeaderTitle(key) {
+    if (key !== undefined) pageHeaderKey = key;
+    const t = el("page-header-title");
+    if (!t) return;
+    const text = pageHeaderKey === "home" ? "" : pageHeaderTitleText(pageHeaderKey);
+    if (t.textContent !== text) t.textContent = text;
+    const speechOpen = el("body-logo-speech") && !el("body-logo-speech").hidden;
+    t.hidden = !text || speechOpen;
+  }
+  // Titres d'origine masqués (classe CSS) ; ceux qui sont recopiés sont
+  // surveillés pour suivre leurs changements (nom de classe, etc.).
+  Object.values(PAGE_HEADER_TITLES).forEach((cfg) => {
+    if (typeof cfg !== "object") return;
+    (cfg.hide || []).forEach((sel) => document.querySelectorAll(sel).forEach((n) => n.classList.add("page-title-moved")));
+    if (cfg.from) {
+      const src = document.querySelector(cfg.from);
+      if (!src) return;
+      src.classList.add("page-title-moved");
+      new MutationObserver(() => updatePageHeaderTitle()).observe(src, { childList: true, characterData: true, subtree: true });
+    }
+  });
+
   const topbarDarwinLogoEl = el("topbar-darwin-logo");
   const manageStickyActionsEl = el("manage-sticky-actions");
   function onActiveViewChanged() {
     const activeView = document.querySelector(".view.is-active");
     const key = activeView ? activeView.id.replace(/^view-/, "") : "";
     document.title = PAGE_TITLES[key] ? `${PAGE_TITLES[key]} — Fiches` : "Fiches";
+    navOnViewChanged(key);
+    updatePageHeaderTitle(key);
     // Round 17, item 1 : logo darwin du bandeau masqué UNIQUEMENT sur
     // l'accueil (qui a déjà son propre grand logo darwin).
     if (topbarDarwinLogoEl) topbarDarwinLogoEl.hidden = key === "home";
@@ -8795,7 +8993,7 @@
   // Round 25, item 2 : Réviser atteint via "Révisions conseillées" (true)
   // ou via "Sélection manuelle" (false) — décide où ramène Accueil.
   let reviewEntryFromProgram = false;
-  function goHome() {
+  function goBackHierarchical() {
     // Round 22, item 4 : connexion obligatoire — tant que l'appli est
     // verrouillée, "Accueil" ne doit jamais en sortir (le bouton lui-même
     // est déjà masqué par enforceLoginGate(), ceci est une défense
@@ -8897,6 +9095,35 @@
     // (pas seulement son conteneur), pour qu'aucune page suivante n'hérite
     // par erreur d'un message resté en mémoire depuis avant ce retour à
     // l'accueil.
+    bodyLogoSpeechMessages = [];
+    bodyLogoSpeechIndex = 0;
+    renderBodyLogoSpeechState(false);
+  }
+  /** Round 45 : Accueil ramène TOUJOURS à la page d'accueil (le retour
+   *  d'une page en arrière est porté par « ← Retour », voir navBack). */
+  function goHome() {
+    if (appLoginLocked) {
+      enforceLoginGate();
+      return;
+    }
+    cardsEntryFromManage = false;
+    cardsEntryFromCreations = false;
+    if (newCardFixedSubject) releaseNewCardFixedSubject();
+    creationDetailSubjectId = null;
+    reportCardContext = null;
+    calendarFormReturnToClass = null;
+    calendarEditingEventId = null;
+    reviewEntryFromManage = false;
+    reviewEntryFromProgram = false;
+    navStack.length = 0;
+    document.querySelectorAll(".tab").forEach((t) => {
+      t.classList.remove("is-active");
+      t.setAttribute("aria-selected", "false");
+    });
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el("view-home").classList.add("is-active");
+    if (homeBtn) homeBtn.hidden = true;
+    if (el("body-logo-row")) el("body-logo-row").hidden = true;
     bodyLogoSpeechMessages = [];
     bodyLogoSpeechIndex = 0;
     renderBodyLogoSpeechState(false);
@@ -10654,6 +10881,7 @@
     const wasLocked = appLoginLocked;
     appLoginLocked = shouldLock;
     document.body.classList.toggle("is-login-locked", shouldLock);
+    if (el("nav-back-btn") && shouldLock) el("nav-back-btn").hidden = true;
     // Round 22, item 4 : à la levée du verrou (connexion/inscription tout
     // juste réussie), la page Compte forcée jusqu'ici n'a plus de bouton
     // Accueil pour en sortir (masqué pendant le verrou) — on ramène donc

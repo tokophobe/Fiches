@@ -166,6 +166,9 @@
       <button type="button" class="btn btn--ghost home-btn" id="home-btn" title="Retour à l'accueil" aria-label="Retour à l'accueil" hidden>
         <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
       </button>
+      <!-- Round 45 : même navigation sur toutes les pages — « ← Retour »
+           (page précédente) à côté du bouton Accueil (page d'accueil). -->
+      <button type="button" class="nav-back-link" id="nav-back-btn" title="Revenir à la page précédente" aria-label="Revenir à la page précédente" hidden>← Retour</button>
     </div>
     <div class="header-right">
       <!-- Round 14 : petit logo "darwin" dans le bandeau du haut, entre le
@@ -233,6 +236,9 @@
     <button type="button" class="body-logo-help-btn" id="body-logo-help-btn" title="Aide" hidden>
       <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4 8.3 8.3 0 0 1-3.8-.9L3 21l1.9-5.8a8.3 8.3 0 0 1-.9-3.7A8.4 8.4 0 1 1 21 11.5z"/><circle cx="8.3" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="12.6" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="16.9" cy="11.5" r="1" fill="currentColor" stroke="none"/></svg>
     </button>
+    <!-- Round 45 : titre de la page, à droite du robot ; masqué pendant que
+         la bulle du robot est ouverte. -->
+    <h2 class="page-header-title" id="page-header-title"></h2>
     <div class="body-logo-speech" id="body-logo-speech" hidden>
       <!-- Round 18, item 6 : bouton fermer explicite — cliquer sur la
            bulle la refermait déjà, mais ce n'était pas évident sans le
