@@ -962,17 +962,31 @@ function isMissingTeacherNameColumn(error) {
   return !!error && /shared_by_name/i.test(error.message || "");
 }
 
-async function shareEventToClass(classId, title, date) {
+/** Round 44 : boîtes à réviser d'un évènement de classe (`box_ids`, ids
+ *  des boîtes partagées `shared_boxes`) — colonne ajoutée par
+ *  supabase/shared_events_boxes_migration.sql. Sans elle, l'évènement est
+ *  quand même partagé (sans ses boîtes) et `boxIdsMissing` le signale. */
+function isMissingBoxIdsColumn(error) {
+  return !!error && /box_ids/i.test(error.message || "");
+}
+async function shareEventToClass(classId, title, date, boxIds) {
   const c = getClient();
   const user = await authGetUser();
   if (!c || !user) return { error: "Non connecté." };
   const row = { class_id: classId, shared_by: user.id, title, date, shared_by_name: teacherDisplayName(user) };
+  if (Array.isArray(boxIds)) row.box_ids = boxIds;
+  let boxIdsMissing = false;
   let { data, error } = await c.from("shared_events").insert(row).select().single();
+  if (isMissingBoxIdsColumn(error)) {
+    boxIdsMissing = true;
+    delete row.box_ids;
+    ({ data, error } = await c.from("shared_events").insert(row).select().single());
+  }
   if (isMissingTeacherNameColumn(error)) {
     delete row.shared_by_name;
     ({ data, error } = await c.from("shared_events").insert(row).select().single());
   }
-  return { data, error: error ? error.message : null };
+  return { data, error: error ? error.message : null, boxIdsMissing };
 }
 
 /** Round 26, item 2 : complète le nom du professeur sur SES évènements
@@ -1013,17 +1027,24 @@ async function listSharedEventsForClass(classId) {
   return data || [];
 }
 
-async function updateSharedEvent(eventId, title, date) {
+async function updateSharedEvent(eventId, title, date, boxIds) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée." };
   const user = await authGetUser();
   const fields = { title, date, updated_at: new Date().toISOString(), shared_by_name: teacherDisplayName(user) };
+  if (Array.isArray(boxIds)) fields.box_ids = boxIds;
+  let boxIdsMissing = false;
   let { error } = await c.from("shared_events").update(fields).eq("id", eventId);
+  if (isMissingBoxIdsColumn(error)) {
+    boxIdsMissing = true;
+    delete fields.box_ids;
+    ({ error } = await c.from("shared_events").update(fields).eq("id", eventId));
+  }
   if (isMissingTeacherNameColumn(error)) {
     delete fields.shared_by_name;
     ({ error } = await c.from("shared_events").update(fields).eq("id", eventId));
   }
-  return { error: error ? error.message : null };
+  return { error: error ? error.message : null, boxIdsMissing };
 }
 
 async function deleteSharedEvent(eventId) {

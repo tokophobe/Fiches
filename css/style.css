@@ -5895,3 +5895,243 @@ body.is-view-library {
 .revision-reinforce-more:not([hidden]) { display: block; margin: 0 auto 16px; }
 .dev-revision-algo-input.is-invalid { border-color: #dc2626; box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2); }
 .dev-revision-algo-error { color: #b91c1c; margin-top: 8px; }
+
+/* Round 44 : évènement de classe — boîtes à réviser sous le titre, ligne
+   cliquable (modification) côté enseignant. */
+.class-event-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.class-event-boxes {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.3;
+}
+.class-event-boxes svg { width: 14px; height: 14px; flex-shrink: 0; }
+.class-event-boxes--none { font-style: italic; opacity: 0.8; }
+.class-event-row--editable { cursor: pointer; border-radius: 8px; }
+.class-event-row--editable:active { background: var(--paper-2); }
+.class-event-edit {
+  flex-shrink: 0;
+  align-self: center;
+  color: var(--ink-soft);
+  display: flex;
+}
+.class-event-edit svg { width: 15px; height: 15px; }
+
+/* ==================================================================
+   Round 44 : pages « 2 » (mode body.layout-v2) — mises en page de test,
+   plus épurées, dans l'esprit de la Messagerie et du Calendrier en liste :
+   pas de cartes ni d'ombres, des lignes sur le fond de la page séparées
+   par un trait fin, un titre net, une ligne d'infos grise en dessous, et
+   des actions en simples liens colorés. Tout est limité à ces pages ;
+   les pages d'origine ne changent pas. Pour revenir en arrière : supprimer
+   ce bloc et les boutons « … 2 » d'index.html.
+   ================================================================== */
+
+/* Boutons d'accès « … 2 » : même rond, petit liseré pointillé. */
+.classes-role-circle--v2 {
+  outline: 1.5px dashed var(--rule);
+  outline-offset: 4px;
+}
+
+/* --- Éléments communs ------------------------------------------- */
+body.layout-v2 :is(#view-manage, #view-creations, #view-revision-program, #view-boite-picker, #view-classes-teacher, #view-classes-student, #view-class-detail) {
+  --v2-row-pad: 14px 4px;
+}
+body.layout-v2 :is(#view-creations, #view-boite-picker, #view-revision-program, #view-classes-teacher, #view-classes-student) .subject-list,
+body.layout-v2 #view-manage .subject-list,
+body.layout-v2 #view-revision-program .revision-event-list,
+body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-card-list {
+  gap: 0;
+}
+/* Titres de page et de section : ceux de la Messagerie / du Calendrier. */
+body.layout-v2 #view-creations .library-title-row .section-title,
+body.layout-v2 :is(#view-classes-teacher, #view-classes-student) > .section-title {
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--main-text-color, var(--ink));
+}
+body.layout-v2 #view-revision-program .revision-section-title,
+body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-list-heading {
+  margin: 22px 4px 4px;
+  font-family: var(--font-type);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--main-text-color, var(--ink));
+}
+body.layout-v2 #view-revision-program .revision-section-title:first-child { margin-top: 4px; }
+body.layout-v2 #view-revision-program .revision-section-hint { margin: 0 4px 6px; opacity: 0.75; }
+
+/* Actions principales en lien coloré (comme « + Ajouter un évènement »). */
+body.layout-v2 #view-creations .round-add-card-wrap {
+  justify-content: flex-start;
+  margin: 2px 0 6px;
+}
+body.layout-v2 #view-creations .round-add-card-btn,
+body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) .classes-role-circle {
+  width: auto;
+  height: auto;
+  padding: 8px 4px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  flex-direction: row;
+  gap: 6px;
+  color: var(--rule);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+body.layout-v2 #view-creations .round-add-card-btn svg,
+body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) .classes-role-circle svg {
+  width: 16px;
+  height: 16px;
+}
+body.layout-v2 #view-creations .round-add-card-btn span { font-size: inherit; font-weight: inherit; }
+body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) {
+  justify-content: flex-start;
+  margin: 0 0 4px;
+}
+
+/* --- Mes fiches de révision 2 ----------------------------------- */
+body.layout-v2 #view-manage .subject-row {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--rule-soft);
+  margin: 0 !important;
+}
+body.layout-v2 #view-manage .folder-row--stacked::before,
+body.layout-v2 #view-manage .folder-row--stacked::after { display: none; }
+body.layout-v2 #view-manage .subject-row-name { font-weight: 500; }
+body.layout-v2 #view-manage .subject-row .subject-row,
+body.layout-v2 #view-manage .subject-row:last-child { border-bottom: none; }
+body.layout-v2 #view-manage .subject-row .subject-list { border-top: 1px solid var(--rule-soft); }
+body.layout-v2 #view-manage .org-count { opacity: 0.7; }
+
+/* --- Mes créations de fiches 2 ---------------------------------- */
+body.layout-v2 #view-creations .creations-row {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--rule-soft);
+  padding: var(--v2-row-pad);
+  gap: 3px;
+}
+body.layout-v2 #view-creations .creations-row:last-child { border-bottom: none; }
+body.layout-v2 #view-creations .creations-row .subject-row-name { font-weight: 500; font-size: 15px; }
+body.layout-v2 #view-creations .creations-row .card-row-meta { font-size: 12px; opacity: 0.7; }
+body.layout-v2 #view-creations .creations-status {
+  background: transparent;
+  padding: 0;
+  font-weight: 500;
+  font-size: 11.5px;
+}
+body.layout-v2 #view-creations .creations-chip {
+  background: transparent;
+  border: 1px solid var(--rule-soft);
+  box-shadow: none;
+  font-weight: 500;
+}
+body.layout-v2 #view-creations .creations-chip.is-active,
+body.layout-v2 #view-creations .creations-chip[aria-pressed="true"] {
+  border-color: var(--rule);
+  color: var(--rule);
+  background: transparent;
+}
+
+/* --- Révisions conseillées 2 ------------------------------------ */
+body.layout-v2 #view-revision-program .revision-event-block {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--rule-soft);
+  padding: var(--v2-row-pad);
+}
+body.layout-v2 #view-revision-program .revision-event-block:last-child { border-bottom: none; }
+body.layout-v2 #view-revision-program .revision-event-title { font-size: 16px; }
+body.layout-v2 #view-revision-program .revision-event-date { opacity: 0.7; font-size: 12px; }
+body.layout-v2 #view-revision-program .revision-tree-row { border-top: none; padding-top: 5px; padding-bottom: 5px; }
+body.layout-v2 #view-revision-program .revision-event-gauge { margin: 6px 0 2px; }
+body.layout-v2 #view-revision-program .revision-event-go {
+  display: block;
+  width: auto;
+  margin: 4px 0 0 auto;
+  padding: 6px 0;
+  background: transparent;
+  color: var(--rule);
+  box-shadow: none;
+}
+body.layout-v2 #view-revision-program .revision-event-go::after { content: " →"; }
+body.layout-v2 #view-revision-program .revision-event-go:disabled { color: var(--ink-soft); }
+body.layout-v2 #view-revision-program .revision-event-go:disabled::after { content: ""; }
+
+/* --- Sélection manuelle 2 --------------------------------------- */
+body.layout-v2 #view-boite-picker .view-title { font-size: 15px; font-weight: 400; letter-spacing: 0.04em; }
+body.layout-v2 #view-boite-picker .subject-row {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--rule-soft);
+  margin: 0 !important;
+}
+body.layout-v2 #view-boite-picker .folder-row--stacked::before,
+body.layout-v2 #view-boite-picker .folder-row--stacked::after { display: none; }
+body.layout-v2 #view-boite-picker .picker-row--all .subject-row-name { font-weight: 600; }
+body.layout-v2 #view-boite-picker .boite-picker-actions .btn--primary { width: 100%; }
+
+/* --- Mes classes 2 (élève / enseignant) et page d'une classe ----- */
+body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-card {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--rule-soft);
+  padding: var(--v2-row-pad);
+}
+body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-card:last-child { border-bottom: none; }
+body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-card-icon {
+  width: auto;
+  height: auto;
+  background: transparent;
+}
+body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-card-icon svg { width: 18px; height: 18px; }
+body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-card-name { font-weight: 500; }
+body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-card-meta { font-size: 12px; opacity: 0.75; }
+body.layout-v2 #view-class-detail .class-detail-section {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+body.layout-v2 #view-class-detail .class-detail-section:last-child { border-bottom: none; }
+body.layout-v2 #view-class-detail .class-detail-section-head h3 {
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+body.layout-v2 #view-creations .round-add-card-btn span { white-space: nowrap; }
+body.layout-v2 #view-class-detail .class-detail-section-head h3 { text-transform: none; color: var(--ink); }
+body.layout-v2 #view-class-detail .class-detail-section-action {
+  border: none;
+  background: transparent;
+  color: var(--rule);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 0;
+}

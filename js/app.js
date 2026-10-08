@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v197";
+  const APP_VERSION = "v198";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -9573,14 +9573,19 @@
       try { await Sync.classes.deleteSharedEvent(ev.classShare.remoteId); } catch (e) { /* best-effort */ }
     }
   }
+  // Round 44 : formulaire ouvert depuis la page d'une classe -> on y revient.
+  let calendarFormReturnToClass = null;
   function closeCalendarEventForm() {
-    // Round 18, item 13 : retour à la page Calendrier (toujours son point
-    // d'entrée, y compris depuis la page d'une classe — voir
-    // classDetailAddEventBtn plus bas, qui bascule d'abord sur l'onglet
-    // Calendrier avant d'ouvrir ce formulaire).
+    calendarEditingEventId = null;
+    if (calendarFormReturnToClass) {
+      const ctx = calendarFormReturnToClass;
+      calendarFormReturnToClass = null;
+      openClassDetailView(ctx.klass, ctx.role);
+      return;
+    }
+    // Round 18, item 13 : retour à la page Calendrier.
     boitePickerActivateView("view-calendar");
     applyBodyLogoSpeech("calendar");
-    calendarEditingEventId = null;
   }
 
   /** Round 21, item 3 : page de présentation d'un évènement — tous ses
@@ -9721,13 +9726,21 @@
         delete ev.classShare;
       }
       if (Sync.isConfigured() && selectedClassId) {
+        // Round 44 : les boîtes liées partent avec l'évènement (ids de leurs
+        // partages avec cette classe — une boîte pas encore partagée l'est
+        // automatiquement).
+        const klassForBoxes = (await Sync.classes.listAsTeacher()).find((k) => k.id === selectedClassId);
+        const boxIds = await ensureEventBoxesSharedWithClass(ev, selectedClassId, klassForBoxes ? klassForBoxes.name : "");
         if (ev.classShare && ev.classShare.classId === selectedClassId) {
-          await Sync.classes.updateSharedEvent(ev.classShare.remoteId, titleVal, dateVal);
+          const res = await Sync.classes.updateSharedEvent(ev.classShare.remoteId, titleVal, dateVal, boxIds);
+          if (res && !res.error) ev.classShare = { ...ev.classShare, boxIds: res.boxIdsMissing ? null : boxIds };
+          if (res && res.boxIdsMissing) warnSharedEventBoxesMigration();
         } else {
-          const klass = (await Sync.classes.listAsTeacher()).find((k) => k.id === selectedClassId);
-          const { data, error } = await Sync.classes.shareEvent(selectedClassId, titleVal, dateVal);
+          const klass = klassForBoxes;
+          const { data, error, boxIdsMissing } = await Sync.classes.shareEvent(selectedClassId, titleVal, dateVal, boxIds);
+          if (boxIdsMissing) warnSharedEventBoxesMigration();
           if (!error && data) {
-            ev.classShare = { classId: selectedClassId, className: klass ? klass.name : "", remoteId: data.id };
+            ev.classShare = { classId: selectedClassId, className: klass ? klass.name : "", remoteId: data.id, boxIds: boxIdsMissing ? null : boxIds };
             // Round 10, item 10 : message automatique dans la messagerie de
             // la classe quand un prof y ajoute un évènement.
             try {
@@ -10442,6 +10455,11 @@
     const reason = reviewHubAdvisedBlockReason();
     btn.classList.toggle("is-disabled", !!reason);
     btn.setAttribute("aria-disabled", reason ? "true" : "false");
+    const btn2 = el("review-hub-advised2-btn");
+    if (btn2) {
+      btn2.classList.toggle("is-disabled", !!reason);
+      btn2.setAttribute("aria-disabled", reason ? "true" : "false");
+    }
     if (note) {
       note.hidden = !reason;
       note.textContent = reason;
@@ -11159,6 +11177,7 @@
     applyBodyLogoSpeech(which === "teacher" ? "classes-teacher" : "classes-student");
     if (which === "teacher") {
       await renderTeacherClasses();
+      syncTeacherEventBoxes();
     } else {
       await syncSharedBoxesForStudent();
       await renderStudentClasses();
@@ -11171,6 +11190,56 @@
   if (classesGotoStudentBtn) classesGotoStudentBtn.addEventListener("click", () => openClassesSubView("student"));
   const classesGotoTeacherBtn = el("classes-goto-teacher-btn");
   if (classesGotoTeacherBtn) classesGotoTeacherBtn.addEventListener("click", () => openClassesSubView("teacher"));
+
+  /* ---------------------------------------------------------
+     Round 44 : pages « 2 » — mises en page de test, plus épurées
+     (inspirées de la Messagerie et du Calendrier en liste), sans toucher
+     aux pages d'origine. Chaque bouton « … 2 » ouvre la MÊME page (mêmes
+     données, mêmes actions) avec le mode `layout-v2` sur <body> : toute
+     la nouvelle présentation est dans css/style.css sous
+     `body.layout-v2 #view-…`. Le mode s'éteint en revenant à l'accueil ou
+     en ouvrant une page par son bouton d'origine. Pour revenir en arrière :
+     retirer les boutons « 2 » (index.html) et ce bloc CSS.
+  --------------------------------------------------------- */
+  let layoutV2 = false;
+  let layoutV2Entering = false;
+  function setLayoutV2(on) {
+    layoutV2 = !!on;
+    document.body.classList.toggle("layout-v2", layoutV2);
+  }
+  [
+    ["fiches-hub-revision-btn", "fiches-hub-revision2-btn"],
+    ["fiches-hub-creations-btn", "fiches-hub-creations2-btn"],
+    ["review-hub-advised-btn", "review-hub-advised2-btn"],
+    ["review-hub-manual-btn", "review-hub-manual2-btn"],
+    ["classes-goto-student-btn", "classes-goto-student2-btn"],
+    ["classes-goto-teacher-btn", "classes-goto-teacher2-btn"],
+  ].forEach(([origId, v2Id]) => {
+    const orig = el(origId);
+    const v2 = el(v2Id);
+    if (!orig || !v2) return;
+    orig.addEventListener(
+      "click",
+      () => {
+        if (!layoutV2Entering) setLayoutV2(false);
+      },
+      true
+    );
+    v2.addEventListener("click", () => {
+      setLayoutV2(true);
+      layoutV2Entering = true;
+      try {
+        orig.click();
+      } finally {
+        layoutV2Entering = false;
+      }
+    });
+  });
+  if (el("view-home")) {
+    new MutationObserver(() => {
+      if (el("view-home").classList.contains("is-active")) setLayoutV2(false);
+    }).observe(el("view-home"), { attributes: true, attributeFilter: ["class"] });
+  }
 
   /** Icône dédiée aux classes (item 5) — un petit groupe de personnes,
    *  dans le même style épuré (traits fins, coins arrondis) que les
@@ -11343,6 +11412,91 @@
     }
   }
 
+  /* ---------------------------------------------------------
+     Round 44 : boîtes à réviser des évènements de classe.
+     Côté enseignant, les boîtes liées à un évènement partagé avec une
+     classe sont envoyées avec lui (ids des boîtes partagées avec cette
+     classe, `shared_boxes`) ; une boîte liée pas encore partagée avec la
+     classe l'est automatiquement. Côté élève, ces ids sont traduits en
+     boîtes miroirs locales (`sharedBoxId`) et deviennent les boîtes liées
+     de l'évènement reçu (Révisions conseillées, mode sprint).
+  --------------------------------------------------------- */
+  function eventOwnBoxSubjectIds(ev) {
+    return revisionTreeBoxIds(revisionTreeForEvent(ev)).filter((id) => {
+      const s = subjects.find((x) => x.id === id);
+      return s && !s.deleted && !s.sharedBoxId && !(s.fromLibrary && s.libraryOriginId);
+    });
+  }
+  async function ensureEventBoxesSharedWithClass(ev, classId, className) {
+    const out = [];
+    for (const id of eventOwnBoxSubjectIds(ev)) {
+      const subject = subjects.find((x) => x.id === id);
+      subject.sharedShares = subject.sharedShares || [];
+      let share = subject.sharedShares.find((x) => x.classId === classId);
+      if (!share) {
+        const boxCards = cards.filter((c) => !c.deleted && c.subject === id);
+        const folderPathNames = folderPath(subject.folderId).map((f) => f.name);
+        const { data, error } = await Sync.classes.shareBox(classId, subject.name, boxCards, folderPathNames);
+        if (error || !data) continue;
+        share = { classId, className, boxId: data.id };
+        subject.sharedShares.push(share);
+        subject.updatedAt = new Date().toISOString();
+        await persistSubject(subject);
+        try {
+          await Sync.messages.send(classId, `📚 « ${subject.name} » a été partagée dans la classe.`);
+        } catch (e) { /* best-effort */ }
+      }
+      if (share.boxId && !out.includes(share.boxId)) out.push(share.boxId);
+    }
+    return out;
+  }
+  let sharedEventBoxesMigrationWarned = false;
+  function warnSharedEventBoxesMigration() {
+    if (sharedEventBoxesMigrationWarned) return;
+    sharedEventBoxesMigrationWarned = true;
+    robotAlert("L'évènement est bien partagé, mais pas encore ses boîtes à réviser : la base Supabase n'est pas à jour. Exécute supabase/shared_events_boxes_migration.sql, puis rouvre la page de la classe.");
+  }
+  /** Rattrapage côté enseignant (ouverture de Mes classes / d'une classe) :
+   *  renvoie les boîtes des évènements de classe à venir dont la liste a
+   *  changé depuis le dernier envoi (ex. boîte ajoutée avant ce round). */
+  let syncTeacherEventBoxesInFlight = null;
+  function syncTeacherEventBoxes() {
+    if (syncTeacherEventBoxesInFlight) return syncTeacherEventBoxesInFlight;
+    syncTeacherEventBoxesInFlight = (async () => {
+      if (!Sync.isConfigured() || !accountCurrentUser) return;
+      const events = loadCalendarEvents();
+      let changed = false;
+      for (const ev of events) {
+        if (!ev.classShare || !ev.classShare.remoteId || !ev.date || calendarDiffDays(ev.date) < 0) continue;
+        const boxIds = await ensureEventBoxesSharedWithClass(ev, ev.classShare.classId, ev.classShare.className || "");
+        if (JSON.stringify(ev.classShare.boxIds || null) === JSON.stringify(boxIds)) continue;
+        const res = await Sync.classes.updateSharedEvent(ev.classShare.remoteId, ev.title, ev.date, boxIds);
+        if (!res || res.error) continue;
+        if (res.boxIdsMissing) {
+          warnSharedEventBoxesMigration();
+          break;
+        }
+        ev.classShare = { ...ev.classShare, boxIds };
+        changed = true;
+      }
+      if (changed) saveCalendarEvents(events);
+    })().catch((e) => console.warn("Classes : rattrapage des boîtes des évènements impossible", e))
+      .finally(() => {
+        syncTeacherEventBoxesInFlight = null;
+      });
+    return syncTeacherEventBoxesInFlight;
+  }
+  /** Côté élève : boîtes miroirs locales correspondant aux `box_ids` reçus. */
+  function sharedEventLocalLinkIds(re) {
+    const ids = Array.isArray(re.box_ids) ? re.box_ids : [];
+    const out = [];
+    ids.forEach((bid) => {
+      const s = subjects.find((x) => x.sharedBoxId === bid && !x.deleted);
+      if (s && !out.includes(`subject:${s.id}`)) out.push(`subject:${s.id}`);
+    });
+    return out;
+  }
+
   /** Round 3, item 4 (squelette) : ajoute ou met à jour, dans le calendrier
    *  local (localStorage), la copie en lecture seule d'un événement partagé
    *  par le prof — même id que côté prof (sharedEventId), pour repérer un
@@ -11357,10 +11511,15 @@
     // Round 26, item 2 : identité du professeur (vide pour un évènement
     // partagé avant la migration, tant que le prof n'a pas rouvert l'appli).
     const teacherName = re.shared_by_name || "";
+    // Round 44 : boîtes à réviser envoyées par le prof (miroirs locaux).
+    const linkIds = sharedEventLocalLinkIds(re);
     if (idx >= 0) {
       const cur = events[idx];
-      if (cur.title !== re.title || cur.date !== re.date || (cur.sharedByName || "") !== teacherName || cur.sharedClassName !== klass.name) {
-        events[idx] = { ...cur, title: re.title, date: re.date, sharedByName: teacherName, sharedClassName: klass.name };
+      const curLinks = JSON.stringify(eventLinkIds(cur));
+      if (cur.title !== re.title || cur.date !== re.date || (cur.sharedByName || "") !== teacherName || cur.sharedClassName !== klass.name || curLinks !== JSON.stringify(linkIds)) {
+        const next = { ...cur, title: re.title, date: re.date, sharedByName: teacherName, sharedClassName: klass.name, linkIds };
+        delete next.linkId;
+        events[idx] = next;
         saveCalendarEvents(events);
       }
     } else {
@@ -11368,7 +11527,7 @@
         id: uid(),
         title: re.title,
         date: re.date,
-        linkId: null,
+        linkIds,
         sharedEventId: re.id,
         sharedClassId: klass.id,
         sharedClassName: klass.name,
@@ -11739,6 +11898,11 @@
     el("view-class-detail").classList.add("is-active");
     applyBodyLogoSpeech("class-detail");
     await renderClassDetailView();
+    if (role === "teacher") {
+      syncTeacherEventBoxes().then(() => {
+        if (classDetailContext && classDetailContext.klass.id === klass.id) renderClassDetailView();
+      });
+    }
   }
   function closeClassDetailView() {
     const role = classDetailContext ? classDetailContext.role : "student";
@@ -11791,7 +11955,32 @@
       for (const ev of events) {
         const li = document.createElement("li");
         li.className = "class-event-row";
-        li.innerHTML = `<span class="class-event-title">${escapeHtml(ev.title)}</span><span class="class-event-when"><span>${formatCalendarDate(ev.date)}</span><span class="class-event-countdown">${calendarCountdownLabel(ev.date)}</span></span>`;
+        // Round 44 : boîtes à réviser de l'évènement, sous son titre ; côté
+        // enseignant, un clic ouvre la modification de l'évènement.
+        const boxNames = eventLinkedBoxNames(ev);
+        li.innerHTML = `<span class="class-event-main"><span class="class-event-title">${escapeHtml(ev.title)}</span>${
+          boxNames.length
+            ? `<span class="class-event-boxes">${orgIconMarkup("orgBoite")} ${boxNames.map(escapeHtml).join(", ")}</span>`
+            : `<span class="class-event-boxes class-event-boxes--none">Aucune boîte à réviser</span>`
+        }</span><span class="class-event-when"><span>${formatCalendarDate(ev.date)}</span><span class="class-event-countdown">${calendarCountdownLabel(ev.date)}</span></span>`;
+        if (isTeacher) {
+          li.classList.add("class-event-row--editable");
+          li.setAttribute("role", "button");
+          li.tabIndex = 0;
+          li.title = "Modifier cet évènement";
+          li.insertAdjacentHTML("beforeend", `<span class="class-event-edit" aria-hidden="true">${iconSvgMarkup("pencil", "icon-inline-svg")}</span>`);
+          const open = () => {
+            calendarFormReturnToClass = { klass, role };
+            openCalendarEventForm(ev, klass.id);
+          };
+          li.addEventListener("click", open);
+          li.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              open();
+            }
+          });
+        }
         eventsList.appendChild(li);
       }
     }
@@ -11871,8 +12060,10 @@
     classDetailAddEventBtn.addEventListener("click", () => {
       if (!classDetailContext) return;
       const klass = classDetailContext.klass;
+      const ctx = { klass, role: classDetailContext.role };
       const calendarTab = document.querySelector('.tab[data-view="calendar"]');
       if (calendarTab) calendarTab.click();
+      calendarFormReturnToClass = ctx;
       openCalendarEventForm(null, klass.id);
     });
   }
