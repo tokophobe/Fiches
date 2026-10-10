@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v200";
+  const APP_VERSION = "v201";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -187,7 +187,11 @@
   // restent repliées tant qu'on n'a pas cliqué dessus.
   const revealSecondaryIconsBtn = el("reveal-secondary-icons-btn");
   const secondaryIconsWrap = el("secondary-icons-wrap");
-  if (revealSecondaryIconsBtn && secondaryIconsWrap) {
+  // Round 47 : plus de bouton « révéler » — signaler et éditer sont
+  // directement dans le coin supérieur droit de la fiche.
+  if (revealSecondaryIconsBtn) revealSecondaryIconsBtn.hidden = true;
+  if (secondaryIconsWrap) secondaryIconsWrap.hidden = false;
+  if (false && revealSecondaryIconsBtn && secondaryIconsWrap) {
     // Item 6 : icônes épurées (banque d'icônes) plutôt que les caractères
     // ▾/▴, à l'aller comme au retour.
     revealSecondaryIconsBtn.innerHTML = iconSvgMarkup("chevronDown", "icon-inline-svg");
@@ -392,6 +396,7 @@
   const DEFAULT_NAV_ICONS = {
     review: "cards", manage: "folder", stats: "barChart", settings: "settings",
     addCard: "plus", calendar: "calendar", dev: "code", library: "book",
+    creations: "pencil",
   };
   // Couleurs des 4 notes (boutons d'évaluation + graphiques) — item 2 :
   // rendues éditables depuis la page Développeur plutôt que codées en dur
@@ -625,7 +630,8 @@
   // uniquement s'ils restent référencés ailleurs, sinon retirés. Libellés
   // mis à jour pour "manage" (Mon bureau) et "classes" (École).
   const HOME_LAYOUT_TITLES = {
-    review: "Réviser", manage: "Gérer mes fiches", addCard: "Ajouter une fiche",
+    review: "Réviser", manage: "Organiser mes boîtes de révision", addCard: "Ajouter une fiche",
+    creations: "Créer mes propres boîtes de révision",
     stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
     dev: "Développeur", classes: "École", account: "Compte",
     library: "Librairie",
@@ -641,7 +647,10 @@
   const DEFAULT_HOME_LAYOUT = {
     addCard: { x: 73.4, y: 14.9, d: 110 },
     review: { x: 26.1, y: 13.7, d: 155 },
-    manage: { x: 79.8, y: 59.0, d: 95 },
+    manage: { x: 79.8, y: 59.0, d: 105 },
+    // Round 47 : « Créer mes propres boîtes de révision » (ex-« Mes
+    // créations de fiches » du hub Gérer mes fiches, supprimé).
+    creations: { x: 47.0, y: 73.0, d: 105 },
     classes: { x: 50.0, y: 26.5, d: 95 },
     calendar: { x: 39.5, y: 54.7, d: 100 },
     stats: { x: 77.7, y: 37.5, d: 100 },
@@ -677,68 +686,80 @@
   // petite série façon tuto (voir bouton "Suite", round 4), une simple
   // chaîne reste acceptée pour un message unique.
   const DEFAULT_HELP_MESSAGES_BY_VIEW = {
-    manage: ["Range ici tes boîtes dans des dossiers. Pour créer une nouvelle boîte, passe par « Mes créations de fiches »."],
-    "manage-creations": ["Ici, seulement les boîtes que tu as créées toi-même. L'interrupteur ne garde que celles publiées dans la Librairie."],
-    "creation-detail": [],
+    // Round 47 : un message par page (bulle « … » partout), modifiable dans
+    // le mode développeur.
+    "review-hub": ["Choisis comment réviser : les révisions urgentes préparent tes prochaines échéances (c'est ce que je te conseille), le renforcement fait travailler les boîtes où tu es le plus en retard, et la sélection manuelle te laisse choisir toi-même."],
+    "revision-program": ["A ta place, voici ce que je réviserais en priorité : les boîtes de tes prochaines échéances, la plus proche d'abord. Décoche ce que tu ne veux pas réviser."],
+    "revision-reinforce": ["Voici tes boîtes, celles sur lesquelles tu es le plus en retard d'abord. La barre montre où tu en es dans l'apprentissage de chacune."],
+    review: ["Touche la fiche pour voir la réponse, puis dis-moi si tu la savais. Je m'occupe de te la reposer au bon moment."],
+    manage: ["Range ici tes boîtes de révision dans des dossiers. Touche une boîte pour voir son résumé. Pour créer une nouvelle boîte, passe par « Créer mes propres boîtes de révision »."],
+    creations: ["Ici, toutes les boîtes que tu as créées. Publie-les dans la Librairie, ou ajoute-les à tes révisions pour les ranger dans l'organisation de tes boîtes."],
+    "creation-detail": ["Le résumé de ta boîte : ses fiches, son classement, sa place dans tes révisions. Le bouton + ajoute une fiche."],
+    "box-create": ["Donne un nom à ta boîte et classe-la : ce classement servira aux filtres, et sera repris si tu la publies dans la Librairie."],
     "report-card": ["Explique à l'auteur ce qui ne va pas dans cette fiche : il recevra ton message et pourra la corriger."],
     reports: ["Voici les fiches que d'autres utilisateurs t'ont signalées. Corrige-les, puis marque le signalement comme traité."],
-    "box-create": ["Donne un nom à ta boîte et classe-la : ce classement servira aux filtres, et sera repris si tu la publies dans la Librairie."],
-    creations: ["Ici, toutes les boîtes que tu as créées. Publie-les dans la Librairie, ou ajoute-les à tes révisions pour les ranger dans Mes fiches de révision."],
-    "fiches-hub": [],
-    "review-hub": [],
-    "revision-program": ["A ta place, voici ce que je réviserais en priorité, dans l'ordre :"],
-    review: [],
-    cards: [],
-    stats: [],
-    sync: [],
-    // Round 18, item 12 : texte d'intro déplacé de la page vers le robot
-    // (message d'aide par défaut, éditable en mode développeur).
-    calendar: ["Note ici tes échéances (contrôle, interrogation, partiels, bac...) liées à une boîte ou un dossier. De quoi, plus tard, générer automatiquement un programme de révision."],
-    classes: [],
-    "classes-student": [],
-    "classes-teacher": [],
-    "class-detail": [],
-    account: [],
-    settings: [],
-    dev: [],
-    "new-card": [],
-    "boite-picker": [],
-    "calendar-event-form": [],
-    messages: [],
-    "message-thread": [],
-    library: ["Ici, tu peux prendre des collections de fiches partagées par d'autres — elles s'ajoutent à tes collections, avec cette icône en réseau pour les reconnaître."],
+    cards: ["Toutes les fiches de cette boîte. Le drapeau signale une fiche à corriger ; la flèche ouvre les autres actions (éditer, déplacer, supprimer)."],
+    "new-card": ["Écris la question et la réponse : je te poserai la question et tu me diras si tu connaissais la réponse."],
+    stats: ["Tes statistiques : combien de fiches tu révises, et comment tu progresses."],
+    calendar: ["Note ici tes échéances (contrôle, interrogation, partiels, bac...) liées à une boîte ou un dossier : je m'en sers pour te préparer les révisions urgentes."],
+    "calendar-event-form": ["Donne un titre et une date à ton échéance, puis choisis les boîtes à réviser pour elle."],
+    "calendar-event-detail": ["Le détail de cette échéance et des boîtes à réviser pour elle."],
+    sync: ["L'état de la synchronisation de tes données entre tes appareils."],
+    account: ["Ton compte : ton nom, ton niveau scolaire et la façon dont tu utilises l'appli."],
+    "school-hub": ["Retrouve ici tes classes, la messagerie de tes classes et ton calendrier."],
+    classes: ["Choisis ton rôle : élève (tu rejoins une classe avec un code) ou enseignant (tu crées tes classes)."],
+    "classes-student": ["Les classes que tu as rejointes. Touche une classe pour voir ses boîtes et ses évènements."],
+    "classes-teacher": ["Les classes que tu as créées. Donne leur code à tes élèves pour qu'ils les rejoignent."],
+    "classes-join": ["Entre le code que ton enseignant t'a donné pour rejoindre sa classe."],
+    "classes-create": ["Donne un nom à ta classe."],
+    "class-detail": ["La page de la classe : ses boîtes partagées, ses évènements à venir et la liste des élèves."],
+    messages: ["Une discussion par classe : touche une classe pour lire et écrire les messages."],
+    "message-thread": ["Écris ton message en bas de la page : toute la classe le verra."],
+    library: ["Ici, tu peux prendre des collections de fiches partagées par d'autres — elles s'ajoutent à tes boîtes, avec cette icône en réseau pour les reconnaître."],
+    "library-detail": ["La présentation de cette collection : son auteur, son classement et sa note."],
+    "library-cards": ["Un aperçu des fiches de cette collection."],
+    "library-share": ["Publie ta boîte dans la Librairie : donne-lui un nom, un classement et des mots clés pour qu'on la trouve facilement."],
+    settings: ["Tes réglages : l'apparence des fiches, l'import et l'export de tes boîtes."],
+    dev: ["Le mode développeur : les réglages de présentation, communs à tous les utilisateurs."],
+    "boite-picker": ["Choisis une boîte ou un dossier dans la liste."],
   };
   // Round 4, partie 2 : intitulés amicaux de chaque page, pour l'éditeur du
   // mode développeur — mêmes clés que DEFAULT_HELP_MESSAGES_BY_VIEW.
   const HELP_VIEW_LABELS = {
-    review: "Réviser",
-    manage: "Mes fiches de révision (Organisation)",
-    "manage-creations": "Mes créations de fiches (ancienne page)",
-    creations: "Mes créations de fiches",
-    "box-create": "Mes créations — créer une boîte",
-    "creation-detail": "Mes créations — page d'une boîte",
+    "review-hub": "Réviser (choix)",
+    "revision-program": "Révisions urgentes",
+    "revision-reinforce": "Renforcer mes connaissances",
+    review: "Réviser (fiches)",
+    manage: "Organisation des boîtes de révision",
+    creations: "Mes créations de boîtes de révision",
+    "creation-detail": "Résumé d'une boîte",
+    "box-create": "Créer / classer une boîte",
     "report-card": "Signaler une fiche à son auteur",
     reports: "Signalements reçus",
-    "fiches-hub": "Gérer mes fiches (choix)",
-    cards: "Fiches",
-    stats: "Statistiques",
-    sync: "Synchronisation",
-    calendar: "Calendrier",
-    "review-hub": "Réviser (choix)",
-    "revision-program": "Programme de révision",
-    classes: "Classes (page d'accueil)",
-    "classes-student": "Classes — J'apprends",
-    "classes-teacher": "Classes — J'enseigne",
-    "class-detail": "Classes — page d'une classe",
-    account: "Compte",
-    settings: "Réglages",
-    dev: "Développeur",
+    cards: "Fiches d'une boîte",
     "new-card": "Nouvelle fiche",
-    "boite-picker": "Sélecteur de boîte(s)",
-    "calendar-event-form": "Calendrier — ajouter/modifier un événement",
+    stats: "Statistiques",
+    calendar: "Calendrier",
+    "calendar-event-form": "Calendrier — ajouter/modifier un évènement",
+    "calendar-event-detail": "Calendrier — détail d'un évènement",
+    sync: "Synchronisation",
+    account: "Compte",
+    "school-hub": "École",
+    classes: "Mes classes (choix du rôle)",
+    "classes-student": "Classes — Élève",
+    "classes-teacher": "Classes — Enseignant",
+    "classes-join": "Rejoindre une classe",
+    "classes-create": "Créer une classe",
+    "class-detail": "Page d'une classe",
     messages: "Messagerie",
     "message-thread": "Messagerie — discussion",
     library: "Librairie",
+    "library-detail": "Librairie — présentation d'une collection",
+    "library-cards": "Librairie — fiches d'une collection",
+    "library-share": "Librairie — publier une boîte",
+    settings: "Réglages",
+    dev: "Développeur",
+    "boite-picker": "Sélecteur de boîte(s)",
   };
   // Round 4 : le robot ne dit plus rien par défaut — une petite bulle
   // "aide" cliquable apparaît à côté de lui quand la page a un message, et
@@ -749,7 +770,15 @@
   // défaut tant que rien n'a été personnalisé.
   let bodyLogoSpeechMessages = [];
   let bodyLogoSpeechIndex = 0;
+  // Round 47 : page dont la bulle est actuellement chargée (évite qu'un
+  // message ponctuel — ex. « Déplacer … vers : » — soit écrasé par le
+  // message générique de la page quand celle-ci devient active).
+  let bodyLogoSpeechKey = "";
+  // Round 47 : partage d'une collection de la Librairie avec une classe en
+  // cours (voir setLibraryShareToClass) — déclaré tôt (goHome y touche).
+  let libraryShareToClassCtx = null;
   function applyBodyLogoSpeech(view) {
+    bodyLogoSpeechKey = view;
     const raw = loadDevSettings().helpMessagesByView[view];
     bodyLogoSpeechMessages = Array.isArray(raw) ? raw.filter((m) => m && m.trim()) : raw ? [raw] : [];
     bodyLogoSpeechIndex = 0;
@@ -4139,15 +4168,11 @@
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
       nameBtn.innerHTML = `${boiteIconMarkup} <span>${escapeHtml(displayName)}</span>`;
-      nameBtn.title = "Voir les fiches de cette boîte";
-      // Round 13, item 3-2 : un clic sur une boîte mène désormais à la page
-      // Fiches (au lieu de Réviser) — le bouton Accueil depuis Fiches
-      // ramène alors ici (Mon bureau) plutôt qu'au véritable accueil
-      // (cardsEntryFromManage, déjà géré par goHome()).
+      nameBtn.title = "Voir le résumé de cette boîte";
+      // Round 47 : un clic sur une boîte ouvre son résumé (comme depuis Mes
+      // créations) ; les fiches sont à un clic de là.
       nameBtn.addEventListener("click", () => {
-        cardsEntryFromManage = true;
-        cardsEntryFromCreations = false;
-        goToCardsFor(`subject:${subjectId}`);
+        openCreationDetail(subjectId, "manage");
       });
 
       const n = cards.filter((c) => !c.deleted && c.subject === subjectId).length;
@@ -4287,7 +4312,7 @@
     // Item 8 : demande tout de suite où le ranger, plutôt que de le créer
     // silencieusement à la racine en laissant l'utilisateur le déplacer
     // ensuite lui-même via ↔️.
-    openMovePicker("folder", folder.id);
+    openMovePicker("folder", folder.id, { verb: "Placer" });
   }
 
   async function renameFolder(folderId) {
@@ -4334,7 +4359,7 @@
   /* ---------------------------------------------------------
      Déplacer un dossier ou une boîte vers un autre dossier
   --------------------------------------------------------- */
-  function openMovePicker(kind, targetId) {
+  function openMovePicker(kind, targetId, opts) {
     // Pour un dossier, on exclut lui-même et tous ses descendants de la
     // liste des destinations possibles (on ne peut pas le déplacer dans
     // lui-même ou l'un de ses propres sous-dossiers).
@@ -4354,7 +4379,8 @@
       // (bulle de parole) plutôt qu'en simple titre de page, et le bouton
       // de retour de cette page devient "Annuler" (on choisit une
       // destination, on ne "revient" pas en arrière).
-      robotMessage: `Déplacer « ${name || ""} » vers :`,
+      // Round 47 : « Placer … vers » pour un dossier qu'on vient de créer.
+      robotMessage: `${(opts && opts.verb) || "Déplacer"} « ${name || ""} » vers :`,
       backLabel: "Annuler",
       excludedFolderIds: excluded,
       onPick: async (kindPicked, destId) => {
@@ -4826,15 +4852,36 @@
    *  dans son style Organisation, pseudo-dossier racine inclus. Le Set
    *  passé en argument est muté EN PLACE au fil des cases cochées/décochées
    *  — l'appelant le relit directement (plus besoin de relire le DOM). */
-  function renderMultiBoitePicker(container, selectedSubjectIds, onChange) {
+  function renderMultiBoitePicker(container, selectedSubjectIds, onChange, opts) {
     const ctx = { mode: "multi", selectedSubjectIds, rerenderRoot: rerender, onSelectionChange: onChange };
     function rerender() {
       container.innerHTML = "";
       container.classList.add("picker-tree");
       prependAllBoxesRootRow(container, ctx);
       renderFolderTreeForPicker(container, ROOT_FOLDER_ID, 0, ctx);
+      if (opts && opts.greyEmpty) greyEmptyPickerRows(container);
     }
     rerender();
+  }
+  /** Round 47 : « Choisir les boîtes à réviser » — les cases des boîtes et
+   *  dossiers sans aucune fiche sont grisées (rien à réviser dedans). */
+  function greyEmptyPickerRows(container) {
+    const counts = new Map();
+    cards.forEach((c) => {
+      if (!c.deleted) counts.set(c.subject, (counts.get(c.subject) || 0) + 1);
+    });
+    const nFor = (ids) => ids.reduce((acc, id) => acc + (counts.get(id) || 0), 0);
+    container.querySelectorAll("input.picker-row-checkbox").forEach((cb) => {
+      const kind = cb.dataset.kind;
+      let n = null;
+      if (kind === "subject") n = nFor([cb.value]);
+      else if (kind === "folder") n = nFor([cb.value, ...subjectIdsInFolder(cb.value)]);
+      if (n === 0) {
+        cb.disabled = true;
+        const row = cb.closest(".picker-row");
+        if (row) row.classList.add("picker-row--empty");
+      }
+    });
   }
 
   /** Point d'entrée commun (item 1, nouveau lot) pour un sélecteur à choix
@@ -5028,7 +5075,7 @@
 
     if (ctx.mode === "multi") {
       const selection = new Set(ctx.initialSelection || []);
-      renderMultiBoitePicker(list, selection);
+      renderMultiBoitePicker(list, selection, undefined, { greyEmpty: !!ctx.greyEmpty });
       if (actions) actions.hidden = false;
       if (confirmBtn) {
         confirmBtn.hidden = false;
@@ -5039,7 +5086,7 @@
         noneBtn.onclick = ctx.showNoneButton
           ? () => {
               selection.clear();
-              renderMultiBoitePicker(list, selection);
+              renderMultiBoitePicker(list, selection, undefined, { greyEmpty: !!ctx.greyEmpty });
             }
           : null;
       }
@@ -5067,6 +5114,7 @@
       // habituel de cette page.
       bodyLogoSpeechMessages = [ctx.robotMessage];
       bodyLogoSpeechIndex = 0;
+      bodyLogoSpeechKey = "boite-picker";
       renderBodyLogoSpeechState(true);
     } else {
       applyBodyLogoSpeech("boite-picker");
@@ -5108,6 +5156,7 @@
       mode: "multi",
       title: "Choisir les boîtes à réviser",
       hint: "Choisis les boîtes à réviser confondues :",
+      greyEmpty: true,
       // Round 39 : depuis « Sélection manuelle », le bouton lance directement la révision.
       confirmLabel: multiPickerNavigateToReviewOnConfirm ? "Lancer la révision" : "Valider",
       initialSelection: loadMultiSelection(),
@@ -5589,14 +5638,27 @@
     }
   }
 
+  /** Round 47 : sur Réviser, le titre de la page (à droite du robot) est
+   *  « N fiches à revoir » — la capsule du bandeau du haut est retirée. */
+  function reviewHeaderDueText() {
+    const due = dueCards().length;
+    return `${due} fiche${due > 1 ? "s" : ""} à revoir`;
+  }
   function renderDuePill() {
     const due = dueCards().length;
     dueCountEl.textContent = String(due);
 
-    // Item 5 (dernier lot) : la pastille ne s'affiche plus que sur la
-    // page Réviser (elle restait visible partout auparavant).
+    // Round 47 : la capsule n'est plus affichée nulle part (le nombre est
+    // devenu le titre de la page Réviser).
     const onReview = el("view-review") && el("view-review").classList.contains("is-active");
-    duePillEl.hidden = !onReview;
+    duePillEl.hidden = true;
+    if (onReview) {
+      try {
+        updatePageHeaderTitle();
+      } catch (e) {
+        /* titre pas encore prêt au démarrage */
+      }
+    }
     if (!onReview) return;
 
     // Dès que le compteur atteint 0, la pastille passe en blanc (comme en
@@ -6030,7 +6092,8 @@
    *  (cases cochées), puis « Renforcer mes connaissances ». */
   function advisedBoxOrder() {
     const out = [];
-    upcomingEventsWithBoxes().forEach((ev) => {
+    // Round 47 : en « Renforcer mes connaissances », on reste dans cette liste.
+    if (reviewEntryFromProgram !== "reinforce") upcomingEventsWithBoxes().forEach((ev) => {
       const unchecked = revisionProgramUnchecked.get(ev.id) || new Set();
       revisionTreeBoxIds(revisionTreeForEvent(ev)).forEach((id) => {
         if (!unchecked.has(id) && !out.includes(id)) out.push(id);
@@ -6053,6 +6116,9 @@
   let proposalOpen = false;
   async function maybeProposeNextBox() {
     if (proposalOpen || !currentCard) return;
+    // Round 47 : pas de proposition en « Révisions urgentes » — seulement en
+    // « Renforcer mes connaissances » et en « Sélection manuelle ».
+    if (reviewEntryFromProgram === "urgent") return;
     const met = sessionProposalConditionMet();
     if (!met) {
       if (sessionState.proposalShown) sessionState.proposalArmed = true;
@@ -6076,7 +6142,6 @@
         );
         if (ok) {
           reviewEntryFromManage = false;
-          reviewEntryFromProgram = true;
           switchSubject(next.id);
         }
       } else {
@@ -6456,7 +6521,10 @@
     // Round 39 : fiches d'une boîte ouverte depuis Mes créations — bouton
     // rond « + Ajouter une fiche » et pas de sélecteur de périmètre.
     {
-      const fromBox = cardsEntryFromCreations && subjects.some((x) => x.id === cardsScopeFilter);
+      // Round 47 : bouton rond « + Ajouter une fiche » dès qu'on affiche une
+      // de ses propres boîtes (quelle que soit la page d'où l'on vient).
+      const scopeSubj = subjects.find((x) => x.id === cardsScopeFilter);
+      const fromBox = !!scopeSubj && isOwnCreatedSubject(scopeSubj);
       const addWrap = el("cards-add-card-wrap");
       // Round 41 : plus de sélecteur de périmètre — juste le nom du dossier
       // ou de la boîte.
@@ -6521,80 +6589,87 @@
 
     for (const card of sorted) {
       const li = document.createElement("li");
-      li.className = "card-row";
+      li.className = "card-row card-row--r47";
 
-      // Score d'apprentissage (item 1c), coin supérieur droit de la ligne.
-      const scoreBadge = document.createElement("span");
-      scoreBadge.className = "card-row-score";
-      scoreBadge.textContent = `${computeCardScore(card)}`;
-      li.appendChild(scoreBadge);
-
+      // Round 47 : plus de score (ancien « score d'apprentissage » 0-100), ni
+      // de nom de boîte / date sous la fiche (sauf si la liste mélange
+      // plusieurs boîtes : le nom de la boîte reste alors utile), ni de
+      // drapeau devant la question. À droite : « signaler » (drapeau rouge
+      // quand la fiche est signalée) et « ⌄ » (éditer, déplacer, supprimer).
       const main = document.createElement("div");
       main.className = "card-row-main";
 
       const q = document.createElement("p");
       q.className = "card-row-q";
-      q.innerHTML = (card.underConstruction ? "🚩 " : "") + toDisplayHtml(card.question);
+      q.innerHTML = toDisplayHtml(card.question);
 
       const a = document.createElement("p");
       a.className = "card-row-a";
       a.innerHTML = toDisplayHtml(card.answer);
 
-      const meta = document.createElement("p");
-      meta.className = "card-row-meta";
-      // Nom de la boîte (item 11) : seulement utile quand la liste mélange
-      // plusieurs boîtes (dossier / toutes / sélection) — inutile et
-      // redondant quand on est déjà filtré sur "cette boîte".
-      const dueLabel = SM2.isDue(card)
-        ? "à revoir aujourd'hui"
-        : `prochaine question dans ${formatInterval(daysUntil(card.dueDate))}`;
-      meta.textContent = showSubjectNames ? `${subjectName(card.subject)} — ${dueLabel}` : dueLabel;
-
       main.appendChild(q);
       main.appendChild(a);
-      main.appendChild(meta);
+      if (showSubjectNames && cardsScopeFilter !== CARDS_SCOPE_CURRENT && !subjects.some((x) => x.id === cardsScopeFilter)) {
+        const meta = document.createElement("p");
+        meta.className = "card-row-meta";
+        meta.textContent = subjectName(card.subject);
+        main.appendChild(meta);
+      }
 
-      const actions = document.createElement("div");
-      actions.className = "row-actions";
-
-      const editBtn = document.createElement("button");
-      editBtn.className = "icon-btn";
-      editBtn.type = "button";
-      editBtn.textContent = "éditer";
-      editBtn.addEventListener("click", () => enterEditMode(card));
+      const side = document.createElement("div");
+      side.className = "card-row-side";
 
       const constructionBtn = document.createElement("button");
-      constructionBtn.className = "icon-btn" + (card.underConstruction ? " is-active-construction" : "");
+      constructionBtn.className = "card-row-flag" + (card.underConstruction ? " is-flagged" : "");
       constructionBtn.type = "button";
       constructionBtn.innerHTML = getIconMarkupFor("construction");
       constructionBtn.title = isReadonlyMirrorCard(card) ? "Signaler cette fiche à son auteur" : card.underConstruction ? "Retirer le signalement" : "Signaler cette fiche (à corriger)";
+      constructionBtn.setAttribute("aria-label", constructionBtn.title);
       constructionBtn.addEventListener("click", () => signalCard(card.id));
+      side.appendChild(constructionBtn);
 
-      const delBtn = document.createElement("button");
-      delBtn.className = "icon-btn icon-btn--danger";
-      delBtn.type = "button";
-      delBtn.textContent = "suppr.";
-      delBtn.addEventListener("click", () => deleteCard(card.id));
+      const deployBtn = document.createElement("button");
+      deployBtn.type = "button";
+      deployBtn.className = "org-deploy-btn card-row-deploy";
+      deployBtn.title = "Actions";
+      deployBtn.setAttribute("aria-label", "Actions sur cette fiche");
+      deployBtn.innerHTML = iconSvgMarkup("chevronDown", "icon-inline-svg");
+      side.appendChild(deployBtn);
 
-      actions.appendChild(editBtn);
-      actions.appendChild(constructionBtn);
-
+      const popover = document.createElement("div");
+      popover.className = "org-actions-popover card-row-popover";
+      popover.hidden = true;
+      const addItem = (iconHtml, label, fn, danger) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "org-actions-popover-item" + (danger ? " org-actions-popover-item--danger" : "");
+        b.innerHTML = `${iconHtml}<span>${label}</span>`;
+        b.addEventListener("click", () => {
+          closeAllOrgActionPopovers();
+          fn();
+        });
+        popover.appendChild(b);
+      };
+      addItem(orgIconMarkup("orgRename"), "Éditer", () => enterEditMode(card));
       // Round 26, item 4 : "déplacer" ouvre l'explorateur (page de
       // sélection, comme partout ailleurs) au lieu d'une liste déroulante.
-      if (subjects.length > 1 || folders.length > 0) {
-        const moveBtn = document.createElement("button");
-        moveBtn.type = "button";
-        moveBtn.className = "icon-btn card-row-move";
-        moveBtn.title = "Déplacer vers une autre boîte";
-        moveBtn.textContent = "déplacer";
-        moveBtn.addEventListener("click", () => openCardMovePicker(card.id));
-        actions.appendChild(moveBtn);
-      }
+      if (subjects.length > 1 || folders.length > 0) addItem(orgIconMarkup("orgMove"), "Déplacer", () => openCardMovePicker(card.id));
+      addItem(orgIconMarkup("orgDelete"), "Supprimer", () => deleteCard(card.id), true);
+      deployBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const willOpen = popover.hidden;
+        closeAllOrgActionPopovers();
+        popover.hidden = !willOpen;
+        if (willOpen) {
+          const r = deployBtn.getBoundingClientRect();
+          const h = popover.offsetHeight || popover.children.length * 40 + 12;
+          popover.classList.toggle("org-actions-popover--flip-up", window.innerHeight - r.bottom < h + 12);
+        }
+      });
 
-      actions.appendChild(delBtn);
-
-      li.appendChild(actions);
       li.appendChild(main);
+      li.appendChild(side);
+      li.appendChild(popover);
       cardListEl.appendChild(li);
     }
   }
@@ -8599,7 +8674,7 @@
       // n'apparaît que sur les pages autres que l'accueil, qui a déjà son
       // propre grand logo.
       if (el("body-logo-row")) el("body-logo-row").hidden = false;
-      applyBodyLogoSpeech(view === "manage" && manageMode === "creations" ? "manage-creations" : view);
+      applyBodyLogoSpeech(view);
 
       if (view === "review") {
         if (!reviewSessionStarted) {
@@ -8627,7 +8702,7 @@
       if (view === "library") renderLibraryView();
       if (view === "creations") renderCreationsView();
       if (view === "reports") renderReportsView();
-      if (view === "fiches-hub") refreshReportsBadge();
+      if (view === "creations") refreshReportsBadge();
       // Round 10, item 2 : resynchronise les collections prises dans la
       // Bibliothèque en ouvrant Mes collections — indépendant d'un Compte
       // connecté (prendre une collection publique n'en demande pas), donc
@@ -8636,6 +8711,10 @@
       if (view === "manage") syncLibraryMirrorsForUser().then(() => renderSubjectManageList());
       if (view === "calendar") renderCalendarEvents();
       if (view === "revision-program") renderRevisionProgramList();
+      if (view === "revision-reinforce") {
+        reinforceShown = REINFORCE_PAGE_SIZE;
+        renderReinforceList();
+      }
       if (view === "review-hub") renderReviewHub();
       if (view === "settings") renderSettingsView();
       renderDuePill();
@@ -8657,9 +8736,10 @@
   const PAGE_TITLES = {
     home: "Accueil",
     "review-hub": "Réviser",
-    "revision-program": "Programme",
+    "revision-program": "Révisions urgentes",
+    "revision-reinforce": "Renforcer mes connaissances",
     review: "Réviser",
-    manage: "Fiches",
+    manage: "Organisation des boîtes de révision",
     "new-card": "Nouvelle fiche",
     cards: "Fiches",
     stats: "Statistiques",
@@ -8667,8 +8747,7 @@
     sync: "Synchronisation",
     account: "Mon compte",
     "school-hub": "École",
-    "fiches-hub": "Gérer mes fiches",
-    creations: "Mes créations",
+    creations: "Mes créations de boîtes de révision",
     "box-create": "Nouvelle boîte",
     "creation-detail": "Boîte",
     "report-card": "Signaler",
@@ -8812,9 +8891,11 @@
    *  (`from`, qui est alors masqué) ; `hide` = titres d'origine à masquer. */
   const PAGE_HEADER_TITLES = {
     "review-hub": "Réviser",
-    "revision-program": "Révisions conseillées",
-    review: "Réviser",
-    manage: "Mes fiches de révision",
+    "revision-program": "Révisions urgentes",
+    "revision-reinforce": "Renforcer mes connaissances",
+    // Round 47 : sur Réviser, le titre est le nombre de fiches à revoir.
+    review: { dynamic: () => reviewHeaderDueText() },
+    manage: "Organisation des boîtes de révision",
     "new-card": { from: "#view-new-card .card-form-header h2.section-title" },
     cards: { from: "#cards-scope-title", fallback: "Liste des fiches", hide: ["#view-cards .cards-list-big-title"] },
     stats: "Statistiques",
@@ -8824,10 +8905,9 @@
     sync: "Synchronisation",
     account: { text: "Mon compte", hide: ["#view-account > h2.section-title"] },
     "school-hub": "École",
-    "fiches-hub": "Gérer mes fiches",
-    creations: { text: "Mes créations de fiches", hide: ["#view-creations .library-title-row"] },
+    creations: { text: "Mes créations de boîtes de révision", hide: ["#view-creations .library-title-row"] },
     "box-create": { from: "#box-create-title" },
-    "creation-detail": "Ma boîte",
+    "creation-detail": "Résumé de la boîte",
     "report-card": { text: "Signaler une fiche", hide: ["#view-report-card .settings-block-title"] },
     reports: { text: "Signalements", hide: ["#view-reports > h2.section-title"] },
     classes: { text: "Mes classes", hide: ["#view-classes > h2.section-title"] },
@@ -8851,6 +8931,7 @@
     const cfg = PAGE_HEADER_TITLES[key];
     if (!cfg) return PAGE_TITLES[key] || "";
     if (typeof cfg === "string") return cfg;
+    if (cfg.dynamic) return cfg.dynamic();
     if (cfg.from) {
       const src = document.querySelector(cfg.from);
       const t = src ? src.textContent.trim() : "";
@@ -8888,6 +8969,8 @@
     document.title = PAGE_TITLES[key] ? `${PAGE_TITLES[key]} — Fiches` : "Fiches";
     navOnViewChanged(key);
     updatePageHeaderTitle(key);
+    // Round 47 : bulle « … » du robot sur toutes les pages.
+    if (key && key !== "home" && bodyLogoSpeechKey !== key) applyBodyLogoSpeech(key);
     // Round 17, item 1 : logo darwin du bandeau masqué UNIQUEMENT sur
     // l'accueil (qui a déjà son propre grand logo darwin).
     if (topbarDarwinLogoEl) topbarDarwinLogoEl.hidden = key === "home";
@@ -9043,7 +9126,7 @@
       return;
     }
     if (el("view-reports") && el("view-reports").classList.contains("is-active")) {
-      const tab = document.querySelector('.tab[data-view="fiches-hub"]');
+      const tab = document.querySelector('.tab[data-view="creations"]');
       if (tab) tab.click();
       return;
     }
@@ -9052,22 +9135,11 @@
       return;
     }
     if (el("view-creation-detail") && el("view-creation-detail").classList.contains("is-active")) {
-      creationDetailSubjectId = null;
-      const tab = document.querySelector('.tab[data-view="creations"]');
-      if (tab) tab.click();
+      closeCreationDetail();
       return;
     }
-    // Mes fiches de révision / Mes créations se rejoignent par le hub
-    // Fiches : Accueil y ramène. Round 30 : la Librairie, elle, est
-    // désormais sur l'accueil (Accueil y ramène directement).
-    if (
-      (el("view-manage") && el("view-manage").classList.contains("is-active")) ||
-      (el("view-creations") && el("view-creations").classList.contains("is-active"))
-    ) {
-      const tab = document.querySelector('.tab[data-view="fiches-hub"]');
-      if (tab) tab.click();
-      return;
-    }
+    // Round 47 : Organisation et Mes créations sont sur l'accueil (le hub
+    // « Gérer mes fiches » n'existe plus) — retour direct à l'accueil.
     // Round 13, item 4 : Classes et Messagerie ne se rejoignent plus que
     // via le nouveau hub École — Accueil y ramène plutôt qu'au véritable
     // accueil, comme pour Organisation/Fiches ci-dessus.
@@ -9095,11 +9167,16 @@
       }
       // Round 25, item 2 : retour au Programme si on y est passé, sinon au
       // palier Réviser (Sélection manuelle).
-      const tab = document.querySelector(`.tab[data-view="${reviewEntryFromProgram ? "revision-program" : "review-hub"}"]`);
+      const tab = document.querySelector(
+        `.tab[data-view="${reviewEntryFromProgram === "reinforce" ? "revision-reinforce" : reviewEntryFromProgram ? "revision-program" : "review-hub"}"]`
+      );
       if (tab) tab.click();
       return;
     }
-    if (el("view-revision-program") && el("view-revision-program").classList.contains("is-active")) {
+    if (
+      (el("view-revision-program") && el("view-revision-program").classList.contains("is-active")) ||
+      (el("view-revision-reinforce") && el("view-revision-reinforce").classList.contains("is-active"))
+    ) {
       const tab = document.querySelector('.tab[data-view="review-hub"]');
       if (tab) tab.click();
       return;
@@ -9135,6 +9212,7 @@
     reportCardContext = null;
     calendarFormReturnToClass = null;
     calendarEditingEventId = null;
+    if (libraryShareToClassCtx) setLibraryShareToClass(null);
     reviewEntryFromManage = false;
     reviewEntryFromProgram = false;
     navStack.length = 0;
@@ -9167,6 +9245,12 @@
       if (square.dataset.go === "cards") {
         cardsEntryFromManage = false;
         cardsEntryFromCreations = false;
+      }
+      // Round 47 : « Organiser mes boîtes de révision » ouvre directement
+      // l'organisation (toutes les boîtes).
+      if (square.dataset.go === "manage") {
+        openManageInMode("all");
+        return;
       }
       const tab = document.querySelector(`.tab[data-view="${square.dataset.go}"]`);
       if (tab) tab.click();
@@ -9568,8 +9652,11 @@
       textEl.classList.toggle("is-overflowing", overflow > 0);
       if (!(await homeTickerWait(HOME_TICKER_PAUSE_MS, token))) return;
       if (overflow > 0 && !reduce) {
-        const duration = (overflow / HOME_TICKER_SPEED_PX_PER_S) * 1000;
-        line.style.transition = `transform ${duration}ms linear`;
+        // Round 47 : légère accélération au départ et décélération à
+        // l'arrivée (au lieu d'une vitesse constante), durée allongée
+        // d'autant pour garder une vitesse moyenne lisible.
+        const duration = (overflow / HOME_TICKER_SPEED_PX_PER_S) * 1000 * 1.15 + 300;
+        line.style.transition = `transform ${duration}ms cubic-bezier(0.42, 0, 0.58, 1)`;
         line.style.transform = `translateX(-${overflow + 8}px)`;
         if (!(await homeTickerWait(duration, token))) return;
         if (!(await homeTickerWait(HOME_TICKER_PAUSE_MS, token))) return;
@@ -9607,6 +9694,8 @@
   }
 
   function refreshHomeEventWarning() {
+    // Round 47 : pastille rouge « révisions urgentes » sur Réviser (accueil).
+    if (el("view-home") && el("view-home").classList.contains("is-active")) refreshReviewBadges();
     const wrap = el("home-event-warning");
     const textEl = el("home-event-warning-text");
     if (!wrap || !textEl) return;
@@ -9776,6 +9865,7 @@
     const field = el("calendar-event-class-field");
     const select = el("calendar-event-class-select");
     if (!field || !select) return;
+    field.dataset.forced = "";
     if (!Sync.isConfigured() || !accountCurrentUser) {
       field.hidden = true;
       return;
@@ -9791,6 +9881,12 @@
       `<option value="">Ne pas partager</option>` +
       myClasses.map((k) => `<option value="${k.id}">${escapeHtml(k.name)}</option>`).join("");
     select.value = eventToEdit && eventToEdit.classShare ? eventToEdit.classShare.classId : presetClassId || "";
+    // Round 47 : depuis la page d'une classe, l'évènement est partagé
+    // d'office avec cette classe — le champ n'est pas affiché.
+    const forced = !!presetClassId && myClasses.some((k) => k.id === presetClassId);
+    if (forced) select.value = presetClassId;
+    field.dataset.forced = forced ? "1" : "";
+    field.hidden = forced;
   }
   /** Garde-fou supplémentaire (round 6, "attention qu'un élève ne puisse
    *  rien modifier de ce qui est partagé par un prof") : la corbeille
@@ -9950,7 +10046,8 @@
       const commentVal = commentInput ? commentInput.value.trim() : "";
       const events = loadCalendarEvents();
       const classSelect = el("calendar-event-class-select");
-      const selectedClassId = classSelect && !el("calendar-event-class-field").hidden ? classSelect.value : "";
+      const classField = el("calendar-event-class-field");
+      const selectedClassId = classSelect && (!classField.hidden || classField.dataset.forced === "1") ? classSelect.value : "";
 
       let ev;
       let idx = -1;
@@ -10506,7 +10603,6 @@
     list.innerHTML = "";
     if (empty) empty.hidden = events.length > 0;
     events.forEach((ev) => list.appendChild(buildRevisionEventBlock(ev)));
-    renderReinforceList();
   }
 
   /* Round 42 : 2e partie des révisions conseillées, « Renforcer mes
@@ -10557,20 +10653,23 @@
       li.className = "revision-event-block revision-reinforce-block";
       li.dataset.subjectId = it.id;
       const n = it.pool.length;
+      // Round 47 : jauge en face du titre ; « X fiches à revoir sur N au
+      // total » sous le titre, dans une couleur rassurante.
+      const countText =
+        it.due > 0
+          ? `${it.due} fiche${it.due > 1 ? "s" : ""} à revoir sur ${n} au total`
+          : `À jour — ${n} fiche${n > 1 ? "s" : ""} au total`;
       li.innerHTML = `
-        <div class="revision-event-head">
+        <div class="revision-event-head revision-reinforce-head">
           <span class="revision-event-title">${escapeHtml(it.name)}</span>
-          <span class="revision-event-when${it.due > 0 ? " is-soon" : ""}">${
-            it.due > 0 ? `${it.due} fiche${it.due > 1 ? "s" : ""} à revoir` : "À jour"
-          }</span>
+          <span class="revision-event-gauge revision-reinforce-gauge">${buildPersGaugeSvg(it.pool, { width: 70, barHeight: 8 })}</span>
         </div>
-        <div class="revision-event-date">${n} fiche${n > 1 ? "s" : ""}</div>
-        <div class="revision-event-gauge">${buildPersGaugeSvg(it.pool, { width: 70, barHeight: 8 })}</div>
+        <div class="revision-reinforce-count">${countText}</div>
         <button type="button" class="btn btn--primary revision-event-go">Réviser cette boîte</button>
       `;
       li.querySelector(".revision-event-go").addEventListener("click", () => {
         reviewEntryFromManage = false;
-        reviewEntryFromProgram = true;
+        reviewEntryFromProgram = "reinforce";
         switchSubject(it.id);
         const tab = document.querySelector('.tab[data-view="review"]');
         if (tab) tab.click();
@@ -10672,7 +10771,7 @@
       const ids = selectedIds();
       if (ids.length === 0) return;
       reviewEntryFromManage = false;
-      reviewEntryFromProgram = true;
+      reviewEntryFromProgram = "urgent";
       if (ids.length === 1) {
         switchSubject(ids[0]);
       } else {
@@ -10687,43 +10786,89 @@
     return li;
   }
 
-  /** Round 25, item 2 : palier Réviser. "Révisions conseillées" n'est
-   *  utilisable que s'il existe au moins un évènement à venir AVEC des
-   *  boîtes associées (sinon le programme serait vide) — désactivé sinon,
-   *  avec la raison sous le libellé, répétée par le robot au clic. */
-  function reviewHubAdvisedBlockReason() {
-    // Round 42 : la page a aussi « Renforcer mes connaissances », utile même
-    // sans échéance — bloquée seulement s'il n'y a aucune fiche à réviser.
+  /** Round 47 : palier Réviser à trois boutons — « Révisions urgentes
+   *  (conseillé) » (échéances proches), « Renforcer mes connaissances » et
+   *  « Sélection manuelle ». Pastille rouge = nombre d'échéances à venir dont
+   *  une boîte a des fiches à revoir (reprise sur « Réviser » à l'accueil) ;
+   *  pastille grise = nombre de boîtes à renforcer qui ont des fiches à
+   *  revoir. */
+  function urgentEventsToReviewCount() {
+    const now = Date.now();
+    return upcomingEventsWithBoxes().filter((ev) => {
+      const ids = new Set(revisionTreeBoxIds(revisionTreeForEvent(ev)));
+      return cards.some((c) => !c.deleted && ids.has(c.subject) && cardDueTime(c) <= now);
+    }).length;
+  }
+  function reinforceBoxesToReviewCount() {
+    return computeReinforceItems().filter((it) => it.due > 0).length;
+  }
+  function setBadge(id, n) {
+    const b = el(id);
+    if (!b) return;
+    b.hidden = !(n > 0);
+    b.textContent = n > 99 ? "99+" : String(n);
+  }
+  function refreshReviewBadges() {
+    let urgent = 0;
+    try {
+      urgent = urgentEventsToReviewCount();
+    } catch (e) {
+      urgent = 0;
+    }
+    setBadge("home-review-badge", urgent);
+    setBadge("review-hub-urgent-badge", urgent);
+    return urgent;
+  }
+  function reviewHubUrgentBlockReason() {
     if (revisionCards().length === 0) return "Tu n'as encore aucune fiche dans tes révisions.";
+    if (upcomingEventsWithBoxes().length === 0) return "Aucune échéance à venir avec des boîtes associées.";
     return "";
   }
-  function renderReviewHub() {
-    const btn = el("review-hub-advised-btn");
-    const note = el("review-hub-advised-note");
+  function reviewHubReinforceBlockReason() {
+    if (revisionCards().length === 0) return "Tu n'as encore aucune fiche dans tes révisions.";
+    if (computeReinforceItems().length === 0) return "Toutes tes boîtes sont déjà dans les révisions urgentes.";
+    return "";
+  }
+  function renderHubButtonState(btnId, noteId, reason) {
+    const btn = el(btnId);
+    const note = el(noteId);
     if (!btn) return;
-    const reason = reviewHubAdvisedBlockReason();
     btn.classList.toggle("is-disabled", !!reason);
     btn.setAttribute("aria-disabled", reason ? "true" : "false");
-    const btn2 = el("review-hub-advised2-btn");
-    if (btn2) {
-      btn2.classList.toggle("is-disabled", !!reason);
-      btn2.setAttribute("aria-disabled", reason ? "true" : "false");
-    }
     if (note) {
       note.hidden = !reason;
       note.textContent = reason;
     }
   }
+  function renderReviewHub() {
+    renderHubButtonState("review-hub-advised-btn", "review-hub-advised-note", reviewHubUrgentBlockReason());
+    renderHubButtonState("review-hub-reinforce-btn", "review-hub-reinforce-note", reviewHubReinforceBlockReason());
+    refreshReviewBadges();
+    setBadge("review-hub-reinforce-badge", reinforceBoxesToReviewCount());
+  }
   const reviewHubAdvisedBtn = el("review-hub-advised-btn");
   if (reviewHubAdvisedBtn) {
     reviewHubAdvisedBtn.addEventListener("click", async () => {
-      const reason = reviewHubAdvisedBlockReason();
+      const reason = reviewHubUrgentBlockReason();
       if (reason) {
         renderReviewHub();
-        await robotAlert(`${reason} Ajoute des boîtes à tes révisions pour que je te propose un programme.`);
+        await robotAlert(`${reason} Ajoute une échéance (avec ses boîtes) dans le Calendrier pour que je te prépare des révisions urgentes.`);
         return;
       }
       const tab = document.querySelector('.tab[data-view="revision-program"]');
+      if (tab) tab.click();
+    });
+  }
+  const reviewHubReinforceBtn = el("review-hub-reinforce-btn");
+  if (reviewHubReinforceBtn) {
+    reviewHubReinforceBtn.addEventListener("click", async () => {
+      const reason = reviewHubReinforceBlockReason();
+      if (reason) {
+        renderReviewHub();
+        await robotAlert(reason);
+        return;
+      }
+      const tab = document.querySelector('.tab[data-view="revision-reinforce"]');
       if (tab) tab.click();
     });
   }
@@ -11458,10 +11603,6 @@
     document.body.classList.toggle("layout-v2", layoutV2);
   }
   [
-    ["fiches-hub-revision-btn", "fiches-hub-revision2-btn"],
-    ["fiches-hub-creations-btn", "fiches-hub-creations2-btn"],
-    ["review-hub-advised-btn", "review-hub-advised2-btn"],
-    ["review-hub-manual-btn", "review-hub-manual2-btn"],
     ["classes-goto-student-btn", "classes-goto-student2-btn"],
     ["classes-goto-teacher-btn", "classes-goto-teacher2-btn"],
   ].forEach(([origId, v2Id]) => {
@@ -12042,8 +12183,39 @@
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     el("view-classes-teacher").classList.add("is-active");
   }
+  /** Round 47 : le nom de la classe est demandé par le robot, avec le
+   *  modèle de nommage conseillé. */
+  function currentSchoolYearLabel() {
+    const d = new Date();
+    const y = d.getFullYear();
+    const start = d.getMonth() >= 7 ? y : y - 1;
+    return `${start}-${start + 1}`;
+  }
+  async function createClassWithRobot() {
+    const example = `6ème B - Histoire - ${currentSchoolYearLabel()}`;
+    const name = await showRobotMessage(
+      `Quel nom donner à ta classe ?\n\nConseil : respecte ce modèle « classe - matière - année scolaire », exemple : ${example}`,
+      {
+        input: { defaultValue: "", placeholder: example },
+        cancelValue: null,
+        buttons: [
+          { label: "Annuler", value: null },
+          { label: "Créer la classe", value: true, primary: true },
+        ],
+      }
+    );
+    const clean = typeof name === "string" ? name.trim() : "";
+    if (!clean) return;
+    const { error } = await Sync.classes.create(clean);
+    if (error) {
+      await robotAlert("Erreur : " + error);
+      return;
+    }
+    await renderTeacherClasses();
+    showToast(`Classe « ${clean} » créée`);
+  }
   const classesGotoCreateBtn = el("classes-goto-create-btn");
-  if (classesGotoCreateBtn) classesGotoCreateBtn.addEventListener("click", openClassesCreateView);
+  if (classesGotoCreateBtn) classesGotoCreateBtn.addEventListener("click", createClassWithRobot);
   const classesCreateBackBtn = el("classes-create-back-btn");
   if (classesCreateBackBtn) classesCreateBackBtn.addEventListener("click", closeClassesCreateView);
 
@@ -12185,7 +12357,7 @@
       }
       statsEl.innerHTML = chips.join("");
     }
-    if (shareBtn) shareBtn.hidden = !isTeacher;
+    if (el("class-detail-share-btns")) el("class-detail-share-btns").hidden = !isTeacher;
     const addEventBtn = el("class-detail-add-event-btn");
     if (addEventBtn) addEventBtn.hidden = !isTeacher;
 
@@ -12235,6 +12407,100 @@
       }
     }
     if (eventsEmpty) eventsEmpty.hidden = events.length > 0;
+    renderClassStudents(klass, isTeacher);
+  }
+
+  /** Round 47 : liste des élèves de la classe (prénom et nom ; l'email en
+   *  repli, pour l'enseignant seulement). */
+  async function renderClassStudents(klass, isTeacher) {
+    const list = el("class-detail-students");
+    const empty = el("class-detail-students-empty");
+    if (!list) return;
+    const { data, error, missing } = await Sync.classes.listMembers(klass.id);
+    if (!classDetailContext || classDetailContext.klass.id !== klass.id) return;
+    list.innerHTML = "";
+    if (error) {
+      if (empty) {
+        empty.hidden = false;
+        empty.textContent = missing
+          ? "La liste des élèves sera disponible après la mise à jour du serveur."
+          : "Impossible de charger la liste des élèves pour le moment.";
+      }
+      return;
+    }
+    const rows = (data || [])
+      .map((m) => {
+        const name = `${m.first_name || ""} ${m.last_name || ""}`.trim();
+        const key = name ? `0 ${m.last_name || ""} ${m.first_name || ""}` : `1 ${m.email || ""}`;
+        return { name, sortKey: key.toLowerCase(), email: m.email || "" };
+      })
+      .sort((a, b) => a.sortKey.localeCompare(b.sortKey, "fr"));
+    if (empty) {
+      empty.hidden = rows.length > 0;
+      empty.textContent = "Aucun élève n'a encore rejoint cette classe.";
+    }
+    rows.forEach((r) => {
+      const li = document.createElement("li");
+      li.className = "class-student-row";
+      const label = r.name || (isTeacher && r.email) || "Élève (nom non renseigné)";
+      li.innerHTML = `<span class="class-student-icon">${iconSvgMarkup("smile", "icon-inline-svg")}</span><span class="class-student-name">${escapeHtml(label)}</span>${
+        isTeacher && r.name && r.email ? `<span class="class-student-email">${escapeHtml(r.email)}</span>` : ""
+      }`;
+      list.appendChild(li);
+    });
+  }
+
+  /* Round 47 : partager une collection de la Librairie avec une classe —
+     avertissement du robot, puis la Librairie s'ouvre ; sur la fiche d'une
+     collection, « Partager avec la classe ». */
+  function setLibraryShareToClass(ctx) {
+    libraryShareToClassCtx = ctx;
+    const banner = el("library-share-class-banner");
+    if (banner) banner.hidden = !ctx;
+    const t = el("library-share-class-text");
+    if (t && ctx) t.textContent = `Choisis la collection à partager avec « ${ctx.klass.name} ».`;
+  }
+  const classDetailShareLibraryBtn = el("class-detail-share-library-btn");
+  if (classDetailShareLibraryBtn) {
+    classDetailShareLibraryBtn.addEventListener("click", async () => {
+      if (!classDetailContext) return;
+      const ctx = { klass: classDetailContext.klass, role: classDetailContext.role };
+      const ok = await robotConfirm("Attention, seuls les élèves abonnés ont accès aux boîtes de la librairie.", {
+        okLabel: "Continuer",
+        cancelLabel: "Annuler",
+      });
+      if (!ok) return;
+      setLibraryShareToClass(ctx);
+      const tab = document.querySelector('.tab[data-view="library"]');
+      if (tab) tab.click();
+    });
+  }
+  const libraryShareClassCancel = el("library-share-class-cancel");
+  if (libraryShareClassCancel) {
+    libraryShareClassCancel.addEventListener("click", () => {
+      const ctx = libraryShareToClassCtx;
+      setLibraryShareToClass(null);
+      if (ctx) openClassDetailView(ctx.klass, ctx.role);
+    });
+  }
+  async function shareLibraryCollectionToClass(col) {
+    const ctx = libraryShareToClassCtx;
+    if (!ctx || !col) return;
+    const name = col.name || "Collection";
+    const boxCards = Array.isArray(col.cards) ? col.cards : [];
+    const { error } = await Sync.classes.shareBox(ctx.klass.id, name, boxCards, [], { libraryCollectionId: col.id });
+    if (error) {
+      await robotAlert("Erreur lors du partage : " + error);
+      return;
+    }
+    try {
+      await Sync.messages.send(ctx.klass.id, `📚 « ${name} » a été partagée dans la classe (depuis la Librairie).`);
+    } catch (e) {
+      /* best-effort */
+    }
+    setLibraryShareToClass(null);
+    showToast(`« ${name} » partagée avec la classe`);
+    openClassDetailView(ctx.klass, ctx.role);
   }
 
   const classDetailBackBtn = el("class-detail-back-btn");
@@ -12245,14 +12511,13 @@
     classDetailShareBtn.addEventListener("click", async () => {
       if (!classDetailContext) return;
       const klass = classDetailContext.klass;
-      // Round 11, item 1 : le bouton dédié "Partager depuis la
-      // Bibliothèque" (round 10) est retiré — ce même sélecteur "Partager
-      // une boîte" propose maintenant, en plus des boîtes perso, les
-      // collections de la Bibliothèque comme options (ctx.libraryOptions).
-      const libraryOptions = await Sync.library.list();
+      // Round 47 : « Depuis mes boîtes » — l'explorateur ne propose plus que
+      // ses propres boîtes (la Librairie a son propre bouton).
+      const libraryOptions = [];
       openBoitePickerView({
         mode: "single",
         title: `Partager une boîte à « ${klass.name} »`,
+        robotMessage: `Quelle boîte partager avec « ${klass.name} » ?`,
         folderAlwaysSelectable: false,
         excludeSubjectIds: new Set(subjects.filter((s) => s.sharedBoxId).map((s) => s.id)),
         libraryOptions,
@@ -13204,6 +13469,13 @@
         });
       }
     }
+    // Round 47 : en cours de partage avec une classe — bouton dédié.
+    const shareClassBtn = el("library-detail-share-class-btn");
+    if (shareClassBtn) {
+      shareClassBtn.hidden = !libraryShareToClassCtx;
+      if (libraryShareToClassCtx) shareClassBtn.textContent = "Partager avec cette classe";
+      shareClassBtn.onclick = () => shareLibraryCollectionToClass(col);
+    }
     const alreadyTaken = subjects.some((s) => s.fromLibrary && s.libraryOriginId === col.id);
     // Round 21, item 6 : même bouton "prix" que dans la liste, avec la
     // même confirmation d'achat (voir confirmAndTakeLibraryCollection).
@@ -14113,7 +14385,7 @@
         <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""}</span>
         <span class="card-row-meta creations-tax">${taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`}</span>
       `;
-      li.addEventListener("click", () => openCreationDetail(s.id));
+      li.addEventListener("click", () => openCreationDetail(s.id, "creations"));
       list.appendChild(li);
     }
   }
@@ -14130,7 +14402,11 @@
   /* Round 34 : page détaillée d'une boîte de Mes créations — toutes ses
      infos et toutes ses actions (voir les fiches, publier, révisions,
      classer, supprimer). */
-  function openCreationDetail(subjectId) {
+  // Round 47 : le résumé d'une boîte s'ouvre aussi depuis l'organisation
+  // des boîtes de révision — on y revient alors.
+  let creationDetailOrigin = "creations";
+  function openCreationDetail(subjectId, origin) {
+    if (origin) creationDetailOrigin = origin;
     creationDetailSubjectId = subjectId;
     renderCreationDetail();
     boitePickerActivateView("view-creation-detail");
@@ -14138,6 +14414,10 @@
   }
   function closeCreationDetail() {
     creationDetailSubjectId = null;
+    if (creationDetailOrigin === "manage") {
+      openManageInMode("all");
+      return;
+    }
     boitePickerActivateView("view-creations");
     applyBodyLogoSpeech("creations");
     renderCreationsList();
@@ -14148,6 +14428,13 @@
     const s = subjects.find((x) => x.id === creationDetailSubjectId);
     if (!s) {
       wrap.innerHTML = `<p class="field-hint">Cette boîte n'existe plus.</p>`;
+      return;
+    }
+    // Round 47 : boîte d'une classe ou collection prise dans la Librairie
+    // (résumé ouvert depuis l'organisation) — résumé simplifié, sans les
+    // actions réservées à ses propres boîtes.
+    if (!isOwnCreatedSubject(s)) {
+      renderForeignBoxDetail(wrap, s);
       return;
     }
     const col = creationsCollectionFor(s);
@@ -14166,9 +14453,10 @@
     wrap.innerHTML = `
       <div class="creation-detail-head">
         <h2 class="section-title creation-detail-title">${escapeHtml(s.name)}</h2>
-        <span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>
+        ${pool ? `<span class="creation-detail-gauge">${buildPersGaugeSvg(pool, { width: 70, barHeight: 8 })}</span>` : ""}
       </div>
       <dl class="creation-detail-info">
+        <dt>Statut</dt><dd><span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span></dd>
         <dt>Fiches</dt><dd>${n} fiche${n > 1 ? "s" : ""}</dd>
         <dt>Classement</dt><dd>${taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`}</dd>
         <dt>Mes révisions</dt><dd>${place ? escapeHtml(place) : `Hors de mes révisions${remembered ? ` <span class="field-hint">(avant : ${escapeHtml(remembered)})</span>` : ""}`}</dd>
@@ -14176,7 +14464,6 @@
         ${tags.length ? `<dt>Tags</dt><dd><span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span></dd>` : ""}
         ${created ? `<dt>Créée le</dt><dd>${escapeHtml(created)}</dd>` : ""}
       </dl>
-      ${pool ? `<div class="creation-detail-gauge">${buildPersGaugeSvg(pool, { width: 70, barHeight: 8 })}</div>` : ""}
       <div class="creation-detail-actions">
         <button type="button" class="btn btn--ghost" data-act="cards">Voir les fiches</button>
         <button type="button" class="btn btn--ghost" data-act="publish">${col ? `Voir dans la Librairie · ${priceTokens > 0 ? `${priceTokens} jeton${priceTokens > 1 ? "s" : ""}` : "gratuite"}` : "Publier dans la Librairie"}</button>
@@ -14213,6 +14500,43 @@
           const before = subjects.length;
           await deleteSubjectFromCreations(s.id, !!col);
           if (subjects.length < before) closeCreationDetail();
+        }
+      });
+    });
+  }
+  function renderForeignBoxDetail(wrap, s) {
+    const addWrap = el("creation-detail-add");
+    if (addWrap) addWrap.innerHTML = "";
+    const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
+    const pool = subjectCardsPool(s.id);
+    const place = creationsPlaceLabel(s);
+    const klass = s.sharedBoxId ? folderPath(s.folderId).find((f) => f && f.sharedClassRoot) : null;
+    const origin = s.fromLibrary ? "Collection prise dans la Librairie" : `Boîte partagée par ta classe${klass ? ` « ${escapeHtml(klass.name)} »` : ""}`;
+    wrap.innerHTML = `
+      <div class="creation-detail-head">
+        <h2 class="section-title creation-detail-title">${escapeHtml(s.name)}</h2>
+        ${pool ? `<span class="creation-detail-gauge">${buildPersGaugeSvg(pool, { width: 70, barHeight: 8 })}</span>` : ""}
+      </div>
+      <dl class="creation-detail-info">
+        <dt>Fiches</dt><dd>${n} fiche${n > 1 ? "s" : ""}</dd>
+        <dt>Origine</dt><dd>${origin}</dd>
+        <dt>Mes révisions</dt><dd>${place ? escapeHtml(place) : "Hors de mes révisions"}</dd>
+      </dl>
+      <div class="creation-detail-actions">
+        <button type="button" class="btn btn--ghost" data-act="cards">Voir les fiches</button>
+        ${s.fromLibrary ? `<button type="button" class="btn btn--ghost creation-detail-delete" data-act="remove">Retirer de mes révisions</button>` : ""}
+      </div>
+    `;
+    wrap.querySelectorAll("[data-act]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        if (btn.dataset.act === "cards") {
+          cardsEntryFromCreations = false;
+          cardsEntryFromManage = true;
+          goToCardsFor(`subject:${s.id}`);
+        } else if (btn.dataset.act === "remove") {
+          const before = subjects.filter((x) => !x.deleted).length;
+          await deleteSubject(s.id);
+          if (subjects.filter((x) => !x.deleted).length < before || !subjects.some((x) => x.id === s.id && !x.deleted)) closeCreationDetail();
         }
       });
     });

@@ -879,6 +879,20 @@ async function classMemberCount(classId) {
   return data || 0;
 }
 
+/** Round 47 : élèves d'une classe (prénom, nom ; email seulement pour
+ *  l'enseignant) — fonction serveur ajoutée par
+ *  supabase/class_members_list_migration.sql. Sans elle : `missing`. */
+async function listClassMembers(classId) {
+  const c = getClient();
+  if (!c) return { data: [], error: "Sync non configurée." };
+  const { data, error } = await c.rpc("class_members_list", { p_class_id: classId });
+  if (error) {
+    const missing = /class_members_list|function|schema cache/i.test(error.message || "");
+    return { data: [], error: error.message, missing };
+  }
+  return { data: data || [], error: null };
+}
+
 async function joinClassByCode(code) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée." };
@@ -899,7 +913,7 @@ async function joinClassByCode(code) {
 // racine du prof jusqu'au dossier direct de la boîte) est repoussé en même
 // temps que les fiches, pour que l'élève puisse reconstituer la même
 // arborescence (en lecture seule) sous le dossier de sa classe.
-async function shareBoxToClass(classId, subjectName, cards, folderPath) {
+async function shareBoxToClass(classId, subjectName, cards, folderPath, extra) {
   const c = getClient();
   const user = await authGetUser();
   if (!c || !user) return { error: "Non connecté." };
@@ -910,7 +924,16 @@ async function shareBoxToClass(classId, subjectName, cards, folderPath) {
     cards: cards.map((card) => ({ id: card.id, question: card.question, answer: card.answer })),
     folder_path: Array.isArray(folderPath) ? folderPath : [],
   };
-  const { data, error } = await c.from("shared_boxes").insert(row).select().single();
+  // Round 47 : boîte venue de la Librairie — on garde la collection
+  // d'origine (colonne library_collection_id, voir
+  // supabase/class_members_list_migration.sql) ; sans la colonne, on
+  // partage quand même.
+  if (extra && extra.libraryCollectionId) row.library_collection_id = extra.libraryCollectionId;
+  let { data, error } = await c.from("shared_boxes").insert(row).select().single();
+  if (error && row.library_collection_id && /library_collection_id/i.test(error.message || "")) {
+    delete row.library_collection_id;
+    ({ data, error } = await c.from("shared_boxes").insert(row).select().single());
+  }
   return { data, error: error ? error.message : null };
 }
 
@@ -1349,6 +1372,7 @@ window.Sync = {
     listAsTeacher: listClassesAsTeacher,
     listAsStudent: listClassesAsStudent,
     memberCount: classMemberCount,
+    listMembers: listClassMembers,
     join: joinClassByCode,
     shareBox: shareBoxToClass,
     listSharedBoxes: listSharedBoxesForClass,

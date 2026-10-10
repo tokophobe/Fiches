@@ -5942,24 +5942,26 @@ body.is-view-library {
 }
 
 /* --- Éléments communs ------------------------------------------- */
-body.layout-v2 :is(#view-manage, #view-creations, #view-revision-program, #view-boite-picker, #view-classes-teacher, #view-classes-student, #view-class-detail) {
+body:not(.v1-pages) :is(#view-manage, #view-creations, #view-revision-program, #view-revision-reinforce, #view-boite-picker),
+body.layout-v2 :is(#view-classes-teacher, #view-classes-student, #view-class-detail) {
   --v2-row-pad: 14px 4px;
 }
-body.layout-v2 :is(#view-creations, #view-boite-picker, #view-revision-program, #view-classes-teacher, #view-classes-student) .subject-list,
-body.layout-v2 #view-manage .subject-list,
-body.layout-v2 #view-revision-program .revision-event-list,
+body:not(.v1-pages) :is(#view-creations, #view-boite-picker, #view-revision-program, #view-revision-reinforce) .subject-list,
+body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .subject-list,
+body:not(.v1-pages) #view-manage .subject-list,
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-list,
 body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-card-list {
   gap: 0;
 }
 /* Titres de page et de section : ceux de la Messagerie / du Calendrier. */
-body.layout-v2 #view-creations .library-title-row .section-title,
+body:not(.v1-pages) #view-creations .library-title-row .section-title,
 body.layout-v2 :is(#view-classes-teacher, #view-classes-student) > .section-title {
   font-size: 15px;
   font-weight: 400;
   letter-spacing: 0.04em;
   color: var(--main-text-color, var(--ink));
 }
-body.layout-v2 #view-revision-program .revision-section-title,
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-section-title,
 body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-list-heading {
   margin: 22px 4px 4px;
   font-family: var(--font-type);
@@ -5969,15 +5971,15 @@ body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-list-hea
   text-transform: none;
   color: var(--main-text-color, var(--ink));
 }
-body.layout-v2 #view-revision-program .revision-section-title:first-child { margin-top: 4px; }
-body.layout-v2 #view-revision-program .revision-section-hint { margin: 0 4px 6px; opacity: 0.75; }
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-section-title:first-child { margin-top: 4px; }
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-section-hint { margin: 0 4px 6px; opacity: 0.75; }
 
 /* Actions principales en lien coloré (comme « + Ajouter un évènement »). */
-body.layout-v2 #view-creations .round-add-card-wrap {
+body:not(.v1-pages) #view-creations .round-add-card-wrap {
   justify-content: flex-start;
   margin: 2px 0 6px;
 }
-body.layout-v2 #view-creations .round-add-card-btn,
+body:not(.v1-pages) #view-creations .round-add-card-btn,
 body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) .classes-role-circle {
   width: auto;
   height: auto;
@@ -5995,35 +5997,35 @@ body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) .classes-
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
-body.layout-v2 #view-creations .round-add-card-btn svg,
+body:not(.v1-pages) #view-creations .round-add-card-btn svg,
 body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) .classes-role-circle svg {
   width: 16px;
   height: 16px;
 }
-body.layout-v2 #view-creations .round-add-card-btn span { font-size: inherit; font-weight: inherit; }
+body:not(.v1-pages) #view-creations .round-add-card-btn span { font-size: inherit; font-weight: inherit; }
 body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) {
   justify-content: flex-start;
   margin: 0 0 4px;
 }
 
 /* --- Mes fiches de révision 2 ----------------------------------- */
-body.layout-v2 #view-manage .subject-row {
+body:not(.v1-pages) #view-manage .subject-row {
   background: transparent;
   box-shadow: none;
   border-radius: 0;
   border-bottom: 1px solid var(--rule-soft);
   margin: 0 !important;
 }
-body.layout-v2 #view-manage .folder-row--stacked::before,
-body.layout-v2 #view-manage .folder-row--stacked::after { display: none; }
-body.layout-v2 #view-manage .subject-row-name { font-weight: 500; }
-body.layout-v2 #view-manage .subject-row .subject-row,
-body.layout-v2 #view-manage .subject-row:last-child { border-bottom: none; }
-body.layout-v2 #view-manage .subject-row .subject-list { border-top: 1px solid var(--rule-soft); }
-body.layout-v2 #view-manage .org-count { opacity: 0.7; }
+body:not(.v1-pages) #view-manage .folder-row--stacked::before,
+body:not(.v1-pages) #view-manage .folder-row--stacked::after { display: none; }
+body:not(.v1-pages) #view-manage .subject-row-name { font-weight: 500; }
+body:not(.v1-pages) #view-manage .subject-row .subject-row,
+body:not(.v1-pages) #view-manage .subject-row:last-child { border-bottom: none; }
+body:not(.v1-pages) #view-manage .subject-row .subject-list { border-top: 1px solid var(--rule-soft); }
+body:not(.v1-pages) #view-manage .org-count { opacity: 0.7; }
 
 /* --- Mes créations de fiches 2 ---------------------------------- */
-body.layout-v2 #view-creations .creations-row {
+body:not(.v1-pages) #view-creations .creations-row {
   background: transparent;
   box-shadow: none;
   border-radius: 0;
@@ -6031,42 +6033,42 @@ body.layout-v2 #view-creations .creations-row {
   padding: var(--v2-row-pad);
   gap: 3px;
 }
-body.layout-v2 #view-creations .creations-row:last-child { border-bottom: none; }
-body.layout-v2 #view-creations .creations-row .subject-row-name { font-weight: 500; font-size: 15px; }
-body.layout-v2 #view-creations .creations-row .card-row-meta { font-size: 12px; opacity: 0.7; }
-body.layout-v2 #view-creations .creations-status {
+body:not(.v1-pages) #view-creations .creations-row:last-child { border-bottom: none; }
+body:not(.v1-pages) #view-creations .creations-row .subject-row-name { font-weight: 500; font-size: 15px; }
+body:not(.v1-pages) #view-creations .creations-row .card-row-meta { font-size: 12px; opacity: 0.7; }
+body:not(.v1-pages) #view-creations .creations-status {
   background: transparent;
   padding: 0;
   font-weight: 500;
   font-size: 11.5px;
 }
-body.layout-v2 #view-creations .creations-chip {
+body:not(.v1-pages) #view-creations .creations-chip {
   background: transparent;
   border: 1px solid var(--rule-soft);
   box-shadow: none;
   font-weight: 500;
 }
-body.layout-v2 #view-creations .creations-chip.is-active,
-body.layout-v2 #view-creations .creations-chip[aria-pressed="true"] {
+body:not(.v1-pages) #view-creations .creations-chip.is-active,
+body:not(.v1-pages) #view-creations .creations-chip[aria-pressed="true"] {
   border-color: var(--rule);
   color: var(--rule);
   background: transparent;
 }
 
 /* --- Révisions conseillées 2 ------------------------------------ */
-body.layout-v2 #view-revision-program .revision-event-block {
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-block {
   background: transparent;
   box-shadow: none;
   border-radius: 0;
   border-bottom: 1px solid var(--rule-soft);
   padding: var(--v2-row-pad);
 }
-body.layout-v2 #view-revision-program .revision-event-block:last-child { border-bottom: none; }
-body.layout-v2 #view-revision-program .revision-event-title { font-size: 16px; }
-body.layout-v2 #view-revision-program .revision-event-date { opacity: 0.7; font-size: 12px; }
-body.layout-v2 #view-revision-program .revision-tree-row { border-top: none; padding-top: 5px; padding-bottom: 5px; }
-body.layout-v2 #view-revision-program .revision-event-gauge { margin: 6px 0 2px; }
-body.layout-v2 #view-revision-program .revision-event-go {
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-block:last-child { border-bottom: none; }
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-title { font-size: 16px; }
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-date { opacity: 0.7; font-size: 12px; }
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-tree-row { border-top: none; padding-top: 5px; padding-bottom: 5px; }
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-gauge { margin: 6px 0 2px; }
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-go {
   display: block;
   width: auto;
   margin: 4px 0 0 auto;
@@ -6075,23 +6077,23 @@ body.layout-v2 #view-revision-program .revision-event-go {
   color: var(--rule);
   box-shadow: none;
 }
-body.layout-v2 #view-revision-program .revision-event-go::after { content: " →"; }
-body.layout-v2 #view-revision-program .revision-event-go:disabled { color: var(--ink-soft); }
-body.layout-v2 #view-revision-program .revision-event-go:disabled::after { content: ""; }
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-go::after { content: " →"; }
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-go:disabled { color: var(--ink-soft); }
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-go:disabled::after { content: ""; }
 
 /* --- Sélection manuelle 2 --------------------------------------- */
-body.layout-v2 #view-boite-picker .view-title { font-size: 15px; font-weight: 400; letter-spacing: 0.04em; }
-body.layout-v2 #view-boite-picker .subject-row {
+body:not(.v1-pages) #view-boite-picker .view-title { font-size: 15px; font-weight: 400; letter-spacing: 0.04em; }
+body:not(.v1-pages) #view-boite-picker .subject-row {
   background: transparent;
   box-shadow: none;
   border-radius: 0;
   border-bottom: 1px solid var(--rule-soft);
   margin: 0 !important;
 }
-body.layout-v2 #view-boite-picker .folder-row--stacked::before,
-body.layout-v2 #view-boite-picker .folder-row--stacked::after { display: none; }
-body.layout-v2 #view-boite-picker .picker-row--all .subject-row-name { font-weight: 600; }
-body.layout-v2 #view-boite-picker .boite-picker-actions .btn--primary { width: 100%; }
+body:not(.v1-pages) #view-boite-picker .folder-row--stacked::before,
+body:not(.v1-pages) #view-boite-picker .folder-row--stacked::after { display: none; }
+body:not(.v1-pages) #view-boite-picker .picker-row--all .subject-row-name { font-weight: 600; }
+body:not(.v1-pages) #view-boite-picker .boite-picker-actions .btn--primary { width: 100%; }
 
 /* --- Mes classes 2 (élève / enseignant) et page d'une classe ----- */
 body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-card {
@@ -6123,7 +6125,7 @@ body.layout-v2 #view-class-detail .class-detail-section-head h3 {
   font-weight: 400;
   letter-spacing: 0.02em;
 }
-body.layout-v2 #view-creations .round-add-card-btn span { white-space: nowrap; }
+body:not(.v1-pages) #view-creations .round-add-card-btn span { white-space: nowrap; }
 body.layout-v2 #view-class-detail .class-detail-section-head h3 { text-transform: none; color: var(--ink); }
 body.layout-v2 #view-class-detail .class-detail-section-action {
   border: none;
@@ -6175,7 +6177,7 @@ body.layout-v2 #view-class-detail .class-detail-section-action {
 /* Round 45 : « Mes fiches de révision 2 » — plus de retrait à droite pour
    les sous-niveaux (seul le retrait à gauche reste) : les flèches de menu
    s'alignent toutes sur le bord droit. */
-body.layout-v2 #view-manage .org-children { margin-right: 0; }
+body:not(.v1-pages) #view-manage .org-children { margin-right: 0; }
 
 /* ==================================================================
    Round 46 : couleur unique des actions (celle de « + NOUVEAU DOSSIER »),
@@ -6203,9 +6205,9 @@ body.layout-v2 #view-manage .org-children { margin-right: 0; }
 .creations-search-toggle,
 .body-logo-speech-prev,
 .body-logo-speech-next,
-body.layout-v2 #view-creations .round-add-card-btn,
+body:not(.v1-pages) #view-creations .round-add-card-btn,
 body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) .classes-role-circle,
-body.layout-v2 #view-revision-program .revision-event-go,
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-go,
 body.layout-v2 #view-class-detail .class-detail-section-action {
   color: var(--action-color);
 }
@@ -6232,8 +6234,8 @@ body.layout-v2 #view-class-detail .class-detail-section-action {
   background: var(--action-color);
   color: var(--paper);
 }
-body.layout-v2 #view-creations .round-add-card-btn,
-body.layout-v2 #view-revision-program .revision-event-go { background: transparent; }
+body:not(.v1-pages) #view-creations .round-add-card-btn,
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-go { background: transparent; }
 .body-logo-help-btn { border-color: var(--action-color); color: var(--action-color); }
 .classes-role-circle--v2 { outline-color: var(--action-color); }
 .usage-option:has(input:checked), .usage-option.is-selected { border-color: var(--action-color); }
@@ -6305,7 +6307,7 @@ body.layout-v2 #view-revision-program .revision-event-go { background: transpare
 #view-revision-program .revision-section-title:first-of-type::before { content: "📅"; }
 #view-revision-program .revision-section-title:not(:first-of-type)::before { content: "💪"; }
 #view-revision-program .revision-section-hint { margin: -4px 4px 10px; }
-body.layout-v2 #view-revision-program .revision-section-title {
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-section-title {
   margin: 26px 0 8px;
   font-size: 13px;
   font-weight: 700;
@@ -6313,5 +6315,433 @@ body.layout-v2 #view-revision-program .revision-section-title {
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
-body.layout-v2 #view-revision-program .revision-section-title:first-child { margin-top: 4px; }
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-section-title:first-child { margin-top: 4px; }
 .revision-event-gauge, .creation-detail-gauge { display: flex; justify-content: flex-start; }
+
+/* ==================================================================
+   Round 47
+   ================================================================== */
+
+/* --- 1. Titre de la page à gauche, juste après la bulle « … » ------ */
+.page-header-title {
+  text-align: left;
+  margin-left: 6px;
+}
+/* --- 1. Affichage « nombre » / « barre d'apprentissage » : le bouton
+   actif est simplement encadré (plus de couleurs inversées). -------- */
+.org-display-toggle-btn,
+.manage-sticky-actions .org-display-toggle-btn {
+  background: transparent;
+  color: var(--action-color);
+  border: 1.5px solid transparent;
+}
+.org-display-toggle-btn.is-active,
+.manage-sticky-actions .org-display-toggle-btn.is-active {
+  background: transparent;
+  color: var(--action-color);
+  border-color: var(--action-color);
+}
+/* --- 1. « < » (page précédente) à gauche du bouton Accueil ---------- */
+.brand { align-items: center; gap: 2px; }
+.nav-back-link.nav-back-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 2px 8px 0;
+  color: var(--action-color);
+  background: transparent;
+  border: none;
+}
+.nav-back-link.nav-back-chevron[hidden] { display: none; }
+.nav-back-row { display: none; }
+
+/* --- 2. Accueil : même couleur de texte pour tous les boutons ------- */
+.home-circle.home-circle--accent,
+.home-circle.home-circle--library,
+#home-new-card-btn.home-circle {
+  color: var(--ink);
+}
+/* --- 2. La capsule « N à revoir » n'est plus affichée --------------- */
+#due-pill { display: none !important; }
+
+/* --- 13. Palier Réviser : trois boutons ronds l'un sous l'autre ----- */
+.classes-role-circles.review-hub-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.review-hub-stack .classes-role-circle { position: relative; }
+/* Renforcer mes connaissances : jauge en face du titre, compte dessous. */
+.revision-reinforce-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.revision-reinforce-head .revision-event-title { flex: 1; min-width: 0; }
+body:not(.v1-pages) #view-revision-reinforce .revision-reinforce-gauge { margin: 0; flex-shrink: 0; }
+.revision-reinforce-count {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--reassure-color, #3e7c6b);
+}
+:root.is-night-mode { --reassure-color: #7fc0ad; }
+
+/* --- 6. Aucun zoom : ni double-toucher, ni agrandissement du texte ---- */
+html {
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* --- 4. Liste des fiches d'une boîte : question/réponse à gauche, à
+   droite « signaler » (drapeau, rouge si signalée) et « ⌄ » (éditer,
+   déplacer, supprimer). Plus de trait entre les actions et la question. */
+#view-cards .card-row.card-row--r47 {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+  position: relative;
+}
+.card-row--r47 .card-row-q { margin-bottom: 4px; }
+.card-row--r47 .card-row-a { margin-bottom: 0; }
+.card-row--r47 .card-row-meta { margin: 6px 0 0; }
+.card-row-side {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: -4px;
+}
+.card-row-flag {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--action-color);
+  padding: 0;
+  font-size: 15px;
+}
+.card-row-flag svg { width: 17px; height: 17px; }
+.card-row-side .card-row-deploy { width: 30px; height: 32px; color: var(--action-color); }
+.card-row--r47 .card-row-popover { top: 34px; right: 0; }
+.card-row--r47 .card-row-popover.org-actions-popover--flip-up { top: auto; bottom: calc(100% - 10px); }
+/* Fiche signalée : le picto du drapeau passe en rouge (même picto). */
+.card-row-flag.is-flagged,
+.card-icon-btn.card-construction-btn.is-active-construction {
+  color: #dc2626;
+  background: transparent;
+}
+.card-row-flag.is-flagged svg,
+.card-icon-btn.card-construction-btn.is-active-construction svg { fill: currentColor; }
+
+/* --- 4. Page Réviser : signaler et éditer directement dans le coin
+   supérieur droit de la fiche (plus de bouton « ⌄ »). ---------------- */
+#reveal-secondary-icons-btn { display: none !important; }
+#secondary-icons-wrap,
+#secondary-icons-wrap[hidden] {
+  display: flex;
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+#secondary-icons-wrap .card-icon-btn {
+  position: static;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
+}
+#secondary-icons-wrap .card-icon-btn[hidden] { display: none; }
+#secondary-icons-wrap .card-edit-btn { width: 34px; font-size: 16px; }
+
+/* --- 5. Résumé d'une boîte : style épuré (le bouton rond « + Ajouter une
+   fiche » reste). ------------------------------------------------------ */
+#view-creation-detail #creation-detail-body.card-form {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  padding: 0 4px;
+}
+#view-creation-detail .creation-detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 6px;
+}
+#view-creation-detail .creation-detail-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--main-text-color, var(--ink));
+  overflow-wrap: break-word;
+}
+#view-creation-detail .creation-detail-gauge { margin: 0; flex-shrink: 0; }
+#view-creation-detail .creation-detail-info {
+  gap: 0 12px;
+  margin: 0 0 10px;
+  font-size: 13.5px;
+}
+#view-creation-detail .creation-detail-info dt,
+#view-creation-detail .creation-detail-info dd {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+#view-creation-detail .creation-detail-info dt { font-weight: 500; opacity: 0.85; }
+#view-creation-detail .creations-status { background: transparent; padding: 0; font-weight: 500; }
+#view-creation-detail .creation-detail-actions { gap: 0; }
+#view-creation-detail .creation-detail-actions .btn {
+  justify-content: flex-start;
+  padding: 12px 2px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--action-color);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: left;
+}
+#view-creation-detail .creation-detail-actions .btn::after { content: " →"; }
+#view-creation-detail .creation-detail-actions .btn.creation-detail-delete { color: var(--red, #b6604a); }
+#view-creation-detail .creation-detail-actions .btn.creation-detail-delete::after { content: ""; }
+
+/* --- 17. Réviser : nom de la boîte en entier (retour à la ligne) ------ */
+.review-current-box { align-items: flex-start; }
+.review-current-box-name {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: break-word;
+  line-height: 1.25;
+}
+.review-current-box-gauge { margin-top: 3px; }
+
+/* --- 15. Choisir les boîtes à réviser : boîtes/dossiers sans fiche grisés */
+.picker-row--empty .picker-row-checkbox {
+  opacity: 0.35;
+  filter: grayscale(1);
+  cursor: not-allowed;
+}
+.picker-row--empty .subject-row-name,
+.picker-row--empty .org-count { opacity: 0.5; }
+
+/* --- 10. Mes créations : nom de la boîte en entier ------------------ */
+#view-creations .creations-row .subject-row-name,
+#view-creations .creations-row .subject-row-name * {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: break-word;
+}
+
+/* --- 8. Page d'une classe : plus de traits entre dossiers et boîtes ;
+   un trait entre les sections (boîtes / évènements / élèves). --------- */
+#view-class-detail .class-tree-row { border-top: none; padding-top: 6px; padding-bottom: 6px; }
+#view-class-detail .class-detail-section {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  margin-bottom: 0;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+#view-class-detail .class-detail-section:last-child { border-bottom: none; }
+#view-class-detail .class-detail-section-head h3 {
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--main-text-color, var(--ink));
+}
+.class-student-list { list-style: none; margin: 0; padding: 0; }
+.class-student-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-family: var(--font-type);
+  font-size: 14px;
+  color: var(--ink);
+}
+.class-student-icon { display: flex; color: var(--ink-soft); }
+.class-student-name { flex: 1; min-width: 0; overflow-wrap: break-word; }
+.class-student-email { flex-shrink: 1; min-width: 0; font-size: 12px; color: var(--ink-soft); overflow-wrap: anywhere; text-align: right; }
+
+/* --- 11. Partage d'une boîte : deux boutons ronds -------------------- */
+.class-share-round-btns {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  margin: 4px 0 12px;
+}
+.class-share-round-btns[hidden] { display: none; }
+.class-share-round-btns .round-add-card-btn span { white-space: normal; }
+.library-share-class-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border-left: 3px solid var(--action-color);
+  background: var(--paper-2);
+  font-family: var(--font-type);
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.library-share-class-banner[hidden] { display: none; }
+.library-share-class-cancel {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--action-color);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 2px;
+}
+
+/* --- 9. Discussions : style épuré, on joue sur les couleurs, plus
+   d'ombre sous les bulles (disposition gauche / droite conservée). ---- */
+#view-message-thread .message-thread-list { gap: 6px; }
+#view-message-thread .message-bubble {
+  box-shadow: none;
+  border: none;
+  background: var(--msg-other-bg, rgba(31, 41, 55, 0.06));
+  color: var(--ink);
+  padding: 8px 12px 6px;
+  border-radius: 16px;
+}
+#view-message-thread .message-bubble--left { border-bottom-left-radius: 5px; }
+#view-message-thread .message-bubble--right { border-bottom-right-radius: 5px; }
+#view-message-thread .message-bubble--right:not(.message-bubble--mine) {
+  background: var(--msg-teacher-bg, rgba(62, 124, 107, 0.12));
+}
+#view-message-thread .message-bubble--mine {
+  background: var(--msg-mine-bg, rgba(74, 144, 217, 0.16));
+  color: var(--ink);
+}
+#view-message-thread .message-bubble-sender {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 1;
+  color: var(--msg-sender-color, #3e7c6b);
+}
+#view-message-thread .message-bubble-time { opacity: 0.55; }
+#view-message-thread .message-thread-form { align-items: center; gap: 6px; padding: 8px 0 4px; }
+#view-message-thread .message-thread-form input {
+  border: none;
+  border-radius: 20px;
+  background: var(--paper-2);
+  padding: 10px 14px;
+  font-size: 16px;
+  color: var(--ink);
+}
+#view-message-thread .message-thread-form .btn {
+  background: transparent;
+  color: var(--action-color);
+  box-shadow: none;
+  padding: 8px 6px;
+}
+:root.is-night-mode {
+  --msg-other-bg: rgba(238, 242, 248, 0.08);
+  --msg-teacher-bg: rgba(127, 192, 173, 0.16);
+  --msg-mine-bg: rgba(74, 159, 224, 0.22);
+  --msg-sender-color: #7fc0ad;
+}
+
+/* --- 12 & 16. Formulaires épurés : évènement (ajout / modification /
+   détail), signaler une fiche, signalements reçus. --------------------- */
+:is(#view-calendar-event-form, #view-report-card) .card-form {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  padding: 0 4px;
+}
+:is(#view-calendar-event-form, #view-report-card) .field > span {
+  font-size: 11.5px;
+  opacity: 0.8;
+}
+:is(#view-calendar-event-form, #view-report-card) .field :is(input[type="text"], textarea, select),
+:is(#view-calendar-event-form, #view-report-card) .calendar-date-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--rule-soft);
+  border-radius: 0;
+  padding-left: 2px;
+  padding-right: 2px;
+  box-shadow: none;
+}
+:is(#view-calendar-event-form, #view-report-card) .field :is(input[type="text"], textarea, select):focus {
+  border-bottom-color: var(--action-color);
+  outline: none;
+}
+:is(#view-calendar-event-form, #view-report-card) textarea { background: var(--paper-2); border-radius: 8px; border-bottom: none; padding: 10px; }
+:is(#view-calendar-event-form, #view-report-card) .form-actions { flex-direction: column; align-items: stretch; gap: 4px; margin-top: 10px !important; }
+:is(#view-calendar-event-form, #view-report-card) .form-actions .btn--primary { width: 100%; }
+:is(#view-calendar-event-form, #view-report-card) .form-actions .btn--ghost {
+  background: transparent;
+  color: var(--action-color);
+  box-shadow: none;
+}
+#view-report-card .report-card-preview {
+  border: none;
+  border-left: 3px solid var(--rule-soft);
+  border-radius: 0;
+  background: transparent;
+  padding: 4px 0 4px 12px;
+}
+#view-reports .report-row {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--rule-soft);
+  padding: 14px 4px;
+  margin: 0 !important;
+}
+#view-reports .report-row:last-child { border-bottom: none; }
+#view-reports .report-row--unread { border-left: none; }
+#view-reports .report-row--unread .report-row-box::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e0453c;
+  flex-shrink: 0;
+}
+#view-reports .report-row-message {
+  border-left: 2px solid var(--rule-soft);
+  background: transparent;
+  font-style: normal;
+}
+#view-reports .library-row-actions .btn {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  color: var(--action-color);
+  padding: 6px 2px;
+}
+#view-calendar-event-detail .classes-shared-badge { background: transparent; padding: 0; }
+/* Signalements (Mes créations) : pastille dans le lien. */
+.creations-reports-btn[hidden] { display: none !important; }
+.creations-reports-btn .home-circle-badge { position: static; margin-left: 2px; }

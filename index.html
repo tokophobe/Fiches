@@ -6,7 +6,7 @@
      cloisonnement des données locales par compte. -->
 <script src="js/config.js"></script>
 <script src="js/user-scope.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
 <!-- Round 25, item 1 : zoom automatique. Sur un téléphone en portrait, la
      page est mise en page pour une largeur de référence (390 px, celle de
      l'iPhone 13/14/15 sur lequel tout a été réglé) puis le navigateur
@@ -30,9 +30,16 @@
     var ref = refWidth();
     var shortSide = Math.min(screen.width, screen.height);
     var portrait = !window.matchMedia || window.matchMedia("(orientation: portrait)").matches;
-    var content = ref > 0 && shortSide < 600 && portrait
-      ? "width=" + ref + ", viewport-fit=cover"
-      : "width=device-width, initial-scale=1, viewport-fit=cover";
+    // Round 47 : le zoom est figé (minimum = maximum = échelle de départ) —
+    // plus aucun zoom automatique quand on touche une zone de texte (Safari
+    // agrandit sinon la page sur les champs de petite taille).
+    var content;
+    if (ref > 0 && shortSide < 600 && portrait) {
+      var s = Math.round((shortSide / ref) * 1000) / 1000;
+      content = "width=" + ref + ", initial-scale=" + s + ", minimum-scale=" + s + ", maximum-scale=" + s + ", user-scalable=no, viewport-fit=cover";
+    } else {
+      content = "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover";
+    }
     if (meta.getAttribute("content") !== content) meta.setAttribute("content", content);
   }
   apply();
@@ -163,6 +170,11 @@
   <header class="topbar">
     <div class="brand">
       <h1 class="sr-only">Fiches</h1>
+      <!-- Round 47 : « ← Retour » devient un simple « < », à gauche du bouton
+           Accueil (page précédente). -->
+      <button type="button" class="nav-back-link nav-back-chevron" id="nav-back-btn" title="Revenir à la page précédente" aria-label="Revenir à la page précédente" hidden>
+        <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
       <button type="button" class="btn btn--ghost home-btn" id="home-btn" title="Retour à l'accueil" aria-label="Retour à l'accueil" hidden>
         <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
       </button>
@@ -250,10 +262,6 @@
       </div>
     </div>
   </div>
-  <!-- Round 46 : « ← Retour » juste sous le robot (page précédente). -->
-  <div class="nav-back-row">
-    <button type="button" class="nav-back-link" id="nav-back-btn" title="Revenir à la page précédente" aria-label="Revenir à la page précédente" hidden>← Retour</button>
-  </div>
 
   <!-- Round 18, item 2 : le bloc d'actions de "Fiches" (+ Nouveau dossier,
        Bibliothèque, les 3 pictos d'affichage), déjà intégré au bandeau
@@ -269,7 +277,7 @@
         <button type="button" class="org-display-toggle-btn is-active" data-org-display="count" title="Nombre de fiches/boîtes">
           <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/></svg>
         </button>
-        <button type="button" class="org-display-toggle-btn" data-org-display="gauge" title="Jauge de score">
+        <button type="button" class="org-display-toggle-btn" data-org-display="gauge" title="Barre d'apprentissage">
           <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="10" width="11" height="4" rx="2" fill="currentColor" stroke="none"/></svg>
         </button>
       </div>
@@ -316,9 +324,9 @@
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
     <button class="tab" role="tab" aria-selected="false" data-view="calendar" hidden>Calendrier</button>
     <button class="tab" role="tab" aria-selected="false" data-view="review-hub" hidden>Réviser</button>
-    <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Programme</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Révisions urgentes</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="revision-reinforce" hidden>Renforcer mes connaissances</button>
     <button class="tab" role="tab" aria-selected="false" data-view="school-hub" hidden>École</button>
-    <button class="tab" role="tab" aria-selected="false" data-view="fiches-hub" hidden>Gérer mes fiches</button>
     <button class="tab" role="tab" aria-selected="false" data-view="creations" hidden>Mes créations</button>
     <button class="tab" role="tab" aria-selected="false" data-view="reports" hidden>Signalements</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes" hidden>Classes</button>
@@ -357,16 +365,18 @@
         <button type="button" class="home-circle" data-key="review" data-go="review-hub">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
           <span>Réviser</span>
+          <span class="home-circle-badge" id="home-review-badge" hidden>0</span>
         </button>
-        <!-- Round 13, item 3 : "Mon bureau" remplace "Mes collections" (même
-             data-key/data-go pour ne rien casser des maps de mise en page/
-             icônes) ; la page elle-même gagne un accès Bibliothèque et fait
-             mener les clics de ligne vers Fiches (cf. #view-manage). -->
-        <button type="button" class="home-circle" data-key="manage" data-go="fiches-hub">
+        <!-- Round 47 : « Gérer mes fiches » (hub) disparaît — ses deux pages
+             sont accessibles directement depuis l'accueil. data-key="manage"
+             conservé (position/icône réglées en mode développeur). -->
+        <button type="button" class="home-circle" data-key="manage" data-go="manage">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
-          <!-- Round 18, item 1 : "Mon bureau" -> "Fiches" ; round 41 :
-               "Fiches" -> "Gérer mes fiches" (même data-key/data-go). -->
-          <span>Gérer mes fiches</span>
+          <span>Organiser mes boîtes de révision</span>
+        </button>
+        <button type="button" class="home-circle" data-key="creations" data-go="creations">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+          <span>Créer mes propres boîtes de révision</span>
           <span class="home-circle-badge" id="home-reports-badge" hidden>0</span>
         </button>
         <!-- Round 13, item 4 : "École" remplace "Classes" et mène désormais
@@ -413,31 +423,31 @@
          Calendrier, désactivé sans évènement à venir) ou Sélection
          manuelle (sélecteur de boîtes/dossiers). -->
     <section id="view-review-hub" class="view" aria-labelledby="tab-review-hub">
-      <div class="classes-role-circles" id="review-hub-circles">
+      <!-- Round 47 : trois boutons ronds alignés verticalement et centrés —
+           Révisions urgentes (conseillé), Renforcer mes connaissances,
+           Sélection manuelle. -->
+      <div class="classes-role-circles review-hub-stack" id="review-hub-circles">
         <button type="button" class="classes-role-circle" id="review-hub-advised-btn">
           <span class="classes-role-circle-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m8.5 15.5 2.2 2.2 4.8-4.8"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="13" x2="12" y2="16.5"/><circle cx="12" cy="19" r="0.6" fill="currentColor"/></svg>
           </span>
-          <span>Révisions conseillées</span>
+          <span>Révisions urgentes (conseillé)</span>
           <span class="classes-role-circle-note" id="review-hub-advised-note" hidden></span>
+          <span class="home-circle-badge" id="review-hub-urgent-badge" hidden>0</span>
         </button>
-        <button type="button" class="classes-role-circle classes-role-circle--v2" id="review-hub-advised2-btn">
+        <button type="button" class="classes-role-circle" id="review-hub-reinforce-btn">
           <span class="classes-role-circle-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m8.5 15.5 2.2 2.2 4.8-4.8"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M3 17l5-5 4 4 8-8"/><path d="M15 8h5v5"/></svg>
           </span>
-          <span>Révisions conseillées 2</span>
+          <span>Renforcer mes connaissances</span>
+          <span class="classes-role-circle-note" id="review-hub-reinforce-note" hidden></span>
+          <span class="home-circle-badge home-circle-badge--neutral" id="review-hub-reinforce-badge" hidden>0</span>
         </button>
         <button type="button" class="classes-role-circle" id="review-hub-manual-btn">
           <span class="classes-role-circle-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="m14.5 17.5 2 2 4-4"/></svg>
           </span>
           <span>Sélection manuelle</span>
-        </button>
-        <button type="button" class="classes-role-circle classes-role-circle--v2" id="review-hub-manual2-btn">
-          <span class="classes-role-circle-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="m14.5 17.5 2 2 4-4"/></svg>
-          </span>
-          <span>Sélection manuelle 2</span>
         </button>
       </div>
     </section>
@@ -446,19 +456,20 @@
          Réviser, qui conseille par ordre de priorité les boîtes/dossiers
          à exercer en fonction des échéances du calendrier. -->
     <section id="view-revision-program" class="view" aria-labelledby="tab-revision-program">
-      <h2 class="revision-section-title">Préparer les échéances proches</h2>
+      <!-- Round 47 : « Révisions urgentes (conseillé) » — échéances proches
+           (ex-1re partie des Révisions conseillées). -->
       <ul class="revision-event-list" id="revision-program-list"></ul>
       <p class="chart-empty" id="revision-program-empty" hidden>Aucune échéance à venir avec des boîtes associées.</p>
-      <h2 class="revision-section-title">Renforcer mes connaissances</h2>
-      <p class="field-hint revision-section-hint">Les boîtes sur lesquelles tu es le plus en retard d'abord.</p>
+    </section>
+
+    <!-- Round 47 : « Renforcer mes connaissances » — page à part (ex-2e
+         partie des Révisions conseillées). -->
+    <section id="view-revision-reinforce" class="view" aria-labelledby="tab-revision-reinforce">
       <ul class="revision-event-list" id="revision-reinforce-list"></ul>
       <p class="chart-empty" id="revision-reinforce-empty" hidden>Aucune autre boîte dans tes révisions.</p>
       <button type="button" class="btn btn--ghost revision-reinforce-more" id="revision-reinforce-more" hidden>Voir plus de boîtes</button>
-      <!-- Round 25, item 2 : bouton "Sélection manuelle" déplacé sur le
-           palier Réviser (#view-review-hub). -->
     </section>
 
-    <!-- VUE RÉVISION -->
     <section id="view-review" class="view" aria-labelledby="tab-review">
       <div class="subject-bar" id="subject-bar">
         <button type="button" class="subject-select-btn" id="subject-select-btn" aria-label="Choisir les boîtes à réviser"></button>
@@ -1065,44 +1076,6 @@
     <!-- Palier "Fiches" (même principe graphique que le hub École) :
          Mes fiches de révision (organisation complète), Mes créations de
          fiches (seulement les boîtes créées par l'utilisateur), Librairie. -->
-    <section id="view-fiches-hub" class="view" aria-labelledby="tab-fiches-hub">
-      <div class="classes-role-circles" id="fiches-hub-circles">
-        <button type="button" class="classes-role-circle" id="fiches-hub-revision-btn">
-          <span class="classes-role-circle-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="4" y="6" width="14" height="15" rx="2"/><path d="M8 3h10a2 2 0 0 1 2 2v12"/><line x1="4" y1="13.5" x2="18" y2="13.5"/></svg>
-          </span>
-          <span>Mes fiches de révision</span>
-        </button>
-        <button type="button" class="classes-role-circle classes-role-circle--v2" id="fiches-hub-revision2-btn">
-          <span class="classes-role-circle-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="4" y="6" width="14" height="15" rx="2"/><path d="M8 3h10a2 2 0 0 1 2 2v12"/><line x1="4" y1="13.5" x2="18" y2="13.5"/></svg>
-          </span>
-          <span>Mes fiches de révision 2</span>
-        </button>
-        <button type="button" class="classes-role-circle" id="fiches-hub-creations-btn">
-          <span class="classes-role-circle-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
-          </span>
-          <span>Mes créations de fiches</span>
-        </button>
-        <button type="button" class="classes-role-circle classes-role-circle--v2" id="fiches-hub-creations2-btn">
-          <span class="classes-role-circle-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
-          </span>
-          <span>Mes créations de fiches 2</span>
-        </button>
-        <!-- Round 41 : signalements reçus (fiches de mes boîtes partagées ou
-             publiées, signalées par d'autres) — visible seulement s'il y en a. -->
-        <button type="button" class="classes-role-circle fiches-hub-reports-btn" id="fiches-hub-reports-btn" hidden>
-          <span class="classes-role-circle-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M4 22V3"/><path d="M4 4h14l-2 4 2 4H4"/></svg>
-          </span>
-          <span>Signalements</span>
-          <span class="home-circle-badge" id="fiches-hub-reports-badge" hidden>0</span>
-        </button>
-      </div>
-    </section>
-
     <!-- Round 30 : Mes créations de fiches — présentation façon Librairie
          (mêmes filtres), avec « Créer une boîte », « Publier » et
          « Ajouter à / Retirer de mes révisions ». Une boîte n'a de
@@ -1116,6 +1089,13 @@
         <button type="button" class="round-add-card-btn" id="creations-create-btn" aria-label="Créer une boîte">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           <span>Créer une boîte</span>
+        </button>
+        <!-- Round 47 : signalements reçus (déplacé de l'ancien hub « Gérer
+             mes fiches ») — visible seulement s'il y en a. -->
+        <button type="button" class="round-add-card-btn creations-reports-btn" id="fiches-hub-reports-btn" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M4 22V3"/><path d="M4 4h14l-2 4 2 4H4"/></svg>
+          <span>Signalements</span>
+          <span class="home-circle-badge" id="fiches-hub-reports-badge" hidden>0</span>
         </button>
       </div>
       <!-- Round 41 : filtres de classement, tags et mots clés repliés derrière
@@ -1332,7 +1312,18 @@
           <h3>Boîtes partagées</h3>
           <!-- Propose aussi bien les boîtes perso que les collections de la
                Librairie (voir renderSingleBoitePicker). -->
-          <button type="button" class="class-detail-section-action" id="class-detail-share-btn" hidden>+ Partager</button>
+        </div>
+        <!-- Round 47 : deux boutons ronds pour partager une boîte — depuis
+             mes boîtes (explorateur) ou depuis la Librairie. -->
+        <div class="class-share-round-btns" id="class-detail-share-btns" hidden>
+          <button type="button" class="round-add-card-btn class-share-round-btn" id="class-detail-share-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/><line x1="12" y1="10.5" x2="12" y2="16.5"/><line x1="9" y1="13.5" x2="15" y2="13.5"/></svg>
+            <span>Depuis mes boîtes</span>
+          </button>
+          <button type="button" class="round-add-card-btn class-share-round-btn" id="class-detail-share-library-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><rect x="3" y="4" width="4" height="16" rx="1"/><rect x="9" y="4" width="4" height="16" rx="1"/><path d="M15.2 5.2l3.8-1 3.6 14.6-3.8 1z"/></svg>
+            <span>Depuis la Librairie</span>
+          </button>
         </div>
         <div class="class-tree" id="class-detail-boxes"></div>
       </div>
@@ -1343,6 +1334,14 @@
         </div>
         <ul class="class-event-list" id="class-detail-events"></ul>
         <p class="class-detail-empty" id="class-detail-events-empty" hidden>Aucun évènement à venir pour cette classe.</p>
+      </div>
+      <!-- Round 47 : liste des élèves de la classe. -->
+      <div class="class-detail-section">
+        <div class="class-detail-section-head">
+          <h3>Élèves</h3>
+        </div>
+        <ul class="class-student-list" id="class-detail-students"></ul>
+        <p class="class-detail-empty" id="class-detail-students-empty" hidden>Aucun élève n'a encore rejoint cette classe.</p>
       </div>
     </section>
 
@@ -1377,6 +1376,13 @@
          "prendre" en copie une collection l'ajoute à Mes collections avec
          une icône en réseau distincte. -->
     <section id="view-library" class="view" aria-labelledby="tab-library">
+      <!-- Round 47 : partage d'une collection avec une classe (depuis la page
+           de la classe) — choisis la collection, puis « Partager avec la
+           classe » sur sa fiche. -->
+      <div class="library-share-class-banner" id="library-share-class-banner" hidden>
+        <span id="library-share-class-text"></span>
+        <button type="button" class="library-share-class-cancel" id="library-share-class-cancel">Annuler</button>
+      </div>
       <!-- Round 21, item 6 : le titre et le crédit de jetons partagent
            maintenant la même ligne, le crédit aligné à droite. -->
       <div class="library-title-row">
@@ -1876,6 +1882,7 @@
       <p class="library-detail-description" id="library-detail-description" hidden></p>
       <p class="library-rating-row" id="library-detail-rating"></p>
       <div class="form-actions">
+        <button type="button" class="btn btn--primary" id="library-detail-share-class-btn" hidden>Partager avec la classe</button>
         <button type="button" class="btn btn--primary" id="library-detail-view-cards-btn">Voir les fiches</button>
         <button type="button" class="btn btn--small" id="library-detail-take-btn">Prendre</button>
       </div>
