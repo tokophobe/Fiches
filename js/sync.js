@@ -20,7 +20,7 @@ const LS_KEYS = {
   pending: "fiches_sb_pending",
 };
 
-const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // sans 0/O/1/I/L
+const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // sans 0, O, 1 ni I (round 48 : vérifié)
 
 function generateSyncCode() {
   const bytes = new Uint8Array(8);
@@ -184,36 +184,46 @@ function removePending(id) {
 --------------------------------------------------------- */
 const PULL_PAGE_SIZE = 1000; // limite par défaut de PostgREST par requête
 
+/** Round 48 : lecture complète d'une table, page par page. Bug corrigé —
+ *  (1) sans ORDER BY, PostgreSQL ne garantit pas le même ordre d'une page
+ *  à l'autre : des lignes pouvaient sauter (jamais lues) et d'autres être
+ *  lues deux fois, d'où des boîtes à qui il manquait des fiches au-delà de
+ *  1 000 lignes ; (2) on s'arrêtait dès qu'une page faisait moins de
+ *  PULL_PAGE_SIZE lignes, alors que le serveur peut plafonner chaque
+ *  réponse plus bas : on continue désormais tant qu'une page n'est pas
+ *  vide. `build(from, to)` renvoie la requête de la page (triée de façon
+ *  stable). */
+async function fetchAllPages(build, label) {
+  const all = [];
+  let from = 0;
+  for (let guard = 0; guard < 1000; guard++) {
+    const { data, error } = await build(from, from + PULL_PAGE_SIZE - 1);
+    if (error) {
+      console.warn(`Sync: échec du chargement distant (${label})`, error.message);
+      return { data: all, error };
+    }
+    const rows = data || [];
+    all.push(...rows);
+    if (rows.length === 0) break;
+    from += rows.length;
+  }
+  return { data: all, error: null };
+}
+
 async function pullAll() {
   const c = getClient();
   const uid = currentUid();
   if (!c || !uid) return [];
-
-  const all = [];
-  let from = 0;
-
-  while (true) {
-    const to = from + PULL_PAGE_SIZE - 1;
-    const { data, error } = await c
-      .from("cards")
-      .select("*")
-      .eq("owner_id", uid)
-      .range(from, to);
-
-    if (error) {
-      console.warn("Sync: échec du chargement distant", error.message);
-      lastError = error.message;
-      noteError(error);
-      // On garde ce qui a déjà été récupéré plutôt que de tout jeter :
-      // mieux vaut une synchro partielle que rien du tout.
-      return all.map(rowToCard);
-    }
-
-    all.push(...data);
-    if (data.length < PULL_PAGE_SIZE) break; // dernière page atteinte
-    from += PULL_PAGE_SIZE;
+  const { data: all, error } = await fetchAllPages(
+    (from, to) => c.from("cards").select("*").eq("owner_id", uid).order("id", { ascending: true }).range(from, to),
+    "cards"
+  );
+  if (error) {
+    lastError = error.message;
+    noteError(error);
+    // Synchro partielle plutôt que rien du tout.
+    return all.map(rowToCard);
   }
-
   lastError = "";
   return all.map(rowToCard);
 }
@@ -352,20 +362,11 @@ async function pullTable(tableName, rowMapper) {
   const c = getClient();
   const uid = currentUid();
   if (!c || !uid) return [];
-  const all = [];
-  let from = 0;
-  while (true) {
-    const to = from + PULL_PAGE_SIZE - 1;
-    const { data, error } = await c.from(tableName).select("*").eq("owner_id", uid).range(from, to);
-    if (error) {
-      console.warn(`Sync: échec du chargement distant (${tableName})`, error.message);
-      noteError(error);
-      return all.map(rowMapper);
-    }
-    all.push(...data);
-    if (data.length < PULL_PAGE_SIZE) break;
-    from += PULL_PAGE_SIZE;
-  }
+  const { data: all, error } = await fetchAllPages(
+    (from, to) => c.from(tableName).select("*").eq("owner_id", uid).order("id", { ascending: true }).range(from, to),
+    tableName
+  );
+  if (error) noteError(error);
   return all.map(rowMapper);
 }
 
@@ -401,7 +402,10 @@ async function listMyCardReports() {
     .order("created_at", { ascending: false });
   if (error) {
     console.warn("Signalements : lecture impossible", error.message);
-    return [];
+    // Round 48 : l'appli peut dire pourquoi la liste est vide.
+    const out = [];
+    out.error = error.message;
+    return out;
   }
   return data || [];
 }
@@ -760,21 +764,6 @@ async function authUpdateMetadata(fields) {
   return { data, error: error ? error.message : null };
 }
 
-/** Round 21, item 6 : nouveau solde de jetons après un achat dans la
- *  Bibliothèque (voir confirmAndTakeLibraryCollection, js/app.js) — même
- *  principe que school_level/token_balance (round 18/19), simple
- *  métadonnée du Compte, pas de vraie table de transactions (le crédit
- *  reste un système informel, cf. round 18 item 16 : pas encore de moyen
- *  d'ACHETER des jetons, seulement de les dépenser ici). */
-async function authUpdateTokenBalance(newBalance) {
-  const c = getClient();
-  if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
-  const { data, error } = await c.auth.updateUser({
-    data: { token_balance: Math.max(0, Number(newBalance) || 0) },
-  });
-  return { data, error: error ? error.message : null };
-}
-
 async function authSignIn(email, password) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
@@ -958,7 +947,7 @@ async function listSharedBoxesForClass(classId) {
 // appels existants — quand fourni (le prof a réorganisé ses dossiers), il
 // est repoussé en même temps que les fiches, sinon seul `cards` est mis à
 // jour et le chemin de dossiers distant reste inchangé.
-async function updateSharedBoxCards(boxId, cards, folderPath) {
+async function updateSharedBoxCards(boxId, cards, folderPath, subjectName) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée." };
   const payload = {
@@ -966,6 +955,8 @@ async function updateSharedBoxCards(boxId, cards, folderPath) {
     updated_at: new Date().toISOString(),
   };
   if (Array.isArray(folderPath)) payload.folder_path = folderPath;
+  // Round 48 : le nom de la boîte suit aussi (renommage côté enseignant).
+  if (subjectName) payload.subject_name = subjectName;
   const { error } = await c.from("shared_boxes").update(payload).eq("id", boxId);
   return { error: error ? error.message : null };
 }
@@ -1192,22 +1183,26 @@ async function unrateLibraryCollection(collectionId) {
 async function listLibraryRatings() {
   const c = getClient();
   if (!c) return [];
-  const { data, error } = await c.from("library_ratings").select("collection_id, user_id, rating");
-  if (error) {
-    console.warn("Librairie : échec du chargement des notes", error.message);
-    return [];
-  }
+  // Round 48 : toutes les pages (au-delà de 1 000 lignes).
+  const { data } = await fetchAllPages(
+    (from, to) => c.from("library_ratings").select("collection_id, user_id, rating").order("collection_id").order("user_id").range(from, to),
+    "library_ratings"
+  );
   return data || [];
 }
 
 async function listLibraryCollections() {
   const c = getClient();
   if (!c) return [];
-  const { data, error } = await c.from("library_collections").select("*").order("shared_at", { ascending: false });
-  if (error) {
-    console.warn("Librairie : échec du chargement des collections partagées", error.message);
-    return [];
-  }
+  // Round 48 : bug corrigé — le serveur ne renvoie que 1 000 lignes par
+  // requête : au-delà (plus de 1 000 collections publiées), les plus
+  // anciennes manquaient. Conséquences : collections absentes de la
+  // Librairie, et ses propres boîtes publiées affichées « Non publiée »
+  // dans Mes créations (alors que « Publier » répondait « déjà partagée »).
+  const { data } = await fetchAllPages(
+    (from, to) => c.from("library_collections").select("*").order("shared_at", { ascending: false }).order("id").range(from, to),
+    "library_collections"
+  );
   return data || [];
 }
 
@@ -1261,8 +1256,14 @@ async function sendClassMessage(classId, body) {
   if (!c || !user) return { error: "Non connecté." };
   const trimmed = (body || "").trim();
   if (!trimmed) return { error: "Message vide." };
-  const row = { class_id: classId, sender_id: user.id, sender_email: user.email || "", body: trimmed };
-  const { data, error } = await c.from("class_messages").insert(row).select().single();
+  // Round 48 : prénom et nom de l'expéditeur (colonne sender_name, voir
+  // supabase/round48_migration.sql) — sans la colonne, envoi sans elle.
+  const row = { class_id: classId, sender_id: user.id, sender_email: user.email || "", sender_name: teacherDisplayName(user), body: trimmed };
+  let { data, error } = await c.from("class_messages").insert(row).select().single();
+  if (error && /sender_name/i.test(error.message || "")) {
+    delete row.sender_name;
+    ({ data, error } = await c.from("class_messages").insert(row).select().single());
+  }
   return { data, error: error ? error.message : null };
 }
 
@@ -1365,7 +1366,6 @@ window.Sync = {
     updateProfile: authUpdateProfile,
     updateSchoolLevel: authUpdateSchoolLevel,
     updateMetadata: authUpdateMetadata,
-    updateTokenBalance: authUpdateTokenBalance,
   },
   classes: {
     create: createClass,

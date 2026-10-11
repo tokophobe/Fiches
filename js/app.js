@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v201";
+  const APP_VERSION = "v202";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -713,6 +713,8 @@
     "classes-join": ["Entre le code que ton enseignant t'a donné pour rejoindre sa classe."],
     "classes-create": ["Donne un nom à ta classe."],
     "class-detail": ["La page de la classe : ses boîtes partagées, ses évènements à venir et la liste des élèves."],
+    "class-share": ["Partage une de tes boîtes avec la classe, ou une boîte de la Librairie (seuls les élèves abonnés y auront accès)."],
+    subscriptions: ["Bientôt, l'abonnement te donnera accès à toutes les boîtes de la Librairie."],
     messages: ["Une discussion par classe : touche une classe pour lire et écrire les messages."],
     "message-thread": ["Écris ton message en bas de la page : toute la classe le verra."],
     library: ["Ici, tu peux prendre des collections de fiches partagées par d'autres — elles s'ajoutent à tes boîtes, avec cette icône en réseau pour les reconnaître."],
@@ -751,6 +753,8 @@
     "classes-join": "Rejoindre une classe",
     "classes-create": "Créer une classe",
     "class-detail": "Page d'une classe",
+    "class-share": "Classe — partager une boîte",
+    subscriptions: "Abonnements",
     messages: "Messagerie",
     "message-thread": "Messagerie — discussion",
     library: "Librairie",
@@ -774,6 +778,8 @@
   // message ponctuel — ex. « Déplacer … vers : » — soit écrasé par le
   // message générique de la page quand celle-ci devient active).
   let bodyLogoSpeechKey = "";
+  // Round 48 : contexte du sélecteur de boîtes ouvert (voir cancelBoitePicker).
+  let boitePickerCtx = null;
   // Round 47 : partage d'une collection de la Librairie avec une classe en
   // cours (voir setLibraryShareToClass) — déclaré tôt (goHome y touche).
   let libraryShareToClassCtx = null;
@@ -841,6 +847,11 @@
     bodyLogoSpeechCloseBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       renderBodyLogoSpeechState(false);
+      // Round 48 : dans un sélecteur qui le demande (placer un nouveau
+      // dossier), fermer la bulle du robot annule l'opération.
+      if (boitePickerCtx && boitePickerCtx.closeSpeechCancels && el("view-boite-picker") && el("view-boite-picker").classList.contains("is-active")) {
+        cancelBoitePicker();
+      }
     });
   }
   const bodyLogoSpeechPrevBtn = el("body-logo-speech-prev");
@@ -4193,7 +4204,14 @@
         // fiches et garde en mémoire son emplacement (proposé si on l'y
         // remet). Boîte de classe / collection de la Librairie : même
         // libellé, effet inchangé (bloqué / retirée, reprenable en Librairie).
-        onDelete: () => (isOwnCreatedSubject(subjectForIcon) ? removeSubjectFromRevisions(subjectId) : deleteSubject(subjectId)),
+        // Round 48 : une collection de la Librairie sort aussi des révisions
+        // en gardant sa progression (reprise si on la rajoute).
+        onDelete: () =>
+          isOwnCreatedSubject(subjectForIcon)
+            ? removeSubjectFromRevisions(subjectId)
+            : subjectForIcon && subjectForIcon.fromLibrary && subjectForIcon.libraryOriginId
+            ? removeLibraryCollectionFromRevisions({ id: subjectForIcon.libraryOriginId })
+            : deleteSubject(subjectId),
         // Round 31 : « Partager dans la librairie » retiré de ce menu — la
         // publication se fait depuis Mes créations de fiches.
         onShare: null,
@@ -4312,7 +4330,21 @@
     // Item 8 : demande tout de suite où le ranger, plutôt que de le créer
     // silencieusement à la racine en laissant l'utilisateur le déplacer
     // ensuite lui-même via ↔️.
-    openMovePicker("folder", folder.id, { verb: "Placer" });
+    // Round 48 : « Placer « X » dans : » ; annuler (« < », ou ✕ de la
+    // bulle du robot) annule la création du dossier.
+    openMovePicker("folder", folder.id, {
+      verb: "Placer",
+      prep: "dans",
+      closeSpeechCancels: true,
+      onCancel: async () => {
+        if (!folders.some((x) => x.id === folder.id)) return;
+        folders = folders.filter((x) => x.id !== folder.id);
+        await pushFolderDeleted(folder);
+        await DB.removeFolder(folder.id);
+        renderSubjectManageList();
+        showToast("Création du dossier annulée");
+      },
+    });
   }
 
   async function renameFolder(folderId) {
@@ -4380,8 +4412,10 @@
       // de retour de cette page devient "Annuler" (on choisit une
       // destination, on ne "revient" pas en arrière).
       // Round 47 : « Placer … vers » pour un dossier qu'on vient de créer.
-      robotMessage: `${(opts && opts.verb) || "Déplacer"} « ${name || ""} » vers :`,
+      robotMessage: `${(opts && opts.verb) || "Déplacer"} « ${name || ""} » ${(opts && opts.prep) || "vers"} :`,
       backLabel: "Annuler",
+      closeSpeechCancels: !!(opts && opts.closeSpeechCancels),
+      onCancel: opts && opts.onCancel,
       excludedFolderIds: excluded,
       onPick: async (kindPicked, destId) => {
         if (kind === "folder") {
@@ -4487,6 +4521,8 @@
     s.name = name.trim();
     s.updatedAt = new Date().toISOString();
     await persistSubject(s);
+    // Round 48 : nom repoussé vers les classes avec qui la boîte est partagée.
+    await pushSharedBoxUpdatesForSubject(s.id);
     subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
     renderSubjectSelect();
     renderSubjectManageList();
@@ -5032,6 +5068,7 @@
     const view = el("view-boite-picker");
     const list = el("boite-picker-list");
     if (!view || !list) return;
+    boitePickerCtx = ctx;
 
     const current = document.querySelector(".view.is-active");
     boitePickerReturnViewId = current ? current.id : "view-home";
@@ -5122,6 +5159,7 @@
   }
 
   function closeBoitePickerView() {
+    boitePickerCtx = null;
     const returnViewId = boitePickerReturnViewId || "view-home";
     boitePickerActivateView(returnViewId);
     if (returnViewId === "view-creations") renderCreationsList();
@@ -5143,8 +5181,16 @@
     }
   }
 
+  /** Round 48 : annulation du sélecteur (« < », Annuler, ou ✕ de la bulle
+   *  quand ctx.closeSpeechCancels) — prévient l'appelant (ctx.onCancel). */
+  function cancelBoitePicker() {
+    const c = boitePickerCtx;
+    boitePickerCtx = null;
+    closeBoitePickerView();
+    if (c && typeof c.onCancel === "function") c.onCancel();
+  }
   const boitePickerBackBtn = el("boite-picker-back-btn");
-  if (boitePickerBackBtn) boitePickerBackBtn.addEventListener("click", () => closeBoitePickerView());
+  if (boitePickerBackBtn) boitePickerBackBtn.addEventListener("click", () => cancelBoitePicker());
 
   // Item 6 (nouveau lot) : quand ce sélecteur est ouvert depuis "Sélection
   // manuelle" (programme de révision), il faut, une fois la sélection
@@ -5318,7 +5364,7 @@
     const folderPathNames = folderPath(subject.folderId).map((f) => f.name);
     for (const share of subject.sharedShares) {
       try {
-        await Sync.classes.updateSharedBoxCards(share.boxId, boxCards, folderPathNames);
+        await Sync.classes.updateSharedBoxCards(share.boxId, boxCards, folderPathNames, subject.name);
       } catch (e) {
         console.warn("Classes: échec de la mise à jour de la boîte partagée", e);
       }
@@ -5329,6 +5375,25 @@
    *  d'une ou plusieurs boîtes partagées — re-pousse toutes les boîtes
    *  partagées d'un coup (simple et largement suffisant à cette échelle,
    *  plutôt que de calculer précisément lesquelles sont concernées). */
+  async function pushSharedBoxUpdatesForClass(classId) {
+    if (!Sync.isConfigured()) return;
+    const remote = await Sync.classes.listSharedBoxes(classId);
+    const byId = new Map(remote.map((b) => [b.id, b]));
+    for (const s of subjects.filter((x) => !x.deleted && x.sharedShares && x.sharedShares.some((sh) => sh.classId === classId))) {
+      const path = folderPath(s.folderId).map((f) => f.name);
+      for (const share of s.sharedShares.filter((sh) => sh.classId === classId)) {
+        const rb = byId.get(share.boxId);
+        if (!rb) continue;
+        if (JSON.stringify(rb.folder_path || []) === JSON.stringify(path) && rb.subject_name === s.name) continue;
+        const boxCards = cards.filter((c) => !c.deleted && c.subject === s.id);
+        try {
+          await Sync.classes.updateSharedBoxCards(share.boxId, boxCards, path, s.name);
+        } catch (e) {
+          console.warn("Classes : mise à jour d'une boîte partagée impossible", e);
+        }
+      }
+    }
+  }
   async function pushSharedBoxUpdatesForAllSharedSubjects() {
     if (!Sync.isConfigured()) return;
     const sharedSubjects = subjects.filter((s) => s.sharedShares && s.sharedShares.length);
@@ -5634,7 +5699,7 @@
     const gaugeEl = el("review-current-box-gauge");
     if (gaugeEl) {
       const pool = cards.filter((c) => !c.deleted && c.subject === card.subject);
-      gaugeEl.innerHTML = buildPersGaugeSvg(pool, { width: 120, barHeight: 10 });
+      gaugeEl.innerHTML = buildPersGaugeSvg(pool, { width: 100, barHeight: 9 });
     }
   }
 
@@ -5768,10 +5833,6 @@
       reviewProgressEl.textContent = `${sessionTotalDue - remaining}/${sessionTotalDue} fiches dues revues`;
     } else if (sessionTotalDue > 0) {
       reviewProgressEl.textContent = "Fiches dues terminées — tu continues en avance";
-      if (!sessionState.dueDoneToastShown) {
-        sessionState.dueDoneToastShown = true;
-        showCenterToast("✅ Fiches dues terminées — tu continues en avance");
-      }
     } else {
       reviewProgressEl.textContent = "Aucune fiche due — tu révises en avance";
     }
@@ -6127,25 +6188,27 @@
     if (sessionState.proposalShown && !sessionState.proposalArmed) return;
     sessionState.proposalShown = true;
     sessionState.proposalArmed = false;
-    const scope = currentSubjectId === ALL_SUBJECTS_ID || currentSubjectId === MULTI_SUBJECTS_ID ? "de ta sélection" : "de cette boîte";
-    const head =
-      sessionState.low.size > 0
-        ? `Bravo ! Tu as vu toutes les fiches dues ${scope}, et revu deux fois celles que tu ne savais pas.`
-        : `Bravo ! Tu as vu toutes les fiches dues ${scope}.`;
-    const next = nextAdvisedBox();
+    // Round 48 : un seul message du robot à la fin de l'exercice (il
+    // remplace « Fiches dues terminées — tu continues en avance » et la
+    // proposition de boîte suivante) : « Continuer » reste ici, « Changer »
+    // ouvre « Choisir les boîtes à réviser ».
     proposalOpen = true;
     try {
-      if (next) {
-        const ok = await robotConfirm(
-          `${head}\n\nJe te propose de passer à la boîte suivante des révisions conseillées : « ${next.name} » (${next.due} fiche${next.due > 1 ? "s" : ""} à revoir).`,
-          { okLabel: "Passer à cette boîte", cancelLabel: "Continuer ici" }
-        );
-        if (ok) {
-          reviewEntryFromManage = false;
-          switchSubject(next.id);
+      const choice = await showRobotMessage(
+        "Tu as fini l'exercice de renforcement de connaissances pour cette boîte. Tu peux continuer à travailler sur cette boîte si tu le souhaites. Je te conseille de passer à d'autres boîtes.",
+        {
+          buttons: [
+            { label: "Continuer", value: "stay" },
+            { label: "Changer", value: "change", primary: true },
+          ],
+          cancelValue: "stay",
         }
-      } else {
-        await robotAlert(`${head}\n\nTes révisions conseillées sont terminées pour le moment : tu peux t'arrêter là, ou continuer à réviser en avance.`);
+      );
+      if (choice === "change") {
+        reviewEntryFromManage = false;
+        reviewEntryFromProgram = false;
+        multiPickerNavigateToReviewOnConfirm = true;
+        openMultiSubjectPicker();
       }
     } finally {
       proposalOpen = false;
@@ -8252,24 +8315,27 @@
   const ORG_DISPLAY_KEY = "fiches_org_display_mode";
   // Round 26, item 5 : affichage "mode" retiré (modes d'apprentissage
   // abandonnés) — un ancien choix "mode" retombe sur "count".
+  // Round 48 : troisième affichage « none » (ni nombre ni barre : toute la
+  // largeur pour le nom des boîtes) — c'est celui affiché à chaque arrivée
+  // sur la page ; re-toucher le bouton actif y revient aussi.
   const ORG_DISPLAY_MODES = ["count", "gauge"];
+  let orgDisplayMode = "none";
   function loadOrgDisplayMode() {
-    const raw = localStorage.getItem(ORG_DISPLAY_KEY);
-    return ORG_DISPLAY_MODES.includes(raw) ? raw : "count";
+    return orgDisplayMode;
   }
   function setOrgDisplayMode(mode) {
-    if (!ORG_DISPLAY_MODES.includes(mode)) return;
-    localStorage.setItem(ORG_DISPLAY_KEY, mode);
-    document.body.dataset.orgCarouselSlot = String(ORG_DISPLAY_MODES.indexOf(mode));
-    document.querySelectorAll(".org-display-toggle-btn").forEach((b) => {
+    if (mode !== "none" && !ORG_DISPLAY_MODES.includes(mode)) return;
+    orgDisplayMode = mode;
+    document.body.dataset.orgCarouselSlot = mode === "none" ? "none" : String(ORG_DISPLAY_MODES.indexOf(mode));
+    document.querySelectorAll(".org-display-toggle-btn[data-org-display]").forEach((b) => {
       b.classList.toggle("is-active", b.dataset.orgDisplay === mode);
     });
-    scheduleDevSettingsPush();
+    if (mode !== "none" && typeof alignOrgInfoSlots === "function") requestAnimationFrame(alignOrgInfoSlots);
   }
-  document.querySelectorAll(".org-display-toggle-btn").forEach((btn) => {
-    btn.addEventListener("click", () => setOrgDisplayMode(btn.dataset.orgDisplay));
+  document.querySelectorAll(".org-display-toggle-btn[data-org-display]").forEach((btn) => {
+    btn.addEventListener("click", () => setOrgDisplayMode(orgDisplayMode === btn.dataset.orgDisplay ? "none" : btn.dataset.orgDisplay));
   });
-  setOrgDisplayMode(loadOrgDisplayMode());
+  setOrgDisplayMode("none");
 
   function renderSettingsView() {
     if (settingBonusHardEl) settingBonusHardEl.value = bonusDaysSettings.hard;
@@ -8708,7 +8774,10 @@
       // connecté (prendre une collection publique n'en demande pas), donc
       // appelé ici plutôt que via syncSharedBoxesForStudent (qui lui exige
       // un Compte, pour les boîtes de classe).
-      if (view === "manage") syncLibraryMirrorsForUser().then(() => renderSubjectManageList());
+      if (view === "manage") {
+        setOrgDisplayMode("none");
+        syncLibraryMirrorsForUser().then(() => renderSubjectManageList());
+      }
       if (view === "calendar") renderCalendarEvents();
       if (view === "revision-program") renderRevisionProgramList();
       if (view === "revision-reinforce") {
@@ -8783,7 +8852,7 @@
   let navBackUntil = 0;
   // Pages de passage (formulaires, sélecteurs) : jamais rouvertes par
   // « ← Retour », on revient à la page d'avant.
-  const NAV_TRANSIENT = new Set(["boite-picker", "calendar-event-form", "new-card", "box-create", "report-card", "library-share", "classes-join", "classes-create"]);
+  const NAV_TRANSIENT = new Set(["class-share", "boite-picker", "calendar-event-form", "new-card", "box-create", "report-card", "library-share", "classes-join", "classes-create"]);
   const NAV_OWN_BACK = {
     "calendar-event-detail": "calendar-detail-back-btn",
     "creation-detail": "creation-detail-back-btn",
@@ -8916,6 +8985,8 @@
     "classes-teacher": { text: "Enseignant", hide: ["#view-classes-teacher > h2.section-title"] },
     "classes-create": { text: "Créer une classe", hide: ["#view-classes-create > h2.section-title"] },
     "class-detail": { from: "#class-detail-title" },
+    "class-share": "Partager une boîte",
+    subscriptions: "Abonnements",
     messages: { text: "Messagerie", hide: ["#view-messages > h2.section-title"] },
     "message-thread": { from: "#message-thread-title" },
     library: { text: "Librairie", hide: ["#view-library .library-title-row > h2.section-title"] },
@@ -11289,8 +11360,6 @@
     if (profileNote) profileNote.hidden = true;
     // Round 18, item 16 : crédit de jetons (affichage seul, cf. commentaire
     // HTML sur account-token-balance-row).
-    const tokenEl = el("account-token-balance");
-    if (tokenEl) tokenEl.textContent = String(meta.token_balance || 0);
   }
 
   function setClassesAuthMode(mode) {
@@ -11733,6 +11802,53 @@
     }
   }
 
+  /* Round 48 : fiches des boîtes miroirs (boîte de classe, collection de la
+     Librairie). Bug corrigé — elles reprenaient l'id de la fiche d'origine :
+     deux miroirs de la même source (même boîte partagée avec deux classes,
+     boîte reçue d'une classe ET prise dans la Librairie, sa propre
+     collection reprise…) avaient donc des fiches au même id, et chaque
+     enregistrement de l'une écrasait l'autre — d'où des boîtes à qui il
+     manquait des fiches. Chaque fiche miroir a désormais un id propre à sa
+     boîte (`m~<boîte>~<id d'origine>`), l'id d'origine étant gardé dans
+     `mirrorSrcId` (signalements, mises à jour). Les anciennes fiches miroirs
+     (id d'origine) restent reconnues ; une boîte à qui il en manquait les
+     retrouve à la synchro suivante. */
+  function mirrorSourceId(card) {
+    return card.mirrorSrcId || card.id;
+  }
+  function mirrorCardId(subjectId, srcId) {
+    return `m~${subjectId}~${srcId}`;
+  }
+  async function reconcileMirrorCards(subject, remoteCards) {
+    const src = remoteCards.map((rc, i) => ({ ...rc, srcId: rc.id ? String(rc.id) : `idx${i}` }));
+    const remoteIds = new Set(src.map((rc) => rc.srcId));
+    const nowIso = new Date().toISOString();
+    for (const rc of src) {
+      const idx = cards.findIndex((c) => c.subject === subject.id && mirrorSourceId(c) === rc.srcId);
+      if (idx >= 0) {
+        const existing = cards[idx];
+        const contentChanged = existing.question !== (rc.question || "") || existing.answer !== (rc.answer || "");
+        if (existing.deleted || contentChanged) {
+          const updated = { ...existing, question: rc.question || "", answer: rc.answer || "", deleted: false, updatedAt: nowIso };
+          await persist(updated);
+          cards[idx] = updated;
+        }
+      } else {
+        const card = { ...newCard(rc.question || "", rc.answer || "", subject.id), id: mirrorCardId(subject.id, rc.srcId), mirrorSrcId: rc.srcId };
+        await persist(card);
+        cards.push(card);
+      }
+    }
+    for (const c of cards.filter((x) => x.subject === subject.id)) {
+      if (!c.deleted && !remoteIds.has(mirrorSourceId(c))) {
+        const updated = touch({ ...c, deleted: true });
+        await persist(updated);
+        const idx = cards.findIndex((x) => x.id === c.id && x.subject === subject.id);
+        if (idx >= 0) cards[idx] = updated;
+      }
+    }
+  }
+
   /** Round 10, item 2 : reconciliation périodique d'un miroir de
    *  bibliothèque — même principe que reconcileSharedBox (classes) plus
    *  haut, mais sans notion de dossier/chemin à reconstituer : la
@@ -11753,35 +11869,7 @@
       subject.updatedAt = new Date().toISOString();
       await persistSubject(subject);
     }
-    const remoteCards = Array.isArray(col.cards) ? col.cards : [];
-    const remoteIds = new Set(remoteCards.map((c) => c.id).filter(Boolean));
-    const localCardsHere = cards.filter((c) => c.subject === subject.id);
-
-    for (const rc of remoteCards) {
-      if (!rc.id) continue;
-      const idx = cards.findIndex((c) => c.id === rc.id && c.subject === subject.id);
-      if (idx >= 0) {
-        const existing = cards[idx];
-        const contentChanged = existing.question !== (rc.question || "") || existing.answer !== (rc.answer || "");
-        if (existing.deleted || contentChanged) {
-          const updated = { ...existing, question: rc.question || "", answer: rc.answer || "", deleted: false, updatedAt: new Date().toISOString() };
-          await persist(updated);
-          cards[idx] = updated;
-        }
-      } else {
-        const card = { ...newCard(rc.question || "", rc.answer || "", subject.id), id: rc.id };
-        await persist(card);
-        cards.push(card);
-      }
-    }
-    for (const c of localCardsHere) {
-      if (!c.deleted && !remoteIds.has(c.id)) {
-        const updated = touch({ ...c, deleted: true });
-        await persist(updated);
-        const idx = cards.findIndex((x) => x.id === c.id);
-        if (idx >= 0) cards[idx] = updated;
-      }
-    }
+    await reconcileMirrorCards(subject, Array.isArray(col.cards) ? col.cards : []);
   }
 
   /** Parcourt toutes les collections locales prises dans la Bibliothèque et
@@ -12030,47 +12118,7 @@
       }
     }
 
-    const remoteCards = Array.isArray(box.cards) ? box.cards : [];
-    const remoteIds = new Set(remoteCards.map((c) => c.id).filter(Boolean));
-    const localCardsHere = cards.filter((c) => c.subject === subject.id);
-
-    for (const rc of remoteCards) {
-      if (!rc.id) continue;
-      // Comparaison bornée à CETTE boîte miroir (et pas juste par id global)
-      // : un id de fiche est unique en pratique (uid() aléatoire), mais
-      // rester borné à `subject.id` évite tout risque de confusion avec
-      // une fiche locale sans rapport qui porterait le même id.
-      const idx = cards.findIndex((c) => c.id === rc.id && c.subject === subject.id);
-      if (idx >= 0) {
-        const existing = cards[idx];
-        const contentChanged = existing.question !== (rc.question || "") || existing.answer !== (rc.answer || "");
-        if (existing.deleted || contentChanged) {
-          const updated = {
-            ...existing,
-            question: rc.question || "",
-            answer: rc.answer || "",
-            deleted: false,
-            updatedAt: new Date().toISOString(),
-          };
-          await persist(updated);
-          cards[idx] = updated;
-        }
-      } else {
-        const card = { ...newCard(rc.question || "", rc.answer || "", subject.id), id: rc.id };
-        await persist(card);
-        cards.push(card);
-      }
-    }
-    // Le prof a retiré une fiche : suppression douce locale (jamais un
-    // vrai delete, pour rester cohérent avec le reste de l'appli).
-    for (const c of localCardsHere) {
-      if (!c.deleted && !remoteIds.has(c.id)) {
-        const updated = touch({ ...c, deleted: true });
-        await persist(updated);
-        const idx = cards.findIndex((x) => x.id === c.id);
-        if (idx >= 0) cards[idx] = updated;
-      }
-    }
+    await reconcileMirrorCards(subject, Array.isArray(box.cards) ? box.cards : []);
   }
 
   /** Round 6, item 4 : les classes apparaissent désormais en ronds (même
@@ -12321,7 +12369,10 @@
     applyBodyLogoSpeech("class-detail");
     await renderClassDetailView();
     if (role === "teacher") {
-      syncTeacherEventBoxes().then(() => {
+      // Round 48 : les boîtes partagées reprennent l'organisation ACTUELLE
+      // de l'enseignant (dossiers, noms) — rattrapage des partages faits
+      // avant que ce chemin soit envoyé, ou d'une réorganisation manquée.
+      Promise.all([syncTeacherEventBoxes(), pushSharedBoxUpdatesForClass(klass.id)]).then(() => {
         if (classDetailContext && classDetailContext.klass.id === klass.id) renderClassDetailView();
       });
     }
@@ -12357,7 +12408,7 @@
       }
       statsEl.innerHTML = chips.join("");
     }
-    if (el("class-detail-share-btns")) el("class-detail-share-btns").hidden = !isTeacher;
+    if (el("class-detail-share-open-btn")) el("class-detail-share-open-btn").hidden = !isTeacher;
     const addEventBtn = el("class-detail-add-event-btn");
     if (addEventBtn) addEventBtn.hidden = !isTeacher;
 
@@ -12429,6 +12480,7 @@
       return;
     }
     const rows = (data || [])
+      .filter((m) => m.role !== "teacher")
       .map((m) => {
         const name = `${m.first_name || ""} ${m.last_name || ""}`.trim();
         const key = name ? `0 ${m.last_name || ""} ${m.first_name || ""}` : `1 ${m.email || ""}`;
@@ -12506,6 +12558,15 @@
   const classDetailBackBtn = el("class-detail-back-btn");
   if (classDetailBackBtn) classDetailBackBtn.addEventListener("click", closeClassDetailView);
 
+  // Round 48 : « + Partager » ouvre une page à deux boutons ronds.
+  const classDetailShareOpenBtn = el("class-detail-share-open-btn");
+  if (classDetailShareOpenBtn) {
+    classDetailShareOpenBtn.addEventListener("click", () => {
+      if (!classDetailContext) return;
+      boitePickerActivateView("view-class-share");
+      applyBodyLogoSpeech("class-share");
+    });
+  }
   const classDetailShareBtn = el("class-detail-share-btn");
   if (classDetailShareBtn) {
     classDetailShareBtn.addEventListener("click", async () => {
@@ -12560,7 +12621,8 @@
             return;
           }
           await afterShare(data);
-          renderClassDetailView();
+          openClassDetailView(klass, classDetailContext ? classDetailContext.role : "teacher");
+          showToast(`« ${name} » partagée avec la classe`);
         },
       });
     });
@@ -12733,6 +12795,10 @@
   // Round 20, item 4 : filtre "Mes partages" — ne montre que MES propres
   // collections partagées (comparaison sur owner_id).
   let libraryOnlyMine = false;
+  // Round 48 : résumés des collections affichés dans les blocs (masqués
+  // par défaut).
+  let libraryShowSummaries = false;
+  const SIMULATE_NO_SUBSCRIPTION_KEY = "fiches_simulate_no_subscription";
 
   // Round 18, item 15 : niveaux scolaires proposés au partage et au tri —
   // liste reprise telle que demandée ("6ème, 5ème,..., 2nd, 1ère,
@@ -13153,37 +13219,6 @@
     return `<span class="library-thumb${liked ? " library-thumb--active" : ""}"${interactiveId ? ` data-like-collection="${interactiveId}"` : ""} title="${liked ? "Retirer mon pouce" : "Mettre un pouce"}">${icon}${countLabel}</span>`;
   }
 
-  /** Round 22, item 6 : icône de pièce d'or réaliste (dégradé radial +
-   *  anneau en relief + reflet) pour le bouton de prix de la Bibliothèque —
-   *  remplace l'icône plate monochrome `coin` de ICON_LIBRARY (round 21),
-   *  jugée trop peu réaliste ("il faut vraiment que ça ressemble à une
-   *  pièce en or"). Un `<radialGradient>` a besoin de plusieurs couleurs et
-   *  d'un id unique par instance, ce que le pochoir `currentColor` à un
-   *  seul trait de ICON_LIBRARY ne permet pas — d'où ce petit SVG à part. */
-  function libraryCoinIconSvg(size) {
-    const s = size || 15;
-    const gid = `lib-coin-grad-${Math.random().toString(36).slice(2, 9)}`;
-    return `<svg class="library-coin-icon" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true">
-      <defs>
-        <radialGradient id="${gid}" cx="35%" cy="30%" r="75%">
-          <stop offset="0%" stop-color="#fff3c4" />
-          <stop offset="45%" stop-color="#f3c545" />
-          <stop offset="100%" stop-color="#b8860b" />
-        </radialGradient>
-      </defs>
-      <circle cx="12" cy="12" r="10" fill="url(#${gid})" stroke="#8a6103" stroke-width="1" />
-      <circle cx="12" cy="12" r="7.3" fill="none" stroke="#8a6103" stroke-width="0.8" opacity="0.55" />
-      <ellipse cx="9" cy="8.3" rx="3.1" ry="1.7" fill="#ffffff" opacity="0.45" />
-    </svg>`;
-  }
-
-  /** Round 22, item 6 : libellé du bouton de prix — icône pièce + nombre,
-   *  sans le mot "jeton" (demande explicite de Stéphane), ou "Gratuit" en
-   *  texte simple (pas d'icône, rien à payer). */
-  function libraryPriceButtonHtml(priceTokens) {
-    return priceTokens > 0 ? `${libraryCoinIconSvg()}${priceTokens}` : "Gratuit";
-  }
-
   /** Bascule le pouce du Compte connecté sur une collection (pose s'il n'y
    *  était pas, retire s'il y était déjà), puis rafraîchit le cache de
    *  notes et rappelle `onDone` pour ré-afficher le nombre à jour. */
@@ -13208,7 +13243,6 @@
     const searchInput = el("library-search-input");
     const taxFilterEl = el("library-filter-taxonomy");
     const tagFilterEl = el("library-filter-tags");
-    const tokenRow = el("library-token-balance-row");
     if (!list) return;
     if (!Sync.isConfigured()) {
       if (needsSync) needsSync.hidden = false;
@@ -13217,7 +13251,6 @@
       if (searchInput) searchInput.hidden = true;
       if (taxFilterEl) taxFilterEl.hidden = true;
       if (tagFilterEl) tagFilterEl.hidden = true;
-      if (tokenRow) tokenRow.hidden = true;
       return;
     }
     if (needsSync) needsSync.hidden = true;
@@ -13225,17 +13258,6 @@
     // Round 19, items 5/6 : un seul appel pour le crédit de jetons ET le
     // préréglage du niveau scolaire, plutôt qu'un par fonctionnalité.
     const freshUser = (await Sync.auth.getUser()) || accountCurrentUser;
-    // Round 19, item 6 : crédit de jetons, visible seulement une fois
-    // connecté (comme dans Mon compte).
-    if (tokenRow) {
-      if (freshUser) {
-        tokenRow.hidden = false;
-        const tokenEl = el("library-token-balance");
-        if (tokenEl) tokenEl.textContent = String((freshUser.user_metadata || {}).token_balance || 0);
-      } else {
-        tokenRow.hidden = true;
-      }
-    }
     // Round 20, item 4 : bouton "Mes partages", visible seulement une fois
     // connecté (rien à filtrer sinon) ; se désactive tout seul en se
     // déconnectant, pour ne pas laisser un filtre actif mais invisible.
@@ -13344,51 +13366,27 @@
     }
     for (const col of collections) {
       const n = Array.isArray(col.cards) ? col.cards.length : 0;
-      // Round 10, item 6 : "Déjà pris" (désactivé, fond différent) si une
-      // collection de Mes collections est déjà un miroir de celle-ci.
-      const alreadyTaken = subjects.some((s) => s.fromLibrary && s.libraryOriginId === col.id);
-      // Round 18, item 15 : prénom/nom plutôt que l'email brut (repli sur
-      // l'email pour les collections partagées avant ce round, quand le
-      // prénom/nom de l'auteur n'était pas encore connu).
-      const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || col.owner_email || "quelqu'un";
-      const priceTokens = Number(col.price_tokens) || 0;
+      // Round 48 : bloc épuré — nom en entier, nombre de fiches et
+      // classement, résumé (si l'affichage des résumés est activé), pouce.
+      // Plus d'auteur, de tags, de prix ni de bouton « Détails » (le bloc
+      // entier ouvre la fiche de la collection). Déjà dans mes révisions :
+      // bloc légèrement transparent + mention.
+      const inRevisions = isLibraryCollectionInRevisions(col.id);
       const taxLabel = taxonomyShortLabel(collectionTaxonomy(col));
       const levelLabel = taxLabel ? ` · ${escapeHtml(taxLabel)}` : "";
-      const rowTags = collectionTags(col);
       const { count: likeCount, liked } = libraryCollectionLikeStats(col.id);
+      const summary = (col.summary || "").trim();
       const li = document.createElement("li");
-      li.className = "subject-row library-row";
-      // Round 21, item 6 : notation déplacée sur la même ligne que le nom
-      // (alignée à droite du bloc). Round 22, item 6/8 : le bouton de prix
-      // (icône pièce + nombre, sans le mot "jeton") passe en bas à droite
-      // du bloc, à côté de "Détails" ; les 5 étoiles sont remplacées par un
-      // pouce cliquable (voir libraryThumbHtml).
+      li.className = "subject-row library-row" + (inRevisions ? " library-row--in-revisions" : "");
       li.innerHTML = `
         <div class="library-row-head">
-          <span class="subject-row-name">${iconSvgMarkup("share", "icon-inline-svg")} <span>${escapeHtml(col.name)}</span></span>
+          <span class="subject-row-name library-row-name">${iconSvgMarkup("share", "icon-inline-svg")} <span>${escapeHtml(col.name)}</span></span>
           <span class="library-rating-row">${libraryThumbHtml(likeCount, liked, col.id)}</span>
         </div>
-        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""} — par ${escapeHtml(ownerName)}${levelLabel}</span>
-        ${rowTags.length ? `<span class="tag-chips tag-chips--row">${tagChipsHtml(rowTags)}</span>` : ""}
-        <div class="library-row-actions">
-          <button type="button" class="btn btn--small library-price-btn${alreadyTaken ? " library-price-btn--taken" : ""}" ${alreadyTaken ? "disabled" : ""}>${alreadyTaken ? "Déjà pris" : libraryPriceButtonHtml(priceTokens)}</button>
-          <button type="button" class="btn btn--small btn--ghost library-details-btn">Détails</button>
-        </div>
+        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""}${levelLabel}</span>
+        ${libraryShowSummaries && summary ? `<p class="library-row-summary">${escapeHtml(summary)}</p>` : ""}
+        ${inRevisions ? `<span class="library-row-in-revisions">Déjà dans mes révisions</span>` : ""}
       `;
-      const priceBtn = li.querySelector(".library-price-btn");
-      if (priceBtn && !alreadyTaken) {
-        priceBtn.addEventListener("click", async (e) => {
-          e.stopPropagation();
-          await confirmAndTakeLibraryCollection(col, () => renderLibraryList());
-        });
-      }
-      const detailsBtn = li.querySelector(".library-details-btn");
-      if (detailsBtn) {
-        detailsBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          openLibraryDetailView(col);
-        });
-      }
       const thumbEl = li.querySelector(".library-thumb");
       if (thumbEl) {
         thumbEl.addEventListener("click", async (e) => {
@@ -13396,9 +13394,6 @@
           await toggleLibraryLike(col, liked, () => renderLibraryList());
         });
       }
-      // Round 19, item 11 : le reste de la ligne ouvre la page de détail
-      // de la collection (les boutons gardent leur clic propre grâce à
-      // e.stopPropagation() ci-dessus).
       li.addEventListener("click", () => openLibraryDetailView(col));
       list.appendChild(li);
     }
@@ -13413,11 +13408,6 @@
     libraryDetailCollection = col;
     const n = Array.isArray(col.cards) ? col.cards.length : 0;
     const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || col.owner_email || "quelqu'un";
-    const priceTokens = Number(col.price_tokens) || 0;
-    // Round 22, item 6 : icône pièce + nombre, sans le mot "jeton" (voir
-    // libraryPriceButtonHtml, partagé avec la liste et le bouton "Prendre"
-    // ci-dessous).
-    const priceLabel = libraryPriceButtonHtml(priceTokens);
     const { count, liked } = libraryCollectionLikeStats(col.id);
 
     const titleEl = el("library-detail-title");
@@ -13426,8 +13416,7 @@
     if (metaEl) {
       metaEl.innerHTML = `
         ${n} fiche${n > 1 ? "s" : ""}<br>
-        Par ${escapeHtml(ownerName)}<br>
-        ${priceLabel}
+        Par ${escapeHtml(ownerName)}
       `;
     }
     // Round 23 : classement complet (catégorie › … › matière) et tags.
@@ -13476,28 +13465,9 @@
       if (libraryShareToClassCtx) shareClassBtn.textContent = "Partager avec cette classe";
       shareClassBtn.onclick = () => shareLibraryCollectionToClass(col);
     }
-    const alreadyTaken = subjects.some((s) => s.fromLibrary && s.libraryOriginId === col.id);
-    // Round 21, item 6 : même bouton "prix" que dans la liste, avec la
-    // même confirmation d'achat (voir confirmAndTakeLibraryCollection).
-    // Round 22, item 6 : innerHTML (pas textContent) car le libellé
-    // contient maintenant l'icône SVG de la pièce.
-    const takeBtn = el("library-detail-take-btn");
-    if (takeBtn) {
-      takeBtn.classList.add("library-price-btn");
-      takeBtn.classList.toggle("library-price-btn--taken", alreadyTaken);
-      takeBtn.disabled = alreadyTaken;
-      takeBtn.innerHTML = alreadyTaken ? "Déjà pris" : priceLabel;
-      takeBtn.onclick = alreadyTaken
-        ? null
-        : async () => {
-            await confirmAndTakeLibraryCollection(col, () => {
-              renderLibraryList();
-              takeBtn.disabled = true;
-              takeBtn.classList.add("library-price-btn--taken");
-              takeBtn.innerHTML = "Déjà pris";
-            });
-          };
-    }
+    // Round 48 : plus de prix ni de jetons — « Ajouter à mes révisions » ou
+    // « Retirer de mes révisions » selon que la collection y est déjà.
+    renderLibraryDetailTakeBtn(col);
 
     boitePickerActivateView("view-library-detail");
     const homeBtnEl = el("home-btn");
@@ -13809,7 +13779,7 @@
         tags: Array.isArray(box.tags) ? box.tags.map(normalizeTag).filter(Boolean) : [],
         summary: box.summary || "",
         description: box.description || "",
-        priceTokens: Number(box.priceTokens) || 0,
+        priceTokens: 0,
         sourceSubjectId: subject.id,
       });
       if (error) failures.push(`${subject.name} : ${libraryShareErrorHint(error)}`);
@@ -13928,6 +13898,31 @@
       renderLibraryList();
     });
   }
+  const devSimNoSubEl = el("dev-simulate-no-subscription");
+  if (devSimNoSubEl) {
+    try {
+      devSimNoSubEl.checked = localStorage.getItem(SIMULATE_NO_SUBSCRIPTION_KEY) === "1";
+    } catch (e) {
+      /* stockage indisponible */
+    }
+    devSimNoSubEl.addEventListener("change", () => {
+      try {
+        if (devSimNoSubEl.checked) localStorage.setItem(SIMULATE_NO_SUBSCRIPTION_KEY, "1");
+        else localStorage.removeItem(SIMULATE_NO_SUBSCRIPTION_KEY);
+      } catch (e) {
+        /* stockage indisponible */
+      }
+    });
+  }
+  const librarySummaryToggleEl = el("library-summary-toggle");
+  if (librarySummaryToggleEl) {
+    librarySummaryToggleEl.addEventListener("click", () => {
+      libraryShowSummaries = !libraryShowSummaries;
+      librarySummaryToggleEl.classList.toggle("is-active", libraryShowSummaries);
+      librarySummaryToggleEl.setAttribute("aria-pressed", String(libraryShowSummaries));
+      renderLibraryList();
+    });
+  }
   const libraryMineToggleEl = el("library-mine-toggle");
   if (libraryMineToggleEl) {
     libraryMineToggleEl.addEventListener("click", () => {
@@ -13944,74 +13939,139 @@
    *  (round 10, item 2) — les fiches gardent le même id que dans la
    *  collection publiée (comme pour une boîte de classe), ce qui permet à
    *  `reconcileLibraryCollection` de la garder à jour ensuite. */
-  async function takeLibraryCollection(col) {
+  /* Round 48 : plus de jetons. Une collection de la Librairie s'ajoute à
+     mes révisions (le robot demande où la ranger), sous réserve d'un
+     abonnement ; « Retirer de mes révisions » la sort des révisions en
+     gardant sa progression (elle est reprise telle quelle si on la
+     rajoute). */
+  function libraryMirrorFor(colId) {
+    return subjects.find((s) => !s.deleted && s.fromLibrary && s.libraryOriginId === colId) || null;
+  }
+  function isLibraryCollectionInRevisions(colId) {
+    const m = libraryMirrorFor(colId);
+    return !!m && isSubjectInRevisions(m);
+  }
+  function renderLibraryDetailTakeBtn(col) {
+    const btn = el("library-detail-take-btn");
+    if (!btn) return;
+    const inRev = isLibraryCollectionInRevisions(col.id);
+    btn.classList.remove("library-price-btn", "library-price-btn--taken");
+    btn.disabled = false;
+    btn.textContent = inRev ? "Retirer de mes révisions" : "Ajouter à mes révisions";
+    btn.onclick = async () => {
+      if (isLibraryCollectionInRevisions(col.id)) await removeLibraryCollectionFromRevisions(col);
+      else await addLibraryCollectionToRevisions(col);
+      renderLibraryDetailTakeBtn(col);
+      renderLibraryList();
+    };
+  }
+  /** Abonnement : le système sera mis en place plus tard. En attendant,
+   *  tout compte connecté est considéré comme abonné — sauf si l'appareil
+   *  simule « pas d'abonnement » (mode développeur), pour tester le
+   *  message. Point d'entrée unique à brancher sur les vrais abonnements. */
+  function hasLibrarySubscription() {
+    if (!accountCurrentUser) return false;
+    try {
+      if (localStorage.getItem(SIMULATE_NO_SUBSCRIPTION_KEY) === "1") return false;
+    } catch (e) {
+      /* stockage indisponible */
+    }
+    return true;
+  }
+  async function showSubscriptionRequired(text) {
+    const choice = await showRobotMessage(text || "L'ajout de boîtes de la librairie nécessite un abonnement.", {
+      buttons: [
+        { label: "Annuler", value: null },
+        { label: "Voir les abonnements", value: "subs", primary: true },
+      ],
+      cancelValue: null,
+    });
+    if (choice === "subs") {
+      const tab = document.querySelector('.tab[data-view="subscriptions"]');
+      if (tab) tab.click();
+    }
+  }
+  /** Choix du dossier (explorateur des dossiers, Racine comprise). Résout
+   *  avec l'id du dossier (null = racine), ou undefined si annulé. */
+  function pickRevisionFolder(robotMessage) {
+    return new Promise((resolve) => {
+      let done = false;
+      const excluded = new Set();
+      folders.forEach((f) => {
+        if (f.sharedClassRoot) excluded.add(f.id);
+      });
+      openBoitePickerView({
+        mode: "single",
+        robotMessage,
+        backLabel: "Annuler",
+        excludedFolderIds: excluded,
+        onPick: (_kind, destId) => {
+          done = true;
+          closeBoitePickerView();
+          resolve(destId || ROOT_FOLDER_ID);
+        },
+        onCancel: () => {
+          if (!done) resolve(undefined);
+        },
+      });
+    });
+  }
+  async function addLibraryCollectionToRevisions(col) {
+    if (!accountCurrentUser) {
+      await robotAlert("Connecte-toi à ton compte pour ajouter une boîte de la Librairie à tes révisions.");
+      return false;
+    }
     const cardsToCopy = Array.isArray(col.cards) ? col.cards : [];
     if (cardsToCopy.length === 0) {
-      await robotAlert("Cette collection ne contient aucune fiche.");
-      return;
+      await robotAlert("Cette boîte ne contient aucune fiche.");
+      return false;
     }
-    const subject = newSubject(col.name, ROOT_FOLDER_ID);
-    subject.fromLibrary = true;
-    subject.libraryOriginId = col.id || null;
-    await persistSubject(subject);
-    subjects.push(subject);
-    subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
-    for (const rc of cardsToCopy) {
-      if (!rc.id) continue;
-      const card = { ...newCard(rc.question || "", rc.answer || "", subject.id), id: rc.id };
-      await persist(card);
-      cards.push(card);
+    const folderId = await pickRevisionFolder(`Dans quel dossier ranger « ${col.name} » ?`);
+    if (folderId === undefined) return false;
+    if (!hasLibrarySubscription()) {
+      await showSubscriptionRequired();
+      return false;
     }
+    let subject = libraryMirrorFor(col.id);
+    if (subject) {
+      subject.outOfRevisions = false;
+      subject.folderId = folderId;
+      subject.updatedAt = new Date().toISOString();
+      await persistSubject(subject);
+    } else {
+      subject = newSubject(col.name, folderId);
+      subject.fromLibrary = true;
+      subject.libraryOriginId = col.id || null;
+      await persistSubject(subject);
+      subjects.push(subject);
+      subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+    }
+    await reconcileMirrorCards(subject, cardsToCopy);
     renderStatsSubjectSelect();
     renderSubjectSelect();
     renderSubjectManageList();
     renderStats();
+    const place = folderId ? folderPath(folderId).map((x) => x.name).join(" › ") : "la racine";
     await robotAlert(
-      `« ${subject.name} » a été ajoutée à Mes collections (${cardsToCopy.length} fiche${cardsToCopy.length > 1 ? "s" : ""}). Elle se met à jour automatiquement si son auteur la modifie ; tu peux la déplacer dans un dossier, mais pas la modifier ni la repartager.`
+      `« ${subject.name} » est dans tes révisions (${place}). Elle se met à jour toute seule si son auteur la modifie ; tu peux la déplacer, mais pas la modifier.`
     );
+    return true;
   }
-
-  /** Round 21, item 6 : demande de Stéphane — le bouton "Prendre" affiche
-   *  désormais le prix et, au clic, demande confirmation pour l'achat
-   *  ("veux-tu acheter cette collection pour N jetons ?"). Le crédit de
-   *  jetons (métadonnées du Compte, round 18 item 16) est vérifié et
-   *  débité AVANT de prendre la collection ; rien n'est déduit si
-   *  l'utilisateur annule, n'a pas assez de jetons, ou si la prise elle-
-   *  même échoue. Un `onDone` optionnel est appelé après une prise
-   *  réussie (mise à jour de l'affichage à l'appelant). */
-  async function confirmAndTakeLibraryCollection(col, onDone) {
-    if (!accountCurrentUser) {
-      await robotAlert("Connecte-toi avec un Compte (page Compte) pour prendre une collection de la Librairie.");
-      return;
-    }
-    const priceTokens = Number(col.price_tokens) || 0;
-    const confirmMsg =
-      priceTokens > 0
-        ? `Acheter « ${col.name} » pour ${priceTokens} jeton${priceTokens > 1 ? "s" : ""} ?`
-        : `Prendre « ${col.name} » gratuitement ?`;
-    if (!(await robotConfirm(confirmMsg))) return;
-    if (priceTokens > 0) {
-      const freshUser = (await Sync.auth.getUser()) || accountCurrentUser;
-      const balance = Number((freshUser.user_metadata || {}).token_balance) || 0;
-      if (balance < priceTokens) {
-        await robotAlert(`Solde de jetons insuffisant : il te faut ${priceTokens} jeton${priceTokens > 1 ? "s" : ""}, tu en as ${balance}.`);
-        return;
-      }
-      const { error } = await Sync.auth.updateTokenBalance(balance - priceTokens);
-      if (error) {
-        await robotAlert(`Le débit des jetons a échoué : ${error}`);
-        return;
-      }
-      accountCurrentUser = await Sync.auth.getUser();
-      // Reflète le nouveau solde partout où il est affiché, sans attendre
-      // un rechargement de page.
-      const accTokenEl = el("account-token-balance");
-      if (accTokenEl) accTokenEl.textContent = String(balance - priceTokens);
-      const libTokenEl = el("library-token-balance");
-      if (libTokenEl) libTokenEl.textContent = String(balance - priceTokens);
-    }
-    await takeLibraryCollection(col);
-    if (onDone) onDone();
+  async function removeLibraryCollectionFromRevisions(col) {
+    const m = libraryMirrorFor(col.id);
+    if (!m) return;
+    const ok = await robotConfirm(
+      `Retirer « ${m.name} » de tes révisions ? Ta progression est gardée : tu la retrouveras si tu la rajoutes.`,
+      { okLabel: "Retirer" }
+    );
+    if (!ok) return;
+    m.outOfRevisions = true;
+    m.updatedAt = new Date().toISOString();
+    await persistSubject(m);
+    if (currentSubjectId === m.id) switchSubject(ALL_SUBJECTS_ID, true);
+    renderSubjectManageList();
+    renderStatsSubjectSelect();
+    showToast("Boîte retirée de tes révisions");
   }
 
   /** Partage une boîte existante dans la bibliothèque publique : nécessite
@@ -14093,7 +14153,6 @@
     const tagsEl = el("library-share-tags");
     const summaryEl = el("library-share-summary");
     const descriptionEl = el("library-share-description");
-    const priceEl = el("library-share-price");
     if (nameEl) nameEl.value = subject.name || "";
     // Round 23 : taxonomie (Excel) + tags. Les collections déjà publiées
     // sont chargées si besoin, pour proposer leurs tags en saisie
@@ -14119,7 +14178,6 @@
     }
     if (summaryEl) summaryEl.value = "";
     if (descriptionEl) descriptionEl.value = "";
-    if (priceEl) priceEl.value = "0";
     // Boîte toute prête : pré-remplit niveau, résumé, description et prix
     // depuis packs/bibliotheque.json (modifiables avant de publier).
     if (String(subject.id || "").startsWith(LIBRARY_PACK_PREFIX)) {
@@ -14133,7 +14191,6 @@
           if (libraryShareTagInput && Array.isArray(box.tags)) libraryShareTagInput.setTags(box.tags);
           if (summaryEl && !summaryEl.value) summaryEl.value = box.summary || "";
           if (descriptionEl && !descriptionEl.value) descriptionEl.value = box.description || "";
-          if (priceEl) priceEl.value = String(Number(box.priceTokens) || 0);
         })
         .catch(() => {});
     }
@@ -14159,7 +14216,6 @@
         }
         const taxonomy = taxonomyValueFromSelection(libraryShareCascade ? libraryShareCascade.getSelection() : {});
         const tags = libraryShareTagInput ? libraryShareTagInput.getTags() : [];
-        const priceTokens = Math.max(0, Math.round(Number(((priceEl && priceEl.value) || "0").replace(",", ".")) || 0));
         const submitBtn = el("library-share-submit");
         if (submitBtn) submitBtn.disabled = true;
         const { error } = await Sync.library.share(name, boxCards, {
@@ -14170,7 +14226,7 @@
           tags,
           summary: ((summaryEl && summaryEl.value) || "").trim(),
           description: ((descriptionEl && descriptionEl.value) || "").trim(),
-          priceTokens,
+          priceTokens: 0,
           sourceSubjectId: subject.id,
         });
         if (submitBtn) submitBtn.disabled = false;
@@ -14443,7 +14499,6 @@
     const place = creationsPlaceLabel(s);
     const taxFull = taxonomyFullLabel(creationsTaxonomyOf(s, col));
     const tags = col ? collectionTags(col) : [];
-    const priceTokens = col ? Number(col.price_tokens) || 0 : 0;
     const created = s.createdAt ? new Date(s.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "";
     const pool = subjectCardsPool(s.id);
     const remembered = !inRev && s.revisionsPlace ? (s.revisionsPlace.folderId ? folderPath(s.revisionsPlace.folderId).map((x) => x.name).join(" › ") : "Racine") : "";
@@ -14460,13 +14515,13 @@
         <dt>Fiches</dt><dd>${n} fiche${n > 1 ? "s" : ""}</dd>
         <dt>Classement</dt><dd>${taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`}</dd>
         <dt>Mes révisions</dt><dd>${place ? escapeHtml(place) : `Hors de mes révisions${remembered ? ` <span class="field-hint">(avant : ${escapeHtml(remembered)})</span>` : ""}`}</dd>
-        ${col ? `<dt>Librairie</dt><dd>${priceTokens > 0 ? `${priceTokens} jeton${priceTokens > 1 ? "s" : ""}` : "Gratuite"}${col.name && col.name !== s.name ? ` · publiée sous le nom « ${escapeHtml(col.name)} »` : ""}</dd>` : ""}
+        ${col && col.name && col.name !== s.name ? `<dt>Librairie</dt><dd>publiée sous le nom « ${escapeHtml(col.name)} »</dd>` : ""}
         ${tags.length ? `<dt>Tags</dt><dd><span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span></dd>` : ""}
         ${created ? `<dt>Créée le</dt><dd>${escapeHtml(created)}</dd>` : ""}
       </dl>
       <div class="creation-detail-actions">
         <button type="button" class="btn btn--ghost" data-act="cards">Voir les fiches</button>
-        <button type="button" class="btn btn--ghost" data-act="publish">${col ? `Voir dans la Librairie · ${priceTokens > 0 ? `${priceTokens} jeton${priceTokens > 1 ? "s" : ""}` : "gratuite"}` : "Publier dans la Librairie"}</button>
+        <button type="button" class="btn btn--ghost" data-act="publish">${col ? "Voir dans la Librairie" : "Publier dans la Librairie"}</button>
         <button type="button" class="btn btn--ghost" data-act="revisions">${inRev ? "Retirer de mes révisions" : "Ajouter à mes révisions"}</button>
         ${col ? "" : `<button type="button" class="btn btn--ghost" data-act="classify">${taxFull ? "Modifier le classement / le nom" : "Classer la boîte"}</button>`}
         <button type="button" class="btn btn--ghost creation-detail-delete" data-act="delete">Supprimer la boîte</button>
@@ -14534,9 +14589,8 @@
           cardsEntryFromManage = true;
           goToCardsFor(`subject:${s.id}`);
         } else if (btn.dataset.act === "remove") {
-          const before = subjects.filter((x) => !x.deleted).length;
-          await deleteSubject(s.id);
-          if (subjects.filter((x) => !x.deleted).length < before || !subjects.some((x) => x.id === s.id && !x.deleted)) closeCreationDetail();
+          await removeLibraryCollectionFromRevisions({ id: s.libraryOriginId });
+          if (!isSubjectInRevisions(s)) closeCreationDetail();
         }
       });
     });
@@ -14770,6 +14824,7 @@
           }
           s.updatedAt = now;
           await persistSubject(s);
+          await pushSharedBoxUpdatesForSubject(s.id);
           renderSubjectManageList();
           renderStatsSubjectSelect();
         }
@@ -14904,7 +14959,7 @@
       const { error } = await Sync.reports.send({
         ...row,
         reporter_name: reporterName,
-        card_id: card.id,
+        card_id: mirrorSourceId(card),
         card_question: stripHtmlFast(card.question).slice(0, 1000),
         card_answer: stripHtmlFast(card.answer).slice(0, 1000),
         message,
@@ -14933,9 +14988,11 @@
       if (homeBadge) homeBadge.hidden = true;
       return;
     }
-    const { open, unread } = await Sync.reports.countMine();
+    const { unread } = await Sync.reports.countMine();
     const text = unread > 99 ? "99+" : String(unread);
-    if (hubBtn) hubBtn.hidden = open <= 0;
+    // Round 48 : « Signalements » toujours visible sur Mes créations (la
+    // page dit s'il n'y en a aucun).
+    if (hubBtn) hubBtn.hidden = false;
     if (hubBadge) {
       hubBadge.hidden = unread <= 0;
       hubBadge.textContent = text;
@@ -14959,7 +15016,15 @@
     list.innerHTML = `<li class="field-hint">Chargement…</li>`;
     const reports = await Sync.reports.listMine();
     list.innerHTML = "";
-    if (empty) empty.hidden = reports.length > 0;
+    if (empty) {
+      empty.hidden = reports.length > 0;
+      empty.textContent =
+        reports.error && /card_reports|schema cache|relation/i.test(reports.error)
+          ? "Les signalements ne sont pas encore activés sur le serveur (supabase/card_reports_migration.sql)."
+          : reports.error
+          ? "Impossible de charger les signalements pour le moment."
+          : "Aucun signalement en attente.";
+    }
     reports.forEach((r) => {
       const local = cards.find((c) => c.id === r.card_id && !c.deleted && !isReadonlyMirrorCard(c));
       const li = document.createElement("li");
@@ -15061,6 +15126,14 @@
       return "";
     }
   }
+  /** Round 48 : prénom et nom de l'expéditeur plutôt que son email —
+   *  enregistré avec le message (sender_name), sinon retrouvé dans la liste
+   *  des membres de la classe, sinon l'email. */
+  function messageSenderName(msg) {
+    if (msg.sender_name && String(msg.sender_name).trim() && msg.sender_name !== msg.sender_email) return msg.sender_name;
+    const names = (messageThreadContext && messageThreadContext.names) || {};
+    return names[msg.sender_id] || msg.sender_name || msg.sender_email || "";
+  }
   function messageBubbleHtml(msg, klass) {
     const isMine = !!(accountCurrentUser && msg.sender_id === accountCurrentUser.id);
     const isTeacherMsg = msg.sender_id === klass.teacher_id;
@@ -15068,7 +15141,7 @@
     const cls = ["message-bubble", `message-bubble--${side}`, isMine ? "message-bubble--mine" : ""].filter(Boolean).join(" ");
     return `
       <div class="${cls}">
-        ${!isMine ? `<span class="message-bubble-sender">${escapeHtml(msg.sender_email || "")}</span>` : ""}
+        ${!isMine ? `<span class="message-bubble-sender">${escapeHtml(messageSenderName(msg))}</span>` : ""}
         <span class="message-bubble-body">${escapeHtml(msg.body || "")}</span>
         <span class="message-bubble-time">${formatSmartMessageTime(msg.created_at)}</span>
       </div>
@@ -15087,6 +15160,18 @@
     const { klass } = messageThreadContext;
     const listEl = el("message-thread-list");
     if (!listEl) return;
+    if (!messageThreadContext.names) {
+      messageThreadContext.names = {};
+      try {
+        const { data } = await Sync.classes.listMembers(klass.id);
+        (data || []).forEach((m) => {
+          const n = `${m.first_name || ""} ${m.last_name || ""}`.trim();
+          if (n) messageThreadContext.names[m.user_id] = n;
+        });
+      } catch (e) {
+        /* liste indisponible : repli sur l'email */
+      }
+    }
     const messages = await Sync.messages.list(klass.id);
     messageThreadRenderedIds = new Set(messages.map((m) => m.id));
     listEl.innerHTML = messages.map((m) => messageBubbleHtml(m, klass)).join("");

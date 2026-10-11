@@ -334,6 +334,7 @@
     <button class="tab" role="tab" aria-selected="false" data-view="classes-create" hidden>Créer une classe</button>
     <button class="tab" role="tab" aria-selected="false" data-view="messages" hidden>Messagerie</button>
     <button class="tab" role="tab" aria-selected="false" data-view="library" hidden>Librairie</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="subscriptions" hidden>Abonnements</button>
     <button class="tab" role="tab" aria-selected="false" data-view="account" hidden>Compte</button>
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">
       <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -993,7 +994,6 @@
         <!-- Round 21, item 5 : design plus épuré — icône pièce recolorée
              en "or" (voir .token-chip, css/style.css) au lieu de l'émoji
              🪙, dont la couleur ne peut pas se régler en CSS. -->
-        <p class="token-chip" id="account-token-balance-row"><svg class="token-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><path d="M12 8.3v7.4"/></svg><span id="account-token-balance">0</span> jeton(s)</p>
         <!-- Round 10, item 7 : nom/prénom modifiables après coup, pour les
              comptes créés avant ce round ou pour corriger une saisie. -->
         <!-- Round 25, item 3 : usages de l'appli (au moins un). Enregistrés
@@ -1310,20 +1310,11 @@
       <div class="class-detail-section">
         <div class="class-detail-section-head">
           <h3>Boîtes partagées</h3>
+          <!-- Round 48 : « + Partager » mène à une page qui propose « Depuis
+               mes boîtes » et « Depuis la Librairie ». -->
+          <button type="button" class="class-detail-section-action" id="class-detail-share-open-btn" hidden>+ Partager</button>
           <!-- Propose aussi bien les boîtes perso que les collections de la
                Librairie (voir renderSingleBoitePicker). -->
-        </div>
-        <!-- Round 47 : deux boutons ronds pour partager une boîte — depuis
-             mes boîtes (explorateur) ou depuis la Librairie. -->
-        <div class="class-share-round-btns" id="class-detail-share-btns" hidden>
-          <button type="button" class="round-add-card-btn class-share-round-btn" id="class-detail-share-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/><line x1="12" y1="10.5" x2="12" y2="16.5"/><line x1="9" y1="13.5" x2="15" y2="13.5"/></svg>
-            <span>Depuis mes boîtes</span>
-          </button>
-          <button type="button" class="round-add-card-btn class-share-round-btn" id="class-detail-share-library-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><rect x="3" y="4" width="4" height="16" rx="1"/><rect x="9" y="4" width="4" height="16" rx="1"/><path d="M15.2 5.2l3.8-1 3.6 14.6-3.8 1z"/></svg>
-            <span>Depuis la Librairie</span>
-          </button>
         </div>
         <div class="class-tree" id="class-detail-boxes"></div>
       </div>
@@ -1343,6 +1334,23 @@
         <ul class="class-student-list" id="class-detail-students"></ul>
         <p class="class-detail-empty" id="class-detail-students-empty" hidden>Aucun élève n'a encore rejoint cette classe.</p>
       </div>
+    </section>
+
+    <!-- Round 48 : partager une boîte avec une classe — depuis mes boîtes
+         (explorateur) ou depuis la Librairie. -->
+    <section id="view-class-share" class="view">
+      <!-- Round 47 : deux boutons ronds pour partager une boîte — depuis
+             mes boîtes (explorateur) ou depuis la Librairie. -->
+        <div class="classes-role-circles class-share-round-btns" id="class-detail-share-btns">
+          <button type="button" class="classes-role-circle class-share-round-btn" id="class-detail-share-btn">
+            <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/><line x1="12" y1="10.5" x2="12" y2="16.5"/><line x1="9" y1="13.5" x2="15" y2="13.5"/></svg></span>
+            <span>Depuis mes boîtes</span>
+          </button>
+          <button type="button" class="classes-role-circle class-share-round-btn" id="class-detail-share-library-btn">
+            <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="4" height="16" rx="1"/><rect x="9" y="4" width="4" height="16" rx="1"/><path d="M15.2 5.2l3.8-1 3.6 14.6-3.8 1z"/></svg></span>
+            <span>Depuis la Librairie</span>
+          </button>
+        </div>
     </section>
 
     <!-- Round 6, item 5 : messagerie — une discussion par classe, façon
@@ -1387,7 +1395,6 @@
            maintenant la même ligne, le crédit aligné à droite. -->
       <div class="library-title-row">
         <h2 class="section-title" style="margin:0;">Librairie</h2>
-        <p class="token-chip" id="library-token-balance-row" hidden><svg class="token-chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><path d="M12 8.3v7.4"/></svg><span id="library-token-balance">0</span> jeton(s)</p>
       </div>
       <!-- Round 19, item 6 : texte d'intro retiré — redondant avec la
            bulle d'aide du robot pour cette page (voir
@@ -1405,12 +1412,22 @@
       <div class="tag-input tag-input--filter" id="library-filter-tags"></div>
       <!-- Round 10, item 3 : recherche par mots-clés (nom de la collection
            ou nom de son auteur). -->
-      <input type="search" id="library-search-input" class="library-search-input" placeholder="Rechercher une collection…" />
+      <input type="search" id="library-search-input" class="library-search-input" placeholder="Rechercher par mots clés…" />
       <!-- Round 20, item 4 : filtre "Mes partages" — ne montre que les
            collections partagées par l'utilisateur connecté. Masqué tant
            qu'aucun Compte n'est connecté (rien à filtrer sinon). Round 21,
            item 6 : redessiné en interrupteur (toggle), voir css/style.css. -->
-      <button type="button" class="library-mine-toggle" id="library-mine-toggle" hidden aria-pressed="false">Mes partages</button>
+      <!-- Round 48 : interrupteur « Mes partages » et, à droite, bouton
+           d'affichage des résumés dans les blocs (même style que les
+           boutons d'affichage de l'organisation : encadré quand actif). -->
+      <div class="library-tools-row">
+        <button type="button" class="library-mine-toggle" id="library-mine-toggle" hidden aria-pressed="false">Mes partages</button>
+        <div class="org-display-toggle">
+          <button type="button" class="org-display-toggle-btn" id="library-summary-toggle" title="Afficher les résumés" aria-label="Afficher les résumés" aria-pressed="false">
+            <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="11" x2="20" y2="11"/><line x1="4" y1="16" x2="14" y2="16"/></svg>
+          </button>
+        </div>
+      </div>
       <ul class="subject-list" id="library-list"></ul>
       <p class="field-hint" id="library-empty" hidden>Aucune collection partagée pour l'instant.</p>
     </section>
@@ -1828,6 +1845,17 @@
            n'est visible que sur les appareils débloqués (7 appuis sur le
            numéro de version, page Réglages) — ce bouton permet de le
            recacher facilement sur cet appareil. -->
+      <!-- Round 48 : abonnements — en attendant le vrai système, tout compte
+           connecté est considéré comme abonné ; cette case simule l'absence
+           d'abonnement sur cet appareil (pour tester le message du robot). -->
+      <div class="card-form">
+        <h3 class="settings-block-title">Abonnements (test)</h3>
+        <label class="settings-toggle-row">
+          <input type="checkbox" id="dev-simulate-no-subscription" />
+          <span>Simuler « pas d'abonnement » sur cet appareil</span>
+        </label>
+      </div>
+
       <div class="card-form">
         <h3 class="settings-block-title">Accès à ce mode</h3>
         <p class="field-hint settings-block-hint">
@@ -1884,7 +1912,7 @@
       <div class="form-actions">
         <button type="button" class="btn btn--primary" id="library-detail-share-class-btn" hidden>Partager avec la classe</button>
         <button type="button" class="btn btn--primary" id="library-detail-view-cards-btn">Voir les fiches</button>
-        <button type="button" class="btn btn--small" id="library-detail-take-btn">Prendre</button>
+        <button type="button" class="btn btn--small" id="library-detail-take-btn">Ajouter à mes révisions</button>
       </div>
     </section>
 
@@ -1932,15 +1960,19 @@
           <span>Description (optionnel)</span>
           <textarea id="library-share-description" rows="4" placeholder="Quelques lignes pour présenter cette collection…"></textarea>
         </label>
-        <label class="field">
-          <span>Prix en jetons (0 = gratuit)</span>
-          <input type="number" id="library-share-price" min="0" step="1" value="0" inputmode="numeric" />
-        </label>
         <div class="form-actions" style="margin-top:0;">
           <button type="submit" class="btn btn--primary" id="library-share-submit">Partager</button>
           <button type="button" class="btn btn--ghost" id="library-share-back-btn">Annuler</button>
         </div>
       </form>
+    </section>
+    <!-- Round 48 : abonnements (page d'attente — le système d'abonnement
+         sera mis en place plus tard). -->
+    <section id="view-subscriptions" class="view" aria-labelledby="tab-subscriptions">
+      <div class="subscriptions-placeholder">
+        <p class="subscriptions-lead">Les abonnements arrivent bientôt.</p>
+        <p class="field-hint">Ils donneront accès aux boîtes de la Librairie, à ajouter à tes révisions ou à partager avec tes classes.</p>
+      </div>
     </section>
   </main>
 </div>

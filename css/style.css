@@ -6745,3 +6745,65 @@ html {
 /* Signalements (Mes créations) : pastille dans le lien. */
 .creations-reports-btn[hidden] { display: none !important; }
 .creations-reports-btn .home-circle-badge { position: static; margin-left: 2px; }
+
+/* ==================================================================
+   Round 48
+   ================================================================== */
+
+/* --- 2. Organisation : plus de place pour le nom des boîtes ---------- */
+body[data-org-carousel-slot="none"] #view-manage .org-info-slot { display: none; }
+#view-manage .subjects-panel { margin: 0 -12px; }
+.manage-sticky-actions { margin-left: -8px; margin-right: -6px; }
+#view-manage .org-row-main { padding-left: 4px; padding-right: 2px; gap: 4px; }
+#view-manage .org-children { margin: 0 0 6px 8px; padding-left: 6px; }
+#view-manage .subject-row-name { min-width: 0; }
+#view-manage .subject-row-name span { overflow-wrap: anywhere; }
+
+/* --- 3. Librairie : blocs épurés -------------------------------------- */
+.library-tools-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 4px 0 10px;
+}
+.library-tools-row .library-mine-toggle { margin: 0; }
+.library-tools-row .org-display-toggle { margin-left: auto; }
+#library-summary-toggle.is-active { border-color: var(--action-color); }
+.library-row-name,
+.library-row-name span {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere;
+}
+.library-row-head { align-items: flex-start; }
+.library-row-summary {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+.library-row--in-revisions { opacity: 0.55; }
+.library-row-in-revisions {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--reassure-color, #3e7c6b);
+}
+
+/* --- 4. Abonnements (page d'attente) ---------------------------------- */
+.subscriptions-placeholder { padding: 10px 4px; }
+.subscriptions-lead {
+  margin: 0 0 8px;
+  font-family: var(--font-type);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--main-text-color, var(--ink));
+}
+
+/* --- 10. Réviser : nom de la boîte plus petit, sans gras --------------- */
+.review-current-box-name { font-size: 13.5px; font-weight: 400; }
