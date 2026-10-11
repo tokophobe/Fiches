@@ -409,24 +409,103 @@ async function listMyCardReports() {
   }
   return data || [];
 }
+/** Round 49 : signalements reçus (y compris traités) — l'appli les sépare. */
+async function listReceivedCardReports() {
+  const c = getClient();
+  const uid = currentUid();
+  if (!c || !uid) return [];
+  const { data, error } = await c
+    .from("card_reports")
+    .select("*")
+    .eq("author_id", uid)
+    .order("created_at", { ascending: false });
+  if (error) {
+    const out = [];
+    out.error = error.message;
+    return out;
+  }
+  return data || [];
+}
+/** Round 49 : signalements que J'AI émis. */
+async function listSentCardReports() {
+  const c = getClient();
+  const uid = currentUid();
+  if (!c || !uid) return [];
+  const { data, error } = await c
+    .from("card_reports")
+    .select("*")
+    .eq("reporter_id", uid)
+    .order("created_at", { ascending: false });
+  if (error) {
+    const out = [];
+    out.error = error.message;
+    return out;
+  }
+  return data || [];
+}
+/** Round 49 : compteurs — reçus (total, non traités), émis (total, avec un
+ *  traitement ou une réponse pas encore vus). */
 async function countMyCardReports() {
   const c = getClient();
   const uid = currentUid();
-  if (!c || !uid) return { open: 0, unread: 0 };
-  const { data, error } = await c.from("card_reports").select("id, read_at").eq("author_id", uid).eq("resolved", false);
-  if (error) return { open: 0, unread: 0 };
-  return { open: (data || []).length, unread: (data || []).filter((r) => !r.read_at).length };
+  const empty = { open: 0, unread: 0, receivedTotal: 0, sentTotal: 0, sentUnseen: 0 };
+  if (!c || !uid) return empty;
+  const [rec, sent] = await Promise.all([
+    c.from("card_reports").select("*").eq("author_id", uid),
+    c.from("card_reports").select("*").eq("reporter_id", uid),
+  ]);
+  if (rec.error && sent.error) return empty;
+  const received = rec.data || [];
+  const mine = sent.data || [];
+  const open = received.filter((r) => !r.resolved).length;
+  const sentUnseen = mine.filter((r) => reportHasUnseenUpdate(r)).length;
+  return { open, unread: open, receivedTotal: received.length, sentTotal: mine.length, sentUnseen };
+}
+function reportHasUnseenUpdate(r) {
+  const last = [r.resolved ? r.resolved_at || r.read_at : null, r.author_reply_at].filter(Boolean).sort().pop();
+  if (!last) return false;
+  return !r.reporter_seen_at || String(r.reporter_seen_at) < String(last);
+}
+async function markSentReportsSeen(ids) {
+  const c = getClient();
+  if (!c || !ids || !ids.length) return { error: null };
+  const { error } = await c.rpc("card_reports_mark_seen", { p_ids: ids });
+  return { error: error ? error.message : null };
 }
 async function markCardReportsRead(ids) {
   const c = getClient();
-  if (!c || !ids || !ids.length) return { error: null };
+  if (!c || !ids.length) return { error: null };
   const { error } = await c.from("card_reports").update({ read_at: new Date().toISOString() }).in("id", ids);
   return { error: error ? error.message : null };
 }
-async function resolveCardReport(id) {
+/** Round 49 : traité — on garde la fiche telle qu'elle est maintenant
+ *  (`fixed` = { question, answer }, texte brut), pour le signaleur. Sans
+ *  les colonnes du round 49, simple passage à « traité ». */
+async function resolveCardReport(id, fixed) {
   const c = getClient();
   if (!c) return { error: "non connecté" };
-  const { error } = await c.from("card_reports").update({ resolved: true, read_at: new Date().toISOString() }).eq("id", id);
+  const now = new Date().toISOString();
+  const full = { resolved: true, read_at: now, resolved_at: now };
+  if (fixed) {
+    full.resolved_question = fixed.question;
+    full.resolved_answer = fixed.answer;
+  }
+  let { error } = await c.from("card_reports").update(full).eq("id", id);
+  if (error && /resolved_at|resolved_question|resolved_answer|schema cache/i.test(error.message || "")) {
+    ({ error } = await c.from("card_reports").update({ resolved: true, read_at: now }).eq("id", id));
+    if (!error) return { error: null, migrationMissing: true };
+  }
+  return { error: error ? error.message : null };
+}
+/** Round 49 : message de l'auteur au signaleur. */
+async function replyToCardReport(id, message) {
+  const c = getClient();
+  if (!c) return { error: "non connecté" };
+  const { error } = await c
+    .from("card_reports")
+    .update({ author_reply: message, author_reply_at: new Date().toISOString() })
+    .eq("id", id);
+  if (error && /author_reply|schema cache/i.test(error.message || "")) return { error: error.message, migrationMissing: true };
   return { error: error ? error.message : null };
 }
 /** Auteur d'une boîte partagée à une classe (le prof qui l'a partagée). */
@@ -722,6 +801,7 @@ async function authSignUp(email, password, firstName, lastName) {
   if (firstName || lastName) {
     options.data = { first_name: (firstName || "").trim(), last_name: (lastName || "").trim() };
   }
+  invalidateAuthUserCache();
   const { data, error } = await c.auth.signUp({ email, password, options });
   return { data, error: error ? error.message : null };
 }
@@ -731,6 +811,7 @@ async function authSignUp(email, password, firstName, lastName) {
 async function authUpdateProfile(firstName, lastName) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
+  invalidateAuthUserCache();
   const { data, error } = await c.auth.updateUser({
     data: { first_name: (firstName || "").trim(), last_name: (lastName || "").trim() },
   });
@@ -748,6 +829,7 @@ async function authUpdateProfile(firstName, lastName) {
 async function authUpdateSchoolLevel(level) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
+  invalidateAuthUserCache();
   const { data, error } = await c.auth.updateUser({
     data: { school_level: level || "" },
   });
@@ -760,6 +842,7 @@ async function authUpdateSchoolLevel(level) {
 async function authUpdateMetadata(fields) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
+  invalidateAuthUserCache();
   const { data, error } = await c.auth.updateUser({ data: fields || {} });
   return { data, error: error ? error.message : null };
 }
@@ -767,6 +850,7 @@ async function authUpdateMetadata(fields) {
 async function authSignIn(email, password) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
+  invalidateAuthUserCache();
   const { data, error } = await c.auth.signInWithPassword({ email, password });
   return { data, error: error ? error.message : null };
 }
@@ -774,12 +858,27 @@ async function authSignIn(email, password) {
 async function authSignOut() {
   const c = getClient();
   if (!c) return;
+  invalidateAuthUserCache();
   await c.auth.signOut();
 }
 
+// Round 49 : le compte connecté est gardé 30 s en mémoire — chaque appel
+// interrogeait le serveur (plusieurs allers-retours pour afficher la
+// Messagerie, les classes…). Vidé à chaque connexion, déconnexion ou
+// modification du compte.
+let authUserCache = null;
+function invalidateAuthUserCache() {
+  authUserCache = null;
+}
 async function authGetUser() {
   const c = getClient();
   if (!c) return null;
+  if (authUserCache && Date.now() - authUserCache.at < 30000) return authUserCache.user;
+  const user = await authGetUserUncached(c);
+  authUserCache = user ? { user, at: Date.now() } : null;
+  return user;
+}
+async function authGetUserUncached(c) {
   // Round 29 : getUser() interroge le serveur ; hors-ligne (ou réseau
   // capricieux), on se rabat sur la session enregistrée sur l'appareil
   // plutôt que de considérer la personne comme déconnectée.
@@ -1395,9 +1494,14 @@ window.Sync = {
   reports: {
     send: sendCardReport,
     listMine: listMyCardReports,
+    listReceived: listReceivedCardReports,
+    listSent: listSentCardReports,
     countMine: countMyCardReports,
     markRead: markCardReportsRead,
+    markSeen: markSentReportsSeen,
     resolve: resolveCardReport,
+    reply: replyToCardReport,
+    hasUnseenUpdate: reportHasUnseenUpdate,
     sharedBoxAuthor,
   },
   library: {

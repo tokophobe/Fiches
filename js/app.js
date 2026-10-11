@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v202";
+  const APP_VERSION = "v203";
 
   const ICON_LIBRARY = {
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
@@ -397,6 +397,7 @@
     review: "cards", manage: "folder", stats: "barChart", settings: "settings",
     addCard: "plus", calendar: "calendar", dev: "code", library: "book",
     creations: "pencil",
+    reports: "flag",
   };
   // Couleurs des 4 notes (boutons d'évaluation + graphiques) — item 2 :
   // rendues éditables depuis la page Développeur plutôt que codées en dur
@@ -632,6 +633,7 @@
   const HOME_LAYOUT_TITLES = {
     review: "Réviser", manage: "Organiser mes boîtes de révision", addCard: "Ajouter une fiche",
     creations: "Créer mes propres boîtes de révision",
+    reports: "Signalements",
     stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
     dev: "Développeur", classes: "École", account: "Compte",
     library: "Librairie",
@@ -651,6 +653,8 @@
     // Round 47 : « Créer mes propres boîtes de révision » (ex-« Mes
     // créations de fiches » du hub Gérer mes fiches, supprimé).
     creations: { x: 47.0, y: 73.0, d: 105 },
+    // Round 49 : Signalements (visible seulement s'il y en a).
+    reports: { x: 80.0, y: 94.0, d: 90 },
     classes: { x: 50.0, y: 26.5, d: 95 },
     calendar: { x: 39.5, y: 54.7, d: 100 },
     stats: { x: 77.7, y: 37.5, d: 100 },
@@ -697,7 +701,9 @@
     "creation-detail": ["Le résumé de ta boîte : ses fiches, son classement, sa place dans tes révisions. Le bouton + ajoute une fiche."],
     "box-create": ["Donne un nom à ta boîte et classe-la : ce classement servira aux filtres, et sera repris si tu la publies dans la Librairie."],
     "report-card": ["Explique à l'auteur ce qui ne va pas dans cette fiche : il recevra ton message et pourra la corriger."],
-    reports: ["Voici les fiches que d'autres utilisateurs t'ont signalées. Corrige-les, puis marque le signalement comme traité."],
+    reports: ["Voici les fiches que d'autres utilisateurs t'ont signalées. Corrige-les, écris si besoin à la personne qui les a signalées, puis marque le signalement comme traité : elle en sera informée."],
+    "reports-hub": ["Retrouve ici les fiches que tu as signalées à leur auteur, et celles que d'autres t'ont signalées."],
+    "reports-sent": ["Les fiches que tu as signalées : tu vois ici quand l'auteur les a corrigées, ce qu'il a changé, et son message."],
     cards: ["Toutes les fiches de cette boîte. Le drapeau signale une fiche à corriger ; la flèche ouvre les autres actions (éditer, déplacer, supprimer)."],
     "new-card": ["Écris la question et la réponse : je te poserai la question et tu me diras si tu connaissais la réponse."],
     stats: ["Tes statistiques : combien de fiches tu révises, et comment tu progresses."],
@@ -738,6 +744,8 @@
     "box-create": "Créer / classer une boîte",
     "report-card": "Signaler une fiche à son auteur",
     reports: "Signalements reçus",
+    "reports-hub": "Signalements (choix)",
+    "reports-sent": "Signalements émis",
     cards: "Fiches d'une boîte",
     "new-card": "Nouvelle fiche",
     stats: "Statistiques",
@@ -8768,7 +8776,8 @@
       if (view === "library") renderLibraryView();
       if (view === "creations") renderCreationsView();
       if (view === "reports") renderReportsView();
-      if (view === "creations") refreshReportsBadge();
+      if (view === "reports-sent") renderSentReportsView();
+      if (view === "reports-hub" || view === "creations") refreshReportsBadge();
       // Round 10, item 2 : resynchronise les collections prises dans la
       // Bibliothèque en ouvrant Mes collections — indépendant d'un Compte
       // connecté (prendre une collection publique n'en demande pas), donc
@@ -8978,7 +8987,9 @@
     "box-create": { from: "#box-create-title" },
     "creation-detail": "Résumé de la boîte",
     "report-card": { text: "Signaler une fiche", hide: ["#view-report-card .settings-block-title"] },
-    reports: { text: "Signalements", hide: ["#view-reports > h2.section-title"] },
+    reports: { text: "Signalements reçus", hide: ["#view-reports > h2.section-title"] },
+    "reports-hub": "Signalements",
+    "reports-sent": "Signalements émis",
     classes: { text: "Mes classes", hide: ["#view-classes > h2.section-title"] },
     "classes-student": { text: "Élève", hide: ["#view-classes-student > h2.section-title"] },
     "classes-join": { text: "Rejoindre une classe", hide: ["#view-classes-join > h2.section-title"] },
@@ -9196,8 +9207,11 @@
       if (creationDetailSubjectId && subjects.some((x) => x.id === creationDetailSubjectId)) openCreationDetail(creationDetailSubjectId);
       return;
     }
-    if (el("view-reports") && el("view-reports").classList.contains("is-active")) {
-      const tab = document.querySelector('.tab[data-view="creations"]');
+    if (
+      (el("view-reports") && el("view-reports").classList.contains("is-active")) ||
+      (el("view-reports-sent") && el("view-reports-sent").classList.contains("is-active"))
+    ) {
+      const tab = document.querySelector('.tab[data-view="reports-hub"]');
       if (tab) tab.click();
       return;
     }
@@ -9654,6 +9668,7 @@
   // les boîtes ne sont pas chargées (sinon tous les liens paraîtraient
   // cassés au démarrage).
   let homeEventWarningReady = false;
+  let lastHomeReportsRefresh = 0;
   /* Round 26, item 3 : bandeau d'alertes de l'accueil en "carrousel".
      Chaque alerte s'affiche seule : courte pause au début, défilement
      horizontal jusqu'à la fin du texte s'il dépasse, courte pause à la fin,
@@ -9766,7 +9781,14 @@
 
   function refreshHomeEventWarning() {
     // Round 47 : pastille rouge « révisions urgentes » sur Réviser (accueil).
-    if (el("view-home") && el("view-home").classList.contains("is-active")) refreshReviewBadges();
+    // Round 49 : et bouton / pastille « Signalements » (au plus toutes les 20 s).
+    if (el("view-home") && el("view-home").classList.contains("is-active")) {
+      refreshReviewBadges();
+      if (Date.now() - lastHomeReportsRefresh > 20000) {
+        lastHomeReportsRefresh = Date.now();
+        refreshReportsBadge().catch(() => {});
+      }
+    }
     const wrap = el("home-event-warning");
     const textEl = el("home-event-warning-text");
     if (!wrap || !textEl) return;
@@ -12707,10 +12729,8 @@
     try {
       const classes = await Sync.messages.listClasses();
       const lastReadMap = loadMessagesLastRead();
-      let total = 0;
-      for (const k of classes) {
-        total += await Sync.messages.countUnread(k.id, lastReadMap[k.id]);
-      }
+      const counts = await Promise.all(classes.map((k) => Sync.messages.countUnread(k.id, lastReadMap[k.id]).catch(() => 0)));
+      const total = counts.reduce((a, b) => a + (b || 0), 0);
       const text = total > 99 ? "99+" : String(total);
       if (homeBadge) {
         homeBadge.hidden = total <= 0;
@@ -12737,38 +12757,67 @@
       return;
     }
     if (needsAccount) needsAccount.hidden = true;
-    list.innerHTML = "";
+    // Round 49 : affichage immédiat des discussions déjà connues (dernière
+    // liste chargée), puis mise à jour ; toutes les lectures se font en
+    // parallèle (avant : une classe après l'autre).
+    const token = ++messagesViewToken;
+    if (messagesClassesCache) drawMessagesList(messagesClassesCache);
     const classes = await Sync.messages.listClasses();
-    if (empty) empty.hidden = classes.length > 0;
+    if (token !== messagesViewToken) return;
     const lastReadMap = loadMessagesLastRead();
-    for (const klass of classes) {
-      // Round 10, item 11 : date/heure du dernier message reçu ou envoyé,
-      // affichée sous le nom de la classe. Un accroc réseau sur la lecture
-      // du dernier message ne doit jamais empêcher la ligne de s'afficher
-      // (juste sans cette date en plus).
-      // Les deux lectures sont indépendantes : un accroc sur l'une ne doit
-      // pas priver l'autre de son résultat (sinon la pastille de non-lus
-      // retomberait à 0 juste parce que la date du dernier message a
-      // échoué à charger, ou l'inverse).
-      const [unreadResult, lastMsgResult] = await Promise.allSettled([
-        Sync.messages.countUnread(klass.id, lastReadMap[klass.id]),
-        Sync.messages.getLastMessage(klass.id),
-      ]);
-      const unread = unreadResult.status === "fulfilled" ? unreadResult.value : 0;
-      const lastMsg = lastMsgResult.status === "fulfilled" ? lastMsgResult.value : null;
+    const details = await Promise.all(
+      classes.map(async (klass) => {
+        const [unreadResult, lastMsgResult] = await Promise.allSettled([
+          Sync.messages.countUnread(klass.id, lastReadMap[klass.id]),
+          Sync.messages.getLastMessage(klass.id),
+        ]);
+        return {
+          klass,
+          unread: unreadResult.status === "fulfilled" ? unreadResult.value : 0,
+          lastAt: lastMsgResult.status === "fulfilled" && lastMsgResult.value ? lastMsgResult.value.created_at : null,
+        };
+      })
+    );
+    if (token !== messagesViewToken) return;
+    messagesClassesCache = details;
+    drawMessagesList(details);
+    applyMessagesBadgeTotal(details.reduce((acc, d) => acc + (d.unread || 0), 0));
+  }
+  let messagesViewToken = 0;
+  let messagesClassesCache = null;
+  function drawMessagesList(details) {
+    const list = el("messages-class-list");
+    const empty = el("messages-empty");
+    if (!list) return;
+    if (empty) empty.hidden = details.length > 0;
+    list.innerHTML = "";
+    details.forEach(({ klass, unread, lastAt }) => {
       const li = document.createElement("li");
       li.className = "subject-row messages-class-row";
       li.innerHTML = `
         <span class="messages-class-row-meta">
           <span class="subject-row-name">${CLASSES_ROW_ICON} <span>${escapeHtml(klass.name)}</span></span>
-          ${lastMsg && lastMsg.created_at ? `<span class="messages-class-row-last">${formatSmartMessageTime(lastMsg.created_at)}</span>` : ""}
+          ${lastAt ? `<span class="messages-class-row-last">${formatSmartMessageTime(lastAt)}</span>` : ""}
         </span>
         ${unread > 0 ? `<span class="home-circle-badge messages-class-row-badge">${unread > 99 ? "99+" : unread}</span>` : ""}
       `;
-      li.addEventListener("click", () => openMessageThread(klass));
+      li.addEventListener("click", () => {
+        // la discussion ouverte devient lue : la pastille de la ligne disparaît au retour
+        const d = (messagesClassesCache || []).find((x) => x.klass.id === klass.id);
+        if (d) d.unread = 0;
+        openMessageThread(klass);
+      });
       list.appendChild(li);
-    }
-    refreshMessagesBadge();
+    });
+  }
+  function applyMessagesBadgeTotal(total) {
+    const text = total > 99 ? "99+" : String(total);
+    ["home-school-badge", "school-hub-messages-badge"].forEach((id) => {
+      const b = el(id);
+      if (!b) return;
+      b.hidden = total <= 0;
+      b.textContent = text;
+    });
   }
 
   /** Bibliothèque : collections de fiches partagées publiquement (table
@@ -14976,31 +15025,36 @@
   const reportCardCancel = el("report-card-cancel");
   if (reportCardCancel) reportCardCancel.addEventListener("click", () => closeReportCardView());
 
-  /* Côté auteur : bouton rond « Signalements » (Gérer mes fiches), pastille
-     rouge des signalements non lus (aussi sur « Gérer mes fiches » de
-     l'accueil), et page qui les liste. */
+  /* Round 49 : signalements émis et reçus.
+     - Accueil : bouton « Signalements » visible si l'on a fait OU reçu au
+       moins un signalement ; pastille = reçus non traités + émis dont le
+       traitement ou la réponse n'a pas encore été vu.
+     - Page « Signalements » : « Signalements émis » / « Signalements reçus ».
+     - Reçus : à traiter d'abord, puis traités ; « Corriger la fiche »,
+       « Écrire au signaleur », « Marquer comme traité » (la fiche telle
+       qu'elle est à ce moment est gardée pour le signaleur).
+     - Émis : statut, fiche avant / après correction, message de l'auteur. */
+  function setBadgeEl(id, n) {
+    const b = el(id);
+    if (!b) return;
+    b.hidden = !(n > 0);
+    b.textContent = n > 99 ? "99+" : String(n);
+  }
   async function refreshReportsBadge() {
+    const homeCircle = el("home-reports-circle");
     const hubBtn = el("fiches-hub-reports-btn");
-    const hubBadge = el("fiches-hub-reports-badge");
-    const homeBadge = el("home-reports-badge");
     if (!Sync.isConfigured() || !accountCurrentUser || !Sync.reports) {
       if (hubBtn) hubBtn.hidden = true;
-      if (homeBadge) homeBadge.hidden = true;
+      if (homeCircle) homeCircle.hidden = true;
       return;
     }
-    const { unread } = await Sync.reports.countMine();
-    const text = unread > 99 ? "99+" : String(unread);
-    // Round 48 : « Signalements » toujours visible sur Mes créations (la
-    // page dit s'il n'y en a aucun).
+    const c = await Sync.reports.countMine();
     if (hubBtn) hubBtn.hidden = false;
-    if (hubBadge) {
-      hubBadge.hidden = unread <= 0;
-      hubBadge.textContent = text;
-    }
-    if (homeBadge) {
-      homeBadge.hidden = unread <= 0;
-      homeBadge.textContent = text;
-    }
+    if (homeCircle) homeCircle.hidden = c.receivedTotal + c.sentTotal === 0;
+    setBadgeEl("home-reports-badge", c.open + c.sentUnseen);
+    setBadgeEl("fiches-hub-reports-badge", c.open);
+    setBadgeEl("reports-hub-received-badge", c.open);
+    setBadgeEl("reports-hub-sent-badge", c.sentUnseen);
   }
   function formatReportDate(iso) {
     try {
@@ -15009,57 +15063,153 @@
       return "";
     }
   }
+  function reportsMigrationHint(err) {
+    return /card_reports|schema cache|relation/i.test(err || "")
+      ? "Les signalements ne sont pas encore activés sur le serveur (supabase/card_reports_migration.sql)."
+      : "Impossible de charger les signalements pour le moment.";
+  }
+  function reportCardBlockHtml(label, q, a) {
+    return `<div class="report-row-card"><span class="report-row-label">${label}</span><div class="report-row-q">${escapeHtml(q || "")}</div>${
+      a ? `<div class="report-row-a">${escapeHtml(a)}</div>` : ""
+    }</div>`;
+  }
   async function renderReportsView() {
     const list = el("reports-list");
     const empty = el("reports-empty");
     if (!list) return;
     list.innerHTML = `<li class="field-hint">Chargement…</li>`;
-    const reports = await Sync.reports.listMine();
+    const reports = await Sync.reports.listReceived();
     list.innerHTML = "";
     if (empty) {
       empty.hidden = reports.length > 0;
-      empty.textContent =
-        reports.error && /card_reports|schema cache|relation/i.test(reports.error)
-          ? "Les signalements ne sont pas encore activés sur le serveur (supabase/card_reports_migration.sql)."
-          : reports.error
-          ? "Impossible de charger les signalements pour le moment."
-          : "Aucun signalement en attente.";
+      empty.textContent = reports.error ? reportsMigrationHint(reports.error) : "Aucun signalement reçu.";
     }
+    const open = reports.filter((r) => !r.resolved);
+    const done = reports.filter((r) => r.resolved);
+    const section = (title) => {
+      const h = document.createElement("li");
+      h.className = "reports-section-title";
+      h.textContent = title;
+      list.appendChild(h);
+    };
+    if (open.length) section(`À traiter (${open.length})`);
+    open.forEach((r) => list.appendChild(buildReceivedReportRow(r)));
+    if (done.length) section(`Traités (${done.length})`);
+    done.forEach((r) => list.appendChild(buildReceivedReportRow(r)));
+    const unreadIds = reports.filter((r) => !r.read_at).map((r) => r.id);
+    if (unreadIds.length) await Sync.reports.markRead(unreadIds);
+    refreshReportsBadge();
+  }
+  function buildReceivedReportRow(r) {
+    const local = cards.find((c) => c.id === r.card_id && !c.deleted && !isReadonlyMirrorCard(c));
+    const li = document.createElement("li");
+    li.className = "subject-row report-row" + (r.resolved ? " report-row--done" : "");
+    li.innerHTML = `
+      <div class="report-row-head">
+        <span class="report-row-box">${orgIconMarkup("orgBoite")} ${escapeHtml(r.box_name || "Boîte")}</span>
+        <span class="report-row-date">${escapeHtml(formatReportDate(r.created_at))}</span>
+      </div>
+      ${reportCardBlockHtml("Fiche signalée :", r.card_question, "")}
+      <blockquote class="report-row-message">${escapeHtml(r.message || "")}</blockquote>
+      <div class="report-row-from">— ${escapeHtml(r.reporter_name || "un utilisateur")}</div>
+      ${r.author_reply ? `<div class="report-row-reply"><span class="report-row-label">Ta réponse :</span> ${escapeHtml(r.author_reply)}</div>` : ""}
+      ${r.resolved ? `<div class="report-row-status report-row-status--done">Traité${r.resolved_at ? ` le ${escapeHtml(formatReportDate(r.resolved_at))}` : ""}</div>` : ""}
+      <div class="library-row-actions">
+        ${local ? `<button type="button" class="btn btn--small btn--ghost" data-act="edit">Corriger la fiche</button>` : ""}
+        <button type="button" class="btn btn--small btn--ghost" data-act="reply">${r.author_reply ? "Modifier ma réponse" : "Écrire au signaleur"}</button>
+        ${r.resolved ? "" : `<button type="button" class="btn btn--small btn--ghost" data-act="done">Marquer comme traité</button>`}
+      </div>`;
+    const editBtn = li.querySelector('[data-act="edit"]');
+    if (editBtn) editBtn.addEventListener("click", () => enterEditMode(local));
+    li.querySelector('[data-act="reply"]').addEventListener("click", async () => {
+      const text = await showRobotMessage(`Ton message à ${r.reporter_name || "la personne qui a signalé la fiche"} :`, {
+        input: { defaultValue: r.author_reply || "", placeholder: "Merci, j'ai corrigé la réponse." },
+        cancelValue: null,
+        buttons: [
+          { label: "Annuler", value: null },
+          { label: "Envoyer", value: true, primary: true },
+        ],
+      });
+      const msg = typeof text === "string" ? text.trim().slice(0, 2000) : "";
+      if (!msg) return;
+      const { error, migrationMissing } = await Sync.reports.reply(r.id, msg);
+      if (error) {
+        await robotAlert(migrationMissing ? "Les réponses aux signalements ne sont pas encore activées sur le serveur (supabase/round49_migration.sql)." : `Le message n'a pas pu être envoyé : ${error}`);
+        return;
+      }
+      showToast("Message envoyé");
+      renderReportsView();
+    });
+    const doneBtn = li.querySelector('[data-act="done"]');
+    if (doneBtn) {
+      doneBtn.addEventListener("click", async () => {
+        const fresh = cards.find((c) => c.id === r.card_id && !c.deleted && !isReadonlyMirrorCard(c));
+        const fixed = fresh ? { question: stripHtmlFast(fresh.question).trim().slice(0, 1000), answer: stripHtmlFast(fresh.answer).trim().slice(0, 1000) } : null;
+        const { error } = await Sync.reports.resolve(r.id, fixed);
+        if (error) {
+          await robotAlert(`Impossible de marquer ce signalement comme traité : ${error}`);
+          return;
+        }
+        showToast("Signalement traité — la personne qui l'a fait en est informée");
+        renderReportsView();
+      });
+    }
+    return li;
+  }
+  async function renderSentReportsView() {
+    const list = el("reports-sent-list");
+    const empty = el("reports-sent-empty");
+    if (!list) return;
+    list.innerHTML = `<li class="field-hint">Chargement…</li>`;
+    const reports = await Sync.reports.listSent();
+    list.innerHTML = "";
+    if (empty) {
+      empty.hidden = reports.length > 0;
+      empty.textContent = reports.error ? reportsMigrationHint(reports.error) : "Tu n'as encore signalé aucune fiche.";
+    }
+    const unseen = [];
     reports.forEach((r) => {
-      const local = cards.find((c) => c.id === r.card_id && !c.deleted && !isReadonlyMirrorCard(c));
+      const isNew = Sync.reports.hasUnseenUpdate(r);
+      if (isNew) unseen.push(r.id);
+      const changed =
+        r.resolved &&
+        r.resolved_question != null &&
+        (String(r.resolved_question) !== String(r.card_question || "") || String(r.resolved_answer || "") !== String(r.card_answer || ""));
       const li = document.createElement("li");
-      li.className = "subject-row report-row" + (r.read_at ? "" : " report-row--unread");
+      li.className = "subject-row report-row" + (r.resolved ? " report-row--done" : "") + (isNew ? " report-row--new" : "");
       li.innerHTML = `
         <div class="report-row-head">
           <span class="report-row-box">${orgIconMarkup("orgBoite")} ${escapeHtml(r.box_name || "Boîte")}</span>
           <span class="report-row-date">${escapeHtml(formatReportDate(r.created_at))}</span>
         </div>
-        <div class="report-row-card"><span class="report-row-label">Fiche :</span> ${escapeHtml(r.card_question || "")}</div>
-        <blockquote class="report-row-message">${escapeHtml(r.message || "")}</blockquote>
-        <div class="report-row-from">— ${escapeHtml(r.reporter_name || "un utilisateur")}</div>
-        <div class="library-row-actions">
-          ${local ? `<button type="button" class="btn btn--small btn--ghost" data-act="edit">Corriger la fiche</button>` : ""}
-          <button type="button" class="btn btn--small btn--ghost" data-act="done">Marquer comme traité</button>
-        </div>`;
-      const editBtn = li.querySelector('[data-act="edit"]');
-      if (editBtn) editBtn.addEventListener("click", () => enterEditMode(local));
-      li.querySelector('[data-act="done"]').addEventListener("click", async () => {
-        const { error } = await Sync.reports.resolve(r.id);
-        if (error) {
-          await robotAlert(`Impossible de marquer ce signalement comme traité : ${error}`);
-          return;
-        }
-        li.remove();
-        if (empty) empty.hidden = list.children.length > 0;
-        refreshReportsBadge();
-      });
+        <div class="report-row-status${r.resolved ? " report-row-status--done" : ""}">${
+          r.resolved ? `Traité${r.resolved_at ? ` le ${escapeHtml(formatReportDate(r.resolved_at))}` : ""}` : "En attente de l'auteur"
+        }${isNew ? ` <span class="report-row-new">nouveau</span>` : ""}</div>
+        ${reportCardBlockHtml(changed ? "Avant :" : "Fiche signalée :", r.card_question, r.card_answer)}
+        ${changed ? reportCardBlockHtml("Après correction :", r.resolved_question, r.resolved_answer) : ""}
+        ${r.resolved && r.resolved_question != null && !changed ? `<div class="field-hint">La fiche n'a pas été modifiée.</div>` : ""}
+        <div class="report-row-message-mine"><span class="report-row-label">Ton message :</span> ${escapeHtml(r.message || "")}</div>
+        ${r.author_reply ? `<blockquote class="report-row-message">${escapeHtml(r.author_reply)}</blockquote><div class="report-row-from">— l'auteur de la fiche</div>` : ""}`;
       list.appendChild(li);
     });
-    const unreadIds = reports.filter((r) => !r.read_at).map((r) => r.id);
-    if (unreadIds.length) {
-      await Sync.reports.markRead(unreadIds);
+    if (unseen.length) {
+      await Sync.reports.markSeen(unseen);
       refreshReportsBadge();
     }
+  }
+  const reportsHubSentBtn = el("reports-hub-sent-btn");
+  if (reportsHubSentBtn) {
+    reportsHubSentBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="reports-sent"]');
+      if (tab) tab.click();
+    });
+  }
+  const reportsHubReceivedBtn = el("reports-hub-received-btn");
+  if (reportsHubReceivedBtn) {
+    reportsHubReceivedBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="reports"]');
+      if (tab) tab.click();
+    });
   }
   const fichesHubReportsBtn = el("fiches-hub-reports-btn");
   if (fichesHubReportsBtn) {
@@ -15157,7 +15307,8 @@
   }
   async function renderMessageThread() {
     if (!messageThreadContext) return;
-    const { klass } = messageThreadContext;
+    const ctx = messageThreadContext;
+    const { klass } = ctx;
     const listEl = el("message-thread-list");
     if (!listEl) return;
     if (!messageThreadContext.names) {
@@ -15173,6 +15324,9 @@
       }
     }
     const messages = await Sync.messages.list(klass.id);
+    // Round 49 : une autre discussion a été ouverte entre-temps — on
+    // n'affiche pas ces messages (évite de voir la mauvaise discussion).
+    if (messageThreadContext !== ctx) return;
     messageThreadRenderedIds = new Set(messages.map((m) => m.id));
     listEl.innerHTML = messages.map((m) => messageBubbleHtml(m, klass)).join("");
     listEl.scrollTop = listEl.scrollHeight;
@@ -15180,6 +15334,15 @@
 
   async function openMessageThread(klass) {
     messageThreadContext = { klass };
+    // Round 49 : on vide d'abord le fil (sinon l'ancienne discussion
+    // apparaissait furtivement avant la bonne).
+    const listElNow = el("message-thread-list");
+    if (listElNow) listElNow.innerHTML = "";
+    messageThreadRenderedIds = new Set();
+    if (unsubscribeMessageThreadRealtime) {
+      unsubscribeMessageThreadRealtime();
+      unsubscribeMessageThreadRealtime = null;
+    }
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     el("view-message-thread").classList.add("is-active");
     applyBodyLogoSpeech("message-thread");

@@ -6807,3 +6807,64 @@ body[data-org-carousel-slot="none"] #view-manage .org-info-slot { display: none;
 
 /* --- 10. Réviser : nom de la boîte plus petit, sans gras --------------- */
 .review-current-box-name { font-size: 13.5px; font-weight: 400; }
+
+/* ==================================================================
+   Round 49
+   ================================================================== */
+/* Boutons ronds de l'accueil masqués (Développeur non débloqué,
+   Signalements sans signalement) — bug corrigé : `display: flex`
+   l'emportait sur l'attribut hidden. */
+.home-circle[hidden] { display: none !important; }
+
+/* Mes créations : plus d'espace entre « Créer une boîte » et « Signalements ». */
+#view-creations .round-add-card-wrap { gap: 22px; flex-wrap: wrap; }
+.creations-reports-btn { position: relative; }
+
+/* Signalements : sections, statut, avant / après. */
+.reports-section-title {
+  list-style: none;
+  margin: 16px 4px 2px;
+  font-family: var(--font-type);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.reports-section-title:first-child { margin-top: 2px; }
+#view-reports .report-row--unread .report-row-box::before { display: none; }
+:is(#view-reports, #view-reports-sent) .report-row {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  border-left: none;
+  border-bottom: 1px solid var(--rule-soft);
+  padding: 14px 4px;
+  margin: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.report-row--done { opacity: 0.75; }
+.report-row-q { font-weight: 600; }
+.report-row-a { color: var(--ink-soft); }
+.report-row-status { font-size: 12px; color: var(--amber, #cf9a4d); font-weight: 600; }
+.report-row-status--done { color: var(--reassure-color, #3e7c6b); }
+.report-row-new {
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: #e0453c;
+  color: #fff;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.report-row-reply, .report-row-message-mine { font-size: 13px; color: var(--ink-soft); }
+#view-reports-sent .report-row-message {
+  margin: 6px 0 0;
+  padding: 2px 0 2px 10px;
+  border-left: 2px solid var(--reassure-color, #3e7c6b);
+  background: transparent;
+  font-style: normal;
+}
+#view-reports-sent .report-row-from { font-size: 12px; color: var(--ink-soft); }
