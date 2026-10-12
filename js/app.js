@@ -5,94 +5,86 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v203";
+  const APP_VERSION = "v204";
 
-  const ICON_LIBRARY = {
-    cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
-    folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>',
-    file: '<path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M15 2v5h5"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/>',
-    stackedSheets: '<path d="M8 3h9l4 4v12a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M17 3v4h4"/><path d="M5 7v13a1 1 0 0 0 1 1h11"/><path d="M2 11v13a1 1 0 0 0 1 1h11"/>',
-    barChart: '<line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/>',
-    gradCap: '<path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15.5"/>',
-    settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
-    brain: '<path d="M9.5 2a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 1.5 5.5V17a3 3 0 0 0 3 3 2.5 2.5 0 0 0 2.5-2.5V4.5A2.5 2.5 0 0 0 9.5 2z"/><path d="M14.5 2a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-1.5 5.5V17a3 3 0 0 1-3 3 2.5 2.5 0 0 1-2.5-2.5V4.5A2.5 2.5 0 0 1 14.5 2z"/>',
-    star: '<path d="M12 2l3.1 6.6 7.2.9-5.3 5 1.4 7.1L12 18l-6.4 3.6 1.4-7.1-5.3-5 7.2-.9z"/>',
-    heart: '<path d="M12 21s-7-4.5-9.5-9C1 8 2 4 6 4c2 0 4 1.5 6 4 2-2.5 4-4 6-4 4 0 5 4 3.5 8-2.5 4.5-9.5 9-9.5 9z"/>',
-    bookmark: '<path d="M6 2h12v20l-6-4-6 4z"/>',
-    flag: '<path d="M4 22V3"/><path d="M4 4h14l-2 4 2 4H4"/>',
-    moon: '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/>',
-    sun: '<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.9" y1="4.9" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.1" y2="19.1"/><line x1="4.9" y1="19.1" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.1" y2="4.9"/>',
-    clock: '<circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 15,14"/>',
-    calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/>',
-    check: '<polyline points="4,12 9,17 20,6"/>',
-    plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
-    search: '<circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
-    home: '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>',
-    layers: '<path d="M12 2l9 5-9 5-9-5 9-5z"/><path d="M3 12l9 5 9-5"/><path d="M3 17l9 5 9-5"/>',
-    target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
-    zap: '<polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>',
-    book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5z"/><path d="M4 4.5v16"/>',
-    // Équivalents sobres des icônes déjà utilisées ailleurs dans l'appli
-    // (crayon, hibernation, chantier, annuler...).
-    pencil: '<path d="M17 3a2.83 2.83 0 0 1 4 4L7 21l-4 1 1-4z"/>',
-    sleep: '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/><line x1="9" y1="9" x2="13" y2="9"/><line x1="9" y1="9" x2="13" y2="9" transform="rotate(20 11 9)"/>',
-    cone: '<path d="M12 2l6 16H6z"/><line x1="8.2" y1="13" x2="15.8" y2="13"/><line x1="4" y1="21" x2="20" y2="21"/>',
-    undo: '<polyline points="9,14 4,9 9,4"/><path d="M4 9h11a5 5 0 0 1 5 5v1"/>',
-    trash: '<polyline points="3,6 5,6 21,6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>',
-    eye: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
-    eyeOff: '<path d="M17.9 17.9A10.6 10.6 0 0 1 12 20c-7 0-11-8-11-8a19 19 0 0 1 4.2-5.4M9.9 4.2A9.7 9.7 0 0 1 12 4c7 0 11 8 11 8a19 19 0 0 1-2.2 3.1"/><line x1="1" y1="1" x2="23" y2="23"/>',
-    lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
-    unlock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.6-1.8"/>',
-    bell: '<path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/>',
-    list: '<line x1="9" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="9" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>',
-    grid: '<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/>',
-    filter: '<polygon points="4,4 20,4 14,12 14,19 10,21 10,12"/>',
-    shuffle: '<polyline points="16,3 21,3 21,8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21,16 21,21 16,21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/>',
-    chevronLeft: '<polyline points="15,18 9,12 15,6"/>',
-    chevronRight: '<polyline points="9,18 15,12 9,6"/>',
-    chevronDown: '<polyline points="6,9 12,15 18,9"/>',
-    code: '<polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/>',
-    chevronUp: '<polyline points="18,15 12,9 6,15"/>',
-    refresh: '<polyline points="23,4 23,10 17,10"/><polyline points="1,20 1,14 7,14"/><path d="M3.5 9a9 9 0 0 1 14.8-3.4L23 10M1 14l4.7 4.4A9 9 0 0 0 20.5 15"/>',
-    share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/>',
-    // Round 21, item 5 : pièce de jeton — un cercle simple (contour de
-    // pièce) + un repère central, pour rester dans le même style
-    // monochrome/traits que le reste de la banque plutôt qu'un émoji
-    // (dont la couleur ne peut pas se régler en CSS) ; coloré en "or" via
-    // `color` sur l'élément englobant (voir .token-chip).
-    coin: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><path d="M12 8.3v7.4"/>',
-    link: '<path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/>',
-    mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,6 12,13 22,6"/>',
-    image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>',
-    thumbsUp: '<path d="M7 22V11l5-9 2 1v7h6a2 2 0 0 1 2 2l-1.5 7a2 2 0 0 1-2 1.5H7z"/>',
-    alertTriangle: '<path d="M10.3 3.9L1.8 18a1.7 1.7 0 0 0 1.5 2.5h17.4a1.7 1.7 0 0 0 1.5-2.5L13.7 3.9a1.7 1.7 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
-    info: '<circle cx="12" cy="12" r="9"/><line x1="12" y1="16" x2="12" y2="11"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
-    shield: '<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/>',
-    gift: '<rect x="3" y="8" width="18" height="4"/><rect x="4" y="12" width="16" height="9"/><line x1="12" y1="8" x2="12" y2="21"/><path d="M12 8C10 3 5 4 5 6.5S8 8 12 8z"/><path d="M12 8c2-5 7-4 7-1.5S16 8 12 8z"/>',
-    award: '<circle cx="12" cy="8" r="6"/><polyline points="8.2,13.5 6,22 12,18 18,22 15.8,13.5"/>',
-    compass: '<circle cx="12" cy="12" r="9"/><polygon points="15,9 13,15 9,17 11,11"/>',
-    cloud: '<path d="M17 18H6a4 4 0 1 1 .7-7.9A6 6 0 0 1 18 9.5 4 4 0 0 1 17 18z"/>',
-    hash: '<line x1="5" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="19" y2="15"/><line x1="10" y1="4" x2="8" y2="20"/><line x1="16" y1="4" x2="14" y2="20"/>',
-    smile: '<circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
-    userCheck: '<path d="M5 21v-2a4 4 0 0 1 4-4h3a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7" r="4"/><polyline points="17,11 19,13 23,9"/>',
-    globe: '<circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/>',
-    tool: '<path d="M14.7 6.3a4 4 0 0 0 5.4 5.4l-6 6a2 2 0 0 1-2.8 0l-3-3a2 2 0 0 1 0-2.8z"/><path d="M2 22l6-6"/>',
-    key: '<circle cx="8" cy="15" r="4"/><path d="M10.8 12.2L20 3l2 2-2 2 2 2-3 3-2-2-3.2 3.2"/>',
-    battery: '<rect x="2" y="7" width="18" height="10" rx="2"/><line x1="22" y1="10" x2="22" y2="14"/><line x1="6" y1="10" x2="6" y2="14"/>',
-    wifi: '<path d="M2 8.5a16 16 0 0 1 20 0"/><path d="M5.5 12a11 11 0 0 1 13 0"/><path d="M9 15.5a6 6 0 0 1 6 0"/><line x1="12" y1="19" x2="12.01" y2="19"/>',
-    thermometer: '<path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0z"/>',
-    scissors: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.1" y2="15.9"/><line x1="14.5" y1="14.5" x2="20" y2="20"/><line x1="8.1" y1="8.1" x2="12" y2="12"/>',
-    paperclip: '<path d="M21 11.5l-9.4 9.4a5 5 0 0 1-7-7L13 5.5a3.5 3.5 0 0 1 5 5L9.4 19a2 2 0 0 1-2.8-2.8L14 8.5"/>',
-    upload: '<path d="M12 3v13"/><polyline points="7,8 12,3 17,8"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/>',
-    download: '<path d="M12 3v13"/><polyline points="7,11 12,16 17,11"/><path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/>',
-    move: '<line x1="3" y1="12" x2="21" y2="12"/><polyline points="8,6 3,12 8,18"/><polyline points="16,6 21,12 16,18"/>',
-    // Visages pour les boutons d'évaluation (item 3) : sobres, cohérents
-    // avec le reste de la banque, remplacent les émoticônes colorées.
-    faceSad: '<circle cx="12" cy="12" r="9"/><path d="M8 16s1.5-2.5 4-2.5 4 2.5 4 2.5"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
-    faceNeutral: '<circle cx="12" cy="12" r="9"/><line x1="8" y1="15" x2="16" y2="15"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
-    faceSmile: '<circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
-    faceGrin: '<circle cx="12" cy="12" r="9"/><path d="M7.5 13c0 2 2 4.5 4.5 4.5s4.5-2.5 4.5-4.5z"/><line x1="7.5" y1="13" x2="16.5" y2="13"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
-  };
+  // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
+  // voir js/settings-model.js (partagé avec l'appli d'administration).
+  const {
+    BG_COLORS_ORDER,
+    BG_COLORS_TITLES,
+    DEFAULT_APP_BG_COLOR,
+    DEFAULT_BG_COLORS,
+    DEFAULT_BODY_LOGO,
+    DEFAULT_BONUS_PILL_COLOR,
+    DEFAULT_CARD_BG_COLOR,
+    DEFAULT_CARD_FORM_BG_COLOR,
+    DEFAULT_CARD_SCORE_SETTINGS,
+    DEFAULT_CARD_TEXT_COLOR,
+    DEFAULT_CHART_WRAP_BG_COLOR,
+    DEFAULT_CONSTRUCTION_ACTIVE_COLOR,
+    DEFAULT_DARWIN_LOGO,
+    DEFAULT_DARWIN_TEXT,
+    DEFAULT_DUE_BAR_COLOR,
+    DEFAULT_EMPTY_BAR_COLOR,
+    DEFAULT_GAUGE_COLORS,
+    DEFAULT_HELP_MESSAGES_BY_VIEW,
+    DEFAULT_HOME_LAYOUT,
+    DEFAULT_HOME_LOGO,
+    DEFAULT_ICONS,
+    DEFAULT_ICON_BANK_CHOICES,
+    DEFAULT_MAIN_TEXT_COLOR,
+    DEFAULT_NAV_ICONS,
+    DEFAULT_NAV_LABELS,
+    DEFAULT_NIGHT_BG_COLORS,
+    DEFAULT_NIGHT_RATING_BTN_BG_COLOR,
+    DEFAULT_NIGHT_TEXT_COLORS_SET,
+    DEFAULT_ORG_ICON_BANK_CHOICES,
+    DEFAULT_PERS_GAUGE_COLORS,
+    DEFAULT_RATING_BTN_BG_COLOR,
+    DEFAULT_RATING_COLORS,
+    DEFAULT_RATING_ICONS,
+    DEFAULT_RATING_LABELS,
+    DEFAULT_REVIEW_LAYOUT,
+    DEFAULT_REVISION_ALGO_SETTINGS,
+    DEFAULT_RICH_EDITOR_BG_COLOR,
+    DEFAULT_SHADOWS,
+    DEFAULT_SVG_CHART_BG_COLOR,
+    DEFAULT_TEXT_COLORS,
+    DEFAULT_TEXT_COLORS_SET,
+    DEFAULT_TODAY_BAR_COLOR,
+    GAUGE_COLORS_TITLES,
+    GAUGE_ZONE_DEFS,
+    HELP_VIEW_LABELS,
+    HOME_LAYOUT_LEGACY_REF_HEIGHT,
+    HOME_LAYOUT_LEGACY_REF_WIDTH,
+    HOME_LAYOUT_TITLES,
+    ICON_LIBRARY,
+    LOGO_SHADOW_FILTER,
+    PERS_GAUGE_ZONE_LABELS,
+    PERS_GAUGE_ZONE_ORDER,
+    RATING_COLORS_TITLES,
+    REVIEW_LAYOUT_FIELDS,
+    REVIEW_LAYOUT_REF_HEIGHT,
+    REVIEW_LAYOUT_REF_WIDTH,
+    REVISION_ALGO_FIELD_DEFS,
+    REVISION_ALGO_RATING_LABELS,
+    REVISION_ALGO_RATING_ORDER,
+    REVISION_ALGO_VERSION,
+    SESSION_MIN_GAP,
+    SHADOW_ELEMENTS,
+    SPRINT_EVENT_DAY_DELAY_MIN,
+    SPRINT_EVENT_HOUR,
+    TEXT_COLORS_SET_ORDER,
+    TEXT_COLORS_SET_TITLES,
+    buildDevSettings,
+    buildRevisionAlgoSettings,
+    gaugeZoneStarText,
+    iconSvgMarkup,
+    migrateHomeLayoutToPercent,
+    revisionAlgoValueError,
+    DEFAULT_AUTO_ZOOM_REF_WIDTH,
+  } = window.FichesSettingsModel;
+
 
   /** @type {Array<any>} cache mémoire de toutes les fiches */
   let cards = [];
@@ -352,427 +344,6 @@
      vraie séparation développeur/utilisateur viendra plus tard.
   --------------------------------------------------------- */
   const DEV_SETTINGS_KEY = "fiches_dev_settings";
-  // Round 4, partie 2 : le mode développeur reste dans l'appli (pas de page
-  // séparée) mais n'est plus visible par défaut — il ne l'était pas assez
-  // caché jusqu'ici (bouton/onglet ordinaires, accessibles à n'importe qui,
-  // y compris les élèves/profs des Classes). Débloqué sur un appareil via
-  // un geste discret (7 appuis sur le numéro de version, page Réglages),
-  // mémorisé localement (jamais synchronisé, jamais transmis aux autres
-  // appareils/comptes).
-  const DEV_UNLOCK_KEY = "fiches_dev_unlocked";
-  function isDevUnlocked() {
-    return localStorage.getItem(DEV_UNLOCK_KEY) === "1";
-  }
-  function setDevUnlocked(v) {
-    if (v) localStorage.setItem(DEV_UNLOCK_KEY, "1");
-    else localStorage.removeItem(DEV_UNLOCK_KEY);
-    updateDevModeVisibility();
-  }
-  function updateDevModeVisibility() {
-    const unlocked = isDevUnlocked();
-    const devTab = document.querySelector('.tab[data-view="dev"]');
-    if (devTab) devTab.hidden = !unlocked;
-    const devCircle = document.querySelector('.home-circle[data-key="dev"]');
-    if (devCircle) devCircle.hidden = !unlocked;
-  }
-  const DEFAULT_RATING_LABELS = { again: "😵‍💫", hard: "🤔", good: "🙂", easy: "😎" };
-  const DEFAULT_NAV_LABELS = {
-    review: "🤓", manage: "🗃️", cards: "📄", stats: "📊", settings: "⚙",
-  };
-  /** Banque d'icônes monochromes (essai apprécié, étoffé sur demande) —
-   *  chaque entrée est le contenu interne d'un <svg viewBox="0 0 24 24">
-   *  (traits seulement, currentColor géré au niveau du SVG englobant),
-   *  pour rester cohérent avec le style sobre déjà en place sur le menu. */
-  function iconSvgMarkup(iconId, cls) {
-    const inner = ICON_LIBRARY[iconId];
-    if (!inner) return "";
-    return `<svg class="${cls || "tab-icon-svg"}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
-  }
-  // Choix par défaut = les icônes déjà en place (essai précédent).
-  // Round 13 : "cards" et "sync" ne sont plus des cercles d'accueil (Fiches
-  // se rejoint désormais via Mon bureau, Synchronisation via Mon compte) —
-  // retirés d'ici pour ne plus proposer une icône éditable pour un cercle
-  // qui n'existe plus sur l'accueil.
-  const DEFAULT_NAV_ICONS = {
-    review: "cards", manage: "folder", stats: "barChart", settings: "settings",
-    addCard: "plus", calendar: "calendar", dev: "code", library: "book",
-    creations: "pencil",
-    reports: "flag",
-  };
-  // Couleurs des 4 notes (boutons d'évaluation + graphiques) — item 2 :
-  // rendues éditables depuis la page Développeur plutôt que codées en dur
-  // dans la feuille de style.
-  const DEFAULT_RATING_COLORS = { again: "#b6604a", hard: "#cf9a4d", good: "#6f8b5c", easy: "#3e7c6b" };
-  // Fond partagé des 4 boutons d'évaluation (item 4) — une seule couleur,
-  // désormais séparée de la couleur de chaque note (qui teinte l'icône).
-  const DEFAULT_RATING_BTN_BG_COLOR = "#ffffff";
-  const DEFAULT_NIGHT_RATING_BTN_BG_COLOR = "#1c2330";
-  // Fond de l'appli, fond du bouton "chantier" actif, fond de la pastille
-  // "0 à revoir" en mode bonus (items 3/4/8).
-  const DEFAULT_APP_BG_COLOR = "#eef2f8";
-  const DEFAULT_CONSTRUCTION_ACTIVE_COLOR = "#cf9a4d";
-  const DEFAULT_BONUS_PILL_COLOR = "#ffffff";
-  // Textes généraux, barres/fonds d'histogrammes, fonds de zones (item :
-  // étoffe encore le mode développeur) — valeurs par défaut mises à jour
-  // pour le thème clair (item 1 : "futuriste naïf", blanc/gris/bleu ciel).
-  const DEFAULT_MAIN_TEXT_COLOR = "#1f2937";
-  const DEFAULT_CARD_TEXT_COLOR = "#1f2937";
-  const DEFAULT_DUE_BAR_COLOR = "#4a90d9";
-  const DEFAULT_TODAY_BAR_COLOR = "#4a9fe0";
-  const DEFAULT_CHART_WRAP_BG_COLOR = "#ffffff";
-  const DEFAULT_SVG_CHART_BG_COLOR = "#eef2f8";
-  const DEFAULT_CARD_FORM_BG_COLOR = "#ffffff";
-  const DEFAULT_RICH_EDITOR_BG_COLOR = "#f4f7fb";
-  const DEFAULT_CARD_BG_COLOR = "#ffffff";
-  const DEFAULT_EMPTY_BAR_COLOR = "#dce4f0";
-  // Nouveaux réglages "Couleurs des fonds" / "Couleurs des textes" (items
-  // 2h/2i) : chacun a un nom de réglage direct, plus explicite que les
-  // anciennes clés génériques ci-dessus.
-  const DEFAULT_BG_COLORS = {
-    appBg: "#eef2f8",
-    homeSquareBg: "#ffffff",
-    homeAddCardBg: "#4a90d9",
-    // Round 30 : bouton « Librairie » de l'accueil (déplacé depuis Fiches),
-    // avec sa propre couleur.
-    homeLibraryBg: "#8a63c9",
-    // Round 31 : fond de la page Librairie (par défaut, celui des autres pages).
-    libraryPageBg: "#eef2f8",
-    cardFormBg: "#ffffff",
-    richEditorBg: "#f4f7fb",
-    homeBtnBg: "transparent",
-    cardBg: "#ffffff",
-    subjectSelectBg: "#f0f3f7",
-    syncStatusBg: "transparent",
-    folderBg: "#ffffff",
-    folderL1Bg: "#ffffff",
-    folderL2Bg: "#ffffff",
-    folderL3Bg: "#ffffff",
-    subjectRowBg: "#ffffff",
-    addBtnBg: "#f0f3f7",
-    chartWrapBg: "#ffffff",
-    svgChartBg: "#eef2f8",
-    dueBarColor: "#4a90d9",
-    todayBarColor: "#4a9fe0",
-    reviewedBarColor: "#4a90d9",
-    // Item 10 (dernier lot) : fond du bouton "Ne pas suivre le programme".
-    skipProgramBg: "#fde8d7",
-    // Item 11 (dernier lot) : fond de la page d'accueil, indépendant du
-    // fond des autres pages (appBg).
-    homeBg: "#eef2f8",
-  };
-  // Item 4 : couleurs de fond pour le mode nuit — un jeu de valeurs sombres
-  // parallèle, réglable séparément dans le mode développeur.
-  const DEFAULT_NIGHT_BG_COLORS = {
-    appBg: "#11151c",
-    homeSquareBg: "#1c2330",
-    homeAddCardBg: "#3a75b3",
-    homeLibraryBg: "#6d4fa3",
-    libraryPageBg: "#11151c",
-    cardFormBg: "#1c2330",
-    richEditorBg: "#232b3a",
-    homeBtnBg: "transparent",
-    cardBg: "#1c2330",
-    subjectSelectBg: "#232b3a",
-    syncStatusBg: "transparent",
-    folderBg: "#1c2330",
-    folderL1Bg: "#212939",
-    folderL2Bg: "#252e40",
-    folderL3Bg: "#2a3447",
-    subjectRowBg: "#1c2330",
-    addBtnBg: "#232b3a",
-    chartWrapBg: "#1c2330",
-    svgChartBg: "#11151c",
-    dueBarColor: "#5a9fe0",
-    todayBarColor: "#6bafef",
-    reviewedBarColor: "#5a9fe0",
-    skipProgramBg: "#4a3524",
-    homeBg: "#11151c",
-  };
-  const DEFAULT_TEXT_COLORS_SET = {
-    homeTitle: "#1f2937",
-    titles: "#1f2937",
-    generalText: "#64748b",
-    folderSubjectNames: "#1f2937",
-    cardText: "#1f2937",
-    chartValues: "#6b7280",
-    chartLabels: "#6b7280",
-    chartTodayLabel: "#1f2937",
-    selectorText: "#1f2937",
-    syncText: "#64748b",
-  };
-  const DEFAULT_NIGHT_TEXT_COLORS_SET = {
-    homeTitle: "#eef2f8",
-    titles: "#eef2f8",
-    generalText: "#93a1b5",
-    folderSubjectNames: "#eef2f8",
-    cardText: "#eef2f8",
-    chartValues: "#93a1b5",
-    chartLabels: "#93a1b5",
-    chartTodayLabel: "#eef2f8",
-    selectorText: "#eef2f8",
-    syncText: "#93a1b5",
-  };
-  // Effet d'ombrage réglable élément par élément (item 5) — clé -> nom de
-  // variable CSS + intitulé affiché dans la page développeur. Tout activé
-  // par défaut (comportement actuel inchangé tant qu'on ne décoche rien).
-  const SHADOW_ELEMENTS = {
-    duePill: { varName: "--shadow-due-pill", title: "Pastille « à revoir »" },
-    homeSquare: { varName: "--shadow-home-square", title: "Boutons de la page d'accueil" },
-    card: { varName: "--shadow-card", title: "Fiches (recto & verso)" },
-    cardForm: { varName: "--shadow-card-form", title: "Cadres (blocs)" },
-    statBox: { varName: "--shadow-stat-box", title: "Cases de statistiques" },
-    chartWrap: { varName: "--shadow-chart-wrap", title: "Histogrammes" },
-    subjectRow: { varName: "--shadow-subject-row", title: "Boîtes et dossiers" },
-  };
-  const DEFAULT_SHADOWS = Object.fromEntries(Object.keys(SHADOW_ELEMENTS).map((k) => [k, true]));
-  // Score d'apprentissage des fiches (item 1) : S = ((D-1)^P)/((D-1)^P+B),
-  // D = délai (en jours) avant la prochaine interrogation.
-  const DEFAULT_CARD_SCORE_SETTINGS = {
-    p: 1.2,
-    b: 10,
-    v1: 10,
-    v2: 45,
-    v3: 65,
-    v4: 75,
-    v5: 85,
-    hideReviewScoreInfo: false,
-    hideSubjectScoreOnReview: false,
-    // Item 3 : taille de police du texte "Objectif : X" sur la jauge de
-    // la page Programme de révision, réglable dans le mode développeur.
-    programTargetFontSize: 8,
-  };
-  // Zones de la jauge (item 4) : 6 zones désormais ("Bien" ajoutée entre
-  // "En bonne voie" et "Maîtrisé"), couleurs réglables depuis le mode
-  // développeur plutôt que fixes.
-  const GAUGE_ZONE_DEFS = [
-    { key: "debutant", boundKey: "v1", label: "0 étoile", stars: 0 },
-    { key: "fragile", boundKey: "v2", label: "1 étoile", stars: 1 },
-    { key: "enBonneVoie", boundKey: "v3", label: "2 étoiles", stars: 2 },
-    { key: "bien", boundKey: "v4", label: "3 étoiles", stars: 3 },
-    { key: "maitrise", boundKey: "v5", label: "4 étoiles", stars: 4 },
-    { key: "acquis", boundKey: null, label: "5 étoiles", stars: 5 },
-  ];
-  // Item 8 : intitulés des zones remplacés par des étoiles — une étoile
-  // grisée vide pour le tout premier niveau (0), puis 1 à 5 étoiles
-  // pleines, dans la couleur de la zone.
-  function gaugeZoneStarText(stars) {
-    return stars === 0 ? "☆" : "★".repeat(stars);
-  }
-  const DEFAULT_GAUGE_COLORS = {
-    debutant: "#94a3b8",
-    fragile: "#7c93b3",
-    enBonneVoie: "#4a90d9",
-    bien: "#3a7cc4",
-    maitrise: "#2f6fb0",
-    acquis: "#5fae7c",
-  };
-
-  // Algorithme de révision v2 (round 42, spécification « algo_new3 »
-  // validée par Stéphane le 7 octobre). Toutes les durées en MINUTES.
-  // Chaque fiche porte :
-  //  - dd         : dernier délai d'interrogation appliqué
-  //  - lastReviewed : date de la dernière interrogation (TE = maintenant − elle)
-  //  - lastRating : dernière note (0 à 3) — jauge 4 couleurs
-  //  - inSprint / ddBeforeSprint / sprintNext / sprintUntil : mode sprint
-  // Boutons : 0 = je ne sais pas (again), 1 = vague idée (hard),
-  // 2 = je sais (good), 3 = je sais parfaitement (easy).
-  //  Mode fond : NDI = (DD − TE) + TE × COEF_FOND, borné [PLANCHER ; PLAFOND]
-  //  Mode sprint (au moins une échéance à venir pour la boîte) :
-  //    NDI = mini(D_P_ECH − D_P_ECH / COEF_SPRINT ; NDI fond), D_P_ECH =
-  //    temps restant jusqu'à 8 h le jour de l'échéance la plus proche
-  //    (le jour même : 30 min fixes).
-  const REVISION_ALGO_RATING_ORDER = ["again", "hard", "good", "easy"];
-  const REVISION_ALGO_RATING_LABELS = {
-    again: "0 — Je ne sais pas",
-    hard: "1 — Vague idée",
-    good: "2 — Je sais",
-    easy: "3 — Parfaitement",
-  };
-  const REVISION_ALGO_VERSION = 2;
-  const DEFAULT_REVISION_ALGO_SETTINGS = {
-    version: REVISION_ALGO_VERSION,
-    coefSprint: [1.03, 1.05, 2, 3],
-    coefFond: [0, 0, 2, 3],
-    plancherMin: [4320, 1440, 4320, 7200],
-    plafondMin: [4320, 1440, 43200, 172800],
-  };
-  // Heure (locale) de référence d'une échéance, et délai fixe le jour même.
-  const SPRINT_EVENT_HOUR = 8;
-  const SPRINT_EVENT_DAY_DELAY_MIN = 30;
-  // Nombre minimal d'autres fiches entre deux passages d'une même fiche.
-  const SESSION_MIN_GAP = 10;
-  // Jauge 4 couleurs : proportion des fiches selon leur dernière note
-  // (jamais notée = 0). Dégradé du gris vers un joli vert. Les clés
-  // historiques (court/moyen/long/tresLong) sont gardées pour la synchro
-  // des réglages et correspondent aux notes 0/1/2/3.
-  const DEFAULT_PERS_GAUGE_COLORS = {
-    court: "#B8BEC6", // 0 — gris
-    moyen: "#9DB5A2", // 1 — gris-vert
-    long: "#86D69B", // 2 — vert clair
-    tresLong: "#22C55E", // 3 — vert vif
-  };
-  const PERS_GAUGE_ZONE_ORDER = ["court", "moyen", "long", "tresLong"];
-  const PERS_GAUGE_ZONE_LABELS = {
-    court: "Je ne sais pas",
-    moyen: "Vague idée",
-    long: "Je sais",
-    tresLong: "Parfait",
-  };
-  // Disposition dispersée de la page d'accueil (item 3) : position (x,y en
-  // pixels, coin haut-gauche du cercle) + diamètre (px) par bouton — tailles
-  // différentes selon l'importance (Réviser le plus grand, Développeur le
-  // plus petit). Repères en pourcentage de la zone d'accueil (item — bug
-  // corrigé : des pixels fixes, pensés pour ~390px de large, décalaient
-  // tout vers la gauche sur un écran plus large comme un PC, puisque
-  // l'appli s'adapte elle en largeur — le pourcentage, lui, suit toujours
-  // la largeur réelle quel que soit l'appareil).
-  // Round 13 : "cards", "sync", "messages" et "library" ne sont plus des
-  // cercles d'accueil (retirés du DOM — voir index.html) ; conservés ici
-  // uniquement s'ils restent référencés ailleurs, sinon retirés. Libellés
-  // mis à jour pour "manage" (Mon bureau) et "classes" (École).
-  const HOME_LAYOUT_TITLES = {
-    review: "Réviser", manage: "Organiser mes boîtes de révision", addCard: "Ajouter une fiche",
-    creations: "Créer mes propres boîtes de révision",
-    reports: "Signalements",
-    stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
-    dev: "Développeur", classes: "École", account: "Compte",
-    library: "Librairie",
-  };
-  // Largeur/hauteur de référence utilisées uniquement pour convertir une
-  // seule fois d'anciens réglages enregistrés en pixels (avant ce
-  // correctif) vers des pourcentages équivalents.
-  const HOME_LAYOUT_LEGACY_REF_WIDTH = 354;
-  const HOME_LAYOUT_LEGACY_REF_HEIGHT = 640;
-  // Round 13 : 9 cercles d'accueil seulement (cards/sync/messages/library
-  // retirés — voir index.html) ; positions reprises au plus proche de
-  // l'ancien agencement.
-  const DEFAULT_HOME_LAYOUT = {
-    addCard: { x: 73.4, y: 14.9, d: 110 },
-    review: { x: 26.1, y: 13.7, d: 155 },
-    manage: { x: 79.8, y: 59.0, d: 105 },
-    // Round 47 : « Créer mes propres boîtes de révision » (ex-« Mes
-    // créations de fiches » du hub Gérer mes fiches, supprimé).
-    creations: { x: 47.0, y: 73.0, d: 105 },
-    // Round 49 : Signalements (visible seulement s'il y en a).
-    reports: { x: 80.0, y: 94.0, d: 90 },
-    classes: { x: 50.0, y: 26.5, d: 95 },
-    calendar: { x: 39.5, y: 54.7, d: 100 },
-    stats: { x: 77.7, y: 37.5, d: 100 },
-    settings: { x: 16.2, y: 73.8, d: 85 },
-    account: { x: 15.0, y: 90.0, d: 70 },
-    dev: { x: 89.0, y: 79.0, d: 80 },
-    // Round 30 : Librairie, déplacée de la page Fiches vers l'accueil.
-    library: { x: 17.0, y: 40.0, d: 90 },
-  };
-  // Items 1/2 (logo) : position (X/Y en %, centre du logo) et taille (px)
-  // du logo sur la page d'accueil.
-  const DEFAULT_HOME_LOGO = { x: 50, y: 7, size: 64, shadow: false };
-  // Items 1/2/6 (dernier lot) : logo affiché en haut du corps de chaque
-  // autre page (taille + ombre, indépendantes de celles de l'accueil).
-  const DEFAULT_BODY_LOGO = { size: 40, shadow: false };
-  // Round 14 : logo "darwin" affiché en plus du robot sur l'accueil —
-  // position/taille/ombre TOUTES réglables en mode développeur (à la
-  // différence du logo robot ci-dessus, dont l'ombre est un réglage
-  // utilisateur séparé dans Réglages).
-  // Placé par défaut sous les cercles (zone dédiée par le padding-bottom
-  // supplémentaire de #view-home, voir css/style.css), pour ne chevaucher
-  // aucun cercle avec la disposition par défaut.
-  // Round 15, item 2 : couleur du logo darwin (partagée avec sa petite
-  // version dans le bandeau du haut) — bleu par défaut (--blue), le noir
-  // d'origine ayant été jugé trop dur ; réglable en mode développeur.
-  const DEFAULT_DARWIN_LOGO = { x: 50, y: 88, size: 70, shadow: false, color: "#4a90d9" };
-  // Round 14 : texte optionnel sous le logo darwin — contenu/position/
-  // taille réglables en mode développeur ; vide par défaut (masqué tant
-  // que rien n'est saisi).
-  const DEFAULT_DARWIN_TEXT = { x: 50, y: 95, size: 11, content: "" };
-  // Items 4 et 5 : le robot (logo en haut du corps de page) peut porter un
-  // ou plusieurs messages d'aide selon la page — un tableau permet une
-  // petite série façon tuto (voir bouton "Suite", round 4), une simple
-  // chaîne reste acceptée pour un message unique.
-  const DEFAULT_HELP_MESSAGES_BY_VIEW = {
-    // Round 47 : un message par page (bulle « … » partout), modifiable dans
-    // le mode développeur.
-    "review-hub": ["Choisis comment réviser : les révisions urgentes préparent tes prochaines échéances (c'est ce que je te conseille), le renforcement fait travailler les boîtes où tu es le plus en retard, et la sélection manuelle te laisse choisir toi-même."],
-    "revision-program": ["A ta place, voici ce que je réviserais en priorité : les boîtes de tes prochaines échéances, la plus proche d'abord. Décoche ce que tu ne veux pas réviser."],
-    "revision-reinforce": ["Voici tes boîtes, celles sur lesquelles tu es le plus en retard d'abord. La barre montre où tu en es dans l'apprentissage de chacune."],
-    review: ["Touche la fiche pour voir la réponse, puis dis-moi si tu la savais. Je m'occupe de te la reposer au bon moment."],
-    manage: ["Range ici tes boîtes de révision dans des dossiers. Touche une boîte pour voir son résumé. Pour créer une nouvelle boîte, passe par « Créer mes propres boîtes de révision »."],
-    creations: ["Ici, toutes les boîtes que tu as créées. Publie-les dans la Librairie, ou ajoute-les à tes révisions pour les ranger dans l'organisation de tes boîtes."],
-    "creation-detail": ["Le résumé de ta boîte : ses fiches, son classement, sa place dans tes révisions. Le bouton + ajoute une fiche."],
-    "box-create": ["Donne un nom à ta boîte et classe-la : ce classement servira aux filtres, et sera repris si tu la publies dans la Librairie."],
-    "report-card": ["Explique à l'auteur ce qui ne va pas dans cette fiche : il recevra ton message et pourra la corriger."],
-    reports: ["Voici les fiches que d'autres utilisateurs t'ont signalées. Corrige-les, écris si besoin à la personne qui les a signalées, puis marque le signalement comme traité : elle en sera informée."],
-    "reports-hub": ["Retrouve ici les fiches que tu as signalées à leur auteur, et celles que d'autres t'ont signalées."],
-    "reports-sent": ["Les fiches que tu as signalées : tu vois ici quand l'auteur les a corrigées, ce qu'il a changé, et son message."],
-    cards: ["Toutes les fiches de cette boîte. Le drapeau signale une fiche à corriger ; la flèche ouvre les autres actions (éditer, déplacer, supprimer)."],
-    "new-card": ["Écris la question et la réponse : je te poserai la question et tu me diras si tu connaissais la réponse."],
-    stats: ["Tes statistiques : combien de fiches tu révises, et comment tu progresses."],
-    calendar: ["Note ici tes échéances (contrôle, interrogation, partiels, bac...) liées à une boîte ou un dossier : je m'en sers pour te préparer les révisions urgentes."],
-    "calendar-event-form": ["Donne un titre et une date à ton échéance, puis choisis les boîtes à réviser pour elle."],
-    "calendar-event-detail": ["Le détail de cette échéance et des boîtes à réviser pour elle."],
-    sync: ["L'état de la synchronisation de tes données entre tes appareils."],
-    account: ["Ton compte : ton nom, ton niveau scolaire et la façon dont tu utilises l'appli."],
-    "school-hub": ["Retrouve ici tes classes, la messagerie de tes classes et ton calendrier."],
-    classes: ["Choisis ton rôle : élève (tu rejoins une classe avec un code) ou enseignant (tu crées tes classes)."],
-    "classes-student": ["Les classes que tu as rejointes. Touche une classe pour voir ses boîtes et ses évènements."],
-    "classes-teacher": ["Les classes que tu as créées. Donne leur code à tes élèves pour qu'ils les rejoignent."],
-    "classes-join": ["Entre le code que ton enseignant t'a donné pour rejoindre sa classe."],
-    "classes-create": ["Donne un nom à ta classe."],
-    "class-detail": ["La page de la classe : ses boîtes partagées, ses évènements à venir et la liste des élèves."],
-    "class-share": ["Partage une de tes boîtes avec la classe, ou une boîte de la Librairie (seuls les élèves abonnés y auront accès)."],
-    subscriptions: ["Bientôt, l'abonnement te donnera accès à toutes les boîtes de la Librairie."],
-    messages: ["Une discussion par classe : touche une classe pour lire et écrire les messages."],
-    "message-thread": ["Écris ton message en bas de la page : toute la classe le verra."],
-    library: ["Ici, tu peux prendre des collections de fiches partagées par d'autres — elles s'ajoutent à tes boîtes, avec cette icône en réseau pour les reconnaître."],
-    "library-detail": ["La présentation de cette collection : son auteur, son classement et sa note."],
-    "library-cards": ["Un aperçu des fiches de cette collection."],
-    "library-share": ["Publie ta boîte dans la Librairie : donne-lui un nom, un classement et des mots clés pour qu'on la trouve facilement."],
-    settings: ["Tes réglages : l'apparence des fiches, l'import et l'export de tes boîtes."],
-    dev: ["Le mode développeur : les réglages de présentation, communs à tous les utilisateurs."],
-    "boite-picker": ["Choisis une boîte ou un dossier dans la liste."],
-  };
-  // Round 4, partie 2 : intitulés amicaux de chaque page, pour l'éditeur du
-  // mode développeur — mêmes clés que DEFAULT_HELP_MESSAGES_BY_VIEW.
-  const HELP_VIEW_LABELS = {
-    "review-hub": "Réviser (choix)",
-    "revision-program": "Révisions urgentes",
-    "revision-reinforce": "Renforcer mes connaissances",
-    review: "Réviser (fiches)",
-    manage: "Organisation des boîtes de révision",
-    creations: "Mes créations de boîtes de révision",
-    "creation-detail": "Résumé d'une boîte",
-    "box-create": "Créer / classer une boîte",
-    "report-card": "Signaler une fiche à son auteur",
-    reports: "Signalements reçus",
-    "reports-hub": "Signalements (choix)",
-    "reports-sent": "Signalements émis",
-    cards: "Fiches d'une boîte",
-    "new-card": "Nouvelle fiche",
-    stats: "Statistiques",
-    calendar: "Calendrier",
-    "calendar-event-form": "Calendrier — ajouter/modifier un évènement",
-    "calendar-event-detail": "Calendrier — détail d'un évènement",
-    sync: "Synchronisation",
-    account: "Compte",
-    "school-hub": "École",
-    classes: "Mes classes (choix du rôle)",
-    "classes-student": "Classes — Élève",
-    "classes-teacher": "Classes — Enseignant",
-    "classes-join": "Rejoindre une classe",
-    "classes-create": "Créer une classe",
-    "class-detail": "Page d'une classe",
-    "class-share": "Classe — partager une boîte",
-    subscriptions: "Abonnements",
-    messages: "Messagerie",
-    "message-thread": "Messagerie — discussion",
-    library: "Librairie",
-    "library-detail": "Librairie — présentation d'une collection",
-    "library-cards": "Librairie — fiches d'une collection",
-    "library-share": "Librairie — publier une boîte",
-    settings: "Réglages",
-    dev: "Développeur",
-    "boite-picker": "Sélecteur de boîte(s)",
-  };
   // Round 4 : le robot ne dit plus rien par défaut — une petite bulle
   // "aide" cliquable apparaît à côté de lui quand la page a un message, et
   // c'est ce clic qui ouvre la bulle de parole (fermée à chaque changement
@@ -1112,137 +683,21 @@
     });
   }
 
-  const LOGO_SHADOW_FILTER = "drop-shadow(0 3px 5px rgba(0,0,0,0.35))";
-  // Hauteur de référence utilisée pour calculer les % verticaux de la page
-  // Réviser (voir applyReviewLayout) : 844px est la hauteur de l'iPhone
-  // standard 13/14/15 (390×844) sur lequel toute la disposition par défaut
-  // ci-dessous a été réglée à l'origine — déductible des anciennes valeurs
-  // par défaut du CSS (ex. 675px de haut de jauge / 80% = 844).
-  const REVIEW_LAYOUT_REF_HEIGHT = 844;
-  // Largeur de référence associée (390px = largeur de ce même iPhone
-  // standard 13/14/15). Corrige un ratio largeur/hauteur incohérent entre
-  // PC et iPhone (round 5, correctif 5) : la hauteur de référence était
-  // déjà plafonnée ci-dessus, mais la largeur (voir applyReviewLayout)
-  // restait calculée sur la largeur RÉELLE de .desk, qui va jusqu'à 560px
-  // sur PC (voir .desk en CSS) contre ~390px sur iPhone — la fiche
-  // s'étalait donc proportionnellement plus en largeur qu'en hauteur sur
-  // un grand écran. Les deux dimensions se basent maintenant sur le même
-  // gabarit fixe 390×844, centré quel que soit l'écran.
-  const REVIEW_LAYOUT_REF_WIDTH = 390;
-  // Disposition de la page Réviser (item 1c) : hauteur/largeur de la fiche
-  // et position Y de son bord haut, position Y des boutons d'évaluation
-  // (tous en % de l'écran), temps de retournement en secondes.
-  const DEFAULT_REVIEW_LAYOUT = {
-    cardHeightPct: 45,
-    cardWidthPct: 91,
-    cardTopPct: 13,
-    ratingRowTopPct: 60,
-    scoreInfoTopPct: 70,
-    gaugeTopPct: 80,
-    flipDurationSec: 0.7,
-  };
-  const DEFAULT_ICONS = {
-    hibernate: "💤", edit: "✎", construction: "🚩", undo: "◀️", folder: "📁",
-  };
-  // Choix par défaut dans la banque d'icônes pour ces mêmes réglages
-  // (utilisé seulement pour les 4 premiers — le dossier reste en
-  // émoticône, utilisé comme simple texte à trop d'endroits pour basculer
-  // en SVG sans tout casser).
-  const DEFAULT_ICON_BANK_CHOICES = { hibernate: "sleep", edit: "pencil", construction: "flag", undo: "undo" };
-  // Icônes de la page Organisation (item 3) : renommer/déplacer/supprimer,
-  // sobres, choisies dans la banque d'icônes.
-  const DEFAULT_ORG_ICON_BANK_CHOICES = { orgRename: "pencil", orgMove: "move", orgDelete: "trash", orgBoite: "stackedSheets" };
-  // Icônes des boutons d'évaluation (item 2a) : plus d'émoticônes libres,
-  // uniquement la banque d'icônes sobres.
-  const DEFAULT_RATING_ICONS = { again: "faceSad", hard: "faceNeutral", good: "faceSmile", easy: "faceGrin" };
-  // Palette de couleurs de texte proposée dans la mise en forme des fiches
-  // (item 20 puis étendue ici) — modifiable, y compris ajouter/retirer des
-  // couleurs, depuis la page Développeur.
-  const DEFAULT_TEXT_COLORS = [
-    { label: "Foncé", hex: "#23302a" },
-    { label: "Terracotta", hex: "#b6604a" },
-    { label: "Ambre", hex: "#cf9a4d" },
-    { label: "Sauge", hex: "#6f8b5c" },
-    { label: "Bleu-vert", hex: "#3e7c6b" },
-    { label: "Marine", hex: "#1f3a5f" },
-    { label: "Ciel", hex: "#2a8fd8" },
-    { label: "Rose", hex: "#c96a95" },
-    { label: "Violet", hex: "#8a5fb3" },
-    { label: "Orange", hex: "#d97f35" },
-    { label: "Gris", hex: "#6b7280" },
-  ];
 
-  /** Convertit une disposition d'accueil enregistrée en pixels (avant le
-   *  correctif de cet item) vers des pourcentages équivalents, une seule
-   *  fois — repérable via l'absence du marqueur homeLayoutUnit. Les
-   *  réglages déjà migrés, ou tout nouveau réglage refait depuis
-   *  l'interface (déjà en pourcentage), passent au travers sans y
-   *  toucher. Gère aussi le passage du coin haut-gauche vers le centre du
-   *  cercle (homeLayoutAnchor) — deux migrations indépendantes, un
-   *  réglage peut avoir besoin de l'une, de l'autre, des deux, ou d'aucune. */
-  function migrateHomeLayoutToPercent(parsed) {
-    const stored = parsed.homeLayout || {};
-    const unitMigrated = parsed.homeLayoutUnit === "percent";
-    const anchorMigrated = parsed.homeLayoutAnchor === "center";
-    return Object.fromEntries(
-      Object.keys(DEFAULT_HOME_LAYOUT).map((k) => {
-        const def = DEFAULT_HOME_LAYOUT[k];
-        const val = stored[k];
-        if (!val) return [k, { ...def }];
-        // Ancien format en pixels : convertit vers un pourcentage de la
-        // largeur/hauteur de référence d'origine (~390px de large).
-        let x = val.x !== undefined ? Number(val.x) : def.x;
-        let y = val.y !== undefined ? Number(val.y) : def.y;
-        const d = val.d !== undefined ? Number(val.d) : def.d;
-        if (!unitMigrated) {
-          x = (x / HOME_LAYOUT_LEGACY_REF_WIDTH) * 100;
-          y = (y / HOME_LAYOUT_LEGACY_REF_HEIGHT) * 100;
-        }
-        if (!anchorMigrated) {
-          // Coin haut-gauche -> centre : on décale d'un demi-diamètre,
-          // converti en pourcentage des mêmes repères de référence.
-          x += (d / 2 / HOME_LAYOUT_LEGACY_REF_WIDTH) * 100;
-          y += (d / 2 / HOME_LAYOUT_LEGACY_REF_HEIGHT) * 100;
-        }
-        return [k, { x, y, d }];
-      })
-    );
-  }
-
-  // Round 16 : SIMPLIFICATION demandée par Stéphane suite au bug de
-  // synchro du round 15 (deux canaux séparés — réglages "personnels" par
-  // (code de synchro + Compte) ET réglages "publiés pour tous" — avec une
-  // logique de fusion "le plus récent gagne" fragile, qui a fini par
-  // laisser un ancien réglage local écraser silencieusement la bonne
-  // version publiée). Il n'existe plus maintenant qu'UNE seule source de
-  // vérité : la table Supabase `dev_settings_public` (une seule ligne,
-  // id="global"), que seul le Compte de Stéphane peut modifier (RLS).
-  // - `localStorage` ne sert plus qu'à AFFICHER quelque chose hors ligne
-  //   (miroir du dernier contenu connu du serveur) — il n'est plus jamais
-  //   considéré comme "plus à jour" que le serveur : dès qu'une connexion
-  //   est possible, le serveur écrase toujours le local, sans comparaison
-  //   de date. Plus de notion de "réglage personnel" ni de cloisonnement
-  //   par Compte : tout le monde (élèves, profs, Stéphane lui-même sur
-  //   n'importe quel appareil) voit exactement la même chose.
-  // - Modifier un réglage en mode développeur (saveDevSettings) écrit
-  //   directement vers ce même canal public : plus besoin d'un bouton
-  //   "Publier" séparé, chaque changement est déjà la version de tout le
-  //   monde.
-  /* Round 33 : réglages partagés entre appareils — bug corrigé. Avant,
-     chaque appareil ne relisait le serveur qu'au DÉMARRAGE de l'appli (pas
-     au retour depuis l'arrière-plan, fréquent sur iPhone), et chaque
-     modification renvoyait l'objet COMPLET des réglages de l'appareil :
-     un appareil resté sur d'anciens réglages écrasait donc, à sa
-     prochaine modification, tout ce qui avait été changé ailleurs (ex.
-     couleurs réglées sur le PC, puis un bouton déplacé sur l'iPhone →
-     les couleurs du PC disparaissent du serveur).
-     Désormais : on garde la dernière version reçue du serveur (« base ») ;
-     les changements faits sur l'appareil = différence entre la base et
-     les réglages locaux ; à chaque envoi, on relit le serveur et on n'y
-     applique QUE ces changements. Relecture aussi au retour au premier
-     plan, et à chaque changement temps réel. */
-  const DEV_SETTINGS_BASE_KEY = "fiches_dev_settings_base";
-  const devSyncStatus = { at: null, error: null, pending: false };
+  /* Réglages communs (couleurs, icônes, disposition, algorithme, messages
+     du robot…) : une seule source de vérité, la table Supabase
+     `dev_settings_public` (ligne id="global").
+     Round 50 : ils ne se modifient plus dans l'appli (l'ancien mode
+     développeur a été retiré) mais dans l'appli d'administration
+     Darwin Admin (dossier admin/). Ici, lecture seule : la version du
+     serveur s'applique toujours telle quelle (au démarrage, au retour au
+     premier plan et en direct par le temps réel) ; localStorage n'en garde
+     qu'une copie pour le hors-ligne. Seul le dernier choix jour / nuit
+     (`nightMode`) reste propre à l'appareil.
+     Aperçu : quand l'appli est affichée dans le cadre d'aperçu de Darwin
+     Admin (même site), celui-ci lui envoie les réglages en cours de
+     modification (message « darwin-admin-preview ») ; ils s'affichent
+     sans rien enregistrer. */
   let devSyncChain = Promise.resolve();
   function devSyncQueue(fn) {
     devSyncChain = devSyncChain.then(fn, fn).catch((e) => console.warn("Réglages : synchro", e));
@@ -1251,254 +706,45 @@
   function devIsPlainObj(v) {
     return !!v && typeof v === "object" && !Array.isArray(v);
   }
-  const DEV_DIFF_IGNORED = new Set(["updatedAt", "appPrefs", "appPrefsOwner"]);
-  /** Liste des changements [chemin, valeur, supprimé] de `base` à `local`. */
-  function devSettingsDiff(base, local, path, out) {
-    path = path || [];
-    out = out || [];
-    const b = devIsPlainObj(base) ? base : {};
-    const l = devIsPlainObj(local) ? local : {};
-    new Set([...Object.keys(b), ...Object.keys(l)]).forEach((key) => {
-      if (path.length === 0 && DEV_DIFF_IGNORED.has(key)) return;
-      const bv = b[key];
-      const lv = l[key];
-      if (devIsPlainObj(bv) && devIsPlainObj(lv)) devSettingsDiff(bv, lv, path.concat(key), out);
-      else if (JSON.stringify(bv) !== JSON.stringify(lv)) out.push([path.concat(key), lv === undefined ? null : lv, lv === undefined]);
-    });
-    return out;
-  }
-  function devSettingsApplyPatch(target, patch) {
-    const out = JSON.parse(JSON.stringify(devIsPlainObj(target) ? target : {}));
-    patch.forEach(([p, v, del]) => {
-      let o = out;
-      for (let n = 0; n < p.length - 1; n++) {
-        if (!devIsPlainObj(o[p[n]])) o[p[n]] = {};
-        o = o[p[n]];
-      }
-      if (del) delete o[p[p.length - 1]];
-      else o[p[p.length - 1]] = JSON.parse(JSON.stringify(v));
-    });
-    return out;
-  }
-  function readDevSettingsBase() {
-    const raw = localStorage.getItem(DEV_SETTINGS_BASE_KEY);
-    if (raw === null) return null;
-    try {
-      return JSON.parse(raw) || {};
-    } catch (e) {
-      return null;
-    }
-  }
-  /** Changements faits sur cet appareil depuis la dernière version reçue
-   *  du serveur (comparés sur les réglages complets, valeurs par défaut
-   *  comprises, pour qu'une nouvelle valeur par défaut ne passe pas pour
-   *  une modification). null = pas encore de base (1er lancement). */
-  function localDevSettingsChanges() {
-    const base = readDevSettingsBase();
-    if (base === null) return null;
-    if (base && base.__firstMergePending) {
-      // 1er lancement de cette version sur un appareil en mode développeur :
-      // tous ses réglages qui diffèrent du serveur sont fusionnés (voir
-      // adoptServerDevSettings), rien n'est perdu.
-      const real = { ...base };
-      delete real.__firstMergePending;
-      return devSettingsDiff(buildDevSettings(real), buildDevSettings(loadRawDevSettingsOverride()));
-    }
-    return devSettingsDiff(buildDevSettings(base), buildDevSettings(loadRawDevSettingsOverride()));
-  }
   function storeLocalDevSettings(obj) {
     localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(obj));
     _devSettingsCacheRaw = undefined;
     _devSettingsCache = undefined;
   }
-  /** Réglages de la page Réglages (bonus, hibernation…) : propres au compte
-   *  qui les a envoyés — jamais appliqués chez un autre compte. */
+  /** Réglages de la page Réglages (bonus, hibernation…) autrefois envoyés
+   *  avec les réglages communs par le compte développeur : appliqués
+   *  seulement au compte qui les a envoyés. */
   function applyOwnAppPrefs(settings) {
     if (!settings || !settings.appPrefs) return;
     const uidNow = Sync.currentUid && Sync.currentUid();
     if (!settings.appPrefsOwner || settings.appPrefsOwner !== uidNow) return;
     applyAppPrefsFromRemote(settings.appPrefs);
   }
-  function refreshDevViewIfIdle() {
-    const devView = el("view-dev");
-    if (!devView || !devView.classList.contains("is-active")) return;
-    const ae = document.activeElement;
-    if (ae && devView.contains(ae) && (ae.tagName === "INPUT" || ae.tagName === "TEXTAREA" || ae.tagName === "SELECT")) return;
-    renderDevView();
-  }
-  /** Adopte une version du serveur en y réappliquant les changements
-   *  locaux pas encore envoyés. Renvoie true s'il en reste à envoyer. */
-  /* Round 35 : les réglages développeur sont COMMUNS à tous les
-     utilisateurs et ne se modifient que depuis le compte développeur (celui
-     qui a envoyé la dernière version : `updated_by`). Sur tout autre
-     compte, la version du serveur s'applique toujours telle quelle — un
-     appareil où l'on aurait bricolé des réglages en local (mode
-     développeur ouvert sur un 2e compte, par exemple) ne garde plus ses
-     propres valeurs « en attente » à vie. */
-  let devSettingsWriterUid = null;
-  function isDevSettingsWriter() {
-    const uidNow = (Sync.currentUid && Sync.currentUid()) || null;
-    return !devSettingsWriterUid || (uidNow && uidNow === devSettingsWriterUid);
-  }
-  function isDevPermissionError(msg) {
-    return /row-level security|refus|permission|not allowed|42501/i.test(String(msg || ""));
-  }
   function forceServerDevSettings(serverRaw) {
-    const server = devIsPlainObj(serverRaw) ? serverRaw : {};
-    localStorage.setItem(DEV_SETTINGS_BASE_KEY, JSON.stringify(server));
+    const server = devIsPlainObj(serverRaw) ? { ...serverRaw } : {};
+    const local = loadRawDevSettingsOverride();
+    if (typeof local.nightMode === "boolean") server.nightMode = local.nightMode;
     storeLocalDevSettings(server);
     applyAllDevSettings();
     applyOwnAppPrefs(server);
-    refreshDevViewIfIdle();
-  }
-  function adoptServerDevSettings(serverRaw) {
-    const server = devIsPlainObj(serverRaw) ? serverRaw : {};
-    if (!isDevSettingsWriter()) {
-      forceServerDevSettings(server);
-      return false;
-    }
-    // Round 33 : 1er lancement de cette version (pas encore de « base ») sur
-    // un appareil où le mode développeur est déverrouillé — ses réglages
-    // n'avaient peut-être jamais atteint le serveur (ancien bug) : on les
-    // fusionne avec ceux du serveur au lieu de les écraser. Ailleurs (élèves…),
-    // le serveur fait foi, comme avant.
-    if (readDevSettingsBase() === null && isDevUnlocked() && localStorage.getItem(DEV_SETTINGS_KEY)) {
-      localStorage.setItem(DEV_SETTINGS_BASE_KEY, JSON.stringify({ ...server, __firstMergePending: true }));
-    }
-    const changes = localDevSettingsChanges();
-    const merged = changes && changes.length ? devSettingsApplyPatch(server, changes) : server;
-    localStorage.setItem(DEV_SETTINGS_BASE_KEY, JSON.stringify(server));
-    storeLocalDevSettings(merged);
-    applyAllDevSettings();
-    applyOwnAppPrefs(server);
-    refreshDevViewIfIdle();
-    return !!(changes && changes.length);
   }
   function syncDevSettingsFromServer() {
     return devSyncQueue(async () => {
       if (typeof Sync === "undefined" || !Sync.isConfigured()) return;
       const res = await Sync.fetchPublicDevSettingsResult();
-      if (res.error) {
-        devSyncStatus.error = `lecture impossible (${res.error})`;
-        renderDevSyncStatus();
-        return;
-      }
-      if (res.updatedBy) devSettingsWriterUid = res.updatedBy;
-      if (!res.settings) {
-        // Rien encore sur le serveur : on garde ce qu'on a (envoyé à la
-        // prochaine modification).
-        renderDevSyncStatus();
-        return;
-      }
-      const pending = adoptServerDevSettings(res.settings);
-      devSyncStatus.error = null;
-      devSyncStatus.at = new Date();
-      if (pending) await pushDevSettingsNow(true);
-      renderDevSyncStatus();
+      if (res.error || !res.settings) return;
+      forceServerDevSettings(res.settings);
     });
-  }
-  /** Envoi : relit le serveur, y applique les changements de cet appareil,
-   *  puis renvoie le tout (et adopte localement le résultat). */
-  async function pushDevSettingsNow(alreadyQueued) {
-    const run = async (attempt) => {
-      attempt = attempt || 0;
-      if (typeof Sync === "undefined" || !Sync.isConfigured()) return;
-      const res = await Sync.fetchPublicDevSettingsResult();
-      if (res.error) {
-        devSyncStatus.error = `envoi impossible (${res.error})`;
-        devSyncStatus.pending = true;
-        renderDevSyncStatus();
-        return;
-      }
-      const server = devIsPlainObj(res.settings) ? res.settings : {};
-      if (res.updatedBy) devSettingsWriterUid = res.updatedBy;
-      if (res.settings && !isDevSettingsWriter()) {
-        // Pas le compte développeur : rien à envoyer, réglages communs rétablis.
-        forceServerDevSettings(server);
-        devSyncStatus.error = "ce compte ne peut pas modifier les réglages communs (réservé au compte développeur) — réglages communs rétablis";
-        devSyncStatus.pending = false;
-        renderDevSyncStatus();
-        return;
-      }
-      let changes = localDevSettingsChanges();
-      // 1er envoi sans base connue : l'appareil fait foi (ancien comportement).
-      if (changes === null) changes = devSettingsDiff(buildDevSettings(server), buildDevSettings(loadRawDevSettingsOverride()));
-      // Objet complet (valeurs par défaut comprises, marqueurs de format
-      // de la disposition de l'accueil…) : le serveur reste lisible tel quel.
-      const merged = devSettingsApplyPatch(buildDevSettings(server), changes);
-      merged.updatedAt = new Date().toISOString();
-      merged.appPrefs = gatherAppPrefs();
-      merged.appPrefsOwner = (Sync.currentUid && Sync.currentUid()) || null;
-      const pushRes = await Sync.pushPublicDevSettings(merged, res.settings ? res.updatedAt : null);
-      // Un autre appareil a écrit entre notre lecture et notre envoi : on
-      // recommence (relecture + fusion), pour ne rien écraser.
-      if (pushRes.conflict) {
-        if (attempt < 4) return run(attempt + 1);
-        devSyncStatus.error = "envoi impossible (le serveur change trop souvent, réessai plus tard)";
-        devSyncStatus.pending = true;
-        renderDevSyncStatus();
-        return;
-      }
-      const error = pushRes.error;
-      if (error && isDevPermissionError(error)) {
-        // Compte sans droit d'écriture : les réglages communs s'appliquent.
-        forceServerDevSettings(server);
-        devSyncStatus.error = "ce compte ne peut pas modifier les réglages communs (réservé au compte développeur) — réglages communs rétablis";
-        devSyncStatus.pending = false;
-      } else if (error) {
-        // Hors ligne / erreur passagère : on garde les changements de
-        // l'appareil, à renvoyer plus tard.
-        localStorage.setItem(DEV_SETTINGS_BASE_KEY, JSON.stringify(server));
-        storeLocalDevSettings(devSettingsApplyPatch(server, changes));
-        applyAllDevSettings();
-        devSyncStatus.error = `envoi refusé (${error})`;
-        devSyncStatus.pending = true;
-      } else {
-        devSettingsWriterUid = (Sync.currentUid && Sync.currentUid()) || devSettingsWriterUid;
-        localStorage.setItem(DEV_SETTINGS_BASE_KEY, JSON.stringify(merged));
-        storeLocalDevSettings(merged);
-        applyAllDevSettings();
-        devSyncStatus.error = null;
-        devSyncStatus.pending = false;
-        devSyncStatus.at = new Date();
-      }
-      renderDevSyncStatus();
-    };
-    if (alreadyQueued) return run(0);
-    return devSyncQueue(() => run(0));
-  }
-  function renderDevSyncStatus() {
-    const out = el("dev-settings-sync-status");
-    if (!out) return;
-    if (typeof Sync === "undefined" || !Sync.isConfigured()) {
-      out.textContent = "Synchronisation non configurée : réglages gardés sur cet appareil.";
-      return;
-    }
-    const changes = localDevSettingsChanges();
-    const nPending = changes ? changes.length : 0;
-    if (devSyncStatus.error) {
-      out.textContent = `⚠ ${devSyncStatus.error}${nPending ? ` — ${nPending} changement(s) en attente sur cet appareil` : ""}.`;
-      out.classList.add("is-error");
-      return;
-    }
-    out.classList.remove("is-error");
-    const time = devSyncStatus.at ? devSyncStatus.at.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }) : null;
-    out.textContent = nPending
-      ? `${nPending} changement(s) en cours d'envoi…`
-      : time
-      ? `À jour avec le serveur (dernière synchro à ${time}).`
-      : "En attente de la première synchro…";
   }
 
   // Bug corrigé (item 9) : cette fonction est appelée TRÈS souvent (une
-  // fois par fiche pour son score, par exemple) et reconstruisait à chaque
-  // fois l'objet complet (JSON.parse + fusion de ~15 groupes de réglages)
-  // — sur une liste de nombreuses fiches, ça pouvait provoquer un vrai
-  // temps de gel. On ne refait ce travail que si le contenu brut de
-  // localStorage a changé depuis le dernier appel.
+  // fois par fiche pour son score, par exemple) : on ne reconstruit
+  // l'objet complet que si le contenu brut de localStorage a changé.
   let _devSettingsCacheRaw;
   let _devSettingsCache;
+  let previewDevSettings = null;
   function loadDevSettings() {
+    if (previewDevSettings) return previewDevSettings;
     const raw = localStorage.getItem(DEV_SETTINGS_KEY);
     if (_devSettingsCache && raw === _devSettingsCacheRaw) return _devSettingsCache;
     let parsed = {};
@@ -1512,135 +758,7 @@
     _devSettingsCache = built;
     return built;
   }
-  /** Réglages complets (valeurs par défaut du code + personnalisations)
-   *  à partir d'un objet stocké — sans effet de bord (round 33 : sert
-   *  aussi à comparer deux versions des réglages). */
-  /** Réglages de l'algorithme v2, normalisés (4 valeurs numériques par
-   *  paramètre). Toute version antérieure repart des valeurs par défaut. */
-  function buildRevisionAlgoSettings(raw) {
-    const d = DEFAULT_REVISION_ALGO_SETTINGS;
-    const ok = raw && raw.version === REVISION_ALGO_VERSION;
-    const arr = (key) =>
-      d[key].map((def, i) => {
-        const v = ok && Array.isArray(raw[key]) ? Number(raw[key][i]) : NaN;
-        return Number.isFinite(v) ? v : def;
-      });
-    return {
-      version: REVISION_ALGO_VERSION,
-      coefSprint: arr("coefSprint"),
-      coefFond: arr("coefFond"),
-      plancherMin: arr("plancherMin"),
-      plafondMin: arr("plafondMin"),
-    };
-  }
-  function buildDevSettings(parsed) {
-    parsed = parsed && typeof parsed === "object" ? parsed : {};
-    const built = {
-      ratingLabels: { ...DEFAULT_RATING_LABELS, ...(parsed.ratingLabels || {}) },
-      navLabels: { ...DEFAULT_NAV_LABELS, ...(parsed.navLabels || {}) },
-      navIcons: { ...DEFAULT_NAV_ICONS, ...(parsed.navIcons || {}) },
-      ratingIcons: { ...DEFAULT_RATING_ICONS, ...(parsed.ratingIcons || {}) },
-      iconBank: { ...DEFAULT_ICON_BANK_CHOICES, ...(parsed.iconBank || {}) },
-      orgIconBank: { ...DEFAULT_ORG_ICON_BANK_CHOICES, ...(parsed.orgIconBank || {}) },
-      ratingColors: { ...DEFAULT_RATING_COLORS, ...(parsed.ratingColors || {}) },
-      // Round 4, partie 2 : messages d'aide du robot par page, éditables
-      // dans le mode développeur. Fusion clé par clé comme les autres
-      // groupes : une page personnalisée (même avec un tableau vide,
-      // volontairement) remplace entièrement la valeur par défaut de
-      // cette page, elle ne se mélange pas avec elle.
-      // Round 19, item 2 : correctif d'un vrai bug — `saveDevSettings`
-      // écrit toujours l'objet `helpMessagesByView` COMPLET (toutes les
-      // pages, pas seulement celle éditée), donc éditer N'IMPORTE QUEL
-      // réglage développeur ne serait-ce qu'une fois fige, ce jour-là, un
-      // instantané de TOUTES les pages — y compris celles jamais
-      // vraiment personnalisées, restées à `[]` (valeur par défaut de
-      // l'époque). Si un nouveau texte par défaut est ajouté PLUS TARD
-      // pour l'une de ces pages (ex. l'intro du Calendrier, round 18,
-      // item 12), cet instantané figé (`[]`) masque silencieusement le
-      // nouveau texte pour toujours, sur ce compte. Un tableau stocké
-      // vide alors que le texte par défaut actuel ne l'est pas ne peut
-      // donc pas être une vraie personnalisation volontaire (l'éditeur
-      // n'a alors jamais affiché ce nouveau texte à effacer) — on
-      // l'ignore et on retombe sur le texte par défaut à jour.
-      helpMessagesByView: (() => {
-        const stored = parsed.helpMessagesByView || {};
-        const cleaned = {};
-        Object.keys(stored).forEach((key) => {
-          const storedVal = stored[key];
-          const storedEmpty = !Array.isArray(storedVal) || storedVal.length === 0;
-          const defaultVal = DEFAULT_HELP_MESSAGES_BY_VIEW[key];
-          const defaultNonEmpty = Array.isArray(defaultVal) && defaultVal.length > 0;
-          if (storedEmpty && defaultNonEmpty) return; // instantané figé obsolète, ignoré
-          cleaned[key] = storedVal;
-        });
-        return { ...DEFAULT_HELP_MESSAGES_BY_VIEW, ...cleaned };
-      })(),
-      ratingBtnBgColor: parsed.ratingBtnBgColor || DEFAULT_RATING_BTN_BG_COLOR,
-      appBgColor: parsed.appBgColor || DEFAULT_APP_BG_COLOR,
-      constructionActiveColor: parsed.constructionActiveColor || DEFAULT_CONSTRUCTION_ACTIVE_COLOR,
-      bonusPillColor: parsed.bonusPillColor || DEFAULT_BONUS_PILL_COLOR,
-      mainTextColor: parsed.mainTextColor || DEFAULT_MAIN_TEXT_COLOR,
-      cardTextColor: parsed.cardTextColor || DEFAULT_CARD_TEXT_COLOR,
-      dueBarColor: parsed.dueBarColor || DEFAULT_DUE_BAR_COLOR,
-      todayBarColor: parsed.todayBarColor || DEFAULT_TODAY_BAR_COLOR,
-      chartWrapBgColor: parsed.chartWrapBgColor || DEFAULT_CHART_WRAP_BG_COLOR,
-      svgChartBgColor: parsed.svgChartBgColor || DEFAULT_SVG_CHART_BG_COLOR,
-      cardFormBgColor: parsed.cardFormBgColor || DEFAULT_CARD_FORM_BG_COLOR,
-      richEditorBgColor: parsed.richEditorBgColor || DEFAULT_RICH_EDITOR_BG_COLOR,
-      cardBgColor: parsed.cardBgColor || DEFAULT_CARD_BG_COLOR,
-      emptyBarColor: parsed.emptyBarColor || DEFAULT_EMPTY_BAR_COLOR,
-      bgColors: { ...DEFAULT_BG_COLORS, ...(parsed.bgColors || {}) },
-      textColorsSet: { ...DEFAULT_TEXT_COLORS_SET, ...(parsed.textColorsSet || {}) },
-      shadows: { ...DEFAULT_SHADOWS, ...(parsed.shadows || {}) },
-      homeLayout: migrateHomeLayoutToPercent(parsed),
-      homeLogo: { ...DEFAULT_HOME_LOGO, ...(parsed.homeLogo || {}) },
-      bodyLogo: { ...DEFAULT_BODY_LOGO, ...(parsed.bodyLogo || {}) },
-      darwinLogo: { ...DEFAULT_DARWIN_LOGO, ...(parsed.darwinLogo || {}) },
-      darwinText: { ...DEFAULT_DARWIN_TEXT, ...(parsed.darwinText || {}) },
-      homeLayoutUnit: "percent",
-      homeLayoutAnchor: "center",
-      reviewLayout: { ...DEFAULT_REVIEW_LAYOUT, ...(parsed.reviewLayout || {}) },
-      cardScore: { ...DEFAULT_CARD_SCORE_SETTINGS, ...(parsed.cardScore || {}) },
-      gaugeColors: { ...DEFAULT_GAUGE_COLORS, ...(parsed.gaugeColors || {}) },
-      // Round 42 : nouvel algorithme. D'anciens réglages (version < 2,
-      // coefTe/coefDd/abat…) sont remplacés par les valeurs par défaut,
-      // couleurs de la jauge comprises. Tableaux clonés (jamais partagés
-      // avec les valeurs par défaut).
-      revisionAlgo: buildRevisionAlgoSettings(parsed.revisionAlgo),
-      persGaugeColors:
-        parsed.revisionAlgo && parsed.revisionAlgo.version === REVISION_ALGO_VERSION
-          ? { ...DEFAULT_PERS_GAUGE_COLORS, ...(parsed.persGaugeColors || {}) }
-          : { ...DEFAULT_PERS_GAUGE_COLORS },
-      // Item 4 : mode nuit — un jeu de couleurs parallèle et réglable pour
-      // chacun des groupes ci-dessus, plus un simple drapeau on/off (dont
-      // l'état effectif est en réalité piloté par le bouton en topbar, pas
-      // ce réglage-ci, qui ne sert qu'à mémoriser le dernier choix).
-      nightMode: parsed.nightMode === true,
-      nightColors: {
-        bgColors: { ...DEFAULT_NIGHT_BG_COLORS, ...((parsed.nightColors || {}).bgColors || {}) },
-        textColorsSet: { ...DEFAULT_NIGHT_TEXT_COLORS_SET, ...((parsed.nightColors || {}).textColorsSet || {}) },
-        ratingColors: { ...DEFAULT_RATING_COLORS, ...((parsed.nightColors || {}).ratingColors || {}) },
-        ratingBtnBgColor: (parsed.nightColors || {}).ratingBtnBgColor || DEFAULT_NIGHT_RATING_BTN_BG_COLOR,
-        gaugeColors: { ...DEFAULT_GAUGE_COLORS, ...((parsed.nightColors || {}).gaugeColors || {}) },
-      },
-      icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
-      textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
-      // Horodatage de la dernière modification (posé par saveDevSettings) —
-      // affiché nulle part mais conservé pour référence/débogage.
-      updatedAt: parsed.updatedAt,
-    };
-    // Round 41 : le mode « chantier » devient « signaler » — anciennes
-    // icônes (barrière / cône) remplacées par le drapeau.
-    if (built.icons && built.icons.construction === "🚧") built.icons.construction = "🚩";
-    if (built.iconBank && built.iconBank.construction === "cone") built.iconBank.construction = "flag";
-    return built;
-  }
-  /** Round 4, partie 3 : réglages STRICTEMENT locaux à cet appareil, TELS
-   *  QUE STOCKÉS (sans les valeurs par défaut du code ni la "sous-couche"
-   *  publique — voir loadDevSettings) — à utiliser pour toute écriture
-   *  automatique (non déclenchée par une vraie personnalisation de
-   *  l'utilisateur dans le mode développeur), pour ne jamais figer par
-   *  erreur un instantané complet dans le stockage local. */
+  /** Réglages tels que stockés sur l'appareil (sans valeurs par défaut). */
   function loadRawDevSettingsOverride() {
     try {
       return JSON.parse(localStorage.getItem(DEV_SETTINGS_KEY)) || {};
@@ -1648,42 +766,18 @@
       return {};
     }
   }
+  /** Écriture locale seulement (dernier choix jour / nuit de l'appareil). */
   function saveDevSettings(settings) {
     settings.updatedAt = new Date().toISOString();
-    localStorage.setItem(DEV_SETTINGS_KEY, JSON.stringify(settings));
-    scheduleDevSettingsPush();
+    storeLocalDevSettings(settings);
   }
-  // Poussée retardée (item 1 — synchro des réglages développeur) :
-  // beaucoup d'appels à saveDevSettings coup sur coup en bougeant un
-  // curseur de couleur enverraient sinon une requête réseau par pixel de
-  // déplacement — un seul envoi groupé, un court instant après la
-  // dernière modification. Round 16 : envoi direct vers l'UNIQUE canal
-  // partagé (`dev_settings_public`) — plus de notion de Compte à
-  // résoudre au préalable, ni de bouton "Publier" séparé : ce qui est
-  // sauvegardé ici EST déjà la version que tout le monde va recevoir.
-  let devSettingsPushTimer = null;
-  function scheduleDevSettingsPush() {
-    if (typeof Sync === "undefined" || !Sync.isConfigured || !Sync.isConfigured()) return;
-    clearTimeout(devSettingsPushTimer);
-    devSettingsPushTimer = setTimeout(() => {
-      devSettingsPushTimer = null;
-      pushDevSettingsNow();
-    }, 900);
-    renderDevSyncStatus();
-  }
-  // Round 33 : au retour au premier plan (iPhone : l'appli n'est souvent pas
-  // relancée), on relit les réglages partagés ; en passant en arrière-plan,
-  // on envoie tout de suite ce qui attendait encore.
+  /** Round 50 : plus rien à envoyer (réglages modifiés dans Darwin Admin). */
+  function scheduleDevSettingsPush() {}
+  // Au retour au premier plan (iPhone : l'appli n'est souvent pas
+  // relancée), on relit les réglages communs.
   let devSettingsLastResumeSync = 0;
   function onDevSettingsVisibility() {
-    if (document.visibilityState === "hidden") {
-      if (devSettingsPushTimer) {
-        clearTimeout(devSettingsPushTimer);
-        devSettingsPushTimer = null;
-        pushDevSettingsNow();
-      }
-      return;
-    }
+    if (document.visibilityState === "hidden") return;
     if (Date.now() - devSettingsLastResumeSync < 5000) return;
     devSettingsLastResumeSync = Date.now();
     syncDevSettingsFromServer();
@@ -1692,36 +786,31 @@
   window.addEventListener("pageshow", (e) => {
     if (e.persisted) onDevSettingsVisibility();
   });
-  /** Réglages de la page "Réglages" (item — jusqu'ici jamais synchronisés
-   *  du tout, contrairement aux couleurs/icônes) : mode bonus, jours
-   *  d'hibernation, affichage des jours sur les boutons, histogramme de
-   *  Réviser, boîte mémorisée pour "Nouvelle fiche". Regroupés à part
-   *  ici et glissés dans le MÊME envoi que les réglages développeur (pas
-   *  besoin d'une deuxième table Supabase pour si peu de valeurs). */
-  function gatherAppPrefs() {
-    return {
-      bonusDays: localStorage.getItem("fiches_bonus_days"),
-      bonusAgainMode: localStorage.getItem("fiches_bonus_again_mode"),
-      hibernateDays: localStorage.getItem("fiches_hibernate_days"),
-      showRatingDays: localStorage.getItem("fiches_show_rating_days"),
-      showReviewChart: localStorage.getItem("fiches_show_review_chart"),
-      newCardSubjectId: localStorage.getItem("fiches_new_card_subject_id"),
-      cardFontSize: localStorage.getItem("fiches_card_font_size"),
-      // Round 22, item 4 : bug corrigé — RETIRÉ d'ici. Cette fonction
-      // alimente le canal `dev_settings_public` (une seule ligne "global",
-      // voir Sync.pushPublicDevSettings côté sync.js), conçu pour des
-      // réglages d'affichage VALIDÉS PAR STÉPHANE et partagés à toute
-      // installation de l'appli — pas pour des données personnelles. Les
-      // évènements du calendrier y transitaient par erreur : n'importe
-      // quelle installation de l'appli (y compris sans Compte connecté,
-      // y compris celle d'un autre utilisateur) les recevait donc au
-      // démarrage (voir syncDevSettingsFromServer), ce qui est exactement
-      // le bug signalé ("j'avais tous mes évènements alors que je n'étais
-      // pas connecté"). Les évènements sont maintenant stockés localement
-      // par Compte connecté (voir CALENDAR_EVENTS_KEY / loadCalendarEvents)
-      // plutôt que diffusés à tout le monde par ce canal.
-      nightModeActive: localStorage.getItem("fiches_night_mode"),
-    };
+  /* ---- Aperçu dans Darwin Admin ---- */
+  const IS_ADMIN_PREVIEW = window.parent !== window && /[?&]preview=1/.test(location.search);
+  if (IS_ADMIN_PREVIEW) {
+    window.addEventListener("message", (e) => {
+      if (e.origin !== location.origin || !e.data || typeof e.data !== "object") return;
+      if (e.data.type === "darwin-admin-preview" && devIsPlainObj(e.data.settings)) {
+        previewDevSettings = buildDevSettings(e.data.settings);
+        applyAllDevSettings();
+        [renderManageList, renderReviewGauge, renderReviewSubjectScore, updateRatingPreviews, renderRevisionProgramList].forEach((fn) => {
+          try {
+            fn();
+          } catch (err) {
+            /* page pas encore prête */
+          }
+        });
+      } else if (e.data.type === "darwin-admin-goto" && typeof e.data.view === "string") {
+        if (e.data.view === "home") goHome();
+        else {
+          const tab = document.querySelector(`.tab[data-view="${e.data.view}"]`);
+          if (tab) tab.click();
+        }
+      } else if (e.data.type === "darwin-admin-night") {
+        setNightModeActive(!!e.data.on);
+      }
+    });
   }
   function applyAppPrefsFromRemote(prefs) {
     if (!prefs) return;
@@ -1796,147 +885,9 @@
     });
   }
 
-  /** Applique les couleurs des notes (item 2) : posées comme
-   *  variables CSS sur :root, que la feuille de style référence désormais
-   *  (voir .stamp--again, .is-cool, etc.) — un seul endroit à mettre à
-   *  jour pour que ça se répercute partout où ces couleurs sont utilisées. */
-  /** Conversions hex <-> TSL (teinte/saturation/lumière), item 17 — pour
-   *  proposer un réglage par curseurs H/S/L en plus (ou à la place) du
-   *  sélecteur natif <input type="color">, qui ne le propose pas partout
-   *  de la même façon selon le navigateur/l'OS. */
-  function hexToHsl(hex) {
-    const r = parseInt(hex.slice(1, 3), 16) / 255;
-    const g = parseInt(hex.slice(3, 5), 16) / 255;
-    const b = parseInt(hex.slice(5, 7), 16) / 255;
-    const max = Math.max(r, g, b), min = Math.min(r, g, b);
-    let h = 0, s = 0;
-    const l = (max + min) / 2;
-    const d = max - min;
-    if (d !== 0) {
-      s = d / (1 - Math.abs(2 * l - 1));
-      switch (max) {
-        case r: h = 60 * (((g - b) / d) % 6); break;
-        case g: h = 60 * ((b - r) / d + 2); break;
-        case b: h = 60 * ((r - g) / d + 4); break;
-      }
-    }
-    if (h < 0) h += 360;
-    return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) };
-  }
-  function hslToHex(h, s, l) {
-    s /= 100;
-    l /= 100;
-    const c = (1 - Math.abs(2 * l - 1)) * s;
-    const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
-    const m = l - c / 2;
-    let r1 = 0, g1 = 0, b1 = 0;
-    if (h < 60) { r1 = c; g1 = x; } else if (h < 120) { r1 = x; g1 = c; }
-    else if (h < 180) { g1 = c; b1 = x; } else if (h < 240) { g1 = x; b1 = c; }
-    else if (h < 300) { r1 = x; b1 = c; } else { r1 = c; b1 = x; }
-    const toHex = (v) => Math.round((v + m) * 255).toString(16).padStart(2, "0");
-    return `#${toHex(r1)}${toHex(g1)}${toHex(b1)}`;
-  }
 
-  const COLOR_SLIDER_MODE_KEY = "fiches_color_slider_mode";
-  /** "none" | "rgb" | "tsl" — item : remplace la simple case à cocher par
-   *  un vrai choix entre deux jeux de curseurs personnalisés, en plus du
-   *  sélecteur natif de l'appareil (qui propose ses propres onglets
-   *  Grille/Spectre/Curseurs, mais ceux-là appartiennent à l'OS et ne
-   *  peuvent pas être renommés ni complétés depuis une page web). */
-  function loadColorSliderMode() {
-    const v = localStorage.getItem(COLOR_SLIDER_MODE_KEY);
-    return v === "rgb" || v === "tsl" ? v : "none";
-  }
-  function saveColorSliderMode(value) {
-    localStorage.setItem(COLOR_SLIDER_MODE_KEY, value);
-  }
 
-  /** Remplace le sélecteur natif <input type="color"> par un popup
-   *  personnalisé (item 2 — clarifié : le choix RVB/TSL doit vivre DANS le
-   *  popup qui s'ouvre au clic sur une couleur, pas à côté sous forme de
-   *  réglage séparé). Chaque couleur de la page Développeur devient une
-   *  pastille cliquable ; le popup contient l'aperçu, les curseurs
-   *  (RVB ou TSL selon le dernier choix fait, mémorisé), et un bouton pour
-   *  basculer entre les deux à tout moment. */
-  let colorPopupEl = null;
-  /** Popup de sélection dans la banque d'icônes (grille), même principe
-   *  que le popup de couleur : un seul popup partagé, repositionné et
-   *  re-rempli à chaque ouverture. */
-  let iconPopupEl = null;
-  function ensureIconPopup() {
-    if (iconPopupEl) return iconPopupEl;
-    iconPopupEl = document.createElement("div");
-    iconPopupEl.className = "icon-popup";
-    iconPopupEl.hidden = true;
-    document.body.appendChild(iconPopupEl);
-    // "pointerdown" plutôt que "click" (bug corrigé) : sur iOS Safari, un
-    // clic sur un élément qui n'est pas nativement "cliquable" (un simple
-    // <body>/<div> sans gestionnaire dessus) ne remonte pas toujours
-    // fiablement jusqu'à un écouteur "click" posé sur document — le popup
-    // semblait alors ne jamais se refermer au clic en dehors.
-    // "pointerdown" est délivré de façon bien plus fiable, quel que soit
-    // l'élément visé.
-    document.addEventListener("pointerdown", (e) => {
-      if (iconPopupEl.hidden) return;
-      if (iconPopupEl.contains(e.target) || e.target.closest(".icon-picker-btn")) return;
-      iconPopupEl.hidden = true;
-    });
-    return iconPopupEl;
-  }
-  function openIconPopup(anchorBtn, currentIconId, onPick) {
-    const popup = ensureIconPopup();
-    const rect = anchorBtn.getBoundingClientRect();
-    const popupWidth = 240;
-    popup.style.position = "fixed";
-    popup.style.top = `${rect.bottom + 6}px`;
-    popup.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - popupWidth - 8))}px`;
-    popup.hidden = false;
-    popup.innerHTML = Object.keys(ICON_LIBRARY)
-      .map(
-        (id) =>
-          `<button type="button" class="icon-bank-btn${id === currentIconId ? " is-active" : ""}" data-icon="${id}">${iconSvgMarkup(id, "icon-bank-svg")}</button>`
-      )
-      .join("");
-    popup.querySelectorAll(".icon-bank-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        onPick(btn.dataset.icon);
-        popup.hidden = true;
-      });
-    });
-  }
 
-  /** Éditeur des icônes du menu principal (banque d'icônes). */
-  /** Éditeur générique "banque d'icônes" (item : réutilisé pour le menu
-   *  principal ET les icônes de la fiche/arborescence) — une ligne par
-   *  emplacement, avec un aperçu cliquable ouvrant la grille de choix. */
-  function renderIconBankPicker(wrapId, slots, titles, settingsKey, onApplied) {
-    const wrap = el(wrapId);
-    if (!wrap) return;
-    const settings = loadDevSettings();
-    wrap.innerHTML = slots
-      .map(
-        (slot) => `<div class="dev-nav-icon-row">
-          <span>${titles[slot] || slot}</span>
-          <button type="button" class="icon-picker-btn" data-slot="${slot}">${iconSvgMarkup(settings[settingsKey][slot], "icon-bank-svg")}</button>
-        </div>`
-      )
-      .join("");
-    wrap.querySelectorAll(".icon-picker-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const slot = btn.dataset.slot;
-        const current = loadDevSettings()[settingsKey][slot];
-        openIconPopup(btn, current, (iconId) => {
-          const s = loadDevSettings();
-          s[settingsKey][slot] = iconId;
-          saveDevSettings(s);
-          onApplied();
-          renderIconBankPicker(wrapId, slots, titles, settingsKey, onApplied);
-        });
-      });
-    });
-  }
 
   /** Applique les icônes choisies aux carrés de la page d'accueil (item
    *  2c) — même réglage "navIcons" que l'ancien menu principal, maintenant
@@ -1952,141 +903,12 @@
     });
   }
 
-  function renderNavIconsEditor() {
-    renderIconBankPicker(
-      "dev-nav-icons-list",
-      Object.keys(DEFAULT_NAV_ICONS),
-      { review: "Réviser", manage: "Gérer", stats: "Stats", settings: "Réglages", addCard: "Ajouter une fiche", calendar: "Calendrier", dev: "Développeur", library: "Librairie" },
-      "navIcons",
-      () => {
-        applyNavLabels();
-        applyHomeIcons();
-      }
-    );
-  }
 
-  function renderIconBankEditor() {
-    renderIconBankPicker(
-      "dev-icon-bank-list",
-      Object.keys(DEFAULT_ICON_BANK_CHOICES).filter((k) => k !== "hibernate"),
-      { edit: "Éditer", construction: "Signaler", undo: "Annuler" },
-      "iconBank",
-      applyIconSettings
-    );
-  }
 
-  /** Icônes de la page Organisation (item 3) : renommer/déplacer/
-   *  supprimer. */
-  function renderOrgIconBankEditor() {
-    renderIconBankPicker(
-      "dev-org-icon-bank-list",
-      Object.keys(DEFAULT_ORG_ICON_BANK_CHOICES),
-      { orgRename: "Renommer", orgMove: "Déplacer", orgDelete: "Supprimer", orgBoite: "Icône des boîtes" },
-      "orgIconBank",
-      renderManageList
-    );
-  }
 
-  /** Icônes des boutons d'évaluation (item 2a) — plus d'émoticônes libres. */
-  function renderRatingIconsEditor() {
-    renderIconBankPicker(
-      "dev-rating-icons-list",
-      Object.keys(DEFAULT_RATING_ICONS),
-      { again: "Encore", hard: "Difficile", good: "Bien", easy: "Facile" },
-      "ratingIcons",
-      applyRatingLabels
-    );
-  }
 
-  /** Liste verticale intitulé/sélecteur de couleur (items 2h/2i) —
-   *  générique, réutilisée pour "Couleurs des fonds" et "Couleurs des
-   *  textes" : un ordre précis de clés, avec leur intitulé affiché. */
-  function renderColorListPicker(wrapId, order, titles, settingsKey, onApplied) {
-    const wrap = el(wrapId);
-    if (!wrap) return;
-    const settings = loadDevSettings();
-    wrap.innerHTML = order
-      .map(
-        (key) => `<div class="dev-color-row dev-color-row--daynight">
-          <span>${titles[key] || key}</span>
-          <span class="dev-color-daynight-pair">
-            <input type="text" class="dev-color-value" data-key="${key}" data-variant="day" title="Mode jour" value="${settings[settingsKey][key]}" />
-            <input type="text" class="dev-color-value" data-key="${key}" data-variant="night" title="Mode nuit" value="${(settings.nightColors[settingsKey] || {})[key]}" />
-          </span>
-        </div>`
-      )
-      .join("");
-    wrap.querySelectorAll("input.dev-color-value").forEach((input) => {
-      input.addEventListener("input", () => {
-        const s = loadDevSettings();
-        if (input.dataset.variant === "night") {
-          if (!s.nightColors[settingsKey]) s.nightColors[settingsKey] = {};
-          s.nightColors[settingsKey][input.dataset.key] = input.value;
-        } else {
-          s[settingsKey][input.dataset.key] = input.value;
-        }
-        saveDevSettings(s);
-        onApplied();
-      });
-    });
-    enhanceColorInputsWithHsl();
-  }
 
-  const BG_COLORS_ORDER = [
-    "appBg", "homeBg", "homeSquareBg", "homeAddCardBg", "homeLibraryBg", "libraryPageBg", "cardFormBg", "richEditorBg", "homeBtnBg", "cardBg",
-    "subjectSelectBg", "syncStatusBg", "folderBg", "folderL1Bg", "folderL2Bg", "folderL3Bg",
-    "subjectRowBg", "addBtnBg", "chartWrapBg", "svgChartBg", "dueBarColor", "todayBarColor", "reviewedBarColor",
-    "skipProgramBg",
-  ];
-  const BG_COLORS_TITLES = {
-    appBg: "Fond de l'appli (toutes pages sauf accueil)",
-    homeBg: "Fond de la page d'accueil",
-    homeSquareBg: "Boutons de la page d'accueil",
-    homeAddCardBg: "Bouton « Ajouter une fiche » de l'accueil",
-    homeLibraryBg: "Bouton « Librairie » de l'accueil",
-    libraryPageBg: "Fond de la page Librairie",
-    cardFormBg: "Fond des cadres (blocs)",
-    richEditorBg: "Fond des zones de texte",
-    homeBtnBg: "Bouton home",
-    cardBg: "Fond des fiches (recto & verso)",
-    subjectSelectBg: "Fond des sélecteurs de boîtes",
-    syncStatusBg: "Fond de la pastille synchronisé",
-    folderBg: "Fond des dossiers",
-    folderL1Bg: "Fond des sous-dossiers de niveau 1",
-    folderL2Bg: "Fond des sous-dossiers de niveau 2",
-    folderL3Bg: "Fond des sous-dossiers de niveau 3",
-    subjectRowBg: "Fond des boîtes",
-    addBtnBg: "Fond des boutons (nouveau dossier / nouvelle boîte)",
-    chartWrapBg: "Fond des histogrammes",
-    svgChartBg: "Fond des graphiques",
-    dueBarColor: "Barres « à revoir »",
-    todayBarColor: "Barre « Aujourd'hui »",
-    reviewedBarColor: "Barres « révisées »",
-    skipProgramBg: "Fond du bouton « Ne pas suivre le programme »",
-  };
-  function renderBgColorsEditor() {
-    renderColorListPicker("dev-bg-colors-list", BG_COLORS_ORDER, BG_COLORS_TITLES, "bgColors", applyColorSettings);
-  }
 
-  const TEXT_COLORS_SET_ORDER = [
-    "homeTitle", "titles", "generalText", "folderSubjectNames", "cardText",
-    "chartValues", "chartLabels", "chartTodayLabel", "selectorText", "syncText",
-  ];
-  const TEXT_COLORS_SET_TITLES = {
-    homeTitle: "Titre de la page d'accueil",
-    titles: "Titres (toutes les pages)",
-    generalText: "Textes (autres que titres)",
-    folderSubjectNames: "Intitulés dossiers et boîtes",
-    cardText: "Texte fiches",
-    chartValues: "Valeurs graphiques",
-    chartLabels: "Étiquettes graphiques",
-    chartTodayLabel: "Étiquette « Aujourd'hui »",
-    selectorText: "Texte sélecteurs",
-    syncText: "Texte « synchroniser »",
-  };
-  function renderTextColorsSetEditor() {
-    renderColorListPicker("dev-text-colors-set-list", TEXT_COLORS_SET_ORDER, TEXT_COLORS_SET_TITLES, "textColorsSet", applyColorSettings);
-  }
 
   /** Applique (ou retire) l'ombrage de chaque élément réglable (item 5). */
   /** Positionne chaque cercle de l'accueil selon x/y/diamètre réglés
@@ -2273,382 +1095,14 @@
     root.setProperty("--review-flip-duration", `${getFlipDurationMs() / 1000}s`);
   }
 
-  function renderHomeLayoutEditor() {
-    const wrap = el("dev-home-layout-list");
-    if (!wrap) return;
-    const settings = loadDevSettings();
-    wrap.innerHTML = Object.keys(DEFAULT_HOME_LAYOUT)
-      .map((key) => {
-        const pos = settings.homeLayout[key];
-        return `<div class="dev-home-layout-row">
-          <span class="dev-home-layout-title">${HOME_LAYOUT_TITLES[key] || key}</span>
-          <label>X % <input type="number" step="0.1" class="dev-home-layout-input" data-key="${key}" data-field="x" value="${Math.round(pos.x * 10) / 10}" /></label>
-          <label>Y % <input type="number" step="0.1" class="dev-home-layout-input" data-key="${key}" data-field="y" value="${Math.round(pos.y * 10) / 10}" /></label>
-          <label>Ø px <input type="number" class="dev-home-layout-input" data-key="${key}" data-field="d" value="${pos.d}" /></label>
-        </div>`;
-      })
-      .join("");
-    wrap.querySelectorAll(".dev-home-layout-input").forEach((input) => {
-      input.addEventListener("input", () => {
-        const s = loadDevSettings();
-        s.homeLayout[input.dataset.key][input.dataset.field] = Number(input.value) || 0;
-        saveDevSettings(s);
-        applyHomeLayout();
-      });
-    });
-  }
 
-  /** Items 1/2 : position/taille du logo sur la page d'accueil. */
-  function renderHomeLogoEditor() {
-    const wrap = el("dev-home-logo-list");
-    if (!wrap) return;
-    const logo = loadDevSettings().homeLogo;
-    const bodyLogo = loadDevSettings().bodyLogo;
-    wrap.innerHTML = `<div class="dev-home-layout-row">
-      <span class="dev-home-layout-title">Logo (accueil)</span>
-      <label>X % <input type="number" step="0.1" class="dev-home-logo-input" data-field="x" value="${logo.x}" /></label>
-      <label>Y % <input type="number" step="0.1" class="dev-home-logo-input" data-field="y" value="${logo.y}" /></label>
-      <label>Taille px <input type="number" class="dev-home-logo-input" data-field="size" value="${logo.size}" /></label>
-    </div>
-    <div class="dev-home-layout-row">
-      <span class="dev-home-layout-title">Logo (autres pages)</span>
-      <label>Taille px <input type="number" class="dev-body-logo-input" data-field="size" value="${bodyLogo.size}" /></label>
-    </div>`;
-    wrap.querySelectorAll(".dev-home-logo-input").forEach((input) => {
-      input.addEventListener("input", () => {
-        const s = loadDevSettings();
-        s.homeLogo[input.dataset.field] = Number(input.value) || 0;
-        saveDevSettings(s);
-        applyHomeLayout();
-      });
-    });
-    wrap.querySelectorAll(".dev-body-logo-input").forEach((input) => {
-      input.addEventListener("input", () => {
-        const s = loadDevSettings();
-        s.bodyLogo[input.dataset.field] = Number(input.value) || 0;
-        saveDevSettings(s);
-        applyHomeLayout();
-      });
-    });
-  }
 
-  // Round 14 : logo "darwin" — position/taille/ombre TOUTES réglables
-  // ici (contrairement au logo robot, dont seule l'ombre vit dans
-  // Réglages ; voir DEFAULT_DARWIN_LOGO plus haut).
-  function renderDarwinLogoEditor() {
-    const wrap = el("dev-darwin-logo-list");
-    if (!wrap) return;
-    const logo = loadDevSettings().darwinLogo;
-    wrap.innerHTML = `<div class="dev-home-layout-row">
-      <span class="dev-home-layout-title">Logo darwin</span>
-      <label>X % <input type="number" step="0.1" class="dev-darwin-logo-input" data-field="x" value="${logo.x}" /></label>
-      <label>Y % <input type="number" step="0.1" class="dev-darwin-logo-input" data-field="y" value="${logo.y}" /></label>
-      <label>Taille px <input type="number" class="dev-darwin-logo-input" data-field="size" value="${logo.size}" /></label>
-    </div>
-    <label class="settings-toggle-row">
-      <input type="checkbox" id="dev-darwin-logo-shadow" ${logo.shadow ? "checked" : ""} />
-      <span>Ombre sous le logo darwin</span>
-    </label>
-    <!-- Round 15, item 2 : couleur du logo darwin (topbar + accueil),
-         noir d'origine jugé trop dur — bleu par défaut, réglable ici. -->
-    <label class="field">
-      <span>Couleur du logo darwin</span>
-      <input type="color" id="dev-darwin-logo-color" value="${logo.color || "#4a90d9"}" />
-    </label>`;
-    wrap.querySelectorAll(".dev-darwin-logo-input").forEach((input) => {
-      input.addEventListener("input", () => {
-        const s = loadDevSettings();
-        s.darwinLogo[input.dataset.field] = Number(input.value) || 0;
-        saveDevSettings(s);
-        applyHomeLayout();
-      });
-    });
-    const shadowEl = el("dev-darwin-logo-shadow");
-    if (shadowEl) {
-      shadowEl.addEventListener("change", () => {
-        const s = loadDevSettings();
-        s.darwinLogo.shadow = shadowEl.checked;
-        saveDevSettings(s);
-        applyHomeLayout();
-      });
-    }
-    const colorEl = el("dev-darwin-logo-color");
-    if (colorEl) {
-      colorEl.addEventListener("input", () => {
-        const s = loadDevSettings();
-        s.darwinLogo.color = colorEl.value;
-        saveDevSettings(s);
-        applyHomeLayout();
-      });
-    }
-  }
 
-  // Round 14 : texte sous le logo darwin — contenu/position/taille.
-  function renderDarwinTextEditor() {
-    const wrap = el("dev-darwin-text-list");
-    if (!wrap) return;
-    const text = loadDevSettings().darwinText;
-    wrap.innerHTML = `<label class="field">
-      <span>Texte (vide = masqué)</span>
-      <input type="text" id="dev-darwin-text-content" value="${escapeHtml(text.content || "")}" placeholder="Ex. Fiches by darwin" />
-    </label>
-    <div class="dev-home-layout-row">
-      <span class="dev-home-layout-title">Position</span>
-      <label>X % <input type="number" step="0.1" class="dev-darwin-text-input" data-field="x" value="${text.x}" /></label>
-      <label>Y % <input type="number" step="0.1" class="dev-darwin-text-input" data-field="y" value="${text.y}" /></label>
-      <label>Taille px <input type="number" class="dev-darwin-text-input" data-field="size" value="${text.size}" /></label>
-    </div>`;
-    const contentEl = el("dev-darwin-text-content");
-    if (contentEl) {
-      contentEl.addEventListener("input", () => {
-        const s = loadDevSettings();
-        s.darwinText.content = contentEl.value;
-        saveDevSettings(s);
-        applyHomeLayout();
-      });
-    }
-    wrap.querySelectorAll(".dev-darwin-text-input").forEach((input) => {
-      input.addEventListener("input", () => {
-        const s = loadDevSettings();
-        s.darwinText[input.dataset.field] = Number(input.value) || 0;
-        saveDevSettings(s);
-        applyHomeLayout();
-      });
-    });
-  }
 
-  // Item 6 (dernier lot) : ombres du logo — réglages utilisateur
-  // (Réglages), la donnée reste dans devSettings pour réutiliser
-  // applyHomeLayout tel quel.
-  const settingBodyLogoShadowEl = el("setting-body-logo-shadow");
-  if (settingBodyLogoShadowEl) {
-    settingBodyLogoShadowEl.addEventListener("change", () => {
-      const s = loadDevSettings();
-      s.bodyLogo.shadow = settingBodyLogoShadowEl.checked;
-      saveDevSettings(s);
-      applyHomeLayout();
-    });
-  }
-  const settingHomeLogoShadowEl = el("setting-home-logo-shadow");
-  if (settingHomeLogoShadowEl) {
-    settingHomeLogoShadowEl.addEventListener("change", () => {
-      const s = loadDevSettings();
-      s.homeLogo.shadow = settingHomeLogoShadowEl.checked;
-      saveDevSettings(s);
-      applyHomeLayout();
-    });
-  }
 
-  /** Disposition de la page Réviser (item 1b/1c). */
-  const REVIEW_LAYOUT_FIELDS = [
-    { key: "cardHeightPct", title: "Hauteur de la fiche", unit: "% de l'écran" },
-    { key: "cardWidthPct", title: "Largeur de la fiche", unit: "% de l'écran" },
-    { key: "cardTopPct", title: "Position Y du bord haut de la fiche", unit: "% de l'écran" },
-    { key: "ratingRowTopPct", title: "Position Y des boutons d'évaluation", unit: "% de l'écran" },
-    { key: "scoreInfoTopPct", title: "Position Y des infos de score de la fiche", unit: "% de l'écran" },
-    { key: "gaugeTopPct", title: "Position Y de la jauge", unit: "% de l'écran" },
-    { key: "flipDurationSec", title: "Temps de retournement de la fiche", unit: "secondes" },
-  ];
-  function renderReviewLayoutEditor() {
-    const wrap = el("dev-review-layout-list");
-    if (!wrap) return;
-    const settings = loadDevSettings();
-    wrap.innerHTML = REVIEW_LAYOUT_FIELDS.map(
-      ({ key, title, unit }) => `<div class="dev-color-row">
-        <span>${title} (${unit})</span>
-        <input type="number" step="${key === "flipDurationSec" ? "0.1" : "1"}" class="dev-review-layout-input" data-key="${key}" value="${settings.reviewLayout[key]}" style="width:70px;" />
-      </div>`
-    ).join("");
-    wrap.querySelectorAll(".dev-review-layout-input").forEach((input) => {
-      input.addEventListener("input", () => {
-        const s = loadDevSettings();
-        s.reviewLayout[input.dataset.key] = Number(input.value) || 0;
-        saveDevSettings(s);
-        applyReviewLayout();
-      });
-    });
-  }
-  const devReviewLayoutResetBtn = el("dev-review-layout-reset");
-  if (devReviewLayoutResetBtn) {
-    devReviewLayoutResetBtn.addEventListener("click", () => {
-      const s = loadDevSettings();
-      s.reviewLayout = { ...DEFAULT_REVIEW_LAYOUT };
-      saveDevSettings(s);
-      applyReviewLayout();
-      renderDevView();
-    });
-  }
 
-  /** Algorithme v2 : COEF_SPRINT / COEF_FOND / PLANCHER_FOND / PLAFOND_FOND
-   *  par bouton (indices 0-3). Contrôles : COEF_SPRINT > 1, PLANCHER ≤
-   *  PLAFOND, valeurs positives — une valeur refusée n'est pas enregistrée
-   *  (champ en rouge, message sous le tableau). */
-  const REVISION_ALGO_FIELD_DEFS = [
-    { key: "coefSprint", title: "COEF_SPRINT (mode sprint, > 1)", step: "0.01" },
-    { key: "coefFond", title: "COEF_FOND (mode fond)", step: "0.01" },
-    { key: "plancherMin", title: "PLANCHER_FOND (minutes)", step: "1" },
-    { key: "plafondMin", title: "PLAFOND_FOND (minutes)", step: "1" },
-  ];
-  function revisionAlgoValueError(algo, key, idx, value) {
-    if (!Number.isFinite(value) || value < 0) return "Valeur positive attendue.";
-    if (key === "coefSprint" && value <= 1) return "COEF_SPRINT doit être strictement supérieur à 1.";
-    if (key === "plancherMin" && value > algo.plafondMin[idx]) return "Le PLANCHER ne peut pas dépasser le PLAFOND.";
-    if (key === "plafondMin" && value < algo.plancherMin[idx]) return "Le PLAFOND ne peut pas être inférieur au PLANCHER.";
-    if ((key === "plancherMin" || key === "plafondMin") && value < 1) return "1 minute minimum.";
-    return "";
-  }
-  function renderRevisionAlgoEditor() {
-    const wrap = el("dev-revision-algo-list");
-    if (!wrap) return;
-    const settings = loadDevSettings().revisionAlgo;
-    wrap.innerHTML =
-      REVISION_ALGO_FIELD_DEFS.map(
-        ({ key, title, step }) => `<div class="dev-color-row">
-          <span>${title}</span>
-          <span class="algo-grid algo-grid--4" style="flex:1;">
-            ${REVISION_ALGO_RATING_ORDER.map(
-              (rating, idx) =>
-                `<label class="field settings-bonus-field">
-                  <span>${REVISION_ALGO_RATING_LABELS[rating]}</span>
-                  <input type="number" step="${step}" class="dev-revision-algo-input" data-key="${key}" data-idx="${idx}" value="${settings[key][idx]}" />
-                </label>`
-            ).join("")}
-          </span>
-        </div>`
-      ).join("") + `<p class="field-hint dev-revision-algo-error" id="dev-revision-algo-error" hidden></p>`;
-    const errEl = el("dev-revision-algo-error");
-    wrap.querySelectorAll(".dev-revision-algo-input").forEach((input) => {
-      input.addEventListener("input", () => {
-        const s = loadDevSettings();
-        const idx = Number(input.dataset.idx);
-        const key = input.dataset.key;
-        const value = input.value === "" ? NaN : Number(input.value);
-        const err = revisionAlgoValueError(s.revisionAlgo, key, idx, value);
-        input.classList.toggle("is-invalid", !!err);
-        if (errEl) {
-          errEl.hidden = !err;
-          errEl.textContent = err ? `${REVISION_ALGO_RATING_LABELS[REVISION_ALGO_RATING_ORDER[idx]]} : ${err} (non enregistré)` : "";
-        }
-        if (err) return;
-        s.revisionAlgo[key][idx] = value;
-        saveDevSettings(s);
-        updateRatingPreviews();
-      });
-    });
-  }
-  const devRevisionAlgoResetBtn = el("dev-revision-algo-reset");
-  if (devRevisionAlgoResetBtn) {
-    devRevisionAlgoResetBtn.addEventListener("click", () => {
-      const settings = loadDevSettings();
-      settings.revisionAlgo = buildRevisionAlgoSettings(null);
-      settings.persGaugeColors = { ...DEFAULT_PERS_GAUGE_COLORS };
-      saveDevSettings(settings);
-      renderDevView();
-      renderManageList();
-      updateRatingPreviews();
-      renderReviewGauge();
-      renderRevisionProgramList();
-    });
-  }
-  function renderPersGaugeColorsEditor() {
-    const wrap = el("dev-pers-gauge-colors-list");
-    if (!wrap) return;
-    const settings = loadDevSettings();
-    wrap.innerHTML = PERS_GAUGE_ZONE_ORDER.map(
-      (key) => `<div class="dev-color-row">
-        <span>${PERS_GAUGE_ZONE_LABELS[key]}</span>
-        <input type="text" class="dev-pers-gauge-color-input" data-key="${key}" value="${settings.persGaugeColors[key]}" />
-      </div>`
-    ).join("");
-    wrap.querySelectorAll(".dev-pers-gauge-color-input").forEach((input) => {
-      input.addEventListener("input", () => {
-        const s = loadDevSettings();
-        s.persGaugeColors[input.dataset.key] = input.value;
-        saveDevSettings(s);
-        renderManageList();
-        renderReviewGauge();
-        renderRevisionProgramList();
-      });
-    });
-    enhanceColorInputsWithHsl();
-  }
 
-  /** Score des fiches (items 1a/1d/2) : P, B, seuils de jauge V1-V4, et
-   *  les deux cases "masquer". */
-  function renderCardScoreEditor() {
-    const s = loadDevSettings().cardScore;
-    const pInput = el("dev-score-p");
-    const bInput = el("dev-score-b");
-    if (pInput) pInput.value = s.p;
-    if (bInput) bInput.value = s.b;
-    ["v1", "v2", "v3", "v4", "v5"].forEach((k) => {
-      const input = el(`dev-score-${k}`);
-      if (input) input.value = s[k];
-    });
-    const fontSizeInput = el("dev-score-program-target-font-size");
-    if (fontSizeInput) fontSizeInput.value = s.programTargetFontSize;
-    const hideInfo = el("dev-score-hide-info");
-    if (hideInfo) hideInfo.checked = s.hideReviewScoreInfo;
-    const hideSubject = el("dev-score-hide-subject");
-    if (hideSubject) hideSubject.checked = s.hideSubjectScoreOnReview;
-  }
-  function saveCardScoreFromInputs() {
-    const settings = loadDevSettings();
-    const pInput = el("dev-score-p");
-    const bInput = el("dev-score-b");
-    if (pInput) settings.cardScore.p = Number(pInput.value) || DEFAULT_CARD_SCORE_SETTINGS.p;
-    if (bInput) settings.cardScore.b = Number(bInput.value) || DEFAULT_CARD_SCORE_SETTINGS.b;
-    ["v1", "v2", "v3", "v4", "v5"].forEach((k) => {
-      const input = el(`dev-score-${k}`);
-      if (input) settings.cardScore[k] = Number(input.value) || DEFAULT_CARD_SCORE_SETTINGS[k];
-    });
-    const fontSizeInput = el("dev-score-program-target-font-size");
-    if (fontSizeInput) settings.cardScore.programTargetFontSize = Number(fontSizeInput.value) || DEFAULT_CARD_SCORE_SETTINGS.programTargetFontSize;
-    const hideInfo = el("dev-score-hide-info");
-    if (hideInfo) settings.cardScore.hideReviewScoreInfo = hideInfo.checked;
-    const hideSubject = el("dev-score-hide-subject");
-    if (hideSubject) settings.cardScore.hideSubjectScoreOnReview = hideSubject.checked;
-    saveDevSettings(settings);
-    renderManageList();
-    updateRatingPreviews();
-    renderReviewSubjectScore();
-    renderReviewGauge();
-    renderRevisionProgramList();
-  }
-  ["dev-score-p", "dev-score-b", "dev-score-v1", "dev-score-v2", "dev-score-v3", "dev-score-v4", "dev-score-v5", "dev-score-program-target-font-size", "dev-score-hide-info", "dev-score-hide-subject"].forEach((id) => {
-    const input = el(id);
-    if (input) input.addEventListener("input", saveCardScoreFromInputs);
-  });
-  const devScoreResetBtn = el("dev-score-reset");
-  if (devScoreResetBtn) {
-    devScoreResetBtn.addEventListener("click", () => {
-      const settings = loadDevSettings();
-      settings.cardScore = { ...DEFAULT_CARD_SCORE_SETTINGS };
-      settings.gaugeColors = { ...DEFAULT_GAUGE_COLORS };
-      settings.nightColors.gaugeColors = { ...DEFAULT_GAUGE_COLORS };
-      saveDevSettings(settings);
-      renderDevView();
-      renderManageList();
-      updateRatingPreviews();
-      renderReviewSubjectScore();
-      renderReviewGauge();
-    });
-  }
 
-  /** Couleurs des zones de la jauge (item 4). */
-  const GAUGE_COLORS_TITLES = Object.fromEntries(GAUGE_ZONE_DEFS.map((z) => [z.key, z.label]));
-  function renderGaugeColorsEditor() {
-    renderColorListPicker(
-      "dev-gauge-colors-list",
-      GAUGE_ZONE_DEFS.map((z) => z.key),
-      GAUGE_COLORS_TITLES,
-      "gaugeColors",
-      () => {
-        renderReviewGauge();
-        renderManageList();
-      }
-    );
-  }
 
   function applyShadowSettings() {
     const settings = loadDevSettings();
@@ -2660,239 +1114,12 @@
     });
   }
 
-  function renderShadowsEditor() {
-    const wrap = el("dev-shadows-list");
-    if (!wrap) return;
-    const settings = loadDevSettings();
-    wrap.innerHTML = Object.keys(SHADOW_ELEMENTS)
-      .map((key) => {
-        const { title } = SHADOW_ELEMENTS[key];
-        const checked = settings.shadows[key] !== false;
-        return `<label class="settings-toggle-row">
-          <input type="checkbox" class="dev-shadow-toggle" data-key="${key}" ${checked ? "checked" : ""} />
-          <span>${title}</span>
-        </label>`;
-      })
-      .join("");
-    wrap.querySelectorAll(".dev-shadow-toggle").forEach((cb) => {
-      cb.addEventListener("change", () => {
-        const s = loadDevSettings();
-        s.shadows[cb.dataset.key] = cb.checked;
-        saveDevSettings(s);
-        applyShadowSettings();
-      });
-    });
-  }
 
-  function ensureColorPopup() {
-    if (colorPopupEl) return colorPopupEl;
-    colorPopupEl = document.createElement("div");
-    colorPopupEl.className = "color-popup";
-    colorPopupEl.hidden = true;
-    document.body.appendChild(colorPopupEl);
-    // Même correctif que le popup d'icônes : "pointerdown" plutôt que
-    // "click", plus fiable sur iOS Safari pour détecter un clic "en
-    // dehors".
-    document.addEventListener("pointerdown", (e) => {
-      if (colorPopupEl.hidden) return;
-      if (colorPopupEl.contains(e.target) || e.target.classList.contains("color-swatch-btn")) return;
-      colorPopupEl.hidden = true;
-    });
-    return colorPopupEl;
-  }
 
-  /** Décompose une valeur de couleur (6 chiffres hex opaque, 8 chiffres
-   *  hex avec alpha, ou l'ancien mot-clé "transparent") en teinte opaque +
-   *  transparence 0-100 (item 2 : curseur réglable plutôt qu'un simple
-   *  interrupteur tout ou rien). */
-  function parseColorValue(value) {
-    if (value === "transparent") return { hex6: "#000000", alpha: 0 };
-    if (/^#[0-9a-fA-F]{8}$/i.test(value)) {
-      return { hex6: value.slice(0, 7), alpha: Math.round((parseInt(value.slice(7, 9), 16) / 255) * 100) };
-    }
-    if (/^#[0-9a-fA-F]{6}$/i.test(value)) return { hex6: value, alpha: 100 };
-    return { hex6: "#000000", alpha: 100 };
-  }
-  function buildColorValue(hex6, alpha) {
-    const a = Math.max(0, Math.min(100, Math.round(alpha)));
-    if (a >= 100) return hex6;
-    const aHex = Math.round((a / 100) * 255).toString(16).padStart(2, "0");
-    return `${hex6}${aHex}`;
-  }
 
-  function openColorPopup(input, anchorBtn) {
-    const popup = ensureColorPopup();
-    const rect = anchorBtn.getBoundingClientRect();
-    const popupWidth = 260;
-    popup.style.position = "fixed";
-    popup.style.top = `${rect.bottom + 6}px`;
-    popup.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - popupWidth - 8))}px`;
-    popup.hidden = false;
 
-    function render() {
-      const mode = loadColorSliderMode() === "rgb" ? "rgb" : "tsl";
-      const { hex6: hex, alpha } = parseColorValue(input.value);
-      let slidersHtml;
-      if (mode === "rgb") {
-        const r = parseInt(hex.slice(1, 3), 16) || 0;
-        const g = parseInt(hex.slice(3, 5), 16) || 0;
-        const bch = parseInt(hex.slice(5, 7), 16) || 0;
-        slidersHtml = `
-          <div class="hsl-slider-row"><span>R</span><input type="range" min="0" max="255" value="${r}" data-c="r" /><span class="hsl-slider-value" data-cv="r">${r}</span></div>
-          <div class="hsl-slider-row"><span>V</span><input type="range" min="0" max="255" value="${g}" data-c="v" /><span class="hsl-slider-value" data-cv="v">${g}</span></div>
-          <div class="hsl-slider-row"><span>B</span><input type="range" min="0" max="255" value="${bch}" data-c="b" /><span class="hsl-slider-value" data-cv="b">${bch}</span></div>
-        `;
-      } else {
-        const hsl = hexToHsl(hex);
-        slidersHtml = `
-          <div class="hsl-slider-row"><span>T</span><input type="range" min="0" max="360" value="${hsl.h}" data-c="h" /><span class="hsl-slider-value" data-cv="h">${hsl.h}</span></div>
-          <div class="hsl-slider-row"><span>S</span><input type="range" min="0" max="100" value="${hsl.s}" data-c="s" /><span class="hsl-slider-value" data-cv="s">${hsl.s}</span></div>
-          <div class="hsl-slider-row"><span>L</span><input type="range" min="0" max="100" value="${hsl.l}" data-c="l" /><span class="hsl-slider-value" data-cv="l">${hsl.l}</span></div>
-        `;
-      }
-      popup.innerHTML = `
-        <div class="color-popup-preview color-popup-preview--checker" style="--swatch-color:${hex6WithAlpha(hex, alpha)}"></div>
-        <label class="color-popup-hex-row">
-          <span>Hex</span>
-          <input type="text" class="color-popup-hex-input" value="${hex}" placeholder="#rrggbb" maxlength="7" />
-        </label>
-        <div class="color-popup-sliders">${slidersHtml}</div>
-        <div class="hsl-slider-row color-popup-alpha-row">
-          <span>Opacité</span>
-          <input type="range" min="0" max="100" value="${alpha}" id="color-popup-alpha" />
-          <span class="hsl-slider-value" id="color-popup-alpha-value">${alpha}%</span>
-        </div>
-        <div class="color-popup-mode-toggle">
-          <button type="button" class="color-popup-mode-btn${mode === "rgb" ? " is-active" : ""}" data-mode="rgb">RVB</button>
-          <button type="button" class="color-popup-mode-btn${mode === "tsl" ? " is-active" : ""}" data-mode="tsl">TSL</button>
-        </div>
-      `;
-      const commit = (newHex6, newAlpha) => {
-        const value = buildColorValue(newHex6, newAlpha);
-        input.value = value;
-        setSwatchVisual(anchorBtn, value);
-        const preview = popup.querySelector(".color-popup-preview");
-        if (preview) preview.style.setProperty("--swatch-color", hex6WithAlpha(newHex6, newAlpha));
-        input.dispatchEvent(new Event("input", { bubbles: true }));
-      };
-      popup.querySelectorAll('input[type="range"]:not(#color-popup-alpha)').forEach((slider) => {
-        slider.addEventListener("input", () => {
-          // Affiche la valeur en direct à côté du curseur qu'on bouge,
-          // sans attendre le prochain rendu complet (item 1).
-          const valueSpan = popup.querySelector(`[data-cv="${slider.dataset.c}"]`);
-          if (valueSpan) valueSpan.textContent = slider.value;
-          let newHex;
-          if (mode === "rgb") {
-            const toHex = (v) => Number(v).toString(16).padStart(2, "0");
-            newHex = `#${toHex(popup.querySelector('[data-c="r"]').value)}${toHex(popup.querySelector('[data-c="v"]').value)}${toHex(popup.querySelector('[data-c="b"]').value)}`;
-          } else {
-            newHex = hslToHex(
-              Number(popup.querySelector('[data-c="h"]').value),
-              Number(popup.querySelector('[data-c="s"]').value),
-              Number(popup.querySelector('[data-c="l"]').value)
-            );
-          }
-          const hexInput = popup.querySelector(".color-popup-hex-input");
-          if (hexInput) hexInput.value = newHex;
-          const curAlpha = Number(popup.querySelector("#color-popup-alpha").value);
-          commit(newHex, curAlpha);
-        });
-      });
-      // Opacité (item 2) : curseur réglable de 0 à 100%, plutôt qu'un
-      // simple "transparent" tout ou rien.
-      const alphaSlider = popup.querySelector("#color-popup-alpha");
-      if (alphaSlider) {
-        alphaSlider.addEventListener("input", () => {
-          const valueSpan = popup.querySelector("#color-popup-alpha-value");
-          if (valueSpan) valueSpan.textContent = `${alphaSlider.value}%`;
-          const hexInput = popup.querySelector(".color-popup-hex-input");
-          const curHex = hexInput ? hexInput.value : hex;
-          commit(curHex, Number(alphaSlider.value));
-        });
-      }
-      // Code hex tapé/collé directement (item 1).
-      const hexInput = popup.querySelector(".color-popup-hex-input");
-      if (hexInput) {
-        hexInput.addEventListener("change", () => {
-          const v = hexInput.value.trim();
-          const curAlpha = Number(popup.querySelector("#color-popup-alpha").value);
-          if (/^#[0-9a-fA-F]{6}$/.test(v)) commit(v, curAlpha);
-          else hexInput.value = hex;
-        });
-      }
-      popup.querySelectorAll(".color-popup-mode-btn").forEach((b) => {
-        b.addEventListener("click", (e) => {
-          // Bug corrigé (item 6) : sans stopPropagation, le clic remontait
-          // jusqu'au document APRÈS que render() ait déjà remplacé le
-          // contenu du popup (donc l'ancien bouton cliqué n'existait plus
-          // dans le DOM) — le test "clic en dehors du popup" se trompait
-          // et refermait le popup juste après l'avoir redessiné.
-          e.stopPropagation();
-          saveColorSliderMode(b.dataset.mode);
-          render();
-        });
-      });
-    }
-    render();
-  }
 
-  /** Transforme chaque <input class="dev-color-value"> pertinent en
-   *  pastille cliquable ouvrant le popup ci-dessus — appelé après chaque
-   *  rendu (les pastilles de couleur des modes personnalisés étant
-   *  régénérées dynamiquement). L'input reste dans le DOM (caché) : il
-   *  continue de porter la valeur et de déclencher les mêmes événements
-   *  "input" que tout le reste du code attend déjà — en <input type="text">
-   *  plutôt que type="color" (item 1) pour pouvoir aussi porter la valeur
-   *  spéciale "transparent", que le sélecteur natif refuserait. */
-  function enhanceColorInputsWithHsl() {
-    document.querySelectorAll('#view-dev input.dev-color-value, #algo-custom-picker-list input.dev-color-value').forEach((input) => {
-      if (input.dataset.swatchUpgraded) {
-        const btn = input.nextElementSibling;
-        if (btn && btn.classList.contains("color-swatch-btn")) setSwatchVisual(btn, input.value);
-        return;
-      }
-      input.dataset.swatchUpgraded = "true";
-      input.style.display = "none";
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "color-swatch-btn" + (input.className.includes("algo-custom-picker-color") ? " algo-custom-picker-color" : "");
-      setSwatchVisual(btn, input.value);
-      btn.title = input.title || "";
-      input.insertAdjacentElement("afterend", btn);
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        openColorPopup(input, btn);
-      });
-    });
-  }
 
-  /** Affiche un damier (case transparente) plutôt qu'un simple à-plat de
-   *  couleur quand la valeur est "transparent" (item 1 : couleur
-   *  transparente possible partout). */
-  /** Convertit hex6 + opacité (0-100) en rgba() utilisable dans un style
-   *  inline (item 2 — curseur de transparence réglable). */
-  function hex6WithAlpha(hex6, alpha) {
-    const r = parseInt(hex6.slice(1, 3), 16) || 0;
-    const g = parseInt(hex6.slice(3, 5), 16) || 0;
-    const b = parseInt(hex6.slice(5, 7), 16) || 0;
-    return `rgba(${r}, ${g}, ${b}, ${Math.max(0, Math.min(100, alpha)) / 100})`;
-  }
-
-  /** Affiche un damier en dessous de la couleur dès qu'elle n'est pas
-   *  totalement opaque (item 2), pour que le niveau de transparence choisi
-   *  soit visible sur la pastille elle-même — pas seulement à 0%. */
-  function setSwatchVisual(btn, value) {
-    const { hex6, alpha } = parseColorValue(value);
-    if (alpha >= 100) {
-      btn.classList.remove("color-swatch-btn--transparent");
-      btn.style.removeProperty("--swatch-color");
-      btn.style.background = hex6;
-    } else {
-      btn.classList.add("color-swatch-btn--transparent");
-      btn.style.background = "";
-      btn.style.setProperty("--swatch-color", hex6WithAlpha(hex6, alpha));
-    }
-  }
 
   // Item 4 : mode nuit — bouton en topbar, bascule quel jeu de couleurs
   // (jour ou nuit, réglés séparément dans le mode développeur) est
@@ -8354,290 +6581,14 @@
     if (settingShowRatingDaysEl) settingShowRatingDaysEl.checked = loadShowRatingDays();
     if (settingShowReviewChartEl) settingShowReviewChartEl.checked = loadShowReviewChart();
     if (settingCardFontSizeEl) settingCardFontSizeEl.value = loadCardFontSize();
-    if (settingBodyLogoShadowEl) settingBodyLogoShadowEl.checked = loadDevSettings().bodyLogo.shadow;
-    if (settingHomeLogoShadowEl) settingHomeLogoShadowEl.checked = loadDevSettings().homeLogo.shadow;
   }
 
-  /* ---------------------------------------------------------
-     Page Développeur (item 19)
-  --------------------------------------------------------- */
-  function saveRatingLabelsFromInputs() {
-    const settings = loadDevSettings();
-    ["again", "hard", "good", "easy"].forEach((r) => {
-      const input = el(`dev-rating-${r}`);
-      if (input && input.value.trim()) settings.ratingLabels[r] = input.value.trim();
-    });
-    saveDevSettings(settings);
-    applyRatingLabels();
-  }
-  function saveNavLabelsFromInputs() {
-    const settings = loadDevSettings();
-    Object.keys(DEFAULT_NAV_LABELS).forEach((view) => {
-      const input = el(`dev-nav-${view}`);
-      if (input && input.value.trim()) settings.navLabels[view] = input.value.trim();
-    });
-    saveDevSettings(settings);
-    applyNavLabels();
-  }
 
-  ["again", "hard", "good", "easy"].forEach((r) => {
-    const input = el(`dev-rating-${r}`);
-    if (input) input.addEventListener("change", saveRatingLabelsFromInputs);
-  });
-  const devRatingResetBtn = el("dev-rating-reset");
-  if (devRatingResetBtn) {
-    devRatingResetBtn.addEventListener("click", () => {
-      const settings = loadDevSettings();
-      settings.ratingLabels = { ...DEFAULT_RATING_LABELS };
-      saveDevSettings(settings);
-      applyRatingLabels();
-      renderDevView();
-    });
-  }
-  Object.keys(DEFAULT_NAV_LABELS).forEach((view) => {
-    const input = el(`dev-nav-${view}`);
-    if (input) input.addEventListener("change", saveNavLabelsFromInputs);
-  });
-  const devNavResetBtn = el("dev-nav-reset");
-  if (devNavResetBtn) {
-    devNavResetBtn.addEventListener("click", () => {
-      const settings = loadDevSettings();
-      settings.navLabels = { ...DEFAULT_NAV_LABELS };
-      settings.navIcons = { ...DEFAULT_NAV_ICONS };
-      saveDevSettings(settings);
-      applyNavLabels();
-      renderDevView();
-    });
-  }
 
-  /* ---------------------------------------------------------
-     Icônes, couleurs des notes/modes, palette de texte (item 2) — étoffe
-     le mode développeur avec un maximum de choix d'émoticônes/couleurs.
-  --------------------------------------------------------- */
-  function saveIconsFromInputs() {
-    const settings = loadDevSettings();
-    Object.keys(DEFAULT_ICONS).forEach((k) => {
-      const input = el(`dev-icon-${k}`);
-      if (input && input.value.trim()) settings.icons[k] = input.value.trim();
-    });
-    saveDevSettings(settings);
-    applyIconSettings();
-  }
-  Object.keys(DEFAULT_ICONS).forEach((k) => {
-    const input = el(`dev-icon-${k}`);
-    if (input) input.addEventListener("change", saveIconsFromInputs);
-  });
-  const devIconsResetBtn = el("dev-icons-reset");
-  if (devIconsResetBtn) {
-    devIconsResetBtn.addEventListener("click", () => {
-      const settings = loadDevSettings();
-      settings.icons = { ...DEFAULT_ICONS };
-      saveDevSettings(settings);
-      applyIconSettings();
-      renderDevView();
-    });
-  }
 
-  /** Couleurs des notes (item 4 — paires jour/nuit, via le même mécanisme
-   *  générique que fonds/textes/jauges). */
-  const RATING_COLORS_TITLES = { again: "Encore", hard: "Difficile", good: "Bien", easy: "Facile" };
-  function renderRatingColorsEditor() {
-    renderColorListPicker("dev-rating-colors-list", ["again", "hard", "good", "easy"], RATING_COLORS_TITLES, "ratingColors", applyColorSettings);
-  }
-  function saveRatingBtnBgFromInputs() {
-    const settings = loadDevSettings();
-    const dayInput = el("dev-color-rating-btn-bg");
-    const nightInput = el("dev-color-rating-btn-bg-night");
-    if (dayInput) settings.ratingBtnBgColor = dayInput.value;
-    if (nightInput) settings.nightColors.ratingBtnBgColor = nightInput.value;
-    saveDevSettings(settings);
-    applyColorSettings();
-  }
-  const ratingBtnBgInputEl = el("dev-color-rating-btn-bg");
-  if (ratingBtnBgInputEl) ratingBtnBgInputEl.addEventListener("input", saveRatingBtnBgFromInputs);
-  const ratingBtnBgNightInputEl = el("dev-color-rating-btn-bg-night");
-  if (ratingBtnBgNightInputEl) ratingBtnBgNightInputEl.addEventListener("input", saveRatingBtnBgFromInputs);
-  const devRatingColorsResetBtn = el("dev-rating-colors-reset");
-  if (devRatingColorsResetBtn) {
-    devRatingColorsResetBtn.addEventListener("click", () => {
-      const settings = loadDevSettings();
-      settings.ratingColors = { ...DEFAULT_RATING_COLORS };
-      settings.ratingBtnBgColor = DEFAULT_RATING_BTN_BG_COLOR;
-      settings.nightColors.ratingColors = { ...DEFAULT_RATING_COLORS };
-      settings.nightColors.ratingBtnBgColor = DEFAULT_NIGHT_RATING_BTN_BG_COLOR;
-      saveDevSettings(settings);
-      applyColorSettings();
-      renderDevView();
-    });
-  }
 
-  /** Couleurs des fonds / des textes (items 2h/2i) — remplace les anciens
-   *  blocs "Autres couleurs"/"Textes, histogrammes et fonds de zones". */
-  const devBgColorsResetBtn = el("dev-bg-colors-reset");
-  if (devBgColorsResetBtn) {
-    devBgColorsResetBtn.addEventListener("click", () => {
-      const settings = loadDevSettings();
-      settings.bgColors = { ...DEFAULT_BG_COLORS };
-      saveDevSettings(settings);
-      applyColorSettings();
-      renderDevView();
-    });
-  }
-  const devTextColorsSetResetBtn = el("dev-text-colors-set-reset");
-  if (devTextColorsSetResetBtn) {
-    devTextColorsSetResetBtn.addEventListener("click", () => {
-      const settings = loadDevSettings();
-      settings.textColorsSet = { ...DEFAULT_TEXT_COLORS_SET };
-      saveDevSettings(settings);
-      applyColorSettings();
-      renderDevView();
-    });
-  }
 
-  const devHomeLayoutResetBtn = el("dev-home-layout-reset");
-  if (devHomeLayoutResetBtn) {
-    devHomeLayoutResetBtn.addEventListener("click", () => {
-      const settings = loadDevSettings();
-      settings.homeLayout = JSON.parse(JSON.stringify(DEFAULT_HOME_LAYOUT));
-      saveDevSettings(settings);
-      applyHomeLayout();
-      renderDevView();
-    });
-  }
 
-  /** Liste éditable de couleurs de texte (item 2) : ajouter/renommer/
-   *  changer la couleur/retirer, appliqué en direct à la barre d'outils de
-   *  mise en forme des fiches. */
-  function renderTextColorsEditor() {
-    const wrap = el("dev-text-colors-list");
-    if (!wrap) return;
-    const colors = loadDevSettings().textColors;
-    wrap.innerHTML = colors
-      .map(
-        (c, i) => `<div class="dev-text-color-row" data-idx="${i}">
-          <input type="color" class="dev-text-color-swatch" value="${c.hex}" />
-          <input type="text" class="dev-text-color-label" value="${escapeHtml(c.label)}" maxlength="16" />
-          <button type="button" class="icon-btn icon-btn--danger dev-text-color-remove">🗑️</button>
-        </div>`
-      )
-      .join("");
-
-    function saveFromRows() {
-      const rows = [...wrap.querySelectorAll(".dev-text-color-row")];
-      const newColors = rows.map((row) => ({
-        hex: row.querySelector(".dev-text-color-swatch").value,
-        label: row.querySelector(".dev-text-color-label").value.trim() || "Couleur",
-      }));
-      const settings = loadDevSettings();
-      settings.textColors = newColors;
-      saveDevSettings(settings);
-      applyTextColorPalette();
-    }
-
-    wrap.querySelectorAll(".dev-text-color-swatch, .dev-text-color-label").forEach((input) => {
-      input.addEventListener("input", saveFromRows);
-    });
-    wrap.querySelectorAll(".dev-text-color-remove").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const settings = loadDevSettings();
-        const idx = Number(btn.closest(".dev-text-color-row").dataset.idx);
-        settings.textColors = settings.textColors.filter((_, i) => i !== idx);
-        if (settings.textColors.length === 0) settings.textColors = [{ ...DEFAULT_TEXT_COLORS[0] }];
-        saveDevSettings(settings);
-        applyTextColorPalette();
-        renderTextColorsEditor();
-        enhanceColorInputsWithHsl();
-      });
-    });
-  }
-  const devTextColorAddBtn = el("dev-text-color-add");
-  if (devTextColorAddBtn) {
-    devTextColorAddBtn.addEventListener("click", () => {
-      const settings = loadDevSettings();
-      settings.textColors = [...settings.textColors, { label: "Nouvelle", hex: "#888888" }];
-      saveDevSettings(settings);
-      applyTextColorPalette();
-      renderTextColorsEditor();
-      enhanceColorInputsWithHsl();
-    });
-  }
-  const devTextColorsResetBtn = el("dev-text-colors-reset");
-  if (devTextColorsResetBtn) {
-    devTextColorsResetBtn.addEventListener("click", () => {
-      const settings = loadDevSettings();
-      settings.textColors = DEFAULT_TEXT_COLORS.map((c) => ({ ...c }));
-      saveDevSettings(settings);
-      applyTextColorPalette();
-      renderTextColorsEditor();
-      enhanceColorInputsWithHsl();
-    });
-  }
-
-  function renderDevView() {
-    const devSettings = loadDevSettings();
-    const ratingBtnBgInput = el("dev-color-rating-btn-bg");
-    if (ratingBtnBgInput) ratingBtnBgInput.value = devSettings.ratingBtnBgColor;
-    const ratingBtnBgNightInput = el("dev-color-rating-btn-bg-night");
-    if (ratingBtnBgNightInput) ratingBtnBgNightInput.value = devSettings.nightColors.ratingBtnBgColor;
-    renderRatingColorsEditor();
-    renderRatingIconsEditor();
-    renderNavIconsEditor();
-    renderIconBankEditor();
-    renderOrgIconBankEditor();
-    renderBgColorsEditor();
-    renderTextColorsSetEditor();
-    renderShadowsEditor();
-    renderHomeLayoutEditor();
-    renderHomeLogoEditor();
-    renderDarwinLogoEditor();
-    renderDarwinTextEditor();
-    renderReviewLayoutEditor();
-    renderRevisionAlgoEditor();
-    renderPersGaugeColorsEditor();
-    renderCardScoreEditor();
-    renderGaugeColorsEditor();
-    renderHelpMessagesEditor();
-    renderDevLibraryModerationEditor();
-    // Après TOUS les autres rendus ci-dessus : ils régénèrent leurs propres
-    // <input class="dev-color-value"> dynamiquement, donc les pastilles
-    // (et curseurs T/S/L) doivent être posées en tout dernier pour ne
-    // rater aucun d'entre eux.
-    enhanceColorInputsWithHsl();
-  }
-
-  /** Round 4, partie 2 : éditeur des messages d'aide du robot, une textarea
-   *  par page (une ligne = un message, dans l'ordre du bouton "Suite"). */
-  function renderHelpMessagesEditor() {
-    const wrap = el("dev-help-messages-list");
-    if (!wrap) return;
-    const settings = loadDevSettings();
-    const viewKeys = Object.keys(DEFAULT_HELP_MESSAGES_BY_VIEW);
-    wrap.innerHTML = viewKeys
-      .map((key) => {
-        const messages = settings.helpMessagesByView[key] || [];
-        const value = messages.join("\n");
-        return `<div class="dev-help-messages-row">
-          <span class="dev-help-messages-title">${HELP_VIEW_LABELS[key] || key}</span>
-          <textarea class="dev-help-messages-textarea" data-key="${key}" placeholder="Aucun message — pas de bulle d'aide sur cette page.">${value.replace(/</g, "&lt;")}</textarea>
-        </div>`;
-      })
-      .join("");
-    wrap.querySelectorAll(".dev-help-messages-textarea").forEach((textarea) => {
-      textarea.addEventListener("change", () => {
-        const s = loadDevSettings();
-        const lines = textarea.value.split("\n").map((l) => l.trim()).filter((l) => l.length > 0);
-        s.helpMessagesByView[textarea.dataset.key] = lines;
-        saveDevSettings(s);
-        // La page actuellement affichée peut être celle qu'on vient
-        // d'éditer : on rafraîchit sa bulle d'aide tout de suite plutôt
-        // que d'attendre le prochain changement de page.
-        const activeView = document.querySelector(".view.is-active");
-        if (activeView && activeView.id === `view-${textarea.dataset.key}`) {
-          applyBodyLogoSpeech(textarea.dataset.key);
-        }
-      });
-    });
-  }
 
 
   /** Bouton de dépannage manuel : désinscrit le(s) service worker(s) et vide
@@ -8653,14 +6604,6 @@
   // modification est automatiquement "publiée" pour tout le monde sans
   // étape manuelle supplémentaire.
 
-  const devHideDevModeBtn = el("dev-hide-dev-mode-btn");
-  if (devHideDevModeBtn) {
-    devHideDevModeBtn.addEventListener("click", () => {
-      setDevUnlocked(false);
-      const homeBtnEl = el("home-btn");
-      if (homeBtnEl) homeBtnEl.click();
-    });
-  }
 
   const settingHardResetEl = el("setting-hard-reset");
   if (settingHardResetEl) {
@@ -8761,10 +6704,6 @@
         renderReviewGauge();
       }
       if (view === "stats") renderStats();
-      if (view === "dev") {
-      renderDevView();
-      renderDevSyncStatus();
-    }
       if (view === "sync") renderSyncView();
       if (view === "account") renderAccountView();
       if (view === "school-hub") {
@@ -8794,7 +6733,10 @@
         renderReinforceList();
       }
       if (view === "review-hub") renderReviewHub();
-      if (view === "settings") renderSettingsView();
+      if (view === "settings") {
+        renderSettingsView();
+        refreshAdminLink();
+      }
       renderDuePill();
     });
   });
@@ -12847,7 +10789,6 @@
   // Round 48 : résumés des collections affichés dans les blocs (masqués
   // par défaut).
   let libraryShowSummaries = false;
-  const SIMULATE_NO_SUBSCRIPTION_KEY = "fiches_simulate_no_subscription";
 
   // Round 18, item 15 : niveaux scolaires proposés au partage et au tri —
   // liste reprise telle que demandée ("6ème, 5ème,..., 2nd, 1ère,
@@ -12939,6 +10880,22 @@
    *  `taxonomy` en libellés ({ niveau: "4ème", specialite: "...", matiere:
    *  "anglais" }) si présent, sinon l'ancien `level`. Chaque libellé n'est
    *  retenu que s'il est cohérent avec ceux déjà retenus au-dessus. */
+  /* Boîtes toutes prêtes (packs/bibliotheque.json) : chaque boîte importée
+     a l'id « pack-<clé> ». L'import et la publication en masse se font
+     dans Darwin Admin (round 50) ; ici, seulement le pré-remplissage de la
+     page de publication d'une boîte importée autrefois. */
+  const LIBRARY_PACK_PREFIX = "pack-";
+  let libraryPackCache = null;
+  async function loadLibraryPack() {
+    if (libraryPackCache) return libraryPackCache;
+    const res = await fetch("./packs/bibliotheque.json", { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    libraryPackCache = await res.json();
+    return libraryPackCache;
+  }
+  function libraryPackSubjectId(box) {
+    return `${LIBRARY_PACK_PREFIX}${box.key}`;
+  }
   function libraryPackSelection(box) {
     const tax = Taxonomy.get();
     if (!tax || !box) return {};
@@ -13607,360 +11564,28 @@
     });
   }
 
-  /** Round 20, item 6 : mode développeur — liste toutes les collections de
-   *  la Bibliothèque (n'importe quel auteur) avec un bouton "Supprimer"
-   *  chacune, pour de la modération (contenu inapproprié, doublon signalé
-   *  par un utilisateur...). Repose sur la policy RLS dédiée côté base
-   *  (voir supabase/library_collections_summary_share_migration.sql), qui
-   *  n'autorise cette suppression que pour le compte de Stéphane. */
-  async function renderDevLibraryModerationEditor() {
-    const list = el("dev-library-moderation-list");
-    if (!list) return;
-    if (!Sync.isConfigured()) {
-      list.innerHTML = `<li class="field-hint">Active la synchronisation pour accéder à la Librairie.</li>`;
-      return;
-    }
-    list.innerHTML = `<li class="field-hint">Chargement…</li>`;
-    const collections = await Sync.library.list();
-    list.innerHTML = "";
-    if (collections.length === 0) {
-      list.innerHTML = `<li class="field-hint">Aucune collection partagée.</li>`;
-      return;
-    }
-    collections.forEach((col) => {
-      const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || col.owner_email || "quelqu'un";
-      const n = Array.isArray(col.cards) ? col.cards.length : 0;
-      const li = document.createElement("li");
-      li.className = "subject-row library-row";
-      li.style.cursor = "default";
-      li.innerHTML = `
-        <span class="subject-row-name">${escapeHtml(col.name)}</span>
-        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""} — par ${escapeHtml(ownerName)}</span>
-      `;
-      const delBtn = document.createElement("button");
-      delBtn.type = "button";
-      delBtn.className = "btn btn--small";
-      delBtn.textContent = "Supprimer";
-      delBtn.addEventListener("click", async (e) => {
-        e.stopPropagation();
-        if (!(await robotConfirm(`Supprimer définitivement « ${col.name} » (par ${ownerName}) de la Librairie ?`, { danger: true }))) return;
-        const { error } = await Sync.library.delete(col.id);
-        if (error) {
-          await robotAlert(`La suppression a échoué : ${error}`);
-          return;
-        }
-        renderDevLibraryModerationEditor();
-      });
-      li.appendChild(delBtn);
-      list.appendChild(li);
-    });
-  }
   /* ---- Boîtes toutes prêtes pour la Bibliothèque (packs/bibliotheque.json).
      Chaque boîte du pack reçoit un id de boîte fixe ("pack-<clé>") : un
      second import ne crée jamais de doublon (même sur un autre appareil,
      grâce à la synchro), et la publication réutilise le contrôle existant
      "déjà partagée ?" par id de boîte d'origine. ---- */
-  const LIBRARY_PACK_PREFIX = "pack-";
-  let libraryPackCache = null;
 
-  async function loadLibraryPack() {
-    if (libraryPackCache) return libraryPackCache;
-    const res = await fetch("./packs/bibliotheque.json", { cache: "no-store" });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    libraryPackCache = await res.json();
-    return libraryPackCache;
-  }
 
-  function libraryPackSubjectId(box) {
-    return `${LIBRARY_PACK_PREFIX}${box.key}`;
-  }
 
-  function setLibraryPackStatus(text) {
-    const s = el("dev-library-pack-status");
-    if (s) s.textContent = text || "";
-  }
 
-  async function importLibraryPack() {
-    let pack;
-    try {
-      pack = await loadLibraryPack();
-    } catch (e) {
-      await robotAlert(`Impossible de charger les boîtes toutes prêtes (${e.message}).`);
-      return;
-    }
-    const boxes = Array.isArray(pack.boxes) ? pack.boxes : [];
-    const toImport = boxes.filter((b) => !subjects.some((s) => s.id === libraryPackSubjectId(b)));
-    if (toImport.length === 0) {
-      const n = await classifyImportedPackSubjects(boxes);
-      await robotAlert(`Toutes les boîtes toutes prêtes sont déjà dans Mes collections.${n ? ` ${n} ont reçu leur classement.` : ""}`);
-      return;
-    }
-    const nCards = toImport.reduce((acc, b) => acc + (b.cards || []).length, 0);
-    if (!(await robotConfirm(`Importer ${toImport.length} boîte${toImport.length > 1 ? "s" : ""} (${nCards} fiches) dans le dossier « ${pack.folderName} » ?`))) return;
 
-    let folder = folders.find((f) => !f.deleted && f.parentId === ROOT_FOLDER_ID && (f.name === pack.folderName || f.name === "Boîtes Bibliothèque"));
-    if (!folder) {
-      folder = newFolder(pack.folderName, ROOT_FOLDER_ID);
-      await persistFolder(folder);
-      folders.push(folder);
-    }
-    await Taxonomy.load();
-    const newCards = [];
-    let done = 0;
-    for (const box of toImport) {
-      const subject = newSubject(box.name, folder.id);
-      subject.id = libraryPackSubjectId(box);
-      // Round 37 : la boîte arrive déjà classée (classement du pack).
-      subject.taxonomy = taxonomyValueFromSelection(libraryPackSelection(box));
-      await persistSubject(subject);
-      subjects.push(subject);
-      for (const c of box.cards || []) newCards.push(newCard(c.question || "", c.answer || "", subject.id));
-      done++;
-      if (done % 20 === 0) setLibraryPackStatus(`Import : ${done} / ${toImport.length} boîtes…`);
-    }
-    // Round 37 : fiches enregistrées et envoyées en une fois (plus rapide).
-    await DB.bulkPut(newCards);
-    newCards.forEach((card) => cards.push(card));
-    if (Sync.isConfigured()) Sync.pushCardsBulk(newCards).finally(updateSyncStatus);
-    await classifyImportedPackSubjects(boxes);
-    subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
-    renderStatsSubjectSelect();
-    renderSubjectSelect();
-    renderSubjectManageList();
-    renderStats();
-    setLibraryPackStatus(`${toImport.length} boîte(s) importée(s) dans « ${pack.folderName} ».`);
-    await robotAlert(`${toImport.length} boîte${toImport.length > 1 ? "s" : ""} importée${toImport.length > 1 ? "s" : ""} dans « ${pack.folderName} ». Relis-les puis reviens ici pour les publier.`);
-  }
 
-  /** Round 37 : donne aux boîtes toutes prêtes déjà importées le classement
-   *  du pack si elles n'en ont pas (ou un incomplet). */
-  async function classifyImportedPackSubjects(boxes) {
-    await Taxonomy.load();
-    let n = 0;
-    for (const box of boxes) {
-      const s = subjects.find((x) => x.id === libraryPackSubjectId(box));
-      if (!s) continue;
-      const tax = taxonomyValueFromSelection(libraryPackSelection(box));
-      if (JSON.stringify(s.taxonomy || {}) === JSON.stringify(tax)) continue;
-      s.taxonomy = tax;
-      s.updatedAt = new Date().toISOString();
-      await persistSubject(s);
-      n++;
-    }
-    return n;
-  }
 
-  async function publishLibraryPack() {
-    if (!Sync.isConfigured()) {
-      await robotAlert("Active d'abord la synchronisation (page Synchronisation) pour publier dans la Librairie.");
-      return;
-    }
-    if (!accountCurrentUser) {
-      await robotAlert("Connecte-toi avec ton Compte (page Compte) pour publier à ton nom.");
-      return;
-    }
-    let pack;
-    try {
-      pack = await loadLibraryPack();
-    } catch (e) {
-      await robotAlert(`Impossible de charger les boîtes toutes prêtes (${e.message}).`);
-      return;
-    }
-    const freshUser = (await Sync.auth.getUser()) || accountCurrentUser;
-    const meta = (freshUser && freshUser.user_metadata) || {};
-    if (!meta.first_name && !meta.last_name) {
-      await robotAlert("Renseigne d'abord ton prénom et ton nom dans Mon compte : ils seront affichés comme auteur dans la Librairie.");
-      return;
-    }
-    const local = (pack.boxes || [])
-      .map((box) => ({ box, subject: subjects.find((s) => s.id === libraryPackSubjectId(box)) }))
-      .filter((x) => x.subject);
-    if (local.length === 0) {
-      await robotAlert("Importe d'abord les boîtes toutes prêtes (bouton au-dessus).");
-      return;
-    }
-    const author = `${meta.first_name || ""} ${meta.last_name || ""}`.trim();
-    if (!(await robotConfirm(`Publier ${local.length} boîte${local.length > 1 ? "s" : ""} dans la Librairie, au nom de ${author} ? Celles déjà publiées y gardent leur place, mais leur classement et leurs tags sont mis à jour.`))) return;
 
-    await Taxonomy.load();
-    await classifyImportedPackSubjects(pack.boxes || []);
-    // Round 37 : mes collections déjà publiées (pour mettre à jour leur
-    // classement au lieu de les ignorer).
-    let mine = [];
-    try {
-      mine = (await Sync.library.list()).filter((c) => c.owner_id === accountCurrentUser.id);
-    } catch (e) {
-      mine = [];
-    }
-    let published = 0;
-    let skipped = 0;
-    let updated = 0;
-    const failures = [];
-    for (const { box, subject } of local) {
-      setLibraryPackStatus(`Publication de « ${subject.name} »…`);
-      const existing = mine.find((c) => c.source_subject_id === subject.id) || mine.find((c) => !c.source_subject_id && c.name === subject.name);
-      if (existing) {
-        const taxonomy = taxonomyValueFromSelection(libraryPackSelection(box));
-        const tags = Array.isArray(box.tags) ? box.tags.map(normalizeTag).filter(Boolean) : [];
-        const sameTax = JSON.stringify(collectionTaxonomy(existing)) === JSON.stringify(taxonomy) && existing.taxonomy && Object.keys(existing.taxonomy).length;
-        const sameTags = JSON.stringify(collectionTags(existing)) === JSON.stringify(tags);
-        if (sameTax && (sameTags || !tags.length)) {
-          skipped++;
-          continue;
-        }
-        const fields = { taxonomy, level: taxonomy.niveau ? taxonomy.niveau.label : box.level || existing.level || "" };
-        if (tags.length) fields.tags = tags;
-        if (!existing.source_subject_id) fields.source_subject_id = subject.id;
-        const { error } = await Sync.library.updateMeta(existing.id, fields);
-        if (error) failures.push(`${subject.name} : ${libraryShareErrorHint(error)}`);
-        else updated++;
-        continue;
-      }
-      const boxCards = cards.filter((c) => !c.deleted && c.subject === subject.id);
-      if (boxCards.length === 0) {
-        skipped++;
-        continue;
-      }
-      const taxonomy = taxonomyValueFromSelection(libraryPackSelection(box));
-      const { error } = await Sync.library.share(subject.name, boxCards, {
-        level: taxonomy.niveau ? taxonomy.niveau.label : box.level || "",
-        taxonomy,
-        tags: Array.isArray(box.tags) ? box.tags.map(normalizeTag).filter(Boolean) : [],
-        summary: box.summary || "",
-        description: box.description || "",
-        priceTokens: 0,
-        sourceSubjectId: subject.id,
-      });
-      if (error) failures.push(`${subject.name} : ${libraryShareErrorHint(error)}`);
-      else {
-        published++;
-        myPublishedSourceIds.add(subject.id);
-      }
-    }
-    const lines = [`${published} boîte${published > 1 ? "s" : ""} publiée${published > 1 ? "s" : ""}.`];
-    if (updated) lines.push(`${updated} déjà publiée${updated > 1 ? "s" : ""} : classement et tags mis à jour.`);
-    if (skipped) lines.push(`${skipped} déjà publiée${skipped > 1 ? "s" : ""} et à jour (ou vide${skipped > 1 ? "s" : ""}), inchangée${skipped > 1 ? "s" : ""}.`);
-    if (failures.length) lines.push(`Échecs :\n${failures.join("\n")}`);
-    setLibraryPackStatus(lines.join(" "));
-    await robotAlert(lines.join("\n"));
-  }
 
-  const devLibraryPackImportBtn = el("dev-library-pack-import-btn");
-  if (devLibraryPackImportBtn) devLibraryPackImportBtn.addEventListener("click", () => importLibraryPack());
-  const devLibraryPackPublishBtn = el("dev-library-pack-publish-btn");
-  if (devLibraryPackPublishBtn) devLibraryPackPublishBtn.addEventListener("click", () => publishLibraryPack());
 
-  /** Round 29 : contenu de js/config.js à partir du serveur de cet appareil. */
-  function devConfigSnippet() {
-    const { url, key } = Sync.getConfig();
-    return `window.FICHES_CONFIG = {\n  supabaseUrl: ${JSON.stringify(url)},\n  supabaseAnonKey: ${JSON.stringify(key)},\n};\n`;
-  }
-  function renderDevConfigSnippet() {
-    const pre = el("dev-config-snippet");
-    const status = el("dev-config-status");
-    if (!pre) return;
-    pre.textContent = devConfigSnippet();
-    if (status) {
-      status.textContent = Sync.getConfig().builtIn
-        ? "Le serveur est déjà intégré à l'appli (js/config.js)."
-        : "Pas encore intégré : les nouveaux utilisateurs devraient saisir le serveur eux-mêmes.";
-    }
-  }
-  const devConfigCopyBtn = el("dev-config-copy-btn");
-  if (devConfigCopyBtn) {
-    devConfigCopyBtn.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(devConfigSnippet());
-        devConfigCopyBtn.textContent = "Copié !";
-        setTimeout(() => (devConfigCopyBtn.textContent = "Copier"), 1500);
-      } catch {
-        /* presse-papier indisponible : le texte reste sélectionnable */
-      }
-    });
-    renderDevConfigSnippet();
-  }
 
-  /** Round 25, item 1 : réglage du zoom automatique (par appareil). */
-  function renderDevAutoZoom() {
-    const z = window.__fichesAutoZoom;
-    const input = el("dev-autozoom-ref");
-    const status = el("dev-autozoom-status");
-    if (!z || !input) return;
-    input.value = String(z.refWidth());
-    if (status) {
-      const shortSide = Math.min(screen.width, screen.height);
-      const ref = z.refWidth();
-      status.textContent =
-        ref > 0 && shortSide < 600
-          ? `Écran : ${shortSide} px de large → zoom ${Math.round((shortSide / ref) * 100)} %.`
-          : `Écran : ${shortSide} px de large → pas de zoom automatique.`;
-    }
-  }
-  const devAutoZoomSaveBtn = el("dev-autozoom-save-btn");
-  if (devAutoZoomSaveBtn) {
-    devAutoZoomSaveBtn.addEventListener("click", () => {
-      const z = window.__fichesAutoZoom;
-      const input = el("dev-autozoom-ref");
-      if (!z || !input) return;
-      const v = Math.max(0, Math.min(1000, parseInt(input.value, 10) || 0));
-      try {
-        localStorage.setItem(z.key, String(v));
-      } catch {
-        /* stockage indisponible */
-      }
-      z.apply();
-      renderDevAutoZoom();
-    });
-    renderDevAutoZoom();
-  }
-
-  /** Round 23 : état de la taxonomie lue dans l'Excel (réglages dév.). */
-  function renderDevTaxonomyStatus(tax) {
-    const status = el("dev-taxonomy-status");
-    if (!status || !tax) return;
-    const L = tax.lists || {};
-    const n = (k) => (L[k] || []).length;
-    const when = tax.loadedAt ? new Date(tax.loadedAt).toLocaleString("fr-FR") : "?";
-    status.textContent = tax.error
-      ? `Lecture impossible : ${tax.error}`
-      : `${n("categories")} catégories, ${n("cycles")} cycles, ${n("niveaux")} niveaux, ${n("annees")} années, ${n("specialites")} spécialités, ${n("matieres")} matières — lu le ${when}.`;
-  }
-  const devTaxonomyReloadBtn = el("dev-taxonomy-reload-btn");
-  if (devTaxonomyReloadBtn) {
-    devTaxonomyReloadBtn.addEventListener("click", async () => {
-      const status = el("dev-taxonomy-status");
-      if (status) status.textContent = "Lecture…";
-      const tax = await Taxonomy.load(true);
-      renderDevTaxonomyStatus(tax);
-      if (libraryFilterCascade) libraryFilterCascade.redraw();
-    });
-    Taxonomy.load().then(renderDevTaxonomyStatus);
-  }
-
-  const devLibraryRefreshBtn = el("dev-library-refresh-btn");
-  if (devLibraryRefreshBtn) devLibraryRefreshBtn.addEventListener("click", () => renderDevLibraryModerationEditor());
 
   const librarySearchInputEl = el("library-search-input");
   if (librarySearchInputEl) {
     librarySearchInputEl.addEventListener("input", () => {
       librarySearchQuery = librarySearchInputEl.value || "";
       renderLibraryList();
-    });
-  }
-  const devSimNoSubEl = el("dev-simulate-no-subscription");
-  if (devSimNoSubEl) {
-    try {
-      devSimNoSubEl.checked = localStorage.getItem(SIMULATE_NO_SUBSCRIPTION_KEY) === "1";
-    } catch (e) {
-      /* stockage indisponible */
-    }
-    devSimNoSubEl.addEventListener("change", () => {
-      try {
-        if (devSimNoSubEl.checked) localStorage.setItem(SIMULATE_NO_SUBSCRIPTION_KEY, "1");
-        else localStorage.removeItem(SIMULATE_NO_SUBSCRIPTION_KEY);
-      } catch (e) {
-        /* stockage indisponible */
-      }
     });
   }
   const librarySummaryToggleEl = el("library-summary-toggle");
@@ -14014,18 +11639,30 @@
       renderLibraryList();
     };
   }
-  /** Abonnement : le système sera mis en place plus tard. En attendant,
-   *  tout compte connecté est considéré comme abonné — sauf si l'appareil
-   *  simule « pas d'abonnement » (mode développeur), pour tester le
-   *  message. Point d'entrée unique à brancher sur les vrais abonnements. */
+  /** Round 50 : abonnement du compte (table `subscriptions`, géré dans
+   *  Darwin Admin en attendant le paiement en ligne). Point d'entrée unique
+   *  des droits d'accès aux boîtes de la Librairie :
+   *  - abonnement actif ou à l'essai (période non échue) → accès ;
+   *  - sinon, si l'accès est réservé aux abonnés (réglage commun
+   *    subscriptionPolicy.enforce) → pas d'accès ;
+   *  - sinon (en attendant le paiement) tout compte connecté a accès, sauf
+   *    un compte marqué « Sans abonnement » (utile pour tester). */
+  let mySubscriptionRow = null;
+  async function refreshMySubscription() {
+    if (!accountCurrentUser || !Sync.isConfigured()) {
+      mySubscriptionRow = null;
+      return;
+    }
+    const res = await Sync.fetchMySubscription();
+    if (!res.error) mySubscriptionRow = res.row;
+  }
   function hasLibrarySubscription() {
     if (!accountCurrentUser) return false;
-    try {
-      if (localStorage.getItem(SIMULATE_NO_SUBSCRIPTION_KEY) === "1") return false;
-    } catch (e) {
-      /* stockage indisponible */
-    }
-    return true;
+    const row = mySubscriptionRow;
+    const active = !!row && (row.status === "active" || row.status === "trial") && (!row.current_period_end || new Date(row.current_period_end) > new Date());
+    if (active) return true;
+    if (loadDevSettings().subscriptionPolicy.enforce) return false;
+    return !(row && row.status === "none");
   }
   async function showSubscriptionRequired(text) {
     const choice = await showRobotMessage(text || "L'ajout de boîtes de la librairie nécessite un abonnement.", {
@@ -14077,6 +11714,7 @@
     }
     const folderId = await pickRevisionFolder(`Dans quel dossier ranger « ${col.name} » ?`);
     if (folderId === undefined) return false;
+    await refreshMySubscription();
     if (!hasLibrarySubscription()) {
       await showSubscriptionRequired();
       return false;
@@ -15651,6 +13289,23 @@
     applyShadowSettings();
     applyIconSettings();
     applyTextColorPalette();
+    applyCommonAutoZoom();
+  }
+  /** Round 50 : zoom automatique des téléphones, commun à tous les
+   *  appareils (réglé dans Darwin Admin) — gardé en mémoire locale pour
+   *  être appliqué dès le chargement suivant (script en tête d'index.html). */
+  function applyCommonAutoZoom() {
+    if (IS_ADMIN_PREVIEW) return;
+    try {
+      const z = window.__fichesAutoZoom;
+      const ref = String(loadDevSettings().autoZoom.refWidth);
+      if (z && localStorage.getItem(z.key) !== ref) {
+        localStorage.setItem(z.key, ref);
+        z.apply();
+      }
+    } catch (e) {
+      /* stockage indisponible */
+    }
   }
   // Bug corrigé (item 6) : cet écouteur vivait DANS applyAllDevSettings, qui
   // peut s'exécuter plusieurs fois (démarrage, synchro) — il s'accumulait
@@ -15787,34 +13442,10 @@
     updateSyncStatus();
   }
 
-  /** Callback de l'abonnement Realtime au canal UNIQUE des réglages
-   *  développeur (round 16) — un autre appareil de Stéphane (le seul à
-   *  pouvoir écrire, RLS) vient de changer un réglage : on l'adopte tel
-   *  quel, sans comparaison de date (il n'y a plus qu'une seule source de
-   *  vérité, donc plus de conflit possible à trancher). */
+  /** Temps réel : les réglages communs viennent de changer (Darwin Admin) —
+   *  la nouvelle version s'applique telle quelle. */
   function handleRemoteDevSettings(remote) {
-    // Round 33 : on réapplique les changements locaux pas encore envoyés
-    // par-dessus la version reçue (au lieu de les écraser).
-    devSyncQueue(async () => {
-      if (remote.updatedBy) devSettingsWriterUid = remote.updatedBy;
-      const pending = adoptServerDevSettings(remote.payload);
-      devSyncStatus.at = new Date();
-      devSyncStatus.error = null;
-      if (pending) await pushDevSettingsNow(true);
-      renderDevSyncStatus();
-    });
-    return;
-    // Bug corrigé (items 1/2, toujours valable) : si l'utilisateur est EN
-    // TRAIN de taper dans un champ du mode développeur, reconstruire toute
-    // la liste (renderDevView) à cet instant précis lui fait perdre le
-    // focus en plein milieu de la frappe — ou, pour le mode nuit, fait
-    // clignoter l'état si l'écho de sa propre modification revient juste
-    // après l'avoir changé. On saute ce rendu tant qu'un champ de ce
-    // panneau a le focus ; il se remettra à jour de toute façon au
-    // prochain rendu normal (changement de page, nouvelle modification...).
-    const devViewActive = el("view-dev") && el("view-dev").classList.contains("is-active");
-    const editingInDevView = document.activeElement && el("view-dev") && el("view-dev").contains(document.activeElement) && document.activeElement.tagName === "INPUT";
-    if (devViewActive && !editingInDevView) renderDevView();
+    devSyncQueue(async () => forceServerDevSettings(remote.payload));
   }
   /** (Ré)abonne le canal Realtime unique des réglages développeur —
    *  désabonne d'abord l'ancien abonnement s'il y en avait un, pour ne
@@ -15861,29 +13492,17 @@
   --------------------------------------------------------- */
   const appVersionLabelEl = el("app-version-label");
   if (appVersionLabelEl) appVersionLabelEl.textContent = `Version installée : ${APP_VERSION}`;
-  // Round 4, partie 2 : geste discret pour débloquer le mode développeur
-  // sur cet appareil (7 appuis rapides sur le numéro de version) — le
-  // bouton/onglet "Développeur" reste caché pour tout le monde tant que ce
-  // geste n'a pas été fait.
-  if (appVersionLabelEl) {
-    let devTapCount = 0;
-    let devTapTimer = null;
-    appVersionLabelEl.style.cursor = "pointer";
-    appVersionLabelEl.addEventListener("click", () => {
-      if (isDevUnlocked()) return;
-      devTapCount += 1;
-      clearTimeout(devTapTimer);
-      devTapTimer = setTimeout(() => {
-        devTapCount = 0;
-      }, 1500);
-      if (devTapCount >= 7) {
-        devTapCount = 0;
-        setDevUnlocked(true);
-        robotAlert("Mode développeur débloqué sur cet appareil.");
-      }
-    });
+  // Round 50 : le mode développeur (7 appuis sur la version) est remplacé
+  // par l'appli d'administration Darwin Admin (dossier admin/). Le lien
+  // « Administration » de la page Réglages n'apparaît que pour un compte
+  // administrateur (vérifié par le serveur).
+  let adminLinkChecked = false;
+  async function refreshAdminLink() {
+    const row = el("settings-admin-row");
+    if (!row || adminLinkChecked || !accountCurrentUser || IS_ADMIN_PREVIEW) return;
+    adminLinkChecked = true;
+    row.hidden = !(await Sync.isAdmin());
   }
-  updateDevModeVisibility();
   const checkUpdateBtn = el("check-update-btn");
   const checkUpdateResultEl = el("check-update-result");
   if ("serviceWorker" in navigator) {
@@ -16099,5 +13718,14 @@
     enforceLoginGate();
     homeEventWarningReady = true;
     refreshHomeEventWarning();
+    refreshMySubscription();
+    // Aperçu dans Darwin Admin : l'appli est prête à recevoir les réglages.
+    if (IS_ADMIN_PREVIEW) {
+      try {
+        window.parent.postMessage({ type: "darwin-preview-ready" }, location.origin);
+      } catch (e) {
+        /* cadre d'un autre site */
+      }
+    }
   })();
 })();

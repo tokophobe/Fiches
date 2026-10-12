@@ -25,7 +25,8 @@
 (function () {
   "use strict";
 
-  const XLSX_URL = "data/taxonomie.xlsx";
+  // Round 50 : chemin modifiable (l'appli d'administration est dans admin/).
+  const XLSX_URL = window.FICHES_TAXONOMY_URL || "data/taxonomie.xlsx";
   const CACHE_KEY = "fiches-taxonomy-cache-v1";
 
   /* Listes, dans l'ordre de la cascade. `aliases` : en-têtes acceptés

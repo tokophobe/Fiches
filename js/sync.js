@@ -1429,7 +1429,38 @@ function subscribeClassMessagesRealtime(classId, onNewMessage) {
   return () => c.removeChannel(channel);
 }
 
+/** Round 50 : le compte connecté est-il administrateur (table admins) ?
+ *  false si le serveur n'a pas encore la mise à jour. */
+async function isAdmin() {
+  const c = getClient();
+  if (!c) return false;
+  try {
+    const { data, error } = await c.rpc("is_admin");
+    return !error && data === true;
+  } catch (e) {
+    return false;
+  }
+}
+
+/** Round 50 : abonnement du compte connecté (table subscriptions), ou null.
+ *  { status, plan, current_period_end } ; `missing: true` si la table
+ *  n'existe pas encore sur le serveur. */
+async function fetchMySubscription() {
+  const c = getClient();
+  const uid = currentUid();
+  if (!c || !uid) return { row: null };
+  try {
+    const { data, error } = await c.from("subscriptions").select("status, plan, current_period_end").eq("user_id", uid).maybeSingle();
+    if (error) return { row: null, missing: /relation|does not exist|schema cache|PGRST205/i.test(error.message || ""), error: error.message };
+    return { row: data || null };
+  } catch (e) {
+    return { row: null, error: String(e) };
+  }
+}
+
 window.Sync = {
+  isAdmin,
+  fetchMySubscription,
   generateSyncCode,
   getConfig,
   isConfigured,

@@ -8,8 +8,8 @@
    être publique : ce sont les règles de sécurité (RLS) de la base qui
    protègent les données de chacun.
 
-   Astuce : Réglages développeur → « Configuration du serveur » affiche le
-   contenu exact à coller ici, repris de cet appareil.
+   Astuce : Darwin Admin (admin/) → Réglages › Technique → « Configuration
+   du serveur » affiche le contenu exact de ce fichier.
 
    Round 36 : valeurs du projet de Stéphane intégrées (toutes les
    livraisons suivantes les gardent).

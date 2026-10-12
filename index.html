@@ -16,7 +16,9 @@
      Réglable (ou désactivable avec 0) dans Développeur — par appareil. -->
 <script>
 (function () {
-  var KEY = "fiches-autozoom-ref";
+  // Round 50 : valeur commune à tous les appareils (réglée dans Darwin
+  // Admin, recopiée ici par l'appli) ; l'ancien réglage par appareil est ignoré.
+  var KEY = "fiches-autozoom-ref-common";
   function refWidth() {
     try {
       var v = localStorage.getItem(KEY);
@@ -341,7 +343,6 @@
     <button class="tab tab--icon" role="tab" aria-selected="false" data-view="settings" title="Réglages" aria-label="Réglages">
       <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
-    <button class="tab tab--icon" role="tab" aria-selected="false" data-view="dev" title="Développeur" aria-label="Développeur">🧑‍💻</button>
   </nav>
 
   <main>
@@ -421,10 +422,6 @@
         <button type="button" class="home-circle" data-key="account" data-go="account">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
           <span>Se connecter</span>
-        </button>
-        <button type="button" class="home-circle" data-key="dev" data-go="dev">
-          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/></svg>
-          <span>Développeur</span>
         </button>
       </div>
     </section>
@@ -1478,19 +1475,12 @@
         <p class="field-hint" id="check-update-result" style="margin-top:8px;"></p>
       </div>
 
-      <!-- Item 6 (dernier lot) : ombre du logo — réglage utilisateur, pas
-           développeur (la taille et la position, elles, restent dans le
-           mode développeur). -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Logo</h3>
-        <label class="settings-toggle-row">
-          <input type="checkbox" id="setting-body-logo-shadow" />
-          <span>Ombre sous le logo (toutes les pages)</span>
-        </label>
-        <label class="settings-toggle-row">
-          <input type="checkbox" id="setting-home-logo-shadow" />
-          <span>Ombre sous le logo (page d'accueil)</span>
-        </label>
+      <!-- Round 50 : accès à l'appli d'administration (comptes
+           administrateurs seulement ; remplace le mode développeur). -->
+      <div class="card-form" id="settings-admin-row" hidden>
+        <h3 class="settings-block-title">Administration</h3>
+        <p class="field-hint">Ton compte est administrateur : gère les comptes, les abonnements, la Librairie et les réglages communs de l'appli.</p>
+        <a class="btn btn--small" href="./admin/" target="_blank" rel="noopener">Ouvrir Darwin Admin</a>
       </div>
 
       <!-- Item 5 (dernier lot) : couleur unie de la pastille "à revoir". -->
@@ -1602,301 +1592,6 @@
 
     <!-- VUE DÉVELOPPEUR (item 19) — réglages internes, cachés dans une
          future version "utilisateur" de l'appli. -->
-    <section id="view-dev" class="view" aria-labelledby="tab-dev">
-      <h2 class="section-title">🧑‍💻 Développeur</h2>
-
-      <!-- Round 33 : état de la synchro des réglages entre appareils. -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Réglages partagés entre appareils</h3>
-        <p class="field-hint" id="dev-settings-sync-status"></p>
-      </div>
-
-      <!-- 2a -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Boutons d'évaluation</h3>
-        <div id="dev-rating-icons-list" class="dev-nav-icons-list"></div>
-      </div>
-
-      <!-- 2c (2b : bloc "Menu principal" obsolète retiré) -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Icônes de la page d'accueil</h3>
-        <div id="dev-nav-icons-list" class="dev-nav-icons-list"></div>
-      </div>
-
-      <!-- 2d -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Icônes de la fiche</h3>
-        <div id="dev-icon-bank-list" class="dev-nav-icons-list"></div>
-      </div>
-
-      <!-- Item 3 : icônes de la page Organisation. -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Icônes de la page Organisation</h3>
-        <div id="dev-org-icon-bank-list" class="dev-nav-icons-list"></div>
-      </div>
-
-      <!-- 2e -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Couleurs des notes</h3>
-        <div class="dev-color-list" id="dev-rating-colors-list"></div>
-        <!-- Item 4 : fond partagé des 4 boutons, séparé de la couleur de
-             chaque note (qui teinte désormais l'icône). -->
-        <div class="dev-color-row dev-color-row--daynight" style="margin-top:12px;">
-          <span>Fond des boutons (les 4)</span>
-          <span class="dev-color-daynight-pair">
-            <input type="text" class="dev-color-value" id="dev-color-rating-btn-bg" title="Mode jour" />
-            <input type="text" class="dev-color-value" id="dev-color-rating-btn-bg-night" title="Mode nuit" />
-          </span>
-        </div>
-        <button type="button" class="btn btn--ghost" id="dev-rating-colors-reset">Revenir aux couleurs d'origine</button>
-      </div>
-
-      <!-- 2h -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Couleurs des fonds</h3>
-        <div class="dev-color-list" id="dev-bg-colors-list"></div>
-        <button type="button" class="btn btn--ghost" id="dev-bg-colors-reset">Revenir aux couleurs d'origine</button>
-      </div>
-
-      <!-- 2i -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Couleurs des textes</h3>
-        <div class="dev-color-list" id="dev-text-colors-set-list"></div>
-        <button type="button" class="btn btn--ghost" id="dev-text-colors-set-reset">Revenir aux couleurs d'origine</button>
-      </div>
-
-      <!-- Item 5 : ombrage réglable élément par élément. -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Effets d'ombrage</h3>
-        <div id="dev-shadows-list" class="dev-shadows-list"></div>
-      </div>
-
-      <!-- Item 3 : disposition (position + diamètre) des cercles de
-           l'accueil. -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Disposition de la page d'accueil</h3>
-        <p class="field-hint settings-block-hint">Position X/Y (centre du cercle, en % de la largeur/hauteur de l'écran — s'adapte à chaque appareil) et diamètre en pixels.</p>
-        <div id="dev-home-layout-list" class="dev-home-layout-list"></div>
-        <button type="button" class="btn btn--ghost" id="dev-home-layout-reset">Revenir à la disposition d'origine</button>
-      </div>
-
-      <!-- Items 1/2 : position/taille du logo. -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Logo (page d'accueil)</h3>
-        <div id="dev-home-logo-list"></div>
-      </div>
-
-      <!-- Round 14 : logo "darwin" affiché en plus du robot sur l'accueil
-           — position/taille/ombre entièrement réglables ici (à la
-           différence du logo robot ci-dessus, dont l'ombre reste un
-           réglage utilisateur dans Réglages). -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Logo darwin (page d'accueil)</h3>
-        <div id="dev-darwin-logo-list"></div>
-      </div>
-
-      <!-- Round 14 : texte sous le logo darwin — contenu, position et
-           taille réglables ici. Laissé vide par défaut (masqué tant
-           qu'aucun texte n'est saisi). -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Texte sous le logo darwin (page d'accueil)</h3>
-        <div id="dev-darwin-text-list"></div>
-      </div>
-
-      <!-- Item 1b/1c : disposition de la page Réviser. -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Disposition de la page Réviser</h3>
-        <div class="dev-color-list" id="dev-review-layout-list"></div>
-        <button type="button" class="btn btn--ghost" id="dev-review-layout-reset">Revenir à la disposition d'origine</button>
-      </div>
-
-      <!-- Round 42 : algorithme de révision v2 (fond / sprint). -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Algorithme de révision</h3>
-        <p class="field-hint settings-block-hint">Délais en minutes. Mode fond : NDI = (DD − TE) + TE × COEF_FOND, borné entre PLANCHER_FOND et PLAFOND_FOND. Mode sprint (boîte liée à une échéance à venir) : NDI = mini(D_P_ECH − D_P_ECH / COEF_SPRINT ; NDI fond), D_P_ECH comptée jusqu'à 8 h le jour de l'échéance la plus proche (30 min le jour même).</p>
-        <div id="dev-revision-algo-list"></div>
-        <p class="field-hint settings-block-hint" style="margin-top:12px;">Couleurs de la jauge (dernière note de chaque fiche, jamais notée = 0) :</p>
-        <div class="dev-color-list" id="dev-pers-gauge-colors-list"></div>
-        <button type="button" class="btn btn--ghost" id="dev-revision-algo-reset" style="margin-top:12px;">Revenir aux valeurs par défaut</button>
-      </div>
-
-      <!-- Item 1a/2 : score d'apprentissage des fiches, boîtes et
-           dossiers. -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Score des fiches</h3>
-        <p class="field-hint settings-block-hint">S = ((D-1)^P)/((D-1)^P+B), D = délai avant la prochaine interrogation (jours).</p>
-        <div class="algo-grid algo-grid--4">
-          <label class="field settings-bonus-field">
-            <span>P</span>
-            <input type="number" step="0.1" id="dev-score-p" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>B</span>
-            <input type="number" step="0.1" id="dev-score-b" />
-          </label>
-        </div>
-        <p class="field-hint settings-block-hint" style="margin-top:12px;">Seuils de la jauge (% de score) :</p>
-        <div class="algo-grid algo-grid--4">
-          <label class="field settings-bonus-field">
-            <span>V1 (Débutant → Fragile)</span>
-            <input type="number" id="dev-score-v1" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>V2 (Fragile → En bonne voie)</span>
-            <input type="number" id="dev-score-v2" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>V3 (En bonne voie → Bien)</span>
-            <input type="number" id="dev-score-v3" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>V4 (Bien → Maîtrisé)</span>
-            <input type="number" id="dev-score-v4" />
-          </label>
-          <label class="field settings-bonus-field">
-            <span>V5 (Maîtrisé → Acquis)</span>
-            <input type="number" id="dev-score-v5" />
-          </label>
-        </div>
-        <label class="field settings-bonus-field" style="margin-top:12px;">
-          <span>Taille de police "Objectif : X" (page Programme de révision)</span>
-          <input type="number" id="dev-score-program-target-font-size" />
-        </label>
-        <p class="field-hint settings-block-hint" style="margin-top:12px;">Couleurs des zones :</p>
-        <div class="dev-color-list" id="dev-gauge-colors-list"></div>
-        <label class="settings-toggle-row" style="margin-top:12px;">
-          <input type="checkbox" id="dev-score-hide-info" />
-          <span>Masquer le délai/score sous les boutons d'évaluation (Réviser)</span>
-        </label>
-        <label class="settings-toggle-row">
-          <input type="checkbox" id="dev-score-hide-subject" />
-          <span>Masquer le score de la boîte sur Réviser</span>
-        </label>
-        <button type="button" class="btn btn--ghost" id="dev-score-reset">Revenir aux réglages d'origine</button>
-      </div>
-
-      <!-- 2j : bloc "Palette de couleurs de texte" retiré (la barre d'outils
-           de mise en forme des fiches qui l'utilisait a été retirée). -->
-
-      <!-- Round 4, partie 2 : messages d'aide du robot, éditables ici pour
-           chaque page de l'appli (plutôt que codés en dur), avec plusieurs
-           messages possibles par page (un par ligne = un message, façon
-           tuto avec bouton "Suite"). -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Messages d'aide du robot 🤖</h3>
-        <p class="field-hint settings-block-hint">
-          Un message par ligne. Sur la page concernée, le robot affichera le
-          premier message, puis un bouton "Suite →" fera défiler les
-          suivants s'il y en a plusieurs. Laisser vide = pas de bulle
-          "aide" sur cette page.
-        </p>
-        <div id="dev-help-messages-list" class="dev-help-messages-list"></div>
-      </div>
-
-      <!-- Round 16 : le bouton "Publier ces réglages pour tous les
-           utilisateurs" a été retiré — chaque modification ci-dessus est
-           désormais automatiquement enregistrée pour tout le monde (une
-           seule source de vérité côté serveur), sans étape manuelle. -->
-
-      <!-- Round 20, item 6 : modération de la Bibliothèque — le
-           développeur peut supprimer n'importe quelle collection
-           partagée (pas seulement les siennes), utile en cas de contenu
-           inapproprié ou de doublon signalé. -->
-      <!-- Boîtes toutes prêtes (packs/bibliotheque.json) : import dans un
-           dossier de Mes collections pour relecture, puis publication en
-           une fois dans la Bibliothèque, au nom du Compte connecté. -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Librairie — boîtes toutes prêtes</h3>
-        <p class="field-hint settings-block-hint">
-          1. Importe les boîtes dans le dossier « Boîtes Librairie » pour
-          les relire (tu peux corriger les fiches). 2. Publie-les toutes dans
-          la Librairie, à ton nom. Une boîte déjà publiée n'est jamais
-          publiée deux fois.
-        </p>
-        <button type="button" class="btn btn--ghost" id="dev-library-pack-import-btn">Importer les boîtes toutes prêtes</button>
-        <button type="button" class="btn btn--ghost" id="dev-library-pack-publish-btn">Publier / mettre à jour ces boîtes dans la Librairie</button>
-        <p class="field-hint" id="dev-library-pack-status"></p>
-      </div>
-
-      <!-- Round 29 : configuration du serveur à intégrer à l'appli. -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Configuration du serveur</h3>
-        <p class="field-hint settings-block-hint">
-          Pour que les nouveaux utilisateurs n'aient qu'à créer leur compte,
-          copie ce texte dans le fichier js/config.js de l'appli (sur le
-          site), à la place du contenu actuel.
-        </p>
-        <pre class="dev-config-snippet" id="dev-config-snippet"></pre>
-        <button type="button" class="btn btn--small" id="dev-config-copy-btn">Copier</button>
-        <p class="field-hint" id="dev-config-status"></p>
-      </div>
-
-      <!-- Round 25, item 1 : zoom automatique (voir script en tête de page). -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Zoom automatique (téléphone)</h3>
-        <p class="field-hint settings-block-hint">
-          La page est dessinée pour cette largeur, puis agrandie ou réduite
-          pour remplir l'écran du téléphone. 390 = réglage d'origine ;
-          plus petit = tout paraît plus gros ; 0 = désactivé. Propre à cet
-          appareil.
-        </p>
-        <label class="field">
-          <span>Largeur de référence (px)</span>
-          <input type="text" inputmode="numeric" id="dev-autozoom-ref" />
-        </label>
-        <button type="button" class="btn btn--small" id="dev-autozoom-save-btn">Appliquer</button>
-        <p class="field-hint" id="dev-autozoom-status"></p>
-      </div>
-
-      <!-- Round 23 : taxonomie lue dans data/taxonomie.xlsx (voir
-           js/taxonomy.js) — permet de vérifier qu'un Excel remplacé sur le
-           site a bien été relu. -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Librairie — taxonomie (Excel)</h3>
-        <p class="field-hint settings-block-hint">
-          Classement proposé au partage et dans les filtres, lu dans
-          data/taxonomie.xlsx. Pour le modifier : remplace ce fichier sur le
-          site, puis appuie sur « Relire l'Excel ».
-        </p>
-        <button type="button" class="btn btn--ghost" id="dev-taxonomy-reload-btn">Relire l'Excel</button>
-        <p class="field-hint" id="dev-taxonomy-status"></p>
-      </div>
-
-      <div class="card-form">
-        <h3 class="settings-block-title">Librairie — modération</h3>
-        <p class="field-hint settings-block-hint">
-          Supprime définitivement une collection partagée, quel que soit
-          son auteur.
-        </p>
-        <button type="button" class="btn btn--ghost" id="dev-library-refresh-btn">Charger les collections partagées</button>
-        <ul class="subject-list dev-library-moderation-list" id="dev-library-moderation-list"></ul>
-      </div>
-
-      <!-- Round 4, partie 2 : le mode développeur reste dans l'appli mais
-           n'est visible que sur les appareils débloqués (7 appuis sur le
-           numéro de version, page Réglages) — ce bouton permet de le
-           recacher facilement sur cet appareil. -->
-      <!-- Round 48 : abonnements — en attendant le vrai système, tout compte
-           connecté est considéré comme abonné ; cette case simule l'absence
-           d'abonnement sur cet appareil (pour tester le message du robot). -->
-      <div class="card-form">
-        <h3 class="settings-block-title">Abonnements (test)</h3>
-        <label class="settings-toggle-row">
-          <input type="checkbox" id="dev-simulate-no-subscription" />
-          <span>Simuler « pas d'abonnement » sur cet appareil</span>
-        </label>
-      </div>
-
-      <div class="card-form">
-        <h3 class="settings-block-title">Accès à ce mode</h3>
-        <p class="field-hint settings-block-hint">
-          Ce mode est caché aux autres utilisateurs. Il n'est visible sur
-          cet appareil que parce qu'il a été débloqué (7 appuis sur le
-          numéro de version, dans Réglages).
-        </p>
-        <button type="button" class="btn btn--ghost" id="dev-hide-dev-mode-btn">Recacher le mode développeur sur cet appareil</button>
-      </div>
-    </section>
 
     <!-- VUE SÉLECTEUR DE BOÎTE(S) (item 1, 4e lot) : page UNIQUE et PARTAGÉE
          par tous les endroits de l'appli où il faut choisir un ou plusieurs
@@ -2012,6 +1707,7 @@
 <script src="js/db.js"></script>
 <script src="js/sync.js"></script>
 <script src="js/taxonomy.js"></script>
+<script src="js/settings-model.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
