@@ -1234,25 +1234,155 @@
     });
     return sel;
   }
+  /* Les boîtes toutes prêtes sont publiées au nom de « darwin » (round 51),
+     directement dans la Librairie (sans passer par l'organisation d'un
+     compte). Une boîte déjà publiée est retrouvée par son id d'origine
+     « pack-<clé> » ; sa mise à jour garde l'id de chaque fiche (les comptes
+     qui l'ont ajoutée à leurs révisions gardent leur progression). Les fiches
+     sont retrouvées par empreinte de leur texte : texte actuel du fichier, ou
+     texte précédent (champs `w` = question + réponse, `wq` = question). */
+  const PACK_AUTHOR = { first: "darwin", last: "" };
+  const PACK_FOLDER_NAMES = ["Boîtes Librairie", "Boîtes Bibliothèque", "Bibliothèque"];
+  function packNorm(s) {
+    return String(s || "")
+      .replace(/\r\n?/g, "\n")
+      .split("\n")
+      .map((l) => l.trim())
+      .join("\n")
+      .trim();
+  }
+  function packHash(s) {
+    s = packNorm(s);
+    let h = 0x811c9dc5;
+    for (let i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 0x01000193) >>> 0;
+    }
+    return h.toString(16).padStart(8, "0");
+  }
+  const packQaHash = (q, a) => packHash(`${packNorm(q)}\u0001${packNorm(a)}`);
+  function sortedJson(v) {
+    if (Array.isArray(v)) return `[${v.map(sortedJson).join(",")}]`;
+    if (isObj(v)) return `{${Object.keys(v).sort().map((k) => `${JSON.stringify(k)}:${sortedJson(v[k])}`).join(",")}}`;
+    return JSON.stringify(v === undefined ? null : v);
+  }
+  /** Fiches d'une collection publiée recalées sur la version du fichier. */
+  function mergePackCards(colCards, packCards) {
+    const curQA = new Map();
+    const curQ = new Map();
+    const oldQA = new Map();
+    const oldQ = new Map();
+    const setOnce = (m, k, i) => {
+      if (k && !m.has(k)) m.set(k, i);
+    };
+    packCards.forEach((p, i) => {
+      setOnce(curQA, packQaHash(p.question, p.answer), i);
+      setOnce(curQ, packHash(p.question), i);
+      setOnce(oldQA, p.w, i);
+      setOnce(oldQ, p.wq, i);
+    });
+    const used = new Set();
+    let changed = 0;
+    let unmatched = 0;
+    const cards = (colCards || []).map((c) => {
+      const qa = packQaHash(c.question, c.answer);
+      const q = packHash(c.question);
+      const i0 = curQA.get(qa);
+      if (i0 != null && !used.has(i0)) {
+        used.add(i0);
+        return c;
+      }
+      for (const m of [oldQA.get(qa), curQ.get(q), oldQ.get(q)]) {
+        if (m == null || used.has(m)) continue;
+        used.add(m);
+        const p = packCards[m];
+        if (p.question === c.question && p.answer === c.answer) return c;
+        changed++;
+        return { ...c, question: p.question, answer: p.answer };
+      }
+      unmatched++;
+      return c;
+    });
+    return { cards, changed, unmatched, missing: packCards.length - used.size };
+  }
+  async function fetchAllRows(build, pageSize) {
+    const out = [];
+    for (let from = 0; ; from += pageSize) {
+      const { data, error } = await build().range(from, from + pageSize - 1);
+      if (error) throw new Error(friendlyError(error));
+      out.push(...(data || []));
+      if (!data || data.length < pageSize) break;
+    }
+    return out;
+  }
   async function libraryPacksTab(root, live) {
-    const out = h("div", null, h("p", { class: "muted" }, "Appuie sur « Analyser » pour comparer les boîtes du fichier avec tes publications."));
+    const { data: userData } = await client().auth.getUser();
+    const me = userData && userData.user;
+    // 1) Boîtes toutes prêtes restées dans l'organisation du compte.
+    const orgCard = card(
+      "Dans ton organisation",
+      "Anciennes copies des boîtes toutes prêtes dans tes propres boîtes (ids « pack-… », importées autrefois pour être publiées). Les retirer ne touche pas à la Librairie.",
+      h("p", { class: "muted" }, "Comptage…")
+    );
+    root.appendChild(orgCard);
+    const drawOrg = async () => {
+      const body = h("div");
+      orgCard.replaceChildren(orgCard.firstChild, body);
+      let nBoxes = 0;
+      let nCards = 0;
+      try {
+        const r1 = await client().from("subjects").select("id", { count: "exact", head: true }).eq("owner_id", me.id).eq("deleted", false).like("id", "pack-%");
+        const r2 = await client().from("cards").select("id", { count: "exact", head: true }).eq("owner_id", me.id).eq("deleted", false).like("subject", "pack-%");
+        if (r1.error || r2.error) throw new Error(friendlyError(r1.error || r2.error));
+        nBoxes = r1.count || 0;
+        nCards = r2.count || 0;
+      } catch (e) {
+        body.appendChild(h("p", { class: "form-error" }, e.message));
+        return;
+      }
+      if (!live()) return;
+      if (!nBoxes && !nCards) {
+        body.appendChild(h("p", { class: "muted" }, "Aucune : ton organisation ne contient plus de boîte toute prête."));
+        return;
+      }
+      const btn = h("button", { type: "button", class: "btn btn--danger" }, "Les retirer de mon organisation");
+      const log = h("div", { class: "log", hidden: true });
+      btn.addEventListener("click", async () => {
+        if (!(await confirmDialog(`Retirer de ton organisation ${plural(nBoxes, "boîte toute prête", "boîtes toutes prêtes")} (${plural(nCards, "fiche", "fiches")}) et leur dossier s'il devient vide ? Ta progression de révision sur ces fiches sera perdue. Les collections publiées dans la Librairie ne changent pas. Conseil : ferme l'appli Fiches sur tes autres appareils pendant l'opération ; elle se mettra à jour à la prochaine ouverture.`, { danger: true, okLabel: "Retirer" }))) return;
+        btn.disabled = true;
+        log.hidden = false;
+        try {
+          await removePackBoxesFromOrg(me.id, (t) => (log.textContent += `${t}\n`));
+          toast("Boîtes toutes prêtes retirées de ton organisation");
+          drawOrg();
+        } catch (e) {
+          log.textContent += `✗ ${e.message}\n`;
+          btn.disabled = false;
+        }
+      });
+      body.append(h("div", { class: "grid grid--kpi" }, kpi("Boîtes", nBoxes), kpi("Fiches", nCards)), btn, log);
+    };
+    drawOrg();
+
+    // 2) Publication / mise à jour dans la Librairie, au nom de darwin.
+    const out = h("div", null, h("p", { class: "muted" }, "Appuie sur « Analyser » pour comparer le fichier avec ce qui est publié."));
     const log = h("div", { class: "log", hidden: true });
     const analyse = h("button", { type: "button", class: "btn btn--primary" }, "Analyser");
     root.appendChild(
       card(
-        "Boîtes toutes prêtes",
-        "Le fichier packs/bibliotheque.json du site contient des boîtes prêtes à publier. Elles sont publiées dans la Librairie à ton nom (prénom et nom de ton compte). Une boîte déjà publiée garde sa place : seuls son classement et ses tags sont mis à jour.",
+        "Publication dans la Librairie",
+        "Le fichier packs/bibliotheque.json du site contient les boîtes toutes prêtes. Elles sont publiées au nom de « darwin ». Une boîte déjà publiée garde sa place et l'identifiant de ses fiches : son nom, son résumé, son classement, ses tags et le texte de ses fiches sont mis à jour.",
         h("div", { class: "toolbar" }, analyse),
         out,
         log
       )
     );
-    let plan = null;
     analyse.addEventListener("click", async () => {
       analyse.disabled = true;
-      out.replaceChildren(h("p", { class: "muted" }, "Lecture du fichier et du classement…"));
+      out.replaceChildren(h("p", { class: "muted" }, "Lecture du fichier, du classement et des collections publiées…"));
+      let plan;
       try {
-        plan = await buildPackPlan();
+        plan = await buildPackPlan(me);
       } catch (e) {
         out.replaceChildren(h("p", { class: "form-error" }, e.message));
         analyse.disabled = false;
@@ -1262,63 +1392,123 @@
       if (!live()) return;
       const publishBtn = h("button", { type: "button", class: "btn btn--primary", disabled: !plan.toCreate.length && !plan.toUpdate.length }, "Publier / mettre à jour");
       publishBtn.addEventListener("click", () => runPackPlan(plan, publishBtn, log));
-      out.replaceChildren(
+      const parts = [
         h(
           "div",
           { class: "grid grid--kpi" },
           kpi("Boîtes dans le fichier", plan.total),
-          kpi("Déjà publiées et à jour", plan.upToDate),
-          kpi("À mettre à jour", plan.toUpdate.length, "classement ou tags"),
+          kpi("Publiées et à jour", plan.upToDate),
+          kpi("À mettre à jour", plan.toUpdate.length, `${plural(plan.cardsChanged, "fiche modifiée", "fiches modifiées")}`),
           kpi("Nouvelles à publier", plan.toCreate.length)
         ),
-        plan.author ? h("p", { class: "card-hint" }, `Auteur affiché : ${plan.author}`) : h("p", { class: "form-error" }, "Renseigne d'abord ton prénom et ton nom dans « Mon compte » de l'appli Fiches : ils sont affichés comme auteur."),
-        publishBtn
-      );
-      if (!plan.author) publishBtn.disabled = true;
+        plan.cardsUnmatched
+          ? h("p", { class: "card-hint" }, `${plural(plan.cardsUnmatched, "fiche publiée", "fiches publiées")} non retrouvée${plan.cardsUnmatched > 1 ? "s" : ""} dans le fichier (modifiée${plan.cardsUnmatched > 1 ? "s" : ""} à la main ?) : laissée${plan.cardsUnmatched > 1 ? "s" : ""} telle${plan.cardsUnmatched > 1 ? "s" : ""} quelle${plan.cardsUnmatched > 1 ? "s" : ""}.`)
+          : null,
+        plan.cardsMissing
+          ? h("p", { class: "card-hint" }, `${plural(plan.cardsMissing, "fiche du fichier", "fiches du fichier")} absente${plan.cardsMissing > 1 ? "s" : ""} des collections déjà publiées : non ajoutée${plan.cardsMissing > 1 ? "s" : ""} (pour ne pas réintroduire une fiche retirée à la main).`)
+          : null,
+        publishBtn,
+      ];
+      out.replaceChildren(...parts.filter(Boolean));
     });
   }
-  async function buildPackPlan() {
+  /** Retire du compte les boîtes « pack-… », leurs fiches, puis les dossiers
+   *  devenus vides (dossier des boîtes toutes prêtes et ses sous-dossiers). */
+  async function removePackBoxesFromOrg(uid, line) {
+    const c = client();
+    const now = new Date().toISOString();
+    const boxes = await fetchAllRows(() => c.from("subjects").select("id, folder_id").eq("owner_id", uid).eq("deleted", false).like("id", "pack-%").order("id"), 1000);
+    line(`${boxes.length} boîte(s) à retirer…`);
+    for (let i = 0; i < boxes.length; i += 100) {
+      const ids = boxes.slice(i, i + 100).map((b) => b.id);
+      const r = await c.from("cards").update({ deleted: true, updated_at: now }).eq("owner_id", uid).eq("deleted", false).in("subject", ids);
+      if (r.error) throw new Error(friendlyError(r.error));
+      const r2 = await c.from("subjects").update({ deleted: true, updated_at: now }).eq("owner_id", uid).in("id", ids);
+      if (r2.error) throw new Error(friendlyError(r2.error));
+      line(`${Math.min(i + 100, boxes.length)} / ${boxes.length}`);
+    }
+    // Fiches orphelines éventuelles (boîte déjà retirée).
+    const r3 = await c.from("cards").update({ deleted: true, updated_at: now }).eq("owner_id", uid).eq("deleted", false).like("subject", "pack-%");
+    if (r3.error) throw new Error(friendlyError(r3.error));
+    // Dossiers devenus vides.
+    const folders = await fetchAllRows(() => c.from("folders").select("id, name, parent_id").eq("owner_id", uid).eq("deleted", false).order("id"), 1000);
+    const liveSubjects = await fetchAllRows(() => c.from("subjects").select("id, folder_id").eq("owner_id", uid).eq("deleted", false).order("id"), 1000);
+    const usedFolders = new Set(liveSubjects.map((s) => s.folder_id).filter(Boolean));
+    const candidates = new Set(boxes.map((b) => b.folder_id).filter(Boolean));
+    folders.filter((f) => PACK_FOLDER_NAMES.includes(f.name)).forEach((f) => candidates.add(f.id));
+    const removed = new Set();
+    let progress = true;
+    while (progress) {
+      progress = false;
+      for (const f of folders) {
+        if (removed.has(f.id) || !candidates.has(f.id)) continue;
+        const hasChild = folders.some((x) => x.parent_id === f.id && !removed.has(x.id));
+        if (hasChild || usedFolders.has(f.id)) continue;
+        const r = await c.from("folders").update({ deleted: true, updated_at: now }).eq("owner_id", uid).eq("id", f.id);
+        if (r.error) throw new Error(friendlyError(r.error));
+        removed.add(f.id);
+        if (f.parent_id) candidates.add(f.parent_id);
+        progress = true;
+      }
+    }
+    line(`Terminé : ${boxes.length} boîte(s) et ${removed.size} dossier(s) retirés.`);
+  }
+  async function buildPackPlan(user) {
     const res = await fetch("../packs/bibliotheque.json", { cache: "no-store" });
     if (!res.ok) throw new Error(`Fichier introuvable (HTTP ${res.status}).`);
     const pack = await res.json();
     await window.Taxonomy.load();
-    const { data: userData } = await client().auth.getUser();
-    const user = userData && userData.user;
-    const meta = (user && user.user_metadata) || {};
-    const author = `${meta.first_name || ""} ${meta.last_name || ""}`.trim();
-    const mine = [];
-    for (let from = 0; ; from += 1000) {
-      const { data, error } = await client()
-        .from("library_collections")
-        .select("id, name, source_subject_id, taxonomy, tags, level")
-        .eq("owner_id", user.id)
-        .order("id")
-        .range(from, from + 999);
-      if (error) throw new Error(friendlyError(error));
-      mine.push(...(data || []));
-      if (!data || data.length < 1000) break;
-    }
-    const plan = { total: 0, upToDate: 0, toUpdate: [], toCreate: [], author, user };
+    const mine = await fetchAllRows(
+      () =>
+        client()
+          .from("library_collections")
+          .select("id, name, source_subject_id, taxonomy, tags, level, summary, description, owner_first_name, owner_last_name, cards")
+          .eq("owner_id", user.id)
+          .order("id"),
+      300
+    );
+    const plan = { total: 0, upToDate: 0, toUpdate: [], toCreate: [], user, cardsChanged: 0, cardsUnmatched: 0, cardsMissing: 0 };
     (pack.boxes || []).forEach((box) => {
       plan.total++;
       const sid = `pack-${box.key}`;
       const taxonomy = taxValueFromSelection(packSelection(box));
       const tags = Array.isArray(box.tags) ? box.tags.map(normalizeTag).filter(Boolean) : [];
+      const packCards = (box.cards || []).map((c) => ({ question: c.question || "", answer: c.answer || "", w: c.w, wq: c.wq }));
       const existing = mine.find((c) => c.source_subject_id === sid) || mine.find((c) => !c.source_subject_id && c.name === box.name);
-      if (existing) {
-        const sameTax = JSON.stringify(existing.taxonomy || {}) === JSON.stringify(taxonomy) && existing.taxonomy && Object.keys(existing.taxonomy).length;
-        const sameTags = JSON.stringify((existing.tags || []).map(normalizeTag)) === JSON.stringify(tags);
-        if (sameTax && (sameTags || !tags.length) && existing.source_subject_id) plan.upToDate++;
-        else plan.toUpdate.push({ box, existing, taxonomy, tags, sid });
-      } else if ((box.cards || []).length) {
-        plan.toCreate.push({ box, taxonomy, tags, sid });
+      if (!existing) {
+        if (packCards.length) plan.toCreate.push({ box, taxonomy, tags, sid, packCards });
+        return;
       }
+      const fields = {};
+      const want = {
+        name: box.name,
+        summary: box.summary || existing.summary || "",
+        description: box.description || existing.description || "",
+        level: taxonomy.niveau ? taxonomy.niveau.label : box.level || existing.level || "",
+        source_subject_id: sid,
+        owner_first_name: PACK_AUTHOR.first,
+        owner_last_name: PACK_AUTHOR.last,
+      };
+      Object.keys(want).forEach((k) => {
+        if ((existing[k] || "") !== (want[k] || "")) fields[k] = want[k];
+      });
+      if (Object.keys(taxonomy).length && sortedJson(existing.taxonomy || {}) !== sortedJson(taxonomy)) fields.taxonomy = taxonomy;
+      if (tags.length && sortedJson((existing.tags || []).map(normalizeTag)) !== sortedJson(tags)) fields.tags = tags;
+      const merged = mergePackCards(existing.cards || [], packCards);
+      plan.cardsUnmatched += merged.unmatched;
+      plan.cardsMissing += merged.missing;
+      if (merged.changed) {
+        fields.cards = merged.cards;
+        plan.cardsChanged += merged.changed;
+      }
+      if (Object.keys(fields).length) plan.toUpdate.push({ box, existing, fields });
+      else plan.upToDate++;
     });
     return plan;
   }
   async function runPackPlan(plan, btn, log) {
     const n = plan.toCreate.length + plan.toUpdate.length;
-    if (!(await confirmDialog(`Publier ${plural(plan.toCreate.length, "nouvelle boîte", "nouvelles boîtes")} et mettre à jour ${plural(plan.toUpdate.length, "boîte", "boîtes")} dans la Librairie, au nom de ${plan.author} ?`, { okLabel: "Publier" }))) return;
+    if (!(await confirmDialog(`Publier ${plural(plan.toCreate.length, "nouvelle boîte", "nouvelles boîtes")} et mettre à jour ${plural(plan.toUpdate.length, "boîte", "boîtes")} (${plural(plan.cardsChanged, "fiche modifiée", "fiches modifiées")}) dans la Librairie, au nom de « darwin » ?`, { okLabel: "Publier" }))) return;
     btn.disabled = true;
     log.hidden = false;
     log.textContent = "";
@@ -1326,47 +1516,59 @@
       log.textContent += `${t}\n`;
       log.scrollTop = log.scrollHeight;
     };
-    const meta = plan.user.user_metadata || {};
     let ok = 0;
     let fail = 0;
-    let i = 0;
-    for (const it of plan.toUpdate) {
-      i++;
-      const fields = { taxonomy: it.taxonomy, level: it.taxonomy.niveau ? it.taxonomy.niveau.label : it.box.level || it.existing.level || "", source_subject_id: it.sid, updated_at: new Date().toISOString() };
-      if (it.tags.length) fields.tags = it.tags;
-      const { error } = await client().from("library_collections").update(fields).eq("id", it.existing.id);
-      if (error) {
-        fail++;
-        line(`✗ ${it.box.name} : ${friendlyError(error)}`);
-      } else ok++;
-      if (i % 25 === 0) line(`${i} / ${n}…`);
-    }
-    for (const it of plan.toCreate) {
-      i++;
-      const row = {
-        owner_id: plan.user.id,
-        owner_email: plan.user.email || "",
-        owner_first_name: meta.first_name || "",
-        owner_last_name: meta.last_name || "",
-        name: it.box.name,
-        level: it.taxonomy.niveau ? it.taxonomy.niveau.label : it.box.level || "",
-        price_tokens: 0,
-        summary: it.box.summary || "",
-        description: it.box.description || "",
-        source_subject_id: it.sid,
-        taxonomy: it.taxonomy,
-        tags: it.tags,
-        cards: (it.box.cards || []).map((c, k) => ({ id: `${it.sid}-${k + 1}`, question: c.question || "", answer: c.answer || "" })),
-      };
-      const { error } = await client().from("library_collections").insert(row);
-      if (error) {
-        fail++;
-        line(`✗ ${it.box.name} : ${friendlyError(error)}`);
-      } else ok++;
-      if (i % 25 === 0) line(`${i} / ${n}…`);
-    }
+    let done = 0;
+    const tasks = [
+      ...plan.toUpdate.map((it) => async () => {
+        const { error } = await client()
+          .from("library_collections")
+          .update({ ...it.fields, updated_at: new Date().toISOString() })
+          .eq("id", it.existing.id);
+        return error ? `${it.box.name} : ${friendlyError(error)}` : null;
+      }),
+      ...plan.toCreate.map((it) => async () => {
+        const row = {
+          owner_id: plan.user.id,
+          owner_email: plan.user.email || "",
+          owner_first_name: PACK_AUTHOR.first,
+          owner_last_name: PACK_AUTHOR.last,
+          name: it.box.name,
+          level: it.taxonomy.niveau ? it.taxonomy.niveau.label : it.box.level || "",
+          price_tokens: 0,
+          summary: it.box.summary || "",
+          description: it.box.description || "",
+          source_subject_id: it.sid,
+          taxonomy: it.taxonomy,
+          tags: it.tags,
+          cards: it.packCards.map((c, k) => ({ id: `${it.sid}-${k + 1}`, question: c.question, answer: c.answer })),
+        };
+        const { error } = await client().from("library_collections").insert(row);
+        return error ? `${it.box.name} : ${friendlyError(error)}` : null;
+      }),
+    ];
+    // 4 envois en parallèle.
+    let next = 0;
+    const worker = async () => {
+      while (next < tasks.length) {
+        const t = tasks[next++];
+        let err;
+        try {
+          err = await t();
+        } catch (e) {
+          err = String(e && e.message ? e.message : e);
+        }
+        if (err) {
+          fail++;
+          line(`✗ ${err}`);
+        } else ok++;
+        done++;
+        if (done % 50 === 0) line(`${done} / ${n}…`);
+      }
+    };
+    await Promise.all([worker(), worker(), worker(), worker()]);
     line(`Terminé : ${ok} réussie(s), ${fail} échec(s).`);
-    toast(fail ? `${fail} échec(s) — voir le détail` : "Boîtes publiées", !!fail);
+    toast(fail ? `${fail} échec(s) — voir le détail` : "Librairie à jour", !!fail);
   }
 
   /* ================================================================
@@ -1775,11 +1977,13 @@
   const DIFF_IGNORED = new Set(["updatedAt", "appPrefs", "appPrefsOwner"]);
   /** Réglages complets (valeurs par défaut comprises) en gardant les
    *  champs que le modèle ne connaît pas (appPrefs…). */
+  // Réglages retirés de l'appli : supprimés du serveur au prochain enregistrement.
+  const OBSOLETE_KEYS = new Set(["cardScore", "gaugeColors"]);
   function fullFrom(raw) {
     raw = isObj(raw) ? raw : {};
     const out = clone(M.buildDevSettings(raw));
     Object.keys(raw).forEach((k) => {
-      if (!(k in out)) out[k] = clone(raw[k]);
+      if (!(k in out) && !OBSOLETE_KEYS.has(k)) out[k] = clone(raw[k]);
     });
     return out;
   }
@@ -2396,23 +2600,10 @@
       );
       root.appendChild(
         section(
-          "Score des fiches",
-          "S = ((D − 1)^P) / ((D − 1)^P + B), D = délai avant la prochaine interrogation (en jours). Seuils de la jauge en % de score.",
-          [["cardScore"], ["gaugeColors"], ["nightColors", "gaugeColors"]],
-          setRow("P et B", [numCtrl(["cardScore", "p"], { step: 0.1, label: "P" }), numCtrl(["cardScore", "b"], { step: 0.1, label: "B" })]),
-          [
-            ["v1", "V1 (0 → 1 étoile)"],
-            ["v2", "V2 (1 → 2 étoiles)"],
-            ["v3", "V3 (2 → 3 étoiles)"],
-            ["v4", "V4 (3 → 4 étoiles)"],
-            ["v5", "V5 (4 → 5 étoiles)"],
-          ].map(([k, l]) => setRow(l, numCtrl(["cardScore", k], { min: 0, max: 100, unit: "%" }))),
-          setRow("Taille du texte « Objectif : X » (programme de révision)", numCtrl(["cardScore", "programTargetFontSize"], { min: 4, max: 40, unit: "px" })),
-          setRow("Masquer le délai / score sous les boutons d'évaluation", switchCtrl(["cardScore", "hideReviewScoreInfo"])),
-          setRow("Masquer le score de la boîte pendant la révision", switchCtrl(["cardScore", "hideSubjectScoreOnReview"])),
-          h("div", { class: "quote-label", style: { marginTop: "14px" } }, "Couleurs des zones de la jauge"),
-          dayNightHead(),
-          M.GAUGE_ZONE_DEFS.map((z) => setRow(`${z.label}`, [colorCtrl(["gaugeColors", z.key]), colorCtrl(["nightColors", "gaugeColors", z.key])]))
+          "Infos sous les boutons d'évaluation",
+          "Pendant la révision, sous les quatre boutons : « Délai précédent » et, pour chaque note, le délai avant la prochaine interrogation.",
+          [["reviewInfo"]],
+          setRow("Masquer ces délais", switchCtrl(["reviewInfo", "hideDelays"]))
         )
       );
     });

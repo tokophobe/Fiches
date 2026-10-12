@@ -413,18 +413,6 @@ main {
   margin-bottom: 0;
 }
 
-/* Score de la boîte/sélection en cours (item 2), à côté du sélecteur. */
-.review-subject-score {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--ink-soft);
-  background: var(--paper-2);
-  border-radius: 999px;
-  padding: 6px 10px;
-  flex-shrink: 0;
-}
-
 /* Bouton "+ Nouvelle fiche" (item 3), à côté du sélecteur de boîte —
    ouvre le cadre de création, masqué par défaut. */
 .cards-new-btn {

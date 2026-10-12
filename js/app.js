@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v204";
+  const APP_VERSION = "v205";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -18,7 +18,6 @@
     DEFAULT_BONUS_PILL_COLOR,
     DEFAULT_CARD_BG_COLOR,
     DEFAULT_CARD_FORM_BG_COLOR,
-    DEFAULT_CARD_SCORE_SETTINGS,
     DEFAULT_CARD_TEXT_COLOR,
     DEFAULT_CHART_WRAP_BG_COLOR,
     DEFAULT_CONSTRUCTION_ACTIVE_COLOR,
@@ -26,7 +25,6 @@
     DEFAULT_DARWIN_TEXT,
     DEFAULT_DUE_BAR_COLOR,
     DEFAULT_EMPTY_BAR_COLOR,
-    DEFAULT_GAUGE_COLORS,
     DEFAULT_HELP_MESSAGES_BY_VIEW,
     DEFAULT_HOME_LAYOUT,
     DEFAULT_HOME_LOGO,
@@ -52,8 +50,6 @@
     DEFAULT_TEXT_COLORS,
     DEFAULT_TEXT_COLORS_SET,
     DEFAULT_TODAY_BAR_COLOR,
-    GAUGE_COLORS_TITLES,
-    GAUGE_ZONE_DEFS,
     HELP_VIEW_LABELS,
     HOME_LAYOUT_LEGACY_REF_HEIGHT,
     HOME_LAYOUT_LEGACY_REF_WIDTH,
@@ -78,7 +74,6 @@
     TEXT_COLORS_SET_TITLES,
     buildDevSettings,
     buildRevisionAlgoSettings,
-    gaugeZoneStarText,
     iconSvgMarkup,
     migrateHomeLayoutToPercent,
     revisionAlgoValueError,
@@ -794,7 +789,7 @@
       if (e.data.type === "darwin-admin-preview" && devIsPlainObj(e.data.settings)) {
         previewDevSettings = buildDevSettings(e.data.settings);
         applyAllDevSettings();
-        [renderManageList, renderReviewGauge, renderReviewSubjectScore, updateRatingPreviews, renderRevisionProgramList].forEach((fn) => {
+        [renderManageList, renderReviewGauge, updateRatingPreviews, renderRevisionProgramList].forEach((fn) => {
           try {
             fn();
           } catch (err) {
@@ -1135,7 +1130,6 @@
         textColorsSet: settings.textColorsSet,
         ratingColors: settings.ratingColors,
         ratingBtnBgColor: settings.ratingBtnBgColor,
-        gaugeColors: settings.gaugeColors,
       };
     }
     return settings.nightColors;
@@ -1319,21 +1313,6 @@
 
 
 
-  /** Applique une note à une fiche avec le nouvel algorithme : renvoie les
-   *  champs à fusionner dans la fiche (échéance brute conservée à 3
-   *  décimales, échéance entière, et date de prochaine interrogation). */
-  /** Score d'apprentissage d'une fiche (item 1), de 0 à 100 (entier) :
-   *  S = ((D-1)^P)/((D-1)^P+B), D = délai actuel (en jours) avant la
-   *  prochaine interrogation. D est ramené à 1 minimum (fiche due
-   *  aujourd'hui ou en retard) pour éviter une puissance d'un nombre
-   *  négatif avec un exposant non entier (NaN sinon). */
-  function computeCardScore(card, intervalOverride) {
-    const settings = loadDevSettings().cardScore;
-    const D = Math.max(1, intervalOverride !== undefined ? intervalOverride : card.interval || 1);
-    const base = Math.pow(D - 1, settings.p);
-    const S = base / (base + settings.b);
-    return Math.round(S * 100);
-  }
 
   /* ---------------------------------------------------------
      Algorithme de révision v2 (round 42) — voir
@@ -1707,27 +1686,7 @@
     await persistSubject(s);
   }
 
-  /** Score moyen d'une boîte (item 2) : moyenne des scores de ses fiches
-   *  (non supprimées). null si la boîte n'a aucune fiche — pas de score
-   *  à afficher dans ce cas plutôt qu'un 0% trompeur. */
-  function computeSubjectScore(subjectId) {
-    const own = cards.filter((c) => !c.deleted && c.subject === subjectId);
-    if (own.length === 0) return null;
-    const sum = own.reduce((acc, c) => acc + computeCardScore(c), 0);
-    return Math.round(sum / own.length);
-  }
 
-  /** Score moyen d'un dossier (item 2) : moyenne des scores de TOUTES les
-   *  fiches des boîtes qu'il contient, y compris dans ses sous-dossiers
-   *  — pas une moyenne des scores de boîtes (ce qui pondérerait à tort
-   *  une boîte à 2 fiches autant qu'une à 200). */
-  function computeFolderScore(folderId) {
-    const subjectIds = subjectIdsInFolder(folderId);
-    const own = cards.filter((c) => !c.deleted && subjectIds.includes(c.subject));
-    if (own.length === 0) return null;
-    const sum = own.reduce((acc, c) => acc + computeCardScore(c), 0);
-    return Math.round(sum / own.length);
-  }
 
   /** Nouvelle jauge de persistance (remplace le score 0-100 dans les 3
    *  emplacements où il s'affichait) : renvoie le POOL de fiches d'une
@@ -2034,7 +1993,11 @@
   function toDisplayHtml(raw) {
     if (!raw) return "";
     if (looksLikeHtml(raw)) return raw;
-    return escapeHtml(raw).replace(/\n/g, "<br>");
+    // Round 51 : l'indentation en début de ligne (code des boîtes toutes
+    // prêtes, lignes de suite) est gardée — sinon le HTML la fusionne.
+    return escapeHtml(raw)
+      .replace(/^ +/gm, (m) => "&nbsp;".repeat(m.length))
+      .replace(/\n/g, "<br>");
   }
   /** Texte brut d'un contenu HTML — pour l'export en clair et la
    *  vérification "champ vide", jamais pour l'affichage. */
@@ -2831,7 +2794,6 @@
 
     renderSubjectSelect();
     renderAll();
-    renderReviewSubjectScore();
     renderReviewGauge();
 
     if (el("view-review").classList.contains("is-active")) {
@@ -3696,7 +3658,6 @@
     renderManageList();
     renderStats();
     renderReviewChart();
-    renderReviewSubjectScore();
     renderReviewGauge();
     renderSubjectBarCount();
   }
@@ -3727,111 +3688,7 @@
     return subjectCards().filter((c) => SM2.isDue(c));
   }
 
-  /** Score de la boîte/sélection en cours sur Réviser (item 2), à côté
-   *  du sélecteur — masquable depuis le mode développeur. */
-  function renderReviewSubjectScore() {
-    const el2 = el("review-subject-score");
-    if (!el2) return;
-    const settings = loadDevSettings().cardScore;
-    if (settings.hideSubjectScoreOnReview) {
-      el2.hidden = true;
-      return;
-    }
-    const pool = subjectCards();
-    if (pool.length === 0) {
-      el2.hidden = true;
-      return;
-    }
-    const avg = Math.round(pool.reduce((acc, c) => acc + computeCardScore(c), 0) / pool.length);
-    el2.hidden = false;
-    el2.textContent = `${avg}`;
-  }
 
-  /** Item 4 : toutes les jauges (Organisation, Programme de révision,
-   *  Réviser) sont désormais des barres linéaires horizontales plutôt que
-   *  des anneaux/demi-cercles — même principe partout (couleur = zone
-   *  actuelle du score, remplissage proportionnel), avec en option les
-   *  points de zone + intitulés (Réviser) et/ou un repère d'objectif
-   *  (Programme de révision). */
-  /** Limites (en %) des 6 zones de la jauge, à partir des seuils réglés
-   *  dans le mode développeur. */
-  function gaugeBounds(cardScoreSettings) {
-    return [0, cardScoreSettings.v1, cardScoreSettings.v2, cardScoreSettings.v3, cardScoreSettings.v4, cardScoreSettings.v5, 100];
-  }
-  function currentGaugeZoneColor(score, colors, bounds) {
-    let zoneKey = GAUGE_ZONE_DEFS[0].key;
-    for (let i = 0; i < GAUGE_ZONE_DEFS.length; i++) {
-      if (score >= bounds[i]) zoneKey = GAUGE_ZONE_DEFS[i].key;
-    }
-    return colors[zoneKey] || DEFAULT_GAUGE_COLORS[zoneKey];
-  }
-  function buildLinearGaugeSvg(score, { width = 200, barHeight = 14, showZoneLabels = false, targetValue = null, targetFontSize = 8, scoreFontSize = 15, scoreOnLeft = false, targetLabel = "Objectif : ", targetStyle = "circle" } = {}) {
-    const settings = loadDevSettings().cardScore;
-    const colors = effectiveColors(loadDevSettings()).gaugeColors;
-    const bounds = gaugeBounds(settings);
-    const color = currentGaugeZoneColor(score, colors, bounds);
-    const clampedScore = Math.max(0, Math.min(100, score));
-    // Item 10 : le "objectif du jour" (triangle + texte au-dessus) a besoin
-    // de plus de marge en haut que le simple repère en cercle.
-    const topPad = targetValue !== null && targetStyle === "triangle" ? 34 : 20;
-    const bottomPad = showZoneLabels ? 30 : 4;
-    const height = topPad + barHeight + bottomPad;
-    const barY = topPad;
-    // Item 10 : le score se lit à gauche de la jauge — la barre elle-même
-    // est donc décalée pour lui laisser la place, plutôt que d'écrire le
-    // score PAR-DESSUS le début de la barre.
-    const leftPad = scoreOnLeft ? Math.max(28, scoreFontSize * 1.8) : 0;
-    const barX0 = leftPad;
-    const barWidth = width - leftPad;
-    const pctX = (pct) => barX0 + (Math.max(0, Math.min(100, pct)) / 100) * barWidth;
-    const fillW = Math.max((clampedScore / 100) * barWidth, clampedScore > 0 ? barHeight : 0);
-
-    let svg = `<svg viewBox="0 0 ${width} ${height}" class="linear-gauge-svg">`;
-    svg += `<rect x="${barX0}" y="${barY}" width="${barWidth}" height="${barHeight}" rx="${barHeight / 2}" fill="rgba(0,0,0,0.08)" />`;
-    if (fillW > 0) svg += `<rect x="${barX0}" y="${barY}" width="${fillW}" height="${barHeight}" rx="${barHeight / 2}" fill="${color}" />`;
-    if (scoreOnLeft) {
-      svg += `<text x="0" y="${barY + barHeight / 2 + scoreFontSize * 0.35}" text-anchor="start" font-size="${scoreFontSize}" font-weight="700" fill="${color}" font-family="sans-serif">${score}</text>`;
-    } else {
-      const scoreX = Math.min(Math.max(barX0 + fillW, barX0 + 22), width - 4);
-      svg += `<text x="${scoreX}" y="${barY - 6}" text-anchor="middle" font-size="${scoreFontSize}" font-weight="700" fill="${color}" font-family="sans-serif">${score}</text>`;
-    }
-
-    if (showZoneLabels) {
-      // Item 10 : les traits de niveau deviennent des ronds DIRECTEMENT sur
-      // la jauge (même diamètre que son épaisseur), contour noir, remplis
-      // de la couleur de la zone qu'ils terminent — avec les étoiles
-      // centrées horizontalement au-dessus de chaque rond (item 8).
-      const cr = barHeight / 2;
-      for (let i = 0; i < GAUGE_ZONE_DEFS.length; i++) {
-        const boundary = bounds[i + 1];
-        if (boundary === undefined) continue;
-        const cx = pctX(boundary);
-        const zc = colors[GAUGE_ZONE_DEFS[i].key] || DEFAULT_GAUGE_COLORS[GAUGE_ZONE_DEFS[i].key];
-        const clampedCx = Math.max(barX0 + cr, Math.min(barX0 + barWidth - cr, cx));
-        svg += `<circle cx="${clampedCx.toFixed(1)}" cy="${barY + barHeight / 2}" r="${cr}" fill="${zc}" stroke="#000" stroke-width="1.2" />`;
-        svg += `<text x="${clampedCx.toFixed(1)}" y="${barY + barHeight + 14}" text-anchor="middle" font-size="7" font-family="sans-serif" fill="${zc}">${gaugeZoneStarText(GAUGE_ZONE_DEFS[i].stars)}</text>`;
-      }
-    }
-    if (targetValue !== null) {
-      const tx = pctX(targetValue);
-      if (targetStyle === "triangle") {
-        // Item 10 : triangle noir juste au-dessus de la jauge, avec
-        // "Objectif du jour : X" écrit au-dessus du triangle.
-        const triY = barY - 4;
-        svg += `<polygon points="${tx.toFixed(1)},${triY} ${(tx - 6).toFixed(1)},${triY - 9} ${(tx + 6).toFixed(1)},${triY - 9}" fill="#000" />`;
-        const anchor = tx > barX0 + barWidth - 60 ? "end" : tx < barX0 + 60 ? "start" : "middle";
-        svg += `<text x="${tx.toFixed(1)}" y="${triY - 13}" text-anchor="${anchor}" font-size="${targetFontSize}" font-weight="700" fill="var(--ink, #1f2937)" font-family="sans-serif">${targetLabel}${targetValue}</text>`;
-      } else {
-        // Item 9 : simple rond noir directement sur la jauge, de diamètre
-        // égal à son épaisseur — sans trait en dessous.
-        svg += `<circle cx="${tx.toFixed(1)}" cy="${barY + barHeight / 2}" r="${barHeight / 2}" fill="#000" />`;
-        const anchor = tx > barX0 + barWidth - 45 ? "end" : tx < barX0 + 45 ? "start" : "middle";
-        svg += `<text x="${tx.toFixed(1)}" y="${barY - 6}" text-anchor="${anchor}" font-size="${targetFontSize}" font-weight="700" fill="var(--ink-soft, #64748b)" font-family="sans-serif">${targetLabel}${targetValue}</text>`;
-      }
-    }
-    svg += `</svg>`;
-    return svg;
-  }
   /** Nouvelle jauge de persistance (remplace la jauge de score 0-100 dans
    *  les 3 emplacements où elle apparaissait — Organisation, Réviser,
    *  Programme de révision) : une barre à 4 segments contigus, proportionnels
@@ -3884,34 +3741,6 @@
     }
     svg += `</svg>`;
     return svg;
-  }
-  /** Jauge compacte (Organisation) : juste la barre + le score, sans
-   *  point de zone ni objectif. */
-  function renderMiniGaugeRing(score) {
-    return buildLinearGaugeSvg(score, { width: 120, barHeight: 12, scoreFontSize: 13 });
-  }
-  /** Même jauge, avec en plus un repère indiquant le score OBJECTIF à
-   *  atteindre — utilisée dans le Programme de révision. */
-  function renderMiniGaugeRingWithTarget(score, target) {
-    const fontSize = loadDevSettings().cardScore.programTargetFontSize;
-    return buildLinearGaugeSvg(score, { width: 190, barHeight: 12, scoreFontSize: 13, targetValue: target, targetFontSize: fontSize });
-  }
-  /** Grande jauge de la page Réviser : les 6 points de zone avec leurs
-   *  intitulés (Débutant, Fragile, etc.), comme le demandait l'item 4. */
-  /** Item 10 : "objectif du jour" pour la jauge de Réviser — reprend la
-   *  même logique que le Programme de révision (échéance la plus proche
-   *  liée à la boîte actuellement révisée), affiché seulement quand une
-   *  boîte précise (pas "toutes"/sélection) est en cours et qu'elle a
-   *  effectivement une échéance à venir. */
-  function computeTodayTargetForCurrentSubject() {
-    if (!currentSubjectId || currentSubjectId === ALL_SUBJECTS_ID || currentSubjectId === MULTI_SUBJECTS_ID) return null;
-    const todayStr = new Date().toISOString().slice(0, 10);
-    const linkId = `subject:${currentSubjectId}`;
-    const upcoming = loadCalendarEvents()
-      .filter((ev) => eventLinkIds(ev).includes(linkId) && ev.date >= todayStr)
-      .sort((a, b) => a.date.localeCompare(b.date));
-    if (upcoming.length === 0) return null;
-    return REVISION_PROGRAM_TARGET_SCORE;
   }
   function renderReviewGauge() {
     // Round 46 : plus de grande jauge sous la fiche — jauge moyenne de la
@@ -4133,7 +3962,6 @@
       reviewProgressEl.textContent = "";
       renderDuePill();
       renderReviewChart();
-      renderReviewSubjectScore();
       renderReviewGauge();
       return;
     }
@@ -4150,7 +3978,6 @@
     updateRatingPreviews();
     renderDuePill();
     renderReviewChart();
-    renderReviewSubjectScore();
     renderReviewGauge();
   }
 
@@ -4181,8 +4008,7 @@
   function updateReviewScoreInfo(futureDelaysMin) {
     const wrap = el("review-score-info");
     if (!wrap || !currentCard) return;
-    const settings = loadDevSettings().cardScore;
-    if (settings.hideReviewScoreInfo) {
+    if (loadDevSettings().reviewInfo.hideDelays) {
       wrap.hidden = true;
       return;
     }
@@ -6700,7 +6526,6 @@
           syncCurrentCardFromStore();
         }
         renderReviewChart();
-        renderReviewSubjectScore();
         renderReviewGauge();
       }
       if (view === "stats") renderStats();

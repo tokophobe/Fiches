@@ -248,47 +248,6 @@
     subjectRow: { varName: "--shadow-subject-row", title: "Boîtes et dossiers" },
   };
   const DEFAULT_SHADOWS = Object.fromEntries(Object.keys(SHADOW_ELEMENTS).map((k) => [k, true]));
-  // Score d'apprentissage des fiches (item 1) : S = ((D-1)^P)/((D-1)^P+B),
-  // D = délai (en jours) avant la prochaine interrogation.
-  const DEFAULT_CARD_SCORE_SETTINGS = {
-    p: 1.2,
-    b: 10,
-    v1: 10,
-    v2: 45,
-    v3: 65,
-    v4: 75,
-    v5: 85,
-    hideReviewScoreInfo: false,
-    hideSubjectScoreOnReview: false,
-    // Item 3 : taille de police du texte "Objectif : X" sur la jauge de
-    // la page Programme de révision, réglable dans le mode développeur.
-    programTargetFontSize: 8,
-  };
-  // Zones de la jauge (item 4) : 6 zones désormais ("Bien" ajoutée entre
-  // "En bonne voie" et "Maîtrisé"), couleurs réglables depuis le mode
-  // développeur plutôt que fixes.
-  const GAUGE_ZONE_DEFS = [
-    { key: "debutant", boundKey: "v1", label: "0 étoile", stars: 0 },
-    { key: "fragile", boundKey: "v2", label: "1 étoile", stars: 1 },
-    { key: "enBonneVoie", boundKey: "v3", label: "2 étoiles", stars: 2 },
-    { key: "bien", boundKey: "v4", label: "3 étoiles", stars: 3 },
-    { key: "maitrise", boundKey: "v5", label: "4 étoiles", stars: 4 },
-    { key: "acquis", boundKey: null, label: "5 étoiles", stars: 5 },
-  ];
-  // Item 8 : intitulés des zones remplacés par des étoiles — une étoile
-  // grisée vide pour le tout premier niveau (0), puis 1 à 5 étoiles
-  // pleines, dans la couleur de la zone.
-  function gaugeZoneStarText(stars) {
-    return stars === 0 ? "☆" : "★".repeat(stars);
-  }
-  const DEFAULT_GAUGE_COLORS = {
-    debutant: "#94a3b8",
-    fragile: "#7c93b3",
-    enBonneVoie: "#4a90d9",
-    bien: "#3a7cc4",
-    maitrise: "#2f6fb0",
-    acquis: "#5fae7c",
-  };
 
   // Algorithme de révision v2 (round 42, spécification « algo_new3 »
   // validée par Stéphane le 7 octobre). Toutes les durées en MINUTES.
@@ -683,8 +642,15 @@
       homeLayoutUnit: "percent",
       homeLayoutAnchor: "center",
       reviewLayout: { ...DEFAULT_REVIEW_LAYOUT, ...(parsed.reviewLayout || {}) },
-      cardScore: { ...DEFAULT_CARD_SCORE_SETTINGS, ...(parsed.cardScore || {}) },
-      gaugeColors: { ...DEFAULT_GAUGE_COLORS, ...(parsed.gaugeColors || {}) },
+      // Round 51 : l'ancien score des fiches (jauge à étoiles, réglages
+      // cardScore / gaugeColors) a été retiré. Seul réglage gardé : masquer
+      // les délais sous les boutons d'évaluation (ex-cardScore.hideReviewScoreInfo).
+      reviewInfo: {
+        hideDelays:
+          parsed.reviewInfo && typeof parsed.reviewInfo.hideDelays === "boolean"
+            ? parsed.reviewInfo.hideDelays
+            : !!(parsed.cardScore && parsed.cardScore.hideReviewScoreInfo === true),
+      },
       // Round 42 : nouvel algorithme. D'anciens réglages (version < 2,
       // coefTe/coefDd/abat…) sont remplacés par les valeurs par défaut,
       // couleurs de la jauge comprises. Tableaux clonés (jamais partagés
@@ -704,7 +670,6 @@
         textColorsSet: { ...DEFAULT_NIGHT_TEXT_COLORS_SET, ...((parsed.nightColors || {}).textColorsSet || {}) },
         ratingColors: { ...DEFAULT_RATING_COLORS, ...((parsed.nightColors || {}).ratingColors || {}) },
         ratingBtnBgColor: (parsed.nightColors || {}).ratingBtnBgColor || DEFAULT_NIGHT_RATING_BTN_BG_COLOR,
-        gaugeColors: { ...DEFAULT_GAUGE_COLORS, ...((parsed.nightColors || {}).gaugeColors || {}) },
       },
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       // Round 50 : zoom automatique des téléphones (largeur de référence
@@ -810,7 +775,6 @@
     return "";
   }
 
-  const GAUGE_COLORS_TITLES = Object.fromEntries(GAUGE_ZONE_DEFS.map((z) => [z.key, z.label]));
 
   const RATING_COLORS_TITLES = { again: "Encore", hard: "Difficile", good: "Bien", easy: "Facile" };
 
@@ -824,7 +788,6 @@
     DEFAULT_BONUS_PILL_COLOR,
     DEFAULT_CARD_BG_COLOR,
     DEFAULT_CARD_FORM_BG_COLOR,
-    DEFAULT_CARD_SCORE_SETTINGS,
     DEFAULT_CARD_TEXT_COLOR,
     DEFAULT_CHART_WRAP_BG_COLOR,
     DEFAULT_CONSTRUCTION_ACTIVE_COLOR,
@@ -832,7 +795,6 @@
     DEFAULT_DARWIN_TEXT,
     DEFAULT_DUE_BAR_COLOR,
     DEFAULT_EMPTY_BAR_COLOR,
-    DEFAULT_GAUGE_COLORS,
     DEFAULT_HELP_MESSAGES_BY_VIEW,
     DEFAULT_HOME_LAYOUT,
     DEFAULT_HOME_LOGO,
@@ -858,8 +820,6 @@
     DEFAULT_TEXT_COLORS,
     DEFAULT_TEXT_COLORS_SET,
     DEFAULT_TODAY_BAR_COLOR,
-    GAUGE_COLORS_TITLES,
-    GAUGE_ZONE_DEFS,
     HELP_VIEW_LABELS,
     HOME_LAYOUT_LEGACY_REF_HEIGHT,
     HOME_LAYOUT_LEGACY_REF_WIDTH,
@@ -884,7 +844,6 @@
     TEXT_COLORS_SET_TITLES,
     buildDevSettings,
     buildRevisionAlgoSettings,
-    gaugeZoneStarText,
     iconSvgMarkup,
     migrateHomeLayoutToPercent,
     revisionAlgoValueError,
