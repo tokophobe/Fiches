@@ -374,7 +374,7 @@
   const DEFAULT_HELP_MESSAGES_BY_VIEW = {
     // Round 47 : un message par page (bulle « … » partout), modifiable dans
     // le mode développeur.
-    "review-hub": ["Choisis comment réviser : les révisions urgentes préparent tes prochaines échéances (c'est ce que je te conseille), le renforcement fait travailler les boîtes où tu es le plus en retard, et la sélection manuelle te laisse choisir toi-même."],
+    "review-hub": ["Choisis comment réviser : les révisions prioritaires préparent tes prochaines échéances (c'est ce que je te conseille), le renforcement fait travailler les boîtes où tu es le plus en retard, et la sélection manuelle te laisse choisir toi-même."],
     "revision-program": ["A ta place, voici ce que je réviserais en priorité : les boîtes de tes prochaines échéances, la plus proche d'abord. Décoche ce que tu ne veux pas réviser."],
     "revision-reinforce": ["Voici tes boîtes, celles sur lesquelles tu es le plus en retard d'abord. La barre montre où tu en es dans l'apprentissage de chacune."],
     review: ["Touche la fiche pour voir la réponse, puis dis-moi si tu la savais. Je m'occupe de te la reposer au bon moment."],
@@ -389,7 +389,7 @@
     cards: ["Toutes les fiches de cette boîte. Le drapeau signale une fiche à corriger ; la flèche ouvre les autres actions (éditer, déplacer, supprimer)."],
     "new-card": ["Écris la question et la réponse : je te poserai la question et tu me diras si tu connaissais la réponse."],
     stats: ["Tes statistiques : combien de fiches tu révises, et comment tu progresses."],
-    calendar: ["Note ici tes échéances (contrôle, interrogation, partiels, bac...) liées à une boîte ou un dossier : je m'en sers pour te préparer les révisions urgentes."],
+    calendar: ["Note ici tes échéances (contrôle, interrogation, partiels, bac...) liées à une boîte ou un dossier : je m'en sers pour te préparer les révisions prioritaires."],
     "calendar-event-form": ["Donne un titre et une date à ton échéance, puis choisis les boîtes à réviser pour elle."],
     "calendar-event-detail": ["Le détail de cette échéance et des boîtes à réviser pour elle."],
     sync: ["L'état de la synchronisation de tes données entre tes appareils."],
@@ -417,7 +417,7 @@
   // mode développeur — mêmes clés que DEFAULT_HELP_MESSAGES_BY_VIEW.
   const HELP_VIEW_LABELS = {
     "review-hub": "Réviser (choix)",
-    "revision-program": "Révisions urgentes",
+    "revision-program": "Révisions prioritaires",
     "revision-reinforce": "Renforcer mes connaissances",
     review: "Réviser (fiches)",
     manage: "Organisation des boîtes de révision",
@@ -483,8 +483,14 @@
     cardTopPct: 13,
     ratingRowTopPct: 60,
     scoreInfoTopPct: 70,
-    gaugeTopPct: 80,
+    gaugeTopPct: 80, // Round 52 : plus utilisé (ancienne jauge sous la fiche)
     flipDurationSec: 0.7,
+    // Round 52 : nombre de fiches à revoir sous la fiche, jauge de la boîte
+    // sous le titre, animation de changement de boîte.
+    statusTopPct: 77,
+    gaugeWidthPx: 160,
+    gaugeHeightPx: 10,
+    boxChangeAnimSec: 0.6,
   };
   const DEFAULT_ICONS = {
     hibernate: "💤", edit: "✎", construction: "🚩", undo: "◀️", folder: "📁",
@@ -755,9 +761,12 @@
     { key: "cardWidthPct", title: "Largeur de la fiche", unit: "% de l'écran" },
     { key: "cardTopPct", title: "Position Y du bord haut de la fiche", unit: "% de l'écran" },
     { key: "ratingRowTopPct", title: "Position Y des boutons d'évaluation", unit: "% de l'écran" },
-    { key: "scoreInfoTopPct", title: "Position Y des infos de score de la fiche", unit: "% de l'écran" },
-    { key: "gaugeTopPct", title: "Position Y de la jauge", unit: "% de l'écran" },
-    { key: "flipDurationSec", title: "Temps de retournement de la fiche", unit: "secondes" },
+    { key: "scoreInfoTopPct", title: "Position Y des délais sous les boutons", unit: "% de l'écran" },
+    { key: "statusTopPct", title: "Position Y du nombre de fiches à revoir", unit: "% de l'écran" },
+    { key: "gaugeWidthPx", title: "Largeur de la jauge de la boîte", unit: "px" },
+    { key: "gaugeHeightPx", title: "Hauteur de la jauge de la boîte", unit: "px" },
+    { key: "flipDurationSec", title: "Temps de retournement de la fiche", unit: "secondes", step: 0.1 },
+    { key: "boxChangeAnimSec", title: "Durée de l'animation de changement de boîte", unit: "secondes", step: 0.1 },
   ];
 
   const REVISION_ALGO_FIELD_DEFS = [

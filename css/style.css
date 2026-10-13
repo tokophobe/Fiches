@@ -6856,3 +6856,148 @@ body[data-org-carousel-slot="none"] #view-manage .org-info-slot { display: none;
   font-style: normal;
 }
 #view-reports-sent .report-row-from { font-size: 12px; color: var(--ink-soft); }
+
+/* ==================================================================
+   Round 52 : cases à cocher d'une seule couleur, neutre (plus de bleu ni
+   d'orange), et boutons d'action pleins remplacés par le style épuré
+   (texte en majuscules, couleur des actions, sans fond) — comme
+   « RÉVISER LA SÉLECTION → » des pages de révision.
+   ================================================================== */
+:root { --check-color: #5f6e82; }
+:root.is-night-mode { --check-color: #8a98ab; }
+input[type="checkbox"],
+input[type="radio"],
+.picker-row-checkbox,
+.revision-tree-row input[type="checkbox"],
+.usage-option input {
+  accent-color: var(--check-color);
+}
+.btn--primary,
+.revision-event-go,
+#boite-picker-confirm,
+#submit-btn {
+  background: transparent;
+  color: var(--action-color);
+  border: none;
+  box-shadow: none;
+  font-weight: 600;
+}
+.btn--primary:hover,
+#boite-picker-confirm:hover,
+#submit-btn:hover { background: var(--rule-soft); }
+.btn--primary:disabled { opacity: 0.45; }
+
+/* --- Round 52 : Réviser — titre = boîte, jauge dessous et centrée ---- */
+.review-current-box { justify-content: center; align-items: center; }
+.review-current-box-name { display: none; }
+.review-current-box-gauge { margin-top: 0; justify-content: center; }
+#page-header-title, #review-current-box-gauge { will-change: transform; }
+
+/* Nombre de fiches à revoir, sous la fiche (position réglable). */
+.review-session-status {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: var(--review-status-top, 560px);
+  width: var(--review-card-width, 355px);
+  max-width: 560px;
+  margin: 0;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--general-text-color, var(--ink-soft));
+  text-align: center;
+  pointer-events: none;
+}
+.review-session-status[hidden] { display: none; }
+
+/* Boutons d'évaluation : plus de surbrillance qui reste après le clic
+   (survol seulement avec une vraie souris). */
+.stamp--again:hover, .stamp--hard:hover, .stamp--good:hover, .stamp--easy:hover { filter: none; }
+@media (hover: hover) and (pointer: fine) {
+  .stamp--again:hover, .stamp--hard:hover, .stamp--good:hover, .stamp--easy:hover { filter: brightness(1.1); }
+}
+.stamp:focus:not(:focus-visible) { outline: none; }
+
+/* « Modifier cette fiche » : même fond et même couleur que « Signaler »
+   et « Annuler ». */
+.card-edit-btn,
+#secondary-icons-wrap .card-edit-btn {
+  background: rgba(35, 48, 42, 0.08);
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+.card-edit-btn:hover { background: rgba(35, 48, 42, 0.16); color: var(--ink); }
+
+/* Boutons du robot : même style épuré que les autres boutons d'action. */
+.robot-modal-btn,
+.robot-modal-btn--primary {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--action-color);
+}
+.robot-modal-btn--primary { font-weight: 700; color: var(--ink); }
+.robot-modal-btn:hover { filter: none; background: var(--rule-soft); }
+.robot-modal-btn--danger { background: transparent; color: var(--danger, #c0392b); border: none; font-weight: 700; }
+
+/* Mode nuit : plus de liseré clair autour de la fiche (le fond blanc du
+   bouton qui porte les deux faces dépassait de l'anticrénelage, surtout
+   pendant la rotation). Les faces portent seules la couleur de la fiche. */
+.stack-card--front { background: transparent; }
+:root.is-night-mode .stack-card--front,
+:root.is-night-mode .card-icon-btn { box-shadow: none; }
+
+/* --- Round 52 : Révisions prioritaires --------------------------------- */
+:root { --event-comment-color: #8a6a3a; }
+:root.is-night-mode { --event-comment-color: #d9bd8c; }
+.revision-program-display-toggle { justify-content: flex-end; margin: 0 0 4px; }
+#view-revision-program .revision-event-head { align-items: flex-start; }
+.revision-event-head-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.revision-event-head-side { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; }
+body:not(.v1-pages) #view-revision-program .revision-event-head-side .revision-event-date { margin: 0; }
+body:not(.v1-pages) #view-revision-program .revision-event-head-main .revision-event-gauge { margin: 0; justify-content: flex-start; }
+.revision-event-comment {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--event-comment-color);
+  white-space: pre-line;
+  overflow-wrap: break-word;
+}
+.revision-event-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  margin: 8px 0 0;
+  padding: 6px 0;
+  border: none;
+  background: transparent;
+  font-family: var(--font-type);
+  font-size: 14px;
+  color: var(--ink);
+  text-align: left;
+}
+.revision-event-toggle-label { flex: 1; }
+.revision-event-toggle-chevron { display: flex; color: var(--action-color); transition: transform 0.2s ease; }
+.revision-event-toggle.is-open .revision-event-toggle-chevron { transform: rotate(180deg); }
+.revision-event-tree[hidden] { display: none; }
+.revision-tree-info { flex-shrink: 0; display: flex; align-items: center; }
+.revision-tree-gauge { display: none; }
+.revision-tree-gauge svg { display: block; }
+#view-revision-program .revision-tree-count { display: none; }
+#view-revision-program[data-prio-display="count"] .revision-tree-count { display: inline; }
+#view-revision-program[data-prio-display="gauge"] .revision-tree-gauge { display: flex; }
+
+/* --- Round 52 : Librairie -------------------------------------------- */
+.library-row-in-revisions { text-align: right; align-self: flex-end; }
+.library-row-summary { white-space: pre-line; overflow-wrap: break-word; }
+.library-row-description { margin-top: 6px; font-size: 12.5px; opacity: 0.9; }

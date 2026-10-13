@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v205";
+  const APP_VERSION = "v206";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -1080,7 +1080,7 @@
     root.setProperty("--review-card-top", `${Math.round(cardTopPx)}px`);
     root.setProperty("--review-rating-row-top", `${Math.round(r.ratingRowTopPct * vh + extraOffsetPx)}px`);
     root.setProperty("--review-score-info-top", `${Math.round(r.scoreInfoTopPct * vh + extraOffsetPx)}px`);
-    root.setProperty("--review-gauge-top", `${Math.round(r.gaugeTopPct * vh + extraOffsetPx)}px`);
+    root.setProperty("--review-status-top", `${Math.round(r.statusTopPct * vh + extraOffsetPx)}px`);
     // Bug corrigé (item 2) : la durée CSS utilisait la valeur BRUTE du
     // réglage, alors que le calcul JS (voir getFlipDurationMs) applique un
     // minimum de 150ms — avec un réglage très court, la fiche changeait
@@ -3398,11 +3398,12 @@
     openBoitePickerView({
       mode: "multi",
       title: "Choisir les boîtes à réviser",
-      hint: "Choisis les boîtes à réviser confondues :",
+      hint: "Choisis les boîtes et dossiers à réviser :",
       greyEmpty: true,
       // Round 39 : depuis « Sélection manuelle », le bouton lance directement la révision.
       confirmLabel: multiPickerNavigateToReviewOnConfirm ? "Lancer la révision" : "Valider",
-      initialSelection: loadMultiSelection(),
+      // Round 52 : aucune case cochée à l'ouverture.
+      initialSelection: [],
       onConfirm: async (selection) => {
         const { resultIds, singleSubjectId, label } = computeMultiPickerResult(selection);
         if (resultIds.length === 0) {
@@ -3749,26 +3750,121 @@
     if (wrap) wrap.innerHTML = "";
     renderReviewCurrentBox(currentCard);
   }
-  function renderReviewCurrentBox(card) {
+  /* Round 52 : le titre de la page Réviser est le nom de la boîte de la
+     fiche en cours ; sa jauge est dessous, centrée (taille réglable). Quand
+     la boîte change, nom et jauge défilent de la gauche vers la droite
+     (accélération puis décélération) ; à l'annulation, dans l'autre sens. */
+  let reviewBoxShownSubject = null;
+  let reviewBoxAnimToken = 0;
+  function reviewBoxGaugeHtml(subjectId) {
+    const r = loadDevSettings().reviewLayout;
+    const pool = cards.filter((c) => !c.deleted && c.subject === subjectId);
+    const w = Math.max(40, Number(r.gaugeWidthPx) || 160);
+    const hgt = Math.max(3, Number(r.gaugeHeightPx) || 10);
+    return buildPersGaugeSvg(pool, { width: w, barHeight: hgt });
+  }
+  function reviewHeaderBoxTitle() {
+    if (reviewBoxShownSubject) return subjectName(reviewBoxShownSubject);
+    return currentSubjectId ? subjectName(currentSubjectId) : "Réviser";
+  }
+  /** Image clé du défilement : le titre est découpé à sa place d'origine
+   *  (il ne passe pas sur le robot ni sur la bulle). */
+  function reviewBoxFrame(t, x) {
+    const f = { transform: `translateX(${x}px)` };
+    if (t.id === "page-header-title") {
+      const l = `${-x}px`;
+      const r = `calc(100% - ${x}px)`;
+      f.clipPath = `polygon(${l} -40px, ${r} -40px, ${r} calc(100% + 40px), ${l} calc(100% + 40px))`;
+    }
+    return f;
+  }
+  function renderReviewCurrentBox(card, opts) {
+    opts = opts || {};
     const box = el("review-current-box");
     if (!box) return;
     const onReview = el("view-review") && el("view-review").classList.contains("is-active");
-    if (!card || card.deleted || (!onReview && !card)) {
+    const gaugeEl = el("review-current-box-gauge");
+    if (!card || card.deleted) {
       box.hidden = true;
+      reviewBoxAnimToken++;
+      reviewBoxShownSubject = null;
+      if (onReview) updatePageHeaderTitle();
       return;
     }
     box.hidden = false;
-    const nameEl = el("review-current-box-name");
-    if (nameEl) nameEl.textContent = subjectName(card.subject);
-    const gaugeEl = el("review-current-box-gauge");
-    if (gaugeEl) {
-      const pool = cards.filter((c) => !c.deleted && c.subject === card.subject);
-      gaugeEl.innerHTML = buildPersGaugeSvg(pool, { width: 100, barHeight: 9 });
+    const sid = card.subject;
+    const prev = reviewBoxShownSubject;
+    const durMs = Math.max(0, Number(loadDevSettings().reviewLayout.boxChangeAnimSec) || 0) * 1000;
+    const titleEl = el("page-header-title");
+    if (!onReview || !prev || prev === sid || durMs < 50 || !gaugeEl || !titleEl || typeof gaugeEl.animate !== "function") {
+      reviewBoxAnimToken++;
+      reviewBoxShownSubject = sid;
+      if (gaugeEl) gaugeEl.innerHTML = reviewBoxGaugeHtml(sid);
+      if (onReview) updatePageHeaderTitle();
+      return;
     }
+    const token = ++reviewBoxAnimToken;
+    const dir = opts.reverse ? -1 : 1;
+    const dist = Math.max(window.innerWidth, 400);
+    const targets = [titleEl, gaugeEl];
+    const half = durMs / 2;
+    Promise.all(
+      targets.map((t) => {
+        t.getAnimations().forEach((a) => a.cancel());
+        return t.animate([reviewBoxFrame(t, 0), reviewBoxFrame(t, dir * dist)], {
+          duration: half,
+          easing: "cubic-bezier(0.55, 0, 1, 0.45)",
+          fill: "forwards",
+        }).finished.catch(() => {});
+      })
+    ).then(() => {
+      if (token !== reviewBoxAnimToken) return;
+      reviewBoxShownSubject = sid;
+      gaugeEl.innerHTML = reviewBoxGaugeHtml(sid);
+      updatePageHeaderTitle();
+      targets.forEach((t) => {
+        t.getAnimations().forEach((a) => a.cancel());
+        t.animate([reviewBoxFrame(t, -dir * dist), reviewBoxFrame(t, 0)], {
+          duration: half,
+          easing: "cubic-bezier(0, 0.55, 0.45, 1)",
+        });
+      });
+    });
   }
 
-  /** Round 47 : sur Réviser, le titre de la page (à droite du robot) est
-   *  « N fiches à revoir » — la capsule du bandeau du haut est retirée. */
+  /* Round 52 : sous la fiche, le nombre de fiches à revoir — puis, une
+     fois les fiches dues vues, « On revoit les fiches difficiles : » + leur
+     nombre — puis, si l'on a choisi de continuer après le message du robot,
+     « Pour être plus efficace, change de boîte ». */
+  function renderReviewSessionStatus() {
+    const st = el("review-session-status");
+    if (!st) return;
+    const onReview = el("view-review") && el("view-review").classList.contains("is-active");
+    if (!currentCard || !onReview) {
+      st.hidden = true;
+      return;
+    }
+    st.hidden = false;
+    const plural = (n) => `${n} fiche${n > 1 ? "s" : ""} à revoir`;
+    const alive = new Set(subjectCards().map((c) => c.id));
+    let dueLeft = 0;
+    sessionState.dueAtStart.forEach((id) => {
+      if (alive.has(id) && !(sessionState.seen.get(id) >= 1)) dueLeft++;
+    });
+    let lowLeft = 0;
+    sessionState.low.forEach((id) => {
+      if (alive.has(id) && (sessionState.seen.get(id) || 0) < 2) lowLeft++;
+    });
+    let html;
+    if (dueLeft > 0) html = escapeHtml(plural(dueLeft));
+    else if (lowLeft > 0) html = `On revoit les fiches difficiles :<br>${escapeHtml(plural(lowLeft))}`;
+    else if (sessionState.proposalShown || reviewEntryFromProgram === "urgent") html = "Pour être plus efficace, change de boîte";
+    else html = escapeHtml(plural(0));
+    if (st.innerHTML !== html) st.innerHTML = html;
+  }
+
+  /** Round 47 : nombre de fiches à revoir (round 52 : affiché sous la
+   *  fiche, voir renderReviewSessionStatus ; le titre est la boîte). */
   function reviewHeaderDueText() {
     const due = dueCards().length;
     return `${due} fiche${due > 1 ? "s" : ""} à revoir`;
@@ -3776,6 +3872,7 @@
   function renderDuePill() {
     const due = dueCards().length;
     dueCountEl.textContent = String(due);
+    renderReviewSessionStatus();
 
     // Round 47 : la capsule n'est plus affichée nulle part (le nombre est
     // devenu le titre de la page Réviser).
@@ -4015,7 +4112,6 @@
     wrap.hidden = false;
     const prevDelay = typeof currentCard.dd === "number" ? currentCard.dd : currentCard.interval * 1440 || 0;
     el("score-info-prev-delay").textContent = formatDelayMinutes(prevDelay);
-    el("score-info-current").textContent = "";
     const labels = { again: "Je ne sais pas", hard: "Vague idée", good: "Je sais", easy: "Parfait" };
     ["again", "hard", "good", "easy"].forEach((r) => {
       const cell = el(`score-info-${r}`);
@@ -4065,6 +4161,8 @@
   ratingRowEl.addEventListener("click", async (e) => {
     const btn = e.target.closest(".stamp");
     if (!btn || !currentCard) return;
+    // Round 52 : le bouton ne reste pas en surbrillance après le clic.
+    btn.blur();
     const rating = btn.dataset.rating;
     await rateCurrentCard(rating);
   });
@@ -4145,6 +4243,9 @@
     renderStats();
     renderManageList();
     renderDuePill();
+    // Round 52 : retour à la boîte de la fiche restaurée, animation inversée.
+    renderReviewCurrentBox(currentCard, { reverse: true });
+    renderReviewSessionStatus();
   }
 
   const undoRatingBtn = el("undo-rating-btn");
@@ -4238,7 +4339,7 @@
   let proposalOpen = false;
   async function maybeProposeNextBox() {
     if (proposalOpen || !currentCard) return;
-    // Round 47 : pas de proposition en « Révisions urgentes » — seulement en
+    // Round 47 : pas de proposition en « Révisions prioritaires » — seulement en
     // « Renforcer mes connaissances » et en « Sélection manuelle ».
     if (reviewEntryFromProgram === "urgent") return;
     const met = sessionProposalConditionMet();
@@ -4265,11 +4366,19 @@
           cancelValue: "stay",
         }
       );
+      renderReviewSessionStatus();
       if (choice === "change") {
+        // Round 52 : « Changer » ramène à la page d'où la révision est partie.
+        const from = reviewEntryFromProgram;
         reviewEntryFromManage = false;
-        reviewEntryFromProgram = false;
-        multiPickerNavigateToReviewOnConfirm = true;
-        openMultiSubjectPicker();
+        if (from === "reinforce" || from === "urgent") {
+          const tab = document.querySelector(`.tab[data-view="${from === "reinforce" ? "revision-reinforce" : "revision-program"}"]`);
+          if (tab) tab.click();
+        } else {
+          reviewEntryFromProgram = false;
+          multiPickerNavigateToReviewOnConfirm = true;
+          openMultiSubjectPicker();
+        }
       }
     } finally {
       proposalOpen = false;
@@ -4609,7 +4718,7 @@
         mode: "multi",
         title: "Choisir des boîtes et/ou dossiers",
         hint: "Coche des boîtes et/ou dossiers à combiner :",
-        initialSelection: loadCardsMultiSelection(),
+        initialSelection: [], // Round 52 : aucune case cochée à l'ouverture.
         onConfirm: async (selection) => {
           const { resultIds, singleSubjectId, label } = computeMultiPickerResult(selection);
           if (resultIds.length === 0) {
@@ -5112,7 +5221,7 @@
       mode: "multi",
       title: "Choisir les boîtes pour les statistiques",
       hint: "Choisis les boîtes et/ou dossiers à combiner :",
-      initialSelection: loadStatsMultiSelection(),
+      initialSelection: [], // Round 52 : aucune case cochée à l'ouverture.
       onConfirm: async (selection) => {
         const { resultIds, singleSubjectId, label } = computeMultiPickerResult(selection);
         if (resultIds.length === 0) {
@@ -6581,7 +6690,7 @@
   const PAGE_TITLES = {
     home: "Accueil",
     "review-hub": "Réviser",
-    "revision-program": "Révisions urgentes",
+    "revision-program": "Révisions prioritaires",
     "revision-reinforce": "Renforcer mes connaissances",
     review: "Réviser",
     manage: "Organisation des boîtes de révision",
@@ -6736,10 +6845,11 @@
    *  (`from`, qui est alors masqué) ; `hide` = titres d'origine à masquer. */
   const PAGE_HEADER_TITLES = {
     "review-hub": "Réviser",
-    "revision-program": "Révisions urgentes",
+    "revision-program": "Révisions prioritaires",
     "revision-reinforce": "Renforcer mes connaissances",
     // Round 47 : sur Réviser, le titre est le nombre de fiches à revoir.
-    review: { dynamic: () => reviewHeaderDueText() },
+    // Round 52 : le titre de Réviser est le nom de la boîte en cours.
+    review: { dynamic: () => reviewHeaderBoxTitle() },
     manage: "Organisation des boîtes de révision",
     "new-card": { from: "#view-new-card .card-form-header h2.section-title" },
     cards: { from: "#cards-scope-title", fallback: "Liste des fiches", hide: ["#view-cards .cards-list-big-title"] },
@@ -7547,7 +7657,7 @@
   }
 
   function refreshHomeEventWarning() {
-    // Round 47 : pastille rouge « révisions urgentes » sur Réviser (accueil).
+    // Round 47 : pastille rouge « révisions prioritaires » sur Réviser (accueil).
     // Round 49 : et bouton / pastille « Signalements » (au plus toutes les 20 s).
     if (el("view-home") && el("view-home").classList.contains("is-active")) {
       refreshReviewBadges();
@@ -8389,6 +8499,23 @@
   // Boîtes décochées par évènement (mémorisées le temps de la session de
   // l'appli, pour retrouver ses choix en revenant sur la page).
   const revisionProgramUnchecked = new Map();
+  // Round 52 : évènements dont la liste des boîtes est dépliée (repliée
+  // par défaut) et affichage à droite de chaque ligne (nombre / jauge /
+  // rien), comme sur la page Organisation.
+  const revisionProgramExpanded = new Set();
+  let prioDisplayMode = "none";
+  function setPrioDisplayMode(mode) {
+    prioDisplayMode = mode === "count" || mode === "gauge" ? mode : "none";
+    const view = el("view-revision-program");
+    if (view) view.dataset.prioDisplay = prioDisplayMode;
+    document.querySelectorAll(".org-display-toggle-btn[data-prio-display]").forEach((b) => {
+      b.classList.toggle("is-active", b.dataset.prioDisplay === prioDisplayMode);
+    });
+  }
+  document.querySelectorAll(".org-display-toggle-btn[data-prio-display]").forEach((btn) => {
+    btn.addEventListener("click", () => setPrioDisplayMode(prioDisplayMode === btn.dataset.prioDisplay ? "none" : btn.dataset.prioDisplay));
+  });
+  setPrioDisplayMode("none");
 
   function upcomingEventsWithBoxes() {
     return loadCalendarEvents()
@@ -8559,19 +8686,43 @@
     const li = document.createElement("li");
     li.className = "revision-event-block";
     const diff = calendarDiffDays(ev.date);
+    // Round 52 : échéance et date à droite (l'une sous l'autre), jauge sous
+    // le titre, commentaire de l'évènement en couleur discrète, boîtes
+    // repliées derrière « N boîtes à réviser ∨ » (toutes cochées).
+    const comment = (ev.comment || "").trim();
     li.innerHTML = `
       <div class="revision-event-head">
-        <span class="revision-event-title">${escapeHtml(ev.title || "Évènement")}</span>
-        <span class="revision-event-when${diff <= 3 ? " is-soon" : ""}">${calendarCountdownLabel(ev.date)}</span>
+        <div class="revision-event-head-main">
+          <span class="revision-event-title">${escapeHtml(ev.title || "Évènement")}</span>
+          <div class="revision-event-gauge"></div>
+        </div>
+        <div class="revision-event-head-side">
+          <span class="revision-event-when${diff <= 3 ? " is-soon" : ""}">${calendarCountdownLabel(ev.date)}</span>
+          <span class="revision-event-date">${formatCalendarDate(ev.date)}</span>
+        </div>
       </div>
-      <div class="revision-event-date">${formatCalendarDate(ev.date)}</div>
-      <div class="revision-event-tree"></div>
-      <div class="revision-event-gauge"></div>
+      ${comment ? `<p class="revision-event-comment">${escapeHtml(comment)}</p>` : ""}
+      <button type="button" class="revision-event-toggle" aria-expanded="false">
+        <span class="revision-event-toggle-label"></span>
+        <span class="revision-event-toggle-chevron" aria-hidden="true">${iconSvgMarkup("chevronDown", "icon-inline-svg") || "&#8964;"}</span>
+      </button>
+      <div class="revision-event-tree" hidden></div>
       <button type="button" class="btn btn--primary revision-event-go"></button>
     `;
     const treeEl = li.querySelector(".revision-event-tree");
     const gaugeEl = li.querySelector(".revision-event-gauge");
     const goBtn = li.querySelector(".revision-event-go");
+    const toggleBtn = li.querySelector(".revision-event-toggle");
+    const toggleLabel = li.querySelector(".revision-event-toggle-label");
+    const setExpanded = (open) => {
+      treeEl.hidden = !open;
+      toggleBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      toggleBtn.classList.toggle("is-open", open);
+      if (open) revisionProgramExpanded.add(ev.id);
+      else revisionProgramExpanded.delete(ev.id);
+    };
+    toggleBtn.addEventListener("click", () => setExpanded(treeEl.hidden));
+    setExpanded(revisionProgramExpanded.has(ev.id));
 
     function selectedIds() {
       return allIds.filter(isChecked);
@@ -8591,6 +8742,7 @@
       const ids = selectedIds();
       const pool = cards.filter((c) => !c.deleted && ids.includes(c.subject));
       gaugeEl.innerHTML = pool.length > 0 ? buildPersGaugeSvg(pool, { width: 70, barHeight: 8 }) : "";
+      toggleLabel.textContent = `${ids.length} boîte${ids.length > 1 ? "s" : ""} à réviser`;
       goBtn.disabled = pool.length === 0;
       goBtn.textContent =
         ids.length === 0
@@ -8614,13 +8766,19 @@
         cb._node = node;
         cb.addEventListener("change", () => toggleNode(node, cb.checked));
         row.appendChild(cb);
-        const icon = node.kind === "folder" ? iconSvgMarkup("folder", "icon-inline-svg") : orgIconMarkup("orgBoite");
-        const n = node.kind === "box" ? cards.filter((c) => !c.deleted && c.subject === node.id).length : null;
+        // Round 52 : plus de picto devant les boîtes (le dossier garde le
+        // sien) ; à droite, comme dans Organisation : nombre, jauge ou rien
+        // (choix en haut de la page).
+        const icon = node.kind === "folder" ? `<span class="revision-tree-icon">${iconSvgMarkup("folder", "icon-inline-svg")}</span>` : "";
+        const boxIds = node.kind === "box" ? [node.id] : revisionTreeBoxIds(node.children);
+        const pool = cards.filter((c) => !c.deleted && boxIds.includes(c.subject));
+        const countTxt =
+          node.kind === "box"
+            ? `${pool.length} fiche${pool.length > 1 ? "s" : ""}`
+            : `${boxIds.length} boîte${boxIds.length > 1 ? "s" : ""}`;
         row.insertAdjacentHTML(
           "beforeend",
-          `<span class="revision-tree-icon">${icon}</span><span class="revision-tree-name">${escapeHtml(node.name)}</span>${
-            n !== null ? `<span class="revision-tree-count">${n} fiche${n > 1 ? "s" : ""}</span>` : ""
-          }`
+          `${icon}<span class="revision-tree-name">${escapeHtml(node.name)}</span><span class="revision-tree-info"><span class="revision-tree-count">${countTxt}</span><span class="revision-tree-gauge">${buildPersGaugeSvg(pool, { width: 60, barHeight: 6 })}</span></span>`
         );
         treeEl.appendChild(row);
         if (node.kind === "folder") renderNodes(node.children, depth + 1);
@@ -8646,7 +8804,7 @@
     return li;
   }
 
-  /** Round 47 : palier Réviser à trois boutons — « Révisions urgentes
+  /** Round 47 : palier Réviser à trois boutons — « Révisions prioritaires
    *  (conseillé) » (échéances proches), « Renforcer mes connaissances » et
    *  « Sélection manuelle ». Pastille rouge = nombre d'échéances à venir dont
    *  une boîte a des fiches à revoir (reprise sur « Réviser » à l'accueil) ;
@@ -8686,7 +8844,7 @@
   }
   function reviewHubReinforceBlockReason() {
     if (revisionCards().length === 0) return "Tu n'as encore aucune fiche dans tes révisions.";
-    if (computeReinforceItems().length === 0) return "Toutes tes boîtes sont déjà dans les révisions urgentes.";
+    if (computeReinforceItems().length === 0) return "Toutes tes boîtes sont déjà dans les révisions prioritaires.";
     return "";
   }
   function renderHubButtonState(btnId, noteId, reason) {
@@ -8712,7 +8870,7 @@
       const reason = reviewHubUrgentBlockReason();
       if (reason) {
         renderReviewHub();
-        await robotAlert(`${reason} Ajoute une échéance (avec ses boîtes) dans le Calendrier pour que je te prépare des révisions urgentes.`);
+        await robotAlert(`${reason} Ajoute une échéance (avec ses boîtes) dans le Calendrier pour que je te prépare des révisions prioritaires.`);
         return;
       }
       const tab = document.querySelector('.tab[data-view="revision-program"]');
@@ -11207,6 +11365,7 @@
       const levelLabel = taxLabel ? ` · ${escapeHtml(taxLabel)}` : "";
       const { count: likeCount, liked } = libraryCollectionLikeStats(col.id);
       const summary = (col.summary || "").trim();
+      const description = (col.description || "").trim();
       const li = document.createElement("li");
       li.className = "subject-row library-row" + (inRevisions ? " library-row--in-revisions" : "");
       li.innerHTML = `
@@ -11216,6 +11375,7 @@
         </div>
         <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""}${levelLabel}</span>
         ${libraryShowSummaries && summary ? `<p class="library-row-summary">${escapeHtml(summary)}</p>` : ""}
+        ${libraryShowSummaries && description ? `<p class="library-row-summary library-row-description">${escapeHtml(description)}</p>` : ""}
         ${inRevisions ? `<span class="library-row-in-revisions">Déjà dans mes révisions</span>` : ""}
       `;
       const thumbEl = li.querySelector(".library-thumb");

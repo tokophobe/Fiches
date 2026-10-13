@@ -326,7 +326,7 @@
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
     <button class="tab" role="tab" aria-selected="false" data-view="calendar" hidden>Calendrier</button>
     <button class="tab" role="tab" aria-selected="false" data-view="review-hub" hidden>Réviser</button>
-    <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Révisions urgentes</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Révisions prioritaires</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-reinforce" hidden>Renforcer mes connaissances</button>
     <button class="tab" role="tab" aria-selected="false" data-view="school-hub" hidden>École</button>
     <button class="tab" role="tab" aria-selected="false" data-view="creations" hidden>Mes créations</button>
@@ -432,14 +432,14 @@
          manuelle (sélecteur de boîtes/dossiers). -->
     <section id="view-review-hub" class="view" aria-labelledby="tab-review-hub">
       <!-- Round 47 : trois boutons ronds alignés verticalement et centrés —
-           Révisions urgentes (conseillé), Renforcer mes connaissances,
+           Révisions prioritaires (conseillé), Renforcer mes connaissances,
            Sélection manuelle. -->
       <div class="classes-role-circles review-hub-stack" id="review-hub-circles">
         <button type="button" class="classes-role-circle" id="review-hub-advised-btn">
           <span class="classes-role-circle-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="13" x2="12" y2="16.5"/><circle cx="12" cy="19" r="0.6" fill="currentColor"/></svg>
           </span>
-          <span>Révisions urgentes (conseillé)</span>
+          <span>Révisions prioritaires (conseillé)</span>
           <span class="classes-role-circle-note" id="review-hub-advised-note" hidden></span>
           <span class="home-circle-badge" id="review-hub-urgent-badge" hidden>0</span>
         </button>
@@ -464,8 +464,18 @@
          Réviser, qui conseille par ordre de priorité les boîtes/dossiers
          à exercer en fonction des échéances du calendrier. -->
     <section id="view-revision-program" class="view" aria-labelledby="tab-revision-program">
-      <!-- Round 47 : « Révisions urgentes (conseillé) » — échéances proches
+      <!-- Round 47 : « Révisions prioritaires (conseillé) » — échéances proches
            (ex-1re partie des Révisions conseillées). -->
+      <!-- Round 52 : même choix d'affichage que la page Organisation
+           (nombre de fiches / jauge / rien). -->
+      <div class="org-display-toggle revision-program-display-toggle" id="revision-program-display-toggle">
+        <button type="button" class="org-display-toggle-btn" data-prio-display="count" title="Nombre de fiches/boîtes" aria-label="Afficher le nombre de fiches">
+          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/></svg>
+        </button>
+        <button type="button" class="org-display-toggle-btn" data-prio-display="gauge" title="Barre d'apprentissage" aria-label="Afficher la barre d'apprentissage">
+          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="10" width="11" height="4" rx="2" fill="currentColor" stroke="none"/></svg>
+        </button>
+      </div>
       <ul class="revision-event-list" id="revision-program-list"></ul>
       <p class="chart-empty" id="revision-program-empty" hidden>Aucune échéance à venir avec des boîtes associées.</p>
     </section>
@@ -552,12 +562,15 @@
         </button>
       </div>
 
+      <!-- Round 52 : nombre de fiches à revoir / fiches difficiles / conseil
+           de changer de boîte, sous la fiche (position réglable). -->
+      <p class="review-session-status" id="review-session-status" aria-live="polite" hidden></p>
+
       <!-- Item 1d : délai précédent, score actuel, et pour chaque bouton
            d'évaluation le futur délai + futur score associé. -->
       <div class="review-score-info" id="review-score-info" hidden>
         <p class="review-score-info-current">
           Délai précédent : <strong id="score-info-prev-delay">—</strong>
-          &nbsp;·&nbsp;Score actuel : <strong id="score-info-current">—</strong>
         </p>
         <div class="review-score-info-grid">
           <span class="review-score-info-cell" id="score-info-again">—</span>
@@ -1483,8 +1496,9 @@
         <a class="btn btn--small" href="./admin/" target="_blank" rel="noopener">Ouvrir Darwin Admin</a>
       </div>
 
-      <!-- Item 5 (dernier lot) : couleur unie de la pastille "à revoir". -->
-      <div class="card-form">
+      <!-- Item 5 (dernier lot) : couleur unie de la pastille "à revoir".
+           Round 52 : masqué (la pastille n'est plus affichée). -->
+      <div class="card-form" hidden>
         <h3 class="settings-block-title">Pastille "à revoir"</h3>
         <label class="field">
           <span>Couleur</span>

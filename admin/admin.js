@@ -2374,6 +2374,13 @@
   }
 
   /* ---- Apparence ---- */
+  /* Round 52 : réglages devenus sans effet dans l'appli (élément supprimé
+     de l'interface) — gardés dans le modèle pour la compatibilité, mais
+     plus proposés ici. */
+  const OBSOLETE_SETTINGS = {
+    bg: ["skipProgramBg"], // bouton « Passer » des révisions conseillées (supprimé)
+    shadows: ["duePill"], // pastille « à revoir » (plus affichée depuis le round 47)
+  };
   PAGES["settings/appearance"] = (root, params, live) =>
     settingsPage(root, live, "Apparence", (root) => {
       root.appendChild(
@@ -2392,7 +2399,7 @@
           null,
           [["bgColors"], ["nightColors", "bgColors"]],
           dayNightHead(),
-          M.BG_COLORS_ORDER.map((k) => setRow(M.BG_COLORS_TITLES[k] || k, [colorCtrl(["bgColors", k]), colorCtrl(["nightColors", "bgColors", k])]))
+          M.BG_COLORS_ORDER.filter((k) => !OBSOLETE_SETTINGS.bg.includes(k)).map((k) => setRow(M.BG_COLORS_TITLES[k] || k, [colorCtrl(["bgColors", k]), colorCtrl(["nightColors", "bgColors", k])]))
         )
       );
       root.appendChild(
@@ -2409,7 +2416,7 @@
           "Effets d'ombrage",
           "Ombre portée sous chaque type d'élément.",
           [["shadows"]],
-          Object.keys(M.SHADOW_ELEMENTS).map((k) => setRow(M.SHADOW_ELEMENTS[k].title, switchCtrl(["shadows", k], { defaultTrue: true })))
+          Object.keys(M.SHADOW_ELEMENTS).filter((k) => !OBSOLETE_SETTINGS.shadows.includes(k)).map((k) => setRow(M.SHADOW_ELEMENTS[k].title, switchCtrl(["shadows", k], { defaultTrue: true })))
         )
       );
     });
@@ -2545,7 +2552,7 @@
           "Dimensions et positions en % de l'écran (gabarit 390 × 844).",
           [["reviewLayout"]],
           M.REVIEW_LAYOUT_FIELDS.map((f) =>
-            setRow(f.title, numCtrl(["reviewLayout", f.key], { step: f.key === "flipDurationSec" ? 0.1 : 1, min: 0, unit: f.unit }))
+            setRow(f.title, numCtrl(["reviewLayout", f.key], { step: f.step || 1, min: 0, unit: f.unit }))
           )
         )
       );
