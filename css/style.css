@@ -7001,3 +7001,311 @@ body:not(.v1-pages) #view-revision-program .revision-event-head-main .revision-e
 .library-row-in-revisions { text-align: right; align-self: flex-end; }
 .library-row-summary { white-space: pre-line; overflow-wrap: break-word; }
 .library-row-description { margin-top: 6px; font-size: 12.5px; opacity: 0.9; }
+
+/* ==================================================================
+   Round 53
+   ================================================================== */
+/* 1. Nouvelle fiche depuis une boîte : le sélecteur de boîte (masqué par
+   l'attribut hidden) ne réapparaît plus à cause de display:flex. */
+.subject-bar[hidden] { display: none !important; }
+
+/* 2. Résumé d'une boîte : tableau à trois colonnes, lignes continues. */
+#view-creation-detail .creation-detail-title { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+#view-creation-detail .creation-detail-title .creation-detail-gauge { display: inline-flex; }
+.creation-detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 4px 0 10px;
+  font-size: 13.5px;
+  color: var(--main-text-color, var(--ink));
+}
+.creation-detail-table tr { border-bottom: 1px solid var(--rule-soft); }
+.creation-detail-table th,
+.creation-detail-table td { padding: 10px 0; vertical-align: middle; }
+.creation-detail-table th {
+  width: 1%;
+  white-space: nowrap;
+  padding-right: 12px;
+  text-align: right;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+.creation-detail-table td { overflow-wrap: anywhere; }
+.creation-detail-table .creation-detail-act-cell { width: 34%; padding-left: 8px; text-align: right; }
+.creation-detail-table .creations-status { background: transparent; padding: 0; font-weight: 500; }
+.creation-detail-act.btn {
+  display: inline-block;
+  padding: 4px 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--action-color);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: right;
+}
+.creation-detail-act.btn.creation-detail-delete { color: var(--red, #b6604a); }
+/* Bouton rond « + Ajouter une fiche » comme les autres boutons ronds. */
+.add-card-circle.classes-role-circle { width: 120px; height: 120px; font-size: 13px; position: relative; }
+.round-add-card-wrap { display: flex; justify-content: center; }
+.creation-detail-table .creations-status { font-size: inherit; }
+
+/* 3. Classement : blocs imbriqués (le sélecteur en haut, le bloc enfant
+   dessous ; même marge à gauche, à droite et en bas ; dégradé léger). */
+.tax-nested,
+.library-taxonomy-filters.tax-nested { display: block; }
+.tax-block {
+  --tax-tint: calc(var(--tax-depth, 0) * 5% + 4%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--rule, #4a9fe0) var(--tax-tint), var(--paper));
+  border: 1px solid color-mix(in srgb, var(--rule, #4a9fe0) calc(var(--tax-tint) + 6%), transparent);
+}
+.tax-nested > .tax-block { margin: 0 0 10px; }
+.tax-block > .field.taxonomy-field { margin: 0; }
+.tax-block > .field.taxonomy-field > span { padding-left: 4px; }
+.tax-block select,
+.tax-block .library-taxonomy-select { width: 100%; border-radius: 10px; }
+.tax-block .library-taxonomy-select.is-set { border-color: var(--action-color); box-shadow: inset 0 0 0 1px var(--action-color); }
+
+/* 4. Librairie : rangée d'outils collée sous le bandeau (seul le bouton
+   des résumés reste visible une fois collée) ; « Ajouter à mes révisions »
+   dans chaque bloc, comme « Déjà dans mes révisions ». */
+#view-library .library-tools-row {
+  position: sticky;
+  top: calc(var(--sticky-header-h, 96px) + 2px);
+  z-index: 30;
+  pointer-events: none;
+}
+#view-library .library-tools-row > * { pointer-events: auto; }
+#view-library .library-tools-row.is-stuck .library-mine-toggle { visibility: hidden; }
+#view-library .library-tools-row.is-stuck #library-summary-toggle {
+  background: var(--app-bg-color, var(--desk));
+  box-shadow: 0 2px 8px rgba(30, 60, 100, 0.18);
+}
+.library-row-add {
+  display: block;
+  margin: 4px 0 0 auto;
+  padding: 4px 0;
+  border: none;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--action-color);
+  cursor: pointer;
+}
+
+/* 5. Choisir les boîtes : traits comme dans l'organisation (seulement
+   entre les lignes du premier niveau), affichage nombre / jauge / rien. */
+body:not(.v1-pages) #view-boite-picker .subject-row .subject-row,
+body:not(.v1-pages) #view-boite-picker .subject-row:last-child { border-bottom: none; }
+body:not(.v1-pages) #view-boite-picker .org-children { border-top: none; }
+.boite-picker-hint-row { display: flex; align-items: center; gap: 10px; }
+.boite-picker-hint-row .settings-block-hint { flex: 1; margin: 0; }
+.boite-picker-display-toggle { margin-left: auto; }
+.picker-gauge { display: none; flex-shrink: 0; }
+.picker-gauge svg { display: block; }
+#view-boite-picker .org-count { display: none; }
+#view-boite-picker[data-picker-display="count"] .org-count { display: inline; }
+#view-boite-picker[data-picker-display="gauge"] .picker-gauge { display: flex; }
+
+/* 6. Révisions prioritaires : le chevron juste à côté de « N boîtes à
+   réviser ». */
+.revision-event-toggle { width: auto; justify-content: flex-start; }
+.revision-event-toggle-label { flex: 0 1 auto; }
+.revision-event-toggle[hidden] { display: none; }
+
+/* 8. Calendrier : « Liste » / « Calendrier » sans cadre de groupe ni fond
+   blanc ; seul le bouton sélectionné est encadré (couleur des actions). */
+.calendar-view-toggle { border: none; padding: 0; gap: 8px; }
+.calendar-view-toggle-btn { border: 1.5px solid transparent; }
+.calendar-view-toggle-btn.is-active {
+  background: transparent;
+  border-color: var(--action-color);
+  color: var(--ink);
+}
+
+/* 9 & 10. Élève 2 / Enseignant 2 : « + Rejoindre une classe » et
+   « + Créer une classe » redeviennent des boutons ronds. */
+body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) {
+  justify-content: center;
+  margin: 10px 0 14px;
+}
+body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) .classes-role-circle {
+  width: 130px;
+  height: 130px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--home-square-bg-color, var(--paper));
+  box-shadow: var(--shadow-home-square, var(--shadow-deep));
+  flex-direction: column;
+  gap: 8px;
+  color: var(--ink);
+  font-family: var(--font-type);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: normal;
+  text-transform: none;
+}
+body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) .classes-role-circle svg { width: 30px; height: 30px; }
+
+/* 11. Page d'une classe : menu « ⌄ » des dossiers et boîtes (enseignant). */
+.class-tree-menu-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin: -4px 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--action-color);
+}
+.class-tree-menu-btn:hover { background: var(--rule-soft); }
+.class-detail-section-head { gap: 10px; }
+.class-detail-section-head h3 { flex: 1; }
+
+/* 12. Messagerie : zone d'écriture fixée en bas, qui grandit avec le texte. */
+#view-message-thread { padding-bottom: calc(var(--composer-h, 60px) + 8px); }
+#view-message-thread .message-thread-list {
+  max-height: none;
+  overflow: visible;
+  margin-bottom: 0;
+}
+#view-message-thread .message-thread-form {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 560px;
+  z-index: 35;
+  align-items: flex-end;
+  padding: 8px 18px max(10px, env(safe-area-inset-bottom));
+  background: var(--app-bg-color, var(--desk));
+  border-top: 1px solid var(--rule-soft);
+}
+#view-message-thread .message-thread-form textarea {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  overflow-y: hidden;
+  border: none;
+  border-radius: 20px;
+  background: var(--paper-2);
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--ink);
+  max-height: 150px;
+}
+#view-message-thread .message-thread-form textarea:focus { outline: none; box-shadow: inset 0 0 0 1.5px var(--action-color); }
+#view-message-thread .message-thread-form .btn { margin-bottom: 4px; }
+
+/* 13. Signalements : blocs épurés. */
+#view-reports .reports-section-title {
+  margin: 14px 0 2px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  list-style: none;
+}
+#view-reports .reports-section-title:first-child { margin-top: 0; }
+.report-row.rp {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 2px 12px;
+  margin: 0 !important;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.report-row.rp:last-child { border-bottom: none; }
+.report-row.rp.report-row--done { opacity: 0.8; }
+.rp-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.rp-box { font-family: var(--font-type); font-size: 15px; font-weight: 600; color: var(--main-text-color, var(--ink)); overflow-wrap: anywhere; }
+.rp-date { flex-shrink: 0; font-size: 12px; color: var(--ink-soft); }
+.rp-status {
+  margin-top: -4px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.rp-status--open { color: #b7791f; }
+.rp-status--wait { color: var(--ink-soft); }
+.rp-status--done { color: var(--reassure-color, #3e7c6b); }
+:root.is-night-mode .rp-status--open { color: #e0b46a; }
+.rp-new {
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--terracotta);
+  color: #fff;
+  font-size: 9.5px;
+}
+.rp-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.rp-card {
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--paper-2);
+  font-family: var(--font-type);
+  min-width: 0;
+}
+.rp-card--fresh { box-shadow: inset 0 0 0 1px var(--reassure-color, #3e7c6b); }
+.rp-card-label {
+  display: block;
+  margin-bottom: 3px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.rp-card-q { font-size: 13.5px; font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.rp-card-a { margin-top: 2px; font-size: 13px; color: var(--ink-soft); overflow-wrap: anywhere; }
+.rp-thread { display: flex; flex-direction: column; gap: 6px; }
+.rp-bubble {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 85%;
+  padding: 7px 11px 8px;
+  border-radius: 14px;
+  font-family: var(--font-type);
+}
+.rp-bubble--other { align-self: flex-start; border-bottom-left-radius: 4px; background: var(--msg-other-bg, rgba(31, 41, 55, 0.06)); }
+.rp-bubble--mine { align-self: flex-end; border-bottom-right-radius: 4px; background: var(--msg-mine-bg, rgba(74, 144, 217, 0.16)); }
+.rp-bubble-who { font-size: 10.5px; font-weight: 600; color: var(--msg-sender-color, #3e7c6b); }
+.rp-bubble-text { font-size: 13.5px; line-height: 1.35; color: var(--ink); white-space: pre-wrap; overflow-wrap: anywhere; }
+.rp-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 2px 14px; }
+.rp-act {
+  padding: 4px 0;
+  border: none;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--action-color);
+  cursor: pointer;
+}
+.rp-act--main { font-weight: 700; color: var(--ink); }

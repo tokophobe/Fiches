@@ -1060,6 +1060,30 @@ async function updateSharedBoxCards(boxId, cards, folderPath, subjectName) {
   return { error: error ? error.message : null };
 }
 
+/** Round 53 : arborescence propre à la classe. `folderPath` d'une boîte
+ *  partagée = son dossier DANS LA CLASSE (rangé par l'enseignant depuis la
+ *  page de la classe), indépendant de son organisation personnelle. */
+async function updateSharedBoxPath(boxId, folderPath) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée." };
+  const { error } = await c
+    .from("shared_boxes")
+    .update({ folder_path: Array.isArray(folderPath) ? folderPath : [], updated_at: new Date().toISOString() })
+    .eq("id", boxId);
+  return { error: error ? error.message : null };
+}
+/** Round 53 : dossiers de la classe (y compris vides) — colonne
+ *  `box_folders` ajoutée par supabase/round53_migration.sql. Sans elle :
+ *  `missing` (les dossiers qui contiennent des boîtes restent gérés par le
+ *  chemin de chaque boîte). */
+async function updateClassBoxFolders(classId, folders) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée." };
+  const { error } = await c.from("classes").update({ box_folders: Array.isArray(folders) ? folders : [] }).eq("id", classId);
+  if (error) return { error: error.message, missing: /box_folders/i.test(error.message || "") };
+  return { error: null };
+}
+
 /* ---- Round 3, item 4 (squelette) : événements de calendrier partagés ---- */
 
 /** Round 26, item 2 : identité du professeur affichée côté élève —
@@ -1507,6 +1531,8 @@ window.Sync = {
     shareBox: shareBoxToClass,
     listSharedBoxes: listSharedBoxesForClass,
     updateSharedBoxCards,
+    updateSharedBoxPath,
+    updateBoxFolders: updateClassBoxFolders,
     shareEvent: shareEventToClass,
     listSharedEvents: listSharedEventsForClass,
     updateSharedEvent,

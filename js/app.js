@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v206";
+  const APP_VERSION = "v207";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -110,6 +110,7 @@
   let cardsEntryFromCreations = false;
   const NEW_CARD_SUBJECT_KEY = "fiches_new_card_subject_id";
   let newCardSubjectId = localStorage.getItem(NEW_CARD_SUBJECT_KEY) || null;
+  let newCardFixedSubjectActive = false; // round 53 : voir openNewCardForSubject
   function saveNewCardSubjectId(id) {
     newCardSubjectId = id;
     if (id) localStorage.setItem(NEW_CARD_SUBJECT_KEY, id);
@@ -836,7 +837,8 @@
     loadBonusDaysSettings();
     loadBonusAgainMode();
     loadHibernateDays();
-    newCardSubjectId = localStorage.getItem("fiches_new_card_subject_id") || null;
+    // Round 53 : pas pendant une création depuis une boîte précise.
+    if (!newCardFixedSubjectActive) newCardSubjectId = localStorage.getItem("fiches_new_card_subject_id") || null;
     applyShowRatingDays();
     applyShowReviewChart();
     applyCardFontSize();
@@ -2863,7 +2865,7 @@
    *  compteur, éventuelle case à cocher — identique à
    *  buildRowBody/renderTreeLevel de la page Organisation, juste sans les
    *  actions Éditer/Déplacer/Supprimer (pas de sens dans un sélecteur). */
-  function buildPickerRow({ depth, isFolder, iconMarkup, nameText, countLabel, expandable, expanded, onToggleExpand, selectControl, checked, dataKind, value, onRowSelect, rowSelectable }) {
+  function buildPickerRow({ depth, isFolder, iconMarkup, nameText, countLabel, gaugeSubjectIds, expandable, expanded, onToggleExpand, selectControl, checked, dataKind, value, onRowSelect, rowSelectable }) {
     const li = document.createElement("li");
     li.className = "subject-row picker-row" + (isFolder ? ` folder-row folder-row-depth-${Math.min(depth, 3)}` : "");
     const main = document.createElement(selectControl === "checkbox" ? "label" : "div");
@@ -2895,7 +2897,7 @@
 
     const nameWrap = document.createElement("span");
     nameWrap.className = "subject-row-name";
-    nameWrap.innerHTML = `${iconMarkup} <span>${escapeHtml(nameText)}</span>`;
+    nameWrap.innerHTML = `${iconMarkup ? `${iconMarkup} ` : ""}<span>${escapeHtml(nameText)}</span>`;
     main.appendChild(nameWrap);
 
     const spacer = document.createElement("span");
@@ -2907,6 +2909,15 @@
       count.className = "org-count";
       count.textContent = countLabel;
       main.appendChild(count);
+    }
+    // Round 53 : barre d'apprentissage (affichée selon le choix nombre /
+    // jauge / rien en haut de la page, comme dans l'organisation).
+    if (gaugeSubjectIds) {
+      const g = document.createElement("span");
+      g.className = "picker-gauge";
+      const idSet = new Set(gaugeSubjectIds);
+      g.innerHTML = buildPersGaugeSvg(cards.filter((c) => !c.deleted && idSet.has(c.subject)), { width: 60, barHeight: 6 });
+      main.appendChild(g);
     }
 
     if (rowSelectable) {
@@ -2983,6 +2994,7 @@
         iconMarkup: iconSvgMarkup("folder", "icon-inline-svg"),
         nameText: f.name,
         countLabel: `${ids.length} boîte${ids.length > 1 ? "s" : ""}`,
+        gaugeSubjectIds: ids,
         selectControl: ctx.mode === "multi" ? "checkbox" : "none",
         checked: ctx.mode === "multi" && ids.length > 0 && ids.every((id) => ctx.selectedSubjectIds.has(id)),
         dataKind: "folder",
@@ -3030,9 +3042,12 @@
     const { li, cb } = buildPickerRow({
       depth,
       isFolder: false,
-      iconMarkup: orgIconMarkup("orgBoite"),
+      // Round 53 : plus de picto devant les boîtes (ni boîtes partagées)
+      // dans le sélecteur ; les dossiers et les classes gardent le leur.
+      iconMarkup: "",
       nameText: name,
       countLabel: `${cardCount} fiche${cardCount > 1 ? "s" : ""}`,
+      gaugeSubjectIds: [subjectId],
       selectControl: ctx.mode === "multi" ? "checkbox" : "none",
       checked: ctx.mode === "multi" && ctx.selectedSubjectIds.has(subjectId),
       dataKind: "subject",
@@ -3062,6 +3077,7 @@
       iconMarkup: iconSvgMarkup("folder", "icon-inline-svg"),
       nameText: "Toutes les boîtes",
       countLabel: `${allIds.length} boîte${allIds.length > 1 ? "s" : ""}`,
+      gaugeSubjectIds: allIds,
       selectControl: "checkbox",
       checked: allIds.length > 0 && allIds.every((id) => ctx.selectedSubjectIds.has(id)),
       dataKind: "all",
@@ -3559,10 +3575,11 @@
     // Round 3, item 1 : le chemin de dossiers actuel (côté prof) est
     // repoussé en même temps que les fiches, pour que l'élève reconstitue
     // la même arborescence même après une réorganisation.
-    const folderPathNames = folderPath(subject.folderId).map((f) => f.name);
+    // Round 53 : le dossier de la boîte DANS LA CLASSE est géré depuis la
+    // page de la classe — on ne repousse plus le chemin personnel.
     for (const share of subject.sharedShares) {
       try {
-        await Sync.classes.updateSharedBoxCards(share.boxId, boxCards, folderPathNames, subject.name);
+        await Sync.classes.updateSharedBoxCards(share.boxId, boxCards, undefined, subject.name);
       } catch (e) {
         console.warn("Classes: échec de la mise à jour de la boîte partagée", e);
       }
@@ -3578,14 +3595,14 @@
     const remote = await Sync.classes.listSharedBoxes(classId);
     const byId = new Map(remote.map((b) => [b.id, b]));
     for (const s of subjects.filter((x) => !x.deleted && x.sharedShares && x.sharedShares.some((sh) => sh.classId === classId))) {
-      const path = folderPath(s.folderId).map((f) => f.name);
       for (const share of s.sharedShares.filter((sh) => sh.classId === classId)) {
         const rb = byId.get(share.boxId);
         if (!rb) continue;
-        if (JSON.stringify(rb.folder_path || []) === JSON.stringify(path) && rb.subject_name === s.name) continue;
+        // Round 53 : seul le nom suit (plus le chemin personnel).
+        if (rb.subject_name === s.name) continue;
         const boxCards = cards.filter((c) => !c.deleted && c.subject === s.id);
         try {
-          await Sync.classes.updateSharedBoxCards(share.boxId, boxCards, path, s.name);
+          await Sync.classes.updateSharedBoxCards(share.boxId, boxCards, undefined, s.name);
         } catch (e) {
           console.warn("Classes : mise à jour d'une boîte partagée impossible", e);
         }
@@ -3778,15 +3795,28 @@
     }
     return f;
   }
+  // Round 53 : l'animation n'est plus relancée par les rendus répétés
+  // (fiche suivante, synchro, jauge…) pendant qu'elle se déroule — c'est
+  // ce qui faisait réapparaître l'ancien nom avant qu'il ne reparte.
+  let reviewBoxAnimPhase = null; // null | "out" | "in"
+  let reviewBoxReverseUntil = 0;
+  let reviewBoxAnimTarget = null;
   function renderReviewCurrentBox(card, opts) {
     opts = opts || {};
     const box = el("review-current-box");
     if (!box) return;
     const onReview = el("view-review") && el("view-review").classList.contains("is-active");
     const gaugeEl = el("review-current-box-gauge");
+    const titleEl = el("page-header-title");
+    const stopAnim = () => {
+      reviewBoxAnimToken++;
+      reviewBoxAnimPhase = null;
+      reviewBoxAnimTarget = null;
+      [titleEl, gaugeEl].forEach((t) => t && t.getAnimations && t.getAnimations().forEach((a) => a.cancel()));
+    };
     if (!card || card.deleted) {
       box.hidden = true;
-      reviewBoxAnimToken++;
+      stopAnim();
       reviewBoxShownSubject = null;
       if (onReview) updatePageHeaderTitle();
       return;
@@ -3795,39 +3825,79 @@
     const sid = card.subject;
     const prev = reviewBoxShownSubject;
     const durMs = Math.max(0, Number(loadDevSettings().reviewLayout.boxChangeAnimSec) || 0) * 1000;
-    const titleEl = el("page-header-title");
-    if (!onReview || !prev || prev === sid || durMs < 50 || !gaugeEl || !titleEl || typeof gaugeEl.animate !== "function") {
-      reviewBoxAnimToken++;
+    const canAnimate = onReview && durMs >= 50 && gaugeEl && titleEl && typeof gaugeEl.animate === "function";
+    if (!canAnimate) {
+      if (reviewBoxAnimPhase) stopAnim();
       reviewBoxShownSubject = sid;
       if (gaugeEl) gaugeEl.innerHTML = reviewBoxGaugeHtml(sid);
       if (onReview) updatePageHeaderTitle();
       return;
     }
+    // Animation en cours : la sortie montrera la bonne boîte à mi-course ;
+    // une entrée déjà vers cette boîte se termine tranquillement.
+    if (reviewBoxAnimPhase === "out") {
+      reviewBoxAnimTarget = sid;
+      return;
+    }
+    if (reviewBoxAnimPhase === "in" && reviewBoxAnimTarget === sid) return;
+    if (!reviewBoxAnimPhase && (!prev || prev === sid)) {
+      reviewBoxShownSubject = sid;
+      gaugeEl.innerHTML = reviewBoxGaugeHtml(sid);
+      updatePageHeaderTitle();
+      return;
+    }
     const token = ++reviewBoxAnimToken;
-    const dir = opts.reverse ? -1 : 1;
+    reviewBoxAnimPhase = "out";
+    reviewBoxAnimTarget = sid;
+    const dir = opts.reverse || Date.now() < reviewBoxReverseUntil ? -1 : 1;
     const dist = Math.max(window.innerWidth, 400);
     const targets = [titleEl, gaugeEl];
     const half = durMs / 2;
     Promise.all(
       targets.map((t) => {
-        t.getAnimations().forEach((a) => a.cancel());
-        return t.animate([reviewBoxFrame(t, 0), reviewBoxFrame(t, dir * dist)], {
-          duration: half,
-          easing: "cubic-bezier(0.55, 0, 1, 0.45)",
-          fill: "forwards",
-        }).finished.catch(() => {});
+        // Repart de la position actuelle (entrée interrompue), sans saut.
+        t.getAnimations().forEach((a) => {
+          try {
+            a.commitStyles();
+          } catch (e) {
+            /* ignore */
+          }
+          a.cancel();
+        });
+        const from = t.style.transform && t.style.transform !== "none" ? t.style.transform : "translateX(0px)";
+        const fromX = parseFloat((from.match(/translateX\((-?[\d.]+)px\)/) || [0, 0])[1]) || 0;
+        t.style.transform = "";
+        t.style.clipPath = "";
+        return t
+          .animate([reviewBoxFrame(t, fromX), reviewBoxFrame(t, dir * dist)], {
+            duration: half,
+            easing: "cubic-bezier(0.55, 0, 1, 0.45)",
+            fill: "forwards",
+          })
+          .finished.catch(() => {});
       })
     ).then(() => {
       if (token !== reviewBoxAnimToken) return;
-      reviewBoxShownSubject = sid;
-      gaugeEl.innerHTML = reviewBoxGaugeHtml(sid);
+      reviewBoxShownSubject = reviewBoxAnimTarget;
+      gaugeEl.innerHTML = reviewBoxGaugeHtml(reviewBoxShownSubject);
       updatePageHeaderTitle();
-      targets.forEach((t) => {
-        t.getAnimations().forEach((a) => a.cancel());
-        t.animate([reviewBoxFrame(t, -dir * dist), reviewBoxFrame(t, 0)], {
-          duration: half,
-          easing: "cubic-bezier(0, 0.55, 0.45, 1)",
-        });
+      reviewBoxAnimPhase = "in";
+      Promise.all(
+        targets.map((t) => {
+          t.getAnimations().forEach((a) => a.cancel());
+          return t
+            .animate([reviewBoxFrame(t, -dir * dist), reviewBoxFrame(t, 0)], {
+              duration: half,
+              easing: "cubic-bezier(0, 0.55, 0.45, 1)",
+            })
+            .finished.catch(() => {});
+        })
+      ).then(() => {
+        if (token !== reviewBoxAnimToken) return;
+        reviewBoxAnimPhase = null;
+        // Une autre boîte demandée pendant l'entrée ? On y va maintenant.
+        if (currentCard && currentCard.subject !== reviewBoxShownSubject) renderReviewCurrentBox(currentCard);
+        else gaugeEl.innerHTML = reviewBoxGaugeHtml(reviewBoxShownSubject);
       });
     });
   }
@@ -4210,6 +4280,7 @@
     const snap = lastRatingSnapshot;
     if (!snap) return;
     lastRatingSnapshot = null;
+    reviewBoxReverseUntil = Date.now() + 400; // round 53 : défilement inverse
     const undoBtn = el("undo-rating-btn");
     if (undoBtn) undoBtn.hidden = true;
 
@@ -4411,6 +4482,7 @@
     exitEditMode();
     resetCardForm();
     newCardFixedSubject = { id: subjectId, prevSubjectId: newCardSubjectId, returnView };
+    newCardFixedSubjectActive = true;
     newCardSubjectId = subjectId;
     const bar = el("cards-subject-bar");
     if (bar) bar.hidden = true;
@@ -4423,6 +4495,7 @@
     if (!newCardFixedSubject) return;
     newCardSubjectId = newCardFixedSubject.prevSubjectId;
     newCardFixedSubject = null;
+    newCardFixedSubjectActive = false;
     const bar = el("cards-subject-bar");
     if (bar) bar.hidden = false;
     const btn = el("cards-subject-select-btn");
@@ -4506,6 +4579,10 @@
       // Item 5 : la boîte est désormais obligatoire et explicite (bug
       // corrigé — la fiche partait auparavant toujours dans la boîte
       // active de Réviser, sans lien avec ce sélecteur).
+      // Round 53 : arrivé depuis une boîte (« + Ajouter une fiche »), la
+      // fiche va TOUJOURS dans cette boîte — un écho de synchro des
+      // réglages pouvait remettre entre-temps la boîte mémorisée.
+      if (newCardFixedSubject) newCardSubjectId = newCardFixedSubject.id;
       if (!newCardSubjectId || !subjects.some((s) => s.id === newCardSubjectId)) {
         await robotAlert("Choisis d'abord une boîte pour cette fiche.");
         return;
@@ -4566,7 +4643,7 @@
 
   function exitEditMode() {
     editingId = null;
-    submitBtn.textContent = "Ajouter à la pile";
+    submitBtn.textContent = "Ajouter à la boîte";
     cancelEditBtn.hidden = true;
     if (deleteEditingCardBtn) deleteEditingCardBtn.hidden = true;
   }
@@ -8499,11 +8576,25 @@
   // Boîtes décochées par évènement (mémorisées le temps de la session de
   // l'appli, pour retrouver ses choix en revenant sur la page).
   const revisionProgramUnchecked = new Map();
+  // Round 53 : même choix d'affichage dans « Choisir les boîtes à réviser ».
+  let pickerDisplayMode = "none";
+  function setPickerDisplayMode(mode) {
+    pickerDisplayMode = mode === "count" || mode === "gauge" ? mode : "none";
+    const view = el("view-boite-picker");
+    if (view) view.dataset.pickerDisplay = pickerDisplayMode;
+    document.querySelectorAll(".org-display-toggle-btn[data-picker-display]").forEach((b) => {
+      b.classList.toggle("is-active", b.dataset.pickerDisplay === pickerDisplayMode);
+    });
+  }
+  document.querySelectorAll(".org-display-toggle-btn[data-picker-display]").forEach((btn) => {
+    btn.addEventListener("click", () => setPickerDisplayMode(pickerDisplayMode === btn.dataset.pickerDisplay ? "none" : btn.dataset.pickerDisplay));
+  });
+  setPickerDisplayMode("none");
   // Round 52 : évènements dont la liste des boîtes est dépliée (repliée
   // par défaut) et affichage à droite de chaque ligne (nombre / jauge /
   // rien), comme sur la page Organisation.
   const revisionProgramExpanded = new Set();
-  let prioDisplayMode = "none";
+  let prioDisplayMode = "gauge"; // round 53 : jauges affichées par défaut
   function setPrioDisplayMode(mode) {
     prioDisplayMode = mode === "count" || mode === "gauge" ? mode : "none";
     const view = el("view-revision-program");
@@ -8515,7 +8606,7 @@
   document.querySelectorAll(".org-display-toggle-btn[data-prio-display]").forEach((btn) => {
     btn.addEventListener("click", () => setPrioDisplayMode(prioDisplayMode === btn.dataset.prioDisplay ? "none" : btn.dataset.prioDisplay));
   });
-  setPrioDisplayMode("none");
+  setPrioDisplayMode("gauge");
 
   function upcomingEventsWithBoxes() {
     return loadCalendarEvents()
@@ -8722,7 +8813,13 @@
       else revisionProgramExpanded.delete(ev.id);
     };
     toggleBtn.addEventListener("click", () => setExpanded(treeEl.hidden));
-    setExpanded(revisionProgramExpanded.has(ev.id));
+    // Round 53 : une seule boîte → affichée directement (pas de « 1 boîte à
+    // réviser ∨ »).
+    const singleBox = allIds.length === 1 && tree.length === 1 && tree[0].kind === "box";
+    if (singleBox) {
+      toggleBtn.hidden = true;
+      treeEl.hidden = false;
+    } else setExpanded(revisionProgramExpanded.has(ev.id));
 
     function selectedIds() {
       return allIds.filter(isChecked);
@@ -9153,6 +9250,7 @@
     refreshHomeEventWarning();
   }
   function renderAccountUsages() {
+    renderAccountShareEmail();
     const wrap = el("account-usages");
     if (!wrap) return;
     const u = currentUsages() || [];
@@ -9164,6 +9262,28 @@
       note.hidden = u.length > 0;
       note.textContent = u.length > 0 ? "" : "Choisis au moins un usage.";
     }
+  }
+  // Round 53 : autorisation de montrer son email aux enseignants.
+  function renderAccountShareEmail() {
+    const cb = el("account-share-email");
+    if (!cb) return;
+    cb.checked = !!(accountCurrentUser && accountCurrentUser.user_metadata && accountCurrentUser.user_metadata.share_email_with_teachers === true);
+  }
+  const accountShareEmailCb = el("account-share-email");
+  if (accountShareEmailCb) {
+    accountShareEmailCb.addEventListener("change", async () => {
+      const note = el("account-share-email-note");
+      const res = await Sync.auth.updateMetadata({ share_email_with_teachers: accountShareEmailCb.checked });
+      if (note) {
+        note.hidden = false;
+        note.textContent = res && res.error ? `Échec de l'enregistrement : ${res.error}` : "Enregistré.";
+      }
+      if (res && res.error) {
+        accountShareEmailCb.checked = !accountShareEmailCb.checked;
+        return;
+      }
+      accountCurrentUser = (await Sync.auth.getUser()) || accountCurrentUser;
+    });
   }
   const accountUsagesWrap = el("account-usages");
   if (accountUsagesWrap) {
@@ -9861,8 +9981,7 @@
       let share = subject.sharedShares.find((x) => x.classId === classId);
       if (!share) {
         const boxCards = cards.filter((c) => !c.deleted && c.subject === id);
-        const folderPathNames = folderPath(subject.folderId).map((f) => f.name);
-        const { data, error } = await Sync.classes.shareBox(classId, subject.name, boxCards, folderPathNames);
+        const { data, error } = await Sync.classes.shareBox(classId, subject.name, boxCards, []); // round 53 : racine de la classe
         if (error || !data) continue;
         share = { classId, className, boxId: data.id };
         subject.sharedShares.push(share);
@@ -10309,6 +10428,207 @@
     return html;
   }
 
+  /* ---------------------------------------------------------
+     Round 53 : arborescence propre à la classe. Les boîtes partagées
+     arrivent à la racine de la classe ; l'enseignant crée des dossiers et
+     range les boîtes comme dans l'organisation des boîtes (menu « ⌄ » de
+     chaque ligne : renommer, déplacer, supprimer, sous-dossier). Chaque
+     dossier = un chemin de noms ; les dossiers vides sont gardés dans
+     classes.box_folders, le dossier d'une boîte dans son folder_path.
+  --------------------------------------------------------- */
+  const classPathKey = (p) => JSON.stringify(p || []);
+  const classPathLabel = (p) => (p && p.length ? p.join(" › ") : "Racine de la classe");
+  const classPathStartsWith = (p, prefix) => prefix.length <= p.length && prefix.every((x, i) => p[i] === x);
+  function classFolderList(klass, boxes) {
+    const map = new Map();
+    const add = (p) => {
+      for (let i = 1; i <= p.length; i++) map.set(classPathKey(p.slice(0, i)), p.slice(0, i));
+    };
+    (Array.isArray(klass.box_folders) ? klass.box_folders : []).forEach((p) => Array.isArray(p) && p.length && add(p));
+    boxes.forEach((b) => Array.isArray(b.folder_path) && b.folder_path.length && add(b.folder_path));
+    return [...map.values()].sort((a, b) => a.join("\u0000").localeCompare(b.join("\u0000"), "fr"));
+  }
+  function buildClassTree(klass, boxes) {
+    const root = { name: null, path: [], children: new Map(), boxes: [] };
+    const nodeFor = (path) => {
+      let node = root;
+      path.forEach((seg, i) => {
+        if (!node.children.has(seg)) node.children.set(seg, { name: seg, path: path.slice(0, i + 1), children: new Map(), boxes: [] });
+        node = node.children.get(seg);
+      });
+      return node;
+    };
+    classFolderList(klass, boxes).forEach(nodeFor);
+    boxes.forEach((b) => nodeFor(Array.isArray(b.folder_path) ? b.folder_path : []).boxes.push(b));
+    return root;
+  }
+  function renderClassBoxesTree(container, klass, boxes, isTeacher) {
+    container.innerHTML = "";
+    const tree = buildClassTree(klass, boxes);
+    if (boxes.length === 0 && tree.children.size === 0) {
+      container.innerHTML = `<p class="class-detail-empty">Aucune boîte partagée pour l'instant.</p>`;
+      return;
+    }
+    const menuBtn = (onClick) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "class-tree-menu-btn";
+      b.setAttribute("aria-label", "Actions");
+      b.innerHTML = iconSvgMarkup("chevronDown", "icon-inline-svg");
+      b.addEventListener("click", (e) => {
+        e.stopPropagation();
+        onClick();
+      });
+      return b;
+    };
+    const draw = (node, depth) => {
+      [...node.children.values()]
+        .sort((a, b) => a.name.localeCompare(b.name, "fr"))
+        .forEach((child) => {
+          const row = document.createElement("div");
+          row.className = "class-tree-row class-tree-row--folder";
+          row.style.setProperty("--depth", depth);
+          row.innerHTML = `${iconSvgMarkup("folder", "class-tree-icon")}<span class="class-tree-name">${escapeHtml(child.name)}</span>`;
+          if (isTeacher) row.appendChild(menuBtn(() => classTreeFolderMenu(klass, boxes, child.path)));
+          container.appendChild(row);
+          draw(child, depth + 1);
+        });
+      [...node.boxes]
+        .sort((a, b) => (a.subject_name || "").localeCompare(b.subject_name || "", "fr"))
+        .forEach((box) => {
+          const n = (box.cards || []).length;
+          const row = document.createElement("div");
+          row.className = "class-tree-row";
+          row.style.setProperty("--depth", depth);
+          row.innerHTML = `<span class="class-tree-name">${escapeHtml(box.subject_name)}</span><span class="class-tree-count">${n} fiche${n > 1 ? "s" : ""}</span>`;
+          if (isTeacher) row.appendChild(menuBtn(() => classTreeBoxMenu(klass, boxes, box)));
+          container.appendChild(row);
+        });
+    };
+    draw(tree, 0);
+  }
+  /** Applique un renommage/déplacement de dossier (préfixe `from` → `to`) aux
+   *  dossiers de la classe et aux boîtes concernées, puis enregistre. */
+  async function classTreeApply(klass, boxes, nextFolders, boxChanges) {
+    const res = await Sync.classes.updateBoxFolders(klass.id, nextFolders);
+    if (res.error && !res.missing) {
+      await robotAlert("Erreur lors de l'enregistrement des dossiers : " + res.error);
+      return false;
+    }
+    if (!res.error) klass.box_folders = nextFolders;
+    for (const [box, path] of boxChanges) {
+      const r = await Sync.classes.updateSharedBoxPath(box.id, path);
+      if (r.error) {
+        await robotAlert("Erreur lors du rangement de « " + box.subject_name + " » : " + r.error);
+        return false;
+      }
+      box.folder_path = path;
+    }
+    if (res.missing && nextFolders.some((p) => !boxes.some((b) => classPathStartsWith(b.folder_path || [], p)))) {
+      await robotAlert("Les dossiers vides seront gardés après la mise à jour du serveur (script round53_migration.sql). Les dossiers qui contiennent des boîtes fonctionnent déjà.");
+    }
+    if (classDetailContext && classDetailContext.klass.id === klass.id) renderClassDetailView();
+    return true;
+  }
+  function classTreeRePrefix(klass, boxes, from, to) {
+    const swap = (p) => (classPathStartsWith(p, from) ? [...to, ...p.slice(from.length)] : p);
+    const seen = new Set();
+    const nextFolders = classFolderList(klass, boxes)
+      .map(swap)
+      .filter((p) => p.length && !seen.has(classPathKey(p)) && seen.add(classPathKey(p)));
+    const boxChanges = boxes
+      .filter((b) => classPathStartsWith(b.folder_path || [], from))
+      .map((b) => [b, swap(b.folder_path || [])]);
+    return { nextFolders, boxChanges };
+  }
+  function classSiblingNames(klass, boxes, parentPath) {
+    return classFolderList(klass, boxes)
+      .filter((p) => p.length === parentPath.length + 1 && classPathStartsWith(p, parentPath))
+      .map((p) => p[p.length - 1].toLowerCase());
+  }
+  async function classTreeAskName(klass, boxes, parentPath, question, current) {
+    const raw = await robotPrompt(question, current || "");
+    const name = (raw || "").trim();
+    if (!name || name === current) return null;
+    if (classSiblingNames(klass, boxes, parentPath).includes(name.toLowerCase())) {
+      await robotAlert(`Il y a déjà un dossier « ${name} » à cet endroit.`);
+      return null;
+    }
+    return name;
+  }
+  async function classTreeCreateFolder(klass, boxes, parentPath) {
+    const name = await classTreeAskName(klass, boxes, parentPath, "Nom du nouveau dossier :");
+    if (!name) return;
+    await classTreeApply(klass, boxes, [...classFolderList(klass, boxes), [...parentPath, name]], []);
+  }
+  async function classTreePickDestination(klass, boxes, question, excludePath) {
+    const options = [[], ...classFolderList(klass, boxes)].filter((p) => !excludePath || !classPathStartsWith(p, excludePath));
+    const value = await showRobotMessage(question, {
+      buttons: [
+        ...options.map((p) => ({ label: classPathLabel(p), value: classPathKey(p) })),
+        { label: "Annuler", value: null },
+      ],
+      cancelValue: null,
+    });
+    return value == null ? null : JSON.parse(value);
+  }
+  async function classTreeFolderMenu(klass, boxes, path) {
+    const name = path[path.length - 1];
+    const act = await showRobotMessage(`Dossier « ${name} »`, {
+      buttons: [
+        { label: "Nouveau sous-dossier", value: "sub" },
+        { label: "Renommer", value: "rename" },
+        { label: "Déplacer", value: "move" },
+        { label: "Supprimer", value: "delete", danger: true },
+        { label: "Annuler", value: null },
+      ],
+      cancelValue: null,
+    });
+    const parent = path.slice(0, -1);
+    if (act === "sub") return classTreeCreateFolder(klass, boxes, path);
+    if (act === "rename") {
+      const next = await classTreeAskName(klass, boxes, parent, "Nouveau nom du dossier :", name);
+      if (!next) return;
+      const { nextFolders, boxChanges } = classTreeRePrefix(klass, boxes, path, [...parent, next]);
+      return classTreeApply(klass, boxes, nextFolders, boxChanges);
+    }
+    if (act === "move") {
+      const dest = await classTreePickDestination(klass, boxes, `Où déplacer le dossier « ${name} » ?`, path);
+      if (!dest || classPathKey(dest) === classPathKey(parent)) return;
+      if (classSiblingNames(klass, boxes, dest).includes(name.toLowerCase())) {
+        await robotAlert(`Il y a déjà un dossier « ${name} » à cet endroit.`);
+        return;
+      }
+      const { nextFolders, boxChanges } = classTreeRePrefix(klass, boxes, path, [...dest, name]);
+      return classTreeApply(klass, boxes, nextFolders, boxChanges);
+    }
+    if (act === "delete") {
+      const inside = boxes.filter((b) => classPathStartsWith(b.folder_path || [], path)).length;
+      const ok = await robotConfirm(
+        inside
+          ? `Supprimer le dossier « ${name} » ? Son contenu (${inside} boîte${inside > 1 ? "s" : ""}) remonte d'un niveau ; aucune boîte n'est retirée de la classe.`
+          : `Supprimer le dossier « ${name} » ?`,
+        { okLabel: "Supprimer", danger: true }
+      );
+      if (!ok) return;
+      const { nextFolders, boxChanges } = classTreeRePrefix(klass, boxes, path, parent);
+      return classTreeApply(klass, boxes, nextFolders, boxChanges);
+    }
+  }
+  async function classTreeBoxMenu(klass, boxes, box) {
+    const act = await showRobotMessage(`Boîte « ${box.subject_name} »`, {
+      buttons: [
+        { label: "Déplacer", value: "move" },
+        { label: "Annuler", value: null },
+      ],
+      cancelValue: null,
+    });
+    if (act !== "move") return;
+    const dest = await classTreePickDestination(klass, boxes, `Où ranger « ${box.subject_name} » dans la classe ?`);
+    if (!dest || classPathKey(dest) === classPathKey(box.folder_path || [])) return;
+    return classTreeApply(klass, boxes, classFolderList(klass, boxes), [[box, dest]]);
+  }
+
   async function openClassDetailView(klass, role) {
     classDetailContext = { klass, role };
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
@@ -10360,11 +10680,11 @@
     if (addEventBtn) addEventBtn.hidden = !isTeacher;
 
     const boxesEl = el("class-detail-boxes");
-    if (boxesEl) {
-      boxesEl.innerHTML =
-        sharedBoxes.length === 0
-          ? `<p class="class-detail-empty">Aucune boîte partagée pour l'instant.</p>`
-          : renderSharedBoxesTreeHtml(buildSharedBoxesTree(sharedBoxes), 0);
+    if (boxesEl) renderClassBoxesTree(boxesEl, klass, sharedBoxes, isTeacher);
+    const newFolderBtn = el("class-detail-new-folder-btn");
+    if (newFolderBtn) {
+      newFolderBtn.hidden = !isTeacher;
+      newFolderBtn.onclick = () => classTreeCreateFolder(klass, sharedBoxes, []);
     }
 
     const events = classUpcomingEvents(klass.id, role);
@@ -10548,7 +10868,8 @@
             if (!subject) return;
             name = subject.name;
             boxCards = cards.filter((c) => !c.deleted && c.subject === id);
-            folderPathNames = folderPath(subject.folderId).map((f) => f.name);
+            // Round 53 : n'hérite d'aucune arborescence (racine de la classe).
+            folderPathNames = [];
             afterShare = async (data) => {
               subject.sharedShares = subject.sharedShares || [];
               subject.sharedShares.push({ classId: klass.id, className: klass.name, boxId: data.id });
@@ -10981,9 +11302,30 @@
     const hiddenKeys = (opts && opts.hiddenKeys) || [];
     const excludeKeys = (opts && opts.excludeKeys) || [];
     let sel = { ...((opts && opts.sel) || {}) };
+    // Round 53 : classement en blocs imbriqués (catégorie ⊃ cycle ⊃
+    // niveau…) — le sélecteur en haut de chaque bloc, le bloc suivant
+    // dessous, même marge à gauche, à droite et en bas ; léger dégradé de
+    // teinte d'un bloc à l'autre. Pas pour le niveau scolaire du profil.
+    const nested = mode !== "profile";
     function draw() {
       const tax = Taxonomy.get();
       container.innerHTML = "";
+      container.classList.toggle("tax-nested", nested);
+      let parent = container;
+      let depth = 0;
+      const place = (node) => {
+        if (!nested) {
+          container.appendChild(node);
+          return;
+        }
+        const block = document.createElement("div");
+        block.className = "tax-block";
+        block.style.setProperty("--tax-depth", String(depth));
+        block.appendChild(node);
+        parent.appendChild(block);
+        parent = block;
+        depth += 1;
+      };
       Taxonomy.FIELDS.forEach((f) => {
         if (excludeKeys.includes(f.key)) {
           delete sel[f.key];
@@ -11015,7 +11357,7 @@
           select.className = "library-taxonomy-select";
           select.setAttribute("aria-label", f.label);
           select.classList.toggle("is-set", !!sel[f.key]);
-          container.appendChild(select);
+          place(select);
         } else {
           const label = document.createElement("label");
           label.className = "field taxonomy-field";
@@ -11023,7 +11365,7 @@
           span.textContent = f.label;
           label.appendChild(span);
           label.appendChild(select);
-          container.appendChild(label);
+          place(label);
         }
       });
     }
@@ -11376,8 +11718,21 @@
         <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""}${levelLabel}</span>
         ${libraryShowSummaries && summary ? `<p class="library-row-summary">${escapeHtml(summary)}</p>` : ""}
         ${libraryShowSummaries && description ? `<p class="library-row-summary library-row-description">${escapeHtml(description)}</p>` : ""}
-        ${inRevisions ? `<span class="library-row-in-revisions">Déjà dans mes révisions</span>` : ""}
+        ${
+          inRevisions
+            ? `<span class="library-row-in-revisions">Déjà dans mes révisions</span>`
+            : `<button type="button" class="library-row-add">Ajouter à mes révisions</button>`
+        }
       `;
+      // Round 53 : « Ajouter à mes révisions » directement depuis le bloc.
+      const addBtn = li.querySelector(".library-row-add");
+      if (addBtn) {
+        addBtn.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          await addLibraryCollectionToRevisions(col);
+          renderLibraryList();
+        });
+      }
       const thumbEl = li.querySelector(".library-thumb");
       if (thumbEl) {
         thumbEl.addEventListener("click", async (e) => {
@@ -11573,6 +11928,16 @@
       renderLibraryList();
     });
   }
+  // Round 53 : la rangée « Mes partages / résumés » monte avec le reste
+  // puis reste collée sous le bandeau ; une fois collée, seul le bouton des
+  // résumés reste visible (les boîtes passent dessous).
+  function updateLibraryToolsStuck() {
+    const row = document.querySelector("#view-library .library-tools-row");
+    if (!row || !el("view-library").classList.contains("is-active")) return;
+    const headerH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--sticky-header-h")) || 96;
+    row.classList.toggle("is-stuck", row.getBoundingClientRect().top <= headerH + 4 && window.scrollY > 0);
+  }
+  window.addEventListener("scroll", updateLibraryToolsStuck, { passive: true });
   const librarySummaryToggleEl = el("library-summary-toggle");
   if (librarySummaryToggleEl) {
     librarySummaryToggleEl.addEventListener("click", () => {
@@ -12121,8 +12486,10 @@
   /** Round 39 : bouton rond « + Ajouter une fiche » (page d'une boîte et
    *  liste de ses fiches). */
   function roundAddCardButtonHtml() {
-    return `<button type="button" class="round-add-card-btn" aria-label="Ajouter une fiche dans cette boîte">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    // Round 53 : même design que les autres boutons ronds (cercle clair,
+    // picto au trait, libellé).
+    return `<button type="button" class="classes-role-circle add-card-circle" aria-label="Ajouter une fiche dans cette boîte">
+      <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
       <span>Ajouter une fiche</span>
     </button>`;
   }
@@ -12177,27 +12544,25 @@
     const addWrap = el("creation-detail-add");
     if (addWrap) addWrap.innerHTML = roundAddCardButtonHtml();
     if (addWrap) addWrap.querySelector("button").onclick = () => openNewCardForSubject(s.id, "creation-detail");
+    // Round 53 : tableau à trois colonnes (intitulé aligné à droite,
+    // valeur, action en face), lignes continues ; jauge juste après le nom.
+    const actBtn = (act, label, extra) => `<button type="button" class="btn btn--ghost creation-detail-act${extra ? ` ${extra}` : ""}" data-act="${act}">${label}</button>`;
+    const row = (label, value, action) => `<tr><th scope="row">${label}</th><td>${value}</td><td class="creation-detail-act-cell">${action || ""}</td></tr>`;
     wrap.innerHTML = `
       <div class="creation-detail-head">
-        <h2 class="section-title creation-detail-title">${escapeHtml(s.name)}</h2>
-        ${pool ? `<span class="creation-detail-gauge">${buildPersGaugeSvg(pool, { width: 70, barHeight: 8 })}</span>` : ""}
+        <h2 class="section-title creation-detail-title">${escapeHtml(s.name)}${pool ? ` <span class="creation-detail-gauge">${buildPersGaugeSvg(pool, { width: 70, barHeight: 8 })}</span>` : ""}</h2>
       </div>
-      <dl class="creation-detail-info">
-        <dt>Statut</dt><dd><span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span></dd>
-        <dt>Fiches</dt><dd>${n} fiche${n > 1 ? "s" : ""}</dd>
-        <dt>Classement</dt><dd>${taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`}</dd>
-        <dt>Mes révisions</dt><dd>${place ? escapeHtml(place) : `Hors de mes révisions${remembered ? ` <span class="field-hint">(avant : ${escapeHtml(remembered)})</span>` : ""}`}</dd>
-        ${col && col.name && col.name !== s.name ? `<dt>Librairie</dt><dd>publiée sous le nom « ${escapeHtml(col.name)} »</dd>` : ""}
-        ${tags.length ? `<dt>Tags</dt><dd><span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span></dd>` : ""}
-        ${created ? `<dt>Créée le</dt><dd>${escapeHtml(created)}</dd>` : ""}
-      </dl>
-      <div class="creation-detail-actions">
-        <button type="button" class="btn btn--ghost" data-act="cards">Voir les fiches</button>
-        <button type="button" class="btn btn--ghost" data-act="publish">${col ? "Voir dans la Librairie" : "Publier dans la Librairie"}</button>
-        <button type="button" class="btn btn--ghost" data-act="revisions">${inRev ? "Retirer de mes révisions" : "Ajouter à mes révisions"}</button>
-        ${col ? "" : `<button type="button" class="btn btn--ghost" data-act="classify">${taxFull ? "Modifier le classement / le nom" : "Classer la boîte"}</button>`}
-        <button type="button" class="btn btn--ghost creation-detail-delete" data-act="delete">Supprimer la boîte</button>
-      </div>
+      <table class="creation-detail-table">
+        <tbody>
+          ${row("Statut", `<span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>`, actBtn("publish", col ? "Voir dans la Librairie" : "Publier dans la Librairie"))}
+          ${row("Fiches", `${n} fiche${n > 1 ? "s" : ""}`, actBtn("cards", "Voir les fiches"))}
+          ${row("Classement", taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`, col ? "" : actBtn("classify", taxFull ? "Modifier le classement" : "Classer la boîte"))}
+          ${row("Mes révisions", place ? escapeHtml(place) : `Hors de mes révisions${remembered ? ` <span class="field-hint">(avant : ${escapeHtml(remembered)})</span>` : ""}`, actBtn("revisions", inRev ? "Retirer de mes révisions" : "Ajouter à mes révisions"))}
+          ${col && col.name && col.name !== s.name ? row("Librairie", `publiée sous le nom « ${escapeHtml(col.name)} »`) : ""}
+          ${tags.length ? row("Tags", `<span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span>`) : ""}
+          ${row("Créée le", created ? escapeHtml(created) : "—", actBtn("delete", "Supprimer la boîte", "creation-detail-delete"))}
+        </tbody>
+      </table>
     `;
     wrap.querySelectorAll("[data-act]").forEach((btn) => {
       btn.addEventListener("click", async () => {
@@ -12241,18 +12606,15 @@
     const origin = s.fromLibrary ? "Collection prise dans la Librairie" : `Boîte partagée par ta classe${klass ? ` « ${escapeHtml(klass.name)} »` : ""}`;
     wrap.innerHTML = `
       <div class="creation-detail-head">
-        <h2 class="section-title creation-detail-title">${escapeHtml(s.name)}</h2>
-        ${pool ? `<span class="creation-detail-gauge">${buildPersGaugeSvg(pool, { width: 70, barHeight: 8 })}</span>` : ""}
+        <h2 class="section-title creation-detail-title">${escapeHtml(s.name)}${pool ? ` <span class="creation-detail-gauge">${buildPersGaugeSvg(pool, { width: 70, barHeight: 8 })}</span>` : ""}</h2>
       </div>
-      <dl class="creation-detail-info">
-        <dt>Fiches</dt><dd>${n} fiche${n > 1 ? "s" : ""}</dd>
-        <dt>Origine</dt><dd>${origin}</dd>
-        <dt>Mes révisions</dt><dd>${place ? escapeHtml(place) : "Hors de mes révisions"}</dd>
-      </dl>
-      <div class="creation-detail-actions">
-        <button type="button" class="btn btn--ghost" data-act="cards">Voir les fiches</button>
-        ${s.fromLibrary ? `<button type="button" class="btn btn--ghost creation-detail-delete" data-act="remove">Retirer de mes révisions</button>` : ""}
-      </div>
+      <table class="creation-detail-table">
+        <tbody>
+          <tr><th scope="row">Fiches</th><td>${n} fiche${n > 1 ? "s" : ""}</td><td class="creation-detail-act-cell"><button type="button" class="btn btn--ghost creation-detail-act" data-act="cards">Voir les fiches</button></td></tr>
+          <tr><th scope="row">Origine</th><td>${origin}</td><td class="creation-detail-act-cell"></td></tr>
+          <tr><th scope="row">Mes révisions</th><td>${place ? escapeHtml(place) : "Hors de mes révisions"}</td><td class="creation-detail-act-cell">${s.fromLibrary ? `<button type="button" class="btn btn--ghost creation-detail-act creation-detail-delete" data-act="remove">Retirer de mes révisions</button>` : ""}</td></tr>
+        </tbody>
+      </table>
     `;
     wrap.querySelectorAll("[data-act]").forEach((btn) => {
       btn.addEventListener("click", async () => {
@@ -12691,6 +13053,15 @@
       ? "Les signalements ne sont pas encore activés sur le serveur (supabase/card_reports_migration.sql)."
       : "Impossible de charger les signalements pour le moment.";
   }
+  /* Round 53 : petits blocs communs aux signalements. */
+  function reportMiniCardHtml(label, q, a, fresh) {
+    return `<div class="rp-card${fresh ? " rp-card--fresh" : ""}"><span class="rp-card-label">${escapeHtml(label)}</span><div class="rp-card-q">${escapeHtml(q || "")}</div>${
+      a ? `<div class="rp-card-a">${escapeHtml(a)}</div>` : ""
+    }</div>`;
+  }
+  function reportBubbleHtml(who, text, side) {
+    return `<div class="rp-bubble rp-bubble--${side}"><span class="rp-bubble-who">${escapeHtml(who)}</span><span class="rp-bubble-text">${escapeHtml(text || "")}</span></div>`;
+  }
   function reportCardBlockHtml(label, q, a) {
     return `<div class="report-row-card"><span class="report-row-label">${label}</span><div class="report-row-q">${escapeHtml(q || "")}</div>${
       a ? `<div class="report-row-a">${escapeHtml(a)}</div>` : ""
@@ -12726,21 +13097,24 @@
   function buildReceivedReportRow(r) {
     const local = cards.find((c) => c.id === r.card_id && !c.deleted && !isReadonlyMirrorCard(c));
     const li = document.createElement("li");
-    li.className = "subject-row report-row" + (r.resolved ? " report-row--done" : "");
+    li.className = "subject-row report-row rp" + (r.resolved ? " report-row--done" : "");
+    // Round 53 : présentation épurée — en-tête (boîte, date), statut, la
+    // fiche dans un petit cadre, l'échange en bulles, actions à droite.
     li.innerHTML = `
-      <div class="report-row-head">
-        <span class="report-row-box">${orgIconMarkup("orgBoite")} ${escapeHtml(r.box_name || "Boîte")}</span>
-        <span class="report-row-date">${escapeHtml(formatReportDate(r.created_at))}</span>
+      <div class="rp-head">
+        <span class="rp-box">${escapeHtml(r.box_name || "Boîte")}</span>
+        <span class="rp-date">${escapeHtml(formatReportDate(r.created_at))}</span>
       </div>
-      ${reportCardBlockHtml("Fiche signalée :", r.card_question, "")}
-      <blockquote class="report-row-message">${escapeHtml(r.message || "")}</blockquote>
-      <div class="report-row-from">— ${escapeHtml(r.reporter_name || "un utilisateur")}</div>
-      ${r.author_reply ? `<div class="report-row-reply"><span class="report-row-label">Ta réponse :</span> ${escapeHtml(r.author_reply)}</div>` : ""}
-      ${r.resolved ? `<div class="report-row-status report-row-status--done">Traité${r.resolved_at ? ` le ${escapeHtml(formatReportDate(r.resolved_at))}` : ""}</div>` : ""}
-      <div class="library-row-actions">
-        ${local ? `<button type="button" class="btn btn--small btn--ghost" data-act="edit">Corriger la fiche</button>` : ""}
-        <button type="button" class="btn btn--small btn--ghost" data-act="reply">${r.author_reply ? "Modifier ma réponse" : "Écrire au signaleur"}</button>
-        ${r.resolved ? "" : `<button type="button" class="btn btn--small btn--ghost" data-act="done">Marquer comme traité</button>`}
+      ${r.resolved ? `<div class="rp-status rp-status--done">Traité${r.resolved_at ? ` le ${escapeHtml(formatReportDate(r.resolved_at))}` : ""}</div>` : ""}
+      ${reportMiniCardHtml("Fiche signalée", r.card_question, r.card_answer)}
+      <div class="rp-thread">
+        ${reportBubbleHtml(r.reporter_name || "Un utilisateur", r.message, "other")}
+        ${r.author_reply ? reportBubbleHtml("Toi", r.author_reply, "mine") : ""}
+      </div>
+      <div class="rp-actions">
+        ${local ? `<button type="button" class="rp-act" data-act="edit">Corriger la fiche</button>` : ""}
+        <button type="button" class="rp-act" data-act="reply">${r.author_reply ? "Modifier ma réponse" : "Répondre"}</button>
+        ${r.resolved ? "" : `<button type="button" class="rp-act rp-act--main" data-act="done">Marquer traité</button>`}
       </div>`;
     const editBtn = li.querySelector('[data-act="edit"]');
     if (editBtn) editBtn.addEventListener("click", () => enterEditMode(local));
@@ -12799,20 +13173,23 @@
         r.resolved_question != null &&
         (String(r.resolved_question) !== String(r.card_question || "") || String(r.resolved_answer || "") !== String(r.card_answer || ""));
       const li = document.createElement("li");
-      li.className = "subject-row report-row" + (r.resolved ? " report-row--done" : "") + (isNew ? " report-row--new" : "");
+      li.className = "subject-row report-row rp" + (r.resolved ? " report-row--done" : "") + (isNew ? " report-row--new" : "");
+      const notChanged = r.resolved && r.resolved_question != null && !changed;
       li.innerHTML = `
-        <div class="report-row-head">
-          <span class="report-row-box">${orgIconMarkup("orgBoite")} ${escapeHtml(r.box_name || "Boîte")}</span>
-          <span class="report-row-date">${escapeHtml(formatReportDate(r.created_at))}</span>
+        <div class="rp-head">
+          <span class="rp-box">${escapeHtml(r.box_name || "Boîte")}</span>
+          <span class="rp-date">${escapeHtml(formatReportDate(r.created_at))}</span>
         </div>
-        <div class="report-row-status${r.resolved ? " report-row-status--done" : ""}">${
+        <div class="rp-status${r.resolved ? " rp-status--done" : " rp-status--wait"}">${
           r.resolved ? `Traité${r.resolved_at ? ` le ${escapeHtml(formatReportDate(r.resolved_at))}` : ""}` : "En attente de l'auteur"
-        }${isNew ? ` <span class="report-row-new">nouveau</span>` : ""}</div>
-        ${reportCardBlockHtml(changed ? "Avant :" : "Fiche signalée :", r.card_question, r.card_answer)}
-        ${changed ? reportCardBlockHtml("Après correction :", r.resolved_question, r.resolved_answer) : ""}
-        ${r.resolved && r.resolved_question != null && !changed ? `<div class="field-hint">La fiche n'a pas été modifiée.</div>` : ""}
-        <div class="report-row-message-mine"><span class="report-row-label">Ton message :</span> ${escapeHtml(r.message || "")}</div>
-        ${r.author_reply ? `<blockquote class="report-row-message">${escapeHtml(r.author_reply)}</blockquote><div class="report-row-from">— l'auteur de la fiche</div>` : ""}`;
+        }${isNew ? ` <span class="rp-new">nouveau</span>` : ""}</div>
+        ${changed
+          ? `<div class="rp-cards">${reportMiniCardHtml("Avant", r.card_question, r.card_answer)}${reportMiniCardHtml("Après correction", r.resolved_question, r.resolved_answer, true)}</div>`
+          : reportMiniCardHtml(notChanged ? "Fiche signalée (non modifiée)" : "Fiche signalée", r.card_question, r.card_answer)}
+        <div class="rp-thread">
+          ${reportBubbleHtml("Toi", r.message, "mine")}
+          ${r.author_reply ? reportBubbleHtml("L'auteur de la fiche", r.author_reply, "other") : ""}
+        </div>`;
       list.appendChild(li);
     });
     if (unseen.length) {
@@ -12926,7 +13303,7 @@
     const listEl = el("message-thread-list");
     if (!listEl) return;
     listEl.insertAdjacentHTML("beforeend", messageBubbleHtml(msg, messageThreadContext.klass));
-    listEl.scrollTop = listEl.scrollHeight;
+    scrollMessageThreadToEnd();
   }
   async function renderMessageThread() {
     if (!messageThreadContext) return;
@@ -12952,7 +13329,12 @@
     if (messageThreadContext !== ctx) return;
     messageThreadRenderedIds = new Set(messages.map((m) => m.id));
     listEl.innerHTML = messages.map((m) => messageBubbleHtml(m, klass)).join("");
-    listEl.scrollTop = listEl.scrollHeight;
+    scrollMessageThreadToEnd();
+  }
+  /** Round 53 : la page entière défile (zone d'écriture fixée en bas). */
+  function scrollMessageThreadToEnd() {
+    autoGrowMessageInput();
+    requestAnimationFrame(() => window.scrollTo(0, document.documentElement.scrollHeight));
   }
 
   async function openMessageThread(klass) {
@@ -13006,6 +13388,33 @@
   const messageThreadBackBtn = el("message-thread-back-btn");
   if (messageThreadBackBtn) messageThreadBackBtn.addEventListener("click", closeMessageThread);
 
+  // Round 53 : la zone d'écriture grandit avec le texte (jusqu'à ~6
+  // lignes, puis défile) ; la hauteur réelle est reportée dans
+  // --composer-h pour que la liste des messages ne passe pas dessous.
+  function autoGrowMessageInput() {
+    const input = el("message-thread-input");
+    if (!input) return;
+    const doc = document.documentElement;
+    const atBottom = window.innerHeight + window.scrollY >= doc.scrollHeight - 60;
+    input.style.height = "auto";
+    input.style.height = `${Math.min(input.scrollHeight, 150)}px`;
+    input.style.overflowY = input.scrollHeight > 150 ? "auto" : "hidden";
+    const form = el("message-thread-form");
+    if (form) doc.style.setProperty("--composer-h", `${Math.ceil(form.getBoundingClientRect().height)}px`);
+    if (atBottom && el("view-message-thread").classList.contains("is-active")) window.scrollTo(0, doc.scrollHeight);
+  }
+  const messageThreadInputEl = el("message-thread-input");
+  if (messageThreadInputEl) {
+    messageThreadInputEl.addEventListener("input", autoGrowMessageInput);
+    // Ordinateur : Entrée envoie (Maj+Entrée = nouvelle ligne) ; téléphone :
+    // Entrée fait une nouvelle ligne, on envoie avec le bouton.
+    messageThreadInputEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        e.preventDefault();
+        if (messageThreadForm) messageThreadForm.requestSubmit();
+      }
+    });
+  }
   const messageThreadForm = el("message-thread-form");
   if (messageThreadForm) {
     messageThreadForm.addEventListener("submit", async (e) => {
@@ -13015,6 +13424,7 @@
       const body = (input.value || "").trim();
       if (!body) return;
       input.value = "";
+      autoGrowMessageInput();
       const { data, error } = await Sync.messages.send(messageThreadContext.klass.id, body);
       if (error) {
         await robotAlert("Erreur d'envoi : " + error);

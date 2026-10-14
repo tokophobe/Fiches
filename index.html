@@ -621,7 +621,7 @@
           <div class="rich-editor" id="input-answer" contenteditable="true" data-placeholder="Ex. Reykjavik" role="textbox" aria-multiline="true"></div>
         </label>
         <div class="form-actions">
-          <button type="submit" class="btn btn--primary" id="submit-btn">Ajouter à la pile</button>
+          <button type="submit" class="btn btn--primary" id="submit-btn">Ajouter à la boîte</button>
           <button type="button" class="btn btn--ghost" id="cancel-edit" hidden>Annuler</button>
           <button type="button" class="btn algo-review-old-btn" id="delete-editing-card" hidden>Supprimer cette fiche</button>
         </div>
@@ -1031,6 +1031,16 @@
           </div>
           <p class="field-hint" id="account-usages-note" hidden></p>
         </div>
+        <!-- Round 53 : l'adresse email n'apparaît dans la liste des élèves
+             d'une classe que si l'élève l'autorise ici (métadonnée
+             share_email_with_teachers). -->
+        <div class="card-form">
+          <label class="settings-toggle-row account-share-email-row">
+            <input type="checkbox" id="account-share-email" />
+            <span>Montrer mon adresse email aux enseignants de mes classes</span>
+          </label>
+          <p class="field-hint" id="account-share-email-note" hidden></p>
+        </div>
         <div class="card-form">
           <label class="field">
             <span>Prénom</span>
@@ -1353,6 +1363,8 @@
           <h3>Boîtes partagées</h3>
           <!-- Round 48 : « + Partager » mène à une page qui propose « Depuis
                mes boîtes » et « Depuis la Librairie ». -->
+          <!-- Round 53 : dossiers propres à la classe (enseignant). -->
+          <button type="button" class="class-detail-section-action" id="class-detail-new-folder-btn" hidden>+ Dossier</button>
           <button type="button" class="class-detail-section-action" id="class-detail-share-open-btn" hidden>+ Partager</button>
           <!-- Propose aussi bien les boîtes perso que les collections de la
                Librairie (voir renderSingleBoitePicker). -->
@@ -1416,7 +1428,9 @@
       <h2 class="section-title" id="message-thread-title">Discussion</h2>
       <div class="message-thread-list" id="message-thread-list"></div>
       <form class="message-thread-form" id="message-thread-form">
-        <input type="text" id="message-thread-input" placeholder="Écrire un message…" autocomplete="off" />
+        <!-- Round 53 : zone d'écriture fixée en bas de l'écran, qui
+             s'agrandit avec le texte (plusieurs lignes). -->
+        <textarea id="message-thread-input" rows="1" placeholder="Écrire un message…" autocomplete="off" enterkeyhint="enter"></textarea>
         <button type="submit" class="btn btn--primary btn--small">Envoyer</button>
       </form>
     </section>
@@ -1624,7 +1638,19 @@
         <button type="button" class="btn btn--ghost btn--small boite-picker-none-btn" id="boite-picker-none" hidden>Aucun lien</button>
       </div>
       <h2 class="view-title" id="boite-picker-title">Choisir une boîte</h2>
-      <p class="field-hint settings-block-hint" id="boite-picker-hint" hidden></p>
+      <div class="boite-picker-hint-row">
+        <p class="field-hint settings-block-hint" id="boite-picker-hint" hidden></p>
+        <!-- Round 53 : nombre / barre d'apprentissage / rien, comme dans
+             l'organisation des boîtes. -->
+        <div class="org-display-toggle boite-picker-display-toggle">
+          <button type="button" class="org-display-toggle-btn" data-picker-display="count" title="Nombre de fiches/boîtes" aria-label="Afficher le nombre de fiches">
+            <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/></svg>
+          </button>
+          <button type="button" class="org-display-toggle-btn" data-picker-display="gauge" title="Barre d'apprentissage" aria-label="Afficher la barre d'apprentissage">
+            <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="10" width="11" height="4" rx="2" fill="currentColor" stroke="none"/></svg>
+          </button>
+        </div>
+      </div>
       <ul class="subject-list" id="boite-picker-list"></ul>
       <div class="multi-subject-picker-actions boite-picker-actions" id="boite-picker-actions" hidden>
         <button type="button" class="btn btn--primary" id="boite-picker-confirm">Valider</button>
