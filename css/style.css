@@ -7309,3 +7309,121 @@ body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) .classes-
   cursor: pointer;
 }
 .rp-act--main { font-weight: 700; color: var(--ink); }
+
+/* ==================================================================
+   Round 54
+   ================================================================== */
+/* 1. Librairie : toute la rangée « Mes partages / résumés » reste collée
+   sous le bandeau, sur le fond de la page. */
+#view-library .library-tools-row {
+  pointer-events: auto;
+  margin-left: -18px;
+  margin-right: -18px;
+  padding: 6px 18px;
+  background: var(--app-bg-color, var(--desk));
+}
+#view-library .library-tools-row.is-stuck .library-mine-toggle { visibility: visible; }
+#view-library .library-tools-row.is-stuck #library-summary-toggle { box-shadow: none; }
+#view-library .library-tools-row.is-stuck { box-shadow: 0 6px 8px -6px rgba(30, 60, 100, 0.25); }
+
+/* 2. Fiche d'une collection : « N fiches · par X » plus grand, pouce à droite. */
+.library-detail-meta-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 2px 0 8px; }
+.library-detail-meta-row #library-detail-meta { margin: 0; font-size: 14.5px; opacity: 1; color: var(--general-text-color, var(--ink-soft)); }
+.library-detail-meta-row .library-rating-row { margin: 0; flex-shrink: 0; }
+
+/* 3. Liste des fiches : « ⌄ » sous le drapeau (plus de largeur pour le
+   texte) ; modification d'une fiche épurée. */
+.card-row-side { flex-direction: column; align-items: center; gap: 0; }
+.card-row--r47 .card-row-popover { top: 66px; }
+#card-form.is-editing {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+#card-form.is-editing .form-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 18px;
+}
+#card-form.is-editing #submit-btn { font-weight: 400; }
+#card-form.is-editing .form-actions .btn { flex: 0 0 auto; width: auto; white-space: nowrap; padding-left: 4px; padding-right: 4px; }
+
+/* 5. Organisation : une boîte dans un dossier est décalée vers la droite
+   (au-delà de la flèche du dossier), plus à gauche de son dossier. */
+#view-manage .org-children > .subject-row:not(.folder-row) .org-row-main { padding-left: 30px !important; }
+#view-boite-picker .org-children > .subject-row:not(.folder-row) > .org-row-main { padding-left: 26px; }
+
+/* 6. Mes créations : « Rechercher une boîte » plus visible (loupe + chevron
+   franc dans une pastille). */
+.creations-search-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px 7px 10px;
+  border: 1px solid var(--rule-soft);
+  border-radius: 999px;
+}
+.creations-search-icon { width: 15px; height: 15px; flex-shrink: 0; }
+.creations-search-toggle::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin: -3px 0 0 2px;
+  border-right: 1.8px solid currentColor;
+  border-bottom: 1.8px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease, margin 0.2s ease;
+}
+.creations-search-toggle.is-open::after { transform: rotate(-135deg); margin-top: 3px; }
+.creations-search-toggle.is-open { border-color: var(--action-color); }
+
+/* 7. Classement en blocs : plus de bordures (blocs ni sélecteurs),
+   sélecteurs sur fond transparent ; en mode jour, le dégradé est inversé
+   (bloc extérieur le plus teinté, puis de plus en plus clair). */
+.tax-block {
+  border: none;
+  --tax-tint: calc(22% - var(--tax-depth, 0) * 4%);
+}
+:root.is-night-mode .tax-block { --tax-tint: calc(var(--tax-depth, 0) * 5% + 4%); }
+.tax-block select,
+.tax-block .library-taxonomy-select,
+.tax-block .library-taxonomy-select.is-set {
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+}
+.tax-block .library-taxonomy-select.is-set,
+.tax-block select:has(option:checked:not([value=""])) { font-weight: 600; }
+
+/* 11 & 12. Page d'une classe : rôle sous le nom, quitter / supprimer. */
+.class-detail-role {
+  margin: -10px 0 8px;
+  font-family: var(--font-type);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.class-detail-danger-row { display: flex; justify-content: center; margin: 22px 0 8px; }
+.class-detail-leave-btn {
+  padding: 8px 4px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  cursor: pointer;
+}
+/* 13. Menus « ⌄ » des dossiers / boîtes d'une classe (comme l'organisation). */
+.class-tree-row--menu { position: relative; }
+.class-tree-popover { top: calc(100% - 4px); right: 0; min-width: 190px; max-height: 50vh; overflow-y: auto; }
+.org-actions-popover-item--sub { font-size: 12.5px; }
+.class-tree-popover-head { padding: 6px 10px 4px; font-size: 11px; color: var(--ink-soft); font-family: var(--font-type); }
+.library-detail-meta-row > * { margin-top: 0 !important; margin-bottom: 0 !important; align-self: center; }
+#view-library-detail .library-detail-meta-row #library-detail-meta { font-size: 16px !important; color: var(--main-text-color, var(--ink)); }
+#view-library .library-tools-row { top: calc(var(--sticky-header-h, 96px) - 1px); }

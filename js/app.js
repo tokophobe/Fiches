@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v207";
+  const APP_VERSION = "v208";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -1791,7 +1791,9 @@
   }
 
   /** Exposé pour que sync.js puisse dénormaliser le nom de la boîte sur chaque ligne envoyée. */
-  window.getSubjectName = subjectName;
+  // Round 54 : jamais « Boîte inconnue » envoyé au serveur avec une fiche
+  // (il servait ensuite de nom à la boîte recréée sur un autre appareil).
+  window.getSubjectName = (id) => (subjects.some((x) => x.id === id) ? subjectName(id) : null);
 
   /** Charge les boîtes depuis IndexedDB ; en crée une par défaut si aucune n'existe encore. */
   async function loadSubjects() {
@@ -2263,7 +2265,7 @@
     const renameBtn = document.createElement("button");
     renameBtn.type = "button";
     renameBtn.className = "org-actions-popover-item";
-    renameBtn.innerHTML = `${orgIconMarkup("orgRename")}<span>Éditer</span>`;
+    renameBtn.innerHTML = `${orgIconMarkup("orgRename")}<span>Renommer</span>`;
     renameBtn.addEventListener("click", () => {
       closeAllOrgActionPopovers();
       onRename();
@@ -3592,7 +3594,7 @@
    *  plutôt que de calculer précisément lesquelles sont concernées). */
   async function pushSharedBoxUpdatesForClass(classId) {
     if (!Sync.isConfigured()) return;
-    const remote = await Sync.classes.listSharedBoxes(classId);
+    const remote = await cleanupDuplicateSharedBoxes(classId, await Sync.classes.listSharedBoxes(classId));
     const byId = new Map(remote.map((b) => [b.id, b]));
     for (const s of subjects.filter((x) => !x.deleted && x.sharedShares && x.sharedShares.some((sh) => sh.classId === classId))) {
       for (const share of s.sharedShares.filter((sh) => sh.classId === classId)) {
@@ -4629,7 +4631,8 @@
 
   const deleteEditingCardBtn = el("delete-editing-card");
 
-  async function enterEditMode(card) {
+  async function enterEditMode(card, opts) {
+    opts = opts || {};
     if (await blockIfSharedReadonly(card.subject)) return;
     openNewCardView();
     editingId = card.id;
@@ -4637,11 +4640,24 @@
     inputAnswer.innerHTML = toDisplayHtml(card.answer);
     submitBtn.textContent = "Enregistrer les modifications";
     cancelEditBtn.hidden = false;
-    if (deleteEditingCardBtn) deleteEditingCardBtn.hidden = false;
-    inputQuestion.focus();
+    // Round 54 : en modification, pas de choix de boîte (la fiche reste dans
+    // la sienne), pas de focus automatique (le clavier ne surgit pas), cadre
+    // épuré, « Enregistrer » et « Annuler » sur une ligne. Depuis la liste
+    // des fiches, pas de « Supprimer cette fiche » (déjà dans le menu ⌄).
+    if (deleteEditingCardBtn) deleteEditingCardBtn.hidden = !!opts.fromList;
+    if (cardForm) cardForm.classList.add("is-editing");
+    const formTitle = document.querySelector("#view-new-card .card-form-header h2.section-title");
+    if (formTitle) formTitle.textContent = "Modifier la fiche";
+    const bar = el("cards-subject-bar");
+    if (bar) bar.hidden = true;
   }
 
   function exitEditMode() {
+    if (cardForm) cardForm.classList.remove("is-editing");
+    const formTitle = document.querySelector("#view-new-card .card-form-header h2.section-title");
+    if (formTitle) formTitle.textContent = "Nouvelle fiche";
+    const bar = el("cards-subject-bar");
+    if (bar && !newCardFixedSubjectActive) bar.hidden = false;
     editingId = null;
     submitBtn.textContent = "Ajouter à la boîte";
     cancelEditBtn.hidden = true;
@@ -4960,7 +4976,7 @@
         });
         popover.appendChild(b);
       };
-      addItem(orgIconMarkup("orgRename"), "Éditer", () => enterEditMode(card));
+      addItem(orgIconMarkup("orgRename"), "Éditer", () => enterEditMode(card, { fromList: true }));
       // Round 26, item 4 : "déplacer" ouvre l'explorateur (page de
       // sélection, comme partout ailleurs) au lieu d'une liste déroulante.
       if (subjects.length > 1 || folders.length > 0) addItem(orgIconMarkup("orgMove"), "Déplacer", () => openCardMovePicker(card.id));
@@ -6939,7 +6955,13 @@
     "school-hub": "École",
     creations: { text: "Mes créations de boîtes de révision", hide: ["#view-creations .library-title-row"] },
     "box-create": { from: "#box-create-title" },
-    "creation-detail": "Résumé de la boîte",
+    // Round 54 : le titre de la page est le nom de la boîte.
+    "creation-detail": {
+      dynamic: () => {
+        const s = subjects.find((x) => x.id === creationDetailSubjectId);
+        return s ? s.name : "Résumé de la boîte";
+      },
+    },
     "report-card": { text: "Signaler une fiche", hide: ["#view-report-card .settings-block-title"] },
     reports: { text: "Signalements reçus", hide: ["#view-reports > h2.section-title"] },
     "reports-hub": "Signalements",
@@ -9824,10 +9846,17 @@
       // événements des classes effectivement interrogées avec succès (voir
       // pruneStaleSharedEvents ci-dessous et le correctif dans sync.js).
       const fetchedEventClassIds = new Set();
-      for (const klass of myClasses) {
+      const meId = accountCurrentUser && accountCurrentUser.id;
+      // Round 54 : une classe dont je suis l'enseignant ne crée pas de copies
+      // « élève » de mes propres boîtes (doublons dans l'organisation) —
+      // celles déjà créées sont retirées.
+      for (const klass of myClasses.filter((k) => meId && k.teacher_id === meId)) {
+        await removeClassMirrors(klass.id);
+      }
+      for (const klass of myClasses.filter((k) => !meId || k.teacher_id !== meId)) {
         const rootId = await ensureClassMirrorFolder(klass);
         usedMirrorFolderIds.add(rootId);
-        const boxes = await Sync.classes.listSharedBoxes(klass.id);
+        const boxes = dedupeSharedBoxRows(await Sync.classes.listSharedBoxes(klass.id));
         for (const box of boxes) {
           const pathNames = Array.isArray(box.folder_path) ? box.folder_path : [];
           const targetFolderId = await ensureClassMirrorFolderPath(klass, rootId, pathNames, usedMirrorFolderIds);
@@ -10157,6 +10186,77 @@
     }
   }
 
+  /** Round 54 : signature d'une boîte partagée (nom + fiches d'origine) —
+   *  deux partages identiques d'une même boîte ne donnent qu'une copie. */
+  function sharedBoxSignature(box) {
+    const ids = (Array.isArray(box.cards) ? box.cards : []).map((c) => c && c.id).filter(Boolean).sort();
+    return `${box.shared_by || ""}|${(box.subject_name || "").trim().toLowerCase()}|${ids.join(",")}`;
+  }
+  function dedupeSharedBoxRows(boxes) {
+    const seen = new Map();
+    [...boxes]
+      .sort((a, b) => String(a.shared_at || "").localeCompare(String(b.shared_at || "")))
+      .forEach((b) => {
+        const k = sharedBoxSignature(b);
+        if (!seen.has(k)) seen.set(k, b);
+      });
+    return [...seen.values()];
+  }
+  /** Retire les copies locales (boîtes, fiches, dossiers) d'une classe. */
+  async function removeClassMirrors(classId) {
+    const mirrors = subjects.filter((s) => s.sharedBoxId && s.sharedClassId === classId);
+    for (const s of mirrors) {
+      for (const c of cards.filter((x) => !x.deleted && x.subject === s.id)) {
+        const updated = touch({ ...c, deleted: true });
+        await persist(updated);
+        const idx = cards.findIndex((x) => x.id === c.id);
+        if (idx >= 0) cards[idx] = updated;
+      }
+      await pushSubjectDeleted(s);
+      await DB.removeSubject(s.id);
+      subjects = subjects.filter((x) => x.id !== s.id);
+      if (currentSubjectId === s.id) {
+        currentSubjectId = ALL_SUBJECTS_ID;
+        localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
+      }
+    }
+    const mirrorFolders = folders.filter((f) => f.sharedClassId === classId).sort((a, b) => folderPath(b.id).length - folderPath(a.id).length);
+    for (const f of mirrorFolders) {
+      if (Sync.isConfigured()) await Sync.pushFolder({ ...f, deleted: true, updatedAt: new Date().toISOString() });
+      folders = folders.filter((x) => x.id !== f.id);
+      await DB.removeFolder(f.id);
+    }
+    return mirrors.length;
+  }
+  /** Round 54 : côté enseignant, supprime les partages en double d'une même
+   *  boîte dans une classe (même nom, mêmes fiches) et remet à jour le
+   *  lien de la boîte d'origine. */
+  async function cleanupDuplicateSharedBoxes(classId, remote) {
+    const meId = accountCurrentUser && accountCurrentUser.id;
+    const mine = remote.filter((b) => !meId || b.shared_by === meId);
+    const keepBySig = new Map();
+    const removed = new Set();
+    [...mine]
+      .sort((a, b) => String(a.shared_at || "").localeCompare(String(b.shared_at || "")))
+      .forEach((b) => {
+        const k = sharedBoxSignature(b);
+        if (!keepBySig.has(k)) keepBySig.set(k, b);
+        else removed.add(b.id);
+      });
+    if (!removed.size) return remote;
+    for (const id of removed) {
+      const { error } = await Sync.classes.deleteSharedBox(id);
+      if (error) removed.delete(id);
+    }
+    for (const s of subjects.filter((x) => (x.sharedShares || []).some((sh) => removed.has(sh.boxId)))) {
+      const kept = (s.sharedShares || []).filter((sh) => !removed.has(sh.boxId));
+      s.sharedShares = kept.filter((sh, i) => kept.findIndex((o) => o.classId === sh.classId && o.boxId === sh.boxId) === i);
+      s.updatedAt = new Date().toISOString();
+      await persistSubject(s);
+    }
+    return remote.filter((b) => !removed.has(b.id));
+  }
+
   async function reconcileSharedBox(klass, box, targetFolderId) {
     let subject = subjects.find((s) => s.sharedBoxId === box.id);
     if (!subject) {
@@ -10284,6 +10384,19 @@
       await syncSharedBoxesForStudent();
       await renderStudentClasses();
       closeClassesJoinView();
+      // Round 54 : le robot confirme.
+      const norm = code.replace(/\s+/g, "").toUpperCase();
+      let joined = null;
+      try {
+        joined = (await Sync.classes.listAsStudent()).find((k) => String(k.invite_code || "").toUpperCase() === norm);
+      } catch (e) {
+        /* nom indisponible : message générique */
+      }
+      await robotAlert(
+        joined
+          ? `Tu as bien rejoint la classe « ${joined.name} ». Ses boîtes sont dans ton organisation, dans le dossier de la classe.`
+          : "Tu as bien rejoint la classe. Ses boîtes sont dans ton organisation, dans le dossier de la classe."
+      );
     });
   }
 
@@ -10469,18 +10582,64 @@
       container.innerHTML = `<p class="class-detail-empty">Aucune boîte partagée pour l'instant.</p>`;
       return;
     }
-    const menuBtn = (onClick) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "class-tree-menu-btn";
-      b.setAttribute("aria-label", "Actions");
-      b.innerHTML = iconSvgMarkup("chevronDown", "icon-inline-svg");
-      b.addEventListener("click", (e) => {
+    // Round 54 : menu « ⌄ » comme dans l'organisation des boîtes (petite
+    // liste sous la ligne), plus de choix posés par le robot.
+    const attachMenu = (row, items) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "org-deploy-btn class-tree-menu-btn";
+      btn.setAttribute("aria-label", "Actions");
+      btn.innerHTML = iconSvgMarkup("chevronDown", "icon-inline-svg");
+      const pop = document.createElement("div");
+      pop.className = "org-actions-popover class-tree-popover";
+      pop.hidden = true;
+      const fill = (list) => {
+        pop.innerHTML = "";
+        list.forEach((it) => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "org-actions-popover-item" + (it.danger ? " org-actions-popover-item--danger" : "") + (it.sub ? " org-actions-popover-item--sub" : "");
+          b.innerHTML = `${it.icon || ""}<span>${escapeHtml(it.label)}</span>`;
+          b.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (it.children) {
+              fill(it.children);
+              const head = document.createElement("span");
+              head.className = "class-tree-popover-head";
+              head.textContent = it.children.length ? "Déplacer vers :" : "Aucun autre dossier : crée-en un avec « + Dossier ».";
+              pop.prepend(head);
+              return;
+            }
+            closeAllOrgActionPopovers();
+            it.run();
+          });
+          pop.appendChild(b);
+        });
+      };
+      btn.addEventListener("click", (e) => {
         e.stopPropagation();
-        onClick();
+        const willOpen = pop.hidden;
+        closeAllOrgActionPopovers();
+        if (!willOpen) return;
+        fill(items);
+        pop.hidden = false;
+        const r = btn.getBoundingClientRect();
+        pop.classList.toggle("org-actions-popover--flip-up", window.innerHeight - r.bottom < pop.offsetHeight + 12);
       });
-      return b;
+      row.classList.add("class-tree-row--menu");
+      row.appendChild(btn);
+      row.appendChild(pop);
     };
+    const destinations = (excludePath, current, onPick) =>
+      [[], ...classFolderList(klass, boxes)]
+        .filter((p) => !excludePath || !classPathStartsWith(p, excludePath))
+        .filter((p) => classPathKey(p) !== classPathKey(current))
+        .map((p) => ({
+          label: p.length ? p.join(" › ") : "Racine de la classe",
+          icon: iconSvgMarkup("folder", "icon-inline-svg"),
+          sub: true,
+          run: () => onPick(p),
+        }));
     const draw = (node, depth) => {
       [...node.children.values()]
         .sort((a, b) => a.name.localeCompare(b.name, "fr"))
@@ -10489,7 +10648,19 @@
           row.className = "class-tree-row class-tree-row--folder";
           row.style.setProperty("--depth", depth);
           row.innerHTML = `${iconSvgMarkup("folder", "class-tree-icon")}<span class="class-tree-name">${escapeHtml(child.name)}</span>`;
-          if (isTeacher) row.appendChild(menuBtn(() => classTreeFolderMenu(klass, boxes, child.path)));
+          if (isTeacher) {
+            const parent = child.path.slice(0, -1);
+            attachMenu(row, [
+              { label: "Nouveau sous-dossier", icon: iconSvgMarkup("folder", "icon-inline-svg"), run: () => classTreeCreateFolder(klass, boxes, child.path) },
+              { label: "Renommer", icon: orgIconMarkup("orgRename"), run: () => classTreeRenameFolder(klass, boxes, child.path) },
+              {
+                label: "Déplacer",
+                icon: orgIconMarkup("orgMove"),
+                children: destinations(child.path, parent, (dest) => classTreeMoveFolder(klass, boxes, child.path, dest)),
+              },
+              { label: "Supprimer", icon: orgIconMarkup("orgDelete"), danger: true, run: () => classTreeDeleteFolder(klass, boxes, child.path) },
+            ]);
+          }
           container.appendChild(row);
           draw(child, depth + 1);
         });
@@ -10501,7 +10672,16 @@
           row.className = "class-tree-row";
           row.style.setProperty("--depth", depth);
           row.innerHTML = `<span class="class-tree-name">${escapeHtml(box.subject_name)}</span><span class="class-tree-count">${n} fiche${n > 1 ? "s" : ""}</span>`;
-          if (isTeacher) row.appendChild(menuBtn(() => classTreeBoxMenu(klass, boxes, box)));
+          if (isTeacher) {
+            attachMenu(row, [
+              {
+                label: "Déplacer",
+                icon: orgIconMarkup("orgMove"),
+                children: destinations(null, box.folder_path || [], (dest) => classTreeApply(klass, boxes, classFolderList(klass, boxes), [[box, dest]])),
+              },
+              { label: "Retirer de la classe", icon: orgIconMarkup("orgDelete"), danger: true, run: () => classTreeRemoveBox(klass, boxes, box) },
+            ]);
+          }
           container.appendChild(row);
         });
     };
@@ -10561,72 +10741,57 @@
     if (!name) return;
     await classTreeApply(klass, boxes, [...classFolderList(klass, boxes), [...parentPath, name]], []);
   }
-  async function classTreePickDestination(klass, boxes, question, excludePath) {
-    const options = [[], ...classFolderList(klass, boxes)].filter((p) => !excludePath || !classPathStartsWith(p, excludePath));
-    const value = await showRobotMessage(question, {
-      buttons: [
-        ...options.map((p) => ({ label: classPathLabel(p), value: classPathKey(p) })),
-        { label: "Annuler", value: null },
-      ],
-      cancelValue: null,
-    });
-    return value == null ? null : JSON.parse(value);
-  }
-  async function classTreeFolderMenu(klass, boxes, path) {
+  async function classTreeRenameFolder(klass, boxes, path) {
     const name = path[path.length - 1];
-    const act = await showRobotMessage(`Dossier « ${name} »`, {
-      buttons: [
-        { label: "Nouveau sous-dossier", value: "sub" },
-        { label: "Renommer", value: "rename" },
-        { label: "Déplacer", value: "move" },
-        { label: "Supprimer", value: "delete", danger: true },
-        { label: "Annuler", value: null },
-      ],
-      cancelValue: null,
-    });
     const parent = path.slice(0, -1);
-    if (act === "sub") return classTreeCreateFolder(klass, boxes, path);
-    if (act === "rename") {
-      const next = await classTreeAskName(klass, boxes, parent, "Nouveau nom du dossier :", name);
-      if (!next) return;
-      const { nextFolders, boxChanges } = classTreeRePrefix(klass, boxes, path, [...parent, next]);
-      return classTreeApply(klass, boxes, nextFolders, boxChanges);
-    }
-    if (act === "move") {
-      const dest = await classTreePickDestination(klass, boxes, `Où déplacer le dossier « ${name} » ?`, path);
-      if (!dest || classPathKey(dest) === classPathKey(parent)) return;
-      if (classSiblingNames(klass, boxes, dest).includes(name.toLowerCase())) {
-        await robotAlert(`Il y a déjà un dossier « ${name} » à cet endroit.`);
-        return;
-      }
-      const { nextFolders, boxChanges } = classTreeRePrefix(klass, boxes, path, [...dest, name]);
-      return classTreeApply(klass, boxes, nextFolders, boxChanges);
-    }
-    if (act === "delete") {
-      const inside = boxes.filter((b) => classPathStartsWith(b.folder_path || [], path)).length;
-      const ok = await robotConfirm(
-        inside
-          ? `Supprimer le dossier « ${name} » ? Son contenu (${inside} boîte${inside > 1 ? "s" : ""}) remonte d'un niveau ; aucune boîte n'est retirée de la classe.`
-          : `Supprimer le dossier « ${name} » ?`,
-        { okLabel: "Supprimer", danger: true }
-      );
-      if (!ok) return;
-      const { nextFolders, boxChanges } = classTreeRePrefix(klass, boxes, path, parent);
-      return classTreeApply(klass, boxes, nextFolders, boxChanges);
-    }
+    const next = await classTreeAskName(klass, boxes, parent, "Nouveau nom du dossier :", name);
+    if (!next) return;
+    const { nextFolders, boxChanges } = classTreeRePrefix(klass, boxes, path, [...parent, next]);
+    return classTreeApply(klass, boxes, nextFolders, boxChanges);
   }
-  async function classTreeBoxMenu(klass, boxes, box) {
-    const act = await showRobotMessage(`Boîte « ${box.subject_name} »`, {
-      buttons: [
-        { label: "Déplacer", value: "move" },
-        { label: "Annuler", value: null },
-      ],
-      cancelValue: null,
+  async function classTreeMoveFolder(klass, boxes, path, dest) {
+    const name = path[path.length - 1];
+    if (classSiblingNames(klass, boxes, dest).includes(name.toLowerCase())) {
+      await robotAlert(`Il y a déjà un dossier « ${name} » à cet endroit.`);
+      return;
+    }
+    const { nextFolders, boxChanges } = classTreeRePrefix(klass, boxes, path, [...dest, name]);
+    return classTreeApply(klass, boxes, nextFolders, boxChanges);
+  }
+  async function classTreeDeleteFolder(klass, boxes, path) {
+    const name = path[path.length - 1];
+    const parent = path.slice(0, -1);
+    const inside = boxes.filter((b) => classPathStartsWith(b.folder_path || [], path)).length;
+    const ok = await robotConfirm(
+      inside
+        ? `Supprimer le dossier « ${name} » ? Son contenu (${inside} boîte${inside > 1 ? "s" : ""}) remonte d'un niveau ; aucune boîte n'est retirée de la classe.`
+        : `Supprimer le dossier « ${name} » ?`,
+      { okLabel: "Supprimer", danger: true }
+    );
+    if (!ok) return;
+    const { nextFolders, boxChanges } = classTreeRePrefix(klass, boxes, path, parent);
+    return classTreeApply(klass, boxes, nextFolders, boxChanges);
+  }
+  /** Round 54 : retirer une boîte partagée de la classe (les élèves n'en
+   *  ont plus la copie ; la boîte de l'enseignant n'est pas touchée). */
+  async function classTreeRemoveBox(klass, boxes, box) {
+    const ok = await robotConfirm(`Retirer « ${box.subject_name} » de la classe ? Les élèves ne l'auront plus ; ta boîte n'est pas modifiée.`, {
+      okLabel: "Retirer",
+      danger: true,
     });
-    if (act !== "move") return;
-    const dest = await classTreePickDestination(klass, boxes, `Où ranger « ${box.subject_name} » dans la classe ?`);
-    if (!dest || classPathKey(dest) === classPathKey(box.folder_path || [])) return;
-    return classTreeApply(klass, boxes, classFolderList(klass, boxes), [[box, dest]]);
+    if (!ok) return;
+    const { error } = await Sync.classes.deleteSharedBox(box.id);
+    if (error) {
+      await robotAlert("Impossible de retirer la boîte : " + error);
+      return;
+    }
+    for (const s of subjects.filter((x) => (x.sharedShares || []).some((sh) => sh.boxId === box.id))) {
+      s.sharedShares = s.sharedShares.filter((sh) => sh.boxId !== box.id);
+      s.updatedAt = new Date().toISOString();
+      await persistSubject(s);
+    }
+    showToast(`« ${box.subject_name} » retirée de la classe`);
+    if (classDetailContext && classDetailContext.klass.id === klass.id) renderClassDetailView();
   }
 
   async function openClassDetailView(klass, role) {
@@ -10666,15 +10831,27 @@
     const isTeacher = role === "teacher";
     const statsEl = el("class-detail-stats");
     if (statsEl) {
-      const chips = [
-        `<span class="class-chip">${isTeacher ? "Enseignant" : "Élève"}</span>`,
-        `<span class="class-chip">${count} élève${count > 1 ? "s" : ""}</span>`,
-      ];
+      // Round 54 : plus de pastille du rôle — « (enseignant) » / « (élève) »
+      // sous le nom de la classe.
+      const chips = [`<span class="class-chip">${count} élève${count > 1 ? "s" : ""}</span>`];
       if (isTeacher && klass.invite_code) {
         chips.push(`<span class="class-chip class-chip--code">Code : <strong>${escapeHtml(klass.invite_code)}</strong></span>`);
       }
       statsEl.innerHTML = chips.join("");
     }
+    const roleEl = el("class-detail-role");
+    if (roleEl) {
+      roleEl.textContent = isTeacher ? "(enseignant)" : "(élève)";
+      // Aligné sous le nom de la classe (titre du bandeau, à droite du robot).
+      requestAnimationFrame(() => {
+        const t = el("page-header-title");
+        if (!t || !roleEl.parentElement) return;
+        const dx = t.getBoundingClientRect().left - roleEl.parentElement.getBoundingClientRect().left;
+        roleEl.style.paddingLeft = `${Math.max(0, Math.round(dx))}px`;
+      });
+    }
+    const leaveBtn = el("class-detail-leave-btn");
+    if (leaveBtn) leaveBtn.textContent = isTeacher ? "Supprimer la classe" : "Quitter la classe";
     if (el("class-detail-share-open-btn")) el("class-detail-share-open-btn").hidden = !isTeacher;
     const addEventBtn = el("class-detail-add-event-btn");
     if (addEventBtn) addEventBtn.hidden = !isTeacher;
@@ -10822,6 +10999,41 @@
     openClassDetailView(ctx.klass, ctx.role);
   }
 
+  // Round 54 : quitter une classe (élève) / la supprimer (enseignant).
+  const classDetailLeaveBtn = el("class-detail-leave-btn");
+  if (classDetailLeaveBtn) {
+    classDetailLeaveBtn.addEventListener("click", async () => {
+      if (!classDetailContext) return;
+      const { klass, role } = classDetailContext;
+      const isTeacher = role === "teacher";
+      const ok = await robotConfirm(
+        isTeacher
+          ? `Supprimer la classe « ${klass.name} » ? Ses élèves la quittent, ses boîtes partagées, ses évènements et sa messagerie sont supprimés. Tes propres boîtes ne sont pas touchées. Cette action est définitive.`
+          : `Quitter la classe « ${klass.name} » ? Ses boîtes disparaissent de ton organisation. Tu pourras la rejoindre à nouveau avec son code.`,
+        { okLabel: isTeacher ? "Supprimer la classe" : "Quitter la classe", danger: true }
+      );
+      if (!ok) return;
+      const { error } = isTeacher ? await Sync.classes.remove(klass.id) : await Sync.classes.leave(klass.id);
+      if (error) {
+        await robotAlert((isTeacher ? "Impossible de supprimer la classe : " : "Impossible de quitter la classe : ") + error);
+        return;
+      }
+      if (isTeacher) {
+        for (const s of subjects.filter((x) => (x.sharedShares || []).some((sh) => sh.classId === klass.id))) {
+          s.sharedShares = s.sharedShares.filter((sh) => sh.classId !== klass.id);
+          s.updatedAt = new Date().toISOString();
+          await persistSubject(s);
+        }
+      } else {
+        await removeClassMirrors(klass.id);
+      }
+      closeClassDetailView();
+      if (isTeacher && typeof renderTeacherClasses === "function") await renderTeacherClasses();
+      if (!isTeacher) await renderStudentClasses();
+      renderSubjectManageList();
+      showToast(isTeacher ? `Classe « ${klass.name} » supprimée` : `Tu as quitté « ${klass.name} »`);
+    });
+  }
   const classDetailBackBtn = el("class-detail-back-btn");
   if (classDetailBackBtn) classDetailBackBtn.addEventListener("click", closeClassDetailView);
 
@@ -10847,7 +11059,11 @@
         title: `Partager une boîte à « ${klass.name} »`,
         robotMessage: `Quelle boîte partager avec « ${klass.name} » ?`,
         folderAlwaysSelectable: false,
-        excludeSubjectIds: new Set(subjects.filter((s) => s.sharedBoxId).map((s) => s.id)),
+        // Round 54 : ni les boîtes reçues, ni celles déjà partagées avec
+        // cette classe (un second partage créait des doublons chez les élèves).
+        excludeSubjectIds: new Set(
+          subjects.filter((s) => s.sharedBoxId || (s.sharedShares || []).some((sh) => sh.classId === klass.id)).map((s) => s.id)
+        ),
         libraryOptions,
         includeOutOfRevisions: true,
         onPick: async (kind, id) => {
@@ -11760,10 +11976,7 @@
     if (titleEl) titleEl.textContent = col.name || "Collection";
     const metaEl = el("library-detail-meta");
     if (metaEl) {
-      metaEl.innerHTML = `
-        ${n} fiche${n > 1 ? "s" : ""}<br>
-        Par ${escapeHtml(ownerName)}
-      `;
+      metaEl.innerHTML = `${n} fiche${n > 1 ? "s" : ""} · par ${escapeHtml(ownerName)}`;
     }
     // Round 23 : classement complet (catégorie › … › matière) et tags.
     const detailTax = taxonomyFullLabel(collectionTaxonomy(col));
@@ -11935,7 +12148,7 @@
     const row = document.querySelector("#view-library .library-tools-row");
     if (!row || !el("view-library").classList.contains("is-active")) return;
     const headerH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--sticky-header-h")) || 96;
-    row.classList.toggle("is-stuck", row.getBoundingClientRect().top <= headerH + 4 && window.scrollY > 0);
+    row.classList.toggle("is-stuck", row.getBoundingClientRect().top <= headerH + 2 && window.scrollY > 0);
   }
   window.addEventListener("scroll", updateLibraryToolsStuck, { passive: true });
   const librarySummaryToggleEl = el("library-summary-toggle");
@@ -12338,6 +12551,25 @@
     }
     return s && s.taxonomy && typeof s.taxonomy === "object" ? s.taxonomy : {};
   }
+  /** Round 54 : une boîte recréée d'après ses fiches s'appelait « Boîte
+   *  inconnue » — elle reprend le nom de sa publication dans la Librairie
+   *  (lien par l'id de la boîte d'origine), sinon « Boîte récupérée ». */
+  async function repairUnknownSubjectNames() {
+    let changed = false;
+    for (const s of subjects.filter((x) => !x.deleted && (x.name === "Boîte inconnue" || x.name === "Boîte importée"))) {
+      const col = creationsMyCollections.find((c) => c.source_subject_id === s.id);
+      const name = col && col.name ? col.name : s.name === "Boîte inconnue" ? "Boîte récupérée" : "";
+      if (!name || name === s.name) continue;
+      s.name = name;
+      s.updatedAt = new Date().toISOString();
+      await persistSubject(s);
+      changed = true;
+    }
+    if (changed) {
+      renderSubjectManageList();
+      renderCreationsList();
+    }
+  }
   function creationsCollectionFor(s) {
     return (
       creationsMyCollections.find((c) => c.source_subject_id === s.id) ||
@@ -12386,6 +12618,7 @@
         if (c.source_subject_id) myPublishedSourceIds.add(c.source_subject_id);
         else if (c.name) myPublishedLegacyNames.add(c.name);
       });
+      await repairUnknownSubjectNames();
     } catch (e) {
       console.warn("Mes créations : échec du chargement des publications", e);
     }
@@ -12502,6 +12735,9 @@
   let creationDetailOrigin = "creations";
   function openCreationDetail(subjectId, origin) {
     if (origin) creationDetailOrigin = origin;
+    repairUnknownSubjectNames().then(() => {
+      if (creationDetailSubjectId === subjectId) renderCreationDetail();
+    });
     creationDetailSubjectId = subjectId;
     renderCreationDetail();
     boitePickerActivateView("view-creation-detail");
@@ -12549,11 +12785,9 @@
     const actBtn = (act, label, extra) => `<button type="button" class="btn btn--ghost creation-detail-act${extra ? ` ${extra}` : ""}" data-act="${act}">${label}</button>`;
     const row = (label, value, action) => `<tr><th scope="row">${label}</th><td>${value}</td><td class="creation-detail-act-cell">${action || ""}</td></tr>`;
     wrap.innerHTML = `
-      <div class="creation-detail-head">
-        <h2 class="section-title creation-detail-title">${escapeHtml(s.name)}${pool ? ` <span class="creation-detail-gauge">${buildPersGaugeSvg(pool, { width: 70, barHeight: 8 })}</span>` : ""}</h2>
-      </div>
       <table class="creation-detail-table">
         <tbody>
+          ${row("Progression", `<span class="creation-detail-gauge">${buildPersGaugeSvg(pool || [], { width: 90, barHeight: 8 })}</span>`, n ? actBtn("review", "Réviser") : "")}
           ${row("Statut", `<span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>`, actBtn("publish", col ? "Voir dans la Librairie" : "Publier dans la Librairie"))}
           ${row("Fiches", `${n} fiche${n > 1 ? "s" : ""}`, actBtn("cards", "Voir les fiches"))}
           ${row("Classement", taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`, col ? "" : actBtn("classify", taxFull ? "Modifier le classement" : "Classer la boîte"))}
@@ -12567,7 +12801,9 @@
     wrap.querySelectorAll("[data-act]").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const act = btn.dataset.act;
-        if (act === "addcard") {
+        if (act === "review") {
+          startReviewOfBox(s.id);
+        } else if (act === "addcard") {
           openNewCardForSubject(s.id, "creation-detail");
         } else if (act === "cards") {
           cardsEntryFromCreations = true;
@@ -12596,6 +12832,14 @@
       });
     });
   }
+  /** Round 54 : « Réviser » depuis le résumé d'une boîte. */
+  function startReviewOfBox(subjectId) {
+    reviewEntryFromManage = false;
+    reviewEntryFromProgram = false;
+    switchSubject(subjectId);
+    const tab = document.querySelector('.tab[data-view="review"]');
+    if (tab) tab.click();
+  }
   function renderForeignBoxDetail(wrap, s) {
     const addWrap = el("creation-detail-add");
     if (addWrap) addWrap.innerHTML = "";
@@ -12605,11 +12849,9 @@
     const klass = s.sharedBoxId ? folderPath(s.folderId).find((f) => f && f.sharedClassRoot) : null;
     const origin = s.fromLibrary ? "Collection prise dans la Librairie" : `Boîte partagée par ta classe${klass ? ` « ${escapeHtml(klass.name)} »` : ""}`;
     wrap.innerHTML = `
-      <div class="creation-detail-head">
-        <h2 class="section-title creation-detail-title">${escapeHtml(s.name)}${pool ? ` <span class="creation-detail-gauge">${buildPersGaugeSvg(pool, { width: 70, barHeight: 8 })}</span>` : ""}</h2>
-      </div>
       <table class="creation-detail-table">
         <tbody>
+          <tr><th scope="row">Progression</th><td><span class="creation-detail-gauge">${buildPersGaugeSvg(pool || [], { width: 90, barHeight: 8 })}</span></td><td class="creation-detail-act-cell">${n ? `<button type="button" class="btn btn--ghost creation-detail-act" data-act="review">Réviser</button>` : ""}</td></tr>
           <tr><th scope="row">Fiches</th><td>${n} fiche${n > 1 ? "s" : ""}</td><td class="creation-detail-act-cell"><button type="button" class="btn btn--ghost creation-detail-act" data-act="cards">Voir les fiches</button></td></tr>
           <tr><th scope="row">Origine</th><td>${origin}</td><td class="creation-detail-act-cell"></td></tr>
           <tr><th scope="row">Mes révisions</th><td>${place ? escapeHtml(place) : "Hors de mes révisions"}</td><td class="creation-detail-act-cell">${s.fromLibrary ? `<button type="button" class="btn btn--ghost creation-detail-act creation-detail-delete" data-act="remove">Retirer de mes révisions</button>` : ""}</td></tr>
@@ -12618,7 +12860,9 @@
     `;
     wrap.querySelectorAll("[data-act]").forEach((btn) => {
       btn.addEventListener("click", async () => {
-        if (btn.dataset.act === "cards") {
+        if (btn.dataset.act === "review") {
+          startReviewOfBox(s.id);
+        } else if (btn.dataset.act === "cards") {
           cardsEntryFromCreations = false;
           cardsEntryFromManage = true;
           goToCardsFor(`subject:${s.id}`);
@@ -13227,7 +13471,7 @@
       panel.hidden = !panel.hidden;
       creationsSearchToggle.setAttribute("aria-expanded", String(!panel.hidden));
       creationsSearchToggle.classList.toggle("is-open", !panel.hidden);
-      if (!panel.hidden && el("creations-search-input")) el("creations-search-input").focus();
+      // Round 54 : plus de focus automatique sur « Mots clés ».
     });
   }
   const creationsSearchInput = el("creations-search-input");
@@ -13337,8 +13581,16 @@
     requestAnimationFrame(() => window.scrollTo(0, document.documentElement.scrollHeight));
   }
 
+  // Round 54 : brouillon gardé PAR discussion (avant, le texte tapé
+  // apparaissait aussi dans les autres discussions).
+  const messageDrafts = new Map();
   async function openMessageThread(klass) {
     messageThreadContext = { klass };
+    const draftInput = el("message-thread-input");
+    if (draftInput) {
+      draftInput.value = messageDrafts.get(klass.id) || "";
+      autoGrowMessageInput();
+    }
     // Round 49 : on vide d'abord le fil (sinon l'ancienne discussion
     // apparaissait furtivement avant la bonne).
     const listElNow = el("message-thread-list");
@@ -13405,7 +13657,10 @@
   }
   const messageThreadInputEl = el("message-thread-input");
   if (messageThreadInputEl) {
-    messageThreadInputEl.addEventListener("input", autoGrowMessageInput);
+    messageThreadInputEl.addEventListener("input", () => {
+      autoGrowMessageInput();
+      if (messageThreadContext) messageDrafts.set(messageThreadContext.klass.id, messageThreadInputEl.value);
+    });
     // Ordinateur : Entrée envoie (Maj+Entrée = nouvelle ligne) ; téléphone :
     // Entrée fait une nouvelle ligne, on envoie avec le bouton.
     messageThreadInputEl.addEventListener("keydown", (e) => {
@@ -13424,6 +13679,7 @@
       const body = (input.value || "").trim();
       if (!body) return;
       input.value = "";
+      messageDrafts.delete(messageThreadContext.klass.id);
       autoGrowMessageInput();
       const { data, error } = await Sync.messages.send(messageThreadContext.klass.id, body);
       if (error) {
@@ -13438,6 +13694,13 @@
   }
 
   /** Trouve (ou crée) localement la boîte référencée par une fiche distante, à partir de son id + nom dénormalisé. */
+  function myCollectionsSafe() {
+    try {
+      return creationsMyCollections || [];
+    } catch (e) {
+      return [];
+    }
+  }
   async function ensureLocalSubjectFor(remote) {
     if (remote.subject && subjects.some((s) => s.id === remote.subject)) {
       return remote.subject;
@@ -13445,7 +13708,9 @@
     if (remote.subject) {
       // Boîte inconnue sur cet appareil (créée ailleurs) : on la recrée avec le même id
       // pour que les deux appareils convergent vers la même boîte.
-      const remoteName = remote.subjectName || "Boîte importée";
+      const sentName = remote.subjectName && remote.subjectName !== "Boîte inconnue" ? remote.subjectName : "";
+      const myCol = myCollectionsSafe().find((c) => c.source_subject_id === remote.subject);
+      const remoteName = sentName || (myCol && myCol.name) || "Boîte récupérée";
 
       // Évite les doublons "fantômes" : si une boîte locale du même nom
       // existe déjà mais n'a encore aucune fiche (typiquement le "Général"

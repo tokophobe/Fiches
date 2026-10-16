@@ -1060,6 +1060,31 @@ async function updateSharedBoxCards(boxId, cards, folderPath, subjectName) {
   return { error: error ? error.message : null };
 }
 
+/** Round 54 : quitter une classe (élève) / supprimer une classe
+ *  (enseignant ; boîtes partagées, membres, messages et évènements de la
+ *  classe sont supprimés en cascade par le serveur). */
+async function leaveClass(classId) {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { error: "Non connecté." };
+  const { error } = await c.from("class_members").delete().eq("class_id", classId).eq("user_id", user.id);
+  return { error: error ? error.message : null };
+}
+async function deleteClass(classId) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée." };
+  const { error } = await c.from("classes").delete().eq("id", classId);
+  return { error: error ? error.message : null };
+}
+
+/** Round 54 : retire une boîte partagée d'une classe (enseignant). */
+async function deleteSharedBox(boxId) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée." };
+  const { error } = await c.from("shared_boxes").delete().eq("id", boxId);
+  return { error: error ? error.message : null };
+}
+
 /** Round 53 : arborescence propre à la classe. `folderPath` d'une boîte
  *  partagée = son dossier DANS LA CLASSE (rangé par l'enseignant depuis la
  *  page de la classe), indépendant de son organisation personnelle. */
@@ -1532,6 +1557,9 @@ window.Sync = {
     listSharedBoxes: listSharedBoxesForClass,
     updateSharedBoxCards,
     updateSharedBoxPath,
+    deleteSharedBox,
+    leave: leaveClass,
+    remove: deleteClass,
     updateBoxFolders: updateClassBoxFolders,
     shareEvent: shareEventToClass,
     listSharedEvents: listSharedEventsForClass,
