@@ -326,6 +326,7 @@
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
     <button class="tab" role="tab" aria-selected="false" data-view="calendar" hidden>Calendrier</button>
     <button class="tab" role="tab" aria-selected="false" data-view="review-hub" hidden>Réviser</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="boxes-hub" hidden>Mes boîtes</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Révisions prioritaires</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-reinforce" hidden>Renforcer mes connaissances</button>
     <button class="tab" role="tab" aria-selected="false" data-view="school-hub" hidden>École</button>
@@ -362,10 +363,6 @@
       <!-- Round 15, item 3 : le titre texte "Fiches" est retiré (remplacé
            par le logo darwin) — à la demande de Stéphane. -->
       <div class="home-scatter" id="home-scatter">
-        <button type="button" class="home-circle home-circle--accent" data-key="addCard" id="home-new-card-btn">
-          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          <span>Ajouter une fiche</span>
-        </button>
         <button type="button" class="home-circle" data-key="review" data-go="review-hub">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
           <span>Réviser</span>
@@ -374,13 +371,11 @@
         <!-- Round 47 : « Gérer mes fiches » (hub) disparaît — ses deux pages
              sont accessibles directement depuis l'accueil. data-key="manage"
              conservé (position/icône réglées en mode développeur). -->
-        <button type="button" class="home-circle" data-key="manage" data-go="manage">
-          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
-          <span>Organiser mes boîtes de révision</span>
-        </button>
-        <button type="button" class="home-circle" data-key="creations" data-go="creations">
-          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
-          <span>Créer mes propres boîtes de révision</span>
+        <!-- Round 55 : « Mes boîtes » remplace « Organiser… », « Créer… » et
+             « Ajouter une fiche » sur l'accueil. -->
+        <button type="button" class="home-circle" data-key="boxes" data-go="boxes-hub">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M6 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/><line x1="10" y1="13" x2="14" y2="13"/></svg>
+          <span>Mes boîtes</span>
         </button>
         <!-- Round 49 : Signalements (émis et reçus) — visible seulement si
              l'utilisateur a fait ou reçu au moins un signalement. Pastille :
@@ -430,6 +425,20 @@
          École/Fiches) — Révisions conseillées (programme d'après le
          Calendrier, désactivé sans évènement à venir) ou Sélection
          manuelle (sélecteur de boîtes/dossiers). -->
+    <!-- Round 55 : « Mes boîtes » — organiser / créer ses boîtes. -->
+    <section id="view-boxes-hub" class="view" aria-labelledby="tab-boxes-hub">
+      <div class="classes-role-circles review-hub-stack" id="boxes-hub-circles">
+        <button type="button" class="classes-role-circle" id="boxes-hub-manage-btn">
+          <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg></span>
+          <span>Organiser mes boîtes</span>
+        </button>
+        <button type="button" class="classes-role-circle" id="boxes-hub-creations-btn">
+          <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span>
+          <span>Créer mes boîtes</span>
+        </button>
+      </div>
+    </section>
+
     <section id="view-review-hub" class="view" aria-labelledby="tab-review-hub">
       <!-- Round 47 : trois boutons ronds alignés verticalement et centrés —
            Révisions prioritaires (conseillé), Renforcer mes connaissances,
@@ -997,6 +1006,8 @@
             <input type="password" id="account-auth-password" autocomplete="current-password" />
           </label>
           <button type="button" class="btn btn--primary" id="account-auth-submit">Se connecter</button>
+          <!-- Round 55 : mot de passe oublié (email de réinitialisation). -->
+          <button type="button" class="account-forgot-link" id="account-forgot-btn">Mot de passe oublié ?</button>
           <p class="field-hint" id="account-auth-note" hidden></p>
         </div>
       </div>
@@ -1031,15 +1042,14 @@
           </div>
           <p class="field-hint" id="account-usages-note" hidden></p>
         </div>
-        <!-- Round 53 : l'adresse email n'apparaît dans la liste des élèves
-             d'une classe que si l'élève l'autorise ici (métadonnée
-             share_email_with_teachers). -->
+        <!-- Round 55 : case inversée — cochée, l'adresse email n'apparaît
+             pas dans la liste des élèves d'une classe (métadonnée
+             hide_email_in_classes). Décochée par défaut. -->
         <div class="card-form">
           <label class="settings-toggle-row account-share-email-row">
             <input type="checkbox" id="account-share-email" />
-            <span>Montrer mon adresse email aux enseignants de mes classes</span>
+            <span>Ne pas montrer mon adresse email aux enseignants et élèves de mes classes</span>
           </label>
-          <p class="field-hint" id="account-share-email-note" hidden></p>
         </div>
         <div class="card-form">
           <label class="field">
@@ -1116,8 +1126,9 @@
       </div>
       <!-- Round 41 : même bouton rond que « + Ajouter une fiche ». -->
       <div class="round-add-card-wrap">
-        <button type="button" class="round-add-card-btn" id="creations-create-btn" aria-label="Créer une boîte">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <!-- Round 55 : bouton rond (même design que les autres). -->
+        <button type="button" class="classes-role-circle add-card-circle" id="creations-create-btn" aria-label="Créer une boîte">
+          <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
           <span>Créer une boîte</span>
         </button>
         <!-- Round 47 : signalements reçus (déplacé de l'ancien hub « Gérer
@@ -1251,24 +1262,12 @@
             </span>
             <span>Élève</span>
           </button>
-        <button type="button" class="classes-role-circle classes-role-circle--v2" id="classes-goto-student2-btn">
-            <span class="classes-role-circle-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M12 5 2 9l10 4 10-4-10-4Z"/><path d="M6 11v5c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-5"/></svg>
-            </span>
-            <span>Élève 2</span>
-        </button>
           <button type="button" class="classes-role-circle" id="classes-goto-teacher-btn">
             <span class="classes-role-circle-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M7 9.5 10.5 12 7 14.5"/></svg>
             </span>
             <span>Enseignant</span>
           </button>
-        <button type="button" class="classes-role-circle classes-role-circle--v2" id="classes-goto-teacher2-btn">
-            <span class="classes-role-circle-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M7 9.5 10.5 12 7 14.5"/></svg>
-            </span>
-            <span>Enseignant 2</span>
-        </button>
         </div>
       </div>
     </section>
@@ -1357,8 +1356,6 @@
            code d'invitation côté enseignant). -->
       <div class="class-detail-header">
         <h2 class="class-detail-name" id="class-detail-title">Classe</h2>
-        <!-- Round 54 : rôle sous le nom de la classe (plus de pastille). -->
-        <p class="class-detail-role" id="class-detail-role"></p>
         <div class="class-detail-chips" id="class-detail-stats"></div>
       </div>
       <div class="class-detail-section">
@@ -1686,9 +1683,11 @@
       <p class="library-detail-summary" id="library-detail-summary" hidden></p>
       <p class="library-detail-description" id="library-detail-description" hidden></p>
       <div class="form-actions">
-        <button type="button" class="btn btn--primary" id="library-detail-share-class-btn" hidden>Partager avec la classe</button>
         <button type="button" class="btn btn--small" id="library-detail-view-cards-btn">Voir les fiches</button>
         <button type="button" class="btn btn--small" id="library-detail-take-btn">Ajouter à mes révisions</button>
+        <!-- Round 55 : en partage avec une classe, remplace « Ajouter à mes
+             révisions », même style que « Voir les fiches ». -->
+        <button type="button" class="btn btn--small" id="library-detail-share-class-btn" hidden>Partager avec cette classe</button>
       </div>
     </section>
 
@@ -1703,6 +1702,7 @@
       <!-- Round 20, item 3 : explique pourquoi les réponses sont
            tronquées (sinon ça pourrait passer pour un bug). -->
       <p class="field-hint library-cards-note" id="library-cards-note" hidden>Aperçu tronqué — prends cette collection (bouton "Prendre") pour voir les réponses complètes.</p>
+      <p class="cards-count-title" id="library-cards-count"></p>
       <ul class="library-cards-list" id="library-cards-list"></ul>
     </section>
 
@@ -1742,13 +1742,41 @@
         </div>
       </form>
     </section>
-    <!-- Round 48 : abonnements (page d'attente — le système d'abonnement
-         sera mis en place plus tard). -->
+    <!-- Round 55 : page Abonnements — fonctionnement et formules (le
+         paiement en ligne sera branché plus tard : boutons inactifs). -->
     <section id="view-subscriptions" class="view" aria-labelledby="tab-subscriptions">
-      <div class="subscriptions-placeholder">
-        <p class="subscriptions-lead">Les abonnements arrivent bientôt.</p>
-        <p class="field-hint">Ils donneront accès aux boîtes de la Librairie, à ajouter à tes révisions ou à partager avec tes classes.</p>
-      </div>
+      <p class="subs-status" id="subs-status" hidden></p>
+      <p class="subs-lead">Les boîtes de la Librairie sont réservées aux abonnés : un abonnement permet de les ajouter à ses révisions et d'en voir les réponses en entier. Tes propres boîtes, les boîtes partagées par tes classes et la révision restent gratuites.</p>
+      <ul class="subs-list">
+        <li class="subs-offer">
+          <div class="subs-offer-head"><span class="subs-offer-name">Individuel</span><span class="subs-offer-price">2 € <small>/ mois</small></span></div>
+          <p class="subs-offer-text">Pour toi : toutes les boîtes de la Librairie, à ajouter à tes révisions.</p>
+          <ul class="subs-offer-points">
+            <li>Premier mois offert</li>
+            <li>Moyen de paiement demandé dès l'inscription (rien n'est prélevé pendant le mois offert)</li>
+            <li>Résiliable à tout moment</li>
+          </ul>
+          <button type="button" class="subs-offer-btn" disabled>Bientôt disponible</button>
+        </li>
+        <li class="subs-offer">
+          <div class="subs-offer-head"><span class="subs-offer-name">Super enseignant</span><span class="subs-offer-price">1 € <small>/ mois / classe</small></span></div>
+          <p class="subs-offer-text">Les élèves de tes classes ont accès aux boîtes de la Librairie que tu partages avec eux, sans abonnement de leur côté.</p>
+          <ul class="subs-offer-points">
+            <li>Classes de 60 élèves maximum</li>
+            <li>Tu choisis les classes concernées</li>
+          </ul>
+          <button type="button" class="subs-offer-btn" disabled>Bientôt disponible</button>
+        </li>
+        <li class="subs-offer">
+          <div class="subs-offer-head"><span class="subs-offer-name">Super école</span><span class="subs-offer-price">5 € <small>/ mois / enseignant</small></span></div>
+          <p class="subs-offer-text">L'établissement désigne ses Super enseignants : chacun en a tous les avantages.</p>
+          <ul class="subs-offer-points">
+            <li>Jusqu'à 15 classes de 60 élèves par enseignant</li>
+            <li>Une seule facture pour l'établissement</li>
+          </ul>
+          <button type="button" class="subs-offer-btn" disabled>Bientôt disponible</button>
+        </li>
+      </ul>
     </section>
   </main>
 </div>

@@ -7427,3 +7427,121 @@ body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) .classes-
 .library-detail-meta-row > * { margin-top: 0 !important; margin-bottom: 0 !important; align-self: center; }
 #view-library-detail .library-detail-meta-row #library-detail-meta { font-size: 16px !important; color: var(--main-text-color, var(--ink)); }
 #view-library .library-tools-row { top: calc(var(--sticky-header-h, 96px) - 1px); }
+
+/* ==================================================================
+   Round 55
+   ================================================================== */
+/* 1. Blocs de classement : couleur de chaque niveau réglable (Darwin Admin). */
+.tax-block { background: var(--tax-bg, color-mix(in srgb, var(--rule, #4a9fe0) var(--tax-tint), var(--paper))); }
+
+/* 4. Fiches d'une collection de la Librairie : même présentation que la
+   liste des fiches d'une boîte. */
+#view-library-cards .library-cards-list--r55 { display: flex; flex-direction: column; gap: 0; padding: 0; margin: 0; list-style: none; }
+#view-library-cards .library-cards-list--r55 .card-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  border-left: none;
+  border-bottom: 1px solid var(--rule-soft);
+  padding: 14px 6px;
+  margin: 0;
+}
+#view-library-cards .library-cards-list--r55 .card-row:last-child { border-bottom: none; }
+#view-library-cards .card-row-a { border-left: none; padding-left: 0; }
+#view-library-cards .library-card-answer--cut { user-select: none; -webkit-user-select: none; }
+#view-library-cards .cards-count-title { margin: 6px 0 0; font-family: var(--font-type); font-size: 15px; color: var(--main-text-color, var(--ink)); }
+#view-library-cards .library-cards-note { margin-bottom: 6px; }
+
+/* 2. Fiche d'une collection : plus d'air entre classement, tags, résumé,
+   description et boutons. */
+#view-library-detail .library-detail-taxonomy { margin: 4px 0 16px; }
+#view-library-detail #library-detail-tags { margin: 0 0 18px; }
+#view-library-detail #library-detail-summary { margin: 0 0 10px; }
+#view-library-detail #library-detail-description { margin: 0 0 24px; }
+#view-library-detail .form-actions { margin-top: 26px; }
+
+/* 3. Modifier la fiche : pas de surbrillance au survol d'« Enregistrer ». */
+#card-form.is-editing #submit-btn:hover,
+#card-form.is-editing #submit-btn:focus { background: transparent; }
+
+/* 5. Mes créations : « + Créer une boîte » en bouton rond, centré. */
+body:not(.v1-pages) #view-creations .round-add-card-wrap { justify-content: center; margin: 4px 0 14px; }
+#view-creations #creations-create-btn.classes-role-circle { width: 120px; height: 120px; font-size: 13px; }
+/* 7. Nom de la classe puis, à la ligne, le rôle. */
+#page-header-title { white-space: pre-line; }
+
+/* 10. Le texte juste sous le bandeau n'est plus rogné par le haut : un
+   petit espace en tête de chaque page. */
+.view::before { content: ""; display: block; height: 8px; flex: 0 0 8px; }
+#view-review::before, #view-home::before { display: none; }
+
+/* 13. Mon compte : style épuré (comme les formulaires d'évènement). */
+#view-account .card-form,
+#view-account .classes-user-row {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  padding: 12px 2px;
+  margin: 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+#view-account .card-form:last-child { border-bottom: none; }
+#view-account .field > span,
+#view-account .account-school-title { font-size: 11.5px; opacity: 0.8; }
+#view-account .field :is(input[type="text"], input[type="email"], input[type="password"], select) {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--rule-soft);
+  border-radius: 0;
+  padding-left: 2px;
+  padding-right: 2px;
+  box-shadow: none;
+}
+#view-account .field :is(input, select):focus { border-bottom-color: var(--action-color); outline: none; }
+#view-account .usage-option { background: transparent; border: none; padding: 6px 2px; }
+#view-account .tax-block select { border-bottom: none; }
+#view-account .btn { background: transparent; color: var(--action-color); box-shadow: none; padding-left: 2px; }
+.account-forgot-link {
+  display: block;
+  margin: 6px 0 0;
+  padding: 6px 2px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-type);
+  font-size: 13px;
+  color: var(--action-color);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* 15. Page Abonnements. */
+.subs-status { margin: 0 0 10px; font-family: var(--font-type); font-size: 13.5px; font-weight: 600; color: var(--reassure-color, #3e7c6b); }
+.subs-lead { margin: 0 0 14px; font-family: var(--font-type); font-size: 14px; line-height: 1.45; color: var(--general-text-color, var(--ink-soft)); }
+.subs-list { list-style: none; margin: 0; padding: 0; }
+.subs-offer { padding: 14px 2px; border-bottom: 1px solid var(--rule-soft); font-family: var(--font-type); }
+.subs-offer:last-child { border-bottom: none; }
+.subs-offer-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.subs-offer-name { font-size: 16px; font-weight: 700; color: var(--main-text-color, var(--ink)); }
+.subs-offer-price { flex-shrink: 0; font-size: 17px; font-weight: 700; color: var(--ink); }
+.subs-offer-price small { font-size: 12px; font-weight: 400; color: var(--ink-soft); }
+.subs-offer-text { margin: 4px 0 6px; font-size: 13.5px; line-height: 1.4; color: var(--ink); }
+.subs-offer-points { margin: 0 0 8px; padding-left: 18px; font-size: 13px; line-height: 1.45; color: var(--ink-soft); }
+.subs-offer-btn {
+  display: block;
+  margin-left: auto;
+  padding: 6px 2px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--action-color);
+}
+.subs-offer-btn:disabled { opacity: 0.55; }
+.subs-status--none { color: var(--ink-soft); font-weight: 400; }

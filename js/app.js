@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v208";
+  const APP_VERSION = "v209";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -594,6 +594,7 @@
         if (hasInput) {
           inputEl.value = opts.input.defaultValue || "";
           inputEl.placeholder = opts.input.placeholder || "";
+          inputEl.type = opts.input.type === "password" ? "password" : "text"; // round 55
         }
       }
       let settled = false;
@@ -1192,6 +1193,11 @@
     root.setProperty("--rating-good-color", eff.ratingColors.good);
     root.setProperty("--rating-easy-color", eff.ratingColors.easy);
     root.setProperty("--rating-btn-bg-color", eff.ratingBtnBgColor);
+    // Round 55 : couleurs des blocs de classement, par niveau.
+    const tax = isNightModeActive() ? settings.nightColors.taxColors : settings.taxColors;
+    if (tax) {
+      ["library", "other"].forEach((k) => (tax[k] || []).forEach((c, i) => root.setProperty(`--tax-${k}-${i + 1}`, c)));
+    }
     root.setProperty("--app-bg-color", settings.appBgColor);
     root.setProperty("--construction-active-color", settings.constructionActiveColor);
     root.setProperty("--due-pill-bonus-color", settings.bonusPillColor);
@@ -6760,6 +6766,7 @@
         renderReinforceList();
       }
       if (view === "review-hub") renderReviewHub();
+      if (view === "subscriptions") renderSubscriptionsStatus();
       if (view === "settings") {
         renderSettingsView();
         refreshAdminLink();
@@ -6783,6 +6790,7 @@
   const PAGE_TITLES = {
     home: "Accueil",
     "review-hub": "Réviser",
+    "boxes-hub": "Mes boîtes",
     "revision-program": "Révisions prioritaires",
     "revision-reinforce": "Renforcer mes connaissances",
     review: "Réviser",
@@ -6938,6 +6946,7 @@
    *  (`from`, qui est alors masqué) ; `hide` = titres d'origine à masquer. */
   const PAGE_HEADER_TITLES = {
     "review-hub": "Réviser",
+    "boxes-hub": "Mes boîtes",
     "revision-program": "Révisions prioritaires",
     "revision-reinforce": "Renforcer mes connaissances",
     // Round 47 : sur Réviser, le titre est le nombre de fiches à revoir.
@@ -6971,7 +6980,15 @@
     "classes-join": { text: "Rejoindre une classe", hide: ["#view-classes-join > h2.section-title"] },
     "classes-teacher": { text: "Enseignant", hide: ["#view-classes-teacher > h2.section-title"] },
     "classes-create": { text: "Créer une classe", hide: ["#view-classes-create > h2.section-title"] },
-    "class-detail": { from: "#class-detail-title" },
+    // Round 55 : nom de la classe puis, à la ligne, « (enseignant) » /
+    // « (élève) ».
+    "class-detail": {
+      dynamic: () => {
+        if (!classDetailContext) return "Classe";
+        return `${classDetailContext.klass.name}\n(${classDetailContext.role === "teacher" ? "enseignant" : "élève"})`;
+      },
+      hide: ["#class-detail-title"],
+    },
     "class-share": "Partager une boîte",
     subscriptions: "Abonnements",
     messages: { text: "Messagerie", hide: ["#view-messages > h2.section-title"] },
@@ -7327,6 +7344,18 @@
       homeTickerOpenCurrent();
     });
   }
+  // Round 55 : page « Mes boîtes ».
+  [
+    ["boxes-hub-manage-btn", "manage"],
+    ["boxes-hub-creations-btn", "creations"],
+  ].forEach(([id, view]) => {
+    const b = el(id);
+    if (b)
+      b.addEventListener("click", () => {
+        const tab = document.querySelector(`.tab[data-view="${view}"]`);
+        if (tab) tab.click();
+      });
+  });
   const homeNewCardBtn = el("home-new-card-btn");
   if (homeNewCardBtn) {
     homeNewCardBtn.addEventListener("click", () => {
@@ -7923,7 +7952,8 @@
       el("calendar-event-subject-btn").textContent = calendarLinkIdsLabel(calendarEventLinkIds);
       if (commentInput) commentInput.value = "";
       if (title) title.textContent = "Ajouter un événement";
-      if (submitBtn) submitBtn.textContent = "Ajouter à mon calendrier";
+      // Round 55 : depuis une classe (enseignant), « Ajouter au calendrier ».
+      if (submitBtn) submitBtn.textContent = presetClassId ? "Ajouter au calendrier" : "Ajouter à mon calendrier";
     }
     await populateCalendarEventClassSelect(eventToEdit, presetClassId);
   }
@@ -9285,23 +9315,60 @@
       note.textContent = u.length > 0 ? "" : "Choisis au moins un usage.";
     }
   }
-  // Round 53 : autorisation de montrer son email aux enseignants.
+  // Round 55 : mot de passe oublié.
+  const accountForgotBtn = el("account-forgot-btn");
+  if (accountForgotBtn) {
+    accountForgotBtn.addEventListener("click", async () => {
+      const typed = (el("account-auth-email") && el("account-auth-email").value) || "";
+      const email = await robotPrompt("Ton adresse email : je t'envoie un lien pour choisir un nouveau mot de passe.", typed);
+      if (!email || !String(email).trim()) return;
+      const { error } = await Sync.auth.sendPasswordReset(email);
+      if (error) {
+        await robotAlert(`L'email n'a pas pu être envoyé : ${error}`);
+        return;
+      }
+      await robotAlert("C'est envoyé ! Ouvre l'email et touche le lien : tu reviendras ici pour choisir ton nouveau mot de passe. Pense à regarder dans les courriers indésirables.");
+    });
+  }
+  async function askNewPassword() {
+    for (;;) {
+      const pwd = await showRobotMessage("Choisis ton nouveau mot de passe (6 caractères minimum) :", {
+        input: { defaultValue: "", type: "password" },
+        cancelValue: null,
+        buttons: [
+          { label: "Annuler", value: null },
+          { label: "Enregistrer", value: true, primary: true },
+        ],
+      });
+      if (pwd == null || pwd === true) return;
+      if (String(pwd).length < 6) {
+        await robotAlert("Il faut au moins 6 caractères.");
+        continue;
+      }
+      const { error } = await Sync.auth.updatePassword(String(pwd));
+      if (error) {
+        await robotAlert(`Le mot de passe n'a pas pu être changé : ${error}`);
+        continue;
+      }
+      await robotAlert("Ton mot de passe est changé. Tu es connecté.");
+      return;
+    }
+  }
+  if (Sync.auth && Sync.auth.onPasswordRecovery) Sync.auth.onPasswordRecovery(() => setTimeout(askNewPassword, 300));
+
+  // Round 55 : « Ne pas montrer mon adresse email… » (cochée = masquée).
   function renderAccountShareEmail() {
     const cb = el("account-share-email");
     if (!cb) return;
-    cb.checked = !!(accountCurrentUser && accountCurrentUser.user_metadata && accountCurrentUser.user_metadata.share_email_with_teachers === true);
+    cb.checked = !!(accountCurrentUser && accountCurrentUser.user_metadata && accountCurrentUser.user_metadata.hide_email_in_classes === true);
   }
   const accountShareEmailCb = el("account-share-email");
   if (accountShareEmailCb) {
     accountShareEmailCb.addEventListener("change", async () => {
-      const note = el("account-share-email-note");
-      const res = await Sync.auth.updateMetadata({ share_email_with_teachers: accountShareEmailCb.checked });
-      if (note) {
-        note.hidden = false;
-        note.textContent = res && res.error ? `Échec de l'enregistrement : ${res.error}` : "Enregistré.";
-      }
+      const res = await Sync.auth.updateMetadata({ hide_email_in_classes: accountShareEmailCb.checked });
       if (res && res.error) {
         accountShareEmailCb.checked = !accountShareEmailCb.checked;
+        await robotAlert(`Échec de l'enregistrement : ${res.error}`);
         return;
       }
       accountCurrentUser = (await Sync.auth.getUser()) || accountCurrentUser;
@@ -9467,6 +9534,8 @@
     const lastField = el("account-auth-lastname-field");
     if (firstField) firstField.hidden = mode !== "signup";
     if (lastField) lastField.hidden = mode !== "signup";
+    const forgot = el("account-forgot-btn");
+    if (forgot) forgot.hidden = mode !== "signin";
   }
   const accountAuthTabSignin = el("account-auth-tab-signin");
   if (accountAuthTabSignin) accountAuthTabSignin.addEventListener("click", () => setClassesAuthMode("signin"));
@@ -9754,41 +9823,9 @@
      en ouvrant une page par son bouton d'origine. Pour revenir en arrière :
      retirer les boutons « 2 » (index.html) et ce bloc CSS.
   --------------------------------------------------------- */
-  let layoutV2 = false;
-  let layoutV2Entering = false;
-  function setLayoutV2(on) {
-    layoutV2 = !!on;
-    document.body.classList.toggle("layout-v2", layoutV2);
-  }
-  [
-    ["classes-goto-student-btn", "classes-goto-student2-btn"],
-    ["classes-goto-teacher-btn", "classes-goto-teacher2-btn"],
-  ].forEach(([origId, v2Id]) => {
-    const orig = el(origId);
-    const v2 = el(v2Id);
-    if (!orig || !v2) return;
-    orig.addEventListener(
-      "click",
-      () => {
-        if (!layoutV2Entering) setLayoutV2(false);
-      },
-      true
-    );
-    v2.addEventListener("click", () => {
-      setLayoutV2(true);
-      layoutV2Entering = true;
-      try {
-        orig.click();
-      } finally {
-        layoutV2Entering = false;
-      }
-    });
-  });
-  if (el("view-home")) {
-    new MutationObserver(() => {
-      if (el("view-home").classList.contains("is-active")) setLayoutV2(false);
-    }).observe(el("view-home"), { attributes: true, attributeFilter: ["class"] });
-  }
+  // Round 55 : les présentations « Élève 2 » / « Enseignant 2 » deviennent
+  // les seules (boutons « Élève » et « Enseignant ») : mode toujours actif.
+  document.body.classList.add("layout-v2");
 
   /** Icône dédiée aux classes (item 5) — un petit groupe de personnes,
    *  dans le même style épuré (traits fins, coins arrondis) que les
@@ -10839,17 +10876,7 @@
       }
       statsEl.innerHTML = chips.join("");
     }
-    const roleEl = el("class-detail-role");
-    if (roleEl) {
-      roleEl.textContent = isTeacher ? "(enseignant)" : "(élève)";
-      // Aligné sous le nom de la classe (titre du bandeau, à droite du robot).
-      requestAnimationFrame(() => {
-        const t = el("page-header-title");
-        if (!t || !roleEl.parentElement) return;
-        const dx = t.getBoundingClientRect().left - roleEl.parentElement.getBoundingClientRect().left;
-        roleEl.style.paddingLeft = `${Math.max(0, Math.round(dx))}px`;
-      });
-    }
+    updatePageHeaderTitle();
     const leaveBtn = el("class-detail-leave-btn");
     if (leaveBtn) leaveBtn.textContent = isTeacher ? "Supprimer la classe" : "Quitter la classe";
     if (el("class-detail-share-open-btn")) el("class-detail-share-open-btn").hidden = !isTeacher;
@@ -11523,6 +11550,7 @@
     // dessous, même marge à gauche, à droite et en bas ; léger dégradé de
     // teinte d'un bloc à l'autre. Pas pour le niveau scolaire du profil.
     const nested = mode !== "profile";
+    const taxScope = opts && opts.scope === "library" ? "library" : "other";
     function draw() {
       const tax = Taxonomy.get();
       container.innerHTML = "";
@@ -11537,6 +11565,7 @@
         const block = document.createElement("div");
         block.className = "tax-block";
         block.style.setProperty("--tax-depth", String(depth));
+        block.style.setProperty("--tax-bg", `var(--tax-${taxScope}-${Math.min(depth, 5) + 1})`);
         block.appendChild(node);
         parent.appendChild(block);
         parent = block;
@@ -11838,6 +11867,7 @@
       if (!libraryFilterCascade) {
         libraryFilterCascade = createTaxonomyCascade(taxFilterEl, {
           mode: "filter",
+          scope: "library",
           sel: libraryTaxFilter,
           onChange: (sel) => {
             libraryTaxFilter = sel;
@@ -12027,6 +12057,8 @@
     // Round 48 : plus de prix ni de jetons — « Ajouter à mes révisions » ou
     // « Retirer de mes révisions » selon que la collection y est déjà.
     renderLibraryDetailTakeBtn(col);
+    const takeBtnEl = el("library-detail-take-btn");
+    if (takeBtnEl) takeBtnEl.hidden = !!libraryShareToClassCtx;
 
     boitePickerActivateView("view-library-detail");
     const homeBtnEl = el("home-btn");
@@ -12081,21 +12113,34 @@
     if (titleEl) titleEl.textContent = col.name || "Fiches";
     const listEl = el("library-cards-list");
     const cards = Array.isArray(col.cards) ? col.cards : [];
+    // Round 55 : même présentation que la liste des fiches d'une boîte
+    // (lignes séparées par un trait, question en gras, réponse en gris) ;
+    // réponse entière pour l'auteur de la collection ou un abonné, sinon
+    // coupée à sa moitié.
+    const fullAccess = !!(accountCurrentUser && (col.owner_id === accountCurrentUser.id || hasLibrarySubscription()));
     if (listEl) {
+      listEl.className = "card-list library-cards-list library-cards-list--r55";
       listEl.innerHTML =
         cards
           .map(
             (c) => `
-        <li class="library-card-item">
-          <p class="library-card-question">${toDisplayHtml(c.question || "")}</p>
-          <p class="library-card-answer">${libraryPreviewAnswerHtml(c.answer || "")}</p>
+        <li class="card-row card-row--r47 library-card-item">
+          <div class="card-row-main">
+            <p class="card-row-q">${toDisplayHtml(c.question || "")}</p>
+            <p class="card-row-a${fullAccess ? "" : " library-card-answer--cut"}">${fullAccess ? toDisplayHtml(c.answer || "") : libraryPreviewAnswerHtml(c.answer || "")}</p>
+          </div>
         </li>
       `
           )
           .join("") || `<li class="field-hint">Aucune fiche dans cette collection.</li>`;
     }
     const noteEl = el("library-cards-note");
-    if (noteEl) noteEl.hidden = cards.length === 0;
+    if (noteEl) {
+      noteEl.hidden = cards.length === 0 || fullAccess;
+      noteEl.textContent = "Aperçu : seule la moitié de chaque réponse est visible. Avec un abonnement, ajoute cette boîte à tes révisions pour voir les réponses en entier.";
+    }
+    const cardsCountEl = el("library-cards-count");
+    if (cardsCountEl) cardsCountEl.textContent = `Fiches (${cards.length})`;
     boitePickerActivateView("view-library-cards");
     const homeBtnEl = el("home-btn");
     if (homeBtnEl) homeBtnEl.hidden = false;
@@ -12227,8 +12272,33 @@
     if (loadDevSettings().subscriptionPolicy.enforce) return false;
     return !(row && row.status === "none");
   }
+  /** Round 55 : état de l'abonnement en tête de la page Abonnements. */
+  async function renderSubscriptionsStatus() {
+    const st = el("subs-status");
+    if (!st) return;
+    if (!accountCurrentUser) {
+      st.hidden = false;
+      st.textContent = "Connecte-toi pour voir ton abonnement.";
+      return;
+    }
+    try {
+      await refreshMySubscription();
+    } catch (e) {
+      /* état inconnu */
+    }
+    const row = mySubscriptionRow;
+    const end = row && row.current_period_end ? new Date(row.current_period_end).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "";
+    let text = "";
+    if (row && row.status === "active") text = `Ton abonnement est actif${end ? ` jusqu'au ${end}` : ""}.`;
+    else if (row && row.status === "trial") text = `Tu es en période d'essai${end ? ` jusqu'au ${end}` : ""}.`;
+    else if (hasLibrarySubscription()) text = "En attendant l'ouverture des abonnements, la Librairie est ouverte à tous les comptes.";
+    else text = "Tu n'as pas d'abonnement.";
+    st.hidden = false;
+    st.textContent = text;
+    st.classList.toggle("subs-status--none", !(row && (row.status === "active" || row.status === "trial")) && !hasLibrarySubscription());
+  }
   async function showSubscriptionRequired(text) {
-    const choice = await showRobotMessage(text || "L'ajout de boîtes de la librairie nécessite un abonnement.", {
+    const choice = await showRobotMessage(text || "Il faut être abonné pour pouvoir ajouter cette boîte à tes révisions.", {
       buttons: [
         { label: "Annuler", value: null },
         { label: "Voir les abonnements", value: "subs", primary: true },
@@ -12273,6 +12343,12 @@
     const cardsToCopy = Array.isArray(col.cards) ? col.cards : [];
     if (cardsToCopy.length === 0) {
       await robotAlert("Cette boîte ne contient aucune fiche.");
+      return false;
+    }
+    // Round 55 : l'abonnement est vérifié AVANT le choix du dossier.
+    await refreshMySubscription();
+    if (!hasLibrarySubscription()) {
+      await showSubscriptionRequired();
       return false;
     }
     const folderId = await pickRevisionFolder(`Dans quel dossier ranger « ${col.name} » ?`);
@@ -13278,7 +13354,9 @@
       return;
     }
     const c = await Sync.reports.countMine();
-    if (hubBtn) hubBtn.hidden = false;
+    // Round 55 : plus de lien « Signalements » dans Mes créations (la page
+    // reste accessible depuis l'accueil).
+    if (hubBtn) hubBtn.hidden = true;
     if (homeCircle) homeCircle.hidden = c.receivedTotal + c.sentTotal === 0;
     setBadgeEl("home-reports-badge", c.open + c.sentUnseen);
     setBadgeEl("fiches-hub-reports-badge", c.open);

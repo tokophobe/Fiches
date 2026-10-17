@@ -117,7 +117,7 @@
   // retirés d'ici pour ne plus proposer une icône éditable pour un cercle
   // qui n'existe plus sur l'accueil.
   const DEFAULT_NAV_ICONS = {
-    review: "cards", manage: "folder", stats: "barChart", settings: "settings",
+    boxes: "folder", review: "cards", manage: "folder", stats: "barChart", settings: "settings",
     addCard: "plus", calendar: "calendar", dev: "code", library: "book",
     creations: "pencil",
     reports: "flag",
@@ -319,7 +319,11 @@
     stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
     dev: "Développeur", classes: "École", account: "Compte",
     library: "Librairie",
+    boxes: "Mes boîtes",
   };
+  // Round 55 : boutons qui ne sont plus sur l'accueil (gardés pour les
+  // réglages déjà enregistrés et les icônes).
+  const HOME_LAYOUT_RETIRED = ["addCard", "manage", "creations", "dev", "calendar"];
   // Largeur/hauteur de référence utilisées uniquement pour convertir une
   // seule fois d'anciens réglages enregistrés en pixels (avant ce
   // correctif) vers des pourcentages équivalents.
@@ -345,6 +349,9 @@
     dev: { x: 89.0, y: 79.0, d: 80 },
     // Round 30 : Librairie, déplacée de la page Fiches vers l'accueil.
     library: { x: 17.0, y: 40.0, d: 90 },
+    // Round 55 : « Mes boîtes » (organiser / créer), à la place de
+    // « Ajouter une fiche ».
+    boxes: { x: 72.0, y: 62.0, d: 115 },
   };
   // Items 1/2 (logo) : position (X/Y en %, centre du logo) et taille (px)
   // du logo sur la page d'accueil.
@@ -639,6 +646,7 @@
       emptyBarColor: parsed.emptyBarColor || DEFAULT_EMPTY_BAR_COLOR,
       bgColors: { ...DEFAULT_BG_COLORS, ...(parsed.bgColors || {}) },
       textColorsSet: { ...DEFAULT_TEXT_COLORS_SET, ...(parsed.textColorsSet || {}) },
+      taxColors: mergeTaxColors(DEFAULT_TAX_COLORS, parsed.taxColors),
       shadows: { ...DEFAULT_SHADOWS, ...(parsed.shadows || {}) },
       homeLayout: migrateHomeLayoutToPercent(parsed),
       homeLogo: { ...DEFAULT_HOME_LOGO, ...(parsed.homeLogo || {}) },
@@ -676,6 +684,7 @@
         textColorsSet: { ...DEFAULT_NIGHT_TEXT_COLORS_SET, ...((parsed.nightColors || {}).textColorsSet || {}) },
         ratingColors: { ...DEFAULT_RATING_COLORS, ...((parsed.nightColors || {}).ratingColors || {}) },
         ratingBtnBgColor: (parsed.nightColors || {}).ratingBtnBgColor || DEFAULT_NIGHT_RATING_BTN_BG_COLOR,
+        taxColors: mergeTaxColors(DEFAULT_NIGHT_TAX_COLORS, (parsed.nightColors || {}).taxColors),
       },
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       // Round 50 : zoom automatique des téléphones (largeur de référence
@@ -755,6 +764,27 @@
     selectorText: "Texte sélecteurs",
     syncText: "Texte « synchroniser »",
   };
+
+  // Round 55 : couleurs des blocs de classement (sélecteurs en cascade),
+  // une par niveau (jusqu'à 6), séparément pour la page Librairie et pour
+  // les autres pages, en mode jour et en mode nuit.
+  const TAX_LEVELS = 6;
+  const DEFAULT_TAX_COLORS = {
+    library: ["#d7eaf8", "#deeef9", "#e6f2fb", "#edf5fc", "#f4f9fd", "#fbfdfe"],
+    other: ["#d7eaf8", "#deeef9", "#e6f2fb", "#edf5fc", "#f4f9fd", "#fbfdfe"],
+  };
+  const DEFAULT_NIGHT_TAX_COLORS = {
+    library: ["#1e2837", "#202e40", "#223449", "#253b51", "#27415a", "#294763"],
+    other: ["#1e2837", "#202e40", "#223449", "#253b51", "#27415a", "#294763"],
+  };
+  function mergeTaxColors(defaults, stored) {
+    const out = {};
+    ["library", "other"].forEach((k) => {
+      const src = stored && Array.isArray(stored[k]) ? stored[k] : [];
+      out[k] = defaults[k].map((d, i) => (typeof src[i] === "string" && /^#[0-9a-f]{6}$/i.test(src[i]) ? src[i] : d));
+    });
+    return out;
+  }
 
   const REVIEW_LAYOUT_FIELDS = [
     { key: "cardHeightPct", title: "Hauteur de la fiche", unit: "% de l'écran" },
@@ -839,6 +869,10 @@
     PERS_GAUGE_ZONE_ORDER,
     RATING_COLORS_TITLES,
     REVIEW_LAYOUT_FIELDS,
+    TAX_LEVELS,
+    HOME_LAYOUT_RETIRED,
+    DEFAULT_TAX_COLORS,
+    DEFAULT_NIGHT_TAX_COLORS,
     REVIEW_LAYOUT_REF_HEIGHT,
     REVIEW_LAYOUT_REF_WIDTH,
     REVISION_ALGO_FIELD_DEFS,

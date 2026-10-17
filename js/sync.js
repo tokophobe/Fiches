@@ -897,6 +897,32 @@ async function authGetUserUncached(c) {
   }
 }
 
+/* ---- Round 55 : mot de passe oublié (fonction intégrée de Supabase
+   Auth) — un email avec un lien de réinitialisation est envoyé ; le lien
+   ramène dans l'appli avec l'évènement PASSWORD_RECOVERY, où l'on choisit
+   un nouveau mot de passe (updateUser). ---- */
+async function authSendPasswordReset(email) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée." };
+  const redirectTo = window.location.origin + window.location.pathname;
+  const { error } = await c.auth.resetPasswordForEmail(String(email || "").trim(), { redirectTo });
+  return { error: error ? error.message : null };
+}
+async function authUpdatePassword(password) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée." };
+  const { error } = await c.auth.updateUser({ password });
+  return { error: error ? error.message : null };
+}
+function authOnPasswordRecovery(callback) {
+  const c = getClient();
+  if (!c) return () => {};
+  const { data } = c.auth.onAuthStateChange((event) => {
+    if (event === "PASSWORD_RECOVERY") callback();
+  });
+  return () => data.subscription.unsubscribe();
+}
+
 function authOnChange(callback) {
   const c = getClient();
   if (!c) return () => {};
@@ -1545,6 +1571,9 @@ window.Sync = {
     updateProfile: authUpdateProfile,
     updateSchoolLevel: authUpdateSchoolLevel,
     updateMetadata: authUpdateMetadata,
+    sendPasswordReset: authSendPasswordReset,
+    updatePassword: authUpdatePassword,
+    onPasswordRecovery: authOnPasswordRecovery,
   },
   classes: {
     create: createClass,

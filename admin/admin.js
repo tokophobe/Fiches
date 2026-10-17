@@ -92,7 +92,8 @@
   function setPath(o, path, v) {
     let cur = o;
     for (let i = 0; i < path.length - 1; i++) {
-      if (!isObj(cur[path[i]])) cur[path[i]] = {};
+      // Round 55 : un tableau (couleurs par niveau) est gardé tel quel.
+      if (!isObj(cur[path[i]]) && !Array.isArray(cur[path[i]])) cur[path[i]] = {};
       cur = cur[path[i]];
     }
     cur[path[path.length - 1]] = v;
@@ -2411,6 +2412,24 @@
           M.TEXT_COLORS_SET_ORDER.map((k) => setRow(M.TEXT_COLORS_SET_TITLES[k] || k, [colorCtrl(["textColorsSet", k]), colorCtrl(["nightColors", "textColorsSet", k])]))
         )
       );
+      // Round 55 : blocs de classement (sélecteurs en cascade), un fond par
+      // niveau — page Librairie d'une part, autres pages d'autre part.
+      [
+        ["library", "Blocs de classement — page Librairie", "Fond de chaque niveau des filtres de classement de la Librairie."],
+        ["other", "Blocs de classement — autres pages", "Classer une boîte, publier dans la Librairie, filtres de Mes créations."],
+      ].forEach(([k, title, hint]) => {
+        root.appendChild(
+          section(
+            title,
+            hint,
+            [["taxColors", k], ["nightColors", "taxColors", k]],
+            dayNightHead(),
+            Array.from({ length: M.TAX_LEVELS }, (_, i) =>
+              setRow(`Niveau ${i + 1}${i === 0 ? " (catégorie)" : ""}`, [colorCtrl(["taxColors", k, i]), colorCtrl(["nightColors", "taxColors", k, i])])
+            )
+          )
+        );
+      });
       root.appendChild(
         section(
           "Effets d'ombrage",
@@ -2423,6 +2442,7 @@
 
   /* ---- Icônes ---- */
   const NAV_ICON_TITLES = {
+    boxes: "Mes boîtes",
     review: "Réviser",
     manage: "Organiser mes boîtes de révision",
     stats: "Statistiques",
@@ -2441,7 +2461,7 @@
           null,
           [["navIcons"]],
           Object.keys(M.DEFAULT_NAV_ICONS)
-            .filter((k) => k !== "dev")
+            .filter((k) => k !== "dev" && k !== "addCard")
             .map((k) => setRow(NAV_ICON_TITLES[k] || M.HOME_LAYOUT_TITLES[k] || k, iconCtrl(["navIcons", k])))
         )
       );
@@ -2489,7 +2509,7 @@
           "Position X/Y du centre de chaque bouton rond, en % de la largeur/hauteur de la zone d'accueil (s'adapte à chaque écran), et diamètre en pixels.",
           [["homeLayout"]],
           Object.keys(M.DEFAULT_HOME_LAYOUT)
-            .filter((k) => k !== "dev")
+            .filter((k) => !M.HOME_LAYOUT_RETIRED.includes(k))
             .map((k) =>
               setRow(M.HOME_LAYOUT_TITLES[k] || k, [
                 numCtrl(["homeLayout", k, "x"], { step: 0.1, label: "X", unit: "%" }),
