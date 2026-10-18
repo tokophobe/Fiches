@@ -120535,6 +120535,2545 @@
      "wq": "7b5dec73"
     }
    ]
+  },
+  {
+   "key": "r56-6e-anglais-heure-date",
+   "name": "6ème — Anglais : l'heure, la date et les saisons",
+   "level": "6ème",
+   "taxonomy": {
+    "niveau": "6ème",
+    "matiere": "anglais"
+   },
+   "tags": [
+    "anglais",
+    "heure",
+    "date",
+    "mois",
+    "saisons"
+   ],
+   "summary": "Dire l'heure, les jours, les mois, les saisons et la date en anglais.",
+   "description": "Programme de 6ème (cycle 3), anglais : se situer dans le temps — lire et dire l'heure, les mois, les saisons, les nombres ordinaux et la date.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment demande-t-on l'heure en anglais ?",
+     "answer": "What time is it?"
+    },
+    {
+     "question": "Comment dit-on « Il est 3 heures » ?",
+     "answer": "It's three o'clock."
+    },
+    {
+     "question": "Comment dit-on « Il est 3 h 15 » ?",
+     "answer": "It's quarter past three."
+    },
+    {
+     "question": "Comment dit-on « Il est 3 h 30 » ?",
+     "answer": "It's half past three."
+    },
+    {
+     "question": "Comment dit-on « Il est 3 h 45 » ?",
+     "answer": "It's quarter to four."
+    },
+    {
+     "question": "Que signifient a.m. et p.m. ?",
+     "answer": "a.m. : le matin (avant midi)\np.m. : l'après-midi et le soir"
+    },
+    {
+     "question": "Quels sont les mois de janvier à juin ?",
+     "answer": "January, February, March,\nApril, May, June"
+    },
+    {
+     "question": "Quels sont les mois de juillet à décembre ?",
+     "answer": "July, August, September,\nOctober, November, December"
+    },
+    {
+     "question": "Prennent-ils une majuscule en anglais : les jours et les mois ?",
+     "answer": "Oui, toujours :\nMonday, January…"
+    },
+    {
+     "question": "Quelles sont les quatre saisons en anglais ?",
+     "answer": "spring (printemps), summer (été),\nautumn / fall (automne), winter (hiver)"
+    },
+    {
+     "question": "Comment dit-on 1er, 2e, 3e en anglais ?",
+     "answer": "first (1st), second (2nd), third (3rd)"
+    },
+    {
+     "question": "Comment forme-t-on les autres nombres ordinaux ?",
+     "answer": "On ajoute -th : fourth, sixth, tenth…\n(attention : fifth, twelfth)"
+    },
+    {
+     "question": "Comment dit-on « le 14 juillet » ?",
+     "answer": "the fourteenth of July\n(écrit : July 14th)"
+    },
+    {
+     "question": "Comment demande-t-on la date du jour ?",
+     "answer": "What's the date today?"
+    },
+    {
+     "question": "Quelle préposition devant un jour ? un mois ? une heure ?",
+     "answer": "on Monday\nin May\nat 8 o'clock"
+    },
+    {
+     "question": "Comment dit-on « Mon anniversaire est le 3 mars » ?",
+     "answer": "My birthday is on the third of March."
+    }
+   ]
+  },
+  {
+   "key": "r56-6e-anglais-have-got-description",
+   "name": "6ème — Anglais : have got, possessifs et description physique",
+   "level": "6ème",
+   "taxonomy": {
+    "niveau": "6ème",
+    "matiere": "anglais"
+   },
+   "tags": [
+    "anglais",
+    "have got",
+    "possessifs",
+    "description"
+   ],
+   "summary": "Décrire quelqu'un : have got, adjectifs possessifs, génitif 's et vocabulaire du physique.",
+   "description": "Programme de 6ème (cycle 3), anglais : se décrire et décrire quelqu'un — have got, adjectifs possessifs, cas possessif 's, place de l'adjectif.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Conjugue have got au présent.",
+     "answer": "I have got / you have got\nhe, she, it has got\nwe, you, they have got"
+    },
+    {
+     "question": "Quelle est la forme contractée de I have got et she has got ?",
+     "answer": "I've got\nshe's got"
+    },
+    {
+     "question": "Comment met-on have got à la forme négative ?",
+     "answer": "I haven't got a dog.\nShe hasn't got a dog."
+    },
+    {
+     "question": "Comment pose-t-on une question avec have got ?",
+     "answer": "On inverse : Have you got a pet?\nRéponse : Yes, I have. / No, I haven't."
+    },
+    {
+     "question": "Quels sont les adjectifs possessifs anglais ?",
+     "answer": "my, your, his, her, its,\nour, your, their"
+    },
+    {
+     "question": "His ou her : comment choisir ?",
+     "answer": "Selon le possesseur :\nhis = à lui, her = à elle\nTom and his sister / Ann and her brother"
+    },
+    {
+     "question": "Comment dit-on « le vélo de Tom » ?",
+     "answer": "Tom's bike\n(cas possessif 's)"
+    },
+    {
+     "question": "Comment dit-on « la chambre de mes parents » ?",
+     "answer": "my parents' bedroom\n(pluriel en -s : seulement l'apostrophe)"
+    },
+    {
+     "question": "Où se place l'adjectif en anglais ?",
+     "answer": "Avant le nom, et il ne s'accorde jamais :\nblue eyes, a tall girl"
+    },
+    {
+     "question": "Comment dit-on « Elle a les cheveux longs et blonds » ?",
+     "answer": "She's got long fair hair.\n(hair est indénombrable : pas de -s)"
+    },
+    {
+     "question": "Que signifient tall et short ?",
+     "answer": "tall : grand\nshort : petit (ou court)"
+    },
+    {
+     "question": "Que signifient curly, straight et wavy ?",
+     "answer": "curly : bouclés\nstraight : raides\nwavy : ondulés"
+    },
+    {
+     "question": "Comment dit-on « des lunettes » et « une barbe » ?",
+     "answer": "glasses\na beard"
+    },
+    {
+     "question": "Comment demande-t-on « De quelle couleur sont ses yeux ? »",
+     "answer": "What colour are his eyes?"
+    },
+    {
+     "question": "Que signifie « He's got freckles » ?",
+     "answer": "Il a des taches de rousseur."
+    },
+    {
+     "question": "Comment dit-on « Il a 12 ans » ?",
+     "answer": "He is twelve (years old).\n(verbe be, pas have)"
+    }
+   ]
+  },
+  {
+   "key": "r56-6e-francais-determinants-pronoms",
+   "name": "6ème — Français : déterminants et pronoms",
+   "level": "6ème",
+   "taxonomy": {
+    "niveau": "6ème",
+    "matiere": "français"
+   },
+   "tags": [
+    "grammaire",
+    "déterminants",
+    "pronoms",
+    "classes de mots"
+   ],
+   "summary": "Reconnaître les déterminants (articles, possessifs, démonstratifs) et les pronoms personnels.",
+   "description": "Programme de 6ème (cycle 3), français, étude de la langue : identifier les classes de mots — les déterminants et les pronoms, leur rôle dans le groupe nominal et dans la phrase.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce qu'un déterminant ?",
+     "answer": "Un mot placé devant le nom,\nqui forme avec lui le groupe nominal."
+    },
+    {
+     "question": "Quels sont les articles définis ?",
+     "answer": "le, la, l', les"
+    },
+    {
+     "question": "Quels sont les articles indéfinis ?",
+     "answer": "un, une, des"
+    },
+    {
+     "question": "Quels sont les articles partitifs ?",
+     "answer": "du, de la, de l'\n(une quantité qu'on ne compte pas : du pain)"
+    },
+    {
+     "question": "Que sont « au » et « aux » ?",
+     "answer": "Des articles définis contractés :\nà + le = au, à + les = aux"
+    },
+    {
+     "question": "Cite les déterminants possessifs.",
+     "answer": "mon, ton, son, ma, ta, sa, mes, tes, ses,\nnotre, votre, leur, nos, vos, leurs"
+    },
+    {
+     "question": "Cite les déterminants démonstratifs.",
+     "answer": "ce, cet, cette, ces"
+    },
+    {
+     "question": "Quand emploie-t-on « cet » ?",
+     "answer": "Devant un nom masculin\nqui commence par une voyelle ou un h muet :\ncet arbre, cet homme"
+    },
+    {
+     "question": "Qu'est-ce qu'un pronom ?",
+     "answer": "Un mot qui remplace un nom ou un groupe nominal\n(pour éviter une répétition)."
+    },
+    {
+     "question": "Quels sont les pronoms personnels sujets ?",
+     "answer": "je, tu, il, elle, on,\nnous, vous, ils, elles"
+    },
+    {
+     "question": "Quels pronoms remplacent un COD ?",
+     "answer": "le, la, l', les\n(+ me, te, nous, vous)"
+    },
+    {
+     "question": "Quels pronoms remplacent un COI introduit par « à » ?",
+     "answer": "lui, leur\n(+ me, te, nous, vous)"
+    },
+    {
+     "question": "Dans « Je les vois », « les » est-il un déterminant ?",
+     "answer": "Non : un pronom.\nIl est devant un verbe, pas devant un nom."
+    },
+    {
+     "question": "« Leur » : déterminant ou pronom ?",
+     "answer": "Devant un nom : déterminant (leur chien, leurs amis).\nDevant un verbe : pronom, invariable (je leur parle)."
+    },
+    {
+     "question": "Que sont « quel, quelle, quels, quelles » ?",
+     "answer": "Des déterminants interrogatifs ou exclamatifs :\nQuel livre ? Quelle chance !"
+    },
+    {
+     "question": "Cite des déterminants indéfinis.",
+     "answer": "chaque, plusieurs, quelques, aucun, certains, tout…"
+    }
+   ]
+  },
+  {
+   "key": "r56-6e-histoire-athenes-democratie",
+   "name": "6ème — Histoire : Athènes, citoyenneté et démocratie",
+   "level": "6ème",
+   "taxonomy": {
+    "niveau": "6ème",
+    "matiere": "histoire"
+   },
+   "tags": [
+    "histoire",
+    "Grèce",
+    "Athènes",
+    "démocratie",
+    "citoyens"
+   ],
+   "summary": "La cité d'Athènes au Ve siècle av. J.-C. : citoyens, institutions et exclus de la démocratie.",
+   "description": "Programme de 6ème (cycle 3), histoire, thème 2 « Récits fondateurs, croyances et citoyenneté dans la Méditerranée antique » : la naissance de la démocratie à Athènes.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce qu'une cité grecque ?",
+     "answer": "Une ville et son territoire,\nindépendante, avec ses lois et ses dieux."
+    },
+    {
+     "question": "Que signifie le mot « démocratie » ?",
+     "answer": "Le pouvoir (kratos) du peuple (dêmos)."
+    },
+    {
+     "question": "Au Ve siècle av. J.-C., qui est citoyen à Athènes ?",
+     "answer": "Un homme libre, de plus de 18 ans,\nné de parents athéniens."
+    },
+    {
+     "question": "Qui est exclu de la citoyenneté à Athènes ?",
+     "answer": "Les femmes, les esclaves\net les métèques (étrangers)."
+    },
+    {
+     "question": "Qu'est-ce qu'un métèque ?",
+     "answer": "Un étranger libre installé à Athènes :\nil paie des impôts mais ne vote pas."
+    },
+    {
+     "question": "Qu'est-ce que l'Ecclésia ?",
+     "answer": "L'assemblée des citoyens :\nelle vote les lois, la guerre et la paix."
+    },
+    {
+     "question": "Où se réunit l'Ecclésia ?",
+     "answer": "Sur la colline de la Pnyx."
+    },
+    {
+     "question": "Qu'est-ce que la Boulè ?",
+     "answer": "Un conseil de 500 citoyens tirés au sort\nqui prépare les lois."
+    },
+    {
+     "question": "Qu'est-ce que l'Héliée ?",
+     "answer": "Le tribunal populaire d'Athènes,\nformé de citoyens tirés au sort."
+    },
+    {
+     "question": "Qui sont les stratèges ?",
+     "answer": "10 magistrats élus chaque année\nqui commandent l'armée."
+    },
+    {
+     "question": "Quel stratège a dominé la vie d'Athènes au Ve siècle av. J.-C. ?",
+     "answer": "Périclès."
+    },
+    {
+     "question": "Qu'est-ce que l'ostracisme ?",
+     "answer": "Un vote pour exiler pendant 10 ans\nun citoyen jugé dangereux."
+    },
+    {
+     "question": "Qu'est-ce que l'Acropole ?",
+     "answer": "La colline sacrée d'Athènes,\noù se dresse le Parthénon."
+    },
+    {
+     "question": "À quelle déesse le Parthénon est-il dédié ?",
+     "answer": "Athéna, protectrice de la cité."
+    },
+    {
+     "question": "Qu'est-ce que l'Agora ?",
+     "answer": "La place publique : marché et lieu de rencontre\net de vie politique."
+    },
+    {
+     "question": "Pourquoi les citoyens pauvres peuvent-ils participer ?",
+     "answer": "Périclès crée le misthos :\nune indemnité pour ceux qui siègent."
+    }
+   ]
+  },
+  {
+   "key": "r56-6e-geo-se-reperer-terre",
+   "name": "6ème — Géographie : se repérer sur la Terre",
+   "level": "6ème",
+   "taxonomy": {
+    "niveau": "6ème",
+    "matiere": "géographie"
+   },
+   "tags": [
+    "géographie",
+    "continents",
+    "océans",
+    "latitude",
+    "longitude",
+    "repères"
+   ],
+   "summary": "Continents, océans, équateur, méridiens, latitude et longitude : les grands repères du globe.",
+   "description": "Programme de 6ème (cycle 3), géographie : repères géographiques — continents, océans, grands repères du globe et coordonnées géographiques.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Combien y a-t-il de continents ? Lesquels ?",
+     "answer": "6 : Afrique, Amérique, Antarctique,\nAsie, Europe, Océanie"
+    },
+    {
+     "question": "Quels sont les cinq océans ?",
+     "answer": "Pacifique, Atlantique, Indien,\nArctique, Austral"
+    },
+    {
+     "question": "Quel est le plus grand océan ?",
+     "answer": "L'océan Pacifique."
+    },
+    {
+     "question": "Quelle part de la surface de la Terre est couverte d'eau ?",
+     "answer": "Environ 70 %."
+    },
+    {
+     "question": "Qu'est-ce que l'équateur ?",
+     "answer": "La ligne imaginaire qui partage la Terre\nen deux hémisphères, Nord et Sud."
+    },
+    {
+     "question": "Qu'est-ce qu'un méridien ?",
+     "answer": "Un demi-cercle imaginaire\nqui relie le pôle Nord au pôle Sud."
+    },
+    {
+     "question": "Quel est le méridien de référence ?",
+     "answer": "Le méridien de Greenwich (près de Londres), 0°."
+    },
+    {
+     "question": "Qu'est-ce que la latitude ?",
+     "answer": "La distance en degrés d'un lieu\npar rapport à l'équateur (de 0° à 90° Nord ou Sud)."
+    },
+    {
+     "question": "Qu'est-ce que la longitude ?",
+     "answer": "La distance en degrés d'un lieu\npar rapport au méridien de Greenwich (0° à 180° Est ou Ouest)."
+    },
+    {
+     "question": "Qu'est-ce qu'un parallèle ?",
+     "answer": "Un cercle imaginaire parallèle à l'équateur :\ntous ses points ont la même latitude."
+    },
+    {
+     "question": "Comment s'appellent les parallèles situés vers 23° Nord et 23° Sud ?",
+     "answer": "Le tropique du Cancer (Nord)\net le tropique du Capricorne (Sud)."
+    },
+    {
+     "question": "Quels sont les quatre points cardinaux ?",
+     "answer": "Nord, Sud, Est, Ouest."
+    },
+    {
+     "question": "À quoi sert l'échelle d'une carte ?",
+     "answer": "À calculer les distances réelles :\n1/100 000 → 1 cm = 1 km."
+    },
+    {
+     "question": "À quoi sert la légende d'une carte ?",
+     "answer": "À expliquer les figurés (couleurs, symboles)\nutilisés sur la carte."
+    },
+    {
+     "question": "Quelle est la plus haute montagne du monde ?",
+     "answer": "L'Everest (Himalaya), 8 849 m."
+    },
+    {
+     "question": "Quel est le plus long fleuve du monde ?",
+     "answer": "Le Nil ou l'Amazone\n(environ 6 500 à 7 000 km selon les mesures)."
+    }
+   ]
+  },
+  {
+   "key": "r56-6e-maths-calcul-decimaux",
+   "name": "6ème — Maths : calculer avec les nombres décimaux",
+   "level": "6ème",
+   "taxonomy": {
+    "niveau": "6ème",
+    "matiere": "mathématiques"
+   },
+   "tags": [
+    "maths",
+    "décimaux",
+    "opérations",
+    "calcul mental"
+   ],
+   "summary": "Additionner, soustraire, multiplier des décimaux, multiplier et diviser par 10, 100, 1 000, ordres de grandeur.",
+   "description": "Programme de 6ème (cycle 3), mathématiques, « Nombres et calculs » : les quatre opérations sur les nombres décimaux, calcul mental, calcul posé et ordre de grandeur.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment pose-t-on une addition de nombres décimaux ?",
+     "answer": "On aligne les virgules\n(unités sous unités, dixièmes sous dixièmes…)."
+    },
+    {
+     "question": "Calcule 4,7 + 2,85.",
+     "answer": "7,55"
+    },
+    {
+     "question": "Calcule 10 − 3,6.",
+     "answer": "6,4"
+    },
+    {
+     "question": "Comment multiplie-t-on deux nombres décimaux ?",
+     "answer": "On multiplie sans les virgules,\npuis on place autant de chiffres après la virgule\nqu'il y en a en tout dans les deux facteurs."
+    },
+    {
+     "question": "Calcule 2,5 × 1,2.",
+     "answer": "3"
+    },
+    {
+     "question": "Calcule 0,3 × 0,2.",
+     "answer": "0,06"
+    },
+    {
+     "question": "Comment multiplie-t-on un nombre par 10, 100, 1 000 ?",
+     "answer": "Chaque chiffre prend une valeur 10, 100, 1 000 fois plus grande :\nla virgule « avance » de 1, 2, 3 rangs vers la droite."
+    },
+    {
+     "question": "Calcule 3,45 × 100.",
+     "answer": "345"
+    },
+    {
+     "question": "Comment divise-t-on un nombre par 10, 100, 1 000 ?",
+     "answer": "La virgule « recule » de 1, 2, 3 rangs vers la gauche."
+    },
+    {
+     "question": "Calcule 52 ÷ 1 000.",
+     "answer": "0,052"
+    },
+    {
+     "question": "Multiplier par 0,1, c'est comme…",
+     "answer": "… diviser par 10."
+    },
+    {
+     "question": "Multiplier par 0,5, c'est comme…",
+     "answer": "… prendre la moitié (diviser par 2)."
+    },
+    {
+     "question": "Donne un ordre de grandeur de 19,8 × 5,1.",
+     "answer": "20 × 5 = 100"
+    },
+    {
+     "question": "Calcule 7,2 ÷ 4.",
+     "answer": "1,8"
+    },
+    {
+     "question": "Le produit de deux nombres plus petits que 1 est-il plus petit ou plus grand que chacun d'eux ?",
+     "answer": "Plus petit.\nEx. : 0,5 × 0,4 = 0,2"
+    },
+    {
+     "question": "Calcule 25 × 4 × 3,7 de tête.",
+     "answer": "370\n(25 × 4 = 100)"
+    }
+   ]
+  },
+  {
+   "key": "r56-6e-sciences-eau-cycle",
+   "name": "6ème — Sciences : l'eau, ses états et son cycle",
+   "level": "6ème",
+   "taxonomy": {
+    "niveau": "6ème",
+    "matiere": "sciences"
+   },
+   "tags": [
+    "sciences",
+    "eau",
+    "états de la matière",
+    "cycle de l'eau"
+   ],
+   "summary": "Solide, liquide, gaz, changements d'état, température de l'eau et cycle de l'eau.",
+   "description": "Programme de 6ème (cycle 3), sciences et technologie, « Matière, mouvement, énergie, information » et « La planète Terre » : états et changements d'état de l'eau, le cycle de l'eau.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Quels sont les trois états de l'eau ?",
+     "answer": "Solide (glace), liquide, gazeux (vapeur d'eau)."
+    },
+    {
+     "question": "La vapeur d'eau est-elle visible ?",
+     "answer": "Non, c'est un gaz invisible.\nLa « fumée » d'une casserole, ce sont de fines gouttelettes."
+    },
+    {
+     "question": "Comment s'appelle le passage de solide à liquide ?",
+     "answer": "La fusion."
+    },
+    {
+     "question": "Comment s'appelle le passage de liquide à solide ?",
+     "answer": "La solidification."
+    },
+    {
+     "question": "Comment s'appelle le passage de liquide à gaz ?",
+     "answer": "La vaporisation\n(ébullition ou évaporation)."
+    },
+    {
+     "question": "Comment s'appelle le passage de gaz à liquide ?",
+     "answer": "La liquéfaction (ou condensation)."
+    },
+    {
+     "question": "À quelle température l'eau pure gèle-t-elle ?",
+     "answer": "0 °C (sous la pression normale)."
+    },
+    {
+     "question": "À quelle température l'eau pure bout-elle ?",
+     "answer": "100 °C (au niveau de la mer)."
+    },
+    {
+     "question": "Pendant qu'un glaçon fond, que fait la température ?",
+     "answer": "Elle reste constante, à 0 °C,\njusqu'à ce que toute la glace ait fondu."
+    },
+    {
+     "question": "La masse change-t-elle lors d'un changement d'état ?",
+     "answer": "Non, elle se conserve."
+    },
+    {
+     "question": "Pourquoi une bouteille d'eau pleine éclate-t-elle au congélateur ?",
+     "answer": "L'eau qui gèle prend plus de volume\n(la glace est moins dense que l'eau liquide)."
+    },
+    {
+     "question": "Quel instrument mesure la température ?",
+     "answer": "Le thermomètre."
+    },
+    {
+     "question": "Quelles sont les grandes étapes du cycle de l'eau ?",
+     "answer": "Évaporation → condensation en nuages →\nprécipitations → ruissellement et infiltration → retour à la mer."
+    },
+    {
+     "question": "Qu'est-ce qu'une nappe phréatique ?",
+     "answer": "De l'eau souterraine,\nstockée dans les roches du sous-sol."
+    },
+    {
+     "question": "Quelle part de l'eau de la Terre est de l'eau douce ?",
+     "answer": "Environ 3 %,\ndont la plus grande partie est sous forme de glace."
+    },
+    {
+     "question": "Quelle source d'énergie fait fonctionner le cycle de l'eau ?",
+     "answer": "Le Soleil."
+    }
+   ]
+  },
+  {
+   "key": "r56-6e-techno-evolution-objets",
+   "name": "6ème — Technologie : l'évolution des objets techniques",
+   "level": "6ème",
+   "taxonomy": {
+    "niveau": "6ème",
+    "matiere": "technologie"
+   },
+   "tags": [
+    "technologie",
+    "objets techniques",
+    "innovation",
+    "besoin"
+   ],
+   "summary": "Besoin, fonction d'usage, solutions techniques, innovations et évolution des objets.",
+   "description": "Programme de 6ème (cycle 3), sciences et technologie, « Matériaux et objets techniques » : identifier les principales évolutions du besoin et des objets, repérer les innovations.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce qu'un objet technique ?",
+     "answer": "Un objet fabriqué par l'être humain\npour répondre à un besoin."
+    },
+    {
+     "question": "Qu'est-ce que la fonction d'usage d'un objet ?",
+     "answer": "Ce à quoi il sert.\nEx. : un vélo sert à se déplacer."
+    },
+    {
+     "question": "Qu'est-ce qu'une fonction d'estime ?",
+     "answer": "Ce qui rend l'objet agréable ou désirable :\ncouleur, forme, marque…"
+    },
+    {
+     "question": "Qu'est-ce qu'une fonction technique ?",
+     "answer": "Une action que doit réaliser une partie de l'objet\npour qu'il fonctionne (ex. : freiner, éclairer)."
+    },
+    {
+     "question": "Qu'est-ce qu'une solution technique ?",
+     "answer": "Le moyen choisi pour réaliser une fonction technique\n(ex. : un frein à disque ou à patin)."
+    },
+    {
+     "question": "Qu'est-ce qu'une innovation ?",
+     "answer": "Une amélioration nouvelle d'un objet\nqui est adoptée par les utilisateurs."
+    },
+    {
+     "question": "Qu'est-ce qu'une invention ?",
+     "answer": "Une idée ou un objet qui n'existait pas avant."
+    },
+    {
+     "question": "Qu'est-ce qu'une famille d'objets ?",
+     "answer": "Des objets qui ont la même fonction d'usage\n(ex. : tous les moyens d'éclairage)."
+    },
+    {
+     "question": "Qu'est-ce qu'une lignée d'objets ?",
+     "answer": "Des objets d'une même famille\nqui utilisent le même principe technique."
+    },
+    {
+     "question": "Pourquoi un objet évolue-t-il ?",
+     "answer": "Nouveaux besoins, nouveaux matériaux,\nnouvelles énergies, progrès techniques, coût, confort…"
+    },
+    {
+     "question": "Cite trois sources d'éclairage dans l'ordre historique.",
+     "answer": "Bougie (ou lampe à huile) → ampoule à incandescence → LED."
+    },
+    {
+     "question": "Quel est l'avantage de la LED sur l'ampoule à incandescence ?",
+     "answer": "Elle consomme beaucoup moins d'énergie\net dure plus longtemps."
+    },
+    {
+     "question": "Qu'est-ce qu'une frise chronologique d'objets ?",
+     "answer": "Une ligne du temps qui montre\nl'évolution d'un objet à travers les époques."
+    },
+    {
+     "question": "Qu'est-ce que le cycle de vie d'un objet ?",
+     "answer": "Extraction des matières → fabrication → transport →\nutilisation → fin de vie (recyclage)."
+    },
+    {
+     "question": "Qu'est-ce qu'un cahier des charges ?",
+     "answer": "Le document qui décrit ce que l'objet doit faire\net les contraintes à respecter."
+    },
+    {
+     "question": "Qui a inventé l'ampoule électrique à incandescence durable ?",
+     "answer": "Thomas Edison (1879),\naprès d'autres inventeurs comme Joseph Swan."
+    }
+   ]
+  },
+  {
+   "key": "r56-6e-musique-instruments-vocabulaire",
+   "name": "6ème — Éducation musicale : instruments et vocabulaire de la musique",
+   "level": "6ème",
+   "taxonomy": {
+    "niveau": "6ème",
+    "matiere": "éducation musicale"
+   },
+   "tags": [
+    "musique",
+    "instruments",
+    "orchestre",
+    "vocabulaire"
+   ],
+   "summary": "Familles d'instruments, orchestre, voix, tempo, nuances et vocabulaire pour décrire une œuvre.",
+   "description": "Programme de 6ème (cycle 3), éducation musicale : écouter, comparer et commenter — familles d'instruments, voix, paramètres du son et vocabulaire de base.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Quelles sont les grandes familles d'instruments ?",
+     "answer": "Les cordes, les vents (bois et cuivres)\net les percussions."
+    },
+    {
+     "question": "Cite quatre instruments à cordes frottées de l'orchestre.",
+     "answer": "Violon, alto, violoncelle, contrebasse."
+    },
+    {
+     "question": "La guitare et la harpe sont des cordes…",
+     "answer": "… pincées."
+    },
+    {
+     "question": "Le piano est un instrument à cordes…",
+     "answer": "… frappées (par des marteaux)."
+    },
+    {
+     "question": "Cite des instruments de la famille des bois.",
+     "answer": "Flûte, hautbois, clarinette, basson."
+    },
+    {
+     "question": "Pourquoi la flûte traversière fait-elle partie des bois alors qu'elle est en métal ?",
+     "answer": "Parce que le son ne vient pas de la vibration des lèvres :\nles bois sont classés selon leur mode de jeu."
+    },
+    {
+     "question": "Cite des instruments de la famille des cuivres.",
+     "answer": "Trompette, cor, trombone, tuba."
+    },
+    {
+     "question": "Qu'est-ce que le tempo ?",
+     "answer": "La vitesse d'exécution d'un morceau\n(lent, modéré, rapide)."
+    },
+    {
+     "question": "Que signifient piano et forte en musique ?",
+     "answer": "piano (p) : doucement\nforte (f) : fort"
+    },
+    {
+     "question": "Que sont un crescendo et un decrescendo ?",
+     "answer": "crescendo : de plus en plus fort\ndecrescendo : de plus en plus doux"
+    },
+    {
+     "question": "Qu'est-ce que le timbre d'un son ?",
+     "answer": "La « couleur » du son qui permet\nde reconnaître un instrument ou une voix."
+    },
+    {
+     "question": "Qu'est-ce que la hauteur d'un son ?",
+     "answer": "Son caractère grave ou aigu."
+    },
+    {
+     "question": "Quelles sont les voix, de la plus aiguë à la plus grave ?",
+     "answer": "Femmes : soprano, alto.\nHommes : ténor, basse."
+    },
+    {
+     "question": "Qui dirige l'orchestre ?",
+     "answer": "Le chef d'orchestre."
+    },
+    {
+     "question": "Qu'est-ce qu'un refrain ?",
+     "answer": "Une partie qui revient plusieurs fois\navec les mêmes paroles et la même mélodie."
+    },
+    {
+     "question": "Quelles sont les sept notes de la gamme ?",
+     "answer": "do, ré, mi, fa, sol, la, si"
+    }
+   ]
+  },
+  {
+   "key": "r56-6e-emc-droits-enfant",
+   "name": "6ème — EMC : les droits de l'enfant et l'égalité filles-garçons",
+   "level": "6ème",
+   "taxonomy": {
+    "niveau": "6ème",
+    "matiere": "EMC"
+   },
+   "tags": [
+    "EMC",
+    "droits de l'enfant",
+    "CIDE",
+    "égalité"
+   ],
+   "summary": "La Convention internationale des droits de l'enfant, ses grands droits, et l'égalité filles-garçons.",
+   "description": "Programme de 6ème (cycle 3), enseignement moral et civique : respecter autrui, connaître les droits de l'enfant et le principe d'égalité.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce que la CIDE ?",
+     "answer": "La Convention internationale des droits de l'enfant,\nadoptée par l'ONU."
+    },
+    {
+     "question": "En quelle année la CIDE a-t-elle été adoptée ?",
+     "answer": "Le 20 novembre 1989."
+    },
+    {
+     "question": "Quel jour est la journée internationale des droits de l'enfant ?",
+     "answer": "Le 20 novembre."
+    },
+    {
+     "question": "Jusqu'à quel âge est-on un enfant selon la CIDE ?",
+     "answer": "Jusqu'à 18 ans."
+    },
+    {
+     "question": "Cite quatre droits de l'enfant.",
+     "answer": "Droit à l'éducation, à la santé, à un nom et une nationalité,\nà être protégé de la violence…"
+    },
+    {
+     "question": "La France a-t-elle signé la CIDE ?",
+     "answer": "Oui, en 1990."
+    },
+    {
+     "question": "Quel organisme de l'ONU s'occupe des enfants ?",
+     "answer": "L'UNICEF."
+    },
+    {
+     "question": "Quel numéro appeler pour signaler un enfant en danger en France ?",
+     "answer": "Le 119 (Allô enfance en danger), gratuit, 24 h/24."
+    },
+    {
+     "question": "Jusqu'à quel âge l'instruction est-elle obligatoire en France ?",
+     "answer": "De 3 à 16 ans\n(formation obligatoire jusqu'à 18 ans)."
+    },
+    {
+     "question": "Qu'est-ce qu'un droit ?",
+     "answer": "Ce que la loi permet ou garantit à chacun."
+    },
+    {
+     "question": "Qu'est-ce qu'un devoir ?",
+     "answer": "Une obligation à respecter\n(ex. : respecter les autres, le règlement)."
+    },
+    {
+     "question": "Que dit le principe d'égalité filles-garçons ?",
+     "answer": "Filles et garçons ont les mêmes droits\net doivent être traités de la même façon."
+    },
+    {
+     "question": "Qu'est-ce qu'un stéréotype ?",
+     "answer": "Une idée toute faite sur un groupe de personnes\n(ex. : « les filles sont nulles en foot »)."
+    },
+    {
+     "question": "Qu'est-ce qu'une discrimination ?",
+     "answer": "Traiter quelqu'un moins bien\nà cause de son origine, de son sexe, de son handicap…"
+    },
+    {
+     "question": "Qu'est-ce que le harcèlement scolaire ?",
+     "answer": "Des violences répétées (moqueries, insultes, coups, messages)\ncontre un même élève."
+    },
+    {
+     "question": "Quel numéro appeler contre le harcèlement ?",
+     "answer": "Le 3018\n(harcèlement à l'école et sur Internet)."
+    }
+   ]
+  },
+  {
+   "key": "r56-5e-anglais-present-continu",
+   "name": "5ème — Anglais : présent en be + -ing et activités",
+   "level": "5ème",
+   "taxonomy": {
+    "niveau": "5ème",
+    "matiere": "anglais"
+   },
+   "tags": [
+    "anglais",
+    "présent continu",
+    "be + ing",
+    "activités"
+   ],
+   "summary": "Décrire ce qui se passe maintenant : be + V-ing, orthographe du -ing, présent simple ou en -ing.",
+   "description": "Programme de 5ème (cycle 4), anglais : décrire une scène, une action en cours — présent en be + V-ing, contraste avec le présent simple.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment forme-t-on le présent en be + -ing ?",
+     "answer": "be au présent + verbe + -ing :\nI am playing, she is reading."
+    },
+    {
+     "question": "Quand l'emploie-t-on ?",
+     "answer": "Pour une action en cours au moment où l'on parle :\nLook! It's raining."
+    },
+    {
+     "question": "Mets à la forme négative : He is sleeping.",
+     "answer": "He isn't sleeping."
+    },
+    {
+     "question": "Pose la question : They are watching TV.",
+     "answer": "Are they watching TV?"
+    },
+    {
+     "question": "Que devient le -e final devant -ing ?",
+     "answer": "Il disparaît : write → writing, dance → dancing."
+    },
+    {
+     "question": "Quand double-t-on la consonne finale ?",
+     "answer": "Verbe court terminé par consonne-voyelle-consonne :\nswim → swimming, run → running, sit → sitting."
+    },
+    {
+     "question": "Que devient -ie devant -ing ?",
+     "answer": "Il devient -y : lie → lying, die → dying."
+    },
+    {
+     "question": "Quels mots signalent souvent le présent en be + -ing ?",
+     "answer": "now, right now, at the moment, look!, listen!"
+    },
+    {
+     "question": "Quels mots signalent souvent le présent simple ?",
+     "answer": "always, usually, often, sometimes, never, every day"
+    },
+    {
+     "question": "Présent simple ou en -ing ? « D'habitude il va à l'école à pied, mais aujourd'hui il prend le bus. »",
+     "answer": "He usually walks to school,\nbut today he is taking the bus."
+    },
+    {
+     "question": "Quels verbes ne se mettent pas (en général) en -ing ?",
+     "answer": "Les verbes d'état : like, love, hate, want,\nknow, understand, believe…"
+    },
+    {
+     "question": "Que signifie « What are you doing? » ?",
+     "answer": "Qu'est-ce que tu es en train de faire ?"
+    },
+    {
+     "question": "Comment dit-on « faire du vélo » ?",
+     "answer": "ride a bike / go cycling"
+    },
+    {
+     "question": "Comment dit-on « faire les courses » ?",
+     "answer": "do the shopping / go shopping"
+    },
+    {
+     "question": "Que signifient « do my homework » et « tidy my room » ?",
+     "answer": "faire mes devoirs\nranger ma chambre"
+    },
+    {
+     "question": "Peut-on dire « I am liking pizza » ?",
+     "answer": "Non : I like pizza.\n(like est un verbe d'état)"
+    }
+   ]
+  },
+  {
+   "key": "r56-5e-anglais-ville-directions",
+   "name": "5ème — Anglais : la ville, les directions et les prépositions de lieu",
+   "level": "5ème",
+   "taxonomy": {
+    "niveau": "5ème",
+    "matiere": "anglais"
+   },
+   "tags": [
+    "anglais",
+    "ville",
+    "directions",
+    "prépositions",
+    "impératif"
+   ],
+   "summary": "Lieux de la ville, demander et indiquer son chemin, impératif et prépositions de lieu.",
+   "description": "Programme de 5ème (cycle 4), anglais : se repérer dans la ville — demander et indiquer un itinéraire, prépositions de lieu, impératif.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment demande-t-on poliment son chemin ?",
+     "answer": "Excuse me, where is the station, please?\n/ How can I get to the station?"
+    },
+    {
+     "question": "Comment dit-on « tournez à gauche / à droite » ?",
+     "answer": "Turn left / Turn right."
+    },
+    {
+     "question": "Comment dit-on « allez tout droit » ?",
+     "answer": "Go straight on (ahead)."
+    },
+    {
+     "question": "Comment dit-on « prenez la deuxième rue à gauche » ?",
+     "answer": "Take the second street on the left."
+    },
+    {
+     "question": "Comment forme-t-on l'impératif en anglais ?",
+     "answer": "Verbe sans sujet : Go! Stop!\nNégatif : Don't go! Ensemble : Let's go!"
+    },
+    {
+     "question": "Que signifient next to et opposite ?",
+     "answer": "next to : à côté de\nopposite : en face de"
+    },
+    {
+     "question": "Que signifie between ?",
+     "answer": "entre (deux choses)"
+    },
+    {
+     "question": "Que signifient in front of et behind ?",
+     "answer": "in front of : devant\nbehind : derrière"
+    },
+    {
+     "question": "Que signifie « at the corner of the street » ?",
+     "answer": "au coin de la rue"
+    },
+    {
+     "question": "Que signifie « crossroads » ?",
+     "answer": "un carrefour"
+    },
+    {
+     "question": "Comment dit-on « la poste », « la boulangerie » et « la mairie » ?",
+     "answer": "the post office, the baker's,\nthe town hall"
+    },
+    {
+     "question": "Comment dit-on « la gare » et « l'arrêt de bus » ?",
+     "answer": "the (train) station\nthe bus stop"
+    },
+    {
+     "question": "Comment dit-on « la bibliothèque » ? (attention au faux ami)",
+     "answer": "the library\n(a bookshop = une librairie)"
+    },
+    {
+     "question": "Comment dit-on « traversez le pont » ?",
+     "answer": "Cross the bridge."
+    },
+    {
+     "question": "Que signifie « It's on your left » ?",
+     "answer": "C'est sur votre gauche."
+    },
+    {
+     "question": "Comment demande-t-on si c'est loin ?",
+     "answer": "Is it far from here?\n— No, it's a five-minute walk."
+    }
+   ]
+  },
+  {
+   "key": "r56-5e-espagnol-nombres-heure-date",
+   "name": "5ème — Espagnol : nombres, heure, jours et date",
+   "level": "5ème",
+   "taxonomy": {
+    "niveau": "5ème",
+    "matiere": "espagnol"
+   },
+   "tags": [
+    "espagnol",
+    "nombres",
+    "heure",
+    "date",
+    "jours"
+   ],
+   "summary": "Compter jusqu'à 100, dire l'heure, les jours de la semaine, les mois et la date en espagnol.",
+   "description": "Programme de 5ème (cycle 4, LV2), espagnol : se situer dans le temps — nombres, heure, jours, mois et date.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Compte de 1 à 5 en espagnol.",
+     "answer": "uno, dos, tres, cuatro, cinco"
+    },
+    {
+     "question": "Compte de 6 à 10.",
+     "answer": "seis, siete, ocho, nueve, diez"
+    },
+    {
+     "question": "Comment dit-on 15, 16 et 20 ?",
+     "answer": "quince, dieciséis, veinte"
+    },
+    {
+     "question": "Comment dit-on 21, 31 et 45 ?",
+     "answer": "veintiuno, treinta y uno, cuarenta y cinco"
+    },
+    {
+     "question": "Comment dit-on 100 ?",
+     "answer": "cien (ciento devant un autre nombre : ciento dos)"
+    },
+    {
+     "question": "Comment demande-t-on l'heure ?",
+     "answer": "¿Qué hora es?"
+    },
+    {
+     "question": "Comment dit-on « Il est une heure » et « Il est trois heures » ?",
+     "answer": "Es la una.\nSon las tres."
+    },
+    {
+     "question": "Comment dit-on « Il est 4 h 15 » et « 4 h 30 » ?",
+     "answer": "Son las cuatro y cuarto.\nSon las cuatro y media."
+    },
+    {
+     "question": "Comment dit-on « Il est 5 h moins le quart » ?",
+     "answer": "Son las cinco menos cuarto."
+    },
+    {
+     "question": "Quels sont les jours de la semaine ?",
+     "answer": "lunes, martes, miércoles, jueves,\nviernes, sábado, domingo"
+    },
+    {
+     "question": "Les jours et les mois prennent-ils une majuscule en espagnol ?",
+     "answer": "Non : lunes, enero."
+    },
+    {
+     "question": "Quels sont les mois de janvier à juin ?",
+     "answer": "enero, febrero, marzo,\nabril, mayo, junio"
+    },
+    {
+     "question": "Quels sont les mois de juillet à décembre ?",
+     "answer": "julio, agosto, septiembre,\noctubre, noviembre, diciembre"
+    },
+    {
+     "question": "Comment dit-on « Nous sommes le 12 octobre » ?",
+     "answer": "Estamos a doce de octubre.\n/ Hoy es el doce de octubre."
+    },
+    {
+     "question": "Comment dit-on « le lundi » (chaque lundi) ?",
+     "answer": "los lunes"
+    },
+    {
+     "question": "Comment demande-t-on « Quand est ton anniversaire ? »",
+     "answer": "¿Cuándo es tu cumpleaños?"
+    }
+   ]
+  },
+  {
+   "key": "r56-5e-allemand-famille-accusatif",
+   "name": "5ème — Allemand : famille, animaux et accusatif",
+   "level": "5ème",
+   "taxonomy": {
+    "niveau": "5ème",
+    "matiere": "allemand"
+   },
+   "tags": [
+    "allemand",
+    "famille",
+    "animaux",
+    "accusatif",
+    "haben"
+   ],
+   "summary": "Parler de sa famille et de ses animaux : haben, articles au nominatif et à l'accusatif, kein.",
+   "description": "Programme de 5ème (cycle 4, LV2), allemand : se présenter et présenter sa famille — verbe haben, genre des noms, accusatif, négation kein.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Quels sont les trois genres en allemand et leurs articles définis ?",
+     "answer": "masculin : der\nféminin : die\nneutre : das"
+    },
+    {
+     "question": "Comment dit-on « le père », « la mère », « l'enfant » ?",
+     "answer": "der Vater, die Mutter, das Kind"
+    },
+    {
+     "question": "Comment dit-on « le frère » et « la sœur » ?",
+     "answer": "der Bruder, die Schwester\n(pluriel : die Geschwister = frères et sœurs)"
+    },
+    {
+     "question": "Comment dit-on « les grands-parents » ?",
+     "answer": "die Großeltern\n(der Großvater / Opa, die Großmutter / Oma)"
+    },
+    {
+     "question": "Conjugue haben au présent.",
+     "answer": "ich habe, du hast, er/sie/es hat,\nwir haben, ihr habt, sie/Sie haben"
+    },
+    {
+     "question": "Que devient l'article masculin à l'accusatif ?",
+     "answer": "der → den\nein → einen"
+    },
+    {
+     "question": "Les articles féminins et neutres changent-ils à l'accusatif ?",
+     "answer": "Non : die / eine et das / ein restent identiques."
+    },
+    {
+     "question": "Traduis : J'ai un chien.",
+     "answer": "Ich habe einen Hund."
+    },
+    {
+     "question": "Traduis : J'ai une chatte et un lapin.",
+     "answer": "Ich habe eine Katze und ein Kaninchen."
+    },
+    {
+     "question": "Comment dit-on « Je n'ai pas de frère » ?",
+     "answer": "Ich habe keinen Bruder.\n(kein se décline comme ein)"
+    },
+    {
+     "question": "Comment dit-on « l'oiseau », « le cheval », « le poisson » ?",
+     "answer": "der Vogel, das Pferd, der Fisch"
+    },
+    {
+     "question": "Comment dit-on « mon / ma » ?",
+     "answer": "mein (masc. et neutre), meine (fém. et pluriel)\naccusatif masc. : meinen"
+    },
+    {
+     "question": "Comment demande-t-on « As-tu des frères et sœurs ? »",
+     "answer": "Hast du Geschwister?"
+    },
+    {
+     "question": "Comment dit-on « Je suis fils unique / fille unique » ?",
+     "answer": "Ich bin Einzelkind."
+    },
+    {
+     "question": "Comment dit-on « Il s'appelle Max » ?",
+     "answer": "Er heißt Max."
+    },
+    {
+     "question": "Les noms communs prennent-ils une majuscule en allemand ?",
+     "answer": "Oui, toujours : der Hund, die Schule."
+    }
+   ]
+  },
+  {
+   "key": "r56-5e-italien-premiers-pas",
+   "name": "5ème — Italien : premiers pas en LV2",
+   "level": "5ème",
+   "taxonomy": {
+    "niveau": "5ème",
+    "matiere": "italien"
+   },
+   "tags": [
+    "italien",
+    "LV2",
+    "se présenter",
+    "salutations"
+   ],
+   "summary": "Saluer, se présenter, essere et avere, articles, nombres et premières phrases en italien.",
+   "description": "Programme de 5ème (cycle 4, LV2), italien : premiers échanges — saluer, se présenter, les verbes essere et avere, les articles, les nombres.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment dit-on « bonjour » et « bonsoir » ?",
+     "answer": "Buongiorno\nBuonasera"
+    },
+    {
+     "question": "Comment dit-on « salut » (bonjour ou au revoir) ?",
+     "answer": "Ciao"
+    },
+    {
+     "question": "Comment dit-on « au revoir » (poli) ?",
+     "answer": "Arrivederci (ArrivederLa au vouvoiement)"
+    },
+    {
+     "question": "Comment dit-on « Je m'appelle Léa » ?",
+     "answer": "Mi chiamo Léa."
+    },
+    {
+     "question": "Comment demande-t-on « Comment t'appelles-tu ? »",
+     "answer": "Come ti chiami?"
+    },
+    {
+     "question": "Comment demande-t-on « Quel âge as-tu ? »",
+     "answer": "Quanti anni hai?\n— Ho dodici anni."
+    },
+    {
+     "question": "Conjugue essere (être) au présent.",
+     "answer": "sono, sei, è,\nsiamo, siete, sono"
+    },
+    {
+     "question": "Conjugue avere (avoir) au présent.",
+     "answer": "ho, hai, ha,\nabbiamo, avete, hanno"
+    },
+    {
+     "question": "Le h se prononce-t-il en italien ?",
+     "answer": "Non, il est muet : ho se dit « o »."
+    },
+    {
+     "question": "Quels sont les articles définis singuliers ?",
+     "answer": "il (masc.), lo (masc. devant s + consonne, z…),\nla (fém.), l' (devant voyelle)"
+    },
+    {
+     "question": "Comment forme-t-on le pluriel en italien ?",
+     "answer": "-o → -i (il libro → i libri)\n-a → -e (la casa → le case)\n-e → -i (il cane → i cani)"
+    },
+    {
+     "question": "Compte de 1 à 5.",
+     "answer": "uno, due, tre, quattro, cinque"
+    },
+    {
+     "question": "Compte de 6 à 10.",
+     "answer": "sei, sette, otto, nove, dieci"
+    },
+    {
+     "question": "Comment dit-on « merci » et « s'il te plaît » ?",
+     "answer": "grazie\nper favore"
+    },
+    {
+     "question": "Comment dit-on « J'habite à Paris » ?",
+     "answer": "Abito a Parigi."
+    },
+    {
+     "question": "Comment se prononcent « ci » et « che » ?",
+     "answer": "ci = « tchi » (ciao)\nche = « ké » (perché)"
+    }
+   ]
+  },
+  {
+   "key": "r56-5e-francais-participe-passe",
+   "name": "5ème — Français : l'accord du participe passé",
+   "level": "5ème",
+   "taxonomy": {
+    "niveau": "5ème",
+    "matiere": "français"
+   },
+   "tags": [
+    "orthographe",
+    "participe passé",
+    "accords",
+    "être",
+    "avoir"
+   ],
+   "summary": "Accorder le participe passé employé seul, avec être et avec avoir.",
+   "description": "Programme de 5ème (cycle 4), français, étude de la langue : orthographe grammaticale — accords du participe passé avec être et avec avoir.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment trouver la terminaison d'un participe passé ?",
+     "answer": "On le met au féminin :\npris → prise (s), fini → finie (rien), fait → faite (t)."
+    },
+    {
+     "question": "Quelle est la terminaison du participe passé des verbes en -er ?",
+     "answer": "-é : chanté, mangé, arrivé."
+    },
+    {
+     "question": "-é ou -er ? « Il a (manger) »",
+     "answer": "Il a mangé.\nAstuce : remplacer par « vendu » (et non « vendre »)."
+    },
+    {
+     "question": "Comment s'accorde un participe passé employé seul ?",
+     "answer": "Comme un adjectif, avec le nom auquel il se rapporte :\ndes fleurs fanées."
+    },
+    {
+     "question": "Avec être, comment s'accorde le participe passé ?",
+     "answer": "Avec le sujet :\nElles sont parties."
+    },
+    {
+     "question": "Accorde : « Mes cousines sont (venir) hier. »",
+     "answer": "Mes cousines sont venues hier."
+    },
+    {
+     "question": "Avec avoir, s'accorde-t-il avec le sujet ?",
+     "answer": "Jamais avec le sujet :\nElles ont mangé."
+    },
+    {
+     "question": "Avec avoir, quand le participe passé s'accorde-t-il ?",
+     "answer": "Avec le COD, seulement si le COD est placé avant le verbe."
+    },
+    {
+     "question": "Accorde : « Les pommes que j'ai (acheter) »",
+     "answer": "Les pommes que j'ai achetées.\n(COD « que » = les pommes, placé avant)"
+    },
+    {
+     "question": "Accorde : « J'ai (acheter) des pommes »",
+     "answer": "J'ai acheté des pommes.\n(COD placé après : pas d'accord)"
+    },
+    {
+     "question": "Accorde : « Ces lettres, je les ai (écrire) »",
+     "answer": "Je les ai écrites.\n(« les » = les lettres, COD placé avant)"
+    },
+    {
+     "question": "Dans « Elles se sont (laver) », comment accorder ?",
+     "answer": "Elles se sont lavées.\n(se = elles-mêmes, COD placé avant)"
+    },
+    {
+     "question": "Accorde : « La porte a été (ouvrir) »",
+     "answer": "La porte a été ouverte.\n(voix passive : accord avec le sujet)"
+    },
+    {
+     "question": "Accorde : « Ils sont (tomber) et se sont (relever) »",
+     "answer": "Ils sont tombés et se sont relevés."
+    },
+    {
+     "question": "Quel est le participe passé de « naître » et « mourir » ?",
+     "answer": "né, mort"
+    },
+    {
+     "question": "Accorde : « Nous avons (finir) nos devoirs »",
+     "answer": "Nous avons fini nos devoirs."
+    }
+   ]
+  },
+  {
+   "key": "r56-5e-histoire-eglise-moyen-age",
+   "name": "5ème — Histoire : l'Église au Moyen Âge",
+   "level": "5ème",
+   "taxonomy": {
+    "niveau": "5ème",
+    "matiere": "histoire"
+   },
+   "tags": [
+    "histoire",
+    "Moyen Âge",
+    "Église",
+    "cathédrales",
+    "monastères",
+    "croisades"
+   ],
+   "summary": "Le rôle de l'Église, clergé, monastères, cathédrales romanes et gothiques, croisades.",
+   "description": "Programme de 5ème (cycle 4), histoire, thème 2 « Société, Église et pouvoir politique dans l'Occident féodal (XIe-XVe siècles) » : l'emprise de l'Église sur la société.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qui est le chef de l'Église catholique ?",
+     "answer": "Le pape, évêque de Rome."
+    },
+    {
+     "question": "Qu'est-ce que le clergé ?",
+     "answer": "L'ensemble des hommes et des femmes d'Église."
+    },
+    {
+     "question": "Quelle différence entre clergé séculier et clergé régulier ?",
+     "answer": "Séculier : vit parmi les fidèles (prêtres, évêques).\nRégulier : vit selon une règle, à l'écart (moines, moniales)."
+    },
+    {
+     "question": "Qu'est-ce qu'une paroisse ?",
+     "answer": "Le territoire dont s'occupe un prêtre (le curé),\nautour d'une église."
+    },
+    {
+     "question": "Qu'est-ce qu'un diocèse ?",
+     "answer": "Le territoire dirigé par un évêque."
+    },
+    {
+     "question": "Quels sont les sept sacrements ?",
+     "answer": "Baptême, confirmation, eucharistie, pénitence,\nmariage, ordre, extrême-onction."
+    },
+    {
+     "question": "Qu'est-ce que la dîme ?",
+     "answer": "Un impôt versé à l'Église,\nenviron un dixième des récoltes."
+    },
+    {
+     "question": "Quelle abbaye bourguignonne, fondée en 910, est devenue très puissante ?",
+     "answer": "L'abbaye de Cluny."
+    },
+    {
+     "question": "Quelle est la devise de la règle de saint Benoît ?",
+     "answer": "Ora et labora : « prie et travaille »."
+    },
+    {
+     "question": "Quelles sont les caractéristiques d'une église romane ?",
+     "answer": "Murs épais, petites fenêtres,\nvoûtes en berceau, intérieur sombre."
+    },
+    {
+     "question": "Quelles sont les caractéristiques d'une cathédrale gothique ?",
+     "answer": "Arcs-boutants, voûtes sur croisée d'ogives,\ngrands vitraux, édifice haut et lumineux."
+    },
+    {
+     "question": "Qu'est-ce qu'une cathédrale ?",
+     "answer": "L'église de l'évêque, dans la ville principale du diocèse."
+    },
+    {
+     "question": "Qu'est-ce qu'une croisade ?",
+     "answer": "Une expédition militaire de chrétiens\npour reprendre Jérusalem et les lieux saints."
+    },
+    {
+     "question": "Quel pape lance la première croisade, et quand ?",
+     "answer": "Urbain II, en 1095 (à Clermont)."
+    },
+    {
+     "question": "Qu'est-ce qu'un pèlerinage ?",
+     "answer": "Un voyage vers un lieu saint\n(Rome, Jérusalem, Saint-Jacques-de-Compostelle)."
+    },
+    {
+     "question": "Qu'est-ce que l'excommunication ?",
+     "answer": "L'exclusion de la communauté des chrétiens\nprononcée par l'Église."
+    }
+   ]
+  },
+  {
+   "key": "r56-5e-maths-aires",
+   "name": "5ème — Maths : aires du triangle, du parallélogramme et du disque",
+   "level": "5ème",
+   "taxonomy": {
+    "niveau": "5ème",
+    "matiere": "mathématiques"
+   },
+   "tags": [
+    "maths",
+    "aires",
+    "périmètre",
+    "disque",
+    "triangle"
+   ],
+   "summary": "Formules d'aires et de périmètres, hauteur d'un triangle, conversions d'unités d'aire.",
+   "description": "Programme de 5ème (cycle 4), mathématiques, « Grandeurs et mesures » : calculer des aires (triangle, parallélogramme, disque) et des périmètres, convertir des unités d'aire.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Aire d'un rectangle ?",
+     "answer": "Longueur × largeur"
+    },
+    {
+     "question": "Aire d'un carré de côté c ?",
+     "answer": "c × c = c²"
+    },
+    {
+     "question": "Aire d'un triangle ?",
+     "answer": "(base × hauteur) ÷ 2"
+    },
+    {
+     "question": "Qu'est-ce qu'une hauteur d'un triangle ?",
+     "answer": "La droite qui passe par un sommet\net qui est perpendiculaire au côté opposé."
+    },
+    {
+     "question": "Aire d'un parallélogramme ?",
+     "answer": "base × hauteur"
+    },
+    {
+     "question": "Périmètre d'un cercle de rayon r ?",
+     "answer": "2 × π × r\n(ou π × diamètre)"
+    },
+    {
+     "question": "Aire d'un disque de rayon r ?",
+     "answer": "π × r × r = π r²"
+    },
+    {
+     "question": "Quelle valeur approchée de π utilise-t-on ?",
+     "answer": "3,14"
+    },
+    {
+     "question": "Aire d'un disque de rayon 10 cm (arrondie) ?",
+     "answer": "π × 100 ≈ 314 cm²"
+    },
+    {
+     "question": "Aire d'un triangle de base 6 cm et de hauteur 4 cm ?",
+     "answer": "(6 × 4) ÷ 2 = 12 cm²"
+    },
+    {
+     "question": "Combien y a-t-il de cm² dans 1 m² ?",
+     "answer": "10 000 cm²\n(1 m = 100 cm, donc 100 × 100)"
+    },
+    {
+     "question": "Combien y a-t-il de m² dans 1 hectare ?",
+     "answer": "10 000 m² (1 ha = 1 hm²)"
+    },
+    {
+     "question": "Convertis 3,5 dm² en cm².",
+     "answer": "350 cm²\n(× 100 à chaque rang pour les aires)"
+    },
+    {
+     "question": "Deux figures de même aire ont-elles forcément le même périmètre ?",
+     "answer": "Non.\nEx. : un carré 4 × 4 et un rectangle 8 × 2 (aire 16, périmètres 16 et 20)."
+    },
+    {
+     "question": "Aire d'un losange de diagonales D et d ?",
+     "answer": "(D × d) ÷ 2"
+    },
+    {
+     "question": "Si on double le rayon d'un disque, que devient son aire ?",
+     "answer": "Elle est multipliée par 4."
+    }
+   ]
+  },
+  {
+   "key": "r56-5e-svt-ecosystemes",
+   "name": "5ème — SVT : écosystèmes, chaînes alimentaires et biodiversité",
+   "level": "5ème",
+   "taxonomy": {
+    "niveau": "5ème",
+    "matiere": "SVT"
+   },
+   "tags": [
+    "SVT",
+    "écosystème",
+    "chaîne alimentaire",
+    "biodiversité"
+   ],
+   "summary": "Écosystème, producteurs et consommateurs, réseaux trophiques, décomposeurs et actions humaines.",
+   "description": "Programme de 5ème (cycle 4), SVT, « Le vivant et son évolution » et « La planète Terre, l'environnement et l'action humaine » : relations alimentaires, écosystèmes et biodiversité.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce qu'un écosystème ?",
+     "answer": "Un milieu de vie (biotope)\net les êtres vivants qui y vivent (biocénose)."
+    },
+    {
+     "question": "Qu'est-ce que le biotope ?",
+     "answer": "Le milieu physique :\nsol, eau, lumière, température…"
+    },
+    {
+     "question": "Qu'est-ce que la biocénose ?",
+     "answer": "L'ensemble des êtres vivants d'un écosystème."
+    },
+    {
+     "question": "Que représente une flèche dans une chaîne alimentaire ?",
+     "answer": "« est mangé par » :\nherbe → lapin → renard."
+    },
+    {
+     "question": "Qu'est-ce qu'un producteur primaire ?",
+     "answer": "Un être vivant qui fabrique sa propre matière\ngrâce à la lumière : les végétaux chlorophylliens."
+    },
+    {
+     "question": "Qu'est-ce qu'un consommateur ?",
+     "answer": "Un être vivant qui se nourrit d'autres êtres vivants."
+    },
+    {
+     "question": "Qu'est-ce qu'un herbivore ? un carnivore ? un omnivore ?",
+     "answer": "herbivore : mange des végétaux\ncarnivore : mange des animaux\nomnivore : mange les deux"
+    },
+    {
+     "question": "Qu'est-ce qu'un réseau trophique ?",
+     "answer": "L'ensemble des chaînes alimentaires\nreliées entre elles dans un milieu."
+    },
+    {
+     "question": "Quel est le rôle des décomposeurs ?",
+     "answer": "Ils transforment la matière morte\nen matière minérale utilisable par les plantes."
+    },
+    {
+     "question": "Cite des décomposeurs.",
+     "answer": "Bactéries, champignons, vers de terre, cloportes…"
+    },
+    {
+     "question": "Qu'est-ce que la biodiversité ?",
+     "answer": "La diversité du vivant :\ndes écosystèmes, des espèces et des individus."
+    },
+    {
+     "question": "Qu'est-ce qu'une espèce ?",
+     "answer": "Des individus qui se ressemblent\net peuvent se reproduire entre eux avec une descendance fertile."
+    },
+    {
+     "question": "Cite trois menaces pour la biodiversité.",
+     "answer": "Destruction des milieux, pollution,\nespèces invasives, surexploitation, changement climatique."
+    },
+    {
+     "question": "Qu'est-ce qu'une espèce invasive ?",
+     "answer": "Une espèce introduite hors de son milieu\nqui prolifère et menace les espèces locales."
+    },
+    {
+     "question": "Que se passe-t-il si un maillon d'une chaîne alimentaire disparaît ?",
+     "answer": "Tout l'écosystème est déséquilibré :\nses prédateurs manquent de nourriture, ses proies prolifèrent."
+    },
+    {
+     "question": "Cite deux actions pour protéger la biodiversité.",
+     "answer": "Créer des réserves naturelles, replanter des haies,\nlimiter les pesticides, protéger les espèces menacées."
+    }
+   ]
+  },
+  {
+   "key": "r56-5e-arts-plastiques-vocabulaire",
+   "name": "5ème — Arts plastiques : couleurs, composition et vocabulaire",
+   "level": "5ème",
+   "taxonomy": {
+    "niveau": "5ème",
+    "matiere": "arts plastiques"
+   },
+   "tags": [
+    "arts plastiques",
+    "couleurs",
+    "composition",
+    "vocabulaire"
+   ],
+   "summary": "Couleurs primaires et complémentaires, plans, cadrage, techniques et vocabulaire pour analyser une œuvre.",
+   "description": "Programme de 5ème (cycle 4), arts plastiques : la représentation, la matérialité et la couleur — vocabulaire pour décrire et analyser une production plastique.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Quelles sont les couleurs primaires (en peinture) ?",
+     "answer": "Le cyan (bleu), le magenta (rouge) et le jaune."
+    },
+    {
+     "question": "Qu'est-ce qu'une couleur secondaire ?",
+     "answer": "Le mélange de deux couleurs primaires :\nvert, orange, violet."
+    },
+    {
+     "question": "Quelle est la couleur complémentaire du rouge ? du bleu ? du jaune ?",
+     "answer": "Rouge → vert\nBleu → orange\nJaune → violet"
+    },
+    {
+     "question": "Que produit l'association de deux complémentaires côte à côte ?",
+     "answer": "Un fort contraste : chacune paraît plus intense."
+    },
+    {
+     "question": "Qu'est-ce qu'une couleur chaude ? une couleur froide ?",
+     "answer": "Chaudes : rouge, orange, jaune.\nFroides : bleu, vert, violet."
+    },
+    {
+     "question": "Qu'est-ce qu'un camaïeu ?",
+     "answer": "Une œuvre en différentes nuances d'une seule couleur."
+    },
+    {
+     "question": "Que sont le premier plan et l'arrière-plan ?",
+     "answer": "Premier plan : le plus proche du spectateur.\nArrière-plan : le plus éloigné."
+    },
+    {
+     "question": "Qu'est-ce que le cadrage ?",
+     "answer": "Le choix de ce que l'on montre\net de ce que l'on laisse hors du cadre."
+    },
+    {
+     "question": "Qu'est-ce qu'une plongée ? une contre-plongée ?",
+     "answer": "Plongée : vu d'en haut.\nContre-plongée : vu d'en bas."
+    },
+    {
+     "question": "Qu'est-ce que la perspective ?",
+     "answer": "Une technique pour donner l'illusion de la profondeur\nsur une surface plane."
+    },
+    {
+     "question": "Qu'est-ce qu'un point de fuite ?",
+     "answer": "Le point où se rejoignent les lignes de la perspective."
+    },
+    {
+     "question": "Qu'est-ce qu'un collage ?",
+     "answer": "Une œuvre faite en assemblant des éléments collés\n(papiers, images, objets)."
+    },
+    {
+     "question": "Qu'est-ce qu'une œuvre figurative ? abstraite ?",
+     "answer": "Figurative : représente le réel de façon reconnaissable.\nAbstraite : ne représente pas le réel."
+    },
+    {
+     "question": "Qu'est-ce qu'un autoportrait ?",
+     "answer": "Un portrait de l'artiste par lui-même."
+    },
+    {
+     "question": "Qu'est-ce qu'une nature morte ?",
+     "answer": "La représentation d'objets inanimés\n(fruits, vases, fleurs coupées…)."
+    },
+    {
+     "question": "Qu'est-ce qu'une œuvre en volume (ronde-bosse) ?",
+     "answer": "Une sculpture dont on peut faire le tour."
+    }
+   ]
+  },
+  {
+   "key": "r56-4e-anglais-futur-preterit-ing",
+   "name": "4ème — Anglais : futur (will, be going to) et prétérit en be + -ing",
+   "level": "4ème",
+   "taxonomy": {
+    "niveau": "4ème",
+    "matiere": "anglais"
+   },
+   "tags": [
+    "anglais",
+    "futur",
+    "will",
+    "be going to",
+    "prétérit continu"
+   ],
+   "summary": "Parler de l'avenir avec will et be going to, raconter avec was / were + -ing.",
+   "description": "Programme de 4ème (cycle 4), anglais : faire des projets et raconter — expression du futur, prétérit en be + V-ing.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment forme-t-on le futur avec will ?",
+     "answer": "will + base verbale, à toutes les personnes :\nI will go, she will go."
+    },
+    {
+     "question": "Quelle est la forme contractée de will et de will not ?",
+     "answer": "'ll (I'll)\nwon't (I won't)"
+    },
+    {
+     "question": "Quand emploie-t-on will ?",
+     "answer": "Pour une prédiction, une décision prise sur le moment,\nune promesse : I'll help you!"
+    },
+    {
+     "question": "Comment forme-t-on be going to ?",
+     "answer": "be + going to + base verbale :\nI'm going to visit London."
+    },
+    {
+     "question": "Quand emploie-t-on be going to ?",
+     "answer": "Pour une intention déjà décidée,\nou une conséquence visible : Look, it's going to rain."
+    },
+    {
+     "question": "Will ou going to ? « Le téléphone sonne. — Je vais répondre ! »",
+     "answer": "I'll answer it!\n(décision prise sur le moment)"
+    },
+    {
+     "question": "Comment pose-t-on une question au futur avec will ?",
+     "answer": "Will you come to my party?\n— Yes, I will. / No, I won't."
+    },
+    {
+     "question": "Quels mots indiquent souvent le futur ?",
+     "answer": "tomorrow, next week, next year, soon, in 2030"
+    },
+    {
+     "question": "Comment forme-t-on le prétérit en be + -ing ?",
+     "answer": "was / were + V-ing :\nI was reading, they were playing."
+    },
+    {
+     "question": "Quand emploie-t-on was / were + -ing ?",
+     "answer": "Pour une action en cours à un moment du passé\n(souvent interrompue)."
+    },
+    {
+     "question": "Traduis : Je regardais la télé quand le téléphone a sonné.",
+     "answer": "I was watching TV when the phone rang."
+    },
+    {
+     "question": "Que signifie while ?",
+     "answer": "pendant que :\nWhile I was cooking, he was sleeping."
+    },
+    {
+     "question": "Mets à la forme négative : She was sleeping.",
+     "answer": "She wasn't sleeping."
+    },
+    {
+     "question": "Pose la question : They were playing football.",
+     "answer": "Were they playing football?"
+    },
+    {
+     "question": "Quelle forme pour un rendez-vous déjà fixé ?",
+     "answer": "Le présent en be + -ing :\nI'm meeting Tom tomorrow at 5."
+    },
+    {
+     "question": "Comment dit-on « Qu'est-ce que tu feras plus tard ? »",
+     "answer": "What will you do later?\n/ What are you going to do later?"
+    }
+   ]
+  },
+  {
+   "key": "r56-4e-espagnol-futur-imperatif",
+   "name": "4ème — Espagnol : futur, ir a + infinitif et impératif",
+   "level": "4ème",
+   "taxonomy": {
+    "niveau": "4ème",
+    "matiere": "espagnol"
+   },
+   "tags": [
+    "espagnol",
+    "futur",
+    "impératif",
+    "projets"
+   ],
+   "summary": "Faire des projets (ir a, futur simple) et donner des ordres ou des conseils (impératif).",
+   "description": "Programme de 4ème (cycle 4, LV2), espagnol : exprimer des projets et des consignes — futur proche, futur simple, impératif affirmatif.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment forme-t-on le futur proche ?",
+     "answer": "ir a + infinitif :\nVoy a viajar. (Je vais voyager.)"
+    },
+    {
+     "question": "Conjugue ir au présent.",
+     "answer": "voy, vas, va,\nvamos, vais, van"
+    },
+    {
+     "question": "Comment forme-t-on le futur simple ?",
+     "answer": "Infinitif + -é, -ás, -á, -emos, -éis, -án\n(mêmes terminaisons pour tous les verbes)."
+    },
+    {
+     "question": "Conjugue hablar au futur.",
+     "answer": "hablaré, hablarás, hablará,\nhablaremos, hablaréis, hablarán"
+    },
+    {
+     "question": "Quel est le futur de tener, hacer et poder (je) ?",
+     "answer": "tendré, haré, podré"
+    },
+    {
+     "question": "Quel est le futur de salir, venir et decir (je) ?",
+     "answer": "saldré, vendré, diré"
+    },
+    {
+     "question": "Comment dit-on « demain » et « l'année prochaine » ?",
+     "answer": "mañana\nel año que viene / el próximo año"
+    },
+    {
+     "question": "Comment forme-t-on l'impératif (tú) des verbes réguliers ?",
+     "answer": "Comme la 3e personne du présent :\nhabla, come, escribe."
+    },
+    {
+     "question": "Comment forme-t-on l'impératif (vosotros) ?",
+     "answer": "Infinitif : -r → -d :\nhablad, comed, escribid."
+    },
+    {
+     "question": "Donne l'impératif (tú) de tener, hacer, poner, salir.",
+     "answer": "ten, haz, pon, sal"
+    },
+    {
+     "question": "Donne l'impératif (tú) de venir, decir, ir, ser.",
+     "answer": "ven, di, ve, sé"
+    },
+    {
+     "question": "Où se placent les pronoms à l'impératif affirmatif ?",
+     "answer": "Collés à la fin du verbe :\n¡Levántate! ¡Dímelo!"
+    },
+    {
+     "question": "Traduis : Ouvre la fenêtre !",
+     "answer": "¡Abre la ventana!"
+    },
+    {
+     "question": "Comment dit-on « Quand je serai grand, je serai médecin » ?",
+     "answer": "Cuando sea mayor, seré médico.\n(cuando + subjonctif pour le futur)"
+    },
+    {
+     "question": "Comment dit-on « Il faut travailler » ?",
+     "answer": "Hay que trabajar."
+    },
+    {
+     "question": "Que signifie « tener que + infinitif » ?",
+     "answer": "devoir (obligation personnelle) :\nTengo que estudiar."
+    }
+   ]
+  },
+  {
+   "key": "r56-4e-allemand-datif-prepositions",
+   "name": "4ème — Allemand : datif, prépositions et localisation",
+   "level": "4ème",
+   "taxonomy": {
+    "niveau": "4ème",
+    "matiere": "allemand"
+   },
+   "tags": [
+    "allemand",
+    "datif",
+    "prépositions",
+    "wo",
+    "wohin"
+   ],
+   "summary": "Le datif, les prépositions + datif, les prépositions mixtes et la question wo ? / wohin ?",
+   "description": "Programme de 4ème (cycle 4, LV2), allemand : se situer et se déplacer — datif, prépositions spatiales, opposition locatif / directif.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Quels sont les articles définis au datif ?",
+     "answer": "masc. : dem\nfém. : der\nneutre : dem\npluriel : den (+ -n au nom)"
+    },
+    {
+     "question": "Quels sont les articles indéfinis au datif ?",
+     "answer": "masc. et neutre : einem\nfém. : einer"
+    },
+    {
+     "question": "Quand emploie-t-on le datif ?",
+     "answer": "Pour le complément d'attribution (à qui ?)\net après certaines prépositions."
+    },
+    {
+     "question": "Cite les prépositions toujours suivies du datif.",
+     "answer": "aus, bei, mit, nach, seit, von, zu\n(+ gegenüber)"
+    },
+    {
+     "question": "Traduis : Je vais à l'école à vélo.",
+     "answer": "Ich fahre mit dem Rad zur Schule.\n(zur = zu der)"
+    },
+    {
+     "question": "Que sont zum et zur ?",
+     "answer": "zum = zu dem\nzur = zu der"
+    },
+    {
+     "question": "Cite les prépositions mixtes (datif ou accusatif).",
+     "answer": "in, an, auf, über, unter,\nvor, hinter, neben, zwischen"
+    },
+    {
+     "question": "Quand une préposition mixte prend-elle le datif ?",
+     "answer": "Pour un lieu où l'on est (question Wo?) :\nIch bin in der Stadt."
+    },
+    {
+     "question": "Quand prend-elle l'accusatif ?",
+     "answer": "Pour un déplacement vers un lieu (question Wohin?) :\nIch gehe in die Stadt."
+    },
+    {
+     "question": "Wo ou wohin ? « … gehst du? »",
+     "answer": "Wohin gehst du? (Où vas-tu ?)"
+    },
+    {
+     "question": "Que sont im et ins ?",
+     "answer": "im = in dem (datif)\nins = in das (accusatif)"
+    },
+    {
+     "question": "Traduis : Le chat est sous la table.",
+     "answer": "Die Katze ist unter dem Tisch."
+    },
+    {
+     "question": "Traduis : Je pose le livre sur la table.",
+     "answer": "Ich lege das Buch auf den Tisch."
+    },
+    {
+     "question": "Comment dit-on « chez moi » et « à la maison » (direction) ?",
+     "answer": "zu Hause (où l'on est)\nnach Hause (où l'on va)"
+    },
+    {
+     "question": "Comment dit-on « Je viens de Berlin » ?",
+     "answer": "Ich komme aus Berlin."
+    },
+    {
+     "question": "Comment dit-on « Je vais en Allemagne » ?",
+     "answer": "Ich fahre nach Deutschland."
+    }
+   ]
+  },
+  {
+   "key": "r56-4e-histoire-regimes-xixe",
+   "name": "4ème — Histoire : les régimes politiques en France au XIXe siècle",
+   "level": "4ème",
+   "taxonomy": {
+    "niveau": "4ème",
+    "matiere": "histoire"
+   },
+   "tags": [
+    "histoire",
+    "XIXe siècle",
+    "république",
+    "empire",
+    "monarchie",
+    "1848"
+   ],
+   "summary": "De la Restauration à la IIIe République : monarchies, révolutions de 1830 et 1848, Second Empire.",
+   "description": "Programme de 4ème (cycle 4), histoire, thème 3 « Société, culture et politique dans la France du XIXe siècle » : une difficile conquête de la République.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce que la Restauration (1814-1830) ?",
+     "answer": "Le retour des rois Bourbons après Napoléon :\nLouis XVIII, puis Charles X."
+    },
+    {
+     "question": "Quelle révolution renverse Charles X ?",
+     "answer": "Les Trois Glorieuses, en juillet 1830."
+    },
+    {
+     "question": "Quel régime suit la révolution de 1830 ?",
+     "answer": "La monarchie de Juillet,\navec Louis-Philippe, « roi des Français »."
+    },
+    {
+     "question": "Quel tableau célèbre représente la révolution de 1830 ?",
+     "answer": "La Liberté guidant le peuple, d'Eugène Delacroix."
+    },
+    {
+     "question": "Quel régime naît de la révolution de février 1848 ?",
+     "answer": "La IIe République."
+    },
+    {
+     "question": "Quelles sont deux grandes mesures de 1848 ?",
+     "answer": "Le suffrage universel masculin\net l'abolition de l'esclavage."
+    },
+    {
+     "question": "Qui fait abolir l'esclavage en 1848 ?",
+     "answer": "Victor Schœlcher."
+    },
+    {
+     "question": "Qui est élu président de la République en décembre 1848 ?",
+     "answer": "Louis-Napoléon Bonaparte, neveu de Napoléon Ier."
+    },
+    {
+     "question": "Comment Louis-Napoléon Bonaparte prend-il tout le pouvoir ?",
+     "answer": "Par un coup d'État le 2 décembre 1851."
+    },
+    {
+     "question": "Quel régime fonde-t-il en 1852 ?",
+     "answer": "Le Second Empire : il devient Napoléon III."
+    },
+    {
+     "question": "Quel événement fait tomber le Second Empire ?",
+     "answer": "La défaite de Sedan contre la Prusse (1870).\nLa République est proclamée le 4 septembre 1870."
+    },
+    {
+     "question": "Qu'est-ce que la Commune de Paris ?",
+     "answer": "Une insurrection parisienne au printemps 1871,\nécrasée lors de la « Semaine sanglante »."
+    },
+    {
+     "question": "Quelle République s'installe durablement à partir de 1870-1875 ?",
+     "answer": "La IIIe République."
+    },
+    {
+     "question": "Quels symboles républicains s'imposent sous la IIIe République ?",
+     "answer": "La Marseillaise (hymne), le 14 Juillet (fête nationale),\nMarianne, la devise « Liberté, Égalité, Fraternité »."
+    },
+    {
+     "question": "Quelles lois Jules Ferry fait-il voter en 1881-1882 ?",
+     "answer": "L'école primaire gratuite, laïque et obligatoire."
+    },
+    {
+     "question": "Quelle loi de 1905 instaure la laïcité ?",
+     "answer": "La loi de séparation des Églises et de l'État."
+    }
+   ]
+  },
+  {
+   "key": "r56-4e-techno-capteurs-objets-connectes",
+   "name": "4ème — Technologie : capteurs, actionneurs et objets connectés",
+   "level": "4ème",
+   "taxonomy": {
+    "niveau": "4ème",
+    "matiere": "technologie"
+   },
+   "tags": [
+    "technologie",
+    "capteurs",
+    "actionneurs",
+    "objets connectés",
+    "information"
+   ],
+   "summary": "Acquérir, traiter, transmettre l'information : capteurs, carte programmable, actionneurs et objets connectés.",
+   "description": "Programme de 4ème (cycle 4), technologie, « Informatique et programmation » et « Design, innovation et créativité » : chaîne d'information, capteurs, actionneurs et objets communicants.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce qu'un capteur ?",
+     "answer": "Un composant qui mesure une grandeur physique\n(lumière, température…) et la transforme en signal."
+    },
+    {
+     "question": "Cite quatre capteurs.",
+     "answer": "Capteur de luminosité, de température, de présence (PIR),\nbouton-poussoir, capteur d'humidité, à ultrasons…"
+    },
+    {
+     "question": "Qu'est-ce qu'un actionneur ?",
+     "answer": "Un composant qui agit sur l'environnement :\nmoteur, lampe (LED), buzzer, vérin…"
+    },
+    {
+     "question": "Quelles sont les fonctions de la chaîne d'information ?",
+     "answer": "Acquérir → traiter → communiquer."
+    },
+    {
+     "question": "Quelles sont les fonctions de la chaîne d'énergie ?",
+     "answer": "Alimenter → distribuer → convertir → transmettre."
+    },
+    {
+     "question": "Quel composant traite l'information dans un objet programmable ?",
+     "answer": "Le microcontrôleur (carte Arduino, micro:bit…)."
+    },
+    {
+     "question": "Qu'est-ce qu'un signal logique (tout ou rien) ?",
+     "answer": "Un signal qui n'a que deux états : 0 ou 1."
+    },
+    {
+     "question": "Qu'est-ce qu'un signal analogique ?",
+     "answer": "Un signal qui varie de façon continue\n(ex. : une température)."
+    },
+    {
+     "question": "Qu'est-ce qu'un objet connecté ?",
+     "answer": "Un objet qui échange des données\navec d'autres appareils ou Internet."
+    },
+    {
+     "question": "Cite trois moyens de communication sans fil.",
+     "answer": "Wi-Fi, Bluetooth, 4G / 5G, NFC…"
+    },
+    {
+     "question": "Qu'est-ce que la domotique ?",
+     "answer": "L'automatisation de la maison :\néclairage, chauffage, volets, alarme…"
+    },
+    {
+     "question": "Que fait un détecteur de présence relié à une lampe ?",
+     "answer": "Il allume la lampe quand il détecte un mouvement\n(acquérir → traiter → agir)."
+    },
+    {
+     "question": "Qu'est-ce qu'une interface homme-machine ?",
+     "answer": "Ce qui permet à l'utilisateur de communiquer avec l'objet :\nécran, boutons, application."
+    },
+    {
+     "question": "Qu'est-ce qu'un algorithme ?",
+     "answer": "Une suite d'instructions pour résoudre un problème."
+    },
+    {
+     "question": "Que signifie « Si … alors … sinon » dans un programme ?",
+     "answer": "Une condition :\nle programme choisit une action selon le résultat d'un test."
+    },
+    {
+     "question": "Pourquoi faut-il protéger un objet connecté ?",
+     "answer": "Il peut être piraté :\nmots de passe solides et mises à jour."
+    }
+   ]
+  },
+  {
+   "key": "r56-4e-svt-meteo-climat",
+   "name": "4ème — SVT : météo, climats et activité humaine",
+   "level": "4ème",
+   "taxonomy": {
+    "niveau": "4ème",
+    "matiere": "SVT"
+   },
+   "tags": [
+    "SVT",
+    "météo",
+    "climat",
+    "effet de serre",
+    "réchauffement"
+   ],
+   "summary": "Différence entre météo et climat, effet de serre, réchauffement climatique et ses conséquences.",
+   "description": "Programme de 4ème (cycle 4), SVT, « La planète Terre, l'environnement et l'action humaine » : phénomènes météorologiques et climatiques, influence des activités humaines.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Quelle différence entre météo et climat ?",
+     "answer": "Météo : le temps qu'il fait à un moment et un endroit.\nClimat : les conditions moyennes sur au moins 30 ans."
+    },
+    {
+     "question": "Quel instrument mesure la pression atmosphérique ?",
+     "answer": "Le baromètre."
+    },
+    {
+     "question": "Quel instrument mesure la quantité de pluie ?",
+     "answer": "Le pluviomètre."
+    },
+    {
+     "question": "Quel instrument mesure la vitesse du vent ?",
+     "answer": "L'anémomètre."
+    },
+    {
+     "question": "Pourquoi les climats sont-ils plus chauds à l'équateur ?",
+     "answer": "Les rayons du Soleil y arrivent presque à la verticale :\nl'énergie est plus concentrée."
+    },
+    {
+     "question": "Qu'est-ce que l'effet de serre ?",
+     "answer": "Certains gaz de l'atmosphère retiennent une partie\nde la chaleur émise par la Terre."
+    },
+    {
+     "question": "Sans effet de serre naturel, quelle serait la température moyenne sur Terre ?",
+     "answer": "Environ −18 °C (au lieu de +15 °C)."
+    },
+    {
+     "question": "Cite trois gaz à effet de serre.",
+     "answer": "Vapeur d'eau, dioxyde de carbone (CO₂),\nméthane (CH₄)."
+    },
+    {
+     "question": "D'où vient surtout le CO₂ supplémentaire dans l'atmosphère ?",
+     "answer": "De la combustion des énergies fossiles\n(charbon, pétrole, gaz) et de la déforestation."
+    },
+    {
+     "question": "D'où vient une grande partie du méthane d'origine humaine ?",
+     "answer": "De l'élevage (ruminants), des rizières,\ndes décharges et des fuites de gaz."
+    },
+    {
+     "question": "Qu'est-ce que le réchauffement climatique ?",
+     "answer": "L'augmentation de la température moyenne de la Terre,\ndue à l'effet de serre renforcé par les activités humaines."
+    },
+    {
+     "question": "Cite trois conséquences du réchauffement climatique.",
+     "answer": "Fonte des glaciers, montée du niveau des mers,\nvagues de chaleur, sécheresses, espèces menacées."
+    },
+    {
+     "question": "Qu'est-ce que le GIEC ?",
+     "answer": "Le groupe international d'experts\nqui fait le point sur les connaissances sur le climat."
+    },
+    {
+     "question": "Pourquoi le niveau des mers monte-t-il ?",
+     "answer": "Fonte des glaciers et des calottes terrestres,\net dilatation de l'eau qui se réchauffe."
+    },
+    {
+     "question": "Cite deux façons de limiter le réchauffement.",
+     "answer": "Économiser l'énergie, utiliser des énergies renouvelables,\nprivilégier transports en commun et vélo."
+    },
+    {
+     "question": "Qu'est-ce qu'un puits de carbone ?",
+     "answer": "Un milieu qui absorbe et stocke du CO₂ :\nforêts, océans, sols."
+    }
+   ]
+  },
+  {
+   "key": "r56-4e-physique-forces-interactions",
+   "name": "4ème — Physique : interactions et forces",
+   "level": "4ème",
+   "taxonomy": {
+    "niveau": "4ème",
+    "matiere": "physique"
+   },
+   "tags": [
+    "physique",
+    "forces",
+    "interactions",
+    "poids",
+    "newton"
+   ],
+   "summary": "Actions mécaniques, interactions de contact et à distance, modélisation par une force, poids et masse.",
+   "description": "Programme de 4ème (cycle 4), physique-chimie, « Mouvement et interactions » : modéliser une interaction par une force, poids et masse.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce qu'une interaction ?",
+     "answer": "Une action réciproque entre deux objets :\nA agit sur B et B agit sur A."
+    },
+    {
+     "question": "Donne un exemple d'interaction de contact.",
+     "answer": "Un pied qui frappe un ballon,\nune main qui pousse une porte."
+    },
+    {
+     "question": "Donne un exemple d'interaction à distance.",
+     "answer": "La gravitation (Terre-Lune),\nl'attraction d'un aimant, l'électricité statique."
+    },
+    {
+     "question": "Quels effets une action mécanique peut-elle avoir ?",
+     "answer": "Mettre en mouvement, modifier un mouvement\n(vitesse ou direction) ou déformer un objet."
+    },
+    {
+     "question": "Par quoi modélise-t-on une action mécanique ?",
+     "answer": "Par une force, représentée par une flèche (un vecteur)."
+    },
+    {
+     "question": "Quelles sont les quatre caractéristiques d'une force ?",
+     "answer": "Point d'application, direction,\nsens et valeur (intensité)."
+    },
+    {
+     "question": "Quelle est l'unité de la valeur d'une force ?",
+     "answer": "Le newton (N)."
+    },
+    {
+     "question": "Quel instrument mesure la valeur d'une force ?",
+     "answer": "Le dynamomètre."
+    },
+    {
+     "question": "Qu'est-ce que le poids d'un objet ?",
+     "answer": "La force d'attraction exercée par la Terre sur cet objet."
+    },
+    {
+     "question": "Quelles sont la direction et le sens du poids ?",
+     "answer": "Direction verticale,\nsens vers le bas (vers le centre de la Terre)."
+    },
+    {
+     "question": "Quelle relation relie le poids P et la masse m ?",
+     "answer": "P = m × g\n(P en N, m en kg, g ≈ 9,8 N/kg sur Terre)"
+    },
+    {
+     "question": "Quel est le poids d'un objet de 2 kg sur Terre ?",
+     "answer": "P ≈ 2 × 9,8 ≈ 19,6 N"
+    },
+    {
+     "question": "La masse change-t-elle sur la Lune ?",
+     "answer": "Non, la masse reste la même.\nC'est le poids qui change (environ 6 fois plus faible)."
+    },
+    {
+     "question": "Quelle est l'unité de la masse et quel instrument la mesure ?",
+     "answer": "Le kilogramme (kg), mesuré avec une balance."
+    },
+    {
+     "question": "Qu'est-ce qu'un diagramme objet-interactions ?",
+     "answer": "Un schéma qui montre l'objet étudié\net tous les objets qui agissent sur lui."
+    },
+    {
+     "question": "Que se passe-t-il si les forces exercées sur un objet immobile se compensent ?",
+     "answer": "Il reste immobile."
+    }
+   ]
+  },
+  {
+   "key": "r56-4e-maths-transformations",
+   "name": "4ème — Maths : translation, rotation et frises",
+   "level": "4ème",
+   "taxonomy": {
+    "niveau": "4ème",
+    "matiere": "mathématiques"
+   },
+   "tags": [
+    "maths",
+    "transformations",
+    "translation",
+    "rotation",
+    "symétrie"
+   ],
+   "summary": "Reconnaître et construire translations, rotations et symétries, et leurs propriétés.",
+   "description": "Programme de 4ème (cycle 4), mathématiques, « Espace et géométrie » : comprendre l'effet d'une translation, d'une rotation et des symétries sur une figure.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce qu'une translation ?",
+     "answer": "Un glissement de la figure, sans la tourner,\nselon une direction, un sens et une longueur donnés."
+    },
+    {
+     "question": "Comment définit-on la translation qui transforme A en B ?",
+     "answer": "C'est la translation qui fait glisser\ntoute figure comme A va en B (flèche de A vers B)."
+    },
+    {
+     "question": "Si la translation qui transforme A en B transforme C en D, quelle figure est ABDC ?",
+     "answer": "Un parallélogramme (éventuellement aplati)."
+    },
+    {
+     "question": "Qu'est-ce qu'une rotation ?",
+     "answer": "Une transformation qui fait tourner une figure\nautour d'un point (le centre), d'un certain angle."
+    },
+    {
+     "question": "Que faut-il préciser pour définir une rotation ?",
+     "answer": "Son centre, son angle\net son sens (horaire ou anti-horaire)."
+    },
+    {
+     "question": "Une rotation de 180° correspond à quelle transformation ?",
+     "answer": "Une symétrie centrale (de même centre)."
+    },
+    {
+     "question": "Qu'est-ce qu'une symétrie axiale ?",
+     "answer": "Un retournement de la figure par rapport à une droite\n(effet miroir, pliage)."
+    },
+    {
+     "question": "Qu'est-ce qu'une symétrie centrale ?",
+     "answer": "Un demi-tour autour d'un point."
+    },
+    {
+     "question": "Que conservent les translations, rotations et symétries ?",
+     "answer": "Les longueurs, les angles,\nles aires et l'alignement."
+    },
+    {
+     "question": "L'image d'une droite par une translation est…",
+     "answer": "… une droite parallèle à la première."
+    },
+    {
+     "question": "Lors d'une rotation de centre O, que dire de OA et OA' ?",
+     "answer": "OA = OA' : A et A' sont sur un même cercle de centre O."
+    },
+    {
+     "question": "Quelle transformation permet de construire une frise ?",
+     "answer": "Une translation répétée."
+    },
+    {
+     "question": "Qu'est-ce qu'un pavage ?",
+     "answer": "Un recouvrement du plan par des figures\nsans trou ni chevauchement."
+    },
+    {
+     "question": "Quel est le sens anti-horaire (sens direct) ?",
+     "answer": "Le sens inverse des aiguilles d'une montre."
+    },
+    {
+     "question": "Quelle transformation transforme la figure en une figure « retournée » ?",
+     "answer": "La symétrie axiale."
+    },
+    {
+     "question": "Une figure tourne de 90° autour de O, sens horaire. Combien de fois faut-il le faire pour revenir au départ ?",
+     "answer": "4 fois (4 × 90° = 360°)."
+    }
+   ]
+  },
+  {
+   "key": "r56-4e-francais-figures-de-style",
+   "name": "4ème — Français : les figures de style",
+   "level": "4ème",
+   "taxonomy": {
+    "niveau": "4ème",
+    "matiere": "français"
+   },
+   "tags": [
+    "français",
+    "figures de style",
+    "poésie",
+    "analyse"
+   ],
+   "summary": "Comparaison, métaphore, personnification, hyperbole, antithèse, anaphore… les reconnaître et les interpréter.",
+   "description": "Programme de 4ème (cycle 4), français : lire et analyser des textes, notamment poétiques — identifier les principales figures de style et leurs effets.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce qu'une comparaison ?",
+     "answer": "Un rapprochement entre deux éléments\navec un outil de comparaison (comme, tel, pareil à…)."
+    },
+    {
+     "question": "Qu'est-ce qu'une métaphore ?",
+     "answer": "Un rapprochement entre deux éléments sans outil de comparaison :\n« Ce toit tranquille, où marchent des colombes »."
+    },
+    {
+     "question": "« Ses yeux sont des étoiles » : comparaison ou métaphore ?",
+     "answer": "Métaphore (pas d'outil de comparaison)."
+    },
+    {
+     "question": "Qu'est-ce qu'une personnification ?",
+     "answer": "Attribuer des caractéristiques humaines\nà une chose ou un animal : « Le vent hurle »."
+    },
+    {
+     "question": "Qu'est-ce qu'une hyperbole ?",
+     "answer": "Une exagération : « Je meurs de faim »."
+    },
+    {
+     "question": "Qu'est-ce qu'un euphémisme ?",
+     "answer": "Une atténuation : « Il nous a quittés » (pour « il est mort »)."
+    },
+    {
+     "question": "Qu'est-ce qu'une antithèse ?",
+     "answer": "Le rapprochement de deux mots ou idées opposés :\n« Je vis, je meurs »."
+    },
+    {
+     "question": "Qu'est-ce qu'un oxymore ?",
+     "answer": "Deux termes contradictoires réunis dans un même groupe :\n« cette obscure clarté »."
+    },
+    {
+     "question": "Qu'est-ce qu'une anaphore ?",
+     "answer": "La répétition d'un mot ou groupe de mots\nen début de vers ou de phrase."
+    },
+    {
+     "question": "Qu'est-ce qu'une gradation ?",
+     "answer": "Une suite de termes d'intensité croissante (ou décroissante) :\n« Va, cours, vole »."
+    },
+    {
+     "question": "Qu'est-ce qu'une énumération ?",
+     "answer": "Une liste de mots ou d'éléments de même nature."
+    },
+    {
+     "question": "Qu'est-ce qu'une allitération ?",
+     "answer": "La répétition d'un même son consonne :\n« Pour qui sont ces serpents qui sifflent sur vos têtes ? »"
+    },
+    {
+     "question": "Qu'est-ce qu'une assonance ?",
+     "answer": "La répétition d'un même son voyelle."
+    },
+    {
+     "question": "Qu'est-ce qu'une litote ?",
+     "answer": "Dire moins pour suggérer plus :\n« Va, je ne te hais point » (= je t'aime)."
+    },
+    {
+     "question": "Qu'est-ce qu'une périphrase ?",
+     "answer": "Une expression qui remplace un mot :\n« la Ville Lumière » pour Paris."
+    },
+    {
+     "question": "Quel est l'effet d'une hyperbole ?",
+     "answer": "Elle met en valeur une idée,\nexprime une émotion forte ou crée du comique."
+    }
+   ]
+  },
+  {
+   "key": "r56-4e-italien-presente-routine",
+   "name": "4ème — Italien : le présent et la vie quotidienne",
+   "level": "4ème",
+   "taxonomy": {
+    "niveau": "4ème",
+    "matiere": "italien"
+   },
+   "tags": [
+    "italien",
+    "présent",
+    "routine",
+    "verbes"
+   ],
+   "summary": "Conjuguer les verbes en -are, -ere, -ire au présent, verbes irréguliers et raconter sa journée.",
+   "description": "Programme de 4ème (cycle 4, LV2), italien : parler de soi et de son quotidien — présent de l'indicatif, verbes pronominaux, heure et activités.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Conjugue parlare au présent.",
+     "answer": "parlo, parli, parla,\nparliamo, parlate, parlano"
+    },
+    {
+     "question": "Conjugue prendere au présent.",
+     "answer": "prendo, prendi, prende,\nprendiamo, prendete, prendono"
+    },
+    {
+     "question": "Conjugue dormire au présent.",
+     "answer": "dormo, dormi, dorme,\ndormiamo, dormite, dormono"
+    },
+    {
+     "question": "Que se passe-t-il pour finire, capire, preferire ?",
+     "answer": "On ajoute -isc- (sauf nous et vous) :\nfinisco, finisci, finisce, finiamo, finite, finiscono"
+    },
+    {
+     "question": "Conjugue andare au présent.",
+     "answer": "vado, vai, va,\nandiamo, andate, vanno"
+    },
+    {
+     "question": "Conjugue fare au présent.",
+     "answer": "faccio, fai, fa,\nfacciamo, fate, fanno"
+    },
+    {
+     "question": "Conjugue alzarsi (se lever) au présent.",
+     "answer": "mi alzo, ti alzi, si alza,\nci alziamo, vi alzate, si alzano"
+    },
+    {
+     "question": "Comment dit-on « Je me lève à 7 heures » ?",
+     "answer": "Mi alzo alle sette."
+    },
+    {
+     "question": "Comment demande-t-on l'heure ?",
+     "answer": "Che ora è? / Che ore sono?\n— Sono le otto. / È l'una."
+    },
+    {
+     "question": "Comment dit-on « faire le petit-déjeuner » ?",
+     "answer": "fare colazione"
+    },
+    {
+     "question": "Comment dit-on « le déjeuner » et « le dîner » ?",
+     "answer": "il pranzo\nla cena"
+    },
+    {
+     "question": "Comment dit-on « aller à l'école » ?",
+     "answer": "andare a scuola"
+    },
+    {
+     "question": "Comment dit-on « J'aime le sport » ?",
+     "answer": "Mi piace lo sport.\n(pluriel : Mi piacciono i film)"
+    },
+    {
+     "question": "Comment dit-on « toujours », « souvent » et « jamais » ?",
+     "answer": "sempre, spesso, mai\n(non … mai : Non mangio mai carne.)"
+    },
+    {
+     "question": "Où place-t-on l'accent tonique en italien en général ?",
+     "answer": "Sur l'avant-dernière syllabe :\nscuola, mangiare."
+    },
+    {
+     "question": "Comment dit-on « le week-end » et « le samedi » ?",
+     "answer": "il fine settimana\nil sabato"
+    }
+   ]
   }
  ]
 }
