@@ -7545,3 +7545,46 @@ body:not(.v1-pages) #view-creations .round-add-card-wrap { justify-content: cent
 }
 .subs-offer-btn:disabled { opacity: 0.55; }
 .subs-status--none { color: var(--ink-soft); font-weight: 400; }
+
+/* ==================================================================
+   Round 56
+   ================================================================== */
+/* 3. Blocs de classement : une seule couleur, une opacité par niveau
+   (mélange avec le fond de la page — suit donc aussi le fond coloré de la
+   Librairie). Réglages : Darwin Admin. */
+.tax-block {
+  background: color-mix(in srgb, var(--tax-color, #4a9fe0) var(--tax-alpha, 10%), var(--app-bg-color, var(--desk)));
+  transition: background-color 0.35s ease;
+}
+
+/* 2. Librairie : fond de la page à la couleur du cycle choisi (mêmes
+   couleurs que le site web, réglables dans Darwin Admin). */
+:root {
+  --library-bg: color-mix(in srgb, var(--library-cycle-color, transparent) var(--library-cycle-bg-pct, 16%), var(--app-bg-color, var(--desk)));
+}
+:root:has(#view-library.is-active[data-cycle="primaire"]) { --library-cycle-color: var(--cycle-primaire, #e0a23a); }
+:root:has(#view-library.is-active[data-cycle="college"]) { --library-cycle-color: var(--cycle-college, #4a9fe0); }
+:root:has(#view-library.is-active[data-cycle="lycee"]) { --library-cycle-color: var(--cycle-lycee, #8a63c9); }
+:root:has(#view-library.is-active[data-cycle="superieur"]) { --library-cycle-color: var(--cycle-superieur, #3e7c6b); }
+body:has(#view-library.is-active[data-cycle]) {
+  --app-bg-color: var(--library-bg);
+  background: var(--library-bg);
+}
+.desk, #app-sticky-header { transition: background-color 0.35s ease; }
+
+/* Liseré de couleur du cycle sur chaque boîte de la Librairie. */
+.library-row--cycled { position: relative; padding-left: 18px; }
+.library-row--cycled::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: var(--row-cycle, var(--cycle-autre, #94a3b8));
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+}
+/* Cycle choisi : les blocs de classement de la Librairie prennent la
+   couleur du cycle (mêmes opacités par niveau). */
+#view-library[data-cycle] .tax-block { --tax-color: var(--library-cycle-color) !important; }

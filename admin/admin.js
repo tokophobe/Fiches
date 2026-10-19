@@ -2412,24 +2412,39 @@
           M.TEXT_COLORS_SET_ORDER.map((k) => setRow(M.TEXT_COLORS_SET_TITLES[k] || k, [colorCtrl(["textColorsSet", k]), colorCtrl(["nightColors", "textColorsSet", k])]))
         )
       );
-      // Round 55 : blocs de classement (sélecteurs en cascade), un fond par
-      // niveau — page Librairie d'une part, autres pages d'autre part.
+      // Round 56 : blocs de classement (sélecteurs en cascade) — une seule
+      // couleur par page, et une opacité par niveau de bloc (mélange avec
+      // le fond de la page) qui recrée le dégradé.
       [
-        ["library", "Blocs de classement — page Librairie", "Fond de chaque niveau des filtres de classement de la Librairie."],
+        ["library", "Blocs de classement — page Librairie", "Filtres de classement de la Librairie : une couleur, puis l'opacité de chaque niveau (0 % = fond de la page, 100 % = couleur pleine)."],
         ["other", "Blocs de classement — autres pages", "Classer une boîte, publier dans la Librairie, filtres de Mes créations."],
       ].forEach(([k, title, hint]) => {
+        const pct = (path) => numCtrl(path, { min: 0, max: 100, unit: "%" });
         root.appendChild(
           section(
             title,
             hint,
-            [["taxColors", k], ["nightColors", "taxColors", k]],
+            [["taxTint", k], ["nightColors", "taxTint", k]],
             dayNightHead(),
+            setRow("Couleur", [colorCtrl(["taxTint", k, "color"]), colorCtrl(["nightColors", "taxTint", k, "color"])]),
             Array.from({ length: M.TAX_LEVELS }, (_, i) =>
-              setRow(`Niveau ${i + 1}${i === 0 ? " (catégorie)" : ""}`, [colorCtrl(["taxColors", k, i]), colorCtrl(["nightColors", "taxColors", k, i])])
+              setRow(`Opacité niveau ${i + 1}${i === 0 ? " (catégorie)" : ""}`, [pct(["taxTint", k, "alphas", i]), pct(["nightColors", "taxTint", k, "alphas", i])])
             )
           )
         );
       });
+      // Round 56 : couleurs des cycles — fond de la Librairie quand un
+      // cycle est choisi, liseré de chaque boîte (mêmes couleurs que le site).
+      root.appendChild(
+        section(
+          "Couleurs des cycles (Librairie)",
+          "Liseré des boîtes de la Librairie et fond de la page quand un cycle est choisi dans les filtres. Mêmes couleurs que le site web.",
+          [["cycleColors"], ["libraryCycleBgPct"], ["nightColors", "libraryCycleBgPct"]],
+          M.CYCLE_COLOR_KEYS.map((k) => setRow(M.CYCLE_COLOR_TITLES[k], colorCtrl(["cycleColors", k]))),
+          dayNightHead(),
+          setRow("Intensité du fond de page", [numCtrl(["libraryCycleBgPct"], { min: 0, max: 100, unit: "%" }), numCtrl(["nightColors", "libraryCycleBgPct"], { min: 0, max: 100, unit: "%" })], "Part de la couleur du cycle dans le fond")
+        )
+      );
       root.appendChild(
         section(
           "Effets d'ombrage",

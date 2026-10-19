@@ -123074,6 +123074,2582 @@
      "answer": "il fine settimana\nil sabato"
     }
    ]
+  },
+  {
+   "key": "r57-2nde-anglais-grammaire",
+   "name": "Seconde — Anglais : grammaire essentielle (temps, modaux, passif)",
+   "level": "2nde",
+   "taxonomy": {
+    "niveau": "2nde",
+    "specialite": "2nde générale et technologique",
+    "matiere": "anglais"
+   },
+   "tags": [
+    "anglais",
+    "grammaire",
+    "present perfect",
+    "passif",
+    "modaux"
+   ],
+   "summary": "Les points de grammaire indispensables en Seconde : present perfect, past perfect, modaux, passif, discours indirect.",
+   "description": "Programme de Seconde, langues vivantes (niveau visé B1) : consolider la grammaire pour comprendre et s'exprimer — temps du passé, modalité, voix passive, discours rapporté.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment forme-t-on le present perfect ?",
+     "answer": "have / has + participe passé :\nI have lived here for ten years."
+    },
+    {
+     "question": "For ou since avec le present perfect ?",
+     "answer": "for + durée (for two years)\nsince + point de départ (since 2020)"
+    },
+    {
+     "question": "Prétérit ou present perfect : « J'ai vu ce film hier » ?",
+     "answer": "I saw this film yesterday.\n(moment passé précis → prétérit)"
+    },
+    {
+     "question": "Comment forme-t-on le past perfect ?",
+     "answer": "had + participe passé :\nWhen I arrived, the train had left."
+    },
+    {
+     "question": "Quand emploie-t-on le past perfect ?",
+     "answer": "Pour une action antérieure à une autre action passée."
+    },
+    {
+     "question": "Comment forme-t-on la voix passive ?",
+     "answer": "be (au temps voulu) + participe passé :\nThe house was built in 1900."
+    },
+    {
+     "question": "Mets au passif : People speak English all over the world.",
+     "answer": "English is spoken all over the world."
+    },
+    {
+     "question": "Qu'expriment must et have to ?",
+     "answer": "L'obligation.\nmust : vient de celui qui parle ; have to : obligation extérieure."
+    },
+    {
+     "question": "Quelle différence entre mustn't et don't have to ?",
+     "answer": "mustn't : interdiction.\ndon't have to : absence d'obligation."
+    },
+    {
+     "question": "Comment exprime-t-on un conseil ?",
+     "answer": "should / ought to + base verbale :\nYou should rest."
+    },
+    {
+     "question": "Comment exprime-t-on une forte probabilité au passé ?",
+     "answer": "must have + participe passé :\nHe must have forgotten."
+    },
+    {
+     "question": "Comment rapporte-t-on « I am tired », dit-il ?",
+     "answer": "He said (that) he was tired.\n(décalage des temps)"
+    },
+    {
+     "question": "Que devient will au discours indirect ?",
+     "answer": "would :\n« I will come » → She said she would come."
+    },
+    {
+     "question": "Comment forme-t-on une question indirecte ?",
+     "answer": "Sans inversion :\nCan you tell me where the station is?"
+    },
+    {
+     "question": "Que signifient used to + base verbale ?",
+     "answer": "Une habitude passée révolue :\nI used to play the piano."
+    },
+    {
+     "question": "Comment dit-on « Je me suis fait couper les cheveux » ?",
+     "answer": "I had my hair cut.\n(have + objet + participe passé)"
+    }
+   ]
+  },
+  {
+   "key": "r57-2nde-anglais-identites-echanges",
+   "name": "Seconde — Anglais : vocabulaire des axes (identités, sauver la planète, création)",
+   "level": "2nde",
+   "taxonomy": {
+    "niveau": "2nde",
+    "specialite": "2nde générale et technologique",
+    "matiere": "anglais"
+   },
+   "tags": [
+    "anglais",
+    "vocabulaire",
+    "axes",
+    "environnement",
+    "art"
+   ],
+   "summary": "Mots et expressions pour parler de soi, de l'environnement, de l'art et de la technologie.",
+   "description": "Programme de Seconde, langues vivantes, axes culturels « Vivre entre générations », « Sauver la planète, penser les futurs possibles », « Création et rapport aux arts », « Représentation de soi et rapport à autrui » : lexique utile.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment dit-on « le réchauffement climatique » ?",
+     "answer": "global warming / climate change"
+    },
+    {
+     "question": "Comment dit-on « les gaz à effet de serre » ?",
+     "answer": "greenhouse gases"
+    },
+    {
+     "question": "Comment dit-on « les énergies renouvelables » ?",
+     "answer": "renewable energy (solar, wind power)"
+    },
+    {
+     "question": "Que signifie « to reduce your carbon footprint » ?",
+     "answer": "réduire son empreinte carbone"
+    },
+    {
+     "question": "Comment dit-on « le gaspillage » et « recycler » ?",
+     "answer": "waste\nto recycle"
+    },
+    {
+     "question": "Que signifie « the generation gap » ?",
+     "answer": "le fossé entre les générations"
+    },
+    {
+     "question": "Comment dit-on « les grands-parents » et « s'entendre avec » ?",
+     "answer": "grandparents\nto get along with"
+    },
+    {
+     "question": "Que signifie « to grow up » ?",
+     "answer": "grandir"
+    },
+    {
+     "question": "Comment dit-on « une œuvre d'art » et « un tableau » ?",
+     "answer": "a work of art\na painting"
+    },
+    {
+     "question": "Que signifient « a sculptor » et « a playwright » ?",
+     "answer": "un sculpteur\nun dramaturge"
+    },
+    {
+     "question": "Comment dit-on « les réseaux sociaux » ?",
+     "answer": "social media / social networks"
+    },
+    {
+     "question": "Que signifie « to post a selfie » ?",
+     "answer": "publier un selfie"
+    },
+    {
+     "question": "Que signifie « self-esteem » ?",
+     "answer": "l'estime de soi"
+    },
+    {
+     "question": "Comment dit-on « avoir confiance en soi » ?",
+     "answer": "to be self-confident"
+    },
+    {
+     "question": "Comment dit-on « à mon avis » ?",
+     "answer": "In my opinion / As far as I'm concerned"
+    },
+    {
+     "question": "Comment dit-on « d'un côté… de l'autre… » ?",
+     "answer": "On the one hand… on the other hand…"
+    }
+   ]
+  },
+  {
+   "key": "r57-2nde-espagnol-passe",
+   "name": "Seconde — Espagnol : raconter au passé (passé simple et imparfait)",
+   "level": "2nde",
+   "taxonomy": {
+    "niveau": "2nde",
+    "specialite": "2nde générale et technologique",
+    "matiere": "espagnol"
+   },
+   "tags": [
+    "espagnol",
+    "pretérito indefinido",
+    "imperfecto",
+    "conjugaison"
+   ],
+   "summary": "Pretérito indefinido, imperfecto et pretérito perfecto : formes, irréguliers et emplois.",
+   "description": "Programme de Seconde, espagnol (niveau visé B1) : raconter un événement passé — passé simple (pretérito indefinido), imparfait, passé composé et leurs emplois.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Conjugue hablar au passé simple (indefinido).",
+     "answer": "hablé, hablaste, habló,\nhablamos, hablasteis, hablaron"
+    },
+    {
+     "question": "Conjugue comer au passé simple.",
+     "answer": "comí, comiste, comió,\ncomimos, comisteis, comieron"
+    },
+    {
+     "question": "Quel est le passé simple de ser et ir ?",
+     "answer": "Identique : fui, fuiste, fue,\nfuimos, fuisteis, fueron"
+    },
+    {
+     "question": "Donne le passé simple de tener, estar, poder (yo).",
+     "answer": "tuve, estuve, pude"
+    },
+    {
+     "question": "Donne le passé simple de hacer, querer, venir (yo).",
+     "answer": "hice, quise, vine\n(él hizo)"
+    },
+    {
+     "question": "Donne le passé simple de decir et traer (yo / ellos).",
+     "answer": "dije / dijeron\ntraje / trajeron"
+    },
+    {
+     "question": "Conjugue hablar à l'imparfait.",
+     "answer": "hablaba, hablabas, hablaba,\nhablábamos, hablabais, hablaban"
+    },
+    {
+     "question": "Conjugue vivir à l'imparfait.",
+     "answer": "vivía, vivías, vivía,\nvivíamos, vivíais, vivían"
+    },
+    {
+     "question": "Quels sont les trois verbes irréguliers à l'imparfait ?",
+     "answer": "ser (era), ir (iba), ver (veía)"
+    },
+    {
+     "question": "Quand emploie-t-on le passé simple ?",
+     "answer": "Pour une action achevée, dans un temps révolu :\nAyer fui al cine."
+    },
+    {
+     "question": "Quand emploie-t-on l'imparfait ?",
+     "answer": "Pour une description, une habitude ou une action en cours dans le passé."
+    },
+    {
+     "question": "Quand emploie-t-on le pretérito perfecto (he hablado) ?",
+     "answer": "Pour un passé lié au présent :\nhoy, esta semana, ya, todavía no…"
+    },
+    {
+     "question": "Traduis : Quand j'étais petit, j'allais à la plage.",
+     "answer": "Cuando era pequeño, iba a la playa."
+    },
+    {
+     "question": "Traduis : Hier, j'ai mangé avec mes amis.",
+     "answer": "Ayer comí con mis amigos."
+    },
+    {
+     "question": "Que signifient « hace dos años » et « el año pasado » ?",
+     "answer": "il y a deux ans\nl'année dernière"
+    },
+    {
+     "question": "Quel changement orthographique : buscar → yo … ?",
+     "answer": "busqué (c → qu devant e)\nde même : llegar → llegué"
+    }
+   ]
+  },
+  {
+   "key": "r57-2nde-espagnol-vocabulaire-axes",
+   "name": "Seconde — Espagnol : vocabulaire de l'environnement, de la ville et de la société",
+   "level": "2nde",
+   "taxonomy": {
+    "niveau": "2nde",
+    "specialite": "2nde générale et technologique",
+    "matiere": "espagnol"
+   },
+   "tags": [
+    "espagnol",
+    "vocabulaire",
+    "environnement",
+    "société"
+   ],
+   "summary": "Lexique pour les axes de Seconde : planète, ville, générations, relations aux autres, et expressions d'opinion.",
+   "description": "Programme de Seconde, espagnol, axes culturels (« Sauver la planète », « Le village, le quartier, la ville », « Vivre entre générations », « Représentation de soi ») : vocabulaire et formules utiles.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment dit-on « l'environnement » et « la pollution » ?",
+     "answer": "el medio ambiente\nla contaminación"
+    },
+    {
+     "question": "Comment dit-on « le réchauffement climatique » ?",
+     "answer": "el calentamiento global"
+    },
+    {
+     "question": "Comment dit-on « protéger la planète » ?",
+     "answer": "proteger el planeta"
+    },
+    {
+     "question": "Comment dit-on « les déchets » et « recycler » ?",
+     "answer": "los residuos / la basura\nreciclar"
+    },
+    {
+     "question": "Comment dit-on « la sécheresse » ?",
+     "answer": "la sequía"
+    },
+    {
+     "question": "Comment dit-on « le quartier » et « les habitants » ?",
+     "answer": "el barrio\nlos habitantes / los vecinos"
+    },
+    {
+     "question": "Comment dit-on « la campagne » et « un village » ?",
+     "answer": "el campo\nun pueblo"
+    },
+    {
+     "question": "Que signifie « la España vaciada » ?",
+     "answer": "l'Espagne « vidée » :\nles zones rurales qui se dépeuplent"
+    },
+    {
+     "question": "Comment dit-on « les personnes âgées » ?",
+     "answer": "las personas mayores / los ancianos"
+    },
+    {
+     "question": "Comment dit-on « les jeunes » ?",
+     "answer": "los jóvenes"
+    },
+    {
+     "question": "Comment dit-on « s'entendre bien avec quelqu'un » ?",
+     "answer": "llevarse bien con alguien"
+    },
+    {
+     "question": "Comment dit-on « à mon avis » ?",
+     "answer": "en mi opinión / para mí / a mi parecer"
+    },
+    {
+     "question": "Comment dit-on « je pense que… » et « je ne pense pas que… » ?",
+     "answer": "Creo que + indicatif\nNo creo que + subjonctif"
+    },
+    {
+     "question": "Comment dit-on « d'une part… d'autre part » ?",
+     "answer": "por una parte… por otra parte…"
+    },
+    {
+     "question": "Comment dit-on « il faut » (impersonnel) ?",
+     "answer": "hay que + infinitif"
+    },
+    {
+     "question": "Comment dit-on « devenir » (changement durable) ?",
+     "answer": "volverse / hacerse / convertirse en"
+    }
+   ]
+  },
+  {
+   "key": "r57-2nde-allemand-grammaire",
+   "name": "Seconde — Allemand : subordonnées, prétérit et déclinaisons",
+   "level": "2nde",
+   "taxonomy": {
+    "niveau": "2nde",
+    "specialite": "2nde générale et technologique",
+    "matiere": "allemand"
+   },
+   "tags": [
+    "allemand",
+    "grammaire",
+    "subordonnées",
+    "prétérit",
+    "adjectifs"
+   ],
+   "summary": "Verbe en fin de subordonnée, conjonctions, prétérit des verbes forts et faibles, déclinaison de l'adjectif.",
+   "description": "Programme de Seconde, allemand (niveau visé B1) : consolider la grammaire — place du verbe, subordonnées, prétérit, déclinaison de l'adjectif épithète.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Où se place le verbe conjugué dans une subordonnée ?",
+     "answer": "À la fin :\n…, weil ich müde bin."
+    },
+    {
+     "question": "Cite cinq conjonctions de subordination.",
+     "answer": "dass, weil, wenn, als, ob, obwohl, damit"
+    },
+    {
+     "question": "Quelle différence entre wenn et als ?",
+     "answer": "als : une seule fois dans le passé.\nwenn : répétition, présent, futur, condition."
+    },
+    {
+     "question": "Que signifie ob ?",
+     "answer": "si (interrogation indirecte) :\nIch weiß nicht, ob er kommt."
+    },
+    {
+     "question": "Que se passe-t-il quand la subordonnée est en tête de phrase ?",
+     "answer": "La principale commence par le verbe :\nWenn es regnet, bleibe ich zu Hause."
+    },
+    {
+     "question": "Où se place le verbe dans une principale ?",
+     "answer": "En 2e position :\nHeute gehe ich ins Kino."
+    },
+    {
+     "question": "Quelles conjonctions ne changent pas l'ordre des mots ?",
+     "answer": "und, aber, oder, denn, sondern"
+    },
+    {
+     "question": "Comment forme-t-on le prétérit d'un verbe faible ?",
+     "answer": "radical + -te :\nich machte, du machtest, er machte, wir machten"
+    },
+    {
+     "question": "Donne le prétérit de sein, haben et werden (er).",
+     "answer": "er war, er hatte, er wurde"
+    },
+    {
+     "question": "Donne le prétérit de gehen, kommen, sehen (er).",
+     "answer": "ging, kam, sah"
+    },
+    {
+     "question": "Donne le prétérit de fahren, geben, nehmen (er).",
+     "answer": "fuhr, gab, nahm"
+    },
+    {
+     "question": "Quand utilise-t-on surtout le prétérit ?",
+     "answer": "À l'écrit, dans un récit\n(et toujours pour sein, haben et les modaux)."
+    },
+    {
+     "question": "Quelle terminaison a l'adjectif après der / die / das (nominatif singulier) ?",
+     "answer": "-e : der alte Mann, die alte Frau, das alte Haus"
+    },
+    {
+     "question": "Quelle terminaison a l'adjectif au pluriel après die ?",
+     "answer": "-en : die alten Häuser"
+    },
+    {
+     "question": "Décline : ein (alt) Mann (nominatif).",
+     "answer": "ein alter Mann"
+    },
+    {
+     "question": "Comment forme-t-on un infinitif avec zu ?",
+     "answer": "Ich habe keine Lust, ins Kino zu gehen.\n(verbe à particule : anzurufen)"
+    }
+   ]
+  },
+  {
+   "key": "r57-2nde-italien-passato-prossimo",
+   "name": "Seconde — Italien : le passé composé et l'imparfait",
+   "level": "2nde",
+   "taxonomy": {
+    "niveau": "2nde",
+    "specialite": "2nde générale et technologique",
+    "matiere": "italien"
+   },
+   "tags": [
+    "italien",
+    "passato prossimo",
+    "imperfetto",
+    "conjugaison"
+   ],
+   "summary": "Passato prossimo avec avere ou essere, participes irréguliers, imperfetto et leurs emplois.",
+   "description": "Programme de Seconde, italien : raconter au passé — passato prossimo, choix de l'auxiliaire, participes passés irréguliers, imperfetto.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment forme-t-on le passato prossimo ?",
+     "answer": "avere ou essere au présent + participe passé :\nho mangiato, sono andato."
+    },
+    {
+     "question": "Comment forme-t-on le participe passé régulier ?",
+     "answer": "-are → -ato, -ere → -uto, -ire → -ito :\nparlato, venduto, dormito"
+    },
+    {
+     "question": "Avec quel auxiliaire conjugue-t-on les verbes de mouvement et d'état ?",
+     "answer": "essere : sono andato, sono rimasto, sono nato."
+    },
+    {
+     "question": "Avec essere, le participe s'accorde-t-il ?",
+     "answer": "Oui, avec le sujet :\nMaria è partita. Siamo arrivati."
+    },
+    {
+     "question": "Quel auxiliaire pour essere lui-même ?",
+     "answer": "essere : sono stato / stata (j'ai été)."
+    },
+    {
+     "question": "Quel est le participe passé de fare, dire, scrivere ?",
+     "answer": "fatto, detto, scritto"
+    },
+    {
+     "question": "Quel est le participe passé de prendere, mettere, vedere ?",
+     "answer": "preso, messo, visto (ou veduto)"
+    },
+    {
+     "question": "Quel est le participe passé de leggere, aprire, venire ?",
+     "answer": "letto, aperto, venuto"
+    },
+    {
+     "question": "Conjugue parlare à l'imparfait.",
+     "answer": "parlavo, parlavi, parlava,\nparlavamo, parlavate, parlavano"
+    },
+    {
+     "question": "Conjugue essere à l'imparfait.",
+     "answer": "ero, eri, era,\neravamo, eravate, erano"
+    },
+    {
+     "question": "Quand emploie-t-on l'imperfetto ?",
+     "answer": "Pour décrire, pour une habitude ou une action en cours dans le passé."
+    },
+    {
+     "question": "Traduis : Hier je suis allé au cinéma.",
+     "answer": "Ieri sono andato al cinema."
+    },
+    {
+     "question": "Traduis : Quand j'étais petit, je jouais au football.",
+     "answer": "Da piccolo giocavo a calcio."
+    },
+    {
+     "question": "Comment dit-on « il y a deux jours » ?",
+     "answer": "due giorni fa"
+    },
+    {
+     "question": "Comment dit-on « l'été dernier » ?",
+     "answer": "l'estate scorsa"
+    },
+    {
+     "question": "Quel auxiliaire pour les verbes pronominaux ?",
+     "answer": "essere : mi sono alzato / alzata."
+    }
+   ]
+  },
+  {
+   "key": "r57-2nde-emc-ddhc-droits",
+   "name": "Seconde — EMC : droits de l'homme, DDHC et État de droit",
+   "level": "2nde",
+   "taxonomy": {
+    "niveau": "2nde",
+    "specialite": "2nde générale et technologique",
+    "matiere": "EMC"
+   },
+   "tags": [
+    "EMC",
+    "DDHC",
+    "droits de l'homme",
+    "État de droit",
+    "Constitution"
+   ],
+   "summary": "Grands textes des droits de l'homme, hiérarchie des normes, État de droit et garanties des libertés.",
+   "description": "Programme de Seconde, enseignement moral et civique, « Des libertés pour la liberté » : les textes qui protègent les libertés et l'État de droit qui les garantit.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "En quelle année la Déclaration des droits de l'homme et du citoyen a-t-elle été adoptée ?",
+     "answer": "Le 26 août 1789."
+    },
+    {
+     "question": "Que dit l'article 1 de la DDHC ?",
+     "answer": "« Les hommes naissent et demeurent libres et égaux en droits. »"
+    },
+    {
+     "question": "Comment la DDHC définit-elle la liberté (article 4) ?",
+     "answer": "« Pouvoir faire tout ce qui ne nuit pas à autrui. »"
+    },
+    {
+     "question": "Quel texte de l'ONU date de 1948 ?",
+     "answer": "La Déclaration universelle des droits de l'homme."
+    },
+    {
+     "question": "Qui a rédigé la Déclaration des droits de la femme et de la citoyenne (1791) ?",
+     "answer": "Olympe de Gouges."
+    },
+    {
+     "question": "Quel texte européen protège les droits fondamentaux depuis 1950 ?",
+     "answer": "La Convention européenne des droits de l'homme (CEDH)."
+    },
+    {
+     "question": "Quelle cour fait respecter la CEDH ?",
+     "answer": "La Cour européenne des droits de l'homme, à Strasbourg."
+    },
+    {
+     "question": "Qu'est-ce que l'État de droit ?",
+     "answer": "Un État où tous, y compris les gouvernants,\nsont soumis au droit et à des juges indépendants."
+    },
+    {
+     "question": "Qu'est-ce que la hiérarchie des normes ?",
+     "answer": "Chaque règle doit respecter celles qui lui sont supérieures :\nConstitution > traités > lois > règlements."
+    },
+    {
+     "question": "Qui contrôle la conformité des lois à la Constitution ?",
+     "answer": "Le Conseil constitutionnel."
+    },
+    {
+     "question": "Qu'est-ce qu'une QPC ?",
+     "answer": "Une question prioritaire de constitutionnalité :\nun justiciable conteste une loi devant le Conseil constitutionnel."
+    },
+    {
+     "question": "Qu'est-ce que le bloc de constitutionnalité ?",
+     "answer": "La Constitution de 1958, son préambule,\nla DDHC de 1789, le préambule de 1946 et la Charte de l'environnement."
+    },
+    {
+     "question": "Qu'est-ce que la séparation des pouvoirs ?",
+     "answer": "Les pouvoirs législatif, exécutif et judiciaire\nsont confiés à des organes distincts (Montesquieu)."
+    },
+    {
+     "question": "Que garantit la présomption d'innocence ?",
+     "answer": "Toute personne est innocente\ntant que sa culpabilité n'a pas été prouvée."
+    },
+    {
+     "question": "Qui est le Défenseur des droits ?",
+     "answer": "Une autorité indépendante qui défend les citoyens\nface aux administrations et aux discriminations."
+    },
+    {
+     "question": "Une liberté peut-elle être limitée ?",
+     "answer": "Oui, par la loi, pour protéger les droits d'autrui\nou l'ordre public."
+    }
+   ]
+  },
+  {
+   "key": "r57-2nde-francais-argumentation",
+   "name": "Seconde — Français : le vocabulaire de l'argumentation",
+   "level": "2nde",
+   "taxonomy": {
+    "niveau": "2nde",
+    "specialite": "2nde générale et technologique",
+    "matiere": "français"
+   },
+   "tags": [
+    "français",
+    "argumentation",
+    "thèse",
+    "connecteurs",
+    "littérature d'idées"
+   ],
+   "summary": "Thèse, arguments, exemples, connecteurs logiques, convaincre et persuader, formes de l'argumentation.",
+   "description": "Programme de Seconde, français, objet d'étude « La littérature d'idées et la presse du XIXe au XXIe siècle » : notions et outils pour analyser et construire une argumentation.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce qu'une thèse ?",
+     "answer": "La position défendue par l'auteur sur un sujet."
+    },
+    {
+     "question": "Qu'est-ce qu'un argument ?",
+     "answer": "Une raison qui appuie la thèse."
+    },
+    {
+     "question": "Quel est le rôle de l'exemple ?",
+     "answer": "Illustrer un argument par un cas concret."
+    },
+    {
+     "question": "Qu'est-ce que la thèse adverse (ou réfutée) ?",
+     "answer": "La position que l'auteur combat."
+    },
+    {
+     "question": "Quelle différence entre convaincre et persuader ?",
+     "answer": "Convaincre : faire appel à la raison.\nPersuader : faire appel aux sentiments."
+    },
+    {
+     "question": "Qu'est-ce qu'une concession ?",
+     "answer": "Reconnaître une part de vérité à l'adversaire\navant de le contredire : « certes… mais… »."
+    },
+    {
+     "question": "Cite des connecteurs d'opposition.",
+     "answer": "mais, pourtant, cependant, toutefois, en revanche, néanmoins"
+    },
+    {
+     "question": "Cite des connecteurs de cause.",
+     "answer": "car, parce que, puisque, en effet, étant donné que"
+    },
+    {
+     "question": "Cite des connecteurs de conséquence.",
+     "answer": "donc, ainsi, c'est pourquoi, par conséquent, si bien que"
+    },
+    {
+     "question": "Qu'est-ce qu'un argument d'autorité ?",
+     "answer": "Un argument qui s'appuie sur une personne ou une institution reconnue."
+    },
+    {
+     "question": "Qu'est-ce qu'un raisonnement par analogie ?",
+     "answer": "Un raisonnement qui compare deux situations\npour en tirer une conclusion."
+    },
+    {
+     "question": "Qu'est-ce qu'un apologue ?",
+     "answer": "Un court récit qui délivre une leçon\n(fable, conte philosophique, utopie)."
+    },
+    {
+     "question": "Qu'est-ce qu'un essai ?",
+     "answer": "Un texte en prose où l'auteur expose librement\nsa réflexion sur un sujet."
+    },
+    {
+     "question": "Qu'est-ce que l'ironie ?",
+     "answer": "Dire le contraire de ce qu'on pense\npour critiquer ou faire sourire."
+    },
+    {
+     "question": "Qu'est-ce qu'un registre polémique ?",
+     "answer": "Un ton vif et agressif pour attaquer une idée ou une personne."
+    },
+    {
+     "question": "Qui a écrit « J'accuse… ! » en 1898 ?",
+     "answer": "Émile Zola, dans L'Aurore,\npour défendre le capitaine Dreyfus."
+    }
+   ]
+  },
+  {
+   "key": "r57-1re-anglais-axes-vocabulaire",
+   "name": "1ère — Anglais : vocabulaire des axes du cycle terminal",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "anglais"
+   },
+   "tags": [
+    "anglais",
+    "vocabulaire",
+    "axes",
+    "bac",
+    "citoyenneté"
+   ],
+   "summary": "Lexique des axes du cycle terminal : identités, espace public et privé, art et pouvoir, citoyenneté, fictions, innovations.",
+   "description": "Programme de 1ère, langues vivantes, cycle terminal : vocabulaire des huit axes culturels (Identités et échanges, Espace privé et espace public, Art et pouvoir, Citoyenneté et mondes virtuels, Fictions et réalités, Innovations scientifiques, Diversité et inclusion, Territoire et mémoire).",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment dit-on « la vie privée » ?",
+     "answer": "privacy / private life"
+    },
+    {
+     "question": "Comment dit-on « l'espace public » ?",
+     "answer": "the public sphere / public space"
+    },
+    {
+     "question": "Que signifie « surveillance » en anglais ?",
+     "answer": "la surveillance (caméras, données…)"
+    },
+    {
+     "question": "Comment dit-on « les fausses informations » ?",
+     "answer": "fake news / disinformation"
+    },
+    {
+     "question": "Comment dit-on « un lanceur d'alerte » ?",
+     "answer": "a whistleblower"
+    },
+    {
+     "question": "Que signifie « to vote » et « an election » ?",
+     "answer": "voter\nune élection"
+    },
+    {
+     "question": "Comment dit-on « la propagande » et « la censure » ?",
+     "answer": "propaganda\ncensorship"
+    },
+    {
+     "question": "Que signifie « a mural » ?",
+     "answer": "une fresque murale"
+    },
+    {
+     "question": "Comment dit-on « la diversité » et « l'inclusion » ?",
+     "answer": "diversity\ninclusion"
+    },
+    {
+     "question": "Comment dit-on « l'égalité des chances » ?",
+     "answer": "equal opportunities"
+    },
+    {
+     "question": "Comment dit-on « la mémoire collective » ?",
+     "answer": "collective memory"
+    },
+    {
+     "question": "Que signifie « a landmark » ?",
+     "answer": "un monument emblématique / un lieu repère"
+    },
+    {
+     "question": "Comment dit-on « une avancée scientifique » ?",
+     "answer": "a scientific breakthrough"
+    },
+    {
+     "question": "Comment dit-on « l'intelligence artificielle » ?",
+     "answer": "artificial intelligence (AI)"
+    },
+    {
+     "question": "Que signifie « a melting pot » ?",
+     "answer": "un creuset (mélange de cultures)"
+    },
+    {
+     "question": "Comment dit-on « immigrer » et « un immigré » ?",
+     "answer": "to immigrate\nan immigrant"
+    }
+   ]
+  },
+  {
+   "key": "r57-1re-anglais-oral",
+   "name": "1ère — Anglais : expressions pour présenter un document et prendre la parole",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "anglais"
+   },
+   "tags": [
+    "anglais",
+    "oral",
+    "présentation",
+    "expressions",
+    "bac"
+   ],
+   "summary": "Présenter un document, décrire une image, nuancer, donner son avis et conclure à l'oral.",
+   "description": "Programme de 1ère, anglais, évaluations du cycle terminal : formules utiles pour présenter un document, décrire une image, organiser son propos et donner son opinion.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment présenter la nature d'un document ?",
+     "answer": "This document is an article / an extract from a novel / a cartoon…"
+    },
+    {
+     "question": "Comment dire « Ce document traite de… » ?",
+     "answer": "This document deals with… / is about…"
+    },
+    {
+     "question": "Comment dire « au premier plan » et « à l'arrière-plan » ?",
+     "answer": "in the foreground\nin the background"
+    },
+    {
+     "question": "Comment dire « au centre » et « en haut à gauche » ?",
+     "answer": "in the middle\nin the top left-hand corner"
+    },
+    {
+     "question": "Comment dire « Il semble que… » ?",
+     "answer": "It seems that… / He seems to be…"
+    },
+    {
+     "question": "Comment dire « L'auteur veut montrer que… » ?",
+     "answer": "The author wants to show that…\n/ aims at showing that…"
+    },
+    {
+     "question": "Comment dire « Pour commencer » et « ensuite » ?",
+     "answer": "First of all / To begin with\nThen / Next"
+    },
+    {
+     "question": "Comment dire « De plus » ?",
+     "answer": "Moreover / Furthermore / What's more"
+    },
+    {
+     "question": "Comment dire « Cependant » ?",
+     "answer": "However / Nevertheless"
+    },
+    {
+     "question": "Comment dire « Je suis d'accord / pas d'accord » ?",
+     "answer": "I agree / I disagree (with)"
+    },
+    {
+     "question": "Comment dire « Il est vrai que… mais… » ?",
+     "answer": "It is true that… but…\n/ Admittedly…, yet…"
+    },
+    {
+     "question": "Comment dire « Par exemple » ?",
+     "answer": "For instance / For example / such as"
+    },
+    {
+     "question": "Comment dire « En conclusion » ?",
+     "answer": "To conclude / To sum up / All in all"
+    },
+    {
+     "question": "Comment dire « Cela me rappelle… » ?",
+     "answer": "It reminds me of…"
+    },
+    {
+     "question": "Comment dire « Cela soulève la question de… » ?",
+     "answer": "It raises the question of…"
+    },
+    {
+     "question": "Comment gagner du temps poliment à l'oral ?",
+     "answer": "Let me think… / How can I put it?\n/ That's an interesting question."
+    }
+   ]
+  },
+  {
+   "key": "r57-1re-espagnol-subjonctif",
+   "name": "1ère — Espagnol : le subjonctif présent et ses emplois",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "espagnol"
+   },
+   "tags": [
+    "espagnol",
+    "subjonctif",
+    "grammaire",
+    "bac"
+   ],
+   "summary": "Formation du subjonctif présent, irréguliers, et emplois après les verbes de volonté, d'émotion et cuando.",
+   "description": "Programme de 1ère, espagnol (niveau visé B1-B2) : le présent du subjonctif — formes et emplois pour exprimer la volonté, le souhait, le doute, le sentiment et le futur.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment forme-t-on le subjonctif présent ?",
+     "answer": "Radical de la 1re pers. du présent + terminaisons inversées :\n-ar → -e ; -er / -ir → -a"
+    },
+    {
+     "question": "Conjugue hablar au subjonctif présent.",
+     "answer": "hable, hables, hable,\nhablemos, habléis, hablen"
+    },
+    {
+     "question": "Conjugue comer au subjonctif présent.",
+     "answer": "coma, comas, coma,\ncomamos, comáis, coman"
+    },
+    {
+     "question": "Donne le subjonctif de tener, hacer, decir (yo).",
+     "answer": "tenga, haga, diga"
+    },
+    {
+     "question": "Donne le subjonctif de ser, ir, estar (yo).",
+     "answer": "sea, vaya, esté"
+    },
+    {
+     "question": "Donne le subjonctif de saber, haber, dar (yo).",
+     "answer": "sepa, haya, dé"
+    },
+    {
+     "question": "Après quels verbes emploie-t-on le subjonctif ?",
+     "answer": "Volonté, ordre, souhait, sentiment :\nquiero que, pido que, me alegra que…"
+    },
+    {
+     "question": "Traduis : Je veux que tu viennes.",
+     "answer": "Quiero que vengas."
+    },
+    {
+     "question": "Pourquoi « Cuando llegues, llámame » ?",
+     "answer": "cuando + subjonctif pour une action future :\nQuand tu arriveras, appelle-moi."
+    },
+    {
+     "question": "Creo que ou No creo que : lequel prend le subjonctif ?",
+     "answer": "No creo que + subjonctif\n(Creo que + indicatif)"
+    },
+    {
+     "question": "Comment traduire « Il faut que je travaille » ?",
+     "answer": "Es necesario que trabaje.\n/ Tengo que trabajar."
+    },
+    {
+     "question": "Comment exprime-t-on un souhait avec ojalá ?",
+     "answer": "Ojalá + subjonctif :\n¡Ojalá haga buen tiempo!"
+    },
+    {
+     "question": "Que devient e → ie au subjonctif (querer) ?",
+     "answer": "quiera, quieras, quiera, queramos, queráis, quieran\n(pas de diphtongue avec nosotros / vosotros)"
+    },
+    {
+     "question": "Quel est le subjonctif de pedir (nosotros) ?",
+     "answer": "pidamos (e → i à toutes les personnes)"
+    },
+    {
+     "question": "Que signifie « para que » ?",
+     "answer": "pour que (+ subjonctif) :\nTe lo explico para que lo entiendas."
+    },
+    {
+     "question": "Comment dit-on « bien que » ?",
+     "answer": "aunque (+ subjonctif pour un fait hypothétique)"
+    }
+   ]
+  },
+  {
+   "key": "r57-1re-espagnol-civilisation",
+   "name": "1ère — Espagnol : repères de civilisation hispanique",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "espagnol"
+   },
+   "tags": [
+    "espagnol",
+    "civilisation",
+    "Espagne",
+    "Amérique latine",
+    "histoire"
+   ],
+   "summary": "Grandes dates et figures de l'Espagne et de l'Amérique latine utiles pour les axes du cycle terminal.",
+   "description": "Programme de 1ère, espagnol, axes « Territoire et mémoire », « Art et pouvoir », « Diversité et inclusion » : repères historiques et culturels du monde hispanique.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Dans combien de pays l'espagnol est-il langue officielle ?",
+     "answer": "Une vingtaine de pays (20 États, plus Porto Rico),\nsoit environ 500 millions de locuteurs natifs."
+    },
+    {
+     "question": "Que s'est-il passé en 1492 ?",
+     "answer": "Arrivée de Christophe Colomb en Amérique\net prise de Grenade (fin de la Reconquista)."
+    },
+    {
+     "question": "Quelle guerre a déchiré l'Espagne de 1936 à 1939 ?",
+     "answer": "La guerre civile espagnole."
+    },
+    {
+     "question": "Qui a dirigé l'Espagne de 1939 à 1975 ?",
+     "answer": "Le général Franco (dictature franquiste)."
+    },
+    {
+     "question": "Comment appelle-t-on le retour à la démocratie après 1975 ?",
+     "answer": "La Transición (transition démocratique)."
+    },
+    {
+     "question": "En quelle année la Constitution espagnole actuelle a-t-elle été adoptée ?",
+     "answer": "En 1978."
+    },
+    {
+     "question": "Quel tableau de Picasso dénonce le bombardement d'une ville basque en 1937 ?",
+     "answer": "Guernica."
+    },
+    {
+     "question": "Qui est Frida Kahlo ?",
+     "answer": "Une peintre mexicaine (1907-1954),\nconnue pour ses autoportraits."
+    },
+    {
+     "question": "Qui a écrit Cent ans de solitude ?",
+     "answer": "Gabriel García Márquez (Colombie), prix Nobel 1982."
+    },
+    {
+     "question": "Que désigne le « realismo mágico » ?",
+     "answer": "Un courant littéraire latino-américain\nqui mêle réel et merveilleux."
+    },
+    {
+     "question": "Qui sont les Mères de la place de Mai ?",
+     "answer": "Des mères argentines qui réclament leurs enfants\ndisparus sous la dictature (1976-1983)."
+    },
+    {
+     "question": "Qui a dirigé le Chili de 1973 à 1990 ?",
+     "answer": "Le général Pinochet, après le coup d'État contre Salvador Allende."
+    },
+    {
+     "question": "Quelle civilisation a fondé Tenochtitlan (Mexico) ?",
+     "answer": "Les Aztèques (Mexicas)."
+    },
+    {
+     "question": "Quelle civilisation a bâti le Machu Picchu ?",
+     "answer": "Les Incas (Pérou)."
+    },
+    {
+     "question": "Qu'est-ce que le Día de los Muertos ?",
+     "answer": "La fête des morts au Mexique (1er et 2 novembre)."
+    },
+    {
+     "question": "Que désigne la « Movida » ?",
+     "answer": "Le mouvement culturel madrilène\ndes années 1980 (Almodóvar…)."
+    }
+   ]
+  },
+  {
+   "key": "r57-1re-allemand-konjunktiv-passif",
+   "name": "1ère — Allemand : subjonctif II, passif et relatives",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "allemand"
+   },
+   "tags": [
+    "allemand",
+    "Konjunktiv II",
+    "passif",
+    "relatives",
+    "grammaire"
+   ],
+   "summary": "Exprimer l'hypothèse et le souhait (würde, wäre, hätte), le passif avec werden, les pronoms relatifs.",
+   "description": "Programme de 1ère, allemand (niveau visé B1-B2) : subjonctif II, voix passive, propositions relatives — pour argumenter et nuancer.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment forme-t-on le subjonctif II de la plupart des verbes ?",
+     "answer": "würde + infinitif :\nIch würde gern reisen."
+    },
+    {
+     "question": "Quel est le subjonctif II de sein et haben (ich) ?",
+     "answer": "ich wäre, ich hätte"
+    },
+    {
+     "question": "Quel est le subjonctif II de können et müssen (ich) ?",
+     "answer": "ich könnte, ich müsste"
+    },
+    {
+     "question": "Traduis : Si j'avais le temps, je viendrais.",
+     "answer": "Wenn ich Zeit hätte, würde ich kommen."
+    },
+    {
+     "question": "Comment exprime-t-on un souhait irréel ?",
+     "answer": "Wenn ich doch reich wäre!\n/ Ich wünschte, ich wäre…"
+    },
+    {
+     "question": "Comment formule-t-on une demande polie ?",
+     "answer": "Könnten Sie mir helfen?\n/ Ich hätte gern einen Kaffee."
+    },
+    {
+     "question": "Comment forme-t-on le passif présent ?",
+     "answer": "werden + participe II :\nDas Haus wird gebaut."
+    },
+    {
+     "question": "Comment forme-t-on le passif au prétérit ?",
+     "answer": "wurde + participe II :\nDas Haus wurde 1900 gebaut."
+    },
+    {
+     "question": "Comment introduit-on le complément d'agent au passif ?",
+     "answer": "von + datif :\nDas Buch wurde von Goethe geschrieben."
+    },
+    {
+     "question": "Où se place le verbe dans une relative ?",
+     "answer": "À la fin :\nDer Mann, der dort steht, ist mein Vater."
+    },
+    {
+     "question": "Quels sont les pronoms relatifs au nominatif ?",
+     "answer": "der (masc.), die (fém.), das (neutre), die (pluriel)"
+    },
+    {
+     "question": "Qu'est-ce qui change au datif pluriel du pronom relatif ?",
+     "answer": "denen :\ndie Leute, denen ich helfe"
+    },
+    {
+     "question": "Quel est le pronom relatif au génitif masculin ?",
+     "answer": "dessen :\nder Mann, dessen Auto rot ist"
+    },
+    {
+     "question": "Comment dit-on « bien que » ?",
+     "answer": "obwohl (+ verbe à la fin)"
+    },
+    {
+     "question": "Comment dit-on « pour que » ?",
+     "answer": "damit (+ verbe à la fin) ou um … zu + infinitif"
+    },
+    {
+     "question": "Comment dit-on « au lieu de » + infinitif ?",
+     "answer": "statt … zu + infinitif :\nstatt zu lernen"
+    }
+   ]
+  },
+  {
+   "key": "r57-1re-italien-futur-conditionnel",
+   "name": "1ère — Italien : futur, conditionnel et hypothèse",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "italien"
+   },
+   "tags": [
+    "italien",
+    "futur",
+    "conditionnel",
+    "subjonctif",
+    "grammaire"
+   ],
+   "summary": "Futuro semplice, condizionale presente, irréguliers et phrase hypothétique en italien.",
+   "description": "Programme de 1ère, italien : exprimer projets, souhaits et hypothèses — futur, conditionnel présent et période hypothétique.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Conjugue parlare au futur.",
+     "answer": "parlerò, parlerai, parlerà,\nparleremo, parlerete, parleranno"
+    },
+    {
+     "question": "Que devient le -a- des verbes en -are au futur ?",
+     "answer": "Il devient -e- : parlare → parlerò."
+    },
+    {
+     "question": "Donne le futur de essere et avere (io).",
+     "answer": "sarò, avrò"
+    },
+    {
+     "question": "Donne le futur de andare, fare, venire (io).",
+     "answer": "andrò, farò, verrò"
+    },
+    {
+     "question": "Conjugue parlare au conditionnel présent.",
+     "answer": "parlerei, parleresti, parlerebbe,\nparleremmo, parlereste, parlerebbero"
+    },
+    {
+     "question": "Donne le conditionnel de essere et avere (io).",
+     "answer": "sarei, avrei"
+    },
+    {
+     "question": "Donne le conditionnel de volere et potere (io).",
+     "answer": "vorrei, potrei"
+    },
+    {
+     "question": "Comment demande-t-on poliment quelque chose ?",
+     "answer": "Vorrei un caffè, per favore."
+    },
+    {
+     "question": "Que signifie « dovresti » ?",
+     "answer": "tu devrais (conseil)"
+    },
+    {
+     "question": "Comment forme-t-on la phrase hypothétique (irréel du présent) ?",
+     "answer": "se + subjonctif imparfait, conditionnel présent :\nSe avessi tempo, verrei."
+    },
+    {
+     "question": "Donne le subjonctif imparfait de essere (io).",
+     "answer": "fossi"
+    },
+    {
+     "question": "Donne le subjonctif imparfait de avere et fare (io).",
+     "answer": "avessi, facessi"
+    },
+    {
+     "question": "Traduis : Si j'étais riche, je voyagerais.",
+     "answer": "Se fossi ricco, viaggerei."
+    },
+    {
+     "question": "Le futur peut-il exprimer une supposition ?",
+     "answer": "Oui : Sarà vero ? (C'est peut-être vrai ?)\nAvrà vent'anni. (Il doit avoir vingt ans.)"
+    },
+    {
+     "question": "Comment dit-on « l'année prochaine » ?",
+     "answer": "l'anno prossimo"
+    },
+    {
+     "question": "Comment dit-on « dans deux ans » ?",
+     "answer": "fra due anni / tra due anni"
+    }
+   ]
+  },
+  {
+   "key": "r57-1re-emc-democratie-engagement",
+   "name": "1ère — EMC : démocratie, institutions et engagement",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "EMC"
+   },
+   "tags": [
+    "EMC",
+    "démocratie",
+    "institutions",
+    "vote",
+    "engagement"
+   ],
+   "summary": "Institutions de la Ve République, vote, représentation, référendum, partis et formes d'engagement.",
+   "description": "Programme de 1ère, enseignement moral et civique : les fondements et les fragilités du lien démocratique — institutions, participation, engagement citoyen.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "En quelle année la Constitution de la Ve République a-t-elle été adoptée ?",
+     "answer": "En 1958."
+    },
+    {
+     "question": "Pour combien de temps le président de la République est-il élu ?",
+     "answer": "5 ans (quinquennat, depuis 2000),\nau suffrage universel direct."
+    },
+    {
+     "question": "Qui nomme le Premier ministre ?",
+     "answer": "Le président de la République."
+    },
+    {
+     "question": "Quelles sont les deux chambres du Parlement ?",
+     "answer": "L'Assemblée nationale et le Sénat."
+    },
+    {
+     "question": "Combien y a-t-il de députés ?",
+     "answer": "577."
+    },
+    {
+     "question": "Comment les sénateurs sont-ils élus ?",
+     "answer": "Au suffrage universel indirect,\npar des « grands électeurs » (surtout des élus locaux)."
+    },
+    {
+     "question": "Quel article permet au gouvernement de faire adopter un texte sans vote ?",
+     "answer": "L'article 49.3 (sauf motion de censure adoptée)."
+    },
+    {
+     "question": "Qu'est-ce qu'une motion de censure ?",
+     "answer": "Un vote des députés qui peut renverser le gouvernement."
+    },
+    {
+     "question": "Qu'est-ce qu'un référendum ?",
+     "answer": "Un vote où les citoyens répondent directement\npar oui ou non à une question."
+    },
+    {
+     "question": "Depuis quand les femmes votent-elles en France ?",
+     "answer": "Depuis 1944 (premier vote en 1945)."
+    },
+    {
+     "question": "À quel âge peut-on voter en France ?",
+     "answer": "À 18 ans (depuis 1974)."
+    },
+    {
+     "question": "Qu'est-ce que l'abstention ?",
+     "answer": "Le fait de ne pas aller voter."
+    },
+    {
+     "question": "Qu'est-ce qu'une démocratie représentative ?",
+     "answer": "Les citoyens élisent des représentants\nqui décident en leur nom."
+    },
+    {
+     "question": "Qu'est-ce que la démocratie participative ?",
+     "answer": "Des dispositifs qui associent les citoyens aux décisions :\nconsultations, conventions citoyennes, budgets participatifs."
+    },
+    {
+     "question": "Cite trois formes d'engagement citoyen.",
+     "answer": "Association, syndicat, parti politique,\nbénévolat, service civique, pétition…"
+    },
+    {
+     "question": "Qu'est-ce que le service civique ?",
+     "answer": "Un engagement volontaire de 6 à 12 mois\npour une mission d'intérêt général (16-25 ans)."
+    }
+   ]
+  },
+  {
+   "key": "r57-1re-ens-sci-son-musique",
+   "name": "1ère — Enseignement scientifique : son, musique et audition",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "enseignement scientifique"
+   },
+   "tags": [
+    "enseignement scientifique",
+    "son",
+    "musique",
+    "fréquence",
+    "audition"
+   ],
+   "summary": "Fréquence, hauteur, timbre, intensité et décibels, gammes, numérisation du son et fonctionnement de l'oreille.",
+   "description": "Programme de 1ère, enseignement scientifique, thème « Son et musique, porteurs d'information » : son, instruments, gammes, numérisation et audition.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce qu'un son ?",
+     "answer": "Une vibration qui se propage dans un milieu matériel\n(onde mécanique) ; pas de son dans le vide."
+    },
+    {
+     "question": "Quelle est la vitesse du son dans l'air ?",
+     "answer": "Environ 340 m/s."
+    },
+    {
+     "question": "Qu'est-ce que la fréquence d'un son ?",
+     "answer": "Le nombre de vibrations par seconde, en hertz (Hz).\nf = 1 / T"
+    },
+    {
+     "question": "Quel lien entre fréquence et hauteur ?",
+     "answer": "Plus la fréquence est grande, plus le son est aigu."
+    },
+    {
+     "question": "Quel est le domaine des sons audibles par l'être humain ?",
+     "answer": "Environ de 20 Hz à 20 000 Hz."
+    },
+    {
+     "question": "Qu'est-ce qu'un son pur ?",
+     "answer": "Un son dont le signal est sinusoïdal\n(une seule fréquence)."
+    },
+    {
+     "question": "Qu'est-ce qui fait le timbre d'un son ?",
+     "answer": "La présence et l'amplitude des harmoniques\n(fréquences multiples du fondamental)."
+    },
+    {
+     "question": "Comment mesure-t-on le niveau d'intensité sonore ?",
+     "answer": "En décibels (dB), avec un sonomètre."
+    },
+    {
+     "question": "Que se passe-t-il quand l'intensité sonore est multipliée par 10 ?",
+     "answer": "Le niveau augmente de 10 dB."
+    },
+    {
+     "question": "À partir de quel niveau le son devient-il dangereux ?",
+     "answer": "Vers 85 dB en exposition prolongée ;\nseuil de douleur vers 120 dB."
+    },
+    {
+     "question": "Qu'est-ce qu'une octave ?",
+     "answer": "L'intervalle entre deux notes\ndont les fréquences sont dans un rapport 2."
+    },
+    {
+     "question": "Qu'est-ce que la gamme tempérée ?",
+     "answer": "Une gamme de 12 demi-tons égaux par octave\n(rapport de fréquence 2^(1/12))."
+    },
+    {
+     "question": "Qu'est-ce que l'échantillonnage d'un son ?",
+     "answer": "Mesurer le signal à intervalles réguliers\n(fréquence d'échantillonnage, ex. 44,1 kHz pour un CD)."
+    },
+    {
+     "question": "Qu'est-ce que la quantification ?",
+     "answer": "Coder chaque échantillon avec un nombre fini de bits\n(ex. 16 bits)."
+    },
+    {
+     "question": "Quel organe de l'oreille transforme le son en signal nerveux ?",
+     "answer": "La cochlée (oreille interne), grâce à ses cellules ciliées."
+    },
+    {
+     "question": "Pourquoi les pertes auditives sont-elles souvent définitives ?",
+     "answer": "Les cellules ciliées détruites ne se renouvellent pas."
+    }
+   ]
+  },
+  {
+   "key": "r57-1re-ens-sci-bilan-radiatif",
+   "name": "1ère — Enseignement scientifique : énergie solaire, bilan radiatif et photosynthèse",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "enseignement scientifique"
+   },
+   "tags": [
+    "enseignement scientifique",
+    "Soleil",
+    "albédo",
+    "effet de serre",
+    "photosynthèse"
+   ],
+   "summary": "Rayonnement solaire, puissance reçue, albédo, effet de serre, bilan radiatif et photosynthèse.",
+   "description": "Programme de 1ère, enseignement scientifique, thème « Le Soleil, notre source d'énergie » : rayonnement solaire, bilan radiatif terrestre, une conversion biologique de l'énergie solaire.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "D'où vient l'énergie du Soleil ?",
+     "answer": "De réactions de fusion nucléaire :\nl'hydrogène se transforme en hélium."
+    },
+    {
+     "question": "Que dit la loi de Wien ?",
+     "answer": "λmax × T = constante :\nplus un corps est chaud, plus son pic d'émission est à courte longueur d'onde."
+    },
+    {
+     "question": "Quelle est la température de surface du Soleil ?",
+     "answer": "Environ 5 800 K (≈ 5 500 °C)."
+    },
+    {
+     "question": "Quelle puissance solaire arrive au sommet de l'atmosphère ?",
+     "answer": "Environ 1 360 W/m²\n(constante solaire)."
+    },
+    {
+     "question": "Pourquoi la puissance reçue varie-t-elle selon la latitude ?",
+     "answer": "Le rayonnement arrive plus incliné vers les pôles :\nil se répartit sur une surface plus grande."
+    },
+    {
+     "question": "Qu'est-ce que l'albédo ?",
+     "answer": "La part du rayonnement solaire réfléchie par une surface\n(entre 0 et 1)."
+    },
+    {
+     "question": "Quel est l'albédo moyen de la Terre ?",
+     "answer": "Environ 0,3 (30 % réfléchi)."
+    },
+    {
+     "question": "Quelle surface a un albédo élevé ? faible ?",
+     "answer": "Élevé : neige, glace.\nFaible : océan, forêt."
+    },
+    {
+     "question": "Dans quel domaine la Terre émet-elle son rayonnement ?",
+     "answer": "Dans l'infrarouge."
+    },
+    {
+     "question": "Qu'est-ce que l'effet de serre ?",
+     "answer": "L'absorption par certains gaz de l'atmosphère\nd'une partie du rayonnement infrarouge émis par la Terre."
+    },
+    {
+     "question": "Qu'est-ce que le bilan radiatif terrestre ?",
+     "answer": "L'équilibre entre l'énergie reçue du Soleil\net l'énergie renvoyée vers l'espace."
+    },
+    {
+     "question": "Quelle part de l'énergie solaire reçue sert à la photosynthèse ?",
+     "answer": "Moins de 0,1 % en moyenne."
+    },
+    {
+     "question": "Quelle est l'équation simplifiée de la photosynthèse ?",
+     "answer": "6 CO₂ + 6 H₂O → C₆H₁₂O₆ + 6 O₂\n(grâce à la lumière)"
+    },
+    {
+     "question": "Où a lieu la photosynthèse ?",
+     "answer": "Dans les chloroplastes des cellules chlorophylliennes."
+    },
+    {
+     "question": "Qu'est-ce que la respiration cellulaire ?",
+     "answer": "L'utilisation du glucose et du dioxygène\npour libérer de l'énergie (rejet de CO₂ et d'eau)."
+    },
+    {
+     "question": "D'où vient l'énergie des combustibles fossiles ?",
+     "answer": "De matière organique issue de la photosynthèse,\nenfouie et transformée pendant des millions d'années."
+    }
+   ]
+  },
+  {
+   "key": "r57-1re-llcer-anglais-reperes",
+   "name": "1ère spé — LLCER anglais : repères de littérature anglophone",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "LLCER"
+   },
+   "tags": [
+    "LLCER",
+    "anglais",
+    "littérature",
+    "auteurs",
+    "œuvres"
+   ],
+   "summary": "Auteurs et œuvres incontournables du monde anglophone, de Shakespeare aux romanciers contemporains.",
+   "description": "Programme de 1ère, spécialité LLCER anglais, thématiques « Imaginaires » et « Rencontres » : repères d'auteurs, d'œuvres et de mouvements littéraires.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qui a écrit Hamlet et Romeo and Juliet ?",
+     "answer": "William Shakespeare (1564-1616)."
+    },
+    {
+     "question": "Qui a écrit Pride and Prejudice (1813) ?",
+     "answer": "Jane Austen."
+    },
+    {
+     "question": "Qui a créé Frankenstein (1818) ?",
+     "answer": "Mary Shelley."
+    },
+    {
+     "question": "Quel roman de Charles Dickens suit un orphelin à Londres ?",
+     "answer": "Oliver Twist (1838)."
+    },
+    {
+     "question": "Qui a écrit Jane Eyre ?",
+     "answer": "Charlotte Brontë (1847)."
+    },
+    {
+     "question": "Qui a écrit The Strange Case of Dr Jekyll and Mr Hyde ?",
+     "answer": "Robert Louis Stevenson (1886)."
+    },
+    {
+     "question": "Qui a écrit Dracula (1897) ?",
+     "answer": "Bram Stoker."
+    },
+    {
+     "question": "Quel roman de George Orwell décrit un régime totalitaire ?",
+     "answer": "Nineteen Eighty-Four (1949)."
+    },
+    {
+     "question": "Qui a écrit The Great Gatsby (1925) ?",
+     "answer": "F. Scott Fitzgerald."
+    },
+    {
+     "question": "Qui a écrit Of Mice and Men ?",
+     "answer": "John Steinbeck (1937)."
+    },
+    {
+     "question": "Quel roman de Harper Lee aborde le racisme en Alabama ?",
+     "answer": "To Kill a Mockingbird (1960)."
+    },
+    {
+     "question": "Qui a écrit Beloved, prix Nobel en 1993 ?",
+     "answer": "Toni Morrison."
+    },
+    {
+     "question": "Qu'est-ce que le roman gothique ?",
+     "answer": "Un genre mêlant mystère, surnaturel et lieux inquiétants\n(XVIIIe-XIXe siècles)."
+    },
+    {
+     "question": "Qu'est-ce qu'une dystopie ?",
+     "answer": "Un récit qui décrit une société imaginaire cauchemardesque\n(Brave New World, The Handmaid's Tale)."
+    },
+    {
+     "question": "Qu'est-ce que le « stream of consciousness » ?",
+     "answer": "Le monologue intérieur qui suit librement les pensées d'un personnage\n(Virginia Woolf, James Joyce)."
+    },
+    {
+     "question": "Qui a écrit The Handmaid's Tale (1985) ?",
+     "answer": "Margaret Atwood (Canada)."
+    }
+   ]
+  },
+  {
+   "key": "r57-1re-si-grandeurs-energie",
+   "name": "1ère spé — Sciences de l'ingénieur : grandeurs, puissance et rendement",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "sciences de l'ingénieur"
+   },
+   "tags": [
+    "sciences de l'ingénieur",
+    "énergie",
+    "puissance",
+    "rendement",
+    "unités"
+   ],
+   "summary": "Grandeurs et unités de l'ingénieur, puissances électrique et mécanique, rendement et chaîne de puissance.",
+   "description": "Programme de 1ère, spécialité sciences de l'ingénieur : modéliser et quantifier les flux d'énergie — grandeurs physiques, puissances, rendements.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Quelle relation relie énergie, puissance et durée ?",
+     "answer": "E = P × t\n(E en J, P en W, t en s)"
+    },
+    {
+     "question": "Combien de joules vaut 1 kWh ?",
+     "answer": "3,6 × 10⁶ J (3,6 MJ)."
+    },
+    {
+     "question": "Comment calcule-t-on une puissance électrique en courant continu ?",
+     "answer": "P = U × I\n(W = V × A)"
+    },
+    {
+     "question": "Comment calcule-t-on une puissance mécanique en translation ?",
+     "answer": "P = F × v\n(N × m/s)"
+    },
+    {
+     "question": "Comment calcule-t-on une puissance mécanique en rotation ?",
+     "answer": "P = C × ω\n(couple en N·m × vitesse angulaire en rad/s)"
+    },
+    {
+     "question": "Comment convertit-on des tr/min en rad/s ?",
+     "answer": "ω = N × 2π / 60"
+    },
+    {
+     "question": "Qu'est-ce que le rendement ?",
+     "answer": "η = P utile / P absorbée\n(toujours inférieur à 1)"
+    },
+    {
+     "question": "Quel est le rendement global de plusieurs éléments en série ?",
+     "answer": "Le produit des rendements :\nη = η1 × η2 × η3"
+    },
+    {
+     "question": "Que devient l'énergie perdue dans un système ?",
+     "answer": "Elle est le plus souvent dissipée sous forme de chaleur."
+    },
+    {
+     "question": "Quelle est la loi d'Ohm ?",
+     "answer": "U = R × I"
+    },
+    {
+     "question": "Quelles sont les fonctions de la chaîne de puissance ?",
+     "answer": "Alimenter, distribuer, convertir, transmettre."
+    },
+    {
+     "question": "Quel composant convertit l'énergie électrique en énergie mécanique ?",
+     "answer": "Le moteur (actionneur)."
+    },
+    {
+     "question": "Quel composant distribue l'énergie au moteur ?",
+     "answer": "Le préactionneur (relais, contacteur, variateur, hacheur)."
+    },
+    {
+     "question": "Qu'est-ce qu'un réducteur ?",
+     "answer": "Un transmetteur qui diminue la vitesse de rotation\net augmente le couple."
+    },
+    {
+     "question": "Qu'est-ce qu'un diagramme SysML de blocs internes (ibd) ?",
+     "answer": "Un diagramme qui montre les échanges\n(énergie, matière, information) entre les blocs d'un système."
+    },
+    {
+     "question": "Qu'est-ce qu'un écart entre performance attendue et mesurée ?",
+     "answer": "La différence entre le cahier des charges et le réel,\nà analyser pour améliorer le modèle ou le système."
+    }
+   ]
+  },
+  {
+   "key": "r57-1re-geographie-notions",
+   "name": "1ère — Géographie : notions clés et vocabulaire",
+   "level": "1ère",
+   "taxonomy": {
+    "niveau": "1ère",
+    "specialite": "voie générale",
+    "matiere": "géographie"
+   },
+   "tags": [
+    "géographie",
+    "notions",
+    "métropolisation",
+    "mondialisation",
+    "vocabulaire"
+   ],
+   "summary": "Les notions indispensables du programme de 1ère : métropole, littoralisation, espace productif, rural, recomposition.",
+   "description": "Programme de 1ère, géographie, « Les dynamiques d'un monde en recomposition » : vocabulaire et notions transversales à maîtriser pour l'épreuve.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce que la métropolisation ?",
+     "answer": "La concentration des populations, des activités et des pouvoirs\ndans les grandes villes."
+    },
+    {
+     "question": "Qu'est-ce qu'une métropole ?",
+     "answer": "Une grande ville qui concentre des fonctions de commandement\net rayonne à l'échelle nationale ou mondiale."
+    },
+    {
+     "question": "Qu'est-ce que la gentrification ?",
+     "answer": "L'installation de catégories aisées dans un quartier populaire,\nqui en transforme la population et les prix."
+    },
+    {
+     "question": "Qu'est-ce que la périurbanisation ?",
+     "answer": "L'extension des villes vers les campagnes environnantes."
+    },
+    {
+     "question": "Qu'est-ce qu'un espace productif ?",
+     "answer": "Un espace aménagé et organisé\npour produire des biens ou des services."
+    },
+    {
+     "question": "Qu'est-ce qu'une chaîne de valeur mondiale ?",
+     "answer": "La division des étapes de production d'un bien\nentre plusieurs pays."
+    },
+    {
+     "question": "Qu'est-ce qu'une firme transnationale (FTN) ?",
+     "answer": "Une entreprise qui a des filiales dans plusieurs pays."
+    },
+    {
+     "question": "Qu'est-ce qu'une ZIP ?",
+     "answer": "Une zone industrialo-portuaire :\nun port associé à des industries."
+    },
+    {
+     "question": "Qu'est-ce que la littoralisation ?",
+     "answer": "La concentration des hommes et des activités sur les littoraux."
+    },
+    {
+     "question": "Qu'est-ce qu'un espace rural multifonctionnel ?",
+     "answer": "Un espace rural aux usages variés :\nagriculture, résidence, tourisme, loisirs, environnement."
+    },
+    {
+     "question": "Qu'est-ce qu'une recomposition spatiale ?",
+     "answer": "La transformation de l'organisation d'un territoire\n(activités, populations, réseaux)."
+    },
+    {
+     "question": "Qu'est-ce qu'une interface ?",
+     "answer": "Une zone de contact entre deux espaces différents\nqui favorise les échanges (ex. frontière, littoral)."
+    },
+    {
+     "question": "Qu'est-ce qu'un hub ?",
+     "answer": "Une plate-forme de correspondance\n(aéroport, port) qui redistribue les flux."
+    },
+    {
+     "question": "Qu'est-ce que la mondialisation ?",
+     "answer": "La mise en relation des territoires et des sociétés\npar l'intensification des échanges."
+    },
+    {
+     "question": "Qu'est-ce que la périphérie, par opposition au centre ?",
+     "answer": "Un espace dominé, dépendant d'un centre\nqui concentre richesses et pouvoirs."
+    },
+    {
+     "question": "Quelles sont les métropoles les plus peuplées du monde ?",
+     "answer": "Tokyo, Delhi, Shanghai, São Paulo, Mexico, Le Caire…\n(plus de 20 millions d'habitants)"
+    }
+   ]
+  },
+  {
+   "key": "r57-tle-anglais-axes-oral",
+   "name": "Terminale — Anglais : expressions pour nuancer et argumenter (B2)",
+   "level": "terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "anglais"
+   },
+   "tags": [
+    "anglais",
+    "argumentation",
+    "B2",
+    "bac",
+    "expressions"
+   ],
+   "summary": "Tournures de niveau B2 pour nuancer, exprimer l'hypothèse, le regret, la concession et la conclusion.",
+   "description": "Programme de Terminale, anglais (niveau visé B2) : tournures idiomatiques et structures utiles à l'écrit et à l'oral du baccalauréat.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment exprime-t-on un regret sur le passé ?",
+     "answer": "I wish I had + participe passé :\nI wish I had studied more."
+    },
+    {
+     "question": "Comment exprime-t-on un souhait sur le présent ?",
+     "answer": "I wish + prétérit :\nI wish I were taller."
+    },
+    {
+     "question": "Comment forme-t-on l'irréel du passé ?",
+     "answer": "If + past perfect, would have + participe :\nIf I had known, I would have come."
+    },
+    {
+     "question": "Que signifie « Had I known… » ?",
+     "answer": "Si j'avais su… (inversion littéraire de If I had known)"
+    },
+    {
+     "question": "Comment dit-on « Il est grand temps que… » ?",
+     "answer": "It's high time + prétérit :\nIt's high time we acted."
+    },
+    {
+     "question": "Comment dit-on « Bien que » ?",
+     "answer": "Although / Even though + sujet + verbe\n(despite / in spite of + nom ou V-ing)"
+    },
+    {
+     "question": "Comment dit-on « Quoi qu'il en soit » ?",
+     "answer": "Be that as it may / Anyway"
+    },
+    {
+     "question": "Comment dit-on « Il va sans dire que… » ?",
+     "answer": "It goes without saying that…"
+    },
+    {
+     "question": "Comment dit-on « Non seulement… mais aussi… » ?",
+     "answer": "Not only… but also…\n(Not only does it…, but it also…)"
+    },
+    {
+     "question": "Comment dit-on « Plus on…, plus on… » ?",
+     "answer": "The more…, the more…\nThe more you read, the more you learn."
+    },
+    {
+     "question": "Que signifie « to some extent » ?",
+     "answer": "dans une certaine mesure"
+    },
+    {
+     "question": "Que signifie « whereas » ?",
+     "answer": "alors que (opposition)"
+    },
+    {
+     "question": "Comment dit-on « Cela vaut la peine de… » ?",
+     "answer": "It is worth + V-ing :\nIt's worth visiting."
+    },
+    {
+     "question": "Comment dit-on « avoir l'habitude de » (présent) ?",
+     "answer": "to be used to + V-ing :\nI'm used to working late."
+    },
+    {
+     "question": "Comment dit-on « En fin de compte » ?",
+     "answer": "In the end / Ultimately / At the end of the day"
+    },
+    {
+     "question": "Comment dit-on « Je ne peux pas m'empêcher de… » ?",
+     "answer": "I can't help + V-ing"
+    }
+   ]
+  },
+  {
+   "key": "r57-tle-espagnol-concordance",
+   "name": "Terminale — Espagnol : subjonctif imparfait, concordance des temps et hypothèse",
+   "level": "terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "espagnol"
+   },
+   "tags": [
+    "espagnol",
+    "subjonctif imparfait",
+    "concordance",
+    "hypothèse",
+    "bac"
+   ],
+   "summary": "Former le subjonctif imparfait, appliquer la concordance des temps et construire la phrase hypothétique.",
+   "description": "Programme de Terminale, espagnol (niveau visé B2) : subjonctif imparfait, concordance des temps et expression de l'hypothèse.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Comment forme-t-on le subjonctif imparfait ?",
+     "answer": "Radical de la 3e pers. pluriel du passé simple + -ra / -se :\nhablaron → hablara, hablase"
+    },
+    {
+     "question": "Conjugue hablar au subjonctif imparfait (forme en -ra).",
+     "answer": "hablara, hablaras, hablara,\nhabláramos, hablarais, hablaran"
+    },
+    {
+     "question": "Donne le subjonctif imparfait de tener, hacer, ser (yo).",
+     "answer": "tuviera, hiciera, fuera"
+    },
+    {
+     "question": "Donne le subjonctif imparfait de decir et poder (yo).",
+     "answer": "dijera, pudiera"
+    },
+    {
+     "question": "Qu'est-ce que la concordance des temps ?",
+     "answer": "Principale au passé → subordonnée au subjonctif imparfait :\nQuería que vinieras."
+    },
+    {
+     "question": "Traduis : Il m'a demandé de l'aider.",
+     "answer": "Me pidió que le ayudara."
+    },
+    {
+     "question": "Comment forme-t-on l'hypothèse irréelle au présent ?",
+     "answer": "si + subjonctif imparfait, conditionnel :\nSi tuviera dinero, viajaría."
+    },
+    {
+     "question": "Comment forme-t-on l'irréel du passé ?",
+     "answer": "si + subjonctif plus-que-parfait, conditionnel passé :\nSi hubiera sabido, habría venido."
+    },
+    {
+     "question": "Peut-on mettre un futur ou un conditionnel après si ?",
+     "answer": "Non, jamais en espagnol."
+    },
+    {
+     "question": "Traduis : Il parle comme s'il savait tout.",
+     "answer": "Habla como si lo supiera todo."
+    },
+    {
+     "question": "Comment traduit-on « Il faudrait que tu viennes » ?",
+     "answer": "Sería necesario que vinieras.\n/ Haría falta que vinieras."
+    },
+    {
+     "question": "Comment exprime-t-on un souhait irréalisable ?",
+     "answer": "Ojalá + subjonctif imparfait :\n¡Ojalá estuviera aquí!"
+    },
+    {
+     "question": "Que signifie « aunque llueva » ?",
+     "answer": "même s'il pleut (hypothèse)\n(aunque llueve = bien qu'il pleuve, fait réel)"
+    },
+    {
+     "question": "Comment dit-on « à moins que » ?",
+     "answer": "a menos que / a no ser que + subjonctif"
+    },
+    {
+     "question": "Comment dit-on « avant que » ?",
+     "answer": "antes de que + subjonctif"
+    },
+    {
+     "question": "Comment dit-on « sans que » ?",
+     "answer": "sin que + subjonctif"
+    }
+   ]
+  },
+  {
+   "key": "r57-tle-allemand-civilisation",
+   "name": "Terminale — Allemand : repères de civilisation (Allemagne depuis 1945)",
+   "level": "terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "allemand"
+   },
+   "tags": [
+    "allemand",
+    "civilisation",
+    "histoire",
+    "RDA",
+    "réunification"
+   ],
+   "summary": "De l'après-guerre à la réunification et à l'Allemagne d'aujourd'hui : dates, notions et institutions.",
+   "description": "Programme de Terminale, allemand, axes « Territoire et mémoire », « Espace privé et espace public », « Citoyenneté » : repères historiques et institutionnels du monde germanophone.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Que signifie « die Stunde Null » ?",
+     "answer": "« L'heure zéro » : la fin de la guerre en 1945,\nun pays à reconstruire."
+    },
+    {
+     "question": "En quelle année sont créées la RFA et la RDA ?",
+     "answer": "En 1949."
+    },
+    {
+     "question": "Que signifient BRD et DDR ?",
+     "answer": "Bundesrepublik Deutschland (RFA)\nDeutsche Demokratische Republik (RDA)"
+    },
+    {
+     "question": "Quand le mur de Berlin a-t-il été construit ?",
+     "answer": "Le 13 août 1961."
+    },
+    {
+     "question": "Quand le mur de Berlin est-il tombé ?",
+     "answer": "Le 9 novembre 1989."
+    },
+    {
+     "question": "Quand a eu lieu la réunification allemande ?",
+     "answer": "Le 3 octobre 1990 (fête nationale : Tag der Deutschen Einheit)."
+    },
+    {
+     "question": "Qu'est-ce que la Stasi ?",
+     "answer": "La police politique de la RDA."
+    },
+    {
+     "question": "Que désigne la « Ostalgie » ?",
+     "answer": "La nostalgie de certains aspects de la vie en RDA."
+    },
+    {
+     "question": "Qu'est-ce que le « Wirtschaftswunder » ?",
+     "answer": "Le « miracle économique » de la RFA dans les années 1950."
+    },
+    {
+     "question": "Qui a été le premier chancelier de la RFA ?",
+     "answer": "Konrad Adenauer (1949-1963)."
+    },
+    {
+     "question": "Quel chancelier s'est agenouillé à Varsovie en 1970 ?",
+     "answer": "Willy Brandt (Kniefall von Warschau)."
+    },
+    {
+     "question": "Qui était chancelier lors de la réunification ?",
+     "answer": "Helmut Kohl."
+    },
+    {
+     "question": "Qui a été chancelière de 2005 à 2021 ?",
+     "answer": "Angela Merkel."
+    },
+    {
+     "question": "Comment s'appelle le Parlement allemand ?",
+     "answer": "Der Bundestag (+ le Bundesrat, qui représente les Länder)."
+    },
+    {
+     "question": "Combien l'Allemagne compte-t-elle de Länder ?",
+     "answer": "16."
+    },
+    {
+     "question": "Que désigne la « Vergangenheitsbewältigung » ?",
+     "answer": "Le travail de mémoire sur le passé nazi."
+    }
+   ]
+  },
+  {
+   "key": "r57-tle-italien-grammaire",
+   "name": "Terminale — Italien : subjonctif, passé simple et pronoms",
+   "level": "terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "italien"
+   },
+   "tags": [
+    "italien",
+    "congiuntivo",
+    "passato remoto",
+    "pronoms",
+    "bac"
+   ],
+   "summary": "Congiuntivo présent, passato remoto, pronoms combinés et tournures utiles au baccalauréat.",
+   "description": "Programme de Terminale, italien (niveau visé B2) : subjonctif présent, passé simple de la narration, pronoms groupés et expressions d'opinion.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Conjugue parlare au subjonctif présent.",
+     "answer": "parli, parli, parli,\nparliamo, parliate, parlino"
+    },
+    {
+     "question": "Conjugue prendere au subjonctif présent.",
+     "answer": "prenda, prenda, prenda,\nprendiamo, prendiate, prendano"
+    },
+    {
+     "question": "Donne le subjonctif présent de essere et avere (io).",
+     "answer": "sia, abbia"
+    },
+    {
+     "question": "Après quelles expressions emploie-t-on le subjonctif ?",
+     "answer": "Opinion, doute, volonté, sentiment :\npenso che, credo che, voglio che, è importante che…"
+    },
+    {
+     "question": "Traduis : Je pense qu'il a raison.",
+     "answer": "Penso che abbia ragione."
+    },
+    {
+     "question": "Conjugue parlare au passato remoto.",
+     "answer": "parlai, parlasti, parlò,\nparlammo, parlaste, parlarono"
+    },
+    {
+     "question": "Donne le passato remoto de essere et avere (lui).",
+     "answer": "fu, ebbe"
+    },
+    {
+     "question": "Donne le passato remoto de fare, dire, vedere (lui).",
+     "answer": "fece, disse, vide"
+    },
+    {
+     "question": "Quand emploie-t-on le passato remoto ?",
+     "answer": "Pour des faits passés éloignés et achevés,\nsurtout dans les récits et les textes historiques."
+    },
+    {
+     "question": "Que deviennent mi + lo ?",
+     "answer": "me lo :\nMe lo dai ? (Tu me le donnes ?)"
+    },
+    {
+     "question": "Que deviennent gli + lo ?",
+     "answer": "glielo :\nGlielo dico. (Je le lui dis.)"
+    },
+    {
+     "question": "Que signifie le pronom ne ?",
+     "answer": "« en » :\nNe voglio due. (J'en veux deux.)"
+    },
+    {
+     "question": "Que signifie ci dans « Ci vado domani » ?",
+     "answer": "« y » : J'y vais demain."
+    },
+    {
+     "question": "Comment dit-on « bien que » ?",
+     "answer": "benché / sebbene + subjonctif"
+    },
+    {
+     "question": "Comment dit-on « à mon avis » ?",
+     "answer": "secondo me / a mio parere"
+    },
+    {
+     "question": "Comment dit-on « Il faut que tu étudies » ?",
+     "answer": "Bisogna che tu studi.\n/ Devi studiare."
+    }
+   ]
+  },
+  {
+   "key": "r57-tle-nsi-sql",
+   "name": "Terminale spé NSI — Bases de données relationnelles et SQL",
+   "level": "terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "NSI"
+   },
+   "tags": [
+    "NSI",
+    "SQL",
+    "bases de données",
+    "modèle relationnel"
+   ],
+   "summary": "Relation, attribut, clés primaire et étrangère, contraintes d'intégrité et requêtes SQL.",
+   "description": "Programme de Terminale, spécialité NSI, « Bases de données » : modèle relationnel, SGBD, langage SQL (requêtes d'interrogation et de mise à jour).",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce qu'une relation dans le modèle relationnel ?",
+     "answer": "Un ensemble de n-uplets (une table)\nqui partagent les mêmes attributs."
+    },
+    {
+     "question": "Qu'est-ce qu'un attribut ?",
+     "answer": "Une colonne de la relation, avec un domaine (type de valeurs)."
+    },
+    {
+     "question": "Qu'est-ce qu'une clé primaire ?",
+     "answer": "Un attribut (ou groupe d'attributs) qui identifie\nde façon unique chaque n-uplet."
+    },
+    {
+     "question": "Qu'est-ce qu'une clé étrangère ?",
+     "answer": "Un attribut qui fait référence à la clé primaire\nd'une autre relation."
+    },
+    {
+     "question": "Qu'est-ce qu'une contrainte d'intégrité ?",
+     "answer": "Une règle que les données doivent respecter :\nde domaine, de relation (clé), de référence."
+    },
+    {
+     "question": "Qu'est-ce qu'un SGBD ?",
+     "answer": "Un système de gestion de bases de données\n(ex. SQLite, PostgreSQL, MySQL)."
+    },
+    {
+     "question": "Quelle requête affiche toutes les colonnes d'une table Eleve ?",
+     "answer": "SELECT * FROM Eleve;"
+    },
+    {
+     "question": "Comment filtre-t-on les lignes ?",
+     "answer": "Avec WHERE :\nSELECT nom FROM Eleve WHERE age >= 18;"
+    },
+    {
+     "question": "Comment trie-t-on les résultats ?",
+     "answer": "ORDER BY colonne (ASC ou DESC)."
+    },
+    {
+     "question": "Comment évite-t-on les doublons ?",
+     "answer": "SELECT DISTINCT ville FROM Eleve;"
+    },
+    {
+     "question": "Cite trois fonctions d'agrégation.",
+     "answer": "COUNT, SUM, AVG, MIN, MAX"
+    },
+    {
+     "question": "Comment relie-t-on deux tables ?",
+     "answer": "Avec une jointure :\nSELECT … FROM A JOIN B ON A.id_b = B.id;"
+    },
+    {
+     "question": "Comment ajoute-t-on une ligne ?",
+     "answer": "INSERT INTO Eleve (nom, age) VALUES ('Léa', 17);"
+    },
+    {
+     "question": "Comment modifie-t-on des lignes ?",
+     "answer": "UPDATE Eleve SET age = 18 WHERE nom = 'Léa';"
+    },
+    {
+     "question": "Comment supprime-t-on des lignes ?",
+     "answer": "DELETE FROM Eleve WHERE age < 15;"
+    },
+    {
+     "question": "Que se passe-t-il si on oublie WHERE dans un UPDATE ou un DELETE ?",
+     "answer": "Toutes les lignes de la table sont modifiées ou supprimées."
+    }
+   ]
+  },
+  {
+   "key": "r57-tle-nsi-poo-recursivite",
+   "name": "Terminale spé NSI — Récursivité, programmation objet et diviser pour régner",
+   "level": "terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "NSI"
+   },
+   "tags": [
+    "NSI",
+    "récursivité",
+    "POO",
+    "classes",
+    "diviser pour régner"
+   ],
+   "summary": "Fonctions récursives, cas de base, classes et objets en Python, tri fusion et méthode diviser pour régner.",
+   "description": "Programme de Terminale, spécialité NSI, « Langages et programmation » et « Algorithmique » : récursivité, paradigme objet, méthode diviser pour régner.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Qu'est-ce qu'une fonction récursive ?",
+     "answer": "Une fonction qui s'appelle elle-même."
+    },
+    {
+     "question": "Qu'est-ce que le cas de base ?",
+     "answer": "La condition qui arrête les appels récursifs\n(sans lui, la récursion est infinie)."
+    },
+    {
+     "question": "Écris une fonction récursive pour n!",
+     "answer": "def fact(n):\n    if n == 0: return 1\n    return n * fact(n - 1)"
+    },
+    {
+     "question": "Que se passe-t-il quand la récursion est trop profonde en Python ?",
+     "answer": "RecursionError :\nla pile d'appels dépasse la limite (environ 1 000 par défaut)."
+    },
+    {
+     "question": "Qu'est-ce qu'une classe ?",
+     "answer": "Un modèle qui définit les attributs et les méthodes\nd'un type d'objet."
+    },
+    {
+     "question": "Qu'est-ce qu'un objet (instance) ?",
+     "answer": "Un élément créé à partir d'une classe."
+    },
+    {
+     "question": "Quel est le rôle de la méthode __init__ ?",
+     "answer": "C'est le constructeur :\nelle initialise les attributs d'un nouvel objet."
+    },
+    {
+     "question": "Que représente self ?",
+     "answer": "L'objet sur lequel la méthode est appelée."
+    },
+    {
+     "question": "Comment crée-t-on un objet de la classe Chien ?",
+     "answer": "rex = Chien(\"Rex\", 3)"
+    },
+    {
+     "question": "Qu'est-ce que l'encapsulation ?",
+     "answer": "Le fait de regrouper données et méthodes dans un objet\net de limiter l'accès direct aux attributs."
+    },
+    {
+     "question": "Qu'est-ce que la méthode « diviser pour régner » ?",
+     "answer": "Diviser le problème en sous-problèmes,\nles résoudre (souvent récursivement), puis combiner."
+    },
+    {
+     "question": "Quel est le principe du tri fusion ?",
+     "answer": "Couper la liste en deux, trier chaque moitié,\npuis fusionner les deux moitiés triées."
+    },
+    {
+     "question": "Quelle est la complexité du tri fusion ?",
+     "answer": "O(n log n)."
+    },
+    {
+     "question": "Quelle est la complexité de la recherche dichotomique ?",
+     "answer": "O(log n) (sur une liste triée)."
+    },
+    {
+     "question": "Qu'est-ce que la programmation dynamique ?",
+     "answer": "Résoudre un problème en mémorisant les solutions\ndes sous-problèmes pour ne pas les recalculer."
+    },
+    {
+     "question": "Quelle suite illustre l'intérêt de la mémoïsation ?",
+     "answer": "La suite de Fibonacci :\nla version récursive naïve recalcule sans cesse les mêmes termes."
+    }
+   ]
+  },
+  {
+   "key": "r57-tle-maths-expertes-arithmetique",
+   "name": "Terminale — Maths expertes : divisibilité, congruences et PGCD",
+   "level": "terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "mathématiques expertes"
+   },
+   "tags": [
+    "maths expertes",
+    "arithmétique",
+    "congruences",
+    "PGCD",
+    "Bézout"
+   ],
+   "summary": "Division euclidienne, congruences, PGCD, algorithme d'Euclide, théorèmes de Bézout et de Gauss, nombres premiers.",
+   "description": "Programme de Terminale, option mathématiques expertes, « Arithmétique » : divisibilité dans ℤ, congruences, PGCD, théorèmes de Bézout et de Gauss, nombres premiers.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Que signifie « a divise b » dans ℤ ?",
+     "answer": "Il existe un entier k tel que b = k × a."
+    },
+    {
+     "question": "Énonce la division euclidienne de a par b > 0.",
+     "answer": "Il existe un unique couple (q, r) tel que\na = bq + r avec 0 ≤ r < b."
+    },
+    {
+     "question": "Que signifie a ≡ b [n] ?",
+     "answer": "a et b ont le même reste dans la division par n\n(n divise a − b)."
+    },
+    {
+     "question": "Les congruences sont-elles compatibles avec + et × ?",
+     "answer": "Oui : si a ≡ b [n] et c ≡ d [n],\nalors a + c ≡ b + d et ac ≡ bd [n]."
+    },
+    {
+     "question": "Si a ≡ b [n], que dire de aᵏ ?",
+     "answer": "aᵏ ≡ bᵏ [n] pour tout entier naturel k."
+    },
+    {
+     "question": "Quel est le reste de 10ⁿ dans la division par 9 ?",
+     "answer": "1 (car 10 ≡ 1 [9])."
+    },
+    {
+     "question": "Qu'est-ce que le PGCD de a et b ?",
+     "answer": "Le plus grand diviseur commun de a et b."
+    },
+    {
+     "question": "Sur quoi repose l'algorithme d'Euclide ?",
+     "answer": "PGCD(a, b) = PGCD(b, r),\noù r est le reste de la division de a par b."
+    },
+    {
+     "question": "Que signifie « a et b sont premiers entre eux » ?",
+     "answer": "PGCD(a, b) = 1."
+    },
+    {
+     "question": "Énonce le théorème de Bézout.",
+     "answer": "a et b sont premiers entre eux\nsi et seulement s'il existe u, v entiers tels que au + bv = 1."
+    },
+    {
+     "question": "Énonce le théorème de Gauss.",
+     "answer": "Si a divise bc et que a et b sont premiers entre eux,\nalors a divise c."
+    },
+    {
+     "question": "Qu'est-ce qu'un nombre premier ?",
+     "answer": "Un entier naturel qui a exactement deux diviseurs : 1 et lui-même."
+    },
+    {
+     "question": "Combien y a-t-il de nombres premiers ?",
+     "answer": "Une infinité."
+    },
+    {
+     "question": "Que dit le petit théorème de Fermat ?",
+     "answer": "Si p est premier et ne divise pas a,\nalors aᵖ⁻¹ ≡ 1 [p]."
+    },
+    {
+     "question": "Que dit le théorème fondamental de l'arithmétique ?",
+     "answer": "Tout entier n ≥ 2 se décompose de façon unique\nen produit de facteurs premiers."
+    },
+    {
+     "question": "Jusqu'où tester les diviseurs pour savoir si n est premier ?",
+     "answer": "Jusqu'à √n."
+    }
+   ]
+  },
+  {
+   "key": "r57-tle-maths-comp-suites-modeles",
+   "name": "Terminale — Maths complémentaires : suites, modèles d'évolution et logarithme",
+   "level": "terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "mathématiques complémentaires"
+   },
+   "tags": [
+    "maths complémentaires",
+    "suites",
+    "modèles",
+    "logarithme",
+    "exponentielle"
+   ],
+   "summary": "Suites arithmétiques et géométriques, modèles linéaires et exponentiels, limites, logarithme népérien.",
+   "description": "Programme de Terminale, option mathématiques complémentaires : modéliser une évolution — suites, croissance linéaire ou exponentielle, fonction logarithme.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Forme explicite d'une suite arithmétique ?",
+     "answer": "uₙ = u₀ + n × r"
+    },
+    {
+     "question": "Forme explicite d'une suite géométrique ?",
+     "answer": "uₙ = u₀ × qⁿ"
+    },
+    {
+     "question": "Somme 1 + 2 + … + n ?",
+     "answer": "n(n + 1) / 2"
+    },
+    {
+     "question": "Somme 1 + q + q² + … + qⁿ (q ≠ 1) ?",
+     "answer": "(1 − qⁿ⁺¹) / (1 − q)"
+    },
+    {
+     "question": "Quel modèle pour une augmentation de 3 % par an ?",
+     "answer": "Un modèle exponentiel (suite géométrique de raison 1,03)."
+    },
+    {
+     "question": "Quel modèle pour une augmentation de 500 € par an ?",
+     "answer": "Un modèle linéaire (suite arithmétique de raison 500)."
+    },
+    {
+     "question": "Limite de qⁿ si q > 1 ?",
+     "answer": "+∞"
+    },
+    {
+     "question": "Limite de qⁿ si −1 < q < 1 ?",
+     "answer": "0"
+    },
+    {
+     "question": "Qu'est-ce qu'une suite arithmético-géométrique ?",
+     "answer": "uₙ₊₁ = a uₙ + b ;\non l'étudie avec une suite auxiliaire vₙ = uₙ − ℓ."
+    },
+    {
+     "question": "Définition de ln(x) ?",
+     "answer": "L'unique réel y tel que eʸ = x (pour x > 0)."
+    },
+    {
+     "question": "ln(ab) = ?",
+     "answer": "ln(a) + ln(b)"
+    },
+    {
+     "question": "ln(aⁿ) = ?",
+     "answer": "n ln(a)"
+    },
+    {
+     "question": "Comment résoudre qⁿ > S (q > 1) ?",
+     "answer": "n > ln(S) / ln(q)"
+    },
+    {
+     "question": "Dérivée de ln(x) ?",
+     "answer": "1 / x"
+    },
+    {
+     "question": "Que valent ln(1) et ln(e) ?",
+     "answer": "ln(1) = 0\nln(e) = 1"
+    },
+    {
+     "question": "Qu'est-ce que le temps de doublement d'une grandeur qui croît de t % par an ?",
+     "answer": "Le n tel que (1 + t/100)ⁿ = 2,\nsoit n = ln(2) / ln(1 + t/100)."
+    }
+   ]
+  },
+  {
+   "key": "r57-tle-dgemc-famille",
+   "name": "Terminale — DGEMC : le couple, la famille et la filiation",
+   "level": "terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "DGEMC"
+   },
+   "tags": [
+    "DGEMC",
+    "droit de la famille",
+    "mariage",
+    "PACS",
+    "filiation"
+   ],
+   "summary": "Mariage, PACS, concubinage, divorce, filiation, autorité parentale et obligations familiales.",
+   "description": "Programme de Terminale, option droit et grands enjeux du monde contemporain (DGEMC) : le droit de la famille — couple, filiation, autorité parentale.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Quelles sont les trois formes de vie de couple reconnues en droit français ?",
+     "answer": "Le mariage, le PACS et le concubinage (union libre)."
+    },
+    {
+     "question": "Depuis quand le mariage est-il ouvert aux couples de même sexe ?",
+     "answer": "Depuis la loi du 17 mai 2013."
+    },
+    {
+     "question": "Quel est l'âge minimum pour se marier en France ?",
+     "answer": "18 ans (pour les deux époux, depuis 2006)."
+    },
+    {
+     "question": "Qu'est-ce que le PACS ?",
+     "answer": "Le pacte civil de solidarité :\nun contrat entre deux adultes pour organiser leur vie commune (créé en 1999)."
+    },
+    {
+     "question": "Qu'est-ce que le concubinage ?",
+     "answer": "Une union de fait, stable et continue,\nsans formalité ni obligation légale entre les concubins."
+    },
+    {
+     "question": "Où se déclare un PACS ?",
+     "answer": "Devant l'officier d'état civil de la mairie, ou chez un notaire."
+    },
+    {
+     "question": "Cite trois devoirs des époux.",
+     "answer": "Respect, fidélité, secours et assistance,\ncommunauté de vie."
+    },
+    {
+     "question": "Qu'est-ce que le divorce par consentement mutuel ?",
+     "answer": "Les époux s'accordent sur le divorce et ses effets ;\ndepuis 2017, il se fait souvent sans juge, par convention d'avocats."
+    },
+    {
+     "question": "Qu'est-ce que la filiation ?",
+     "answer": "Le lien juridique entre un enfant et ses parents."
+    },
+    {
+     "question": "Comment la filiation peut-elle être établie ?",
+     "answer": "Par l'effet de la loi (acte de naissance, présomption de paternité),\npar la reconnaissance, par la possession d'état ou par jugement."
+    },
+    {
+     "question": "Qu'est-ce que la présomption de paternité ?",
+     "answer": "Le mari de la mère est présumé être le père de l'enfant."
+    },
+    {
+     "question": "Qu'est-ce que l'adoption plénière ?",
+     "answer": "Une adoption qui remplace la filiation d'origine\npar une nouvelle filiation, de façon irrévocable."
+    },
+    {
+     "question": "Qu'est-ce que l'autorité parentale ?",
+     "answer": "L'ensemble des droits et devoirs des parents\npour protéger l'enfant et assurer son éducation, jusqu'à sa majorité."
+    },
+    {
+     "question": "Qu'est-ce que l'obligation alimentaire ?",
+     "answer": "Le devoir d'aider financièrement un membre de sa famille dans le besoin\n(parents, enfants, beaux-parents)."
+    },
+    {
+     "question": "Quelle loi de 2019 interdit les violences éducatives ordinaires ?",
+     "answer": "La loi du 10 juillet 2019 (« loi anti-fessée »)."
+    },
+    {
+     "question": "Quel juge s'occupe des conflits familiaux ?",
+     "answer": "Le juge aux affaires familiales (JAF)."
+    }
+   ]
+  },
+  {
+   "key": "r57-tle-llcer-anglais-civilisation",
+   "name": "Terminale spé — LLCER anglais : repères de civilisation du monde anglophone",
+   "level": "terminale",
+   "taxonomy": {
+    "niveau": "terminale",
+    "specialite": "voie générale",
+    "matiere": "LLCER"
+   },
+   "tags": [
+    "LLCER",
+    "anglais",
+    "civilisation",
+    "histoire",
+    "États-Unis",
+    "Royaume-Uni"
+   ],
+   "summary": "Grandes dates, institutions et figures du Royaume-Uni et des États-Unis pour les thématiques de Terminale.",
+   "description": "Programme de Terminale, spécialité LLCER anglais, thématiques « Arts et débats d'idées » et « Expression et construction de soi » : repères historiques et institutionnels du monde anglophone.",
+   "priceTokens": 0,
+   "cards": [
+    {
+     "question": "Quel texte de 1215 limite le pouvoir du roi d'Angleterre ?",
+     "answer": "La Magna Carta."
+    },
+    {
+     "question": "Que s'est-il passé lors de la Glorious Revolution (1688) ?",
+     "answer": "Le Parlement remplace Jacques II par Guillaume et Marie ;\nle Bill of Rights (1689) suit."
+    },
+    {
+     "question": "En quelle année les États-Unis ont-ils déclaré leur indépendance ?",
+     "answer": "Le 4 juillet 1776."
+    },
+    {
+     "question": "Quelle guerre oppose le Nord et le Sud des États-Unis (1861-1865) ?",
+     "answer": "La guerre de Sécession (Civil War)."
+    },
+    {
+     "question": "Quel amendement abolit l'esclavage aux États-Unis ?",
+     "answer": "Le 13e amendement (1865)."
+    },
+    {
+     "question": "Que désignent les lois « Jim Crow » ?",
+     "answer": "Les lois de ségrégation raciale dans le Sud des États-Unis\n(fin XIXe – années 1960)."
+    },
+    {
+     "question": "Qui a prononcé « I Have a Dream » en 1963 ?",
+     "answer": "Martin Luther King, à Washington."
+    },
+    {
+     "question": "Qui est Rosa Parks ?",
+     "answer": "Une militante qui refusa de céder sa place dans un bus\nà Montgomery en 1955."
+    },
+    {
+     "question": "Quelles lois de 1964 et 1965 mettent fin à la ségrégation légale ?",
+     "answer": "Le Civil Rights Act (1964) et le Voting Rights Act (1965)."
+    },
+    {
+     "question": "Qui étaient les suffragettes ?",
+     "answer": "Des militantes britanniques pour le droit de vote des femmes\n(Emmeline Pankhurst)."
+    },
+    {
+     "question": "Quelles sont les deux chambres du Parlement britannique ?",
+     "answer": "La Chambre des communes et la Chambre des lords."
+    },
+    {
+     "question": "Quelles sont les deux chambres du Congrès américain ?",
+     "answer": "La Chambre des représentants et le Sénat."
+    },
+    {
+     "question": "Qu'est-ce que le Commonwealth ?",
+     "answer": "Une organisation de 56 États,\npour la plupart d'anciennes colonies britanniques."
+    },
+    {
+     "question": "Qu'est-ce que le Brexit ?",
+     "answer": "La sortie du Royaume-Uni de l'Union européenne\n(référendum 2016, effective le 31 janvier 2020)."
+    },
+    {
+     "question": "Qu'est-ce que la Harlem Renaissance ?",
+     "answer": "Un mouvement culturel afro-américain des années 1920\n(Langston Hughes, jazz)."
+    },
+    {
+     "question": "Que désigne l'« American Dream » ?",
+     "answer": "L'idée que chacun peut réussir par son travail,\nquelle que soit son origine."
+    }
+   ]
   }
  ]
 }

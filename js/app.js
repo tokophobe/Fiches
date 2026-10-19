@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v210";
+  const APP_VERSION = "v211";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -1198,6 +1198,20 @@
     if (tax) {
       ["library", "other"].forEach((k) => (tax[k] || []).forEach((c, i) => root.setProperty(`--tax-${k}-${i + 1}`, c)));
     }
+    // Round 56 : une seule couleur par page, opacité par niveau de bloc
+    // (mélange avec le fond de la page, voir .tax-block dans style.css).
+    const night = isNightModeActive();
+    const tint = night ? settings.nightColors.taxTint : settings.taxTint;
+    if (tint) {
+      ["library", "other"].forEach((k) => {
+        if (!tint[k]) return;
+        root.setProperty(`--tax-${k}-color`, tint[k].color);
+        tint[k].alphas.forEach((a, i) => root.setProperty(`--tax-${k}-a${i + 1}`, `${a}%`));
+      });
+    }
+    // Round 56 : couleurs des cycles (Librairie).
+    Object.entries(settings.cycleColors || {}).forEach(([k, c]) => root.setProperty(`--cycle-${k}`, c));
+    root.setProperty("--library-cycle-bg-pct", `${night ? settings.nightColors.libraryCycleBgPct : settings.libraryCycleBgPct}%`);
     root.setProperty("--app-bg-color", settings.appBgColor);
     root.setProperty("--construction-active-color", settings.constructionActiveColor);
     root.setProperty("--due-pill-bonus-color", settings.bonusPillColor);
@@ -11386,6 +11400,45 @@
     return taxonomyValueFromSelection(legacyLevelSelection(col && col.level));
   }
 
+  /** Round 56 : cycle d'une collection (primaire / college / lycee /
+   *  superieur / autre) — pour le liseré de couleur des blocs et le fond de
+   *  la Librairie. Déduit du niveau quand le cycle n'est pas renseigné. */
+  function cycleKeyFromLabel(label) {
+    const n = Taxonomy.norm ? Taxonomy.norm(label || "") : String(label || "").toLowerCase();
+    if (n.includes("primaire")) return "primaire";
+    if (n.includes("college")) return "college";
+    if (n.includes("lycee")) return "lycee";
+    if (n.includes("superieur")) return "superieur";
+    return null;
+  }
+  const cycleOfNiveauCache = new Map();
+  function cycleKeyOfNiveau(niveauId) {
+    if (cycleOfNiveauCache.has(niveauId)) return cycleOfNiveauCache.get(niveauId);
+    const tax = Taxonomy.get();
+    let key = null;
+    if (tax && tax.lists && Array.isArray(tax.lists.cycles)) {
+      const cyc = tax.lists.cycles.find((c) => c && Taxonomy.options(tax, "niveau", { cycle: c.id }).some((o) => o.id === niveauId));
+      if (cyc) key = cycleKeyFromLabel(cyc.label);
+    }
+    if (tax) cycleOfNiveauCache.set(niveauId, key);
+    return key;
+  }
+  function collectionCycleKey(col) {
+    const t = collectionTaxonomy(col);
+    if (!t) return "autre";
+    if (t.cycle && t.cycle.label) return cycleKeyFromLabel(t.cycle.label) || "autre";
+    if (t.niveau && t.niveau.id) return cycleKeyOfNiveau(t.niveau.id) || "autre";
+    return "autre";
+  }
+  /** Cycle choisi dans les filtres de la Librairie (ou null). */
+  function libraryFilterCycleKey() {
+    const id = libraryTaxFilter && libraryTaxFilter.cycle;
+    if (!id) return null;
+    const tax = Taxonomy.get();
+    const item = tax && tax.lists && (tax.lists.cycles || []).find((c) => c && c.id === id);
+    return item ? cycleKeyFromLabel(item.label) : null;
+  }
+
   /** Libellé court pour la liste : niveau (+ année) · matière, ou à défaut
    *  le champ le plus précis disponible. */
   function taxonomyShortLabel(t) {
@@ -11565,7 +11618,9 @@
         const block = document.createElement("div");
         block.className = "tax-block";
         block.style.setProperty("--tax-depth", String(depth));
-        block.style.setProperty("--tax-bg", `var(--tax-${taxScope}-${Math.min(depth, 5) + 1})`);
+        // Round 56 : même couleur pour tous les blocs, opacité par niveau.
+        block.style.setProperty("--tax-color", `var(--tax-${taxScope}-color)`);
+        block.style.setProperty("--tax-alpha", `var(--tax-${taxScope}-a${Math.min(depth, 5) + 1})`);
         block.appendChild(node);
         parent.appendChild(block);
         parent = block;
@@ -11935,6 +11990,14 @@
         );
       });
     }
+    // Round 56 : fond de la page aux couleurs du cycle choisi (voir
+    // #view-library[data-cycle] dans style.css).
+    const libView = el("view-library");
+    if (libView) {
+      const ck = libraryFilterCycleKey();
+      if (ck) libView.dataset.cycle = ck;
+      else delete libView.dataset.cycle;
+    }
     list.innerHTML = "";
     if (empty) empty.hidden = libraryCollectionsCache.length > 0;
     if (libraryCollectionsCache.length > 0 && collections.length === 0) {
@@ -11955,7 +12018,11 @@
       const summary = (col.summary || "").trim();
       const description = (col.description || "").trim();
       const li = document.createElement("li");
-      li.className = "subject-row library-row" + (inRevisions ? " library-row--in-revisions" : "");
+      li.className = "subject-row library-row library-row--cycled" + (inRevisions ? " library-row--in-revisions" : "");
+      // Round 56 : liseré à la couleur du cycle de la boîte.
+      const cycleKey = collectionCycleKey(col);
+      li.dataset.cycle = cycleKey;
+      li.style.setProperty("--row-cycle", `var(--cycle-${cycleKey})`);
       li.innerHTML = `
         <div class="library-row-head">
           <span class="subject-row-name library-row-name">${iconSvgMarkup("share", "icon-inline-svg")} <span>${escapeHtml(col.name)}</span></span>
@@ -13348,7 +13415,11 @@
   async function refreshReportsBadge() {
     const homeCircle = el("home-reports-circle");
     const hubBtn = el("fiches-hub-reports-btn");
-    if (!Sync.isConfigured() || !accountCurrentUser || !Sync.reports) {
+    // Round 56 : le compte de l'appareil (UserScope) suffit — le bouton
+    // peut ainsi apparaître dès l'ouverture, sans attendre la fin de la
+    // synchro des fiches (qui peut prendre plusieurs dizaines de secondes).
+    const knownUser = accountCurrentUser || (window.UserScope && window.UserScope.uid);
+    if (!Sync.isConfigured() || !knownUser || !Sync.reports) {
       if (hubBtn) hubBtn.hidden = true;
       if (homeCircle) homeCircle.hidden = true;
       return;
@@ -14413,6 +14484,12 @@
     // La synchro Supabase qui suit peut échouer sans que ça bloque l'appli.
     if (window.__clearBootWatchdog) window.__clearBootWatchdog();
     if (window.__clearBootRetryFlag) window.__clearBootRetryFlag();
+    if (Sync.isConfigured()) {
+      // Round 56 : bouton « Signalements » de l'accueil sans attendre la
+      // synchro ci-dessous (avant, il n'arrivait qu'après connectSync()).
+      lastHomeReportsRefresh = Date.now();
+      refreshReportsBadge().catch(() => {});
+    }
     if (Sync.isConfigured()) {
       // Correctif : ce bloc n'était protégé par aucun try/catch — un
       // accroc réseau ponctuel pendant connectSync() (ou l'une des étapes

@@ -647,6 +647,13 @@
       bgColors: { ...DEFAULT_BG_COLORS, ...(parsed.bgColors || {}) },
       textColorsSet: { ...DEFAULT_TEXT_COLORS_SET, ...(parsed.textColorsSet || {}) },
       taxColors: mergeTaxColors(DEFAULT_TAX_COLORS, parsed.taxColors),
+      // Round 56 : blocs de classement = une seule couleur, avec une
+      // opacité par niveau (remplace taxColors, gardé pour compatibilité).
+      taxTint: mergeTaxTint(DEFAULT_TAX_TINT, parsed.taxTint),
+      // Round 56 : couleur de chaque cycle (fond de la Librairie quand un
+      // cycle est choisi, liseré des boîtes) — mêmes couleurs que le site.
+      cycleColors: mergeCycleColors(parsed.cycleColors),
+      libraryCycleBgPct: pctOr(parsed.libraryCycleBgPct, DEFAULT_LIBRARY_CYCLE_BG_PCT),
       shadows: { ...DEFAULT_SHADOWS, ...(parsed.shadows || {}) },
       homeLayout: migrateHomeLayoutToPercent(parsed),
       homeLogo: { ...DEFAULT_HOME_LOGO, ...(parsed.homeLogo || {}) },
@@ -685,6 +692,8 @@
         ratingColors: { ...DEFAULT_RATING_COLORS, ...((parsed.nightColors || {}).ratingColors || {}) },
         ratingBtnBgColor: (parsed.nightColors || {}).ratingBtnBgColor || DEFAULT_NIGHT_RATING_BTN_BG_COLOR,
         taxColors: mergeTaxColors(DEFAULT_NIGHT_TAX_COLORS, (parsed.nightColors || {}).taxColors),
+        taxTint: mergeTaxTint(DEFAULT_NIGHT_TAX_TINT, (parsed.nightColors || {}).taxTint),
+        libraryCycleBgPct: pctOr((parsed.nightColors || {}).libraryCycleBgPct, DEFAULT_NIGHT_LIBRARY_CYCLE_BG_PCT),
       },
       icons: { ...DEFAULT_ICONS, ...(parsed.icons || {}) },
       // Round 50 : zoom automatique des téléphones (largeur de référence
@@ -786,6 +795,48 @@
     return out;
   }
 
+  /* Round 56 : blocs de classement — une couleur et une opacité (en %
+     du mélange avec le fond de la page) par niveau de bloc. */
+  const DEFAULT_TAX_TINT = {
+    library: { color: "#4a9fe0", alphas: [22, 18, 14, 10, 6, 2] },
+    other: { color: "#4a9fe0", alphas: [22, 18, 14, 10, 6, 2] },
+  };
+  const DEFAULT_NIGHT_TAX_TINT = {
+    library: { color: "#4a9fe0", alphas: [8, 11, 14, 17, 20, 23] },
+    other: { color: "#4a9fe0", alphas: [8, 11, 14, 17, 20, 23] },
+  };
+  function pctOr(v, d) {
+    const n = Number(v);
+    return Number.isFinite(n) && n >= 0 && n <= 100 ? Math.round(n) : d;
+  }
+  function mergeTaxTint(defaults, stored) {
+    const out = {};
+    ["library", "other"].forEach((k) => {
+      const src = stored && stored[k] && typeof stored[k] === "object" ? stored[k] : {};
+      const alphas = Array.isArray(src.alphas) ? src.alphas : [];
+      out[k] = {
+        color: typeof src.color === "string" && /^#[0-9a-f]{6}$/i.test(src.color) ? src.color : defaults[k].color,
+        alphas: defaults[k].alphas.map((d, i) => pctOr(alphas[i], d)),
+      };
+    });
+    return out;
+  }
+  /* Round 56 : couleurs des cycles (mêmes que le site web). */
+  const CYCLE_COLOR_KEYS = ["primaire", "college", "lycee", "superieur", "autre"];
+  const CYCLE_COLOR_TITLES = { primaire: "Primaire", college: "Collège", lycee: "Lycée", superieur: "Études supérieures", autre: "Hors cycle scolaire" };
+  const DEFAULT_CYCLE_COLORS = { primaire: "#e0a23a", college: "#4a9fe0", lycee: "#8a63c9", superieur: "#3e7c6b", autre: "#94a3b8" };
+  const DEFAULT_LIBRARY_CYCLE_BG_PCT = 16;
+  const DEFAULT_NIGHT_LIBRARY_CYCLE_BG_PCT = 18;
+  function mergeCycleColors(stored) {
+    const out = { ...DEFAULT_CYCLE_COLORS };
+    if (stored && typeof stored === "object") {
+      CYCLE_COLOR_KEYS.forEach((k) => {
+        if (typeof stored[k] === "string" && /^#[0-9a-f]{6}$/i.test(stored[k])) out[k] = stored[k];
+      });
+    }
+    return out;
+  }
+
   const REVIEW_LAYOUT_FIELDS = [
     { key: "cardHeightPct", title: "Hauteur de la fiche", unit: "% de l'écran" },
     { key: "cardWidthPct", title: "Largeur de la fiche", unit: "% de l'écran" },
@@ -873,6 +924,11 @@
     HOME_LAYOUT_RETIRED,
     DEFAULT_TAX_COLORS,
     DEFAULT_NIGHT_TAX_COLORS,
+    DEFAULT_TAX_TINT,
+    DEFAULT_NIGHT_TAX_TINT,
+    DEFAULT_CYCLE_COLORS,
+    CYCLE_COLOR_KEYS,
+    CYCLE_COLOR_TITLES,
     REVIEW_LAYOUT_REF_HEIGHT,
     REVIEW_LAYOUT_REF_WIDTH,
     REVISION_ALGO_FIELD_DEFS,
