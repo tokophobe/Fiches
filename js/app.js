@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v212";
+  const APP_VERSION = "v213";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -6786,6 +6786,7 @@
       }
       if (view === "review-hub") renderReviewHub();
       if (view === "subscriptions") renderSubscriptionsStatus();
+      if (view === "defi") renderDefiView();
       if (view === "settings") {
         renderSettingsView();
         refreshAdminLink();
@@ -7010,6 +7011,7 @@
     },
     "class-share": "Partager une boîte",
     subscriptions: "Abonnements",
+    defi: { text: "Défi du jour", hide: ["#view-defi > h2.section-title"] },
     messages: { text: "Messagerie", hide: ["#view-messages > h2.section-title"] },
     "message-thread": { from: "#message-thread-title" },
     library: { text: "Librairie", hide: ["#view-library .library-title-row > h2.section-title"] },
@@ -7284,6 +7286,7 @@
     });
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     el("view-home").classList.add("is-active");
+    refreshHomeDefi();
     if (homeBtn) homeBtn.hidden = true;
     if (el("body-logo-row")) el("body-logo-row").hidden = true;
     // Round 22, item 7 : filet de sécurité en plus du masquage de la ligne
@@ -7297,6 +7300,59 @@
   }
   /** Round 45 : Accueil ramène TOUJOURS à la page d'accueil (le retour
    *  d'une page en arrière est porté par « ← Retour », voir navBack). */
+  /* ---- Round 58 : défi du jour (QCM, js/defi.js, commun avec le site) ----
+     Une partie par jour et par compte (stockage local préfixé par le
+     compte). Le bouton de l'accueil montre l'état : à jouer (liseré
+     orange), en cours, ou fait (grisé, avec le score). */
+  function defiStore() {
+    const uid = (window.UserScope && window.UserScope.uid) || "local";
+    return window.DarwinDefi ? window.DarwinDefi.localStore(uid) : null;
+  }
+  function refreshHomeDefi() {
+    const btn = el("home-defi-circle");
+    const store = defiStore();
+    if (!btn || !store) return;
+    const D = window.DarwinDefi;
+    const day = D.today();
+    const status = D.status(store, day.key);
+    btn.classList.toggle("is-todo", status === "todo");
+    btn.classList.toggle("is-playing", status === "playing");
+    btn.classList.toggle("is-done", status === "done");
+    const label = el("home-defi-state");
+    if (label) {
+      label.textContent = status === "done" ? `✓ ${D.score(D.load(day.key, store))}/${D.N}` : status === "playing" ? "En cours" : "À jouer";
+    }
+    btn.setAttribute("aria-label", `Défi du jour — ${status === "done" ? "fait" : status === "playing" ? "en cours" : "à jouer"}`);
+  }
+  function renderDefiView() {
+    const root = el("defi-app");
+    const store = defiStore();
+    if (!root || !store) return;
+    const D = window.DarwinDefi;
+    const day = D.today();
+    const dayEl = el("defi-app-day");
+    if (dayEl) dayEl.textContent = `Défi n° ${day.num} · ${day.label}`;
+    root.innerHTML = "";
+    root.className = "";
+    D.mount(root, {
+      store,
+      day,
+      nextLabel: "Nouveau défi demain à minuit.",
+      actions: [{ label: "Retour à l'accueil", onClick: () => goHome() }],
+      onEvent: (e) => {
+        if (e.type === "finish" || e.type === "gameover" || e.type === "correct" || e.type === "wrong") refreshHomeDefi();
+        if (e.type === "question" || e.type === "finish") {
+          const v = el("view-defi");
+          if (v && v.classList.contains("is-active")) window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      },
+    });
+  }
+  // Le défi change à minuit : on remet le bouton à jour au retour sur l'appli.
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") refreshHomeDefi();
+  });
+
   function goHome() {
     if (appLoginLocked) {
       enforceLoginGate();
@@ -14479,6 +14535,7 @@
     }
     renderSubjectSelect();
     renderAll();
+    refreshHomeDefi();
     // Item 7 : appel complet maintenant que tout est chargé (voir plus haut
     // pour le pourquoi du report).
     setNightModeActive(new Date().getHours() < 7 || new Date().getHours() >= 20);

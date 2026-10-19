@@ -1,0 +1,92 @@
+/* darwin — défi du jour (QCM), commun au site et à l'appli.
+   Couleurs réglables par variables (l'appli les redéfinit en mode nuit).
+   Fichier source : css/defi.css (copié dans site/assets/). */
+.ddefi {
+  --ddefi-accent: #ef7d2d;
+  --ddefi-accent-soft: #fde7d6;
+  --ddefi-ink: #1f2937;
+  --ddefi-muted: #64748b;
+  --ddefi-paper: #ffffff;
+  --ddefi-line: rgba(31, 41, 55, 0.12);
+  --ddefi-ok: #3e7c6b;
+  --ddefi-late: #cf9a4d;
+  --ddefi-fail: #b6604a;
+  --ddefi-empty: #dbe3ee;
+  color: var(--ddefi-ink);
+  width: min(420px, 100%);
+  margin: 0 auto;
+  text-align: left;
+}
+.ddefi-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14px; color: var(--ddefi-muted); }
+.ddefi-count { font-weight: 700; color: var(--ddefi-ink); font-size: 16px; }
+.ddefi-count small { font-weight: 400; color: var(--ddefi-muted); font-size: 14px; }
+.ddefi-level { display: inline-flex; align-items: center; gap: 6px; }
+.ddefi-dots { display: inline-flex; gap: 3px; }
+.ddefi-dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--ddefi-empty); }
+.ddefi-dots i.is-on { background: var(--ddefi-accent); }
+.ddefi-lives { display: inline-flex; gap: 3px; }
+.ddefi-heart svg { width: 20px; height: 20px; display: block; fill: #e4495b; transition: transform 0.3s ease, opacity 0.3s ease; }
+.ddefi-heart.is-lost svg { fill: var(--ddefi-empty); }
+.ddefi-heart.is-breaking svg { animation: ddefi-break 0.6s ease; }
+.ddefi-lives--big { justify-content: center; margin: 4px 0 14px; }
+.ddefi-lives--big .ddefi-heart svg { width: 28px; height: 28px; }
+.ddefi-progress { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin: 10px 0 14px; }
+.ddefi-step { height: 7px; border-radius: 4px; background: var(--ddefi-empty); }
+.ddefi-step.is-current { background: var(--ddefi-accent); opacity: 0.55; }
+.ddefi-step.is-ok { background: var(--ddefi-ok); }
+.ddefi-step.is-late { background: var(--ddefi-late); }
+.ddefi-step.is-fail { background: var(--ddefi-fail); }
+.ddefi-progress--result { grid-template-columns: repeat(5, 28px); justify-content: center; gap: 6px; margin: 0 0 16px; }
+.ddefi-progress--result .ddefi-step { height: 28px; border-radius: 7px; }
+.ddefi-card {
+  background: var(--ddefi-paper); border-radius: 20px; padding: 20px 18px 18px;
+  box-shadow: 0 18px 40px rgba(30, 60, 100, 0.14); border-top: 5px solid var(--ddefi-accent);
+}
+.ddefi-theme { display: inline-block; font-size: 12.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ddefi-accent); }
+.ddefi-q { margin: 6px 0 16px; font-size: 20px; line-height: 1.3; font-weight: 700; }
+.ddefi-choices { display: grid; gap: 9px; }
+.ddefi-choice {
+  display: flex; align-items: center; gap: 12px; width: 100%; padding: 11px 12px; border-radius: 14px;
+  border: 2px solid var(--ddefi-line); background: var(--ddefi-paper); color: inherit; font: inherit; font-size: 16px;
+  text-align: left; cursor: pointer; transition: border-color 0.15s ease, background 0.15s ease, opacity 0.2s ease, transform 0.1s ease;
+}
+.ddefi-choice:hover:not([disabled]) { border-color: var(--ddefi-accent); }
+.ddefi-choice:active:not([disabled]) { transform: scale(0.98); }
+.ddefi-letter {
+  flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+  font-weight: 700; background: var(--ddefi-accent-soft); color: var(--ddefi-accent);
+}
+.ddefi-choice.is-wrong { opacity: 0.45; border-color: var(--ddefi-line); background: transparent; cursor: default; text-decoration: line-through; text-decoration-color: var(--ddefi-fail); }
+.ddefi-choice.is-wrong .ddefi-letter { background: var(--ddefi-empty); color: var(--ddefi-muted); }
+.ddefi-choice.is-right { border-color: var(--ddefi-ok); background: color-mix(in srgb, var(--ddefi-ok) 12%, var(--ddefi-paper)); opacity: 1; }
+.ddefi-choice.is-right .ddefi-letter { background: var(--ddefi-ok); color: #fff; }
+.ddefi-choice[disabled]:not(.is-right):not(.is-wrong) { opacity: 0.55; cursor: default; }
+.ddefi-choice.is-shaking { animation: ddefi-shake 0.4s ease; }
+.ddefi-feedback { margin-top: 14px; }
+.ddefi-feedback[hidden] { display: none; }
+.ddefi-verdict { margin: 0 0 6px; font-weight: 700; color: var(--ddefi-ok); }
+.ddefi-verdict.is-fail { color: var(--ddefi-fail); }
+.ddefi-more { margin: 0 0 12px; font-size: 15px; color: var(--ddefi-muted); line-height: 1.45; }
+.ddefi-next, .ddefi-btn {
+  display: inline-block; border: none; border-radius: 14px; padding: 12px 20px; font: inherit; font-weight: 700; font-size: 16px;
+  background: var(--ddefi-accent); color: #fff; cursor: pointer; text-decoration: none; text-align: center;
+}
+.ddefi-next { width: 100%; }
+.ddefi-btn--ghost { background: transparent; color: var(--ddefi-ink); box-shadow: inset 0 0 0 2px var(--ddefi-ink); }
+.ddefi-result {
+  background: var(--ddefi-paper); border-radius: 22px; padding: 24px 20px; text-align: center;
+  box-shadow: 0 18px 40px rgba(30, 60, 100, 0.14); border-top: 5px solid var(--ddefi-accent);
+}
+.ddefi-result-day { margin: 0; font-size: 14px; color: var(--ddefi-muted); }
+.ddefi-big { font-size: 58px; font-weight: 700; line-height: 1; margin: 6px 0 4px; }
+.ddefi-big small { font-size: 26px; color: var(--ddefi-muted); }
+.ddefi-msg { margin: 0 0 8px; }
+.ddefi-streak { margin: 0 0 8px; font-weight: 700; color: var(--ddefi-ok); }
+.ddefi-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 14px; }
+.ddefi-copied { margin: 0; min-height: 1.2em; font-size: 14px; color: var(--ddefi-ok); white-space: pre-line; }
+.ddefi-next-day { margin: 12px 0 0; font-size: 14px; color: var(--ddefi-muted); }
+@keyframes ddefi-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+@keyframes ddefi-break { 0% { transform: scale(1); } 40% { transform: scale(1.35); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .ddefi-choice.is-shaking, .ddefi-heart.is-breaking svg { animation: none; }
+}

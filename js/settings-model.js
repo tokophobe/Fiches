@@ -320,6 +320,7 @@
     dev: "Développeur", classes: "École", account: "Compte",
     library: "Librairie",
     boxes: "Mes boîtes",
+    defi: "Défi du jour",
   };
   // Round 55 : boutons qui ne sont plus sur l'accueil (gardés pour les
   // réglages déjà enregistrés et les icônes).
@@ -352,6 +353,8 @@
     // Round 55 : « Mes boîtes » (organiser / créer), à la place de
     // « Ajouter une fiche ».
     boxes: { x: 72.0, y: 62.0, d: 115 },
+    // Round 58 : défi du jour (QCM), bouton à part.
+    defi: { x: 47.0, y: 80.0, d: 96 },
   };
   // Items 1/2 (logo) : position (X/Y en %, centre du logo) et taille (px)
   // du logo sur la page d'accueil.
@@ -412,6 +415,7 @@
     subscriptions: ["Bientôt, l'abonnement te donnera accès à toutes les boîtes de la Librairie."],
     messages: ["Une discussion par classe : touche une classe pour lire et écrire les messages."],
     "message-thread": ["Écris ton message en bas de la page : toute la classe le verra."],
+    defi: ["Chaque jour, 10 questions de culture générale de plus en plus difficiles, les mêmes pour tout le monde. Tu as 3 vies : une erreur coûte une vie, et la question t'est reposée sans la réponse fausse.", "Quand tu as fini, partage ton score avec tes amis. Un nouveau défi arrive chaque jour à minuit."],
     library: ["Ici, tu peux prendre des collections de fiches partagées par d'autres — elles s'ajoutent à tes boîtes, avec cette icône en réseau pour les reconnaître."],
     "library-detail": ["La présentation de cette collection : son auteur, son classement et sa note."],
     "library-cards": ["Un aperçu des fiches de cette collection."],
@@ -454,6 +458,7 @@
     subscriptions: "Abonnements",
     messages: "Messagerie",
     "message-thread": "Messagerie — discussion",
+    defi: "Défi du jour",
     library: "Librairie",
     "library-detail": "Librairie — présentation d'une collection",
     "library-cards": "Librairie — fiches d'une collection",

@@ -7588,3 +7588,45 @@ body:has(#view-library.is-active[data-cycle]) {
 /* Cycle choisi : les blocs de classement de la Librairie prennent la
    couleur du cycle (mêmes opacités par niveau). */
 #view-library[data-cycle] .tax-block { --tax-color: var(--library-cycle-color) !important; }
+
+/* ==================================================================
+   Round 58 : défi du jour
+   ================================================================== */
+/* Bouton de l'accueil : à part des autres — anneau et pastille orange
+   quand le défi du jour est à jouer, grisé avec le score une fois fait. */
+.home-circle.home-defi { gap: 3px; }
+.home-circle.home-defi .home-circle-icon { color: #ef7d2d; }
+.home-circle.home-defi span:not(.home-defi-state) { font-size: 11.5px; line-height: 1.1; }
+.home-defi-state {
+  display: inline-block; margin-top: 2px; padding: 2px 8px; border-radius: 999px;
+  font-family: var(--font-type); font-size: 10.5px; font-weight: 700; letter-spacing: 0.02em;
+  background: #ef7d2d; color: #fff; white-space: nowrap;
+}
+.home-circle.home-defi.is-todo,
+.home-circle.home-defi.is-playing {
+  box-shadow: 0 0 0 3px #ef7d2d, var(--shadow-home-square, var(--shadow-deep));
+  animation: home-defi-glow 2.6s ease-in-out infinite;
+}
+.home-circle.home-defi.is-playing .home-defi-state { background: transparent; color: #ef7d2d; box-shadow: inset 0 0 0 1.5px #ef7d2d; }
+.home-circle.home-defi.is-done { box-shadow: 0 0 0 2px var(--rule-soft, rgba(0, 0, 0, 0.1)), var(--shadow-home-square, var(--shadow-deep)); }
+.home-circle.home-defi.is-done .home-circle-icon { color: var(--ink-soft, #64748b); }
+.home-circle.home-defi.is-done .home-defi-state { background: #3e7c6b; }
+@keyframes home-defi-glow {
+  0%, 100% { box-shadow: 0 0 0 3px #ef7d2d, 0 0 0 3px rgba(239, 125, 45, 0), var(--shadow-home-square, var(--shadow-deep)); }
+  50% { box-shadow: 0 0 0 3px #ef7d2d, 0 0 0 9px rgba(239, 125, 45, 0.18), var(--shadow-home-square, var(--shadow-deep)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-circle.home-defi.is-todo, .home-circle.home-defi.is-playing { animation: none; }
+}
+
+/* Page du défi : mêmes composants que le site, aux couleurs de l'appli. */
+#view-defi .ddefi {
+  --ddefi-paper: var(--paper);
+  --ddefi-ink: var(--ink);
+  --ddefi-muted: var(--ink-soft);
+  font-family: var(--font-type);
+  margin-top: 6px;
+}
+:root.is-night-mode #view-defi .ddefi { --ddefi-accent-soft: rgba(239, 125, 45, 0.18); --ddefi-empty: rgba(255, 255, 255, 0.14); --ddefi-line: rgba(255, 255, 255, 0.14); }
+#view-defi .ddefi-q { font-family: var(--font-type); }
+.defi-app-day { margin: 0 0 10px; font-family: var(--font-type); font-size: 13px; color: var(--ink-soft); text-align: center; }

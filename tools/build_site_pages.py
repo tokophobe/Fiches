@@ -99,6 +99,7 @@ def page(title, description, body, depth=1, extra_head=""):
   .sh-title {{ grid-area: title; align-self: end; }}
   .sh-copy {{ grid-area: copy; align-self: start; }}
   .subject-hero .play {{ grid-area: play; }}
+  .play-note {{ margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }}
   .facts {{ display: flex; gap: 28px; margin: 6px 0 26px; }}
   .facts b {{ display: block; font-size: 34px; line-height: 1; color: var(--sky); }}
   .facts span {{ font-size: 15px; color: var(--slate); }}
@@ -164,7 +165,19 @@ def page(title, description, body, depth=1, extra_head=""):
 """
 
 
+# Fichiers partagés avec l'appli (défi du jour) : la source est dans js/ et
+# css/, une copie est faite dans site/assets/ pour que le site soit autonome.
+SHARED = [("js/defi.js", "defi.js"), ("js/defi-questions.js", "defi-questions.js"), ("css/defi.css", "defi.css")]
+
+
+def copy_shared():
+    import shutil
+    for src, dst in SHARED:
+        shutil.copyfile(os.path.join(ROOT, src), os.path.join(ROOT, "site", "assets", dst))
+
+
 def main():
+    copy_shared()
     boxes = json.load(open(PACK, encoding="utf-8"))["boxes"]
     groups = defaultdict(list)
     for b in boxes:
@@ -227,9 +240,9 @@ def main():
       <div class="sh-copy">
         <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme {en(label)}. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
         <a class="cta" href="../../index.html">Réviser avec darwin</a>
-        <span class="cta-note">Essaie quelques fiches ici, sans inscription.</span>
       </div>
       <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
         <div id="robot"></div>
         <div id="deck"></div>
         <p class="score" id="score"></p>
@@ -271,6 +284,7 @@ def main():
         urls.append(f"revision/{fname(lv, m)}")
 
     # Index : par cycle, puis par niveau.
+    fmt = lambda n: f"{n:,}".replace(",", "\u202f")
     def sort_key(m):
         return slugify(m)
     def dot(m):
@@ -286,24 +300,25 @@ def main():
         cid = slugify(cycle)
         cards = []
         n_cycle = 0
+        c_cycle = 0
         for v in cycles.get(cycle, []):
             nb = sum(len(groups[(v, m)]) for m in by_level[v])
             nc = sum(len(b["cards"]) for m in by_level[v] for b in groups[(v, m)])
             n_cycle += nb
+            c_cycle += nc
             items = "".join(
                 f'<li><a href="{fname(v, m)}"><i style="background:{dot(m)}"></i>{esc(subject_title(m))} <small>{len(groups[(v, m)])}</small></a></li>'
                 for m in sorted(by_level[v], key=sort_key)
             )
             lab = LEVEL[v][1]
             cards.append(f'<div class="level"><h3>{esc(lab[:1].upper() + lab[1:])}</h3>'
-                         f'<p class="meta">{nb} boîtes · {nc} fiches</p><ul class="subjects">{items}</ul></div>')
-        blocks.append(f'<section class="cycle {cid}" id="{cid}"><div class="cycle-head"><h2>{cycle}</h2><span>{n_cycle} boîtes</span></div>'
+                         f'<p class="meta">{fmt(nb)} boîtes · {fmt(nc)} fiches</p><ul class="subjects">{items}</ul></div>')
+        blocks.append(f'<section class="cycle {cid}" id="{cid}"><div class="cycle-head"><h2>{cycle}</h2><span>{fmt(n_cycle)} boîtes · {fmt(c_cycle)} fiches</span></div>'
                       f'<div class="levels">{"".join(cards)}</div></section>')
         jump.append(f'<li><a class="{cid}" href="#{cid}">{cycle}</a></li>')
     total_boxes = sum(len(v) for v in groups.values())
     total_cards = sum(len(b["cards"]) for v in groups.values() for b in v)
     n_subjects = len(by_subject)
-    fmt = lambda n: f"{n:,}".replace(",", "\u202f")
     body = f"""  <main>
     <section class="idx-hero">
       <div>

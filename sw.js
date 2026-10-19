@@ -1,10 +1,11 @@
-const CACHE_NAME = "fiches-cache-v212";
+const CACHE_NAME = "fiches-cache-v213";
 
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
   "./css/style.css",
+  "./css/defi.css",
   "./js/config.js",
   "./js/user-scope.js",
   "./js/sm2.js",
@@ -12,6 +13,8 @@ const CORE_ASSETS = [
   "./js/sync.js",
   "./js/taxonomy.js",
   "./js/settings-model.js",
+  "./js/defi-questions.js",
+  "./js/defi.js",
   "./data/taxonomie.xlsx",
   "./js/app.js",
   "./icons/icon-192.png",
