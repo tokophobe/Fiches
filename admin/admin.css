@@ -371,3 +371,16 @@ pre.code {
   .save-state { display: none; }
 }
 .algo-table .num-input { width: 92px; }
+
+/* ---------- Round 57 : réglage visuel ---------- */
+.preview-mode { display: flex; gap: 0; margin-bottom: 8px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.preview-mode .mode-btn { flex: 1; height: 32px; border: 0; background: transparent; font: inherit; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; }
+.preview-mode .mode-btn + .mode-btn { border-left: 1px solid var(--line); }
+.preview-mode .mode-btn.is-active { background: #ff6a2b; color: #fff; }
+.preview-mode .mode-btn[data-mode="navigate"].is-active { background: var(--accent); }
+.visual-head-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.visual-label { font-size: 17px; font-weight: 650; }
+.visual-tip { margin: 10px 0 0; }
+.visual-more { margin: 0 0 16px; }
+.visual-more > summary { cursor: pointer; font-weight: 600; color: var(--muted); padding: 8px 2px 12px; }
+.ctrl-ghost { visibility: hidden; pointer-events: none; }

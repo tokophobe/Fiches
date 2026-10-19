@@ -316,6 +316,7 @@
     {
       group: "Réglages de l'appli",
       items: [
+        { key: "settings/visual", label: "Réglage visuel", icon: "palette" },
         { key: "settings/appearance", label: "Apparence", icon: "palette" },
         { key: "settings/icons", label: "Icônes", icon: "shapes" },
         { key: "settings/home", label: "Page d'accueil", icon: "home" },
@@ -2199,18 +2200,59 @@
       nightBtn.textContent = previewNight ? "Mode jour" : "Mode nuit";
       previewSend({ type: "darwin-admin-night", on: previewNight });
     });
+    // Round 57 : deux modes — « Régler » (toucher un élément ouvre ses
+    // réglages) et « Naviguer » (l'aperçu se comporte comme l'appli).
+    const modeBtn = (mode, label, title) =>
+      h("button", { type: "button", class: "mode-btn", "data-mode": mode, title, onclick: () => setInspectMode(mode === "inspect") }, label);
+    const modeSwitch = h("div", { class: "preview-mode", role: "group", "aria-label": "Mode de l'aperçu" }, modeBtn("inspect", "✎ Régler", "Toucher un élément ouvre ses réglages"), modeBtn("navigate", "☝ Naviguer", "L'aperçu fonctionne comme l'appli"));
+    previewHint = h("p", { class: "preview-hint" });
     aside.append(
+      modeSwitch,
       h("div", { class: "preview-bar" }, go("home", "Accueil"), go("review-hub", "Réviser"), go("manage", "Organisation"), go("library", "Librairie"), go("settings", "Réglages"), nightBtn),
       wrap,
-      h("p", { class: "preview-hint" }, "Aperçu en direct avec ton compte : les modifications s'y affichent tout de suite, puis sont enregistrées pour tous les utilisateurs. On peut aussi naviguer dans l'aperçu.")
+      previewHint
     );
+    renderInspectMode();
     requestAnimationFrame(fit);
+  }
+  /* Round 57 : réglage visuel — mode de l'aperçu et élément touché. */
+  let inspectMode = (() => {
+    try {
+      return localStorage.getItem("darwin_admin_inspect") !== "0";
+    } catch (e) {
+      return true;
+    }
+  })();
+  let previewHint = null;
+  let visualPick = null; // { ids, view, label, actionable }
+  function renderInspectMode() {
+    document.querySelectorAll(".preview-mode .mode-btn").forEach((b) => b.classList.toggle("is-active", (b.dataset.mode === "inspect") === inspectMode));
+    if (previewHint) {
+      previewHint.textContent = inspectMode
+        ? "Mode Régler : touche un élément de l'aperçu pour ouvrir ses réglages. Pour l'utiliser comme dans l'appli (ouvrir une page…) : Alt + clic, le bouton « Utiliser cet élément », ou le mode Naviguer."
+        : "Mode Naviguer : l'aperçu fonctionne comme l'appli. Repasse en mode Régler pour toucher un élément et ouvrir ses réglages.";
+    }
+    previewSend({ type: "darwin-admin-inspect", on: inspectMode });
+  }
+  function setInspectMode(onMode) {
+    inspectMode = !!onMode;
+    try {
+      localStorage.setItem("darwin_admin_inspect", inspectMode ? "1" : "0");
+    } catch (e) {
+      /* stockage indisponible */
+    }
+    renderInspectMode();
   }
   window.addEventListener("message", (e) => {
     if (e.origin !== location.origin || !e.data) return;
     if (e.data.type === "darwin-preview-ready") {
       postPreview();
       if (previewNight) previewSend({ type: "darwin-admin-night", on: true });
+      previewSend({ type: "darwin-admin-inspect", on: inspectMode });
+    } else if (e.data.type === "darwin-preview-pick" && Array.isArray(e.data.ids)) {
+      visualPick = { ids: e.data.ids, view: String(e.data.view || "home"), label: String(e.data.label || ""), actionable: !!e.data.actionable };
+      if (currentNavKey === "settings/visual") route();
+      else location.hash = "#/settings/visual";
     }
   });
 
@@ -2382,6 +2424,110 @@
     bg: ["skipProgramBg"], // bouton « Passer » des révisions conseillées (supprimé)
     shadows: ["duePill"], // pastille « à revoir » (plus affichée depuis le round 47)
   };
+  /* ---- Round 57 : réglage visuel ---- */
+  const INSPECT_DEFS = M.inspectDefs ? M.inspectDefs() : [];
+  const INSPECT_BY_ID = new Map(INSPECT_DEFS.map((d) => [d.id, d]));
+  function inspectControl(c, path) {
+    if (c.c === "c") return colorCtrl(path);
+    if (c.c === "n") return numCtrl(path, c.opts || {});
+    if (c.c === "s") return switchCtrl(path, c.opts || {});
+    if (c.c === "i") return iconCtrl(path);
+    if (c.c === "t") return textCtrl(path);
+    return null;
+  }
+  function inspectSection(def) {
+    const hasNight = def.controls.some((c) => c.night);
+    const resetPaths = [];
+    def.controls.forEach((c) => {
+      resetPaths.push(c.p);
+      if (c.night) resetPaths.push(c.night);
+    });
+    // Réglage sans valeur de nuit dans un bloc jour / nuit : le champ va
+    // dans la colonne « Jour » (la colonne « Nuit » reste vide).
+    const spacer = (c) => {
+      const ghost = inspectControl(c, c.p);
+      return h("span", { class: "ctrl-ghost", "aria-hidden": "true" }, ghost);
+    };
+    const rows = def.controls.map((c) =>
+      setRow(
+        c.label,
+        c.night ? [inspectControl(c, c.p), inspectControl(c, c.night)] : hasNight ? [inspectControl(c, c.p), spacer(c)] : inspectControl(c, c.p),
+        hasNight && !c.night ? "Même valeur le jour et la nuit" : null
+      )
+    );
+    const hint =
+      def.kind === "bg" || def.kind === "text" || def.kind === "shadow"
+        ? "Réglage commun à tous les éléments de ce type dans l'appli."
+        : null;
+    return section(def.title, hint, resetPaths, hasNight ? dayNightHead() : null, rows);
+  }
+  function robotHelpSection(view) {
+    const def = M.DEFAULT_HELP_MESSAGES_BY_VIEW[view];
+    if (!def) return null;
+    const current = S.work.helpMessagesByView[view] || [];
+    const ta = h("textarea", { rows: String(Math.max(3, current.length + 1)) });
+    ta.value = current.join("\n");
+    ta.addEventListener("input", () => {
+      const lines = ta.value
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean);
+      setValue(["helpMessagesByView", view], lines.length ? lines : clone(def));
+    });
+    return section(
+      `Bulle d'aide du robot — ${M.HELP_VIEW_LABELS[view] || view}`,
+      "Un message par ligne : le robot affiche le premier, puis « Suite » fait défiler les suivants. Vide = texte d'origine.",
+      [["helpMessagesByView", view]],
+      h("div", { class: "help-row" }, ta)
+    );
+  }
+  PAGES["settings/visual"] = (root, params, live) =>
+    settingsPage(root, live, "Réglage visuel", (root) => {
+      if (!visualPick) {
+        root.appendChild(
+          h(
+            "section",
+            { class: "card visual-empty" },
+            h("h2", { class: "card-title" }, "Touche un élément dans l'aperçu"),
+            h(
+              "p",
+              { class: "card-hint" },
+              "En mode « Régler » (au-dessus de l'aperçu), toucher n'importe quel élément de l'appli affiche ici tous ses réglages : couleurs (jour / nuit, avec transparence), textes, ombres, position, taille, icône, et la bulle d'aide du robot de la page. Les modifications s'affichent tout de suite dans l'aperçu et sont enregistrées pour tous les utilisateurs."
+            ),
+            h(
+              "p",
+              { class: "card-hint" },
+              "Pour aller sur une autre page de l'aperçu : Alt + clic sur un bouton, ou bouton « Utiliser cet élément » après l'avoir touché, ou mode « Naviguer », ou les raccourcis Accueil / Réviser / Organisation… au-dessus de l'aperçu."
+            )
+          )
+        );
+        return;
+      }
+      const pick = visualPick;
+      const defs = pick.ids.map((id) => INSPECT_BY_ID.get(id)).filter(Boolean);
+      const useBtn = pick.actionable
+        ? h("button", { type: "button", class: "btn btn--primary", onclick: () => previewSend({ type: "darwin-admin-activate" }) }, "Utiliser cet élément ▶")
+        : null;
+      root.appendChild(
+        h(
+          "section",
+          { class: "card visual-head" },
+          h("div", { class: "visual-head-row" }, h("div", null, h("div", { class: "visual-label" }, `« ${pick.label} »`), h("div", { class: "card-hint" }, `Page : ${M.HELP_VIEW_LABELS[pick.view] || (pick.view === "home" ? "Accueil" : pick.view)}`)), h("span", { class: "spacer" }), useBtn),
+          useBtn ? h("p", { class: "card-hint visual-tip" }, "« Utiliser cet élément » fait comme un toucher dans l'appli (ouvrir sa page…). Raccourci : Alt + clic dans l'aperçu.") : null
+        )
+      );
+      if (!defs.length) root.appendChild(h("div", { class: "notice", style: { margin: "0 0 16px" } }, "Pas de réglage propre à cet élément. Voici la bulle d'aide de la page ; touche un élément voisin ou son conteneur pour d'autres réglages."));
+      const MAIN = 4;
+      defs.slice(0, MAIN).forEach((d) => root.appendChild(inspectSection(d)));
+      if (defs.length > MAIN) {
+        const more = h("details", { class: "visual-more" }, h("summary", null, `Réglages des conteneurs de cet élément (${defs.length - MAIN})`));
+        defs.slice(MAIN).forEach((d) => more.appendChild(inspectSection(d)));
+        root.appendChild(more);
+      }
+      const help = robotHelpSection(pick.view);
+      if (help) root.appendChild(help);
+    });
+
   PAGES["settings/appearance"] = (root, params, live) =>
     settingsPage(root, live, "Apparence", (root) => {
       root.appendChild(

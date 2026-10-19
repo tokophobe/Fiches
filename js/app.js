@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v211";
+  const APP_VERSION = "v212";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -786,6 +786,10 @@
   /* ---- Aperçu dans Darwin Admin ---- */
   const IS_ADMIN_PREVIEW = window.parent !== window && /[?&]preview=1/.test(location.search);
   if (IS_ADMIN_PREVIEW) {
+    // Round 57 : réglage visuel (toucher un élément → ses réglages).
+    const inspectorScript = document.createElement("script");
+    inspectorScript.src = "js/preview-inspector.js";
+    document.head.appendChild(inspectorScript);
     window.addEventListener("message", (e) => {
       if (e.origin !== location.origin || !e.data || typeof e.data !== "object") return;
       if (e.data.type === "darwin-admin-preview" && devIsPlainObj(e.data.settings)) {
@@ -2219,8 +2223,9 @@
    *  personnalisée en tant que telle, sinon SVG de la banque. */
   function orgIconMarkup(key) {
     const iconId = loadDevSettings().orgIconBank[key];
-    if (iconId && ICON_LIBRARY[iconId]) return iconSvgMarkup(iconId, "icon-inline-svg");
-    return escapeHtml(DEFAULT_ORG_ICON_BANK_CHOICES[key] || "");
+    // Round 57 : data-ik = repère pour le réglage visuel de Darwin Admin.
+    if (iconId && ICON_LIBRARY[iconId]) return iconSvgMarkup(iconId, "icon-inline-svg").replace("<svg", `<svg data-ik="${key}"`);
+    return `<span data-ik="${key}">${escapeHtml(DEFAULT_ORG_ICON_BANK_CHOICES[key] || "")}</span>`;
   }
 
   // Ferme n'importe quel popover d'actions ouvert (item 4) quand on clique
@@ -3760,7 +3765,7 @@
     // largeur totale, qui masque proprement les coins carrés des
     // rectangles de segments qui dépassent de cette forme.
     const clipId = `pers-gauge-clip-${Math.random().toString(36).slice(2, 9)}`;
-    let svg = `<svg viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">`;
+    let svg = `<svg class="pers-gauge-svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">`;
     svg += `<defs><clipPath id="${clipId}"><rect x="0" y="${barY}" width="${width}" height="${barHeight}" rx="${barHeight / 2}" /></clipPath></defs>`;
     svg += `<g clip-path="url(#${clipId})">`;
     svg += `<rect x="0" y="${barY}" width="${width}" height="${barHeight}" fill="${colors.court}" />`;

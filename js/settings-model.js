@@ -868,7 +868,164 @@
 
   const RATING_COLORS_TITLES = { again: "Encore", hard: "Difficile", good: "Bien", easy: "Facile" };
 
+  /* ============================================================
+     Round 57 : réglage visuel (Darwin Admin). Pour chaque réglage :
+     - `vars` : variables CSS qu'il pilote — l'aperçu retrouve tout seul,
+       en lisant les feuilles de style, les éléments qui les utilisent ;
+     - `sel` : sélecteurs des éléments qu'il concerne directement
+       (réglages qui ne passent pas par une variable CSS) ;
+     - `controls` : champs à afficher (c = couleur, n = nombre,
+       s = interrupteur, i = icône, t = texte) ; `p` = chemin du réglage,
+       `night` = chemin du même réglage en mode nuit.
+     ============================================================ */
+  const BG_VARS = {
+    appBg: "--app-bg-color", homeBg: "--home-bg-color", homeSquareBg: "--home-square-bg-color",
+    homeAddCardBg: "--home-add-card-bg-color", homeLibraryBg: "--home-library-bg-color",
+    libraryPageBg: "--library-page-bg-color", cardFormBg: "--card-form-bg-color",
+    richEditorBg: "--rich-editor-bg-color", homeBtnBg: "--home-btn-bg-color", cardBg: "--card-bg-color",
+    subjectSelectBg: "--subject-select-bg-color", syncStatusBg: "--sync-status-bg-color",
+    folderBg: "--folder-bg-color", folderL1Bg: "--folder-l1-bg-color", folderL2Bg: "--folder-l2-bg-color",
+    folderL3Bg: "--folder-l3-bg-color", subjectRowBg: "--subject-row-bg-color", addBtnBg: "--add-btn-bg-color",
+    chartWrapBg: "--chart-wrap-bg-color", svgChartBg: "--svg-chart-bg-color", dueBarColor: "--due-bar-color",
+    todayBarColor: "--today-bar-color", reviewedBarColor: "--reviewed-bar-color",
+  };
+  const TEXT_VARS = {
+    homeTitle: "--home-title-color", titles: "--main-text-color", generalText: "--general-text-color",
+    folderSubjectNames: "--folder-subject-name-color", cardText: "--card-text-color",
+    chartValues: "--chart-value-color", chartLabels: "--chart-label-color",
+    chartTodayLabel: "--chart-today-label-color", selectorText: "--selector-text-color", syncText: "--sync-text-color",
+  };
+  const NAV_ICON_TITLES_R57 = {
+    boxes: "Mes boîtes", review: "Réviser", manage: "Organiser mes boîtes de révision", stats: "Statistiques",
+    settings: "Réglages", calendar: "Calendrier", library: "Librairie", creations: "Créer mes propres boîtes de révision",
+    reports: "Signalements",
+  };
+  const RATING_TITLES_R57 = { again: "Je ne savais pas", hard: "Vague idée", good: "Je savais", easy: "Parfait" };
+  function inspectDefs() {
+    const out = [];
+    const color = (label, p, night) => ({ c: "c", label, p, night });
+    Object.keys(BG_VARS).forEach((k) => {
+      out.push({ id: `bg.${k}`, title: BG_COLORS_TITLES[k] || k, vars: [BG_VARS[k]], kind: "bg", controls: [color("Couleur", ["bgColors", k], ["nightColors", "bgColors", k])] });
+    });
+    Object.keys(TEXT_VARS).forEach((k) => {
+      out.push({ id: `tx.${k}`, title: `Texte : ${TEXT_COLORS_SET_TITLES[k] || k}`, vars: [TEXT_VARS[k]], kind: "text", controls: [color("Couleur", ["textColorsSet", k], ["nightColors", "textColorsSet", k])] });
+    });
+    ["again", "hard", "good", "easy"].forEach((k) => {
+      out.push({
+        id: `rating.${k}`,
+        title: `Note « ${RATING_TITLES_R57[k]} »`,
+        vars: [`--rating-${k}-color`],
+        sel: [`.stamp--${k}`],
+        controls: [color("Couleur", ["ratingColors", k], ["nightColors", "ratingColors", k]), { c: "i", label: "Icône", p: ["ratingIcons", k] }],
+      });
+    });
+    out.push({ id: "ratingBtnBg", title: "Fond des boutons d'évaluation", vars: ["--rating-btn-bg-color"], controls: [color("Couleur", ["ratingBtnBgColor"], ["nightColors", "ratingBtnBgColor"])] });
+    Object.keys(SHADOW_ELEMENTS)
+      .filter((k) => k !== "duePill")
+      .forEach((k) => {
+        out.push({ id: `shadow.${k}`, title: `Ombre : ${SHADOW_ELEMENTS[k].title}`, vars: [SHADOW_ELEMENTS[k].varName], kind: "shadow", controls: [{ c: "s", label: "Ombre portée", p: ["shadows", k], opts: { defaultTrue: true } }] });
+      });
+    Object.keys(HOME_LAYOUT_TITLES)
+      .filter((k) => !HOME_LAYOUT_RETIRED.includes(k) && k !== "dev")
+      .forEach((k) => {
+        const controls = [
+          { c: "n", label: "Position X (centre)", p: ["homeLayout", k, "x"], opts: { step: 0.1, unit: "%" } },
+          { c: "n", label: "Position Y (centre)", p: ["homeLayout", k, "y"], opts: { step: 0.1, unit: "%" } },
+          { c: "n", label: "Diamètre", p: ["homeLayout", k, "d"], opts: { step: 1, min: 20, max: 400, unit: "px" } },
+        ];
+        if (DEFAULT_NAV_ICONS[k] && k !== "addCard") controls.push({ c: "i", label: "Icône", p: ["navIcons", k] });
+        out.push({ id: `home.${k}`, title: `Bouton « ${NAV_ICON_TITLES_R57[k] || HOME_LAYOUT_TITLES[k] || k} »`, sel: [`.home-circle[data-key="${k}"]`], controls });
+      });
+    out.push({
+      id: "homeLogo",
+      title: "Robot de la page d'accueil",
+      sel: ["#home-logo"],
+      controls: [
+        { c: "n", label: "Position X", p: ["homeLogo", "x"], opts: { step: 0.1, unit: "%" } },
+        { c: "n", label: "Position Y", p: ["homeLogo", "y"], opts: { step: 0.1, unit: "%" } },
+        { c: "n", label: "Taille", p: ["homeLogo", "size"], opts: { min: 10, max: 400, unit: "px" } },
+        { c: "s", label: "Ombre", p: ["homeLogo", "shadow"] },
+      ],
+    });
+    out.push({
+      id: "bodyLogo",
+      title: "Robot en haut des pages",
+      sel: ["#body-logo"],
+      controls: [
+        { c: "n", label: "Taille", p: ["bodyLogo", "size"], opts: { min: 10, max: 300, unit: "px" } },
+        { c: "s", label: "Ombre", p: ["bodyLogo", "shadow"] },
+      ],
+    });
+    out.push({
+      id: "darwinLogo",
+      title: "Logo darwin",
+      sel: ["#darwin-home-logo", "#topbar-darwin-logo"],
+      controls: [
+        { c: "n", label: "Position X (accueil)", p: ["darwinLogo", "x"], opts: { step: 0.1, unit: "%" } },
+        { c: "n", label: "Position Y (accueil)", p: ["darwinLogo", "y"], opts: { step: 0.1, unit: "%" } },
+        { c: "n", label: "Taille (accueil)", p: ["darwinLogo", "size"], opts: { min: 10, max: 400, unit: "px" } },
+        { c: "c", label: "Couleur", p: ["darwinLogo", "color"] },
+        { c: "s", label: "Ombre", p: ["darwinLogo", "shadow"] },
+      ],
+    });
+    out.push({
+      id: "darwinText",
+      title: "Texte sous le logo darwin",
+      sel: ["#darwin-home-text"],
+      controls: [
+        { c: "t", label: "Texte", p: ["darwinText", "content"] },
+        { c: "n", label: "Position X", p: ["darwinText", "x"], opts: { step: 0.1, unit: "%" } },
+        { c: "n", label: "Position Y", p: ["darwinText", "y"], opts: { step: 0.1, unit: "%" } },
+        { c: "n", label: "Taille", p: ["darwinText", "size"], opts: { min: 6, max: 60, unit: "px" } },
+      ],
+    });
+    [
+      ["edit", "Icône « Éditer » de la fiche", "#edit-current-btn"],
+      ["construction", "Icône « Signaler » de la fiche", "#construction-current-btn, .card-construction-btn"],
+      ["undo", "Icône « Annuler » de la fiche", "#undo-rating-btn"],
+    ].forEach(([k, title, sel]) => out.push({ id: `iconBank.${k}`, title, sel: [sel], controls: [{ c: "i", label: "Icône", p: ["iconBank", k] }] }));
+    [
+      ["orgRename", "Icône « Renommer »"],
+      ["orgMove", "Icône « Déplacer »"],
+      ["orgDelete", "Icône « Supprimer »"],
+      ["orgBoite", "Icône des boîtes"],
+    ].forEach(([k, title]) => out.push({ id: `orgIcon.${k}`, title, sel: [`[data-ik="${k}"]`], controls: [{ c: "i", label: "Icône", p: ["orgIconBank", k] }] }));
+    out.push({
+      id: "reviewLayout",
+      title: "Disposition de la page de révision",
+      sel: ["#view-review #card-stack", "#view-review #rating-row", "#view-review #review-score-info"],
+      controls: REVIEW_LAYOUT_FIELDS.map((f) => ({ c: "n", label: f.title, p: ["reviewLayout", f.key], opts: { step: f.step || 1, min: 0, unit: f.unit } })),
+    });
+    out.push({ id: "reviewInfo", title: "Délais sous les boutons d'évaluation", sel: ["#review-score-info", ".stamp-sub"], controls: [{ c: "s", label: "Masquer ces délais", p: ["reviewInfo", "hideDelays"] }] });
+    out.push({
+      id: "persGauge",
+      title: "Jauge des boîtes",
+      sel: [".pers-gauge-svg"],
+      controls: PERS_GAUGE_ZONE_ORDER.map((k) => ({ c: "c", label: PERS_GAUGE_ZONE_LABELS[k], p: ["persGaugeColors", k] })),
+    });
+    ["library", "other"].forEach((k) => {
+      out.push({
+        id: `taxTint.${k}`,
+        title: k === "library" ? "Blocs de classement (Librairie)" : "Blocs de classement",
+        vars: [`--tax-${k}-color`],
+        controls: [color("Couleur", ["taxTint", k, "color"], ["nightColors", "taxTint", k, "color"])].concat(
+          Array.from({ length: TAX_LEVELS }, (_, i) => ({ c: "n", label: `Opacité niveau ${i + 1}`, p: ["taxTint", k, "alphas", i], night: ["nightColors", "taxTint", k, "alphas", i], opts: { min: 0, max: 100, unit: "%" } }))
+        ),
+      });
+    });
+    out.push({
+      id: "cycleColors",
+      title: "Couleurs des cycles (Librairie)",
+      sel: [".library-row--cycled", "#view-library .library-taxonomy-filters"],
+      controls: CYCLE_COLOR_KEYS.map((k) => ({ c: "c", label: CYCLE_COLOR_TITLES[k], p: ["cycleColors", k] })).concat([
+        { c: "n", label: "Intensité du fond de page", p: ["libraryCycleBgPct"], night: ["nightColors", "libraryCycleBgPct"], opts: { min: 0, max: 100, unit: "%" } },
+      ]),
+    });
+    return out;
+  }
+
   window.FichesSettingsModel = {
+    inspectDefs,
     DEFAULT_AUTO_ZOOM_REF_WIDTH,
     BG_COLORS_ORDER,
     BG_COLORS_TITLES,
