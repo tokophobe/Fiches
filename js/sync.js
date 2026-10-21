@@ -116,6 +116,7 @@ function withPayload(row, mapped) {
 function shareableCard(card) {
   const out = { id: card.id, question: card.question, answer: card.answer };
   if (Array.isArray(card.wrongs) && card.wrongs.length === 3) out.wrongs = card.wrongs.slice();
+  if (card.more) out.more = card.more;
   return out;
 }
 

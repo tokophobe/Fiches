@@ -217,7 +217,7 @@ def main():
                 if q and a:
                     theme = b["name"].split("—")[-1].strip()
                     theme = re.sub(r"^" + re.escape(m) + r"\s*:\s*", "", theme, flags=re.I)
-                    sample.append({"theme": theme[:1].upper() + theme[1:], "q": q, "a": a, "more": ""})
+                    sample.append({"theme": theme[:1].upper() + theme[1:], "q": q, "a": a, "more": plain(c.get("more"))})
         sample = sample[:SAMPLE_CARDS]
         box_items = "\n".join(
             f"""        <li><h3>{esc(b['name'])}</h3><p>{esc(b.get('summary') or '')}</p><span class="n">{len(b['cards'])} fiches</span></li>"""

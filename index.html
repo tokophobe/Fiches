@@ -648,6 +648,13 @@
           <span>Réponse</span>
           <div class="rich-editor" id="input-answer" contenteditable="true" data-placeholder="Ex. Reykjavik" role="textbox" aria-multiline="true"></div>
         </label>
+        <!-- Round 60 : complément de réponse (explications), séparé de la
+             réponse : affiché sous la réponse, et jamais dans les choix du
+             QCM (seulement une fois la réponse trouvée). -->
+        <label class="field">
+          <span>Complément de réponse <small class="field-optional">(facultatif)</small></span>
+          <div class="rich-editor rich-editor--more" id="input-more" contenteditable="true" data-placeholder="Ex. C'est la capitale la plus au nord du monde." role="textbox" aria-multiline="true"></div>
+        </label>
         <!-- Round 59 : mode QCM facultatif — 3 réponses fausses en plus de la
              bonne. La fiche est alors d'abord posée en QCM (voir js/app.js,
              « Mode QCM »). -->

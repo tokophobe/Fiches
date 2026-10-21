@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v216";
+  const APP_VERSION = "v217";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -1954,14 +1954,111 @@
           const idx = cards.findIndex((x) => x.id === c.id);
           if (idx >= 0) cards[idx] = updated;
         }
-        await DB.removeSubject(dup.id);
-        subjects = subjects.filter((x) => x.id !== dup.id);
+        // Round 60 : retirée aussi sur le serveur — avant, elle n'était
+        // retirée que de l'appareil et la synchro suivante la faisait
+        // revenir (puis ses fiches étaient recréées).
+        await removeSubjectEverywhere(dup);
+        remapSubjectReferences(dup.id, keep.id);
         if (currentSubjectId === dup.id) {
           currentSubjectId = keep.id;
           localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
         }
       }
     }
+  }
+
+  /** Round 60 : une boîte supprimée comme doublon → les échéances du
+   *  calendrier qui la visaient visent la boîte gardée. */
+  function remapSubjectReferences(fromId, toId) {
+    try {
+      const events = loadCalendarEvents();
+      let changed = false;
+      events.forEach((ev) => {
+        if (!Array.isArray(ev.linkIds) || !ev.linkIds.includes(`subject:${fromId}`)) return;
+        ev.linkIds = [...new Set(ev.linkIds.map((l) => (l === `subject:${fromId}` ? `subject:${toId}` : l)))];
+        changed = true;
+      });
+      if (changed) saveCalendarEvents(events);
+    } catch (e) {
+      console.warn("Doublons : échéances non recalées", e);
+    }
+  }
+
+  /** Round 60 : boîtes personnelles en double — même nom, même dossier et
+   *  exactement les mêmes fiches (questions et réponses). On garde celle qui
+   *  est publiée ou partagée, sinon celle qui a le plus de révisions, sinon
+   *  la plus ancienne ; les autres sont retirées partout (fiches comprises).
+   *  Les boîtes vides en double sont déjà traitées par dedupeEmptySubjects. */
+  let dedupeIdenticalBoxesRunning = false;
+  async function dedupeIdenticalBoxes() {
+    if (dedupeIdenticalBoxesRunning) return 0;
+    dedupeIdenticalBoxesRunning = true;
+    let removed = 0;
+    try {
+      // Les boîtes publiées dans la Librairie ne doivent jamais partir : la
+      // liste des publications est lue une fois par session avant tout.
+      if (Sync.isConfigured() && accountCurrentUser && !dedupeIdenticalBoxes.publishedLoaded) {
+        await refreshMyPublishedSubjects();
+        dedupeIdenticalBoxes.publishedLoaded = true;
+      }
+      if (Sync.isConfigured() && !accountCurrentUser) return 0;
+      const live = cards.filter((c) => !c.deleted);
+      const bySubject = new Map();
+      live.forEach((c) => {
+        if (!bySubject.has(c.subject)) bySubject.set(c.subject, []);
+        bySubject.get(c.subject).push(c);
+      });
+      const groups = new Map();
+      subjects
+        .filter((s) => !s.deleted && !s.sharedBoxId && !s.fromLibrary && bySubject.has(s.id) && !folders.some((f) => f.id === s.id))
+        .forEach((s) => {
+          const sig = bySubject
+            .get(s.id)
+            .map((c) => `${c.question}\u0001${c.answer}`)
+            .sort()
+            .join("\u0002");
+          const key = `${s.name}\u0003${s.folderId || ""}\u0003${sig}`;
+          if (!groups.has(key)) groups.set(key, []);
+          groups.get(key).push(s);
+        });
+      for (const group of groups.values()) {
+        if (group.length < 2) continue;
+        const score = (s) => [
+          myPublishedSourceIds.has(s.id) ? 1 : 0,
+          (s.sharedShares || []).length ? 1 : 0,
+          bySubject.get(s.id).reduce((n, c) => n + (c.reviewCount || 0), 0),
+          -new Date(s.createdAt || 0).getTime(),
+        ];
+        const sorted = [...group].sort((a, b) => {
+          const A = score(a);
+          const B = score(b);
+          for (let i = 0; i < A.length; i++) if (A[i] !== B[i]) return B[i] - A[i];
+          return 0;
+        });
+        const keep = sorted[0];
+        for (const dup of sorted.slice(1)) {
+          if (isSubjectPublishedInLibrary(dup) && myPublishedSourceIds.has(dup.id)) continue;
+          if ((dup.sharedShares || []).length) continue;
+          for (const c of bySubject.get(dup.id)) {
+            const updated = touch({ ...c, deleted: true });
+            await persist(updated);
+            const idx = cards.findIndex((x) => x.id === c.id);
+            if (idx >= 0) cards[idx] = updated;
+          }
+          await removeSubjectEverywhere(dup);
+          remapSubjectReferences(dup.id, keep.id);
+          if (currentSubjectId === dup.id) {
+            currentSubjectId = keep.id;
+            localStorage.setItem(CURRENT_SUBJECT_KEY, currentSubjectId);
+          }
+          removed++;
+        }
+      }
+    } finally {
+      dedupeIdenticalBoxesRunning = false;
+    }
+    if (removed) console.info(`Doublons : ${removed} boîte(s) identique(s) retirée(s).`);
+    return removed;
   }
 
   function renderSubjectSelect() {
@@ -3676,7 +3773,7 @@
       currentCard = updated;
       if (el("view-review").classList.contains("is-active")) {
         renderQuestionText(currentCard);
-        answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
+        answerTextEl.innerHTML = answerWithMoreHtml(currentCard);
         updateRatingPreviews();
       }
     }
@@ -4116,7 +4213,7 @@
     }
     currentCard = fresh;
     renderQuestionText(currentCard);
-    answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
+    answerTextEl.innerHTML = answerWithMoreHtml(currentCard);
     updateRatingPreviews();
   }
 
@@ -4168,7 +4265,7 @@
     // question comme côté réponse) : on ne les cache plus au retournement.
     ratingRowEl.hidden = false;
     renderQuestionText(currentCard);
-    answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
+    answerTextEl.innerHTML = answerWithMoreHtml(currentCard);
     renderReviewMode(currentCard);
     renderSessionProgress();
     updateRatingPreviews();
@@ -4547,7 +4644,7 @@
     requestAnimationFrame(() => flipCardEl.classList.remove("no-flip-transition"));
     isFlipped = false;
     renderQuestionText(currentCard);
-    answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
+    answerTextEl.innerHTML = answerWithMoreHtml(currentCard);
     renderReviewMode(currentCard);
     updateRatingPreviews();
     renderReviewChart();
@@ -4566,6 +4663,11 @@
 
   async function rateCurrentCard(rating, extra) {
     if (!currentCard) return;
+    // Round 60 : une fiche QCM repassée en mode normal puis ratée
+    // (« Je ne savais pas ») repasse en QCM.
+    if (!(extra && "qcmMode" in extra) && rating === "again" && cardWrongs(currentCard).length === 3 && currentCard.qcmMode === false) {
+      extra = { ...(extra || {}), qcmMode: true };
+    }
     const ratingLogId = await logRating(currentCard, rating);
     captureRatingSnapshot(ratingLogId);
     const updated = await rateScheduledCard(rating, extra);
@@ -4782,6 +4884,7 @@
     cardForm.reset();
     if (inputQuestion) inputQuestion.innerHTML = "";
     if (inputAnswer) inputAnswer.innerHTML = "";
+    if (el("input-more")) el("input-more").innerHTML = "";
     setQcmFields(null);
   }
 
@@ -4794,6 +4897,11 @@
      cas, la fiche reste en QCM.
   --------------------------------------------------------- */
   const QCM_WRONG_IDS = ["input-wrong-1", "input-wrong-2", "input-wrong-3"];
+  /** Round 60 : réponse + complément (sous la réponse, mis en forme à part). */
+  function answerWithMoreHtml(card) {
+    const more = card && card.more && stripHtml(card.more).trim() ? card.more : "";
+    return toDisplayHtml((card && card.answer) || "") + (more ? `<span class="card-more">${toDisplayHtml(more)}</span>` : "");
+  }
   function cardWrongs(card) {
     return Array.isArray(card && card.wrongs) ? card.wrongs.map((w) => String(w || "").trim()).filter(Boolean) : [];
   }
@@ -4851,6 +4959,8 @@
     if (isRichEditorEmpty(inputQuestion) || isRichEditorEmpty(inputAnswer)) return;
     const question = inputQuestion.innerHTML.trim();
     const answer = inputAnswer.innerHTML.trim();
+    const moreEl = el("input-more");
+    const more = moreEl && !isRichEditorEmpty(moreEl) ? moreEl.innerHTML.trim() : "";
     const qcm = readQcmFields(answer);
     if (qcm.error) {
       await robotAlert(qcm.error);
@@ -4863,6 +4973,8 @@
         if (await blockIfSharedReadonly(cards[idx].subject)) return;
         const prev = cards[idx];
         const updated = touch({ ...prev, question, answer });
+        if (more) updated.more = more;
+        else delete updated.more;
         if (qcm.wrongs.length) {
           // Réponses fausses ajoutées à une fiche qui n'en avait pas : elle
           // repasse en QCM à sa prochaine interrogation.
@@ -4901,6 +5013,7 @@
       if (await blockIfSharedReadonly(newCardSubjectId)) return;
       const card = newCard(question, answer, newCardSubjectId);
       if (qcm.wrongs.length) card.wrongs = qcm.wrongs;
+      if (more) card.more = more;
       await persist(card);
       cards.push(card);
       await pushSharedBoxUpdatesForSubject(newCardSubjectId);
@@ -4948,6 +5061,7 @@
     editingId = card.id;
     inputQuestion.innerHTML = toDisplayHtml(card.question);
     inputAnswer.innerHTML = toDisplayHtml(card.answer);
+    if (el("input-more")) el("input-more").innerHTML = card.more ? toDisplayHtml(card.more) : "";
     setQcmFields(card);
     submitBtn.textContent = "Enregistrer les modifications";
     cancelEditBtn.hidden = false;
@@ -5242,7 +5356,7 @@
 
       const a = document.createElement("p");
       a.className = "card-row-a";
-      a.innerHTML = toDisplayHtml(card.answer);
+      a.innerHTML = answerWithMoreHtml(card);
 
       main.appendChild(q);
       main.appendChild(a);
@@ -7070,7 +7184,10 @@
       // un Compte, pour les boîtes de classe).
       if (view === "manage") {
         setOrgDisplayMode("none");
-        syncLibraryMirrorsForUser().then(() => renderSubjectManageList());
+        syncLibraryMirrorsForUser()
+          .then(() => dedupeDuplicateMirrorSubjects())
+          .then(() => dedupeIdenticalBoxes())
+          .then(() => renderSubjectManageList());
       }
       if (view === "calendar") renderCalendarEvents();
       if (view === "revision-program") renderRevisionProgramList();
@@ -10296,6 +10413,7 @@
       // Round 18, item 3 (suite) : nettoie d'éventuels doublons déjà créés
       // (avant ce correctif, ou par une synchro externe) à chaque passage.
       await dedupeDuplicateMirrorSubjects();
+      await dedupeIdenticalBoxes();
       renderAll();
       renderSubjectManageList();
       renderCalendarEvents();
@@ -10331,17 +10449,23 @@
         const existing = cards[idx];
         const rcWrongs = Array.isArray(rc.wrongs) && rc.wrongs.length === 3 ? rc.wrongs.map(String) : null;
         const contentChanged =
-          existing.question !== (rc.question || "") || existing.answer !== (rc.answer || "") || JSON.stringify(cardWrongs(existing)) !== JSON.stringify(rcWrongs || []);
+          existing.question !== (rc.question || "") ||
+          existing.answer !== (rc.answer || "") ||
+          (existing.more || "") !== (rc.more || "") ||
+          JSON.stringify(cardWrongs(existing)) !== JSON.stringify(rcWrongs || []);
         if (existing.deleted || contentChanged) {
           const updated = { ...existing, question: rc.question || "", answer: rc.answer || "", deleted: false, updatedAt: nowIso };
           if (rcWrongs) updated.wrongs = rcWrongs;
           else delete updated.wrongs;
+          if (rc.more) updated.more = String(rc.more);
+          else delete updated.more;
           await persist(updated);
           cards[idx] = updated;
         }
       } else {
         const card = { ...newCard(rc.question || "", rc.answer || "", subject.id), id: mirrorCardId(subject.id, rc.srcId), mirrorSrcId: rc.srcId };
         if (Array.isArray(rc.wrongs) && rc.wrongs.length === 3) card.wrongs = rc.wrongs.map(String);
+        if (rc.more) card.more = String(rc.more);
         await persist(card);
         cards.push(card);
       }
@@ -12554,7 +12678,7 @@
         <li class="card-row card-row--r47 library-card-item">
           <div class="card-row-main">
             <p class="card-row-q">${toDisplayHtml(c.question || "")}</p>
-            <p class="card-row-a${fullAccess ? "" : " library-card-answer--cut"}">${fullAccess ? toDisplayHtml(c.answer || "") : libraryPreviewAnswerHtml(c.answer || "")}</p>
+            <p class="card-row-a${fullAccess ? "" : " library-card-answer--cut"}">${fullAccess ? answerWithMoreHtml(c) : libraryPreviewAnswerHtml(c.answer || "")}</p>
             ${cardWrongs(c).length === 3 ? `<p class="card-row-wrongs"><span class="qcm-chip">QCM</span>${fullAccess ? ` ${cardWrongs(c).map((x) => escapeHtml(x)).join(" · ")}` : ""}</p>` : ""}
           </div>
         </li>
@@ -12763,7 +12887,17 @@
       });
     });
   }
+  // Round 60 : un double toucher sur « Ajouter à mes révisions » lançait
+  // deux ajouts en parallèle, donc deux boîtes miroirs.
+  let addLibraryInFlight = null;
   async function addLibraryCollectionToRevisions(col) {
+    if (addLibraryInFlight) return addLibraryInFlight;
+    addLibraryInFlight = addLibraryCollectionToRevisionsImpl(col).finally(() => {
+      addLibraryInFlight = null;
+    });
+    return addLibraryInFlight;
+  }
+  async function addLibraryCollectionToRevisionsImpl(col) {
     if (!accountCurrentUser) {
       await robotAlert("Connecte-toi à ton compte pour ajouter une boîte de la Librairie à tes révisions.");
       return false;
@@ -14869,6 +15003,7 @@
         // connexion. On redéduplique donc une fois la synchro effectuée.
         await dedupeEmptySubjects();
         await purgeAutoGeneralBoxes();
+        await dedupeIdenticalBoxes();
         await reconcileSprintState();
         renderSubjectSelect();
         renderStatsSubjectSelect();

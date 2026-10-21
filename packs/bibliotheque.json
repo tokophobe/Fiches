@@ -525,9 +525,15 @@
     },
     {
      "question": "Capitale : Afrique du Sud ?",
-     "answer": "Pretoria (capitale administrative)\nLe Cap : capitale législative\nBloemfontein : capitale judiciaire",
+     "answer": "Pretoria",
      "w": "aa4022b9",
-     "wq": "f4fb3167"
+     "wq": "f4fb3167",
+     "more": "Capitale administrative. Le Cap est la capitale législative, Bloemfontein la capitale judiciaire.",
+     "wrongs": [
+      "Johannesburg",
+      "Durban",
+      "Port Elizabeth"
+     ]
     },
     {
      "question": "Capitale : Algérie ?",
@@ -535,7 +541,7 @@
      "wrongs": [
       "Beyrouth",
       "Berlin",
-      "Pékin (Beijing)"
+      "Pékin"
      ]
     },
     {
@@ -567,9 +573,15 @@
     },
     {
      "question": "Capitale : Australie ?",
-     "answer": "Canberra\nEt non Sydney !",
+     "answer": "Canberra",
      "w": "e1ea6fc0",
-     "wq": "3c23b897"
+     "wq": "3c23b897",
+     "more": "Et non Sydney !",
+     "wrongs": [
+      "Sydney",
+      "Melbourne",
+      "Perth"
+     ]
     },
     {
      "question": "Capitale : Autriche ?",
@@ -591,13 +603,25 @@
     },
     {
      "question": "Capitale : Bolivie ?",
-     "answer": "Sucre (capitale constitutionnelle)\nLe gouvernement siège à La Paz."
+     "answer": "Sucre",
+     "more": "Capitale constitutionnelle ; le gouvernement siège à La Paz.",
+     "wrongs": [
+      "Santa Cruz",
+      "Cochabamba",
+      "Lima"
+     ]
     },
     {
      "question": "Capitale : Brésil ?",
-     "answer": "Brasília\nEt non Rio de Janeiro !",
+     "answer": "Brasília",
      "w": "1b02fc9b",
-     "wq": "9b1728d8"
+     "wq": "9b1728d8",
+     "more": "Et non Rio de Janeiro !",
+     "wrongs": [
+      "Rio de Janeiro",
+      "São Paulo",
+      "Salvador"
+     ]
     },
     {
      "question": "Capitale : Cameroun ?",
@@ -610,9 +634,15 @@
     },
     {
      "question": "Capitale : Canada ?",
-     "answer": "Ottawa\nEt non Toronto ni Montréal !",
+     "answer": "Ottawa",
      "w": "c1cbd052",
-     "wq": "cafcf247"
+     "wq": "cafcf247",
+     "more": "Et non Toronto ni Montréal !",
+     "wrongs": [
+      "Toronto",
+      "Montréal",
+      "Vancouver"
+     ]
     },
     {
      "question": "Capitale : Chili ?",
@@ -625,12 +655,13 @@
     },
     {
      "question": "Capitale : Chine ?",
-     "answer": "Pékin (Beijing)",
+     "answer": "Pékin",
      "wrongs": [
       "Dublin",
       "Bucarest",
       "Berlin"
-     ]
+     ],
+     "more": "On dit aussi Beijing."
     },
     {
      "question": "Capitale : Colombie ?",
@@ -652,9 +683,15 @@
     },
     {
      "question": "Capitale : Côte d'Ivoire ?",
-     "answer": "Yamoussoukro (capitale politique)\nAbidjan : capitale économique",
+     "answer": "Yamoussoukro",
      "w": "11cc38b4",
-     "wq": "ba53e206"
+     "wq": "ba53e206",
+     "more": "Capitale politique ; Abidjan est la capitale économique.",
+     "wrongs": [
+      "Abidjan",
+      "Bouaké",
+      "Dakar"
+     ]
     },
     {
      "question": "Capitale : Croatie ?",
@@ -703,9 +740,15 @@
     },
     {
      "question": "Capitale : États-Unis ?",
-     "answer": "Washington\nEt non New York !",
+     "answer": "Washington",
      "w": "704b17ec",
-     "wq": "4c6204f6"
+     "wq": "4c6204f6",
+     "more": "Et non New York !",
+     "wrongs": [
+      "New York",
+      "Los Angeles",
+      "Chicago"
+     ]
     },
     {
      "question": "Capitale : Éthiopie ?",
@@ -754,9 +797,15 @@
     },
     {
      "question": "Capitale : Indonésie ?",
-     "answer": "Jakarta\nUn transfert vers une nouvelle capitale, Nusantara, est en cours.",
+     "answer": "Jakarta",
      "w": "8991e6dc",
-     "wq": "7f353823"
+     "wq": "7f353823",
+     "more": "Un transfert vers une nouvelle capitale, Nusantara, est en cours.",
+     "wrongs": [
+      "Surabaya",
+      "Bandung",
+      "Kuala Lumpur"
+     ]
     },
     {
      "question": "Capitale : Irak ?",
@@ -817,7 +866,7 @@
      "answer": "Astana",
      "wrongs": [
       "Bagdad",
-      "Pékin (Beijing)",
+      "Pékin",
       "Oslo"
      ]
     },
@@ -825,7 +874,7 @@
      "question": "Capitale : Kenya ?",
      "answer": "Nairobi",
      "wrongs": [
-      "Pékin (Beijing)",
+      "Pékin",
       "Antananarivo",
       "Islamabad"
      ]
@@ -859,9 +908,15 @@
     },
     {
      "question": "Capitale : Maroc ?",
-     "answer": "Rabat\nEt non Casablanca !",
+     "answer": "Rabat",
      "w": "fa055665",
-     "wq": "12c45727"
+     "wq": "12c45727",
+     "more": "Et non Casablanca !",
+     "wrongs": [
+      "Casablanca",
+      "Marrakech",
+      "Fès"
+     ]
     },
     {
      "question": "Capitale : Mexique ?",
@@ -883,9 +938,15 @@
     },
     {
      "question": "Capitale : Nigeria ?",
-     "answer": "Abuja\nEt non Lagos !",
+     "answer": "Abuja",
      "w": "5c7a18de",
-     "wq": "5c5fd85a"
+     "wq": "5c5fd85a",
+     "more": "Et non Lagos !",
+     "wrongs": [
+      "Lagos",
+      "Kano",
+      "Accra"
+     ]
     },
     {
      "question": "Capitale : Norvège ?",
@@ -898,9 +959,15 @@
     },
     {
      "question": "Capitale : Nouvelle-Zélande ?",
-     "answer": "Wellington\nEt non Auckland !",
+     "answer": "Wellington",
      "w": "a86ccb0e",
-     "wq": "98de9049"
+     "wq": "98de9049",
+     "more": "Et non Auckland !",
+     "wrongs": [
+      "Auckland",
+      "Christchurch",
+      "Sydney"
+     ]
     },
     {
      "question": "Capitale : Pakistan ?",
@@ -913,7 +980,13 @@
     },
     {
      "question": "Capitale : Pays-Bas ?",
-     "answer": "Amsterdam\nLe gouvernement et le Parlement siègent à La Haye."
+     "answer": "Amsterdam",
+     "more": "Le gouvernement et le Parlement siègent à La Haye.",
+     "wrongs": [
+      "Rotterdam",
+      "Utrecht",
+      "Bruxelles"
+     ]
     },
     {
      "question": "Capitale : Pérou ?",
@@ -965,7 +1038,7 @@
      "answer": "Bucarest",
      "wrongs": [
       "Beyrouth",
-      "Pékin (Beijing)",
+      "Pékin",
       "Helsinki"
      ]
     },
@@ -1007,9 +1080,15 @@
     },
     {
      "question": "Capitale : Suisse ?",
-     "answer": "Berne (ville fédérale)\nEt non Genève ni Zurich !",
+     "answer": "Berne",
      "w": "3240cbe1",
-     "wq": "cb853c01"
+     "wq": "cb853c01",
+     "more": "On l'appelle la « ville fédérale ». Et non Genève ni Zurich !",
+     "wrongs": [
+      "Genève",
+      "Zurich",
+      "Lausanne"
+     ]
     },
     {
      "question": "Capitale : Syrie ?",
@@ -1049,18 +1128,25 @@
     },
     {
      "question": "Capitale : Turquie ?",
-     "answer": "Ankara\nEt non Istanbul !",
+     "answer": "Ankara",
      "w": "c14d0929",
-     "wq": "6003c202"
+     "wq": "6003c202",
+     "more": "Et non Istanbul !",
+     "wrongs": [
+      "Istanbul",
+      "Izmir",
+      "Antalya"
+     ]
     },
     {
      "question": "Capitale : Ukraine ?",
-     "answer": "Kiev (Kyiv)",
+     "answer": "Kiev",
      "wrongs": [
       "Damas",
       "Budapest",
       "Rome"
-     ]
+     ],
+     "more": "On écrit aussi Kyiv."
     },
     {
      "question": "Capitale : Venezuela ?",
@@ -121250,12 +121336,13 @@
    "cards": [
     {
      "question": "Comment pose-t-on une addition de nombres décimaux ?",
-     "answer": "On aligne les virgules\n(unités sous unités, dixièmes sous dixièmes…).",
+     "answer": "On aligne les virgules",
      "wrongs": [
       "On aligne les chiffres sur la droite",
       "On aligne les chiffres sur la gauche",
       "On arrondit d'abord chaque nombre à l'unité"
-     ]
+     ],
+     "more": "Unités sous unités, dixièmes sous dixièmes…"
     },
     {
      "question": "Calcule 4,7 + 2,85.",
@@ -121277,7 +121364,12 @@
     },
     {
      "question": "Comment multiplie-t-on deux nombres décimaux ?",
-     "answer": "On multiplie sans les virgules,\npuis on place autant de chiffres après la virgule\nqu'il y en a en tout dans les deux facteurs."
+     "answer": "On multiplie sans les virgules, puis on place autant de chiffres après la virgule qu'il y en a en tout dans les deux facteurs.",
+     "wrongs": [
+      "On multiplie les parties entières entre elles, puis les parties décimales entre elles.",
+      "On garde la virgule à la place qu'elle a dans le plus grand des deux nombres.",
+      "On arrondit les deux nombres à l'unité, puis on les multiplie."
+     ]
     },
     {
      "question": "Calcule 2,5 × 1,2.",
@@ -121299,7 +121391,13 @@
     },
     {
      "question": "Comment multiplie-t-on un nombre par 10, 100, 1 000 ?",
-     "answer": "Chaque chiffre prend une valeur 10, 100, 1 000 fois plus grande :\nla virgule « avance » de 1, 2, 3 rangs vers la droite."
+     "answer": "La virgule « avance » de 1, 2 ou 3 rangs vers la droite.",
+     "more": "Chaque chiffre prend une valeur 10, 100, 1 000 fois plus grande.",
+     "wrongs": [
+      "La virgule « recule » de 1, 2 ou 3 rangs vers la gauche.",
+      "On écrit 1, 2 ou 3 zéros juste après la virgule.",
+      "On ajoute 10, 100 ou 1 000 au nombre."
+     ]
     },
     {
      "question": "Calcule 3,45 × 100.",
@@ -121312,7 +121410,13 @@
     },
     {
      "question": "Comment divise-t-on un nombre par 10, 100, 1 000 ?",
-     "answer": "La virgule « recule » de 1, 2, 3 rangs vers la gauche."
+     "answer": "La virgule « recule » de 1, 2 ou 3 rangs vers la gauche.",
+     "more": "Chaque chiffre prend une valeur 10, 100, 1 000 fois plus petite.",
+     "wrongs": [
+      "La virgule « avance » de 1, 2 ou 3 rangs vers la droite.",
+      "On enlève 1, 2 ou 3 zéros à la fin du nombre.",
+      "On retire 10, 100 ou 1 000 au nombre."
+     ]
     },
     {
      "question": "Calcule 52 ÷ 1 000.",
@@ -121334,12 +121438,13 @@
     },
     {
      "question": "Multiplier par 0,5, c'est comme…",
-     "answer": "… prendre la moitié (diviser par 2).",
+     "answer": "… prendre la moitié.",
      "wrongs": [
       "… diviser par 5.",
       "… multiplier par 2.",
       "… enlever 0,5."
-     ]
+     ],
+     "more": "C'est la même chose que diviser par 2."
     },
     {
      "question": "Donne un ordre de grandeur de 19,8 × 5,1.",
@@ -121361,16 +121466,23 @@
     },
     {
      "question": "Le produit de deux nombres plus petits que 1 est-il plus petit ou plus grand que chacun d'eux ?",
-     "answer": "Plus petit.\nEx. : 0,5 × 0,4 = 0,2",
+     "answer": "Plus petit.",
      "wrongs": [
       "Plus grand.",
       "Égal au plus grand des deux.",
       "Ça dépend des nombres."
-     ]
+     ],
+     "more": "Ex. : 0,5 × 0,4 = 0,2"
     },
     {
      "question": "Calcule 25 × 4 × 3,7 de tête.",
-     "answer": "370\n(25 × 4 = 100)"
+     "answer": "370",
+     "more": "25 × 4 = 100, puis 100 × 3,7 = 370.",
+     "wrongs": [
+      "37",
+      "3 700",
+      "111"
+     ]
     }
    ]
   },
@@ -121394,16 +121506,23 @@
    "cards": [
     {
      "question": "Quels sont les trois états de l'eau ?",
-     "answer": "Solide (glace), liquide, gazeux (vapeur d'eau).",
+     "answer": "Solide, liquide et gazeux.",
      "wrongs": [
       "Solide, liquide et plasma.",
       "Glace, eau et nuage.",
       "Liquide, gazeux et poudre."
-     ]
+     ],
+     "more": "Glace, eau liquide et vapeur d'eau."
     },
     {
      "question": "La vapeur d'eau est-elle visible ?",
-     "answer": "Non, c'est un gaz invisible.\nLa « fumée » d'une casserole, ce sont de fines gouttelettes."
+     "answer": "Non, c'est un gaz invisible.",
+     "more": "La « fumée » d'une casserole, ce sont de fines gouttelettes d'eau liquide.",
+     "wrongs": [
+      "Oui, elle forme une fumée blanche.",
+      "Oui, mais seulement quand il fait froid.",
+      "Oui, elle est légèrement bleutée."
+     ]
     },
     {
      "question": "Comment s'appelle le passage de solide à liquide ?",
@@ -121425,48 +121544,53 @@
     },
     {
      "question": "Comment s'appelle le passage de liquide à gaz ?",
-     "answer": "La vaporisation\n(ébullition ou évaporation).",
+     "answer": "La vaporisation.",
      "wrongs": [
       "La liquéfaction.",
       "La fusion.",
       "La solidification."
-     ]
+     ],
+     "more": "Elle peut se faire par ébullition ou par évaporation."
     },
     {
      "question": "Comment s'appelle le passage de gaz à liquide ?",
-     "answer": "La liquéfaction (ou condensation).",
+     "answer": "La liquéfaction.",
      "wrongs": [
       "La vaporisation.",
       "La fusion.",
       "La solidification."
-     ]
+     ],
+     "more": "On dit aussi condensation."
     },
     {
      "question": "À quelle température l'eau pure gèle-t-elle ?",
-     "answer": "0 °C (sous la pression normale).",
+     "answer": "0 °C",
      "wrongs": [
       "4 °C",
       "−10 °C",
       "10 °C"
-     ]
+     ],
+     "more": "Sous la pression atmosphérique normale."
     },
     {
      "question": "À quelle température l'eau pure bout-elle ?",
-     "answer": "100 °C (au niveau de la mer).",
+     "answer": "100 °C",
      "wrongs": [
       "90 °C",
       "80 °C",
       "120 °C"
-     ]
+     ],
+     "more": "Au niveau de la mer ; en altitude, elle bout un peu plus bas."
     },
     {
      "question": "Pendant qu'un glaçon fond, que fait la température ?",
-     "answer": "Elle reste constante, à 0 °C,\njusqu'à ce que toute la glace ait fondu.",
+     "answer": "Elle reste constante, à 0 °C.",
      "wrongs": [
       "Elle augmente régulièrement.",
       "Elle baisse.",
       "Elle monte jusqu'à 10 °C, puis s'arrête."
-     ]
+     ],
+     "more": "Jusqu'à ce que toute la glace ait fondu."
     },
     {
      "question": "La masse change-t-elle lors d'un changement d'état ?",
@@ -121479,7 +121603,13 @@
     },
     {
      "question": "Pourquoi une bouteille d'eau pleine éclate-t-elle au congélateur ?",
-     "answer": "L'eau qui gèle prend plus de volume\n(la glace est moins dense que l'eau liquide)."
+     "answer": "L'eau qui gèle prend plus de volume.",
+     "more": "La glace est moins dense que l'eau liquide.",
+     "wrongs": [
+      "Le froid fait rétrécir le plastique.",
+      "L'air de la bouteille se dilate.",
+      "La glace est plus lourde que l'eau."
+     ]
     },
     {
      "question": "Quel instrument mesure la température ?",
@@ -121492,25 +121622,32 @@
     },
     {
      "question": "Quelles sont les grandes étapes du cycle de l'eau ?",
-     "answer": "Évaporation → condensation en nuages →\nprécipitations → ruissellement et infiltration → retour à la mer."
+     "answer": "Évaporation → condensation en nuages → précipitations → ruissellement et infiltration → retour à la mer.",
+     "wrongs": [
+      "Précipitations → évaporation → condensation en nuages → retour à la mer → infiltration.",
+      "Condensation → évaporation → ruissellement → précipitations → retour à la mer.",
+      "Infiltration → précipitations → évaporation → retour à la mer → nuages."
+     ]
     },
     {
      "question": "Qu'est-ce qu'une nappe phréatique ?",
-     "answer": "De l'eau souterraine,\nstockée dans les roches du sous-sol.",
+     "answer": "De l'eau souterraine.",
      "wrongs": [
       "Un lac de montagne.",
       "Une couche de nuages bas.",
       "Une source d'eau chaude."
-     ]
+     ],
+     "more": "Elle est stockée dans les roches du sous-sol."
     },
     {
      "question": "Quelle part de l'eau de la Terre est de l'eau douce ?",
-     "answer": "Environ 3 %,\ndont la plus grande partie est sous forme de glace.",
+     "answer": "Environ 3 %",
      "wrongs": [
       "Environ 30 %",
       "Environ 50 %",
       "Environ 97 %"
-     ]
+     ],
+     "more": "La plus grande partie est sous forme de glace."
     },
     {
      "question": "Quelle source d'énergie fait fonctionner le cycle de l'eau ?",

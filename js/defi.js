@@ -138,6 +138,20 @@
     const day = o.day || today();
     const qs = questionsFor(day.key);
     let s = load(day.key, store);
+    // Ordre des réponses propre à chaque joueur (tiré au hasard à la
+    // première apparition de la question, puis gardé dans la partie) : la
+    // bonne réponse n'est pas à la même lettre pour tout le monde.
+    function viewOf(i) {
+      const q = qs[i];
+      if (!s.orders) s.orders = {};
+      let perm = s.orders[i];
+      if (!Array.isArray(perm) || perm.length !== q.choices.length) {
+        perm = shuffle(q.choices.map((_, k) => k), Math.random);
+        s.orders[i] = perm;
+        store.set(KEY(day.key), s);
+      }
+      return Object.assign({}, q, { choices: perm.map((k) => q.choices[k]), answer: perm.indexOf(q.answer) });
+    }
     const emit = (type, extra) => o.onEvent && o.onEvent(Object.assign({ type, state: s, day }, extra || {}));
     const save = () => store.set(KEY(day.key), s);
     root.classList.add("ddefi");
@@ -162,7 +176,7 @@
     }
 
     function renderQuestion(revealed) {
-      const q = qs[s.cur];
+      const q = viewOf(s.cur);
       const failed = s.res[s.cur] === "fail";
       root.innerHTML = `
         <div class="ddefi-top">
@@ -203,7 +217,7 @@
     }
 
     function answer(i, btn) {
-      const q = qs[s.cur];
+      const q = viewOf(s.cur);
       if (s.res[s.cur] || s.wrong.includes(i)) return;
       if (i === q.answer) {
         s.res[s.cur] = s.wrong.length ? "late" : "ok";
