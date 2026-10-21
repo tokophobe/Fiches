@@ -7703,3 +7703,6 @@ body.is-qcm-review #review-session-status { display: none !important; }
 @keyframes qcm-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 @keyframes qcm-nudge { 0%, 100% { transform: translateX(-50%); } 30% { transform: translateX(calc(-50% - 6px)); } 60% { transform: translateX(calc(-50% + 6px)); } }
 @media (prefers-reduced-motion: reduce) { .qcm-choice.is-shaking, .qcm-panel.is-nudged { animation: none; } }
+/* Round 59 (suite) : la fiche change de taille en douceur quand le
+   panneau QCM a besoin de place. */
+body.is-qcm-review .card-stack { transition: top 0.25s ease, height 0.25s ease; }

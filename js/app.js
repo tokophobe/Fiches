@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v215";
+  const APP_VERSION = "v216";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -4331,6 +4331,7 @@
       qcmState = null;
       if (panel) panel.hidden = true;
       if (card) ratingRowEl.hidden = false;
+      layoutQcmPanel();
       return;
     }
     ratingRowEl.hidden = true;
@@ -4359,7 +4360,70 @@
       msg.className = `qcm-msg${tone ? ` is-${tone}` : ""}`;
     }
     if (cont) cont.hidden = true;
+    layoutQcmPanel();
+    // Le nom de la boîte peut être en train d'arriver (animation de
+    // changement de boîte) : on recale une fois l'animation finie.
+    clearTimeout(drawQcm.relayout);
+    drawQcm.relayout = setTimeout(layoutQcmPanel, 750);
   }
+  /** Round 59 (suite) : les 4 réponses prennent plus de hauteur que les
+   *  boutons d'évaluation. Le panneau se place du même côté de la fiche que
+   *  ces boutons (dessus ou dessous, selon la disposition réglée) ; s'il
+   *  manque de place, la fiche est raccourcie le temps de la question QCM
+   *  (variables posées sur <body>, retirées en mode normal). */
+  function layoutQcmPanel() {
+    const panel = el("qcm-panel");
+    const body = document.body;
+    body.style.removeProperty("--review-card-top");
+    body.style.removeProperty("--review-card-height");
+    if (!panel || panel.hidden) return;
+    const cs = getComputedStyle(document.documentElement);
+    const px = (name, fallback) => parseFloat(cs.getPropertyValue(name)) || fallback;
+    const cardTop = px("--review-card-top", 110);
+    const cardH = px("--review-card-height", 380);
+    const rowTop = px("--review-rating-row-top", 506);
+    // Pas sous le bandeau ni sous le nom de la boîte et sa jauge.
+    let headerBottom = px("--sticky-header-h", 96) + 8;
+    const boxBar = el("review-current-box");
+    if (boxBar && !boxBar.hidden) {
+      const r = boxBar.getBoundingClientRect();
+      if (r.height) headerBottom = Math.max(headerBottom, r.bottom + 8);
+    }
+    const viewBottom = window.innerHeight - 8;
+    const GAP = 10;
+    const MIN_CARD_H = 150;
+    panel.style.maxHeight = "none";
+    const h = panel.scrollHeight;
+    let top;
+    let newTop = cardTop;
+    let newH = cardH;
+    if (rowTop < cardTop) {
+      // Réponses au-dessus de la fiche : la fiche descend si besoin, son
+      // bas restant à la même place.
+      top = Math.max(rowTop, headerBottom);
+      const needed = top + h + GAP;
+      if (needed > cardTop) {
+        newTop = needed;
+        newH = Math.max(MIN_CARD_H, cardTop + cardH - needed);
+      }
+    } else {
+      // Réponses sous la fiche : la fiche raccourcit si le panneau déborde
+      // de l'écran.
+      top = Math.max(rowTop, cardTop + cardH + GAP);
+      const overflow = top + h - viewBottom;
+      if (overflow > 0) {
+        newH = Math.max(MIN_CARD_H, cardH - overflow);
+        top = Math.max(cardTop + newH + GAP, Math.min(top, viewBottom - h));
+      }
+    }
+    if (newTop !== cardTop) body.style.setProperty("--review-card-top", `${Math.round(newTop)}px`);
+    if (newH !== cardH) body.style.setProperty("--review-card-height", `${Math.round(newH)}px`);
+    panel.style.top = `${Math.round(top)}px`;
+    panel.style.maxHeight = `${Math.max(120, Math.round(viewBottom - top))}px`;
+  }
+  window.addEventListener("resize", () => {
+    if (qcmState) layoutQcmPanel();
+  });
   function revealQcmAnswer() {
     if (!isFlipped) {
       isFlipped = true;
