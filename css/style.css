@@ -7723,3 +7723,17 @@ body.is-qcm-review .card-stack { transition: top 0.25s ease, height 0.25s ease; 
 .card-row-a .card-more { margin-top: 0.3em; padding-top: 0; border-top: none; }
 .field-optional { font-weight: 400; text-transform: none; letter-spacing: 0; opacity: 0.75; }
 .rich-editor.rich-editor--more { min-height: 56px; font-size: 0.95em; }
+
+/* ==================================================================
+   Round 61 : texte d'invitation à la place des boutons d'évaluation
+   ================================================================== */
+.rating-invite {
+  position: fixed; left: 50%; transform: translateX(-50%);
+  top: var(--review-rating-row-top, 506px);
+  width: var(--review-card-width, 355px); max-width: 560px; z-index: 2;
+  min-height: 62px; margin: 0; padding: 0 14px; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  font-family: var(--font-type); font-size: 15px; line-height: 1.4; color: var(--general-text-color, var(--ink-soft));
+}
+.rating-invite[hidden] { display: none; }
+body.is-rating-invite #review-score-info { display: none !important; }

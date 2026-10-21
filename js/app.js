@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v217";
+  const APP_VERSION = "v218";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -4363,6 +4363,10 @@
     }
     isFlipped = !isFlipped;
     flipCardEl.classList.toggle("is-flipped", isFlipped);
+    if (isFlipped && answerSeenCardId !== currentCard.id && !(qcmState && qcmState.cardId === currentCard.id)) {
+      answerSeenCardId = currentCard.id;
+      setRatingInvite(false);
+    }
   });
 
   ratingRowEl.addEventListener("click", async (e) => {
@@ -4406,6 +4410,24 @@
 
   /* ---- Round 59 : mode QCM pendant la révision ---- */
   let qcmState = null; // { cardId, items: [{ html, ok }], wrong: [indices], done, timer }
+  /* Round 61 : « Cherche la réponse, tourne la fiche, puis évalue-toi »
+     à la place des boutons tant que la réponse de la fiche en cours n'a pas
+     été vue ; une fois vue, les boutons restent (même si on retourne la
+     fiche côté question). */
+  let answerSeenCardId = null;
+  function setRatingInvite(showInvite, hideAll) {
+    const invite = el("rating-invite");
+    const info = el("review-score-info");
+    if (hideAll) {
+      if (invite) invite.hidden = true;
+      return;
+    }
+    if (invite) invite.hidden = !showInvite;
+    ratingRowEl.hidden = showInvite;
+    document.body.classList.toggle("is-rating-invite", showInvite);
+    if (info && showInvite) info.hidden = true;
+    else if (!showInvite && currentCard) updateRatingPreviews();
+  }
   function shuffledCopy(arr) {
     const a = arr.slice();
     for (let i = a.length - 1; i > 0; i--) {
@@ -4427,10 +4449,15 @@
     if (!qcm) {
       qcmState = null;
       if (panel) panel.hidden = true;
-      if (card) ratingRowEl.hidden = false;
+      // Round 61 : nouvelle fiche → le texte d'invitation à la place des
+      // boutons, jusqu'à ce que la réponse ait été vue.
+      answerSeenCardId = null;
+      setRatingInvite(!!card);
       layoutQcmPanel();
       return;
     }
+    answerSeenCardId = null;
+    setRatingInvite(false, true);
     ratingRowEl.hidden = true;
     const items = shuffledCopy([{ html: toDisplayHtml(card.answer), ok: true }].concat(cardWrongs(card).map((w) => ({ html: escapeHtml(w), ok: false }))));
     qcmState = { cardId: card.id, items, wrong: [], done: false, timer: null };
@@ -4547,9 +4574,15 @@
         const firstTry = st.wrong.length === 0;
         drawQcm(firstTry ? "Bonne réponse !" : "Bonne réponse, au deuxième essai.", "ok");
         revealQcmAnswer();
-        if (firstTry) {
+        // Round 61 : avec un complément de réponse, on attend que la personne
+        // l'ait lu (bouton « Continuer »).
+        const hasMore = !!(currentCard.more && stripHtml(currentCard.more).trim());
+        if (firstTry && !hasMore) {
           // « Je sais » : la fiche repassera en mode normal.
           st.timer = setTimeout(() => finishQcm(cardId, "good", false), 1300);
+        } else if (firstTry && cont) {
+          cont.hidden = false;
+          cont.onclick = () => finishQcm(cardId, "good", false);
         } else if (cont) {
           cont.hidden = false;
           cont.onclick = () => finishQcm(cardId, "hard", true);
