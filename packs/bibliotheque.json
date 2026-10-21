@@ -516,7 +516,12 @@
    "cards": [
     {
      "question": "Capitale : Afghanistan ?",
-     "answer": "Kaboul"
+     "answer": "Kaboul",
+     "wrongs": [
+      "Le Caire",
+      "Bruxelles",
+      "Bucarest"
+     ]
     },
     {
      "question": "Capitale : Afrique du Sud ?",
@@ -526,19 +531,39 @@
     },
     {
      "question": "Capitale : Algérie ?",
-     "answer": "Alger"
+     "answer": "Alger",
+     "wrongs": [
+      "Beyrouth",
+      "Berlin",
+      "Pékin (Beijing)"
+     ]
     },
     {
      "question": "Capitale : Allemagne ?",
-     "answer": "Berlin"
+     "answer": "Berlin",
+     "wrongs": [
+      "Budapest",
+      "Stockholm",
+      "Alger"
+     ]
     },
     {
      "question": "Capitale : Arabie saoudite ?",
-     "answer": "Riyad"
+     "answer": "Riyad",
+     "wrongs": [
+      "Moscou",
+      "Lisbonne",
+      "Kaboul"
+     ]
     },
     {
      "question": "Capitale : Argentine ?",
-     "answer": "Buenos Aires"
+     "answer": "Buenos Aires",
+     "wrongs": [
+      "Bamako",
+      "Reykjavik",
+      "Caracas"
+     ]
     },
     {
      "question": "Capitale : Australie ?",
@@ -548,11 +573,21 @@
     },
     {
      "question": "Capitale : Autriche ?",
-     "answer": "Vienne"
+     "answer": "Vienne",
+     "wrongs": [
+      "Oslo",
+      "Budapest",
+      "Bangkok"
+     ]
     },
     {
      "question": "Capitale : Belgique ?",
-     "answer": "Bruxelles"
+     "answer": "Bruxelles",
+     "wrongs": [
+      "Séoul",
+      "Damas",
+      "Manille"
+     ]
     },
     {
      "question": "Capitale : Bolivie ?",
@@ -566,7 +601,12 @@
     },
     {
      "question": "Capitale : Cameroun ?",
-     "answer": "Yaoundé"
+     "answer": "Yaoundé",
+     "wrongs": [
+      "Bagdad",
+      "Londres",
+      "Zagreb"
+     ]
     },
     {
      "question": "Capitale : Canada ?",
@@ -576,19 +616,39 @@
     },
     {
      "question": "Capitale : Chili ?",
-     "answer": "Santiago"
+     "answer": "Santiago",
+     "wrongs": [
+      "Oulan-Bator",
+      "Yaoundé",
+      "Bruxelles"
+     ]
     },
     {
      "question": "Capitale : Chine ?",
-     "answer": "Pékin (Beijing)"
+     "answer": "Pékin (Beijing)",
+     "wrongs": [
+      "Dublin",
+      "Bucarest",
+      "Berlin"
+     ]
     },
     {
      "question": "Capitale : Colombie ?",
-     "answer": "Bogota"
+     "answer": "Bogota",
+     "wrongs": [
+      "New Delhi",
+      "Budapest",
+      "Vienne"
+     ]
     },
     {
      "question": "Capitale : Corée du Sud ?",
-     "answer": "Séoul"
+     "answer": "Séoul",
+     "wrongs": [
+      "Berlin",
+      "La Havane",
+      "Prague"
+     ]
     },
     {
      "question": "Capitale : Côte d'Ivoire ?",
@@ -598,23 +658,48 @@
     },
     {
      "question": "Capitale : Croatie ?",
-     "answer": "Zagreb"
+     "answer": "Zagreb",
+     "wrongs": [
+      "Vienne",
+      "Lima",
+      "Lisbonne"
+     ]
     },
     {
      "question": "Capitale : Cuba ?",
-     "answer": "La Havane"
+     "answer": "La Havane",
+     "wrongs": [
+      "Vienne",
+      "Addis-Abeba",
+      "Budapest"
+     ]
     },
     {
      "question": "Capitale : Danemark ?",
-     "answer": "Copenhague"
+     "answer": "Copenhague",
+     "wrongs": [
+      "Vienne",
+      "Londres",
+      "Manille"
+     ]
     },
     {
      "question": "Capitale : Égypte ?",
-     "answer": "Le Caire"
+     "answer": "Le Caire",
+     "wrongs": [
+      "Prague",
+      "Bucarest",
+      "Varsovie"
+     ]
     },
     {
      "question": "Capitale : Espagne ?",
-     "answer": "Madrid"
+     "answer": "Madrid",
+     "wrongs": [
+      "Bruxelles",
+      "Bagdad",
+      "Lima"
+     ]
     },
     {
      "question": "Capitale : États-Unis ?",
@@ -624,23 +709,48 @@
     },
     {
      "question": "Capitale : Éthiopie ?",
-     "answer": "Addis-Abeba"
+     "answer": "Addis-Abeba",
+     "wrongs": [
+      "Santiago",
+      "Londres",
+      "Rome"
+     ]
     },
     {
      "question": "Capitale : Finlande ?",
-     "answer": "Helsinki"
+     "answer": "Helsinki",
+     "wrongs": [
+      "Kaboul",
+      "Tunis",
+      "Vienne"
+     ]
     },
     {
      "question": "Capitale : Grèce ?",
-     "answer": "Athènes"
+     "answer": "Athènes",
+     "wrongs": [
+      "Nairobi",
+      "Helsinki",
+      "Oslo"
+     ]
     },
     {
      "question": "Capitale : Hongrie ?",
-     "answer": "Budapest"
+     "answer": "Budapest",
+     "wrongs": [
+      "Mexico",
+      "Copenhague",
+      "Bagdad"
+     ]
     },
     {
      "question": "Capitale : Inde ?",
-     "answer": "New Delhi"
+     "answer": "New Delhi",
+     "wrongs": [
+      "Oulan-Bator",
+      "Moscou",
+      "Rome"
+     ]
     },
     {
      "question": "Capitale : Indonésie ?",
@@ -650,47 +760,102 @@
     },
     {
      "question": "Capitale : Irak ?",
-     "answer": "Bagdad"
+     "answer": "Bagdad",
+     "wrongs": [
+      "Prague",
+      "Athènes",
+      "Varsovie"
+     ]
     },
     {
      "question": "Capitale : Iran ?",
-     "answer": "Téhéran"
+     "answer": "Téhéran",
+     "wrongs": [
+      "Dakar",
+      "Santiago",
+      "Tunis"
+     ]
     },
     {
      "question": "Capitale : Irlande ?",
-     "answer": "Dublin"
+     "answer": "Dublin",
+     "wrongs": [
+      "Riyad",
+      "Kinshasa",
+      "Varsovie"
+     ]
     },
     {
      "question": "Capitale : Islande ?",
-     "answer": "Reykjavik"
+     "answer": "Reykjavik",
+     "wrongs": [
+      "Dublin",
+      "Varsovie",
+      "Nairobi"
+     ]
     },
     {
      "question": "Capitale : Italie ?",
-     "answer": "Rome"
+     "answer": "Rome",
+     "wrongs": [
+      "Mexico",
+      "Téhéran",
+      "Moscou"
+     ]
     },
     {
      "question": "Capitale : Japon ?",
-     "answer": "Tokyo"
+     "answer": "Tokyo",
+     "wrongs": [
+      "Dakar",
+      "Prague",
+      "Madrid"
+     ]
     },
     {
      "question": "Capitale : Kazakhstan ?",
-     "answer": "Astana"
+     "answer": "Astana",
+     "wrongs": [
+      "Bagdad",
+      "Pékin (Beijing)",
+      "Oslo"
+     ]
     },
     {
      "question": "Capitale : Kenya ?",
-     "answer": "Nairobi"
+     "answer": "Nairobi",
+     "wrongs": [
+      "Pékin (Beijing)",
+      "Antananarivo",
+      "Islamabad"
+     ]
     },
     {
      "question": "Capitale : Liban ?",
-     "answer": "Beyrouth"
+     "answer": "Beyrouth",
+     "wrongs": [
+      "La Havane",
+      "Le Caire",
+      "Kinshasa"
+     ]
     },
     {
      "question": "Capitale : Madagascar ?",
-     "answer": "Antananarivo"
+     "answer": "Antananarivo",
+     "wrongs": [
+      "Beyrouth",
+      "Copenhague",
+      "Oulan-Bator"
+     ]
     },
     {
      "question": "Capitale : Mali ?",
-     "answer": "Bamako"
+     "answer": "Bamako",
+     "wrongs": [
+      "Varsovie",
+      "Tokyo",
+      "Copenhague"
+     ]
     },
     {
      "question": "Capitale : Maroc ?",
@@ -700,11 +865,21 @@
     },
     {
      "question": "Capitale : Mexique ?",
-     "answer": "Mexico"
+     "answer": "Mexico",
+     "wrongs": [
+      "Kinshasa",
+      "Londres",
+      "Oulan-Bator"
+     ]
     },
     {
      "question": "Capitale : Mongolie ?",
-     "answer": "Oulan-Bator"
+     "answer": "Oulan-Bator",
+     "wrongs": [
+      "New Delhi",
+      "Mexico",
+      "Tunis"
+     ]
     },
     {
      "question": "Capitale : Nigeria ?",
@@ -714,7 +889,12 @@
     },
     {
      "question": "Capitale : Norvège ?",
-     "answer": "Oslo"
+     "answer": "Oslo",
+     "wrongs": [
+      "Riyad",
+      "Téhéran",
+      "Alger"
+     ]
     },
     {
      "question": "Capitale : Nouvelle-Zélande ?",
@@ -724,7 +904,12 @@
     },
     {
      "question": "Capitale : Pakistan ?",
-     "answer": "Islamabad"
+     "answer": "Islamabad",
+     "wrongs": [
+      "Budapest",
+      "Bucarest",
+      "Bagdad"
+     ]
     },
     {
      "question": "Capitale : Pays-Bas ?",
@@ -732,43 +917,93 @@
     },
     {
      "question": "Capitale : Pérou ?",
-     "answer": "Lima"
+     "answer": "Lima",
+     "wrongs": [
+      "Manille",
+      "Reykjavik",
+      "Moscou"
+     ]
     },
     {
      "question": "Capitale : Philippines ?",
-     "answer": "Manille"
+     "answer": "Manille",
+     "wrongs": [
+      "Yaoundé",
+      "Kaboul",
+      "Islamabad"
+     ]
     },
     {
      "question": "Capitale : Pologne ?",
-     "answer": "Varsovie"
+     "answer": "Varsovie",
+     "wrongs": [
+      "Nairobi",
+      "Caracas",
+      "Buenos Aires"
+     ]
     },
     {
      "question": "Capitale : Portugal ?",
-     "answer": "Lisbonne"
+     "answer": "Lisbonne",
+     "wrongs": [
+      "Le Caire",
+      "Islamabad",
+      "Rome"
+     ]
     },
     {
      "question": "Capitale : République démocratique du Congo ?",
-     "answer": "Kinshasa"
+     "answer": "Kinshasa",
+     "wrongs": [
+      "Berlin",
+      "Caracas",
+      "Rome"
+     ]
     },
     {
      "question": "Capitale : Roumanie ?",
-     "answer": "Bucarest"
+     "answer": "Bucarest",
+     "wrongs": [
+      "Beyrouth",
+      "Pékin (Beijing)",
+      "Helsinki"
+     ]
     },
     {
      "question": "Capitale : Royaume-Uni ?",
-     "answer": "Londres"
+     "answer": "Londres",
+     "wrongs": [
+      "Damas",
+      "Budapest",
+      "Oulan-Bator"
+     ]
     },
     {
      "question": "Capitale : Russie ?",
-     "answer": "Moscou"
+     "answer": "Moscou",
+     "wrongs": [
+      "New Delhi",
+      "Bagdad",
+      "Kinshasa"
+     ]
     },
     {
      "question": "Capitale : Sénégal ?",
-     "answer": "Dakar"
+     "answer": "Dakar",
+     "wrongs": [
+      "Prague",
+      "Bruxelles",
+      "Caracas"
+     ]
     },
     {
      "question": "Capitale : Suède ?",
-     "answer": "Stockholm"
+     "answer": "Stockholm",
+     "wrongs": [
+      "Helsinki",
+      "Buenos Aires",
+      "Athènes"
+     ]
     },
     {
      "question": "Capitale : Suisse ?",
@@ -778,19 +1013,39 @@
     },
     {
      "question": "Capitale : Syrie ?",
-     "answer": "Damas"
+     "answer": "Damas",
+     "wrongs": [
+      "Beyrouth",
+      "Prague",
+      "Stockholm"
+     ]
     },
     {
      "question": "Capitale : Tchéquie ?",
-     "answer": "Prague"
+     "answer": "Prague",
+     "wrongs": [
+      "Vienne",
+      "Antananarivo",
+      "Bogota"
+     ]
     },
     {
      "question": "Capitale : Thaïlande ?",
-     "answer": "Bangkok"
+     "answer": "Bangkok",
+     "wrongs": [
+      "Copenhague",
+      "Nairobi",
+      "Manille"
+     ]
     },
     {
      "question": "Capitale : Tunisie ?",
-     "answer": "Tunis"
+     "answer": "Tunis",
+     "wrongs": [
+      "Yaoundé",
+      "Bruxelles",
+      "Hanoï"
+     ]
     },
     {
      "question": "Capitale : Turquie ?",
@@ -800,15 +1055,30 @@
     },
     {
      "question": "Capitale : Ukraine ?",
-     "answer": "Kiev (Kyiv)"
+     "answer": "Kiev (Kyiv)",
+     "wrongs": [
+      "Damas",
+      "Budapest",
+      "Rome"
+     ]
     },
     {
      "question": "Capitale : Venezuela ?",
-     "answer": "Caracas"
+     "answer": "Caracas",
+     "wrongs": [
+      "Dakar",
+      "Téhéran",
+      "Kaboul"
+     ]
     },
     {
      "question": "Capitale : Vietnam ?",
-     "answer": "Hanoï"
+     "answer": "Hanoï",
+     "wrongs": [
+      "Copenhague",
+      "Yaoundé",
+      "Bagdad"
+     ]
     }
    ],
    "priceTokens": 0,
@@ -120980,15 +121250,30 @@
    "cards": [
     {
      "question": "Comment pose-t-on une addition de nombres décimaux ?",
-     "answer": "On aligne les virgules\n(unités sous unités, dixièmes sous dixièmes…)."
+     "answer": "On aligne les virgules\n(unités sous unités, dixièmes sous dixièmes…).",
+     "wrongs": [
+      "On aligne les chiffres sur la droite",
+      "On aligne les chiffres sur la gauche",
+      "On arrondit d'abord chaque nombre à l'unité"
+     ]
     },
     {
      "question": "Calcule 4,7 + 2,85.",
-     "answer": "7,55"
+     "answer": "7,55",
+     "wrongs": [
+      "6,92",
+      "7,5",
+      "8,55"
+     ]
     },
     {
      "question": "Calcule 10 − 3,6.",
-     "answer": "6,4"
+     "answer": "6,4",
+     "wrongs": [
+      "7,4",
+      "6,6",
+      "7,6"
+     ]
     },
     {
      "question": "Comment multiplie-t-on deux nombres décimaux ?",
@@ -120996,11 +121281,21 @@
     },
     {
      "question": "Calcule 2,5 × 1,2.",
-     "answer": "3"
+     "answer": "3",
+     "wrongs": [
+      "2,7",
+      "30",
+      "0,3"
+     ]
     },
     {
      "question": "Calcule 0,3 × 0,2.",
-     "answer": "0,06"
+     "answer": "0,06",
+     "wrongs": [
+      "0,6",
+      "0,5",
+      "6"
+     ]
     },
     {
      "question": "Comment multiplie-t-on un nombre par 10, 100, 1 000 ?",
@@ -121008,7 +121303,12 @@
     },
     {
      "question": "Calcule 3,45 × 100.",
-     "answer": "345"
+     "answer": "345",
+     "wrongs": [
+      "34,5",
+      "3 450",
+      "0,0345"
+     ]
     },
     {
      "question": "Comment divise-t-on un nombre par 10, 100, 1 000 ?",
@@ -121016,27 +121316,57 @@
     },
     {
      "question": "Calcule 52 ÷ 1 000.",
-     "answer": "0,052"
+     "answer": "0,052",
+     "wrongs": [
+      "0,52",
+      "5,2",
+      "52 000"
+     ]
     },
     {
      "question": "Multiplier par 0,1, c'est comme…",
-     "answer": "… diviser par 10."
+     "answer": "… diviser par 10.",
+     "wrongs": [
+      "… multiplier par 10.",
+      "… diviser par 100.",
+      "… ajouter 0,1."
+     ]
     },
     {
      "question": "Multiplier par 0,5, c'est comme…",
-     "answer": "… prendre la moitié (diviser par 2)."
+     "answer": "… prendre la moitié (diviser par 2).",
+     "wrongs": [
+      "… diviser par 5.",
+      "… multiplier par 2.",
+      "… enlever 0,5."
+     ]
     },
     {
      "question": "Donne un ordre de grandeur de 19,8 × 5,1.",
-     "answer": "20 × 5 = 100"
+     "answer": "20 × 5 = 100",
+     "wrongs": [
+      "20 × 5 = 1 000",
+      "10 × 5 = 50",
+      "20 × 6 = 120"
+     ]
     },
     {
      "question": "Calcule 7,2 ÷ 4.",
-     "answer": "1,8"
+     "answer": "1,8",
+     "wrongs": [
+      "1,08",
+      "2,8",
+      "18"
+     ]
     },
     {
      "question": "Le produit de deux nombres plus petits que 1 est-il plus petit ou plus grand que chacun d'eux ?",
-     "answer": "Plus petit.\nEx. : 0,5 × 0,4 = 0,2"
+     "answer": "Plus petit.\nEx. : 0,5 × 0,4 = 0,2",
+     "wrongs": [
+      "Plus grand.",
+      "Égal au plus grand des deux.",
+      "Ça dépend des nombres."
+     ]
     },
     {
      "question": "Calcule 25 × 4 × 3,7 de tête.",
@@ -121064,7 +121394,12 @@
    "cards": [
     {
      "question": "Quels sont les trois états de l'eau ?",
-     "answer": "Solide (glace), liquide, gazeux (vapeur d'eau)."
+     "answer": "Solide (glace), liquide, gazeux (vapeur d'eau).",
+     "wrongs": [
+      "Solide, liquide et plasma.",
+      "Glace, eau et nuage.",
+      "Liquide, gazeux et poudre."
+     ]
     },
     {
      "question": "La vapeur d'eau est-elle visible ?",
@@ -121072,35 +121407,75 @@
     },
     {
      "question": "Comment s'appelle le passage de solide à liquide ?",
-     "answer": "La fusion."
+     "answer": "La fusion.",
+     "wrongs": [
+      "La solidification.",
+      "La vaporisation.",
+      "La condensation."
+     ]
     },
     {
      "question": "Comment s'appelle le passage de liquide à solide ?",
-     "answer": "La solidification."
+     "answer": "La solidification.",
+     "wrongs": [
+      "La fusion.",
+      "La liquéfaction.",
+      "La sublimation."
+     ]
     },
     {
      "question": "Comment s'appelle le passage de liquide à gaz ?",
-     "answer": "La vaporisation\n(ébullition ou évaporation)."
+     "answer": "La vaporisation\n(ébullition ou évaporation).",
+     "wrongs": [
+      "La liquéfaction.",
+      "La fusion.",
+      "La solidification."
+     ]
     },
     {
      "question": "Comment s'appelle le passage de gaz à liquide ?",
-     "answer": "La liquéfaction (ou condensation)."
+     "answer": "La liquéfaction (ou condensation).",
+     "wrongs": [
+      "La vaporisation.",
+      "La fusion.",
+      "La solidification."
+     ]
     },
     {
      "question": "À quelle température l'eau pure gèle-t-elle ?",
-     "answer": "0 °C (sous la pression normale)."
+     "answer": "0 °C (sous la pression normale).",
+     "wrongs": [
+      "4 °C",
+      "−10 °C",
+      "10 °C"
+     ]
     },
     {
      "question": "À quelle température l'eau pure bout-elle ?",
-     "answer": "100 °C (au niveau de la mer)."
+     "answer": "100 °C (au niveau de la mer).",
+     "wrongs": [
+      "90 °C",
+      "80 °C",
+      "120 °C"
+     ]
     },
     {
      "question": "Pendant qu'un glaçon fond, que fait la température ?",
-     "answer": "Elle reste constante, à 0 °C,\njusqu'à ce que toute la glace ait fondu."
+     "answer": "Elle reste constante, à 0 °C,\njusqu'à ce que toute la glace ait fondu.",
+     "wrongs": [
+      "Elle augmente régulièrement.",
+      "Elle baisse.",
+      "Elle monte jusqu'à 10 °C, puis s'arrête."
+     ]
     },
     {
      "question": "La masse change-t-elle lors d'un changement d'état ?",
-     "answer": "Non, elle se conserve."
+     "answer": "Non, elle se conserve.",
+     "wrongs": [
+      "Oui, elle augmente.",
+      "Oui, elle diminue.",
+      "Ça dépend de l'état d'arrivée."
+     ]
     },
     {
      "question": "Pourquoi une bouteille d'eau pleine éclate-t-elle au congélateur ?",
@@ -121108,7 +121483,12 @@
     },
     {
      "question": "Quel instrument mesure la température ?",
-     "answer": "Le thermomètre."
+     "answer": "Le thermomètre.",
+     "wrongs": [
+      "Le baromètre.",
+      "L'anémomètre.",
+      "Le pluviomètre."
+     ]
     },
     {
      "question": "Quelles sont les grandes étapes du cycle de l'eau ?",
@@ -121116,15 +121496,30 @@
     },
     {
      "question": "Qu'est-ce qu'une nappe phréatique ?",
-     "answer": "De l'eau souterraine,\nstockée dans les roches du sous-sol."
+     "answer": "De l'eau souterraine,\nstockée dans les roches du sous-sol.",
+     "wrongs": [
+      "Un lac de montagne.",
+      "Une couche de nuages bas.",
+      "Une source d'eau chaude."
+     ]
     },
     {
      "question": "Quelle part de l'eau de la Terre est de l'eau douce ?",
-     "answer": "Environ 3 %,\ndont la plus grande partie est sous forme de glace."
+     "answer": "Environ 3 %,\ndont la plus grande partie est sous forme de glace.",
+     "wrongs": [
+      "Environ 30 %",
+      "Environ 50 %",
+      "Environ 97 %"
+     ]
     },
     {
      "question": "Quelle source d'énergie fait fonctionner le cycle de l'eau ?",
-     "answer": "Le Soleil."
+     "answer": "Le Soleil.",
+     "wrongs": [
+      "Le vent.",
+      "La chaleur de l'intérieur de la Terre.",
+      "La Lune."
+     ]
     }
    ]
   },

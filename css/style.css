@@ -7630,3 +7630,76 @@ body:has(#view-library.is-active[data-cycle]) {
 :root.is-night-mode #view-defi .ddefi { --ddefi-accent-soft: rgba(239, 125, 45, 0.18); --ddefi-empty: rgba(255, 255, 255, 0.14); --ddefi-line: rgba(255, 255, 255, 0.14); }
 #view-defi .ddefi-q { font-family: var(--font-type); }
 .defi-app-day { margin: 0 0 10px; font-family: var(--font-type); font-size: 13px; color: var(--ink-soft); text-align: center; }
+
+/* ==================================================================
+   Round 59 : mode QCM
+   ================================================================== */
+.qcm-chip {
+  display: inline-block; padding: 1px 7px; border-radius: 999px; font-family: var(--font-type);
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; background: #ef7d2d; color: #fff; vertical-align: 1px;
+}
+/* Formulaire de fiche */
+.qcm-fields { margin: 2px 0 14px; }
+.qcm-toggle {
+  display: inline-flex; align-items: center; gap: 8px; padding: 6px 2px; border: none; background: transparent;
+  font-family: var(--font-type); font-size: 14px; color: var(--action-color, var(--ink)); cursor: pointer;
+}
+.qcm-toggle::after { content: ""; width: 7px; height: 7px; border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: rotate(45deg); margin: -3px 0 0 2px; transition: transform 0.2s ease; }
+.qcm-toggle.is-open::after { transform: rotate(-135deg); margin-top: 3px; }
+.qcm-inputs { display: grid; gap: 8px; margin-top: 6px; }
+.qcm-inputs[hidden] { display: none; }
+.qcm-inputs .field-hint { margin: 0 0 2px; }
+.qcm-wrong-input {
+  width: 100%; box-sizing: border-box; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(35, 48, 42, 0.15);
+  background: var(--rich-editor-bg-color, var(--paper-2)); color: var(--ink); font-family: var(--font-type); font-size: 15px;
+}
+.qcm-wrong-input:focus { outline: 2px solid #ef7d2d; outline-offset: 0; }
+/* Liste des fiches */
+.card-row-wrongs { margin: 4px 0 0; font-family: var(--font-type); font-size: 12.5px; color: var(--ink-soft); }
+/* Révision */
+.card-qcm-badge { margin-left: 6px; }
+.card-qcm-badge[hidden] { display: none; }
+.qcm-panel {
+  position: fixed; left: 50%; transform: translateX(-50%); top: var(--review-rating-row-top, 506px);
+  width: var(--review-card-width, 355px); max-width: 560px; z-index: 3;
+  max-height: calc(100dvh - var(--review-rating-row-top, 506px) - 8px); overflow-y: auto;
+  font-family: var(--font-type);
+}
+.qcm-panel[hidden] { display: none; }
+.qcm-panel.is-nudged { animation: qcm-nudge 0.45s ease; }
+.qcm-foot { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 40px; margin-top: 6px; }
+.qcm-msg { flex: 1; margin: 0; font-size: 13px; font-weight: 700; text-align: center; color: var(--ink-soft); }
+.qcm-msg.is-ok { color: #3e7c6b; }
+.qcm-msg.is-wrong { color: #cf7a2d; }
+.qcm-msg.is-fail { color: #b6604a; }
+.qcm-choices { display: grid; gap: 6px; }
+.qcm-choice {
+  display: flex; align-items: center; gap: 10px; width: 100%; padding: 6px 10px; border-radius: 12px; text-align: left;
+  border: 1.5px solid var(--rule-soft, rgba(0, 0, 0, 0.12)); background: var(--card-bg-color, var(--paper)); color: var(--card-text-color, var(--ink));
+  font-family: var(--font-type); font-size: 14.5px; line-height: 1.3; cursor: pointer;
+  box-shadow: 0 2px 6px rgba(30, 60, 100, 0.06); transition: border-color 0.15s ease, opacity 0.2s ease, transform 0.1s ease;
+}
+.qcm-choice:hover:not([disabled]) { border-color: #ef7d2d; }
+.qcm-choice:active:not([disabled]) { transform: scale(0.98); }
+.qcm-letter {
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 13px; font-weight: 700; background: #fde7d6; color: #ef7d2d;
+}
+.qcm-text { min-width: 0; overflow-wrap: anywhere; }
+.qcm-choice.is-wrong { opacity: 0.45; text-decoration: line-through; text-decoration-color: #b6604a; cursor: default; box-shadow: none; }
+.qcm-choice.is-wrong .qcm-letter { background: rgba(127, 127, 127, 0.18); color: var(--ink-soft); }
+.qcm-choice.is-right { border-color: #3e7c6b; background: color-mix(in srgb, #3e7c6b 12%, var(--card-bg-color, var(--paper))); }
+.qcm-choice.is-right .qcm-letter { background: #3e7c6b; color: #fff; }
+.qcm-choice[disabled]:not(.is-right):not(.is-wrong) { opacity: 0.55; cursor: default; }
+.qcm-choice.is-shaking { animation: qcm-shake 0.4s ease; }
+.qcm-continue {
+  flex-shrink: 0; padding: 9px 16px; border: none; border-radius: 12px;
+  background: var(--action-color, #2f6fae); color: #fff; font-family: var(--font-type); font-size: 15px; font-weight: 700; cursor: pointer;
+}
+.qcm-continue[hidden] { display: none; }
+body.is-qcm-review #review-score-info,
+body.is-qcm-review #review-session-status { display: none !important; }
+:root.is-night-mode .qcm-letter { background: rgba(239, 125, 45, 0.2); }
+@keyframes qcm-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+@keyframes qcm-nudge { 0%, 100% { transform: translateX(-50%); } 30% { transform: translateX(calc(-50% - 6px)); } 60% { transform: translateX(calc(-50% + 6px)); } }
+@media (prefers-reduced-motion: reduce) { .qcm-choice.is-shaking, .qcm-panel.is-nudged { animation: none; } }

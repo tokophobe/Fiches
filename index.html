@@ -541,7 +541,7 @@
             <button class="stack-card stack-card--front" id="flip-card" type="button" aria-label="Retourner la fiche">
               <div class="rule-line"></div>
               <div class="card-face card-face--question">
-                <span class="card-label">Question</span>
+                <span class="card-label">Question <span class="qcm-chip card-qcm-badge" id="card-qcm-badge" hidden>QCM</span></span>
                 <p class="card-text" id="question-text"></p>
                 <span class="tap-hint">Touche la fiche pour voir la réponse</span>
               </div>
@@ -587,6 +587,15 @@
 
       <!-- Item 1d : délai précédent, score actuel, et pour chaque bouton
            d'évaluation le futur délai + futur score associé. -->
+      <!-- Round 59 : mode QCM — les 4 réponses à la place des boutons
+           d'évaluation. -->
+      <div class="qcm-panel" id="qcm-panel" hidden>
+        <div class="qcm-choices" id="qcm-choices" role="group" aria-label="Réponses"></div>
+        <div class="qcm-foot">
+          <p class="qcm-msg" id="qcm-msg" aria-live="polite"></p>
+          <button type="button" class="qcm-continue" id="qcm-continue" hidden>Continuer →</button>
+        </div>
+      </div>
       <div class="review-score-info" id="review-score-info" hidden>
         <p class="review-score-info-current">
           Délai précédent : <strong id="score-info-prev-delay">—</strong>
@@ -639,6 +648,20 @@
           <span>Réponse</span>
           <div class="rich-editor" id="input-answer" contenteditable="true" data-placeholder="Ex. Reykjavik" role="textbox" aria-multiline="true"></div>
         </label>
+        <!-- Round 59 : mode QCM facultatif — 3 réponses fausses en plus de la
+             bonne. La fiche est alors d'abord posée en QCM (voir js/app.js,
+             « Mode QCM »). -->
+        <div class="qcm-fields" id="qcm-fields">
+          <button type="button" class="qcm-toggle" id="qcm-toggle" aria-expanded="false" aria-controls="qcm-inputs">
+            <span class="qcm-chip">QCM</span><span id="qcm-toggle-label">Ajouter 3 réponses fausses (facultatif)</span>
+          </button>
+          <div class="qcm-inputs" id="qcm-inputs" hidden>
+            <p class="field-hint">La fiche te sera d'abord posée en QCM : la bonne réponse mélangée à ces 3 réponses fausses. Laisse les 3 cases vides pour une fiche classique.</p>
+            <input type="text" class="qcm-wrong-input" id="input-wrong-1" placeholder="Réponse fausse 1" autocomplete="off" />
+            <input type="text" class="qcm-wrong-input" id="input-wrong-2" placeholder="Réponse fausse 2" autocomplete="off" />
+            <input type="text" class="qcm-wrong-input" id="input-wrong-3" placeholder="Réponse fausse 3" autocomplete="off" />
+          </div>
+        </div>
         <div class="form-actions">
           <button type="submit" class="btn btn--primary" id="submit-btn">Ajouter à la boîte</button>
           <button type="button" class="btn btn--ghost" id="cancel-edit" hidden>Annuler</button>

@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v213";
+  const APP_VERSION = "v214";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -4152,6 +4152,7 @@
       editCurrentBtn.hidden = true;
       if (el("construction-current-btn")) el("construction-current-btn").hidden = true;
       ratingRowEl.hidden = true;
+      renderReviewMode(null);
       if (el("review-score-info")) el("review-score-info").hidden = true;
       reviewProgressEl.textContent = "";
       renderDuePill();
@@ -4168,6 +4169,7 @@
     ratingRowEl.hidden = false;
     renderQuestionText(currentCard);
     answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
+    renderReviewMode(currentCard);
     renderSessionProgress();
     updateRatingPreviews();
     renderDuePill();
@@ -4251,6 +4253,17 @@
 
   flipCardEl.addEventListener("click", () => {
     if (!currentCard) return;
+    // Round 59 : en QCM, la fiche ne se retourne qu'une fois la question
+    // résolue (sinon on verrait la réponse).
+    if (qcmState && qcmState.cardId === currentCard.id && !qcmState.done) {
+      const panel = el("qcm-panel");
+      if (panel) {
+        panel.classList.remove("is-nudged");
+        void panel.offsetWidth;
+        panel.classList.add("is-nudged");
+      }
+      return;
+    }
     isFlipped = !isFlipped;
     flipCardEl.classList.toggle("is-flipped", isFlipped);
   });
@@ -4261,8 +4274,143 @@
     // Round 52 : le bouton ne reste pas en surbrillance après le clic.
     btn.blur();
     const rating = btn.dataset.rating;
+    if (!(await confirmUnusualRating(currentCard, rating))) return;
     await rateCurrentCard(rating);
   });
+
+  /* Round 59 : note très différente de la précédente (« Parfait » après
+     « Je ne savais pas » / « Vague idée », ou l'inverse) → le robot demande
+     confirmation. */
+  function previousRatingIndex(card) {
+    if (!card) return null;
+    if (typeof card.lastRating === "number" && card.lastRating >= 0 && card.lastRating <= 3) return card.lastRating;
+    const fromLog = lastRatingFromLog().get(card.id);
+    return typeof fromLog === "number" ? fromLog : null;
+  }
+  async function confirmUnusualRating(card, rating) {
+    const prev = previousRatingIndex(card);
+    const idx = ratingIndex(rating);
+    if (prev === null || idx < 0) return true;
+    const jumpUp = idx === 3 && prev <= 1;
+    const jumpDown = idx <= 1 && prev === 3;
+    if (!jumpUp && !jumpDown) return true;
+    const NAMES = { again: "Je ne savais pas", hard: "Vague idée", good: "Je savais", easy: "Parfait" };
+    const L = (i) => NAMES[REVISION_ALGO_RATING_ORDER[i]] || "";
+    const text = jumpUp
+      ? `La dernière fois, tu avais noté cette fiche « ${L(prev)} ». Tu la notes maintenant « ${L(idx)} » : tu es sûr(e) ? Elle ne reviendra pas avant longtemps.`
+      : `La dernière fois, tu avais noté cette fiche « ${L(prev)} ». Tu la notes maintenant « ${L(idx)} » : c'est bien ça ? Elle reviendra bientôt.`;
+    return showRobotMessage(text, {
+      buttons: [
+        { label: "Changer ma note", value: false },
+        { label: `Oui, « ${L(idx)} »`, value: true, primary: true },
+      ],
+    });
+  }
+
+  /* ---- Round 59 : mode QCM pendant la révision ---- */
+  let qcmState = null; // { cardId, items: [{ html, ok }], wrong: [indices], done, timer }
+  function shuffledCopy(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  const QCM_LETTERS = ["A", "B", "C", "D"];
+  function renderReviewMode(card) {
+    const panel = el("qcm-panel");
+    const badge = el("card-qcm-badge");
+    const hint = document.querySelector("#flip-card .tap-hint");
+    if (qcmState && qcmState.timer) clearTimeout(qcmState.timer);
+    const qcm = isQcmCard(card);
+    document.body.classList.toggle("is-qcm-review", qcm);
+    if (badge) badge.hidden = !qcm;
+    if (hint) hint.textContent = qcm ? "Choisis la bonne réponse ci-dessous" : "Touche la fiche pour voir la réponse";
+    if (!qcm) {
+      qcmState = null;
+      if (panel) panel.hidden = true;
+      if (card) ratingRowEl.hidden = false;
+      return;
+    }
+    ratingRowEl.hidden = true;
+    const items = shuffledCopy([{ html: toDisplayHtml(card.answer), ok: true }].concat(cardWrongs(card).map((w) => ({ html: escapeHtml(w), ok: false }))));
+    qcmState = { cardId: card.id, items, wrong: [], done: false, timer: null };
+    if (panel) panel.hidden = false;
+    drawQcm("");
+  }
+  function drawQcm(message, tone) {
+    const box = el("qcm-choices");
+    const msg = el("qcm-msg");
+    const cont = el("qcm-continue");
+    if (!box || !qcmState) return;
+    const st = qcmState;
+    box.innerHTML = st.items
+      .map((it, i) => {
+        const wrong = st.wrong.includes(i);
+        const right = st.done && it.ok;
+        const cls = wrong ? " is-wrong" : right ? " is-right" : "";
+        const dis = wrong || st.done ? " disabled" : "";
+        return `<button type="button" class="qcm-choice${cls}" data-i="${i}"${dis}><span class="qcm-letter">${QCM_LETTERS[i]}</span><span class="qcm-text">${it.html}</span></button>`;
+      })
+      .join("");
+    if (msg) {
+      msg.textContent = message || "";
+      msg.className = `qcm-msg${tone ? ` is-${tone}` : ""}`;
+    }
+    if (cont) cont.hidden = true;
+  }
+  function revealQcmAnswer() {
+    if (!isFlipped) {
+      isFlipped = true;
+      flipCardEl.classList.add("is-flipped");
+    }
+  }
+  async function finishQcm(cardId, rating, keepQcm) {
+    if (!currentCard || currentCard.id !== cardId) return;
+    qcmState = null;
+    await rateCurrentCard(rating, { qcmMode: keepQcm });
+  }
+  const qcmChoicesEl = el("qcm-choices");
+  if (qcmChoicesEl) {
+    qcmChoicesEl.addEventListener("click", (e) => {
+      const btn = e.target.closest(".qcm-choice");
+      const st = qcmState;
+      if (!btn || !st || st.done || !currentCard || st.cardId !== currentCard.id) return;
+      const i = Number(btn.dataset.i);
+      if (st.wrong.includes(i)) return;
+      const cont = el("qcm-continue");
+      const cardId = st.cardId;
+      if (st.items[i].ok) {
+        st.done = true;
+        const firstTry = st.wrong.length === 0;
+        drawQcm(firstTry ? "Bonne réponse !" : "Bonne réponse, au deuxième essai.", "ok");
+        revealQcmAnswer();
+        if (firstTry) {
+          // « Je sais » : la fiche repassera en mode normal.
+          st.timer = setTimeout(() => finishQcm(cardId, "good", false), 1300);
+        } else if (cont) {
+          cont.hidden = false;
+          cont.onclick = () => finishQcm(cardId, "hard", true);
+        }
+        return;
+      }
+      st.wrong.push(i);
+      if (st.wrong.length >= 2) {
+        st.done = true;
+        drawQcm("Raté… La bonne réponse est en vert.", "fail");
+        revealQcmAnswer();
+        if (cont) {
+          cont.hidden = false;
+          cont.onclick = () => finishQcm(cardId, "again", true);
+        }
+        return;
+      }
+      drawQcm("Ce n'est pas ça. Encore un essai !", "wrong");
+      const b = qcmChoicesEl.querySelector(`.qcm-choice[data-i="${i}"]`);
+      if (b) b.classList.add("is-shaking");
+    });
+  }
 
   /** Journal des notes données (item 15) : un evénement par notation, quel
    *  que soit le mode (file du jour ou révision libre) — sert uniquement
@@ -4336,6 +4484,7 @@
     isFlipped = false;
     renderQuestionText(currentCard);
     answerTextEl.innerHTML = toDisplayHtml(currentCard.answer);
+    renderReviewMode(currentCard);
     updateRatingPreviews();
     renderReviewChart();
     renderStats();
@@ -4351,11 +4500,11 @@
     undoRatingBtn.addEventListener("click", undoLastRating);
   }
 
-  async function rateCurrentCard(rating) {
+  async function rateCurrentCard(rating, extra) {
     if (!currentCard) return;
     const ratingLogId = await logRating(currentCard, rating);
     captureRatingSnapshot(ratingLogId);
-    const updated = await rateScheduledCard(rating);
+    const updated = await rateScheduledCard(rating, extra);
     // Suivi de la séance (règle des 10 fiches, fiches à revoir deux fois,
     // proposition de passer à la boîte suivante).
     const id = updated.id;
@@ -4372,12 +4521,13 @@
     maybeProposeNextBox();
   }
 
-  async function rateScheduledCard(rating) {
+  async function rateScheduledCard(rating, extra) {
     const next = computeAlgoNext(currentCard, rating);
     delete next.mode;
     const updated = touch({
       ...currentCard,
       ...next,
+      ...(extra || {}),
       lastReviewed: new Date().toISOString(),
       reviewCount: (currentCard.reviewCount || 0) + 1,
     });
@@ -4568,6 +4718,61 @@
     cardForm.reset();
     if (inputQuestion) inputQuestion.innerHTML = "";
     if (inputAnswer) inputAnswer.innerHTML = "";
+    setQcmFields(null);
+  }
+
+  /* ---------------------------------------------------------
+     Round 59 : mode QCM. Une fiche peut avoir 3 réponses fausses
+     (`wrongs`). Tant que `qcmMode` n'est pas `false`, elle est posée en
+     QCM : bonne réponse du premier coup → « Je sais » et retour au mode
+     normal ; erreur puis bonne réponse → « Vague idée » ; deux erreurs →
+     « Je ne savais pas » (la bonne réponse est montrée) ; dans ces deux
+     cas, la fiche reste en QCM.
+  --------------------------------------------------------- */
+  const QCM_WRONG_IDS = ["input-wrong-1", "input-wrong-2", "input-wrong-3"];
+  function cardWrongs(card) {
+    return Array.isArray(card && card.wrongs) ? card.wrongs.map((w) => String(w || "").trim()).filter(Boolean) : [];
+  }
+  function isQcmCard(card) {
+    return !!card && cardWrongs(card).length === 3 && card.qcmMode !== false;
+  }
+  function setQcmFields(card) {
+    const wrongs = card ? cardWrongs(card) : [];
+    QCM_WRONG_IDS.forEach((id, i) => {
+      const input = el(id);
+      if (input) input.value = wrongs[i] || "";
+    });
+    toggleQcmFields(wrongs.length > 0);
+  }
+  function toggleQcmFields(open) {
+    const box = el("qcm-inputs");
+    const btn = el("qcm-toggle");
+    if (!box || !btn) return;
+    box.hidden = !open;
+    btn.setAttribute("aria-expanded", String(open));
+    btn.classList.toggle("is-open", open);
+    const label = el("qcm-toggle-label");
+    if (label) label.textContent = open ? "Réponses fausses (mode QCM)" : "Ajouter 3 réponses fausses (facultatif)";
+  }
+  const qcmToggleBtn = el("qcm-toggle");
+  if (qcmToggleBtn) {
+    qcmToggleBtn.addEventListener("click", () => {
+      const open = el("qcm-inputs").hidden;
+      toggleQcmFields(open);
+      if (open) el(QCM_WRONG_IDS[0]).focus();
+    });
+  }
+  /** Réponses fausses saisies : [] (fiche classique), 3 réponses, ou un
+   *  message d'erreur. */
+  function readQcmFields(answerHtml) {
+    const wrongs = QCM_WRONG_IDS.map((id) => (el(id) ? el(id).value.trim() : "")).filter(Boolean);
+    if (wrongs.length === 0) return { wrongs: [] };
+    if (wrongs.length < 3) return { error: "Pour le mode QCM, il faut 3 réponses fausses. Complète les cases, ou vide-les pour une fiche classique." };
+    const norm = (t) => String(t || "").replace(/\s+/g, " ").trim().toLowerCase();
+    const answerText = norm(stripHtml(answerHtml));
+    if (wrongs.some((w) => norm(w) === answerText)) return { error: "Une des réponses fausses est identique à la bonne réponse." };
+    if (new Set(wrongs.map(norm)).size < 3) return { error: "Les 3 réponses fausses doivent être différentes." };
+    return { wrongs };
   }
 
   /* ---------------------------------------------------------
@@ -4582,12 +4787,27 @@
     if (isRichEditorEmpty(inputQuestion) || isRichEditorEmpty(inputAnswer)) return;
     const question = inputQuestion.innerHTML.trim();
     const answer = inputAnswer.innerHTML.trim();
+    const qcm = readQcmFields(answer);
+    if (qcm.error) {
+      await robotAlert(qcm.error);
+      return;
+    }
 
     if (editingId) {
       const idx = cards.findIndex((c) => c.id === editingId);
       if (idx >= 0) {
         if (await blockIfSharedReadonly(cards[idx].subject)) return;
-        const updated = touch({ ...cards[idx], question, answer });
+        const prev = cards[idx];
+        const updated = touch({ ...prev, question, answer });
+        if (qcm.wrongs.length) {
+          // Réponses fausses ajoutées à une fiche qui n'en avait pas : elle
+          // repasse en QCM à sa prochaine interrogation.
+          if (!cardWrongs(prev).length) delete updated.qcmMode;
+          updated.wrongs = qcm.wrongs;
+        } else {
+          delete updated.wrongs;
+          delete updated.qcmMode;
+        }
         await persist(updated);
         cards[idx] = updated;
         syncCardEverywhere(updated);
@@ -4616,6 +4836,7 @@
       }
       if (await blockIfSharedReadonly(newCardSubjectId)) return;
       const card = newCard(question, answer, newCardSubjectId);
+      if (qcm.wrongs.length) card.wrongs = qcm.wrongs;
       await persist(card);
       cards.push(card);
       await pushSharedBoxUpdatesForSubject(newCardSubjectId);
@@ -4663,6 +4884,7 @@
     editingId = card.id;
     inputQuestion.innerHTML = toDisplayHtml(card.question);
     inputAnswer.innerHTML = toDisplayHtml(card.answer);
+    setQcmFields(card);
     submitBtn.textContent = "Enregistrer les modifications";
     cancelEditBtn.hidden = false;
     // Round 54 : en modification, pas de choix de boîte (la fiche reste dans
@@ -4960,6 +5182,14 @@
 
       main.appendChild(q);
       main.appendChild(a);
+      // Round 59 : fiche en mode QCM (3 réponses fausses).
+      const wrongsForRow = cardWrongs(card);
+      if (wrongsForRow.length === 3) {
+        const w = document.createElement("p");
+        w.className = "card-row-wrongs";
+        w.innerHTML = `<span class="qcm-chip">QCM</span> ${wrongsForRow.map((x) => escapeHtml(x)).join(" · ")}`;
+        main.appendChild(w);
+      }
       if (showSubjectNames && cardsScopeFilter !== CARDS_SCOPE_CURRENT && !subjects.some((x) => x.id === cardsScopeFilter)) {
         const meta = document.createElement("p");
         meta.className = "card-row-meta";
@@ -10035,14 +10265,19 @@
       const idx = cards.findIndex((c) => c.subject === subject.id && mirrorSourceId(c) === rc.srcId);
       if (idx >= 0) {
         const existing = cards[idx];
-        const contentChanged = existing.question !== (rc.question || "") || existing.answer !== (rc.answer || "");
+        const rcWrongs = Array.isArray(rc.wrongs) && rc.wrongs.length === 3 ? rc.wrongs.map(String) : null;
+        const contentChanged =
+          existing.question !== (rc.question || "") || existing.answer !== (rc.answer || "") || JSON.stringify(cardWrongs(existing)) !== JSON.stringify(rcWrongs || []);
         if (existing.deleted || contentChanged) {
           const updated = { ...existing, question: rc.question || "", answer: rc.answer || "", deleted: false, updatedAt: nowIso };
+          if (rcWrongs) updated.wrongs = rcWrongs;
+          else delete updated.wrongs;
           await persist(updated);
           cards[idx] = updated;
         }
       } else {
         const card = { ...newCard(rc.question || "", rc.answer || "", subject.id), id: mirrorCardId(subject.id, rc.srcId), mirrorSrcId: rc.srcId };
+        if (Array.isArray(rc.wrongs) && rc.wrongs.length === 3) card.wrongs = rc.wrongs.map(String);
         await persist(card);
         cards.push(card);
       }

@@ -1268,6 +1268,18 @@
     if (isObj(v)) return `{${Object.keys(v).sort().map((k) => `${JSON.stringify(k)}:${sortedJson(v[k])}`).join(",")}}`;
     return JSON.stringify(v === undefined ? null : v);
   }
+  /* Round 59 : réponses fausses (mode QCM) des boîtes toutes prêtes. */
+  function packWrongs(c) {
+    return Array.isArray(c.wrongs) && c.wrongs.length === 3 ? c.wrongs.map(String) : null;
+  }
+  function sameWrongs(a, b) {
+    return JSON.stringify(Array.isArray(a) && a.length === 3 ? a : null) === JSON.stringify(b || null);
+  }
+  function withWrongs(card, wrongs) {
+    if (wrongs) card.wrongs = wrongs;
+    else delete card.wrongs;
+    return card;
+  }
   /** Fiches d'une collection publiée recalées sur la version du fichier. */
   function mergePackCards(colCards, packCards) {
     const curQA = new Map();
@@ -1292,15 +1304,18 @@
       const i0 = curQA.get(qa);
       if (i0 != null && !used.has(i0)) {
         used.add(i0);
-        return c;
+        // Round 59 : réponses fausses (mode QCM) ajoutées ou modifiées.
+        if (sameWrongs(c.wrongs, packCards[i0].wrongs)) return c;
+        changed++;
+        return withWrongs({ ...c }, packCards[i0].wrongs);
       }
       for (const m of [oldQA.get(qa), curQ.get(q), oldQ.get(q)]) {
         if (m == null || used.has(m)) continue;
         used.add(m);
         const p = packCards[m];
-        if (p.question === c.question && p.answer === c.answer) return c;
+        if (p.question === c.question && p.answer === c.answer && sameWrongs(c.wrongs, p.wrongs)) return c;
         changed++;
-        return { ...c, question: p.question, answer: p.answer };
+        return withWrongs({ ...c, question: p.question, answer: p.answer }, p.wrongs);
       }
       unmatched++;
       return c;
@@ -1475,7 +1490,7 @@
       const sid = `pack-${box.key}`;
       const taxonomy = taxValueFromSelection(packSelection(box));
       const tags = Array.isArray(box.tags) ? box.tags.map(normalizeTag).filter(Boolean) : [];
-      const packCards = (box.cards || []).map((c) => ({ question: c.question || "", answer: c.answer || "", w: c.w, wq: c.wq }));
+      const packCards = (box.cards || []).map((c) => ({ question: c.question || "", answer: c.answer || "", w: c.w, wq: c.wq, wrongs: packWrongs(c) }));
       const existing = mine.find((c) => c.source_subject_id === sid) || mine.find((c) => !c.source_subject_id && c.name === box.name);
       if (!existing) {
         if (packCards.length) plan.toCreate.push({ box, taxonomy, tags, sid, packCards });
@@ -1543,7 +1558,7 @@
           source_subject_id: it.sid,
           taxonomy: it.taxonomy,
           tags: it.tags,
-          cards: it.packCards.map((c, k) => ({ id: `${it.sid}-${k + 1}`, question: c.question, answer: c.answer })),
+          cards: it.packCards.map((c, k) => withWrongs({ id: `${it.sid}-${k + 1}`, question: c.question, answer: c.answer }, c.wrongs)),
         };
         const { error } = await client().from("library_collections").insert(row);
         return error ? `${it.box.name} : ${friendlyError(error)}` : null;

@@ -111,6 +111,14 @@ function withPayload(row, mapped) {
   return out;
 }
 
+/** Fiche telle qu'elle est partagée (classe, Librairie) : avec ses 3
+ *  réponses fausses si elle est en mode QCM (round 59). */
+function shareableCard(card) {
+  const out = { id: card.id, question: card.question, answer: card.answer };
+  if (Array.isArray(card.wrongs) && card.wrongs.length === 3) out.wrongs = card.wrongs.slice();
+  return out;
+}
+
 function cardToRow(card, uid) {
   return {
     id: card.id,
@@ -1035,7 +1043,7 @@ async function shareBoxToClass(classId, subjectName, cards, folderPath, extra) {
     class_id: classId,
     shared_by: user.id,
     subject_name: subjectName,
-    cards: cards.map((card) => ({ id: card.id, question: card.question, answer: card.answer })),
+    cards: cards.map(shareableCard),
     folder_path: Array.isArray(folderPath) ? folderPath : [],
   };
   // Round 47 : boîte venue de la Librairie — on garde la collection
@@ -1076,7 +1084,7 @@ async function updateSharedBoxCards(boxId, cards, folderPath, subjectName) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée." };
   const payload = {
-    cards: cards.map((card) => ({ id: card.id, question: card.question, answer: card.answer })),
+    cards: cards.map(shareableCard),
     updated_at: new Date().toISOString(),
   };
   if (Array.isArray(folderPath)) payload.folder_path = folderPath;
@@ -1280,7 +1288,7 @@ async function shareCollectionToLibrary(name, cards, extra) {
     // { id, label }, cycle: ..., matiere: ... }) et tags libres.
     taxonomy: extra.taxonomy || {},
     tags: Array.isArray(extra.tags) ? extra.tags : [],
-    cards: cards.map((card) => ({ id: card.id, question: card.question, answer: card.answer })),
+    cards: cards.map(shareableCard),
   };
   const { data, error } = await c.from("library_collections").insert(row).select().single();
   return { data, error: error ? error.message : null };
