@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v214";
+  const APP_VERSION = "v215";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -12491,6 +12491,7 @@
           <div class="card-row-main">
             <p class="card-row-q">${toDisplayHtml(c.question || "")}</p>
             <p class="card-row-a${fullAccess ? "" : " library-card-answer--cut"}">${fullAccess ? toDisplayHtml(c.answer || "") : libraryPreviewAnswerHtml(c.answer || "")}</p>
+            ${cardWrongs(c).length === 3 ? `<p class="card-row-wrongs"><span class="qcm-chip">QCM</span>${fullAccess ? ` ${cardWrongs(c).map((x) => escapeHtml(x)).join(" · ")}` : ""}</p>` : ""}
           </div>
         </li>
       `

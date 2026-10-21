@@ -1,4 +1,4 @@
-const CACHE_NAME = "fiches-cache-v214";
+const CACHE_NAME = "fiches-cache-v215";
 
 const CORE_ASSETS = [
   "./",
@@ -67,7 +67,12 @@ self.addEventListener("fetch", (event) => {
   // en cache), cache seulement hors-ligne.
   // Round 29 : js/config.js (serveur intégré) se modifie aussi sur le site
   // sans nouvelle version — même traitement que la taxonomie.
-  if (isCoreAsset && (url.pathname.endsWith("/data/taxonomie.xlsx") || url.pathname.endsWith("/js/config.js"))) {
+  // Round 59 : idem pour les boîtes toutes prêtes (packs/*.json) — sinon
+  // Darwin Admin, dont la page est aussi sous le contrôle de ce service
+  // worker, lisait une ancienne copie du fichier et ne voyait aucune
+  // modification à publier.
+  const fromAdmin = (request.referrer || "").includes("/admin/");
+  if (isCoreAsset && (fromAdmin || url.pathname.includes("/packs/") || url.pathname.endsWith("/data/taxonomie.xlsx") || url.pathname.endsWith("/js/config.js"))) {
     event.respondWith(
       fetch(request)
         .then((response) => {
