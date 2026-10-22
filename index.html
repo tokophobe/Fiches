@@ -551,6 +551,21 @@
               </div>
             </button>
           </div>
+          <!-- Round 62 : mode QCM — tout se passe dans la fiche (qui ne se
+               retourne pas) : question, puis les 4 réponses, puis le
+               complément une fois la bonne réponse trouvée ; « Continuer »
+               sous la fiche. -->
+          <div class="qcm-panel" id="qcm-panel" hidden>
+            <div class="qcm-sheet" id="qcm-sheet">
+              <span class="card-label">Question <span class="qcm-chip">QCM</span></span>
+              <div class="qcm-sheet-rule" aria-hidden="true"></div>
+              <div class="card-text qcm-question" id="qcm-question"></div>
+              <div class="qcm-choices" id="qcm-choices" role="group" aria-label="Réponses"></div>
+              <p class="qcm-msg" id="qcm-msg" aria-live="polite"></p>
+              <div class="qcm-more card-more" id="qcm-more" hidden></div>
+            </div>
+            <button type="button" class="qcm-continue" id="qcm-continue" hidden>Continuer →</button>
+          </div>
           <button class="card-icon-btn card-undo-btn" id="undo-rating-btn" type="button" hidden title="Revenir à la fiche précédente (annule la dernière évaluation)" aria-label="Annuler la dernière évaluation">◀️</button>
           <!-- Boutons secondaires repliés par défaut (item 1c) : un simple
                bouton "révéler" à la place, qui les fait apparaître. -->
@@ -590,15 +605,6 @@
 
       <!-- Item 1d : délai précédent, score actuel, et pour chaque bouton
            d'évaluation le futur délai + futur score associé. -->
-      <!-- Round 59 : mode QCM — les 4 réponses à la place des boutons
-           d'évaluation. -->
-      <div class="qcm-panel" id="qcm-panel" hidden>
-        <div class="qcm-choices" id="qcm-choices" role="group" aria-label="Réponses"></div>
-        <div class="qcm-foot">
-          <p class="qcm-msg" id="qcm-msg" aria-live="polite"></p>
-          <button type="button" class="qcm-continue" id="qcm-continue" hidden>Continuer →</button>
-        </div>
-      </div>
       <div class="review-score-info" id="review-score-info" hidden>
         <p class="review-score-info-current">
           Délai précédent : <strong id="score-info-prev-delay">—</strong>

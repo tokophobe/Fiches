@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v218";
+  const APP_VERSION = "v219";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -634,11 +634,10 @@
       positionRobotModal();
       document.addEventListener("keydown", onKeydown, true);
       requestAnimationFrame(() => {
-        if (hasInput && inputEl) {
-          inputEl.focus();
-          inputEl.select();
-          return;
-        }
+        // Round 62 : plus de focus automatique sur une zone de saisie
+        // (clavier qui s'ouvre et zoom sur iPhone) : c'est l'utilisateur
+        // qui touche le champ quand il veut écrire.
+        if (hasInput && inputEl) return;
         const first = actions.querySelector(".robot-modal-btn--primary") || actions.querySelector("button");
         if (first) first.focus();
       });
@@ -4345,7 +4344,6 @@
     if (!currentCard) return;
     editReturnToReview = true;
     enterEditMode(currentCard);
-    inputQuestion.focus();
   });
 
   flipCardEl.addEventListener("click", () => {
@@ -4461,7 +4459,31 @@
     ratingRowEl.hidden = true;
     const items = shuffledCopy([{ html: toDisplayHtml(card.answer), ok: true }].concat(cardWrongs(card).map((w) => ({ html: escapeHtml(w), ok: false }))));
     qcmState = { cardId: card.id, items, wrong: [], done: false, timer: null };
+    // Round 62 : la question, les réponses et le complément sont dans la
+    // fiche QCM (la fiche ne se retourne plus).
+    const qEl = el("qcm-question");
+    if (qEl) qEl.innerHTML = toDisplayHtml(card.question);
+    const moreEl = el("qcm-more");
+    if (moreEl) {
+      moreEl.innerHTML = "";
+      moreEl.hidden = true;
+    }
+    const sheet = el("qcm-sheet");
+    if (sheet) {
+      sheet.scrollTop = 0;
+      sheet.classList.remove("is-arriving");
+      void sheet.offsetWidth;
+      sheet.classList.add("is-arriving");
+    }
     if (panel) panel.hidden = false;
+    // Round 62 : pas de survol hérité de la question précédente (pointeur
+    // resté au même endroit) tant que la souris n'a pas bougé.
+    const choicesEl = el("qcm-choices");
+    if (choicesEl) {
+      choicesEl.classList.add("no-hover");
+      const wake = () => choicesEl.classList.remove("no-hover");
+      choicesEl.addEventListener("pointermove", wake, { once: true });
+    }
     drawQcm("");
   }
   function drawQcm(message, tone) {
@@ -4470,6 +4492,9 @@
     const cont = el("qcm-continue");
     if (!box || !qcmState) return;
     const st = qcmState;
+    // Round 62 : on retire le focus avant de redessiner (sinon le bouton
+    // touché à la question précédente restait en surbrillance).
+    if (document.activeElement && box.contains(document.activeElement)) document.activeElement.blur();
     box.innerHTML = st.items
       .map((it, i) => {
         const wrong = st.wrong.includes(i);
@@ -4482,76 +4507,55 @@
     if (msg) {
       msg.textContent = message || "";
       msg.className = `qcm-msg${tone ? ` is-${tone}` : ""}`;
+      msg.hidden = !message;
     }
     if (cont) cont.hidden = true;
     layoutQcmPanel();
-    // Le nom de la boîte peut être en train d'arriver (animation de
-    // changement de boîte) : on recale une fois l'animation finie.
-    clearTimeout(drawQcm.relayout);
-    drawQcm.relayout = setTimeout(layoutQcmPanel, 750);
   }
-  /** Round 59 (suite) : les 4 réponses prennent plus de hauteur que les
-   *  boutons d'évaluation. Le panneau se place du même côté de la fiche que
-   *  ces boutons (dessus ou dessous, selon la disposition réglée) ; s'il
-   *  manque de place, la fiche est raccourcie le temps de la question QCM
-   *  (variables posées sur <body>, retirées en mode normal). */
+  /** Round 62 : la fiche QCM prend la place de la fiche (même haut, même
+   *  largeur, au moins la même hauteur) ; elle s'allonge si son contenu le
+   *  demande, jusqu'à laisser la place du bouton « Continuer » au-dessus du
+   *  bas de l'écran, puis défile à l'intérieur. */
   function layoutQcmPanel() {
     const panel = el("qcm-panel");
+    const sheet = el("qcm-sheet");
     const body = document.body;
     body.style.removeProperty("--review-card-top");
     body.style.removeProperty("--review-card-height");
-    if (!panel || panel.hidden) return;
-    const cs = getComputedStyle(document.documentElement);
-    const px = (name, fallback) => parseFloat(cs.getPropertyValue(name)) || fallback;
-    const cardTop = px("--review-card-top", 110);
-    const cardH = px("--review-card-height", 380);
-    const rowTop = px("--review-rating-row-top", 506);
-    // Pas sous le bandeau ni sous le nom de la boîte et sa jauge.
-    let headerBottom = px("--sticky-header-h", 96) + 8;
-    const boxBar = el("review-current-box");
-    if (boxBar && !boxBar.hidden) {
-      const r = boxBar.getBoundingClientRect();
-      if (r.height) headerBottom = Math.max(headerBottom, r.bottom + 8);
+    const stack = el("card-stack");
+    if (!panel || panel.hidden || !sheet) {
+      if (stack) stack.style.removeProperty("--qcm-sheet-extra");
+      return;
     }
-    const viewBottom = window.innerHeight - 8;
-    const GAP = 10;
-    const MIN_CARD_H = 150;
-    panel.style.maxHeight = "none";
-    const h = panel.scrollHeight;
-    let top;
-    let newTop = cardTop;
-    let newH = cardH;
-    if (rowTop < cardTop) {
-      // Réponses au-dessus de la fiche : la fiche descend si besoin, son
-      // bas restant à la même place.
-      top = Math.max(rowTop, headerBottom);
-      const needed = top + h + GAP;
-      if (needed > cardTop) {
-        newTop = needed;
-        newH = Math.max(MIN_CARD_H, cardTop + cardH - needed);
-      }
-    } else {
-      // Réponses sous la fiche : la fiche raccourcit si le panneau déborde
-      // de l'écran.
-      top = Math.max(rowTop, cardTop + cardH + GAP);
-      const overflow = top + h - viewBottom;
-      if (overflow > 0) {
-        newH = Math.max(MIN_CARD_H, cardH - overflow);
-        top = Math.max(cardTop + newH + GAP, Math.min(top, viewBottom - h));
-      }
-    }
-    if (newTop !== cardTop) body.style.setProperty("--review-card-top", `${Math.round(newTop)}px`);
-    if (newH !== cardH) body.style.setProperty("--review-card-height", `${Math.round(newH)}px`);
-    panel.style.top = `${Math.round(top)}px`;
-    panel.style.maxHeight = `${Math.max(120, Math.round(viewBottom - top))}px`;
+    const r = stack ? stack.getBoundingClientRect() : { top: 110, height: 380 };
+    const contH = 44 + 10;
+    const avail = Math.max(160, window.innerHeight - 8 - r.top - contH);
+    sheet.style.maxHeight = `${Math.round(avail)}px`;
+    sheet.style.minHeight = `${Math.round(Math.min(r.height, avail))}px`;
+    // Le bouton « annuler » (coin bas-droit de la pile) suit le bas de la
+    // fiche QCM quand elle est plus haute que la fiche normale.
+    if (stack) stack.style.setProperty("--qcm-sheet-extra", `${Math.max(0, Math.round(sheet.offsetHeight - r.height))}px`);
   }
   window.addEventListener("resize", () => {
     if (qcmState) layoutQcmPanel();
   });
+  /** Round 62 : la bonne réponse est mise en évidence dans les choix ; on
+   *  dévoile seulement le complément (s'il y en a un), dans la fiche. */
   function revealQcmAnswer() {
-    if (!isFlipped) {
-      isFlipped = true;
-      flipCardEl.classList.add("is-flipped");
+    const moreEl = el("qcm-more");
+    const card = currentCard;
+    const more = card && card.more && stripHtml(card.more).trim() ? card.more : "";
+    if (moreEl) {
+      moreEl.innerHTML = more ? toDisplayHtml(more) : "";
+      moreEl.hidden = !more;
+    }
+    layoutQcmPanel();
+    const sheet = el("qcm-sheet");
+    if (sheet && more) {
+      requestAnimationFrame(() => {
+        const max = sheet.scrollHeight - sheet.clientHeight;
+        if (max > 0) sheet.scrollTo({ top: Math.min(max, Math.max(0, moreEl.offsetTop - 60)), behavior: "smooth" });
+      });
     }
   }
   async function finishQcm(cardId, rating, keepQcm) {
@@ -4865,7 +4869,6 @@
     if (cancelEditBtn) cancelEditBtn.hidden = false;
     openNewCardView();
     previousViewBeforeNewCard = returnView;
-    if (inputQuestion) inputQuestion.focus();
   }
   function releaseNewCardFixedSubject() {
     if (!newCardFixedSubject) return;
@@ -4964,7 +4967,6 @@
     qcmToggleBtn.addEventListener("click", () => {
       const open = el("qcm-inputs").hidden;
       toggleQcmFields(open);
-      if (open) el(QCM_WRONG_IDS[0]).focus();
     });
   }
   /** Réponses fausses saisies : [] (fiche classique), 3 réponses, ou un
@@ -5055,7 +5057,6 @@
       // autre fiche, la boîte choisie est conservée.
       resetCardForm();
       showToast("Fiche ajoutée");
-      if (inputQuestion) inputQuestion.focus();
       if (!currentCard) startReviewSession();
     }
   });
@@ -5081,7 +5082,6 @@
       // Item 7 : annuler une CRÉATION efface juste le contenu (question/
       // réponse), garde la boîte choisie, et reste sur cette page.
       resetCardForm();
-      if (inputQuestion) inputQuestion.focus();
     }
   });
 
@@ -7883,7 +7883,6 @@
       resetCardForm();
       cancelEditBtn.hidden = false;
       openNewCardView();
-      if (inputQuestion) inputQuestion.focus();
     });
   }
 
@@ -13725,7 +13724,6 @@
       taxEl.innerHTML = "";
       boxCreateCascade = createTaxonomyCascade(taxEl, { mode: "publish", sel: {} });
     }
-    if (nameEl) nameEl.focus();
   }
   function closeBoxCreateView() {
     boxEditSubjectId = null;
@@ -13877,7 +13875,6 @@
     if (homeBtnEl) homeBtnEl.hidden = false;
     if (el("body-logo-row")) el("body-logo-row").hidden = false;
     applyBodyLogoSpeech("report-card");
-    if (msg) msg.focus();
   }
   function closeReportCardView() {
     const back = (reportCardContext && reportCardContext.returnViewId) || "view-home";

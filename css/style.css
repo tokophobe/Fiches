@@ -7660,15 +7660,31 @@ body:has(#view-library.is-active[data-cycle]) {
 .card-qcm-badge { margin-left: 6px; }
 .card-qcm-badge[hidden] { display: none; }
 .qcm-panel {
-  position: fixed; left: 50%; transform: translateX(-50%); top: var(--review-rating-row-top, 506px);
-  width: var(--review-card-width, 355px); max-width: 560px; z-index: 3;
-  max-height: calc(100dvh - var(--review-rating-row-top, 506px) - 8px); overflow-y: auto;
+  /* Round 62 : dans la pile de la fiche, à la place de la fiche. */
+  position: absolute; top: 0; left: 0; right: 0; z-index: 4;
+  display: flex; flex-direction: column; align-items: stretch; gap: 10px;
   font-family: var(--font-type);
 }
 .qcm-panel[hidden] { display: none; }
 .qcm-panel.is-nudged { animation: qcm-nudge 0.45s ease; }
-.qcm-foot { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 40px; margin-top: 6px; }
-.qcm-msg { flex: 1; margin: 0; font-size: 13px; font-weight: 700; text-align: center; color: var(--ink-soft); }
+.qcm-sheet {
+  position: relative; box-sizing: border-box; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-card); background: var(--card-bg-color, #ffffff);
+  box-shadow: var(--shadow-card, var(--shadow-deep));
+  padding: 34px 22px 20px 22px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.qcm-sheet.is-arriving { animation: qcm-arrive 0.35s ease; }
+.qcm-sheet-rule {
+  position: absolute; top: 54px; left: 0; right: 0; height: 1px;
+  background: var(--rule); opacity: 0.55; pointer-events: none;
+}
+.qcm-sheet > .card-label { line-height: 1.3; }
+.qcm-sheet .qcm-question { flex: none; overflow: visible; }
+.qcm-sheet .qcm-more { margin-top: 0; }
+.qcm-sheet .qcm-more[hidden] { display: none; }
+.qcm-msg { margin: -4px 0 0; font-size: 13px; font-weight: 700; text-align: center; color: var(--ink-soft); }
+.qcm-msg[hidden] { display: none; }
 .qcm-msg.is-ok { color: #3e7c6b; }
 .qcm-msg.is-wrong { color: #cf7a2d; }
 .qcm-msg.is-fail { color: #b6604a; }
@@ -7679,7 +7695,12 @@ body:has(#view-library.is-active[data-cycle]) {
   font-family: var(--font-type); font-size: 14.5px; line-height: 1.3; cursor: pointer;
   box-shadow: 0 2px 6px rgba(30, 60, 100, 0.06); transition: border-color 0.15s ease, opacity 0.2s ease, transform 0.1s ease;
 }
-.qcm-choice:hover:not([disabled]) { border-color: #ef7d2d; }
+@media (hover: hover) and (pointer: fine) {
+  .qcm-choices:not(.no-hover) .qcm-choice:hover:not([disabled]) { border-color: #ef7d2d; }
+}
+.qcm-choice { -webkit-tap-highlight-color: transparent; }
+.qcm-choice:focus { outline: none; }
+.qcm-choice:focus-visible { outline: 2px solid #ef7d2d; outline-offset: 1px; }
 .qcm-choice:active:not([disabled]) { transform: scale(0.98); }
 .qcm-letter {
   flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
@@ -7693,7 +7714,7 @@ body:has(#view-library.is-active[data-cycle]) {
 .qcm-choice[disabled]:not(.is-right):not(.is-wrong) { opacity: 0.55; cursor: default; }
 .qcm-choice.is-shaking { animation: qcm-shake 0.4s ease; }
 .qcm-continue {
-  flex-shrink: 0; padding: 9px 16px; border: none; border-radius: 12px;
+  align-self: flex-end; flex-shrink: 0; padding: 10px 18px; min-height: 44px; border: none; border-radius: 12px;
   background: var(--action-color, #2f6fae); color: #fff; font-family: var(--font-type); font-size: 15px; font-weight: 700; cursor: pointer;
 }
 .qcm-continue[hidden] { display: none; }
@@ -7701,11 +7722,15 @@ body.is-qcm-review #review-score-info,
 body.is-qcm-review #review-session-status { display: none !important; }
 :root.is-night-mode .qcm-letter { background: rgba(239, 125, 45, 0.2); }
 @keyframes qcm-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
-@keyframes qcm-nudge { 0%, 100% { transform: translateX(-50%); } 30% { transform: translateX(calc(-50% - 6px)); } 60% { transform: translateX(calc(-50% + 6px)); } }
-@media (prefers-reduced-motion: reduce) { .qcm-choice.is-shaking, .qcm-panel.is-nudged { animation: none; } }
+@keyframes qcm-nudge { 0%, 100% { transform: translateX(0); } 30% { transform: translateX(-6px); } 60% { transform: translateX(6px); } }
+@keyframes qcm-arrive { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+/* Round 62 : en QCM, la fiche retournable est remplacée par la fiche QCM. */
+body.is-qcm-review #flip-card { visibility: hidden; }
+body.is-qcm-review #rating-row, body.is-qcm-review #rating-invite { display: none !important; }
+@media (prefers-reduced-motion: reduce) { .qcm-choice.is-shaking, .qcm-panel.is-nudged, .qcm-sheet.is-arriving { animation: none; } }
 /* Round 59 (suite) : la fiche change de taille en douceur quand le
    panneau QCM a besoin de place. */
-body.is-qcm-review .card-stack { transition: top 0.25s ease, height 0.25s ease; }
+
 
 /* ==================================================================
    Round 60 : complément de réponse
@@ -7737,3 +7762,29 @@ body.is-qcm-review .card-stack { transition: top 0.25s ease, height 0.25s ease; 
 }
 .rating-invite[hidden] { display: none; }
 body.is-rating-invite #review-score-info { display: none !important; }
+
+/* ==================================================================
+   Round 62 : mode nuit — listes déroulantes lisibles
+   La liste ouverte d'un <select> est dessinée par le système : sans
+   color-scheme, elle reste sur fond clair alors que le texte des options
+   hérite du texte clair du mode nuit (invisible). On déclare le thème au
+   navigateur et on donne aux options un fond et un texte explicites.
+   ================================================================== */
+:root { color-scheme: light; }
+:root.is-night-mode { color-scheme: dark; }
+select option,
+select optgroup {
+  background-color: var(--paper, #ffffff);
+  color: var(--ink, #1d2a35);
+}
+:root.is-night-mode select option,
+:root.is-night-mode select optgroup {
+  background-color: #1f2733;
+  color: #eef2f8;
+}
+
+/* Round 62 : en QCM, « annuler » reste au coin bas-droit de la fiche QCM
+   (qui peut être plus haute que la fiche normale), avec la place qu'il
+   faut sous le texte. */
+body.is-qcm-review .card-undo-btn { bottom: calc(10px - var(--qcm-sheet-extra, 0px)); }
+body.is-qcm-review .qcm-sheet { padding-bottom: 46px; }
