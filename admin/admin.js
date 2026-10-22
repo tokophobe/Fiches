@@ -1391,11 +1391,20 @@
     const out = h("div", null, h("p", { class: "muted" }, "Appuie sur « Analyser » pour comparer le fichier avec ce qui est publié."));
     const log = h("div", { class: "log", hidden: true });
     const analyse = h("button", { type: "button", class: "btn btn--primary" }, "Analyser");
+    const fileInput = h("input", { type: "file", accept: ".json,application/json" });
+    const fileName = h("span", { class: "muted" }, "Aucun fichier choisi");
+    const pickBtn = h("button", { type: "button", class: "btn" }, "Choisir le fichier…");
+    fileInput.hidden = true;
+    pickBtn.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", () => {
+      const f = fileInput.files && fileInput.files[0];
+      fileName.textContent = f ? `${f.name} (${Math.round(f.size / 1024)} Ko)` : "Aucun fichier choisi";
+    });
     root.appendChild(
       card(
         "Publication dans la Librairie",
-        "Le fichier packs/bibliotheque.json du site contient les boîtes toutes prêtes. Elles sont publiées au nom de « darwin ». Une boîte déjà publiée garde sa place et l'identifiant de ses fiches : son nom, son résumé, son classement, ses tags et le texte de ses fiches sont mis à jour.",
-        h("div", { class: "toolbar" }, analyse),
+        "Le fichier bibliotheque.json (zip « contenu » livré avec chaque version, il n'est plus en ligne avec l'appli) contient les boîtes toutes prêtes. Elles sont publiées au nom de « darwin ». Une boîte déjà publiée garde sa place et l'identifiant de ses fiches : son nom, son résumé, son classement, ses tags et le texte de ses fiches sont mis à jour.",
+        h("div", { class: "toolbar" }, pickBtn, fileName, fileInput, analyse),
         out,
         log
       )
@@ -1405,7 +1414,7 @@
       out.replaceChildren(h("p", { class: "muted" }, "Lecture du fichier, du classement et des collections publiées…"));
       let plan;
       try {
-        plan = await buildPackPlan(me);
+        plan = await buildPackPlan(me, fileInput.files && fileInput.files[0]);
       } catch (e) {
         out.replaceChildren(h("p", { class: "form-error" }, e.message));
         analyse.disabled = false;
@@ -1476,10 +1485,32 @@
     }
     line(`Terminé : ${boxes.length} boîte(s) et ${removed.size} dossier(s) retirés.`);
   }
-  async function buildPackPlan(user) {
-    const res = await fetch("../packs/bibliotheque.json", { cache: "no-store" });
-    if (!res.ok) throw new Error(`Fichier introuvable (HTTP ${res.status}).`);
-    const pack = await res.json();
+  /* Round 64 : le fichier des boîtes toutes prêtes ne fait plus partie de
+     l'appli en ligne (il était téléchargeable par n'importe qui, fiches
+     comprises). Il est livré à part (zip « contenu ») et choisi ici ; à
+     défaut, on essaie encore ../packs/bibliotheque.json (copie locale de
+     développement). */
+  async function loadPackFile(file) {
+    if (file) {
+      const text = await file.text();
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        throw new Error("Ce fichier n'est pas un fichier de boîtes valide (JSON illisible).");
+      }
+    }
+    let res;
+    try {
+      res = await fetch("../packs/bibliotheque.json", { cache: "no-store" });
+    } catch (e) {
+      res = null;
+    }
+    if (!res || !res.ok) throw new Error("Choisis d'abord le fichier bibliotheque.json (dans le zip « contenu » livré avec chaque version).");
+    return res.json();
+  }
+  async function buildPackPlan(user, file) {
+    const pack = await loadPackFile(file);
+    if (!pack || !Array.isArray(pack.boxes)) throw new Error("Ce fichier ne contient pas de boîtes (champ « boxes » absent).");
     await window.Taxonomy.load();
     const mine = await fetchAllRows(
       () =>

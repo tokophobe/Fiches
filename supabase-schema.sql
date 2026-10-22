@@ -1,3 +1,9 @@
+-- ⚠️  Round 64 : script de création initiale. NE PAS le relancer sur la
+-- base en service : il recrée des règles « tout le monde peut tout
+-- lire/écrire » sur les fiches. Pour une base neuve, il doit être suivi de
+-- TOUTES les migrations de supabase/ (account_scoping_migration.sql
+-- referme ces règles, round64_migration.sql vérifie qu'elles ont disparu).
+
 -- À exécuter une seule fois dans Supabase : Project → SQL Editor → New query
 -- puis « Run ». Crée la table qui stocke les fiches de tout le monde,
 -- séparées par sync_code.

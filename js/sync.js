@@ -864,6 +864,35 @@ async function authSignIn(email, password) {
   return { data, error: error ? error.message : null };
 }
 
+/** Round 64 : suppression définitive du compte connecté et de toutes ses
+ *  données (fonction serveur delete_my_account, voir
+ *  supabase/round64_migration.sql). Le mot de passe est revérifié avant.
+ *  Renvoie { error } avec un code parlant : "wrong_password",
+ *  "active_subscription", "last_admin", ou le message du serveur. */
+async function authDeleteMyAccount(password) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
+  const user = await authGetUser();
+  if (!user || !user.email) return { error: "not_authenticated" };
+  const check = await c.auth.signInWithPassword({ email: user.email, password: password || "" });
+  if (check.error) return { error: "wrong_password" };
+  const { error } = await c.rpc("delete_my_account");
+  if (error) {
+    const msg = String(error.message || error);
+    if (/active_subscription/.test(msg)) return { error: "active_subscription" };
+    if (/last_admin/.test(msg)) return { error: "last_admin" };
+    if (/delete_my_account|function|schema cache/i.test(msg)) return { error: `${msg} (la base n'a pas encore la fonction : exécute supabase/round64_migration.sql dans Supabase.)` };
+    return { error: msg };
+  }
+  invalidateAuthUserCache();
+  try {
+    await c.auth.signOut({ scope: "local" });
+  } catch (e) {
+    /* le compte n'existe plus : la session locale est de toute façon effacée */
+  }
+  return { error: null };
+}
+
 async function authSignOut() {
   const c = getClient();
   if (!c) return;
@@ -1383,10 +1412,29 @@ async function listLibraryCollections() {
   // Librairie, et ses propres boîtes publiées affichées « Non publiée »
   // dans Mes créations (alors que « Publier » répondait « déjà partagée »).
   const { data } = await fetchAllPages(
-    (from, to) => c.from("library_collections").select("*").order("shared_at", { ascending: false }).order("id").range(from, to),
-    "library_collections"
+    // Round 64 : la liste vient de la vue publique `library_catalog` (tout
+    // sauf les fiches et l'email de l'auteur, avec `card_count`) ; les
+    // fiches passent par library_collection_cards (contrôle d'accès côté
+    // serveur).
+    (from, to) => c.from("library_catalog").select("*").order("shared_at", { ascending: false }).order("id").range(from, to),
+    "library_catalog"
   );
   return data || [];
+}
+
+/** Round 64 : fiches d'une collection, servies par le serveur — complètes
+ *  (`full: true`) pour l'auteur, un administrateur ou un compte qui a accès
+ *  à la Librairie ; sinon un aperçu (`full: false`, réponses coupées).
+ *  Renvoie null si la collection n'existe plus ou en cas d'erreur. */
+async function fetchLibraryCollectionCards(id) {
+  const c = getClient();
+  if (!c || !id) return null;
+  const { data, error } = await c.rpc("library_collection_cards", { p_id: id });
+  if (error || !data) {
+    if (error) console.warn("Librairie : échec du chargement des fiches", error.message);
+    return null;
+  }
+  return { full: !!data.full, cards: Array.isArray(data.cards) ? data.cards : [] };
 }
 
 /** Round 10, item 2 : une collection prise dans la Bibliothèque devient un
@@ -1396,12 +1444,17 @@ async function listLibraryCollections() {
 async function getLibraryCollection(id) {
   const c = getClient();
   if (!c || !id) return null;
-  const { data, error } = await c.from("library_collections").select("*").eq("id", id).maybeSingle();
+  const { data, error } = await c.from("library_catalog").select("*").eq("id", id).maybeSingle();
   if (error) {
     console.warn("Librairie : échec du rechargement d'une collection", error.message);
     return null;
   }
-  return data || null;
+  if (!data) return null;
+  // Fiches complètes seulement si le serveur les donne (sinon `cardsFull`
+  // est faux et `cards` reste vide : un miroir n'est jamais recalé sur un
+  // aperçu).
+  const res = await fetchLibraryCollectionCards(id);
+  return { ...data, cards: res && res.full ? res.cards : [], cardsFull: !!(res && res.full) };
 }
 
 /* ---- Round 6, item 5 : messagerie par classe (façon groupe WhatsApp) ---- */
@@ -1583,6 +1636,7 @@ window.Sync = {
     sendPasswordReset: authSendPasswordReset,
     updatePassword: authUpdatePassword,
     onPasswordRecovery: authOnPasswordRecovery,
+    deleteMyAccount: authDeleteMyAccount,
   },
   classes: {
     create: createClass,
@@ -1631,6 +1685,7 @@ window.Sync = {
     share: shareCollectionToLibrary,
     list: listLibraryCollections,
     get: getLibraryCollection,
+    cards: fetchLibraryCollectionCards,
     rate: rateLibraryCollection,
     unrate: unrateLibraryCollection,
     listRatings: listLibraryRatings,

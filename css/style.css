@@ -7793,3 +7793,10 @@ body.is-qcm-review .qcm-sheet { padding-bottom: 46px; }
    morceau de texte devenait un élément flex séparé, d'où des espaces
    immenses entre les mots). */
 .rating-invite-text { display: block; max-width: 30ch; margin: 0 auto; text-align: center; text-align-last: center; word-spacing: normal; letter-spacing: normal; white-space: normal; hyphens: none; }
+
+/* Round 64 : « Supprimer mon compte », discret, en bas de la page Compte. */
+.account-danger-zone { margin: 28px 0 8px; padding-top: 14px; border-top: 1px solid var(--rule-soft, rgba(0, 0, 0, 0.1)); text-align: center; }
+.account-delete-link {
+  border: none; background: transparent; padding: 8px 4px; cursor: pointer;
+  font-family: var(--font-type); font-size: 14px; color: var(--danger, #c0392b); text-decoration: underline; text-underline-offset: 3px;
+}

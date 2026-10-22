@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v220";
+  const APP_VERSION = "v221";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -3277,13 +3277,14 @@
         sectionTitle.textContent = "Depuis la Librairie";
         container.appendChild(sectionTitle);
         libraryOptions.forEach((col) => {
-          const n = Array.isArray(col.cards) ? col.cards.length : 0;
+          const n = libraryCardCount(col);
+          const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || "quelqu'un";
           const { li } = buildPickerRow({
             depth: 0,
             isFolder: false,
             iconMarkup: iconSvgMarkup("share", "icon-inline-svg"),
             nameText: col.name,
-            countLabel: `${n} fiche${n > 1 ? "s" : ""} — ${col.owner_email || "quelqu'un"}`,
+            countLabel: `${n} fiche${n > 1 ? "s" : ""} — ${ownerName}`,
             selectControl: "none",
             dataKind: "library",
             value: col.id,
@@ -10144,6 +10145,80 @@
     });
   }
 
+  /** Round 64 : « Supprimer mon compte » — deux confirmations (ce qui sera
+   *  effacé, puis le mot de passe), suppression côté serveur, puis on
+   *  efface aussi les données locales de ce compte sur cet appareil et on
+   *  recharge l'appli (écran de connexion). */
+  async function wipeLocalDataForUser(uid) {
+    if (!uid) return;
+    try {
+      const suffix = `__u_${uid}`;
+      const keys = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.endsWith(suffix)) keys.push(k);
+      }
+      keys.forEach((k) => window.UserScope.rawRemove(k));
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const k = localStorage.key(i);
+        if (k && /^sb-.+-auth-token$/.test(k)) window.UserScope.rawRemove(k);
+      }
+    } catch (e) {
+      /* stockage local indisponible */
+    }
+    try {
+      await new Promise((resolve) => {
+        const req = indexedDB.deleteDatabase(`fiches-db__u_${uid}`);
+        req.onsuccess = req.onerror = req.onblocked = () => resolve();
+      });
+    } catch (e) {
+      /* rien à effacer */
+    }
+  }
+  const accountDeleteBtn = el("account-delete-btn");
+  if (accountDeleteBtn) {
+    accountDeleteBtn.addEventListener("click", async () => {
+      if (!accountCurrentUser) return;
+      const uid = accountCurrentUser.id;
+      const go = await showRobotMessage(
+        "Supprimer ton compte ? Tout sera effacé définitivement, sur tous tes appareils : tes boîtes et tes fiches, ta progression, ton calendrier, tes messages, les boîtes que tu as publiées dans la Librairie et, si tu es enseignant, tes classes (tes élèves ne les verront plus). On ne pourra rien récupérer.",
+        {
+          buttons: [
+            { label: "Annuler", value: false },
+            { label: "Supprimer mon compte", value: true, danger: true },
+          ],
+        }
+      );
+      if (!go) return;
+      const password = await showRobotMessage("Pour confirmer, tape ton mot de passe.", {
+        input: { type: "password", placeholder: "Mot de passe" },
+        buttons: [
+          { label: "Annuler", value: false },
+          { label: "Supprimer définitivement", value: true, danger: true },
+        ],
+      });
+      if (!password) return;
+      accountDeleteBtn.disabled = true;
+      const { error } = await Sync.auth.deleteMyAccount(password);
+      accountDeleteBtn.disabled = false;
+      if (error) {
+        const msg =
+          error === "wrong_password"
+            ? "Ce mot de passe n'est pas le bon : ton compte n'a pas été supprimé."
+            : error === "active_subscription"
+              ? "Tu as un abonnement en cours : résilie-le d'abord (page Abonnements), puis tu pourras supprimer ton compte."
+              : error === "last_admin"
+                ? "Ce compte est le dernier administrateur de darwin : il ne peut pas être supprimé."
+                : `La suppression n'a pas pu se faire : ${error}`;
+        await robotAlert(msg);
+        return;
+      }
+      await wipeLocalDataForUser(uid);
+      await robotAlert("Ton compte et toutes tes données ont été supprimés. Au revoir, et merci d'avoir révisé avec darwin !");
+      location.reload();
+    });
+  }
+
   /** Round 10, item 7 : nom/prénom modifiables après coup depuis la page
    *  Mon Compte (comptes créés avant ce round, ou correction d'une
    *  saisie), via Sync.auth.updateProfile (métadonnées Supabase Auth). */
@@ -10549,6 +10624,9 @@
       subject.updatedAt = new Date().toISOString();
       await persistSubject(subject);
     }
+    // Round 64 : sans accès complet (abonnement terminé…), le serveur ne
+    // donne qu'un aperçu — on garde alors la copie locale telle quelle.
+    if (col.cardsFull === false) return;
     await reconcileMirrorCards(subject, Array.isArray(col.cards) ? col.cards : []);
   }
 
@@ -11557,7 +11635,8 @@
     const ctx = libraryShareToClassCtx;
     if (!ctx || !col) return;
     const name = col.name || "Collection";
-    const boxCards = Array.isArray(col.cards) ? col.cards : [];
+    const boxCards = await fetchFullLibraryCards(col, "Il faut être abonné pour partager cette boîte de la Librairie avec une classe.");
+    if (!boxCards) return;
     const { error } = await Sync.classes.shareBox(ctx.klass.id, name, boxCards, [], { libraryCollectionId: col.id });
     if (error) {
       await robotAlert("Erreur lors du partage : " + error);
@@ -11646,7 +11725,8 @@
             const col = libraryOptions.find((c) => c.id === id);
             if (!col) return;
             name = col.name;
-            boxCards = Array.isArray(col.cards) ? col.cards : [];
+            boxCards = await fetchFullLibraryCards(col, "Il faut être abonné pour partager cette boîte de la Librairie avec une classe.");
+            if (!boxCards) return;
             folderPathNames = [];
             afterShare = async () => {
               try {
@@ -12517,7 +12597,6 @@
         return (
           (col.name || "").toLowerCase().includes(q) ||
           ownerName.toLowerCase().includes(q) ||
-          (col.owner_email || "").toLowerCase().includes(q) ||
           collectionTags(col).some((t) => t.includes(q)) ||
           taxonomyFullLabel(collectionTaxonomy(col)).toLowerCase().includes(q)
         );
@@ -12538,7 +12617,7 @@
       return;
     }
     for (const col of collections) {
-      const n = Array.isArray(col.cards) ? col.cards.length : 0;
+      const n = libraryCardCount(col);
       // Round 48 : bloc épuré — nom en entier, nombre de fiches et
       // classement, résumé (si l'affichage des résumés est activé), pouce.
       // Plus d'auteur, de tags, de prix ni de bouton « Détails » (le bloc
@@ -12598,8 +12677,8 @@
 
   function openLibraryDetailView(col) {
     libraryDetailCollection = col;
-    const n = Array.isArray(col.cards) ? col.cards.length : 0;
-    const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || col.owner_email || "quelqu'un";
+    const n = libraryCardCount(col);
+    const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || "quelqu'un";
     const { count, liked } = libraryCollectionLikeStats(col.id);
 
     const titleEl = el("library-detail-title");
@@ -12697,27 +12776,47 @@
    *  quelle que soit sa longueur — seule la coupe au dernier espace (pour
    *  rester lisible) reste une adaptation mineure, sans jamais revenir en
    *  arrière jusqu'à annuler la troncature elle-même. */
-  function libraryPreviewAnswerHtml(raw) {
-    const plain = stripHtml(toDisplayHtml(raw || "")).trim();
-    if (!plain) return "";
-    const half = Math.ceil(plain.length / 2);
-    if (half <= 0) return "";
-    let cut = plain.slice(0, half);
-    const lastSpace = cut.lastIndexOf(" ");
-    if (lastSpace > half * 0.4) cut = cut.slice(0, lastSpace);
-    return `${escapeHtml(cut)}…`;
+  /** Round 64 : nombre de fiches d'une collection (colonne card_count de la
+   *  vue library_catalog ; repli sur les fiches si elles sont là). */
+  function libraryCardCount(col) {
+    if (!col) return 0;
+    if (Number.isFinite(col.card_count)) return col.card_count;
+    return Array.isArray(col.cards) ? col.cards.length : 0;
   }
-
-  function openLibraryCardsView(col) {
+  /** Round 64 : fiches complètes d'une collection (null si le serveur ne
+   *  les donne pas en entier : pas d'abonnement, collection supprimée…). */
+  async function fetchFullLibraryCards(col, deniedText) {
+    const res = col && col.id ? await Sync.library.cards(col.id) : null;
+    if (res && res.full) return res.cards;
+    if (!res) await robotAlert("Impossible de charger les fiches de cette boîte. Vérifie ta connexion et réessaie.");
+    else await showSubscriptionRequired(deniedText);
+    return null;
+  }
+  let libraryCardsViewToken = 0;
+  async function openLibraryCardsView(col) {
     const titleEl = el("library-cards-title");
     if (titleEl) titleEl.textContent = col.name || "Fiches";
     const listEl = el("library-cards-list");
-    const cards = Array.isArray(col.cards) ? col.cards : [];
-    // Round 55 : même présentation que la liste des fiches d'une boîte
-    // (lignes séparées par un trait, question en gras, réponse en gris) ;
-    // réponse entière pour l'auteur de la collection ou un abonné, sinon
-    // coupée à sa moitié.
-    const fullAccess = !!(accountCurrentUser && (col.owner_id === accountCurrentUser.id || hasLibrarySubscription()));
+    const token = ++libraryCardsViewToken;
+    const noteEl0 = el("library-cards-note");
+    if (noteEl0) noteEl0.hidden = true;
+    const countEl0 = el("library-cards-count");
+    if (countEl0) countEl0.textContent = `Fiches (${libraryCardCount(col)})`;
+    if (listEl) {
+      listEl.className = "card-list library-cards-list library-cards-list--r55";
+      listEl.innerHTML = `<li class="field-hint">Chargement des fiches…</li>`;
+    }
+    boitePickerActivateView("view-library-cards");
+    // Round 64 : les fiches viennent du serveur, qui décide de l'accès —
+    // réponses entières (auteur, administrateur, abonné) ou aperçu.
+    const res = await Sync.library.cards(col.id);
+    if (token !== libraryCardsViewToken) return;
+    if (!res) {
+      if (listEl) listEl.innerHTML = `<li class="field-hint">Impossible de charger les fiches. Vérifie ta connexion et réessaie.</li>`;
+      return;
+    }
+    const cards = res.cards;
+    const fullAccess = res.full;
     if (listEl) {
       listEl.className = "card-list library-cards-list library-cards-list--r55";
       listEl.innerHTML =
@@ -12727,7 +12826,7 @@
         <li class="card-row card-row--r47 library-card-item">
           <div class="card-row-main">
             <p class="card-row-q">${toDisplayHtml(c.question || "")}</p>
-            <p class="card-row-a${fullAccess ? "" : " library-card-answer--cut"}">${fullAccess ? answerWithMoreHtml(c) : libraryPreviewAnswerHtml(c.answer || "")}</p>
+            <p class="card-row-a${fullAccess ? "" : " library-card-answer--cut"}">${fullAccess ? answerWithMoreHtml(c) : escapeHtml(c.answer || "")}</p>
             ${cardWrongs(c).length === 3 ? `<p class="card-row-wrongs"><span class="qcm-chip">QCM</span>${fullAccess ? ` ${cardWrongs(c).map((x) => escapeHtml(x)).join(" · ")}` : ""}</p>` : ""}
           </div>
         </li>
@@ -12742,7 +12841,6 @@
     }
     const cardsCountEl = el("library-cards-count");
     if (cardsCountEl) cardsCountEl.textContent = `Fiches (${cards.length})`;
-    boitePickerActivateView("view-library-cards");
     const homeBtnEl = el("home-btn");
     if (homeBtnEl) homeBtnEl.hidden = false;
     if (el("body-logo-row")) el("body-logo-row").hidden = false;
@@ -12951,8 +13049,7 @@
       await robotAlert("Connecte-toi à ton compte pour ajouter une boîte de la Librairie à tes révisions.");
       return false;
     }
-    const cardsToCopy = Array.isArray(col.cards) ? col.cards : [];
-    if (cardsToCopy.length === 0) {
+    if (libraryCardCount(col) === 0) {
       await robotAlert("Cette boîte ne contient aucune fiche.");
       return false;
     }
@@ -12969,6 +13066,10 @@
       await showSubscriptionRequired();
       return false;
     }
+    // Round 64 : les fiches complètes viennent du serveur, qui vérifie
+    // lui-même l'accès.
+    const cardsToCopy = await fetchFullLibraryCards(col);
+    if (!cardsToCopy) return false;
     let subject = libraryMirrorFor(col.id);
     if (subject) {
       subject.outOfRevisions = false;

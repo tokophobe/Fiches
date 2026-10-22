@@ -1,3 +1,8 @@
+-- ⚠️  OBSOLÈTE — NE PLUS EXÉCUTER (round 64). Ce script crée des règles
+-- « tout le monde peut tout lire/écrire » qui ont été remplacées par les
+-- règles par compte (account_scoping_migration.sql). Le relancer rouvrirait
+-- toutes les fiches à n'importe qui. Gardé uniquement pour l'historique.
+
 -- ============================================================
 -- Fiches — correctif RLS : la synchro perso casse quand on est
 -- connecté avec un Compte (Classes)
