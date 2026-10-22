@@ -7788,3 +7788,8 @@ select optgroup {
    faut sous le texte. */
 body.is-qcm-review .card-undo-btn { bottom: calc(10px - var(--qcm-sheet-extra, 0px)); }
 body.is-qcm-review .qcm-sheet { padding-bottom: 46px; }
+
+/* Round 63 : le texte d'invitation est un seul bloc centré (avant, chaque
+   morceau de texte devenait un élément flex séparé, d'où des espaces
+   immenses entre les mots). */
+.rating-invite-text { display: block; max-width: 30ch; margin: 0 auto; text-align: center; text-align-last: center; word-spacing: normal; letter-spacing: normal; white-space: normal; hyphens: none; }

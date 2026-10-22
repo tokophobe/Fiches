@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v219";
+  const APP_VERSION = "v220";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -4511,6 +4511,10 @@
     }
     if (cont) cont.hidden = true;
     layoutQcmPanel();
+    // Le nom de la boîte peut être en train d'arriver (animation) : on
+    // recale une fois l'animation finie.
+    clearTimeout(drawQcm.relayout);
+    drawQcm.relayout = setTimeout(layoutQcmPanel, 750);
   }
   /** Round 62 : la fiche QCM prend la place de la fiche (même haut, même
    *  largeur, au moins la même hauteur) ; elle s'allonge si son contenu le
@@ -4526,6 +4530,19 @@
     if (!panel || panel.hidden || !sheet) {
       if (stack) stack.style.removeProperty("--qcm-sheet-extra");
       return;
+    }
+    // Round 63 : en QCM, ni boutons d'évaluation, ni délais, ni statut :
+    // la fiche remonte jusque sous le nom de la boîte (et sa jauge).
+    if (stack) {
+      const r0 = stack.getBoundingClientRect();
+      let headerBottom = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--sticky-header-h")) || 96) + 8;
+      ["review-current-box"].forEach((id) => {
+        const n = el(id);
+        if (!n || n.hidden) return;
+        const rr = n.getBoundingClientRect();
+        if (rr.height && rr.bottom < r0.top + 4) headerBottom = Math.max(headerBottom, rr.bottom + 14);
+      });
+      if (headerBottom < r0.top - 2) body.style.setProperty("--review-card-top", `${Math.round(headerBottom)}px`);
     }
     const r = stack ? stack.getBoundingClientRect() : { top: 110, height: 380 };
     const contH = 44 + 10;
