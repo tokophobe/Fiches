@@ -7800,3 +7800,18 @@ body.is-qcm-review .qcm-sheet { padding-bottom: 46px; }
   border: none; background: transparent; padding: 8px 4px; cursor: pointer;
   font-family: var(--font-type); font-size: 14px; color: var(--danger, #c0392b); text-decoration: underline; text-underline-offset: 3px;
 }
+
+/* Round 65 : page Abonnements — lien vers le portail Stripe, alerte impayé. */
+.subs-manage-link {
+  display: block; margin: 10px auto 0; padding: 6px 4px; border: none; background: transparent; cursor: pointer;
+  font-family: var(--font-type); font-size: 14px; color: var(--action-color, var(--ink)); text-decoration: underline; text-underline-offset: 3px;
+}
+.subs-manage-link[hidden] { display: none; }
+.subs-status.subs-status--warn { color: var(--danger, #c0392b); font-weight: 700; }
+
+/* Round 66 : formule Individuel annuelle (20 € / an). */
+.subs-offer-price-alt { margin: 0; text-align: right; font-family: var(--font-type); font-size: 14px; font-weight: 700; color: var(--ink); }
+.subs-offer-price-alt small { font-size: 12px; font-weight: 400; color: var(--ink-soft); }
+.subs-offer-save { margin-left: 6px; padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 700; background: color-mix(in srgb, #3e7c6b 16%, transparent); color: #3e7c6b; }
+:root.is-night-mode .subs-offer-save { color: #7fc0ad; }
+.subs-offer-btn[hidden] { display: none; }

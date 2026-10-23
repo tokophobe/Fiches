@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v221";
+  const APP_VERSION = "v224";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -12972,12 +12972,32 @@
     return !(row && row.status === "none");
   }
   /** Round 55 : état de l'abonnement en tête de la page Abonnements. */
+  /** Round 65 : abonnement Stripe en cours (actif, à l'essai ou impayé,
+   *  période non échue). */
+  function stripeSubscriptionLive(row) {
+    return (
+      !!row &&
+      row.source === "stripe" &&
+      ["active", "trial", "past_due"].includes(row.status) &&
+      (!row.current_period_end || new Date(row.current_period_end) > new Date())
+    );
+  }
+  function frenchDate(iso) {
+    return iso ? new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "";
+  }
+  /** Round 55 : état de l'abonnement en tête de la page Abonnements.
+   *  Round 65 : boutons de paiement Stripe (si ouverts dans Darwin Admin). */
   async function renderSubscriptionsStatus() {
     const st = el("subs-status");
+    const btn = el("subs-individuel-btn");
+    const annual = el("subs-annuel-btn");
+    const manage = el("subs-manage-btn");
+    if (annual) annual.hidden = true;
     if (!st) return;
     if (!accountCurrentUser) {
       st.hidden = false;
       st.textContent = "Connecte-toi pour voir ton abonnement.";
+      if (btn) btn.disabled = true;
       return;
     }
     try {
@@ -12986,15 +13006,159 @@
       /* état inconnu */
     }
     const row = mySubscriptionRow;
-    const end = row && row.current_period_end ? new Date(row.current_period_end).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "";
+    const end = frenchDate(row && row.current_period_end);
+    const live = stripeSubscriptionLive(row);
     let text = "";
-    if (row && row.status === "active") text = `Ton abonnement est actif${end ? ` jusqu'au ${end}` : ""}.`;
+    if (live && row.status === "past_due") text = "Le dernier paiement n'est pas passé : mets à jour ta carte avec « Gérer mon abonnement ».";
+    else if (live && row.cancel_at_period_end) text = `Ton abonnement est résilié : il reste actif jusqu'au ${end}.`;
+    else if (live && row.status === "trial") text = `Tu es en période d'essai gratuite jusqu'au ${end}. Ensuite : ${row.plan === "individuel_annuel" ? "20 € par an" : "2 € par mois"}, résiliable à tout moment.`;
+    else if (live && row.status === "active") text = `Ton abonnement est actif. Prochain renouvellement le ${end}.`;
+    else if (row && row.status === "active") text = `Ton abonnement est actif${end ? ` jusqu'au ${end}` : ""}.`;
     else if (row && row.status === "trial") text = `Tu es en période d'essai${end ? ` jusqu'au ${end}` : ""}.`;
-    else if (hasLibrarySubscription()) text = "En attendant l'ouverture des abonnements, la Librairie est ouverte à tous les comptes.";
+    else if (hasLibrarySubscription())
+      text = loadDevSettings().subscriptionPolicy.checkoutOpen
+        ? "Pour l'instant, la Librairie est encore ouverte à tous les comptes."
+        : "En attendant l'ouverture des abonnements, la Librairie est ouverte à tous les comptes.";
     else text = "Tu n'as pas d'abonnement.";
     st.hidden = false;
     st.textContent = text;
     st.classList.toggle("subs-status--none", !(row && (row.status === "active" || row.status === "trial")) && !hasLibrarySubscription());
+    st.classList.toggle("subs-status--warn", !!(live && row.status === "past_due"));
+
+    const open = !!loadDevSettings().subscriptionPolicy.checkoutOpen;
+    const manualActive = !!row && row.source !== "stripe" && (row.status === "active" || row.status === "trial") && (!row.current_period_end || new Date(row.current_period_end) > new Date());
+    if (btn) {
+      if (live) {
+        btn.textContent = "Gérer mon abonnement";
+        btn.disabled = false;
+        btn.dataset.action = "portal";
+      } else if (manualActive) {
+        btn.textContent = "Déjà abonné";
+        btn.disabled = true;
+        btn.dataset.action = "";
+      } else if (!open) {
+        btn.textContent = "Bientôt disponible";
+        btn.disabled = true;
+        btn.dataset.action = "";
+      } else {
+        // Round 66 : deux formules, au mois ou à l'année (premier mois
+        // offert dans les deux cas, si l'essai n'a pas déjà servi).
+        const trialText = row && row.trial_used ? "" : "1 mois gratuit, puis ";
+        btn.textContent = `Mensuel — ${trialText}2 € / mois`;
+        btn.disabled = false;
+        btn.dataset.action = "checkout";
+        btn.dataset.plan = "individuel";
+        if (annual) {
+          annual.textContent = `Annuel — ${trialText}20 € / an`;
+          annual.hidden = false;
+          annual.disabled = false;
+          annual.dataset.action = "checkout";
+          annual.dataset.plan = "individuel_annuel";
+        }
+      }
+    }
+    if (manage) manage.hidden = live || !(row && row.stripe_customer_id);
+  }
+  const BILLING_ERRORS = {
+    already_subscribed: "Tu as déjà un abonnement en cours.",
+    plan_unavailable: "Cette formule n'est pas encore disponible.",
+    no_customer: "Aucun abonnement n'a encore été souscrit avec ce compte.",
+    not_deployed: "Le paiement n'est pas encore installé sur le serveur (fonctions Stripe non déployées).",
+    not_configured: "Le serveur n'est pas configuré.",
+    config_missing: "Le paiement n'est pas encore configuré sur le serveur (APP_URL manquant).",
+    network: "Impossible de joindre le serveur. Vérifie ta connexion et réessaie.",
+    not_authenticated: "Ta session a expiré : reconnecte-toi, puis réessaie.",
+  };
+  async function goToBilling(action, plan) {
+    const btn = el("subs-individuel-btn");
+    const annualBtn = el("subs-annuel-btn");
+    plan = plan === "individuel_annuel" ? "individuel_annuel" : "individuel";
+    if (action === "checkout") {
+      const row = mySubscriptionRow;
+      const price = plan === "individuel_annuel" ? "20 € par an" : "2 € par mois";
+      const trial = !(row && row.trial_used);
+      const ok = await showRobotMessage(
+        `Formule ${plan === "individuel_annuel" ? "annuelle" : "mensuelle"} : ${trial ? `premier mois offert, puis ${price}` : price}. Tu vas aller sur la page de paiement sécurisée de Stripe. Si tu as moins de 18 ans, fais-le avec un parent : c'est lui qui donne sa carte. ${trial ? "Rien n'est prélevé pendant le mois offert, et tu" : "Tu"} peux résilier à tout moment.`,
+        {
+          buttons: [
+            { label: "Annuler", value: false },
+            { label: "Continuer", value: true, primary: true },
+          ],
+        }
+      );
+      if (!ok) return;
+    }
+    if (btn) btn.disabled = true;
+    if (annualBtn) annualBtn.disabled = true;
+    const res = action === "portal" ? await Sync.billing.portal() : await Sync.billing.checkout(plan);
+    if (res.url) {
+      window.location.href = res.url;
+      return;
+    }
+    if (btn) btn.disabled = false;
+    if (annualBtn) annualBtn.disabled = false;
+    await robotAlert(BILLING_ERRORS[res.error] || `Le paiement n'a pas pu s'ouvrir : ${res.error}`);
+    renderSubscriptionsStatus();
+  }
+  const subsIndividuelBtn = el("subs-individuel-btn");
+  if (subsIndividuelBtn) {
+    subsIndividuelBtn.addEventListener("click", () => {
+      const action = subsIndividuelBtn.dataset.action;
+      if (action) goToBilling(action, subsIndividuelBtn.dataset.plan);
+    });
+  }
+  const subsAnnuelBtn = el("subs-annuel-btn");
+  if (subsAnnuelBtn) {
+    subsAnnuelBtn.addEventListener("click", () => {
+      if (subsAnnuelBtn.dataset.action) goToBilling(subsAnnuelBtn.dataset.action, subsAnnuelBtn.dataset.plan);
+    });
+  }
+  const subsManageBtn = el("subs-manage-btn");
+  if (subsManageBtn) subsManageBtn.addEventListener("click", () => goToBilling("portal"));
+
+  /** Round 65 : retour de Stripe (?abonnement=ok|annule|portail) : on
+   *  nettoie l'adresse, on ouvre la page Abonnements et, après un
+   *  paiement, on attend que le serveur ait reçu la confirmation de
+   *  Stripe (quelques secondes). */
+  async function handleBillingReturn() {
+    let outcome = null;
+    try {
+      const params = new URLSearchParams(location.search);
+      outcome = params.get("abonnement");
+      if (!outcome) return;
+      params.delete("abonnement");
+      const qs = params.toString();
+      history.replaceState(null, "", `${location.pathname}${qs ? `?${qs}` : ""}${location.hash}`);
+    } catch (e) {
+      return;
+    }
+    if (!accountCurrentUser) return;
+    const tab = document.querySelector('.tab[data-view="subscriptions"]');
+    if (tab) tab.click();
+    if (outcome === "annule") {
+      await robotAlert("Paiement annulé : rien n'a été prélevé. Tu peux t'abonner quand tu veux.");
+      return;
+    }
+    if (outcome !== "ok") {
+      renderSubscriptionsStatus();
+      return;
+    }
+    for (let i = 0; i < 10; i++) {
+      await refreshMySubscription();
+      if (stripeSubscriptionLive(mySubscriptionRow)) break;
+      await new Promise((r) => setTimeout(r, 1500));
+    }
+    await renderSubscriptionsStatus();
+    const row = mySubscriptionRow;
+    if (stripeSubscriptionLive(row)) {
+      await robotAlert(
+        row.status === "trial"
+          ? `Merci ! Ton mois d'essai a commencé (jusqu'au ${frenchDate(row.current_period_end)}). Toutes les boîtes de la Librairie sont à toi.`
+          : "Merci ! Ton abonnement est actif. Toutes les boîtes de la Librairie sont à toi."
+      );
+    } else {
+      await robotAlert("Merci ! Ton paiement est en cours de confirmation : ton abonnement apparaîtra ici dans quelques instants.");
+    }
   }
   async function showSubscriptionRequired(text) {
     const choice = await showRobotMessage(text || "Il faut être abonné pour pouvoir ajouter cette boîte à tes révisions.", {
@@ -15175,6 +15339,7 @@
     // brièvement utilisable, sans connexion, entre l'affichage de
     // l'accueil et la résolution de cette promesse.
     await initAccountState();
+    handleBillingReturn().catch(() => {});
     enforceLoginGate();
     homeEventWarningReady = true;
     refreshHomeEventWarning();

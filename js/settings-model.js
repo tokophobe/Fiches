@@ -716,6 +716,9 @@
       // comptes dont l'abonnement est actif (ou à l'essai).
       subscriptionPolicy: {
         enforce: !!(parsed.subscriptionPolicy && parsed.subscriptionPolicy.enforce === true),
+        // Round 65 : boutons de paiement (Stripe) actifs dans la page
+        // Abonnements. Désactivé tant que Stripe n'est pas configuré.
+        checkoutOpen: !!(parsed.subscriptionPolicy && parsed.subscriptionPolicy.checkoutOpen === true),
       },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       // Horodatage de la dernière modification (posé par saveDevSettings) —

@@ -1587,11 +1587,42 @@ async function fetchMySubscription() {
   const uid = currentUid();
   if (!c || !uid) return { row: null };
   try {
-    const { data, error } = await c.from("subscriptions").select("status, plan, current_period_end").eq("user_id", uid).maybeSingle();
+    const { data, error } = await c.from("subscriptions").select("*").eq("user_id", uid).maybeSingle();
     if (error) return { row: null, missing: /relation|does not exist|schema cache|PGRST205/i.test(error.message || ""), error: error.message };
     return { row: data || null };
   } catch (e) {
     return { row: null, error: String(e) };
+  }
+}
+
+/** Round 65 : paiements Stripe, par les fonctions serveur
+ *  create-checkout et customer-portal (voir supabase/functions/). Renvoie
+ *  { url } (page Stripe où aller) ou { error } avec un code :
+ *  already_subscribed, plan_unavailable, no_customer, not_deployed… */
+async function billingInvoke(name, body) {
+  const c = getClient();
+  if (!c || !c.functions) return { error: "not_configured" };
+  try {
+    const { data, error } = await c.functions.invoke(name, { body: body || {} });
+    if (error) {
+      let code = "";
+      try {
+        const res = error.context;
+        if (res && typeof res.json === "function") {
+          const j = await res.json();
+          code = (j && (j.error || j.message)) || "";
+          if (res.status === 404 && !j.error) code = "not_deployed";
+        }
+      } catch (e) {
+        /* réponse illisible */
+      }
+      if (!code && /Failed to send|fetch|NetworkError/i.test(String(error.message || ""))) code = "network";
+      return { error: code || String(error.message || error) };
+    }
+    if (!data || !data.url) return { error: "no_url" };
+    return { url: data.url, trial: !!data.trial };
+  } catch (e) {
+    return { error: "network" };
   }
 }
 
@@ -1680,6 +1711,10 @@ window.Sync = {
     reply: replyToCardReport,
     hasUnseenUpdate: reportHasUnseenUpdate,
     sharedBoxAuthor,
+  },
+  billing: {
+    checkout: (plan) => billingInvoke("create-checkout", { plan: plan || "individuel" }),
+    portal: () => billingInvoke("customer-portal", {}),
   },
   library: {
     share: shareCollectionToLibrary,

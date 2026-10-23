@@ -579,6 +579,8 @@
         return badge("Résilié", "warn");
       case "none":
         return badge("Accès bloqué", "danger");
+      case "incomplete":
+        return badge("Paiement en cours", "warn");
       default:
         return badge(status);
     }
@@ -804,7 +806,7 @@
   }
   function subscriptionCard(userId, sub) {
     sub = sub || {};
-    const status = h("select", null, h("option", { value: "default" }, "Aucun (règle générale)"), SUB_STATUS_OPTIONS.map(([v, l]) => h("option", { value: v }, l)));
+    const status = h("select", null, h("option", { value: "default" }, "Pas d'abonnement (accès selon le réglage de la Librairie)"), SUB_STATUS_OPTIONS.map(([v, l]) => h("option", { value: v }, l)));
     status.value = sub.status || "default";
     const plan = h("input", { type: "text", value: sub.plan || "", placeholder: "Ex. Librairie — annuel", maxlength: "100" });
     const until = h("input", { type: "date", value: sub.current_period_end ? String(sub.current_period_end).slice(0, 10) : "" });
@@ -841,7 +843,7 @@
         h("label", { class: "field" }, h("span", null, "Fin de période"), until)
       ),
       h("label", { class: "field", style: { marginTop: "12px" } }, h("span", null, "Note"), note),
-      h("div", { style: { marginTop: "12px", display: "flex", gap: "8px", alignItems: "center" } }, save, h("span", { class: "card-hint" }, "« Aucun » : le compte suit la règle générale (page Abonnements). « Accès bloqué » coupe l'accès aux boîtes de la Librairie même quand il est ouvert à tous (pratique pour tester)."))
+      h("div", { style: { marginTop: "12px", display: "flex", gap: "8px", alignItems: "center" } }, save, h("span", { class: "card-hint" }, "« Pas d'abonnement » : ce compte a accès à la Librairie seulement si l'interrupteur « Réserver les boîtes de la Librairie aux abonnés » (page Abonnements) est coupé. « Abonné » et « Essai » donnent l'accès dans tous les cas ; « Accès bloqué » le retire dans tous les cas (pratique pour tester). Pour un abonné payant, c'est Stripe qui décide : résilier ou rembourser se fait dans le tableau de bord Stripe."))
     );
   }
 
@@ -930,6 +932,11 @@
         "Réserver les boîtes de la Librairie aux abonnés",
         switchCtrl(["subscriptionPolicy", "enforce"]),
         "Désactivé : tout compte connecté peut ajouter des boîtes de la Librairie à ses révisions, sauf un compte marqué « Accès bloqué ». Activé : seuls les comptes « Abonné » ou « Essai » (période non échue) le peuvent."
+      ),
+      setRow(
+        "Ouvrir les paiements (Stripe)",
+        switchCtrl(["subscriptionPolicy", "checkoutOpen"]),
+        "Activé : le bouton « Essayer 1 mois gratuitement / S'abonner » de la page Abonnements ouvre la page de paiement Stripe. À n'activer qu'une fois Stripe configuré (voir supabase/functions/README-stripe.md), d'abord avec les clés de test."
       )
     );
   };
