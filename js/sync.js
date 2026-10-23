@@ -1606,18 +1606,20 @@ async function billingInvoke(name, body) {
     const { data, error } = await c.functions.invoke(name, { body: body || {} });
     if (error) {
       let code = "";
+      let detail = "";
       try {
         const res = error.context;
         if (res && typeof res.json === "function") {
           const j = await res.json();
           code = (j && (j.error || j.message)) || "";
+          detail = (j && j.detail) || "";
           if (res.status === 404 && !j.error) code = "not_deployed";
         }
       } catch (e) {
         /* réponse illisible */
       }
       if (!code && /Failed to send|fetch|NetworkError/i.test(String(error.message || ""))) code = "network";
-      return { error: code || String(error.message || error) };
+      return { error: code || String(error.message || error), detail };
     }
     if (!data || !data.url) return { error: "no_url" };
     return { url: data.url, trial: !!data.trial };

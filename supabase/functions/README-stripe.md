@@ -44,16 +44,25 @@ Prévoir environ 30 minutes.
    - `STRIPE_AUTOMATIC_TAX=1` : calcul de la TVA par Stripe Tax.
 
 ## 3. Stripe : prévenir Supabase (webhook)
-1. **Développeurs → Webhooks** (ou Workbench → Destinations d'évènements) → **Ajouter une destination**.
-2. URL : `https://<ton-projet>.supabase.co/functions/v1/stripe-webhook`. Le nom du projet figure dans `js/config.js`, par exemple `pyqffmweflicfpbniroz`.
-3. Évènements à envoyer :
-   - `checkout.session.completed`
-   - `customer.subscription.created`
-   - `customer.subscription.updated`
-   - `customer.subscription.deleted`
-   - `invoice.paid`
-   - `invoice.payment_failed`
-4. Copie le **secret de signature** (`whsec_…`) dans le secret Supabase `STRIPE_WEBHOOK_SECRET`.
+Dans Stripe, l'adresse se saisit à la **fin** de l'assistant, pas au début : on choisit d'abord les évènements.
+1. Ouvre **dashboard.stripe.com/test/webhooks**. On y arrive aussi par le bouton **Développeurs** (en bas à gauche), puis **Webhooks**. Vérifie que tu es bien en mode test.
+2. Clique sur **« Ajouter une destination »** (ou « Créer une destination »).
+3. Premier écran : choix des évènements.
+   - **Version de l'API** : garde celle proposée.
+   - **Évènements sur ton compte** (et non « comptes connectés »).
+   - Dans la recherche, coche ces 6 évènements, puis clique sur **« Continuer »** :
+     - `checkout.session.completed`
+     - `customer.subscription.created`
+     - `customer.subscription.updated`
+     - `customer.subscription.deleted`
+     - `invoice.paid`
+     - `invoice.payment_failed`
+4. Deuxième écran : type de destination. Choisis **« Point de terminaison webhook »** (Webhook endpoint), puis **« Continuer »**.
+5. Troisième écran : c'est là qu'on saisit l'adresse. Dans **« URL du point de terminaison »**, colle :
+   `https://pyqffmweflicfpbniroz.supabase.co/functions/v1/stripe-webhook`
+   Description facultative : « darwin ». Clique sur **« Créer la destination »**.
+6. Sur la page de la destination créée, à droite, repère **« Secret de signature »**. Clique sur **« Afficher »** (ou « Révéler ») et copie la valeur `whsec_…`.
+7. Dans Supabase, **Edge Functions → Secrets**, ajoute `STRIPE_WEBHOOK_SECRET` avec cette valeur.
 
 ## 4. Ouvrir les paiements et tester
 1. **Darwin Admin → Abonnements → « Ouvrir les paiements (Stripe) »** : active l'option.

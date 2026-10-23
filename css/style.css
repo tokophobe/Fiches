@@ -7815,3 +7815,9 @@ body.is-qcm-review .qcm-sheet { padding-bottom: 46px; }
 .subs-offer-save { margin-left: 6px; padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 700; background: color-mix(in srgb, #3e7c6b 16%, transparent); color: #3e7c6b; }
 :root.is-night-mode .subs-offer-save { color: #7fc0ad; }
 .subs-offer-btn[hidden] { display: none; }
+
+/* Round 67 : ligne « Abonnement » de la page Compte. */
+.account-subs-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.account-subs-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; font-family: var(--font-type); }
+.account-subs-title { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.account-subs-summary { font-size: 14.5px; color: var(--ink); }

@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v224";
+  const APP_VERSION = "v226";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -10036,6 +10036,7 @@
     if (lastEl) lastEl.value = meta.last_name || "";
     // Round 25, item 3 : usages.
     renderAccountUsages();
+    renderAccountSubscriptionSummary();
     // Round 25, item 4 : niveau scolaire en cascade d'après la taxonomie
     // (remplace la liste courte LIBRARY_LEVELS du round 19).
     const schoolTaxEl = el("account-school-taxonomy");
@@ -10142,6 +10143,35 @@
       // obligatoire) — sans Compte connecté, plus aucun usage n'est
       // possible, y compris rester sur une autre page déjà ouverte.
       enforceLoginGate();
+    });
+  }
+
+  /** Round 67 : ligne « Abonnement » de la page Compte (état en une ligne
+   *  + bouton vers la page Abonnements, qui n'avait pas d'autre accès que
+   *  le message « il faut être abonné »). */
+  async function renderAccountSubscriptionSummary() {
+    const sum = el("account-subs-summary");
+    if (!sum) return;
+    try {
+      await refreshMySubscription();
+    } catch (e) {
+      /* état inconnu */
+    }
+    const row = mySubscriptionRow;
+    const end = frenchDate(row && row.current_period_end);
+    const valid = !!row && (!row.current_period_end || new Date(row.current_period_end) > new Date());
+    let text = "Aucun abonnement";
+    if (valid && row.status === "past_due") text = "Paiement à régulariser";
+    else if (valid && row.cancel_at_period_end && (row.status === "active" || row.status === "trial")) text = `Résilié, actif jusqu'au ${end}`;
+    else if (valid && row.status === "trial") text = end ? `Essai gratuit jusqu'au ${end}` : "Essai gratuit";
+    else if (valid && row.status === "active") text = row.plan === "individuel_annuel" ? "Individuel annuel" : row.plan === "individuel" ? "Individuel mensuel" : "Abonné";
+    sum.textContent = text;
+  }
+  const accountSubsBtn = el("account-subs-btn");
+  if (accountSubsBtn) {
+    accountSubsBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="subscriptions"]');
+      if (tab) tab.click();
     });
   }
 
@@ -13097,7 +13127,11 @@
     }
     if (btn) btn.disabled = false;
     if (annualBtn) annualBtn.disabled = false;
-    await robotAlert(BILLING_ERRORS[res.error] || `Le paiement n'a pas pu s'ouvrir : ${res.error}`);
+    // Round 67 : le détail renvoyé par le serveur (message de Stripe…) est
+    // affiché, pour savoir quoi corriger dans la configuration.
+    await robotAlert(
+      (BILLING_ERRORS[res.error] || `Le paiement n'a pas pu s'ouvrir : ${res.error}`) + (res.detail ? `\n\nDétail : ${res.detail}` : "")
+    );
     renderSubscriptionsStatus();
   }
   const subsIndividuelBtn = el("subs-individuel-btn");
