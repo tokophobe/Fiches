@@ -12,12 +12,13 @@
 //   supabase functions deploy stripe-webhook --no-verify-jwt
 // (ou, dans le tableau de bord : décocher « Enforce JWT verification »).
 // Secrets : STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET (whsec_…),
-//           STRIPE_PRICE_INDIVIDUEL (+ _ANNUEL facultatif).
+//           STRIPE_PRICE_INDIVIDUEL, STRIPE_PRICE_INDIVIDUEL_ANNUEL,
+//           STRIPE_PRICE_SUPER_ENSEIGNANT.
 // Évènements à cocher dans Stripe : checkout.session.completed,
 //   customer.subscription.created / updated / deleted,
 //   invoice.paid, invoice.payment_failed.
 // =====================================================================
-import Stripe from "npm:stripe@17.7.0";
+import Stripe from "npm:stripe@18.5.0";
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 
 export type Deps = {
@@ -56,6 +57,7 @@ export function periodEnd(sub: any): string | null {
 export function planOf(priceId: string | null, env: (k: string) => string | undefined): string {
   if (priceId && priceId === env("STRIPE_PRICE_INDIVIDUEL")) return "individuel";
   if (priceId && priceId === env("STRIPE_PRICE_INDIVIDUEL_ANNUEL")) return "individuel_annuel";
+  if (priceId && priceId === env("STRIPE_PRICE_SUPER_ENSEIGNANT")) return "super_enseignant";
   return priceId ? `stripe:${priceId}` : "";
 }
 

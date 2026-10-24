@@ -719,6 +719,12 @@
         // Round 65 : boutons de paiement (Stripe) actifs dans la page
         // Abonnements. Désactivé tant que Stripe n'est pas configuré.
         checkoutOpen: !!(parsed.subscriptionPolicy && parsed.subscriptionPolicy.checkoutOpen === true),
+        // Round 68 : durée de l'essai gratuit (jours, 0 = pas d'essai), lue
+        // par l'appli (libellés) ET par la fonction create-checkout.
+        trialDays: (() => {
+          const v = parsed.subscriptionPolicy ? Number(parsed.subscriptionPolicy.trialDays) : NaN;
+          return Number.isFinite(v) && v >= 0 && v <= 365 ? Math.round(v) : 30;
+        })(),
       },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       // Horodatage de la dernière modification (posé par saveDevSettings) —

@@ -1821,8 +1821,8 @@
           <p class="subs-offer-price-alt">ou 20 € <small>/ an</small> <span class="subs-offer-save">2 mois offerts</span></p>
           <p class="subs-offer-text">Pour toi : toutes les boîtes de la Librairie, à ajouter à tes révisions.</p>
           <ul class="subs-offer-points">
-            <li>Premier mois offert</li>
-            <li>Moyen de paiement demandé dès l'inscription (rien n'est prélevé pendant le mois offert)</li>
+            <li id="subs-trial-point">Premier mois offert</li>
+            <li id="subs-trial-point2">Moyen de paiement demandé dès l'inscription (rien n'est prélevé pendant la période offerte)</li>
             <li>Résiliable à tout moment</li>
             <li>Paiement par un adulte (si tu as moins de 18 ans, demande à un parent)</li>
           </ul>
@@ -1835,9 +1835,12 @@
           <p class="subs-offer-text">Les élèves de tes classes ont accès aux boîtes de la Librairie que tu partages avec eux, sans abonnement de leur côté.</p>
           <ul class="subs-offer-points">
             <li>Classes de 60 élèves maximum</li>
-            <li>Tu choisis les classes concernées</li>
+            <li>Tu choisis les classes concernées, et tu peux changer ton choix à tout moment</li>
+            <li>Tu as aussi accès à toute la Librairie</li>
           </ul>
-          <button type="button" class="subs-offer-btn" disabled>Bientôt disponible</button>
+          <!-- Round 68 : choix des classes couvertes. -->
+          <div class="subs-super-classes" id="subs-super-classes" hidden></div>
+          <button type="button" class="subs-offer-btn" id="subs-super-btn" disabled>Bientôt disponible</button>
         </li>
         <li class="subs-offer">
           <div class="subs-offer-head"><span class="subs-offer-name">Super école</span><span class="subs-offer-price">5 € <small>/ mois / enseignant</small></span></div>

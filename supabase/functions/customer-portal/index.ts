@@ -8,7 +8,7 @@
 // Le portail doit être activé une fois dans Stripe :
 // Paramètres > Facturation > Portail client.
 // =====================================================================
-import Stripe from "npm:stripe@17.7.0";
+import Stripe from "npm:stripe@18.5.0";
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 
 const CORS = {
@@ -39,7 +39,13 @@ export function createHandler(deps: Deps) {
       const u = new URL(appUrl);
       u.searchParams.set("abonnement", "portail");
       u.hash = "";
-      const session = await deps.stripe.billingPortal.sessions.create({ customer: row.stripe_customer_id, return_url: u.toString(), locale: "fr" });
+      let session;
+      try {
+        session = await deps.stripe.billingPortal.sessions.create({ customer: row.stripe_customer_id, return_url: u.toString(), locale: "fr" });
+      } catch (e) {
+        if ((e as any)?.code === "resource_missing" || /No such customer/i.test(String((e as Error)?.message || ""))) return json({ error: "no_customer" }, 404);
+        throw e;
+      }
       return json({ url: session.url });
     } catch (e) {
       console.error("customer-portal", e);

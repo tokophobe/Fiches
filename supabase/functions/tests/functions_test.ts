@@ -2,10 +2,11 @@
 // Supabase sont remplacés par des doublures en mémoire ; la vérification
 // de signature utilise le vrai SDK Stripe.
 // Lancer : FICHES_NO_SERVE=1 deno test -A supabase/functions/tests/
-import Stripe from "npm:stripe@17.7.0";
+import Stripe from "npm:stripe@18.5.0";
 import { createHandler as checkoutHandler } from "../create-checkout/index.ts";
 import { createHandler as portalHandler } from "../customer-portal/index.ts";
 import { createHandler as webhookHandler, mapStatus, periodEnd } from "../stripe-webhook/index.ts";
+import { createHandler as superHandler } from "../update-super-classes/index.ts";
 
 function assertEq(a: unknown, b: unknown, msg = "") {
   const sa = JSON.stringify(a);
@@ -273,4 +274,91 @@ Deno.test("checkout : formule annuelle (20 € / an) avec son propre prix", asyn
   const params = stripe.calls.find((c) => c[0] === "checkout.create")[1];
   assertEq(params.line_items, [{ price: "price_annuel", quantity: 1 }]);
   assertEq(params.subscription_data.metadata.plan, "individuel_annuel");
+});
+
+Deno.test("checkout : Managed Payments désactivé par défaut, réessai si Stripe refuse le paramètre", async () => {
+  const stripe: any = fakeStripe();
+  let first = true;
+  const orig = stripe.checkout.sessions.create;
+  stripe.checkout.sessions.create = async (p: any) => {
+    if (first && p.managed_payments) {
+      first = false;
+      assertEq(p.managed_payments, { enabled: false });
+      throw new Error("Received unknown parameter: managed_payments");
+    }
+    return orig(p);
+  };
+  const h = checkoutHandler({ env, stripe, admin: fakeAdmin({ jwt1: USER }, { subscriptions: [] }) });
+  const r = await h(post({ plan: "individuel" }, "jwt1"));
+  assertEq(r.status, 200);
+  const last = stripe.calls.filter((c: any) => c[0] === "checkout.create").pop()[1];
+  assertEq(last.managed_payments, undefined, "réessai sans le paramètre");
+});
+
+Deno.test("checkout : client enregistré mais disparu chez Stripe → nouveau client", async () => {
+  const tables: any = { subscriptions: [{ user_id: "u1", status: "canceled", source: "stripe", stripe_customer_id: "cus_disparu", trial_used: true }] };
+  const stripe: any = fakeStripe();
+  stripe.customers.retrieve = async (id: string) => {
+    const e: any = new Error(`No such customer: '${id}'`);
+    e.code = "resource_missing";
+    throw e;
+  };
+  const h = checkoutHandler({ env, stripe, admin: fakeAdmin({ jwt1: USER }, tables) });
+  const r = await h(post({ plan: "individuel" }, "jwt1"));
+  assertEq(r.status, 200);
+  assertEq(tables.subscriptions[0].stripe_customer_id, "cus_123", "client remplacé");
+  const params = stripe.calls.filter((c: any) => c[0] === "checkout.create").pop()[1];
+  assertEq(params.customer, "cus_123");
+});
+
+Deno.test("checkout : durée d'essai lue dans les réglages de Darwin Admin", async () => {
+  const tables: any = { subscriptions: [], dev_settings_public: [{ id: "global", settings: { subscriptionPolicy: { trialDays: 14 } } }] };
+  const stripe: any = fakeStripe();
+  const h = checkoutHandler({ env, stripe, admin: fakeAdmin({ jwt1: USER }, tables) });
+  await h(post({ plan: "individuel" }, "jwt1"));
+  const params = stripe.calls.filter((c: any) => c[0] === "checkout.create").pop()[1];
+  assertEq(params.subscription_data.trial_period_days, 14);
+  tables.dev_settings_public[0].settings.subscriptionPolicy.trialDays = 0;
+  tables.subscriptions = [];
+  const r = await (await h(post({ plan: "individuel" }, "jwt1"))).json();
+  assertEq(r.trial, false, "0 jour = pas d'essai");
+});
+
+Deno.test("checkout : Super enseignant — quantité = classes de l'enseignant, pas d'essai", async () => {
+  const tables: any = {
+    subscriptions: [],
+    classes: [{ id: "c1", teacher_id: "u1" }, { id: "c2", teacher_id: "u1" }, { id: "cX", teacher_id: "autre" }],
+  };
+  const stripe: any = fakeStripe();
+  const envS = (k: string) => ({ ...ENV, STRIPE_PRICE_SUPER_ENSEIGNANT: "price_super" } as Record<string, string>)[k];
+  const h = checkoutHandler({ env: envS, stripe, admin: fakeAdmin({ jwt1: USER }, tables) });
+  assertEq((await h(post({ plan: "super_enseignant", classIds: ["cX"] }, "jwt1"))).status, 400, "classe d'un autre");
+  const r = await h(post({ plan: "super_enseignant", classIds: ["c1", "c2", "cX", "c1"] }, "jwt1"));
+  const body = await r.json();
+  assertEq(r.status, 200);
+  assertEq(body.trial, false);
+  const params = stripe.calls.filter((c: any) => c[0] === "checkout.create").pop()[1];
+  assertEq(params.line_items, [{ price: "price_super", quantity: 2 }]);
+  assertEq(tables.subscriptions[0].super_class_ids, ["c1", "c2"]);
+});
+
+Deno.test("update-super-classes : ajuste la quantité Stripe et la liste", async () => {
+  const future = new Date(Date.now() + 86400000).toISOString();
+  const tables: any = {
+    subscriptions: [{ user_id: "u1", plan: "super_enseignant", status: "active", source: "stripe", current_period_end: future, stripe_subscription_id: "sub_s", super_class_ids: ["c1"], quantity: 1 }],
+    classes: [{ id: "c1", teacher_id: "u1" }, { id: "c2", teacher_id: "u1" }, { id: "c3", teacher_id: "u1" }],
+  };
+  const stripe: any = fakeStripe({ sub_s: { id: "sub_s", items: { data: [{ id: "si_1", quantity: 1 }] } } });
+  stripe.subscriptions.update = async (id: string, p: any) => {
+    stripe.calls.push(["subscriptions.update", id, p]);
+    return {};
+  };
+  const h = superHandler({ env, stripe, admin: fakeAdmin({ jwt1: USER }, tables) });
+  const r = await (await h(post({ classIds: ["c1", "c3"] }, "jwt1"))).json();
+  assertEq(r, { ok: true, quantity: 2 });
+  const upd = stripe.calls.find((c: any) => c[0] === "subscriptions.update");
+  assertEq(upd[2].items, [{ id: "si_1", quantity: 2 }]);
+  assertEq(tables.subscriptions[0].super_class_ids, ["c1", "c3"]);
+  const h2 = superHandler({ env, stripe, admin: fakeAdmin({ jwt2: { id: "u2" } }, tables) });
+  assertEq((await h2(post({ classIds: ["c1"] }, "jwt2"))).status, 400, "pas ses classes");
 });

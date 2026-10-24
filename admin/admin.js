@@ -934,9 +934,14 @@
         "Désactivé : tout compte connecté peut ajouter des boîtes de la Librairie à ses révisions, sauf un compte marqué « Accès bloqué ». Activé : seuls les comptes « Abonné » ou « Essai » (période non échue) le peuvent."
       ),
       setRow(
+        "Durée de l'essai gratuit",
+        numCtrl(["subscriptionPolicy", "trialDays"], { min: 0, max: 365, unit: "jours" }),
+        "Offert une seule fois par compte, pour la formule Individuel (mensuelle ou annuelle). 0 = pas d'essai. Utilisé à la fois par les boutons de l'appli et par la page de paiement Stripe."
+      ),
+      setRow(
         "Ouvrir les paiements (Stripe)",
         switchCtrl(["subscriptionPolicy", "checkoutOpen"]),
-        "Activé : le bouton « Essayer 1 mois gratuitement / S'abonner » de la page Abonnements ouvre la page de paiement Stripe. À n'activer qu'une fois Stripe configuré (voir supabase/functions/README-stripe.md), d'abord avec les clés de test."
+        "Activé : les boutons « Mensuel » et « Annuel » de la page Abonnements ouvrent la page de paiement Stripe. À n'activer qu'une fois Stripe configuré (voir supabase/functions/README-stripe.md), d'abord avec les clés de test."
       )
     );
   };

@@ -11,6 +11,7 @@ Prévoir environ 30 minutes.
    - Premier prix : **2,00 €**, **récurrent**, **mensuel**. Coche « TTC » (taxes incluses) si l'option apparaît.
    - Second prix, sur le **même produit** (« Ajouter un autre prix ») : **20,00 €**, **récurrent**, **annuel**.
    - Enregistre, puis copie les **identifiants des deux prix** : ils commencent par `price_…`.
+   - **Code fiscal du produit** : si ton compte a les « Managed Payments » (Stripe devient vendeur officiel et gère la TVA ; c'est activé par défaut sur les comptes récents), choisis « Software as a service (SaaS) – personal use » (`txcd_10103000`). Sans ce code, Stripe refuse d'ouvrir la page de paiement. Sinon, désactive les Managed Payments dans Paramètres → Managed Payments.
 3. **Développeurs → Clés API** : copie la **clé secrète** (`sk_test_…`). Ne la mets jamais dans l'appli ni sur le site.
 4. **Paramètres → Facturation → Portail client** : active le portail. Autorise :
    - la mise à jour du moyen de paiement ;
@@ -36,11 +37,12 @@ Prévoir environ 30 minutes.
    | `STRIPE_SECRET_KEY` | `sk_test_…` |
    | `STRIPE_PRICE_INDIVIDUEL` | `price_…` (2 € / mois) |
    | `STRIPE_PRICE_INDIVIDUEL_ANNUEL` | `price_…` (20 € / an) |
+   | `STRIPE_PRICE_SUPER_ENSEIGNANT` | `price_…` (1 € / mois / classe, voir §6) |
    | `APP_URL` | l'adresse exacte de l'appli, par exemple `https://tokophobe.github.io/Fiches/index.html` |
    | `STRIPE_WEBHOOK_SECRET` | voir l'étape 3 ci-dessous |
 
    Facultatif :
-   - `STRIPE_TRIAL_DAYS` : 30 par défaut ; 0 = pas d'essai ;
+   - `STRIPE_TRIAL_DAYS` : remplacé (v228) par le réglage « Durée de l'essai gratuit » de Darwin Admin → Abonnements ; tu peux supprimer ce secret ;
    - `STRIPE_AUTOMATIC_TAX=1` : calcul de la TVA par Stripe Tax.
 
 ## 3. Stripe : prévenir Supabase (webhook)
@@ -80,7 +82,7 @@ Dans Stripe, l'adresse se saisit à la **fin** de l'assistant, pas au début : o
    - la page Abonnements affiche l'essai et le bouton « Gérer mon abonnement » ;
    - Darwin Admin → Comptes indique « Essai » ;
    - « Gérer mon abonnement » puis « Annuler l'abonnement » : la page affiche « résilié, actif jusqu'au … ».
-5. Pour simuler la fin de l'essai sans attendre 30 jours : dans Stripe, utilise les **horloges de test** (Test clocks / Simulations), ou crée un prix de test avec `STRIPE_TRIAL_DAYS=0`.
+5. Pour simuler la fin de l'essai sans attendre 30 jours : dans Stripe, utilise les **horloges de test** (Test clocks / Simulations), ou mets la durée de l'essai à 0 dans Darwin Admin.
 6. En cas de problème : Supabase → Edge Functions → la fonction → **Logs** ; Stripe → Webhooks → la destination → évènements envoyés et réponses.
 
 ## 5. Passer en réel (plus tard)
@@ -106,3 +108,31 @@ Dans Stripe, l'adresse se saisit à la **fin** de l'assistant, pas au début : o
 - **`has_library_access`** (côté serveur) et l'appli lisent la même table. Un abonnement actif ou en essai donne accès aux fiches complètes de la Librairie.
 - **Supprimer mon compte** est refusé tant qu'un abonnement continue d'être prélevé. Une fois l'abonnement résilié, c'est possible ; le client Stripe et ses factures restent chez Stripe, ce qui est une obligation comptable.
 - **Tests automatiques** : `FICHES_NO_SERVE=1 deno test -A supabase/functions/tests/`.
+
+## 6. Formule Super enseignant (v228)
+**Le principe :**
+- 1 € par mois et par classe couverte, sans essai gratuit.
+- L'enseignant choisit ses classes dans la page Abonnements de l'appli, et peut changer son choix à tout moment.
+- Stripe ajuste alors le montant au prorata, sur la facture suivante.
+- Les élèves d'une classe couverte (60 au plus) ont accès aux boîtes de la Librairie que l'enseignant y partage. L'enseignant a lui-même accès à toute la Librairie.
+
+**À faire une fois :**
+1. **Supabase → éditeur SQL** : exécute `supabase/round68_migration.sql`.
+2. **Stripe → Catalogue de produits → Ajouter un produit.**
+   - Nom : `darwin — Super enseignant`.
+   - Même code fiscal que le produit Individuel.
+   - Prix : **1,00 €**, **récurrent**, **mensuel**, TTC. Copie son identifiant `price_…`.
+3. **Supabase → Edge Functions → Secrets** : ajoute `STRIPE_PRICE_SUPER_ENSEIGNANT` = `price_…`.
+4. **Supabase → Edge Functions** :
+   - mets à jour `create-checkout` et `stripe-webhook` avec les nouveaux fichiers ;
+   - crée la fonction **`update-super-classes`** avec le fichier `supabase/functions/update-super-classes/index.ts`, en laissant la vérification JWT activée.
+5. **Stripe → Paramètres → Facturation → Portail client** : dans « Changements d'abonnement », ne propose pas le produit Super enseignant. Le nombre de classes se change dans l'appli, pas dans le portail.
+
+**Pour tester :**
+1. Avec un compte enseignant qui a au moins une classe, va dans **Abonnements → Super enseignant → Choisir mes classes**.
+2. Coche une ou plusieurs classes, puis paie avec la carte 4242.
+3. Vérifie le résultat :
+   - la page affiche « Super enseignant actif : N classes couvertes » ;
+   - dans ces classes, le partage de boîtes de la Librairie est permis, même quand « Réserver aux abonnés » est activé ;
+   - les élèves voient ces boîtes sans cadenas.
+4. Change la sélection avec **Choisir mes classes couvertes**. Dans Stripe, la quantité de l'abonnement doit changer.

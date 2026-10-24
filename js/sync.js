@@ -1599,7 +1599,7 @@ async function fetchMySubscription() {
  *  create-checkout et customer-portal (voir supabase/functions/). Renvoie
  *  { url } (page Stripe où aller) ou { error } avec un code :
  *  already_subscribed, plan_unavailable, no_customer, not_deployed… */
-async function billingInvoke(name, body) {
+async function billingInvoke(name, body, noUrl) {
   const c = getClient();
   if (!c || !c.functions) return { error: "not_configured" };
   try {
@@ -1621,6 +1621,7 @@ async function billingInvoke(name, body) {
       if (!code && /Failed to send|fetch|NetworkError/i.test(String(error.message || ""))) code = "network";
       return { error: code || String(error.message || error), detail };
     }
+    if (noUrl) return { ok: true, data };
     if (!data || !data.url) return { error: "no_url" };
     return { url: data.url, trial: !!data.trial };
   } catch (e) {
@@ -1715,8 +1716,17 @@ window.Sync = {
     sharedBoxAuthor,
   },
   billing: {
-    checkout: (plan) => billingInvoke("create-checkout", { plan: plan || "individuel" }),
+    checkout: (plan, extra) => billingInvoke("create-checkout", { plan: plan || "individuel", ...(extra || {}) }),
     portal: () => billingInvoke("customer-portal", {}),
+    // Round 68 : Super enseignant — classes couvertes.
+    updateSuperClasses: (classIds) => billingInvoke("update-super-classes", { classIds }, true),
+    coveredClasses: async () => {
+      const c = getClient();
+      if (!c) return null;
+      const { data, error } = await c.rpc("my_covered_classes");
+      if (error) return null;
+      return Array.isArray(data) ? data : [];
+    },
   },
   library: {
     share: shareCollectionToLibrary,

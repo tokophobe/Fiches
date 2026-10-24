@@ -7821,3 +7821,21 @@ body.is-qcm-review .qcm-sheet { padding-bottom: 46px; }
 .account-subs-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; font-family: var(--font-type); }
 .account-subs-title { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
 .account-subs-summary { font-size: 14.5px; color: var(--ink); }
+
+/* Round 67 : boîte de la Librairie verrouillée (abonnement terminé). */
+.subject-row.is-locked .subject-row-name > span:not(.subject-lock) { opacity: 0.55; }
+.subject-lock { display: inline-flex; vertical-align: -2px; margin-left: 4px; color: var(--ink-soft); }
+.subject-lock .icon-inline-svg { width: 15px; height: 15px; }
+
+/* Round 68 : Super enseignant — choix des classes couvertes. */
+.subs-super-classes { margin: 6px 0 10px; padding: 10px 12px; border-radius: 12px; background: color-mix(in srgb, var(--rule, #4a9fe0) 8%, transparent); font-family: var(--font-type); }
+.subs-super-classes[hidden] { display: none; }
+.subs-super-hint { margin: 0 0 8px; font-size: 13.5px; color: var(--ink-soft); }
+.subs-super-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.subs-super-row { display: flex; align-items: center; gap: 10px; padding: 6px 2px; font-size: 14.5px; color: var(--ink); cursor: pointer; }
+.subs-super-name { flex: 1; min-width: 0; }
+.subs-super-count { font-size: 12.5px; color: var(--ink-soft); }
+.subs-super-count.is-warn { color: var(--danger, #c0392b); }
+.subs-super-total { margin: 8px 0 4px; font-weight: 700; font-size: 14px; color: var(--ink); }
+.subs-super-actions { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
+.subs-super-actions .subs-manage-link { display: inline-block; margin: 0; }

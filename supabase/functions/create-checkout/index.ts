@@ -12,11 +12,14 @@
 //   STRIPE_PRICE_INDIVIDUEL    price_… (2 € / mois)
 //   STRIPE_PRICE_INDIVIDUEL_ANNUEL  price_… (facultatif)
 //   APP_URL                    adresse de l'appli, ex. https://app.darwin.fr/
-//   STRIPE_TRIAL_DAYS          facultatif (30 par défaut ; 0 = pas d'essai)
+//   STRIPE_TRIAL_DAYS          facultatif, remplacé par le réglage « Durée
+//                              de l'essai gratuit » de Darwin Admin (v228)
 //   STRIPE_AUTOMATIC_TAX       "1" pour activer Stripe Tax (facultatif)
+//   STRIPE_MANAGED_PAYMENTS    "1" pour laisser Stripe être le vendeur
+//                              officiel (Managed Payments) ; sinon désactivé
 // SUPABASE_URL et SUPABASE_SERVICE_ROLE_KEY sont fournis automatiquement.
 // =====================================================================
-import Stripe from "npm:stripe@17.7.0";
+import Stripe from "npm:stripe@18.5.0";
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 
 const CORS = {
@@ -38,7 +41,19 @@ export type Deps = {
 const PLANS: Record<string, { envKey: string; label: string }> = {
   individuel: { envKey: "STRIPE_PRICE_INDIVIDUEL", label: "individuel" },
   individuel_annuel: { envKey: "STRIPE_PRICE_INDIVIDUEL_ANNUEL", label: "individuel_annuel" },
+  // Round 68 : 1 € / mois / classe couverte (quantité = nombre de classes).
+  super_enseignant: { envKey: "STRIPE_PRICE_SUPER_ENSEIGNANT", label: "super_enseignant" },
 };
+
+/** Classes de l'enseignant parmi celles demandées (ids valides, sans
+ *  doublon). */
+export async function teacherClassIds(deps: Deps, userId: string, wanted: unknown): Promise<string[]> {
+  const ids = Array.isArray(wanted) ? [...new Set(wanted.filter((x) => typeof x === "string"))] : [];
+  if (!ids.length) return [];
+  const { data } = await deps.admin.from("classes").select("id").eq("teacher_id", userId);
+  const mine = new Set((data || []).map((c: any) => c.id));
+  return ids.filter((id) => mine.has(id));
+}
 
 /** Adresse de retour : APP_URL, avec un paramètre que l'appli reconnaît. */
 export function returnUrl(appUrl: string, outcome: "ok" | "annule"): string {
@@ -46,6 +61,22 @@ export function returnUrl(appUrl: string, outcome: "ok" | "annule"): string {
   u.searchParams.set("abonnement", outcome);
   u.hash = "";
   return u.toString();
+}
+
+/** Round 68 : durée de l'essai réglée dans Darwin Admin (réglages communs,
+ *  subscriptionPolicy.trialDays) ; à défaut le secret STRIPE_TRIAL_DAYS ;
+ *  à défaut 30 jours. */
+export async function trialDaysSetting(deps: Deps): Promise<number> {
+  try {
+    const { data } = await deps.admin.from("dev_settings_public").select("settings").eq("id", "global").maybeSingle();
+    const raw = data && data.settings && data.settings.subscriptionPolicy ? data.settings.subscriptionPolicy.trialDays : undefined;
+    const v = raw === undefined || raw === null || raw === "" ? NaN : Number(raw);
+    if (Number.isFinite(v) && v >= 0 && v <= 365) return Math.round(v);
+  } catch (_e) {
+    /* réglages illisibles : valeur par défaut */
+  }
+  const env = Number(deps.env("STRIPE_TRIAL_DAYS"));
+  return Number.isFinite(env) && deps.env("STRIPE_TRIAL_DAYS") !== undefined && deps.env("STRIPE_TRIAL_DAYS") !== "" ? env : 30;
 }
 
 export function createHandler(deps: Deps) {
@@ -89,12 +120,36 @@ export function createHandler(deps: Deps) {
         (!row.current_period_end || new Date(row.current_period_end) > new Date());
       if (live) return json({ error: "already_subscribed" }, 409);
 
+      // 3 bis) Super enseignant : les classes choisies (au moins une).
+      const isSuper = planKey === "super_enseignant";
+      let classIds: string[] = [];
+      if (isSuper) {
+        classIds = await teacherClassIds(deps, user.id, body.classIds);
+        if (!classIds.length) return json({ error: "no_class" }, 400);
+      }
+
       // 4) Client Stripe du compte (créé une seule fois).
       let customerId: string | null = (row && row.stripe_customer_id) || null;
+      // Client enregistré mais introuvable chez Stripe (supprimé, créé dans
+      // un autre environnement de test, ou par les Managed Payments) : on en
+      // recrée un.
+      let recreated = false;
+      if (customerId) {
+        try {
+          const existing = await deps.stripe.customers.retrieve(customerId);
+          if (!existing || existing.deleted) customerId = null;
+        } catch (e) {
+          if ((e as any)?.code === "resource_missing" || /No such customer/i.test(String((e as Error)?.message || ""))) customerId = null;
+          else throw e;
+        }
+        recreated = !customerId;
+      }
       if (!customerId) {
         const customer = await deps.stripe.customers.create(
           { email: user.email || undefined, metadata: { user_id: user.id } },
-          { idempotencyKey: `customer-${user.id}` }
+          // Clé d'idempotence (évite deux clients sur un double toucher) ;
+          // pas réutilisée quand on remplace un client disparu.
+          recreated ? undefined : { idempotencyKey: `customer-${user.id}` }
         );
         customerId = customer.id;
         if (row) {
@@ -111,13 +166,18 @@ export function createHandler(deps: Deps) {
       }
 
       // 5) Page de paiement. Un seul mois offert par compte.
-      const trialDays = Number(deps.env("STRIPE_TRIAL_DAYS") ?? "30");
-      const withTrial = !(row && row.trial_used) && trialDays > 0;
+      const trialDays = await trialDaysSetting(deps);
+      const withTrial = !isSuper && !(row && row.trial_used) && trialDays > 0;
+      // Classes choisies, gardées en attendant la confirmation du paiement
+      // (lues par class_library_access une fois l'abonnement actif).
+      if (isSuper) {
+        await deps.admin.from("subscriptions").update({ super_class_ids: classIds }).eq("user_id", user.id);
+      }
       const params: any = {
         mode: "subscription",
         customer: customerId,
         client_reference_id: user.id,
-        line_items: [{ price, quantity: 1 }],
+        line_items: [{ price, quantity: isSuper ? classIds.length : 1 }],
         payment_method_collection: "always",
         allow_promotion_codes: true,
         locale: "fr",
@@ -134,7 +194,22 @@ export function createHandler(deps: Deps) {
         params.customer_update = { address: "auto" };
         params.billing_address_collection = "required";
       }
-      const session = await deps.stripe.checkout.sessions.create(params);
+      // Managed Payments (Stripe vendeur officiel) : désactivé pour chaque
+      // paiement, quel que soit le réglage du compte Stripe, sauf si le
+      // secret STRIPE_MANAGED_PAYMENTS vaut "1". Si Stripe ne connaît pas
+      // ce paramètre, on réessaie sans.
+      params.managed_payments = { enabled: deps.env("STRIPE_MANAGED_PAYMENTS") === "1" };
+      let session;
+      try {
+        session = await deps.stripe.checkout.sessions.create(params);
+      } catch (e) {
+        if (/managed_payments/i.test(String((e as Error)?.message || "")) && /unknown|unrecognized|not supported|invalid/i.test(String((e as Error)?.message || ""))) {
+          delete params.managed_payments;
+          session = await deps.stripe.checkout.sessions.create(params);
+        } else {
+          throw e;
+        }
+      }
       return json({ url: session.url, trial: withTrial });
     } catch (e) {
       console.error("create-checkout", e);

@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v226";
+  const APP_VERSION = "v228";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -1635,13 +1635,77 @@
   function isSubjectInRevisions(s) {
     return !!s && !s.outOfRevisions;
   }
+  /** Round 67 : boîte venue de la Librairie, verrouillée faute d'accès.
+   *  - Prise par l'utilisateur dans la Librairie : verrouillée quand il n'a
+   *    plus accès à la Librairie (abonnement terminé) ;
+   *  - partagée dans une classe depuis la Librairie : verrouillée pour les
+   *    élèves tant que l'enseignant n'a pas de formule Super enseignant /
+   *    Super école (pas encore disponibles : donc toujours, pour l'instant).
+   *  Rien n'est verrouillé tant que la Librairie est ouverte à tous
+   *  (« Réserver aux abonnés » désactivé dans Darwin Admin), ni pour un
+   *  administrateur. La progression est gardée : tout revient si l'accès
+   *  revient. */
+  let accountIsAdminFlag = false;
+  function isSubjectLocked(s) {
+    if (!s || accountIsAdminFlag) return false;
+    if (!loadDevSettings().subscriptionPolicy.enforce) return false;
+    if (s.fromLibrary && s.libraryOriginId) return !hasLibrarySubscription();
+    if (s.sharedBoxId && s.sharedFromLibrary) return !classLibraryAccess(s.sharedClassId);
+    return false;
+  }
+  /** Round 68 : classes couvertes par une formule Super enseignant (lues
+   *  sur le serveur, my_covered_classes ; dernière liste gardée sur
+   *  l'appareil). Super école : pas encore en place. */
+  var coveredClassIds = readCachedCoveredClasses();
+  function coveredCacheKey() {
+    const uid = (window.UserScope && window.UserScope.uid) || "";
+    return uid ? `fiches_covered_classes__u_${uid}` : "";
+  }
+  function readCachedCoveredClasses() {
+    try {
+      const k = coveredCacheKey();
+      const raw = k ? window.UserScope.rawGet(k) : null;
+      return new Set(raw ? JSON.parse(raw) : []);
+    } catch (e) {
+      return new Set();
+    }
+  }
+  async function refreshCoveredClasses() {
+    if (!accountCurrentUser || !Sync.isConfigured() || !Sync.billing.coveredClasses) return;
+    const ids = await Sync.billing.coveredClasses();
+    if (!ids) return;
+    coveredClassIds = new Set(ids);
+    try {
+      const k = coveredCacheKey();
+      if (k) window.UserScope.rawSet(k, JSON.stringify(ids));
+    } catch (e) {
+      /* stockage indisponible */
+    }
+  }
+  function classLibraryAccess(classId) {
+    return !!classId && coveredClassIds.has(classId);
+  }
+  function lockedSubjectIds() {
+    return new Set(subjects.filter((x) => isSubjectLocked(x)).map((x) => x.id));
+  }
+  async function showLockedSubjectMessage(s) {
+    const fromClass = !!(s && s.sharedBoxId);
+    const text = fromClass
+      ? `« ${s.name} » vient de la Librairie de darwin et a été partagée par ton enseignant. Elle n'est accessible que si ton enseignant a une formule Super enseignant ou Super école. Ta progression est gardée.`
+      : `« ${s ? s.name : "Cette boîte"} » vient de la Librairie : elle est réservée aux abonnés. Ta progression est gardée : tu retrouveras tout en te réabonnant.`;
+    if (fromClass) {
+      await robotAlert(text);
+      return;
+    }
+    await showSubscriptionRequired(text);
+  }
   function isSubjectIdInRevisions(id) {
     const s = subjects.find((x) => x.id === id);
     return !s || !s.outOfRevisions;
   }
   /** Fiches non supprimées des boîtes présentes dans mes révisions. */
   function revisionCards() {
-    const out = new Set(subjects.filter((s) => s.outOfRevisions).map((s) => s.id));
+    const out = new Set(subjects.filter((s) => s.outOfRevisions || isSubjectLocked(s)).map((s) => s.id));
     return cards.filter((c) => !c.deleted && !out.has(c.subject));
   }
 
@@ -2498,14 +2562,21 @@
       // collection prise dans la Bibliothèque — pour la reconnaître d'un
       // coup d'œil dans Mes collections, comme demandé.
       const boiteIconMarkup = subjectForIcon && subjectForIcon.fromLibrary ? iconSvgMarkup("share", "icon-inline-svg") : orgIconMarkup("orgBoite");
+      const locked = isSubjectLocked(subjectForIcon);
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
-      nameBtn.innerHTML = `${boiteIconMarkup} <span>${escapeHtml(displayName)}</span>`;
-      nameBtn.title = "Voir le résumé de cette boîte";
+      nameBtn.innerHTML = `${boiteIconMarkup} <span>${escapeHtml(displayName)}</span>${locked ? ` <span class="subject-lock" title="Réservée aux abonnés">${iconSvgMarkup("lock", "icon-inline-svg")}</span>` : ""}`;
+      nameBtn.title = locked ? "Boîte de la Librairie réservée aux abonnés" : "Voir le résumé de cette boîte";
+      if (locked) li.classList.add("is-locked");
       // Round 47 : un clic sur une boîte ouvre son résumé (comme depuis Mes
       // créations) ; les fiches sont à un clic de là.
+      // Round 67 : boîte verrouillée → message (abonnement).
       nameBtn.addEventListener("click", () => {
+        if (isSubjectLocked(subjects.find((x) => x.id === subjectId))) {
+          showLockedSubjectMessage(subjects.find((x) => x.id === subjectId));
+          return;
+        }
         openCreationDetail(subjectId, "manage");
       });
 
@@ -2908,6 +2979,11 @@
   function switchSubject(id, force) {
     const sentinel = isSentinelSubject(id);
     if ((id === currentSubjectId && !force) || (!sentinel && !subjects.some((s) => s.id === id))) return;
+    // Round 67 : boîte de la Librairie verrouillée → message, pas de révision.
+    if (!sentinel && isSubjectLocked(subjects.find((s) => s.id === id))) {
+      showLockedSubjectMessage(subjects.find((s) => s.id === id));
+      return;
+    }
     currentSubjectId = id;
     localStorage.setItem(CURRENT_SUBJECT_KEY, id);
 
@@ -3823,6 +3899,7 @@
       const set = new Set(loadMultiSelection());
       return revisionCards().filter((c) => set.has(c.subject));
     }
+    if (isSubjectLocked(subjects.find((x) => x.id === currentSubjectId))) return [];
     return cards.filter((c) => !c.deleted && c.subject === currentSubjectId);
   }
 
@@ -10956,10 +11033,16 @@
       subject.sharedBoxId = box.id;
       subject.sharedClassId = klass.id;
       subject.sharedClassName = klass.name;
+      subject.sharedFromLibrary = !!box.library_collection_id;
       await persistSubject(subject);
       subjects.push(subject);
     } else {
       let changed = false;
+      // Round 67 : boîte partagée depuis la Librairie (verrouillable).
+      if (!!subject.sharedFromLibrary !== !!box.library_collection_id) {
+        subject.sharedFromLibrary = !!box.library_collection_id;
+        changed = true;
+      }
       if (subject.name !== box.subject_name) {
         // Le prof a renommé sa boîte : la copie miroir suit.
         subject.name = box.subject_name;
@@ -11661,9 +11744,23 @@
       if (ctx) openClassDetailView(ctx.klass, ctx.role);
     });
   }
+  /** Round 67 : partager une boîte de la Librairie avec une classe demande
+   *  une formule Super enseignant / Super école (pas encore disponibles)
+   *  dès que la Librairie est réservée aux abonnés. */
+  async function blockLibraryShareToClass(classId) {
+    if (accountIsAdminFlag || !loadDevSettings().subscriptionPolicy.enforce) return false;
+    // Round 68 : classe couverte par Super enseignant → partage permis.
+    await refreshCoveredClasses();
+    if (classLibraryAccess(classId)) return false;
+    await showSubscriptionRequired(
+      "Pour partager une boîte de la Librairie avec cette classe, elle doit être couverte par la formule Super enseignant (1 € par mois et par classe) : tes élèves y ont alors accès sans abonnement. Tu peux toujours partager les boîtes que tu as créées toi-même."
+    );
+    return true;
+  }
   async function shareLibraryCollectionToClass(col) {
     const ctx = libraryShareToClassCtx;
     if (!ctx || !col) return;
+    if (await blockLibraryShareToClass(ctx.klass && ctx.klass.id)) return;
     const name = col.name || "Collection";
     const boxCards = await fetchFullLibraryCards(col, "Il faut être abonné pour partager cette boîte de la Librairie avec une classe.");
     if (!boxCards) return;
@@ -11754,6 +11851,7 @@
           if (kind === "library") {
             const col = libraryOptions.find((c) => c.id === id);
             if (!col) return;
+            if (await blockLibraryShareToClass(klass.id)) return;
             name = col.name;
             boxCards = await fetchFullLibraryCards(col, "Il faut être abonné pour partager cette boîte de la Librairie avec une classe.");
             if (!boxCards) return;
@@ -12984,14 +13082,41 @@
    *    subscriptionPolicy.enforce) → pas d'accès ;
    *  - sinon (en attendant le paiement) tout compte connecté a accès, sauf
    *    un compte marqué « Sans abonnement » (utile pour tester). */
-  let mySubscriptionRow = null;
+  // Round 67 : `var` (et non `let`) car lu par isSubjectLocked dès les
+  // premiers affichages ; dernière valeur connue gardée sur l'appareil
+  // (hors ligne, un abonné ne voit pas ses boîtes se verrouiller).
+  var mySubscriptionRow = readCachedSubscriptionRow();
+  function subscriptionCacheKey() {
+    const uid = (window.UserScope && window.UserScope.uid) || "";
+    return uid ? `fiches_sub_row__u_${uid}` : "";
+  }
+  function readCachedSubscriptionRow() {
+    try {
+      const k = subscriptionCacheKey();
+      const raw = k ? window.UserScope.rawGet(k) : null;
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
   async function refreshMySubscription() {
     if (!accountCurrentUser || !Sync.isConfigured()) {
       mySubscriptionRow = null;
       return;
     }
     const res = await Sync.fetchMySubscription();
-    if (!res.error) mySubscriptionRow = res.row;
+    if (!res.error) {
+      mySubscriptionRow = res.row;
+      try {
+        const k = subscriptionCacheKey();
+        if (k) {
+          if (res.row) window.UserScope.rawSet(k, JSON.stringify(res.row));
+          else window.UserScope.rawRemove(k);
+        }
+      } catch (e) {
+        /* stockage indisponible */
+      }
+    }
   }
   function hasLibrarySubscription() {
     if (!accountCurrentUser) return false;
@@ -13023,6 +13148,7 @@
     const annual = el("subs-annuel-btn");
     const manage = el("subs-manage-btn");
     if (annual) annual.hidden = true;
+    renderTrialPoints();
     if (!st) return;
     if (!accountCurrentUser) {
       st.hidden = false;
@@ -13041,7 +13167,10 @@
     let text = "";
     if (live && row.status === "past_due") text = "Le dernier paiement n'est pas passé : mets à jour ta carte avec « Gérer mon abonnement ».";
     else if (live && row.cancel_at_period_end) text = `Ton abonnement est résilié : il reste actif jusqu'au ${end}.`;
-    else if (live && row.status === "trial") text = `Tu es en période d'essai gratuite jusqu'au ${end}. Ensuite : ${row.plan === "individuel_annuel" ? "20 € par an" : "2 € par mois"}, résiliable à tout moment.`;
+    else if (live && row.plan === "super_enseignant") {
+      const n = Array.isArray(row.super_class_ids) ? row.super_class_ids.length : row.quantity || 0;
+      text = `Super enseignant actif : ${n} classe${n > 1 ? "s" : ""} couverte${n > 1 ? "s" : ""} (${n} € par mois). Prochain renouvellement le ${end}.`;
+    } else if (live && row.status === "trial") text = `Tu es en période d'essai gratuite jusqu'au ${end}. Ensuite : ${row.plan === "individuel_annuel" ? "20 € par an" : "2 € par mois"}, résiliable à tout moment.`;
     else if (live && row.status === "active") text = `Ton abonnement est actif. Prochain renouvellement le ${end}.`;
     else if (row && row.status === "active") text = `Ton abonnement est actif${end ? ` jusqu'au ${end}` : ""}.`;
     else if (row && row.status === "trial") text = `Tu es en période d'essai${end ? ` jusqu'au ${end}` : ""}.`;
@@ -13073,7 +13202,7 @@
       } else {
         // Round 66 : deux formules, au mois ou à l'année (premier mois
         // offert dans les deux cas, si l'essai n'a pas déjà servi).
-        const trialText = row && row.trial_used ? "" : "1 mois gratuit, puis ";
+        const trialText = row && row.trial_used ? "" : trialFreeText() ? `${trialFreeText()}, puis ` : "";
         btn.textContent = `Mensuel — ${trialText}2 € / mois`;
         btn.disabled = false;
         btn.dataset.action = "checkout";
@@ -13088,17 +13217,174 @@
       }
     }
     if (manage) manage.hidden = live || !(row && row.stripe_customer_id);
+    renderSuperOffer(row, live, open);
+  }
+
+  /* ---- Round 68 : formule Super enseignant ---- */
+  function renderSuperOffer(row, live, open) {
+    const btn = el("subs-super-btn");
+    const panel = el("subs-super-classes");
+    if (!btn) return;
+    const superLive = live && row.plan === "super_enseignant";
+    if (panel && !panel.dataset.open) panel.hidden = true;
+    if (superLive) {
+      btn.textContent = "Choisir mes classes couvertes";
+      btn.disabled = false;
+      btn.dataset.action = "edit";
+    } else if (!open) {
+      btn.textContent = "Bientôt disponible";
+      btn.disabled = true;
+      btn.dataset.action = "";
+    } else if (live) {
+      btn.textContent = "S'abonner — 1 € / mois / classe";
+      btn.disabled = false;
+      btn.dataset.action = "has-individual";
+    } else {
+      btn.textContent = "Choisir mes classes — 1 € / mois / classe";
+      btn.disabled = false;
+      btn.dataset.action = "new";
+    }
+  }
+  async function openSuperClassesPanel(mode) {
+    const panel = el("subs-super-classes");
+    if (!panel) return;
+    panel.hidden = false;
+    panel.dataset.open = "1";
+    const superBtn = el("subs-super-btn");
+    if (superBtn) superBtn.hidden = true;
+    panel.innerHTML = `<p class="subs-super-hint">Chargement de tes classes…</p>`;
+    const classes = await Sync.classes.listAsTeacher();
+    if (!classes.length) {
+      panel.innerHTML = `<p class="subs-super-hint">Tu n'as pas encore de classe : crée-en une depuis École → Mes classes, puis reviens ici.</p>`;
+      if (superBtn) superBtn.hidden = false;
+      return;
+    }
+    const counts = await Promise.all(classes.map((k) => Sync.classes.memberCount(k.id).catch(() => null)));
+    const row = mySubscriptionRow;
+    const chosen = new Set(mode === "edit" && row && Array.isArray(row.super_class_ids) ? row.super_class_ids : []);
+    panel.innerHTML = `
+      <p class="subs-super-hint">Coche les classes à couvrir : leurs élèves auront accès aux boîtes de la Librairie que tu y partages.</p>
+      <ul class="subs-super-list">${classes
+        .map((k, i) => {
+          const n = Number.isFinite(counts[i]) ? counts[i] : null;
+          const tooBig = n != null && n > 60;
+          return `<li><label class="subs-super-row"><input type="checkbox" value="${escapeHtml(k.id)}"${chosen.has(k.id) ? " checked" : ""} />
+            <span class="subs-super-name">${escapeHtml(k.name || "Classe")}</span>
+            <span class="subs-super-count${tooBig ? " is-warn" : ""}">${n == null ? "" : `${n} élève${n > 1 ? "s" : ""}${tooBig ? " — plus de 60 : non couverte" : ""}`}</span></label></li>`;
+        })
+        .join("")}</ul>
+      <p class="subs-super-total" id="subs-super-total"></p>
+      <div class="subs-super-actions">
+        <button type="button" class="subs-manage-link" id="subs-super-cancel">Annuler</button>
+        <button type="button" class="btn btn--small" id="subs-super-confirm"></button>
+      </div>`;
+    const total = () => [...panel.querySelectorAll("input[type=checkbox]:checked")].map((x) => x.value);
+    const confirmBtn = el("subs-super-confirm");
+    const refresh = () => {
+      const n = total().length;
+      el("subs-super-total").textContent = n ? `${n} classe${n > 1 ? "s" : ""} × 1 € = ${n} € par mois` : "Aucune classe cochée.";
+      confirmBtn.disabled = n === 0;
+      confirmBtn.textContent = mode === "edit" ? "Enregistrer" : `Payer ${n} € / mois`;
+    };
+    panel.addEventListener("change", refresh);
+    refresh();
+    const closePanel = () => {
+      panel.hidden = true;
+      delete panel.dataset.open;
+      if (superBtn) superBtn.hidden = false;
+    };
+    el("subs-super-cancel").onclick = closePanel;
+    confirmBtn.onclick = async () => {
+      const ids = total();
+      if (!ids.length) return;
+      if (mode === "edit") {
+        confirmBtn.disabled = true;
+        const res = await Sync.billing.updateSuperClasses(ids);
+        confirmBtn.disabled = false;
+        if (res.error) {
+          await robotAlert((BILLING_ERRORS[res.error] || `L'enregistrement n'a pas pu se faire : ${res.error}`) + (res.detail ? `\n\nDétail : ${res.detail}` : ""));
+          return;
+        }
+        await refreshMySubscription();
+        await refreshCoveredClasses();
+        closePanel();
+        await robotAlert(`C'est enregistré : ${ids.length} classe${ids.length > 1 ? "s" : ""} couverte${ids.length > 1 ? "s" : ""}, soit ${ids.length} € par mois. La différence est calculée au prorata sur ta prochaine facture.`);
+        renderSubscriptionsStatus();
+        return;
+      }
+      const ok = await showRobotMessage(
+        `Super enseignant : ${ids.length} classe${ids.length > 1 ? "s" : ""}, soit ${ids.length} € par mois, résiliable à tout moment. Tu vas aller sur la page de paiement sécurisée de Stripe.`,
+        {
+          buttons: [
+            { label: "Annuler", value: false },
+            { label: "Continuer", value: true, primary: true },
+          ],
+        }
+      );
+      if (!ok) return;
+      confirmBtn.disabled = true;
+      const res = await Sync.billing.checkout("super_enseignant", { classIds: ids });
+      if (res.url) {
+        window.location.href = res.url;
+        return;
+      }
+      confirmBtn.disabled = false;
+      await robotAlert((BILLING_ERRORS[res.error] || `Le paiement n'a pas pu s'ouvrir : ${res.error}`) + (res.detail ? `\n\nDétail : ${res.detail}` : ""));
+    };
+  }
+  const subsSuperBtn = el("subs-super-btn");
+  if (subsSuperBtn) {
+    subsSuperBtn.addEventListener("click", async () => {
+      const action = subsSuperBtn.dataset.action;
+      if (action === "has-individual") {
+        await robotAlert("Tu as déjà l'abonnement Individuel. Pour passer à Super enseignant (qui comprend aussi l'accès à toute la Librairie), résilie d'abord ton abonnement Individuel avec « Gérer mon abonnement », puis reviens ici.");
+        return;
+      }
+      if (action === "new" || action === "edit") openSuperClassesPanel(action);
+    });
   }
   const BILLING_ERRORS = {
     already_subscribed: "Tu as déjà un abonnement en cours.",
     plan_unavailable: "Cette formule n'est pas encore disponible.",
     no_customer: "Aucun abonnement n'a encore été souscrit avec ce compte.",
+    no_class: "Choisis au moins une de tes classes.",
+    no_super_subscription: "Tu n'as pas d'abonnement Super enseignant en cours.",
     not_deployed: "Le paiement n'est pas encore installé sur le serveur (fonctions Stripe non déployées).",
     not_configured: "Le serveur n'est pas configuré.",
     config_missing: "Le paiement n'est pas encore configuré sur le serveur (APP_URL manquant).",
     network: "Impossible de joindre le serveur. Vérifie ta connexion et réessaie.",
     not_authenticated: "Ta session a expiré : reconnecte-toi, puis réessaie.",
   };
+  /** Round 68 : durée de l'essai réglée dans Darwin Admin. */
+  function trialDaysSetting() {
+    const n = loadDevSettings().subscriptionPolicy.trialDays;
+    return Number.isFinite(n) ? n : 30;
+  }
+  /** « 1 mois », « 2 mois », « 14 jours »… ; "" si pas d'essai. */
+  function trialLabel() {
+    const n = trialDaysSetting();
+    if (n <= 0) return "";
+    if (n % 30 === 0) return `${n / 30} mois`;
+    return `${n} jour${n > 1 ? "s" : ""}`;
+  }
+  /** « 1 mois gratuit », « 2 mois gratuits », « 14 jours gratuits ». */
+  function trialFreeText() {
+    const n = trialDaysSetting();
+    const label = trialLabel();
+    if (!label) return "";
+    return `${label} ${n === 1 || n === 30 ? "gratuit" : "gratuits"}`;
+  }
+  /** Points de la carte Individuel qui parlent de l'essai. */
+  function renderTrialPoints() {
+    const label = trialLabel();
+    const p1 = el("subs-trial-point");
+    const p2 = el("subs-trial-point2");
+    if (p1) {
+      p1.hidden = !label;
+      p1.textContent = label ? (trialDaysSetting() === 30 ? "Premier mois offert" : `${label} offert${trialDaysSetting() === 1 ? "" : "s"}`) : "";
+    }
+    if (p2) p2.textContent = label ? "Moyen de paiement demandé dès l'inscription (rien n'est prélevé pendant la période offerte)" : "Paiement par carte, résiliable à tout moment";
+  }
   async function goToBilling(action, plan) {
     const btn = el("subs-individuel-btn");
     const annualBtn = el("subs-annuel-btn");
@@ -13106,9 +13392,9 @@
     if (action === "checkout") {
       const row = mySubscriptionRow;
       const price = plan === "individuel_annuel" ? "20 € par an" : "2 € par mois";
-      const trial = !(row && row.trial_used);
+      const trial = !(row && row.trial_used) && trialDaysSetting() > 0;
       const ok = await showRobotMessage(
-        `Formule ${plan === "individuel_annuel" ? "annuelle" : "mensuelle"} : ${trial ? `premier mois offert, puis ${price}` : price}. Tu vas aller sur la page de paiement sécurisée de Stripe. Si tu as moins de 18 ans, fais-le avec un parent : c'est lui qui donne sa carte. ${trial ? "Rien n'est prélevé pendant le mois offert, et tu" : "Tu"} peux résilier à tout moment.`,
+        `Formule ${plan === "individuel_annuel" ? "annuelle" : "mensuelle"} : ${trial ? `${trialFreeText()}, puis ${price}` : price}. Tu vas aller sur la page de paiement sécurisée de Stripe. Si tu as moins de 18 ans, fais-le avec un parent : c'est lui qui donne sa carte. ${trial ? "Rien n'est prélevé pendant la période offerte, et tu" : "Tu"} peux résilier à tout moment.`,
         {
           buttons: [
             { label: "Annuler", value: false },
@@ -13720,6 +14006,10 @@
   // des boîtes de révision — on y revient alors.
   let creationDetailOrigin = "creations";
   function openCreationDetail(subjectId, origin) {
+    if (isSubjectLocked(subjects.find((x) => x.id === subjectId))) {
+      showLockedSubjectMessage(subjects.find((x) => x.id === subjectId));
+      return;
+    }
     if (origin) creationDetailOrigin = origin;
     repairUnknownSubjectNames().then(() => {
       if (creationDetailSubjectId === subjectId) renderCreationDetail();
@@ -15374,6 +15664,16 @@
     // l'accueil et la résolution de cette promesse.
     await initAccountState();
     handleBillingReturn().catch(() => {});
+    // Round 67 : état d'abonnement et droits d'administrateur au démarrage
+    // (verrou des boîtes de la Librairie), puis réaffichage.
+    if (accountCurrentUser) {
+      Promise.all([refreshMySubscription(), refreshCoveredClasses(), Sync.isAdmin().then((v) => (accountIsAdminFlag = !!v))])
+        .catch(() => {})
+        .then(() => {
+          renderAll();
+          renderSubjectManageList();
+        });
+    }
     enforceLoginGate();
     homeEventWarningReady = true;
     refreshHomeEventWarning();
