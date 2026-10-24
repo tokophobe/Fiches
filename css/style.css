@@ -7875,3 +7875,13 @@ body.is-qcm-review .qcm-sheet { padding-bottom: 46px; }
 /* Round 69 : le bouton d'essai gratuit est mis en avant (couleur de la
    Librairie, au lieu de la couleur d'action grise de la page Compte). */
 #view-account .btn.btn--primary.account-subs-trial { background: var(--home-library-bg-color, #8a63c9); font-size: 15px; padding: 12px 14px; }
+
+/* Round 70 : pages légales (liens), case d'acceptation des conditions. */
+.legal-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; margin: 18px 0 8px; font-size: 13.5px; }
+.legal-links a { color: var(--ink-soft, #64748b); text-decoration: underline; text-underline-offset: 2px; }
+.account-terms-check { display: flex; align-items: flex-start; gap: 10px; margin: 6px 0 10px; font-size: 14px; line-height: 1.45; color: var(--ink); cursor: pointer; }
+.account-terms-check[hidden] { display: none; }
+.account-terms-check input { margin-top: 3px; width: 18px; height: 18px; flex: none; }
+.account-terms-check a { color: var(--action-color, #2f6fae); }
+.subs-legal { font-size: 13.5px; color: var(--ink-soft, #64748b); margin: 14px 4px 0; }
+.subs-legal a { color: inherit; }

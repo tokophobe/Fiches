@@ -1,0 +1,35 @@
+/* darwin — pages légales (mentions légales, confidentialité, CGU, CGV).
+   Pas de police externe : rien n'est chargé depuis un autre site. */
+:root {
+  --ink: #1f2937; --body: #334155; --slate: #64748b; --mist: #eef2f8; --paper: #ffffff;
+  --sky: #2f7fc4; --line: rgba(31, 41, 55, 0.12); --todo-bg: #fff3b0; --todo-ink: #6b4e00;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --ink: #e5e7eb; --body: #cbd5e1; --slate: #94a3b8; --mist: #0f172a; --paper: #1e293b; --sky: #7cb8ec; --line: rgba(226, 232, 240, 0.14); --todo-bg: #5c4a00; --todo-ink: #ffe9a3; }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--mist); color: var(--body); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px 48px; }
+header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 0 8px; }
+header.top a { color: var(--sky); text-decoration: none; font-weight: 600; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 700; font-size: 20px; text-decoration: none; }
+.brand img { width: 40px; height: 40px; object-fit: contain; }
+main { background: var(--paper); border-radius: 18px; padding: 22px 20px 28px; box-shadow: 0 10px 28px rgba(30, 60, 100, 0.07); }
+h1 { color: var(--ink); font-size: 28px; line-height: 1.2; margin: 4px 0 6px; }
+h2 { color: var(--ink); font-size: 21px; margin: 30px 0 8px; }
+h3 { color: var(--ink); font-size: 18px; margin: 20px 0 6px; }
+p, li { overflow-wrap: anywhere; }
+.updated { color: var(--slate); font-size: 15px; margin: 0 0 18px; }
+a { color: var(--sky); }
+table { width: 100%; border-collapse: collapse; font-size: 15.5px; margin: 10px 0; }
+th, td { text-align: left; vertical-align: top; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+th { color: var(--ink); }
+.table-scroll { overflow-x: auto; }
+mark.todo { background: var(--todo-bg); color: var(--todo-ink); padding: 0 3px; border-radius: 4px; font-weight: 600; }
+.draft-banner { background: var(--todo-bg); color: var(--todo-ink); border-radius: 12px; padding: 10px 14px; margin: 10px 0 16px; font-size: 15px; }
+.draft-banner[hidden] { display: none; }
+.toc { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 15px; margin: 0 0 6px; padding: 0; list-style: none; }
+footer { display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: center; padding: 22px 0 0; font-size: 15px; }
+footer a { color: var(--slate); }
+footer a[aria-current="page"] { color: var(--ink); font-weight: 700; text-decoration: none; }

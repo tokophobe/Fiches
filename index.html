@@ -1054,11 +1054,17 @@
             <span>Mot de passe</span>
             <input type="password" id="account-auth-password" autocomplete="current-password" />
           </label>
+          <!-- Round 70 : acceptation des conditions à la création du compte. -->
+          <label class="account-terms-check" id="account-auth-terms-field" hidden>
+            <input type="checkbox" id="account-auth-terms" />
+            <span>J'ai lu et j'accepte les <a href="legal/cgu.html" target="_blank" rel="noopener">conditions d'utilisation</a> et la <a href="legal/confidentialite.html" target="_blank" rel="noopener">politique de confidentialité</a>.</span>
+          </label>
           <button type="button" class="btn btn--primary" id="account-auth-submit">Se connecter</button>
           <!-- Round 55 : mot de passe oublié (email de réinitialisation). -->
           <button type="button" class="account-forgot-link" id="account-forgot-btn">Mot de passe oublié ?</button>
           <p class="field-hint" id="account-auth-note" hidden></p>
         </div>
+        <nav class="legal-links" aria-label="Informations légales"><a href="legal/mentions-legales.html" target="_blank" rel="noopener">Mentions légales</a><a href="legal/confidentialite.html" target="_blank" rel="noopener">Confidentialité</a><a href="legal/cgu.html" target="_blank" rel="noopener">Conditions d'utilisation</a><a href="legal/cgv.html" target="_blank" rel="noopener">Conditions de vente</a></nav>
       </div>
 
       <div id="account-connected-block" hidden>
@@ -1136,6 +1142,8 @@
         <div class="account-danger-zone">
           <button type="button" class="account-delete-link" id="account-delete-btn">Supprimer mon compte</button>
         </div>
+        <!-- Round 70 : pages légales. -->
+        <nav class="legal-links" aria-label="Informations légales"><a href="legal/mentions-legales.html" target="_blank" rel="noopener">Mentions légales</a><a href="legal/confidentialite.html" target="_blank" rel="noopener">Confidentialité</a><a href="legal/cgu.html" target="_blank" rel="noopener">Conditions d'utilisation</a><a href="legal/cgv.html" target="_blank" rel="noopener">Conditions de vente</a></nav>
       </div>
     </section>
 
@@ -1834,6 +1842,8 @@
           <button type="button" class="subs-offer-btn" id="subs-individuel-btn" disabled>Bientôt disponible</button>
           <button type="button" class="subs-offer-btn" id="subs-annuel-btn" hidden>Annuel — 20 € / an</button>
           <button type="button" class="subs-manage-link" id="subs-manage-btn" hidden>Gérer mon abonnement et mes factures</button>
+          <!-- Round 70 : résiliation en quelques clics (code de la consommation, art. L215-1-1). -->
+          <button type="button" class="subs-manage-link" id="subs-cancel-btn" hidden>Résilier mon abonnement</button>
         </li>
         <li class="subs-offer">
           <div class="subs-offer-head"><span class="subs-offer-name">Super enseignant</span><span class="subs-offer-price">1 € <small>/ mois / classe</small></span></div>
@@ -1860,6 +1870,8 @@
           <button type="button" class="subs-offer-btn" disabled>Bientôt disponible</button>
         </li>
       </ul>
+      <p class="subs-legal">Prix toutes taxes comprises. S'abonner, c'est accepter les <a href="legal/cgv.html" target="_blank" rel="noopener">conditions de vente</a> (résiliation, droit de rétractation de 14 jours…).</p>
+      <nav class="legal-links" aria-label="Informations légales"><a href="legal/mentions-legales.html" target="_blank" rel="noopener">Mentions légales</a><a href="legal/confidentialite.html" target="_blank" rel="noopener">Confidentialité</a><a href="legal/cgu.html" target="_blank" rel="noopener">Conditions d'utilisation</a><a href="legal/cgv.html" target="_blank" rel="noopener">Conditions de vente</a></nav>
     </section>
   </main>
 </div>

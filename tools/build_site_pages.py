@@ -158,6 +158,7 @@ def page(title, description, body, depth=1, extra_head=""):
   <footer>
     <a href="{up}index.html" aria-label="Accueil darwin"><img class="logo" src="{up}assets/darwin-logo-blue.png" alt="darwin" /></a>
     <nav><a href="{up}index.html">Accueil</a><a href="{up}defi.html">Défi du jour</a><a href="{up}revision/index.html">Fiches par matière et niveau</a><a href="{up}../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="{up}../legal/mentions-legales.html">Mentions légales</a><a href="{up}../legal/confidentialite.html">Confidentialité</a><a href="{up}../legal/cgu.html">Conditions d'utilisation</a><a href="{up}../legal/cgv.html">Conditions de vente</a></nav>
   </footer>
 </div>
 </body>

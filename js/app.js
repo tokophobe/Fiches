@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v229";
+  const APP_VERSION = "v230";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -10158,6 +10158,8 @@
     if (lastField) lastField.hidden = mode !== "signup";
     const forgot = el("account-forgot-btn");
     if (forgot) forgot.hidden = mode !== "signin";
+    const terms = el("account-auth-terms-field");
+    if (terms) terms.hidden = mode !== "signup";
   }
   const accountAuthTabSignin = el("account-auth-tab-signin");
   if (accountAuthTabSignin) accountAuthTabSignin.addEventListener("click", () => setClassesAuthMode("signin"));
@@ -10179,6 +10181,14 @@
         }
         return;
       }
+      // Round 70 : les conditions doivent être acceptées pour créer un compte.
+      if (classesAuthMode === "signup" && !(el("account-auth-terms") && el("account-auth-terms").checked)) {
+        if (note) {
+          note.hidden = false;
+          note.textContent = "Coche la case pour accepter les conditions d'utilisation et la politique de confidentialité.";
+        }
+        return;
+      }
       accountAuthSubmitBtn.disabled = true;
       const result =
         classesAuthMode === "signin"
@@ -10187,7 +10197,8 @@
               email,
               password,
               (el("account-auth-firstname").value || "").trim(),
-              (el("account-auth-lastname").value || "").trim()
+              (el("account-auth-lastname").value || "").trim(),
+              termsAcceptanceMeta()
             );
       accountAuthSubmitBtn.disabled = false;
       if (result.error) {
@@ -10208,6 +10219,7 @@
       passwordInput.value = "";
       await renderAccountView();
       await syncSharedBoxesForStudent();
+      setTimeout(ensureTermsAccepted, 300);
       // Round 22, item 4 : lève le verrou de connexion obligatoire tout de
       // suite après une connexion réussie (renderAccountView() ci-dessus a
       // déjà rafraîchi accountCurrentUser) — sans attendre un éventuel
@@ -10234,6 +10246,87 @@
   /** Round 67 : ligne « Abonnement » de la page Compte (état en une ligne
    *  + bouton vers la page Abonnements, qui n'avait pas d'autre accès que
    *  le message « il faut être abonné »). */
+  /* ---- Round 70 : pages légales et acceptation des conditions ----
+     LEGAL_VERSION change à chaque modification importante des conditions
+     d'utilisation ou de la politique de confidentialité : chaque compte
+     doit alors accepter la nouvelle version (une fois). */
+  const LEGAL_VERSION = "2026-11";
+  const LEGAL_URLS = {
+    cgu: "legal/cgu.html",
+    confidentialite: "legal/confidentialite.html",
+    cgv: "legal/cgv.html",
+    mentions: "legal/mentions-legales.html",
+  };
+  function openLegalPage(key) {
+    try {
+      window.open(LEGAL_URLS[key] || LEGAL_URLS.cgu, "_blank", "noopener");
+    } catch (e) {
+      /* fenêtre refusée */
+    }
+  }
+  function termsAcceptanceMeta() {
+    return { terms_version: LEGAL_VERSION, terms_accepted_at: new Date().toISOString() };
+  }
+  let termsPromptOpen = false;
+  /** Compte connecté qui n'a pas encore accepté la version en cours des
+   *  conditions : le robot le lui demande (lire, puis accepter). */
+  async function ensureTermsAccepted() {
+    if (termsPromptOpen || IS_ADMIN_PREVIEW || !accountCurrentUser) return;
+    const meta = accountCurrentUser.user_metadata || {};
+    if (meta.terms_version === LEGAL_VERSION) return;
+    termsPromptOpen = true;
+    try {
+      const first = !meta.terms_version;
+      for (;;) {
+        const choice = await showRobotMessage(
+          first
+            ? "Avant de continuer, lis et accepte les conditions d'utilisation de darwin et sa politique de confidentialité (quelles données sont utilisées, et pourquoi)."
+            : "Les conditions d'utilisation de darwin ou sa politique de confidentialité ont changé : lis-les, puis accepte-les pour continuer.",
+          {
+            buttons: [
+              { label: "Conditions", value: "cgu" },
+              { label: "Confidentialité", value: "confidentialite" },
+              { label: "J'accepte", value: "ok", primary: true },
+            ],
+            cancelValue: "later",
+          }
+        );
+        if (choice === "cgu" || choice === "confidentialite") {
+          openLegalPage(choice);
+          continue;
+        }
+        if (choice !== "ok") return;
+        const res = await Sync.auth.updateMetadata(termsAcceptanceMeta());
+        if (res && res.error) {
+          await robotAlert(`L'acceptation n'a pas pu être enregistrée : ${res.error}. Réessaie plus tard.`);
+          return;
+        }
+        accountCurrentUser = { ...accountCurrentUser, user_metadata: { ...meta, ...termsAcceptanceMeta() } };
+        return;
+      }
+    } finally {
+      termsPromptOpen = false;
+    }
+  }
+  /** Confirmation avant la page de paiement, avec accès aux conditions de
+   *  vente (les accepter fait partie de la confirmation). */
+  async function confirmCheckout(text) {
+    for (;;) {
+      const v = await showRobotMessage(`${text}\n\nEn continuant, tu acceptes les conditions de vente (résiliation à tout moment, droit de rétractation de 14 jours).`, {
+        buttons: [
+          { label: "Annuler", value: false },
+          { label: "Conditions de vente", value: "cgv" },
+          { label: "Continuer", value: true, primary: true },
+        ],
+      });
+      if (v === "cgv") {
+        openLegalPage("cgv");
+        continue;
+      }
+      return v === true;
+    }
+  }
+
   /** Round 69 : nom et prix de la formule d'une ligne d'abonnement. */
   function planDescription(row) {
     if (!row) return { name: "", price: "" };
@@ -13410,6 +13503,8 @@
       }
     }
     if (manage) manage.hidden = live || !(row && row.stripe_customer_id);
+    const cancelBtn = el("subs-cancel-btn");
+    if (cancelBtn) cancelBtn.hidden = !(live && !row.cancel_at_period_end);
     renderSuperOffer(row, live, open);
   }
 
@@ -13522,14 +13617,8 @@
       }
       const billed = Math.max(SUPER_MIN_CLASSES, ids.length);
       const annual = period() === "super_enseignant_annuel";
-      const ok = await showRobotMessage(
-        `Super enseignant : ${ids.length} classe${ids.length > 1 ? "s" : ""}, soit ${annual ? `${billed * 10} € par an` : `${billed} € par mois`}${ids.length < SUPER_MIN_CLASSES ? ` (tu pourras ajouter jusqu'à ${SUPER_MIN_CLASSES} classes sans payer plus)` : ""}, résiliable à tout moment. Tu vas aller sur la page de paiement sécurisée de Stripe.`,
-        {
-          buttons: [
-            { label: "Annuler", value: false },
-            { label: "Continuer", value: true, primary: true },
-          ],
-        }
+      const ok = await confirmCheckout(
+        `Super enseignant : ${ids.length} classe${ids.length > 1 ? "s" : ""}, soit ${annual ? `${billed * 10} € par an` : `${billed} € par mois`}${ids.length < SUPER_MIN_CLASSES ? ` (tu pourras ajouter jusqu'à ${SUPER_MIN_CLASSES} classes sans payer plus)` : ""}, résiliable à tout moment. Tu vas aller sur la page de paiement sécurisée de Stripe.`
       );
       if (!ok) return;
       confirmBtn.disabled = true;
@@ -13603,20 +13692,15 @@
       const row = mySubscriptionRow;
       const price = plan === "individuel_annuel" ? "20 € par an" : "2 € par mois";
       const trial = !(row && row.trial_used) && trialDaysSetting() > 0;
-      const ok = await showRobotMessage(
-        `Formule ${plan === "individuel_annuel" ? "annuelle" : "mensuelle"} : ${trial ? `${trialFreeText()}, puis ${price}` : price}. Tu vas aller sur la page de paiement sécurisée de Stripe. Si tu as moins de 18 ans, fais-le avec un parent : c'est lui qui donne sa carte. ${trial ? "Rien n'est prélevé pendant la période offerte, et tu" : "Tu"} peux résilier à tout moment.`,
-        {
-          buttons: [
-            { label: "Annuler", value: false },
-            { label: "Continuer", value: true, primary: true },
-          ],
-        }
+      const ok = await confirmCheckout(
+        `Formule ${plan === "individuel_annuel" ? "annuelle" : "mensuelle"} : ${trial ? `${trialFreeText()}, puis ${price}` : price}. Tu vas aller sur la page de paiement sécurisée de Stripe. Si tu as moins de 18 ans, fais-le avec un parent : c'est lui qui donne sa carte. ${trial ? "Rien n'est prélevé pendant la période offerte, et tu" : "Tu"} peux résilier à tout moment.`
       );
       if (!ok) return;
     }
     if (btn) btn.disabled = true;
     if (annualBtn) annualBtn.disabled = true;
-    const res = action === "portal" ? await Sync.billing.portal() : await Sync.billing.checkout(plan);
+    const res =
+      action === "portal" || action === "cancel" ? await Sync.billing.portal(action === "cancel" ? "cancel" : undefined) : await Sync.billing.checkout(plan);
     if (res.url) {
       window.location.href = res.url;
       return;
@@ -13645,6 +13729,19 @@
   }
   const subsManageBtn = el("subs-manage-btn");
   if (subsManageBtn) subsManageBtn.addEventListener("click", () => goToBilling("portal"));
+  // Round 70 : « Résilier mon abonnement » ouvre directement l'écran de
+  // résiliation de Stripe.
+  const subsCancelBtn = el("subs-cancel-btn");
+  if (subsCancelBtn)
+    subsCancelBtn.addEventListener("click", async () => {
+      const row = mySubscriptionRow;
+      const end = frenchDate(row && row.current_period_end);
+      const ok = await robotConfirm(
+        `Tu vas aller sur la page de Stripe pour résilier. Confirme avec « Annuler l'abonnement ».${end ? ` Ton abonnement restera actif jusqu'au ${end}, puis s'arrêtera : plus rien ne sera prélevé.` : ""} Ta progression est gardée.`,
+        { okLabel: "Résilier" }
+      );
+      if (ok) goToBilling("cancel");
+    });
 
   /** Round 65 : retour de Stripe (?abonnement=ok|annule|portail) : on
    *  nettoie l'adresse, on ouvre la page Abonnements et, après un
@@ -15923,6 +16020,7 @@
           renderAll();
           renderSubjectManageList();
           refreshHomeEventWarning();
+          ensureTermsAccepted();
         });
     }
     enforceLoginGate();

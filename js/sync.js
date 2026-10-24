@@ -803,13 +803,15 @@ function subscribePublicDevSettingsRealtime(onRemoteChange) {
 // Round 10 : nom/prénom demandés à la création d'un compte, stockés dans les
 // métadonnées du compte Supabase Auth (`user_metadata`) — pas besoin d'une
 // table dédiée, récupérables ensuite via authGetUser() -> user.user_metadata.
-async function authSignUp(email, password, firstName, lastName) {
+async function authSignUp(email, password, firstName, lastName, extraMeta) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
   const options = {};
   if (firstName || lastName) {
     options.data = { first_name: (firstName || "").trim(), last_name: (lastName || "").trim() };
   }
+  // Round 70 : version des conditions acceptées (et date), etc.
+  if (extraMeta && typeof extraMeta === "object") options.data = { ...(options.data || {}), ...extraMeta };
   invalidateAuthUserCache();
   const { data, error } = await c.auth.signUp({ email, password, options });
   return { data, error: error ? error.message : null };
@@ -1744,7 +1746,7 @@ window.Sync = {
   },
   billing: {
     checkout: (plan, extra) => billingInvoke("create-checkout", { plan: plan || "individuel", ...(extra || {}) }),
-    portal: () => billingInvoke("customer-portal", {}),
+    portal: (flow) => billingInvoke("customer-portal", flow ? { flow } : {}),
     // Round 68 : Super enseignant — classes couvertes.
     updateSuperClasses: (classIds) => billingInvoke("update-super-classes", { classIds }, true),
     coveredClasses: async () => {
