@@ -319,7 +319,7 @@
     stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
     dev: "Développeur", classes: "École", account: "Compte",
     library: "Librairie",
-    boxes: "Mes boîtes",
+    boxes: "Mes fiches",
     defi: "Défi du jour",
   };
   // Round 55 : boutons qui ne sont plus sur l'accueil (gardés pour les
@@ -910,7 +910,7 @@
     chartTodayLabel: "--chart-today-label-color", selectorText: "--selector-text-color", syncText: "--sync-text-color",
   };
   const NAV_ICON_TITLES_R57 = {
-    boxes: "Mes boîtes", review: "Réviser", manage: "Organiser mes boîtes de révision", stats: "Statistiques",
+    boxes: "Mes fiches", review: "Réviser", manage: "Organiser mes boîtes de révision", stats: "Statistiques",
     settings: "Réglages", calendar: "Calendrier", library: "Librairie", creations: "Créer mes propres boîtes de révision",
     reports: "Signalements",
   };

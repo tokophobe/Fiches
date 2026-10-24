@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v228";
+  const APP_VERSION = "v229";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -1649,7 +1649,7 @@
   function isSubjectLocked(s) {
     if (!s || accountIsAdminFlag) return false;
     if (!loadDevSettings().subscriptionPolicy.enforce) return false;
-    if (s.fromLibrary && s.libraryOriginId) return !hasLibrarySubscription();
+    if (s.fromLibrary && s.libraryOriginId) return !hasLibraryRevisionAccess();
     if (s.sharedBoxId && s.sharedFromLibrary) return !classLibraryAccess(s.sharedClassId);
     return false;
   }
@@ -7349,7 +7349,7 @@
   const PAGE_TITLES = {
     home: "Accueil",
     "review-hub": "Réviser",
-    "boxes-hub": "Mes boîtes",
+    "boxes-hub": "Mes fiches",
     "revision-program": "Révisions prioritaires",
     "revision-reinforce": "Renforcer mes connaissances",
     review: "Réviser",
@@ -7505,7 +7505,7 @@
    *  (`from`, qui est alors masqué) ; `hide` = titres d'origine à masquer. */
   const PAGE_HEADER_TITLES = {
     "review-hub": "Réviser",
-    "boxes-hub": "Mes boîtes",
+    "boxes-hub": "Mes fiches",
     "revision-program": "Révisions prioritaires",
     "revision-reinforce": "Renforcer mes connaissances",
     // Round 47 : sur Réviser, le titre est le nombre de fiches à revoir.
@@ -8310,6 +8310,8 @@
         target: { kind: "account" },
       });
     }
+    const payment = accountCurrentUser ? paymentProblem(mySubscriptionRow) : null;
+    if (payment) items.unshift({ text: payment.text, target: { kind: "billing" } });
     if (homeEventWarningReady) {
       const fmt = (d) => new Date(d + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
       upcomingEventsWithoutBox().forEach((ev) => {
@@ -8435,6 +8437,10 @@
   function homeTickerOpenCurrent() {
     const item = homeTicker.current || homeTicker.items[0];
     if (!item) return;
+    if (item.target.kind === "billing") {
+      goToBilling("portal");
+      return;
+    }
     if (item.target.kind === "account") {
       const tab = document.querySelector('.tab[data-view="account"]');
       if (tab) tab.click();
@@ -10121,6 +10127,8 @@
       await Taxonomy.load();
       accountSchoolCascade = createTaxonomyCascade(schoolTaxEl, {
         mode: "profile",
+        // Round 69 : même présentation en blocs imbriqués que la Librairie.
+        nested: true,
         sel: profileSchoolSelection(meta),
         hiddenKeys: ["categorie"],
         excludeKeys: ["matiere"],
@@ -10226,9 +10234,53 @@
   /** Round 67 : ligne « Abonnement » de la page Compte (état en une ligne
    *  + bouton vers la page Abonnements, qui n'avait pas d'autre accès que
    *  le message « il faut être abonné »). */
+  /** Round 69 : nom et prix de la formule d'une ligne d'abonnement. */
+  function planDescription(row) {
+    if (!row) return { name: "", price: "" };
+    const n = Math.max(SUPER_MIN_CLASSES, Number(row.quantity) || 0);
+    switch (row.plan) {
+      case "individuel":
+        return { name: "Individuel (mensuel)", price: "2 € par mois" };
+      case "individuel_annuel":
+        return { name: "Individuel (annuel)", price: "20 € par an" };
+      case "super_enseignant":
+        return { name: "Super enseignant (mensuel)", price: `${n} € par mois (${n} classes)` };
+      case "super_enseignant_annuel":
+        return { name: "Super enseignant (annuel)", price: `${n * 10} € par an (${n} classes)` };
+      default:
+        return { name: row.source === "manual" ? "Abonnement offert" : "Abonnement", price: "" };
+    }
+  }
+  /** Round 69 : nombre de boîtes et de fiches de la Librairie (liste
+   *  publique, gardée en mémoire). */
+  let libraryStatsCache = null;
+  async function libraryStats() {
+    if (libraryStatsCache) return libraryStatsCache;
+    try {
+      const cols = libraryCollectionsCache && libraryCollectionsCache.length ? libraryCollectionsCache : await Sync.library.list();
+      libraryStatsCache = { boxes: cols.length, cards: cols.reduce((t, c) => t + libraryCardCount(c), 0) };
+    } catch (e) {
+      libraryStatsCache = null;
+    }
+    return libraryStatsCache;
+  }
+  function frenchNumber(n) {
+    return Number(n || 0).toLocaleString("fr-FR");
+  }
+  /** Texte « gratuit / ce que donne un abonnement », avec les chiffres de
+   *  la Librairie quand on les a. */
+  async function freeUsageText() {
+    const st = await libraryStats();
+    const lib = st && st.cards ? `la Librairie de darwin : ${frenchNumber(st.cards)} fiches prêtes à réviser, dans ${frenchNumber(st.boxes)} boîtes, de la primaire au lycée` : "la Librairie de darwin, ses fiches prêtes à réviser";
+    return `L'appli est gratuite pour une utilisation normale : créer et réviser tes propres fiches, et partager des fiches entre élèves et enseignants. Un abonnement donne en plus accès à ${lib}.`;
+  }
+  /** Round 67 / 69 : section « Abonnement » de la page Compte — détail de
+   *  l'abonnement en cours, ou rappel de la gratuité + essai gratuit. */
   async function renderAccountSubscriptionSummary() {
-    const sum = el("account-subs-summary");
-    if (!sum) return;
+    const details = el("account-subs-details");
+    const free = el("account-subs-free");
+    const trialBtn = el("account-subs-trial-btn");
+    if (!details || !free) return;
     try {
       await refreshMySubscription();
     } catch (e) {
@@ -10236,13 +10288,68 @@
     }
     const row = mySubscriptionRow;
     const end = frenchDate(row && row.current_period_end);
-    const valid = !!row && (!row.current_period_end || new Date(row.current_period_end) > new Date());
-    let text = "Aucun abonnement";
-    if (valid && row.status === "past_due") text = "Paiement à régulariser";
-    else if (valid && row.cancel_at_period_end && (row.status === "active" || row.status === "trial")) text = `Résilié, actif jusqu'au ${end}`;
-    else if (valid && row.status === "trial") text = end ? `Essai gratuit jusqu'au ${end}` : "Essai gratuit";
-    else if (valid && row.status === "active") text = row.plan === "individuel_annuel" ? "Individuel annuel" : row.plan === "individuel" ? "Individuel mensuel" : "Abonné";
-    sum.textContent = text;
+    const valid = !!row && ["active", "trial", "past_due"].includes(row.status) && (!row.current_period_end || new Date(row.current_period_end) > new Date());
+    if (valid) {
+      const d = planDescription(row);
+      const lines = [["Formule", d.name]];
+      if (d.price) lines.push(["Prix", d.price]);
+      let state = "Actif";
+      if (row.status === "trial") state = `Essai gratuit${end ? ` jusqu'au ${end}` : ""}`;
+      if (row.status === "past_due") state = "Paiement refusé : mets à jour ta carte";
+      if (row.cancel_at_period_end) state = `Résilié, actif jusqu'au ${end}`;
+      const problem = paymentProblem(row);
+      lines.push(["État", state]);
+      if (end && !row.cancel_at_period_end && row.source === "stripe") lines.push([row.status === "trial" ? "Premier prélèvement" : "Prochain prélèvement", end]);
+      if (end && row.source !== "stripe") lines.push(["Jusqu'au", end]);
+      const card = cardSummary(row);
+      if (card) lines.push(["Carte", card]);
+      details.innerHTML =
+        lines.map(([k, v]) => `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(v)}</dd>`).join("") +
+        (problem ? `<dd class="account-subs-warn">${escapeHtml(problem.text)}</dd>` : "");
+      details.hidden = false;
+      free.hidden = true;
+      if (trialBtn) trialBtn.hidden = true;
+      return;
+    }
+    details.hidden = true;
+    free.hidden = false;
+    free.textContent = await freeUsageText();
+    if (trialBtn) {
+      const canTrial = !!loadDevSettings().subscriptionPolicy.checkoutOpen && trialDaysSetting() > 0 && !(row && row.trial_used);
+      trialBtn.hidden = !canTrial;
+      if (canTrial) trialBtn.textContent = `Essayer gratuitement pendant ${trialLabel()}`;
+    }
+  }
+  const accountSubsTrialBtn = el("account-subs-trial-btn");
+  if (accountSubsTrialBtn) accountSubsTrialBtn.addEventListener("click", () => goToBilling("checkout", "individuel"));
+  /** Round 69 : problème de paiement à signaler (abonnement Stripe en
+   *  cours, non résilié) : prélèvement refusé, ou carte qui expire avant le
+   *  prochain prélèvement. Renvoie { text, short } ou null. */
+  function paymentProblem(row) {
+    if (!stripeSubscriptionLive(row)) return null;
+    if (row.status === "past_due")
+      return {
+        short: "Paiement refusé : mets à jour ta carte",
+        text: "Le dernier prélèvement de ton abonnement n'est pas passé : enregistre une carte valide avec « Gérer mon abonnement ».",
+      };
+    if (row.cancel_at_period_end || !row.card_exp_month || !row.card_exp_year || !row.current_period_end) return null;
+    // La carte reste valable jusqu'au dernier jour de son mois d'expiration.
+    const cardEnd = new Date(row.card_exp_year, row.card_exp_month, 0, 23, 59, 59);
+    const next = new Date(row.current_period_end);
+    if (cardEnd >= next) return null;
+    const exp = `${String(row.card_exp_month).padStart(2, "0")}/${row.card_exp_year}`;
+    const expired = cardEnd < new Date();
+    return {
+      short: expired ? `Carte expirée (${exp}) : enregistre une nouvelle carte` : `Carte expirant le ${exp} : enregistre une nouvelle carte`,
+      text: `${expired ? "Ta carte bancaire a expiré" : "Ta carte bancaire expire"} (${exp}) avant le prochain prélèvement du ${frenchDate(row.current_period_end)} : enregistre une nouvelle carte avec « Gérer mon abonnement ».`,
+    };
+  }
+  /** Round 69 : « Visa •••• 4242, expire 08/2027 » (si connu). */
+  function cardSummary(row) {
+    if (!row || !row.card_last4) return "";
+    const brand = row.card_brand ? `${row.card_brand.charAt(0).toUpperCase()}${row.card_brand.slice(1)} ` : "";
+    const exp = row.card_exp_month && row.card_exp_year ? `, expire ${String(row.card_exp_month).padStart(2, "0")}/${row.card_exp_year}` : "";
+    return `${brand}•••• ${row.card_last4}${exp}`;
   }
   const accountSubsBtn = el("account-subs-btn");
   if (accountSubsBtn) {
@@ -11864,6 +11971,14 @@
           } else {
             const subject = subjects.find((s) => s.id === id);
             if (!subject) return;
+            // Round 69 : une boîte créée par l'enseignant et pas encore dans
+            // la Librairie → formulaire de la Librairie d'abord (classement,
+            // résumé…), puis partage avec la classe + proposition à darwin.
+            if (isOwnCreatedSubject(subject) && !myPublishedSourceIds.has(subject.id)) {
+              closeBoitePickerView();
+              await openClassShareForm(klass, subject);
+              return;
+            }
             name = subject.name;
             boxCards = cards.filter((c) => !c.deleted && c.subject === id);
             // Round 53 : n'hérite d'aucune arborescence (racine de la classe).
@@ -11880,7 +11995,7 @@
               } catch (e) { /* best-effort */ }
             };
           }
-          const { data, error } = await Sync.classes.shareBox(klass.id, name, boxCards, folderPathNames);
+          const { data, error } = await Sync.classes.shareBox(klass.id, name, boxCards, folderPathNames, kind === "library" ? { libraryCollectionId: id } : undefined);
           closeBoitePickerView();
           if (error) {
             await robotAlert("Erreur lors du partage : " + error);
@@ -11891,6 +12006,67 @@
           showToast(`« ${name} » partagée avec la classe`);
         },
       });
+    });
+  }
+
+  /** Round 69 : partage d'une boîte créée avec une classe, avec le
+   *  formulaire de la Librairie ; la boîte est partagée tout de suite et
+   *  proposée à darwin (table library_submissions, Darwin Admin →
+   *  Librairie → Propositions). */
+  async function openClassShareForm(klass, subject) {
+    const role = classDetailContext ? classDetailContext.role : "teacher";
+    const backToClass = () => openClassDetailView(klass, role);
+    await openLibraryShareView(subject, cards.filter((c) => !c.deleted && c.subject === subject.id), {
+      classMode: true,
+      className: klass.name,
+      onCancel: backToClass,
+      onSubmit: async (meta) => {
+        const boxCards = cards.filter((c) => !c.deleted && c.subject === subject.id);
+        if (!boxCards.length) {
+          await robotAlert("Cette boîte ne contient aucune fiche.");
+          return;
+        }
+        // Le classement et les tags restent aussi sur la boîte (repris si
+        // l'enseignant la publie plus tard lui-même).
+        subject.taxonomy = meta.taxonomy;
+        if (meta.name && meta.name !== subject.name) subject.name = meta.name;
+        subject.updatedAt = new Date().toISOString();
+        await persistSubject(subject);
+        const { data, error } = await Sync.classes.shareBox(klass.id, subject.name, boxCards, []);
+        if (error) {
+          await robotAlert("Erreur lors du partage : " + error);
+          return;
+        }
+        subject.sharedShares = subject.sharedShares || [];
+        subject.sharedShares.push({ classId: klass.id, className: klass.name, boxId: data.id });
+        subject.updatedAt = new Date().toISOString();
+        await persistSubject(subject);
+        try {
+          await Sync.messages.send(klass.id, `📚 « ${subject.name} » a été partagée dans la classe.`);
+        } catch (e) {
+          /* best-effort */
+        }
+        const sub = await Sync.library.submit({
+          name: meta.name || subject.name,
+          summary: meta.summary,
+          description: meta.description,
+          taxonomy: meta.taxonomy,
+          tags: meta.tags,
+          cards: boxCards,
+          classId: klass.id,
+          className: klass.name,
+          sharedBoxId: data.id,
+          sourceSubjectId: subject.id,
+        });
+        libraryShareClassOpts = null;
+        backToClass();
+        showToast(`« ${subject.name} » partagée avec la classe`);
+        await robotAlert(
+          sub.error
+            ? `« ${subject.name} » est partagée avec ta classe. (La proposition pour la Librairie n'a pas pu être envoyée : ${sub.error})`
+            : `« ${subject.name} » est partagée avec ta classe. Merci ! Elle est aussi proposée à darwin pour la Librairie : tu la verras dans la Librairie si elle y est publiée.`
+        );
+      },
     });
   }
 
@@ -12343,7 +12519,7 @@
     // niveau…) — le sélecteur en haut de chaque bloc, le bloc suivant
     // dessous, même marge à gauche, à droite et en bas ; léger dégradé de
     // teinte d'un bloc à l'autre. Pas pour le niveau scolaire du profil.
-    const nested = mode !== "profile";
+    const nested = opts && typeof opts.nested === "boolean" ? opts.nested : mode !== "profile";
     const taxScope = opts && opts.scope === "library" ? "library" : "other";
     function draw() {
       const tax = Taxonomy.get();
@@ -13118,6 +13294,22 @@
       }
     }
   }
+  /** Round 69 : formule Super enseignant (mensuelle ou annuelle). */
+  var SUPER_MIN_CLASSES = 3;
+  function isSuperPlan(row) {
+    return !!row && (row.plan === "super_enseignant" || row.plan === "super_enseignant_annuel");
+  }
+  /** Round 69 : droit d'AJOUTER des boîtes de la Librairie à ses révisions
+   *  (et de les réviser). Super enseignant donne seulement la consultation
+   *  (fiches en entier) et le partage avec ses classes couvertes. */
+  function hasLibraryRevisionAccess() {
+    if (accountIsAdminFlag) return true;
+    const row = mySubscriptionRow;
+    const active = !!row && (row.status === "active" || row.status === "trial") && (!row.current_period_end || new Date(row.current_period_end) > new Date());
+    if (active && !isSuperPlan(row)) return true;
+    if (loadDevSettings().subscriptionPolicy.enforce) return false;
+    return !(row && row.status === "none");
+  }
   function hasLibrarySubscription() {
     if (!accountCurrentUser) return false;
     const row = mySubscriptionRow;
@@ -13165,11 +13357,12 @@
     const end = frenchDate(row && row.current_period_end);
     const live = stripeSubscriptionLive(row);
     let text = "";
-    if (live && row.status === "past_due") text = "Le dernier paiement n'est pas passé : mets à jour ta carte avec « Gérer mon abonnement ».";
+    const problem = paymentProblem(row);
+    if (problem) text = problem.text;
     else if (live && row.cancel_at_period_end) text = `Ton abonnement est résilié : il reste actif jusqu'au ${end}.`;
-    else if (live && row.plan === "super_enseignant") {
-      const n = Array.isArray(row.super_class_ids) ? row.super_class_ids.length : row.quantity || 0;
-      text = `Super enseignant actif : ${n} classe${n > 1 ? "s" : ""} couverte${n > 1 ? "s" : ""} (${n} € par mois). Prochain renouvellement le ${end}.`;
+    else if (live && isSuperPlan(row)) {
+      const n = Array.isArray(row.super_class_ids) ? row.super_class_ids.length : 0;
+      text = `Super enseignant actif : ${n} classe${n > 1 ? "s" : ""} couverte${n > 1 ? "s" : ""} — ${planDescription(row).price}. Prochain renouvellement le ${end}.`;
     } else if (live && row.status === "trial") text = `Tu es en période d'essai gratuite jusqu'au ${end}. Ensuite : ${row.plan === "individuel_annuel" ? "20 € par an" : "2 € par mois"}, résiliable à tout moment.`;
     else if (live && row.status === "active") text = `Ton abonnement est actif. Prochain renouvellement le ${end}.`;
     else if (row && row.status === "active") text = `Ton abonnement est actif${end ? ` jusqu'au ${end}` : ""}.`;
@@ -13182,7 +13375,7 @@
     st.hidden = false;
     st.textContent = text;
     st.classList.toggle("subs-status--none", !(row && (row.status === "active" || row.status === "trial")) && !hasLibrarySubscription());
-    st.classList.toggle("subs-status--warn", !!(live && row.status === "past_due"));
+    st.classList.toggle("subs-status--warn", !!problem);
 
     const open = !!loadDevSettings().subscriptionPolicy.checkoutOpen;
     const manualActive = !!row && row.source !== "stripe" && (row.status === "active" || row.status === "trial") && (!row.current_period_end || new Date(row.current_period_end) > new Date());
@@ -13225,7 +13418,7 @@
     const btn = el("subs-super-btn");
     const panel = el("subs-super-classes");
     if (!btn) return;
-    const superLive = live && row.plan === "super_enseignant";
+    const superLive = live && isSuperPlan(row);
     if (panel && !panel.dataset.open) panel.hidden = true;
     if (superLive) {
       btn.textContent = "Choisir mes classes couvertes";
@@ -13236,11 +13429,11 @@
       btn.disabled = true;
       btn.dataset.action = "";
     } else if (live) {
-      btn.textContent = "S'abonner — 1 € / mois / classe";
+      btn.textContent = "S'abonner — à partir de 3 € / mois";
       btn.disabled = false;
       btn.dataset.action = "has-individual";
     } else {
-      btn.textContent = "Choisir mes classes — 1 € / mois / classe";
+      btn.textContent = "Choisir mes classes — à partir de 3 € / mois";
       btn.disabled = false;
       btn.dataset.action = "new";
     }
@@ -13273,6 +13466,10 @@
             <span class="subs-super-count${tooBig ? " is-warn" : ""}">${n == null ? "" : `${n} élève${n > 1 ? "s" : ""}${tooBig ? " — plus de 60 : non couverte" : ""}`}</span></label></li>`;
         })
         .join("")}</ul>
+      ${mode === "edit" ? "" : `<div class="subs-super-period" role="radiogroup" aria-label="Facturation">
+        <label><input type="radio" name="subs-super-period" value="super_enseignant" checked /> Au mois — 1 € / classe</label>
+        <label><input type="radio" name="subs-super-period" value="super_enseignant_annuel" /> À l'année — 10 € / classe</label>
+      </div>`}
       <p class="subs-super-total" id="subs-super-total"></p>
       <div class="subs-super-actions">
         <button type="button" class="subs-manage-link" id="subs-super-cancel">Annuler</button>
@@ -13280,11 +13477,22 @@
       </div>`;
     const total = () => [...panel.querySelectorAll("input[type=checkbox]:checked")].map((x) => x.value);
     const confirmBtn = el("subs-super-confirm");
+    // Round 69 : mensuel ou annuel ; 3 classes facturées au minimum.
+    const period = () => {
+      if (mode === "edit") return row && row.plan === "super_enseignant_annuel" ? "super_enseignant_annuel" : "super_enseignant";
+      const r = panel.querySelector('input[name="subs-super-period"]:checked');
+      return r ? r.value : "super_enseignant";
+    };
     const refresh = () => {
       const n = total().length;
-      el("subs-super-total").textContent = n ? `${n} classe${n > 1 ? "s" : ""} × 1 € = ${n} € par mois` : "Aucune classe cochée.";
+      const billed = Math.max(SUPER_MIN_CLASSES, n);
+      const annual = period() === "super_enseignant_annuel";
+      const amount = annual ? `${billed * 10} € par an` : `${billed} € par mois`;
+      el("subs-super-total").textContent = n
+        ? `${n} classe${n > 1 ? "s" : ""} cochée${n > 1 ? "s" : ""} : ${amount}${n < SUPER_MIN_CLASSES ? ` (minimum, jusqu'à ${SUPER_MIN_CLASSES} classes)` : ""}`
+        : "Aucune classe cochée.";
       confirmBtn.disabled = n === 0;
-      confirmBtn.textContent = mode === "edit" ? "Enregistrer" : `Payer ${n} € / mois`;
+      confirmBtn.textContent = mode === "edit" ? "Enregistrer" : `Payer ${annual ? `${billed * 10} € / an` : `${billed} € / mois`}`;
     };
     panel.addEventListener("change", refresh);
     refresh();
@@ -13308,12 +13516,14 @@
         await refreshMySubscription();
         await refreshCoveredClasses();
         closePanel();
-        await robotAlert(`C'est enregistré : ${ids.length} classe${ids.length > 1 ? "s" : ""} couverte${ids.length > 1 ? "s" : ""}, soit ${ids.length} € par mois. La différence est calculée au prorata sur ta prochaine facture.`);
+        await robotAlert(`C'est enregistré : ${ids.length} classe${ids.length > 1 ? "s" : ""} couverte${ids.length > 1 ? "s" : ""}, soit ${planDescription(mySubscriptionRow).price}. S'il y a une différence de prix, elle est calculée au prorata sur ta prochaine facture.`);
         renderSubscriptionsStatus();
         return;
       }
+      const billed = Math.max(SUPER_MIN_CLASSES, ids.length);
+      const annual = period() === "super_enseignant_annuel";
       const ok = await showRobotMessage(
-        `Super enseignant : ${ids.length} classe${ids.length > 1 ? "s" : ""}, soit ${ids.length} € par mois, résiliable à tout moment. Tu vas aller sur la page de paiement sécurisée de Stripe.`,
+        `Super enseignant : ${ids.length} classe${ids.length > 1 ? "s" : ""}, soit ${annual ? `${billed * 10} € par an` : `${billed} € par mois`}${ids.length < SUPER_MIN_CLASSES ? ` (tu pourras ajouter jusqu'à ${SUPER_MIN_CLASSES} classes sans payer plus)` : ""}, résiliable à tout moment. Tu vas aller sur la page de paiement sécurisée de Stripe.`,
         {
           buttons: [
             { label: "Annuler", value: false },
@@ -13323,7 +13533,7 @@
       );
       if (!ok) return;
       confirmBtn.disabled = true;
-      const res = await Sync.billing.checkout("super_enseignant", { classIds: ids });
+      const res = await Sync.billing.checkout(period(), { classIds: ids });
       if (res.url) {
         window.location.href = res.url;
         return;
@@ -13539,14 +13749,14 @@
     }
     // Round 55 : l'abonnement est vérifié AVANT le choix du dossier.
     await refreshMySubscription();
-    if (!hasLibrarySubscription()) {
-      await showSubscriptionRequired();
+    if (!hasLibraryRevisionAccess()) {
+      await showSubscriptionRequired(isSuperPlan(mySubscriptionRow) ? "La formule Super enseignant permet de consulter toutes les boîtes de la Librairie et de les partager avec tes classes couvertes, mais pas de les ajouter à tes propres révisions (il faut pour cela l'abonnement Individuel)." : undefined);
       return false;
     }
     const folderId = await pickRevisionFolder(`Dans quel dossier ranger « ${col.name} » ?`);
     if (folderId === undefined) return false;
     await refreshMySubscription();
-    if (!hasLibrarySubscription()) {
+    if (!hasLibraryRevisionAccess()) {
       await showSubscriptionRequired();
       return false;
     }
@@ -13669,7 +13879,26 @@
    *  en jetons). */
   let libraryShareCascade = null;
   let libraryShareTagInput = null;
-  async function openLibraryShareView(subject, boxCards) {
+  async function openLibraryShareView(subject, boxCards, shareOpts) {
+    // Round 69 : `shareOpts.classMode` = partage d'une boîte créée avec une
+    // classe (formulaire de la Librairie, puis partage immédiat avec la
+    // classe et proposition à darwin) ; `onSubmit(meta)` fait le partage,
+    // `onCancel()` revient à la classe.
+    const classMode = !!(shareOpts && shareOpts.classMode);
+    const titleEl = el("library-share-title");
+    const hintEl = el("library-share-class-hint");
+    const summaryLabelEl = el("library-share-summary-label");
+    const submitBtnEl = el("library-share-submit");
+    if (titleEl) titleEl.textContent = classMode ? `Partager avec « ${shareOpts.className} »` : "Partager dans la librairie";
+    if (hintEl) {
+      hintEl.hidden = !classMode;
+      hintEl.textContent = classMode
+        ? "Ta boîte sera partagée tout de suite avec ta classe. Elle sera aussi proposée à darwin pour la Librairie : après relecture (et éventuelles corrections), elle pourra y être publiée à ton nom, pour profiter à d'autres élèves. Pour cela, renseigne son classement et un résumé."
+        : "";
+    }
+    if (summaryLabelEl) summaryLabelEl.textContent = classMode ? "Résumé (une phrase)" : "Résumé (une phrase, optionnel)";
+    if (submitBtnEl) submitBtnEl.textContent = classMode ? "Partager avec la classe" : "Partager";
+    libraryShareClassOpts = classMode ? shareOpts : null;
     const nameEl = el("library-share-name");
     const taxEl = el("library-share-taxonomy");
     const tagsEl = el("library-share-tags");
@@ -13739,6 +13968,20 @@
         const taxonomy = taxonomyValueFromSelection(libraryShareCascade ? libraryShareCascade.getSelection() : {});
         const tags = libraryShareTagInput ? libraryShareTagInput.getTags() : [];
         const submitBtn = el("library-share-submit");
+        if (classMode) {
+          const summary = ((summaryEl && summaryEl.value) || "").trim();
+          if (!summary) {
+            await robotAlert("Ajoute un résumé d'une phrase : il présentera ta boîte dans la Librairie.");
+            return;
+          }
+          if (submitBtn) submitBtn.disabled = true;
+          try {
+            await shareOpts.onSubmit({ name, taxonomy, tags, summary, description: ((descriptionEl && descriptionEl.value) || "").trim() });
+          } finally {
+            if (submitBtn) submitBtn.disabled = false;
+          }
+          return;
+        }
         if (submitBtn) submitBtn.disabled = true;
         const { error } = await Sync.library.share(name, boxCards, {
           // `level` reste rempli (libellé du niveau) pour les versions
@@ -13770,7 +14013,14 @@
   // Round 30 : la publication se lance surtout depuis Mes créations de
   // fiches — on y revient (plutôt que sur Mes fiches de révision).
   let libraryShareReturnView = "manage";
+  let libraryShareClassOpts = null;
   function closeLibraryShareView() {
+    if (libraryShareClassOpts) {
+      const o = libraryShareClassOpts;
+      libraryShareClassOpts = null;
+      if (o.onCancel) o.onCancel();
+      return;
+    }
     const back = libraryShareReturnView || "manage";
     libraryShareReturnView = "manage";
     boitePickerActivateView(`view-${back}`);
@@ -15672,6 +15922,7 @@
         .then(() => {
           renderAll();
           renderSubjectManageList();
+          refreshHomeEventWarning();
         });
     }
     enforceLoginGate();

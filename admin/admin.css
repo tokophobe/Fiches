@@ -384,3 +384,11 @@ pre.code {
 .visual-more { margin: 0 0 16px; }
 .visual-more > summary { cursor: pointer; font-weight: 600; color: var(--muted); padding: 8px 2px 12px; }
 .ctrl-ghost { visibility: hidden; pointer-events: none; }
+
+/* Round 69 : relecture d'une proposition d'enseignant. */
+.submission-form { display: grid; gap: 10px; }
+.submission-form .form-field { display: grid; gap: 4px; }
+.submission-form .form-field > span { font-size: 12.5px; color: var(--muted, #6b7a76); }
+.submission-cards { display: grid; gap: 10px; max-height: 50vh; overflow: auto; padding-right: 4px; }
+.submission-card { display: grid; gap: 4px; padding: 8px; border: 1px solid var(--line, #e3e7e5); border-radius: 10px; }
+.submission-card .btn { justify-self: end; }

@@ -1039,6 +1039,7 @@
       { class: "tabs" },
       [
         ["collections", "Collections publiées", "#/library"],
+        ["submissions", "Propositions des enseignants", "#/library/submissions"],
         ["packs", "Boîtes toutes prêtes", "#/library/packs"],
         ["taxonomy", "Classement (Excel)", "#/library/taxonomy"],
       ].map(([k, l, href]) => h("a", { href, class: k === active ? "is-active" : null }, l))
@@ -1088,6 +1089,7 @@
     setTitle("Librairie", [{ label: "Contenus" }]);
     root.appendChild(libraryTabs(tab));
     if (tab === "packs") return libraryPacksTab(root, live);
+    if (tab === "submissions") return librarySubmissionsTab(root, live);
     if (tab === "taxonomy") return libraryTaxonomyTab(root, live);
     if (state.limited) {
       root.appendChild(errorCard(MIGRATION_HINT));
@@ -1350,6 +1352,183 @@
     }
     return out;
   }
+  /* ---- Round 69 : propositions des enseignants (boîtes partagées avec
+     une classe) : relecture, modification, publication dans la Librairie
+     au nom de l'enseignant, ou refus. ---- */
+  const SUBMISSION_STATUS = { pending: ["À relire", "warn"], published: ["Publiée", "ok"], rejected: ["Refusée", null] };
+  async function librarySubmissionsTab(root, live) {
+    const listCard = h("div", { class: "card card--flush" }, h("p", { class: "muted", style: { padding: "14px" } }, "Chargement…"));
+    let filter = "pending";
+    const seg = h(
+      "div",
+      { class: "seg" },
+      [
+        ["pending", "À relire"],
+        ["published", "Publiées"],
+        ["rejected", "Refusées"],
+        ["all", "Toutes"],
+      ].map(([v, l]) =>
+        h(
+          "button",
+          {
+            type: "button",
+            class: v === filter ? "is-active" : null,
+            onclick: (e) => {
+              filter = v;
+              seg.querySelectorAll("button").forEach((b) => b.classList.toggle("is-active", b === e.currentTarget));
+              load();
+            },
+          },
+          l
+        )
+      )
+    );
+    root.appendChild(
+      card(
+        null,
+        "Quand un enseignant partage une boîte qu'il a créée avec une de ses classes, elle est partagée tout de suite et proposée ici. Relis-la, corrige-la si besoin, puis publie-la dans la Librairie (à son nom) ou refuse-la.",
+        h("div", { class: "toolbar" }, seg)
+      )
+    );
+    root.appendChild(listCard);
+    async function load() {
+      let q = client().from("library_submissions").select("*").order("created_at", { ascending: false }).limit(200);
+      if (filter !== "all") q = q.eq("status", filter);
+      const { data, error } = await q;
+      if (!live()) return;
+      if (error) {
+        listCard.replaceChildren(h("p", { class: "form-error", style: { padding: "14px" } }, /library_submissions/.test(error.message || "") ? "La table des propositions n'existe pas encore : exécute supabase/round69_migration.sql dans Supabase." : friendlyError(error)));
+        return;
+      }
+      listCard.replaceChildren(
+        table(
+          [
+            { label: "Reçue", render: (r) => fmtDate(r.created_at) },
+            { label: "Enseignant", render: (r) => `${r.owner_first_name || ""} ${r.owner_last_name || ""}`.trim() || "—" },
+            { label: "Classe", render: (r) => r.class_name || "—" },
+            { label: "Boîte", render: (r) => h("div", null, r.name, h("div", { class: "cell-sub" }, taxonomyShort(r.taxonomy, ""))) },
+            { label: "Fiches", cls: "num", render: (r) => fmtN(Array.isArray(r.cards) ? r.cards.length : 0) },
+            { label: "État", render: (r) => badge(...(SUBMISSION_STATUS[r.status] || [r.status])) },
+          ],
+          data || [],
+          { empty: filter === "pending" ? "Aucune proposition à relire." : "Aucune proposition.", onRow: (r) => openSubmission(r, load) }
+        )
+      );
+    }
+    load();
+  }
+  async function openSubmission(sub, reload) {
+    const field = (label, node) => h("label", { class: "form-field" }, h("span", null, label), node);
+    const nameIn = h("input", { type: "text", class: "input", value: sub.name || "" });
+    const summaryIn = h("input", { type: "text", class: "input", value: sub.summary || "", maxlength: "140" });
+    const descIn = h("textarea", { class: "input", rows: "3" });
+    descIn.value = sub.description || "";
+    const tagsIn = h("input", { type: "text", class: "input", value: (sub.tags || []).join(", "), placeholder: "tags séparés par des virgules" });
+    const noteIn = h("textarea", { class: "input", rows: "2", placeholder: "Note (raison d'un refus, corrections faites…)" });
+    noteIn.value = sub.admin_note || "";
+    let cardsData = (Array.isArray(sub.cards) ? sub.cards : []).map((c) => ({ ...c }));
+    const cardsWrap = h("div", { class: "submission-cards" });
+    const cardsCount = h("b", null, "");
+    const drawCards = () => {
+      cardsCount.textContent = `Fiches (${cardsData.length})`;
+      cardsWrap.replaceChildren(
+        ...cardsData.map((c, i) => {
+          const q = h("textarea", { class: "input", rows: "2" });
+          q.value = c.question || "";
+          q.addEventListener("input", () => (cardsData[i].question = q.value));
+          const a = h("textarea", { class: "input", rows: "2" });
+          a.value = c.answer || "";
+          a.addEventListener("input", () => (cardsData[i].answer = a.value));
+          const del = h("button", { type: "button", class: "btn btn--small", onclick: () => { cardsData.splice(i, 1); drawCards(); } }, "Retirer");
+          return h("div", { class: "submission-card" }, h("div", { class: "cell-sub" }, `Fiche ${i + 1}`), q, a, del);
+        })
+      );
+    };
+    drawCards();
+    const latestBtn = h(
+      "button",
+      {
+        type: "button",
+        class: "btn btn--small",
+        onclick: async () => {
+          try {
+            const latest = await rpc("admin_submission_latest_cards", { p_id: sub.id });
+            if (!Array.isArray(latest)) {
+              toast("La boîte n'est plus partagée dans la classe.", true);
+              return;
+            }
+            cardsData = latest.map((c) => ({ ...c }));
+            drawCards();
+            toast("Fiches rechargées depuis la classe");
+          } catch (e) {
+            toast(e.message, true);
+          }
+        },
+      },
+      "Recharger la dernière version (classe)"
+    );
+    const readOnly = sub.status === "published";
+    const body = h(
+      "div",
+      { class: "submission-form" },
+      h("p", { class: "muted" }, `Proposée par ${`${sub.owner_first_name || ""} ${sub.owner_last_name || ""}`.trim() || "un enseignant"}${sub.class_name ? ` (classe « ${sub.class_name} »)` : ""}, le ${fmtDate(sub.created_at)}. Classement : ${taxonomyShort(sub.taxonomy, "—") || "—"}.`),
+      field("Nom", nameIn),
+      field("Résumé", summaryIn),
+      field("Description", descIn),
+      field("Tags", tagsIn),
+      h("div", { class: "toolbar" }, cardsCount, latestBtn),
+      cardsWrap,
+      field("Note", noteIn)
+    );
+    const patch = () => ({
+      name: nameIn.value.trim(),
+      summary: summaryIn.value.trim(),
+      description: descIn.value.trim(),
+      tags: tagsIn.value.split(",").map((t) => t.trim().toLowerCase()).filter(Boolean),
+      cards: cardsData.filter((c) => (c.question || "").trim() && (c.answer || "").trim()),
+      note: noteIn.value.trim(),
+    });
+    const buttons = readOnly
+      ? [{ label: "Fermer" }]
+      : [
+          { label: "Fermer" },
+          {
+            label: "Refuser",
+            danger: true,
+            onClick: async () => {
+              try {
+                await rpc("admin_reject_submission", { p_id: sub.id, p_note: noteIn.value.trim() });
+                toast("Proposition refusée");
+                reload();
+              } catch (e) {
+                toast(e.message, true);
+                return false;
+              }
+            },
+          },
+          {
+            label: "Publier dans la Librairie",
+            primary: true,
+            onClick: async () => {
+              const p = patch();
+              if (!p.name || !p.cards.length) {
+                toast("Il faut un nom et au moins une fiche.", true);
+                return false;
+              }
+              try {
+                await rpc("admin_publish_submission", { p_id: sub.id, p_patch: p });
+                toast("Publiée dans la Librairie");
+                reload();
+              } catch (e) {
+                toast(e.message, true);
+                return false;
+              }
+            },
+          },
+        ];
+    await openModal({ title: sub.name || "Proposition", body, wide: true, buttons });
+  }
+
   async function libraryPacksTab(root, live) {
     const { data: userData } = await client().auth.getUser();
     const me = userData && userData.user;
@@ -2414,7 +2593,7 @@
     return h("label", { class: "switch" }, input, h("i"));
   }
   function textCtrl(path, placeholder) {
-    const input = h("input", { type: "text", class: "text-input", value: getPath(S.work, path) || "", placeholder: placeholder || "" });
+    const input = h("input", { type: "text", class: "input", value: getPath(S.work, path) || "", placeholder: placeholder || "" });
     input.addEventListener("input", () => setValue(path, input.value));
     return input;
   }
@@ -2667,7 +2846,7 @@
 
   /* ---- Icônes ---- */
   const NAV_ICON_TITLES = {
-    boxes: "Mes boîtes",
+    boxes: "Mes fiches",
     review: "Réviser",
     manage: "Organiser mes boîtes de révision",
     stats: "Statistiques",

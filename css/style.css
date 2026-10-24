@@ -7839,3 +7839,39 @@ body.is-qcm-review .qcm-sheet { padding-bottom: 46px; }
 .subs-super-total { margin: 8px 0 4px; font-weight: 700; font-size: 14px; color: var(--ink); }
 .subs-super-actions { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
 .subs-super-actions .subs-manage-link { display: inline-block; margin: 0; }
+
+/* Round 69 : nouvelle mascotte — lévitation douce sur l'accueil
+   (propriétés `translate` / `rotate` indépendantes de `transform`, pour
+   ne pas toucher au placement existant du logo). */
+@keyframes mascot-float {
+  0%, 100% { translate: 0 0; rotate: -1.5deg; }
+  50% { translate: 0 -7px; rotate: 1.5deg; }
+}
+.home-logo { animation: mascot-float 4.2s ease-in-out infinite; will-change: translate, rotate; }
+@media (prefers-reduced-motion: reduce) { .home-logo { animation: none; } }
+
+/* Round 69 : section Abonnement de la page Compte. */
+.account-subs-block { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; font-family: var(--font-type); }
+.account-subs-details { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 0; font-size: 14.5px; }
+.account-subs-details[hidden] { display: none; }
+.account-subs-details dt { color: var(--ink-soft); }
+.account-subs-details dd { margin: 0; color: var(--ink); }
+.account-subs-free { margin: 0; font-size: 14.5px; line-height: 1.45; color: var(--ink); }
+.account-subs-free[hidden], .account-subs-trial[hidden] { display: none; }
+.account-subs-trial { align-self: stretch; }
+.account-profile-save { margin-top: 6px; }
+
+/* Round 69 : Super enseignant — facturation au mois ou à l'année. */
+.subs-super-period { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 8px 0 0; font-size: 14px; color: var(--ink); }
+.subs-super-period label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+/* Round 69 : boutons pleins sur la page Compte (le style épuré y rend les
+   boutons transparents). */
+#view-account .btn.btn--primary.account-profile-save,
+#view-account .btn.btn--primary.account-subs-trial {
+  background: var(--action-color, #2f6fae); color: #fff; border-radius: 12px; padding: 10px 14px; box-shadow: none; text-transform: none; letter-spacing: 0; font-weight: 700;
+}
+/* Round 69 : carte expirée / paiement refusé dans Mon compte. */
+.account-subs-details dd.account-subs-warn { grid-column: 1 / -1; color: var(--danger, #c0392b); font-weight: 700; margin-top: 4px; }
+/* Round 69 : le bouton d'essai gratuit est mis en avant (couleur de la
+   Librairie, au lieu de la couleur d'action grise de la page Compte). */
+#view-account .btn.btn--primary.account-subs-trial { background: var(--home-library-bg-color, #8a63c9); font-size: 15px; padding: 12px 14px; }

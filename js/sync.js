@@ -1351,6 +1351,33 @@ async function findLibraryCollectionBySourceSubject(subjectId) {
  *  (modération) — voir la policy RLS dédiée côté base, qui autorise ceci
  *  uniquement pour le compte de Stéphane, en plus de la policy existante
  *  qui permet à chaque auteur de supprimer les siennes. */
+/** Round 69 : proposition d'une boîte partagée avec une classe pour la
+ *  Librairie (relue puis publiée depuis Darwin Admin). */
+async function submitLibraryProposal(p) {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { error: "non connecté" };
+  const meta = user.user_metadata || {};
+  const row = {
+    owner_id: user.id,
+    owner_first_name: meta.first_name || "",
+    owner_last_name: meta.last_name || "",
+    class_id: p.classId || null,
+    class_name: p.className || "",
+    shared_box_id: p.sharedBoxId || null,
+    source_subject_id: p.sourceSubjectId || null,
+    name: p.name,
+    summary: p.summary || "",
+    description: p.description || "",
+    taxonomy: p.taxonomy || {},
+    tags: Array.isArray(p.tags) ? p.tags : [],
+    cards: (p.cards || []).map(shareableCard),
+  };
+  const { error } = await c.from("library_submissions").insert(row);
+  if (error && /library_submissions/i.test(error.message || "")) return { error: "la base n'a pas encore la table des propositions (supabase/round69_migration.sql)" };
+  return { error: error ? error.message : null };
+}
+
 async function deleteLibraryCollection(id) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
@@ -1733,6 +1760,7 @@ window.Sync = {
     list: listLibraryCollections,
     get: getLibraryCollection,
     cards: fetchLibraryCollectionCards,
+    submit: submitLibraryProposal,
     rate: rateLibraryCollection,
     unrate: unrateLibraryCollection,
     listRatings: listLibraryRatings,
