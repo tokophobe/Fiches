@@ -685,6 +685,84 @@
     ["none", "Accès bloqué"],
   ];
   const BOX_KIND = { own: ["Créée", null], class: ["Classe", "accent"], library: ["Librairie", "ok"] };
+  /* v231 : âge et accord parental (moins de 15 ans). */
+  const CONSENT_LABELS = { pending: ["Email envoyé, en attente", "warn"], granted: ["Accord donné", "ok"], refused: ["Refusé", null] };
+  function ageConsentCard(userId, reload) {
+    const body = h("div", null, h("p", { class: "muted" }, "Chargement…"));
+    const c = card("Âge et accord parental", "Moins de 15 ans sans accord d'un parent : compte limité (ses propres fiches seulement).", body);
+    (async () => {
+      let a;
+      try {
+        a = await rpc("admin_account_age", { p_user: userId });
+      } catch (e) {
+        body.replaceChildren(h("p", { class: "form-error" }, /admin_account_age/.test(e.message || "") ? "Exécute supabase/round71_migration.sql dans Supabase pour voir ces informations." : friendlyError(e)));
+        return;
+      }
+      a = a || {};
+      const consent = a.consent_status ? CONSENT_LABELS[a.consent_status] || [a.consent_status] : null;
+      const dateIn = h("input", { type: "date", class: "input", value: a.birth_date || "", max: new Date().toISOString().slice(0, 10) });
+      body.replaceChildren(
+        h(
+          "dl",
+          { class: "dl" },
+          h("dt", null, "Date de naissance"),
+          h("dd", null, a.birth_date ? `${fmtDate(a.birth_date)} (${a.age} ans)${a.birth_date_set_by === "admin" ? " — corrigée par un administrateur" : ""}` : "non renseignée"),
+          h("dt", null, "Compte limité"),
+          h("dd", null, a.restricted ? badge("Oui", "warn") : "Non"),
+          h("dt", null, "Accord parental"),
+          h("dd", null, consent ? badge(consent[0], consent[1]) : "—", a.granted_by === "admin" ? " (validé par un administrateur)" : ""),
+          h("dt", null, "Email du parent"),
+          h("dd", null, a.parent_email || "—", a.last_sent_at ? h("span", { class: "faint" }, ` — envoyé le ${fmtDateTime(a.last_sent_at)}`) : ""),
+          a.answered_at ? h("dt", null, "Réponse") : null,
+          a.answered_at ? h("dd", null, fmtDateTime(a.answered_at)) : null
+        ),
+        h(
+          "div",
+          { class: "toolbar" },
+          dateIn,
+          h(
+            "button",
+            {
+              type: "button",
+              class: "btn",
+              onclick: async () => {
+                if (!(await confirmDialog(dateIn.value ? `Nouvelle date de naissance : ${fmtDate(dateIn.value)}.` : "La date sera effacée : l'appli la redemandera.", { title: "Corriger la date de naissance ?" }))) return;
+                try {
+                  await rpc("admin_set_birth_date", { p_user: userId, p_date: dateIn.value || null });
+                  toast("Date de naissance enregistrée");
+                  reload();
+                } catch (e) {
+                  toast(friendlyError(e), true);
+                }
+              },
+            },
+            "Corriger la date"
+          ),
+          a.restricted
+            ? h(
+                "button",
+                {
+                  type: "button",
+                  class: "btn btn--primary",
+                  onclick: async () => {
+                    if (!(await confirmDialog("À faire seulement si tu as reçu l'accord d'un parent autrement (formulaire papier de l'école, email…). Le compte ne sera plus limité.", { title: "Valider l'accord parental ?" }))) return;
+                    try {
+                      await rpc("admin_grant_parental_consent", { p_user: userId, p_note: "Darwin Admin" });
+                      toast("Accord parental enregistré");
+                      reload();
+                    } catch (e) {
+                      toast(friendlyError(e), true);
+                    }
+                  },
+                },
+                "Valider l'accord parental"
+              )
+            : null
+        )
+      );
+    })();
+    return c;
+  }
   async function userDetailPage(root, userId, live) {
     setTitle("Compte", [{ label: "Utilisateurs" }, { label: "Comptes", href: "#/users" }]);
     root.appendChild(loadingCard());
@@ -737,6 +815,7 @@
       )
     );
     root.appendChild(h("div", { class: "grid grid--2" }, profile, subscriptionCard(u.id, d.subscription)));
+    root.appendChild(ageConsentCard(u.id, () => live() && route()));
     root.appendChild(
       card(
         "Boîtes",

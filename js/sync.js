@@ -1744,6 +1744,29 @@ window.Sync = {
     hasUnseenUpdate: reportHasUnseenUpdate,
     sharedBoxAuthor,
   },
+  // v231 : âge et accord parental (moins de 15 ans).
+  account: {
+    /** { birth_date, age, restricted, consent_status, parent_email, last_sent_at },
+     *  ou { error } (null si la migration round71 n'est pas passée). */
+    status: async () => {
+      const c = getClient();
+      if (!c || !currentUid()) return { status: null };
+      try {
+        const { data, error } = await c.rpc("my_account_status");
+        if (error) return { status: null, missing: /function|does not exist|schema cache|PGRST202/i.test(error.message || ""), error: error.message };
+        return { status: data || null };
+      } catch (e) {
+        return { status: null, error: String(e) };
+      }
+    },
+    setBirthDate: async (isoDate) => {
+      const c = getClient();
+      if (!c) return { error: "not_configured" };
+      const { data, error } = await c.rpc("set_my_birth_date", { p_date: isoDate });
+      return error ? { error: error.message || String(error) } : { status: data };
+    },
+    requestParentalConsent: (parentEmail) => billingInvoke("parental-consent", { action: "request", parentEmail }, true),
+  },
   billing: {
     checkout: (plan, extra) => billingInvoke("create-checkout", { plan: plan || "individuel", ...(extra || {}) }),
     portal: (flow) => billingInvoke("customer-portal", flow ? { flow } : {}),

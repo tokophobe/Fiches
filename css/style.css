@@ -7885,3 +7885,11 @@ body.is-qcm-review .qcm-sheet { padding-bottom: 46px; }
 .account-terms-check a { color: var(--action-color, #2f6fae); }
 .subs-legal { font-size: 13.5px; color: var(--ink-soft, #64748b); margin: 14px 4px 0; }
 .subs-legal a { color: inherit; }
+
+/* v231 : accord parental. */
+.account-parental-block[hidden] { display: none; }
+.account-parental-text { margin: 4px 0 10px; font-size: 14.5px; color: var(--ink); }
+#view-account .btn.btn--primary.account-parental-send {
+  background: var(--action-color, #2f6fae); color: #fff; border-radius: 12px; padding: 10px 14px; text-transform: none; letter-spacing: 0; font-weight: 700;
+}
+.account-parent-hint { margin: 2px 0 6px; color: var(--ink); }

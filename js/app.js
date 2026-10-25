@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v230";
+  const APP_VERSION = "v231";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -594,7 +594,10 @@
         if (hasInput) {
           inputEl.value = opts.input.defaultValue || "";
           inputEl.placeholder = opts.input.placeholder || "";
-          inputEl.type = opts.input.type === "password" ? "password" : "text"; // round 55
+          // round 55 (mot de passe), v231 (date, email)
+          inputEl.type = ["password", "date", "email"].includes(opts.input.type) ? opts.input.type : "text";
+          if (opts.input.type === "date") inputEl.max = new Date().toISOString().slice(0, 10);
+          else inputEl.removeAttribute("max");
         }
       }
       let settled = false;
@@ -8310,6 +8313,16 @@
         target: { kind: "account" },
       });
     }
+    if (isAccountRestricted()) {
+      const st = accountStatusRow || {};
+      items.unshift({
+        text:
+          st.consent_status === "pending" && st.parent_email
+            ? `Ton compte est limité en attendant l'accord de ton parent (email envoyé à ${maskEmail(st.parent_email)}). Touche ici pour le renvoyer ou changer d'adresse.`
+            : "Ton compte est limité : un de tes parents doit donner son accord. Touche ici pour lui envoyer un email.",
+        target: { kind: "account" },
+      });
+    }
     const payment = accountCurrentUser ? paymentProblem(mySubscriptionRow) : null;
     if (payment) items.unshift({ text: payment.text, target: { kind: "billing" } });
     if (homeEventWarningReady) {
@@ -10120,6 +10133,9 @@
     // Round 25, item 3 : usages.
     renderAccountUsages();
     renderAccountSubscriptionSummary();
+    // v231 : accord parental (compte limité).
+    renderParentalSection();
+    refreshAccountStatus().then(renderParentalSection).catch(() => {});
     // Round 25, item 4 : niveau scolaire en cascade d'après la taxonomie
     // (remplace la liste courte LIBRARY_LEVELS du round 19).
     const schoolTaxEl = el("account-school-taxonomy");
@@ -10160,6 +10176,29 @@
     if (forgot) forgot.hidden = mode !== "signin";
     const terms = el("account-auth-terms-field");
     if (terms) terms.hidden = mode !== "signup";
+    const birth = el("account-auth-birth-field");
+    if (birth) birth.hidden = mode !== "signup";
+    updateSignupParentField();
+  }
+  /** v231 : email d'un parent demandé à l'inscription d'un enfant de moins
+   *  de 15 ans. */
+  function signupAge() {
+    const v = el("account-auth-birth") && el("account-auth-birth").value;
+    return v ? ageFromBirthDate(v) : null;
+  }
+  function updateSignupParentField() {
+    const age = signupAge();
+    const show = classesAuthMode === "signup" && age !== null && age < 15;
+    const f = el("account-auth-parent-field");
+    const hint = el("account-auth-parent-hint");
+    if (f) f.hidden = !show;
+    if (hint) hint.hidden = !show;
+  }
+  const accountAuthBirth = el("account-auth-birth");
+  if (accountAuthBirth) {
+    accountAuthBirth.max = new Date().toISOString().slice(0, 10);
+    accountAuthBirth.addEventListener("input", updateSignupParentField);
+    accountAuthBirth.addEventListener("change", updateSignupParentField);
   }
   const accountAuthTabSignin = el("account-auth-tab-signin");
   if (accountAuthTabSignin) accountAuthTabSignin.addEventListener("click", () => setClassesAuthMode("signin"));
@@ -10189,6 +10228,26 @@
         }
         return;
       }
+      // v231 : date de naissance (et email d'un parent avant 15 ans).
+      let ageMeta = {};
+      if (classesAuthMode === "signup") {
+        const birth = (el("account-auth-birth") && el("account-auth-birth").value) || "";
+        const age = birth ? ageFromBirthDate(birth) : null;
+        const fail = (t) => {
+          if (note) {
+            note.hidden = false;
+            note.textContent = t;
+          }
+        };
+        if (age === null || age < 0 || age > 120) return fail("Indique ta date de naissance.");
+        ageMeta = { birth_date: birth };
+        if (age < 15) {
+          const parent = ((el("account-auth-parent-email") && el("account-auth-parent-email").value) || "").trim().toLowerCase();
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(parent)) return fail("Tu as moins de 15 ans : écris l'adresse email d'un de tes parents.");
+          if (parent === email.toLowerCase()) return fail("Il faut l'adresse d'un de tes parents, pas la tienne.");
+          ageMeta.parent_email = parent;
+        }
+      }
       accountAuthSubmitBtn.disabled = true;
       const result =
         classesAuthMode === "signin"
@@ -10198,7 +10257,7 @@
               password,
               (el("account-auth-firstname").value || "").trim(),
               (el("account-auth-lastname").value || "").trim(),
-              termsAcceptanceMeta()
+              { ...termsAcceptanceMeta(), ...ageMeta }
             );
       accountAuthSubmitBtn.disabled = false;
       if (result.error) {
@@ -10308,6 +10367,215 @@
       termsPromptOpen = false;
     }
   }
+
+  /* ---- v231 : âge et accord parental (moins de 15 ans) ----
+     La date de naissance est enregistrée une fois sur le serveur
+     (account_ages). Moins de 15 ans sans accord d'un parent = compte
+     « limité » : ses propres fiches seulement (pas de classe, de
+     messagerie, de signalement, de publication ni d'abonnement). Le
+     serveur applique lui-même ces limites ; l'appli explique. */
+  var accountStatusRow = readCachedAccountStatus();
+  function accountStatusKey() {
+    const uid = (window.UserScope && window.UserScope.uid) || "";
+    return uid ? `fiches_account_status__u_${uid}` : "";
+  }
+  function readCachedAccountStatus() {
+    try {
+      const k = accountStatusKey();
+      const raw = k ? window.UserScope.rawGet(k) : null;
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+  function storeAccountStatus(st) {
+    accountStatusRow = st || null;
+    try {
+      const k = accountStatusKey();
+      if (k) {
+        if (st) window.UserScope.rawSet(k, JSON.stringify(st));
+        else window.UserScope.rawRemove(k);
+      }
+    } catch (e) {
+      /* stockage indisponible */
+    }
+  }
+  /** null = inconnu (hors ligne, migration absente…). */
+  async function refreshAccountStatus() {
+    if (!accountCurrentUser || !Sync.isConfigured() || !Sync.account) return null;
+    const r = await Sync.account.status();
+    if (r && !r.error) storeAccountStatus(r.status);
+    return r;
+  }
+  function ageFromBirthDate(iso) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || ""));
+    if (!m) return null;
+    const now = new Date();
+    let age = now.getFullYear() - Number(m[1]);
+    const mm = now.getMonth() + 1;
+    if (mm < Number(m[2]) || (mm === Number(m[2]) && now.getDate() < Number(m[3]))) age--;
+    return age;
+  }
+  function isAccountRestricted() {
+    const st = accountStatusRow;
+    if (!accountCurrentUser || !st || !st.restricted || accountIsAdminFlag) return false;
+    // Levée automatique le jour des 15 ans (le serveur fait de même).
+    const age = ageFromBirthDate(st.birth_date);
+    return !(age !== null && age >= 15);
+  }
+  function maskEmail(e) {
+    const m = /^([^@]{0,2})[^@]*(@.*)$/.exec(String(e || ""));
+    return m ? `${m[1]}…${m[2]}` : "";
+  }
+  /** À appeler avant une action réservée aux comptes complets. */
+  async function requireParentalConsent(what) {
+    if (!isAccountRestricted()) return true;
+    const st = accountStatusRow || {};
+    const sent = st.consent_status === "pending" && st.parent_email ? ` Un email a été envoyé à ${maskEmail(st.parent_email)} : il suffit qu'il ou elle l'ouvre et réponde.` : "";
+    const go = await showRobotMessage(
+      `Pour ${what}, il faut d'abord l'accord d'un de tes parents, parce que tu as moins de 15 ans.${sent} En attendant, tu peux créer et réviser tes propres fiches.`,
+      {
+        buttons: [
+          { label: "OK", value: false },
+          { label: "Mon compte", value: true, primary: true },
+        ],
+      }
+    );
+    if (go) {
+      const tab = document.querySelector('.tab[data-view="account"]');
+      if (tab) tab.click();
+    }
+    return false;
+  }
+  const PARENTAL_ERRORS = {
+    invalid_email: "Cette adresse email ne semble pas valide.",
+    same_email: "Il faut l'adresse d'un de tes parents, pas la tienne.",
+    too_soon: "Un email vient d'être envoyé : attends une minute avant de recommencer.",
+    too_many: "Trop d'emails envoyés aujourd'hui : réessaie demain.",
+    not_needed: "L'accord d'un parent n'est plus nécessaire pour ton compte.",
+    not_deployed: "L'envoi de l'email n'est pas encore installé sur le serveur.",
+    config_missing: "L'envoi d'emails n'est pas encore configuré sur le serveur.",
+    email_failed: "L'email n'a pas pu partir. Vérifie l'adresse, ou réessaie plus tard.",
+    network: "Pas de connexion : réessaie quand tu seras en ligne.",
+  };
+  async function sendParentalRequest(email) {
+    const res = await Sync.account.requestParentalConsent(email);
+    if (res && res.error) {
+      await robotAlert((PARENTAL_ERRORS[res.error] || `L'email n'a pas pu être envoyé : ${res.error}`) + (res.detail && !PARENTAL_ERRORS[res.error] ? `\n\nDétail : ${res.detail}` : ""));
+      return false;
+    }
+    await refreshAccountStatus();
+    await robotAlert(`C'est envoyé : ${email} va recevoir un email pour donner son accord. Dès qu'il ou elle aura répondu, tout ton compte sera ouvert.`);
+    refreshHomeEventWarning();
+    if (el("view-account") && el("view-account").classList.contains("is-active")) renderParentalSection();
+    return true;
+  }
+  async function askParentEmail(defaultValue) {
+    const v = await showRobotMessage("Tu as moins de 15 ans : un de tes parents doit donner son accord pour ton compte. Écris son adresse email ; il ou elle recevra un lien pour répondre.", {
+      input: { type: "email", placeholder: "email d'un parent", defaultValue: defaultValue || "" },
+      cancelValue: null,
+      buttons: [
+        { label: "Plus tard", value: null },
+        { label: "Envoyer", value: true, primary: true },
+      ],
+    });
+    return typeof v === "string" && v ? v.toLowerCase() : null;
+  }
+  async function askBirthDate() {
+    for (;;) {
+      const v = await showRobotMessage("Quelle est ta date de naissance ? La loi demande l'accord d'un parent pour les moins de 15 ans. (Elle ne pourra plus être modifiée ensuite, sauf en nous écrivant.)", {
+        input: { type: "date" },
+        cancelValue: null,
+        buttons: [
+          { label: "Plus tard", value: null },
+          { label: "Valider", value: true, primary: true },
+        ],
+      });
+      if (!v) return null;
+      const age = ageFromBirthDate(v);
+      if (age === null || age < 0 || age > 120) {
+        await robotAlert("Cette date ne semble pas correcte.");
+        continue;
+      }
+      const ok = await robotConfirm(`Tu es né(e) le ${new Date(v + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })} ?`, { okLabel: "Oui", cancelLabel: "Corriger" });
+      if (ok) return v;
+    }
+  }
+  let ageCheckRunning = false;
+  /** Au démarrage (après les conditions) : date de naissance inconnue →
+   *  la demander ; moins de 15 ans sans demande envoyée → demander l'email
+   *  d'un parent. */
+  async function ensureAgeKnown() {
+    if (ageCheckRunning || IS_ADMIN_PREVIEW || !accountCurrentUser || accountIsAdminFlag || !Sync.account) return;
+    ageCheckRunning = true;
+    try {
+      const r = await refreshAccountStatus();
+      if (!r || r.error || !accountStatusRow) return; // hors ligne ou migration absente
+      const meta = accountCurrentUser.user_metadata || {};
+      if (!accountStatusRow.birth_date) {
+        let d = /^\d{4}-\d{2}-\d{2}$/.test(String(meta.birth_date || "")) ? meta.birth_date : null;
+        if (!d) d = await askBirthDate();
+        if (!d) return;
+        const res = await Sync.account.setBirthDate(d);
+        if (res.error) {
+          await robotAlert(`La date n'a pas pu être enregistrée : ${res.error}`);
+          return;
+        }
+        storeAccountStatus(res.status);
+      }
+      if (isAccountRestricted() && !accountStatusRow.consent_status) {
+        let email = typeof meta.parent_email === "string" && meta.parent_email ? meta.parent_email : null;
+        if (!email) email = await askParentEmail();
+        if (email) await sendParentalRequest(email);
+      }
+      refreshHomeEventWarning();
+    } finally {
+      ageCheckRunning = false;
+    }
+  }
+  /** Section « Accord parental » de Mon compte. */
+  function renderParentalSection() {
+    const box = el("account-parental-block");
+    if (!box) return;
+    const st = accountStatusRow;
+    if (!isAccountRestricted()) {
+      box.hidden = true;
+      return;
+    }
+    box.hidden = false;
+    const text = el("account-parental-text");
+    const send = el("account-parental-send-btn");
+    const change = el("account-parental-change-btn");
+    const when = st.last_sent_at ? new Date(st.last_sent_at).toLocaleDateString("fr-FR", { day: "numeric", month: "long" }) : "";
+    if (st.consent_status === "pending" && st.parent_email) {
+      text.textContent = `Ton compte est limité tant qu'un de tes parents n'a pas donné son accord : tu peux créer et réviser tes propres fiches, mais pas rejoindre une classe, écrire des messages, publier ni t'abonner. Email envoyé à ${st.parent_email}${when ? ` le ${when}` : ""}.`;
+      send.textContent = "Renvoyer l'email";
+      change.hidden = false;
+    } else {
+      text.textContent = "Ton compte est limité tant qu'un de tes parents n'a pas donné son accord : tu peux créer et réviser tes propres fiches, mais pas rejoindre une classe, écrire des messages, publier ni t'abonner.";
+      send.textContent = "Demander l'accord d'un parent";
+      change.hidden = true;
+    }
+  }
+  const accountParentalSendBtn = el("account-parental-send-btn");
+  if (accountParentalSendBtn)
+    accountParentalSendBtn.addEventListener("click", async () => {
+      const st = accountStatusRow || {};
+      const email = st.consent_status === "pending" && st.parent_email ? st.parent_email : await askParentEmail();
+      if (!email) return;
+      accountParentalSendBtn.disabled = true;
+      try {
+        await sendParentalRequest(email);
+      } finally {
+        accountParentalSendBtn.disabled = false;
+      }
+    });
+  const accountParentalChangeBtn = el("account-parental-change-btn");
+  if (accountParentalChangeBtn)
+    accountParentalChangeBtn.addEventListener("click", async () => {
+      const email = await askParentEmail((accountStatusRow && accountStatusRow.parent_email) || "");
+      if (email) await sendParentalRequest(email);
+    });
   /** Confirmation avant la page de paiement, avec accès aux conditions de
    *  vente (les accepter fait partie de la confirmation). */
   async function confirmCheckout(text) {
@@ -10408,7 +10676,7 @@
     free.hidden = false;
     free.textContent = await freeUsageText();
     if (trialBtn) {
-      const canTrial = !!loadDevSettings().subscriptionPolicy.checkoutOpen && trialDaysSetting() > 0 && !(row && row.trial_used);
+      const canTrial = !!loadDevSettings().subscriptionPolicy.checkoutOpen && trialDaysSetting() > 0 && !(row && row.trial_used) && !isAccountRestricted();
       trialBtn.hidden = !canTrial;
       if (canTrial) trialBtn.textContent = `Essayer gratuitement pendant ${trialLabel()}`;
     }
@@ -11344,6 +11612,7 @@
       const note = el("classes-join-note");
       const code = (input.value || "").trim();
       if (!code) return;
+      if (!(await requireParentalConsent("rejoindre une classe"))) return;
       classesJoinBtn.disabled = true;
       const { error } = await Sync.classes.join(code);
       classesJoinBtn.disabled = false;
@@ -11408,6 +11677,7 @@
     );
     const clean = typeof name === "string" ? name.trim() : "";
     if (!clean) return;
+    if (!(await requireParentalConsent("créer une classe"))) return;
     const { error } = await Sync.classes.create(clean);
     if (error) {
       await robotAlert("Erreur : " + error);
@@ -11427,6 +11697,7 @@
       const input = el("classes-create-name-input");
       const name = (input.value || "").trim();
       if (!name) return;
+      if (!(await requireParentalConsent("créer une classe"))) return;
       classesCreateBtn.disabled = true;
       const { error } = await Sync.classes.create(name);
       classesCreateBtn.disabled = false;
@@ -13617,6 +13888,7 @@
       }
       const billed = Math.max(SUPER_MIN_CLASSES, ids.length);
       const annual = period() === "super_enseignant_annuel";
+      if (!(await requireParentalConsent("t'abonner"))) return;
       const ok = await confirmCheckout(
         `Super enseignant : ${ids.length} classe${ids.length > 1 ? "s" : ""}, soit ${annual ? `${billed * 10} € par an` : `${billed} € par mois`}${ids.length < SUPER_MIN_CLASSES ? ` (tu pourras ajouter jusqu'à ${SUPER_MIN_CLASSES} classes sans payer plus)` : ""}, résiliable à tout moment. Tu vas aller sur la page de paiement sécurisée de Stripe.`
       );
@@ -13688,6 +13960,7 @@
     const btn = el("subs-individuel-btn");
     const annualBtn = el("subs-annuel-btn");
     plan = plan === "individuel_annuel" ? "individuel_annuel" : "individuel";
+    if (action === "checkout" && !(await requireParentalConsent("t'abonner"))) return;
     if (action === "checkout") {
       const row = mySubscriptionRow;
       const price = plan === "individuel_annuel" ? "20 € par an" : "2 € par mois";
@@ -13977,6 +14250,7 @@
   let libraryShareCascade = null;
   let libraryShareTagInput = null;
   async function openLibraryShareView(subject, boxCards, shareOpts) {
+    if (!(await requireParentalConsent(shareOpts && shareOpts.classMode ? "partager une boîte avec une classe" : "publier une boîte dans la Librairie"))) return;
     // Round 69 : `shareOpts.classMode` = partage d'une boîte créée avec une
     // classe (formulaire de la Librairie, puis partage immédiat avec la
     // classe et proposition à darwin) ; `onSubmit(meta)` fait le partage,
@@ -14781,6 +15055,7 @@
   async function openReportCardView(card) {
     const s = subjects.find((x) => x.id === card.subject);
     if (!s) return;
+    if (!(await requireParentalConsent("signaler une fiche à son auteur"))) return;
     if (!Sync.isConfigured() || !accountCurrentUser) {
       await robotAlert("Connecte-toi à ton compte pour signaler une fiche à son auteur.");
       return;
@@ -15305,6 +15580,7 @@
       const input = el("message-thread-input");
       const body = (input.value || "").trim();
       if (!body) return;
+      if (!(await requireParentalConsent("écrire dans la messagerie"))) return;
       input.value = "";
       messageDrafts.delete(messageThreadContext.klass.id);
       autoGrowMessageInput();
@@ -16020,7 +16296,7 @@
           renderAll();
           renderSubjectManageList();
           refreshHomeEventWarning();
-          ensureTermsAccepted();
+          ensureTermsAccepted().then(ensureAgeKnown);
         });
     }
     enforceLoginGate();

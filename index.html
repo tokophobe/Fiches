@@ -1054,6 +1054,16 @@
             <span>Mot de passe</span>
             <input type="password" id="account-auth-password" autocomplete="current-password" />
           </label>
+          <!-- v231 : date de naissance (accord d'un parent avant 15 ans). -->
+          <label class="field" id="account-auth-birth-field" hidden>
+            <span>Date de naissance</span>
+            <input type="date" id="account-auth-birth" autocomplete="bday" />
+          </label>
+          <p class="field-hint account-parent-hint" id="account-auth-parent-hint" hidden>Tu as moins de 15 ans : un de tes parents doit donner son accord. Il ou elle recevra un email pour répondre ; en attendant, tu pourras déjà créer et réviser tes fiches.</p>
+          <label class="field" id="account-auth-parent-field" hidden>
+            <span>Email d'un de tes parents</span>
+            <input type="email" id="account-auth-parent-email" autocomplete="off" />
+          </label>
           <!-- Round 70 : acceptation des conditions à la création du compte. -->
           <label class="account-terms-check" id="account-auth-terms-field" hidden>
             <input type="checkbox" id="account-auth-terms" />
@@ -1129,6 +1139,13 @@
         <!-- Round 18, item 17 : bouton "Aller à Classes" retiré (l'accès
              se fait déjà depuis École sur l'accueil). -->
         <!-- Round 67 : accès permanent à la page Abonnements. -->
+        <!-- v231 : compte limité en attendant l'accord d'un parent. -->
+        <div class="card-form account-parental-block" id="account-parental-block" hidden>
+          <span class="account-subs-title">Accord parental</span>
+          <p class="account-parental-text" id="account-parental-text"></p>
+          <button type="button" class="btn btn--primary account-parental-send" id="account-parental-send-btn">Renvoyer l'email</button>
+          <button type="button" class="btn btn--small" id="account-parental-change-btn" hidden>Changer l'adresse du parent</button>
+        </div>
         <div class="card-form account-subs-block">
           <span class="account-subs-title">Abonnement</span>
           <!-- Round 69 : détail de l'abonnement en cours, ou rappel de ce qui
