@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v233";
+  const APP_VERSION = "v234";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -11374,8 +11374,47 @@
    *  localement (voir deleteSubject) n'est plus dans `subjects`, donc plus
    *  jamais reconsidérée ici : la suppression locale reste bien
    *  définitive côté appareil, sans jamais "revenir toute seule". */
+  /** v234 : réparation — une boîte prise dans la Librairie qui aurait
+   *  perdu son lien (cas constaté : devenue « Créée », elle ne se mettait
+   *  plus à jour). Signature : toutes ses fiches sont des fiches miroirs
+   *  (« m~<boîte>~<fiche d'origine> ») et une collection de même nom
+   *  contient ces fiches d'origine. Le lien est alors rétabli. */
+  async function repairOrphanLibraryMirrors() {
+    const candidates = subjects.filter((s) => {
+      if (s.deleted || s.fromLibrary || s.sharedBoxId) return false;
+      const cs = cards.filter((c) => c.subject === s.id && !c.deleted);
+      return cs.length > 0 && cs.every((c) => c.mirrorSrcId && String(c.id).startsWith(`m~${s.id}~`));
+    });
+    if (!candidates.length) return;
+    let list;
+    try {
+      list = libraryCollectionsCache && libraryCollectionsCache.length ? libraryCollectionsCache : await Sync.library.list();
+    } catch (e) {
+      return;
+    }
+    for (const s of candidates) {
+      const col = (list || []).find((c) => c.name === s.name);
+      if (!col) continue;
+      const res = await Sync.library.cards(col.id);
+      if (!res || !Array.isArray(res.cards)) continue;
+      const srcIds = new Set(res.cards.map((c, i) => (c.id ? String(c.id) : `idx${i}`)));
+      const mine = cards.filter((c) => c.subject === s.id && !c.deleted);
+      const hits = mine.filter((c) => srcIds.has(String(c.mirrorSrcId))).length;
+      if (hits < Math.ceil(mine.length * 0.8)) continue;
+      s.fromLibrary = true;
+      s.libraryOriginId = col.id;
+      s.updatedAt = new Date().toISOString();
+      await persistSubject(s);
+      console.info(`Librairie : lien rétabli entre « ${s.name} » et sa collection.`);
+    }
+  }
   async function syncLibraryMirrorsForUser() {
     if (!Sync.isConfigured()) return;
+    try {
+      await repairOrphanLibraryMirrors();
+    } catch (e) {
+      console.warn("Librairie : échec de la réparation des liens", e);
+    }
     const mirrors = subjects.filter((s) => s.fromLibrary && s.libraryOriginId);
     if (mirrors.length === 0) return;
     for (const subject of mirrors) {
