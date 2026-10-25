@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v232";
+  const APP_VERSION = "v233";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -3852,20 +3852,25 @@
    *  en fin de file même si elle n'est plus "due" au sens strict. */
   function syncCardEverywhere(updated) {
     if (currentCard && currentCard.id === updated.id) {
+      const before = currentCard;
+      const textChanged =
+        before.question !== updated.question || before.answer !== updated.answer || JSON.stringify(cardWrongs(before)) !== JSON.stringify(cardWrongs(updated));
       currentCard = updated;
-      if (el("view-review").classList.contains("is-active")) {
-        renderQuestionText(currentCard);
-        answerTextEl.innerHTML = answerWithMoreHtml(currentCard);
-        updateRatingPreviews();
-      }
+      // v233 : affichage mis à jour même si la page Réviser n'est pas
+      // visible (on y revient après « Enregistrer les modifications »),
+      // y compris la fiche QCM (question, choix et réponses fausses).
+      renderQuestionText(currentCard);
+      answerTextEl.innerHTML = answerWithMoreHtml(currentCard);
+      updateRatingPreviews();
+      if (textChanged && !(qcmState && qcmState.cardId === updated.id && qcmState.done)) renderReviewMode(currentCard);
     }
 
     const qIdx = reviewQueue.findIndex((c) => c.id === updated.id);
     if (qIdx >= 0) {
-      const stillBelongsInQueue =
-        !updated.deleted &&
-        updated.subject === currentSubjectId &&
-        SM2.isDue(updated);
+      // v233 : une modification de texte ne retire plus la fiche de la
+      // séance (séance sur plusieurs boîtes : currentSubjectId n'est pas
+      // forcément sa boîte).
+      const stillBelongsInQueue = !updated.deleted && SM2.isDue(updated);
       if (stillBelongsInQueue) {
         reviewQueue[qIdx] = updated;
       } else {
@@ -4525,8 +4530,15 @@
    *  suivantes s'affichent avec le complément, une fois la réponse
    *  trouvée. */
   function qcmAnswerParts(card) {
-    const raw = String((card && card.answer) || "");
-    if (!raw || looksLikeHtml(raw) || !raw.includes("\n")) return { main: raw, rest: "" };
+    const original = String((card && card.answer) || "");
+    let raw = original;
+    // v233 : une réponse modifiée dans l'éditeur est en HTML (<br>, <div>) :
+    // on la ramène en lignes de texte avant de la couper.
+    if (raw && looksLikeHtml(raw)) {
+      const withBreaks = raw.replace(/<br\s*\/?>/gi, "\n").replace(/<\/(div|p|li)>/gi, "\n");
+      raw = stripHtml(withBreaks).replace(/\u00a0/g, " ").replace(/\n{2,}/g, "\n").trim();
+    }
+    if (!raw || !raw.includes("\n")) return { main: original, rest: "" };
     const lines = raw.split("\n");
     return { main: lines[0], rest: lines.slice(1).join("\n").trim() };
   }
@@ -5133,6 +5145,12 @@
           delete updated.wrongs;
           delete updated.qcmMode;
         }
+        // v233 : fiche d'une boîte de la Librairie (administrateur) : la
+        // correction est d'abord enregistrée dans la Librairie, pour tous.
+        if (isLibraryMirrorSubject(prev.subject)) {
+          const ok = await saveLibraryMirrorCardEdit(prev, updated);
+          if (!ok) return;
+        }
         await persist(updated);
         cards[idx] = updated;
         syncCardEverywhere(updated);
@@ -5204,6 +5222,22 @@
   async function enterEditMode(card, opts) {
     opts = opts || {};
     if (await blockIfSharedReadonly(card.subject)) return;
+    // v233 : une fiche prise dans la Librairie se met à jour toute seule
+    // (une modification locale serait écrasée) : seul un administrateur
+    // peut la corriger, et la correction va dans la Librairie elle-même.
+    if (isLibraryMirrorSubject(card.subject) && !accountIsAdminFlag) {
+      const go = await showRobotMessage(
+        "Cette fiche vient de la Librairie : elle se met à jour toute seule, tu ne peux pas la modifier. Si tu y vois une erreur, signale-la avec le drapeau : son auteur sera prévenu.",
+        {
+          buttons: [
+            { label: "OK", value: false },
+            { label: "Signaler", value: true, primary: true },
+          ],
+        }
+      );
+      if (go) openReportCardView(card);
+      return;
+    }
     openNewCardView();
     editingId = card.id;
     inputQuestion.innerHTML = toDisplayHtml(card.question);
@@ -11230,6 +11264,38 @@
      `mirrorSrcId` (signalements, mises à jour). Les anciennes fiches miroirs
      (id d'origine) restent reconnues ; une boîte à qui il en manquait les
      retrouve à la synchro suivante. */
+  /** v233 : remplace, dans la collection de la Librairie, la fiche source
+   *  d'une fiche miroir par sa version corrigée. */
+  async function saveLibraryMirrorCardEdit(prev, updated) {
+    const subject = subjects.find((x) => x.id === prev.subject);
+    const colId = subject && subject.libraryOriginId;
+    const res = colId ? await Sync.library.cards(colId) : null;
+    if (!res || !res.full || !Array.isArray(res.cards)) {
+      await robotAlert("La correction n'a pas pu être enregistrée dans la Librairie (fiches introuvables). Vérifie ta connexion et réessaie.");
+      return false;
+    }
+    const src = mirrorSourceId(prev);
+    const list = res.cards.map((c) => ({ ...c }));
+    let i = list.findIndex((c) => c.id && String(c.id) === src);
+    if (i < 0 && /^idx\d+$/.test(src)) i = Number(src.slice(3));
+    if (i < 0 || i >= list.length) {
+      await robotAlert("La fiche d'origine n'a pas été retrouvée dans la Librairie : la correction n'est pas enregistrée.");
+      return false;
+    }
+    const next = { ...list[i], question: updated.question, answer: updated.answer };
+    if (updated.more) next.more = updated.more;
+    else delete next.more;
+    if (Array.isArray(updated.wrongs) && updated.wrongs.length === 3) next.wrongs = updated.wrongs;
+    else delete next.wrongs;
+    list[i] = next;
+    const r = await Sync.library.updateCards(colId, list);
+    if (r.error) {
+      await robotAlert(`La correction n'a pas pu être enregistrée dans la Librairie : ${r.error}`);
+      return false;
+    }
+    showToast("Fiche corrigée dans la Librairie, pour tous les comptes");
+    return true;
+  }
   function mirrorSourceId(card) {
     return card.mirrorSrcId || card.id;
   }

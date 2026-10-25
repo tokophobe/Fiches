@@ -559,6 +559,22 @@ async function updateLibraryCollectionMeta(id, fields) {
   return { error: null };
 }
 
+/** v233 : correction des fiches d'une collection de la Librairie, depuis
+ *  l'appli (administrateur, ou auteur de la collection — règles d'accès
+ *  du serveur). Renvoie { error }. */
+async function updateLibraryCollectionCards(id, newCards) {
+  const c = getClient();
+  if (!c || !id) return { error: "non connecté" };
+  const { data, error } = await c
+    .from("library_collections")
+    .update({ cards: newCards, updated_at: new Date().toISOString() })
+    .eq("id", id)
+    .select("id");
+  if (error) return { error: error.message };
+  if (Array.isArray(data) && data.length === 0) return { error: "mise à jour refusée" };
+  return { error: null };
+}
+
 async function pushSubject(subject) {
   const c = getClient();
   const uid = currentUid();
@@ -1791,6 +1807,7 @@ window.Sync = {
     listRatings: listLibraryRatings,
     findBySourceSubject: findLibraryCollectionBySourceSubject,
     updateMeta: updateLibraryCollectionMeta,
+    updateCards: updateLibraryCollectionCards,
     delete: deleteLibraryCollection,
   },
 };

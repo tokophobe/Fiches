@@ -1380,7 +1380,7 @@
     return card;
   }
   /** Fiches d'une collection publiée recalées sur la version du fichier. */
-  function mergePackCards(colCards, packCards) {
+  function mergePackCards(colCards, packCards, sid) {
     const curQA = new Map();
     const curQ = new Map();
     const oldQA = new Map();
@@ -1388,11 +1388,14 @@
     const setOnce = (m, k, i) => {
       if (k && !m.has(k)) m.set(k, i);
     };
+    // v233 : `w` / `wq` peuvent être des listes (plusieurs versions
+    // précédentes d'une même fiche).
+    const list = (v) => (Array.isArray(v) ? v : v ? [v] : []);
     packCards.forEach((p, i) => {
       setOnce(curQA, packQaHash(p.question, p.answer), i);
       setOnce(curQ, packHash(p.question), i);
-      setOnce(oldQA, p.w, i);
-      setOnce(oldQ, p.wq, i);
+      list(p.w).forEach((k) => setOnce(oldQA, k, i));
+      list(p.wq).forEach((k) => setOnce(oldQ, k, i));
     });
     const used = new Set();
     let changed = 0;
@@ -1419,7 +1422,23 @@
       unmatched++;
       return c;
     });
-    return { cards, changed, unmatched, missing: packCards.length - used.size };
+    // v233 : fiches nouvelles du fichier (par exemple une fiche coupée en
+    // deux) : ajoutées à la collection, avec un identifiant nouveau.
+    let added = 0;
+    if (sid) {
+      let maxN = 0;
+      cards.forEach((c) => {
+        const m = new RegExp(`^${sid.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}-(\\d+)$`).exec(String(c.id || ""));
+        if (m) maxN = Math.max(maxN, Number(m[1]));
+      });
+      packCards.forEach((p, i) => {
+        if (used.has(i)) return;
+        maxN += 1;
+        cards.push(withMore(withWrongs({ id: `${sid}-${maxN}`, question: p.question, answer: p.answer }, p.wrongs), p.more));
+        added++;
+      });
+    }
+    return { cards, changed: changed + added, unmatched, missing: sid ? 0 : packCards.length - used.size, added };
   }
   async function fetchAllRows(build, pageSize) {
     const out = [];
@@ -1818,7 +1837,7 @@
       });
       if (Object.keys(taxonomy).length && sortedJson(existing.taxonomy || {}) !== sortedJson(taxonomy)) fields.taxonomy = taxonomy;
       if (tags.length && sortedJson((existing.tags || []).map(normalizeTag)) !== sortedJson(tags)) fields.tags = tags;
-      const merged = mergePackCards(existing.cards || [], packCards);
+      const merged = mergePackCards(existing.cards || [], packCards, sid);
       plan.cardsUnmatched += merged.unmatched;
       plan.cardsMissing += merged.missing;
       if (merged.changed) {
