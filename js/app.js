@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v234";
+  const APP_VERSION = "v235";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -4524,6 +4524,10 @@
     return a;
   }
   const QCM_LETTERS = ["A", "B", "C", "D"];
+  /** v235 : réponses fausses d'une fiche QCM dans les listes de fiches. */
+  function qcmWrongsListHtml(wrongs) {
+    return `<ul class="card-row-wrongs-list">${wrongs.map((x) => `<li>${escapeHtml(x)} <span class="card-row-wrong-tag">(réponse fausse)</span></li>`).join("")}</ul>`;
+  }
   /** v232 : en QCM, seule la 1re ligne d'une réponse en texte simple est
    *  proposée parmi les choix (les réponses fausses n'ont qu'une ligne :
    *  sinon la bonne réponse se repérait à sa longueur) ; les lignes
@@ -5546,7 +5550,8 @@
       if (wrongsForRow.length === 3) {
         const w = document.createElement("p");
         w.className = "card-row-wrongs";
-        w.innerHTML = `<span class="qcm-chip">QCM</span> ${wrongsForRow.map((x) => escapeHtml(x)).join(" · ")}`;
+        // v235 : une réponse fausse par ligne, marquée « (réponse fausse) ».
+        w.innerHTML = `<span class="qcm-chip">QCM</span>${qcmWrongsListHtml(wrongsForRow)}`;
         main.appendChild(w);
       }
       if (showSubjectNames && cardsScopeFilter !== CARDS_SCOPE_CURRENT && !subjects.some((x) => x.id === cardsScopeFilter)) {
@@ -11264,6 +11269,27 @@
      `mirrorSrcId` (signalements, mises à jour). Les anciennes fiches miroirs
      (id d'origine) restent reconnues ; une boîte à qui il en manquait les
      retrouve à la synchro suivante. */
+  /** v235 : même empreinte que Darwin Admin (packHash / packQaHash). */
+  function packNormForCorr(t) {
+    return String(t || "")
+      .replace(/\r\n?/g, "\n")
+      .split("\n")
+      .map((l) => l.trim())
+      .join("\n")
+      .trim();
+  }
+  function packHashForCorr(t) {
+    const str = packNormForCorr(t);
+    let h = 0x811c9dc5;
+    for (let i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 0x01000193) >>> 0;
+    }
+    return h.toString(16).padStart(8, "0");
+  }
+  function packQaHashForCorr(q, a) {
+    return packHashForCorr(`${packNormForCorr(q)}\u0001${packNormForCorr(a)}`);
+  }
   /** v233 : remplace, dans la collection de la Librairie, la fiche source
    *  d'une fiche miroir par sa version corrigée. */
   async function saveLibraryMirrorCardEdit(prev, updated) {
@@ -11282,7 +11308,13 @@
       await robotAlert("La fiche d'origine n'a pas été retrouvée dans la Librairie : la correction n'est pas enregistrée.");
       return false;
     }
-    const next = { ...list[i], question: updated.question, answer: updated.answer };
+    // v235 : la fiche garde la trace de la correction (date, et empreinte
+    // du texte d'avant la 1re correction) : Darwin Admin ne l'écrase plus
+    // en publiant le fichier des boîtes toutes prêtes, et sait la reporter
+    // dans ce fichier.
+    const before = list[i];
+    const corrFrom = (before.corr && before.corr.from) || packQaHashForCorr(before.question, before.answer);
+    const next = { ...before, question: updated.question, answer: updated.answer, corr: { at: new Date().toISOString(), from: corrFrom } };
     if (updated.more) next.more = updated.more;
     else delete next.more;
     if (Array.isArray(updated.wrongs) && updated.wrongs.length === 3) next.wrongs = updated.wrongs;
@@ -13698,7 +13730,7 @@
           <div class="card-row-main">
             <p class="card-row-q">${toDisplayHtml(c.question || "")}</p>
             <p class="card-row-a${fullAccess ? "" : " library-card-answer--cut"}">${fullAccess ? answerWithMoreHtml(c) : escapeHtml(c.answer || "")}</p>
-            ${cardWrongs(c).length === 3 ? `<p class="card-row-wrongs"><span class="qcm-chip">QCM</span>${fullAccess ? ` ${cardWrongs(c).map((x) => escapeHtml(x)).join(" · ")}` : ""}</p>` : ""}
+            ${cardWrongs(c).length === 3 ? `<div class="card-row-wrongs"><span class="qcm-chip">QCM</span>${fullAccess ? qcmWrongsListHtml(cardWrongs(c)) : ""}</div>` : ""}
           </div>
         </li>
       `

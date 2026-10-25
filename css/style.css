@@ -7958,3 +7958,11 @@ body.is-qcm-review .qcm-sheet { padding-bottom: 46px; }
 .plan-card .account-subs-details { margin: 0; }
 /* Bouton « Enregistrer mon profil » centré. */
 #view-account .btn.btn--primary.account-profile-save { align-self: center; display: block; margin-left: auto; margin-right: auto; }
+
+/* v235 : listes de fiches — réponses fausses l'une sous l'autre, gélule
+   QCM discrète. */
+.card-row-wrongs .qcm-chip { background: transparent; color: var(--ink-soft); border: 1px solid currentColor; font-weight: 600; opacity: 0.85; }
+.card-row-wrongs-list { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 2px; }
+.card-row-wrongs-list li { line-height: 1.4; }
+.card-row-wrong-tag { font-style: italic; opacity: 0.75; }
+div.card-row-wrongs { margin: 4px 0 0; }
