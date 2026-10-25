@@ -298,6 +298,14 @@
        #home-logo selon la vue), qui reste éclairé au-dessus de
        l'assombrissement plutôt que d'être recouvert par un second robot
        flottant au centre de l'écran. -->
+  <!-- v232 : pages légales affichées dans l'appli (au-dessus d'un éventuel
+       message du robot, qui reste ouvert dessous). -->
+  <div class="legal-viewer" id="legal-viewer" hidden role="dialog" aria-modal="true" aria-label="Informations légales">
+    <div class="legal-viewer-bar">
+      <button type="button" class="legal-viewer-back" id="legal-viewer-back">‹ Retour</button>
+    </div>
+    <iframe class="legal-viewer-frame" id="legal-viewer-frame" title="Informations légales"></iframe>
+  </div>
   <div class="robot-modal-overlay" id="robot-modal-overlay" hidden>
     <div class="robot-modal" id="robot-modal" role="alertdialog" aria-modal="true">
       <div class="robot-modal-bubble" id="robot-modal-bubble">
@@ -1133,7 +1141,7 @@
                « école & études », pas de matière). -->
           <h4 class="account-school-title">Niveau scolaire</h4>
           <div class="account-school-taxonomy" id="account-school-taxonomy"></div>
-          <button type="button" class="btn btn--primary account-profile-save" id="account-profile-save-btn">Enregistrer mon prénom, mon nom et mon niveau</button>
+          <button type="button" class="btn btn--primary account-profile-save" id="account-profile-save-btn">Enregistrer mon profil</button>
           <p class="field-hint" id="account-profile-note" hidden></p>
         </div>
         <!-- Round 18, item 17 : bouton "Aller à Classes" retiré (l'accès
@@ -1146,15 +1154,59 @@
           <button type="button" class="btn btn--primary account-parental-send" id="account-parental-send-btn">Renvoyer l'email</button>
           <button type="button" class="btn btn--small" id="account-parental-change-btn" hidden>Changer l'adresse du parent</button>
         </div>
-        <div class="card-form account-subs-block">
-          <span class="account-subs-title">Abonnement</span>
-          <!-- Round 69 : détail de l'abonnement en cours, ou rappel de ce qui
-               est gratuit et de ce que donne un abonnement. -->
-          <dl class="account-subs-details" id="account-subs-details" hidden></dl>
-          <p class="account-subs-free" id="account-subs-free" hidden></p>
-          <button type="button" class="btn btn--primary account-subs-trial" id="account-subs-trial-btn" hidden>Essayer gratuitement pendant 1 mois</button>
-          <button type="button" class="btn btn--small" id="account-subs-btn">Voir les offres</button>
-        </div>
+        <!-- v232 : « Mon abonnement » — abonnement en cours, puis les offres
+             (Gratuit, Super élève, Super enseignant, Super école). -->
+        <section class="account-plans account-subs-block" aria-labelledby="account-plans-title">
+          <h2 class="account-subs-title" id="account-plans-title">Mon abonnement</h2>
+          <div class="plan-card plan-card--current" id="account-subs-current" hidden>
+            <span class="plan-kicker">Mon abonnement en cours</span>
+            <dl class="account-subs-details" id="account-subs-details"></dl>
+          </div>
+          <div class="plan-card plan-card--free" data-plan="free">
+            <div class="plan-head"><span class="plan-name">Gratuit</span><span class="plan-badge" hidden>Ton offre</span><span class="plan-price">0 €</span></div>
+            <ul class="plan-points">
+              <li>Crée tes propres fiches de révision !</li>
+              <li>Bénéficie de la fonction QCM (questions à choix multiples) pour un démarrage ludique et en douceur de tes révisions !</li>
+              <li>Organise tes fiches dans des boîtes et des dossiers !</li>
+              <li>Révise tes propres fiches et les fiches partagées par tes enseignants !</li>
+              <li>Profite gratuitement des révisions optimisées, pour une mémorisation solide. <a href="guide/revisions-espacees.html" class="plan-link">Comment ça marche ?</a></li>
+              <li>Si tu enseignes, partage tes fiches avec tes élèves dans des classes !</li>
+              <li>Fixe des échéances (dates de contrôles, d'examens…), à toi ou à tes élèves : les révisions optimisées s'adaptent pour que tu sois prêt le jour J !</li>
+              <li>Profite des messageries de classe pour communiquer entre élèves et enseignants !</li>
+            </ul>
+          </div>
+          <div class="plan-card plan-card--eleve" data-plan="eleve">
+            <div class="plan-head"><span class="plan-name">Super élève</span><span class="plan-badge" hidden>Ton offre</span><span class="plan-price">2 € <small>/ mois</small></span></div>
+            <p class="plan-price-alt">ou 20 € par an (2 mois offerts)</p>
+            <p class="plan-plus">Tout le gratuit, et en plus :</p>
+            <p class="plan-lead">L'accès complet et illimité à la Librairie de darwin</p>
+            <div class="plan-stats" id="plan-stats">
+              <div class="plan-stat"><strong id="plan-stat-cards">—</strong><span>fiches prêtes à réviser</span></div>
+              <div class="plan-stat"><strong id="plan-stat-boxes">—</strong><span>boîtes</span></div>
+              <div class="plan-stat"><strong id="plan-stat-levels">—</strong><span>niveaux, du CP à la terminale</span></div>
+              <div class="plan-stat"><strong id="plan-stat-subjects">—</strong><span>matières</span></div>
+            </div>
+            <p class="account-subs-free" id="account-subs-free" hidden></p>
+            <button type="button" class="btn btn--primary account-subs-trial" id="account-subs-trial-btn" hidden>Essayer gratuitement pendant 1 mois</button>
+          </div>
+          <div class="plan-card plan-card--prof" data-plan="prof">
+            <div class="plan-head"><span class="plan-name">Super enseignant</span><span class="plan-badge" hidden>Ton offre</span><span class="plan-price"><small>dès</small> 3 € <small>/ mois</small></span></div>
+            <p class="plan-price-alt">1 € par mois et par classe, ou 10 € par an et par classe — 3 classes minimum</p>
+            <ul class="plan-points">
+              <li>Tes élèves accèdent aux boîtes de la Librairie que tu partages dans tes classes, sans abonnement de leur côté.</li>
+              <li>Tu consultes toute la Librairie, réponses en entier, pour préparer tes partages.</li>
+              <li>Jusqu'à 60 élèves par classe ; tu choisis les classes couvertes, et tu changes quand tu veux.</li>
+            </ul>
+          </div>
+          <div class="plan-card plan-card--ecole" data-plan="ecole">
+            <div class="plan-head"><span class="plan-name">Super école</span><span class="plan-soon">Bientôt</span><span class="plan-price">50 € <small>/ an / enseignant</small></span></div>
+            <ul class="plan-points">
+              <li>L'établissement désigne ses Super enseignants : chacun en a tous les avantages.</li>
+              <li>Jusqu'à 15 classes de 60 élèves par enseignant, et une seule facture.</li>
+            </ul>
+          </div>
+          <button type="button" class="btn btn--small account-plans-more" id="account-subs-btn">Voir les offres</button>
+        </section>
         <!-- Round 64 : suppression définitive du compte (RGPD). -->
         <div class="account-danger-zone">
           <button type="button" class="account-delete-link" id="account-delete-btn">Supprimer mon compte</button>
@@ -1847,7 +1899,7 @@
       <p class="subs-lead" id="subs-lead">L'appli est gratuite pour une utilisation normale : créer et réviser tes propres fiches, et partager des fiches entre élèves et enseignants. Les abonnements donnent accès à la Librairie de fiches prêtes à réviser.</p>
       <ul class="subs-list">
         <li class="subs-offer">
-          <div class="subs-offer-head"><span class="subs-offer-name">Individuel</span><span class="subs-offer-price">2 € <small>/ mois</small></span></div>
+          <div class="subs-offer-head"><span class="subs-offer-name">Super élève</span><span class="subs-offer-price">2 € <small>/ mois</small></span></div>
           <p class="subs-offer-price-alt">ou 20 € <small>/ an</small> <span class="subs-offer-save">2 mois offerts</span></p>
           <p class="subs-offer-text">Pour toi : toutes les boîtes de la Librairie, à ajouter à tes révisions.</p>
           <ul class="subs-offer-points">
@@ -1859,8 +1911,15 @@
           <button type="button" class="subs-offer-btn" id="subs-individuel-btn" disabled>Bientôt disponible</button>
           <button type="button" class="subs-offer-btn" id="subs-annuel-btn" hidden>Annuel — 20 € / an</button>
           <button type="button" class="subs-manage-link" id="subs-manage-btn" hidden>Gérer mon abonnement et mes factures</button>
-          <!-- Round 70 : résiliation en quelques clics (code de la consommation, art. L215-1-1). -->
-          <button type="button" class="subs-manage-link" id="subs-cancel-btn" hidden>Résilier mon abonnement</button>
+          <!-- v232 : boutons de l'abonnement en cours, placés par l'appli dans
+               la carte de la formule souscrite. -->
+          <div class="subs-offer-manage" id="subs-individuel-manage-slot">
+            <div class="subs-current-actions" id="subs-current-actions" hidden>
+              <button type="button" class="subs-offer-btn" id="subs-current-manage-btn">Gérer mon abonnement</button>
+              <!-- Round 70 : résiliation en quelques clics (code de la consommation, art. L215-1-1). -->
+              <button type="button" class="subs-manage-link" id="subs-cancel-btn">Résilier mon abonnement</button>
+            </div>
+          </div>
         </li>
         <li class="subs-offer">
           <div class="subs-offer-head"><span class="subs-offer-name">Super enseignant</span><span class="subs-offer-price">1 € <small>/ mois / classe</small></span></div>
@@ -1875,6 +1934,7 @@
           <!-- Round 68 : choix des classes couvertes. -->
           <div class="subs-super-classes" id="subs-super-classes" hidden></div>
           <button type="button" class="subs-offer-btn" id="subs-super-btn" disabled>Bientôt disponible</button>
+          <div class="subs-offer-manage" id="subs-super-manage-slot"></div>
         </li>
         <li class="subs-offer">
           <div class="subs-offer-head"><span class="subs-offer-name">Super école</span><span class="subs-offer-price">5 € <small>/ mois / enseignant</small></span></div>

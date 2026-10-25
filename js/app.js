@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v231";
+  const APP_VERSION = "v232";
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -376,6 +376,9 @@
     const isOpen = hasMessages && open;
     helpBtn.hidden = !hasMessages || isOpen;
     speechEl.hidden = !isOpen;
+    // v232 : le robot du bandeau lévite pendant qu'il parle.
+    const bodyLogoEl = el("body-logo");
+    if (bodyLogoEl) bodyLogoEl.classList.toggle("is-speaking", isOpen);
     // Round 45 : le titre de la page laisse sa place à la bulle du robot.
     const pageTitleEl = el("page-header-title");
     if (pageTitleEl) pageTitleEl.hidden = isOpen || !pageTitleEl.textContent;
@@ -4516,6 +4519,17 @@
     return a;
   }
   const QCM_LETTERS = ["A", "B", "C", "D"];
+  /** v232 : en QCM, seule la 1re ligne d'une réponse en texte simple est
+   *  proposée parmi les choix (les réponses fausses n'ont qu'une ligne :
+   *  sinon la bonne réponse se repérait à sa longueur) ; les lignes
+   *  suivantes s'affichent avec le complément, une fois la réponse
+   *  trouvée. */
+  function qcmAnswerParts(card) {
+    const raw = String((card && card.answer) || "");
+    if (!raw || looksLikeHtml(raw) || !raw.includes("\n")) return { main: raw, rest: "" };
+    const lines = raw.split("\n");
+    return { main: lines[0], rest: lines.slice(1).join("\n").trim() };
+  }
   function renderReviewMode(card) {
     const panel = el("qcm-panel");
     const badge = el("card-qcm-badge");
@@ -4538,7 +4552,7 @@
     answerSeenCardId = null;
     setRatingInvite(false, true);
     ratingRowEl.hidden = true;
-    const items = shuffledCopy([{ html: toDisplayHtml(card.answer), ok: true }].concat(cardWrongs(card).map((w) => ({ html: escapeHtml(w), ok: false }))));
+    const items = shuffledCopy([{ html: toDisplayHtml(qcmAnswerParts(card).main), ok: true }].concat(cardWrongs(card).map((w) => ({ html: escapeHtml(w), ok: false }))));
     qcmState = { cardId: card.id, items, wrong: [], done: false, timer: null };
     // Round 62 : la question, les réponses et le complément sont dans la
     // fiche QCM (la fiche ne se retourne plus).
@@ -4642,9 +4656,11 @@
   function revealQcmAnswer() {
     const moreEl = el("qcm-more");
     const card = currentCard;
-    const more = card && card.more && stripHtml(card.more).trim() ? card.more : "";
+    const rest = card ? qcmAnswerParts(card).rest : "";
+    const extra = card && card.more && stripHtml(card.more).trim() ? card.more : "";
+    const more = rest || extra;
     if (moreEl) {
-      moreEl.innerHTML = more ? toDisplayHtml(more) : "";
+      moreEl.innerHTML = [rest ? toDisplayHtml(rest) : "", extra ? toDisplayHtml(extra) : ""].filter(Boolean).join("<br>");
       moreEl.hidden = !more;
     }
     layoutQcmPanel();
@@ -10316,13 +10332,58 @@
     cgv: "legal/cgv.html",
     mentions: "legal/mentions-legales.html",
   };
-  function openLegalPage(key) {
-    try {
-      window.open(LEGAL_URLS[key] || LEGAL_URLS.cgu, "_blank", "noopener");
-    } catch (e) {
-      /* fenêtre refusée */
+  /** v232 : les pages légales s'ouvrent DANS l'appli (cadre plein écran
+   *  avec « ‹ Retour »), au-dessus d'un éventuel message du robot qui reste
+   *  ouvert : sur iPhone, l'appli installée les ouvrait à sa place, et le
+   *  message disparaissait au retour. */
+  function openLegalUrl(url) {
+    const viewer = el("legal-viewer");
+    const frame = el("legal-viewer-frame");
+    if (!viewer || !frame) {
+      try {
+        window.open(url, "_blank", "noopener");
+      } catch (e) {
+        /* fenêtre refusée */
+      }
+      return;
     }
+    const u = new URL(url, location.href);
+    u.searchParams.set("embed", "1");
+    frame.src = u.toString();
+    viewer.hidden = false;
+    const back = el("legal-viewer-back");
+    if (back) back.focus();
   }
+  function closeLegalViewer() {
+    const viewer = el("legal-viewer");
+    const frame = el("legal-viewer-frame");
+    if (!viewer || viewer.hidden) return false;
+    viewer.hidden = true;
+    if (frame) frame.src = "about:blank";
+    return true;
+  }
+  function openLegalPage(key) {
+    openLegalUrl(LEGAL_URLS[key] || LEGAL_URLS.cgu);
+  }
+  const legalViewerBack = el("legal-viewer-back");
+  if (legalViewerBack) legalViewerBack.addEventListener("click", closeLegalViewer);
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      if (e.key === "Escape" && closeLegalViewer()) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+    },
+    true
+  );
+  // Tous les liens « legal/… » de l'appli passent par ce cadre.
+  document.addEventListener("click", (e) => {
+    const a = e.target && e.target.closest ? e.target.closest('a[href^="legal/"], a[href^="guide/"]') : null;
+    if (!a) return;
+    e.preventDefault();
+    openLegalUrl(a.getAttribute("href"));
+  });
   function termsAcceptanceMeta() {
     return { terms_version: LEGAL_VERSION, terms_accepted_at: new Date().toISOString() };
   }
@@ -10601,9 +10662,9 @@
     const n = Math.max(SUPER_MIN_CLASSES, Number(row.quantity) || 0);
     switch (row.plan) {
       case "individuel":
-        return { name: "Individuel (mensuel)", price: "2 € par mois" };
+        return { name: "Super élève (mensuel)", price: "2 € par mois" };
       case "individuel_annuel":
-        return { name: "Individuel (annuel)", price: "20 € par an" };
+        return { name: "Super élève (annuel)", price: "20 € par an" };
       case "super_enseignant":
         return { name: "Super enseignant (mensuel)", price: `${n} € par mois (${n} classes)` };
       case "super_enseignant_annuel":
@@ -10619,7 +10680,18 @@
     if (libraryStatsCache) return libraryStatsCache;
     try {
       const cols = libraryCollectionsCache && libraryCollectionsCache.length ? libraryCollectionsCache : await Sync.library.list();
-      libraryStatsCache = { boxes: cols.length, cards: cols.reduce((t, c) => t + libraryCardCount(c), 0) };
+      // v232 : aussi le nombre de niveaux et de matières (classement).
+      const lab = (v) => (v && typeof v === "object" ? v.label : v) || "";
+      const levels = new Set();
+      const subjectsSet = new Set();
+      cols.forEach((c) => {
+        const t = c.taxonomy || {};
+        const lv = lab(t.niveau) || c.level || "";
+        if (lv) levels.add(lv.toLowerCase());
+        const m = lab(t.matiere) || lab(t.specialite);
+        if (m) subjectsSet.add(m.toLowerCase());
+      });
+      libraryStatsCache = { boxes: cols.length, cards: cols.reduce((t, c) => t + libraryCardCount(c), 0), levels: levels.size, subjects: subjectsSet.size };
     } catch (e) {
       libraryStatsCache = null;
     }
@@ -10650,6 +10722,33 @@
     const row = mySubscriptionRow;
     const end = frenchDate(row && row.current_period_end);
     const valid = !!row && ["active", "trial", "past_due"].includes(row.status) && (!row.current_period_end || new Date(row.current_period_end) > new Date());
+    // v232 : offres présentées en cartes ; celle du compte est mise en avant.
+    const mine = !valid ? "free" : isSuperPlan(row) ? "prof" : "eleve";
+    document.querySelectorAll("#view-account .plan-card[data-plan]").forEach((c) => {
+      const isMine = c.dataset.plan === mine;
+      c.classList.toggle("is-mine", isMine);
+      const b = c.querySelector(".plan-badge");
+      if (b) b.hidden = !isMine;
+    });
+    const current = el("account-subs-current");
+    if (current) current.hidden = !valid;
+    const moreBtn = el("account-subs-btn");
+    if (moreBtn) moreBtn.textContent = valid ? "Voir mon offre / modifier mon offre" : "Voir les offres";
+    libraryStats()
+      .then((st) => {
+        if (!st) return;
+        const put = (id, v) => {
+          const n = el(id);
+          if (n && v) n.textContent = frenchNumber(v);
+        };
+        put("plan-stat-cards", st.cards);
+        put("plan-stat-boxes", st.boxes);
+        put("plan-stat-levels", st.levels);
+        put("plan-stat-subjects", st.subjects);
+        const stats = el("plan-stats");
+        if (stats) stats.hidden = !st.cards;
+      })
+      .catch(() => {});
     if (valid) {
       const d = planDescription(row);
       const lines = [["Formule", d.name]];
@@ -10673,8 +10772,7 @@
       return;
     }
     details.hidden = true;
-    free.hidden = false;
-    free.textContent = await freeUsageText();
+    free.hidden = true;
     if (trialBtn) {
       const canTrial = !!loadDevSettings().subscriptionPolicy.checkoutOpen && trialDaysSetting() > 0 && !(row && row.trial_used) && !isAccountRestricted();
       trialBtn.hidden = !canTrial;
@@ -13743,11 +13841,19 @@
 
     const open = !!loadDevSettings().subscriptionPolicy.checkoutOpen;
     const manualActive = !!row && row.source !== "stripe" && (row.status === "active" || row.status === "trial") && (!row.current_period_end || new Date(row.current_period_end) > new Date());
+    if (btn) btn.hidden = false;
     if (btn) {
-      if (live) {
-        btn.textContent = "Gérer mon abonnement";
+      if (live && isSuperPlan(row)) {
+        // v232 : abonné Super enseignant → le Super élève reste proposé
+        // (il faudra d'abord résilier).
+        btn.textContent = "Mensuel — 2 € / mois";
         btn.disabled = false;
-        btn.dataset.action = "portal";
+        btn.dataset.action = "has-super";
+      } else if (live) {
+        // v232 : « Gérer » et « Résilier » sont dans la carte de la formule
+        // souscrite (voir subs-current-actions).
+        btn.hidden = true;
+        btn.dataset.action = "";
       } else if (manualActive) {
         btn.textContent = "Déjà abonné";
         btn.disabled = true;
@@ -13776,6 +13882,12 @@
     if (manage) manage.hidden = live || !(row && row.stripe_customer_id);
     const cancelBtn = el("subs-cancel-btn");
     if (cancelBtn) cancelBtn.hidden = !(live && !row.cancel_at_period_end);
+    const current = el("subs-current-actions");
+    if (current) {
+      current.hidden = !live;
+      const slot = el(live && isSuperPlan(row) ? "subs-super-manage-slot" : "subs-individuel-manage-slot");
+      if (slot && current.parentNode !== slot) slot.appendChild(current);
+    }
     renderSuperOffer(row, live, open);
   }
 
@@ -13854,9 +13966,11 @@
       const billed = Math.max(SUPER_MIN_CLASSES, n);
       const annual = period() === "super_enseignant_annuel";
       const amount = annual ? `${billed * 10} € par an` : `${billed} € par mois`;
-      el("subs-super-total").textContent = n
-        ? `${n} classe${n > 1 ? "s" : ""} cochée${n > 1 ? "s" : ""} : ${amount}${n < SUPER_MIN_CLASSES ? ` (minimum, jusqu'à ${SUPER_MIN_CLASSES} classes)` : ""}`
-        : "Aucune classe cochée.";
+      // v232 : « minimum 3 € par mois (jusqu'à 3 classes) », puis à la ligne
+      // « 2 classes cochées ».
+      const checked = n ? `${n} classe${n > 1 ? "s" : ""} cochée${n > 1 ? "s" : ""}` : "Aucune classe cochée";
+      el("subs-super-total").textContent =
+        n >= SUPER_MIN_CLASSES ? `${checked} : ${amount}` : `minimum ${amount} (jusqu'à ${SUPER_MIN_CLASSES} classes)\n${checked}`;
       confirmBtn.disabled = n === 0;
       confirmBtn.textContent = mode === "edit" ? "Enregistrer" : `Payer ${annual ? `${billed * 10} € / an` : `${billed} € / mois`}`;
     };
@@ -13908,7 +14022,7 @@
     subsSuperBtn.addEventListener("click", async () => {
       const action = subsSuperBtn.dataset.action;
       if (action === "has-individual") {
-        await robotAlert("Tu as déjà l'abonnement Individuel. Pour passer à Super enseignant (qui comprend aussi l'accès à toute la Librairie), résilie d'abord ton abonnement Individuel avec « Gérer mon abonnement », puis reviens ici.");
+        await robotAlert("Tu as déjà l'abonnement Super élève. Pour passer à Super enseignant (qui permet aussi de consulter toute la Librairie), résilie d'abord ton abonnement Super élève avec « Gérer mon abonnement », puis reviens ici.");
         return;
       }
       if (action === "new" || action === "edit") openSuperClassesPanel(action);
@@ -13945,7 +14059,7 @@
     if (!label) return "";
     return `${label} ${n === 1 || n === 30 ? "gratuit" : "gratuits"}`;
   }
-  /** Points de la carte Individuel qui parlent de l'essai. */
+  /** Points de la carte Super élève (ex-Individuel) qui parlent de l'essai. */
   function renderTrialPoints() {
     const label = trialLabel();
     const p1 = el("subs-trial-point");
@@ -13991,6 +14105,10 @@
   if (subsIndividuelBtn) {
     subsIndividuelBtn.addEventListener("click", () => {
       const action = subsIndividuelBtn.dataset.action;
+      if (action === "has-super") {
+        robotAlert("Tu as déjà l'abonnement Super enseignant. Pour passer à Super élève, résilie d'abord ton abonnement Super enseignant avec « Résilier mon abonnement », puis reviens ici à la fin de la période.");
+        return;
+      }
       if (action) goToBilling(action, subsIndividuelBtn.dataset.plan);
     });
   }
@@ -14000,6 +14118,8 @@
       if (subsAnnuelBtn.dataset.action) goToBilling(subsAnnuelBtn.dataset.action, subsAnnuelBtn.dataset.plan);
     });
   }
+  const subsCurrentManageBtn = el("subs-current-manage-btn");
+  if (subsCurrentManageBtn) subsCurrentManageBtn.addEventListener("click", () => goToBilling("portal"));
   const subsManageBtn = el("subs-manage-btn");
   if (subsManageBtn) subsManageBtn.addEventListener("click", () => goToBilling("portal"));
   // Round 70 : « Résilier mon abonnement » ouvre directement l'écran de
@@ -14120,7 +14240,7 @@
     // Round 55 : l'abonnement est vérifié AVANT le choix du dossier.
     await refreshMySubscription();
     if (!hasLibraryRevisionAccess()) {
-      await showSubscriptionRequired(isSuperPlan(mySubscriptionRow) ? "La formule Super enseignant permet de consulter toutes les boîtes de la Librairie et de les partager avec tes classes couvertes, mais pas de les ajouter à tes propres révisions (il faut pour cela l'abonnement Individuel)." : undefined);
+      await showSubscriptionRequired(isSuperPlan(mySubscriptionRow) ? "La formule Super enseignant permet de consulter toutes les boîtes de la Librairie et de les partager avec tes classes couvertes, mais pas de les ajouter à tes propres révisions (il faut pour cela l'abonnement Super élève)." : undefined);
       return false;
     }
     const folderId = await pickRevisionFolder(`Dans quel dossier ranger « ${col.name} » ?`);

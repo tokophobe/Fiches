@@ -7718,8 +7718,10 @@ body:has(#view-library.is-active[data-cycle]) {
   background: var(--action-color, #2f6fae); color: #fff; font-family: var(--font-type); font-size: 15px; font-weight: 700; cursor: pointer;
 }
 .qcm-continue[hidden] { display: none; }
-body.is-qcm-review #review-score-info,
-body.is-qcm-review #review-session-status { display: none !important; }
+body.is-qcm-review #review-score-info { display: none !important; }
+/* v232 : le nombre de fiches à revoir reste affiché en QCM (au-dessus de
+   la fiche QCM s'ils se chevauchent). */
+body.is-qcm-review #review-session-status { z-index: 30; }
 :root.is-night-mode .qcm-letter { background: rgba(239, 125, 45, 0.2); }
 @keyframes qcm-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 @keyframes qcm-nudge { 0%, 100% { transform: translateX(0); } 30% { transform: translateX(-6px); } 60% { transform: translateX(6px); } }
@@ -7893,3 +7895,66 @@ body.is-qcm-review .qcm-sheet { padding-bottom: 46px; }
   background: var(--action-color, #2f6fae); color: #fff; border-radius: 12px; padding: 10px 14px; text-transform: none; letter-spacing: 0; font-weight: 700;
 }
 .account-parent-hint { margin: 2px 0 6px; color: var(--ink); }
+
+/* v232 : total Super enseignant sur deux lignes. */
+.subs-super-total { white-space: pre-line; }
+
+/* v232 : boutons de l'abonnement en cours, dans la carte de la formule. */
+.subs-current-actions { display: flex; flex-direction: column; align-items: stretch; gap: 4px; }
+.subs-current-actions[hidden] { display: none; }
+/* v232 : le nombre de fiches à revoir ne sort jamais de l'écran (réglage
+   bas, fiche poussée vers le bas par le bandeau). */
+.review-session-status { top: min(var(--review-status-top, 560px), calc(100dvh - 26px - env(safe-area-inset-bottom, 0px))); }
+
+/* v232 : le robot parle → il lévite (bulle du bandeau, et copie du robot
+   affichée au-dessus de l'assombrissement pendant un message). La copie
+   du robot de l'accueil ne garde pas son décalage de centrage
+   (translate(-50%, -50%)), sinon elle sortait en partie de l'écran. */
+.body-logo.is-speaking,
+.robot-modal-logo-clone { animation: mascot-float 3.2s ease-in-out infinite; }
+.robot-modal-logo-clone.home-logo { transform: none !important; left: auto; top: auto; }
+@media (prefers-reduced-motion: reduce) { .body-logo.is-speaking, .robot-modal-logo-clone { animation: none; } }
+
+/* v232 : pages légales dans l'appli. */
+.legal-viewer { position: fixed; inset: 0; z-index: 2100; display: flex; flex-direction: column; background: var(--app-bg-color, var(--desk, #eef2f8)); }
+.legal-viewer[hidden] { display: none; }
+.legal-viewer-bar { flex: none; display: flex; align-items: center; padding: calc(env(safe-area-inset-top, 0px) + 8px) 12px 8px; border-bottom: 1px solid var(--rule-soft, rgba(0, 0, 0, 0.1)); }
+.legal-viewer-back { border: 0; background: none; font: inherit; font-family: var(--font-type); font-size: 17px; font-weight: 700; color: var(--action-color, #2f6fae); padding: 8px 6px; min-height: 44px; cursor: pointer; }
+.legal-viewer-frame { flex: 1; width: 100%; border: 0; background: transparent; }
+
+/* v232 : « Mon abonnement » de la page Compte, présenté par offres. */
+#view-account .account-plans { display: flex; flex-direction: column; align-items: stretch; gap: 12px; margin: 8px 0 4px; font-family: var(--font-type); }
+#view-account .account-plans .account-subs-title { margin: 6px 0 0; font-weight: 400; }
+.plan-card { position: relative; background: var(--paper, #fff); color: var(--ink); border-radius: 16px; padding: 14px 16px 16px; box-shadow: 0 6px 20px rgba(30, 60, 100, 0.08); border-top: 5px solid var(--plan-color, #64748b); }
+.plan-card[hidden] { display: none; }
+.plan-card--current { --plan-color: var(--action-color, #2f6fae); }
+.plan-card--free { --plan-color: #3e7c6b; }
+.plan-card--eleve { --plan-color: var(--home-library-bg-color, #8a63c9); }
+.plan-card--prof { --plan-color: #4a9fe0; }
+.plan-card--ecole { --plan-color: #ef7d2d; }
+.plan-card.is-mine { box-shadow: 0 0 0 2px var(--plan-color), 0 8px 24px rgba(30, 60, 100, 0.12); }
+.plan-kicker { display: block; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--plan-color); font-weight: 700; margin-bottom: 8px; }
+.plan-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 10px; }
+.plan-name { font-size: 20px; font-weight: 700; color: var(--plan-color); }
+.plan-price { margin-left: auto; font-size: 20px; font-weight: 700; color: var(--ink); white-space: nowrap; }
+.plan-price small { font-size: 13px; font-weight: 400; color: var(--ink-soft); }
+.plan-price-alt { margin: 2px 0 6px; font-size: 13.5px; color: var(--ink-soft); }
+.plan-badge, .plan-soon { font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--plan-color); color: #fff; }
+.plan-badge[hidden] { display: none; }
+.plan-soon { background: color-mix(in srgb, var(--plan-color) 18%, transparent); color: var(--plan-color); }
+.plan-points { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; font-size: 14.5px; line-height: 1.45; }
+.plan-points li { position: relative; padding-left: 26px; }
+.plan-points li::before { content: "✓"; position: absolute; left: 0; top: -1px; width: 19px; height: 19px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: #fff; background: var(--plan-color); }
+.plan-link { color: var(--plan-color); font-weight: 700; white-space: nowrap; }
+.plan-plus { margin: 8px 0 2px; font-size: 14px; color: var(--ink-soft); }
+.plan-lead { margin: 0 0 10px; font-size: 16.5px; font-weight: 700; color: var(--ink); }
+.plan-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.plan-stat { border-radius: 12px; padding: 10px 10px 9px; background: color-mix(in srgb, var(--plan-color) 12%, transparent); display: flex; flex-direction: column; gap: 2px; }
+.plan-stat strong { font-size: 24px; line-height: 1.1; color: var(--plan-color); font-weight: 700; }
+.plan-stat span { font-size: 12.5px; line-height: 1.3; color: var(--ink); }
+.plan-card .account-subs-free { margin: 10px 0 0; }
+#view-account .plan-card .btn.btn--primary.account-subs-trial { margin-top: 12px; width: 100%; }
+.account-plans-more { align-self: center; }
+.plan-card .account-subs-details { margin: 0; }
+/* Bouton « Enregistrer mon profil » centré. */
+#view-account .btn.btn--primary.account-profile-save { align-self: center; display: block; margin-left: auto; margin-right: auto; }

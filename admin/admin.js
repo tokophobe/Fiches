@@ -1015,7 +1015,7 @@
       setRow(
         "Durée de l'essai gratuit",
         numCtrl(["subscriptionPolicy", "trialDays"], { min: 0, max: 365, unit: "jours" }),
-        "Offert une seule fois par compte, pour la formule Individuel (mensuelle ou annuelle). 0 = pas d'essai. Utilisé à la fois par les boutons de l'appli et par la page de paiement Stripe."
+        "Offert une seule fois par compte, pour la formule Super élève (ex-Individuel, mensuelle ou annuelle). 0 = pas d'essai. Utilisé à la fois par les boutons de l'appli et par la page de paiement Stripe."
       ),
       setRow(
         "Ouvrir les paiements (Stripe)",
