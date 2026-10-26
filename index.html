@@ -676,18 +676,18 @@
 
         <label class="field">
           <span>Question</span>
-          <div class="rich-editor" id="input-question" contenteditable="true" data-placeholder="Ex. Capitale de l'Islande ?" role="textbox" aria-multiline="true"></div>
+          <div class="rich-editor" id="input-question" aria-label="Question" contenteditable="true" data-placeholder="Ex. Capitale de l'Islande ?" role="textbox" aria-multiline="true"></div>
         </label>
         <label class="field">
           <span>Réponse</span>
-          <div class="rich-editor" id="input-answer" contenteditable="true" data-placeholder="Ex. Reykjavik" role="textbox" aria-multiline="true"></div>
+          <div class="rich-editor" id="input-answer" aria-label="Réponse" contenteditable="true" data-placeholder="Ex. Reykjavik" role="textbox" aria-multiline="true"></div>
         </label>
         <!-- Round 60 : complément de réponse (explications), séparé de la
              réponse : affiché sous la réponse, et jamais dans les choix du
              QCM (seulement une fois la réponse trouvée). -->
         <label class="field">
           <span>Complément de réponse <small class="field-optional">(facultatif)</small></span>
-          <div class="rich-editor rich-editor--more" id="input-more" contenteditable="true" data-placeholder="Ex. C'est la capitale la plus au nord du monde." role="textbox" aria-multiline="true"></div>
+          <div class="rich-editor rich-editor--more" id="input-more" aria-label="Complément de réponse" contenteditable="true" data-placeholder="Ex. C'est la capitale la plus au nord du monde." role="textbox" aria-multiline="true"></div>
         </label>
         <!-- Round 59 : mode QCM facultatif — 3 réponses fausses en plus de la
              bonne. La fiche est alors d'abord posée en QCM (voir js/app.js,
@@ -1223,7 +1223,7 @@
             </ul>
           </div>
           <div class="plan-card plan-card--ecole" data-plan="ecole">
-            <div class="plan-head"><span class="plan-name">Super école</span><span class="plan-soon">Bientôt</span><span class="plan-price">50 € <small>/ an / enseignant</small></span></div>
+            <div class="plan-head"><span class="plan-name">Super école</span><span class="plan-badge" hidden>Ton offre</span><span class="plan-soon" id="account-school-soon">Bientôt</span><span class="plan-price">50 € <small>/ an / enseignant</small></span></div>
             <ul class="plan-points">
               <li>L'établissement désigne ses Super enseignants : chacun en a tous les avantages.</li>
               <li>Jusqu'à 15 classes de 60 élèves par enseignant, et une seule facture.</li>
@@ -1962,14 +1962,18 @@
           <div class="subs-offer-manage" id="subs-super-manage-slot"></div>
         </li>
         <li class="subs-offer">
-          <div class="subs-offer-head"><span class="subs-offer-name">Super école</span><span class="subs-offer-price">5 € <small>/ mois / enseignant</small></span></div>
-          <p class="subs-offer-price-alt">ou 50 € <small>/ an / enseignant</small></p>
+          <div class="subs-offer-head"><span class="subs-offer-name">Super école</span><span class="subs-offer-price">50 € <small>/ an / enseignant</small></span></div>
           <p class="subs-offer-text">L'établissement désigne ses Super enseignants : chacun en a tous les avantages.</p>
           <ul class="subs-offer-points">
             <li>Jusqu'à 15 classes de 60 élèves par enseignant</li>
+            <li>Les enseignants sont désignés par leur adresse email ; la liste se modifie à tout moment</li>
+            <li>Paiement par carte, ou sur facture (virement, mandat administratif) à 30 jours</li>
             <li>Une seule facture pour l'établissement</li>
           </ul>
-          <button type="button" class="subs-offer-btn" disabled>Bientôt disponible</button>
+          <!-- v238 : formulaire de l'établissement (responsable). -->
+          <div class="subs-school-panel" id="subs-school-panel" hidden></div>
+          <button type="button" class="subs-offer-btn" id="subs-school-btn" disabled>Bientôt disponible</button>
+          <div class="subs-offer-manage" id="subs-school-manage-slot"></div>
         </li>
       </ul>
       <p class="subs-legal">Prix toutes taxes comprises. S'abonner, c'est accepter les <a href="legal/cgv.html" target="_blank" rel="noopener">conditions de vente</a> (résiliation, droit de rétractation de 14 jours…).</p>

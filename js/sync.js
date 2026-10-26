@@ -1704,6 +1704,23 @@ async function billingInvoke(name, body, noUrl) {
   }
 }
 
+/** v238 : appels des fonctions Super école ; { data } ou { error }. */
+async function schoolRpc(name, args) {
+  const c = getClient();
+  if (!c) return { error: "not_configured" };
+  try {
+    const { data, error } = await c.rpc(name, args || {});
+    if (error) {
+      const msg = String(error.message || error);
+      if (/could not find the function|PGRST202|does not exist|schema cache/i.test(msg)) return { error: "migration_missing" };
+      return { error: msg };
+    }
+    return { data };
+  } catch (e) {
+    return { error: "network" };
+  }
+}
+
 window.Sync = {
   isAdmin,
   fetchMySubscription,
@@ -1813,11 +1830,21 @@ window.Sync = {
     },
     requestParentalConsent: (parentEmail) => billingInvoke("parental-consent", { action: "request", parentEmail }, true),
   },
+  // v238 : Super école (supabase/round79_migration.sql).
+  school: {
+    mine: () => schoolRpc("my_school"),
+    save: (s) => schoolRpc("save_my_school", { p_name: s.name || "", p_city: s.city || "", p_uai: s.uai || "", p_billing_email: s.billingEmail || "" }),
+    setTeachers: (emails) => schoolRpc("set_my_school_teachers", { p_emails: emails || [] }),
+    teacherStatus: () => schoolRpc("my_school_teacher_status"),
+  },
   billing: {
     checkout: (plan, extra) => billingInvoke("create-checkout", { plan: plan || "individuel", ...(extra || {}) }),
     portal: (flow) => billingInvoke("customer-portal", flow ? { flow } : {}),
     // Round 68 : Super enseignant — classes couvertes.
     updateSuperClasses: (classIds) => billingInvoke("update-super-classes", { classIds }, true),
+    // v238 : Super école — paiement sur facture, nombre d'enseignants payés.
+    schoolInvoice: (seats) => billingInvoke("create-checkout", { plan: "super_ecole", seats, invoice: true }, true),
+    schoolSeats: (seats) => billingInvoke("school-seats", { seats }, true),
     coveredClasses: async () => {
       const c = getClient();
       if (!c) return null;

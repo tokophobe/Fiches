@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v237";
+  const APP_VERSION = "v238";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -4382,6 +4382,13 @@
     el("sub-hard").textContent = previews.hard;
     el("sub-good").textContent = previews.good;
     el("sub-easy").textContent = previews.easy;
+    // v238 (accessibilité) : nom lisible des boutons d'évaluation (les
+    // émoticônes ou icônes seules ne disent rien à un lecteur d'écran).
+    const RATING_A11Y = { again: "Je ne savais pas", hard: "Vague idée", good: "Je savais", easy: "Parfait" };
+    Object.keys(RATING_A11Y).forEach((r) => {
+      const b = document.querySelector(`#rating-row .stamp--${r}`);
+      if (b) b.setAttribute("aria-label", `${RATING_A11Y[r]} — revoir dans ${previews[r]}`);
+    });
     updateReviewScoreInfo(futureDelaysMin);
   }
 
@@ -7385,6 +7392,7 @@
         }
         renderReviewChart();
         renderReviewGauge();
+        scheduleReviewRelayout();
       }
       if (view === "stats") renderStats();
       if (view === "sync") renderSyncView();
@@ -10846,6 +10854,10 @@
         return { name: "Super enseignant (mensuel)", price: `${n} € par mois (${n} classes)` };
       case "super_enseignant_annuel":
         return { name: "Super enseignant (annuel)", price: `${n * 10} € par an (${n} classes)` };
+      case "super_ecole": {
+        const q = Math.max(1, Number(row.quantity) || 1);
+        return { name: "Super école", price: `${q * 50} € par an (${q} enseignant${q > 1 ? "s" : ""})` };
+      }
       default:
         return { name: row.source === "manual" ? "Abonnement offert" : "Abonnement", price: "" };
     }
@@ -10900,7 +10912,9 @@
     const end = frenchDate(row && row.current_period_end);
     const valid = !!row && ["active", "trial", "past_due"].includes(row.status) && (!row.current_period_end || new Date(row.current_period_end) > new Date());
     // v232 : offres présentées en cartes ; celle du compte est mise en avant.
-    const mine = !valid ? "free" : isSuperPlan(row) ? "prof" : "eleve";
+    const mine = !valid ? (schoolTeacherActive() ? "prof" : "free") : isSchoolPlan(row) ? "ecole" : isSuperPlan(row) ? "prof" : "eleve";
+    const schoolSoon = el("account-school-soon");
+    if (schoolSoon) schoolSoon.hidden = !!loadDevSettings().subscriptionPolicy.checkoutOpen;
     document.querySelectorAll("#view-account .plan-card[data-plan]").forEach((c) => {
       const isMine = c.dataset.plan === mine;
       c.classList.toggle("is-mine", isMine);
@@ -10944,6 +10958,20 @@
         lines.map(([k, v]) => `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(v)}</dd>`).join("") +
         (problem ? `<dd class="account-subs-warn">${escapeHtml(problem.text)}</dd>` : "");
       details.hidden = false;
+      free.hidden = true;
+      if (trialBtn) trialBtn.hidden = true;
+      return;
+    }
+    // v238 : enseignant désigné par son établissement.
+    if (schoolTeacherActive()) {
+      details.innerHTML = [
+        ["Formule", "Super enseignant"],
+        ["Offerte par", schoolTeacherStatus.school + (schoolTeacherStatus.city ? ` (${schoolTeacherStatus.city})` : "")],
+      ]
+        .map(([k, v]) => `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(v)}</dd>`)
+        .join("");
+      details.hidden = false;
+      if (current) current.hidden = false;
       free.hidden = true;
       if (trialBtn) trialBtn.hidden = true;
       return;
@@ -14040,11 +14068,50 @@
       return null;
     }
   }
+  /* v238 : Super école — l'établissement qui me désigne (enseignant),
+     gardé sur l'appareil comme l'abonnement. */
+  var schoolTeacherStatus = null; // var : lu avant cette ligne au démarrage
+  function schoolStatusCacheKey() {
+    const uid = (window.UserScope && window.UserScope.uid) || "";
+    return uid ? `fiches_school_status__u_${uid}` : "";
+  }
+  try {
+    const k0 = schoolStatusCacheKey();
+    const raw0 = k0 ? window.UserScope.rawGet(k0) : null;
+    schoolTeacherStatus = raw0 ? JSON.parse(raw0) : null;
+  } catch (e) {
+    schoolTeacherStatus = null;
+  }
+  async function refreshSchoolTeacherStatus() {
+    if (!accountCurrentUser || !Sync.isConfigured() || !Sync.school) {
+      schoolTeacherStatus = null;
+      return;
+    }
+    const r = await Sync.school.teacherStatus();
+    if (r.error) return;
+    schoolTeacherStatus = r.data || null;
+    try {
+      const k = schoolStatusCacheKey();
+      if (k) {
+        if (schoolTeacherStatus) window.UserScope.rawSet(k, JSON.stringify(schoolTeacherStatus));
+        else window.UserScope.rawRemove(k);
+      }
+    } catch (e) {
+      /* stockage indisponible */
+    }
+  }
+  function schoolTeacherActive() {
+    return !!(accountCurrentUser && schoolTeacherStatus && schoolTeacherStatus.active);
+  }
+  function isSchoolPlan(row) {
+    return !!row && row.plan === "super_ecole";
+  }
   async function refreshMySubscription() {
     if (!accountCurrentUser || !Sync.isConfigured()) {
       mySubscriptionRow = null;
       return;
     }
+    refreshSchoolTeacherStatus().catch(() => {});
     const res = await Sync.fetchMySubscription();
     if (!res.error) {
       mySubscriptionRow = res.row;
@@ -14071,12 +14138,14 @@
     if (accountIsAdminFlag) return true;
     const row = mySubscriptionRow;
     const active = !!row && (row.status === "active" || row.status === "trial") && (!row.current_period_end || new Date(row.current_period_end) > new Date());
-    if (active && !isSuperPlan(row)) return true;
+    if (active && !isSuperPlan(row) && !isSchoolPlan(row)) return true;
     if (loadDevSettings().subscriptionPolicy.enforce) return false;
     return !(row && row.status === "none");
   }
   function hasLibrarySubscription() {
     if (!accountCurrentUser) return false;
+    // v238 : Super enseignant désigné par son établissement (consultation).
+    if (schoolTeacherActive()) return true;
     const row = mySubscriptionRow;
     const active = !!row && (row.status === "active" || row.status === "trial") && (!row.current_period_end || new Date(row.current_period_end) > new Date());
     if (active) return true;
@@ -14125,7 +14194,10 @@
     const problem = paymentProblem(row);
     if (problem) text = problem.text;
     else if (live && row.cancel_at_period_end) text = `Ton abonnement est résilié : il reste actif jusqu'au ${end}.`;
-    else if (live && isSuperPlan(row)) {
+    else if (live && isSchoolPlan(row)) {
+      const q = Math.max(1, Number(row.quantity) || 1);
+      text = `Super école actif : ${q} enseignant${q > 1 ? "s" : ""} payé${q > 1 ? "s" : ""} — ${planDescription(row).price}. Prochain renouvellement le ${end}.`;
+    } else if (live && isSuperPlan(row)) {
       const n = Array.isArray(row.super_class_ids) ? row.super_class_ids.length : 0;
       text = `Super enseignant actif : ${n} classe${n > 1 ? "s" : ""} couverte${n > 1 ? "s" : ""} — ${planDescription(row).price}. Prochain renouvellement le ${end}.`;
     } else if (live && row.status === "trial") text = `Tu es en période d'essai gratuite jusqu'au ${end}. Ensuite : ${row.plan === "individuel_annuel" ? "20 € par an" : "2 € par mois"}, résiliable à tout moment.`;
@@ -14137,6 +14209,9 @@
         ? "Pour l'instant, la Librairie est encore ouverte à tous les comptes."
         : "En attendant l'ouverture des abonnements, la Librairie est ouverte à tous les comptes.";
     else text = "Tu n'as pas d'abonnement.";
+    if (schoolTeacherActive() && !live) {
+      text = `Tu es Super enseignant grâce à ton établissement, « ${schoolTeacherStatus.school} » : tu consultes toute la Librairie, et jusqu'à 15 de tes classes sont couvertes.`;
+    }
     st.hidden = false;
     st.textContent = text;
     st.classList.toggle("subs-status--none", !(row && (row.status === "active" || row.status === "trial")) && !hasLibrarySubscription());
@@ -14188,10 +14263,11 @@
     const current = el("subs-current-actions");
     if (current) {
       current.hidden = !live;
-      const slot = el(live && isSuperPlan(row) ? "subs-super-manage-slot" : "subs-individuel-manage-slot");
+      const slot = el(live && isSchoolPlan(row) ? "subs-school-manage-slot" : live && isSuperPlan(row) ? "subs-super-manage-slot" : "subs-individuel-manage-slot");
       if (slot && current.parentNode !== slot) slot.appendChild(current);
     }
     renderSuperOffer(row, live, open);
+    renderSchoolOffer(row, live, open);
   }
 
   /* ---- Round 68 : formule Super enseignant ---- */
@@ -14325,10 +14401,255 @@
     subsSuperBtn.addEventListener("click", async () => {
       const action = subsSuperBtn.dataset.action;
       if (action === "has-individual") {
+        if (isSchoolPlan(mySubscriptionRow)) {
+          await robotAlert("Ton compte porte l'abonnement Super école de ton établissement. Pour être toi-même Super enseignant, ajoute ta propre adresse email à la liste des enseignants de l'établissement.");
+          return;
+        }
         await robotAlert("Tu as déjà l'abonnement Super élève. Pour passer à Super enseignant (qui permet aussi de consulter toute la Librairie), résilie d'abord ton abonnement Super élève avec « Gérer mon abonnement », puis reviens ici.");
         return;
       }
       if (action === "new" || action === "edit") openSuperClassesPanel(action);
+    });
+  }
+  /* ---- v238 : formule Super école (responsable de l'établissement) ---- */
+  const SCHOOL_PRICE = 50;
+  function renderSchoolOffer(row, live, open) {
+    const btn = el("subs-school-btn");
+    const panel = el("subs-school-panel");
+    if (!btn) return;
+    if (panel && !panel.dataset.open) panel.hidden = true;
+    const schoolLive = live && isSchoolPlan(row);
+    btn.hidden = false;
+    if (schoolLive) {
+      btn.textContent = "Gérer mon établissement";
+      btn.disabled = false;
+      btn.dataset.action = "edit";
+    } else if (!open) {
+      btn.textContent = "Bientôt disponible";
+      btn.disabled = true;
+      btn.dataset.action = "";
+    } else if (live) {
+      btn.textContent = "Équiper mon établissement";
+      btn.disabled = false;
+      btn.dataset.action = "has-other";
+    } else {
+      btn.textContent = "Équiper mon établissement";
+      btn.disabled = false;
+      btn.dataset.action = "new";
+    }
+  }
+  const SCHOOL_ERRORS = {
+    migration_missing: "La base n'est pas encore prête pour Super école (supabase/round79_migration.sql à exécuter).",
+    no_school: "Renseigne d'abord ton établissement.",
+    invalid_email: "Une des adresses email n'est pas valable : vérifie la liste (une adresse par ligne).",
+    too_many_teachers: "200 enseignants au plus par établissement.",
+    no_school_subscription: "Ton établissement n'a pas d'abonnement Super école en cours.",
+    bad_seats: "Le nombre d'enseignants doit être compris entre 1 et 200.",
+    parental_consent_required: "Ce compte est limité : il ne peut pas gérer un établissement.",
+  };
+  function schoolErrorText(code, detail) {
+    const known = SCHOOL_ERRORS[code] || BILLING_ERRORS[code];
+    const m = !known && /invalid_email|too_many_teachers|no_school|parental_consent_required/.exec(String(code || ""));
+    return (known || (m && SCHOOL_ERRORS[m[0]]) || `Une erreur est survenue : ${code}`) + (detail ? `\n\nDétail : ${detail}` : "");
+  }
+  function parseSchoolEmails(text) {
+    const list = String(text || "")
+      .split(/[\s,;]+/)
+      .map((x) => x.trim().toLowerCase())
+      .filter(Boolean);
+    return [...new Set(list)];
+  }
+  async function openSchoolPanel(mode) {
+    const panel = el("subs-school-panel");
+    const btn = el("subs-school-btn");
+    if (!panel) return;
+    if (!(await requireParentalConsent("gérer un établissement"))) return;
+    panel.hidden = false;
+    panel.dataset.open = "1";
+    if (btn) btn.hidden = true;
+    panel.innerHTML = `<p class="subs-super-hint">Chargement…</p>`;
+    const res = await Sync.school.mine();
+    if (res.error) {
+      panel.innerHTML = "";
+      panel.hidden = true;
+      delete panel.dataset.open;
+      if (btn) btn.hidden = false;
+      await robotAlert(schoolErrorText(res.error));
+      return;
+    }
+    const sc = res.data || {};
+    const row = mySubscriptionRow;
+    const live = mode === "edit";
+    const seatsPaid = live ? Math.max(1, Number(row && row.quantity) || 1) : 0;
+    const teachers = Array.isArray(sc.teachers) ? sc.teachers : [];
+    const statusLine = (t) => {
+      if (!t.has_account) return `<span class="school-t-state is-warn">pas encore de compte darwin à cette adresse</span>`;
+      if (!live) return `<span class="school-t-state">compte trouvé${t.name ? ` : ${escapeHtml(t.name)}` : ""}</span>`;
+      return t.covered
+        ? `<span class="school-t-state is-ok">Super enseignant${t.name ? ` : ${escapeHtml(t.name)}` : ""}</span>`
+        : `<span class="school-t-state is-warn">au-delà des ${seatsPaid} place${seatsPaid > 1 ? "s" : ""} payée${seatsPaid > 1 ? "s" : ""}</span>`;
+    };
+    panel.innerHTML = `
+      <p class="subs-super-hint">${live ? "Ton établissement est abonné. Modifie la liste des enseignants quand tu veux." : "Renseigne ton établissement et la liste de ses enseignants. Chacun aura les avantages de Super enseignant."}</p>
+      <div class="school-form">
+        <label class="field"><span>Nom de l'établissement</span><input type="text" id="school-name" maxlength="200" autocomplete="organization" value="${escapeHtml(sc.name || "")}" placeholder="Ex. Collège Jean Moulin" /></label>
+        <label class="field"><span>Ville <small class="field-optional">(facultatif)</small></span><input type="text" id="school-city" maxlength="120" autocomplete="address-level2" value="${escapeHtml(sc.city || "")}" /></label>
+        <label class="field"><span>Code UAI <small class="field-optional">(facultatif, ex. 0691234A)</small></span><input type="text" id="school-uai" maxlength="8" autocapitalize="characters" value="${escapeHtml(sc.uai || "")}" /></label>
+        <label class="field"><span>Email de facturation <small class="field-optional">(facultatif : sinon, le tien)</small></span><input type="email" id="school-billing" maxlength="254" autocomplete="email" value="${escapeHtml(sc.billing_email || "")}" /></label>
+        <label class="field"><span>Adresses email des enseignants <small class="field-optional">(une par ligne)</small></span><textarea id="school-emails" rows="5" spellcheck="false" autocapitalize="off" placeholder="prof.un@exemple.fr&#10;prof.deux@exemple.fr">${escapeHtml(teachers.map((t) => t.email).join("\n"))}</textarea></label>
+        <p class="field-hint">Chaque enseignant doit avoir un compte darwin à cette adresse (email confirmé). Si c'est aussi ton cas, ajoute ta propre adresse. Jusqu'à 15 classes de 60 élèves par enseignant sont couvertes.</p>
+        ${teachers.length ? `<ul class="school-teachers">${teachers.map((t) => `<li><span class="school-t-email">${escapeHtml(t.email)}</span>${statusLine(t)}</li>`).join("")}</ul>` : ""}
+        ${live ? `<label class="field"><span>Nombre d'enseignants payés</span><input type="number" id="school-seats" min="1" max="200" step="1" value="${seatsPaid}" inputmode="numeric" /></label>` : ""}
+      </div>
+      <p class="subs-super-total" id="school-total" aria-live="polite"></p>
+      <div class="school-actions">
+        ${live ? `<button type="button" class="subs-offer-btn" id="school-save">Enregistrer</button>` : `<button type="button" class="subs-offer-btn" id="school-card"></button><button type="button" class="subs-offer-btn" id="school-invoice">Recevoir une facture (virement)</button>`}
+        <button type="button" class="subs-manage-link" id="school-cancel">Annuler</button>
+      </div>`;
+    const v = (id) => ((el(id) && el(id).value) || "").trim();
+    const count = () => parseSchoolEmails(el("school-emails").value).length;
+    const seatsWanted = () => (live ? Math.round(Number(v("school-seats"))) : Math.max(1, count()));
+    const refresh = () => {
+      const n = count();
+      const seats = seatsWanted();
+      const totalEl = el("school-total");
+      if (live) {
+        totalEl.textContent = `${n} adresse${n > 1 ? "s" : ""} dans la liste · ${seats} enseignant${seats > 1 ? "s" : ""} payé${seats > 1 ? "s" : ""} : ${seats * SCHOOL_PRICE} € par an`;
+      } else {
+        totalEl.textContent = n ? `${n} enseignant${n > 1 ? "s" : ""} × ${SCHOOL_PRICE} € = ${n * SCHOOL_PRICE} € par an` : `Ajoute au moins une adresse : ${SCHOOL_PRICE} € par an et par enseignant.`;
+        const cardBtn = el("school-card");
+        cardBtn.textContent = `Payer par carte — ${Math.max(1, n) * SCHOOL_PRICE} € / an`;
+        cardBtn.disabled = !n;
+        el("school-invoice").disabled = !n;
+      }
+    };
+    panel.addEventListener("input", refresh);
+    refresh();
+    const close = () => {
+      panel.hidden = true;
+      delete panel.dataset.open;
+      panel.innerHTML = "";
+      if (btn) btn.hidden = false;
+    };
+    el("school-cancel").onclick = close;
+    /** Enregistre l'établissement et la liste ; true si tout va bien. */
+    const saveAll = async () => {
+      const name = v("school-name");
+      if (name.length < 2) {
+        await robotAlert("Indique le nom de l'établissement.");
+        return false;
+      }
+      const uai = v("school-uai").toUpperCase();
+      if (uai && !/^[0-9]{7}[A-Z]$/.test(uai)) {
+        await robotAlert("Le code UAI comporte 7 chiffres et une lettre (ex. 0691234A). Laisse la case vide si tu ne le connais pas.");
+        return false;
+      }
+      const billing = v("school-billing");
+      if (billing && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(billing)) {
+        await robotAlert("L'email de facturation n'est pas valable.");
+        return false;
+      }
+      const emails = parseSchoolEmails(el("school-emails").value);
+      const bad = emails.find((e) => !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e));
+      if (bad) {
+        await robotAlert(`Cette adresse n'est pas valable : ${bad}`);
+        return false;
+      }
+      const r1 = await Sync.school.save({ name, city: v("school-city"), uai, billingEmail: billing });
+      if (r1.error) {
+        await robotAlert(schoolErrorText(r1.error));
+        return false;
+      }
+      const r2 = await Sync.school.setTeachers(emails);
+      if (r2.error) {
+        await robotAlert(schoolErrorText(r2.error));
+        return false;
+      }
+      return true;
+    };
+    if (live) {
+      el("school-save").onclick = async () => {
+        const seats = seatsWanted();
+        if (!Number.isFinite(seats) || seats < 1 || seats > 200) {
+          await robotAlert(SCHOOL_ERRORS.bad_seats);
+          return;
+        }
+        const b = el("school-save");
+        b.disabled = true;
+        try {
+          if (!(await saveAll())) return;
+          if (seats !== seatsPaid) {
+            const more = seats > seatsPaid;
+            const ok = await robotConfirm(
+              `Passer de ${seatsPaid} à ${seats} enseignant${seats > 1 ? "s" : ""} payé${seats > 1 ? "s" : ""}, soit ${seats * SCHOOL_PRICE} € par an ? ${more ? "La différence, au prorata de la période restante, est facturée tout de suite." : "La différence, au prorata de la période restante, est déduite de la prochaine facture."}`,
+              { okLabel: "Confirmer" }
+            );
+            if (ok) {
+              const r = await Sync.billing.schoolSeats(seats);
+              if (r.error) {
+                await robotAlert(schoolErrorText(r.error, r.detail));
+                return;
+              }
+              await refreshMySubscription();
+            }
+          }
+          showToast("Établissement enregistré");
+          close();
+          renderSubscriptionsStatus();
+          openSchoolPanel("edit");
+        } finally {
+          b.disabled = false;
+        }
+      };
+      return;
+    }
+    const startPayment = async (invoice) => {
+      const n = count();
+      if (!n) return;
+      if (!(await saveAll())) return;
+      if (invoice) {
+        const billing = v("school-billing") || (accountCurrentUser && accountCurrentUser.email) || "";
+        const ok = await robotConfirm(
+          `Super école : ${n} enseignant${n > 1 ? "s" : ""}, soit ${n * SCHOOL_PRICE} € par an. L'abonnement commence tout de suite, et la facture est envoyée à ${billing}, payable sous 30 jours (virement ou carte). En confirmant, tu acceptes les conditions de vente.`,
+          { okLabel: "Recevoir la facture" }
+        );
+        if (!ok) return;
+        const r = await Sync.billing.schoolInvoice(n);
+        if (r.error) {
+          await robotAlert(schoolErrorText(r.error, r.detail));
+          return;
+        }
+        await refreshMySubscription();
+        close();
+        renderSubscriptionsStatus();
+        const url = r.data && r.data.url;
+        const go = await showRobotMessage(`C'est fait : ton établissement est abonné. La facture a été envoyée à ${(r.data && r.data.email) || billing}.`, {
+          buttons: url ? [{ label: "Fermer", value: false }, { label: "Voir la facture", value: true, primary: true }] : [{ label: "OK", value: false, primary: true }],
+        });
+        if (go && url) window.open(url, "_blank", "noopener");
+        return;
+      }
+      const ok = await confirmCheckout(`Super école : ${n} enseignant${n > 1 ? "s" : ""}, soit ${n * SCHOOL_PRICE} € par an, résiliable à tout moment. Tu vas aller sur la page de paiement sécurisée de Stripe.`);
+      if (!ok) return;
+      const r = await Sync.billing.checkout("super_ecole", { seats: n });
+      if (r.url) {
+        window.location.href = r.url;
+        return;
+      }
+      await robotAlert(schoolErrorText(r.error, r.detail));
+    };
+    el("school-card").onclick = () => startPayment(false);
+    el("school-invoice").onclick = () => startPayment(true);
+  }
+  const subsSchoolBtn = el("subs-school-btn");
+  if (subsSchoolBtn) {
+    subsSchoolBtn.addEventListener("click", async () => {
+      const action = subsSchoolBtn.dataset.action;
+      if (action === "has-other") {
+        await robotAlert("Ce compte a déjà un abonnement en cours. L'abonnement Super école se prend depuis le compte d'un responsable de l'établissement qui n'a pas d'autre abonnement (par exemple un compte créé pour l'établissement).");
+        return;
+      }
+      if (action === "new" || action === "edit") openSchoolPanel(action);
     });
   }
   const BILLING_ERRORS = {
@@ -16356,6 +16677,34 @@
   window.addEventListener("resize", () => {
     if (el("view-review") && el("view-review").classList.contains("is-active")) applyReviewLayout();
   });
+  /* v238 : à l'ouverture de Réviser, les positions (fiche, boutons, fiche
+     QCM) pouvaient être calculées avant que la page soit vraiment affichée
+     (bandeau du haut, nom de la boîte et sa jauge pas encore à leur
+     taille) : éléments superposés jusqu'à la fiche suivante. On recalcule
+     juste après l'affichage, puis à chaque changement de taille du
+     bandeau de la boîte. */
+  function reviewIsActive() {
+    return !!(el("view-review") && el("view-review").classList.contains("is-active"));
+  }
+  function relayoutReviewNow() {
+    if (!reviewIsActive()) return;
+    applyReviewLayout();
+    layoutQcmPanel();
+  }
+  function scheduleReviewRelayout() {
+    requestAnimationFrame(() => {
+      relayoutReviewNow();
+      requestAnimationFrame(relayoutReviewNow);
+    });
+    setTimeout(relayoutReviewNow, 350);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayoutReviewNow).catch(() => {});
+  }
+  if (typeof ResizeObserver !== "undefined") {
+    const reviewBarRo = new ResizeObserver(() => relayoutReviewNow());
+    ["subject-bar", "review-current-box"].forEach((id) => {
+      if (el(id)) reviewBarRo.observe(el(id));
+    });
+  }
 
   async function reconcileWithRemote() {
     await reconcileSubjectsAndFolders();

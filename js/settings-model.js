@@ -214,15 +214,27 @@
   const DEFAULT_TEXT_COLORS_SET = {
     homeTitle: "#1f2937",
     titles: "#1f2937",
-    generalText: "#64748b",
+    // v238 (accessibilité) : gris plus foncés (contraste ≥ 4,5:1).
+    generalText: "#526073",
     folderSubjectNames: "#1f2937",
     cardText: "#1f2937",
-    chartValues: "#6b7280",
-    chartLabels: "#6b7280",
+    chartValues: "#5b6472",
+    chartLabels: "#5b6472",
     chartTodayLabel: "#1f2937",
     selectorText: "#1f2937",
-    syncText: "#64748b",
+    syncText: "#526073",
   };
+  /** v238 : les anciens gris par défaut, enregistrés tels quels dans les
+   *  réglages communs, sont remplacés par les nouveaux (plus lisibles). */
+  const OLD_TEXT_GREYS = { "#64748b": "#526073", "#6b7280": "#5b6472" };
+  function upgradeTextGreys(set) {
+    const out = { ...set };
+    ["generalText", "syncText", "chartValues", "chartLabels"].forEach((k) => {
+      const v = String(out[k] || "").toLowerCase();
+      if (OLD_TEXT_GREYS[v]) out[k] = OLD_TEXT_GREYS[v];
+    });
+    return out;
+  }
   const DEFAULT_NIGHT_TEXT_COLORS_SET = {
     homeTitle: "#eef2f8",
     titles: "#eef2f8",
@@ -650,7 +662,7 @@
       cardBgColor: parsed.cardBgColor || DEFAULT_CARD_BG_COLOR,
       emptyBarColor: parsed.emptyBarColor || DEFAULT_EMPTY_BAR_COLOR,
       bgColors: { ...DEFAULT_BG_COLORS, ...(parsed.bgColors || {}) },
-      textColorsSet: { ...DEFAULT_TEXT_COLORS_SET, ...(parsed.textColorsSet || {}) },
+      textColorsSet: upgradeTextGreys({ ...DEFAULT_TEXT_COLORS_SET, ...(parsed.textColorsSet || {}) }),
       taxColors: mergeTaxColors(DEFAULT_TAX_COLORS, parsed.taxColors),
       // Round 56 : blocs de classement = une seule couleur, avec une
       // opacité par niveau (remplace taxColors, gardé pour compatibilité).

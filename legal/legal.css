@@ -1,8 +1,8 @@
 /* darwin — pages légales (mentions légales, confidentialité, CGU, CGV).
    Pas de police externe : rien n'est chargé depuis un autre site. */
 :root {
-  --ink: #1f2937; --body: #334155; --slate: #64748b; --mist: #eef2f8; --paper: #ffffff;
-  --sky: #2f7fc4; --line: rgba(31, 41, 55, 0.12); --todo-bg: #fff3b0; --todo-ink: #6b4e00;
+  --ink: #1f2937; --body: #334155; --slate: #526073; --mist: #eef2f8; --paper: #ffffff;
+  --sky: #23679f; --line: rgba(31, 41, 55, 0.12); --todo-bg: #fff3b0; --todo-ink: #6b4e00;
 }
 @media (prefers-color-scheme: dark) {
   :root { --ink: #e5e7eb; --body: #cbd5e1; --slate: #94a3b8; --mist: #0f172a; --paper: #1e293b; --sky: #7cb8ec; --line: rgba(226, 232, 240, 0.14); --todo-bg: #5c4a00; --todo-ink: #ffe9a3; }

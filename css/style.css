@@ -23,7 +23,8 @@
      sur les deux fonds. */
   --rule-soft: rgba(31, 41, 55, 0.14);
   --ink: #1f2937;
-  --ink-soft: #64748b;
+  /* v238 (accessibilité) : un peu plus foncé (contraste 5,7:1 sur le fond). */
+  --ink-soft: #526073;
   --amber: #cf9a4d;
   --sage: #6f8b5c;
   --teal: #3e7c6b;
@@ -7491,7 +7492,7 @@ body:not(.v1-pages) #view-creations .round-add-card-wrap { justify-content: cent
 }
 #view-account .card-form:last-child { border-bottom: none; }
 #view-account .field > span,
-#view-account .account-school-title { font-size: 11.5px; opacity: 0.8; }
+#view-account .account-school-title { font-size: 11.5px; }
 #view-account .field :is(input[type="text"], input[type="email"], input[type="password"], select) {
   background: transparent;
   border: none;
@@ -7600,7 +7601,7 @@ body:has(#view-library.is-active[data-cycle]) {
 .home-defi-state {
   display: inline-block; margin-top: 2px; padding: 2px 8px; border-radius: 999px;
   font-family: var(--font-type); font-size: 10.5px; font-weight: 700; letter-spacing: 0.02em;
-  background: #ef7d2d; color: #fff; white-space: nowrap;
+  background: #c2570f; color: #fff; white-space: nowrap;
 }
 .home-circle.home-defi.is-todo,
 .home-circle.home-defi.is-playing {
@@ -7627,7 +7628,7 @@ body:has(#view-library.is-active[data-cycle]) {
   font-family: var(--font-type);
   margin-top: 6px;
 }
-:root.is-night-mode #view-defi .ddefi { --ddefi-accent-soft: rgba(239, 125, 45, 0.18); --ddefi-empty: rgba(255, 255, 255, 0.14); --ddefi-line: rgba(255, 255, 255, 0.14); }
+:root.is-night-mode #view-defi .ddefi { --ddefi-accent-ink: #f7a46a; --ddefi-accent-soft: rgba(239, 125, 45, 0.18); --ddefi-empty: rgba(255, 255, 255, 0.14); --ddefi-line: rgba(255, 255, 255, 0.14); }
 #view-defi .ddefi-q { font-family: var(--font-type); }
 .defi-app-day { margin: 0 0 10px; font-family: var(--font-type); font-size: 13px; color: var(--ink-soft); text-align: center; }
 
@@ -7636,7 +7637,7 @@ body:has(#view-library.is-active[data-cycle]) {
    ================================================================== */
 .qcm-chip {
   display: inline-block; padding: 1px 7px; border-radius: 999px; font-family: var(--font-type);
-  font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; background: #ef7d2d; color: #fff; vertical-align: 1px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; background: #c2570f; color: #fff; vertical-align: 1px;
 }
 /* Formulaire de fiche */
 .qcm-fields { margin: 2px 0 14px; }
@@ -7699,7 +7700,7 @@ body:has(#view-library.is-active[data-cycle]) {
   .qcm-choices:not(.no-hover) .qcm-choice:hover:not([disabled]) { border-color: #ef7d2d; }
 }
 .qcm-choice { -webkit-tap-highlight-color: transparent; }
-.qcm-choice:focus { outline: none; }
+.qcm-choice:focus:not(:focus-visible) { outline: none; }
 .qcm-choice:focus-visible { outline: 2px solid #ef7d2d; outline-offset: 1px; }
 .qcm-choice:active:not([disabled]) { transform: scale(0.98); }
 .qcm-letter {
@@ -7748,7 +7749,7 @@ body.is-qcm-review #rating-row, body.is-qcm-review #rating-invite { display: non
   color: var(--ink-soft, #64748b);
 }
 .card-row-a .card-more { margin-top: 0.3em; padding-top: 0; border-top: none; }
-.field-optional { font-weight: 400; text-transform: none; letter-spacing: 0; opacity: 0.75; }
+.field-optional { font-weight: 400; text-transform: none; letter-spacing: 0; }
 .rich-editor.rich-editor--more { min-height: 56px; font-size: 0.95em; }
 
 /* ==================================================================
@@ -8009,3 +8010,55 @@ body.is-qcm-review .card-learn-link { display: none; }
 .media-viewer-box iframe { width: 100%; height: 100%; border: 0; display: block; }
 .media-viewer-foot { flex: none; margin: 0; padding: 8px 16px calc(env(safe-area-inset-bottom, 0px) + 12px); text-align: center; font-size: 13px; color: rgba(232, 237, 243, 0.7); }
 .media-viewer-foot a { color: #8cc4ff; font-weight: 700; white-space: nowrap; }
+
+/* v238 : Super école — formulaire de l'établissement. */
+.subs-school-panel { margin: 6px 0 10px; padding: 10px 12px; border-radius: 12px; background: color-mix(in srgb, #ef7d2d 8%, transparent); font-family: var(--font-type); text-align: left; }
+.subs-school-panel[hidden] { display: none; }
+.school-form { display: grid; gap: 10px; }
+.school-form .field { margin: 0; }
+.school-form input, .school-form textarea { width: 100%; box-sizing: border-box; }
+.school-form textarea { font: inherit; font-size: 15px; resize: vertical; }
+.school-teachers { list-style: none; margin: 2px 0 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+.school-teachers li { display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: baseline; padding: 6px 8px; border-radius: 8px; background: color-mix(in srgb, var(--ink, #1d2b3a) 5%, transparent); }
+.school-t-email { font-weight: 700; word-break: break-all; }
+.school-t-state { color: var(--ink-soft); }
+.school-t-state.is-ok { color: #2e7d4f; }
+.school-t-state.is-warn { color: #b0602a; }
+.school-actions { display: flex; flex-direction: column; align-items: stretch; gap: 8px; margin-top: 6px; }
+.school-actions .subs-offer-btn { margin: 0; width: 100%; }
+.school-actions .subs-manage-link { align-self: center; margin: 2px 0 0; }
+.school-form input[type="number"] { max-width: 120px; }
+
+/* v238 (accessibilité) : contrastes suffisants en mode jour. */
+:where(:root:not(.is-night-mode)) .subs-status { color: color-mix(in srgb, var(--reassure-color, #3e7c6b) 78%, #000); }
+:where(:root:not(.is-night-mode)) .subs-offer-save { color: #2a5c4e; }
+/* Cartes des offres : couleur des textes assez contrastée (jour et nuit),
+   la couleur de la formule restant pour les bandeaux et pastilles. */
+.plan-card--free { --plan-ink: #2e6a59; }
+.plan-card--eleve { --plan-ink: color-mix(in srgb, var(--home-library-bg-color, #8a63c9) 72%, #000); }
+.plan-card--prof { --plan-ink: #2a6fa8; }
+.plan-card--ecole { --plan-ink: #9e480c; }
+.plan-card--current { --plan-ink: color-mix(in srgb, var(--action-color, #2f6fae) 85%, #000); }
+:root.is-night-mode .plan-card--free { --plan-ink: #7fc0ad; }
+:root.is-night-mode .plan-card--eleve { --plan-ink: color-mix(in srgb, var(--home-library-bg-color, #8a63c9) 45%, #fff); }
+:root.is-night-mode .plan-card--prof { --plan-ink: #86c2f2; }
+:root.is-night-mode .plan-card--ecole { --plan-ink: #f7a46a; }
+:root.is-night-mode .plan-card--current { --plan-ink: color-mix(in srgb, var(--action-color, #2f6fae) 45%, #fff); }
+.plan-name, .plan-kicker, .plan-link, .plan-soon { color: var(--plan-ink, var(--plan-color)); }
+:root.is-night-mode #view-account .btn.btn--primary.account-profile-save { color: #11151c; }
+:root.is-night-mode .account-delete-link { color: #f08a7e; }
+
+/* v238 (accessibilité) : contour visible au clavier partout où aucun style
+   de focus n'est déjà prévu, et animations décoratives coupées quand le
+   système demande moins d'animations. */
+:where(button, a, input, select, textarea, [contenteditable="true"], [tabindex]):focus-visible {
+  outline: 2px solid var(--action-color, #2f6fae);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

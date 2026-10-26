@@ -17,6 +17,28 @@
   const M = window.FichesSettingsModel;
   const DEF = M.buildDevSettings({});
   const OWNER_EMAIL = "stephane.vezain@gmail.com";
+  // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
+  // avertissement quand une version plus récente est en ligne (le
+  // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
+  const ADMIN_VERSION = "v238";
+  async function checkAdminVersion() {
+    const label = $("#sidebar-version");
+    if (label) label.textContent = `Darwin Admin ${ADMIN_VERSION}`;
+    try {
+      const res = await fetch(`../sw.js?v=${Date.now()}`, { cache: "no-store" });
+      if (!res.ok) return;
+      const m = /fiches-cache-(v\d+)/.exec(await res.text());
+      if (!m || m[1] === ADMIN_VERSION) return;
+      const online = Number(m[1].slice(1));
+      if (!(online > Number(ADMIN_VERSION.slice(1)))) return;
+      const n = $("#notice");
+      if (!n) return;
+      n.hidden = false;
+      n.textContent = `Une version plus récente de Darwin Admin est en ligne (${m[1]}) ; tu utilises encore la ${ADMIN_VERSION}. Recharge la page en forçant le navigateur : Ctrl + Maj + R (sur Mac : Cmd + Maj + R).`;
+    } catch (e) {
+      /* hors ligne */
+    }
+  }
   const PAGE_SIZE = 50;
 
   /* ---------------- Outils ---------------- */
@@ -403,6 +425,7 @@
     $("#gate").hidden = true;
     $("#shell").hidden = false;
     $("#sidebar-user").textContent = user.email || "";
+    checkAdminVersion();
     const notice = $("#notice");
     notice.hidden = !state.limited;
     if (state.limited) notice.textContent = `Mode limité — ${MIGRATION_HINT} En attendant, seuls les réglages de l'appli sont disponibles.`;

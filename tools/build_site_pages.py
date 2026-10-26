@@ -99,7 +99,7 @@ def page(title, description, body, depth=1, extra_head=""):
   .subject-hero .play {{ grid-area: play; }}
   .play-note {{ margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }}
   .facts {{ display: flex; gap: 28px; margin: 6px 0 26px; }}
-  .facts b {{ display: block; font-size: 34px; line-height: 1; color: var(--sky); }}
+  .facts b {{ display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }}
   .facts span {{ font-size: 15px; color: var(--slate); }}
   .boxes {{ list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }}
   .boxes li {{ background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }}
@@ -112,7 +112,7 @@ def page(title, description, body, depth=1, extra_head=""):
   .idx-hero {{ display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }}
   .idx-stats {{ display: flex; gap: 14px; flex-wrap: wrap; }}
   .idx-stats div {{ background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }}
-  .idx-stats b {{ display: block; font-size: 30px; line-height: 1.05; color: var(--sky); }}
+  .idx-stats b {{ display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }}
   .idx-stats span {{ font-size: 15px; color: var(--slate); }}
   .jump {{ display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }}
   .jump a {{ display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }}

@@ -182,7 +182,7 @@
         <div class="ddefi-top">
           <span class="ddefi-count">Question ${s.cur + 1}<small> / ${N}</small></span>
           <span class="ddefi-level" title="Niveau ${q.level} sur 5">Niveau <span class="ddefi-dots">${levelHtml(q.level)}</span></span>
-          <span class="ddefi-lives" aria-label="${s.lives} vie${s.lives > 1 ? "s" : ""}">${livesHtml()}</span>
+          <span class="ddefi-lives" role="img" aria-label="${s.lives} vie${s.lives > 1 ? "s" : ""}">${livesHtml()}</span>
         </div>
         <div class="ddefi-progress" aria-hidden="true">${progressHtml()}</div>
         <div class="ddefi-card">
