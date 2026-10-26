@@ -5,7 +5,8 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v235";
+  const APP_VERSION = "v236";
+  window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
   // voir js/settings-model.js (partagé avec l'appli d'administration).
@@ -15838,11 +15839,23 @@
       const body = (input.value || "").trim();
       if (!body) return;
       if (!(await requireParentalConsent("écrire dans la messagerie"))) return;
+      // v236 : la base refuse les messages de plus de 4 000 caractères.
+      if (body.length > 4000) {
+        await robotAlert(`Ton message est trop long (${body.length} caractères) : 4 000 au maximum. Coupe-le en plusieurs messages.`);
+        return;
+      }
       input.value = "";
       messageDrafts.delete(messageThreadContext.klass.id);
       autoGrowMessageInput();
       const { data, error } = await Sync.messages.send(messageThreadContext.klass.id, body);
       if (error) {
+        // v236 : le message n'est pas perdu (par exemple après « Trop de
+        // messages en peu de temps »).
+        if (!input.value) {
+          input.value = body;
+          messageDrafts.set(messageThreadContext.klass.id, body);
+          autoGrowMessageInput();
+        }
         await robotAlert("Erreur d'envoi : " + error);
         return;
       }

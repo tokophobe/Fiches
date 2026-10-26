@@ -34,7 +34,7 @@
       <tr><td>Pour un enfant de moins de 15 ans : email du parent, date et réponse de l'accord</td><td>Recueillir et prouver l'accord d'un parent</td><td>Obligation légale</td></tr>
       <tr><td>Abonnement : formule, état, dates, identifiants Stripe ; carte bancaire limitée à la marque, aux 4 derniers chiffres et à la date d'expiration</td><td>Gérer l'abonnement, te prévenir si ta carte expire avant le prochain prélèvement</td><td>Exécution du contrat</td></tr>
       <tr><td>Factures (chez Stripe)</td><td>Comptabilité</td><td>Obligation légale</td></tr>
-      <tr><td>Données techniques (adresse IP, date de connexion, journaux d'erreurs des serveurs)</td><td>Sécurité, lutte contre les abus, correction des pannes</td><td>Intérêt légitime</td></tr>
+      <tr><td>Données techniques (adresse IP, date de connexion, journaux d'erreurs des serveurs ; erreurs de fonctionnement de l'appli : message d'erreur, page, version, navigateur, sans le contenu de tes fiches)</td><td>Sécurité, lutte contre les abus, correction des pannes</td><td>Intérêt légitime</td></tr>
     </table></div>
     <p><strong>Ton numéro de carte bancaire n'est jamais vu ni gardé par darwin</strong> : la saisie se fait sur la page sécurisée de Stripe.</p>
 
@@ -49,7 +49,6 @@
           <li>Stripe Payments Europe, Limited (Irlande) : paiement des abonnements ;</li>
           <li><mark class="todo">[hébergeur des pages de l'appli et du site ; aujourd'hui GitHub, Inc. (États-Unis)]</mark> : il reçoit l'adresse IP des visiteurs pour afficher les pages ;</li>
           <li><mark class="todo">[service d'envoi d'emails, ex. Brevo (France) ou Resend (États-Unis)]</mark> : emails de confirmation et de réinitialisation du mot de passe ;</li>
-          <li>Google Fonts (Google Ireland Limited) : certaines polices de caractères de l'appli et du site sont chargées depuis les serveurs de Google, qui reçoivent alors ton adresse IP <mark class="todo">[à retirer si les polices sont hébergées par darwin]</mark>.</li>
         </ul>
       </li>
     </ul>
@@ -61,6 +60,7 @@
       <li>Boîtes publiées dans la Librairie : supprimées avec ton compte.</li>
       <li>Factures : 10 ans, chez Stripe (obligation comptable), même après la suppression du compte.</li>
       <li>Journaux techniques : <mark class="todo">[durée, ex. 12 mois au plus]</mark>.</li>
+      <li>Erreurs de fonctionnement de l'appli : 90 jours.</li>
     </ul>
 
     <h2>5. Les enfants</h2>

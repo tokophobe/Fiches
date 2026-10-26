@@ -290,6 +290,7 @@
     cards: '<rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/>',
     chat: '<path d="M4 5h16v11H9l-5 4V5z"/>',
     wrench: '<path d="M14.5 6.5a4 4 0 0 0 5 5L12 19a2.1 2.1 0 0 1-3-3l7.5-7.5a4 4 0 0 0-2-2z"/>',
+    bug: '<rect x="7" y="8" width="10" height="12" rx="5"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8M3 13h4M17 13h4M4 7.5l3 2M20 7.5l-3 2M4 19l3-2M20 19l-3-2"/>',
     list: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>',
   };
   const svg = (inner) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
@@ -325,9 +326,15 @@
         { key: "settings/tech", label: "Technique", icon: "wrench" },
       ],
     },
-    { group: "Suivi", items: [{ key: "journal", label: "Journal", icon: "list" }] },
+    {
+      group: "Suivi",
+      items: [
+        { key: "journal", label: "Journal", icon: "list" },
+        { key: "errors", label: "Erreurs", icon: "bug", badge: "errors" },
+      ],
+    },
   ];
-  const badges = { reports: 0 };
+  const badges = { reports: 0, errors: 0 };
   function renderNav(activeKey) {
     const nav = $("#nav");
     nav.innerHTML = "";
@@ -408,6 +415,13 @@
     try {
       const o = await rpc("admin_overview");
       badges.reports = Number(o.reports_open) || 0;
+      // v236 : erreurs nouvelles des dernières 24 h (table client_errors).
+      try {
+        const { count } = await client().from("client_errors").select("id", { count: "exact", head: true }).gt("first_seen", new Date(Date.now() - 86400000).toISOString());
+        badges.errors = Number(count) || 0;
+      } catch (e) {
+        badges.errors = 0;
+      }
       renderNav(currentNavKey);
       return o;
     } catch (e) {
@@ -1400,9 +1414,31 @@
     const used = new Set();
     let changed = 0;
     let unmatched = 0;
+    const kept = [];
     const cards = (colCards || []).map((c) => {
       const qa = packQaHash(c.question, c.answer);
       const q = packHash(c.question);
+      // v235 : fiche corrigée dans l'appli (par un administrateur) : on la
+      // garde telle quelle, sauf si le fichier contient déjà la correction.
+      if (c.corr && c.corr.from) {
+        const iNow = curQA.get(qa);
+        // Si seule l'explication ou les réponses fausses ont été corrigées,
+        // la question / réponse est la même qu'avant : le fichier ne
+        // contient la correction que si tout est identique.
+        const pNow = iNow != null ? packCards[iNow] : null;
+        const fileHasIt = pNow && (qa !== c.corr.from || (sameWrongs(c.wrongs, pNow.wrongs) && (c.more || "") === (pNow.more || "")));
+        if (fileHasIt && !used.has(iNow)) {
+          used.add(iNow);
+          const out = { ...c };
+          delete out.corr;
+          changed++;
+          return withMore(withWrongs(out, packCards[iNow].wrongs), packCards[iNow].more);
+        }
+        const iFrom = [curQA.get(c.corr.from), oldQA.get(c.corr.from)].find((m) => m != null && !used.has(m));
+        if (iFrom != null) used.add(iFrom);
+        kept.push({ packIndex: iFrom == null ? null : iFrom, card: c });
+        return c;
+      }
       const i0 = curQA.get(qa);
       if (i0 != null && !used.has(i0)) {
         used.add(i0);
@@ -1438,7 +1474,7 @@
         added++;
       });
     }
-    return { cards, changed: changed + added, unmatched, missing: sid ? 0 : packCards.length - used.size, added };
+    return { cards, changed: changed + added, unmatched, missing: sid ? 0 : packCards.length - used.size, added, kept };
   }
   async function fetchAllRows(build, pageSize) {
     const out = [];
@@ -1728,10 +1764,69 @@
         plan.cardsMissing
           ? h("p", { class: "card-hint" }, `${plural(plan.cardsMissing, "fiche du fichier", "fiches du fichier")} absente${plan.cardsMissing > 1 ? "s" : ""} des collections déjà publiées : non ajoutée${plan.cardsMissing > 1 ? "s" : ""} (pour ne pas réintroduire une fiche retirée à la main).`)
           : null,
+        plan.corrections.length ? packCorrectionsBlock(plan) : null,
         publishBtn,
       ];
       out.replaceChildren(...parts.filter(Boolean));
     });
+  }
+  /* v235 : fiches corrigées dans l'appli (administrateur). Elles sont
+     gardées à la publication ; ce bloc permet de télécharger le fichier
+     bibliotheque.json avec ces corrections, pour qu'il reste la référence. */
+  function packCorrectionsBlock(plan) {
+    const n = plan.corrections.length;
+    const dl = h("button", { type: "button", class: "btn" }, "Télécharger le fichier avec ces corrections");
+    dl.addEventListener("click", () => {
+      const pack = JSON.parse(JSON.stringify(plan.pack));
+      const boxes = new Map((pack.boxes || []).map((b) => [b.key, b]));
+      let done = 0;
+      plan.corrections.forEach((k) => {
+        const box = boxes.get(k.key);
+        if (!box || k.packIndex == null || !box.cards[k.packIndex]) return;
+        const p = box.cards[k.packIndex];
+        const c = k.card;
+        const list = (v) => (Array.isArray(v) ? v : v ? [v] : []);
+        const oldQa = packQaHash(p.question, p.answer);
+        const oldQ = packHash(p.question);
+        const next = { ...p, question: c.question, answer: c.answer };
+        const newQa = packQaHash(c.question, c.answer);
+        const newQ = packHash(c.question);
+        const ws = (oldQa !== newQa ? [oldQa] : []).concat(list(p.w).filter((x) => x !== oldQa && x !== newQa));
+        const wqs = (oldQ !== newQ ? [oldQ] : []).concat(list(p.wq).filter((x) => x !== oldQ && x !== newQ));
+        if (ws.length) next.w = ws;
+        else delete next.w;
+        if (wqs.length) next.wq = wqs;
+        else delete next.wq;
+        if (c.more) next.more = c.more;
+        else delete next.more;
+        if (Array.isArray(c.wrongs) && c.wrongs.length === 3) next.wrongs = c.wrongs;
+        else delete next.wrongs;
+        box.cards[k.packIndex] = next;
+        done++;
+      });
+      const blob = new Blob([JSON.stringify(pack, null, 1) + "\n"], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "bibliotheque.json";
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        URL.revokeObjectURL(a.href);
+        a.remove();
+      }, 1000);
+      toast(`Fichier téléchargé (${plural(done, "correction reportée", "corrections reportées")})`);
+    });
+    const rows = plan.corrections.slice(0, 50).map((k) =>
+      h("li", null, h("b", null, k.boxName), " — ", String(k.card.question || "").replace(/<[^>]+>/g, " ").slice(0, 120), k.card.corr && k.card.corr.at ? h("span", { class: "faint" }, ` (${fmtDateTime(k.card.corr.at)})`) : "")
+    );
+    return h(
+      "div",
+      { class: "pack-corr-box" },
+      h("h3", null, `${plural(n, "fiche corrigée", "fiches corrigées")} dans l'appli`),
+      h("p", { class: "card-hint" }, "Ces fiches ont été corrigées dans l'appli : la publication les garde telles quelles. Pour que le fichier reste la référence, télécharge-le avec ces corrections et garde ce nouveau fichier (envoie-le à Claude à la prochaine mise à jour du contenu)."),
+      h("ul", { class: "pack-corrections" }, ...rows, n > 50 ? h("li", { class: "faint" }, `… et ${n - 50} autres`) : null),
+      dl
+    );
   }
   /** Retire du compte les boîtes « pack-… », leurs fiches, puis les dossiers
    *  devenus vides (dossier des boîtes toutes prêtes et ses sous-dossiers). */
@@ -1810,7 +1905,7 @@
           .order("id"),
       300
     );
-    const plan = { total: 0, upToDate: 0, toUpdate: [], toCreate: [], user, cardsChanged: 0, cardsUnmatched: 0, cardsMissing: 0 };
+    const plan = { total: 0, upToDate: 0, toUpdate: [], toCreate: [], user, cardsChanged: 0, cardsUnmatched: 0, cardsMissing: 0, corrections: [], pack };
     (pack.boxes || []).forEach((box) => {
       plan.total++;
       const sid = `pack-${box.key}`;
@@ -1838,6 +1933,7 @@
       if (Object.keys(taxonomy).length && sortedJson(existing.taxonomy || {}) !== sortedJson(taxonomy)) fields.taxonomy = taxonomy;
       if (tags.length && sortedJson((existing.tags || []).map(normalizeTag)) !== sortedJson(tags)) fields.tags = tags;
       const merged = mergePackCards(existing.cards || [], packCards, sid);
+      merged.kept.forEach((k) => plan.corrections.push({ key: box.key, boxName: box.name, packIndex: k.packIndex, card: k.card }));
       plan.cardsUnmatched += merged.unmatched;
       plan.cardsMissing += merged.missing;
       if (merged.changed) {
@@ -2259,6 +2355,123 @@
     "library.delete": "Collection supprimée",
   };
   const journalQuery = { offset: 0 };
+  /* v236 : erreurs remontées par l'appli et Darwin Admin (js/error-report.js,
+     table client_errors). Une ligne par erreur, tous comptes confondus. */
+  const errorsQuery = { days: 7 };
+  PAGES.errors = async (root, params, live) => {
+    setTitle("Erreurs", [{ label: "Suivi" }]);
+    if (state.limited) {
+      root.appendChild(errorCard(MIGRATION_HINT));
+      return;
+    }
+    const daysSel = h(
+      "select",
+      { class: "input", style: { width: "auto" } },
+      [1, 7, 30, 90].map((d) => h("option", { value: String(d), selected: d === errorsQuery.days }, d === 1 ? "Dernières 24 h" : `${d} derniers jours`))
+    );
+    const clearBtn = h("button", { type: "button", class: "btn btn--small" }, "Tout effacer");
+    const listCard = h("div", { class: "card card--flush" });
+    root.appendChild(
+      h(
+        "p",
+        { class: "card-hint", style: { marginTop: 0 } },
+        "Erreurs imprévues survenues chez les utilisateurs (appli et Darwin Admin). Une même erreur n'est comptée qu'une fois par compte et par jour. Clique sur une ligne pour voir le détail (à copier et transmettre à Claude). Effacées automatiquement après 90 jours."
+      )
+    );
+    root.appendChild(h("div", { class: "toolbar", style: { display: "flex", gap: "10px", alignItems: "center", margin: "0 0 12px" } }, daysSel, clearBtn));
+    root.appendChild(listCard);
+    let rows = [];
+    const detail = (r) => {
+      const text = [
+        `Message : ${r.message}`,
+        `Type : ${r.kind === "rejection" ? "promesse rejetée" : "erreur"} · ${r.app === "admin" ? "Darwin Admin" : "appli"}`,
+        `Versions : ${(r.versions || []).filter(Boolean).join(", ") || "?"}`,
+        `Pages : ${(r.pages || []).join(" · ")}`,
+        `Comptes : ${fmtN(r.accounts)} (${(r.emails || []).join(", ") || "non connectés"})`,
+        `Fois : ${fmtN(r.occurrences)} · du ${fmtDateTime(r.first_seen)} au ${fmtDateTime(r.last_seen)}`,
+        `Navigateurs : ${(r.user_agents || []).join(" | ")}`,
+        "",
+        r.stack || "(pas de pile d'appels)",
+      ].join("\n");
+      const pre = h("pre", { class: "error-detail" }, text);
+      openModal({
+        title: "Détail de l'erreur",
+        wide: true,
+        body: pre,
+        buttons: [
+          {
+            label: "Copier",
+            onClick: async () => {
+              try {
+                await navigator.clipboard.writeText(text);
+                toast("Copié");
+              } catch (e) {
+                toast("Copie impossible : sélectionne le texte à la main.", true);
+              }
+              return false;
+            },
+          },
+          {
+            label: "Effacer cette erreur",
+            danger: true,
+            onClick: async () => {
+              const { error } = await client().from("client_errors").delete().eq("fingerprint", r.fingerprint);
+              if (error) {
+                toast(friendlyError(error), true);
+                return false;
+              }
+              toast("Erreur effacée");
+              load();
+              refreshBadges();
+            },
+          },
+          { label: "Fermer", value: true, primary: true },
+        ],
+      });
+    };
+    const load = async () => {
+      listCard.replaceChildren(h("div", { class: "empty" }, "Chargement…"));
+      try {
+        rows = (await rpc("admin_client_errors", { p_days: errorsQuery.days })) || [];
+      } catch (e) {
+        listCard.replaceChildren(h("div", { class: "empty form-error" }, e.message));
+        return;
+      }
+      if (!live()) return;
+      clearBtn.disabled = !rows.length;
+      listCard.replaceChildren(
+        table(
+          [
+            { label: "Dernière fois", cls: "nowrap", render: (r) => fmtDateTime(r.last_seen) },
+            { label: "Erreur", render: (r) => h("span", { class: "error-msg" }, r.message) },
+            { label: "Où", render: (r) => (r.app === "admin" ? "Darwin Admin" : "Appli") },
+            { label: "Versions", render: (r) => (r.versions || []).filter(Boolean).join(", ") },
+            { label: "Comptes", cls: "num", render: (r) => fmtN(r.accounts) },
+            { label: "Fois", cls: "num", render: (r) => fmtN(r.occurrences) },
+          ],
+          rows,
+          { empty: "Aucune erreur sur cette période. 🎉", onRow: detail }
+        )
+      );
+    };
+    daysSel.addEventListener("change", () => {
+      errorsQuery.days = Number(daysSel.value) || 7;
+      load();
+    });
+    clearBtn.addEventListener("click", async () => {
+      if (!(await confirmDialog("Effacer toutes les erreurs enregistrées (toutes périodes) ?", { okLabel: "Tout effacer", danger: true }))) return;
+      const { error } = await client().from("client_errors").delete().gt("id", 0);
+      if (error) {
+        toast(friendlyError(error), true);
+        return;
+      }
+      toast("Erreurs effacées");
+      load();
+      refreshBadges();
+    });
+    await load();
+  };
+
   PAGES.journal = async (root, params, live) => {
     setTitle("Journal", [{ label: "Suivi" }]);
     if (state.limited) {

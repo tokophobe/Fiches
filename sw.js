@@ -1,4 +1,4 @@
-const CACHE_NAME = "fiches-cache-v235";
+const CACHE_NAME = "fiches-cache-v236";
 
 const CORE_ASSETS = [
   "./",
@@ -7,6 +7,7 @@ const CORE_ASSETS = [
   "./css/style.css",
   "./css/defi.css",
   "./js/config.js",
+  "./js/error-report.js",
   "./js/user-scope.js",
   "./js/sm2.js",
   "./js/db.js",
@@ -46,7 +47,7 @@ self.addEventListener("activate", (event) => {
 });
 
 // Stratégie : cache d'abord pour les fichiers du cœur de l'appli,
-// réseau avec repli sur le cache pour le reste (ex. polices Google Fonts).
+// réseau avec repli sur le cache pour le reste .
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   if (request.method !== "GET") return;
