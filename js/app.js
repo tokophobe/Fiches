@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v236";
+  const APP_VERSION = "v237";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -3786,7 +3786,7 @@
     // page de la classe — on ne repousse plus le chemin personnel.
     for (const share of subject.sharedShares) {
       try {
-        await Sync.classes.updateSharedBoxCards(share.boxId, boxCards, undefined, subject.name);
+        await Sync.classes.updateSharedBoxCards(share.boxId, boxCards, undefined, subject.name, subject.link || null);
       } catch (e) {
         console.warn("Classes: échec de la mise à jour de la boîte partagée", e);
       }
@@ -3806,10 +3806,10 @@
         const rb = byId.get(share.boxId);
         if (!rb) continue;
         // Round 53 : seul le nom suit (plus le chemin personnel).
-        if (rb.subject_name === s.name) continue;
+        if (rb.subject_name === s.name && (rb.link === undefined || (rb.link || "") === (s.link || ""))) continue;
         const boxCards = cards.filter((c) => !c.deleted && c.subject === s.id);
         try {
-          await Sync.classes.updateSharedBoxCards(share.boxId, boxCards, undefined, s.name);
+          await Sync.classes.updateSharedBoxCards(share.boxId, boxCards, undefined, s.name, s.link || null);
         } catch (e) {
           console.warn("Classes : mise à jour d'une boîte partagée impossible", e);
         }
@@ -3862,6 +3862,8 @@
       // y compris la fiche QCM (question, choix et réponses fausses).
       renderQuestionText(currentCard);
       answerTextEl.innerHTML = answerWithMoreHtml(currentCard);
+      renderCardLearnLink(currentCard);
+      if (qcmState && qcmState.cardId === updated.id && qcmState.done && el("qcm-learn-link")) el("qcm-learn-link").hidden = !learnLinkInfo(updated.link);
       updateRatingPreviews();
       if (textChanged && !(qcmState && qcmState.cardId === updated.id && qcmState.done)) renderReviewMode(currentCard);
     }
@@ -4036,6 +4038,8 @@
     }
     box.hidden = false;
     const sid = card.subject;
+    const linkSubject = subjects.find((x) => x.id === sid);
+    setLearnLinkButton(el("review-box-learn-link"), linkSubject && linkSubject.link, "box", linkSubject ? linkSubject.name : "");
     const prev = reviewBoxShownSubject;
     const durMs = Math.max(0, Number(loadDevSettings().reviewLayout.boxChangeAnimSec) || 0) * 1000;
     const canAnimate = onReview && durMs >= 50 && gaugeEl && titleEl && typeof gaugeEl.animate === "function";
@@ -4303,6 +4307,7 @@
     currentCard = fresh;
     renderQuestionText(currentCard);
     answerTextEl.innerHTML = answerWithMoreHtml(currentCard);
+    renderCardLearnLink(currentCard);
     updateRatingPreviews();
   }
 
@@ -4547,7 +4552,17 @@
     const lines = raw.split("\n");
     return { main: lines[0], rest: lines.slice(1).join("\n").trim() };
   }
+  /** v237 : liens de la fiche affichée (sous la fiche une fois retournée,
+   *  ou dans la fiche QCM une fois la bonne réponse trouvée). */
+  function renderCardLearnLink(card) {
+    const title = card ? stripHtml(card.question || "").trim().slice(0, 120) : "";
+    setLearnLinkButton(el("card-learn-link"), card && card.link, "card", title);
+    const q = el("qcm-learn-link");
+    setLearnLinkButton(q, card && card.link, "card", title);
+    if (q && !(qcmState && qcmState.done && card && qcmState.cardId === card.id)) q.hidden = true;
+  }
   function renderReviewMode(card) {
+    renderCardLearnLink(card);
     const panel = el("qcm-panel");
     const badge = el("card-qcm-badge");
     const hint = document.querySelector("#flip-card .tap-hint");
@@ -4676,6 +4691,8 @@
     const rest = card ? qcmAnswerParts(card).rest : "";
     const extra = card && card.more && stripHtml(card.more).trim() ? card.more : "";
     const more = rest || extra;
+    const qLink = el("qcm-learn-link");
+    if (qLink) qLink.hidden = !learnLinkInfo(card && card.link);
     if (moreEl) {
       moreEl.innerHTML = [rest ? toDisplayHtml(rest) : "", extra ? toDisplayHtml(extra) : ""].filter(Boolean).join("<br>");
       moreEl.hidden = !more;
@@ -4711,7 +4728,9 @@
         revealQcmAnswer();
         // Round 61 : avec un complément de réponse, on attend que la personne
         // l'ait lu (bouton « Continuer »).
-        const hasMore = !!(currentCard.more && stripHtml(currentCard.more).trim());
+        // v237 : idem avec un lien « Pour aller plus loin » (le temps de
+        // pouvoir le toucher).
+        const hasMore = !!(currentCard.more && stripHtml(currentCard.more).trim()) || !!learnLinkInfo(currentCard.link);
         if (firstTry && !hasMore) {
           // « Je sais » : la fiche repassera en mode normal.
           st.timer = setTimeout(() => finishQcm(cardId, "good", false), 1300);
@@ -5132,6 +5151,12 @@
       await robotAlert(qcm.error);
       return;
     }
+    const linkRes = readLearnLinkInput(el("input-link") ? el("input-link").value : "");
+    if (linkRes.error) {
+      await robotAlert(linkRes.error);
+      return;
+    }
+    const link = linkRes.link;
 
     if (editingId) {
       const idx = cards.findIndex((c) => c.id === editingId);
@@ -5141,6 +5166,8 @@
         const updated = touch({ ...prev, question, answer });
         if (more) updated.more = more;
         else delete updated.more;
+        if (link) updated.link = link;
+        else delete updated.link;
         if (qcm.wrongs.length) {
           // Réponses fausses ajoutées à une fiche qui n'en avait pas : elle
           // repasse en QCM à sa prochaine interrogation.
@@ -5186,6 +5213,7 @@
       const card = newCard(question, answer, newCardSubjectId);
       if (qcm.wrongs.length) card.wrongs = qcm.wrongs;
       if (more) card.more = more;
+      if (link) card.link = link;
       await persist(card);
       cards.push(card);
       await pushSharedBoxUpdatesForSubject(newCardSubjectId);
@@ -5248,6 +5276,7 @@
     inputQuestion.innerHTML = toDisplayHtml(card.question);
     inputAnswer.innerHTML = toDisplayHtml(card.answer);
     if (el("input-more")) el("input-more").innerHTML = card.more ? toDisplayHtml(card.more) : "";
+    if (el("input-link")) el("input-link").value = card.link || "";
     setQcmFields(card);
     submitBtn.textContent = "Enregistrer les modifications";
     cancelEditBtn.hidden = false;
@@ -5554,6 +5583,13 @@
         // v235 : une réponse fausse par ligne, marquée « (réponse fausse) ».
         w.innerHTML = `<span class="qcm-chip">QCM</span>${qcmWrongsListHtml(wrongsForRow)}`;
         main.appendChild(w);
+      }
+      // v237 : lien « Pour aller plus loin ».
+      if (card.link && learnLinkInfo(card.link)) {
+        const l = document.createElement("div");
+        l.className = "card-row-link";
+        l.innerHTML = learnLinkChipHtml(card.link, "card", stripHtml(card.question || "").slice(0, 120));
+        main.appendChild(l);
       }
       if (showSubjectNames && cardsScopeFilter !== CARDS_SCOPE_CURRENT && !subjects.some((x) => x.id === cardsScopeFilter)) {
         const meta = document.createElement("p");
@@ -10405,6 +10441,107 @@
   function openLegalPage(key) {
     openLegalUrl(LEGAL_URLS[key] || LEGAL_URLS.cgu);
   }
+
+  /* ---------------------------------------------------------
+     v237 : liens « Pour aller plus loin » (fiche, boîte) — voir
+     js/learn-links.js. Les vidéos YouTube / Vimeo / Dailymotion
+     s'ouvrent dans l'appli avec le lecteur officiel ; les autres pages
+     dans le navigateur intégré du téléphone (au-dessus de l'appli quand
+     elle est installée).
+  --------------------------------------------------------- */
+  function learnLinkInfo(url) {
+    return url && window.LearnLinks ? window.LearnLinks.info(url) : null;
+  }
+  /** Texte de la puce : `scope` = "card" ou "box". */
+  function learnLinkLabel(info, scope) {
+    if (!info) return "";
+    const video = info.kind === "video" || info.kind === "playlist";
+    if (scope === "box") return video ? "▶ Le cours en vidéo" : `🎓 Le cours · ${info.host}`;
+    return video ? "▶ Mieux comprendre en vidéo" : `🔗 En savoir plus · ${info.host}`;
+  }
+  /** Puce cliquable (HTML) pour un lien, ou "" s'il n'y en a pas. */
+  function learnLinkChipHtml(url, scope, title) {
+    const info = learnLinkInfo(url);
+    if (!info) return "";
+    return `<button type="button" class="learn-link-chip${scope === "box" ? " learn-link-chip--box" : ""}" data-learn-url="${escapeHtml(info.url)}" data-learn-title="${escapeHtml(title || "")}">${escapeHtml(learnLinkLabel(info, scope))}</button>`;
+  }
+  function setLearnLinkButton(btn, url, scope, title) {
+    if (!btn) return;
+    const info = learnLinkInfo(url);
+    btn.hidden = !info;
+    if (!info) {
+      delete btn.dataset.learnUrl;
+      return;
+    }
+    btn.dataset.learnUrl = info.url;
+    btn.dataset.learnTitle = title || "";
+    btn.textContent = learnLinkLabel(info, scope);
+    btn.title = info.kind === "page" ? `Ouvrir ${info.host}` : `${info.label} : ${title || ""}`.trim();
+  }
+  function openLearnLink(url, title) {
+    const info = learnLinkInfo(url);
+    if (!info) return;
+    const viewer = el("media-viewer");
+    if (!info.embed || !viewer) {
+      try {
+        window.open(info.url, "_blank", "noopener");
+      } catch (e) {
+        location.href = info.url;
+      }
+      return;
+    }
+    const box = el("media-viewer-box");
+    box.innerHTML = "";
+    const frame = document.createElement("iframe");
+    frame.src = info.embed;
+    frame.title = `${info.label}${title ? ` : ${title}` : ""}`;
+    frame.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
+    frame.setAttribute("allowfullscreen", "");
+    frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+    box.appendChild(frame);
+    el("media-viewer-title").textContent = title || info.label;
+    el("media-viewer-credit").textContent = `${info.label} : le contenu appartient à son auteur.`;
+    const ext = el("media-viewer-ext");
+    ext.href = info.url;
+    ext.textContent = `Ouvrir sur ${info.provider} ↗`;
+    viewer.hidden = false;
+    const back = el("media-viewer-back");
+    if (back) back.focus();
+  }
+  function closeMediaViewer() {
+    const viewer = el("media-viewer");
+    if (!viewer || viewer.hidden) return false;
+    viewer.hidden = true;
+    // Arrête la lecture.
+    const box = el("media-viewer-box");
+    if (box) box.innerHTML = "";
+    return true;
+  }
+  const mediaViewerBack = el("media-viewer-back");
+  if (mediaViewerBack) mediaViewerBack.addEventListener("click", closeMediaViewer);
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      if (e.key === "Escape" && closeMediaViewer()) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+    },
+    true
+  );
+  document.addEventListener("click", (e) => {
+    const b = e.target && e.target.closest ? e.target.closest("[data-learn-url]") : null;
+    if (!b) return;
+    e.preventDefault();
+    e.stopPropagation();
+    openLearnLink(b.dataset.learnUrl, b.dataset.learnTitle || "");
+  });
+  /** Lien saisi → { link } (chaîne vide = pas de lien) ou { error }. */
+  function readLearnLinkInput(raw) {
+    const v = window.LearnLinks ? window.LearnLinks.normalize(raw) : String(raw || "").trim();
+    if (v === null) return { error: "Ce lien n'est pas valable. Copie l'adresse complète de la page (elle commence par https://)." };
+    return { link: v };
+  }
   const legalViewerBack = el("legal-viewer-back");
   if (legalViewerBack) legalViewerBack.addEventListener("click", closeLegalViewer);
   document.addEventListener(
@@ -11320,6 +11457,8 @@
     else delete next.more;
     if (Array.isArray(updated.wrongs) && updated.wrongs.length === 3) next.wrongs = updated.wrongs;
     else delete next.wrongs;
+    if (updated.link) next.link = updated.link;
+    else delete next.link;
     list[i] = next;
     const r = await Sync.library.updateCards(colId, list);
     if (r.error) {
@@ -11348,6 +11487,7 @@
           existing.question !== (rc.question || "") ||
           existing.answer !== (rc.answer || "") ||
           (existing.more || "") !== (rc.more || "") ||
+          (existing.link || "") !== (rc.link || "") ||
           JSON.stringify(cardWrongs(existing)) !== JSON.stringify(rcWrongs || []);
         if (existing.deleted || contentChanged) {
           const updated = { ...existing, question: rc.question || "", answer: rc.answer || "", deleted: false, updatedAt: nowIso };
@@ -11355,6 +11495,8 @@
           else delete updated.wrongs;
           if (rc.more) updated.more = String(rc.more);
           else delete updated.more;
+          if (rc.link) updated.link = String(rc.link);
+          else delete updated.link;
           await persist(updated);
           cards[idx] = updated;
         }
@@ -11362,6 +11504,7 @@
         const card = { ...newCard(rc.question || "", rc.answer || "", subject.id), id: mirrorCardId(subject.id, rc.srcId), mirrorSrcId: rc.srcId };
         if (Array.isArray(rc.wrongs) && rc.wrongs.length === 3) card.wrongs = rc.wrongs.map(String);
         if (rc.more) card.more = String(rc.more);
+        if (rc.link) card.link = String(rc.link);
         await persist(card);
         cards.push(card);
       }
@@ -11390,6 +11533,11 @@
     let changed = false;
     if (col.name && subject.name !== col.name) {
       subject.name = col.name;
+      changed = true;
+    }
+    if (col.link !== undefined && (subject.link || "") !== (col.link || "")) {
+      if (col.link) subject.link = String(col.link);
+      else delete subject.link;
       changed = true;
     }
     if (changed) {
@@ -11483,7 +11631,7 @@
       let share = subject.sharedShares.find((x) => x.classId === classId);
       if (!share) {
         const boxCards = cards.filter((c) => !c.deleted && c.subject === id);
-        const { data, error } = await Sync.classes.shareBox(classId, subject.name, boxCards, []); // round 53 : racine de la classe
+        const { data, error } = await Sync.classes.shareBox(classId, subject.name, boxCards, [], { link: subject.link || "" }); // round 53 : racine de la classe
         if (error || !data) continue;
         share = { classId, className, boxId: data.id };
         subject.sharedShares.push(share);
@@ -11738,6 +11886,7 @@
       subject.sharedClassId = klass.id;
       subject.sharedClassName = klass.name;
       subject.sharedFromLibrary = !!box.library_collection_id;
+      if (box.link) subject.link = String(box.link);
       await persistSubject(subject);
       subjects.push(subject);
     } else {
@@ -11750,6 +11899,12 @@
       if (subject.name !== box.subject_name) {
         // Le prof a renommé sa boîte : la copie miroir suit.
         subject.name = box.subject_name;
+        changed = true;
+      }
+      // v237 : lien de la boîte (colonne absente : on ne touche à rien).
+      if (box.link !== undefined && (subject.link || "") !== (box.link || "")) {
+        if (box.link) subject.link = String(box.link);
+        else delete subject.link;
         changed = true;
       }
       if (targetFolderId != null && subject.folderId !== targetFolderId) {
@@ -12471,7 +12626,7 @@
     const name = col.name || "Collection";
     const boxCards = await fetchFullLibraryCards(col, "Il faut être abonné pour partager cette boîte de la Librairie avec une classe.");
     if (!boxCards) return;
-    const { error } = await Sync.classes.shareBox(ctx.klass.id, name, boxCards, [], { libraryCollectionId: col.id });
+    const { error } = await Sync.classes.shareBox(ctx.klass.id, name, boxCards, [], { libraryCollectionId: col.id, link: col.link || "" });
     if (error) {
       await robotAlert("Erreur lors du partage : " + error);
       return;
@@ -12554,12 +12709,13 @@
         libraryOptions,
         includeOutOfRevisions: true,
         onPick: async (kind, id) => {
-          let name, boxCards, folderPathNames, afterShare;
+          let name, boxCards, folderPathNames, afterShare, boxLink;
           if (kind === "library") {
             const col = libraryOptions.find((c) => c.id === id);
             if (!col) return;
             if (await blockLibraryShareToClass(klass.id)) return;
             name = col.name;
+            boxLink = col.link || "";
             boxCards = await fetchFullLibraryCards(col, "Il faut être abonné pour partager cette boîte de la Librairie avec une classe.");
             if (!boxCards) return;
             folderPathNames = [];
@@ -12580,6 +12736,7 @@
               return;
             }
             name = subject.name;
+            boxLink = subject.link || "";
             boxCards = cards.filter((c) => !c.deleted && c.subject === id);
             // Round 53 : n'hérite d'aucune arborescence (racine de la classe).
             folderPathNames = [];
@@ -12595,7 +12752,7 @@
               } catch (e) { /* best-effort */ }
             };
           }
-          const { data, error } = await Sync.classes.shareBox(klass.id, name, boxCards, folderPathNames, kind === "library" ? { libraryCollectionId: id } : undefined);
+          const { data, error } = await Sync.classes.shareBox(klass.id, name, boxCards, folderPathNames, kind === "library" ? { libraryCollectionId: id, link: boxLink } : { link: boxLink });
           closeBoitePickerView();
           if (error) {
             await robotAlert("Erreur lors du partage : " + error);
@@ -12632,7 +12789,7 @@
         if (meta.name && meta.name !== subject.name) subject.name = meta.name;
         subject.updatedAt = new Date().toISOString();
         await persistSubject(subject);
-        const { data, error } = await Sync.classes.shareBox(klass.id, subject.name, boxCards, []);
+        const { data, error } = await Sync.classes.shareBox(klass.id, subject.name, boxCards, [], { link: subject.link || "" });
         if (error) {
           await robotAlert("Erreur lors du partage : " + error);
           return;
@@ -12657,6 +12814,7 @@
           className: klass.name,
           sharedBoxId: data.id,
           sourceSubjectId: subject.id,
+          link: subject.link || "",
         });
         libraryShareClassOpts = null;
         backToClass();
@@ -13617,6 +13775,12 @@
       descriptionEl.hidden = !col.description;
       descriptionEl.textContent = col.description || "";
     }
+    // v237 : lien « Pour aller plus loin » de la collection.
+    const linkWrap = el("library-detail-link");
+    if (linkWrap) {
+      setLearnLinkButton(el("library-detail-link-btn"), col.link, "box", col.name || "");
+      linkWrap.hidden = !learnLinkInfo(col.link);
+    }
     const ratingEl = el("library-detail-rating");
     if (ratingEl) {
       ratingEl.innerHTML = libraryThumbHtml(count, liked, col.id);
@@ -13732,6 +13896,7 @@
             <p class="card-row-q">${toDisplayHtml(c.question || "")}</p>
             <p class="card-row-a${fullAccess ? "" : " library-card-answer--cut"}">${fullAccess ? answerWithMoreHtml(c) : escapeHtml(c.answer || "")}</p>
             ${cardWrongs(c).length === 3 ? `<div class="card-row-wrongs"><span class="qcm-chip">QCM</span>${fullAccess ? qcmWrongsListHtml(cardWrongs(c)) : ""}</div>` : ""}
+            ${fullAccess && c.link ? `<div class="card-row-link">${learnLinkChipHtml(c.link, "card", stripHtml(c.question || "").slice(0, 120))}</div>` : ""}
           </div>
         </li>
       `
@@ -14402,6 +14567,7 @@
       subject = newSubject(col.name, folderId);
       subject.fromLibrary = true;
       subject.libraryOriginId = col.id || null;
+      if (col.link) subject.link = String(col.link);
       await persistSubject(subject);
       subjects.push(subject);
       subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
@@ -14622,6 +14788,7 @@
           description: ((descriptionEl && descriptionEl.value) || "").trim(),
           priceTokens: 0,
           sourceSubjectId: subject.id,
+          link: subject.link || "",
         });
         if (submitBtn) submitBtn.disabled = false;
         if (error) {
@@ -14946,6 +15113,7 @@
           ${row("Statut", `<span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>`, actBtn("publish", col ? "Voir dans la Librairie" : "Publier dans la Librairie"))}
           ${row("Fiches", `${n} fiche${n > 1 ? "s" : ""}`, actBtn("cards", "Voir les fiches"))}
           ${row("Classement", taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`, col ? "" : actBtn("classify", taxFull ? "Modifier le classement" : "Classer la boîte"))}
+          ${row("Pour aller plus loin", learnLinkChipHtml(s.link, "box", s.name) || `<span class="field-hint">Aucun lien</span>`, actBtn("link", s.link ? "Modifier" : "Ajouter un lien"))}
           ${row("Mes révisions", place ? escapeHtml(place) : `Hors de mes révisions${remembered ? ` <span class="field-hint">(avant : ${escapeHtml(remembered)})</span>` : ""}`, actBtn("revisions", inRev ? "Retirer de mes révisions" : "Ajouter à mes révisions"))}
           ${col && col.name && col.name !== s.name ? row("Librairie", `publiée sous le nom « ${escapeHtml(col.name)} »`) : ""}
           ${tags.length ? row("Tags", `<span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span>`) : ""}
@@ -14977,6 +15145,9 @@
           if (inRev) await removeSubjectFromRevisions(s.id);
           else await openAddToRevisionsPicker(s.id);
           renderCreationDetail();
+        } else if (act === "link") {
+          await editSubjectLearnLink(s, col);
+          renderCreationDetail();
         } else if (act === "classify") {
           await openBoxEditView(s.id);
         } else if (act === "delete") {
@@ -14986,6 +15157,36 @@
         }
       });
     });
+  }
+  /** v237 : lien « Pour aller plus loin » d'une de mes boîtes (repoussé
+   *  vers les classes et vers la collection publiée dans la Librairie). */
+  async function editSubjectLearnLink(s, col) {
+    const raw = await showRobotMessage(
+      "Lien vers un contenu qui existe déjà et présente tout le sujet de la boîte : une vidéo de cours, une série de vidéos, un cours en ligne… Choisis une source sérieuse (chaîne de l'auteur, site éducatif), pas une copie piratée.",
+      {
+        input: { defaultValue: s.link || "", placeholder: "https://…" },
+        cancelValue: "cancel",
+        buttons: [{ label: "Annuler", value: "cancel" }].concat(s.link ? [{ label: "Retirer le lien", value: "remove" }] : [], [{ label: "Valider", value: true, primary: true }]),
+      }
+    );
+    if (raw === "cancel") return;
+    const res = raw === "remove" || raw === null ? { link: "" } : readLearnLinkInput(raw);
+    if (res.error) {
+      await robotAlert(res.error);
+      return;
+    }
+    if ((s.link || "") === res.link) return;
+    if (res.link) s.link = res.link;
+    else delete s.link;
+    s.updatedAt = new Date().toISOString();
+    await persistSubject(s);
+    await pushSharedBoxUpdatesForSubject(s.id);
+    if (col && col.id && Sync.library && Sync.library.updateMeta) {
+      const r = await Sync.library.updateMeta(col.id, { link: res.link || null });
+      if (r && r.error) await robotAlert(`Le lien est enregistré dans ta boîte, mais pas dans la Librairie : ${r.error}`);
+    }
+    if (currentCard && currentCard.subject === s.id) renderReviewCurrentBox(currentCard);
+    showToast(res.link ? "Lien enregistré" : "Lien retiré");
   }
   /** Round 54 : « Réviser » depuis le résumé d'une boîte. */
   function startReviewOfBox(subjectId) {
@@ -15009,6 +15210,7 @@
           <tr><th scope="row">Progression</th><td><span class="creation-detail-gauge">${buildPersGaugeSvg(pool || [], { width: 90, barHeight: 8 })}</span></td><td class="creation-detail-act-cell">${n ? `<button type="button" class="btn btn--ghost creation-detail-act" data-act="review">Réviser</button>` : ""}</td></tr>
           <tr><th scope="row">Fiches</th><td>${n} fiche${n > 1 ? "s" : ""}</td><td class="creation-detail-act-cell"><button type="button" class="btn btn--ghost creation-detail-act" data-act="cards">Voir les fiches</button></td></tr>
           <tr><th scope="row">Origine</th><td>${origin}</td><td class="creation-detail-act-cell"></td></tr>
+          ${s.link ? `<tr><th scope="row">Pour aller plus loin</th><td>${learnLinkChipHtml(s.link, "box", s.name)}</td><td class="creation-detail-act-cell"></td></tr>` : ""}
           <tr><th scope="row">Mes révisions</th><td>${place ? escapeHtml(place) : "Hors de mes révisions"}</td><td class="creation-detail-act-cell">${s.fromLibrary ? `<button type="button" class="btn btn--ghost creation-detail-act creation-detail-delete" data-act="remove">Retirer de mes révisions</button>` : ""}</td></tr>
         </tbody>
       </table>

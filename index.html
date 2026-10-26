@@ -305,6 +305,18 @@
     </div>
     <iframe class="legal-viewer-frame" id="legal-viewer-frame" title="Informations légales"></iframe>
   </div>
+  <!-- v237 : lecteur des liens « Pour aller plus loin » (vidéos YouTube,
+       Vimeo, Dailymotion, avec le lecteur officiel de la plateforme). -->
+  <div class="media-viewer" id="media-viewer" hidden role="dialog" aria-modal="true" aria-labelledby="media-viewer-title">
+    <div class="media-viewer-bar">
+      <button type="button" class="legal-viewer-back" id="media-viewer-back">‹ Retour</button>
+      <span class="media-viewer-title" id="media-viewer-title"></span>
+    </div>
+    <div class="media-viewer-stage" id="media-viewer-stage">
+      <div class="media-viewer-box" id="media-viewer-box"></div>
+    </div>
+    <p class="media-viewer-foot"><span id="media-viewer-credit"></span> <a id="media-viewer-ext" href="#" target="_blank" rel="noopener noreferrer"></a></p>
+  </div>
   <div class="robot-modal-overlay" id="robot-modal-overlay" hidden>
     <div class="robot-modal" id="robot-modal" role="alertdialog" aria-modal="true">
       <div class="robot-modal-bubble" id="robot-modal-bubble">
@@ -522,6 +534,8 @@
         <div class="review-current-box" id="review-current-box" hidden>
           <span class="review-current-box-name" id="review-current-box-name"></span>
           <span class="review-current-box-gauge" id="review-current-box-gauge"></span>
+          <!-- v237 : lien « Pour aller plus loin » de la boîte. -->
+          <button type="button" class="learn-link-chip learn-link-chip--box" id="review-box-learn-link" hidden></button>
         </div>
 
         <div class="subject-choice-menu" id="subject-choice-menu" hidden>
@@ -570,9 +584,13 @@
               <div class="qcm-choices" id="qcm-choices" role="group" aria-label="Réponses"></div>
               <p class="qcm-msg" id="qcm-msg" aria-live="polite"></p>
               <div class="qcm-more card-more" id="qcm-more" hidden></div>
+              <button type="button" class="learn-link-chip qcm-learn-link" id="qcm-learn-link" hidden></button>
             </div>
             <button type="button" class="qcm-continue" id="qcm-continue" hidden>Continuer →</button>
           </div>
+          <!-- v237 : lien « Pour aller plus loin » de la fiche, visible une
+               fois la réponse affichée. -->
+          <button type="button" class="learn-link-chip card-learn-link" id="card-learn-link" hidden></button>
           <button class="card-icon-btn card-undo-btn" id="undo-rating-btn" type="button" hidden title="Revenir à la fiche précédente (annule la dernière évaluation)" aria-label="Annuler la dernière évaluation">◀️</button>
           <!-- Boutons secondaires repliés par défaut (item 1c) : un simple
                bouton "révéler" à la place, qui les fait apparaître. -->
@@ -685,6 +703,13 @@
             <input type="text" class="qcm-wrong-input" id="input-wrong-3" placeholder="Réponse fausse 3" autocomplete="off" />
           </div>
         </div>
+        <!-- v237 : lien vers un contenu existant (vidéo courte, animation…)
+             qui explique mieux la fiche ; affiché sur la page Réviser. -->
+        <label class="field field--link">
+          <span>Pour aller plus loin <small class="field-optional">(facultatif)</small></span>
+          <input type="text" id="input-link" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://www.youtube.com/watch?v=…" />
+          <small class="field-hint">Une courte vidéo ou une page qui explique bien cette fiche, d'une source sérieuse (chaîne de l'auteur, site éducatif).</small>
+        </label>
         <div class="form-actions">
           <button type="submit" class="btn btn--primary" id="submit-btn">Ajouter à la boîte</button>
           <button type="button" class="btn btn--ghost" id="cancel-edit" hidden>Annuler</button>
@@ -1821,6 +1846,7 @@
       <div class="tag-chips" id="library-detail-tags" hidden></div>
       <p class="library-detail-summary" id="library-detail-summary" hidden></p>
       <p class="library-detail-description" id="library-detail-description" hidden></p>
+      <p class="library-detail-link" id="library-detail-link" hidden><button type="button" class="learn-link-chip learn-link-chip--box" id="library-detail-link-btn"></button></p>
       <div class="form-actions">
         <button type="button" class="btn btn--small" id="library-detail-view-cards-btn">Voir les fiches</button>
         <button type="button" class="btn btn--small" id="library-detail-take-btn">Ajouter à mes révisions</button>
@@ -1959,6 +1985,7 @@
 <script src="js/settings-model.js"></script>
 <script src="js/defi-questions.js"></script>
 <script src="js/defi.js"></script>
+<script src="js/learn-links.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

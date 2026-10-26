@@ -1,4 +1,4 @@
-const CACHE_NAME = "fiches-cache-v236";
+const CACHE_NAME = "fiches-cache-v237";
 
 const CORE_ASSETS = [
   "./",
@@ -17,6 +17,7 @@ const CORE_ASSETS = [
   "./js/defi-questions.js",
   "./js/defi.js",
   "./data/taxonomie.xlsx",
+  "./js/learn-links.js",
   "./js/app.js",
   "./icons/icon-192.png",
   "./icons/icon-512.png",

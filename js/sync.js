@@ -117,7 +117,15 @@ function shareableCard(card) {
   const out = { id: card.id, question: card.question, answer: card.answer };
   if (Array.isArray(card.wrongs) && card.wrongs.length === 3) out.wrongs = card.wrongs.slice();
   if (card.more) out.more = card.more;
+  // v237 : lien « Pour aller plus loin ».
+  if (card.link) out.link = card.link;
   return out;
+}
+
+/** v237 : réessaie sans la colonne `link` si la base n'a pas encore
+ *  supabase/round77_migration.sql (le reste est enregistré quand même). */
+function isMissingLinkColumn(error) {
+  return !!error && /\blink\b/i.test(error.message || "") && /column|schema cache/i.test(error.message || "");
 }
 
 function cardToRow(card, uid) {
@@ -553,7 +561,8 @@ async function updateLibraryCollectionMeta(id, fields) {
   const c = getClient();
   const user = await authGetUser();
   if (!c || !user) return { error: "non connecté" };
-  const { data, error } = await c.from("library_collections").update(fields).eq("id", id).eq("owner_id", user.id).select("id");
+  let { data, error } = await c.from("library_collections").update(fields).eq("id", id).eq("owner_id", user.id).select("id");
+  if (isMissingLinkColumn(error) && "link" in fields) return { error: "la base n'a pas encore la colonne des liens (supabase/round77_migration.sql)" };
   if (error) return { error: error.message };
   if (Array.isArray(data) && data.length === 0) return { error: "mise à jour refusée" };
   return { error: null };
@@ -1099,7 +1108,12 @@ async function shareBoxToClass(classId, subjectName, cards, folderPath, extra) {
   // supabase/class_members_list_migration.sql) ; sans la colonne, on
   // partage quand même.
   if (extra && extra.libraryCollectionId) row.library_collection_id = extra.libraryCollectionId;
+  if (extra && extra.link) row.link = extra.link;
   let { data, error } = await c.from("shared_boxes").insert(row).select().single();
+  if (isMissingLinkColumn(error)) {
+    delete row.link;
+    ({ data, error } = await c.from("shared_boxes").insert(row).select().single());
+  }
   if (error && row.library_collection_id && /library_collection_id/i.test(error.message || "")) {
     delete row.library_collection_id;
     ({ data, error } = await c.from("shared_boxes").insert(row).select().single());
@@ -1128,7 +1142,7 @@ async function listSharedBoxesForClass(classId) {
 // appels existants — quand fourni (le prof a réorganisé ses dossiers), il
 // est repoussé en même temps que les fiches, sinon seul `cards` est mis à
 // jour et le chemin de dossiers distant reste inchangé.
-async function updateSharedBoxCards(boxId, cards, folderPath, subjectName) {
+async function updateSharedBoxCards(boxId, cards, folderPath, subjectName, boxLink) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée." };
   const payload = {
@@ -1138,7 +1152,13 @@ async function updateSharedBoxCards(boxId, cards, folderPath, subjectName) {
   if (Array.isArray(folderPath)) payload.folder_path = folderPath;
   // Round 48 : le nom de la boîte suit aussi (renommage côté enseignant).
   if (subjectName) payload.subject_name = subjectName;
-  const { error } = await c.from("shared_boxes").update(payload).eq("id", boxId);
+  // v237 : lien de la boîte (null = retiré) ; non transmis si absent.
+  if (boxLink !== undefined) payload.link = boxLink || null;
+  let { error } = await c.from("shared_boxes").update(payload).eq("id", boxId);
+  if (isMissingLinkColumn(error)) {
+    delete payload.link;
+    ({ error } = await c.from("shared_boxes").update(payload).eq("id", boxId));
+  }
   return { error: error ? error.message : null };
 }
 
@@ -1338,7 +1358,12 @@ async function shareCollectionToLibrary(name, cards, extra) {
     tags: Array.isArray(extra.tags) ? extra.tags : [],
     cards: cards.map(shareableCard),
   };
-  const { data, error } = await c.from("library_collections").insert(row).select().single();
+  if (extra.link) row.link = extra.link;
+  let { data, error } = await c.from("library_collections").insert(row).select().single();
+  if (isMissingLinkColumn(error)) {
+    delete row.link;
+    ({ data, error } = await c.from("library_collections").insert(row).select().single());
+  }
   return { data, error: error ? error.message : null };
 }
 
@@ -1391,7 +1416,12 @@ async function submitLibraryProposal(p) {
     tags: Array.isArray(p.tags) ? p.tags : [],
     cards: (p.cards || []).map(shareableCard),
   };
-  const { error } = await c.from("library_submissions").insert(row);
+  if (p.link) row.link = p.link;
+  let { error } = await c.from("library_submissions").insert(row);
+  if (isMissingLinkColumn(error)) {
+    delete row.link;
+    ({ error } = await c.from("library_submissions").insert(row));
+  }
   if (error && /library_submissions/i.test(error.message || "")) return { error: "la base n'a pas encore la table des propositions (supabase/round69_migration.sql)" };
   return { error: error ? error.message : null };
 }

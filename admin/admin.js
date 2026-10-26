@@ -1383,6 +1383,16 @@
     return JSON.stringify(Array.isArray(a) && a.length === 3 ? a : null) === JSON.stringify(b || null);
   }
   /* Round 60 : complément de réponse (séparé de la réponse). */
+  /* v237 : lien « Pour aller plus loin » d'une fiche. */
+  function withLink(card, link) {
+    if (link) card.link = link;
+    else delete card.link;
+    return card;
+  }
+  function packLink(v) {
+    const n = window.LearnLinks ? window.LearnLinks.normalize(v) : String(v || "").trim();
+    return n || "";
+  }
   function withMore(card, more) {
     if (more) card.more = more;
     else delete card.more;
@@ -1426,13 +1436,13 @@
         // la question / réponse est la même qu'avant : le fichier ne
         // contient la correction que si tout est identique.
         const pNow = iNow != null ? packCards[iNow] : null;
-        const fileHasIt = pNow && (qa !== c.corr.from || (sameWrongs(c.wrongs, pNow.wrongs) && (c.more || "") === (pNow.more || "")));
+        const fileHasIt = pNow && (qa !== c.corr.from || (sameWrongs(c.wrongs, pNow.wrongs) && (c.more || "") === (pNow.more || "") && (c.link || "") === (pNow.link || "")));
         if (fileHasIt && !used.has(iNow)) {
           used.add(iNow);
           const out = { ...c };
           delete out.corr;
           changed++;
-          return withMore(withWrongs(out, packCards[iNow].wrongs), packCards[iNow].more);
+          return withLink(withMore(withWrongs(out, packCards[iNow].wrongs), packCards[iNow].more), packCards[iNow].link);
         }
         const iFrom = [curQA.get(c.corr.from), oldQA.get(c.corr.from)].find((m) => m != null && !used.has(m));
         if (iFrom != null) used.add(iFrom);
@@ -1443,17 +1453,17 @@
       if (i0 != null && !used.has(i0)) {
         used.add(i0);
         // Round 59 : réponses fausses (mode QCM) ajoutées ou modifiées.
-        if (sameWrongs(c.wrongs, packCards[i0].wrongs) && (c.more || "") === packCards[i0].more) return c;
+        if (sameWrongs(c.wrongs, packCards[i0].wrongs) && (c.more || "") === packCards[i0].more && (c.link || "") === packCards[i0].link) return c;
         changed++;
-        return withMore(withWrongs({ ...c }, packCards[i0].wrongs), packCards[i0].more);
+        return withLink(withMore(withWrongs({ ...c }, packCards[i0].wrongs), packCards[i0].more), packCards[i0].link);
       }
       for (const m of [oldQA.get(qa), curQ.get(q), oldQ.get(q)]) {
         if (m == null || used.has(m)) continue;
         used.add(m);
         const p = packCards[m];
-        if (p.question === c.question && p.answer === c.answer && sameWrongs(c.wrongs, p.wrongs) && (c.more || "") === p.more) return c;
+        if (p.question === c.question && p.answer === c.answer && sameWrongs(c.wrongs, p.wrongs) && (c.more || "") === p.more && (c.link || "") === p.link) return c;
         changed++;
-        return withMore(withWrongs({ ...c, question: p.question, answer: p.answer }, p.wrongs), p.more);
+        return withLink(withMore(withWrongs({ ...c, question: p.question, answer: p.answer }, p.wrongs), p.more), p.link);
       }
       unmatched++;
       return c;
@@ -1470,7 +1480,7 @@
       packCards.forEach((p, i) => {
         if (used.has(i)) return;
         maxN += 1;
-        cards.push(withMore(withWrongs({ id: `${sid}-${maxN}`, question: p.question, answer: p.answer }, p.wrongs), p.more));
+        cards.push(withLink(withMore(withWrongs({ id: `${sid}-${maxN}`, question: p.question, answer: p.answer }, p.wrongs), p.more), p.link));
         added++;
       });
     }
@@ -1602,6 +1612,8 @@
       "Recharger la dernière version (classe)"
     );
     const readOnly = sub.status === "published";
+    // v237 : lien de la boîte (vidéo de cours…), facultatif.
+    const linkIn = h("input", { type: "text", class: "input", value: sub.link || "", placeholder: "https://…", inputmode: "url" });
     const body = h(
       "div",
       { class: "submission-form" },
@@ -1610,6 +1622,7 @@
       field("Résumé", summaryIn),
       field("Description", descIn),
       field("Tags", tagsIn),
+      field("Lien « Pour aller plus loin »", linkIn),
       h("div", { class: "toolbar" }, cardsCount, latestBtn),
       cardsWrap,
       field("Note", noteIn)
@@ -1621,6 +1634,7 @@
       tags: tagsIn.value.split(",").map((t) => t.trim().toLowerCase()).filter(Boolean),
       cards: cardsData.filter((c) => (c.question || "").trim() && (c.answer || "").trim()),
       note: noteIn.value.trim(),
+      link: window.LearnLinks ? window.LearnLinks.normalize(linkIn.value) : linkIn.value.trim(),
     });
     const buttons = readOnly
       ? [{ label: "Fermer" }]
@@ -1649,6 +1663,12 @@
                 toast("Il faut un nom et au moins une fiche.", true);
                 return false;
               }
+              if (p.link === null) {
+                toast("Le lien n'est pas valable (adresse complète en https://).", true);
+                return false;
+              }
+              // Base sans supabase/round77_migration.sql : pas de lien.
+              if (sub.link === undefined && !p.link) delete p.link;
               try {
                 await rpc("admin_publish_submission", { p_id: sub.id, p_patch: p });
                 toast("Publiée dans la Librairie");
@@ -1801,6 +1821,8 @@
         else delete next.more;
         if (Array.isArray(c.wrongs) && c.wrongs.length === 3) next.wrongs = c.wrongs;
         else delete next.wrongs;
+        if (c.link) next.link = c.link;
+        else delete next.link;
         box.cards[k.packIndex] = next;
         done++;
       });
@@ -1896,22 +1918,34 @@
     const pack = await loadPackFile(file);
     if (!pack || !Array.isArray(pack.boxes)) throw new Error("Ce fichier ne contient pas de boîtes (champ « boxes » absent).");
     await window.Taxonomy.load();
-    const mine = await fetchAllRows(
-      () =>
-        client()
-          .from("library_collections")
-          .select("id, name, source_subject_id, taxonomy, tags, level, summary, description, owner_first_name, owner_last_name, cards")
-          .eq("owner_id", user.id)
-          .order("id"),
-      300
-    );
-    const plan = { total: 0, upToDate: 0, toUpdate: [], toCreate: [], user, cardsChanged: 0, cardsUnmatched: 0, cardsMissing: 0, corrections: [], pack };
+    const cols = "id, name, source_subject_id, taxonomy, tags, level, summary, description, owner_first_name, owner_last_name, cards";
+    const fetchMine = (withLink) =>
+      fetchAllRows(
+        () =>
+          client()
+            .from("library_collections")
+            .select(withLink ? `${cols}, link` : cols)
+            .eq("owner_id", user.id)
+            .order("id"),
+        300
+      );
+    // v237 : sans supabase/round77_migration.sql, pas de colonne `link`.
+    let mine;
+    let hasLinkColumn = true;
+    try {
+      mine = await fetchMine(true);
+    } catch (e) {
+      if (!/\blink\b/i.test(e.message || "")) throw e;
+      hasLinkColumn = false;
+      mine = await fetchMine(false);
+    }
+    const plan = { total: 0, upToDate: 0, toUpdate: [], toCreate: [], user, cardsChanged: 0, cardsUnmatched: 0, cardsMissing: 0, corrections: [], pack, hasLinkColumn };
     (pack.boxes || []).forEach((box) => {
       plan.total++;
       const sid = `pack-${box.key}`;
       const taxonomy = taxValueFromSelection(packSelection(box));
       const tags = Array.isArray(box.tags) ? box.tags.map(normalizeTag).filter(Boolean) : [];
-      const packCards = (box.cards || []).map((c) => ({ question: c.question || "", answer: c.answer || "", w: c.w, wq: c.wq, wrongs: packWrongs(c), more: c.more || "" }));
+      const packCards = (box.cards || []).map((c) => ({ question: c.question || "", answer: c.answer || "", w: c.w, wq: c.wq, wrongs: packWrongs(c), more: c.more || "", link: packLink(c.link) }));
       const existing = mine.find((c) => c.source_subject_id === sid) || mine.find((c) => !c.source_subject_id && c.name === box.name);
       if (!existing) {
         if (packCards.length) plan.toCreate.push({ box, taxonomy, tags, sid, packCards });
@@ -1927,6 +1961,7 @@
         owner_first_name: PACK_AUTHOR.first,
         owner_last_name: PACK_AUTHOR.last,
       };
+      if (hasLinkColumn) want.link = packLink(box.link) || null;
       Object.keys(want).forEach((k) => {
         if ((existing[k] || "") !== (want[k] || "")) fields[k] = want[k];
       });
@@ -1980,7 +2015,8 @@
           source_subject_id: it.sid,
           taxonomy: it.taxonomy,
           tags: it.tags,
-          cards: it.packCards.map((c, k) => withMore(withWrongs({ id: `${it.sid}-${k + 1}`, question: c.question, answer: c.answer }, c.wrongs), c.more)),
+          ...(plan.hasLinkColumn && packLink(it.box.link) ? { link: packLink(it.box.link) } : {}),
+          cards: it.packCards.map((c, k) => withLink(withMore(withWrongs({ id: `${it.sid}-${k + 1}`, question: c.question, answer: c.answer }, c.wrongs), c.more), c.link)),
         };
         const { error } = await client().from("library_collections").insert(row);
         return error ? `${it.box.name} : ${friendlyError(error)}` : null;
