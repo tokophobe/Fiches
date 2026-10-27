@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v241";
+  const APP_VERSION = "v242";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -2523,7 +2523,7 @@
     return wrap;
   }
 
-  function renderTreeLevel(parentId, depth, container) {
+  function renderTreeLevel(parentId, depth, container, only) {
     // Round 10, item 1 : à la racine, les classes (dossier racine d'une
     // classe suivie) doivent toujours apparaître APRÈS les dossiers et
     // collections propres de l'utilisateur — auparavant, tout était trié
@@ -2532,16 +2532,28 @@
     // sous-dossiers d'une classe sont de toute façon reconstitués SOUS son
     // dossier racine (voir ensureClassMirrorFolderPath), l'ordre n'y a donc
     // pas de sens à changer.
-    const isRootLevel = parentId === ROOT_FOLDER_ID;
-    let childFolders = folders.filter((f) => f.parentId === parentId);
-    let childSubjects = subjects.filter((s) => s.folderId === parentId && isSubjectInRevisions(s) && !folders.some((f) => f.id === s.id));
+    const isRootLevel = parentId === ROOT_FOLDER_ID && !only;
+    let childFolders = only ? only.folders.slice() : folders.filter((f) => f.parentId === parentId);
+    let childSubjects = only ? only.subjects.slice() : subjects.filter((s) => s.folderId === parentId && isSubjectInRevisions(s) && !folders.some((f) => f.id === s.id));
+    let classGroup = null;
     if (isRootLevel) {
       const ownFolders = childFolders.filter((f) => !f.sharedClassId && !f.sharedClassRoot).sort((a, b) => a.name.localeCompare(b.name, "fr"));
       const classFolders = childFolders.filter((f) => f.sharedClassId || f.sharedClassRoot).sort((a, b) => a.name.localeCompare(b.name, "fr"));
-      childFolders = [...ownFolders, ...classFolders];
       const ownSubjects = childSubjects.filter((s) => !s.sharedBoxId).sort((a, b) => a.name.localeCompare(b.name, "fr"));
       const classSubjects = childSubjects.filter((s) => s.sharedBoxId).sort((a, b) => a.name.localeCompare(b.name, "fr"));
-      childSubjects = [...ownSubjects, ...classSubjects];
+      // v242 : les classes suivies en élève sont regroupées dans un dossier
+      // « Mes classes », en haut, rangé automatiquement (non modifiable).
+      if (manageMode !== "creations" && (classFolders.length || classSubjects.length)) {
+        classGroup = { folders: classFolders, subjects: classSubjects };
+        childFolders = ownFolders;
+        childSubjects = ownSubjects;
+      } else {
+        childFolders = [...ownFolders, ...classFolders];
+        childSubjects = [...ownSubjects, ...classSubjects];
+      }
+    } else if (only) {
+      childFolders.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      childSubjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
     } else {
       childFolders = childFolders.sort((a, b) => a.name.localeCompare(b.name, "fr"));
       // Item 1 : une boîte "auto-liée" (même id qu'un dossier) ne doit
@@ -2620,6 +2632,55 @@
         deleteTitle: "Retirer cette boîte de mes révisions (elle n'est pas supprimée)",
       });
       li.appendChild(body);
+      container.appendChild(li);
+    }
+
+    if (classGroup) appendClassGroupRow(classGroup);
+    function appendClassGroupRow(group) {
+      const key = "__my_classes__";
+      const expanded = expandedManageFolders.has(key);
+      const li = document.createElement("li");
+      li.className = "subject-row folder-row folder-row-depth-0 folder-row--classes";
+      const expandBtn = document.createElement("button");
+      expandBtn.type = "button";
+      expandBtn.title = expanded ? "Replier" : "Déplier";
+      expandBtn.innerHTML = iconSvgMarkup(expanded ? "chevronDown" : "chevronRight", "icon-inline-svg");
+      expandBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (expandedManageFolders.has(key)) expandedManageFolders.delete(key);
+        else expandedManageFolders.add(key);
+        renderSubjectManageList();
+      });
+      const nameBtn = document.createElement("button");
+      nameBtn.type = "button";
+      nameBtn.className = "subject-row-name";
+      nameBtn.title = "Déplier / replier : les classes que tu suis";
+      nameBtn.innerHTML = `${CLASSES_ROW_ICON} <span>Mes classes</span>`;
+      nameBtn.addEventListener("click", () => expandBtn.click());
+      const ids = new Set(group.subjects.map((x) => x.id));
+      group.folders.forEach((f) => subjectIdsInFolder(f.id).forEach((id) => ids.add(id)));
+      const pool = cards.filter((c) => !c.deleted && ids.has(c.subject));
+      const n = group.folders.filter((f) => f.sharedClassRoot).length || group.folders.length;
+      if (!expanded) li.classList.add("folder-row--stacked");
+      const noop = async () => robotAlert("Le dossier « Mes classes » est rangé automatiquement : il regroupe les classes que tu as rejointes, organisées par tes enseignants.");
+      const body = buildRowBody({
+        nameBtnEl: nameBtn,
+        expandBtnEl: expandBtn,
+        countLabel: `${n} classe${n > 1 ? "s" : ""}`,
+        score: pool.length ? pool : null,
+        onRename: noop,
+        onMove: noop,
+        onDelete: noop,
+      });
+      // Pas de menu d'actions : dossier non modifiable.
+      body.querySelectorAll(".org-deploy-btn, .org-actions-popover").forEach((x) => x.remove());
+      li.appendChild(body);
+      if (expanded) {
+        const childrenUl = document.createElement("ul");
+        childrenUl.className = "org-children";
+        li.appendChild(childrenUl);
+        renderTreeLevel(ROOT_FOLDER_ID, depth + 1, childrenUl, group);
+      }
       container.appendChild(li);
     }
 
@@ -3197,7 +3258,8 @@
           else pickerExpandedFolders.add(f.id);
           ctx.rerenderRoot();
         },
-        iconMarkup: iconSvgMarkup("folder", "icon-inline-svg"),
+        // v242 : une classe suivie garde l'icône des classes.
+        iconMarkup: f.sharedClassRoot ? CLASSES_ROW_ICON : iconSvgMarkup("folder", "icon-inline-svg"),
         nameText: f.name,
         countLabel: `${ids.length} boîte${ids.length > 1 ? "s" : ""}`,
         gaugeSubjectIds: ids,
@@ -9716,6 +9778,14 @@
     }
     setBadge("home-review-badge", urgent);
     setBadge("review-hub-urgent-badge", urgent);
+    // v242 : la pastille « Renforcer » est aussi sur le bouton Réviser de l'accueil.
+    let reinforce = 0;
+    try {
+      reinforce = reinforceBoxesToReviewCount();
+    } catch (e) {
+      reinforce = 0;
+    }
+    setBadge("home-review-reinforce-badge", reinforce);
     return urgent;
   }
   function reviewHubUrgentBlockReason() {
@@ -9740,8 +9810,16 @@
     }
   }
   function renderReviewHub() {
-    renderHubButtonState("review-hub-advised-btn", "review-hub-advised-note", reviewHubUrgentBlockReason());
-    renderHubButtonState("review-hub-reinforce-btn", "review-hub-reinforce-note", reviewHubReinforceBlockReason());
+    const urgentReason = reviewHubUrgentBlockReason();
+    const reinforceReason = reviewHubReinforceBlockReason();
+    renderHubButtonState("review-hub-advised-btn", "review-hub-advised-note", urgentReason);
+    renderHubButtonState("review-hub-reinforce-btn", "review-hub-reinforce-note", reinforceReason);
+    // v242 : « (conseillé) » passe sur « Renforcer » quand il n'y a pas de
+    // révisions prioritaires.
+    const advisedTag = el("review-hub-advised-tag");
+    const reinforceTag = el("review-hub-reinforce-tag");
+    if (advisedTag) advisedTag.hidden = !!urgentReason;
+    if (reinforceTag) reinforceTag.hidden = !urgentReason || !!reinforceReason;
     refreshReviewBadges();
     setBadge("review-hub-reinforce-badge", reinforceBoxesToReviewCount());
   }
@@ -10034,10 +10112,22 @@
     refreshHomeEventWarning();
   }
   function renderAccountUsages() {
-    renderAccountShareEmail();
     const wrap = el("account-usages");
     if (!wrap) return;
-    const u = currentUsages() || [];
+    let u = currentUsages() || [];
+    // v242 : aucun usage encore choisi → « usage personnel » coché (et
+    // enregistré) par défaut.
+    if (accountCurrentUser && u.length === 0 && Sync.auth.updateMetadata) {
+      u = ["perso"];
+      Sync.auth
+        .updateMetadata({ usages: u })
+        .then(async (res) => {
+          if (res && res.error) return;
+          accountCurrentUser = (await Sync.auth.getUser()) || accountCurrentUser;
+          applyUsageEffects();
+        })
+        .catch(() => {});
+    }
     wrap.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
       cb.checked = u.includes(cb.value);
     });
@@ -10088,24 +10178,6 @@
   }
   if (Sync.auth && Sync.auth.onPasswordRecovery) Sync.auth.onPasswordRecovery(() => setTimeout(askNewPassword, 300));
 
-  // Round 55 : « Ne pas montrer mon adresse email… » (cochée = masquée).
-  function renderAccountShareEmail() {
-    const cb = el("account-share-email");
-    if (!cb) return;
-    cb.checked = !!(accountCurrentUser && accountCurrentUser.user_metadata && accountCurrentUser.user_metadata.hide_email_in_classes === true);
-  }
-  const accountShareEmailCb = el("account-share-email");
-  if (accountShareEmailCb) {
-    accountShareEmailCb.addEventListener("change", async () => {
-      const res = await Sync.auth.updateMetadata({ hide_email_in_classes: accountShareEmailCb.checked });
-      if (res && res.error) {
-        accountShareEmailCb.checked = !accountShareEmailCb.checked;
-        await robotAlert(`Échec de l'enregistrement : ${res.error}`);
-        return;
-      }
-      accountCurrentUser = (await Sync.auth.getUser()) || accountCurrentUser;
-    });
-  }
   const accountUsagesWrap = el("account-usages");
   if (accountUsagesWrap) {
     accountUsagesWrap.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
@@ -10135,9 +10207,16 @@
     });
   }
 
+  // v242 : tant que la session n'est pas vérifiée (après la synchro du
+  // démarrage, parfois longue), le bouton se fie à la session enregistrée
+  // sur l'appareil : « Mon compte » s'affiche tout de suite.
+  let accountStateKnown = false;
+  function storedSessionLikely() {
+    return !accountStateKnown && !!(window.UserScope && window.UserScope.uid);
+  }
   function updateAccountHomeButton() {
     const label = document.querySelector('.home-circle[data-key="account"] span');
-    if (label) label.textContent = accountCurrentUser ? "Mon compte" : "Se connecter";
+    if (label) label.textContent = accountCurrentUser || storedSessionLikely() ? "Mon compte" : "Se connecter";
     const emailEl = el("account-user-email");
     if (emailEl) emailEl.textContent = (accountCurrentUser && accountCurrentUser.email) || "";
     // Round 18, item 10 : ligne "Connecté en tant que [email]" (page
@@ -10157,9 +10236,17 @@
    *  seul ; il suffit de la lire ici pour que l'appli sache déjà "qui
    *  c'est" sans repasser par un écran de connexion à chaque ouverture,
    *  et de rester à l'écoute (`onChange`) pour le reste de la session. */
+  {
+    const label0 = document.querySelector('.home-circle[data-key="account"] span');
+    if (label0 && storedSessionLikely()) label0.textContent = "Mon compte";
+  }
   async function initAccountState() {
-    if (!Sync.isConfigured()) return;
+    if (!Sync.isConfigured()) {
+      accountStateKnown = true;
+      return;
+    }
     accountCurrentUser = await Sync.auth.getUser();
+    accountStateKnown = true;
     updateAccountHomeButton();
     if (accountCurrentUser) syncSharedBoxesForStudent();
     touchActivity();
@@ -10279,7 +10366,53 @@
     if (terms) terms.hidden = mode !== "signup";
     const birth = el("account-auth-birth-field");
     if (birth) birth.hidden = mode !== "signup";
+    // v242 : usages et niveau scolaire dès l'inscription.
+    ["account-auth-usages-field", "account-auth-school-field"].forEach((id) => {
+      const f = el(id);
+      if (f) f.hidden = mode !== "signup";
+    });
+    if (mode === "signup") buildSignupSchoolCascade();
     updateSignupParentField();
+  }
+  let signupSchoolCascade = null;
+  async function buildSignupSchoolCascade() {
+    const box = el("account-auth-school-taxonomy");
+    if (!box || signupSchoolCascade) return;
+    try {
+      await Taxonomy.load();
+    } catch (e) {
+      return;
+    }
+    if (signupSchoolCascade) return;
+    const sel = {};
+    const catId = schoolCategoryId();
+    if (catId) sel.categorie = catId;
+    signupSchoolCascade = createTaxonomyCascade(box, { mode: "profile", nested: true, sel, hiddenKeys: ["categorie"], excludeKeys: ["matiere"] });
+  }
+  /** v242 : messages du serveur de comptes (Supabase, en anglais) en français. */
+  function frenchAuthError(msg) {
+    const m = String(msg || "");
+    const table = [
+      [/invalid login credentials/i, "Email ou mot de passe incorrect."],
+      [/email not confirmed/i, "Ton adresse email n'est pas encore confirmée : ouvre l'email reçu à l'inscription et touche le lien (regarde aussi dans les courriers indésirables)."],
+      [/already registered|already been registered|user already exists/i, "Un compte existe déjà avec cette adresse email : connecte-toi, ou utilise « Mot de passe oublié ? »."],
+      [/unable to validate email|invalid format|invalid email/i, "Cette adresse email n'est pas valide (pas d'accent ni d'espace, exemple : prenom.nom@gmail.com)."],
+      [/password should be at least|password.*(short|characters)/i, "Le mot de passe doit contenir au moins 6 caractères."],
+      [/weak password|pwned|leaked/i, "Ce mot de passe est trop facile à deviner : choisis-en un autre."],
+      [/rate limit|too many requests|security purposes/i, "Trop d'essais en peu de temps : attends une minute, puis réessaie."],
+      [/signups not allowed|signup is disabled/i, "Les inscriptions sont fermées pour le moment."],
+      [/failed to fetch|network/i, "Pas de connexion : réessaie quand tu seras en ligne."],
+    ];
+    const hit = table.find(([re]) => re.test(m));
+    return hit ? hit[1] : m;
+  }
+  /** v242 : une adresse email ne peut contenir ni accent ni espace (le
+   *  serveur répondait en anglais « invalid format »). */
+  function emailFormatError(email) {
+    if (/\s/.test(email)) return "Une adresse email ne peut pas contenir d'espace.";
+    if (/[^\x21-\x7e]/.test(email)) return "Une adresse email ne peut pas contenir d'accent (é, è, à, ç…) ni de caractère spécial.";
+    if (!/^[^@]+@[^@]+\.[^@.]{2,}$/.test(email)) return "Cette adresse email n'est pas complète (exemple : prenom.nom@gmail.com).";
+    return null;
   }
   /** v231 : email d'un parent demandé à l'inscription d'un enfant de moins
    *  de 15 ans. */
@@ -10321,6 +10454,14 @@
         }
         return;
       }
+      const formatErr = emailFormatError(email);
+      if (formatErr) {
+        if (note) {
+          note.hidden = false;
+          note.textContent = formatErr;
+        }
+        return;
+      }
       // Round 70 : les conditions doivent être acceptées pour créer un compte.
       if (classesAuthMode === "signup" && !(el("account-auth-terms") && el("account-auth-terms").checked)) {
         if (note) {
@@ -10342,6 +10483,18 @@
         };
         if (age === null || age < 0 || age > 120) return fail("Indique ta date de naissance.");
         ageMeta = { birth_date: birth };
+        // v242 : usages (au moins un) et niveau scolaire (facultatif).
+        const usages = [...document.querySelectorAll('#account-auth-usages input[type="checkbox"]')].filter((x) => x.checked).map((x) => x.value);
+        if (!usages.length) return fail("Choisis au moins un usage : élève, enseignant ou usage personnel.");
+        ageMeta.usages = usages;
+        if (signupSchoolCascade) {
+          const tax = taxonomyValueFromSelection(signupSchoolCascade.getSelection());
+          delete tax.matiere;
+          if (tax.cycle || tax.niveau) {
+            ageMeta.school_taxonomy = tax;
+            ageMeta.school_level = tax.niveau ? tax.niveau.label : "";
+          }
+        }
         if (age < 15) {
           const parent = ((el("account-auth-parent-email") && el("account-auth-parent-email").value) || "").trim().toLowerCase();
           if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(parent)) return fail("Tu as moins de 15 ans : écris l'adresse email d'un de tes parents.");
@@ -10364,7 +10517,7 @@
       if (result.error) {
         if (note) {
           note.hidden = false;
-          note.textContent = result.error;
+          note.textContent = frenchAuthError(result.error);
         }
         return;
       }
@@ -12515,6 +12668,42 @@
       });
     }
   }
+  async function copyClassCode(code) {
+    let ok = false;
+    try {
+      await navigator.clipboard.writeText(String(code || ""));
+      ok = true;
+    } catch (e) {
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = String(code || "");
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        ok = document.execCommand("copy");
+        ta.remove();
+      } catch (e2) {
+        ok = false;
+      }
+    }
+    if (ok) showToast(`Code ${code} copié : colle-le dans un message à tes élèves.`);
+    else await robotAlert(`Le code de la classe est ${code}.`);
+  }
+  async function renameClassFlow(klass) {
+    const name = await robotPrompt("Nouveau nom de la classe :", klass.name);
+    if (!name || !name.trim() || name.trim() === klass.name) return;
+    const { error } = await Sync.classes.rename(klass.id, name.trim());
+    if (error) {
+      await robotAlert(`La classe n'a pas pu être renommée : ${error}`);
+      return;
+    }
+    klass.name = name.trim().slice(0, 120);
+    if (classDetailContext && classDetailContext.klass.id === klass.id) classDetailContext.klass.name = klass.name;
+    showToast("Classe renommée");
+    renderClassDetailView();
+  }
   function closeClassDetailView() {
     const role = classDetailContext ? classDetailContext.role : "student";
     classDetailContext = null;
@@ -12541,10 +12730,20 @@
       // sous le nom de la classe.
       const chips = [`<span class="class-chip">${count} élève${count > 1 ? "s" : ""}</span>`];
       if (isTeacher && klass.invite_code) {
-        chips.push(`<span class="class-chip class-chip--code">Code : <strong>${escapeHtml(klass.invite_code)}</strong></span>`);
+        chips.push(
+          `<span class="class-chip class-chip--code">Code : <strong>${escapeHtml(klass.invite_code)}</strong><button type="button" class="class-code-copy" id="class-code-copy-btn" title="Copier le code" aria-label="Copier le code de la classe">${iconSvgMarkup("copy", "icon-inline-svg")}</button></span>`
+        );
+      }
+      if (isTeacher) {
+        chips.push(`<button type="button" class="class-chip class-chip--rename" id="class-detail-rename-btn" title="Renommer la classe">${iconSvgMarkup("pencil", "icon-inline-svg")} Renommer</button>`);
       }
       statsEl.innerHTML = chips.join("");
+      const copyBtn = el("class-code-copy-btn");
+      if (copyBtn) copyBtn.addEventListener("click", () => copyClassCode(klass.invite_code));
     }
+    // v242 : renommer la classe (enseignant).
+    const renameBtn = el("class-detail-rename-btn");
+    if (renameBtn) renameBtn.onclick = () => renameClassFlow(klass);
     updatePageHeaderTitle();
     const leaveBtn = el("class-detail-leave-btn");
     if (leaveBtn) leaveBtn.textContent = isTeacher ? "Supprimer la classe" : "Quitter la classe";
@@ -12623,8 +12822,8 @@
       .filter((m) => m.role !== "teacher")
       .map((m) => {
         const name = `${m.first_name || ""} ${m.last_name || ""}`.trim();
-        const key = name ? `0 ${m.last_name || ""} ${m.first_name || ""}` : `1 ${m.email || ""}`;
-        return { name, sortKey: key.toLowerCase(), email: m.email || "" };
+        const key = name ? `0 ${m.last_name || ""} ${m.first_name || ""}` : "1";
+        return { name, sortKey: key.toLowerCase() };
       })
       .sort((a, b) => a.sortKey.localeCompare(b.sortKey, "fr"));
     if (empty) {
@@ -12634,10 +12833,9 @@
     rows.forEach((r) => {
       const li = document.createElement("li");
       li.className = "class-student-row";
-      const label = r.name || (isTeacher && r.email) || "Élève (nom non renseigné)";
-      li.innerHTML = `<span class="class-student-icon">${iconSvgMarkup("smile", "icon-inline-svg")}</span><span class="class-student-name">${escapeHtml(label)}</span>${
-        isTeacher && r.name && r.email ? `<span class="class-student-email">${escapeHtml(r.email)}</span>` : ""
-      }`;
+      // v242 : prénom et nom seulement, jamais l'email.
+      const label = r.name || "Élève (nom non renseigné)";
+      li.innerHTML = `<span class="class-student-icon">${iconSvgMarkup("smile", "icon-inline-svg")}</span><span class="class-student-name">${escapeHtml(label)}</span>`;
       list.appendChild(li);
     });
   }
@@ -16261,9 +16459,11 @@
    *  enregistré avec le message (sender_name), sinon retrouvé dans la liste
    *  des membres de la classe, sinon l'email. */
   function messageSenderName(msg) {
-    if (msg.sender_name && String(msg.sender_name).trim() && msg.sender_name !== msg.sender_email) return msg.sender_name;
+    const ok = (v) => !!v && !!String(v).trim() && String(v).indexOf("@") < 0;
+    if (ok(msg.sender_name)) return msg.sender_name;
     const names = (messageThreadContext && messageThreadContext.names) || {};
-    return names[msg.sender_id] || msg.sender_name || msg.sender_email || "";
+    // v242 : jamais l'email de l'expéditeur.
+    return ok(names[msg.sender_id]) ? names[msg.sender_id] : "Membre de la classe";
   }
   function messageBubbleHtml(msg, klass) {
     const isMine = !!(accountCurrentUser && msg.sender_id === accountCurrentUser.id);

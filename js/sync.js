@@ -1203,6 +1203,15 @@ async function updateSharedBoxPath(boxId, folderPath) {
  *  `box_folders` ajoutée par supabase/round53_migration.sql. Sans elle :
  *  `missing` (les dossiers qui contiennent des boîtes restent gérés par le
  *  chemin de chaque boîte). */
+/** v242 : renommer une classe (enseignant). */
+async function renameClass(classId, name) {
+  const c = getClient();
+  if (!c) return { error: "Sync non configurée." };
+  const n = String(name || "").trim().slice(0, 120);
+  if (!n) return { error: "Nom vide." };
+  const { error } = await c.from("classes").update({ name: n }).eq("id", classId);
+  return { error: error ? error.message : null };
+}
 async function updateClassBoxFolders(classId, folders) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée." };
@@ -1217,7 +1226,8 @@ async function updateClassBoxFolders(classId, folders) {
  *  "Prénom Nom" des métadonnées du compte, repli sur l'email. */
 function teacherDisplayName(user) {
   const meta = (user && user.user_metadata) || {};
-  return `${meta.first_name || ""} ${meta.last_name || ""}`.trim() || (user && user.email) || "";
+  // v242 : jamais l'email (il n'est plus montré aux autres utilisateurs).
+  return `${meta.first_name || ""} ${meta.last_name || ""}`.trim();
 }
 /** La colonne `shared_by_name` n'existe qu'après la migration
  *  supabase/shared_events_teacher_name_migration.sql : sans elle, on
@@ -1569,7 +1579,7 @@ async function sendClassMessage(classId, body) {
   if (!trimmed) return { error: "Message vide." };
   // Round 48 : prénom et nom de l'expéditeur (colonne sender_name, voir
   // supabase/round48_migration.sql) — sans la colonne, envoi sans elle.
-  const row = { class_id: classId, sender_id: user.id, sender_email: user.email || "", sender_name: teacherDisplayName(user), body: trimmed };
+  const row = { class_id: classId, sender_id: user.id, sender_email: "", sender_name: teacherDisplayName(user), body: trimmed };
   let { data, error } = await c.from("class_messages").insert(row).select().single();
   if (error && /sender_name/i.test(error.message || "")) {
     delete row.sender_name;
@@ -1778,6 +1788,7 @@ window.Sync = {
     deleteSharedBox,
     leave: leaveClass,
     remove: deleteClass,
+    rename: renameClass,
     updateBoxFolders: updateClassBoxFolders,
     shareEvent: shareEventToClass,
     listSharedEvents: listSharedEventsForClass,

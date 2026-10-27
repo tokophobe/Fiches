@@ -387,7 +387,12 @@
         <button type="button" class="home-circle" data-key="review" data-go="review-hub">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
           <span>Réviser</span>
-          <span class="home-circle-badge" id="home-review-badge" hidden>0</span>
+          <!-- v242 : deux pastilles — révisions prioritaires (vert) et
+               renforcer mes connaissances (vert pâle). -->
+          <span class="home-circle-badges">
+            <span class="home-circle-badge home-circle-badge--reinforce" id="home-review-reinforce-badge" title="Boîtes à renforcer" hidden>0</span>
+            <span class="home-circle-badge home-circle-badge--urgent" id="home-review-badge" title="Révisions prioritaires" hidden>0</span>
+          </span>
         </button>
         <!-- Round 47 : « Gérer mes fiches » (hub) disparaît — ses deux pages
              sont accessibles directement depuis l'accueil. data-key="manage"
@@ -477,17 +482,17 @@
           <span class="classes-role-circle-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="13" x2="12" y2="16.5"/><circle cx="12" cy="19" r="0.6" fill="currentColor"/></svg>
           </span>
-          <span>Révisions prioritaires (conseillé)</span>
+          <span>Révisions prioritaires<span class="hub-advised-tag" id="review-hub-advised-tag"> (conseillé)</span></span>
           <span class="classes-role-circle-note" id="review-hub-advised-note" hidden></span>
-          <span class="home-circle-badge" id="review-hub-urgent-badge" hidden>0</span>
+          <span class="home-circle-badge home-circle-badge--urgent" id="review-hub-urgent-badge" hidden>0</span>
         </button>
         <button type="button" class="classes-role-circle" id="review-hub-reinforce-btn">
           <span class="classes-role-circle-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M3 17l5-5 4 4 8-8"/><path d="M15 8h5v5"/></svg>
           </span>
-          <span>Renforcer mes connaissances</span>
+          <span>Renforcer mes connaissances<span class="hub-advised-tag" id="review-hub-reinforce-tag" hidden> (conseillé)</span></span>
           <span class="classes-role-circle-note" id="review-hub-reinforce-note" hidden></span>
-          <span class="home-circle-badge home-circle-badge--neutral" id="review-hub-reinforce-badge" hidden>0</span>
+          <span class="home-circle-badge home-circle-badge--reinforce" id="review-hub-reinforce-badge" hidden>0</span>
         </button>
         <button type="button" class="classes-role-circle" id="review-hub-manual-btn">
           <span class="classes-role-circle-icon">
@@ -1096,6 +1101,21 @@
             <span>Email d'un de tes parents</span>
             <input type="email" id="account-auth-parent-email" autocomplete="off" />
           </label>
+          <!-- v242 : usages et niveau scolaire demandés dès l'inscription. -->
+          <div class="field" id="account-auth-usages-field" hidden>
+            <span>J'utilise l'appli…</span>
+            <div class="usage-options" id="account-auth-usages">
+              <label class="usage-option"><input type="checkbox" value="eleve" /> <span>en tant qu'élève<small>possibilité de rejoindre les classes de tes enseignants</small></span></label>
+              <label class="usage-option"><input type="checkbox" value="enseignant" /> <span>en tant qu'enseignant<small>possibilité de créer des classes pour tes élèves</small></span></label>
+              <label class="usage-option"><input type="checkbox" value="perso" checked /> <span>pour un usage personnel</span></label>
+            </div>
+            <p class="field-hint">Tu pourras changer ces choix à tout moment dans Mon compte.</p>
+          </div>
+          <div class="field" id="account-auth-school-field" hidden>
+            <span>Niveau scolaire <em class="field-optional">(facultatif)</em></span>
+            <p class="field-hint">Il permet de te proposer, dans la Librairie, des fiches adaptées à ton niveau. Tu pourras le changer dans Mon compte.</p>
+            <div class="account-school-taxonomy" id="account-auth-school-taxonomy"></div>
+          </div>
           <!-- Round 70 : acceptation des conditions à la création du compte. -->
           <label class="account-terms-check" id="account-auth-terms-field" hidden>
             <input type="checkbox" id="account-auth-terms" />
@@ -1132,22 +1152,15 @@
           <div class="field">
             <span>J'utilise l'appli…</span>
             <div class="usage-options" id="account-usages">
-              <label class="usage-option"><input type="checkbox" value="eleve" /> <span>en tant qu'élève</span></label>
-              <label class="usage-option"><input type="checkbox" value="enseignant" /> <span>en tant qu'enseignant</span></label>
+              <label class="usage-option"><input type="checkbox" value="eleve" /> <span>en tant qu'élève<small>possibilité de rejoindre les classes de tes enseignants</small></span></label>
+              <label class="usage-option"><input type="checkbox" value="enseignant" /> <span>en tant qu'enseignant<small>possibilité de créer des classes pour tes élèves</small></span></label>
               <label class="usage-option"><input type="checkbox" value="perso" /> <span>pour un usage personnel</span></label>
             </div>
           </div>
           <p class="field-hint" id="account-usages-note" hidden></p>
         </div>
-        <!-- Round 55 : case inversée — cochée, l'adresse email n'apparaît
-             pas dans la liste des élèves d'une classe (métadonnée
-             hide_email_in_classes). Décochée par défaut. -->
-        <div class="card-form">
-          <label class="settings-toggle-row account-share-email-row">
-            <input type="checkbox" id="account-share-email" />
-            <span>Ne pas montrer mon adresse email aux enseignants et élèves de mes classes</span>
-          </label>
-        </div>
+        <!-- v242 : la case « Ne pas montrer mon adresse email… » est retirée :
+             l'email n'est plus jamais montré aux autres utilisateurs. -->
         <div class="card-form">
           <label class="field">
             <span>Prénom</span>
@@ -1163,7 +1176,8 @@
           <!-- Round 25, item 4 : niveau scolaire d'après la taxonomie Excel
                (cycle → niveau → année → spécialité ; catégorie toujours
                « école & études », pas de matière). -->
-          <h4 class="account-school-title">Niveau scolaire</h4>
+          <h4 class="account-school-title">Niveau scolaire <em class="field-optional">(facultatif)</em></h4>
+          <p class="field-hint account-school-hint">Il permet de te proposer, dans la Librairie, des fiches adaptées à ton niveau.</p>
           <div class="account-school-taxonomy" id="account-school-taxonomy"></div>
           <button type="button" class="btn btn--primary account-profile-save" id="account-profile-save-btn">Enregistrer mon profil</button>
           <p class="field-hint" id="account-profile-note" hidden></p>

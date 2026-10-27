@@ -1768,10 +1768,15 @@ body.is-login-locked .home-circle:not([data-key="account"]) { display: none; }
 
 /* Round 30 : bouton « Librairie » de l'accueil — couleur propre, réglable
    en mode développeur (Couleurs des fonds). */
+/* v242 : même fond que les autres boutons, avec une bordure de couleur
+   (comme le défi du jour). La couleur reste réglable dans Darwin Admin
+   (« Bordure du bouton Librairie »). */
 .home-circle--library {
-  background: var(--home-library-bg-color, #8a63c9);
-  color: #ffffff;
+  background: var(--home-square-bg-color, var(--paper));
+  color: var(--ink);
+  box-shadow: 0 0 0 3px var(--home-library-bg-color, #8a63c9), var(--shadow-home-square, var(--shadow-deep));
 }
+.home-circle--library .home-circle-icon { color: var(--home-library-bg-color, #8a63c9); }
 
 /* Round 3, item 2 : page d'accueil Classes — deux gros boutons ronds
    ("J'apprends" / "J'enseigne"), même esprit visuel que les boutons ronds
@@ -8080,3 +8085,57 @@ body.is-qcm-review .card-learn-link { display: none; }
 #view-account .teacher-plans { margin: 0; }
 #view-subscriptions .teacher-plans > .teacher-plans-toggle { background: transparent; box-shadow: none; border-left: 0; border-radius: 0; border-top: 1px solid var(--rule-soft); padding: 14px 2px; }
 #view-subscriptions .teacher-plans[open] > .teacher-plans-toggle { margin-bottom: 0; }
+
+/* v242 : précision sous un usage, mention « facultatif ». */
+.usage-option > span small { display: block; font-size: 12.5px; color: var(--ink-soft, #64748b); margin-top: 2px; line-height: 1.3; }
+.usage-option { align-items: flex-start; }
+.usage-option input { margin-top: 2px; }
+.field-optional { font-style: normal; font-weight: 400; color: var(--ink-soft, #64748b); font-size: 0.9em; }
+.account-school-hint { margin: -4px 0 10px; }
+#account-auth-school-field .field-hint, #account-auth-usages-field .field-hint { margin: 4px 0 0; }
+
+/* v242 : pastilles de Réviser — vert (prioritaires), vert pâle (renforcer). */
+.home-circle-badge.home-circle-badge--urgent { background: #1f9d55; color: #fff; }
+.home-circle-badge.home-circle-badge--reinforce { background: #b5e3c4; color: #14532d; }
+.home-circle-badges { position: absolute; top: 4px; right: 8px; display: flex; gap: 3px; pointer-events: none; }
+.home-circle-badges .home-circle-badge { position: static; }
+.hub-advised-tag[hidden] { display: none; }
+
+/* ==================================================================
+   v242 : Librairie — même fond que les autres pages ; la couleur du
+   cycle passe sur les contours (plus « vitrine »).
+   ================================================================== */
+body.is-view-library { --app-bg-color: inherit; }
+:root { --library-bg: var(--app-bg-color, var(--desk)); }
+body:has(#view-library.is-active[data-cycle]) { background: var(--app-bg-color, var(--desk)); }
+#view-library .tax-block {
+  background: var(--card-form-bg-color, var(--paper));
+  border: 2px solid color-mix(in srgb, var(--tax-color, #4a9fe0) calc(var(--tax-alpha, 10%) * 4), transparent);
+  border-radius: 14px;
+}
+#view-library .library-row--cycled {
+  border: 2px solid color-mix(in srgb, var(--row-cycle, #94a3b8) 45%, transparent);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--row-cycle, #94a3b8) 18%, transparent);
+}
+#view-library .library-row--cycled .library-row-name .icon-inline-svg { color: var(--row-cycle, var(--action-color)); }
+#view-library .library-row--cycled .library-row-add {
+  display: inline-block;
+  float: right;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1.5px solid var(--row-cycle, var(--action-color));
+  color: color-mix(in srgb, var(--row-cycle, var(--action-color)) 75%, #000);
+  background: color-mix(in srgb, var(--row-cycle, var(--action-color)) 10%, transparent);
+}
+#view-library .library-row--cycled::after { content: ""; display: block; clear: both; }
+
+/* v242 : classe enseignant — copier le code, renommer. */
+.class-code-copy { border: none; background: transparent; padding: 2px 4px; margin-left: 4px; color: var(--action-color); cursor: pointer; display: inline-flex; align-items: center; vertical-align: middle; border-radius: 6px; }
+.class-code-copy:hover { background: rgba(0, 0, 0, 0.06); }
+.class-code-copy .icon-inline-svg { width: 16px; height: 16px; }
+.class-detail-name-row { display: flex; align-items: center; justify-content: center; gap: 6px; }
+.class-detail-rename { border: none; background: transparent; padding: 6px; color: var(--ink-soft, #64748b); cursor: pointer; border-radius: 8px; display: inline-flex; }
+.class-detail-rename:hover { background: rgba(0, 0, 0, 0.06); color: var(--action-color); }
+.class-detail-rename[hidden] { display: none; }
+.class-chip.class-chip--rename { cursor: pointer; font-family: var(--font-type); font-size: 12px; color: var(--action-color); display: inline-flex; align-items: center; gap: 4px; }
+.class-chip--rename .icon-inline-svg { width: 14px; height: 14px; }

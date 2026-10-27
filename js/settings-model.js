@@ -39,6 +39,7 @@
     // Équivalents sobres des icônes déjà utilisées ailleurs dans l'appli
     // (crayon, hibernation, chantier, annuler...).
     pencil: '<path d="M17 3a2.83 2.83 0 0 1 4 4L7 21l-4 1 1-4z"/>',
+    copy: '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>',
     sleep: '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/><line x1="9" y1="9" x2="13" y2="9"/><line x1="9" y1="9" x2="13" y2="9" transform="rotate(20 11 9)"/>',
     cone: '<path d="M12 2l6 16H6z"/><line x1="8.2" y1="13" x2="15.8" y2="13"/><line x1="4" y1="21" x2="20" y2="21"/>',
     undo: '<polyline points="9,14 4,9 9,4"/><path d="M4 9h11a5 5 0 0 1 5 5v1"/>',
@@ -761,7 +762,7 @@
     homeBg: "Fond de la page d'accueil",
     homeSquareBg: "Boutons de la page d'accueil",
     homeAddCardBg: "Bouton « Ajouter une fiche » de l'accueil",
-    homeLibraryBg: "Bouton « Librairie » de l'accueil",
+    homeLibraryBg: "Bordure du bouton « Librairie » de l'accueil",
     libraryPageBg: "Fond de la page Librairie",
     cardFormBg: "Fond des cadres (blocs)",
     richEditorBg: "Fond des zones de texte",
