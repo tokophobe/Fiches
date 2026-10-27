@@ -34,6 +34,7 @@
       <tr><td>Pour un enfant de moins de 15 ans : email du parent, date et réponse de l'accord</td><td>Recueillir et prouver l'accord d'un parent</td><td>Obligation légale</td></tr>
       <tr><td>Abonnement : formule, état, dates, identifiants Stripe ; carte bancaire limitée à la marque, aux 4 derniers chiffres et à la date d'expiration</td><td>Gérer l'abonnement, te prévenir si ta carte expire avant le prochain prélèvement</td><td>Exécution du contrat</td></tr>
       <tr><td>Factures (chez Stripe)</td><td>Comptabilité</td><td>Obligation légale</td></tr>
+      <tr><td>Jours d'utilisation de l'appli (la date seulement, une fois par jour : « ce compte a servi tel jour »)</td><td>Statistiques d'usage de darwin (nombre de comptes actifs, fidélité), et suppression des comptes inactifs</td><td>Intérêt légitime</td></tr>
       <tr><td>Données techniques (adresse IP, date de connexion, journaux d'erreurs des serveurs ; erreurs de fonctionnement de l'appli : message d'erreur, page, version, navigateur, sans le contenu de tes fiches)</td><td>Sécurité, lutte contre les abus, correction des pannes</td><td>Intérêt légitime</td></tr>
     </table></div>
     <p><strong>Ton numéro de carte bancaire n'est jamais vu ni gardé par darwin</strong> : la saisie se fait sur la page sécurisée de Stripe.</p>
@@ -57,11 +58,12 @@
 
     <h2>4. Combien de temps ?</h2>
     <ul>
-      <li>Compte et contenus : tant que ton compte existe. « Supprimer mon compte » (dans Mon compte) efface définitivement tes données sur tous tes appareils et sur nos serveurs. <mark class="todo">[durée d'inactivité au bout de laquelle un compte est supprimé, ex. 3 ans, après un email d'avertissement — à décider]</mark>.</li>
+      <li>Compte et contenus : tant que ton compte existe. « Supprimer mon compte » (dans Mon compte) efface définitivement tes données sur tous tes appareils et sur nos serveurs. Un compte qui n'a pas servi pendant <strong>2 ans</strong> est supprimé automatiquement, après un email d'avertissement envoyé 30 jours avant (et un rappel une semaine avant) : il suffit d'ouvrir l'appli pour le garder. Ne sont pas concernés les comptes qui ont un abonnement en cours. Un compte dont l'adresse email n'a jamais été confirmée, et qui n'a jamais servi, est supprimé au bout de 30 jours.</li>
       <li>Boîtes publiées dans la Librairie : supprimées avec ton compte.</li>
       <li>Factures : 10 ans, chez Stripe (obligation comptable), même après la suppression du compte.</li>
       <li>Journaux techniques : <mark class="todo">[durée, ex. 12 mois au plus]</mark>.</li>
       <li>Erreurs de fonctionnement de l'appli : 90 jours.</li>
+      <li>Jours d'utilisation : supprimés avec le compte.</li>
     </ul>
 
     <h2>5. Les enfants</h2>
@@ -69,7 +71,7 @@
     <p>Un mineur ne peut pas souscrire seul un abonnement payant : l'appli lui demande de le faire avec un parent.</p>
 
     <h2>6. Ce qui est enregistré sur ton appareil</h2>
-    <p>Pour fonctionner hors connexion, l'appli garde sur ton appareil tes fiches, tes réglages et ta session (stockage local du navigateur et cache de l'appli). Ce stockage est indispensable au service : il ne nécessite pas de consentement et ne sert à aucun suivi. darwin n'utilise ni cookie publicitaire ni outil de mesure d'audience <mark class="todo">[à modifier si un outil de statistiques est ajouté]</mark>.</p>
+    <p>Pour fonctionner hors connexion, l'appli garde sur ton appareil tes fiches, tes réglages et ta session (stockage local du navigateur et cache de l'appli). Ce stockage est indispensable au service : il ne nécessite pas de consentement et ne sert à aucun suivi. darwin n'utilise ni cookie publicitaire ni outil de mesure d'audience d'une autre société. Les visites du site public de darwin sont comptées sans cookie et sans rien enregistrer sur ton appareil : seuls sont gardés, par jour, le nombre de visites de chaque page et le site d'où vient la visite (son nom de domaine, par exemple un moteur de recherche). Aucune adresse IP ni aucun identifiant n'est gardé : ces chiffres ne permettent pas de savoir qui a visité le site.</p>
 
     <h2>7. Tes droits</h2>
     <p>Tu peux à tout moment :</p>

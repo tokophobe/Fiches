@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v238";
+  const ADMIN_VERSION = "v240";
   async function checkAdminVersion() {
     const label = $("#sidebar-version");
     if (label) label.textContent = `Darwin Admin ${ADMIN_VERSION}`;
@@ -313,17 +313,26 @@
     chat: '<path d="M4 5h16v11H9l-5 4V5z"/>',
     wrench: '<path d="M14.5 6.5a4 4 0 0 0 5 5L12 19a2.1 2.1 0 0 1-3-3l7.5-7.5a4 4 0 0 0-2-2z"/>',
     bug: '<rect x="7" y="8" width="10" height="12" rx="5"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8M3 13h4M17 13h4M4 7.5l3 2M20 7.5l-3 2M4 19l3-2M20 19l-3-2"/>',
+    chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
     list: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>',
   };
   const svg = (inner) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
 
   const NAV = [
-    { group: "Pilotage", items: [{ key: "dashboard", label: "Tableau de bord", icon: "dashboard" }] },
+    {
+      group: "Pilotage",
+      items: [
+        { key: "dashboard", label: "Tableau de bord", icon: "dashboard" },
+        { key: "stats", label: "Statistiques", icon: "chart" },
+      ],
+    },
     {
       group: "Utilisateurs",
       items: [
         { key: "users", label: "Comptes", icon: "users" },
         { key: "subscriptions", label: "Abonnements", icon: "card" },
+        { key: "schools", label: "Établissements", icon: "school" },
         { key: "admins", label: "Administrateurs", icon: "shield" },
       ],
     },
@@ -353,6 +362,7 @@
       items: [
         { key: "journal", label: "Journal", icon: "list" },
         { key: "errors", label: "Erreurs", icon: "bug", badge: "errors" },
+        { key: "retention", label: "Comptes inactifs", icon: "clock" },
       ],
     },
   ];
@@ -538,9 +548,10 @@
       const x = padL + i * bw + bw * 0.15;
       const y = yOf(v);
       const d = new Date(`${p.day}T12:00:00`);
-      const label = d.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+      const label = opts.labelOf ? opts.labelOf(p) : d.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
       s += `<rect class="bar" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${(bw * 0.7).toFixed(1)}" height="${Math.max(0, H - padB - y).toFixed(1)}" rx="2"><title>${esc(label)} : ${v}</title></rect>`;
-      if (i % 7 === 0 || (i === n - 1 && (n - 1) % 7 >= 4)) s += `<text class="axis" x="${(x + bw * 0.35).toFixed(1)}" y="${H - 6}" text-anchor="middle">${esc(label)}</text>`;
+      const every = opts.every || (n > 60 ? 14 : 7);
+      if (i % every === 0 || (i === n - 1 && (n - 1) % every >= every / 2 + 0.5)) s += `<text class="axis" x="${(x + bw * 0.35).toFixed(1)}" y="${H - 6}" text-anchor="middle">${esc(label)}</text>`;
     });
     s += "</svg>";
     return h("div", { html: s });
@@ -919,6 +930,54 @@
         )
       )
     );
+    // v240 : suppression d'un compte (comptes de test, demande écrite…).
+    if (!d.is_admin) root.appendChild(deleteUserCard(u));
+  }
+  function deleteUserCard(u) {
+    const btn = h("button", { type: "button", class: "btn btn--danger" }, "Supprimer ce compte");
+    btn.addEventListener("click", async () => {
+      const typed = h("input", { class: "input", placeholder: u.email || "", "aria-label": "Email du compte à supprimer" });
+      const ok = await openModal({
+        title: "Supprimer ce compte ?",
+        body: h(
+          "div",
+          { class: "stack" },
+          h("p", { style: { margin: 0 } }, `Le compte ${u.email}, ses boîtes, fiches, classes, messages et publications dans la Librairie seront supprimés définitivement. Ses élèves perdront les boîtes de ses classes.`),
+          h("label", { class: "field" }, h("span", null, "Pour confirmer, écris l'email du compte"), typed)
+        ),
+        buttons: [
+          { label: "Annuler", value: false },
+          {
+            label: "Supprimer définitivement",
+            danger: true,
+            value: true,
+            onClick: () => {
+              if (typed.value.trim().toLowerCase() !== String(u.email || "").toLowerCase()) {
+                toast("L'email ne correspond pas.", true);
+                return false;
+              }
+            },
+          },
+        ],
+      });
+      if (ok !== true) return;
+      try {
+        await rpc("admin_delete_user", { p_user: u.id });
+        toast("Compte supprimé");
+        location.hash = "#/users";
+      } catch (e) {
+        const m = (e && e.message) || "";
+        toast(
+          /active_subscription/.test(m)
+            ? "Ce compte a un abonnement payant en cours : résilie-le d'abord dans Stripe."
+            : /admin_account/.test(m)
+            ? "Retire d'abord ses droits d'administrateur."
+            : r80Error(e),
+          true
+        );
+      }
+    });
+    return card("Supprimer le compte", "Pour les comptes de test avant le lancement, ou à la demande écrite de l'utilisateur. Irréversible.", btn);
   }
   function subscriptionCard(userId, sub) {
     sub = sub || {};
@@ -2412,6 +2471,9 @@
     "admin.add": "Administrateur ajouté",
     "admin.remove": "Administrateur retiré",
     "library.delete": "Collection supprimée",
+    "user.delete": "Compte supprimé",
+    "school.quote": "Devis ou bon de commande",
+    "retention.settings": "Réglage des comptes inactifs",
   };
   const journalQuery = { offset: 0 };
   /* v236 : erreurs remontées par l'appli et Darwin Admin (js/error-report.js,
@@ -3601,6 +3663,761 @@
         )
       );
     });
+
+  /* ================================================================
+     v240 — Statistiques (sans cookie)
+     ================================================================ */
+  const MIGRATION80_HINT = "Le serveur n'a pas encore la mise à jour v240 : exécute supabase/round80_migration.sql dans Supabase (SQL Editor).";
+  function r80Error(e) {
+    const msg = (e && e.message) || String(e);
+    return msg === MIGRATION_HINT ? MIGRATION80_HINT : msg;
+  }
+  const pct = (a, b) => (Number(b) > 0 ? `${Math.round((100 * Number(a)) / Number(b))} %` : "—");
+  const euros = (cents) => `${(Number(cents || 0) / 100).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+  const PLAN_LABELS = {
+    individuel: "Super élève (mensuel)",
+    individuel_annuel: "Super élève (annuel)",
+    super_enseignant: "Super enseignant (mensuel)",
+    super_enseignant_annuel: "Super enseignant (annuel)",
+    super_ecole: "Super école",
+    manuel: "Donné à la main",
+  };
+  /** Barres empilées par semaine : series = [{ key, label, cls }]. */
+  function stackedChart(points, series, opts) {
+    opts = opts || {};
+    const W = 640;
+    const H = 170;
+    const padL = 30;
+    const padB = 22;
+    const padT = 8;
+    const n = points.length || 1;
+    const tot = (p) => series.reduce((a, s) => a + (Number(p[s.key]) || 0), 0);
+    const max = Math.max(1, ...points.map(tot));
+    const niceMax = max <= 4 ? max : Math.ceil(max / 4) * 4;
+    const bw = (W - padL) / n;
+    const yOf = (v) => padT + (H - padT - padB) * (1 - v / niceMax);
+    let s = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.label || "")}">`;
+    [0, 0.5, 1].forEach((f) => {
+      const v = Math.round(niceMax * f);
+      const y = yOf(v);
+      s += `<line class="grid-line" x1="${padL}" x2="${W}" y1="${y}" y2="${y}"/><text class="axis" x="${padL - 6}" y="${y + 3}" text-anchor="end">${v}</text>`;
+    });
+    points.forEach((p, i) => {
+      const x = padL + i * bw + bw * 0.15;
+      let acc = 0;
+      const label = opts.labelOf ? opts.labelOf(p) : "";
+      series.forEach((se) => {
+        const v = Number(p[se.key]) || 0;
+        if (!v) return;
+        const y0 = yOf(acc);
+        const y1 = yOf(acc + v);
+        acc += v;
+        s += `<rect class="bar ${se.cls || ""}" x="${x.toFixed(1)}" y="${y1.toFixed(1)}" width="${(bw * 0.7).toFixed(1)}" height="${Math.max(0, y0 - y1).toFixed(1)}"><title>${esc(label)} — ${esc(se.label)} : ${v}</title></rect>`;
+      });
+      if (!opts.every || i % opts.every === 0) s += `<text class="axis" x="${(x + bw * 0.35).toFixed(1)}" y="${H - 6}" text-anchor="middle">${esc(label)}</text>`;
+    });
+    s += "</svg>";
+    const legend = h(
+      "div",
+      { class: "chart-legend" },
+      series.map((se) => h("span", null, h("i", { class: `legend-dot ${se.cls || ""}` }), se.label))
+    );
+    return h("div", null, h("div", { html: s }), legend);
+  }
+  const statsQuery = { days: 90 };
+  PAGES.stats = async (root, params, live) => {
+    setTitle("Statistiques", [{ label: "Pilotage" }]);
+    if (state.limited) {
+      root.appendChild(errorCard(MIGRATION_HINT));
+      return;
+    }
+    const periodSel = h(
+      "select",
+      { class: "input", style: { width: "auto" }, "aria-label": "Période" },
+      [30, 90, 180, 365].map((d) => h("option", { value: String(d), selected: d === statsQuery.days }, `${d} derniers jours`))
+    );
+    periodSel.addEventListener("change", () => {
+      statsQuery.days = Number(periodSel.value) || 90;
+      route();
+    });
+    root.appendChild(h("div", { class: "toolbar", style: { display: "flex", gap: "10px", alignItems: "center", margin: "0 0 12px" } }, periodSel));
+    const body = h("div", null, loadingCard());
+    root.appendChild(body);
+    let o;
+    try {
+      o = await rpc("admin_stats", { p_days: statsQuery.days });
+    } catch (e) {
+      if (live()) body.replaceChildren(errorCard(r80Error(e)));
+      return;
+    }
+    if (!live()) return;
+    const since = o.activity_since ? fmtDate(o.activity_since) : null;
+    const conv = o.conversion || {};
+    const plans = o.plans || {};
+    const siteTotal = (o.site_by_day || []).slice(-30).reduce((a, p) => a + (Number(p.n) || 0), 0);
+    body.replaceChildren(
+      h(
+        "p",
+        { class: "card-hint", style: { marginTop: 0 } },
+        `Comptés sans cookie : un compte est « actif » un jour où il a ouvert l'appli. ${since ? `Données d'activité depuis le ${since} (mise en ligne de la v240) ; avant, seule la date de dernière connexion est connue.` : "Aucune donnée d'activité pour l'instant : elles arrivent avec la v240."}`
+      ),
+      h(
+        "div",
+        { class: "grid grid--kpi" },
+        kpi("Actifs aujourd'hui", o.dau, "comptes qui ont ouvert l'appli"),
+        kpi("Actifs sur 7 jours", o.wau, `${pct(o.wau, o.users_total)} des comptes`),
+        kpi("Actifs sur 30 jours", o.mau, `${pct(o.mau, o.users_total)} des ${fmtN(o.users_total)} comptes`),
+        kpi("Assiduité", o.mau ? Math.round((100 * o.wau) / o.mau) : null, "actifs 7 j / actifs 30 j, en %"),
+        kpi("Abonnés payants", conv.paying_total, `${fmtN(conv.trial_total)} à l'essai en plus`, "#/subscriptions"),
+        h(
+          "div",
+          { class: "kpi" },
+          h("div", { class: "kpi-label" }, "Revenu mensuel estimé"),
+          h("div", { class: "kpi-value" }, euros(o.mrr_cents)),
+          h("div", { class: "kpi-sub" }, "TTC, abonnements Stripe payants, annuels ramenés au mois")
+        ),
+        kpi("Conversion (90 jours)", conv.signups_90d ? Math.round((100 * conv.paying_90d) / conv.signups_90d) : null, `% des ${fmtN(conv.signups_90d)} inscrits récents devenus abonnés payants`),
+        kpi("Visites du site (30 jours)", siteTotal, "pages vues, sans cookie")
+      ),
+      card(
+        "Comptes actifs par jour",
+        `${statsQuery.days} derniers jours`,
+        barChart(o.active_by_day || [], { label: "Comptes actifs par jour" })
+      ),
+      h(
+        "div",
+        { class: "grid grid--2" },
+        card(
+          "Inscriptions par semaine",
+          "12 dernières semaines, selon l'usage choisi dans Mon compte",
+          stackedChart(
+            o.signups_by_week || [],
+            [
+              { key: "eleve", label: "Élèves", cls: "s1" },
+              { key: "enseignant", label: "Enseignants", cls: "s2" },
+              { key: "autre", label: "Autres ou non précisé", cls: "s3" },
+            ],
+            { label: "Inscriptions par semaine", every: 2, labelOf: (p) => new Date(`${p.week}T12:00:00`).toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) }
+          )
+        ),
+        card(
+          "Fidélité des nouveaux comptes",
+          "Part des comptes inscrits une semaine donnée qui sont revenus la semaine suivante, puis un mois après.",
+          table(
+            [
+              { label: "Semaine du", cls: "nowrap", render: (r) => fmtDate(r.week) },
+              { label: "Inscrits", cls: "num", render: (r) => fmtN(r.size) },
+              { label: "Revenus en 1re semaine", cls: "num", render: (r) => (r.complete7 ? pct(r.d1_7, r.size) : h("span", { class: "faint" }, "en cours")) },
+              { label: "Encore là après 4 semaines", cls: "num", render: (r) => (r.complete35 ? pct(r.d28_35, r.size) : h("span", { class: "faint" }, "en cours")) },
+            ],
+            (o.retention || []).slice().reverse().filter((r) => Number(r.size) > 0),
+            { empty: "Pas encore d'inscriptions sur la période." }
+          )
+        )
+      ),
+      h(
+        "div",
+        { class: "grid grid--2" },
+        card(
+          "Abonnements en cours",
+          "Par formule. « Quantité » : classes payées (Super enseignant) ou enseignants payés (Super école).",
+          table(
+            [
+              { label: "Formule", render: (r) => PLAN_LABELS[r.k] || r.k },
+              { label: "Comptes", cls: "num", render: (r) => fmtN(r.v.n) },
+              { label: "Quantité", cls: "num", render: (r) => fmtN(r.v.qty) },
+              { label: "À l'essai", cls: "num", render: (r) => fmtN(r.v.trial) },
+              { label: "Résiliation prévue", cls: "num", render: (r) => (Number(r.v.canceling) ? badge(fmtN(r.v.canceling), "warn") : "0") },
+            ],
+            Object.keys(plans).map((k) => ({ k, v: plans[k] })),
+            { empty: "Aucun abonnement en cours." }
+          ),
+          h("h3", { class: "sub-title" }, "Nouveaux abonnés par mois (Stripe)"),
+          barChart((o.new_subs_by_month || []).map((m) => ({ day: m.month, n: m.n })), {
+            label: "Nouveaux abonnés par mois",
+            labelOf: (p) => new Date(`${p.day}T12:00:00`).toLocaleDateString("fr-FR", { month: "short", year: "2-digit" }),
+            every: 1,
+          })
+        ),
+        card(
+          "Qui utilise darwin ?",
+          "Usages choisis dans Mon compte (plusieurs possibles), et classes.",
+          table(
+            [
+              { label: "", render: (r) => r[0] },
+              { label: "Comptes", cls: "num", render: (r) => fmtN(r[1]) },
+            ],
+            [
+              ["Élèves", (o.usages || {}).eleve],
+              ["Enseignants", (o.usages || {}).enseignant],
+              ["Usage personnel", (o.usages || {}).perso],
+              ["Usage non précisé", (o.usages || {}).aucun],
+              ["Classes créées", (o.classes || {}).total],
+              ["Classes avec au moins un élève", (o.classes || {}).with_members],
+              ["Élèves de classe actifs (30 jours)", (o.classes || {}).active_members_30d],
+            ]
+          )
+        )
+      ),
+      card(
+        "Boîtes de la Librairie les plus ajoutées",
+        "Nombre de comptes qui ont ajouté la boîte à leurs révisions (et, parmi eux, actifs ces 30 derniers jours).",
+        table(
+          [
+            { label: "Boîte", render: (r) => r.name },
+            { label: "Comptes", cls: "num", render: (r) => fmtN(r.accounts) },
+            { label: "Dont actifs (30 j)", cls: "num", render: (r) => fmtN(r.active30) },
+          ],
+          o.top_library || [],
+          { empty: "Aucune boîte de la Librairie ajoutée pour l'instant." }
+        )
+      ),
+      h(
+        "div",
+        { class: "grid grid--2" },
+        card(
+          "Visites du site public",
+          `Pages vues par jour, ${statsQuery.days} derniers jours. Comptées sans cookie ni adresse IP (site/assets/stats.js).`,
+          barChart(o.site_by_day || [], { label: "Visites du site par jour" })
+        ),
+        card(
+          "Pages et provenance (30 jours)",
+          null,
+          table(
+            [
+              { label: "Page", render: (r) => h("span", { class: "cell-sub" }, r.path) },
+              { label: "Vues", cls: "num", render: (r) => fmtN(r.n) },
+            ],
+            o.site_pages || [],
+            { empty: "Aucune visite comptée." }
+          ),
+          h("h3", { class: "sub-title" }, "Venus de"),
+          table(
+            [
+              { label: "Site", render: (r) => r.referrer },
+              { label: "Vues", cls: "num", render: (r) => fmtN(r.n) },
+            ],
+            o.site_referrers || [],
+            { empty: "Visites directes uniquement." }
+          )
+        )
+      )
+    );
+  };
+
+  /* ================================================================
+     v240 — Comptes inactifs
+     ================================================================ */
+  const RETENTION_ACTIONS = {
+    warn: ["Avertissement", "accent"],
+    remind: ["Rappel", "warn"],
+    delete: ["Suppression", "danger"],
+    delete_unconfirmed: ["Jamais confirmé", "danger"],
+  };
+  async function invokeInactive(dryRun) {
+    const c = client();
+    const { data, error } = await c.functions.invoke("inactive-accounts", { body: { dryRun } });
+    if (error) {
+      let detail = "";
+      try {
+        const b = error.context && typeof error.context.json === "function" ? await error.context.json() : null;
+        detail = b ? `${b.error}${b.detail ? ` (${b.detail})` : ""}` : "";
+      } catch (e) {
+        /* rien */
+      }
+      if (/not found|404|Failed to send/i.test(`${error.message} ${detail}`)) throw new Error("La fonction serveur « inactive-accounts » n'est pas encore installée (voir README-stripe §13).");
+      if (/config_missing/.test(detail)) throw new Error(`Configuration manquante sur le serveur : ${detail}. Voir README-stripe §13.`);
+      throw new Error(detail || error.message || String(error));
+    }
+    return data;
+  }
+  PAGES.retention = async (root, params, live) => {
+    setTitle("Comptes inactifs", [{ label: "Suivi" }]);
+    if (state.limited) {
+      root.appendChild(errorCard(MIGRATION_HINT));
+      return;
+    }
+    root.appendChild(loadingCard());
+    let o;
+    try {
+      o = await rpc("admin_retention_overview");
+    } catch (e) {
+      if (live()) root.replaceChildren(errorCard(r80Error(e)));
+      return;
+    }
+    if (!live()) return;
+    root.innerHTML = "";
+    const st = o.settings || {};
+    const enabled = h("input", { type: "checkbox", checked: !!st.enabled, "aria-label": "Suppression automatique activée" });
+    const num = (v, min, max, label) => h("input", { type: "number", class: "input", style: { width: "90px" }, min: String(min), max: String(max), value: String(v), "aria-label": label });
+    const months = num(st.months, 6, 60, "Durée d'inactivité en mois");
+    const warnDays = num(st.warn_days, 7, 90, "Avertissement, jours avant");
+    const remindDays = num(st.remind_days, 0, 30, "Rappel, jours avant");
+    const unconfDays = num(st.unconfirmed_days, 7, 365, "Comptes jamais confirmés, jours");
+    const maxRun = num(st.max_per_run, 1, 5000, "Comptes traités par nuit au plus");
+    const save = h("button", { type: "button", class: "btn btn--primary" }, "Enregistrer");
+    save.addEventListener("click", async () => {
+      const turningOn = enabled.checked && !st.enabled;
+      if (turningOn && !(await confirmDialog("Activer la suppression automatique ? Chaque nuit, les comptes inactifs recevront l'email d'avertissement, puis seront supprimés s'ils ne reviennent pas. Vérifie d'abord la simulation ci-dessous.", { okLabel: "Activer" }))) return;
+      save.disabled = true;
+      try {
+        await rpc("admin_set_retention", {
+          p_enabled: enabled.checked,
+          p_months: Number(months.value),
+          p_warn_days: Number(warnDays.value),
+          p_remind_days: Number(remindDays.value),
+          p_unconfirmed_days: Number(unconfDays.value),
+          p_max_per_run: Number(maxRun.value),
+        });
+        toast("Réglages enregistrés");
+        route();
+      } catch (e) {
+        toast(r80Error(e), true);
+      }
+      save.disabled = false;
+    });
+    root.appendChild(
+      card(
+        "Règle de conservation",
+        "Le RGPD demande de ne pas garder les comptes sans limite. Si tu changes la durée, mets aussi à jour la politique de confidentialité et les CGU (elles annoncent 2 ans, avertissement 30 jours avant).",
+        setRow("Suppression automatique activée", h("label", { class: "switch" }, enabled, h("i")), "Désactivée : rien n'est envoyé ni supprimé ; la page montre seulement ce qui serait fait. À activer le jour du lancement, une fois la tâche de nuit installée (README-stripe §13)."),
+        setRow("Supprimer après", h("span", null, months, " mois sans utilisation"), "Les abonnés en cours, les administrateurs, les Super enseignants d'un établissement et les enseignants dont un élève est actif ne sont jamais concernés."),
+        setRow("Avertir", h("span", null, warnDays, " jours avant"), "Email « ton compte sera supprimé le …, sauf si tu ouvres l'appli d'ici là ». Ouvrir l'appli annule tout."),
+        setRow("Rappeler", h("span", null, remindDays, " jours avant"), "0 = pas de rappel."),
+        setRow("Comptes jamais confirmés", h("span", null, unconfDays, " jours"), "Adresse email jamais confirmée et appli jamais utilisée : supprimés sans email."),
+        setRow("Au plus", h("span", null, maxRun, " comptes par nuit"), "Limite d'emails de ton service d'envoi (Brevo gratuit : 300 par jour)."),
+        h("div", { style: { marginTop: "12px" } }, save)
+      )
+    );
+    const now = o.now || {};
+    const next = o.next30 || {};
+    const out = h("pre", { class: "error-detail", hidden: true });
+    const runBtn = (label, dry, primary) =>
+      h(
+        "button",
+        {
+          type: "button",
+          class: `btn${primary ? " btn--danger" : ""}`,
+          onclick: async (e) => {
+            if (!dry && !(await confirmDialog("Lancer maintenant le traitement réel : envoyer les avertissements et supprimer les comptes arrivés à échéance ?", { danger: true, okLabel: "Lancer" }))) return;
+            const b = e.currentTarget;
+            b.disabled = true;
+            try {
+              const r = await invokeInactive(dry);
+              out.hidden = false;
+              const p = r.preview || {};
+              const d = r.done;
+              out.textContent = d
+                ? `Fait : ${d.warned} avertissement(s), ${d.reminded} rappel(s), ${d.deleted} compte(s) supprimé(s), ${d.deleted_unconfirmed} jamais confirmé(s) supprimé(s), ${d.errors} erreur(s).${(r.errors || []).length ? `\n\n${r.errors.join("\n")}` : ""}`
+                : `Simulation${r.enabled ? "" : " (suppression automatique désactivée)"} : ${p.warn} avertissement(s), ${p.remind} rappel(s), ${p.delete} suppression(s), ${p.delete_unconfirmed} compte(s) jamais confirmé(s). Rien n'a été envoyé ni supprimé.`;
+              if (d) setTimeout(() => live() && route(), 1500);
+            } catch (err) {
+              toast(err.message, true);
+            }
+            b.disabled = false;
+          },
+        },
+        label
+      );
+    root.appendChild(
+      h(
+        "div",
+        { class: "grid grid--kpi" },
+        kpi("À avertir maintenant", now.warn, `${fmtN(next.warn)} de plus d'ici 30 jours`),
+        kpi("Rappels à envoyer", now.remind, "avertis, pas revenus"),
+        kpi("À supprimer maintenant", (Number(now.delete) || 0) + (Number(now.delete_unconfirmed) || 0), `dont ${fmtN(now.delete_unconfirmed)} jamais confirmés · ${fmtN(next.delete)} d'ici 30 jours`, null, Number(now.delete) > 0),
+        kpi("Avertissements en cours", o.pending_notices, "en attente de retour ou d'échéance"),
+        kpi("Exemptés", now.exempt, "inactifs mais gardés (abonnés, enseignants…)")
+      )
+    );
+    root.appendChild(
+      card(
+        "Lancer à la main",
+        o.activity_since
+          ? `La tâche de nuit le fait toute seule. Activité suivie depuis le ${fmtDate(o.activity_since)} ; pour les comptes plus anciens, c'est la date de dernière connexion qui compte.`
+          : "La tâche de nuit le fait toute seule. L'activité est suivie à partir de la v240 ; avant, c'est la date de dernière connexion qui compte.",
+        h("div", { class: "form-row" }, runBtn("Simuler", true, false), runBtn("Lancer maintenant", false, true)),
+        out
+      )
+    );
+    const actionBadge = (a) => {
+      const x = RETENTION_ACTIONS[a] || [a, ""];
+      return badge(x[0], x[1]);
+    };
+    root.appendChild(
+      h(
+        "div",
+        { class: "card card--flush" },
+        h("div", { class: "card-head", style: { padding: "14px 16px 0" } }, h("h2", { class: "card-title" }, "Concernés maintenant (100 au plus)")),
+        table(
+          [
+            { label: "Compte", render: (r) => r.email },
+            { label: "Action", render: (r) => actionBadge(r.action) },
+            { label: "Dernière activité", cls: "nowrap", render: (r) => fmtDate(r.last_active) },
+            { label: "Suppression le", cls: "nowrap", render: (r) => (r.action === "delete" || r.action === "delete_unconfirmed" ? "dès le prochain passage" : fmtDate(r.delete_on)) },
+          ],
+          o.list || [],
+          { empty: "Aucun compte concerné pour l'instant.", onRow: (r) => (location.hash = `#/users/${r.user_id}`) }
+        )
+      )
+    );
+    root.appendChild(
+      h(
+        "div",
+        { class: "grid grid--2" },
+        card(
+          "Avertissements en cours",
+          null,
+          table(
+            [
+              { label: "Compte", render: (r) => r.email },
+              { label: "Averti le", cls: "nowrap", render: (r) => fmtDate(r.warned_at) },
+              { label: "Rappel", cls: "nowrap", render: (r) => (r.reminded_at ? fmtDate(r.reminded_at) : "—") },
+              { label: "Suppression le", cls: "nowrap", render: (r) => fmtDate(r.delete_on) },
+            ],
+            o.notices || [],
+            { empty: "Aucun.", onRow: (r) => (location.hash = `#/users/${r.user_id}`) }
+          )
+        ),
+        card(
+          "Derniers passages",
+          null,
+          table(
+            [
+              { label: "Quand", cls: "nowrap", render: (r) => h("div", null, fmtDateTime(r.ran_at), h("div", { class: "cell-sub" }, `${r.trigger === "admin" ? "à la main" : "tâche de nuit"}${r.dry_run ? " · simulation" : ""}`)) },
+              { label: "Averti", cls: "num", render: (r) => fmtN(r.warned) },
+              { label: "Rappel", cls: "num", render: (r) => fmtN(r.reminded) },
+              { label: "Supprimés", cls: "num", render: (r) => fmtN((Number(r.deleted) || 0) + (Number(r.deleted_unconfirmed) || 0)) },
+              { label: "Erreurs", cls: "num", render: (r) => (Number(r.errors) ? h("span", { title: r.detail || "" }, badge(fmtN(r.errors), "danger")) : "0") },
+            ],
+            o.runs || [],
+            { empty: "Aucun passage pour l'instant.", onRow: (r) => r.detail && openModal({ title: "Détail", body: h("pre", { class: "error-detail" }, r.detail), buttons: [{ label: "Fermer", primary: true }] }) }
+          )
+        )
+      )
+    );
+  };
+
+  /* ================================================================
+     v240 — Établissements (Super école) : liste, devis, bons de commande
+     ================================================================ */
+  const SELLER_FIELDS = [
+    ["name", "Raison sociale ou nom", "darwin — Stéphane Vezain"],
+    ["address", "Adresse", "N°, rue, code postal, ville"],
+    ["siren", "SIREN / SIRET", ""],
+    ["vat_number", "N° de TVA intracommunautaire", "facultatif en franchise de TVA"],
+    ["email", "Email", "contact@…"],
+    ["phone", "Téléphone", "facultatif"],
+    ["iban", "IBAN (paiement par virement)", "facultatif"],
+    ["bic", "BIC", "facultatif"],
+  ];
+  async function loadSeller() {
+    const { data, error } = await client().from("seller_info").select("info").eq("id", true).maybeSingle();
+    if (error) throw new Error(friendlyError(error));
+    return Object.assign({ vat: "franchise", unit_price: 50 }, (data && data.info) || {});
+  }
+  const money = (n) => `${Number(n || 0).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+  /** Montants : le prix affiché (50 €) est TTC. */
+  function quoteTotals(seats, unitTtc, vat) {
+    const ttc = Math.round(Number(seats) * Number(unitTtc) * 100) / 100;
+    if (vat === "20") {
+      const ht = Math.round((ttc / 1.2) * 100) / 100;
+      return { ht, tva: Math.round((ttc - ht) * 100) / 100, ttc };
+    }
+    return { ht: ttc, tva: 0, ttc };
+  }
+  /** Document imprimable (devis ou bon de commande). */
+  function quoteHtml(q) {
+    const p = q.payload || {};
+    const s = p.seller || {};
+    const t = quoteTotals(p.seats, p.unit_price, s.vat);
+    const isOrder = q.kind === "bon_de_commande";
+    const title = isOrder ? "Bon de commande" : "Devis";
+    const date = new Date(q.created_at || Date.now());
+    const until = new Date(date.getTime() + (Number(p.validity_days) || 30) * 86400000);
+    const d = (x) => x.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+    const lines = (txt) => esc(txt || "").replace(/\n/g, "<br>");
+    const unitHt = s.vat === "20" ? Number(p.unit_price) / 1.2 : Number(p.unit_price);
+    return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${title} ${esc(q.number)}</title>
+<style>
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1f2937;font-size:13px;line-height:1.5;max-width:760px;margin:24px auto;padding:0 24px}
+  h1{font-size:22px;margin:0 0 4px} .muted{color:#64748b} .row{display:flex;justify-content:space-between;gap:24px;margin:24px 0}
+  .box{border:1px solid #d6dde3;border-radius:8px;padding:12px 14px;flex:1} .box h2{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin:0 0 6px}
+  table{width:100%;border-collapse:collapse;margin:16px 0} th,td{padding:8px;border-bottom:1px solid #e5e9ee;text-align:left;vertical-align:top} th{font-size:11px;text-transform:uppercase;color:#64748b}
+  td.n,th.n{text-align:right;white-space:nowrap} .tot td{border:none;padding:4px 8px} .tot .big td{font-size:15px;font-weight:700}
+  .sign{height:90px;border:1px dashed #b8c2cc;border-radius:8px;margin-top:8px} .foot{margin-top:28px;font-size:11.5px;color:#64748b}
+  @media print{body{margin:0} .noprint{display:none}}
+</style></head><body>
+<p class="noprint" style="background:#eef4fb;padding:8px 12px;border-radius:8px">Pour l'enregistrer en PDF : Imprimer, puis « Enregistrer au format PDF ». <button onclick="print()">Imprimer</button></p>
+<div class="row" style="margin-top:0"><div><h1>${title}</h1><div class="muted">N° ${esc(q.number)} · ${d(date)}${isOrder ? "" : ` · valable jusqu'au ${d(until)}`}</div></div>
+<div style="text-align:right"><strong>${esc(s.name || "")}</strong><br>${lines(s.address)}${s.siren ? `<br>SIREN/SIRET : ${esc(s.siren)}` : ""}${s.vat_number ? `<br>TVA : ${esc(s.vat_number)}` : ""}${s.email ? `<br>${esc(s.email)}` : ""}${s.phone ? `<br>${esc(s.phone)}` : ""}</div></div>
+<div class="row"><div class="box"><h2>${isOrder ? "Acheteur" : "Client"}</h2><strong>${esc(p.school_name || "")}</strong>${p.school_address ? `<br>${lines(p.school_address)}` : ""}${p.uai ? `<br>UAI : ${esc(p.uai)}` : ""}${p.contact ? `<br>À l'attention de : ${esc(p.contact)}` : ""}${p.billing_email ? `<br>Facturation : ${esc(p.billing_email)}` : ""}</div>
+<div class="box"><h2>Abonnement</h2>Super école — 1 an${p.start ? `, à partir du ${esc(p.start)}` : ""}<br>Paiement : ${p.payment === "carte" ? "par carte bancaire en ligne" : "sur facture, à 30 jours"}${p.engagement ? `<br>N° d'engagement : ${esc(p.engagement)}` : ""}</div></div>
+<table><tr><th>Désignation</th><th class="n">Qté</th><th class="n">Prix unitaire${s.vat === "20" ? " HT" : ""}</th><th class="n">Total${s.vat === "20" ? " HT" : ""}</th></tr>
+<tr><td><strong>darwin — formule Super école</strong>, abonnement annuel par enseignant<br><span class="muted">Chaque enseignant désigné a les avantages de Super enseignant : toute la Librairie de darwin (fiches prêtes à réviser, du CP à la terminale), et jusqu'à 15 classes de 60 élèves couvertes, dont les élèves révisent les boîtes de la Librairie partagées avec elles.</span></td>
+<td class="n">${fmtN(p.seats)}</td><td class="n">${money(unitHt)}</td><td class="n">${money(t.ht)}</td></tr></table>
+<table class="tot" style="width:auto;margin-left:auto">${s.vat === "20" ? `<tr><td>Total HT</td><td class="n">${money(t.ht)}</td></tr><tr><td>TVA 20 %</td><td class="n">${money(t.tva)}</td></tr>` : ""}<tr class="big"><td>Total${s.vat === "20" ? " TTC" : ""}</td><td class="n">${money(t.ttc)}</td></tr></table>
+${s.vat === "20" ? "" : `<p class="muted">TVA non applicable, article 293 B du code général des impôts.</p>`}
+${p.notes ? `<p>${lines(p.notes)}</p>` : ""}
+${isOrder ? `<div class="row"><div class="box"><h2>Bon pour accord — l'établissement</h2>Nom, qualité, date, cachet et signature :<div class="sign"></div></div></div>` : `<p>Pour accepter ce devis : le retourner signé avec la mention « Bon pour accord », ou s'abonner directement depuis l'appli (page Abonnements → Super école).</p><div class="row"><div class="box"><h2>Bon pour accord</h2>Date, cachet et signature :<div class="sign"></div></div></div>`}
+<div class="foot">Paiement : ${s.iban ? `virement — IBAN ${esc(s.iban)}${s.bic ? `, BIC ${esc(s.bic)}` : ""}, ou ` : ""}par carte, depuis la facture envoyée par email. Établissements publics : facture déposable sur Chorus Pro sur demande.<br>Conditions générales de vente : voir la page « Conditions de vente » de darwin. Pénalités de retard : 3 fois le taux d'intérêt légal ; indemnité forfaitaire pour frais de recouvrement : 40 € (professionnels).</div>
+</body></html>`;
+  }
+  function openQuoteDoc(q) {
+    const w = window.open("", "_blank");
+    if (!w) {
+      toast("Le navigateur a bloqué la fenêtre : autorise les fenêtres pour Darwin Admin.", true);
+      return;
+    }
+    w.document.open();
+    w.document.write(quoteHtml(q));
+    w.document.close();
+  }
+  async function quoteDialog(school, kind) {
+    let seller;
+    try {
+      seller = await loadSeller();
+    } catch (e) {
+      toast(r80Error(e), true);
+      return;
+    }
+    if (!seller.name || !seller.address) {
+      toast("Renseigne d'abord tes coordonnées (bouton « Mes coordonnées » en haut de la page).", true);
+      return;
+    }
+    const f = {};
+    const inp = (k, label, value, attrs) => {
+      f[k] = h(attrs && attrs.textarea ? "textarea" : "input", Object.assign({ class: "input", value: value == null ? "" : String(value) }, (attrs && attrs.input) || {}));
+      if (attrs && attrs.textarea) f[k].rows = 3;
+      return h("label", { class: "field" }, h("span", null, label), f[k]);
+    };
+    f.kind = h("select", { class: "input" }, h("option", { value: "devis", selected: kind !== "bon_de_commande" }, "Devis"), h("option", { value: "bon_de_commande", selected: kind === "bon_de_commande" }, "Bon de commande"));
+    f.payment = h("select", { class: "input" }, h("option", { value: "facture" }, "Sur facture, à 30 jours"), h("option", { value: "carte", selected: school && school.collection_method === "charge_automatically" }, "Carte bancaire en ligne"));
+    const totalEl = h("strong");
+    const body = h(
+      "div",
+      { class: "stack" },
+      h("div", { class: "form-row" }, h("label", { class: "field" }, h("span", null, "Document"), f.kind), h("label", { class: "field" }, h("span", null, "Paiement"), f.payment)),
+      h("div", { class: "form-row" }, inp("school_name", "Établissement", school && school.name), inp("uai", "Code UAI", school && school.uai)),
+      inp("school_address", "Adresse", school && school.city, { textarea: true }),
+      h("div", { class: "form-row" }, inp("contact", "À l'attention de", school && school.manager_name), inp("billing_email", "Email de facturation", school && (school.billing_email || school.manager_email))),
+      h(
+        "div",
+        { class: "form-row" },
+        inp("seats", "Nombre d'enseignants", (school && (school.quantity || school.teachers)) || 1, { input: { type: "number", min: "1", max: "500" } }),
+        inp("unit_price", "Prix par enseignant et par an (TTC)", seller.unit_price || 50, { input: { type: "number", min: "0", step: "0.01" } }),
+        inp("validity_days", "Validité (jours)", 30, { input: { type: "number", min: "1", max: "365" } })
+      ),
+      h("div", { class: "form-row" }, inp("start", "Début souhaité", "", { input: { placeholder: "ex. 1er septembre 2026" } }), inp("engagement", "N° d'engagement (si l'établissement en donne un)", "")),
+      inp("notes", "Remarque (facultatif)", "", { textarea: true }),
+      h("p", { class: "muted" }, "Total : ", totalEl, seller.vat === "20" ? " TTC (TVA 20 %)" : " (TVA non applicable, art. 293 B du CGI)")
+    );
+    const upd = () => (totalEl.textContent = money(quoteTotals(f.seats.value, f.unit_price.value, seller.vat).ttc));
+    f.seats.addEventListener("input", upd);
+    f.unit_price.addEventListener("input", upd);
+    upd();
+    await openModal({
+      title: school ? `Devis ou bon de commande — ${school.name}` : "Nouveau devis",
+      wide: true,
+      body,
+      buttons: [
+        { label: "Annuler" },
+        {
+          label: "Créer et imprimer",
+          primary: true,
+          onClick: async () => {
+            const seats = Math.round(Number(f.seats.value));
+            if (!f.school_name.value.trim() || !(seats >= 1)) {
+              toast("Indique au moins l'établissement et le nombre d'enseignants.", true);
+              return false;
+            }
+            const payload = {
+              seller,
+              school_name: f.school_name.value.trim(),
+              uai: f.uai.value.trim().toUpperCase(),
+              school_address: f.school_address.value.trim(),
+              contact: f.contact.value.trim(),
+              billing_email: f.billing_email.value.trim(),
+              seats,
+              unit_price: Number(f.unit_price.value) || 0,
+              validity_days: Number(f.validity_days.value) || 30,
+              start: f.start.value.trim(),
+              engagement: f.engagement.value.trim(),
+              notes: f.notes.value.trim(),
+              payment: f.payment.value,
+            };
+            payload.total = quoteTotals(seats, payload.unit_price, seller.vat).ttc;
+            const win = window.open("", "_blank");
+            try {
+              const q = await rpc("admin_create_quote", { p_kind: f.kind.value, p_school: school ? school.id : null, p_payload: payload });
+              const doc = { ...q, payload };
+              if (win) {
+                win.document.open();
+                win.document.write(quoteHtml(doc));
+                win.document.close();
+              } else openQuoteDoc(doc);
+              toast(`${q.kind === "devis" ? "Devis" : "Bon de commande"} ${q.number} créé`);
+            } catch (e) {
+              if (win) win.close();
+              toast(r80Error(e), true);
+              return false;
+            }
+          },
+        },
+      ],
+    });
+  }
+  async function sellerDialog() {
+    let seller;
+    try {
+      seller = await loadSeller();
+    } catch (e) {
+      toast(r80Error(e), true);
+      return;
+    }
+    const f = {};
+    const fields = SELLER_FIELDS.map(([k, label, ph]) => {
+      f[k] = h(k === "address" ? "textarea" : "input", { class: "input", value: seller[k] || "", placeholder: ph });
+      if (k === "address") f[k].rows = 3;
+      return h("label", { class: "field" }, h("span", null, label), f[k]);
+    });
+    f.vat = h("select", { class: "input" }, h("option", { value: "franchise", selected: seller.vat !== "20" }, "Franchise en base (TVA non applicable, art. 293 B du CGI)"), h("option", { value: "20", selected: seller.vat === "20" }, "TVA 20 % (prix TTC)"));
+    f.unit_price = h("input", { class: "input", type: "number", min: "0", step: "0.01", value: String(seller.unit_price || 50) });
+    await openModal({
+      title: "Mes coordonnées (en-tête des devis)",
+      wide: true,
+      body: h(
+        "div",
+        { class: "stack" },
+        h("p", { class: "muted" }, "Elles figurent sur chaque devis et bon de commande. Un document déjà émis garde les coordonnées du jour où il a été créé."),
+        fields,
+        h("div", { class: "form-row" }, h("label", { class: "field" }, h("span", null, "TVA"), f.vat), h("label", { class: "field" }, h("span", null, "Prix par enseignant et par an (TTC)"), f.unit_price))
+      ),
+      buttons: [
+        { label: "Annuler" },
+        {
+          label: "Enregistrer",
+          primary: true,
+          onClick: async () => {
+            const info = { vat: f.vat.value, unit_price: Number(f.unit_price.value) || 50 };
+            SELLER_FIELDS.forEach(([k]) => (info[k] = f[k].value.trim()));
+            try {
+              await rpc("admin_set_seller_info", { p_info: info });
+              toast("Coordonnées enregistrées");
+            } catch (e) {
+              toast(r80Error(e), true);
+              return false;
+            }
+          },
+        },
+      ],
+    });
+  }
+  function schoolPayment(s) {
+    if (!s.status) return h("span", { class: "faint" }, "pas encore abonné");
+    return s.collection_method === "send_invoice" ? "Sur facture" : s.collection_method === "charge_automatically" ? "Carte" : h("span", { class: "faint" }, "—");
+  }
+  async function schoolDetail(s) {
+    let d;
+    try {
+      d = await rpc("admin_school_detail", { p_school: s.id });
+    } catch (e) {
+      toast(r80Error(e), true);
+      return;
+    }
+    const teacherStatus = (t) => (!t.has_account ? badge("Pas de compte", "warn") : t.covered ? badge("Super enseignant", "ok") : badge("Hors places payées", "warn"));
+    const body = h(
+      "div",
+      { class: "stack" },
+      h(
+        "p",
+        { class: "muted", style: { margin: 0 } },
+        `${s.city || ""}${s.uai ? ` · UAI ${s.uai}` : ""} · responsable : ${s.manager_name || ""} (${s.manager_email}) · facturation : ${s.billing_email || "—"}`
+      ),
+      h("p", { style: { margin: 0 } }, `Places payées : ${fmtN(s.seats)} · enseignants désignés : ${fmtN(s.teachers)} (dont ${fmtN(s.teachers_with_account)} avec un compte confirmé) · paiement : `, schoolPayment(s), s.period_end ? ` · jusqu'au ${fmtDate(s.period_end)}` : ""),
+      h("h3", { class: "sub-title" }, "Enseignants désignés"),
+      table(
+        [
+          { label: "Email", render: (t) => h("div", null, h("div", { class: "cell-main" }, t.name || t.email), t.name ? h("div", { class: "cell-sub" }, t.email) : null) },
+          { label: "État", render: teacherStatus },
+          { label: "Classes", cls: "num", render: (t) => fmtN(t.classes) },
+          { label: "Dernière activité", cls: "nowrap", render: (t) => (t.last_active ? fmtRel(t.last_active) : "—") },
+        ],
+        d.teachers || [],
+        { empty: "Aucun enseignant désigné.", onRow: (t) => t.user_id && (closeModal(), (location.hash = `#/users/${t.user_id}`)) }
+      ),
+      h("h3", { class: "sub-title" }, "Devis et bons de commande"),
+      table(
+        [
+          { label: "N°", render: (q) => q.number },
+          { label: "Date", cls: "nowrap", render: (q) => fmtDate(q.created_at) },
+          { label: "Enseignants", cls: "num", render: (q) => fmtN(q.seats) },
+          { label: "Total", cls: "num", render: (q) => money(q.total) },
+        ],
+        d.quotes || [],
+        {
+          empty: "Aucun pour l'instant.",
+          onRow: async (q) => {
+            const { data, error } = await client().from("school_quotes").select("*").eq("id", q.id).maybeSingle();
+            if (error || !data) return toast(friendlyError(error), true);
+            openQuoteDoc(data);
+          },
+        }
+      )
+    );
+    await openModal({
+      title: s.name,
+      wide: true,
+      body,
+      buttons: [
+        { label: "Fiche du responsable", onClick: () => void (location.hash = `#/users/${s.manager_id}`) },
+        { label: "Bon de commande", onClick: () => void setTimeout(() => quoteDialog(s, "bon_de_commande"), 0) },
+        { label: "Devis", primary: true, onClick: () => void setTimeout(() => quoteDialog(s, "devis"), 0) },
+      ],
+    });
+  }
+  PAGES.schools = async (root, params, live) => {
+    setTitle("Établissements", [{ label: "Utilisateurs" }]);
+    if (state.limited) {
+      root.appendChild(errorCard(MIGRATION_HINT));
+      return;
+    }
+    root.appendChild(
+      h(
+        "div",
+        { class: "toolbar", style: { display: "flex", gap: "10px", alignItems: "center", margin: "0 0 12px", flexWrap: "wrap" } },
+        h("button", { type: "button", class: "btn btn--primary", onclick: () => quoteDialog(null, "devis") }, "Nouveau devis"),
+        h("button", { type: "button", class: "btn", onclick: sellerDialog }, "Mes coordonnées"),
+        h("span", { class: "muted" }, "Un devis pour un établissement qui n'a pas encore de compte : « Nouveau devis ». Pour un établissement de la liste : clique sur sa ligne.")
+      )
+    );
+    const listCard = h("div", { class: "card card--flush" }, h("div", { class: "empty" }, "Chargement…"));
+    root.appendChild(listCard);
+    let rows;
+    try {
+      rows = (await rpc("admin_schools")) || [];
+    } catch (e) {
+      if (live()) listCard.replaceChildren(h("div", { class: "empty form-error" }, r80Error(e)));
+      return;
+    }
+    if (!live()) return;
+    listCard.replaceChildren(
+      table(
+        [
+          { label: "Établissement", render: (s) => h("div", null, h("div", { class: "cell-main" }, s.name), h("div", { class: "cell-sub" }, `${s.city || ""}${s.uai ? ` · ${s.uai}` : ""}`)) },
+          { label: "Responsable", render: (s) => h("div", null, h("div", { class: "cell-main" }, s.manager_name || s.manager_email), h("div", { class: "cell-sub" }, s.manager_email)) },
+          { label: "Statut", render: (s) => (s.plan === "super_ecole" ? subBadge(s.status, s.period_end) : badge("Pas abonné")) },
+          { label: "Places payées", cls: "num", render: (s) => fmtN(s.seats) },
+          { label: "Désignés", cls: "num", render: (s) => `${fmtN(s.teachers_with_account)} / ${fmtN(s.teachers)}` },
+          { label: "Paiement", render: schoolPayment },
+          { label: "Fin de période", cls: "nowrap", render: (s) => (s.plan === "super_ecole" ? fmtDate(s.period_end) : "—") },
+        ],
+        rows,
+        { empty: "Aucun établissement pour l'instant. Ils apparaissent quand un responsable remplit le formulaire Super école dans l'appli.", onRow: schoolDetail }
+      )
+    );
+    root.appendChild(h("p", { class: "card-hint" }, "« Désignés » : enseignants avec un compte confirmé / enseignants inscrits sur la liste du responsable. Une résiliation prévue apparaît dans la fiche du responsable (page Comptes)."));
+  };
 
   boot();
 })();

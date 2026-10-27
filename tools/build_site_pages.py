@@ -159,6 +159,8 @@ def page(title, description, body, depth=1, extra_head=""):
     <nav class="legal-nav"><a href="{up}../guide/aide.html">Aide</a><a href="{up}../legal/mentions-legales.html">Mentions légales</a><a href="{up}../legal/confidentialite.html">Confidentialité</a><a href="{up}../legal/cgu.html">Conditions d'utilisation</a><a href="{up}../legal/cgv.html">Conditions de vente</a></nav>
   </footer>
 </div>
+<script src="{up}assets/stats-config.js"></script>
+<script src="{up}assets/stats.js" defer></script>
 </body>
 </html>
 """

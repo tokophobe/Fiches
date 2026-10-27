@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v238";
+  const APP_VERSION = "v240";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -10162,6 +10162,7 @@
     accountCurrentUser = await Sync.auth.getUser();
     updateAccountHomeButton();
     if (accountCurrentUser) syncSharedBoxesForStudent();
+    touchActivity();
     // Round 26, item 2 : complète le nom du prof sur ses anciens partages.
     if (accountCurrentUser && Sync.classes.backfillSharedEventsTeacherName) {
       Sync.classes.backfillSharedEventsTeacherName().catch(() => {});
@@ -10646,6 +10647,30 @@
       /* stockage indisponible */
     }
   }
+  /** v240 : signale au serveur que le compte a servi aujourd'hui (une fois
+   *  par jour et par appareil). Sert aux statistiques de Darwin Admin et
+   *  annule un avertissement « compte inactif ». Aucun cookie. */
+  function touchActivity() {
+    if (IS_ADMIN_PREVIEW || !accountCurrentUser || !Sync.isConfigured() || !Sync.account || !Sync.account.touch) return;
+    const today = new Date().toISOString().slice(0, 10);
+    const key = `fiches-activity-${accountCurrentUser.id}`;
+    try {
+      if (localStorage.getItem(key) === today) return;
+    } catch (e) {
+      /* stockage indisponible : on envoie quand même */
+    }
+    Sync.account.touch().then((ok) => {
+      if (!ok) return;
+      try {
+        localStorage.setItem(key, today);
+      } catch (e) {
+        /* rien */
+      }
+    });
+  }
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") touchActivity();
+  });
   /** null = inconnu (hors ligne, migration absente…). */
   async function refreshAccountStatus() {
     if (!accountCurrentUser || !Sync.isConfigured() || !Sync.account) return null;
@@ -10913,6 +10938,7 @@
     const valid = !!row && ["active", "trial", "past_due"].includes(row.status) && (!row.current_period_end || new Date(row.current_period_end) > new Date());
     // v232 : offres présentées en cartes ; celle du compte est mise en avant.
     const mine = !valid ? (schoolTeacherActive() ? "prof" : "free") : isSchoolPlan(row) ? "ecole" : isSuperPlan(row) ? "prof" : "eleve";
+    if (mine === "prof" || mine === "ecole") openTeacherPlans();
     const schoolSoon = el("account-school-soon");
     if (schoolSoon) schoolSoon.hidden = !!loadDevSettings().subscriptionPolicy.checkoutOpen;
     document.querySelectorAll("#view-account .plan-card[data-plan]").forEach((c) => {
@@ -14268,6 +14294,17 @@
     }
     renderSuperOffer(row, live, open);
     renderSchoolOffer(row, live, open);
+    // v239 : formules enseignants dépliées pour un abonné Super enseignant
+    // ou Super école (repliées sinon).
+    if (live && (isSuperPlan(row) || isSchoolPlan(row))) openTeacherPlans();
+  }
+  /** v239 : déplie « Formules pour les enseignants » (Mon compte et
+   *  Abonnements). */
+  function openTeacherPlans() {
+    ["account-teacher-plans", "subs-teacher-plans"].forEach((id) => {
+      const d = el(id);
+      if (d) d.open = true;
+    });
   }
 
   /* ---- Round 68 : formule Super enseignant ---- */
@@ -14813,6 +14850,8 @@
       cancelValue: null,
     });
     if (choice === "subs") {
+      // v239 : message sur Super enseignant → formules enseignants dépliées.
+      if (/enseignant/i.test(text || "")) openTeacherPlans();
       const tab = document.querySelector('.tab[data-view="subscriptions"]');
       if (tab) tab.click();
     }

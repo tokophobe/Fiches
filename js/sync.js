@@ -1829,6 +1829,18 @@ window.Sync = {
       return error ? { error: error.message || String(error) } : { status: data };
     },
     requestParentalConsent: (parentEmail) => billingInvoke("parental-consent", { action: "request", parentEmail }, true),
+    // v240 : « ce compte a servi aujourd'hui » (statistiques, comptes
+    // inactifs ; voir supabase/round80_migration.sql). Sans cookie.
+    touch: async () => {
+      const c = getClient();
+      if (!c || !currentUid()) return false;
+      try {
+        const { error } = await c.rpc("touch_activity");
+        return !error;
+      } catch (e) {
+        return false;
+      }
+    },
   },
   // v238 : Super école (supabase/round79_migration.sql).
   school: {

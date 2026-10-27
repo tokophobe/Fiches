@@ -8062,3 +8062,21 @@ body.is-qcm-review .card-learn-link { display: none; }
     scroll-behavior: auto !important;
   }
 }
+
+/* v239 : « Formules pour les enseignants », repliées par défaut. */
+.teacher-plans { margin: 10px 0 0; }
+.teacher-plans > .teacher-plans-toggle {
+  list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 12px 16px; border-radius: 14px; background: var(--paper, #fff); color: var(--ink);
+  font-family: var(--font-type); font-size: 16px; font-weight: 700;
+  box-shadow: 0 4px 14px rgba(30, 60, 100, 0.07);
+  border-left: 5px solid #4a9fe0;
+}
+.teacher-plans > .teacher-plans-toggle::-webkit-details-marker { display: none; }
+.teacher-plans > .teacher-plans-toggle::after { content: "▾"; font-size: 15px; color: var(--ink-soft); transition: transform 0.2s ease; }
+.teacher-plans[open] > .teacher-plans-toggle::after { transform: rotate(180deg); }
+.teacher-plans[open] > .teacher-plans-toggle { margin-bottom: 12px; }
+.teacher-plans-body { display: flex; flex-direction: column; gap: 12px; }
+#view-account .teacher-plans { margin: 0; }
+#view-subscriptions .teacher-plans > .teacher-plans-toggle { background: transparent; box-shadow: none; border-left: 0; border-radius: 0; border-top: 1px solid var(--rule-soft); padding: 14px 2px; }
+#view-subscriptions .teacher-plans[open] > .teacher-plans-toggle { margin-bottom: 0; }

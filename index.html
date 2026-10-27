@@ -1213,6 +1213,10 @@
             <p class="account-subs-free" id="account-subs-free" hidden></p>
             <button type="button" class="btn btn--primary account-subs-trial" id="account-subs-trial-btn" hidden>Essayer gratuitement pendant 1 mois</button>
           </div>
+          <!-- v239 : formules pour les enseignants, repliées par défaut. -->
+          <details class="teacher-plans" id="account-teacher-plans">
+            <summary class="teacher-plans-toggle">Formules pour les enseignants</summary>
+            <div class="teacher-plans-body">
           <div class="plan-card plan-card--prof" data-plan="prof">
             <div class="plan-head"><span class="plan-name">Super enseignant</span><span class="plan-badge" hidden>Ton offre</span><span class="plan-price"><small>dès</small> 3 € <small>/ mois</small></span></div>
             <p class="plan-price-alt">1 € par mois et par classe, ou 10 € par an et par classe — 3 classes minimum</p>
@@ -1229,6 +1233,8 @@
               <li>Jusqu'à 15 classes de 60 élèves par enseignant, et une seule facture.</li>
             </ul>
           </div>
+            </div>
+          </details>
           <button type="button" class="btn btn--small account-plans-more" id="account-subs-btn">Voir les offres</button>
         </section>
         <!-- Round 64 : suppression définitive du compte (RGPD). -->
@@ -1946,6 +1952,11 @@
             </div>
           </div>
         </li>
+      </ul>
+      <!-- v239 : formules pour les enseignants, repliées par défaut. -->
+      <details class="teacher-plans" id="subs-teacher-plans">
+        <summary class="teacher-plans-toggle">Formules pour les enseignants</summary>
+      <ul class="subs-list">
         <li class="subs-offer">
           <div class="subs-offer-head"><span class="subs-offer-name">Super enseignant</span><span class="subs-offer-price">1 € <small>/ mois / classe</small></span></div>
           <p class="subs-offer-price-alt">ou 10 € <small>/ an / classe</small></p>
@@ -1976,6 +1987,7 @@
           <div class="subs-offer-manage" id="subs-school-manage-slot"></div>
         </li>
       </ul>
+      </details>
       <p class="subs-legal">Prix toutes taxes comprises. S'abonner, c'est accepter les <a href="legal/cgv.html" target="_blank" rel="noopener">conditions de vente</a> (résiliation, droit de rétractation de 14 jours…).</p>
       <nav class="legal-links" aria-label="Informations légales"><a href="guide/aide.html">Aide</a><a href="legal/mentions-legales.html" target="_blank" rel="noopener">Mentions légales</a><a href="legal/confidentialite.html" target="_blank" rel="noopener">Confidentialité</a><a href="legal/cgu.html" target="_blank" rel="noopener">Conditions d'utilisation</a><a href="legal/cgv.html" target="_blank" rel="noopener">Conditions de vente</a></nav>
     </section>
