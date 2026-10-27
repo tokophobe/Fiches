@@ -8139,3 +8139,41 @@ body:has(#view-library.is-active[data-cycle]) { background: var(--app-bg-color, 
 .class-detail-rename[hidden] { display: none; }
 .class-chip.class-chip--rename { cursor: pointer; font-family: var(--font-type); font-size: 12px; color: var(--action-color); display: inline-flex; align-items: center; gap: 4px; }
 .class-chip--rename .icon-inline-svg { width: 14px; height: 14px; }
+
+/* ==================================================================
+   v243 : formules dans Mon compte — cartes repliables et boutons.
+   ================================================================== */
+#view-account .plan-card[data-plan] > .plan-head { cursor: pointer; user-select: none; padding-right: 28px; position: relative; }
+#view-account .plan-card[data-plan] > .plan-head:focus-visible { outline: 2px solid var(--plan-color); outline-offset: 4px; border-radius: 6px; }
+.plan-chevron { position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: var(--plan-ink, var(--ink-soft)); display: inline-flex; transition: transform 0.2s ease; }
+.plan-chevron .icon-inline-svg { width: 18px; height: 18px; }
+#view-account .plan-card.is-open > .plan-head .plan-chevron { transform: translateY(-50%) rotate(180deg); }
+#view-account .plan-card[data-plan]:not(.is-open) > .plan-body { display: none; }
+#view-account .plan-card[data-plan]:not(.is-open) { padding-bottom: 12px; }
+.plan-body > :first-child { margin-top: 8px; }
+.plan-actions { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.plan-actions:empty { display: none; }
+.plan-actions-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.plan-actions .btn { white-space: normal; }
+.plan-note { margin: 0; font-size: 13px; color: var(--ink-soft, #64748b); line-height: 1.4; }
+.plan-link-btn { border: none; background: transparent; padding: 2px 0; color: var(--plan-ink, var(--action-color)); text-decoration: underline; font: inherit; font-size: 13px; cursor: pointer; }
+.plan-stepper { display: inline-flex; align-items: center; gap: 10px; }
+.plan-stepper .btn { min-width: 36px; font-size: 18px; line-height: 1; }
+.plan-stepper-value { font-weight: 700; min-width: 80px; text-align: center; color: var(--plan-ink, var(--ink)); }
+.plan-legal { font-size: 12px; color: var(--ink-soft, #64748b); margin: 14px 2px 0; line-height: 1.45; }
+.plan-card--referral { --plan-color: #1f9d55; --plan-ink: #16713d; }
+:root.is-night-mode .plan-card--referral { --plan-ink: #7fd3a1; }
+.referral-text { margin: 6px 0 8px; font-size: 14px; line-height: 1.45; }
+.referral-link-row { margin-bottom: 10px; overflow-x: auto; }
+.referral-link { font-size: 12.5px; background: var(--paper-2, #f1f5f9); padding: 4px 8px; border-radius: 6px; word-break: break-all; display: inline-block; }
+.plan-card .subs-school-panel { margin-top: 6px; }
+#view-account .plan-actions .btn { text-transform: none; letter-spacing: normal; font-family: var(--font-type); font-size: 14px; font-weight: 600; padding: 9px 14px; border-radius: 999px; border: 1.5px solid var(--plan-color); color: var(--plan-ink, var(--ink)); background: transparent; min-height: 40px; }
+#view-account .plan-actions .btn.btn--primary { background: var(--plan-color); color: #fff; }
+#view-account .plan-actions .btn:disabled { opacity: 0.55; }
+#view-account .plan-actions .plan-stepper .btn { padding: 4px 0; width: 40px; font-size: 20px; }
+#view-account .plan-card--referral .btn { text-transform: none; letter-spacing: normal; border-radius: 999px; }
+#view-account .plan-card--referral .btn { font-family: var(--font-type); font-size: 14px; font-weight: 600; padding: 8px 14px; border: 1.5px solid var(--plan-color); color: var(--plan-ink); background: transparent; min-height: 38px; }
+#view-account .plan-card--referral .btn.btn--primary { background: var(--plan-color); color: #fff; }
+#view-account .plan-card--referral .plan-actions-row { margin-bottom: 6px; }
+#view-account .plan-actions .subs-offer-btn { font-family: var(--font-type); font-size: 14px; font-weight: 600; padding: 9px 14px; border-radius: 999px; border: 1.5px solid var(--plan-color); background: var(--plan-color); color: #fff; min-height: 40px; align-self: flex-start; text-transform: none; letter-spacing: normal; }
+#view-account .plan-actions .subs-offer-btn:disabled { opacity: 0.55; }

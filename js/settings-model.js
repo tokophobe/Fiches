@@ -738,6 +738,23 @@
           const v = parsed.subscriptionPolicy ? Number(parsed.subscriptionPolicy.trialDays) : NaN;
           return Number.isFinite(v) && v >= 0 && v <= 365 ? Math.round(v) : 30;
         })(),
+        // v243 : offre gratuite et parrainage (lus aussi par le serveur,
+        // supabase/round82_migration.sql et fonctions Stripe).
+        ...(() => {
+          const sp = parsed.subscriptionPolicy || {};
+          const n = (k, def, max) => {
+            const v = Number(sp[k]);
+            return Number.isFinite(v) && v >= 0 && v <= max ? Math.round(v) : def;
+          };
+          return {
+            freeLibraryBoxes: n("freeLibraryBoxes", 2, 50),
+            freeTeacherClasses: n("freeTeacherClasses", 1, 20),
+            freeClassLibraryBoxes: n("freeClassLibraryBoxes", 2, 50),
+            referralMonths: n("referralMonths", 2, 12),
+            referralFriendMonths: n("referralFriendMonths", 1, 12),
+            referralMaxMonthsPerYear: n("referralMaxMonthsPerYear", 12, 60),
+          };
+        })(),
       },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       // Horodatage de la dernière modification (posé par saveDevSettings) —

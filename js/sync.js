@@ -1875,12 +1875,34 @@ window.Sync = {
       if (error) return null;
       return Array.isArray(data) ? data : [];
     },
+    // v243 : boîtes de la Librairie révisables dans mes classes (null si la
+    // migration round82 n'est pas passée).
+    coveredBoxes: async () => {
+      const c = getClient();
+      if (!c) return null;
+      const { data, error } = await c.rpc("my_covered_library_boxes");
+      if (error) return null;
+      return Array.isArray(data) ? data : [];
+    },
+    // v243 : classes où j'ai partagé des boîtes de la Librairie, et limites.
+    classUsage: () => schoolRpc("my_library_class_usage"),
+    // v243 : changement de formule immédiat, au prorata.
+    changePlan: (plan, quantity) => billingInvoke("change-plan", { plan, quantity }, true),
+  },
+  // v243 : parrainage.
+  referral: {
+    mine: () => schoolRpc("my_referral"),
+    valid: (code) => schoolRpc("referral_code_valid", { p_code: String(code || "") }),
   },
   library: {
     share: shareCollectionToLibrary,
     list: listLibraryCollections,
     get: getLibraryCollection,
     cards: fetchLibraryCollectionCards,
+    // v243 : boîtes gratuites de la Librairie (offre gratuite).
+    rights: () => schoolRpc("my_library_rights"),
+    pickFree: (id) => schoolRpc("pick_free_library_box", { p_id: id }),
+    releaseFree: (id) => schoolRpc("release_free_library_box", { p_id: id }),
     submit: submitLibraryProposal,
     rate: rateLibraryCollection,
     unrate: unrateLibraryCollection,

@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v242";
+  const ADMIN_VERSION = "v243";
   async function checkAdminVersion() {
     const label = $("#sidebar-version");
     if (label) label.textContent = `Darwin Admin ${ADMIN_VERSION}`;
@@ -333,6 +333,7 @@
         { key: "users", label: "Comptes", icon: "users" },
         { key: "subscriptions", label: "Abonnements", icon: "card" },
         { key: "schools", label: "Établissements", icon: "school" },
+        { key: "referrals", label: "Parrainage", icon: "users" },
         { key: "admins", label: "Administrateurs", icon: "shield" },
       ],
     },
@@ -1113,6 +1114,39 @@
         numCtrl(["subscriptionPolicy", "trialDays"], { min: 0, max: 365, unit: "jours" }),
         "Offert une seule fois par compte, pour la formule Super élève (ex-Individuel, mensuelle ou annuelle). 0 = pas d'essai. Utilisé à la fois par les boutons de l'appli et par la page de paiement Stripe."
       ),
+      h("h3", { class: "sub-title" }, "Offre gratuite (v243)"),
+      setRow(
+        "Boîtes de la Librairie gratuites",
+        numCtrl(["subscriptionPolicy", "freeLibraryBoxes"], { min: 0, max: 50, unit: "boîtes" }),
+        "Sans abonnement, chacun peut ajouter ce nombre de boîtes de la Librairie à ses révisions, au choix, et les remplacer (la progression de la boîte retirée est perdue). 0 = aucune."
+      ),
+      setRow(
+        "Classes gratuites avec des boîtes de la Librairie",
+        numCtrl(["subscriptionPolicy", "freeTeacherClasses"], { min: 0, max: 20, unit: "classes" }),
+        "Sans abonnement, un enseignant peut partager des boîtes de la Librairie dans ce nombre de classes ; ses élèves les révisent sans abonnement."
+      ),
+      setRow(
+        "Boîtes de la Librairie par classe gratuite",
+        numCtrl(["subscriptionPolicy", "freeClassLibraryBoxes"], { min: 0, max: 50, unit: "boîtes" }),
+        "Nombre de boîtes de la Librairie au plus dans chacune de ces classes."
+      ),
+      h("h3", { class: "sub-title" }, "Parrainage (v243)"),
+      setRow(
+        "Mois offerts au parrain",
+        numCtrl(["subscriptionPolicy", "referralMonths"], { min: 0, max: 12, unit: "mois" }),
+        "Pour chaque ami qui s'abonne (Super élève ou Super enseignant) avec son lien, au premier vrai paiement de l'ami. Accordés en avoir chez Stripe, déduit des prochains prélèvements du parrain. 0 = pas de récompense."
+      ),
+      setRow(
+        "Mois offerts au filleul",
+        numCtrl(["subscriptionPolicy", "referralFriendMonths"], { min: 0, max: 12, unit: "mois" }),
+        "Ajoutés à l'essai gratuit (Super élève), ou offerts avant le premier prélèvement (Super enseignant)."
+      ),
+      setRow(
+        "Plafond par parrain",
+        numCtrl(["subscriptionPolicy", "referralMaxMonthsPerYear"], { min: 0, max: 60, unit: "mois par an" }),
+        "Au-delà, les parrainages suivants ne sont plus récompensés pendant 12 mois glissants."
+      ),
+      h("h3", { class: "sub-title" }, "Paiements"),
       setRow(
         "Ouvrir les paiements (Stripe)",
         switchCtrl(["subscriptionPolicy", "checkoutOpen"]),
@@ -4417,6 +4451,58 @@ ${isOrder ? `<div class="row"><div class="box"><h2>Bon pour accord — l'établi
       )
     );
     root.appendChild(h("p", { class: "card-hint" }, "« Désignés » : enseignants avec un compte confirmé / enseignants inscrits sur la liste du responsable. Une résiliation prévue apparaît dans la fiche du responsable (page Comptes)."));
+  };
+
+
+  /* ================================================================
+     v243 — Parrainage
+     ================================================================ */
+  PAGES.referrals = async (root, params, live) => {
+    setTitle("Parrainage", [{ label: "Utilisateurs" }]);
+    if (state.limited) {
+      root.appendChild(errorCard(MIGRATION_HINT));
+      return;
+    }
+    root.appendChild(loadingCard());
+    let o;
+    try {
+      o = await rpc("admin_referrals", { p_limit: 300 });
+    } catch (e) {
+      const msg = (e && e.message) || String(e);
+      if (live()) root.replaceChildren(errorCard(msg === MIGRATION_HINT ? "Le serveur n'a pas encore la mise à jour v243 : exécute supabase/round82_migration.sql dans Supabase (SQL Editor)." : msg));
+      return;
+    }
+    if (!live()) return;
+    root.innerHTML = "";
+    root.appendChild(
+      h(
+        "div",
+        { class: "grid grid--kpi" },
+        kpi("Parrainages", o.total, "amis venus avec un lien"),
+        kpi("Récompensés", o.rewarded, "premier vrai paiement de l'ami"),
+        kpi("Mois offerts", o.months, "aux parrains, en avoir Stripe")
+      )
+    );
+    root.appendChild(h("p", { class: "card-hint" }, "Réglages (mois offerts, plafond) : page Abonnements. Le parrain est récompensé au premier vrai paiement de son ami, en avoir sur son compte Stripe."));
+    const STATUS = { pending: ["En attente", "warn"], rewarded: ["Récompensé", "ok"], refused: ["Refusé", "danger"] };
+    root.appendChild(
+      h(
+        "div",
+        { class: "card card--flush" },
+        table(
+          [
+            { label: "Date", cls: "nowrap", render: (r) => fmtDate(r.created_at) },
+            { label: "Parrain", render: (r) => r.referrer_email || h("span", { class: "faint" }, "compte supprimé") },
+            { label: "Ami", render: (r) => r.referee_email || "—" },
+            { label: "Formule", render: (r) => r.plan || "—" },
+            { label: "État", render: (r) => badge(...(STATUS[r.status] || [r.status])) },
+            { label: "Offert", cls: "num", render: (r) => (r.status === "rewarded" ? `${r.reward_months} mois (${(Number(r.reward_cents) / 100).toLocaleString("fr-FR", { minimumFractionDigits: 2 })} €)` : h("span", { class: "cell-sub" }, r.detail || "")) },
+          ],
+          o.list || [],
+          { empty: "Aucun parrainage pour l'instant." }
+        )
+      )
+    );
   };
 
   boot();

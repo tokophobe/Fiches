@@ -1195,10 +1195,25 @@
         <!-- v232 : « Mon abonnement » — abonnement en cours, puis les offres
              (Gratuit, Super élève, Super enseignant, Super école). -->
         <section class="account-plans account-subs-block" aria-labelledby="account-plans-title">
+          <!-- v243 : toutes les formules ici (la page « Voir mon offre /
+               modifier mon offre » disparaît). La formule du compte est
+               dépliée, les autres repliées : on les déplie en touchant leur
+               titre ; chacune a ses boutons pour y souscrire ou en changer. -->
           <h2 class="account-subs-title" id="account-plans-title">Mon abonnement</h2>
           <div class="plan-card plan-card--current" id="account-subs-current" hidden>
             <span class="plan-kicker">Mon abonnement en cours</span>
             <dl class="account-subs-details" id="account-subs-details"></dl>
+          </div>
+          <!-- v243 : parrainage (abonnés payants). -->
+          <div class="plan-card plan-card--referral" id="account-referral" hidden>
+            <span class="plan-kicker">Parraine tes amis</span>
+            <p class="referral-text" id="account-referral-text"></p>
+            <div class="referral-link-row"><code class="referral-link" id="account-referral-link"></code></div>
+            <div class="plan-actions-row">
+              <button type="button" class="btn btn--primary btn--small" id="account-referral-share">Partager mon lien</button>
+              <button type="button" class="btn btn--small" id="account-referral-copy">Copier</button>
+            </div>
+            <p class="field-hint" id="account-referral-stats" hidden></p>
           </div>
           <div class="plan-card plan-card--free" data-plan="free">
             <div class="plan-head"><span class="plan-name">Gratuit</span><span class="plan-badge" hidden>Ton offre</span><span class="plan-price">0 €</span></div>
@@ -1208,10 +1223,12 @@
               <li>Organise tes fiches dans des boîtes et des dossiers !</li>
               <li>Révise tes propres fiches et les fiches partagées par tes enseignants !</li>
               <li>Profite gratuitement des révisions optimisées, pour une mémorisation solide. <a href="guide/revisions-espacees.html" class="plan-link">Comment ça marche ?</a></li>
-              <li>Si tu enseignes, partage tes fiches avec tes élèves dans des classes !</li>
+              <li>Choisis <span class="js-free-lib">2 boîtes</span> de la Librairie de darwin pour tes révisions (tu peux les remplacer) !</li>
+              <li>Si tu enseignes, partage tes fiches avec tes élèves dans des classes, et <span class="js-free-class-boxes">2 boîtes</span> de la Librairie avec <span class="js-free-classes">une de tes classes</span> !</li>
               <li>Fixe des échéances (dates de contrôles, d'examens…), à toi ou à tes élèves : les révisions optimisées s'adaptent pour que tu sois prêt le jour J !</li>
               <li>Profite des messageries de classe pour communiquer entre élèves et enseignants !</li>
             </ul>
+            <div class="plan-actions" data-actions="free"></div>
           </div>
           <div class="plan-card plan-card--eleve" data-plan="eleve">
             <div class="plan-head"><span class="plan-name">Super élève</span><span class="plan-badge" hidden>Ton offre</span><span class="plan-price">2 € <small>/ mois</small></span></div>
@@ -1224,8 +1241,14 @@
               <div class="plan-stat"><strong id="plan-stat-levels">—</strong><span>niveaux, du CP à la terminale</span></div>
               <div class="plan-stat"><strong id="plan-stat-subjects">—</strong><span>matières</span></div>
             </div>
+            <ul class="plan-points">
+              <li class="js-trial-point" hidden></li>
+              <li>Résiliable à tout moment.</li>
+              <li>Paiement par un adulte (si tu as moins de 18 ans, demande à un parent).</li>
+              <li class="js-referral-point">Parraine tes amis : <span class="js-referral-months">2 mois</span> offerts pour toi à chaque ami qui s'abonne.</li>
+            </ul>
             <p class="account-subs-free" id="account-subs-free" hidden></p>
-            <button type="button" class="btn btn--primary account-subs-trial" id="account-subs-trial-btn" hidden>Essayer gratuitement pendant 1 mois</button>
+            <div class="plan-actions" data-actions="eleve"></div>
           </div>
           <!-- v239 : formules pour les enseignants, repliées par défaut. -->
           <details class="teacher-plans" id="account-teacher-plans">
@@ -1235,21 +1258,25 @@
             <div class="plan-head"><span class="plan-name">Super enseignant</span><span class="plan-badge" hidden>Ton offre</span><span class="plan-price"><small>dès</small> 3 € <small>/ mois</small></span></div>
             <p class="plan-price-alt">1 € par mois et par classe, ou 10 € par an et par classe — 3 classes minimum</p>
             <ul class="plan-points">
-              <li>Tes élèves accèdent aux boîtes de la Librairie que tu partages dans tes classes, sans abonnement de leur côté.</li>
-              <li>Tu consultes toute la Librairie, réponses en entier, pour préparer tes partages.</li>
-              <li>Jusqu'à 60 élèves par classe ; tu choisis les classes couvertes, et tu changes quand tu veux.</li>
+              <li>Pour toi, tous les avantages de Super élève : toute la Librairie dans tes révisions.</li>
+              <li>Tes élèves révisent les boîtes de la Librairie que tu partages dans tes classes, sans abonnement de leur côté.</li>
+              <li>Tu choisis le nombre de classes (3 au moins). Une classe compte dès que tu y partages une boîte de la Librairie ; tu peux en ajouter à tout moment.</li>
+              <li>Crée autant de classes que tu veux pour tes propres fiches, même sans abonnement. Jusqu'à 60 élèves par classe.</li>
             </ul>
+            <div class="plan-actions" data-actions="prof"></div>
           </div>
           <div class="plan-card plan-card--ecole" data-plan="ecole">
             <div class="plan-head"><span class="plan-name">Super école</span><span class="plan-badge" hidden>Ton offre</span><span class="plan-soon" id="account-school-soon">Bientôt</span><span class="plan-price">50 € <small>/ an / enseignant</small></span></div>
             <ul class="plan-points">
               <li>L'établissement désigne ses Super enseignants : chacun en a tous les avantages.</li>
               <li>Jusqu'à 15 classes de 60 élèves par enseignant, et une seule facture.</li>
+              <li>Paiement par carte, ou sur facture (virement, mandat administratif) à 30 jours.</li>
             </ul>
+            <div class="plan-actions" data-actions="ecole"></div>
           </div>
             </div>
           </details>
-          <button type="button" class="btn btn--small account-plans-more" id="account-subs-btn">Voir les offres</button>
+          <p class="plan-legal">Prix toutes taxes comprises. S'abonner, c'est accepter les <a href="legal/cgv.html" target="_blank" rel="noopener">conditions de vente</a> (résiliation, droit de rétractation de 14 jours…). Un changement de formule est immédiat : la différence est calculée au prorata de la période en cours.</p>
         </section>
         <!-- Round 64 : suppression définitive du compte (RGPD). -->
         <div class="account-danger-zone">

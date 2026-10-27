@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v242";
+  const APP_VERSION = "v243";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -1656,8 +1656,9 @@
   function isSubjectLocked(s) {
     if (!s || accountIsAdminFlag) return false;
     if (!loadDevSettings().subscriptionPolicy.enforce) return false;
-    if (s.fromLibrary && s.libraryOriginId) return !hasLibraryRevisionAccess();
-    if (s.sharedBoxId && s.sharedFromLibrary) return !classLibraryAccess(s.sharedClassId);
+    if (s.fromLibrary && s.libraryOriginId) return !hasLibraryRevisionAccess() && !isFreeLibraryPick(s.libraryOriginId);
+    // v243 : boîte par boîte (offre gratuite : 2 boîtes dans 1 classe).
+    if (s.sharedBoxId && s.sharedFromLibrary) return coveredBoxIds ? !coveredBoxIds.has(s.sharedBoxId) : !classLibraryAccess(s.sharedClassId);
     return false;
   }
   /** Round 68 : classes couvertes par une formule Super enseignant (lues
@@ -1677,8 +1678,30 @@
       return new Set();
     }
   }
+  // v243 : boîtes partagées depuis la Librairie révisables (null = inconnu).
+  var coveredBoxIds = (() => {
+    try {
+      const uid = (window.UserScope && window.UserScope.uid) || "";
+      const raw = uid ? window.UserScope.rawGet(`fiches_covered_boxes__u_${uid}`) : null;
+      return raw ? new Set(JSON.parse(raw)) : null;
+    } catch (e) {
+      return null;
+    }
+  })();
   async function refreshCoveredClasses() {
     if (!accountCurrentUser || !Sync.isConfigured() || !Sync.billing.coveredClasses) return;
+    if (Sync.billing.coveredBoxes) {
+      const boxes = await Sync.billing.coveredBoxes();
+      if (boxes) {
+        coveredBoxIds = new Set(boxes);
+        try {
+          const uid = (window.UserScope && window.UserScope.uid) || "";
+          if (uid) window.UserScope.rawSet(`fiches_covered_boxes__u_${uid}`, JSON.stringify(boxes));
+        } catch (e) {
+          /* stockage indisponible */
+        }
+      }
+    }
     const ids = await Sync.billing.coveredClasses();
     if (!ids) return;
     coveredClassIds = new Set(ids);
@@ -7427,6 +7450,12 @@
         enforceLoginGate();
         return;
       }
+      // v243 : la page Abonnements n'existe plus — les formules sont dans
+      // Mon compte.
+      if (tab.dataset.view === "subscriptions") {
+        openAccountPlans();
+        return;
+      }
       document.querySelectorAll(".tab").forEach((t) => {
         t.classList.remove("is-active");
         t.setAttribute("aria-selected", "false");
@@ -11102,8 +11131,7 @@
     });
     const current = el("account-subs-current");
     if (current) current.hidden = !valid;
-    const moreBtn = el("account-subs-btn");
-    if (moreBtn) moreBtn.textContent = valid ? "Voir mon offre / modifier mon offre" : "Voir les offres";
+    renderPlanActions(row, mine);
     libraryStats()
       .then((st) => {
         if (!st) return;
@@ -11161,6 +11189,472 @@
       const canTrial = !!loadDevSettings().subscriptionPolicy.checkoutOpen && trialDaysSetting() > 0 && !(row && row.trial_used) && !isAccountRestricted();
       trialBtn.hidden = !canTrial;
       if (canTrial) trialBtn.textContent = `Essayer gratuitement pendant ${trialLabel()}`;
+    }
+  }
+  /* ================================================================
+     v243 : formules dans Mon compte — cartes repliables, boutons pour
+     souscrire, changer de formule (au prorata) ou gérer l'abonnement.
+     ================================================================ */
+  const PLAN_KEYS_ORDER = ["free", "eleve", "prof", "ecole"];
+  let planCardsReady = false;
+  let planOpenState = null; // { free: bool, ... } choisi par l'utilisateur
+  let profQty = null; // classes demandées (Super enseignant)
+  let profUsedClasses = 0;
+  function initPlanCards() {
+    if (planCardsReady) return;
+    planCardsReady = true;
+    document.querySelectorAll("#view-account .plan-card[data-plan]").forEach((card) => {
+      const head = card.querySelector(".plan-head");
+      if (!head) return;
+      const body = document.createElement("div");
+      body.className = "plan-body";
+      [...card.children].filter((c) => c !== head).forEach((c) => body.appendChild(c));
+      card.appendChild(body);
+      head.setAttribute("role", "button");
+      head.tabIndex = 0;
+      head.insertAdjacentHTML("beforeend", `<span class="plan-chevron" aria-hidden="true">${iconSvgMarkup("chevronDown", "icon-inline-svg")}</span>`);
+      const toggle = () => setPlanCardOpen(card.dataset.plan, !card.classList.contains("is-open"), true);
+      head.addEventListener("click", (e) => {
+        if (e.target.closest("a")) return;
+        toggle();
+      });
+      head.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggle();
+        }
+      });
+    });
+    // Super école : formulaire et bouton de l'établissement (ex-page Abonnements).
+    const ecole = document.querySelector('#view-account [data-actions="ecole"]');
+    ["subs-school-panel", "subs-school-btn"].forEach((id) => {
+      const n = el(id);
+      if (n && ecole) ecole.appendChild(n);
+    });
+    // Ancien bouton « Gérer / Résilier » de la page Abonnements : plus utilisé.
+  }
+  function setPlanCardOpen(plan, open, byUser) {
+    const card = document.querySelector(`#view-account .plan-card[data-plan="${plan}"]`);
+    if (!card) return;
+    card.classList.toggle("is-open", !!open);
+    const head = card.querySelector(".plan-head");
+    if (head) head.setAttribute("aria-expanded", open ? "true" : "false");
+    if (byUser) {
+      planOpenState = planOpenState || {};
+      planOpenState[plan] = !!open;
+    }
+    if (open && (plan === "prof" || plan === "ecole")) openTeacherPlans();
+  }
+  /** Ouvre Mon compte sur les formules (et déplie l'une d'elles). */
+  function openAccountPlans(plan) {
+    const tab = document.querySelector('.tab[data-view="account"]');
+    if (tab) tab.click();
+    setTimeout(() => {
+      initPlanCards();
+      if (plan) setPlanCardOpen(plan, true, true);
+      const target = (plan && document.querySelector(`#view-account .plan-card[data-plan="${plan}"]`)) || el("account-plans-title");
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 350);
+  }
+  /* ---- Parrainage ---- */
+  const REFERRAL_STORAGE = "fiches_referral_code";
+  function storedReferralCode() {
+    try {
+      const v = (window.UserScope ? window.UserScope.rawGet(REFERRAL_STORAGE) : localStorage.getItem(REFERRAL_STORAGE)) || "";
+      return /^[A-Z0-9]{6,12}$/.test(v) ? v : "";
+    } catch (e) {
+      return "";
+    }
+  }
+  function storeReferralCode(code) {
+    try {
+      const v = String(code || "").trim().toUpperCase();
+      if (window.UserScope) {
+        if (v) window.UserScope.rawSet(REFERRAL_STORAGE, v);
+        else window.UserScope.rawRemove(REFERRAL_STORAGE);
+      } else if (v) localStorage.setItem(REFERRAL_STORAGE, v);
+      else localStorage.removeItem(REFERRAL_STORAGE);
+    } catch (e) {
+      /* stockage indisponible */
+    }
+  }
+  function referralExtra() {
+    const code = storedReferralCode();
+    return code ? { referralCode: code } : {};
+  }
+  // Lien de parrainage : …/index.html?parrain=CODE
+  (() => {
+    try {
+      const params = new URLSearchParams(location.search);
+      const code = (params.get("parrain") || "").trim().toUpperCase();
+      if (!code) return;
+      if (/^[A-Z0-9]{6,12}$/.test(code)) storeReferralCode(code);
+      params.delete("parrain");
+      const qs = params.toString();
+      history.replaceState(null, "", `${location.pathname}${qs ? `?${qs}` : ""}${location.hash}`);
+    } catch (e) {
+      /* adresse illisible */
+    }
+  })();
+  function referralLink(code) {
+    const u = new URL(location.href);
+    u.search = "";
+    u.hash = "";
+    u.searchParams.set("parrain", code);
+    return u.toString();
+  }
+  async function renderReferralBlock() {
+    const box = el("account-referral");
+    if (!box) return;
+    if (!accountCurrentUser || !Sync.referral) {
+      box.hidden = true;
+      return;
+    }
+    const r = await Sync.referral.mine();
+    const d = r && r.data;
+    if (!d || !d.eligible || !d.code) {
+      box.hidden = true;
+      return;
+    }
+    box.hidden = false;
+    const m = Number(d.months) || 0;
+    const fm = Number(d.friend_months) || 0;
+    el("account-referral-text").textContent = `Partage ton lien : chaque ami qui s'abonne à Super élève ou Super enseignant${fm ? ` a ${fm} mois offert${fm > 1 ? "s" : ""}` : ""}, et toi ${m} mois offert${m > 1 ? "s" : ""}, déduit${m > 1 ? "s" : ""} de tes prochains prélèvements dès son premier paiement.`;
+    const link = referralLink(d.code);
+    el("account-referral-link").textContent = link;
+    const stats = el("account-referral-stats");
+    const earned = Number(d.months_earned) || 0;
+    const pending = Number(d.pending) || 0;
+    if (stats) {
+      stats.hidden = !(earned || pending);
+      stats.textContent = `${earned ? `${earned} mois gagné${earned > 1 ? "s" : ""}` : ""}${earned && pending ? " · " : ""}${pending ? `${pending} ami${pending > 1 ? "s" : ""} en période d'essai` : ""}`;
+    }
+    el("account-referral-copy").onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(link);
+        showToast("Lien copié");
+      } catch (e) {
+        await robotAlert(`Ton lien : ${link}`);
+      }
+    };
+    el("account-referral-share").onclick = async () => {
+      const text = `Je révise avec darwin. Avec mon lien, tu as ${fm ? `${fm} mois offert${fm > 1 ? "s" : ""}` : "un cadeau"} en t'abonnant :`;
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: "darwin", text, url: link });
+          return;
+        } catch (e) {
+          if (e && e.name === "AbortError") return;
+        }
+      }
+      el("account-referral-copy").click();
+    };
+  }
+  async function askReferralCode() {
+    const v = await robotPrompt("Ton code de parrainage (8 lettres ou chiffres) :", storedReferralCode());
+    if (v == null) return;
+    const code = String(v).trim().toUpperCase();
+    if (!code) {
+      storeReferralCode("");
+      renderAccountSubscriptionSummary();
+      return;
+    }
+    if (!/^[A-Z0-9]{6,12}$/.test(code)) {
+      await robotAlert("Ce code n'a pas le bon format.");
+      return;
+    }
+    const r = await Sync.referral.valid(code);
+    if (r.error || r.data !== true) {
+      await robotAlert(r.error === "migration_missing" ? "Le parrainage n'est pas encore installé sur le serveur." : "Ce code de parrainage n'existe pas (ou c'est le tien).");
+      return;
+    }
+    storeReferralCode(code);
+    await robotAlert(`Code enregistré : tu auras ${referralFriendMonthsSetting()} mois offert${referralFriendMonthsSetting() > 1 ? "s" : ""} en plus en t'abonnant.`);
+    renderAccountSubscriptionSummary();
+  }
+  function referralFriendMonthsSetting() {
+    const n = Number(loadDevSettings().subscriptionPolicy.referralFriendMonths);
+    return Number.isFinite(n) ? n : 1;
+  }
+  /* ---- Boutons des formules ---- */
+  function planButton(label, onClick, opts) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = opts && opts.link ? "plan-link-btn" : `btn ${opts && opts.secondary ? "btn--small" : "btn--primary btn--small"}`;
+    b.textContent = label;
+    if (opts && opts.disabled) b.disabled = true;
+    b.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      b.disabled = true;
+      try {
+        await onClick();
+      } finally {
+        b.disabled = !!(opts && opts.disabled);
+      }
+    });
+    return b;
+  }
+  function planNote(text, cls) {
+    const p = document.createElement("p");
+    p.className = `plan-note${cls ? ` ${cls}` : ""}`;
+    p.textContent = text;
+    return p;
+  }
+  function planRow(...nodes) {
+    const d = document.createElement("div");
+    d.className = "plan-actions-row";
+    nodes.filter(Boolean).forEach((n) => d.appendChild(n));
+    return d;
+  }
+  const PLAN_LABEL = {
+    individuel: "Super élève (mensuel)",
+    individuel_annuel: "Super élève (annuel)",
+    super_enseignant: "Super enseignant (mensuel)",
+    super_enseignant_annuel: "Super enseignant (annuel)",
+  };
+  function planPriceText(plan, qty) {
+    const q = Math.max(SUPER_MIN_CLASSES, Number(qty) || SUPER_MIN_CLASSES);
+    switch (plan) {
+      case "individuel":
+        return "2 € par mois";
+      case "individuel_annuel":
+        return "20 € par an";
+      case "super_enseignant":
+        return `${q} € par mois (${q} classes)`;
+      case "super_enseignant_annuel":
+        return `${q * 10} € par an (${q} classes)`;
+      default:
+        return "";
+    }
+  }
+  async function changePlanFlow(plan, qty, extraText) {
+    const row = mySubscriptionRow;
+    const isTrial = row && row.status === "trial";
+    const ok = await robotConfirm(
+      `Passer à ${PLAN_LABEL[plan] || plan}, soit ${planPriceText(plan, qty)} ? Le changement est immédiat. ${
+        isTrial ? "Ta période d'essai continue : rien n'est prélevé avant sa fin." : "La différence pour la période en cours est calculée au prorata : elle est facturée tout de suite si la nouvelle formule coûte plus cher, sinon déduite de tes prochains prélèvements."
+      }${extraText ? ` ${extraText}` : ""}`,
+      { okLabel: "Changer", cancelLabel: "Annuler" }
+    );
+    if (!ok) return false;
+    const res = await Sync.billing.changePlan(plan, qty);
+    if (res.error) {
+      await robotAlert(billingErrorText(res));
+      return false;
+    }
+    await refreshMySubscription();
+    await Promise.all([refreshCoveredClasses(), refreshLibraryRights()]).catch(() => {});
+    profQty = null;
+    await renderAccountSubscriptionSummary();
+    showToast("Formule changée");
+    return true;
+  }
+  async function startProfCheckout(plan, qty) {
+    if (!(await requireParentalConsent("t'abonner"))) return;
+    const ref = storedReferralCode();
+    const ok = await confirmCheckout(
+      `Super enseignant : ${planPriceText(plan, qty)}${ref ? `, avec ${referralFriendMonthsSetting()} mois offert${referralFriendMonthsSetting() > 1 ? "s" : ""} grâce au parrainage` : ""}, résiliable à tout moment. Tu pourras ajouter des classes plus tard. Tu vas aller sur la page de paiement sécurisée de Stripe.`
+    );
+    if (!ok) return;
+    const res = await Sync.billing.checkout(plan, { quantity: qty, ...referralExtra() });
+    if (res.url) {
+      window.location.href = res.url;
+      return;
+    }
+    await robotAlert(billingErrorText(res));
+  }
+  async function cancelSubscriptionFlow() {
+    const row = mySubscriptionRow;
+    const end = frenchDate(row && row.current_period_end);
+    const ok = await robotConfirm(
+      `Tu vas aller sur la page de Stripe pour résilier. Confirme avec « Annuler l'abonnement ».${end ? ` Ton abonnement restera actif jusqu'au ${end}, puis tu repasseras à l'offre gratuite : plus rien ne sera prélevé.` : ""} Ta progression est gardée.`,
+      { okLabel: "Résilier" }
+    );
+    if (ok) goToBilling("cancel");
+  }
+  async function renderPlanActions(row, mine) {
+    initPlanCards();
+    const open = !!loadDevSettings().subscriptionPolicy.checkoutOpen;
+    const live = stripeSubscriptionLive(row);
+    const plan = live ? row.plan : "";
+    const canceled = live && row.cancel_at_period_end;
+    const isEleve = plan === "individuel" || plan === "individuel_annuel";
+    const isProf = isSuperPlan(row) && live;
+    const invoice = live && row.collection_method === "send_invoice";
+    // Formule dépliée par défaut : celle du compte.
+    PLAN_KEYS_ORDER.forEach((k) => {
+      const want = planOpenState && k in planOpenState ? planOpenState[k] : k === mine;
+      setPlanCardOpen(k, want, false);
+    });
+    // Nombres de l'offre gratuite (réglages de Darwin Admin).
+    const pol = loadDevSettings().subscriptionPolicy;
+    const nLib = Number.isFinite(Number(pol.freeLibraryBoxes)) ? Number(pol.freeLibraryBoxes) : 2;
+    const nCls = Number.isFinite(Number(pol.freeTeacherClasses)) ? Number(pol.freeTeacherClasses) : 1;
+    const nClsBox = Number.isFinite(Number(pol.freeClassLibraryBoxes)) ? Number(pol.freeClassLibraryBoxes) : 2;
+    document.querySelectorAll("#view-account .js-free-lib").forEach((x) => (x.textContent = `${nLib} boîte${nLib > 1 ? "s" : ""}`));
+    document.querySelectorAll("#view-account .js-free-class-boxes").forEach((x) => (x.textContent = `${nClsBox} boîte${nClsBox > 1 ? "s" : ""}`));
+    document.querySelectorAll("#view-account .js-free-classes").forEach((x) => (x.textContent = nCls > 1 ? `${nCls} de tes classes` : "une de tes classes"));
+    const refM = Number.isFinite(Number(pol.referralMonths)) ? Number(pol.referralMonths) : 2;
+    document.querySelectorAll("#view-account .js-referral-months").forEach((x) => (x.textContent = `${refM} mois`));
+    document.querySelectorAll("#view-account .js-referral-point").forEach((x) => (x.hidden = refM <= 0));
+    const trialPoint = document.querySelector("#view-account .js-trial-point");
+    if (trialPoint) {
+      const t = trialLabel();
+      trialPoint.hidden = !t || !!(row && row.trial_used) || live;
+      trialPoint.textContent = t ? `${trialDaysSetting() === 30 ? "Premier mois offert" : `${t} offert${trialDaysSetting() === 1 ? "" : "s"}`} (moyen de paiement demandé, rien n'est prélevé pendant la période offerte).` : "";
+    }
+    const box = (k) => document.querySelector(`#view-account [data-actions="${k}"]`);
+    const manageRow = () =>
+      planRow(
+        planButton("Gérer mon abonnement et mes factures", () => goToBilling("portal"), { secondary: true }),
+        canceled ? null : planButton("Résilier", cancelSubscriptionFlow, { link: true })
+      );
+    const referralLine = () => {
+      const code = storedReferralCode();
+      const d = document.createElement("p");
+      d.className = "plan-note plan-referral-note";
+      if (code) {
+        d.textContent = `Code de parrainage ${code} : ${referralFriendMonthsSetting()} mois offert${referralFriendMonthsSetting() > 1 ? "s" : ""} en plus. `;
+      }
+      const a = document.createElement("button");
+      a.type = "button";
+      a.className = "plan-link-btn";
+      a.textContent = code ? "Changer" : "J'ai un code de parrainage";
+      a.addEventListener("click", (e) => {
+        e.stopPropagation();
+        askReferralCode();
+      });
+      d.appendChild(a);
+      return d;
+    };
+
+    // --- Gratuit ---
+    const bFree = box("free");
+    if (bFree) {
+      bFree.innerHTML = "";
+      if (!hasLibraryRevisionAccess() && accountCurrentUser) {
+        const used = freeLibraryPicks().size;
+        bFree.appendChild(planNote(`Boîtes gratuites de la Librairie : ${used} sur ${freeLibraryLimit()}.`));
+      }
+      if (live && !isSchoolPlan(row) && !canceled) bFree.appendChild(planRow(planButton("Revenir à l'offre gratuite", cancelSubscriptionFlow, { secondary: true })));
+      if (canceled) bFree.appendChild(planNote(`Ton abonnement s'arrête le ${frenchDate(row.current_period_end)} : tu repasseras alors à l'offre gratuite.`));
+    }
+    // --- Super élève ---
+    const bEl = box("eleve");
+    if (bEl) {
+      bEl.innerHTML = "";
+      if (isEleve) {
+        const other = plan === "individuel" ? "individuel_annuel" : "individuel";
+        if (canceled) bEl.appendChild(planNote(`Résilié : actif jusqu'au ${frenchDate(row.current_period_end)}. Tu peux le reprendre avec « Gérer mon abonnement ».`));
+        bEl.appendChild(
+          planRow(planButton(other === "individuel_annuel" ? "Passer à l'annuel — 20 € / an" : "Passer au mensuel — 2 € / mois", () => changePlanFlow(other, 1), { secondary: true }))
+        );
+        bEl.appendChild(manageRow());
+      } else if (live && isSchoolPlan(row)) {
+        bEl.appendChild(planNote("Ce compte porte l'abonnement Super école de ton établissement : utilise un autre compte pour un abonnement personnel."));
+      } else if (invoice) {
+        bEl.appendChild(planNote("Abonnement payé sur facture : écris-nous pour en changer."));
+      } else if (live) {
+        bEl.appendChild(
+          planRow(
+            planButton("Passer à Super élève — 2 € / mois", () => changePlanFlow("individuel", 1, "Tes élèves ne pourront plus réviser les boîtes de la Librairie que tu as partagées dans tes classes.")),
+            planButton("Annuel — 20 € / an", () => changePlanFlow("individuel_annuel", 1, "Tes élèves ne pourront plus réviser les boîtes de la Librairie que tu as partagées dans tes classes."), { secondary: true })
+          )
+        );
+      } else if (!open) {
+        bEl.appendChild(planRow(planButton("Bientôt disponible", () => {}, { disabled: true })));
+      } else {
+        const trialText = (row && row.trial_used) || !trialFreeText() ? "" : `${trialFreeText()}, puis `;
+        bEl.appendChild(
+          planRow(
+            planButton(`Mensuel — ${trialText}2 € / mois`, () => goToBilling("checkout", "individuel")),
+            planButton(`Annuel — ${trialText}20 € / an`, () => goToBilling("checkout", "individuel_annuel"), { secondary: true })
+          )
+        );
+        if (refM > 0 || storedReferralCode()) bEl.appendChild(referralLine());
+      }
+    }
+    // --- Super enseignant ---
+    const bPr = box("prof");
+    if (bPr) {
+      bPr.innerHTML = "";
+      const current = isProf ? Math.max(SUPER_MIN_CLASSES, Number(row.quantity) || SUPER_MIN_CLASSES) : null;
+      if (profQty == null) profQty = Math.max(SUPER_MIN_CLASSES, current || 0, profUsedClasses);
+      const stepper = document.createElement("div");
+      stepper.className = "plan-stepper";
+      const minus = planButton("−", async () => {
+        profQty = Math.max(SUPER_MIN_CLASSES, profQty - 1);
+        renderPlanActions(mySubscriptionRow, mine);
+      }, { secondary: true });
+      const plus = planButton("+", async () => {
+        profQty = Math.min(200, profQty + 1);
+        renderPlanActions(mySubscriptionRow, mine);
+      }, { secondary: true });
+      minus.setAttribute("aria-label", "Une classe de moins");
+      plus.setAttribute("aria-label", "Une classe de plus");
+      if (profQty <= SUPER_MIN_CLASSES) minus.disabled = true;
+      const label = document.createElement("span");
+      label.className = "plan-stepper-value";
+      label.textContent = `${profQty} classes`;
+      stepper.append(minus, label, plus);
+      if (isSchoolPlan(row) && live) {
+        bPr.appendChild(planNote("Ce compte porte l'abonnement Super école de ton établissement."));
+      } else if (invoice) {
+        bPr.appendChild(planNote("Abonnement payé sur facture : écris-nous pour en changer."));
+      } else {
+        bPr.appendChild(stepper);
+        const annualNow = plan === "super_enseignant_annuel";
+        bPr.appendChild(planNote(`Au mois : ${profQty} € / mois · à l'année : ${profQty * 10} € / an${profUsedClasses ? ` · tu partages des boîtes de la Librairie dans ${profUsedClasses} classe${profUsedClasses > 1 ? "s" : ""}` : ""}`));
+        if (isProf) {
+          if (canceled) bPr.appendChild(planNote(`Résilié : actif jusqu'au ${frenchDate(row.current_period_end)}.`));
+          const warn = profQty < profUsedClasses ? ` Attention : tu partages des boîtes de la Librairie dans ${profUsedClasses} classes ; les élèves des dernières classes ne pourront plus les réviser et perdront leur progression.` : "";
+          bPr.appendChild(
+            planRow(
+              profQty !== current ? planButton(`Passer à ${profQty} classes`, () => changePlanFlow(plan, profQty, warn)) : null,
+              planButton(annualNow ? `Passer au mensuel — ${profQty} € / mois` : `Passer à l'annuel — ${profQty * 10} € / an`, () => changePlanFlow(annualNow ? "super_enseignant" : "super_enseignant_annuel", profQty, warn), { secondary: true })
+            )
+          );
+          bPr.appendChild(manageRow());
+        } else if (live) {
+          bPr.appendChild(
+            planRow(
+              planButton(`Passer à Super enseignant — ${profQty} € / mois`, () => changePlanFlow("super_enseignant", profQty)),
+              planButton(`Annuel — ${profQty * 10} € / an`, () => changePlanFlow("super_enseignant_annuel", profQty), { secondary: true })
+            )
+          );
+        } else if (!open) {
+          bPr.appendChild(planRow(planButton("Bientôt disponible", () => {}, { disabled: true })));
+        } else {
+          bPr.appendChild(
+            planRow(
+              planButton(`Mensuel — ${profQty} € / mois`, () => startProfCheckout("super_enseignant", profQty)),
+              planButton(`Annuel — ${profQty * 10} € / an`, () => startProfCheckout("super_enseignant_annuel", profQty), { secondary: true })
+            )
+          );
+          if (refM > 0 || storedReferralCode()) bPr.appendChild(referralLine());
+        }
+      }
+    }
+    // --- Super école : bouton et formulaire existants ---
+    renderSchoolOffer(row, live, open);
+    renderReferralBlock().catch(() => {});
+    // Classes où l'enseignant partage déjà des boîtes de la Librairie.
+    if (accountCurrentUser && Sync.billing.classUsage && !renderPlanActions.usageLoading) {
+      renderPlanActions.usageLoading = true;
+      Sync.billing
+        .classUsage()
+        .then((r) => {
+          const n = r && r.data && Array.isArray(r.data.classes) ? r.data.classes.length : 0;
+          if (n !== profUsedClasses) {
+            profUsedClasses = n;
+            if (!isProf) profQty = null;
+            renderPlanActions(mySubscriptionRow, mine);
+          }
+        })
+        .catch(() => {})
+        .finally(() => {
+          setTimeout(() => (renderPlanActions.usageLoading = false), 5000);
+        });
     }
   }
   const accountSubsTrialBtn = el("account-subs-trial-btn");
@@ -11263,7 +11757,7 @@
           error === "wrong_password"
             ? "Ce mot de passe n'est pas le bon : ton compte n'a pas été supprimé."
             : error === "active_subscription"
-              ? "Tu as un abonnement en cours : résilie-le d'abord (page Abonnements), puis tu pourras supprimer ton compte."
+              ? "Tu as un abonnement en cours : résilie-le d'abord (Mon compte → « Résilier » sous ta formule), puis tu pourras supprimer ton compte."
               : error === "last_admin"
                 ? "Ce compte est le dernier administrateur de darwin : il ne peut pas être supprimé."
                 : `La suppression n'a pas pu se faire : ${error}`;
@@ -12634,7 +13128,13 @@
   /** Round 54 : retirer une boîte partagée de la classe (les élèves n'en
    *  ont plus la copie ; la boîte de l'enseignant n'est pas touchée). */
   async function classTreeRemoveBox(klass, boxes, box) {
-    const ok = await robotConfirm(`Retirer « ${box.subject_name} » de la classe ? Les élèves ne l'auront plus ; ta boîte n'est pas modifiée.`, {
+    // v243 : boîte de la Librairie — les élèves perdent aussi leur progression.
+    const fromLib = !!box.library_collection_id;
+    const ok = await robotConfirm(
+      fromLib
+        ? `Retirer « ${box.subject_name} » de la classe ? Tes élèves ne pourront plus réviser cette boîte de la Librairie et perdront leur progression sur celle-ci.`
+        : `Retirer « ${box.subject_name} » de la classe ? Les élèves ne l'auront plus ; ta boîte n'est pas modifiée.`,
+      {
       okLabel: "Retirer",
       danger: true,
     });
@@ -12644,6 +13144,7 @@
       await robotAlert("Impossible de retirer la boîte : " + error);
       return;
     }
+    if (fromLib) refreshCoveredClasses().catch(() => {});
     for (const s of subjects.filter((x) => (x.sharedShares || []).some((sh) => sh.boxId === box.id))) {
       s.sharedShares = s.sharedShares.filter((sh) => sh.boxId !== box.id);
       s.updatedAt = new Date().toISOString();
@@ -12855,11 +13356,9 @@
     classDetailShareLibraryBtn.addEventListener("click", async () => {
       if (!classDetailContext) return;
       const ctx = { klass: classDetailContext.klass, role: classDetailContext.role };
-      const ok = await robotConfirm("Attention, seuls les élèves abonnés ont accès aux boîtes de la librairie.", {
-        okLabel: "Continuer",
-        cancelLabel: "Annuler",
-      });
-      if (!ok) return;
+      // v243 : les limites de la formule sont vérifiées avant d'ouvrir la
+      // Librairie (et à nouveau par le serveur au moment du partage).
+      if (await blockLibraryShareToClass(ctx.klass.id)) return;
       setLibraryShareToClass(ctx);
       const tab = document.querySelector('.tab[data-view="library"]');
       if (tab) tab.click();
@@ -12873,31 +13372,109 @@
       if (ctx) openClassDetailView(ctx.klass, ctx.role);
     });
   }
-  /** Round 67 : partager une boîte de la Librairie avec une classe demande
-   *  une formule Super enseignant / Super école (pas encore disponibles)
-   *  dès que la Librairie est réservée aux abonnés. */
+  /** v243 : partager une boîte de la Librairie avec une classe.
+   *  - offre gratuite : une seule classe (réglable), 2 boîtes au plus ;
+   *  - Super enseignant : autant de classes que de classes payées (3 au
+   *    moins) ; au-delà, l'appli propose d'ajouter une classe au forfait ;
+   *  - Super école : 15 classes.
+   *  Renvoie true si le partage est bloqué. */
   async function blockLibraryShareToClass(classId) {
     if (accountIsAdminFlag || !loadDevSettings().subscriptionPolicy.enforce) return false;
-    // Round 68 : classe couverte par Super enseignant → partage permis.
-    await refreshCoveredClasses();
-    if (classLibraryAccess(classId)) return false;
-    await showSubscriptionRequired(
-      "Pour partager une boîte de la Librairie avec cette classe, elle doit être couverte par la formule Super enseignant (1 € par mois et par classe) : tes élèves y ont alors accès sans abonnement. Tu peux toujours partager les boîtes que tu as créées toi-même."
-    );
+    const r = await Sync.billing.classUsage();
+    if (r.error) {
+      // Serveur pas encore à jour : le serveur tranchera au moment du partage.
+      return false;
+    }
+    const usage = r.data || {};
+    const q = usage.quota || {};
+    const list = Array.isArray(usage.classes) ? usage.classes : [];
+    const here = list.find((x) => x.class_id === classId);
+    const maxClasses = Number(q.classes) || 0;
+    const maxBoxes = q.boxes == null ? null : Number(q.boxes);
+    if (here) {
+      if (here.rank > maxClasses) return libraryLimitMessage("classes", q, list, classId);
+      if (maxBoxes != null && here.boxes >= maxBoxes) return libraryLimitMessage("boxes", q, list, classId);
+      return false;
+    }
+    if (list.length >= maxClasses) return libraryLimitMessage("classes", q, list, classId);
+    if (q.plan === "free") {
+      return !(await robotConfirm(
+        `Avec l'offre gratuite, tu peux partager des boîtes de la Librairie dans ${maxClasses > 1 ? `${maxClasses} classes` : "une seule classe"}, ${maxBoxes} boîte${maxBoxes > 1 ? "s" : ""} au plus : tes élèves les révisent sans abonnement. Ce sera ${maxClasses > 1 ? "une de ces classes" : "cette classe"}.`,
+        { okLabel: "Continuer", cancelLabel: "Annuler" }
+      ));
+    }
+    return false;
+  }
+  /** v243 : message quand le partage dépasse la formule. Renvoie true
+   *  (bloqué), sauf si l'enseignant ajoute une classe à son forfait. */
+  async function libraryLimitMessage(kind, q, list, classId) {
+    const others = list.filter((x) => x.class_id !== classId).map((x) => `« ${x.name} »`);
+    if (q.plan === "free") {
+      const text =
+        kind === "boxes"
+          ? `Avec l'offre gratuite, tu peux partager ${q.boxes} boîte${q.boxes > 1 ? "s" : ""} de la Librairie au plus dans ta classe. Retire-en une de cette classe (tes élèves perdront leur progression sur celle-ci), ou passe à Super enseignant pour en partager autant que tu veux.`
+          : `Avec l'offre gratuite, tu peux partager des boîtes de la Librairie dans ${q.classes > 1 ? `${q.classes} classes` : "une seule classe"}${others.length ? ` : c'est déjà le cas dans ${others.join(", ")}` : ""}. Pour partager ici, retire d'abord celles de ${others.length > 1 ? "ces classes" : "cette classe"} (ses élèves ne pourront plus les réviser et perdront leur progression), ou passe à Super enseignant.`;
+      const choice = await showRobotMessage(text, {
+        buttons: [
+          { label: "Annuler", value: null },
+          { label: "Voir les formules", value: "subs", primary: true },
+        ],
+        cancelValue: null,
+      });
+      if (choice === "subs") openAccountPlans("prof");
+      return true;
+    }
+    if (q.plan === "prof") {
+      const row = mySubscriptionRow;
+      const n = Number(q.classes) || SUPER_MIN_CLASSES;
+      const annual = row && row.plan === "super_enseignant_annuel";
+      const price = annual ? `${(n + 1) * 10} € par an` : `${n + 1} € par mois`;
+      const ok = await robotConfirm(
+        `Ton forfait Super enseignant couvre ${n} classes, et tu partages déjà des boîtes de la Librairie dans ${others.length ? others.join(", ") : `${n} classes`}. Ajouter une classe à ton forfait ? Il passera à ${n + 1} classes, soit ${price}. La différence pour la période en cours est calculée au prorata et facturée tout de suite. (Tu peux aussi retirer les boîtes de la Librairie d'une autre classe, ou supprimer une classe.)`,
+        { okLabel: "Ajouter une classe", cancelLabel: "Annuler" }
+      );
+      if (!ok) return true;
+      const res = await Sync.billing.changePlan(row && row.plan ? row.plan : "super_enseignant", n + 1);
+      if (res.error) {
+        await robotAlert(billingErrorText(res));
+        return true;
+      }
+      await refreshMySubscription();
+      await refreshCoveredClasses();
+      showToast(`Forfait passé à ${n + 1} classes`);
+      return false;
+    }
+    await robotAlert(`Tu partages déjà des boîtes de la Librairie dans ${q.classes} classes, le maximum de ta formule.`);
     return true;
+  }
+  function billingErrorText(res) {
+    return (BILLING_ERRORS[res.error] || `L'opération n'a pas pu se faire : ${res.error}`) + (res.detail && !BILLING_ERRORS[res.error] ? `\n\nDétail : ${res.detail}` : "");
   }
   async function shareLibraryCollectionToClass(col) {
     const ctx = libraryShareToClassCtx;
     if (!ctx || !col) return;
     if (await blockLibraryShareToClass(ctx.klass && ctx.klass.id)) return;
     const name = col.name || "Collection";
-    const boxCards = await fetchFullLibraryCards(col, "Il faut être abonné pour partager cette boîte de la Librairie avec une classe.");
-    if (!boxCards) return;
+    // v243 : le serveur recopie lui-même les fiches complètes de la
+    // Librairie (même pour un enseignant sans abonnement) ; l'aperçu suffit.
+    const res0 = await Sync.library.cards(col.id);
+    const boxCards = res0 && Array.isArray(res0.cards) ? res0.cards : null;
+    if (!boxCards) {
+      await robotAlert("Impossible de charger les fiches de cette boîte. Vérifie ta connexion et réessaie.");
+      return;
+    }
     const { error } = await Sync.classes.shareBox(ctx.klass.id, name, boxCards, [], { libraryCollectionId: col.id, link: col.link || "" });
     if (error) {
+      if (/library_class_limit|library_class_box_limit/.test(error)) {
+        const r = await Sync.billing.classUsage();
+        const usage = (r && r.data) || {};
+        if (!(await libraryLimitMessage(/box_limit/.test(error) ? "boxes" : "classes", usage.quota || {}, usage.classes || [], ctx.klass.id))) return shareLibraryCollectionToClass(col);
+        return;
+      }
       await robotAlert("Erreur lors du partage : " + error);
       return;
     }
+    refreshCoveredClasses().catch(() => {});
     try {
       await Sync.messages.send(ctx.klass.id, `📚 « ${name} » a été partagée dans la classe (depuis la Librairie).`);
     } catch (e) {
@@ -14377,9 +14954,52 @@
     if (accountIsAdminFlag) return true;
     const row = mySubscriptionRow;
     const active = !!row && (row.status === "active" || row.status === "trial") && (!row.current_period_end || new Date(row.current_period_end) > new Date());
-    if (active && !isSuperPlan(row) && !isSchoolPlan(row)) return true;
+    // v243 : Super enseignant (et l'enseignant d'un établissement Super
+    // école) a aussi pour lui-même les avantages de Super élève.
+    if (active && !isSchoolPlan(row)) return true;
+    if (schoolTeacherActive()) return true;
     if (loadDevSettings().subscriptionPolicy.enforce) return false;
     return !(row && row.status === "none");
+  }
+  /* ---- v243 : boîtes gratuites de la Librairie (offre gratuite) ---- */
+  var libraryRights = readCachedLibraryRights();
+  function libraryRightsKey() {
+    const uid = (window.UserScope && window.UserScope.uid) || "";
+    return uid ? `fiches_library_rights__u_${uid}` : "";
+  }
+  function readCachedLibraryRights() {
+    try {
+      const uid = (window.UserScope && window.UserScope.uid) || "";
+      const raw = uid ? window.UserScope.rawGet(`fiches_library_rights__u_${uid}`) : null;
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+  async function refreshLibraryRights() {
+    if (!accountCurrentUser || !Sync.isConfigured() || !Sync.library.rights) return null;
+    const r = await Sync.library.rights();
+    if (r.error) return null;
+    libraryRights = r.data || null;
+    try {
+      const k = libraryRightsKey();
+      if (k && libraryRights) window.UserScope.rawSet(k, JSON.stringify(libraryRights));
+    } catch (e) {
+      /* stockage indisponible */
+    }
+    return libraryRights;
+  }
+  function freeLibraryLimit() {
+    const n = libraryRights && Number(libraryRights.free_limit);
+    if (Number.isFinite(n)) return n;
+    const s = Number(loadDevSettings().subscriptionPolicy.freeLibraryBoxes);
+    return Number.isFinite(s) ? s : 2;
+  }
+  function freeLibraryPicks() {
+    return new Set((libraryRights && Array.isArray(libraryRights.free_picks) ? libraryRights.free_picks : []).map(String));
+  }
+  function isFreeLibraryPick(collectionId) {
+    return !!collectionId && freeLibraryPicks().has(String(collectionId));
   }
   function hasLibrarySubscription() {
     if (!accountCurrentUser) return false;
@@ -14626,7 +15246,7 @@
         await refreshCoveredClasses();
         closePanel();
         await robotAlert(`C'est enregistré : ${ids.length} classe${ids.length > 1 ? "s" : ""} couverte${ids.length > 1 ? "s" : ""}, soit ${planDescription(mySubscriptionRow).price}. S'il y a une différence de prix, elle est calculée au prorata sur ta prochaine facture.`);
-        renderSubscriptionsStatus();
+        renderAccountSubscriptionSummary();
         return;
       }
       const billed = Math.max(SUPER_MIN_CLASSES, ids.length);
@@ -14845,7 +15465,7 @@
           }
           showToast("Établissement enregistré");
           close();
-          renderSubscriptionsStatus();
+          renderAccountSubscriptionSummary();
           openSchoolPanel("edit");
         } finally {
           b.disabled = false;
@@ -14871,7 +15491,7 @@
         }
         await refreshMySubscription();
         close();
-        renderSubscriptionsStatus();
+        renderAccountSubscriptionSummary();
         const url = r.data && r.data.url;
         const go = await showRobotMessage(`C'est fait : ton établissement est abonné. La facture a été envoyée à ${(r.data && r.data.email) || billing}.`, {
           buttons: url ? [{ label: "Fermer", value: false }, { label: "Voir la facture", value: true, primary: true }] : [{ label: "OK", value: false, primary: true }],
@@ -14952,7 +15572,7 @@
     if (action === "checkout") {
       const row = mySubscriptionRow;
       const price = plan === "individuel_annuel" ? "20 € par an" : "2 € par mois";
-      const trial = !(row && row.trial_used) && trialDaysSetting() > 0;
+      const trial = (!(row && row.trial_used) && trialDaysSetting() > 0) || !!storedReferralCode();
       const ok = await confirmCheckout(
         `Formule ${plan === "individuel_annuel" ? "annuelle" : "mensuelle"} : ${trial ? `${trialFreeText()}, puis ${price}` : price}. Tu vas aller sur la page de paiement sécurisée de Stripe. Si tu as moins de 18 ans, fais-le avec un parent : c'est lui qui donne sa carte. ${trial ? "Rien n'est prélevé pendant la période offerte, et tu" : "Tu"} peux résilier à tout moment.`
       );
@@ -14961,7 +15581,7 @@
     if (btn) btn.disabled = true;
     if (annualBtn) annualBtn.disabled = true;
     const res =
-      action === "portal" || action === "cancel" ? await Sync.billing.portal(action === "cancel" ? "cancel" : undefined) : await Sync.billing.checkout(plan);
+      action === "portal" || action === "cancel" ? await Sync.billing.portal(action === "cancel" ? "cancel" : undefined) : await Sync.billing.checkout(plan, referralExtra());
     if (res.url) {
       window.location.href = res.url;
       return;
@@ -14973,7 +15593,7 @@
     await robotAlert(
       (BILLING_ERRORS[res.error] || `Le paiement n'a pas pu s'ouvrir : ${res.error}`) + (res.detail ? `\n\nDétail : ${res.detail}` : "")
     );
-    renderSubscriptionsStatus();
+    renderAccountSubscriptionSummary();
   }
   const subsIndividuelBtn = el("subs-individuel-btn");
   if (subsIndividuelBtn) {
@@ -15027,14 +15647,13 @@
       return;
     }
     if (!accountCurrentUser) return;
-    const tab = document.querySelector('.tab[data-view="subscriptions"]');
-    if (tab) tab.click();
+    openAccountPlans();
     if (outcome === "annule") {
       await robotAlert("Paiement annulé : rien n'a été prélevé. Tu peux t'abonner quand tu veux.");
       return;
     }
     if (outcome !== "ok") {
-      renderSubscriptionsStatus();
+      renderAccountSubscriptionSummary();
       return;
     }
     for (let i = 0; i < 10; i++) {
@@ -15042,7 +15661,8 @@
       if (stripeSubscriptionLive(mySubscriptionRow)) break;
       await new Promise((r) => setTimeout(r, 1500));
     }
-    await renderSubscriptionsStatus();
+    await Promise.all([refreshLibraryRights(), refreshCoveredClasses()]).catch(() => {});
+    await renderAccountSubscriptionSummary();
     const row = mySubscriptionRow;
     if (stripeSubscriptionLive(row)) {
       await robotAlert(
@@ -15058,16 +15678,11 @@
     const choice = await showRobotMessage(text || "Il faut être abonné pour pouvoir ajouter cette boîte à tes révisions.", {
       buttons: [
         { label: "Annuler", value: null },
-        { label: "Voir les abonnements", value: "subs", primary: true },
+        { label: "Voir les formules", value: "subs", primary: true },
       ],
       cancelValue: null,
     });
-    if (choice === "subs") {
-      // v239 : message sur Super enseignant → formules enseignants dépliées.
-      if (/enseignant/i.test(text || "")) openTeacherPlans();
-      const tab = document.querySelector('.tab[data-view="subscriptions"]');
-      if (tab) tab.click();
-    }
+    if (choice === "subs") openAccountPlans(/enseignant|classe/i.test(text || "") ? "prof" : "eleve");
   }
   /** Choix du dossier (explorateur des dossiers, Racine comprise). Résout
    *  avec l'id du dossier (null = racine), ou undefined si annulé. */
@@ -15115,16 +15730,30 @@
     }
     // Round 55 : l'abonnement est vérifié AVANT le choix du dossier.
     await refreshMySubscription();
+    // v243 : sans abonnement, une des boîtes gratuites de la Librairie.
+    let usesFreePick = false;
     if (!hasLibraryRevisionAccess()) {
-      await showSubscriptionRequired(isSuperPlan(mySubscriptionRow) ? "La formule Super enseignant permet de consulter toutes les boîtes de la Librairie et de les partager avec tes classes couvertes, mais pas de les ajouter à tes propres révisions (il faut pour cela l'abonnement Super élève)." : undefined);
-      return false;
+      await refreshLibraryRights();
+      if (!isFreeLibraryPick(col.id)) {
+        if (!(await confirmFreeLibraryPick(col))) return false;
+        usesFreePick = true;
+      }
     }
     const folderId = await pickRevisionFolder(`Dans quel dossier ranger « ${col.name} » ?`);
     if (folderId === undefined) return false;
-    await refreshMySubscription();
-    if (!hasLibraryRevisionAccess()) {
-      await showSubscriptionRequired();
-      return false;
+    if (usesFreePick) {
+      const r = await Sync.library.pickFree(col.id);
+      if (r.error) {
+        await robotAlert(
+          /free_limit_reached/.test(r.error)
+            ? `Tu as déjà tes ${freeLibraryLimit()} boîtes gratuites de la Librairie.`
+            : r.error === "migration_missing"
+            ? "Le serveur n'est pas encore prêt pour les boîtes gratuites (supabase/round82_migration.sql)."
+            : `La boîte n'a pas pu être ajoutée : ${r.error}`
+        );
+        return false;
+      }
+      libraryRights = r.data || libraryRights;
     }
     // Round 64 : les fiches complètes viennent du serveur, qui vérifie
     // lui-même l'accès.
@@ -15156,9 +15785,77 @@
     );
     return true;
   }
+  /** v243 : supprime pour de bon la copie d'une boîte de la Librairie
+   *  (fiches et progression), sans confirmation. */
+  async function forgetLibraryMirror(m) {
+    const toDelete = cards.filter((c) => !c.deleted && c.subject === m.id);
+    for (const c of toDelete) {
+      const updated = touch({ ...c, deleted: true });
+      await persist(updated);
+      const idx = cards.findIndex((x) => x.id === c.id);
+      if (idx >= 0) cards[idx] = updated;
+    }
+    await DB.removeSubject(m.id);
+    subjects = subjects.filter((x) => x.id !== m.id);
+    await pushSubjectDeleted(m);
+    if (currentSubjectId === m.id) switchSubject(ALL_SUBJECTS_ID, true);
+    renderSubjectSelect();
+    renderSubjectManageList();
+    renderStatsSubjectSelect();
+    renderAll();
+  }
+  /** v243 : offre gratuite — choisir une des boîtes gratuites de la
+   *  Librairie. Renvoie true pour continuer. */
+  async function confirmFreeLibraryPick(col) {
+    const limit = freeLibraryLimit();
+    const picks = freeLibraryPicks();
+    const used = picks.size;
+    if (limit <= 0) {
+      await showSubscriptionRequired();
+      return false;
+    }
+    if (used >= limit) {
+      const names = subjects.filter((x) => x.fromLibrary && x.libraryOriginId && picks.has(String(x.libraryOriginId)) && !x.outOfRevisions).map((x) => `« ${x.name} »`);
+      const choice = await showRobotMessage(
+        `Avec l'offre gratuite, tu peux avoir ${limit} boîte${limit > 1 ? "s" : ""} de la Librairie dans tes révisions${names.length ? ` (${names.join(", ")})` : ""}. Pour ajouter « ${col.name} », retire d'abord l'une d'elles de tes révisions (Mes fiches → Organiser mes fiches) — attention, tu perdras ta progression sur la boîte retirée — ou passe à Super élève pour avoir toute la Librairie.`,
+        {
+          buttons: [
+            { label: "Annuler", value: null },
+            { label: "Voir les formules", value: "subs", primary: true },
+          ],
+          cancelValue: null,
+        }
+      );
+      if (choice === "subs") openAccountPlans("eleve");
+      return false;
+    }
+    const left = limit - used - 1;
+    return robotConfirm(
+      `Avec l'offre gratuite, tu peux choisir ${limit} boîte${limit > 1 ? "s" : ""} de la Librairie. « ${col.name} » sera ${used === 0 ? "la première" : "la suivante"} : il t'en restera ${left}. Tu pourras la remplacer plus tard par une autre, mais tu perdras alors ta progression sur celle-ci.`,
+      { okLabel: "Ajouter", cancelLabel: "Annuler" }
+    );
+  }
   async function removeLibraryCollectionFromRevisions(col) {
     const m = libraryMirrorFor(col.id);
     if (!m) return;
+    // v243 : boîte gratuite (offre gratuite) — la retirer libère la place,
+    // et efface sa progression.
+    if (!hasLibraryRevisionAccess() && isFreeLibraryPick(col.id)) {
+      const ok0 = await robotConfirm(
+        `Retirer « ${m.name} » de tes révisions ? Elle libère une de tes boîtes gratuites de la Librairie, mais tu perdras toute ta progression sur cette boîte.`,
+        { okLabel: "Retirer", danger: true }
+      );
+      if (!ok0) return;
+      const r = await Sync.library.releaseFree(col.id);
+      if (r.error) {
+        await robotAlert(`La boîte n'a pas pu être retirée : ${r.error}`);
+        return;
+      }
+      libraryRights = r.data || libraryRights;
+      await forgetLibraryMirror(m);
+      showToast("Boîte retirée : une boîte gratuite est libre");
+      return;
+    }
     const ok = await robotConfirm(
       `Retirer « ${m.name} » de tes révisions ? Ta progression est gardée : tu la retrouveras si tu la rajoutes.`,
       { okLabel: "Retirer" }
@@ -17365,7 +18062,7 @@
     // Round 67 : état d'abonnement et droits d'administrateur au démarrage
     // (verrou des boîtes de la Librairie), puis réaffichage.
     if (accountCurrentUser) {
-      Promise.all([refreshMySubscription(), refreshCoveredClasses(), Sync.isAdmin().then((v) => (accountIsAdminFlag = !!v))])
+      Promise.all([refreshMySubscription(), refreshCoveredClasses(), refreshLibraryRights(), Sync.isAdmin().then((v) => (accountIsAdminFlag = !!v))])
         .catch(() => {})
         .then(() => {
           renderAll();
