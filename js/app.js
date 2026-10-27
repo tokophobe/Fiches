@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v240";
+  const APP_VERSION = "v241";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -11995,44 +11995,59 @@
     `;
   }
 
+  const classListSeq = {};
   async function renderStudentClasses() {
     const list = el("classes-student-list");
     const empty = el("classes-student-empty");
     if (!list) return;
-    list.innerHTML = "";
+    // v241 : deux affichages lancés coup sur coup (ouverture de la page +
+    // reconnexion silencieuse de la session) ajoutaient chacun leurs lignes
+    // à la même liste → classes affichées en double. Seul le dernier
+    // affichage lancé remplit la liste, en une fois.
+    const seq = (classListSeq.student = (classListSeq.student || 0) + 1);
     const myClasses = await Sync.classes.listAsStudent();
+    const counts = await Promise.all(myClasses.map((k) => Sync.classes.memberCount(k.id)));
+    if (seq !== classListSeq.student) return;
     if (empty) empty.hidden = myClasses.length > 0;
     if (list.previousElementSibling) list.previousElementSibling.hidden = myClasses.length === 0;
-    for (const klass of myClasses) {
-      const count = await Sync.classes.memberCount(klass.id);
+    const frag = document.createDocumentFragment();
+    myClasses.forEach((klass, i) => {
       const upcoming = classUpcomingEvents(klass.id, "student").length;
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "class-card";
-      btn.innerHTML = classCircleHtml(klass, count, upcoming);
+      btn.innerHTML = classCircleHtml(klass, counts[i], upcoming);
       btn.addEventListener("click", () => openClassDetailView(klass, "student"));
-      list.appendChild(btn);
-    }
+      frag.appendChild(btn);
+    });
+    list.replaceChildren(frag);
   }
 
   async function renderTeacherClasses() {
     const list = el("classes-teacher-list");
     const empty = el("classes-teacher-empty");
     if (!list) return;
-    list.innerHTML = "";
+    // v241 : deux affichages lancés coup sur coup (ouverture de la page +
+    // reconnexion silencieuse de la session) ajoutaient chacun leurs lignes
+    // à la même liste → classes affichées en double. Seul le dernier
+    // affichage lancé remplit la liste, en une fois.
+    const seq = (classListSeq.teacher = (classListSeq.teacher || 0) + 1);
     const myClasses = await Sync.classes.listAsTeacher();
+    const counts = await Promise.all(myClasses.map((k) => Sync.classes.memberCount(k.id)));
+    if (seq !== classListSeq.teacher) return;
     if (empty) empty.hidden = myClasses.length > 0;
     if (list.previousElementSibling) list.previousElementSibling.hidden = myClasses.length === 0;
-    for (const klass of myClasses) {
-      const count = await Sync.classes.memberCount(klass.id);
+    const frag = document.createDocumentFragment();
+    myClasses.forEach((klass, i) => {
       const upcoming = classUpcomingEvents(klass.id, "teacher").length;
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "class-card";
-      btn.innerHTML = classCircleHtml(klass, count, upcoming);
+      btn.innerHTML = classCircleHtml(klass, counts[i], upcoming);
       btn.addEventListener("click", () => openClassDetailView(klass, "teacher"));
-      list.appendChild(btn);
-    }
+      frag.appendChild(btn);
+    });
+    list.replaceChildren(frag);
   }
 
   // Round 13 : "rejoindre une classe" vit maintenant dans une page dédiée

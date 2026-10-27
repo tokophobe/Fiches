@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v240";
+  const ADMIN_VERSION = "v241";
   async function checkAdminVersion() {
     const label = $("#sidebar-version");
     if (label) label.textContent = `Darwin Admin ${ADMIN_VERSION}`;
