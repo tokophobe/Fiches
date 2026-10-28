@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v243";
+  const ADMIN_VERSION = "v244";
   async function checkAdminVersion() {
     const label = $("#sidebar-version");
     if (label) label.textContent = `Darwin Admin ${ADMIN_VERSION}`;
@@ -1683,7 +1683,6 @@
     const summaryIn = h("input", { type: "text", class: "input", value: sub.summary || "", maxlength: "140" });
     const descIn = h("textarea", { class: "input", rows: "3" });
     descIn.value = sub.description || "";
-    const tagsIn = h("input", { type: "text", class: "input", value: (sub.tags || []).join(", "), placeholder: "tags séparés par des virgules" });
     const noteIn = h("textarea", { class: "input", rows: "2", placeholder: "Note (raison d'un refus, corrections faites…)" });
     noteIn.value = sub.admin_note || "";
     let cardsData = (Array.isArray(sub.cards) ? sub.cards : []).map((c) => ({ ...c }));
@@ -1737,7 +1736,6 @@
       field("Nom", nameIn),
       field("Résumé", summaryIn),
       field("Description", descIn),
-      field("Tags", tagsIn),
       field("Lien « Pour aller plus loin »", linkIn),
       h("div", { class: "toolbar" }, cardsCount, latestBtn),
       cardsWrap,
@@ -1747,7 +1745,8 @@
       name: nameIn.value.trim(),
       summary: summaryIn.value.trim(),
       description: descIn.value.trim(),
-      tags: tagsIn.value.split(",").map((t) => t.trim().toLowerCase()).filter(Boolean),
+      // v244 : plus de tags à saisir ; ceux de la proposition sont gardés.
+      tags: Array.isArray(sub.tags) ? sub.tags : [],
       cards: cardsData.filter((c) => (c.question || "").trim() && (c.answer || "").trim()),
       note: noteIn.value.trim(),
       link: window.LearnLinks ? window.LearnLinks.normalize(linkIn.value) : linkIn.value.trim(),
@@ -1864,7 +1863,7 @@
     root.appendChild(
       card(
         "Publication dans la Librairie",
-        "Le fichier bibliotheque.json (zip « contenu » livré avec chaque version, il n'est plus en ligne avec l'appli) contient les boîtes toutes prêtes. Elles sont publiées au nom de « darwin ». Une boîte déjà publiée garde sa place et l'identifiant de ses fiches : son nom, son résumé, son classement, ses tags et le texte de ses fiches sont mis à jour.",
+        "Le fichier bibliotheque.json (zip « contenu » livré avec chaque version, il n'est plus en ligne avec l'appli) contient les boîtes toutes prêtes. Elles sont publiées au nom de « darwin ». Une boîte déjà publiée garde sa place et l'identifiant de ses fiches : son nom, son résumé, son classement et le texte de ses fiches sont mis à jour.",
         h("div", { class: "toolbar" }, pickBtn, fileName, fileInput, analyse),
         out,
         log

@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v243";
+  const APP_VERSION = "v244";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -14500,9 +14500,13 @@
         const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim();
         // Round 23 : la recherche texte porte aussi sur les tags et le
         // classement (ex. "anglais", "terminale").
+        // v244 : plus de tags à saisir ; la recherche lit aussi le résumé
+        // et la description (et les anciens tags, s'il y en a).
         return (
           (col.name || "").toLowerCase().includes(q) ||
           ownerName.toLowerCase().includes(q) ||
+          (col.summary || "").toLowerCase().includes(q) ||
+          stripHtmlFast(col.description || "").toLowerCase().includes(q) ||
           collectionTags(col).some((t) => t.includes(q)) ||
           taxonomyFullLabel(collectionTaxonomy(col)).toLowerCase().includes(q)
         );
@@ -15943,6 +15947,7 @@
    *  en jetons). */
   let libraryShareCascade = null;
   let libraryShareTagInput = null;
+  let libraryShareKeptTags = [];
   async function openLibraryShareView(subject, boxCards, shareOpts) {
     if (!(await requireParentalConsent(shareOpts && shareOpts.classMode ? "partager une boîte avec une classe" : "publier une boîte dans la Librairie"))) return;
     // Round 69 : `shareOpts.classMode` = partage d'une boîte créée avec une
@@ -15985,6 +15990,8 @@
       });
     }
     if (taxEl) libraryShareCascade = createTaxonomyCascade(taxEl, { mode: "publish", sel: createdSel });
+    libraryShareTagInput = null;
+    libraryShareKeptTags = [];
     if (tagsEl) {
       libraryShareTagInput = createTagInput(tagsEl, {
         allowNew: true,
@@ -16005,6 +16012,7 @@
           // "anglais", ... } en libellés) s'il existe, sinon l'ancien `level`.
           if (libraryShareCascade) libraryShareCascade.setSelection(libraryPackSelection(box));
           if (libraryShareTagInput && Array.isArray(box.tags)) libraryShareTagInput.setTags(box.tags);
+          else if (Array.isArray(box.tags)) libraryShareKeptTags = box.tags.slice();
           if (summaryEl && !summaryEl.value) summaryEl.value = box.summary || "";
           if (descriptionEl && !descriptionEl.value) descriptionEl.value = box.description || "";
         })
@@ -16031,7 +16039,8 @@
           return;
         }
         const taxonomy = taxonomyValueFromSelection(libraryShareCascade ? libraryShareCascade.getSelection() : {});
-        const tags = libraryShareTagInput ? libraryShareTagInput.getTags() : [];
+        // v244 : plus de saisie de tags (les tags existants sont gardés).
+        const tags = libraryShareTagInput ? libraryShareTagInput.getTags() : libraryShareKeptTags;
         const submitBtn = el("library-share-submit");
         if (classMode) {
           const summary = ((summaryEl && summaryEl.value) || "").trim();
@@ -16273,6 +16282,7 @@
       items = items.filter(({ s, col }) =>
         (s.name || "").toLowerCase().includes(q) ||
         (col && (col.name || "").toLowerCase().includes(q)) ||
+        (col && (col.summary || "").toLowerCase().includes(q)) ||
         (col && collectionTags(col).some((t) => t.includes(q))) ||
         taxonomyFullLabel(creationsTaxonomyOf(s, col)).toLowerCase().includes(q)
       );
