@@ -8177,3 +8177,129 @@ body:has(#view-library.is-active[data-cycle]) { background: var(--app-bg-color, 
 #view-account .plan-card--referral .plan-actions-row { margin-bottom: 6px; }
 #view-account .plan-actions .subs-offer-btn { font-family: var(--font-type); font-size: 14px; font-weight: 600; padding: 9px 14px; border-radius: 999px; border: 1.5px solid var(--plan-color); background: var(--plan-color); color: #fff; min-height: 40px; align-self: flex-start; text-transform: none; letter-spacing: normal; }
 #view-account .plan-actions .subs-offer-btn:disabled { opacity: 0.55; }
+
+/* ==================================================================
+   v245 — plus de couleur et de fantaisie
+   ================================================================== */
+/* 1. Boutons : même style que l'ancien « Ajouter à mes révisions » des
+   blocs de la Librairie (pilule, contour coloré, fond légèrement teinté,
+   texte de la même couleur en plus foncé). Une couleur par grande partie
+   de l'appli (--btn-color). Ne sont PAS concernés : les boutons ronds
+   (accueil, classes), les boutons-icônes (accueil, chevrons, crayon,
+   drapeau…), les onglets et les cartes des formules (déjà colorées).
+   Les sélecteurs « :is(html, #v245) :is(…, #v245) » donnent à ces règles la
+   force de deux id, pour passer devant les anciennes règles des boutons. */
+:root {
+  --btn-color: #3b82c4;
+  --btn-ink-base: #000;
+  --btn-ink-pct: 72%;
+  --btn-fill-pct: 10%;
+}
+:root.is-night-mode { --btn-ink-base: #fff; --btn-ink-pct: 55%; --btn-fill-pct: 16%; }
+:is(#view-library, #view-library-share) { --btn-color: var(--home-library-bg-color, #8a63c9); }
+#view-library-detail { --btn-color: var(--row-cycle, var(--home-library-bg-color, #8a63c9)); }
+:is(#view-review-hub, #view-revision-program, #view-revision-reinforce, #view-review, #view-stats) { --btn-color: #1f9d55; }
+:is(#view-boxes-hub, #view-manage, #view-new-card, #view-cards, #view-creations, #view-creation-detail, #view-box-create) { --btn-color: #0f9b9b; }
+:is(#view-calendar, #view-calendar-event-form, #view-calendar-event-detail) { --btn-color: #ef7d2d; }
+:is(#view-classes, #view-classes-student, #view-classes-join, #view-classes-teacher, #view-classes-create, #view-class-detail, #view-class-share, #view-school-hub) { --btn-color: #2f80d1; }
+:is(#view-messages, #view-message-thread, #view-reports-hub, #view-reports, #view-reports-sent, #view-report-card) { --btn-color: #d9822b; }
+:is(#view-account, #view-subscriptions) { --btn-color: #c2569b; }
+:is(#view-settings, #view-sync) { --btn-color: #5f6e82; }
+:is(html, #v245) :is(.btn, #v245):where(:not(.home-btn, .nav-legacy-back, [data-mode], .plan-actions .btn, .account-subs-trial)),
+:is(html, #v245) :is(.robot-modal-btn, #v245),
+:is(html, #v245) :is(.revision-event-go, #boite-picker-confirm, #submit-btn, #v245) {
+  --pill: var(--btn-color);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--pill);
+  color: color-mix(in srgb, var(--pill) var(--btn-ink-pct), var(--btn-ink-base));
+  background: color-mix(in srgb, var(--pill) var(--btn-fill-pct), transparent);
+  box-shadow: none;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+:is(html, #v245) :is(.btn--small, #v245):where(:not(.home-btn, .nav-legacy-back, [data-mode], .plan-actions .btn, .account-subs-trial)) { padding: 6px 13px; font-size: 11.5px; }
+/* Bouton principal d'un formulaire : un peu plus rempli. */
+:is(html, #v245) :is(.btn--primary, .robot-modal-btn--primary, #boite-picker-confirm, #submit-btn, #v245):where(:not(.home-btn, .nav-legacy-back, [data-mode], .plan-actions .btn, .account-subs-trial)) {
+  background: color-mix(in srgb, var(--pill) calc(var(--btn-fill-pct) * 2.2), transparent);
+}
+/* Annuler, Retour, Fermer… : gris, plus discret. */
+:is(html, #v245) :is(.btn--ghost, .robot-modal-btn:not(.robot-modal-btn--primary):not(.robot-modal-btn--danger), #v245) { --pill: #8592a6; }
+/* Supprimer : rouge. */
+:is(html, #v245) :is(#calendar-detail-delete-btn, #delete-editing-card, #setting-hard-reset, .creation-detail-delete, .robot-modal-btn--danger, #v245) { --pill: #d14b3a; }
+:is(html, #v245) :is(.btn, .robot-modal-btn, .revision-event-go, #boite-picker-confirm, #submit-btn, #v245):where(:not(.home-btn, .nav-legacy-back, [data-mode], .plan-actions .btn, .account-subs-trial)):hover:not(:disabled) {
+  background: color-mix(in srgb, var(--pill) calc(var(--btn-fill-pct) * 2.8), transparent);
+}
+:is(html, #v245) :is(.btn, .robot-modal-btn, .revision-event-go, #v245):where(:not(.home-btn, .nav-legacy-back, [data-mode], .plan-actions .btn, .account-subs-trial)):active:not(:disabled) { transform: scale(0.97); }
+:is(html, #v245) :is(.btn, .robot-modal-btn, #v245):disabled { opacity: 0.45; }
+:is(html, #v245) .btn svg { flex-shrink: 0; }
+
+/* 2. Bouton d'aide du robot : collé au robot, à côté de son corps sous sa
+   tête (le titre de la page gagne la place). */
+.body-logo-row { position: relative; }
+.body-logo-row .body-logo-help-btn {
+  position: absolute;
+  left: calc(var(--body-logo-size, 40px) * 0.72);
+  top: 50%;
+  margin-top: calc(var(--body-logo-size, 40px) * 0.06);
+  width: 22px;
+  height: 22px;
+  z-index: 2;
+  background: var(--paper);
+}
+.body-logo-row .body-logo-help-btn svg { width: 13px; height: 13px; }
+.body-logo-row:has(.body-logo-help-btn:not([hidden])) .page-header-title { padding-left: 10px; }
+
+/* 3. Page d'une boîte de la Librairie : bouton sous le titre, couleur du
+   cycle, fiches en blocs. */
+#view-library-detail .library-detail-actions { margin: 0 0 14px; justify-content: flex-start; }
+#view-library-detail .library-detail-taxonomy {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--row-cycle, var(--action-color)) 14%, transparent);
+  color: color-mix(in srgb, var(--row-cycle, var(--action-color)) var(--btn-ink-pct), var(--btn-ink-base));
+  font-weight: 600;
+}
+#view-library-detail .library-detail-taxonomy[hidden] { display: none; }
+#view-library-detail .library-detail-description {
+  white-space: pre-line;
+  padding: 10px 14px;
+  border-left: 4px solid var(--row-cycle, var(--action-color));
+  border-radius: 4px 10px 10px 4px;
+  background: color-mix(in srgb, var(--row-cycle, var(--action-color)) 8%, var(--paper));
+}
+#view-library-detail .library-detail-cards-title {
+  margin: 20px 0 0;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--row-cycle, var(--action-color)) var(--btn-ink-pct), var(--btn-ink-base));
+}
+#view-library-detail .library-detail-cards { margin-top: 10px; gap: 10px; }
+#view-library-detail .library-detail-cards .library-card-item {
+  border-left: 4px solid var(--row-cycle, var(--action-color));
+  background: var(--paper);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+#view-library-detail .library-detail-cards .card-row-q { font-weight: 600; margin: 0 0 6px; }
+#view-library-detail .library-detail-cards .card-row-a { margin: 0; color: var(--ink-soft); border-left: none; padding-left: 0; }
+#view-library-detail .library-detail-cards .library-card-answer--cut { user-select: none; -webkit-user-select: none; }
+#view-library-detail .library-detail-cards .card-row-wrongs,
+#view-library-detail .library-detail-cards .card-row-link { margin-top: 8px; }
+#view-library-detail .library-detail-cards li.field-hint { border: none; box-shadow: none; background: transparent; padding: 4px 0; }
+/* Mon compte : « Enregistrer mon profil » et « Renvoyer l'email » suivent
+   aussi le style en pilule (le bouton d'essai gratuit reste plein, violet). */
+:root:root #view-account .btn.btn--primary:is(.account-profile-save, .account-parental-send) {
+  background: color-mix(in srgb, var(--pill) calc(var(--btn-fill-pct) * 2.2), transparent);
+  color: color-mix(in srgb, var(--pill) var(--btn-ink-pct), var(--btn-ink-base));
+  border-radius: 999px;
+  padding: 8px 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  font-size: 12px;
+}

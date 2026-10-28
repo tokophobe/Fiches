@@ -74,6 +74,19 @@ def esc(s):
     return html.escape(s or "", quote=True)
 
 
+def short_description(b, limit=220):
+    """v245 : plus de résumé dans le pack, seulement la description. La page
+    du site en montre le début : tout le texte s'il est court, sinon
+    jusqu'à la dernière fin de phrase avant `limit` caractères."""
+    t = re.sub(r"\s+", " ", (b.get("description") or b.get("summary") or "").strip())
+    if len(t) <= limit:
+        return t
+    ends = [m.end(1) for m in re.finditer(r"([.!?…])\s", t[: limit + 1]) if m.end(1) >= 40]
+    if ends:
+        return t[: ends[-1]]
+    return t[:limit].rsplit(" ", 1)[0] + "…"
+
+
 def page(title, description, body, depth=1, extra_head=""):
     up = "../" * depth
     robots = '<meta name="robots" content="noindex, nofollow" />\n' if NOINDEX else ""
@@ -221,7 +234,7 @@ def main():
                     sample.append({"theme": theme[:1].upper() + theme[1:], "q": q, "a": a, "more": plain(c.get("more"))})
         sample = sample[:SAMPLE_CARDS]
         box_items = "\n".join(
-            f"""        <li><h3>{esc(b['name'])}</h3><p>{esc(b.get('summary') or '')}</p><span class="n">{len(b['cards'])} fiches</span></li>"""
+            f"""        <li><h3>{esc(b['name'])}</h3><p>{esc(short_description(b))}</p><span class="n">{len(b['cards'])} fiches</span></li>"""
             for b in sorted(bxs, key=lambda x: x["name"])
         )
         same_level = sorted(x for x in by_level[lv] if x != m)

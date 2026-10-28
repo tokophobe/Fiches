@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v244";
+  const ADMIN_VERSION = "v245";
   async function checkAdminVersion() {
     const label = $("#sidebar-version");
     if (label) label.textContent = `Darwin Admin ${ADMIN_VERSION}`;
@@ -1276,8 +1276,7 @@
     }
     const cards = Array.isArray(data.cards) ? data.cards : [];
     body.replaceChildren(
-      data.summary ? h("p", null, h("b", null, data.summary)) : null,
-      data.description ? h("p", { class: "muted" }, data.description) : null,
+      mergeSummaryDescription(data.summary, data.description) ? h("p", { class: "muted" }, mergeSummaryDescription(data.summary, data.description)) : null,
       h("p", { class: "card-hint" }, plural(cards.length, "fiche", "fiches")),
       h(
         "div",
@@ -1285,6 +1284,18 @@
         cards.map((c) => h("div", { class: "cardlist-item" }, h("div", { class: "cardlist-q" }, stripHtml(c.question)), h("div", { class: "cardlist-a" }, stripHtml(c.answer))))
       )
     );
+  }
+  /** v245 : résumé et description fusionnés en une seule description
+   *  (même règle que l'appli, mergeSummaryDescription dans js/app.js). */
+  function mergeSummaryDescription(summary, description) {
+    const a = String(summary || "").trim();
+    const b = String(description || "").trim();
+    if (!a) return b;
+    if (!b) return a;
+    const na = a.toLowerCase().replace(/[\s.!?…]+$/, "");
+    if (b.toLowerCase().startsWith(na)) return b;
+    if (a.toLowerCase().includes(b.toLowerCase().replace(/[\s.!?…]+$/, ""))) return a;
+    return `${a}${/[.!?…:]$/.test(a) ? "" : "."} ${b}`;
   }
   function stripHtml(s) {
     const d = document.createElement("div");
@@ -1334,7 +1345,7 @@
       listCard.replaceChildren(
         table(
           [
-            { label: "Collection", render: (r) => h("div", null, h("div", { class: "cell-main" }, r.name), r.summary ? h("div", { class: "cell-sub" }, r.summary) : null) },
+            { label: "Collection", render: (r) => h("div", null, h("div", { class: "cell-main" }, r.name), mergeSummaryDescription(r.summary, r.description) ? h("div", { class: "cell-sub" }, mergeSummaryDescription(r.summary, r.description).slice(0, 140)) : null) },
             { label: "Auteur", render: (r) => h("div", null, r.owner_name, h("div", { class: "cell-sub" }, r.owner_email)) },
             { label: "Fiches", cls: "r num", render: (r) => fmtN(r.cards) },
             { label: "Classement", render: (r) => taxonomyShort(r.taxonomy, r.level) || h("span", { class: "faint" }, "—") },
@@ -1680,9 +1691,9 @@
   async function openSubmission(sub, reload) {
     const field = (label, node) => h("label", { class: "form-field" }, h("span", null, label), node);
     const nameIn = h("input", { type: "text", class: "input", value: sub.name || "" });
-    const summaryIn = h("input", { type: "text", class: "input", value: sub.summary || "", maxlength: "140" });
-    const descIn = h("textarea", { class: "input", rows: "3" });
-    descIn.value = sub.description || "";
+    // v245 : un seul champ « Description » (ancien résumé fusionné dedans).
+    const descIn = h("textarea", { class: "input", rows: "4" });
+    descIn.value = mergeSummaryDescription(sub.summary, sub.description);
     const noteIn = h("textarea", { class: "input", rows: "2", placeholder: "Note (raison d'un refus, corrections faites…)" });
     noteIn.value = sub.admin_note || "";
     let cardsData = (Array.isArray(sub.cards) ? sub.cards : []).map((c) => ({ ...c }));
@@ -1734,8 +1745,7 @@
       { class: "submission-form" },
       h("p", { class: "muted" }, `Proposée par ${`${sub.owner_first_name || ""} ${sub.owner_last_name || ""}`.trim() || "un enseignant"}${sub.class_name ? ` (classe « ${sub.class_name} »)` : ""}, le ${fmtDate(sub.created_at)}. Classement : ${taxonomyShort(sub.taxonomy, "—") || "—"}.`),
       field("Nom", nameIn),
-      field("Résumé", summaryIn),
-      field("Description", descIn),
+      field("Description (optionnel)", descIn),
       field("Lien « Pour aller plus loin »", linkIn),
       h("div", { class: "toolbar" }, cardsCount, latestBtn),
       cardsWrap,
@@ -1743,7 +1753,7 @@
     );
     const patch = () => ({
       name: nameIn.value.trim(),
-      summary: summaryIn.value.trim(),
+      summary: "",
       description: descIn.value.trim(),
       // v244 : plus de tags à saisir ; ceux de la proposition sont gardés.
       tags: Array.isArray(sub.tags) ? sub.tags : [],
@@ -2069,8 +2079,9 @@
       const fields = {};
       const want = {
         name: box.name,
-        summary: box.summary || existing.summary || "",
-        description: box.description || existing.description || "",
+        // v245 : plus de résumé, tout est dans la description.
+        summary: "",
+        description: mergeSummaryDescription(box.summary, box.description) || mergeSummaryDescription(existing.summary, existing.description),
         level: taxonomy.niveau ? taxonomy.niveau.label : box.level || existing.level || "",
         source_subject_id: sid,
         owner_first_name: PACK_AUTHOR.first,
@@ -2125,8 +2136,8 @@
           name: it.box.name,
           level: it.taxonomy.niveau ? it.taxonomy.niveau.label : it.box.level || "",
           price_tokens: 0,
-          summary: it.box.summary || "",
-          description: it.box.description || "",
+          summary: "",
+          description: mergeSummaryDescription(it.box.summary, it.box.description),
           source_subject_id: it.sid,
           taxonomy: it.taxonomy,
           tags: it.tags,

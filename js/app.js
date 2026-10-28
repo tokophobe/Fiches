@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v244";
+  const APP_VERSION = "v245";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -14505,8 +14505,7 @@
         return (
           (col.name || "").toLowerCase().includes(q) ||
           ownerName.toLowerCase().includes(q) ||
-          (col.summary || "").toLowerCase().includes(q) ||
-          stripHtmlFast(col.description || "").toLowerCase().includes(q) ||
+          collectionDescriptionText(col).toLowerCase().includes(q) ||
           collectionTags(col).some((t) => t.includes(q)) ||
           taxonomyFullLabel(collectionTaxonomy(col)).toLowerCase().includes(q)
         );
@@ -14537,9 +14536,9 @@
       const taxLabel = taxonomyShortLabel(collectionTaxonomy(col));
       const levelLabel = taxLabel ? ` · ${escapeHtml(taxLabel)}` : "";
       const { count: likeCount, liked } = libraryCollectionLikeStats(col.id);
-      const summary = (col.summary || "").trim();
-      const description = (col.description || "").trim();
+      const descriptionText = collectionDescriptionText(col);
       const li = document.createElement("li");
+      li.dataset.colId = col.id;
       li.className = "subject-row library-row library-row--cycled" + (inRevisions ? " library-row--in-revisions" : "");
       // Round 56 : liseré à la couleur du cycle de la boîte.
       const cycleKey = collectionCycleKey(col);
@@ -14551,23 +14550,11 @@
           <span class="library-rating-row">${libraryThumbHtml(likeCount, liked, col.id)}</span>
         </div>
         <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""}${levelLabel}</span>
-        ${libraryShowSummaries && summary ? `<p class="library-row-summary">${escapeHtml(summary)}</p>` : ""}
-        ${libraryShowSummaries && description ? `<p class="library-row-summary library-row-description">${escapeHtml(description)}</p>` : ""}
-        ${
-          inRevisions
-            ? `<span class="library-row-in-revisions">Déjà dans mes révisions</span>`
-            : `<button type="button" class="library-row-add">Ajouter à mes révisions</button>`
-        }
+        ${libraryShowSummaries && descriptionText ? `<p class="library-row-summary">${escapeHtml(descriptionText)}</p>` : ""}
+        ${inRevisions ? `<span class="library-row-in-revisions">Déjà dans mes révisions</span>` : ""}
       `;
-      // Round 53 : « Ajouter à mes révisions » directement depuis le bloc.
-      const addBtn = li.querySelector(".library-row-add");
-      if (addBtn) {
-        addBtn.addEventListener("click", async (e) => {
-          e.stopPropagation();
-          await addLibraryCollectionToRevisions(col);
-          renderLibraryList();
-        });
-      }
+      // v245 : plus de bouton « Ajouter à mes révisions » sur le bloc (il
+      // est sur la page de la boîte).
       const thumbEl = li.querySelector(".library-thumb");
       if (thumbEl) {
         thumbEl.addEventListener("click", async (e) => {
@@ -14575,7 +14562,10 @@
           await toggleLibraryLike(col, liked, () => renderLibraryList());
         });
       }
-      li.addEventListener("click", () => openLibraryDetailView(col));
+      li.addEventListener("click", () => {
+        rememberLibraryListScroll(col, li);
+        openLibraryDetailView(col);
+      });
       list.appendChild(li);
     }
   }
@@ -14610,18 +14600,19 @@
       tagsEl.hidden = detailTags.length === 0;
       tagsEl.innerHTML = tagChipsHtml(detailTags);
     }
-    // Round 20, item 2 : résumé/description, restitués ici tels que saisis
-    // au partage — masqués quand absents (collections d'avant ce round, ou
-    // champs laissés vides).
-    const summaryEl = el("library-detail-summary");
-    if (summaryEl) {
-      summaryEl.hidden = !col.summary;
-      summaryEl.textContent = col.summary || "";
-    }
+    // v245 : un seul texte (ancien résumé + description fusionnés).
+    const descriptionText = collectionDescriptionText(col);
     const descriptionEl = el("library-detail-description");
     if (descriptionEl) {
-      descriptionEl.hidden = !col.description;
-      descriptionEl.textContent = col.description || "";
+      descriptionEl.hidden = !descriptionText;
+      descriptionEl.textContent = descriptionText;
+    }
+    // v245 : couleur du cycle de la boîte (bouton, cadre du texte, fiches).
+    const detailView = el("view-library-detail");
+    if (detailView) {
+      const ck = collectionCycleKey(col);
+      detailView.dataset.cycle = ck;
+      detailView.style.setProperty("--row-cycle", `var(--cycle-${ck})`);
     }
     // v237 : lien « Pour aller plus loin » de la collection.
     const linkWrap = el("library-detail-link");
@@ -14659,16 +14650,39 @@
     const homeBtnEl = el("home-btn");
     if (homeBtnEl) homeBtnEl.hidden = false;
     if (el("body-logo-row")) el("body-logo-row").hidden = false;
+    // v245 : les fiches s'affichent directement sur cette page.
+    loadLibraryDetailCards(col);
   }
 
   // Round 30 : la fiche détaillée d'une collection s'ouvre aussi depuis Mes
   // créations de fiches (bouton prix d'une boîte publiée).
   let libraryDetailReturnView = "library";
+  /* v245 : au retour à la Librairie, on retrouve la boîte à la même
+     hauteur de l'écran (position mémorisée à l'ouverture de la boîte). */
+  let libraryListScrollMemo = null;
+  function rememberLibraryListScroll(col, li) {
+    libraryListScrollMemo = { id: col.id, top: li ? li.getBoundingClientRect().top : 0, y: window.scrollY };
+  }
+  function restoreLibraryListScroll() {
+    const memo = libraryListScrollMemo;
+    if (!memo) return;
+    const go = () => {
+      const li = [...document.querySelectorAll("#library-list li[data-col-id]")].find((x) => x.dataset.colId === memo.id);
+      const y = li ? window.scrollY + li.getBoundingClientRect().top - memo.top : memo.y;
+      window.scrollTo({ top: Math.max(0, y), behavior: "instant" });
+    };
+    go();
+    requestAnimationFrame(() => {
+      go();
+      setTimeout(go, 60);
+    });
+  }
   function closeLibraryDetailView() {
     const back = libraryDetailReturnView || "library";
     libraryDetailReturnView = "library";
     boitePickerActivateView(`view-${back}`);
     applyBodyLogoSpeech(back);
+    if (back === "library") restoreLibraryListScroll();
     if (back === "creations") renderCreationsList();
     if (back === "creation-detail") renderCreationDetail();
   }
@@ -14694,6 +14708,22 @@
    *  arrière jusqu'à annuler la troncature elle-même. */
   /** Round 64 : nombre de fiches d'une collection (colonne card_count de la
    *  vue library_catalog ; repli sur les fiches si elles sont là). */
+  /** v245 : un seul texte de présentation par boîte. Les boîtes publiées
+   *  avant la v245 ont un résumé ET une description : ils sont fusionnés
+   *  (résumé, puis description), sans doublon si l'un reprend l'autre. */
+  function mergeSummaryDescription(summary, description) {
+    const a = String(summary || "").trim();
+    const b = String(description || "").trim();
+    if (!a) return b;
+    if (!b) return a;
+    const na = a.toLowerCase().replace(/[\s.!?…]+$/, "");
+    if (b.toLowerCase().startsWith(na)) return b;
+    if (a.toLowerCase().includes(b.toLowerCase().replace(/[\s.!?…]+$/, ""))) return a;
+    return `${a}${/[.!?…:]$/.test(a) ? "" : "."} ${b}`;
+  }
+  function collectionDescriptionText(col) {
+    return col ? mergeSummaryDescription(col.summary, col.description) : "";
+  }
   function libraryCardCount(col) {
     if (!col) return 0;
     if (Number.isFinite(col.card_count)) return col.card_count;
@@ -14709,9 +14739,7 @@
     return null;
   }
   let libraryCardsViewToken = 0;
-  async function openLibraryCardsView(col) {
-    const titleEl = el("library-cards-title");
-    if (titleEl) titleEl.textContent = col.name || "Fiches";
+  async function loadLibraryDetailCards(col) {
     const listEl = el("library-cards-list");
     const token = ++libraryCardsViewToken;
     const noteEl0 = el("library-cards-note");
@@ -14719,10 +14747,9 @@
     const countEl0 = el("library-cards-count");
     if (countEl0) countEl0.textContent = `Fiches (${libraryCardCount(col)})`;
     if (listEl) {
-      listEl.className = "card-list library-cards-list library-cards-list--r55";
+      listEl.className = "library-cards-list library-detail-cards";
       listEl.innerHTML = `<li class="field-hint">Chargement des fiches…</li>`;
     }
-    boitePickerActivateView("view-library-cards");
     // Round 64 : les fiches viennent du serveur, qui décide de l'accès —
     // réponses entières (auteur, administrateur, abonné) ou aperçu.
     const res = await Sync.library.cards(col.id);
@@ -14734,12 +14761,12 @@
     const cards = res.cards;
     const fullAccess = res.full;
     if (listEl) {
-      listEl.className = "card-list library-cards-list library-cards-list--r55";
+      listEl.className = "library-cards-list library-detail-cards";
       listEl.innerHTML =
         cards
           .map(
             (c) => `
-        <li class="card-row card-row--r47 library-card-item">
+        <li class="library-card-item">
           <div class="card-row-main">
             <p class="card-row-q">${toDisplayHtml(c.question || "")}</p>
             <p class="card-row-a${fullAccess ? "" : " library-card-answer--cut"}">${fullAccess ? answerWithMoreHtml(c) : escapeHtml(c.answer || "")}</p>
@@ -14758,9 +14785,6 @@
     }
     const cardsCountEl = el("library-cards-count");
     if (cardsCountEl) cardsCountEl.textContent = `Fiches (${cards.length})`;
-    const homeBtnEl = el("home-btn");
-    if (homeBtnEl) homeBtnEl.hidden = false;
-    if (el("body-logo-row")) el("body-logo-row").hidden = false;
   }
 
   function closeLibraryCardsView() {
@@ -14771,12 +14795,6 @@
   if (libraryDetailBackBtn) libraryDetailBackBtn.addEventListener("click", () => closeLibraryDetailView());
   const libraryCardsBackBtn = el("library-cards-back-btn");
   if (libraryCardsBackBtn) libraryCardsBackBtn.addEventListener("click", () => closeLibraryCardsView());
-  const libraryDetailViewCardsBtn = el("library-detail-view-cards-btn");
-  if (libraryDetailViewCardsBtn) {
-    libraryDetailViewCardsBtn.addEventListener("click", () => {
-      if (libraryDetailCollection) openLibraryCardsView(libraryDetailCollection);
-    });
-  }
 
   /* ---- Boîtes toutes prêtes pour la Bibliothèque (packs/bibliotheque.json).
      Chaque boîte du pack reçoit un id de boîte fixe ("pack-<clé>") : un
@@ -15957,22 +15975,19 @@
     const classMode = !!(shareOpts && shareOpts.classMode);
     const titleEl = el("library-share-title");
     const hintEl = el("library-share-class-hint");
-    const summaryLabelEl = el("library-share-summary-label");
     const submitBtnEl = el("library-share-submit");
     if (titleEl) titleEl.textContent = classMode ? `Partager avec « ${shareOpts.className} »` : "Partager dans la librairie";
     if (hintEl) {
       hintEl.hidden = !classMode;
       hintEl.textContent = classMode
-        ? "Ta boîte sera partagée tout de suite avec ta classe. Elle sera aussi proposée à darwin pour la Librairie : après relecture (et éventuelles corrections), elle pourra y être publiée à ton nom, pour profiter à d'autres élèves. Pour cela, renseigne son classement et un résumé."
+        ? "Ta boîte sera partagée tout de suite avec ta classe. Elle sera aussi proposée à darwin pour la Librairie : après relecture (et éventuelles corrections), elle pourra y être publiée à ton nom, pour profiter à d'autres élèves. Pour cela, renseigne son classement (et, si tu veux, une description)."
         : "";
     }
-    if (summaryLabelEl) summaryLabelEl.textContent = classMode ? "Résumé (une phrase)" : "Résumé (une phrase, optionnel)";
     if (submitBtnEl) submitBtnEl.textContent = classMode ? "Partager avec la classe" : "Partager";
     libraryShareClassOpts = classMode ? shareOpts : null;
     const nameEl = el("library-share-name");
     const taxEl = el("library-share-taxonomy");
     const tagsEl = el("library-share-tags");
-    const summaryEl = el("library-share-summary");
     const descriptionEl = el("library-share-description");
     if (nameEl) nameEl.value = subject.name || "";
     // Round 23 : taxonomie (Excel) + tags. Les collections déjà publiées
@@ -15999,7 +16014,6 @@
         getSuggestions: libraryKnownTags,
       });
     }
-    if (summaryEl) summaryEl.value = "";
     if (descriptionEl) descriptionEl.value = "";
     // Boîte toute prête : pré-remplit niveau, résumé, description et prix
     // depuis packs/bibliotheque.json (modifiables avant de publier).
@@ -16013,8 +16027,7 @@
           if (libraryShareCascade) libraryShareCascade.setSelection(libraryPackSelection(box));
           if (libraryShareTagInput && Array.isArray(box.tags)) libraryShareTagInput.setTags(box.tags);
           else if (Array.isArray(box.tags)) libraryShareKeptTags = box.tags.slice();
-          if (summaryEl && !summaryEl.value) summaryEl.value = box.summary || "";
-          if (descriptionEl && !descriptionEl.value) descriptionEl.value = box.description || "";
+          if (descriptionEl && !descriptionEl.value) descriptionEl.value = mergeSummaryDescription(box.summary, box.description);
         })
         .catch(() => {});
     }
@@ -16043,14 +16056,9 @@
         const tags = libraryShareTagInput ? libraryShareTagInput.getTags() : libraryShareKeptTags;
         const submitBtn = el("library-share-submit");
         if (classMode) {
-          const summary = ((summaryEl && summaryEl.value) || "").trim();
-          if (!summary) {
-            await robotAlert("Ajoute un résumé d'une phrase : il présentera ta boîte dans la Librairie.");
-            return;
-          }
           if (submitBtn) submitBtn.disabled = true;
           try {
-            await shareOpts.onSubmit({ name, taxonomy, tags, summary, description: ((descriptionEl && descriptionEl.value) || "").trim() });
+            await shareOpts.onSubmit({ name, taxonomy, tags, summary: "", description: ((descriptionEl && descriptionEl.value) || "").trim() });
           } finally {
             if (submitBtn) submitBtn.disabled = false;
           }
@@ -16063,7 +16071,8 @@
           level: taxonomy.niveau ? taxonomy.niveau.label : "",
           taxonomy,
           tags,
-          summary: ((summaryEl && summaryEl.value) || "").trim(),
+          // v245 : un seul champ, la description (résumé laissé vide).
+          summary: "",
           description: ((descriptionEl && descriptionEl.value) || "").trim(),
           priceTokens: 0,
           sourceSubjectId: subject.id,
@@ -16282,7 +16291,7 @@
       items = items.filter(({ s, col }) =>
         (s.name || "").toLowerCase().includes(q) ||
         (col && (col.name || "").toLowerCase().includes(q)) ||
-        (col && (col.summary || "").toLowerCase().includes(q)) ||
+        (col && collectionDescriptionText(col).toLowerCase().includes(q)) ||
         (col && collectionTags(col).some((t) => t.includes(q))) ||
         taxonomyFullLabel(creationsTaxonomyOf(s, col)).toLowerCase().includes(q)
       );

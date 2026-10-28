@@ -1879,39 +1879,27 @@
         <button class="btn btn--ghost btn--small" id="library-detail-back-btn" type="button">← Retour</button>
       </div>
       <h2 class="view-title" id="library-detail-title">Collection</h2>
+      <!-- v245 : « Ajouter à mes révisions » juste sous le titre. -->
+      <div class="form-actions library-detail-actions">
+        <button type="button" class="btn btn--small" id="library-detail-take-btn">Ajouter à mes révisions</button>
+        <!-- Round 55 : en partage avec une classe, remplace « Ajouter à mes
+             révisions ». -->
+        <button type="button" class="btn btn--small" id="library-detail-share-class-btn" hidden>Partager avec cette classe</button>
+      </div>
       <!-- Round 54 : « N fiches · par X » en plus grand, pouce à droite. -->
       <div class="library-detail-meta-row">
         <p class="card-row-meta" id="library-detail-meta"></p>
         <p class="library-rating-row" id="library-detail-rating"></p>
       </div>
-      <!-- Round 20, item 2 : résumé (une phrase) et description (plus
-           longue), saisis au partage, restitués ici. Masqués si absents
-           (collections partagées avant ce round, ou champs laissés vides). -->
       <p class="library-detail-taxonomy" id="library-detail-taxonomy" hidden></p>
-      <p class="library-detail-summary" id="library-detail-summary" hidden></p>
+      <!-- v245 : un seul texte de présentation (ancien résumé + description
+           fusionnés, voir collectionDescriptionText). -->
       <p class="library-detail-description" id="library-detail-description" hidden></p>
       <p class="library-detail-link" id="library-detail-link" hidden><button type="button" class="learn-link-chip learn-link-chip--box" id="library-detail-link-btn"></button></p>
-      <div class="form-actions">
-        <button type="button" class="btn btn--small" id="library-detail-view-cards-btn">Voir les fiches</button>
-        <button type="button" class="btn btn--small" id="library-detail-take-btn">Ajouter à mes révisions</button>
-        <!-- Round 55 : en partage avec une classe, remplace « Ajouter à mes
-             révisions », même style que « Voir les fiches ». -->
-        <button type="button" class="btn btn--small" id="library-detail-share-class-btn" hidden>Partager avec cette classe</button>
-      </div>
-    </section>
-
-    <!-- Round 19, item 11 : aperçu épuré des fiches d'une collection
-         partagée — juste question/réponse, sans les actions habituelles de
-         la page "Fiches" (éditer, hiberner, algo...). -->
-    <section id="view-library-cards" class="view">
-      <div class="list-header">
-        <button class="btn btn--ghost btn--small" id="library-cards-back-btn" type="button">← Retour</button>
-      </div>
-      <h2 class="view-title" id="library-cards-title">Fiches</h2>
-      <!-- Round 20, item 3 : explique pourquoi les réponses sont
-           tronquées (sinon ça pourrait passer pour un bug). -->
-      <p class="field-hint library-cards-note" id="library-cards-note" hidden>Aperçu tronqué — prends cette collection (bouton "Prendre") pour voir les réponses complètes.</p>
-      <p class="cards-count-title" id="library-cards-count"></p>
+      <!-- v245 : les fiches sont affichées directement ici, en blocs (plus
+           de page « Voir les fiches »). -->
+      <p class="cards-count-title library-detail-cards-title" id="library-cards-count"></p>
+      <p class="field-hint library-cards-note" id="library-cards-note" hidden></p>
       <ul class="library-cards-list" id="library-cards-list"></ul>
     </section>
 
@@ -1936,13 +1924,10 @@
              un champ n'apparaît que s'il a des choix possibles). v244 : plus
              de tags. -->
         <div id="library-share-taxonomy"></div>
-        <label class="field">
-          <span id="library-share-summary-label">Résumé (une phrase, optionnel)</span>
-          <input type="text" id="library-share-summary" maxlength="140" placeholder="Ex. Vocabulaire d'anglais niveau 5ème" />
-        </label>
+        <!-- v245 : plus de champ « Résumé » (fusionné avec la description). -->
         <label class="field">
           <span>Description (optionnel)</span>
-          <textarea id="library-share-description" rows="4" placeholder="Quelques lignes pour présenter cette collection…"></textarea>
+          <textarea id="library-share-description" rows="4" placeholder="Quelques lignes pour présenter cette boîte… Ex. Vocabulaire d'anglais niveau 5ème : les couleurs, les animaux, la maison."></textarea>
         </label>
         <div class="form-actions" style="margin-top:0;">
           <button type="submit" class="btn btn--primary" id="library-share-submit">Partager</button>
