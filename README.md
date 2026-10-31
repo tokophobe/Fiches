@@ -1,171 +1,119 @@
-# Fiches — révision espacée
+# darwin — fiches de révision
 
-Une PWA toute simple : tu entres des questions/réponses, l'appli te les
-pose, et plus tu réponds juste, moins souvent elle te les repose
-(algorithme SM-2, celui d'Anki).
+**darwin** (dépôt « Fiches ») est une application web installable (PWA)
+de révision par fiches question / réponse. Elle repose sur la
+**répétition espacée** : plus on répond juste à une fiche, moins souvent
+l'appli la repose (algorithme SM-2, celui d'Anki).
 
-## Nouveautés de cette version
+Version actuelle : **v245** (affichée dans les Réglages de l'appli).
 
-- Pastille de notification (à côté du logo) redessinée façon icône iOS :
-  icône en fond "squircle", badge en dégradé rouge avec liseré.
-- Mode bonus (révision libre) : le tirage lisse toujours la charge en
-  piochant en priorité parmi les fiches du jour le plus chargé à venir.
-- Page **Réviser** : un mini-histogramme des échéances de la boîte en
-  cours apparaît en bas de page (taper dessus change l'échelle : 15 j
-  → 1 mois → 3 mois → 6 mois → 1 an → boucle). Le compteur « fiches
-  revues aujourd'hui » a été déplacé dans **Stats**, et le bouton
-  « Modifier cette fiche » est maintenant une icône dans le coin
-  supérieur droit de la fiche elle-même.
-- Nouvel onglet **Réglages** (icône ⚙) : permet de configurer le
-  nombre de jours dont chaque bouton (Difficile / Bien / Facile)
-  recule une fiche en mode bonus (1/3/5 par défaut).
+## Fonctionnalités
 
-Tout est stocké **en local sur ton appareil** (IndexedDB) — pas de
-compte, pas de serveur, ça marche hors-ligne une fois installée.
+- **Fiches et boîtes** : chaque boîte (histoire, maths…) a ses fiches, sa
+  file de révision et ses statistiques. Programme de révision, mode
+  renforcement et calendrier des échéances.
+- **Compte utilisateur** : on se connecte sur n'importe quel appareil et
+  on retrouve ses fiches. L'appli marche aussi **hors-ligne** : les
+  modifications sont envoyées dès que le réseau revient.
+- **Librairie** : boîtes publiées et partagées, classées par catégorie,
+  niveau et matière (voir « Taxonomie » plus bas), avec notes et
+  signalements.
+- **Classes** : un enseignant crée une classe, les élèves la rejoignent ;
+  partage de boîtes, évènements (contrôles…) et messagerie de classe.
+- **Défi du jour** : 10 questions de culture générale par jour, les mêmes
+  pour tout le monde, sur le site et dans l'appli.
+- **Abonnements** payants via Stripe : formule individuelle, « Super
+  enseignant » (par classe) et « Super école ». Le détail et les prix
+  figurent dans `legal/cgv.html` et `site/index.html`.
+- **Darwin Admin** (`admin/`) : l'outil d'administration (réglages de
+  l'appli, apparence, abonnements, aperçu en direct).
 
-## Boîtes
-
-L'appli gère plusieurs boîtes indépendantes (histoire, maths, etc.).
-Chacune a ses propres fiches, sa propre file de révision et ses propres
-stats. Le sélecteur en haut de l'écran permet de changer de boîte à
-tout moment ; le bouton **+** en crée une nouvelle. Dans l'onglet
-**Gérer**, une section « Boîtes » permet de renommer ou supprimer une
-boîte (la suppression retire aussi ses fiches — au moins une boîte
-doit toujours rester).
-
-Si tu utilises la synchronisation Supabase, la boîte de chaque fiche
-est propagée automatiquement entre appareils.
-
-## Structure du projet
+## Organisation des fichiers
 
 ```
-fiches-pwa/
-├── index.html
-├── manifest.json
-├── sw.js                 # service worker (cache hors-ligne)
-├── css/style.css
-├── js/
-│   ├── sm2.js             # algorithme de répétition espacée
-│   ├── db.js               # stockage IndexedDB
-│   └── app.js               # logique de l'appli
-└── icons/                     # icônes 192/512 (normales + maskable)
+index.html            l'appli (tous les écrans)
+manifest.json, sw.js  installation et fonctionnement hors-ligne
+_headers              réglages de cache (Netlify uniquement)
+css/                  styles (couleurs et polices en haut de style.css)
+js/                   code de l'appli (app.js = l'essentiel)
+admin/                Darwin Admin
+site/                 site vitrine public
+legal/                CGU, CGV, confidentialité, mentions légales…
+guide/                pages d'aide
+data/taxonomie.xlsx   classement de la Librairie (modifiable dans Excel)
+supabase/             base de données (SQL) et fonctions serveur Stripe
+tools/                scripts Python (lancement, pages du site)
+icons/                icônes de l'appli
+CLAUDE.md             description technique du projet pour Claude Code
 ```
 
-## Tester en local
+## Le serveur : Supabase
 
-Un service worker exige HTTPS *ou* `localhost` — tu ne peux pas juste
-double-cliquer sur `index.html`. Le plus simple :
+Les comptes, la synchronisation, la Librairie, les classes et les
+abonnements utilisent un projet **Supabase**. Son adresse et sa clé
+publique « anon » sont dans `js/config.js`. Cette clé est publique par
+conception : ce sont les règles de sécurité de la base (RLS, « chacun ne
+lit et n'écrit que ses lignes ») qui protègent les données. La clé
+`service_role` et les clés Stripe secrètes, elles, ne doivent **jamais**
+apparaître dans le code.
+
+### Modifications de la base (fichiers SQL)
+
+Chaque fichier de `supabase/` s'exécute **une fois**, à la main :
+Supabase → **SQL Editor** → **New query** → coller le fichier → **Run**.
+L'en-tête de chaque fichier explique à quoi il sert et s'il doit passer
+avant ou après un autre.
+
+- Nouveau projet : `supabase-schema.sql`, puis
+  `supabase/fix_personal_sync_rls_scope.sql`, puis les autres fichiers
+  `supabase/*.sql` dans l'ordre de leur numéro de round, en respectant
+  les indications « APRÈS … » de leurs en-têtes.
+- Projet existant : lorsqu'une nouvelle version ajoute un fichier SQL,
+  il suffit d'exécuter celui-là.
+
+### Paiements Stripe
+
+La mise en place (produits, clés, fonctions serveur, webhook, passage en
+réel) est décrite pas à pas dans
+[`supabase/functions/README-stripe.md`](supabase/functions/README-stripe.md).
+
+## Publier une nouvelle version
+
+1. À chaque changement de l'appli, augmenter le numéro de version à deux
+   endroits, avec la même valeur :
+   - `CACHE_NAME` dans `sw.js` (`fiches-cache-v245` → `fiches-cache-v246`) ;
+   - `APP_VERSION` en haut de `js/app.js` (`"v245"` → `"v246"`).
+
+   Sans ce changement, les téléphones gardent l'ancienne version en
+   mémoire. Avec lui, l'appli détecte la nouveauté à l'ouverture et se met
+   à jour toute seule.
+2. Mettre les fichiers en ligne : fusionner les modifications dans la
+   branche `main` sur GitHub, ou les redéposer sur l'hébergeur.
+3. Vérifier dans les **Réglages** de l'appli que le nouveau numéro
+   s'affiche.
+
+Hébergement : n'importe quel hébergeur de site statique convient, par
+exemple **GitHub Pages** (dépôt → Settings → Pages → branche `main`,
+dossier `/`) ou **Netlify**.
+
+## Tester sur son ordinateur
+
+L'appli ne s'ouvre pas en double-cliquant sur `index.html` : le mode
+hors-ligne exige une adresse `localhost` ou HTTPS. Depuis le dossier du
+projet :
 
 ```bash
-cd fiches-pwa
 python3 -m http.server 8080
-# puis ouvre http://localhost:8080 dans le navigateur
 ```
 
-(N'importe quel serveur statique fonctionne : `npx serve`, VS Code
-« Live Server », etc.)
+puis ouvrir http://localhost:8080 dans le navigateur.
 
-## Déployer pour de vrai (gratuit)
+## Installer l'appli sur un téléphone
 
-N'importe quel hébergeur de site statique convient. Deux options simples :
-
-**Netlify (glisser-déposer)**
-1. Va sur https://app.netlify.com/drop
-2. Glisse le dossier `fiches-pwa` entier
-3. Ouvre l'URL fournie sur ton téléphone
-
-**GitHub Pages**
-1. Crée un dépôt et pousse le contenu de `fiches-pwa/` à la racine
-2. Repo → Settings → Pages → source = branche principale, dossier `/`
-3. L'appli sera sur `https://<utilisateur>.github.io/<repo>/`
-
-## Installer sur ton téléphone
-
-- **Android (Chrome)** : ouvre l'URL → menu ⋮ → « Installer l'application »
-- **iOS (Safari)** : ouvre l'URL → bouton Partager → « Sur l'écran d'accueil »
-
-Une fois installée, l'icône apparaît comme une vraie appli et elle
-fonctionne hors-ligne.
-
-## Synchroniser entre plusieurs appareils (Supabase)
-
-Par défaut, les fiches restent uniquement sur l'appareil (IndexedDB). Pour
-avoir les mêmes fiches sur ton PC et ton téléphone, connecte l'appli à un
-projet Supabase gratuit — pas de compte à créer dans l'appli elle-même,
-juste un **code de synchronisation** que tu entres sur chaque appareil.
-
-**1. Crée un projet Supabase**
-- Va sur https://supabase.com → « New project » (le plan gratuit suffit largement)
-- Une fois le projet créé, ouvre **SQL Editor** → **New query**, colle le
-  contenu de `supabase-schema.sql` (à la racine de ce dossier), clique **Run**
-- Va dans **Project Settings → API** : note l'**URL du projet** et la clé
-  **anon / public** (surtout pas la clé `service_role`, qui est secrète)
-
-*Projet Supabase déjà existant (créé avant l'ajout des boîtes ou de la
-page Tamagotchi) ?* Recolle et relance `supabase-schema.sql` une fois —
-les commandes sont sans risque à rejouer, elles ajoutent juste les
-colonnes et la table manquantes (dont `reward_state`, qui porte
-maintenant aussi la colonne `tamagotchi`, nécessaire pour que le
-compagnon et ses cadeaux se synchronisent entre appareils).
-
-**2. Connecte l'appli**
-- Ouvre l'appli → onglet **Sync**
-- Colle l'URL et la clé anon
-- Clique **Générer** pour créer un code de synchronisation, puis **Connecter**
-- Sur ton autre appareil : mêmes URL/clé, mais entre **exactement le même
-  code** au lieu d'en générer un nouveau
-
-À partir de là, tout ajout, modification, suppression ou révision se
-synchronise automatiquement (et en temps réel si les deux appareils sont
-ouverts en même temps). L'appli reste utilisable hors-ligne : les
-modifications faites sans connexion sont envoyées dès que le réseau revient
-(l'onglet Sync affiche le nombre de fiches en attente).
-
-**À savoir sur la sécurité** : il n'y a pas de compte utilisateur, donc le
-code de synchronisation joue le rôle de mot de passe — garde-le pour toi.
-La configuration proposée (policy Supabase ouverte à la clé « anon ») est
-adaptée à un usage personnel, pas à des données sensibles.
-
-## Mise à jour automatique
-
-L'appli vérifie s'il existe une nouvelle version à chaque ouverture (et
-toutes les heures si elle reste ouverte en arrière-plan). Dès qu'une
-nouvelle version est détectée, elle s'active et la page se recharge
-toute seule — plus besoin de vider le cache ou de réinstaller l'icône.
-
-Deux conditions pour que ça marche bien :
-- **Redéployer les fichiers** à chaque changement (copier le zip sur ton
-  PC ne suffit pas si l'appli tourne sur une URL en ligne)
-- **Incrémenter `CACHE_NAME`** dans `sw.js` à chaque déploiement (ex.
-  `fiches-cache-v5` → `v6`) — c'est ce qui fait que le fichier `sw.js`
-  change d'octets et que le navigateur le remarque
-
-Le fichier `_headers` (reconnu par Netlify) empêche en plus la mise en
-cache de `sw.js` et `index.html` côté serveur, pour que la vérification
-soit toujours fiable.
-
-## Comptes : chacun ses données
-
-Depuis la v159, toutes les données personnelles (fiches, boîtes, dossiers,
-calendrier) appartiennent au **compte** connecté. On se connecte sur
-n'importe quel appareil et on retrouve tout ; personne d'autre ne peut les
-voir, même sur le même appareil (chaque compte a son propre espace local,
-et changer de compte recharge l'appli sur le bon espace).
-
-Mise en place d'un serveur (une fois) :
-
-1. Créer un projet Supabase, puis exécuter dans l'éditeur SQL, dans l'ordre :
-   `supabase-schema.sql`, `supabase/fix_personal_sync_rls_scope.sql`, les
-   scripts `supabase/*_schema.sql` / `*_migration.sql` (classes, librairie…),
-   et enfin `supabase/account_scoping_migration.sql`.
-2. Renseigner l'URL du projet et sa clé publique « anon » dans
-   `js/config.js` (Réglages développeur → « Configuration du serveur »
-   affiche le texte exact à coller). Les utilisateurs n'ont alors plus qu'à
-   créer leur compte.
-
-La clé « anon » est publique par conception : ce sont les règles de
-sécurité de la base (RLS, « chacun ne lit et n'écrit que ses lignes ») qui
-protègent les données.
+- **Android (Chrome)** : ouvrir l'adresse de l'appli → menu ⋮ →
+  « Installer l'application ».
+- **iPhone (Safari)** : ouvrir l'adresse → bouton Partager → « Sur l'écran
+  d'accueil ».
 
 ## Taxonomie de la Librairie (fichier Excel)
 
@@ -175,40 +123,50 @@ de recherche sont lus **directement** dans `data/taxonomie.xlsx`.
 
 Pour le modifier :
 
-1. Ouvre `data/taxonomie.xlsx` dans Excel et modifie-le (onglet « listes »
-   + les matrices de correspondance : une cellule non vide = lien).
-   Garde les mêmes noms d'onglets et la même disposition (ids/libellés
-   dans l'onglet « listes », matrices à partir de la cellule C3).
-2. Remplace `data/taxonomie.xlsx` sur le site (même nom, même dossier).
+1. Ouvrir `data/taxonomie.xlsx` dans Excel et le modifier (onglet
+   « listes » + les matrices de correspondance : une cellule non vide =
+   un lien). Garder les mêmes noms d'onglets et la même disposition (ids
+   et libellés dans l'onglet « listes », matrices à partir de la cellule
+   C3).
+2. Remplacer `data/taxonomie.xlsx` sur le site (même nom, même dossier).
 
-Matières : elles sont proposées d'après la spécialité choisie (onglet
-« spécialités-matières »). Pour un niveau qui n'a aucune spécialité (CP à
-3ème), elles viennent directement de l'onglet « niveaux-matières ».
+Pas besoin de nouvelle version de l'appli : elle relit le fichier à
+chaque ouverture. Pour vérifier : Réglages développeur → « Librairie —
+taxonomie (Excel) » → « Relire l'Excel ».
 
-C'est tout : pas besoin de nouvelle version de l'appli. Elle relit le
-fichier à chaque ouverture (le service worker le prend toujours sur le
-réseau d'abord). Pour vérifier : Réglages développeur → « Librairie —
-taxonomie (Excel) » → « Relire l'Excel », qui affiche ce qui a été lu.
+Les matières sont proposées d'après la spécialité choisie (onglet
+« spécialités-matières »). Pour un niveau sans spécialité (CP à 3ème),
+elles viennent de l'onglet « niveaux-matières ».
 
-Évite de changer les ids d'éléments déjà utilisés : les collections
-publiées gardent l'id et le libellé de leur classement.
+Éviter de changer les ids déjà utilisés : les boîtes publiées gardent
+l'id et le libellé de leur classement.
+
+## Ouverture au public
+
+`tools/lancement.py` fait le bilan de ce qui reste à faire avant
+l'ouverture (pages encore cachées des moteurs de recherche, cases à
+compléter dans les pages légales…) puis, avec `--go <adresse du site>`,
+bascule le site en mode public. Les instructions sont en tête du fichier.
+
+`tools/build_site_pages.py` génère les pages publiques « Fiches de
+révision — matière / niveau » à partir de `packs/bibliotheque.json` (ce
+dossier n'est pas encore dans le dépôt).
 
 ## Comment fonctionne la répétition espacée
 
-Chaque fiche a trois valeurs : un facteur de facilité, un intervalle
-(en jours) et un compteur de bonnes réponses d'affilée. Après avoir
-répondu, tu notes la fiche :
+Chaque fiche a trois valeurs : un facteur de facilité, un intervalle (en
+jours) et un compteur de bonnes réponses d'affilée. Après avoir répondu,
+on note la fiche :
 
-- **Encore** → tu la reverras dans moins d'un jour
-- **Difficile** → l'intervalle progresse lentement
-- **Bien** → l'intervalle suit la progression normale (1 j → 6 j → ×facteur)
-- **Facile** → l'intervalle grandit plus vite
+- **Encore** → elle revient dans moins d'un jour ;
+- **Difficile** → l'intervalle progresse lentement ;
+- **Bien** → progression normale (1 j → 6 j → × facteur) ;
+- **Facile** → l'intervalle grandit plus vite.
 
-Tout ça vit dans `js/sm2.js`, une soixantaine de lignes commentées si
-tu veux l'ajuster.
+Tout est dans `js/sm2.js`.
 
 ## Modifier le design
 
-Les couleurs, polices et espacements sont centralisés en haut de
-`css/style.css` (bloc `:root`). Change les variables, tout le reste
-suit.
+Les couleurs, polices et espacements sont regroupés en haut de
+`css/style.css` (bloc `:root`). La plupart se règlent aussi sans toucher
+au code, depuis Darwin Admin.
