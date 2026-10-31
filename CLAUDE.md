@@ -80,6 +80,15 @@ Les commentaires du code font référence aux numéros de version
 (« v237 », « Round 65 ») : continuer cette convention pour les nouveautés
 notables.
 
+## Hébergement
+
+GitHub Pages, branche `main`, dossier racine :
+https://tokophobe.github.io/Fiches/. **Toute fusion dans `main` est mise
+en ligne automatiquement** (1 à 2 minutes) pour tous les utilisateurs :
+ne proposer une fusion que pour du travail terminé et vérifié. GitHub
+Pages ignore `_headers` ; c'est `updateViaCache: "none"` (dans
+`js/app.js`) qui garantit la détection des nouvelles versions de `sw.js`.
+
 ## Tester en local
 
 Un service worker exige `localhost` ou HTTPS :

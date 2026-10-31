@@ -33,7 +33,7 @@ Version actuelle : **v245** (affichée dans les Réglages de l'appli).
 ```
 index.html            l'appli (tous les écrans)
 manifest.json, sw.js  installation et fonctionnement hors-ligne
-_headers              réglages de cache (Netlify uniquement)
+_headers              réglages de cache (Netlify ; ignoré par GitHub Pages)
 css/                  styles (couleurs et polices en haut de style.css)
 js/                   code de l'appli (app.js = l'essentiel)
 admin/                Darwin Admin
@@ -87,14 +87,17 @@ réel) est décrite pas à pas dans
    Sans ce changement, les téléphones gardent l'ancienne version en
    mémoire. Avec lui, l'appli détecte la nouveauté à l'ouverture et se met
    à jour toute seule.
-2. Mettre les fichiers en ligne : fusionner les modifications dans la
-   branche `main` sur GitHub, ou les redéposer sur l'hébergeur.
+2. Fusionner les modifications dans la branche `main` sur GitHub :
+   l'appli est mise en ligne automatiquement en 1 à 2 minutes.
 3. Vérifier dans les **Réglages** de l'appli que le nouveau numéro
    s'affiche.
 
-Hébergement : n'importe quel hébergeur de site statique convient, par
-exemple **GitHub Pages** (dépôt → Settings → Pages → branche `main`,
-dossier `/`) ou **Netlify**.
+Hébergement : **GitHub Pages**, à l'adresse
+https://tokophobe.github.io/Fiches/ (dépôt → Settings → Pages : source
+« Deploy from a branch », branche `main`, dossier `/ (root)`). Chaque
+fusion dans `main` est publiée automatiquement. Un nom de domaine (par
+exemple darwin-revision.fr) pourra être ajouté dans la même page,
+rubrique « Custom domain ».
 
 ## Tester sur son ordinateur
 
