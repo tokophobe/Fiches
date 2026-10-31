@@ -1375,7 +1375,8 @@ body[data-org-carousel-slot="2"] .org-info-slot-item[data-slot="2"] {
 .body-logo-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  /* v246 : 12px → 8px, pour laisser plus de place au titre de la page. */
+  gap: 8px;
   margin-bottom: 12px;
 }
 
@@ -1405,6 +1406,9 @@ body.is-login-locked .home-circle:not([data-key="account"]) { display: none; }
   height: auto;
   filter: var(--body-logo-shadow, none);
 }
+/* v246 : robot cliquable quand la page a une aide. */
+.body-logo.has-help { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.body-logo.has-help:focus-visible { outline: 2px solid var(--action-color); outline-offset: 3px; border-radius: 8px; }
 
 /* Item 2 (nouveau lot) : bulle de bande dessinée (fond + pointe vers le
    robot) plutôt qu'un simple texte à côté du logo, pour qu'on comprenne
@@ -1483,26 +1487,6 @@ body.is-login-locked .home-circle:not([data-key="account"]) { display: none; }
 .body-logo-speech-prev[hidden],
 .body-logo-speech-next[hidden] { display: none; }
 
-/* Round 4 : petite bulle "aide" ronde, cliquable, affichée à côté du robot
-   quand la page a un message à proposer — le robot ne parle plus tout
-   seul par défaut, c'est ce bouton qui ouvre la bulle de parole. */
-.body-logo-help-btn {
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  color: var(--speech-bubble-text-color, var(--ink));
-  background: var(--speech-bubble-bg-color, var(--paper-2));
-  border: 1.5px solid var(--speech-bubble-border-color, var(--rule));
-  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
-  cursor: pointer;
-}
-.body-logo-help-btn svg { width: 16px; height: 16px; }
-.body-logo-help-btn[hidden] { display: none; }
 
 /* Pointe de la bulle, dirigée vers le robot (à gauche). */
 .body-logo-speech::before,
@@ -6230,7 +6214,6 @@ body.layout-v2 #view-class-detail .class-detail-section-action {
 }
 body:not(.v1-pages) #view-creations .round-add-card-btn,
 body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-go { background: transparent; }
-.body-logo-help-btn { border-color: var(--action-color); color: var(--action-color); }
 .classes-role-circle--v2 { outline-color: var(--action-color); }
 .usage-option:has(input:checked), .usage-option.is-selected { border-color: var(--action-color); }
 .creations-chip.is-active, .creations-chip[aria-pressed="true"] { border-color: var(--action-color); color: var(--action-color); }
@@ -8210,12 +8193,14 @@ body:has(#view-library.is-active[data-cycle]) { background: var(--app-bg-color, 
 :is(html, #v245) :is(.revision-event-go, #boite-picker-confirm, #submit-btn, #v245) {
   --pill: var(--btn-color);
   font-family: var(--font-mono);
-  font-size: 12px;
+  /* v246 : boutons plus petits (12px → 10.5px, marges 8/16 → 5/12). */
+  font-size: 10.5px;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 8px 16px;
+  line-height: 1.3;
+  padding: 5px 12px;
   border-radius: 999px;
   border: 1.5px solid var(--pill);
   color: color-mix(in srgb, var(--pill) var(--btn-ink-pct), var(--btn-ink-base));
@@ -8223,7 +8208,7 @@ body:has(#view-library.is-active[data-cycle]) { background: var(--app-bg-color, 
   box-shadow: none;
   transition: background-color 0.15s ease, transform 0.1s ease;
 }
-:is(html, #v245) :is(.btn--small, #v245):where(:not(.home-btn, .nav-legacy-back, [data-mode], .plan-actions .btn, .account-subs-trial)) { padding: 6px 13px; font-size: 11.5px; }
+:is(html, #v245) :is(.btn--small, #v245):where(:not(.home-btn, .nav-legacy-back, [data-mode], .plan-actions .btn, .account-subs-trial)) { padding: 4px 10px; font-size: 10px; }
 /* Bouton principal d'un formulaire : un peu plus rempli. */
 :is(html, #v245) :is(.btn--primary, .robot-modal-btn--primary, #boite-picker-confirm, #submit-btn, #v245):where(:not(.home-btn, .nav-legacy-back, [data-mode], .plan-actions .btn, .account-subs-trial)) {
   background: color-mix(in srgb, var(--pill) calc(var(--btn-fill-pct) * 2.2), transparent);
@@ -8239,21 +8224,9 @@ body:has(#view-library.is-active[data-cycle]) { background: var(--app-bg-color, 
 :is(html, #v245) :is(.btn, .robot-modal-btn, #v245):disabled { opacity: 0.45; }
 :is(html, #v245) .btn svg { flex-shrink: 0; }
 
-/* 2. Bouton d'aide du robot : collé au robot, à côté de son corps sous sa
-   tête (le titre de la page gagne la place). */
+/* 2. v246 : plus de bouton d'aide à côté du robot — le robot lui-même se
+   touche pour ouvrir l'aide de la page (le titre gagne la place). */
 .body-logo-row { position: relative; }
-.body-logo-row .body-logo-help-btn {
-  position: absolute;
-  left: calc(var(--body-logo-size, 40px) * 0.72);
-  top: 50%;
-  margin-top: calc(var(--body-logo-size, 40px) * 0.06);
-  width: 22px;
-  height: 22px;
-  z-index: 2;
-  background: var(--paper);
-}
-.body-logo-row .body-logo-help-btn svg { width: 13px; height: 13px; }
-.body-logo-row:has(.body-logo-help-btn:not([hidden])) .page-header-title { padding-left: 10px; }
 
 /* 3. Page d'une boîte de la Librairie : bouton sous le titre, couleur du
    cycle, fiches en blocs. */
@@ -8297,9 +8270,49 @@ body:has(#view-library.is-active[data-cycle]) { background: var(--app-bg-color, 
   background: color-mix(in srgb, var(--pill) calc(var(--btn-fill-pct) * 2.2), transparent);
   color: color-mix(in srgb, var(--pill) var(--btn-ink-pct), var(--btn-ink-base));
   border-radius: 999px;
-  padding: 8px 18px;
+  padding: 5px 12px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 10.5px;
 }
+
+/* ==================================================================
+   v246 — résumé d'une boîte : fiches affichées directement, « + Ajouter
+   une fiche » en tête (depuis Mes créations), picto devant le nom.
+   ================================================================== */
+/* Fiches : même présentation épurée que la page « Fiches ». */
+#view-creation-detail .creation-detail-cards { gap: 0; margin: 6px 0 0; padding: 0; }
+#view-creation-detail .creation-detail-cards .card-row {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  border-left: none;
+  border-bottom: 1px solid var(--rule-soft);
+  padding: 14px 6px;
+}
+#view-creation-detail .creation-detail-cards .card-row:last-child { border-bottom: none; }
+#view-creation-detail .creation-detail-cards .card-row-a { border-left: none; padding-left: 0; }
+#view-creation-detail .creation-detail-cards .card-row.card-row--r47 {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+  position: relative;
+}
+#view-creation-detail .creation-detail-cards .list-empty { padding: 10px 6px; }
+/* Le tableau n'a plus de trait sous sa dernière ligne : les fiches suivent. */
+#view-creation-detail .creation-detail-table { margin-bottom: 4px; }
+/* Boutons du tableau : pas de coupure au milieu d'un mot. */
+.creation-detail-table .creation-detail-act-cell { overflow-wrap: normal; }
+.creation-detail-table .creation-detail-act.btn { white-space: normal; text-align: center; }
+/* « Supprimer la boîte » seul, en bas de la page. */
+.creation-detail-foot { display: flex; justify-content: flex-end; margin: 18px 0 6px; }
+/* « + Ajouter une fiche » en tête, juste sous le titre. */
+#view-creation-detail .creation-detail-add--top { margin: 0 0 10px; }
+#view-creation-detail .creation-detail-add--top .add-card-circle.classes-role-circle { width: 96px; height: 96px; font-size: 12px; }
+#view-creation-detail .creation-detail-add--top .add-card-circle svg { width: 24px; height: 24px; }
+/* Picto devant le nom de la boîte (titre de la page). */
+.page-header-title-icon { display: inline-flex; vertical-align: -0.12em; margin-right: 6px; opacity: 0.85; }
+.page-header-title-icon svg { width: 0.95em; height: 0.95em; }
+/* Boutons du tableau un peu plus serrés (ils passent souvent sur 2 lignes). */
+:is(html, #v246) .creation-detail-table :is(.creation-detail-act.btn, #v246) { padding: 4px 10px; line-height: 1.25; }
