@@ -102,3 +102,13 @@ testables ainsi.
 - Travailler sur une branche, jamais directement sur `main`.
 - Le `README.md` est en partie ancien (il décrit une appli « sans
   compte ») ; se fier au code et à ce fichier en priorité.
+
+## Points en suspens (à revoir plus tard avec le propriétaire)
+
+- **Prix et noms des formules incohérents** entre `site/index.html` et
+  `legal/cgv.html` : formule de base « Individuel » (site) vs « Super
+  élève » (CGV) ; Super école à 5 €/mois/enseignant (site) vs 50 €/an
+  (CGV). Les offres vont encore évoluer : ne rien corriger sans demande,
+  mais le rappeler quand on touche aux prix ou aux abonnements.
+- `packs/bibliotheque.json` (utilisé par `tools/build_site_pages.py`)
+  n'est pas dans le dépôt.
