@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v245";
+  const APP_VERSION = "v246";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -367,19 +367,31 @@
     renderBodyLogoSpeechState(false);
   }
   function renderBodyLogoSpeechState(open) {
-    const helpBtn = el("body-logo-help-btn");
     const speechEl = el("body-logo-speech");
     const textEl = el("body-logo-speech-text");
     const prevBtn = el("body-logo-speech-prev");
     const nextBtn = el("body-logo-speech-next");
-    if (!helpBtn || !speechEl || !textEl || !nextBtn) return;
+    if (!speechEl || !textEl || !nextBtn) return;
     const hasMessages = bodyLogoSpeechMessages.length > 0;
     const isOpen = hasMessages && open;
-    helpBtn.hidden = !hasMessages || isOpen;
     speechEl.hidden = !isOpen;
     // v232 : le robot du bandeau lévite pendant qu'il parle.
+    // v246 : plus de petite bulle « aide » à côté de lui — le robot
+    // lui-même se touche pour afficher l'aide quand la page en a une.
     const bodyLogoEl = el("body-logo");
-    if (bodyLogoEl) bodyLogoEl.classList.toggle("is-speaking", isOpen);
+    if (bodyLogoEl) {
+      bodyLogoEl.classList.toggle("is-speaking", isOpen);
+      bodyLogoEl.classList.toggle("has-help", hasMessages);
+      if (hasMessages) {
+        bodyLogoEl.setAttribute("role", "button");
+        bodyLogoEl.setAttribute("tabindex", "0");
+        bodyLogoEl.title = isOpen ? "Fermer l'aide" : "Aide";
+      } else {
+        bodyLogoEl.removeAttribute("role");
+        bodyLogoEl.removeAttribute("tabindex");
+        bodyLogoEl.removeAttribute("title");
+      }
+    }
     // Round 45 : le titre de la page laisse sa place à la bulle du robot.
     const pageTitleEl = el("page-header-title");
     if (pageTitleEl) pageTitleEl.hidden = isOpen || !pageTitleEl.textContent;
@@ -398,11 +410,24 @@
     if (prevBtn) prevBtn.hidden = bodyLogoSpeechIndex <= 0;
     nextBtn.hidden = bodyLogoSpeechIndex >= bodyLogoSpeechMessages.length - 1;
   }
-  const bodyLogoHelpBtn = el("body-logo-help-btn");
-  if (bodyLogoHelpBtn) {
-    bodyLogoHelpBtn.addEventListener("click", () => {
+  // v246 : toucher le robot ouvre l'aide de la page (ou la referme).
+  const bodyLogoImgEl = el("body-logo");
+  if (bodyLogoImgEl) {
+    const toggleBodyLogoHelp = () => {
+      if (!bodyLogoSpeechMessages.length) return;
+      // Pendant un message du robot (fenêtre au-dessus de la page), il
+      // reste éclairé mais ne répond pas au toucher.
+      const modal = el("robot-modal-overlay");
+      if (modal && !modal.hidden) return;
+      const speechOpen = el("body-logo-speech") && !el("body-logo-speech").hidden;
       bodyLogoSpeechIndex = 0;
-      renderBodyLogoSpeechState(true);
+      renderBodyLogoSpeechState(!speechOpen);
+    };
+    bodyLogoImgEl.addEventListener("click", toggleBodyLogoHelp);
+    bodyLogoImgEl.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault();
+      toggleBodyLogoHelp();
     });
   }
   const bodyLogoSpeechEl = el("body-logo-speech");
@@ -3977,6 +4002,10 @@
     renderReviewChart();
     renderReviewGauge();
     renderSubjectBarCount();
+    // v246 : le résumé d'une boîte affiche ses fiches — à tenir à jour
+    // (fiche supprimée, déplacée, synchronisée…).
+    const detailView = el("view-creation-detail");
+    if (detailView && detailView.classList.contains("is-active")) renderCreationDetail();
   }
 
   /** Nombre de fiches de la boîte active, dans la barre de Réviser.
@@ -5646,106 +5675,115 @@
     );
 
     for (const card of sorted) {
-      const li = document.createElement("li");
-      li.className = "card-row card-row--r47";
-
-      // Round 47 : plus de score (ancien « score d'apprentissage » 0-100), ni
-      // de nom de boîte / date sous la fiche (sauf si la liste mélange
-      // plusieurs boîtes : le nom de la boîte reste alors utile), ni de
-      // drapeau devant la question. À droite : « signaler » (drapeau rouge
-      // quand la fiche est signalée) et « ⌄ » (éditer, déplacer, supprimer).
-      const main = document.createElement("div");
-      main.className = "card-row-main";
-
-      const q = document.createElement("p");
-      q.className = "card-row-q";
-      q.innerHTML = toDisplayHtml(card.question);
-
-      const a = document.createElement("p");
-      a.className = "card-row-a";
-      a.innerHTML = answerWithMoreHtml(card);
-
-      main.appendChild(q);
-      main.appendChild(a);
-      // Round 59 : fiche en mode QCM (3 réponses fausses).
-      const wrongsForRow = cardWrongs(card);
-      if (wrongsForRow.length === 3) {
-        const w = document.createElement("p");
-        w.className = "card-row-wrongs";
-        // v235 : une réponse fausse par ligne, marquée « (réponse fausse) ».
-        w.innerHTML = `<span class="qcm-chip">QCM</span>${qcmWrongsListHtml(wrongsForRow)}`;
-        main.appendChild(w);
-      }
-      // v237 : lien « Pour aller plus loin ».
-      if (card.link && learnLinkInfo(card.link)) {
-        const l = document.createElement("div");
-        l.className = "card-row-link";
-        l.innerHTML = learnLinkChipHtml(card.link, "card", stripHtml(card.question || "").slice(0, 120));
-        main.appendChild(l);
-      }
-      if (showSubjectNames && cardsScopeFilter !== CARDS_SCOPE_CURRENT && !subjects.some((x) => x.id === cardsScopeFilter)) {
-        const meta = document.createElement("p");
-        meta.className = "card-row-meta";
-        meta.textContent = subjectName(card.subject);
-        main.appendChild(meta);
-      }
-
-      const side = document.createElement("div");
-      side.className = "card-row-side";
-
-      const constructionBtn = document.createElement("button");
-      constructionBtn.className = "card-row-flag" + (card.underConstruction ? " is-flagged" : "");
-      constructionBtn.type = "button";
-      constructionBtn.innerHTML = getIconMarkupFor("construction");
-      constructionBtn.title = isReadonlyMirrorCard(card) ? "Signaler cette fiche à son auteur" : card.underConstruction ? "Retirer le signalement" : "Signaler cette fiche (à corriger)";
-      constructionBtn.setAttribute("aria-label", constructionBtn.title);
-      constructionBtn.addEventListener("click", () => signalCard(card.id));
-      side.appendChild(constructionBtn);
-
-      const deployBtn = document.createElement("button");
-      deployBtn.type = "button";
-      deployBtn.className = "org-deploy-btn card-row-deploy";
-      deployBtn.title = "Actions";
-      deployBtn.setAttribute("aria-label", "Actions sur cette fiche");
-      deployBtn.innerHTML = iconSvgMarkup("chevronDown", "icon-inline-svg");
-      side.appendChild(deployBtn);
-
-      const popover = document.createElement("div");
-      popover.className = "org-actions-popover card-row-popover";
-      popover.hidden = true;
-      const addItem = (iconHtml, label, fn, danger) => {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = "org-actions-popover-item" + (danger ? " org-actions-popover-item--danger" : "");
-        b.innerHTML = `${iconHtml}<span>${label}</span>`;
-        b.addEventListener("click", () => {
-          closeAllOrgActionPopovers();
-          fn();
-        });
-        popover.appendChild(b);
-      };
-      addItem(orgIconMarkup("orgRename"), "Éditer", () => enterEditMode(card, { fromList: true }));
-      // Round 26, item 4 : "déplacer" ouvre l'explorateur (page de
-      // sélection, comme partout ailleurs) au lieu d'une liste déroulante.
-      if (subjects.length > 1 || folders.length > 0) addItem(orgIconMarkup("orgMove"), "Déplacer", () => openCardMovePicker(card.id));
-      addItem(orgIconMarkup("orgDelete"), "Supprimer", () => deleteCard(card.id), true);
-      deployBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const willOpen = popover.hidden;
-        closeAllOrgActionPopovers();
-        popover.hidden = !willOpen;
-        if (willOpen) {
-          const r = deployBtn.getBoundingClientRect();
-          const h = popover.offsetHeight || popover.children.length * 40 + 12;
-          popover.classList.toggle("org-actions-popover--flip-up", window.innerHeight - r.bottom < h + 12);
-        }
-      });
-
-      li.appendChild(main);
-      li.appendChild(side);
-      li.appendChild(popover);
-      cardListEl.appendChild(li);
+      cardListEl.appendChild(buildCardRowLi(card, { showSubjectName: showSubjectNames && cardsScopeFilter !== CARDS_SCOPE_CURRENT && !subjects.some((x) => x.id === cardsScopeFilter) }));
     }
+  }
+
+  /** v246 : ligne d'une fiche (question, réponse, drapeau, menu ⌄) —
+   *  sortie de renderManageList pour servir aussi au résumé d'une boîte,
+   *  qui affiche désormais ses fiches directement. opts.onEdit remplace
+   *  l'action « Éditer » (pour revenir ensuite au résumé). */
+  function buildCardRowLi(card, opts) {
+    opts = opts || {};
+    const li = document.createElement("li");
+    li.className = "card-row card-row--r47";
+
+    // Round 47 : plus de score (ancien « score d'apprentissage » 0-100), ni
+    // de nom de boîte / date sous la fiche (sauf si la liste mélange
+    // plusieurs boîtes : le nom de la boîte reste alors utile), ni de
+    // drapeau devant la question. À droite : « signaler » (drapeau rouge
+    // quand la fiche est signalée) et « ⌄ » (éditer, déplacer, supprimer).
+    const main = document.createElement("div");
+    main.className = "card-row-main";
+
+    const q = document.createElement("p");
+    q.className = "card-row-q";
+    q.innerHTML = toDisplayHtml(card.question);
+
+    const a = document.createElement("p");
+    a.className = "card-row-a";
+    a.innerHTML = answerWithMoreHtml(card);
+
+    main.appendChild(q);
+    main.appendChild(a);
+    // Round 59 : fiche en mode QCM (3 réponses fausses).
+    const wrongsForRow = cardWrongs(card);
+    if (wrongsForRow.length === 3) {
+      const w = document.createElement("p");
+      w.className = "card-row-wrongs";
+      // v235 : une réponse fausse par ligne, marquée « (réponse fausse) ».
+      w.innerHTML = `<span class="qcm-chip">QCM</span>${qcmWrongsListHtml(wrongsForRow)}`;
+      main.appendChild(w);
+    }
+    // v237 : lien « Pour aller plus loin ».
+    if (card.link && learnLinkInfo(card.link)) {
+      const l = document.createElement("div");
+      l.className = "card-row-link";
+      l.innerHTML = learnLinkChipHtml(card.link, "card", stripHtml(card.question || "").slice(0, 120));
+      main.appendChild(l);
+    }
+    if (opts.showSubjectName) {
+      const meta = document.createElement("p");
+      meta.className = "card-row-meta";
+      meta.textContent = subjectName(card.subject);
+      main.appendChild(meta);
+    }
+
+    const side = document.createElement("div");
+    side.className = "card-row-side";
+
+    const constructionBtn = document.createElement("button");
+    constructionBtn.className = "card-row-flag" + (card.underConstruction ? " is-flagged" : "");
+    constructionBtn.type = "button";
+    constructionBtn.innerHTML = getIconMarkupFor("construction");
+    constructionBtn.title = isReadonlyMirrorCard(card) ? "Signaler cette fiche à son auteur" : card.underConstruction ? "Retirer le signalement" : "Signaler cette fiche (à corriger)";
+    constructionBtn.setAttribute("aria-label", constructionBtn.title);
+    constructionBtn.addEventListener("click", () => signalCard(card.id));
+    side.appendChild(constructionBtn);
+
+    const deployBtn = document.createElement("button");
+    deployBtn.type = "button";
+    deployBtn.className = "org-deploy-btn card-row-deploy";
+    deployBtn.title = "Actions";
+    deployBtn.setAttribute("aria-label", "Actions sur cette fiche");
+    deployBtn.innerHTML = iconSvgMarkup("chevronDown", "icon-inline-svg");
+    side.appendChild(deployBtn);
+
+    const popover = document.createElement("div");
+    popover.className = "org-actions-popover card-row-popover";
+    popover.hidden = true;
+    const addItem = (iconHtml, label, fn, danger) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "org-actions-popover-item" + (danger ? " org-actions-popover-item--danger" : "");
+      b.innerHTML = `${iconHtml}<span>${label}</span>`;
+      b.addEventListener("click", () => {
+        closeAllOrgActionPopovers();
+        fn();
+      });
+      popover.appendChild(b);
+    };
+    addItem(orgIconMarkup("orgRename"), "Éditer", () => (opts.onEdit ? opts.onEdit(card) : enterEditMode(card, { fromList: true })));
+    // Round 26, item 4 : "déplacer" ouvre l'explorateur (page de
+    // sélection, comme partout ailleurs) au lieu d'une liste déroulante.
+    if (subjects.length > 1 || folders.length > 0) addItem(orgIconMarkup("orgMove"), "Déplacer", () => openCardMovePicker(card.id));
+    addItem(orgIconMarkup("orgDelete"), "Supprimer", () => deleteCard(card.id), true);
+    deployBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const willOpen = popover.hidden;
+      closeAllOrgActionPopovers();
+      popover.hidden = !willOpen;
+      if (willOpen) {
+        const r = deployBtn.getBoundingClientRect();
+        const h = popover.offsetHeight || popover.children.length * 40 + 12;
+        popover.classList.toggle("org-actions-popover--flip-up", window.innerHeight - r.bottom < h + 12);
+      }
+    });
+
+    li.appendChild(main);
+    li.appendChild(side);
+    li.appendChild(popover);
+    return li;
   }
 
   function daysUntil(dueDateIso) {
@@ -7723,6 +7761,15 @@
         const s = subjects.find((x) => x.id === creationDetailSubjectId);
         return s ? s.name : "Résumé de la boîte";
       },
+      // v246 : hors Mes créations, picto de la boîte devant son nom (boîte
+      // à soi ou de classe / boîte prise dans la Librairie), à la place de
+      // l'ancienne ligne « Origine ».
+      icon: () => {
+        if (creationDetailOrigin === "creations") return "";
+        const s = subjects.find((x) => x.id === creationDetailSubjectId);
+        if (!s) return "";
+        return s.fromLibrary ? iconSvgMarkup("share", "icon-inline-svg") : orgIconMarkup("orgBoite");
+      },
     },
     "report-card": { text: "Signaler une fiche", hide: ["#view-report-card .settings-block-title"] },
     reports: { text: "Signalements reçus", hide: ["#view-reports > h2.section-title"] },
@@ -7773,7 +7820,18 @@
     const t = el("page-header-title");
     if (!t) return;
     const text = pageHeaderKey === "home" ? "" : pageHeaderTitleText(pageHeaderKey);
-    if (t.textContent !== text) t.textContent = text;
+    const cfg = PAGE_HEADER_TITLES[pageHeaderKey];
+    const icon = text && cfg && typeof cfg === "object" && cfg.icon ? cfg.icon() : "";
+    if (icon) {
+      const html = `<span class="page-header-title-icon">${icon}</span>${escapeHtml(text)}`;
+      if (t.dataset.iconHtml !== html) {
+        t.innerHTML = html;
+        t.dataset.iconHtml = html;
+      }
+    } else if (t.textContent !== text || t.dataset.iconHtml) {
+      t.textContent = text;
+      delete t.dataset.iconHtml;
+    }
     const speechOpen = el("body-logo-speech") && !el("body-logo-speech").hidden;
     t.hidden = !text || speechOpen;
   }
@@ -7840,7 +7898,7 @@
   })();
 
   /** Round 15, item 6 : aide CONTEXTUELLE — en plus de la bulle d'aide
-   *  générique par page (body-logo-help-btn, déjà existante), ce bouton
+   *  générique par page (toucher le robot), ce bouton
    *  bascule un mode "pointer" : le PROCHAIN clic sur n'importe quel
    *  élément de la page est intercepté (au lieu de déclencher son action
    *  normale) et le robot affiche une explication pour CET élément-là.
@@ -16375,6 +16433,9 @@
     // Round 47 : boîte d'une classe ou collection prise dans la Librairie
     // (résumé ouvert depuis l'organisation) — résumé simplifié, sans les
     // actions réservées à ses propres boîtes.
+    // v246 : le titre (nom de la boîte, avec ou sans picto) suit la page
+    // d'où l'on vient.
+    if (el("view-creation-detail") && el("view-creation-detail").classList.contains("is-active")) updatePageHeaderTitle();
     if (!isOwnCreatedSubject(s)) {
       renderForeignBoxDetail(wrap, s);
       return;
@@ -16385,42 +16446,57 @@
     const place = creationsPlaceLabel(s);
     const taxFull = taxonomyFullLabel(creationsTaxonomyOf(s, col));
     const tags = col ? collectionTags(col) : [];
-    const created = s.createdAt ? new Date(s.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "";
     const pool = subjectCardsPool(s.id);
     const remembered = !inRev && s.revisionsPlace ? (s.revisionsPlace.folderId ? folderPath(s.revisionsPlace.folderId).map((x) => x.name).join(" › ") : "Racine") : "";
-    const addWrap = el("creation-detail-add");
-    if (addWrap) addWrap.innerHTML = roundAddCardButtonHtml();
-    if (addWrap) addWrap.querySelector("button").onclick = () => openNewCardForSubject(s.id, "creation-detail");
+    // v246 : deux présentations selon la page d'où l'on vient.
+    // - Depuis « Mes créations » : la page de gestion de la boîte (statut,
+    //   classement, révisions, suppression), « + Ajouter une fiche » en
+    //   tête, sans « Réviser ».
+    // - Depuis l'organisation des boîtes de révision : un résumé épuré
+    //   (progression, « Réviser », fiches, lien), le picto de la boîte
+    //   devant son nom ; la gestion se fait depuis Mes créations.
+    const manageMode = creationDetailOrigin !== "creations";
+    setCreationDetailAddButton(s.id, manageMode ? "bottom" : "top");
     // Round 53 : tableau à trois colonnes (intitulé aligné à droite,
     // valeur, action en face), lignes continues ; jauge juste après le nom.
     const actBtn = (act, label, extra) => `<button type="button" class="btn btn--ghost creation-detail-act${extra ? ` ${extra}` : ""}" data-act="${act}">${label}</button>`;
     const row = (label, value, action) => `<tr><th scope="row">${label}</th><td>${value}</td><td class="creation-detail-act-cell">${action || ""}</td></tr>`;
+    const rows = manageMode
+      ? [
+          row("Progression", `<span class="creation-detail-gauge">${buildPersGaugeSvg(pool || [], { width: 90, barHeight: 8 })}</span>`, n ? actBtn("review", "Réviser") : ""),
+          row("Fiches", `${n} fiche${n > 1 ? "s" : ""}`),
+          row("Pour aller plus loin", learnLinkChipHtml(s.link, "box", s.name) || `<span class="field-hint">Aucun lien</span>`, actBtn("link", s.link ? "Modifier" : "Ajouter un lien")),
+          col && col.name && col.name !== s.name ? row("Librairie", `publiée sous le nom « ${escapeHtml(col.name)} »`) : "",
+          tags.length ? row("Tags", `<span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span>`) : "",
+        ]
+      : [
+          row("Progression", `<span class="creation-detail-gauge">${buildPersGaugeSvg(pool || [], { width: 90, barHeight: 8 })}</span>`),
+          row("Statut", `<span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>`, actBtn("publish", col ? "Voir dans la Librairie" : "Publier dans la Librairie")),
+          row("Fiches", `${n} fiche${n > 1 ? "s" : ""}`),
+          row("Classement", taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`, col ? "" : actBtn("classify", taxFull ? "Modifier le classement" : "Classer la boîte")),
+          row("Pour aller plus loin", learnLinkChipHtml(s.link, "box", s.name) || `<span class="field-hint">Aucun lien</span>`, actBtn("link", s.link ? "Modifier" : "Ajouter un lien")),
+          // v246 : plus de « Retirer de mes révisions » ici (il reste dans
+          // le menu de la boîte, page Organisation) ; « Ajouter à mes
+          // révisions » reste proposé quand elle n'y est pas.
+          row("Mes révisions", place ? escapeHtml(place) : `Hors de mes révisions${remembered ? ` <span class="field-hint">(avant : ${escapeHtml(remembered)})</span>` : ""}`, inRev ? "" : actBtn("revisions", "Ajouter à mes révisions")),
+          col && col.name && col.name !== s.name ? row("Librairie", `publiée sous le nom « ${escapeHtml(col.name)} »`) : "",
+          tags.length ? row("Tags", `<span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span>`) : "",
+        ];
     wrap.innerHTML = `
       <table class="creation-detail-table">
         <tbody>
-          ${row("Progression", `<span class="creation-detail-gauge">${buildPersGaugeSvg(pool || [], { width: 90, barHeight: 8 })}</span>`, n ? actBtn("review", "Réviser") : "")}
-          ${row("Statut", `<span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>`, actBtn("publish", col ? "Voir dans la Librairie" : "Publier dans la Librairie"))}
-          ${row("Fiches", `${n} fiche${n > 1 ? "s" : ""}`, actBtn("cards", "Voir les fiches"))}
-          ${row("Classement", taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`, col ? "" : actBtn("classify", taxFull ? "Modifier le classement" : "Classer la boîte"))}
-          ${row("Pour aller plus loin", learnLinkChipHtml(s.link, "box", s.name) || `<span class="field-hint">Aucun lien</span>`, actBtn("link", s.link ? "Modifier" : "Ajouter un lien"))}
-          ${row("Mes révisions", place ? escapeHtml(place) : `Hors de mes révisions${remembered ? ` <span class="field-hint">(avant : ${escapeHtml(remembered)})</span>` : ""}`, actBtn("revisions", inRev ? "Retirer de mes révisions" : "Ajouter à mes révisions"))}
-          ${col && col.name && col.name !== s.name ? row("Librairie", `publiée sous le nom « ${escapeHtml(col.name)} »`) : ""}
-          ${tags.length ? row("Tags", `<span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span>`) : ""}
-          ${row("Créée le", created ? escapeHtml(created) : "—", actBtn("delete", "Supprimer la boîte", "creation-detail-delete"))}
+          ${rows.join("")}
         </tbody>
       </table>
+      <ul class="card-list creation-detail-cards" id="creation-detail-cards"></ul>
+      ${manageMode ? "" : `<div class="creation-detail-foot">${actBtn("delete", "Supprimer la boîte", "creation-detail-delete")}</div>`}
     `;
+    fillCreationDetailCards(s);
     wrap.querySelectorAll("[data-act]").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const act = btn.dataset.act;
         if (act === "review") {
           startReviewOfBox(s.id);
-        } else if (act === "addcard") {
-          openNewCardForSubject(s.id, "creation-detail");
-        } else if (act === "cards") {
-          cardsEntryFromCreations = true;
-          cardsEntryFromManage = false;
-          goToCardsFor(`subject:${s.id}`);
         } else if (act === "publish") {
           if (col) {
             libraryDetailReturnView = "creation-detail";
@@ -16486,38 +16562,74 @@
     if (tab) tab.click();
   }
   function renderForeignBoxDetail(wrap, s) {
-    const addWrap = el("creation-detail-add");
-    if (addWrap) addWrap.innerHTML = "";
+    // v246 : plus de lignes « Origine » (remplacée par le picto devant le
+    // nom de la boîte) ni « Mes révisions » ; les fiches sont affichées
+    // directement, sans passer par « Voir les fiches ».
+    setCreationDetailAddButton(s.id, "none");
     const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
     const pool = subjectCardsPool(s.id);
-    const place = creationsPlaceLabel(s);
-    const klass = s.sharedBoxId ? folderPath(s.folderId).find((f) => f && f.sharedClassRoot) : null;
-    const origin = s.fromLibrary ? "Collection prise dans la Librairie" : `Boîte partagée par ta classe${klass ? ` « ${escapeHtml(klass.name)} »` : ""}`;
     wrap.innerHTML = `
       <table class="creation-detail-table">
         <tbody>
           <tr><th scope="row">Progression</th><td><span class="creation-detail-gauge">${buildPersGaugeSvg(pool || [], { width: 90, barHeight: 8 })}</span></td><td class="creation-detail-act-cell">${n ? `<button type="button" class="btn btn--ghost creation-detail-act" data-act="review">Réviser</button>` : ""}</td></tr>
-          <tr><th scope="row">Fiches</th><td>${n} fiche${n > 1 ? "s" : ""}</td><td class="creation-detail-act-cell"><button type="button" class="btn btn--ghost creation-detail-act" data-act="cards">Voir les fiches</button></td></tr>
-          <tr><th scope="row">Origine</th><td>${origin}</td><td class="creation-detail-act-cell"></td></tr>
+          <tr><th scope="row">Fiches</th><td>${n} fiche${n > 1 ? "s" : ""}</td><td class="creation-detail-act-cell"></td></tr>
           ${s.link ? `<tr><th scope="row">Pour aller plus loin</th><td>${learnLinkChipHtml(s.link, "box", s.name)}</td><td class="creation-detail-act-cell"></td></tr>` : ""}
-          <tr><th scope="row">Mes révisions</th><td>${place ? escapeHtml(place) : "Hors de mes révisions"}</td><td class="creation-detail-act-cell">${s.fromLibrary ? `<button type="button" class="btn btn--ghost creation-detail-act creation-detail-delete" data-act="remove">Retirer de mes révisions</button>` : ""}</td></tr>
         </tbody>
       </table>
+      <ul class="card-list creation-detail-cards" id="creation-detail-cards"></ul>
     `;
+    fillCreationDetailCards(s);
     wrap.querySelectorAll("[data-act]").forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        if (btn.dataset.act === "review") {
-          startReviewOfBox(s.id);
-        } else if (btn.dataset.act === "cards") {
-          cardsEntryFromCreations = false;
-          cardsEntryFromManage = true;
-          goToCardsFor(`subject:${s.id}`);
-        } else if (btn.dataset.act === "remove") {
-          await removeLibraryCollectionFromRevisions({ id: s.libraryOriginId });
-          if (!isSubjectInRevisions(s)) closeCreationDetail();
-        }
+      btn.addEventListener("click", () => {
+        if (btn.dataset.act === "review") startReviewOfBox(s.id);
       });
     });
+  }
+  /** v246 : fiches de la boîte, affichées directement dans son résumé
+   *  (mêmes lignes que la liste des fiches). « Éditer » revient ensuite
+   *  au résumé. */
+  function fillCreationDetailCards(s) {
+    const list = el("creation-detail-cards");
+    if (!list) return;
+    const boxCards = cards.filter((c) => !c.deleted && c.subject === s.id).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+    list.innerHTML = "";
+    if (!boxCards.length) {
+      const li = document.createElement("li");
+      li.className = "list-empty";
+      li.textContent = isOwnCreatedSubject(s) ? "Aucune fiche pour l'instant." : "Aucune fiche dans cette boîte.";
+      list.appendChild(li);
+      return;
+    }
+    const onEdit = async (card) => {
+      await enterEditMode(card, { fromList: true });
+      const form = el("view-new-card");
+      if (form && form.classList.contains("is-active")) previousViewBeforeNewCard = "creation-detail";
+    };
+    boxCards.forEach((card) => list.appendChild(buildCardRowLi(card, { onEdit })));
+  }
+  /** v246 : bouton rond « + Ajouter une fiche » du résumé — en tête (sous
+   *  le titre) depuis Mes créations, en bas depuis l'organisation, absent
+   *  pour une boîte de classe ou de la Librairie. */
+  function setCreationDetailAddButton(subjectId, where) {
+    const addWrap = el("creation-detail-add");
+    const view = el("view-creation-detail");
+    const body = el("creation-detail-body");
+    if (!addWrap || !view || !body) return;
+    if (where === "none") {
+      addWrap.innerHTML = "";
+      addWrap.hidden = true;
+      return;
+    }
+    addWrap.hidden = false;
+    addWrap.innerHTML = roundAddCardButtonHtml();
+    addWrap.querySelector("button").onclick = () => openNewCardForSubject(subjectId, "creation-detail");
+    addWrap.classList.toggle("creation-detail-add--top", where === "top");
+    addWrap.classList.toggle("creation-detail-add--bottom", where !== "top");
+    if (where === "top") {
+      if (addWrap.nextElementSibling !== body) view.insertBefore(addWrap, body);
+    } else if (body.nextElementSibling !== addWrap) {
+      body.after(addWrap);
+    }
   }
   const creationDetailBackBtn = el("creation-detail-back-btn");
   if (creationDetailBackBtn) creationDetailBackBtn.addEventListener("click", () => closeCreationDetail());

@@ -195,7 +195,7 @@
         <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       </button>
       <!-- Round 15, item 6 : aide contextuelle — en plus de la bulle
-           d'aide par page déjà existante (body-logo-help-btn), ce bouton
+           d'aide par page (toucher le robot), ce bouton
            bascule un mode "pointer" : le prochain clic sur un élément de
            la page est intercepté et le robot explique cet élément-là au
            lieu de déclencher son action normale. -->
@@ -235,18 +235,10 @@
        déjà son propre grand logo. Taille réglable dans le mode
        développeur (voir dev-body-logo-list). -->
   <div class="body-logo-row" id="body-logo-row" hidden>
-    <img src="./icons/logo.png" alt="" id="body-logo" class="body-logo" />
-    <!-- Round 4 : le robot ne parle plus tout seul par défaut — une petite
-         bulle "aide" cliquable apparaît à côté de lui quand cette page a un
-         message, et c'est ce clic qui affiche la bulle de parole complète.
-         Round 17, item 2 : icône changée pour une bulle de parole (plutôt
-         qu'un "?" dans un rond, devenu ambigu depuis l'ajout du bouton
-         d'aide CONTEXTUELLE du bandeau, round 15, qui a la même forme) —
-         plus cohérent avec ce que ce bouton fait réellement (ouvrir une
-         bulle de parole), et visuellement distinct du "?" contextuel. -->
-    <button type="button" class="body-logo-help-btn" id="body-logo-help-btn" title="Aide" hidden>
-      <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4 8.3 8.3 0 0 1-3.8-.9L3 21l1.9-5.8a8.3 8.3 0 0 1-.9-3.7A8.4 8.4 0 1 1 21 11.5z"/><circle cx="8.3" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="12.6" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="16.9" cy="11.5" r="1" fill="currentColor" stroke="none"/></svg>
-    </button>
+    <img src="./icons/logo.png" alt="Aide" id="body-logo" class="body-logo" />
+    <!-- v246 : plus de petite bulle « aide » à côté du robot — c'est le
+         robot lui-même qui se touche pour afficher l'aide de la page
+         (voir renderBodyLogoSpeechState, js/app.js). -->
     <!-- Round 45 : titre de la page, à droite du robot ; masqué pendant que
          la bulle du robot est ouverte. -->
     <h2 class="page-header-title" id="page-header-title"></h2>
