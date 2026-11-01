@@ -3328,7 +3328,7 @@
     stats: "Statistiques",
     settings: "Réglages",
     addCard: "Ajouter une fiche",
-    calendar: "Calendrier",
+    calendar: "Agenda",
     library: "Librairie",
     creations: "Créer mes propres boîtes de révision",
     reports: "Signalements",

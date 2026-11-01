@@ -31,6 +31,7 @@
     "fiches_stats_multi_ids",
     "fiches_stats_multi_label",
     "fiches_messages_last_read",
+    "fiches_active_role",
     "fiches_bonus_days",
     "fiches_bonus_again_mode",
     "fiches_hibernate_days",

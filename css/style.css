@@ -8316,3 +8316,70 @@ body:has(#view-library.is-active[data-cycle]) { background: var(--app-bg-color, 
 .page-header-title-icon svg { width: 0.95em; height: 0.95em; }
 /* Boutons du tableau un peu plus serrés (ils passent souvent sur 2 lignes). */
 :is(html, #v246) .creation-detail-table :is(.creation-detail-act.btn, #v246) { padding: 4px 10px; line-height: 1.25; }
+
+/* ==================================================================
+   v247 — compte élève / compte enseignant, Agenda et messagerie de classe
+   ================================================================== */
+/* Une couleur par compte (seulement pour qui a les deux usages) : bleu
+   pour le compte élève, orange pour le compte enseignant. */
+:root { --role-student-color: #2f80d1; --role-teacher-color: #e07a1f; }
+body.role-student { --role-color: var(--role-student-color); }
+body.role-teacher { --role-color: var(--role-teacher-color); }
+/* Repère 1 : liseré de la couleur du compte tout en haut de l'écran. */
+body.has-two-roles .topbar { box-shadow: inset 0 3px 0 var(--role-color); }
+/* Repère 2 : pastille « Élève » / « Enseignant » dans le bandeau. */
+.role-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1.5px solid var(--role-color, var(--rule));
+  background: color-mix(in srgb, var(--role-color, transparent) 14%, transparent);
+  color: var(--role-color, var(--ink));
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  white-space: nowrap;
+  cursor: default;
+}
+.role-indicator[hidden] { display: none; }
+.role-indicator.is-switch { cursor: pointer; }
+.role-indicator.is-switch:active { transform: scale(0.96); }
+.role-indicator .role-indicator-swap { width: 12px; height: 12px; }
+:root.is-night-mode .role-indicator { color: color-mix(in srgb, var(--role-color, #fff) 70%, #fff); }
+
+/* Page de choix du compte (élève et enseignant). */
+#view-role-picker .role-picker-hint {
+  text-align: center;
+  margin: 18px 0 8px;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+#view-role-picker .role-picker-circles { justify-content: center; gap: 22px; flex-wrap: wrap; margin-top: 10px; }
+.role-picker-btn--student { outline: 3px solid var(--role-student-color); outline-offset: -3px; color: var(--role-student-color); }
+.role-picker-btn--teacher { outline: 3px solid var(--role-teacher-color); outline-offset: -3px; color: var(--role-teacher-color); }
+.role-picker-btn span:not(.classes-role-circle-icon) { color: var(--ink); }
+
+/* Page d'une classe : boutons « Agenda de la classe » et « Messagerie de
+   la classe ». */
+#view-class-detail .class-detail-tools { justify-content: center; gap: 18px; margin: 4px 0 16px; flex-wrap: wrap; }
+#view-class-detail .class-detail-tool.classes-role-circle { width: 108px; height: 108px; font-size: 12px; gap: 4px; text-align: center; padding: 0 10px; line-height: 1.2; }
+
+/* Agenda d'une classe : nom de la classe en tête. */
+.calendar-class-scope {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 12px;
+  font-weight: 600;
+  color: var(--main-text-color, var(--ink));
+}
+.calendar-class-scope[hidden] { display: none; }
+body.is-picking-role .topbar { box-shadow: none; }
+/* Place limitée dans le bandeau : la pastille du compte prend la place du
+   petit logo darwin (sinon « Synchronisé » sort de l'écran). */
+body.has-two-roles:not(.is-picking-role) .topbar-darwin-logo { display: none; }

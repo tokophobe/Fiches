@@ -41,6 +41,19 @@ simple.
   `build_site_pages.py` : génère les pages SEO depuis
   `packs/bibliotheque.json`, dossier absent du dépôt pour l'instant).
 
+## Compte élève / compte enseignant (v247)
+
+- Usages (`user_metadata.usages`) : `eleve` et/ou `enseignant` (l'ancien
+  `perso` n'est plus proposé ni pris en compte).
+- `activeRole()` dans `js/app.js` donne l'environnement utilisé
+  (`student` / `teacher`) ; avec les deux usages, choix à l'ouverture
+  (vue `role-picker`) puis bascule depuis l'accueil (pastille
+  `#role-indicator`). Classes CSS sur `<body>` : `has-two-roles`,
+  `role-student`, `role-teacher`. Le choix est mémorisé dans
+  `fiches_active_role` (par compte, `js/user-scope.js`).
+- Les différences entre les deux environnements sont à préciser avec le
+  propriétaire au fur et à mesure.
+
 ## Backend : Supabase + Stripe
 
 - Projet Supabase configuré dans `js/config.js` (URL + clé **anon**,

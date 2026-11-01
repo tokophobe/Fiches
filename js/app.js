@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v246";
+  const APP_VERSION = "v247";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -359,6 +359,12 @@
   // Round 47 : partage d'une collection de la Librairie avec une classe en
   // cours (voir setLibraryShareToClass) — déclaré tôt (goHome y touche).
   let libraryShareToClassCtx = null;
+  // v247 : agenda d'une classe ({ klass, role }), ou null pour l'Agenda
+  // complet de l'utilisateur — déclaré tôt (titres de page, goHome).
+  let calendarClassFilter = null;
+  // v247 : classe dont la messagerie est ouverte depuis sa page (on y
+  // revient en quittant la discussion).
+  let messageThreadReturnClass = null;
   function applyBodyLogoSpeech(view) {
     bodyLogoSpeechKey = view;
     const raw = loadDevSettings().helpMessagesByView[view];
@@ -7526,10 +7532,6 @@
       if (view === "stats") renderStats();
       if (view === "sync") renderSyncView();
       if (view === "account") renderAccountView();
-      if (view === "school-hub") {
-        refreshMessagesBadge();
-        refreshCalendarHubBadge();
-      }
       if (view === "classes") renderClassesView();
       if (view === "messages") renderMessagesView();
       if (view === "library") renderLibraryView();
@@ -7580,6 +7582,7 @@
    *  patcher un par un. */
   const PAGE_TITLES = {
     home: "Accueil",
+    "role-picker": "Choisir mon compte",
     "review-hub": "Réviser",
     "boxes-hub": "Mes fiches",
     "revision-program": "Révisions prioritaires",
@@ -7589,19 +7592,18 @@
     "new-card": "Nouvelle fiche",
     cards: "Fiches",
     stats: "Statistiques",
-    calendar: "Calendrier",
+    calendar: "Agenda",
     sync: "Synchronisation",
     account: "Mon compte",
-    "school-hub": "École",
     creations: "Mes créations de boîtes de révision",
     "box-create": "Nouvelle boîte",
     "creation-detail": "Boîte",
     "report-card": "Signaler",
     reports: "Signalements",
     classes: "Classes",
-    "classes-student": "Classes",
+    "classes-student": "Mes classes",
     "classes-join": "Rejoindre une classe",
-    "classes-teacher": "Classes",
+    "classes-teacher": "Mes classes",
     "classes-create": "Créer une classe",
     "class-detail": "Classe",
     messages: "Messagerie",
@@ -7629,7 +7631,7 @@
   let navBackUntil = 0;
   // Pages de passage (formulaires, sélecteurs) : jamais rouvertes par
   // « ← Retour », on revient à la page d'avant.
-  const NAV_TRANSIENT = new Set(["class-share", "boite-picker", "calendar-event-form", "new-card", "box-create", "report-card", "library-share", "classes-join", "classes-create"]);
+  const NAV_TRANSIENT = new Set(["role-picker", "class-share", "boite-picker", "calendar-event-form", "new-card", "box-create", "report-card", "library-share", "classes-join", "classes-create"]);
   const NAV_OWN_BACK = {
     "calendar-event-detail": "calendar-detail-back-btn",
     "creation-detail": "creation-detail-back-btn",
@@ -7665,8 +7667,14 @@
     // chargement, avant la déclaration de cette variable.)
     const locked = document.body.classList.contains("is-login-locked");
     const backBtn = el("nav-back-btn");
-    if (backBtn) backBtn.hidden = key === "home" || locked;
-    if (homeBtn && key !== "home" && !locked) homeBtn.hidden = false;
+    // v247 : la page de choix du compte (élève / enseignant) n'a ni retour
+    // ni accueil — on choisit un des deux comptes.
+    const noNav = key === "home" || key === "role-picker";
+    if (backBtn) backBtn.hidden = noNav || locked;
+    if (homeBtn) {
+      if (key === "role-picker") homeBtn.hidden = true;
+      else if (key !== "home" && !locked) homeBtn.hidden = false;
+    }
     if (key !== "home" && el("body-logo-row")) el("body-logo-row").hidden = false;
   }
   function navActivate(key) {
@@ -7747,12 +7755,12 @@
     "new-card": { from: "#view-new-card .card-form-header h2.section-title" },
     cards: { from: "#cards-scope-title", fallback: "Liste des fiches", hide: ["#view-cards .cards-list-big-title"] },
     stats: "Statistiques",
-    calendar: "Calendrier",
+    // v247 : « Agenda de la classe » quand il est ouvert depuis une classe.
+    calendar: { dynamic: () => (calendarClassFilter ? "Agenda de la classe" : "Agenda") },
     "calendar-event-form": { from: "#calendar-event-form-title" },
     "calendar-event-detail": { from: "#view-calendar-event-detail .view-title" },
     sync: "Synchronisation",
     account: { text: "Mon compte", hide: ["#view-account > h2.section-title"] },
-    "school-hub": "École",
     creations: { text: "Mes créations de boîtes de révision", hide: ["#view-creations .library-title-row"] },
     "box-create": { from: "#box-create-title" },
     // Round 54 : le titre de la page est le nom de la boîte.
@@ -7776,9 +7784,9 @@
     "reports-hub": "Signalements",
     "reports-sent": "Signalements émis",
     classes: { text: "Mes classes", hide: ["#view-classes > h2.section-title"] },
-    "classes-student": { text: "Élève", hide: ["#view-classes-student > h2.section-title"] },
+    "classes-student": { text: "Mes classes", hide: ["#view-classes-student > h2.section-title"] },
     "classes-join": { text: "Rejoindre une classe", hide: ["#view-classes-join > h2.section-title"] },
-    "classes-teacher": { text: "Enseignant", hide: ["#view-classes-teacher > h2.section-title"] },
+    "classes-teacher": { text: "Mes classes", hide: ["#view-classes-teacher > h2.section-title"] },
     "classes-create": { text: "Créer une classe", hide: ["#view-classes-create > h2.section-title"] },
     // Round 55 : nom de la classe puis, à la ligne, « (enseignant) » /
     // « (élève) ».
@@ -7856,6 +7864,13 @@
     document.title = PAGE_TITLES[key] ? `${PAGE_TITLES[key]} — Fiches` : "Fiches";
     navOnViewChanged(key);
     updatePageHeaderTitle(key);
+    // (appelée aussi au tout premier chargement, avant que le compte ne
+    // soit déclaré : on ignore alors l'erreur, le repère suivra.)
+    try {
+      applyRoleIndicator();
+    } catch (e) {
+      /* compte pas encore chargé */
+    }
     // Round 47 : bulle « … » du robot sur toutes les pages.
     if (key && key !== "home" && bodyLogoSpeechKey !== key) applyBodyLogoSpeech(key);
     // Round 17, item 1 : logo darwin du bandeau masqué UNIQUEMENT sur
@@ -8030,20 +8045,8 @@
     }
     // Round 47 : Organisation et Mes créations sont sur l'accueil (le hub
     // « Gérer mes fiches » n'existe plus) — retour direct à l'accueil.
-    // Round 13, item 4 : Classes et Messagerie ne se rejoignent plus que
-    // via le nouveau hub École — Accueil y ramène plutôt qu'au véritable
-    // accueil, comme pour Organisation/Fiches ci-dessus.
-    if (
-      (el("view-classes") && el("view-classes").classList.contains("is-active")) ||
-      (el("view-messages") && el("view-messages").classList.contains("is-active")) ||
-      // Round 25, item 3 : en mode « Calendrier à l'accueil », le
-      // Calendrier ramène au véritable accueil (le hub École n'y mène plus).
-      (el("view-calendar") && el("view-calendar").classList.contains("is-active") && !homeCalendarModeActive())
-    ) {
-      const tab = document.querySelector('.tab[data-view="school-hub"]');
-      if (tab) tab.click();
-      return;
-    }
+    // v247 : plus de hub École — Mes classes, la messagerie et l'Agenda
+    // ramènent au véritable accueil.
     // Item 8 (lot précédent) : Réviser se rejoint désormais toujours en
     // passant par le Programme de révision (ou "Sélection manuelle") —
     // Accueil y ramène par défaut. Item 3 (nouveau lot) : sauf si on est
@@ -8156,6 +8159,8 @@
     reportCardContext = null;
     calendarFormReturnToClass = null;
     calendarEditingEventId = null;
+    calendarClassFilter = null;
+    messageThreadReturnClass = null;
     if (libraryShareToClassCtx) setLibraryShareToClass(null);
     reviewEntryFromManage = false;
     reviewEntryFromProgram = false;
@@ -8171,6 +8176,12 @@
     bodyLogoSpeechMessages = [];
     bodyLogoSpeechIndex = 0;
     renderBodyLogoSpeechState(false);
+    refreshCalendarHubBadge();
+    try {
+      applyRoleIndicator();
+    } catch (e) {
+      /* compte pas encore chargé */
+    }
   }
   if (homeBtn) homeBtn.addEventListener("click", goHome);
 
@@ -8196,6 +8207,14 @@
         openManageInMode("all");
         return;
       }
+      // v247 : « Mes classes » mène directement aux classes du compte
+      // utilisé (élève ou enseignant).
+      if (square.dataset.go === "my-classes") {
+        openMyClasses();
+        return;
+      }
+      // v247 : depuis l'accueil, l'Agenda complet (pas celui d'une classe).
+      if (square.dataset.go === "calendar") calendarClassFilter = null;
       const tab = document.querySelector(`.tab[data-view="${square.dataset.go}"]`);
       if (tab) tab.click();
     });
@@ -8524,10 +8543,10 @@
       .sort((a, b) => a.date.localeCompare(b.date));
   }
 
-  /** Pastille grise du bouton Calendrier (hub École) : nombre
-   *  d'évènements à venir (aujourd'hui compris). */
+  /** Pastille grise du bouton Agenda de l'accueil (v247 ; avant : hub
+   *  École) : nombre d'évènements à venir (aujourd'hui compris). */
   function refreshCalendarHubBadge() {
-    const badge = el("school-hub-calendar-badge");
+    const badge = el("home-calendar-badge");
     if (!badge) return;
     const n = loadCalendarEvents().filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0).length;
     badge.hidden = n <= 0;
@@ -8558,7 +8577,7 @@
     const usages = currentUsages();
     if (usages && usages.length === 0) {
       items.push({
-        text: "Dis-moi comment tu utilises l'appli : choisis un ou plusieurs usages (élève, enseignant, usage personnel) dans Mon compte.",
+        text: "Dis-moi comment tu utilises l'appli : en tant qu'élève, en tant qu'enseignant, ou les deux. Touche ici pour choisir dans Mon compte.",
         target: { kind: "account" },
       });
     }
@@ -8834,7 +8853,7 @@
       if (commentInput) commentInput.value = "";
       if (title) title.textContent = "Ajouter un événement";
       // Round 55 : depuis une classe (enseignant), « Ajouter au calendrier ».
-      if (submitBtn) submitBtn.textContent = presetClassId ? "Ajouter au calendrier" : "Ajouter à mon calendrier";
+      if (submitBtn) submitBtn.textContent = presetClassId ? "Ajouter à l'agenda de la classe" : "Ajouter à mon agenda";
     }
     await populateCalendarEventClassSelect(eventToEdit, presetClassId);
   }
@@ -9008,7 +9027,11 @@
   }
 
   const calendarAddEventBtn = el("calendar-add-event-btn");
-  if (calendarAddEventBtn) calendarAddEventBtn.addEventListener("click", () => openCalendarEventForm(null));
+  if (calendarAddEventBtn)
+    calendarAddEventBtn.addEventListener("click", () =>
+      // v247 : depuis l'agenda d'une classe, l'évènement est pour la classe.
+      openCalendarEventForm(null, calendarClassFilter && calendarClassFilter.role === "teacher" ? calendarClassFilter.klass.id : undefined)
+    );
   const calendarEventCancelBtn = el("calendar-event-cancel");
   if (calendarEventCancelBtn) calendarEventCancelBtn.addEventListener("click", closeCalendarEventForm);
 
@@ -9185,11 +9208,33 @@
     return li;
   }
 
+  /** v247 : évènements affichés par l'Agenda — tous, ou seulement ceux de
+   *  la classe quand c'est l'agenda d'une classe. */
+  function calendarVisibleEvents() {
+    const all = loadCalendarEvents();
+    if (!calendarClassFilter) return all;
+    const { klass, role } = calendarClassFilter;
+    return all.filter((e) => eventBelongsToClass(e, klass.id, role));
+  }
+  function renderCalendarClassScope() {
+    const scope = el("calendar-class-scope");
+    if (scope) {
+      scope.hidden = !calendarClassFilter;
+      scope.innerHTML = calendarClassFilter ? `${CLASSES_ROW_ICON} <span>${escapeHtml(calendarClassFilter.klass.name)}</span>` : "";
+    }
+    // Agenda d'une classe : seul l'enseignant y ajoute des évènements.
+    const addBtn = el("calendar-add-event-btn");
+    if (addBtn) addBtn.hidden = !!calendarClassFilter && calendarClassFilter.role !== "teacher";
+    const empty = el("calendar-event-empty");
+    if (empty) empty.textContent = calendarClassFilter ? "Aucun évènement pour cette classe." : "Aucun événement pour l'instant.";
+    updatePageHeaderTitle();
+  }
   function renderCalendarListView() {
     const list = el("calendar-event-list");
     const empty = el("calendar-event-empty");
     if (!list) return;
-    const events = loadCalendarEvents().slice().sort((a, b) => a.date.localeCompare(b.date));
+    renderCalendarClassScope();
+    const events = calendarVisibleEvents().slice().sort((a, b) => a.date.localeCompare(b.date));
     list.innerHTML = "";
     if (events.length === 0) {
       if (empty) empty.hidden = false;
@@ -9214,7 +9259,7 @@
   const CALENDAR_DOW_LABELS = ["L", "M", "M", "J", "V", "S", "D"];
   function calendarEventsByDay(year, month) {
     const map = {};
-    loadCalendarEvents().forEach((ev) => {
+    calendarVisibleEvents().forEach((ev) => {
       const d = new Date(ev.date + "T00:00:00");
       if (d.getFullYear() === year && d.getMonth() === month) {
         (map[d.getDate()] = map[d.getDate()] || []).push(ev);
@@ -9916,7 +9961,7 @@
       const reason = reviewHubUrgentBlockReason();
       if (reason) {
         renderReviewHub();
-        await robotAlert(`${reason} Ajoute une échéance (avec ses boîtes) dans le Calendrier pour que je te prépare des révisions prioritaires.`);
+        await robotAlert(`${reason} Ajoute une échéance (avec ses boîtes) dans l'Agenda pour que je te prépare des révisions prioritaires.`);
         return;
       }
       const tab = document.querySelector('.tab[data-view="revision-program"]');
@@ -10148,73 +10193,135 @@
   /** Reflète l'état de connexion sur le bouton d'accueil (item 1/2) : son
    *  libellé change tout seul, avant même d'avoir ouvert la page Compte. */
   /* ---------------- Round 25, item 3 : usages ----------------
-     `user_metadata.usages` ⊂ ["eleve", "enseignant", "perso"], au moins un
+     `user_metadata.usages` ⊂ ["eleve", "enseignant"] (v247 : l'ancien
+     « perso » n'est plus proposé et n'est plus pris en compte), au moins un
      une fois choisis. null = pas de Compte connu (on ne change rien). */
-  const USAGE_KEYS = ["eleve", "enseignant", "perso"];
+  const USAGE_KEYS = ["eleve", "enseignant"];
   function currentUsages() {
     if (!accountCurrentUser) return null;
     const u = (accountCurrentUser.user_metadata || {}).usages;
     return Array.isArray(u) ? u.filter((k) => USAGE_KEYS.includes(k)) : [];
   }
-  /** Ni élève ni enseignant (y compris aucun usage choisi) : le bouton
-   *  d'accueil École devient Calendrier. */
-  function homeCalendarModeActive() {
-    const u = currentUsages();
-    return !!u && !u.includes("eleve") && !u.includes("enseignant");
+
+  /* ---------------- v247 : compte élève / compte enseignant ----------------
+     Élève seulement → environnement élève ; enseignant seulement →
+     environnement enseignant ; les deux → choix du compte à l'ouverture
+     (page « role-picker »), puis bascule possible depuis l'accueil. Le
+     compte utilisé est mémorisé sur l'appareil (par compte, voir
+     js/user-scope.js). Aucun usage choisi (anciens comptes « usage
+     personnel ») → environnement élève, en attendant le choix. */
+  const ACTIVE_ROLE_KEY = "fiches_active_role";
+  const ROLE_LABELS = { student: "Élève", teacher: "Enseignant" };
+  const ROLE_SWAP_ICON =
+    '<svg class="icon-inline-svg role-indicator-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4L3 8l4 4"/><path d="M3 8h14"/><path d="M17 20l4-4-4-4"/><path d="M21 16H7"/></svg>';
+  function userHasBothRoles() {
+    const u = currentUsages() || [];
+    return u.includes("eleve") && u.includes("enseignant");
   }
-  /** Élève OU (exclusif) enseignant : Classes mène directement à la page
-   *  correspondante. */
-  function classesShortcutRole() {
-    const u = currentUsages();
-    if (!u) return null;
+  function activeRole() {
+    const u = currentUsages() || [];
     const eleve = u.includes("eleve");
     const prof = u.includes("enseignant");
-    if (eleve && !prof) return "student";
     if (prof && !eleve) return "teacher";
-    return null;
-  }
-  let homeSchoolCircleOriginal = null;
-  function applyUsageEffects() {
-    const circle = document.querySelector('.home-circle[data-key="classes"]');
-    if (circle) {
-      if (!homeSchoolCircleOriginal) {
-        homeSchoolCircleOriginal = { html: circle.innerHTML, go: circle.dataset.go };
-      }
-      const calendarMode = homeCalendarModeActive();
-      if (calendarMode && circle.dataset.go !== "calendar") {
-        const iconId = (loadDevSettings().navIcons || {}).calendar || DEFAULT_NAV_ICONS.calendar;
-        circle.innerHTML = `${iconSvgMarkup(ICON_LIBRARY[iconId] ? iconId : "calendar", "home-circle-icon")}<span>Calendrier</span><span class="home-circle-badge home-circle-badge--neutral" id="home-calendar-badge" hidden>0</span>`;
-        circle.dataset.go = "calendar";
-      } else if (!calendarMode && circle.dataset.go === "calendar") {
-        circle.innerHTML = homeSchoolCircleOriginal.html;
-        circle.dataset.go = homeSchoolCircleOriginal.go;
-      }
-      const calBadge = el("home-calendar-badge");
-      if (calBadge) {
-        const n = loadCalendarEvents().filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0).length;
-        calBadge.hidden = n <= 0;
-        calBadge.textContent = n > 99 ? "99+" : String(n);
-      }
+    if (!prof) return "student";
+    let stored = null;
+    try {
+      stored = localStorage.getItem(ACTIVE_ROLE_KEY);
+    } catch (e) {
+      stored = null;
     }
+    return stored === "teacher" ? "teacher" : "student";
+  }
+  function setActiveRole(role) {
+    try {
+      localStorage.setItem(ACTIVE_ROLE_KEY, role === "teacher" ? "teacher" : "student");
+    } catch (e) {
+      /* stockage indisponible : le choix vaut pour cette ouverture */
+    }
+    applyRoleIndicator();
+  }
+  /** Repère du compte utilisé, visible partout : pastille dans le bandeau
+   *  du haut (« Élève » / « Enseignant », chacun sa couleur) et liseré de
+   *  la même couleur sous le bandeau. Seulement pour qui a les deux usages.
+   *  Sur l'accueil, la pastille sert à changer de compte. */
+  function applyRoleIndicator() {
+    const both = !!accountCurrentUser && userHasBothRoles();
+    const role = activeRole();
+    document.body.classList.toggle("has-two-roles", both);
+    document.body.classList.toggle("role-teacher", both && role === "teacher");
+    document.body.classList.toggle("role-student", both && role === "student");
+    const btn = el("role-indicator");
+    if (!btn) return;
+    // Pas de repère sur la page de choix du compte : rien n'est encore choisi.
+    const picking = !!(el("view-role-picker") && el("view-role-picker").classList.contains("is-active"));
+    document.body.classList.toggle("is-picking-role", picking);
+    btn.hidden = !both || picking;
+    if (!both || picking) return;
+    const onHome = !!(el("view-home") && el("view-home").classList.contains("is-active"));
+    btn.classList.toggle("is-switch", onHome);
+    btn.innerHTML = `<span class="role-indicator-label">${ROLE_LABELS[role]}</span>${onHome ? ROLE_SWAP_ICON : ""}`;
+    btn.title = onHome ? `Compte ${role === "teacher" ? "enseignant" : "élève"} — toucher pour passer au compte ${role === "teacher" ? "élève" : "enseignant"}` : `Compte ${role === "teacher" ? "enseignant" : "élève"} (change de compte depuis l'accueil)`;
+    btn.setAttribute("aria-label", btn.title);
+  }
+  const roleIndicatorBtn = el("role-indicator");
+  if (roleIndicatorBtn) {
+    roleIndicatorBtn.addEventListener("click", () => {
+      if (!userHasBothRoles()) return;
+      const onHome = !!(el("view-home") && el("view-home").classList.contains("is-active"));
+      if (!onHome) {
+        showToast("Change de compte depuis l'accueil");
+        return;
+      }
+      const next = activeRole() === "teacher" ? "student" : "teacher";
+      setActiveRole(next);
+      showToast(next === "teacher" ? "Compte enseignant" : "Compte élève");
+    });
+  }
+  // Choix du compte proposé une seule fois par ouverture de l'appli.
+  let rolePickerShownThisLaunch = false;
+  function maybeShowRolePicker() {
+    if (rolePickerShownThisLaunch || !accountCurrentUser || !userHasBothRoles()) return;
+    if (document.body.classList.contains("is-login-locked")) return;
+    const onHome = !!(el("view-home") && el("view-home").classList.contains("is-active"));
+    if (!onHome) return;
+    rolePickerShownThisLaunch = true;
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    el("view-role-picker").classList.add("is-active");
+    if (el("body-logo-row")) el("body-logo-row").hidden = false;
+    applyBodyLogoSpeech("role-picker");
+  }
+  document.querySelectorAll(".role-picker-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      setActiveRole(btn.dataset.role);
+      goHome();
+    });
+  });
+  /** « Mes classes » : directement la page des classes du compte utilisé. */
+  function openMyClasses() {
+    if (!Sync.isConfigured() || !accountCurrentUser) {
+      const tab = document.querySelector('.tab[data-view="classes"]');
+      if (tab) tab.click();
+      return;
+    }
+    openClassesSubView(activeRole());
+  }
+  function applyUsageEffects() {
+    const calBadge = el("home-calendar-badge");
+    if (calBadge) {
+      const n = loadCalendarEvents().filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0).length;
+      calBadge.hidden = n <= 0;
+      calBadge.textContent = n > 99 ? "99+" : String(n);
+    }
+    applyRoleIndicator();
+    maybeShowRolePicker();
     refreshHomeEventWarning();
   }
   function renderAccountUsages() {
     const wrap = el("account-usages");
     if (!wrap) return;
-    let u = currentUsages() || [];
-    // v242 : aucun usage encore choisi → « usage personnel » coché (et
-    // enregistré) par défaut.
-    if (accountCurrentUser && u.length === 0 && Sync.auth.updateMetadata) {
-      u = ["perso"];
-      Sync.auth
-        .updateMetadata({ usages: u })
-        .then(async (res) => {
-          if (res && res.error) return;
-          accountCurrentUser = (await Sync.auth.getUser()) || accountCurrentUser;
-          applyUsageEffects();
-        })
-        .catch(() => {});
-    }
+    // v247 : plus de « usage personnel » coché par défaut — élève et/ou
+    // enseignant, au choix.
+    const u = currentUsages() || [];
     wrap.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
       cb.checked = u.includes(cb.value);
     });
@@ -10272,7 +10379,7 @@
         const checked = [...accountUsagesWrap.querySelectorAll('input[type="checkbox"]')].filter((x) => x.checked).map((x) => x.value);
         if (checked.length === 0) {
           cb.checked = true;
-          await robotAlert("Garde au moins un usage : élève, enseignant ou usage personnel.");
+          await robotAlert("Garde au moins un usage : élève ou enseignant.");
           return;
         }
         const note = el("account-usages-note");
@@ -10572,7 +10679,7 @@
         ageMeta = { birth_date: birth };
         // v242 : usages (au moins un) et niveau scolaire (facultatif).
         const usages = [...document.querySelectorAll('#account-auth-usages input[type="checkbox"]')].filter((x) => x.checked).map((x) => x.value);
-        if (!usages.length) return fail("Choisis au moins un usage : élève, enseignant ou usage personnel.");
+        if (!usages.length) return fail("Choisis au moins un usage : élève ou enseignant.");
         ageMeta.usages = usages;
         if (signupSchoolCascade) {
           const tax = taxonomyValueFromSelection(signupSchoolCascade.getSelection());
@@ -11790,7 +11897,7 @@
       if (!accountCurrentUser) return;
       const uid = accountCurrentUser.id;
       const go = await showRobotMessage(
-        "Supprimer ton compte ? Tout sera effacé définitivement, sur tous tes appareils : tes boîtes et tes fiches, ta progression, ton calendrier, tes messages, les boîtes que tu as publiées dans la Librairie et, si tu es enseignant, tes classes (tes élèves ne les verront plus). On ne pourra rien récupérer.",
+        "Supprimer ton compte ? Tout sera effacé définitivement, sur tous tes appareils : tes boîtes et tes fiches, ta progression, ton agenda, tes messages, les boîtes que tu as publiées dans la Librairie et, si tu es enseignant, tes classes (tes élèves ne les verront plus). On ne pourra rien récupérer.",
         {
           buttons: [
             { label: "Annuler", value: false },
@@ -11919,41 +12026,6 @@
     });
   }
 
-  // Round 13, item 4 : hub École — deux boutons ronds vers Messagerie et
-  // Mes classes.
-  const schoolHubMessagesBtn = el("school-hub-messages-btn");
-  if (schoolHubMessagesBtn) {
-    schoolHubMessagesBtn.addEventListener("click", () => {
-      const tab = document.querySelector('.tab[data-view="messages"]');
-      if (tab) tab.click();
-    });
-  }
-  const schoolHubCalendarBtn = el("school-hub-calendar-btn");
-  if (schoolHubCalendarBtn) {
-    schoolHubCalendarBtn.addEventListener("click", () => {
-      const tab = document.querySelector('.tab[data-view="calendar"]');
-      if (tab) tab.click();
-    });
-  }
-  const schoolHubClassesBtn = el("school-hub-classes-btn");
-  if (schoolHubClassesBtn) {
-    schoolHubClassesBtn.addEventListener("click", () => {
-      // Round 26, item 1 : bug corrigé — avec un seul usage élève OU
-      // enseignant, la page Classes s'affichait un instant avant la bascule
-      // (la décision n'était prise qu'après le chargement asynchrone du
-      // compte). Quand le compte est déjà connu, on va maintenant
-      // directement sur la bonne page, sans jamais afficher Classes.
-      const shortcut = Sync.isConfigured() && accountCurrentUser ? classesShortcutRole() : null;
-      if (shortcut) {
-        applyBodyLogoSpeech(shortcut === "teacher" ? "classes-teacher" : "classes-student");
-        openClassesSubView(shortcut);
-        return;
-      }
-      const tab = document.querySelector('.tab[data-view="classes"]');
-      if (tab) tab.click();
-    });
-  }
-
   /** ---------------------------------------------------------------
    *  Classes — suppose maintenant qu'on est déjà connecté (voir Compte
    *  ci-dessus). item 3 : plus aucune action manuelle côté élève — dès
@@ -11971,9 +12043,9 @@
     const needsAccount = el("classes-needs-account");
     const mainBlock = el("classes-main-block");
     if (!needsSync || !needsAccount || !mainBlock) return;
-    // Round 26, item 1 : masqué d'emblée si un raccourci est probable (le
-    // bloc pouvait rester visible depuis une visite précédente).
-    if (classesShortcutRole()) mainBlock.hidden = true;
+    // v247 : plus de choix Élève / Enseignant ici — une fois connecté, on
+    // va directement aux classes du compte utilisé (voir openMyClasses).
+    mainBlock.hidden = true;
 
     if (!Sync.isConfigured()) {
       needsSync.hidden = false;
@@ -11992,22 +12064,7 @@
     }
     needsAccount.hidden = true;
 
-    // Round 25, item 3 : usage élève OU enseignant (pas les deux) -> la
-    // page Classes est court-circuitée, on arrive directement sur la page
-    // correspondante (qui fait elle-même la synchro côté élève). Round 26,
-    // item 1 : les boutons Élève/Enseignant ne sont affichés qu'APRÈS cette
-    // décision, pour ne jamais les faire apparaître un instant.
-    const shortcut = classesShortcutRole();
-    if (shortcut && el("view-classes") && el("view-classes").classList.contains("is-active")) {
-      mainBlock.hidden = true;
-      await openClassesSubView(shortcut);
-      return;
-    }
-    mainBlock.hidden = false;
-
-    // item 3 (lot précédent) : synchro automatique, sans action de
-    // l'élève, dès qu'on ouvre la page Classes (palier ou sous-page).
-    await syncSharedBoxesForStudent();
+    if (el("view-classes") && el("view-classes").classList.contains("is-active")) await openClassesSubView(activeRole());
   }
 
   /** Bascule vers une des deux pages complètes "J'apprends" (which="student")
@@ -12904,16 +12961,19 @@
   /** Nombre d'évènements de calendrier à venir liés à cette classe — côté
    *  prof (ev.classShare.classId) ou côté élève (ev.sharedClassId), selon
    *  le rôle sous lequel la classe est consultée ici. */
+  /** v247 : l'évènement concerne-t-il cette classe (côté prof : partagé
+   *  par lui avec la classe ; côté élève : reçu de la classe) ? */
+  function eventBelongsToClass(e, classId, role) {
+    if (!e) return false;
+    if (role === "teacher") return !!e.classShare && e.classShare.classId === classId;
+    return e.sharedClassId === classId;
+  }
   function classUpcomingEvents(classId, role) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return loadCalendarEvents()
       .filter((e) => {
-        if (role === "teacher") {
-          if (!e.classShare || e.classShare.classId !== classId) return false;
-        } else {
-          if (e.sharedClassId !== classId) return false;
-        }
+        if (!eventBelongsToClass(e, classId, role)) return false;
         if (!e.date) return false;
         return new Date(e.date + "T00:00:00") >= today;
       })
@@ -13263,6 +13323,45 @@
     showToast("Classe renommée");
     renderClassDetailView();
   }
+  /** v247 : pastilles des boutons « Agenda de la classe » (évènements à
+   *  venir) et « Messagerie de la classe » (messages non lus). */
+  function refreshClassDetailToolBadges(klass, role) {
+    const agendaBadge = el("class-detail-agenda-badge");
+    if (agendaBadge) {
+      const n = classUpcomingEvents(klass.id, role).length;
+      agendaBadge.hidden = n <= 0;
+      agendaBadge.textContent = n > 99 ? "99+" : String(n);
+    }
+    const msgBadge = el("class-detail-messages-badge");
+    if (msgBadge && Sync.messages && Sync.messages.countUnread) {
+      const lastRead = loadMessagesLastRead()[klass.id];
+      Sync.messages
+        .countUnread(klass.id, lastRead)
+        .then((n) => {
+          if (!classDetailContext || classDetailContext.klass.id !== klass.id) return;
+          msgBadge.hidden = !(n > 0);
+          msgBadge.textContent = n > 99 ? "99+" : String(n || 0);
+        })
+        .catch(() => {});
+    }
+  }
+  const classDetailAgendaBtn = el("class-detail-agenda-btn");
+  if (classDetailAgendaBtn) {
+    classDetailAgendaBtn.addEventListener("click", () => {
+      if (!classDetailContext) return;
+      calendarClassFilter = { klass: classDetailContext.klass, role: classDetailContext.role };
+      const tab = document.querySelector('.tab[data-view="calendar"]');
+      if (tab) tab.click();
+    });
+  }
+  const classDetailMessagesBtn = el("class-detail-messages-btn");
+  if (classDetailMessagesBtn) {
+    classDetailMessagesBtn.addEventListener("click", () => {
+      if (!classDetailContext) return;
+      messageThreadReturnClass = { klass: classDetailContext.klass, role: classDetailContext.role };
+      openMessageThread(classDetailContext.klass);
+    });
+  }
   function closeClassDetailView() {
     const role = classDetailContext ? classDetailContext.role : "student";
     classDetailContext = null;
@@ -13309,6 +13408,7 @@
     if (el("class-detail-share-open-btn")) el("class-detail-share-open-btn").hidden = !isTeacher;
     const addEventBtn = el("class-detail-add-event-btn");
     if (addEventBtn) addEventBtn.hidden = !isTeacher;
+    refreshClassDetailToolBadges(klass, role);
 
     const boxesEl = el("class-detail-boxes");
     if (boxesEl) renderClassBoxesTree(boxesEl, klass, sharedBoxes, isTeacher);
@@ -17389,6 +17489,13 @@
       unsubscribeMessageThreadRealtime = null;
     }
     messageThreadContext = null;
+    // v247 : discussion ouverte depuis la page de sa classe → on y revient.
+    if (messageThreadReturnClass) {
+      const ctx = messageThreadReturnClass;
+      messageThreadReturnClass = null;
+      openClassDetailView(ctx.klass, ctx.role);
+      return;
+    }
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     el("view-messages").classList.add("is-active");
     applyBodyLogoSpeech("messages");
