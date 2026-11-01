@@ -329,15 +329,16 @@
     review: "Réviser", manage: "Organiser mes boîtes de révision", addCard: "Ajouter une fiche",
     creations: "Créer mes propres boîtes de révision",
     reports: "Signalements",
-    stats: "Statistiques", settings: "Réglages", calendar: "Calendrier",
-    dev: "Développeur", classes: "École", account: "Compte",
+    stats: "Statistiques", settings: "Réglages", calendar: "Agenda",
+    dev: "Développeur", classes: "Mes classes", account: "Compte",
     library: "Librairie",
     boxes: "Mes fiches",
     defi: "Défi du jour",
   };
   // Round 55 : boutons qui ne sont plus sur l'accueil (gardés pour les
   // réglages déjà enregistrés et les icônes).
-  const HOME_LAYOUT_RETIRED = ["addCard", "manage", "creations", "dev", "calendar"];
+  // v247 : « calendar » revient sur l'accueil (bouton Agenda).
+  const HOME_LAYOUT_RETIRED = ["addCard", "manage", "creations", "dev"];
   // Largeur/hauteur de référence utilisées uniquement pour convertir une
   // seule fois d'anciens réglages enregistrés en pixels (avant ce
   // correctif) vers des pourcentages équivalents.
@@ -412,18 +413,18 @@
     cards: ["Toutes les fiches de cette boîte. Le drapeau signale une fiche à corriger ; la flèche ouvre les autres actions (éditer, déplacer, supprimer)."],
     "new-card": ["Écris la question et la réponse : je te poserai la question et tu me diras si tu connaissais la réponse.", "Tu peux aussi ajouter 3 réponses fausses : je te poserai d'abord la fiche en QCM. Si tu trouves du premier coup, elle repasse en fiche classique ; sinon, je te la reposerai en QCM."],
     stats: ["Tes statistiques : combien de fiches tu révises, et comment tu progresses."],
-    calendar: ["Note ici tes échéances (contrôle, interrogation, partiels, bac...) liées à une boîte ou un dossier : je m'en sers pour te préparer les révisions prioritaires."],
+    calendar: ["Ton agenda : tous tes évènements, les tiens et ceux de tes classes. Note ici tes échéances (contrôle, interrogation, partiels, bac...) liées à une boîte ou un dossier : je m'en sers pour te préparer les révisions prioritaires."],
     "calendar-event-form": ["Donne un titre et une date à ton échéance, puis choisis les boîtes à réviser pour elle."],
     "calendar-event-detail": ["Le détail de cette échéance et des boîtes à réviser pour elle."],
     sync: ["L'état de la synchronisation de tes données entre tes appareils."],
     account: ["Ton compte : ton nom, ton niveau scolaire et la façon dont tu utilises l'appli."],
-    "school-hub": ["Retrouve ici tes classes, la messagerie de tes classes et ton calendrier."],
-    classes: ["Choisis ton rôle : élève (tu rejoins une classe avec un code) ou enseignant (tu crées tes classes)."],
+    "role-picker": ["Tu utilises darwin comme élève et comme enseignant : choisis le compte avec lequel tu veux continuer. Tu pourras en changer depuis l'accueil, en touchant « Élève » ou « Enseignant » en haut de l'écran."],
+    classes: ["Pour voir tes classes, connecte-toi d'abord à ton compte."],
     "classes-student": ["Les classes que tu as rejointes. Touche une classe pour voir ses boîtes et ses évènements."],
     "classes-teacher": ["Les classes que tu as créées. Donne leur code à tes élèves pour qu'ils les rejoignent."],
     "classes-join": ["Entre le code que ton enseignant t'a donné pour rejoindre sa classe."],
     "classes-create": ["Donne un nom à ta classe."],
-    "class-detail": ["La page de la classe : ses boîtes partagées, ses évènements à venir et la liste des élèves."],
+    "class-detail": ["La page de la classe : son agenda, sa messagerie, ses boîtes partagées, ses évènements à venir et la liste des élèves."],
     "class-share": ["Partage une de tes boîtes avec la classe, ou une boîte de la Librairie (seuls les élèves abonnés y auront accès)."],
     subscriptions: ["Bientôt, l'abonnement te donnera accès à toutes les boîtes de la Librairie."],
     messages: ["Une discussion par classe : touche une classe pour lire et écrire les messages."],
@@ -455,15 +456,15 @@
     cards: "Fiches d'une boîte",
     "new-card": "Nouvelle fiche",
     stats: "Statistiques",
-    calendar: "Calendrier",
-    "calendar-event-form": "Calendrier — ajouter/modifier un évènement",
-    "calendar-event-detail": "Calendrier — détail d'un évènement",
+    calendar: "Agenda",
+    "calendar-event-form": "Agenda — ajouter/modifier un évènement",
+    "calendar-event-detail": "Agenda — détail d'un évènement",
     sync: "Synchronisation",
     account: "Compte",
-    "school-hub": "École",
-    classes: "Mes classes (choix du rôle)",
-    "classes-student": "Classes — Élève",
-    "classes-teacher": "Classes — Enseignant",
+    "role-picker": "Choix du compte (élève / enseignant)",
+    classes: "Mes classes (non connecté)",
+    "classes-student": "Mes classes — élève",
+    "classes-teacher": "Mes classes — enseignant",
     "classes-join": "Rejoindre une classe",
     "classes-create": "Créer une classe",
     "class-detail": "Page d'une classe",
@@ -941,7 +942,7 @@
   };
   const NAV_ICON_TITLES_R57 = {
     boxes: "Mes fiches", review: "Réviser", manage: "Organiser mes boîtes de révision", stats: "Statistiques",
-    settings: "Réglages", calendar: "Calendrier", library: "Librairie", creations: "Créer mes propres boîtes de révision",
+    settings: "Réglages", calendar: "Agenda", library: "Librairie", creations: "Créer mes propres boîtes de révision",
     reports: "Signalements",
   };
   const RATING_TITLES_R57 = { again: "Je ne savais pas", hard: "Vague idée", good: "Je savais", easy: "Parfait" };

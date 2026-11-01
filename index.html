@@ -190,6 +190,9 @@
            (qui a déjà son propre grand logo darwin) — bascule en JS,
            voir onActiveViewChanged ; commence masqué car l'accueil est
            la page de départ. -->
+      <!-- v247 : compte utilisé (élève / enseignant), pour ceux qui ont les
+           deux usages. Sur l'accueil, le toucher change de compte. -->
+      <button type="button" class="role-indicator" id="role-indicator" hidden></button>
       <div id="topbar-darwin-logo" class="topbar-darwin-logo" role="img" aria-label="darwin" hidden></div>
       <button type="button" class="night-mode-toggle-btn" id="night-mode-toggle-btn" title="Mode nuit" aria-label="Basculer le mode nuit">
         <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -336,12 +339,11 @@
       <svg class="tab-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
     </button>
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
-    <button class="tab" role="tab" aria-selected="false" data-view="calendar" hidden>Calendrier</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="calendar" hidden>Agenda</button>
     <button class="tab" role="tab" aria-selected="false" data-view="review-hub" hidden>Réviser</button>
     <button class="tab" role="tab" aria-selected="false" data-view="boxes-hub" hidden>Mes fiches</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Révisions prioritaires</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-reinforce" hidden>Renforcer mes connaissances</button>
-    <button class="tab" role="tab" aria-selected="false" data-view="school-hub" hidden>École</button>
     <button class="tab" role="tab" aria-selected="false" data-view="creations" hidden>Mes créations</button>
     <button class="tab" role="tab" aria-selected="false" data-view="reports-hub" hidden>Signalements</button>
     <button class="tab" role="tab" aria-selected="false" data-view="reports" hidden>Signalements reçus</button>
@@ -412,15 +414,21 @@
           <span>Signalements</span>
           <span class="home-circle-badge" id="home-reports-badge" hidden>0</span>
         </button>
-        <!-- Round 13, item 4 : "École" remplace "Classes" et mène désormais
-             au nouveau hub (#view-school-hub) plutôt qu'à la page Classes
-             directement ; conserve data-key="classes" pour ne pas casser
-             DEFAULT_HOME_LAYOUT, mais data-go pointe vers le hub. La pastille
-             de messagerie migre ici. -->
-        <button type="button" class="home-circle" data-key="classes" data-go="school-hub">
+        <!-- v247 : « Mes classes » remplace « École » (page supprimée) et
+             mène directement aux classes du compte utilisé (élève ou
+             enseignant, voir openMyClasses). Garde data-key="classes" pour
+             la disposition de l'accueil. La pastille de messagerie reste ici. -->
+        <button type="button" class="home-circle" data-key="classes" data-go="my-classes">
           <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c0-3.6 2.5-6.2 5.5-6.2s5.5 2.6 5.5 6.2"/><circle cx="17" cy="9" r="2.2"/><path d="M15.3 14.3c2.5.5 4.2 2.7 4.2 5.7"/></svg>
-          <span>École</span>
+          <span>Mes classes</span>
           <span class="home-circle-badge" id="home-school-badge" hidden>0</span>
+        </button>
+        <!-- v247 : l'Agenda (ex-Calendrier) a son propre bouton : tous les
+             évènements de l'utilisateur (perso et classes). -->
+        <button type="button" class="home-circle" data-key="calendar" data-go="calendar">
+          <svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Agenda</span>
+          <span class="home-circle-badge home-circle-badge--neutral" id="home-calendar-badge" hidden>0</span>
         </button>
         <!-- Round 30 : la Librairie quitte la page Fiches pour l'accueil,
              avec sa propre couleur (mode développeur → Couleurs des fonds →
@@ -461,6 +469,22 @@
         <button type="button" class="classes-role-circle" id="boxes-hub-creations-btn">
           <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span>
           <span>Créer mes fiches</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- v247 : élève ET enseignant — à l'ouverture, choix du compte à
+         utiliser (voir showRolePicker, js/app.js). -->
+    <section id="view-role-picker" class="view">
+      <p class="role-picker-hint">Avec quel compte veux-tu continuer ?</p>
+      <div class="classes-role-circles role-picker-circles">
+        <button type="button" class="classes-role-circle role-picker-btn role-picker-btn--student" data-role="student">
+          <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/><line x1="22" y1="9" x2="22" y2="15"/></svg></span>
+          <span>Mon compte élève</span>
+        </button>
+        <button type="button" class="classes-role-circle role-picker-btn role-picker-btn--teacher" data-role="teacher">
+          <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="3" width="18" height="12" rx="1.5"/><line x1="7" y1="7" x2="14" y2="7"/><line x1="7" y1="10.5" x2="11" y2="10.5"/><line x1="8" y1="21" x2="12" y2="15"/><line x1="16" y1="21" x2="12" y2="15"/></svg></span>
+          <span>Mon compte enseignant</span>
         </button>
       </div>
     </section>
@@ -836,13 +860,16 @@
       <!-- Round 18, item 13 : "+ Ajouter un événement" ouvre maintenant
            une page à part entière (#view-calendar-event-form ci-dessous),
            au lieu de déplier un panneau sur cette même page. -->
+      <!-- v247 : agenda d'une classe — nom de la classe (voir
+           renderCalendarClassScope). -->
+      <p class="calendar-class-scope" id="calendar-class-scope" hidden></p>
       <button type="button" class="btn btn--primary" id="calendar-add-event-btn" style="margin-bottom:14px;">+ Ajouter un événement</button>
 
       <!-- Item 3 : bascule d'affichage — liste / calendrier (mois en
            défilement infini). Le format "année" a été retiré. -->
       <div class="calendar-view-toggle">
         <button type="button" class="calendar-view-toggle-btn is-active" data-calview="list">Liste</button>
-        <button type="button" class="calendar-view-toggle-btn" data-calview="months">Calendrier</button>
+        <button type="button" class="calendar-view-toggle-btn" data-calview="months">Mois</button>
       </div>
 
       <div class="card-form" id="calendar-list-view">
@@ -927,7 +954,7 @@
         <!-- Round 19, item 3 : marge homogène avec les autres champs de la
              page (12px, comme .field) plutôt qu'une valeur ad hoc. -->
         <div class="form-actions" style="margin-top:0;">
-          <button type="submit" class="btn btn--primary" id="calendar-event-submit">Ajouter à mon calendrier</button>
+          <button type="submit" class="btn btn--primary" id="calendar-event-submit">Ajouter à mon agenda</button>
           <button type="button" class="btn btn--ghost" id="calendar-event-cancel">Annuler</button>
         </div>
       </form>
@@ -1099,7 +1126,6 @@
             <div class="usage-options" id="account-auth-usages">
               <label class="usage-option"><input type="checkbox" value="eleve" /> <span>en tant qu'élève<small>possibilité de rejoindre les classes de tes enseignants</small></span></label>
               <label class="usage-option"><input type="checkbox" value="enseignant" /> <span>en tant qu'enseignant<small>possibilité de créer des classes pour tes élèves</small></span></label>
-              <label class="usage-option"><input type="checkbox" value="perso" checked /> <span>pour un usage personnel</span></label>
             </div>
             <p class="field-hint">Tu pourras changer ces choix à tout moment dans Mon compte.</p>
           </div>
@@ -1146,7 +1172,6 @@
             <div class="usage-options" id="account-usages">
               <label class="usage-option"><input type="checkbox" value="eleve" /> <span>en tant qu'élève<small>possibilité de rejoindre les classes de tes enseignants</small></span></label>
               <label class="usage-option"><input type="checkbox" value="enseignant" /> <span>en tant qu'enseignant<small>possibilité de créer des classes pour tes élèves</small></span></label>
-              <label class="usage-option"><input type="checkbox" value="perso" /> <span>pour un usage personnel</span></label>
             </div>
           </div>
           <p class="field-hint" id="account-usages-note" hidden></p>
@@ -1287,34 +1312,8 @@
          (même esprit que la page Classes) : Messagerie et Mes classes.
          Le cercle d'accueil "École" mène ici plutôt que directement sur
          la page Classes. -->
-    <section id="view-school-hub" class="view" aria-labelledby="tab-school-hub">
-      <!-- Round 18, item 8 : titre "École" retiré (les titres de page ont
-           déjà été retirés partout ailleurs au round 17 ; celui-ci avait
-           été oublié). -->
-      <div class="classes-role-circles" id="school-hub-circles">
-        <button type="button" class="classes-role-circle" id="school-hub-messages-btn">
-          <span class="classes-role-circle-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          </span>
-          <span>Messagerie</span>
-          <span class="home-circle-badge" id="school-hub-messages-badge" hidden>0</span>
-        </button>
-        <button type="button" class="classes-role-circle" id="school-hub-classes-btn">
-          <span class="classes-role-circle-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c0-3.6 2.5-6.2 5.5-6.2s5.5 2.6 5.5 6.2"/><circle cx="17" cy="9" r="2.2"/><path d="M15.3 14.3c2.5.5 4.2 2.7 4.2 5.7"/></svg>
-          </span>
-          <span>Mes classes</span>
-        </button>
-        <button type="button" class="classes-role-circle" id="school-hub-calendar-btn">
-          <span class="classes-role-circle-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          </span>
-          <span>Calendrier</span>
-          <!-- Nombre d'évènements à venir (pastille grise, informative). -->
-          <span class="home-circle-badge home-circle-badge--neutral" id="school-hub-calendar-badge" hidden>0</span>
-        </button>
-      </div>
-    </section>
+    <!-- v247 : la page « École » est supprimée (Mes classes et l'Agenda sont
+         sur l'accueil ; la messagerie est dans chaque classe). -->
 
     <!-- Palier "Fiches" (même principe graphique que le hub École) :
          Mes fiches de révision (organisation complète), Mes créations de
@@ -1559,6 +1558,19 @@
       <div class="class-detail-header">
         <h2 class="class-detail-name" id="class-detail-title">Classe</h2>
         <div class="class-detail-chips" id="class-detail-stats"></div>
+      </div>
+      <!-- v247 : agenda et messagerie propres à la classe. -->
+      <div class="classes-role-circles class-detail-tools">
+        <button type="button" class="classes-role-circle class-detail-tool" id="class-detail-agenda-btn">
+          <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+          <span>Agenda de la classe</span>
+          <span class="home-circle-badge home-circle-badge--neutral" id="class-detail-agenda-badge" hidden>0</span>
+        </button>
+        <button type="button" class="classes-role-circle class-detail-tool" id="class-detail-messages-btn">
+          <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+          <span>Messagerie de la classe</span>
+          <span class="home-circle-badge" id="class-detail-messages-badge" hidden>0</span>
+        </button>
       </div>
       <div class="class-detail-section">
         <div class="class-detail-section-head">
