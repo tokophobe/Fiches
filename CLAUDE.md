@@ -7,6 +7,22 @@ Le propriétaire n'est pas développeur : tout ce qui lui est adressé
 (messages, commentaires, documentation) est **en français**, en langage
 simple.
 
+## Spécification fonctionnelle (à lire en premier)
+
+`docs/SPECIFICATION.md` est **la référence de la logique de l'appli**,
+partagée avec le propriétaire, qui y écrit aussi ses demandes.
+
+- Le lire **avant** toute modification de l'appli. Traiter les demandes
+  de sa rubrique « Demandes » comme des demandes du propriétaire.
+- Si une demande contredit une règle existante, ou si le code ne fait
+  pas ce que dit le document : **le signaler et demander** avant de
+  coder.
+- À chaque modification livrée, dans la **même branche** que le code :
+  mettre à jour les règles et écrans concernés, cocher la demande et la
+  déplacer dans le journal des changements (version, date, résumé), et
+  noter les nouvelles questions dans « Questions ouvertes ».
+- Langage simple, sans code ni noms de fonctions dans le document.
+
 ## Architecture
 
 - `index.html` : l'appli (tous les écrans sont dans ce fichier). Les

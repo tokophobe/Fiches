@@ -1,11 +1,15 @@
 # darwin — fiches de révision
 
+> 📘 **Comment fonctionne l'appli (règles, algorithme, boîtes, classes,
+> Librairie) :** voir [`docs/SPECIFICATION.md`](docs/SPECIFICATION.md).
+> C'est aussi là qu'on écrit les demandes de modification.
+
 **darwin** (dépôt « Fiches ») est une application web installable (PWA)
 de révision par fiches question / réponse. Elle repose sur la
 **répétition espacée** : plus on répond juste à une fiche, moins souvent
-l'appli la repose (algorithme SM-2, celui d'Anki).
+l'appli la repose.
 
-Version actuelle : **v245** (affichée dans les Réglages de l'appli).
+Le numéro de version est affiché dans les Réglages de l'appli.
 
 ## Fonctionnalités
 
@@ -157,16 +161,12 @@ dossier n'est pas encore dans le dépôt).
 
 ## Comment fonctionne la répétition espacée
 
-Chaque fiche a trois valeurs : un facteur de facilité, un intervalle (en
-jours) et un compteur de bonnes réponses d'affilée. Après avoir répondu,
-on note la fiche :
-
-- **Encore** → elle revient dans moins d'un jour ;
-- **Difficile** → l'intervalle progresse lentement ;
-- **Bien** → progression normale (1 j → 6 j → × facteur) ;
-- **Facile** → l'intervalle grandit plus vite.
-
-Tout est dans `js/sm2.js`.
+Quatre réponses possibles (Je ne sais pas, Vague idée, Je sais,
+Parfaitement) ; l'appli calcule le délai avant la prochaine question, et
+resserre les révisions à l'approche d'une échéance de l'agenda (mode
+« sprint »). Toutes les règles sont décrites dans
+[`docs/SPECIFICATION.md`](docs/SPECIFICATION.md) (§4) ; le calcul est dans
+`js/app.js` (`computeAlgoNext`), ses réglages dans Darwin Admin.
 
 ## Modifier le design
 
