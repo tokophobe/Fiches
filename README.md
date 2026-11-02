@@ -1,5 +1,9 @@
 # darwin — fiches de révision
 
+> 📘 **Comment fonctionne l'appli (règles, algorithme, boîtes, classes,
+> Librairie) :** voir [`docs/SPECIFICATION.md`](docs/SPECIFICATION.md).
+> C'est aussi là qu'on écrit les demandes de modification.
+
 **darwin** (dépôt « Fiches ») est une application web installable (PWA)
 de révision par fiches question / réponse. Elle repose sur la
 **répétition espacée** : plus on répond juste à une fiche, moins souvent
