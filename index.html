@@ -270,6 +270,16 @@
       <div class="list-header-actions">
         <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
       </div>
+      <!-- v248 : toute l'arborescence, ou les boîtes « hors de mes
+           révisions » grisées. -->
+      <div class="org-display-toggle org-rev-toggle" id="org-rev-toggle">
+        <button type="button" class="org-display-toggle-btn org-rev-toggle-btn" data-org-rev-display="all" title="Toute l'arborescence" aria-label="Afficher toute l'arborescence">
+          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-13.7 5.7"/><path d="M4 12a8 8 0 0 1 13.7-5.7"/><polyline points="17.5 2.5 17.7 6.3 14 6.6"/><polyline points="6.5 21.5 6.3 17.7 10 17.4"/></svg>
+        </button>
+        <button type="button" class="org-display-toggle-btn org-rev-toggle-btn" data-org-rev-display="dim" title="Griser les boîtes hors de mes révisions" aria-label="Griser les boîtes hors de mes révisions">
+          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-13.7 5.7"/><path d="M4 12a8 8 0 0 1 13.7-5.7"/><polyline points="17.5 2.5 17.7 6.3 14 6.6"/><polyline points="6.5 21.5 6.3 17.7 10 17.4"/><line x1="3" y1="3" x2="21" y2="21"/></svg>
+        </button>
+      </div>
       <div class="org-display-toggle" id="org-display-toggle">
         <button type="button" class="org-display-toggle-btn is-active" data-org-display="count" title="Nombre de fiches/boîtes">
           <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/></svg>
@@ -675,6 +685,13 @@
            Bibliothèque, pictos d'affichage) a été déplacé dans le bandeau
            fixe (#manage-sticky-actions, voir plus haut) — il ne défile
            donc plus avec la liste ci-dessous. -->
+      <!-- v248 : créer une boîte directement depuis l'organisation. -->
+      <div class="round-add-card-wrap manage-new-box-wrap">
+        <button type="button" class="classes-role-circle add-card-circle" id="manage-new-box-btn" aria-label="Créer une nouvelle boîte">
+          <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          <span>Nouvelle boîte</span>
+        </button>
+      </div>
       <div class="subjects-panel">
         <ul class="subject-list" id="subject-list"></ul>
       </div>
@@ -1559,48 +1576,54 @@
         <h2 class="class-detail-name" id="class-detail-title">Classe</h2>
         <div class="class-detail-chips" id="class-detail-stats"></div>
       </div>
-      <!-- v247 : agenda et messagerie propres à la classe. -->
-      <div class="classes-role-circles class-detail-tools">
-        <button type="button" class="classes-role-circle class-detail-tool" id="class-detail-agenda-btn">
-          <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
-          <span>Agenda de la classe</span>
-          <span class="home-circle-badge home-circle-badge--neutral" id="class-detail-agenda-badge" hidden>0</span>
-        </button>
-        <button type="button" class="classes-role-circle class-detail-tool" id="class-detail-messages-btn">
-          <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
-          <span>Messagerie de la classe</span>
-          <span class="home-circle-badge" id="class-detail-messages-badge" hidden>0</span>
-        </button>
+      <!-- v248 : page de la classe en blocs à coins arrondis, repliables
+           (touche l'en-tête d'un bloc pour l'ouvrir ou le fermer). L'agenda
+           de la classe est dans son bloc (plus de bouton rond). -->
+      <div class="info-block info-block--link" id="class-detail-messages-btn" role="button" tabindex="0">
+        <div class="info-block-head">
+          <span class="info-block-title"><svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Messagerie de la classe</span>
+          <span class="info-block-summary"><span class="home-circle-badge info-block-badge" id="class-detail-messages-badge" hidden>0</span></span>
+          <svg class="info-block-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg>
+        </div>
       </div>
-      <div class="class-detail-section">
-        <div class="class-detail-section-head">
-          <h3>Boîtes partagées</h3>
+      <section class="info-block is-collapsible" data-block="class-boxes">
+        <div class="info-block-head">
+          <button type="button" class="info-block-toggle"><svg class="info-block-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg><span class="info-block-title">Boîtes partagées</span><span class="info-block-summary" id="class-detail-boxes-summary"></span></button>
           <!-- Round 48 : « + Partager » mène à une page qui propose « Depuis
-               mes boîtes » et « Depuis la Librairie ». -->
-          <!-- Round 53 : dossiers propres à la classe (enseignant). -->
-          <button type="button" class="class-detail-section-action" id="class-detail-new-folder-btn" hidden>+ Dossier</button>
-          <button type="button" class="class-detail-section-action" id="class-detail-share-open-btn" hidden>+ Partager</button>
-          <!-- Propose aussi bien les boîtes perso que les collections de la
-               Librairie (voir renderSingleBoitePicker). -->
+               mes boîtes » et « Depuis la Librairie ». Round 53 : dossiers
+               propres à la classe (enseignant). -->
         </div>
-        <div class="class-tree" id="class-detail-boxes"></div>
-      </div>
-      <div class="class-detail-section">
-        <div class="class-detail-section-head">
-          <h3>Évènements à venir</h3>
-          <button type="button" class="class-detail-section-action" id="class-detail-add-event-btn" hidden>+ Ajouter</button>
+        <div class="info-block-body">
+          <div class="info-block-actions">
+            <button type="button" class="class-detail-section-action" id="class-detail-new-folder-btn" hidden>+ Dossier</button>
+            <button type="button" class="class-detail-section-action" id="class-detail-share-open-btn" hidden>+ Partager</button>
+          </div>
+          <div class="class-tree" id="class-detail-boxes"></div>
         </div>
-        <ul class="class-event-list" id="class-detail-events"></ul>
-        <p class="class-detail-empty" id="class-detail-events-empty" hidden>Aucun évènement à venir pour cette classe.</p>
-      </div>
+      </section>
+      <section class="info-block is-collapsible" data-block="class-agenda">
+        <div class="info-block-head">
+          <button type="button" class="info-block-toggle"><svg class="info-block-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg><span class="info-block-title">Agenda de la classe</span><span class="info-block-summary" id="class-detail-agenda-summary"></span></button>
+        </div>
+        <div class="info-block-body">
+          <div class="info-block-actions">
+            <button type="button" class="class-detail-section-action" id="class-detail-add-event-btn" hidden>+ Ajouter</button>
+          </div>
+          <ul class="class-event-list" id="class-detail-events"></ul>
+          <p class="class-detail-empty" id="class-detail-events-empty" hidden>Aucun évènement à venir pour cette classe.</p>
+          <button type="button" class="info-block-more" id="class-detail-agenda-btn">Voir l'agenda par mois →</button>
+        </div>
+      </section>
       <!-- Round 47 : liste des élèves de la classe. -->
-      <div class="class-detail-section">
-        <div class="class-detail-section-head">
-          <h3>Élèves</h3>
+      <section class="info-block is-collapsible" data-block="class-students">
+        <div class="info-block-head">
+          <button type="button" class="info-block-toggle"><svg class="info-block-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg><span class="info-block-title">Élèves</span><span class="info-block-summary" id="class-detail-students-summary"></span></button>
         </div>
-        <ul class="class-student-list" id="class-detail-students"></ul>
-        <p class="class-detail-empty" id="class-detail-students-empty" hidden>Aucun élève n'a encore rejoint cette classe.</p>
-      </div>
+        <div class="info-block-body">
+          <ul class="class-student-list" id="class-detail-students"></ul>
+          <p class="class-detail-empty" id="class-detail-students-empty" hidden>Aucun élève n'a encore rejoint cette classe.</p>
+        </div>
+      </section>
           <!-- Round 54 : quitter (élève) / supprimer (enseignant) la classe. -->
       <div class="class-detail-danger-row">
         <button type="button" class="class-detail-leave-btn" id="class-detail-leave-btn">Quitter la classe</button>

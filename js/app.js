@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v247";
+  const APP_VERSION = "v248";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -362,6 +362,38 @@
   // v247 : agenda d'une classe ({ klass, role }), ou null pour l'Agenda
   // complet de l'utilisateur — déclaré tôt (titres de page, goHome).
   let calendarClassFilter = null;
+  /* v248 : blocs à coins arrondis repliables (pages d'une boîte et d'une
+     classe). Un bloc `.info-block.is-collapsible[data-block]` s'ouvre ou se
+     ferme en touchant son en-tête (`.info-block-toggle`) ; l'état choisi
+     est gardé le temps de l'ouverture de l'appli. */
+  const INFO_BLOCK_DEFAULT_OPEN = new Set(["class-boxes", "class-agenda"]);
+  const infoBlockOpen = new Map();
+  function isInfoBlockOpen(key) {
+    return infoBlockOpen.has(key) ? infoBlockOpen.get(key) : INFO_BLOCK_DEFAULT_OPEN.has(key);
+  }
+  function applyInfoBlockStates(root) {
+    if (!root) return;
+    root.querySelectorAll(".info-block.is-collapsible[data-block]").forEach((b) => {
+      const open = isInfoBlockOpen(b.dataset.block);
+      b.classList.toggle("is-open", open);
+      const t = b.querySelector(".info-block-toggle");
+      if (t) t.setAttribute("aria-expanded", String(open));
+    });
+  }
+  function setInfoBlockSummary(id, text) {
+    const n = document.getElementById(id);
+    if (n) n.textContent = text;
+  }
+  document.addEventListener("click", (e) => {
+    const t = e.target.closest(".info-block-toggle");
+    if (!t) return;
+    const b = t.closest(".info-block.is-collapsible[data-block]");
+    if (!b) return;
+    const open = !b.classList.contains("is-open");
+    infoBlockOpen.set(b.dataset.block, open);
+    b.classList.toggle("is-open", open);
+    t.setAttribute("aria-expanded", String(open));
+  });
   // v247 : classe dont la messagerie est ouverte depuis sa page (on y
   // revient en quittant la discussion).
   let messageThreadReturnClass = null;
@@ -1663,6 +1695,12 @@
     const ids = new Set([folderId, ...folderDescendantIds(folderId)]);
     return subjects.filter((s) => ids.has(s.folderId) && isSubjectInRevisions(s)).map((s) => s.id);
   }
+  /** v248 : toutes les boîtes d'un dossier (sous-dossiers compris), y
+   *  compris celles hors de mes révisions. */
+  function allSubjectIdsInFolder(folderId) {
+    const ids = new Set([folderId, ...folderDescendantIds(folderId)]);
+    return subjects.filter((s) => !s.deleted && ids.has(s.folderId)).map((s) => s.id);
+  }
 
   /* Round 30 : une boîte peut exister SANS être dans « Mes fiches de
      révision » (créée depuis Mes créations de fiches et pas encore rangée,
@@ -1672,6 +1710,33 @@
      avec le reste de la boîte). */
   function isSubjectInRevisions(s) {
     return !!s && !s.outOfRevisions;
+  }
+  /* v248 : pictos des boîtes.
+     - Boîte créée par l'utilisateur : une boîte de fiches avec un crayon
+       (plus explicite que l'ancienne pile de feuilles, gardée pour les
+       boîtes de classe) ;
+     - boîte de la Librairie : picto « partage » (inchangé) ;
+     - état « dans mes révisions » (flèches en cercle, vertes) ou « hors de
+       mes révisions » (mêmes flèches, barrées, grises). */
+  const OWN_BOX_ICON =
+    '<svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h13v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M5 9V6.5a1 1 0 0 1 1-1h7"/><line x1="6.5" y1="13" x2="12.5" y2="13"/><line x1="6.5" y1="16" x2="10.5" y2="16"/><path d="M19.6 3.4a1.4 1.4 0 0 1 2 2L16 11l-2.6.6.6-2.6z"/></svg>';
+  const IN_REVISIONS_ICON =
+    '<svg class="icon-inline-svg rev-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 0 1-13.7 5.7"/><path d="M4 12a8 8 0 0 1 13.7-5.7"/><polyline points="17.5 2.5 17.7 6.3 14 6.6"/><polyline points="6.5 21.5 6.3 17.7 10 17.4"/></svg>';
+  const OUT_OF_REVISIONS_ICON =
+    '<svg class="icon-inline-svg rev-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 0 1-13.7 5.7"/><path d="M4 12a8 8 0 0 1 13.7-5.7"/><polyline points="17.5 2.5 17.7 6.3 14 6.6"/><polyline points="6.5 21.5 6.3 17.7 10 17.4"/><line x1="3" y1="3" x2="21" y2="21"/></svg>';
+  /** Picto d'une boîte selon son type. */
+  function boxIconMarkup(s) {
+    if (s && s.fromLibrary) return iconSvgMarkup("share", "icon-inline-svg");
+    if (s && !s.sharedBoxId) return OWN_BOX_ICON;
+    return orgIconMarkup("orgBoite");
+  }
+  /** Picto de l'état « dans / hors de mes révisions » (pas pour une boîte
+   *  de classe, toujours dans les révisions). */
+  function revisionStateIconMarkup(s) {
+    if (!s || s.sharedBoxId) return "";
+    return isSubjectInRevisions(s)
+      ? `<span class="rev-state rev-state--in" title="Dans mes révisions">${IN_REVISIONS_ICON}</span>`
+      : `<span class="rev-state rev-state--out" title="Hors de mes révisions">${OUT_OF_REVISIONS_ICON}</span>`;
   }
   /** Round 67 : boîte venue de la Librairie, verrouillée faute d'accès.
    *  - Prise par l'utilisateur dans la Librairie : verrouillée quand il n'a
@@ -2465,7 +2530,7 @@
    *  actions (éditer/déplacer/supprimer, empilées verticalement dans un
    *  petit panneau), la jauge (plus courte/fine). Round 26, item 5 : le
    *  picto du mode d'apprentissage (abandonné) est retiré. */
-  function buildRowBody({ nameBtnEl, expandBtnEl, countLabel, score: persPool, onRename, onMove, onDelete, onShare, deleteTitle, deleteLabel }) {
+  function buildRowBody({ nameBtnEl, expandBtnEl, countLabel, score: persPool, onRename, onMove, onDelete, onShare, deleteTitle, deleteLabel, deleteNotDanger, deleteIconHtml }) {
     const main = document.createElement("div");
     main.className = "org-row-main";
     if (expandBtnEl) {
@@ -2526,8 +2591,8 @@
     });
     const delBtn = document.createElement("button");
     delBtn.type = "button";
-    delBtn.className = "org-actions-popover-item org-actions-popover-item--danger";
-    delBtn.innerHTML = `${orgIconMarkup("orgDelete")}<span>${escapeHtml(deleteLabel || "Supprimer")}</span>`;
+    delBtn.className = "org-actions-popover-item" + (deleteNotDanger ? "" : " org-actions-popover-item--danger");
+    delBtn.innerHTML = `${deleteIconHtml || orgIconMarkup("orgDelete")}<span>${escapeHtml(deleteLabel || "Supprimer")}</span>`;
     delBtn.title = deleteTitle;
     delBtn.addEventListener("click", () => {
       closeAllOrgActionPopovers();
@@ -2548,7 +2613,7 @@
       });
       popover.appendChild(shareBtn);
     }
-    popover.appendChild(delBtn);
+    if (onDelete) popover.appendChild(delBtn);
     deployBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       const willOpen = popover.hidden;
@@ -2588,7 +2653,18 @@
     // pas de sens à changer.
     const isRootLevel = parentId === ROOT_FOLDER_ID && !only;
     let childFolders = only ? only.folders.slice() : folders.filter((f) => f.parentId === parentId);
-    let childSubjects = only ? only.subjects.slice() : subjects.filter((s) => s.folderId === parentId && isSubjectInRevisions(s) && !folders.some((f) => f.id === s.id));
+    // v248 : l'organisation montre TOUTES les boîtes de l'utilisateur, dans
+    // ou hors de ses révisions (celles-ci avec leur picto, ou grisées).
+    // À la racine, on y range aussi les boîtes dont le dossier n'existe plus.
+    let childSubjects = only
+      ? only.subjects.slice()
+      : subjects.filter(
+          (s) =>
+            !s.deleted &&
+            (manageMode === "creations" || orgShowsSubject(s)) &&
+            (s.folderId === parentId || (parentId === ROOT_FOLDER_ID && !s.sharedBoxId && !folders.some((f) => f.id === s.folderId))) &&
+            !folders.some((f) => f.id === s.id)
+        );
     let classGroup = null;
     if (isRootLevel) {
       const ownFolders = childFolders.filter((f) => !f.sharedClassId && !f.sharedClassRoot).sort((a, b) => a.name.localeCompare(b.name, "fr"));
@@ -2634,12 +2710,16 @@
       // Icône en réseau (au lieu de l'icône de boîte habituelle) pour une
       // collection prise dans la Bibliothèque — pour la reconnaître d'un
       // coup d'œil dans Mes collections, comme demandé.
-      const boiteIconMarkup = subjectForIcon && subjectForIcon.fromLibrary ? iconSvgMarkup("share", "icon-inline-svg") : orgIconMarkup("orgBoite");
+      // v248 : picto selon le type (à moi / Librairie / classe) + picto de
+      // l'état dans / hors de mes révisions.
+      const boiteIconMarkup = boxIconMarkup(subjectForIcon);
       const locked = isSubjectLocked(subjectForIcon);
+      const inRev = isSubjectInRevisions(subjectForIcon);
+      if (!inRev) li.classList.add("is-out-of-revisions");
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
-      nameBtn.innerHTML = `${boiteIconMarkup} <span>${escapeHtml(displayName)}</span>${locked ? ` <span class="subject-lock" title="Réservée aux abonnés">${iconSvgMarkup("lock", "icon-inline-svg")}</span>` : ""}`;
+      nameBtn.innerHTML = `${boiteIconMarkup} <span>${escapeHtml(displayName)}</span>${manageMode === "creations" ? "" : revisionStateIconMarkup(subjectForIcon)}${locked ? ` <span class="subject-lock" title="Réservée aux abonnés">${iconSvgMarkup("lock", "icon-inline-svg")}</span>` : ""}`;
       nameBtn.title = locked ? "Boîte de la Librairie réservée aux abonnés" : "Voir le résumé de cette boîte";
       if (locked) li.classList.add("is-locked");
       // Round 47 : un clic sur une boîte ouvre son résumé (comme depuis Mes
@@ -2673,17 +2753,27 @@
         // libellé, effet inchangé (bloqué / retirée, reprenable en Librairie).
         // Round 48 : une collection de la Librairie sort aussi des révisions
         // en gardant sa progression (reprise si on la rajoute).
-        onDelete: () =>
-          isOwnCreatedSubject(subjectForIcon)
-            ? removeSubjectFromRevisions(subjectId)
-            : subjectForIcon && subjectForIcon.fromLibrary && subjectForIcon.libraryOriginId
-            ? removeLibraryCollectionFromRevisions({ id: subjectForIcon.libraryOriginId })
-            : deleteSubject(subjectId),
+        // v248 : « Retirer de mes révisions » / « Ajouter à mes révisions »
+        // selon l'état de la boîte — elle reste dans l'organisation dans
+        // les deux cas. Pas de choix pour une boîte de classe.
+        onDelete:
+          subjectForIcon && subjectForIcon.sharedBoxId
+            ? null
+            : inRev
+            ? () =>
+                isOwnCreatedSubject(subjectForIcon)
+                  ? removeSubjectFromRevisions(subjectId)
+                  : subjectForIcon && subjectForIcon.fromLibrary && subjectForIcon.libraryOriginId
+                  ? removeLibraryCollectionFromRevisions({ id: subjectForIcon.libraryOriginId })
+                  : deleteSubject(subjectId)
+            : () => addSubjectBackToRevisions(subjectId),
         // Round 31 : « Partager dans la librairie » retiré de ce menu — la
         // publication se fait depuis Mes créations de fiches.
         onShare: null,
-        deleteLabel: "Retirer de mes révisions",
-        deleteTitle: "Retirer cette boîte de mes révisions (elle n'est pas supprimée)",
+        deleteLabel: inRev ? "Retirer de mes révisions" : "Ajouter à mes révisions",
+        deleteNotDanger: !inRev,
+        deleteIconHtml: inRev ? OUT_OF_REVISIONS_ICON : IN_REVISIONS_ICON,
+        deleteTitle: inRev ? "La boîte reste ici, grisée : ta progression est gardée" : "Remettre cette boîte dans tes révisions",
       });
       li.appendChild(body);
       container.appendChild(li);
@@ -2784,12 +2874,15 @@
         if (expandBtn) expandBtn.click();
       });
 
-      const childCount = folders.filter((x) => x.parentId === f.id).length + subjects.filter((x) => x.folderId === f.id && isSubjectInRevisions(x)).length;
+      const childCount = folders.filter((x) => x.parentId === f.id).length + subjects.filter((x) => x.folderId === f.id && !x.deleted && orgShowsSubject(x)).length;
       // Item 5 : effet de pile quand ce dossier est replié ET n'est pas
       // vide, pour montrer qu'il contient bien quelque chose en dessous.
       if (!expanded && childCount > 0) li.classList.add("folder-row--stacked");
 
-      const n = subjectIdsInFolder(f.id).length;
+      // v248 : branche entièrement hors de mes révisions → grisée.
+      const allIds = allSubjectIdsInFolder(f.id);
+      const n = allIds.length;
+      if (n > 0 && !allIds.some((id) => isSubjectIdInRevisions(id))) li.classList.add("is-out-of-revisions");
       const folderScore = folderCardsPool(f.id);
       const body = buildRowBody({
         nameBtnEl: nameBtn,
@@ -5626,7 +5719,7 @@
       const scopeTitle = el("cards-scope-title");
       if (scopeTitle) {
         const isFolder = typeof cardsScopeFilter === "string" && cardsScopeFilter.startsWith("folder:");
-        scopeTitle.innerHTML = `${isFolder ? iconSvgMarkup("folder", "icon-inline-svg") : orgIconMarkup("orgBoite")} <span>${escapeHtml(cardsScopeLabel())}</span>`;
+        scopeTitle.innerHTML = `${isFolder ? iconSvgMarkup("folder", "icon-inline-svg") : boxIconMarkup(scopeSubj)} <span>${escapeHtml(cardsScopeLabel())}</span>`;
       }
       if (addWrap) {
         addWrap.hidden = !fromBox;
@@ -7392,6 +7485,36 @@
   });
   setOrgDisplayMode("none");
 
+  /* v248 : deux affichages de l'organisation (boutons reprenant les
+     pictos) : toute l'arborescence, ou la même avec les boîtes et les
+     branches « hors de mes révisions » grisées. Mémorisé sur l'appareil. */
+  const ORG_REV_DISPLAY_KEY = "fiches_org_rev_display";
+  let orgRevDisplay = "all";
+  try {
+    orgRevDisplay = localStorage.getItem(ORG_REV_DISPLAY_KEY) === "dim" ? "dim" : "all";
+  } catch (e) {
+    orgRevDisplay = "all";
+  }
+  function setOrgRevDisplay(mode) {
+    orgRevDisplay = mode === "dim" ? "dim" : "all";
+    try {
+      localStorage.setItem(ORG_REV_DISPLAY_KEY, orgRevDisplay);
+    } catch (e) {
+      /* stockage indisponible */
+    }
+    document.body.dataset.orgRevDisplay = orgRevDisplay;
+    document.querySelectorAll(".org-rev-toggle-btn").forEach((b) => b.classList.toggle("is-active", b.dataset.orgRevDisplay === orgRevDisplay));
+  }
+  document.querySelectorAll(".org-rev-toggle-btn").forEach((btn) => {
+    btn.addEventListener("click", () => setOrgRevDisplay(btn.dataset.orgRevDisplay));
+  });
+  setOrgRevDisplay(orgRevDisplay);
+  /** Boîte affichée dans l'organisation : toutes, dans les deux affichages
+   *  (l'écart se fait par le grisé, en CSS). */
+  function orgShowsSubject(s) {
+    return !!s && !s.deleted;
+  }
+
   function renderSettingsView() {
     if (settingBonusHardEl) settingBonusHardEl.value = bonusDaysSettings.hard;
     if (settingBonusGoodEl) settingBonusGoodEl.value = bonusDaysSettings.good;
@@ -7776,7 +7899,7 @@
         if (creationDetailOrigin === "creations") return "";
         const s = subjects.find((x) => x.id === creationDetailSubjectId);
         if (!s) return "";
-        return s.fromLibrary ? iconSvgMarkup("share", "icon-inline-svg") : orgIconMarkup("orgBoite");
+        return boxIconMarkup(s);
       },
     },
     "report-card": { text: "Signaler une fiche", hide: ["#view-report-card .settings-block-title"] },
@@ -8179,6 +8302,7 @@
     refreshCalendarHubBadge();
     try {
       applyRoleIndicator();
+      refreshHomeClassesCircle();
     } catch (e) {
       /* compte pas encore chargé */
     }
@@ -10274,6 +10398,7 @@
       }
       const next = activeRole() === "teacher" ? "student" : "teacher";
       setActiveRole(next);
+      refreshHomeClassesCircle();
       showToast(next === "teacher" ? "Compte enseignant" : "Compte élève");
     });
   }
@@ -10293,17 +10418,61 @@
   document.querySelectorAll(".role-picker-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       setActiveRole(btn.dataset.role);
+      refreshHomeClassesCircle();
       goHome();
     });
   });
-  /** « Mes classes » : directement la page des classes du compte utilisé. */
+  /** « Mes classes » : directement la page des classes du compte utilisé.
+   *  v248 : sans aucune classe, directement « Rejoindre une classe »
+   *  (élève) ou « Créer une classe » (enseignant). */
   function openMyClasses() {
     if (!Sync.isConfigured() || !accountCurrentUser) {
       const tab = document.querySelector('.tab[data-view="classes"]');
       if (tab) tab.click();
       return;
     }
-    openClassesSubView(activeRole());
+    const role = activeRole();
+    if (homeClassCounts[role] === 0) {
+      if (role === "teacher") openClassesCreateView();
+      else openClassesJoinView();
+      return;
+    }
+    openClassesSubView(role);
+  }
+  /* v248 : bouton d'accueil « Mes classes » → « Rejoindre une classe » /
+     « Créer une classe » tant que le compte utilisé n'a aucune classe. */
+  const homeClassCounts = { student: null, teacher: null };
+  const HOME_CLASSES_ICON =
+    '<svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c0-3.6 2.5-6.2 5.5-6.2s5.5 2.6 5.5 6.2"/><circle cx="17" cy="9" r="2.2"/><path d="M15.3 14.3c2.5.5 4.2 2.7 4.2 5.7"/></svg>';
+  const HOME_CLASSES_ADD_ICON =
+    '<svg class="home-circle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c0-3.6 2.5-6.2 5.5-6.2s5.5 2.6 5.5 6.2"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="16" y1="11" x2="22" y2="11"/></svg>';
+  function renderHomeClassesCircle() {
+    const circle = document.querySelector('.home-circle[data-key="classes"]');
+    if (!circle) return;
+    const role = activeRole();
+    const empty = !!accountCurrentUser && homeClassCounts[role] === 0;
+    const label = empty ? (role === "teacher" ? "Créer une classe" : "Rejoindre une classe") : "Mes classes";
+    const state = `${empty ? "add" : "list"}:${label}`;
+    if (circle.dataset.state === state) return;
+    const badge = el("home-school-badge");
+    circle.dataset.state = state;
+    circle.innerHTML = `${empty ? HOME_CLASSES_ADD_ICON : HOME_CLASSES_ICON}<span>${label}</span>`;
+    if (badge) circle.appendChild(badge);
+  }
+  let homeClassCountsToken = 0;
+  async function refreshHomeClassesCircle() {
+    renderHomeClassesCircle();
+    if (!accountCurrentUser || !Sync.isConfigured() || !Sync.classes) return;
+    const role = activeRole();
+    const token = ++homeClassCountsToken;
+    try {
+      const list = role === "teacher" ? await Sync.classes.listAsTeacher() : await Sync.classes.listAsStudent();
+      if (token !== homeClassCountsToken) return;
+      homeClassCounts[role] = Array.isArray(list) ? list.length : null;
+    } catch (e) {
+      homeClassCounts[role] = null;
+    }
+    renderHomeClassesCircle();
   }
   function applyUsageEffects() {
     const calBadge = el("home-calendar-badge");
@@ -10314,6 +10483,7 @@
     }
     applyRoleIndicator();
     maybeShowRolePicker();
+    refreshHomeClassesCircle();
     refreshHomeEventWarning();
   }
   function renderAccountUsages() {
@@ -12768,6 +12938,9 @@
     // affichage lancé remplit la liste, en une fois.
     const seq = (classListSeq.student = (classListSeq.student || 0) + 1);
     const myClasses = await Sync.classes.listAsStudent();
+    // v248 : tenu à jour pour le bouton d'accueil (Mes classes / Rejoindre / Créer).
+    homeClassCounts.student = Array.isArray(myClasses) ? myClasses.length : null;
+    renderHomeClassesCircle();
     const counts = await Promise.all(myClasses.map((k) => Sync.classes.memberCount(k.id)));
     if (seq !== classListSeq.student) return;
     if (empty) empty.hidden = myClasses.length > 0;
@@ -12795,6 +12968,9 @@
     // affichage lancé remplit la liste, en une fois.
     const seq = (classListSeq.teacher = (classListSeq.teacher || 0) + 1);
     const myClasses = await Sync.classes.listAsTeacher();
+    // v248 : tenu à jour pour le bouton d'accueil (Mes classes / Rejoindre / Créer).
+    homeClassCounts.teacher = Array.isArray(myClasses) ? myClasses.length : null;
+    renderHomeClassesCircle();
     const counts = await Promise.all(myClasses.map((k) => Sync.classes.memberCount(k.id)));
     if (seq !== classListSeq.teacher) return;
     if (empty) empty.hidden = myClasses.length > 0;
@@ -13326,12 +13502,6 @@
   /** v247 : pastilles des boutons « Agenda de la classe » (évènements à
    *  venir) et « Messagerie de la classe » (messages non lus). */
   function refreshClassDetailToolBadges(klass, role) {
-    const agendaBadge = el("class-detail-agenda-badge");
-    if (agendaBadge) {
-      const n = classUpcomingEvents(klass.id, role).length;
-      agendaBadge.hidden = n <= 0;
-      agendaBadge.textContent = n > 99 ? "99+" : String(n);
-    }
     const msgBadge = el("class-detail-messages-badge");
     if (msgBadge && Sync.messages && Sync.messages.countUnread) {
       const lastRead = loadMessagesLastRead()[klass.id];
@@ -13356,10 +13526,16 @@
   }
   const classDetailMessagesBtn = el("class-detail-messages-btn");
   if (classDetailMessagesBtn) {
-    classDetailMessagesBtn.addEventListener("click", () => {
+    const openClassMessages = () => {
       if (!classDetailContext) return;
       messageThreadReturnClass = { klass: classDetailContext.klass, role: classDetailContext.role };
       openMessageThread(classDetailContext.klass);
+    };
+    classDetailMessagesBtn.addEventListener("click", openClassMessages);
+    classDetailMessagesBtn.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault();
+      openClassMessages();
     });
   }
   function closeClassDetailView() {
@@ -13456,6 +13632,12 @@
       }
     }
     if (eventsEmpty) eventsEmpty.hidden = events.length > 0;
+    // v248 : résumés des blocs (visibles même blocs fermés).
+    const plural = (n, one, many) => `${n} ${n > 1 ? many : one}`;
+    setInfoBlockSummary("class-detail-boxes-summary", plural(sharedBoxes.length, "boîte", "boîtes"));
+    setInfoBlockSummary("class-detail-agenda-summary", events.length ? plural(events.length, "évènement à venir", "évènements à venir") : "rien à venir");
+    setInfoBlockSummary("class-detail-students-summary", typeof count === "number" ? plural(count, "élève", "élèves") : "");
+    applyInfoBlockStates(el("view-class-detail"));
     renderClassStudents(klass, isTeacher);
   }
 
@@ -16470,7 +16652,7 @@
       li.dataset.subjectId = s.id;
       li.innerHTML = `
         <div class="library-row-head">
-          <span class="subject-row-name">${orgIconMarkup("orgBoite")} <span>${escapeHtml(s.name)}</span></span>
+          <span class="subject-row-name">${OWN_BOX_ICON} <span>${escapeHtml(s.name)}</span></span>
           <span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>
         </div>
         <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""}</span>
@@ -16504,6 +16686,10 @@
       return;
     }
     if (origin) creationDetailOrigin = origin;
+    if (creationDetailSubjectId !== subjectId) {
+      creationDetailCardQuery = "";
+      creationDetailFlaggedOnly = false;
+    }
     repairUnknownSubjectNames().then(() => {
       if (creationDetailSubjectId === subjectId) renderCreationDetail();
     });
@@ -16557,40 +16743,42 @@
     //   devant son nom ; la gestion se fait depuis Mes créations.
     const manageMode = creationDetailOrigin !== "creations";
     setCreationDetailAddButton(s.id, manageMode ? "bottom" : "top");
-    // Round 53 : tableau à trois colonnes (intitulé aligné à droite,
-    // valeur, action en face), lignes continues ; jauge juste après le nom.
+    // v248 : présentation en blocs à coins arrondis (voir infoRowBlock) ;
+    // le bloc « Fiches » se déplie pour montrer les fiches et la recherche.
     const actBtn = (act, label, extra) => `<button type="button" class="btn btn--ghost creation-detail-act${extra ? ` ${extra}` : ""}" data-act="${act}">${label}</button>`;
-    const row = (label, value, action) => `<tr><th scope="row">${label}</th><td>${value}</td><td class="creation-detail-act-cell">${action || ""}</td></tr>`;
-    const rows = manageMode
+    const gauge = `<span class="creation-detail-gauge">${buildPersGaugeSvg(pool || [], { width: 90, barHeight: 8 })}</span>`;
+    const linkValue = learnLinkChipHtml(s.link, "box", s.name) || `<span class="field-hint">Aucun lien</span>`;
+    const libraryExtras = [
+      col && col.name && col.name !== s.name ? `<p class="info-block-note">Publiée sous le nom « ${escapeHtml(col.name)} »</p>` : "",
+      tags.length ? `<span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span>` : "",
+    ].join("");
+    const blocks = manageMode
       ? [
-          row("Progression", `<span class="creation-detail-gauge">${buildPersGaugeSvg(pool || [], { width: 90, barHeight: 8 })}</span>`, n ? actBtn("review", "Réviser") : ""),
-          row("Fiches", `${n} fiche${n > 1 ? "s" : ""}`),
-          row("Pour aller plus loin", learnLinkChipHtml(s.link, "box", s.name) || `<span class="field-hint">Aucun lien</span>`, actBtn("link", s.link ? "Modifier" : "Ajouter un lien")),
-          col && col.name && col.name !== s.name ? row("Librairie", `publiée sous le nom « ${escapeHtml(col.name)} »`) : "",
-          tags.length ? row("Tags", `<span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span>`) : "",
+          infoRowBlock("Progression", gauge, n && inRev ? actBtn("review", "Réviser") : ""),
+          creationDetailCardsBlockHtml(n),
+          infoRowBlock("Pour aller plus loin", linkValue, actBtn("link", s.link ? "Modifier" : "Ajouter un lien")),
+          libraryExtras ? infoRowBlock("Librairie", libraryExtras) : "",
         ]
       : [
-          row("Progression", `<span class="creation-detail-gauge">${buildPersGaugeSvg(pool || [], { width: 90, barHeight: 8 })}</span>`),
-          row("Statut", `<span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>`, actBtn("publish", col ? "Voir dans la Librairie" : "Publier dans la Librairie")),
-          row("Fiches", `${n} fiche${n > 1 ? "s" : ""}`),
-          row("Classement", taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`, col ? "" : actBtn("classify", taxFull ? "Modifier le classement" : "Classer la boîte")),
-          row("Pour aller plus loin", learnLinkChipHtml(s.link, "box", s.name) || `<span class="field-hint">Aucun lien</span>`, actBtn("link", s.link ? "Modifier" : "Ajouter un lien")),
+          infoRowBlock("Progression", gauge),
+          creationDetailCardsBlockHtml(n),
+          infoRowBlock(
+            "Librairie",
+            `<span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>${libraryExtras}`,
+            actBtn("publish", col ? "Voir dans la Librairie" : "Publier")
+          ),
+          infoRowBlock("Classement", taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`, col ? "" : actBtn("classify", taxFull ? "Modifier" : "Classer")),
+          infoRowBlock("Pour aller plus loin", linkValue, actBtn("link", s.link ? "Modifier" : "Ajouter un lien")),
           // v246 : plus de « Retirer de mes révisions » ici (il reste dans
           // le menu de la boîte, page Organisation) ; « Ajouter à mes
           // révisions » reste proposé quand elle n'y est pas.
-          row("Mes révisions", place ? escapeHtml(place) : `Hors de mes révisions${remembered ? ` <span class="field-hint">(avant : ${escapeHtml(remembered)})</span>` : ""}`, inRev ? "" : actBtn("revisions", "Ajouter à mes révisions")),
-          col && col.name && col.name !== s.name ? row("Librairie", `publiée sous le nom « ${escapeHtml(col.name)} »`) : "",
-          tags.length ? row("Tags", `<span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span>`) : "",
+          infoRowBlock("Mes révisions", place ? escapeHtml(place) : `Hors de mes révisions${remembered ? ` <span class="field-hint">(avant : ${escapeHtml(remembered)})</span>` : ""}`, inRev ? "" : actBtn("revisions", "Ajouter")),
         ];
     wrap.innerHTML = `
-      <table class="creation-detail-table">
-        <tbody>
-          ${rows.join("")}
-        </tbody>
-      </table>
-      <ul class="card-list creation-detail-cards" id="creation-detail-cards"></ul>
+      <div class="info-blocks">${blocks.join("")}</div>
       ${manageMode ? "" : `<div class="creation-detail-foot">${actBtn("delete", "Supprimer la boîte", "creation-detail-delete")}</div>`}
     `;
+    applyInfoBlockStates(wrap);
     fillCreationDetailCards(s);
     wrap.querySelectorAll("[data-act]").forEach((btn) => {
       btn.addEventListener("click", async () => {
@@ -16668,16 +16856,15 @@
     setCreationDetailAddButton(s.id, "none");
     const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
     const pool = subjectCardsPool(s.id);
+    const gauge = `<span class="creation-detail-gauge">${buildPersGaugeSvg(pool || [], { width: 90, barHeight: 8 })}</span>`;
     wrap.innerHTML = `
-      <table class="creation-detail-table">
-        <tbody>
-          <tr><th scope="row">Progression</th><td><span class="creation-detail-gauge">${buildPersGaugeSvg(pool || [], { width: 90, barHeight: 8 })}</span></td><td class="creation-detail-act-cell">${n ? `<button type="button" class="btn btn--ghost creation-detail-act" data-act="review">Réviser</button>` : ""}</td></tr>
-          <tr><th scope="row">Fiches</th><td>${n} fiche${n > 1 ? "s" : ""}</td><td class="creation-detail-act-cell"></td></tr>
-          ${s.link ? `<tr><th scope="row">Pour aller plus loin</th><td>${learnLinkChipHtml(s.link, "box", s.name)}</td><td class="creation-detail-act-cell"></td></tr>` : ""}
-        </tbody>
-      </table>
-      <ul class="card-list creation-detail-cards" id="creation-detail-cards"></ul>
+      <div class="info-blocks">
+        ${infoRowBlock("Progression", gauge, n && isSubjectInRevisions(s) ? `<button type="button" class="btn btn--ghost creation-detail-act" data-act="review">Réviser</button>` : "")}
+        ${creationDetailCardsBlockHtml(n)}
+        ${s.link ? infoRowBlock("Pour aller plus loin", learnLinkChipHtml(s.link, "box", s.name)) : ""}
+      </div>
     `;
+    applyInfoBlockStates(wrap);
     fillCreationDetailCards(s);
     wrap.querySelectorAll("[data-act]").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -16685,14 +16872,70 @@
       });
     });
   }
+  /** v248 : bloc non repliable « intitulé — valeur — action ». */
+  function infoRowBlock(title, valueHtml, actionHtml) {
+    return `<div class="info-block info-block--row"><div class="info-block-head"><span class="info-block-title">${title}</span><span class="info-block-value">${valueHtml || ""}</span>${actionHtml ? `<span class="info-block-action">${actionHtml}</span>` : ""}</div></div>`;
+  }
+  /** v248 : bloc « Fiches » repliable : le nombre de fiches ; ouvert, la
+   *  recherche (mot-clé, fiches signalées) et la liste des fiches. */
+  let creationDetailCardQuery = "";
+  let creationDetailFlaggedOnly = false;
+  function creationDetailCardsBlockHtml(n) {
+    const chev = '<svg class="info-block-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg>';
+    return `<section class="info-block is-collapsible" data-block="box-cards">
+      <div class="info-block-head"><button type="button" class="info-block-toggle">${chev}<span class="info-block-title">Fiches</span><span class="info-block-summary">${n} fiche${n > 1 ? "s" : ""}</span></button></div>
+      <div class="info-block-body">
+        ${
+          n
+            ? `<div class="info-block-tools">
+          <input type="search" class="info-block-search" id="creation-detail-search" placeholder="Rechercher une fiche…" value="${escapeHtml(creationDetailCardQuery)}" aria-label="Rechercher une fiche (question ou réponse)" />
+          <button type="button" class="construction-filter-btn${creationDetailFlaggedOnly ? " is-active" : ""}" id="creation-detail-flag-filter" title="N'afficher que les fiches signalées" aria-pressed="${creationDetailFlaggedOnly}">${getIconMarkupFor("construction")}</button>
+        </div>`
+            : ""
+        }
+        <ul class="card-list creation-detail-cards" id="creation-detail-cards"></ul>
+      </div>
+    </section>`;
+  }
   /** v246 : fiches de la boîte, affichées directement dans son résumé
    *  (mêmes lignes que la liste des fiches). « Éditer » revient ensuite
-   *  au résumé. */
+   *  au résumé. v248 : dans le bloc « Fiches », avec la recherche. */
   function fillCreationDetailCards(s) {
     const list = el("creation-detail-cards");
     if (!list) return;
-    const boxCards = cards.filter((c) => !c.deleted && c.subject === s.id).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+    const search = el("creation-detail-search");
+    if (search && !search.dataset.bound) {
+      search.dataset.bound = "1";
+      search.addEventListener("input", () => {
+        creationDetailCardQuery = search.value;
+        fillCreationDetailCards(s);
+      });
+    }
+    const flagBtn = el("creation-detail-flag-filter");
+    if (flagBtn && !flagBtn.dataset.bound) {
+      flagBtn.dataset.bound = "1";
+      flagBtn.addEventListener("click", () => {
+        creationDetailFlaggedOnly = !creationDetailFlaggedOnly;
+        flagBtn.classList.toggle("is-active", creationDetailFlaggedOnly);
+        flagBtn.setAttribute("aria-pressed", String(creationDetailFlaggedOnly));
+        fillCreationDetailCards(s);
+      });
+    }
+    const allBoxCards = cards.filter((c) => !c.deleted && c.subject === s.id).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+    const q = creationDetailCardQuery.trim().toLowerCase();
+    const boxCards = allBoxCards.filter(
+      (c) =>
+        (!creationDetailFlaggedOnly || c.underConstruction) &&
+        (!q || stripHtmlFast(c.question).toLowerCase().includes(q) || stripHtmlFast(c.answer).toLowerCase().includes(q))
+    );
     list.innerHTML = "";
+    if (allBoxCards.length && !boxCards.length) {
+      const li = document.createElement("li");
+      li.className = "list-empty";
+      li.textContent = creationDetailFlaggedOnly && !q ? "Aucune fiche signalée." : "Aucune fiche ne correspond à cette recherche.";
+      list.appendChild(li);
+      return;
+    }
     if (!boxCards.length) {
       const li = document.createElement("li");
       li.className = "list-empty";
@@ -16791,11 +17034,34 @@
 
   /** Retire une boîte de Mes fiches de révision (après confirmation) :
    *  elle reste dans Mes créations avec ses fiches et leur progression. */
+  /** v248 : « Ajouter à mes révisions » depuis l'organisation — la boîte
+   *  reprend sa place dans les révisions, là où elle est déjà rangée. */
+  async function addSubjectBackToRevisions(subjectId) {
+    const s = subjects.find((x) => x.id === subjectId);
+    if (!s || isSubjectInRevisions(s)) return;
+    if (s.fromLibrary && s.libraryOriginId && !hasLibraryRevisionAccess() && !isFreeLibraryPick(s.libraryOriginId)) {
+      const go = await showRobotMessage(
+        `Pour remettre « ${s.name} » dans tes révisions, il faut un accès à la Librairie (abonnement, ou une de tes boîtes gratuites).`,
+        {
+          buttons: [
+            { label: "Annuler", value: false },
+            { label: "Voir les formules", value: true, primary: true },
+          ],
+          cancelValue: false,
+        }
+      );
+      if (go) openAccountPlans("eleve");
+      return;
+    }
+    if (s.folderId && s.folderId !== ROOT_FOLDER_ID && !folders.some((f) => f.id === s.folderId && !f.deleted)) s.folderId = ROOT_FOLDER_ID;
+    await putSubjectBackInRevisions(s, s.folderId || ROOT_FOLDER_ID);
+    renderSubjectManageList();
+  }
   async function removeSubjectFromRevisions(subjectId) {
     const s = subjects.find((x) => x.id === subjectId);
     if (!s) return;
     const ok = await robotConfirm(
-      `Retirer « ${s.name} » de tes révisions ? Elle n'apparaîtra plus dans Mes fiches de révision ni dans tes révisions, mais elle n'est pas supprimée : elle reste dans Mes créations de fiches, avec toutes ses fiches et leur progression. Tu pourras l'y remettre quand tu veux, à la même place.`,
+      `Retirer « ${s.name} » de tes révisions ? Elle ne sera plus proposée dans tes révisions, mais elle reste à sa place dans l'organisation de tes boîtes (avec le picto « hors de mes révisions »), avec toutes ses fiches et leur progression. Tu pourras l'y remettre quand tu veux (menu ⌄ → « Ajouter à mes révisions »).`,
       { okLabel: "Retirer" }
     );
     if (!ok) return;
@@ -16896,7 +17162,15 @@
      choix du dossier dans l'arborescence ; non : elle reste hors
      révisions, dans Mes créations. */
   let boxCreateCascade = null;
+  // v248 : création lancée depuis l'organisation (bouton « + Nouvelle
+  // boîte ») : on y revient, et la boîte va directement dans les révisions.
+  let boxCreateFromManage = false;
+  async function createBoxFromManage() {
+    await createBoxFromCreations();
+    boxCreateFromManage = true;
+  }
   async function createBoxFromCreations() {
+    boxCreateFromManage = false;
     creationDetailSubjectId = null;
     const nameEl = el("box-create-name");
     const taxEl = el("box-create-taxonomy");
@@ -16915,6 +17189,11 @@
   }
   function closeBoxCreateView() {
     boxEditSubjectId = null;
+    if (boxCreateFromManage) {
+      boxCreateFromManage = false;
+      openManageInMode("all");
+      return;
+    }
     if (creationDetailSubjectId && subjects.some((x) => x.id === creationDetailSubjectId)) {
       boitePickerActivateView("view-creation-detail");
       applyBodyLogoSpeech("creation-detail");
@@ -16976,6 +17255,14 @@
       subjects.push(subject);
       subjects.sort((a, b) => a.name.localeCompare(b.name, "fr"));
       renderStatsSubjectSelect();
+      // v248 : depuis l'organisation, pas de question — on choisit
+      // directement le dossier où la ranger (annuler la laisse à la racine,
+      // hors de mes révisions).
+      if (boxCreateFromManage) {
+        closeBoxCreateView();
+        openAddToRevisionsPicker(subject.id, { justCreated: true });
+        return;
+      }
       closeBoxCreateView();
       const add = await robotConfirm(`Boîte « ${name} » créée. Veux-tu l'ajouter à tes révisions ?`, {
         okLabel: "Oui",
@@ -16987,6 +17274,8 @@
   const boxCreateCancelBtn = el("box-create-cancel-btn");
   if (boxCreateCancelBtn) boxCreateCancelBtn.addEventListener("click", () => closeBoxCreateView());
 
+  const manageNewBoxBtn = el("manage-new-box-btn");
+  if (manageNewBoxBtn) manageNewBoxBtn.addEventListener("click", () => createBoxFromManage());
   const creationsCreateBtn = el("creations-create-btn");
   if (creationsCreateBtn) creationsCreateBtn.addEventListener("click", () => createBoxFromCreations());
 
