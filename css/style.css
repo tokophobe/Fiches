@@ -8495,3 +8495,18 @@ body[data-org-rev-display="dim"] #subject-list .subject-row.is-out-of-revisions 
 .info-block-summary { white-space: nowrap; }
 .info-block-actions { display: flex; justify-content: flex-end; gap: 14px; padding-top: 8px; }
 .info-block-actions:not(:has(button:not([hidden]))) { display: none; }
+
+/* v249 : recherche d'une boîte dans l'organisation. */
+.org-search-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 10px;
+  padding: 8px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+}

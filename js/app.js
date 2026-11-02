@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v248";
+  const APP_VERSION = "v249";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -2434,6 +2434,8 @@
 
   function openManageInMode(mode) {
     manageMode = mode;
+    // v249 : classes de l'enseignant rechargées à chaque arrivée sur la page.
+    teacherOrgClasses = null;
     if (mode !== "creations") manageOnlyPublished = false;
     updateManagePublishedToggle();
     const tab = document.querySelector('.tab[data-view="manage"]');
@@ -2471,9 +2473,31 @@
 
   function renderSubjectManageList() {
     subjectListEl.innerHTML = "";
+    // v249 : recherche d'une boîte par son nom — liste à plat des boîtes
+    // qui correspondent (dans ou hors de mes révisions).
+    const orgQuery = manageMode === "creations" ? "" : orgSearchQuery.trim().toLowerCase();
+    if (orgQuery) {
+      const norm = (t) => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const q = norm(orgQuery);
+      const matches = subjects
+        .filter((x) => !x.deleted && norm(x.name).includes(q))
+        .filter((x) => activeRole() !== "teacher" || !x.sharedBoxId)
+        .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+      if (matches.length) renderTreeLevel(ROOT_FOLDER_ID, 0, subjectListEl, { folders: [], subjects: matches });
+      else {
+        const none = document.createElement("p");
+        none.className = "field-hint";
+        none.textContent = "Aucune boîte ne porte ce nom.";
+        subjectListEl.appendChild(none);
+      }
+      return;
+    }
+    // v249 : compte enseignant — ses classes en tête, avec l'arborescence
+    // des boîtes partagées dans chacune.
+    if (manageMode !== "creations" && accountCurrentUser && activeRole() === "teacher") appendTeacherClassesGroup(subjectListEl);
     renderTreeLevel(ROOT_FOLDER_ID, 0, subjectListEl);
     updateManagePublishedToggle();
-    if ((folders.length === 0 && subjects.length === 0) || subjectListEl.children.length === 0) {
+    if (!subjectListEl.querySelector(":scope > li:not(.folder-row--classes)")) {
       const empty = document.createElement("p");
       empty.className = "field-hint";
       empty.textContent =
@@ -2490,6 +2514,146 @@
     // de chaque ligne pour qu'il tombe pile à la même position partout,
     // sans avoir à sacrifier cet effet de blocs imbriqués.
     requestAnimationFrame(alignOrgInfoSlots);
+  }
+
+  /* v249 : classes de l'enseignant dans l'organisation. Chargées à la
+     demande (liste des classes + boîtes partagées de chacune), puis
+     gardées le temps de l'ouverture de l'appli ; rechargées en revenant
+     sur la page. */
+  let teacherOrgClasses = null; // null = pas encore chargées
+  let teacherOrgClassesLoading = false;
+  async function loadTeacherOrgClasses() {
+    if (teacherOrgClassesLoading || !Sync.isConfigured() || !Sync.classes) return;
+    teacherOrgClassesLoading = true;
+    try {
+      const list = (await Sync.classes.listAsTeacher()) || [];
+      const withBoxes = await Promise.all(
+        list.map(async (klass) => ({ klass, boxes: (await Sync.classes.listSharedBoxes(klass.id).catch(() => [])) || [] }))
+      );
+      teacherOrgClasses = withBoxes.sort((a, b) => String(a.klass.name || "").localeCompare(String(b.klass.name || ""), "fr"));
+    } catch (e) {
+      teacherOrgClasses = [];
+    }
+    teacherOrgClassesLoading = false;
+    const v = el("view-manage");
+    if (v && v.classList.contains("is-active")) renderSubjectManageList();
+  }
+  /** Ligne simple de l'organisation (dossier ou boîte d'une classe, en
+   *  lecture seule : pas de menu ⌄). */
+  function orgSimpleRow({ iconHtml, name, countLabel, expandKey, depth, onOpen, extraClass }) {
+    const li = document.createElement("li");
+    li.className = `subject-row${expandKey ? ` folder-row folder-row-depth-${Math.min(depth, 3)}` : ""}${extraClass ? ` ${extraClass}` : ""}`;
+    const expanded = !!expandKey && expandedManageFolders.has(expandKey);
+    let expandBtn = null;
+    if (expandKey) {
+      expandBtn = document.createElement("button");
+      expandBtn.type = "button";
+      expandBtn.title = expanded ? "Replier" : "Déplier";
+      expandBtn.innerHTML = iconSvgMarkup(expanded ? "chevronDown" : "chevronRight", "icon-inline-svg");
+      expandBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (expandedManageFolders.has(expandKey)) expandedManageFolders.delete(expandKey);
+        else expandedManageFolders.add(expandKey);
+        renderSubjectManageList();
+      });
+    }
+    const nameBtn = document.createElement("button");
+    nameBtn.type = "button";
+    nameBtn.className = "subject-row-name";
+    nameBtn.innerHTML = `${iconHtml} <span>${escapeHtml(name)}</span>`;
+    nameBtn.addEventListener("click", () => (expandBtn ? expandBtn.click() : onOpen && onOpen()));
+    const body = buildRowBody({ nameBtnEl: nameBtn, expandBtnEl: expandBtn, countLabel: countLabel || "", score: null, onRename: () => {}, onMove: () => {}, onDelete: null });
+    body.querySelectorAll(".org-deploy-btn, .org-actions-popover").forEach((x) => x.remove());
+    li.appendChild(body);
+    let childrenUl = null;
+    if (expanded) {
+      childrenUl = document.createElement("ul");
+      childrenUl.className = "org-children";
+      li.appendChild(childrenUl);
+    } else if (expandKey) li.classList.add("folder-row--stacked");
+    return { li, childrenUl };
+  }
+  function appendTeacherClassesGroup(container) {
+    if (teacherOrgClasses === null) loadTeacherOrgClasses();
+    const list = teacherOrgClasses || [];
+    if (teacherOrgClasses !== null && list.length === 0) return;
+    const group = orgSimpleRow({
+      iconHtml: CLASSES_ROW_ICON,
+      name: "Mes classes",
+      countLabel: teacherOrgClasses === null ? "…" : `${list.length} classe${list.length > 1 ? "s" : ""}`,
+      expandKey: "__teacher_classes__",
+      depth: 0,
+      extraClass: "folder-row--classes",
+    });
+    container.appendChild(group.li);
+    if (!group.childrenUl) return;
+    if (teacherOrgClasses === null) {
+      const wait = document.createElement("li");
+      wait.className = "field-hint";
+      wait.textContent = "Chargement de tes classes…";
+      group.childrenUl.appendChild(wait);
+      return;
+    }
+    list.forEach(({ klass, boxes }) => {
+      const key = `__tclass_${klass.id}`;
+      const row = orgSimpleRow({
+        iconHtml: CLASSES_ROW_ICON,
+        name: klass.name || "Classe",
+        countLabel: `${boxes.length} boîte${boxes.length > 1 ? "s" : ""}`,
+        expandKey: key,
+        depth: 1,
+      });
+      group.childrenUl.appendChild(row.li);
+      if (!row.childrenUl) return;
+      const tree = buildClassTree(klass, boxes);
+      const draw = (node, ul, depth) => {
+        [...node.children.values()]
+          .sort((a, b) => a.name.localeCompare(b.name, "fr"))
+          .forEach((child) => {
+            const fkey = `${key}:${classPathKey(child.path)}`;
+            const n = (function count(nd) {
+              return nd.boxes.length + [...nd.children.values()].reduce((t, c) => t + count(c), 0);
+            })(child);
+            const fr = orgSimpleRow({ iconHtml: iconSvgMarkup("folder", "icon-inline-svg"), name: child.name, countLabel: `${n} boîte${n > 1 ? "s" : ""}`, expandKey: fkey, depth });
+            ul.appendChild(fr.li);
+            if (fr.childrenUl) draw(child, fr.childrenUl, depth + 1);
+          });
+        node.boxes
+          .slice()
+          .sort((a, b) => String(a.subject_name || "").localeCompare(String(b.subject_name || ""), "fr"))
+          .forEach((box) => {
+            const own = subjects.find((x) => !x.deleted && (x.sharedShares || []).some((sh) => sh.classId === klass.id && sh.boxId === box.id));
+            const n = (box.cards || []).length;
+            const br = orgSimpleRow({
+              iconHtml: own ? boxIconMarkup(own) : orgIconMarkup("orgBoite"),
+              name: box.subject_name || "Boîte",
+              countLabel: `${n} fiche${n > 1 ? "s" : ""}`,
+              depth,
+              onOpen: () => {
+                if (own) openCreationDetail(own.id, "manage");
+                else openClassDetailView(klass, "teacher");
+              },
+            });
+            ul.appendChild(br.li);
+          });
+        if (!node.children.size && !node.boxes.length && depth === 2) {
+          const none = document.createElement("li");
+          none.className = "field-hint";
+          none.textContent = "Aucune boîte partagée.";
+          ul.appendChild(none);
+        }
+      };
+      draw(tree, row.childrenUl, 2);
+    });
+  }
+  // v249 : recherche par nom de boîte (page Organisation).
+  let orgSearchQuery = "";
+  const orgSearchInput = el("org-search-input");
+  if (orgSearchInput) {
+    orgSearchInput.addEventListener("input", () => {
+      orgSearchQuery = orgSearchInput.value;
+      renderSubjectManageList();
+    });
   }
 
   function alignOrgInfoSlots() {
@@ -2674,7 +2838,10 @@
       // v242 : les classes suivies en élève sont regroupées dans un dossier
       // « Mes classes », en haut, rangé automatiquement (non modifiable).
       if (manageMode !== "creations" && (classFolders.length || classSubjects.length)) {
-        classGroup = { folders: classFolders, subjects: classSubjects };
+        // v249 : en compte enseignant, ce sont les classes qu'il anime qui
+        // sont en tête (voir appendTeacherClassesGroup) ; les classes
+        // suivies en élève restent dans le compte élève.
+        classGroup = activeRole() === "teacher" ? null : { folders: classFolders, subjects: classSubjects };
         childFolders = ownFolders;
         childSubjects = ownSubjects;
       } else {
@@ -7896,7 +8063,6 @@
       // à soi ou de classe / boîte prise dans la Librairie), à la place de
       // l'ancienne ligne « Origine ».
       icon: () => {
-        if (creationDetailOrigin === "creations") return "";
         const s = subjects.find((x) => x.id === creationDetailSubjectId);
         if (!s) return "";
         return boxIconMarkup(s);
@@ -16734,15 +16900,10 @@
     const tags = col ? collectionTags(col) : [];
     const pool = subjectCardsPool(s.id);
     const remembered = !inRev && s.revisionsPlace ? (s.revisionsPlace.folderId ? folderPath(s.revisionsPlace.folderId).map((x) => x.name).join(" › ") : "Racine") : "";
-    // v246 : deux présentations selon la page d'où l'on vient.
-    // - Depuis « Mes créations » : la page de gestion de la boîte (statut,
-    //   classement, révisions, suppression), « + Ajouter une fiche » en
-    //   tête, sans « Réviser ».
-    // - Depuis l'organisation des boîtes de révision : un résumé épuré
-    //   (progression, « Réviser », fiches, lien), le picto de la boîte
-    //   devant son nom ; la gestion se fait depuis Mes créations.
-    const manageMode = creationDetailOrigin !== "creations";
-    setCreationDetailAddButton(s.id, manageMode ? "bottom" : "top");
+    // v249 : une seule page pour une boîte à soi, d'où qu'on vienne
+    // (organisation ou Mes créations) : « + Ajouter une fiche » en tête,
+    // tous les blocs de gestion, « Supprimer la boîte » en bas.
+    setCreationDetailAddButton(s.id, "top");
     // v248 : présentation en blocs à coins arrondis (voir infoRowBlock) ;
     // le bloc « Fiches » se déplie pour montrer les fiches et la recherche.
     const actBtn = (act, label, extra) => `<button type="button" class="btn btn--ghost creation-detail-act${extra ? ` ${extra}` : ""}" data-act="${act}">${label}</button>`;
@@ -16752,28 +16913,21 @@
       col && col.name && col.name !== s.name ? `<p class="info-block-note">Publiée sous le nom « ${escapeHtml(col.name)} »</p>` : "",
       tags.length ? `<span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span>` : "",
     ].join("");
-    const blocks = manageMode
-      ? [
-          infoRowBlock("Progression", gauge, n && inRev ? actBtn("review", "Réviser") : ""),
-          creationDetailCardsBlockHtml(n),
-          infoRowBlock("Pour aller plus loin", linkValue, actBtn("link", s.link ? "Modifier" : "Ajouter un lien")),
-          libraryExtras ? infoRowBlock("Librairie", libraryExtras) : "",
-        ]
-      : [
-          infoRowBlock("Progression", gauge),
-          creationDetailCardsBlockHtml(n),
-          infoRowBlock(
-            "Librairie",
-            `<span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>${libraryExtras}`,
-            actBtn("publish", col ? "Voir dans la Librairie" : "Publier")
-          ),
-          infoRowBlock("Classement", taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`, col ? "" : actBtn("classify", taxFull ? "Modifier" : "Classer")),
-          infoRowBlock("Pour aller plus loin", linkValue, actBtn("link", s.link ? "Modifier" : "Ajouter un lien")),
-          // v246 : plus de « Retirer de mes révisions » ici (il reste dans
-          // le menu de la boîte, page Organisation) ; « Ajouter à mes
-          // révisions » reste proposé quand elle n'y est pas.
-          infoRowBlock("Mes révisions", place ? escapeHtml(place) : `Hors de mes révisions${remembered ? ` <span class="field-hint">(avant : ${escapeHtml(remembered)})</span>` : ""}`, inRev ? "" : actBtn("revisions", "Ajouter")),
-        ];
+    const blocks = [
+      infoRowBlock("Progression", gauge, n && inRev ? actBtn("review", "Réviser") : ""),
+      creationDetailCardsBlockHtml(n),
+      infoRowBlock(
+        "Librairie",
+        `<span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>${libraryExtras}`,
+        actBtn("publish", col ? "Voir dans la Librairie" : "Publier")
+      ),
+      infoRowBlock("Classement", taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`, col ? "" : actBtn("classify", taxFull ? "Modifier" : "Classer")),
+      infoRowBlock("Pour aller plus loin", linkValue, actBtn("link", s.link ? "Modifier" : "Ajouter un lien")),
+      // « Retirer de mes révisions » : menu ⌄ de la boîte (Organisation) ;
+      // « Ajouter à mes révisions » proposé ici quand elle n'y est pas.
+      infoRowBlock("Mes révisions", place ? escapeHtml(place) : `Hors de mes révisions${remembered ? ` <span class="field-hint">(avant : ${escapeHtml(remembered)})</span>` : ""}`, inRev ? "" : actBtn("revisions", "Ajouter")),
+    ];
+    const manageMode = false;
     wrap.innerHTML = `
       <div class="info-blocks">${blocks.join("")}</div>
       ${manageMode ? "" : `<div class="creation-detail-foot">${actBtn("delete", "Supprimer la boîte", "creation-detail-delete")}</div>`}
