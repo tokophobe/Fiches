@@ -8383,3 +8383,130 @@ body.is-picking-role .topbar { box-shadow: none; }
 /* Place limitée dans le bandeau : la pastille du compte prend la place du
    petit logo darwin (sinon « Synchronisé » sort de l'écran). */
 body.has-two-roles:not(.is-picking-role) .topbar-darwin-logo { display: none; }
+
+/* ==================================================================
+   v248 — blocs repliables, états des boîtes dans l'organisation
+   ================================================================== */
+/* Blocs à coins arrondis (pages d'une boîte et d'une classe). */
+.info-blocks { display: flex; flex-direction: column; gap: 10px; }
+#view-class-detail .info-block { margin-bottom: 10px; }
+.info-block {
+  border: 1px solid var(--rule-soft, var(--rule));
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+.info-block-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 8px 12px;
+}
+.info-block-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--main-text-color, var(--ink));
+  flex-shrink: 0;
+}
+.info-block--row .info-block-title { font-weight: 500; color: var(--ink-soft); min-width: 84px; }
+.info-block-value { flex: 1; min-width: 0; overflow-wrap: anywhere; color: var(--main-text-color, var(--ink)); }
+.info-block-value .tag-chips { display: flex; margin-top: 6px; }
+.info-block-note { margin: 4px 0 0; font-size: 12.5px; color: var(--ink-soft); }
+.info-block-action { flex-shrink: 0; }
+.info-block-summary { margin-left: auto; color: var(--ink-soft); font-size: 13px; font-weight: 400; }
+/* En-tête cliquable des blocs repliables. */
+.info-block-toggle {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  padding: 4px 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.info-block-chevron { width: 16px; height: 16px; flex-shrink: 0; color: var(--ink-soft); transition: transform 0.18s ease; }
+.info-block.is-open .info-block-toggle .info-block-chevron { transform: rotate(90deg); }
+.info-block-body { display: none; padding: 0 12px 12px; border-top: 1px solid var(--rule-soft, var(--rule)); }
+.info-block.is-open .info-block-body { display: block; }
+.info-block.is-collapsible:not(.is-open) { background: color-mix(in srgb, var(--paper) 92%, var(--ink) 3%); }
+/* Bloc-lien (ex. Messagerie de la classe) : tout le bloc est un bouton. */
+.info-block--link { cursor: pointer; }
+.info-block--link .info-block-head { gap: 8px; }
+.info-block--link .info-block-summary { display: inline-flex; align-items: center; }
+.info-block--link .info-block-badge { position: static; transform: none; }
+.info-block--link:active { transform: scale(0.99); }
+.info-block-more {
+  display: block;
+  margin: 10px 0 0 auto;
+  border: none;
+  background: transparent;
+  color: var(--action-color);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+/* Outils de recherche du bloc « Fiches ». */
+.info-block-tools { display: flex; align-items: center; gap: 8px; padding-top: 10px; }
+.info-block-search {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+}
+#view-creation-detail .info-block .creation-detail-cards { margin-top: 4px; }
+/* Ancienne présentation en tableau (remplacée par les blocs). */
+#view-creation-detail .creation-detail-table { display: none; }
+/* Page d'une classe : les en-têtes de blocs gardent leurs boutons
+   d'action (+ Dossier, + Partager, + Ajouter). */
+#view-class-detail .info-block-head .class-detail-section-action { flex-shrink: 0; }
+#view-class-detail .info-block-body .class-tree,
+#view-class-detail .info-block-body .class-event-list,
+#view-class-detail .info-block-body .class-student-list { margin-top: 8px; }
+
+/* Organisation : picto de l'état dans / hors de mes révisions. */
+.rev-state { display: inline-flex; margin-left: 6px; vertical-align: -0.1em; }
+.rev-state .rev-state-icon { width: 13px; height: 13px; }
+.rev-state--in { color: #1f9d55; }
+.rev-state--out { color: #9aa3ae; }
+/* Affichage « griser les boîtes hors de mes révisions ». */
+body[data-org-rev-display="dim"] #subject-list .subject-row.is-out-of-revisions > .org-row-wrap .org-row-main { opacity: 0.42; filter: grayscale(1); }
+.org-rev-toggle { margin-right: 6px; }
+/* « + Nouvelle boîte » en haut de l'organisation. */
+.manage-new-box-wrap { margin: 2px 0 12px; }
+#manage-new-box-btn.add-card-circle.classes-role-circle { width: 96px; height: 96px; font-size: 12px; }
+.info-block--row .info-block-title { font-size: 14px; }
+.info-block-value { font-size: 14px; }
+.info-block-summary { white-space: nowrap; }
+.info-block-actions { display: flex; justify-content: flex-end; gap: 14px; padding-top: 8px; }
+.info-block-actions:not(:has(button:not([hidden]))) { display: none; }
+
+/* v249 : recherche d'une boîte dans l'organisation. */
+.org-search-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 10px;
+  padding: 8px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+}

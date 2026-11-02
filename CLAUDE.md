@@ -54,6 +54,16 @@ simple.
 - Les différences entre les deux environnements sont à préciser avec le
   propriétaire au fur et à mesure.
 
+## Organisation des boîtes (v248, en cours de refonte)
+
+- La page Organisation montre **toutes** les boîtes de l'utilisateur, dans
+  ou hors de ses révisions (`outOfRevisions`) ; pictos : `boxIconMarkup`
+  (type de boîte) et `revisionStateIconMarkup` (état). Objectif à terme :
+  supprimer la page « Mes créations » (pas avant validation du
+  propriétaire).
+- Pages d'une boîte et d'une classe : blocs repliables `.info-block`
+  (`applyInfoBlockStates`, `infoRowBlock`).
+
 ## Backend : Supabase + Stripe
 
 - Projet Supabase configuré dans `js/config.js` (URL + clé **anon**,
