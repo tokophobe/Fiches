@@ -8510,3 +8510,58 @@ body[data-org-rev-display="dim"] #subject-list .subject-row.is-out-of-revisions 
   font: inherit;
   font-size: 14px;
 }
+
+/* ==================================================================
+   v250 — page d'une boîte plus aérée, classes en blocs
+   ================================================================== */
+/* « Ma progression » et « Pour aller plus loin » : hors des blocs. */
+.info-plain-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  padding: 2px 4px;
+}
+.info-plain-title { font-weight: 600; color: var(--main-text-color, var(--ink)); font-size: 14px; }
+.info-plain-row .info-block-value { flex: 1; min-width: 120px; }
+.info-plain-row + .info-plain-row { margin-top: -2px; }
+/* Bloc « Librairie » : publiée / non publiée, puis la classification. */
+.info-block--library .info-block-head { min-height: 0; padding-bottom: 2px; }
+.info-block-lines { display: flex; align-items: center; gap: 10px; padding: 0 12px 12px; }
+.info-block-lines-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; font-size: 14px; }
+.info-block-sub { color: var(--ink-soft); font-size: 13px; }
+.info-block--library .creations-status { background: transparent; padding: 0; font-weight: 600; }
+/* « Mes classes » : chaque classe dans un bloc à coins arrondis. */
+:is(#view-classes-teacher, #view-classes-student) .class-card.info-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  margin: 0 0 10px;
+  text-align: left;
+  border-radius: 14px;
+  border: 1px solid var(--rule-soft, var(--rule));
+  background: var(--paper);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+}
+/* Page d'une classe : messagerie en bouton rond ; « Quitter / Supprimer
+   la classe » en bouton ovale rouge, comme les autres boutons. */
+#view-class-detail .class-detail-tools { margin: 4px 0 14px; }
+:is(html, #v250) :is(.class-detail-leave-btn, #v250) { --pill: #d14b3a; }
+#view-creation-detail .info-block--library .info-block-lines-text .creations-status { font-size: 14px; font-weight: 600; color: var(--main-text-color, var(--ink)); }
+#view-creation-detail .info-block--library .info-block-lines-text .info-block-sub { font-size: 13px; color: var(--ink-soft); }
+.info-plain-row .info-block-value { min-width: 0; }
+.info-plain-row .info-block-action { margin-left: auto; }
+/* (plus fort que les anciennes règles « layout-v2 » de la liste) */
+body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-card-list { display: flex; flex-direction: column; gap: 10px; border: none; background: transparent; box-shadow: none; padding: 0; }
+body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-card.info-block,
+body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-card.info-block:last-child {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--rule-soft, var(--rule));
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}

@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v249";
+  const APP_VERSION = "v250";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -7882,7 +7882,7 @@
     "new-card": "Nouvelle fiche",
     cards: "Fiches",
     stats: "Statistiques",
-    calendar: "Agenda",
+    calendar: "Mon agenda",
     sync: "Synchronisation",
     account: "Mon compte",
     creations: "Mes créations de boîtes de révision",
@@ -8046,7 +8046,7 @@
     cards: { from: "#cards-scope-title", fallback: "Liste des fiches", hide: ["#view-cards .cards-list-big-title"] },
     stats: "Statistiques",
     // v247 : « Agenda de la classe » quand il est ouvert depuis une classe.
-    calendar: { dynamic: () => (calendarClassFilter ? "Agenda de la classe" : "Agenda") },
+    calendar: { dynamic: () => (calendarClassFilter ? "Agenda de la classe" : "Mon agenda") },
     "calendar-event-form": { from: "#calendar-event-form-title" },
     "calendar-event-detail": { from: "#view-calendar-event-detail .view-title" },
     sync: "Synchronisation",
@@ -10570,8 +10570,27 @@
   }
   // Choix du compte proposé une seule fois par ouverture de l'appli.
   let rolePickerShownThisLaunch = false;
+  /** v250 : usages lus dans la session enregistrée sur l'appareil, pour
+   *  proposer le choix du compte dès l'ouverture, sans attendre la
+   *  synchronisation du démarrage (souvent longue). */
+  function storedSessionHasBothRoles() {
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (!k || !/^sb-.+-auth-token$/.test(k)) continue;
+        const v = JSON.parse(localStorage.getItem(k) || "null");
+        const user = (v && v.user) || (v && v.currentSession && v.currentSession.user) || null;
+        const u = user && user.user_metadata && user.user_metadata.usages;
+        if (Array.isArray(u)) return u.includes("eleve") && u.includes("enseignant");
+      }
+    } catch (e) {
+      /* session illisible */
+    }
+    return false;
+  }
   function maybeShowRolePicker() {
-    if (rolePickerShownThisLaunch || !accountCurrentUser || !userHasBothRoles()) return;
+    if (rolePickerShownThisLaunch) return;
+    if (!(accountCurrentUser ? userHasBothRoles() : storedSessionHasBothRoles())) return;
     if (document.body.classList.contains("is-login-locked")) return;
     const onHome = !!(el("view-home") && el("view-home").classList.contains("is-active"));
     if (!onHome) return;
@@ -10627,6 +10646,11 @@
   }
   let homeClassCountsToken = 0;
   async function refreshHomeClassesCircle() {
+    const roleNow = activeRole();
+    if (homeClassCounts[roleNow] === null) {
+      const c = loadClassesCache()[roleNow];
+      if (c && Array.isArray(c.classes)) homeClassCounts[roleNow] = c.classes.length;
+    }
     renderHomeClassesCircle();
     if (!accountCurrentUser || !Sync.isConfigured() || !Sync.classes) return;
     const role = activeRole();
@@ -12409,12 +12433,19 @@
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     el(which === "teacher" ? "view-classes-teacher" : "view-classes-student").classList.add("is-active");
     applyBodyLogoSpeech(which === "teacher" ? "classes-teacher" : "classes-student");
+    // v250 : la liste s'affiche d'abord ; la synchronisation des boîtes
+    // partagées se fait ensuite, sans faire attendre la page.
     if (which === "teacher") {
       await renderTeacherClasses();
       syncTeacherEventBoxes();
     } else {
-      await syncSharedBoxesForStudent();
       await renderStudentClasses();
+      syncSharedBoxesForStudent()
+        .then(() => {
+          const v = el("view-classes-student");
+          if (v && v.classList.contains("is-active")) renderStudentClasses();
+        })
+        .catch(() => {});
     }
   }
   // Round 18, item 11 : boutons "← Retour à Classes" (Élève/Enseignant)
@@ -13081,7 +13112,7 @@
   function classCircleHtml(klass, count, upcoming) {
     // Lisibilité : une carte par classe (nom en clair, infos sur une ligne
     // dessous) plutôt qu'un petit rond à trois lignes de texte.
-    const meta = [`${count} élève${count > 1 ? "s" : ""}`];
+    const meta = typeof count === "number" ? [`${count} élève${count > 1 ? "s" : ""}`] : [];
     meta.push(upcoming > 0 ? `${upcoming} échéance${upcoming > 1 ? "s" : ""} à venir` : "aucune échéance");
     return `
       <span class="class-card-icon">${CLASSES_ROW_ICON}</span>
@@ -13093,65 +13124,73 @@
     `;
   }
 
+  /* v250 : « Mes classes » s'affiche tout de suite — la dernière liste
+     connue (gardée sur l'appareil, par compte) est montrée aussitôt, puis
+     remplacée par la liste à jour ; le nombre d'élèves arrive ensuite,
+     sans faire attendre l'affichage. */
   const classListSeq = {};
-  async function renderStudentClasses() {
-    const list = el("classes-student-list");
-    const empty = el("classes-student-empty");
+  const CLASSES_CACHE_KEY = "fiches_classes_cache";
+  function loadClassesCache() {
+    try {
+      const v = JSON.parse(localStorage.getItem(CLASSES_CACHE_KEY) || "{}");
+      return v && typeof v === "object" ? v : {};
+    } catch (e) {
+      return {};
+    }
+  }
+  function saveClassesCache(role, classes, counts) {
+    try {
+      const all = loadClassesCache();
+      all[role] = { classes, counts };
+      localStorage.setItem(CLASSES_CACHE_KEY, JSON.stringify(all));
+    } catch (e) {
+      /* stockage plein ou indisponible : tant pis pour le cache */
+    }
+  }
+  function drawClassList(role, myClasses, counts) {
+    const list = el(role === "teacher" ? "classes-teacher-list" : "classes-student-list");
+    const empty = el(role === "teacher" ? "classes-teacher-empty" : "classes-student-empty");
     if (!list) return;
-    // v241 : deux affichages lancés coup sur coup (ouverture de la page +
-    // reconnexion silencieuse de la session) ajoutaient chacun leurs lignes
-    // à la même liste → classes affichées en double. Seul le dernier
-    // affichage lancé remplit la liste, en une fois.
-    const seq = (classListSeq.student = (classListSeq.student || 0) + 1);
-    const myClasses = await Sync.classes.listAsStudent();
-    // v248 : tenu à jour pour le bouton d'accueil (Mes classes / Rejoindre / Créer).
-    homeClassCounts.student = Array.isArray(myClasses) ? myClasses.length : null;
-    renderHomeClassesCircle();
-    const counts = await Promise.all(myClasses.map((k) => Sync.classes.memberCount(k.id)));
-    if (seq !== classListSeq.student) return;
     if (empty) empty.hidden = myClasses.length > 0;
     if (list.previousElementSibling) list.previousElementSibling.hidden = myClasses.length === 0;
     const frag = document.createDocumentFragment();
-    myClasses.forEach((klass, i) => {
-      const upcoming = classUpcomingEvents(klass.id, "student").length;
+    myClasses.forEach((klass) => {
+      const upcoming = classUpcomingEvents(klass.id, role).length;
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "class-card";
-      btn.innerHTML = classCircleHtml(klass, counts[i], upcoming);
-      btn.addEventListener("click", () => openClassDetailView(klass, "student"));
+      // v250 : chaque classe dans un bloc à coins arrondis.
+      btn.className = "class-card info-block";
+      btn.innerHTML = classCircleHtml(klass, counts ? counts[klass.id] : undefined, upcoming);
+      btn.addEventListener("click", () => openClassDetailView(klass, role));
       frag.appendChild(btn);
     });
     list.replaceChildren(frag);
   }
-
-  async function renderTeacherClasses() {
-    const list = el("classes-teacher-list");
-    const empty = el("classes-teacher-empty");
-    if (!list) return;
-    // v241 : deux affichages lancés coup sur coup (ouverture de la page +
-    // reconnexion silencieuse de la session) ajoutaient chacun leurs lignes
-    // à la même liste → classes affichées en double. Seul le dernier
-    // affichage lancé remplit la liste, en une fois.
-    const seq = (classListSeq.teacher = (classListSeq.teacher || 0) + 1);
-    const myClasses = await Sync.classes.listAsTeacher();
+  async function renderClassList(role) {
+    // v241 : deux affichages lancés coup sur coup ajoutaient chacun leurs
+    // lignes à la même liste → seul le dernier lancé remplit la liste.
+    const seq = (classListSeq[role] = (classListSeq[role] || 0) + 1);
+    const cached = loadClassesCache()[role];
+    if (cached && Array.isArray(cached.classes)) drawClassList(role, cached.classes, cached.counts || {});
+    const myClasses = (role === "teacher" ? await Sync.classes.listAsTeacher() : await Sync.classes.listAsStudent()) || [];
+    if (seq !== classListSeq[role]) return;
     // v248 : tenu à jour pour le bouton d'accueil (Mes classes / Rejoindre / Créer).
-    homeClassCounts.teacher = Array.isArray(myClasses) ? myClasses.length : null;
+    homeClassCounts[role] = Array.isArray(myClasses) ? myClasses.length : null;
     renderHomeClassesCircle();
-    const counts = await Promise.all(myClasses.map((k) => Sync.classes.memberCount(k.id)));
-    if (seq !== classListSeq.teacher) return;
-    if (empty) empty.hidden = myClasses.length > 0;
-    if (list.previousElementSibling) list.previousElementSibling.hidden = myClasses.length === 0;
-    const frag = document.createDocumentFragment();
-    myClasses.forEach((klass, i) => {
-      const upcoming = classUpcomingEvents(klass.id, "teacher").length;
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "class-card";
-      btn.innerHTML = classCircleHtml(klass, counts[i], upcoming);
-      btn.addEventListener("click", () => openClassDetailView(klass, "teacher"));
-      frag.appendChild(btn);
-    });
-    list.replaceChildren(frag);
+    const knownCounts = (cached && cached.counts) || {};
+    drawClassList(role, myClasses, knownCounts);
+    const countList = await Promise.all(myClasses.map((k) => Sync.classes.memberCount(k.id).catch(() => undefined)));
+    if (seq !== classListSeq[role]) return;
+    const counts = {};
+    myClasses.forEach((k, i) => (counts[k.id] = countList[i]));
+    drawClassList(role, myClasses, counts);
+    saveClassesCache(role, myClasses, counts);
+  }
+  function renderStudentClasses() {
+    return renderClassList("student");
+  }
+  function renderTeacherClasses() {
+    return renderClassList("teacher");
   }
 
   // Round 13 : "rejoindre une classe" vit maintenant dans une page dédiée
@@ -13728,7 +13767,8 @@
     if (statsEl) {
       // Round 54 : plus de pastille du rôle — « (enseignant) » / « (élève) »
       // sous le nom de la classe.
-      const chips = [`<span class="class-chip">${count} élève${count > 1 ? "s" : ""}</span>`];
+      // v250 : plus de pastille « n élèves » (redondante avec le bloc Élèves).
+      const chips = [];
       if (isTeacher && klass.invite_code) {
         chips.push(
           `<span class="class-chip class-chip--code">Code : <strong>${escapeHtml(klass.invite_code)}</strong><button type="button" class="class-code-copy" id="class-code-copy-btn" title="Copier le code" aria-label="Copier le code de la classe">${iconSvgMarkup("copy", "icon-inline-svg")}</button></span>`
@@ -16913,19 +16953,30 @@
       col && col.name && col.name !== s.name ? `<p class="info-block-note">Publiée sous le nom « ${escapeHtml(col.name)} »</p>` : "",
       tags.length ? `<span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span>` : "",
     ].join("");
+    // v250 : « Ma progression » et « Pour aller plus loin » hors des
+    // blocs, en haut ; un seul bloc « Librairie » (publication puis
+    // classification, un seul bouton : Classifier → Publier dans la
+    // Librairie → Voir dans la Librairie) ; plus de bloc « Mes révisions ».
+    const libraryAction = col
+      ? actBtn("publish", "Voir dans la Librairie")
+      : taxFull
+      ? actBtn("publish", "Publier dans la Librairie")
+      : actBtn("classify", "Classifier");
     const blocks = [
-      infoRowBlock("Progression", gauge, n && inRev ? actBtn("review", "Réviser") : ""),
+      creationDetailPlainRow("Ma progression", gauge, n && inRev ? actBtn("review", "Réviser") : ""),
+      creationDetailPlainRow("Pour aller plus loin", linkValue, actBtn("link", s.link ? "Modifier" : "Ajouter un lien")),
       creationDetailCardsBlockHtml(n),
-      infoRowBlock(
-        "Librairie",
-        `<span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>${libraryExtras}`,
-        actBtn("publish", col ? "Voir dans la Librairie" : "Publier")
-      ),
-      infoRowBlock("Classement", taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`, col ? "" : actBtn("classify", taxFull ? "Modifier" : "Classer")),
-      infoRowBlock("Pour aller plus loin", linkValue, actBtn("link", s.link ? "Modifier" : "Ajouter un lien")),
-      // « Retirer de mes révisions » : menu ⌄ de la boîte (Organisation) ;
-      // « Ajouter à mes révisions » proposé ici quand elle n'y est pas.
-      infoRowBlock("Mes révisions", place ? escapeHtml(place) : `Hors de mes révisions${remembered ? ` <span class="field-hint">(avant : ${escapeHtml(remembered)})</span>` : ""}`, inRev ? "" : actBtn("revisions", "Ajouter")),
+      `<section class="info-block info-block--library">
+        <div class="info-block-head"><span class="info-block-title">Librairie</span></div>
+        <div class="info-block-lines">
+          <div class="info-block-lines-text">
+            <span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>
+            <span class="info-block-sub">${taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">Classification à définir</span>`}</span>
+            ${libraryExtras}
+          </div>
+          <span class="info-block-action">${libraryAction}</span>
+        </div>
+      </section>`,
     ];
     const manageMode = false;
     wrap.innerHTML = `
@@ -17013,9 +17064,9 @@
     const gauge = `<span class="creation-detail-gauge">${buildPersGaugeSvg(pool || [], { width: 90, barHeight: 8 })}</span>`;
     wrap.innerHTML = `
       <div class="info-blocks">
-        ${infoRowBlock("Progression", gauge, n && isSubjectInRevisions(s) ? `<button type="button" class="btn btn--ghost creation-detail-act" data-act="review">Réviser</button>` : "")}
+        ${creationDetailPlainRow("Ma progression", gauge, n && isSubjectInRevisions(s) ? `<button type="button" class="btn btn--ghost creation-detail-act" data-act="review">Réviser</button>` : "")}
+        ${s.link ? creationDetailPlainRow("Pour aller plus loin", learnLinkChipHtml(s.link, "box", s.name)) : ""}
         ${creationDetailCardsBlockHtml(n)}
-        ${s.link ? infoRowBlock("Pour aller plus loin", learnLinkChipHtml(s.link, "box", s.name)) : ""}
       </div>
     `;
     applyInfoBlockStates(wrap);
@@ -17025,6 +17076,10 @@
         if (btn.dataset.act === "review") startReviewOfBox(s.id);
       });
     });
+  }
+  /** v250 : ligne hors bloc (Ma progression, Pour aller plus loin). */
+  function creationDetailPlainRow(title, valueHtml, actionHtml) {
+    return `<div class="info-plain-row"><span class="info-plain-title">${title}</span><span class="info-block-value">${valueHtml || ""}</span>${actionHtml ? `<span class="info-block-action">${actionHtml}</span>` : ""}</div>`;
   }
   /** v248 : bloc non repliable « intitulé — valeur — action ». */
   function infoRowBlock(title, valueHtml, actionHtml) {
@@ -18649,6 +18704,13 @@
      Démarrage
   --------------------------------------------------------- */
   (async () => {
+    // v250 : élève ET enseignant → choix du compte tout de suite, sans
+    // attendre la synchronisation du démarrage.
+    try {
+      maybeShowRolePicker();
+    } catch (e) {
+      /* rien à proposer */
+    }
     loadBonusDaysSettings();
     loadBonusAgainMode();
     loadHibernateDays();
