@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v253";
+  const APP_VERSION = "v254";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -2292,6 +2292,13 @@
   let manageOnlyPublished = false;
   let myPublishedSourceIds = new Set();
   let myPublishedLegacyNames = new Set();
+  // v254 : mes publications dans la Librairie (collections dont je suis
+  // l'auteur) — chargées depuis l'organisation et la page d'une boîte
+  // (avant v254, seulement depuis « Mes créations », supprimée : la page
+  // d'une boîte ouverte depuis l'organisation pouvait se croire « Non
+  // publiée »).
+  let creationsMyCollections = [];
+  let myCollectionsLoaded = false;
 
   function isOwnCreatedSubject(s) {
     return !!s && !s.deleted && !s.sharedBoxId && !s.fromLibrary;
@@ -2322,20 +2329,33 @@
   }
 
   async function refreshMyPublishedSubjects() {
-    myPublishedSourceIds = new Set();
-    myPublishedLegacyNames = new Set();
-    if (!Sync.isConfigured() || !accountCurrentUser) return;
+    if (!Sync.isConfigured() || !accountCurrentUser) {
+      myPublishedSourceIds = new Set();
+      myPublishedLegacyNames = new Set();
+      creationsMyCollections = [];
+      return;
+    }
     try {
       const cols = await Sync.library.list();
-      cols
-        .filter((c) => c.owner_id === accountCurrentUser.id)
-        .forEach((c) => {
-          if (c.source_subject_id) myPublishedSourceIds.add(c.source_subject_id);
-          else if (c.name) myPublishedLegacyNames.add(c.name);
-        });
+      libraryCollectionsCache = cols;
+      const mine = cols.filter((c) => c.owner_id === accountCurrentUser.id);
+      const ids = new Set();
+      const names = new Set();
+      mine.forEach((c) => {
+        if (c.source_subject_id) ids.add(c.source_subject_id);
+        else if (c.name) names.add(c.name);
+      });
+      myPublishedSourceIds = ids;
+      myPublishedLegacyNames = names;
+      creationsMyCollections = mine;
+      myCollectionsLoaded = true;
     } catch (e) {
       console.warn("Librairie : échec du chargement de mes publications", e);
     }
+  }
+  /** v254 : la boîte (à moi) est-elle publiée dans la Librairie ? */
+  function isOwnSubjectPublished(s) {
+    return isOwnCreatedSubject(s) && (isSubjectPublishedInLibrary(s) || !!creationsCollectionFor(s));
   }
 
   function updateManagePublishedToggle() {
@@ -2797,6 +2817,9 @@
       const locked = isSubjectLocked(subjectForIcon);
       const inRev = isSubjectInRevisions(subjectForIcon);
       if (!inRev) li.classList.add("is-out-of-revisions");
+      // v254 : filtre « Publiées / Non publiées » (grise le reste, dont les
+      // boîtes qui ne sont pas les miennes).
+      if (isOwnCreatedSubject(subjectForIcon)) li.classList.add(isOwnSubjectPublished(subjectForIcon) ? "org-pub-yes" : "org-unpub-yes");
       const nameBtn = document.createElement("button");
       nameBtn.type = "button";
       nameBtn.className = "subject-row-name";
@@ -2964,6 +2987,11 @@
       const allIds = allSubjectIdsInFolder(f.id);
       const n = allIds.length;
       if (n > 0 && !allIds.some((id) => isSubjectIdInRevisions(id))) li.classList.add("is-out-of-revisions");
+      // v254 : dossier non grisé par le filtre de publication s'il contient
+      // au moins une de mes boîtes concernées.
+      const ownInside = allIds.map((id) => subjects.find((x) => x.id === id)).filter((x) => isOwnCreatedSubject(x));
+      if (ownInside.some((x) => isOwnSubjectPublished(x))) li.classList.add("org-pub-yes");
+      if (ownInside.some((x) => !isOwnSubjectPublished(x))) li.classList.add("org-unpub-yes");
       const folderScore = folderCardsPool(f.id);
       const body = buildRowBody({
         nameBtnEl: nameBtn,
@@ -3872,7 +3900,6 @@
     boitePickerCtx = null;
     const returnViewId = boitePickerReturnViewId || "view-home";
     boitePickerActivateView(returnViewId);
-    if (returnViewId === "view-creations") renderCreationsList();
     if (returnViewId === "view-creation-detail") renderCreationDetail();
     // Round 4, partie 2 : en revenant sur la page d'où on est parti, la
     // bulle d'aide doit refléter CETTE page, pas garder le message (ou
@@ -7589,6 +7616,24 @@
     btn.addEventListener("click", () => setOrgRevDisplay(btn.dataset.orgRevDisplay));
   });
   setOrgRevDisplay(orgRevDisplay);
+  /* v254 : filtre « Publiées / Non publiées » (remplace celui de Mes
+     créations, supprimée) : grise les boîtes et dossiers non concernés,
+     et toujours les boîtes qui ne sont pas les miennes. Remis à zéro à
+     chaque arrivée sur la page ; re-toucher le bouton actif l'enlève. */
+  let orgPubDisplay = "none";
+  function setOrgPubDisplay(mode) {
+    orgPubDisplay = mode === "published" || mode === "unpublished" ? mode : "none";
+    document.body.dataset.orgPubDisplay = orgPubDisplay;
+    document.querySelectorAll(".org-pub-toggle-btn").forEach((b) => {
+      const on = b.dataset.orgPubDisplay === orgPubDisplay;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-pressed", String(on));
+    });
+  }
+  document.querySelectorAll(".org-pub-toggle-btn").forEach((btn) => {
+    btn.addEventListener("click", () => setOrgPubDisplay(orgPubDisplay === btn.dataset.orgPubDisplay ? "none" : btn.dataset.orgPubDisplay));
+  });
+  setOrgPubDisplay("none");
   /** Boîte affichée dans l'organisation : toutes, dans les deux affichages
    *  (l'écart se fait par le grisé, en CSS). */
   function orgShowsSubject(s) {
@@ -7738,10 +7783,9 @@
       if (view === "classes") renderClassesView();
       if (view === "messages") renderMessagesView();
       if (view === "library") renderLibraryView();
-      if (view === "creations") renderCreationsView();
       if (view === "reports") renderReportsView();
       if (view === "reports-sent") renderSentReportsView();
-      if (view === "reports-hub" || view === "creations") refreshReportsBadge();
+      if (view === "reports-hub") refreshReportsBadge();
       // Round 10, item 2 : resynchronise les collections prises dans la
       // Bibliothèque en ouvrant Mes collections — indépendant d'un Compte
       // connecté (prendre une collection publique n'en demande pas), donc
@@ -7749,6 +7793,11 @@
       // un Compte, pour les boîtes de classe).
       if (view === "manage") {
         setOrgDisplayMode("none");
+        setOrgPubDisplay("none");
+        // v254 : état de publication de mes boîtes (filtre Publiées).
+        refreshMyPublishedSubjects().then(() => {
+          if (el("view-manage") && el("view-manage").classList.contains("is-active")) renderSubjectManageList();
+        });
         syncLibraryMirrorsForUser()
           .then(() => dedupeDuplicateMirrorSubjects())
           .then(() => dedupeIdenticalBoxes())
@@ -7798,7 +7847,6 @@
     calendar: "Mon agenda",
     sync: "Synchronisation",
     account: "Mon compte",
-    creations: "Mes créations de boîtes de révision",
     "box-create": "Nouvelle boîte",
     "creation-detail": "Boîte",
     "report-card": "Signaler",
@@ -7964,7 +8012,6 @@
     "calendar-event-detail": { from: "#view-calendar-event-detail .view-title" },
     sync: "Synchronisation",
     account: { text: "Mon compte", hide: ["#view-account > h2.section-title"] },
-    creations: { text: "Mes créations de boîtes de révision", hide: ["#view-creations .library-title-row"] },
     "box-create": { from: "#box-create-title" },
     // Round 54 : le titre de la page est le nom de la boîte.
     "creation-detail": {
@@ -8223,10 +8270,9 @@
     }
     if (cardsEntryFromCreations && el("view-cards") && el("view-cards").classList.contains("is-active")) {
       cardsEntryFromCreations = false;
-      const tab = document.querySelector('.tab[data-view="creations"]');
-      if (tab) tab.click();
       // Round 34 : retour sur la page détaillée de la boîte d'où l'on venait.
       if (creationDetailSubjectId && subjects.some((x) => x.id === creationDetailSubjectId)) openCreationDetail(creationDetailSubjectId);
+      else openManageInMode("all");
       return;
     }
     if (
@@ -8432,18 +8478,8 @@
       homeTickerOpenCurrent();
     });
   }
-  // Round 55 : page « Mes boîtes ».
-  [
-    ["boxes-hub-manage-btn", "manage"],
-    ["boxes-hub-creations-btn", "creations"],
-  ].forEach(([id, view]) => {
-    const b = el(id);
-    if (b)
-      b.addEventListener("click", () => {
-        const tab = document.querySelector(`.tab[data-view="${view}"]`);
-        if (tab) tab.click();
-      });
-  });
+  // v254 : plus de page « Mes fiches » intermédiaire (ni de « Mes
+  // créations ») : le bouton de l'accueil ouvre directement l'organisation.
   const homeNewCardBtn = el("home-new-card-btn");
   if (homeNewCardBtn) {
     homeNewCardBtn.addEventListener("click", () => {
@@ -12277,13 +12313,6 @@
   // Hub Fiches : Mes fiches de révision / Mes créations de fiches / Librairie.
   const fichesHubRevisionBtn = el("fiches-hub-revision-btn");
   if (fichesHubRevisionBtn) fichesHubRevisionBtn.addEventListener("click", () => openManageInMode("all"));
-  const fichesHubCreationsBtn = el("fiches-hub-creations-btn");
-  if (fichesHubCreationsBtn) {
-    fichesHubCreationsBtn.addEventListener("click", () => {
-      const tab = document.querySelector('.tab[data-view="creations"]');
-      if (tab) tab.click();
-    });
-  }
   const fichesHubLibraryBtn = el("fiches-hub-library-btn");
   if (fichesHubLibraryBtn) {
     fichesHubLibraryBtn.addEventListener("click", () => {
@@ -15142,7 +15171,6 @@
     boitePickerActivateView(`view-${back}`);
     applyBodyLogoSpeech(back);
     if (back === "library") restoreLibraryListScroll();
-    if (back === "creations") renderCreationsList();
     if (back === "creation-detail") renderCreationDetail();
   }
 
@@ -16546,8 +16574,7 @@
         myPublishedSourceIds.add(subject.id);
         closeLibraryShareView();
         renderSubjectManageList();
-        if (el("view-creations") && el("view-creations").classList.contains("is-active")) renderCreationsView();
-        if (el("view-creation-detail") && el("view-creation-detail").classList.contains("is-active")) renderCreationsView().then(renderCreationDetail);
+        if (el("view-creation-detail") && el("view-creation-detail").classList.contains("is-active")) refreshMyPublishedSubjects().then(renderCreationDetail);
         await robotAlert(`« ${name} » a été partagée dans la librairie.`);
       };
     }
@@ -16568,7 +16595,6 @@
     libraryShareReturnView = "manage";
     boitePickerActivateView(`view-${back}`);
     applyBodyLogoSpeech(back);
-    if (back === "creations") renderCreationsList();
     if (back === "creation-detail") renderCreationDetail();
   }
 
@@ -16576,37 +16602,10 @@
   if (libraryShareBackBtn) libraryShareBackBtn.addEventListener("click", () => closeLibraryShareView());
 
   /* ---------------------------------------------------------
-     Round 30 : page « Mes créations de fiches » — même présentation et
-     mêmes filtres que la Librairie, pour les boîtes créées par
-     l'utilisateur (ni boîtes de classe, ni collections prises dans la
-     Librairie). Une boîte n'a de classement (taxonomie, tags) qu'une fois
-     publiée : les filtres de classement ne retiennent donc que des boîtes
-     publiées ; la recherche texte porte aussi sur le nom.
-     - « + Créer une boîte » : nom, puis l'explorateur s'ouvre pour la
-       ranger dans Mes fiches de révision (« Plus tard » possible).
-     - Bouton prix (« Gratuit » / jetons) si publiée, sinon « Publier ».
-     - « Ajouter à mes révisions » / « Retirer de mes révisions ».
-     - Interrupteur « Publiées dans la librairie » (ex-« Mes partages »).
+     Boîtes à moi et leurs publications dans la Librairie (ex-« Mes
+     créations de fiches », page supprimée en v254 : tout se fait depuis
+     l'organisation et la page de la boîte).
   --------------------------------------------------------- */
-  let creationsTaxFilter = {};
-  let creationsTagFilter = [];
-  let creationsSearchQuery = "";
-  let creationsOnlyPublished = false;
-  let creationsFilterCascade = null;
-  let creationsFilterTagInput = null;
-  let creationsMyCollections = [];
-
-  function creationsSubjects() {
-    return subjects
-      .filter((s) => {
-        if (!isOwnCreatedSubject(s)) return false;
-        // Boîte « auto-liée » à un dossier qui n'est pas (ou plus) une
-        // boîte : simple trace technique, pas une création.
-        if (folders.some((f) => f.id === s.id) && !isFolderABoite(s.id)) return false;
-        return true;
-      })
-      .sort((a, b) => a.name.localeCompare(b.name, "fr"));
-  }
   /** Classement d'une boîte : celui de sa publication s'il y en a une,
    *  sinon celui choisi à sa création (round 31). */
   function creationsTaxonomyOf(s, col) {
@@ -16630,10 +16629,7 @@
       await persistSubject(s);
       changed = true;
     }
-    if (changed) {
-      renderSubjectManageList();
-      renderCreationsList();
-    }
+    if (changed) renderSubjectManageList();
   }
   function creationsCollectionFor(s) {
     return (
@@ -16652,135 +16648,7 @@
     return path.length ? path.join(" › ") : "Racine";
   }
 
-  async function renderCreationsView() {
-    const taxFilterEl = el("creations-filter-taxonomy");
-    const tagFilterEl = el("creations-filter-tags");
-    const toggle = el("creations-published-toggle");
-    const online = Sync.isConfigured() && !!accountCurrentUser;
-    if (toggle) {
-      toggle.hidden = !online;
-      if (!online) creationsOnlyPublished = false;
-      toggle.classList.toggle("is-active", creationsOnlyPublished);
-      toggle.setAttribute("aria-pressed", String(creationsOnlyPublished));
-    }
-    if (taxFilterEl) taxFilterEl.hidden = !online;
-    if (tagFilterEl) tagFilterEl.hidden = !online;
-    // Affichage immédiat avec ce qu'on sait déjà, puis mise à jour une fois
-    // les publications (et la taxonomie) chargées.
-    renderCreationsList();
-    if (!online) {
-      creationsMyCollections = [];
-      renderCreationsList();
-      return;
-    }
-    try {
-      const [cols] = await Promise.all([Sync.library.list(), Taxonomy.load()]);
-      libraryCollectionsCache = cols;
-      creationsMyCollections = cols.filter((c) => c.owner_id === accountCurrentUser.id);
-      myPublishedSourceIds = new Set();
-      myPublishedLegacyNames = new Set();
-      creationsMyCollections.forEach((c) => {
-        if (c.source_subject_id) myPublishedSourceIds.add(c.source_subject_id);
-        else if (c.name) myPublishedLegacyNames.add(c.name);
-      });
-      await repairUnknownSubjectNames();
-    } catch (e) {
-      console.warn("Mes créations : échec du chargement des publications", e);
-    }
-    if (taxFilterEl && !creationsFilterCascade) {
-      creationsFilterCascade = createTaxonomyCascade(taxFilterEl, {
-        mode: "filter",
-        sel: creationsTaxFilter,
-        onChange: (sel) => {
-          creationsTaxFilter = sel;
-          renderCreationsList();
-        },
-      });
-    }
-    if (tagFilterEl && !creationsFilterTagInput) {
-      creationsFilterTagInput = createTagInput(tagFilterEl, {
-        allowNew: false,
-        tags: creationsTagFilter,
-        placeholder: "Filtrer par tags…",
-        getSuggestions: libraryKnownTags,
-        onChange: (tags) => {
-          creationsTagFilter = tags;
-          renderCreationsList();
-        },
-      });
-    }
-    renderCreationsList();
-  }
-
-  // Round 34 : filtres d'état (publication × révisions), combinables.
-  let creationsPubFilter = ""; // "" | "published" | "unpublished"
-  let creationsRevFilter = ""; // "" | "in" | "out"
   let creationDetailSubjectId = null;
-
-  function updateCreationsStatusChips() {
-    document.querySelectorAll("#creations-status-chips .creations-chip").forEach((chip) => {
-      const on = chip.dataset.group === "pub" ? creationsPubFilter === chip.dataset.value : creationsRevFilter === chip.dataset.value;
-      chip.classList.toggle("is-active", on);
-      chip.setAttribute("aria-pressed", String(on));
-    });
-  }
-
-  function renderCreationsList() {
-    const list = el("creations-list");
-    const empty = el("creations-empty");
-    if (!list) return;
-    updateCreationsStatusChips();
-    const all = creationsSubjects();
-    let items = all.map((s) => ({ s, col: creationsCollectionFor(s) }));
-    if (creationsOnlyPublished || creationsPubFilter === "published") items = items.filter((it) => it.col);
-    if (creationsPubFilter === "unpublished") items = items.filter((it) => !it.col);
-    if (creationsRevFilter === "in") items = items.filter((it) => isSubjectInRevisions(it.s));
-    if (creationsRevFilter === "out") items = items.filter((it) => !isSubjectInRevisions(it.s));
-    const taxActive = Object.keys(creationsTaxFilter || {}).some((k) => creationsTaxFilter[k]);
-    if (taxActive) items = items.filter((it) => collectionMatchesTaxFilter({ taxonomy: creationsTaxonomyOf(it.s, it.col) }, creationsTaxFilter));
-    if (creationsTagFilter.length > 0) {
-      items = items.filter((it) => {
-        if (!it.col) return false;
-        const t = collectionTags(it.col);
-        return creationsTagFilter.every((tag) => t.includes(tag));
-      });
-    }
-    const q = creationsSearchQuery.trim().toLowerCase();
-    if (q) {
-      items = items.filter(({ s, col }) =>
-        (s.name || "").toLowerCase().includes(q) ||
-        (col && (col.name || "").toLowerCase().includes(q)) ||
-        (col && collectionDescriptionText(col).toLowerCase().includes(q)) ||
-        (col && collectionTags(col).some((t) => t.includes(q))) ||
-        taxonomyFullLabel(creationsTaxonomyOf(s, col)).toLowerCase().includes(q)
-      );
-    }
-    list.innerHTML = "";
-    if (empty) empty.hidden = all.length > 0;
-    if (all.length > 0 && items.length === 0) {
-      list.innerHTML = `<li class="field-hint">Aucun résultat.</li>`;
-      return;
-    }
-    // Round 34 : bloc épuré — nom, pastille, nombre de fiches, classement
-    // complet (ou « à classer ») ; le détail est sur la page de la boîte.
-    for (const { s, col } of items) {
-      const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
-      const taxFull = taxonomyFullLabel(creationsTaxonomyOf(s, col));
-      const li = document.createElement("li");
-      li.className = "subject-row library-row creations-row";
-      li.dataset.subjectId = s.id;
-      li.innerHTML = `
-        <div class="library-row-head">
-          <span class="subject-row-name">${OWN_BOX_ICON} <span>${escapeHtml(s.name)}</span></span>
-          <span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>
-        </div>
-        <span class="card-row-meta">${n} fiche${n > 1 ? "s" : ""}</span>
-        <span class="card-row-meta creations-tax">${taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">à classer</span>`}</span>
-      `;
-      li.addEventListener("click", () => openCreationDetail(s.id, "creations"));
-      list.appendChild(li);
-    }
-  }
 
   /** Round 39 : bouton rond « + Ajouter une fiche » (page d'une boîte et
    *  liste de ses fiches). */
@@ -16798,7 +16666,7 @@
      classer, supprimer). */
   // Round 47 : le résumé d'une boîte s'ouvre aussi depuis l'organisation
   // des boîtes de révision — on y revient alors.
-  let creationDetailOrigin = "creations";
+  let creationDetailOrigin = "manage";
   function openCreationDetail(subjectId, origin) {
     if (isSubjectLocked(subjects.find((x) => x.id === subjectId))) {
       showLockedSubjectMessage(subjects.find((x) => x.id === subjectId));
@@ -16812,6 +16680,13 @@
     repairUnknownSubjectNames().then(() => {
       if (creationDetailSubjectId === subjectId) renderCreationDetail();
     });
+    // v254 : état de publication (bloc Librairie) chargé si on ne le
+    // connaît pas encore — sans cela la boîte se croirait « Non publiée ».
+    if (!myCollectionsLoaded && Sync.isConfigured() && accountCurrentUser) {
+      refreshMyPublishedSubjects().then(() => {
+        if (creationDetailSubjectId === subjectId && el("view-creation-detail").classList.contains("is-active")) renderCreationDetail();
+      });
+    }
     creationDetailSubjectId = subjectId;
     renderCreationDetail();
     boitePickerActivateView("view-creation-detail");
@@ -16819,13 +16694,8 @@
   }
   function closeCreationDetail() {
     creationDetailSubjectId = null;
-    if (creationDetailOrigin === "manage") {
-      openManageInMode("all");
-      return;
-    }
-    boitePickerActivateView("view-creations");
-    applyBodyLogoSpeech("creations");
-    renderCreationsList();
+    // v254 : plus de « Mes créations » — retour à l'organisation.
+    openManageInMode("all");
   }
   function renderCreationDetail() {
     const wrap = el("creation-detail-body");
@@ -17103,13 +16973,6 @@
   }
   const creationDetailBackBtn = el("creation-detail-back-btn");
   if (creationDetailBackBtn) creationDetailBackBtn.addEventListener("click", () => closeCreationDetail());
-  document.querySelectorAll("#creations-status-chips .creations-chip").forEach((chip) => {
-    chip.addEventListener("click", () => {
-      if (chip.dataset.group === "pub") creationsPubFilter = creationsPubFilter === chip.dataset.value ? "" : chip.dataset.value;
-      else creationsRevFilter = creationsRevFilter === chip.dataset.value ? "" : chip.dataset.value;
-      renderCreationsList();
-    });
-  });
 
   /** Range une boîte dans Mes fiches de révision : l'explorateur s'ouvre
    *  sur les dossiers (Racine comprise) pour choisir où la mettre. */
@@ -17155,7 +17018,6 @@
     await persistSubject(s);
     renderSubjectManageList();
     renderStatsSubjectSelect();
-    renderCreationsList();
     showToast("Boîte ajoutée à tes révisions");
   }
 
@@ -17215,7 +17077,6 @@
     if (currentSubjectId === s.id) switchSubject(ALL_SUBJECTS_ID, true);
     renderSubjectManageList();
     renderStatsSubjectSelect();
-    renderCreationsList();
     showToast("Boîte retirée de tes révisions");
   }
 
@@ -17246,7 +17107,6 @@
       if (!goOn) return;
     }
     await deleteSubject(subjectId);
-    renderCreationsList();
   }
 
   function taxonomySelectionFromValue(t) {
@@ -17328,9 +17188,7 @@
       renderCreationDetail();
       return;
     }
-    boitePickerActivateView("view-creations");
-    applyBodyLogoSpeech("creations");
-    renderCreationsList();
+    openManageInMode("all");
   }
   const boxCreateForm = el("box-create-form");
   if (boxCreateForm) {
@@ -17404,8 +17262,6 @@
 
   const manageNewBoxBtn = el("manage-new-box-btn");
   if (manageNewBoxBtn) manageNewBoxBtn.addEventListener("click", () => createBoxFromManage());
-  const creationsCreateBtn = el("creations-create-btn");
-  if (creationsCreateBtn) creationsCreateBtn.addEventListener("click", () => createBoxFromCreations());
 
   /* ---------------------------------------------------------
      Round 41 : « Signaler » (ex-mode chantier).
@@ -17733,41 +17589,6 @@
     reportsHubReceivedBtn.addEventListener("click", () => {
       const tab = document.querySelector('.tab[data-view="reports"]');
       if (tab) tab.click();
-    });
-  }
-  const fichesHubReportsBtn = el("fiches-hub-reports-btn");
-  if (fichesHubReportsBtn) {
-    fichesHubReportsBtn.addEventListener("click", () => {
-      const tab = document.querySelector('.tab[data-view="reports"]');
-      if (tab) tab.click();
-    });
-  }
-
-  const creationsSearchToggle = el("creations-search-toggle");
-  if (creationsSearchToggle) {
-    creationsSearchToggle.addEventListener("click", () => {
-      const panel = el("creations-search-panel");
-      if (!panel) return;
-      panel.hidden = !panel.hidden;
-      creationsSearchToggle.setAttribute("aria-expanded", String(!panel.hidden));
-      creationsSearchToggle.classList.toggle("is-open", !panel.hidden);
-      // Round 54 : plus de focus automatique sur « Mots clés ».
-    });
-  }
-  const creationsSearchInput = el("creations-search-input");
-  if (creationsSearchInput) {
-    creationsSearchInput.addEventListener("input", () => {
-      creationsSearchQuery = creationsSearchInput.value;
-      renderCreationsList();
-    });
-  }
-  const creationsPublishedToggle = el("creations-published-toggle");
-  if (creationsPublishedToggle) {
-    creationsPublishedToggle.addEventListener("click", () => {
-      creationsOnlyPublished = !creationsOnlyPublished;
-      creationsPublishedToggle.classList.toggle("is-active", creationsOnlyPublished);
-      creationsPublishedToggle.setAttribute("aria-pressed", String(creationsOnlyPublished));
-      renderCreationsList();
     });
   }
 

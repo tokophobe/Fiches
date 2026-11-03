@@ -8487,6 +8487,11 @@ body.has-two-roles:not(.is-picking-role) .topbar-darwin-logo { display: none; }
 /* Affichage « griser les boîtes hors de mes révisions ». */
 body[data-org-rev-display="dim"] #subject-list .subject-row.is-out-of-revisions > .org-row-wrap .org-row-main { opacity: 0.42; filter: grayscale(1); }
 .org-rev-toggle { margin-right: 6px; }
+/* v254 : filtre « Publiées / Non publiées » — grise tout ce qui n'est pas
+   concerné (dont les boîtes qui ne sont pas les miennes). */
+body[data-org-pub-display="published"] #subject-list .subject-row:not(.org-pub-yes) > .org-row-wrap .org-row-main,
+body[data-org-pub-display="unpublished"] #subject-list .subject-row:not(.org-unpub-yes) > .org-row-wrap .org-row-main { opacity: 0.42; filter: grayscale(1); }
+.org-pub-toggle { margin-right: 6px; }
 /* « + Nouvelle boîte » en haut de l'organisation. */
 .manage-new-box-wrap { margin: 2px 0 12px; }
 #manage-new-box-btn.add-card-circle.classes-role-circle { width: 96px; height: 96px; font-size: 12px; }
