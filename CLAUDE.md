@@ -103,13 +103,14 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
 - Les différences entre les deux environnements sont à préciser avec le
   propriétaire au fur et à mesure.
 
-## Organisation des boîtes (v248, en cours de refonte)
+## Organisation des boîtes (v248, v254)
 
 - La page Organisation montre **toutes** les boîtes de l'utilisateur, dans
   ou hors de ses révisions (`outOfRevisions`) ; pictos : `boxIconMarkup`
-  (type de boîte) et `revisionStateIconMarkup` (état). Objectif à terme :
-  supprimer la page « Mes créations » (pas avant validation du
-  propriétaire).
+  (type de boîte) et `revisionStateIconMarkup` (état). Filtre
+  Publiées / Non publiées (`setOrgPubDisplay`, classes `org-pub-yes` /
+  `org-unpub-yes`). La page « Mes créations » a été supprimée en v254 ;
+  il reste du code mort `manageMode === "creations"` dans `app.js`.
 - Pages d'une boîte et d'une classe : blocs repliables `.info-block`
   (`applyInfoBlockStates`, `infoRowBlock`).
 

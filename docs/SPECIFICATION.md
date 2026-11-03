@@ -261,7 +261,7 @@ personnages.
 ```mermaid
 stateDiagram-v2
     [*] --> Dans: créée depuis l'organisation
-    [*] --> Hors: créée depuis Mes créations (si « pas maintenant »)
+    [*] --> Hors: créée sans choisir de dossier
     Dans --> Hors: menu ⌄ « Retirer de mes révisions »
     Hors --> Dans: menu ⌄ « Ajouter à mes révisions »
 ```
@@ -292,6 +292,12 @@ leur place dans l'arborescence.
 - **Affichages** : toute l'arborescence, ou les boîtes et branches hors
   révisions **grisées** ; nombre de fiches ou jauge à droite de chaque
   ligne.
+- **Filtre « Publiées » / « Non publiées »** (dans la Librairie) : grise
+  tout ce qui n'est pas concerné. Les boîtes qui ne sont pas les miennes
+  (classe, Librairie) sont grisées dans les deux cas ; un dossier reste
+  normal s'il contient au moins une boîte concernée. Toucher à nouveau le
+  bouton enlève le filtre ; il est enlevé aussi à chaque retour sur la
+  page.
 - **Menu ⌄ d'une ligne** :
 
 | Action | Dossier | Boîte à moi | Boîte de la Librairie | Boîte de classe | Dossier de classe |
@@ -309,8 +315,7 @@ leur place dans l'arborescence.
 
 ### 5.4 La page d'une boîte
 
-**Boîte à moi** (même page, qu'on vienne de l'organisation ou de Mes
-créations) :
+**Boîte à moi** :
 
 1. Titre : picto + nom de la boîte.
 2. Bouton rond « + Ajouter une fiche ».
@@ -333,11 +338,13 @@ créations) :
 **Boîte de classe ou de la Librairie** : titre + picto, Ma progression
 (+ Réviser), Pour aller plus loin (s'il y a un lien), bloc Fiches.
 
-### 5.5 Mes créations (page amenée à disparaître)
+### 5.5 Mes créations (supprimée en v254)
 
-Liste des boîtes créées par l'utilisateur, avec leur statut de
-publication. Objectif : la supprimer quand l'organisation fera tout ce
-qu'elle fait (voir §8, Q5).
+Cette page n'existe plus : tout ce qu'elle faisait se fait depuis
+l'organisation (créer une boîte, la retrouver, filtre Publiées / Non
+publiées) et la page de la boîte (publication, classification,
+suppression). Abandonné avec elle : la recherche de ses boîtes par
+classification et par tags (voir §8, Q5).
 
 ### 5.6 Les fiches
 
@@ -528,18 +535,11 @@ moi, relecture pour une boîte de classe). Faut-il les unifier ? (lié à Q3)
 >
 > ⏳ *Claude : à réaliser avec Q3 (chantier « publication avec relecture »).*
 
-**Q5 — Suppression de « Mes créations ».** Prérequis restants : décider où
-mène le hub « Mes fiches » (directement l'organisation ?), et vérifier que
-rien ne manque à l'organisation.
-> Réponse : peux-tu vérifier qu'on se passer de la page "mes créations" ? ensuite le bouton "Mes fiches" mènera directement à la page "Organisation des boites de révision"
->
-> ⏳ *Claude : prochain chantier (vérification puis suppression de « Mes créations »).*
-
 **Q6 — Autres différences entre compte élève et compte enseignant**
 (agenda, Librairie, statistiques, accueil…).
 > Réponse : la page "Mon agenda" reportera tous les évènements concernant le profil en cours (élève ou enseignant). Sur la page "organisation des boites de révisions", seules les classes du profil en cours apparaitront, par contre tous les autres dossiers et boites seront communs aux deux profils ; avec le profil enseignants les notions "dans mes révisions" et hors de mes révisions" disparaissent ; d'ailleurs on va supprimer tout ce qui est en rapport avec les révisions dans le profil enseignant ("désactivation" du bouton "réviser" de l'accueil : griser le bouton et afficher un message quand on clique dessus)
 >
-> ⏳ *Claude : chantier « compte enseignant sans révisions », après « Mes créations ».*
+> ⏳ *Claude : prochain chantier, « compte enseignant sans révisions ».*
 
 **Q8 — Avant l'ouverture au public : une adresse de test.**
 Aujourd'hui, fusionner une branche publie la version pour tout le monde,
@@ -555,6 +555,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | Q1 — « Je ne sais pas » à 3 jours, « Vague idée » à 1 jour | Voulu pour l'instant (renforcer tout de suite ce qu'on commence à savoir ; pas trop de fiches par jour). | §4.2 (v253) |
 | Q2 — Prix et noms des formules | Les CGV font foi ; site vitrine corrigé. | §7.4, site (v253) |
 | Q7 — Modifier la classification d'une boîte classée | Oui, lien « Modifier » tant qu'elle n'est pas publiée. | §5.4 (v253) |
+| Q5 — Supprimer « Mes créations » | Oui, après vérification. « Mes fiches » ouvre directement l'organisation. Remplacé par un filtre Publiées / Non publiées qui grise le reste ; recherche par classification et par tags abandonnée. | §5.3, §5.5 (v254) |
 
 ---
 
@@ -574,6 +575,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v254 | 3 nov. 2026 | Q5 : page « Mes créations » supprimée, « Mes fiches » ouvre directement l'organisation. Nouveau filtre Publiées / Non publiées dans l'organisation. Corrigé : une boîte publiée ouverte depuis l'organisation pouvait s'afficher « Non publiée ». |
 | v253 | 3 nov. 2026 | Décisions Q1, Q2, Q7 : choix « Je ne sais pas » / « Vague idée » confirmé ; prix et noms des formules du site alignés sur les CGV ; lien « Modifier » la classification sur la page d'une boîte non publiée. |
 | v252 | 3 nov. 2026 | Tests automatiques de l'algorithme de révision (§4) et du repérage des questions QCM (§5.7), lancés par GitHub à chaque modification. Aucun changement visible dans l'appli. |
 | v251 | 3 nov. 2026 | Règle d'écriture des fiches QCM (§5.7) : avertissement dans l'appli à l'enregistrement, rappel sous les réponses fausses, onglet « Questions QCM » dans Darwin Admin (vérification de la Librairie et du fichier des boîtes toutes prêtes). Vérification du fichier des boîtes toutes prêtes du 22 octobre (1 176 boîtes, 100 fiches QCM) : aucune question à corriger. |
@@ -594,9 +596,8 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | **Accueil** | — | Boutons ronds : Réviser, Défi du jour, Mes fiches, Mes classes (ou Rejoindre / Créer une classe), Mon agenda, Librairie, Statistiques, Réglages, Mon compte, Signalements (s'il y en a). Bandeau défilant d'alertes. |
 | **Réviser** | Accueil | Révisions prioritaires, Renforcer mes connaissances, Sélection manuelle |
 | **Séance de révision** | Réviser | Fiche, 4 boutons de note, jauge, mini-histogramme des échéances |
-| **Mes fiches** | Accueil | Organiser mes fiches, Créer mes fiches (Mes créations) |
-| **Organisation** | Mes fiches | §5.3 |
-| **Page d'une boîte** | Organisation, Mes créations | §5.4 |
+| **Organisation** | Accueil (Mes fiches) | §5.3 |
+| **Page d'une boîte** | Organisation | §5.4 |
 | **Nouvelle fiche / Modifier la fiche** | Page d'une boîte, accueil | Question, réponse, complément, QCM, lien |
 | **Mes classes** | Accueil | §6.3 |
 | **Page d'une classe** | Mes classes | §6.1 |
