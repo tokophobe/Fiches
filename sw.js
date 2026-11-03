@@ -1,4 +1,4 @@
-const CACHE_NAME = "fiches-cache-v255";
+const CACHE_NAME = "fiches-cache-v256";
 
 const CORE_ASSETS = [
   "./",
@@ -11,6 +11,7 @@ const CORE_ASSETS = [
   "./js/user-scope.js",
   "./js/sm2.js",
   "./js/revision-algo.js",
+  "./js/profile-rules.js",
   "./js/db.js",
   "./js/sync.js",
   "./js/taxonomy.js",
