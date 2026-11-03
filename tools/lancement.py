@@ -130,6 +130,9 @@ def report():
       - Librairie → retirer les collections de test.
   • Retirer packs/ de l'hébergement (le contenu passe par Darwin Admin).
   • Google Search Console : déclarer le site et sitemap.xml.
+  • Adresse de test (v252) : une copie de l'appli, avec sa propre base,
+    pour essayer chaque version avant de la mettre en ligne (fusionner
+    = publier pour tous les utilisateurs).
 """
     )
     return not todo

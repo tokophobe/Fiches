@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v251";
+  const APP_VERSION = "v252";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -1436,12 +1436,6 @@
     const fromLog = lastRatingFromLog().get(card.id);
     return typeof fromLog === "number" ? fromLog : 0;
   }
-  /** Temps écoulé (minutes) depuis la dernière interrogation — 0 pour une
-   *  fiche jamais interrogée. */
-  function cardElapsedMinutes(card, now) {
-    if (!card.lastReviewed) return 0;
-    return Math.max(0, (now.getTime() - new Date(card.lastReviewed).getTime()) / 60000);
-  }
   function localDateStr(d) {
     const x = d || new Date();
     return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, "0")}-${String(x.getDate()).padStart(2, "0")}`;
@@ -1475,66 +1469,15 @@
     subjectEventsCache = { today, at: Date.now(), map };
     return map;
   }
-  function eventReferenceTime(dateStr) {
-    const [y, m, d] = dateStr.split("-").map(Number);
-    return new Date(y, m - 1, d, SPRINT_EVENT_HOUR, 0, 0, 0);
-  }
-  function dayAfter(dateStr) {
-    const [y, m, d] = dateStr.split("-").map(Number);
-    return new Date(y, m - 1, d + 1, 0, 0, 0, 0);
-  }
-
-  /** Délai (minutes) en mode fond pour l'indice de note `idx`. */
-  function fondDelayMinutes(card, idx, settings, now) {
-    const dd = typeof card.dd === "number" && Number.isFinite(card.dd) ? Math.max(0, card.dd) : 0;
-    const te = cardElapsedMinutes(card, now);
-    const raw = dd - te + te * (settings.coefFond[idx] || 0);
-    return Math.min(settings.plafondMin[idx], Math.max(settings.plancherMin[idx], raw));
-  }
-
+  // v252 : le calcul vit dans js/revision-algo.js (testé automatiquement,
+  // voir tests/) ; ici, on lui passe les réglages, l'heure et l'agenda.
   /** Nouveau délai et champs à fusionner dans la fiche après la note
    *  `rating`. `mode` vaut "fond" ou "sprint". */
   function computeAlgoNext(card, rating) {
-    const settings = loadDevSettings().revisionAlgo;
-    const now = new Date();
-    let idx = ratingIndex(rating);
-    if (idx < 0) idx = 0;
-    const fond = fondDelayMinutes(card, idx, settings, now);
-    let ndi = fond;
-    let mode = "fond";
-    const ev = subjectEventsMap().get(card.subject);
-    if (ev) {
-      mode = "sprint";
-      const dpEch = (eventReferenceTime(ev.next).getTime() - now.getTime()) / 60000;
-      const coef = settings.coefSprint[idx];
-      let sprint;
-      if (dpEch <= 0) sprint = SPRINT_EVENT_DAY_DELAY_MIN;
-      else if (coef > 1) sprint = dpEch - dpEch / coef;
-      else sprint = fond;
-      ndi = Math.min(sprint, fond);
-    }
-    ndi = Math.max(1, ndi);
-    const due = new Date(now.getTime() + ndi * 60000);
-    const out = {
-      dd: Math.round(ndi * 100) / 100,
-      interval: Math.max(0, Math.round(ndi / 1440)),
-      deadlineDaysRaw: Math.round((ndi / 1440) * 1000) / 1000,
-      dueDate: due.toISOString(),
-      lastRating: idx,
-      mode,
-    };
-    if (ev && !card.inSprint) {
-      // Entrée en sprint au moment de la note (le calendrier n'avait pas
-      // encore été rapproché) : on mémorise le délai d'avant.
-      out.inSprint = true;
-      out.ddBeforeSprint = card.dd > 0 ? card.dd : null;
-      out.sprintNext = ev.next;
-      out.sprintUntil = ev.last;
-    } else if (ev) {
-      out.sprintNext = ev.next;
-      out.sprintUntil = ev.last;
-    }
-    return out;
+    return RevisionAlgo.computeNext(card, ratingIndex(rating), loadDevSettings().revisionAlgo, new Date(), subjectEventsMap().get(card.subject) || null, {
+      eventHour: SPRINT_EVENT_HOUR,
+      eventDayDelayMin: SPRINT_EVENT_DAY_DELAY_MIN,
+    });
   }
 
   /** Rapproche l'état sprint/fond de toutes les fiches de mes révisions
@@ -1554,39 +1497,9 @@
       const map = subjectEventsMap();
       const settings = loadDevSettings().revisionAlgo;
       const now = new Date();
-      const nowIso = now.toISOString();
       const changed = [];
       revisionCards().forEach((card) => {
-        const ev = map.get(card.subject);
-        let upd = null;
-        if (ev) {
-          if (!card.inSprint) {
-            upd = { inSprint: true, ddBeforeSprint: card.dd > 0 ? card.dd : null, sprintNext: ev.next, sprintUntil: ev.last };
-            if (!card.dueDate || new Date(card.dueDate) > now) upd.dueDate = nowIso;
-          } else if (card.sprintNext !== ev.next || card.sprintUntil !== ev.last) {
-            upd = { sprintNext: ev.next, sprintUntil: ev.last };
-            // Nouvelle échéance plus proche que celle connue : tout de suite.
-            if ((!card.sprintNext || ev.next < card.sprintNext) && (!card.dueDate || new Date(card.dueDate) > now)) {
-              upd.dueDate = nowIso;
-            }
-          }
-        } else if (card.inSprint) {
-          const end = card.sprintUntil ? dayAfter(card.sprintUntil) : now;
-          const base = end < now ? end : now;
-          const delay =
-            typeof card.ddBeforeSprint === "number" && card.ddBeforeSprint > 0
-              ? card.ddBeforeSprint
-              : settings.plancherMin[cardLastRating(card)];
-          upd = {
-            inSprint: false,
-            ddBeforeSprint: null,
-            sprintNext: null,
-            sprintUntil: null,
-            dd: delay,
-            interval: Math.max(0, Math.round(delay / 1440)),
-            dueDate: new Date(base.getTime() + delay * 60000).toISOString(),
-          };
-        }
+        const upd = RevisionAlgo.sprintUpdate(card, map.get(card.subject) || null, settings, now, cardLastRating(card));
         if (upd) changed.push(touch({ ...card, ...upd }));
       });
       if (changed.length === 0) return 0;
@@ -4628,32 +4541,10 @@
   function cardDueTime(c) {
     return c.dueDate ? new Date(c.dueDate).getTime() : 0;
   }
-  /** Prochaine fiche de la séance parmi `pool` (voir ci-dessus). */
+  /** Prochaine fiche de la séance parmi `pool` (voir ci-dessus ;
+   *  calcul dans js/revision-algo.js). */
   function pickNextSessionCard(pool) {
-    if (pool.length === 0) return null;
-    const gap = Math.min(SESSION_MIN_GAP, pool.length - 1);
-    const blocked = new Set(gap > 0 ? sessionState.recent.slice(-gap) : []);
-    let candidates = pool.filter((c) => !blocked.has(c.id));
-    if (candidates.length === 0) candidates = pool;
-    const now = Date.now();
-    const tier = (c) => {
-      if (cardDueTime(c) <= now) return 0;
-      if (sessionState.low.has(c.id) && (sessionState.seen.get(c.id) || 0) < 2) return 1;
-      return 2;
-    };
-    let best = null;
-    let bestTier = 9;
-    let bestDue = Infinity;
-    candidates.forEach((c) => {
-      const t = tier(c);
-      const d = cardDueTime(c);
-      if (t < bestTier || (t === bestTier && d < bestDue)) {
-        best = c;
-        bestTier = t;
-        bestDue = d;
-      }
-    });
-    return best;
+    return RevisionAlgo.pickNextSessionCard(pool, sessionState, new Date(), SESSION_MIN_GAP);
   }
   /** Texte de progression sous la fiche. */
   function renderSessionProgress() {

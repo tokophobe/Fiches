@@ -1,6 +1,6 @@
 # CLAUDE.md — Fiches (« darwin »)
 
-Application de révision par fiches (répétition espacée SM-2), en **PWA
+Application de révision par fiches (répétition espacée), en **PWA
 statique** sans étape de build : HTML / CSS / JavaScript « vanilla »
 servis tels quels. Le nom affiché aux utilisateurs est **darwin**.
 Le propriétaire n'est pas développeur : tout ce qui lui est adressé
@@ -33,12 +33,24 @@ toute seule (jamais « Laquelle de ces propositions… », « Parmi les
 réponses suivantes… », « Quel est l'intrus ? » sans la liste). Vérifier
 avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
 
+## Tests automatiques (v252)
+
+- `node --test tests/*.test.js` (aucune dépendance) ; lancés aussi par
+  GitHub Actions (`.github/workflows/tests.yml`) à chaque envoi.
+- La logique testable vit hors de `app.js`, dans des fichiers sans
+  écran ni stockage, l'heure étant passée en paramètre : `js/revision-algo.js`
+  (algorithme, §4 de la spécification). Pour ajouter un test sur une
+  autre règle, extraire de la même façon la logique concernée.
+- **Lancer les tests avant chaque livraison.** Quand une règle de la
+  spécification change, mettre à jour son test dans la même branche ;
+  nommer chaque test en français d'après la règle qu'il vérifie.
+
 ## Architecture
 
 - `index.html` : l'appli (tous les écrans sont dans ce fichier). Les
   scripts sont chargés dans cet ordre, sans modules ni bundler :
   `config.js`, `error-report.js`, `user-scope.js` (dans le `<head>`),
-  puis supabase-js (CDN), `sm2.js`, `db.js`, `sync.js`, `taxonomy.js`,
+  puis supabase-js (CDN), `sm2.js`, `revision-algo.js`, `db.js`, `sync.js`, `taxonomy.js`,
   `settings-model.js`, `defi-questions.js`, `defi.js`, `learn-links.js`,
   `app.js`.
 - `js/app.js` (~18 000 lignes) : toute la logique de l'interface, dans une
@@ -48,7 +60,9 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
 - `js/sync.js` : synchronisation avec Supabase, données rattachées au
   compte (`owner_id`).
 - `js/user-scope.js` : sépare les données locales par compte connecté.
-- `js/sm2.js` : algorithme de répétition espacée.
+- `js/revision-algo.js` : algorithme de révision (calcul des délais,
+  sprint, ordre des fiches d'une séance) — testé dans `tests/`.
+- `js/sm2.js` : ancien algorithme SM-2, seul `isDue` sert encore.
 - `js/settings-model.js` : réglages « développeur », **partagé** entre
   l'appli et `admin/`.
 - `js/taxonomy.js` : lit `data/taxonomie.xlsx` directement (classement de
