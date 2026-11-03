@@ -186,10 +186,5 @@ testables ainsi.
 
 ## Points en suspens (à revoir plus tard avec le propriétaire)
 
-- **Prix et noms des formules incohérents** entre `site/index.html` et
-  `legal/cgv.html` : formule de base « Individuel » (site) vs « Super
-  élève » (CGV) ; Super école à 5 €/mois/enseignant (site) vs 50 €/an
-  (CGV). Les offres vont encore évoluer : ne rien corriger sans demande,
-  mais le rappeler quand on touche aux prix ou aux abonnements.
 - `packs/bibliotheque.json` (utilisé par `tools/build_site_pages.py`)
   n'est pas dans le dépôt.

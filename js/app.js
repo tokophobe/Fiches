@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v252";
+  const APP_VERSION = "v253";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -16884,7 +16884,12 @@
         <div class="info-block-lines">
           <div class="info-block-lines-text">
             <span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>
-            <span class="info-block-sub">${taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">Classification à définir</span>`}</span>
+            <span class="info-block-sub">${taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">Classification à définir</span>`}${
+              // v253 : classification modifiable tant que la boîte n'est pas
+              // publiée (une fois publiée, c'est celle de la publication qui
+              // fait foi).
+              taxFull && !col ? ` <button type="button" class="info-block-link" data-act="classify">Modifier</button>` : ""
+            }</span>
             ${libraryExtras}
           </div>
           <span class="info-block-action">${libraryAction}</span>
@@ -17265,7 +17270,8 @@
     const taxEl = el("box-create-taxonomy");
     const titleEl = el("box-create-title");
     const submitEl = el("box-create-submit");
-    if (titleEl) titleEl.textContent = "Classer la boîte";
+    // v253 : mêmes mots que sur la page de la boîte.
+    if (titleEl) titleEl.textContent = s.taxonomy && Object.keys(s.taxonomy).length ? "Modifier la classification" : "Classifier la boîte";
     if (submitEl) submitEl.textContent = "Enregistrer";
     if (nameEl) nameEl.value = s.name;
     boitePickerActivateView("view-box-create");
@@ -17365,7 +17371,7 @@
           renderStatsSubjectSelect();
         }
         closeBoxCreateView();
-        showToast("Boîte classée");
+        showToast("Classification enregistrée");
         return;
       }
       const subject = newSubject(name, ROOT_FOLDER_ID);

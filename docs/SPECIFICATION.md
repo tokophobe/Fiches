@@ -15,7 +15,7 @@
 > bug, soit une décision à prendre (rubrique [Questions
 > ouvertes](#8-questions-ouvertes)).
 
-**Version de l'appli décrite : v252** — première rédaction le 2 novembre 2026,
+**Version de l'appli décrite : v253** — première rédaction le 2 novembre 2026,
 à partir du code.
 
 ## Sommaire
@@ -173,8 +173,11 @@ d'autant plus.
 | 2 — Je sais | 2 | 3 jours | 30 jours | entre 3 et 30 jours |
 | 3 — Parfaitement | 3 | 5 jours | 120 jours | entre 5 et 120 jours |
 
-⚠️ « Je ne sais pas » repousse plus loin que « Vague idée » : voir la
-question Q1 au §8.
+**Choix assumé (décision Q1) :** « Je ne sais pas » repousse plus loin que
+« Vague idée ». Quand on commence à avoir une vague idée, ça vaut le coup
+de renforcer tout de suite ; une fiche pas du tout sue peut attendre tant
+qu'il n'y a pas d'échéance (et elle revient quand même deux fois dans la
+séance en cours). Cela évite d'avoir trop de fiches à revoir chaque jour.
 
 ### 4.3 Mode « sprint » (échéance à venir)
 
@@ -321,7 +324,10 @@ créations) :
 6. Bloc **Librairie** : « Publiée » / « Non publiée », puis la
    classification ou « Classification à définir ». Un seul bouton :
    **Classifier** → **Publier dans la Librairie** → **Voir dans la
-   Librairie**.
+   Librairie**. Tant que la boîte n'est pas publiée, un lien
+   **« Modifier »** à côté de la classification permet de la changer
+   (une fois publiée, c'est la classification de la publication qui
+   compte).
 7. Bouton « Supprimer la boîte » (définitif, avec ses fiches).
 
 **Boîte de classe ou de la Librairie** : titre + picto, Ma progression
@@ -491,7 +497,8 @@ est éteint, tout compte connecté a accès à la Librairie.
   an).
 - Paiement par **Stripe** ; gestion de l'abonnement dans Mon compte.
 
-⚠️ Le site vitrine n'affiche pas les mêmes noms ni prix : voir Q2.
+Le site vitrine affiche les mêmes noms et prix (décision Q2 : les CGV
+font foi).
 
 ### 7.5 Défi du jour
 
@@ -505,19 +512,6 @@ est éteint, tout compte connecté a accès à la Librairie.
 > Décisions à prendre ou incohérences repérées. Répondez directement
 > sous chaque question ; Claude reportera la réponse dans les règles.
 
-**Q1 — « Je ne sais pas » repousse à 3 jours, « Vague idée » à 1 jour.**
-Avec les réglages par défaut, une fiche ratée revient plus tard qu'une
-fiche à moitié sue (elle revient quand même deux fois dans la séance en
-cours). C'est voulu ? Les valeurs réellement en ligne sont peut-être
-différentes (réglées dans Darwin Admin).
-> Réponse : oui, pour l'instant c'est voulu. L'idée c'est que quand on commence à avoir une vague idée, ça vaut le coup de renforcer toute de suite. Et pour éviter d'avoir trop de fiches qui reviennent au quotidien, les fiches "je ne sais pas" ont été réglées à un plus long terme (tant qu'il n'y a pas d'échéance, rien ne presse)
-
-**Q2 — Prix et noms des formules différents entre le site et les CGV.**
-Site : « Individuel » et Super école à 5 €/mois/enseignant. CGV : « Super
-élève » et Super école à 50 €/an/enseignant. Mis de côté pour l'instant
-(les offres vont évoluer).
-> Réponse : c'est les prix et noms de CGV qui sont bons pour l'instant.
-
 **Q3 — Droits sur une boîte publiée dans la Librairie.**
 Aujourd'hui : publication immédiate, copie figée, l'auteur ne peut plus la
 mettre à jour, seul darwin peut corriger. Proposition de Claude : publier =
@@ -525,24 +519,27 @@ proposer (relecture par darwin) ; ensuite l'auteur propose ses
 modifications, darwin garde le dernier mot ; l'auteur ne supprime pas, il
 demande le retrait ; une phrase dans les CGU.
 > Réponse : d'accord pour que Publier = proposer avec relecture par darwin. Pour la gestion des modifications et suppression, je ne sais pas encore trop ; fais ce que tu propose mais laisse ce sujet en suspend quelquepart
+>
+> ⏳ *Claude : chantier « publication avec relecture » (avec Q4), à préparer d'abord sous forme de plan. La gestion des modifications et des suppressions restera ensuite ouverte ici.*
 
 **Q4 — Deux chemins de publication différents** (immédiat pour une boîte à
 moi, relecture pour une boîte de classe). Faut-il les unifier ? (lié à Q3)
 > Réponse : oui
+>
+> ⏳ *Claude : à réaliser avec Q3 (chantier « publication avec relecture »).*
 
 **Q5 — Suppression de « Mes créations ».** Prérequis restants : décider où
 mène le hub « Mes fiches » (directement l'organisation ?), et vérifier que
 rien ne manque à l'organisation.
 > Réponse : peux-tu vérifier qu'on se passer de la page "mes créations" ? ensuite le bouton "Mes fiches" mènera directement à la page "Organisation des boites de révision"
+>
+> ⏳ *Claude : prochain chantier (vérification puis suppression de « Mes créations »).*
 
 **Q6 — Autres différences entre compte élève et compte enseignant**
 (agenda, Librairie, statistiques, accueil…).
 > Réponse : la page "Mon agenda" reportera tous les évènements concernant le profil en cours (élève ou enseignant). Sur la page "organisation des boites de révisions", seules les classes du profil en cours apparaitront, par contre tous les autres dossiers et boites seront communs aux deux profils ; avec le profil enseignants les notions "dans mes révisions" et hors de mes révisions" disparaissent ; d'ailleurs on va supprimer tout ce qui est en rapport avec les révisions dans le profil enseignant ("désactivation" du bouton "réviser" de l'accueil : griser le bouton et afficher un message quand on clique dessus)
-
-**Q7 — Modifier la classification d'une boîte déjà classée** : la page de
-la boîte n'a plus de bouton pour ça (seulement « Publier dans la
-Librairie »). Faut-il un moyen de la modifier ?
-> Réponse : oui
+>
+> ⏳ *Claude : chantier « compte enseignant sans révisions », après « Mes créations ».*
 
 **Q8 — Avant l'ouverture au public : une adresse de test.**
 Aujourd'hui, fusionner une branche publie la version pour tout le monde,
@@ -550,6 +547,14 @@ sur la même base de données. Avant le lancement, mettre en place une
 copie de l'appli (avec sa propre base) pour essayer chaque version avant
 sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 > Réponse : d'accord pour attendre le lancement (3 nov. 2026).
+
+### Décisions prises
+
+| Question | Décision | Où c'est appliqué |
+|---|---|---|
+| Q1 — « Je ne sais pas » à 3 jours, « Vague idée » à 1 jour | Voulu pour l'instant (renforcer tout de suite ce qu'on commence à savoir ; pas trop de fiches par jour). | §4.2 (v253) |
+| Q2 — Prix et noms des formules | Les CGV font foi ; site vitrine corrigé. | §7.4, site (v253) |
+| Q7 — Modifier la classification d'une boîte classée | Oui, lien « Modifier » tant qu'elle n'est pas publiée. | §5.4 (v253) |
 
 ---
 
@@ -569,6 +574,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v253 | 3 nov. 2026 | Décisions Q1, Q2, Q7 : choix « Je ne sais pas » / « Vague idée » confirmé ; prix et noms des formules du site alignés sur les CGV ; lien « Modifier » la classification sur la page d'une boîte non publiée. |
 | v252 | 3 nov. 2026 | Tests automatiques de l'algorithme de révision (§4) et du repérage des questions QCM (§5.7), lancés par GitHub à chaque modification. Aucun changement visible dans l'appli. |
 | v251 | 3 nov. 2026 | Règle d'écriture des fiches QCM (§5.7) : avertissement dans l'appli à l'enregistrement, rappel sous les réponses fausses, onglet « Questions QCM » dans Darwin Admin (vérification de la Librairie et du fichier des boîtes toutes prêtes). Vérification du fichier des boîtes toutes prêtes du 22 octobre (1 176 boîtes, 100 fiches QCM) : aucune question à corriger. |
 | v250 | 2 nov. 2026 | Page d'une boîte : Ma progression et Pour aller plus loin hors des blocs, bloc Librairie (Classifier → Publier), plus de bloc Mes révisions. Mes classes plus rapide, en blocs. Choix élève/enseignant immédiat. Page de classe : messagerie en bouton rond, agenda en liste. « Mon agenda ». |
