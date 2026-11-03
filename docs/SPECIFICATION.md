@@ -15,7 +15,7 @@
 > bug, soit une décision à prendre (rubrique [Questions
 > ouvertes](#8-questions-ouvertes)).
 
-**Version de l'appli décrite : v251** — première rédaction le 2 novembre 2026,
+**Version de l'appli décrite : v252** — première rédaction le 2 novembre 2026,
 à partir du code.
 
 ## Sommaire
@@ -127,9 +127,12 @@ Les autres différences entre les deux environnements sont **à définir**
 
 ## 4. L'algorithme de révision
 
-> Le README parle encore de « SM-2 » : ce n'est plus l'algorithme utilisé.
-> L'algorithme actuel (« v2 », validé le 7 octobre) compte en **minutes**
-> et tient compte des échéances de l'agenda.
+> L'algorithme (« v2 », validé le 7 octobre) compte en **minutes** et
+> tient compte des échéances de l'agenda.
+>
+> ✅ **Vérifié par des tests automatiques** (v252) : chaque règle de cette
+> section a son test, lancé par GitHub à chaque modification du code. Si
+> une règle change ici, son test change avec elle.
 
 ### 4.1 Les 4 réponses
 
@@ -541,6 +544,13 @@ la boîte n'a plus de bouton pour ça (seulement « Publier dans la
 Librairie »). Faut-il un moyen de la modifier ?
 > Réponse :
 
+**Q8 — Avant l'ouverture au public : une adresse de test.**
+Aujourd'hui, fusionner une branche publie la version pour tout le monde,
+sur la même base de données. Avant le lancement, mettre en place une
+copie de l'appli (avec sa propre base) pour essayer chaque version avant
+sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
+> Réponse : d'accord pour attendre le lancement (3 nov. 2026).
+
 ---
 
 ## 9. Demandes
@@ -559,6 +569,7 @@ Librairie »). Faut-il un moyen de la modifier ?
 
 | Version | Date | Changements |
 |---|---|---|
+| v252 | 3 nov. 2026 | Tests automatiques de l'algorithme de révision (§4) et du repérage des questions QCM (§5.7), lancés par GitHub à chaque modification. Aucun changement visible dans l'appli. |
 | v251 | 3 nov. 2026 | Règle d'écriture des fiches QCM (§5.7) : avertissement dans l'appli à l'enregistrement, rappel sous les réponses fausses, onglet « Questions QCM » dans Darwin Admin (vérification de la Librairie et du fichier des boîtes toutes prêtes). Vérification du fichier des boîtes toutes prêtes du 22 octobre (1 176 boîtes, 100 fiches QCM) : aucune question à corriger. |
 | v250 | 2 nov. 2026 | Page d'une boîte : Ma progression et Pour aller plus loin hors des blocs, bloc Librairie (Classifier → Publier), plus de bloc Mes révisions. Mes classes plus rapide, en blocs. Choix élève/enseignant immédiat. Page de classe : messagerie en bouton rond, agenda en liste. « Mon agenda ». |
 | v249 | 2 nov. 2026 | Page de boîte unique pour ses boîtes. Classes de l'enseignant en tête de l'organisation. Recherche par nom. |

@@ -1,0 +1,19 @@
+# Tests automatiques : lancés par GitHub à chaque envoi de code et sur
+# chaque pull request. Résultat visible dans l'onglet « Actions » du dépôt
+# et en bas de chaque pull request (coche verte = tout va bien).
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Tests de l'appli (algorithme, règles)
+        run: node --test tests/*.test.js
