@@ -510,13 +510,13 @@ Avec les réglages par défaut, une fiche ratée revient plus tard qu'une
 fiche à moitié sue (elle revient quand même deux fois dans la séance en
 cours). C'est voulu ? Les valeurs réellement en ligne sont peut-être
 différentes (réglées dans Darwin Admin).
-> Réponse :
+> Réponse : oui, pour l'instant c'est voulu. L'idée c'est que quand on commence à avoir une vague idée, ça vaut le coup de renforcer toute de suite. Et pour éviter d'avoir trop de fiches qui reviennent au quotidien, les fiches "je ne sais pas" ont été réglées à un plus long terme (tant qu'il n'y a pas d'échéance, rien ne presse)
 
 **Q2 — Prix et noms des formules différents entre le site et les CGV.**
 Site : « Individuel » et Super école à 5 €/mois/enseignant. CGV : « Super
 élève » et Super école à 50 €/an/enseignant. Mis de côté pour l'instant
 (les offres vont évoluer).
-> Réponse :
+> Réponse : c'est les prix et noms de CGV qui sont bons pour l'instant.
 
 **Q3 — Droits sur une boîte publiée dans la Librairie.**
 Aujourd'hui : publication immédiate, copie figée, l'auteur ne peut plus la
@@ -524,25 +524,25 @@ mettre à jour, seul darwin peut corriger. Proposition de Claude : publier =
 proposer (relecture par darwin) ; ensuite l'auteur propose ses
 modifications, darwin garde le dernier mot ; l'auteur ne supprime pas, il
 demande le retrait ; une phrase dans les CGU.
-> Réponse :
+> Réponse : d'accord pour que Publier = proposer avec relecture par darwin. Pour la gestion des modifications et suppression, je ne sais pas encore trop ; fais ce que tu propose mais laisse ce sujet en suspend quelquepart
 
 **Q4 — Deux chemins de publication différents** (immédiat pour une boîte à
 moi, relecture pour une boîte de classe). Faut-il les unifier ? (lié à Q3)
-> Réponse :
+> Réponse : oui
 
 **Q5 — Suppression de « Mes créations ».** Prérequis restants : décider où
 mène le hub « Mes fiches » (directement l'organisation ?), et vérifier que
 rien ne manque à l'organisation.
-> Réponse :
+> Réponse : peux-tu vérifier qu'on se passer de la page "mes créations" ? ensuite le bouton "Mes fiches" mènera directement à la page "Organisation des boites de révision"
 
 **Q6 — Autres différences entre compte élève et compte enseignant**
 (agenda, Librairie, statistiques, accueil…).
-> Réponse :
+> Réponse : la page "Mon agenda" reportera tous les évènements concernant le profil en cours (élève ou enseignant). Sur la page "organisation des boites de révisions", seules les classes du profil en cours apparaitront, par contre tous les autres dossiers et boites seront communs aux deux profils ; avec le profil enseignants les notions "dans mes révisions" et hors de mes révisions" disparaissent ; d'ailleurs on va supprimer tout ce qui est en rapport avec les révisions dans le profil enseignant ("désactivation" du bouton "réviser" de l'accueil : griser le bouton et afficher un message quand on clique dessus)
 
 **Q7 — Modifier la classification d'une boîte déjà classée** : la page de
 la boîte n'a plus de bouton pour ça (seulement « Publier dans la
 Librairie »). Faut-il un moyen de la modifier ?
-> Réponse :
+> Réponse : oui
 
 **Q8 — Avant l'ouverture au public : une adresse de test.**
 Aujourd'hui, fusionner une branche publie la version pour tout le monde,
