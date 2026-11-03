@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v245";
+  const ADMIN_VERSION = "v251";
   async function checkAdminVersion() {
     const label = $("#sidebar-version");
     if (label) label.textContent = `Darwin Admin ${ADMIN_VERSION}`;
@@ -1250,6 +1250,7 @@
         ["collections", "Collections publiées", "#/library"],
         ["submissions", "Propositions des enseignants", "#/library/submissions"],
         ["packs", "Boîtes toutes prêtes", "#/library/packs"],
+        ["qcm", "Questions QCM", "#/library/qcm"],
         ["taxonomy", "Classement (Excel)", "#/library/taxonomy"],
       ].map(([k, l, href]) => h("a", { href, class: k === active ? "is-active" : null }, l))
     );
@@ -1311,6 +1312,7 @@
     if (tab === "packs") return libraryPacksTab(root, live);
     if (tab === "submissions") return librarySubmissionsTab(root, live);
     if (tab === "taxonomy") return libraryTaxonomyTab(root, live);
+    if (tab === "qcm") return libraryQcmTab(root, live);
     if (state.limited) {
       root.appendChild(errorCard(MIGRATION_HINT));
       return;
@@ -1409,6 +1411,103 @@
     const L = tax.lists || {};
     const n = (k) => (L[k] || []).length;
     return `${n("categories")} catégories, ${n("cycles")} cycles, ${n("niveaux")} niveaux, ${n("annees")} années, ${n("specialites")} spécialités, ${n("matieres")} matières — lu le ${tax.loadedAt ? new Date(tax.loadedAt).toLocaleString("fr-FR") : "?"}.`;
+  }
+  /* v251 : une fiche QCM est aussi posée en mode normal, sans les
+     propositions — sa question doit avoir du sens toute seule. Cet onglet
+     repère les questions qui renvoient à des propositions absentes
+     (« Laquelle de ces… », « parmi les réponses suivantes », « l'intrus »
+     sans la liste…), dans la Librairie en ligne et dans le fichier des
+     boîtes toutes prêtes. Même détecteur que l'appli (settings-model.js). */
+  async function libraryQcmTab(root, live) {
+    const detect = M.qcmQuestionNeedsChoices;
+    const resultsTable = (rows, withAuthor) =>
+      table(
+        [
+          { label: withAuthor ? "Collection" : "Boîte", render: (r) => h("div", null, h("div", { class: "cell-main" }, r.box), r.author ? h("div", { class: "cell-sub" }, r.author) : null) },
+          { label: "Fiche", cls: "r num", render: (r) => String(r.index + 1) },
+          { label: "Question", render: (r) => h("div", null, h("div", null, r.question), h("div", { class: "cell-sub" }, `Passage en cause : « ${r.hit} »`)) },
+          { label: "Type", render: (r) => (r.qcm ? badge("QCM", "warn") : h("span", { class: "faint" }, "classique")) },
+          {
+            label: "",
+            cls: "r nowrap",
+            render: (r) => (r.id ? h("button", { type: "button", class: "btn btn--small", onclick: () => openCollectionCards(r.id, r.box) }, "Fiches") : ""),
+          },
+        ],
+        rows,
+        { empty: "Aucune question à revoir. 👍" }
+      );
+    const scanCards = (cards, base) => {
+      const out = [];
+      (Array.isArray(cards) ? cards : []).forEach((c, index) => {
+        const hit = detect(c && c.question);
+        if (hit) out.push({ ...base, index, hit, question: stripHtml(c.question), qcm: Array.isArray(c.wrongs) && c.wrongs.length === 3 });
+      });
+      return out;
+    };
+    // 1) Librairie en ligne.
+    const onlineOut = h("div", null, h("p", { class: "muted" }, "Appuie sur « Vérifier » pour analyser toutes les collections publiées."));
+    const onlineBtn = h("button", { type: "button", class: "btn btn--primary" }, "Vérifier la Librairie");
+    onlineBtn.addEventListener("click", async () => {
+      onlineBtn.disabled = true;
+      onlineOut.replaceChildren(h("p", { class: "muted" }, "Analyse en cours…"));
+      try {
+        const cols = await fetchAllRows(
+          () => client().from("library_collections").select("id, name, owner_first_name, owner_last_name, cards").order("id"),
+          100
+        );
+        if (!live()) return;
+        let total = 0;
+        const rows = [];
+        cols.forEach((col) => {
+          total += Array.isArray(col.cards) ? col.cards.length : 0;
+          rows.push(...scanCards(col.cards, { id: col.id, box: col.name, author: `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() }));
+        });
+        onlineOut.replaceChildren(
+          h("p", { class: "card-hint" }, `${plural(cols.length, "collection", "collections")}, ${plural(total, "fiche", "fiches")} analysées : ${plural(rows.length, "question à revoir", "questions à revoir")}.`),
+          resultsTable(rows, true)
+        );
+      } catch (e) {
+        onlineOut.replaceChildren(h("p", { class: "form-error" }, e.message));
+      }
+      onlineBtn.disabled = false;
+    });
+    // 2) Fichier des boîtes toutes prêtes.
+    const packOut = h("div", null, h("p", { class: "muted" }, "Choisis le fichier bibliotheque.json (zip « contenu »)."));
+    const fileInput = h("input", { type: "file", accept: ".json,application/json" });
+    fileInput.hidden = true;
+    const pickBtn = h("button", { type: "button", class: "btn" }, "Choisir le fichier…");
+    pickBtn.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", async () => {
+      const f = fileInput.files && fileInput.files[0];
+      if (!f) return;
+      packOut.replaceChildren(h("p", { class: "muted" }, "Analyse en cours…"));
+      try {
+        const pack = await loadPackFile(f);
+        const boxes = (pack && Array.isArray(pack.boxes) && pack.boxes) || [];
+        let total = 0;
+        const rows = [];
+        boxes.forEach((b) => {
+          total += Array.isArray(b.cards) ? b.cards.length : 0;
+          rows.push(...scanCards(b.cards, { box: b.name || b.key || "Boîte" }));
+        });
+        packOut.replaceChildren(
+          h("p", { class: "card-hint" }, `${f.name} : ${plural(boxes.length, "boîte", "boîtes")}, ${plural(total, "fiche", "fiches")} analysées : ${plural(rows.length, "question à revoir", "questions à revoir")}.`),
+          resultsTable(rows, false)
+        );
+      } catch (e) {
+        packOut.replaceChildren(h("p", { class: "form-error" }, e.message));
+      }
+      fileInput.value = "";
+    });
+    root.appendChild(
+      card(
+        "Questions QCM : sens sans les propositions",
+        "Une fiche QCM est aussi posée en mode normal, sans les propositions : sa question doit avoir du sens toute seule. Exemple à corriger : « Laquelle de ces villes est la capitale de l'Australie ? » → « Quelle est la capitale de l'Australie ? ». Les questions qui contiennent elles-mêmes les choix (« Quel est l'intrus : pomme, poire, chou ? ») ne sont pas signalées.",
+        h("div", { class: "toolbar" }, onlineBtn),
+        onlineOut
+      )
+    );
+    root.appendChild(card("Boîtes toutes prêtes (fichier)", null, h("div", { class: "toolbar" }, pickBtn, fileInput), packOut));
   }
   async function libraryTaxonomyTab(root) {
     const status = h("p", null, "Lecture…");
