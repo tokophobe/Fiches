@@ -8485,7 +8485,7 @@ body.has-two-roles:not(.is-picking-role) .topbar-darwin-logo { display: none; }
 .rev-state--in { color: #1f9d55; }
 .rev-state--out { color: #9aa3ae; }
 /* Affichage « griser les boîtes hors de mes révisions ». */
-body[data-org-rev-display="dim"] #subject-list .subject-row.is-out-of-revisions > .org-row-wrap .org-row-main { opacity: 0.42; filter: grayscale(1); }
+body[data-org-rev-display="dim"]:not(.profile-teacher) #subject-list .subject-row.is-out-of-revisions > .org-row-wrap .org-row-main { opacity: 0.42; filter: grayscale(1); }
 .org-rev-toggle { margin-right: 6px; }
 /* v254 : filtre « Publiées / Non publiées » — grise tout ce qui n'est pas
    concerné (dont les boîtes qui ne sont pas les miennes). */
@@ -8582,3 +8582,14 @@ body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-card.inf
   text-decoration: underline;
   cursor: pointer;
 }
+
+/* v256 (Q6) : profil enseignant — rien de ce qui touche aux révisions.
+   Bouton « Réviser » grisé (un message s'affiche si on le touche, voir
+   showTeacherNoRevisionMessage), sans ses pastilles ; ni picto ni
+   affichage « dans / hors de mes révisions », ni jauge de progression
+   dans l'organisation. */
+body.profile-teacher .home-circle[data-key="review"] { opacity: 0.4; filter: grayscale(1); }
+body.profile-teacher .home-circle[data-key="review"] .home-circle-badges { display: none !important; }
+body.profile-teacher #org-rev-toggle,
+body.profile-teacher #org-display-toggle [data-org-display="gauge"],
+body.profile-teacher #subject-list .rev-state { display: none !important; }

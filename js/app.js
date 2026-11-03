@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v255";
+  const APP_VERSION = "v256";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -1454,7 +1454,8 @@
       return subjectEventsCache.map;
     }
     const map = new Map();
-    loadCalendarEvents()
+    // v256 : seules les échéances du profil élève mettent en sprint.
+    revisionCalendarEvents()
       .filter((ev) => ev && ev.date && ev.date >= today && eventLinkIds(ev).length > 0)
       .forEach((ev) => {
         revisionTreeBoxIds(revisionTreeForEvent(ev)).forEach((id) => {
@@ -2860,8 +2861,10 @@
         // v248 : « Retirer de mes révisions » / « Ajouter à mes révisions »
         // selon l'état de la boîte — elle reste dans l'organisation dans
         // les deux cas. Pas de choix pour une boîte de classe.
+        // v256 (Q6) : ni « Retirer de » ni « Ajouter à mes révisions » dans
+        // le profil enseignant.
         onDelete:
-          subjectForIcon && subjectForIcon.sharedBoxId
+          (subjectForIcon && subjectForIcon.sharedBoxId) || activeRole() === "teacher"
             ? null
             : inRev
             ? () =>
@@ -7730,6 +7733,16 @@
      de bascule elle-même ne change pas, seul le déclencheur change.
   --------------------------------------------------------- */
   const homeBtn = el("home-btn");
+  // v256 (Q6) : pages de révision, fermées au profil enseignant.
+  const REVISION_VIEWS = new Set(["review", "review-hub", "revision-program", "revision-reinforce"]);
+  function showTeacherNoRevisionMessage() {
+    const hasStudent = (currentUsages() || []).includes("eleve");
+    robotAlert(
+      hasStudent
+        ? "Le compte enseignant ne sert pas à réviser. Pour réviser, passe sur ton compte élève : touche la pastille « Enseignant » en haut de l'accueil."
+        : "Les révisions sont réservées au compte élève. Tu peux ajouter l'usage « élève » dans Mon compte."
+    );
+  }
   document.querySelectorAll(".tab").forEach((tab) => {
     tab.addEventListener("click", () => {
       // Round 22, item 4 : connexion obligatoire — masquer les cercles
@@ -7746,6 +7759,11 @@
       // Mon compte.
       if (tab.dataset.view === "subscriptions") {
         openAccountPlans();
+        return;
+      }
+      // v256 (Q6) : pas de révisions dans le profil enseignant.
+      if (REVISION_VIEWS.has(tab.dataset.view) && accountCurrentUser && activeRole() === "teacher") {
+        showTeacherNoRevisionMessage();
         return;
       }
       document.querySelectorAll(".tab").forEach((t) => {
@@ -8563,6 +8581,16 @@
       return [];
     }
   }
+  /** v256 (Q6) : évènements du profil utilisé (agenda, pastille, alertes)
+   *  et évènements qui comptent pour les révisions (profil élève
+   *  seulement) — règles dans js/profile-rules.js. */
+  function profileCalendarEvents() {
+    const role = activeRole();
+    return loadCalendarEvents().filter((ev) => ProfileRules.eventVisibleInProfile(ev, role));
+  }
+  function revisionCalendarEvents() {
+    return loadCalendarEvents().filter((ev) => ProfileRules.eventCountsForRevisions(ev));
+  }
   /** Round 29 : enregistrement local + envoi au serveur des seuls
    *  évènements ajoutés, modifiés ou supprimés (comparés à la version
    *  précédente), horodatés pour la fusion entre appareils. */
@@ -8777,7 +8805,12 @@
    *  proche au plus lointain — base de l'alerte du Calendrier et du bandeau
    *  défilant de l'accueil. */
   function upcomingEventsWithoutBox() {
-    return loadCalendarEvents()
+    // v256 : en profil enseignant, seules les échéances données à une
+    // classe appellent des fiches (un évènement personnel, une réunion…,
+    // n'a rien à réviser).
+    const teacher = activeRole() === "teacher";
+    return profileCalendarEvents()
+      .filter((ev) => !teacher || (ev.classShare && ev.classShare.classId))
       .filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0 && calendarEventHasNoBox(ev))
       .sort((a, b) => a.date.localeCompare(b.date));
   }
@@ -8787,7 +8820,7 @@
   function refreshCalendarHubBadge() {
     const badge = el("home-calendar-badge");
     if (!badge) return;
-    const n = loadCalendarEvents().filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0).length;
+    const n = profileCalendarEvents().filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0).length;
     badge.hidden = n <= 0;
     badge.textContent = n > 99 ? "99+" : String(n);
   }
@@ -9104,8 +9137,10 @@
     const select = el("calendar-event-class-select");
     if (!field || !select) return;
     field.dataset.forced = "";
-    if (!Sync.isConfigured() || !accountCurrentUser) {
+    // v256 : partager avec une classe se fait depuis le profil enseignant.
+    if (!Sync.isConfigured() || !accountCurrentUser || (activeRole() !== "teacher" && !(eventToEdit && eventToEdit.classShare))) {
       field.hidden = true;
+      select.value = "";
       return;
     }
     const myClasses = await Sync.classes.listAsTeacher();
@@ -9302,7 +9337,8 @@
         ev = idx >= 0 ? { ...events[idx], title: titleVal, date: dateVal, linkIds: linkIdsArr, comment: commentVal } : null;
         if (ev) delete ev.linkId;
       } else {
-        ev = { id: uid(), title: titleVal, date: dateVal, linkIds: linkIdsArr, comment: commentVal };
+        // v256 : l'évènement retient le profil où il est créé.
+        ev = { id: uid(), title: titleVal, date: dateVal, linkIds: linkIdsArr, comment: commentVal, profile: activeRole() };
       }
       if (!ev) return;
 
@@ -9451,7 +9487,8 @@
    *  la classe quand c'est l'agenda d'une classe. */
   function calendarVisibleEvents() {
     const all = loadCalendarEvents();
-    if (!calendarClassFilter) return all;
+    // v256 : « Mon agenda » ne montre que les évènements du profil utilisé.
+    if (!calendarClassFilter) return all.filter((ev) => ProfileRules.eventVisibleInProfile(ev, activeRole()));
     const { klass, role } = calendarClassFilter;
     return all.filter((e) => eventBelongsToClass(e, klass.id, role));
   }
@@ -9697,7 +9734,7 @@
   const REVISION_PROGRAM_TARGET_SCORE = 80;
   function computeRevisionProgramItems() {
     const todayStr = new Date().toISOString().slice(0, 10);
-    const upcoming = loadCalendarEvents().filter((ev) => eventLinkIds(ev).length > 0 && ev.date >= todayStr);
+    const upcoming = revisionCalendarEvents().filter((ev) => eventLinkIds(ev).length > 0 && ev.date >= todayStr);
     // Un seul point de programme par boîte/dossier : celui dont
     // l'échéance est la plus proche fait foi. Round 18, item 13 : un
     // événement peut maintenant porter PLUSIEURS liens — chacun devient
@@ -9826,7 +9863,8 @@
   setPrioDisplayMode("gauge");
 
   function upcomingEventsWithBoxes() {
-    return loadCalendarEvents()
+    // v256 : révisions → évènements du profil élève seulement.
+    return revisionCalendarEvents()
       .filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0 && !calendarEventHasNoBox(ev))
       .sort((a, b) => a.date.localeCompare(b.date));
   }
@@ -10489,6 +10527,9 @@
     document.body.classList.toggle("has-two-roles", both);
     document.body.classList.toggle("role-teacher", both && role === "teacher");
     document.body.classList.toggle("role-student", both && role === "student");
+    // v256 (Q6) : profil enseignant (avec ou sans usage élève) — pas de
+    // révisions : voir css/style.css (body.profile-teacher).
+    document.body.classList.toggle("profile-teacher", !!accountCurrentUser && role === "teacher");
     const btn = el("role-indicator");
     if (!btn) return;
     // Pas de repère sur la page de choix du compte : rien n'est encore choisi.
@@ -10616,7 +10657,7 @@
   function applyUsageEffects() {
     const calBadge = el("home-calendar-badge");
     if (calBadge) {
-      const n = loadCalendarEvents().filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0).length;
+      const n = profileCalendarEvents().filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0).length;
       calBadge.hidden = n <= 0;
       calBadge.textContent = n > 99 ? "99+" : String(n);
     }
@@ -16746,7 +16787,8 @@
       ? actBtn("publish", "Publier dans la Librairie")
       : actBtn("classify", "Classifier");
     const blocks = [
-      creationDetailPlainRow("Ma progression", gauge, n && inRev ? actBtn("review", "Réviser") : ""),
+      // v256 (Q6) : pas de progression ni de « Réviser » en profil enseignant.
+      activeRole() === "teacher" ? "" : creationDetailPlainRow("Ma progression", gauge, n && inRev ? actBtn("review", "Réviser") : ""),
       creationDetailPlainRow("Pour aller plus loin", linkValue, actBtn("link", s.link ? "Modifier" : "Ajouter un lien")),
       creationDetailCardsBlockHtml(n),
       `<section class="info-block info-block--library">
@@ -16852,7 +16894,7 @@
     const gauge = `<span class="creation-detail-gauge">${buildPersGaugeSvg(pool || [], { width: 90, barHeight: 8 })}</span>`;
     wrap.innerHTML = `
       <div class="info-blocks">
-        ${creationDetailPlainRow("Ma progression", gauge, n && isSubjectInRevisions(s) ? `<button type="button" class="btn btn--ghost creation-detail-act" data-act="review">Réviser</button>` : "")}
+        ${activeRole() === "teacher" ? "" : creationDetailPlainRow("Ma progression", gauge, n && isSubjectInRevisions(s) ? `<button type="button" class="btn btn--ghost creation-detail-act" data-act="review">Réviser</button>` : "")}
         ${s.link ? creationDetailPlainRow("Pour aller plus loin", learnLinkChipHtml(s.link, "box", s.name)) : ""}
         ${creationDetailCardsBlockHtml(n)}
       </div>
@@ -17000,16 +17042,29 @@
     folders.forEach((f) => {
       if (f.sharedClassRoot) excluded.add(f.id);
     });
+    // v256 (Q6) : boîte créée dans le profil enseignant → on choisit
+    // seulement son dossier ; elle reste hors des révisions (profil élève).
+    const placeOnly = !!(opts && opts.justCreated) && activeRole() === "teacher";
     openBoitePickerView({
       mode: "single",
-      robotMessage: `Dans quel dossier de Mes fiches de révision ranger « ${s.name} » ?`,
+      robotMessage: placeOnly ? `Dans quel dossier ranger « ${s.name} » ?` : `Dans quel dossier de Mes fiches de révision ranger « ${s.name} » ?`,
       backLabel: "Annuler",
       excludedFolderIds: excluded,
       onPick: async (_kind, destId) => {
         closeBoitePickerView();
-        await putSubjectBackInRevisions(s, destId);
+        if (placeOnly) await placeSubjectWithoutRevisions(s, destId);
+        else await putSubjectBackInRevisions(s, destId);
       },
     });
+  }
+  async function placeSubjectWithoutRevisions(s, destId) {
+    s.folderId = destId;
+    s.outOfRevisions = true;
+    s.updatedAt = new Date().toISOString();
+    await persistSubject(s);
+    renderSubjectManageList();
+    renderStatsSubjectSelect();
+    showToast("Boîte rangée");
   }
   async function putSubjectBackInRevisions(s, destId) {
     s.folderId = destId;

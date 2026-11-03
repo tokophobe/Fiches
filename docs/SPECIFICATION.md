@@ -118,10 +118,13 @@ de confidentialité.
 |---|---|---|
 | Bouton d'accueil « Mes classes » | Classes rejointes ; « Rejoindre une classe » s'il n'y en a aucune | Classes créées ; « Créer une classe » s'il n'y en a aucune |
 | Organisation des boîtes | Dossier « Mes classes » en tête : boîtes des classes rejointes | Dossier « Mes classes » en tête : classes animées et leurs boîtes partagées |
-| Agenda, Librairie, fiches, statistiques | Identiques | Identiques |
-
-Les autres différences entre les deux environnements sont **à définir**
-(voir §8).
+| Autres dossiers et boîtes | Communs aux deux comptes | Communs aux deux comptes |
+| Révisions (v256) | Oui | **Non** : bouton « Réviser » grisé (un message explique de passer au compte élève), sans ses pastilles |
+| Dans / hors de mes révisions (v256) | Pictos, affichage grisé, menu « Retirer de / Ajouter à mes révisions » | Rien de tout cela |
+| Progression (v256) | Jauge « Ma progression » sur la page d'une boîte, affichage en jauge dans l'organisation | Pas de jauge |
+| Nouvelle boîte (v256) | Rangée dans un dossier, elle entre dans mes révisions | Rangée dans un dossier, elle reste **hors** de mes révisions (on pourra l'y ajouter depuis le compte élève) |
+| Mon agenda (v256) | Évènements créés dans le compte élève + échéances reçues des classes suivies | Évènements créés dans le compte enseignant + échéances données à ses classes |
+| Librairie, fiches, statistiques, défi du jour | Identiques | Identiques |
 
 ---
 
@@ -182,7 +185,9 @@ séance en cours). Cela évite d'avoir trop de fiches à revoir chaque jour.
 ### 4.3 Mode « sprint » (échéance à venir)
 
 Une boîte passe en sprint dès qu'une **échéance à venir** de l'agenda la
-concerne (directement, ou via un dossier relié à l'échéance).
+concerne (directement, ou via un dossier relié à l'échéance). Seules
+comptent les échéances du **compte élève** (v256) : une échéance qu'un
+enseignant donne à sa classe ne met pas ses propres boîtes en sprint.
 
 - Au passage en sprint, toutes ses fiches deviennent **à revoir tout de
   suite**, et l'appli mémorise leur délai d'avant.
@@ -227,8 +232,10 @@ Une séance continue tant qu'on répond. Ordre de passage :
 | **Sélection manuelle** | Une boîte, un dossier, ou une sélection de boîtes, au choix. |
 
 Seules les boîtes **dans mes révisions** (§5.2) et **non verrouillées**
-(§7.3) sont concernées. La pastille « n à revoir » (en haut) compte les
-fiches dues aujourd'hui.
+(§7.3) sont concernées, et seules les échéances du compte élève (§4.3).
+Les pastilles du bouton « Réviser » de l'accueil comptent les échéances
+proches qui ont des fiches à revoir et les boîtes à renforcer. Les
+révisions n'existent pas dans le compte enseignant (§3.2).
 
 ### 4.6 La jauge de progression
 
@@ -425,8 +432,16 @@ tout de suite, la liste à jour suit.
 
 ### 6.4 Agenda
 
-- **Mon agenda** (accueil) : toutes les échéances de l'utilisateur, les
-  siennes et celles de ses classes. Affichage en liste ou par mois.
+- **Mon agenda** (accueil) : les évènements du **compte utilisé** (v256).
+  Compte élève : ceux créés dans le compte élève et les échéances reçues
+  des classes suivies. Compte enseignant : ceux créés dans le compte
+  enseignant et les échéances données à ses classes. Chaque évènement
+  retient le compte où il a été créé ; ceux d'avant la v256 sont côté
+  élève. Affichage en liste ou par mois.
+- Partager un évènement avec une classe ne se fait que depuis le compte
+  enseignant.
+- Alerte de l'accueil « l'évènement n'a pas de boîte associée » : dans le
+  compte enseignant, seulement pour les échéances données à une classe.
 - **Agenda de la classe** : seulement les échéances de la classe (bloc de
   la page de la classe).
 - Une échéance : titre, date, boîtes et dossiers reliés, commentaire,
@@ -535,11 +550,17 @@ moi, relecture pour une boîte de classe). Faut-il les unifier ? (lié à Q3)
 >
 > ⏳ *Claude : à réaliser avec Q3 (chantier « publication avec relecture »).*
 
-**Q6 — Autres différences entre compte élève et compte enseignant**
-(agenda, Librairie, statistiques, accueil…).
-> Réponse : la page "Mon agenda" reportera tous les évènements concernant le profil en cours (élève ou enseignant). Sur la page "organisation des boites de révisions", seules les classes du profil en cours apparaitront, par contre tous les autres dossiers et boites seront communs aux deux profils ; avec le profil enseignants les notions "dans mes révisions" et hors de mes révisions" disparaissent ; d'ailleurs on va supprimer tout ce qui est en rapport avec les révisions dans le profil enseignant ("désactivation" du bouton "réviser" de l'accueil : griser le bouton et afficher un message quand on clique dessus)
->
-> ⏳ *Claude : prochain chantier, « compte enseignant sans révisions ».*
+**Q9 — Librairie dans le compte enseignant.** Dans la Librairie, prendre
+une boîte s'appelle « Ajouter à mes révisions » (et « Retirer de mes
+révisions »), y compris dans le compte enseignant, où les révisions
+n'existent plus. Faut-il un autre libellé (« Prendre la boîte »…) ou un
+autre comportement côté enseignant ?
+> Réponse :
+
+**Q10 — Titre de la page Organisation.** Dans le compte enseignant, la
+page s'appelle toujours « Organisation des boîtes de révision ». Garder
+ce titre, ou en prendre un autre (« Organisation de mes boîtes ») ?
+> Réponse :
 
 **Q8 — Avant l'ouverture au public : une adresse de test.**
 Aujourd'hui, fusionner une branche publie la version pour tout le monde,
@@ -555,6 +576,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | Q1 — « Je ne sais pas » à 3 jours, « Vague idée » à 1 jour | Voulu pour l'instant (renforcer tout de suite ce qu'on commence à savoir ; pas trop de fiches par jour). | §4.2 (v253) |
 | Q2 — Prix et noms des formules | Les CGV font foi ; site vitrine corrigé. | §7.4, site (v253) |
 | Q7 — Modifier la classification d'une boîte classée | Oui, lien « Modifier » tant qu'elle n'est pas publiée. | §5.4 (v253) |
+| Q6 — Différences élève / enseignant | Agenda par compte ; classes du compte utilisé dans l'organisation, le reste commun ; pas de révisions dans le compte enseignant (Réviser grisé, ni dans/hors révisions, ni progression) ; échéances données à une classe sans effet sur ses propres révisions ; nouvelle boîte du compte enseignant hors révisions. | §3.2, §4.3, §4.5, §6.4 (v256) |
 | Q5 — Supprimer « Mes créations » | Oui, après vérification. « Mes fiches » ouvre directement l'organisation. Remplacé par un filtre Publiées / Non publiées qui grise le reste ; recherche par classification et par tags abandonnée. | §5.3, §5.5 (v254) |
 
 ---
@@ -575,6 +597,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v256 | 3 nov. 2026 | Q6 : compte enseignant sans révisions (Réviser grisé avec message, ni dans/hors révisions, ni progression ; nouvelle boîte hors révisions). Agenda propre à chaque compte. Les échéances données à une classe ne mettent plus en sprint les boîtes de l'enseignant. |
 | v255 | 3 nov. 2026 | Mise à jour plus fiable sur iPhone : à l'installation d'une nouvelle version, tous les fichiers sont repris en ligne (un iPhone pouvait garder l'ancienne appli en se croyant à jour). Aucun changement visible. |
 | v254 | 3 nov. 2026 | Q5 : page « Mes créations » supprimée, « Mes fiches » ouvre directement l'organisation. Nouveau filtre Publiées / Non publiées dans l'organisation. Corrigé : une boîte publiée ouverte depuis l'organisation pouvait s'afficher « Non publiée ». |
 | v253 | 3 nov. 2026 | Décisions Q1, Q2, Q7 : choix « Je ne sais pas » / « Vague idée » confirmé ; prix et noms des formules du site alignés sur les CGV ; lien « Modifier » la classification sur la page d'une boîte non publiée. |

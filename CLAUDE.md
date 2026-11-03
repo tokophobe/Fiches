@@ -48,7 +48,8 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   GitHub Actions (`.github/workflows/tests.yml`) à chaque envoi.
 - La logique testable vit hors de `app.js`, dans des fichiers sans
   écran ni stockage, l'heure étant passée en paramètre : `js/revision-algo.js`
-  (algorithme, §4 de la spécification). Pour ajouter un test sur une
+  (algorithme, §4 de la spécification), `js/profile-rules.js` (agenda et
+  révisions selon le compte élève / enseignant). Pour ajouter un test sur une
   autre règle, extraire de la même façon la logique concernée.
 - **Lancer les tests avant chaque livraison.** Quand une règle de la
   spécification change, mettre à jour son test dans la même branche ;
@@ -59,7 +60,7 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
 - `index.html` : l'appli (tous les écrans sont dans ce fichier). Les
   scripts sont chargés dans cet ordre, sans modules ni bundler :
   `config.js`, `error-report.js`, `user-scope.js` (dans le `<head>`),
-  puis supabase-js (CDN), `sm2.js`, `revision-algo.js`, `db.js`, `sync.js`, `taxonomy.js`,
+  puis supabase-js (CDN), `sm2.js`, `revision-algo.js`, `profile-rules.js`, `db.js`, `sync.js`, `taxonomy.js`,
   `settings-model.js`, `defi-questions.js`, `defi.js`, `learn-links.js`,
   `app.js`.
 - `js/app.js` (~18 000 lignes) : toute la logique de l'interface, dans une
@@ -100,8 +101,15 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   `#role-indicator`). Classes CSS sur `<body>` : `has-two-roles`,
   `role-student`, `role-teacher`. Le choix est mémorisé dans
   `fiches_active_role` (par compte, `js/user-scope.js`).
-- Les différences entre les deux environnements sont à préciser avec le
-  propriétaire au fur et à mesure.
+- v256 (Q6) : pas de révisions dans le compte enseignant. Classe
+  `profile-teacher` sur `<body>` (aussi pour un compte seulement
+  enseignant) : masque en CSS pictos et affichages « dans / hors
+  révisions » et la jauge ; les pages de révision sont bloquées dans le
+  gestionnaire des onglets (`REVISION_VIEWS`,
+  `showTeacherNoRevisionMessage`). Agenda par compte et échéances qui
+  comptent pour les révisions : `js/profile-rules.js` (champ `profile`
+  des évènements, `profileCalendarEvents` / `revisionCalendarEvents`).
+- Les autres différences sont à préciser avec le propriétaire (spéc. §3.2).
 
 ## Organisation des boîtes (v248, v254)
 
