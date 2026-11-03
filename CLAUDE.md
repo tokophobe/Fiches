@@ -7,6 +7,15 @@ Le propriétaire n'est pas développeur : tout ce qui lui est adressé
 (messages, commentaires, documentation) est **en français**, en langage
 simple.
 
+## Accompagnement du propriétaire
+
+Le propriétaire apprend à développer avec Claude Code. Il demande des
+**conseils proactifs**, en fin de réponse et en quelques lignes : façon
+d'utiliser Claude Code, méthode de développement, et **alerter tôt** sur
+tout ce qui risquerait d'obliger un jour à « tout reprendre » (dette
+technique, choix difficiles à défaire, absence de tests, risques de mise
+en ligne). Rester concret et proportionné : un conseil utile, pas un cours.
+
 ## Spécification fonctionnelle (à lire en premier)
 
 `docs/SPECIFICATION.md` est **la référence de la logique de l'appli**,
