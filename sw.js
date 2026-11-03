@@ -1,4 +1,4 @@
-const CACHE_NAME = "fiches-cache-v254";
+const CACHE_NAME = "fiches-cache-v255";
 
 const CORE_ASSETS = [
   "./",
@@ -30,7 +30,12 @@ const CORE_ASSETS = [
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS))
+    // v255 : chaque fichier est relu EN LIGNE (cache: "reload"), jamais
+    // depuis le cache du navigateur. Sans cela, un iPhone pouvait ranger
+    // d'anciens fichiers sous le nom de la nouvelle version : il se
+    // croyait à jour (plus aucune mise à jour trouvée) en gardant
+    // l'ancienne appli.
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS.map((u) => new Request(u, { cache: "reload" }))))
   );
   self.skipWaiting();
 });
