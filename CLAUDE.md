@@ -23,6 +23,16 @@ partagée avec le propriétaire, qui y écrit aussi ses demandes.
   noter les nouvelles questions dans « Questions ouvertes ».
 - Langage simple, sans code ni noms de fonctions dans le document.
 
+## Rédaction de fiches et de boîtes (contenu)
+
+Pour toute fiche ou boîte rédigée (boîtes toutes prêtes de
+`bibliotheque.json`, exemples, tests…), suivre les règles d'écriture du
+§5.7 de `docs/SPECIFICATION.md`. En particulier : **une fiche QCM est
+aussi posée sans ses propositions**, sa question doit donc avoir du sens
+toute seule (jamais « Laquelle de ces propositions… », « Parmi les
+réponses suivantes… », « Quel est l'intrus ? » sans la liste). Vérifier
+avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
+
 ## Architecture
 
 - `index.html` : l'appli (tous les écrans sont dans ce fichier). Les

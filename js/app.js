@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v250";
+  const APP_VERSION = "v251";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -79,6 +79,7 @@
     migrateHomeLayoutToPercent,
     revisionAlgoValueError,
     DEFAULT_AUTO_ZOOM_REF_WIDTH,
+    qcmQuestionNeedsChoices,
   } = window.FichesSettingsModel;
 
 
@@ -5537,6 +5538,27 @@
     if (qcm.error) {
       await robotAlert(qcm.error);
       return;
+    }
+    // v251 : une fiche QCM est aussi posée SANS les propositions (mode
+    // normal) : la question doit garder son sens toute seule.
+    if (qcm.wrongs.length) {
+      const bad = qcmQuestionNeedsChoices(question);
+      if (bad) {
+        const keep = await showRobotMessage(
+          `Ta question parle des propositions (« ${bad} »). Mais cette fiche te sera aussi posée sans elles, en mode normal : la question doit avoir du sens toute seule. Par exemple, au lieu de « Laquelle de ces villes est la capitale de l'Australie ? », écris « Quelle est la capitale de l'Australie ? ».`,
+          {
+            buttons: [
+              { label: "Garder quand même", value: true },
+              { label: "Reformuler", value: false, primary: true },
+            ],
+            cancelValue: false,
+          }
+        );
+        if (!keep) {
+          inputQuestion.focus();
+          return;
+        }
+      }
     }
     const linkRes = readLearnLinkInput(el("input-link") ? el("input-link").value : "");
     if (linkRes.error) {

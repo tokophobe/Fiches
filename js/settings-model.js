@@ -1069,6 +1069,55 @@
     return out;
   }
 
+  /* v251 : une fiche QCM est aussi posée en mode normal (sans les
+     propositions). Sa question doit donc avoir du sens SANS elles : pas de
+     « Laquelle de ces propositions… », « parmi les réponses suivantes »,
+     « l'intrus »… Renvoie le passage qui pose problème, ou null. Partagé
+     entre l'appli (avertissement à la saisie) et Darwin Admin
+     (vérification de la Librairie et des boîtes toutes prêtes). */
+  // Formulations qui renvoient à des propositions absentes de la
+  // question. Quand les choix sont écrits dans la question elle-même
+  // (« Quel est l'intrus : pomme, poire, carotte ? », « Laquelle : la
+  // respiration ou la fermentation ? »), la fiche garde son sens : pas
+  // d'alerte.
+  const QCM_DEPENDENT_PATTERNS = [
+    /\bparmi (ces|les) (\w+ )?(propositions?|affirmations?|reponses?|choix|options?|mots|elements)\b/,
+    /\bparmi ces\b/,
+    /\b(ces|les \w+ suivant\w*|les) (propositions|affirmations|reponses|options) (suivantes|ci-dessous|ci-dessus|proposees|possibles)\b/,
+    /\b(ces|les) (propositions|affirmations|reponses|options) ?[?:]?$/,
+    /\b(proposition|affirmation|reponse|option)s? (suivante|ci-dessous|ci-dessus|proposee)s?\b/,
+    /\b(laquelle|lequel|lesquelles|lesquels) (de ces|des propositions|des reponses|des affirmations|parmi)\b/,
+    /\b(laquelle|lequel) (est|sont) (la bonne|correcte|exacte|juste|vraie|fausse|la seule)\b/,
+    /\b(quelle|quelles) (proposition|affirmation|reponse|option)s? (est|sont) (correcte|exacte|juste|vraie|fausse)s?\b/,
+    /\b(la|une) (bonne|mauvaise|seule) (reponse|proposition) (parmi|ci-dessous)\b/,
+    /\b(coche|cochez|entoure|entourez) (la|les|le)\b/,
+    /\bci-(dessous|dessus)\b/,
+    /\b(quatre|4|trois|3) (propositions|reponses|choix|options)\b/,
+  ];
+  function qcmQuestionNeedsChoices(text) {
+    const plain = String(text || "")
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;/g, " ")
+      .replace(/&#39;|&rsquo;|[’‘]/g, "'")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!plain) return null;
+    // Les choix sont écrits dans la question (liste après « : », « ? »,
+    // tirets, points-virgules, plusieurs virgules, « ou ») : elle se suffit.
+    const selfContained = /[:;–—]|\?\s*\S/.test(plain) || (plain.match(/,/g) || []).length >= 2 || /\sou\s/.test(plain);
+    if (selfContained) return null;
+    for (const re of QCM_DEPENDENT_PATTERNS) {
+      const m = re.exec(plain);
+      if (m) return m[0].trim();
+    }
+    // « l'intrus » sans la liste dans la question.
+    if (/\bl'intrus\b|\bun intrus\b/.test(plain)) return "l'intrus";
+    return null;
+  }
+
   window.FichesSettingsModel = {
     inspectDefs,
     DEFAULT_AUTO_ZOOM_REF_WIDTH,
@@ -1145,6 +1194,7 @@
     TEXT_COLORS_SET_TITLES,
     buildDevSettings,
     buildRevisionAlgoSettings,
+    qcmQuestionNeedsChoices,
     iconSvgMarkup,
     migrateHomeLayoutToPercent,
     revisionAlgoValueError,

@@ -738,6 +738,8 @@
           </button>
           <div class="qcm-inputs" id="qcm-inputs" hidden>
             <p class="field-hint">La fiche te sera d'abord posée en QCM : la bonne réponse mélangée à ces 3 réponses fausses. Laisse les 3 cases vides pour une fiche classique.</p>
+            <!-- v251 : la question doit aussi marcher sans les propositions. -->
+            <p class="field-hint qcm-question-hint">⚠️ Elle te sera aussi posée <strong>sans</strong> les propositions : écris une question qui se suffit à elle-même (« Quelle est la capitale de l'Australie ? », pas « Laquelle de ces villes… »).</p>
             <input type="text" class="qcm-wrong-input" id="input-wrong-1" placeholder="Réponse fausse 1" autocomplete="off" />
             <input type="text" class="qcm-wrong-input" id="input-wrong-2" placeholder="Réponse fausse 2" autocomplete="off" />
             <input type="text" class="qcm-wrong-input" id="input-wrong-3" placeholder="Réponse fausse 3" autocomplete="off" />

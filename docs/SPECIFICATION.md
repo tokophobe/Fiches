@@ -15,7 +15,7 @@
 > bug, soit une décision à prendre (rubrique [Questions
 > ouvertes](#8-questions-ouvertes)).
 
-**Version de l'appli décrite : v250** — première rédaction le 2 novembre 2026,
+**Version de l'appli décrite : v251** — première rédaction le 2 novembre 2026,
 à partir du code.
 
 ## Sommaire
@@ -341,6 +341,29 @@ qu'elle fait (voir §8, Q5).
   corriger » ; sur une fiche de classe ou de la Librairie, ouvre un
   message à son auteur (voir §6.5).
 
+### 5.7 Règles d'écriture des fiches
+
+Ces règles valent pour **toutes** les fiches : celles des utilisateurs,
+les boîtes toutes prêtes de darwin, et celles que Claude rédige.
+
+1. **Fiche QCM : la question doit avoir du sens sans les propositions.**
+   Une fiche QCM est d'abord posée avec ses 4 propositions, puis aussi en
+   mode normal, **sans** elles. On n'écrit donc jamais « Laquelle de ces
+   propositions est correcte ? », « Parmi les réponses suivantes… »,
+   « Quel est l'intrus ? » (sans la liste), « Coche la bonne réponse »…
+   - ❌ « Laquelle de ces villes est la capitale de l'Australie ? »
+   - ✅ « Quelle est la capitale de l'Australie ? »
+   - ✅ Accepté : les choix sont écrits **dans la question** elle-même
+     (« Quel est l'intrus : pomme, poire, chou, kiwi ? »).
+2. **Contrôles automatiques** de cette règle :
+   - **dans l'appli**, en enregistrant une fiche QCM dont la question
+     renvoie à des propositions, le robot prévient et propose de
+     reformuler (on peut garder quand même) ; un rappel est écrit sous
+     les cases des réponses fausses ;
+   - **dans Darwin Admin** (Librairie → onglet « Questions QCM ») : liste
+     des questions à revoir dans toute la Librairie en ligne et dans le
+     fichier des boîtes toutes prêtes.
+
 ---
 
 ## 6. Classes
@@ -536,6 +559,7 @@ Librairie »). Faut-il un moyen de la modifier ?
 
 | Version | Date | Changements |
 |---|---|---|
+| v251 | 3 nov. 2026 | Règle d'écriture des fiches QCM (§5.7) : avertissement dans l'appli à l'enregistrement, rappel sous les réponses fausses, onglet « Questions QCM » dans Darwin Admin (vérification de la Librairie et du fichier des boîtes toutes prêtes). Vérification du fichier des boîtes toutes prêtes du 22 octobre (1 176 boîtes, 100 fiches QCM) : aucune question à corriger. |
 | v250 | 2 nov. 2026 | Page d'une boîte : Ma progression et Pour aller plus loin hors des blocs, bloc Librairie (Classifier → Publier), plus de bloc Mes révisions. Mes classes plus rapide, en blocs. Choix élève/enseignant immédiat. Page de classe : messagerie en bouton rond, agenda en liste. « Mon agenda ». |
 | v249 | 2 nov. 2026 | Page de boîte unique pour ses boîtes. Classes de l'enseignant en tête de l'organisation. Recherche par nom. |
 | v248 | 2 nov. 2026 | Organisation : toutes les boîtes, états dans/hors révisions avec pictos, + Nouvelle boîte, affichage grisé. Blocs repliables (boîte, classe). Rejoindre/Créer une classe sur l'accueil. |
@@ -583,6 +607,6 @@ Darwin Admin (`admin/`) permet de régler, pour tous les utilisateurs :
 - l'**apparence** : couleurs, pictos, disposition des boutons de
   l'accueil, textes d'aide du robot ;
 - la **Librairie** : propositions des enseignants, corrections,
-  modération ;
+  modération, vérification des questions QCM (§5.7) ;
 - les **établissements** (Super école) : devis, factures, enseignants
   désignés.
