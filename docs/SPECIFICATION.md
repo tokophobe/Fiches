@@ -555,12 +555,12 @@ une boîte s'appelle « Ajouter à mes révisions » (et « Retirer de mes
 révisions »), y compris dans le compte enseignant, où les révisions
 n'existent plus. Faut-il un autre libellé (« Prendre la boîte »…) ou un
 autre comportement côté enseignant ?
-> Réponse :
+> Réponse : je pense que "Ajouter aux révisions" et "retirer des révisions" peut être bien et cohérent avec les libellés du compte élève
 
 **Q10 — Titre de la page Organisation.** Dans le compte enseignant, la
 page s'appelle toujours « Organisation des boîtes de révision ». Garder
 ce titre, ou en prendre un autre (« Organisation de mes boîtes ») ?
-> Réponse :
+> Réponse : on reste comme ça
 
 **Q8 — Avant l'ouverture au public : une adresse de test.**
 Aujourd'hui, fusionner une branche publie la version pour tout le monde,
