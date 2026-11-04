@@ -34,7 +34,7 @@ l'autre.
 
 Projet **darwin-test** : `https://tcyvrkiccmlozwkvhpul.supabase.co`.
 
-### Étape 2 — Exporter la structure de la base réelle
+### Étape 2 — Exporter la structure de la base réelle ✅ (fait le 4 nov. 2026)
 
 Pourquoi : plusieurs scripts SQL ont été exécutés sur la base réelle sans
 être enregistrés dans le dépôt. On demande donc à la base réelle de
@@ -45,7 +45,8 @@ lit aucune donnée d'utilisateur.
    gauche).
 2. Menu de gauche → **SQL Editor** → **New query**.
 3. Coller tout le contenu de `supabase/copie-de-test/1-exporter-la-structure.sql`,
-   puis **Run**.
+   puis **Run**. Si Supabase demande « Run and Enable RLS » ou « Run
+   without RLS », choisir **Run without RLS** (le script ne crée rien).
 4. Le résultat est une seule case, « structure ». Au-dessus des
    résultats, cliquer sur **Export** (ou « Download ») → **Download CSV**.
    Un fichier est enregistré sur l'ordinateur.

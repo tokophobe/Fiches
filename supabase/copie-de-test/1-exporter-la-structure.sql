@@ -129,7 +129,7 @@ pub as (
 ),
 settings as (
   select 99 as ord,
-    format('insert into public.dev_settings_public select * from json_populate_record(null::public.dev_settings_public, %L::json) on conflict do nothing;', row_to_json(d)::text) as stmt,
+    format('insert into public.dev_settings_public select * from json_populate_record(null::public.dev_settings_public, %L::json) on conflict do nothing;', (to_jsonb(d) - 'updated_by')::text) as stmt,
     'dev_settings_public' as k
   from public.dev_settings_public d
 ),
