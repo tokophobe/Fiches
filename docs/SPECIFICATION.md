@@ -82,11 +82,20 @@ naissance, usages (élève et/ou enseignant, au moins un), niveau scolaire
 (facultatif), et on accepte les conditions d'utilisation et la politique
 de confidentialité.
 
-La page est présentée en blocs (v261) : « Toi » (prénom, nom, date de
-naissance), « Tes identifiants » (email, mot de passe), « J'utilise
-l'appli… » (usages, niveau scolaire). L'usage élève s'appelle « en
-utilisateur normal — pour un usage personnel ou pour rejoindre les
-classes de tes enseignants » et il est **coché par défaut**.
+La page est présentée en blocs, sans titre (v262) : prénom, nom, date de
+naissance ; email, mot de passe ; « Utilisation de l'appli » ; niveau
+scolaire. L'usage élève s'appelle « en utilisateur normal — pour un usage
+personnel ou pour rejoindre les classes de tes enseignants » et il est
+**coché par défaut**.
+
+**Présentation commune (v262)** : un seul aspect pour toute l'appli —
+- boutons principaux d'une seule couleur (celle du logo darwin) ;
+  « Annuler », « Retour »… en gris ; « Supprimer » en rouge ;
+- zones de saisie et textes d'exemple : même police, même taille, même
+  gris pour l'exemple ;
+- classement (catégorie → cycle → niveau…) : blocs emboîtés comme dans
+  la Librairie, partout (création du compte, Mon compte, création ou
+  classement d'une boîte, publication).
 
 - **Connexion obligatoire** : sans compte connecté, seule la page Mon
   compte est accessible.
@@ -605,6 +614,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v262 | 4 nov. 2026 | Une seule couleur pour tous les boutons principaux. Créer un compte : blocs sans titre, « Utilisation de l'appli », niveau scolaire dans son bloc. Classement en blocs emboîtés comme la Librairie, partout. Nouvelle fiche : un bloc par champ. Même police pour toutes les zones de saisie et leurs textes d'exemple. Ajouter un évènement : blocs sans titre, « (facultatif) » sur les champs concernés. |
 | v261 | 4 nov. 2026 | Retouches visuelles : accueil (petits boutons en pictogramme, liseré fin en dégradé, vert pour le compte enseignant, lévitation du robot relancée quand elle se figeait) ; Créer un compte en blocs, « utilisateur normal » coché par défaut ; Nouvelle fiche (cases QCM toujours visibles « (facultatif) », aides derrière un picto ⓘ lues par le robot) ; Ajouter un évènement en blocs, boutons côte à côte ; boutons au même aspect partout ; page d'une classe sans « (élève) / (enseignant) », Renommer sous le titre, code d'invitation en simple information. |
 | v260 | 4 nov. 2026 | Corrigé : la page d'une classe ouverte depuis « Mes classes » pouvait montrer d'anciennes informations (par ex. un dossier supprimé par l'enseignant) jusqu'à la réouverture ; elle relit désormais la classe à jour à chaque ouverture. |
 | v259 | 4 nov. 2026 | Corrigé : le menu ⌄ des boîtes dans le bloc « Boîtes partagées » d'une classe (et tout menu ⌄ dans un bloc repliable) était coupé par le bord du bloc, donc invisible. |
