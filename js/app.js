@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v259";
+  const APP_VERSION = "v260";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -13739,10 +13739,16 @@
     const titleEl = el("class-detail-title");
     if (titleEl) titleEl.textContent = klass.name;
 
-    const [count, sharedBoxes] = await Promise.all([
+    // v260 : la classe est relue sur le serveur à chaque affichage. Ouverte
+    // depuis la liste gardée sur l'appareil (« Mes classes » s'affiche
+    // d'abord avec la dernière liste connue), elle montrait sinon d'anciens
+    // dossiers (ex. un dossier supprimé entre-temps par l'enseignant).
+    const [count, sharedBoxes, fresh] = await Promise.all([
       Sync.classes.memberCount(klass.id),
       Sync.classes.listSharedBoxes(klass.id),
+      Sync.classes.get ? Sync.classes.get(klass.id) : null,
     ]);
+    if (fresh && fresh.id === klass.id) Object.assign(klass, fresh);
 
     const shareBtn = el("class-detail-share-btn");
     const isTeacher = role === "teacher";
