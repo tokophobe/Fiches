@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v260";
+  const APP_VERSION = "v261";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -532,7 +532,12 @@
       robotModalHighlightedLogo = null;
     }
     const clone = document.getElementById("robot-modal-logo-clone");
-    if (clone) clone.remove();
+    if (clone) {
+      clone.remove();
+      // v261 : le robot de l'accueil reprend sa lévitation (voir
+      // restartMascotFloat, défini plus bas).
+      if (typeof restartMascotFloat === "function") restartMascotFloat();
+    }
   }
   /* Round 39 : seul le robot reste éclairé au-dessus de l'assombrissement
      (avant, tout le bandeau du haut passait devant). On pose une copie du
@@ -5411,23 +5416,22 @@
     });
     toggleQcmFields(wrongs.length > 0);
   }
-  function toggleQcmFields(open) {
-    const box = el("qcm-inputs");
-    const btn = el("qcm-toggle");
-    if (!box || !btn) return;
-    box.hidden = !open;
-    btn.setAttribute("aria-expanded", String(open));
-    btn.classList.toggle("is-open", open);
-    const label = el("qcm-toggle-label");
-    if (label) label.textContent = open ? "Réponses fausses (mode QCM)" : "Ajouter 3 réponses fausses (facultatif)";
-  }
-  const qcmToggleBtn = el("qcm-toggle");
-  if (qcmToggleBtn) {
-    qcmToggleBtn.addEventListener("click", () => {
-      const open = el("qcm-inputs").hidden;
-      toggleQcmFields(open);
+  /** v261 : les cases du QCM sont toujours affichées (plus de bouton pour
+   *  les ouvrir) — gardé pour les appels existants. */
+  function toggleQcmFields() {}
+  /* v261 : picto d'aide ⓘ à côté d'un champ — le robot lit l'explication. */
+  const FIELD_HELP_TEXTS = {
+    qcm: "Si tu remplis les 3 réponses fausses, la fiche te sera d'abord posée en QCM : la bonne réponse mélangée à ces 3 réponses fausses. Laisse les 3 cases vides pour une fiche classique. Attention : elle te sera aussi posée sans les propositions. Écris donc une question qui se suffit à elle-même (« Quelle est la capitale de l'Australie ? », pas « Laquelle de ces villes… »).",
+    link: "Une courte vidéo ou une page qui explique bien cette fiche, d'une source sérieuse (chaîne de l'auteur, site éducatif). Le lien sera proposé pendant la révision.",
+  };
+  document.querySelectorAll(".field-help-btn[data-field-help]").forEach((b) => {
+    b.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const t = FIELD_HELP_TEXTS[b.dataset.fieldHelp];
+      if (t) robotAlert(t);
     });
-  }
+  });
   /** Réponses fausses saisies : [] (fiche classique), 3 réponses, ou un
    *  message d'erreur. */
   function readQcmFields(answerHtml) {
@@ -8058,10 +8062,14 @@
     // Round 55 : nom de la classe puis, à la ligne, « (enseignant) » /
     // « (élève) ».
     "class-detail": {
-      dynamic: () => {
-        if (!classDetailContext) return "Classe";
-        return `${classDetailContext.klass.name}\n(${classDetailContext.role === "teacher" ? "enseignant" : "élève"})`;
-      },
+      // v261 : plus de « (élève) » / « (enseignant) » sous le nom (les deux
+      // comptes sont déjà différenciés) ; l'enseignant a « Renommer » juste
+      // sous le titre.
+      dynamic: () => (classDetailContext ? classDetailContext.klass.name : "Classe"),
+      sub: () =>
+        classDetailContext && classDetailContext.role === "teacher"
+          ? { label: "Renommer", icon: iconSvgMarkup("pencil", "icon-inline-svg"), run: () => renameClassFlow(classDetailContext.klass) }
+          : null,
       hide: ["#class-detail-title"],
     },
     "class-share": "Partager une boîte",
@@ -8106,6 +8114,18 @@
     } else if (t.textContent !== text || t.dataset.iconHtml) {
       t.textContent = text;
       delete t.dataset.iconHtml;
+    }
+    // v261 : petite action sous le titre (ex. « Renommer » une classe).
+    const oldSub = t.querySelector(".page-header-sub");
+    if (oldSub) oldSub.remove();
+    const sub = text && cfg && typeof cfg === "object" && cfg.sub ? cfg.sub() : null;
+    if (sub) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "page-header-sub";
+      b.innerHTML = `${sub.icon || ""}<span>${escapeHtml(sub.label)}</span>`;
+      b.addEventListener("click", sub.run);
+      t.appendChild(b);
     }
     const speechOpen = el("body-logo-speech") && !el("body-logo-speech").hidden;
     t.hidden = !text || speechOpen;
@@ -8413,6 +8433,22 @@
     if (document.visibilityState === "visible") refreshHomeDefi();
   });
 
+  /* v261 : le robot de l'accueil cessait parfois de léviter (animation
+     figée par le navigateur, surtout sur iPhone, après un retour de
+     l'arrière-plan ou un message du robot) jusqu'à un aller-retour vers
+     une autre page. On relance l'animation à ces moments-là. */
+  function restartMascotFloat() {
+    const logo = el("home-logo");
+    if (!logo) return;
+    logo.style.animation = "none";
+    void logo.offsetWidth; // force le navigateur à repartir de zéro
+    logo.style.animation = "";
+  }
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") restartMascotFloat();
+  });
+  window.addEventListener("pageshow", restartMascotFloat);
+  window.addEventListener("focus", restartMascotFloat);
   function goHome() {
     if (appLoginLocked) {
       enforceLoginGate();
@@ -8437,6 +8473,7 @@
     });
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     el("view-home").classList.add("is-active");
+    restartMascotFloat();
     if (homeBtn) homeBtn.hidden = true;
     if (el("body-logo-row")) el("body-logo-row").hidden = true;
     bodyLogoSpeechMessages = [];
@@ -8849,7 +8886,7 @@
     const usages = currentUsages();
     if (usages && usages.length === 0) {
       items.push({
-        text: "Dis-moi comment tu utilises l'appli : en tant qu'élève, en tant qu'enseignant, ou les deux. Touche ici pour choisir dans Mon compte.",
+        text: "Dis-moi comment tu utilises l'appli : en utilisateur normal (élève), en tant qu'enseignant, ou les deux. Touche ici pour choisir dans Mon compte.",
         target: { kind: "account" },
       });
     }
@@ -10915,6 +10952,8 @@
       const f = el(id);
       if (f) f.hidden = mode !== "signup";
     });
+    // v261 : blocs et titres propres à la création du compte.
+    document.querySelectorAll("#account-auth-block [data-signup-only]").forEach((n) => (n.hidden = mode !== "signup"));
     if (mode === "signup") buildSignupSchoolCascade();
     updateSignupParentField();
   }
@@ -11029,7 +11068,7 @@
         ageMeta = { birth_date: birth };
         // v242 : usages (au moins un) et niveau scolaire (facultatif).
         const usages = [...document.querySelectorAll('#account-auth-usages input[type="checkbox"]')].filter((x) => x.checked).map((x) => x.value);
-        if (!usages.length) return fail("Choisis au moins un usage : élève ou enseignant.");
+        if (!usages.length) return fail("Choisis au moins un usage : utilisateur normal ou enseignant.");
         ageMeta.usages = usages;
         if (signupSchoolCascade) {
           const tax = taxonomyValueFromSelection(signupSchoolCascade.getSelection());
@@ -13757,14 +13796,13 @@
       // Round 54 : plus de pastille du rôle — « (enseignant) » / « (élève) »
       // sous le nom de la classe.
       // v250 : plus de pastille « n élèves » (redondante avec le bloc Élèves).
+      // v261 : le code d'invitation est une simple information (il
+      // ressemblait à un bouton) ; « Renommer » est passé sous le titre.
       const chips = [];
       if (isTeacher && klass.invite_code) {
         chips.push(
-          `<span class="class-chip class-chip--code">Code : <strong>${escapeHtml(klass.invite_code)}</strong><button type="button" class="class-code-copy" id="class-code-copy-btn" title="Copier le code" aria-label="Copier le code de la classe">${iconSvgMarkup("copy", "icon-inline-svg")}</button></span>`
+          `<p class="class-code-line">Code d'invitation : <strong class="class-code-value">${escapeHtml(klass.invite_code)}</strong><button type="button" class="class-code-copy" id="class-code-copy-btn" title="Copier le code" aria-label="Copier le code de la classe">${iconSvgMarkup("copy", "icon-inline-svg")}</button></p>`
         );
-      }
-      if (isTeacher) {
-        chips.push(`<button type="button" class="class-chip class-chip--rename" id="class-detail-rename-btn" title="Renommer la classe">${iconSvgMarkup("pencil", "icon-inline-svg")} Renommer</button>`);
       }
       statsEl.innerHTML = chips.join("");
       const copyBtn = el("class-code-copy-btn");
