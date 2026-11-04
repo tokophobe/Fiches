@@ -8177,21 +8177,16 @@ body:has(#view-library.is-active[data-cycle]) { background: var(--app-bg-color, 
    Les sélecteurs « :is(html, #v245) :is(…, #v245) » donnent à ces règles la
    force de deux id, pour passer devant les anciennes règles des boutons. */
 :root {
-  --btn-color: #3b82c4;
+  --btn-color: var(--darwin-logo-color, #4a90d9);
   --btn-ink-base: #000;
   --btn-ink-pct: 72%;
   --btn-fill-pct: 10%;
 }
 :root.is-night-mode { --btn-ink-base: #fff; --btn-ink-pct: 55%; --btn-fill-pct: 16%; }
-:is(#view-library, #view-library-share) { --btn-color: var(--home-library-bg-color, #8a63c9); }
-#view-library-detail { --btn-color: var(--row-cycle, var(--home-library-bg-color, #8a63c9)); }
-:is(#view-review-hub, #view-revision-program, #view-revision-reinforce, #view-review, #view-stats) { --btn-color: #1f9d55; }
-:is(#view-boxes-hub, #view-manage, #view-new-card, #view-cards, #view-creations, #view-creation-detail, #view-box-create) { --btn-color: #0f9b9b; }
-:is(#view-calendar, #view-calendar-event-form, #view-calendar-event-detail) { --btn-color: #ef7d2d; }
-:is(#view-classes, #view-classes-student, #view-classes-join, #view-classes-teacher, #view-classes-create, #view-class-detail, #view-class-share, #view-school-hub) { --btn-color: #2f80d1; }
-:is(#view-messages, #view-message-thread, #view-reports-hub, #view-reports, #view-reports-sent, #view-report-card) { --btn-color: #d9822b; }
-:is(#view-account, #view-subscriptions) { --btn-color: #c2569b; }
-:is(#view-settings, #view-sync) { --btn-color: #5f6e82; }
+/* v262 : une seule couleur pour tous les boutons principaux, celle du
+   logo darwin (réglable dans Darwin Admin) — plus de couleur par partie
+   de l'appli. Restent à part : gris (Annuler, Retour…), rouge
+   (Supprimer). */
 :is(html, #v245) :is(.btn, #v245):where(:not(.home-btn, .nav-legacy-back, [data-mode], .plan-actions .btn, .account-subs-trial)),
 :is(html, #v245) :is(.robot-modal-btn, #v245),
 :is(html, #v245) :is(.revision-event-go, #boite-picker-confirm, #submit-btn, #v245) {
@@ -8686,3 +8681,50 @@ body.profile-teacher #subject-list .rev-state { display: none !important; }
 /* v261 : code d'invitation affiché comme une information. */
 .class-code-line { margin: 0; font-family: var(--font-type); font-size: 13.5px; color: var(--ink-soft); display: flex; align-items: center; flex-wrap: wrap; gap: 2px; }
 .class-code-value { color: var(--ink); font-family: var(--font-mono); font-size: 15px; letter-spacing: 0.08em; margin-left: 4px; }
+
+/* v262 : blocs de classement (catégorie → cycle → niveau…) avec la
+   présentation de la Librairie sur toutes les pages : fond blanc, contour
+   de couleur, coins arrondis ; listes sans fond ni trait propres. */
+.tax-block {
+  background: var(--card-form-bg-color, var(--paper));
+  border: 2px solid color-mix(in srgb, var(--tax-color, #4a9fe0) calc(var(--tax-alpha, 10%) * 4), transparent);
+  border-radius: 14px;
+}
+:is(#view-account, #view-box-create, #view-library-share) .tax-block select.library-taxonomy-select.library-taxonomy-select {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* v262 : formulaire en blocs séparés (Nouvelle fiche) — le cadre général
+   s'efface, chaque champ a son bloc. */
+.card-form.card-form--blocks { background: transparent; box-shadow: none; border: none; padding: 0; }
+.card-form--blocks .card-form-header:not(:has(:not(.page-title-moved))) { display: none; }
+.card-form--blocks .form-block .field { margin-bottom: 8px; }
+.card-form--blocks .form-block .qcm-fields { margin-bottom: 8px; }
+
+/* v262 : même typographie pour toutes les zones de saisie de l'appli et
+   leurs textes d'exemple (taille, graisse, police, couleur du texte
+   d'exemple). Les !important passent devant les réglages au cas par cas
+   des pages (complément plus petit, réponses fausses en gras…). Les
+   listes de classement gardent leur valeur choisie en gras. */
+:root { --field-font-size: 15px; --field-placeholder-color: color-mix(in srgb, var(--ink-soft, #64748b) 80%, transparent); }
+:is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]), textarea, select:not(.library-taxonomy-select), .rich-editor, .calendar-date-btn) {
+  font-family: var(--font-type) !important;
+  font-size: var(--field-font-size) !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+}
+.library-taxonomy-select { font-family: var(--font-type) !important; font-size: var(--field-font-size) !important; }
+::placeholder {
+  color: var(--field-placeholder-color) !important;
+  opacity: 1 !important;
+  font-family: var(--font-type);
+  font-size: var(--field-font-size);
+  font-weight: 400;
+  font-style: normal;
+}
+.rich-editor:empty:before { color: var(--field-placeholder-color) !important; font-weight: 400; font-style: normal; font-size: var(--field-font-size); }
+.is-placeholder, .calendar-date-btn.is-placeholder { color: var(--field-placeholder-color) !important; }

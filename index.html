@@ -700,7 +700,8 @@
     <!-- VUE NOUVELLE FICHE : page indépendante, accessible uniquement via
          le bouton "+ Fiche" en haut de l'écran (pas un onglet du menu). -->
     <section id="view-new-card" class="view">
-      <form class="card-form" id="card-form">
+      <!-- v262 : chaque champ dans son propre bloc (comme Créer un compte). -->
+      <form class="card-form card-form--blocks" id="card-form">
         <div class="card-form-header">
           <h2 class="section-title">Nouvelle fiche</h2>
         </div>
@@ -711,26 +712,33 @@
           <button type="button" class="subject-select-btn subject-select-btn--prominent" id="cards-subject-select-btn" aria-label="Choisir la boîte de cette nouvelle fiche"></button>
         </div>
 
+        <section class="form-block">
         <label class="field">
           <span>Question</span>
           <div class="rich-editor" id="input-question" aria-label="Question" contenteditable="true" data-placeholder="Ex. Capitale de l'Islande ?" role="textbox" aria-multiline="true"></div>
         </label>
+        </section>
+        <section class="form-block">
         <label class="field">
           <span>Réponse</span>
           <div class="rich-editor" id="input-answer" aria-label="Réponse" contenteditable="true" data-placeholder="Ex. Reykjavik" role="textbox" aria-multiline="true"></div>
         </label>
+        </section>
         <!-- Round 60 : complément de réponse (explications), séparé de la
              réponse : affiché sous la réponse, et jamais dans les choix du
              QCM (seulement une fois la réponse trouvée). -->
+        <section class="form-block">
         <label class="field">
           <span>Complément de réponse <small class="field-optional">(facultatif)</small></span>
           <div class="rich-editor rich-editor--more" id="input-more" aria-label="Complément de réponse" contenteditable="true" data-placeholder="Ex. C'est la capitale la plus au nord du monde." role="textbox" aria-multiline="true"></div>
         </label>
+        </section>
         <!-- Round 59 : mode QCM facultatif — 3 réponses fausses en plus de la
              bonne. La fiche est alors d'abord posée en QCM (voir js/app.js,
              « Mode QCM »). v261 : toujours affiché, au même format que les
              autres champs ; les explications sont derrière le picto d'aide
              (le robot les lit, voir FIELD_HELP_TEXTS). -->
+        <section class="form-block">
         <div class="field qcm-fields" id="qcm-fields">
           <span>Réponses fausses (mode QCM) <small class="field-optional">(facultatif)</small> <button type="button" class="field-help-btn" data-field-help="qcm" aria-label="Aide : mode QCM" title="Aide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button></span>
           <div class="qcm-inputs" id="qcm-inputs">
@@ -739,12 +747,15 @@
             <input type="text" class="qcm-wrong-input" id="input-wrong-3" placeholder="Réponse fausse 3 (facultatif)" autocomplete="off" />
           </div>
         </div>
+        </section>
         <!-- v237 : lien vers un contenu existant (vidéo courte, animation…)
              qui explique mieux la fiche ; affiché sur la page Réviser. -->
+        <section class="form-block">
         <div class="field field--link">
           <span>Pour aller plus loin <small class="field-optional">(facultatif)</small> <button type="button" class="field-help-btn" data-field-help="link" aria-label="Aide : pour aller plus loin" title="Aide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button></span>
           <input type="text" id="input-link" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://www.youtube.com/watch?v=…" aria-label="Pour aller plus loin : lien" />
         </div>
+        </section>
         <div class="form-actions">
           <button type="submit" class="btn btn--primary" id="submit-btn">Ajouter à la boîte</button>
           <button type="button" class="btn btn--ghost" id="cancel-edit" hidden>Annuler</button>
@@ -914,9 +925,8 @@
     <section id="view-calendar-event-form" class="view">
       <form class="card-form" id="calendar-event-form">
         <h3 class="settings-block-title" id="calendar-event-form-title">Ajouter un événement</h3>
-        <!-- v261 : présentation en blocs (L'évènement / Détails / Partage). -->
+        <!-- v261 : présentation en blocs ; v262 : sans titre de bloc, « (facultatif) » sur chaque champ concerné. -->
         <section class="form-block">
-        <h3 class="form-block-title">L'évènement</h3>
         <label class="field">
           <span>Titre</span>
           <input type="text" id="calendar-event-title" placeholder="Ex. Contrôle de chimie" required />
@@ -940,7 +950,6 @@
         </label>
         </section>
         <section class="form-block">
-        <h3 class="form-block-title">Détails <small class="field-optional">(facultatif)</small></h3>
         <!-- Round 18, item 13 : bouton plus visible (avant : un simple
              lien texte discret). Sélection MULTIPLE désormais possible
              (voir calendarEventSubjectBtn, js/app.js). Round 19, item 3 :
@@ -949,26 +958,25 @@
              style "pilule" du sélecteur de Nouvelle fiche, qui détonnait
              ici. -->
         <label class="field">
-          <span>Boîtes ou dossiers à réviser</span>
+          <span>Boîtes ou dossiers à réviser <small class="field-optional">(facultatif)</small></span>
           <button type="button" class="calendar-date-btn" id="calendar-event-subject-btn" aria-label="Choisir la boîte ou le dossier lié">Aucune boîte/dossier liés</button>
         </label>
 
         <!-- Round 21, item 2 : champ libre pour des précisions (salle,
              matériel à apporter, chapitres concernés...), optionnel. -->
         <label class="field">
-          <span>Commentaires</span>
+          <span>Commentaires <small class="field-optional">(facultatif)</small></span>
           <textarea id="calendar-event-comment" rows="3" placeholder="Précisions sur cet évènement…"></textarea>
         </label>
 
         </section>
         <section class="form-block">
-        <h3 class="form-block-title">Partage <small class="field-optional">(facultatif)</small></h3>
         <!-- Round 3, item 4 (squelette) : un prof peut partager cet
              événement avec une de ses classes — n'apparaît que si Sync est
              configurée, connecté(e), et prof d'au moins une classe (rempli
              par JS à l'ouverture du formulaire). -->
         <label class="field" id="calendar-event-class-field" hidden>
-          <span>Partager avec une classe</span>
+          <span>Partager avec une classe <small class="field-optional">(facultatif)</small></span>
           <select id="calendar-event-class-select">
             <option value="">Ne pas partager</option>
           </select>
@@ -1121,7 +1129,6 @@
                data-signup-only n'apparaissent qu'en mode « Créer un
                compte » (voir setClassesAuthMode). -->
           <section class="auth-section" data-signup-only hidden>
-            <h3 class="auth-section-title">Toi</h3>
             <!-- Round 10, item 7 : nom/prénom demandés uniquement à la
                  création du compte (masqués en mode "Se connecter"). -->
             <label class="field" id="account-auth-firstname-field" hidden>
@@ -1144,7 +1151,6 @@
             </label>
           </section>
           <section class="auth-section">
-            <h3 class="auth-section-title" data-signup-only hidden>Tes identifiants</h3>
             <label class="field">
               <span>Email</span>
               <input type="email" id="account-auth-email" autocomplete="email" />
@@ -1156,8 +1162,8 @@
           </section>
           <!-- v242 : usages et niveau scolaire demandés dès l'inscription. -->
           <section class="auth-section" data-signup-only hidden>
-            <h3 class="auth-section-title">J'utilise l'appli…</h3>
             <div class="field" id="account-auth-usages-field" hidden>
+              <span>Utilisation de l'appli</span>
               <div class="usage-options" id="account-auth-usages">
                 <!-- v261 : « utilisateur normal » coché par défaut. -->
                 <label class="usage-option"><input type="checkbox" value="eleve" checked /> <span>en utilisateur normal<small>pour un usage personnel ou pour rejoindre les classes de tes enseignants</small></span></label>
@@ -1165,6 +1171,9 @@
               </div>
               <p class="field-hint">Tu pourras changer ces choix à tout moment dans Mon compte.</p>
             </div>
+          </section>
+          <!-- v262 : niveau scolaire dans son propre bloc. -->
+          <section class="auth-section" data-signup-only hidden>
             <div class="field" id="account-auth-school-field" hidden>
               <span>Niveau scolaire <em class="field-optional">(facultatif)</em></span>
               <p class="field-hint">Il permet de te proposer, dans la Librairie, des fiches adaptées à ton niveau. Tu pourras le changer dans Mon compte.</p>
@@ -1205,7 +1214,7 @@
              Classes → Élève/Enseignant. -->
         <div class="card-form">
           <div class="field">
-            <span>J'utilise l'appli…</span>
+            <span>Utilisation de l'appli</span>
             <div class="usage-options" id="account-usages">
               <label class="usage-option"><input type="checkbox" value="eleve" /> <span>en utilisateur normal<small>pour un usage personnel ou pour rejoindre les classes de tes enseignants</small></span></label>
               <label class="usage-option"><input type="checkbox" value="enseignant" /> <span>en tant qu'enseignant<small>possibilité de créer des classes pour tes élèves</small></span></label>

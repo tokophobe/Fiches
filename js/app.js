@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v261";
+  const APP_VERSION = "v262";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -5416,6 +5416,19 @@
     });
     toggleQcmFields(wrongs.length > 0);
   }
+  /* v262 : « Choisir une date » et « Aucune boîte/dossier liés » sont des
+     textes d'exemple : même gris que les autres tant que rien n'est choisi
+     (le texte change à plusieurs endroits — on le surveille). */
+  [
+    ["calendar-event-date-label", "Choisir une date"],
+    ["calendar-event-subject-btn", "Aucune boîte/dossier liés"],
+  ].forEach(([id, emptyText]) => {
+    const node = el(id);
+    if (!node) return;
+    const sync = () => node.classList.toggle("is-placeholder", node.textContent.trim() === emptyText);
+    sync();
+    new MutationObserver(sync).observe(node, { childList: true, characterData: true, subtree: true });
+  });
   /** v261 : les cases du QCM sont toujours affichées (plus de bouton pour
    *  les ouvrir) — gardé pour les appels existants. */
   function toggleQcmFields() {}
@@ -14694,8 +14707,11 @@
     // niveau…) — le sélecteur en haut de chaque bloc, le bloc suivant
     // dessous, même marge à gauche, à droite et en bas ; léger dégradé de
     // teinte d'un bloc à l'autre. Pas pour le niveau scolaire du profil.
-    const nested = opts && typeof opts.nested === "boolean" ? opts.nested : mode !== "profile";
-    const taxScope = opts && opts.scope === "library" ? "library" : "other";
+    // v262 : partout la présentation de la Librairie (blocs emboîtés, même
+    // couleur, listes sans intitulé au-dessus) — cohérent sur toutes les
+    // pages (création du compte, Mon compte, classement d'une boîte…).
+    const nested = opts && typeof opts.nested === "boolean" ? opts.nested : true;
+    const taxScope = "library";
     function draw() {
       const tax = Taxonomy.get();
       container.innerHTML = "";
@@ -14730,7 +14746,8 @@
         select.dataset.taxKey = f.key;
         const first = document.createElement("option");
         first.value = "";
-        first.textContent = mode === "filter" ? TAX_ALL_LABELS[f.key] || "Tous" : mode === "profile" ? "Non renseigné" : "Choisir…";
+        // v262 : sans intitulé au-dessus, la liste dit ce qu'elle attend.
+        first.textContent = mode === "filter" ? TAX_ALL_LABELS[f.key] || "Tous" : mode === "profile" ? `${f.label} : non renseigné` : `${f.label} : à choisir`;
         select.appendChild(first);
         options.forEach((o) => {
           const opt = document.createElement("option");
@@ -14745,20 +14762,10 @@
           draw();
           if (opts && opts.onChange) opts.onChange({ ...sel });
         });
-        if (mode === "filter") {
-          select.className = "library-taxonomy-select";
-          select.setAttribute("aria-label", f.label);
-          select.classList.toggle("is-set", !!sel[f.key]);
-          place(select);
-        } else {
-          const label = document.createElement("label");
-          label.className = "field taxonomy-field";
-          const span = document.createElement("span");
-          span.textContent = f.label;
-          label.appendChild(span);
-          label.appendChild(select);
-          place(label);
-        }
+        select.className = "library-taxonomy-select";
+        select.setAttribute("aria-label", f.label);
+        select.classList.toggle("is-set", !!sel[f.key]);
+        place(select);
       });
     }
     draw();
