@@ -8397,6 +8397,10 @@ body.has-two-roles:not(.is-picking-role) .topbar-darwin-logo { display: none; }
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   overflow: hidden;
 }
+/* v259 : un menu ⌄ ouvert dans un bloc (boîtes partagées d'une classe,
+   fiches d'une boîte…) dépasse du bloc au lieu d'être coupé par ses
+   bords arrondis (il était invisible sous la dernière ligne). */
+.info-block:has(.org-actions-popover:not([hidden])) { overflow: visible; }
 .info-block-head {
   display: flex;
   align-items: center;

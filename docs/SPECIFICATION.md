@@ -597,6 +597,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v259 | 4 nov. 2026 | Corrigé : le menu ⌄ des boîtes dans le bloc « Boîtes partagées » d'une classe (et tout menu ⌄ dans un bloc repliable) était coupé par le bord du bloc, donc invisible. |
 | v258 | 4 nov. 2026 | Copie de test (Q8, en cours) : l'appli choisit seule sa base — base de test aux adresses de test (Netlify, essais en local), avec un bandeau « VERSION DE TEST » ; base réelle partout ailleurs. Aucun changement pour les utilisateurs. |
 | v257 | 4 nov. 2026 | Q9 : dans le compte enseignant, le bouton d'une boîte de la Librairie s'appelle « Ajouter aux révisions » / « Retirer des révisions ». Q10 : titre de l'Organisation inchangé. |
 | v256 | 3 nov. 2026 | Q6 : compte enseignant sans révisions (Réviser grisé avec message, ni dans/hors révisions, ni progression ; nouvelle boîte hors révisions). Agenda propre à chaque compte. Les échéances données à une classe ne mettent plus en sprint les boîtes de l'enseignant. |
