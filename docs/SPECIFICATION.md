@@ -556,7 +556,15 @@ Aujourd'hui, fusionner une branche publie la version pour tout le monde,
 sur la même base de données. Avant le lancement, mettre en place une
 copie de l'appli (avec sa propre base) pour essayer chaque version avant
 sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
-> Réponse : d'accord pour attendre le lancement (3 nov. 2026).
+> Réponse (3 nov. 2026) : d'accord pour attendre le lancement. *(La date
+> est celle de la réponse, pas celle du lancement, qui n'est pas fixé.)*
+> Réponse (4 nov. 2026) : on la met en place maintenant, pour pouvoir
+> essayer aussi la synchronisation, les classes et la Librairie.
+>
+> ⏳ *En cours (v258) : mode d'emploi pas à pas dans
+> `docs/COPIE-DE-TEST.md`. Constat : plusieurs scripts SQL exécutés sur la
+> base réelle ne sont pas dans le dépôt ; la base de test sera construite
+> d'après la structure exportée de la base réelle.*
 
 ### Décisions prises
 
@@ -588,6 +596,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v258 | 4 nov. 2026 | Copie de test (Q8, en cours) : l'appli choisit seule sa base — base de test aux adresses de test (Netlify, essais en local), avec un bandeau « VERSION DE TEST » ; base réelle partout ailleurs. Aucun changement pour les utilisateurs. |
 | v257 | 4 nov. 2026 | Q9 : dans le compte enseignant, le bouton d'une boîte de la Librairie s'appelle « Ajouter aux révisions » / « Retirer des révisions ». Q10 : titre de l'Organisation inchangé. |
 | v256 | 3 nov. 2026 | Q6 : compte enseignant sans révisions (Réviser grisé avec message, ni dans/hors révisions, ni progression ; nouvelle boîte hors révisions). Agenda propre à chaque compte. Les échéances données à une classe ne mettent plus en sprint les boîtes de l'enseignant. |
 | v255 | 3 nov. 2026 | Mise à jour plus fiable sur iPhone : à l'installation d'une nouvelle version, tous les fichiers sont repris en ligne (un iPhone pouvait garder l'ancienne appli en se croyant à jour). Aucun changement visible. |

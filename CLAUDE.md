@@ -170,6 +170,18 @@ ne proposer une fusion que pour du travail terminé et vérifié. GitHub
 Pages ignore `_headers` ; c'est `updateViaCache: "none"` (dans
 `js/app.js`) qui garantit la détection des nouvelles versions de `sw.js`.
 
+**Copie de test (v258, Q8)** : mode d'emploi dans `docs/COPIE-DE-TEST.md`.
+Netlify (`netlify.toml`) publie chaque demande de fusion à une adresse
+`…netlify.app` ; `js/config.js` y branche la base Supabase de TEST
+(`tcyvrkiccmlozwkvhpul`), avec un bandeau « VERSION DE TEST ». La base
+RÉELLE (`pyqffmweflicfpbniroz`) sert partout ailleurs. Une migration SQL
+s'exécute d'abord dans la base de test, puis dans la réelle, et doit
+**toujours** être enregistrée dans `supabase/`.
+⚠ Constat du 4 nov. 2026 : des scripts exécutés sur la base réelle
+(`round69`, `71`, `76`, `77`, `79`, `80`, `82`…) manquent au dépôt. La
+structure de référence est l'export de la base réelle
+(`supabase/copie-de-test/`).
+
 ## Tester en local
 
 Un service worker exige `localhost` ou HTTPS :

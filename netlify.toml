@@ -1,0 +1,8 @@
+# Copie de test (v258, voir docs/COPIE-DE-TEST.md) : Netlify publie le
+# dépôt tel quel, sans étape de construction. Chaque demande de fusion
+# (pull request) reçoit son propre lien de test (deploy preview), branché
+# sur la base de TEST (choix automatique dans js/config.js).
+# L'appli réelle reste publiée par GitHub Pages, sur la base réelle.
+[build]
+  publish = "."
+  command = ""
