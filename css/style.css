@@ -6674,9 +6674,13 @@ html {
   outline: none;
 }
 :is(#view-calendar-event-form, #view-report-card) textarea { background: var(--paper-2); border-radius: 8px; border-bottom: none; padding: 10px; }
-:is(#view-calendar-event-form, #view-report-card) .form-actions { flex-direction: column; align-items: stretch; gap: 4px; margin-top: 10px !important; }
-:is(#view-calendar-event-form, #view-report-card) .form-actions .btn--primary { width: 100%; }
-:is(#view-calendar-event-form, #view-report-card) .form-actions .btn--ghost {
+#view-report-card .form-actions { flex-direction: column; align-items: stretch; gap: 4px; margin-top: 10px !important; }
+#view-report-card .form-actions .btn--primary { width: 100%; }
+/* v261 : page évènement — deux boutons côte à côte, même largeur et même
+   hauteur (le texte passe à la ligne si besoin). */
+#view-calendar-event-form .form-actions { display: flex; flex-direction: row; align-items: stretch; gap: 10px; margin-top: 4px !important; }
+#view-calendar-event-form .form-actions .btn { flex: 1 1 0; min-width: 0; white-space: normal; display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 9px; padding-bottom: 9px; }
+#view-report-card .form-actions .btn--ghost {
   background: transparent;
   color: var(--action-color);
   box-shadow: none;
@@ -7481,7 +7485,7 @@ body:not(.v1-pages) #view-creations .round-add-card-wrap { justify-content: cent
 #view-account .card-form:last-child { border-bottom: none; }
 #view-account .field > span,
 #view-account .account-school-title { font-size: 11.5px; }
-#view-account .field :is(input[type="text"], input[type="email"], input[type="password"], select) {
+#view-account .field :is(input[type="text"], input[type="email"], input[type="password"], input[type="date"], select) {
   background: transparent;
   border: none;
   border-bottom: 1px solid var(--rule-soft);
@@ -8193,7 +8197,9 @@ body:has(#view-library.is-active[data-cycle]) { background: var(--app-bg-color, 
 :is(html, #v245) :is(.revision-event-go, #boite-picker-confirm, #submit-btn, #v245) {
   --pill: var(--btn-color);
   font-family: var(--font-mono);
-  /* v246 : boutons plus petits (12px → 10.5px, marges 8/16 → 5/12). */
+  /* v246 : boutons plus petits (12px → 10.5px, marges 8/16 → 5/12).
+     v261 : fonds opaques (mélangés au papier) — un même bouton a le même
+     aspect sur le fond de page et dans un cadre blanc. */
   font-size: 10.5px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -8204,21 +8210,21 @@ body:has(#view-library.is-active[data-cycle]) { background: var(--app-bg-color, 
   border-radius: 999px;
   border: 1.5px solid var(--pill);
   color: color-mix(in srgb, var(--pill) var(--btn-ink-pct), var(--btn-ink-base));
-  background: color-mix(in srgb, var(--pill) var(--btn-fill-pct), transparent);
+  background: color-mix(in srgb, var(--pill) var(--btn-fill-pct), var(--paper));
   box-shadow: none;
   transition: background-color 0.15s ease, transform 0.1s ease;
 }
 :is(html, #v245) :is(.btn--small, #v245):where(:not(.home-btn, .nav-legacy-back, [data-mode], .plan-actions .btn, .account-subs-trial)) { padding: 4px 10px; font-size: 10px; }
 /* Bouton principal d'un formulaire : un peu plus rempli. */
 :is(html, #v245) :is(.btn--primary, .robot-modal-btn--primary, #boite-picker-confirm, #submit-btn, #v245):where(:not(.home-btn, .nav-legacy-back, [data-mode], .plan-actions .btn, .account-subs-trial)) {
-  background: color-mix(in srgb, var(--pill) calc(var(--btn-fill-pct) * 2.2), transparent);
+  background: color-mix(in srgb, var(--pill) calc(var(--btn-fill-pct) * 2.2), var(--paper));
 }
 /* Annuler, Retour, Fermer… : gris, plus discret. */
 :is(html, #v245) :is(.btn--ghost, .robot-modal-btn:not(.robot-modal-btn--primary):not(.robot-modal-btn--danger), #v245) { --pill: #8592a6; }
 /* Supprimer : rouge. */
 :is(html, #v245) :is(#calendar-detail-delete-btn, #delete-editing-card, #setting-hard-reset, .creation-detail-delete, .robot-modal-btn--danger, #v245) { --pill: #d14b3a; }
 :is(html, #v245) :is(.btn, .robot-modal-btn, .revision-event-go, #boite-picker-confirm, #submit-btn, #v245):where(:not(.home-btn, .nav-legacy-back, [data-mode], .plan-actions .btn, .account-subs-trial)):hover:not(:disabled) {
-  background: color-mix(in srgb, var(--pill) calc(var(--btn-fill-pct) * 2.8), transparent);
+  background: color-mix(in srgb, var(--pill) calc(var(--btn-fill-pct) * 2.8), var(--paper));
 }
 :is(html, #v245) :is(.btn, .robot-modal-btn, .revision-event-go, #v245):where(:not(.home-btn, .nav-legacy-back, [data-mode], .plan-actions .btn, .account-subs-trial)):active:not(:disabled) { transform: scale(0.97); }
 :is(html, #v245) :is(.btn, .robot-modal-btn, #v245):disabled { opacity: 0.45; }
@@ -8267,7 +8273,7 @@ body:has(#view-library.is-active[data-cycle]) { background: var(--app-bg-color, 
 /* Mon compte : « Enregistrer mon profil » et « Renvoyer l'email » suivent
    aussi le style en pilule (le bouton d'essai gratuit reste plein, violet). */
 :root:root #view-account .btn.btn--primary:is(.account-profile-save, .account-parental-send) {
-  background: color-mix(in srgb, var(--pill) calc(var(--btn-fill-pct) * 2.2), transparent);
+  background: color-mix(in srgb, var(--pill) calc(var(--btn-fill-pct) * 2.2), var(--paper));
   color: color-mix(in srgb, var(--pill) var(--btn-ink-pct), var(--btn-ink-base));
   border-radius: 999px;
   padding: 5px 12px;
@@ -8321,12 +8327,22 @@ body:has(#view-library.is-active[data-cycle]) { background: var(--app-bg-color, 
    v247 — compte élève / compte enseignant, Agenda et messagerie de classe
    ================================================================== */
 /* Une couleur par compte (seulement pour qui a les deux usages) : bleu
-   pour le compte élève, orange pour le compte enseignant. */
-:root { --role-student-color: #2f80d1; --role-teacher-color: #e07a1f; }
+   pour le compte élève, vert pour le compte enseignant (v261 ; orange
+   avant). */
+:root { --role-student-color: #2f80d1; --role-teacher-color: #1f9a63; }
 body.role-student { --role-color: var(--role-student-color); }
 body.role-teacher { --role-color: var(--role-teacher-color); }
-/* Repère 1 : liseré de la couleur du compte tout en haut de l'écran. */
-body.has-two-roles .topbar { box-shadow: inset 0 3px 0 var(--role-color); }
+/* Repère 1 : liseré de la couleur du compte tout en haut de l'écran.
+   v261 : trait fin, prolongé d'un dégradé qui s'efface vers le bas sur
+   la hauteur des petits boutons du haut. */
+body.has-two-roles .topbar {
+  background-image: linear-gradient(
+    to bottom,
+    var(--role-color) 0 1.5px,
+    color-mix(in srgb, var(--role-color) 22%, transparent) 1.5px,
+    transparent 100%
+  );
+}
 /* Repère 2 : pastille « Élève » / « Enseignant » dans le bandeau. */
 .role-indicator {
   display: inline-flex;
@@ -8597,3 +8613,76 @@ body.profile-teacher .home-circle[data-key="review"] .home-circle-badges { displ
 body.profile-teacher #org-rev-toggle,
 body.profile-teacher #org-display-toggle [data-org-display="gauge"],
 body.profile-teacher #subject-list .rev-state { display: none !important; }
+
+/* v261 : accueil — Statistiques, Réglages, Mon compte et Signalements en
+   simple pictogramme sur fond transparent (sans cercle ni intitulé ;
+   l'intitulé reste lu par les lecteurs d'écran). */
+.home-circle.home-circle--icon-only {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none;
+}
+.home-circle.home-circle--icon-only > span:not(.home-circle-badge) {
+  position: absolute !important;
+  width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.home-circle.home-circle--icon-only .home-circle-icon { width: 28px; height: 28px; opacity: 0.75; }
+.home-circle.home-circle--icon-only:active .home-circle-icon { transform: scale(0.92); }
+
+/* v261 : page « Créer un compte » en blocs (même esprit que .info-block). */
+.form-block,
+.auth-section {
+  border: 1px solid var(--rule-soft, var(--rule));
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  padding: 12px 14px 4px;
+  margin: 0 0 12px;
+}
+.auth-section[hidden], .form-block[hidden] { display: none; }
+.form-block-title,
+.auth-section-title {
+  margin: 0 0 6px;
+  font-family: var(--font-type);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.auth-section-title[hidden] { display: none; }
+.auth-section .usage-options { margin-top: 2px; }
+#account-auth-block .account-terms-check { margin: 4px 2px 12px; }
+/* v261 : date de naissance au même style que les autres champs, et cases
+   d'usage de même taille (cochée ou non). */
+#view-account .field input[type="date"] { width: 100%; font-family: var(--font-mono); font-size: 14px; color: var(--ink); padding-top: 10px; padding-bottom: 10px; }
+.usage-option input { flex: 0 0 18px; width: 18px; height: 18px; }
+
+/* v261 : picto d'aide ⓘ à côté de l'intitulé d'un champ. */
+.field-help-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; margin: -4px 0 -4px 2px; padding: 0;
+  border: none; background: transparent; color: var(--ink-soft);
+  vertical-align: middle; cursor: pointer; border-radius: 50%;
+}
+.field-help-btn svg { width: 17px; height: 17px; }
+.field-help-btn:hover, .field-help-btn:focus-visible { color: var(--action-color, var(--ink)); }
+#view-new-card .qcm-fields { margin: 0 0 16px; }
+#view-new-card .qcm-inputs { margin-top: 0; }
+/* v261 : page évènement en blocs ; le bloc « Partage » disparaît quand
+   son champ est masqué (compte élève, ou aucune classe). */
+#view-calendar-event-form .form-block:has(> #calendar-event-class-field[hidden]) { display: none; }
+/* v261 : action sous le titre du bandeau (« Renommer » une classe). */
+.page-header-title .page-header-sub {
+  display: flex; align-items: center; gap: 4px;
+  margin: 4px 0 0; padding: 0; border: none; background: transparent;
+  font-family: var(--font-type); font-size: 12.5px; font-weight: 500;
+  color: var(--action-color, var(--ink-soft)); cursor: pointer;
+}
+.page-header-title .page-header-sub .icon-inline-svg { width: 13px; height: 13px; }
+.page-header-title .page-header-sub:hover span { text-decoration: underline; }
+/* v261 : code d'invitation affiché comme une information. */
+.class-code-line { margin: 0; font-family: var(--font-type); font-size: 13.5px; color: var(--ink-soft); display: flex; align-items: center; flex-wrap: wrap; gap: 2px; }
+.class-code-value { color: var(--ink); font-family: var(--font-mono); font-size: 15px; letter-spacing: 0.08em; margin-left: 4px; }
