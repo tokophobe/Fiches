@@ -1032,6 +1032,19 @@ async function listClassesAsTeacher() {
   return data || [];
 }
 
+/** v260 : une classe relue sur le serveur (nom, dossiers…), ou null si
+ *  elle n'est pas accessible ou en cas d'erreur réseau. */
+async function getClassById(classId) {
+  const c = getClient();
+  if (!c || !classId) return null;
+  const { data, error } = await c.from("classes").select("*").eq("id", classId).maybeSingle();
+  if (error) {
+    console.warn("Classes: échec du rechargement de la classe", error.message);
+    return null;
+  }
+  return data || null;
+}
+
 async function listClassesAsStudent() {
   const c = getClient();
   const user = await authGetUser();
@@ -1777,6 +1790,7 @@ window.Sync = {
   classes: {
     create: createClass,
     listAsTeacher: listClassesAsTeacher,
+    get: getClassById,
     listAsStudent: listClassesAsStudent,
     memberCount: classMemberCount,
     listMembers: listClassMembers,
