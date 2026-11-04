@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v256";
+  const APP_VERSION = "v257";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -15401,7 +15401,10 @@
     const inRev = isLibraryCollectionInRevisions(col.id);
     btn.classList.remove("library-price-btn", "library-price-btn--taken");
     btn.disabled = false;
-    btn.textContent = inRev ? "Retirer de mes révisions" : "Ajouter à mes révisions";
+    // v257 (Q9) : compte enseignant — « Ajouter aux révisions » / « Retirer
+    // des révisions » (celles du compte élève).
+    const teacher = activeRole() === "teacher";
+    btn.textContent = inRev ? (teacher ? "Retirer des révisions" : "Retirer de mes révisions") : teacher ? "Ajouter aux révisions" : "Ajouter à mes révisions";
     btn.onclick = async () => {
       if (isLibraryCollectionInRevisions(col.id)) await removeLibraryCollectionFromRevisions(col);
       else await addLibraryCollectionToRevisions(col);

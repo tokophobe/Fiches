@@ -124,7 +124,8 @@ de confidentialité.
 | Progression (v256) | Jauge « Ma progression » sur la page d'une boîte, affichage en jauge dans l'organisation | Pas de jauge |
 | Nouvelle boîte (v256) | Rangée dans un dossier, elle entre dans mes révisions | Rangée dans un dossier, elle reste **hors** de mes révisions (on pourra l'y ajouter depuis le compte élève) |
 | Mon agenda (v256) | Évènements créés dans le compte élève + échéances reçues des classes suivies | Évènements créés dans le compte enseignant + échéances données à ses classes |
-| Librairie, fiches, statistiques, défi du jour | Identiques | Identiques |
+| Librairie : bouton d'une boîte (v257) | « Ajouter à mes révisions » / « Retirer de mes révisions » | « Ajouter aux révisions » / « Retirer des révisions » (celles du compte élève) |
+| Librairie (le reste), fiches, statistiques, défi du jour | Identiques | Identiques |
 
 ---
 
@@ -550,18 +551,6 @@ moi, relecture pour une boîte de classe). Faut-il les unifier ? (lié à Q3)
 >
 > ⏳ *Claude : à réaliser avec Q3 (chantier « publication avec relecture »).*
 
-**Q9 — Librairie dans le compte enseignant.** Dans la Librairie, prendre
-une boîte s'appelle « Ajouter à mes révisions » (et « Retirer de mes
-révisions »), y compris dans le compte enseignant, où les révisions
-n'existent plus. Faut-il un autre libellé (« Prendre la boîte »…) ou un
-autre comportement côté enseignant ?
-> Réponse : je pense que "Ajouter aux révisions" et "retirer des révisions" peut être bien et cohérent avec les libellés du compte élève
-
-**Q10 — Titre de la page Organisation.** Dans le compte enseignant, la
-page s'appelle toujours « Organisation des boîtes de révision ». Garder
-ce titre, ou en prendre un autre (« Organisation de mes boîtes ») ?
-> Réponse : on reste comme ça
-
 **Q8 — Avant l'ouverture au public : une adresse de test.**
 Aujourd'hui, fusionner une branche publie la version pour tout le monde,
 sur la même base de données. Avant le lancement, mettre en place une
@@ -576,6 +565,8 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | Q1 — « Je ne sais pas » à 3 jours, « Vague idée » à 1 jour | Voulu pour l'instant (renforcer tout de suite ce qu'on commence à savoir ; pas trop de fiches par jour). | §4.2 (v253) |
 | Q2 — Prix et noms des formules | Les CGV font foi ; site vitrine corrigé. | §7.4, site (v253) |
 | Q7 — Modifier la classification d'une boîte classée | Oui, lien « Modifier » tant qu'elle n'est pas publiée. | §5.4 (v253) |
+| Q9 — Prendre une boîte de la Librairie dans le compte enseignant | Bouton « Ajouter aux révisions » / « Retirer des révisions » (révisions du compte élève) ; « Ajouter à mes révisions » / « Retirer de mes révisions » dans le compte élève. | §3.2 (v257) |
+| Q10 — Titre de la page Organisation côté enseignant | On garde « Organisation des boîtes de révision ». | — |
 | Q6 — Différences élève / enseignant | Agenda par compte ; classes du compte utilisé dans l'organisation, le reste commun ; pas de révisions dans le compte enseignant (Réviser grisé, ni dans/hors révisions, ni progression) ; échéances données à une classe sans effet sur ses propres révisions ; nouvelle boîte du compte enseignant hors révisions. | §3.2, §4.3, §4.5, §6.4 (v256) |
 | Q5 — Supprimer « Mes créations » | Oui, après vérification. « Mes fiches » ouvre directement l'organisation. Remplacé par un filtre Publiées / Non publiées qui grise le reste ; recherche par classification et par tags abandonnée. | §5.3, §5.5 (v254) |
 
@@ -597,6 +588,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v257 | 4 nov. 2026 | Q9 : dans le compte enseignant, le bouton d'une boîte de la Librairie s'appelle « Ajouter aux révisions » / « Retirer des révisions ». Q10 : titre de l'Organisation inchangé. |
 | v256 | 3 nov. 2026 | Q6 : compte enseignant sans révisions (Réviser grisé avec message, ni dans/hors révisions, ni progression ; nouvelle boîte hors révisions). Agenda propre à chaque compte. Les échéances données à une classe ne mettent plus en sprint les boîtes de l'enseignant. |
 | v255 | 3 nov. 2026 | Mise à jour plus fiable sur iPhone : à l'installation d'une nouvelle version, tous les fichiers sont repris en ligne (un iPhone pouvait garder l'ancienne appli en se croyant à jour). Aucun changement visible. |
 | v254 | 3 nov. 2026 | Q5 : page « Mes créations » supprimée, « Mes fiches » ouvre directement l'organisation. Nouveau filtre Publiées / Non publiées dans l'organisation. Corrigé : une boîte publiée ouverte depuis l'organisation pouvait s'afficher « Non publiée ». |
