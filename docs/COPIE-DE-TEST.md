@@ -137,6 +137,25 @@ de test afficheront une erreur : c'est normal.
 2. puis, une fois la fusion décidée, dans **darwin** (réel).
 Chaque script doit être enregistré dans le dépôt (dossier `supabase/`).
 
+## Si la mise en ligne de l'appli réelle échoue
+
+Après une fusion, ouvrir https://github.com/tokophobe/Fiches/actions : la
+ligne « pages build and deployment » la plus récente doit avoir une coche
+verte (en ligne en 1 à 20 minutes selon la charge de GitHub).
+
+- **Croix rouge, « Timeout reached »** : GitHub a été trop lent. Relancer
+  une fois (« Re-run jobs » sur la page de l'échec).
+- **Croix rouge, « Deployment cancelled »** juste après une relance :
+  GitHub refuse de remettre en ligne une version dont la mise en ligne a
+  été annulée. Une relance ne sert alors plus à rien : il faut une
+  nouvelle version (n'importe quelle petite modification fusionnée dans
+  `main`, par exemple une mise à jour de la documentation).
+- En cas de doute, https://www.githubstatus.com indique les incidents en
+  cours chez GitHub (« Pages », « Actions »).
+- Pendant ce temps, l'appli réelle reste sur la version précédente : rien
+  n'est cassé pour les utilisateurs. La copie de test (Netlify) a déjà la
+  nouvelle version.
+
 ## En cas de doute
 
 - Le bandeau « VERSION DE TEST » est absent alors qu'on croit être sur la
