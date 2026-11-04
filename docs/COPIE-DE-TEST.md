@@ -9,7 +9,7 @@ touche alors aucun vrai utilisateur.
 
 | | Appli réelle | Copie de test |
 |---|---|---|
-| Adresse | https://tokophobe.github.io/Fiches/ | une adresse en `…netlify.app` |
+| Adresse | https://tokophobe.github.io/Fiches/ | https://darwin-test.netlify.app (et un lien par demande de fusion) |
 | Publiée par | GitHub Pages | Netlify |
 | Base de données | Supabase **darwin** (réelle) | Supabase **darwin-test** |
 | Repère visuel | — | bandeau orange « VERSION DE TEST » en bas de l'écran |
@@ -61,7 +61,7 @@ lit aucune donnée d'utilisateur.
    test (`2-creer-la-base-de-test.sql`) et le vérifie avant de vous le
    donner.
 
-### Étape 3 — Construire la base de test
+### Étape 3 — Construire la base de test ✅ (fait le 4 nov. 2026)
 
 1. Supabase → projet **darwin-test** (vérifier le nom !).
 2. **SQL Editor** → **New query** → coller tout le contenu de
@@ -69,7 +69,7 @@ lit aucune donnée d'utilisateur.
 3. Le message « Success » doit s'afficher. Le script peut être relancé
    sans risque.
 
-### Étape 4 — Réglages de connexion de la base de test
+### Étape 4 — Réglages de connexion de la base de test ✅ (fait le 4 nov. 2026)
 
 Supabase → projet **darwin-test** → **Authentication** :
 
@@ -83,7 +83,11 @@ Supabase → projet **darwin-test** → **Authentication** :
      puis `https://darwin-test.netlify.app/**` (en remplaçant
      `darwin-test` par le nom choisi à l'étape 5).
 
-### Étape 5 — Créer l'adresse de test chez Netlify
+### Étape 5 — Créer l'adresse de test chez Netlify ✅ (fait le 4 nov. 2026)
+
+Site Netlify **darwin-test**, en mode **privé** (il faut être connecté
+à Netlify pour l'ouvrir, y compris sur l'iPhone). Le compte Netlify
+existait déjà (connexion par email), relié ensuite à GitHub.
 
 1. Aller sur https://app.netlify.com → **Sign up** → **GitHub**
    (s'inscrire avec son compte GitHub). C'est gratuit.
@@ -98,7 +102,7 @@ Supabase → projet **darwin-test** → **Authentication** :
    Build & deploy → Branches and deploy contexts) : « Any pull request
    against your production branch ».
 
-### Étape 6 — Premier essai
+### Étape 6 — Premier essai (compte de test créé et administrateur le 4 nov. 2026)
 
 1. Ouvrir `https://darwin-test.netlify.app` : le bandeau orange
    « VERSION DE TEST » doit apparaître en bas.
@@ -121,8 +125,11 @@ de test afficheront une erreur : c'est normal.
 ## Au quotidien
 
 1. Claude prépare une version et ouvre une demande de fusion.
-2. Sur la page de la demande de fusion, GitHub affiche le lien Netlify
-   **« Deploy Preview »** (une minute après). On l'ouvre et on essaie.
+2. Sur la page de la demande de fusion, une minute après, Netlify ajoute
+   un commentaire et une ligne dans les vérifications (« deploy/netlify »,
+   « Deploy Preview ») avec un lien du type
+   `https://deploy-preview-19--darwin-test.netlify.app`. On l'ouvre (le
+   bandeau « VERSION DE TEST » doit être là) et on essaie.
 3. Si tout va bien : **Merge**. La version part sur l'appli réelle.
 
 **Scripts SQL (migrations)** : toujours dans cet ordre —
