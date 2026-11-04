@@ -561,10 +561,11 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 > Réponse (4 nov. 2026) : on la met en place maintenant, pour pouvoir
 > essayer aussi la synchronisation, les classes et la Librairie.
 >
-> ⏳ *En cours (v258) : mode d'emploi pas à pas dans
-> `docs/COPIE-DE-TEST.md`. Constat : plusieurs scripts SQL exécutés sur la
-> base réelle ne sont pas dans le dépôt ; la base de test sera construite
-> d'après la structure exportée de la base réelle.*
+> ✅ *En place le 4 nov. 2026 : https://darwin-test.netlify.app (base
+> darwin-test) et un lien de test par demande de fusion. Mode d'emploi :
+> `docs/COPIE-DE-TEST.md`. Reste à faire plus tard : les paiements en mode
+> test (Stripe). La structure de la base réelle est désormais enregistrée
+> dans le dépôt.*
 
 ### Décisions prises
 
