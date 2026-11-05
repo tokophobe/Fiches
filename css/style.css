@@ -8776,9 +8776,9 @@ body.profile-teacher #subject-list .rev-state { display: none !important; }
   height: 640px;
   margin: 0;
 }
-/* v264 : « Annuler » sous la liste du sélecteur de dossier. */
-.boite-picker-cancel-row { display: flex; justify-content: center; margin: 16px 0 8px; }
-.boite-picker-cancel-row[hidden] { display: none; }
+/* v265 : « Annuler » dans la bulle du robot (choix d'un dossier). */
+.body-logo-speech-cancel[hidden] { display: none; }
+.body-logo-speech-nav:has(.body-logo-speech-cancel:not([hidden])) { display: flex; justify-content: flex-end; margin-top: 8px; }
 /* v264 : contour des blocs de classement au gris du fond de page (plus
    visible sur fond blanc) — sauf dans la Librairie, où la couleur du
    contour indique le cycle choisi. */

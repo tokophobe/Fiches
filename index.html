@@ -256,6 +256,9 @@
       <div class="body-logo-speech-nav" id="body-logo-speech-nav">
         <button type="button" class="body-logo-speech-prev" id="body-logo-speech-prev" hidden>← Précédent</button>
         <button type="button" class="body-logo-speech-next" id="body-logo-speech-next" hidden>Suite →</button>
+        <!-- v265 : « Annuler » dans la bulle (ex. « Dans quel dossier
+             ranger… ? ») — voir openBoitePickerView. -->
+        <button type="button" class="btn btn--ghost btn--small body-logo-speech-cancel" id="body-logo-speech-cancel" hidden>Annuler</button>
       </div>
     </div>
   </div>
@@ -1890,11 +1893,6 @@
         </div>
       </div>
       <ul class="subject-list" id="boite-picker-list"></ul>
-      <!-- v264 : « Annuler » visible (ex. « Dans quel dossier ranger… ») ;
-           la croix de la bulle du robot fait la même chose. -->
-      <div class="boite-picker-cancel-row" id="boite-picker-cancel-row" hidden>
-        <button type="button" class="btn btn--ghost" id="boite-picker-cancel-btn">Annuler</button>
-      </div>
       <div class="multi-subject-picker-actions boite-picker-actions" id="boite-picker-actions" hidden>
         <button type="button" class="btn btn--primary" id="boite-picker-confirm">Valider</button>
       </div>

@@ -553,6 +553,12 @@ font foi).
 10 questions de culture générale par jour (2 de chaque niveau, de 1 à 5),
 **les mêmes pour tout le monde**, sur le site et dans l'appli.
 
+- Dans l'appli, la partie du jour et la série de jours sont **les mêmes
+  sur tous les appareils d'un compte** (v265) : un défi commencé ou fini
+  sur le PC apparaît ainsi sur l'iPhone, et ne peut pas être refait. Si
+  deux appareils ne sont pas d'accord, la partie la plus avancée
+  l'emporte (terminée d'abord, sinon celle qui a le plus de réponses).
+
 ---
 
 ## 8. Questions ouvertes
@@ -622,6 +628,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v265 | 5 nov. 2026 | Défi du jour synchronisé entre les appareils d'un compte (un défi fait sur le PC restait « à jouer » sur l'iPhone et pouvait être refait). « Annuler » dans la bulle du robot quand on choisit le dossier d'une boîte. |
 | v264 | 5 nov. 2026 | Accueil à l'échelle : tout tient à l'écran sur tous les appareils (les pictos du bas sortaient de l'écran sur certains téléphones et sur PC), plus de défilement ; sur tablette et grand écran, l'accueil remplit la hauteur ; même placement qu'avant sur l'iPhone de référence. Défi du jour en « carte de jeu ». Pastille de Signalements décalée. Bandeau du compte sans trait, dégradé plus haut ; robot vert en compte enseignant. Organisation : nouveau titre, bouton Librairie, trois filtres exclusifs renommés, recherche et barre d'outils qui restent en haut. Classement : contour gris. Corrigé : « Connecte-toi… » à tort dans la Librairie (connexion expirée non renouvelée) ; « Annuler » (et la croix du robot) quand on choisit le dossier d'une boîte. |
 | v263 | 5 nov. 2026 | Bandeau de couleur du compte (élève / enseignant) : affiché dès le choix du compte à l'ouverture, sans attendre le serveur (l'appli se croyait en compte élève jusque-là), et sur toute la largeur, depuis le haut de l'écran. |
 | v262 | 4 nov. 2026 | Une seule couleur pour tous les boutons principaux. Créer un compte : blocs sans titre, « Utilisation de l'appli », niveau scolaire dans son bloc. Classement en blocs emboîtés comme la Librairie, partout. Nouvelle fiche : un bloc par champ. Même police pour toutes les zones de saisie et leurs textes d'exemple. Ajouter un évènement : blocs sans titre, « (facultatif) » sur les champs concernés. |
