@@ -123,8 +123,11 @@ personnel ou pour rejoindre les classes de tes enseignants » et il est
   l'appli ; le dernier choix est mémorisé sur l'appareil.
 - **Repère visuel** (seulement avec les deux usages) : pastille
   « ÉLÈVE » (bleu) ou « ENSEIGNANT » (vert, v261 ; orange avant) dans la
-  barre du haut, et fin liseré de la même couleur en haut de l'écran,
-  prolongé d'un léger dégradé sur la hauteur des petits boutons du haut.
+  barre du haut, et un dégradé de la même couleur en haut de l'écran, qui
+  s'efface vers le bas (v264 : sans trait).
+- **Robot aux couleurs du compte** (v264) : en compte enseignant, ce qui
+  est bleu sur le robot (écran, yeux, réacteur, reflets) passe en vert, et
+  la petite diode de la caméra passe en bleu.
 - **Changer de compte** : toucher la pastille, **sur l'accueil
   uniquement**. Ailleurs, un message rappelle de passer par l'accueil.
 
@@ -299,7 +302,7 @@ Cas particuliers :
 - **Boîte de la Librairie** : la remettre dans mes révisions demande un
   accès à la Librairie (abonnement ou place gratuite).
 
-### 5.3 L'organisation des boîtes (page « Organisation »)
+### 5.3 L'organisation des boîtes (page « Organisation de mes boîtes de fiches »)
 
 C'est la page centrale : **toutes** les boîtes de l'utilisateur y sont, à
 leur place dans l'arborescence.
@@ -310,18 +313,23 @@ leur place dans l'arborescence.
     boîtes partagées (lecture seule ; toucher une boîte ouvre la boîte
     d'origine de l'enseignant).
 - Puis les dossiers et boîtes de l'utilisateur, par ordre alphabétique.
-- **Boutons** : « + Nouvelle boîte » (bouton rond), « + Nouveau dossier »,
+- **En haut** (v264) : deux boutons ronds, « + Nouvelle boîte » et
+  « Librairie » (même bouton que sur l'accueil, même effet). Dessous, le
   champ **« Rechercher une boîte… »** (par nom, sans tenir compte des
-  accents ; résultats en liste).
-- **Affichages** : toute l'arborescence, ou les boîtes et branches hors
-  révisions **grisées** ; nombre de fiches ou jauge à droite de chaque
-  ligne.
-- **Filtre « Publiées » / « Non publiées »** (dans la Librairie) : grise
-  tout ce qui n'est pas concerné. Les boîtes qui ne sont pas les miennes
-  (classe, Librairie) sont grisées dans les deux cas ; un dossier reste
-  normal s'il contient au moins une boîte concernée. Toucher à nouveau le
-  bouton enlève le filtre ; il est enlevé aussi à chaque retour sur la
-  page.
+  accents ; résultats en liste), puis la barre d'outils. Quand la liste
+  défile, la recherche et la barre d'outils restent en haut ; les deux
+  boutons ronds passent sous le bandeau.
+- **Barre d'outils** : « + Nouveau dossier » ; trois filtres
+  **exclusifs** (un seul à la fois, aucun par défaut, enlevés à chaque
+  retour sur la page ; re-toucher le filtre actif l'enlève), qui grisent
+  ce qui n'est pas concerné :
+  - « Afficher les boîtes activées pour la révision » (compte élève) ;
+  - « Afficher mes boîtes publiées » ;
+  - « Afficher mes boîtes non publiées ».
+  Pour les deux derniers, les boîtes qui ne sont pas les miennes (classe,
+  Librairie) sont toujours grisées ; un dossier reste normal s'il contient
+  au moins une boîte concernée. Enfin, nombre de fiches ou jauge à droite
+  de chaque ligne.
 - **Menu ⌄ d'une ligne** :
 
 | Action | Dossier | Boîte à moi | Boîte de la Librairie | Boîte de classe | Dossier de classe |
@@ -592,7 +600,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | Q2 — Prix et noms des formules | Les CGV font foi ; site vitrine corrigé. | §7.4, site (v253) |
 | Q7 — Modifier la classification d'une boîte classée | Oui, lien « Modifier » tant qu'elle n'est pas publiée. | §5.4 (v253) |
 | Q9 — Prendre une boîte de la Librairie dans le compte enseignant | Bouton « Ajouter aux révisions » / « Retirer des révisions » (révisions du compte élève) ; « Ajouter à mes révisions » / « Retirer de mes révisions » dans le compte élève. | §3.2 (v257) |
-| Q10 — Titre de la page Organisation côté enseignant | On garde « Organisation des boîtes de révision ». | — |
+| Q10 — Titre de la page Organisation | « Organisation de mes boîtes de fiches » (5 nov. 2026, pour les deux comptes). | §5.3 (v264) |
 | Q6 — Différences élève / enseignant | Agenda par compte ; classes du compte utilisé dans l'organisation, le reste commun ; pas de révisions dans le compte enseignant (Réviser grisé, ni dans/hors révisions, ni progression) ; échéances données à une classe sans effet sur ses propres révisions ; nouvelle boîte du compte enseignant hors révisions. | §3.2, §4.3, §4.5, §6.4 (v256) |
 | Q5 — Supprimer « Mes créations » | Oui, après vérification. « Mes fiches » ouvre directement l'organisation. Remplacé par un filtre Publiées / Non publiées qui grise le reste ; recherche par classification et par tags abandonnée. | §5.3, §5.5 (v254) |
 
@@ -614,7 +622,8 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
-| v263 | 5 nov. 2026 | Bandeau de couleur du compte (élève / enseignant) : affiché dès le choix du compte à l'ouverture, sans attendre le serveur (l'appli se croyait en compte élève jusque-là), et sur toute la largeur, depuis le haut de l'écran. Accueil à l'échelle : tout tient à l'écran sur tous les appareils (les pictos du bas sortaient de l'écran sur certains téléphones et sur PC) ; sur tablette et grand écran, l'accueil remplit la hauteur. Même placement qu'avant sur l'iPhone de référence. |
+| v264 | 5 nov. 2026 | Accueil à l'échelle : tout tient à l'écran sur tous les appareils (les pictos du bas sortaient de l'écran sur certains téléphones et sur PC), plus de défilement ; sur tablette et grand écran, l'accueil remplit la hauteur ; même placement qu'avant sur l'iPhone de référence. Défi du jour en « carte de jeu ». Pastille de Signalements décalée. Bandeau du compte sans trait, dégradé plus haut ; robot vert en compte enseignant. Organisation : nouveau titre, bouton Librairie, trois filtres exclusifs renommés, recherche et barre d'outils qui restent en haut. Classement : contour gris. Corrigé : « Connecte-toi… » à tort dans la Librairie (connexion expirée non renouvelée) ; « Annuler » (et la croix du robot) quand on choisit le dossier d'une boîte. |
+| v263 | 5 nov. 2026 | Bandeau de couleur du compte (élève / enseignant) : affiché dès le choix du compte à l'ouverture, sans attendre le serveur (l'appli se croyait en compte élève jusque-là), et sur toute la largeur, depuis le haut de l'écran. |
 | v262 | 4 nov. 2026 | Une seule couleur pour tous les boutons principaux. Créer un compte : blocs sans titre, « Utilisation de l'appli », niveau scolaire dans son bloc. Classement en blocs emboîtés comme la Librairie, partout. Nouvelle fiche : un bloc par champ. Même police pour toutes les zones de saisie et leurs textes d'exemple. Ajouter un évènement : blocs sans titre, « (facultatif) » sur les champs concernés. |
 | v261 | 4 nov. 2026 | Retouches visuelles : accueil (petits boutons en pictogramme, liseré fin en dégradé, vert pour le compte enseignant, lévitation du robot relancée quand elle se figeait) ; Créer un compte en blocs, « utilisateur normal » coché par défaut ; Nouvelle fiche (cases QCM toujours visibles « (facultatif) », aides derrière un picto ⓘ lues par le robot) ; Ajouter un évènement en blocs, boutons côte à côte ; boutons au même aspect partout ; page d'une classe sans « (élève) / (enseignant) », Renommer sous le titre, code d'invitation en simple information. |
 | v260 | 4 nov. 2026 | Corrigé : la page d'une classe ouverte depuis « Mes classes » pouvait montrer d'anciennes informations (par ex. un dossier supprimé par l'enseignant) jusqu'à la réouverture ; elle relit désormais la classe à jour à chaque ouverture. |
@@ -641,7 +650,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | Écran | Accès | Contenu |
 |---|---|---|
 | **Choix du compte** | Ouverture (deux usages) | Mon compte élève / Mon compte enseignant |
-| **Accueil** | — | Boutons ronds : Réviser, Défi du jour, Mes fiches, Mes classes (ou Rejoindre / Créer une classe), Mon agenda, Librairie. En simple pictogramme, sans cercle ni intitulé (v261) : Statistiques, Réglages, Mon compte, Signalements (s'il y en a). Bandeau défilant d'alertes. Robot qui lévite. **À l'échelle** (v263) : robot, logo et boutons forment un seul dessin, agrandi ou réduit pour tenir en entier dans l'écran (largeur et hauteur), sur téléphone, tablette et ordinateur ; placement réglé dans Darwin Admin sur le dessin de référence (iPhone). |
+| **Accueil** | — | Boutons ronds : Réviser, Défi du jour, Mes fiches, Mes classes (ou Rejoindre / Créer une classe), Mon agenda, Librairie. En simple pictogramme, sans cercle ni intitulé (v261) : Statistiques, Réglages, Mon compte, Signalements (s'il y en a). Bandeau défilant d'alertes. Robot qui lévite. Défi du jour en « carte de jeu » orange inclinée (v264). **À l'échelle** (v264), sans défilement : robot, logo et boutons forment un seul dessin, agrandi ou réduit pour tenir en entier dans l'écran (largeur et hauteur), sur téléphone, tablette et ordinateur ; placement réglé dans Darwin Admin sur le dessin de référence (iPhone). |
 | **Réviser** | Accueil | Révisions prioritaires, Renforcer mes connaissances, Sélection manuelle |
 | **Séance de révision** | Réviser | Fiche, 4 boutons de note, jauge, mini-histogramme des échéances |
 | **Organisation** | Accueil (Mes fiches) | §5.3 |

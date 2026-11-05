@@ -1,4 +1,4 @@
-const CACHE_NAME = "fiches-cache-v263";
+const CACHE_NAME = "fiches-cache-v264";
 
 const CORE_ASSETS = [
   "./",
@@ -26,6 +26,7 @@ const CORE_ASSETS = [
   "./icons/icon-maskable-192.png",
   "./icons/icon-maskable-512.png",
   "./icons/logo.png",
+  "./icons/logo-enseignant.png",
   "./icons/darwin-logo.png",
 ];
 

@@ -950,7 +950,22 @@ async function authGetUserUncached(c) {
   try {
     const { data, error } = await c.auth.getUser();
     if (data && data.user) return data.user;
-    if (error && /invalid|expired|not found|jwt/i.test(error.message || "") && navigator.onLine) return null;
+    // v264 : jeton expiré (appli longtemps en arrière-plan, renouvellement
+    // automatique en retard) — on le renouvelle avant de conclure que
+    // personne n'est connecté. Sans cela, l'appli se croyait déconnectée
+    // (ex. « Connecte-toi… » dans la Librairie) jusqu'à un passage par
+    // Mon compte.
+    if (error && /invalid|expired|jwt/i.test(error.message || "") && navigator.onLine) {
+      try {
+        const { data: refreshed } = await c.auth.refreshSession();
+        if (refreshed && refreshed.user) return refreshed.user;
+        if (refreshed && refreshed.session && refreshed.session.user) return refreshed.session.user;
+      } catch (e) {
+        /* renouvellement impossible : vraiment déconnecté */
+      }
+      return null;
+    }
+    if (error && /not found/i.test(error.message || "") && navigator.onLine) return null;
   } catch (e) {
     /* hors-ligne : repli ci-dessous */
   }

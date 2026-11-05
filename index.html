@@ -265,42 +265,7 @@
        fixe (round 17), est déplacé SOUS le robot (body-logo-row) plutôt
        qu'au-dessus — mêmes id, simplement déplacé. Couleur de fond des
        boutons retirée (voir css/style.css). -->
-  <div class="manage-sticky-actions" id="manage-sticky-actions" hidden>
-    <div class="list-header">
-      <div class="list-header-actions">
-        <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
-      </div>
-      <!-- v248 : toute l'arborescence, ou les boîtes « hors de mes
-           révisions » grisées. -->
-      <div class="org-display-toggle org-rev-toggle" id="org-rev-toggle">
-        <button type="button" class="org-display-toggle-btn org-rev-toggle-btn" data-org-rev-display="all" title="Toute l'arborescence" aria-label="Afficher toute l'arborescence">
-          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-13.7 5.7"/><path d="M4 12a8 8 0 0 1 13.7-5.7"/><polyline points="17.5 2.5 17.7 6.3 14 6.6"/><polyline points="6.5 21.5 6.3 17.7 10 17.4"/></svg>
-        </button>
-        <button type="button" class="org-display-toggle-btn org-rev-toggle-btn" data-org-rev-display="dim" title="Griser les boîtes hors de mes révisions" aria-label="Griser les boîtes hors de mes révisions">
-          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-13.7 5.7"/><path d="M4 12a8 8 0 0 1 13.7-5.7"/><polyline points="17.5 2.5 17.7 6.3 14 6.6"/><polyline points="6.5 21.5 6.3 17.7 10 17.4"/><line x1="3" y1="3" x2="21" y2="21"/></svg>
-        </button>
-      </div>
-      <!-- v254 : filtre Publiées / Non publiées (dans la Librairie) : grise
-           les boîtes et dossiers non concernés, et les boîtes qui ne sont
-           pas les miennes. -->
-      <div class="org-display-toggle org-pub-toggle" id="org-pub-toggle">
-        <button type="button" class="org-display-toggle-btn org-pub-toggle-btn" data-org-pub-display="published" title="Griser tout sauf mes boîtes publiées" aria-label="Griser tout sauf mes boîtes publiées dans la Librairie" aria-pressed="false">
-          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z"/><polyline points="8.5 10 11 12.5 15.5 8"/></svg>
-        </button>
-        <button type="button" class="org-display-toggle-btn org-pub-toggle-btn" data-org-pub-display="unpublished" title="Griser tout sauf mes boîtes non publiées" aria-label="Griser tout sauf mes boîtes non publiées dans la Librairie" aria-pressed="false">
-          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z"/><line x1="3" y1="3" x2="21" y2="21"/></svg>
-        </button>
-      </div>
-      <div class="org-display-toggle" id="org-display-toggle">
-        <button type="button" class="org-display-toggle-btn is-active" data-org-display="count" title="Nombre de fiches/boîtes">
-          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/></svg>
-        </button>
-        <button type="button" class="org-display-toggle-btn" data-org-display="gauge" title="Barre d'apprentissage">
-          <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="10" width="11" height="4" rx="2" fill="currentColor" stroke="none"/></svg>
-        </button>
-      </div>
-    </div>
-  </div>
+  <!-- v264 : la barre d'outils de l'Organisation est passée dans la page, sous la recherche (voir #view-manage). -->
   </div>
   <!-- /Round 15 : fin du bandeau fixe (#app-sticky-header). -->
 
@@ -696,9 +661,46 @@
           <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
           <span>Nouvelle boîte</span>
         </button>
+        <!-- v264 : même bouton que la Librairie de l'accueil (plus petit). -->
+        <button type="button" class="classes-role-circle org-library-btn" id="manage-library-btn" aria-label="Librairie">
+          <span class="classes-role-circle-icon" id="manage-library-btn-icon"></span>
+          <span>Librairie</span>
+        </button>
       </div>
-      <!-- v249 : recherche d'une boîte par son nom. -->
+      <!-- v249 : recherche d'une boîte par son nom. v264 : recherche et barre
+           d'outils restent en haut quand la liste défile. -->
+      <div class="manage-toolbar-sticky" id="manage-toolbar-sticky">
       <input type="search" class="org-search-input" id="org-search-input" placeholder="Rechercher une boîte…" aria-label="Rechercher une boîte par son nom" />
+  <div class="manage-sticky-actions" id="manage-sticky-actions">
+      <div class="list-header">
+        <div class="list-header-actions">
+          <button class="btn btn--small" id="manage-add-folder-btn" type="button">+ Nouveau dossier</button>
+        </div>
+        <!-- v264 : trois filtres exclusifs (un seul à la fois, aucun par
+             défaut) : boîtes activées pour la révision / publiées / non
+             publiées — les autres boîtes sont grisées. -->
+        <div class="org-display-toggle org-filter-toggle" id="org-filter-toggle">
+          <button type="button" class="org-display-toggle-btn org-filter-btn" id="org-rev-filter-btn" data-org-filter="rev" title="Afficher les boîtes activées pour la révision" aria-label="Afficher les boîtes activées pour la révision" aria-pressed="false">
+            <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-13.7 5.7"/><path d="M4 12a8 8 0 0 1 13.7-5.7"/><polyline points="17.5 2.5 17.7 6.3 14 6.6"/><polyline points="6.5 21.5 6.3 17.7 10 17.4"/></svg>
+          </button>
+          <button type="button" class="org-display-toggle-btn org-filter-btn" data-org-filter="published" title="Afficher mes boîtes publiées" aria-label="Afficher mes boîtes publiées" aria-pressed="false">
+            <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z"/><polyline points="8.5 10 11 12.5 15.5 8"/></svg>
+          </button>
+          <button type="button" class="org-display-toggle-btn org-filter-btn" data-org-filter="unpublished" title="Afficher mes boîtes non publiées" aria-label="Afficher mes boîtes non publiées" aria-pressed="false">
+            <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z"/><line x1="3" y1="3" x2="21" y2="21"/></svg>
+          </button>
+        </div>
+        <div class="org-display-toggle" id="org-display-toggle">
+          <button type="button" class="org-display-toggle-btn is-active" data-org-display="count" title="Nombre de fiches/boîtes">
+            <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/></svg>
+          </button>
+          <button type="button" class="org-display-toggle-btn" data-org-display="gauge" title="Barre d'apprentissage">
+            <svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="4" rx="2"/><rect x="3" y="10" width="11" height="4" rx="2" fill="currentColor" stroke="none"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+      </div>
       <div class="subjects-panel">
         <ul class="subject-list" id="subject-list"></ul>
       </div>
@@ -1888,6 +1890,11 @@
         </div>
       </div>
       <ul class="subject-list" id="boite-picker-list"></ul>
+      <!-- v264 : « Annuler » visible (ex. « Dans quel dossier ranger… ») ;
+           la croix de la bulle du robot fait la même chose. -->
+      <div class="boite-picker-cancel-row" id="boite-picker-cancel-row" hidden>
+        <button type="button" class="btn btn--ghost" id="boite-picker-cancel-btn">Annuler</button>
+      </div>
       <div class="multi-subject-picker-actions boite-picker-actions" id="boite-picker-actions" hidden>
         <button type="button" class="btn btn--primary" id="boite-picker-confirm">Valider</button>
       </div>

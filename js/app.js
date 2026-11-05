@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v263";
+  const APP_VERSION = "v264";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -1116,6 +1116,9 @@
     if (!Number.isFinite(scale) || scale <= 0) scale = 1;
     scale = Math.max(HOME_SCALE_MIN, Math.min(HOME_SCALE_MAX, scale));
     root.setProperty("--home-scale", scale.toFixed(4));
+    // v264 : tout l'accueil tient à l'écran → pas de défilement (voir CSS
+    // body.is-view-home.home-fits).
+    document.body.classList.toggle("home-fits", homeStageContentH * scale <= availH + 1);
     root.setProperty("--home-stage-h", `${homeStageContentH}px`);
   }
   window.addEventListener("resize", () => fitHomeStage());
@@ -3875,6 +3878,12 @@
     }
     const backBtnEl = el("boite-picker-back-btn");
     if (backBtnEl) backBtnEl.textContent = ctx.backLabel || "← Retour";
+    // v264 : choix annulable → bouton « Annuler » visible, et la croix de
+    // la bulle du robot annule aussi.
+    const cancelable = ctx.backLabel === "Annuler" || !!ctx.closeSpeechCancels;
+    ctx.closeSpeechCancels = cancelable;
+    const cancelRow = el("boite-picker-cancel-row");
+    if (cancelRow) cancelRow.hidden = !cancelable;
 
     const actions = el("boite-picker-actions");
     const confirmBtn = el("boite-picker-confirm");
@@ -3976,6 +3985,8 @@
   }
   const boitePickerBackBtn = el("boite-picker-back-btn");
   if (boitePickerBackBtn) boitePickerBackBtn.addEventListener("click", () => cancelBoitePicker());
+  const boitePickerCancelBtn = el("boite-picker-cancel-btn");
+  if (boitePickerCancelBtn) boitePickerCancelBtn.addEventListener("click", () => cancelBoitePicker());
 
   // Item 6 (nouveau lot) : quand ce sélecteur est ouvert depuis "Sélection
   // manuelle" (programme de révision), il faut, une fois la sélection
@@ -7652,48 +7663,34 @@
   });
   setOrgDisplayMode("none");
 
-  /* v248 : deux affichages de l'organisation (boutons reprenant les
-     pictos) : toute l'arborescence, ou la même avec les boîtes et les
-     branches « hors de mes révisions » grisées. Mémorisé sur l'appareil. */
-  const ORG_REV_DISPLAY_KEY = "fiches_org_rev_display";
-  let orgRevDisplay = "all";
-  try {
-    orgRevDisplay = localStorage.getItem(ORG_REV_DISPLAY_KEY) === "dim" ? "dim" : "all";
-  } catch (e) {
-    orgRevDisplay = "all";
-  }
-  function setOrgRevDisplay(mode) {
-    orgRevDisplay = mode === "dim" ? "dim" : "all";
-    try {
-      localStorage.setItem(ORG_REV_DISPLAY_KEY, orgRevDisplay);
-    } catch (e) {
-      /* stockage indisponible */
-    }
-    document.body.dataset.orgRevDisplay = orgRevDisplay;
-    document.querySelectorAll(".org-rev-toggle-btn").forEach((b) => b.classList.toggle("is-active", b.dataset.orgRevDisplay === orgRevDisplay));
-  }
-  document.querySelectorAll(".org-rev-toggle-btn").forEach((btn) => {
-    btn.addEventListener("click", () => setOrgRevDisplay(btn.dataset.orgRevDisplay));
-  });
-  setOrgRevDisplay(orgRevDisplay);
-  /* v254 : filtre « Publiées / Non publiées » (remplace celui de Mes
-     créations, supprimée) : grise les boîtes et dossiers non concernés,
-     et toujours les boîtes qui ne sont pas les miennes. Remis à zéro à
-     chaque arrivée sur la page ; re-toucher le bouton actif l'enlève. */
-  let orgPubDisplay = "none";
-  function setOrgPubDisplay(mode) {
-    orgPubDisplay = mode === "published" || mode === "unpublished" ? mode : "none";
-    document.body.dataset.orgPubDisplay = orgPubDisplay;
-    document.querySelectorAll(".org-pub-toggle-btn").forEach((b) => {
-      const on = b.dataset.orgPubDisplay === orgPubDisplay;
+  /* v264 : trois filtres exclusifs de l'organisation (un seul à la fois,
+     aucun par défaut, remis à zéro à chaque arrivée sur la page ;
+     re-toucher le filtre actif l'enlève) :
+     - « rev » : afficher les boîtes activées pour la révision (les autres
+       grisées ; ex-affichage « hors de mes révisions grisées », v248) ;
+     - « published » / « unpublished » : afficher mes boîtes publiées / non
+       publiées (v254).
+     Le grisé est fait en CSS (body[data-org-rev-display="dim"],
+     body[data-org-pub-display]). */
+  let orgFilter = "none";
+  function setOrgFilter(mode) {
+    orgFilter = ["rev", "published", "unpublished"].includes(mode) ? mode : "none";
+    document.body.dataset.orgRevDisplay = orgFilter === "rev" ? "dim" : "all";
+    document.body.dataset.orgPubDisplay = orgFilter === "published" || orgFilter === "unpublished" ? orgFilter : "none";
+    document.querySelectorAll(".org-filter-btn").forEach((b) => {
+      const on = b.dataset.orgFilter === orgFilter;
       b.classList.toggle("is-active", on);
       b.setAttribute("aria-pressed", String(on));
     });
   }
-  document.querySelectorAll(".org-pub-toggle-btn").forEach((btn) => {
-    btn.addEventListener("click", () => setOrgPubDisplay(orgPubDisplay === btn.dataset.orgPubDisplay ? "none" : btn.dataset.orgPubDisplay));
+  // Anciens noms, encore appelés ailleurs.
+  function setOrgPubDisplay(mode) {
+    setOrgFilter(mode);
+  }
+  document.querySelectorAll(".org-filter-btn").forEach((btn) => {
+    btn.addEventListener("click", () => setOrgFilter(orgFilter === btn.dataset.orgFilter ? "none" : btn.dataset.orgFilter));
   });
-  setOrgPubDisplay("none");
+  setOrgFilter("none");
   /** Boîte affichée dans l'organisation : toutes, dans les deux affichages
    *  (l'écart se fait par le grisé, en CSS). */
   function orgShowsSubject(s) {
@@ -7915,7 +7912,7 @@
     "revision-program": "Révisions prioritaires",
     "revision-reinforce": "Renforcer mes connaissances",
     review: "Réviser",
-    manage: "Organisation des boîtes de révision",
+    manage: "Organisation de mes boîtes de fiches",
     "new-card": "Nouvelle fiche",
     cards: "Fiches",
     stats: "Statistiques",
@@ -8077,7 +8074,7 @@
     // Round 47 : sur Réviser, le titre est le nombre de fiches à revoir.
     // Round 52 : le titre de Réviser est le nom de la boîte en cours.
     review: { dynamic: () => reviewHeaderBoxTitle() },
-    manage: "Organisation des boîtes de révision",
+    manage: "Organisation de mes boîtes de fiches",
     "new-card": { from: "#view-new-card .card-form-header h2.section-title" },
     cards: { from: "#cards-scope-title", fallback: "Liste des fiches", hide: ["#view-cards .cards-list-big-title"] },
     stats: "Statistiques",
@@ -8219,8 +8216,10 @@
     // Round 17, item 3 : bloc d'actions de "Mon bureau" visible
     // UNIQUEMENT sur cette page.
     if (manageStickyActionsEl) manageStickyActionsEl.hidden = key !== "manage";
+    if (key === "manage") syncManageLibraryIcon();
     // Round 31 : fond propre à la page Librairie (voir css, body.is-view-library).
     document.body.classList.toggle("is-view-library", key === "library");
+    document.body.classList.toggle("is-view-home", key === "home");
     setTimeout(refreshHomeEventWarning, 0);
   }
   document.querySelectorAll(".view").forEach((v) => {
@@ -10631,6 +10630,13 @@
     // v256 (Q6) : profil enseignant (avec ou sans usage élève) — pas de
     // révisions : voir css/style.css (body.profile-teacher).
     document.body.classList.toggle("profile-teacher", signedIn && role === "teacher");
+    // v264 : robot aux couleurs du compte enseignant (bleus → vert, diode
+    // verte → bleue ; image icons/logo-enseignant.png).
+    const robotSrc = signedIn && role === "teacher" ? "./icons/logo-enseignant.png" : "./icons/logo.png";
+    ["home-logo", "body-logo"].forEach((id) => {
+      const img = el(id);
+      if (img && img.getAttribute("src") !== robotSrc) img.setAttribute("src", robotSrc);
+    });
     const btn = el("role-indicator");
     if (!btn) return;
     // Pas de repère sur la page de choix du compte : rien n'est encore choisi.
@@ -16381,6 +16387,9 @@
     return addLibraryInFlight;
   }
   async function addLibraryCollectionToRevisionsImpl(col) {
+    // v264 : on revérifie la connexion avant de dire « Connecte-toi » (le
+    // compte connecté pouvait être oublié après un jeton expiré).
+    if (!accountCurrentUser && Sync.isConfigured()) accountCurrentUser = (await Sync.auth.getUser()) || null;
     if (!accountCurrentUser) {
       await robotAlert("Connecte-toi à ton compte pour ajouter une boîte de la Librairie à tes révisions.");
       return false;
@@ -17426,6 +17435,23 @@
   const boxCreateCancelBtn = el("box-create-cancel-btn");
   if (boxCreateCancelBtn) boxCreateCancelBtn.addEventListener("click", () => closeBoxCreateView());
 
+  // v264 : bouton Librairie de l'Organisation — même picto que celui de
+  // l'accueil (réglable dans Darwin Admin), même effet.
+  const manageLibraryBtn = el("manage-library-btn");
+  function syncManageLibraryIcon() {
+    const src = document.querySelector('.home-circle[data-key="library"] .home-circle-icon');
+    const slot = el("manage-library-btn-icon");
+    if (src && slot && slot.dataset.from !== src.outerHTML) {
+      slot.innerHTML = src.outerHTML;
+      slot.dataset.from = src.outerHTML;
+    }
+  }
+  if (manageLibraryBtn) {
+    manageLibraryBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="library"]');
+      if (tab) tab.click();
+    });
+  }
   const manageNewBoxBtn = el("manage-new-box-btn");
   if (manageNewBoxBtn) manageNewBoxBtn.addEventListener("click", () => createBoxFromManage());
 
