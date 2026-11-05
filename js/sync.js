@@ -943,6 +943,12 @@ async function authGetUser() {
   authUserCache = user ? { user, at: Date.now() } : null;
   return user;
 }
+/** v265 : compte relu sur le serveur, sans la mémoire de 30 s (données du
+ *  compte modifiées sur un autre appareil, ex. le défi du jour). */
+async function authGetUserFresh() {
+  authUserCache = null;
+  return authGetUser();
+}
 async function authGetUserUncached(c) {
   // Round 29 : getUser() interroge le serveur ; hors-ligne (ou réseau
   // capricieux), on se rabat sur la session enregistrée sur l'appareil
@@ -1797,6 +1803,7 @@ window.Sync = {
     updateProfile: authUpdateProfile,
     updateSchoolLevel: authUpdateSchoolLevel,
     updateMetadata: authUpdateMetadata,
+    getUserFresh: authGetUserFresh,
     sendPasswordReset: authSendPasswordReset,
     updatePassword: authUpdatePassword,
     onPasswordRecovery: authOnPasswordRecovery,

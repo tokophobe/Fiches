@@ -93,6 +93,25 @@
     if (!s || s.v !== 1 || (!s.res.length && !s.wrong.length)) return "todo";
     return s.done ? "done" : "playing";
   }
+  /* v265 : synchronisation entre appareils (appli) — on garde la partie la
+     plus avancée : terminée d'abord, sinon celle qui a le plus de
+     réponses ; pour la série de jours, la plus récente (à égalité, la plus
+     longue). */
+  function progress(s) {
+    if (!s || s.v !== 1) return 0;
+    const answered = Array.isArray(s.res) ? s.res.length : 0;
+    const greyed = Array.isArray(s.wrong) ? s.wrong.length : 0;
+    return (s.done ? 1000 : 0) + answered * 10 + greyed + 1;
+  }
+  function moreAdvanced(a, b) {
+    return progress(b) > progress(a) ? b : a;
+  }
+  function newerStreak(a, b) {
+    if (!b || !b.last) return a || null;
+    if (!a || !a.last) return b;
+    if (b.last !== a.last) return b.last > a.last ? b : a;
+    return (b.count || 0) > (a.count || 0) ? b : a;
+  }
   function score(s) {
     return s.res.filter((r) => r === "ok" || r === "late").length;
   }
@@ -331,5 +350,5 @@
     };
   }
 
-  window.DarwinDefi = { N, LIVES, today, questionsFor, load, status, score, shareText, mount, localStore, currentStreak };
+  window.DarwinDefi = { N, LIVES, today, questionsFor, load, status, score, shareText, mount, localStore, currentStreak, stateKey: KEY, STREAK_KEY: STREAK, progress, moreAdvanced, newerStreak };
 })();

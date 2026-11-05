@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v264";
+  const APP_VERSION = "v265";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -3882,8 +3882,9 @@
     // la bulle du robot annule aussi.
     const cancelable = ctx.backLabel === "Annuler" || !!ctx.closeSpeechCancels;
     ctx.closeSpeechCancels = cancelable;
-    const cancelRow = el("boite-picker-cancel-row");
-    if (cancelRow) cancelRow.hidden = !cancelable;
+    // v265 : le bouton « Annuler » est dans la bulle du robot.
+    const speechCancel = el("body-logo-speech-cancel");
+    if (speechCancel) speechCancel.hidden = !(cancelable && ctx.robotMessage);
 
     const actions = el("boite-picker-actions");
     const confirmBtn = el("boite-picker-confirm");
@@ -3985,8 +3986,13 @@
   }
   const boitePickerBackBtn = el("boite-picker-back-btn");
   if (boitePickerBackBtn) boitePickerBackBtn.addEventListener("click", () => cancelBoitePicker());
-  const boitePickerCancelBtn = el("boite-picker-cancel-btn");
-  if (boitePickerCancelBtn) boitePickerCancelBtn.addEventListener("click", () => cancelBoitePicker());
+  const speechCancelBtn = el("body-logo-speech-cancel");
+  if (speechCancelBtn) {
+    speechCancelBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      cancelBoitePicker();
+    });
+  }
 
   // Item 6 (nouveau lot) : quand ce sélecteur est ouvert depuis "Sélection
   // manuelle" (programme de révision), il faut, une fois la sélection
@@ -8216,6 +8222,8 @@
     // Round 17, item 3 : bloc d'actions de "Mon bureau" visible
     // UNIQUEMENT sur cette page.
     if (manageStickyActionsEl) manageStickyActionsEl.hidden = key !== "manage";
+    // v265 : « Annuler » de la bulle seulement pendant un choix de dossier.
+    if (key !== "boite-picker" && el("body-logo-speech-cancel")) el("body-logo-speech-cancel").hidden = true;
     if (key === "manage") syncManageLibraryIcon();
     // Round 31 : fond propre à la page Librairie (voir css, body.is-view-library).
     document.body.classList.toggle("is-view-library", key === "library");
@@ -8439,9 +8447,96 @@
      orange), en cours, ou fait (grisé, avec le score). */
   function defiStore() {
     const uid = (window.UserScope && window.UserScope.uid) || "local";
-    return window.DarwinDefi ? window.DarwinDefi.localStore(uid) : null;
+    if (!window.DarwinDefi) return null;
+    const local = window.DarwinDefi.localStore(uid);
+    // v265 : chaque enregistrement de la partie du jour est aussi envoyé
+    // dans les données du compte (synchronisation entre appareils).
+    return {
+      get: (k) => local.get(k),
+      set: (k, v) => {
+        local.set(k, v);
+        scheduleDefiPush();
+      },
+    };
   }
+  /* v265 : le défi du jour est synchronisé entre les appareils d'un même
+     compte, via les données du compte (user_metadata.defi = { day, state,
+     streak }) — pas de table à créer. Règle : on garde la partie la plus
+     avancée (js/defi.js, moreAdvanced / newerStreak). Avant, chaque
+     appareil avait la sienne : un défi fini sur le PC restait « à jouer »
+     sur l'iPhone, et pouvait être refait. */
+  let defiPushTimer = null;
+  function scheduleDefiPush() {
+    if (!accountCurrentUser || !Sync.isConfigured() || !Sync.auth.updateMetadata) return;
+    clearTimeout(defiPushTimer);
+    defiPushTimer = setTimeout(pushDefiToAccount, 700);
+  }
+  async function pushDefiToAccount() {
+    const D = window.DarwinDefi;
+    const uid = (window.UserScope && window.UserScope.uid) || "local";
+    if (!D || !accountCurrentUser) return;
+    const local = D.localStore(uid);
+    const day = D.today().key;
+    const payload = { day, state: local.get(D.stateKey(day)), streak: local.get(D.STREAK_KEY) || null };
+    try {
+      const r = await Sync.auth.updateMetadata({ defi: payload });
+      if (!(r && r.error) && accountCurrentUser) {
+        accountCurrentUser = { ...accountCurrentUser, user_metadata: { ...(accountCurrentUser.user_metadata || {}), defi: payload } };
+      }
+    } catch (e) {
+      /* hors ligne : renvoyé au prochain enregistrement */
+    }
+  }
+  /** Reprend la partie du jour enregistrée sur un autre appareil si elle
+   *  est plus avancée (et la série de jours la plus récente). Renvoie true
+   *  si l'état de cet appareil a changé. */
+  async function pullDefiFromAccount() {
+    const D = window.DarwinDefi;
+    if (!D || !accountCurrentUser || !Sync.isConfigured()) return false;
+    let user = null;
+    try {
+      user = Sync.auth.getUserFresh ? await Sync.auth.getUserFresh() : await Sync.auth.getUser();
+    } catch (e) {
+      user = null;
+    }
+    if (!user) return false;
+    accountCurrentUser = user;
+    const remote = (user.user_metadata || {}).defi || {};
+    const uid = (window.UserScope && window.UserScope.uid) || "local";
+    const local = D.localStore(uid);
+    const day = D.today().key;
+    let changed = false;
+    // Partie de cet appareil plus avancée que celle du compte (ex. jouée
+    // avant la synchronisation) → elle est envoyée.
+    const mineNow = local.get(D.stateKey(day));
+    const remoteToday = remote.day === day ? remote.state : null;
+    if (mineNow && D.progress(mineNow) > D.progress(remoteToday)) scheduleDefiPush();
+    if (remote.day === day && remote.state) {
+      const mine = local.get(D.stateKey(day));
+      if (D.moreAdvanced(mine, remote.state) === remote.state && JSON.stringify(mine) !== JSON.stringify(remote.state)) {
+        local.set(D.stateKey(day), remote.state);
+        changed = true;
+      }
+    }
+    const myStreak = local.get(D.STREAK_KEY);
+    const best = D.newerStreak(myStreak, remote.streak);
+    if (best && JSON.stringify(best) !== JSON.stringify(myStreak)) {
+      local.set(D.STREAK_KEY, best);
+      changed = true;
+    }
+    return changed;
+  }
+  let defiPullAt = 0;
   function refreshHomeDefi() {
+    paintHomeDefi();
+    // v265 : puis état du compte (autre appareil), au plus toutes les 10 s.
+    if (!accountCurrentUser || Date.now() - defiPullAt < 10000) return;
+    defiPullAt = Date.now();
+    pullDefiFromAccount().then((changed) => {
+      if (changed) paintHomeDefi();
+    });
+  }
+  function paintHomeDefi() {
     const btn = el("home-defi-circle");
     const store = defiStore();
     if (!btn || !store) return;
@@ -8457,10 +8552,17 @@
     }
     btn.setAttribute("aria-label", `Défi du jour — ${status === "done" ? "fait" : status === "playing" ? "en cours" : "à jouer"}`);
   }
-  function renderDefiView() {
+  async function renderDefiView() {
     const root = el("defi-app");
+    if (!root || !defiStore()) return;
+    // v265 : reprendre d'abord la partie faite sur un autre appareil (sans
+    // cela, on pouvait refaire le défi déjà joué ailleurs).
+    if (accountCurrentUser) {
+      root.innerHTML = `<p class="field-hint">Chargement du défi…</p>`;
+      await pullDefiFromAccount();
+      defiPullAt = Date.now();
+    }
     const store = defiStore();
-    if (!root || !store) return;
     const D = window.DarwinDefi;
     const day = D.today();
     const dayEl = el("defi-app-day");
@@ -10905,6 +11007,7 @@
     accountCurrentUser = await Sync.auth.getUser();
     accountStateKnown = true;
     updateAccountHomeButton();
+    if (accountCurrentUser) refreshHomeDefi(); // v265 : défi des autres appareils
     if (accountCurrentUser) syncSharedBoxesForStudent();
     touchActivity();
     // Round 26, item 2 : complète le nom du prof sur ses anciens partages.
