@@ -1038,19 +1038,17 @@
     // le CSS de .home-scatter (largeur dispo = .desk moins les 18px de
     // padding de #view-home de chaque côté, plafonnée à 354px) — plus
     // aucune dépendance à ce qui est affiché à l'écran au moment du calcul.
-    const HOME_SCATTER_MAX_WIDTH = 354;
-    const VIEW_HOME_SIDE_PADDING = 18;
-    const deskWidthForLogo = document.querySelector(".desk")?.getBoundingClientRect().width || window.innerWidth;
-    const viewHomeContentWidth = Math.max(0, deskWidthForLogo - VIEW_HOME_SIDE_PADDING * 2);
-    const scatterWidthForLogo = Math.min(HOME_SCATTER_MAX_WIDTH, viewHomeContentWidth);
-    // "left" d'un élément en position absolue se mesure depuis le bord
-    // EXTÉRIEUR de la boîte de padding du référent (#view-home), donc
-    // depuis avant son propre padding — il faut le rajouter ici pour que
-    // 0px corresponde bien au tout début de la zone de contenu.
-    const scatterLeftOffset = VIEW_HOME_SIDE_PADDING + (viewHomeContentWidth - scatterWidthForLogo) / 2;
+    // v263 : le robot, le logo darwin et son texte sont placés dans le même
+    // dessin de référence que les ronds (#home-stage, voir fitHomeStage) :
+    // horizontalement en % de la zone des ronds (354 px, à 18 px du bord),
+    // verticalement en % de 816 px (hauteur de l'ancienne page d'accueil
+    // de référence) — mêmes réglages, même placement qu'avant sur
+    // l'iPhone de référence, sur tous les écrans.
+    const scatterLeftOffset = HOME_STAGE_PAD;
+    const scatterWidthForLogo = HOME_SCATTER_W;
     const logoLeftPx = scatterLeftOffset + (logo.x / 100) * scatterWidthForLogo;
     root.setProperty("--home-logo-x", `${Math.round(logoLeftPx)}px`);
-    root.setProperty("--home-logo-y", `${logo.y}%`);
+    root.setProperty("--home-logo-y", `${Math.round((logo.y / 100) * HOME_LOGO_REF_H)}px`);
     root.setProperty("--home-logo-size", `${logo.size}px`);
     root.setProperty("--home-logo-shadow", logo.shadow ? LOGO_SHADOW_FILTER : "none");
     root.setProperty("--body-logo-size", `${bodyLogo.size}px`);
@@ -1064,7 +1062,7 @@
     const darwinText = loadDevSettings().darwinText;
     const darwinLogoLeftPx = scatterLeftOffset + (darwinLogo.x / 100) * scatterWidthForLogo;
     root.setProperty("--darwin-logo-x", `${Math.round(darwinLogoLeftPx)}px`);
-    root.setProperty("--darwin-logo-y", `${darwinLogo.y}%`);
+    root.setProperty("--darwin-logo-y", `${Math.round((darwinLogo.y / 100) * HOME_LOGO_REF_H)}px`);
     root.setProperty("--darwin-logo-size", `${darwinLogo.size}px`);
     root.setProperty("--darwin-logo-shadow", darwinLogo.shadow ? LOGO_SHADOW_FILTER : "none");
     // Round 15, item 2 : couleur du logo darwin (topbar + accueil, même
@@ -1073,7 +1071,7 @@
     root.setProperty("--darwin-logo-color", darwinLogo.color || "#4a90d9");
     const darwinTextLeftPx = scatterLeftOffset + (darwinText.x / 100) * scatterWidthForLogo;
     root.setProperty("--darwin-text-x", `${Math.round(darwinTextLeftPx)}px`);
-    root.setProperty("--darwin-text-y", `${darwinText.y}%`);
+    root.setProperty("--darwin-text-y", `${Math.round((darwinText.y / 100) * HOME_LOGO_REF_H)}px`);
     root.setProperty("--darwin-text-size", `${darwinText.size}px`);
     const darwinTextEl = el("darwin-home-text");
     if (darwinTextEl) {
@@ -1081,7 +1079,49 @@
       darwinTextEl.textContent = content;
       darwinTextEl.hidden = content.length === 0;
     }
+    // v263 : hauteur utile du dessin (jusqu'au bas de l'élément le plus
+    // bas, + une petite marge) — c'est elle qui doit tenir à l'écran.
+    let bottom = 0;
+    document.querySelectorAll("#home-scatter .home-circle[data-key]").forEach((c) => {
+      const pos = layout[c.dataset.key];
+      if (pos) bottom = Math.max(bottom, HOME_STAGE_PAD + (pos.y / 100) * HOME_SCATTER_H + pos.d / 2);
+    });
+    const robotImg = el("home-logo");
+    const robotRatio = robotImg && robotImg.naturalWidth ? robotImg.naturalHeight / robotImg.naturalWidth : 1;
+    bottom = Math.max(bottom, (logo.y / 100) * HOME_LOGO_REF_H + (logo.size * robotRatio) / 2);
+    bottom = Math.max(bottom, (darwinLogo.y / 100) * HOME_LOGO_REF_H + (darwinLogo.size * 239) / 600 / 2);
+    homeStageContentH = Math.max(300, Math.ceil(bottom + 16));
+    fitHomeStage();
   }
+  /* v263 : accueil à l'échelle — dessin de référence (390 × hauteur utile)
+     agrandi ou réduit d'un bloc pour tenir dans la colonne de l'appli
+     ET dans la hauteur de l'écran sous le bandeau du haut. */
+  const HOME_STAGE_W = 390;
+  const HOME_STAGE_PAD = 18;
+  const HOME_SCATTER_W = 354;
+  const HOME_SCATTER_H = 640;
+  const HOME_LOGO_REF_H = 816;
+  const HOME_SCALE_MIN = 0.7;
+  const HOME_SCALE_MAX = 1.6;
+  let homeStageContentH = 760;
+  function fitHomeStage() {
+    const root = document.documentElement.style;
+    const desk = document.querySelector(".desk");
+    const availW = desk ? desk.getBoundingClientRect().width : window.innerWidth;
+    const headerH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--sticky-header-h")) || 96;
+    // #view-home commence 18 px au-dessus du contenu (marge négative) ;
+    // on garde une petite marge en bas.
+    const availH = window.innerHeight - headerH + HOME_STAGE_PAD - 12;
+    let scale = Math.min(availW / HOME_STAGE_W, availH / homeStageContentH);
+    if (!Number.isFinite(scale) || scale <= 0) scale = 1;
+    scale = Math.max(HOME_SCALE_MIN, Math.min(HOME_SCALE_MAX, scale));
+    root.setProperty("--home-scale", scale.toFixed(4));
+    root.setProperty("--home-stage-h", `${homeStageContentH}px`);
+  }
+  window.addEventListener("resize", () => fitHomeStage());
+  // Hauteur du robot connue une fois son image chargée.
+  if (el("home-logo")) el("home-logo").addEventListener("load", () => applyHomeLayout());
+  window.addEventListener("orientationchange", () => setTimeout(fitHomeStage, 120));
 
   /** Retourne le temps de retournement de fiche réglé (item 1c), en
    *  millisecondes — utilisé à la fois pour la durée de transition CSS et
@@ -8202,6 +8242,7 @@
     const rootStyle = document.documentElement.style;
     function syncStickyHeaderHeight() {
       rootStyle.setProperty("--sticky-header-h", `${Math.ceil(header.getBoundingClientRect().height)}px`);
+      fitHomeStage(); // v263 : l'accueil se recale sous le bandeau
       // La fiche (page Réviser) a sa marge haute minimale calculée à
       // partir de cette même hauteur (voir applyReviewLayout) — on la
       // resynchronise ici pour rester cohérent si le bandeau change de
@@ -8487,6 +8528,7 @@
     document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
     el("view-home").classList.add("is-active");
     restartMascotFloat();
+    fitHomeStage();
     if (homeBtn) homeBtn.hidden = true;
     if (el("body-logo-row")) el("body-logo-row").hidden = true;
     bodyLogoSpeechMessages = [];

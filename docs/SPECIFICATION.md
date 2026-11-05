@@ -614,7 +614,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
-| v263 | 5 nov. 2026 | Bandeau de couleur du compte (élève / enseignant) : affiché dès le choix du compte à l'ouverture, sans attendre le serveur (l'appli se croyait en compte élève jusque-là), et sur toute la largeur, depuis le haut de l'écran. |
+| v263 | 5 nov. 2026 | Bandeau de couleur du compte (élève / enseignant) : affiché dès le choix du compte à l'ouverture, sans attendre le serveur (l'appli se croyait en compte élève jusque-là), et sur toute la largeur, depuis le haut de l'écran. Accueil à l'échelle : tout tient à l'écran sur tous les appareils (les pictos du bas sortaient de l'écran sur certains téléphones et sur PC) ; sur tablette et grand écran, l'accueil remplit la hauteur. Même placement qu'avant sur l'iPhone de référence. |
 | v262 | 4 nov. 2026 | Une seule couleur pour tous les boutons principaux. Créer un compte : blocs sans titre, « Utilisation de l'appli », niveau scolaire dans son bloc. Classement en blocs emboîtés comme la Librairie, partout. Nouvelle fiche : un bloc par champ. Même police pour toutes les zones de saisie et leurs textes d'exemple. Ajouter un évènement : blocs sans titre, « (facultatif) » sur les champs concernés. |
 | v261 | 4 nov. 2026 | Retouches visuelles : accueil (petits boutons en pictogramme, liseré fin en dégradé, vert pour le compte enseignant, lévitation du robot relancée quand elle se figeait) ; Créer un compte en blocs, « utilisateur normal » coché par défaut ; Nouvelle fiche (cases QCM toujours visibles « (facultatif) », aides derrière un picto ⓘ lues par le robot) ; Ajouter un évènement en blocs, boutons côte à côte ; boutons au même aspect partout ; page d'une classe sans « (élève) / (enseignant) », Renommer sous le titre, code d'invitation en simple information. |
 | v260 | 4 nov. 2026 | Corrigé : la page d'une classe ouverte depuis « Mes classes » pouvait montrer d'anciennes informations (par ex. un dossier supprimé par l'enseignant) jusqu'à la réouverture ; elle relit désormais la classe à jour à chaque ouverture. |
@@ -641,7 +641,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | Écran | Accès | Contenu |
 |---|---|---|
 | **Choix du compte** | Ouverture (deux usages) | Mon compte élève / Mon compte enseignant |
-| **Accueil** | — | Boutons ronds : Réviser, Défi du jour, Mes fiches, Mes classes (ou Rejoindre / Créer une classe), Mon agenda, Librairie. En simple pictogramme, sans cercle ni intitulé (v261) : Statistiques, Réglages, Mon compte, Signalements (s'il y en a). Bandeau défilant d'alertes. Robot qui lévite. |
+| **Accueil** | — | Boutons ronds : Réviser, Défi du jour, Mes fiches, Mes classes (ou Rejoindre / Créer une classe), Mon agenda, Librairie. En simple pictogramme, sans cercle ni intitulé (v261) : Statistiques, Réglages, Mon compte, Signalements (s'il y en a). Bandeau défilant d'alertes. Robot qui lévite. **À l'échelle** (v263) : robot, logo et boutons forment un seul dessin, agrandi ou réduit pour tenir en entier dans l'écran (largeur et hauteur), sur téléphone, tablette et ordinateur ; placement réglé dans Darwin Admin sur le dessin de référence (iPhone). |
 | **Réviser** | Accueil | Révisions prioritaires, Renforcer mes connaissances, Sélection manuelle |
 | **Séance de révision** | Réviser | Fiche, 4 boutons de note, jauge, mini-histogramme des échéances |
 | **Organisation** | Accueil (Mes fiches) | §5.3 |

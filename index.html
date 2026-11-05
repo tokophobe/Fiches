@@ -384,6 +384,12 @@
     <!-- VUE ACCUEIL (item 1a) : nouvelle page centrale — on y repasse à
          chaque fois pour aller d'une page à l'autre (item, confirmé). -->
     <section id="view-home" class="view is-active">
+      <!-- v263 : robot, logo darwin, texte et ronds forment un seul dessin
+           de référence (#home-stage, 390 px de large, celui de l'iPhone où
+           la disposition est réglée), agrandi ou réduit d'un bloc pour
+           tenir dans la place disponible (voir fitHomeStage, js/app.js). -->
+      <div class="home-stage-frame" id="home-stage-frame">
+      <div class="home-stage" id="home-stage">
       <img src="./icons/logo.png" alt="" id="home-logo" class="home-logo" />
       <!-- Round 14 : logo "darwin" affiché en plus du robot, position/
            taille/ombre réglables en mode développeur (dev-darwin-logo-list). -->
@@ -473,6 +479,8 @@
           <span>Se connecter</span>
         </button>
       </div>
+      </div><!-- /#home-stage -->
+      </div><!-- /#home-stage-frame -->
     </section>
 
     <!-- Round 25, item 2 : palier "Réviser" (même graphisme que les hubs

@@ -182,6 +182,22 @@ s'exécute d'abord dans la base de test, puis dans la réelle, et doit
 structure de référence est l'export de la base réelle
 (`supabase/copie-de-test/`).
 
+## Tailles d'écran (v263)
+
+- Téléphones : « zoom automatique » (script en tête d'`index.html`,
+  réglage `autoZoom` de Darwin Admin) — chaque page est mise en page pour
+  390 px de large puis agrandie/réduite pour remplir la largeur. Petite
+  dette technique (la norme est une mise en page fluide), gardée tant
+  qu'elle donne satisfaction.
+- Pages de contenu : colonne fluide de 560 px maximum (`.desk`).
+- Accueil : un seul dessin de référence (`#home-stage`, 390 × hauteur
+  utile) mis à l'échelle par `fitHomeStage` pour tenir en largeur ET en
+  hauteur. Repères inchangés pour Darwin Admin : ronds en % de 354 × 640
+  (à 18 px du bord), robot / logo darwin en % de 354 px et de 816 px.
+- À chaque livraison qui touche l'affichage : planche de captures sur
+  iPhone SE, iPhone 13, iPhone Pro Max, iPad, PC 1366×768 et 1920×1080,
+  à montrer au propriétaire.
+
 ## Tester en local
 
 Un service worker exige `localhost` ou HTTPS :
