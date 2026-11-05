@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v265";
+  const APP_VERSION = "v266";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -8228,6 +8228,19 @@
     // Round 31 : fond propre à la page Librairie (voir css, body.is-view-library).
     document.body.classList.toggle("is-view-library", key === "library");
     document.body.classList.toggle("is-view-home", key === "home");
+    // v266 : quel que soit le chemin pour revenir à l'accueil (⌂, flèche
+    // « < »…), le bouton du défi est redessiné (avant : seulement avec ⌂ —
+    // un défi fait ailleurs restait « À jouer » après un retour par « < »),
+    // et l'accueil se recale à l'écran.
+    if (key === "home") {
+      try {
+        refreshHomeDefi();
+        fitHomeStage();
+      } catch (e) {
+        /* tout premier affichage : l'appli n'est pas encore prête (le
+           démarrage s'en charge ensuite) */
+      }
+    }
     setTimeout(refreshHomeEventWarning, 0);
   }
   document.querySelectorAll(".view").forEach((v) => {
