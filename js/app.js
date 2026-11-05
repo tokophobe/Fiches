@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v262";
+  const APP_VERSION = "v263";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -10541,12 +10541,20 @@
   const ROLE_LABELS = { student: "Élève", teacher: "Enseignant" };
   const ROLE_SWAP_ICON =
     '<svg class="icon-inline-svg role-indicator-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4L3 8l4 4"/><path d="M3 8h14"/><path d="M17 20l4-4-4-4"/><path d="M21 16H7"/></svg>';
+  /** v263 : usages connus tout de suite — ceux du compte connecté, ou, en
+   *  attendant la réponse du serveur (souvent longue au démarrage), ceux
+   *  de la session enregistrée sur l'appareil. Sans cela, le bandeau de
+   *  couleur et le compte enseignant n'apparaissaient qu'après plusieurs
+   *  secondes (l'appli se croyait en compte élève jusque-là). */
+  function knownUsages() {
+    return currentUsages() || storedSessionUsages() || [];
+  }
   function userHasBothRoles() {
-    const u = currentUsages() || [];
+    const u = knownUsages();
     return u.includes("eleve") && u.includes("enseignant");
   }
   function activeRole() {
-    const u = currentUsages() || [];
+    const u = knownUsages();
     const eleve = u.includes("eleve");
     const prof = u.includes("enseignant");
     if (prof && !eleve) return "teacher";
@@ -10572,14 +10580,15 @@
    *  la même couleur sous le bandeau. Seulement pour qui a les deux usages.
    *  Sur l'accueil, la pastille sert à changer de compte. */
   function applyRoleIndicator() {
-    const both = !!accountCurrentUser && userHasBothRoles();
+    const signedIn = !!accountCurrentUser || !!storedSessionUsages();
+    const both = signedIn && userHasBothRoles();
     const role = activeRole();
     document.body.classList.toggle("has-two-roles", both);
     document.body.classList.toggle("role-teacher", both && role === "teacher");
     document.body.classList.toggle("role-student", both && role === "student");
     // v256 (Q6) : profil enseignant (avec ou sans usage élève) — pas de
     // révisions : voir css/style.css (body.profile-teacher).
-    document.body.classList.toggle("profile-teacher", !!accountCurrentUser && role === "teacher");
+    document.body.classList.toggle("profile-teacher", signedIn && role === "teacher");
     const btn = el("role-indicator");
     if (!btn) return;
     // Pas de repère sur la page de choix du compte : rien n'est encore choisi.
@@ -10613,7 +10622,7 @@
   /** v250 : usages lus dans la session enregistrée sur l'appareil, pour
    *  proposer le choix du compte dès l'ouverture, sans attendre la
    *  synchronisation du démarrage (souvent longue). */
-  function storedSessionHasBothRoles() {
+  function storedSessionUsages() {
     try {
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
@@ -10621,12 +10630,18 @@
         const v = JSON.parse(localStorage.getItem(k) || "null");
         const user = (v && v.user) || (v && v.currentSession && v.currentSession.user) || null;
         const u = user && user.user_metadata && user.user_metadata.usages;
-        if (Array.isArray(u)) return u.includes("eleve") && u.includes("enseignant");
+        // (liste écrite ici : USAGE_KEYS est déclaré plus bas et peut ne pas
+        // être encore prêt au tout premier affichage)
+        if (Array.isArray(u)) return u.filter((x) => x === "eleve" || x === "enseignant");
       }
     } catch (e) {
       /* session illisible */
     }
-    return false;
+    return null;
+  }
+  function storedSessionHasBothRoles() {
+    const u = storedSessionUsages() || [];
+    return u.includes("eleve") && u.includes("enseignant");
   }
   function maybeShowRolePicker() {
     if (rolePickerShownThisLaunch) return;
