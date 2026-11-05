@@ -8330,7 +8330,18 @@ body.role-teacher { --role-color: var(--role-teacher-color); }
 /* Repère 1 : liseré de la couleur du compte tout en haut de l'écran.
    v261 : trait fin, prolongé d'un dégradé qui s'efface vers le bas sur
    la hauteur des petits boutons du haut. */
-body.has-two-roles .topbar {
+/* v263 : sur toute la largeur de l'appli et depuis le haut de l'écran
+   (avant : seulement sous la barre du haut, avec ses marges). */
+body.has-two-roles .topbar { position: relative; z-index: 0; }
+body.has-two-roles .topbar::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -18px;
+  right: -18px;
+  top: calc(-1 * max(18px, env(safe-area-inset-top)));
+  bottom: 0;
+  pointer-events: none;
   background-image: linear-gradient(
     to bottom,
     var(--role-color) 0 1.5px,
