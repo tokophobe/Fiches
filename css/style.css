@@ -8739,3 +8739,39 @@ body.profile-teacher #subject-list .rev-state { display: none !important; }
 }
 .rich-editor:empty:before { color: var(--field-placeholder-color) !important; font-weight: 400; font-style: normal; font-size: var(--field-font-size); }
 .is-placeholder, .calendar-date-btn.is-placeholder { color: var(--field-placeholder-color) !important; }
+
+/* ==================================================================
+   v263 : accueil à l'échelle. Robot, logo darwin, texte et ronds forment
+   un seul dessin de référence (390 px de large : l'iPhone où la
+   disposition est réglée), agrandi ou réduit d'un bloc (--home-scale,
+   calculé par fitHomeStage dans js/app.js) pour tenir dans la place
+   disponible, en largeur ET en hauteur — comme une image.
+   Repères du dessin (inchangés pour les réglages de Darwin Admin) :
+   ronds en % d'une zone de 354 × 640 placée à 18 px du bord ; robot et
+   logo darwin en % de 354 px (horizontal) et de 816 px (vertical).
+   ================================================================== */
+#view-home.is-active { padding: 0 0 max(12px, env(safe-area-inset-bottom)); }
+.home-stage-frame {
+  position: relative;
+  margin: 0 auto;
+  width: calc(390px * var(--home-scale, 1));
+  height: calc(var(--home-stage-h, 816px) * var(--home-scale, 1));
+}
+.home-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 390px;
+  height: var(--home-stage-h, 816px);
+  transform: scale(var(--home-scale, 1));
+  transform-origin: 0 0;
+}
+.home-stage .home-scatter {
+  position: absolute;
+  left: 18px;
+  top: 18px;
+  width: 354px;
+  max-width: none;
+  height: 640px;
+  margin: 0;
+}
