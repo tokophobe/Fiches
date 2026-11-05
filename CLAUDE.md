@@ -115,9 +115,10 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
 
 - La page Organisation montre **toutes** les boîtes de l'utilisateur, dans
   ou hors de ses révisions (`outOfRevisions`) ; pictos : `boxIconMarkup`
-  (type de boîte) et `revisionStateIconMarkup` (état). Filtre
-  Publiées / Non publiées (`setOrgPubDisplay`, classes `org-pub-yes` /
-  `org-unpub-yes`). La page « Mes créations » a été supprimée en v254 ;
+  (type de boîte) et `revisionStateIconMarkup` (état). v264 : trois
+  filtres exclusifs (`setOrgFilter` : `rev` / `published` /
+  `unpublished`, classes `org-pub-yes` / `org-unpub-yes`) ; recherche et
+  barre d'outils (`#manage-toolbar-sticky`) collantes dans la page. La page « Mes créations » a été supprimée en v254 ;
   il reste du code mort `manageMode === "creations"` dans `app.js`.
 - Pages d'une boîte et d'une classe : blocs repliables `.info-block`
   (`applyInfoBlockStates`, `infoRowBlock`).
@@ -181,6 +182,22 @@ s'exécute d'abord dans la base de test, puis dans la réelle, et doit
 (`round69`, `71`, `76`, `77`, `79`, `80`, `82`…) manquent au dépôt. La
 structure de référence est l'export de la base réelle
 (`supabase/copie-de-test/`).
+
+## Tailles d'écran (v263)
+
+- Téléphones : « zoom automatique » (script en tête d'`index.html`,
+  réglage `autoZoom` de Darwin Admin) — chaque page est mise en page pour
+  390 px de large puis agrandie/réduite pour remplir la largeur. Petite
+  dette technique (la norme est une mise en page fluide), gardée tant
+  qu'elle donne satisfaction.
+- Pages de contenu : colonne fluide de 560 px maximum (`.desk`).
+- Accueil (v264) : un seul dessin de référence (`#home-stage`, 390 × hauteur
+  utile) mis à l'échelle par `fitHomeStage` pour tenir en largeur ET en
+  hauteur ; sans défilement quand il tient (`body.home-fits`). Repères inchangés pour Darwin Admin : ronds en % de 354 × 640
+  (à 18 px du bord), robot / logo darwin en % de 354 px et de 816 px.
+- À chaque livraison qui touche l'affichage : planche de captures sur
+  iPhone SE, iPhone 13, iPhone Pro Max, iPad, PC 1366×768 et 1920×1080,
+  à montrer au propriétaire.
 
 ## Tester en local
 

@@ -8340,12 +8340,13 @@ body.has-two-roles .topbar::before {
   left: -18px;
   right: -18px;
   top: calc(-1 * max(18px, env(safe-area-inset-top)));
-  bottom: 0;
+  /* v264 : plus de trait ; dégradé un peu plus soutenu en haut et 1,5 fois
+     plus haut (hauteur de la barre du haut + sa marge, × 1,5). */
+  height: calc((100% + max(18px, env(safe-area-inset-top))) * 1.5);
   pointer-events: none;
   background-image: linear-gradient(
     to bottom,
-    var(--role-color) 0 1.5px,
-    color-mix(in srgb, var(--role-color) 22%, transparent) 1.5px,
+    color-mix(in srgb, var(--role-color) 34%, transparent) 0%,
     transparent 100%
   );
 }
@@ -8517,7 +8518,7 @@ body[data-org-rev-display="dim"]:not(.profile-teacher) #subject-list .subject-ro
    concerné (dont les boîtes qui ne sont pas les miennes). */
 body[data-org-pub-display="published"] #subject-list .subject-row:not(.org-pub-yes) > .org-row-wrap .org-row-main,
 body[data-org-pub-display="unpublished"] #subject-list .subject-row:not(.org-unpub-yes) > .org-row-wrap .org-row-main { opacity: 0.42; filter: grayscale(1); }
-.org-pub-toggle { margin-right: 6px; }
+.org-pub-toggle, .org-filter-toggle { margin-right: 6px; }
 /* « + Nouvelle boîte » en haut de l'organisation. */
 .manage-new-box-wrap { margin: 2px 0 12px; }
 #manage-new-box-btn.add-card-circle.classes-role-circle { width: 96px; height: 96px; font-size: 12px; }
@@ -8616,7 +8617,7 @@ body.layout-v2 :is(#view-classes-teacher, #view-classes-student) .class-card.inf
    dans l'organisation. */
 body.profile-teacher .home-circle[data-key="review"] { opacity: 0.4; filter: grayscale(1); }
 body.profile-teacher .home-circle[data-key="review"] .home-circle-badges { display: none !important; }
-body.profile-teacher #org-rev-toggle,
+body.profile-teacher #org-rev-filter-btn,
 body.profile-teacher #org-display-toggle [data-org-display="gauge"],
 body.profile-teacher #subject-list .rev-state { display: none !important; }
 
@@ -8739,3 +8740,131 @@ body.profile-teacher #subject-list .rev-state { display: none !important; }
 }
 .rich-editor:empty:before { color: var(--field-placeholder-color) !important; font-weight: 400; font-style: normal; font-size: var(--field-font-size); }
 .is-placeholder, .calendar-date-btn.is-placeholder { color: var(--field-placeholder-color) !important; }
+
+/* ==================================================================
+   v263 : accueil à l'échelle. Robot, logo darwin, texte et ronds forment
+   un seul dessin de référence (390 px de large : l'iPhone où la
+   disposition est réglée), agrandi ou réduit d'un bloc (--home-scale,
+   calculé par fitHomeStage dans js/app.js) pour tenir dans la place
+   disponible, en largeur ET en hauteur — comme une image.
+   Repères du dessin (inchangés pour les réglages de Darwin Admin) :
+   ronds en % d'une zone de 354 × 640 placée à 18 px du bord ; robot et
+   logo darwin en % de 354 px (horizontal) et de 816 px (vertical).
+   ================================================================== */
+#view-home.is-active { padding: 0 0 max(12px, env(safe-area-inset-bottom)); }
+.home-stage-frame {
+  position: relative;
+  margin: 0 auto;
+  width: calc(390px * var(--home-scale, 1));
+  height: calc(var(--home-stage-h, 816px) * var(--home-scale, 1));
+}
+.home-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 390px;
+  height: var(--home-stage-h, 816px);
+  transform: scale(var(--home-scale, 1));
+  transform-origin: 0 0;
+}
+.home-stage .home-scatter {
+  position: absolute;
+  left: 18px;
+  top: 18px;
+  width: 354px;
+  max-width: none;
+  height: 640px;
+  margin: 0;
+}
+/* v264 : « Annuler » sous la liste du sélecteur de dossier. */
+.boite-picker-cancel-row { display: flex; justify-content: center; margin: 16px 0 8px; }
+.boite-picker-cancel-row[hidden] { display: none; }
+/* v264 : contour des blocs de classement au gris du fond de page (plus
+   visible sur fond blanc) — sauf dans la Librairie, où la couleur du
+   contour indique le cycle choisi. */
+.tax-block { border-color: var(--app-bg-color, var(--desk)); }
+#view-library .tax-block { border-color: color-mix(in srgb, var(--tax-color, #4a9fe0) calc(var(--tax-alpha, 10%) * 4), transparent); }
+/* v264 : l'accueil ne défile pas quand il tient en entier à l'écran. */
+html:has(body.is-view-home.home-fits),
+body.is-view-home.home-fits { overflow: hidden; overscroll-behavior: none; }
+/* Sous le dessin de l'accueil, même fond que l'accueil (sinon une bande
+   d'une autre couleur apparaissait en bas de l'écran). */
+body.is-view-home,
+body.is-view-home .desk { background-color: var(--home-bg-color, var(--app-bg-color, var(--desk))); }
+/* v264 : pastille des petits boutons en picto seul (Signalements) décalée
+   vers le coin, pour ne plus cacher le picto. */
+.home-circle.home-circle--icon-only .home-circle-badge {
+  /* coin haut-droit du picto (28 px, centré dans le bouton) */
+  top: calc(50% - 24px);
+  right: calc(50% - 26px);
+  transform: none;
+  min-width: 16px;
+  height: 16px;
+  font-size: 9.5px;
+}
+
+/* ==================================================================
+   v264 : Défi du jour — une « carte de jeu » plutôt qu'un rond (trop
+   semblable aux autres boutons) : coins arrondis, légèrement inclinée,
+   dégradé orange chaud, texte blanc ; elle se balance doucement tant
+   que le défi est à jouer. Une fois fait : carte sobre, grisée, avec le
+   score. (`rotate` est indépendant du `transform` de placement.)
+   ================================================================== */
+.home-circle.home-defi {
+  border-radius: 24%;
+  rotate: -7deg;
+  background: linear-gradient(150deg, #ffb24a 0%, #f2832f 52%, #d9531e 100%);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(217, 83, 30, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.55);
+}
+.home-circle.home-defi .home-circle-icon { color: #fff; }
+.home-circle.home-defi span:not(.home-defi-state) { color: #fff; font-weight: 700; text-shadow: 0 1px 2px rgba(120, 40, 0, 0.35); }
+.home-circle.home-defi .home-defi-state { background: #fff; color: #c2570f; box-shadow: none; }
+.home-circle.home-defi.is-todo,
+.home-circle.home-defi.is-playing {
+  box-shadow: 0 10px 22px rgba(217, 83, 30, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  animation: home-defi-sway 3.2s ease-in-out infinite;
+}
+.home-circle.home-defi.is-playing .home-defi-state { background: transparent; color: #fff; box-shadow: inset 0 0 0 1.5px #fff; }
+@keyframes home-defi-sway {
+  0%, 100% { rotate: -7deg; }
+  50% { rotate: -2deg; }
+}
+.home-circle.home-defi.is-done {
+  rotate: -3deg;
+  background: var(--home-square-bg-color, var(--paper));
+  color: var(--ink-soft, #64748b);
+  border: 2px solid var(--rule-soft, rgba(0, 0, 0, 0.1));
+  box-shadow: var(--shadow-home-square, var(--shadow-deep));
+}
+.home-circle.home-defi.is-done .home-circle-icon,
+.home-circle.home-defi.is-done span:not(.home-defi-state) { color: var(--ink-soft, #64748b); text-shadow: none; }
+.home-circle.home-defi.is-done .home-defi-state { background: #3e7c6b; color: #fff; }
+@media (prefers-reduced-motion: reduce) {
+  .home-circle.home-defi.is-todo, .home-circle.home-defi.is-playing { animation: none; }
+}
+
+/* v264 : Organisation — recherche + barre d'outils sous les boutons ronds,
+   collées en haut (sous le bandeau) quand la liste défile ; « + Nouvelle
+   boîte » et « Librairie » passent dessous. */
+.manage-toolbar-sticky {
+  position: sticky;
+  top: var(--sticky-header-h, 96px);
+  z-index: 30;
+  background: var(--app-bg-color, var(--desk));
+  margin: 0 -18px 8px;
+  padding: 6px 18px 4px;
+}
+.manage-toolbar-sticky .org-search-input { margin: 0 0 4px; }
+.manage-toolbar-sticky .manage-sticky-actions { margin: 0; }
+.manage-new-box-wrap { display: flex; justify-content: center; gap: 18px; }
+/* Bouton Librairie : même aspect que celui de l'accueil, plus petit. */
+.org-library-btn.classes-role-circle {
+  width: 96px; height: 96px; font-size: 12px;
+  background: var(--home-square-bg-color, var(--paper));
+  color: var(--ink);
+  box-shadow: 0 0 0 3px var(--home-library-bg-color, #8a63c9), var(--shadow-home-square, var(--shadow-deep));
+}
+.org-library-btn .classes-role-circle-icon { color: var(--home-library-bg-color, #8a63c9); }
+.org-library-btn .classes-role-circle-icon svg { width: 26px; height: 26px; }
