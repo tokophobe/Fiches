@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v268";
+  const APP_VERSION = "v269";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -7794,7 +7794,7 @@
   --------------------------------------------------------- */
   const homeBtn = el("home-btn");
   // v256 (Q6) : pages de révision, fermées au profil enseignant.
-  const REVISION_VIEWS = new Set(["review", "review-hub", "review-guide", "review-mix", "revision-program", "revision-reinforce"]);
+  const REVISION_VIEWS = new Set(["review", "review-hub", "review-guide", "revision-program", "revision-reinforce"]);
   function showTeacherNoRevisionMessage() {
     const hasStudent = (currentUsages() || []).includes("eleve");
     robotAlert(
@@ -7889,8 +7889,8 @@
       }
       if (view === "review-hub") renderReviewHub();
       if (view === "review-guide") renderReviewGuide();
-      if (view === "review-mix") renderReviewMix();
-      if (view === "review-hub" || view === "review-guide" || view === "review-mix") renderReviewVariantSwitch();
+      if (view === "review-hub") renderReviewExplain();
+      if (view === "review-hub" || view === "review-guide") renderReviewVariantSwitch();
       if (view === "subscriptions") renderSubscriptionsStatus();
       if (view === "defi") renderDefiView();
       if (view === "settings") {
@@ -7918,7 +7918,6 @@
     "role-picker": "Choisir mon compte",
     "review-hub": "Réviser",
     "review-guide": "Réviser",
-    "review-mix": "Réviser",
     "boxes-hub": "Mes fiches",
     "revision-program": "Révisions prioritaires",
     "revision-reinforce": "Renforcer mes connaissances",
@@ -8080,7 +8079,6 @@
   const PAGE_HEADER_TITLES = {
     "review-hub": "Réviser",
     "review-guide": "Réviser",
-    "review-mix": "Réviser",
     "boxes-hub": "Mes fiches",
     "revision-program": "Révisions prioritaires",
     "revision-reinforce": "Renforcer mes connaissances",
@@ -10464,29 +10462,25 @@
   --------------------------------------------------------- */
   const REVIEW_VARIANT_KEY = "fiches_review_variant";
   function reviewHubViewKey() {
-    let v = null;
-    try {
-      v = localStorage.getItem(REVIEW_VARIANT_KEY);
-    } catch (e) {
-      v = null;
-    }
-    return v === "guide" ? "review-guide" : v === "mix" ? "review-mix" : "review-hub";
+    // v269 : la présentation « mixte » est la page à trois ronds, avec le
+    // bouton « Comment ça marche ? » en plus.
+    return reviewVariant() === "guide" ? "review-guide" : "review-hub";
   }
   // v268 : trois présentations à comparer (administrateurs) : liens vers
   // les deux autres en bas de chaque page.
   const REVIEW_VARIANTS = [
     ["classic", "review-hub", "trois boutons"],
     ["guide", "review-guide", "parcours guidé"],
-    ["mix", "review-mix", "mixte"],
+    ["mix", "review-hub", "mixte"],
   ];
   function renderReviewVariantSwitch() {
-    const current = reviewHubViewKey();
+    const current = reviewVariant();
     document.querySelectorAll(".review-variant-switch").forEach((p) => {
       p.hidden = !accountIsAdminFlag;
       if (!accountIsAdminFlag) return;
       p.innerHTML =
         "Autres présentations : " +
-        REVIEW_VARIANTS.filter(([, view]) => view !== current)
+        REVIEW_VARIANTS.filter(([key]) => key !== current)
           .map(([key, , label]) => `<button type="button" class="review-variant-switch-btn" data-review-variant="${key}">${label}</button>`)
           .join(" · ");
       p.querySelectorAll(".review-variant-switch-btn").forEach((b) => {
@@ -10498,6 +10492,9 @@
           }
           const t = document.querySelector(`.tab[data-view="${reviewHubViewKey()}"]`);
           if (t) t.click();
+          // même page (trois boutons ⇄ mixte) : on la remet à jour
+          renderReviewExplain();
+          renderReviewVariantSwitch();
         });
       });
     });
@@ -10570,34 +10567,28 @@
   }
 
   /* ---------------------------------------------------------
-     v268 : « Réviser — mixte » : compacte par défaut (comme la page à
-     trois boutons) ; chaque carte se déplie (▸) pour les explications du
-     parcours guidé (dépliage mémorisé sur l'appareil : un débutant garde
-     les explications, un habitué la page compacte). Une couleur et un
-     schéma par façon de réviser : sprint avant les échéances (orange,
-     points qui se resserrent jusqu'au drapeau), consolidation (vert, bonds
-     de plus en plus longs), révisions libres (bleu, boîte choisie).
+     v269 : « Réviser — mixte » (refait d'après la maquette du
+     propriétaire). La page à trois ronds, plus un bouton « Comment ça
+     marche ? » : les ronds rapetissent et filent à gauche (animation),
+     et trois cadres d'explication apparaissent, chacun avec son schéma,
+     sa couleur et son bouton : le plus urgent (sprint avant les
+     échéances, orange), le travail de fond (consolidation, vert), les
+     révisions libres (bleu). « OK » revient aux ronds.
   --------------------------------------------------------- */
-  const RM_OPEN_KEY = "fiches_review_mix_open";
-  function rmOpenSet() {
+  function reviewVariant() {
+    let v = null;
     try {
-      return new Set(JSON.parse(localStorage.getItem(RM_OPEN_KEY) || "[]"));
+      v = localStorage.getItem(REVIEW_VARIANT_KEY);
     } catch (e) {
-      return new Set();
+      v = null;
     }
-  }
-  function rmSaveOpen(set) {
-    try {
-      localStorage.setItem(RM_OPEN_KEY, JSON.stringify([...set]));
-    } catch (e) {
-      /* stockage indisponible */
-    }
+    return v === "guide" || v === "mix" ? v : "classic";
   }
   const RM_SCHEMAS = {
     event:
       '<svg viewBox="0 0 120 44" class="rm-schema" aria-hidden="true"><line x1="4" y1="32" x2="104" y2="32" class="rm-s-line"/>' +
       [8, 40, 62, 77, 87, 94, 99].map((x) => `<circle cx="${x}" cy="32" r="3.6" class="rm-s-dot"/>`).join("") +
-      '<line x1="108" y1="8" x2="108" y2="38" class="rm-s-pole"/><path d="M108 8 L120 13 L108 18 Z" class="rm-s-flag"/><text x="84" y="44" class="rm-s-text">jour J</text></svg>',
+      '<line x1="108" y1="8" x2="108" y2="38" class="rm-s-pole"/><path d="M108 8 L120 13 L108 18 Z" class="rm-s-flag"/><text x="84" y="42" class="rm-s-text">jour J</text></svg>',
     reinforce:
       '<svg viewBox="0 0 120 44" class="rm-schema" aria-hidden="true"><line x1="4" y1="34" x2="118" y2="34" class="rm-s-line"/>' +
       [[6, 14], [14, 30], [30, 60], [60, 114]]
@@ -10612,105 +10603,109 @@
         .join("") +
       '<path d="M76 30 l0 11 l3 -3 l3 6 l2.5 -1.2 l-3 -6 l4.5 -0.6 z" class="rm-s-hand"/></svg>',
   };
-  function renderReviewMix() {
-    const line = el("rm-today-line");
-    const list = el("rm-cards");
-    if (!line || !list) return;
+  /** Met à jour le bouton « Comment ça marche ? » et le contenu des cadres
+   *  (appelé à chaque affichage de la page à trois ronds). */
+  function renderReviewExplain() {
+    const view = el("view-review-hub");
+    const btn = el("rx-how-btn");
+    if (!view || !btn) return;
+    const isMix = reviewVariant() === "mix";
+    btn.hidden = !isMix;
+    if (!isMix && view.classList.contains("is-explaining")) setReviewExplain(false, false);
+    if (!isMix) return;
+    // Schémas, et le petit rond de chaque cadre (même picto que le grand).
+    const circleIds = { event: "review-hub-advised-btn", reinforce: "review-hub-reinforce-btn", manual: "review-hub-manual-btn" };
+    Object.keys(circleIds).forEach((k) => {
+      const frame = view.querySelector(`.rx-frame--${k}`);
+      if (!frame) return;
+      const schema = frame.querySelector(".rx-schema");
+      if (schema && !schema.firstChild) schema.innerHTML = RM_SCHEMAS[k];
+      const ico = frame.querySelector(".rx-icon");
+      const src = document.querySelector(`#${circleIds[k]} .classes-role-circle-icon`);
+      if (ico && src) ico.innerHTML = src.innerHTML;
+    });
+    // Où en sont les échéances ?
     const S = computeReviewSituation();
-    line.innerHTML = !S.rc.length
-      ? "Pas encore de fiches dans tes révisions."
-      : S.dueNow
-      ? `<strong class="rm-today-n">${S.dueNow}</strong> ${S.dueNow > 1 ? "fiches à revoir" : "fiche à revoir"} aujourd'hui`
-      : "Rien à revoir pour l'instant : tout est à jour.";
-    const howList = el("rm-how-list");
-    if (howList) howList.innerHTML = ratingDelaysHtml();
-    const open = rmOpenSet();
-    const cards = [
-      {
-        key: "event",
-        title: "Sprint avant mes échéances",
-        sub: "Apprentissage rapide pour le jour J",
-        count: S.eventsDue,
-        countLabel: S.ev ? (S.eventsDue ? `${S.eventsDue} à revoir` : "à jour") : "aucune échéance",
-        more: S.ev
-          ? `<p class="rm-more-detail">Prochaine : « ${escapeHtml(S.ev.title || "Sans titre")} » ${escapeHtml(calendarCountdownLabel(S.ev.date).toLowerCase())} (${escapeHtml(formatCalendarDate(S.ev.date))})${S.events.length > 1 ? `, puis ${rgPlural(S.events.length - 1, "autre échéance", "autres échéances")}` : ""}.</p>
-             <p class="rm-more-why">Quand un contrôle approche, darwin passe en <strong>mode sprint</strong> : les fiches de ses boîtes reviennent <strong>de plus en plus souvent</strong>, jusqu'au jour J.</p>`
-          : `<p class="rm-more-why">Ajoute un contrôle (avec ses boîtes) dans ton agenda : darwin <strong>accélérera tes révisions</strong> avant le jour J.</p>`,
-        action: S.ev ? "Commencer" : "Ajouter une échéance",
-        disabled: !S.rc.length && !!S.ev,
-      },
-      {
-        key: "reinforce",
-        title: "Consolider mes connaissances",
-        sub: "Apprentissage de fond, sur la durée",
-        count: S.cardsDue,
-        countLabel: !S.rc.length ? "pas de fiches" : S.cardsDue ? `${S.cardsDue} à revoir` : "à jour",
-        more: `<p class="rm-more-detail">${!S.rc.length ? "Pas encore de fiches." : S.boxesDue ? `${rgPlural(S.boxesDue, "boîte a", "boîtes ont")} des fiches à revoir.` : "Tout est à jour : tu peux revoir en avance tes boîtes les plus fragiles."}</p>
-             <p class="rm-more-why">Chaque bonne réponse <strong>éloigne la prochaine révision</strong> : quelques jours, puis quelques semaines, puis quelques mois. Tu revois juste avant d'oublier.</p>`,
-        action: "Consolider",
-        disabled: !S.rc.length || !S.reinforce.length,
-      },
-      {
-        key: "manual",
-        title: "Révisions libres",
-        sub: "Ce que je veux, quand je veux",
-        count: 0,
-        countLabel: "",
-        more: `<p class="rm-more-why">Choisis une boîte ou un dossier, par exemple pour revoir un chapitre. Tu peux <strong>réviser en avance</strong> : darwin en tient compte pour les prochaines fois.</p>`,
-        action: "Choisir",
-        disabled: !S.rc.length,
-      },
-    ];
-    list.innerHTML = "";
-    cards.forEach((c) => {
-      const isOpen = open.has(c.key);
-      const li = document.createElement("li");
-      li.className = `rm-card rm-card--${c.key}${c.key === S.advised ? " is-advised" : ""}${c.disabled ? " is-disabled" : ""}${isOpen ? " is-open" : ""}`;
-      li.innerHTML = `
-        <div class="rm-card-main">
-          <button type="button" class="rm-card-go" data-rm-go="${c.key}"${c.disabled ? " disabled" : ""}>
-            ${RM_SCHEMAS[c.key]}
-            <span class="rm-card-text">
-              <span class="rm-card-title">${c.title}${c.key === S.advised ? ' <span class="rm-card-tag">Conseillé</span>' : ""}</span>
-              <span class="rm-card-sub">${c.sub}</span>
-            </span>
-            ${c.countLabel ? `<span class="rm-card-count${c.count ? " has-due" : ""}">${c.countLabel}</span>` : ""}
-          </button>
-          <button type="button" class="rm-card-toggle" data-rm-toggle="${c.key}" aria-expanded="${isOpen}" aria-label="${isOpen ? "Masquer" : "Afficher"} les explications"><span class="rm-chevron" aria-hidden="true"></span></button>
-        </div>
-        <div class="rm-card-more"${isOpen ? "" : " hidden"}>
-          ${c.more}
-          <div class="rm-more-actions"><button type="button" class="btn${c.key === S.advised ? " btn--primary" : ""}" data-rm-go="${c.key}"${c.disabled ? " disabled" : ""}>${c.action}</button></div>
-        </div>`;
-      list.appendChild(li);
-    });
-    list.querySelectorAll("[data-rm-go]").forEach((b) => b.addEventListener("click", () => runReviewStep(b.dataset.rmGo, S.ev)));
-    list.querySelectorAll("[data-rm-toggle]").forEach((b) => {
-      b.addEventListener("click", () => {
-        const li = b.closest(".rm-card");
-        const more = li.querySelector(".rm-card-more");
-        const nowOpen = more.hidden;
-        more.hidden = !nowOpen;
-        li.classList.toggle("is-open", nowOpen);
-        b.setAttribute("aria-expanded", String(nowOpen));
-        b.setAttribute("aria-label", `${nowOpen ? "Masquer" : "Afficher"} les explications`);
-        const set = rmOpenSet();
-        if (nowOpen) set.add(b.dataset.rmToggle);
-        else set.delete(b.dataset.rmToggle);
-        rmSaveOpen(set);
-      });
+    const status = el("rx-event-status");
+    const evBtn = el("rx-event-btn");
+    if (status) {
+      status.innerHTML = S.ev
+        ? `Prochaine échéance : « ${escapeHtml(S.ev.title || "Sans titre")} » ${escapeHtml(calendarCountdownLabel(S.ev.date).toLowerCase())} (${escapeHtml(formatCalendarDate(S.ev.date))}) — ${S.eventsDue ? rgPlural(S.eventsDue, "fiche à revoir", "fiches à revoir") : "rien à revoir pour l'instant"}.`
+        : "Actuellement, tu n'as aucune échéance prévue.";
+    }
+    if (evBtn) {
+      evBtn.textContent = S.ev ? "Réviser pour mes échéances" : "Ajouter une échéance";
+      evBtn.onclick = () => runReviewStep("event", S.ev);
+    }
+    const reBtn = el("rx-reinforce-btn");
+    if (reBtn) {
+      reBtn.disabled = !S.rc.length || !S.reinforce.length;
+      reBtn.onclick = () => runReviewStep("reinforce", S.ev);
+    }
+    const maBtn = el("rx-manual-btn");
+    if (maBtn) {
+      maBtn.disabled = !S.rc.length;
+      maBtn.onclick = () => runReviewStep("manual", S.ev);
+    }
+    // Les quatre réponses, avec les pictos des boutons de notation.
+    view.querySelectorAll(".rx-rate-ico").forEach((ico) => {
+      const src = document.querySelector(`.stamp--${ico.dataset.rating} .stamp-label`);
+      if (src) ico.innerHTML = src.innerHTML;
     });
   }
-  const rmHowToggle = el("rm-how-toggle");
-  if (rmHowToggle) {
-    rmHowToggle.addEventListener("click", () => {
-      const how = el("rm-how");
-      if (!how) return;
-      how.hidden = !how.hidden;
-      rmHowToggle.setAttribute("aria-expanded", String(!how.hidden));
-      rmHowToggle.classList.toggle("is-open", !how.hidden);
+  /** Passe de la page à trois ronds aux cadres d'explication (ou
+   *  l'inverse). Animation : chaque grand rond « devient » le petit rond de
+   *  son cadre (et inversement), en glissant et en rapetissant. */
+  function setReviewExplain(on, animate = true) {
+    const view = el("view-review-hub");
+    if (!view) return;
+    const keys = ["event", "reinforce", "manual"];
+    const circles = {
+      event: el("review-hub-advised-btn"),
+      reinforce: el("review-hub-reinforce-btn"),
+      manual: el("review-hub-manual-btn"),
+    };
+    const icons = {};
+    keys.forEach((k) => (icons[k] = view.querySelector(`.rx-frame--${k} .rx-icon`)));
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Positions de départ (avant le changement).
+    const from = {};
+    if (animate && !reduce) keys.forEach((k) => (from[k] = (on ? circles[k] : icons[k])?.getBoundingClientRect()));
+    view.classList.toggle("is-explaining", on);
+    el("rx-explain").hidden = !on;
+    el("rx-how-btn")?.setAttribute("aria-expanded", String(on));
+    if (on) window.scrollTo(0, 0);
+    if (!animate || reduce) return;
+    keys.forEach((k) => {
+      const target = on ? icons[k] : circles[k];
+      const a = from[k];
+      if (!target || !a || !a.width) return;
+      const b = target.getBoundingClientRect();
+      if (!b.width) return;
+      const dx = a.left + a.width / 2 - (b.left + b.width / 2);
+      const dy = a.top + a.height / 2 - (b.top + b.height / 2);
+      const s = a.width / b.width;
+      try {
+        target.animate(
+          [{ transform: `translate(${dx}px, ${dy}px) scale(${s})` }, { transform: "none" }],
+          { duration: 420, easing: "cubic-bezier(.2,.8,.2,1)" }
+        );
+      } catch (e) {
+        /* navigateur sans animations : pas grave */
+      }
+    });
+    // Les cadres (ou les ronds) apparaissent en fondu, juste après.
+    const fadeIn = on ? view.querySelectorAll(".rx-frame-body, .rx-schema, .rx-ok") : view.querySelectorAll(".classes-role-circle > :not(.classes-role-circle-icon)");
+    fadeIn.forEach((n) => {
+      try {
+        n.animate([{ opacity: 0 }, { opacity: 0, offset: 0.35 }, { opacity: 1 }], { duration: 520, easing: "ease-out" });
+      } catch (e) {
+        /* idem */
+      }
     });
   }
+  el("rx-how-btn")?.addEventListener("click", () => setReviewExplain(true));
+  el("rx-ok-btn")?.addEventListener("click", () => setReviewExplain(false));
 
   function renderReviewGuide() {
     const todayEl = el("rg-today");
