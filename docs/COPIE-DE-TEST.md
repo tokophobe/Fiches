@@ -145,6 +145,10 @@ verte (en ligne en 1 à 20 minutes selon la charge de GitHub).
 
 - **Croix rouge, « Timeout reached »** : GitHub a été trop lent. Relancer
   une fois (« Re-run jobs » sur la page de l'échec).
+- **Croix rouge, « Deployment failed, try again later »** (la mise en
+  ligne reste « deployment_queued » plusieurs minutes) : GitHub est
+  encombré. Relancer une fois ; si la relance échoue aussi, fusionner une
+  nouvelle petite modification (cas du 6 nov. 2026, v269).
 - **Croix rouge, « Deployment cancelled »** juste après une relance :
   GitHub refuse de remettre en ligne une version dont la mise en ligne a
   été annulée. Une relance ne sert alors plus à rien : il faut une
