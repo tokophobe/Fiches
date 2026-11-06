@@ -331,7 +331,6 @@
     <button class="tab" role="tab" aria-selected="false" data-view="calendar" hidden>Agenda</button>
     <button class="tab" role="tab" aria-selected="false" data-view="review-hub" hidden>Réviser</button>
     <button class="tab" role="tab" aria-selected="false" data-view="review-guide" hidden>Réviser</button>
-    <button class="tab" role="tab" aria-selected="false" data-view="review-mix" hidden>Réviser</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Révisions prioritaires</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-reinforce" hidden>Renforcer mes connaissances</button>
     <button class="tab" role="tab" aria-selected="false" data-view="reports-hub" hidden>Signalements</button>
@@ -502,7 +501,65 @@
           <span>Sélection manuelle</span>
         </button>
       </div>
-          <!-- v267 : essai d'une seconde présentation (administrateurs). -->
+      <!-- v269 : présentation « mixte » : « Comment ça marche ? » réduit les
+           ronds (ils filent à gauche) et fait apparaître trois cadres
+           d'explication. Rempli par renderReviewExplain (js/app.js). -->
+      <button type="button" class="btn btn--ghost rx-how-btn" id="rx-how-btn" aria-expanded="false" aria-controls="rx-explain" hidden>Comment ça marche ?</button>
+      <div class="rx-explain" id="rx-explain" hidden>
+        <section class="rx-frame rx-frame--event">
+          <div class="rx-schema"></div>
+          <span class="rx-icon" aria-hidden="true"></span>
+          <div class="rx-frame-body">
+            <h3 class="rx-title">Ici, le plus urgent !</h3>
+            <p>Lorsque tes échéances approchent (contrôles, examens…), darwin <strong>intensifie tes révisions</strong> en fonction de l'agenda, pour que tu sois au point le jour J. Concrètement, les fiches que tu ne sais pas reviennent très vite, et de plus en plus vite en approchant de l'échéance. Pour les fiches que tu connais, darwin vérifie juste de temps en temps que tu ne les as pas oubliées.</p>
+            <p class="rx-note">Tu peux créer des échéances dans ton agenda. Tes enseignants peuvent aussi en créer : si tu as rejoint leurs classes, elles apparaîtront dans ton agenda et seront prises en compte pour tes révisions.</p>
+            <p class="rx-status" id="rx-event-status"></p>
+            <div class="rx-actions"><button type="button" class="btn" id="rx-event-btn">Ajouter une échéance</button></div>
+          </div>
+        </section>
+        <section class="rx-frame rx-frame--reinforce">
+          <div class="rx-schema"></div>
+          <span class="rx-icon" aria-hidden="true"></span>
+          <div class="rx-frame-body">
+            <h3 class="rx-title">Là, le travail de fond…</h3>
+            <p>C'est ici que tu <strong>consolides tes connaissances</strong> et que la puissance de darwin se révèle : tu apprends mieux, donc tu perds moins de temps !</p>
+            <h4 class="rx-subtitle">Comment ça marche ?</h4>
+            <p>Plus on revoit une information, plus on la retient. Au début, elle s'efface vite de notre mémoire ; mais si on la revoit juste avant de l'avoir oubliée, elle se grave un peu plus longtemps. On attend alors un peu plus avant de la revoir, et plus on avance dans ce cycle, plus c'est facile !</p>
+            <p>La bonne nouvelle, c'est que <strong>darwin se charge de tout</strong> :</p>
+            <svg class="rm-curve" viewBox="0 0 260 110" role="img" aria-label="Courbe de l'oubli : chaque révision fait remonter le souvenir, qui s'efface ensuite de plus en plus lentement">
+              <line x1="22" y1="88" x2="252" y2="88" class="rm-axis"/>
+              <line x1="22" y1="10" x2="22" y2="88" class="rm-axis"/>
+              <text x="-62" y="15" class="rm-axis-label" transform="rotate(-90)">souvenir</text>
+              <text x="200" y="102" class="rm-axis-label">temps</text>
+              <path class="rm-forget" d="M24 14 C 40 60, 60 78, 110 84"/>
+              <path class="rm-memory" d="M24 14 C 34 40, 44 50, 58 54 L58 14 C 74 34, 92 42, 112 44 L112 14 C 140 26, 170 32, 196 33 L196 14 C 216 18, 236 21, 250 22"/>
+              <circle cx="58" cy="14" r="4" class="rm-dot"/><circle cx="112" cy="14" r="4" class="rm-dot"/><circle cx="196" cy="14" r="4" class="rm-dot"/>
+            </svg>
+            <p class="rx-legend"><span class="rm-legend rm-legend--forget"></span> Sans révision, on oublie vite. <span class="rm-legend"></span> Chaque révision au bon moment <strong>fait remonter le souvenir</strong>, qui s'efface ensuite <strong>de plus en plus lentement</strong> : darwin te repose chaque fiche juste avant que tu l'oublies, après quelques jours, puis quelques semaines, puis quelques mois.</p>
+            <p>D'abord, quand elle est prévue pour, une fiche t'est proposée en <strong>QCM</strong> (question à choix multiples) : une manière plus douce de commencer et de découvrir la bonne réponse.</p>
+            <p>Ensuite, la fiche passe en <strong>auto-évaluation</strong> : la question s'affiche, tu essaies de trouver la réponse, tu retournes la fiche pour découvrir la bonne réponse, et enfin tu dis honnêtement si tu savais :</p>
+            <ul class="rx-rates">
+            <li><span class="rx-rate-ico stamp--again" data-rating="again" aria-hidden="true"></span><span class="rx-rate-label">Je ne savais pas du tout</span><span class="rx-rate-what">La fiche reviendra vite</span></li>
+            <li><span class="rx-rate-ico stamp--hard" data-rating="hard" aria-hidden="true"></span><span class="rx-rate-label">J'avais une vague idée</span><span class="rx-rate-what">La fiche reviendra très vite, pour consolider</span></li>
+            <li><span class="rx-rate-ico stamp--good" data-rating="good" aria-hidden="true"></span><span class="rx-rate-label">Je savais</span><span class="rx-rate-what">La fiche reviendra au bon moment, un peu plus tard</span></li>
+            <li><span class="rx-rate-ico stamp--easy" data-rating="easy" aria-hidden="true"></span><span class="rx-rate-label">Je savais parfaitement</span><span class="rx-rate-what">La fiche reviendra au bon moment, plus tard</span></li>
+            </ul>
+            <div class="rx-actions"><button type="button" class="btn" id="rx-reinforce-btn">Renforcer mes connaissances</button></div>
+          </div>
+        </section>
+        <section class="rx-frame rx-frame--manual">
+          <div class="rx-schema"></div>
+          <span class="rx-icon" aria-hidden="true"></span>
+          <div class="rx-frame-body">
+            <h3 class="rx-title">Révisions libres</h3>
+            <p>Ici, tu révises <strong>ce que tu veux, quand tu veux</strong> !</p>
+            <p>Choisis une boîte ou un dossier, par exemple pour revoir un chapitre. Tu peux réviser en avance : darwin en tient compte pour les prochaines fois.</p>
+            <div class="rx-actions"><button type="button" class="btn" id="rx-manual-btn">Choisir</button></div>
+          </div>
+        </section>
+        <div class="rx-ok"><button type="button" class="btn btn--primary" id="rx-ok-btn">OK</button></div>
+      </div>
+      <!-- v267 : essai d'autres présentations (administrateurs). -->
       <p class="review-variant-switch" hidden></p>
     </section>
 
@@ -520,36 +577,6 @@
         <ul class="rg-how-list" id="rg-how-list"></ul>
         <p class="rg-how-note">Une fiche ratée revient aussi deux fois dans la même séance, pour la fixer tout de suite.</p>
       </details>
-      <p class="review-variant-switch" hidden></p>
-    </section>
-
-    <!-- v268 : « Réviser — mixte » : compacte par défaut comme la page à
-         trois boutons, chaque carte se déplie (▸) pour donner les
-         explications du parcours guidé ; un schéma et une couleur par façon
-         de réviser (sprint / consolidation / libre). Remplie par
-         renderReviewMix (js/app.js). -->
-    <section id="view-review-mix" class="view" aria-labelledby="tab-review-mix">
-      <div class="rm-today">
-        <p class="rm-today-line" id="rm-today-line"></p>
-        <button type="button" class="rm-how-toggle" id="rm-how-toggle" aria-expanded="false" aria-controls="rm-how">
-          <span class="rm-chevron" aria-hidden="true"></span><span>Comment ça marche ?</span>
-        </button>
-        <div class="rm-how" id="rm-how" hidden>
-          <svg class="rm-curve" viewBox="0 0 260 110" role="img" aria-label="Courbe de l'oubli : chaque révision fait remonter le souvenir, qui s'efface ensuite de plus en plus lentement">
-            <line x1="22" y1="88" x2="252" y2="88" class="rm-axis"/>
-            <line x1="22" y1="10" x2="22" y2="88" class="rm-axis"/>
-            <text x="6" y="16" class="rm-axis-label" transform="rotate(-90 12 50)">souvenir</text>
-            <text x="200" y="102" class="rm-axis-label">temps</text>
-            <path class="rm-forget" d="M24 14 C 40 60, 60 78, 110 84"/>
-            <path class="rm-memory" d="M24 14 C 34 40, 44 50, 58 54 L58 14 C 74 34, 92 42, 112 44 L112 14 C 140 26, 170 32, 196 33 L196 14 C 216 18, 236 21, 250 22"/>
-            <circle cx="58" cy="14" r="4" class="rm-dot"/><circle cx="112" cy="14" r="4" class="rm-dot"/><circle cx="196" cy="14" r="4" class="rm-dot"/>
-          </svg>
-          <p class="rm-how-text"><span class="rm-legend rm-legend--forget"></span> Sans révision, on oublie vite. <span class="rm-legend rm-legend--memory"></span> Chaque révision au bon moment <strong>fait remonter le souvenir</strong>, qui s'efface ensuite <strong>de plus en plus lentement</strong> : darwin te repose chaque fiche juste avant que tu l'oublies.</p>
-          <p class="rm-how-text">Après chaque fiche, dis honnêtement si tu savais :</p>
-          <ul class="rg-how-list" id="rm-how-list"></ul>
-        </div>
-      </div>
-      <ul class="rm-cards" id="rm-cards"></ul>
       <p class="review-variant-switch" hidden></p>
     </section>
 

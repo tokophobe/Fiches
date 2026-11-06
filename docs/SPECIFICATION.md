@@ -268,24 +268,23 @@ contenu, plus explicite sur la méthode :
   que je sais (boîtes et fiches à revoir) ; 3. Réviser ce que je veux ;
 - « Comment noter mes réponses ? » : les quatre réponses et le délai
   avant le retour de la fiche (lu dans les réglages de l'algorithme).
-**Troisième présentation, à l'essai (v268) : « mixte ».** Le mélange des
-deux : compacte par défaut, comme la page à trois boutons (pour l'habitué),
-avec des triangles ▸ qui déplient les explications du parcours guidé (pour
-le débutant) :
-- en haut, « N fiches à revoir aujourd'hui » et « ▸ Comment ça marche ? »,
-  qui déplie un schéma de la courbe de l'oubli (chaque révision fait
-  remonter le souvenir, qui s'efface ensuite de plus en plus lentement) et
-  le sens des quatre réponses ;
-- trois cartes, chacune avec sa couleur, son schéma et le nombre de fiches
-  à revoir : **Sprint avant mes échéances** (orange, « apprentissage
-  rapide pour le jour J » : des points qui se resserrent jusqu'au
-  drapeau), **Consolider mes connaissances** (vert, « apprentissage de
-  fond, sur la durée » : des bonds de plus en plus longs), **Révisions
-  libres** (bleu, « ce que je veux, quand je veux » : une boîte choisie) ;
-  la carte conseillée est soulignée ;
-- toucher une carte lance la révision ; son triangle ▸ déplie le détail
-  (prochaine échéance, boîtes à revoir) et le « pourquoi ». Les cartes
-  dépliées restent dépliées la fois suivante (sur l'appareil).
+**Troisième présentation, à l'essai (v268, refaite en v269 d'après la
+maquette du propriétaire) : « mixte ».** La page à trois boutons, avec en
+plus un bouton « Comment ça marche ? ». Ce bouton fait rapetisser les
+trois ronds, qui glissent à gauche, et fait apparaître trois cadres
+d'explication, chacun avec sa couleur, son schéma, son petit rond et son
+bouton :
+- **« Ici, le plus urgent ! »** (orange, des points qui se resserrent
+  jusqu'au drapeau du jour J) : le sprint avant les échéances ; d'où
+  viennent les échéances (son agenda, celles des enseignants des classes
+  rejointes) ; la prochaine échéance ou « aucune échéance prévue » ; bouton
+  « Réviser pour mes échéances » ou « Ajouter une échéance » ;
+- **« Là, le travail de fond… »** (vert, des bonds de plus en plus longs) :
+  la consolidation, la courbe de l'oubli, le QCM puis l'auto-évaluation, et
+  ce que devient la fiche après chacune des quatre réponses ; bouton
+  « Renforcer mes connaissances » ;
+- **« Révisions libres »** (bleu, une boîte choisie) : bouton « Choisir ».
+« OK » ramène aux trois ronds (même animation à l'envers).
 La page à trois boutons reste celle par défaut. Pour comparer, des liens
 « Autres présentations » n'apparaissent qu'aux administrateurs (choix
 mémorisé sur l'appareil). Voir §8, Q11.
@@ -667,6 +666,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v269 | 6 nov. 2026 | Page Réviser « mixte » refaite d'après la maquette du propriétaire : la page à trois boutons plus « Comment ça marche ? », qui réduit les ronds (ils glissent à gauche) et fait apparaître trois cadres d'explication colorés avec schémas (le plus urgent, le travail de fond, les révisions libres) ; « OK » pour revenir. |
 | v268 | 6 nov. 2026 | Page Réviser : troisième présentation à l'essai, « mixte » : compacte par défaut, triangles ▸ pour déplier les explications ; une couleur et un schéma pour chaque façon de réviser (sprint avant les échéances, consolidation, révisions libres) ; schéma de la courbe de l'oubli. Liens « Autres présentations » pour les administrateurs (Q11). |
 | v267 | 5 nov. 2026 | Page Réviser : seconde présentation à l'essai, « parcours guidé » (situation du jour, chemin en trois étapes avec leur « pourquoi », sens des quatre réponses). La page à trois boutons reste celle par défaut ; les administrateurs peuvent passer de l'une à l'autre (Q11). |
 | v266 | 5 nov. 2026 | Corrigé : après un retour à l'accueil par la flèche « < », le bouton du défi du jour gardait son ancien état (« À jouer » alors que le défi était fait sur un autre appareil). L'accueil est désormais remis à jour quel que soit le chemin pour y revenir. |
