@@ -164,7 +164,27 @@
     return best;
   }
 
-  const api = { eventReferenceTime, dayAfter, elapsedMinutes, fondDelayMinutes, computeNext, sprintUpdate, pickNextSessionCard };
+  /* v267 : délais écrits en langage simple (page « Réviser — parcours
+     guidé »). Arrondis lisibles : minutes, heures, jours, semaines, mois. */
+  function delayLabel(minutes) {
+    const m = Math.max(0, Math.round(Number(minutes) || 0));
+    const plural = (n, one, many) => `${n} ${n > 1 ? many : one}`;
+    if (m < 60) return plural(m, "minute", "minutes");
+    if (m < 1440) return plural(Math.round(m / 60), "heure", "heures");
+    const days = Math.round(m / 1440);
+    if (days < 14) return plural(days, "jour", "jours");
+    if (days < 28) return plural(Math.round(days / 7), "semaine", "semaines");
+    return `${Math.round(days / 30)} mois`;
+  }
+  /** Plancher et plafond d'une note → « 3 jours » ou « 3 jours à 1 mois »
+   *  (à lire après « revient dans »). */
+  function delayRangeLabel(floorMin, ceilMin) {
+    const a = delayLabel(floorMin);
+    const b = delayLabel(Math.max(floorMin, ceilMin));
+    return a === b ? a : `${a} à ${b}`;
+  }
+
+  const api = { eventReferenceTime, dayAfter, elapsedMinutes, fondDelayMinutes, computeNext, sprintUpdate, pickNextSessionCard, delayLabel, delayRangeLabel };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.RevisionAlgo = api;
 })(typeof window !== "undefined" ? window : globalThis);

@@ -257,6 +257,21 @@ Les pastilles du bouton « Réviser » de l'accueil comptent les échéances
 proches qui ont des fiches à revoir et les boîtes à renforcer. Les
 révisions n'existent pas dans le compte enseignant (§3.2).
 
+**Seconde présentation, à l'essai (v267) : « parcours guidé ».** Même
+contenu, plus explicite sur la méthode :
+- en haut, la situation du jour (« N fiches à revoir aujourd'hui ») et une
+  phrase qui résume la méthode ;
+- un « chemin du jour » en trois étapes numérotées, l'étape conseillée en
+  avant, chacune avec ses chiffres et son « pourquoi » : 1. Préparer mes
+  échéances (prochaine échéance, jours restants, fiches à revoir ; sans
+  échéance, invitation à en ajouter une dans l'agenda) ; 2. Entretenir ce
+  que je sais (boîtes et fiches à revoir) ; 3. Réviser ce que je veux ;
+- « Comment noter mes réponses ? » : les quatre réponses et le délai
+  avant le retour de la fiche (lu dans les réglages de l'algorithme).
+La page à trois boutons reste celle par défaut. Pour comparer, un lien
+« Voir l'autre présentation » n'apparaît qu'aux administrateurs (choix
+mémorisé sur l'appareil). Voir §8, Q11.
+
 ### 4.6 La jauge de progression
 
 Barre à 4 couleurs (du gris au vert) : part des fiches de la boîte (ou du
@@ -582,6 +597,12 @@ moi, relecture pour une boîte de classe). Faut-il les unifier ? (lié à Q3)
 >
 > ⏳ *Claude : à réaliser avec Q3 (chantier « publication avec relecture »).*
 
+**Q11 — Page Réviser : quelle présentation garder ?** La page à trois
+boutons, ou le « parcours guidé » (v267, §4.5) ? Pour comparer : sur la
+page Réviser, lien « Voir l'autre présentation » en bas (visible
+seulement pour les administrateurs).
+> Réponse :
+
 **Q8 — Avant l'ouverture au public : une adresse de test.**
 Aujourd'hui, fusionner une branche publie la version pour tout le monde,
 sur la même base de données. Avant le lancement, mettre en place une
@@ -628,6 +649,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v267 | 5 nov. 2026 | Page Réviser : seconde présentation à l'essai, « parcours guidé » (situation du jour, chemin en trois étapes avec leur « pourquoi », sens des quatre réponses). La page à trois boutons reste celle par défaut ; les administrateurs peuvent passer de l'une à l'autre (Q11). |
 | v266 | 5 nov. 2026 | Corrigé : après un retour à l'accueil par la flèche « < », le bouton du défi du jour gardait son ancien état (« À jouer » alors que le défi était fait sur un autre appareil). L'accueil est désormais remis à jour quel que soit le chemin pour y revenir. |
 | v265 | 5 nov. 2026 | Défi du jour synchronisé entre les appareils d'un compte (un défi fait sur le PC restait « à jouer » sur l'iPhone et pouvait être refait). « Annuler » dans la bulle du robot quand on choisit le dossier d'une boîte. |
 | v264 | 5 nov. 2026 | Accueil à l'échelle : tout tient à l'écran sur tous les appareils (les pictos du bas sortaient de l'écran sur certains téléphones et sur PC), plus de défilement ; sur tablette et grand écran, l'accueil remplit la hauteur ; même placement qu'avant sur l'iPhone de référence. Défi du jour en « carte de jeu ». Pastille de Signalements décalée. Bandeau du compte sans trait, dégradé plus haut ; robot vert en compte enseignant. Organisation : nouveau titre, bouton Librairie, trois filtres exclusifs renommés, recherche et barre d'outils qui restent en haut. Classement : contour gris. Corrigé : « Connecte-toi… » à tort dans la Librairie (connexion expirée non renouvelée) ; « Annuler » (et la croix du robot) quand on choisit le dossier d'une boîte. |

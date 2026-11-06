@@ -223,3 +223,18 @@ test("Séance : avec peu de fiches, l'écart se réduit (toutes les autres)", ()
 test("Séance : rien à proposer quand il n'y a pas de fiche", () => {
   assert.equal(A.pickNextSessionCard([], session(), NOW, 10), null);
 });
+
+/* v267 : délais en langage simple (page « Réviser — parcours guidé »). */
+test("Délais lisibles : réglages par défaut des 4 notes (§4.2)", () => {
+  const RA = require(path.join(__dirname, "..", "js", "revision-algo.js"));
+  assert.equal(RA.delayRangeLabel(4320, 4320), "3 jours");
+  assert.equal(RA.delayRangeLabel(1440, 1440), "1 jour");
+  assert.equal(RA.delayRangeLabel(4320, 43200), "3 jours à 1 mois");
+  assert.equal(RA.delayRangeLabel(7200, 172800), "5 jours à 4 mois");
+});
+test("Délais lisibles : minutes, heures, semaines", () => {
+  const RA = require(path.join(__dirname, "..", "js", "revision-algo.js"));
+  assert.equal(RA.delayLabel(30), "30 minutes");
+  assert.equal(RA.delayLabel(120), "2 heures");
+  assert.equal(RA.delayLabel(1440 * 21), "3 semaines");
+});

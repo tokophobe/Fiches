@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v266";
+  const APP_VERSION = "v267";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -7794,7 +7794,7 @@
   --------------------------------------------------------- */
   const homeBtn = el("home-btn");
   // v256 (Q6) : pages de révision, fermées au profil enseignant.
-  const REVISION_VIEWS = new Set(["review", "review-hub", "revision-program", "revision-reinforce"]);
+  const REVISION_VIEWS = new Set(["review", "review-hub", "review-guide", "revision-program", "revision-reinforce"]);
   function showTeacherNoRevisionMessage() {
     const hasStudent = (currentUsages() || []).includes("eleve");
     robotAlert(
@@ -7888,6 +7888,8 @@
         renderReinforceList();
       }
       if (view === "review-hub") renderReviewHub();
+      if (view === "review-guide") renderReviewGuide();
+      if (view === "review-hub" || view === "review-guide") renderReviewVariantSwitch();
       if (view === "subscriptions") renderSubscriptionsStatus();
       if (view === "defi") renderDefiView();
       if (view === "settings") {
@@ -7914,6 +7916,7 @@
     home: "Accueil",
     "role-picker": "Choisir mon compte",
     "review-hub": "Réviser",
+    "review-guide": "Réviser",
     "boxes-hub": "Mes fiches",
     "revision-program": "Révisions prioritaires",
     "revision-reinforce": "Renforcer mes connaissances",
@@ -8074,6 +8077,7 @@
    *  (`from`, qui est alors masqué) ; `hide` = titres d'origine à masquer. */
   const PAGE_HEADER_TITLES = {
     "review-hub": "Réviser",
+    "review-guide": "Réviser",
     "boxes-hub": "Mes fiches",
     "revision-program": "Révisions prioritaires",
     "revision-reinforce": "Renforcer mes connaissances",
@@ -8421,7 +8425,7 @@
       // Round 25, item 2 : retour au Programme si on y est passé, sinon au
       // palier Réviser (Sélection manuelle).
       const tab = document.querySelector(
-        `.tab[data-view="${reviewEntryFromProgram === "reinforce" ? "revision-reinforce" : reviewEntryFromProgram ? "revision-program" : "review-hub"}"]`
+        `.tab[data-view="${reviewEntryFromProgram === "reinforce" ? "revision-reinforce" : reviewEntryFromProgram ? "revision-program" : reviewHubViewKey()}"]`
       );
       if (tab) tab.click();
       return;
@@ -8430,7 +8434,7 @@
       (el("view-revision-program") && el("view-revision-program").classList.contains("is-active")) ||
       (el("view-revision-reinforce") && el("view-revision-reinforce").classList.contains("is-active"))
     ) {
-      const tab = document.querySelector('.tab[data-view="review-hub"]');
+      const tab = document.querySelector(`.tab[data-view="${reviewHubViewKey()}"]`);
       if (tab) tab.click();
       return;
     }
@@ -8688,6 +8692,13 @@
       }
       // v247 : depuis l'accueil, l'Agenda complet (pas celui d'une classe).
       if (square.dataset.go === "calendar") calendarClassFilter = null;
+      // v267 : « Réviser » ouvre la présentation choisie (trois boutons ou
+      // parcours guidé).
+      if (square.dataset.go === "review-hub") {
+        const t = document.querySelector(`.tab[data-view="${reviewHubViewKey()}"]`);
+        if (t) t.click();
+        return;
+      }
       const tab = document.querySelector(`.tab[data-view="${square.dataset.go}"]`);
       if (tab) tab.click();
     });
@@ -10437,6 +10448,159 @@
     if (reinforceTag) reinforceTag.hidden = !urgentReason || !!reinforceReason;
     refreshReviewBadges();
     setBadge("review-hub-reinforce-badge", reinforceBoxesToReviewCount());
+  }
+  /* ---------------------------------------------------------
+     v267 : « Réviser — parcours guidé », seconde présentation de la page
+     Réviser, plus explicite sur la méthode : la situation du jour, un
+     chemin en trois étapes (échéances, entretien, choix libre) avec des
+     chiffres réels et le « pourquoi » de chacune, et le sens des quatre
+     réponses (délais lus dans les réglages de l'algorithme). La page à
+     trois boutons reste celle par défaut ; les administrateurs peuvent
+     passer de l'une à l'autre pour comparer (choix mémorisé sur
+     l'appareil).
+  --------------------------------------------------------- */
+  const REVIEW_VARIANT_KEY = "fiches_review_variant";
+  function reviewHubViewKey() {
+    let v = null;
+    try {
+      v = localStorage.getItem(REVIEW_VARIANT_KEY);
+    } catch (e) {
+      v = null;
+    }
+    return v === "guide" ? "review-guide" : "review-hub";
+  }
+  function renderReviewVariantSwitch() {
+    document.querySelectorAll(".review-variant-switch").forEach((p) => (p.hidden = !accountIsAdminFlag));
+  }
+  document.querySelectorAll(".review-variant-switch-btn").forEach((b) => {
+    b.addEventListener("click", () => {
+      try {
+        localStorage.setItem(REVIEW_VARIANT_KEY, b.dataset.reviewVariant === "guide" ? "guide" : "classic");
+      } catch (e) {
+        /* stockage indisponible */
+      }
+      const t = document.querySelector(`.tab[data-view="${reviewHubViewKey()}"]`);
+      if (t) t.click();
+    });
+  });
+  const RG_ICONS = {
+    event: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M9 15l2 2 4-4"/></svg>',
+    reinforce: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><polyline points="3 3 3 9 9 9"/><path d="M12 8v4l3 2"/></svg>',
+    manual: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 14l2 2 4-4"/></svg>',
+  };
+  function rgPlural(n, one, many) {
+    return `${n} ${n > 1 ? many : one}`;
+  }
+  function renderReviewGuide() {
+    const todayEl = el("rg-today");
+    const pathEl = el("rg-path");
+    const howEl = el("rg-how-list");
+    if (!todayEl || !pathEl) return;
+    const now = Date.now();
+    const rc = revisionCards();
+    const isDueNow = (c) => cardDueTime(c) <= now;
+    const dueNow = rc.filter(isDueNow).length;
+
+    // 1. La situation du jour.
+    if (rc.length === 0) {
+      todayEl.innerHTML = `<p class="rg-today-big">Pas encore de fiches à réviser</p>
+        <p class="rg-today-text">Crée une boîte et ses fiches, ou prends une boîte dans la Librairie : darwin s'occupera ensuite de te les reposer au bon moment.</p>`;
+    } else {
+      todayEl.innerHTML = dueNow
+        ? `<p class="rg-today-big"><span class="rg-today-n">${dueNow}</span> ${dueNow > 1 ? "fiches à revoir" : "fiche à revoir"} aujourd'hui</p>`
+        : `<p class="rg-today-big">Rien à revoir pour l'instant</p>`;
+      todayEl.innerHTML += `<p class="rg-today-text">darwin te repose chaque fiche <strong>juste avant que tu risques de l'oublier</strong> : plus tu la sais, plus elle revient tard. Quelques minutes par jour suffisent.</p>`;
+    }
+
+    // 2. Le chemin du jour.
+    const events = upcomingEventsWithBoxes();
+    const ev = events[0] || null;
+    let evDue = 0;
+    if (ev) {
+      const ids = new Set(revisionTreeBoxIds(revisionTreeForEvent(ev)));
+      evDue = rc.filter((c) => ids.has(c.subject) && isDueNow(c)).length;
+    }
+    const reinforce = rc.length ? computeReinforceItems() : [];
+    const boxesDue = reinforce.filter((it) => it.due > 0).length;
+    const cardsDue = reinforce.reduce((n, it) => n + it.due, 0);
+    const advised = ev && rc.length ? "event" : rc.length ? "reinforce" : "";
+    const steps = [
+      {
+        key: "event",
+        title: "Préparer mes échéances",
+        detail: ev
+          ? `« ${escapeHtml(ev.title || "Sans titre")} » ${escapeHtml(calendarCountdownLabel(ev.date).toLowerCase())} (${escapeHtml(formatCalendarDate(ev.date))}) — ${evDue ? rgPlural(evDue, "fiche à revoir", "fiches à revoir") : "rien à revoir pour l'instant"}${events.length > 1 ? `, et ${rgPlural(events.length - 1, "autre échéance", "autres échéances")}` : ""}.`
+          : "Aucun contrôle prévu dans ton agenda.",
+        why: ev
+          ? "Avant un contrôle, darwin passe en <strong>mode sprint</strong> : les fiches de ses boîtes reviennent de plus en plus souvent, jusqu'au jour J."
+          : "Ajoute un contrôle (avec ses boîtes) dans ton agenda : darwin accélérera tes révisions avant le jour J.",
+        action: ev ? "Préparer" : "Ajouter une échéance",
+        disabled: !rc.length && !!ev,
+      },
+      {
+        key: "reinforce",
+        title: "Entretenir ce que je sais",
+        detail: !rc.length
+          ? "Pas encore de fiches."
+          : boxesDue
+          ? `${rgPlural(boxesDue, "boîte a", "boîtes ont")} des fiches à revoir (${rgPlural(cardsDue, "fiche", "fiches")}).`
+          : "Tout est à jour : tu peux revoir en avance tes boîtes les plus fragiles.",
+        why: "Sans contrôle prévu, chaque bonne réponse <strong>éloigne la prochaine révision</strong> : quelques jours, puis quelques semaines, puis quelques mois.",
+        action: "Entretenir",
+        disabled: !rc.length || !reinforce.length,
+      },
+      {
+        key: "manual",
+        title: "Réviser ce que je veux",
+        detail: "Une boîte ou un dossier de ton choix, par exemple pour revoir un chapitre.",
+        why: "Tu peux réviser en avance : darwin en tient compte pour les prochaines fois.",
+        action: "Choisir",
+        disabled: !rc.length,
+      },
+    ];
+    pathEl.innerHTML = "";
+    steps.forEach((st, i) => {
+      const li = document.createElement("li");
+      li.className = `rg-step${st.key === advised ? " is-advised" : ""}${st.disabled ? " is-disabled" : ""}`;
+      li.innerHTML = `<span class="rg-step-num" aria-hidden="true">${i + 1}</span>
+        <div class="rg-step-card">
+          <div class="rg-step-head"><span class="rg-step-icon" aria-hidden="true">${RG_ICONS[st.key]}</span><span class="rg-step-title">${st.title}</span>${st.key === advised ? '<span class="rg-step-tag">Conseillé</span>' : ""}</div>
+          <p class="rg-step-detail">${st.detail}</p>
+          <p class="rg-step-why">${st.why}</p>
+          <div class="rg-step-actions"><button type="button" class="btn ${st.key === advised ? "btn--primary" : ""}" data-rg-step="${st.key}"${st.disabled ? " disabled" : ""}>${st.action}</button></div>
+        </div>`;
+      pathEl.appendChild(li);
+    });
+    pathEl.querySelectorAll("[data-rg-step]").forEach((b) => {
+      b.addEventListener("click", () => {
+        const k = b.dataset.rgStep;
+        if (k === "event") {
+          if (ev) el("review-hub-advised-btn")?.click();
+          else {
+            calendarClassFilter = null;
+            openCalendarEventForm(null);
+          }
+        } else if (k === "reinforce") el("review-hub-reinforce-btn")?.click();
+        else el("review-hub-manual-btn")?.click();
+      });
+    });
+
+    // 3. Le sens des quatre réponses (délais lus dans les réglages).
+    if (howEl) {
+      const algo = loadDevSettings().revisionAlgo || {};
+      const fl = algo.plancherMin || [];
+      const ce = algo.plafondMin || [];
+      const icons = loadDevSettings().ratingLabels || {};
+      const rows = [
+        ["again", "Je ne sais pas", 0],
+        ["hard", "Vague idée", 1],
+        ["good", "Je sais", 2],
+        ["easy", "Parfaitement", 3],
+      ];
+      howEl.innerHTML = rows
+        .map(([k, label, i]) => `<li><span class="rg-how-emoji" aria-hidden="true">${escapeHtml(icons[k] || "")}</span><span class="rg-how-label">${label}</span><span class="rg-how-delay">revient dans ${escapeHtml(RevisionAlgo.delayRangeLabel(fl[i] || 0, ce[i] || 0))}</span></li>`)
+        .join("");
+    }
   }
   const reviewHubAdvisedBtn = el("review-hub-advised-btn");
   if (reviewHubAdvisedBtn) {
