@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v269";
+  const APP_VERSION = "v270";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -10654,11 +10654,26 @@
     });
   }
   /** Passe de la page à trois ronds aux cadres d'explication (ou
-   *  l'inverse). Animation : chaque grand rond « devient » le petit rond de
-   *  son cadre (et inversement), en glissant et en rapetissant. */
-  function setReviewExplain(on, animate = true) {
+   *  l'inverse). v270 : animation en trois temps —
+   *  1. le texte des ronds s'efface et le picto grandit jusqu'à remplir le
+   *     rond ;
+   *  2. chaque grand rond glisse et rapetisse jusqu'au petit rond de son
+   *     cadre (plus lentement, pour qu'on suive le mouvement) ;
+   *  3. à la fin, les cadres (repliés) apparaissent l'un après l'autre.
+   *  Le retour (« OK ») joue la même chose à l'envers. */
+  let rxBusy = false;
+  const RX_GROW_MS = 380;
+  const RX_MOVE_MS = 900;
+  const rxWait = (ms) => new Promise((r) => setTimeout(r, ms));
+  function rxAnim(node, frames, opts) {
+    try {
+      return node.animate(frames, opts);
+    } catch (e) {
+      return null;
+    }
+  }
+  function rxParts() {
     const view = el("view-review-hub");
-    if (!view) return;
     const keys = ["event", "reinforce", "manual"];
     const circles = {
       event: el("review-hub-advised-btn"),
@@ -10667,45 +10682,159 @@
     };
     const icons = {};
     keys.forEach((k) => (icons[k] = view.querySelector(`.rx-frame--${k} .rx-icon`)));
-    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // Positions de départ (avant le changement).
-    const from = {};
-    if (animate && !reduce) keys.forEach((k) => (from[k] = (on ? circles[k] : icons[k])?.getBoundingClientRect()));
-    view.classList.toggle("is-explaining", on);
-    el("rx-explain").hidden = !on;
-    el("rx-how-btn")?.setAttribute("aria-expanded", String(on));
-    if (on) window.scrollTo(0, 0);
-    if (!animate || reduce) return;
+    return { view, keys, circles, icons };
+  }
+  /** Le picto de chaque grand rond, agrandi et centré (le texte effacé).
+   *  `ms` = 0 : tout de suite. Renvoie les animations (à annuler ensuite). */
+  function rxGrowCircles(circles, keys, ms, reverse) {
+    const anims = [];
     keys.forEach((k) => {
-      const target = on ? icons[k] : circles[k];
-      const a = from[k];
+      const c = circles[k];
+      const ico = c && c.querySelector(".classes-role-circle-icon");
+      if (!ico) return;
+      const cr = c.getBoundingClientRect();
+      const ir = ico.getBoundingClientRect();
+      if (!cr.width || !ir.width) return;
+      const dy = cr.top + cr.height / 2 - (ir.top + ir.height / 2);
+      const dx = cr.left + cr.width / 2 - (ir.left + ir.width / 2);
+      const k2 = (cr.width * 0.5) / ir.width;
+      const big = { transform: `translate(${dx}px, ${dy}px) scale(${k2})` };
+      const small = { transform: "none" };
+      const a = rxAnim(ico, reverse ? [big, small] : [small, big], { duration: ms, easing: "ease-in-out", fill: "forwards" });
+      if (a) anims.push(a);
+      c.querySelectorAll(":scope > :not(.classes-role-circle-icon)").forEach((n) => {
+        const b = rxAnim(n, reverse ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 1 }, { opacity: 0 }], { duration: ms, easing: "ease-out", fill: "forwards" });
+        if (b) anims.push(b);
+      });
+    });
+    return anims;
+  }
+  /** Déplace chaque élément `to[k]` depuis la place de `from[k]` (mesurée
+   *  avant le changement), en partant de sa taille. */
+  function rxFly(fromRects, to, keys, ms) {
+    keys.forEach((k) => {
+      const a = fromRects[k];
+      const target = to[k];
       if (!target || !a || !a.width) return;
       const b = target.getBoundingClientRect();
       if (!b.width) return;
       const dx = a.left + a.width / 2 - (b.left + b.width / 2);
       const dy = a.top + a.height / 2 - (b.top + b.height / 2);
       const s = a.width / b.width;
-      try {
-        target.animate(
-          [{ transform: `translate(${dx}px, ${dy}px) scale(${s})` }, { transform: "none" }],
-          { duration: 420, easing: "cubic-bezier(.2,.8,.2,1)" }
-        );
-      } catch (e) {
-        /* navigateur sans animations : pas grave */
-      }
+      rxAnim(target, [{ transform: `translate(${dx}px, ${dy}px) scale(${s})` }, { transform: "none" }], {
+        duration: ms,
+        easing: "cubic-bezier(.45,.05,.25,1)",
+      });
     });
-    // Les cadres (ou les ronds) apparaissent en fondu, juste après.
-    const fadeIn = on ? view.querySelectorAll(".rx-frame-body, .rx-schema, .rx-ok") : view.querySelectorAll(".classes-role-circle > :not(.classes-role-circle-icon)");
-    fadeIn.forEach((n) => {
-      try {
-        n.animate([{ opacity: 0 }, { opacity: 0, offset: 0.35 }, { opacity: 1 }], { duration: 520, easing: "ease-out" });
-      } catch (e) {
-        /* idem */
+  }
+  /** Replie tous les cadres (ils s'affichent repliés à chaque ouverture). */
+  function rxFoldAll() {
+    document.querySelectorAll("#rx-explain .rx-frame").forEach((f) => {
+      f.classList.remove("is-open");
+      const more = f.querySelector(".rx-more");
+      if (more) more.hidden = true;
+      const b = f.querySelector(".rx-fold");
+      if (b) {
+        b.setAttribute("aria-expanded", "false");
+        b.setAttribute("aria-label", "Lire la suite");
       }
     });
   }
+  async function setReviewExplain(on, animate = true) {
+    const view = el("view-review-hub");
+    if (!view || rxBusy) return;
+    const { keys, circles, icons } = rxParts();
+    const explain = el("rx-explain");
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const apply = () => {
+      if (on) rxFoldAll();
+      view.classList.toggle("is-explaining", on);
+      explain.hidden = !on;
+      el("rx-how-btn")?.setAttribute("aria-expanded", String(on));
+    };
+    if (!animate || reduce || !view.classList.contains("is-active")) {
+      apply();
+      if (on) window.scrollTo(0, 0);
+      return;
+    }
+    rxBusy = true;
+    try {
+      const frames = [...view.querySelectorAll(".rx-frame")];
+      const fading = (f) => [f.querySelector(".rx-frame-body"), f.querySelector(".rx-schema")].filter(Boolean);
+      if (on) {
+        // 1. Le texte s'efface, le picto remplit le rond.
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        const grow = rxGrowCircles(circles, keys, RX_GROW_MS, false);
+        await rxWait(RX_GROW_MS + 60);
+        // 2. Les grands ronds filent vers les petits.
+        const from = {};
+        keys.forEach((k) => (from[k] = circles[k]?.getBoundingClientRect()));
+        view.classList.add("rx-entering");
+        apply();
+        window.scrollTo(0, 0);
+        grow.forEach((a) => a.cancel());
+        rxFly(from, icons, keys, RX_MOVE_MS);
+        await rxWait(RX_MOVE_MS * 0.8);
+        // 3. Les cadres apparaissent, l'un après l'autre.
+        view.classList.remove("rx-entering");
+        frames.forEach((f, i) =>
+          fading(f).forEach((n) =>
+            rxAnim(n, [{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }], {
+              duration: 420,
+              delay: i * 120,
+              easing: "ease-out",
+              fill: "backwards",
+            })
+          )
+        );
+        const ok = view.querySelector(".rx-ok");
+        if (ok) rxAnim(ok, [{ opacity: 0 }, { opacity: 1 }], { duration: 400, delay: frames.length * 120, fill: "backwards" });
+        await rxWait(420 + frames.length * 120);
+      } else {
+        // 1. Les cadres s'effacent (les petits ronds restent).
+        frames.forEach((f) => fading(f).forEach((n) => rxAnim(n, [{ opacity: 1 }, { opacity: 0 }], { duration: 260, fill: "forwards" })));
+        const ok = view.querySelector(".rx-ok");
+        if (ok) rxAnim(ok, [{ opacity: 1 }, { opacity: 0 }], { duration: 260, fill: "forwards" });
+        await rxWait(280);
+        // 2. Les petits ronds redeviennent les grands (picto agrandi, sans texte).
+        const from = {};
+        keys.forEach((k) => (from[k] = icons[k]?.getBoundingClientRect()));
+        apply();
+        frames.forEach((f) => fading(f).forEach((n) => n.getAnimations().forEach((a) => a.cancel())));
+        if (ok) ok.getAnimations().forEach((a) => a.cancel());
+        window.scrollTo(0, 0);
+        const hold = rxGrowCircles(circles, keys, 0, false);
+        rxFly(from, circles, keys, RX_MOVE_MS);
+        await rxWait(RX_MOVE_MS + 40);
+        // 3. Le picto reprend sa place et le texte revient.
+        hold.forEach((a) => a.cancel());
+        rxGrowCircles(circles, keys, RX_GROW_MS, true).forEach((a) => {
+          a.finished.then(() => a.cancel()).catch(() => {});
+        });
+        await rxWait(RX_GROW_MS);
+      }
+    } finally {
+      rxBusy = false;
+    }
+  }
   el("rx-how-btn")?.addEventListener("click", () => setReviewExplain(true));
   el("rx-ok-btn")?.addEventListener("click", () => setReviewExplain(false));
+  // v270 : chaque cadre se déplie avec le triangle en bas.
+  document.querySelectorAll("#rx-explain .rx-fold").forEach((b) => {
+    b.addEventListener("click", () => {
+      const f = b.closest(".rx-frame");
+      const more = f.querySelector(".rx-more");
+      const open = more.hidden;
+      more.hidden = !open;
+      f.classList.toggle("is-open", open);
+      b.setAttribute("aria-expanded", String(open));
+      b.setAttribute("aria-label", open ? "Replier" : "Lire la suite");
+      if (open) {
+        const h = more.scrollHeight;
+        rxAnim(more, [{ height: "0px", opacity: 0 }, { height: `${h}px`, opacity: 1 }], { duration: 320, easing: "ease-out" });
+      }
+    });
+  });
 
   function renderReviewGuide() {
     const todayEl = el("rg-today");

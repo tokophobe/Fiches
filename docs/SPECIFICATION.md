@@ -270,10 +270,16 @@ contenu, plus explicite sur la méthode :
   avant le retour de la fiche (lu dans les réglages de l'algorithme).
 **Troisième présentation, à l'essai (v268, refaite en v269 d'après la
 maquette du propriétaire) : « mixte ».** La page à trois boutons, avec en
-plus un bouton « Comment ça marche ? ». Ce bouton fait rapetisser les
-trois ronds, qui glissent à gauche, et fait apparaître trois cadres
-d'explication, chacun avec sa couleur, son schéma, son petit rond et son
-bouton :
+plus un bouton « Comment ça marche ? ». Ce bouton lance une animation en
+trois temps (v270) : le texte des ronds s'efface et leur picto grandit
+jusqu'à remplir le rond ; puis chaque grand rond glisse lentement vers la
+gauche en rapetissant, jusqu'au petit rond de son cadre ; enfin les trois
+cadres apparaissent l'un après l'autre. Les cadres s'affichent **repliés**
+(titre et notion en une ligne : « Apprentissage rapide pour le jour J »,
+« Apprentissage de fond, sur la durée », « Ce que je veux, quand je
+veux »), pour tout voir sur un seul écran ; le triangle en bas de chaque
+cadre le déplie. Chaque cadre a sa couleur, son schéma, son petit rond et
+son bouton :
 - **« Ici, le plus urgent ! »** (orange, des points qui se resserrent
   jusqu'au drapeau du jour J) : le sprint avant les échéances ; d'où
   viennent les échéances (son agenda, celles des enseignants des classes
@@ -284,7 +290,8 @@ bouton :
   ce que devient la fiche après chacune des quatre réponses ; bouton
   « Renforcer mes connaissances » ;
 - **« Révisions libres »** (bleu, une boîte choisie) : bouton « Choisir ».
-« OK » ramène aux trois ronds (même animation à l'envers).
+« OK » ramène aux trois ronds (même animation à l'envers). Les cadres
+sont de nouveau repliés à chaque ouverture.
 La page à trois boutons reste celle par défaut. Pour comparer, des liens
 « Autres présentations » n'apparaissent qu'aux administrateurs (choix
 mémorisé sur l'appareil). Voir §8, Q11.
@@ -666,6 +673,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v270 | 6 nov. 2026 | Page Réviser « mixte » : animation en trois temps (texte des ronds effacé et picto agrandi, vol plus lent des grands ronds vers les petits, apparition des cadres l'un après l'autre) ; cadres repliés par défaut (titre et notion), dépliables par un triangle en bas. |
 | v269 | 6 nov. 2026 | Page Réviser « mixte » refaite d'après la maquette du propriétaire : la page à trois boutons plus « Comment ça marche ? », qui réduit les ronds (ils glissent à gauche) et fait apparaître trois cadres d'explication colorés avec schémas (le plus urgent, le travail de fond, les révisions libres) ; « OK » pour revenir. |
 | v268 | 6 nov. 2026 | Page Réviser : troisième présentation à l'essai, « mixte » : compacte par défaut, triangles ▸ pour déplier les explications ; une couleur et un schéma pour chaque façon de réviser (sprint avant les échéances, consolidation, révisions libres) ; schéma de la courbe de l'oubli. Liens « Autres présentations » pour les administrateurs (Q11). |
 | v267 | 5 nov. 2026 | Page Réviser : seconde présentation à l'essai, « parcours guidé » (situation du jour, chemin en trois étapes avec leur « pourquoi », sens des quatre réponses). La page à trois boutons reste celle par défaut ; les administrateurs peuvent passer de l'une à l'autre (Q11). |
