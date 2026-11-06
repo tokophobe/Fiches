@@ -511,10 +511,14 @@
           <span class="rx-icon" aria-hidden="true"></span>
           <div class="rx-frame-body">
             <h3 class="rx-title">Ici, le plus urgent !</h3>
+            <p class="rx-teaser">Apprentissage rapide pour le jour J</p>
+            <div class="rx-more" id="rx-more-event" hidden>
             <p>Lorsque tes échéances approchent (contrôles, examens…), darwin <strong>intensifie tes révisions</strong> en fonction de l'agenda, pour que tu sois au point le jour J. Concrètement, les fiches que tu ne sais pas reviennent très vite, et de plus en plus vite en approchant de l'échéance. Pour les fiches que tu connais, darwin vérifie juste de temps en temps que tu ne les as pas oubliées.</p>
             <p class="rx-note">Tu peux créer des échéances dans ton agenda. Tes enseignants peuvent aussi en créer : si tu as rejoint leurs classes, elles apparaîtront dans ton agenda et seront prises en compte pour tes révisions.</p>
             <p class="rx-status" id="rx-event-status"></p>
             <div class="rx-actions"><button type="button" class="btn" id="rx-event-btn">Ajouter une échéance</button></div>
+            </div>
+            <button type="button" class="rx-fold" aria-expanded="false" aria-controls="rx-more-event" aria-label="Lire la suite"><span class="rx-fold-tri" aria-hidden="true"></span></button>
           </div>
         </section>
         <section class="rx-frame rx-frame--reinforce">
@@ -522,6 +526,8 @@
           <span class="rx-icon" aria-hidden="true"></span>
           <div class="rx-frame-body">
             <h3 class="rx-title">Là, le travail de fond…</h3>
+            <p class="rx-teaser">Apprentissage de fond, sur la durée</p>
+            <div class="rx-more" id="rx-more-reinforce" hidden>
             <p>C'est ici que tu <strong>consolides tes connaissances</strong> et que la puissance de darwin se révèle : tu apprends mieux, donc tu perds moins de temps !</p>
             <h4 class="rx-subtitle">Comment ça marche ?</h4>
             <p>Plus on revoit une information, plus on la retient. Au début, elle s'efface vite de notre mémoire ; mais si on la revoit juste avant de l'avoir oubliée, elle se grave un peu plus longtemps. On attend alors un peu plus avant de la revoir, et plus on avance dans ce cycle, plus c'est facile !</p>
@@ -545,6 +551,8 @@
             <li><span class="rx-rate-ico stamp--easy" data-rating="easy" aria-hidden="true"></span><span class="rx-rate-label">Je savais parfaitement</span><span class="rx-rate-what">La fiche reviendra au bon moment, plus tard</span></li>
             </ul>
             <div class="rx-actions"><button type="button" class="btn" id="rx-reinforce-btn">Renforcer mes connaissances</button></div>
+            </div>
+            <button type="button" class="rx-fold" aria-expanded="false" aria-controls="rx-more-reinforce" aria-label="Lire la suite"><span class="rx-fold-tri" aria-hidden="true"></span></button>
           </div>
         </section>
         <section class="rx-frame rx-frame--manual">
@@ -552,9 +560,13 @@
           <span class="rx-icon" aria-hidden="true"></span>
           <div class="rx-frame-body">
             <h3 class="rx-title">Révisions libres</h3>
+            <p class="rx-teaser">Ce que je veux, quand je veux</p>
+            <div class="rx-more" id="rx-more-manual" hidden>
             <p>Ici, tu révises <strong>ce que tu veux, quand tu veux</strong> !</p>
             <p>Choisis une boîte ou un dossier, par exemple pour revoir un chapitre. Tu peux réviser en avance : darwin en tient compte pour les prochaines fois.</p>
             <div class="rx-actions"><button type="button" class="btn" id="rx-manual-btn">Choisir</button></div>
+            </div>
+            <button type="button" class="rx-fold" aria-expanded="false" aria-controls="rx-more-manual" aria-label="Lire la suite"><span class="rx-fold-tri" aria-hidden="true"></span></button>
           </div>
         </section>
         <div class="rx-ok"><button type="button" class="btn btn--primary" id="rx-ok-btn">OK</button></div>
