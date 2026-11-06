@@ -8939,3 +8939,109 @@ body.is-view-home .desk { background-color: var(--home-bg-color, var(--app-bg-co
 .review-variant-switch { text-align: center; margin: 18px 0 4px; }
 .review-variant-switch[hidden] { display: none; }
 .review-variant-switch-btn { border: none; background: transparent; color: var(--ink-soft); font-size: 12.5px; text-decoration: underline; cursor: pointer; }
+
+/* ==================================================================
+   v268 : « Réviser — mixte » : compacte par défaut, chaque carte se
+   déplie (▸) pour ses explications. Une couleur et un schéma par façon
+   de réviser : sprint (orange), consolidation (vert), libre (bleu).
+   ================================================================== */
+#view-review-mix { padding-bottom: 24px; }
+.rm-card--event { --rm-c: #e8743b; }
+.rm-card--reinforce { --rm-c: #2f9e6b; }
+.rm-card--manual { --rm-c: #4a7fd9; }
+:root.is-night-mode .rm-card--event { --rm-c: color-mix(in srgb, #e8743b 75%, #ffffff); }
+:root.is-night-mode .rm-card--reinforce { --rm-c: color-mix(in srgb, #2f9e6b 65%, #ffffff); }
+:root.is-night-mode .rm-card--manual { --rm-c: color-mix(in srgb, #4a7fd9 65%, #ffffff); }
+/* le triangle qui pivote quand on déplie */
+.rm-chevron {
+  display: inline-block; width: 0; height: 0; flex-shrink: 0;
+  border-style: solid; border-width: 5px 0 5px 8px;
+  border-color: transparent transparent transparent currentColor;
+  transition: transform 0.18s ease;
+}
+.is-open > .rm-chevron, .is-open .rm-card-toggle .rm-chevron, .rm-card-toggle[aria-expanded="true"] .rm-chevron { transform: rotate(90deg); }
+.rm-today {
+  background: var(--paper);
+  border: 1px solid var(--rule-soft, var(--rule));
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  padding: 12px 14px 8px;
+  margin: 4px 0 14px;
+  text-align: center;
+}
+.rm-today-line { margin: 0 0 4px; font-family: var(--font-type); font-size: 17px; font-weight: 700; color: var(--ink); }
+.rm-today-n { font-size: 26px; vertical-align: -2px; color: var(--btn-color, #4a90d9); }
+:root.is-night-mode .rm-today-n { color: color-mix(in srgb, var(--btn-color, #4a90d9) 45%, #ffffff); }
+.rm-how-toggle {
+  display: inline-flex; align-items: center; gap: 7px;
+  border: none; background: transparent; cursor: pointer;
+  padding: 6px 8px; font-size: 13.5px; font-weight: 600; color: var(--ink-soft);
+}
+.rm-how { text-align: left; padding: 4px 2px 6px; }
+.rm-how[hidden] { display: none; }
+.rm-curve { display: block; width: 100%; max-width: 340px; height: auto; margin: 0 auto 6px; }
+.rm-axis { stroke: var(--ink-soft); stroke-width: 1.2; opacity: 0.6; }
+.rm-axis-label { font-size: 9px; fill: var(--ink-soft); }
+.rm-forget { fill: none; stroke: #d9534f; stroke-width: 2; stroke-dasharray: 4 4; opacity: 0.8; }
+.rm-memory { fill: none; stroke: #2f9e6b; stroke-width: 2.4; stroke-linejoin: round; }
+.rm-dot { fill: #2f9e6b; }
+.rm-how-text { margin: 6px 0; font-size: 13.5px; line-height: 1.45; color: var(--ink-soft); }
+.rm-legend { display: inline-block; width: 18px; height: 0; vertical-align: middle; margin-right: 2px; border-top: 2.4px solid #2f9e6b; }
+.rm-legend--forget { border-top: 2px dashed #d9534f; }
+.rm-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.rm-card {
+  background: var(--paper);
+  border: 1px solid var(--rule-soft, var(--rule));
+  border-left: 5px solid var(--rm-c);
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+.rm-card.is-advised { box-shadow: 0 0 0 2px color-mix(in srgb, var(--rm-c) 45%, transparent), 0 2px 6px rgba(0, 0, 0, 0.08); }
+.rm-card.is-disabled .rm-card-go { opacity: 0.5; }
+.rm-card-main { display: flex; align-items: stretch; }
+.rm-card-go {
+  flex: 1; min-width: 0;
+  display: grid; grid-template-columns: 84px 1fr auto; align-items: center; gap: 8px;
+  border: none; background: transparent; cursor: pointer; text-align: left;
+  padding: 12px 6px 12px 10px; color: var(--ink); font: inherit;
+}
+.rm-card-go:disabled { cursor: default; }
+.rm-schema { width: 84px; height: auto; display: block; }
+.rm-s-line { stroke: var(--rm-c); stroke-width: 1.5; opacity: 0.35; }
+.rm-s-dot { fill: var(--rm-c); }
+.rm-s-pole { stroke: var(--rm-c); stroke-width: 2; }
+.rm-s-flag { fill: var(--rm-c); }
+.rm-s-text { font-size: 10px; font-weight: 700; fill: var(--rm-c); }
+.rm-s-hop { fill: none; stroke: var(--rm-c); stroke-width: 2; stroke-dasharray: 3 2.5; }
+.rm-s-box { fill: color-mix(in srgb, var(--rm-c) 15%, transparent); stroke: var(--rm-c); stroke-width: 1.5; }
+.rm-s-box--picked { fill: var(--rm-c); }
+.rm-s-hand { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; stroke-linejoin: round; }
+.rm-card-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rm-card-title { font-family: var(--font-type); font-weight: 700; font-size: 15.5px; line-height: 1.25; color: var(--ink); }
+.rm-card-sub { font-size: 12.5px; line-height: 1.3; font-weight: 600; color: var(--rm-c); }
+.rm-card-tag {
+  display: inline-block; margin-left: 4px; padding: 1px 7px; border-radius: 999px; vertical-align: 2px;
+  font-family: system-ui, sans-serif; font-size: 10.5px; font-weight: 700; color: #fff; background: var(--rm-c);
+}
+.rm-card-count {
+  white-space: nowrap; padding: 3px 8px; border-radius: 999px;
+  font-size: 12px; font-weight: 600; color: var(--ink-soft);
+  background: color-mix(in srgb, var(--ink-soft) 10%, transparent);
+}
+.rm-card-count.has-due { color: #fff; background: var(--rm-c); }
+:root.is-night-mode .rm-card-count.has-due { color: #16181d; }
+.rm-card-toggle {
+  flex: 0 0 40px; border: none; border-left: 1px solid var(--rule-soft, var(--rule));
+  background: transparent; cursor: pointer; color: var(--rm-c);
+  display: flex; align-items: center; justify-content: center;
+}
+.rm-card-more {
+  padding: 10px 14px 12px;
+  border-top: 1px dashed var(--rule-soft, var(--rule));
+  background: color-mix(in srgb, var(--rm-c) 6%, transparent);
+}
+.rm-card-more[hidden] { display: none; }
+.rm-more-detail { margin: 0 0 6px; font-size: 14px; line-height: 1.4; color: var(--ink); }
+.rm-more-why { margin: 0; font-size: 13px; line-height: 1.45; color: var(--ink-soft); }
+.rm-more-actions { display: flex; justify-content: flex-end; margin-top: 8px; }
