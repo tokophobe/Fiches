@@ -331,6 +331,7 @@
     <button class="tab" role="tab" aria-selected="false" data-view="calendar" hidden>Agenda</button>
     <button class="tab" role="tab" aria-selected="false" data-view="review-hub" hidden>Réviser</button>
     <button class="tab" role="tab" aria-selected="false" data-view="review-guide" hidden>Réviser</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="review-mix" hidden>Réviser</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Révisions prioritaires</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-reinforce" hidden>Renforcer mes connaissances</button>
     <button class="tab" role="tab" aria-selected="false" data-view="reports-hub" hidden>Signalements</button>
@@ -502,7 +503,7 @@
         </button>
       </div>
           <!-- v267 : essai d'une seconde présentation (administrateurs). -->
-      <p class="review-variant-switch" hidden><button type="button" class="review-variant-switch-btn" data-review-variant="guide">Voir l'autre présentation (parcours guidé)</button></p>
+      <p class="review-variant-switch" hidden></p>
     </section>
 
     <!-- v267 : « Réviser — parcours guidé » : seconde présentation de la page
@@ -519,7 +520,37 @@
         <ul class="rg-how-list" id="rg-how-list"></ul>
         <p class="rg-how-note">Une fiche ratée revient aussi deux fois dans la même séance, pour la fixer tout de suite.</p>
       </details>
-      <p class="review-variant-switch" hidden><button type="button" class="review-variant-switch-btn" data-review-variant="classic">Voir l'autre présentation (trois boutons)</button></p>
+      <p class="review-variant-switch" hidden></p>
+    </section>
+
+    <!-- v268 : « Réviser — mixte » : compacte par défaut comme la page à
+         trois boutons, chaque carte se déplie (▸) pour donner les
+         explications du parcours guidé ; un schéma et une couleur par façon
+         de réviser (sprint / consolidation / libre). Remplie par
+         renderReviewMix (js/app.js). -->
+    <section id="view-review-mix" class="view" aria-labelledby="tab-review-mix">
+      <div class="rm-today">
+        <p class="rm-today-line" id="rm-today-line"></p>
+        <button type="button" class="rm-how-toggle" id="rm-how-toggle" aria-expanded="false" aria-controls="rm-how">
+          <span class="rm-chevron" aria-hidden="true"></span><span>Comment ça marche ?</span>
+        </button>
+        <div class="rm-how" id="rm-how" hidden>
+          <svg class="rm-curve" viewBox="0 0 260 110" role="img" aria-label="Courbe de l'oubli : chaque révision fait remonter le souvenir, qui s'efface ensuite de plus en plus lentement">
+            <line x1="22" y1="88" x2="252" y2="88" class="rm-axis"/>
+            <line x1="22" y1="10" x2="22" y2="88" class="rm-axis"/>
+            <text x="6" y="16" class="rm-axis-label" transform="rotate(-90 12 50)">souvenir</text>
+            <text x="200" y="102" class="rm-axis-label">temps</text>
+            <path class="rm-forget" d="M24 14 C 40 60, 60 78, 110 84"/>
+            <path class="rm-memory" d="M24 14 C 34 40, 44 50, 58 54 L58 14 C 74 34, 92 42, 112 44 L112 14 C 140 26, 170 32, 196 33 L196 14 C 216 18, 236 21, 250 22"/>
+            <circle cx="58" cy="14" r="4" class="rm-dot"/><circle cx="112" cy="14" r="4" class="rm-dot"/><circle cx="196" cy="14" r="4" class="rm-dot"/>
+          </svg>
+          <p class="rm-how-text"><span class="rm-legend rm-legend--forget"></span> Sans révision, on oublie vite. <span class="rm-legend rm-legend--memory"></span> Chaque révision au bon moment <strong>fait remonter le souvenir</strong>, qui s'efface ensuite <strong>de plus en plus lentement</strong> : darwin te repose chaque fiche juste avant que tu l'oublies.</p>
+          <p class="rm-how-text">Après chaque fiche, dis honnêtement si tu savais :</p>
+          <ul class="rg-how-list" id="rm-how-list"></ul>
+        </div>
+      </div>
+      <ul class="rm-cards" id="rm-cards"></ul>
+      <p class="review-variant-switch" hidden></p>
     </section>
 
     <!-- VUE PROGRAMME DE RÉVISION (item 7) : étape intermédiaire avant

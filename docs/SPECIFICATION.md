@@ -268,8 +268,26 @@ contenu, plus explicite sur la méthode :
   que je sais (boîtes et fiches à revoir) ; 3. Réviser ce que je veux ;
 - « Comment noter mes réponses ? » : les quatre réponses et le délai
   avant le retour de la fiche (lu dans les réglages de l'algorithme).
-La page à trois boutons reste celle par défaut. Pour comparer, un lien
-« Voir l'autre présentation » n'apparaît qu'aux administrateurs (choix
+**Troisième présentation, à l'essai (v268) : « mixte ».** Le mélange des
+deux : compacte par défaut, comme la page à trois boutons (pour l'habitué),
+avec des triangles ▸ qui déplient les explications du parcours guidé (pour
+le débutant) :
+- en haut, « N fiches à revoir aujourd'hui » et « ▸ Comment ça marche ? »,
+  qui déplie un schéma de la courbe de l'oubli (chaque révision fait
+  remonter le souvenir, qui s'efface ensuite de plus en plus lentement) et
+  le sens des quatre réponses ;
+- trois cartes, chacune avec sa couleur, son schéma et le nombre de fiches
+  à revoir : **Sprint avant mes échéances** (orange, « apprentissage
+  rapide pour le jour J » : des points qui se resserrent jusqu'au
+  drapeau), **Consolider mes connaissances** (vert, « apprentissage de
+  fond, sur la durée » : des bonds de plus en plus longs), **Révisions
+  libres** (bleu, « ce que je veux, quand je veux » : une boîte choisie) ;
+  la carte conseillée est soulignée ;
+- toucher une carte lance la révision ; son triangle ▸ déplie le détail
+  (prochaine échéance, boîtes à revoir) et le « pourquoi ». Les cartes
+  dépliées restent dépliées la fois suivante (sur l'appareil).
+La page à trois boutons reste celle par défaut. Pour comparer, des liens
+« Autres présentations » n'apparaissent qu'aux administrateurs (choix
 mémorisé sur l'appareil). Voir §8, Q11.
 
 ### 4.6 La jauge de progression
@@ -598,9 +616,9 @@ moi, relecture pour une boîte de classe). Faut-il les unifier ? (lié à Q3)
 > ⏳ *Claude : à réaliser avec Q3 (chantier « publication avec relecture »).*
 
 **Q11 — Page Réviser : quelle présentation garder ?** La page à trois
-boutons, ou le « parcours guidé » (v267, §4.5) ? Pour comparer : sur la
-page Réviser, lien « Voir l'autre présentation » en bas (visible
-seulement pour les administrateurs).
+boutons, le « parcours guidé » (v267) ou la présentation « mixte » (v268,
+§4.5) ? Pour comparer : sur la page Réviser, liens « Autres
+présentations » en bas (visibles seulement pour les administrateurs).
 > Réponse :
 
 **Q8 — Avant l'ouverture au public : une adresse de test.**
@@ -649,6 +667,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v268 | 6 nov. 2026 | Page Réviser : troisième présentation à l'essai, « mixte » : compacte par défaut, triangles ▸ pour déplier les explications ; une couleur et un schéma pour chaque façon de réviser (sprint avant les échéances, consolidation, révisions libres) ; schéma de la courbe de l'oubli. Liens « Autres présentations » pour les administrateurs (Q11). |
 | v267 | 5 nov. 2026 | Page Réviser : seconde présentation à l'essai, « parcours guidé » (situation du jour, chemin en trois étapes avec leur « pourquoi », sens des quatre réponses). La page à trois boutons reste celle par défaut ; les administrateurs peuvent passer de l'une à l'autre (Q11). |
 | v266 | 5 nov. 2026 | Corrigé : après un retour à l'accueil par la flèche « < », le bouton du défi du jour gardait son ancien état (« À jouer » alors que le défi était fait sur un autre appareil). L'accueil est désormais remis à jour quel que soit le chemin pour y revenir. |
 | v265 | 5 nov. 2026 | Défi du jour synchronisé entre les appareils d'un compte (un défi fait sur le PC restait « à jouer » sur l'iPhone et pouvait être refait). « Annuler » dans la bulle du robot quand on choisit le dossier d'une boîte. |
