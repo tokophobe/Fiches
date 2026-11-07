@@ -53024,20 +53024,22 @@
      "link": "https://fr.wikipedia.org/wiki/Adrénaline"
     },
     {
-     "question": "Lequel de ces effets est dû à l'adrénaline ?",
-     "answer": "L'accélération du rythme cardiaque",
+     "question": "L'adrénaline accélère-t-elle ou ralentit-elle le rythme cardiaque ?",
+     "answer": "Elle l'accélère",
      "w": [
+      "e35cec19",
       "5abf8464",
       "f24f3976"
      ],
      "wq": [
+      "ee774d8c",
       "ef03ea42"
      ],
-     "more": "Aussi : rythme respiratoire accéléré, hausse de la pression artérielle, libération de glucose dans le sang.",
+     "more": "Elle augmente aussi la glycémie et la pression artérielle.",
      "wrongs": [
-      "La baisse de la glycémie",
-      "Le ralentissement de la respiration",
-      "La baisse de la pression artérielle"
+      "Elle le ralentit",
+      "Elle l'arrête",
+      "Elle n'a aucun effet sur le cœur"
      ]
     },
     {
@@ -53127,20 +53129,22 @@
      ]
     },
     {
-     "question": "Lequel de ces troubles peut résulter du stress chronique ?",
-     "answer": "Une baisse de l'immunité",
+     "question": "Quel effet le stress chronique peut-il avoir sur l'immunité ?",
+     "answer": "Il peut la diminuer",
      "w": [
+      "40c44209",
       "9c81bfb1",
       "faf3e795"
      ],
      "wq": [
+      "9e96f621",
       "4d19baf8"
      ],
      "more": "Aussi : troubles du sommeil, anxiété, dépression, maladies cardiovasculaires, troubles digestifs et métaboliques.",
      "wrongs": [
-      "Une hausse de l'immunité",
-      "Une meilleure mémoire",
-      "Une croissance accélérée"
+      "Il la renforce",
+      "Il n'a aucun effet",
+      "Il la rend parfaite"
      ]
     },
     {
@@ -53213,20 +53217,22 @@
      ]
     },
     {
-     "question": "Laquelle de ces stratégies non médicamenteuses aide à gérer le stress ?",
-     "answer": "L'activité physique",
+     "question": "L'activité physique aide-t-elle à gérer le stress ?",
+     "answer": "Oui",
      "w": [
+      "989d9c8f",
       "fd3c7b66",
       "23171808"
      ],
      "wq": [
+      "b05c77ea",
       "9deb28e2"
      ],
-     "more": "Aussi : sommeil suffisant, relaxation ou méditation, soutien social ou psychologique.",
+     "more": "Comme un bon sommeil et le lien avec les autres ; à l'inverse de l'isolement ou des écrans tard le soir.",
      "wrongs": [
-      "Réduire son sommeil",
-      "S'isoler",
-      "Augmenter les écrans le soir"
+      "Non, elle l'aggrave",
+      "Seulement chez les sportifs",
+      "Non, seul un médicament aide"
      ]
     }
    ]
@@ -56401,20 +56407,22 @@
      ]
     },
     {
-     "question": "Lequel de ces couples de grandeurs n'est PAS proportionnel ?",
-     "answer": "L'âge et la taille",
+     "question": "L'âge et la taille d'une personne sont-ils proportionnels ?",
+     "answer": "Non",
      "w": [
+      "66aa2bba",
       "537b7b96",
       "b1b858b5"
      ],
      "wq": [
+      "10159495",
       "d25313a0"
      ],
-     "more": "2 fois plus d'âge ne donne pas 2 fois plus de taille.",
+     "more": "Le prix et le nombre de cahiers, eux, le sont.",
      "wrongs": [
-      "Le nombre de cahiers et leur prix",
-      "La distance et le temps à vitesse constante",
-      "La quantité de farine et le nombre de gâteaux"
+      "Oui, toujours",
+      "Oui, jusqu'à 18 ans",
+      "Oui, pour les enfants"
      ]
     },
     {
@@ -56676,20 +56684,22 @@
      ]
     },
     {
-     "question": "Laquelle de ces classes de mots est variable ?",
-     "answer": "Le pronom",
+     "question": "Le pronom est-il une classe de mots variable ou invariable ?",
+     "answer": "Variable",
      "w": [
+      "02913136",
       "e25767da",
       "a48f3f2f"
      ],
      "wq": [
+      "dacf7ec5",
       "dffe146e"
      ],
-     "more": "Variables : nom, déterminant, adjectif, pronom, verbe. Ils changent de forme (genre, nombre, personne, temps).",
+     "more": "L'adverbe, la préposition et l'interjection sont invariables.",
      "wrongs": [
-      "L'adverbe",
-      "La préposition",
-      "L'interjection"
+      "Invariable",
+      "Ça dépend du verbe",
+      "Ce n'est pas une classe de mots"
      ]
     },
     {
@@ -56710,20 +56720,19 @@
      ]
     },
     {
-     "question": "Lequel de ces mots est une conjonction de coordination ?",
-     "answer": "Car",
+     "question": "Quelles sont les conjonctions de coordination ?",
+     "answer": "Mais, ou, et, donc, or, ni, car",
      "w": [
+      "aba2b216",
       "31439f5d",
       "a087b7f5"
      ],
-     "wq": [
-      "e885dbfe"
-     ],
+     "wq": "bfabcac9",
      "more": "Mais, ou, et, donc, or, ni, car : elles relient des éléments de même fonction.",
      "wrongs": [
-      "Avec",
-      "Très",
-      "Quand"
+      "Quand, si, parce que, comme",
+      "Avec, sans, pour, par",
+      "Très, bien, souvent, jamais"
      ]
     },
     {
@@ -56846,20 +56855,22 @@
      ]
     },
     {
-     "question": "Lequel de ces verbes est un verbe d'état ?",
-     "answer": "Devenir",
+     "question": "« Devenir » est-il un verbe d'état ou un verbe d'action ?",
+     "answer": "Un verbe d'état",
      "w": [
+      "c2305bd9",
       "0add79ed",
       "58fbbb38"
      ],
      "wq": [
+      "9ff134b3",
       "185dde05"
      ],
-     "more": "Être, paraître, sembler, devenir, demeurer, rester, avoir l'air.",
+     "more": "Comme être, paraître, sembler, rester.",
      "wrongs": [
-      "Courir",
-      "Manger",
-      "Parler"
+      "Un verbe d'action",
+      "Un auxiliaire",
+      "Un verbe impersonnel"
      ]
     },
     {
@@ -58224,97 +58235,233 @@
    "cards": [
     {
      "question": "À quoi sert le règlement intérieur du collège ?",
-     "answer": "Il fixe les règles de vie de l'établissement :\n• droits et devoirs des élèves\n• sanctions en cas de manquement\nIl s'applique à tous.",
-     "w": "ef5981e6",
-     "wq": "78bad867"
+     "answer": "À fixer les règles de vie, les droits et devoirs des élèves",
+     "w": [
+      "444e3d23",
+      "ef5981e6"
+     ],
+     "wrongs": [
+      "À fixer les notes",
+      "À choisir les professeurs",
+      "À organiser les vacances"
+     ]
     },
     {
      "question": "Quelle est la différence entre un droit et un devoir ?",
-     "answer": "Droit : ce qui est permis ou garanti (être protégé, s'exprimer).\nDevoir : une obligation (respecter les autres, être assidu).",
-     "w": "2afcff06",
-     "wq": "27629a06"
+     "answer": "Un droit est permis ou garanti ; un devoir est une obligation",
+     "w": [
+      "1407f151",
+      "2afcff06"
+     ],
+     "wrongs": [
+      "Ce sont deux synonymes",
+      "Un devoir est facultatif",
+      "Un droit est une punition"
+     ]
     },
     {
-     "question": "Comment sont désignés les délégués de classe et quel est leur rôle ?",
-     "answer": "Élus par les élèves de la classe. Ils :\n• représentent leurs camarades\n• font le lien avec les adultes\n• participent au conseil de classe",
-     "w": "e6c82e02",
-     "wq": "f32bcb8e"
+     "question": "Comment sont désignés les délégués de classe ?",
+     "answer": "Élus par les élèves de la classe",
+     "w": [
+      "c77f47c3",
+      "e6c82e02"
+     ],
+     "wq": "f32bcb8e",
+     "more": "Ils représentent leurs camarades et participent au conseil de classe.",
+     "wrongs": [
+      "Choisis par le principal",
+      "Tirés au sort",
+      "Nommés par les parents"
+     ]
     },
     {
-     "question": "Qu'est-ce que le conseil de classe ?",
-     "answer": "Une réunion chaque trimestre ou semestre :\nprofesseurs, direction, délégués des élèves et des parents.\nBilan du travail et du comportement de chaque élève.",
-     "w": "390d2cde",
-     "wq": "fe3dc487"
+     "question": "Qui participe au conseil de classe ?",
+     "answer": "Professeurs, direction, délégués des élèves et des parents",
+     "w": [
+      "0b65255e",
+      "390d2cde"
+     ],
+     "wq": "fe3dc487",
+     "wrongs": [
+      "Seulement les professeurs",
+      "Seulement les élèves",
+      "Seulement les parents"
+     ]
     },
     {
      "question": "Qu'est-ce que le CVC ?",
-     "answer": "Le conseil de la vie collégienne :\ndes élèves élus y proposent avec des adultes\ndes projets pour améliorer la vie au collège.",
-     "w": "9a1b36f6",
-     "wq": "bd4b18f2"
+     "answer": "Le conseil de la vie collégienne",
+     "w": [
+      "b9f07c02",
+      "9a1b36f6"
+     ],
+     "more": "Des élèves élus y proposent des projets pour améliorer la vie au collège.",
+     "wrongs": [
+      "Le conseil des villes de collège",
+      "Le comité de vigilance contre la violence",
+      "Le club de vacances du collège"
+     ]
     },
     {
-     "question": "Qu'est-ce que la Convention internationale des droits de l'enfant ?",
-     "answer": "Un texte de l'ONU (1989) qui reconnaît des droits à tous les moins de 18 ans :\néducation, soins, protection, identité…",
-     "w": "ca614caa",
-     "wq": "5ddd8e67"
+     "question": "En quelle année l'ONU adopte-t-elle la Convention internationale des droits de l'enfant ?",
+     "answer": "En 1989",
+     "w": [
+      "d5ef256f",
+      "ca614caa"
+     ],
+     "wq": "5ddd8e67",
+     "more": "Droits à l'éducation, aux soins, à la protection, à l'identité…",
+     "wrongs": [
+      "En 1789",
+      "En 1948",
+      "En 2000"
+     ]
     },
     {
      "question": "Qu'est-ce que le harcèlement scolaire ?",
-     "answer": "Des violences répétées contre un élève par un ou plusieurs autres :\nmoqueries, insultes, coups, mise à l'écart.\nC'est interdit et puni par la loi.",
-     "w": "cf35ea95",
-     "wq": "57c45591"
+     "answer": "Des violences répétées contre un élève",
+     "w": [
+      "e4c8f0fc",
+      "cf35ea95"
+     ],
+     "more": "Moqueries, insultes, coups, mise à l'écart : c'est interdit et puni par la loi.",
+     "wrongs": [
+      "Une dispute ponctuelle",
+      "Un désaccord avec un professeur",
+      "Une mauvaise note"
+     ]
     },
     {
-     "question": "Que faire si l'on est victime ou témoin de harcèlement ?",
-     "answer": "• En parler à un adulte de confiance (parent, professeur, CPE)\n• Appeler le 3018 (gratuit, harcèlement et cyberharcèlement)",
-     "w": "7dd7d315",
-     "wq": "1bee5071"
+     "question": "Quel numéro appeler en cas de harcèlement ou de cyberharcèlement ?",
+     "answer": "Le 3018",
+     "w": [
+      "7083e5a4",
+      "7dd7d315"
+     ],
+     "wq": "1bee5071",
+     "more": "Il faut aussi en parler à un adulte de confiance.",
+     "wrongs": [
+      "Le 15",
+      "Le 18",
+      "Le 112"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une discrimination ?",
-     "answer": "Traiter une personne moins bien qu'une autre\nen raison de son origine, son sexe, son handicap, sa religion ou son apparence.\nC'est interdit par la loi.",
-     "w": "90844afd",
-     "wq": "afa4de1e"
+     "answer": "Traiter quelqu'un moins bien en raison de son origine, son sexe, son handicap…",
+     "w": [
+      "0f6a89c3",
+      "90844afd"
+     ],
+     "wrongs": [
+      "Une dispute entre amis",
+      "Une punition au collège",
+      "Un désaccord d'opinion"
+     ]
     },
     {
      "question": "Que signifie l'égalité entre les filles et les garçons ?",
-     "answer": "Mêmes droits et mêmes chances pour filles et garçons,\nà l'école comme dans la société, sans stéréotypes.",
-     "w": "106ca7ed",
-     "wq": "bedc8862"
+     "answer": "Les mêmes droits et les mêmes chances, sans stéréotypes",
+     "w": [
+      "9708e60a",
+      "106ca7ed"
+     ],
+     "wrongs": [
+      "Les mêmes goûts pour tous",
+      "Les mêmes vêtements",
+      "Des classes séparées"
+     ]
     },
     {
-     "question": "Qu'est-ce que la laïcité ?",
-     "answer": "Un principe de la République (loi de 1905) :\n• l'État est neutre et séparé des religions\n• il garantit la liberté de croire ou de ne pas croire",
-     "w": "3188147e",
-     "wq": "90a16cb3"
+     "question": "Quelle loi de 1905 fonde la laïcité en France ?",
+     "answer": "La loi de séparation des Églises et de l'État",
+     "w": [
+      "5a864ee3",
+      "3188147e"
+     ],
+     "wq": "90a16cb3",
+     "more": "L'État est neutre et garantit la liberté de croire ou de ne pas croire.",
+     "wrongs": [
+      "La loi sur l'école gratuite",
+      "La loi sur le droit de vote",
+      "La loi sur la liberté de la presse"
+     ]
     },
     {
-     "question": "Comment la laïcité s'applique-t-elle à l'école publique ?",
-     "answer": "• L'enseignement est neutre.\n• Depuis 2004, pas de signes religieux ostensibles pour les élèves.\n• La Charte de la laïcité est affichée.",
-     "w": "c4734af4",
-     "wq": "696f8c98"
+     "question": "Depuis 2004, que n'ont pas le droit de porter les élèves à l'école publique ?",
+     "answer": "Des signes religieux ostensibles",
+     "w": [
+      "cce78dbd",
+      "c4734af4"
+     ],
+     "wq": "696f8c98",
+     "wrongs": [
+      "Des vêtements de couleur",
+      "Des montres",
+      "Des casquettes de sport seulement"
+     ]
     },
     {
      "question": "Quelle est la devise de la République française ?",
-     "answer": "« Liberté, Égalité, Fraternité »."
+     "answer": "« Liberté, Égalité, Fraternité »",
+     "w": "7e99ed04",
+     "wrongs": [
+      "« Travail, Famille, Patrie »",
+      "« Unité, Travail, Progrès »",
+      "« Paix et Justice »"
+     ]
     },
     {
-     "question": "Cite les symboles de la République française.",
-     "answer": "• Le drapeau bleu-blanc-rouge\n• La Marseillaise\n• La devise\n• Marianne\n• Le 14 juillet",
-     "w": "900fe915",
-     "wq": "60f8836c"
+     "question": "Quels sont les symboles de la République française ?",
+     "answer": "Le drapeau, La Marseillaise, la devise, Marianne, le 14 juillet",
+     "w": [
+      "f71c11ef",
+      "900fe915"
+     ],
+     "wq": "60f8836c",
+     "wrongs": [
+      "La tour Eiffel et le coq",
+      "Le roi et la couronne",
+      "L'euro et le Parlement"
+     ]
     },
     {
-     "question": "Qui a composé La Marseillaise et quand ?",
-     "answer": "Rouget de Lisle, en 1792, à Strasbourg\nChant de guerre pour l'armée du Rhin, devenu hymne national.",
-     "w": "dcf4786e",
-     "wq": "b0ab7680"
+     "question": "Qui a composé La Marseillaise ?",
+     "answer": "Rouget de Lisle",
+     "w": [
+      "cfaa3e33",
+      "dcf4786e"
+     ],
+     "wq": "b0ab7680",
+     "wrongs": [
+      "Victor Hugo",
+      "Napoléon",
+      "Mozart"
+     ]
+    },
+    {
+     "question": "En quelle année La Marseillaise est-elle composée ?",
+     "answer": "En 1792",
+     "more": "À Strasbourg, comme chant de guerre pour l'armée du Rhin.",
+     "wrongs": [
+      "En 1789",
+      "En 1815",
+      "En 1870"
+     ]
     },
     {
      "question": "La liberté d'expression a-t-elle des limites ?",
-     "answer": "Oui : on peut donner son opinion,\nmais pas insulter, diffamer ou inciter à la haine,\ny compris sur Internet et les réseaux sociaux.",
-     "w": "25dc6574",
-     "wq": "49ba26ad"
+     "answer": "Oui : on ne peut pas insulter, diffamer ou inciter à la haine",
+     "w": [
+      "79963a07",
+      "25dc6574"
+     ],
+     "more": "Y compris sur internet et les réseaux sociaux.",
+     "wrongs": [
+      "Non, aucune",
+      "Seulement à l'école",
+      "Seulement pour les adultes"
+     ]
     }
    ]
   },
@@ -58991,110 +59138,259 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'affirme l'inégalité triangulaire ?",
-     "answer": "Chaque côté est plus court que la somme des deux autres.\nEx. : AB < AC + CB",
-     "w": "bf236e29",
-     "wq": "bac3f0a1"
+     "question": "Que dit l'inégalité triangulaire ?",
+     "answer": "Chaque côté est plus court que la somme des deux autres",
+     "w": [
+      "47746389",
+      "bf236e29"
+     ],
+     "wq": "bac3f0a1",
+     "wrongs": [
+      "Chaque côté est plus long que la somme des deux autres",
+      "Les trois côtés sont égaux",
+      "La somme des côtés vaut 180"
+     ]
     },
     {
-     "question": "Comment vérifier rapidement qu'un triangle est constructible ?",
-     "answer": "On compare la plus grande longueur à la somme des deux autres :\nconstructible si elle est plus petite que cette somme.",
-     "w": "3d28454f",
-     "wq": "f8d74a27"
+     "question": "Comment vérifier qu'un triangle est constructible ?",
+     "answer": "La plus grande longueur doit être inférieure à la somme des deux autres",
+     "w": [
+      "8cefac1e",
+      "3d28454f"
+     ],
+     "wq": "f8d74a27",
+     "wrongs": [
+      "Les trois longueurs doivent être égales",
+      "La somme des longueurs doit valoir 180",
+      "La plus petite longueur doit être supérieure aux deux autres"
+     ]
     },
     {
      "question": "Peut-on construire un triangle de côtés 3 cm, 4 cm et 8 cm ?",
-     "answer": "Non.\n3 + 4 = 7 et 7 < 8 :\nles deux petits côtés ne peuvent pas se rejoindre.",
-     "w": "f11d7b71",
-     "wq": "2921ffe7"
+     "answer": "Non",
+     "w": [
+      "9280dc2b",
+      "f11d7b71"
+     ],
+     "more": "3 + 4 = 7 et 7 < 8.",
+     "wrongs": [
+      "Oui",
+      "Oui, un triangle rectangle",
+      "Oui, un triangle aplati"
+     ]
     },
     {
-     "question": "Que se passe-t-il avec des longueurs de 5 cm, 7 cm et 12 cm ?",
-     "answer": "5 + 7 = 12 : les trois points sont alignés.\nTriangle « aplati » : le troisième point est sur le plus grand côté.",
-     "w": "1351f1df",
-     "wq": "48f09b02"
+     "question": "Avec des côtés de 5 cm, 7 cm et 12 cm, qu'obtient-on ?",
+     "answer": "Un triangle aplati : les trois points sont alignés",
+     "w": [
+      "17123a5a",
+      "1351f1df"
+     ],
+     "wq": "48f09b02",
+     "more": "5 + 7 = 12.",
+     "wrongs": [
+      "Un triangle rectangle",
+      "Un triangle équilatéral",
+      "Rien du tout"
+     ]
     },
     {
      "question": "Que vaut la somme des angles d'un triangle ?",
-     "answer": "180°\ntoujours, pour tout triangle.",
-     "w": "d2605b75",
-     "wq": "05104069"
+     "answer": "180°",
+     "w": [
+      "f9730124",
+      "d2605b75"
+     ],
+     "wrongs": [
+      "90°",
+      "360°",
+      "270°"
+     ]
     },
     {
      "question": "Un triangle a deux angles de 50° et 60°. Combien mesure le troisième ?",
-     "answer": "70°\n180° − (50° + 60°) = 70°",
-     "w": "afe4bc67",
-     "wq": "38482eca"
+     "answer": "70°",
+     "w": [
+      "1e3694fe",
+      "afe4bc67"
+     ],
+     "wrongs": [
+      "110°",
+      "80°",
+      "60°"
+     ]
     },
     {
-     "question": "Que peut-on dire des deux angles aigus d'un triangle rectangle ?",
-     "answer": "Leur somme vaut 90° : ils sont complémentaires.\nEx. : 35° et 55°",
-     "w": "b3ce0c68",
-     "wq": "09df05ff"
+     "question": "Que vaut la somme des deux angles aigus d'un triangle rectangle ?",
+     "answer": "90°",
+     "w": [
+      "0ade1876",
+      "b3ce0c68"
+     ],
+     "wq": "09df05ff",
+     "wrongs": [
+      "180°",
+      "60°",
+      "45°"
+     ]
     },
     {
      "question": "Combien mesure chaque angle d'un triangle équilatéral ?",
-     "answer": "60°\nTrois angles égaux : 180° ÷ 3 = 60°",
-     "w": "ada6aaab",
-     "wq": "80718819"
+     "answer": "60°",
+     "w": [
+      "92d8348f",
+      "ada6aaab"
+     ],
+     "wrongs": [
+      "90°",
+      "45°",
+      "180°"
+     ]
     },
     {
-     "question": "Un triangle isocèle a un angle principal de 40°. Combien mesurent les angles à la base ?",
-     "answer": "70° chacun\n(180° − 40°) ÷ 2 = 70°",
-     "w": "a069d11a",
-     "wq": "369b9248"
+     "question": "Un triangle isocèle a un angle principal de 40°. Combien mesure chaque angle à la base ?",
+     "answer": "70°",
+     "w": [
+      "f72278c5",
+      "a069d11a"
+     ],
+     "wq": "369b9248",
+     "wrongs": [
+      "40°",
+      "140°",
+      "50°"
+     ]
     },
     {
-     "question": "Comment construire un triangle ABC avec AB = 5 cm, AC = 4 cm et BC = 3 cm ?",
-     "answer": "1. Tracer [AB] de 5 cm.\n2. Arc de centre A, rayon 4 cm.\n3. Arc de centre B, rayon 3 cm.\nC est à l'intersection des arcs.",
-     "w": "18ff0fd2",
-     "wq": "74818adb"
+     "question": "Pour construire un triangle connaissant ses trois côtés, quel instrument utilise-t-on ?",
+     "answer": "Le compas",
+     "w": [
+      "00875576",
+      "18ff0fd2"
+     ],
+     "wq": "74818adb",
+     "more": "On trace un côté, puis deux arcs de centre ses extrémités.",
+     "wrongs": [
+      "Le rapporteur seul",
+      "L'équerre seule",
+      "Aucun instrument"
+     ]
     },
     {
-     "question": "Comment construire un triangle connaissant un côté et les deux angles adjacents ?",
-     "answer": "1. Tracer le côté.\n2. Reporter au rapporteur chaque angle à ses extrémités.\nLe troisième sommet est à l'intersection des deux demi-droites.",
-     "w": "bc6cc8ec",
-     "wq": "551dffce"
+     "question": "Pour construire un triangle connaissant un côté et ses deux angles adjacents, quel instrument utilise-t-on ?",
+     "answer": "Le rapporteur",
+     "w": [
+      "45a3c8d4",
+      "bc6cc8ec"
+     ],
+     "wq": "551dffce",
+     "wrongs": [
+      "Le compas seul",
+      "L'équerre seule",
+      "La calculatrice"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une hauteur d'un triangle ?",
-     "answer": "La droite qui passe par un sommet\net qui est perpendiculaire au côté opposé (ou à sa droite).",
-     "w": "10bbfcb3",
-     "wq": "8ff07eeb"
+     "answer": "La droite passant par un sommet, perpendiculaire au côté opposé",
+     "w": [
+      "50c11b64",
+      "10bbfcb3"
+     ],
+     "wrongs": [
+      "La droite passant par un sommet et le milieu du côté opposé",
+      "Le plus grand côté",
+      "La médiatrice d'un côté"
+     ]
     },
     {
      "question": "Que sont deux angles adjacents ?",
-     "answer": "Deux angles qui ont :\n• le même sommet\n• un côté commun\net qui sont de part et d'autre de ce côté.",
-     "w": "1683cc6c",
-     "wq": "05e5539e"
+     "answer": "Deux angles de même sommet, avec un côté commun, de part et d'autre",
+     "w": [
+      "6bf1b352",
+      "1683cc6c"
+     ],
+     "wrongs": [
+      "Deux angles de même mesure",
+      "Deux angles dont la somme vaut 90°",
+      "Deux angles opposés par le sommet"
+     ]
     },
     {
-     "question": "Que sont des angles complémentaires et des angles supplémentaires ?",
-     "answer": "• Complémentaires : somme = 90°\n• Supplémentaires : somme = 180°\nEx. : 120° et 60° sont supplémentaires.",
-     "w": "0936008b",
-     "wq": "5794a831"
+     "question": "Que sont deux angles complémentaires ?",
+     "answer": "Deux angles dont la somme vaut 90°",
+     "w": [
+      "1339ca73",
+      "0936008b"
+     ],
+     "wq": "5794a831",
+     "wrongs": [
+      "Deux angles dont la somme vaut 180°",
+      "Deux angles égaux",
+      "Deux angles adjacents"
+     ]
+    },
+    {
+     "question": "Que sont deux angles supplémentaires ?",
+     "answer": "Deux angles dont la somme vaut 180°",
+     "more": "Ex. : 120° et 60°.",
+     "wrongs": [
+      "Deux angles dont la somme vaut 90°",
+      "Deux angles égaux",
+      "Deux angles de 360°"
+     ]
     },
     {
      "question": "Que sait-on de deux angles opposés par le sommet ?",
-     "answer": "Ils ont la même mesure."
+     "answer": "Ils ont la même mesure",
+     "w": "e2a2ba4e",
+     "wrongs": [
+      "Leur somme vaut 90°",
+      "Leur somme vaut 180°",
+      "L'un est le double de l'autre"
+     ]
     },
     {
      "question": "Où sont situés deux angles alternes-internes ?",
-     "answer": "Formés par deux droites et une sécante :\n• de part et d'autre de la sécante\n• entre les deux droites",
-     "w": "af948fb3",
-     "wq": "8ebb79c4"
+     "answer": "De part et d'autre de la sécante, entre les deux droites",
+     "w": [
+      "143f6314",
+      "af948fb3"
+     ],
+     "wrongs": [
+      "Du même côté de la sécante, à l'extérieur",
+      "Sur la même droite",
+      "Au même sommet"
+     ]
     },
     {
-     "question": "Que sait-on des angles alternes-internes ou correspondants quand les deux droites sont parallèles ?",
-     "answer": "Si deux droites parallèles sont coupées par une sécante :\n• les angles alternes-internes sont égaux\n• les angles correspondants aussi",
-     "w": "c9eb549c",
-     "wq": "66cfff93"
+     "question": "Si deux droites parallèles sont coupées par une sécante, que sait-on des angles alternes-internes ?",
+     "answer": "Ils sont égaux",
+     "w": [
+      "22346c49",
+      "c9eb549c"
+     ],
+     "wq": "66cfff93",
+     "more": "Les angles correspondants aussi.",
+     "wrongs": [
+      "Leur somme vaut 90°",
+      "Ils sont supplémentaires",
+      "On ne peut rien dire"
+     ]
     },
     {
-     "question": "Comment prouver que deux droites sont parallèles avec des angles ?",
-     "answer": "Si les angles alternes-internes (ou correspondants) sont égaux,\nalors les deux droites sont parallèles.",
-     "w": "ed552c8c",
-     "wq": "237900c6"
+     "question": "Si les angles alternes-internes formés par une sécante sont égaux, que sait-on des deux droites ?",
+     "answer": "Elles sont parallèles",
+     "w": [
+      "5d269ac5",
+      "ed552c8c"
+     ],
+     "wq": "237900c6",
+     "wrongs": [
+      "Elles sont perpendiculaires",
+      "Elles sont sécantes",
+      "On ne peut rien dire"
+     ]
     }
    ]
   },
@@ -59563,20 +59859,22 @@
      ]
     },
     {
-     "question": "Lequel de ces mots est une conjonction de coordination ?",
-     "answer": "Or",
+     "question": "« Or » est-il une conjonction de coordination ou de subordination ?",
+     "answer": "De coordination",
      "w": [
+      "512d4845",
       "1650a662",
       "d789326c"
      ],
      "wq": [
+      "bfabcac9",
       "e885dbfe"
      ],
-     "more": "Mais, ou, et, donc, or, ni, car : elles relient des propositions coordonnées.",
+     "more": "Mais, ou, et, donc, or, ni, car ; quand, si, parce que sont des subordonnants.",
      "wrongs": [
-      "Quand",
-      "Parce que",
-      "Si"
+      "De subordination",
+      "Un adverbe",
+      "Une préposition"
      ]
     },
     {
@@ -59762,20 +60060,22 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Laquelle de ces entrées appartient au programme de français de 5e ?",
-     "answer": "Le voyage et l'aventure",
+     "question": "« Le voyage et l'aventure » est-il une entrée du programme de français de 5e ?",
+     "answer": "Oui",
      "w": [
+      "56681d31",
       "e7495d89",
       "701ee145"
      ],
      "wq": [
+      "34dc6e94",
       "ab112366"
      ],
-     "more": "Aussi : Avec autrui (familles, amis, réseaux) ; Imaginer des univers nouveaux ; Héros / héroïnes et héroïsmes ; complément : « L'être humain est-il maître de la nature ? »",
+     "more": "« Dénoncer les travers de la société » relève de la 3e.",
      "wrongs": [
-      "Se raconter, se représenter",
-      "Dénoncer les travers de la société",
-      "La fiction pour interroger le réel"
+      "Non, de la 3e",
+      "Non, de la 6e",
+      "Non, du lycée"
      ]
     },
     {
@@ -62031,106 +62331,260 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment dire bonjour et au revoir en espagnol ?",
-     "answer": "Bonjour :\n• ¡Hola!\n• Buenos días (matin) · Buenas tardes (après-midi)\nAu revoir :\n• ¡Adiós! · Hasta luego (à plus tard)",
-     "w": "88a03235",
-     "wq": "b347f302"
+     "question": "Comment dit-on « au revoir » en espagnol ?",
+     "answer": "¡Adiós!",
+     "w": [
+      "a7f41807",
+      "88a03235"
+     ],
+     "wq": "b347f302",
+     "more": "Bonjour : ¡Hola!, Buenos días ; à plus tard : Hasta luego.",
+     "wrongs": [
+      "¡Hola!",
+      "¡Gracias!",
+      "¡Buenos días!"
+     ]
     },
     {
-     "question": "Comment demander et dire comment on va ?",
-     "answer": "¿Qué tal? / ¿Cómo estás?\n— Muy bien, gracias. ¿Y tú?",
-     "w": "50ac401e",
-     "wq": "89f61445"
+     "question": "Comment demande-t-on « comment vas-tu ? » en espagnol ?",
+     "answer": "¿Cómo estás?",
+     "w": [
+      "1202688b",
+      "50ac401e"
+     ],
+     "wq": "89f61445",
+     "more": "Aussi : ¿Qué tal? Réponse : Muy bien, gracias.",
+     "wrongs": [
+      "¿Cómo te llamas?",
+      "¿Dónde vives?",
+      "¿Cuántos años tienes?"
+     ]
     },
     {
-     "question": "Comment demander et donner son prénom ?",
-     "answer": "¿Cómo te llamas?\n— Me llamo Lucas.",
-     "w": "f8107e34",
-     "wq": "6c95c93d"
+     "question": "Comment dit-on « je m'appelle Lucas » en espagnol ?",
+     "answer": "Me llamo Lucas",
+     "w": [
+      "078588c6",
+      "f8107e34"
+     ],
+     "wq": "6c95c93d",
+     "wrongs": [
+      "Yo llamo Lucas",
+      "Soy llamo Lucas",
+      "Me nombre Lucas"
+     ]
     },
     {
-     "question": "Comment dire son âge ?",
-     "answer": "Avec tener :\n¿Cuántos años tienes?\n— Tengo doce años.",
-     "w": "e6edc7f9",
-     "wq": "259da8fb"
+     "question": "Comment dit-on « j'ai douze ans » en espagnol ?",
+     "answer": "Tengo doce años",
+     "w": [
+      "8fe72256",
+      "e6edc7f9"
+     ],
+     "wq": "259da8fb",
+     "wrongs": [
+      "Soy doce años",
+      "Estoy doce años",
+      "Hay doce años"
+     ]
     },
     {
-     "question": "Comment dire d'où l'on vient et où l'on habite ?",
-     "answer": "Soy de Francia, soy francés / francesa.\nVivo en Lyon.",
-     "w": "6fd422ff",
-     "wq": "24b943aa"
+     "question": "Comment dit-on « j'habite à Lyon » en espagnol ?",
+     "answer": "Vivo en Lyon",
+     "w": [
+      "5b4b06c9",
+      "6fd422ff"
+     ],
+     "wq": "24b943aa",
+     "more": "Je viens de France : Soy de Francia.",
+     "wrongs": [
+      "Soy en Lyon",
+      "Estoy de Lyon",
+      "Habito a Lyon"
+     ]
     },
     {
      "question": "Quelle particularité a la ponctuation espagnole ?",
-     "answer": "Les questions et exclamations commencent par un signe renversé.\n¿Dónde vives? ¡Qué bien!",
-     "w": "ff1dd4ce",
-     "wq": "7674d415"
+     "answer": "Questions et exclamations commencent par un signe renversé",
+     "w": [
+      "fcfd7edb",
+      "ff1dd4ce"
+     ],
+     "more": "¿Dónde vives? ¡Qué bien!",
+     "wrongs": [
+      "Il n'y a pas de points",
+      "Les questions finissent par deux points d'interrogation",
+      "Les phrases n'ont pas de majuscule"
+     ]
     },
     {
-     "question": "Conjugue le verbe ser (être) au présent.",
-     "answer": "Soy, eres, es,\nsomos, sois, son",
-     "w": "c2ff100d",
-     "wq": "336da025"
+     "question": "Comment se conjugue « ser » au présent ?",
+     "answer": "Soy, eres, es, somos, sois, son",
+     "w": [
+      "ba6e458b",
+      "c2ff100d"
+     ],
+     "wq": "336da025",
+     "wrongs": [
+      "Estoy, estás, está, estamos, estáis, están",
+      "Soy, es, eres, somos, sois, son",
+      "Tengo, tienes, tiene, tenemos, tenéis, tienen"
+     ]
     },
     {
-     "question": "Conjugue le verbe tener (avoir) au présent.",
-     "answer": "Tengo, tienes, tiene,\ntenemos, tenéis, tienen",
-     "w": "ed5da456",
-     "wq": "c5a3a783"
+     "question": "Comment se conjugue « tener » au présent ?",
+     "answer": "Tengo, tienes, tiene, tenemos, tenéis, tienen",
+     "w": [
+      "9298c2de",
+      "ed5da456"
+     ],
+     "wq": "c5a3a783",
+     "wrongs": [
+      "Teno, tenes, tene, tenemos, tenéis, tenen",
+      "Tango, tanes, tane, tanemos, tanéis, tanen",
+      "Soy, eres, es, somos, sois, son"
+     ]
     },
     {
-     "question": "Conjugue hablar (parler) au présent.",
-     "answer": "Hablo, hablas, habla,\nhablamos, habláis, hablan\nModèle des verbes réguliers en -ar.",
-     "w": "cdf0c42b",
-     "wq": "f80a1ecf"
+     "question": "Comment se conjugue « hablar » au présent ?",
+     "answer": "Hablo, hablas, habla, hablamos, habláis, hablan",
+     "w": [
+      "fb866649",
+      "cdf0c42b"
+     ],
+     "wq": "f80a1ecf",
+     "more": "Modèle des verbes réguliers en -ar.",
+     "wrongs": [
+      "Hablo, hables, hable, hablemos, habléis, hablen",
+      "Habló, hablaste, habló, hablamos, hablasteis, hablaron",
+      "Hablar, hablas, habla, hablamos, habláis, hablan"
+     ]
     },
     {
      "question": "Pourquoi omet-on souvent le pronom sujet en espagnol ?",
-     "answer": "La terminaison du verbe indique déjà la personne.\nEx. : « hablo » = « je parle », sans « yo »",
-     "w": "5b738519",
-     "wq": "6f456d36"
+     "answer": "La terminaison du verbe indique déjà la personne",
+     "w": [
+      "0110021b",
+      "5b738519"
+     ],
+     "wrongs": [
+      "C'est interdit de l'écrire",
+      "Les pronoms n'existent pas en espagnol",
+      "Seulement à l'oral"
+     ]
     },
     {
-     "question": "Comment dire « j'aime le football » et « j'aime les animaux » ?",
-     "answer": "• Me gusta el fútbol.\n• Me gustan los animales.\nGustar s'accorde avec ce qui plaît (gusta / gustan).",
-     "w": "8089bac8",
-     "wq": "1a453aaf"
+     "question": "Comment dit-on « j'aime les animaux » en espagnol ?",
+     "answer": "Me gustan los animales",
+     "w": [
+      "66b5118a",
+      "8089bac8"
+     ],
+     "wq": "1a453aaf",
+     "more": "Gustar s'accorde avec ce qui plaît ; « me gusta el fútbol ».",
+     "wrongs": [
+      "Me gusta los animales",
+      "Yo gusto los animales",
+      "Amo los animales gusta"
+     ]
     },
     {
-     "question": "Comment vouvoyer quelqu'un en espagnol ?",
-     "answer": "Usted + verbe à la 3e personne du singulier.\nEx. : ¿Cómo se llama usted?",
-     "w": "3357c0cd",
-     "wq": "e22d74ed"
+     "question": "Comment vouvoie-t-on quelqu'un en espagnol ?",
+     "answer": "Usted + verbe à la 3e personne du singulier",
+     "w": [
+      "0b6a172d",
+      "3357c0cd"
+     ],
+     "wq": "e22d74ed",
+     "more": "¿Cómo se llama usted?",
+     "wrongs": [
+      "Vosotros + verbe à la 2e personne du pluriel",
+      "Tú + verbe à la 2e personne",
+      "Vos + infinitif"
+     ]
     },
     {
-     "question": "Compte de 1 à 10 en espagnol.",
-     "answer": "Uno, dos, tres, cuatro, cinco,\nseis, siete, ocho, nueve, diez",
-     "w": "803cae65",
-     "wq": "b7f67f2e"
+     "question": "Comment dit-on « sept » en espagnol ?",
+     "answer": "Siete",
+     "w": [
+      "a1e8a87f",
+      "803cae65"
+     ],
+     "wq": "b7f67f2e",
+     "more": "Uno, dos, tres, cuatro, cinco, seis, siete, ocho, nueve, diez.",
+     "wrongs": [
+      "Seis",
+      "Sete",
+      "Ocho"
+     ]
     },
     {
-     "question": "Quels sont les jours de la semaine en espagnol ?",
-     "answer": "Lunes, martes, miércoles, jueves,\nviernes, sábado, domingo\n(sans majuscule)",
-     "w": "beb63d4a",
-     "wq": "0113a433"
+     "question": "Comment dit-on « jeudi » en espagnol ?",
+     "answer": "Jueves",
+     "w": [
+      "67f84128",
+      "beb63d4a"
+     ],
+     "wq": "0113a433",
+     "more": "Lunes, martes, miércoles, jueves, viernes, sábado, domingo — sans majuscule.",
+     "wrongs": [
+      "Martes",
+      "Viernes",
+      "Miércoles"
+     ]
     },
     {
-     "question": "Comment dit-on père, mère, frère, sœur et grands-parents ?",
-     "answer": "• Père : el padre · Mère : la madre\n• Frère : el hermano · Sœur : la hermana\n• Grands-parents : los abuelos",
-     "w": "ada3edda",
-     "wq": "76b02521"
+     "question": "Comment dit-on « le frère » en espagnol ?",
+     "answer": "El hermano",
+     "w": [
+      "e962b9cc",
+      "ada3edda"
+     ],
+     "wq": "76b02521",
+     "wrongs": [
+      "El padre",
+      "El abuelo",
+      "El primo"
+     ]
     },
     {
-     "question": "Quels sont les articles définis et indéfinis en espagnol ?",
-     "answer": "• Définis : el, la, los, las\n• Indéfinis : un, una (pluriel : unos, unas)",
-     "w": "3e9a72ea",
-     "wq": "f01e85d5"
+     "question": "Comment dit-on « les grands-parents » en espagnol ?",
+     "answer": "Los abuelos",
+     "wrongs": [
+      "Los padres",
+      "Los hermanos",
+      "Los grandes"
+     ]
     },
     {
-     "question": "Comment se prononcent la lettre ñ et la jota (j) ?",
-     "answer": "• ñ : comme « gn » dans « montagne » (España)\n• j (jota) : un son raclé du fond de la gorge (jueves)",
-     "w": "60eef307",
-     "wq": "c4ac3886"
+     "question": "Quels sont les articles définis en espagnol ?",
+     "answer": "El, la, los, las",
+     "w": [
+      "91721f50",
+      "3e9a72ea"
+     ],
+     "wq": "f01e85d5",
+     "more": "Indéfinis : un, una, unos, unas.",
+     "wrongs": [
+      "Un, una, unos, unas",
+      "Le, la, les",
+      "Lo, la, los, les"
+     ]
+    },
+    {
+     "question": "Comment se prononce le « ñ » espagnol ?",
+     "answer": "Comme « gn » dans « montagne »",
+     "w": [
+      "70eedbc1",
+      "60eef307"
+     ],
+     "wq": "c4ac3886",
+     "more": "La jota (j) est un son raclé du fond de la gorge.",
+     "wrongs": [
+      "Comme « n »",
+      "Comme « ni » séparé",
+      "Comme « ng » anglais"
+     ]
     }
    ]
   },
@@ -62373,20 +62827,22 @@
      ]
     },
     {
-     "question": "Laquelle de ces fractions n'est PAS égale à −3/4 ?",
-     "answer": "(−3)/(−4)",
+     "question": "(−3)/(−4) est-il égal à −3/4 ?",
+     "answer": "Non : il vaut 3/4",
      "w": [
+      "172c234c",
       "f334bbb1",
       "419e9310"
      ],
      "wq": [
+      "8b9215e7",
       "64e142cb"
      ],
-     "more": "(−3)/(−4) = 3/4 est positif ; (−3)/4 et 3/(−4) valent bien −3/4.",
+     "more": "(−3)/4, 3/(−4) et −0,75 sont égaux à −3/4.",
      "wrongs": [
-      "(−3)/4",
-      "3/(−4)",
-      "−0,75"
+      "Oui",
+      "Non : il vaut −4/3",
+      "Non : il vaut 4/3"
      ]
     },
     {
@@ -62443,98 +62899,228 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Énonce le théorème de Thalès dans le triangle.",
-     "answer": "Dans un triangle ABC, avec M sur [AB] et N sur [AC] :\nsi (MN) // (BC), alors\nAM/AB = AN/AC = MN/BC",
-     "w": "7270d616",
-     "wq": "e20cf6ce"
+     "question": "Dans un triangle ABC avec (MN) // (BC), que dit le théorème de Thalès ?",
+     "answer": "AM/AB = AN/AC = MN/BC",
+     "w": [
+      "f5d8f796",
+      "7270d616"
+     ],
+     "wq": "e20cf6ce",
+     "wrongs": [
+      "AM/AB = AC/AN = BC/MN",
+      "AM × AB = AN × AC",
+      "AM + AB = AN + AC"
+     ]
     },
     {
-     "question": "Quelle condition indispensable faut-il vérifier avant d'appliquer le théorème de Thalès ?",
-     "answer": "Que (MN) et (BC) sont parallèles\n(et que les points sont bien sur les côtés du triangle).",
-     "w": "8e290a35",
-     "wq": "08074764"
+     "question": "Quelle condition faut-il vérifier avant d'appliquer le théorème de Thalès ?",
+     "answer": "Que (MN) et (BC) sont parallèles",
+     "w": [
+      "03b77e4d",
+      "8e290a35"
+     ],
+     "wq": "08074764",
+     "wrongs": [
+      "Que le triangle est rectangle",
+      "Que le triangle est isocèle",
+      "Que AM = AN"
+     ]
     },
     {
-     "question": "Dans le théorème de Thalès, comment écrire les rapports pour ne pas se tromper ?",
-     "answer": "• Numérateur : les longueurs du petit triangle (AMN)\n• Dénominateur : les longueurs correspondantes du grand (ABC)",
-     "w": "81256d17",
-     "wq": "4a0b0c80"
+     "question": "Dans les rapports de Thalès, quelles longueurs met-on au numérateur ?",
+     "answer": "Celles du petit triangle",
+     "w": [
+      "78a0f9f8",
+      "81256d17"
+     ],
+     "wq": "4a0b0c80",
+     "wrongs": [
+      "Celles du grand triangle",
+      "Les plus grandes longueurs",
+      "Les hypoténuses"
+     ]
     },
     {
-     "question": "ABC triangle, M sur [AB], N sur [AC], (MN) // (BC), AM = 3, AB = 6, BC = 8. Calcule MN.",
-     "answer": "MN = 4\nAM/AB = MN/BC → 3/6 = MN/8\nMN = 8 × 3 ÷ 6 = 4",
-     "w": "4a3de777",
-     "wq": "24e1b63b"
+     "question": "(MN) // (BC), AM = 3, AB = 6, BC = 8. Combien vaut MN ?",
+     "answer": "4",
+     "w": [
+      "be3c2187",
+      "4a3de777"
+     ],
+     "wq": "24e1b63b",
+     "more": "3/6 = MN/8, donc MN = 8 × 3 ÷ 6.",
+     "wrongs": [
+      "16",
+      "2,25",
+      "5"
+     ]
     },
     {
-     "question": "Quelle technique utilise-t-on pour calculer une longueur à partir d'une égalité de rapports ?",
-     "answer": "Le produit en croix :\nsi a/b = c/x, alors x = b × c ÷ a",
-     "w": "c0cf7b1a",
-     "wq": "927f3466"
+     "question": "Si a/b = c/x, comment calcule-t-on x ?",
+     "answer": "x = b × c ÷ a",
+     "w": [
+      "61dfabce",
+      "c0cf7b1a"
+     ],
+     "wq": "927f3466",
+     "more": "C'est le produit en croix.",
+     "wrongs": [
+      "x = a × c ÷ b",
+      "x = a × b ÷ c",
+      "x = a + b − c"
+     ]
     },
     {
-     "question": "Que peut-on dire des triangles AMN et ABC dans la configuration de Thalès ?",
-     "answer": "AMN est une réduction de ABC :\nlongueurs proportionnelles, de coefficient AM/AB.",
-     "w": "a69fbc8f",
-     "wq": "10739bab"
+     "question": "Dans la configuration de Thalès, que représente le triangle AMN par rapport à ABC ?",
+     "answer": "Une réduction de coefficient AM/AB",
+     "w": [
+      "bf6097f5",
+      "a69fbc8f"
+     ],
+     "wq": "10739bab",
+     "wrongs": [
+      "Un agrandissement",
+      "Un triangle de même taille",
+      "Un triangle rectangle"
+     ]
     },
     {
-     "question": "Dans un triangle rectangle, comment appelle-t-on le côté opposé à l'angle droit ?",
-     "answer": "L'hypoténuse\nle plus long côté du triangle rectangle.",
-     "w": "a0faae3e",
-     "wq": "9ca44132"
+     "question": "Comment appelle-t-on le côté opposé à l'angle droit ?",
+     "answer": "L'hypoténuse",
+     "w": [
+      "2fce58e5",
+      "a0faae3e"
+     ],
+     "wq": "9ca44132",
+     "more": "C'est le plus long côté.",
+     "wrongs": [
+      "Le côté adjacent",
+      "Le côté opposé",
+      "La hauteur"
+     ]
     },
     {
      "question": "Qu'est-ce que le côté adjacent à un angle aigu d'un triangle rectangle ?",
-     "answer": "Le côté de l'angle droit\nqui forme cet angle avec l'hypoténuse.",
-     "w": "c3d7a77d",
-     "wq": "3b1130b3"
+     "answer": "Le côté de l'angle droit qui forme cet angle avec l'hypoténuse",
+     "w": [
+      "b4cbd8ed",
+      "c3d7a77d"
+     ],
+     "wrongs": [
+      "Le côté opposé à l'angle",
+      "L'hypoténuse",
+      "La hauteur du triangle"
+     ]
     },
     {
-     "question": "Quelle est la définition du cosinus d'un angle aigu dans un triangle rectangle ?",
-     "answer": "cos(angle) = côté adjacent / hypoténuse."
+     "question": "Comment définit-on le cosinus d'un angle aigu ?",
+     "answer": "Côté adjacent / hypoténuse",
+     "w": "3695b1f8",
+     "wq": "d970b106",
+     "wrongs": [
+      "Côté opposé / hypoténuse",
+      "Côté adjacent / côté opposé",
+      "Hypoténuse / côté adjacent"
+     ]
     },
     {
-     "question": "ABC est rectangle en A. Écris cos(ABC) avec les longueurs du triangle.",
-     "answer": "cos(ABC) = AB / BC\n• AB : côté adjacent à l'angle B\n• BC : hypoténuse",
-     "w": "c3c7eb6c",
-     "wq": "120e401c"
+     "question": "ABC est rectangle en A. Que vaut cos(ABC) ?",
+     "answer": "AB / BC",
+     "w": [
+      "85220f4f",
+      "c3c7eb6c"
+     ],
+     "wq": "120e401c",
+     "wrongs": [
+      "AC / BC",
+      "BC / AB",
+      "AB / AC"
+     ]
     },
     {
      "question": "Entre quelles valeurs est compris le cosinus d'un angle aigu ?",
-     "answer": "Strictement entre 0 et 1\nLe côté adjacent est plus court que l'hypoténuse.",
-     "w": "8cd13352",
-     "wq": "72c9e6f6"
+     "answer": "Entre 0 et 1",
+     "w": [
+      "49b4a255",
+      "8cd13352"
+     ],
+     "wrongs": [
+      "Entre 0 et 90",
+      "Entre −1 et 0",
+      "Entre 1 et 10"
+     ]
     },
     {
      "question": "Le cosinus a-t-il une unité ?",
-     "answer": "Non : quotient de deux longueurs de même unité,\nc'est un nombre sans unité.",
-     "w": "b116b9cc",
-     "wq": "81a6e244"
+     "answer": "Non",
+     "w": [
+      "27b04a6d",
+      "b116b9cc"
+     ],
+     "more": "C'est un quotient de deux longueurs.",
+     "wrongs": [
+      "Oui, le degré",
+      "Oui, le centimètre",
+      "Oui, le radian"
+     ]
     },
     {
-     "question": "Quel réglage vérifier sur la calculatrice avant de calculer un cosinus ?",
-     "answer": "Le mode degrés\n(DEG ou D)",
-     "w": "f09f30ef",
-     "wq": "5b54a3a4"
+     "question": "Quel mode vérifier sur la calculatrice avant de calculer un cosinus ?",
+     "answer": "Le mode degrés (DEG)",
+     "w": [
+      "db9445e8",
+      "f09f30ef"
+     ],
+     "wq": "5b54a3a4",
+     "wrongs": [
+      "Le mode radians",
+      "Le mode statistiques",
+      "Le mode fraction"
+     ]
     },
     {
-     "question": "ABC rectangle en A, BC = 10 cm, angle ABC = 60°. Calcule AB.",
-     "answer": "AB = 5 cm\ncos(60°) = AB/BC\nAB = 10 × 0,5 = 5",
-     "w": "f33635d6",
-     "wq": "fabd6db5"
+     "question": "ABC rectangle en A, BC = 10 cm, angle B = 60°. Combien vaut AB ?",
+     "answer": "5 cm",
+     "w": [
+      "40f51954",
+      "f33635d6"
+     ],
+     "wq": "fabd6db5",
+     "more": "AB = 10 × cos(60°) = 10 × 0,5.",
+     "wrongs": [
+      "20 cm",
+      "8,7 cm",
+      "6 cm"
+     ]
     },
     {
-     "question": "ABC rectangle en A, AB = 4 cm, BC = 8 cm. Comment trouver l'angle ABC ?",
-     "answer": "cos(ABC) = 4/8 = 0,5\nTouche cos⁻¹ (Arccos) : ABC = 60°",
-     "w": "f401a807",
-     "wq": "9f8f142b"
+     "question": "ABC rectangle en A, AB = 4 cm, BC = 8 cm. Combien mesure l'angle B ?",
+     "answer": "60°",
+     "w": [
+      "73401e88",
+      "f401a807"
+     ],
+     "wq": "9f8f142b",
+     "more": "cos(B) = 4/8 = 0,5, puis touche cos⁻¹.",
+     "wrongs": [
+      "30°",
+      "45°",
+      "50°"
+     ]
     },
     {
-     "question": "Comment calculer l'hypoténuse connaissant un angle aigu et son côté adjacent ?",
-     "answer": "Hypoténuse = côté adjacent / cos(angle)\nEx. : adjacent 6 cm, angle 60°\n→ 6 ÷ 0,5 = 12 cm",
-     "w": "22694d26",
-     "wq": "3be3b46f"
+     "question": "Comment calcule-t-on l'hypoténuse avec un angle et son côté adjacent ?",
+     "answer": "Hypoténuse = côté adjacent / cos(angle)",
+     "w": [
+      "4cb7e25f",
+      "22694d26"
+     ],
+     "wq": "3be3b46f",
+     "wrongs": [
+      "Hypoténuse = côté adjacent × cos(angle)",
+      "Hypoténuse = cos(angle) / côté adjacent",
+      "Hypoténuse = côté adjacent + cos(angle)"
+     ]
     }
    ]
   },
@@ -63147,98 +63733,230 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qui a fondé La Gazette, l'un des premiers journaux français, et en quelle année ?",
-     "answer": "Théophraste Renaudot\nen 1631.",
-     "w": "287a53b6",
-     "wq": "58fd1e4c"
+     "question": "Qui a fondé La Gazette, l'un des premiers journaux français ?",
+     "answer": "Théophraste Renaudot",
+     "w": [
+      "9dff5430",
+      "287a53b6"
+     ],
+     "wq": "58fd1e4c",
+     "wrongs": [
+      "Émile Zola",
+      "Victor Hugo",
+      "Gutenberg"
+     ]
+    },
+    {
+     "question": "En quelle année paraît La Gazette de Renaudot ?",
+     "answer": "En 1631",
+     "wrongs": [
+      "En 1789",
+      "En 1881",
+      "En 1455"
+     ]
     },
     {
      "question": "Quelle loi garantit la liberté de la presse en France ?",
-     "answer": "La loi du 29 juillet 1881 sur la liberté de la presse."
+     "answer": "La loi du 29 juillet 1881",
+     "w": "491256b1",
+     "wrongs": [
+      "La loi de 1905",
+      "La loi de 1789",
+      "La loi de 1945"
+     ]
     },
     {
      "question": "Qu'est-ce que la « une » d'un journal ?",
-     "answer": "La première page :\nles informations jugées les plus importantes, avec un gros titre.",
-     "w": "e46b945c",
-     "wq": "b07fc699"
+     "answer": "La première page",
+     "w": [
+      "8dd508e7",
+      "e46b945c"
+     ],
+     "wrongs": [
+      "La dernière page",
+      "Le premier article à l'intérieur",
+      "Le nom du journal"
+     ]
     },
     {
-     "question": "Qu'est-ce que le chapeau (ou chapô) d'un article ?",
-     "answer": "Le court paragraphe, souvent en gras,\nentre le titre et le corps de l'article,\nqui résume l'essentiel.",
-     "w": "d1eb116c",
-     "wq": "9fa9f8c0"
+     "question": "Qu'est-ce que le chapeau (chapô) d'un article ?",
+     "answer": "Le court paragraphe qui résume l'essentiel, sous le titre",
+     "w": [
+      "027793d1",
+      "d1eb116c"
+     ],
+     "wq": "9fa9f8c0",
+     "wrongs": [
+      "Le titre de l'article",
+      "La signature du journaliste",
+      "La photo principale"
+     ]
     },
     {
      "question": "À quelles questions un article d'information doit-il répondre ?",
-     "answer": "Qui ? Quoi ? Où ? Quand ? Comment ? Pourquoi ?\n(« QQOQCP »)",
-     "w": "de740171",
-     "wq": "b1376a9f"
+     "answer": "Qui ? Quoi ? Où ? Quand ? Comment ? Pourquoi ?",
+     "w": [
+      "88c25543",
+      "de740171"
+     ],
+     "wrongs": [
+      "Combien ça coûte ?",
+      "Qui a raison ?",
+      "Qu'en pense le journaliste ?"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une dépêche d'agence ?",
-     "answer": "Une information brève et factuelle\nenvoyée aux médias par une agence de presse (ex. : l'AFP).",
-     "w": "a23843fa",
-     "wq": "fd7cf586"
+     "answer": "Une information brève et factuelle envoyée aux médias par une agence",
+     "w": [
+      "44848ff1",
+      "a23843fa"
+     ],
+     "more": "Ex. : l'AFP.",
+     "wrongs": [
+      "Un long reportage",
+      "Un éditorial",
+      "Une publicité"
+     ]
     },
     {
-     "question": "Quelle est la différence entre un article d'information et un éditorial ?",
-     "answer": "Article d'information : rapporte des faits de façon neutre.\nÉditorial : exprime l'opinion du journal,\nsouvent signé par le rédacteur en chef.",
-     "w": "1edd4818",
-     "wq": "190780f5"
+     "question": "Qu'exprime un éditorial ?",
+     "answer": "L'opinion du journal",
+     "w": [
+      "bdc7ef58",
+      "1edd4818"
+     ],
+     "wq": "190780f5",
+     "more": "Souvent signé par le rédacteur en chef ; l'article d'information rapporte des faits.",
+     "wrongs": [
+      "Des faits de façon neutre",
+      "Les résultats sportifs",
+      "Les petites annonces"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un reportage ?",
-     "answer": "Un document réalisé sur le terrain par un journaliste :\nil décrit ce qu'il a vu et recueille des témoignages.",
-     "w": "39f41b38",
-     "wq": "b6cc3a5b"
+     "answer": "Un document réalisé sur le terrain par un journaliste",
+     "w": [
+      "387fad83",
+      "39f41b38"
+     ],
+     "wrongs": [
+      "Un article d'opinion",
+      "Une dépêche d'agence",
+      "Un dessin de presse"
+     ]
     },
     {
      "question": "Qu'est-ce que la ligne éditoriale d'un média ?",
-     "answer": "Les choix qui définissent l'identité d'un média :\nsujets traités, ton, opinions.",
-     "w": "74d4d151",
-     "wq": "e2aa9e0f"
+     "answer": "Les choix qui définissent son identité : sujets, ton, opinions",
+     "w": [
+      "5a811de9",
+      "74d4d151"
+     ],
+     "wrongs": [
+      "La première ligne d'un article",
+      "Le nom du rédacteur en chef",
+      "Le prix du journal"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une infox (fake news) ?",
-     "answer": "Une information fausse ou trompeuse\ndiffusée volontairement pour manipuler,\nsouvent sur les réseaux sociaux.",
-     "w": "fe19f08a",
-     "wq": "97339828"
+     "question": "Qu'est-ce qu'une infox ?",
+     "answer": "Une information fausse diffusée volontairement pour manipuler",
+     "w": [
+      "58d3e8b2",
+      "fe19f08a"
+     ],
+     "wq": "97339828",
+     "wrongs": [
+      "Une information vérifiée",
+      "Une erreur de frappe",
+      "Une information ancienne"
+     ]
     },
     {
      "question": "Que veut dire « recouper une information » ?",
-     "answer": "La comparer avec d'autres sources fiables et indépendantes\npour vérifier qu'elle est exacte.",
-     "w": "35d487d1",
-     "wq": "fde92476"
+     "answer": "La comparer avec d'autres sources fiables et indépendantes",
+     "w": [
+      "7dcd2ae3",
+      "35d487d1"
+     ],
+     "wrongs": [
+      "La raccourcir",
+      "La partager sur les réseaux",
+      "La traduire"
+     ]
     },
     {
-     "question": "Quels réflexes adopter face à une information trouvée sur internet ?",
-     "answer": "• Identifier la source et l'auteur\n• Vérifier la date\n• Distinguer fait et opinion\n• Recouper avec d'autres sources\n• Se méfier des titres sensationnels",
-     "w": "9cb24e3c",
-     "wq": "6f001b11"
+     "question": "Quel réflexe adopter face à une information trouvée sur internet ?",
+     "answer": "Identifier la source, vérifier la date, recouper",
+     "w": [
+      "eca8998f",
+      "9cb24e3c"
+     ],
+     "wq": "6f001b11",
+     "wrongs": [
+      "La partager tout de suite",
+      "Croire le titre",
+      "Se fier au nombre de « j'aime »"
+     ]
     },
     {
-     "question": "Quels indices linguistiques montrent qu'un texte n'est pas objectif ?",
-     "answer": "• Les modalisateurs (« malheureusement », « sembler »)\n• Le vocabulaire mélioratif ou péjoratif\n• Les marques de la 1re personne",
-     "w": "7f40d879",
-     "wq": "cd11e433"
+     "question": "Quels indices montrent qu'un texte n'est pas objectif ?",
+     "answer": "Modalisateurs, vocabulaire mélioratif ou péjoratif, 1re personne",
+     "w": [
+      "2cc3efc8",
+      "7f40d879"
+     ],
+     "wq": "cd11e433",
+     "wrongs": [
+      "Des dates précises",
+      "Des chiffres sourcés",
+      "Des citations entre guillemets"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un titre « racoleur » ou « putaclic » ?",
-     "answer": "Un titre exagéré ou mystérieux\nconçu pour attirer les clics plutôt que pour informer exactement.",
-     "w": "8f59a37b",
-     "wq": "dbb90834"
+     "question": "Qu'est-ce qu'un titre racoleur ?",
+     "answer": "Un titre exagéré conçu pour attirer les clics",
+     "w": [
+      "eb1a5e95",
+      "8f59a37b"
+     ],
+     "wq": "dbb90834",
+     "wrongs": [
+      "Un titre très long",
+      "Un titre neutre",
+      "Un titre en anglais"
+     ]
     },
     {
-     "question": "Quel article célèbre d'Émile Zola fut publié dans L'Aurore le 13 janvier 1898 ?",
-     "answer": "« J'accuse… ! »\nLettre ouverte au président de la République\npour défendre le capitaine Dreyfus.",
-     "w": "5c8659b5",
-     "wq": "1a38b7f0"
+     "question": "Quel article d'Émile Zola paraît dans L'Aurore le 13 janvier 1898 ?",
+     "answer": "« J'accuse… ! »",
+     "w": [
+      "1c475d17",
+      "5c8659b5"
+     ],
+     "wq": "1a38b7f0",
+     "more": "Lettre ouverte pour défendre le capitaine Dreyfus.",
+     "wrongs": [
+      "« Germinal »",
+      "« Les Misérables »",
+      "« Le Ventre de Paris »"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une caricature de presse ?",
-     "answer": "Un dessin qui exagère les traits d'une personne ou d'une situation\npour faire rire et critiquer.\nElle relève de la liberté d'expression.",
-     "w": "e0130f48",
-     "wq": "c74f27b3"
+     "answer": "Un dessin qui exagère les traits pour faire rire et critiquer",
+     "w": [
+      "0c873da9",
+      "e0130f48"
+     ],
+     "more": "Elle relève de la liberté d'expression.",
+     "wrongs": [
+      "Une photo officielle",
+      "Un portrait fidèle",
+      "Une publicité"
+     ]
     }
    ]
   },
@@ -63260,96 +63978,239 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelle invention, perfectionnée par James Watt à la fin du XVIIIe siècle, est au cœur de l'industrialisation ?",
-     "answer": "La machine à vapeur\nElle transforme la chaleur du charbon brûlé en mouvement.",
-     "w": "6f0a2c2f",
-     "wq": "69cefcd2"
+     "question": "Quelle invention, perfectionnée par James Watt, est au cœur de l'industrialisation ?",
+     "answer": "La machine à vapeur",
+     "w": [
+      "a482ad7f",
+      "6f0a2c2f"
+     ],
+     "wq": "69cefcd2",
+     "wrongs": [
+      "Le moteur électrique",
+      "Le moteur à explosion",
+      "L'imprimerie"
+     ]
     },
     {
      "question": "Quelle source d'énergie domine la première industrialisation ?",
-     "answer": "Le charbon\nIl alimente machines à vapeur, usines et locomotives.",
-     "w": "62fd93e0",
-     "wq": "c92053cc"
+     "answer": "Le charbon",
+     "w": [
+      "11398c02",
+      "62fd93e0"
+     ],
+     "wrongs": [
+      "Le pétrole",
+      "L'électricité",
+      "Le gaz"
+     ]
     },
     {
      "question": "Dans quel pays l'industrialisation commence-t-elle ?",
-     "answer": "Au Royaume-Uni, dès la fin du XVIIIe siècle.\nPuis la Belgique, la France et l'Allemagne au XIXe siècle.",
-     "w": "dcb92606",
-     "wq": "488d7c0a"
+     "answer": "Au Royaume-Uni",
+     "w": [
+      "53b4deea",
+      "dcb92606"
+     ],
+     "more": "Dès la fin du XVIIIe siècle.",
+     "wrongs": [
+      "En France",
+      "En Allemagne",
+      "Aux États-Unis"
+     ]
     },
     {
-     "question": "Quelle première ligne de chemin de fer pour voyageurs relie deux villes anglaises en 1830 ?",
-     "answer": "La ligne Liverpool–Manchester."
+     "question": "Quelle première ligne de chemin de fer pour voyageurs ouvre en 1830 ?",
+     "answer": "Liverpool–Manchester",
+     "w": "e47d7913",
+     "wq": "4d0e7cdd",
+     "wrongs": [
+      "Paris–Saint-Germain",
+      "Londres–Paris",
+      "Berlin–Munich"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'exode rural ?",
-     "answer": "Le départ massif des habitants des campagnes vers les villes,\npour travailler dans les usines.",
-     "w": "d696d3ab",
-     "wq": "365de3a1"
+     "question": "Qu'est-ce que l'exode rural au XIXe siècle ?",
+     "answer": "Le départ massif des campagnes vers les villes et leurs usines",
+     "w": [
+      "42d51d87",
+      "d696d3ab"
+     ],
+     "wq": "365de3a1",
+     "wrongs": [
+      "Le départ des villes vers les campagnes",
+      "L'émigration vers l'Amérique",
+      "La conquête des colonies"
+     ]
     },
     {
      "question": "Qu'est-ce que le prolétariat ?",
-     "answer": "Les ouvriers qui ne possèdent que leur force de travail\net la louent contre un salaire.",
-     "w": "6bb109bb",
-     "wq": "41a4b967"
+     "answer": "Les ouvriers qui ne possèdent que leur force de travail",
+     "w": [
+      "ff153553",
+      "6bb109bb"
+     ],
+     "wrongs": [
+      "Les propriétaires d'usines",
+      "Les paysans propriétaires",
+      "Les commerçants"
+     ]
     },
     {
-     "question": "Quelles sont les conditions de vie des ouvriers au XIXe siècle ?",
-     "answer": "• Journées de 12 à 15 heures\n• Salaires faibles\n• Travail des enfants\n• Logements insalubres\n• Aucune protection (maladie, accident)",
-     "w": "69dc0b9c",
-     "wq": "55c85665"
+     "question": "Combien d'heures dure souvent la journée d'un ouvrier au XIXe siècle ?",
+     "answer": "De 12 à 15 heures",
+     "w": [
+      "70242612",
+      "69dc0b9c"
+     ],
+     "wq": "55c85665",
+     "more": "Salaires faibles, travail des enfants, logements insalubres.",
+     "wrongs": [
+      "8 heures",
+      "6 heures",
+      "20 heures"
+     ]
     },
     {
-     "question": "Que prévoit la loi française de 1841 sur le travail des enfants ?",
-     "answer": "• Interdiction du travail des moins de 8 ans dans les manufactures\n• Durée du travail limitée pour les plus jeunes",
-     "w": "a286a909",
-     "wq": "927ca7ff"
+     "question": "Que prévoit la loi française de 1841 ?",
+     "answer": "L'interdiction du travail des enfants de moins de 8 ans dans les manufactures",
+     "w": [
+      "25aa9deb",
+      "a286a909"
+     ],
+     "wq": "927ca7ff",
+     "wrongs": [
+      "Le droit de grève",
+      "La journée de 8 heures",
+      "Les congés payés"
+     ]
     },
     {
-     "question": "Qui sont Karl Marx et Friedrich Engels ?",
-     "answer": "Des penseurs socialistes allemands,\nauteurs du Manifeste du parti communiste (1848).\nIls appellent les ouvriers à s'unir contre la bourgeoisie capitaliste.",
-     "w": "baa1c732",
-     "wq": "647ed0a8"
+     "question": "Qui a écrit le Manifeste du parti communiste (1848) ?",
+     "answer": "Karl Marx et Friedrich Engels",
+     "w": [
+      "b4117759",
+      "baa1c732"
+     ],
+     "wq": "647ed0a8",
+     "wrongs": [
+      "Victor Hugo et Émile Zola",
+      "Lénine et Staline",
+      "Jules Ferry et Jean Jaurès"
+     ]
     },
     {
-     "question": "Quelles lois accordent aux ouvriers français le droit de grève puis le droit de se syndiquer ?",
-     "answer": "• Droit de grève : 1864\n• Liberté syndicale : 1884 (loi Waldeck-Rousseau)",
-     "w": "3dc33e5c",
-     "wq": "cea4510a"
+     "question": "En quelle année les ouvriers français obtiennent-ils le droit de grève ?",
+     "answer": "En 1864",
+     "w": [
+      "e613401d",
+      "3dc33e5c"
+     ],
+     "wq": "cea4510a",
+     "wrongs": [
+      "En 1884",
+      "En 1848",
+      "En 1936"
+     ]
     },
     {
-     "question": "Quel roman d'Émile Zola (1885) décrit la vie des mineurs et une grève ?",
-     "answer": "Germinal."
+     "question": "Quelle loi de 1884 accorde la liberté syndicale ?",
+     "answer": "La loi Waldeck-Rousseau",
+     "wrongs": [
+      "La loi Ferry",
+      "La loi Le Chapelier",
+      "La loi Veil"
+     ]
     },
     {
-     "question": "Quand l'esclavage est-il définitivement aboli dans les colonies françaises et grâce à qui ?",
-     "answer": "En 1848\ndécret du 27 avril 1848, préparé par Victor Schœlcher.",
-     "w": "f88e8954",
-     "wq": "324d69d7"
+     "question": "Quel roman d'Émile Zola (1885) décrit la vie des mineurs ?",
+     "answer": "Germinal",
+     "w": "5216ffa2",
+     "wq": "26546230",
+     "wrongs": [
+      "L'Assommoir",
+      "Nana",
+      "Les Misérables"
+     ]
     },
     {
-     "question": "Quand commence la conquête de l'Algérie par la France ?",
-     "answer": "En 1830, avec la prise d'Alger.\nL'émir Abd el-Kader résiste jusqu'en 1847.",
-     "w": "0975ac86",
-     "wq": "1adcc538"
+     "question": "En quelle année l'esclavage est-il définitivement aboli dans les colonies françaises ?",
+     "answer": "En 1848",
+     "w": [
+      "ef225e08",
+      "f88e8954"
+     ],
+     "wq": "324d69d7",
+     "wrongs": [
+      "En 1794",
+      "En 1802",
+      "En 1905"
+     ]
+    },
+    {
+     "question": "Qui a préparé le décret d'abolition de l'esclavage de 1848 ?",
+     "answer": "Victor Schœlcher",
+     "wrongs": [
+      "Jules Ferry",
+      "Victor Hugo",
+      "Napoléon III"
+     ]
+    },
+    {
+     "question": "En quelle année commence la conquête de l'Algérie par la France ?",
+     "answer": "En 1830",
+     "w": [
+      "00cfbcd8",
+      "0975ac86"
+     ],
+     "wq": "1adcc538",
+     "more": "L'émir Abd el-Kader résiste jusqu'en 1847.",
+     "wrongs": [
+      "En 1848",
+      "En 1881",
+      "En 1914"
+     ]
     },
     {
      "question": "Qu'a organisé la conférence de Berlin (1884-1885) ?",
-     "answer": "Les règles du partage de l'Afrique\nentre les puissances européennes.",
-     "w": "6dd1994c",
-     "wq": "a6b201c3"
+     "answer": "Le partage de l'Afrique entre puissances européennes",
+     "w": [
+      "a15361ce",
+      "6dd1994c"
+     ],
+     "wrongs": [
+      "La fin de l'esclavage",
+      "La paix après une guerre européenne",
+      "La création de l'ONU"
+     ]
     },
     {
-     "question": "Quels arguments les colonisateurs avancent-ils pour justifier la colonisation ?",
-     "answer": "• Économiques : matières premières, débouchés\n• Politiques : puissance\n• La prétendue « mission civilisatrice » (Jules Ferry, 1885)",
-     "w": "331f97cb",
-     "wq": "501dc3f6"
+     "question": "Quel argument les colonisateurs avancent-ils pour justifier la colonisation ?",
+     "answer": "La prétendue « mission civilisatrice »",
+     "w": [
+      "0eaca5d5",
+      "331f97cb"
+     ],
+     "wq": "501dc3f6",
+     "more": "Aussi : matières premières, débouchés, puissance (Jules Ferry, 1885).",
+     "wrongs": [
+      "La protection de l'environnement",
+      "La démocratie pour tous",
+      "L'abolition des frontières"
+     ]
     },
     {
      "question": "Qu'est-ce que le code de l'indigénat ?",
-     "answer": "Un régime juridique (à partir de 1881 en Algérie)\nqui soumet les colonisés à des règles et sanctions particulières,\nsans les droits des citoyens français.",
-     "w": "6f7abfee",
-     "wq": "362aa444"
+     "answer": "Un régime qui soumet les colonisés à des règles particulières, sans les droits des citoyens",
+     "w": [
+      "30ee9fa2",
+      "6f7abfee"
+     ],
+     "wrongs": [
+      "Une loi d'égalité entre colons et colonisés",
+      "Un code pour protéger les indigènes",
+      "Une constitution coloniale démocratique"
+     ]
     }
    ]
   },
@@ -64264,97 +65125,239 @@
    "cards": [
     {
      "question": "Quel est le rôle de la justice dans une démocratie ?",
-     "answer": "• Faire respecter la loi\n• Régler les conflits pacifiquement\n• Protéger les droits des personnes\n• Sanctionner les auteurs d'infractions",
-     "w": "c5312b60",
-     "wq": "fed688c3"
+     "answer": "Faire respecter la loi et régler les conflits pacifiquement",
+     "w": [
+      "4508f35b",
+      "c5312b60"
+     ],
+     "more": "Elle protège les droits et sanctionne les infractions.",
+     "wrongs": [
+      "Voter les lois",
+      "Diriger le gouvernement",
+      "Organiser les élections"
+     ]
     },
     {
-     "question": "Que signifie l'adage « Nul n'est censé ignorer la loi » ?",
-     "answer": "Personne ne peut échapper à la loi\nen prétendant ne pas la connaître.",
-     "w": "f514988c",
-     "wq": "f762e277"
+     "question": "Que signifie « Nul n'est censé ignorer la loi » ?",
+     "answer": "On ne peut pas échapper à la loi en prétendant ne pas la connaître",
+     "w": [
+      "12c4027e",
+      "f514988c"
+     ],
+     "wq": "f762e277",
+     "wrongs": [
+      "Tout le monde connaît toutes les lois",
+      "Seuls les juges doivent connaître la loi",
+      "La loi s'applique seulement si on la connaît"
+     ]
     },
     {
      "question": "Qu'est-ce que la présomption d'innocence ?",
-     "answer": "Toute personne accusée est considérée comme innocente\ntant qu'un tribunal n'a pas prouvé sa culpabilité.\n(article 9 de la DDHC de 1789)",
-     "w": "0b27d7ff",
-     "wq": "6e04927d"
+     "answer": "Toute personne accusée est innocente tant que sa culpabilité n'est pas prouvée",
+     "w": [
+      "9c2d823b",
+      "0b27d7ff"
+     ],
+     "more": "Article 9 de la DDHC de 1789.",
+     "wrongs": [
+      "Toute personne accusée est coupable",
+      "Un accusé doit prouver son innocence",
+      "Un mineur ne peut jamais être jugé"
+     ]
     },
     {
      "question": "Quels sont les grands principes d'un procès équitable ?",
-     "answer": "• Un juge indépendant et impartial\n• Le droit à un avocat\n• Un débat contradictoire\n• Un procès public\n• Le droit de faire appel",
-     "w": "605ebcca",
-     "wq": "6cd867f1"
+     "answer": "Juge impartial, droit à un avocat, débat contradictoire, droit de faire appel",
+     "w": [
+      "b2859619",
+      "605ebcca"
+     ],
+     "wrongs": [
+      "Procès secret et sans avocat",
+      "Jugement par la police",
+      "Jugement sans possibilité d'appel"
+     ]
     },
     {
-     "question": "Quelle est la différence entre justice civile et justice pénale ?",
-     "answer": "Civile : règle les litiges entre personnes (divorce, loyer, héritage).\nPénale : juge les auteurs d'infractions et prononce des peines.",
-     "w": "3f775ff6",
-     "wq": "d1842120"
+     "question": "Que règle la justice civile ?",
+     "answer": "Les litiges entre personnes",
+     "w": [
+      "db6c690b",
+      "3f775ff6"
+     ],
+     "wq": "d1842120",
+     "more": "Divorce, loyer, héritage…",
+     "wrongs": [
+      "Les crimes",
+      "Les délits routiers",
+      "Les conflits entre États"
+     ]
     },
     {
-     "question": "Quelles sont les trois catégories d'infractions, de la moins grave à la plus grave ?",
-     "answer": "1. La contravention\n2. Le délit\n3. Le crime",
-     "w": "180cfd39",
-     "wq": "485228d0"
+     "question": "Que fait la justice pénale ?",
+     "answer": "Elle juge les auteurs d'infractions et prononce des peines",
+     "wrongs": [
+      "Elle règle les divorces",
+      "Elle vote les lois",
+      "Elle règle les héritages"
+     ]
     },
     {
-     "question": "Quel tribunal juge les contraventions ? les délits ?",
-     "answer": "• Contraventions : tribunal de police\n• Délits : tribunal correctionnel",
-     "w": "48b525dc",
-     "wq": "e44c0e06"
+     "question": "Quelles sont les catégories d'infractions, de la moins grave à la plus grave ?",
+     "answer": "Contravention, délit, crime",
+     "w": [
+      "3561e74a",
+      "180cfd39"
+     ],
+     "wq": "485228d0",
+     "wrongs": [
+      "Crime, délit, contravention",
+      "Délit, contravention, crime",
+      "Faute, erreur, crime"
+     ]
+    },
+    {
+     "question": "Quel tribunal juge les contraventions ?",
+     "answer": "Le tribunal de police",
+     "w": [
+      "27e08515",
+      "48b525dc"
+     ],
+     "wq": "e44c0e06",
+     "wrongs": [
+      "Le tribunal correctionnel",
+      "La cour d'assises",
+      "La Cour de cassation"
+     ]
+    },
+    {
+     "question": "Quel tribunal juge les délits ?",
+     "answer": "Le tribunal correctionnel",
+     "wrongs": [
+      "Le tribunal de police",
+      "La cour d'assises",
+      "Le conseil des prud'hommes"
+     ]
     },
     {
      "question": "Quelle juridiction juge les crimes les plus graves ?",
-     "answer": "La cour d'assises : magistrats et jurés (citoyens tirés au sort).\nCertains crimes : cour criminelle départementale (magistrats seulement).",
-     "w": "d90c0e66",
-     "wq": "60d6e810"
+     "answer": "La cour d'assises",
+     "w": [
+      "a62806b4",
+      "d90c0e66"
+     ],
+     "more": "Magistrats et jurés tirés au sort.",
+     "wrongs": [
+      "Le tribunal correctionnel",
+      "Le tribunal de police",
+      "Le conseil constitutionnel"
+     ]
     },
     {
      "question": "Quel est le rôle du procureur de la République ?",
-     "answer": "Magistrat du parquet, il représente la société :\nil décide des poursuites\net demande l'application de la loi au procès.",
-     "w": "65b7f498",
-     "wq": "02208a93"
+     "answer": "Représenter la société et décider des poursuites",
+     "w": [
+      "51d02d5f",
+      "65b7f498"
+     ],
+     "wrongs": [
+      "Défendre l'accusé",
+      "Rendre le jugement seul",
+      "Voter les lois"
+     ]
     },
     {
      "question": "Quel est le rôle de l'avocat ?",
-     "answer": "Il conseille et défend les intérêts de son client\n(accusé ou victime) devant la justice.",
-     "w": "9bb03929",
-     "wq": "490699a3"
+     "answer": "Conseiller et défendre son client",
+     "w": [
+      "cc1b776f",
+      "9bb03929"
+     ],
+     "wrongs": [
+      "Prononcer la peine",
+      "Représenter la société",
+      "Arrêter les suspects"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une victime qui se « constitue partie civile » ?",
-     "answer": "Une victime qui participe au procès pénal\npour faire reconnaître son préjudice\net demander réparation (dommages et intérêts).",
-     "w": "c0f6db8a",
-     "wq": "b52ba206"
+     "question": "Que fait une victime qui se constitue partie civile ?",
+     "answer": "Elle participe au procès pénal pour demander réparation",
+     "w": [
+      "bd40fb4c",
+      "c0f6db8a"
+     ],
+     "wq": "b52ba206",
+     "wrongs": [
+      "Elle devient juge",
+      "Elle retire sa plainte",
+      "Elle défend l'accusé"
+     ]
     },
     {
-     "question": "Que peut faire une personne qui n'est pas d'accord avec un jugement ?",
-     "answer": "1. Faire appel : l'affaire est rejugée par une cour d'appel.\n2. Puis former un pourvoi devant la Cour de cassation.",
-     "w": "3dc1a484",
-     "wq": "b74bc35c"
+     "question": "Que peut faire une personne en désaccord avec un jugement ?",
+     "answer": "Faire appel, puis former un pourvoi en cassation",
+     "w": [
+      "61db550b",
+      "3dc1a484"
+     ],
+     "wq": "b74bc35c",
+     "wrongs": [
+      "Rien du tout",
+      "Demander un nouveau juge au maire",
+      "Refuser la peine"
+     ]
     },
     {
-     "question": "Qui juge les mineurs en France ?",
-     "answer": "Des juridictions spécialisées :\n• le juge des enfants\n• le tribunal pour enfants\n• la cour d'assises des mineurs (crimes des 16-18 ans)",
-     "w": "613bcc03",
-     "wq": "d12611f9"
+     "question": "Quel juge est spécialisé pour les mineurs ?",
+     "answer": "Le juge des enfants",
+     "w": [
+      "1ef32c75",
+      "613bcc03"
+     ],
+     "wq": "d12611f9",
+     "more": "Aussi : tribunal pour enfants, cour d'assises des mineurs.",
+     "wrongs": [
+      "Le procureur",
+      "Le juge aux affaires familiales",
+      "Le juge d'instruction seulement"
+     ]
     },
     {
      "question": "Quel principe guide la justice des mineurs ?",
-     "answer": "L'éducation passe avant la répression.\nLes peines sont atténuées par rapport aux majeurs.",
-     "w": "dc4bc15e",
-     "wq": "e98bd32a"
+     "answer": "L'éducation passe avant la répression",
+     "w": [
+      "02eff221",
+      "dc4bc15e"
+     ],
+     "wrongs": [
+      "Les mêmes peines que les majeurs",
+      "Aucune sanction possible",
+      "La prison d'abord"
+     ]
     },
     {
      "question": "Que prévoit le Code de la justice pénale des mineurs (2021) pour les moins de 13 ans ?",
-     "answer": "Une présomption de non-discernement :\navant 13 ans, un mineur est présumé incapable de discernement,\nsauf preuve contraire.",
-     "w": "9461fbe4",
-     "wq": "5786b37a"
+     "answer": "Une présomption de non-discernement",
+     "w": [
+      "b7546097",
+      "9461fbe4"
+     ],
+     "wrongs": [
+      "Des peines de prison",
+      "Un jugement en cour d'assises",
+      "Aucune règle particulière"
+     ]
     },
     {
-     "question": "Quelle institution indépendante peut être saisie gratuitement en cas d'atteinte aux droits ou de discrimination ?",
-     "answer": "Le Défenseur des droits."
+     "question": "Quelle institution indépendante peut être saisie gratuitement en cas de discrimination ?",
+     "answer": "Le Défenseur des droits",
+     "w": "5632f7f7",
+     "wq": "d88f56b1",
+     "wrongs": [
+      "Le Conseil constitutionnel",
+      "Le Sénat",
+      "La Cour des comptes"
+     ]
     }
    ]
   },
@@ -64677,99 +65680,227 @@
    "cards": [
     {
      "question": "Quelle est l'unité d'énergie dans le Système international ?",
-     "answer": "Le joule (J)\nPour l'électricité, on utilise aussi le kilowattheure (kWh).",
-     "w": "ec7b1ad2",
-     "wq": "5177203a"
+     "answer": "Le joule (J)",
+     "w": [
+      "326a6161",
+      "ec7b1ad2"
+     ],
+     "more": "Pour l'électricité : aussi le kilowattheure (kWh).",
+     "wrongs": [
+      "Le watt (W)",
+      "Le volt (V)",
+      "Le newton (N)"
+     ]
     },
     {
-     "question": "Cite les principales formes d'énergie.",
-     "answer": "• Cinétique (de mouvement)\n• De position\n• Thermique\n• Chimique\n• Électrique, lumineuse (rayonnante), nucléaire",
-     "w": "10e80315",
-     "wq": "5a9d4434"
+     "question": "Quelles sont les principales formes d'énergie ?",
+     "answer": "Cinétique, de position, thermique, chimique, électrique, lumineuse, nucléaire",
+     "w": [
+      "709dcb1d",
+      "10e80315"
+     ],
+     "wq": "5a9d4434",
+     "wrongs": [
+      "Solide, liquide, gazeuse",
+      "Renouvelable et fossile seulement",
+      "Électrique seulement"
+     ]
     },
     {
      "question": "Qu'est-ce que l'énergie cinétique ?",
-     "answer": "L'énergie liée au mouvement d'un objet.\nElle augmente avec sa vitesse et sa masse.",
-     "w": "dfe23f14",
-     "wq": "32baf190"
+     "answer": "L'énergie liée au mouvement d'un objet",
+     "w": [
+      "cd44e24c",
+      "dfe23f14"
+     ],
+     "more": "Elle augmente avec la vitesse et la masse.",
+     "wrongs": [
+      "L'énergie liée à la chaleur",
+      "L'énergie stockée dans une pile",
+      "L'énergie de la lumière"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un convertisseur d'énergie ?",
-     "answer": "Un appareil qui transforme une forme d'énergie en une autre.\nEx. : une lampe : électrique → lumineuse + thermique",
-     "w": "17da8264",
-     "wq": "85d0bcce"
+     "answer": "Un appareil qui transforme une forme d'énergie en une autre",
+     "w": [
+      "1b37afe4",
+      "17da8264"
+     ],
+     "more": "Ex. : une lampe (électrique → lumineuse + thermique).",
+     "wrongs": [
+      "Un appareil qui crée de l'énergie",
+      "Un appareil qui détruit l'énergie",
+      "Un réservoir d'énergie"
+     ]
     },
     {
      "question": "Quelle conversion réalise un panneau solaire photovoltaïque ?",
-     "answer": "Énergie lumineuse (Soleil) → énergie électrique",
-     "w": "ffc8e5ea",
-     "wq": "a07bd06f"
+     "answer": "Lumineuse → électrique",
+     "w": [
+      "1bd0fb0b",
+      "ffc8e5ea"
+     ],
+     "wrongs": [
+      "Électrique → lumineuse",
+      "Thermique → électrique",
+      "Chimique → électrique"
+     ]
     },
     {
      "question": "Quelle conversion réalise un moteur électrique ?",
-     "answer": "Énergie électrique → énergie mécanique (mouvement)\navec une partie perdue en énergie thermique.",
-     "w": "0d1eec68",
-     "wq": "6695fe51"
+     "answer": "Électrique → mécanique",
+     "w": [
+      "c130a6a7",
+      "0d1eec68"
+     ],
+     "wrongs": [
+      "Mécanique → électrique",
+      "Chimique → électrique",
+      "Lumineuse → mécanique"
+     ]
     },
     {
      "question": "Quelle conversion réalise un alternateur (ou une dynamo) ?",
-     "answer": "Énergie mécanique → énergie électrique",
-     "w": "7ae476ab",
-     "wq": "a3094a5c"
+     "answer": "Mécanique → électrique",
+     "w": [
+      "b0dea7a6",
+      "7ae476ab"
+     ],
+     "wrongs": [
+      "Électrique → mécanique",
+      "Chimique → électrique",
+      "Thermique → lumineuse"
+     ]
     },
     {
      "question": "Quelle conversion a lieu dans une pile électrique ?",
-     "answer": "Énergie chimique → énergie électrique",
-     "w": "408ae795",
-     "wq": "991b00ff"
+     "answer": "Chimique → électrique",
+     "w": [
+      "69ab0362",
+      "408ae795"
+     ],
+     "wrongs": [
+      "Électrique → chimique",
+      "Mécanique → électrique",
+      "Lumineuse → électrique"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une chaîne énergétique ?",
-     "answer": "Un schéma avec cadres et flèches :\nréservoir d'énergie, convertisseurs, formes d'énergie transférées\net pertes.",
-     "w": "666be9b9",
-     "wq": "870ec07e"
+     "answer": "Un schéma montrant réservoir, convertisseurs, énergies transférées et pertes",
+     "w": [
+      "5cc38110",
+      "666be9b9"
+     ],
+     "wrongs": [
+      "Une chaîne de vélo",
+      "Un circuit électrique en série",
+      "Une liste de centrales"
+     ]
     },
     {
-     "question": "Énonce le principe de conservation de l'énergie.",
-     "answer": "L'énergie ne se crée pas et ne disparaît pas :\nelle se transfère ou se convertit.\nÉnergie reçue = énergie utile + énergie perdue",
-     "w": "bc95985d",
-     "wq": "bec3fbcb"
+     "question": "Que dit le principe de conservation de l'énergie ?",
+     "answer": "L'énergie ne se crée pas et ne disparaît pas : elle se convertit",
+     "w": [
+      "6366fc66",
+      "bc95985d"
+     ],
+     "wq": "bec3fbcb",
+     "more": "Énergie reçue = énergie utile + énergie perdue.",
+     "wrongs": [
+      "L'énergie se crée dans les centrales",
+      "L'énergie disparaît avec le temps",
+      "L'énergie augmente à chaque conversion"
+     ]
     },
     {
-     "question": "Sous quelle forme l'énergie est-elle le plus souvent « perdue » dans une conversion ?",
-     "answer": "En énergie thermique (chaleur)\ncédée à l'environnement.",
-     "w": "73e66dd8",
-     "wq": "b312dc1c"
+     "question": "Sous quelle forme l'énergie est-elle le plus souvent perdue ?",
+     "answer": "Thermique (chaleur)",
+     "w": [
+      "896af49b",
+      "73e66dd8"
+     ],
+     "wq": "b312dc1c",
+     "wrongs": [
+      "Lumineuse",
+      "Électrique",
+      "Nucléaire"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une source d'énergie renouvelable ?",
-     "answer": "Une source qui se reconstitue vite à l'échelle humaine.\nEx. : Soleil, vent, eau (hydraulique), biomasse, géothermie",
-     "w": "ff294315",
-     "wq": "c4b2ee38"
+     "answer": "Une source qui se reconstitue vite à l'échelle humaine",
+     "w": [
+      "2dfcc1d7",
+      "ff294315"
+     ],
+     "more": "Soleil, vent, eau, biomasse, géothermie.",
+     "wrongs": [
+      "Une source qu'on peut stocker",
+      "Une source qui ne pollue jamais",
+      "Une source qu'on achète"
+     ]
     },
     {
-     "question": "Cite des sources d'énergie non renouvelables.",
-     "answer": "• Combustibles fossiles : pétrole, charbon, gaz naturel\n• Uranium (centrales nucléaires)",
-     "w": "dec16c49",
-     "wq": "058893b4"
+     "question": "Quelle source d'énergie est non renouvelable ?",
+     "answer": "Le pétrole",
+     "w": [
+      "acaf3de6",
+      "dec16c49"
+     ],
+     "wq": "058893b4",
+     "more": "Aussi : charbon, gaz naturel, uranium.",
+     "wrongs": [
+      "Le vent",
+      "Le Soleil",
+      "La biomasse"
+     ]
     },
     {
-     "question": "Quelle chaîne de conversions a lieu dans une éolienne ?",
-     "answer": "1. Énergie cinétique du vent → rotation des pales (mécanique)\n2. L'alternateur → énergie électrique",
-     "w": "0740f9e2",
-     "wq": "535b3b7e"
+     "question": "Dans une éolienne, quelle énergie le vent apporte-t-il ?",
+     "answer": "De l'énergie cinétique",
+     "w": [
+      "cea296c6",
+      "0740f9e2"
+     ],
+     "wq": "535b3b7e",
+     "more": "Puis rotation des pales (mécanique) et alternateur (électrique).",
+     "wrongs": [
+      "De l'énergie chimique",
+      "De l'énergie thermique",
+      "De l'énergie nucléaire"
+     ]
     },
     {
-     "question": "Quelles conversions se produisent dans une centrale thermique à charbon ?",
-     "answer": "1. Chimique (charbon) → thermique (combustion)\n2. Thermique → mécanique (turbine entraînée par la vapeur)\n3. Mécanique → électrique (alternateur)",
-     "w": "8eac033d",
-     "wq": "6d3ff244"
+     "question": "Quelle est la première conversion dans une centrale thermique à charbon ?",
+     "answer": "Chimique → thermique (combustion)",
+     "w": [
+      "b7b1035e",
+      "8eac033d"
+     ],
+     "wq": "6d3ff244",
+     "more": "Puis thermique → mécanique (turbine) → électrique (alternateur).",
+     "wrongs": [
+      "Électrique → thermique",
+      "Mécanique → chimique",
+      "Lumineuse → thermique"
+     ]
     },
     {
-     "question": "Quelle énergie utile et quelle énergie perdue pour une lampe à DEL ?",
-     "answer": "• Utile : lumineuse\n• Perdue : thermique\nUne DEL perd beaucoup moins en chaleur qu'une lampe à incandescence.",
-     "w": "8c2993be",
-     "wq": "95712a99"
+     "question": "Quelle est l'énergie utile d'une lampe à DEL ?",
+     "answer": "Lumineuse",
+     "w": [
+      "dc7494fd",
+      "8c2993be"
+     ],
+     "wq": "95712a99",
+     "more": "L'énergie perdue est thermique ; une DEL chauffe beaucoup moins qu'une lampe à incandescence.",
+     "wrongs": [
+      "Thermique",
+      "Électrique",
+      "Chimique"
+     ]
     }
    ]
   },
@@ -64792,93 +65923,225 @@
    "cards": [
     {
      "question": "Comment forme-t-on le comparatif de supériorité d'un adjectif court ?",
-     "answer": "Adjectif + -er + than\nEx. : Tom is taller than Sam.",
-     "w": "d189821c",
-     "wq": "0a2e59db"
+     "answer": "Adjectif + -er + than",
+     "w": [
+      "835cb9f2",
+      "d189821c"
+     ],
+     "more": "Ex. : Tom is taller than Sam.",
+     "wrongs": [
+      "More + adjectif + than",
+      "The + adjectif + -est",
+      "As + adjectif + as"
+     ]
     },
     {
      "question": "Comment forme-t-on le comparatif de supériorité d'un adjectif long ?",
-     "answer": "More + adjectif + than\nEx. : This book is more interesting than that one.",
-     "w": "c55a730c",
-     "wq": "133e8a64"
+     "answer": "More + adjectif + than",
+     "w": [
+      "8b421076",
+      "c55a730c"
+     ],
+     "more": "Ex. : more interesting than.",
+     "wrongs": [
+      "Adjectif + -er + than",
+      "The most + adjectif",
+      "Less + adjectif + as"
+     ]
     },
     {
      "question": "Comment forme-t-on le superlatif d'un adjectif court ?",
-     "answer": "The + adjectif + -est\nEx. : She is the tallest girl in the class.",
-     "w": "ac9df014",
-     "wq": "4e9783ea"
+     "answer": "The + adjectif + -est",
+     "w": [
+      "4f005a1e",
+      "ac9df014"
+     ],
+     "more": "Ex. : the tallest girl.",
+     "wrongs": [
+      "The most + adjectif",
+      "Adjectif + -er + than",
+      "Most + adjectif + -est"
+     ]
     },
     {
      "question": "Comment forme-t-on le superlatif d'un adjectif long ?",
-     "answer": "The most + adjectif\nEx. : It's the most beautiful city in the world.",
-     "w": "063c6341",
-     "wq": "cfa24c87"
+     "answer": "The most + adjectif",
+     "w": [
+      "5fc38edf",
+      "063c6341"
+     ],
+     "more": "Ex. : the most beautiful city.",
+     "wrongs": [
+      "The + adjectif + -est",
+      "More + adjectif + than",
+      "The more + adjectif"
+     ]
     },
     {
-     "question": "Quel est le comparatif et le superlatif de « good » ?",
-     "answer": "Better, the best\nEx. : My phone is better than yours; it's the best.",
-     "w": "9b0a45f4",
-     "wq": "a1d65233"
+     "question": "Quel est le superlatif de « good » ?",
+     "answer": "The best",
+     "w": [
+      "52a89f82",
+      "9b0a45f4"
+     ],
+     "wq": "a1d65233",
+     "more": "Comparatif : better.",
+     "wrongs": [
+      "The goodest",
+      "The better",
+      "The most good"
+     ]
     },
     {
-     "question": "Quel est le comparatif et le superlatif de « bad » ?",
-     "answer": "Worse, the worst."
+     "question": "Quel est le comparatif de « bad » ?",
+     "answer": "Worse",
+     "w": "eb70549a",
+     "wq": "77e22fa5",
+     "more": "Superlatif : the worst.",
+     "wrongs": [
+      "Badder",
+      "More bad",
+      "Worst"
+     ]
     },
     {
-     "question": "Quel est le comparatif et le superlatif de « far » ?",
-     "answer": "Farther / further\nthe farthest / the furthest",
-     "w": "72ce8588",
-     "wq": "6cd6f16f"
+     "question": "Quel est le comparatif de « far » ?",
+     "answer": "Farther (ou further)",
+     "w": [
+      "4aec65e2",
+      "72ce8588"
+     ],
+     "wq": "6cd6f16f",
+     "wrongs": [
+      "Farer",
+      "More far",
+      "Farest"
+     ]
     },
     {
-     "question": "Que devient le y final d'un adjectif court au comparatif ? Ex. : happy.",
-     "answer": "Le y devient i :\nhappy → happier → the happiest\neasy → easier → the easiest",
-     "w": "3555d790",
-     "wq": "5e495f24"
+     "question": "Quel est le comparatif de « happy » ?",
+     "answer": "Happier",
+     "w": [
+      "80bde7ab",
+      "3555d790"
+     ],
+     "wq": "5e495f24",
+     "more": "Le y devient i : happy → happier → the happiest.",
+     "wrongs": [
+      "Happyer",
+      "More happy",
+      "Happiest"
+     ]
     },
     {
-     "question": "Quand double-t-on la consonne finale au comparatif ?",
-     "answer": "Adjectif d'une syllabe en consonne + voyelle + consonne :\nbig → bigger, hot → hotter, thin → thinner",
-     "w": "f192cd91",
-     "wq": "941fa67c"
+     "question": "Quel est le comparatif de « big » ?",
+     "answer": "Bigger",
+     "w": [
+      "3c4f7cbb",
+      "f192cd91"
+     ],
+     "wq": "941fa67c",
+     "more": "On double la consonne : hot → hotter, thin → thinner.",
+     "wrongs": [
+      "Biger",
+      "More big",
+      "Biggest"
+     ]
     },
     {
-     "question": "Comment exprime-t-on l'égalité ?",
-     "answer": "As + adjectif + as\nEx. : He is as tall as his father.",
-     "w": "db547df2",
-     "wq": "f7d6c3c6"
+     "question": "Comment exprime-t-on l'égalité en anglais ?",
+     "answer": "As + adjectif + as",
+     "w": [
+      "1a1a188c",
+      "db547df2"
+     ],
+     "wq": "f7d6c3c6",
+     "more": "Ex. : as tall as his father.",
+     "wrongs": [
+      "More + adjectif + than",
+      "So + adjectif + that",
+      "Same + adjectif + as"
+     ]
     },
     {
-     "question": "Comment exprime-t-on l'infériorité ?",
-     "answer": "• Not as + adjectif + as\nEx. : It's not as cold as yesterday.\n• Less + adjectif + than\nEx. : It's less expensive than the red one.",
-     "w": "5267edb1",
-     "wq": "7a9d1257"
+     "question": "Comment exprime-t-on l'infériorité en anglais ?",
+     "answer": "Less + adjectif + than (ou not as … as)",
+     "w": [
+      "8759045d",
+      "5267edb1"
+     ],
+     "wq": "7a9d1257",
+     "wrongs": [
+      "More + adjectif + than",
+      "As + adjectif + as",
+      "The least + adjectif + than"
+     ]
     },
     {
-     "question": "Traduis : « Londres est plus grande que Paris. »",
-     "answer": "London is bigger than Paris."
+     "question": "Comment traduit-on « Londres est plus grande que Paris » ?",
+     "answer": "London is bigger than Paris.",
+     "w": "8fd2acd4",
+     "wq": "90674d3d",
+     "wrongs": [
+      "London is more big than Paris.",
+      "London is biger than Paris.",
+      "London is bigger that Paris."
+     ]
     },
     {
-     "question": "Traduis : « C'est le film le plus drôle de l'année. »",
-     "answer": "It's the funniest film of the year."
+     "question": "Comment traduit-on « C'est le film le plus drôle de l'année » ?",
+     "answer": "It's the funniest film of the year.",
+     "w": "eec3915b",
+     "wq": "8351ddd3",
+     "wrongs": [
+      "It's the most funny film of the year.",
+      "It's the funnyest film of the year.",
+      "It's the more funny film of the year."
+     ]
     },
     {
-     "question": "Comment traduire « de plus en plus » avec un adjectif ?",
-     "answer": "• Adjectif court : -er and -er\n(it's getting colder and colder)\n• Adjectif long : more and more + adjectif\n(more and more popular)",
-     "w": "4aa53f3b",
-     "wq": "d206ef4d"
+     "question": "Comment traduit-on « de plus en plus froid » ?",
+     "answer": "Colder and colder",
+     "w": [
+      "f6ed05d6",
+      "4aa53f3b"
+     ],
+     "wq": "d206ef4d",
+     "more": "Adjectif long : more and more popular.",
+     "wrongs": [
+      "More and more cold",
+      "Cold and colder",
+      "Colder than colder"
+     ]
     },
     {
      "question": "Quelle préposition utilise-t-on après un superlatif suivi d'un lieu ?",
-     "answer": "In\nEx. : the highest mountain in the world\n(et non « of the world »)",
-     "w": "2cdb0601",
-     "wq": "c5fa2cbf"
+     "answer": "In",
+     "w": [
+      "6e596dd5",
+      "2cdb0601"
+     ],
+     "more": "Ex. : the highest mountain in the world.",
+     "wrongs": [
+      "Of",
+      "At",
+      "On"
+     ]
     },
     {
-     "question": "Les adjectifs de deux syllabes en -y forment-ils leur comparatif avec more ?",
-     "answer": "Non, ils prennent -ier :\nfunny → funnier, busy → busier, pretty → prettier",
-     "w": "5933bd5a",
-     "wq": "a82b59b8"
+     "question": "Quel est le comparatif de « busy » ?",
+     "answer": "Busier",
+     "w": [
+      "e4df0b8a",
+      "5933bd5a"
+     ],
+     "wq": "a82b59b8",
+     "more": "Les adjectifs de deux syllabes en -y prennent -ier.",
+     "wrongs": [
+      "More busy",
+      "Busyer",
+      "Busiest"
+     ]
     }
    ]
   },
@@ -65424,29 +66687,33 @@
      ]
     },
     {
-     "question": "Lequel de ces connecteurs exprime l'opposition ?",
-     "answer": "Cependant",
+     "question": "Quel rapport logique exprime le connecteur « cependant » ?",
+     "answer": "L'opposition",
      "w": [
+      "d431f4b5",
       "831f0fb7",
       "5a51f2a5"
      ],
      "wq": [
+      "1c4431de",
       "a3211b8a"
      ],
      "more": "Opposition : mais, cependant, pourtant, en revanche. Cause : car, parce que, puisque, en effet.",
      "wrongs": [
-      "Car",
-      "Puisque",
-      "En effet"
+      "La cause",
+      "La conséquence",
+      "L'addition"
      ]
     },
     {
-     "question": "Lequel de ces connecteurs exprime la cause ?",
-     "answer": "Puisque",
+     "question": "Quel rapport logique exprime le connecteur « puisque » ?",
+     "answer": "La cause",
+     "w": "1cae92be",
+     "wq": "b4c046ef",
      "wrongs": [
-      "Pourtant",
-      "En revanche",
-      "Donc"
+      "L'opposition",
+      "La conséquence",
+      "Le but"
      ]
     },
     {
@@ -66450,20 +67717,22 @@
      ]
     },
     {
-     "question": "Lequel de ces critères est évalué à l'oral ?",
-     "answer": "La maîtrise du sujet",
+     "question": "Qu'évalue-t-on à l'oral du brevet ?",
+     "answer": "La maîtrise du sujet et la qualité de l'expression",
      "w": [
+      "b5698868",
       "c1e785ea",
       "f73dca4c"
      ],
      "wq": [
+      "f56ce075",
       "361cab78"
      ],
      "more": "Connaissances, démarche, réflexion ; et l'expression orale : clarté, vocabulaire, posture.",
      "wrongs": [
       "La couleur du diaporama",
-      "La longueur des notes",
-      "Le nombre de diapositives"
+      "Le nombre de diapositives",
+      "La longueur des notes"
      ]
     },
     {
@@ -66620,37 +67889,41 @@
      ]
     },
     {
-     "question": "Laquelle de ces méthodes aide à s'entraîner à l'oral ?",
-     "answer": "Se chronométrer",
+     "question": "Se chronométrer aide-t-il à s'entraîner pour l'oral ?",
+     "answer": "Oui",
      "w": [
+      "0cf2dfb0",
       "d52ade72",
       "4eee7244"
      ],
      "wq": [
+      "2aaf7171",
       "2275bc75"
      ],
-     "more": "Aussi : notes en mots-clés, répéter à voix haute devant quelqu'un, anticiper les questions.",
+     "more": "À l'inverse, lire un texte entièrement rédigé ou réciter sans comprendre est à éviter.",
      "wrongs": [
-      "Rédiger tout son texte pour le lire",
-      "Ne jamais répéter",
-      "Apprendre par cœur sans comprendre"
+      "Non, c'est inutile",
+      "Non, cela stresse trop",
+      "Seulement le jour de l'épreuve"
      ]
     },
     {
-     "question": "Laquelle de ces erreurs faut-il éviter à l'oral ?",
-     "answer": "Parler trop vite",
+     "question": "Faut-il parler vite à l'oral pour montrer qu'on maîtrise son sujet ?",
+     "answer": "Non : parler trop vite est une erreur à éviter",
      "w": [
+      "a2cbb739",
       "a87be488",
       "dcfba898"
      ],
      "wq": [
+      "2b67fd27",
       "3725131b"
      ],
-     "more": "Aussi : lire ses notes, langage familier, ne pas respecter le temps, réciter sans comprendre.",
+     "more": "Il faut regarder le jury, annoncer son plan et justifier ses réponses.",
      "wrongs": [
-      "Regarder le jury",
-      "Annoncer son plan",
-      "Justifier ses réponses"
+      "Oui, cela montre l'aisance",
+      "Oui, pour dire plus de choses",
+      "Ça n'a aucune importance"
      ]
     }
    ]
@@ -66690,37 +67963,41 @@
      ]
     },
     {
-     "question": "Laquelle de ces grandeurs est une grandeur quotient ?",
-     "answer": "La vitesse en km/h",
+     "question": "La vitesse en km/h est-elle une grandeur quotient ou produit ?",
+     "answer": "Une grandeur quotient",
      "w": [
+      "14c2de00",
       "19c5fbc5",
       "d0edac98"
      ],
      "wq": [
+      "cd137173",
       "63aa084c"
      ],
-     "more": "Obtenue en divisant deux grandeurs. Autres ex. : débit (L/min), masse volumique (g/cm³).",
+     "more": "Distance ÷ durée.",
      "wrongs": [
-      "L'énergie en kWh",
-      "L'aire en m²",
-      "La longueur en m"
+      "Une grandeur produit",
+      "Une grandeur simple",
+      "Ni l'une ni l'autre"
      ]
     },
     {
-     "question": "Laquelle de ces grandeurs est une grandeur produit ?",
-     "answer": "L'énergie en kWh",
+     "question": "L'énergie en kWh est-elle une grandeur quotient ou produit ?",
+     "answer": "Une grandeur produit",
      "w": [
+      "3dadaf69",
       "2661e70c",
       "78434618"
      ],
      "wq": [
+      "877a3ad9",
       "72fc5cd4"
      ],
-     "more": "Obtenue en multipliant deux grandeurs : puissance × durée. Autre ex. : l'aire en m².",
+     "more": "Puissance × durée.",
      "wrongs": [
-      "La vitesse en km/h",
-      "Le débit en L/min",
-      "La masse volumique en g/cm³"
+      "Une grandeur quotient",
+      "Une grandeur simple",
+      "Une vitesse"
      ]
     },
     {
@@ -66977,97 +68254,230 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'une expérience aléatoire ?",
-     "answer": "Une expérience dont on connaît les résultats possibles,\nsans pouvoir prévoir le résultat.\nEx. : lancer un dé",
-     "w": "881a9ebe",
-     "wq": "ac9efd0b"
+     "answer": "Une expérience dont on connaît les résultats possibles sans pouvoir prévoir le résultat",
+     "w": [
+      "7d271a73",
+      "881a9ebe"
+     ],
+     "more": "Ex. : lancer un dé.",
+     "wrongs": [
+      "Une expérience dont le résultat est toujours le même",
+      "Une expérience impossible",
+      "Une expérience scientifique"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une issue ?",
-     "answer": "Un résultat possible d'une expérience aléatoire.\nEx. : obtenir 4 avec un dé",
-     "w": "c26b2f72",
-     "wq": "52cbce2c"
+     "answer": "Un résultat possible d'une expérience aléatoire",
+     "w": [
+      "abea78b7",
+      "c26b2f72"
+     ],
+     "wrongs": [
+      "Un ensemble de résultats",
+      "Une probabilité",
+      "La fin de l'expérience"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un événement ?",
-     "answer": "Un ensemble d'issues.\nEx. : « obtenir un nombre pair » → 2, 4 et 6",
-     "w": "e2a9f27e",
-     "wq": "867a972d"
+     "answer": "Un ensemble d'issues",
+     "w": [
+      "2b4d0f9e",
+      "e2a9f27e"
+     ],
+     "more": "Ex. : « obtenir un nombre pair » → 2, 4 et 6.",
+     "wrongs": [
+      "Un seul résultat",
+      "Une probabilité égale à 1",
+      "Un lancer de dé"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un événement élémentaire ?",
-     "answer": "Un événement réalisé par une seule issue.\nEx. : « obtenir 5 » avec un dé",
-     "w": "c98d69c4",
-     "wq": "b75fa05a"
+     "answer": "Un événement réalisé par une seule issue",
+     "w": [
+      "33212528",
+      "c98d69c4"
+     ],
+     "wrongs": [
+      "Un événement impossible",
+      "Un événement certain",
+      "Un événement de probabilité 1/2"
+     ]
     },
     {
-     "question": "Quelle est la probabilité d'un événement impossible et d'un événement certain ?",
-     "answer": "• Impossible : 0\n• Certain : 1",
-     "w": "ae81d1b6",
-     "wq": "19c8f384"
+     "question": "Quelle est la probabilité d'un événement impossible ?",
+     "answer": "0",
+     "w": [
+      "bfb8de41",
+      "ae81d1b6"
+     ],
+     "wq": "19c8f384",
+     "wrongs": [
+      "1",
+      "−1",
+      "0,5"
+     ]
     },
     {
-     "question": "Que vaut la somme des probabilités de toutes les issues d'une expérience ?",
-     "answer": "Elle vaut 1."
+     "question": "Quelle est la probabilité d'un événement certain ?",
+     "answer": "1",
+     "wrongs": [
+      "0",
+      "100",
+      "0,5"
+     ]
+    },
+    {
+     "question": "Que vaut la somme des probabilités de toutes les issues ?",
+     "answer": "1",
+     "w": "d91a4285",
+     "wq": "74b03de9",
+     "wrongs": [
+      "0",
+      "100",
+      "Le nombre d'issues"
+     ]
     },
     {
      "question": "Que sont deux événements incompatibles ?",
-     "answer": "Deux événements qui ne peuvent pas se réaliser en même temps.\nEx. : « obtenir 1 » et « obtenir un nombre pair »",
-     "w": "67f72ab1",
-     "wq": "ad46f5df"
+     "answer": "Deux événements qui ne peuvent pas se réaliser en même temps",
+     "w": [
+      "3650d626",
+      "67f72ab1"
+     ],
+     "wrongs": [
+      "Deux événements de même probabilité",
+      "Deux événements toujours réalisés ensemble",
+      "Deux événements impossibles"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une expérience à deux épreuves ?",
-     "answer": "Deux expériences aléatoires successives.\nEx. : lancer deux fois une pièce",
-     "w": "b14b342f",
-     "wq": "e7a54e46"
+     "answer": "Deux expériences aléatoires successives",
+     "w": [
+      "e65e61d7",
+      "b14b342f"
+     ],
+     "more": "Ex. : lancer deux fois une pièce.",
+     "wrongs": [
+      "Une expérience avec deux issues",
+      "Deux personnes qui lancent un dé",
+      "Une expérience répétée 100 fois"
+     ]
     },
     {
      "question": "Comment représenter une expérience à deux épreuves ?",
-     "answer": "• Un arbre des possibles (branches pour chaque épreuve)\n• Un tableau à double entrée",
-     "w": "c4265088",
-     "wq": "0ed31ca1"
+     "answer": "Avec un arbre ou un tableau à double entrée",
+     "w": [
+      "7f9b1bc4",
+      "c4265088"
+     ],
+     "wrongs": [
+      "Avec un diagramme circulaire",
+      "Avec une droite graduée",
+      "Avec un histogramme"
+     ]
     },
     {
-     "question": "On lance deux fois une pièce équilibrée. Quelle est la probabilité d'obtenir deux fois Pile ?",
-     "answer": "1/4\n4 issues équiprobables : PP, PF, FP, FF",
-     "w": "b4bb8bf4",
-     "wq": "47d5ec6e"
+     "question": "Quelle est la probabilité d'obtenir deux fois Pile avec une pièce ?",
+     "answer": "1/4",
+     "w": [
+      "092bca13",
+      "b4bb8bf4"
+     ],
+     "wq": "47d5ec6e",
+     "wrongs": [
+      "1/2",
+      "1/3",
+      "2/4"
+     ]
     },
     {
-     "question": "Avec deux dés équilibrés, quelle est la probabilité que la somme fasse 7 ?",
-     "answer": "1/6\n36 issues, dont 6 donnent 7 :\n1+6, 2+5, 3+4, 4+3, 5+2, 6+1\n6/36 = 1/6",
-     "w": "5434f1ac",
-     "wq": "d69c896e"
+     "question": "Avec deux dés, quelle est la probabilité que la somme fasse 7 ?",
+     "answer": "1/6",
+     "w": [
+      "730c3183",
+      "5434f1ac"
+     ],
+     "wq": "d69c896e",
+     "more": "6 issues favorables sur 36.",
+     "wrongs": [
+      "1/12",
+      "7/36",
+      "1/2"
+     ]
     },
     {
      "question": "Comment calcule-t-on la probabilité d'un chemin sur un arbre pondéré ?",
-     "answer": "On multiplie les probabilités\ninscrites sur les branches du chemin.",
-     "w": "3b5adee1",
-     "wq": "71bf62df"
+     "answer": "On multiplie les probabilités du chemin",
+     "w": [
+      "e54b73f3",
+      "3b5adee1"
+     ],
+     "wrongs": [
+      "On additionne les probabilités du chemin",
+      "On prend la plus grande",
+      "On divise par le nombre de branches"
+     ]
     },
     {
-     "question": "Quelle différence entre un tirage avec remise et sans remise ?",
-     "answer": "Avec remise : on remet l'objet, la 2e épreuve est identique à la 1re.\nSans remise : le nombre d'objets diminue, les probabilités changent.",
-     "w": "4e28e018",
-     "wq": "4d047e35"
+     "question": "Dans un tirage sans remise, que se passe-t-il pour la 2e épreuve ?",
+     "answer": "Le nombre d'objets diminue et les probabilités changent",
+     "w": [
+      "22b68869",
+      "4e28e018"
+     ],
+     "wq": "4d047e35",
+     "wrongs": [
+      "Rien ne change",
+      "Les probabilités doublent",
+      "L'expérience s'arrête"
+     ]
     },
     {
-     "question": "Une urne contient 3 boules rouges et 2 bleues. On tire 2 boules sans remise. Probabilité d'avoir 2 rouges ?",
-     "answer": "3/10\n3/5 × 2/4 = 6/20 = 3/10",
-     "w": "0ab2fb93",
-     "wq": "ebe2776e"
+     "question": "Urne de 3 rouges et 2 bleues, 2 tirages sans remise : probabilité d'avoir 2 rouges ?",
+     "answer": "3/10",
+     "w": [
+      "089860db",
+      "0ab2fb93"
+     ],
+     "wq": "ebe2776e",
+     "more": "3/5 × 2/4.",
+     "wrongs": [
+      "9/25",
+      "6/10",
+      "3/5"
+     ]
     },
     {
      "question": "On lance deux fois un dé. Quelle est la probabilité d'obtenir au moins un 6 ?",
-     "answer": "11/36\nContraire « aucun 6 » : 5/6 × 5/6 = 25/36\nP = 1 − 25/36 = 11/36",
-     "w": "ee03a748",
-     "wq": "e9d456cc"
+     "answer": "11/36",
+     "w": [
+      "3ec8da6f",
+      "ee03a748"
+     ],
+     "more": "1 − (5/6 × 5/6) = 1 − 25/36.",
+     "wrongs": [
+      "1/3",
+      "2/6",
+      "1/36"
+     ]
     },
     {
-     "question": "Que se passe-t-il pour la fréquence quand on répète un grand nombre de fois une expérience ?",
-     "answer": "Elle se stabilise\nautour de la probabilité de l'issue.",
-     "w": "b940fbe7",
-     "wq": "7928d5c5"
+     "question": "Que fait la fréquence quand on répète un très grand nombre de fois une expérience ?",
+     "answer": "Elle se stabilise autour de la probabilité",
+     "w": [
+      "3a0e3daa",
+      "b940fbe7"
+     ],
+     "wq": "7928d5c5",
+     "wrongs": [
+      "Elle augmente sans cesse",
+      "Elle devient nulle",
+      "Elle varie au hasard sans se stabiliser"
+     ]
     }
    ]
   },
