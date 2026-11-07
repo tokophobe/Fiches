@@ -119394,100 +119394,237 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Que faut-il interroger dans un sujet qui commence par « Peut-on… ? »",
-     "answer": "Deux sens de « pouvoir » :\n• possibilité de fait : est-ce réalisable ?\n• possibilité de droit : est-ce permis, légitime ?",
-     "w": "d5cee63f",
-     "wq": "aa990e4d"
+     "question": "Dans un sujet en « Peut-on… ? », quels deux sens de « pouvoir » faut-il distinguer ?",
+     "answer": "Possibilité de fait et possibilité de droit",
+     "w": [
+      "b1adeb70",
+      "d5cee63f"
+     ],
+     "wq": "aa990e4d",
+     "more": "Est-ce réalisable ? Est-ce permis, légitime ?",
+     "wrongs": [
+      "Passé et futur",
+      "Vrai et faux",
+      "Individuel et collectif"
+     ]
     },
     {
-     "question": "Que faut-il interroger dans un sujet en « Faut-il… ? » ou « Doit-on… ? »",
-     "answer": "• La nécessité : est-ce indispensable ?\n• L'obligation : est-ce un devoir moral ou juridique ?\nUne chose peut être nécessaire sans être un devoir.",
-     "w": "1192259b",
-     "wq": "8dc858f4"
+     "question": "Dans un sujet en « Faut-il… ? », quelles deux notions faut-il distinguer ?",
+     "answer": "La nécessité et l'obligation",
+     "w": [
+      "abe1d657",
+      "1192259b"
+     ],
+     "wq": "8dc858f4",
+     "more": "Une chose peut être nécessaire sans être un devoir.",
+     "wrongs": [
+      "Le fait et le droit",
+      "Le corps et l'esprit",
+      "La cause et l'effet"
+     ]
     },
     {
-     "question": "Comment traiter un sujet du type « X n'est-il que Y ? » ?",
-     "answer": "1. Reconnaître que X est bien Y en partie\n2. Chercher ce qui, en X, dépasse Y\nEx. : « Le langage n'est-il qu'un outil ? »",
-     "w": "b68312ca",
-     "wq": "c85e831b"
+     "question": "Comment traiter un sujet « X n'est-il que Y ? » ?",
+     "answer": "Reconnaître que X est en partie Y, puis chercher ce qui le dépasse",
+     "w": [
+      "86d05a7e",
+      "b68312ca"
+     ],
+     "wq": "c85e831b",
+     "more": "Ex. : « Le langage n'est-il qu'un outil ? »",
+     "wrongs": [
+      "Répondre oui sans discuter",
+      "Définir seulement Y",
+      "Raconter l'histoire de X"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une problématique de dissertation ?",
-     "answer": "Une tension entre deux réponses également défendables,\nqui rend la question nécessaire.\nSouvent formulée en deux questions opposées.",
-     "w": "04969ecc",
-     "wq": "f904250f"
+     "answer": "Une tension entre deux réponses défendables",
+     "w": [
+      "f1c0a2fa",
+      "04969ecc"
+     ],
+     "wrongs": [
+      "Le résumé du cours",
+      "La définition d'un mot",
+      "La conclusion du devoir"
+     ]
     },
     {
-     "question": "« Être libre, est-ce faire ce que l'on veut ? » : quelle piste de problématique ?",
-     "answer": "Thèse : faire ce que l'on veut semble la définition de la liberté.\nMais : si nos désirs ont des causes ignorées (Spinoza),\nobéir à ses envies n'est-il pas une servitude ?",
-     "w": "c5a6510c",
-     "wq": "12b7c30d"
+     "question": "« Être libre, est-ce faire ce que l'on veut ? » : quel philosophe montre que nos désirs ont des causes ignorées ?",
+     "answer": "Spinoza",
+     "w": [
+      "7e3eab1a",
+      "c5a6510c"
+     ],
+     "wq": "12b7c30d",
+     "wrongs": [
+      "Descartes",
+      "Sartre",
+      "Hobbes"
+     ]
     },
     {
-     "question": "« Le désir est-il la marque de notre imperfection ? » : quelle piste ?",
-     "answer": "Thèse : le désir comme manque (Platon) révèle notre incomplétude.\nMais : s'il est l'essence de l'homme et une puissance d'agir (Spinoza),\nil est plutôt le signe de notre vitalité.",
-     "w": "11e51cac",
-     "wq": "9730170e"
+     "question": "Pour quel philosophe le désir est-il un manque ?",
+     "answer": "Platon",
+     "w": [
+      "3bc031a8",
+      "11e51cac"
+     ],
+     "wq": "9730170e",
+     "more": "Pour Spinoza, il est l'essence de l'homme et une puissance d'agir.",
+     "wrongs": [
+      "Spinoza",
+      "Nietzsche",
+      "Hegel"
+     ]
     },
     {
-     "question": "« Peut-on être heureux sans être vertueux ? » : quelle piste ?",
-     "answer": "Thèse : on voit des méchants comblés et des justes malheureux.\nMais : si le bonheur est l'accord de l'âme avec elle-même (Platon, Aristote),\nle vice ne rend-il pas malheureux ?",
-     "w": "5ec311dd",
-     "wq": "dfee9ed9"
+     "question": "« Peut-on être heureux sans être vertueux ? » : chez Platon et Aristote, le bonheur est…",
+     "answer": "L'accord de l'âme avec elle-même par la vertu",
+     "w": [
+      "5b4ef96f",
+      "5ec311dd"
+     ],
+     "wq": "dfee9ed9",
+     "wrongs": [
+      "La richesse matérielle",
+      "Le plaisir immédiat",
+      "L'absence de pensée"
+     ]
     },
     {
-     "question": "« La technique nous libère-t-elle de la nature ? » : quelle piste ?",
-     "answer": "Thèse : la technique affranchit l'homme des contraintes naturelles (Descartes).\nMais : elle crée de nouvelles dépendances\net menace la nature dont nous dépendons (Heidegger, Jonas).",
-     "w": "fc1f3704",
-     "wq": "34a9f637"
+     "question": "Quels philosophes montrent que la technique crée de nouvelles dépendances et menace la nature ?",
+     "answer": "Heidegger et Jonas",
+     "w": [
+      "49762fdf",
+      "fc1f3704"
+     ],
+     "wq": "34a9f637",
+     "more": "Descartes : l'homme « maître et possesseur de la nature ».",
+     "wrongs": [
+      "Descartes et Bacon",
+      "Platon et Aristote",
+      "Hobbes et Locke"
+     ]
     },
     {
-     "question": "« Peut-on échapper au temps ? » : quelle piste ?",
-     "answer": "Thèse : nous sommes finis, soumis à l'irréversibilité et à la mort.\nMais : la mémoire, l'art ou la contemplation\nsemblent donner accès à ce qui ne passe pas.",
-     "w": "92bacf83",
-     "wq": "00714059"
+     "question": "« Peut-on échapper au temps ? » : qu'est-ce qui semble donner accès à ce qui ne passe pas ?",
+     "answer": "La mémoire, l'art ou la contemplation",
+     "w": [
+      "468383a6",
+      "92bacf83"
+     ],
+     "wq": "00714059",
+     "wrongs": [
+      "Le sommeil",
+      "Le travail",
+      "La vitesse"
+     ]
     },
     {
-     "question": "« La science peut-elle tout expliquer ? » : quelle piste ?",
-     "answer": "Thèse : la science étend sans cesse son domaine d'explication.\nMais : elle ne répond pas aux questions de sens et de valeur,\net ses théories restent réfutables (Popper).",
-     "w": "46284af5",
-     "wq": "16175caf"
+     "question": "Selon Popper, les théories scientifiques sont…",
+     "answer": "Réfutables",
+     "w": [
+      "b5734972",
+      "46284af5"
+     ],
+     "wq": "16175caf",
+     "more": "La science ne répond pas non plus aux questions de sens.",
+     "wrongs": [
+      "Absolument certaines",
+      "Des opinions",
+      "Des dogmes"
+     ]
     },
     {
-     "question": "« Le langage trahit-il la pensée ? » : quelle piste ?",
-     "answer": "Thèse : les mots, généraux, ne disent pas le singulier (Bergson).\nMais : sans mots, pas de pensée claire (Hegel) :\nle langage n'est-il pas la condition de la pensée ?",
-     "w": "66aa16ac",
-     "wq": "db107fa3"
+     "question": "Pour Hegel, peut-on avoir une pensée claire sans les mots ?",
+     "answer": "Non",
+     "w": [
+      "ad52761d",
+      "66aa16ac"
+     ],
+     "wq": "db107fa3",
+     "more": "Bergson : les mots généraux trahissent le singulier.",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, par l'intuition",
+      "Oui, en peinture"
+     ]
     },
     {
-     "question": "« Doit-on tout attendre de l'État ? » : quelle piste ?",
-     "answer": "Thèse : l'État garantit la sécurité et les droits (Hobbes, Locke).\nMais : un État qui prend tout en charge menace\nla liberté et la responsabilité des citoyens (Tocqueville).",
-     "w": "e79e3d86",
-     "wq": "1bf7dbe7"
+     "question": "Quel penseur craint qu'un État qui prend tout en charge menace la liberté ?",
+     "answer": "Tocqueville",
+     "w": [
+      "8918865f",
+      "e79e3d86"
+     ],
+     "wq": "1bf7dbe7",
+     "more": "Hobbes et Locke : l'État garantit la sécurité et les droits.",
+     "wrongs": [
+      "Hobbes",
+      "Rousseau",
+      "Machiavel"
+     ]
     },
     {
-     "question": "« L'inconscient est-il une excuse ? » : quelle piste ?",
-     "answer": "Thèse : si nos actes ont des causes psychiques cachées (Freud),\nnotre responsabilité semble diminuée.\nMais : se disculper par l'inconscient, n'est-ce pas de la mauvaise foi (Sartre) ?",
-     "w": "8d0d4e0e",
-     "wq": "858c62dd"
+     "question": "Pour Sartre, se disculper par l'inconscient relève de quoi ?",
+     "answer": "La mauvaise foi",
+     "w": [
+      "8e6e4436",
+      "8d0d4e0e"
+     ],
+     "wq": "858c62dd",
+     "wrongs": [
+      "La lucidité",
+      "La vertu",
+      "La sagesse"
+     ]
     },
     {
-     "question": "« Faut-il préférer le bonheur à la vérité ? » : quelle piste ?",
-     "answer": "Thèse : certaines illusions rendent heureux, la vérité peut blesser.\nMais : un bonheur fondé sur l'illusion est fragile,\net la dignité de l'esprit exige le vrai (Platon, la caverne).",
-     "w": "fa3a1be7",
-     "wq": "d5c4d9e3"
+     "question": "Quelle allégorie de Platon montre que l'esprit exige la vérité ?",
+     "answer": "La caverne",
+     "w": [
+      "b8322974",
+      "fa3a1be7"
+     ],
+     "wq": "d5c4d9e3",
+     "wrongs": [
+      "L'anneau de Gygès",
+      "Le char ailé",
+      "L'androgyne"
+     ]
     },
     {
-     "question": "« Le travail est-il une contrainte ? » : quelle piste ?",
-     "answer": "Thèse : nécessité vitale et souvent pénible (tripalium ; Marx, l'aliénation).\nMais : c'est aussi par le travail que l'homme se forme et se libère (Hegel).",
-     "w": "12fbb11d",
-     "wq": "67fe300b"
+     "question": "Pour Hegel, que permet le travail ?",
+     "answer": "Se former et se libérer",
+     "w": [
+      "bddc6634",
+      "12fbb11d"
+     ],
+     "wq": "67fe300b",
+     "more": "Marx y voit aussi une aliénation.",
+     "wrongs": [
+      "Seulement survivre",
+      "Devenir riche",
+      "Échapper à la société"
+     ]
     },
     {
-     "question": "« L'art nous détourne-t-il du réel ? » : quelle piste ?",
-     "answer": "Thèse : imitation d'apparences, l'art éloigne du vrai (Platon).\nMais : il peut dévoiler une réalité\nque nos perceptions utilitaires nous cachent (Bergson).",
-     "w": "cb160d33",
-     "wq": "5ca8bd65"
+     "question": "Pour Bergson, que peut dévoiler l'art ?",
+     "answer": "Une réalité que nos perceptions utilitaires cachent",
+     "w": [
+      "b2fc35e9",
+      "cb160d33"
+     ],
+     "wq": "5ca8bd65",
+     "more": "Platon : l'art imite les apparences.",
+     "wrongs": [
+      "Seulement des illusions",
+      "Des lois scientifiques",
+      "Rien de vrai"
+     ]
     }
    ]
   },
@@ -119854,102 +119991,242 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quand et comment la Sécurité sociale est-elle créée ?",
-     "answer": "Par les ordonnances d'octobre 1945, dans l'esprit du programme du CNR.\nElle protège contre la maladie, la vieillesse et les accidents du travail.",
-     "w": "8bb1f90d",
-     "wq": "756189e1"
+     "question": "En quelle année la Sécurité sociale est-elle créée ?",
+     "answer": "1945",
+     "w": [
+      "da262f23",
+      "8bb1f90d"
+     ],
+     "wq": "756189e1",
+     "more": "Ordonnances d'octobre 1945, dans l'esprit du programme du CNR.",
+     "wrongs": [
+      "1936",
+      "1958",
+      "1968"
+     ]
     },
     {
-     "question": "Que permet la loi Neuwirth de 1967 ?",
-     "answer": "Elle autorise la contraception, notamment la pilule, jusque-là interdite en France."
+     "question": "Quelle loi autorise la contraception en 1967 ?",
+     "answer": "La loi Neuwirth",
+     "w": "dbd12975",
+     "wq": "22406f63",
+     "wrongs": [
+      "La loi Veil",
+      "La loi Haby",
+      "La loi Auroux"
+     ]
     },
     {
-     "question": "Quelle réforme est adoptée en juillet 1974, au début du septennat de Valéry Giscard d'Estaing ?",
-     "answer": "L'abaissement de la majorité de 21 à 18 ans (loi du 5 juillet 1974).\nLes jeunes de 18 ans obtiennent le droit de vote.",
-     "w": "46d8a2a9",
-     "wq": "c7b7b0ff"
+     "question": "En 1974, à quel âge la majorité est-elle abaissée ?",
+     "answer": "18 ans",
+     "w": [
+      "476b0b32",
+      "46d8a2a9"
+     ],
+     "wq": "c7b7b0ff",
+     "more": "Au lieu de 21 ans.",
+     "wrongs": [
+      "16 ans",
+      "20 ans",
+      "19 ans"
+     ]
     },
     {
-     "question": "Que prévoit la loi Veil du 17 janvier 1975 ?",
-     "answer": "Elle dépénalise l'IVG, d'abord pour cinq ans.\nElle est rendue définitive en 1979.",
-     "w": "a5933f09",
-     "wq": "1bfa577d"
+     "question": "Que dépénalise la loi Veil de 1975 ?",
+     "answer": "L'IVG",
+     "w": [
+      "0705f77a",
+      "a5933f09"
+     ],
+     "wq": "1bfa577d",
+     "more": "D'abord pour cinq ans, définitivement en 1979.",
+     "wrongs": [
+      "La contraception",
+      "L'homosexualité",
+      "Le divorce"
+     ]
     },
     {
-     "question": "Quelles autres réformes sociétales sont adoptées en 1975 ?",
-     "answer": "• Le divorce par consentement mutuel (loi du 11 juillet 1975)\n• La loi Haby, qui crée le collège unique",
-     "w": "82dcb29f",
-     "wq": "d1be69f2"
+     "question": "Quelle loi de 1975 crée le collège unique ?",
+     "answer": "La loi Haby",
+     "w": [
+      "cc39a8da",
+      "82dcb29f"
+     ],
+     "wq": "d1be69f2",
+     "more": "La même année : divorce par consentement mutuel.",
+     "wrongs": [
+      "La loi Veil",
+      "La loi Debré",
+      "La loi Savary"
+     ]
     },
     {
-     "question": "Quand la peine de mort est-elle abolie en France et par qui ?",
-     "answer": "Par la loi du 9 octobre 1981,\nportée par le garde des Sceaux Robert Badinter,\nsous la présidence de François Mitterrand.",
-     "w": "2c312dbd",
-     "wq": "b5c81756"
+     "question": "Quel garde des Sceaux porte l'abolition de la peine de mort en 1981 ?",
+     "answer": "Robert Badinter",
+     "w": [
+      "577ca1f5",
+      "2c312dbd"
+     ],
+     "wq": "b5c81756",
+     "wrongs": [
+      "Simone Veil",
+      "Jack Lang",
+      "Michel Rocard"
+     ]
     },
     {
-     "question": "Quelles mesures sociales marquent les débuts de la présidence Mitterrand (1981-1982) ?",
-     "answer": "• Retraite à 60 ans\n• Semaine de 39 heures\n• Cinquième semaine de congés payés\n• Lois Auroux sur les droits des salariés\n• Nationalisations",
-     "w": "fe2ab5fd",
-     "wq": "1ecb9c65"
+     "question": "À quel âge la retraite est-elle fixée au début de la présidence Mitterrand ?",
+     "answer": "60 ans",
+     "w": [
+      "3a41f716",
+      "fe2ab5fd"
+     ],
+     "wq": "1ecb9c65",
+     "more": "Aussi : 39 heures, 5e semaine de congés, lois Auroux.",
+     "wrongs": [
+      "65 ans",
+      "62 ans",
+      "55 ans"
+     ]
     },
     {
-     "question": "Qu'a changé la loi du 4 août 1982 ?",
-     "answer": "Elle dépénalise l'homosexualité,\nen supprimant la dernière discrimination pénale qui la visait.",
-     "w": "ba301f47",
-     "wq": "08773fab"
+     "question": "Que dépénalise la loi du 4 août 1982 ?",
+     "answer": "L'homosexualité",
+     "w": [
+      "f117a018",
+      "ba301f47"
+     ],
+     "wq": "08773fab",
+     "wrongs": [
+      "L'IVG",
+      "La contraception",
+      "Le cannabis"
+     ]
     },
     {
-     "question": "Qu'est-ce que le RMI créé en 1988 ?",
-     "answer": "Le revenu minimum d'insertion, créé sous le gouvernement Rocard :\nune allocation pour les personnes sans ressources, liée à l'insertion.\nRemplacé par le RSA en 2009.",
-     "w": "37670a7d",
-     "wq": "fb461666"
+     "question": "Sous quel Premier ministre le RMI est-il créé en 1988 ?",
+     "answer": "Michel Rocard",
+     "w": [
+      "e5c3bff3",
+      "37670a7d"
+     ],
+     "wq": "fb461666",
+     "more": "Remplacé par le RSA en 2009.",
+     "wrongs": [
+      "Jacques Chirac",
+      "Lionel Jospin",
+      "Pierre Mauroy"
+     ]
     },
     {
-     "question": "Que règlent les accords de Matignon (1988) et de Nouméa (1998) ?",
-     "answer": "Ils mettent fin aux violences en Nouvelle-Calédonie.\nIls organisent un transfert progressif de compétences\net des consultations sur l'indépendance.",
-     "w": "64d89e07",
-     "wq": "9c0d3424"
+     "question": "Quel territoire concernent les accords de Matignon (1988) et de Nouméa (1998) ?",
+     "answer": "La Nouvelle-Calédonie",
+     "w": [
+      "d8370c2c",
+      "64d89e07"
+     ],
+     "wq": "9c0d3424",
+     "wrongs": [
+      "La Corse",
+      "La Guyane",
+      "Mayotte"
+     ]
     },
     {
      "question": "Que réprime la loi Gayssot de 1990 ?",
-     "answer": "Le négationnisme : contester les crimes contre l'humanité jugés à Nuremberg.\nElle renforce aussi la lutte contre le racisme.",
-     "w": "a8e6eba5",
-     "wq": "fd9d7114"
+     "answer": "Le négationnisme",
+     "w": [
+      "78c9902b",
+      "a8e6eba5"
+     ],
+     "wrongs": [
+      "Le travail des enfants",
+      "La corruption",
+      "Le terrorisme"
+     ]
     },
     {
-     "question": "Qu'est-ce que le PACS (1999) ?",
-     "answer": "Le pacte civil de solidarité :\nun contrat d'union entre deux personnes majeures, de même sexe ou non,\nqui organise leur vie commune.",
-     "w": "31b1f267",
-     "wq": "4c57f1e4"
+     "question": "Que crée la loi de 1999 sur le PACS ?",
+     "answer": "Un contrat d'union entre deux majeurs",
+     "w": [
+      "effd3bed",
+      "31b1f267"
+     ],
+     "wq": "4c57f1e4",
+     "more": "De même sexe ou non.",
+     "wrongs": [
+      "Le mariage pour tous",
+      "Le divorce par consentement",
+      "Une allocation familiale"
+     ]
     },
     {
-     "question": "Quelle réforme du temps de travail est adoptée en 1998-2000 ?",
-     "answer": "Les lois Aubry : durée légale du travail de 35 heures par semaine.",
-     "w": "a03e4b30",
-     "wq": "c692b815"
+     "question": "Quelle durée légale du travail fixent les lois Aubry ?",
+     "answer": "35 heures par semaine",
+     "w": [
+      "74b8ab9b",
+      "a03e4b30"
+     ],
+     "wq": "c692b815",
+     "wrongs": [
+      "39 heures",
+      "40 heures",
+      "32 heures"
+     ]
     },
     {
-     "question": "Que reconnaît la loi Taubira du 21 mai 2001 ?",
-     "answer": "La traite négrière et l'esclavage comme crimes contre l'humanité."
+     "question": "Que reconnaît la loi Taubira de 2001 comme crime contre l'humanité ?",
+     "answer": "La traite négrière et l'esclavage",
+     "w": "df5a556b",
+     "wq": "605044e6",
+     "wrongs": [
+      "La colonisation de l'Algérie",
+      "Le génocide arménien",
+      "La Shoah"
+     ]
     },
     {
-     "question": "Que modifie la révision constitutionnelle de 2003 ?",
-     "answer": "Elle inscrit à l'article 1er que l'organisation de la République est décentralisée.\nElle renforce les compétences des collectivités territoriales.",
-     "w": "535c156b",
-     "wq": "226951f5"
+     "question": "Selon la révision constitutionnelle de 2003, l'organisation de la République est…",
+     "answer": "Décentralisée",
+     "w": [
+      "2f4c6e8c",
+      "535c156b"
+     ],
+     "wq": "226951f5",
+     "wrongs": [
+      "Fédérale",
+      "Centralisée",
+      "Monarchique"
+     ]
     },
     {
-     "question": "Que prévoit la loi du 15 mars 2004 ?",
-     "answer": "Au nom de la laïcité, elle interdit dans les écoles, collèges et lycées publics\nles signes ou tenues manifestant ostensiblement une appartenance religieuse.",
-     "w": "0b658725",
-     "wq": "7fd4ee5f"
+     "question": "Qu'interdit la loi du 15 mars 2004 dans les écoles publiques ?",
+     "answer": "Les signes religieux ostensibles",
+     "w": [
+      "8ff72587",
+      "0b658725"
+     ],
+     "wq": "7fd4ee5f",
+     "wrongs": [
+      "Les téléphones portables",
+      "Les uniformes",
+      "Les langues régionales"
+     ]
     },
     {
-     "question": "Quel geste mémoriel accomplit Jacques Chirac le 16 juillet 1995 ?",
-     "answer": "Lors de la commémoration de la rafle du Vel d'Hiv,\nil reconnaît la responsabilité de l'État français\ndans la déportation des Juifs.",
-     "w": "3a8b86ed",
-     "wq": "1b883716"
+     "question": "En 1995, quel président reconnaît la responsabilité de l'État français dans la déportation des Juifs ?",
+     "answer": "Jacques Chirac",
+     "w": [
+      "fa38d75d",
+      "3a8b86ed"
+     ],
+     "wq": "1b883716",
+     "wrongs": [
+      "François Mitterrand",
+      "Valéry Giscard d'Estaing",
+      "Nicolas Sarkozy"
+     ]
     }
    ]
   },
@@ -119972,98 +120249,256 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quels sont les cinq océans, et lequel est le plus vaste ?",
-     "answer": "Pacifique, Atlantique, Indien, Arctique et Austral.\nLe Pacifique est le plus vaste : environ un tiers de la surface du globe.",
-     "w": "256b98d3",
-     "wq": "a98f1bef"
+     "question": "Quel est le plus vaste des océans ?",
+     "answer": "Le Pacifique",
+     "w": [
+      "81dc6f11",
+      "256b98d3"
+     ],
+     "wq": [
+      "1dc01b71",
+      "a98f1bef"
+     ],
+     "more": "Environ un tiers de la surface du globe.",
+     "wrongs": [
+      "L'Atlantique",
+      "L'océan Indien",
+      "L'océan Austral"
+     ]
     },
     {
-     "question": "Quelles mers ou océans relient les canaux de Suez et de Panama ?",
-     "answer": "• Suez (1869) : Méditerranée – mer Rouge\n• Panama (1914) : Atlantique – Pacifique\nDeux passages stratégiques du commerce mondial.",
-     "w": "6866c620",
-     "wq": "3621e72b"
+     "question": "Quelles mers relie le canal de Suez ?",
+     "answer": "La Méditerranée et la mer Rouge",
+     "w": [
+      "e186924d",
+      "6866c620"
+     ],
+     "wq": [
+      "f9f4f1fc",
+      "3621e72b"
+     ],
+     "more": "Ouvert en 1869.",
+     "wrongs": [
+      "L'Atlantique et le Pacifique",
+      "La mer Noire et la Méditerranée",
+      "La mer Rouge et l'océan Indien"
+     ]
+    },
+    {
+     "question": "Quels océans relie le canal de Panama ?",
+     "answer": "L'Atlantique et le Pacifique",
+     "more": "Ouvert en 1914.",
+     "wrongs": [
+      "L'Atlantique et l'océan Indien",
+      "Le Pacifique et l'Arctique",
+      "La Méditerranée et la mer Rouge"
+     ]
     },
     {
      "question": "Quelle est la principale route maritime du commerce mondial ?",
-     "answer": "La route Asie orientale – Europe :\nMalacca → océan Indien → Bab el-Mandeb → mer Rouge → Suez → Méditerranée.",
-     "w": "56bead59",
-     "wq": "04fbeb71"
+     "answer": "Asie orientale – Europe par Malacca et Suez",
+     "w": [
+      "492d3367",
+      "56bead59"
+     ],
+     "wrongs": [
+      "Europe – Amérique du Sud par le cap Horn",
+      "Afrique – Australie",
+      "Arctique – Antarctique"
+     ]
     },
     {
-     "question": "Quelles routes maritimes s'ouvrent en Arctique avec la fonte de la banquise ?",
-     "answer": "• Passage du Nord-Est : le long des côtes russes (route maritime du Nord)\n• Passage du Nord-Ouest : dans l'archipel arctique canadien",
-     "w": "abdd78c4",
-     "wq": "48fd7548"
+     "question": "Quel passage arctique longe les côtes russes ?",
+     "answer": "Le passage du Nord-Est",
+     "w": [
+      "f64c14e0",
+      "abdd78c4"
+     ],
+     "wq": "48fd7548",
+     "more": "Le passage du Nord-Ouest traverse l'archipel canadien.",
+     "wrongs": [
+      "Le passage du Nord-Ouest",
+      "Le détroit de Malacca",
+      "Le cap de Bonne-Espérance"
+     ]
     },
     {
-     "question": "Qu'est-ce que la Northern Range ?",
-     "answer": "La façade maritime de l'Europe du Nord-Ouest, du Havre à Hambourg.\nRotterdam, Anvers, Hambourg : la première façade portuaire européenne.",
-     "w": "ae23e364",
-     "wq": "30a75ef1"
+     "question": "Quel est le premier port de la Northern Range ?",
+     "answer": "Rotterdam",
+     "w": [
+      "d64795fc",
+      "ae23e364"
+     ],
+     "wq": "30a75ef1",
+     "more": "Façade du Havre à Hambourg, avec Anvers et Hambourg.",
+     "wrongs": [
+      "Marseille",
+      "Barcelone",
+      "Gênes"
+     ]
     },
     {
-     "question": "Quelles sont les trois grandes façades maritimes de l'Asie orientale à connaître ?",
-     "answer": "• Chinoise : Shanghai, Shenzhen, Ningbo\n• Japonaise et coréenne : Busan, Tokyo, Kobe\n• Asie du Sud-Est : autour de Singapour",
-     "w": "85fcf25e",
-     "wq": "e2a071a1"
+     "question": "Autour de quel port s'organise la façade maritime d'Asie du Sud-Est ?",
+     "answer": "Singapour",
+     "w": [
+      "b40b42e4",
+      "85fcf25e"
+     ],
+     "wq": "e2a071a1",
+     "more": "Façade chinoise : Shanghai, Shenzhen, Ningbo.",
+     "wrongs": [
+      "Shanghai",
+      "Tokyo",
+      "Bombay"
+     ]
     },
     {
      "question": "Quelles sont les trois grandes aires de puissance de la mondialisation ?",
-     "answer": "• Amérique du Nord\n• Europe occidentale\n• Asie orientale\n(la « Triade » élargie à la Chine)",
-     "w": "824b1365",
-     "wq": "c279a2d1"
+     "answer": "Amérique du Nord, Europe occidentale, Asie orientale",
+     "w": [
+      "e4a612fd",
+      "824b1365"
+     ],
+     "wrongs": [
+      "Afrique, Amérique du Sud, Océanie",
+      "Russie, Inde, Brésil",
+      "Europe, Afrique, Moyen-Orient"
+     ]
     },
     {
-     "question": "Quelles mégalopoles faut-il savoir localiser ?",
-     "answer": "• Megalopolis du Nord-Est des États-Unis : de Boston à Washington\n• Mégalopole japonaise : de Tokyo au nord de Kyushu\n• Dorsale européenne : de Londres à Milan",
-     "w": "14b7d500",
-     "wq": "92522f20"
+     "question": "De quelle ville à quelle ville s'étend la Megalopolis américaine ?",
+     "answer": "De Boston à Washington",
+     "w": [
+      "885e88f6",
+      "14b7d500"
+     ],
+     "wq": [
+      "6577078b",
+      "92522f20"
+     ],
+     "more": "Mégalopole japonaise : de Tokyo au nord de Kyushu ; dorsale européenne : de Londres à Milan.",
+     "wrongs": [
+      "De Los Angeles à San Francisco",
+      "De Chicago à Houston",
+      "De Miami à New York"
+     ]
     },
     {
-     "question": "Pourquoi la mer de Chine méridionale est-elle un espace de tensions ?",
-     "answer": "La Chine y revendique presque toutes les eaux et îles (Spratleys, Paracels)\ncontre ses voisins.\nC'est un axe commercial majeur, riche en ressources.",
-     "w": "95851ece",
-     "wq": "50f4aae1"
+     "question": "Quel pays revendique presque toute la mer de Chine méridionale ?",
+     "answer": "La Chine",
+     "w": [
+      "42f7e8a7",
+      "95851ece"
+     ],
+     "wq": "50f4aae1",
+     "more": "Îles Spratleys et Paracels, contre ses voisins.",
+     "wrongs": [
+      "Le Japon",
+      "Le Vietnam",
+      "Les Philippines"
+     ]
     },
     {
-     "question": "Que représente la frontière États-Unis – Mexique dans la mondialisation ?",
-     "answer": "Une interface Nord-Sud :\n• maquiladoras (usines d'assemblage côté mexicain)\n• échanges importants\n• flux migratoires contrôlés par un mur",
-     "w": "14557407",
-     "wq": "8c7b98ca"
+     "question": "Comment s'appellent les usines d'assemblage côté mexicain de la frontière ?",
+     "answer": "Les maquiladoras",
+     "w": [
+      "fb829eca",
+      "14557407"
+     ],
+     "wq": "8c7b98ca",
+     "wrongs": [
+      "Les favelas",
+      "Les haciendas",
+      "Les zones franches chinoises"
+     ]
     },
     {
-     "question": "Où siègent les principales institutions de l'Union européenne ?",
-     "answer": "• Bruxelles : Commission, Conseil de l'UE, Conseil européen\n• Strasbourg : sessions plénières du Parlement\n• Luxembourg : Cour de justice\n• Francfort : BCE",
-     "w": "1f50a93a",
-     "wq": "54695d24"
+     "question": "Où siège la Banque centrale européenne ?",
+     "answer": "À Francfort",
+     "w": [
+      "12ecb877",
+      "1f50a93a"
+     ],
+     "wq": "54695d24",
+     "more": "Commission à Bruxelles, Parlement à Strasbourg, Cour de justice à Luxembourg.",
+     "wrongs": [
+      "À Bruxelles",
+      "À Strasbourg",
+      "À Luxembourg"
+     ]
     },
     {
-     "question": "Quels États de l'UE n'utilisent pas l'euro ?",
-     "answer": "Notamment le Danemark, la Suède, la Pologne,\nla Hongrie, la République tchèque et la Roumanie.",
-     "w": "192ab65b",
-     "wq": "3d3864c4"
+     "question": "La Suède utilise-t-elle l'euro ?",
+     "answer": "Non",
+     "w": [
+      "1c4efcae",
+      "192ab65b"
+     ],
+     "wq": [
+      "13186f75",
+      "3d3864c4"
+     ],
+     "more": "Ni le Danemark, la Pologne, la Hongrie, la République tchèque, la Roumanie.",
+     "wrongs": [
+      "Oui, depuis 2002",
+      "Oui, depuis 1999",
+      "Oui, depuis 2015"
+     ]
     },
     {
-     "question": "Quels États non membres de l'UE font partie de l'espace Schengen ?",
-     "answer": "La Suisse, la Norvège, l'Islande et le Liechtenstein."
+     "question": "La Suisse fait-elle partie de l'espace Schengen ?",
+     "answer": "Oui",
+     "w": "1afdfa11",
+     "wq": "eaa3af0b",
+     "more": "Avec la Norvège, l'Islande et le Liechtenstein, sans être dans l'UE.",
+     "wrongs": [
+      "Non",
+      "Seulement pour les marchandises",
+      "Seulement depuis 2023"
+     ]
     },
     {
      "question": "Quel est le dernier État entré dans l'UE ?",
-     "answer": "La Croatie, en 2013.\nCandidats : plusieurs États des Balkans, l'Ukraine, la Moldavie.",
-     "w": "6312eedf",
-     "wq": "218373e2"
+     "answer": "La Croatie, en 2013",
+     "w": [
+      "045f0170",
+      "6312eedf"
+     ],
+     "wrongs": [
+      "La Roumanie, en 2007",
+      "L'Ukraine, en 2022",
+      "La Serbie, en 2020"
+     ]
     },
     {
-     "question": "Quelles sont les principales routes migratoires vers l'UE ?",
-     "answer": "• Méditerranée centrale : Libye-Tunisie → Italie (Lampedusa)\n• Méditerranée orientale : Turquie → Grèce\n• Méditerranée occidentale : Maroc → Espagne, Canaries",
-     "w": "d7e25009",
-     "wq": "942fd0ae"
+     "question": "Quelle route migratoire va de la Libye vers l'Italie ?",
+     "answer": "La Méditerranée centrale",
+     "w": [
+      "0c2753d5",
+      "d7e25009"
+     ],
+     "wq": "942fd0ae",
+     "more": "Orientale : Turquie → Grèce ; occidentale : Maroc → Espagne.",
+     "wrongs": [
+      "La Méditerranée orientale",
+      "La Méditerranée occidentale",
+      "La route des Balkans"
+     ]
     },
     {
-     "question": "Quels sont les trois types de figurés d'un croquis ?",
-     "answer": "• Ponctuels : villes, ports\n• Linéaires : flux, routes, frontières\n• De surface : aplats de couleur\nLa légende est organisée en parties qui répondent au sujet.",
-     "w": "485fe520",
-     "wq": "82ae44a6"
+     "question": "Sur un croquis, comment représente-t-on un flux ?",
+     "answer": "Par un figuré linéaire",
+     "w": [
+      "161520c1",
+      "485fe520"
+     ],
+     "wq": "82ae44a6",
+     "more": "Ponctuels : villes ; de surface : aplats de couleur.",
+     "wrongs": [
+      "Par un figuré ponctuel",
+      "Par un aplat de couleur",
+      "Par un texte"
+     ]
     }
    ]
   },
@@ -120086,92 +120521,218 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quel siège la France occupe-t-elle à l'ONU ?",
-     "answer": "Membre permanent du Conseil de sécurité, avec droit de veto.\nLes autres : États-Unis, Russie, Chine, Royaume-Uni.",
-     "w": "d89f2828",
-     "wq": "e68ec1eb"
+     "question": "La France a-t-elle un droit de veto au Conseil de sécurité ?",
+     "answer": "Oui, comme membre permanent",
+     "w": [
+      "02be453f",
+      "d89f2828"
+     ],
+     "wq": "e68ec1eb",
+     "wrongs": [
+      "Non, elle n'y siège pas",
+      "Non, seulement un vote",
+      "Oui, mais un an sur deux"
+     ]
     },
     {
-     "question": "Sur quoi repose la puissance militaire de la France ?",
-     "answer": "• La dissuasion nucléaire (premier essai en 1960)\n• Une armée professionnelle capable d'intervenir à l'extérieur\n• Des bases à l'étranger (Djibouti, Abou Dhabi)",
-     "w": "554b8475",
-     "wq": "8deaa8ff"
+     "question": "En quelle année la France réalise-t-elle son premier essai nucléaire ?",
+     "answer": "1960",
+     "w": [
+      "15c723a4",
+      "554b8475"
+     ],
+     "wq": "8deaa8ff",
+     "wrongs": [
+      "1945",
+      "1974",
+      "1986"
+     ]
     },
     {
-     "question": "Quels sont les cinq départements et régions d'outre-mer (DROM) ?",
-     "answer": "La Guadeloupe, la Martinique, la Guyane, La Réunion et Mayotte."
+     "question": "Quel territoire est un département et région d'outre-mer ?",
+     "answer": "La Réunion",
+     "w": "326ba8b3",
+     "wq": "8b9ccdc9",
+     "more": "DROM : Guadeloupe, Martinique, Guyane, La Réunion, Mayotte.",
+     "wrongs": [
+      "La Polynésie française",
+      "La Nouvelle-Calédonie",
+      "Saint-Pierre-et-Miquelon"
+     ]
     },
     {
-     "question": "Pourquoi les outre-mer sont-ils un atout pour la France ?",
-     "answer": "• Une présence sur tous les océans\n• Une immense ZEE\n• Des points d'appui (Centre spatial guyanais de Kourou)",
-     "w": "f5de680d",
-     "wq": "f90cb051"
+     "question": "Quel centre spatial français se trouve en Guyane ?",
+     "answer": "Le centre de Kourou",
+     "w": [
+      "68f21935",
+      "f5de680d"
+     ],
+     "wq": "f90cb051",
+     "more": "Les outre-mer donnent aussi une présence sur tous les océans.",
+     "wrongs": [
+      "Le centre de Toulouse",
+      "Le centre de Brest",
+      "Le centre de Tahiti"
+     ]
     },
     {
-     "question": "Qu'est-ce que la francophonie ?",
-     "answer": "L'ensemble des personnes et pays qui ont le français en partage :\nplus de 300 millions de locuteurs.\nInstitution : l'Organisation internationale de la francophonie (OIF).",
-     "w": "e284f12b",
-     "wq": "d51f52ec"
+     "question": "Combien de locuteurs compte la francophonie ?",
+     "answer": "Plus de 300 millions",
+     "w": [
+      "b359aae6",
+      "e284f12b"
+     ],
+     "wq": "d51f52ec",
+     "wrongs": [
+      "Environ 70 millions",
+      "Environ 1 milliard",
+      "Environ 30 millions"
+     ]
     },
     {
-     "question": "Quel rang la France occupe-t-elle pour le tourisme international ?",
-     "answer": "La première destination mondiale (arrivées de touristes internationaux),\ngrâce à Paris, aux littoraux, à la montagne et au patrimoine.",
-     "w": "e467347a",
-     "wq": "07aa50c3"
+     "question": "Quel rang a la France pour le tourisme international ?",
+     "answer": "1re destination mondiale",
+     "w": [
+      "5081595b",
+      "e467347a"
+     ],
+     "wq": "07aa50c3",
+     "wrongs": [
+      "5e",
+      "10e",
+      "2e après l'Italie"
+     ]
     },
     {
-     "question": "Qu'est-ce que le soft power français ?",
-     "answer": "La capacité d'influence par l'attraction :\nlangue, culture, patrimoine, luxe, gastronomie (UNESCO, 2010),\nuniversités, grands événements.",
-     "w": "e4129e66",
-     "wq": "57d8d3f0"
+     "question": "En quelle année la gastronomie française est-elle inscrite à l'UNESCO ?",
+     "answer": "2010",
+     "w": [
+      "c53d47ec",
+      "e4129e66"
+     ],
+     "wq": "57d8d3f0",
+     "more": "Un élément du soft power français.",
+     "wrongs": [
+      "1990",
+      "2000",
+      "2020"
+     ]
     },
     {
-     "question": "Quels secteurs économiques font rayonner la France ?",
-     "answer": "• Aéronautique et spatial (Airbus à Toulouse, Ariane)\n• Luxe\n• Agroalimentaire et vins\n• Nucléaire civil\n• Pharmacie et finance",
-     "w": "6ae65740",
-     "wq": "46fe851f"
+     "question": "Dans quelle ville est le siège d'Airbus ?",
+     "answer": "Toulouse",
+     "w": [
+      "a1605eb2",
+      "6ae65740"
+     ],
+     "wq": "46fe851f",
+     "wrongs": [
+      "Paris",
+      "Lyon",
+      "Bordeaux"
+     ]
     },
     {
-     "question": "Quelle est l'attractivité de la France pour les investisseurs étrangers ?",
-     "answer": "Souvent en tête des pays européens pour les projets d'investissements étrangers.\nAtouts : infrastructures, main-d'œuvre qualifiée, marché.",
-     "w": "ee5ee31a",
-     "wq": "b780565a"
+     "question": "La France attire-t-elle beaucoup de projets d'investissement étrangers ?",
+     "answer": "Oui, souvent en tête en Europe",
+     "w": [
+      "bda96b74",
+      "ee5ee31a"
+     ],
+     "wq": "b780565a",
+     "wrongs": [
+      "Non, presque aucun",
+      "Seulement dans l'agriculture",
+      "Non, c'est interdit"
+     ]
     },
     {
-     "question": "Pourquoi Paris est-elle une ville mondiale ?",
-     "answer": "Elle concentre :\n• sièges sociaux et quartier d'affaires de La Défense\n• institutions internationales (UNESCO, OCDE)\n• aéroports internationaux, universités, grands événements (JO 2024)",
-     "w": "9d24be52",
-     "wq": "09905661"
+     "question": "Quel quartier d'affaires fait de Paris une ville mondiale ?",
+     "answer": "La Défense",
+     "w": [
+      "78403afc",
+      "9d24be52"
+     ],
+     "wq": "09905661",
+     "wrongs": [
+      "Montmartre",
+      "Le Marais",
+      "La Villette"
+     ]
     },
     {
-     "question": "Quels territoires français sont les plus attractifs dans la mondialisation ?",
-     "answer": "• Les grandes métropoles (Paris, Lyon, Toulouse…)\n• Les littoraux, méditerranéen et atlantique\n• Des régions frontalières ouvertes sur l'Europe",
-     "w": "06e694c7",
-     "wq": "b1dda76a"
+     "question": "Les grandes métropoles sont-elles les territoires français les plus intégrés à la mondialisation ?",
+     "answer": "Oui",
+     "w": [
+      "055483bf",
+      "06e694c7"
+     ],
+     "wq": "b1dda76a",
+     "more": "Avec les littoraux et des régions frontalières.",
+     "wrongs": [
+      "Non, ce sont les campagnes",
+      "Non, ce sont les montagnes",
+      "Non, aucun territoire ne l'est"
+     ]
     },
     {
-     "question": "Quels territoires sont moins intégrés à la mondialisation ?",
-     "answer": "• Espaces ruraux peu denses (« diagonale des faibles densités »)\n• Anciennes régions industrielles en reconversion\n• Certains territoires ultramarins",
-     "w": "cfa741c8",
-     "wq": "942e9e13"
+     "question": "Comment appelle-t-on la bande d'espaces ruraux peu denses en France ?",
+     "answer": "La diagonale des faibles densités",
+     "w": [
+      "be5f56c8",
+      "cfa741c8"
+     ],
+     "wq": "942e9e13",
+     "wrongs": [
+      "La dorsale européenne",
+      "La Northern Range",
+      "La banane bleue"
+     ]
     },
     {
-     "question": "Quelles sont les limites de la puissance française ?",
-     "answer": "• Poids démographique et économique moyen face aux géants\n• Déficit commercial persistant\n• Désindustrialisation\n• Influence contestée, notamment en Afrique",
-     "w": "467effb7",
-     "wq": "e34f9277"
+     "question": "Quelle limite pèse sur la puissance française ?",
+     "answer": "Un déficit commercial persistant",
+     "w": [
+      "643173c0",
+      "467effb7"
+     ],
+     "wq": "e34f9277",
+     "more": "Aussi : désindustrialisation, influence contestée en Afrique.",
+     "wrongs": [
+      "L'absence d'armée",
+      "L'absence d'outre-mer",
+      "Une population très nombreuse"
+     ]
     },
     {
-     "question": "Quel rôle le français joue-t-il dans les organisations internationales ?",
-     "answer": "Langue officielle et de travail de l'ONU, de l'Union européenne\net du Comité international olympique.",
-     "w": "9ef8f903",
-     "wq": "1605544b"
+     "question": "Le français est-il langue officielle de l'ONU ?",
+     "answer": "Oui",
+     "w": [
+      "5c6cf84a",
+      "9ef8f903"
+     ],
+     "wq": "1605544b",
+     "more": "Et de l'UE et du Comité international olympique.",
+     "wrongs": [
+      "Non",
+      "Seulement à l'UNESCO",
+      "Seulement en Afrique"
+     ]
     },
     {
-     "question": "Pourquoi la France est-elle une puissance maritime ?",
-     "answer": "Grâce à ses outre-mer :\n• l'une des plus vastes ZEE du monde\n• une marine présente sur tous les océans\n• de grands ports (Le Havre, Marseille-Fos)",
-     "w": "b94e7e61",
-     "wq": "183a6ed8"
+     "question": "Quel grand port français est situé sur la Manche ?",
+     "answer": "Le Havre",
+     "w": [
+      "8f3f76a3",
+      "b94e7e61"
+     ],
+     "wq": "183a6ed8",
+     "more": "Avec Marseille-Fos, sur la Méditerranée.",
+     "wrongs": [
+      "Marseille-Fos",
+      "Bordeaux",
+      "Toulon"
+     ]
     }
    ]
   },
@@ -120497,100 +121058,234 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelle découverte d'Œrsted (1820) relie électricité et magnétisme ?",
-     "answer": "Un courant électrique dévie l'aiguille d'une boussole proche :\nun courant crée un champ magnétique.",
-     "w": "788d7ea1",
-     "wq": "fecace6c"
+     "question": "Quelle découverte fait Œrsted en 1820 ?",
+     "answer": "Un courant crée un champ magnétique",
+     "w": [
+      "509469d3",
+      "788d7ea1"
+     ],
+     "wq": "fecace6c",
+     "more": "Il dévie l'aiguille d'une boussole.",
+     "wrongs": [
+      "L'induction électromagnétique",
+      "L'effet photoélectrique",
+      "La radioactivité"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'induction électromagnétique (Faraday, 1831) ?",
-     "answer": "L'apparition d'une tension dans un circuit soumis à un champ magnétique variable.\nEx. : un aimant qui se déplace près d'une bobine.",
-     "w": "9f26e363",
-     "wq": "6e69a27b"
+     "question": "Qui découvre l'induction électromagnétique en 1831 ?",
+     "answer": "Faraday",
+     "w": [
+      "e36bbc47",
+      "9f26e363"
+     ],
+     "wq": "6e69a27b",
+     "wrongs": [
+      "Œrsted",
+      "Edison",
+      "Tesla"
+     ]
     },
     {
-     "question": "Comment fonctionne un alternateur ?",
-     "answer": "Un aimant (rotor) tourne devant des bobines fixes (stator).\nPar induction : énergie mécanique → énergie électrique.\nRendement souvent supérieur à 95 %.",
-     "w": "84437196",
-     "wq": "17a25ad8"
+     "question": "Quelle conversion réalise un alternateur ?",
+     "answer": "Mécanique → électrique",
+     "w": [
+      "648104ab",
+      "84437196"
+     ],
+     "wq": "17a25ad8",
+     "more": "Par induction ; rendement souvent supérieur à 95 %.",
+     "wrongs": [
+      "Électrique → mécanique",
+      "Chimique → électrique",
+      "Lumineuse → électrique"
+     ]
     },
     {
-     "question": "Quelles centrales produisent l'électricité grâce à un alternateur ?",
-     "answer": "Presque toutes : thermiques à flamme, nucléaires, hydrauliques, éoliennes.\nGrande exception : le photovoltaïque.",
-     "w": "b6c5446d",
-     "wq": "f3608de6"
+     "question": "Quelle source produit de l'électricité sans alternateur ?",
+     "answer": "Le photovoltaïque",
+     "w": [
+      "440df071",
+      "b6c5446d"
+     ],
+     "wq": "f3608de6",
+     "wrongs": [
+      "Le nucléaire",
+      "L'éolien",
+      "L'hydraulique"
+     ]
     },
     {
-     "question": "Comment une centrale nucléaire produit-elle de l'électricité ?",
-     "answer": "1. La fission de l'uranium 235 libère de la chaleur\n2. La chaleur vaporise de l'eau\n3. La vapeur fait tourner une turbine couplée à un alternateur",
-     "w": "912b1991",
-     "wq": "c8eb91bc"
+     "question": "Dans une centrale nucléaire, que fait tourner la vapeur ?",
+     "answer": "Une turbine couplée à un alternateur",
+     "w": [
+      "cd597072",
+      "912b1991"
+     ],
+     "wq": "c8eb91bc",
+     "wrongs": [
+      "Un panneau solaire",
+      "Une pile",
+      "Le réacteur"
+     ]
     },
     {
-     "question": "Comment fonctionne une cellule photovoltaïque ?",
-     "answer": "Un semi-conducteur (silicium) reçoit un photon d'énergie suffisante :\nun électron est libéré, ce qui crée un courant.\nÉnergie lumineuse → énergie électrique.",
-     "w": "f048d8f2",
-     "wq": "1672854c"
+     "question": "Quel matériau semi-conducteur utilisent les cellules photovoltaïques ?",
+     "answer": "Le silicium",
+     "w": [
+      "56bb6787",
+      "f048d8f2"
+     ],
+     "wq": "1672854c",
+     "wrongs": [
+      "Le cuivre",
+      "L'uranium",
+      "Le plomb"
+     ]
     },
     {
-     "question": "Que permet de déterminer la caractéristique courant-tension d'une cellule photovoltaïque ?",
-     "answer": "Le point de fonctionnement où la puissance P = U × I est maximale.",
-     "w": "0512244f",
-     "wq": "9c392ce4"
+     "question": "Que détermine-t-on avec la caractéristique I(U) d'une cellule photovoltaïque ?",
+     "answer": "Le point de puissance maximale",
+     "w": [
+      "1e39017c",
+      "0512244f"
+     ],
+     "wq": "9c392ce4",
+     "wrongs": [
+      "Sa masse",
+      "Sa couleur",
+      "Sa durée de vie"
+     ]
     },
     {
-     "question": "Que convertissent une pile et un accumulateur ?",
-     "answer": "De l'énergie chimique en énergie électrique.\nL'accumulateur (batterie) est rechargeable : la conversion est réversible.",
-     "w": "b805605e",
-     "wq": "1d3f259d"
+     "question": "Quelle conversion réalise une pile ?",
+     "answer": "Chimique → électrique",
+     "w": [
+      "226dc32b",
+      "b805605e"
+     ],
+     "wq": "1d3f259d",
+     "more": "L'accumulateur est rechargeable.",
+     "wrongs": [
+      "Électrique → chimique",
+      "Mécanique → électrique",
+      "Thermique → électrique"
+     ]
     },
     {
-     "question": "Quelle était la « guerre des courants » à la fin du XIXe siècle ?",
-     "answer": "• Courant continu : défendu par Edison\n• Courant alternatif : défendu par Tesla et Westinghouse\nL'alternatif l'emporte : sa tension se modifie facilement.",
-     "w": "62203216",
-     "wq": "c5b747bc"
+     "question": "Qui défendait le courant alternatif dans la « guerre des courants » ?",
+     "answer": "Tesla et Westinghouse",
+     "w": [
+      "b8910c27",
+      "62203216"
+     ],
+     "wq": "c5b747bc",
+     "more": "Edison défendait le continu.",
+     "wrongs": [
+      "Edison",
+      "Faraday",
+      "Œrsted"
+     ]
     },
     {
      "question": "À quoi sert un transformateur ?",
-     "answer": "À élever ou abaisser une tension alternative :\n• élevée pour le transport sur de longues distances\n• abaissée avant la distribution aux usagers",
-     "w": "78f005e1",
-     "wq": "36db7e24"
+     "answer": "Élever ou abaisser une tension alternative",
+     "w": [
+      "f069e091",
+      "78f005e1"
+     ],
+     "wrongs": [
+      "Stocker l'électricité",
+      "Produire de l'électricité",
+      "Changer l'alternatif en continu"
+     ]
     },
     {
-     "question": "Calcul : pour une même puissance transportée, que deviennent les pertes par effet Joule si la tension est multipliée par 10 ?",
-     "answer": "Divisées par 100.\nI = P / U est divisée par 10, et P_J = R × I².",
-     "w": "b0b6b04f",
-     "wq": "20e48736"
+     "question": "Si la tension de transport est multipliée par 10, que deviennent les pertes par effet Joule ?",
+     "answer": "Divisées par 100",
+     "w": [
+      "bbfa94c5",
+      "b0b6b04f"
+     ],
+     "wq": "20e48736",
+     "more": "I est divisée par 10 et P = R × I².",
+     "wrongs": [
+      "Divisées par 10",
+      "Multipliées par 10",
+      "Inchangées"
+     ]
     },
     {
-     "question": "Comment modélise-t-on un réseau de transport d'électricité ?",
-     "answer": "Par un graphe orienté :\n• sommets : sources, nœuds, cibles (consommateurs)\n• arcs : les lignes\nOn cherche à minimiser les pertes sous contraintes.",
-     "w": "ce35752a",
-     "wq": "742eea96"
+     "question": "Par quoi modélise-t-on un réseau de transport d'électricité ?",
+     "answer": "Un graphe orienté",
+     "w": [
+      "92710410",
+      "ce35752a"
+     ],
+     "wq": "742eea96",
+     "wrongs": [
+      "Un tableau périodique",
+      "Une courbe de Gauss",
+      "Un arbre généalogique"
+     ]
     },
     {
-     "question": "Quelle loi s'applique en chaque nœud du réseau ?",
-     "answer": "La loi des nœuds :\nsomme des intensités entrantes = somme des intensités sortantes.",
-     "w": "8fff3461",
-     "wq": "21d4d90f"
+     "question": "Quelle loi s'applique en chaque nœud du réseau électrique ?",
+     "answer": "La loi des nœuds",
+     "w": [
+      "b526c854",
+      "8fff3461"
+     ],
+     "wq": "21d4d90f",
+     "wrongs": [
+      "La loi d'Ohm",
+      "La loi de Hooke",
+      "La loi de Kohlrausch"
+     ]
     },
     {
-     "question": "Quels moyens de stocker l'électricité existent ?",
-     "answer": "• STEP : l'eau est remontée dans un barrage par pompage\n• Batteries\n• Hydrogène produit par électrolyse",
-     "w": "d9d4a7f9",
-     "wq": "0c327f0d"
+     "question": "Qu'est-ce qu'une STEP ?",
+     "answer": "Un stockage d'électricité par pompage d'eau",
+     "w": [
+      "ce9b73aa",
+      "d9d4a7f9"
+     ],
+     "wq": "0c327f0d",
+     "more": "Aussi : batteries, hydrogène.",
+     "wrongs": [
+      "Une centrale à charbon",
+      "Un panneau solaire",
+      "Une ligne haute tension"
+     ]
     },
     {
-     "question": "Pourquoi l'intermittence pose-t-elle problème pour certaines énergies renouvelables ?",
-     "answer": "Éolien et solaire dépendent du vent et du soleil :\nleur production varie et ne suit pas la demande.\nD'où le besoin de stockage et de sources pilotables.",
-     "w": "a40ba4e5",
-     "wq": "adfa9b95"
+     "question": "Pourquoi l'éolien et le solaire posent-ils un problème d'intermittence ?",
+     "answer": "Leur production ne suit pas la demande",
+     "w": [
+      "46994d5a",
+      "a40ba4e5"
+     ],
+     "wq": "adfa9b95",
+     "wrongs": [
+      "Ils polluent beaucoup",
+      "Ils coûtent trop cher",
+      "Ils produisent du courant continu"
+     ]
     },
     {
-     "question": "Comment compare-t-on l'impact climatique des sources d'électricité ?",
-     "answer": "Par les gaz à effet de serre émis sur tout le cycle de vie (g CO2-équivalent / kWh) :\n• Charbon : environ 1 000\n• Solaire : quelques dizaines\n• Nucléaire et éolien : environ 10",
-     "w": "cdc05341",
-     "wq": "b944b8ce"
+     "question": "Quelle source émet le plus de CO₂ par kWh sur son cycle de vie ?",
+     "answer": "Le charbon",
+     "w": [
+      "f325925d",
+      "cdc05341"
+     ],
+     "wq": "b944b8ce",
+     "more": "Environ 1 000 g ; nucléaire et éolien environ 10 g.",
+     "wrongs": [
+      "Le nucléaire",
+      "L'éolien",
+      "Le solaire"
+     ]
     }
    ]
   },
@@ -120919,106 +121614,249 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Guernica : de quoi s'agit-il et où voir l'œuvre ?",
-     "answer": "Tableau de Picasso (1937), exposé au musée Reina Sofía de Madrid.\nIl dénonce le bombardement de la ville basque\npar l'aviation allemande (légion Condor), alliée de Franco.\nAxe : art et pouvoir.",
-     "w": "4f62c891",
-     "wq": "9f795a73"
+     "question": "Dans quel musée de Madrid est exposé Guernica de Picasso ?",
+     "answer": "Le musée Reina Sofía",
+     "w": [
+      "3ccff2fb",
+      "4f62c891"
+     ],
+     "wq": "9f795a73",
+     "more": "Il dénonce le bombardement de la ville basque (1937).",
+     "wrongs": [
+      "Le Prado",
+      "Le musée Thyssen",
+      "Le Guggenheim de Bilbao"
+     ]
     },
     {
      "question": "Quelles sont les dates de la dictature franquiste ?",
-     "answer": "De 1939 (victoire de Franco dans la guerre civile) à 1975 (sa mort).\nLe « franquismo » : régime autoritaire et catholique.",
-     "w": "8ebdb6cc",
-     "wq": "e270bef3"
+     "answer": "1939-1975",
+     "w": [
+      "5201c711",
+      "8ebdb6cc"
+     ],
+     "wrongs": [
+      "1936-1939",
+      "1923-1930",
+      "1945-1982"
+     ]
     },
     {
-     "question": "Qu'est-ce que la « Transición » ?",
-     "answer": "Le passage de l'Espagne à la démocratie après la mort de Franco (1975).\n• 1978 : Constitution\n• 23 février 1981 (« el 23-F ») : coup d'État manqué",
-     "w": "14772d76",
-     "wq": "fcc5737c"
+     "question": "Que désigne « el 23-F » ?",
+     "answer": "Le coup d'État manqué du 23 février 1981",
+     "w": [
+      "2dbc2b41",
+      "14772d76"
+     ],
+     "wq": "fcc5737c",
+     "more": "Pendant la Transición ; Constitution de 1978.",
+     "wrongs": [
+      "La mort de Franco",
+      "La Constitution de 1978",
+      "Le bombardement de Guernica"
+     ]
     },
     {
-     "question": "Que sont les lois de mémoire en Espagne ?",
-     "answer": "• « Ley de Memoria Histórica » (2007)\n• « Ley de Memoria Democrática » (2022)\nElles reconnaissent les victimes du franquisme\net encouragent la recherche des disparus.",
-     "w": "47379536",
-     "wq": "fe127a01"
+     "question": "Quelle loi espagnole de 2022 reconnaît les victimes du franquisme ?",
+     "answer": "La Ley de Memoria Democrática",
+     "w": [
+      "f9819925",
+      "47379536"
+     ],
+     "wq": "fe127a01",
+     "more": "Après la Ley de Memoria Histórica (2007).",
+     "wrongs": [
+      "La Ley de Amnistía",
+      "La Ley de Extranjería",
+      "La Constitución"
+     ]
     },
     {
      "question": "Que s'est-il passé en 2019 au Valle de los Caídos ?",
-     "answer": "La dépouille de Franco a été exhumée du mausolée,\nrebaptisé « Valle de Cuelgamuros ».\nAxe : territoire et mémoire.",
-     "w": "5237ebf8",
-     "wq": "1e45eb36"
+     "answer": "La dépouille de Franco a été exhumée",
+     "w": [
+      "dc0eb8ac",
+      "5237ebf8"
+     ],
+     "more": "Le lieu est rebaptisé Valle de Cuelgamuros.",
+     "wrongs": [
+      "Franco y a été enterré",
+      "Un musée y a été inauguré",
+      "Il a été détruit"
+     ]
     },
     {
-     "question": "Que s'est-il passé au Chili le 11 septembre 1973 ?",
-     "answer": "Le coup d'État du général Pinochet renverse le président socialiste Salvador Allende.\nDictature jusqu'en 1990.",
-     "w": "cbf22bcd",
-     "wq": "31545e20"
+     "question": "Quel président chilien est renversé le 11 septembre 1973 ?",
+     "answer": "Salvador Allende",
+     "w": [
+      "80f711cd",
+      "cbf22bcd"
+     ],
+     "wq": "31545e20",
+     "more": "Par le général Pinochet ; dictature jusqu'en 1990.",
+     "wrongs": [
+      "Augusto Pinochet",
+      "Michelle Bachelet",
+      "Juan Perón"
+     ]
     },
     {
-     "question": "Qui sont les « Madres de Plaza de Mayo » ?",
-     "answer": "Des mères argentines qui manifestent à Buenos Aires depuis 1977\npour réclamer leurs enfants « desaparecidos »\nsous la dictature militaire (1976-1983).",
-     "w": "bccc1160",
-     "wq": "9163ed71"
+     "question": "Que réclament les Madres de Plaza de Mayo ?",
+     "answer": "Leurs enfants disparus",
+     "w": [
+      "15fa617c",
+      "bccc1160"
+     ],
+     "wq": "9163ed71",
+     "more": "Sous la dictature argentine (1976-1983).",
+     "wrongs": [
+      "La baisse des prix",
+      "L'indépendance",
+      "Le droit de vote"
+     ]
     },
     {
-     "question": "Qu'est-ce que le muralisme mexicain ?",
-     "answer": "Un mouvement des années 1920 qui peint sur les murs publics\nl'histoire et les luttes du peuple mexicain.\nRivera, Orozco, Siqueiros.",
-     "w": "c6045829",
-     "wq": "29c04b95"
+     "question": "Quel peintre est une figure du muralisme mexicain ?",
+     "answer": "Diego Rivera",
+     "w": [
+      "584991be",
+      "c6045829"
+     ],
+     "wq": "29c04b95",
+     "more": "Avec Orozco et Siqueiros.",
+     "wrongs": [
+      "Goya",
+      "Velázquez",
+      "Dalí"
+     ]
     },
     {
-     "question": "Pourquoi Frida Kahlo est-elle une figure des axes « identités » et « art et pouvoir » ?",
-     "answer": "Peintre mexicaine, connue pour ses autoportraits.\nElle y exprime la souffrance, l'identité mexicaine et la condition des femmes.",
-     "w": "60c4ea7e",
-     "wq": "dd22606b"
+     "question": "Pour quel type d'œuvres Frida Kahlo est-elle connue ?",
+     "answer": "Ses autoportraits",
+     "w": [
+      "c1f183c2",
+      "60c4ea7e"
+     ],
+     "wq": "dd22606b",
+     "wrongs": [
+      "Ses fresques murales",
+      "Ses sculptures",
+      "Ses romans"
+     ]
     },
     {
      "question": "Que représente « El tres de mayo de 1808 » de Goya ?",
-     "answer": "L'exécution de civils madrilènes par les soldats de Napoléon,\naprès le soulèvement du 2 mai 1808.\nUne dénonciation de la violence de la guerre.",
-     "w": "71902b95",
-     "wq": "b449d69b"
+     "answer": "L'exécution de civils par les soldats de Napoléon",
+     "w": [
+      "80fed395",
+      "71902b95"
+     ],
+     "wrongs": [
+      "Une corrida",
+      "La cour du roi",
+      "Le bombardement de Guernica"
+     ]
     },
     {
-     "question": "Qu'est-ce que le « Día de Muertos » ?",
-     "answer": "Une fête mexicaine (1er et 2 novembre) pour honorer les défunts,\navec des autels (« ofrendas »).\nPatrimoine immatériel de l'UNESCO (2008).",
-     "w": "28a58990",
-     "wq": "20034f60"
+     "question": "Quand se fête le « Día de Muertos » ?",
+     "answer": "Les 1er et 2 novembre",
+     "w": [
+      "ff7d45ec",
+      "28a58990"
+     ],
+     "wq": "20034f60",
+     "more": "Avec des autels (ofrendas).",
+     "wrongs": [
+      "Le 6 janvier",
+      "Le 12 octobre",
+      "Le 31 décembre"
+     ]
     },
     {
      "question": "Que désigne « La Bestia » pour les migrants ?",
-     "answer": "Les trains de marchandises qui traversent le Mexique vers les États-Unis,\noù montent des migrants centraméricains au péril de leur vie.\nAxe : identités et échanges.",
-     "w": "abb59c61",
-     "wq": "7e098d60"
+     "answer": "Les trains de marchandises traversant le Mexique",
+     "w": [
+      "04409f83",
+      "abb59c61"
+     ],
+     "wrongs": [
+      "Un passeur",
+      "Le mur frontalier",
+      "Une prison"
+     ]
     },
     {
-     "question": "Qu'est-ce que le mouvement « 15-M » ?",
-     "answer": "Le mouvement des « Indignados », né le 15 mai 2011 à la Puerta del Sol (Madrid).\nIl dénonce la crise, le chômage et la corruption.\nAxe : espace privé et espace public.",
-     "w": "7a69c705",
-     "wq": "6b8d36e6"
+     "question": "Où naît le mouvement des « Indignados » le 15 mai 2011 ?",
+     "answer": "À la Puerta del Sol, à Madrid",
+     "w": [
+      "bbdf705f",
+      "7a69c705"
+     ],
+     "wq": "6b8d36e6",
+     "wrongs": [
+      "À Barcelone",
+      "À Buenos Aires",
+      "À Séville"
+     ]
     },
     {
-     "question": "Qu'est-ce que « Ni una menos » ?",
-     "answer": "Un mouvement né en Argentine en 2015\ncontre les féminicides et les violences de genre,\nétendu à toute l'Amérique latine.",
-     "w": "c37e643c",
-     "wq": "13b18240"
+     "question": "Contre quoi lutte le mouvement « Ni una menos » ?",
+     "answer": "Les féminicides",
+     "w": [
+      "352fde13",
+      "c37e643c"
+     ],
+     "wq": "13b18240",
+     "more": "Né en Argentine en 2015.",
+     "wrongs": [
+      "La corruption",
+      "Le chômage",
+      "La pollution"
+     ]
     },
     {
-     "question": "Pourquoi Rigoberta Menchú est-elle célèbre ?",
-     "answer": "Militante maya guatémaltèque des droits des peuples autochtones.\nPrix Nobel de la paix en 1992.\nAxe : diversité et inclusion.",
-     "w": "239b155d",
-     "wq": "256cc208"
+     "question": "En quelle année Rigoberta Menchú reçoit-elle le prix Nobel de la paix ?",
+     "answer": "1992",
+     "w": [
+      "ce97c620",
+      "239b155d"
+     ],
+     "wq": "256cc208",
+     "more": "Militante maya guatémaltèque.",
+     "wrongs": [
+      "1982",
+      "2002",
+      "1972"
+     ]
     },
     {
-     "question": "Quelles sont les grandes dates de la conquête de l'Amérique ?",
-     "answer": "• 1492 : arrivée de Christophe Colomb\n• 1521 : chute de Tenochtitlan (Aztèques) face à Cortés\n• 1532-1533 : conquête de l'Empire inca par Pizarro",
-     "w": "53e24c10",
-     "wq": "175fd912"
+     "question": "Qui fait tomber Tenochtitlan en 1521 ?",
+     "answer": "Cortés",
+     "w": [
+      "543f1f80",
+      "53e24c10"
+     ],
+     "wq": "175fd912",
+     "more": "1492 : Colomb ; 1532-1533 : Pizarro et les Incas.",
+     "wrongs": [
+      "Pizarro",
+      "Colomb",
+      "Magellan"
+     ]
     },
     {
-     "question": "Qu'est-ce que la « Movida madrileña » ?",
-     "answer": "Le bouillonnement culturel et festif de Madrid dans les années 1980,\nsymbole de la liberté retrouvée après le franquisme.\nFigure : Pedro Almodóvar.",
-     "w": "2a5a338f",
-     "wq": "76a4de24"
+     "question": "Quel cinéaste est une figure de la Movida madrileña ?",
+     "answer": "Pedro Almodóvar",
+     "w": [
+      "db60f701",
+      "2a5a338f"
+     ],
+     "wq": "76a4de24",
+     "wrongs": [
+      "Luis Buñuel",
+      "Guillermo del Toro",
+      "Carlos Saura"
+     ]
     }
    ]
   },
@@ -121041,100 +121879,238 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment dit-on « la chute du Mur » et quelle est sa date ?",
-     "answer": "« der Mauerfall » : le 9 novembre 1989.\nLe tournant de 1989-1990 en RDA : « die Wende ».",
-     "w": "b5f078e5",
-     "wq": "361a1cac"
+     "question": "Comment dit-on « la chute du Mur » en allemand ?",
+     "answer": "der Mauerfall",
+     "w": [
+      "21f27967",
+      "b5f078e5"
+     ],
+     "wq": "361a1cac",
+     "more": "Le 9 novembre 1989 ; le tournant : « die Wende ».",
+     "wrongs": [
+      "die Wende",
+      "die Wiedervereinigung",
+      "die Mauer"
+     ]
     },
     {
-     "question": "Comment dit-on « la réunification » et quand a-t-elle lieu ?",
-     "answer": "« die Wiedervereinigung » : le 3 octobre 1990.\nFête nationale : « der Tag der Deutschen Einheit ».",
-     "w": "ea8f8d3a",
-     "wq": "672baa85"
+     "question": "À quelle date a lieu la réunification allemande ?",
+     "answer": "Le 3 octobre 1990",
+     "w": [
+      "b12ecddd",
+      "ea8f8d3a"
+     ],
+     "wq": "672baa85",
+     "more": "« die Wiedervereinigung » ; fête : Tag der Deutschen Einheit.",
+     "wrongs": [
+      "Le 9 novembre 1989",
+      "Le 8 mai 1945",
+      "Le 13 août 1961"
+     ]
     },
     {
-     "question": "Que désigne le mot « Ostalgie » ?",
-     "answer": "La nostalgie de certains aspects de la vie en RDA\n(« Osten », l'Est + « Nostalgie »).\nEx. : le film « Good Bye, Lenin! » (2003).",
-     "w": "57a110fb",
-     "wq": "c496d5f7"
+     "question": "Que désigne « Ostalgie » ?",
+     "answer": "La nostalgie de la vie en RDA",
+     "w": [
+      "d1ba6914",
+      "57a110fb"
+     ],
+     "wq": "c496d5f7",
+     "more": "Ex. : Good Bye, Lenin! (2003).",
+     "wrongs": [
+      "La peur de l'Est",
+      "Un plat typique",
+      "Le mur de Berlin"
+     ]
     },
     {
-     "question": "Qu'était la « Stasi » ?",
-     "answer": "Le ministère de la Sécurité d'État de la RDA :\nune police politique qui surveillait la population.\nSes archives sont aujourd'hui consultables.",
-     "w": "e60775c6",
-     "wq": "0aac2033"
+     "question": "Qu'était la Stasi ?",
+     "answer": "La police politique de la RDA",
+     "w": [
+      "8ac4945b",
+      "e60775c6"
+     ],
+     "wq": "0aac2033",
+     "wrongs": [
+      "L'armée de la RFA",
+      "Un parti politique",
+      "Un journal"
+     ]
     },
     {
-     "question": "Comment dit-on « la culture de la mémoire » et « le travail sur le passé » ?",
-     "answer": "• La culture de la mémoire : « die Erinnerungskultur »\n• Le travail sur le passé : « die Vergangenheitsbewältigung »\n(affronter le passé nazi)",
-     "w": "54d4e839",
-     "wq": "ba456fcb"
+     "question": "Comment dit-on « la culture de la mémoire » ?",
+     "answer": "die Erinnerungskultur",
+     "w": [
+      "da96b024",
+      "54d4e839"
+     ],
+     "wq": "ba456fcb",
+     "more": "Le travail sur le passé : die Vergangenheitsbewältigung.",
+     "wrongs": [
+      "die Vergangenheitsbewältigung",
+      "die Heimat",
+      "die Gleichberechtigung"
+     ]
     },
     {
      "question": "Que sont les « Stolpersteine » ?",
-     "answer": "Des pavés de laiton (artiste : Gunter Demnig)\nposés devant le dernier domicile de victimes du nazisme,\navec leur nom et leur destin.\nAxe : territoire et mémoire.",
-     "w": "0a68a709",
-     "wq": "a58dac9c"
+     "answer": "Des pavés rappelant des victimes du nazisme",
+     "w": [
+      "44453fa6",
+      "0a68a709"
+     ],
+     "more": "Posés devant leur dernier domicile (artiste Gunter Demnig).",
+     "wrongs": [
+      "Des pierres du mur de Berlin",
+      "Des monuments aux soldats",
+      "Des bornes frontières"
+     ]
     },
     {
-     "question": "Quel mémorial se trouve près de la porte de Brandebourg depuis 2005 ?",
-     "answer": "« das Denkmal für die ermordeten Juden Europas »\n(mémorial de l'Holocauste) : 2 711 stèles de béton.",
-     "w": "1017f8b8",
-     "wq": "f9c6ce9c"
+     "question": "Combien de stèles compte le mémorial de l'Holocauste de Berlin ?",
+     "answer": "2 711",
+     "w": [
+      "3bd14eb0",
+      "1017f8b8"
+     ],
+     "wq": "f9c6ce9c",
+     "wrongs": [
+      "150",
+      "6 000 000",
+      "1 945"
+     ]
     },
     {
-     "question": "Qu'était la « Weiße Rose » ?",
-     "answer": "La Rose blanche : étudiants munichois résistants au nazisme\n(Hans et Sophie Scholl), exécutés en 1943 pour avoir diffusé des tracts.",
-     "w": "32069ff6",
-     "wq": "41772675"
+     "question": "Qui étaient les membres de la « Weiße Rose » ?",
+     "answer": "Des étudiants résistants au nazisme",
+     "w": [
+      "c24e1ec7",
+      "32069ff6"
+     ],
+     "wq": "41772675",
+     "more": "Hans et Sophie Scholl, exécutés en 1943.",
+     "wrongs": [
+      "Des espions de la Stasi",
+      "Des soldats nazis",
+      "Des artistes du Bauhaus"
+     ]
     },
     {
-     "question": "Que dit l'article 1 du Grundgesetz (1949) ?",
-     "answer": "« Die Würde des Menschen ist unantastbar »\n(la dignité de l'être humain est intangible).",
-     "w": "03b39db5",
-     "wq": "1a757069"
+     "question": "Que dit l'article 1 du Grundgesetz ?",
+     "answer": "La dignité de l'être humain est intangible",
+     "w": [
+      "5939f05a",
+      "03b39db5"
+     ],
+     "wq": "1a757069",
+     "more": "« Die Würde des Menschen ist unantastbar ».",
+     "wrongs": [
+      "Tous les hommes naissent égaux",
+      "L'Allemagne est une monarchie",
+      "Le peuple est souverain"
+     ]
     },
     {
-     "question": "Que signifient « die Energiewende » et « der Atomausstieg » ?",
-     "answer": "• Energiewende : la transition énergétique\n• Atomausstieg : la sortie du nucléaire (dernières centrales arrêtées en avril 2023)\nAxe : innovations et responsabilité.",
-     "w": "c28c7252",
-     "wq": "4327dc1b"
+     "question": "Que signifie « der Atomausstieg » ?",
+     "answer": "La sortie du nucléaire",
+     "w": [
+      "1ff2c3ad",
+      "c28c7252"
+     ],
+     "wq": "4327dc1b",
+     "more": "Dernières centrales arrêtées en avril 2023. Energiewende : transition énergétique.",
+     "wrongs": [
+      "La transition énergétique",
+      "La bombe atomique",
+      "Une centrale nucléaire"
+     ]
     },
     {
-     "question": "Que désigne la « Willkommenskultur » de 2015 ?",
-     "answer": "La culture de l'accueil des réfugiés, en 2015,\nquand l'Allemagne en accueille des centaines de milliers.\nAngela Merkel : « Wir schaffen das » (« nous y arriverons »).",
-     "w": "6e3bab64",
-     "wq": "5f0b12f9"
+     "question": "Quelle phrase d'Angela Merkel accompagne la « Willkommenskultur » de 2015 ?",
+     "answer": "« Wir schaffen das »",
+     "w": [
+      "76e3b0f0",
+      "6e3bab64"
+     ],
+     "wq": "5f0b12f9",
+     "wrongs": [
+      "« Ich bin ein Berliner »",
+      "« Wir sind das Volk »",
+      "« Die Würde des Menschen ist unantastbar »"
+     ]
     },
     {
      "question": "Qui étaient les « Gastarbeiter » ?",
-     "answer": "Les « travailleurs invités » venus d'Italie, de Grèce, de Turquie (accord de 1961)…\npour travailler en RFA pendant le miracle économique.\nAxe : identités et échanges.",
-     "w": "e84e8e59",
-     "wq": "608989fe"
+     "answer": "Des travailleurs étrangers venus en RFA",
+     "w": [
+      "664c07e7",
+      "e84e8e59"
+     ],
+     "more": "Italie, Grèce, Turquie (accord de 1961).",
+     "wrongs": [
+      "Des touristes",
+      "Des étudiants Erasmus",
+      "Des réfugiés de 2015"
+     ]
     },
     {
-     "question": "Qu'est-ce que le Bauhaus ?",
-     "answer": "Une école d'art, d'architecture et de design :\nfondée à Weimar en 1919 par Walter Gropius,\nfermée sous la pression des nazis en 1933.",
-     "w": "161d33e0",
-     "wq": "32687edf"
+     "question": "Qui fonde le Bauhaus à Weimar en 1919 ?",
+     "answer": "Walter Gropius",
+     "w": [
+      "b74ac69a",
+      "161d33e0"
+     ],
+     "wq": "32687edf",
+     "more": "Fermé sous la pression des nazis en 1933.",
+     "wrongs": [
+      "Gunter Demnig",
+      "Albert Einstein",
+      "Thomas Mann"
+     ]
     },
     {
-     "question": "Comment dit-on « la vie privée », « la protection des données » et « les réseaux sociaux » ?",
-     "answer": "• La vie privée : die Privatsphäre\n• La protection des données : der Datenschutz\n• Les réseaux sociaux : die sozialen Netzwerke\nAxe : citoyenneté et mondes virtuels.",
-     "w": "4468cd31",
-     "wq": "90b73a02"
+     "question": "Comment dit-on « la protection des données » ?",
+     "answer": "der Datenschutz",
+     "w": [
+      "d9882234",
+      "4468cd31"
+     ],
+     "wq": "90b73a02",
+     "more": "La vie privée : die Privatsphäre.",
+     "wrongs": [
+      "die Privatsphäre",
+      "die sozialen Netzwerke",
+      "die Datenbank"
+     ]
     },
     {
-     "question": "Comment dit-on « l'égalité des droits » et « l'égalité des chances » ?",
-     "answer": "• L'égalité des droits : die Gleichberechtigung\n• L'égalité des chances : die Chancengleichheit\n• L'inclusion : die Inklusion\nAxe : diversité et inclusion.",
-     "w": "1963bed5",
-     "wq": "da95a289"
+     "question": "Comment dit-on « l'égalité des chances » ?",
+     "answer": "die Chancengleichheit",
+     "w": [
+      "6582067e",
+      "1963bed5"
+     ],
+     "wq": "da95a289",
+     "more": "L'égalité des droits : die Gleichberechtigung.",
+     "wrongs": [
+      "die Gleichberechtigung",
+      "die Inklusion",
+      "die Würde"
+     ]
     },
     {
-     "question": "Que signifie le mot « Heimat » ?",
-     "answer": "Le pays natal, le lieu où l'on se sent chez soi.\nUne notion affective liée à l'identité, sans équivalent exact en français.",
-     "w": "b9546e6c",
-     "wq": "9845748c"
+     "question": "Que signifie « Heimat » ?",
+     "answer": "Le pays natal, là où l'on se sent chez soi",
+     "w": [
+      "34d99f2a",
+      "b9546e6c"
+     ],
+     "wq": "9845748c",
+     "wrongs": [
+      "La maison de vacances",
+      "La patrie militaire",
+      "La capitale"
+     ]
     }
    ]
   },
@@ -121158,106 +122134,260 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce qu'une règle de droit ?",
-     "answer": "Une règle de conduite générale, impersonnelle et obligatoire,\nédictée par une autorité légitime et sanctionnée par l'État.",
-     "w": "cf8d9d07",
-     "wq": "85f56a92"
+     "question": "Qui sanctionne la règle de droit ?",
+     "answer": "L'État",
+     "w": [
+      "09b89d84",
+      "cf8d9d07"
+     ],
+     "wq": "85f56a92",
+     "more": "Une règle générale, impersonnelle et obligatoire.",
+     "wrongs": [
+      "La conscience",
+      "La famille",
+      "Personne"
+     ]
     },
     {
-     "question": "Quels sont les caractères de la règle de droit ?",
-     "answer": "• Générale et impersonnelle : s'applique à tous dans la même situation\n• Obligatoire\n• Coercitive : son non-respect est sanctionné par l'autorité publique",
-     "w": "61d8c3ac",
-     "wq": "1e0cf11f"
+     "question": "Une règle de droit est-elle générale et impersonnelle ?",
+     "answer": "Oui",
+     "w": [
+      "6089e47b",
+      "61d8c3ac"
+     ],
+     "wq": "1e0cf11f",
+     "more": "Elle est aussi obligatoire et coercitive.",
+     "wrongs": [
+      "Non, elle vise une personne",
+      "Seulement en droit pénal",
+      "Non, elle est facultative"
+     ]
     },
     {
-     "question": "Quelle différence entre règle de droit et règle morale ?",
-     "answer": "• Règle morale : relève de la conscience, sanctionnée par le remords ou la réprobation\n• Règle de droit : sanctionnée par l'État\nCertaines coïncident (interdiction de tuer).",
-     "w": "11806d30",
-     "wq": "106403fb"
+     "question": "Comment est sanctionnée une règle morale ?",
+     "answer": "Par le remords ou la réprobation",
+     "w": [
+      "72da8b03",
+      "11806d30"
+     ],
+     "wq": [
+      "67685075",
+      "106403fb"
+     ],
+     "more": "La règle de droit, elle, est sanctionnée par l'État.",
+     "wrongs": [
+      "Par une amende",
+      "Par la prison",
+      "Par le juge"
+     ]
     },
     {
-     "question": "Quelles sont les fonctions du droit ?",
-     "answer": "• Organiser la vie en société\n• Protéger les personnes et leurs libertés\n• Prévenir et régler les conflits\n• Accompagner les évolutions de la société",
-     "w": "dc3957e9",
-     "wq": "4b81a1ff"
+     "question": "Prévenir et régler les conflits est-il une fonction du droit ?",
+     "answer": "Oui",
+     "w": [
+      "54bfc496",
+      "dc3957e9"
+     ],
+     "wq": "4b81a1ff",
+     "more": "Aussi : organiser la société, protéger les personnes, accompagner les évolutions.",
+     "wrongs": [
+      "Non, c'est le rôle de la morale",
+      "Non, c'est le rôle de l'école",
+      "Seulement en droit international"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'État de droit ?",
-     "answer": "Un système où les pouvoirs publics sont eux-mêmes soumis au droit :\n• hiérarchie des normes respectée\n• égalité devant la loi\n• indépendance de la justice",
-     "w": "36b5ec60",
-     "wq": "8489f425"
+     "question": "Dans un État de droit, les pouvoirs publics sont-ils soumis au droit ?",
+     "answer": "Oui",
+     "w": [
+      "c97f37af",
+      "36b5ec60"
+     ],
+     "wq": "8489f425",
+     "more": "Hiérarchie des normes, égalité devant la loi, justice indépendante.",
+     "wrongs": [
+      "Non, ils font ce qu'ils veulent",
+      "Seulement le maire",
+      "Seulement en temps de guerre"
+     ]
     },
     {
-     "question": "Qu'est-ce que la laïcité ?",
-     "answer": "Un principe de l'article 1er de la Constitution :\n• séparation des Églises et de l'État (loi de 1905)\n• neutralité de l'État\n• liberté de conscience",
-     "w": "8ea5b962",
-     "wq": "90a16cb3"
+     "question": "Quelle loi de 1905 fonde la laïcité ?",
+     "answer": "La loi de séparation des Églises et de l'État",
+     "w": [
+      "bb4020eb",
+      "8ea5b962"
+     ],
+     "wq": "90a16cb3",
+     "wrongs": [
+      "La loi Jules Ferry",
+      "La loi Waldeck-Rousseau",
+      "La loi Veil"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'ordre public en droit ?",
-     "answer": "Les règles impératives auxquelles un contrat ne peut déroger (art. 6 du Code civil).\nEx. : un contrat de travail ne peut prévoir un salaire inférieur au SMIC.",
-     "w": "7994509e",
-     "wq": "aac04e28"
+     "question": "Un contrat de travail peut-il prévoir un salaire inférieur au SMIC ?",
+     "answer": "Non, c'est une règle d'ordre public",
+     "w": [
+      "d6e30aac",
+      "7994509e"
+     ],
+     "wq": "aac04e28",
+     "more": "Article 6 du Code civil.",
+     "wrongs": [
+      "Oui, si le salarié accepte",
+      "Oui, pour les jeunes",
+      "Oui, dans les petites entreprises"
+     ]
     },
     {
      "question": "Qu'est-ce que la qualification juridique ?",
-     "answer": "Faire entrer des faits dans une catégorie juridique\npour déterminer la règle applicable.\nEx. : qualifier un acheteur de « consommateur ».",
-     "w": "c2550466",
-     "wq": "04f9edb5"
+     "answer": "Faire entrer des faits dans une catégorie juridique",
+     "w": [
+      "00acbf59",
+      "c2550466"
+     ],
+     "more": "Ex. : qualifier un acheteur de « consommateur ».",
+     "wrongs": [
+      "Obtenir un diplôme de droit",
+      "Voter une loi",
+      "Juger un procès"
+     ]
     },
     {
      "question": "Quelle est la norme suprême en droit français ?",
-     "answer": "La Constitution du 4 octobre 1958 et le bloc de constitutionnalité :\n• Déclaration des droits de l'homme et du citoyen (1789)\n• Préambule de 1946\n• Charte de l'environnement (2004)",
-     "w": "defd39a0",
-     "wq": "b26c9f8e"
+     "answer": "La Constitution de 1958",
+     "w": [
+      "a45a87fa",
+      "defd39a0"
+     ],
+     "more": "Et le bloc de constitutionnalité (DDHC, Préambule de 1946, Charte de l'environnement).",
+     "wrongs": [
+      "Le Code civil",
+      "La loi",
+      "Les traités européens"
+     ]
     },
     {
-     "question": "Qu'est-ce que la hiérarchie des normes ?",
-     "answer": "Chaque norme doit respecter les normes supérieures :\n1. Constitution\n2. Traités et droit de l'Union européenne\n3. Lois\n4. Règlements (décrets, arrêtés)",
-     "w": "61ecec6d",
-     "wq": "09952e48"
+     "question": "Dans la hiérarchie des normes, qu'est-ce qui est au-dessus des lois ?",
+     "answer": "Les traités et le droit de l'UE",
+     "w": [
+      "a82e699f",
+      "61ecec6d"
+     ],
+     "wq": "09952e48",
+     "more": "Constitution, traités, lois, règlements.",
+     "wrongs": [
+      "Les décrets",
+      "Les arrêtés",
+      "Les contrats"
+     ]
     },
     {
-     "question": "Quelle différence entre loi et règlement ?",
-     "answer": "• Loi : votée par le Parlement, dans les domaines de l'article 34\n• Règlement : pris par l'exécutif (décrets, arrêtés des ministres, préfets, maires)",
-     "w": "ee1059dc",
-     "wq": "4a22aef4"
+     "question": "Qui prend les règlements (décrets, arrêtés) ?",
+     "answer": "L'exécutif",
+     "w": [
+      "cb70141a",
+      "ee1059dc"
+     ],
+     "wq": [
+      "db84f43c",
+      "4a22aef4"
+     ],
+     "more": "La loi est votée par le Parlement (article 34).",
+     "wrongs": [
+      "Le Parlement",
+      "Les juges",
+      "Les syndicats"
+     ]
     },
     {
-     "question": "Qu'est-ce que la question prioritaire de constitutionnalité (QPC) ?",
-     "answer": "Depuis 2010, un justiciable peut soutenir au cours d'un procès\nqu'une loi porte atteinte aux droits garantis par la Constitution.\nAprès filtrage (Cour de cassation ou Conseil d'État),\nle Conseil constitutionnel peut abroger la loi.",
-     "w": "5d717e36",
-     "wq": "d492db4e"
+     "question": "Depuis quand existe la question prioritaire de constitutionnalité ?",
+     "answer": "2010",
+     "w": [
+      "69ef99ad",
+      "5d717e36"
+     ],
+     "wq": "d492db4e",
+     "wrongs": [
+      "1958",
+      "1789",
+      "2000"
+     ]
     },
     {
-     "question": "Quelle différence entre règlement européen et directive européenne ?",
-     "answer": "• Règlement : obligatoire et directement applicable dans tous les États\n• Directive : fixe un objectif, à transposer par chaque État dans un délai donné",
-     "w": "e01264e7",
-     "wq": "4c249e34"
+     "question": "Quel texte européen doit être transposé par chaque État ?",
+     "answer": "La directive",
+     "w": [
+      "77cab0ab",
+      "e01264e7"
+     ],
+     "wq": [
+      "2cf2a910",
+      "4c249e34"
+     ],
+     "more": "Le règlement est directement applicable.",
+     "wrongs": [
+      "Le règlement",
+      "La Constitution",
+      "L'arrêté"
+     ]
     },
     {
      "question": "Qu'est-ce que la jurisprudence ?",
-     "answer": "L'ensemble des décisions des juridictions,\net surtout la solution constante qu'elles donnent à une question de droit\n(notamment sous l'impulsion de la Cour de cassation).",
-     "w": "a2c23da8",
-     "wq": "e514c025"
+     "answer": "La solution constante donnée par les juridictions",
+     "w": [
+      "7a785d2d",
+      "a2c23da8"
+     ],
+     "wrongs": [
+      "Une loi votée",
+      "Un contrat",
+      "Un décret"
+     ]
     },
     {
-     "question": "Quel est le rôle de la Cour de cassation ?",
-     "answer": "La juridiction suprême de l'ordre judiciaire.\nElle ne rejuge pas les faits : elle vérifie la bonne application du droit,\nce qui unifie la jurisprudence.",
-     "w": "2f5e3faf",
-     "wq": "e0bb303a"
+     "question": "La Cour de cassation rejuge-t-elle les faits ?",
+     "answer": "Non, elle vérifie l'application du droit",
+     "w": [
+      "ab4e587e",
+      "2f5e3faf"
+     ],
+     "wq": "e0bb303a",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, en appel",
+      "Seulement en droit pénal"
+     ]
     },
     {
-     "question": "Quels sont les deux ordres de juridictions en France ?",
-     "answer": "• Judiciaire : litiges entre personnes privées, infractions (sommet : Cour de cassation)\n• Administratif : litiges avec l'administration (sommet : Conseil d'État)",
-     "w": "1c361e00",
-     "wq": "2cba2cc9"
+     "question": "Quelle juridiction est au sommet de l'ordre administratif ?",
+     "answer": "Le Conseil d'État",
+     "w": [
+      "d78d1544",
+      "1c361e00"
+     ],
+     "wq": "2cba2cc9",
+     "more": "Ordre judiciaire : Cour de cassation.",
+     "wrongs": [
+      "La Cour de cassation",
+      "Le Conseil constitutionnel",
+      "La cour d'appel"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une convention collective ?",
-     "answer": "Un accord négocié entre syndicats de salariés et employeurs (ou leurs organisations)\nqui adapte le Code du travail à une branche ou à une entreprise.",
-     "w": "3ebbd13e",
-     "wq": "9d07f08e"
+     "answer": "Un accord entre syndicats et employeurs",
+     "w": [
+      "eaca2e78",
+      "3ebbd13e"
+     ],
+     "more": "Il adapte le Code du travail à une branche ou une entreprise.",
+     "wrongs": [
+      "Une loi du Parlement",
+      "Un contrat entre deux salariés",
+      "Un règlement européen"
+     ]
     }
    ]
   },
