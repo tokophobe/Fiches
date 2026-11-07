@@ -95443,104 +95443,252 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment se forme le parfait (Perfekt) ?",
-     "answer": "Auxiliaire haben ou sein au présent\n+ participe passé (Partizip II) en fin de proposition.\nEx. : Ich habe Fußball gespielt.",
-     "w": "0cc1afad",
-     "wq": "fcc1ce34"
+     "question": "Comment se forme le parfait (Perfekt) en allemand ?",
+     "answer": "haben ou sein au présent + participe passé en fin de proposition",
+     "w": [
+      "96a11234",
+      "0cc1afad"
+     ],
+     "wq": "fcc1ce34",
+     "more": "Ex. : Ich habe Fußball gespielt.",
+     "wrongs": [
+      "werden + infinitif",
+      "haben au prétérit + infinitif",
+      "Le verbe + -te"
+     ]
     },
     {
-     "question": "Comment se forme le participe passé d'un verbe faible ?",
-     "answer": "ge- + radical + -t\nEx. : machen → gemacht, spielen → gespielt, kaufen → gekauft",
-     "w": "5a827b42",
-     "wq": "18c7b907"
+     "question": "Quel est le participe passé de « machen » (verbe faible) ?",
+     "answer": "gemacht",
+     "w": [
+      "0ec22718",
+      "5a827b42"
+     ],
+     "wq": "18c7b907",
+     "more": "ge- + radical + -t : gespielt, gekauft.",
+     "wrongs": [
+      "gemachen",
+      "machte",
+      "gemachtet"
+     ]
     },
     {
-     "question": "Comment se forme le participe passé d'un verbe fort ?",
-     "answer": "ge- + radical (souvent modifié) + -en\nEx. : sehen → gesehen, schreiben → geschrieben, trinken → getrunken",
-     "w": "de7e3cb6",
-     "wq": "b00f3ef7"
+     "question": "Quel est le participe passé de « schreiben » (verbe fort) ?",
+     "answer": "geschrieben",
+     "w": [
+      "170e0342",
+      "de7e3cb6"
+     ],
+     "wq": "b00f3ef7",
+     "more": "ge- + radical (souvent modifié) + -en.",
+     "wrongs": [
+      "geschreibt",
+      "schrieb",
+      "geschrieben hat"
+     ]
     },
     {
-     "question": "Donne le participe passé de essen, fahren, gehen et kommen.",
-     "answer": "• essen : gegessen\n• fahren : gefahren\n• gehen : gegangen\n• kommen : gekommen",
-     "w": "cc333ea4",
-     "wq": "160a93e9"
+     "question": "Quel est le participe passé de « gehen » ?",
+     "answer": "gegangen",
+     "w": [
+      "0e3e9f18",
+      "cc333ea4"
+     ],
+     "wq": "160a93e9",
+     "more": "essen : gegessen ; fahren : gefahren ; kommen : gekommen.",
+     "wrongs": [
+      "gegeht",
+      "gegehen",
+      "ging"
+     ]
     },
     {
-     "question": "Quels verbes se conjuguent avec sein au parfait ?",
-     "answer": "• Déplacement : gehen, fahren, kommen, fliegen\n• Changement d'état : aufstehen, werden\n• Et aussi : sein, bleiben",
-     "w": "e39ded0d",
-     "wq": "74cd6c64"
+     "question": "Avec quel auxiliaire se conjuguent les verbes de déplacement au parfait ?",
+     "answer": "sein",
+     "w": [
+      "6a86c484",
+      "e39ded0d"
+     ],
+     "wq": "74cd6c64",
+     "more": "Aussi les changements d'état, et sein, bleiben.",
+     "wrongs": [
+      "haben",
+      "werden",
+      "können"
+     ]
     },
     {
-     "question": "Traduis « Nous sommes allés à Berlin en voiture ».",
-     "answer": "Wir sind nach Berlin gefahren."
+     "question": "Comment dit-on « Nous sommes allés à Berlin en voiture » ?",
+     "answer": "Wir sind nach Berlin gefahren.",
+     "w": "a5668fd5",
+     "wq": "6595f026",
+     "wrongs": [
+      "Wir haben nach Berlin gefahren.",
+      "Wir sind nach Berlin gefährt.",
+      "Wir fahren nach Berlin."
+     ]
     },
     {
-     "question": "Quel est le participe passé des verbes en -ieren ?",
-     "answer": "Pas de ge- :\ntelefonieren → telefoniert\nfotografieren → fotografiert",
-     "w": "b82928f8",
-     "wq": "d8a5cb1d"
+     "question": "Quel est le participe passé de « telefonieren » ?",
+     "answer": "telefoniert",
+     "w": [
+      "b29a1840",
+      "b82928f8"
+     ],
+     "wq": "d8a5cb1d",
+     "more": "Les verbes en -ieren ne prennent pas ge-.",
+     "wrongs": [
+      "getelefoniert",
+      "telefonierte",
+      "getelefonieren"
+     ]
     },
     {
-     "question": "Quel est le participe passé des verbes à préverbe inséparable (be-, ver-, er-, ent-…) ?",
-     "answer": "Pas de ge- :\nbesuchen → besucht, verstehen → verstanden,\nerzählen → erzählt",
-     "w": "4a75e165",
-     "wq": "94a16b96"
+     "question": "Quel est le participe passé de « besuchen » ?",
+     "answer": "besucht",
+     "w": [
+      "40e71b49",
+      "4a75e165"
+     ],
+     "wq": "94a16b96",
+     "more": "Les préverbes inséparables (be-, ver-, er-, ent-) ne prennent pas ge-.",
+     "wrongs": [
+      "gebesucht",
+      "besuchte",
+      "besuchen"
+     ]
     },
     {
-     "question": "Où se place ge- dans un verbe à particule séparable ?",
-     "answer": "Entre la particule et le verbe :\neinkaufen → eingekauft, aufstehen → aufgestanden,\nfernsehen → ferngesehen",
-     "w": "661643e7",
-     "wq": "721eb9c9"
+     "question": "Quel est le participe passé de « einkaufen » ?",
+     "answer": "eingekauft",
+     "w": [
+      "5c73a5cf",
+      "661643e7"
+     ],
+     "wq": "721eb9c9",
+     "more": "ge- se place entre la particule et le verbe.",
+     "wrongs": [
+      "geeinkauft",
+      "einkaufte",
+      "eingekaufen"
+     ]
     },
     {
-     "question": "Donne le parfait de sein et de bleiben à la 1re personne du singulier.",
-     "answer": "• Ich bin gewesen.\n• Ich bin geblieben.",
-     "w": "b067fe9b",
-     "wq": "00e0eebc"
+     "question": "Comment dit-on « j'ai été » en allemand ?",
+     "answer": "Ich bin gewesen.",
+     "w": [
+      "4552edfc",
+      "b067fe9b"
+     ],
+     "wq": "00e0eebc",
+     "more": "Et « je suis resté » : Ich bin geblieben.",
+     "wrongs": [
+      "Ich habe gewesen.",
+      "Ich bin geseint.",
+      "Ich war gewesen."
+     ]
     },
     {
-     "question": "Conjugue sein au prétérit.",
-     "answer": "ich war, du warst, er/sie/es war,\nwir waren, ihr wart, sie/Sie waren",
-     "w": "40d2f032",
-     "wq": "b4b25f37"
+     "question": "Comment dit-on « nous étions » (sein, prétérit) ?",
+     "answer": "wir waren",
+     "w": [
+      "bb07f2be",
+      "40d2f032"
+     ],
+     "wq": "b4b25f37",
+     "more": "ich war, du warst, er war, wir waren, ihr wart, sie waren.",
+     "wrongs": [
+      "wir sind",
+      "wir hatten",
+      "wir wart"
+     ]
     },
     {
-     "question": "Conjugue haben au prétérit.",
-     "answer": "ich hatte, du hattest, er/sie/es hatte,\nwir hatten, ihr hattet, sie/Sie hatten",
-     "w": "640a4c2f",
-     "wq": "63de01c8"
+     "question": "Comment dit-on « j'avais » (haben, prétérit) ?",
+     "answer": "ich hatte",
+     "w": [
+      "4051955d",
+      "640a4c2f"
+     ],
+     "wq": "63de01c8",
+     "wrongs": [
+      "ich habe",
+      "ich war",
+      "ich hätte gehabt"
+     ]
     },
     {
-     "question": "Donne le prétérit (1re personne du singulier) des verbes de modalité können, müssen, wollen et dürfen.",
-     "answer": "• können : ich konnte\n• müssen : ich musste\n• wollen : ich wollte\n• dürfen : ich durfte",
-     "w": "14fdf51d",
-     "wq": "2ac615b3"
+     "question": "Quel est le prétérit de « können » à la 1re personne ?",
+     "answer": "ich konnte",
+     "w": [
+      "e02f19a3",
+      "14fdf51d"
+     ],
+     "wq": "2ac615b3",
+     "more": "müssen : musste ; wollen : wollte ; dürfen : durfte.",
+     "wrongs": [
+      "ich kann",
+      "ich könnte",
+      "ich kannte"
+     ]
     },
     {
      "question": "Comment se forme le prétérit d'un verbe faible ?",
-     "answer": "Radical + -te + terminaison\nich machte, du machtest, er machte,\nwir machten, ihr machtet, sie machten",
-     "w": "1db14764",
-     "wq": "d3a307bd"
+     "answer": "Radical + -te + terminaison",
+     "w": [
+      "0b26c7b4",
+      "1db14764"
+     ],
+     "more": "ich machte, du machtest, er machte…",
+     "wrongs": [
+      "ge- + radical + -t",
+      "Radical + -en",
+      "werden + infinitif"
+     ]
     },
     {
-     "question": "Donne le prétérit (3e personne du singulier) de gehen, kommen et sehen.",
-     "answer": "• gehen : er ging\n• kommen : er kam\n• sehen : er sah",
-     "w": "595bd5e2",
-     "wq": "9ab7c684"
+     "question": "Quel est le prétérit de « kommen » à la 3e personne ?",
+     "answer": "er kam",
+     "w": [
+      "b3c013dd",
+      "595bd5e2"
+     ],
+     "wq": "9ab7c684",
+     "more": "gehen : er ging ; sehen : er sah.",
+     "wrongs": [
+      "er kommte",
+      "er gekommen",
+      "er kommt"
+     ]
     },
     {
      "question": "Comment traduit-on « il y avait » ?",
-     "answer": "Es gab\n(prétérit de es gibt)\nEx. : Es gab viele Leute.",
-     "w": "a10c4f1e",
-     "wq": "389975c9"
+     "answer": "Es gab",
+     "w": [
+      "2a82b7a6",
+      "a10c4f1e"
+     ],
+     "more": "Prétérit de es gibt. Ex. : Es gab viele Leute.",
+     "wrongs": [
+      "Es gibt",
+      "Es war",
+      "Es hatte"
+     ]
     },
     {
-     "question": "Quand utilise-t-on surtout le prétérit plutôt que le parfait ?",
-     "answer": "• Oral : le parfait domine.\n• Écrit (récits) : le prétérit.\nÀ l'oral, prétérit surtout pour sein, haben et les verbes de modalité.",
-     "w": "dd64441a",
-     "wq": "2cc3c67b"
+     "question": "À l'écrit, dans les récits, quel temps du passé domine en allemand ?",
+     "answer": "Le prétérit",
+     "w": [
+      "37b271fb",
+      "dd64441a"
+     ],
+     "wq": "2cc3c67b",
+     "more": "À l'oral, c'est le parfait (sauf sein, haben et les modaux).",
+     "wrongs": [
+      "Le parfait",
+      "Le présent",
+      "Le futur"
+     ]
     }
    ]
   },
@@ -95562,104 +95710,270 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Combien de lettres compte l'alphabet grec et d'où vient le mot « alphabet » ?",
-     "answer": "24 lettres\n« Alphabet » vient des deux premières : alpha (α) et bêta (β).",
-     "w": "7b7d0d40",
-     "wq": "cdf47c8e"
+     "question": "Combien de lettres compte l'alphabet grec ?",
+     "answer": "24",
+     "w": [
+      "c9826cc9",
+      "7b7d0d40"
+     ],
+     "wq": "cdf47c8e",
+     "wrongs": [
+      "26",
+      "22",
+      "30"
+     ]
     },
     {
-     "question": "Donne le nom des lettres α, β, γ, δ et ε.",
-     "answer": "Alpha, bêta, gamma, delta, epsilon."
+     "question": "D'où vient le mot « alphabet » ?",
+     "answer": "Des deux premières lettres grecques, alpha et bêta",
+     "wrongs": [
+      "Du latin alba, blanc",
+      "D'un roi grec appelé Alphabos",
+      "Des lettres alpha et oméga"
+     ]
     },
     {
-     "question": "Donne le nom des lettres ζ, η, θ, ι et κ.",
-     "answer": "Zêta, êta, thêta, iota, kappa."
+     "question": "Comment s'appelle la lettre grecque γ ?",
+     "answer": "Gamma",
+     "w": "8c3ea59e",
+     "wq": "dec0e6e9",
+     "more": "α, β, γ, δ, ε : alpha, bêta, gamma, delta, epsilon.",
+     "wrongs": [
+      "Delta",
+      "Bêta",
+      "Epsilon"
+     ]
     },
     {
-     "question": "Donne le nom des lettres λ, μ, ν, ξ et ο.",
-     "answer": "Lambda, mu, nu, xi, omicron."
+     "question": "Comment s'appelle la lettre grecque θ ?",
+     "answer": "Thêta",
+     "w": "73eae0fc",
+     "wq": "298bfb92",
+     "more": "ζ, η, θ, ι, κ : zêta, êta, thêta, iota, kappa.",
+     "wrongs": [
+      "Êta",
+      "Zêta",
+      "Phi"
+     ]
     },
     {
-     "question": "Donne le nom des lettres π, ρ, σ, τ et υ.",
-     "answer": "Pi, rhô, sigma, tau, upsilon."
+     "question": "Comment s'appelle la lettre grecque λ ?",
+     "answer": "Lambda",
+     "w": "c2443a6a",
+     "wq": "1d61c9f7",
+     "more": "λ, μ, ν, ξ, ο : lambda, mu, nu, xi, omicron.",
+     "wrongs": [
+      "Mu",
+      "Delta",
+      "Kappa"
+     ]
     },
     {
-     "question": "Donne le nom des lettres φ, χ, ψ et ω.",
-     "answer": "Phi, khi, psi, oméga\n(oméga : la dernière lettre)",
-     "w": "9b35745d",
-     "wq": "998f9926"
+     "question": "Comment s'appelle la lettre grecque ρ ?",
+     "answer": "Rhô",
+     "w": "7320eac8",
+     "wq": "9ae7a521",
+     "more": "π, ρ, σ, τ, υ : pi, rhô, sigma, tau, upsilon.",
+     "wrongs": [
+      "Pi",
+      "Phi",
+      "Sigma"
+     ]
     },
     {
-     "question": "Pourquoi le sigma a-t-il deux formes minuscules ?",
-     "answer": "• σ : au début ou à l'intérieur d'un mot\n• ς : à la fin du mot\nEx. : λόγος (logos)",
-     "w": "080f2875",
-     "wq": "9c0b49ca"
+     "question": "Quelle est la dernière lettre de l'alphabet grec ?",
+     "answer": "Oméga (ω)",
+     "w": [
+      "eba94d5f",
+      "9b35745d"
+     ],
+     "wq": "998f9926",
+     "more": "φ, χ, ψ, ω : phi, khi, psi, oméga.",
+     "wrongs": [
+      "Zêta (ζ)",
+      "Psi (ψ)",
+      "Omicron (ο)"
+     ]
     },
     {
-     "question": "Quelle différence entre omicron et oméga ?",
-     "answer": "• Omicron (ο) : « o petit » (bref)\n• Oméga (ω) : « o grand » (long)",
-     "w": "224b4532",
-     "wq": "d99fda76"
+     "question": "Où s'écrit le sigma final « ς » ?",
+     "answer": "À la fin du mot",
+     "w": [
+      "8dcb0a4a",
+      "080f2875"
+     ],
+     "wq": "9c0b49ca",
+     "more": "σ au début ou à l'intérieur. Ex. : λόγος.",
+     "wrongs": [
+      "Au début du mot",
+      "Au milieu du mot",
+      "Seulement en majuscule"
+     ]
     },
     {
-     "question": "D'où vient le mot « démocratie » ?",
-     "answer": "Dêmos (le peuple) + kratos (le pouvoir) :\nle pouvoir du peuple.\nNé à Athènes au VIe-Ve siècle av. J.-C.",
-     "w": "dec7987c",
-     "wq": "d4606771"
+     "question": "Que signifie « oméga » ?",
+     "answer": "« o grand » (long)",
+     "w": [
+      "61243626",
+      "224b4532"
+     ],
+     "wq": "d99fda76",
+     "more": "Omicron : « o petit » (bref).",
+     "wrongs": [
+      "« o petit » (bref)",
+      "« la fin »",
+      "« le cercle »"
+     ]
     },
     {
-     "question": "D'où vient le mot « philosophie » ?",
-     "answer": "Philos (ami, qui aime) + sophia (la sagesse) :\nl'amour de la sagesse.",
-     "w": "1710d5b0",
-     "wq": "0deb5d82"
+     "question": "Que signifie « kratos » dans « démocratie » ?",
+     "answer": "Le pouvoir",
+     "w": [
+      "438ab65f",
+      "dec7987c"
+     ],
+     "wq": "d4606771",
+     "more": "Dêmos : le peuple. Né à Athènes au VIe-Ve s. av. J.-C.",
+     "wrongs": [
+      "Le peuple",
+      "La loi",
+      "La cité"
+     ]
     },
     {
-     "question": "D'où vient le mot « géographie » ?",
-     "answer": "Gê (la terre) + graphein (écrire, décrire) :\nla description de la Terre.",
-     "w": "42513987",
-     "wq": "18547d31"
+     "question": "Que signifie « sophia » dans « philosophie » ?",
+     "answer": "La sagesse",
+     "w": [
+      "fac359f7",
+      "1710d5b0"
+     ],
+     "wq": "0deb5d82",
+     "more": "Philos : ami, qui aime. L'amour de la sagesse.",
+     "wrongs": [
+      "La science",
+      "La parole",
+      "La beauté"
+     ]
     },
     {
-     "question": "D'où vient le mot « biologie » ?",
-     "answer": "Bios (la vie) + logos (la parole, l'étude) :\nl'étude du vivant.",
-     "w": "7ca8fd4c",
-     "wq": "f60c7976"
+     "question": "Que signifie « gê » dans « géographie » ?",
+     "answer": "La terre",
+     "w": [
+      "fad8c4ac",
+      "42513987"
+     ],
+     "wq": "18547d31",
+     "more": "Graphein : écrire, décrire.",
+     "wrongs": [
+      "Le monde",
+      "La carte",
+      "La mer"
+     ]
     },
     {
-     "question": "D'où vient le mot « hippopotame » ?",
-     "answer": "Hippos (le cheval) + potamos (le fleuve) :\nle « cheval du fleuve ».",
-     "w": "9a4334cf",
-     "wq": "22576560"
+     "question": "Que signifie « bios » dans « biologie » ?",
+     "answer": "La vie",
+     "w": [
+      "80184251",
+      "7ca8fd4c"
+     ],
+     "wq": "f60c7976",
+     "more": "Logos : la parole, l'étude.",
+     "wrongs": [
+      "Le corps",
+      "L'animal",
+      "La plante"
+     ]
     },
     {
-     "question": "D'où vient le mot « téléphone » ?",
-     "answer": "Têle (loin) + phônê (la voix, le son) :\nla voix qui porte loin.",
-     "w": "5aed1346",
-     "wq": "08090034"
+     "question": "Que signifie « hippos » dans « hippopotame » ?",
+     "answer": "Le cheval",
+     "w": [
+      "77879d3c",
+      "9a4334cf"
+     ],
+     "wq": "22576560",
+     "more": "Potamos : le fleuve. Le « cheval du fleuve ».",
+     "wrongs": [
+      "Le gros",
+      "L'eau",
+      "Le bœuf"
+     ]
     },
     {
-     "question": "D'où vient le mot « autonomie » ?",
-     "answer": "Autos (soi-même) + nomos (la loi) :\nse donner à soi-même sa loi.",
-     "w": "6c2f3f1b",
-     "wq": "e4614cc1"
+     "question": "Que signifie « têle » dans « téléphone » ?",
+     "answer": "Loin",
+     "w": [
+      "00e67e59",
+      "5aed1346"
+     ],
+     "wq": "08090034",
+     "more": "Phônê : la voix, le son.",
+     "wrongs": [
+      "La voix",
+      "L'image",
+      "Vite"
+     ]
     },
     {
-     "question": "Que signifient les éléments grecs chronos, hydro et thermo ?",
-     "answer": "• Chronos : le temps (chronologie)\n• Hudôr : l'eau (hydrater)\n• Thermos : chaud (thermomètre)",
-     "w": "1b1baa5e",
-     "wq": "20b549be"
+     "question": "Que signifie « nomos » dans « autonomie » ?",
+     "answer": "La loi",
+     "w": [
+      "9860bc12",
+      "6c2f3f1b"
+     ],
+     "wq": "e4614cc1",
+     "more": "Autos : soi-même.",
+     "wrongs": [
+      "Le nom",
+      "Le pays",
+      "La liberté"
+     ]
     },
     {
-     "question": "Que signifient les éléments grecs poly, micro et méga ?",
-     "answer": "• Polus : nombreux (polygone)\n• Mikros : petit (microscope)\n• Megas : grand (mégaphone)",
-     "w": "0586d124",
-     "wq": "31127f75"
+     "question": "Que signifie l'élément grec « chronos » ?",
+     "answer": "Le temps",
+     "w": [
+      "896dd4c3",
+      "1b1baa5e"
+     ],
+     "wq": "20b549be",
+     "more": "Comme dans chronologie. Hydro : l'eau ; thermo : chaud.",
+     "wrongs": [
+      "L'eau",
+      "La chaleur",
+      "La couleur"
+     ]
     },
     {
-     "question": "D'où vient le mot « pédiatre » ?",
-     "answer": "Pais, paidos (l'enfant) + iatros (le médecin) :\nle médecin des enfants.",
-     "w": "7822c408",
-     "wq": "d37fb63c"
+     "question": "Que signifie l'élément grec « poly » ?",
+     "answer": "Nombreux",
+     "w": [
+      "510b0bef",
+      "0586d124"
+     ],
+     "wq": "31127f75",
+     "more": "Comme dans polygone. Micro : petit ; méga : grand.",
+     "wrongs": [
+      "Petit",
+      "Grand",
+      "Rond"
+     ]
+    },
+    {
+     "question": "Que signifie « iatros » dans « pédiatre » ?",
+     "answer": "Le médecin",
+     "w": [
+      "9b0afb75",
+      "7822c408"
+     ],
+     "wq": "d37fb63c",
+     "more": "Pais, paidos : l'enfant.",
+     "wrongs": [
+      "L'enfant",
+      "Le pied",
+      "Le soin"
+     ]
     }
    ]
   },
@@ -97200,98 +97514,233 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce qu'une fable ?",
-     "answer": "Un court récit, souvent en vers,\navec des animaux (ou des humains),\nqui illustre une leçon : la morale.",
-     "w": "674c0962",
-     "wq": "9b5ed4f1"
+     "question": "Comment s'appelle la leçon d'une fable ?",
+     "answer": "La morale",
+     "w": [
+      "26feb0ad",
+      "674c0962"
+     ],
+     "wq": "9b5ed4f1",
+     "more": "Un court récit, souvent en vers, avec des animaux.",
+     "wrongs": [
+      "Le titre",
+      "La chute",
+      "Le refrain"
+     ]
     },
     {
-     "question": "Qui est Jean de La Fontaine ?",
-     "answer": "Un poète français du XVIIe siècle (1621-1695), sous Louis XIV.\nAuteur des Fables (premier recueil en 1668).",
-     "w": "04afd63c",
-     "wq": "910f361d"
+     "question": "À quel siècle a vécu Jean de La Fontaine ?",
+     "answer": "Au XVIIe siècle",
+     "w": [
+      "b2d73887",
+      "04afd63c"
+     ],
+     "wq": "910f361d",
+     "more": "1621-1695, sous Louis XIV. Premier recueil des Fables en 1668.",
+     "wrongs": [
+      "Au Moyen Âge",
+      "Au XVIIIe siècle",
+      "Au XIXe siècle"
+     ]
     },
     {
-     "question": "À quel auteur de l'Antiquité grecque La Fontaine emprunte-t-il beaucoup de sujets ?",
-     "answer": "Ésope\nfabuliste grec.",
-     "w": "81498a1d",
-     "wq": "5c972b32"
+     "question": "À quel fabuliste grec La Fontaine emprunte-t-il beaucoup de sujets ?",
+     "answer": "Ésope",
+     "w": [
+      "f62785e9",
+      "81498a1d"
+     ],
+     "wq": "5c972b32",
+     "wrongs": [
+      "Homère",
+      "Platon",
+      "Molière"
+     ]
     },
     {
      "question": "Où peut se placer la morale d'une fable ?",
-     "answer": "Au début ou à la fin du récit.\nParfois elle n'est pas écrite : le lecteur doit la deviner.",
-     "w": "9ebbb4d4",
-     "wq": "3db8f9bf"
+     "answer": "Au début ou à la fin",
+     "w": [
+      "553fbd76",
+      "9ebbb4d4"
+     ],
+     "more": "Parfois elle n'est pas écrite.",
+     "wrongs": [
+      "Toujours au milieu",
+      "Seulement dans le titre",
+      "Toujours à la fin"
+     ]
     },
     {
      "question": "Comment le Renard obtient-il le fromage du Corbeau ?",
-     "answer": "Il le flatte sur sa voix.\nLe Corbeau ouvre son bec pour chanter\net laisse tomber le fromage.",
-     "w": "ea792d32",
-     "wq": "a464a619"
+     "answer": "Il le flatte sur sa voix",
+     "w": [
+      "43e1828b",
+      "ea792d32"
+     ],
+     "more": "Le Corbeau ouvre son bec pour chanter et laisse tomber le fromage.",
+     "wrongs": [
+      "Il le menace",
+      "Il le lui achète",
+      "Il grimpe à l'arbre"
+     ]
     },
     {
-     "question": "Quelle est la morale du « Corbeau et le Renard » ?",
-     "answer": "« Apprenez que tout flatteur\nVit aux dépens de celui qui l'écoute. »",
-     "w": "836bb0c8",
-     "wq": "688a2327"
+     "question": "Que vit, selon La Fontaine, « aux dépens de celui qui l'écoute » ?",
+     "answer": "Tout flatteur",
+     "w": [
+      "0c2df52f",
+      "836bb0c8"
+     ],
+     "wq": "688a2327",
+     "more": "Morale du Corbeau et le Renard.",
+     "wrongs": [
+      "Tout menteur",
+      "Tout voleur",
+      "Tout bavard"
+     ]
     },
     {
-     "question": "Quelle est la morale du « Loup et l'Agneau » et où est-elle placée ?",
-     "answer": "« La raison du plus fort est toujours la meilleure »\nPlacée au début.\nMalgré ses bons arguments, l'Agneau est mangé.",
-     "w": "736dd2ac",
-     "wq": "2aaf1b67"
+     "question": "Quelle est la morale du « Loup et l'Agneau » ?",
+     "answer": "La raison du plus fort est toujours la meilleure",
+     "w": [
+      "313df2ec",
+      "736dd2ac"
+     ],
+     "wq": "2aaf1b67",
+     "more": "Placée au début. Malgré ses bons arguments, l'Agneau est mangé.",
+     "wrongs": [
+      "Rien ne sert de courir, il faut partir à point",
+      "On a souvent besoin d'un plus petit que soi",
+      "Tout flatteur vit aux dépens de celui qui l'écoute"
+     ]
     },
     {
      "question": "Quelle est la morale du « Lion et le Rat » ?",
-     "answer": "« On a souvent besoin d'un plus petit que soi »\nLe rat libère le lion pris dans un filet en rongeant les mailles.",
-     "w": "6c7ec354",
-     "wq": "ae0fafa9"
+     "answer": "On a souvent besoin d'un plus petit que soi",
+     "w": [
+      "4407e3b0",
+      "6c7ec354"
+     ],
+     "more": "Le rat libère le lion pris dans un filet.",
+     "wrongs": [
+      "La raison du plus fort est toujours la meilleure",
+      "Rien ne sert de courir",
+      "Aide-toi, le ciel t'aidera"
+     ]
     },
     {
-     "question": "Comment la Cigogne se venge-t-elle du Renard ?",
-     "answer": "Le Renard lui avait servi un brouet dans une assiette plate.\nElle l'invite à son tour\net sert le repas dans un vase au long col.",
-     "w": "2d2223d8",
-     "wq": "ba50af84"
+     "question": "Dans quoi la Cigogne sert-elle le repas au Renard pour se venger ?",
+     "answer": "Un vase au long col",
+     "w": [
+      "f6173741",
+      "2d2223d8"
+     ],
+     "wq": "ba50af84",
+     "more": "Le Renard lui avait servi un brouet dans une assiette plate.",
+     "wrongs": [
+      "Une assiette plate",
+      "Un panier",
+      "Une écuelle"
+     ]
     },
     {
-     "question": "Pourquoi La Fontaine utilise-t-il des animaux ?",
-     "answer": "Chaque animal représente un type humain :\n• le lion : le roi puissant\n• le renard : le rusé\n• l'agneau : l'innocent\nIl critique les humains de façon plaisante.",
-     "w": "b6055aa6",
-     "wq": "0d05bf2a"
+     "question": "Chez La Fontaine, quel type humain représente le renard ?",
+     "answer": "Le rusé",
+     "w": [
+      "4744b190",
+      "b6055aa6"
+     ],
+     "wq": "0d05bf2a",
+     "more": "Le lion : le roi puissant ; l'agneau : l'innocent.",
+     "wrongs": [
+      "Le roi",
+      "L'innocent",
+      "Le paresseux"
+     ]
     },
     {
-     "question": "Quelle est la particularité des vers de La Fontaine ?",
-     "answer": "Des vers de longueurs différentes (alexandrins, octosyllabes…) :\nles vers mêlés.",
-     "w": "34266de6",
-     "wq": "8c7b64ee"
+     "question": "Comment appelle-t-on les vers de longueurs différentes de La Fontaine ?",
+     "answer": "Les vers mêlés",
+     "w": [
+      "d6c5411c",
+      "34266de6"
+     ],
+     "wq": "8c7b64ee",
+     "wrongs": [
+      "Les alexandrins",
+      "Les vers libres modernes",
+      "Les rimes croisées"
+     ]
     },
     {
-     "question": "Qu'est-ce que le Roman de Renart ?",
-     "answer": "Des récits du Moyen Âge (XIIe-XIIIe siècles)\noù le goupil Renart ruse sans cesse,\nnotamment contre le loup Ysengrin.",
-     "w": "4369f7f7",
-     "wq": "8ce794aa"
+     "question": "Contre quel loup le goupil Renart ruse-t-il dans le Roman de Renart ?",
+     "answer": "Ysengrin",
+     "w": [
+      "bcf96fd6",
+      "4369f7f7"
+     ],
+     "wq": "8ce794aa",
+     "more": "Récits du Moyen Âge (XIIe-XIIIe siècles).",
+     "wrongs": [
+      "Chantecler",
+      "Noble",
+      "Tibert"
+     ]
     },
     {
-     "question": "Qui est Scapin et dans quelle pièce apparaît-il ?",
-     "answer": "Un valet rusé qui trompe les pères pour aider leurs fils.\nLes Fourberies de Scapin, Molière (1671).",
-     "w": "5822b695",
-     "wq": "fbc15f3a"
+     "question": "Dans quelle pièce de Molière apparaît le valet rusé Scapin ?",
+     "answer": "Les Fourberies de Scapin",
+     "w": [
+      "6632b5f0",
+      "5822b695"
+     ],
+     "wq": "fbc15f3a",
+     "more": "1671. Il trompe les pères pour aider leurs fils.",
+     "wrongs": [
+      "Le Malade imaginaire",
+      "L'Avare",
+      "Le Bourgeois gentilhomme"
+     ]
     },
     {
-     "question": "Quelle célèbre réplique répète Géronte dans Les Fourberies de Scapin ?",
-     "answer": "« Que diable allait-il faire dans cette galère ? »"
+     "question": "Quelle réplique répète Géronte dans Les Fourberies de Scapin ?",
+     "answer": "« Que diable allait-il faire dans cette galère ? »",
+     "w": "d6896907",
+     "wq": "af84e8d3",
+     "wrongs": [
+      "« Le petit chat est mort »",
+      "« Sans dot ! »",
+      "« Le poumon ! »"
+     ]
     },
     {
-     "question": "Quelle différence entre une ruse et un mensonge ?",
-     "answer": "La ruse : un moyen habile de tromper pour obtenir quelque chose.\nElle peut utiliser le mensonge,\nmais aussi le déguisement ou un piège.",
-     "w": "6ac1a6a5",
-     "wq": "e807de74"
+     "question": "La ruse utilise-t-elle seulement le mensonge ?",
+     "answer": "Non, aussi le déguisement ou le piège",
+     "w": [
+      "dc98e396",
+      "6ac1a6a5"
+     ],
+     "wq": "e807de74",
+     "wrongs": [
+      "Oui, uniquement",
+      "Non, seulement la force",
+      "Oui, et jamais de piège"
+     ]
     },
     {
      "question": "Pourquoi le faible a-t-il souvent recours à la ruse ?",
-     "answer": "Il ne peut pas vaincre le plus fort par la force :\nl'intelligence remplace la puissance.",
-     "w": "66ade0f4",
-     "wq": "40865c95"
+     "answer": "Il ne peut pas vaincre le fort par la force",
+     "w": [
+      "5b607186",
+      "66ade0f4"
+     ],
+     "more": "L'intelligence remplace la puissance.",
+     "wrongs": [
+      "Il aime mentir",
+      "Il est plus fort",
+      "La loi l'y oblige"
+     ]
     }
    ]
   },
@@ -97315,95 +97764,232 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'une discrimination ?",
-     "answer": "Traiter une personne moins bien qu'une autre, dans une situation comparable,\nà cause d'un critère interdit par la loi.\nEx. : origine, sexe, handicap, âge, religion…",
-     "w": "b7874167",
-     "wq": "afa4de1e"
+     "answer": "Traiter moins bien quelqu'un pour un critère interdit par la loi",
+     "w": [
+      "68012bb7",
+      "b7874167"
+     ],
+     "more": "Ex. : origine, sexe, handicap, âge, religion…",
+     "wrongs": [
+      "Ne pas être d'accord avec quelqu'un",
+      "Avoir moins de diplômes",
+      "Choisir ses amis"
+     ]
     },
     {
-     "question": "Que dit l'article 1er de la Déclaration des droits de l'homme et du citoyen de 1789 ?",
-     "answer": "« Les hommes naissent et demeurent libres et égaux en droits. »"
+     "question": "Selon l'article 1er de la DDHC de 1789, les hommes naissent et demeurent…",
+     "answer": "Libres et égaux en droits",
+     "w": "e6a30594",
+     "wq": "93d8dc53",
+     "wrongs": [
+      "Riches et puissants",
+      "Égaux en talents",
+      "Soumis au roi"
+     ]
     },
     {
-     "question": "Que garantit l'article 1er de la Constitution de 1958 ?",
-     "answer": "L'égalité devant la loi de tous les citoyens,\nsans distinction d'origine, de race ou de religion.",
-     "w": "a9c2b8b8",
-     "wq": "66d83d35"
+     "question": "Quel texte de 1958 garantit l'égalité devant la loi sans distinction d'origine ?",
+     "answer": "La Constitution",
+     "w": [
+      "8961feac",
+      "a9c2b8b8"
+     ],
+     "wq": "66d83d35",
+     "more": "Article 1er.",
+     "wrongs": [
+      "Le Code civil",
+      "La DDHC",
+      "Le traité de Rome"
+     ]
     },
     {
-     "question": "Quel texte international adopté par l'ONU en 1948 affirme l'égalité de tous ?",
-     "answer": "La Déclaration universelle des droits de l'homme."
+     "question": "Quel texte l'ONU adopte-t-elle en 1948 ?",
+     "answer": "La Déclaration universelle des droits de l'homme",
+     "w": "3f47f2d0",
+     "wq": "f4829f29",
+     "wrongs": [
+      "La DDHC",
+      "La Convention des droits de l'enfant",
+      "Le traité de Versailles"
+     ]
     },
     {
-     "question": "Quelle différence entre un préjugé et un stéréotype ?",
-     "answer": "Préjugé : une opinion toute faite, souvent négative.\nStéréotype : une image caricaturale appliquée à tout un groupe.\nEx. : « les filles sont nulles en maths »",
-     "w": "966491e6",
-     "wq": "a1a7c6ac"
+     "question": "« Les filles sont nulles en maths » est un exemple de…",
+     "answer": "Stéréotype",
+     "w": [
+      "71a2a88f",
+      "966491e6"
+     ],
+     "wq": "a1a7c6ac",
+     "more": "Une image caricaturale appliquée à tout un groupe. Un préjugé est une opinion toute faite.",
+     "wrongs": [
+      "Vérité scientifique",
+      "Loi",
+      "Statistique"
+     ]
     },
     {
-     "question": "Pourquoi une inégalité n'est-elle pas toujours une discrimination ?",
-     "answer": "Il faut qu'elle repose sur un critère interdit par la loi.\nEx. : ne pas obtenir un poste faute du diplôme exigé\nn'est pas une discrimination.",
-     "w": "232ffcc2",
-     "wq": "ecec2ebc"
+     "question": "Ne pas obtenir un poste faute du diplôme exigé est-il une discrimination ?",
+     "answer": "Non",
+     "w": [
+      "5ddd387c",
+      "232ffcc2"
+     ],
+     "wq": "ecec2ebc",
+     "more": "Une inégalité n'est discriminatoire que si elle repose sur un critère interdit.",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, si le poste est public",
+      "Oui, si on est jeune"
+     ]
     },
     {
      "question": "Combien de critères de discrimination la loi française interdit-elle ?",
-     "answer": "Plus de vingt-cinq.\nEx. : origine, sexe, âge, handicap, état de santé, religion,\norientation sexuelle, lieu de résidence",
-     "w": "448faefa",
-     "wq": "2256c56d"
+     "answer": "Plus de vingt-cinq",
+     "w": [
+      "23f7f6bc",
+      "448faefa"
+     ],
+     "more": "Origine, sexe, âge, handicap, santé, religion, lieu de résidence…",
+     "wrongs": [
+      "Trois",
+      "Cinq",
+      "Dix"
+     ]
     },
     {
-     "question": "Quelle peine encourt l'auteur d'une discrimination ?",
-     "answer": "Jusqu'à 3 ans d'emprisonnement\net 45 000 euros d'amende (Code pénal).",
-     "w": "fee90ba3",
-     "wq": "d3fb13ce"
+     "question": "Quelle peine de prison maximale encourt l'auteur d'une discrimination ?",
+     "answer": "3 ans",
+     "w": [
+      "68f5c7e1",
+      "fee90ba3"
+     ],
+     "wq": "d3fb13ce",
+     "more": "Et 45 000 euros d'amende.",
+     "wrongs": [
+      "3 mois",
+      "10 ans",
+      "Aucune"
+     ]
     },
     {
-     "question": "Qu'est-ce que le racisme ?",
-     "answer": "L'idée fausse qu'il existerait des « races » humaines inégales,\net le rejet qui en découle.\nC'est un délit quand il s'exprime par des injures ou des discriminations.",
-     "w": "0b9da7dd",
-     "wq": "67371cb8"
+     "question": "Le racisme s'appuie sur quelle idée fausse ?",
+     "answer": "Il existerait des « races » humaines inégales",
+     "w": [
+      "3c1143b5",
+      "0b9da7dd"
+     ],
+     "wq": "67371cb8",
+     "more": "C'est un délit quand il s'exprime par des injures ou des discriminations.",
+     "wrongs": [
+      "Tous les humains sont égaux",
+      "Les pays sont différents",
+      "Les langues sont différentes"
+     ]
     },
     {
      "question": "Qu'est-ce que le sexisme ?",
-     "answer": "Considérer un sexe comme inférieur à l'autre,\nou enfermer les personnes dans des rôles selon leur sexe.",
-     "w": "e2e53931",
-     "wq": "e74588fe"
+     "answer": "Considérer un sexe comme inférieur à l'autre",
+     "w": [
+      "9ea1c616",
+      "e2e53931"
+     ],
+     "more": "Ou enfermer les personnes dans des rôles selon leur sexe.",
+     "wrongs": [
+      "L'égalité filles-garçons",
+      "Une matière scolaire",
+      "Une loi sur la parité"
+     ]
     },
     {
-     "question": "Qui peut-on saisir gratuitement quand on est victime d'une discrimination ?",
-     "answer": "Le Défenseur des droits\n(autorité indépendante créée en 2011).\nOn peut aussi porter plainte.",
-     "w": "e1ee3936",
-     "wq": "1902a7dc"
+     "question": "Quelle autorité indépendante peut-on saisir gratuitement en cas de discrimination ?",
+     "answer": "Le Défenseur des droits",
+     "w": [
+      "8a5f2819",
+      "e1ee3936"
+     ],
+     "wq": "1902a7dc",
+     "more": "Créé en 2011. On peut aussi porter plainte.",
+     "wrongs": [
+      "Le maire",
+      "Le Conseil constitutionnel",
+      "Le Président de la République"
+     ]
     },
     {
-     "question": "Quel numéro national appeler en cas de harcèlement ou de cyberharcèlement ?",
-     "answer": "Le 3018\ngratuit et anonyme.",
-     "w": "b2193add",
-     "wq": "5d1576c9"
+     "question": "Quel numéro appeler en cas de harcèlement ou de cyberharcèlement ?",
+     "answer": "Le 3018",
+     "w": [
+      "5f62d7ff",
+      "b2193add"
+     ],
+     "wq": "5d1576c9",
+     "more": "Gratuit et anonyme.",
+     "wrongs": [
+      "Le 15",
+      "Le 17",
+      "Le 112"
+     ]
     },
     {
-     "question": "Qu'est-ce que le harcèlement scolaire ?",
-     "answer": "Des violences répétées contre un même élève :\nmoqueries, insultes, coups, exclusion, messages.\nC'est un délit.",
-     "w": "e017e360",
-     "wq": "57c45591"
+     "question": "Le harcèlement scolaire est-il un délit ?",
+     "answer": "Oui",
+     "w": [
+      "eb6f893a",
+      "e017e360"
+     ],
+     "wq": "57c45591",
+     "more": "Violences répétées : moqueries, insultes, coups, exclusion, messages.",
+     "wrongs": [
+      "Non, c'est un jeu",
+      "Seulement s'il y a des coups",
+      "Seulement au lycée"
+     ]
     },
     {
-     "question": "Quelle loi de 2005 concerne les personnes handicapées ?",
-     "answer": "La loi du 11 février 2005 pour l'égalité des droits et des chances :\n• accessibilité des lieux publics\n• scolarisation des élèves handicapés",
-     "w": "a2736f1e",
-     "wq": "894f987f"
+     "question": "Quelle loi de 2005 concerne l'égalité des droits des personnes handicapées ?",
+     "answer": "La loi du 11 février 2005",
+     "w": [
+      "a16e35e0",
+      "a2736f1e"
+     ],
+     "wq": "894f987f",
+     "more": "Accessibilité des lieux publics, scolarisation des élèves handicapés.",
+     "wrongs": [
+      "La loi de 1905",
+      "La loi sur la parité",
+      "La loi Jules Ferry"
+     ]
     },
     {
-     "question": "Quelle différence entre égalité et équité ?",
-     "answer": "Égalité : donner la même chose à tous.\nÉquité : donner à chacun selon ses besoins.\nEx. : du temps supplémentaire pour un élève en situation de handicap",
-     "w": "29384000",
-     "wq": "982d305e"
+     "question": "Donner à chacun selon ses besoins, c'est…",
+     "answer": "L'équité",
+     "w": [
+      "beb2f201",
+      "29384000"
+     ],
+     "wq": "982d305e",
+     "more": "L'égalité : donner la même chose à tous.",
+     "wrongs": [
+      "L'égalité",
+      "La fraternité",
+      "La laïcité"
+     ]
     },
     {
-     "question": "Cite deux étapes de l'égalité entre les femmes et les hommes en politique.",
-     "answer": "• Droit de vote des femmes : 1944 (premier vote en 1945)\n• Loi sur la parité : 2000",
-     "w": "32cfc87e",
-     "wq": "a8d37b37"
+     "question": "En quelle année est votée la loi sur la parité en politique ?",
+     "answer": "2000",
+     "w": [
+      "c2f352a1",
+      "32cfc87e"
+     ],
+     "wq": "a8d37b37",
+     "more": "Droit de vote des femmes : 1944.",
+     "wrongs": [
+      "1944",
+      "1789",
+      "1968"
+     ]
     }
    ]
   },
@@ -97427,97 +98013,234 @@
    "cards": [
     {
      "question": "Comment forme-t-on le prétérit d'un verbe régulier ?",
-     "answer": "Base verbale + -ed, à toutes les personnes.\nEx. : play → played (I played, she played)",
-     "w": "c0a61c06",
-     "wq": "b147288e"
+     "answer": "Base verbale + -ed",
+     "w": [
+      "ad8664b3",
+      "c0a61c06"
+     ],
+     "more": "À toutes les personnes. Ex. : played.",
+     "wrongs": [
+      "Base verbale + -ing",
+      "Did + -ed",
+      "Base verbale + -s"
+     ]
     },
     {
-     "question": "Comment écrit-on le prétérit de stop, study et like ?",
-     "answer": "• stopped : consonne doublée\n• studied : y → ied\n• liked : on ajoute seulement -d",
-     "w": "45e0dbbc",
-     "wq": "49a4d284"
+     "question": "Quel est le prétérit de « study » ?",
+     "answer": "studied",
+     "w": [
+      "78f0e84d",
+      "45e0dbbc"
+     ],
+     "wq": "49a4d284",
+     "more": "y → ied ; stop → stopped ; like → liked.",
+     "wrongs": [
+      "studyed",
+      "studed",
+      "studies"
+     ]
     },
     {
-     "question": "Quelles sont les trois prononciations de la terminaison -ed ?",
-     "answer": "• /t/ : walked\n• /d/ : played\n• /ɪd/ après t ou d : wanted, needed",
-     "w": "76c10b95",
-     "wq": "23a5b8b7"
+     "question": "Comment se prononce -ed dans « wanted » ?",
+     "answer": "/ɪd/",
+     "w": [
+      "c715baed",
+      "76c10b95"
+     ],
+     "wq": "23a5b8b7",
+     "more": "Après t ou d. Sinon /t/ (walked) ou /d/ (played).",
+     "wrongs": [
+      "/t/",
+      "/d/",
+      "Il ne se prononce pas"
+     ]
     },
     {
-     "question": "Comment forme-t-on la négation au prétérit ?",
-     "answer": "didn't (did not) + base verbale\nEx. : I didn't watch TV yesterday.",
-     "w": "42e08c07",
-     "wq": "79e6a458"
+     "question": "Comment dit-on « Je n'ai pas regardé la télé hier » ?",
+     "answer": "I didn't watch TV yesterday.",
+     "w": [
+      "c503071e",
+      "42e08c07"
+     ],
+     "wq": "79e6a458",
+     "more": "didn't + base verbale.",
+     "wrongs": [
+      "I didn't watched TV yesterday.",
+      "I don't watch TV yesterday.",
+      "I not watched TV yesterday."
+     ]
     },
     {
-     "question": "Comment pose-t-on une question au prétérit ?",
-     "answer": "Did + sujet + base verbale\nDid you play football?\n— Yes, I did. / No, I didn't.",
-     "w": "49b1c131",
-     "wq": "267be8ec"
+     "question": "Comment demande-t-on « As-tu joué au foot ? » ?",
+     "answer": "Did you play football?",
+     "w": [
+      "604a6343",
+      "49b1c131"
+     ],
+     "wq": "267be8ec",
+     "more": "Réponse : Yes, I did. / No, I didn't.",
+     "wrongs": [
+      "Did you played football?",
+      "Do you played football?",
+      "Played you football?"
+     ]
     },
     {
-     "question": "Quel est le prétérit de be ?",
-     "answer": "• was : I, he, she, it\n• were : you, we, they\nEx. : I was at home, they were late.",
-     "w": "90697586",
-     "wq": "ac5ef3ef"
+     "question": "Quel est le prétérit de « be » avec « they » ?",
+     "answer": "were",
+     "w": [
+      "47bac158",
+      "90697586"
+     ],
+     "wq": "ac5ef3ef",
+     "more": "was avec I, he, she, it.",
+     "wrongs": [
+      "was",
+      "been",
+      "are"
+     ]
     },
     {
-     "question": "Donne le prétérit de go, see, have et eat.",
-     "answer": "• go : went\n• see : saw\n• have : had\n• eat : ate",
-     "w": "4b2b8d3b",
-     "wq": "f48b2c2e"
+     "question": "Quel est le prétérit de « go » ?",
+     "answer": "went",
+     "w": [
+      "45c50494",
+      "4b2b8d3b"
+     ],
+     "wq": "f48b2c2e",
+     "more": "see : saw ; have : had ; eat : ate.",
+     "wrongs": [
+      "goed",
+      "gone",
+      "goes"
+     ]
     },
     {
-     "question": "Donne le prétérit de come, buy, take et make.",
-     "answer": "• come : came\n• buy : bought\n• take : took\n• make : made",
-     "w": "6c8b6768",
-     "wq": "42645ce2"
+     "question": "Quel est le prétérit de « buy » ?",
+     "answer": "bought",
+     "w": [
+      "d053d45f",
+      "6c8b6768"
+     ],
+     "wq": "42645ce2",
+     "more": "come : came ; take : took ; make : made.",
+     "wrongs": [
+      "buyed",
+      "brought",
+      "bough"
+     ]
     },
     {
-     "question": "Cite trois marqueurs de temps qui appellent le prétérit.",
-     "answer": "• yesterday\n• last week (last year…)\n• two days ago\n• in 2010",
-     "w": "58258fff",
-     "wq": "f09e49ae"
+     "question": "Quel marqueur de temps appelle le prétérit ?",
+     "answer": "yesterday",
+     "w": [
+      "8d91c60b",
+      "58258fff"
+     ],
+     "wq": "f09e49ae",
+     "more": "Aussi : last week, two days ago, in 2010.",
+     "wrongs": [
+      "tomorrow",
+      "now",
+      "every day"
+     ]
     },
     {
      "question": "Comment traduit-on « il y a deux ans » ?",
-     "answer": "two years ago\n(ago se place après la durée ; ce n'est pas there is)",
-     "w": "6f84e7a7",
-     "wq": "1814e6f5"
+     "answer": "two years ago",
+     "w": [
+      "fa41eb52",
+      "6f84e7a7"
+     ],
+     "more": "ago se place après la durée.",
+     "wrongs": [
+      "there are two years",
+      "ago two years",
+      "since two years"
+     ]
     },
     {
-     "question": "Quand utilise-t-on there is et there are ?",
-     "answer": "Pour dire « il y a » :\n• there is + singulier : There is a cat.\n• there are + pluriel : There are two cats.",
-     "w": "43741d13",
-     "wq": "bc68e082"
+     "question": "Comment dit-on « Il y a deux chats » ?",
+     "answer": "There are two cats.",
+     "w": [
+      "49d701d5",
+      "43741d13"
+     ],
+     "wq": "bc68e082",
+     "more": "there is + singulier : There is a cat.",
+     "wrongs": [
+      "There is two cats.",
+      "It is two cats.",
+      "They are two cats."
+     ]
     },
     {
-     "question": "Comment dit-on « il n'y a pas de pommes » ?",
-     "answer": "There aren't any apples.\nAu singulier : There isn't a park.",
-     "w": "b7fb9b5b",
-     "wq": "44000874"
+     "question": "Comment dit-on « Il n'y a pas de pommes » ?",
+     "answer": "There aren't any apples.",
+     "w": [
+      "912e2351",
+      "b7fb9b5b"
+     ],
+     "wq": "44000874",
+     "more": "Au singulier : There isn't a park.",
+     "wrongs": [
+      "There aren't some apples.",
+      "There isn't any apples.",
+      "There are not apple."
+     ]
     },
     {
-     "question": "Comment demande-t-on « Y a-t-il des magasins ? »",
-     "answer": "Are there any shops?\n— Yes, there are. / No, there aren't.",
-     "w": "8e9c5761",
-     "wq": "c8e5bcea"
+     "question": "Comment demande-t-on « Y a-t-il des magasins ? » ?",
+     "answer": "Are there any shops?",
+     "w": [
+      "fe489d3b",
+      "8e9c5761"
+     ],
+     "wq": "c8e5bcea",
+     "wrongs": [
+      "Is there any shops?",
+      "Are there some shops?",
+      "There are any shops?"
+     ]
     },
     {
      "question": "Comment demande-t-on combien il y a d'élèves ?",
-     "answer": "How many pupils are there?"
+     "answer": "How many pupils are there?",
+     "wrongs": [
+      "How much pupils are there?",
+      "How many pupils there are?",
+      "How many pupils is there?"
+     ]
     },
     {
-     "question": "Comment dit-on « il y avait » ?",
-     "answer": "• There was + singulier : There was a castle.\n• There were + pluriel : There were many people.",
-     "w": "21ef5ebe",
-     "wq": "82ecf0cb"
+     "question": "Comment dit-on « Il y avait beaucoup de gens » ?",
+     "answer": "There were many people.",
+     "w": [
+      "120e102e",
+      "21ef5ebe"
+     ],
+     "wq": "82ecf0cb",
+     "more": "There was + singulier : There was a castle.",
+     "wrongs": [
+      "There was many people.",
+      "There are many people.",
+      "It was many people."
+     ]
     },
     {
-     "question": "Quand emploie-t-on some et any ?",
-     "answer": "• some : phrases affirmatives (There are some books.)\n• any : négations et questions (Are there any books?)",
-     "w": "4a61961e",
-     "wq": "61e58cac"
+     "question": "Dans les questions et les négations, emploie-t-on « some » ou « any » ?",
+     "answer": "any",
+     "w": [
+      "1b088359",
+      "4a61961e"
+     ],
+     "wq": "61e58cac",
+     "more": "some dans les phrases affirmatives.",
+     "wrongs": [
+      "some",
+      "many",
+      "much"
+     ]
     }
    ]
   },
@@ -98743,100 +99466,243 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment forme-t-on le Perfekt ?",
-     "answer": "Auxiliaire haben ou sein au présent\n+ participe passé en fin de phrase.\nEx. : Ich habe Fußball gespielt.",
-     "w": "331ccc77",
-     "wq": "47698883"
+     "question": "Où se place le participe passé dans une phrase au Perfekt ?",
+     "answer": "En fin de phrase",
+     "w": [
+      "9baa8308",
+      "331ccc77"
+     ],
+     "wq": "47698883",
+     "more": "Ex. : Ich habe Fußball gespielt.",
+     "wrongs": [
+      "Juste après le sujet",
+      "En première position",
+      "Avant l'auxiliaire"
+     ]
     },
     {
-     "question": "Comment forme-t-on le participe passé d'un verbe faible ?",
-     "answer": "ge- + radical + -t\nEx. : spielen → gespielt, machen → gemacht, kaufen → gekauft",
-     "w": "0dd2737e",
-     "wq": "7941457a"
+     "question": "Quel est le participe passé de « spielen » ?",
+     "answer": "gespielt",
+     "w": [
+      "0bb646b1",
+      "0dd2737e"
+     ],
+     "wq": "7941457a",
+     "more": "Verbe faible : ge- + radical + -t.",
+     "wrongs": [
+      "gespielen",
+      "spielte",
+      "spielt"
+     ]
     },
     {
-     "question": "Donne le participe passé de sehen, essen et trinken.",
-     "answer": "gesehen, gegessen, getrunken\n(verbes forts : ge- + radical, parfois modifié, + -en)",
-     "w": "66da54df",
-     "wq": "11f1e13d"
+     "question": "Quel est le participe passé de « trinken » ?",
+     "answer": "getrunken",
+     "w": [
+      "4a894539",
+      "66da54df"
+     ],
+     "wq": "11f1e13d",
+     "more": "sehen : gesehen ; essen : gegessen.",
+     "wrongs": [
+      "getrinkt",
+      "getrinken",
+      "trank"
+     ]
     },
     {
-     "question": "Quand utilise-t-on l'auxiliaire sein au Perfekt ?",
-     "answer": "Surtout avec les verbes de déplacement ou de changement d'état.\nEx. : Ich bin nach Berlin gefahren. Er ist gekommen.",
-     "w": "824c8e70",
-     "wq": "b10c4dbb"
+     "question": "Avec quel auxiliaire dit-on « Ich … nach Berlin gefahren » ?",
+     "answer": "bin",
+     "w": [
+      "63ad167d",
+      "824c8e70"
+     ],
+     "wq": "b10c4dbb",
+     "more": "sein pour les verbes de déplacement ou de changement d'état.",
+     "wrongs": [
+      "habe",
+      "werde",
+      "hatte"
+     ]
     },
     {
-     "question": "Donne le Perfekt de gehen et bleiben à la 1re personne du singulier.",
-     "answer": "• Ich bin gegangen.\n• Ich bin geblieben.",
-     "w": "1b04f2e3",
-     "wq": "25e91019"
+     "question": "Comment dit-on « je suis allé » (gehen) ?",
+     "answer": "Ich bin gegangen.",
+     "w": [
+      "6d4c1d29",
+      "1b04f2e3"
+     ],
+     "wq": "25e91019",
+     "wrongs": [
+      "Ich habe gegangen.",
+      "Ich bin gegeht.",
+      "Ich ging gegangen."
+     ]
     },
     {
-     "question": "Quel est le participe passé des verbes en -ieren ?",
-     "answer": "Pas de ge- :\ntelefonieren → telefoniert\nfotografieren → fotografiert",
-     "w": "82fb559c",
-     "wq": "d8a5cb1d"
+     "question": "Quel est le participe passé de « fotografieren » ?",
+     "answer": "fotografiert",
+     "w": [
+      "b29a1840",
+      "82fb559c"
+     ],
+     "wq": "d8a5cb1d",
+     "more": "Les verbes en -ieren ne prennent pas ge-.",
+     "wrongs": [
+      "gefotografiert",
+      "fotografierte",
+      "gefotografieren"
+     ]
     },
     {
-     "question": "Où se place ge- avec un verbe à particule séparable ?",
-     "answer": "Entre la particule et le radical :\naufstehen → aufgestanden\neinkaufen → eingekauft",
-     "w": "2443c1fe",
-     "wq": "40b4f834"
+     "question": "Quel est le participe passé de « aufstehen » ?",
+     "answer": "aufgestanden",
+     "w": [
+      "66fe1e5a",
+      "2443c1fe"
+     ],
+     "wq": "40b4f834",
+     "more": "ge- entre la particule et le radical.",
+     "wrongs": [
+      "geaufstanden",
+      "aufgesteht",
+      "aufstand"
+     ]
     },
     {
-     "question": "Les verbes à préfixe inséparable prennent-ils ge- ?",
-     "answer": "Non\nEx. : besuchen → besucht, verstehen → verstanden",
-     "w": "c05641bf",
-     "wq": "cceae8dc"
+     "question": "Quel est le participe passé de « verstehen » ?",
+     "answer": "verstanden",
+     "w": [
+      "251e6c32",
+      "c05641bf"
+     ],
+     "wq": "cceae8dc",
+     "more": "Préfixe inséparable : pas de ge-.",
+     "wrongs": [
+      "geverstanden",
+      "verstehte",
+      "verstegen"
+     ]
     },
     {
-     "question": "Cite les principaux verbes de modalité.",
-     "answer": "• können : pouvoir, savoir faire\n• müssen : devoir\n• wollen : vouloir\n• dürfen : avoir le droit\n• sollen : devoir, être censé\n• mögen : aimer (forme möchte : voudrais)",
-     "w": "4b6c2c13",
-     "wq": "926d1e3a"
+     "question": "Que signifie « dürfen » ?",
+     "answer": "Avoir le droit",
+     "w": [
+      "db0aa571",
+      "4b6c2c13"
+     ],
+     "wq": "926d1e3a",
+     "more": "können : pouvoir ; müssen : devoir ; wollen : vouloir ; sollen : être censé.",
+     "wrongs": [
+      "Devoir",
+      "Vouloir",
+      "Savoir faire"
+     ]
     },
     {
-     "question": "Conjugue können au présent.",
-     "answer": "ich kann, du kannst, er/sie/es kann,\nwir können, ihr könnt, sie/Sie können",
-     "w": "05c67a3a",
-     "wq": "e8102f1c"
+     "question": "Comment dit-on « tu peux » (können) ?",
+     "answer": "du kannst",
+     "w": [
+      "966ef53a",
+      "05c67a3a"
+     ],
+     "wq": "e8102f1c",
+     "more": "ich kann, du kannst, er kann, wir können, ihr könnt, sie können.",
+     "wrongs": [
+      "du könnst",
+      "du kann",
+      "du könnt"
+     ]
     },
     {
-     "question": "Où se place l'infinitif avec un verbe de modalité ?",
-     "answer": "En fin de phrase\nEx. : Ich kann gut schwimmen.",
-     "w": "8b63b7b0",
-     "wq": "f2cbd5c4"
+     "question": "Avec un verbe de modalité, où se place l'infinitif ?",
+     "answer": "En fin de phrase",
+     "w": [
+      "ef79258f",
+      "8b63b7b0"
+     ],
+     "wq": "f2cbd5c4",
+     "more": "Ex. : Ich kann gut schwimmen.",
+     "wrongs": [
+      "Juste après le sujet",
+      "En première position",
+      "Avant le verbe de modalité"
+     ]
     },
     {
-     "question": "Quelle différence entre « Du musst nicht kommen » et « Du darfst nicht kommen » ?",
-     "answer": "• nicht müssen : ne pas être obligé\n(« tu n'es pas obligé de venir »)\n• nicht dürfen : ne pas avoir le droit\n(« tu n'as pas le droit de venir »)",
-     "w": "c380d7d3",
-     "wq": "f31b3f7e"
+     "question": "Que signifie « Du musst nicht kommen » ?",
+     "answer": "Tu n'es pas obligé de venir",
+     "w": [
+      "1a3eb0c6",
+      "c380d7d3"
+     ],
+     "wq": "f31b3f7e",
+     "more": "« Du darfst nicht kommen » : tu n'as pas le droit de venir.",
+     "wrongs": [
+      "Tu n'as pas le droit de venir",
+      "Tu ne veux pas venir",
+      "Tu ne peux pas venir"
+     ]
     },
     {
-     "question": "Où se place le verbe conjugué dans une phrase déclarative ?",
-     "answer": "En deuxième position.\nSi la phrase commence par un complément, le sujet passe après le verbe.\nEx. : Heute spiele ich Tennis.",
-     "w": "e0e1994b",
-     "wq": "76f523fb"
+     "question": "Dans une phrase déclarative, à quelle place est le verbe conjugué ?",
+     "answer": "En deuxième position",
+     "w": [
+      "5d5849be",
+      "e0e1994b"
+     ],
+     "wq": "76f523fb",
+     "more": "Ex. : Heute spiele ich Tennis.",
+     "wrongs": [
+      "En première position",
+      "En fin de phrase",
+      "En troisième position"
+     ]
     },
     {
-     "question": "Où se place le verbe conjugué après weil ou dass ?",
-     "answer": "À la fin de la subordonnée.\nEx. : Ich bleibe zu Hause, weil ich krank bin.",
-     "w": "31701762",
-     "wq": "f5c8a6fe"
+     "question": "Après « weil » ou « dass », où se place le verbe conjugué ?",
+     "answer": "À la fin de la subordonnée",
+     "w": [
+      "2f173abb",
+      "31701762"
+     ],
+     "wq": "f5c8a6fe",
+     "more": "Ex. : …, weil ich krank bin.",
+     "wrongs": [
+      "En deuxième position",
+      "Juste après weil",
+      "Avant le sujet"
+     ]
     },
     {
-     "question": "Comment dit-on « j'étais » et « j'avais » ?",
-     "answer": "Ich war et ich hatte\nPour sein et haben, on emploie surtout le prétérit.",
-     "w": "b20c7332",
-     "wq": "9fba0b41"
+     "question": "Comment dit-on « j'étais » en allemand ?",
+     "answer": "Ich war",
+     "w": [
+      "be599d49",
+      "b20c7332"
+     ],
+     "wq": "9fba0b41",
+     "more": "Et « j'avais » : ich hatte.",
+     "wrongs": [
+      "Ich bin",
+      "Ich hatte",
+      "Ich wurde"
+     ]
     },
     {
-     "question": "Comment traduit-on « il y a un parc » ?",
-     "answer": "Es gibt einen Park.\nEs gibt + accusatif (der Park → einen Park)",
-     "w": "2a7f7dfc",
-     "wq": "a14750cc"
+     "question": "Comment dit-on « il y a un parc » ?",
+     "answer": "Es gibt einen Park.",
+     "w": [
+      "e0c8ebb7",
+      "2a7f7dfc"
+     ],
+     "wq": "a14750cc",
+     "more": "Es gibt + accusatif.",
+     "wrongs": [
+      "Es gibt ein Park.",
+      "Es ist einen Park.",
+      "Da ist einen Park."
+     ]
     }
    ]
   },
@@ -101675,98 +102541,234 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment un son est-il émis ?",
-     "answer": "Par la vibration d'un objet (corde, membrane, cordes vocales),\nsouvent avec une caisse de résonance qui l'amplifie.",
-     "w": "506d55d1",
-     "wq": "8f19d990"
+     "question": "Qu'est-ce qui émet un son ?",
+     "answer": "Un objet qui vibre",
+     "w": [
+      "ead060aa",
+      "506d55d1"
+     ],
+     "wq": "8f19d990",
+     "more": "Corde, membrane, cordes vocales, souvent avec une caisse de résonance.",
+     "wrongs": [
+      "Un objet immobile",
+      "La lumière",
+      "Le vide"
+     ]
     },
     {
-     "question": "Comment un son se propage-t-il ?",
-     "answer": "La vibration se transmet de proche en proche dans un milieu matériel\n(compressions et dilatations),\nsans transport de matière.",
-     "w": "97ae2528",
-     "wq": "09d4e9dd"
+     "question": "La propagation d'un son transporte-t-elle de la matière ?",
+     "answer": "Non",
+     "w": [
+      "177773bc",
+      "97ae2528"
+     ],
+     "wq": "09d4e9dd",
+     "more": "La vibration se transmet de proche en proche dans un milieu matériel.",
+     "wrongs": [
+      "Oui, de l'air",
+      "Oui, des particules sonores",
+      "Seulement dans l'eau"
+     ]
     },
     {
-     "question": "Comment la vitesse du son dépend-elle du milieu ?",
-     "answer": "• Air : environ 340 m/s\n• Eau : environ 1 500 m/s\n• Solides (acier) : plusieurs milliers de m/s",
-     "w": "7c005e5d",
-     "wq": "4d509c9d"
+     "question": "Quelle est la vitesse du son dans l'air ?",
+     "answer": "Environ 340 m/s",
+     "w": [
+      "f15b9341",
+      "7c005e5d"
+     ],
+     "wq": "4d509c9d",
+     "more": "Eau : environ 1 500 m/s ; acier : plusieurs milliers de m/s.",
+     "wrongs": [
+      "Environ 3 × 10⁸ m/s",
+      "Environ 1 500 m/s",
+      "Environ 34 m/s"
+     ]
     },
     {
      "question": "Un son parcourt 680 m en 2,0 s. Quelle est sa vitesse ?",
-     "answer": "340 m/s\nv = d / Δt = 680 / 2,0",
-     "w": "daf2b3f5",
-     "wq": "393204e1"
+     "answer": "340 m/s",
+     "w": [
+      "1d3011c0",
+      "daf2b3f5"
+     ],
+     "more": "v = d / Δt",
+     "wrongs": [
+      "1 360 m/s",
+      "680 m/s",
+      "170 m/s"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un signal périodique ?",
-     "answer": "Un signal dont la forme se répète à l'identique,\nà intervalles de temps égaux.\nCe motif dure une période T.",
-     "w": "19abf147",
-     "wq": "1664569b"
+     "answer": "Un signal dont le motif se répète à intervalles égaux",
+     "w": [
+      "4e9e04bb",
+      "19abf147"
+     ],
+     "more": "Ce motif dure une période T.",
+     "wrongs": [
+      "Un signal qui ne se répète jamais",
+      "Un signal très fort",
+      "Un signal sans fréquence"
+     ]
     },
     {
-     "question": "Comment mesurer précisément la période sur un oscillogramme ?",
-     "answer": "Mesurer la durée de plusieurs périodes successives,\npuis diviser par leur nombre.\nL'incertitude est réduite.",
-     "w": "cdad0601",
-     "wq": "96c85953"
+     "question": "Pour mesurer précisément une période, que mesure-t-on ?",
+     "answer": "Plusieurs périodes, puis on divise",
+     "w": [
+      "36a53e8d",
+      "cdad0601"
+     ],
+     "wq": "96c85953",
+     "more": "L'incertitude est réduite.",
+     "wrongs": [
+      "Une seule période",
+      "L'amplitude",
+      "La hauteur du signal"
+     ]
     },
     {
      "question": "Un son a une période de 2,5 ms. Quelle est sa fréquence ?",
-     "answer": "400 Hz\nf = 1 / T = 1 / 0,0025 s",
-     "w": "dd17d6a0",
-     "wq": "ad0bd45a"
+     "answer": "400 Hz",
+     "w": [
+      "7a7ddf2d",
+      "dd17d6a0"
+     ],
+     "more": "f = 1 / T",
+     "wrongs": [
+      "2,5 Hz",
+      "40 Hz",
+      "4 000 Hz"
+     ]
     },
     {
      "question": "Quelle grandeur détermine la hauteur d'un son ?",
-     "answer": "La fréquence\n• plus elle est élevée : son aigu\n• plus elle est basse : son grave",
-     "w": "9a65337a",
-     "wq": "7d32eca8"
+     "answer": "La fréquence",
+     "w": [
+      "fe41d43b",
+      "9a65337a"
+     ],
+     "more": "Plus elle est élevée, plus le son est aigu.",
+     "wrongs": [
+      "L'amplitude",
+      "Le timbre",
+      "La vitesse"
+     ]
     },
     {
-     "question": "Quelle est la fréquence du la3, note de référence des musiciens ?",
-     "answer": "440 Hz."
+     "question": "Quelle est la fréquence du la3, note de référence ?",
+     "answer": "440 Hz",
+     "w": "2501b3eb",
+     "wq": "3c9e91de",
+     "wrongs": [
+      "220 Hz",
+      "1 000 Hz",
+      "340 Hz"
+     ]
     },
     {
-     "question": "Que sont les infrasons et les ultrasons ?",
-     "answer": "• Infrasons : moins de 20 Hz\n• Ultrasons : plus de 20 kHz\nL'oreille humaine ne les perçoit pas\n(les chauves-souris utilisent les ultrasons).",
-     "w": "938c0005",
-     "wq": "76246800"
+     "question": "Au-dessus de quelle fréquence parle-t-on d'ultrasons ?",
+     "answer": "20 kHz",
+     "w": [
+      "320c9be9",
+      "938c0005"
+     ],
+     "wq": "76246800",
+     "more": "Infrasons : moins de 20 Hz. L'oreille ne les perçoit pas.",
+     "wrongs": [
+      "20 Hz",
+      "440 Hz",
+      "2 kHz"
+     ]
     },
     {
-     "question": "Qu'est-ce que le timbre d'un son ?",
-     "answer": "Ce qui distingue deux sons de même hauteur\njoués par des instruments différents.\nIl est lié à la forme du signal.",
-     "w": "8eb55d80",
-     "wq": "c39c3f2d"
+     "question": "Qu'est-ce qui distingue deux sons de même hauteur joués par deux instruments ?",
+     "answer": "Le timbre",
+     "w": [
+      "85f32017",
+      "8eb55d80"
+     ],
+     "wq": "c39c3f2d",
+     "more": "Il est lié à la forme du signal.",
+     "wrongs": [
+      "La fréquence",
+      "La période",
+      "La vitesse"
+     ]
     },
     {
      "question": "Deux instruments jouent la même note : qu'ont en commun leurs signaux ?",
-     "answer": "La même fréquence (donc la même période),\nmais une forme différente : timbres différents.",
-     "w": "5e9a51cc",
-     "wq": "cfa70bf7"
+     "answer": "La même fréquence",
+     "w": [
+      "1fcf09d6",
+      "5e9a51cc"
+     ],
+     "more": "Mais une forme différente : timbres différents.",
+     "wrongs": [
+      "La même forme",
+      "La même amplitude",
+      "Rien"
+     ]
     },
     {
      "question": "À quelle grandeur du signal l'intensité sonore est-elle liée ?",
-     "answer": "À l'amplitude :\nplus elle est grande, plus le son est fort.",
-     "w": "c3eb0890",
-     "wq": "49fb5e25"
+     "answer": "L'amplitude",
+     "w": [
+      "d0010f15",
+      "c3eb0890"
+     ],
+     "more": "Plus elle est grande, plus le son est fort.",
+     "wrongs": [
+      "La fréquence",
+      "La période",
+      "Le timbre"
+     ]
     },
     {
-     "question": "Qu'est-ce que le niveau d'intensité sonore et comment le mesure-t-on ?",
-     "answer": "L, en décibels (dB) : la force d'un son perçu.\nMesure : avec un sonomètre.",
-     "w": "1a401dc7",
-     "wq": "a824ac33"
+     "question": "Avec quel appareil mesure-t-on le niveau d'intensité sonore ?",
+     "answer": "Un sonomètre",
+     "w": [
+      "c155a862",
+      "1a401dc7"
+     ],
+     "wq": "a824ac33",
+     "more": "En décibels (dB).",
+     "wrongs": [
+      "Un oscilloscope",
+      "Un voltmètre",
+      "Un thermomètre"
+     ]
     },
     {
-     "question": "Quels sont les seuils de danger et de douleur pour l'oreille ?",
-     "answer": "• Danger (exposition prolongée) : vers 85 dB\n• Douleur : environ 120 dB",
-     "w": "4203c407",
-     "wq": "addb7aa0"
+     "question": "À partir de quel niveau sonore une exposition prolongée est-elle dangereuse ?",
+     "answer": "Environ 85 dB",
+     "w": [
+      "ae9378fb",
+      "4203c407"
+     ],
+     "wq": "addb7aa0",
+     "more": "Seuil de douleur : environ 120 dB.",
+     "wrongs": [
+      "Environ 20 dB",
+      "Environ 40 dB",
+      "Environ 200 dB"
+     ]
     },
     {
-     "question": "Quel est le rôle d'un microphone et d'un haut-parleur ?",
-     "answer": "• Microphone : signal sonore → signal électrique\n• Haut-parleur : l'inverse",
-     "w": "3eb31bda",
-     "wq": "e7f3b5b6"
+     "question": "Que convertit un microphone ?",
+     "answer": "Un signal sonore en signal électrique",
+     "w": [
+      "a0b1302d",
+      "3eb31bda"
+     ],
+     "wq": "e7f3b5b6",
+     "more": "Le haut-parleur fait l'inverse.",
+     "wrongs": [
+      "Un signal électrique en son",
+      "La lumière en son",
+      "Le son en lumière"
+     ]
     }
    ]
   },
@@ -102100,102 +103102,254 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "De quoi un atome est-il constitué ?",
-     "answer": "• Un noyau : protons (+e) et neutrons (neutres)\n• Des électrons (−e) autour",
-     "w": "ef9d1ad8",
-     "wq": "b0ec5952"
+     "question": "De quoi est constitué le noyau d'un atome ?",
+     "answer": "De protons et de neutrons",
+     "w": [
+      "f6ed66cf",
+      "ef9d1ad8"
+     ],
+     "wq": "b0ec5952",
+     "more": "Les électrons (−e) sont autour.",
+     "wrongs": [
+      "D'électrons et de protons",
+      "D'électrons seulement",
+      "De molécules"
+     ]
     },
     {
-     "question": "Que représentent A et Z dans l'écriture ᴬ_Z X ?",
-     "answer": "• Z : numéro atomique (nombre de protons)\n• A : nombre de masse (nucléons = protons + neutrons)",
-     "w": "e8713264",
-     "wq": "8ae3f45d"
+     "question": "Dans l'écriture ᴬ_Z X, que représente Z ?",
+     "answer": "Le nombre de protons",
+     "w": [
+      "daebb584",
+      "e8713264"
+     ],
+     "wq": "8ae3f45d",
+     "more": "C'est le numéro atomique.",
+     "wrongs": [
+      "Le nombre de nucléons",
+      "Le nombre de neutrons",
+      "La masse de l'atome"
+     ]
     },
     {
-     "question": "Combien de protons, neutrons et électrons compte l'atome ³⁵₁₇Cl ?",
-     "answer": "• 17 protons\n• 35 − 17 = 18 neutrons\n• 17 électrons (atome neutre)",
-     "w": "2a428788",
-     "wq": "65afea3f"
+     "question": "Dans l'écriture ᴬ_Z X, que représente A ?",
+     "answer": "Le nombre de nucléons",
+     "more": "Protons + neutrons : c'est le nombre de masse.",
+     "wrongs": [
+      "Le nombre de protons",
+      "Le nombre d'électrons",
+      "Le nombre de neutrons"
+     ]
+    },
+    {
+     "question": "Combien de neutrons compte l'atome ³⁵₁₇Cl ?",
+     "answer": "18",
+     "w": [
+      "1367751a",
+      "2a428788"
+     ],
+     "wq": "65afea3f",
+     "more": "35 − 17 = 18 ; il a 17 protons et 17 électrons.",
+     "wrongs": [
+      "17",
+      "35",
+      "52"
+     ]
     },
     {
      "question": "Pourquoi un atome est-il électriquement neutre ?",
-     "answer": "Il a autant d'électrons que de protons :\nles charges se compensent.",
-     "w": "44068672",
-     "wq": "55a843ab"
+     "answer": "Autant d'électrons que de protons",
+     "w": [
+      "892ab7e3",
+      "44068672"
+     ],
+     "wrongs": [
+      "Il n'a pas de neutrons",
+      "Il a autant de neutrons que de protons",
+      "Ses électrons sont neutres"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un élément chimique ?",
-     "answer": "L'ensemble des entités (atomes ou ions)\nde même numéro atomique Z.",
-     "w": "cc68eb3c",
-     "wq": "3e0d7141"
+     "question": "Qu'ont en commun les entités d'un même élément chimique ?",
+     "answer": "Le même numéro atomique Z",
+     "w": [
+      "fab7af84",
+      "cc68eb3c"
+     ],
+     "wq": "3e0d7141",
+     "wrongs": [
+      "Le même nombre de neutrons",
+      "Le même nombre de masse A",
+      "La même charge"
+     ]
     },
     {
-     "question": "Que sont des isotopes ? Donner un exemple.",
-     "answer": "Même Z, mais nombres de neutrons différents (A différents).\nEx. : carbone 12 (¹²₆C) et carbone 14 (¹⁴₆C)",
-     "w": "b9ba0091",
-     "wq": "cdbded0a"
+     "question": "Le carbone 12 et le carbone 14 sont des…",
+     "answer": "Isotopes",
+     "w": [
+      "a1e7e8bb",
+      "b9ba0091"
+     ],
+     "wq": "cdbded0a",
+     "more": "Même Z, nombres de neutrons différents.",
+     "wrongs": [
+      "Ions",
+      "Molécules",
+      "Éléments différents"
+     ]
     },
     {
      "question": "Où est concentrée la masse d'un atome ?",
-     "answer": "Dans le noyau.\nUn nucléon : environ 1,67 × 10⁻²⁷ kg,\nenviron 1 800 fois la masse d'un électron.",
-     "w": "75401f7f",
-     "wq": "88534352"
+     "answer": "Dans le noyau",
+     "w": [
+      "da6b0ed5",
+      "75401f7f"
+     ],
+     "more": "Un nucléon pèse environ 1 800 fois plus qu'un électron.",
+     "wrongs": [
+      "Dans les électrons",
+      "Dans le vide autour du noyau",
+      "Également partout"
+     ]
     },
     {
-     "question": "Pourquoi dit-on que l'atome a une structure lacunaire ?",
-     "answer": "Rayon de l'atome (≈ 10⁻¹⁰ m)\n≈ 100 000 fois celui du noyau (≈ 10⁻¹⁵ m) :\nl'atome est surtout fait de vide.",
-     "w": "1b6515ea",
-     "wq": "aeb45eb5"
+     "question": "Le rayon d'un atome est environ combien de fois celui de son noyau ?",
+     "answer": "100 000 fois",
+     "w": [
+      "4e287881",
+      "1b6515ea"
+     ],
+     "wq": "aeb45eb5",
+     "more": "L'atome est surtout fait de vide : structure lacunaire.",
+     "wrongs": [
+      "10 fois",
+      "2 fois",
+      "1 000 000 000 fois"
+     ]
     },
     {
-     "question": "Dans quel ordre remplit-on les sous-couches pour les 18 premiers éléments ?",
-     "answer": "1s, 2s, 2p, 3s, 3p\n• sous-couche s : 2 électrons au plus\n• sous-couche p : 6 électrons au plus",
-     "w": "12f4c223",
-     "wq": "72e25530"
+     "question": "Combien d'électrons au plus contient une sous-couche p ?",
+     "answer": "6",
+     "w": [
+      "548a3eda",
+      "12f4c223"
+     ],
+     "wq": "72e25530",
+     "more": "Ordre : 1s, 2s, 2p, 3s, 3p ; une sous-couche s en contient 2 au plus.",
+     "wrongs": [
+      "2",
+      "8",
+      "10"
+     ]
     },
     {
      "question": "Quelle est la configuration électronique de l'oxygène (Z = 8) ?",
-     "answer": "1s² 2s² 2p⁴."
+     "answer": "1s² 2s² 2p⁴",
+     "w": "f9613cef",
+     "wrongs": [
+      "1s² 2s² 2p⁶",
+      "1s² 2s⁶",
+      "1s² 2p⁶"
+     ]
     },
     {
      "question": "Quelle est la configuration électronique du sodium (Z = 11) ?",
-     "answer": "1s² 2s² 2p⁶ 3s¹."
+     "answer": "1s² 2s² 2p⁶ 3s¹",
+     "w": "67173824",
+     "wrongs": [
+      "1s² 2s² 2p⁷",
+      "1s² 2s² 2p⁵ 3s²",
+      "1s² 2s² 3s¹ 2p⁶"
+     ]
     },
     {
-     "question": "Que sont les électrons de valence ?",
-     "answer": "Les électrons de la dernière couche occupée (n le plus grand).\nEx. : oxygène : 6 (2s² 2p⁴) ; sodium : 1 (3s¹)",
-     "w": "116c4d4d",
-     "wq": "999bb7f5"
+     "question": "Combien d'électrons de valence a l'oxygène ?",
+     "answer": "6",
+     "w": [
+      "d6525b45",
+      "116c4d4d"
+     ],
+     "wq": "999bb7f5",
+     "more": "Électrons de la dernière couche : 2s² 2p⁴. Le sodium en a 1.",
+     "wrongs": [
+      "8",
+      "2",
+      "4"
+     ]
     },
     {
-     "question": "Comment les éléments sont-ils classés dans le tableau périodique ?",
-     "answer": "Par Z croissant, en lignes (périodes) et colonnes.\nPremière version : Mendeleïev (1869).",
-     "w": "3765f161",
-     "wq": "42040061"
+     "question": "Qui a proposé la première version du tableau périodique en 1869 ?",
+     "answer": "Mendeleïev",
+     "w": [
+      "bdc53943",
+      "3765f161"
+     ],
+     "wq": "42040061",
+     "more": "Les éléments sont classés par Z croissant.",
+     "wrongs": [
+      "Lavoisier",
+      "Bohr",
+      "Rutherford"
+     ]
     },
     {
-     "question": "Que nous apprennent la ligne et la colonne d'un élément ?",
-     "answer": "• Ligne : numéro de la dernière couche occupée\n• Colonne : même nombre d'électrons de valence",
-     "w": "05483f0a",
-     "wq": "e6da8f6f"
+     "question": "Dans le tableau périodique, qu'ont en commun les éléments d'une même colonne ?",
+     "answer": "Le même nombre d'électrons de valence",
+     "w": [
+      "90458ed4",
+      "05483f0a"
+     ],
+     "wq": "e6da8f6f",
+     "more": "La ligne donne le numéro de la dernière couche occupée.",
+     "wrongs": [
+      "La même masse",
+      "Le même nombre de protons",
+      "Le même nombre de neutrons"
+     ]
     },
     {
-     "question": "Où se place le silicium (Z = 14) dans le tableau ?",
-     "answer": "1s² 2s² 2p⁶ 3s² 3p²\n3e période, 14e colonne\n(4 électrons de valence)",
-     "w": "1deb8594",
-     "wq": "8f3c5ee1"
+     "question": "Dans quelle période se trouve le silicium (Z = 14) ?",
+     "answer": "La 3e",
+     "w": [
+      "f63aacbd",
+      "1deb8594"
+     ],
+     "wq": "8f3c5ee1",
+     "more": "1s² 2s² 2p⁶ 3s² 3p² : 14e colonne, 4 électrons de valence.",
+     "wrongs": [
+      "La 2e",
+      "La 4e",
+      "La 14e"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une famille chimique ? Donner deux exemples.",
-     "answer": "Les éléments d'une même colonne, aux propriétés voisines.\nEx. : alcalins (colonne 1, sauf H), halogènes (colonne 17)",
-     "w": "385ced6f",
-     "wq": "cc390cc3"
+     "question": "Dans quelle colonne se trouvent les halogènes ?",
+     "answer": "La colonne 17",
+     "w": [
+      "6f9f1a5d",
+      "385ced6f"
+     ],
+     "wq": "cc390cc3",
+     "more": "Une famille chimique = une colonne. Les alcalins : colonne 1 (sauf H).",
+     "wrongs": [
+      "La colonne 1",
+      "La colonne 18",
+      "La colonne 2"
+     ]
     },
     {
      "question": "Pourquoi les gaz nobles sont-ils très stables ?",
-     "answer": "Leur couche externe est saturée :\n• 2 électrons pour l'hélium (duet)\n• 8 pour le néon et l'argon (octet)\nIls réagissent très peu.",
-     "w": "6ba17275",
-     "wq": "e48de0e3"
+     "answer": "Leur couche externe est saturée",
+     "w": [
+      "6733a7ac",
+      "6ba17275"
+     ],
+     "more": "Duet pour l'hélium, octet pour le néon et l'argon.",
+     "wrongs": [
+      "Ils n'ont pas d'électrons",
+      "Ils sont très lourds",
+      "Ils ont un seul électron externe"
+     ]
     }
    ]
   },
@@ -103145,97 +104299,232 @@
    "cards": [
     {
      "question": "Comment dit-on « le fossé des générations » en anglais ?",
-     "answer": "The generation gap."
+     "answer": "The generation gap",
+     "w": "edef61d6",
+     "wrongs": [
+      "The generation hole",
+      "The age wall",
+      "The family gap"
+     ]
     },
     {
-     "question": "Comment dit-on « les grands-parents » et « les petits-enfants » ?",
-     "answer": "• Grandparents\n• Grandchildren",
-     "w": "516db21f",
-     "wq": "926e39b9"
+     "question": "Comment dit-on « les petits-enfants » ?",
+     "answer": "Grandchildren",
+     "w": [
+      "5810936c",
+      "516db21f"
+     ],
+     "wq": "926e39b9",
+     "more": "Les grands-parents : grandparents.",
+     "wrongs": [
+      "Grandparents",
+      "Little children",
+      "Stepchildren"
+     ]
     },
     {
      "question": "Comment dit-on « frères et sœurs » (la fratrie) ?",
-     "answer": "Siblings\nEx. : I have two siblings.",
-     "w": "7bf84f6d",
-     "wq": "0651dd9c"
+     "answer": "Siblings",
+     "w": [
+      "3e625a3d",
+      "7bf84f6d"
+     ],
+     "more": "Ex. : I have two siblings.",
+     "wrongs": [
+      "Brothers-sisters",
+      "Cousins",
+      "Relatives"
+     ]
     },
     {
-     "question": "Distinguer nuclear family et extended family.",
-     "answer": "• Nuclear family : les parents et leurs enfants\n• Extended family : la famille élargie\n(grands-parents, oncles, tantes, cousins)",
-     "w": "0c67cd7c",
-     "wq": "249cfd21"
+     "question": "Que désigne « extended family » ?",
+     "answer": "La famille élargie",
+     "w": [
+      "38d2846c",
+      "0c67cd7c"
+     ],
+     "wq": "249cfd21",
+     "more": "Grands-parents, oncles, tantes, cousins. Nuclear family : parents et enfants.",
+     "wrongs": [
+      "Les parents et leurs enfants",
+      "Une famille recomposée",
+      "Une famille monoparentale"
+     ]
     },
     {
-     "question": "Comment dit-on « une famille monoparentale » et « une famille recomposée » ?",
-     "answer": "• Monoparentale : a single-parent family\n• Recomposée : a blended family / a stepfamily",
-     "w": "7bbda14f",
-     "wq": "5c60773c"
+     "question": "Comment dit-on « une famille recomposée » ?",
+     "answer": "A blended family",
+     "w": [
+      "4c5354f5",
+      "7bbda14f"
+     ],
+     "wq": "5c60773c",
+     "more": "Monoparentale : a single-parent family.",
+     "wrongs": [
+      "A single-parent family",
+      "A nuclear family",
+      "An extended family"
+     ]
     },
     {
      "question": "Comment dit-on « s'entendre bien avec quelqu'un » ?",
-     "answer": "To get along (with someone)\nou to get on well (with someone)",
-     "w": "79700cd4",
-     "wq": "758e1b0b"
+     "answer": "To get along with someone",
+     "w": [
+      "f6b0cd3c",
+      "79700cd4"
+     ],
+     "wrongs": [
+      "To get up with someone",
+      "To look after someone",
+      "To take after someone"
+     ]
     },
     {
      "question": "Comment dit-on « élever des enfants » ?",
-     "answer": "To bring up children\nou to raise children",
-     "w": "eb01a20a",
-     "wq": "ba5ed5e6"
+     "answer": "To bring up children",
+     "w": [
+      "43ae171a",
+      "eb01a20a"
+     ],
+     "more": "Ou to raise children.",
+     "wrongs": [
+      "To grow up children",
+      "To bring in children",
+      "To look like children"
+     ]
     },
     {
-     "question": "Comment dit-on « s'occuper de » (prendre soin de) ?",
-     "answer": "To look after / to take care of\nEx. : She looks after her grandmother.",
-     "w": "07601f47",
-     "wq": "78608d69"
+     "question": "Comment dit-on « s'occuper de » quelqu'un ?",
+     "answer": "To look after",
+     "w": [
+      "2ae6c118",
+      "07601f47"
+     ],
+     "wq": "78608d69",
+     "more": "Ou to take care of. Ex. : She looks after her grandmother.",
+     "wrongs": [
+      "To look for",
+      "To look like",
+      "To take after"
+     ]
     },
     {
      "question": "Comment désigne-t-on les personnes âgées de façon respectueuse ?",
-     "answer": "Elderly people, senior citizens\nou the elderly",
-     "w": "c7c7eef5",
-     "wq": "6131918d"
+     "answer": "Elderly people",
+     "w": [
+      "0e601fcb",
+      "c7c7eef5"
+     ],
+     "more": "Ou senior citizens, the elderly.",
+     "wrongs": [
+      "Old guys",
+      "Oldies",
+      "Grown-ups"
+     ]
     },
     {
      "question": "Comment dit-on « une maison de retraite » ?",
-     "answer": "• A retirement home / a care home (UK)\n• A nursing home (avec soins médicaux)",
-     "w": "b631d42a",
-     "wq": "30c76880"
+     "answer": "A retirement home",
+     "w": [
+      "14e934df",
+      "b631d42a"
+     ],
+     "more": "A nursing home : avec soins médicaux.",
+     "wrongs": [
+      "A retired house",
+      "A grandparents' house",
+      "A holiday home"
+     ]
     },
     {
-     "question": "Comment dit-on « transmettre » (des traditions, des valeurs) ?",
-     "answer": "To pass on / to hand down\nEx. : Traditions are handed down from generation to generation.",
-     "w": "9627a106",
-     "wq": "c4598e53"
+     "question": "Comment dit-on « transmettre » des traditions ?",
+     "answer": "To hand down",
+     "w": [
+      "f7b63655",
+      "9627a106"
+     ],
+     "wq": "c4598e53",
+     "more": "Ou to pass on.",
+     "wrongs": [
+      "To hand up",
+      "To bring up",
+      "To give up"
+     ]
     },
     {
-     "question": "Comment dit-on « ressembler à » un parent ?",
-     "answer": "• To take after : caractère ou physique\n• To look like : physique\nEx. : He takes after his father.",
-     "w": "cf96fba6",
-     "wq": "7774eec3"
+     "question": "Comment dit-on « Il ressemble à son père » (de caractère) ?",
+     "answer": "He takes after his father.",
+     "w": [
+      "adf9bebe",
+      "cf96fba6"
+     ],
+     "wq": "7774eec3",
+     "more": "To look like : seulement le physique.",
+     "wrongs": [
+      "He looks after his father.",
+      "He takes over his father.",
+      "He gets along his father."
+     ]
     },
     {
-     "question": "Comment dit-on « se disputer avec » et « se réconcilier » ?",
-     "answer": "• Se disputer avec : to argue with someone\n• Se réconcilier : to make up",
-     "w": "0e8bdc9c",
-     "wq": "8faa7005"
+     "question": "Comment dit-on « se réconcilier » ?",
+     "answer": "To make up",
+     "w": [
+      "7a8442dd",
+      "0e8bdc9c"
+     ],
+     "wq": "8faa7005",
+     "more": "Se disputer avec : to argue with someone.",
+     "wrongs": [
+      "To make out",
+      "To break up",
+      "To argue with"
+     ]
     },
     {
-     "question": "À quoi sert la structure used to + base verbale ?",
-     "answer": "Une habitude passée révolue.\nEx. : My grandfather used to work on a farm.\n(avant, il travaillait dans une ferme)",
-     "w": "866dc55b",
-     "wq": "6cc7b49b"
+     "question": "À quoi sert « used to + base verbale » ?",
+     "answer": "Une habitude passée révolue",
+     "w": [
+      "1027d1cd",
+      "866dc55b"
+     ],
+     "wq": "6cc7b49b",
+     "more": "Ex. : My grandfather used to work on a farm.",
+     "wrongs": [
+      "Une action future",
+      "Une habitude présente",
+      "Une action en cours"
+     ]
     },
     {
-     "question": "Comment dit-on « grandir » et « vieillir » ?",
-     "answer": "• Grandir : to grow up (devenir adulte)\n• Vieillir : to grow old / to get older",
-     "w": "46f8a209",
-     "wq": "6fa11c5a"
+     "question": "Comment dit-on « grandir » (devenir adulte) ?",
+     "answer": "To grow up",
+     "w": [
+      "28399f5d",
+      "46f8a209"
+     ],
+     "wq": "6fa11c5a",
+     "more": "Vieillir : to grow old, to get older.",
+     "wrongs": [
+      "To grow old",
+      "To bring up",
+      "To get up"
+     ]
     },
     {
-     "question": "Comment exprimer une opposition entre générations ?",
-     "answer": "Avec unlike ou whereas.\nEx. : Unlike my parents, I share everything online.\nEx. : My parents read newspapers, whereas I read the news on my phone.",
-     "w": "cc4650c8",
-     "wq": "c0806570"
+     "question": "Quel mot sert à exprimer une opposition, comme « contrairement à » ?",
+     "answer": "Unlike",
+     "w": [
+      "22d4c782",
+      "cc4650c8"
+     ],
+     "wq": "c0806570",
+     "more": "Ou whereas. Ex. : Unlike my parents, I share everything online.",
+     "wrongs": [
+      "Like",
+      "Because",
+      "So"
+     ]
     }
    ]
   },
@@ -103258,102 +104547,247 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment dit-on « la ville », « le quartier » et « le village » ?",
-     "answer": "• La ville : la ciudad\n• Le quartier : el barrio\n• Le village : el pueblo",
-     "w": "e2761893",
-     "wq": "35f1e47b"
+     "question": "Comment dit-on « le quartier » en espagnol ?",
+     "answer": "el barrio",
+     "w": [
+      "7c327a23",
+      "e2761893"
+     ],
+     "wq": "35f1e47b",
+     "more": "La ville : la ciudad ; le village : el pueblo.",
+     "wrongs": [
+      "el pueblo",
+      "la calle",
+      "el campo"
+     ]
     },
     {
-     "question": "Comment dit-on « la rue » et « le trottoir » ?",
-     "answer": "• La rue : la calle\n• Le trottoir : la acera",
-     "w": "3452d929",
-     "wq": "d26fd1b6"
+     "question": "Comment dit-on « le trottoir » en espagnol ?",
+     "answer": "la acera",
+     "w": [
+      "b564f3cb",
+      "3452d929"
+     ],
+     "wq": "d26fd1b6",
+     "more": "La rue : la calle.",
+     "wrongs": [
+      "la calle",
+      "la plaza",
+      "el camino"
+     ]
     },
     {
      "question": "Comment dit-on « la grand-place » d'une ville espagnole ?",
-     "answer": "La plaza mayor."
+     "answer": "la plaza mayor",
+     "w": "69d8ce2c",
+     "wrongs": [
+      "la gran plaza",
+      "la plaza grande",
+      "el centro mayor"
+     ]
     },
     {
-     "question": "Comment dit-on « la vieille ville » et « le centre-ville » ?",
-     "answer": "• La vieille ville : el casco antiguo (el casco histórico)\n• Le centre-ville : el centro (de la ciudad)",
-     "w": "17b208fe",
-     "wq": "1d224145"
+     "question": "Comment dit-on « la vieille ville » ?",
+     "answer": "el casco antiguo",
+     "w": [
+      "948f64e5",
+      "17b208fe"
+     ],
+     "wq": "1d224145",
+     "more": "Le centre-ville : el centro.",
+     "wrongs": [
+      "la ciudad vieja",
+      "el barrio mayor",
+      "las afueras"
+     ]
     },
     {
-     "question": "Comment dit-on « la banlieue » (les alentours d'une ville) ?",
-     "answer": "Las afueras\nou la periferia",
-     "w": "dac9d13d",
-     "wq": "9b27f6bb"
+     "question": "Comment dit-on « la banlieue » ?",
+     "answer": "las afueras",
+     "w": [
+      "3e7fad07",
+      "dac9d13d"
+     ],
+     "wq": "9b27f6bb",
+     "more": "Ou la periferia.",
+     "wrongs": [
+      "el centro",
+      "el casco antiguo",
+      "la acera"
+     ]
     },
     {
-     "question": "Comment dit-on « un immeuble » et « un appartement » ?",
-     "answer": "• Un immeuble : un edificio\n• Un appartement : un piso (Espagne),\nun departamento (une grande partie de l'Amérique latine)",
-     "w": "1527877c",
-     "wq": "947c94a2"
+     "question": "Comment dit-on « un appartement » en Espagne ?",
+     "answer": "un piso",
+     "w": [
+      "0d9ae34d",
+      "1527877c"
+     ],
+     "wq": "947c94a2",
+     "more": "Un immeuble : un edificio. En Amérique latine : un departamento.",
+     "wrongs": [
+      "un edificio",
+      "una casa",
+      "un apartamiento"
+     ]
     },
     {
-     "question": "Que désigne le mot « los vecinos » ?",
-     "answer": "Les voisins\net plus largement les habitants d'un quartier ou d'une commune.",
-     "w": "54456de2",
-     "wq": "ba08b0ea"
+     "question": "Que désigne « los vecinos » ?",
+     "answer": "Les voisins",
+     "w": [
+      "27da5f0c",
+      "54456de2"
+     ],
+     "wq": "ba08b0ea",
+     "more": "Et plus largement les habitants d'un quartier.",
+     "wrongs": [
+      "Les villages",
+      "Les vieux",
+      "Les vendeurs"
+     ]
     },
     {
-     "question": "Comment dit-on « la circulation » et « les embouteillages » ?",
-     "answer": "• La circulation : el tráfico\n• Les embouteillages : los atascos",
-     "w": "bd385be6",
-     "wq": "8786e9a9"
+     "question": "Comment dit-on « les embouteillages » ?",
+     "answer": "los atascos",
+     "w": [
+      "f9fe57df",
+      "bd385be6"
+     ],
+     "wq": "8786e9a9",
+     "more": "La circulation : el tráfico.",
+     "wrongs": [
+      "el tráfico",
+      "los coches",
+      "las calles"
+     ]
     },
     {
-     "question": "Comment dit-on « la pollution » et « le bruit » ?",
-     "answer": "• La pollution : la contaminación\n• Le bruit : el ruido",
-     "w": "a1c106b7",
-     "wq": "c879f8cf"
+     "question": "Comment dit-on « le bruit » ?",
+     "answer": "el ruido",
+     "w": [
+      "e2a1afc2",
+      "a1c106b7"
+     ],
+     "wq": "c879f8cf",
+     "more": "La pollution : la contaminación.",
+     "wrongs": [
+      "la contaminación",
+      "el ruedo",
+      "el sonido fuerte"
+     ]
     },
     {
      "question": "Comment dit-on « vivre à la campagne » ?",
-     "answer": "Vivir en el campo."
+     "answer": "Vivir en el campo",
+     "w": "05009a80",
+     "wrongs": [
+      "Vivir en la campaña",
+      "Vivir en el barrio",
+      "Vivir en la ciudad"
+     ]
     },
     {
-     "question": "Comment dit-on « l'exode rural » ?",
-     "answer": "El éxodo rural\nle départ des habitants des campagnes vers les villes.",
-     "w": "647b8818",
-     "wq": "1624de90"
+     "question": "Que signifie « el éxodo rural » ?",
+     "answer": "Le départ des campagnes vers les villes",
+     "w": [
+      "eff4bcc8",
+      "647b8818"
+     ],
+     "wq": "1624de90",
+     "wrongs": [
+      "Le départ des villes vers les campagnes",
+      "Une fête de village",
+      "Un voyage touristique"
+     ]
     },
     {
-     "question": "Que désigne l'expression « la España vaciada » ?",
-     "answer": "L'Espagne « vidée » :\nles régions rurales de l'intérieur\nqui ont perdu une grande partie de leurs habitants.",
-     "w": "c211fd3e",
-     "wq": "27165a30"
+     "question": "Que désigne « la España vaciada » ?",
+     "answer": "Les régions rurales qui se vident",
+     "w": [
+      "0a9732ac",
+      "c211fd3e"
+     ],
+     "wq": "27165a30",
+     "more": "L'intérieur de l'Espagne a perdu une grande partie de ses habitants.",
+     "wrongs": [
+      "Les plages abandonnées l'hiver",
+      "Les villes après une crise",
+      "Les îles espagnoles"
+     ]
     },
     {
-     "question": "Comment désigne-t-on les quartiers de logements précaires ?",
-     "answer": "• Espagne : las chabolas (bidonvilles)\n• Argentine : las villas miseria\n• Brésil (en portugais) : las favelas",
-     "w": "8386ce7c",
-     "wq": "04df68a4"
+     "question": "Comment appelle-t-on les bidonvilles en Espagne ?",
+     "answer": "las chabolas",
+     "w": [
+      "5b2eef98",
+      "8386ce7c"
+     ],
+     "wq": "04df68a4",
+     "more": "Argentine : villas miseria ; Brésil : favelas.",
+     "wrongs": [
+      "los barrios",
+      "las afueras",
+      "los pisos"
+     ]
     },
     {
-     "question": "Comment dit-on « aller en métro » et « aller à pied » ?",
-     "answer": "• Aller en métro : ir en metro\n• Aller à pied : ir a pie (ir andando)",
-     "w": "1c973ee1",
-     "wq": "5a501ee3"
+     "question": "Comment dit-on « aller à pied » ?",
+     "answer": "ir a pie",
+     "w": [
+      "3d118908",
+      "1c973ee1"
+     ],
+     "wq": "5a501ee3",
+     "more": "Aller en métro : ir en metro.",
+     "wrongs": [
+      "ir en pie",
+      "ir con pies",
+      "andar en metro"
+     ]
     },
     {
-     "question": "Comment former les comparatifs de supériorité, d'infériorité et d'égalité ?",
-     "answer": "• Supériorité : más… que\n• Infériorité : menos… que\n• Égalité : tan… como\nEx. : La ciudad es más ruidosa que el pueblo.",
-     "w": "fa0fe0af",
-     "wq": "ea4208e5"
+     "question": "Comment exprime-t-on l'égalité dans une comparaison ?",
+     "answer": "tan… como",
+     "w": [
+      "13148689",
+      "fa0fe0af"
+     ],
+     "wq": "ea4208e5",
+     "more": "Supériorité : más… que ; infériorité : menos… que.",
+     "wrongs": [
+      "más… que",
+      "menos… que",
+      "tanto… que"
+     ]
     },
     {
-     "question": "Quand utiliser hay et quand utiliser estar pour situer un lieu ?",
-     "answer": "• Hay : quelque chose d'indéterminé\n(Hay un parque en mi barrio.)\n• Estar : situer quelque chose de déterminé\n(El parque está cerca de mi casa.)",
-     "w": "89c9c4c0",
-     "wq": "4432e2a4"
+     "question": "« El parque … cerca de mi casa » : hay ou está ?",
+     "answer": "está",
+     "w": [
+      "e608defd",
+      "89c9c4c0"
+     ],
+     "wq": "4432e2a4",
+     "more": "estar situe quelque chose de déterminé ; hay : indéterminé (Hay un parque).",
+     "wrongs": [
+      "hay",
+      "es",
+      "tiene"
+     ]
     },
     {
      "question": "Comment dit-on « j'aime vivre en ville » ?",
-     "answer": "Me gusta vivir en la ciudad.\nGustar s'accorde avec ce qui plaît : me gustan las plazas.",
-     "w": "7ca2e6f3",
-     "wq": "bcd93e8c"
+     "answer": "Me gusta vivir en la ciudad.",
+     "w": [
+      "029cbd12",
+      "7ca2e6f3"
+     ],
+     "more": "Gustar s'accorde avec ce qui plaît : me gustan las plazas.",
+     "wrongs": [
+      "Me gustan vivir en la ciudad.",
+      "Yo gusto vivir en la ciudad.",
+      "Me gusta vivo en la ciudad."
+     ]
     }
    ]
   },
@@ -104299,100 +105733,238 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "La France de 1914 est-elle encore rurale ?",
-     "answer": "Oui : la majorité des Français vit encore à la campagne\net environ 4 actifs sur 10 travaillent dans l'agriculture.\nLes urbains ne dépassent les ruraux qu'en 1931.",
-     "w": "8ee27a3c",
-     "wq": "83fe1e96"
+     "question": "En quelle année les urbains dépassent-ils les ruraux en France ?",
+     "answer": "1931",
+     "w": [
+      "16079605",
+      "8ee27a3c"
+     ],
+     "wq": "83fe1e96",
+     "more": "En 1914, la majorité des Français vit encore à la campagne.",
+     "wrongs": [
+      "1870",
+      "1900",
+      "1960"
+     ]
     },
     {
-     "question": "Qu'est-ce que la deuxième industrialisation ?",
-     "answer": "L'industrialisation de la fin du XIXe siècle\nfondée sur l'électricité, le pétrole, la chimie et l'automobile\n(Renault, Peugeot).",
-     "w": "ef222376",
-     "wq": "7408f3d3"
+     "question": "Sur quelles énergies repose la deuxième industrialisation ?",
+     "answer": "L'électricité et le pétrole",
+     "w": [
+      "2029ca32",
+      "ef222376"
+     ],
+     "wq": "7408f3d3",
+     "more": "Aussi la chimie et l'automobile (Renault, Peugeot).",
+     "wrongs": [
+      "Le charbon et la vapeur",
+      "Le vent et l'eau",
+      "Le nucléaire"
+     ]
     },
     {
      "question": "Que permet la loi Waldeck-Rousseau de 1884 ?",
-     "answer": "La création de syndicats professionnels.",
-     "w": "19d81858",
-     "wq": "9f2dde64"
+     "answer": "La création de syndicats",
+     "w": [
+      "af0dba38",
+      "19d81858"
+     ],
+     "wrongs": [
+      "Le droit de vote des femmes",
+      "La journée de 8 heures",
+      "L'école obligatoire"
+     ]
     },
     {
-     "question": "Que s'est-il passé à Fourmies le 1er mai 1891 ?",
-     "answer": "La troupe tire sur des ouvriers manifestant pour la journée de 8 heures :\nneuf morts.\nL'événement marque le mouvement ouvrier.",
-     "w": "7a5ca398",
-     "wq": "4ec73cf4"
+     "question": "Que réclamaient les ouvriers tués à Fourmies le 1er mai 1891 ?",
+     "answer": "La journée de 8 heures",
+     "w": [
+      "f862d0c3",
+      "7a5ca398"
+     ],
+     "wq": "4ec73cf4",
+     "more": "La troupe tire : neuf morts.",
+     "wrongs": [
+      "Le droit de vote",
+      "La fin de la colonisation",
+      "Les congés payés"
+     ]
     },
     {
-     "question": "Que sont la CGT et la SFIO ?",
-     "answer": "• CGT : confédération syndicale (1895)\n• SFIO : parti socialiste unifié (1905), grande figure : Jean Jaurès",
-     "w": "5fe2171d",
-     "wq": "ffea9fa9"
+     "question": "Qui est la grande figure de la SFIO, parti socialiste fondé en 1905 ?",
+     "answer": "Jean Jaurès",
+     "w": [
+      "de24a936",
+      "5fe2171d"
+     ],
+     "wq": "ffea9fa9",
+     "more": "La CGT est une confédération syndicale fondée en 1895.",
+     "wrongs": [
+      "Jules Ferry",
+      "Clemenceau",
+      "Waldeck-Rousseau"
+     ]
     },
     {
      "question": "Que proclame la charte d'Amiens (1906) ?",
-     "answer": "• L'indépendance du syndicalisme (CGT) à l'égard des partis\n• La grève générale pour transformer la société",
-     "w": "920d1263",
-     "wq": "db6f2371"
+     "answer": "L'indépendance du syndicalisme envers les partis",
+     "w": [
+      "f51b9b61",
+      "920d1263"
+     ],
+     "more": "Et la grève générale pour transformer la société.",
+     "wrongs": [
+      "La fusion des syndicats et des partis",
+      "L'interdiction des grèves",
+      "La création de la SFIO"
+     ]
     },
     {
-     "question": "Quelles lois sociales sont votées avant 1914 ?",
-     "answer": "• Accidents du travail (1898)\n• Repos hebdomadaire obligatoire (1906)\n• Retraites ouvrières et paysannes (1910)",
-     "w": "5245b7de",
-     "wq": "83be71c0"
+     "question": "En quelle année le repos hebdomadaire devient-il obligatoire ?",
+     "answer": "1906",
+     "w": [
+      "dafb011b",
+      "5245b7de"
+     ],
+     "wq": "83be71c0",
+     "more": "Accidents du travail : 1898 ; retraites ouvrières et paysannes : 1910.",
+     "wrongs": [
+      "1936",
+      "1884",
+      "1945"
+     ]
     },
     {
-     "question": "Quelle est la place des femmes dans la société avant 1914 ?",
-     "answer": "Pas de droit de vote, soumission juridique au mari.\nDes féministes (Hubertine Auclert) réclament l'égalité.\nLoi de 1907 : les femmes mariées disposent de leur salaire.",
-     "w": "00f2cf70",
-     "wq": "a4bfa44f"
+     "question": "Que permet aux femmes mariées la loi de 1907 ?",
+     "answer": "Disposer de leur salaire",
+     "w": [
+      "7f3a0f75",
+      "00f2cf70"
+     ],
+     "wq": "a4bfa44f",
+     "more": "Elles n'ont pas le droit de vote ; Hubertine Auclert réclame l'égalité.",
+     "wrongs": [
+      "Voter",
+      "Divorcer librement",
+      "Devenir députées"
+     ]
     },
     {
-     "question": "D'où viennent les immigrés en France à la fin du XIXe siècle ?",
-     "answer": "Surtout des pays voisins (Belges, Italiens).\nIls subissent parfois une violente xénophobie.\nEx. : massacre d'ouvriers italiens à Aigues-Mortes (1893)",
-     "w": "993fc774",
-     "wq": "dcd0bd32"
+     "question": "Où des ouvriers italiens sont-ils massacrés en 1893 ?",
+     "answer": "À Aigues-Mortes",
+     "w": [
+      "f7303fee",
+      "993fc774"
+     ],
+     "wq": "dcd0bd32",
+     "more": "Les immigrés, surtout belges et italiens, subissent une violente xénophobie.",
+     "wrongs": [
+      "À Fourmies",
+      "À Marseille",
+      "À Lille"
+     ]
     },
     {
-     "question": "Comment Jules Ferry justifie-t-il la colonisation (1885) ?",
-     "answer": "• Économie : des débouchés\n• Politique : la puissance de la France\n• Un prétendu « devoir de civiliser les races inférieures »\nClemenceau s'y oppose.",
-     "w": "da7a2c7b",
-     "wq": "1b409618"
+     "question": "Quel homme politique s'oppose à Jules Ferry sur la colonisation en 1885 ?",
+     "answer": "Clemenceau",
+     "w": [
+      "6defdf51",
+      "da7a2c7b"
+     ],
+     "wq": "1b409618",
+     "more": "Ferry invoque débouchés, puissance et un prétendu « devoir de civiliser ».",
+     "wrongs": [
+      "Jaurès",
+      "Gambetta",
+      "Waldeck-Rousseau"
+     ]
     },
     {
-     "question": "Qu'est-ce que la conférence de Berlin (1884-1885) ?",
-     "answer": "Une réunion des puissances européennes\nqui fixe les règles du partage de l'Afrique\net ouvre la course aux territoires.",
-     "w": "96c47fa7",
-     "wq": "9ec1a85c"
+     "question": "Que fixe la conférence de Berlin (1884-1885) ?",
+     "answer": "Les règles du partage de l'Afrique",
+     "w": [
+      "9199e52a",
+      "96c47fa7"
+     ],
+     "wq": "9ec1a85c",
+     "wrongs": [
+      "La fin de la colonisation",
+      "Les frontières de l'Allemagne",
+      "L'alliance franco-britannique"
+     ]
     },
     {
-     "question": "Quelle différence entre colonie et protectorat ?",
-     "answer": "Colonie : administrée directement par la métropole.\nProtectorat : le souverain local reste,\nmais la puissance protectrice contrôle l'essentiel.\nEx. : Tunisie (1881), Maroc (1912)",
-     "w": "d10e4448",
-     "wq": "efe83510"
+     "question": "Dans un protectorat, le souverain local reste-t-il en place ?",
+     "answer": "Oui",
+     "w": [
+      "cf805267",
+      "d10e4448"
+     ],
+     "wq": "efe83510",
+     "more": "Mais la puissance protectrice contrôle l'essentiel. Ex. : Tunisie (1881), Maroc (1912).",
+     "wrongs": [
+      "Non, il est remplacé par un gouverneur",
+      "Non, le territoire devient un département",
+      "Non, il est toujours exilé"
+     ]
     },
     {
-     "question": "Quels sont les principaux territoires de l'empire colonial français vers 1914 ?",
-     "answer": "Algérie, Tunisie, Maroc, AOF (1895), AEF (1910),\nMadagascar, Indochine.\nLe 2e empire colonial du monde, après le britannique.",
-     "w": "2fda7f59",
-     "wq": "7959552e"
+     "question": "Vers 1914, quel est le rang de l'empire colonial français dans le monde ?",
+     "answer": "Le 2e, après le britannique",
+     "w": [
+      "788fb170",
+      "2fda7f59"
+     ],
+     "wq": "7959552e",
+     "more": "Algérie, Tunisie, Maroc, AOF, AEF, Madagascar, Indochine.",
+     "wrongs": [
+      "Le 1er",
+      "Le 5e",
+      "Le 2e, après l'allemand"
+     ]
     },
     {
      "question": "Qu'est-ce que le code de l'indigénat ?",
-     "answer": "Des règles (Algérie en 1881, puis étendues)\nqui soumettent les colonisés à des sanctions spéciales sans jugement.\nIls sont sujets, non citoyens.",
-     "w": "564a1ab9",
-     "wq": "362aa444"
+     "answer": "Des sanctions spéciales sans jugement pour les colonisés",
+     "w": [
+      "7862503b",
+      "564a1ab9"
+     ],
+     "more": "Ils sont sujets, non citoyens.",
+     "wrongs": [
+      "Une loi donnant la citoyenneté",
+      "Un code de conduite des colons",
+      "Un traité de paix"
+     ]
     },
     {
-     "question": "Les conquêtes coloniales se font-elles sans résistance ?",
-     "answer": "Non : il y a des résistances armées.\nEx. : Samory Touré en Afrique de l'Ouest, capturé en 1898",
-     "w": "d173d1be",
-     "wq": "188fdb4c"
+     "question": "Quel chef résiste à la conquête française en Afrique de l'Ouest jusqu'en 1898 ?",
+     "answer": "Samory Touré",
+     "w": [
+      "9b1d66d4",
+      "d173d1be"
+     ],
+     "wq": "188fdb4c",
+     "wrongs": [
+      "Abd el-Kader",
+      "Toussaint Louverture",
+      "Mandela"
+     ]
     },
     {
-     "question": "Qu'est-ce que la crise de Fachoda (1898) ?",
-     "answer": "Une rivalité coloniale France – Royaume-Uni au Soudan.\nLa France recule,\npuis les deux pays se rapprochent (Entente cordiale, 1904).",
-     "w": "f5adc37e",
-     "wq": "0c29364a"
+     "question": "Quels pays s'opposent lors de la crise de Fachoda (1898) ?",
+     "answer": "La France et le Royaume-Uni",
+     "w": [
+      "1263e1a3",
+      "f5adc37e"
+     ],
+     "wq": "0c29364a",
+     "more": "La France recule ; Entente cordiale en 1904.",
+     "wrongs": [
+      "La France et l'Allemagne",
+      "La France et l'Italie",
+      "Le Royaume-Uni et l'Allemagne"
+     ]
     }
    ]
   },
@@ -106892,100 +108464,238 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment Raymond Aron définit-il la puissance ?",
-     "answer": "« La capacité d'une unité politique\nd'imposer sa volonté aux autres unités. »",
-     "w": "e16f30f0",
-     "wq": "c7ddd244"
+     "question": "Qui définit la puissance comme « la capacité d'imposer sa volonté aux autres unités » ?",
+     "answer": "Raymond Aron",
+     "w": [
+      "e76fed77",
+      "e16f30f0"
+     ],
+     "wq": "c7ddd244",
+     "wrongs": [
+      "Joseph Nye",
+      "Hubert Védrine",
+      "Tocqueville"
+     ]
     },
     {
-     "question": "Quels sont les fondements classiques de la puissance d'un État ?",
-     "answer": "• Le territoire et la population\n• Les ressources et la richesse économique\n• La force militaire\n• L'influence diplomatique et culturelle",
-     "w": "dcb631aa",
-     "wq": "8ce90365"
+     "question": "La force militaire est-elle un fondement classique de la puissance ?",
+     "answer": "Oui",
+     "w": [
+      "367dfcfa",
+      "dcb631aa"
+     ],
+     "wq": "8ce90365",
+     "more": "Avec le territoire, la population, la richesse et l'influence.",
+     "wrongs": [
+      "Non, plus depuis 1945",
+      "Non, seulement la culture compte",
+      "Seulement pour les petits États"
+     ]
     },
     {
-     "question": "Quelle différence entre hard power et soft power ?",
-     "answer": "Hard power : contraindre par la force militaire ou économique.\nSoft power (Joseph Nye, 1990) : séduire et influencer\npar la culture, les valeurs, le prestige.",
-     "w": "62f5042e",
-     "wq": "465c13e3"
+     "question": "Qui a forgé la notion de soft power en 1990 ?",
+     "answer": "Joseph Nye",
+     "w": [
+      "88988394",
+      "62f5042e"
+     ],
+     "wq": "465c13e3",
+     "more": "Séduire par la culture et les valeurs ; le hard power contraint par la force.",
+     "wrongs": [
+      "Raymond Aron",
+      "Henry Kissinger",
+      "Hubert Védrine"
+     ]
     },
     {
      "question": "Qu'est-ce que le smart power ?",
-     "answer": "La combinaison intelligente du hard power et du soft power,\nselon les situations.",
-     "w": "210fd53a",
-     "wq": "0d0b8518"
+     "answer": "La combinaison du hard power et du soft power",
+     "w": [
+      "8e9939b4",
+      "210fd53a"
+     ],
+     "wrongs": [
+      "La puissance numérique seule",
+      "La puissance militaire seule",
+      "Le refus de toute puissance"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une hyperpuissance ?",
-     "answer": "Un État qui domine dans tous les domaines de la puissance.\nHubert Védrine l'emploie pour les États-Unis après la guerre froide.",
-     "w": "6660a004",
-     "wq": "bd97a55e"
+     "question": "Qui emploie le mot « hyperpuissance » pour les États-Unis ?",
+     "answer": "Hubert Védrine",
+     "w": [
+      "3752ef03",
+      "6660a004"
+     ],
+     "wq": "bd97a55e",
+     "more": "Un État qui domine dans tous les domaines.",
+     "wrongs": [
+      "Joseph Nye",
+      "Raymond Aron",
+      "Barack Obama"
+     ]
     },
     {
-     "question": "Pourquoi l'Empire ottoman de Soliman le Magnifique est-il une grande puissance ?",
-     "answer": "Sous Soliman (1520-1566), l'Empire :\n• domine la Méditerranée orientale, l'Europe du Sud-Est, le Proche-Orient\n• assiège Vienne en 1529\n• s'appuie sur une administration et une armée efficaces",
-     "w": "e746a994",
-     "wq": "e15483aa"
+     "question": "Quelle ville l'armée de Soliman le Magnifique assiège-t-elle en 1529 ?",
+     "answer": "Vienne",
+     "w": [
+      "be5e8242",
+      "e746a994"
+     ],
+     "wq": "e15483aa",
+     "more": "L'Empire ottoman domine alors la Méditerranée orientale.",
+     "wrongs": [
+      "Paris",
+      "Rome",
+      "Moscou"
+     ]
     },
     {
-     "question": "Pourquoi parle-t-on de déclin relatif d'une puissance ?",
-     "answer": "Une puissance peut rester forte\nmais perdre du poids face à d'autres qui progressent plus vite.",
-     "w": "3ee03198",
-     "wq": "5a2770ba"
+     "question": "Qu'est-ce que le déclin relatif d'une puissance ?",
+     "answer": "Perdre du poids face à d'autres qui progressent plus vite",
+     "w": [
+      "f75f7ece",
+      "3ee03198"
+     ],
+     "wq": "5a2770ba",
+     "wrongs": [
+      "Disparaître totalement",
+      "Perdre une guerre",
+      "Devenir une hyperpuissance"
+     ]
     },
     {
-     "question": "Comment la Russie cherche-t-elle à retrouver sa puissance depuis 1991 ?",
-     "answer": "Après la chute de l'URSS, elle s'appuie sur :\nhydrocarbures, armée, arme nucléaire.\nElle use de la force dans son voisinage :\nGéorgie 2008, Crimée 2014, invasion de l'Ukraine 2022.",
-     "w": "afc8b35e",
-     "wq": "78ee09b8"
+     "question": "En quelle année la Russie annexe-t-elle la Crimée ?",
+     "answer": "2014",
+     "w": [
+      "9f138009",
+      "afc8b35e"
+     ],
+     "wq": "78ee09b8",
+     "more": "Géorgie 2008, invasion de l'Ukraine 2022.",
+     "wrongs": [
+      "2008",
+      "1991",
+      "2022"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une puissance émergente ?",
-     "answer": "Un État dont le poids économique et politique augmente vite.\nEx. : Chine, Inde, Brésil",
-     "w": "fc80a098",
-     "wq": "068ae272"
+     "question": "L'Inde est-elle une puissance émergente ?",
+     "answer": "Oui",
+     "w": [
+      "24067fa6",
+      "fc80a098"
+     ],
+     "wq": "068ae272",
+     "more": "Comme la Chine et le Brésil : poids économique et politique en forte hausse.",
+     "wrongs": [
+      "Non, une hyperpuissance",
+      "Non, un pays en déclin",
+      "Non, une ancienne colonie sans poids"
+     ]
     },
     {
-     "question": "Que sont les BRICS ?",
-     "answer": "Brésil, Russie, Inde, Chine, Afrique du Sud\n(élargi depuis 2024)\nIl conteste la domination occidentale sur l'ordre mondial.",
-     "w": "bb81e94c",
-     "wq": "352f10aa"
+     "question": "Que désigne le « S » des BRICS ?",
+     "answer": "L'Afrique du Sud",
+     "w": [
+      "9f56b0a2",
+      "bb81e94c"
+     ],
+     "wq": "352f10aa",
+     "more": "Brésil, Russie, Inde, Chine, Afrique du Sud (élargi depuis 2024).",
+     "wrongs": [
+      "La Suède",
+      "La Syrie",
+      "Singapour"
+     ]
     },
     {
-     "question": "En quoi les ressources sont-elles une forme indirecte de puissance ?",
-     "answer": "Contrôler l'énergie, les minerais ou l'eau\npermet de faire pression sur d'autres États.\nEx. : la Chine domine le raffinage des terres rares.",
-     "w": "0bac94ff",
-     "wq": "d9aa5d71"
+     "question": "Quel pays domine le raffinage des terres rares ?",
+     "answer": "La Chine",
+     "w": [
+      "ef2ee0c8",
+      "0bac94ff"
+     ],
+     "wq": "d9aa5d71",
+     "wrongs": [
+      "Les États-Unis",
+      "La Russie",
+      "L'Arabie saoudite"
+     ]
     },
     {
      "question": "Qu'est-ce que l'OPEP ?",
-     "answer": "L'Organisation des pays exportateurs de pétrole (1960)\nElle cherche à peser sur la production et les prix du pétrole.",
-     "w": "14787f3a",
-     "wq": "ff9b10ac"
+     "answer": "L'Organisation des pays exportateurs de pétrole",
+     "w": [
+      "19059f6f",
+      "14787f3a"
+     ],
+     "more": "Créée en 1960.",
+     "wrongs": [
+      "L'Organisation pour la paix",
+      "Une alliance militaire",
+      "Un groupe de pays émergents"
+     ]
     },
     {
-     "question": "Qu'est-ce que la puissance normative ?",
-     "answer": "La capacité à imposer ses règles et ses normes aux autres.\nEx. : l'UE avec la protection des données (RGPD)",
-     "w": "34879e6a",
-     "wq": "4a5d380c"
+     "question": "Le RGPD illustre quelle forme de puissance de l'UE ?",
+     "answer": "La puissance normative",
+     "w": [
+      "9e4fd3b6",
+      "34879e6a"
+     ],
+     "wq": "4a5d380c",
+     "more": "Imposer ses règles et ses normes aux autres.",
+     "wrongs": [
+      "Le hard power",
+      "La puissance militaire",
+      "La puissance démographique"
+     ]
     },
     {
-     "question": "Quels sont les atouts de la puissance des États-Unis aujourd'hui ?",
-     "answer": "• Première économie mondiale\n• Le dollar, monnaie de référence\n• Plus d'un tiers des dépenses militaires mondiales\n• Grandes firmes du numérique\n• Rayonnement culturel (Hollywood, universités)",
-     "w": "1bd76c00",
-     "wq": "bcc0333b"
+     "question": "Quelle part des dépenses militaires mondiales font les États-Unis ?",
+     "answer": "Plus d'un tiers",
+     "w": [
+      "62b67dd2",
+      "1bd76c00"
+     ],
+     "wq": "bcc0333b",
+     "more": "Aussi : 1re économie, dollar, firmes du numérique, Hollywood.",
+     "wrongs": [
+      "Environ 5 %",
+      "Environ 10 %",
+      "Plus de 90 %"
+     ]
     },
     {
-     "question": "Quelles limites rencontre la puissance américaine ?",
-     "answer": "• La concurrence de la Chine\n• Les fractures internes de la société\n• Les échecs militaires (Irak, Afghanistan)\n• La contestation de son modèle",
-     "w": "bd1ee7c8",
-     "wq": "dd4b97d6"
+     "question": "Quelle est une limite de la puissance américaine ?",
+     "answer": "La concurrence de la Chine",
+     "w": [
+      "5d2b09d5",
+      "bd1ee7c8"
+     ],
+     "wq": "dd4b97d6",
+     "more": "Aussi : fractures internes, échecs en Irak et en Afghanistan.",
+     "wrongs": [
+      "L'absence d'armée",
+      "Une économie très faible",
+      "L'absence de culture"
+     ]
     },
     {
-     "question": "Comment un État peut-il exercer une puissance culturelle ?",
-     "answer": "Par la diffusion de sa langue, de ses films, de sa musique et de ses universités.\nEx. : la vague culturelle coréenne (K-pop)",
-     "w": "5c88d44d",
-     "wq": "e2c065c6"
+     "question": "La K-pop est un exemple de puissance…",
+     "answer": "Culturelle",
+     "w": [
+      "680e9574",
+      "5c88d44d"
+     ],
+     "wq": "e2c065c6",
+     "more": "Langue, films, musique, universités.",
+     "wrongs": [
+      "Militaire",
+      "Énergétique",
+      "Démographique"
+     ]
     }
    ]
   },
@@ -107009,99 +108719,239 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'une frontière ?",
-     "answer": "Une limite entre deux territoires de souverainetés différentes.\nElle a une dimension politique, juridique et symbolique.",
-     "w": "3672dfc7",
-     "wq": "ebe3b488"
+     "answer": "Une limite entre deux souverainetés",
+     "w": [
+      "f251cc9e",
+      "3672dfc7"
+     ],
+     "more": "Avec une dimension politique, juridique et symbolique.",
+     "wrongs": [
+      "Un fleuve",
+      "Une route",
+      "Une région"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une dyade ?",
-     "answer": "Un segment de frontière commun à deux États voisins.\nEx. : la dyade franco-espagnole",
-     "w": "5c7412d8",
-     "wq": "acb2d8f2"
+     "question": "Comment appelle-t-on un segment de frontière commun à deux États ?",
+     "answer": "Une dyade",
+     "w": [
+      "85824c33",
+      "5c7412d8"
+     ],
+     "wq": "acb2d8f2",
+     "more": "Ex. : la dyade franco-espagnole.",
+     "wrongs": [
+      "Un limes",
+      "Une marche",
+      "Une enclave"
+     ]
     },
     {
      "question": "Qu'est-ce que le limes romain ?",
-     "answer": "La zone frontière fortifiée de l'Empire romain\n(Rhin, Danube, mur d'Hadrien),\nqui contrôlait les passages plus qu'elle ne fermait.",
-     "w": "4e0e2948",
-     "wq": "363a5102"
+     "answer": "La zone frontière fortifiée de l'Empire romain",
+     "w": [
+      "0fca3d9d",
+      "4e0e2948"
+     ],
+     "more": "Rhin, Danube, mur d'Hadrien ; il contrôlait plus qu'il ne fermait.",
+     "wrongs": [
+      "Une route commerciale",
+      "La capitale de l'Empire",
+      "Un traité de paix"
+     ]
     },
     {
-     "question": "Quelle est l'importance des traités de Westphalie (1648) pour les frontières ?",
-     "answer": "Ils consacrent l'idée d'États souverains sur un territoire délimité :\nla base de l'ordre international moderne.",
-     "w": "9629c970",
-     "wq": "9df9d14e"
+     "question": "Quels traités de 1648 consacrent les États souverains sur un territoire délimité ?",
+     "answer": "Les traités de Westphalie",
+     "w": [
+      "72b1446d",
+      "9629c970"
+     ],
+     "wq": "9df9d14e",
+     "wrongs": [
+      "Le traité de Versailles",
+      "Les accords de Schengen",
+      "Le traité de Rome"
+     ]
     },
     {
-     "question": "Pourquoi les frontières africaines sont-elles en grande partie héritées de la colonisation ?",
-     "answer": "Elles ont été tracées par les puissances européennes.\nEn 1964, l'Organisation de l'unité africaine décide de les garder\npour éviter les conflits (principe d'intangibilité).",
-     "w": "8170505b",
-     "wq": "a7e3ab35"
+     "question": "En 1964, que décide l'Organisation de l'unité africaine sur les frontières coloniales ?",
+     "answer": "Les garder",
+     "w": [
+      "52f58b1e",
+      "8170505b"
+     ],
+     "wq": "a7e3ab35",
+     "more": "Principe d'intangibilité, pour éviter les conflits.",
+     "wrongs": [
+      "Les supprimer",
+      "Les redessiner selon les ethnies",
+      "Les confier à l'ONU"
+     ]
     },
     {
-     "question": "Qu'est-ce que le rideau de fer ?",
-     "answer": "L'expression de Churchill (1946) :\nla coupure de l'Europe entre l'Ouest et le bloc soviétique\npendant la guerre froide.",
-     "w": "e107fa4e",
-     "wq": "5e964686"
+     "question": "Qui emploie l'expression « rideau de fer » en 1946 ?",
+     "answer": "Churchill",
+     "w": [
+      "63ca6b75",
+      "e107fa4e"
+     ],
+     "wq": "5e964686",
+     "more": "La coupure de l'Europe pendant la guerre froide.",
+     "wrongs": [
+      "De Gaulle",
+      "Staline",
+      "Kennedy"
+     ]
     },
     {
-     "question": "Que symbolise le mur de Berlin (1961-1989) ?",
-     "answer": "La division de l'Allemagne et de l'Europe en deux blocs.\nSa chute (9 novembre 1989) annonce la réunification\net la fin de la guerre froide.",
-     "w": "dd0efc46",
-     "wq": "5ca56b1a"
+     "question": "À quelle date tombe le mur de Berlin ?",
+     "answer": "Le 9 novembre 1989",
+     "w": [
+      "7a55f71f",
+      "dd0efc46"
+     ],
+     "wq": "5ca56b1a",
+     "more": "Construit en 1961, il symbolisait la division de l'Europe.",
+     "wrongs": [
+      "Le 11 novembre 1918",
+      "Le 8 mai 1945",
+      "Le 3 octobre 1990"
+     ]
     },
     {
-     "question": "Pourquoi la frontière entre les deux Corées est-elle l'une des plus fermées du monde ?",
-     "answer": "Issue de la guerre de Corée, elle suit à peu près le 38e parallèle.\nUne zone démilitarisée (1953)\ntrès militarisée de part et d'autre.",
-     "w": "256f9a96",
-     "wq": "26d0790c"
+     "question": "Quel parallèle suit à peu près la frontière entre les deux Corées ?",
+     "answer": "Le 38e parallèle",
+     "w": [
+      "9afcf75f",
+      "256f9a96"
+     ],
+     "wq": "26d0790c",
+     "more": "Avec une zone démilitarisée depuis 1953.",
+     "wrongs": [
+      "Le 17e parallèle",
+      "L'équateur",
+      "Le 49e parallèle"
+     ]
     },
     {
-     "question": "Quelles sont les caractéristiques de la frontière entre le Mexique et les États-Unis ?",
-     "answer": "Environ 3 100 km :\n• très fréquentée (échanges, travailleurs, villes jumelles San Diego-Tijuana)\n• fortement surveillée et en partie murée contre l'immigration illégale",
-     "w": "aef4a182",
-     "wq": "37e0faed"
+     "question": "Quelle longueur fait la frontière entre le Mexique et les États-Unis ?",
+     "answer": "Environ 3 100 km",
+     "w": [
+      "0e8768ee",
+      "aef4a182"
+     ],
+     "wq": "37e0faed",
+     "more": "Très fréquentée et fortement surveillée.",
+     "wrongs": [
+      "Environ 310 km",
+      "Environ 10 000 km",
+      "Environ 800 km"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une frontière-ressource ?",
-     "answer": "Une frontière qui offre des opportunités\ngrâce aux différences de part et d'autre (salaires, prix, fiscalité).\nEx. : travailleurs frontaliers du Luxembourg ou de la Suisse",
-     "w": "6c0734fa",
-     "wq": "9bd2cac2"
+     "question": "Les travailleurs frontaliers du Luxembourg illustrent quel type de frontière ?",
+     "answer": "Une frontière-ressource",
+     "w": [
+      "16b13786",
+      "6c0734fa"
+     ],
+     "wq": "9bd2cac2",
+     "more": "Elle offre des opportunités grâce aux différences de part et d'autre.",
+     "wrongs": [
+      "Une frontière fermée",
+      "Une frontière naturelle",
+      "Un rideau de fer"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'espace Schengen ?",
-     "answer": "Un espace de libre circulation des personnes,\nsans contrôle aux frontières intérieures.\nAccords de 1985, appliqués depuis 1995.",
-     "w": "37fa8d26",
-     "wq": "1aae1290"
+     "question": "Depuis quand les accords de Schengen sont-ils appliqués ?",
+     "answer": "1995",
+     "w": [
+      "f27ebc36",
+      "37fa8d26"
+     ],
+     "wq": "1aae1290",
+     "more": "Signés en 1985 : libre circulation sans contrôle aux frontières intérieures.",
+     "wrongs": [
+      "1957",
+      "1985",
+      "2004"
+     ]
     },
     {
      "question": "Qu'est-ce que Frontex ?",
-     "answer": "L'agence européenne de garde-frontières et de garde-côtes (2004)\nqui aide à surveiller les frontières extérieures de Schengen.",
-     "w": "2de662a9",
-     "wq": "0f234f51"
+     "answer": "L'agence européenne de garde-frontières et de garde-côtes",
+     "w": [
+      "b017201b",
+      "2de662a9"
+     ],
+     "more": "Créée en 2004.",
+     "wrongs": [
+      "Une armée européenne",
+      "Un traité commercial",
+      "Une ONG d'aide aux migrants"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une zone économique exclusive (ZEE) ?",
-     "answer": "Un espace maritime jusqu'à 200 milles marins (environ 370 km) des côtes\noù un État contrôle l'exploitation des ressources.\n(convention de Montego Bay, 1982)",
-     "w": "bd4161c8",
-     "wq": "45c381c3"
+     "question": "Jusqu'à quelle distance des côtes s'étend une zone économique exclusive ?",
+     "answer": "200 milles marins",
+     "w": [
+      "3ef37fab",
+      "bd4161c8"
+     ],
+     "wq": "45c381c3",
+     "more": "Environ 370 km (convention de Montego Bay, 1982).",
+     "wrongs": [
+      "12 milles marins",
+      "50 milles marins",
+      "1 000 milles marins"
+     ]
     },
     {
-     "question": "Pourquoi la frontière irlandaise a-t-elle posé problème avec le Brexit ?",
-     "answer": "Une frontière physique entre l'Irlande du Nord et l'Irlande\nmenaçait la paix de l'accord du Vendredi saint (1998).\nLes contrôles ont été reportés en mer d'Irlande.",
-     "w": "8140dba3",
-     "wq": "83f5a1c1"
+     "question": "Avec le Brexit, où les contrôles irlandais ont-ils été reportés ?",
+     "answer": "En mer d'Irlande",
+     "w": [
+      "9cda2f0c",
+      "8140dba3"
+     ],
+     "wq": "83f5a1c1",
+     "more": "Pour préserver l'accord du Vendredi saint (1998).",
+     "wrongs": [
+      "À la frontière terrestre irlandaise",
+      "Dans la Manche",
+      "À Londres"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une eurorégion ou une coopération transfrontalière ?",
-     "answer": "Une coopération entre collectivités de part et d'autre d'une frontière\n(transports, santé, environnement).\nEx. : l'Eurométropole Lille-Kortrijk-Tournai",
-     "w": "30f3a66d",
-     "wq": "95920a6d"
+     "question": "L'Eurométropole Lille-Kortrijk-Tournai est un exemple de…",
+     "answer": "Coopération transfrontalière",
+     "w": [
+      "b7c97c5a",
+      "30f3a66d"
+     ],
+     "wq": "95920a6d",
+     "more": "Transports, santé, environnement de part et d'autre d'une frontière.",
+     "wrongs": [
+      "Frontière fermée",
+      "Zone économique exclusive",
+      "Protectorat"
+     ]
     },
     {
-     "question": "Pourquoi parle-t-on d'un retour des murs aux frontières ?",
-     "answer": "Depuis les années 2000, de nombreux États bâtissent murs et barrières\ncontre l'immigration ou le terrorisme,\nalors que la mondialisation semblait effacer les frontières.",
-     "w": "30ebc698",
-     "wq": "bc9b248b"
+     "question": "Depuis les années 2000, les murs aux frontières sont-ils en recul ?",
+     "answer": "Non, ils se multiplient",
+     "w": [
+      "4d9d34e2",
+      "30ebc698"
+     ],
+     "wq": "bc9b248b",
+     "more": "Contre l'immigration ou le terrorisme.",
+     "wrongs": [
+      "Oui, ils disparaissent",
+      "Oui, grâce à la mondialisation",
+      "Il n'y en a plus aucun"
+     ]
     }
    ]
   },
@@ -107124,106 +108974,255 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quels sont les trois axes du thème « Les représentations du monde » ?",
-     "answer": "• Découverte du monde et pluralité des cultures\n• Décrire, figurer, imaginer\n• L'homme et l'animal",
-     "w": "7fa0a419",
-     "wq": "ee0da7f3"
+     "question": "« L'homme et l'animal » est-il un axe du thème « Les représentations du monde » ?",
+     "answer": "Oui",
+     "w": [
+      "7bec2ff5",
+      "7fa0a419"
+     ],
+     "wq": "ee0da7f3",
+     "more": "Avec « Découverte du monde et pluralité des cultures » et « Décrire, figurer, imaginer ».",
+     "wrongs": [
+      "Non, c'est un thème de terminale",
+      "Non, il n'y a qu'un axe",
+      "Non, c'est un thème de SVT"
+     ]
     },
     {
-     "question": "En quoi les grandes découvertes bouleversent-elles les représentations européennes ?",
-     "answer": "La rencontre avec l'Amérique révèle d'autres peuples et d'autres mœurs.\nIl faut repenser l'unité de l'humanité\net la valeur de sa propre culture.",
-     "w": "ebce4ebb",
-     "wq": "79103aa3"
+     "question": "Quelle rencontre bouleverse les représentations européennes au XVIe siècle ?",
+     "answer": "La découverte de l'Amérique",
+     "w": [
+      "46ea22e7",
+      "ebce4ebb"
+     ],
+     "wq": "79103aa3",
+     "more": "D'autres peuples et d'autres mœurs obligent à repenser l'humanité.",
+     "wrongs": [
+      "La conquête de la Lune",
+      "Les croisades",
+      "La découverte de l'Australie"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'ethnocentrisme ?",
-     "answer": "Juger les autres cultures à partir des valeurs de la sienne,\nconsidérée comme supérieure.",
-     "w": "700ca64b",
-     "wq": "2ac46790"
+     "question": "Juger les autres cultures à partir de la sienne, jugée supérieure, c'est…",
+     "answer": "L'ethnocentrisme",
+     "w": [
+      "c5f67632",
+      "700ca64b"
+     ],
+     "wq": "2ac46790",
+     "wrongs": [
+      "Le relativisme culturel",
+      "L'humanisme",
+      "Le cosmopolitisme"
+     ]
     },
     {
-     "question": "Qu'est-ce que le relativisme culturel ?",
-     "answer": "Les mœurs et les valeurs dépendent des cultures :\nil faut les comprendre de l'intérieur avant de les juger.",
-     "w": "5a4719ad",
-     "wq": "78996165"
+     "question": "Comprendre les mœurs d'une culture de l'intérieur avant de les juger, c'est…",
+     "answer": "Le relativisme culturel",
+     "w": [
+      "7d85247c",
+      "5a4719ad"
+     ],
+     "wq": "78996165",
+     "wrongs": [
+      "L'ethnocentrisme",
+      "Le racisme",
+      "Le nationalisme"
+     ]
     },
     {
-     "question": "Qu'est-ce que la controverse de Valladolid (1550-1551) ?",
-     "answer": "Un débat :\n• Las Casas défend l'humanité et les droits des Amérindiens\n• Sepúlveda justifie leur domination par l'Espagne",
-     "w": "d0c95297",
-     "wq": "0123cc6a"
+     "question": "Lors de la controverse de Valladolid, qui défend les droits des Amérindiens ?",
+     "answer": "Las Casas",
+     "w": [
+      "9ba239cc",
+      "d0c95297"
+     ],
+     "wq": "0123cc6a",
+     "more": "Sepúlveda justifie leur domination.",
+     "wrongs": [
+      "Sepúlveda",
+      "Cortés",
+      "Christophe Colomb"
+     ]
     },
     {
-     "question": "Qu'apporte Jean de Léry à la connaissance des Amérindiens ?",
-     "answer": "Dans l'Histoire d'un voyage fait en la terre du Brésil (1578),\nil décrit les Tupinamba avec précision\net une certaine admiration.",
-     "w": "57bd4b95",
-     "wq": "7a21e3f4"
+     "question": "Quel auteur décrit les Tupinamba du Brésil en 1578 ?",
+     "answer": "Jean de Léry",
+     "w": [
+      "00624688",
+      "57bd4b95"
+     ],
+     "wq": "7a21e3f4",
+     "wrongs": [
+      "Montaigne",
+      "Thomas More",
+      "Diderot"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'Utopie de Thomas More (1516) ?",
-     "answer": "Le récit d'une île imaginaire à la société idéale,\npour critiquer indirectement l'Europe de son temps.\n« Utopie » signifie « nulle part ».",
-     "w": "9a212a8e",
-     "wq": "df1730fc"
+     "question": "Que signifie « Utopie », titre de Thomas More (1516) ?",
+     "answer": "Nulle part",
+     "w": [
+      "f910ea77",
+      "9a212a8e"
+     ],
+     "wq": "df1730fc",
+     "more": "Une île imaginaire à la société idéale, pour critiquer l'Europe.",
+     "wrongs": [
+      "Le bonheur",
+      "L'île heureuse",
+      "La cité parfaite"
+     ]
     },
     {
      "question": "Qu'est-ce que le mythe du « bon sauvage » ?",
-     "answer": "L'image idéalisée de peuples lointains, proches de la nature,\ninnocents et heureux,\nutilisée pour critiquer la civilisation européenne.",
-     "w": "434f22ee",
-     "wq": "aee68b73"
+     "answer": "L'image idéalisée de peuples proches de la nature",
+     "w": [
+      "32fae761",
+      "434f22ee"
+     ],
+     "more": "Utilisée pour critiquer la civilisation européenne.",
+     "wrongs": [
+      "Un conte pour enfants",
+      "Une théorie scientifique",
+      "Un récit de guerre"
+     ]
     },
     {
-     "question": "Comment Diderot utilise-t-il Tahiti dans le Supplément au voyage de Bougainville ?",
-     "answer": "Il oppose les mœurs tahitiennes, présentées comme naturelles,\naux lois et à la morale européennes,\npour en dénoncer l'artifice et la colonisation.",
-     "w": "446d7a29",
-     "wq": "e4bb4416"
+     "question": "Quelle île Diderot met-il en scène dans le Supplément au voyage de Bougainville ?",
+     "answer": "Tahiti",
+     "w": [
+      "546e9655",
+      "446d7a29"
+     ],
+     "wq": "e4bb4416",
+     "more": "Il oppose des mœurs naturelles aux lois européennes.",
+     "wrongs": [
+      "Madagascar",
+      "Cuba",
+      "La Réunion"
+     ]
     },
     {
-     "question": "Que montre Rousseau dans le Discours sur l'origine de l'inégalité (1755) ?",
-     "answer": "Il imagine un état de nature où l'homme était libre.\nLa propriété et la société ont fait naître l'inégalité.",
-     "w": "7229f496",
-     "wq": "0b764f17"
+     "question": "Selon Rousseau, qu'est-ce qui a fait naître l'inégalité ?",
+     "answer": "La propriété et la société",
+     "w": [
+      "38fe42a7",
+      "7229f496"
+     ],
+     "wq": "0b764f17",
+     "more": "Discours sur l'origine de l'inégalité (1755).",
+     "wrongs": [
+      "La nature",
+      "La religion seule",
+      "Le climat"
+     ]
     },
     {
-     "question": "En quoi Copernic et Galilée changent-ils la place de l'homme dans le monde ?",
-     "answer": "En retirant la Terre du centre de l'Univers,\nils décentrent l'homme\net ouvrent sur un univers bien plus vaste.",
-     "w": "329cc562",
-     "wq": "7aaf6c43"
+     "question": "Que retirent Copernic et Galilée du centre de l'Univers ?",
+     "answer": "La Terre",
+     "w": [
+      "0e9ac84e",
+      "329cc562"
+     ],
+     "wq": "7aaf6c43",
+     "more": "Ils décentrent l'homme.",
+     "wrongs": [
+      "Le Soleil",
+      "La Lune",
+      "Les étoiles"
+     ]
     },
     {
-     "question": "Quelle inquiétude Pascal exprime-t-il face à l'univers infini ?",
-     "answer": "« Le silence éternel de ces espaces infinis m'effraie » (Pensées) :\nl'homme se découvre perdu et fragile dans l'immensité.",
-     "w": "0c2f88c4",
-     "wq": "af4511e1"
+     "question": "Qui écrit « Le silence éternel de ces espaces infinis m'effraie » ?",
+     "answer": "Pascal",
+     "w": [
+      "10674d76",
+      "0c2f88c4"
+     ],
+     "wq": "af4511e1",
+     "more": "Dans les Pensées.",
+     "wrongs": [
+      "Descartes",
+      "Montaigne",
+      "Voltaire"
+     ]
     },
     {
-     "question": "Que propose Fontenelle dans les Entretiens sur la pluralité des mondes (1686) ?",
-     "answer": "Il vulgarise l'astronomie copernicienne\ndans des dialogues avec une marquise\net imagine d'autres mondes habités.",
-     "w": "e4431c46",
-     "wq": "ea6d3d23"
+     "question": "Avec qui Fontenelle dialogue-t-il dans les Entretiens sur la pluralité des mondes ?",
+     "answer": "Une marquise",
+     "w": [
+      "051d5852",
+      "e4431c46"
+     ],
+     "wq": "ea6d3d23",
+     "more": "1686 : il vulgarise l'astronomie copernicienne.",
+     "wrongs": [
+      "Un roi",
+      "Un astronome",
+      "Un enfant"
+     ]
     },
     {
-     "question": "Comment Swift et Defoe utilisent-ils le récit de voyage ?",
-     "answer": "• Defoe, Robinson Crusoé (1719) : la survie d'un homme seul sur une île\n• Swift, Les Voyages de Gulliver (1726) : des peuples imaginaires\npour faire la satire de la société anglaise",
-     "w": "9cf86353",
-     "wq": "ec642b50"
+     "question": "Qui a écrit Les Voyages de Gulliver (1726) ?",
+     "answer": "Swift",
+     "w": [
+      "9c6921d1",
+      "9cf86353"
+     ],
+     "wq": "ec642b50",
+     "more": "Satire de la société anglaise ; Defoe a écrit Robinson Crusoé (1719).",
+     "wrongs": [
+      "Defoe",
+      "Diderot",
+      "Thomas More"
+     ]
     },
     {
-     "question": "Que pense Montaigne de l'animal dans l'« Apologie de Raymond Sebond » ?",
-     "answer": "Il critique l'orgueil humain et rapproche l'homme de l'animal :\n« Quand je me joue à ma chatte, qui sait\nsi elle passe son temps de moi plus que je ne fais d'elle ? »",
-     "w": "d21b1ece",
-     "wq": "8e49dc27"
+     "question": "Avec quel animal Montaigne joue-t-il dans l'« Apologie de Raymond Sebond » ?",
+     "answer": "Sa chatte",
+     "w": [
+      "86011e9a",
+      "d21b1ece"
+     ],
+     "wq": "8e49dc27",
+     "more": "Il critique l'orgueil humain et rapproche l'homme de l'animal.",
+     "wrongs": [
+      "Son chien",
+      "Son cheval",
+      "Son perroquet"
+     ]
     },
     {
-     "question": "Comment La Fontaine répond-il à la théorie des animaux-machines ?",
-     "answer": "Dans le « Discours à Madame de La Sablière » (1679) :\nles animaux ont une forme d'intelligence,\nce ne sont pas de simples machines.",
-     "w": "06831640",
-     "wq": "da0ad563"
+     "question": "Selon La Fontaine, les animaux sont-ils de simples machines ?",
+     "answer": "Non, ils ont une forme d'intelligence",
+     "w": [
+      "0e3c7198",
+      "06831640"
+     ],
+     "wq": "da0ad563",
+     "more": "« Discours à Madame de La Sablière » (1679).",
+     "wrongs": [
+      "Oui, comme Descartes",
+      "Oui, sans âme ni pensée",
+      "Il ne s'est pas prononcé"
+     ]
     },
     {
-     "question": "Quel est le projet de Buffon dans l'Histoire naturelle ?",
-     "answer": "Décrire toute la nature et les animaux à partir de l'observation.\nPubliée à partir de 1749.",
-     "w": "f3146272",
-     "wq": "872fb43f"
+     "question": "Sur quoi Buffon fonde-t-il son Histoire naturelle ?",
+     "answer": "L'observation",
+     "w": [
+      "82c07cbb",
+      "f3146272"
+     ],
+     "wq": "872fb43f",
+     "more": "Publiée à partir de 1749.",
+     "wrongs": [
+      "La Bible",
+      "L'imagination",
+      "Les mythes grecs"
+     ]
     }
    ]
   },
