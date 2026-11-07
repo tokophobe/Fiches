@@ -388,8 +388,8 @@ leur place dans l'arborescence.
   - « Afficher les boîtes activées pour la révision » (compte élève) ;
   - « Afficher mes boîtes publiées » ;
   - « Afficher mes boîtes non publiées ».
-  Quand on active un filtre, le robot explique en une phrase ce qu'il
-  montre (utile sur téléphone, sans texte au survol). Sa bulle reste
+  Quand on active un filtre, le robot rappelle en une phrase ce qu'il
+  montre (« Affichage des boîtes publiées dans la Librairie »…) (utile sur téléphone, sans texte au survol). Sa bulle reste
   affichée jusqu'à ce qu'on la ferme (croix ou toucher sur la bulle), même
   si l'on touche ailleurs (v272).
   Pour les deux derniers, les boîtes qui ne sont pas les miennes (classe,
@@ -583,6 +583,12 @@ tout de suite, la liste à jour suit.
 - **« Ajouter à mes révisions »** : choix du dossier, puis une copie de la
   boîte arrive dans l'organisation ; elle suit les corrections faites dans
   la Librairie.
+- **Boîtes toutes prêtes de darwin** (contenu payant) : leur fichier est
+  rangé dans un **dépôt GitHub privé** (« Fiches-contenu »), jamais avec
+  l'appli, qui est publique. L'administrateur les met en ligne depuis
+  Darwin Admin : « Importer la dernière version » lit ce fichier sur GitHub
+  (clé d'accès en lecture seule, enregistrée seulement dans son
+  navigateur), l'analyse, puis « Publier / mettre à jour » (v273).
 
 ### 7.2 Publier une boîte
 
@@ -671,16 +677,6 @@ boutons, le « parcours guidé » (v267) ou la présentation « mixte » (v268,
 présentations » en bas (visibles seulement pour les administrateurs).
 > Réponse :
 
-**Q12 — Où ranger le fichier des boîtes toutes prêtes ?** (7 nov. 2026)
-Le dépôt GitHub est public, et GitHub Pages comme les copies de test
-publient tout son contenu : un fichier des boîtes posé dans le dépôt
-devient téléchargeable gratuitement, alors que ces boîtes sont payantes.
-Depuis v271, le fichier n'est plus suivi dans le dépôt (il reste visible
-dans son historique). Pistes : un dépôt privé séparé pour le contenu, puis
-une mise à jour automatique de la Librairie (base de données) à chaque
-nouvelle version du fichier ; l'import par Darwin Admin reste la porte
-d'entrée. À décider avec le propriétaire.
-
 **Q8 — Avant l'ouverture au public : une adresse de test.**
 Aujourd'hui, fusionner une branche publie la version pour tout le monde,
 sur la même base de données. Avant le lancement, mettre en place une
@@ -705,6 +701,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | Q2 — Prix et noms des formules | Les CGV font foi ; site vitrine corrigé. | §7.4, site (v253) |
 | Q7 — Modifier la classification d'une boîte classée | Oui, lien « Modifier » tant qu'elle n'est pas publiée. | §5.4 (v253) |
 | Q9 — Prendre une boîte de la Librairie dans le compte enseignant | Bouton « Ajouter aux révisions » / « Retirer des révisions » (révisions du compte élève) ; « Ajouter à mes révisions » / « Retirer de mes révisions » dans le compte élève. | §3.2 (v257) |
+| Q12 — Où ranger le fichier des boîtes toutes prêtes | Dans un dépôt GitHub privé séparé (« Fiches-contenu »), jamais dans le dépôt public de l'appli ; Darwin Admin l'importe directement (7 nov. 2026). | §7 (v273) |
 | Q10 — Titre de la page Organisation | « Organisation de mes boîtes de fiches » (5 nov. 2026, pour les deux comptes). | §5.3 (v264) |
 | Q6 — Différences élève / enseignant | Agenda par compte ; classes du compte utilisé dans l'organisation, le reste commun ; pas de révisions dans le compte enseignant (Réviser grisé, ni dans/hors révisions, ni progression) ; échéances données à une classe sans effet sur ses propres révisions ; nouvelle boîte du compte enseignant hors révisions. | §3.2, §4.3, §4.5, §6.4 (v256) |
 | Q5 — Supprimer « Mes créations » | Oui, après vérification. « Mes fiches » ouvre directement l'organisation. Remplacé par un filtre Publiées / Non publiées qui grise le reste ; recherche par classification et par tags abandonnée. | §5.3, §5.5 (v254) |
@@ -727,6 +724,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v273 | 8 nov. 2026 | Page Réviser : on arrive toujours sur les trois ronds, en haut de la page (les explications ne restent plus ouvertes). Smiley « Je ne savais pas du tout » éclairci en mode jour (distinct de « vague idée »). Textes du robot raccourcis pour les filtres de l'Organisation. Darwin Admin : bouton « Importer la dernière version » qui lit les boîtes toutes prêtes dans le dépôt privé Fiches-contenu ; numéro de version de Darwin Admin remis à jour. |
 | v272 | 8 nov. 2026 | Page Réviser : ronds un peu plus grands, schémas plus petits alignés à droite, repliement des cadres animé, smileys de l'explication sans cadre et plus grands. Révision : animation entre le texte d'invitation et les boutons d'évaluation ; smileys clairs foncés en mode jour. Organisation : le robot explique chaque filtre quand on l'active (bulle fermée par la croix). Agenda : « Liste » et « Mois » deviennent deux pictogrammes à droite de « + Ajouter un événement ». |
 | v271 | 7 nov. 2026 | Révision : une fiche QCM avec un complément de réponse reste affichée avec « Continuer », même après une bonne réponse du premier coup (la suite d'une réponse sur plusieurs lignes passait toute seule) ; message du robot au passage aux fiches difficiles. Page Réviser « mixte » : contours colorés des trois ronds, aperçu du texte en dégradé dans les cadres repliés, nouveaux schémas dessinés par le propriétaire. |
 | v270 | 6 nov. 2026 | Page Réviser « mixte » : animation en trois temps (texte des ronds effacé et picto agrandi, vol plus lent des grands ronds vers les petits, apparition des cadres l'un après l'autre) ; cadres repliés par défaut (titre et notion), dépliables par un triangle en bas. |
