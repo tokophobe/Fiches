@@ -9079,3 +9079,46 @@ body.is-view-home .desk { background-color: var(--home-bg-color, var(--app-bg-co
   mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
 }
 .rx-frame:not(.is-open) .rx-fold { margin-top: -4px; }
+
+/* ==================================================================
+   v272 : retouches de la page Réviser et des smileys d'évaluation
+   ================================================================== */
+/* 1. Schémas un peu plus petits, alignés à droite (le petit rond du cadre
+   est à gauche et les cachait en partie). */
+.rx-schema { justify-content: flex-end; padding-left: 52px; }
+.rx-schema .rm-schema.rm-schema--wide { height: 38px; }
+.rx-icon { top: 29px; }
+/* 3. Smileys de l'explication « Renforcer » : sans cadre, plus grands. */
+.rx-rate-ico { background: transparent; box-shadow: none; border-radius: 0; width: 38px; height: 38px; }
+.rx-rates li { grid-template-columns: 38px 1fr; }
+.rx-rate-ico .icon-inline-svg, .rx-rate-ico svg { width: 34px; height: 34px; }
+/* 4. En mode jour, les pictos des notes claires (gris, vert pâle) sont
+   foncés pour rester lisibles. Seuls les smileys changent : les jauges et
+   les graphiques gardent les couleurs réglées dans Darwin Admin, et la
+   teinte reste la même (on mélange avec un gris très foncé). En mode
+   nuit, rien ne change. */
+:root {
+  --rating-again-ico: color-mix(in srgb, var(--rating-again-color, var(--terracotta)) 58%, #1f2937);
+  --rating-hard-ico: color-mix(in srgb, var(--rating-hard-color, var(--amber)) 66%, #1f2937);
+  --rating-good-ico: color-mix(in srgb, var(--rating-good-color, var(--sage)) 74%, #1f2937);
+  --rating-easy-ico: var(--rating-easy-color, var(--teal));
+}
+:root.is-night-mode {
+  --rating-again-ico: var(--rating-again-color, var(--terracotta));
+  --rating-hard-ico: var(--rating-hard-color, var(--amber));
+  --rating-good-ico: var(--rating-good-color, var(--sage));
+}
+.stamp--again { color: var(--rating-again-ico); }
+.stamp--hard { color: var(--rating-hard-ico); }
+.stamp--good { color: var(--rating-good-ico); }
+.stamp--easy { color: var(--rating-easy-ico); }
+/* 5. Les trois ronds de la page Réviser, un peu plus grands (le texte
+   touchait presque le bord). */
+.review-hub-stack .classes-role-circle { width: 156px; height: 156px; padding: 0 12px; box-sizing: border-box; }
+/* 8. Agenda : « + Ajouter » à gauche, pictos liste / mois à droite, sur
+   la même ligne. */
+.calendar-top-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.calendar-top-row #calendar-add-event-btn { margin: 0; }
+.calendar-top-row .calendar-view-toggle { margin: 0; flex: 0 0 auto; gap: 6px; }
+.calendar-top-row .calendar-view-toggle-btn { flex: 0 0 auto; width: 42px; height: 42px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+.calendar-top-row .calendar-view-toggle-btn svg { display: block; }
