@@ -79172,99 +79172,256 @@
    "cards": [
     {
      "question": "Que signifie étymologiquement « démocratie » ?",
-     "answer": "Du grec dêmos (le peuple) et kratos (le pouvoir) :\nle pouvoir du peuple.",
-     "w": "9341a2d1",
-     "wq": "daf7fbae"
+     "answer": "Le pouvoir du peuple",
+     "w": [
+      "ae603333",
+      "9341a2d1"
+     ],
+     "more": "Du grec dêmos (peuple) et kratos (pouvoir).",
+     "wrongs": [
+      "Le pouvoir des meilleurs",
+      "Le pouvoir d'un seul",
+      "Le pouvoir des riches"
+     ]
     },
     {
      "question": "Qu'est-ce que la démocratie directe ?",
-     "answer": "Les citoyens décident eux-mêmes, sans représentants.\nEx. : l'Ecclésia de l'Athènes classique",
-     "w": "dd68d8e0",
-     "wq": "2a15227b"
+     "answer": "Les citoyens décident eux-mêmes, sans représentants",
+     "w": [
+      "ac29522a",
+      "dd68d8e0"
+     ],
+     "more": "Ex. : l'Ecclésia de l'Athènes classique.",
+     "wrongs": [
+      "Les citoyens élisent des représentants",
+      "Un chef décide seul",
+      "Les juges font les lois"
+     ]
     },
     {
-     "question": "Quelles sont les principales institutions de la démocratie athénienne ?",
-     "answer": "• Ecclésia : l'assemblée des citoyens, qui vote les lois\n• Boulè : le conseil des 500, tirés au sort\n• Héliée : le tribunal populaire",
-     "w": "f071b06d",
-     "wq": "92257dd6"
+     "question": "Comment s'appelle l'assemblée des citoyens qui vote les lois à Athènes ?",
+     "answer": "L'Ecclésia",
+     "w": [
+      "b1749235",
+      "f071b06d"
+     ],
+     "wq": "92257dd6",
+     "wrongs": [
+      "La Boulè",
+      "L'Héliée",
+      "Le Sénat"
+     ]
     },
     {
-     "question": "Quel est le rôle de Clisthène dans l'histoire de la démocratie athénienne ?",
-     "answer": "Ses réformes (508-507 av. J.-C.) répartissent les citoyens en dix tribus\net posent les bases de l'égalité politique (isonomie).",
-     "w": "a8acb300",
-     "wq": "415964ec"
+     "question": "Qu'est-ce que la Boulè à Athènes ?",
+     "answer": "Le conseil des 500, tirés au sort",
+     "more": "L'Héliée est le tribunal populaire.",
+     "wrongs": [
+      "L'assemblée de tous les citoyens",
+      "Le tribunal populaire",
+      "Le conseil des stratèges élus"
+     ]
+    },
+    {
+     "question": "Quel réformateur pose les bases de la démocratie athénienne en 508-507 av. J.-C. ?",
+     "answer": "Clisthène",
+     "w": [
+      "f4d354db",
+      "a8acb300"
+     ],
+     "wq": "415964ec",
+     "more": "Il répartit les citoyens en dix tribus et pose l'égalité politique (isonomie).",
+     "wrongs": [
+      "Périclès",
+      "Solon",
+      "Socrate"
+     ]
     },
     {
      "question": "Qui est exclu de la citoyenneté à Athènes ?",
-     "answer": "• Les femmes\n• Les esclaves\n• Les métèques (étrangers résidant à Athènes)",
-     "w": "8e8a126a",
-     "wq": "680e53e4"
+     "answer": "Femmes, esclaves et métèques",
+     "w": [
+      "ac0e0eab",
+      "8e8a126a"
+     ],
+     "more": "Les métèques sont les étrangers résidant à Athènes.",
+     "wrongs": [
+      "Seulement les esclaves",
+      "Les paysans et les artisans",
+      "Les hommes de moins de 30 ans"
+     ]
     },
     {
-     "question": "Pourquoi le tirage au sort et le misthos sont-ils démocratiques à Athènes ?",
-     "answer": "• Tirage au sort : chaque citoyen a la même chance d'exercer une charge.\n• Misthos (indemnité, sous Périclès) : les plus pauvres peuvent participer.",
-     "w": "3052a1b2",
-     "wq": "a994b8a0"
+     "question": "Pourquoi le tirage au sort est-il démocratique à Athènes ?",
+     "answer": "Chaque citoyen a la même chance d'exercer une charge",
+     "w": [
+      "e28e971a",
+      "3052a1b2"
+     ],
+     "wq": "a994b8a0",
+     "wrongs": [
+      "Il favorise les plus riches",
+      "Il évite les élections coûteuses",
+      "Il désigne les meilleurs orateurs"
+     ]
+    },
+    {
+     "question": "À quoi sert le misthos instauré sous Périclès ?",
+     "answer": "Permettre aux plus pauvres de participer",
+     "more": "C'est une indemnité versée aux citoyens qui exercent une charge.",
+     "wrongs": [
+      "Payer les esclaves",
+      "Financer la guerre",
+      "Récompenser les vainqueurs des Jeux"
+     ]
     },
     {
      "question": "Qu'est-ce que la démocratie représentative ?",
-     "answer": "Le peuple souverain élit des représentants\nqui gouvernent et votent les lois en son nom.",
-     "w": "b21cd9f4",
-     "wq": "034af712"
+     "answer": "Le peuple élit des représentants qui gouvernent",
+     "w": [
+      "0d661e66",
+      "b21cd9f4"
+     ],
+     "wrongs": [
+      "Les citoyens votent toutes les lois eux-mêmes",
+      "Un roi gouverne avec un conseil",
+      "Les représentants sont tirés au sort à vie"
+     ]
     },
     {
-     "question": "Quelle distinction Benjamin Constant établit-il en 1819 ?",
-     "answer": "Liberté des Anciens : participer collectivement aux décisions de la cité.\nLiberté des Modernes : jouir paisiblement de son indépendance privée,\nd'où le gouvernement représentatif.",
-     "w": "784ad894",
-     "wq": "d944d855"
+     "question": "Qui oppose en 1819 la « liberté des Anciens » à celle des « Modernes » ?",
+     "answer": "Benjamin Constant",
+     "w": [
+      "ff69e4b2",
+      "784ad894"
+     ],
+     "wq": "d944d855",
+     "more": "Anciens : participer aux décisions de la cité. Modernes : jouir de son indépendance privée.",
+     "wrongs": [
+      "Tocqueville",
+      "Montesquieu",
+      "Rousseau"
+     ]
     },
     {
-     "question": "Quelle analyse Tocqueville propose-t-il dans De la démocratie en Amérique (1835-1840) ?",
-     "answer": "La démocratie repose sur l'égalité des conditions.\nRisques : la tyrannie de la majorité, l'individualisme.",
-     "w": "bc5a9302",
-     "wq": "4a8c36f2"
+     "question": "Selon Tocqueville, sur quoi repose la démocratie ?",
+     "answer": "L'égalité des conditions",
+     "w": [
+      "d4e32ac7",
+      "bc5a9302"
+     ],
+     "wq": "4a8c36f2",
+     "more": "Dans De la démocratie en Amérique (1835-1840). Risques : tyrannie de la majorité, individualisme.",
+     "wrongs": [
+      "La richesse des citoyens",
+      "Le tirage au sort",
+      "La religion d'État"
+     ]
     },
     {
-     "question": "Quels sont les critères d'une démocratie libérale ?",
-     "answer": "• Élections libres et pluralistes\n• Séparation des pouvoirs\n• État de droit\n• Libertés fondamentales garanties",
-     "w": "cd0ad395",
-     "wq": "175cbbee"
+     "question": "Quel critère définit une démocratie libérale ?",
+     "answer": "Des élections libres et pluralistes",
+     "w": [
+      "56733ec2",
+      "cd0ad395"
+     ],
+     "wq": "175cbbee",
+     "more": "Aussi : séparation des pouvoirs, État de droit, libertés garanties.",
+     "wrongs": [
+      "Un parti unique",
+      "Un chef élu à vie",
+      "La fusion des pouvoirs"
+     ]
     },
     {
-     "question": "Qu'est-ce que la démocratie semi-directe ? Donner un exemple.",
-     "answer": "Un régime représentatif où les citoyens peuvent aussi décider directement\n(référendum, initiative populaire).\nEx. : les votations en Suisse",
-     "w": "c4724471",
-     "wq": "96d42907"
+     "question": "Quel pays est l'exemple type de la démocratie semi-directe ?",
+     "answer": "La Suisse",
+     "w": [
+      "cb11d68a",
+      "c4724471"
+     ],
+     "wq": "96d42907",
+     "more": "Les citoyens y décident aussi directement, par les votations (référendum, initiative populaire).",
+     "wrongs": [
+      "Le Royaume-Uni",
+      "La Chine",
+      "L'Arabie saoudite"
+     ]
     },
     {
-     "question": "Qu'est-ce que la démocratie participative ?",
-     "answer": "Associer les citoyens à l'élaboration des décisions.\nEx. : budgets participatifs, conseils de quartier,\nConvention citoyenne pour le climat (2019-2020)",
-     "w": "087c9cd4",
-     "wq": "36c177d6"
+     "question": "La Convention citoyenne pour le climat relève de quelle démocratie ?",
+     "answer": "Participative",
+     "w": [
+      "36c2fa94",
+      "087c9cd4"
+     ],
+     "wq": "36c177d6",
+     "more": "Associer les citoyens aux décisions : budgets participatifs, conseils de quartier…",
+     "wrongs": [
+      "Directe",
+      "Athénienne",
+      "Censitaire"
+     ]
     },
     {
-     "question": "Comment le Portugal est-il passé de la dictature à la démocratie ?",
-     "answer": "Par la « révolution des Œillets » (25 avril 1974) :\nun coup d'État militaire pacifique renverse la dictature salazariste.",
-     "w": "3adb67de",
-     "wq": "3e854d83"
+     "question": "Comment s'appelle la révolution qui met fin à la dictature au Portugal en 1974 ?",
+     "answer": "La révolution des Œillets",
+     "w": [
+      "6e3dc0e0",
+      "3adb67de"
+     ],
+     "wq": "3e854d83",
+     "more": "Le 25 avril 1974, un coup d'État militaire pacifique renverse la dictature salazariste.",
+     "wrongs": [
+      "La révolution de Velours",
+      "La révolution des Roses",
+      "La révolution orange"
+     ]
     },
     {
-     "question": "Quelles sont les étapes de la transition démocratique en Espagne ?",
-     "answer": "1. Mort de Franco (1975) ; le roi Juan Carlos accompagne la transition.\n2. Constitution de 1978.\n3. Échec de la tentative de coup d'État du 23 février 1981.",
-     "w": "be60799c",
-     "wq": "4887c631"
+     "question": "Après la mort de Franco, quel roi accompagne la transition démocratique en Espagne ?",
+     "answer": "Juan Carlos",
+     "w": [
+      "1e900395",
+      "be60799c"
+     ],
+     "wq": "4887c631",
+     "more": "Mort de Franco (1975), Constitution de 1978, échec du coup d'État de 1981.",
+     "wrongs": [
+      "Philippe VI",
+      "Alphonse XIII",
+      "Charles III"
+     ]
     },
     {
-     "question": "Que sont les critères de Copenhague (1993) ?",
-     "answer": "Les conditions d'adhésion à l'UE :\n• institutions démocratiques stables, État de droit\n• respect des droits de l'homme et des minorités\n• économie de marché viable",
-     "w": "d4be0512",
-     "wq": "4b7ed8d0"
+     "question": "Que fixent les critères de Copenhague (1993) ?",
+     "answer": "Les conditions d'adhésion à l'UE",
+     "w": [
+      "89f8805d",
+      "d4be0512"
+     ],
+     "wq": "4b7ed8d0",
+     "more": "Institutions démocratiques, État de droit, droits de l'homme, économie de marché.",
+     "wrongs": [
+      "Les règles de l'euro",
+      "Les quotas de pêche",
+      "Les objectifs climatiques"
+     ]
     },
     {
-     "question": "Quelles étapes ont renforcé la dimension démocratique de la construction européenne ?",
-     "answer": "• Élection du Parlement européen au suffrage universel direct (depuis 1979)\n• Citoyenneté européenne (traité de Maastricht, 1992)",
-     "w": "7c04edef",
-     "wq": "7bc8dd61"
+     "question": "Depuis quand le Parlement européen est-il élu au suffrage universel direct ?",
+     "answer": "1979",
+     "w": [
+      "e6c5329a",
+      "7c04edef"
+     ],
+     "wq": "7bc8dd61",
+     "more": "La citoyenneté européenne date du traité de Maastricht (1992).",
+     "wrongs": [
+      "1957",
+      "1992",
+      "2004"
+     ]
     }
    ]
   },
@@ -79288,100 +79445,298 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce qu'un bit ? un octet ?",
-     "answer": "• Bit : un chiffre binaire (0 ou 1)\n• Octet : 8 bits, soit 2⁸ = 256 valeurs",
-     "w": "34bcb450",
-     "wq": "cb96134a"
+     "question": "Qu'est-ce qu'un bit ?",
+     "answer": "Un chiffre binaire, 0 ou 1",
+     "w": [
+      "a97e5ad2",
+      "34bcb450"
+     ],
+     "wq": "cb96134a",
+     "wrongs": [
+      "8 chiffres binaires",
+      "Un chiffre de 0 à 9",
+      "Un caractère"
+     ]
     },
     {
-     "question": "Combien de valeurs peut-on coder sur n bits et quel est le plus grand entier naturel représentable ?",
-     "answer": "2ⁿ valeurs\nPlus grand entier naturel : 2ⁿ − 1 (255 sur 8 bits)",
-     "w": "05248637",
-     "wq": "2ab179b2"
+     "question": "Combien de bits contient un octet ?",
+     "answer": "8",
+     "more": "Soit 2⁸ = 256 valeurs.",
+     "wrongs": [
+      "4",
+      "16",
+      "10"
+     ]
     },
     {
-     "question": "Convertir 1011 (base 2) en base 10.",
-     "answer": "11\n1×8 + 0×4 + 1×2 + 1×1",
-     "w": "cc9e3054",
-     "wq": "7a2832d1"
+     "question": "Combien de valeurs peut-on coder sur n bits ?",
+     "answer": "2ⁿ",
+     "w": [
+      "7ed63807",
+      "05248637"
+     ],
+     "wq": "2ab179b2",
+     "wrongs": [
+      "n²",
+      "2n",
+      "10ⁿ"
+     ]
     },
     {
-     "question": "Convertir 13 (base 10) en base 2.",
-     "answer": "1101\n13 = 8 + 4 + 1\n(par divisions successives par 2)",
-     "w": "68ce05a8",
-     "wq": "fb73a390"
+     "question": "Quel est le plus grand entier naturel codable sur 8 bits ?",
+     "answer": "255",
+     "more": "2ⁿ − 1 sur n bits.",
+     "wrongs": [
+      "256",
+      "127",
+      "128"
+     ]
     },
     {
-     "question": "Qu'est-ce que la base 16 (hexadécimal) ?",
-     "answer": "Chiffres 0 à 9 et lettres A à F (A = 10, …, F = 15).\nUn chiffre hexadécimal = 4 bits.",
-     "w": "c024a38d",
-     "wq": "4c4e06ca"
+     "question": "Combien vaut 1011 (base 2) en base 10 ?",
+     "answer": "11",
+     "w": [
+      "908391af",
+      "cc9e3054"
+     ],
+     "wq": "7a2832d1",
+     "more": "1×8 + 0×4 + 1×2 + 1×1",
+     "wrongs": [
+      "13",
+      "1011",
+      "9"
+     ]
     },
     {
-     "question": "Convertir 2A (base 16) et FF (base 16) en base 10.",
-     "answer": "• 2A = 2×16 + 10 = 42\n• FF = 15×16 + 15 = 255",
-     "w": "a74cd0d8",
-     "wq": "9b4d89d2"
+     "question": "Comment s'écrit 13 (base 10) en base 2 ?",
+     "answer": "1101",
+     "w": [
+      "cf6172af",
+      "68ce05a8"
+     ],
+     "wq": "fb73a390",
+     "more": "13 = 8 + 4 + 1",
+     "wrongs": [
+      "1011",
+      "1110",
+      "1001"
+     ]
     },
     {
-     "question": "Calculer l'addition binaire 0110 + 0011.",
-     "answer": "1001\n(6 + 3 = 9)",
-     "w": "732105ef",
-     "wq": "4e9c2208"
+     "question": "Combien de bits représente un chiffre hexadécimal ?",
+     "answer": "4",
+     "w": [
+      "0b7a4434",
+      "c024a38d"
+     ],
+     "wq": "4c4e06ca",
+     "more": "Chiffres 0 à 9 et lettres A à F (A = 10, …, F = 15).",
+     "wrongs": [
+      "8",
+      "2",
+      "16"
+     ]
     },
     {
-     "question": "Comment représente-t-on un entier négatif en complément à deux sur 8 bits ? Exemple avec −5.",
-     "answer": "−5 s'écrit 11111011 :\n1. 5 en binaire : 00000101\n2. On inverse les bits : 11111010\n3. On ajoute 1 : 11111011",
-     "w": "f3c4379f",
-     "wq": "595bd640"
+     "question": "Combien vaut 2A (base 16) en base 10 ?",
+     "answer": "42",
+     "w": [
+      "e9fd9db5",
+      "a74cd0d8"
+     ],
+     "wq": "9b4d89d2",
+     "more": "2×16 + 10",
+     "wrongs": [
+      "210",
+      "26",
+      "32"
+     ]
     },
     {
-     "question": "Quels entiers relatifs peut-on représenter sur 8 bits en complément à deux ?",
-     "answer": "De −128 à 127\nLe bit de poids fort vaut 1 pour les négatifs.",
-     "w": "6f14d55b",
-     "wq": "9f90fbb2"
+     "question": "Combien vaut FF (base 16) en base 10 ?",
+     "answer": "255",
+     "more": "15×16 + 15",
+     "wrongs": [
+      "256",
+      "1515",
+      "240"
+     ]
+    },
+    {
+     "question": "Combien vaut l'addition binaire 0110 + 0011 ?",
+     "answer": "1001",
+     "w": [
+      "39faa80a",
+      "732105ef"
+     ],
+     "wq": "4e9c2208",
+     "more": "6 + 3 = 9",
+     "wrongs": [
+      "0111",
+      "1010",
+      "1100"
+     ]
+    },
+    {
+     "question": "Comment s'écrit −5 en complément à deux sur 8 bits ?",
+     "answer": "11111011",
+     "w": [
+      "b524ecca",
+      "f3c4379f"
+     ],
+     "wq": "595bd640",
+     "more": "5 = 00000101 ; on inverse : 11111010 ; on ajoute 1.",
+     "wrongs": [
+      "10000101",
+      "11111010",
+      "00000101"
+     ]
+    },
+    {
+     "question": "Quels entiers code-t-on sur 8 bits en complément à deux ?",
+     "answer": "De −128 à 127",
+     "w": [
+      "9bb2c884",
+      "6f14d55b"
+     ],
+     "wq": "9f90fbb2",
+     "more": "Le bit de poids fort vaut 1 pour les négatifs.",
+     "wrongs": [
+      "De 0 à 255",
+      "De −127 à 128",
+      "De −256 à 255"
+     ]
     },
     {
      "question": "Comment les nombres réels sont-ils représentés en machine ?",
-     "answer": "Par des nombres flottants (norme IEEE 754) :\nsigne, exposant, mantisse.\nLa plupart des réels ne sont représentés que de façon approchée.",
-     "w": "ed37f8e5",
-     "wq": "471d24a3"
+     "answer": "Par des flottants (IEEE 754)",
+     "w": [
+      "ba866f59",
+      "ed37f8e5"
+     ],
+     "more": "Signe, exposant, mantisse. La plupart des réels sont représentés de façon approchée.",
+     "wrongs": [
+      "En complément à deux",
+      "En code ASCII",
+      "De façon toujours exacte"
+     ]
     },
     {
-     "question": "Pourquoi 0.1 + 0.2 == 0.3 renvoie-t-il False en Python ?",
-     "answer": "0,1 et 0,2 n'ont pas de représentation binaire exacte :\nle résultat vaut 0.30000000000000004.\nOn ne teste donc pas l'égalité de deux flottants.",
-     "w": "dd809322",
-     "wq": "914cdfce"
+     "question": "En Python, que renvoie 0.1 + 0.2 == 0.3 ?",
+     "answer": "False",
+     "w": [
+      "999356dc",
+      "dd809322"
+     ],
+     "wq": "914cdfce",
+     "more": "0,1 et 0,2 n'ont pas d'écriture binaire exacte : 0.1 + 0.2 vaut 0.30000000000000004.",
+     "wrongs": [
+      "True",
+      "Une erreur",
+      "0.3"
+     ]
     },
     {
-     "question": "Quels sont les opérateurs booléens de base ?",
-     "answer": "• not (non)\n• and (et)\n• or (ou)\n• xor (ou exclusif)\nEx. : True and False vaut False.",
-     "w": "2facc825",
-     "wq": "56f48b85"
+     "question": "Que vaut True and False ?",
+     "answer": "False",
+     "w": [
+      "04cbf081",
+      "2facc825"
+     ],
+     "wq": "56f48b85",
+     "more": "Opérateurs booléens : not, and, or, xor.",
+     "wrongs": [
+      "True",
+      "None",
+      "Une erreur"
+     ]
     },
     {
-     "question": "Que signifie le caractère séquentiel des opérateurs and et or en Python ?",
-     "answer": "Le second opérande n'est évalué que si nécessaire :\n• a and b : si a est False, b n'est pas évalué\n• a or b : si a est True, b n'est pas évalué",
-     "w": "08c33a46",
-     "wq": "5b4312ba"
+     "question": "Dans « a and b », si a vaut False, b est-il évalué ?",
+     "answer": "Non",
+     "w": [
+      "a5e4a8ef",
+      "08c33a46"
+     ],
+     "wq": "5b4312ba",
+     "more": "Évaluation paresseuse : de même, dans « a or b », b n'est pas évalué si a vaut True.",
+     "wrongs": [
+      "Oui, toujours",
+      "Seulement si b est un booléen",
+      "Oui, en premier"
+     ]
     },
     {
-     "question": "Qu'est-ce que le codage ASCII ?",
-     "answer": "Un codage des caractères sur 7 bits (128 caractères) :\nlettres non accentuées, chiffres, ponctuation.\nEx. : « A » a le code 65.",
-     "w": "efadaa25",
-     "wq": "051d1bc8"
+     "question": "Sur combien de bits le code ASCII code-t-il les caractères ?",
+     "answer": "7 bits",
+     "w": [
+      "59c63a5a",
+      "efadaa25"
+     ],
+     "wq": "051d1bc8",
+     "more": "128 caractères non accentués. « A » a le code 65.",
+     "wrongs": [
+      "8 bits",
+      "16 bits",
+      "4 bits"
+     ]
     },
     {
-     "question": "Qu'apportent Unicode et UTF-8 ?",
-     "answer": "Unicode : un numéro pour chaque caractère de toutes les écritures.\nUTF-8 : l'encode sur 1 à 4 octets, compatible avec l'ASCII.",
-     "w": "c59dd204",
-     "wq": "4f0308c0"
+     "question": "Sur combien d'octets UTF-8 encode-t-il un caractère ?",
+     "answer": "1 à 4 octets",
+     "w": [
+      "16b163cf",
+      "c59dd204"
+     ],
+     "wq": "4f0308c0",
+     "more": "Unicode donne un numéro à chaque caractère ; UTF-8 est compatible avec l'ASCII.",
+     "wrongs": [
+      "Toujours 1 octet",
+      "Toujours 2 octets",
+      "8 octets"
+     ]
     },
     {
-     "question": "Que renvoient bin(13), hex(255), int('1101', 2), ord('A') et chr(97) en Python ?",
-     "answer": "• bin(13) → '0b1101'\n• hex(255) → '0xff'\n• int('1101', 2) → 13\n• ord('A') → 65\n• chr(97) → 'a'",
-     "w": "1df627a8",
-     "wq": "53883e3b"
+     "question": "En Python, que renvoie bin(13) ?",
+     "answer": "'0b1101'",
+     "w": [
+      "7eb4671f",
+      "1df627a8"
+     ],
+     "wq": "53883e3b",
+     "wrongs": [
+      "'1101'",
+      "'0x0d'",
+      "13"
+     ]
+    },
+    {
+     "question": "En Python, que renvoie hex(255) ?",
+     "answer": "'0xff'",
+     "wrongs": [
+      "'ff'",
+      "'0b11111111'",
+      "'FF16'"
+     ]
+    },
+    {
+     "question": "En Python, que renvoie int('1101', 2) ?",
+     "answer": "13",
+     "wrongs": [
+      "1101",
+      "11",
+      "'13'"
+     ]
+    },
+    {
+     "question": "En Python, que renvoie ord('A') ?",
+     "answer": "65",
+     "more": "Et chr(97) renvoie 'a'.",
+     "wrongs": [
+      "97",
+      "1",
+      "'a'"
+     ]
     }
    ]
   },
@@ -79406,99 +79761,249 @@
    "cards": [
     {
      "question": "Qu'est-ce que la rhétorique ?",
-     "answer": "L'art de bien parler pour persuader un auditoire.\nElle naît en Grèce au Ve siècle av. J.-C.",
-     "w": "d8d52218",
-     "wq": "fa2db2ac"
+     "answer": "L'art de bien parler pour persuader",
+     "w": [
+      "075438ed",
+      "d8d52218"
+     ],
+     "more": "Elle naît en Grèce au Ve siècle av. J.-C.",
+     "wrongs": [
+      "L'art d'écrire des poèmes",
+      "L'étude de la grammaire",
+      "L'art de raconter des mythes"
+     ]
     },
     {
-     "question": "Quels sont les trois genres oratoires distingués par Aristote ?",
-     "answer": "• Judiciaire : accuser ou défendre (passé)\n• Délibératif : conseiller ou déconseiller (avenir)\n• Épidictique : louer ou blâmer (présent)",
-     "w": "48e34011",
-     "wq": "9a511a14"
+     "question": "Quel genre oratoire sert à louer ou blâmer ?",
+     "answer": "L'épidictique",
+     "w": [
+      "7213bb73",
+      "48e34011"
+     ],
+     "wq": "9a511a14",
+     "more": "Judiciaire : accuser ou défendre. Délibératif : conseiller ou déconseiller.",
+     "wrongs": [
+      "Le judiciaire",
+      "Le délibératif",
+      "Le narratif"
+     ]
     },
     {
-     "question": "Que désignent ethos, pathos et logos ?",
-     "answer": "Les trois moyens de persuader :\n• ethos : l'image de l'orateur\n• pathos : les émotions de l'auditoire\n• logos : les arguments rationnels",
-     "w": "547a7657",
-     "wq": "813e7723"
+     "question": "En rhétorique, que désigne l'ethos ?",
+     "answer": "L'image de l'orateur",
+     "w": [
+      "8b752095",
+      "547a7657"
+     ],
+     "wq": "813e7723",
+     "wrongs": [
+      "Les émotions de l'auditoire",
+      "Les arguments rationnels",
+      "Le plan du discours"
+     ]
     },
     {
-     "question": "Quelles sont les cinq parties de la rhétorique ?",
-     "answer": "1. Invention : trouver les arguments\n2. Disposition : les ordonner\n3. Élocution : le style\n4. Action : diction et gestes\n5. Mémoire",
-     "w": "f9b76d2d",
-     "wq": "0cd985c8"
+     "question": "En rhétorique, que désigne le pathos ?",
+     "answer": "Les émotions de l'auditoire",
+     "more": "Le logos désigne les arguments rationnels.",
+     "wrongs": [
+      "L'image de l'orateur",
+      "Les arguments rationnels",
+      "La conclusion du discours"
+     ]
     },
     {
-     "question": "Quelles sont les grandes parties d'un discours selon la rhétorique antique ?",
-     "answer": "1. Exorde : capter l'attention\n2. Narration : exposer les faits\n3. Confirmation et réfutation : argumenter\n4. Péroraison : conclure en émouvant",
-     "w": "1b5a5762",
-     "wq": "8c91e7e6"
+     "question": "Quelle partie de la rhétorique consiste à trouver les arguments ?",
+     "answer": "L'invention",
+     "w": [
+      "ae6cca8f",
+      "f9b76d2d"
+     ],
+     "wq": "0cd985c8",
+     "more": "Cinq parties : invention, disposition, élocution, action, mémoire.",
+     "wrongs": [
+      "La disposition",
+      "L'élocution",
+      "L'action"
+     ]
+    },
+    {
+     "question": "Comment s'appelle la conclusion d'un discours, qui cherche à émouvoir ?",
+     "answer": "La péroraison",
+     "w": [
+      "7c49f33d",
+      "1b5a5762"
+     ],
+     "wq": "8c91e7e6",
+     "more": "Exorde, narration, confirmation et réfutation, péroraison.",
+     "wrongs": [
+      "L'exorde",
+      "La narration",
+      "La réfutation"
+     ]
     },
     {
      "question": "Qui sont les sophistes ?",
-     "answer": "Des maîtres de rhétorique itinérants du Ve siècle av. J.-C.\n(Gorgias, Protagoras),\nqui enseignaient contre rémunération l'art de convaincre.",
-     "w": "2ed8629a",
-     "wq": "e82fdee5"
+     "answer": "Des maîtres de rhétorique payés",
+     "w": [
+      "852403ac",
+      "2ed8629a"
+     ],
+     "more": "Ve siècle av. J.-C. : Gorgias, Protagoras.",
+     "wrongs": [
+      "Des prêtres grecs",
+      "Des philosophes opposés à la rhétorique",
+      "Des soldats athéniens"
+     ]
     },
     {
-     "question": "Que soutient Gorgias dans l'Éloge d'Hélène ?",
-     "answer": "Le discours est un tyran très puissant :\nla parole agit sur l'âme comme un remède sur le corps.\nHélène, persuadée par la parole, ne serait donc pas coupable.",
-     "w": "755cf223",
-     "wq": "2ecc86d4"
+     "question": "Dans l'Éloge d'Hélène, comment Gorgias décrit-il le discours ?",
+     "answer": "Comme un tyran très puissant",
+     "w": [
+      "56b90b27",
+      "755cf223"
+     ],
+     "wq": "2ecc86d4",
+     "more": "La parole agit sur l'âme comme un remède sur le corps : Hélène, persuadée, n'est pas coupable.",
+     "wrongs": [
+      "Comme une parole sans effet",
+      "Comme un art réservé aux dieux",
+      "Comme une simple flatterie"
+     ]
     },
     {
-     "question": "Quelle critique Platon adresse-t-il à la rhétorique dans le Gorgias ?",
-     "answer": "Une flatterie qui vise le plaisir et l'apparence\nplutôt que le vrai et le bien,\ncomme la cuisine imite la médecine.",
-     "w": "7332c34b",
-     "wq": "80c9d630"
+     "question": "Dans le Gorgias, à quoi Platon compare-t-il la rhétorique ?",
+     "answer": "À une flatterie, comme la cuisine",
+     "w": [
+      "20c173af",
+      "7332c34b"
+     ],
+     "wq": "80c9d630",
+     "more": "Elle vise le plaisir et l'apparence plutôt que le vrai, comme la cuisine imite la médecine.",
+     "wrongs": [
+      "À la médecine de l'âme",
+      "À la géométrie",
+      "À la musique"
+     ]
     },
     {
-     "question": "Quels sont les trois devoirs de l'orateur selon Cicéron ?",
-     "answer": "• Instruire (docere)\n• Plaire (delectare)\n• Émouvoir (movere)",
-     "w": "ac6b4b7b",
-     "wq": "2e329a65"
+     "question": "Selon Cicéron, quels sont les trois devoirs de l'orateur ?",
+     "answer": "Instruire, plaire, émouvoir",
+     "w": [
+      "8753ae16",
+      "ac6b4b7b"
+     ],
+     "wq": "2e329a65",
+     "more": "Docere, delectare, movere.",
+     "wrongs": [
+      "Accuser, défendre, juger",
+      "Inventer, disposer, mémoriser",
+      "Convaincre, menacer, conclure"
+     ]
     },
     {
-     "question": "Quel discours célèbre Cicéron prononce-t-il en 63 av. J.-C. ?",
-     "answer": "Les Catilinaires, contre le conjuré Catilina :\n« Jusqu'à quand enfin, Catilina,\nabuseras-tu de notre patience ? »",
-     "w": "4eef9be4",
-     "wq": "565c5395"
+     "question": "Contre qui Cicéron prononce-t-il les Catilinaires en 63 av. J.-C. ?",
+     "answer": "Catilina",
+     "w": [
+      "94f21f99",
+      "4eef9be4"
+     ],
+     "wq": "565c5395",
+     "more": "« Jusqu'à quand enfin, Catilina, abuseras-tu de notre patience ? »",
+     "wrongs": [
+      "César",
+      "Marc Antoine",
+      "Philippe II"
+     ]
     },
     {
      "question": "Comment Quintilien définit-il l'orateur idéal ?",
-     "answer": "« Vir bonus dicendi peritus » :\nun homme de bien habile à parler.\n(formule de Caton, reprise dans l'Institution oratoire)",
-     "w": "08cb5ece",
-     "wq": "f9d53982"
+     "answer": "Un homme de bien habile à parler",
+     "w": [
+      "d9f1c4a5",
+      "08cb5ece"
+     ],
+     "more": "« Vir bonus dicendi peritus », formule de Caton.",
+     "wrongs": [
+      "Un homme riche et puissant",
+      "Un philosophe silencieux",
+      "Un avocat sans scrupules"
+     ]
     },
     {
-     "question": "Que sont les Philippiques de Démosthène ?",
-     "answer": "Des discours délibératifs (IVe siècle av. J.-C.)\noù l'orateur athénien appelle à résister\nà Philippe II de Macédoine.",
-     "w": "bef16bf7",
-     "wq": "5b2bc85a"
+     "question": "Contre qui Démosthène prononce-t-il les Philippiques ?",
+     "answer": "Philippe II de Macédoine",
+     "w": [
+      "29ec2069",
+      "bef16bf7"
+     ],
+     "wq": "5b2bc85a",
+     "more": "Discours délibératifs du IVe siècle av. J.-C.",
+     "wrongs": [
+      "Alexandre le Grand",
+      "Catilina",
+      "Les Perses"
+     ]
     },
     {
-     "question": "Quelle distinction fait-on entre convaincre et persuader ?",
-     "answer": "Convaincre : s'adresser à la raison, par des arguments.\nPersuader : toucher aussi les émotions et la volonté.",
-     "w": "fe3f1faa",
-     "wq": "e0a98ce6"
+     "question": "Persuader, c'est s'adresser à la raison seulement ?",
+     "answer": "Non, aussi aux émotions",
+     "w": [
+      "ad7ada5d",
+      "fe3f1faa"
+     ],
+     "wq": "e0a98ce6",
+     "more": "Convaincre s'adresse à la raison ; persuader touche aussi les émotions et la volonté.",
+     "wrongs": [
+      "Oui, uniquement à la raison",
+      "Non, uniquement à la mémoire",
+      "Oui, par des démonstrations"
+     ]
     },
     {
-     "question": "Que dit Pascal dans De l'art de persuader ?",
-     "answer": "L'art de persuader consiste autant à agréer qu'à convaincre :\nil faut plaire autant que démontrer.",
-     "w": "3da0c001",
-     "wq": "f3efeceb"
+     "question": "Selon Pascal, l'art de persuader consiste en quoi ?",
+     "answer": "Autant à agréer qu'à convaincre",
+     "w": [
+      "fc7c0ac6",
+      "3da0c001"
+     ],
+     "wq": "f3efeceb",
+     "more": "Dans De l'art de persuader.",
+     "wrongs": [
+      "Seulement à démontrer",
+      "À tromper l'auditoire",
+      "À parler le plus longtemps"
+     ]
     },
     {
-     "question": "Comment la fable « Le Corbeau et le Renard » illustre-t-elle les séductions de la parole ?",
-     "answer": "Le renard flatte le corbeau pour obtenir son fromage.\nMorale : « Apprenez que tout flatteur\nvit aux dépens de celui qui l'écoute. »",
-     "w": "5f5bba23",
-     "wq": "2574b952"
+     "question": "Dans « Le Corbeau et le Renard », comment le renard obtient-il le fromage ?",
+     "answer": "En flattant le corbeau",
+     "w": [
+      "23f725db",
+      "5f5bba23"
+     ],
+     "wq": "2574b952",
+     "more": "« Tout flatteur vit aux dépens de celui qui l'écoute. »",
+     "wrongs": [
+      "En le menaçant",
+      "En le volant pendant son sommeil",
+      "En l'échangeant"
+     ]
     },
     {
-     "question": "Quel exemple de parole épidictique offre Bossuet ?",
-     "answer": "Ses oraisons funèbres,\ncomme celle d'Henriette d'Angleterre (1670) :\n« Madame se meurt, Madame est morte ! »",
-     "w": "b24d1dc8",
-     "wq": "2bf3ded6"
+     "question": "Quel orateur prononce l'oraison funèbre d'Henriette d'Angleterre ?",
+     "answer": "Bossuet",
+     "w": [
+      "30a3a656",
+      "b24d1dc8"
+     ],
+     "wq": "2bf3ded6",
+     "more": "1670 : « Madame se meurt, Madame est morte ! »",
+     "wrongs": [
+      "Pascal",
+      "La Fontaine",
+      "Voltaire"
+     ]
     }
    ]
   },
@@ -79523,99 +80028,235 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'une organisation ?",
-     "answer": "Un groupe organisé d'individus qui coordonnent actions et ressources,\ndans un cadre juridique,\npour atteindre des objectifs communs.",
-     "w": "74732715",
-     "wq": "6bf43acd"
+     "answer": "Un groupe qui coordonne ses actions vers des objectifs communs",
+     "w": [
+      "3baf92e8",
+      "74732715"
+     ],
+     "more": "Dans un cadre juridique, avec des ressources.",
+     "wrongs": [
+      "Une personne qui travaille seule",
+      "Un bâtiment de bureaux",
+      "Un ensemble de clients"
+     ]
     },
     {
      "question": "Pourquoi organiser une action collective ?",
-     "answer": "Pour réaliser à plusieurs ce qu'un individu ne pourrait atteindre seul,\nen conciliant intérêts individuels et intérêt collectif.",
-     "w": "0c273ed6",
-     "wq": "be79581e"
+     "answer": "Réaliser à plusieurs ce qu'on ne peut faire seul",
+     "w": [
+      "f05bae74",
+      "0c273ed6"
+     ],
+     "wrongs": [
+      "Réduire le nombre de participants",
+      "Supprimer les objectifs",
+      "Éviter toute coordination"
+     ]
     },
     {
-     "question": "Quelles ressources une organisation mobilise-t-elle ?",
-     "answer": "• Humaines\n• Financières\n• Matérielles\n• Immatérielles (marque, brevets, savoir-faire)\n• Technologiques",
-     "w": "28e72f66",
-     "wq": "7e9c239b"
+     "question": "Une marque ou un brevet est une ressource…",
+     "answer": "Immatérielle",
+     "w": [
+      "f6280bd9",
+      "28e72f66"
+     ],
+     "wq": "7e9c239b",
+     "more": "Ressources : humaines, financières, matérielles, immatérielles, technologiques.",
+     "wrongs": [
+      "Matérielle",
+      "Financière",
+      "Humaine"
+     ]
     },
     {
-     "question": "Quelle est la différence entre finalité et objectif ?",
-     "answer": "Finalité : la raison d'être (ex. : profit, intérêt général).\nObjectif : un résultat précis, mesurable et daté.",
-     "w": "945659a4",
-     "wq": "46ce323b"
+     "question": "Comment appelle-t-on la raison d'être d'une organisation ?",
+     "answer": "Sa finalité",
+     "w": [
+      "159ed57b",
+      "945659a4"
+     ],
+     "wq": "46ce323b",
+     "more": "Un objectif est un résultat précis, mesurable et daté.",
+     "wrongs": [
+      "Son objectif",
+      "Son budget",
+      "Son statut juridique"
+     ]
     },
     {
-     "question": "Quelles sont les trois grandes catégories d'organisations ?",
-     "answer": "• Entreprises privées : finalité lucrative\n• Organisations publiques : intérêt général\n• Organisations de la société civile :\nassociations, ONG, syndicats, fondations",
-     "w": "02361035",
-     "wq": "c0f01d30"
+     "question": "Une association relève de quelle catégorie d'organisations ?",
+     "answer": "La société civile",
+     "w": [
+      "a10c9f19",
+      "02361035"
+     ],
+     "wq": "c0f01d30",
+     "more": "Trois catégories : entreprises privées, organisations publiques, organisations de la société civile.",
+     "wrongs": [
+      "Les entreprises privées",
+      "Les organisations publiques",
+      "Les administrations"
+     ]
     },
     {
-     "question": "Quelle est la différence entre production marchande et non marchande ?",
-     "answer": "Marchande : vendue à un prix économiquement significatif\n(plus de la moitié de son coût).\nNon marchande : gratuite ou vendue à moins de la moitié de son coût.",
-     "w": "02eeed77",
-     "wq": "b33bbb57"
+     "question": "Une production vendue à moins de la moitié de son coût est…",
+     "answer": "Non marchande",
+     "w": [
+      "1e9968b0",
+      "02eeed77"
+     ],
+     "wq": "b33bbb57",
+     "more": "Marchande : vendue à un prix économiquement significatif.",
+     "wrongs": [
+      "Marchande",
+      "Illégale",
+      "Industrielle"
+     ]
     },
     {
-     "question": "Quelle est la différence entre un bien et un service ?",
-     "answer": "Bien : matériel et stockable.\nService : immatériel, consommé au moment de sa production\n(ex. : une coupe de cheveux).",
-     "w": "77e92c3f",
-     "wq": "f40e49ca"
+     "question": "Une coupe de cheveux est-elle un bien ou un service ?",
+     "answer": "Un service",
+     "w": [
+      "de6d8431",
+      "77e92c3f"
+     ],
+     "wq": "f40e49ca",
+     "more": "Un service est immatériel et consommé au moment de sa production ; un bien est matériel et stockable.",
+     "wrongs": [
+      "Un bien",
+      "Ni l'un ni l'autre",
+      "Un capital"
+     ]
     },
     {
-     "question": "Comment les organisations sont-elles financées selon leur secteur ?",
-     "answer": "• Entreprises privées : ventes et apporteurs de capitaux\n• Organisations publiques : surtout l'impôt\n• Associations : cotisations, dons, subventions",
-     "w": "09e0f946",
-     "wq": "402fa712"
+     "question": "Comment les organisations publiques sont-elles surtout financées ?",
+     "answer": "Par l'impôt",
+     "w": [
+      "b5f073e6",
+      "09e0f946"
+     ],
+     "wq": "402fa712",
+     "more": "Entreprises : ventes et apports de capitaux. Associations : cotisations, dons, subventions.",
+     "wrongs": [
+      "Par les ventes",
+      "Par les dons",
+      "Par les cotisations"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un partenariat public-privé ?",
-     "answer": "Un contrat : une personne publique confie à une entreprise privée\nla réalisation (souvent aussi le financement et l'exploitation)\nd'un équipement public, contre rémunération.",
-     "w": "382657f2",
-     "wq": "9f0264a7"
+     "answer": "Une personne publique confie un équipement à une entreprise privée",
+     "w": [
+      "982307fc",
+      "382657f2"
+     ],
+     "more": "Réalisation, souvent financement et exploitation, contre rémunération.",
+     "wrongs": [
+      "Une entreprise rachetée par l'État",
+      "Une association entre deux entreprises",
+      "Un impôt sur les entreprises"
+     ]
     },
     {
      "question": "Qu'est-ce que le management ?",
-     "answer": "Diriger une organisation :\n• fixer des objectifs\n• organiser\n• animer et mobiliser les personnes\n• contrôler et évaluer les résultats",
-     "w": "bb0e16e7",
-     "wq": "44910925"
+     "answer": "Diriger une organisation",
+     "w": [
+      "a29a79ec",
+      "bb0e16e7"
+     ],
+     "more": "Fixer des objectifs, organiser, animer les personnes, contrôler les résultats.",
+     "wrongs": [
+      "Vendre des produits",
+      "Tenir la comptabilité",
+      "Recruter uniquement"
+     ]
     },
     {
-     "question": "Quelle est la différence entre management stratégique et management opérationnel ?",
-     "answer": "Stratégique : engage l'organisation à long terme (activités, marchés).\nOpérationnel : gère le fonctionnement quotidien, à court terme.",
-     "w": "5bd22bf3",
-     "wq": "c41170f1"
+     "question": "Le management stratégique engage l'organisation à quel terme ?",
+     "answer": "Long terme",
+     "w": [
+      "d30ca26f",
+      "5bd22bf3"
+     ],
+     "wq": "c41170f1",
+     "more": "Le management opérationnel gère le quotidien, à court terme.",
+     "wrongs": [
+      "Court terme",
+      "Une seule journée",
+      "Aucun terme"
+     ]
     },
     {
-     "question": "Quelles spécificités présente le management public ?",
-     "answer": "• Il poursuit l'intérêt général.\n• Il est soumis au droit public (budget, marchés publics).\n• Il subit un contrôle politique et rend compte aux citoyens.",
-     "w": "b9bed365",
-     "wq": "e39ab87f"
+     "question": "Quel but poursuit le management public ?",
+     "answer": "L'intérêt général",
+     "w": [
+      "b8881c06",
+      "b9bed365"
+     ],
+     "wq": "e39ab87f",
+     "more": "Il est soumis au droit public et à un contrôle politique.",
+     "wrongs": [
+      "Le profit maximal",
+      "L'intérêt des actionnaires",
+      "L'intérêt des seuls salariés"
+     ]
     },
     {
-     "question": "Que sont les parties prenantes d'une organisation ?",
-     "answer": "Les acteurs qui influencent l'organisation ou sont affectés par ses décisions.\n• Internes : salariés, dirigeants, actionnaires\n• Externes : clients, fournisseurs, État, riverains…",
-     "w": "c68e6c5b",
-     "wq": "97d68ae0"
+     "question": "Un fournisseur est-il une partie prenante interne ou externe ?",
+     "answer": "Externe",
+     "w": [
+      "1f52ef46",
+      "c68e6c5b"
+     ],
+     "wq": "97d68ae0",
+     "more": "Internes : salariés, dirigeants, actionnaires. Externes : clients, fournisseurs, État, riverains…",
+     "wrongs": [
+      "Interne",
+      "Ce n'est pas une partie prenante",
+      "Les deux"
+     ]
     },
     {
      "question": "Pourquoi dit-on que l'organisation est un système complexe ?",
-     "answer": "Ses éléments interagissent,\nen relation constante avec un environnement changeant :\nle management doit réguler l'ensemble.",
-     "w": "4bc7e247",
-     "wq": "b0d75154"
+     "answer": "Ses éléments interagissent avec un environnement changeant",
+     "w": [
+      "62d89f5a",
+      "4bc7e247"
+     ],
+     "wrongs": [
+      "Parce qu'elle a beaucoup de salariés",
+      "Parce qu'elle est mal organisée",
+      "Parce qu'elle utilise l'informatique"
+     ]
     },
     {
-     "question": "Qu'est-ce que la responsabilité sociétale des entreprises (RSE) ?",
-     "answer": "L'intégration volontaire de préoccupations sociales et environnementales\ndans les activités de l'entreprise\net ses relations avec les parties prenantes.",
-     "w": "3f576830",
-     "wq": "8667717e"
+     "question": "Qu'est-ce que la RSE ?",
+     "answer": "Intégrer volontairement le social et l'environnement",
+     "w": [
+      "1be0cd9b",
+      "3f576830"
+     ],
+     "wq": "8667717e",
+     "more": "Responsabilité sociétale des entreprises, dans leurs activités et leurs relations avec les parties prenantes.",
+     "wrongs": [
+      "Un impôt sur les sociétés",
+      "Un registre des entreprises",
+      "Un type de contrat de travail"
+     ]
     },
     {
      "question": "Comment évaluer l'efficacité du management ?",
-     "answer": "En comparant résultats et objectifs à l'aide d'indicateurs.\nEx. : chiffre d'affaires, satisfaction des usagers, climat social",
-     "w": "e9cd2ef0",
-     "wq": "37f512d3"
+     "answer": "Comparer résultats et objectifs avec des indicateurs",
+     "w": [
+      "d5c6a0c2",
+      "e9cd2ef0"
+     ],
+     "more": "Ex. : chiffre d'affaires, satisfaction des usagers, climat social.",
+     "wrongs": [
+      "Compter les réunions",
+      "Mesurer la taille des bureaux",
+      "Demander au dirigeant"
+     ]
     }
    ]
   },
@@ -79639,100 +80280,239 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelle différence entre donnée, information et connaissance ?",
-     "answer": "• Donnée : un élément brut (ex. : 38)\n• Information : une donnée en contexte (« 38 commandes hier »)\n• Connaissance : une information interprétée et appropriée",
-     "w": "9c021089",
-     "wq": "cc81bfc0"
+     "question": "« 38 commandes hier » est-il une donnée ou une information ?",
+     "answer": "Une information",
+     "w": [
+      "02ef89e4",
+      "9c021089"
+     ],
+     "wq": "cc81bfc0",
+     "more": "Donnée : élément brut (38). Information : donnée en contexte. Connaissance : information interprétée.",
+     "wrongs": [
+      "Une donnée brute",
+      "Une connaissance",
+      "Un processus"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une donnée personnelle ?",
-     "answer": "Toute information sur une personne physique\nidentifiée ou identifiable, directement ou non.\nEx. : nom, adresse IP, photo",
-     "w": "a3fb8290",
-     "wq": "88611e43"
+     "question": "Une adresse IP est-elle une donnée personnelle ?",
+     "answer": "Oui",
+     "w": [
+      "f4758a2f",
+      "a3fb8290"
+     ],
+     "wq": "88611e43",
+     "more": "Toute information sur une personne identifiée ou identifiable : nom, adresse IP, photo…",
+     "wrongs": [
+      "Non, c'est une donnée technique",
+      "Seulement si elle contient le nom",
+      "Seulement en Europe"
+     ]
     },
     {
-     "question": "Qu'est-ce que le RGPD ?",
-     "answer": "Le règlement général sur la protection des données\n(UE, depuis le 25 mai 2018)\nqui encadre la collecte et le traitement des données personnelles.",
-     "w": "97f101a7",
-     "wq": "92a272ad"
+     "question": "Depuis quand le RGPD s'applique-t-il ?",
+     "answer": "Le 25 mai 2018",
+     "w": [
+      "f6737564",
+      "97f101a7"
+     ],
+     "wq": "92a272ad",
+     "more": "Règlement européen sur la protection des données personnelles.",
+     "wrongs": [
+      "Le 1er janvier 2000",
+      "Le 25 mai 2008",
+      "Le 1er janvier 2022"
+     ]
     },
     {
-     "question": "Quels droits le RGPD donne-t-il aux personnes ?",
-     "answer": "• Accès\n• Rectification\n• Effacement\n• Opposition\n• Portabilité\nEn France, la CNIL veille à son respect.",
-     "w": "5861a014",
-     "wq": "fbb7e51b"
+     "question": "En France, qui veille au respect du RGPD ?",
+     "answer": "La CNIL",
+     "w": [
+      "4c746f41",
+      "5861a014"
+     ],
+     "wq": "fbb7e51b",
+     "more": "Droits : accès, rectification, effacement, opposition, portabilité.",
+     "wrongs": [
+      "L'Arcom",
+      "La Cour des comptes",
+      "L'Insee"
+     ]
     },
     {
-     "question": "Qu'est-ce que le big data ?",
-     "answer": "Des ensembles de données massifs, les « 3 V » :\n• volume\n• vélocité (vitesse de production)\n• variété",
-     "w": "05d2bc28",
-     "wq": "270a3234"
+     "question": "Quels sont les « 3 V » du big data ?",
+     "answer": "Volume, vélocité, variété",
+     "w": [
+      "ec38cc84",
+      "05d2bc28"
+     ],
+     "wq": "270a3234",
+     "wrongs": [
+      "Valeur, vérité, vitesse",
+      "Volume, valeur, vente",
+      "Vidéo, voix, visuel"
+     ]
     },
     {
      "question": "Qu'est-ce que l'open data ?",
-     "answer": "Des données ouvertes,\nlibrement accessibles et réutilisables par tous.\nEx. : data.gouv.fr",
-     "w": "8c45694d",
-     "wq": "9a2c8e60"
+     "answer": "Des données librement accessibles et réutilisables",
+     "w": [
+      "4c26bbb8",
+      "8c45694d"
+     ],
+     "more": "Ex. : data.gouv.fr",
+     "wrongs": [
+      "Des données secrètes",
+      "Des données payantes",
+      "Des données personnelles"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un système d'information ?",
-     "answer": "Les ressources organisées (personnes, matériels, logiciels, données, procédures)\nqui permettent de collecter, stocker, traiter et diffuser l'information\ndans l'organisation.",
-     "w": "940a7630",
-     "wq": "0ac1c85c"
+     "question": "À quoi sert un système d'information ?",
+     "answer": "Collecter, stocker, traiter et diffuser l'information",
+     "w": [
+      "4eca82fa",
+      "940a7630"
+     ],
+     "wq": "0ac1c85c",
+     "more": "Personnes, matériels, logiciels, données, procédures.",
+     "wrongs": [
+      "Seulement réparer les ordinateurs",
+      "Produire des biens",
+      "Recruter des salariés"
+     ]
     },
     {
      "question": "Qu'est-ce que l'intelligence collective ?",
-     "answer": "La capacité d'un groupe à produire, par le partage et la collaboration,\ndavantage que la somme des contributions individuelles.",
-     "w": "99f4850b",
-     "wq": "fcdc1205"
+     "answer": "Un groupe qui produit plus que la somme des individus",
+     "w": [
+      "7a6f293e",
+      "99f4850b"
+     ],
+     "more": "Par le partage et la collaboration.",
+     "wrongs": [
+      "L'intelligence d'un seul chef",
+      "Un logiciel d'intelligence artificielle",
+      "La moyenne des QI d'un groupe"
+     ]
     },
     {
-     "question": "Citer des outils numériques de travail collaboratif.",
-     "answer": "• Messagerie, visioconférence\n• Espaces de stockage partagés\n• Documents coéditables en ligne\n• Wikis, réseaux sociaux d'entreprise",
-     "w": "0d58967e",
-     "wq": "05d8013c"
+     "question": "Un document coéditable en ligne est-il un outil collaboratif ?",
+     "answer": "Oui",
+     "w": [
+      "0f7aa6ac",
+      "0d58967e"
+     ],
+     "wq": "05d8013c",
+     "more": "Comme la messagerie, la visioconférence, les espaces partagés, les wikis.",
+     "wrongs": [
+      "Non, c'est un outil individuel",
+      "Seulement hors ligne",
+      "Seulement pour les dirigeants"
+     ]
     },
     {
-     "question": "Quelle différence entre communication synchrone et asynchrone ?",
-     "answer": "Synchrone : en même temps (visioconférence, messagerie instantanée).\nAsynchrone : en différé (courriel, forum).",
-     "w": "60a6fe17",
-     "wq": "70327a73"
+     "question": "Le courriel est-il une communication synchrone ou asynchrone ?",
+     "answer": "Asynchrone",
+     "w": [
+      "88c6e27d",
+      "60a6fe17"
+     ],
+     "wq": "70327a73",
+     "more": "Synchrone : en même temps (visioconférence). Asynchrone : en différé (courriel, forum).",
+     "wrongs": [
+      "Synchrone",
+      "Ni l'un ni l'autre",
+      "Les deux à la fois"
+     ]
     },
     {
-     "question": "Comment l'intelligence artificielle transforme-t-elle les tâches dans les organisations ?",
-     "answer": "Elle automatise des tâches répétitives ou d'analyse\n(tri de courriels, agents conversationnels, prévisions)\net modifie les métiers et les compétences attendues.",
-     "w": "e83d10d6",
-     "wq": "aae671b1"
+     "question": "Quelles tâches l'IA automatise-t-elle surtout dans les organisations ?",
+     "answer": "Des tâches répétitives ou d'analyse",
+     "w": [
+      "06c3fa12",
+      "e83d10d6"
+     ],
+     "wq": "aae671b1",
+     "more": "Tri de courriels, agents conversationnels, prévisions.",
+     "wrongs": [
+      "Aucune",
+      "Seulement la direction",
+      "Seulement les tâches manuelles"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un processus ?",
-     "answer": "Des activités coordonnées qui transforment des entrées\nen résultats ayant de la valeur pour un client.\nReprésentation : un schéma de processus.",
-     "w": "a6e1a9fa",
-     "wq": "9044094b"
+     "answer": "Des activités qui transforment des entrées en résultats",
+     "w": [
+      "ad4bd600",
+      "a6e1a9fa"
+     ],
+     "more": "Résultats ayant de la valeur pour un client.",
+     "wrongs": [
+      "Un logiciel de comptabilité",
+      "Un organigramme",
+      "Une réunion"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un progiciel de gestion intégré (PGI ou ERP) ?",
-     "answer": "Un logiciel à modules (ventes, achats, stocks, comptabilité, paie)\npartageant une base de données unique :\nchaque information n'est saisie qu'une fois.",
-     "w": "ca4f6ea7",
-     "wq": "4dfad564"
+     "question": "Quelle est la particularité d'un PGI (ERP) ?",
+     "answer": "Une base de données unique pour tous les modules",
+     "w": [
+      "761c5008",
+      "ca4f6ea7"
+     ],
+     "wq": "4dfad564",
+     "more": "Chaque information n'est saisie qu'une fois.",
+     "wrongs": [
+      "Un logiciel par service",
+      "Il ne gère que la paie",
+      "Il fonctionne sans données"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'informatique en nuage (cloud computing) ?",
-     "answer": "Utiliser, via internet, des ressources hébergées par un prestataire\n(stockage, logiciels en ligne ou SaaS),\naccessibles de partout.",
-     "w": "61650eb5",
-     "wq": "38570a6d"
+     "question": "Qu'est-ce que l'informatique en nuage ?",
+     "answer": "Utiliser des ressources hébergées via internet",
+     "w": [
+      "69fe8c8c",
+      "61650eb5"
+     ],
+     "wq": "38570a6d",
+     "more": "Stockage, logiciels en ligne (SaaS), accessibles de partout.",
+     "wrongs": [
+      "Un ordinateur sans écran",
+      "Un réseau sans fil",
+      "Un logiciel installé sur un seul poste"
+     ]
     },
     {
-     "question": "Quels sont les avantages et les risques du télétravail ?",
-     "answer": "Avantages : moins de trajets, autonomie, flexibilité.\nRisques : isolement, frontière floue vie privée / travail,\nsécurité des données.",
-     "w": "58e2ab32",
-     "wq": "8b06ee55"
+     "question": "Quel est un risque du télétravail ?",
+     "answer": "L'isolement",
+     "w": [
+      "2a510801",
+      "58e2ab32"
+     ],
+     "wq": "8b06ee55",
+     "more": "Aussi : frontière floue vie privée / travail, sécurité des données. Avantages : moins de trajets, autonomie.",
+     "wrongs": [
+      "Plus de trajets",
+      "Moins d'autonomie",
+      "Plus de bruit au bureau"
+     ]
     },
     {
      "question": "Le numérique rend-il l'organisation plus agile ou plus rigide ?",
-     "answer": "Les deux :\n• agilité : information plus rapide, plus de réactivité\n• rigidité : procédures standardisées, dépendance aux outils",
-     "w": "47d03e84",
-     "wq": "d01afd16"
+     "answer": "Les deux",
+     "w": [
+      "c6264090",
+      "47d03e84"
+     ],
+     "more": "Agilité : réactivité. Rigidité : procédures standardisées, dépendance aux outils.",
+     "wrongs": [
+      "Seulement plus agile",
+      "Seulement plus rigide",
+      "Ni l'un ni l'autre"
+     ]
     }
    ]
   },
@@ -79756,94 +80536,243 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce qu'une personne juridique (sujet de droit) ?",
-     "answer": "Une entité titulaire de droits et d'obligations.\nDeux catégories : personnes physiques et personnes morales.",
-     "w": "a70d13d9",
-     "wq": "e7e91a34"
+     "question": "Quelles sont les deux catégories de personnes juridiques ?",
+     "answer": "Physiques et morales",
+     "w": [
+      "3edaee55",
+      "a70d13d9"
+     ],
+     "wq": "e7e91a34",
+     "wrongs": [
+      "Majeures et mineures",
+      "Publiques et secrètes",
+      "Naturelles et artificielles"
+     ]
     },
     {
-     "question": "Quand commence et quand finit la personnalité juridique d'une personne physique ?",
-     "answer": "• Début : la naissance, si l'enfant naît vivant et viable\n• Fin : le décès",
-     "w": "07767e66",
-     "wq": "c00f0dea"
+     "question": "Quand commence la personnalité juridique d'une personne physique ?",
+     "answer": "À la naissance, si l'enfant naît vivant et viable",
+     "w": [
+      "869410da",
+      "07767e66"
+     ],
+     "wq": "c00f0dea",
+     "wrongs": [
+      "À la conception",
+      "À 18 ans",
+      "À la déclaration en mairie"
+     ]
     },
     {
-     "question": "Que signifie l'adage « infans conceptus pro nato habetur » ?",
-     "answer": "L'enfant simplement conçu est considéré comme né\nchaque fois que c'est son intérêt (ex. : hériter),\ns'il naît vivant et viable.",
-     "w": "fa5ffebb",
-     "wq": "f4e69f2f"
+     "question": "Quand finit la personnalité juridique d'une personne physique ?",
+     "answer": "Au décès",
+     "wrongs": [
+      "À la retraite",
+      "À 100 ans",
+      "À la mise sous tutelle"
+     ]
     },
     {
-     "question": "Que se passe-t-il lorsqu'une personne a disparu sans qu'on sache si elle est vivante ?",
-     "answer": "• Absence : le juge constate une présomption d'absence, puis déclare l'absence.\n• Disparition dans des circonstances mettant la vie en danger :\njugement déclaratif de décès.",
-     "w": "9a0ed74a",
-     "wq": "edfd441e"
+     "question": "Que signifie « infans conceptus pro nato habetur » ?",
+     "answer": "L'enfant conçu est considéré comme né si c'est son intérêt",
+     "w": [
+      "1c0baf29",
+      "fa5ffebb"
+     ],
+     "wq": "f4e69f2f",
+     "more": "Ex. : pour hériter, à condition de naître vivant et viable.",
+     "wrongs": [
+      "L'enfant n'a aucun droit avant 18 ans",
+      "L'enfant appartient à ses parents",
+      "Nul n'est censé ignorer la loi"
+     ]
     },
     {
-     "question": "Quels éléments permettent d'identifier une personne physique ?",
-     "answer": "• Nom et prénom\n• Domicile\n• Nationalité, sexe\n• Date et lieu de naissance\nInscrits à l'état civil.",
-     "w": "c383d7a0",
-     "wq": "5f7eb87f"
+     "question": "Que prononce le juge après une disparition où la vie était en danger ?",
+     "answer": "Un jugement déclaratif de décès",
+     "w": [
+      "c94d72af",
+      "9a0ed74a"
+     ],
+     "wq": "edfd441e",
+     "more": "Sans danger particulier, on parle d'absence : présomption puis déclaration d'absence.",
+     "wrongs": [
+      "Une émancipation",
+      "Une curatelle",
+      "Une présomption d'innocence"
+     ]
     },
     {
-     "question": "Quelle différence entre capacité de jouissance et capacité d'exercice ?",
-     "answer": "Jouissance : l'aptitude à être titulaire de droits.\nExercice : l'aptitude à exercer soi-même ces droits.",
-     "w": "d54f15c3",
-     "wq": "096d9f64"
+     "question": "Où sont inscrits les éléments d'identification d'une personne physique ?",
+     "answer": "À l'état civil",
+     "w": [
+      "65c95674",
+      "c383d7a0"
+     ],
+     "wq": "5f7eb87f",
+     "more": "Nom, prénom, domicile, nationalité, sexe, date et lieu de naissance.",
+     "wrongs": [
+      "Au registre du commerce",
+      "Au casier judiciaire",
+      "Au Journal officiel"
+     ]
     },
     {
-     "question": "Quelle est la situation juridique d'un mineur non émancipé ?",
-     "answer": "Capacité de jouissance, mais pas d'exercice :\nil est représenté par les titulaires de l'autorité parentale,\nsauf pour les actes de la vie courante.",
-     "w": "d3bc5d59",
-     "wq": "c69a21f8"
+     "question": "Comment appelle-t-on l'aptitude à exercer soi-même ses droits ?",
+     "answer": "La capacité d'exercice",
+     "w": [
+      "af3e3a30",
+      "d54f15c3"
+     ],
+     "wq": "096d9f64",
+     "more": "La capacité de jouissance est l'aptitude à être titulaire de droits.",
+     "wrongs": [
+      "La capacité de jouissance",
+      "La personnalité morale",
+      "L'émancipation"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'émancipation ?",
-     "answer": "Une décision du juge :\nun mineur d'au moins 16 ans est traité comme un majeur\npour les actes de la vie civile.",
-     "w": "a54f65e5",
-     "wq": "0718cf42"
+     "question": "Un mineur non émancipé a-t-il la capacité d'exercice ?",
+     "answer": "Non",
+     "w": [
+      "184940a1",
+      "d3bc5d59"
+     ],
+     "wq": "c69a21f8",
+     "more": "Il a la capacité de jouissance ; ses parents le représentent, sauf pour les actes de la vie courante.",
+     "wrongs": [
+      "Oui, totalement",
+      "Oui, dès 16 ans",
+      "Seulement pour vendre ses biens"
+     ]
     },
     {
-     "question": "Quelles sont les mesures de protection des majeurs ?",
-     "answer": "• Sauvegarde de justice : protection temporaire\n• Curatelle : assistance\n• Tutelle : représentation\n• Habilitation familiale",
-     "w": "1a17b1f8",
-     "wq": "a886cf44"
+     "question": "À partir de quel âge un mineur peut-il être émancipé ?",
+     "answer": "16 ans",
+     "w": [
+      "d1a8ce3b",
+      "a54f65e5"
+     ],
+     "wq": "0718cf42",
+     "more": "Décision du juge : il est traité comme un majeur pour les actes de la vie civile.",
+     "wrongs": [
+      "14 ans",
+      "15 ans",
+      "17 ans"
+     ]
     },
     {
-     "question": "Quelle différence entre curatelle et tutelle ?",
-     "answer": "Curatelle : la personne agit elle-même,\nassistée du curateur pour les actes importants.\nTutelle : le tuteur la représente.",
-     "w": "26146b13",
-     "wq": "25806b38"
+     "question": "Quelle mesure offre une protection temporaire à un majeur ?",
+     "answer": "La sauvegarde de justice",
+     "w": [
+      "442b67ee",
+      "1a17b1f8"
+     ],
+     "wq": "a886cf44",
+     "more": "Aussi : curatelle (assistance), tutelle (représentation), habilitation familiale.",
+     "wrongs": [
+      "La tutelle",
+      "L'émancipation",
+      "La curatelle renforcée"
+     ]
+    },
+    {
+     "question": "Dans quelle mesure le protégé est-il représenté et non assisté ?",
+     "answer": "La tutelle",
+     "w": [
+      "b3f7b157",
+      "26146b13"
+     ],
+     "wq": "25806b38",
+     "more": "En curatelle, la personne agit elle-même, assistée pour les actes importants.",
+     "wrongs": [
+      "La curatelle",
+      "La sauvegarde de justice",
+      "L'émancipation"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une personne morale ?",
-     "answer": "Un groupement de personnes ou de biens\ndoté de la personnalité juridique,\ndistincte de celle de ses membres.",
-     "w": "382a4a95",
-     "wq": "b13d7265"
+     "answer": "Un groupement doté de la personnalité juridique",
+     "w": [
+      "e22cc21d",
+      "382a4a95"
+     ],
+     "more": "Distincte de celle de ses membres.",
+     "wrongs": [
+      "Une personne très honnête",
+      "Un majeur protégé",
+      "Un fonctionnaire"
+     ]
     },
     {
-     "question": "Citer des personnes morales de droit privé et de droit public.",
-     "answer": "• Droit privé : sociétés, associations, syndicats\n• Droit public : État, collectivités territoriales,\nétablissements publics (hôpitaux, universités…)",
-     "w": "72cfa3d3",
-     "wq": "62ad4834"
+     "question": "Une collectivité territoriale est une personne morale de droit…",
+     "answer": "Public",
+     "w": [
+      "b94eb552",
+      "72cfa3d3"
+     ],
+     "wq": "62ad4834",
+     "more": "Droit privé : sociétés, associations, syndicats.",
+     "wrongs": [
+      "Privé",
+      "Commercial",
+      "International"
+     ]
     },
     {
-     "question": "Quand une société et une association acquièrent-elles la personnalité morale ?",
-     "answer": "• Société : à son immatriculation au RCS\n• Association : à sa déclaration en préfecture,\nsuivie de sa publication au Journal officiel",
-     "w": "69245f35",
-     "wq": "a1ba4c5a"
+     "question": "Quand une société acquiert-elle la personnalité morale ?",
+     "answer": "À son immatriculation au RCS",
+     "w": [
+      "33bf7ae0",
+      "69245f35"
+     ],
+     "wq": "a1ba4c5a",
+     "wrongs": [
+      "À la signature des statuts",
+      "À sa première vente",
+      "À sa publication au Journal officiel"
+     ]
     },
     {
-     "question": "Quels éléments identifient une personne morale ?",
-     "answer": "• Dénomination sociale\n• Siège social\n• Nationalité\n• Numéro d'immatriculation (SIREN)",
-     "w": "e95f3477",
-     "wq": "384621d0"
+     "question": "Quand une association acquiert-elle la personnalité morale ?",
+     "answer": "Après déclaration en préfecture et publication au JO",
+     "wrongs": [
+      "À son immatriculation au RCS",
+      "À la première réunion",
+      "Dès qu'elle a deux membres"
+     ]
     },
     {
-     "question": "Comment prend fin la personnalité morale d'une société ?",
-     "answer": "1. Dissolution\n2. Liquidation\n3. Radiation du registre du commerce et des sociétés",
-     "w": "45f8515f",
-     "wq": "d9a64457"
+     "question": "Quel numéro identifie une personne morale ?",
+     "answer": "Le numéro SIREN",
+     "w": [
+      "827cb36a",
+      "e95f3477"
+     ],
+     "wq": "384621d0",
+     "more": "Aussi : dénomination sociale, siège social, nationalité.",
+     "wrongs": [
+      "Le numéro de sécurité sociale",
+      "Le numéro fiscal personnel",
+      "Le code postal"
+     ]
+    },
+    {
+     "question": "Quelle est la dernière étape de la fin d'une société ?",
+     "answer": "La radiation du RCS",
+     "w": [
+      "b767ba83",
+      "45f8515f"
+     ],
+     "wq": "d9a64457",
+     "more": "Dissolution, liquidation, puis radiation.",
+     "wrongs": [
+      "La dissolution",
+      "La liquidation",
+      "L'immatriculation"
+     ]
     }
    ]
   },
@@ -79868,93 +80797,224 @@
    "cards": [
     {
      "question": "Qu'est-ce que la production en économie ?",
-     "answer": "L'activité socialement organisée qui crée des biens et des services\nà partir de facteurs de production.",
-     "w": "0dad9d89",
-     "wq": "3d93854f"
+     "answer": "Créer des biens et des services",
+     "w": [
+      "75b3e22b",
+      "0dad9d89"
+     ],
+     "more": "Activité socialement organisée, à partir de facteurs de production.",
+     "wrongs": [
+      "Acheter des biens",
+      "Épargner de l'argent",
+      "Consommer des services"
+     ]
     },
     {
-     "question": "Quels sont les agents économiques qui produisent ?",
-     "answer": "• Les entreprises : production marchande\n• Les administrations publiques et les associations :\nsurtout production non marchande",
-     "w": "67c9e78a",
-     "wq": "a6c4fd3a"
+     "question": "Les administrations publiques produisent surtout de manière…",
+     "answer": "Non marchande",
+     "w": [
+      "7d6af79a",
+      "67c9e78a"
+     ],
+     "wq": "a6c4fd3a",
+     "more": "Les entreprises produisent de manière marchande.",
+     "wrongs": [
+      "Marchande",
+      "Industrielle",
+      "Agricole"
+     ]
     },
     {
-     "question": "Quels sont les facteurs de production ?",
-     "answer": "• Le travail (activité humaine)\n• Le capital (équipements, bâtiments, logiciels)\n(et les ressources naturelles)",
-     "w": "93de0985",
-     "wq": "bc87ffeb"
+     "question": "Quels sont les deux principaux facteurs de production ?",
+     "answer": "Le travail et le capital",
+     "w": [
+      "9dc1bcd3",
+      "93de0985"
+     ],
+     "wq": "bc87ffeb",
+     "more": "Plus les ressources naturelles.",
+     "wrongs": [
+      "L'épargne et la consommation",
+      "L'impôt et la monnaie",
+      "Les clients et les fournisseurs"
+     ]
     },
     {
-     "question": "Quelle différence entre capital fixe et consommations intermédiaires ?",
-     "answer": "Capital fixe : utilisé sur plusieurs cycles de production (machines).\nConsommations intermédiaires : détruites ou transformées pendant la production\n(matières premières, énergie).",
-     "w": "b7d5c048",
-     "wq": "71845297"
+     "question": "Une machine utilisée plusieurs années fait partie…",
+     "answer": "Du capital fixe",
+     "w": [
+      "0923fd8c",
+      "b7d5c048"
+     ],
+     "wq": "71845297",
+     "more": "Les consommations intermédiaires (matières premières, énergie) sont détruites pendant la production.",
+     "wrongs": [
+      "Des consommations intermédiaires",
+      "Des revenus primaires",
+      "De la valeur ajoutée"
+     ]
     },
     {
-     "question": "Que signifie que les facteurs de production sont substituables ou complémentaires ?",
-     "answer": "Substituables : l'un remplace l'autre (un automate à la place d'un salarié).\nComplémentaires : il faut les deux (un chauffeur pour un camion).",
-     "w": "a398eac5",
-     "wq": "998fa295"
+     "question": "Un automate qui remplace un salarié : facteurs substituables ou complémentaires ?",
+     "answer": "Substituables",
+     "w": [
+      "a393b9f0",
+      "a398eac5"
+     ],
+     "wq": "998fa295",
+     "more": "Complémentaires : il faut les deux (un chauffeur pour un camion).",
+     "wrongs": [
+      "Complémentaires",
+      "Indépendants",
+      "Identiques"
+     ]
     },
     {
-     "question": "Comment mesure-t-on la productivité du travail ?",
-     "answer": "Productivité = production / quantité de travail\n(par travailleur ou par heure travaillée)",
-     "w": "39391623",
-     "wq": "3f20a286"
+     "question": "Comment calcule-t-on la productivité du travail ?",
+     "answer": "Production / quantité de travail",
+     "w": [
+      "6041dd6d",
+      "39391623"
+     ],
+     "wq": "3f20a286",
+     "wrongs": [
+      "Quantité de travail / production",
+      "Production × salaire",
+      "Chiffre d'affaires − salaires"
+     ]
     },
     {
-     "question": "Quels facteurs augmentent la productivité ?",
-     "answer": "• Le progrès technique et l'innovation\n• L'investissement\n• La qualification des travailleurs\n• Une meilleure organisation du travail",
-     "w": "d2e92e0b",
-     "wq": "3ad2e05e"
+     "question": "Quel facteur augmente la productivité ?",
+     "answer": "Le progrès technique",
+     "w": [
+      "3b368b30",
+      "d2e92e0b"
+     ],
+     "wq": "3ad2e05e",
+     "more": "Aussi : investissement, qualification, organisation du travail.",
+     "wrongs": [
+      "La baisse de la formation",
+      "L'arrêt des investissements",
+      "L'allongement des pauses"
+     ]
     },
     {
-     "question": "Comment calcule-t-on la valeur ajoutée d'une entreprise ?",
-     "answer": "VA = production (chiffre d'affaires) − consommations intermédiaires\nEx. : 500 000 € − 300 000 € = 200 000 €",
-     "w": "fadee482",
-     "wq": "555d53d4"
+     "question": "Production 500 000 €, consommations intermédiaires 300 000 € : quelle valeur ajoutée ?",
+     "answer": "200 000 €",
+     "w": [
+      "d4e6a59d",
+      "fadee482"
+     ],
+     "wq": "555d53d4",
+     "more": "VA = production − consommations intermédiaires.",
+     "wrongs": [
+      "800 000 €",
+      "300 000 €",
+      "500 000 €"
+     ]
     },
     {
      "question": "Qu'est-ce que le PIB ?",
-     "answer": "La richesse produite sur le territoire en un an :\nsomme des valeurs ajoutées des producteurs résidents\n+ impôts sur les produits − subventions",
-     "w": "bc432190",
-     "wq": "d506bae7"
+     "answer": "La richesse produite sur le territoire en un an",
+     "w": [
+      "a3354f5a",
+      "bc432190"
+     ],
+     "more": "Somme des valeurs ajoutées + impôts sur les produits − subventions.",
+     "wrongs": [
+      "L'argent détenu par l'État",
+      "Le total des salaires",
+      "La dette publique"
+     ]
     },
     {
-     "question": "Qu'est-ce que la croissance économique ?",
-     "answer": "L'augmentation durable de la production d'un pays.\nMesure : le taux de variation du PIB en volume (hors hausse des prix).",
-     "w": "bf969d86",
-     "wq": "5ae292e5"
+     "question": "Comment mesure-t-on la croissance économique ?",
+     "answer": "Le taux de variation du PIB en volume",
+     "w": [
+      "15bc46c6",
+      "bf969d86"
+     ],
+     "wq": "5ae292e5",
+     "more": "En volume : sans la hausse des prix.",
+     "wrongs": [
+      "Le taux de chômage",
+      "Le nombre d'entreprises",
+      "Le niveau des prix"
+     ]
     },
     {
-     "question": "Quelles sont les limites du PIB comme mesure de la richesse ?",
-     "answer": "Il ne mesure pas :\n• la production domestique et le bénévolat\n• les dégradations de l'environnement\n• la répartition des richesses et le bien-être",
-     "w": "1406c6f1",
-     "wq": "c2367a18"
+     "question": "Le PIB mesure-t-il le bénévolat ?",
+     "answer": "Non",
+     "w": [
+      "d00da64c",
+      "1406c6f1"
+     ],
+     "wq": "c2367a18",
+     "more": "Ni la production domestique, ni les dégâts environnementaux, ni la répartition des richesses.",
+     "wrongs": [
+      "Oui, entièrement",
+      "Oui, à moitié",
+      "Seulement dans les associations"
+     ]
     },
     {
-     "question": "Comment la valeur ajoutée est-elle répartie ?",
-     "answer": "• Rémunération des salariés\n• Impôts sur la production (État)\n• Excédent brut d'exploitation (EBE), pour l'entreprise",
-     "w": "11bc29ed",
-     "wq": "0f2904ed"
+     "question": "Entre qui la valeur ajoutée est-elle répartie ?",
+     "answer": "Salariés, État et entreprise (EBE)",
+     "w": [
+      "34ac0182",
+      "11bc29ed"
+     ],
+     "wq": "0f2904ed",
+     "wrongs": [
+      "Seulement les actionnaires",
+      "Seulement les salariés",
+      "Clients et fournisseurs"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'excédent brut d'exploitation et le taux de marge ?",
-     "answer": "EBE : la part de la VA restant à l'entreprise\naprès salaires et impôts sur la production.\nTaux de marge = EBE / VA × 100",
-     "w": "733a0307",
-     "wq": "56640f55"
+     "question": "Comment calcule-t-on le taux de marge ?",
+     "answer": "EBE / VA × 100",
+     "w": [
+      "7f4a77aa",
+      "733a0307"
+     ],
+     "wq": "56640f55",
+     "more": "EBE : la part de la VA restant à l'entreprise après salaires et impôts sur la production.",
+     "wrongs": [
+      "VA / EBE × 100",
+      "Bénéfice / chiffre d'affaires",
+      "Salaires / VA × 100"
+     ]
     },
     {
-     "question": "Quels sont les revenus primaires ?",
-     "answer": "Les revenus issus de la participation à la production :\n• du travail : salaires\n• de la propriété : intérêts, dividendes, loyers\n• mixtes : entrepreneurs individuels",
-     "w": "ad5f0830",
-     "wq": "ce88142e"
+     "question": "Les dividendes sont des revenus…",
+     "answer": "De la propriété",
+     "w": [
+      "faca143d",
+      "ad5f0830"
+     ],
+     "wq": "ce88142e",
+     "more": "Revenus primaires : du travail (salaires), de la propriété (intérêts, dividendes, loyers), mixtes.",
+     "wrongs": [
+      "Du travail",
+      "De transfert",
+      "Mixtes"
+     ]
     },
     {
-     "question": "Comment se partage approximativement la valeur ajoutée en France ?",
-     "answer": "• Salariés : environ les deux tiers\n• Le reste : surtout les profits (EBE)\nPartage relativement stable depuis la fin des années 1980.",
-     "w": "421ca138",
-     "wq": "3e19da0d"
+     "question": "En France, quelle part de la valeur ajoutée va aux salariés ?",
+     "answer": "Environ les deux tiers",
+     "w": [
+      "3ff35d79",
+      "421ca138"
+     ],
+     "wq": "3e19da0d",
+     "more": "Partage relativement stable depuis la fin des années 1980.",
+     "wrongs": [
+      "Environ un tiers",
+      "Environ 90 %",
+      "Environ 10 %"
+     ]
     }
    ]
   },
@@ -80957,112 +82017,277 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Loi de Bernoulli de paramètre p : loi, espérance et variance ?",
-     "answer": "X = 1 (succès) avec la probabilité p,\nX = 0 avec la probabilité 1 − p.\nE(X) = p et V(X) = p(1 − p)",
-     "w": "b98434c2",
-     "wq": "bd6db7b4"
+     "question": "Quelle est l'espérance d'une loi de Bernoulli de paramètre p ?",
+     "answer": "p",
+     "w": [
+      "ca10c81b",
+      "b98434c2"
+     ],
+     "wq": "bd6db7b4",
+     "more": "X = 1 avec la probabilité p, 0 sinon. V(X) = p(1 − p).",
+     "wrongs": [
+      "1 − p",
+      "p(1 − p)",
+      "1/p"
+     ]
     },
     {
-     "question": "Que compte une variable aléatoire suivant la loi binomiale B(n, p) ?",
-     "answer": "Le nombre de succès\nlors de n répétitions identiques et indépendantes\nd'une épreuve de Bernoulli de paramètre p.",
-     "w": "832cde80",
-     "wq": "0ef30f0d"
+     "question": "Que compte une variable suivant la loi binomiale B(n, p) ?",
+     "answer": "Le nombre de succès en n épreuves",
+     "w": [
+      "aa2cc180",
+      "832cde80"
+     ],
+     "wq": "0ef30f0d",
+     "more": "Épreuves de Bernoulli identiques et indépendantes.",
+     "wrongs": [
+      "Le rang du premier succès",
+      "Le nombre d'échecs avant un succès",
+      "La durée d'attente"
+     ]
     },
     {
-     "question": "Formule de P(X = k) pour X suivant B(n, p) ?",
-     "answer": "P(X = k) = (k parmi n) × pᵏ × (1 − p)ⁿ⁻ᵏ\npour k entier entre 0 et n",
-     "w": "9af6ffed",
-     "wq": "17ca74af"
+     "question": "Pour X suivant B(n, p), que vaut P(X = k) ?",
+     "answer": "(k parmi n) × pᵏ × (1 − p)ⁿ⁻ᵏ",
+     "w": [
+      "600cdab6",
+      "9af6ffed"
+     ],
+     "wq": "17ca74af",
+     "wrongs": [
+      "pᵏ × (1 − p)ⁿ⁻ᵏ",
+      "(1 − p)ᵏ⁻¹ × p",
+      "n × p × k"
+     ]
     },
     {
-     "question": "Espérance et variance de la loi binomiale B(n, p) ?",
-     "answer": "E(X) = np et V(X) = np(1 − p)\nEx. : B(100 ; 0,2) → E = 20, V = 16, σ = 4",
-     "w": "015f87fb",
-     "wq": "98b2e84f"
+     "question": "Quelle est l'espérance de la loi binomiale B(n, p) ?",
+     "answer": "np",
+     "w": [
+      "3ab49bc4",
+      "015f87fb"
+     ],
+     "wq": "98b2e84f",
+     "more": "Ex. : B(100 ; 0,2) → E = 20.",
+     "wrongs": [
+      "np(1 − p)",
+      "n/p",
+      "p/n"
+     ]
+    },
+    {
+     "question": "Quelle est la variance de la loi binomiale B(n, p) ?",
+     "answer": "np(1 − p)",
+     "more": "Ex. : B(100 ; 0,2) → V = 16, σ = 4.",
+     "wrongs": [
+      "np",
+      "n(1 − p)",
+      "√(np)"
+     ]
     },
     {
      "question": "Que modélise la loi géométrique de paramètre p ?",
-     "answer": "Le rang du premier succès\ndans des épreuves de Bernoulli indépendantes de paramètre p.\nValeurs : 1, 2, 3, …",
-     "w": "4b6b6833",
-     "wq": "5a9b7d0a"
+     "answer": "Le rang du premier succès",
+     "w": [
+      "bf8b41d9",
+      "4b6b6833"
+     ],
+     "more": "Valeurs : 1, 2, 3, …",
+     "wrongs": [
+      "Le nombre de succès en n épreuves",
+      "Une durée de vie continue",
+      "Le nombre total d'échecs"
+     ]
     },
     {
-     "question": "Loi géométrique : formule de P(X = k) ?",
-     "answer": "P(X = k) = (1 − p)ᵏ⁻¹ × p\nk − 1 échecs, puis un succès.",
-     "w": "684b3cf2",
-     "wq": "8754bce7"
+     "question": "Loi géométrique : que vaut P(X = k) ?",
+     "answer": "(1 − p)ᵏ⁻¹ × p",
+     "w": [
+      "6ad4e4cc",
+      "684b3cf2"
+     ],
+     "wq": "8754bce7",
+     "more": "k − 1 échecs, puis un succès.",
+     "wrongs": [
+      "pᵏ⁻¹ × (1 − p)",
+      "(1 − p)ᵏ",
+      "k × p"
+     ]
     },
     {
      "question": "Loi géométrique : que vaut P(X > k) ?",
-     "answer": "P(X > k) = (1 − p)ᵏ\nLes k premières épreuves sont des échecs.",
-     "w": "b626864d",
-     "wq": "8f06fd02"
+     "answer": "(1 − p)ᵏ",
+     "w": [
+      "ba4035d3",
+      "b626864d"
+     ],
+     "more": "Les k premières épreuves sont des échecs.",
+     "wrongs": [
+      "pᵏ",
+      "1 − (1 − p)ᵏ",
+      "(1 − p)ᵏ⁻¹ × p"
+     ]
     },
     {
-     "question": "Espérance de la loi géométrique de paramètre p ?",
-     "answer": "E(X) = 1/p\nEx. : en moyenne 6 lancers de dé pour obtenir le premier 6.",
-     "w": "f46d9e41",
-     "wq": "4e77f002"
+     "question": "Quelle est l'espérance de la loi géométrique de paramètre p ?",
+     "answer": "1/p",
+     "w": [
+      "53078517",
+      "f46d9e41"
+     ],
+     "wq": "4e77f002",
+     "more": "Ex. : en moyenne 6 lancers de dé pour obtenir le premier 6.",
+     "wrongs": [
+      "p",
+      "1 − p",
+      "np"
+     ]
     },
     {
-     "question": "Que signifie la propriété d'absence de mémoire d'une loi géométrique ?",
-     "answer": "P(X > n + k sachant X > n) = P(X > k)\nAvoir déjà subi n échecs ne change pas\nla probabilité d'attendre encore plus de k épreuves.",
-     "w": "74c79d14",
-     "wq": "ca5602c9"
+     "question": "Loi géométrique : que vaut P(X > n + k sachant X > n) ?",
+     "answer": "P(X > k)",
+     "w": [
+      "24a5efae",
+      "74c79d14"
+     ],
+     "wq": "ca5602c9",
+     "more": "Absence de mémoire : les échecs passés ne changent rien.",
+     "wrongs": [
+      "P(X > n)",
+      "P(X > n + k)",
+      "0"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une fonction de densité sur un intervalle I ?",
-     "answer": "Une fonction f continue (éventuellement par morceaux),\npositive sur I, d'intégrale 1 sur I.\nP(a ≤ X ≤ b) = ∫ₐᵇ f(x) dx",
-     "w": "dc802f1f",
-     "wq": "d748f018"
+     "question": "Que vaut l'intégrale d'une fonction de densité sur son intervalle ?",
+     "answer": "1",
+     "w": [
+      "41ec9fc7",
+      "dc802f1f"
+     ],
+     "wq": "d748f018",
+     "more": "f est continue, positive, et P(a ≤ X ≤ b) = ∫ₐᵇ f(x) dx.",
+     "wrongs": [
+      "0",
+      "Elle peut valoir n'importe quoi",
+      "L'espérance"
+     ]
     },
     {
      "question": "Pour une variable à densité, que vaut P(X = a) ?",
-     "answer": "0\nDonc P(X ≤ a) = P(X < a).",
-     "w": "d8be4dc3",
-     "wq": "152e7a32"
+     "answer": "0",
+     "w": [
+      "a0cf845a",
+      "d8be4dc3"
+     ],
+     "more": "Donc P(X ≤ a) = P(X < a).",
+     "wrongs": [
+      "f(a)",
+      "1",
+      "1/a"
+     ]
     },
     {
-     "question": "Loi uniforme sur [a ; b] : densité et probabilité d'un intervalle [c ; d] inclus ?",
-     "answer": "f(x) = 1/(b − a) sur [a ; b]\nP(c ≤ X ≤ d) = (d − c)/(b − a)\nEx. : sur [0 ; 10], P(2 ≤ X ≤ 5) = 0,3",
-     "w": "dcddf120",
-     "wq": "db830bc1"
+     "question": "Loi uniforme sur [0 ; 10] : que vaut P(2 ≤ X ≤ 5) ?",
+     "answer": "0,3",
+     "w": [
+      "b231d4f3",
+      "dcddf120"
+     ],
+     "wq": "db830bc1",
+     "more": "(d − c)/(b − a) = 3/10. Densité : 1/(b − a).",
+     "wrongs": [
+      "0,5",
+      "0,7",
+      "3"
+     ]
     },
     {
-     "question": "Espérance de la loi uniforme sur [a ; b] ?",
-     "answer": "E(X) = (a + b)/2\nle milieu de l'intervalle.",
-     "w": "ac35f5f5",
-     "wq": "ad75ded5"
+     "question": "Quelle est l'espérance de la loi uniforme sur [a ; b] ?",
+     "answer": "(a + b)/2",
+     "w": [
+      "1b1b9b59",
+      "ac35f5f5"
+     ],
+     "wq": "ad75ded5",
+     "more": "Le milieu de l'intervalle.",
+     "wrongs": [
+      "b − a",
+      "1/(b − a)",
+      "(b − a)/2"
+     ]
     },
     {
-     "question": "Densité de la loi exponentielle de paramètre λ > 0 ?",
-     "answer": "f(x) = λe^(−λx) pour x ≥ 0\n(0 pour x < 0)",
-     "w": "f02c3f9e",
-     "wq": "44eee9fe"
+     "question": "Quelle est la densité de la loi exponentielle de paramètre λ ?",
+     "answer": "λe^(−λx) pour x ≥ 0",
+     "w": [
+      "7bdec43b",
+      "f02c3f9e"
+     ],
+     "wq": "44eee9fe",
+     "wrongs": [
+      "e^(−λx)",
+      "1 − e^(−λx)",
+      "λe^(λx)"
+     ]
     },
     {
-     "question": "Loi exponentielle : que valent P(X ≤ t) et P(X > t) ?",
-     "answer": "P(X ≤ t) = 1 − e^(−λt)\nP(X > t) = e^(−λt)\nEx. : λ = 0,5 → P(X > 2) = e⁻¹ ≈ 0,37",
-     "w": "794905c4",
-     "wq": "772d20c4"
+     "question": "Loi exponentielle : que vaut P(X > t) ?",
+     "answer": "e^(−λt)",
+     "w": [
+      "1f6d48c1",
+      "794905c4"
+     ],
+     "wq": "772d20c4",
+     "more": "Et P(X ≤ t) = 1 − e^(−λt). Ex. : λ = 0,5 → P(X > 2) ≈ 0,37.",
+     "wrongs": [
+      "1 − e^(−λt)",
+      "λe^(−λt)",
+      "e^(λt)"
+     ]
     },
     {
-     "question": "Espérance de la loi exponentielle de paramètre λ ?",
-     "answer": "E(X) = 1/λ\nEx. : durée de vie moyenne de 5 ans → λ = 0,2",
-     "w": "4e6a6fa0",
-     "wq": "c701ac78"
+     "question": "Quelle est l'espérance de la loi exponentielle de paramètre λ ?",
+     "answer": "1/λ",
+     "w": [
+      "9aa62453",
+      "4e6a6fa0"
+     ],
+     "wq": "c701ac78",
+     "more": "Ex. : durée de vie moyenne de 5 ans → λ = 0,2.",
+     "wrongs": [
+      "λ",
+      "λ²",
+      "e^(−λ)"
+     ]
     },
     {
-     "question": "Pourquoi la loi exponentielle modélise-t-elle des durées de vie « sans vieillissement » ?",
-     "answer": "Elle est sans mémoire : P(X > s + t sachant X > s) = P(X > t).\nEx. : désintégration d'un noyau radioactif,\ndurée de vie d'un composant électronique",
-     "w": "844c0f29",
-     "wq": "2686b0f4"
+     "question": "Pourquoi la loi exponentielle modélise-t-elle des durées « sans vieillissement » ?",
+     "answer": "Elle est sans mémoire",
+     "w": [
+      "f50c5cfd",
+      "844c0f29"
+     ],
+     "wq": "2686b0f4",
+     "more": "P(X > s + t sachant X > s) = P(X > t). Ex. : désintégration radioactive.",
+     "wrongs": [
+      "Elle est symétrique",
+      "Elle est discrète",
+      "Elle est uniforme"
+     ]
     },
     {
      "question": "Comment calcule-t-on l'espérance d'une variable de densité f sur [a ; b] ?",
-     "answer": "E(X) = ∫ₐᵇ x f(x) dx",
-     "w": "4af85c3b",
-     "wq": "605d59a4"
+     "answer": "∫ₐᵇ x f(x) dx",
+     "w": [
+      "6dac2bfd",
+      "4af85c3b"
+     ],
+     "wrongs": [
+      "∫ₐᵇ f(x) dx",
+      "f((a + b)/2)",
+      "∫ₐᵇ x² f(x) dx"
+     ]
     }
    ]
   },
@@ -81684,103 +82909,246 @@
    "cards": [
     {
      "question": "Quelle relation donne l'énergie d'un photon ?",
-     "answer": "E = hν = hc/λ\n• h = 6,63 × 10⁻³⁴ J·s (constante de Planck)\n• c = 3,00 × 10⁸ m/s",
-     "w": "a466a5ac",
-     "wq": "e897c03a"
+     "answer": "E = hν = hc/λ",
+     "w": [
+      "180eecfc",
+      "a466a5ac"
+     ],
+     "more": "h = 6,63 × 10⁻³⁴ J·s ; c = 3,00 × 10⁸ m/s.",
+     "wrongs": [
+      "E = hλ",
+      "E = mc²",
+      "E = h/ν"
+     ]
     },
     {
      "question": "Combien vaut 1 électronvolt en joules ?",
-     "answer": "1 eV = 1,60 × 10⁻¹⁹ J."
+     "answer": "1,60 × 10⁻¹⁹ J",
+     "w": "31c214d2",
+     "wrongs": [
+      "6,63 × 10⁻³⁴ J",
+      "1,60 × 10¹⁹ J",
+      "3,00 × 10⁸ J"
+     ]
     },
     {
-     "question": "Énergie d'un photon de longueur d'onde 500 nm ?",
-     "answer": "Environ 2,5 eV (≈ 3,98 × 10⁻¹⁹ J)\nE = hc/λ = (6,63 × 10⁻³⁴ × 3,00 × 10⁸) / (5,00 × 10⁻⁷)",
-     "w": "a809799f",
-     "wq": "88781a5e"
+     "question": "Quelle est l'énergie d'un photon de longueur d'onde 500 nm ?",
+     "answer": "Environ 2,5 eV",
+     "w": [
+      "b09e4a27",
+      "a809799f"
+     ],
+     "wq": "88781a5e",
+     "more": "E = hc/λ ≈ 3,98 × 10⁻¹⁹ J.",
+     "wrongs": [
+      "Environ 25 eV",
+      "Environ 0,25 eV",
+      "Environ 500 eV"
+     ]
     },
     {
      "question": "Qu'est-ce que l'effet photoélectrique ?",
-     "answer": "L'émission d'électrons par un métal\néclairé par une lumière de fréquence suffisante.",
-     "w": "deae8a82",
-     "wq": "91b3592d"
+     "answer": "L'émission d'électrons par un métal éclairé",
+     "w": [
+      "fd26c688",
+      "deae8a82"
+     ],
+     "more": "Avec une lumière de fréquence suffisante.",
+     "wrongs": [
+      "L'émission de lumière par un métal chauffé",
+      "La réflexion de la lumière",
+      "La production de courant par frottement"
+     ]
     },
     {
-     "question": "Pourquoi le modèle ondulatoire de la lumière n'explique-t-il pas l'effet photoélectrique ?",
-     "answer": "Il existe une fréquence seuil sous laquelle aucun électron n'est émis,\nquelle que soit l'intensité lumineuse.\nUne onde devrait toujours finir par apporter assez d'énergie.",
-     "w": "b6dd1f9d",
-     "wq": "fbc948f9"
+     "question": "Quel fait l'onde lumineuse n'explique-t-elle pas ?",
+     "answer": "L'existence d'une fréquence seuil",
+     "w": [
+      "6c274cc6",
+      "b6dd1f9d"
+     ],
+     "wq": "fbc948f9",
+     "more": "Sous ce seuil, aucun électron n'est émis, quelle que soit l'intensité.",
+     "wrongs": [
+      "La diffraction",
+      "Les interférences",
+      "La réfraction"
+     ]
     },
     {
-     "question": "Qui a interprété l'effet photoélectrique et comment ?",
-     "answer": "Einstein, en 1905 :\nla lumière est faite de quanta d'énergie hν (photons) ;\nun photon cède toute son énergie à un seul électron.\n(Prix Nobel 1921)",
-     "w": "8843798b",
-     "wq": "fd19a24a"
+     "question": "Qui a interprété l'effet photoélectrique en 1905 ?",
+     "answer": "Einstein",
+     "w": [
+      "2265b0af",
+      "8843798b"
+     ],
+     "wq": "fd19a24a",
+     "more": "Lumière faite de quanta hν (photons). Prix Nobel 1921.",
+     "wrongs": [
+      "Planck",
+      "Bohr",
+      "Newton"
+     ]
     },
     {
      "question": "Qu'est-ce que le travail d'extraction W d'un métal ?",
-     "answer": "L'énergie minimale pour arracher un électron au métal.\nElle dépend du métal (environ 4,3 eV pour le zinc).",
-     "w": "5e22f59c",
-     "wq": "83f0aa47"
+     "answer": "L'énergie minimale pour arracher un électron",
+     "w": [
+      "94a2fd3f",
+      "5e22f59c"
+     ],
+     "more": "Environ 4,3 eV pour le zinc.",
+     "wrongs": [
+      "L'énergie d'un photon visible",
+      "L'énergie cinétique de l'électron",
+      "La puissance de la lampe"
+     ]
     },
     {
      "question": "Comment s'exprime la fréquence seuil ν₀ ?",
-     "answer": "ν₀ = W/h\nÉmission seulement si ν ≥ ν₀\n(énergie du photon au moins égale à W).",
-     "w": "eed3b25d",
-     "wq": "cd06b575"
+     "answer": "ν₀ = W/h",
+     "w": [
+      "904ca03a",
+      "eed3b25d"
+     ],
+     "more": "Émission seulement si ν ≥ ν₀.",
+     "wrongs": [
+      "ν₀ = h/W",
+      "ν₀ = W × h",
+      "ν₀ = c/W"
+     ]
     },
     {
-     "question": "Énergie cinétique maximale d'un électron émis par effet photoélectrique ?",
-     "answer": "Ec max = hν − W\nl'excédent d'énergie du photon sur le travail d'extraction.",
-     "w": "c9b88392",
-     "wq": "1493e0de"
+     "question": "Quelle est l'énergie cinétique maximale d'un électron émis ?",
+     "answer": "Ec max = hν − W",
+     "w": [
+      "bc73bc46",
+      "c9b88392"
+     ],
+     "wq": "1493e0de",
+     "wrongs": [
+      "Ec max = hν + W",
+      "Ec max = W − hν",
+      "Ec max = hν"
+     ]
     },
     {
-     "question": "Que change une augmentation de l'intensité lumineuse (à fréquence fixée au-dessus du seuil) ?",
-     "answer": "Plus d'électrons émis par seconde,\nmais la même énergie cinétique maximale.",
-     "w": "6439f56f",
-     "wq": "0c736f5c"
+     "question": "Si on augmente l'intensité lumineuse (au-dessus du seuil), que se passe-t-il ?",
+     "answer": "Plus d'électrons, même énergie maximale",
+     "w": [
+      "411b81c5",
+      "6439f56f"
+     ],
+     "wq": "0c736f5c",
+     "wrongs": [
+      "Électrons plus rapides",
+      "Moins d'électrons",
+      "Aucun changement"
+     ]
     },
     {
-     "question": "Longueur d'onde seuil du zinc (W ≈ 4,3 eV) ?",
-     "answer": "Environ 290 nm (ultraviolet)\nλ₀ = hc/W ≈ 1 240 eV·nm / 4,3 eV",
-     "w": "d02fea79",
-     "wq": "22870673"
+     "question": "Quelle est la longueur d'onde seuil du zinc (W ≈ 4,3 eV) ?",
+     "answer": "Environ 290 nm",
+     "w": [
+      "eb91d153",
+      "d02fea79"
+     ],
+     "wq": "22870673",
+     "more": "λ₀ = hc/W ≈ 1 240 eV·nm / 4,3 eV, dans l'ultraviolet.",
+     "wrongs": [
+      "Environ 590 nm",
+      "Environ 29 nm",
+      "Environ 2 900 nm"
+     ]
     },
     {
-     "question": "Comment calculer le nombre de photons émis par seconde par une source de puissance P ?",
-     "answer": "N = P / (hν) = Pλ / (hc)\nEx. : laser de 1 mW à 633 nm\n→ environ 3 × 10¹⁵ photons par seconde",
-     "w": "e8808e1a",
-     "wq": "dab0dea4"
+     "question": "Combien de photons par seconde émet une source de puissance P ?",
+     "answer": "N = P / (hν)",
+     "w": [
+      "121e47f8",
+      "e8808e1a"
+     ],
+     "wq": "dab0dea4",
+     "more": "Ex. : laser de 1 mW à 633 nm → environ 3 × 10¹⁵ photons/s.",
+     "wrongs": [
+      "N = P × hν",
+      "N = hν / P",
+      "N = P / λ"
+     ]
     },
     {
-     "question": "Que se passe-t-il quand un atome absorbe ou émet un photon ?",
-     "answer": "Il passe d'un niveau d'énergie à un autre.\nLe photon a l'énergie de la transition : ΔE = hν.",
-     "w": "301463df",
-     "wq": "4a71768a"
+     "question": "Quand un atome émet un photon, que fait-il ?",
+     "answer": "Il change de niveau d'énergie",
+     "w": [
+      "10e93a6e",
+      "301463df"
+     ],
+     "wq": "4a71768a",
+     "more": "Le photon a l'énergie de la transition : ΔE = hν.",
+     "wrongs": [
+      "Il perd un proton",
+      "Il change d'élément",
+      "Il s'ionise toujours"
+     ]
     },
     {
-     "question": "Comment fonctionne une cellule photovoltaïque ?",
-     "answer": "Dans un semi-conducteur, un photon d'énergie suffisante\nlibère un électron (paire électron-trou).\nÉnergie lumineuse → énergie électrique",
-     "w": "123e653c",
-     "wq": "1672854c"
+     "question": "Quelle conversion réalise une cellule photovoltaïque ?",
+     "answer": "Lumière → électricité",
+     "w": [
+      "126412fc",
+      "123e653c"
+     ],
+     "wq": "1672854c",
+     "more": "Un photon libère un électron dans un semi-conducteur (paire électron-trou).",
+     "wrongs": [
+      "Électricité → lumière",
+      "Chaleur → électricité",
+      "Lumière → chaleur"
+     ]
     },
     {
-     "question": "Comment calcule-t-on le rendement d'une cellule photovoltaïque ?",
-     "answer": "η = P électrique / P lumineuse reçue\nP lumineuse = éclairement (W/m²) × surface\nSilicium : de l'ordre de 15 à 20 %",
-     "w": "950303d8",
-     "wq": "30068f2b"
+     "question": "Quel est le rendement typique d'une cellule au silicium ?",
+     "answer": "15 à 20 %",
+     "w": [
+      "7ecaa2d5",
+      "950303d8"
+     ],
+     "wq": "30068f2b",
+     "more": "η = P électrique / P lumineuse reçue.",
+     "wrongs": [
+      "80 à 90 %",
+      "1 à 2 %",
+      "50 %"
+     ]
     },
     {
-     "question": "Que représente le point de fonctionnement optimal sur la caractéristique I(U) d'une cellule ?",
-     "answer": "Le point où la puissance fournie P = U × I\nest maximale.",
-     "w": "393c435a",
-     "wq": "e2a3ec4b"
+     "question": "Qu'est-ce que le point de fonctionnement optimal d'une cellule ?",
+     "answer": "Le point où P = U × I est maximale",
+     "w": [
+      "57a2758d",
+      "393c435a"
+     ],
+     "wq": "e2a3ec4b",
+     "wrongs": [
+      "Le point où U est maximale",
+      "Le point où I est nulle",
+      "Le point où U = I"
+     ]
     },
     {
-     "question": "Comment une diode électroluminescente (DEL) produit-elle de la lumière ?",
-     "answer": "Le courant provoque des recombinaisons électron-trou ;\nchacune émet un photon.\nC'est la conversion inverse de la cellule photovoltaïque.",
-     "w": "0b340676",
-     "wq": "6643e91c"
+     "question": "Une DEL réalise-t-elle la conversion inverse d'une cellule photovoltaïque ?",
+     "answer": "Oui",
+     "w": [
+      "fd96b2dd",
+      "0b340676"
+     ],
+     "wq": "6643e91c",
+     "more": "Le courant provoque des recombinaisons électron-trou qui émettent des photons.",
+     "wrongs": [
+      "Non, la même conversion",
+      "Non, elle produit de la chaleur",
+      "Non, elle stocke l'énergie"
+     ]
     }
    ]
   },
@@ -82756,97 +84124,237 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'une fonction récursive ?",
-     "answer": "Une fonction qui s'appelle elle-même sur un problème plus petit.\nElle doit avoir un cas de base qui arrête les appels.",
-     "w": "c9ecdde4",
-     "wq": "c5b09be9"
+     "answer": "Une fonction qui s'appelle elle-même",
+     "w": [
+      "a5dd8377",
+      "c9ecdde4"
+     ],
+     "more": "Elle doit avoir un cas de base qui arrête les appels.",
+     "wrongs": [
+      "Une fonction sans paramètre",
+      "Une fonction qui boucle avec while",
+      "Une fonction qui renvoie une fonction"
+     ]
     },
     {
-     "question": "Écrire une fonction récursive factorielle en Python.",
-     "answer": "def fact(n):\n    if n == 0:\n        return 1\n    return n * fact(n - 1)"
+     "question": "Dans fact(n) récursive, que renvoie le cas de base n == 0 ?",
+     "answer": "1",
+     "w": "e9358edc",
+     "wq": "9e6607e6",
+     "more": "Sinon : return n * fact(n - 1).",
+     "wrongs": [
+      "0",
+      "n",
+      "fact(0)"
+     ]
     },
     {
-     "question": "Que se passe-t-il si une fonction récursive n'atteint jamais son cas de base ?",
-     "answer": "Les appels s'empilent jusqu'à saturer la pile d'appels :\nPython lève une RecursionError\n(limite par défaut : environ 1 000 appels).",
-     "w": "4d8f4e69",
-     "wq": "1f6a2b40"
+     "question": "Que lève Python si une récursion n'atteint jamais son cas de base ?",
+     "answer": "RecursionError",
+     "w": [
+      "32c36611",
+      "4d8f4e69"
+     ],
+     "wq": "1f6a2b40",
+     "more": "La pile d'appels sature (environ 1 000 appels par défaut).",
+     "wrongs": [
+      "IndexError",
+      "ZeroDivisionError",
+      "SyntaxError"
+     ]
     },
     {
-     "question": "Pourquoi la version récursive naïve de Fibonacci est-elle lente ?",
-     "answer": "fib(n) = fib(n−1) + fib(n−2) recalcule plusieurs fois les mêmes valeurs :\ncoût exponentiel.\nLa mémoïsation (stocker les résultats) le rend linéaire.",
-     "w": "f2c99968",
-     "wq": "6acc603e"
+     "question": "Quelle technique rend la version récursive de Fibonacci rapide ?",
+     "answer": "La mémoïsation",
+     "w": [
+      "1d7186dd",
+      "f2c99968"
+     ],
+     "wq": "6acc603e",
+     "more": "Stocker les résultats déjà calculés : le coût devient linéaire.",
+     "wrongs": [
+      "L'affichage des valeurs",
+      "Les variables globales",
+      "La compilation"
+     ]
     },
     {
-     "question": "Que signifie « un programme peut être une donnée » ?",
-     "answer": "Un programme peut être lu, traité ou exécuté par un autre programme.\nEx. : interpréteur, compilateur, système d'exploitation, antivirus",
-     "w": "7c4a24ac",
-     "wq": "4467e0aa"
+     "question": "Un programme peut-il être une donnée pour un autre programme ?",
+     "answer": "Oui",
+     "w": [
+      "9c4ede5d",
+      "7c4a24ac"
+     ],
+     "wq": "4467e0aa",
+     "more": "Ex. : interpréteur, compilateur, antivirus.",
+     "wrongs": [
+      "Non, jamais",
+      "Seulement en assembleur",
+      "Seulement s'il est vide"
+     ]
     },
     {
-     "question": "Qu'est-ce que le problème de l'arrêt ?",
-     "answer": "Décider, pour tout programme et toute entrée, si le programme s'arrête.\nTuring (1936) : aucun algorithme ne peut le faire.\nLe problème est indécidable.",
-     "w": "09a9d20b",
-     "wq": "fe1537da"
+     "question": "Le problème de l'arrêt est-il décidable ?",
+     "answer": "Non",
+     "w": [
+      "558b6a79",
+      "09a9d20b"
+     ],
+     "wq": "fe1537da",
+     "more": "Turing (1936) : aucun algorithme ne peut décider si tout programme s'arrête.",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, avec assez de mémoire",
+      "Oui, en Python"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une machine de Turing ?",
-     "answer": "Un modèle théorique de calcul :\nruban infini, tête de lecture-écriture, table de transitions.\nIl définit ce qui est calculable par un algorithme.",
-     "w": "3342f03a",
-     "wq": "1a0f108a"
+     "answer": "Un modèle théorique de calcul",
+     "w": [
+      "1143166b",
+      "3342f03a"
+     ],
+     "more": "Ruban infini, tête de lecture-écriture, table de transitions.",
+     "wrongs": [
+      "Le premier ordinateur construit",
+      "Une machine à chiffrer",
+      "Un langage de programmation"
+     ]
     },
     {
-     "question": "Citer quatre paradigmes de programmation.",
-     "answer": "• Impératif : instructions qui modifient l'état\n• Objet : classes et objets\n• Fonctionnel : composition de fonctions\n• Logique (ex. : Prolog), une forme déclarative\n(on décrit le résultat voulu, comme en SQL)",
-     "w": "ba0f561e",
-     "wq": "6d39971c"
+     "question": "Dans quel paradigme utilise-t-on classes et objets ?",
+     "answer": "La programmation objet",
+     "w": [
+      "1be95ba0",
+      "ba0f561e"
+     ],
+     "wq": "6d39971c",
+     "more": "Autres : impératif, fonctionnel, logique (Prolog).",
+     "wrongs": [
+      "La programmation fonctionnelle",
+      "La programmation logique",
+      "La programmation impérative"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un effet de bord ?",
-     "answer": "Une fonction modifie un état extérieur à elle.\nEx. : variable globale, liste passée en paramètre,\naffichage, écriture dans un fichier",
-     "w": "2f3c9d64",
-     "wq": "27a1c0c4"
+     "answer": "Une fonction qui modifie un état extérieur",
+     "w": [
+      "47957910",
+      "2f3c9d64"
+     ],
+     "more": "Ex. : variable globale, liste en paramètre, affichage.",
+     "wrongs": [
+      "Une erreur de syntaxe",
+      "Une boucle infinie",
+      "Un cas de base"
+     ]
     },
     {
-     "question": "Quels sont les principes de la programmation fonctionnelle ?",
-     "answer": "• Fonctions pures : même résultat pour mêmes arguments, sans effet de bord\n• Données immuables\n• Fonctions manipulées comme des valeurs",
-     "w": "87a636dc",
-     "wq": "bf960867"
+     "question": "Qu'est-ce qu'une fonction pure ?",
+     "answer": "Même résultat pour mêmes arguments, sans effet de bord",
+     "w": [
+      "4dfc4656",
+      "87a636dc"
+     ],
+     "wq": "bf960867",
+     "more": "Principe de la programmation fonctionnelle, avec des données immuables.",
+     "wrongs": [
+      "Une fonction sans paramètre",
+      "Une fonction récursive",
+      "Une fonction qui affiche"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une fonction d'ordre supérieur ? Exemple.",
-     "answer": "Une fonction qui prend une fonction en argument, ou en renvoie une.\nEx. : list(map(lambda x: x * x, [1, 2, 3]))\n→ [1, 4, 9]",
-     "w": "82dd54db",
-     "wq": "26fc8d96"
+     "question": "Que renvoie list(map(lambda x: x * x, [1, 2, 3])) ?",
+     "answer": "[1, 4, 9]",
+     "w": [
+      "eb5557cc",
+      "82dd54db"
+     ],
+     "wq": "26fc8d96",
+     "more": "map est une fonction d'ordre supérieur : elle prend une fonction en argument.",
+     "wrongs": [
+      "[2, 4, 6]",
+      "[1, 2, 3]",
+      "14"
+     ]
     },
     {
-     "question": "Que fait filter en Python ?",
-     "answer": "Elle garde les éléments qui vérifient une condition.\nEx. : list(filter(lambda x: x % 2 == 0, [1, 2, 3, 4]))\n→ [2, 4]",
-     "w": "8f560717",
-     "wq": "e9e7d30e"
+     "question": "Que renvoie list(filter(lambda x: x % 2 == 0, [1, 2, 3, 4])) ?",
+     "answer": "[2, 4]",
+     "w": [
+      "b749b988",
+      "8f560717"
+     ],
+     "wq": "e9e7d30e",
+     "more": "filter garde les éléments qui vérifient la condition.",
+     "wrongs": [
+      "[1, 3]",
+      "[0, 1, 0, 1]",
+      "[True, False]"
+     ]
     },
     {
-     "question": "Qu'est-ce que la modularité ?",
-     "answer": "Découper un programme en modules indépendants\nqui communiquent par une interface (API) documentée.\nOn les importe avec import.",
-     "w": "3f1ad3a6",
-     "wq": "fc293c0c"
+     "question": "Avec quel mot-clé utilise-t-on un module en Python ?",
+     "answer": "import",
+     "w": [
+      "6ea47c11",
+      "3f1ad3a6"
+     ],
+     "wq": "fc293c0c",
+     "more": "Modularité : modules indépendants communiquant par une interface (API).",
+     "wrongs": [
+      "include",
+      "using",
+      "require"
+     ]
     },
     {
-     "question": "À quoi sert l'instruction assert ?",
-     "answer": "Vérifier une condition pendant l'exécution.\nEx. : assert fact(3) == 6\nRien si c'est vrai, AssertionError sinon. Sert aux tests.",
-     "w": "18bf8432",
-     "wq": "bf967283"
+     "question": "Que fait assert si la condition est fausse ?",
+     "answer": "Elle lève une AssertionError",
+     "w": [
+      "60548b8f",
+      "18bf8432"
+     ],
+     "wq": "bf967283",
+     "more": "Si la condition est vraie, rien ne se passe. Sert aux tests.",
+     "wrongs": [
+      "Elle affiche True",
+      "Elle corrige la valeur",
+      "Elle arrête l'ordinateur"
+     ]
     },
     {
-     "question": "Comment construire un bon jeu de tests ?",
-     "answer": "Tester :\n• des cas courants\n• des cas limites (liste vide, zéro, valeurs extrêmes)\nen comparant résultat obtenu et résultat attendu.",
-     "w": "dc871b07",
-     "wq": "68a60755"
+     "question": "Un bon jeu de tests contient-il des cas limites ?",
+     "answer": "Oui",
+     "w": [
+      "75dc85d4",
+      "dc871b07"
+     ],
+     "wq": "68a60755",
+     "more": "Liste vide, zéro, valeurs extrêmes, en plus des cas courants.",
+     "wrongs": [
+      "Non, seulement des cas courants",
+      "Non, c'est inutile",
+      "Seulement s'il y a un bug"
+     ]
     },
     {
-     "question": "Citer des erreurs fréquentes à l'exécution en Python.",
-     "answer": "• IndexError : indice hors de la liste\n• ZeroDivisionError\n• TypeError : opération sur un type inadapté\n• NameError : variable non définie",
-     "w": "a2499b1c",
-     "wq": "d5fb67c0"
+     "question": "Quelle erreur lève un indice hors de la liste ?",
+     "answer": "IndexError",
+     "w": [
+      "d29f9367",
+      "a2499b1c"
+     ],
+     "wq": "d5fb67c0",
+     "more": "Aussi : ZeroDivisionError, TypeError, NameError.",
+     "wrongs": [
+      "NameError",
+      "TypeError",
+      "KeyError"
+     ]
     }
    ]
   },
@@ -82869,106 +84377,250 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quels sont les caractères de la règle de droit ?",
-     "answer": "• Générale et impersonnelle\n• Abstraite\n• Obligatoire\n• Coercitive : l'État garantit son respect, sous peine de sanction",
-     "w": "8e3e8528",
-     "wq": "1e0cf11f"
+     "question": "La règle de droit est-elle générale et impersonnelle ?",
+     "answer": "Oui",
+     "w": [
+      "55fbb1b4",
+      "8e3e8528"
+     ],
+     "wq": "1e0cf11f",
+     "more": "Elle est aussi abstraite, obligatoire et coercitive.",
+     "wrongs": [
+      "Non, elle vise une personne précise",
+      "Seulement en droit pénal",
+      "Non, elle est facultative"
+     ]
     },
     {
-     "question": "Droit objectif et droits subjectifs : quelle différence ?",
-     "answer": "Droit objectif : les règles qui régissent la vie en société.\nDroits subjectifs : les prérogatives qu'il reconnaît à une personne\n(droit de propriété, droit de vote).",
-     "w": "65597173",
-     "wq": "b9e936c9"
+     "question": "Le droit de propriété est-il un droit objectif ou subjectif ?",
+     "answer": "Subjectif",
+     "w": [
+      "48d6772d",
+      "65597173"
+     ],
+     "wq": "b9e936c9",
+     "more": "Droits subjectifs : prérogatives d'une personne. Droit objectif : l'ensemble des règles.",
+     "wrongs": [
+      "Objectif",
+      "Ni l'un ni l'autre",
+      "Constitutionnel seulement"
+     ]
     },
     {
-     "question": "Droit public et droit privé : quelle différence ?",
-     "answer": "Public : l'État, les collectivités, leurs relations avec les particuliers\n(constitutionnel, administratif).\nPrivé : les relations entre particuliers (civil, commercial).",
-     "w": "5d79315a",
-     "wq": "65736241"
+     "question": "Le droit administratif relève du droit public ou privé ?",
+     "answer": "Public",
+     "w": [
+      "d6316bb4",
+      "5d79315a"
+     ],
+     "wq": "65736241",
+     "more": "Le droit civil et le droit commercial relèvent du droit privé.",
+     "wrongs": [
+      "Privé",
+      "Les deux",
+      "International"
+     ]
     },
     {
-     "question": "Comment se présente la hiérarchie des normes en France ?",
-     "answer": "1. Constitution (bloc de constitutionnalité)\n2. Traités internationaux (article 55)\n3. Lois\n4. Règlements (décrets, arrêtés)\nChaque norme respecte les normes supérieures.",
-     "w": "2b708aa0",
-     "wq": "2732b294"
+     "question": "Quelle norme est au sommet de la hiérarchie des normes en France ?",
+     "answer": "La Constitution",
+     "w": [
+      "5547ae75",
+      "2b708aa0"
+     ],
+     "wq": "2732b294",
+     "more": "Puis traités, lois, règlements.",
+     "wrongs": [
+      "La loi",
+      "Les traités",
+      "Les décrets"
+     ]
     },
     {
-     "question": "Que contient le bloc de constitutionnalité ?",
-     "answer": "• La Constitution de 1958\n• La DDHC de 1789\n• Le Préambule de 1946\n• La Charte de l'environnement de 2004",
-     "w": "71b8482a",
-     "wq": "368ca7fd"
+     "question": "La DDHC de 1789 fait-elle partie du bloc de constitutionnalité ?",
+     "answer": "Oui",
+     "w": [
+      "1427af64",
+      "71b8482a"
+     ],
+     "wq": "368ca7fd",
+     "more": "Avec la Constitution de 1958, le Préambule de 1946 et la Charte de l'environnement.",
+     "wrongs": [
+      "Non",
+      "Seulement en partie",
+      "Seulement depuis 2020"
+     ]
     },
     {
      "question": "Qu'est-ce que la jurisprudence ?",
-     "answer": "L'ensemble des décisions des juridictions, surtout les plus hautes,\nqui précisent et interprètent la loi.",
-     "w": "0f21dd69",
-     "wq": "e514c025"
+     "answer": "Les décisions des juridictions qui interprètent la loi",
+     "w": [
+      "73cb0d21",
+      "0f21dd69"
+     ],
+     "wrongs": [
+      "Les lois votées par le Parlement",
+      "Les écrits des professeurs de droit",
+      "Les coutumes locales"
+     ]
     },
     {
-     "question": "Quels sont les deux ordres de juridictions en France ?",
-     "answer": "• Judiciaire : litiges entre personnes privées, infractions pénales\n• Administratif : litiges avec l'administration\nLe Tribunal des conflits tranche les questions de compétence.",
-     "w": "b02bb9da",
-     "wq": "2cba2cc9"
+     "question": "Quel ordre de juridictions juge les litiges avec l'administration ?",
+     "answer": "L'ordre administratif",
+     "w": [
+      "d5a88147",
+      "b02bb9da"
+     ],
+     "wq": "2cba2cc9",
+     "more": "L'ordre judiciaire juge les litiges entre personnes privées et les infractions.",
+     "wrongs": [
+      "L'ordre judiciaire",
+      "Le Conseil constitutionnel",
+      "La Cour de cassation"
+     ]
     },
     {
-     "question": "Citer des juridictions civiles de premier degré.",
-     "answer": "• Tribunal judiciaire (depuis 2020)\n• Conseil de prud'hommes : litiges du travail\n• Tribunal de commerce : litiges entre commerçants",
-     "w": "bca0a21d",
-     "wq": "25802bf0"
+     "question": "Quelle juridiction juge les litiges du travail ?",
+     "answer": "Le conseil de prud'hommes",
+     "w": [
+      "54dfa83a",
+      "bca0a21d"
+     ],
+     "wq": "25802bf0",
+     "wrongs": [
+      "Le tribunal de commerce",
+      "Le tribunal de police",
+      "Le Conseil d'État"
+     ]
     },
     {
-     "question": "Quelles juridictions jugent les trois catégories d'infractions ?",
-     "answer": "• Contraventions : tribunal de police\n• Délits : tribunal correctionnel\n• Crimes : cour d'assises (ou cour criminelle départementale)",
-     "w": "5e3cc7a7",
-     "wq": "76a00fd5"
+     "question": "Quelle juridiction juge les délits ?",
+     "answer": "Le tribunal correctionnel",
+     "w": [
+      "e34b38a9",
+      "5e3cc7a7"
+     ],
+     "wq": "76a00fd5",
+     "more": "Contraventions : tribunal de police. Crimes : cour d'assises.",
+     "wrongs": [
+      "Le tribunal de police",
+      "La cour d'assises",
+      "Le conseil de prud'hommes"
+     ]
     },
     {
-     "question": "Quel est le rôle de la Cour de cassation ?",
-     "answer": "Au sommet de l'ordre judiciaire, elle juge le droit, pas les faits :\nelle vérifie que les juges ont bien appliqué la loi.",
-     "w": "b4d23e8d",
-     "wq": "e0bb303a"
+     "question": "Que juge la Cour de cassation ?",
+     "answer": "Le droit, pas les faits",
+     "w": [
+      "da94a73a",
+      "b4d23e8d"
+     ],
+     "wq": "e0bb303a",
+     "more": "Elle vérifie que les juges ont bien appliqué la loi.",
+     "wrongs": [
+      "Les faits, pas le droit",
+      "Les litiges avec l'administration",
+      "La constitutionnalité des lois"
+     ]
     },
     {
      "question": "Quelle juridiction est au sommet de l'ordre administratif ?",
-     "answer": "Le Conseil d'État\nIl conseille aussi le gouvernement sur les projets de loi et de décret.",
-     "w": "afdeb781",
-     "wq": "c1adeaf4"
+     "answer": "Le Conseil d'État",
+     "w": [
+      "dab631e9",
+      "afdeb781"
+     ],
+     "wrongs": [
+      "La Cour de cassation",
+      "Le Conseil constitutionnel",
+      "La cour d'assises"
+     ]
     },
     {
-     "question": "Quel est le rôle du Conseil constitutionnel ?",
-     "answer": "Il contrôle la conformité des lois à la Constitution :\n• avant leur promulgation\n• après, par la QPC",
-     "w": "c1b34b2d",
-     "wq": "52b7061f"
+     "question": "Que contrôle le Conseil constitutionnel ?",
+     "answer": "La conformité des lois à la Constitution",
+     "w": [
+      "31a41b19",
+      "c1b34b2d"
+     ],
+     "wq": "52b7061f",
+     "more": "Avant leur promulgation, et après par la QPC.",
+     "wrongs": [
+      "Les comptes de l'État",
+      "Les décisions des maires",
+      "Les jugements pénaux"
+     ]
     },
     {
-     "question": "Que signifie le principe de légalité des délits et des peines ?",
-     "answer": "Nul ne peut être puni pour un acte\nqui n'était pas défini comme infraction par la loi au moment des faits.\n(article 8 de la DDHC)",
-     "w": "63008a11",
-     "wq": "11f12976"
+     "question": "Quel principe interdit de punir un acte non défini par la loi au moment des faits ?",
+     "answer": "La légalité des délits et des peines",
+     "w": [
+      "837f7775",
+      "63008a11"
+     ],
+     "wq": "11f12976",
+     "more": "Article 8 de la DDHC.",
+     "wrongs": [
+      "La présomption d'innocence",
+      "La séparation des pouvoirs",
+      "Le droit à un procès équitable"
+     ]
     },
     {
-     "question": "Qu'est-ce que la présomption d'innocence ?",
-     "answer": "Toute personne est présumée innocente\ntant qu'un jugement n'a pas établi sa culpabilité.\n(article 9 de la DDHC)",
-     "w": "5cd9eb48",
-     "wq": "6e04927d"
+     "question": "Quel article de la DDHC pose la présomption d'innocence ?",
+     "answer": "L'article 9",
+     "w": [
+      "b4781130",
+      "5cd9eb48"
+     ],
+     "wq": "6e04927d",
+     "wrongs": [
+      "L'article 1",
+      "L'article 8",
+      "L'article 17"
+     ]
     },
     {
      "question": "Qu'est-ce que la personnalité juridique ?",
-     "answer": "L'aptitude à être titulaire de droits et d'obligations.\n• Personnes physiques : de la naissance (né vivant et viable) au décès\n• Personnes morales (sociétés, associations) : aussi",
-     "w": "d301becd",
-     "wq": "9f22a08e"
+     "answer": "L'aptitude à être titulaire de droits et d'obligations",
+     "w": [
+      "3ccef6f0",
+      "d301becd"
+     ],
+     "wrongs": [
+      "Le caractère d'une personne",
+      "Le droit de vote",
+      "La majorité civile"
+     ]
     },
     {
      "question": "À quel âge est fixée la majorité civile en France ?",
-     "answer": "18 ans (loi de 1974)\nAvant, le mineur est représenté par ses parents pour la plupart des actes.",
-     "w": "ce522c50",
-     "wq": "86ee61a8"
+     "answer": "18 ans",
+     "w": [
+      "e114ebd3",
+      "ce522c50"
+     ],
+     "more": "Depuis la loi de 1974.",
+     "wrongs": [
+      "21 ans",
+      "16 ans",
+      "20 ans"
+     ]
     },
     {
-     "question": "CEDH et CJUE : quelle différence ?",
-     "answer": "CEDH (Strasbourg, Conseil de l'Europe) :\nrespect de la Convention européenne des droits de l'homme.\nCJUE (Luxembourg) :\napplication du droit de l'Union européenne.",
-     "w": "ec79923e",
-     "wq": "5e6c6055"
+     "question": "Où siège la Cour européenne des droits de l'homme (CEDH) ?",
+     "answer": "À Strasbourg",
+     "w": [
+      "dac32846",
+      "ec79923e"
+     ],
+     "wq": "5e6c6055",
+     "more": "La CJUE (droit de l'Union européenne) siège à Luxembourg.",
+     "wrongs": [
+      "À Luxembourg",
+      "À Bruxelles",
+      "À La Haye"
+     ]
     }
    ]
   },
