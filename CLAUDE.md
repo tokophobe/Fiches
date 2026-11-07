@@ -224,5 +224,7 @@ testables ainsi.
 
 ## Points en suspens (à revoir plus tard avec le propriétaire)
 
-- `packs/bibliotheque.json` (utilisé par `tools/build_site_pages.py`)
-  n'est pas dans le dépôt.
+- Boîtes toutes prêtes : `bibliotheque.json` (racine du dépôt, déposé le
+  7 nov. 2026) ; `tools/build_site_pages.py` attend `packs/bibliotheque.json`.
+  Mise à jour par lots de 50 boîtes avec `tools/maj_boites.py` (règles du
+  §5.7 ; marqueurs `w`/`wq` tenus à jour pour Darwin Admin).

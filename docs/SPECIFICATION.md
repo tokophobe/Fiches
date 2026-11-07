@@ -442,7 +442,22 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    - ✅ « Quelle est la capitale de l'Australie ? »
    - ✅ Accepté : les choix sont écrits **dans la question** elle-même
      (« Quel est l'intrus : pomme, poire, chou, kiwi ? »).
-2. **Contrôles automatiques** de cette règle :
+2. **Une seule question par fiche.** « Où ? » = une fiche, « Quand ? » = une
+   autre fiche ; jamais « Où et quand… ? ». Une fiche qui pose plusieurs
+   questions est découpée en plusieurs fiches.
+3. **Questions courtes, réponses courtes.** Les précisions vont dans
+   « En savoir plus » (texte court sous la réponse).
+4. **Toutes les fiches des boîtes toutes prêtes sont en QCM** : 3 réponses
+   fausses plausibles, de même forme que la bonne réponse, et jamais
+   justes elles aussi.
+5. **Liens « Pour aller plus loin »** : on ne crée pas de contenu, on
+   pointe vers un contenu existant, pertinent et pédagogique (vidéo,
+   animation…).
+   - **Boîte** : toujours un lien, vers un contenu plus long qui traite
+     tout le sujet (ex. : une vidéo de cours complète).
+   - **Fiche** : seulement si c'est utile, et jamais un contenu trop long
+     (vidéo) ou trop dense (page de type Wikipédia).
+6. **Contrôles automatiques** de la règle 1 :
    - **dans l'appli**, en enregistrant une fiche QCM dont la question
      renvoie à des propositions, le robot prévient et propose de
      reformuler (on peut garder quand même) ; un rappel est écrit sous

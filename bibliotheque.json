@@ -1081,7 +1081,8 @@
     "brevet",
     "histoire",
     "dates"
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=IxRe-GW05FA"
   },
   {
    "key": "geographie-capitales",
@@ -1751,7 +1752,8 @@
     "capitales",
     "pays",
     "culture générale"
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=lEmR2hpdA-Q"
   },
   {
    "key": "francais-figures-de-style",
@@ -2812,7 +2814,8 @@
     "maths",
     "formules",
     "théorèmes"
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=Rih93ETaj3E"
   },
   {
    "key": "maths-derivees",
@@ -3730,7 +3733,8 @@
     "physique-chimie",
     "formules",
     "constantes"
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=7o6TLVZKKPw"
   },
   {
    "key": "philosophie-bac",
@@ -5594,7 +5598,8 @@
     "histoire",
     "notions",
     "personnages"
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=p8OVRwd2skc"
   },
   {
    "key": "brevet-geographie-notions",
@@ -7985,7 +7990,8 @@
     "brevet",
     "français",
     "analyse littéraire"
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=y_OO80d5Ujc"
   },
   {
    "key": "brevet-physique-chimie",
@@ -8851,7 +8857,8 @@
     "brevet",
     "physique-chimie",
     "cycle 4"
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=WRzQq1paqa0"
   },
   {
    "key": "brevet-svt",
@@ -10100,7 +10107,8 @@
       "« Dieu est mort. »"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=sbipBrIow1c"
   },
   {
    "key": "bac-philo-definir-notions",
@@ -10719,7 +10727,8 @@
      ],
      "link": "https://fr.wikipedia.org/wiki/Apologue"
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=r35pVqkK7ro"
   },
   {
    "key": "bac-francais-versification-poesie",
@@ -12055,7 +12064,8 @@
       "Le registre didactique"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=io--S-IA6gg"
   },
   {
    "key": "bac-histoire-annees-30",
@@ -13652,7 +13662,8 @@
       "Le Sénégal, le Mali, le Cameroun"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=4Rjmo-qbLLk"
   },
   {
    "key": "bac-histoire-1970-1991",
@@ -14059,7 +14070,8 @@
       "La déflation"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=s6Su3HdkjAE"
   },
   {
    "key": "bac-histoire-depuis-1990",
@@ -14442,7 +14454,8 @@
       "En 2008"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=yk6RByJYDPQ"
   },
   {
    "key": "bac-histoire-ve-republique",
@@ -14812,7 +14825,8 @@
       "Ils sont nommés par le président"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=GMMcQIaPBJ4"
   },
   {
    "key": "bac-geo-mers-oceans",
@@ -15153,7 +15167,8 @@
       "Caraïbes, golfe du Mexique, Bermudes"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=TZsXgpgpazY"
   },
   {
    "key": "bac-geo-dynamiques-territoriales",
@@ -15452,7 +15467,8 @@
       "Uniquement défendre un territoire"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=lqHIjzoYoR4"
   },
   {
    "key": "bac-geo-france-ue",
@@ -15764,7 +15780,8 @@
       "Fixer les impôts européens"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=F4FyPflIsA8"
   },
   {
    "key": "bac-emc-terminale",
@@ -16118,7 +16135,8 @@
       "Pour les étudiants seulement"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=x6O6LQmk3EE"
   },
   {
    "key": "bac-maths-suites",
@@ -16412,7 +16430,8 @@
       "Si elle converge vers 0"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=MJv7_pkFcdA"
   },
   {
    "key": "bac-maths-limites-continuite",
@@ -16670,7 +16689,8 @@
       "u(x) × g'(u(x))"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=9SSEUoyHh2s"
   },
   {
    "key": "bac-maths-exp-ln",
@@ -17088,7 +17108,8 @@
       "log(x) = ln(x / 10)"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=sCcy4IQKits"
   },
   {
    "key": "bac-maths-convexite-trigo",
@@ -17376,7 +17397,8 @@
       "x = π + a + 2kπ seulement"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=gge4xdn6cFA"
   },
   {
    "key": "bac-maths-integrales",
@@ -17666,7 +17688,8 @@
       "Une solution particulière × les solutions de y' = ay"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=bQ-eS1zZCdw"
   },
   {
    "key": "bac-maths-probabilites",
@@ -17925,7 +17948,8 @@
      ],
      "more": "P(|Mₙ − μ| ≥ δ) → 0 quand n → +∞"
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=Cb-jNj-RyBE"
   },
   {
    "key": "bac-maths-geometrie-espace",
@@ -18153,7 +18177,8 @@
       "(4/3) × aire de la base × hauteur"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=EoT48VtnUJ4"
   },
   {
    "key": "bac-maths-epreuve-anticipee",
@@ -18562,7 +18587,8 @@
       "Négatif avant b/a, positif après"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=eeVQT9u75TM"
   },
   {
    "key": "bac-pc-mecanique",
@@ -18910,7 +18936,8 @@
       "Le volume de l'objet × g"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=dhVXGV_j6Sw"
   },
   {
    "key": "bac-pc-ondes-lumiere",
@@ -19230,7 +19257,8 @@
       "3,00 × 10⁸ km·s⁻¹"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=Tg0RmgjIb9I"
   },
   {
    "key": "bac-pc-thermo-electricite",
@@ -19527,7 +19555,8 @@
       "E = ½ q u²"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=_9CdR2sQqYQ"
   },
   {
    "key": "bac-chimie-acide-base",
@@ -19822,7 +19851,8 @@
       "Qr = 1/K"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=sQ9-pbUgh0M"
   },
   {
    "key": "bac-chimie-cinetique-redox",
@@ -20124,7 +20154,8 @@
       "En curies par mole"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=2XtfLLtiW_4"
   },
   {
    "key": "bac-chimie-organique",
@@ -20418,7 +20449,8 @@
       "Un isomère d'un alcane"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=VycmSMY5-cw"
   },
   {
    "key": "bac-svt-genetique-evolution",
@@ -20744,7 +20776,8 @@
       "En Afrique, il y a environ 7 millions d'années"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=fDJnuz6d-Lc"
   },
   {
    "key": "bac-svt-geologie",
@@ -21029,7 +21062,8 @@
       "Il y a 540 millions d'années"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=ovb1bSGpUJg"
   },
   {
    "key": "bac-svt-corps-humain",
@@ -21652,7 +21686,8 @@
       "Les éruptions volcaniques"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=Uw0yruznpCs"
   },
   {
    "key": "bac-ens-scientifique-terminale",
@@ -22009,7 +22044,8 @@
       "Une méthode pour apprendre ses leçons"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=AvnRoOWfKVQ"
   },
   {
    "key": "bac-ses-croissance-commerce",
@@ -22651,7 +22687,8 @@
       "Chaque État seul"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=JtuHLgfVDfs"
   },
   {
    "key": "bac-ses-sociologie",
@@ -22938,7 +22975,8 @@
       "Sur la famille seule"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=O91OucFDcEE"
   },
   {
    "key": "bac-ses-politique-justice",
@@ -23209,7 +23247,8 @@
       "Des tribunaux internationaux"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=30dKe7Eh53A"
   },
   {
    "key": "bac-hggsp-terminale",
@@ -23526,7 +23565,8 @@
       "La diplomatie culturelle"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=lk6UL1avToI"
   },
   {
    "key": "bac-hlp-terminale",
@@ -23768,7 +23808,8 @@
       "Faut-il obéir aux lois injustes ?"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=S9WLDcu1XN0"
   },
   {
    "key": "bac-nsi-structures-algos",
@@ -24135,7 +24176,8 @@
       "constructor"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=0r-pSf3PwVQ"
   },
   {
    "key": "bac-nsi-bdd-reseaux",
@@ -24459,7 +24501,8 @@
       "Un disque dur externe"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=jDXU8PvsG3U"
   },
   {
    "key": "bac-anglais-argumenter",
@@ -24802,7 +24845,8 @@
       "Souvent"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=8laFsKfhLXk"
   },
   {
    "key": "bac-espagnol-bac",
@@ -25089,7 +25133,8 @@
       "En un lado… en otro"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=7rg6RixtTao"
   },
   {
    "key": "bac-allemand-bac",
@@ -25401,7 +25446,8 @@
       "Deshalb…"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=TLXZ9_aUMbo"
   },
   {
    "key": "bac-philo-methode",
@@ -25606,7 +25652,8 @@
       "Citer un auteur de plus"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=jGzTHOM0CV0"
   },
   {
    "key": "bac-hggsp-reperes",
@@ -25796,7 +25843,8 @@
       "Il attribue à l'Allemagne seule la responsabilité de la déportation."
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=VuCjR2VHdYE"
   },
   {
    "key": "r35-brevet-fr-natures-mots",
@@ -26974,7 +27022,8 @@
       "Aucun"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=-MUjLiesZWY"
   },
   {
    "key": "r35-brevet-fr-modes",
@@ -27283,7 +27332,8 @@
       "Auxiliaire au futur + participe passé"
      ]
     }
-   ]
+   ],
+   "link": "https://www.youtube.com/watch?v=EX3DdoIoTcU"
   },
   {
    "key": "r35-brevet-fr-accords-pp",
