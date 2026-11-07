@@ -8592,13 +8592,15 @@
      ]
     },
     {
-     "question": "Laquelle de ces sources d'énergie est renouvelable ?",
+     "question": "Quelle énergie est renouvelable : l'éolien, le pétrole, le charbon ou l'uranium ?",
      "answer": "L'énergie éolienne",
      "w": [
+      "a779b32b",
       "5edafb2d",
       "4e4bd2b9"
      ],
      "wq": [
+      "45b350e3",
       "bef284b6"
      ],
      "more": "Renouvelables : solaire, éolien, hydraulique, géothermie, biomasse. Non renouvelables : pétrole, gaz, charbon, uranium.",
@@ -8610,13 +8612,15 @@
      "link": "https://fr.wikipedia.org/wiki/Énergie_renouvelable"
     },
     {
-     "question": "Laquelle de ces sources d'énergie n'est pas renouvelable ?",
-     "answer": "Le gaz naturel",
+     "question": "Le gaz naturel est-il une énergie renouvelable ?",
+     "answer": "Non : c'est une énergie fossile",
+     "w": "adac3fef",
+     "wq": "ac25d590",
      "more": "Les énergies fossiles (pétrole, gaz, charbon) et l'uranium existent en quantité limitée.",
      "wrongs": [
-      "Le soleil",
-      "Le vent",
-      "La biomasse"
+      "Oui : il se reforme en quelques années",
+      "Oui : il vient des végétaux",
+      "Oui : on en découvre toujours de nouveaux gisements"
      ]
     },
     {
@@ -11985,19 +11989,21 @@
      "link": "https://fr.wikipedia.org/wiki/Champ_lexical"
     },
     {
-     "question": "Lequel de ces mots n'est pas un registre littéraire ?",
-     "answer": "Narratif",
+     "question": "« Narratif » désigne-t-il un registre littéraire ?",
+     "answer": "Non : c'est un type de texte",
      "w": [
+      "3d7da9ab",
       "4470b419"
      ],
      "wq": [
+      "54ec4bb1",
       "1874b5c7"
      ],
      "more": "Registres : lyrique, pathétique, tragique, comique, épique, satirique, polémique, fantastique, didactique, élégiaque.",
      "wrongs": [
-      "Lyrique",
-      "Épique",
-      "Didactique"
+      "Oui : le registre du récit",
+      "Oui : un registre comme le lyrique",
+      "Oui : le registre du théâtre"
      ]
     },
     {
@@ -21383,82 +21389,268 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Photosynthèse : bilan",
-     "answer": "6 CO₂ + 6 H₂O → C₆H₁₂O₆ + 6 O₂\nAvec l'énergie lumineuse, dans les chloroplastes.",
-     "w": "8382add8",
-     "wq": "636a4b13"
+     "question": "Quel est le bilan de la photosynthèse ?",
+     "answer": "6 CO₂ + 6 H₂O → C₆H₁₂O₆ + 6 O₂",
+     "w": [
+      "df57f780",
+      "8382add8"
+     ],
+     "wq": "636a4b13",
+     "wrongs": [
+      "C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O",
+      "6 O₂ + 6 H₂O → C₆H₁₂O₆ + 6 CO₂",
+      "CO₂ + H₂O → O₂ + N₂"
+     ]
     },
     {
-     "question": "Surfaces d'échanges d'une plante",
-     "answer": "Feuilles : grande surface, stomates pour les gaz.\nRacines et poils absorbants : eau et ions minéraux.",
-     "w": "e5e5a619",
-     "wq": "905c1795"
+     "question": "Où se déroule la photosynthèse ?",
+     "answer": "Dans les chloroplastes",
+     "more": "Grâce à l'énergie lumineuse.",
+     "wrongs": [
+      "Dans les mitochondries",
+      "Dans le noyau",
+      "Dans les racines"
+     ]
     },
     {
-     "question": "Sève brute / sève élaborée",
-     "answer": "Sève brute : eau et ions, des racines vers les feuilles (xylème).\nSève élaborée : sucres de la photosynthèse (phloème).",
-     "w": "cb1fe084",
-     "wq": "a6e2b1e9"
+     "question": "Par où une plante échange-t-elle des gaz avec l'air ?",
+     "answer": "Par les stomates des feuilles",
+     "w": [
+      "596ecf2d",
+      "e5e5a619"
+     ],
+     "wq": "905c1795",
+     "wrongs": [
+      "Par les poils absorbants",
+      "Par les fleurs",
+      "Par la sève brute"
+     ]
     },
     {
-     "question": "Pollinisation",
-     "answer": "Transport du pollen des étamines au pistil.\nPar le vent ou les animaux (souvent les insectes : coévolution).",
-     "w": "172c53fb",
-     "wq": "d3ef1b00"
+     "question": "Par où une plante absorbe-t-elle l'eau et les ions minéraux ?",
+     "answer": "Par les racines et leurs poils absorbants",
+     "wrongs": [
+      "Par les stomates",
+      "Par les fleurs",
+      "Par l'écorce du tronc"
+     ]
     },
     {
-     "question": "Dissémination des graines",
-     "answer": "Par le vent, l'eau, les animaux (fruits mangés ou accrochés).\nElle permet à des organismes fixés de coloniser de nouveaux milieux.",
-     "w": "ec211a60",
-     "wq": "9220c009"
+     "question": "Que transporte la sève brute ?",
+     "answer": "De l'eau et des ions minéraux, des racines vers les feuilles",
+     "w": [
+      "278209b7",
+      "cb1fe084"
+     ],
+     "wq": "a6e2b1e9",
+     "more": "Dans le xylème.",
+     "wrongs": [
+      "Des sucres, des feuilles vers les organes",
+      "Du pollen",
+      "De l'oxygène"
+     ]
     },
     {
-     "question": "Défenses des plantes",
-     "answer": "• Structures : épines, cuticule\n• Molécules toxiques ou répulsives\n• Signaux d'alerte chimiques",
-     "w": "8344f209",
-     "wq": "8d3f787d"
+     "question": "Que transporte la sève élaborée ?",
+     "answer": "Les sucres produits par la photosynthèse",
+     "more": "Dans le phloème.",
+     "wrongs": [
+      "De l'eau et des ions minéraux",
+      "Du dioxyde de carbone",
+      "Des graines"
+     ]
     },
     {
-     "question": "Domestication des plantes",
-     "answer": "Sélection par l'Homme, depuis environ 10 000 ans, de caractères utiles (grains plus gros, non dispersés…).\nElle réduit la diversité génétique.",
-     "w": "14886f61",
-     "wq": "7f22e46b"
+     "question": "Qu'est-ce que la pollinisation ?",
+     "answer": "Le transport du pollen des étamines au pistil",
+     "w": [
+      "a1d22644",
+      "172c53fb"
+     ],
+     "wq": "d3ef1b00",
+     "wrongs": [
+      "La germination des graines",
+      "La dispersion des fruits",
+      "La fabrication de la sève"
+     ]
     },
     {
-     "question": "δ¹⁸O des glaces polaires : un δ¹⁸O plus bas indique une période… ?",
-     "answer": "… plus froide.",
-     "w": "a6682266",
-     "wq": "f5ae9be0"
+     "question": "Comment appelle-t-on l'évolution conjointe des fleurs et de leurs insectes pollinisateurs ?",
+     "answer": "La coévolution",
+     "wrongs": [
+      "La symbiose",
+      "La dérive génétique",
+      "La domestication"
+     ]
     },
     {
-     "question": "Indices des climats passés",
-     "answer": "• Pollens fossiles\n• Carottes de glace (bulles d'air, isotopes)\n• Sédiments marins (foraminifères), coraux\n• Moraines glaciaires",
-     "w": "7d537621",
-     "wq": "9ec61a80"
+     "question": "Que permet la dissémination des graines à une plante fixée ?",
+     "answer": "Coloniser de nouveaux milieux",
+     "w": [
+      "2fe4b330",
+      "ec211a60"
+     ],
+     "wq": "9220c009",
+     "more": "Par le vent, l'eau, les animaux (fruits mangés ou accrochés).",
+     "wrongs": [
+      "Faire de la photosynthèse",
+      "Se protéger des herbivores",
+      "Absorber plus d'eau"
+     ]
     },
     {
-     "question": "Paramètres de Milankovitch",
-     "answer": "Variations de l'orbite et de l'axe de la Terre : excentricité, obliquité, précession.\nElles expliquent l'alternance glaciaire / interglaciaire.",
-     "w": "dad8befe",
-     "wq": "ad6fae10"
+     "question": "Comment les plantes se défendent-elles ?",
+     "answer": "Par des épines, des molécules toxiques et des signaux chimiques",
+     "w": [
+      "6c9917fc",
+      "8344f209"
+     ],
+     "wq": "8d3f787d",
+     "wrongs": [
+      "En se déplaçant",
+      "En fermant leurs racines",
+      "En arrêtant la photosynthèse"
+     ]
     },
     {
-     "question": "Dernier maximum glaciaire",
-     "answer": "Il y a environ 20 000 ans.\nCalottes étendues, niveau marin environ 120 m plus bas.",
-     "w": "45910d2d",
-     "wq": "9b153e51"
+     "question": "Depuis combien de temps l'Homme domestique-t-il les plantes ?",
+     "answer": "Environ 10 000 ans",
+     "w": [
+      "b33d7380",
+      "14886f61"
+     ],
+     "wq": "7f22e46b",
+     "wrongs": [
+      "Environ 1 000 ans",
+      "Environ 100 000 ans",
+      "Environ 300 ans"
+     ]
     },
     {
-     "question": "Effet de serre",
-     "answer": "Des gaz (H₂O, CO₂, CH₄) absorbent l'infrarouge émis par la Terre et le réémettent en partie vers le sol.\nCela réchauffe la surface.",
-     "w": "6302f4d4",
-     "wq": "234f22a3"
+     "question": "Quel effet la domestication a-t-elle sur la diversité génétique des plantes cultivées ?",
+     "answer": "Elle la réduit",
+     "wrongs": [
+      "Elle l'augmente",
+      "Elle n'a aucun effet",
+      "Elle la double"
+     ]
     },
     {
-     "question": "Réchauffement actuel",
-     "answer": "Environ +1,1 à +1,2 °C par rapport à l'ère préindustrielle.\nDû principalement aux émissions humaines de gaz à effet de serre (GIEC).",
-     "w": "0d2a0a74",
-     "wq": "f7008dd6"
+     "question": "Dans les glaces polaires, que signifie un δ¹⁸O plus bas ?",
+     "answer": "Une période plus froide",
+     "w": [
+      "82d28fcc",
+      "a6682266"
+     ],
+     "wq": [
+      "eaef22ca",
+      "f5ae9be0"
+     ],
+     "wrongs": [
+      "Une période plus chaude",
+      "Une éruption volcanique",
+      "Une hausse du niveau de la mer"
+     ]
+    },
+    {
+     "question": "Quels indices permettent de reconstituer les climats passés ?",
+     "answer": "Pollens fossiles, carottes de glace, sédiments marins",
+     "w": [
+      "cf791007",
+      "7d537621"
+     ],
+     "wq": "9ec61a80",
+     "more": "Aussi : coraux, moraines glaciaires.",
+     "wrongs": [
+      "Les relevés météo des satellites",
+      "Les cartes routières",
+      "Les bulletins des journaux"
+     ]
+    },
+    {
+     "question": "Quels sont les trois paramètres de Milankovitch ?",
+     "answer": "Excentricité, obliquité, précession",
+     "w": [
+      "60c1ddcc",
+      "dad8befe"
+     ],
+     "wq": "ad6fae10",
+     "wrongs": [
+      "Latitude, longitude, altitude",
+      "Albédo, effet de serre, volcanisme",
+      "Pression, température, humidité"
+     ]
+    },
+    {
+     "question": "Qu'expliquent les paramètres de Milankovitch ?",
+     "answer": "L'alternance des périodes glaciaires et interglaciaires",
+     "wrongs": [
+      "Le réchauffement actuel",
+      "Les saisons",
+      "Les marées"
+     ]
+    },
+    {
+     "question": "Quand a eu lieu le dernier maximum glaciaire ?",
+     "answer": "Il y a environ 20 000 ans",
+     "w": [
+      "b82ae062",
+      "45910d2d"
+     ],
+     "wq": "9b153e51",
+     "wrongs": [
+      "Il y a environ 2 000 ans",
+      "Il y a environ 200 000 ans",
+      "Il y a environ 2 millions d'années"
+     ]
+    },
+    {
+     "question": "De combien le niveau marin était-il plus bas lors du dernier maximum glaciaire ?",
+     "answer": "Environ 120 m",
+     "wrongs": [
+      "Environ 12 m",
+      "Environ 1 200 m",
+      "Environ 1 m"
+     ]
+    },
+    {
+     "question": "Comment fonctionne l'effet de serre ?",
+     "answer": "Des gaz absorbent l'infrarouge émis par la Terre et en renvoient une partie vers le sol",
+     "w": [
+      "db6c212a",
+      "6302f4d4"
+     ],
+     "wq": "234f22a3",
+     "more": "H₂O, CO₂, CH₄ : la surface se réchauffe.",
+     "wrongs": [
+      "Des gaz bloquent la lumière du Soleil",
+      "La couche d'ozone se troue",
+      "Les nuages réfléchissent toute la chaleur"
+     ]
+    },
+    {
+     "question": "De combien la Terre s'est-elle réchauffée depuis l'ère préindustrielle ?",
+     "answer": "Environ +1,1 à +1,2 °C",
+     "w": [
+      "223af0ee",
+      "0d2a0a74"
+     ],
+     "wq": "f7008dd6",
+     "wrongs": [
+      "Environ +0,1 °C",
+      "Environ +5 °C",
+      "Environ +12 °C"
+     ]
+    },
+    {
+     "question": "Quelle est la cause principale du réchauffement actuel ?",
+     "answer": "Les émissions humaines de gaz à effet de serre",
+     "more": "Selon le GIEC.",
+     "wrongs": [
+      "Les paramètres de Milankovitch",
+      "L'activité du Soleil",
+      "Les éruptions volcaniques"
+     ]
     }
    ]
   },
@@ -21480,110 +21672,342 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Gaz à effet de serre principaux",
-     "answer": "• Vapeur d'eau (H₂O)\n• Dioxyde de carbone (CO₂)\n• Méthane (CH₄)\n• Protoxyde d'azote (N₂O)",
-     "w": "d4393e0e",
-     "wq": "bee7c74c"
+     "question": "Quels sont les principaux gaz à effet de serre ?",
+     "answer": "Vapeur d'eau, CO₂, méthane, protoxyde d'azote",
+     "w": [
+      "d19889d6",
+      "d4393e0e"
+     ],
+     "wq": "bee7c74c",
+     "wrongs": [
+      "Azote, oxygène, argon",
+      "Hélium, néon, hydrogène",
+      "Ozone, azote, oxygène"
+     ]
     },
     {
-     "question": "Le GIEC",
-     "answer": "Groupe d'experts intergouvernemental sur l'évolution du climat (1988).\nIl synthétise les connaissances scientifiques sur le changement climatique.",
-     "w": "06b61011",
-     "wq": "9976041e"
+     "question": "Que signifie le sigle GIEC ?",
+     "answer": "Groupe d'experts intergouvernemental sur l'évolution du climat",
+     "w": [
+      "8bf07b77",
+      "06b61011"
+     ],
+     "wq": "9976041e",
+     "more": "Créé en 1988.",
+     "wrongs": [
+      "Groupe international d'étude du carbone",
+      "Grand institut européen du climat",
+      "Groupe interministériel de l'énergie et du climat"
+     ]
     },
     {
-     "question": "Concentration en CO₂ atmosphérique",
-     "answer": "Environ 280 ppm avant l'ère industrielle\nPlus de 420 ppm aujourd'hui",
-     "w": "4657f521",
-     "wq": "c4af77ac"
+     "question": "Quel est le rôle du GIEC ?",
+     "answer": "Synthétiser les connaissances scientifiques sur le climat",
+     "wrongs": [
+      "Voter des lois sur le climat",
+      "Fixer le prix du carbone",
+      "Construire des centrales"
+     ]
     },
     {
-     "question": "Rétroaction positive : exemple",
-     "answer": "Fonte des glaces\n→ albédo plus faible\n→ réchauffement accru\n→ davantage de fonte",
-     "w": "2ac0cbac",
-     "wq": "885604b4"
+     "question": "Quelle était la concentration en CO₂ atmosphérique avant l'ère industrielle ?",
+     "answer": "Environ 280 ppm",
+     "w": [
+      "ad20ef32",
+      "4657f521"
+     ],
+     "wq": "c4af77ac",
+     "wrongs": [
+      "Environ 28 ppm",
+      "Environ 420 ppm",
+      "Environ 2 800 ppm"
+     ]
     },
     {
-     "question": "Albédo",
-     "answer": "Fraction du rayonnement solaire réfléchie par une surface.\n≈ 0,3 pour la Terre ; élevé pour la neige.",
-     "w": "bec0561a",
-     "wq": "38e415bc"
+     "question": "Quelle est la concentration actuelle en CO₂ atmosphérique ?",
+     "answer": "Plus de 420 ppm",
+     "wrongs": [
+      "Environ 280 ppm",
+      "Environ 42 ppm",
+      "Plus de 4 200 ppm"
+     ]
     },
     {
-     "question": "Accord de Paris",
-     "answer": "COP21, 2015\nRéchauffement nettement sous 2 °C, en visant 1,5 °C.",
-     "w": "9d889f02",
-     "wq": "baed0b7f"
+     "question": "Quel est l'exemple classique de rétroaction positive du climat ?",
+     "answer": "La fonte des glaces baisse l'albédo, ce qui accroît le réchauffement",
+     "w": [
+      "0c224503",
+      "2ac0cbac"
+     ],
+     "wq": "885604b4",
+     "wrongs": [
+      "Plus de CO₂ fait pousser plus d'arbres",
+      "Plus de nuages refroidit toujours la Terre",
+      "Les océans absorbent toute la chaleur"
+     ]
     },
     {
-     "question": "Puissance et énergie",
-     "answer": "E = P × Δt\n1 kWh = 3,6 × 10⁶ J",
-     "w": "a741ce7a",
-     "wq": "d420ca3e"
+     "question": "Qu'est-ce que l'albédo ?",
+     "answer": "La fraction du rayonnement solaire réfléchie par une surface",
+     "w": [
+      "fccb0ee3",
+      "bec0561a"
+     ],
+     "wq": "38e415bc",
+     "wrongs": [
+      "La quantité de CO₂ dans l'air",
+      "La température moyenne d'une surface",
+      "La part de l'énergie absorbée par les océans"
+     ]
     },
     {
-     "question": "Effet Joule",
-     "answer": "Énergie dissipée en chaleur dans un conducteur.\nP = R I²",
-     "w": "6f079eb9",
-     "wq": "3f0a55bc"
+     "question": "Quel est l'albédo moyen de la Terre ?",
+     "answer": "Environ 0,3",
+     "more": "Il est élevé pour la neige.",
+     "wrongs": [
+      "Environ 0,9",
+      "Environ 0,05",
+      "Environ 3"
+     ]
     },
     {
-     "question": "Énergies renouvelables / non renouvelables",
-     "answer": "Renouvelables : solaire, éolien, hydraulique, biomasse, géothermie.\nNon renouvelables : fossiles (pétrole, gaz, charbon), nucléaire (uranium).",
-     "w": "32d4d1d3",
-     "wq": "abea61bf"
+     "question": "Lors de quelle conférence est signé l'accord de Paris sur le climat ?",
+     "answer": "La COP21, en 2015",
+     "w": [
+      "e37eaf5c",
+      "9d889f02"
+     ],
+     "wq": "baed0b7f",
+     "wrongs": [
+      "La COP3, en 1997",
+      "La COP15, en 2009",
+      "La COP28, en 2023"
+     ]
     },
     {
-     "question": "Rendement d'un convertisseur",
-     "answer": "η = énergie utile / énergie reçue\nToujours < 1",
-     "w": "d60362b9",
-     "wq": "71aaab75"
+     "question": "Quel objectif fixe l'accord de Paris ?",
+     "answer": "Limiter le réchauffement nettement sous 2 °C, en visant 1,5 °C",
+     "wrongs": [
+      "Arrêter tout réchauffement dès 2020",
+      "Limiter le réchauffement à 4 °C",
+      "Interdire le pétrole en 2030"
+     ]
     },
     {
-     "question": "Cellule photovoltaïque",
-     "answer": "Énergie lumineuse → énergie électrique\nGrâce à un semi-conducteur (silicium).",
-     "w": "5388e775",
-     "wq": "6843b5f5"
+     "question": "Quelle relation relie énergie, puissance et durée ?",
+     "answer": "E = P × Δt",
+     "w": [
+      "d8e29587",
+      "a741ce7a"
+     ],
+     "wq": "d420ca3e",
+     "wrongs": [
+      "E = P / Δt",
+      "E = Δt / P",
+      "E = P + Δt"
+     ]
     },
     {
-     "question": "Pourquoi transporter l'électricité en haute tension",
-     "answer": "À puissance égale, I est plus faible :\nles pertes par effet Joule (RI²) sont réduites.",
-     "w": "28382f64",
-     "wq": "53c3c433"
+     "question": "Combien de joules vaut 1 kWh ?",
+     "answer": "3,6 × 10⁶ J",
+     "wrongs": [
+      "3 600 J",
+      "1 000 J",
+      "3,6 × 10³ J"
+     ]
     },
     {
-     "question": "Mix énergétique",
-     "answer": "Répartition des différentes sources d'énergie primaire utilisées dans un pays."
+     "question": "Quelle puissance est dissipée par effet Joule dans un conducteur ?",
+     "answer": "P = R I²",
+     "w": [
+      "73da107e",
+      "6f079eb9"
+     ],
+     "wq": "3f0a55bc",
+     "more": "Énergie dissipée en chaleur.",
+     "wrongs": [
+      "P = R / I",
+      "P = U / I",
+      "P = R I"
+     ]
     },
     {
-     "question": "Datation par le carbone 14 : demi-vie",
-     "answer": "Environ 5 730 ans\nDatation jusqu'à environ 50 000 ans.",
-     "w": "8e30e88f",
-     "wq": "e4b8638e"
+     "question": "Quelles énergies sont renouvelables ?",
+     "answer": "Solaire, éolien, hydraulique, biomasse, géothermie",
+     "w": [
+      "eb52ba54",
+      "32d4d1d3"
+     ],
+     "wq": "abea61bf",
+     "wrongs": [
+      "Pétrole, gaz, charbon",
+      "Nucléaire et charbon",
+      "Gaz naturel et biomasse fossile"
+     ]
     },
     {
-     "question": "Les fossiles : intérêt pour l'histoire du vivant",
-     "answer": "Témoins d'espèces disparues.\nIls permettent de dater et de reconstituer l'évolution.",
-     "w": "d52cd71a",
-     "wq": "13e3401e"
+     "question": "Le nucléaire est-il une énergie renouvelable ?",
+     "answer": "Non : l'uranium est en quantité limitée",
+     "wrongs": [
+      "Oui, car il n'émet pas de CO₂",
+      "Oui, car l'uranium se reforme",
+      "Oui, comme le solaire"
+     ]
     },
     {
-     "question": "Lignée humaine : idée clé",
-     "answer": "Pas une évolution linéaire, mais un buissonnement :\nplusieurs espèces d'Homo ont coexisté (Néandertal, Sapiens, Denisova…).",
-     "w": "873f9841",
-     "wq": "d236755b"
+     "question": "Comment calcule-t-on le rendement d'un convertisseur d'énergie ?",
+     "answer": "η = énergie utile / énergie reçue",
+     "w": [
+      "19909dd8",
+      "d60362b9"
+     ],
+     "wq": "71aaab75",
+     "wrongs": [
+      "η = énergie reçue / énergie utile",
+      "η = énergie perdue / énergie utile",
+      "η = énergie utile × énergie reçue"
+     ]
     },
     {
-     "question": "Modèle logistique / exponentiel d'une population",
-     "answer": "Exponentiel : croissance sans limite (ressources illimitées).\nLogistique : la croissance ralentit et se stabilise à la capacité du milieu.",
-     "w": "68a5270d",
-     "wq": "5db5669a"
+     "question": "Le rendement d'un convertisseur peut-il dépasser 1 ?",
+     "answer": "Non, il est toujours inférieur à 1",
+     "wrongs": [
+      "Oui, souvent",
+      "Oui, pour les panneaux solaires",
+      "Il vaut toujours exactement 1"
+     ]
     },
     {
-     "question": "Intelligence artificielle : apprentissage automatique",
-     "answer": "Un algorithme apprend à partir d'exemples (données d'entraînement) à classer ou prédire.\nSans que chaque règle soit programmée.",
-     "w": "27a09cbb",
-     "wq": "75960c5c"
+     "question": "Quelle conversion réalise une cellule photovoltaïque ?",
+     "answer": "Énergie lumineuse → énergie électrique",
+     "w": [
+      "de347445",
+      "5388e775"
+     ],
+     "wq": "6843b5f5",
+     "more": "Grâce à un semi-conducteur (silicium).",
+     "wrongs": [
+      "Énergie thermique → énergie électrique",
+      "Énergie électrique → énergie lumineuse",
+      "Énergie chimique → énergie électrique"
+     ]
+    },
+    {
+     "question": "Pourquoi transporte-t-on l'électricité en haute tension ?",
+     "answer": "Pour réduire les pertes par effet Joule",
+     "w": [
+      "08e37cc9",
+      "28382f64"
+     ],
+     "wq": "53c3c433",
+     "more": "À puissance égale, l'intensité est plus faible.",
+     "wrongs": [
+      "Pour aller plus vite",
+      "Pour augmenter l'intensité",
+      "Pour que les câbles soient plus légers"
+     ]
+    },
+    {
+     "question": "Qu'est-ce que le mix énergétique d'un pays ?",
+     "answer": "La répartition des sources d'énergie primaire utilisées",
+     "w": "326f3652",
+     "wq": "61792c39",
+     "wrongs": [
+      "Sa consommation totale d'électricité",
+      "Le prix moyen de l'énergie",
+      "Le nombre de centrales"
+     ]
+    },
+    {
+     "question": "Quelle est la demi-vie du carbone 14 ?",
+     "answer": "Environ 5 730 ans",
+     "w": [
+      "3666aa82",
+      "8e30e88f"
+     ],
+     "wq": "e4b8638e",
+     "wrongs": [
+      "Environ 573 ans",
+      "Environ 57 300 ans",
+      "Environ 4,5 milliards d'années"
+     ]
+    },
+    {
+     "question": "Jusqu'à quel âge peut-on dater avec le carbone 14 ?",
+     "answer": "Environ 50 000 ans",
+     "wrongs": [
+      "Environ 5 000 ans",
+      "Environ 5 millions d'années",
+      "Environ 1 milliard d'années"
+     ]
+    },
+    {
+     "question": "Pourquoi les fossiles sont-ils utiles à l'histoire du vivant ?",
+     "answer": "Ils témoignent d'espèces disparues et aident à dater et reconstituer l'évolution",
+     "w": [
+      "9e21e186",
+      "d52cd71a"
+     ],
+     "wq": "13e3401e",
+     "wrongs": [
+      "Ils servent seulement de décoration",
+      "Ils permettent de prévoir la météo",
+      "Ils mesurent la température actuelle"
+     ]
+    },
+    {
+     "question": "Comment se présente l'évolution de la lignée humaine ?",
+     "answer": "Comme un buissonnement, avec plusieurs espèces d'Homo contemporaines",
+     "w": [
+      "1908d390",
+      "873f9841"
+     ],
+     "wq": "d236755b",
+     "more": "Néandertal, Sapiens, Denisova… ont coexisté.",
+     "wrongs": [
+      "Comme une ligne droite, une espèce après l'autre",
+      "Comme une seule espèce inchangée",
+      "Comme une évolution à partir du chimpanzé actuel"
+     ]
+    },
+    {
+     "question": "Comment évolue une population selon le modèle exponentiel ?",
+     "answer": "Elle croît sans limite",
+     "w": [
+      "73c02e4b",
+      "68a5270d"
+     ],
+     "wq": "5db5669a",
+     "more": "Ressources supposées illimitées.",
+     "wrongs": [
+      "Elle se stabilise à la capacité du milieu",
+      "Elle diminue",
+      "Elle reste constante"
+     ]
+    },
+    {
+     "question": "Comment évolue une population selon le modèle logistique ?",
+     "answer": "Sa croissance ralentit et se stabilise à la capacité du milieu",
+     "wrongs": [
+      "Elle croît sans limite",
+      "Elle disparaît",
+      "Elle oscille sans cesse"
+     ]
+    },
+    {
+     "question": "Qu'est-ce que l'apprentissage automatique ?",
+     "answer": "Un algorithme qui apprend à partir d'exemples à classer ou prédire",
+     "w": [
+      "fb8aea60",
+      "27a09cbb"
+     ],
+     "wq": "75960c5c",
+     "more": "Sans que chaque règle soit programmée.",
+     "wrongs": [
+      "Un robot qui apprend à marcher seul",
+      "Un programme dont chaque règle est écrite à la main",
+      "Une méthode pour apprendre ses leçons"
+     ]
     }
    ]
   },
@@ -24057,120 +24481,326 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Tout d'abord / Ensuite / Enfin",
-     "answer": "First of all\nThen / Moreover\nFinally / Last but not least",
-     "w": "aae96df6",
-     "wq": "e7e9f3f5"
+     "question": "Comment dit-on « tout d'abord » en anglais ?",
+     "answer": "First of all",
+     "w": [
+      "684c53a6",
+      "aae96df6"
+     ],
+     "wq": "e7e9f3f5",
+     "more": "Puis : then, moreover ; enfin : finally, last but not least.",
+     "wrongs": [
+      "Finally",
+      "However",
+      "Therefore"
+     ]
     },
     {
-     "question": "Cependant / Néanmoins",
-     "answer": "However\nNevertheless\nYet",
-     "w": "ba93e097",
-     "wq": "b4e7c636"
+     "question": "Comment dit-on « cependant » en anglais ?",
+     "answer": "However",
+     "w": [
+      "6557e909",
+      "ba93e097"
+     ],
+     "wq": "b4e7c636",
+     "more": "Aussi : nevertheless, yet.",
+     "wrongs": [
+      "Therefore",
+      "Moreover",
+      "Because"
+     ]
     },
     {
-     "question": "Bien que",
-     "answer": "Although / Even though"
+     "question": "Comment dit-on « bien que » en anglais ?",
+     "answer": "Although",
+     "w": "f62e1595",
+     "wq": "ecfa1aaa",
+     "more": "Aussi : even though.",
+     "wrongs": [
+      "Because",
+      "Whereas",
+      "Unless"
+     ]
     },
     {
-     "question": "Alors que (opposition)",
-     "answer": "Whereas / While"
+     "question": "Comment dit-on « alors que » (opposition) en anglais ?",
+     "answer": "Whereas",
+     "w": "f9981f60",
+     "wq": "2fe77c76",
+     "more": "Aussi : while.",
+     "wrongs": [
+      "Therefore",
+      "Because",
+      "Moreover"
+     ]
     },
     {
-     "question": "De plus / En outre",
-     "answer": "Furthermore\nMoreover\nIn addition",
-     "w": "5f0cf23b",
-     "wq": "2d387b63"
+     "question": "Comment dit-on « de plus » en anglais ?",
+     "answer": "Moreover",
+     "w": [
+      "25963f4d",
+      "5f0cf23b"
+     ],
+     "wq": "2d387b63",
+     "more": "Aussi : furthermore, in addition.",
+     "wrongs": [
+      "However",
+      "Whereas",
+      "Therefore"
+     ]
     },
     {
-     "question": "Par conséquent / Donc",
-     "answer": "Therefore\nConsequently / As a result\nThus",
-     "w": "5ce3ff24",
-     "wq": "a8c9aed4"
+     "question": "Comment dit-on « par conséquent » en anglais ?",
+     "answer": "Therefore",
+     "w": [
+      "ffa0ec2e",
+      "5ce3ff24"
+     ],
+     "wq": "a8c9aed4",
+     "more": "Aussi : consequently, as a result, thus.",
+     "wrongs": [
+      "However",
+      "Although",
+      "Moreover"
+     ]
     },
     {
-     "question": "Parce que / À cause de",
-     "answer": "Because / Since / As\nBecause of / due to (+ nom)",
-     "w": "36fc75c1",
-     "wq": "901123ba"
+     "question": "Comment dit-on « parce que » en anglais ?",
+     "answer": "Because",
+     "w": [
+      "bc7bbedc",
+      "36fc75c1"
+     ],
+     "wq": "901123ba",
+     "more": "Aussi : since, as.",
+     "wrongs": [
+      "Because of",
+      "Although",
+      "Therefore"
+     ]
     },
     {
-     "question": "Afin de / Pour que",
-     "answer": "In order to / So as to (+ verbe)\nSo that (+ proposition)",
-     "w": "351f90dc",
-     "wq": "7da30c5c"
+     "question": "Comment dit-on « à cause de » (+ nom) en anglais ?",
+     "answer": "Because of",
+     "more": "Aussi : due to.",
+     "wrongs": [
+      "Because",
+      "Although",
+      "In order to"
+     ]
     },
     {
-     "question": "D'une part… d'autre part",
-     "answer": "On the one hand… on the other hand"
+     "question": "Comment dit-on « afin de » (+ verbe) en anglais ?",
+     "answer": "In order to",
+     "w": [
+      "674540d6",
+      "351f90dc"
+     ],
+     "wq": "7da30c5c",
+     "more": "Aussi : so as to.",
+     "wrongs": [
+      "So that",
+      "Because of",
+      "As a result"
+     ]
     },
     {
-     "question": "En conclusion / Pour résumer",
-     "answer": "To conclude / In conclusion\nTo sum up / All in all",
-     "w": "9d8459cf",
-     "wq": "55723c25"
+     "question": "Comment dit-on « pour que » (+ proposition) en anglais ?",
+     "answer": "So that",
+     "wrongs": [
+      "In order to",
+      "Although",
+      "Such as"
+     ]
     },
     {
-     "question": "À mon avis / Selon moi",
-     "answer": "In my opinion\nAs far as I'm concerned\nFrom my point of view",
-     "w": "48b03f98",
-     "wq": "0d291823"
+     "question": "Comment dit-on « d'une part… d'autre part » en anglais ?",
+     "answer": "On the one hand… on the other hand",
+     "w": "251e78b5",
+     "wq": "6afbf1a8",
+     "wrongs": [
+      "First of all… finally",
+      "Either… or",
+      "Both… and"
+     ]
     },
     {
-     "question": "Je suis d'accord / pas d'accord avec",
-     "answer": "I agree with / I disagree with\nAttention : jamais « I am agree ».",
-     "w": "10443e3b",
-     "wq": "c4f48114"
+     "question": "Comment dit-on « pour résumer » en anglais ?",
+     "answer": "To sum up",
+     "w": [
+      "a4222372",
+      "9d8459cf"
+     ],
+     "wq": "55723c25",
+     "more": "Aussi : to conclude, in conclusion, all in all.",
+     "wrongs": [
+      "First of all",
+      "For instance",
+      "Nowadays"
+     ]
     },
     {
-     "question": "Il semble que",
-     "answer": "It seems that"
+     "question": "Comment dit-on « à mon avis » en anglais ?",
+     "answer": "In my opinion",
+     "w": [
+      "6ab08258",
+      "48b03f98"
+     ],
+     "wq": "0d291823",
+     "more": "Aussi : as far as I'm concerned, from my point of view.",
+     "wrongs": [
+      "In my mind",
+      "At my opinion",
+      "For my opinion"
+     ]
     },
     {
-     "question": "Il est indéniable que",
-     "answer": "There is no denying that / It is undeniable that"
+     "question": "Comment dit-on « je suis d'accord avec » en anglais ?",
+     "answer": "I agree with",
+     "w": [
+      "fed4f690",
+      "10443e3b"
+     ],
+     "wq": "c4f48114",
+     "more": "Attention : jamais « I am agree ».",
+     "wrongs": [
+      "I am agree with",
+      "I am agreed with",
+      "I do agree to"
+     ]
     },
     {
-     "question": "Par exemple / Tel que",
-     "answer": "For instance / For example\nSuch as",
-     "w": "e5caa6f5",
-     "wq": "28d4a553"
+     "question": "Comment dit-on « il semble que » en anglais ?",
+     "answer": "It seems that",
+     "w": "5fed9f6b",
+     "wq": "7a8257ed",
+     "wrongs": [
+      "It looks that",
+      "It sounds what",
+      "It is seeming that"
+     ]
     },
     {
-     "question": "En d'autres termes",
-     "answer": "In other words"
+     "question": "Comment dit-on « il est indéniable que » en anglais ?",
+     "answer": "There is no denying that",
+     "w": "df4f2733",
+     "wq": "89d76d2c",
+     "more": "Aussi : it is undeniable that.",
+     "wrongs": [
+      "There is no doubting what",
+      "It is denying that",
+      "There is no deny that"
+     ]
     },
     {
-     "question": "De nos jours",
-     "answer": "Nowadays / These days"
+     "question": "Comment dit-on « par exemple » en anglais ?",
+     "answer": "For instance",
+     "w": [
+      "efebb0f7",
+      "e5caa6f5"
+     ],
+     "wq": "28d4a553",
+     "more": "Aussi : for example ; « tel que » : such as.",
+     "wrongs": [
+      "In other words",
+      "Moreover",
+      "Therefore"
+     ]
     },
     {
-     "question": "Le document traite de…",
-     "answer": "The document deals with…\nis about…\nfocuses on…",
-     "w": "4b94d5cd",
-     "wq": "4000bfb9"
+     "question": "Comment dit-on « en d'autres termes » en anglais ?",
+     "answer": "In other words",
+     "w": "2793510e",
+     "wq": "bb1fe937",
+     "wrongs": [
+      "For instance",
+      "On the other hand",
+      "All in all"
+     ]
     },
     {
-     "question": "L'auteur souligne que…",
-     "answer": "The author highlights / underlines / stresses that…"
+     "question": "Comment dit-on « de nos jours » en anglais ?",
+     "answer": "Nowadays",
+     "w": "036c467f",
+     "wq": "2fe3351b",
+     "more": "Aussi : these days.",
+     "wrongs": [
+      "Eventually",
+      "Actually",
+      "Formerly"
+     ]
     },
     {
-     "question": "Les 8 axes du programme de langues (cycle terminal)",
-     "answer": "• Identités et échanges\n• Espace privé et espace public\n• Art et pouvoir\n• Citoyenneté et mondes virtuels\n• Fictions et réalités ; Innovations scientifiques et responsabilité\n• Diversité et inclusion ; Territoire et mémoire",
-     "w": "48681754",
-     "wq": "86e64888"
+     "question": "Comment dit-on « le document traite de… » en anglais ?",
+     "answer": "The document deals with…",
+     "w": [
+      "995d1b85",
+      "4b94d5cd"
+     ],
+     "wq": "4000bfb9",
+     "more": "Aussi : is about…, focuses on…",
+     "wrongs": [
+      "The document treats of…",
+      "The document speaks on…",
+      "The document deals of…"
+     ]
     },
     {
-     "question": "Faux ami : actually",
-     "answer": "« En fait »\nEt non « actuellement » (= currently, nowadays).",
-     "w": "ff02e67e",
-     "wq": "47797eef"
+     "question": "Comment dit-on « l'auteur souligne que… » en anglais ?",
+     "answer": "The author highlights that…",
+     "w": "4c66cd4f",
+     "wq": "d3cddf3d",
+     "more": "Aussi : underlines, stresses that…",
+     "wrongs": [
+      "The author souligns that…",
+      "The author underlights that…",
+      "The author pretends that…"
+     ]
     },
     {
-     "question": "Faux ami : eventually",
-     "answer": "« Finalement »\nEt non « éventuellement » (= possibly).",
-     "w": "d5c11995",
-     "wq": "7e32f07f"
+     "question": "Combien d'axes compte le programme de langues du cycle terminal ?",
+     "answer": "8",
+     "w": [
+      "4a549ccd",
+      "48681754"
+     ],
+     "wq": "86e64888",
+     "more": "Identités et échanges ; espace privé et espace public ; art et pouvoir ; citoyenneté et mondes virtuels ; fictions et réalités ; innovations scientifiques et responsabilité ; diversité et inclusion ; territoire et mémoire.",
+     "wrongs": [
+      "4",
+      "6",
+      "12"
+     ]
+    },
+    {
+     "question": "Que signifie « actually » en anglais ?",
+     "answer": "En fait",
+     "w": [
+      "6fb97a9a",
+      "ff02e67e"
+     ],
+     "wq": "47797eef",
+     "more": "Faux ami : « actuellement » se dit currently, nowadays.",
+     "wrongs": [
+      "Actuellement",
+      "Activement",
+      "Exactement"
+     ]
+    },
+    {
+     "question": "Que signifie « eventually » en anglais ?",
+     "answer": "Finalement",
+     "w": [
+      "ad20c091",
+      "d5c11995"
+     ],
+     "wq": "7e32f07f",
+     "more": "Faux ami : « éventuellement » se dit possibly.",
+     "wrongs": [
+      "Éventuellement",
+      "Évidemment",
+      "Souvent"
+     ]
     }
    ]
   },
@@ -24193,94 +24823,271 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Cependant / Pourtant",
-     "answer": "Sin embargo / No obstante"
+     "question": "Comment dit-on « cependant » en espagnol ?",
+     "answer": "Sin embargo",
+     "w": "3f9c4453",
+     "wq": "11a1008f",
+     "more": "Aussi : no obstante.",
+     "wrongs": [
+      "Por eso",
+      "Además",
+      "Mientras que"
+     ]
     },
     {
-     "question": "Bien que",
-     "answer": "Aunque\n+ subjonctif : hypothèse\n+ indicatif : fait réel",
-     "w": "2e4667e9",
-     "wq": "ecfa1aaa"
+     "question": "Comment dit-on « bien que » en espagnol ?",
+     "answer": "Aunque",
+     "w": [
+      "698741aa",
+      "2e4667e9"
+     ],
+     "wq": "ecfa1aaa",
+     "wrongs": [
+      "Además",
+      "Por eso",
+      "Sin embargo"
+     ]
     },
     {
-     "question": "C'est pourquoi / Donc",
-     "answer": "Por eso / Por lo tanto / Así que"
+     "question": "Avec « aunque », quand emploie-t-on le subjonctif ?",
+     "answer": "Pour une hypothèse",
+     "more": "Avec l'indicatif : un fait réel.",
+     "wrongs": [
+      "Pour un fait réel",
+      "Toujours",
+      "Jamais"
+     ]
     },
     {
-     "question": "De plus",
-     "answer": "Además"
+     "question": "Comment dit-on « c'est pourquoi » en espagnol ?",
+     "answer": "Por eso",
+     "w": "f7f98a73",
+     "wq": "58b504e0",
+     "more": "Aussi : por lo tanto, así que.",
+     "wrongs": [
+      "Sin embargo",
+      "Aunque",
+      "Además"
+     ]
     },
     {
-     "question": "Alors que (opposition)",
-     "answer": "Mientras que"
+     "question": "Comment dit-on « de plus » en espagnol ?",
+     "answer": "Además",
+     "w": "f4fbfeae",
+     "wq": "9fb9635a",
+     "wrongs": [
+      "Aunque",
+      "Sin embargo",
+      "Mientras"
+     ]
     },
     {
-     "question": "À mon avis",
-     "answer": "En mi opinión / A mi parecer / Para mí"
+     "question": "Comment dit-on « alors que » (opposition) en espagnol ?",
+     "answer": "Mientras que",
+     "w": "10aa2a5f",
+     "wq": "2fe77c76",
+     "wrongs": [
+      "Por eso",
+      "Además",
+      "Para que"
+     ]
     },
     {
-     "question": "Je pense que… / Je ne pense pas que…",
-     "answer": "Creo que + indicatif\nNo creo que + subjonctif",
-     "w": "159b59ec",
-     "wq": "74b16efd"
+     "question": "Comment dit-on « à mon avis » en espagnol ?",
+     "answer": "En mi opinión",
+     "w": "4ca59d09",
+     "wq": "677e0d30",
+     "more": "Aussi : a mi parecer, para mí.",
+     "wrongs": [
+      "En mi avisión",
+      "Por mi idea",
+      "Con mi opinión"
+     ]
     },
     {
-     "question": "Il faut que…",
-     "answer": "Hay que + infinitif (général)\nEs necesario que + subjonctif",
-     "w": "04fa4b40",
-     "wq": "7a1981d1"
+     "question": "Quel mode suit « creo que » en espagnol ?",
+     "answer": "L'indicatif",
+     "w": [
+      "7ee96d45",
+      "159b59ec"
+     ],
+     "wq": "74b16efd",
+     "wrongs": [
+      "Le subjonctif",
+      "L'infinitif",
+      "Le conditionnel"
+     ]
     },
     {
-     "question": "Ser ou estar ?",
-     "answer": "Ser : identité, nature, caractéristique permanente, heure, origine.\nEstar : état passager, localisation, résultat (estar + participe), forme progressive (estar + gérondif)."
+     "question": "Quel mode suit « no creo que » en espagnol ?",
+     "answer": "Le subjonctif",
+     "wrongs": [
+      "L'indicatif",
+      "L'infinitif",
+      "L'impératif"
+     ]
     },
     {
-     "question": "Obligation personnelle",
-     "answer": "Tener que + infinitif\nEx. : Tengo que estudiar.",
-     "w": "3cba0469",
-     "wq": "896e78a6"
+     "question": "Comment exprime-t-on « il faut » (en général) en espagnol ?",
+     "answer": "Hay que + infinitif",
+     "w": [
+      "44c519c7",
+      "04fa4b40"
+     ],
+     "wq": "7a1981d1",
+     "more": "« Il faut que » : es necesario que + subjonctif.",
+     "wrongs": [
+      "Tener que + infinitif",
+      "Hay que + subjonctif",
+      "Es que + infinitif"
+     ]
     },
     {
-     "question": "Cuando + futur en français",
-     "answer": "Cuando + subjonctif présent\nEx. : Cuando llegues, te llamaré.",
-     "w": "58b0f983",
-     "wq": "6eae7ba0"
+     "question": "Quand emploie-t-on « ser » en espagnol ?",
+     "answer": "Pour l'identité, la nature, une caractéristique permanente",
+     "w": "5f1d5bc1",
+     "wq": "29cabbe5",
+     "more": "Aussi : l'heure, l'origine.",
+     "wrongs": [
+      "Pour un état passager",
+      "Pour la localisation",
+      "Pour la forme progressive"
+     ]
     },
     {
-     "question": "Para que (pour que) : mode",
-     "answer": "Toujours le subjonctif.\nEx. : para que comprendas",
-     "w": "8d8ba8bf",
-     "wq": "6b03a439"
+     "question": "Quand emploie-t-on « estar » en espagnol ?",
+     "answer": "Pour un état passager ou une localisation",
+     "more": "Aussi : estar + participe (résultat), estar + gérondif (forme progressive).",
+     "wrongs": [
+      "Pour l'identité",
+      "Pour l'heure",
+      "Pour l'origine"
+     ]
     },
     {
-     "question": "Concordance des temps",
-     "answer": "Principale au passé → subjonctif imparfait dans la subordonnée.\nEx. : Quería que vinieras.",
-     "w": "1ea36b9e",
-     "wq": "3fd0df7b"
+     "question": "Comment exprime-t-on une obligation personnelle en espagnol ?",
+     "answer": "Tener que + infinitif",
+     "w": [
+      "141d1f77",
+      "3cba0469"
+     ],
+     "wq": "896e78a6",
+     "more": "Ex. : Tengo que estudiar.",
+     "wrongs": [
+      "Hay que + infinitif",
+      "Ser que + infinitif",
+      "Deber de + subjonctif"
+     ]
     },
     {
-     "question": "Si + imparfait (hypothèse)",
-     "answer": "Si + subjonctif imparfait, puis conditionnel.\nEx. : Si tuviera tiempo, viajaría.",
-     "w": "626e2656",
-     "wq": "d96d06a4"
+     "question": "Quel mode suit « cuando » quand le français emploie le futur ?",
+     "answer": "Le subjonctif présent",
+     "w": [
+      "9479e997",
+      "58b0f983"
+     ],
+     "wq": "6eae7ba0",
+     "more": "Ex. : Cuando llegues, te llamaré.",
+     "wrongs": [
+      "Le futur",
+      "L'indicatif présent",
+      "Le conditionnel"
+     ]
     },
     {
-     "question": "Traduire « on »",
-     "answer": "Se + verbe à la 3e personne : Se dice que…\nOu 3e personne du pluriel : Dicen que…",
-     "w": "0d3d30eb",
-     "wq": "66ea6a10"
+     "question": "Quel mode suit toujours « para que » ?",
+     "answer": "Le subjonctif",
+     "w": [
+      "3dada341",
+      "8d8ba8bf"
+     ],
+     "wq": "6b03a439",
+     "more": "Ex. : para que comprendas.",
+     "wrongs": [
+      "L'indicatif",
+      "L'infinitif",
+      "Le conditionnel"
+     ]
     },
     {
-     "question": "Le document montre / présente",
-     "answer": "El documento muestra / presenta / trata de…"
+     "question": "Si la principale est au passé, à quel temps est le subjonctif de la subordonnée ?",
+     "answer": "Au subjonctif imparfait",
+     "w": [
+      "878775b0",
+      "1ea36b9e"
+     ],
+     "wq": "3fd0df7b",
+     "more": "Ex. : Quería que vinieras.",
+     "wrongs": [
+      "Au subjonctif présent",
+      "À l'indicatif imparfait",
+      "Au conditionnel"
+     ]
     },
     {
-     "question": "Enfin / Pour conclure",
-     "answer": "Por último / Para concluir / En conclusión"
+     "question": "Quels temps emploie-t-on pour « si + imparfait » (hypothèse) en espagnol ?",
+     "answer": "Si + subjonctif imparfait, puis conditionnel",
+     "w": [
+      "98615269",
+      "626e2656"
+     ],
+     "wq": "d96d06a4",
+     "more": "Ex. : Si tuviera tiempo, viajaría.",
+     "wrongs": [
+      "Si + indicatif imparfait, puis futur",
+      "Si + conditionnel, puis subjonctif",
+      "Si + présent, puis conditionnel"
+     ]
     },
     {
-     "question": "D'un côté… de l'autre",
-     "answer": "Por un lado… por otro lado"
+     "question": "Comment traduit-on « on » en espagnol ?",
+     "answer": "Se + verbe à la 3e personne",
+     "w": [
+      "c2bde813",
+      "0d3d30eb"
+     ],
+     "wq": "66ea6a10",
+     "more": "Ex. : Se dice que… ; ou 3e personne du pluriel : Dicen que…",
+     "wrongs": [
+      "Uno + infinitif",
+      "On + verbe",
+      "Nos + verbe à la 1re personne"
+     ]
+    },
+    {
+     "question": "Comment dit-on « le document montre » en espagnol ?",
+     "answer": "El documento muestra",
+     "w": "39d10457",
+     "wq": "22873aa3",
+     "more": "Aussi : presenta, trata de…",
+     "wrongs": [
+      "El documento monstra",
+      "El documento mira",
+      "El documento enseñe"
+     ]
+    },
+    {
+     "question": "Comment dit-on « pour conclure » en espagnol ?",
+     "answer": "Para concluir",
+     "w": "407bd711",
+     "wq": "e7f8e7cb",
+     "more": "Aussi : por último, en conclusión.",
+     "wrongs": [
+      "Por concluir",
+      "A concluir",
+      "Sin concluir"
+     ]
+    },
+    {
+     "question": "Comment dit-on « d'un côté… de l'autre » en espagnol ?",
+     "answer": "Por un lado… por otro lado",
+     "w": "5a6886f8",
+     "wq": "5dfeab28",
+     "wrongs": [
+      "De un lado… del otro",
+      "Por una parte… por la misma",
+      "En un lado… en otro"
+     ]
     }
    ]
   },
@@ -24303,102 +25110,296 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Place du verbe dans la principale",
-     "answer": "Le verbe conjugué est en 2e position.\nEx. : Heute gehe ich ins Kino.",
-     "w": "0c32013c",
-     "wq": "c53276c9"
+     "question": "En allemand, où se place le verbe conjugué dans une principale ?",
+     "answer": "En 2e position",
+     "w": [
+      "c754703e",
+      "0c32013c"
+     ],
+     "wq": "c53276c9",
+     "more": "Ex. : Heute gehe ich ins Kino.",
+     "wrongs": [
+      "En 1re position",
+      "À la fin",
+      "Juste après le sujet, toujours"
+     ]
     },
     {
-     "question": "Place du verbe dans la subordonnée",
-     "answer": "Le verbe conjugué est à la fin.\nEx. : …, weil ich müde bin.",
-     "w": "efce6357",
-     "wq": "03c00ff4"
+     "question": "En allemand, où se place le verbe conjugué dans une subordonnée ?",
+     "answer": "À la fin",
+     "w": [
+      "013c283d",
+      "efce6357"
+     ],
+     "wq": "03c00ff4",
+     "more": "Ex. : …, weil ich müde bin.",
+     "wrongs": [
+      "En 2e position",
+      "En 1re position",
+      "Juste après la conjonction"
+     ]
     },
     {
-     "question": "Parce que",
-     "answer": "weil : verbe à la fin\ndenn : verbe en 2e position (conjonction de coordination)",
-     "w": "e0e8370e",
-     "wq": "316c0401"
+     "question": "Après « weil », où se place le verbe conjugué ?",
+     "answer": "À la fin",
+     "w": [
+      "3ad3e76a",
+      "e0e8370e"
+     ],
+     "wq": "316c0401",
+     "wrongs": [
+      "En 2e position",
+      "En 1re position",
+      "Juste après weil"
+     ]
     },
     {
-     "question": "Bien que",
-     "answer": "obwohl (verbe à la fin)"
+     "question": "Après « denn », où se place le verbe conjugué ?",
+     "answer": "En 2e position",
+     "more": "« Denn » est une conjonction de coordination.",
+     "wrongs": [
+      "À la fin",
+      "En 1re position",
+      "Avant le sujet"
+     ]
     },
     {
-     "question": "Que / si (interrogation indirecte)",
-     "answer": "Que : dass\nSi : ob\n(verbe à la fin dans les deux cas)",
-     "w": "b5340838",
-     "wq": "950346bc"
+     "question": "Comment dit-on « bien que » en allemand ?",
+     "answer": "obwohl",
+     "w": "74f5521b",
+     "wq": "ecfa1aaa",
+     "more": "Verbe à la fin.",
+     "wrongs": [
+      "weil",
+      "damit",
+      "trotzdem"
+     ]
     },
     {
-     "question": "Quand (une fois, passé) / quand (chaque fois)",
-     "answer": "als : une seule fois dans le passé\nwenn : répétition, présent, futur, condition",
-     "w": "d387dd48",
-     "wq": "d89b2789"
+     "question": "Comment dit-on « que » (conjonction) en allemand ?",
+     "answer": "dass",
+     "w": [
+      "576093c8",
+      "b5340838"
+     ],
+     "wq": "950346bc",
+     "more": "Verbe à la fin.",
+     "wrongs": [
+      "ob",
+      "was",
+      "als"
+     ]
     },
     {
-     "question": "Cependant / pourtant",
-     "answer": "aber, jedoch, trotzdem\n(trotzdem = adverbe : inversion sujet-verbe)",
-     "w": "b0450999",
-     "wq": "dbbf626f"
+     "question": "Comment dit-on « si » dans une interrogation indirecte en allemand ?",
+     "answer": "ob",
+     "more": "Verbe à la fin.",
+     "wrongs": [
+      "wenn",
+      "dass",
+      "als"
+     ]
     },
     {
-     "question": "C'est pourquoi / donc",
-     "answer": "deshalb / deswegen / also\nInversion : Deshalb bleibe ich zu Hause.",
-     "w": "9069c586",
-     "wq": "f1d56dc0"
+     "question": "Quel « quand » emploie-t-on pour une seule fois dans le passé ?",
+     "answer": "als",
+     "w": [
+      "56897b85",
+      "d387dd48"
+     ],
+     "wq": "d89b2789",
+     "wrongs": [
+      "wenn",
+      "wann",
+      "ob"
+     ]
     },
     {
-     "question": "À mon avis",
-     "answer": "Meiner Meinung nach\nIch bin der Meinung, dass…\nIch finde, dass…",
-     "w": "34580e27",
-     "wq": "677e0d30"
+     "question": "Quel « quand » emploie-t-on pour une répétition ou une condition ?",
+     "answer": "wenn",
+     "wrongs": [
+      "als",
+      "ob",
+      "dass"
+     ]
     },
     {
-     "question": "D'une part… d'autre part",
-     "answer": "Einerseits… andererseits"
+     "question": "Comment dit-on « pourtant » (adverbe) en allemand ?",
+     "answer": "trotzdem",
+     "w": [
+      "ef5b45f9",
+      "b0450999"
+     ],
+     "wq": "dbbf626f",
+     "more": "Adverbe : inversion sujet-verbe. Aussi : aber, jedoch.",
+     "wrongs": [
+      "deshalb",
+      "obwohl",
+      "weil"
+     ]
     },
     {
-     "question": "Pour + infinitif / pour que",
-     "answer": "Pour + infinitif : um… zu + infinitif\nPour que : damit (verbe à la fin)",
-     "w": "aea3b928",
-     "wq": "3551db34"
+     "question": "Comment dit-on « c'est pourquoi » en allemand ?",
+     "answer": "deshalb",
+     "w": [
+      "bd14d24f",
+      "9069c586"
+     ],
+     "wq": "f1d56dc0",
+     "more": "Aussi : deswegen, also. Inversion : Deshalb bleibe ich zu Hause.",
+     "wrongs": [
+      "trotzdem",
+      "obwohl",
+      "damit"
+     ]
     },
     {
-     "question": "Prépositions toujours suivies du datif",
-     "answer": "aus, bei, mit, nach, seit, von, zu\n(+ gegenüber)",
-     "w": "38622dd8",
-     "wq": "81355d62"
+     "question": "Comment dit-on « à mon avis » en allemand ?",
+     "answer": "Meiner Meinung nach",
+     "w": [
+      "60b79281",
+      "34580e27"
+     ],
+     "wq": "677e0d30",
+     "more": "Aussi : Ich bin der Meinung, dass… / Ich finde, dass…",
+     "wrongs": [
+      "Mein Meinung ist",
+      "Nach meinem Avis",
+      "In meiner Meinung"
+     ]
     },
     {
-     "question": "Prépositions toujours suivies de l'accusatif",
-     "answer": "durch, für, gegen, ohne, um\n(+ bis)",
-     "w": "3fa968b9",
-     "wq": "7d139520"
+     "question": "Comment dit-on « d'une part… d'autre part » en allemand ?",
+     "answer": "Einerseits… andererseits",
+     "w": "90067933",
+     "wq": "6afbf1a8",
+     "wrongs": [
+      "Erstens… zweitens",
+      "Entweder… oder",
+      "Sowohl… als auch"
+     ]
     },
     {
-     "question": "Prépositions mixtes (datif / accusatif)",
-     "answer": "in, an, auf, über, unter, vor, hinter, neben, zwischen\nAccusatif : changement de lieu (direction)\nDatif : position (lieu)",
-     "w": "a72d3bd8",
-     "wq": "4399d793"
+     "question": "Comment dit-on « pour + infinitif » en allemand ?",
+     "answer": "um… zu + infinitif",
+     "w": [
+      "670628ab",
+      "aea3b928"
+     ],
+     "wq": "3551db34",
+     "wrongs": [
+      "damit + infinitif",
+      "für + infinitif",
+      "weil… zu"
+     ]
     },
     {
-     "question": "Subjonctif II (irréel)",
-     "answer": "würde + infinitif, ou formes propres (wäre, hätte).\nEx. : Wenn ich Zeit hätte, würde ich reisen.",
-     "w": "4ec296d0",
-     "wq": "ce1f1858"
+     "question": "Comment dit-on « pour que » en allemand ?",
+     "answer": "damit",
+     "more": "Verbe à la fin.",
+     "wrongs": [
+      "um… zu",
+      "denn",
+      "obwohl"
+     ]
     },
     {
-     "question": "Le texte parle de…",
-     "answer": "Der Text handelt von… (+ datif)\nEs geht um… (+ accusatif)",
-     "w": "195d3f69",
-     "wq": "86bdfd37"
+     "question": "Quelles prépositions sont toujours suivies du datif ?",
+     "answer": "aus, bei, mit, nach, seit, von, zu",
+     "w": [
+      "a5a824d2",
+      "38622dd8"
+     ],
+     "wq": "81355d62",
+     "more": "Et gegenüber.",
+     "wrongs": [
+      "durch, für, gegen, ohne, um",
+      "in, an, auf, über, unter",
+      "wegen, trotz, während"
+     ]
     },
     {
-     "question": "Pour conclure",
-     "answer": "Zusammenfassend…\nAbschließend kann man sagen, dass…",
-     "w": "b825eb48",
-     "wq": "832e627a"
+     "question": "Quelles prépositions sont toujours suivies de l'accusatif ?",
+     "answer": "durch, für, gegen, ohne, um",
+     "w": [
+      "d77f94fb",
+      "3fa968b9"
+     ],
+     "wq": "7d139520",
+     "more": "Et bis.",
+     "wrongs": [
+      "aus, bei, mit, nach, seit",
+      "in, an, auf, neben, vor",
+      "wegen, trotz, statt"
+     ]
+    },
+    {
+     "question": "Après une préposition mixte (in, an, auf…), quand emploie-t-on l'accusatif ?",
+     "answer": "Pour un changement de lieu (direction)",
+     "w": [
+      "9f551339",
+      "a72d3bd8"
+     ],
+     "wq": "4399d793",
+     "wrongs": [
+      "Pour une position (lieu fixe)",
+      "Toujours",
+      "Jamais"
+     ]
+    },
+    {
+     "question": "Après une préposition mixte (in, an, auf…), quand emploie-t-on le datif ?",
+     "answer": "Pour une position (lieu fixe)",
+     "wrongs": [
+      "Pour une direction",
+      "Toujours",
+      "Pour le temps seulement"
+     ]
+    },
+    {
+     "question": "Comment forme-t-on le subjonctif II (irréel) en allemand ?",
+     "answer": "würde + infinitif, ou formes propres (wäre, hätte)",
+     "w": [
+      "59b05815",
+      "4ec296d0"
+     ],
+     "wq": "ce1f1858",
+     "more": "Ex. : Wenn ich Zeit hätte, würde ich reisen.",
+     "wrongs": [
+      "werden + participe passé",
+      "haben + infinitif",
+      "sein + zu + infinitif"
+     ]
+    },
+    {
+     "question": "Comment dit-on « le texte parle de… » en allemand ?",
+     "answer": "Der Text handelt von…",
+     "w": [
+      "0831d66e",
+      "195d3f69"
+     ],
+     "wq": "86bdfd37",
+     "more": "Aussi : Es geht um… (+ accusatif).",
+     "wrongs": [
+      "Der Text spricht über…",
+      "Der Text redet für…",
+      "Der Text sagt von…"
+     ]
+    },
+    {
+     "question": "Comment dit-on « pour conclure » en allemand ?",
+     "answer": "Abschließend…",
+     "w": [
+      "9ea8bbb1",
+      "b825eb48"
+     ],
+     "wq": "832e627a",
+     "more": "Aussi : Zusammenfassend…",
+     "wrongs": [
+      "Einerseits…",
+      "Trotzdem…",
+      "Deshalb…"
+     ]
     }
    ]
   },
@@ -24420,76 +25421,190 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Épreuve de philosophie du bac : format",
-     "answer": "4 heures\nAu choix : deux sujets de dissertation ou une explication de texte.\nCoefficient 8 en voie générale.",
-     "w": "919911d2",
-     "wq": "51fabfe4"
+     "question": "Combien de temps dure l'épreuve de philosophie du bac ?",
+     "answer": "4 heures",
+     "w": [
+      "2cfed6ef",
+      "919911d2"
+     ],
+     "wq": "51fabfe4",
+     "wrongs": [
+      "2 heures",
+      "3 heures",
+      "6 heures"
+     ]
     },
     {
-     "question": "Analyser un sujet de dissertation",
-     "answer": "• Définir chaque terme\n• Repérer les présupposés\n• Reformuler la question\n• Chercher les sens possibles et les tensions",
-     "w": "cc216e49",
-     "wq": "096b837e"
+     "question": "Quels sujets propose l'épreuve de philosophie du bac ?",
+     "answer": "Deux dissertations ou une explication de texte, au choix",
+     "wrongs": [
+      "Une seule dissertation imposée",
+      "Un QCM et une dissertation",
+      "Trois explications de texte"
+     ]
     },
     {
-     "question": "Problématique de dissertation",
-     "answer": "Montrer pourquoi la question pose problème : deux réponses également justifiées, ou un paradoxe.\nLa formuler en une ou deux questions.",
-     "w": "6761a682",
-     "wq": "2d6f8537"
+     "question": "Que faire en premier pour analyser un sujet de dissertation ?",
+     "answer": "Définir chaque terme",
+     "w": [
+      "93d80e63",
+      "cc216e49"
+     ],
+     "wq": "096b837e",
+     "more": "Puis repérer les présupposés, reformuler, chercher les sens possibles et les tensions.",
+     "wrongs": [
+      "Écrire le plan",
+      "Chercher des citations",
+      "Rédiger la conclusion"
+     ]
     },
     {
-     "question": "Erreur classique : le hors-sujet",
-     "answer": "Traiter de la notion en général (« le bonheur »)\nau lieu de la question posée (« Le bonheur dépend-il de nous ? »).",
-     "w": "c434e168",
-     "wq": "36c6c4d7"
+     "question": "Qu'est-ce qu'une problématique de dissertation ?",
+     "answer": "La question qui montre pourquoi le sujet pose problème",
+     "w": [
+      "5532d70c",
+      "6761a682"
+     ],
+     "wq": "2d6f8537",
+     "more": "Deux réponses également justifiées, ou un paradoxe ; en une ou deux questions.",
+     "wrongs": [
+      "Le résumé du cours",
+      "La liste des auteurs à citer",
+      "La réponse finale"
+     ]
     },
     {
-     "question": "Plan dialectique : principe",
-     "answer": "1. Une première réponse et ses arguments\n2. Ses limites, puis la thèse opposée\n3. Dépasser l'opposition (distinction, nouvelle définition)",
-     "w": "07795e95",
-     "wq": "c7a1ff60"
+     "question": "Qu'est-ce que le hors-sujet en dissertation ?",
+     "answer": "Traiter de la notion en général au lieu de la question posée",
+     "w": [
+      "e0e7c4e7",
+      "c434e168"
+     ],
+     "wq": "36c6c4d7",
+     "more": "Ex. : parler « du bonheur » au lieu de « Le bonheur dépend-il de nous ? ».",
+     "wrongs": [
+      "Faire un plan en trois parties",
+      "Citer un auteur",
+      "Donner un exemple"
+     ]
     },
     {
-     "question": "Un bon exemple en philosophie",
-     "answer": "Précis, analysé (pas seulement cité), au service d'un argument.\nExpérience commune, référence littéraire, historique, scientifique.",
-     "w": "0a344c8d",
-     "wq": "e1bb819c"
+     "question": "Comment se construit un plan dialectique ?",
+     "answer": "Une thèse, ses limites et la thèse opposée, puis un dépassement",
+     "w": [
+      "e8a26e9c",
+      "07795e95"
+     ],
+     "wq": "c7a1ff60",
+     "wrongs": [
+      "Trois exemples successifs",
+      "Une introduction, un résumé, une conclusion",
+      "Une seule réponse développée trois fois"
+     ]
     },
     {
-     "question": "Utiliser une référence philosophique",
-     "answer": "Expliquer la thèse de l'auteur avec ses propres mots et montrer en quoi elle éclaire le sujet.\nUne citation seule ne prouve rien.",
-     "w": "15fcec44",
-     "wq": "17e45205"
+     "question": "Qu'est-ce qu'un bon exemple en philosophie ?",
+     "answer": "Un exemple précis, analysé, au service d'un argument",
+     "w": [
+      "e1ec3760",
+      "0a344c8d"
+     ],
+     "wq": "e1bb819c",
+     "more": "Expérience commune, référence littéraire, historique, scientifique.",
+     "wrongs": [
+      "Une citation célèbre seule",
+      "Un exemple personnel sans analyse",
+      "Une liste d'exemples"
+     ]
     },
     {
-     "question": "Explication de texte : objectif",
-     "answer": "Dégager la thèse, le problème auquel le texte répond, la façon dont l'argumentation la construit.\nPuis en évaluer la portée.",
-     "w": "ebc411ab",
-     "wq": "e930b2cc"
+     "question": "Comment bien utiliser une référence philosophique ?",
+     "answer": "Expliquer la thèse avec ses mots et montrer ce qu'elle apporte au sujet",
+     "w": [
+      "fd9df6a3",
+      "15fcec44"
+     ],
+     "wq": "17e45205",
+     "more": "Une citation seule ne prouve rien.",
+     "wrongs": [
+      "La citer sans commentaire",
+      "Réciter la biographie de l'auteur",
+      "La placer en conclusion seulement"
+     ]
     },
     {
-     "question": "Explication de texte : introduction",
-     "answer": "• Thème\n• Question à laquelle répond le texte\n• Thèse de l'auteur et enjeu\n• Annonce des grandes étapes du texte",
-     "w": "bb82f294",
-     "wq": "7db275d4"
+     "question": "Quel est l'objectif d'une explication de texte ?",
+     "answer": "Dégager la thèse, le problème et l'argumentation du texte",
+     "w": [
+      "654f6abf",
+      "ebc411ab"
+     ],
+     "wq": "e930b2cc",
+     "more": "Puis en évaluer la portée.",
+     "wrongs": [
+      "Résumer le texte",
+      "Réciter le cours sur l'auteur",
+      "Donner son avis sur le texte"
+     ]
     },
     {
-     "question": "Explication de texte : développement",
-     "answer": "Suivre l'ordre du texte.\nExpliquer les concepts, les exemples, les liens logiques (connecteurs), en citant précisément.",
-     "w": "6858dffa",
-     "wq": "042a4436"
+     "question": "Que contient l'introduction d'une explication de texte ?",
+     "answer": "Thème, question, thèse et enjeu, étapes du texte",
+     "w": [
+      "5c9f0dbc",
+      "bb82f294"
+     ],
+     "wq": "7db275d4",
+     "wrongs": [
+      "La biographie de l'auteur",
+      "Un résumé du cours",
+      "La conclusion du devoir"
+     ]
     },
     {
-     "question": "Erreur classique en explication de texte",
-     "answer": "Paraphraser (répéter le texte avec d'autres mots)\nou réciter un cours sur l'auteur au lieu d'expliquer ce texte précis.",
-     "w": "baa65d91",
-     "wq": "455a0f26"
+     "question": "Dans quel ordre explique-t-on le texte dans le développement ?",
+     "answer": "Dans l'ordre du texte",
+     "w": [
+      "9954264d",
+      "6858dffa"
+     ],
+     "wq": "042a4436",
+     "more": "En expliquant concepts, exemples et liens logiques, avec des citations précises.",
+     "wrongs": [
+      "Du plus facile au plus difficile",
+      "Dans l'ordre chronologique de la vie de l'auteur",
+      "En commençant par la fin"
+     ]
     },
     {
-     "question": "Conclusion d'une dissertation",
-     "answer": "Répondre clairement à la question en rappelant le chemin parcouru.\nOuverture facultative.",
-     "w": "5af468a1",
-     "wq": "df82af96"
+     "question": "Quelle est l'erreur classique en explication de texte ?",
+     "answer": "Paraphraser ou réciter un cours",
+     "w": [
+      "5a63a4ff",
+      "baa65d91"
+     ],
+     "wq": "455a0f26",
+     "more": "Répéter le texte avec d'autres mots au lieu de l'expliquer.",
+     "wrongs": [
+      "Citer le texte",
+      "Suivre l'ordre du texte",
+      "Analyser les connecteurs"
+     ]
+    },
+    {
+     "question": "Que doit faire la conclusion d'une dissertation ?",
+     "answer": "Répondre clairement à la question",
+     "w": [
+      "53ba8808",
+      "5af468a1"
+     ],
+     "wq": "df82af96",
+     "more": "En rappelant le chemin parcouru ; ouverture facultative.",
+     "wrongs": [
+      "Poser une nouvelle question sans réponse",
+      "Résumer le cours",
+      "Citer un auteur de plus"
+     ]
     }
    ]
   },
@@ -25577,20 +26692,22 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Lequel de ces temps de l'indicatif est un temps simple ?",
-     "answer": "Le passé simple",
+     "question": "Le passé simple est-il un temps simple ou un temps composé ?",
+     "answer": "Un temps simple",
      "w": [
+      "93362e04",
       "9ba3ae48",
       "015ad431"
      ],
      "wq": [
+      "3e6cf42e",
       "3f031911"
      ],
      "more": "Temps simples : présent, imparfait, passé simple, futur simple (et conditionnel présent).",
      "wrongs": [
-      "Le passé composé",
-      "Le plus-que-parfait",
-      "Le futur antérieur"
+      "Un temps composé",
+      "Un temps surcomposé",
+      "Ni l'un ni l'autre : c'est un mode"
      ]
     },
     {
@@ -25878,97 +26995,293 @@
    "cards": [
     {
      "question": "Quels sont les modes personnels du verbe ?",
-     "answer": "Indicatif, subjonctif, impératif\n(le conditionnel est souvent rattaché à l'indicatif)",
-     "w": "85da8ef9",
-     "wq": "91c5de90"
+     "answer": "Indicatif, subjonctif, impératif",
+     "w": [
+      "a59ef096",
+      "85da8ef9"
+     ],
+     "more": "Le conditionnel est souvent rattaché à l'indicatif.",
+     "wrongs": [
+      "Infinitif, participe, gérondif",
+      "Présent, passé, futur",
+      "Indicatif, infinitif, participe"
+     ]
     },
     {
      "question": "Comment se forme le subjonctif présent ?",
-     "answer": "Radical de « ils » au présent + -e, -es, -e, -ions, -iez, -ent.\nEx. : ils finissent → que je finisse",
-     "w": "e48d4dcb",
-     "wq": "80aea8a1"
+     "answer": "Radical de « ils » au présent + -e, -es, -e, -ions, -iez, -ent",
+     "w": [
+      "13840ea4",
+      "e48d4dcb"
+     ],
+     "more": "Ex. : ils finissent → que je finisse.",
+     "wrongs": [
+      "Radical du futur + -ais, -ais, -ait",
+      "Infinitif + -e",
+      "Radical de « nous » + -ons"
+     ]
     },
     {
-     "question": "Conjuguez « être » et « avoir » au subjonctif présent.",
-     "answer": "Être : que je sois, tu sois, il soit, nous soyons, vous soyez, ils soient\nAvoir : que j'aie, tu aies, il ait, nous ayons, vous ayez, ils aient",
-     "w": "da9a1547",
-     "wq": "6f6388c2"
+     "question": "Quel est le subjonctif présent de « être » à la 1re personne ?",
+     "answer": "Que je sois",
+     "w": [
+      "24c5595e",
+      "da9a1547"
+     ],
+     "wq": "6f6388c2",
+     "wrongs": [
+      "Que je suis",
+      "Que je soie",
+      "Que je serais"
+     ]
     },
     {
-     "question": "Donnez le subjonctif présent de faire, aller et pouvoir (1re pers.).",
-     "answer": "Que je fasse, que j'aille, que je puisse."
+     "question": "Quel est le subjonctif présent de « avoir » à la 1re personne ?",
+     "answer": "Que j'aie",
+     "wrongs": [
+      "Que j'ai",
+      "Que j'aies",
+      "Que j'aurais"
+     ]
+    },
+    {
+     "question": "Quel est le subjonctif présent de « faire » à la 1re personne ?",
+     "answer": "Que je fasse",
+     "w": "f95b5d07",
+     "wq": "81c98536",
+     "wrongs": [
+      "Que je fais",
+      "Que je faise",
+      "Que je ferais"
+     ]
+    },
+    {
+     "question": "Quel est le subjonctif présent de « aller » à la 1re personne ?",
+     "answer": "Que j'aille",
+     "wrongs": [
+      "Que je vais",
+      "Que j'alle",
+      "Que j'irais"
+     ]
+    },
+    {
+     "question": "Quel est le subjonctif présent de « pouvoir » à la 1re personne ?",
+     "answer": "Que je puisse",
+     "wrongs": [
+      "Que je peux",
+      "Que je pouve",
+      "Que je pourrais"
+     ]
     },
     {
      "question": "Après quelles expressions emploie-t-on le subjonctif ?",
-     "answer": "• Volonté, souhait, crainte, sentiment, obligation : vouloir que, il faut que, avoir peur que\n• Bien que, pour que, avant que, afin que, à condition que",
-     "w": "d7a87059",
-     "wq": "e8be72a8"
+     "answer": "Volonté, crainte, obligation ; bien que, pour que, avant que",
+     "w": [
+      "94265063",
+      "d7a87059"
+     ],
+     "more": "Ex. : vouloir que, il faut que, avoir peur que, afin que, à condition que.",
+     "wrongs": [
+      "Après que, parce que, quand",
+      "Si, lorsque, pendant que",
+      "Je pense que, il est certain que"
+     ]
     },
     {
-     "question": "« Après que » est-il suivi du subjonctif ?",
-     "answer": "Non : l'indicatif, car l'action est réalisée.\nEx. : « Après qu'il est parti… »\n(mais « avant que » + subjonctif)",
-     "w": "8e1287e0",
-     "wq": "073ac4df"
+     "question": "Quel mode suit « après que » ?",
+     "answer": "L'indicatif",
+     "w": [
+      "9a19c7b3",
+      "8e1287e0"
+     ],
+     "wq": "073ac4df",
+     "more": "L'action est réalisée : « Après qu'il est parti… » (mais « avant que » + subjonctif).",
+     "wrongs": [
+      "Le subjonctif",
+      "Le conditionnel",
+      "L'impératif"
+     ]
     },
     {
      "question": "Comment se forme le conditionnel présent ?",
-     "answer": "Radical du futur + terminaisons de l'imparfait.\n-ais, -ais, -ait, -ions, -iez, -aient\nEx. : je chanterais, nous viendrions",
-     "w": "39117f80",
-     "wq": "c4cc87dc"
+     "answer": "Radical du futur + terminaisons de l'imparfait",
+     "w": [
+      "96a560e4",
+      "39117f80"
+     ],
+     "more": "-ais, -ais, -ait, -ions, -iez, -aient. Ex. : je chanterais.",
+     "wrongs": [
+      "Radical du présent + terminaisons du futur",
+      "Radical de « ils » + -e, -es, -e",
+      "Infinitif + -ai, -as, -a"
+     ]
     },
     {
      "question": "Quelles sont les valeurs du conditionnel ?",
-     "answer": "• Hypothèse ou irréel\n• Souhait ; politesse (« Pourriez-vous… ? »)\n• Information non confirmée (« Le suspect aurait fui »)\n• Futur dans le passé (« Il dit qu'il viendrait »)",
-     "w": "4486952a",
-     "wq": "2a5cc910"
+     "answer": "Hypothèse, souhait, politesse, information non confirmée, futur dans le passé",
+     "w": [
+      "128ec842",
+      "4486952a"
+     ],
+     "wrongs": [
+      "Ordre et interdiction",
+      "Action passée et terminée",
+      "Vérité générale"
+     ]
     },
     {
-     "question": "Comment ne pas confondre « je chanterai » et « je chanterais » ?",
-     "answer": "Passer à « nous » :\n« nous chanterons » → futur (-ai)\n« nous chanterions » → conditionnel (-ais)",
-     "w": "5d8d90d9",
-     "wq": "dc64dd4c"
+     "question": "Comment distinguer « je chanterai » de « je chanterais » ?",
+     "answer": "Passer à « nous » : chanterons (futur), chanterions (conditionnel)",
+     "w": [
+      "47a2a6a2",
+      "5d8d90d9"
+     ],
+     "wq": "dc64dd4c",
+     "wrongs": [
+      "Passer à « tu »",
+      "Mettre la phrase au passé",
+      "Il n'y a aucun moyen"
+     ]
     },
     {
-     "question": "Quels temps emploie-t-on après « si » d'hypothèse ?",
-     "answer": "Si + présent → futur : « S'il pleut, je resterai »\nSi + imparfait → conditionnel présent : « S'il pleuvait, je resterais »\nSi + plus-que-parfait → conditionnel passé : « S'il avait plu, je serais resté »",
-     "w": "2f8e8093",
-     "wq": "f0bf0658"
+     "question": "Quel temps suit dans la principale « si + présent » ?",
+     "answer": "Le futur",
+     "w": [
+      "be1bdb0c",
+      "2f8e8093"
+     ],
+     "wq": "f0bf0658",
+     "more": "« S'il pleut, je resterai. »",
+     "wrongs": [
+      "Le conditionnel présent",
+      "Le conditionnel passé",
+      "Le subjonctif"
+     ]
     },
     {
-     "question": "Faut-il mettre le conditionnel après « si » ?",
-     "answer": "Non, jamais juste après le « si » d'hypothèse.\n« Si j'avais su », pas « Si j'aurais su ».",
-     "w": "57ce79ac",
-     "wq": "be56f250"
+     "question": "Quel temps suit dans la principale « si + imparfait » ?",
+     "answer": "Le conditionnel présent",
+     "more": "« S'il pleuvait, je resterais. »",
+     "wrongs": [
+      "Le futur",
+      "Le conditionnel passé",
+      "L'imparfait"
+     ]
     },
     {
-     "question": "Combien de personnes a l'impératif ?",
-     "answer": "Trois, sans sujet exprimé :\nchante, chantons, chantez",
-     "w": "448a8f66",
-     "wq": "ff22a134"
+     "question": "Quel temps suit dans la principale « si + plus-que-parfait » ?",
+     "answer": "Le conditionnel passé",
+     "more": "« S'il avait plu, je serais resté. »",
+     "wrongs": [
+      "Le conditionnel présent",
+      "Le futur antérieur",
+      "Le passé composé"
+     ]
+    },
+    {
+     "question": "Peut-on mettre le conditionnel juste après le « si » d'hypothèse ?",
+     "answer": "Non, jamais",
+     "w": [
+      "116884ad",
+      "57ce79ac"
+     ],
+     "wq": "be56f250",
+     "more": "« Si j'avais su », pas « Si j'aurais su ».",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, à l'oral seulement",
+      "Oui, avec « avoir » seulement"
+     ]
+    },
+    {
+     "question": "Combien de personnes compte l'impératif ?",
+     "answer": "Trois",
+     "w": [
+      "96cd3ffe",
+      "448a8f66"
+     ],
+     "wq": "ff22a134",
+     "more": "Sans sujet exprimé : chante, chantons, chantez.",
+     "wrongs": [
+      "Six",
+      "Deux",
+      "Une"
+     ]
     },
     {
      "question": "Pourquoi écrit-on « chante » sans -s à l'impératif ?",
-     "answer": "Les verbes en -er (et offrir, ouvrir, cueillir, avoir, savoir, vouloir…) n'ont pas de -s à la 2e personne du singulier.\nSauf devant « en » ou « y » : « manges-en », « vas-y ».",
-     "w": "87a58919",
-     "wq": "70eba101"
+     "answer": "Les verbes en -er n'ont pas de -s à la 2e personne du singulier",
+     "w": [
+      "49059c3d",
+      "87a58919"
+     ],
+     "more": "Sauf devant « en » ou « y » : « manges-en », « vas-y ».",
+     "wrongs": [
+      "Parce que c'est la 1re personne",
+      "Parce que l'impératif n'a jamais de -s",
+      "C'est une faute : il faut écrire « chantes »"
+     ]
     },
     {
-     "question": "Donnez l'impératif présent de être, avoir et savoir.",
-     "answer": "Être : sois, soyons, soyez\nAvoir : aie, ayons, ayez\nSavoir : sache, sachons, sachez",
-     "w": "ac009a5b",
-     "wq": "e29a03f0"
+     "question": "Quel est l'impératif présent de « être » (2e personne du singulier) ?",
+     "answer": "Sois",
+     "w": [
+      "a5ec455d",
+      "ac009a5b"
+     ],
+     "wq": "e29a03f0",
+     "wrongs": [
+      "Es",
+      "Soit",
+      "Sois-tu"
+     ]
     },
     {
-     "question": "Quelle valeur a l'impératif ?",
-     "answer": "Ordre, interdiction (forme négative), conseil, prière, invitation.\nEx. : « Ne cours pas ! », « Venez dîner. »",
-     "w": "18cfee81",
-     "wq": "da7c53b0"
+     "question": "Quel est l'impératif présent de « avoir » (2e personne du singulier) ?",
+     "answer": "Aie",
+     "wrongs": [
+      "As",
+      "Aies",
+      "Ait"
+     ]
+    },
+    {
+     "question": "Quel est l'impératif présent de « savoir » (2e personne du singulier) ?",
+     "answer": "Sache",
+     "wrongs": [
+      "Sais",
+      "Saches",
+      "Sachez-tu"
+     ]
+    },
+    {
+     "question": "Quelles valeurs a l'impératif ?",
+     "answer": "Ordre, interdiction, conseil, prière, invitation",
+     "w": [
+      "8ca8dbba",
+      "18cfee81"
+     ],
+     "wq": "da7c53b0",
+     "more": "Ex. : « Ne cours pas ! », « Venez dîner. »",
+     "wrongs": [
+      "Hypothèse et irréel",
+      "Action passée",
+      "Information non confirmée"
+     ]
     },
     {
      "question": "Comment se forme le subjonctif passé ?",
-     "answer": "Auxiliaire « être » ou « avoir » au subjonctif présent + participe passé.\nEx. : « Je suis content que tu sois venu. »",
-     "w": "1159bfe5",
-     "wq": "34cad3c6"
+     "answer": "Auxiliaire au subjonctif présent + participe passé",
+     "w": [
+      "adac5583",
+      "1159bfe5"
+     ],
+     "more": "Ex. : « Je suis content que tu sois venu. »",
+     "wrongs": [
+      "Auxiliaire à l'imparfait + participe passé",
+      "Auxiliaire au conditionnel + infinitif",
+      "Auxiliaire au futur + participe passé"
+     ]
     }
    ]
   },
