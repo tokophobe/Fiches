@@ -991,13 +991,16 @@
       <!-- v247 : agenda d'une classe — nom de la classe (voir
            renderCalendarClassScope). -->
       <p class="calendar-class-scope" id="calendar-class-scope" hidden></p>
-      <button type="button" class="btn btn--primary" id="calendar-add-event-btn" style="margin-bottom:14px;">+ Ajouter un événement</button>
-
-      <!-- Item 3 : bascule d'affichage — liste / calendrier (mois en
-           défilement infini). Le format "année" a été retiré. -->
-      <div class="calendar-view-toggle">
-        <button type="button" class="calendar-view-toggle-btn is-active" data-calview="list">Liste</button>
-        <button type="button" class="calendar-view-toggle-btn" data-calview="months">Mois</button>
+      <!-- v272 : « + Ajouter » à gauche et, sur la même ligne à droite, la
+           bascule d'affichage en deux pictogrammes (liste / mois). -->
+      <div class="calendar-top-row">
+        <button type="button" class="btn btn--primary" id="calendar-add-event-btn">+ Ajouter un événement</button>
+        <!-- Item 3 : bascule d'affichage — liste / calendrier (mois en
+             défilement infini). Le format "année" a été retiré. -->
+        <div class="calendar-view-toggle" role="group" aria-label="Affichage de l'agenda">
+          <button type="button" class="calendar-view-toggle-btn is-active" data-calview="list" title="Liste" aria-label="Liste" aria-pressed="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4.5" cy="6" r="1.2" fill="currentColor" stroke="none"/><circle cx="4.5" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="4.5" cy="18" r="1.2" fill="currentColor" stroke="none"/></svg></button>
+          <button type="button" class="calendar-view-toggle-btn" data-calview="months" title="Mois" aria-label="Mois" aria-pressed="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16.5" rx="2"/><line x1="3" y1="9.5" x2="21" y2="9.5"/><line x1="8" y1="2.5" x2="8" y2="6.5"/><line x1="16" y1="2.5" x2="16" y2="6.5"/><rect x="6.5" y="12.5" width="2.5" height="2.5" rx="0.4" fill="currentColor" stroke="none"/><rect x="10.75" y="12.5" width="2.5" height="2.5" rx="0.4" fill="currentColor" stroke="none"/><rect x="15" y="12.5" width="2.5" height="2.5" rx="0.4" fill="currentColor" stroke="none"/><rect x="6.5" y="16.5" width="2.5" height="2.5" rx="0.4" fill="currentColor" stroke="none"/><rect x="10.75" y="16.5" width="2.5" height="2.5" rx="0.4" fill="currentColor" stroke="none"/></svg></button>
+        </div>
       </div>
 
       <div class="card-form" id="calendar-list-view">
