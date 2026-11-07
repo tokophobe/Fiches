@@ -240,6 +240,14 @@ Une séance continue tant qu'on répond. Ordre de passage :
   le robot **propose la boîte suivante** des révisions conseillées (sauf
   en « Révisions prioritaires »).
 - **Annuler** la dernière note est possible juste après.
+- **Évaluation** (v272) : tant que la réponse n'a pas été vue, le texte
+  « Cherche la réponse, tourne la fiche, puis évalue-toi » remplace les
+  quatre boutons. Quand la fiche se retourne, le texte s'efface et les
+  boutons apparaissent l'un après l'autre ; à la fiche suivante, les
+  boutons s'effacent et le texte revient. En mode jour, les smileys des
+  notes « claires » sont un peu foncés pour rester lisibles (même teinte ;
+  les jauges et graphiques gardent leurs couleurs) ; en mode nuit, rien ne
+  change.
 - Quand les fiches dues sont toutes vues et qu'il reste des fiches ratées
   à revoir, le bas de l'écran passe de « N fiches à revoir » à « On revoit
   les fiches difficiles » ; le robot l'explique alors par un message (une
@@ -289,8 +297,10 @@ cadres apparaissent l'un après l'autre. Les cadres s'affichent **repliés**
 veux »), pour tout voir sur un seul écran ; sous le titre, le début du
 texte apparaît déjà et s'efface en dégradé, pour montrer qu'il y a une
 suite (v271) ; le triangle en bas de chaque cadre, ou un toucher sur cet
-aperçu, le déplie. Sur la page à trois ronds, chaque rond a un contour de
-la couleur de son cadre (v271). Chaque cadre a sa couleur, son schéma, son petit rond et
+aperçu, le déplie ; il se replie avec la même animation, à l'envers
+(v272). Les schémas sont alignés à droite au-dessus de chaque cadre (v272).
+Sur la page à trois ronds, chaque rond a un contour de la couleur de son
+cadre (v271). Chaque cadre a sa couleur, son schéma, son petit rond et
 son bouton :
 - **« Ici, le plus urgent ! »** (orange, des bonds qui se resserrent
   entre un chronomètre et le calendrier de l'échéance ; dessins du
@@ -378,6 +388,10 @@ leur place dans l'arborescence.
   - « Afficher les boîtes activées pour la révision » (compte élève) ;
   - « Afficher mes boîtes publiées » ;
   - « Afficher mes boîtes non publiées ».
+  Quand on active un filtre, le robot explique en une phrase ce qu'il
+  montre (utile sur téléphone, sans texte au survol). Sa bulle reste
+  affichée jusqu'à ce qu'on la ferme (croix ou toucher sur la bulle), même
+  si l'on touche ailleurs (v272).
   Pour les deux derniers, les boîtes qui ne sont pas les miennes (classe,
   Librairie) sont toujours grisées ; un dossier reste normal s'il contient
   au moins une boîte concernée. Enfin, nombre de fiches ou jauge à droite
@@ -526,6 +540,8 @@ tout de suite, la liste à jour suit.
 ### 6.4 Agenda
 
 - **Mon agenda** (accueil) : les évènements du **compte utilisé** (v256).
+  En haut, « + Ajouter un événement » et, sur la même ligne à droite, deux
+  pictogrammes pour choisir l'affichage : liste ou mois (v272).
   Compte élève : ceux créés dans le compte élève et les échéances reçues
   des classes suivies. Compte enseignant : ceux créés dans le compte
   enseignant et les échéances données à ses classes. Chaque évènement
@@ -711,6 +727,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v272 | 8 nov. 2026 | Page Réviser : ronds un peu plus grands, schémas plus petits alignés à droite, repliement des cadres animé, smileys de l'explication sans cadre et plus grands. Révision : animation entre le texte d'invitation et les boutons d'évaluation ; smileys clairs foncés en mode jour. Organisation : le robot explique chaque filtre quand on l'active (bulle fermée par la croix). Agenda : « Liste » et « Mois » deviennent deux pictogrammes à droite de « + Ajouter un événement ». |
 | v271 | 7 nov. 2026 | Révision : une fiche QCM avec un complément de réponse reste affichée avec « Continuer », même après une bonne réponse du premier coup (la suite d'une réponse sur plusieurs lignes passait toute seule) ; message du robot au passage aux fiches difficiles. Page Réviser « mixte » : contours colorés des trois ronds, aperçu du texte en dégradé dans les cadres repliés, nouveaux schémas dessinés par le propriétaire. |
 | v270 | 6 nov. 2026 | Page Réviser « mixte » : animation en trois temps (texte des ronds effacé et picto agrandi, vol plus lent des grands ronds vers les petits, apparition des cadres l'un après l'autre) ; cadres repliés par défaut (titre et notion), dépliables par un triangle en bas. |
 | v269 | 6 nov. 2026 | Page Réviser « mixte » refaite d'après la maquette du propriétaire : la page à trois boutons plus « Comment ça marche ? », qui réduit les ronds (ils glissent à gauche) et fait apparaître trois cadres d'explication colorés avec schémas (le plus urgent, le travail de fond, les révisions libres) ; « OK » pour revenir. |

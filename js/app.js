@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v271";
+  const APP_VERSION = "v272";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -350,6 +350,16 @@
   // développeur (éditables dans l'appli), avec les valeurs ci-dessus comme
   // défaut tant que rien n'a été personnalisé.
   let bodyLogoSpeechMessages = [];
+  // v272 : bulle « explication ponctuelle » (ex. filtres de l'organisation) :
+  // une fois fermée, le robot reprend l'aide de la page.
+  let bodyLogoSpeechTip = false;
+  function closeBodyLogoSpeech() {
+    renderBodyLogoSpeechState(false);
+    if (bodyLogoSpeechTip) {
+      bodyLogoSpeechTip = false;
+      if (bodyLogoSpeechKey) applyBodyLogoSpeech(bodyLogoSpeechKey);
+    }
+  }
   let bodyLogoSpeechIndex = 0;
   // Round 47 : page dont la bulle est actuellement chargée (évite qu'un
   // message ponctuel — ex. « Déplacer … vers : » — soit écrasé par le
@@ -400,6 +410,7 @@
   let messageThreadReturnClass = null;
   function applyBodyLogoSpeech(view) {
     bodyLogoSpeechKey = view;
+    bodyLogoSpeechTip = false;
     const raw = loadDevSettings().helpMessagesByView[view];
     bodyLogoSpeechMessages = Array.isArray(raw) ? raw.filter((m) => m && m.trim()) : raw ? [raw] : [];
     bodyLogoSpeechIndex = 0;
@@ -480,7 +491,7 @@
         e.target.closest("#body-logo-speech-close")
       )
         return;
-      renderBodyLogoSpeechState(false);
+      closeBodyLogoSpeech();
     });
   }
   // Round 18, item 6 : bouton fermer explicite, en plus du clic sur la
@@ -489,7 +500,7 @@
   if (bodyLogoSpeechCloseBtn) {
     bodyLogoSpeechCloseBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      renderBodyLogoSpeechState(false);
+      closeBodyLogoSpeech();
       // Round 48 : dans un sélecteur qui le demande (placer un nouveau
       // dossier), fermer la bulle du robot annule l'opération.
       if (boitePickerCtx && boitePickerCtx.closeSpeechCancels && el("view-boite-picker") && el("view-boite-picker").classList.contains("is-active")) {
@@ -4900,18 +4911,84 @@
      été vue ; une fois vue, les boutons restent (même si on retourne la
      fiche côté question). */
   let answerSeenCardId = null;
+  /* v272 : passage animé entre le texte d'invitation et les boutons :
+     quand la fiche se retourne, le texte s'efface et les quatre boutons
+     surgissent l'un après l'autre ; à la fiche suivante, l'inverse. */
+  let ratingSwapToken = 0;
+  function ratingSwapAnims(invite) {
+    [invite, ...ratingRowEl.querySelectorAll(".stamp")].forEach((n) => n && n.getAnimations().forEach((a) => a.cancel()));
+  }
   function setRatingInvite(showInvite, hideAll) {
     const invite = el("rating-invite");
     const info = el("review-score-info");
+    const token = ++ratingSwapToken;
+    if (invite) ratingSwapAnims(invite);
+    ratingRowEl.inert = false;
     if (hideAll) {
       if (invite) invite.hidden = true;
       return;
     }
-    if (invite) invite.hidden = !showInvite;
-    ratingRowEl.hidden = showInvite;
-    document.body.classList.toggle("is-rating-invite", showInvite);
-    if (info && showInvite) info.hidden = true;
-    else if (!showInvite && currentCard) updateRatingPreviews();
+    const wasRow = !ratingRowEl.hidden;
+    const wasInvite = invite && !invite.hidden;
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const onReview = el("view-review") && el("view-review").classList.contains("is-active");
+    const animate = !!invite && !reduce && onReview && typeof ratingRowEl.animate === "function";
+    const stamps = [...ratingRowEl.querySelectorAll(".stamp")];
+    const finish = () => {
+      if (invite) invite.hidden = !showInvite;
+      ratingRowEl.hidden = showInvite;
+      document.body.classList.toggle("is-rating-invite", showInvite);
+      if (info && showInvite) info.hidden = true;
+      else if (!showInvite && currentCard) updateRatingPreviews();
+    };
+    if (!animate) return finish();
+    if (!showInvite) {
+      // Fiche retournée : le texte s'efface, les boutons surgissent.
+      if (wasInvite) {
+        invite.hidden = false;
+        const out = invite.animate([{ opacity: 1, filter: "blur(0)" }, { opacity: 0, filter: "blur(3px)" }], { duration: 220, easing: "ease-in", fill: "forwards" });
+        out.finished.then(() => {
+          if (token !== ratingSwapToken) return;
+          out.cancel();
+          invite.hidden = true;
+        }).catch(() => {});
+      } else invite.hidden = true;
+      ratingRowEl.hidden = false;
+      document.body.classList.remove("is-rating-invite");
+      if (currentCard) updateRatingPreviews();
+      if (!wasRow) {
+        stamps.forEach((b, i) =>
+          b.animate([{ opacity: 0, transform: "translateY(16px) scale(0.55)" }, { opacity: 1, transform: "none" }], {
+            duration: 380,
+            delay: 110 + i * 70,
+            easing: "cubic-bezier(.3,1.45,.55,1)",
+            fill: "backwards",
+          })
+        );
+      }
+      return;
+    }
+    // Fiche suivante : les boutons s'effacent l'un après l'autre, puis le
+    // texte revient.
+    if (!wasRow) return finish();
+    if (info) info.hidden = true;
+    ratingRowEl.inert = true; // pas de seconde note pendant l'effacement
+    const last = stamps.map((b, i) =>
+      b.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(10px) scale(0.6)" }], {
+        duration: 220,
+        delay: (stamps.length - 1 - i) * 45,
+        easing: "ease-in",
+        fill: "forwards",
+      })
+    );
+    const done = last.length ? last[0].finished : Promise.resolve();
+    done.then(() => {
+      if (token !== ratingSwapToken) return;
+      stamps.forEach((b) => b.getAnimations().forEach((a) => a.cancel()));
+      ratingRowEl.inert = false;
+      finish();
+      invite.animate([{ opacity: 0, filter: "blur(3px)" }, { opacity: 1, filter: "blur(0)" }], { duration: 260, easing: "ease-out" });
+    }).catch(() => {});
   }
   function shuffledCopy(arr) {
     const a = arr.slice();
@@ -7720,8 +7797,27 @@
   function setOrgPubDisplay(mode) {
     setOrgFilter(mode);
   }
+  // v272 : le robot explique chaque filtre quand on l'active (sur
+  // téléphone, le texte d'aide au survol n'existe pas). Sa bulle reste
+  // affichée tant qu'on ne la ferme pas (croix ou toucher sur la bulle).
+  const ORG_FILTER_TIPS = {
+    rev: "Je laisse en couleur les boîtes activées pour la révision : ce sont celles que je te fais réviser. Les autres sont grisées.",
+    published: "Je laisse en couleur tes boîtes publiées dans la Librairie. Les autres sont grisées.",
+    unpublished: "Je laisse en couleur tes boîtes pas encore publiées dans la Librairie. Les autres sont grisées.",
+  };
+  function showRobotTip(text) {
+    bodyLogoSpeechTip = true;
+    bodyLogoSpeechMessages = [text];
+    bodyLogoSpeechIndex = 0;
+    renderBodyLogoSpeechState(true);
+  }
   document.querySelectorAll(".org-filter-btn").forEach((btn) => {
-    btn.addEventListener("click", () => setOrgFilter(orgFilter === btn.dataset.orgFilter ? "none" : btn.dataset.orgFilter));
+    btn.addEventListener("click", () => {
+      const mode = orgFilter === btn.dataset.orgFilter ? "none" : btn.dataset.orgFilter;
+      setOrgFilter(mode);
+      if (ORG_FILTER_TIPS[mode]) showRobotTip(`${ORG_FILTER_TIPS[mode]} Touche à nouveau ce bouton pour tout réafficher.`);
+      else if (bodyLogoSpeechTip) closeBodyLogoSpeech();
+    });
   });
   setOrgFilter("none");
   /** Boîte affichée dans l'organisation : toutes, dans les deux affichages
@@ -9954,7 +10050,10 @@
   document.querySelectorAll(".calendar-view-toggle-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       calendarViewMode = btn.dataset.calview;
-      document.querySelectorAll(".calendar-view-toggle-btn").forEach((b) => b.classList.toggle("is-active", b === btn));
+      document.querySelectorAll(".calendar-view-toggle-btn").forEach((b) => {
+        b.classList.toggle("is-active", b === btn);
+        b.setAttribute("aria-pressed", String(b === btn));
+      });
       if (el("calendar-list-view")) el("calendar-list-view").hidden = calendarViewMode !== "list";
       if (el("calendar-months-view")) el("calendar-months-view").hidden = calendarViewMode !== "months";
       if (el("calendar-year-view")) el("calendar-year-view").hidden = calendarViewMode !== "year";
@@ -10896,8 +10995,14 @@
       b.setAttribute("aria-label", open ? "Replier" : "Lire la suite");
     }
     if (animate && from) {
+      // v272 : la hauteur ET la hauteur maximale sont animées (replié, une
+      // hauteur maximale limite l'aperçu : sans cela, le repliement se
+      // faisait d'un coup).
       const to = more.getBoundingClientRect().height;
-      rxAnim(more, [{ height: `${from}px` }, { height: `${to}px` }], { duration: 340, easing: "ease-out" });
+      rxAnim(more, [{ height: `${from}px`, maxHeight: `${from}px` }, { height: `${to}px`, maxHeight: `${to}px` }], {
+        duration: 340,
+        easing: "ease-in-out",
+      });
     }
   }
   document.querySelectorAll("#rx-explain .rx-fold").forEach((b) => {
