@@ -88311,93 +88311,226 @@
    "cards": [
     {
      "question": "Qui devient roi en 987 et commence la dynastie des Capétiens ?",
-     "answer": "Hugues Capet."
+     "answer": "Hugues Capet",
+     "w": "c46f75ee",
+     "wrongs": [
+      "Charlemagne",
+      "Clovis",
+      "Louis IX"
+     ]
     },
     {
-     "question": "Que se passe-t-il lors du sacre d'un roi ?",
-     "answer": "Le roi reçoit l'huile sainte à la cathédrale de Reims :\nson pouvoir paraît venir de Dieu.",
-     "w": "3652dede",
-     "wq": "d25a179f"
+     "question": "Lors du sacre, dans quelle ville le roi reçoit-il l'huile sainte ?",
+     "answer": "Reims",
+     "w": [
+      "f239d258",
+      "3652dede"
+     ],
+     "wq": "d25a179f",
+     "more": "Son pouvoir paraît venir de Dieu.",
+     "wrongs": [
+      "Paris",
+      "Versailles",
+      "Orléans"
+     ]
     },
     {
-     "question": "Quand Louis IX a-t-il régné ?",
-     "answer": "De 1226 à 1270."
+     "question": "À quel siècle Louis IX a-t-il régné ?",
+     "answer": "Au XIIIe siècle",
+     "w": "fd08ecf4",
+     "wq": "5ee7ed1d",
+     "more": "De 1226 à 1270.",
+     "wrongs": [
+      "Au Xe siècle",
+      "Au XVIe siècle",
+      "Au XVIIe siècle"
+     ]
     },
     {
-     "question": "Pourquoi appelle-t-on Louis IX « Saint Louis » ?",
-     "answer": "Un roi très croyant et juste.\nL'Église en a fait un saint après sa mort.",
-     "w": "0322a600",
-     "wq": "480ed2b6"
+     "question": "Quel surnom donne-t-on à Louis IX ?",
+     "answer": "Saint Louis",
+     "w": [
+      "f359a95f",
+      "0322a600"
+     ],
+     "wq": "480ed2b6",
+     "more": "Un roi très croyant et juste ; l'Église en a fait un saint.",
+     "wrongs": [
+      "Le Roi-Soleil",
+      "Le Bon Roi",
+      "Le Grand"
+     ]
     },
     {
-     "question": "Où, selon la tradition, Louis IX rendait-il la justice ?",
-     "answer": "Sous un chêne, à Vincennes,\nen écoutant lui-même les plaintes de ses sujets.",
-     "w": "d3b4449d",
-     "wq": "648d705a"
+     "question": "Selon la tradition, sous quel arbre Louis IX rendait-il la justice ?",
+     "answer": "Un chêne, à Vincennes",
+     "w": [
+      "bae922f7",
+      "d3b4449d"
+     ],
+     "wq": "648d705a",
+     "wrongs": [
+      "Un pommier, à Reims",
+      "Un olivier, à Nice",
+      "Un saule, à Versailles"
+     ]
     },
     {
-     "question": "Quel monument Louis IX a-t-il fait construire à Paris ?",
-     "answer": "La Sainte-Chapelle\npour abriter des reliques comme la couronne d'épines.",
-     "w": "45d99886",
-     "wq": "de8abc02"
+     "question": "Quel monument de Paris Louis IX a-t-il fait construire ?",
+     "answer": "La Sainte-Chapelle",
+     "w": [
+      "90ab2e9a",
+      "45d99886"
+     ],
+     "wq": "de8abc02",
+     "more": "Pour abriter des reliques comme la couronne d'épines.",
+     "wrongs": [
+      "La tour Eiffel",
+      "Le château de Versailles",
+      "L'Arc de triomphe"
+     ]
     },
     {
      "question": "Quelle victoire de François Ier date de 1515 ?",
-     "answer": "Marignan\nen Italie.",
-     "w": "2c15527f",
-     "wq": "f277b3dc"
+     "answer": "Marignan",
+     "w": [
+      "da85db97",
+      "2c15527f"
+     ],
+     "more": "En Italie.",
+     "wrongs": [
+      "Waterloo",
+      "Verdun",
+      "Alésia"
+     ]
     },
     {
-     "question": "Quel grand artiste italien François Ier a-t-il fait venir en France ?",
-     "answer": "Léonard de Vinci\nIl meurt à Amboise en 1519.",
-     "w": "bff96f3a",
-     "wq": "d8472042"
+     "question": "Quel artiste italien François Ier a-t-il fait venir en France ?",
+     "answer": "Léonard de Vinci",
+     "w": [
+      "ef675bd7",
+      "bff96f3a"
+     ],
+     "wq": "d8472042",
+     "more": "Il meurt à Amboise en 1519.",
+     "wrongs": [
+      "Michel-Ange",
+      "Picasso",
+      "Raphaël"
+     ]
     },
     {
-     "question": "Cite un château de la Loire construit sous François Ier.",
-     "answer": "Le château de Chambord."
+     "question": "Quel château de la Loire est construit sous François Ier ?",
+     "answer": "Chambord",
+     "w": "66304269",
+     "wq": "0f5dee7e",
+     "wrongs": [
+      "Versailles",
+      "Le Louvre",
+      "Le Mont-Saint-Michel"
+     ]
     },
     {
-     "question": "Que décide l'ordonnance de Villers-Cotterêts (1539) ?",
-     "answer": "Les actes officiels et la justice doivent être en français,\net non plus en latin.",
-     "w": "e80fddee",
-     "wq": "ad0af1d3"
+     "question": "Selon l'ordonnance de Villers-Cotterêts (1539), en quelle langue sont écrits les actes officiels ?",
+     "answer": "En français",
+     "w": [
+      "d0dc1b54",
+      "e80fddee"
+     ],
+     "wq": "ad0af1d3",
+     "more": "Et non plus en latin.",
+     "wrongs": [
+      "En latin",
+      "En grec",
+      "En italien"
+     ]
     },
     {
      "question": "Quelles guerres déchirent la France au XVIe siècle ?",
-     "answer": "Les guerres de Religion\nentre catholiques et protestants.",
-     "w": "b8b2d182",
-     "wq": "e6633f84"
+     "answer": "Les guerres de Religion",
+     "w": [
+      "8e8e5f74",
+      "b8b2d182"
+     ],
+     "more": "Entre catholiques et protestants.",
+     "wrongs": [
+      "La guerre de Cent Ans",
+      "Les guerres mondiales",
+      "Les guerres napoléoniennes"
+     ]
     },
     {
-     "question": "Que permet l'édit de Nantes signé par Henri IV en 1598 ?",
-     "answer": "Les protestants peuvent pratiquer leur religion dans certains lieux.\nIl ramène la paix.",
-     "w": "a87ac6e3",
-     "wq": "879f75ff"
+     "question": "Quel roi signe l'édit de Nantes en 1598 ?",
+     "answer": "Henri IV",
+     "w": [
+      "9ffb5b3b",
+      "a87ac6e3"
+     ],
+     "wq": "879f75ff",
+     "more": "Les protestants peuvent pratiquer leur religion dans certains lieux.",
+     "wrongs": [
+      "Louis XIV",
+      "François Ier",
+      "Louis XVI"
+     ]
     },
     {
-     "question": "Comment meurt Henri IV ?",
-     "answer": "Assassiné à Paris en 1610\npar Ravaillac.",
-     "w": "dde2d8b7",
-     "wq": "d86928f7"
+     "question": "Par qui Henri IV est-il assassiné en 1610 ?",
+     "answer": "Ravaillac",
+     "w": [
+      "d8000a9a",
+      "dde2d8b7"
+     ],
+     "wq": "d86928f7",
+     "wrongs": [
+      "Robespierre",
+      "Napoléon",
+      "Richelieu"
+     ]
     },
     {
-     "question": "Quel surnom donne-t-on à Louis XIV ?",
-     "answer": "Le Roi-Soleil\nIl règne de 1643 à 1715.",
-     "w": "ebb2bde0",
-     "wq": "22b359cd"
+     "question": "Quel roi surnomme-t-on le Roi-Soleil ?",
+     "answer": "Louis XIV",
+     "w": [
+      "8ac614a6",
+      "ebb2bde0"
+     ],
+     "wq": "22b359cd",
+     "more": "Il règne de 1643 à 1715.",
+     "wrongs": [
+      "Louis XVI",
+      "Henri IV",
+      "François Ier"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une monarchie absolue ?",
-     "answer": "Le roi a tous les pouvoirs :\nil fait les lois, rend la justice et dirige l'armée.",
-     "w": "05c9ff40",
-     "wq": "15b64fca"
+     "question": "Dans une monarchie absolue, qui a tous les pouvoirs ?",
+     "answer": "Le roi",
+     "w": [
+      "929bb63e",
+      "05c9ff40"
+     ],
+     "wq": "15b64fca",
+     "more": "Il fait les lois, rend la justice et dirige l'armée.",
+     "wrongs": [
+      "Le peuple",
+      "Les députés",
+      "Les juges"
+     ]
     },
     {
      "question": "Où Louis XIV installe-t-il la cour à partir de 1682 ?",
-     "answer": "Au château de Versailles\npour surveiller les nobles et montrer sa puissance.",
-     "w": "da03248b",
-     "wq": "d93d8bd0"
+     "answer": "À Versailles",
+     "w": [
+      "3d483b05",
+      "da03248b"
+     ],
+     "more": "Pour surveiller les nobles et montrer sa puissance.",
+     "wrongs": [
+      "Au Louvre",
+      "À Chambord",
+      "À Reims"
+     ]
     }
    ]
   },
@@ -88420,91 +88553,215 @@
    "cards": [
     {
      "question": "Qui est roi de France quand la Révolution commence ?",
-     "answer": "Louis XVI."
+     "answer": "Louis XVI",
+     "w": "4aa1d9db",
+     "wrongs": [
+      "Louis XIV",
+      "Napoléon",
+      "Henri IV"
+     ]
     },
     {
      "question": "Pourquoi Louis XVI réunit-il les états généraux en 1789 ?",
-     "answer": "Le royaume manque d'argent :\nil veut trouver de nouveaux impôts.",
-     "w": "95fcfbfe",
-     "wq": "077bac18"
+     "answer": "Le royaume manque d'argent",
+     "w": [
+      "2c5bf93c",
+      "95fcfbfe"
+     ],
+     "more": "Il veut trouver de nouveaux impôts.",
+     "wrongs": [
+      "Pour déclarer la guerre",
+      "Pour se marier",
+      "Pour fêter son sacre"
+     ]
     },
     {
-     "question": "Quels sont les trois ordres de la société avant 1789 ?",
-     "answer": "• Le clergé\n• La noblesse\n• Le tiers état (la grande majorité de la population)",
-     "w": "13936691",
-     "wq": "0a65aa3d"
+     "question": "Avant 1789, à quel ordre appartient la grande majorité de la population ?",
+     "answer": "Le tiers état",
+     "w": [
+      "c9faa3e2",
+      "13936691"
+     ],
+     "wq": "0a65aa3d",
+     "more": "Les trois ordres : clergé, noblesse, tiers état.",
+     "wrongs": [
+      "Le clergé",
+      "La noblesse",
+      "La bourgeoisie royale"
+     ]
     },
     {
-     "question": "Que se passe-t-il le 14 juillet 1789 ?",
-     "answer": "Les Parisiens prennent la Bastille,\nune prison qui représentait le pouvoir du roi.",
-     "w": "876da012",
-     "wq": "9a756a90"
+     "question": "Que prennent les Parisiens le 14 juillet 1789 ?",
+     "answer": "La Bastille",
+     "w": [
+      "d386519c",
+      "876da012"
+     ],
+     "wq": "9a756a90",
+     "more": "Une prison qui représentait le pouvoir du roi.",
+     "wrongs": [
+      "Le Louvre",
+      "Versailles",
+      "Notre-Dame"
+     ]
     },
     {
      "question": "Qu'est-ce qui est aboli dans la nuit du 4 août 1789 ?",
-     "answer": "Les privilèges\ndes nobles et du clergé.",
-     "w": "326a87bb",
-     "wq": "8d6d47ce"
+     "answer": "Les privilèges",
+     "w": [
+      "a3e74605",
+      "326a87bb"
+     ],
+     "more": "Des nobles et du clergé.",
+     "wrongs": [
+      "La royauté",
+      "L'esclavage",
+      "Les impôts"
+     ]
     },
     {
      "question": "Quel texte est adopté le 26 août 1789 ?",
-     "answer": "La Déclaration des droits de l'homme et du citoyen.\nLes hommes naissent et demeurent libres et égaux en droits.",
-     "w": "149fc263",
-     "wq": "7ab4a313"
+     "answer": "La Déclaration des droits de l'homme et du citoyen",
+     "w": [
+      "89205245",
+      "149fc263"
+     ],
+     "wrongs": [
+      "Le Code civil",
+      "L'édit de Nantes",
+      "La Constitution de 1958"
+     ]
     },
     {
-     "question": "Quand la République est-elle proclamée pour la première fois ?",
-     "answer": "En septembre 1792\nLa monarchie est abolie.",
-     "w": "3b189afc",
-     "wq": "da0eb0b5"
+     "question": "En quelle année la République est-elle proclamée pour la première fois ?",
+     "answer": "1792",
+     "w": [
+      "324d5176",
+      "3b189afc"
+     ],
+     "wq": "da0eb0b5",
+     "wrongs": [
+      "1789",
+      "1804",
+      "1815"
+     ]
     },
     {
-     "question": "Que devient Louis XVI ?",
-     "answer": "Il est jugé et guillotiné\nle 21 janvier 1793.",
-     "w": "d2c64e8a",
-     "wq": "0dd7ed29"
+     "question": "Que devient Louis XVI le 21 janvier 1793 ?",
+     "answer": "Il est guillotiné",
+     "w": [
+      "81155bd0",
+      "d2c64e8a"
+     ],
+     "wq": "0dd7ed29",
+     "wrongs": [
+      "Il devient empereur",
+      "Il s'enfuit en Angleterre",
+      "Il est exilé à Sainte-Hélène"
+     ]
     },
     {
-     "question": "Quel chant devient célèbre pendant la Révolution ?",
-     "answer": "La Marseillaise\nComposée par Rouget de Lisle en 1792,\nrendue célèbre par des soldats de Marseille.\nC'est aujourd'hui l'hymne national.",
-     "w": "b1a728f5",
-     "wq": "62107b0b"
+     "question": "Quel chant, composé en 1792, est devenu l'hymne national ?",
+     "answer": "La Marseillaise",
+     "w": [
+      "bc4127c5",
+      "b1a728f5"
+     ],
+     "wq": "62107b0b",
+     "more": "Composée par Rouget de Lisle, rendue célèbre par des soldats de Marseille.",
+     "wrongs": [
+      "Le Chant du départ",
+      "Frère Jacques",
+      "La Carmagnole"
+     ]
     },
     {
-     "question": "Comment Napoléon Bonaparte prend-il le pouvoir ?",
-     "answer": "Par un coup d'État\nen 1799.",
-     "w": "3ba830d1",
-     "wq": "7aaf4851"
+     "question": "Comment Napoléon Bonaparte prend-il le pouvoir en 1799 ?",
+     "answer": "Par un coup d'État",
+     "w": [
+      "2ac42e7f",
+      "3ba830d1"
+     ],
+     "wq": "7aaf4851",
+     "wrongs": [
+      "Par une élection",
+      "Par héritage",
+      "Par un mariage"
+     ]
     },
     {
-     "question": "Quand Napoléon devient-il empereur ?",
-     "answer": "En 1804\nSacré à Notre-Dame de Paris.",
-     "w": "c6d78c11",
-     "wq": "52785e1d"
+     "question": "En quelle année Napoléon devient-il empereur ?",
+     "answer": "1804",
+     "w": [
+      "0f3ce456",
+      "c6d78c11"
+     ],
+     "wq": "52785e1d",
+     "more": "Sacré à Notre-Dame de Paris.",
+     "wrongs": [
+      "1789",
+      "1799",
+      "1815"
+     ]
     },
     {
-     "question": "Qu'est-ce que le Code civil (1804) ?",
-     "answer": "Un recueil de lois, les mêmes pour tous les Français.\nUne partie existe encore aujourd'hui.",
-     "w": "82ab5149",
-     "wq": "e9d0838e"
+     "question": "Qu'est-ce que le Code civil de 1804 ?",
+     "answer": "Un recueil de lois pour tous les Français",
+     "w": [
+      "440e359b",
+      "82ab5149"
+     ],
+     "wq": "e9d0838e",
+     "more": "Une partie existe encore aujourd'hui.",
+     "wrongs": [
+      "Un livre de cuisine",
+      "Un traité de paix",
+      "Une carte de France"
+     ]
     },
     {
-     "question": "Cite une création de Napoléon qui existe encore.",
-     "answer": "Au choix :\n• les préfets dans les départements\n• les lycées\n• la Légion d'honneur, la Banque de France",
-     "w": "16ab2d82",
-     "wq": "37583125"
+     "question": "Quelle création de Napoléon existe encore ?",
+     "answer": "Les lycées",
+     "w": [
+      "a5ff559f",
+      "16ab2d82"
+     ],
+     "wq": "37583125",
+     "more": "Aussi : les préfets, la Légion d'honneur, la Banque de France.",
+     "wrongs": [
+      "Les châteaux de la Loire",
+      "Le droit de vote des femmes",
+      "L'euro"
+     ]
     },
     {
      "question": "Quelle bataille marque la défaite finale de Napoléon en 1815 ?",
-     "answer": "Waterloo\n(en Belgique actuelle)",
-     "w": "ccd969df",
-     "wq": "6821913c"
+     "answer": "Waterloo",
+     "w": [
+      "06c96b0b",
+      "ccd969df"
+     ],
+     "more": "En Belgique actuelle.",
+     "wrongs": [
+      "Marignan",
+      "Austerlitz",
+      "Verdun"
+     ]
     },
     {
-     "question": "Où Napoléon termine-t-il sa vie ?",
-     "answer": "En exil sur l'île de Sainte-Hélène (océan Atlantique)\nIl y meurt en 1821.",
-     "w": "b3cc7b2e",
-     "wq": "600df827"
+     "question": "Sur quelle île Napoléon termine-t-il sa vie ?",
+     "answer": "Sainte-Hélène",
+     "w": [
+      "8db5fb00",
+      "b3cc7b2e"
+     ],
+     "wq": "600df827",
+     "more": "Il y meurt en 1821.",
+     "wrongs": [
+      "La Corse",
+      "L'île d'Elbe",
+      "La Réunion"
+     ]
     }
    ]
   },
@@ -88803,87 +89060,216 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'un homophone ?",
-     "answer": "Un mot qui se prononce comme un autre,\nmais qui ne s'écrit pas pareil et n'a pas le même sens.\nEx. : a / à",
-     "w": "12df5e86",
-     "wq": "3e4eb099"
+     "answer": "Un mot qui se prononce comme un autre mais s'écrit autrement",
+     "w": [
+      "26af4526",
+      "12df5e86"
+     ],
+     "more": "Ex. : a / à.",
+     "wrongs": [
+      "Un mot qui a le même sens qu'un autre",
+      "Un mot de sens contraire",
+      "Un mot très long"
+     ]
     },
     {
-     "question": "Comment savoir s'il faut écrire « a » ou « à » ?",
-     "answer": "• Remplaçable par « avait » → « a » (verbe avoir)\n• Sinon → « à »",
-     "w": "abb8edbc",
-     "wq": "a506b2d3"
+     "question": "On peut remplacer le mot par « avait » : faut-il écrire « a » ou « à » ?",
+     "answer": "a",
+     "w": [
+      "690f6622",
+      "abb8edbc"
+     ],
+     "wq": "a506b2d3",
+     "more": "C'est le verbe avoir.",
+     "wrongs": [
+      "à",
+      "as",
+      "ah"
+     ]
     },
     {
-     "question": "« Léo … un vélo. » : a ou à ?",
-     "answer": "« Léo a un vélo. »\nOn peut dire « Léo avait un vélo ».",
-     "w": "b947ba74",
-     "wq": "427424fe"
+     "question": "Complète : « Léo … un vélo. »",
+     "answer": "a",
+     "w": [
+      "a3222606",
+      "b947ba74"
+     ],
+     "wq": "427424fe",
+     "more": "On peut dire « Léo avait un vélo ».",
+     "wrongs": [
+      "à",
+      "as",
+      "ait"
+     ]
     },
     {
-     "question": "« Je vais … la piscine. » : a ou à ?",
-     "answer": "« Je vais à la piscine. »\nOn ne peut pas dire « avait la piscine ».",
-     "w": "c3e77d83",
-     "wq": "0a416e0f"
+     "question": "Complète : « Je vais … la piscine. »",
+     "answer": "à",
+     "w": [
+      "c01802d5",
+      "c3e77d83"
+     ],
+     "wq": "0a416e0f",
+     "more": "On ne peut pas dire « avait la piscine ».",
+     "wrongs": [
+      "a",
+      "as",
+      "ah"
+     ]
     },
     {
-     "question": "Comment choisir entre « et » et « est » ?",
-     "answer": "• Remplaçable par « était » → « est » (verbe être)\n• Remplaçable par « et puis » → « et »",
-     "w": "ffc021c5",
-     "wq": "5c3ad9f8"
+     "question": "On peut remplacer le mot par « était » : faut-il écrire « et » ou « est » ?",
+     "answer": "est",
+     "w": [
+      "a3130275",
+      "ffc021c5"
+     ],
+     "wq": "5c3ad9f8",
+     "more": "Si on peut dire « et puis », on écrit « et ».",
+     "wrongs": [
+      "et",
+      "es",
+      "ai"
+     ]
     },
     {
-     "question": "« Le ciel … bleu … le soleil brille. »",
-     "answer": "« Le ciel est bleu et le soleil brille. »"
+     "question": "Complète : « Le ciel … bleu et le soleil brille. »",
+     "answer": "est",
+     "w": "b1aa5c37",
+     "wq": "56c5642e",
+     "wrongs": [
+      "et",
+      "es",
+      "ait"
+     ]
     },
     {
-     "question": "Comment choisir entre « son » et « sont » ?",
-     "answer": "• Remplaçable par « étaient » → « sont » (verbe être)\n• Remplaçable par « mon » → « son »",
-     "w": "f86bedec",
-     "wq": "6379d4a9"
+     "question": "On peut remplacer le mot par « mon » : faut-il écrire « son » ou « sont » ?",
+     "answer": "son",
+     "w": [
+      "cdf0bc48",
+      "f86bedec"
+     ],
+     "wq": "6379d4a9",
+     "more": "Si on peut dire « étaient », on écrit « sont ».",
+     "wrongs": [
+      "sont",
+      "sons",
+      "çon"
+     ]
     },
     {
-     "question": "« Ils … partis avec … chien. »",
-     "answer": "« Ils sont partis avec son chien. »"
+     "question": "Complète : « Ils … partis avec leur chien. »",
+     "answer": "sont",
+     "w": "570ef29e",
+     "wq": "8bb1b410",
+     "more": "On peut dire « Ils étaient partis ».",
+     "wrongs": [
+      "son",
+      "sons",
+      "ont"
+     ]
     },
     {
-     "question": "Comment choisir entre « on » et « ont » ?",
-     "answer": "• Remplaçable par « avaient » → « ont » (verbe avoir)\n• Remplaçable par « il » → « on »",
-     "w": "4b752285",
-     "wq": "8c48de97"
+     "question": "On peut remplacer le mot par « avaient » : faut-il écrire « on » ou « ont » ?",
+     "answer": "ont",
+     "w": [
+      "7fc93485",
+      "4b752285"
+     ],
+     "wq": "8c48de97",
+     "more": "Si on peut dire « il », on écrit « on ».",
+     "wrongs": [
+      "on",
+      "onts",
+      "sont"
+     ]
     },
     {
-     "question": "« … joue dehors. Mes amis … un ballon. »",
-     "answer": "« On joue dehors. Mes amis ont un ballon. »"
+     "question": "Complète : « … joue dehors. »",
+     "answer": "On",
+     "w": "bf92dff8",
+     "wq": "c7f225eb",
+     "more": "On peut dire « Il joue dehors ».",
+     "wrongs": [
+      "Ont",
+      "Sont",
+      "Son"
+     ]
     },
     {
-     "question": "Comment choisir entre « ou » et « où » ?",
-     "answer": "• Remplaçable par « ou bien » → « ou »\n• Un lieu (ou un moment) → « où »",
-     "w": "64c911fb",
-     "wq": "1971ff7d"
+     "question": "Le mot indique un lieu : faut-il écrire « ou » ou « où » ?",
+     "answer": "où",
+     "w": [
+      "2c5ebf21",
+      "64c911fb"
+     ],
+     "wq": "1971ff7d",
+     "more": "Si on peut dire « ou bien », on écrit « ou ».",
+     "wrongs": [
+      "ou",
+      "houx",
+      "août"
+     ]
     },
     {
-     "question": "« … habites-tu ? » : ou ou où ?",
-     "answer": "« Où habites-tu ? »\nLa question porte sur le lieu.",
-     "w": "34f2b1d0",
-     "wq": "206da81d"
+     "question": "Complète : « … habites-tu ? »",
+     "answer": "Où",
+     "w": [
+      "6bf5bfea",
+      "34f2b1d0"
+     ],
+     "wq": "206da81d",
+     "more": "La question porte sur le lieu.",
+     "wrongs": [
+      "Ou",
+      "Houx",
+      "Août"
+     ]
     },
     {
-     "question": "« Tu veux du jus … de l'eau ? » : ou ou où ?",
-     "answer": "« Tu veux du jus ou de l'eau ? »\nOn peut dire « ou bien ».",
-     "w": "ddb74b16",
-     "wq": "83163066"
+     "question": "Complète : « Tu veux du jus … de l'eau ? »",
+     "answer": "ou",
+     "w": [
+      "3786cebc",
+      "ddb74b16"
+     ],
+     "wq": "83163066",
+     "more": "On peut dire « ou bien ».",
+     "wrongs": [
+      "où",
+      "et",
+      "est"
+     ]
     },
     {
-     "question": "Comment choisir entre « ces » et « ses » ?",
-     "answer": "• « ses » = les siens (ses jouets : ceux de quelqu'un)\n• « ces » montre quelque chose (ces jouets-là)",
-     "w": "d812ba9c",
-     "wq": "996595b9"
+     "question": "Pour dire « les siens », faut-il écrire « ses » ou « ces » ?",
+     "answer": "ses",
+     "w": [
+      "321c5ce0",
+      "d812ba9c"
+     ],
+     "wq": "996595b9",
+     "more": "« ces » sert à montrer : ces jouets-là.",
+     "wrongs": [
+      "ces",
+      "c'est",
+      "s'est"
+     ]
     },
     {
-     "question": "« Elle range … livres. » : ces ou ses ?",
-     "answer": "« Elle range ses livres. »\nCe sont les livres à elle.",
-     "w": "baf3d035",
-     "wq": "d7d741ba"
+     "question": "Complète : « Elle range … livres. » (les livres à elle)",
+     "answer": "ses",
+     "w": [
+      "219d2ceb",
+      "baf3d035"
+     ],
+     "wq": "d7d741ba",
+     "wrongs": [
+      "ces",
+      "c'est",
+      "sait"
+     ]
     }
    ]
   },
@@ -88905,94 +89291,222 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Dans la fraction 3/4, que veut dire le 4 ?",
-     "answer": "Le dénominateur\nL'unité est partagée en 4 parts égales.",
-     "w": "b7f71977",
-     "wq": "3bf726d3"
+     "question": "Dans la fraction 3/4, comment s'appelle le 4 ?",
+     "answer": "Le dénominateur",
+     "w": [
+      "1663b4f5",
+      "b7f71977"
+     ],
+     "wq": "3bf726d3",
+     "more": "L'unité est partagée en 4 parts égales.",
+     "wrongs": [
+      "Le numérateur",
+      "Le quotient",
+      "Le diviseur commun"
+     ]
     },
     {
-     "question": "Dans la fraction 3/4, que veut dire le 3 ?",
-     "answer": "Le numérateur\nOn prend 3 parts.",
-     "w": "4756a845",
-     "wq": "9c14698a"
+     "question": "Dans la fraction 3/4, comment s'appelle le 3 ?",
+     "answer": "Le numérateur",
+     "w": [
+      "1fd5df27",
+      "4756a845"
+     ],
+     "wq": "9c14698a",
+     "more": "On prend 3 parts.",
+     "wrongs": [
+      "Le dénominateur",
+      "Le reste",
+      "L'unité"
+     ]
     },
     {
-     "question": "Comment lit-on 1/2, 1/3 et 1/4 ?",
-     "answer": "• 1/2 : un demi\n• 1/3 : un tiers\n• 1/4 : un quart",
-     "w": "3c4ba605",
-     "wq": "b7532d32"
+     "question": "Comment lit-on 1/3 ?",
+     "answer": "Un tiers",
+     "w": [
+      "2522d916",
+      "3c4ba605"
+     ],
+     "wq": "b7532d32",
+     "more": "1/2 : un demi ; 1/4 : un quart.",
+     "wrongs": [
+      "Un quart",
+      "Un demi",
+      "Un trois"
+     ]
     },
     {
      "question": "Combien de quarts faut-il pour faire une unité ?",
-     "answer": "4 quarts\n4/4 = 1",
-     "w": "16106e98",
-     "wq": "fb0215a4"
+     "answer": "4",
+     "w": [
+      "76c8dd86",
+      "16106e98"
+     ],
+     "more": "4/4 = 1",
+     "wrongs": [
+      "2",
+      "3",
+      "10"
+     ]
     },
     {
      "question": "Quelle fraction est la plus grande : 1/3 ou 1/5 ?",
-     "answer": "1/3\nMoins de parts → chaque part est plus grande.",
-     "w": "68793913",
-     "wq": "6b0f2ca4"
+     "answer": "1/3",
+     "w": [
+      "0e22f8b6",
+      "68793913"
+     ],
+     "more": "Moins de parts → chaque part est plus grande.",
+     "wrongs": [
+      "1/5",
+      "Elles sont égales",
+      "On ne peut pas savoir"
+     ]
     },
     {
-     "question": "Comment savoir si une fraction est plus grande que 1 ?",
-     "answer": "Quand le numérateur est plus grand que le dénominateur.\nEx. : 5/4 > 1",
-     "w": "48aefb07",
-     "wq": "2c91e3d0"
+     "question": "Quand une fraction est-elle plus grande que 1 ?",
+     "answer": "Quand le numérateur est plus grand que le dénominateur",
+     "w": [
+      "e508d8fc",
+      "48aefb07"
+     ],
+     "wq": "2c91e3d0",
+     "more": "Ex. : 5/4 > 1",
+     "wrongs": [
+      "Quand le dénominateur est plus grand",
+      "Jamais",
+      "Quand le numérateur vaut 1"
+     ]
     },
     {
-     "question": "Écris 7/4 comme un entier plus une fraction.",
-     "answer": "7/4 = 4/4 + 3/4\n= 1 + 3/4",
-     "w": "749b1c9f",
-     "wq": "6b470c50"
+     "question": "Comment écrire 7/4 comme un entier plus une fraction ?",
+     "answer": "1 + 3/4",
+     "w": [
+      "df7de069",
+      "749b1c9f"
+     ],
+     "wq": "6b470c50",
+     "more": "7/4 = 4/4 + 3/4",
+     "wrongs": [
+      "7 + 1/4",
+      "1 + 7/4",
+      "2 + 1/4"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un dixième ?",
-     "answer": "Une unité partagée en 10 parts égales :\n1/10 = 0,1",
-     "w": "9dd31f2b",
-     "wq": "557553d8"
+     "question": "Combien vaut un dixième en écriture décimale ?",
+     "answer": "0,1",
+     "w": [
+      "65e57ddd",
+      "9dd31f2b"
+     ],
+     "wq": "557553d8",
+     "wrongs": [
+      "0,01",
+      "10",
+      "1,10"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un centième ?",
-     "answer": "Une unité partagée en 100 parts égales :\n1/100 = 0,01",
-     "w": "20ca03a0",
-     "wq": "4f82a571"
+     "question": "Combien vaut un centième en écriture décimale ?",
+     "answer": "0,01",
+     "w": [
+      "b0fddc5c",
+      "20ca03a0"
+     ],
+     "wq": "4f82a571",
+     "wrongs": [
+      "0,1",
+      "100",
+      "0,001"
+     ]
     },
     {
-     "question": "Écris 25/100 sous forme de nombre décimal.",
-     "answer": "0,25."
+     "question": "Comment écrit-on 25/100 en nombre décimal ?",
+     "answer": "0,25",
+     "w": "6c08b2ac",
+     "wq": "1cbf4f4c",
+     "wrongs": [
+      "2,5",
+      "25,100",
+      "0,025"
+     ]
     },
     {
      "question": "Dans 4,37, que représente le chiffre 3 ?",
-     "answer": "Le chiffre des dixièmes\n3 dixièmes",
-     "w": "d46f0779",
-     "wq": "cbf735af"
+     "answer": "Les dixièmes",
+     "w": [
+      "7a2cbffd",
+      "d46f0779"
+     ],
+     "wrongs": [
+      "Les centièmes",
+      "Les unités",
+      "Les dizaines"
+     ]
     },
     {
      "question": "Dans 4,37, que représente le chiffre 7 ?",
-     "answer": "Le chiffre des centièmes\n7 centièmes",
-     "w": "ffef6b89",
-     "wq": "7f919183"
+     "answer": "Les centièmes",
+     "w": [
+      "405e0bd9",
+      "ffef6b89"
+     ],
+     "wrongs": [
+      "Les dixièmes",
+      "Les unités",
+      "Les millièmes"
+     ]
     },
     {
-     "question": "Décompose 5,6 avec une fraction.",
-     "answer": "5,6 = 5 + 6/10."
+     "question": "Comment décomposer 5,6 avec une fraction ?",
+     "answer": "5 + 6/10",
+     "w": "9c9bce89",
+     "wq": "5712f9d8",
+     "wrongs": [
+      "5 + 6/100",
+      "56/100",
+      "5 + 1/6"
+     ]
     },
     {
      "question": "Quel nombre est le plus grand : 2,5 ou 2,45 ?",
-     "answer": "2,5\nOn compare les dixièmes : 5 > 4.\n(2,5 = 2,50)",
-     "w": "fa7d0ad8",
-     "wq": "0fffa2af"
+     "answer": "2,5",
+     "w": [
+      "f511643b",
+      "fa7d0ad8"
+     ],
+     "more": "On compare les dixièmes : 5 > 4 (2,5 = 2,50).",
+     "wrongs": [
+      "2,45",
+      "Ils sont égaux",
+      "On ne peut pas savoir"
+     ]
     },
     {
-     "question": "Est-ce que 3,40 et 3,4 sont égaux ?",
-     "answer": "Oui\nUn zéro à la fin de la partie décimale ne change pas la valeur.",
-     "w": "a4db17d2",
-     "wq": "ba458c0d"
+     "question": "3,40 et 3,4 sont-ils égaux ?",
+     "answer": "Oui",
+     "w": [
+      "b809f464",
+      "a4db17d2"
+     ],
+     "wq": "ba458c0d",
+     "more": "Un zéro à la fin de la partie décimale ne change pas la valeur.",
+     "wrongs": [
+      "Non, 3,40 est plus grand",
+      "Non, 3,4 est plus grand",
+      "Seulement en euros"
+     ]
     },
     {
      "question": "Range dans l'ordre croissant : 1,2 ; 1,05 ; 1,15.",
-     "answer": "1,05 < 1,15 < 1,2."
+     "answer": "1,05 < 1,15 < 1,2",
+     "w": "96959718",
+     "wrongs": [
+      "1,2 < 1,05 < 1,15",
+      "1,05 < 1,2 < 1,15",
+      "1,15 < 1,05 < 1,2"
+     ]
     }
    ]
   },
@@ -89016,101 +89530,246 @@
    "cards": [
     {
      "question": "Quels sont les trois états de la matière ?",
-     "answer": "• Solide\n• Liquide\n• Gazeux",
-     "w": "16652840",
-     "wq": "2d87e7f6"
+     "answer": "Solide, liquide, gazeux",
+     "w": [
+      "c131ece6",
+      "16652840"
+     ],
+     "wrongs": [
+      "Chaud, tiède, froid",
+      "Dur, mou, liquide",
+      "Eau, air, terre"
+     ]
     },
     {
-     "question": "Comment reconnaître un solide ?",
-     "answer": "Il a une forme propre : il garde sa forme.\nEx. : un glaçon, un caillou",
-     "w": "0e32bb8c",
-     "wq": "9d0b56b1"
+     "question": "Quel état de la matière garde sa forme ?",
+     "answer": "Le solide",
+     "w": [
+      "056accb0",
+      "0e32bb8c"
+     ],
+     "wq": "9d0b56b1",
+     "more": "Ex. : un glaçon, un caillou.",
+     "wrongs": [
+      "Le liquide",
+      "Le gaz",
+      "Aucun"
+     ]
     },
     {
-     "question": "Comment se comporte un liquide ?",
-     "answer": "Il n'a pas de forme propre : il prend la forme du récipient.\nAu repos, sa surface est plane et horizontale.",
-     "w": "f97f1e9e",
-     "wq": "82e65354"
+     "question": "Au repos, comment est la surface d'un liquide ?",
+     "answer": "Plane et horizontale",
+     "w": [
+      "7f7debae",
+      "f97f1e9e"
+     ],
+     "wq": "82e65354",
+     "more": "Il prend la forme du récipient.",
+     "wrongs": [
+      "Bombée",
+      "Penchée",
+      "En pointe"
+     ]
     },
     {
-     "question": "Comment se comporte un gaz ?",
-     "answer": "Il n'a pas de forme propre\net occupe tout l'espace disponible.\nEx. : l'air, la vapeur d'eau",
-     "w": "d2802528",
-     "wq": "4294e361"
+     "question": "Quel état de la matière occupe tout l'espace disponible ?",
+     "answer": "Le gaz",
+     "w": [
+      "459d429e",
+      "d2802528"
+     ],
+     "wq": "4294e361",
+     "more": "Ex. : l'air, la vapeur d'eau.",
+     "wrongs": [
+      "Le solide",
+      "Le liquide",
+      "Aucun"
+     ]
     },
     {
      "question": "L'air est-il de la matière ?",
-     "answer": "Oui : l'air est un gaz.\nIl a une masse et il occupe de la place.",
-     "w": "996f4d4c",
-     "wq": "82d4104f"
+     "answer": "Oui, c'est un gaz",
+     "w": [
+      "70f5ef22",
+      "996f4d4c"
+     ],
+     "more": "Il a une masse et il occupe de la place.",
+     "wrongs": [
+      "Non, c'est du vide",
+      "Non, il n'a pas de masse",
+      "Seulement quand il y a du vent"
+     ]
     },
     {
-     "question": "Comment s'appelle le passage de l'état solide à l'état liquide ?",
-     "answer": "La fusion\nEx. : la glace fond.",
-     "w": "898605b6",
-     "wq": "01639825"
+     "question": "Comment s'appelle le passage de solide à liquide ?",
+     "answer": "La fusion",
+     "w": [
+      "77851470",
+      "898605b6"
+     ],
+     "wq": "01639825",
+     "more": "Ex. : la glace fond.",
+     "wrongs": [
+      "La solidification",
+      "La vaporisation",
+      "La liquéfaction"
+     ]
     },
     {
-     "question": "Comment s'appelle le passage de l'état liquide à l'état solide ?",
-     "answer": "La solidification\nEx. : l'eau gèle au congélateur.",
-     "w": "a91440ba",
-     "wq": "d6088fe3"
+     "question": "Comment s'appelle le passage de liquide à solide ?",
+     "answer": "La solidification",
+     "w": [
+      "2bf73756",
+      "a91440ba"
+     ],
+     "wq": "d6088fe3",
+     "more": "Ex. : l'eau gèle au congélateur.",
+     "wrongs": [
+      "La fusion",
+      "La vaporisation",
+      "La dissolution"
+     ]
     },
     {
-     "question": "Comment s'appelle le passage de l'état liquide à l'état gazeux ?",
-     "answer": "La vaporisation\n(par évaporation ou par ébullition)",
-     "w": "c6d0f750",
-     "wq": "c4533ec9"
+     "question": "Comment s'appelle le passage de liquide à gaz ?",
+     "answer": "La vaporisation",
+     "w": [
+      "2fc04c50",
+      "c6d0f750"
+     ],
+     "wq": "c4533ec9",
+     "more": "Par évaporation ou par ébullition.",
+     "wrongs": [
+      "La liquéfaction",
+      "La fusion",
+      "La solidification"
+     ]
     },
     {
-     "question": "Comment s'appelle le passage de l'état gazeux à l'état liquide ?",
-     "answer": "La liquéfaction (on dit aussi condensation)\nEx. : la buée sur une vitre froide",
-     "w": "6a844ece",
-     "wq": "7948525b"
+     "question": "Comment s'appelle le passage de gaz à liquide ?",
+     "answer": "La liquéfaction",
+     "w": [
+      "3fa6bd24",
+      "6a844ece"
+     ],
+     "wq": "7948525b",
+     "more": "On dit aussi condensation. Ex. : la buée sur une vitre froide.",
+     "wrongs": [
+      "La vaporisation",
+      "La fusion",
+      "La solidification"
+     ]
     },
     {
-     "question": "À quelle température l'eau pure gèle-t-elle ou fond-elle ?",
-     "answer": "À 0 °C."
+     "question": "À quelle température l'eau pure gèle-t-elle ?",
+     "answer": "0 °C",
+     "w": "d14e4696",
+     "wq": "58e0908e",
+     "wrongs": [
+      "100 °C",
+      "10 °C",
+      "−10 °C"
+     ]
     },
     {
-     "question": "À quelle température l'eau pure bout-elle (au niveau de la mer) ?",
-     "answer": "À 100 °C."
+     "question": "À quelle température l'eau pure bout-elle, au niveau de la mer ?",
+     "answer": "100 °C",
+     "w": "371dd459",
+     "wq": "a3837d5e",
+     "wrongs": [
+      "0 °C",
+      "50 °C",
+      "200 °C"
+     ]
     },
     {
-     "question": "Quand la glace fond, sa masse change-t-elle ?",
-     "answer": "Non, la masse reste la même :\n100 g de glace donnent 100 g d'eau liquide.",
-     "w": "f3618965",
-     "wq": "2d1f814a"
+     "question": "100 g de glace fondent : quelle masse d'eau liquide obtient-on ?",
+     "answer": "100 g",
+     "w": [
+      "5940ca69",
+      "f3618965"
+     ],
+     "wq": "2d1f814a",
+     "more": "La masse ne change pas.",
+     "wrongs": [
+      "90 g",
+      "110 g",
+      "50 g"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un mélange hétérogène ?",
-     "answer": "On voit à l'œil nu plusieurs constituants.\nEx. : eau et sable",
-     "w": "20c50f88",
-     "wq": "9d0b729a"
+     "question": "Eau et sable forment un mélange…",
+     "answer": "Hétérogène",
+     "w": [
+      "b8f8b659",
+      "20c50f88"
+     ],
+     "wq": "9d0b729a",
+     "more": "On voit à l'œil nu plusieurs constituants.",
+     "wrongs": [
+      "Homogène",
+      "Gazeux",
+      "Pur"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un mélange homogène ?",
-     "answer": "On ne distingue qu'un seul constituant.\nEx. : eau et sel dissous",
-     "w": "e121bede",
-     "wq": "52a0f014"
+     "question": "Eau et sel dissous forment un mélange…",
+     "answer": "Homogène",
+     "w": [
+      "fb5f6b09",
+      "e121bede"
+     ],
+     "wq": "52a0f014",
+     "more": "On ne distingue qu'un seul constituant.",
+     "wrongs": [
+      "Hétérogène",
+      "Solide",
+      "Impossible"
+     ]
     },
     {
-     "question": "Que se passe-t-il quand on met du sucre dans l'eau et qu'on mélange ?",
-     "answer": "Le sucre se dissout :\non ne le voit plus, mais il est toujours là\n(l'eau a un goût sucré).",
-     "w": "6a0b0393",
-     "wq": "6a23f3a3"
+     "question": "Le sucre mélangé à l'eau disparaît-il vraiment ?",
+     "answer": "Non, il est dissous",
+     "w": [
+      "66bed2a7",
+      "6a0b0393"
+     ],
+     "wq": "6a23f3a3",
+     "more": "On ne le voit plus, mais l'eau a un goût sucré.",
+     "wrongs": [
+      "Oui, il disparaît",
+      "Il devient de l'air",
+      "Il devient du sel"
+     ]
     },
     {
-     "question": "Comment séparer l'eau et le sable ?",
-     "answer": "1. Décantation : on laisse reposer.\n2. Filtration : avec un filtre.",
-     "w": "d075e823",
-     "wq": "ef120c50"
+     "question": "Avec quel objet sépare-t-on l'eau et le sable par filtration ?",
+     "answer": "Un filtre",
+     "w": [
+      "8f4bbc86",
+      "d075e823"
+     ],
+     "wq": "ef120c50",
+     "more": "On peut d'abord laisser reposer : c'est la décantation.",
+     "wrongs": [
+      "Un aimant",
+      "Un thermomètre",
+      "Une loupe"
+     ]
     },
     {
      "question": "Comment récupérer le sel dissous dans de l'eau ?",
-     "answer": "Par évaporation :\nl'eau s'évapore, le sel reste au fond.",
-     "w": "97bf230f",
-     "wq": "7a93b702"
+     "answer": "Par évaporation",
+     "w": [
+      "433a69bf",
+      "97bf230f"
+     ],
+     "more": "L'eau s'évapore, le sel reste au fond.",
+     "wrongs": [
+      "Par filtration",
+      "Avec un aimant",
+      "Par décantation"
+     ]
     }
    ]
   },
@@ -89134,89 +89793,209 @@
    "cards": [
     {
      "question": "En quelle année la République fête-t-elle ses 100 ans ?",
-     "answer": "En 1892\ncent ans après la Première République (1792).",
-     "w": "027df7f2",
-     "wq": "18dae482"
+     "answer": "1892",
+     "w": [
+      "3ff19eeb",
+      "027df7f2"
+     ],
+     "more": "Cent ans après la Première République (1792).",
+     "wrongs": [
+      "1889",
+      "1900",
+      "1870"
+     ]
     },
     {
-     "question": "Quand la IIIe République commence-t-elle ?",
-     "answer": "En 1870\naprès la défaite de Napoléon III contre la Prusse.",
-     "w": "08cf5c50",
-     "wq": "a8aa77e9"
+     "question": "En quelle année commence la IIIe République ?",
+     "answer": "1870",
+     "w": [
+      "7803f0e4",
+      "08cf5c50"
+     ],
+     "wq": "a8aa77e9",
+     "more": "Après la défaite de Napoléon III contre la Prusse.",
+     "wrongs": [
+      "1789",
+      "1848",
+      "1914"
+     ]
     },
     {
      "question": "Quelle est la devise de la République ?",
-     "answer": "« Liberté, Égalité, Fraternité »."
+     "answer": "Liberté, Égalité, Fraternité",
+     "w": "abd921c2",
+     "wrongs": [
+      "Travail, Famille, Patrie",
+      "Paix et Justice",
+      "Unité, Force, Honneur"
+     ]
     },
     {
-     "question": "Cite trois symboles de la République.",
-     "answer": "• Le drapeau bleu-blanc-rouge\n• La Marseillaise\n• Marianne\n(et la devise, le 14 juillet)",
-     "w": "307ba238",
-     "wq": "aac555f7"
+     "question": "Marianne est-elle un symbole de la République ?",
+     "answer": "Oui",
+     "w": [
+      "5a22a34e",
+      "307ba238"
+     ],
+     "wq": "aac555f7",
+     "more": "Comme le drapeau, la Marseillaise, la devise et le 14 juillet.",
+     "wrongs": [
+      "Non, c'est une reine",
+      "Non, c'est une sainte",
+      "Seulement avant 1870"
+     ]
     },
     {
      "question": "Depuis quand le 14 juillet est-il la fête nationale ?",
-     "answer": "Depuis 1880."
+     "answer": "1880",
+     "w": "429b295d",
+     "wrongs": [
+      "1789",
+      "1945",
+      "1905"
+     ]
     },
     {
-     "question": "Qui est Marianne ?",
-     "answer": "Une figure de femme qui représente la République.\nSon buste se trouve dans les mairies.",
-     "w": "e1aa8735",
-     "wq": "90d57f26"
+     "question": "Où trouve-t-on le buste de Marianne ?",
+     "answer": "Dans les mairies",
+     "w": [
+      "8d382763",
+      "e1aa8735"
+     ],
+     "wq": "90d57f26",
+     "wrongs": [
+      "Dans les églises",
+      "Dans les gares",
+      "Au sommet de la tour Eiffel"
+     ]
     },
     {
-     "question": "Que se passe-t-il en 1848 pour le droit de vote ?",
-     "answer": "Le suffrage universel masculin :\ntous les hommes de 21 ans et plus peuvent voter.",
-     "w": "4b683801",
-     "wq": "aae14524"
+     "question": "Que décide-t-on en 1848 pour le droit de vote ?",
+     "answer": "Le suffrage universel masculin",
+     "w": [
+      "595240f8",
+      "4b683801"
+     ],
+     "wq": "aae14524",
+     "more": "Tous les hommes de 21 ans et plus peuvent voter.",
+     "wrongs": [
+      "Le vote des femmes",
+      "La fin des élections",
+      "Le vote des enfants"
+     ]
     },
     {
-     "question": "Que décide-t-on aussi en 1848 dans les colonies ?",
-     "answer": "L'abolition définitive de l'esclavage\ngrâce notamment à Victor Schœlcher.",
-     "w": "8221e4ca",
-     "wq": "f73a2a03"
+     "question": "Que décide-t-on en 1848 dans les colonies ?",
+     "answer": "L'abolition de l'esclavage",
+     "w": [
+      "4fca71bc",
+      "8221e4ca"
+     ],
+     "wq": "f73a2a03",
+     "more": "Grâce notamment à Victor Schœlcher.",
+     "wrongs": [
+      "L'indépendance",
+      "Le vote des femmes",
+      "L'école obligatoire"
+     ]
     },
     {
-     "question": "Qui est Jules Ferry ?",
-     "answer": "Un ministre de la IIIe République\nqui fait voter les lois sur l'école (1881 et 1882).",
-     "w": "3c7b5444",
-     "wq": "a1bf52b4"
+     "question": "Quel ministre fait voter les lois sur l'école en 1881-1882 ?",
+     "answer": "Jules Ferry",
+     "w": [
+      "4c431d49",
+      "3c7b5444"
+     ],
+     "wq": "a1bf52b4",
+     "wrongs": [
+      "Victor Hugo",
+      "Jean Jaurès",
+      "Napoléon III"
+     ]
     },
     {
-     "question": "Quelles sont les trois caractéristiques de l'école de Jules Ferry ?",
-     "answer": "• Gratuite\n• Obligatoire (de 6 à 13 ans)\n• Laïque",
-     "w": "d856e145",
-     "wq": "76981e04"
+     "question": "L'école de Jules Ferry est gratuite, obligatoire et…",
+     "answer": "Laïque",
+     "w": [
+      "dc79fb72",
+      "d856e145"
+     ],
+     "wq": "76981e04",
+     "wrongs": [
+      "Payante",
+      "Religieuse",
+      "Facultative"
+     ]
     },
     {
-     "question": "Que veut dire une école laïque ?",
-     "answer": "L'école publique ne dépend d'aucune religion\net respecte toutes les croyances.",
-     "w": "e3a11034",
-     "wq": "c9e5aa48"
+     "question": "Que veut dire « une école laïque » ?",
+     "answer": "Elle ne dépend d'aucune religion",
+     "w": [
+      "f129695a",
+      "e3a11034"
+     ],
+     "wq": "c9e5aa48",
+     "more": "Et respecte toutes les croyances.",
+     "wrongs": [
+      "Elle est payante",
+      "Elle est réservée aux garçons",
+      "Elle enseigne une religion"
+     ]
     },
     {
      "question": "Pourquoi la République veut-elle que tous les enfants aillent à l'école ?",
-     "answer": "Pour qu'ils apprennent à lire, écrire, compter\net deviennent des citoyens capables de voter.",
-     "w": "e212a4ff",
-     "wq": "99da560f"
+     "answer": "Pour en faire des citoyens instruits",
+     "w": [
+      "54c21b5d",
+      "e212a4ff"
+     ],
+     "more": "Qui savent lire, écrire, compter et voter.",
+     "wrongs": [
+      "Pour qu'ils travaillent à l'usine",
+      "Pour qu'ils deviennent soldats",
+      "Pour occuper les parents"
+     ]
     },
     {
      "question": "Que décide la loi de 1905 ?",
-     "answer": "La séparation des Églises et de l'État :\nl'État ne soutient aucune religion\net garantit la liberté de culte.",
-     "w": "dd4ab807",
-     "wq": "6930eefc"
+     "answer": "La séparation des Églises et de l'État",
+     "w": [
+      "ff113c37",
+      "dd4ab807"
+     ],
+     "more": "L'État ne soutient aucune religion et garantit la liberté de culte.",
+     "wrongs": [
+      "Le vote des femmes",
+      "L'école obligatoire",
+      "La fin de la monarchie"
+     ]
     },
     {
      "question": "En quelle année les femmes obtiennent-elles le droit de vote en France ?",
-     "answer": "En 1944\nPremier vote en 1945.",
-     "w": "4dfe9f7a",
-     "wq": "b88cc93d"
+     "answer": "1944",
+     "w": [
+      "4d52ce4b",
+      "4dfe9f7a"
+     ],
+     "more": "Premier vote en 1945.",
+     "wrongs": [
+      "1848",
+      "1905",
+      "1968"
+     ]
     },
     {
      "question": "Comment appelle-t-on les femmes qui se sont battues pour le droit de vote ?",
-     "answer": "Les suffragettes\n(ou suffragistes)",
-     "w": "532e0f96",
-     "wq": "40cf57dd"
+     "answer": "Les suffragettes",
+     "w": [
+      "f3c636ee",
+      "532e0f96"
+     ],
+     "wrongs": [
+      "Les poilus",
+      "Les résistantes",
+      "Les sans-culottes"
+     ]
     }
    ]
   },
@@ -89240,85 +90019,198 @@
    "cards": [
     {
      "question": "Quelle machine est le symbole de l'âge industriel ?",
-     "answer": "La machine à vapeur."
+     "answer": "La machine à vapeur",
+     "w": "45058fcc",
+     "wrongs": [
+      "L'ordinateur",
+      "Le moulin à vent",
+      "La charrue"
+     ]
     },
     {
      "question": "Quelle énergie fait marcher les machines à vapeur ?",
-     "answer": "Le charbon\nOn le brûle pour chauffer l'eau et faire de la vapeur.",
-     "w": "e287795b",
-     "wq": "fe9ddca4"
+     "answer": "Le charbon",
+     "w": [
+      "2d1d5b14",
+      "e287795b"
+     ],
+     "more": "On le brûle pour chauffer l'eau et faire de la vapeur.",
+     "wrongs": [
+      "Le vent",
+      "Le soleil",
+      "L'électricité"
+     ]
     },
     {
      "question": "Où trouve-t-on le charbon ?",
-     "answer": "Dans les mines, sous la terre.\nLes mineurs l'extraient dans des conditions difficiles et dangereuses.",
-     "w": "96b166dd",
-     "wq": "ca5ce1f2"
+     "answer": "Dans les mines",
+     "w": [
+      "d5e007ef",
+      "96b166dd"
+     ],
+     "more": "Les mineurs l'extraient dans des conditions dangereuses.",
+     "wrongs": [
+      "Dans la mer",
+      "Dans les forêts",
+      "Dans les nuages"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une usine ?",
-     "answer": "Un grand bâtiment où des ouvriers\nfabriquent des produits en grande quantité avec des machines.",
-     "w": "48a6abdc",
-     "wq": "4eaab94d"
+     "answer": "Un bâtiment où l'on fabrique en grande quantité avec des machines",
+     "w": [
+      "dcd628cc",
+      "48a6abdc"
+     ],
+     "wrongs": [
+      "Une ferme",
+      "Un magasin",
+      "Une école"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un ouvrier ?",
-     "answer": "Une personne qui travaille dans une usine ou une mine\nen échange d'un salaire.",
-     "w": "24f2693e",
-     "wq": "39b2381a"
+     "answer": "Une personne qui travaille en usine contre un salaire",
+     "w": [
+      "5c502ba8",
+      "24f2693e"
+     ],
+     "wrongs": [
+      "Le patron d'une usine",
+      "Un soldat",
+      "Un paysan propriétaire"
+     ]
     },
     {
-     "question": "Comment étaient les conditions de travail des ouvriers au XIXe siècle ?",
-     "answer": "Très dures :\n• journées de 12 à 15 heures\n• salaires faibles\n• accidents fréquents\n• pas de congés",
-     "w": "1d0d3def",
-     "wq": "e76ed3e8"
+     "question": "Combien d'heures par jour travaillaient souvent les ouvriers au XIXe siècle ?",
+     "answer": "12 à 15 heures",
+     "w": [
+      "a49c73a1",
+      "1d0d3def"
+     ],
+     "wq": "e76ed3e8",
+     "more": "Avec des salaires faibles, des accidents fréquents et sans congés.",
+     "wrongs": [
+      "4 heures",
+      "7 heures",
+      "35 heures par semaine"
+     ]
     },
     {
-     "question": "Les enfants travaillaient-ils dans les usines ?",
-     "answer": "Oui.\nUne loi de 1841 interdit le travail des moins de 8 ans\ndans les grandes usines.",
-     "w": "09e0afc3",
-     "wq": "88ae4ffd"
+     "question": "En 1841, une loi interdit le travail des enfants de moins de…",
+     "answer": "8 ans",
+     "w": [
+      "a7c85e85",
+      "09e0afc3"
+     ],
+     "wq": "88ae4ffd",
+     "more": "Dans les grandes usines.",
+     "wrongs": [
+      "16 ans",
+      "12 ans",
+      "18 ans"
+     ]
     },
     {
-     "question": "Quel nouveau moyen de transport se développe grâce à la vapeur ?",
-     "answer": "Le train (le chemin de fer)\nPremière ligne de voyageurs au départ de Paris en 1837,\nvers Saint-Germain-en-Laye.",
-     "w": "3d8f8655",
-     "wq": "a97dd49b"
+     "question": "Quel moyen de transport se développe grâce à la vapeur ?",
+     "answer": "Le train",
+     "w": [
+      "ae1b38f9",
+      "3d8f8655"
+     ],
+     "wq": "a97dd49b",
+     "more": "Première ligne de voyageurs depuis Paris en 1837.",
+     "wrongs": [
+      "L'avion",
+      "La voiture électrique",
+      "La diligence"
+     ]
     },
     {
      "question": "Qu'est-ce que l'exode rural ?",
-     "answer": "Le départ de nombreux habitants des campagnes vers les villes,\npour travailler dans les usines.",
-     "w": "9d5e05b5",
-     "wq": "365de3a1"
+     "answer": "Le départ des campagnes vers les villes",
+     "w": [
+      "5ebd203f",
+      "9d5e05b5"
+     ],
+     "wrongs": [
+      "Le départ des villes vers les campagnes",
+      "Un voyage à l'étranger",
+      "Une fête de village"
+     ]
     },
     {
      "question": "Quelle conséquence l'industrie a-t-elle sur les villes ?",
-     "answer": "Elles grandissent très vite.\nDes quartiers ouvriers et des cités se construisent près des usines.",
-     "w": "6b8d82c3",
-     "wq": "86242b2d"
+     "answer": "Elles grandissent très vite",
+     "w": [
+      "4caca329",
+      "6b8d82c3"
+     ],
+     "more": "Des quartiers ouvriers se construisent près des usines.",
+     "wrongs": [
+      "Elles se vident",
+      "Elles disparaissent",
+      "Elles ne changent pas"
+     ]
     },
     {
-     "question": "Qui sont les patrons d'usine ?",
-     "answer": "Des industriels qui possèdent les usines et les machines\net qui emploient des ouvriers.",
-     "w": "2aaaf43f",
-     "wq": "a2b8ebfb"
+     "question": "Qui possède les usines et les machines ?",
+     "answer": "Les patrons",
+     "w": [
+      "2fb34db5",
+      "2aaaf43f"
+     ],
+     "wq": "a2b8ebfb",
+     "wrongs": [
+      "Les ouvriers",
+      "Les mineurs",
+      "Les paysans"
+     ]
     },
     {
-     "question": "Que font les ouvriers pour améliorer leur sort ?",
-     "answer": "• Ils font grève.\n• Ils s'organisent en syndicats (autorisés en 1884).",
-     "w": "7613d412",
-     "wq": "7d8d2a5f"
+     "question": "Depuis quand les syndicats sont-ils autorisés ?",
+     "answer": "1884",
+     "w": [
+      "c1fdecbc",
+      "7613d412"
+     ],
+     "wq": "7d8d2a5f",
+     "more": "Les ouvriers font aussi grève pour améliorer leur sort.",
+     "wrongs": [
+      "1789",
+      "1936",
+      "1945"
+     ]
     },
     {
-     "question": "Quelles nouvelles énergies apparaissent à la fin du XIXe siècle ?",
-     "answer": "• L'électricité\n• Le pétrole",
-     "w": "94717f1a",
-     "wq": "15d436e2"
+     "question": "Quelle nouvelle énergie apparaît à la fin du XIXe siècle ?",
+     "answer": "L'électricité",
+     "w": [
+      "8782155f",
+      "94717f1a"
+     ],
+     "wq": "15d436e2",
+     "more": "Et le pétrole.",
+     "wrongs": [
+      "Le charbon",
+      "Le bois",
+      "Le vent"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un grand magasin ?",
-     "answer": "Un très grand commerce qui vend de nombreux produits fabriqués en série.\nEx. : Le Bon Marché à Paris",
-     "w": "f1503f84",
-     "wq": "2e648288"
+     "question": "Quel est un célèbre grand magasin de Paris ?",
+     "answer": "Le Bon Marché",
+     "w": [
+      "c7f62378",
+      "f1503f84"
+     ],
+     "wq": "2e648288",
+     "more": "Il vend de nombreux produits fabriqués en série.",
+     "wrongs": [
+      "Le Louvre",
+      "La Bastille",
+      "Versailles"
+     ]
     }
    ]
   },
@@ -89341,93 +90233,224 @@
    "cards": [
     {
      "question": "Quelles sont les dates de la Première Guerre mondiale ?",
-     "answer": "De 1914 à 1918."
+     "answer": "1914-1918",
+     "w": "5d9ca4b3",
+     "wrongs": [
+      "1939-1945",
+      "1870-1871",
+      "1789-1799"
+     ]
     },
     {
      "question": "Comment appelle-t-on les soldats français de 14-18 ?",
-     "answer": "Les poilus."
+     "answer": "Les poilus",
+     "w": "5ebcbe29",
+     "wrongs": [
+      "Les grognards",
+      "Les résistants",
+      "Les sans-culottes"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une tranchée ?",
-     "answer": "Un long fossé creusé dans la terre\noù les soldats vivaient et se protégeaient des tirs.",
-     "w": "21ca5217",
-     "wq": "116910a7"
+     "answer": "Un long fossé où vivaient les soldats",
+     "w": [
+      "20208229",
+      "21ca5217"
+     ],
+     "more": "Ils s'y protégeaient des tirs.",
+     "wrongs": [
+      "Un char d'assaut",
+      "Un avion de guerre",
+      "Un château fort"
+     ]
     },
     {
-     "question": "Quelle grande bataille a eu lieu en 1916 ?",
-     "answer": "Verdun\nl'une des plus meurtrières de la guerre.",
-     "w": "f6047617",
-     "wq": "bb54ecd7"
+     "question": "Quelle grande bataille a lieu en 1916 ?",
+     "answer": "Verdun",
+     "w": [
+      "0f706ca1",
+      "f6047617"
+     ],
+     "wq": "bb54ecd7",
+     "more": "L'une des plus meurtrières de la guerre.",
+     "wrongs": [
+      "Waterloo",
+      "Marignan",
+      "Austerlitz"
+     ]
     },
     {
-     "question": "Que se passe-t-il le 11 novembre 1918 ?",
-     "answer": "L'armistice est signé : les combats s'arrêtent.\nC'est aujourd'hui un jour férié.",
-     "w": "91d0e7e7",
-     "wq": "f5e60f02"
+     "question": "Que signe-t-on le 11 novembre 1918 ?",
+     "answer": "L'armistice",
+     "w": [
+      "3fb96415",
+      "91d0e7e7"
+     ],
+     "wq": "f5e60f02",
+     "more": "Les combats s'arrêtent ; c'est aujourd'hui un jour férié.",
+     "wrongs": [
+      "Le traité de Rome",
+      "L'appel du 18 juin",
+      "La Déclaration des droits de l'homme"
+     ]
     },
     {
-     "question": "Où voit-on aujourd'hui le souvenir des morts de 14-18 dans les communes ?",
-     "answer": "Sur les monuments aux morts\noù sont gravés les noms des soldats tués.",
-     "w": "6c584953",
-     "wq": "699fef5f"
+     "question": "Où sont gravés les noms des soldats morts en 14-18 dans les communes ?",
+     "answer": "Sur les monuments aux morts",
+     "w": [
+      "c0e90abf",
+      "6c584953"
+     ],
+     "wq": "699fef5f",
+     "wrongs": [
+      "Sur les églises",
+      "Sur les écoles",
+      "Sur les panneaux routiers"
+     ]
     },
     {
      "question": "Quelles sont les dates de la Seconde Guerre mondiale ?",
-     "answer": "De 1939 à 1945."
+     "answer": "1939-1945",
+     "w": "eacd9421",
+     "wrongs": [
+      "1914-1918",
+      "1940-1944",
+      "1945-1950"
+     ]
     },
     {
      "question": "Qui dirige l'Allemagne nazie ?",
-     "answer": "Adolf Hitler."
+     "answer": "Adolf Hitler",
+     "w": "8f80507e",
+     "wrongs": [
+      "Napoléon",
+      "Charles de Gaulle",
+      "Guillaume II"
+     ]
     },
     {
      "question": "Que se passe-t-il pour la France en 1940 ?",
-     "answer": "Elle est battue par l'Allemagne.\nUne grande partie du pays est occupée.",
-     "w": "b561beb2",
-     "wq": "d4e67183"
+     "answer": "Elle est battue et occupée par l'Allemagne",
+     "w": [
+      "04468e59",
+      "b561beb2"
+     ],
+     "wrongs": [
+      "Elle gagne la guerre",
+      "Elle devient un empire",
+      "Elle entre dans l'Union européenne"
+     ]
     },
     {
-     "question": "Que fait le général de Gaulle le 18 juin 1940 ?",
-     "answer": "Depuis Londres, il lance un appel à la radio\npour continuer le combat.",
-     "w": "483639a4",
-     "wq": "3ab033f7"
+     "question": "D'où le général de Gaulle lance-t-il son appel du 18 juin 1940 ?",
+     "answer": "De Londres",
+     "w": [
+      "91eecfb2",
+      "483639a4"
+     ],
+     "wq": "3ab033f7",
+     "more": "À la radio, pour continuer le combat.",
+     "wrongs": [
+      "De Paris",
+      "De Berlin",
+      "De Verdun"
+     ]
     },
     {
-     "question": "Qu'est-ce que la Résistance ?",
-     "answer": "L'action des personnes qui luttent contre l'occupant allemand.\nEx. : Jean Moulin",
-     "w": "e1bed967",
-     "wq": "e48cd6cb"
+     "question": "Comment appelle-t-on la lutte contre l'occupant allemand ?",
+     "answer": "La Résistance",
+     "w": [
+      "fe6559e5",
+      "e1bed967"
+     ],
+     "wq": "e48cd6cb",
+     "more": "Ex. : Jean Moulin.",
+     "wrongs": [
+      "La Révolution",
+      "La Collaboration",
+      "La Restauration"
+     ]
     },
     {
-     "question": "Qu'est-ce que le génocide des Juifs ?",
-     "answer": "L'extermination organisée par les nazis\nd'environ 6 millions de Juifs d'Europe,\nnotamment dans des camps.",
-     "w": "a78c98de",
-     "wq": "9db47da5"
+     "question": "Combien de Juifs d'Europe ont été exterminés par les nazis ?",
+     "answer": "Environ 6 millions",
+     "w": [
+      "f97d1daa",
+      "a78c98de"
+     ],
+     "wq": "9db47da5",
+     "more": "C'est le génocide des Juifs, organisé notamment dans des camps.",
+     "wrongs": [
+      "Environ 6 000",
+      "Environ 60 000",
+      "Environ 600 millions"
+     ]
     },
     {
-     "question": "Quand la guerre se termine-t-elle en Europe ?",
-     "answer": "Le 8 mai 1945\navec la capitulation de l'Allemagne.",
-     "w": "06e56760",
-     "wq": "f91441cb"
+     "question": "À quelle date la guerre se termine-t-elle en Europe ?",
+     "answer": "Le 8 mai 1945",
+     "w": [
+      "5fd8f184",
+      "06e56760"
+     ],
+     "wq": "f91441cb",
+     "more": "Avec la capitulation de l'Allemagne.",
+     "wrongs": [
+      "Le 11 novembre 1918",
+      "Le 14 juillet 1945",
+      "Le 18 juin 1940"
+     ]
     },
     {
-     "question": "Pourquoi des pays d'Europe décident-ils de s'unir après 1945 ?",
-     "answer": "• Garder la paix entre eux, surtout entre la France et l'Allemagne\n• Devenir plus forts ensemble",
-     "w": "f23d9a7f",
-     "wq": "778519e9"
+     "question": "Pourquoi des pays d'Europe s'unissent-ils après 1945 ?",
+     "answer": "Pour garder la paix entre eux",
+     "w": [
+      "8ded5cc6",
+      "f23d9a7f"
+     ],
+     "wq": "778519e9",
+     "more": "Surtout entre la France et l'Allemagne, et être plus forts ensemble.",
+     "wrongs": [
+      "Pour faire la guerre ensemble",
+      "Pour avoir un seul roi",
+      "Pour parler une seule langue"
+     ]
     },
     {
      "question": "Quel traité crée la Communauté économique européenne en 1957 ?",
-     "answer": "Le traité de Rome\nsigné par 6 pays, dont la France et l'Allemagne.",
-     "w": "5540e32e",
-     "wq": "1200322e"
+     "answer": "Le traité de Rome",
+     "w": [
+      "9e7da384",
+      "5540e32e"
+     ],
+     "more": "Signé par 6 pays, dont la France et l'Allemagne.",
+     "wrongs": [
+      "Le traité de Versailles",
+      "Le traité de Maastricht",
+      "L'édit de Nantes"
+     ]
     },
     {
      "question": "Combien de pays compte l'Union européenne aujourd'hui ?",
-     "answer": "27 pays."
+     "answer": "27",
+     "w": "66665243",
+     "wrongs": [
+      "6",
+      "12",
+      "50"
+     ]
     },
     {
-     "question": "Depuis quand utilise-t-on des pièces et des billets en euros ?",
-     "answer": "Depuis le 1er janvier 2002."
+     "question": "Depuis quand utilise-t-on des pièces et billets en euros ?",
+     "answer": "Le 1er janvier 2002",
+     "w": "2b3ca1ff",
+     "wq": "c28f4d7c",
+     "wrongs": [
+      "Le 1er janvier 1957",
+      "Le 1er janvier 1992",
+      "Le 1er janvier 2020"
+     ]
     }
    ]
   },
@@ -89450,91 +90473,214 @@
    "cards": [
     {
      "question": "Qu'est-ce que la mobilité ?",
-     "answer": "La capacité à se déplacer d'un lieu à un autre."
+     "answer": "La capacité à se déplacer",
+     "w": "8112c566",
+     "wrongs": [
+      "Le fait de rester chez soi",
+      "Un téléphone portable",
+      "Un type de route"
+     ]
     },
     {
-     "question": "Pourquoi se déplace-t-on au quotidien ?",
-     "answer": "• Aller à l'école ou au travail\n• Faire ses courses\n• Se soigner\n• Avoir des loisirs",
-     "w": "32417913",
-     "wq": "0f07f3f9"
+     "question": "Aller à l'école est-il un déplacement du quotidien ?",
+     "answer": "Oui",
+     "w": [
+      "b79d21f1",
+      "32417913"
+     ],
+     "wq": "0f07f3f9",
+     "more": "Comme aller au travail, faire ses courses, se soigner, avoir des loisirs.",
+     "wrongs": [
+      "Non, c'est un voyage",
+      "Seulement en ville",
+      "Seulement le week-end"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un transport en commun ?",
-     "answer": "Un moyen de transport partagé par de nombreux voyageurs.\nEx. : bus, tramway, métro, train",
-     "w": "1389b699",
-     "wq": "ad30d869"
+     "question": "Le tramway est-il un transport en commun ?",
+     "answer": "Oui",
+     "w": [
+      "cb5628db",
+      "1389b699"
+     ],
+     "wq": "ad30d869",
+     "more": "Partagé par de nombreux voyageurs, comme le bus, le métro, le train.",
+     "wrongs": [
+      "Non, c'est un transport individuel",
+      "Non, c'est une mobilité douce",
+      "Seulement la nuit"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une mobilité douce ?",
-     "answer": "Un déplacement sans moteur ou peu polluant.\nEx. : la marche, le vélo, la trottinette",
-     "w": "0ede3269",
-     "wq": "64145246"
+     "question": "Le vélo est-il une mobilité douce ?",
+     "answer": "Oui",
+     "w": [
+      "f85f851a",
+      "0ede3269"
+     ],
+     "wq": "64145246",
+     "more": "Un déplacement sans moteur ou peu polluant, comme la marche.",
+     "wrongs": [
+      "Non, il pollue beaucoup",
+      "Non, c'est un transport en commun",
+      "Seulement électrique"
+     ]
     },
     {
-     "question": "Pourquoi les villes développent-elles les pistes cyclables et le tramway ?",
-     "answer": "Pour réduire :\n• les embouteillages\n• la pollution\n• le bruit",
-     "w": "9cd74ee6",
-     "wq": "7d268152"
+     "question": "Pourquoi les villes développent-elles les pistes cyclables ?",
+     "answer": "Pour réduire embouteillages et pollution",
+     "w": [
+      "0d1193eb",
+      "9cd74ee6"
+     ],
+     "wq": "7d268152",
+     "more": "Et le bruit.",
+     "wrongs": [
+      "Pour augmenter la circulation",
+      "Pour remplacer les trottoirs",
+      "Pour les courses de vélo"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un embouteillage ?",
-     "answer": "Une file de véhicules bloqués ou très ralentis,\nsouvent aux heures de pointe.",
-     "w": "2965cf58",
-     "wq": "e4cbd50f"
+     "question": "Quand les embouteillages sont-ils souvent les plus nombreux ?",
+     "answer": "Aux heures de pointe",
+     "w": [
+      "777b848d",
+      "2965cf58"
+     ],
+     "wq": "e4cbd50f",
+     "wrongs": [
+      "En pleine nuit",
+      "Le dimanche matin",
+      "Jamais en ville"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un réseau de transport ?",
-     "answer": "L'ensemble des lignes (routes, voies ferrées…)\nqui relient des lieux entre eux.",
-     "w": "6bddfb5c",
-     "wq": "99395375"
+     "answer": "L'ensemble des lignes qui relient des lieux",
+     "w": [
+      "008ca05a",
+      "6bddfb5c"
+     ],
+     "more": "Routes, voies ferrées…",
+     "wrongs": [
+      "Un seul train",
+      "Un parking",
+      "Un plan de ville"
+     ]
     },
     {
-     "question": "Que remarque-t-on sur la carte des lignes TGV en France ?",
-     "answer": "La plupart des lignes partent de Paris ou y arrivent :\nle réseau est en étoile autour de Paris.",
-     "w": "e8f082b2",
-     "wq": "5a4641af"
+     "question": "Autour de quelle ville le réseau TGV est-il en étoile ?",
+     "answer": "Paris",
+     "w": [
+      "e19b1490",
+      "e8f082b2"
+     ],
+     "wq": "5a4641af",
+     "wrongs": [
+      "Lyon",
+      "Marseille",
+      "Lille"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un TGV ?",
-     "answer": "Un train à grande vitesse :\nplus de 300 km/h sur des lignes spéciales.",
-     "w": "c7324d51",
-     "wq": "0fa47d97"
+     "question": "À quelle vitesse roule un TGV ?",
+     "answer": "Plus de 300 km/h",
+     "w": [
+      "f8f1942f",
+      "c7324d51"
+     ],
+     "wq": "0fa47d97",
+     "more": "Sur des lignes spéciales.",
+     "wrongs": [
+      "50 km/h",
+      "130 km/h",
+      "1 000 km/h"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un aéroport ?",
-     "answer": "Un lieu où les avions décollent et atterrissent.\nEx. : Roissy-Charles-de-Gaulle, près de Paris",
-     "w": "1caa34c3",
-     "wq": "d05d8f6a"
+     "question": "Où les avions décollent-ils et atterrissent-ils ?",
+     "answer": "Dans un aéroport",
+     "w": [
+      "52887759",
+      "1caa34c3"
+     ],
+     "wq": "d05d8f6a",
+     "more": "Ex. : Roissy-Charles-de-Gaulle, près de Paris.",
+     "wrongs": [
+      "Dans une gare",
+      "Dans un port",
+      "Sur l'autoroute"
+     ]
     },
     {
      "question": "Quel moyen de transport utilise-t-on pour aller loin très rapidement ?",
-     "answer": "L'avion\nIl traverse un océan en quelques heures.",
-     "w": "4ba1ee18",
-     "wq": "e4340b49"
+     "answer": "L'avion",
+     "w": [
+      "7f335f72",
+      "4ba1ee18"
+     ],
+     "wrongs": [
+      "Le vélo",
+      "Le bus",
+      "Le bateau"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une gare ?",
-     "answer": "Un lieu de départ et d'arrivée des trains,\noù les voyageurs montent et descendent.",
-     "w": "59e9acc7",
-     "wq": "edc7e566"
+     "question": "Comment s'appelle le lieu de départ et d'arrivée des trains ?",
+     "answer": "Une gare",
+     "w": [
+      "04196809",
+      "59e9acc7"
+     ],
+     "wq": "edc7e566",
+     "wrongs": [
+      "Un aéroport",
+      "Un port",
+      "Un parking"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un trajet domicile-travail ?",
-     "answer": "Le déplacement quotidien des adultes\nentre leur maison et leur lieu de travail.",
-     "w": "9b489fe0",
-     "wq": "6a6c56f2"
+     "answer": "Le déplacement quotidien entre maison et travail",
+     "w": [
+      "deefa057",
+      "9b489fe0"
+     ],
+     "wrongs": [
+      "Un voyage de vacances",
+      "Un déménagement",
+      "Une livraison"
+     ]
     },
     {
-     "question": "Pour un long trajet en France, quel moyen de transport pollue beaucoup moins que l'avion ?",
-     "answer": "Le train\nsurtout le TGV, qui roule à l'électricité.",
-     "w": "a85d2126",
-     "wq": "3783b7a8"
+     "question": "Pour un long trajet en France, quel transport pollue beaucoup moins que l'avion ?",
+     "answer": "Le train",
+     "w": [
+      "1b5aa878",
+      "a85d2126"
+     ],
+     "wq": "3783b7a8",
+     "more": "Surtout le TGV, électrique.",
+     "wrongs": [
+      "La voiture seule",
+      "L'hélicoptère",
+      "Le camion"
+     ]
     },
     {
      "question": "Pourquoi les habitants des campagnes utilisent-ils souvent la voiture ?",
-     "answer": "Il y a peu de transports en commun\net les services sont parfois loin.",
-     "w": "e17207cf",
-     "wq": "bfcc77f2"
+     "answer": "Il y a peu de transports en commun",
+     "w": [
+      "709f618a",
+      "e17207cf"
+     ],
+     "more": "Et les services sont parfois loin.",
+     "wrongs": [
+      "Les routes sont interdites aux vélos",
+      "L'essence est gratuite",
+      "Il n'y a pas de routes"
+     ]
     }
    ]
   },
@@ -89556,96 +90702,240 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quels sont les temps du passé de l'indicatif étudiés au CM2 ?",
-     "answer": "• L'imparfait\n• Le passé composé\n• Le passé simple\n• Le plus-que-parfait",
-     "w": "77098f8b",
-     "wq": "3c708bec"
+     "question": "Le passé simple est-il un temps du passé ?",
+     "answer": "Oui",
+     "w": [
+      "9329a8b8",
+      "77098f8b"
+     ],
+     "wq": "3c708bec",
+     "more": "Au CM2 : imparfait, passé composé, passé simple, plus-que-parfait.",
+     "wrongs": [
+      "Non, c'est un temps du futur",
+      "Non, c'est le présent",
+      "Seulement à l'oral"
+     ]
     },
     {
      "question": "Quelles sont les terminaisons de l'imparfait ?",
-     "answer": "-ais, -ais, -ait, -ions, -iez, -aient\nEx. : je chantais, nous chantions",
-     "w": "6ac18636",
-     "wq": "6fd09b8c"
+     "answer": "-ais, -ais, -ait, -ions, -iez, -aient",
+     "w": [
+      "cbe5272e",
+      "6ac18636"
+     ],
+     "wrongs": [
+      "-ai, -as, -a, -âmes, -âtes, -èrent",
+      "-rai, -ras, -ra, -rons, -rez, -ront",
+      "-e, -es, -e, -ons, -ez, -ent"
+     ]
     },
     {
-     "question": "À quoi sert l'imparfait dans un récit ?",
-     "answer": "Décrire le décor\nou une action qui dure ou se répète.\nEx. : Il pleuvait.",
-     "w": "f497888a",
-     "wq": "da0f3e48"
+     "question": "Dans un récit, quel temps sert à décrire le décor ?",
+     "answer": "L'imparfait",
+     "w": [
+      "184bd46a",
+      "f497888a"
+     ],
+     "wq": "da0f3e48",
+     "more": "Ou une action qui dure ou se répète. Ex. : Il pleuvait.",
+     "wrongs": [
+      "Le passé simple",
+      "Le futur",
+      "Le plus-que-parfait"
+     ]
     },
     {
      "question": "Comment se forme le passé composé ?",
-     "answer": "Auxiliaire être ou avoir au présent + participe passé\nEx. : j'ai mangé, elle est partie",
-     "w": "33bd8be2",
-     "wq": "09197513"
+     "answer": "Être ou avoir au présent + participe passé",
+     "w": [
+      "34dfc89f",
+      "33bd8be2"
+     ],
+     "more": "Ex. : j'ai mangé, elle est partie.",
+     "wrongs": [
+      "Être ou avoir à l'imparfait + participe passé",
+      "Le verbe + -ait",
+      "Aller + infinitif"
+     ]
     },
     {
-     "question": "Avec l'auxiliaire être, que fait le participe passé ?",
-     "answer": "Il s'accorde avec le sujet.\nEx. : Elles sont arrivées.",
-     "w": "500c55ae",
-     "wq": "37373d17"
+     "question": "Avec l'auxiliaire être, avec quoi s'accorde le participe passé ?",
+     "answer": "Avec le sujet",
+     "w": [
+      "8f61c6b4",
+      "500c55ae"
+     ],
+     "wq": "37373d17",
+     "more": "Ex. : Elles sont arrivées.",
+     "wrongs": [
+      "Avec le complément",
+      "Il ne s'accorde jamais",
+      "Avec le verbe être"
+     ]
     },
     {
-     "question": "À quoi sert le passé simple dans un récit ?",
-     "answer": "Raconter les actions principales, courtes et terminées.\nEx. : Soudain, le loup sortit du bois.",
-     "w": "da99bf65",
-     "wq": "472e3641"
+     "question": "Dans un récit, quel temps raconte les actions principales et courtes ?",
+     "answer": "Le passé simple",
+     "w": [
+      "40f2ce6b",
+      "da99bf65"
+     ],
+     "wq": "472e3641",
+     "more": "Ex. : Soudain, le loup sortit du bois.",
+     "wrongs": [
+      "L'imparfait",
+      "Le présent",
+      "Le plus-que-parfait"
+     ]
     },
     {
-     "question": "Conjugue « chanter » au passé simple à la 3e personne.",
-     "answer": "Il chanta\nils chantèrent",
-     "w": "cb559139",
-     "wq": "0c245d71"
+     "question": "Conjugue « chanter » au passé simple avec « ils ».",
+     "answer": "ils chantèrent",
+     "w": [
+      "1505406b",
+      "cb559139"
+     ],
+     "wq": "0c245d71",
+     "more": "il chanta, ils chantèrent.",
+     "wrongs": [
+      "ils chantaient",
+      "ils chantirent",
+      "ils chantent"
+     ]
     },
     {
-     "question": "Conjugue « finir » au passé simple à la 3e personne.",
-     "answer": "Il finit\nils finirent",
-     "w": "0bffa1ef",
-     "wq": "8912cee8"
+     "question": "Conjugue « finir » au passé simple avec « ils ».",
+     "answer": "ils finirent",
+     "w": [
+      "7b9b3a19",
+      "0bffa1ef"
+     ],
+     "wq": "8912cee8",
+     "more": "il finit, ils finirent.",
+     "wrongs": [
+      "ils finèrent",
+      "ils finissaient",
+      "ils finurent"
+     ]
     },
     {
-     "question": "Conjugue « être » au passé simple à la 3e personne.",
-     "answer": "Il fut\nils furent",
-     "w": "3100b4cc",
-     "wq": "a7749531"
+     "question": "Conjugue « être » au passé simple avec « il ».",
+     "answer": "il fut",
+     "w": [
+      "60541c44",
+      "3100b4cc"
+     ],
+     "wq": "a7749531",
+     "more": "ils furent.",
+     "wrongs": [
+      "il était",
+      "il eut",
+      "il fit"
+     ]
     },
     {
-     "question": "Conjugue « avoir » au passé simple à la 3e personne.",
-     "answer": "Il eut\nils eurent",
-     "w": "8c793456",
-     "wq": "42a0c089"
+     "question": "Conjugue « avoir » au passé simple avec « il ».",
+     "answer": "il eut",
+     "w": [
+      "7cc02890",
+      "8c793456"
+     ],
+     "wq": "42a0c089",
+     "more": "ils eurent.",
+     "wrongs": [
+      "il fut",
+      "il avait",
+      "il a eu"
+     ]
     },
     {
-     "question": "Conjugue « faire » et « prendre » au passé simple, 3e personne du singulier.",
-     "answer": "Il fit, il prit."
+     "question": "Conjugue « faire » au passé simple avec « il ».",
+     "answer": "il fit",
+     "w": "8ab9845b",
+     "wq": "d014efc4",
+     "wrongs": [
+      "il faisa",
+      "il fut",
+      "il fait"
+     ]
     },
     {
-     "question": "Conjugue « venir » au passé simple à la 3e personne.",
-     "answer": "Il vint\nils vinrent",
-     "w": "ba7f9213",
-     "wq": "7ac8259c"
+     "question": "Conjugue « prendre » au passé simple avec « il ».",
+     "answer": "il prit",
+     "wrongs": [
+      "il prenda",
+      "il prenait",
+      "il prendit"
+     ]
+    },
+    {
+     "question": "Conjugue « venir » au passé simple avec « il ».",
+     "answer": "il vint",
+     "w": [
+      "0ef598b3",
+      "ba7f9213"
+     ],
+     "wq": "7ac8259c",
+     "more": "ils vinrent.",
+     "wrongs": [
+      "il venit",
+      "il venait",
+      "il vena"
+     ]
     },
     {
      "question": "Comment se forme le plus-que-parfait ?",
-     "answer": "Auxiliaire être ou avoir à l'imparfait + participe passé\nEx. : j'avais fini, il était parti",
-     "w": "8c1d5788",
-     "wq": "a9d0e5c1"
+     "answer": "Être ou avoir à l'imparfait + participe passé",
+     "w": [
+      "4d6909cf",
+      "8c1d5788"
+     ],
+     "more": "Ex. : j'avais fini, il était parti.",
+     "wrongs": [
+      "Être ou avoir au présent + participe passé",
+      "Être ou avoir au futur + participe passé",
+      "Le verbe + -ait"
+     ]
     },
     {
      "question": "À quoi sert le plus-que-parfait ?",
-     "answer": "Une action passée avant une autre action passée.\nEx. : Il avait mangé quand je suis arrivé.",
-     "w": "6763065c",
-     "wq": "13f09655"
+     "answer": "Une action passée avant une autre action passée",
+     "w": [
+      "7469074b",
+      "6763065c"
+     ],
+     "more": "Ex. : Il avait mangé quand je suis arrivé.",
+     "wrongs": [
+      "Une action future",
+      "Une action qui se passe maintenant",
+      "Un ordre"
+     ]
     },
     {
-     "question": "« Les enfants (jouer) dehors quand l'orage éclata. » Quel temps pour « jouer » ?",
-     "answer": "L'imparfait : « jouaient »\nUne action qui dure, interrompue par l'orage.",
-     "w": "66e62dc4",
-     "wq": "bb01e3a5"
+     "question": "« Les enfants (jouer) dehors quand l'orage éclata. » : quelle forme pour « jouer » ?",
+     "answer": "jouaient",
+     "w": [
+      "0bf19c74",
+      "66e62dc4"
+     ],
+     "wq": "bb01e3a5",
+     "more": "Imparfait : une action qui dure, interrompue par l'orage.",
+     "wrongs": [
+      "jouèrent",
+      "ont joué",
+      "joueront"
+     ]
     },
     {
-     "question": "Mets au plus-que-parfait : « nous (partir) ».",
-     "answer": "Nous étions partis."
+     "question": "Comment dit-on « nous (partir) » au plus-que-parfait ?",
+     "answer": "nous étions partis",
+     "w": "9eb0f845",
+     "wq": "4329a86e",
+     "wrongs": [
+      "nous avions partis",
+      "nous sommes partis",
+      "nous partions"
+     ]
     }
    ]
   },
@@ -89668,81 +90958,193 @@
    "cards": [
     {
      "question": "Qu'est-ce que le périmètre d'une figure ?",
-     "answer": "La longueur de son contour.\nEn m, cm, mm…",
-     "w": "056e62b3",
-     "wq": "0e59bc29"
+     "answer": "La longueur de son contour",
+     "w": [
+      "5341ef31",
+      "056e62b3"
+     ],
+     "wrongs": [
+      "La mesure de sa surface",
+      "Le nombre de ses angles",
+      "Sa hauteur"
+     ]
     },
     {
      "question": "Comment calcule-t-on le périmètre d'un polygone ?",
-     "answer": "On additionne les longueurs de tous ses côtés."
+     "answer": "On additionne les longueurs des côtés",
+     "w": "ddd6ab3a",
+     "wrongs": [
+      "On multiplie les côtés",
+      "On compte les angles",
+      "On mesure la diagonale"
+     ]
     },
     {
-     "question": "Quelle est la formule du périmètre d'un carré ?",
-     "answer": "Périmètre = 4 × côté\nEx. : côté 5 cm → 20 cm",
-     "w": "d8a0c746",
-     "wq": "e7df5a77"
+     "question": "Quel est le périmètre d'un carré de 5 cm de côté ?",
+     "answer": "20 cm",
+     "w": [
+      "5c26744c",
+      "d8a0c746"
+     ],
+     "wq": "e7df5a77",
+     "more": "Périmètre = 4 × côté.",
+     "wrongs": [
+      "25 cm",
+      "10 cm",
+      "25 cm²"
+     ]
     },
     {
-     "question": "Quelle est la formule du périmètre d'un rectangle ?",
-     "answer": "Périmètre = 2 × (longueur + largeur)\nEx. : 6 cm et 4 cm → 2 × 10 = 20 cm",
-     "w": "7a530814",
-     "wq": "1988de7d"
+     "question": "Quel est le périmètre d'un rectangle de 6 cm sur 4 cm ?",
+     "answer": "20 cm",
+     "w": [
+      "3bdb8810",
+      "7a530814"
+     ],
+     "wq": "1988de7d",
+     "more": "Périmètre = 2 × (longueur + largeur).",
+     "wrongs": [
+      "24 cm",
+      "10 cm",
+      "24 cm²"
+     ]
     },
     {
      "question": "Qu'est-ce que l'aire d'une figure ?",
-     "answer": "La mesure de sa surface :\nl'espace qu'elle occupe à l'intérieur de son contour.",
-     "w": "8ec453af",
-     "wq": "9cf26b2a"
+     "answer": "La mesure de sa surface",
+     "w": [
+      "58384dc2",
+      "8ec453af"
+     ],
+     "wrongs": [
+      "La longueur de son contour",
+      "Le nombre de ses côtés",
+      "Son épaisseur"
+     ]
     },
     {
      "question": "Dans quelle unité exprime-t-on une aire ?",
-     "answer": "En unités d'aire :\ncm² (centimètre carré), m² (mètre carré)…",
-     "w": "63153156",
-     "wq": "76d67a95"
+     "answer": "En cm² ou m²",
+     "w": [
+      "5345afe9",
+      "63153156"
+     ],
+     "wrongs": [
+      "En cm ou m",
+      "En litres",
+      "En degrés"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un centimètre carré ?",
-     "answer": "L'aire d'un carré de 1 cm de côté."
+     "answer": "L'aire d'un carré de 1 cm de côté",
+     "w": "7b116051",
+     "wrongs": [
+      "Un carré de 1 m de côté",
+      "La longueur de 1 cm",
+      "Un cube de 1 cm"
+     ]
     },
     {
-     "question": "Quelle est la formule de l'aire d'un rectangle ?",
-     "answer": "Aire = longueur × largeur\nEx. : 6 cm et 4 cm → 24 cm²",
-     "w": "5bdc7964",
-     "wq": "d77f7fa5"
+     "question": "Quelle est l'aire d'un rectangle de 6 cm sur 4 cm ?",
+     "answer": "24 cm²",
+     "w": [
+      "3271b126",
+      "5bdc7964"
+     ],
+     "wq": "d77f7fa5",
+     "more": "Aire = longueur × largeur.",
+     "wrongs": [
+      "20 cm²",
+      "10 cm²",
+      "24 cm"
+     ]
     },
     {
-     "question": "Quelle est la formule de l'aire d'un carré ?",
-     "answer": "Aire = côté × côté\nEx. : côté 5 cm → 25 cm²",
-     "w": "0654f606",
-     "wq": "27b6e7ef"
+     "question": "Quelle est l'aire d'un carré de 5 cm de côté ?",
+     "answer": "25 cm²",
+     "w": [
+      "0ad2d2f6",
+      "0654f606"
+     ],
+     "wq": "27b6e7ef",
+     "more": "Aire = côté × côté.",
+     "wrongs": [
+      "20 cm²",
+      "10 cm²",
+      "25 cm"
+     ]
     },
     {
-     "question": "Deux figures qui ont le même périmètre ont-elles toujours la même aire ?",
-     "answer": "Non.\nEx. : rectangle 5 × 1 et carré 3 × 3\nmême périmètre (12), aires 5 et 9",
-     "w": "b7779149",
-     "wq": "309d8d68"
+     "question": "Deux figures de même périmètre ont-elles toujours la même aire ?",
+     "answer": "Non",
+     "w": [
+      "238af680",
+      "b7779149"
+     ],
+     "wq": "309d8d68",
+     "more": "Rectangle 5 × 1 et carré 3 × 3 : même périmètre (12), aires 5 et 9.",
+     "wrongs": [
+      "Oui, toujours",
+      "Seulement les carrés",
+      "Oui, si ce sont des rectangles"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un angle droit ?",
-     "answer": "Un angle comme le coin d'une feuille.\nOn le vérifie avec l'équerre.",
-     "w": "838e362f",
-     "wq": "4ef529fb"
+     "question": "Quel angle ressemble au coin d'une feuille ?",
+     "answer": "L'angle droit",
+     "w": [
+      "3d28b40d",
+      "838e362f"
+     ],
+     "wq": "4ef529fb",
+     "wrongs": [
+      "L'angle aigu",
+      "L'angle obtus",
+      "L'angle plat"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un angle aigu ?",
-     "answer": "Un angle plus petit qu'un angle droit."
+     "question": "Comment s'appelle un angle plus petit qu'un angle droit ?",
+     "answer": "Un angle aigu",
+     "w": "c61fa93b",
+     "wq": "a809de53",
+     "wrongs": [
+      "Un angle obtus",
+      "Un angle plat",
+      "Un angle plein"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un angle obtus ?",
-     "answer": "Un angle plus grand qu'un angle droit."
+     "question": "Comment s'appelle un angle plus grand qu'un angle droit ?",
+     "answer": "Un angle obtus",
+     "w": "76e1f152",
+     "wq": "e9c6ba8a",
+     "wrongs": [
+      "Un angle aigu",
+      "Un angle nul",
+      "Un angle droit"
+     ]
     },
     {
      "question": "Quel outil sert à vérifier un angle droit ?",
-     "answer": "L'équerre."
+     "answer": "L'équerre",
+     "w": "b7d3ed23",
+     "wrongs": [
+      "Le compas",
+      "La règle",
+      "La gomme"
+     ]
     },
     {
      "question": "Combien d'angles droits a un rectangle ?",
-     "answer": "4 angles droits."
+     "answer": "4",
+     "w": "25d94e16",
+     "wrongs": [
+      "2",
+      "3",
+      "0"
+     ]
     }
    ]
   },
@@ -89764,94 +91166,220 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce que le Soleil ?",
-     "answer": "Une étoile :\nune énorme boule de gaz très chaude\nqui produit sa propre lumière.",
-     "w": "67d10fcc",
-     "wq": "cf25bb5e"
+     "question": "Le Soleil est-il une planète ou une étoile ?",
+     "answer": "Une étoile",
+     "w": [
+      "4e6efbac",
+      "67d10fcc"
+     ],
+     "wq": "cf25bb5e",
+     "more": "Une énorme boule de gaz très chaude qui produit sa propre lumière.",
+     "wrongs": [
+      "Une planète",
+      "Un satellite",
+      "Une comète"
+     ]
     },
     {
      "question": "Qu'est-ce que le système solaire ?",
-     "answer": "Le Soleil et tous les astres qui tournent autour de lui :\nplanètes, satellites, astéroïdes, comètes.",
-     "w": "d3348b3a",
-     "wq": "ec5feaae"
+     "answer": "Le Soleil et les astres qui tournent autour",
+     "w": [
+      "e3ef1070",
+      "d3348b3a"
+     ],
+     "more": "Planètes, satellites, astéroïdes, comètes.",
+     "wrongs": [
+      "Toutes les étoiles du ciel",
+      "La Terre et la Lune seulement",
+      "Un appareil solaire"
+     ]
     },
     {
      "question": "Combien y a-t-il de planètes dans le système solaire ?",
-     "answer": "8 planètes."
+     "answer": "8",
+     "w": "84d1be31",
+     "wrongs": [
+      "9",
+      "7",
+      "12"
+     ]
     },
     {
-     "question": "Cite les planètes dans l'ordre à partir du Soleil.",
-     "answer": "Mercure, Vénus, Terre, Mars,\nJupiter, Saturne, Uranus, Neptune",
-     "w": "434179a5",
-     "wq": "aa43fad1"
+     "question": "Quelle est la planète la plus proche du Soleil ?",
+     "answer": "Mercure",
+     "w": [
+      "04f39117",
+      "434179a5"
+     ],
+     "wq": "aa43fad1",
+     "more": "Mercure, Vénus, Terre, Mars, Jupiter, Saturne, Uranus, Neptune.",
+     "wrongs": [
+      "Vénus",
+      "La Terre",
+      "Neptune"
+     ]
     },
     {
      "question": "Quelle est la plus grande planète du système solaire ?",
-     "answer": "Jupiter."
+     "answer": "Jupiter",
+     "w": "b9b738a5",
+     "wrongs": [
+      "Saturne",
+      "La Terre",
+      "Neptune"
+     ]
     },
     {
      "question": "Quelle est la place de la Terre à partir du Soleil ?",
-     "answer": "La 3e planète."
+     "answer": "3e",
+     "w": "10a9044d",
+     "wrongs": [
+      "1re",
+      "2e",
+      "4e"
+     ]
     },
     {
-     "question": "Pourquoi la vie est-elle possible sur Terre ?",
-     "answer": "• De l'eau liquide\n• Une atmosphère\n• Une température ni trop chaude ni trop froide",
-     "w": "f274c54e",
-     "wq": "6eb6ceed"
+     "question": "Qu'est-ce qui rend la vie possible sur Terre ?",
+     "answer": "L'eau liquide",
+     "w": [
+      "d32273f8",
+      "f274c54e"
+     ],
+     "wq": "6eb6ceed",
+     "more": "Aussi : une atmosphère et une température ni trop chaude ni trop froide.",
+     "wrongs": [
+      "Les anneaux",
+      "L'absence d'air",
+      "La lumière de la Lune"
+     ]
     },
     {
-     "question": "Qu'est-ce que la rotation de la Terre ?",
-     "answer": "La Terre tourne sur elle-même\nen environ 24 heures.",
-     "w": "99c327ed",
-     "wq": "acdcd98c"
+     "question": "En combien de temps la Terre tourne-t-elle sur elle-même ?",
+     "answer": "Environ 24 heures",
+     "w": [
+      "0089846b",
+      "99c327ed"
+     ],
+     "wq": "acdcd98c",
+     "more": "C'est la rotation.",
+     "wrongs": [
+      "Environ 365 jours",
+      "Environ 1 heure",
+      "Environ 1 mois"
+     ]
     },
     {
-     "question": "Pourquoi y a-t-il le jour et la nuit ?",
-     "answer": "À cause de la rotation de la Terre :\n• la moitié tournée vers le Soleil est éclairée (jour)\n• l'autre est dans l'ombre (nuit)",
-     "w": "b8018731",
-     "wq": "517551f0"
+     "question": "Qu'est-ce qui cause le jour et la nuit ?",
+     "answer": "La rotation de la Terre",
+     "w": [
+      "178c438d",
+      "b8018731"
+     ],
+     "wq": "517551f0",
+     "more": "La moitié tournée vers le Soleil est éclairée.",
+     "wrongs": [
+      "Le Soleil qui s'éteint",
+      "La Lune qui cache le Soleil",
+      "Les nuages"
+     ]
     },
     {
      "question": "De quel côté le Soleil se lève-t-il ?",
-     "answer": "À l'est\nIl se couche à l'ouest.",
-     "w": "eed5e7b0",
-     "wq": "ccf35b39"
+     "answer": "À l'est",
+     "w": [
+      "6ec74c52",
+      "eed5e7b0"
+     ],
+     "more": "Il se couche à l'ouest.",
+     "wrongs": [
+      "À l'ouest",
+      "Au nord",
+      "Au sud"
+     ]
     },
     {
-     "question": "Qu'est-ce que la révolution de la Terre ?",
-     "answer": "Le tour complet de la Terre autour du Soleil.\nEnviron 365 jours et un quart : une année.",
-     "w": "f77060ad",
-     "wq": "ac100e99"
+     "question": "Combien de temps dure la révolution de la Terre autour du Soleil ?",
+     "answer": "Environ 365 jours",
+     "w": [
+      "07d51198",
+      "f77060ad"
+     ],
+     "wq": "ac100e99",
+     "more": "Et un quart : une année.",
+     "wrongs": [
+      "24 heures",
+      "29 jours",
+      "7 jours"
+     ]
     },
     {
      "question": "Pourquoi y a-t-il des saisons ?",
-     "answer": "L'axe de la Terre est penché :\nau fil de l'année, chaque région reçoit\nplus ou moins les rayons du Soleil.",
-     "w": "393cea08",
-     "wq": "e8c3cb89"
+     "answer": "L'axe de la Terre est penché",
+     "w": [
+      "0e8e8708",
+      "393cea08"
+     ],
+     "more": "Chaque région reçoit plus ou moins les rayons du Soleil.",
+     "wrongs": [
+      "La Terre s'éloigne beaucoup du Soleil",
+      "La Lune cache le Soleil",
+      "Le Soleil change de taille"
+     ]
     },
     {
      "question": "Qu'est-ce que la Lune ?",
-     "answer": "Le satellite naturel de la Terre :\nelle tourne autour de la Terre.",
-     "w": "d0f2a495",
-     "wq": "d882bfbc"
+     "answer": "Le satellite naturel de la Terre",
+     "w": [
+      "b1c2121b",
+      "d0f2a495"
+     ],
+     "wrongs": [
+      "Une étoile",
+      "Une planète",
+      "Une comète"
+     ]
     },
     {
      "question": "La Lune produit-elle sa propre lumière ?",
-     "answer": "Non.\nElle est éclairée par le Soleil et renvoie sa lumière.",
-     "w": "7fd2906e",
-     "wq": "2b8d7c61"
+     "answer": "Non",
+     "w": [
+      "ec57cb94",
+      "7fd2906e"
+     ],
+     "more": "Elle est éclairée par le Soleil et renvoie sa lumière.",
+     "wrongs": [
+      "Oui, comme le Soleil",
+      "Oui, seulement la nuit",
+      "Oui, quand elle est pleine"
+     ]
     },
     {
      "question": "Pourquoi la Lune change-t-elle de forme dans le ciel ?",
-     "answer": "Ce sont les phases de la Lune :\nselon sa position, on voit une partie plus ou moins grande\nde sa face éclairée.",
-     "w": "ceaed3e5",
-     "wq": "fc0a0ef3"
+     "answer": "On voit plus ou moins sa face éclairée",
+     "w": [
+      "10a3a6d9",
+      "ceaed3e5"
+     ],
+     "more": "Ce sont les phases de la Lune.",
+     "wrongs": [
+      "Elle grossit et rétrécit",
+      "Les nuages la cachent",
+      "La Terre la ronge"
+     ]
     },
     {
      "question": "Combien de temps dure un cycle de phases de la Lune ?",
-     "answer": "Environ 29 jours et demi\n(presque un mois)",
-     "w": "40278424",
-     "wq": "b9bf52ab"
+     "answer": "Environ 29 jours et demi",
+     "w": [
+      "2318c774",
+      "40278424"
+     ],
+     "wrongs": [
+      "24 heures",
+      "7 jours",
+      "365 jours"
+     ]
     }
    ]
   },
@@ -89874,91 +91402,217 @@
    "cards": [
     {
      "question": "Comment dit-on « Je m'appelle Léa » en anglais ?",
-     "answer": "My name is Léa.\n(ou : I'm Léa.)",
-     "w": "71fd2d60",
-     "wq": "7ad26dee"
+     "answer": "My name is Léa.",
+     "w": [
+      "f5d9cc46",
+      "71fd2d60"
+     ],
+     "wrongs": [
+      "Your name is Léa.",
+      "I call Léa.",
+      "How is Léa?"
+     ]
     },
     {
-     "question": "Comment demande-t-on l'âge de quelqu'un ?",
-     "answer": "How old are you?\nRéponse : I'm ten. (J'ai dix ans.)",
-     "w": "6efb3ce0",
-     "wq": "c9d5bb27"
+     "question": "Comment demande-t-on l'âge de quelqu'un en anglais ?",
+     "answer": "How old are you?",
+     "w": [
+      "3ed5e7da",
+      "6efb3ce0"
+     ],
+     "wq": "c9d5bb27",
+     "more": "Réponse : I'm ten.",
+     "wrongs": [
+      "How are you?",
+      "What's your name?",
+      "Where do you live?"
+     ]
     },
     {
-     "question": "Comment demande-t-on « Où habites-tu ? »",
-     "answer": "Where do you live?\nRéponse : I live in Lyon.",
-     "w": "745043b7",
-     "wq": "a1345fae"
+     "question": "Comment demande-t-on « Où habites-tu ? » en anglais ?",
+     "answer": "Where do you live?",
+     "w": [
+      "e5567e69",
+      "745043b7"
+     ],
+     "wq": "a1345fae",
+     "more": "Réponse : I live in Lyon.",
+     "wrongs": [
+      "Where are you from?",
+      "How old are you?",
+      "What do you like?"
+     ]
     },
     {
-     "question": "Comment dit-on « J'aime le chocolat » et « Je n'aime pas les carottes » ?",
-     "answer": "• I like chocolate.\n• I don't like carrots.",
-     "w": "1bfc6220",
-     "wq": "36003fdd"
+     "question": "Comment dit-on « Je n'aime pas les carottes » ?",
+     "answer": "I don't like carrots.",
+     "w": [
+      "5043e97a",
+      "1bfc6220"
+     ],
+     "wq": "36003fdd",
+     "more": "I like chocolate : j'aime le chocolat.",
+     "wrongs": [
+      "I not like carrots.",
+      "I doesn't like carrots.",
+      "I like not carrots."
+     ]
     },
     {
      "question": "Comment dit-on « J'ai un frère » ?",
-     "answer": "I have got a brother.\n(ou : I have a brother.)",
-     "w": "66a38811",
-     "wq": "b44756ff"
+     "answer": "I have got a brother.",
+     "w": [
+      "8aa6381f",
+      "66a38811"
+     ],
+     "wrongs": [
+      "I am a brother.",
+      "I has got a brother.",
+      "I have got a sister."
+     ]
     },
     {
-     "question": "Que faut-il ajouter au verbe avec he, she ou it au présent simple ?",
-     "answer": "Un -s.\nEx. : I play → he plays ; she likes",
-     "w": "d12b58f4",
-     "wq": "c0d5ea89"
+     "question": "Au présent simple, qu'ajoute-t-on au verbe avec he, she, it ?",
+     "answer": "Un -s",
+     "w": [
+      "34c0c3e4",
+      "d12b58f4"
+     ],
+     "wq": "c0d5ea89",
+     "more": "Ex. : he plays, she likes.",
+     "wrongs": [
+      "-ing",
+      "-ed",
+      "Rien"
+     ]
     },
     {
-     "question": "Conjugue « to go » avec he.",
-     "answer": "He goes.\nOn ajoute -es après o, s, sh, ch, x : she watches.",
-     "w": "df0a092c",
-     "wq": "eff55328"
+     "question": "Conjugue « to go » avec « he ».",
+     "answer": "He goes",
+     "w": [
+      "77a2ae37",
+      "df0a092c"
+     ],
+     "wq": "eff55328",
+     "more": "On ajoute -es après o, s, sh, ch, x : she watches.",
+     "wrongs": [
+      "He gos",
+      "He go",
+      "He going"
+     ]
     },
     {
-     "question": "Quelle est la forme du verbe « to have » avec she ?",
-     "answer": "She has."
+     "question": "Quelle est la forme de « to have » avec « she » ?",
+     "answer": "She has",
+     "w": "24bb1576",
+     "wq": "99bc603f",
+     "wrongs": [
+      "She haves",
+      "She have",
+      "She is"
+     ]
     },
     {
      "question": "Comment dit-on « Il ne joue pas au foot » ?",
-     "answer": "He doesn't play football.\ndoesn't + verbe sans -s",
-     "w": "958273eb",
-     "wq": "623499d3"
+     "answer": "He doesn't play football.",
+     "w": [
+      "1c883652",
+      "958273eb"
+     ],
+     "more": "doesn't + verbe sans -s.",
+     "wrongs": [
+      "He don't play football.",
+      "He doesn't plays football.",
+      "He not plays football."
+     ]
     },
     {
-     "question": "Comment pose-t-on une question au présent simple avec you ?",
-     "answer": "Avec do : Do you like pizza?\nYes, I do. / No, I don't.",
-     "w": "037fb7a1",
-     "wq": "20a44968"
+     "question": "Comment demande-t-on « Aimes-tu la pizza ? » ?",
+     "answer": "Do you like pizza?",
+     "w": [
+      "4be3e33f",
+      "037fb7a1"
+     ],
+     "wq": "20a44968",
+     "wrongs": [
+      "Does you like pizza?",
+      "You like pizza?",
+      "Are you like pizza?"
+     ]
     },
     {
-     "question": "Comment pose-t-on une question au présent simple avec she ?",
-     "answer": "Avec does : Does she like cats?\nYes, she does. / No, she doesn't.",
-     "w": "9ab98a5a",
-     "wq": "dfafcec1"
+     "question": "Comment demande-t-on « Aime-t-elle les chats ? » ?",
+     "answer": "Does she like cats?",
+     "w": [
+      "e754ceb0",
+      "9ab98a5a"
+     ],
+     "wq": "dfafcec1",
+     "more": "Réponse : Yes, she does. / No, she doesn't.",
+     "wrongs": [
+      "Do she like cats?",
+      "Does she likes cats?",
+      "Is she like cats?"
+     ]
     },
     {
      "question": "À quoi sert le présent simple ?",
-     "answer": "Parler des habitudes et des vérités générales.\nEx. : I go to school every day.",
-     "w": "8788c179",
-     "wq": "06078024"
+     "answer": "Parler des habitudes",
+     "w": [
+      "ed84b017",
+      "8788c179"
+     ],
+     "more": "Et des vérités générales. Ex. : I go to school every day.",
+     "wrongs": [
+      "Parler du futur seulement",
+      "Parler d'une action en cours",
+      "Donner un ordre"
+     ]
     },
     {
-     "question": "Cite les jours de la semaine en anglais.",
-     "answer": "Monday, Tuesday, Wednesday, Thursday,\nFriday, Saturday, Sunday\n(avec une majuscule)",
-     "w": "7fab1e48",
-     "wq": "862b8a5b"
+     "question": "Comment dit-on « mercredi » en anglais ?",
+     "answer": "Wednesday",
+     "w": [
+      "6409299e",
+      "7fab1e48"
+     ],
+     "wq": "862b8a5b",
+     "more": "Les jours prennent une majuscule.",
+     "wrongs": [
+      "Tuesday",
+      "Thursday",
+      "Monday"
+     ]
     },
     {
-     "question": "Comment dit-on « mère, père, sœur, frère » en anglais ?",
-     "answer": "• Mère : mother\n• Père : father\n• Sœur : sister\n• Frère : brother",
-     "w": "afc9ff43",
-     "wq": "b8cfcce3"
+     "question": "Comment dit-on « sœur » en anglais ?",
+     "answer": "sister",
+     "w": [
+      "f3271262",
+      "afc9ff43"
+     ],
+     "wq": "b8cfcce3",
+     "more": "mother, father, sister, brother.",
+     "wrongs": [
+      "brother",
+      "mother",
+      "daughter"
+     ]
     },
     {
-     "question": "Comment demande-t-on « Quelle heure est-il ? »",
-     "answer": "What time is it?\nRéponse : It's three o'clock. (Il est trois heures.)",
-     "w": "e9b2e971",
-     "wq": "34a6f143"
+     "question": "Comment demande-t-on « Quelle heure est-il ? » ?",
+     "answer": "What time is it?",
+     "w": [
+      "e92bb267",
+      "e9b2e971"
+     ],
+     "wq": "34a6f143",
+     "more": "Réponse : It's three o'clock.",
+     "wrongs": [
+      "How old is it?",
+      "What day is it?",
+      "Where is it?"
+     ]
     }
    ]
   },
@@ -91664,98 +93318,243 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Que vaut 10⁴ et que vaut 10⁻³ ?",
-     "answer": "• 10⁴ = 10 000\n• 10⁻³ = 1/10³ = 0,001",
-     "w": "b0a945fe",
-     "wq": "7350128d"
+     "question": "Que vaut 10⁴ ?",
+     "answer": "10 000",
+     "w": [
+      "95625f2b",
+      "b0a945fe"
+     ],
+     "wq": "7350128d",
+     "wrongs": [
+      "40",
+      "1 000",
+      "0,0001"
+     ]
+    },
+    {
+     "question": "Que vaut 10⁻³ ?",
+     "answer": "0,001",
+     "wrongs": [
+      "−1 000",
+      "0,0001",
+      "−30"
+     ]
     },
     {
      "question": "Que vaut 10⁰ ?",
-     "answer": "10⁰ = 1."
+     "answer": "1",
+     "w": "4b56e824",
+     "wrongs": [
+      "0",
+      "10",
+      "Ce n'est pas défini"
+     ]
     },
     {
-     "question": "Quelles sont les règles de calcul 10ⁿ × 10ᵐ et 10ⁿ ÷ 10ᵐ ?",
-     "answer": "• 10ⁿ × 10ᵐ = 10ⁿ⁺ᵐ\n• 10ⁿ ÷ 10ᵐ = 10ⁿ⁻ᵐ\nEx. : 10⁵ × 10⁻² = 10³",
-     "w": "68807853",
-     "wq": "05ce0422"
+     "question": "Que vaut 10ⁿ × 10ᵐ ?",
+     "answer": "10ⁿ⁺ᵐ",
+     "w": [
+      "af6b35f5",
+      "68807853"
+     ],
+     "wq": "05ce0422",
+     "more": "Et 10ⁿ ÷ 10ᵐ = 10ⁿ⁻ᵐ. Ex. : 10⁵ × 10⁻² = 10³.",
+     "wrongs": [
+      "10ⁿˣᵐ",
+      "100ⁿ⁺ᵐ",
+      "10ⁿ⁻ᵐ"
+     ]
     },
     {
      "question": "Que vaut (10³)² ?",
-     "answer": "10⁶\n(10³)² = 10³ˣ²",
-     "w": "36ddb734",
-     "wq": "30091742"
+     "answer": "10⁶",
+     "w": [
+      "0a335e71",
+      "36ddb734"
+     ],
+     "wrongs": [
+      "10⁵",
+      "10⁹",
+      "10⁸"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'écriture scientifique d'un nombre ?",
-     "answer": "a × 10ⁿ\navec 1 ≤ a < 10 (décimal) et n entier relatif",
-     "w": "d8ad31f4",
-     "wq": "141e7d93"
+     "question": "Dans l'écriture scientifique a × 10ⁿ, quelle condition vérifie a ?",
+     "answer": "1 ≤ a < 10",
+     "w": [
+      "97f3dfbd",
+      "d8ad31f4"
+     ],
+     "wq": "141e7d93",
+     "wrongs": [
+      "0 < a < 1",
+      "a entier",
+      "1 ≤ a < 100"
+     ]
     },
     {
-     "question": "Donne l'écriture scientifique de 45 000.",
-     "answer": "4,5 × 10⁴."
+     "question": "Quelle est l'écriture scientifique de 45 000 ?",
+     "answer": "4,5 × 10⁴",
+     "w": "06a97226",
+     "wq": "85de5530",
+     "wrongs": [
+      "45 × 10³",
+      "4,5 × 10³",
+      "0,45 × 10⁵"
+     ]
     },
     {
-     "question": "Donne l'écriture scientifique de 0,003 2.",
-     "answer": "3,2 × 10⁻³."
+     "question": "Quelle est l'écriture scientifique de 0,003 2 ?",
+     "answer": "3,2 × 10⁻³",
+     "w": "cd039e36",
+     "wq": "be41aff6",
+     "wrongs": [
+      "3,2 × 10³",
+      "32 × 10⁻⁴",
+      "3,2 × 10⁻²"
+     ]
     },
     {
-     "question": "Pourquoi 0,5 × 10³ n'est-il pas en écriture scientifique ? Corrige-le.",
-     "answer": "Car 0,5 < 1.\nCorrection : 5 × 10²",
-     "w": "95030be0",
-     "wq": "ed05d857"
+     "question": "Quelle est l'écriture scientifique correcte de 0,5 × 10³ ?",
+     "answer": "5 × 10²",
+     "w": [
+      "bc7bb299",
+      "95030be0"
+     ],
+     "wq": "ed05d857",
+     "more": "0,5 × 10³ n'en est pas une car 0,5 < 1.",
+     "wrongs": [
+      "5 × 10⁴",
+      "50 × 10¹",
+      "0,5 × 10³"
+     ]
     },
     {
-     "question": "Donne l'écriture décimale de 3,7 × 10⁻².",
-     "answer": "0,037."
+     "question": "Quelle est l'écriture décimale de 3,7 × 10⁻² ?",
+     "answer": "0,037",
+     "w": "8ff9cf58",
+     "wq": "b70de689",
+     "wrongs": [
+      "370",
+      "0,37",
+      "0,0037"
+     ]
     },
     {
-     "question": "Calcule (2 × 10³) × (3 × 10⁴).",
-     "answer": "6 × 10⁷\n2 × 3 = 6\n10³ × 10⁴ = 10⁷",
-     "w": "d8e4761b",
-     "wq": "0f729b2f"
+     "question": "Combien vaut (2 × 10³) × (3 × 10⁴) ?",
+     "answer": "6 × 10⁷",
+     "w": [
+      "48fc1975",
+      "d8e4761b"
+     ],
+     "wq": "0f729b2f",
+     "wrongs": [
+      "6 × 10¹²",
+      "5 × 10⁷",
+      "6 × 10¹"
+     ]
     },
     {
-     "question": "Calcule (6 × 10⁸) ÷ (2 × 10³).",
-     "answer": "3 × 10⁵\n6 ÷ 2 = 3\n10⁸ ÷ 10³ = 10⁵",
-     "w": "6fd11967",
-     "wq": "07beb9f4"
+     "question": "Combien vaut (6 × 10⁸) ÷ (2 × 10³) ?",
+     "answer": "3 × 10⁵",
+     "w": [
+      "a196a711",
+      "6fd11967"
+     ],
+     "wq": "07beb9f4",
+     "wrongs": [
+      "3 × 10¹¹",
+      "4 × 10⁵",
+      "12 × 10⁵"
+     ]
     },
     {
-     "question": "Que signifient les préfixes kilo, méga et giga ?",
-     "answer": "• kilo = 10³ (mille)\n• méga = 10⁶ (million)\n• giga = 10⁹ (milliard)\nEx. : 1 Go = 10⁹ octets",
-     "w": "7207ae21",
-     "wq": "b5e1b1dd"
+     "question": "Que signifie le préfixe « giga » ?",
+     "answer": "10⁹",
+     "w": [
+      "02d02ad4",
+      "7207ae21"
+     ],
+     "wq": "b5e1b1dd",
+     "more": "kilo = 10³ ; méga = 10⁶. Ex. : 1 Go = 10⁹ octets.",
+     "wrongs": [
+      "10³",
+      "10⁶",
+      "10¹²"
+     ]
     },
     {
-     "question": "Que signifient les préfixes milli, micro et nano ?",
-     "answer": "• milli = 10⁻³\n• micro = 10⁻⁶\n• nano = 10⁻⁹\nEx. : 1 nm = 10⁻⁹ m",
-     "w": "d45950f5",
-     "wq": "20e2939b"
+     "question": "Que signifie le préfixe « micro » ?",
+     "answer": "10⁻⁶",
+     "w": [
+      "34ba2d82",
+      "d45950f5"
+     ],
+     "wq": "20e2939b",
+     "more": "milli = 10⁻³ ; nano = 10⁻⁹.",
+     "wrongs": [
+      "10⁻³",
+      "10⁻⁹",
+      "10⁶"
+     ]
     },
     {
-     "question": "Comment comparer 3 × 10⁵ et 8 × 10⁴ ?",
-     "answer": "3 × 10⁵ > 8 × 10⁴\nOn compare d'abord les puissances : 10⁵ > 10⁴.\n(300 000 > 80 000)",
-     "w": "f9fb09f6",
-     "wq": "2e993f59"
+     "question": "Quel est le plus grand : 3 × 10⁵ ou 8 × 10⁴ ?",
+     "answer": "3 × 10⁵",
+     "w": [
+      "e6b12980",
+      "f9fb09f6"
+     ],
+     "wq": "2e993f59",
+     "more": "On compare d'abord les puissances : 300 000 > 80 000.",
+     "wrongs": [
+      "8 × 10⁴",
+      "Ils sont égaux",
+      "On ne peut pas savoir"
+     ]
     },
     {
      "question": "Que signifie l'affichage 2.5E6 sur une calculatrice ?",
-     "answer": "2,5 × 10⁶\nsoit 2 500 000",
-     "w": "7255e56a",
-     "wq": "fbecf686"
+     "answer": "2,5 × 10⁶",
+     "w": [
+      "aded6d3e",
+      "7255e56a"
+     ],
+     "more": "Soit 2 500 000.",
+     "wrongs": [
+      "2,5 × 6",
+      "2,5⁶",
+      "25 × 10⁻⁶"
+     ]
     },
     {
-     "question": "Quel est l'ordre de grandeur de la vitesse de la lumière dans le vide ?",
-     "answer": "Environ 3 × 10⁸ m/s\nsoit 300 000 km/s",
-     "w": "437d5f6d",
-     "wq": "6dfd15f5"
+     "question": "Quelle est la vitesse de la lumière dans le vide ?",
+     "answer": "Environ 3 × 10⁸ m/s",
+     "w": [
+      "ede66f6d",
+      "437d5f6d"
+     ],
+     "wq": "6dfd15f5",
+     "more": "Soit 300 000 km/s.",
+     "wrongs": [
+      "Environ 3 × 10⁴ m/s",
+      "Environ 340 m/s",
+      "Environ 3 × 10¹⁵ m/s"
+     ]
     },
     {
      "question": "Qu'est-ce que l'ordre de grandeur d'un nombre ?",
-     "answer": "La puissance de 10 la plus proche du nombre.\nElle sert à estimer et à vérifier un résultat.\nEx. : un atome mesure de l'ordre de 10⁻¹⁰ m.",
-     "w": "9ef82e73",
-     "wq": "4a535d46"
+     "answer": "La puissance de 10 la plus proche",
+     "w": [
+      "4318171e",
+      "9ef82e73"
+     ],
+     "more": "Ex. : un atome mesure de l'ordre de 10⁻¹⁰ m.",
+     "wrongs": [
+      "Son chiffre des unités",
+      "Sa partie entière",
+      "Son nombre de chiffres après la virgule"
+     ]
     }
    ]
   },
@@ -93370,106 +95169,259 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quand emploie-t-on le pretérito indefinido ?",
-     "answer": "Une action passée, achevée et datée,\nsouvent avec ayer, el año pasado, en 2010.\nEx. : Ayer visité Madrid.",
-     "w": "baeff171",
-     "wq": "4243a9f5"
+     "question": "Quel temps espagnol exprime une action passée, achevée et datée ?",
+     "answer": "Le pretérito indefinido",
+     "w": [
+      "f7ef3ddf",
+      "baeff171"
+     ],
+     "wq": "4243a9f5",
+     "more": "Souvent avec ayer, el año pasado. Ex. : Ayer visité Madrid.",
+     "wrongs": [
+      "Le pretérito imperfecto",
+      "Le presente",
+      "Le futuro"
+     ]
     },
     {
-     "question": "Conjugue hablar au pretérito indefinido.",
-     "answer": "hablé, hablaste, habló,\nhablamos, hablasteis, hablaron",
-     "w": "c46ccc6d",
-     "wq": "5756f00e"
+     "question": "Comment dit-on « ils parlèrent » (hablar, indefinido) ?",
+     "answer": "hablaron",
+     "w": [
+      "e3744723",
+      "c46ccc6d"
+     ],
+     "wq": "5756f00e",
+     "more": "hablé, hablaste, habló, hablamos, hablasteis, hablaron.",
+     "wrongs": [
+      "hablaban",
+      "hablan",
+      "hablaste"
+     ]
     },
     {
-     "question": "Conjugue comer au pretérito indefinido.",
-     "answer": "comí, comiste, comió,\ncomimos, comisteis, comieron\n(vivir : viví, viviste, vivió, vivimos, vivisteis, vivieron)",
-     "w": "069baef4",
-     "wq": "2ff267f4"
+     "question": "Comment dit-on « il mangea » (comer, indefinido) ?",
+     "answer": "comió",
+     "w": [
+      "bf90382e",
+      "069baef4"
+     ],
+     "wq": "2ff267f4",
+     "more": "comí, comiste, comió, comimos, comisteis, comieron.",
+     "wrongs": [
+      "comía",
+      "comé",
+      "come"
+     ]
     },
     {
-     "question": "Pourquoi l'accent écrit est-il essentiel dans hablo / habló ?",
-     "answer": "• hablo (sans accent) : je parle (présent)\n• habló (accent sur le o) : il/elle parla (indefinido)",
-     "w": "d4082c9b",
-     "wq": "5b6bda65"
+     "question": "Que signifie « habló » (avec accent) ?",
+     "answer": "Il/elle parla",
+     "w": [
+      "20055ba2",
+      "d4082c9b"
+     ],
+     "wq": "5b6bda65",
+     "more": "« hablo » sans accent : je parle.",
+     "wrongs": [
+      "Je parle",
+      "Je parlai",
+      "Ils parlent"
+     ]
     },
     {
-     "question": "Conjugue ser et ir au pretérito indefinido.",
-     "answer": "Même forme pour les deux :\nfui, fuiste, fue, fuimos, fuisteis, fueron\nLe contexte permet de les distinguer.",
-     "w": "28d58071",
-     "wq": "ea5e5a8c"
+     "question": "Quels verbes ont la même forme « fui, fuiste, fue » à l'indefinido ?",
+     "answer": "Ser et ir",
+     "w": [
+      "5823b0ba",
+      "28d58071"
+     ],
+     "wq": "ea5e5a8c",
+     "more": "Le contexte permet de les distinguer.",
+     "wrongs": [
+      "Ser et estar",
+      "Ir et venir",
+      "Tener et hacer"
+     ]
     },
     {
-     "question": "Donne la 1re et la 3e personne du singulier de tener, estar et hacer au pretérito indefinido.",
-     "answer": "• tener : tuve / tuvo\n• estar : estuve / estuvo\n• hacer : hice / hizo",
-     "w": "985970c7",
-     "wq": "41acfa24"
+     "question": "Comment dit-on « j'eus » (tener, indefinido) ?",
+     "answer": "tuve",
+     "w": [
+      "99330deb",
+      "985970c7"
+     ],
+     "wq": "41acfa24",
+     "more": "estar : estuve ; hacer : hice, hizo.",
+     "wrongs": [
+      "tení",
+      "tenía",
+      "tuvo"
+     ]
     },
     {
-     "question": "Donne la 1re et la 3e personne du singulier de poder, poner, decir et venir au pretérito indefinido.",
-     "answer": "• poder : pude / pudo\n• poner : puse / puso\n• decir : dije / dijo\n• venir : vine / vino",
-     "w": "38bb1fcf",
-     "wq": "78f900e5"
+     "question": "Comment dit-on « il dit » (decir, indefinido) ?",
+     "answer": "dijo",
+     "w": [
+      "fd361af3",
+      "38bb1fcf"
+     ],
+     "wq": "78f900e5",
+     "more": "poder : pudo ; poner : puso ; venir : vino.",
+     "wrongs": [
+      "deció",
+      "decía",
+      "dije"
+     ]
     },
     {
-     "question": "Quand emploie-t-on le pretérito imperfecto ?",
-     "answer": "Pour décrire dans le passé,\nune habitude ou une action en cours.\nEx. : Cuando era niño, jugaba al fútbol.",
-     "w": "1fe5d717",
-     "wq": "800e3770"
+     "question": "Quel temps espagnol sert à décrire ou à dire une habitude passée ?",
+     "answer": "Le pretérito imperfecto",
+     "w": [
+      "df19b647",
+      "1fe5d717"
+     ],
+     "wq": "800e3770",
+     "more": "Ex. : Cuando era niño, jugaba al fútbol.",
+     "wrongs": [
+      "Le pretérito indefinido",
+      "Le pretérito perfecto",
+      "Le futuro"
+     ]
     },
     {
-     "question": "Conjugue hablar à l'imparfait.",
-     "answer": "hablaba, hablabas, hablaba,\nhablábamos, hablabais, hablaban",
-     "w": "ccffdefa",
-     "wq": "e1baf25f"
+     "question": "Comment dit-on « je parlais » (hablar, imparfait) ?",
+     "answer": "hablaba",
+     "w": [
+      "51c9a306",
+      "ccffdefa"
+     ],
+     "wq": "e1baf25f",
+     "more": "hablaba, hablabas, hablaba, hablábamos, hablabais, hablaban.",
+     "wrongs": [
+      "hablé",
+      "hablía",
+      "hablo"
+     ]
     },
     {
-     "question": "Conjugue vivir à l'imparfait.",
-     "answer": "vivía, vivías, vivía,\nvivíamos, vivíais, vivían\n(mêmes terminaisons pour les verbes en -er)",
-     "w": "149215c4",
-     "wq": "233bd0cd"
+     "question": "Comment dit-on « nous vivions » (vivir, imparfait) ?",
+     "answer": "vivíamos",
+     "w": [
+      "54bc526f",
+      "149215c4"
+     ],
+     "wq": "233bd0cd",
+     "more": "Mêmes terminaisons pour les verbes en -er.",
+     "wrongs": [
+      "vivábamos",
+      "vivimos",
+      "vivíais"
+     ]
     },
     {
-     "question": "Quels sont les trois seuls verbes irréguliers à l'imparfait ?",
-     "answer": "• Ser : era\n• Ir : iba\n• Ver : veía",
-     "w": "edb8852f",
-     "wq": "082eecb5"
+     "question": "Quelle est la forme imparfaite irrégulière de « ir » à la 1re personne ?",
+     "answer": "iba",
+     "w": [
+      "60e05cf3",
+      "edb8852f"
+     ],
+     "wq": "082eecb5",
+     "more": "Trois irréguliers : ser (era), ir (iba), ver (veía).",
+     "wrongs": [
+      "fui",
+      "ía",
+      "voy"
+     ]
     },
     {
-     "question": "Comment se forme le pretérito perfecto (passé composé) ?",
-     "answer": "Haber au présent + participe passé en -ado / -ido\n(he, has, ha, hemos, habéis, han)\nEx. : He comido.",
-     "w": "047d83fe",
-     "wq": "460c2500"
+     "question": "Avec quel auxiliaire forme-t-on le pretérito perfecto ?",
+     "answer": "Haber",
+     "w": [
+      "b370c423",
+      "047d83fe"
+     ],
+     "wq": "460c2500",
+     "more": "Au présent + participe passé. Ex. : He comido.",
+     "wrongs": [
+      "Ser",
+      "Estar",
+      "Tener"
+     ]
     },
     {
-     "question": "Quand emploie-t-on le pretérito perfecto ?",
-     "answer": "Une action passée liée au présent,\nsouvent avec hoy, esta semana, ya, nunca.\nEx. : Hoy he estudiado mucho.",
-     "w": "3187af4c",
-     "wq": "bdc2b81e"
+     "question": "Quel temps emploie-t-on avec « hoy » ou « esta semana » ?",
+     "answer": "Le pretérito perfecto",
+     "w": [
+      "dfc1fd20",
+      "3187af4c"
+     ],
+     "wq": "bdc2b81e",
+     "more": "Action passée liée au présent. Ex. : Hoy he estudiado mucho.",
+     "wrongs": [
+      "Le pretérito indefinido",
+      "Le pretérito imperfecto",
+      "Le futuro"
+     ]
     },
     {
-     "question": "Donne les participes passés irréguliers de hacer, decir, escribir, ver et poner.",
-     "answer": "• hacer : hecho\n• decir : dicho\n• escribir : escrito\n• ver : visto\n• poner : puesto",
-     "w": "80e22360",
-     "wq": "975b9b27"
+     "question": "Quel est le participe passé de « hacer » ?",
+     "answer": "hecho",
+     "w": [
+      "7bc8c3bc",
+      "80e22360"
+     ],
+     "wq": "975b9b27",
+     "more": "decir : dicho ; escribir : escrito ; ver : visto ; poner : puesto.",
+     "wrongs": [
+      "hacido",
+      "hacho",
+      "hizo"
+     ]
     },
     {
-     "question": "Donne les participes passés irréguliers de abrir, volver, romper et morir.",
-     "answer": "• abrir : abierto\n• volver : vuelto\n• romper : roto\n• morir : muerto",
-     "w": "40f477e3",
-     "wq": "34292e41"
+     "question": "Quel est le participe passé de « volver » ?",
+     "answer": "vuelto",
+     "w": [
+      "d6f6d3bf",
+      "40f477e3"
+     ],
+     "wq": "34292e41",
+     "more": "abrir : abierto ; romper : roto ; morir : muerto.",
+     "wrongs": [
+      "volvido",
+      "vuelvo",
+      "volto"
+     ]
     },
     {
-     "question": "Le participe passé s'accorde-t-il avec haber ?",
-     "answer": "Non, il reste invariable.\nEx. : Las chicas han llegado.",
-     "w": "d7891873",
-     "wq": "4916f095"
+     "question": "Avec haber, le participe passé s'accorde-t-il ?",
+     "answer": "Non, il reste invariable",
+     "w": [
+      "8e65357d",
+      "d7891873"
+     ],
+     "wq": "4916f095",
+     "more": "Ex. : Las chicas han llegado.",
+     "wrongs": [
+      "Oui, avec le sujet",
+      "Oui, au féminin seulement",
+      "Oui, au pluriel seulement"
+     ]
     },
     {
-     "question": "Comment combiner indefinido et imperfecto dans un récit ?",
-     "answer": "L'imperfecto pose le décor,\nl'indefinido raconte l'événement.\nEx. : Llovía cuando salí de casa.",
-     "w": "a9f2cb19",
-     "wq": "1c57122e"
+     "question": "Dans un récit, quel temps raconte l'événement soudain ?",
+     "answer": "L'indefinido",
+     "w": [
+      "af5eba6d",
+      "a9f2cb19"
+     ],
+     "wq": "1c57122e",
+     "more": "L'imperfecto pose le décor : Llovía cuando salí de casa.",
+     "wrongs": [
+      "L'imperfecto",
+      "Le presente",
+      "Le futuro"
+     ]
     }
    ]
   },
