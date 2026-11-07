@@ -240,8 +240,17 @@ Une séance continue tant qu'on répond. Ordre de passage :
   le robot **propose la boîte suivante** des révisions conseillées (sauf
   en « Révisions prioritaires »).
 - **Annuler** la dernière note est possible juste après.
+- Quand les fiches dues sont toutes vues et qu'il reste des fiches ratées
+  à revoir, le bas de l'écran passe de « N fiches à revoir » à « On revoit
+  les fiches difficiles » ; le robot l'explique alors par un message (une
+  fois par séance, v271).
 - **Fiche QCM** : si elle a 3 réponses fausses, elle se présente en QCM.
   Une fiche QCM repassée en mode normal puis ratée repasse en QCM.
+  Quand la fiche a un complément de réponse (suite de la réponse, « en
+  savoir plus » ou lien), il s'affiche une fois la bonne réponse trouvée,
+  et la fiche **reste affichée** avec un bouton « Continuer », même quand
+  on a répondu juste du premier coup (v271). Sans complément, la fiche
+  passe seule à la suivante après une bonne réponse.
 
 ### 4.5 Où se révise-t-on ? (page « Réviser »)
 
@@ -277,11 +286,15 @@ gauche en rapetissant, jusqu'au petit rond de son cadre ; enfin les trois
 cadres apparaissent l'un après l'autre. Les cadres s'affichent **repliés**
 (titre et notion en une ligne : « Apprentissage rapide pour le jour J »,
 « Apprentissage de fond, sur la durée », « Ce que je veux, quand je
-veux »), pour tout voir sur un seul écran ; le triangle en bas de chaque
-cadre le déplie. Chaque cadre a sa couleur, son schéma, son petit rond et
+veux »), pour tout voir sur un seul écran ; sous le titre, le début du
+texte apparaît déjà et s'efface en dégradé, pour montrer qu'il y a une
+suite (v271) ; le triangle en bas de chaque cadre, ou un toucher sur cet
+aperçu, le déplie. Sur la page à trois ronds, chaque rond a un contour de
+la couleur de son cadre (v271). Chaque cadre a sa couleur, son schéma, son petit rond et
 son bouton :
-- **« Ici, le plus urgent ! »** (orange, des points qui se resserrent
-  jusqu'au drapeau du jour J) : le sprint avant les échéances ; d'où
+- **« Ici, le plus urgent ! »** (orange, des bonds qui se resserrent
+  entre un chronomètre et le calendrier de l'échéance ; dessins du
+  propriétaire, v271) : le sprint avant les échéances ; d'où
   viennent les échéances (son agenda, celles des enseignants des classes
   rejointes) ; la prochaine échéance ou « aucune échéance prévue » ; bouton
   « Réviser pour mes échéances » ou « Ajouter une échéance » ;
@@ -289,7 +302,7 @@ son bouton :
   la consolidation, la courbe de l'oubli, le QCM puis l'auto-évaluation, et
   ce que devient la fiche après chacune des quatre réponses ; bouton
   « Renforcer mes connaissances » ;
-- **« Révisions libres »** (bleu, une boîte choisie) : bouton « Choisir ».
+- **« Révisions libres »** (bleu, des cases cochées au choix) : bouton « Choisir ».
 « OK » ramène aux trois ronds (même animation à l'envers). Les cadres
 sont de nouveau repliés à chaque ouverture.
 La page à trois boutons reste celle par défaut. Pour comparer, des liens
@@ -442,7 +455,22 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    - ✅ « Quelle est la capitale de l'Australie ? »
    - ✅ Accepté : les choix sont écrits **dans la question** elle-même
      (« Quel est l'intrus : pomme, poire, chou, kiwi ? »).
-2. **Contrôles automatiques** de cette règle :
+2. **Une seule question par fiche.** « Où ? » = une fiche, « Quand ? » = une
+   autre fiche ; jamais « Où et quand… ? ». Une fiche qui pose plusieurs
+   questions est découpée en plusieurs fiches.
+3. **Questions courtes, réponses courtes.** Les précisions vont dans
+   « En savoir plus » (texte court sous la réponse).
+4. **Toutes les fiches des boîtes toutes prêtes sont en QCM** : 3 réponses
+   fausses plausibles, de même forme que la bonne réponse, et jamais
+   justes elles aussi.
+5. **Liens « Pour aller plus loin »** : on ne crée pas de contenu, on
+   pointe vers un contenu existant, pertinent et pédagogique (vidéo,
+   animation…).
+   - **Boîte** : toujours un lien, vers un contenu plus long qui traite
+     tout le sujet (ex. : une vidéo de cours complète).
+   - **Fiche** : seulement si c'est utile, et jamais un contenu trop long
+     (vidéo) ou trop dense (page de type Wikipédia).
+6. **Contrôles automatiques** de la règle 1 :
    - **dans l'appli**, en enregistrant une fiche QCM dont la question
      renvoie à des propositions, le robot prévient et propose de
      reformuler (on peut garder quand même) ; un rappel est écrit sous
@@ -627,6 +655,16 @@ boutons, le « parcours guidé » (v267) ou la présentation « mixte » (v268,
 présentations » en bas (visibles seulement pour les administrateurs).
 > Réponse :
 
+**Q12 — Où ranger le fichier des boîtes toutes prêtes ?** (7 nov. 2026)
+Le dépôt GitHub est public, et GitHub Pages comme les copies de test
+publient tout son contenu : un fichier des boîtes posé dans le dépôt
+devient téléchargeable gratuitement, alors que ces boîtes sont payantes.
+Depuis v271, le fichier n'est plus suivi dans le dépôt (il reste visible
+dans son historique). Pistes : un dépôt privé séparé pour le contenu, puis
+une mise à jour automatique de la Librairie (base de données) à chaque
+nouvelle version du fichier ; l'import par Darwin Admin reste la porte
+d'entrée. À décider avec le propriétaire.
+
 **Q8 — Avant l'ouverture au public : une adresse de test.**
 Aujourd'hui, fusionner une branche publie la version pour tout le monde,
 sur la même base de données. Avant le lancement, mettre en place une
@@ -673,6 +711,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v271 | 7 nov. 2026 | Révision : une fiche QCM avec un complément de réponse reste affichée avec « Continuer », même après une bonne réponse du premier coup (la suite d'une réponse sur plusieurs lignes passait toute seule) ; message du robot au passage aux fiches difficiles. Page Réviser « mixte » : contours colorés des trois ronds, aperçu du texte en dégradé dans les cadres repliés, nouveaux schémas dessinés par le propriétaire. |
 | v270 | 6 nov. 2026 | Page Réviser « mixte » : animation en trois temps (texte des ronds effacé et picto agrandi, vol plus lent des grands ronds vers les petits, apparition des cadres l'un après l'autre) ; cadres repliés par défaut (titre et notion), dépliables par un triangle en bas. |
 | v269 | 6 nov. 2026 | Page Réviser « mixte » refaite d'après la maquette du propriétaire : la page à trois boutons plus « Comment ça marche ? », qui réduit les ronds (ils glissent à gauche) et fait apparaître trois cadres d'explication colorés avec schémas (le plus urgent, le travail de fond, les révisions libres) ; « OK » pour revenir. |
 | v268 | 6 nov. 2026 | Page Réviser : troisième présentation à l'essai, « mixte » : compacte par défaut, triangles ▸ pour déplier les explications ; une couleur et un schéma pour chaque façon de réviser (sprint avant les échéances, consolidation, révisions libres) ; schéma de la courbe de l'oubli. Liens « Autres présentations » pour les administrateurs (Q11). |
