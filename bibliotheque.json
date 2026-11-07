@@ -38996,91 +38996,216 @@
    "cards": [
     {
      "question": "Qui est le chef des armées en France ?",
-     "answer": "Le président de la République (article 15 de la Constitution)\nIl décide notamment de l'emploi de l'arme nucléaire.",
-     "w": "6dd98b69",
-     "wq": "f6c8adff"
+     "answer": "Le président de la République",
+     "w": [
+      "1a624948",
+      "6dd98b69"
+     ],
+     "more": "Article 15 de la Constitution ; il décide de l'emploi de l'arme nucléaire.",
+     "wrongs": [
+      "Le Premier ministre",
+      "Le ministre des Armées",
+      "Le chef d'état-major"
+     ]
     },
     {
      "question": "Qu'est-ce que la dissuasion nucléaire ?",
-     "answer": "Posséder l'arme nucléaire pour décourager toute attaque,\nen menaçant l'agresseur de dommages inacceptables.",
-     "w": "c5eb4039",
-     "wq": "c1c87c5a"
+     "answer": "Posséder l'arme nucléaire pour décourager toute attaque",
+     "w": [
+      "e7a05a1d",
+      "c5eb4039"
+     ],
+     "wrongs": [
+      "Utiliser l'arme nucléaire en premier",
+      "Interdire l'arme nucléaire",
+      "Partager l'arme nucléaire avec l'ONU"
+     ]
     },
     {
-     "question": "Depuis quand l'armée française est-elle professionnelle ?",
-     "answer": "Service militaire suspendu par une loi de 1997.\nArmée entièrement professionnelle depuis le début des années 2000.",
-     "w": "b5e406ab",
-     "wq": "d11df627"
+     "question": "En quelle année une loi suspend-elle le service militaire obligatoire ?",
+     "answer": "En 1997",
+     "w": [
+      "4a958ab2",
+      "b5e406ab"
+     ],
+     "wq": "d11df627",
+     "more": "L'armée est entièrement professionnelle depuis le début des années 2000.",
+     "wrongs": [
+      "En 1981",
+      "En 2005",
+      "En 1962"
+     ]
     },
     {
      "question": "Quelles sont les étapes du parcours de citoyenneté ?",
-     "answer": "1. Enseignement de défense à l'école\n2. Recensement à 16 ans\n3. Journée défense et citoyenneté (JDC)",
-     "w": "df6f5668",
-     "wq": "9e4bb467"
+     "answer": "Enseignement de défense, recensement à 16 ans, JDC",
+     "w": [
+      "44574060",
+      "df6f5668"
+     ],
+     "wrongs": [
+      "Service militaire, vote, impôt",
+      "Brevet, bac, permis",
+      "Recensement, mariage, élections"
+     ]
     },
     {
-     "question": "Pourquoi le recensement à 16 ans est-il important ?",
-     "answer": "Il est obligatoire et permet :\n• d'être convoqué à la JDC\n• d'être inscrit automatiquement sur les listes électorales à 18 ans",
-     "w": "44f03339",
-     "wq": "77130675"
+     "question": "Que permet le recensement obligatoire à 16 ans ?",
+     "answer": "D'être convoqué à la JDC et inscrit sur les listes électorales à 18 ans",
+     "w": [
+      "74776d11",
+      "44f03339"
+     ],
+     "wq": "77130675",
+     "wrongs": [
+      "D'obtenir le permis de conduire",
+      "De voter dès 16 ans",
+      "D'être exempté d'impôts"
+     ]
     },
     {
      "question": "Qu'est-ce que la réserve militaire ?",
-     "answer": "Des citoyens volontaires qui, en plus de leur métier,\nservent quelques jours par an\ndans les armées, la gendarmerie ou la police.",
-     "w": "aa0aab84",
-     "wq": "d2b9e3c8"
+     "answer": "Des volontaires qui servent quelques jours par an en plus de leur métier",
+     "w": [
+      "62040223",
+      "aa0aab84"
+     ],
+     "wrongs": [
+      "Un stock d'armes",
+      "Des soldats à la retraite",
+      "Une armée étrangère alliée"
+     ]
     },
     {
      "question": "Qu'est-ce que l'opération Sentinelle ?",
-     "answer": "Le déploiement de militaires sur le territoire national depuis 2015\npour protéger la population face au terrorisme.",
-     "w": "e83ff69f",
-     "wq": "49a44526"
+     "answer": "Des militaires déployés en France depuis 2015 contre le terrorisme",
+     "w": [
+      "f335f151",
+      "e83ff69f"
+     ],
+     "wrongs": [
+      "Une mission de l'ONU en Afrique",
+      "Une opération de secours en mer",
+      "Un exercice militaire annuel"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une OPEX ?",
-     "answer": "Une opération extérieure :\nintervention de l'armée française hors du territoire national,\nsouvent dans un cadre international.",
-     "w": "6fa72d54",
-     "wq": "a0610efd"
+     "answer": "Une opération de l'armée française hors du territoire national",
+     "w": [
+      "d1b0676a",
+      "6fa72d54"
+     ],
+     "more": "Souvent dans un cadre international.",
+     "wrongs": [
+      "Une opération de police en France",
+      "Un exercice d'entraînement",
+      "Une organisation européenne"
+     ]
     },
     {
-     "question": "Quand et où l'ONU a-t-elle été créée ?",
-     "answer": "En 1945 : charte signée à San Francisco le 26 juin 1945.\nSiège : New York",
-     "w": "a76fe88b",
-     "wq": "81c018cc"
+     "question": "En quelle année l'ONU est-elle créée ?",
+     "answer": "En 1945",
+     "w": [
+      "7199d6fc",
+      "a76fe88b"
+     ],
+     "wq": "81c018cc",
+     "more": "Charte signée à San Francisco le 26 juin 1945.",
+     "wrongs": [
+      "En 1919",
+      "En 1948",
+      "En 1957"
+     ]
+    },
+    {
+     "question": "Où se trouve le siège de l'ONU ?",
+     "answer": "À New York",
+     "wrongs": [
+      "À Genève",
+      "À Paris",
+      "À Bruxelles"
+     ]
     },
     {
      "question": "Quels sont les cinq membres permanents du Conseil de sécurité de l'ONU ?",
-     "answer": "• États-Unis\n• Russie\n• Chine\n• Royaume-Uni\n• France\nChacun a un droit de veto.",
-     "w": "82e8e930",
-     "wq": "22f5a190"
+     "answer": "États-Unis, Russie, Chine, Royaume-Uni, France",
+     "w": [
+      "f229b84f",
+      "82e8e930"
+     ],
+     "more": "Chacun a un droit de veto.",
+     "wrongs": [
+      "États-Unis, Allemagne, Japon, France, Inde",
+      "Russie, Chine, Brésil, Inde, Afrique du Sud",
+      "France, Allemagne, Italie, Espagne, Royaume-Uni"
+     ]
     },
     {
      "question": "Qui sont les Casques bleus ?",
-     "answer": "Des soldats fournis par les États membres,\nplacés sous l'autorité de l'ONU\npour des opérations de maintien de la paix.",
-     "w": "db806e82",
-     "wq": "b8c50d5d"
+     "answer": "Des soldats placés sous l'autorité de l'ONU pour maintenir la paix",
+     "w": [
+      "aa0fcd37",
+      "db806e82"
+     ],
+     "wrongs": [
+      "L'armée de l'OTAN",
+      "La police européenne",
+      "Des pompiers internationaux"
+     ]
     },
     {
      "question": "Qu'est-ce que l'OTAN ?",
-     "answer": "L'Organisation du traité de l'Atlantique Nord (1949)\nUne alliance militaire de défense mutuelle, dont la France fait partie.",
-     "w": "0b772aea",
-     "wq": "96b1e886"
+     "answer": "Une alliance militaire de défense mutuelle créée en 1949",
+     "w": [
+      "8bcc23aa",
+      "0b772aea"
+     ],
+     "more": "Organisation du traité de l'Atlantique Nord ; la France en fait partie.",
+     "wrongs": [
+      "Une organisation de l'ONU",
+      "Un tribunal international",
+      "Une organisation commerciale"
+     ]
     },
     {
      "question": "Quel texte adopté par l'ONU le 10 décembre 1948 proclame les droits de tous les êtres humains ?",
-     "answer": "La Déclaration universelle des droits de l'homme."
+     "answer": "La Déclaration universelle des droits de l'homme",
+     "w": "97ab3cab",
+     "wrongs": [
+      "La Déclaration des droits de l'homme et du citoyen",
+      "La Charte de l'ONU",
+      "La Convention européenne des droits de l'homme"
+     ]
     },
     {
-     "question": "Qu'est-ce que la Cour pénale internationale (CPI) ?",
-     "answer": "Une juridiction permanente, à La Haye, qui juge les accusés de :\n• génocide\n• crimes contre l'humanité\n• crimes de guerre",
-     "w": "6e03a07d",
-     "wq": "e7651392"
+     "question": "Que juge la Cour pénale internationale (CPI) ?",
+     "answer": "Génocides, crimes contre l'humanité, crimes de guerre",
+     "w": [
+      "d74a5e16",
+      "6e03a07d"
+     ],
+     "wq": "e7651392",
+     "more": "Juridiction permanente, à La Haye.",
+     "wrongs": [
+      "Les litiges commerciaux entre États",
+      "Les infractions routières",
+      "Les conflits entre entreprises"
+     ]
     },
     {
      "question": "Pourquoi la défense concerne-t-elle aussi le cyberespace ?",
-     "answer": "Des attaques informatiques peuvent viser l'État, les entreprises ou les infrastructures.\nLa France a créé un commandement de la cyberdéfense.",
-     "w": "3a7e0286",
-     "wq": "2ab00708"
+     "answer": "Des attaques informatiques peuvent viser l'État et les infrastructures",
+     "w": [
+      "8cd56035",
+      "3a7e0286"
+     ],
+     "more": "La France a créé un commandement de la cyberdéfense.",
+     "wrongs": [
+      "Parce que les soldats utilisent internet",
+      "Parce que l'armée vend des logiciels",
+      "Elle ne le concerne pas"
+     ]
     }
    ]
   },
@@ -39706,92 +39831,219 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce que la biodiversité ?",
-     "answer": "La diversité du vivant à trois niveaux :\n• les écosystèmes\n• les espèces\n• les gènes (au sein d'une espèce)",
-     "w": "d562f3fd",
-     "wq": "da20757b"
+     "question": "À quels niveaux observe-t-on la biodiversité ?",
+     "answer": "Écosystèmes, espèces, gènes",
+     "w": [
+      "549dd9e8",
+      "d562f3fd"
+     ],
+     "wq": "da20757b",
+     "wrongs": [
+      "Cellules, organes, organismes",
+      "Continents, pays, villes",
+      "Animaux, plantes, roches"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une espèce ?",
-     "answer": "Des individus qui se ressemblent et peuvent se reproduire entre eux\nen donnant une descendance fertile.",
-     "w": "5f42e923",
-     "wq": "f633952b"
+     "question": "Comment définit-on une espèce ?",
+     "answer": "Des individus qui se reproduisent entre eux avec une descendance fertile",
+     "w": [
+      "9699eaa4",
+      "5f42e923"
+     ],
+     "wq": "f633952b",
+     "wrongs": [
+      "Des individus qui vivent au même endroit",
+      "Des individus de la même couleur",
+      "Des individus nés la même année"
+     ]
     },
     {
      "question": "Qu'est-ce que l'évolution ?",
-     "answer": "La transformation des espèces au fil des générations et des temps géologiques.\nElle explique l'apparition et la disparition d'espèces.",
-     "w": "cc3c738e",
-     "wq": "65972d71"
+     "answer": "La transformation des espèces au fil des générations",
+     "w": [
+      "ba7da446",
+      "cc3c738e"
+     ],
+     "wrongs": [
+      "La croissance d'un individu",
+      "Le changement des saisons",
+      "La disparition de toutes les espèces"
+     ]
     },
     {
-     "question": "Quel scientifique a proposé la théorie de la sélection naturelle et dans quel ouvrage ?",
-     "answer": "Charles Darwin\n« L'Origine des espèces » (1859)",
-     "w": "48839779",
-     "wq": "64504479"
+     "question": "Quel scientifique a proposé la théorie de la sélection naturelle ?",
+     "answer": "Charles Darwin",
+     "w": [
+      "be0456cc",
+      "48839779"
+     ],
+     "wq": "64504479",
+     "wrongs": [
+      "Louis Pasteur",
+      "Gregor Mendel",
+      "Jean-Baptiste de Lamarck"
+     ]
     },
     {
-     "question": "Qu'est-ce que la sélection naturelle ?",
-     "answer": "Dans un milieu donné, les individus aux caractères avantageux\nsurvivent et se reproduisent davantage.\nCes caractères deviennent plus fréquents dans la population.",
-     "w": "115c87c0",
-     "wq": "89fc4568"
+     "question": "En quelle année paraît « L'Origine des espèces » de Darwin ?",
+     "answer": "En 1859",
+     "wrongs": [
+      "En 1789",
+      "En 1905",
+      "En 1950"
+     ]
     },
     {
-     "question": "Qu'est-ce que la dérive génétique ?",
-     "answer": "La variation au hasard de la fréquence des allèles d'une génération à l'autre.\nSurtout marquée dans les petites populations.",
-     "w": "588a1fd8",
-     "wq": "d761097a"
+     "question": "Que dit la sélection naturelle ?",
+     "answer": "Les individus aux caractères avantageux survivent et se reproduisent davantage",
+     "w": [
+      "1d7f5d76",
+      "115c87c0"
+     ],
+     "wq": "89fc4568",
+     "more": "Ces caractères deviennent plus fréquents dans la population.",
+     "wrongs": [
+      "Tous les individus ont le même nombre de descendants",
+      "Les plus gros individus gagnent toujours",
+      "Les caractères changent selon les besoins"
+     ]
     },
     {
-     "question": "Donnez un exemple actuel de sélection naturelle.",
-     "answer": "Les bactéries résistantes aux antibiotiques :\nseules les résistantes survivent au traitement et se multiplient.",
-     "w": "41f5099e",
-     "wq": "e5af1781"
+     "question": "Comment appelle-t-on la variation au hasard des fréquences d'allèles ?",
+     "answer": "La dérive génétique",
+     "w": [
+      "730b73ec",
+      "588a1fd8"
+     ],
+     "wq": "d761097a",
+     "more": "Surtout marquée dans les petites populations.",
+     "wrongs": [
+      "La sélection naturelle",
+      "La mutation",
+      "La fécondation"
+     ]
+    },
+    {
+     "question": "Quel exemple actuel illustre la sélection naturelle ?",
+     "answer": "Les bactéries résistantes aux antibiotiques",
+     "w": [
+      "ca89a91b",
+      "41f5099e"
+     ],
+     "wq": "e5af1781",
+     "wrongs": [
+      "Les chiens de race",
+      "Les plantes de jardin",
+      "Les vaccins"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un ancêtre commun ?",
-     "answer": "Une espèce ancienne dont descendent plusieurs espèces actuelles.\nPartager des caractères hérités de lui indique une parenté.",
-     "w": "1df326e8",
-     "wq": "56a0f116"
+     "answer": "Une espèce ancienne dont descendent plusieurs espèces actuelles",
+     "w": [
+      "b6469168",
+      "1df326e8"
+     ],
+     "wrongs": [
+      "Le plus vieil individu vivant",
+      "Un fossile de dinosaure",
+      "Le premier être humain"
+     ]
     },
     {
      "question": "L'Homme descend-il du chimpanzé ?",
-     "answer": "Non : ils partagent un ancêtre commun\nqui vivait il y a environ 7 millions d'années.",
-     "w": "e89ac183",
-     "wq": "19c16359"
+     "answer": "Non, ils partagent un ancêtre commun",
+     "w": [
+      "d81468a3",
+      "e89ac183"
+     ],
+     "more": "Qui vivait il y a environ 7 millions d'années.",
+     "wrongs": [
+      "Oui, directement",
+      "Oui, depuis 1 million d'années",
+      "Non, ils n'ont aucun lien de parenté"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un fossile ?",
-     "answer": "Un reste ou une trace d'être vivant conservé dans une roche.\nIl témoigne d'espèces disparues et de l'histoire du vivant.",
-     "w": "b4efdfeb",
-     "wq": "8200f0b5"
+     "answer": "Un reste ou une trace d'être vivant conservé dans une roche",
+     "w": [
+      "5d0efb8d",
+      "b4efdfeb"
+     ],
+     "wrongs": [
+      "Une roche volcanique",
+      "Un être vivant très âgé",
+      "Un minéral précieux"
+     ]
     },
     {
      "question": "Quel âge a la Terre ?",
-     "answer": "Environ 4,6 milliards d'années."
+     "answer": "Environ 4,6 milliards d'années",
+     "w": "1fab1b67",
+     "wrongs": [
+      "Environ 6 000 ans",
+      "Environ 4,6 millions d'années",
+      "Environ 13,8 milliards d'années"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une crise biologique ?",
-     "answer": "La disparition de nombreuses espèces sur une courte durée géologique,\nsuivie de l'apparition et de la diversification de nouvelles espèces.",
-     "w": "c29b444f",
-     "wq": "a16f617b"
+     "answer": "La disparition de nombreuses espèces en peu de temps",
+     "w": [
+      "b69654f7",
+      "c29b444f"
+     ],
+     "more": "Suivie de la diversification de nouvelles espèces.",
+     "wrongs": [
+      "Une maladie qui touche un animal",
+      "La naissance d'une nouvelle espèce",
+      "Un changement de saison"
+     ]
     },
     {
-     "question": "Quelle crise a fait disparaître les dinosaures non aviens ?",
-     "answer": "La crise Crétacé-Paléogène, il y a environ 66 millions d'années\nCauses : chute d'une météorite et volcanisme intense.",
-     "w": "2bcbedb1",
-     "wq": "8960cd58"
+     "question": "Quand a eu lieu la crise qui a fait disparaître les dinosaures non aviens ?",
+     "answer": "Il y a environ 66 millions d'années",
+     "w": [
+      "adea2dcb",
+      "2bcbedb1"
+     ],
+     "wq": "8960cd58",
+     "more": "Crise Crétacé-Paléogène : chute d'une météorite et volcanisme intense.",
+     "wrongs": [
+      "Il y a environ 6 600 ans",
+      "Il y a environ 252 millions d'années",
+      "Il y a environ 1 million d'années"
+     ]
     },
     {
      "question": "Quelle est la plus grande crise biologique connue ?",
-     "answer": "La crise Permien-Trias, il y a environ 252 millions d'années\nLa grande majorité des espèces marines disparaît.",
-     "w": "4de70dc1",
-     "wq": "e4f6b4a4"
+     "answer": "La crise Permien-Trias",
+     "w": [
+      "d3a32524",
+      "4de70dc1"
+     ],
+     "more": "Il y a environ 252 millions d'années.",
+     "wrongs": [
+      "La crise Crétacé-Paléogène",
+      "La dernière glaciation",
+      "La crise de l'Holocène"
+     ]
     },
     {
      "question": "Quelles activités humaines menacent la biodiversité ?",
-     "answer": "• Destruction des habitats\n• Surexploitation (pêche, chasse)\n• Pollutions\n• Espèces invasives\n• Changement climatique",
-     "w": "823707dd",
-     "wq": "65f98856"
+     "answer": "Destruction des habitats, surexploitation, pollutions, espèces invasives",
+     "w": [
+      "01af1117",
+      "823707dd"
+     ],
+     "more": "Et le changement climatique.",
+     "wrongs": [
+      "La création de parcs nationaux",
+      "Le recyclage",
+      "La protection des espèces"
+     ]
     }
    ]
   },
@@ -40398,98 +40650,242 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce que le système nerveux central ?",
-     "answer": "L'encéphale (dont le cerveau) et la moelle épinière.\n(Les nerfs forment le système nerveux périphérique.)",
-     "w": "8db92ccc",
-     "wq": "1c663543"
+     "question": "Que comprend le système nerveux central ?",
+     "answer": "L'encéphale et la moelle épinière",
+     "w": [
+      "33d03f1c",
+      "8db92ccc"
+     ],
+     "wq": "1c663543",
+     "more": "Les nerfs forment le système nerveux périphérique.",
+     "wrongs": [
+      "Les nerfs et les muscles",
+      "Le cœur et les vaisseaux",
+      "Les yeux et les oreilles"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un neurone ?",
-     "answer": "Une cellule nerveuse qui transmet des messages nerveux.\nElle a un corps cellulaire et des prolongements.",
-     "w": "57c1677a",
-     "wq": "80ddb354"
+     "answer": "Une cellule nerveuse qui transmet des messages",
+     "w": [
+      "c1b92729",
+      "57c1677a"
+     ],
+     "wrongs": [
+      "Une cellule du sang",
+      "Un muscle",
+      "Une hormone"
+     ]
     },
     {
      "question": "Sous quelle forme le message nerveux circule-t-il dans un neurone ?",
-     "answer": "Sous forme d'un message électrique."
+     "answer": "Électrique",
+     "w": "0b49a433",
+     "wrongs": [
+      "Chimique",
+      "Sonore",
+      "Lumineuse"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une synapse ?",
-     "answer": "La zone de contact entre deux neurones (ou un neurone et un muscle).\nLe message y devient chimique grâce aux neurotransmetteurs.",
-     "w": "06b96ccc",
-     "wq": "9d6924ac"
+     "question": "Sous quelle forme le message passe-t-il dans une synapse ?",
+     "answer": "Chimique, grâce aux neurotransmetteurs",
+     "w": [
+      "ce08146d",
+      "06b96ccc"
+     ],
+     "wq": "9d6924ac",
+     "more": "La synapse est la zone de contact entre deux neurones.",
+     "wrongs": [
+      "Électrique",
+      "Mécanique",
+      "Lumineuse"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un neurotransmetteur ?",
-     "answer": "Une molécule libérée par un neurone dans la synapse.\nElle transmet le message à la cellule suivante.",
-     "w": "9713aa16",
-     "wq": "3ef9f4fd"
+     "answer": "Une molécule libérée dans la synapse qui transmet le message",
+     "w": [
+      "8ec7a616",
+      "9713aa16"
+     ],
+     "wrongs": [
+      "Un neurone géant",
+      "Un nerf moteur",
+      "Un récepteur sensoriel"
+     ]
     },
     {
      "question": "Quel est le rôle d'un récepteur sensoriel ?",
-     "answer": "Il capte une stimulation (lumière, son, chaleur, contact)\net la transforme en message nerveux.\nEx. : rétine, peau",
-     "w": "b9aaadec",
-     "wq": "1fd73aaa"
+     "answer": "Capter une stimulation et la transformer en message nerveux",
+     "w": [
+      "22590312",
+      "b9aaadec"
+     ],
+     "more": "Ex. : rétine, peau.",
+     "wrongs": [
+      "Contracter un muscle",
+      "Commander un mouvement",
+      "Fabriquer des hormones"
+     ]
     },
     {
-     "question": "Quel est le trajet du message nerveux lors d'un mouvement volontaire ?",
-     "answer": "1. Le cortex moteur élabore la commande.\n2. La moelle épinière la transmet.\n3. Un nerf moteur l'amène au muscle, qui se contracte.",
-     "w": "14a66819",
-     "wq": "783d65c8"
+     "question": "Où est élaborée la commande d'un mouvement volontaire ?",
+     "answer": "Dans le cortex moteur du cerveau",
+     "w": [
+      "10de0785",
+      "14a66819"
+     ],
+     "wq": "783d65c8",
+     "more": "Puis la moelle épinière et un nerf moteur l'amènent au muscle.",
+     "wrongs": [
+      "Dans la moelle épinière",
+      "Dans le muscle",
+      "Dans le cœur"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un réflexe ?",
-     "answer": "Une réponse involontaire, rapide et automatique à une stimulation.\nCentre nerveux : la moelle épinière.\nEx. : réflexe rotulien",
-     "w": "c3463d88",
-     "wq": "1861728b"
+     "answer": "Une réponse involontaire, rapide et automatique",
+     "w": [
+      "07b40c35",
+      "c3463d88"
+     ],
+     "more": "Ex. : réflexe rotulien.",
+     "wrongs": [
+      "Un mouvement réfléchi",
+      "Une habitude apprise",
+      "Une émotion"
+     ]
     },
     {
-     "question": "Quels sont les deux types de photorécepteurs de la rétine ?",
-     "answer": "• Cônes : vision des couleurs\n• Bâtonnets : vision en faible luminosité",
-     "w": "88ced742",
-     "wq": "e296baed"
+     "question": "Quel est le centre nerveux d'un réflexe ?",
+     "answer": "La moelle épinière",
+     "wrongs": [
+      "Le cortex cérébral",
+      "Le muscle",
+      "L'œil"
+     ]
+    },
+    {
+     "question": "Quels photorécepteurs permettent de voir les couleurs ?",
+     "answer": "Les cônes",
+     "w": [
+      "049f70b7",
+      "88ced742"
+     ],
+     "wq": "e296baed",
+     "wrongs": [
+      "Les bâtonnets",
+      "Les neurones moteurs",
+      "Le cristallin"
+     ]
+    },
+    {
+     "question": "Quels photorécepteurs permettent de voir en faible luminosité ?",
+     "answer": "Les bâtonnets",
+     "wrongs": [
+      "Les cônes",
+      "La pupille",
+      "L'iris"
+     ]
     },
     {
      "question": "Comment l'alcool agit-il sur le système nerveux ?",
-     "answer": "Il perturbe le fonctionnement des synapses :\n• temps de réaction allongé\n• vigilance et coordination diminuées\n→ risques d'accidents",
-     "w": "daab4a69",
-     "wq": "074fbcd8"
+     "answer": "Il perturbe les synapses : réflexes ralentis, vigilance diminuée",
+     "w": [
+      "d26a41a2",
+      "daab4a69"
+     ],
+     "wrongs": [
+      "Il accélère les réflexes",
+      "Il améliore la concentration",
+      "Il n'a aucun effet"
+     ]
     },
     {
-     "question": "Pourquoi certaines substances (nicotine, cannabis, alcool) créent-elles une dépendance ?",
-     "answer": "Elles agissent sur le circuit de la récompense du cerveau.\nL'organisme réclame alors le produit\npour retrouver une sensation de bien-être.",
-     "w": "00bd513e",
-     "wq": "ef3fe364"
+     "question": "Pourquoi certaines substances créent-elles une dépendance ?",
+     "answer": "Elles agissent sur le circuit de la récompense du cerveau",
+     "w": [
+      "ba3dd54c",
+      "00bd513e"
+     ],
+     "wq": "ef3fe364",
+     "wrongs": [
+      "Elles nourrissent les neurones",
+      "Elles renforcent les muscles",
+      "Elles bloquent la digestion"
+     ]
     },
     {
      "question": "Quelle substance active du cannabis perturbe le système nerveux ?",
-     "answer": "Le THC (tétrahydrocannabinol)\nIl altère la mémoire, la concentration et les réflexes.",
-     "w": "8f9361ae",
-     "wq": "846d25fc"
+     "answer": "Le THC",
+     "w": [
+      "5976be64",
+      "8f9361ae"
+     ],
+     "more": "Il altère la mémoire, la concentration et les réflexes.",
+     "wrongs": [
+      "La nicotine",
+      "La caféine",
+      "La mélatonine"
+     ]
     },
     {
-     "question": "Pourquoi le sommeil est-il important pour le système nerveux ?",
-     "answer": "Il permet la récupération\net la consolidation de la mémoire et des apprentissages.\nLe manque de sommeil réduit attention et vigilance.",
-     "w": "0548e3ec",
-     "wq": "26afeb90"
+     "question": "Pourquoi le sommeil est-il important pour le cerveau ?",
+     "answer": "Il permet la récupération et la consolidation des apprentissages",
+     "w": [
+      "a824f46a",
+      "0548e3ec"
+     ],
+     "wq": "26afeb90",
+     "wrongs": [
+      "Il fait grandir le cerveau",
+      "Il supprime les souvenirs",
+      "Il n'a pas d'utilité"
+     ]
     },
     {
      "question": "Pourquoi les écrans le soir peuvent-ils perturber le sommeil ?",
-     "answer": "Leur lumière bleue retarde la sécrétion de mélatonine,\nl'hormone qui favorise l'endormissement.",
-     "w": "f2ce9a73",
-     "wq": "3bc0fcc4"
+     "answer": "Leur lumière bleue retarde la sécrétion de mélatonine",
+     "w": [
+      "083e7c44",
+      "f2ce9a73"
+     ],
+     "more": "La mélatonine favorise l'endormissement.",
+     "wrongs": [
+      "Ils émettent des ultrasons",
+      "Ils chauffent la chambre",
+      "Ils augmentent la mélatonine"
+     ]
     },
     {
-     "question": "À partir de quel niveau sonore l'audition est-elle en danger ?",
-     "answer": "Au-delà d'environ 85 décibels en exposition prolongée.\nLes cellules de l'oreille interne abîmées ne se renouvellent pas.",
-     "w": "284a3417",
-     "wq": "dcc1b007"
+     "question": "À partir de quel niveau sonore une exposition prolongée abîme-t-elle l'audition ?",
+     "answer": "Environ 85 décibels",
+     "w": [
+      "04c8ce65",
+      "284a3417"
+     ],
+     "wq": "dcc1b007",
+     "more": "Les cellules de l'oreille interne abîmées ne se renouvellent pas.",
+     "wrongs": [
+      "Environ 30 décibels",
+      "Environ 50 décibels",
+      "Environ 200 décibels"
+     ]
     },
     {
      "question": "Qu'est-ce que la plasticité cérébrale ?",
-     "answer": "La capacité du cerveau à modifier les connexions entre neurones\ntout au long de la vie, notamment en apprenant.",
-     "w": "2f919290",
-     "wq": "9e37f879"
+     "answer": "La capacité du cerveau à modifier ses connexions tout au long de la vie",
+     "w": [
+      "684be856",
+      "2f919290"
+     ],
+     "wrongs": [
+      "La souplesse du crâne",
+      "La fabrication de nouveaux os",
+      "La fatigue du cerveau"
+     ]
     }
    ]
   },
@@ -40513,95 +40909,250 @@
    "cards": [
     {
      "question": "Quelles sont les grandes enveloppes du globe terrestre ?",
-     "answer": "• La croûte (continentale ou océanique)\n• Le manteau\n• Le noyau",
-     "w": "1f7ef319",
-     "wq": "ea90daa6"
+     "answer": "La croûte, le manteau, le noyau",
+     "w": [
+      "6850c388",
+      "1f7ef319"
+     ],
+     "wrongs": [
+      "L'air, l'eau, le sol",
+      "La lithosphère, l'atmosphère, la biosphère",
+      "Les plaques, les volcans, les océans"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une plaque lithosphérique ?",
-     "answer": "Un grand morceau rigide de la lithosphère (couche superficielle de la Terre)\nqui se déplace de quelques centimètres par an.",
-     "w": "bd4a9733",
-     "wq": "b3329c8d"
+     "question": "De combien se déplacent les plaques lithosphériques ?",
+     "answer": "De quelques centimètres par an",
+     "w": [
+      "23a64cdc",
+      "bd4a9733"
+     ],
+     "wq": "b3329c8d",
+     "wrongs": [
+      "De quelques mètres par jour",
+      "De quelques kilomètres par an",
+      "Elles ne bougent pas"
+     ]
     },
     {
-     "question": "Quel scientifique a proposé la dérive des continents ?",
-     "answer": "Alfred Wegener, en 1912."
+     "question": "Quel scientifique a proposé la dérive des continents en 1912 ?",
+     "answer": "Alfred Wegener",
+     "w": "4a91af1c",
+     "wq": "94e87404",
+     "wrongs": [
+      "Charles Darwin",
+      "Isaac Newton",
+      "Louis Pasteur"
+     ]
     },
     {
      "question": "Que se passe-t-il au niveau d'une dorsale océanique ?",
-     "answer": "Deux plaques s'écartent (divergence).\nDu magma remonte et forme une nouvelle lithosphère océanique.",
-     "w": "30d97ed3",
-     "wq": "058da0db"
+     "answer": "Deux plaques s'écartent et du magma forme une nouvelle lithosphère",
+     "w": [
+      "aab9c25e",
+      "30d97ed3"
+     ],
+     "wrongs": [
+      "Une plaque plonge sous une autre",
+      "Deux continents se rencontrent",
+      "Les plaques glissent sans bouger"
+     ]
     },
     {
      "question": "Qu'est-ce que la subduction ?",
-     "answer": "L'enfoncement d'une plaque océanique sous une autre plaque,\ndans une zone de convergence.",
-     "w": "0eeba41e",
-     "wq": "bfe0bffa"
+     "answer": "L'enfoncement d'une plaque océanique sous une autre plaque",
+     "w": [
+      "65a98c90",
+      "0eeba41e"
+     ],
+     "wrongs": [
+      "L'écartement de deux plaques",
+      "La formation d'un volcan de point chaud",
+      "La remontée du magma"
+     ]
     },
     {
      "question": "Comment s'est formé l'Himalaya ?",
-     "answer": "Par la collision entre la plaque indienne et la plaque eurasienne."
+     "answer": "Par la collision des plaques indienne et eurasienne",
+     "w": "d0a1f9e6",
+     "wrongs": [
+      "Par l'écartement de deux plaques",
+      "Par l'éruption d'un volcan",
+      "Par l'érosion d'un plateau"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un séisme ?",
-     "answer": "Une libération brutale d'énergie :\ndes roches se rompent en profondeur le long d'une faille,\nce qui fait vibrer le sol.",
-     "w": "b8207f3a",
-     "wq": "206d9eaa"
+     "answer": "Une libération brutale d'énergie quand des roches se rompent le long d'une faille",
+     "w": [
+      "2d185bb2",
+      "b8207f3a"
+     ],
+     "wrongs": [
+      "Une éruption de lave",
+      "Un glissement de terrain dû à la pluie",
+      "Une tempête"
+     ]
     },
     {
-     "question": "Quelle est la différence entre foyer et épicentre ?",
-     "answer": "Foyer : le point de rupture en profondeur.\nÉpicentre : le point de la surface juste au-dessus.",
-     "w": "b4e396f0",
-     "wq": "d2e5ff9d"
+     "question": "Comment appelle-t-on le point de rupture en profondeur lors d'un séisme ?",
+     "answer": "Le foyer",
+     "w": [
+      "03f62ce7",
+      "b4e396f0"
+     ],
+     "wq": "d2e5ff9d",
+     "wrongs": [
+      "L'épicentre",
+      "La faille",
+      "Le cratère"
+     ]
     },
     {
-     "question": "Quelle est la différence entre magnitude et intensité d'un séisme ?",
-     "answer": "Magnitude : l'énergie libérée (échelle de Richter).\nIntensité : les effets observés en un lieu (échelle EMS-98, de I à XII).",
-     "w": "621eabdd",
-     "wq": "1ddb5e62"
+     "question": "Comment appelle-t-on le point de la surface juste au-dessus du foyer d'un séisme ?",
+     "answer": "L'épicentre",
+     "wrongs": [
+      "Le foyer",
+      "La magnitude",
+      "La dorsale"
+     ]
     },
     {
-     "question": "Quelle est la différence entre éruption effusive et éruption explosive ?",
-     "answer": "Effusive : lave fluide, coulées.\nEx. : Piton de la Fournaise\nExplosive : lave visqueuse, explosions, nuées ardentes.\nEx. : montagne Pelée (1902)",
-     "w": "e46708e2",
-     "wq": "9c83b2fd"
+     "question": "Que mesure la magnitude d'un séisme ?",
+     "answer": "L'énergie libérée",
+     "w": [
+      "b4d5d142",
+      "621eabdd"
+     ],
+     "wq": "1ddb5e62",
+     "more": "Échelle de Richter.",
+     "wrongs": [
+      "Les dégâts observés",
+      "La durée du séisme",
+      "La profondeur du foyer"
+     ]
+    },
+    {
+     "question": "Que mesure l'intensité d'un séisme ?",
+     "answer": "Les effets observés en un lieu",
+     "more": "Échelle EMS-98, de I à XII.",
+     "wrongs": [
+      "L'énergie libérée",
+      "La vitesse des plaques",
+      "La température du sol"
+     ]
+    },
+    {
+     "question": "Qu'est-ce qui caractérise une éruption effusive ?",
+     "answer": "Une lave fluide qui forme des coulées",
+     "w": [
+      "de90056a",
+      "e46708e2"
+     ],
+     "wq": "9c83b2fd",
+     "more": "Ex. : Piton de la Fournaise.",
+     "wrongs": [
+      "Une lave visqueuse et des explosions",
+      "Des nuées ardentes",
+      "L'absence de lave"
+     ]
+    },
+    {
+     "question": "Qu'est-ce qui caractérise une éruption explosive ?",
+     "answer": "Une lave visqueuse, des explosions et des nuées ardentes",
+     "more": "Ex. : montagne Pelée (1902).",
+     "wrongs": [
+      "Une lave fluide et des coulées",
+      "Des geysers d'eau chaude",
+      "Une lave froide"
+     ]
     },
     {
      "question": "Quelle est la différence entre aléa et risque ?",
-     "answer": "Aléa : l'événement naturel possible.\nRisque : la rencontre d'un aléa et d'enjeux vulnérables (populations, biens).",
-     "w": "4f29120d",
-     "wq": "0a77c10b"
+     "answer": "Le risque, c'est un aléa qui menace des enjeux (populations, biens)",
+     "w": [
+      "0d40fa56",
+      "4f29120d"
+     ],
+     "more": "L'aléa est l'événement naturel possible.",
+     "wrongs": [
+      "Ce sont deux mots synonymes",
+      "L'aléa est toujours plus grave que le risque",
+      "Le risque ne concerne que les volcans"
+     ]
     },
     {
-     "question": "Quelle est la différence entre météo et climat ?",
-     "answer": "Météo : le temps qu'il fait à un moment et en un lieu donnés.\nClimat : la moyenne des conditions météorologiques sur au moins 30 ans.",
-     "w": "71e13b60",
-     "wq": "8861d2bf"
+     "question": "Sur quelle durée calcule-t-on le climat ?",
+     "answer": "Au moins 30 ans",
+     "w": [
+      "a68f5229",
+      "71e13b60"
+     ],
+     "wq": "8861d2bf",
+     "more": "La météo, c'est le temps qu'il fait à un moment donné.",
+     "wrongs": [
+      "Une journée",
+      "Une saison",
+      "Un an"
+     ]
     },
     {
      "question": "Qu'est-ce que l'effet de serre ?",
-     "answer": "Certains gaz de l'atmosphère piègent une partie de la chaleur émise par la Terre.\nNaturel, il est renforcé par les activités humaines.",
-     "w": "bcf77d45",
-     "wq": "ed49fcc0"
+     "answer": "Des gaz de l'atmosphère piègent une partie de la chaleur émise par la Terre",
+     "w": [
+      "3da7b5ff",
+      "bcf77d45"
+     ],
+     "more": "Naturel, il est renforcé par les activités humaines.",
+     "wrongs": [
+      "Un trou dans la couche d'ozone",
+      "La culture sous serre",
+      "Le refroidissement de la Terre"
+     ]
     },
     {
-     "question": "Quels sont les principaux gaz à effet de serre émis par l'Homme ?",
-     "answer": "• Dioxyde de carbone (CO₂)\n• Méthane (CH₄)\n• Protoxyde d'azote\nÉmis par les énergies fossiles, l'élevage et l'agriculture.",
-     "w": "c7db42dc",
-     "wq": "98b0d64d"
+     "question": "Quel est le principal gaz à effet de serre émis par l'Homme ?",
+     "answer": "Le dioxyde de carbone (CO₂)",
+     "w": [
+      "2e007450",
+      "c7db42dc"
+     ],
+     "wq": "98b0d64d",
+     "more": "Aussi : méthane, protoxyde d'azote.",
+     "wrongs": [
+      "Le dioxygène (O₂)",
+      "Le diazote (N₂)",
+      "L'hélium"
+     ]
     },
     {
      "question": "Qu'est-ce que le GIEC ?",
-     "answer": "Le Groupe d'experts intergouvernemental sur l'évolution du climat (1988)\nIl fait la synthèse des connaissances sur le changement climatique.",
-     "w": "dfd0a192",
-     "wq": "66e308ee"
+     "answer": "Un groupe d'experts qui fait la synthèse des connaissances sur le climat",
+     "w": [
+      "3721a36d",
+      "dfd0a192"
+     ],
+     "more": "Groupe d'experts intergouvernemental sur l'évolution du climat (1988).",
+     "wrongs": [
+      "Une entreprise pétrolière",
+      "Un parti écologiste",
+      "Une agence spatiale"
+     ]
     },
     {
-     "question": "Quelle est la différence entre ressource renouvelable et non renouvelable ?",
-     "answer": "Renouvelable : se reconstitue à l'échelle humaine (vent, soleil, bois).\nNon renouvelable : met des millions d'années à se former (pétrole, charbon, gaz).",
-     "w": "7450025c",
-     "wq": "95b00adb"
+     "question": "Qu'est-ce qu'une ressource non renouvelable ?",
+     "answer": "Une ressource qui met des millions d'années à se former",
+     "w": [
+      "a28741a7",
+      "7450025c"
+     ],
+     "wq": "95b00adb",
+     "more": "Pétrole, charbon, gaz.",
+     "wrongs": [
+      "Une ressource qui se reconstitue vite",
+      "Une ressource gratuite",
+      "Une ressource qui ne pollue pas"
+     ]
     }
    ]
   },
@@ -40624,100 +41175,240 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Dans 12,345, quelle est la partie entière et quelle est la partie décimale ?",
-     "answer": "• Partie entière : 12\n• Partie décimale : 0,345 (345 millièmes)",
-     "w": "6bf937dc",
-     "wq": "28b005fb"
+     "question": "Quelle est la partie entière de 12,345 ?",
+     "answer": "12",
+     "w": [
+      "3abf4913",
+      "6bf937dc"
+     ],
+     "wq": "28b005fb",
+     "more": "La partie décimale est 0,345.",
+     "wrongs": [
+      "345",
+      "0,345",
+      "123"
+     ]
     },
     {
      "question": "Quel est le chiffre des centièmes dans 7,284 ?",
-     "answer": "8\n2 : dixièmes · 8 : centièmes · 4 : millièmes",
-     "w": "30785967",
-     "wq": "f4fbca7a"
+     "answer": "8",
+     "w": [
+      "c82efaf4",
+      "30785967"
+     ],
+     "more": "2 : dixièmes ; 8 : centièmes ; 4 : millièmes.",
+     "wrongs": [
+      "2",
+      "4",
+      "7"
+     ]
     },
     {
-     "question": "Comment comparer 3,5 et 3,48 ?",
-     "answer": "Parties entières égales → on compare les dixièmes :\n5 > 4, donc 3,5 > 3,48\n(On peut écrire 3,50 et 3,48.)",
-     "w": "df510d65",
-     "wq": "54fa1152"
+     "question": "Quel est le plus grand : 3,5 ou 3,48 ?",
+     "answer": "3,5",
+     "w": [
+      "566a5605",
+      "df510d65"
+     ],
+     "wq": "54fa1152",
+     "more": "On compare les dixièmes : 5 > 4 (3,50 > 3,48).",
+     "wrongs": [
+      "3,48",
+      "Ils sont égaux",
+      "On ne peut pas savoir"
+     ]
     },
     {
      "question": "Comment écrire 0,7 sous forme de fraction décimale ?",
-     "answer": "0,7 = 7/10 (sept dixièmes)."
+     "answer": "7/10",
+     "w": "b85404d2",
+     "wrongs": [
+      "7/100",
+      "1/7",
+      "70/10"
+     ]
     },
     {
      "question": "Comment écrire 23/100 sous forme décimale ?",
-     "answer": "23/100 = 0,23 (vingt-trois centièmes)."
+     "answer": "0,23",
+     "w": "a8b99b7a",
+     "wrongs": [
+      "2,3",
+      "0,023",
+      "23,100"
+     ]
     },
     {
-     "question": "Que se passe-t-il quand on multiplie un nombre décimal par 10, 100 ou 1 000 ?",
-     "answer": "La virgule se décale vers la droite :\nde 1, 2 ou 3 rangs.\nEx. : 3,45 × 100 = 345",
-     "w": "625f2ad2",
-     "wq": "26cc49e4"
+     "question": "Combien font 3,45 × 100 ?",
+     "answer": "345",
+     "w": [
+      "fa3be652",
+      "625f2ad2"
+     ],
+     "wq": "26cc49e4",
+     "more": "La virgule se décale de 2 rangs vers la droite.",
+     "wrongs": [
+      "34,5",
+      "0,0345",
+      "3 450"
+     ]
     },
     {
      "question": "Combien font 52,3 ÷ 10 ?",
-     "answer": "5,23\nLa virgule se décale d'un rang vers la gauche.",
-     "w": "e3865601",
-     "wq": "f6ab9798"
+     "answer": "5,23",
+     "w": [
+      "0e1af2ae",
+      "e3865601"
+     ],
+     "more": "La virgule se décale d'un rang vers la gauche.",
+     "wrongs": [
+      "523",
+      "0,523",
+      "52,30"
+     ]
     },
     {
      "question": "Quel est l'arrondi au dixième de 4,76 ?",
-     "answer": "4,8\ncar le chiffre des centièmes (6) est supérieur ou égal à 5.",
-     "w": "4243f9b5",
-     "wq": "2ff9cb55"
+     "answer": "4,8",
+     "w": [
+      "fc050113",
+      "4243f9b5"
+     ],
+     "more": "Le chiffre des centièmes (6) est supérieur ou égal à 5.",
+     "wrongs": [
+      "4,7",
+      "5",
+      "4,76"
+     ]
     },
     {
-     "question": "Quelle règle respecter pour poser une addition de nombres décimaux ?",
-     "answer": "On aligne les virgules les unes sous les autres\n(unités sous unités, dixièmes sous dixièmes…).\nEx. : 12,5 + 3,75 = 16,25",
-     "w": "6beeb1fb",
-     "wq": "f7574c61"
+     "question": "Combien font 12,5 + 3,75 ?",
+     "answer": "16,25",
+     "w": [
+      "63b3c6c8",
+      "6beeb1fb"
+     ],
+     "wq": "f7574c61",
+     "more": "On aligne les virgules.",
+     "wrongs": [
+      "15,80",
+      "16,30",
+      "4,00"
+     ]
     },
     {
-     "question": "Comment encadrer 6,38 entre deux nombres entiers consécutifs ?",
-     "answer": "6 < 6,38 < 7."
+     "question": "Entre quels entiers consécutifs se trouve 6,38 ?",
+     "answer": "6 et 7",
+     "w": "e7b33b2b",
+     "wq": "a4d0df62",
+     "wrongs": [
+      "5 et 6",
+      "6 et 8",
+      "3 et 8"
+     ]
     },
     {
-     "question": "Que signifie la fraction 3/4 ?",
-     "answer": "On partage l'unité en 4 parts égales et on en prend 3.\n• 3 : le numérateur\n• 4 : le dénominateur",
-     "w": "64b717d1",
-     "wq": "6ae389a2"
+     "question": "Dans la fraction 3/4, comment s'appelle le 4 ?",
+     "answer": "Le dénominateur",
+     "w": [
+      "8e042ea7",
+      "64b717d1"
+     ],
+     "wq": "6ae389a2",
+     "more": "On partage l'unité en 4 parts égales et on en prend 3 (le numérateur).",
+     "wrongs": [
+      "Le numérateur",
+      "Le quotient",
+      "Le reste"
+     ]
     },
     {
      "question": "Combien font les 3/4 de 20 ?",
-     "answer": "15\n20 ÷ 4 = 5\n5 × 3 = 15",
-     "w": "cff48607",
-     "wq": "9a802171"
+     "answer": "15",
+     "w": [
+      "1a5920b9",
+      "cff48607"
+     ],
+     "more": "20 ÷ 4 = 5, puis 5 × 3 = 15.",
+     "wrongs": [
+      "12",
+      "5",
+      "60"
+     ]
     },
     {
-     "question": "Quelle est l'écriture décimale du quotient 7/4 ?",
-     "answer": "7 ÷ 4 = 1,75\nUne fraction est le quotient du numérateur par le dénominateur.",
-     "w": "91c24ae4",
-     "wq": "4cfba95a"
+     "question": "Quelle est l'écriture décimale de 7/4 ?",
+     "answer": "1,75",
+     "w": [
+      "23f2787f",
+      "91c24ae4"
+     ],
+     "wq": "4cfba95a",
+     "more": "Une fraction est le quotient du numérateur par le dénominateur.",
+     "wrongs": [
+      "7,4",
+      "1,74",
+      "0,57"
+     ]
     },
     {
-     "question": "Cite deux fractions égales à 1/2.",
-     "answer": "Ex. : 2/4 et 50/100\nOn multiplie numérateur et dénominateur par le même nombre.",
-     "w": "f6363857",
-     "wq": "51830578"
+     "question": "Quelle fraction est égale à 1/2 ?",
+     "answer": "50/100",
+     "w": [
+      "474b1389",
+      "f6363857"
+     ],
+     "wq": "51830578",
+     "more": "On multiplie numérateur et dénominateur par le même nombre.",
+     "wrongs": [
+      "1/4",
+      "2/3",
+      "5/100"
+     ]
     },
     {
-     "question": "Effectue la division euclidienne de 47 par 5.",
-     "answer": "Quotient : 9 · Reste : 2\ncar 47 = 5 × 9 + 2 (et 2 < 5)",
-     "w": "20178b96",
-     "wq": "f5a2291d"
+     "question": "Quels sont le quotient et le reste de la division euclidienne de 47 par 5 ?",
+     "answer": "Quotient 9, reste 2",
+     "w": [
+      "848ec303",
+      "20178b96"
+     ],
+     "wq": "f5a2291d",
+     "more": "47 = 5 × 9 + 2 (et 2 < 5).",
+     "wrongs": [
+      "Quotient 8, reste 7",
+      "Quotient 9, reste 4",
+      "Quotient 10, reste 3"
+     ]
     },
     {
      "question": "Quel est le critère de divisibilité par 3 ?",
-     "answer": "La somme de ses chiffres est divisible par 3.\nEx. : 312 → 3 + 1 + 2 = 6\ndonc 312 est divisible par 3.",
-     "w": "eb8cce3a",
-     "wq": "44d23395"
+     "answer": "La somme des chiffres est divisible par 3",
+     "w": [
+      "08cb30d0",
+      "eb8cce3a"
+     ],
+     "more": "Ex. : 312 → 3 + 1 + 2 = 6.",
+     "wrongs": [
+      "Le dernier chiffre est 3",
+      "Le nombre est impair",
+      "Le dernier chiffre est 0 ou 5"
+     ]
     },
     {
-     "question": "Que veut dire « 24 est un multiple de 6 » ?",
-     "answer": "24 est dans la table de 6 : 24 = 6 × 4.\nOn dit aussi que 6 est un diviseur de 24.",
-     "w": "091a7aa3",
-     "wq": "9244e925"
+     "question": "Que signifie « 24 est un multiple de 6 » ?",
+     "answer": "24 est dans la table de 6 (24 = 6 × 4)",
+     "w": [
+      "49aa62ad",
+      "091a7aa3"
+     ],
+     "wq": "9244e925",
+     "more": "On dit aussi que 6 est un diviseur de 24.",
+     "wrongs": [
+      "6 est un multiple de 24",
+      "24 + 6 = 30",
+      "24 se termine par 6"
+     ]
     }
    ]
   },
@@ -40740,104 +41431,265 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quand et où l'écriture apparaît-elle ?",
-     "answer": "Vers 3300 av. J.-C., en Mésopotamie\nSon invention marque le début de l'Histoire.",
-     "w": "5cb92c7b",
-     "wq": "6eda67cc"
+     "question": "Vers quelle date l'écriture apparaît-elle ?",
+     "answer": "Vers 3300 av. J.-C.",
+     "w": [
+      "e11c1adb",
+      "5cb92c7b"
+     ],
+     "wq": "6eda67cc",
+     "more": "Son invention marque le début de l'Histoire.",
+     "wrongs": [
+      "Vers 10 000 av. J.-C.",
+      "Vers 753 av. J.-C.",
+      "Vers l'an 1"
+     ]
     },
     {
-     "question": "Où se trouve la Mésopotamie ?",
-     "answer": "Entre deux fleuves, le Tigre et l'Euphrate,\ndans l'actuel Irak.",
-     "w": "9e11b772",
-     "wq": "b77bd23b"
+     "question": "Dans quelle région l'écriture apparaît-elle ?",
+     "answer": "En Mésopotamie",
+     "wrongs": [
+      "En Grèce",
+      "En Gaule",
+      "En Chine"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'écriture cunéiforme ?",
-     "answer": "L'écriture de la Mésopotamie :\ndes signes en forme de clous, tracés avec un roseau\nsur des tablettes d'argile.",
-     "w": "02367390",
-     "wq": "4cfa2208"
+     "question": "Entre quels fleuves se trouve la Mésopotamie ?",
+     "answer": "Le Tigre et l'Euphrate",
+     "w": [
+      "8f253c14",
+      "9e11b772"
+     ],
+     "wq": "b77bd23b",
+     "more": "Dans l'actuel Irak.",
+     "wrongs": [
+      "Le Nil et le Jourdain",
+      "Le Rhin et le Danube",
+      "L'Indus et le Gange"
+     ]
+    },
+    {
+     "question": "Comment s'appelle l'écriture de la Mésopotamie ?",
+     "answer": "L'écriture cunéiforme",
+     "w": [
+      "07646bb4",
+      "02367390"
+     ],
+     "wq": "4cfa2208",
+     "more": "Des signes en forme de clous sur des tablettes d'argile.",
+     "wrongs": [
+      "Les hiéroglyphes",
+      "L'alphabet grec",
+      "L'écriture latine"
+     ]
     },
     {
      "question": "Comment s'appelle l'écriture des anciens Égyptiens ?",
-     "answer": "Les hiéroglyphes\nSignes dessinés ou gravés, sur les monuments ou le papyrus.",
-     "w": "1d533efa",
-     "wq": "54aec19b"
+     "answer": "Les hiéroglyphes",
+     "w": [
+      "bd68c557",
+      "1d533efa"
+     ],
+     "wrongs": [
+      "Le cunéiforme",
+      "Les runes",
+      "L'alphabet phénicien"
+     ]
     },
     {
      "question": "Pourquoi dit-on que l'Égypte est un « don du Nil » ?",
-     "answer": "Chaque année, la crue du Nil dépose du limon fertile.\nOn peut ainsi cultiver dans un pays presque entièrement désertique.",
-     "w": "187b112f",
-     "wq": "b44d66c7"
+     "answer": "La crue du Nil dépose chaque année un limon fertile",
+     "w": [
+      "55a3318b",
+      "187b112f"
+     ],
+     "more": "On peut ainsi cultiver dans un pays presque désertique.",
+     "wrongs": [
+      "Le Nil apporte de l'or",
+      "Le Nil protège des invasions",
+      "Le Nil donne son nom au pays"
+     ]
     },
     {
      "question": "Qui est le pharaon ?",
-     "answer": "Le roi de l'Égypte ancienne, considéré comme un dieu vivant.\nIl dirige l'État, l'armée et la religion.",
-     "w": "e0866941",
-     "wq": "966cc46b"
+     "answer": "Le roi de l'Égypte ancienne, considéré comme un dieu vivant",
+     "w": [
+      "4838675b",
+      "e0866941"
+     ],
+     "wrongs": [
+      "Un prêtre de Rome",
+      "Un scribe égyptien",
+      "Un chef grec"
+     ]
     },
     {
      "question": "Qu'est-ce que le code de Hammurabi ?",
-     "answer": "Un ensemble de lois gravées sur une stèle\npar Hammurabi, roi de Babylone, vers 1750 av. J.-C.",
-     "w": "a35523f0",
-     "wq": "54b6cc10"
+     "answer": "Des lois gravées sur une stèle par un roi de Babylone",
+     "w": [
+      "98f8be36",
+      "a35523f0"
+     ],
+     "more": "Vers 1750 av. J.-C.",
+     "wrongs": [
+      "Un livre sacré égyptien",
+      "Une loi romaine",
+      "Un traité de paix grec"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une cité grecque ?",
-     "answer": "Une ville et son territoire formant un petit État indépendant,\navec ses lois et ses dieux protecteurs.\nEx. : Athènes, Sparte",
-     "w": "ba6dc495",
-     "wq": "8149b17e"
+     "answer": "Une ville et son territoire formant un petit État indépendant",
+     "w": [
+      "c04db1dc",
+      "ba6dc495"
+     ],
+     "more": "Ex. : Athènes, Sparte.",
+     "wrongs": [
+      "Une province de l'Empire romain",
+      "Un temple dédié à Zeus",
+      "Un quartier d'Athènes"
+     ]
     },
     {
-     "question": "Qui sont les citoyens dans la démocratie athénienne (Ve siècle av. J.-C.) ?",
-     "answer": "Les hommes libres, nés de père et de mère athéniens.\nExclus : femmes, esclaves, étrangers (métèques).",
-     "w": "d41fe545",
-     "wq": "b22ed6d9"
+     "question": "Qui sont les citoyens dans la démocratie athénienne ?",
+     "answer": "Les hommes libres nés de parents athéniens",
+     "w": [
+      "e6f9b0c2",
+      "d41fe545"
+     ],
+     "wq": "b22ed6d9",
+     "more": "Les femmes, les esclaves et les étrangers (métèques) sont exclus.",
+     "wrongs": [
+      "Tous les habitants d'Athènes",
+      "Les hommes et les femmes libres",
+      "Les riches seulement"
+     ]
     },
     {
      "question": "Qu'est-ce que l'Ecclésia à Athènes ?",
-     "answer": "L'assemblée des citoyens, sur la colline de la Pnyx.\nElle vote les lois et décide de la guerre ou de la paix.",
-     "w": "eb4b4061",
-     "wq": "1f0ddcae"
+     "answer": "L'assemblée des citoyens qui vote les lois",
+     "w": [
+      "3ece96db",
+      "eb4b4061"
+     ],
+     "more": "Elle se réunit sur la colline de la Pnyx.",
+     "wrongs": [
+      "Le temple d'Athéna",
+      "Le tribunal des esclaves",
+      "Le palais du roi"
+     ]
     },
     {
-     "question": "Pourquoi les Grecs organisaient-ils les Jeux olympiques ?",
-     "answer": "Pour honorer Zeus, à Olympie.\nPremiers Jeux selon la tradition : 776 av. J.-C.",
-     "w": "6c26db12",
-     "wq": "8c48bb7f"
+     "question": "En l'honneur de quel dieu les Grecs organisaient-ils les Jeux olympiques ?",
+     "answer": "Zeus",
+     "w": [
+      "419fddff",
+      "6c26db12"
+     ],
+     "wq": "8c48bb7f",
+     "more": "À Olympie ; premiers Jeux selon la tradition : 776 av. J.-C.",
+     "wrongs": [
+      "Poséidon",
+      "Apollon",
+      "Arès"
+     ]
     },
     {
-     "question": "Selon la légende, quand et par qui Rome a-t-elle été fondée ?",
-     "answer": "En 753 av. J.-C., par Romulus\nqui aurait tué son frère jumeau Rémus.",
-     "w": "97d1d7f0",
-     "wq": "0093845f"
+     "question": "Selon la légende, en quelle année Rome a-t-elle été fondée ?",
+     "answer": "En 753 av. J.-C.",
+     "w": [
+      "93867f14",
+      "97d1d7f0"
+     ],
+     "wq": "0093845f",
+     "wrongs": [
+      "En 776 av. J.-C.",
+      "En 27 av. J.-C.",
+      "En 3300 av. J.-C."
+     ]
     },
     {
-     "question": "Qui est le premier empereur romain et à partir de quand ?",
-     "answer": "Auguste (Octave), à partir de 27 av. J.-C."
+     "question": "Selon la légende, qui a fondé Rome ?",
+     "answer": "Romulus",
+     "more": "Il aurait tué son frère jumeau Rémus.",
+     "wrongs": [
+      "Jules César",
+      "Auguste",
+      "Énée"
+     ]
+    },
+    {
+     "question": "Qui est le premier empereur romain ?",
+     "answer": "Auguste (Octave)",
+     "w": "0898d8f5",
+     "wq": "f2193044",
+     "more": "À partir de 27 av. J.-C.",
+     "wrongs": [
+      "Jules César",
+      "Néron",
+      "Romulus"
+     ]
     },
     {
      "question": "Que désigne la « paix romaine » ?",
-     "answer": "Une longue période de paix et de prospérité dans l'Empire romain,\naux Ier et IIe siècles ap. J.-C.",
-     "w": "755e2eb4",
-     "wq": "000939e6"
+     "answer": "Une longue période de paix et de prospérité dans l'Empire romain",
+     "w": [
+      "93ac43a2",
+      "755e2eb4"
+     ],
+     "more": "Aux Ier et IIe siècles ap. J.-C.",
+     "wrongs": [
+      "Un traité entre Rome et Athènes",
+      "La fin de l'Empire romain",
+      "Une fête religieuse"
+     ]
     },
     {
-     "question": "Quelles sont les caractéristiques du judaïsme ?",
-     "answer": "• Première religion monothéiste (un seul Dieu)\n• Livre sacré : la Bible hébraïque, dont la Torah\n• Grandes figures : Abraham et Moïse",
-     "w": "367423e4",
-     "wq": "543f60d8"
+     "question": "Quelle est la première religion monothéiste ?",
+     "answer": "Le judaïsme",
+     "w": [
+      "29dfcc11",
+      "367423e4"
+     ],
+     "wq": "543f60d8",
+     "more": "Livre sacré : la Bible hébraïque (Torah) ; figures : Abraham et Moïse.",
+     "wrongs": [
+      "Le christianisme",
+      "L'islam",
+      "La religion grecque"
+     ]
     },
     {
-     "question": "Où et quand le christianisme est-il né ?",
-     "answer": "En Palestine, au Ier siècle ap. J.-C., autour de Jésus.\nPour les chrétiens, il est le fils de Dieu.\nLeurs textes forment le Nouveau Testament.",
-     "w": "66652407",
-     "wq": "cfd6a057"
+     "question": "Où et quand naît le christianisme ?",
+     "answer": "En Palestine, au Ier siècle ap. J.-C.",
+     "w": [
+      "97441c69",
+      "66652407"
+     ],
+     "wq": "cfd6a057",
+     "more": "Autour de Jésus ; ses textes forment le Nouveau Testament.",
+     "wrongs": [
+      "À Rome, au Ve siècle av. J.-C.",
+      "En Égypte, vers 1000 av. J.-C.",
+      "En Grèce, au IIIe siècle ap. J.-C."
+     ]
     },
     {
-     "question": "Quand le christianisme devient-il la religion officielle de l'Empire romain ?",
-     "answer": "En 380, sous l'empereur Théodose.\n(Constantin avait autorisé le culte chrétien en 313.)",
-     "w": "c076129d",
-     "wq": "be0c08ba"
+     "question": "En quelle année le christianisme devient-il religion officielle de l'Empire romain ?",
+     "answer": "En 380",
+     "w": [
+      "e840e015",
+      "c076129d"
+     ],
+     "wq": "be0c08ba",
+     "more": "Sous Théodose ; Constantin avait autorisé le culte en 313.",
+     "wrongs": [
+      "En 313",
+      "En 27 av. J.-C.",
+      "En 476"
+     ]
     }
    ]
   },
@@ -40861,89 +41713,204 @@
    "cards": [
     {
      "question": "Que veut dire « habiter » en géographie ?",
-     "answer": "Vivre dans un lieu :\ns'y loger, y travailler, s'y déplacer, s'y divertir\net y avoir des relations avec les autres.",
-     "w": "0d5dcb60",
-     "wq": "9fec2e3c"
+     "answer": "Vivre dans un lieu : s'y loger, y travailler, s'y déplacer, s'y divertir",
+     "w": [
+      "f7ec6afe",
+      "0d5dcb60"
+     ],
+     "wrongs": [
+      "Seulement avoir un logement",
+      "Seulement travailler quelque part",
+      "Seulement voyager"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une métropole ?",
-     "answer": "Une grande ville qui concentre habitants, activités et pouvoirs,\net dont l'influence s'étend loin.\nEx. : Paris, Tokyo, New York",
-     "w": "689632c2",
-     "wq": "07b62b30"
+     "answer": "Une grande ville qui concentre habitants, activités et pouvoirs",
+     "w": [
+      "b8c12439",
+      "689632c2"
+     ],
+     "more": "Ex. : Paris, Tokyo, New York.",
+     "wrongs": [
+      "Un petit village",
+      "Un pays",
+      "Une ville sans activités"
+     ]
     },
     {
-     "question": "Comment calcule-t-on la densité de population ?",
-     "answer": "Nombre d'habitants ÷ superficie (km²)\nEx. : 1 000 habitants sur 10 km² = 100 hab./km²",
-     "w": "11d19825",
-     "wq": "18a4a106"
+     "question": "Quelle est la densité de 1 000 habitants sur 10 km² ?",
+     "answer": "100 hab./km²",
+     "w": [
+      "56d4d6cd",
+      "11d19825"
+     ],
+     "wq": "18a4a106",
+     "more": "Densité = habitants ÷ superficie.",
+     "wrongs": [
+      "10 000 hab./km²",
+      "10 hab./km²",
+      "1 010 hab./km²"
+     ]
     },
     {
      "question": "Qu'est-ce que l'étalement urbain ?",
-     "answer": "L'extension de la ville sur les campagnes voisines :\nlotissements, routes, zones commerciales.",
-     "w": "2695181b",
-     "wq": "d40313e6"
+     "answer": "L'extension de la ville sur les campagnes voisines",
+     "w": [
+      "bbf75b1d",
+      "2695181b"
+     ],
+     "wrongs": [
+      "La construction de tours en centre-ville",
+      "Le départ des habitants des villes",
+      "La création de parcs en ville"
+     ]
     },
     {
      "question": "Quelles sont les trois grandes parties d'une agglomération ?",
-     "answer": "1. La ville-centre\n2. La banlieue autour\n3. L'espace périurbain, où villes et campagnes se mélangent",
-     "w": "11b4bc1a",
-     "wq": "17ac2852"
+     "answer": "Ville-centre, banlieue, espace périurbain",
+     "w": [
+      "c7770b2b",
+      "11b4bc1a"
+     ],
+     "wrongs": [
+      "Nord, centre, sud",
+      "Port, gare, aéroport",
+      "Quartier, rue, maison"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un quartier d'affaires ? Donne un exemple.",
-     "answer": "Un quartier de grandes tours de bureaux et de sièges d'entreprises.\nEx. : La Défense, près de Paris",
-     "w": "08b52f45",
-     "wq": "b72bfb04"
+     "question": "Quel est un exemple de quartier d'affaires en France ?",
+     "answer": "La Défense, près de Paris",
+     "w": [
+      "cce9fcad",
+      "08b52f45"
+     ],
+     "wq": "b72bfb04",
+     "wrongs": [
+      "Le Mont-Saint-Michel",
+      "Le Vieux-Port de Marseille",
+      "Montmartre"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un bidonville ?",
-     "answer": "Un quartier d'habitat précaire, construit sans autorisation,\nsouvent sans eau courante ni égouts.\nEx. : Dharavi à Mumbai (Inde)",
-     "w": "8d064482",
-     "wq": "9c1dca3a"
+     "answer": "Un quartier d'habitat précaire construit sans autorisation",
+     "w": [
+      "07f0bfb3",
+      "8d064482"
+     ],
+     "more": "Souvent sans eau courante ni égouts. Ex. : Dharavi à Mumbai.",
+     "wrongs": [
+      "Un quartier de luxe",
+      "Un village de vacances",
+      "Un quartier d'affaires"
+     ]
     },
     {
      "question": "Que sont les mobilités pendulaires ?",
-     "answer": "Les allers-retours quotidiens\nentre le domicile et le lieu de travail ou d'études.",
-     "w": "be94774a",
-     "wq": "61718e65"
+     "answer": "Les allers-retours quotidiens entre domicile et travail ou études",
+     "w": [
+      "bf5fafe8",
+      "be94774a"
+     ],
+     "wrongs": [
+      "Les voyages de vacances",
+      "Les déménagements",
+      "Les migrations internationales"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un espace de faible densité ?",
-     "answer": "Un espace où vivent peu d'habitants par km².\nEx. : campagnes isolées, montagnes, déserts, forêts, régions polaires",
-     "w": "ce11cecd",
-     "wq": "ee971a0b"
+     "answer": "Un espace où vivent peu d'habitants par km²",
+     "w": [
+      "2b7ae2b0",
+      "ce11cecd"
+     ],
+     "more": "Ex. : campagnes isolées, montagnes, déserts, régions polaires.",
+     "wrongs": [
+      "Un centre-ville",
+      "Une banlieue",
+      "Un quartier d'affaires"
+     ]
     },
     {
-     "question": "Comment des populations peuvent-elles habiter un désert chaud comme le Sahara ?",
-     "answer": "• En s'installant près des points d'eau (oasis)\n• En se déplaçant avec leurs troupeaux (nomades touaregs)",
-     "w": "3facf5ce",
-     "wq": "0238b0b2"
+     "question": "Comment des populations habitent-elles le Sahara ?",
+     "answer": "Près des oasis ou en nomades avec leurs troupeaux",
+     "w": [
+      "a19d6226",
+      "3facf5ce"
+     ],
+     "wq": "0238b0b2",
+     "wrongs": [
+      "Dans de grandes villes de tours",
+      "Sous terre seulement",
+      "Personne n'y habite"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un littoral ?",
-     "answer": "La zone de contact entre la terre et la mer (ou un océan)."
+     "answer": "La zone de contact entre la terre et la mer",
+     "w": "5b2652d9",
+     "wrongs": [
+      "Une montagne",
+      "Un fleuve",
+      "Une île"
+     ]
     },
     {
-     "question": "Qu'est-ce que la littoralisation ?",
-     "answer": "La concentration croissante des populations et des activités sur les littoraux."
+     "question": "Comment appelle-t-on la concentration des populations et des activités sur les littoraux ?",
+     "answer": "La littoralisation",
+     "w": "c2909fad",
+     "wq": "4c05a368",
+     "wrongs": [
+      "L'étalement urbain",
+      "La métropolisation",
+      "L'exode rural"
+     ]
     },
     {
-     "question": "Cite un exemple de littoral touristique.",
-     "answer": "Ex. : la Côte d'Azur (France), Cancún (Mexique)\nPlages, hôtels, ports de plaisance.",
-     "w": "bc4e02c4",
-     "wq": "ada16567"
+     "question": "Quel est un exemple de littoral touristique ?",
+     "answer": "La Côte d'Azur",
+     "w": [
+      "d6b560ac",
+      "bc4e02c4"
+     ],
+     "wq": "ada16567",
+     "more": "Ou Cancún, au Mexique.",
+     "wrongs": [
+      "Le Sahara",
+      "La Beauce",
+      "Le Massif central"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une zone industrialo-portuaire ? Donne un exemple.",
-     "answer": "Un grand port associé à des usines installées au bord de l'eau.\nEx. : Rotterdam (premier port d'Europe), Le Havre",
-     "w": "ce315ab1",
-     "wq": "da4be2b4"
+     "question": "Qu'est-ce qu'une zone industrialo-portuaire ?",
+     "answer": "Un grand port associé à des usines au bord de l'eau",
+     "w": [
+      "7dec224a",
+      "ce315ab1"
+     ],
+     "wq": "da4be2b4",
+     "more": "Ex. : Rotterdam (premier port d'Europe), Le Havre.",
+     "wrongs": [
+      "Une plage touristique",
+      "Un port de pêche",
+      "Un quartier de bureaux"
+     ]
     },
     {
      "question": "Quels risques menacent les littoraux ?",
-     "answer": "• Érosion du trait de côte\n• Submersion marine lors des tempêtes\n• Montée du niveau de la mer",
-     "w": "ae4e24c7",
-     "wq": "04624d21"
+     "answer": "Érosion, submersion marine, montée du niveau de la mer",
+     "w": [
+      "5c8a7227",
+      "ae4e24c7"
+     ],
+     "wrongs": [
+      "Avalanches et glissements de neige",
+      "Sécheresse du désert",
+      "Éruptions volcaniques seulement"
+     ]
     }
    ]
   },
@@ -41264,96 +42231,247 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment dit-on les jours de la semaine en anglais ?",
-     "answer": "Monday, Tuesday, Wednesday, Thursday,\nFriday, Saturday, Sunday\nToujours avec une majuscule.",
-     "w": "e75bb8af",
-     "wq": "ededfcfd"
+     "question": "Comment dit-on « mercredi » en anglais ?",
+     "answer": "Wednesday",
+     "w": [
+      "ffcf8a80",
+      "e75bb8af"
+     ],
+     "wq": "ededfcfd",
+     "more": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday — toujours avec une majuscule.",
+     "wrongs": [
+      "Thursday",
+      "Tuesday",
+      "Wenesday"
+     ]
     },
     {
-     "question": "Comment dit-on janvier, février et mars en anglais ?",
-     "answer": "January, February, March\n(majuscule, comme tous les mois)",
-     "w": "c3ba431f",
-     "wq": "c2dd7f1a"
+     "question": "Comment dit-on « février » en anglais ?",
+     "answer": "February",
+     "w": [
+      "96c49328",
+      "c3ba431f"
+     ],
+     "wq": "c2dd7f1a",
+     "more": "January, February, March… avec une majuscule.",
+     "wrongs": [
+      "Febuary",
+      "January",
+      "Fevrier"
+     ]
     },
     {
-     "question": "Comment dit-on la mère, le père, le frère, la sœur ?",
-     "answer": "• Mother (mum)\n• Father (dad)\n• Brother\n• Sister",
-     "w": "eba474d1",
-     "wq": "ba80955d"
+     "question": "Comment dit-on « la sœur » en anglais ?",
+     "answer": "Sister",
+     "w": [
+      "6f8f0171",
+      "eba474d1"
+     ],
+     "wq": "ba80955d",
+     "more": "Mother (mum), father (dad), brother, sister.",
+     "wrongs": [
+      "Brother",
+      "Daughter",
+      "Cousin"
+     ]
     },
     {
-     "question": "Comment dit-on grand-mère et grand-père ?",
-     "answer": "• Grandmother (grandma)\n• Grandfather (grandpa)\nLes grands-parents : grandparents",
-     "w": "53f987ca",
-     "wq": "4403cf26"
+     "question": "Comment dit-on « les grands-parents » en anglais ?",
+     "answer": "Grandparents",
+     "w": [
+      "981641b5",
+      "53f987ca"
+     ],
+     "wq": "4403cf26",
+     "more": "Grandmother (grandma), grandfather (grandpa).",
+     "wrongs": [
+      "Bigparents",
+      "Oldparents",
+      "Greatfathers"
+     ]
     },
     {
-     "question": "Cite six couleurs en anglais.",
-     "answer": "• Red : rouge\n• Blue : bleu\n• Green : vert\n• Yellow : jaune\n• Black : noir · White : blanc",
-     "w": "1530e547",
-     "wq": "1addb772"
+     "question": "Comment dit-on « jaune » en anglais ?",
+     "answer": "Yellow",
+     "w": [
+      "1c404566",
+      "1530e547"
+     ],
+     "wq": "1addb772",
+     "more": "Red, blue, green, yellow, black, white.",
+     "wrongs": [
+      "Green",
+      "Orange",
+      "Brown"
+     ]
     },
     {
-     "question": "Comment dit-on 11, 12 et 13 en anglais ?",
-     "answer": "Eleven, twelve, thirteen."
+     "question": "Comment dit-on « douze » en anglais ?",
+     "answer": "Twelve",
+     "w": "6a413226",
+     "wq": "7eace0b8",
+     "more": "Eleven, twelve, thirteen.",
+     "wrongs": [
+      "Twenty",
+      "Eleven",
+      "Twelf"
+     ]
     },
     {
-     "question": "Comment dit-on 20, 30 et 100 en anglais ?",
-     "answer": "Twenty, thirty, one hundred."
+     "question": "Comment dit-on « trente » en anglais ?",
+     "answer": "Thirty",
+     "w": "ddef9d0d",
+     "wq": "68139bbb",
+     "more": "Twenty, thirty, one hundred.",
+     "wrongs": [
+      "Thirteen",
+      "Threety",
+      "Forty"
+     ]
     },
     {
-     "question": "Comment dire son nom et son âge en anglais ?",
-     "answer": "My name is Léa. I'm eleven (years old).\nAttention : « to be » pour l'âge, pas « to have ».",
-     "w": "8d8bd86c",
-     "wq": "ddc439ce"
+     "question": "Comment dit-on « j'ai onze ans » en anglais ?",
+     "answer": "I'm eleven",
+     "w": [
+      "de90d4a0",
+      "8d8bd86c"
+     ],
+     "wq": "ddc439ce",
+     "more": "On utilise « to be » pour l'âge, pas « to have ».",
+     "wrongs": [
+      "I have eleven",
+      "I have eleven years",
+      "I'm eleven years old have"
+     ]
     },
     {
-     "question": "Comment demander à quelqu'un où il habite et répondre ?",
-     "answer": "Where do you live?\n— I live in Lyon.",
-     "w": "02360993",
-     "wq": "f28fb432"
+     "question": "Comment demande-t-on « où habites-tu ? » en anglais ?",
+     "answer": "Where do you live?",
+     "w": [
+      "72ecb429",
+      "02360993"
+     ],
+     "wq": "f28fb432",
+     "more": "Réponse : I live in Lyon.",
+     "wrongs": [
+      "Where you live?",
+      "Where are you live?",
+      "What do you live?"
+     ]
     },
     {
-     "question": "Comment dit-on crayon, stylo, gomme, règle et cartable ?",
-     "answer": "• Crayon : pencil\n• Stylo : pen\n• Gomme : rubber (eraser en américain)\n• Règle : ruler\n• Cartable : schoolbag",
-     "w": "48b4a9be",
-     "wq": "a312360f"
+     "question": "Comment dit-on « une règle » (à l'école) en anglais ?",
+     "answer": "A ruler",
+     "w": [
+      "1f32b085",
+      "48b4a9be"
+     ],
+     "wq": "a312360f",
+     "wrongs": [
+      "A rubber",
+      "A rule",
+      "A pencil"
+     ]
     },
     {
-     "question": "Comment dit-on les matières histoire, sciences et EPS ?",
-     "answer": "• Histoire : History\n• Sciences : Science\n• EPS : PE (Physical Education)",
-     "w": "a434ccc4",
-     "wq": "540c95fa"
+     "question": "Comment dit-on « une gomme » en anglais britannique ?",
+     "answer": "A rubber",
+     "more": "En américain : an eraser.",
+     "wrongs": [
+      "A ruler",
+      "A gum",
+      "A pen"
+     ]
     },
     {
-     "question": "Comment demander l'heure et répondre « il est trois heures » ?",
-     "answer": "What time is it?\n— It's three o'clock.",
-     "w": "ed669df8",
-     "wq": "4ae1d565"
+     "question": "Comment dit-on « EPS » en anglais ?",
+     "answer": "PE (Physical Education)",
+     "w": [
+      "1cbb562c",
+      "a434ccc4"
+     ],
+     "wq": "540c95fa",
+     "more": "Histoire : History ; sciences : Science.",
+     "wrongs": [
+      "Sport Education",
+      "EPS",
+      "Gym Class Education"
+     ]
     },
     {
-     "question": "Comment dire « j'ai une sœur » avec have got ?",
-     "answer": "I have got a sister. (I've got a sister.)\nQuestion : Have you got a sister?",
-     "w": "aab56d0f",
-     "wq": "654bcd60"
+     "question": "Comment dit-on « il est trois heures » en anglais ?",
+     "answer": "It's three o'clock",
+     "w": [
+      "84cbb456",
+      "ed669df8"
+     ],
+     "wq": "4ae1d565",
+     "more": "Pour demander l'heure : What time is it?",
+     "wrongs": [
+      "It's three hours",
+      "It's three o'clocks",
+      "He is three o'clock"
+     ]
     },
     {
-     "question": "Quels sont les pronoms personnels sujets en anglais ?",
-     "answer": "I, you, he, she, it, we, you, they\n« I » prend toujours une majuscule.",
-     "w": "30fa24fa",
-     "wq": "9a02a867"
+     "question": "Comment dit-on « j'ai une sœur » avec have got ?",
+     "answer": "I've got a sister",
+     "w": [
+      "44c6de7d",
+      "aab56d0f"
+     ],
+     "wq": "654bcd60",
+     "more": "Question : Have you got a sister?",
+     "wrongs": [
+      "I've a got sister",
+      "I got have a sister",
+      "I am got a sister"
+     ]
     },
     {
-     "question": "Comment dire « le vélo de Tom » en anglais ?",
-     "answer": "Tom's bike\nGénitif : possesseur + 's + objet possédé",
-     "w": "e5b82a3e",
-     "wq": "03ab69ab"
+     "question": "Quel pronom personnel prend toujours une majuscule en anglais ?",
+     "answer": "I",
+     "w": [
+      "49e4b6cf",
+      "30fa24fa"
+     ],
+     "wq": "9a02a867",
+     "more": "I, you, he, she, it, we, you, they.",
+     "wrongs": [
+      "You",
+      "We",
+      "They"
+     ]
     },
     {
-     "question": "Comment dit-on animal de compagnie, chien et chat ?",
-     "answer": "• Animal de compagnie : pet\n• Chien : dog\n• Chat : cat\nEx. : I've got a pet, it's a dog.",
-     "w": "4056de75",
-     "wq": "e4bcf7fe"
+     "question": "Comment dit-on « le vélo de Tom » en anglais ?",
+     "answer": "Tom's bike",
+     "w": [
+      "ad8eceb0",
+      "e5b82a3e"
+     ],
+     "wq": "03ab69ab",
+     "more": "Génitif : possesseur + 's + objet possédé.",
+     "wrongs": [
+      "The bike of Tom's",
+      "Bike's Tom",
+      "Tom bike's"
+     ]
+    },
+    {
+     "question": "Comment dit-on « animal de compagnie » en anglais ?",
+     "answer": "Pet",
+     "w": [
+      "151ab5d5",
+      "4056de75"
+     ],
+     "wq": "e4bcf7fe",
+     "more": "Chien : dog ; chat : cat.",
+     "wrongs": [
+      "Animal",
+      "Puppy",
+      "Friend"
+     ]
     }
    ]
   },
@@ -44184,95 +45302,218 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'une molécule ?",
-     "answer": "Un assemblage d'atomes liés entre eux.\nEx. : la molécule d'eau H₂O",
-     "w": "546437d2",
-     "wq": "5c93469b"
+     "answer": "Un assemblage d'atomes liés entre eux",
+     "w": [
+      "f4e24475",
+      "546437d2"
+     ],
+     "more": "Ex. : la molécule d'eau H₂O.",
+     "wrongs": [
+      "Un seul atome",
+      "Un mélange de liquides",
+      "Une particule chargée"
+     ]
     },
     {
-     "question": "Que signifie la formule H₂O ?",
-     "answer": "• 2 atomes d'hydrogène (H)\n• 1 atome d'oxygène (O)",
-     "w": "bd869599",
-     "wq": "1a173a29"
+     "question": "Combien d'atomes d'hydrogène contient la molécule H₂O ?",
+     "answer": "2",
+     "w": [
+      "e15002d9",
+      "bd869599"
+     ],
+     "wq": "1a173a29",
+     "more": "Et 1 atome d'oxygène.",
+     "wrongs": [
+      "1",
+      "3",
+      "0"
+     ]
     },
     {
-     "question": "Que signifie la formule CO₂ ?",
-     "answer": "Le dioxyde de carbone :\n• 1 atome de carbone\n• 2 atomes d'oxygène",
-     "w": "51b45128",
-     "wq": "cf23fe42"
+     "question": "Que contient une molécule de CO₂ ?",
+     "answer": "1 atome de carbone et 2 atomes d'oxygène",
+     "w": [
+      "d4f9cbdd",
+      "51b45128"
+     ],
+     "wq": "cf23fe42",
+     "wrongs": [
+      "2 atomes de carbone et 1 d'oxygène",
+      "1 atome de cobalt et 2 d'oxygène",
+      "1 atome de carbone et 2 d'hydrogène"
+     ]
     },
     {
      "question": "Quelle est la composition approximative de l'air ?",
-     "answer": "• Environ 78 % de diazote (N₂)\n• Environ 21 % de dioxygène (O₂)\n• D'autres gaz en petite quantité",
-     "w": "f655dbd3",
-     "wq": "9529ed42"
+     "answer": "78 % de diazote, 21 % de dioxygène",
+     "w": [
+      "c2359645",
+      "f655dbd3"
+     ],
+     "wrongs": [
+      "78 % de dioxygène, 21 % de diazote",
+      "50 % de dioxygène, 50 % de CO₂",
+      "100 % de dioxygène"
+     ]
     },
     {
-     "question": "Quelle est la différence entre un corps pur et un mélange ?",
-     "answer": "Corps pur : une seule espèce chimique (eau distillée).\nMélange : plusieurs espèces (eau salée, air).",
-     "w": "bb0d9212",
-     "wq": "5f14c504"
+     "question": "Qu'est-ce qu'un corps pur ?",
+     "answer": "Une seule espèce chimique",
+     "w": [
+      "07ac72c1",
+      "bb0d9212"
+     ],
+     "wq": "5f14c504",
+     "more": "Ex. : eau distillée ; un mélange contient plusieurs espèces (eau salée, air).",
+     "wrongs": [
+      "Un liquide transparent",
+      "Un mélange sans odeur",
+      "Un produit naturel"
+     ]
     },
     {
      "question": "À quoi reconnaît-on une transformation chimique ?",
-     "answer": "Des réactifs disparaissent\net de nouvelles espèces, les produits, apparaissent.",
-     "w": "1102a6f5",
-     "wq": "ed3c12f6"
+     "answer": "Des réactifs disparaissent et des produits apparaissent",
+     "w": [
+      "ebd20f0b",
+      "1102a6f5"
+     ],
+     "wrongs": [
+      "La matière change d'état",
+      "Le volume augmente",
+      "La couleur reste la même"
+     ]
     },
     {
      "question": "La dissolution du sucre dans l'eau est-elle une transformation chimique ?",
-     "answer": "Non : c'est une transformation physique.\nLe sucre est toujours présent, dispersé dans l'eau.",
-     "w": "b7eedcb1",
-     "wq": "70778c7a"
+     "answer": "Non, c'est une transformation physique",
+     "w": [
+      "fd33e857",
+      "b7eedcb1"
+     ],
+     "more": "Le sucre est toujours présent, dispersé dans l'eau.",
+     "wrongs": [
+      "Oui, le sucre disparaît",
+      "Oui, un nouveau produit se forme",
+      "Oui, car la masse change"
+     ]
     },
     {
-     "question": "Écris l'équation de la combustion du carbone.",
-     "answer": "C + O₂ → CO₂\nLe carbone réagit avec le dioxygène et forme du dioxyde de carbone.",
-     "w": "fc94c512",
-     "wq": "d59d1856"
+     "question": "Quelle est l'équation de la combustion du carbone ?",
+     "answer": "C + O₂ → CO₂",
+     "w": [
+      "b2aa3be6",
+      "fc94c512"
+     ],
+     "wq": "d59d1856",
+     "wrongs": [
+      "C + O → CO₂",
+      "CO₂ → C + O₂",
+      "C + H₂O → CO₂"
+     ]
     },
     {
-     "question": "Écris l'équation de la combustion du méthane.",
-     "answer": "CH₄ + 2 O₂ → CO₂ + 2 H₂O."
+     "question": "Quelle est l'équation de la combustion du méthane ?",
+     "answer": "CH₄ + 2 O₂ → CO₂ + 2 H₂O",
+     "w": "659303ae",
+     "wq": "dffcbc92",
+     "wrongs": [
+      "CH₄ + O₂ → CO₂ + H₂O",
+      "CH₄ → C + 2 H₂",
+      "CH₄ + 2 O₂ → CO + 2 H₂O"
+     ]
     },
     {
      "question": "Que dit la loi de conservation de la masse ?",
-     "answer": "Masse des réactifs consommés = masse des produits formés.\n« Rien ne se perd, rien ne se crée, tout se transforme » (Lavoisier)",
-     "w": "1ff2d6d5",
-     "wq": "fccb9cb2"
+     "answer": "Masse des réactifs consommés = masse des produits formés",
+     "w": [
+      "2aaeff2d",
+      "1ff2d6d5"
+     ],
+     "more": "« Rien ne se perd, rien ne se crée, tout se transforme » (Lavoisier).",
+     "wrongs": [
+      "La masse augmente toujours",
+      "La masse diminue toujours",
+      "La masse des produits est le double"
+     ]
     },
     {
      "question": "Pourquoi faut-il équilibrer une équation de réaction ?",
-     "answer": "Les atomes se conservent :\nmême nombre d'atomes de chaque sorte de chaque côté de la flèche.",
-     "w": "398a66c4",
-     "wq": "83d0c0c4"
+     "answer": "Parce que les atomes se conservent",
+     "w": [
+      "ef6a3870",
+      "398a66c4"
+     ],
+     "more": "Même nombre d'atomes de chaque sorte de chaque côté.",
+     "wrongs": [
+      "Pour que la réaction soit plus rapide",
+      "Parce que les molécules se conservent",
+      "Pour avoir autant de réactifs que de produits"
+     ]
     },
     {
      "question": "Comment identifier le dioxyde de carbone ?",
-     "answer": "Il trouble l'eau de chaux."
+     "answer": "Il trouble l'eau de chaux",
+     "w": "eee77237",
+     "wrongs": [
+      "Il rallume une bûchette",
+      "Il bleuit le sulfate de cuivre",
+      "Il fait une détonation"
+     ]
     },
     {
      "question": "Comment identifier la présence d'eau ?",
-     "answer": "Le sulfate de cuivre anhydre, blanc,\ndevient bleu au contact de l'eau.",
-     "w": "33b9b1f8",
-     "wq": "6bf12672"
+     "answer": "Le sulfate de cuivre anhydre devient bleu",
+     "w": [
+      "161b245e",
+      "33b9b1f8"
+     ],
+     "wrongs": [
+      "L'eau de chaux se trouble",
+      "Une bûchette se rallume",
+      "Une détonation se produit"
+     ]
     },
     {
      "question": "Comment identifier le dioxygène ?",
-     "answer": "Il ravive une bûchette incandescente\n(elle se rallume).",
-     "w": "bd37c46e",
-     "wq": "690bd1ec"
+     "answer": "Il ravive une bûchette incandescente",
+     "w": [
+      "1a3770cc",
+      "bd37c46e"
+     ],
+     "wrongs": [
+      "Il trouble l'eau de chaux",
+      "Il bleuit le sulfate de cuivre",
+      "Il éteint une flamme"
+     ]
     },
     {
      "question": "Quel gaz dangereux produit une combustion incomplète ?",
-     "answer": "Le monoxyde de carbone (CO)\nIncolore, inodore et très toxique.",
-     "w": "60eba7c2",
-     "wq": "049693d3"
+     "answer": "Le monoxyde de carbone (CO)",
+     "w": [
+      "abe74798",
+      "60eba7c2"
+     ],
+     "more": "Incolore, inodore et très toxique.",
+     "wrongs": [
+      "Le dioxyde de carbone",
+      "Le dioxygène",
+      "Le diazote"
+     ]
     },
     {
      "question": "Comment calcule-t-on la masse volumique ?",
-     "answer": "ρ = m / V (masse ÷ volume)\nEau : 1 g/cm³, soit 1 kg/L",
-     "w": "5fd9cada",
-     "wq": "d8c33bdc"
+     "answer": "ρ = m / V",
+     "w": [
+      "4f67133e",
+      "5fd9cada"
+     ],
+     "more": "Eau : 1 g/cm³, soit 1 kg/L.",
+     "wrongs": [
+      "ρ = V / m",
+      "ρ = m × V",
+      "ρ = m + V"
+     ]
     }
    ]
   },
@@ -44589,98 +45830,276 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Dans quel ordre les ensembles de nombres N, Z, D, Q et R sont-ils inclus les uns dans les autres ?",
-     "answer": "N ⊂ Z ⊂ D ⊂ Q ⊂ R\nentiers naturels, entiers relatifs, décimaux, rationnels, réels",
-     "w": "00259f63",
-     "wq": "de7482ed"
+     "question": "Dans quel ordre les ensembles N, Z, D, Q et R sont-ils inclus ?",
+     "answer": "N ⊂ Z ⊂ D ⊂ Q ⊂ R",
+     "w": [
+      "1d7e1bef",
+      "00259f63"
+     ],
+     "wq": "de7482ed",
+     "wrongs": [
+      "Z ⊂ N ⊂ D ⊂ Q ⊂ R",
+      "N ⊂ D ⊂ Z ⊂ Q ⊂ R",
+      "R ⊂ Q ⊂ D ⊂ Z ⊂ N"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un nombre décimal ?",
-     "answer": "Un nombre qui s'écrit a/10ⁿ (a entier relatif, n entier naturel),\nc'est-à-dire avec un nombre fini de chiffres après la virgule.",
-     "w": "9593d60b",
-     "wq": "1e13250a"
+     "answer": "Un nombre qui s'écrit a/10ⁿ (a entier relatif)",
+     "w": [
+      "8bc7783a",
+      "9593d60b"
+     ],
+     "more": "Il a un nombre fini de chiffres après la virgule.",
+     "wrongs": [
+      "Un nombre avec une infinité de décimales",
+      "Un nombre entier",
+      "Un quotient de deux entiers quelconques"
+     ]
     },
     {
-     "question": "1/3 est-il un nombre décimal ? Est-il rationnel ?",
-     "answer": "Pas décimal : 0,333… est infini.\nMais rationnel : quotient de deux entiers.",
-     "w": "9877ef7a",
-     "wq": "6ddc4e23"
+     "question": "1/3 est-il un nombre décimal ?",
+     "answer": "Non",
+     "w": [
+      "095689ab",
+      "9877ef7a"
+     ],
+     "wq": "6ddc4e23",
+     "more": "0,333… a une infinité de chiffres.",
+     "wrongs": [
+      "Oui",
+      "Oui, c'est 0,3",
+      "Seulement arrondi"
+     ]
     },
     {
-     "question": "Citer un nombre réel qui n'est pas rationnel.",
-     "answer": "√2 (ou π)\nIrrationnels : ils ne s'écrivent pas comme quotient de deux entiers.",
-     "w": "caa9e488",
-     "wq": "6df42530"
+     "question": "1/3 est-il un nombre rationnel ?",
+     "answer": "Oui",
+     "more": "C'est un quotient de deux entiers.",
+     "wrongs": [
+      "Non",
+      "Seulement s'il est arrondi",
+      "Non, c'est un irrationnel"
+     ]
+    },
+    {
+     "question": "Quel nombre réel n'est pas rationnel ?",
+     "answer": "√2",
+     "w": [
+      "3cb0e4b8",
+      "caa9e488"
+     ],
+     "wq": "6df42530",
+     "more": "Comme π : ils ne s'écrivent pas comme quotient de deux entiers.",
+     "wrongs": [
+      "1/3",
+      "0,25",
+      "−7"
+     ]
     },
     {
      "question": "Que signifie x ∈ [2 ; 5[ ?",
-     "answer": "2 ≤ x < 5\n2 est inclus, 5 est exclu.",
-     "w": "ef1846b7",
-     "wq": "e8762daf"
+     "answer": "2 ≤ x < 5",
+     "w": [
+      "a2cdac1d",
+      "ef1846b7"
+     ],
+     "wrongs": [
+      "2 < x ≤ 5",
+      "2 < x < 5",
+      "2 ≤ x ≤ 5"
+     ]
     },
     {
-     "question": "Comment écrire sous forme d'intervalle l'ensemble des réels x tels que x > −3 ?",
-     "answer": "]−3 ; +∞[\nLe crochet est toujours ouvert du côté de l'infini.",
-     "w": "f4d685fc",
-     "wq": "4ab4b872"
+     "question": "Quel intervalle correspond à x > −3 ?",
+     "answer": "]−3 ; +∞[",
+     "w": [
+      "ab1c230b",
+      "f4d685fc"
+     ],
+     "wq": "4ab4b872",
+     "wrongs": [
+      "[−3 ; +∞[",
+      "]−∞ ; −3[",
+      "]−3 ; +∞]"
+     ]
     },
     {
-     "question": "Quelle est la différence entre l'intersection I ∩ J et la réunion I ∪ J de deux intervalles ?",
-     "answer": "I ∩ J : les réels à la fois dans I et dans J.\nI ∪ J : les réels dans I ou dans J (au moins l'un des deux).",
-     "w": "43871756",
-     "wq": "79a9846d"
+     "question": "Que contient l'intersection I ∩ J de deux intervalles ?",
+     "answer": "Les réels à la fois dans I et dans J",
+     "w": [
+      "5005d897",
+      "43871756"
+     ],
+     "wq": "79a9846d",
+     "wrongs": [
+      "Les réels dans I ou dans J",
+      "Les réels dans I mais pas dans J",
+      "Tous les réels"
+     ]
+    },
+    {
+     "question": "Que contient la réunion I ∪ J de deux intervalles ?",
+     "answer": "Les réels dans I ou dans J",
+     "wrongs": [
+      "Les réels à la fois dans I et dans J",
+      "Les réels hors de I et de J",
+      "Seulement les bornes"
+     ]
     },
     {
      "question": "Que représente |x − a| sur une droite graduée ?",
-     "answer": "La distance entre les points d'abscisses x et a."
+     "answer": "La distance entre les points d'abscisses x et a",
+     "w": "6de0912a",
+     "wrongs": [
+      "Le milieu de x et a",
+      "La somme de x et a",
+      "Le produit de x et a"
+     ]
     },
     {
-     "question": "À quel intervalle correspond l'inégalité |x − a| ≤ r (avec r > 0) ?",
-     "answer": "[a − r ; a + r]\ncentré en a, de rayon r.",
-     "w": "827e0110",
-     "wq": "c8dbfb04"
+     "question": "À quel intervalle correspond |x − a| ≤ r (r > 0) ?",
+     "answer": "[a − r ; a + r]",
+     "w": [
+      "662233b8",
+      "827e0110"
+     ],
+     "wq": "c8dbfb04",
+     "wrongs": [
+      "[−r ; r]",
+      "]a − r ; a + r[",
+      "[a ; a + r]"
+     ]
     },
     {
-     "question": "Que valent a^n × a^p, (a^n)^p et a^n / a^p (a non nul) ?",
-     "answer": "• aⁿ × aᵖ = aⁿ⁺ᵖ\n• (aⁿ)ᵖ = aⁿˣᵖ\n• aⁿ / aᵖ = aⁿ⁻ᵖ",
-     "w": "a3440152",
-     "wq": "2548bc20"
+     "question": "Que vaut aⁿ × aᵖ ?",
+     "answer": "aⁿ⁺ᵖ",
+     "w": [
+      "2653f167",
+      "a3440152"
+     ],
+     "wq": "2548bc20",
+     "wrongs": [
+      "aⁿˣᵖ",
+      "aⁿ⁻ᵖ",
+      "2aⁿ⁺ᵖ"
+     ]
     },
     {
-     "question": "Que vaut a^(−n) pour a non nul ?",
-     "answer": "a⁻ⁿ = 1 / aⁿ\nEx. : 10⁻³ = 0,001",
-     "w": "6e666b71",
-     "wq": "1cb47e9e"
+     "question": "Que vaut (aⁿ)ᵖ ?",
+     "answer": "aⁿˣᵖ",
+     "wrongs": [
+      "aⁿ⁺ᵖ",
+      "aⁿ⁻ᵖ",
+      "aⁿ × p"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'écriture scientifique d'un nombre décimal positif ?",
-     "answer": "a × 10ⁿ avec 1 ≤ a < 10 et n entier relatif\nEx. : 34 500 = 3,45 × 10⁴",
-     "w": "e9e06467",
-     "wq": "b72e7564"
+     "question": "Que vaut aⁿ / aᵖ (a non nul) ?",
+     "answer": "aⁿ⁻ᵖ",
+     "wrongs": [
+      "aⁿ⁺ᵖ",
+      "aⁿ/ᵖ",
+      "aᵖ⁻ⁿ"
+     ]
     },
     {
-     "question": "Pour a ≥ 0 et b ≥ 0, que valent √(a × b) et, pour b > 0, √(a / b) ?",
-     "answer": "• √(ab) = √a × √b\n• √(a/b) = √a / √b\nAttention : en général √(a + b) ≠ √a + √b",
-     "w": "6c6eb9eb",
-     "wq": "0debd42a"
+     "question": "Que vaut 10⁻³ ?",
+     "answer": "0,001",
+     "w": [
+      "1ca11a4b",
+      "6e666b71"
+     ],
+     "wq": "1cb47e9e",
+     "more": "a⁻ⁿ = 1 / aⁿ",
+     "wrongs": [
+      "−1 000",
+      "0,000 1",
+      "−0,001"
+     ]
+    },
+    {
+     "question": "Quelle est l'écriture scientifique de 34 500 ?",
+     "answer": "3,45 × 10⁴",
+     "w": [
+      "b13c7680",
+      "e9e06467"
+     ],
+     "wq": "b72e7564",
+     "more": "a × 10ⁿ avec 1 ≤ a < 10.",
+     "wrongs": [
+      "34,5 × 10³",
+      "3,45 × 10³",
+      "0,345 × 10⁵"
+     ]
+    },
+    {
+     "question": "Que vaut √(a × b) pour a ≥ 0 et b ≥ 0 ?",
+     "answer": "√a × √b",
+     "w": [
+      "e8565068",
+      "6c6eb9eb"
+     ],
+     "wq": "0debd42a",
+     "wrongs": [
+      "√a + √b",
+      "a × √b",
+      "(a × b)²"
+     ]
+    },
+    {
+     "question": "A-t-on √(a + b) = √a + √b en général ?",
+     "answer": "Non",
+     "more": "Ex. : √(9 + 16) = 5 mais √9 + √16 = 7.",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, si a et b sont positifs",
+      "Oui, si a = b"
+     ]
     },
     {
      "question": "Que vaut √(x²) pour un réel x quelconque ?",
-     "answer": "√(x²) = |x|\nEx. : √((−4)²) = 4",
-     "w": "0b1130c4",
-     "wq": "b1692793"
+     "answer": "|x|",
+     "w": [
+      "68c00830",
+      "0b1130c4"
+     ],
+     "more": "Ex. : √((−4)²) = 4.",
+     "wrongs": [
+      "x",
+      "−x",
+      "x²"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un nombre premier ?",
-     "answer": "Un entier naturel qui a exactement deux diviseurs : 1 et lui-même.\n1 n'est donc pas premier.\nEx. : 2, 3, 5, 7, 11…",
-     "w": "c98a6b72",
-     "wq": "f2dc0931"
+     "question": "Le nombre 1 est-il premier ?",
+     "answer": "Non",
+     "w": [
+      "88b754c1",
+      "c98a6b72"
+     ],
+     "wq": "f2dc0931",
+     "more": "Un nombre premier a exactement deux diviseurs : 1 et lui-même (2, 3, 5, 7…).",
+     "wrongs": [
+      "Oui",
+      "Oui, c'est le plus petit",
+      "Seulement en Seconde"
+     ]
     },
     {
-     "question": "Comment montrer que la somme de deux nombres impairs est paire ?",
-     "answer": "On écrit les deux impairs 2k + 1 et 2k' + 1 (k, k' entiers).\nSomme : 2k + 2k' + 2 = 2(k + k' + 1)\nC'est un multiple de 2.",
-     "w": "02a93747",
-     "wq": "e2e53df8"
+     "question": "Comment écrit-on un nombre impair avec un entier k ?",
+     "answer": "2k + 1",
+     "w": [
+      "c276f6cc",
+      "02a93747"
+     ],
+     "wq": "e2e53df8",
+     "more": "La somme de deux impairs : 2k + 1 + 2k' + 1 = 2(k + k' + 1), un nombre pair.",
+     "wrongs": [
+      "2k",
+      "k + 1",
+      "k²"
+     ]
     }
    ]
   },
@@ -44704,87 +46123,224 @@
    "cards": [
     {
      "question": "À quelle transformation est associé le vecteur AB ?",
-     "answer": "La translation qui transforme A en B.\nChaque point est déplacé avec la même direction, le même sens\net la même longueur que de A vers B.",
-     "w": "9ea1c03c",
-     "wq": "04d07a9a"
+     "answer": "La translation qui transforme A en B",
+     "w": [
+      "e5b48646",
+      "9ea1c03c"
+     ],
+     "wrongs": [
+      "La rotation de centre A",
+      "La symétrie de centre B",
+      "L'homothétie de centre A"
+     ]
     },
     {
-     "question": "Énoncer la relation de Chasles.",
-     "answer": "Pour tous points A, B, C :\nAB + BC = AC (en vecteurs)",
-     "w": "ea08b967",
-     "wq": "23405c5e"
+     "question": "Que dit la relation de Chasles pour les vecteurs ?",
+     "answer": "AB + BC = AC",
+     "w": [
+      "cfe16596",
+      "ea08b967"
+     ],
+     "wq": "23405c5e",
+     "wrongs": [
+      "AB + BC = CA",
+      "AB + AC = BC",
+      "AB − BC = AC"
+     ]
     },
     {
-     "question": "Comment caractériser le parallélogramme ABCD à l'aide des vecteurs ?",
-     "answer": "ABCD est un parallélogramme (éventuellement aplati)\nsi et seulement si AB = DC (en vecteurs).",
-     "w": "d9f1b526",
-     "wq": "bd3c0fd4"
+     "question": "Quand ABCD est-il un parallélogramme ?",
+     "answer": "Quand les vecteurs AB et DC sont égaux",
+     "w": [
+      "02e767af",
+      "d9f1b526"
+     ],
+     "wq": "bd3c0fd4",
+     "wrongs": [
+      "Quand les vecteurs AB et CD sont égaux",
+      "Quand AB = BC (longueurs)",
+      "Quand les vecteurs AC et BD sont égaux"
+     ]
     },
     {
-     "question": "Quelles sont les coordonnées du vecteur AB avec A(xA ; yA) et B(xB ; yB) ?",
-     "answer": "AB(xB − xA ; yB − yA)."
+     "question": "Quelles sont les coordonnées du vecteur AB ?",
+     "answer": "(xB − xA ; yB − yA)",
+     "w": "4b3b1ff3",
+     "wq": "58c02b69",
+     "wrongs": [
+      "(xA − xB ; yA − yB)",
+      "(xA + xB ; yA + yB)",
+      "(xB × xA ; yB × yA)"
+     ]
     },
     {
-     "question": "Quelles sont les coordonnées du milieu I du segment [AB] ?",
-     "answer": "I((xA + xB)/2 ; (yA + yB)/2)."
+     "question": "Quelles sont les coordonnées du milieu de [AB] ?",
+     "answer": "((xA + xB)/2 ; (yA + yB)/2)",
+     "w": "aec414ce",
+     "wq": "c35214a4",
+     "wrongs": [
+      "((xB − xA)/2 ; (yB − yA)/2)",
+      "(xA + xB ; yA + yB)",
+      "((xA × xB)/2 ; (yA × yB)/2)"
+     ]
     },
     {
      "question": "Comment calcule-t-on la distance AB dans un repère orthonormé ?",
-     "answer": "AB = √((xB − xA)² + (yB − yA)²)."
+     "answer": "√((xB − xA)² + (yB − yA)²)",
+     "w": "70645075",
+     "wrongs": [
+      "(xB − xA) + (yB − yA)",
+      "√((xB + xA)² + (yB + yA)²)",
+      "(xB − xA)² + (yB − yA)²"
+     ]
     },
     {
-     "question": "Quelle est la norme du vecteur u(x ; y) dans un repère orthonormé ?",
-     "answer": "||u|| = √(x² + y²)."
+     "question": "Quelle est la norme du vecteur u(x ; y) ?",
+     "answer": "√(x² + y²)",
+     "w": "d0891709",
+     "wq": "8733ff67",
+     "wrongs": [
+      "x² + y²",
+      "x + y",
+      "√(x + y)"
+     ]
     },
     {
-     "question": "Qu'est-ce que le déterminant de deux vecteurs u(x ; y) et v(x' ; y') ?",
-     "answer": "det(u, v) = x·y' − y·x'."
+     "question": "Que vaut le déterminant de u(x ; y) et v(x' ; y') ?",
+     "answer": "x·y' − y·x'",
+     "w": "4ebc5788",
+     "wq": "da1950df",
+     "wrongs": [
+      "x·x' + y·y'",
+      "x·y' + y·x'",
+      "x·x' − y·y'"
+     ]
     },
     {
-     "question": "Comment savoir si deux vecteurs sont colinéaires ?",
-     "answer": "det(u, v) = 0\nc'est-à-dire : il existe un réel k tel que v = k·u (ou u = 0).",
-     "w": "253ef456",
-     "wq": "953441b4"
+     "question": "Quand deux vecteurs sont-ils colinéaires ?",
+     "answer": "Quand leur déterminant est nul",
+     "w": [
+      "d2db91bd",
+      "253ef456"
+     ],
+     "wq": "953441b4",
+     "more": "Il existe alors un réel k tel que v = k·u (ou u = 0).",
+     "wrongs": [
+      "Quand leur déterminant vaut 1",
+      "Quand ils ont la même norme",
+      "Quand leur somme est nulle"
+     ]
     },
     {
-     "question": "Comment démontrer que trois points A, B, C sont alignés ?",
-     "answer": "On montre que les vecteurs AB et AC sont colinéaires (déterminant nul)."
+     "question": "Comment démontrer que A, B, C sont alignés ?",
+     "answer": "Montrer que AB et AC sont colinéaires",
+     "w": "bbe119dd",
+     "wq": "cd2ef6a3",
+     "wrongs": [
+      "Montrer que AB = AC",
+      "Montrer que AB et AC sont orthogonaux",
+      "Montrer que ABC est isocèle"
+     ]
     },
     {
-     "question": "Comment démontrer que deux droites (AB) et (CD) sont parallèles ?",
-     "answer": "On montre que les vecteurs AB et CD sont colinéaires."
+     "question": "Comment démontrer que (AB) et (CD) sont parallèles ?",
+     "answer": "Montrer que les vecteurs AB et CD sont colinéaires",
+     "w": "7c872cfd",
+     "wq": "c85c4381",
+     "wrongs": [
+      "Montrer que AB = CD (longueurs)",
+      "Montrer que AC = BD",
+      "Montrer que ABCD est un carré"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une équation cartésienne de droite ?",
-     "answer": "ax + by + c = 0, avec (a ; b) ≠ (0 ; 0)\nVecteur directeur : u(−b ; a)",
-     "w": "efec08e6",
-     "wq": "7a5fd276"
+     "question": "Quel est un vecteur directeur de la droite ax + by + c = 0 ?",
+     "answer": "u(−b ; a)",
+     "w": [
+      "f3584b76",
+      "efec08e6"
+     ],
+     "wq": "7a5fd276",
+     "wrongs": [
+      "u(a ; b)",
+      "u(b ; a)",
+      "u(a ; −c)"
+     ]
     },
     {
-     "question": "Quelle est la forme de l'équation réduite d'une droite non parallèle à l'axe des ordonnées ?",
-     "answer": "y = mx + p\n• m : coefficient directeur\n• p : ordonnée à l'origine",
-     "w": "6e7b319d",
-     "wq": "042f149e"
+     "question": "Dans l'équation réduite y = mx + p, que représente m ?",
+     "answer": "Le coefficient directeur",
+     "w": [
+      "4aadba14",
+      "6e7b319d"
+     ],
+     "wq": "042f149e",
+     "more": "p est l'ordonnée à l'origine.",
+     "wrongs": [
+      "L'ordonnée à l'origine",
+      "L'abscisse à l'origine",
+      "La longueur de la droite"
+     ]
     },
     {
-     "question": "Quelle est l'équation d'une droite parallèle à l'axe des ordonnées ?",
-     "answer": "x = c\n(c constante)",
-     "w": "4ec1d459",
-     "wq": "11067106"
+     "question": "Quelle est la forme de l'équation d'une droite parallèle à l'axe des ordonnées ?",
+     "answer": "x = c",
+     "w": [
+      "b3659b76",
+      "4ec1d459"
+     ],
+     "wq": "11067106",
+     "wrongs": [
+      "y = c",
+      "y = mx",
+      "y = x + c"
+     ]
     },
     {
-     "question": "Comment calcule-t-on le coefficient directeur de la droite (AB) avec xA ≠ xB ?",
-     "answer": "m = (yB − yA) / (xB − xA)."
+     "question": "Comment calcule-t-on le coefficient directeur de (AB) ?",
+     "answer": "m = (yB − yA) / (xB − xA)",
+     "w": "57e8c25f",
+     "wq": "b221ca61",
+     "wrongs": [
+      "m = (xB − xA) / (yB − yA)",
+      "m = (yB + yA) / (xB + xA)",
+      "m = yB × xA"
+     ]
     },
     {
-     "question": "Quand deux droites d'équations y = mx + p et y = m'x + p' sont-elles parallèles ?",
-     "answer": "Lorsqu'elles ont le même coefficient directeur : m = m'."
+     "question": "Quand les droites y = mx + p et y = m'x + p' sont-elles parallèles ?",
+     "answer": "Quand m = m'",
+     "w": "8f42c652",
+     "wq": "ac7b4938",
+     "wrongs": [
+      "Quand p = p'",
+      "Quand m × m' = −1",
+      "Quand m + m' = 0"
+     ]
     },
     {
-     "question": "Comment résoudre graphiquement un système de deux équations linéaires à deux inconnues ?",
-     "answer": "Chaque équation représente une droite.\nSolution : les coordonnées du point d'intersection.\n• droites strictement parallèles : aucune solution\n• droites confondues : une infinité",
-     "w": "e66d418d",
-     "wq": "8fc646a0"
+     "question": "Que donne graphiquement la solution d'un système de deux équations linéaires ?",
+     "answer": "Les coordonnées du point d'intersection des deux droites",
+     "w": [
+      "5d76f5f3",
+      "e66d418d"
+     ],
+     "wq": "8fc646a0",
+     "wrongs": [
+      "La pente des droites",
+      "L'ordonnée à l'origine",
+      "La distance entre les droites"
+     ]
+    },
+    {
+     "question": "Combien de solutions a un système si les deux droites sont strictement parallèles ?",
+     "answer": "Aucune",
+     "more": "Droites confondues : une infinité.",
+     "wrongs": [
+      "Une seule",
+      "Deux",
+      "Une infinité"
+     ]
     }
    ]
   },
@@ -44807,98 +46363,235 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce que l'image d'un nombre a par une fonction f ?",
-     "answer": "Le nombre f(a)\nTout nombre de l'ensemble de définition a une seule image.",
-     "w": "5941b6fe",
-     "wq": "5ce8d61e"
+     "question": "Combien d'images un nombre a-t-il par une fonction ?",
+     "answer": "Une seule",
+     "w": [
+      "5f681f2d",
+      "5941b6fe"
+     ],
+     "wq": "5ce8d61e",
+     "wrongs": [
+      "Aucune ou plusieurs",
+      "Toujours deux",
+      "Une infinité"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un antécédent de b par f ?",
-     "answer": "Un nombre x tel que f(x) = b\nIl peut y en avoir zéro, un ou plusieurs.",
-     "w": "ed350059",
-     "wq": "e7828c05"
+     "question": "Combien d'antécédents un nombre peut-il avoir par une fonction ?",
+     "answer": "Zéro, un ou plusieurs",
+     "w": [
+      "943fac35",
+      "ed350059"
+     ],
+     "wq": "e7828c05",
+     "wrongs": [
+      "Exactement un",
+      "Toujours deux",
+      "Aucun"
+     ]
     },
     {
-     "question": "Comment lire graphiquement les solutions de l'équation f(x) = k ?",
-     "answer": "Les abscisses des points d'intersection\nde la courbe de f avec la droite horizontale y = k.",
-     "w": "d3acfedf",
-     "wq": "8ceec25c"
+     "question": "Comment lire graphiquement les solutions de f(x) = k ?",
+     "answer": "Les abscisses des points d'intersection de la courbe avec la droite y = k",
+     "w": [
+      "a27e6b3e",
+      "d3acfedf"
+     ],
+     "wq": "8ceec25c",
+     "wrongs": [
+      "Les ordonnées des points de la courbe",
+      "L'ordonnée à l'origine",
+      "La pente de la courbe"
+     ]
     },
     {
-     "question": "Quand dit-on qu'une fonction f est croissante sur un intervalle I ?",
-     "answer": "Pour tous a et b de I : a < b ⇒ f(a) ≤ f(b)\nf conserve l'ordre.",
-     "w": "111005e1",
-     "wq": "29dfd1c0"
+     "question": "Quand f est-elle croissante sur I ?",
+     "answer": "Si a < b ⇒ f(a) ≤ f(b) pour tous a, b de I",
+     "w": [
+      "e90f9f02",
+      "111005e1"
+     ],
+     "wq": "29dfd1c0",
+     "more": "f conserve l'ordre.",
+     "wrongs": [
+      "Si a < b ⇒ f(a) ≥ f(b)",
+      "Si f(a) = f(b) pour tous a, b",
+      "Si f(x) > 0 sur I"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un maximum de f sur I ?",
-     "answer": "Une valeur M = f(a), avec a dans I,\ntelle que f(x) ≤ M pour tout x de I.",
-     "w": "5196f5d0",
-     "wq": "7f718fde"
+     "question": "Qu'est-ce que le maximum de f sur I ?",
+     "answer": "Une valeur M = f(a) telle que f(x) ≤ M pour tout x de I",
+     "w": [
+      "3c8dafa4",
+      "5196f5d0"
+     ],
+     "wq": "7f718fde",
+     "wrongs": [
+      "La plus grande valeur de x dans I",
+      "Une valeur M telle que f(x) ≥ M",
+      "La valeur de f en 0"
+     ]
     },
     {
-     "question": "Quel est le sens de variation de la fonction affine f(x) = mx + p ?",
-     "answer": "• m > 0 : croissante\n• m < 0 : décroissante\n• m = 0 : constante",
-     "w": "32cecb13",
-     "wq": "6e01d5fa"
+     "question": "Si m > 0, comment varie la fonction affine f(x) = mx + p ?",
+     "answer": "Elle est croissante",
+     "w": [
+      "fb46bcb5",
+      "32cecb13"
+     ],
+     "wq": "6e01d5fa",
+     "more": "m < 0 : décroissante ; m = 0 : constante.",
+     "wrongs": [
+      "Elle est décroissante",
+      "Elle est constante",
+      "Elle change de sens en 0"
+     ]
     },
     {
-     "question": "Quelles sont les variations de la fonction carré x ↦ x² ?",
-     "answer": "• Décroissante sur ]−∞ ; 0]\n• Croissante sur [0 ; +∞[\nMinimum 0 atteint en 0. Courbe : une parabole.",
-     "w": "0d8b019b",
-     "wq": "39446654"
+     "question": "Quelles sont les variations de la fonction carré ?",
+     "answer": "Décroissante sur ]−∞ ; 0], croissante sur [0 ; +∞[",
+     "w": [
+      "f7133cb3",
+      "0d8b019b"
+     ],
+     "wq": "39446654",
+     "more": "Minimum 0 en 0 ; courbe : une parabole.",
+     "wrongs": [
+      "Croissante sur R",
+      "Croissante sur ]−∞ ; 0], décroissante sur [0 ; +∞[",
+      "Décroissante sur R"
+     ]
     },
     {
-     "question": "Quelles sont les variations de la fonction inverse x ↦ 1/x ?",
-     "answer": "Définie sur R privé de 0.\n• Décroissante sur ]−∞ ; 0[\n• Décroissante sur ]0 ; +∞[\nCourbe : une hyperbole.",
-     "w": "566816d1",
-     "wq": "3704f807"
+     "question": "Quelles sont les variations de la fonction inverse ?",
+     "answer": "Décroissante sur ]−∞ ; 0[ et sur ]0 ; +∞[",
+     "w": [
+      "61ba81e8",
+      "566816d1"
+     ],
+     "wq": "3704f807",
+     "more": "Courbe : une hyperbole.",
+     "wrongs": [
+      "Croissante sur ]−∞ ; 0[ et sur ]0 ; +∞[",
+      "Décroissante sur R",
+      "Croissante sur R"
+     ]
     },
     {
-     "question": "Quel est l'ensemble de définition et le sens de variation de la fonction racine carrée ?",
-     "answer": "Définie sur [0 ; +∞[\nCroissante sur cet intervalle.",
-     "w": "9655a682",
-     "wq": "5d0a5392"
+     "question": "Sur quel intervalle la fonction racine carrée est-elle définie ?",
+     "answer": "[0 ; +∞[",
+     "w": [
+      "e11dc800",
+      "9655a682"
+     ],
+     "wq": "5d0a5392",
+     "more": "Elle y est croissante.",
+     "wrongs": [
+      "R",
+      "]0 ; +∞[",
+      "]−∞ ; 0]"
+     ]
     },
     {
-     "question": "Quel est le sens de variation de la fonction cube x ↦ x³ ?",
-     "answer": "Elle est croissante sur R."
+     "question": "Quel est le sens de variation de la fonction cube ?",
+     "answer": "Croissante sur R",
+     "w": "69437f7f",
+     "wq": "558dd7eb",
+     "wrongs": [
+      "Décroissante sur R",
+      "Décroissante puis croissante",
+      "Croissante puis décroissante"
+     ]
     },
     {
-     "question": "Comment se placent x, x² et x³ pour x dans [0 ; 1] ?",
-     "answer": "x³ ≤ x² ≤ x\nSur [0 ; 1], une puissance plus grande donne un nombre plus petit.\n(C'est l'inverse pour x ≥ 1.)",
-     "w": "0b76e515",
-     "wq": "9d077234"
+     "question": "Pour x dans [0 ; 1], comment se rangent x, x² et x³ ?",
+     "answer": "x³ ≤ x² ≤ x",
+     "w": [
+      "afdaaccc",
+      "0b76e515"
+     ],
+     "wq": "9d077234",
+     "more": "C'est l'inverse pour x ≥ 1.",
+     "wrongs": [
+      "x ≤ x² ≤ x³",
+      "x² ≤ x ≤ x³",
+      "x = x² = x³"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une fonction paire ? Quel est l'effet sur sa courbe ?",
-     "answer": "f(−x) = f(x) pour tout x (ensemble de définition symétrique par rapport à 0).\nCourbe symétrique par rapport à l'axe des ordonnées.\nEx. : x²",
-     "w": "442432ee",
-     "wq": "b5997837"
+     "question": "Quelle symétrie a la courbe d'une fonction paire ?",
+     "answer": "Symétrique par rapport à l'axe des ordonnées",
+     "w": [
+      "98cb58ac",
+      "442432ee"
+     ],
+     "wq": "b5997837",
+     "more": "f(−x) = f(x). Ex. : x².",
+     "wrongs": [
+      "Symétrique par rapport à l'origine",
+      "Symétrique par rapport à l'axe des abscisses",
+      "Aucune symétrie"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une fonction impaire ? Quel est l'effet sur sa courbe ?",
-     "answer": "f(−x) = −f(x) pour tout x.\nCourbe symétrique par rapport à l'origine.\nEx. : x³, 1/x",
-     "w": "e7b5f572",
-     "wq": "e6650d51"
+     "question": "Quelle symétrie a la courbe d'une fonction impaire ?",
+     "answer": "Symétrique par rapport à l'origine",
+     "w": [
+      "8fd1b71e",
+      "e7b5f572"
+     ],
+     "wq": "e6650d51",
+     "more": "f(−x) = −f(x). Ex. : x³, 1/x.",
+     "wrongs": [
+      "Symétrique par rapport à l'axe des ordonnées",
+      "Symétrique par rapport à la droite y = x",
+      "Aucune symétrie"
+     ]
     },
     {
-     "question": "Comment résoudre l'équation x² = a ?",
-     "answer": "• a > 0 : deux solutions, √a et −√a\n• a = 0 : une solution, 0\n• a < 0 : aucune solution réelle",
-     "w": "9c1bccb1",
-     "wq": "beed8d47"
+     "question": "Combien de solutions a l'équation x² = a si a > 0 ?",
+     "answer": "Deux : √a et −√a",
+     "w": [
+      "58211989",
+      "9c1bccb1"
+     ],
+     "wq": "beed8d47",
+     "more": "a = 0 : une solution ; a < 0 : aucune.",
+     "wrongs": [
+      "Une seule : √a",
+      "Aucune",
+      "Une infinité"
+     ]
     },
     {
-     "question": "Comment résoudre graphiquement l'inéquation f(x) > g(x) ?",
-     "answer": "On cherche les abscisses des points\noù la courbe de f est strictement au-dessus de celle de g.",
-     "w": "2aa0e450",
-     "wq": "4591db1b"
+     "question": "Comment résoudre graphiquement f(x) > g(x) ?",
+     "answer": "Chercher les abscisses où la courbe de f est au-dessus de celle de g",
+     "w": [
+      "d95b70ee",
+      "2aa0e450"
+     ],
+     "wq": "4591db1b",
+     "wrongs": [
+      "Chercher où les courbes se coupent seulement",
+      "Chercher où f est positive",
+      "Chercher l'ordonnée à l'origine"
+     ]
     },
     {
-     "question": "Pourquoi deux réels positifs sont-ils rangés dans le même ordre que leurs carrés ?",
-     "answer": "Car la fonction carré est croissante sur [0 ; +∞[ :\nsi 0 ≤ a ≤ b, alors a² ≤ b².",
-     "w": "0364663a",
-     "wq": "f0a06a1d"
+     "question": "Si 0 ≤ a ≤ b, comment se rangent a² et b² ?",
+     "answer": "a² ≤ b²",
+     "w": [
+      "a4f1856c",
+      "0364663a"
+     ],
+     "wq": "f0a06a1d",
+     "more": "La fonction carré est croissante sur [0 ; +∞[.",
+     "wrongs": [
+      "a² ≥ b²",
+      "a² = b²",
+      "On ne peut pas savoir"
+     ]
     }
    ]
   },
@@ -44921,96 +46614,233 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment calcule-t-on la moyenne d'une série de valeurs x(i) d'effectifs n(i) ?",
-     "answer": "x̄ = (n₁x₁ + n₂x₂ + … + nₚxₚ) / N\nN : l'effectif total",
-     "w": "fa067442",
-     "wq": "7a714301"
+     "question": "Comment calcule-t-on la moyenne d'une série de valeurs xᵢ d'effectifs nᵢ ?",
+     "answer": "(n₁x₁ + n₂x₂ + … + nₚxₚ) / N",
+     "w": [
+      "27d128d1",
+      "fa067442"
+     ],
+     "wq": "7a714301",
+     "more": "N : effectif total.",
+     "wrongs": [
+      "(x₁ + x₂ + … + xₚ) / p",
+      "(n₁ + n₂ + … + nₚ) / N",
+      "n₁x₁ × n₂x₂ × … / N"
+     ]
     },
     {
-     "question": "Qu'est-ce que la médiane d'une série ?",
-     "answer": "Une valeur qui partage la série ordonnée en deux groupes de même effectif :\n• au moins 50 % des valeurs lui sont inférieures ou égales\n• au moins 50 % lui sont supérieures ou égales",
-     "w": "254c3956",
-     "wq": "e00f89b0"
+     "question": "Que signifie la médiane d'une série ?",
+     "answer": "Au moins 50 % des valeurs lui sont inférieures ou égales, et au moins 50 % supérieures ou égales",
+     "w": [
+      "ba4657ab",
+      "254c3956"
+     ],
+     "wq": "e00f89b0",
+     "wrongs": [
+      "C'est la valeur la plus fréquente",
+      "C'est la moyenne",
+      "C'est l'écart entre les valeurs extrêmes"
+     ]
     },
     {
      "question": "Comment définit-on le premier quartile Q1 ?",
-     "answer": "La plus petite valeur de la série\ntelle qu'au moins 25 % des valeurs lui soient inférieures ou égales.",
-     "w": "76022dbd",
-     "wq": "42feb6a6"
+     "answer": "La plus petite valeur telle qu'au moins 25 % des valeurs lui soient inférieures ou égales",
+     "w": [
+      "360440c1",
+      "76022dbd"
+     ],
+     "wrongs": [
+      "La plus petite valeur de la série",
+      "La moyenne des 25 % premières valeurs",
+      "La valeur qui partage la série en deux"
+     ]
     },
     {
      "question": "Qu'est-ce que l'écart interquartile ?",
-     "answer": "Q3 − Q1\nIl mesure la dispersion des 50 % de valeurs centrales,\nsans être sensible aux valeurs extrêmes.",
-     "w": "05658fc7",
-     "wq": "729a4b7e"
+     "answer": "Q3 − Q1",
+     "w": [
+      "78e563b7",
+      "05658fc7"
+     ],
+     "more": "Dispersion des 50 % de valeurs centrales, sans être sensible aux valeurs extrêmes.",
+     "wrongs": [
+      "Q3 + Q1",
+      "Valeur maximale − valeur minimale",
+      "Médiane − moyenne"
+     ]
     },
     {
-     "question": "Que mesure l'écart type d'une série ?",
-     "answer": "La dispersion des valeurs autour de la moyenne.\nPlus il est grand, plus les valeurs sont dispersées.\nC'est la racine carrée de la variance.",
-     "w": "4176d6e0",
-     "wq": "94a83959"
+     "question": "Que mesure l'écart type ?",
+     "answer": "La dispersion des valeurs autour de la moyenne",
+     "w": [
+      "347cf5a8",
+      "4176d6e0"
+     ],
+     "wq": "94a83959",
+     "more": "C'est la racine carrée de la variance.",
+     "wrongs": [
+      "La valeur centrale",
+      "La valeur la plus fréquente",
+      "L'effectif total"
+     ]
     },
     {
-     "question": "Comment calcule-t-on le taux d'évolution t entre une valeur de départ V0 et une valeur d'arrivée V1 ?",
-     "answer": "t = (V1 − V0) / V0\nsouvent exprimé en pourcentage.",
-     "w": "aa580383",
-     "wq": "b6de3974"
+     "question": "Quel est le taux d'évolution entre V0 et V1 ?",
+     "answer": "(V1 − V0) / V0",
+     "w": [
+      "756130c7",
+      "aa580383"
+     ],
+     "wq": "b6de3974",
+     "wrongs": [
+      "(V1 − V0) / V1",
+      "V1 / V0",
+      "V1 − V0"
+     ]
     },
     {
-     "question": "Quel est le coefficient multiplicateur associé à une hausse de 15 % ? à une baisse de 15 % ?",
-     "answer": "• Hausse de 15 % : CM = 1,15\n• Baisse de 15 % : CM = 0,85\nEn général : CM = 1 + t",
-     "w": "36eec991",
-     "wq": "fbee4e6b"
+     "question": "Quel est le coefficient multiplicateur d'une hausse de 15 % ?",
+     "answer": "1,15",
+     "w": [
+      "e59cdc38",
+      "36eec991"
+     ],
+     "wq": "fbee4e6b",
+     "wrongs": [
+      "0,15",
+      "1,5",
+      "0,85"
+     ]
     },
     {
-     "question": "Comment calcule-t-on le coefficient multiplicateur global de deux évolutions successives ?",
-     "answer": "On multiplie les coefficients : CM global = CM1 × CM2\nEx. : deux hausses de 10 % → × 1,21\nsoit + 21 % (et non + 20 %).",
-     "w": "50eeab60",
-     "wq": "b8cab5c3"
+     "question": "Quel est le coefficient multiplicateur d'une baisse de 15 % ?",
+     "answer": "0,85",
+     "wrongs": [
+      "1,15",
+      "0,15",
+      "−0,15"
+     ]
     },
     {
-     "question": "Qu'est-ce que le taux d'évolution réciproque ?",
-     "answer": "Le taux qui ramène à la valeur initiale : CM = 1 / CM initial.\nEx. : après une baisse de 20 % (× 0,8),\nil faut une hausse de 25 % (× 1,25).",
-     "w": "90644f5c",
-     "wq": "0d737c9d"
+     "question": "Comment obtient-on le coefficient multiplicateur global de deux évolutions successives ?",
+     "answer": "En multipliant les coefficients",
+     "w": [
+      "26c396b0",
+      "50eeab60"
+     ],
+     "wq": "b8cab5c3",
+     "more": "Ex. : deux hausses de 10 % → × 1,21, soit + 21 %.",
+     "wrongs": [
+      "En additionnant les coefficients",
+      "En additionnant les taux",
+      "En soustrayant les coefficients"
+     ]
     },
     {
-     "question": "Comment calculer la proportion de A dans B, puis de B dans C, pour obtenir celle de A dans C ?",
-     "answer": "On multiplie les proportions :\np(A dans C) = p(A dans B) × p(B dans C)",
-     "w": "fd237b26",
-     "wq": "bb99aa9b"
+     "question": "Après une baisse de 20 %, quelle hausse ramène à la valeur initiale ?",
+     "answer": "25 %",
+     "w": [
+      "48b295e8",
+      "90644f5c"
+     ],
+     "wq": "0d737c9d",
+     "more": "1 / 0,8 = 1,25",
+     "wrongs": [
+      "20 %",
+      "80 %",
+      "120 %"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une situation d'équiprobabilité ? Comment calcule-t-on alors P(A) ?",
-     "answer": "Toutes les issues ont la même probabilité.\nP(A) = issues favorables à A ÷ nombre total d'issues",
-     "w": "a62d5052",
-     "wq": "6efce0ca"
+     "question": "Comment obtient-on la proportion de A dans C à partir de celles de A dans B et de B dans C ?",
+     "answer": "On multiplie les deux proportions",
+     "w": [
+      "f2124576",
+      "fd237b26"
+     ],
+     "wq": "bb99aa9b",
+     "wrongs": [
+      "On additionne les deux proportions",
+      "On divise l'une par l'autre",
+      "On garde la plus petite"
+     ]
+    },
+    {
+     "question": "En situation d'équiprobabilité, comment calcule-t-on P(A) ?",
+     "answer": "Issues favorables ÷ nombre total d'issues",
+     "w": [
+      "8e0967c9",
+      "a62d5052"
+     ],
+     "wq": "6efce0ca",
+     "wrongs": [
+      "Nombre total d'issues ÷ issues favorables",
+      "Issues favorables × issues possibles",
+      "1 − issues favorables"
+     ]
     },
     {
      "question": "Que vaut la probabilité de l'événement contraire de A ?",
-     "answer": "P(Ā) = 1 − P(A)."
+     "answer": "1 − P(A)",
+     "w": "6d515fa1",
+     "wrongs": [
+      "P(A) − 1",
+      "−P(A)",
+      "1 / P(A)"
+     ]
     },
     {
      "question": "Quelle formule relie P(A ∪ B) et P(A ∩ B) ?",
-     "answer": "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)."
+     "answer": "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)",
+     "w": "22287288",
+     "wrongs": [
+      "P(A ∪ B) = P(A) + P(B) + P(A ∩ B)",
+      "P(A ∪ B) = P(A) × P(B)",
+      "P(A ∪ B) = P(A ∩ B) − P(A)"
+     ]
     },
     {
-     "question": "Que signifie que deux événements A et B sont incompatibles ?",
-     "answer": "A ∩ B est vide : ils ne peuvent pas se réaliser en même temps.\nAlors P(A ∪ B) = P(A) + P(B).",
-     "w": "9e666d28",
-     "wq": "45bbdc0c"
+     "question": "Que signifie que A et B sont incompatibles ?",
+     "answer": "Ils ne peuvent pas se réaliser en même temps",
+     "w": [
+      "403bf1bb",
+      "9e666d28"
+     ],
+     "wq": "45bbdc0c",
+     "more": "A ∩ B est vide, donc P(A ∪ B) = P(A) + P(B).",
+     "wrongs": [
+      "Ils ont la même probabilité",
+      "L'un est le contraire de l'autre",
+      "Ils se réalisent toujours ensemble"
+     ]
     },
     {
      "question": "Qu'est-ce que la fluctuation d'échantillonnage ?",
-     "answer": "La fréquence observée varie d'un échantillon à l'autre,\nmême pour des échantillons de même taille\nissus d'une même population.",
-     "w": "1de91c87",
-     "wq": "90fb7505"
+     "answer": "La fréquence observée varie d'un échantillon à l'autre",
+     "w": [
+      "e8deb61a",
+      "1de91c87"
+     ],
+     "more": "Même pour des échantillons de même taille issus d'une même population.",
+     "wrongs": [
+      "La probabilité change à chaque tirage",
+      "La population change de taille",
+      "Une erreur de calcul"
+     ]
     },
     {
-     "question": "Que dit le programme de Seconde sur l'écart entre fréquence observée f et probabilité p pour un échantillon de taille n ?",
-     "answer": "Pour n assez grand, dans environ 95 % des échantillons :\n|f − p| ≤ 1/√n",
-     "w": "e810b87b",
-     "wq": "623632a4"
+     "question": "Pour n assez grand, dans environ 95 % des échantillons, que vérifie l'écart |f − p| ?",
+     "answer": "|f − p| ≤ 1/√n",
+     "w": [
+      "0e229a09",
+      "e810b87b"
+     ],
+     "wq": "623632a4",
+     "wrongs": [
+      "|f − p| ≤ 1/n",
+      "|f − p| ≤ √n",
+      "|f − p| = 0"
+     ]
     }
    ]
   },
@@ -45034,105 +46864,256 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'un référentiel ?",
-     "answer": "L'objet de référence par rapport auquel on décrit un mouvement.\nIl est associé à un repère d'espace et à une horloge.",
-     "w": "b823d426",
-     "wq": "826b53d5"
+     "answer": "L'objet de référence par rapport auquel on décrit un mouvement",
+     "w": [
+      "e1b1b2f8",
+      "b823d426"
+     ],
+     "more": "Associé à un repère d'espace et à une horloge.",
+     "wrongs": [
+      "La vitesse de l'objet",
+      "La trajectoire de l'objet",
+      "La masse de l'objet"
+     ]
     },
     {
      "question": "Pourquoi dit-on que le mouvement est relatif ?",
-     "answer": "La trajectoire et la vitesse dépendent du référentiel choisi.\nEx. : un passager assis est immobile dans le référentiel du train,\nmais en mouvement par rapport au sol.",
-     "w": "5535d7b8",
-     "wq": "e681dcc4"
+     "answer": "Trajectoire et vitesse dépendent du référentiel choisi",
+     "w": [
+      "3af62271",
+      "5535d7b8"
+     ],
+     "more": "Un passager assis est immobile dans le train, mais en mouvement par rapport au sol.",
+     "wrongs": [
+      "Parce que la vitesse est toujours constante",
+      "Parce que tout objet est immobile",
+      "Parce que la trajectoire est toujours une droite"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un mouvement rectiligne uniforme ?",
-     "answer": "• Trajectoire : une droite\n• Vitesse : constante",
-     "w": "672b8acf",
-     "wq": "e97ac669"
+     "answer": "Une trajectoire droite à vitesse constante",
+     "w": [
+      "d96e6d0f",
+      "672b8acf"
+     ],
+     "wrongs": [
+      "Une trajectoire circulaire à vitesse constante",
+      "Une trajectoire droite à vitesse croissante",
+      "Un mouvement sans trajectoire"
+     ]
     },
     {
-     "question": "Comment est défini le vecteur vitesse moyenne d'un point entre deux positions M et M' ?",
-     "answer": "v = MM' / Δt (en vecteurs)\nMême direction et même sens que MM',\nde norme MM' / Δt.",
-     "w": "332cf8f8",
-     "wq": "d578dbab"
+     "question": "Comment est défini le vecteur vitesse moyenne entre M et M' ?",
+     "answer": "v = MM' / Δt (en vecteurs)",
+     "w": [
+      "b40c41b7",
+      "332cf8f8"
+     ],
+     "wq": "d578dbab",
+     "wrongs": [
+      "v = Δt / MM'",
+      "v = MM' × Δt",
+      "v = MM' + Δt"
+     ]
     },
     {
-     "question": "Comment convertir une vitesse de km/h en m/s ?",
-     "answer": "On divise par 3,6.\nEx. : 72 km/h = 20 m/s",
-     "w": "226d5a06",
-     "wq": "358a6ea0"
+     "question": "Combien font 72 km/h en m/s ?",
+     "answer": "20 m/s",
+     "w": [
+      "f76308ef",
+      "226d5a06"
+     ],
+     "wq": "358a6ea0",
+     "more": "On divise par 3,6.",
+     "wrongs": [
+      "259,2 m/s",
+      "72 m/s",
+      "7,2 m/s"
+     ]
     },
     {
-     "question": "Énoncer le principe d'inertie.",
-     "answer": "Dans un référentiel galiléen, si les forces se compensent (ou sont absentes),\nle système est immobile ou en mouvement rectiligne uniforme.\nEt réciproquement.",
-     "w": "75a90695",
-     "wq": "6677b199"
+     "question": "Que dit le principe d'inertie ?",
+     "answer": "Si les forces se compensent, le système est immobile ou en mouvement rectiligne uniforme",
+     "w": [
+      "ff357ad5",
+      "75a90695"
+     ],
+     "wq": "6677b199",
+     "more": "Dans un référentiel galiléen, et réciproquement.",
+     "wrongs": [
+      "Si les forces se compensent, le système s'arrête toujours",
+      "Un système accélère toujours",
+      "Les forces sont toujours nulles"
+     ]
     },
     {
-     "question": "Que dit la contraposée du principe d'inertie ?",
-     "answer": "Si la vitesse d'un système varie (en valeur ou en direction),\nles forces qui s'exercent sur lui ne se compensent pas.",
-     "w": "0c439855",
-     "wq": "280a2ffa"
+     "question": "Si la vitesse d'un système varie, que peut-on dire des forces ?",
+     "answer": "Elles ne se compensent pas",
+     "w": [
+      "dafd7f26",
+      "0c439855"
+     ],
+     "wq": "280a2ffa",
+     "more": "C'est la contraposée du principe d'inertie.",
+     "wrongs": [
+      "Elles se compensent",
+      "Elles sont nulles",
+      "On ne peut rien dire"
+     ]
     },
     {
-     "question": "Énoncer le principe des actions réciproques (3e loi de Newton).",
-     "answer": "Si A exerce une force sur B, B exerce sur A une force\nde même direction, de même valeur, de sens opposé :\nF(A/B) = −F(B/A)",
-     "w": "a896e26b",
-     "wq": "45073678"
+     "question": "Que dit le principe des actions réciproques ?",
+     "answer": "F(A/B) = −F(B/A)",
+     "w": [
+      "ee7cac7e",
+      "a896e26b"
+     ],
+     "wq": "45073678",
+     "more": "Même direction, même valeur, sens opposé.",
+     "wrongs": [
+      "F(A/B) = F(B/A)",
+      "F(A/B) = 0",
+      "F(A/B) = 2 F(B/A)"
+     ]
     },
     {
-     "question": "Quelle est l'expression de la force d'interaction gravitationnelle entre deux corps ?",
-     "answer": "F = G × mA × mB / d²\n• G ≈ 6,67 × 10⁻¹¹ N·m²·kg⁻²\n• masses en kg, distance d en m",
-     "w": "e6db5b31",
-     "wq": "1a34a128"
+     "question": "Quelle est l'expression de la force gravitationnelle entre deux corps ?",
+     "answer": "F = G × mA × mB / d²",
+     "w": [
+      "236ae434",
+      "e6db5b31"
+     ],
+     "wq": "1a34a128",
+     "more": "G ≈ 6,67 × 10⁻¹¹ N·m²·kg⁻².",
+     "wrongs": [
+      "F = G × mA × mB / d",
+      "F = G × (mA + mB) / d²",
+      "F = mA × mB × d²"
+     ]
     },
     {
-     "question": "Quelle relation lie le poids P et la masse m ? Quelle est la valeur de g sur Terre ?",
-     "answer": "P = m × g\nP en N, m en kg\ng ≈ 9,8 N/kg à la surface de la Terre",
-     "w": "87e1ba90",
-     "wq": "43dd8e2b"
+     "question": "Quelle relation lie le poids et la masse ?",
+     "answer": "P = m × g",
+     "w": [
+      "ab84e43c",
+      "87e1ba90"
+     ],
+     "wq": "43dd8e2b",
+     "wrongs": [
+      "P = m / g",
+      "P = m + g",
+      "P = g / m"
+     ]
     },
     {
-     "question": "Quelles sont les caractéristiques d'une force modélisée par un vecteur ?",
-     "answer": "• Un point d'application\n• Une direction\n• Un sens\n• Une valeur (en newtons, N)",
-     "w": "bc38b4bc",
-     "wq": "c48cbd4c"
+     "question": "Quelle est la valeur de g à la surface de la Terre ?",
+     "answer": "Environ 9,8 N/kg",
+     "wrongs": [
+      "Environ 1,6 N/kg",
+      "Environ 98 N/kg",
+      "Environ 0,98 N/kg"
+     ]
+    },
+    {
+     "question": "Quelles sont les caractéristiques d'une force ?",
+     "answer": "Point d'application, direction, sens, valeur",
+     "w": [
+      "57be02a9",
+      "bc38b4bc"
+     ],
+     "wq": "c48cbd4c",
+     "wrongs": [
+      "Masse, volume, couleur",
+      "Vitesse, durée, distance",
+      "Valeur seulement"
+     ]
     },
     {
      "question": "Un son peut-il se propager dans le vide ?",
-     "answer": "Non : c'est une onde mécanique.\nIl lui faut un milieu matériel (air, eau, solide).",
-     "w": "4ad24d82",
-     "wq": "2b6cdc82"
+     "answer": "Non, c'est une onde mécanique",
+     "w": [
+      "3d5815b0",
+      "4ad24d82"
+     ],
+     "more": "Il lui faut un milieu matériel.",
+     "wrongs": [
+      "Oui, comme la lumière",
+      "Oui, plus vite que dans l'air",
+      "Seulement s'il est aigu"
+     ]
     },
     {
-     "question": "Quelle est la vitesse approximative du son dans l'air ?",
-     "answer": "Environ 340 m/s dans l'air à 20 °C\n(environ 1 500 m/s dans l'eau)",
-     "w": "1fa35f00",
-     "wq": "d1ef88ff"
+     "question": "Quelle est la vitesse du son dans l'air à 20 °C ?",
+     "answer": "Environ 340 m/s",
+     "w": [
+      "26f3027c",
+      "1fa35f00"
+     ],
+     "wq": "d1ef88ff",
+     "more": "Environ 1 500 m/s dans l'eau.",
+     "wrongs": [
+      "Environ 3 × 10⁸ m/s",
+      "Environ 1 500 m/s",
+      "Environ 34 m/s"
+     ]
     },
     {
-     "question": "Quelle relation lie la fréquence f et la période T d'un signal périodique ?",
-     "answer": "f = 1/T\nf en hertz (Hz), T en secondes (s)",
-     "w": "38a47baa",
-     "wq": "de01324e"
+     "question": "Quelle relation lie la fréquence f et la période T ?",
+     "answer": "f = 1/T",
+     "w": [
+      "24a49706",
+      "38a47baa"
+     ],
+     "wq": "de01324e",
+     "wrongs": [
+      "f = T",
+      "f = 2T",
+      "f = T²"
+     ]
     },
     {
-     "question": "Quel est le domaine de fréquences audibles par l'oreille humaine ?",
-     "answer": "De 20 Hz à 20 kHz environ\n• en dessous : infrasons\n• au-dessus : ultrasons",
-     "w": "68e85409",
-     "wq": "9a5d6975"
+     "question": "Quel est le domaine des fréquences audibles par l'oreille humaine ?",
+     "answer": "De 20 Hz à 20 kHz environ",
+     "w": [
+      "9cf93bce",
+      "68e85409"
+     ],
+     "wq": "9a5d6975",
+     "more": "En dessous : infrasons ; au-dessus : ultrasons.",
+     "wrongs": [
+      "De 0 à 200 Hz",
+      "De 20 kHz à 200 kHz",
+      "De 2 Hz à 2 kHz"
+     ]
     },
     {
      "question": "Quelle est la vitesse de la lumière dans le vide ?",
-     "answer": "c = 3,00 × 10⁸ m/s",
-     "w": "d2852686",
-     "wq": "3ad96947"
+     "answer": "3,00 × 10⁸ m/s",
+     "w": [
+      "194df320",
+      "d2852686"
+     ],
+     "wrongs": [
+      "340 m/s",
+      "3,00 × 10⁵ m/s",
+      "3,00 × 10⁸ km/s"
+     ]
     },
     {
-     "question": "Énoncer la loi de Snell-Descartes pour la réfraction.",
-     "answer": "n₁ × sin(i₁) = n₂ × sin(i₂)\n• n₁, n₂ : indices de réfraction des milieux\n• i₁, i₂ : angles par rapport à la normale",
-     "w": "70dbe24f",
-     "wq": "d9c167cc"
+     "question": "Quelle est la loi de Snell-Descartes pour la réfraction ?",
+     "answer": "n₁ × sin(i₁) = n₂ × sin(i₂)",
+     "w": [
+      "55a41fbc",
+      "70dbe24f"
+     ],
+     "wq": "d9c167cc",
+     "more": "Angles mesurés par rapport à la normale.",
+     "wrongs": [
+      "n₁ × i₁ = n₂ × i₂",
+      "n₁ × cos(i₁) = n₂ × cos(i₂)",
+      "sin(i₁) = sin(i₂)"
+     ]
     }
    ]
   },
