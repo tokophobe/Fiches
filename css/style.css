@@ -9098,7 +9098,7 @@ body.is-view-home .desk { background-color: var(--home-bg-color, var(--app-bg-co
    teinte reste la même (on mélange avec un gris très foncé). En mode
    nuit, rien ne change. */
 :root {
-  --rating-again-ico: color-mix(in srgb, var(--rating-again-color, var(--terracotta)) 58%, #1f2937);
+  --rating-again-ico: color-mix(in srgb, var(--rating-again-color, var(--terracotta)) 76%, #1f2937);
   --rating-hard-ico: color-mix(in srgb, var(--rating-hard-color, var(--amber)) 66%, #1f2937);
   --rating-good-ico: color-mix(in srgb, var(--rating-good-color, var(--sage)) 74%, #1f2937);
   --rating-easy-ico: var(--rating-easy-color, var(--teal));

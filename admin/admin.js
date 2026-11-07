@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v251";
+  const ADMIN_VERSION = "v273";
   async function checkAdminVersion() {
     const label = $("#sidebar-version");
     if (label) label.textContent = `Darwin Admin ${ADMIN_VERSION}`;
@@ -1967,13 +1967,76 @@
     pickBtn.addEventListener("click", () => fileInput.click());
     fileInput.addEventListener("change", () => {
       const f = fileInput.files && fileInput.files[0];
+      if (f) remotePack = null;
       fileName.textContent = f ? `${f.name} (${Math.round(f.size / 1024)} Ko)` : "Aucun fichier choisi";
+    });
+    // v273 : « Importer la dernière version » lit le fichier directement
+    // dans le dépôt privé GitHub (tokophobe/Fiches-contenu), avec une clé
+    // d'accès en lecture seule enregistrée SEULEMENT dans ce navigateur.
+    const remoteBtn = h("button", { type: "button", class: "btn btn--primary" }, "Importer la dernière version");
+    const tokenInput = h("input", { type: "password", placeholder: "github_pat_…", autocomplete: "off", style: "min-width:260px" });
+    const tokenSave = h("button", { type: "button", class: "btn" }, "Enregistrer la clé");
+    const tokenForget = h("button", { type: "button", class: "btn" }, "Oublier la clé");
+    const tokenState = h("span", { class: "muted" });
+    const tokenBox = h(
+      "details",
+      null,
+      h("summary", null, "Clé d'accès au dépôt privé"),
+      h(
+        "p",
+        { class: "muted" },
+        "Sur GitHub : Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token. Repository access : « Only select repositories » → Fiches-contenu. Permissions : Contents → Read-only. Copie la clé ici : elle reste dans ce navigateur, elle n'est jamais envoyée ailleurs qu'à GitHub."
+      ),
+      h("div", { class: "toolbar" }, tokenInput, tokenSave, tokenForget, tokenState)
+    );
+    const refreshTokenState = () => {
+      const has = !!packRepoToken();
+      tokenState.textContent = has ? "Clé enregistrée." : "Aucune clé enregistrée.";
+      tokenForget.disabled = !has;
+      if (!has) tokenBox.open = true;
+    };
+    tokenSave.addEventListener("click", () => {
+      const v = tokenInput.value.trim();
+      if (!v) return;
+      try {
+        localStorage.setItem(PACK_REPO_TOKEN_KEY, v);
+      } catch (e) {}
+      tokenInput.value = "";
+      refreshTokenState();
+    });
+    tokenForget.addEventListener("click", () => {
+      try {
+        localStorage.removeItem(PACK_REPO_TOKEN_KEY);
+      } catch (e) {}
+      refreshTokenState();
+    });
+    refreshTokenState();
+    remoteBtn.addEventListener("click", async () => {
+      if (!packRepoToken()) {
+        tokenBox.open = true;
+        out.replaceChildren(h("p", { class: "form-error" }, "Enregistre d'abord la clé d'accès au dépôt privé (ci-dessous)."));
+        return;
+      }
+      remoteBtn.disabled = true;
+      out.replaceChildren(h("p", { class: "muted" }, "Téléchargement de la dernière version depuis le dépôt privé…"));
+      try {
+        const got = await fetchRemotePack();
+        remotePack = got.pack;
+        fileInput.value = "";
+        fileName.textContent = `Dernière version du dépôt privé${got.date ? ` (${got.date})` : ""} : ${got.pack.boxes.length} boîtes`;
+        remoteBtn.disabled = false;
+        analyse.click();
+      } catch (e) {
+        remoteBtn.disabled = false;
+        out.replaceChildren(h("p", { class: "form-error" }, e.message));
+      }
     });
     root.appendChild(
       card(
         "Publication dans la Librairie",
-        "Le fichier bibliotheque.json (zip « contenu » livré avec chaque version, il n'est plus en ligne avec l'appli) contient les boîtes toutes prêtes. Elles sont publiées au nom de « darwin ». Une boîte déjà publiée garde sa place et l'identifiant de ses fiches : son nom, son résumé, son classement et le texte de ses fiches sont mis à jour.",
-        h("div", { class: "toolbar" }, pickBtn, fileName, fileInput, analyse),
+        "Les boîtes toutes prêtes sont dans le fichier bibliotheque.json, rangé dans le dépôt privé Fiches-contenu (jamais en ligne avec l'appli). « Importer la dernière version » le lit directement là-bas puis l'analyse ; « Choisir le fichier… » reste possible avec un fichier sur l'ordinateur. Les boîtes sont publiées au nom de « darwin ». Une boîte déjà publiée garde sa place et l'identifiant de ses fiches : son nom, son résumé, son classement et le texte de ses fiches sont mis à jour.",
+        h("div", { class: "toolbar" }, remoteBtn, h("span", { class: "muted" }, "ou"), pickBtn, fileName, fileInput, analyse),
+        tokenBox,
         out,
         log
       )
@@ -2120,7 +2183,50 @@
      comprises). Il est livré à part (zip « contenu ») et choisi ici ; à
      défaut, on essaie encore ../packs/bibliotheque.json (copie locale de
      développement). */
+  /* v273 : dernière version du fichier dans le dépôt privé GitHub. */
+  const PACK_REPO = "tokophobe/Fiches-contenu";
+  const PACK_REPO_FILE = "bibliotheque.json";
+  const PACK_REPO_TOKEN_KEY = "darwin_admin_pack_repo_token";
+  let remotePack = null;
+  function packRepoToken() {
+    try {
+      return localStorage.getItem(PACK_REPO_TOKEN_KEY) || "";
+    } catch (e) {
+      return "";
+    }
+  }
+  async function fetchRemotePack() {
+    const headers = { Authorization: `Bearer ${packRepoToken()}`, "X-GitHub-Api-Version": "2022-11-28" };
+    const base = `https://api.github.com/repos/${PACK_REPO}`;
+    let res;
+    try {
+      res = await fetch(`${base}/contents/${PACK_REPO_FILE}`, { headers: { ...headers, Accept: "application/vnd.github.raw+json" }, cache: "no-store" });
+    } catch (e) {
+      throw new Error("GitHub ne répond pas (connexion internet ?).");
+    }
+    if (res.status === 401) throw new Error("Clé refusée par GitHub (expirée ou mal copiée) : enregistre une nouvelle clé.");
+    if (res.status === 403) throw new Error("GitHub refuse l'accès : la clé doit avoir le droit « Contents : Read-only » sur Fiches-contenu.");
+    if (res.status === 404) throw new Error("Fichier introuvable : vérifie que la clé donne accès au dépôt Fiches-contenu et que bibliotheque.json y est bien.");
+    if (!res.ok) throw new Error(`GitHub a répondu une erreur (${res.status}).`);
+    let pack;
+    try {
+      pack = JSON.parse(await res.text());
+    } catch (e) {
+      throw new Error("Le fichier du dépôt n'est pas un fichier de boîtes valide (JSON illisible).");
+    }
+    if (!pack || !Array.isArray(pack.boxes)) throw new Error("Le fichier du dépôt ne contient pas de boîtes (champ « boxes » absent).");
+    // Date de la dernière modification du fichier (pour information).
+    let date = "";
+    try {
+      const c = await fetch(`${base}/commits?path=${PACK_REPO_FILE}&per_page=1`, { headers: { ...headers, Accept: "application/vnd.github+json" }, cache: "no-store" });
+      const list = c.ok ? await c.json() : [];
+      const when = list[0] && list[0].commit && list[0].commit.committer && list[0].commit.committer.date;
+      if (when) date = `modifié le ${new Date(when).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}`;
+    } catch (e) {}
+    return { pack, date };
+  }
   async function loadPackFile(file) {
+    if (!file && remotePack) return remotePack;
     if (file) {
       const text = await file.text();
       try {

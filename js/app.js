@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v272";
+  const APP_VERSION = "v273";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -7801,9 +7801,9 @@
   // téléphone, le texte d'aide au survol n'existe pas). Sa bulle reste
   // affichée tant qu'on ne la ferme pas (croix ou toucher sur la bulle).
   const ORG_FILTER_TIPS = {
-    rev: "Je laisse en couleur les boîtes activées pour la révision : ce sont celles que je te fais réviser. Les autres sont grisées.",
-    published: "Je laisse en couleur tes boîtes publiées dans la Librairie. Les autres sont grisées.",
-    unpublished: "Je laisse en couleur tes boîtes pas encore publiées dans la Librairie. Les autres sont grisées.",
+    rev: "Affichage des boîtes activées pour la révision.",
+    published: "Affichage des boîtes publiées dans la Librairie.",
+    unpublished: "Affichage des boîtes non publiées dans la Librairie.",
   };
   function showRobotTip(text) {
     bodyLogoSpeechTip = true;
@@ -7815,7 +7815,7 @@
     btn.addEventListener("click", () => {
       const mode = orgFilter === btn.dataset.orgFilter ? "none" : btn.dataset.orgFilter;
       setOrgFilter(mode);
-      if (ORG_FILTER_TIPS[mode]) showRobotTip(`${ORG_FILTER_TIPS[mode]} Touche à nouveau ce bouton pour tout réafficher.`);
+      if (ORG_FILTER_TIPS[mode]) showRobotTip(ORG_FILTER_TIPS[mode]);
       else if (bodyLogoSpeechTip) closeBodyLogoSpeech();
     });
   });
@@ -8012,7 +8012,15 @@
       }
       if (view === "review-hub") renderReviewHub();
       if (view === "review-guide") renderReviewGuide();
-      if (view === "review-hub") renderReviewExplain();
+      if (view === "review-hub") {
+        // v273 : on arrive toujours sur les trois ronds (les explications ne
+        // restent pas ouvertes d'une visite à l'autre), en haut de la page.
+        const hub = el("view-review-hub");
+        if (hub && hub.classList.contains("is-explaining")) setReviewExplain(false, false);
+        renderReviewExplain();
+        window.scrollTo(0, 0);
+        requestAnimationFrame(() => window.scrollTo(0, 0));
+      }
       if (view === "review-hub" || view === "review-guide") renderReviewVariantSwitch();
       if (view === "subscriptions") renderSubscriptionsStatus();
       if (view === "defi") renderDefiView();
