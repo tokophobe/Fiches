@@ -122412,111 +122412,280 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'un litige ?",
-     "answer": "Un désaccord entre personnes sur l'existence ou l'étendue de leurs droits.\nIl se règle à l'amiable ou devant un juge.",
-     "w": "e8710f12",
-     "wq": "cf838bac"
+     "answer": "Un désaccord sur l'existence ou l'étendue de droits",
+     "w": [
+      "ccdf4807",
+      "e8710f12"
+     ],
+     "more": "Il se règle à l'amiable ou devant un juge.",
+     "wrongs": [
+      "Un contrat signé",
+      "Une loi votée",
+      "Une sanction pénale"
+     ]
     },
     {
-     "question": "Qui sont le demandeur et le défendeur ?",
-     "answer": "• Demandeur : engage l'action en justice\n• Défendeur : celui contre qui l'action est engagée",
-     "w": "f146caa9",
-     "wq": "ece57e99"
+     "question": "Comment appelle-t-on celui qui engage l'action en justice ?",
+     "answer": "Le demandeur",
+     "w": [
+      "7a6ef852",
+      "f146caa9"
+     ],
+     "wq": "ece57e99",
+     "more": "Le défendeur est celui contre qui l'action est engagée.",
+     "wrongs": [
+      "Le défendeur",
+      "Le ministère public",
+      "Le témoin"
+     ]
     },
     {
      "question": "Que sont les prétentions des parties ?",
-     "answer": "Ce que chaque partie demande au juge.\nEx. : des dommages et intérêts, l'annulation d'un contrat.",
-     "w": "0dfbff5d",
-     "wq": "234d8bc4"
+     "answer": "Ce que chaque partie demande au juge",
+     "w": [
+      "f9c417ee",
+      "0dfbff5d"
+     ],
+     "more": "Ex. : des dommages et intérêts.",
+     "wrongs": [
+      "Leurs preuves",
+      "Leurs avocats",
+      "La décision du juge"
+     ]
     },
     {
-     "question": "Quels sont les modes de règlement amiable d'un litige ?",
-     "answer": "• La négociation directe (qui peut aboutir à une transaction)\n• La conciliation\n• La médiation\nUn tiers aide les parties à trouver elles-mêmes une solution.",
-     "w": "eb9f6c60",
-     "wq": "1157e93e"
+     "question": "Dans une médiation, qui trouve la solution ?",
+     "answer": "Les parties elles-mêmes, aidées d'un tiers",
+     "w": [
+      "7d697aad",
+      "eb9f6c60"
+     ],
+     "wq": [
+      "ee6ff4fa",
+      "1157e93e"
+     ],
+     "more": "Comme la négociation et la conciliation.",
+     "wrongs": [
+      "Le juge",
+      "Le médiateur seul",
+      "La police"
+     ]
     },
     {
-     "question": "Quelle différence entre acte juridique et fait juridique ?",
-     "answer": "• Acte : volonté de produire des effets de droit (contrat, testament)\n• Fait : événement aux effets de droit non voulus (accident, naissance)",
-     "w": "12de8df4",
-     "wq": "d1be288f"
+     "question": "Un accident est-il un acte ou un fait juridique ?",
+     "answer": "Un fait juridique",
+     "w": [
+      "7e5c8cdf",
+      "12de8df4"
+     ],
+     "wq": [
+      "41a8141d",
+      "d1be288f"
+     ],
+     "more": "L'acte (contrat, testament) vise volontairement des effets de droit.",
+     "wrongs": [
+      "Un acte juridique",
+      "Ni l'un ni l'autre",
+      "Un contrat"
+     ]
     },
     {
-     "question": "Qui supporte la charge de la preuve ?",
-     "answer": "Celui qui réclame l'exécution d'une obligation (art. 1353 du Code civil) :\nen principe, le demandeur.",
-     "w": "75a07cac",
-     "wq": "8de4bcd1"
+     "question": "Qui supporte en principe la charge de la preuve ?",
+     "answer": "Le demandeur",
+     "w": [
+      "f8f08b68",
+      "75a07cac"
+     ],
+     "wq": "8de4bcd1",
+     "more": "Article 1353 du Code civil.",
+     "wrongs": [
+      "Le défendeur",
+      "Le juge",
+      "L'avocat"
+     ]
     },
     {
-     "question": "Comment prouve-t-on un acte juridique ?",
-     "answer": "• Plus de 1 500 € : par un écrit\n• En dessous : preuve libre\nEntre commerçants, la preuve est libre.",
-     "w": "d51e54c5",
-     "wq": "5b5afefd"
+     "question": "Au-dessus de quel montant un acte juridique doit-il être prouvé par écrit ?",
+     "answer": "1 500 €",
+     "w": [
+      "ac112932",
+      "d51e54c5"
+     ],
+     "wq": "5b5afefd",
+     "more": "Entre commerçants, la preuve est libre.",
+     "wrongs": [
+      "150 €",
+      "15 000 €",
+      "500 €"
+     ]
     },
     {
      "question": "Comment prouve-t-on un fait juridique ?",
-     "answer": "Par tous moyens :\ntémoignages, photos, constats, présomptions, courriels…",
-     "w": "7ac9ee44",
-     "wq": "de7c6922"
+     "answer": "Par tous moyens",
+     "w": [
+      "beab1d4e",
+      "7ac9ee44"
+     ],
+     "more": "Témoignages, photos, constats, courriels…",
+     "wrongs": [
+      "Uniquement par écrit",
+      "Uniquement par témoin",
+      "Par un acte notarié"
+     ]
     },
     {
-     "question": "Quelle différence entre acte authentique et acte sous signature privée ?",
-     "answer": "• Authentique : rédigé par un officier public (notaire, commissaire de justice),\n  il fait foi jusqu'à inscription de faux\n• Sous signature privée : rédigé et signé par les parties elles-mêmes",
-     "w": "5ae25ea4",
-     "wq": "d8e2bcb6"
+     "question": "Qui rédige un acte authentique ?",
+     "answer": "Un officier public, comme un notaire",
+     "w": [
+      "d700f6a5",
+      "5ae25ea4"
+     ],
+     "wq": [
+      "02627d56",
+      "d8e2bcb6"
+     ],
+     "more": "L'acte sous signature privée est rédigé par les parties.",
+     "wrongs": [
+      "Les parties elles-mêmes",
+      "Un avocat",
+      "Le juge"
+     ]
     },
     {
      "question": "Un écrit électronique a-t-il la même valeur qu'un écrit papier ?",
-     "answer": "Oui, si (art. 1366 du Code civil) :\n• son auteur peut être identifié\n• son intégrité est garantie par sa conservation\nLa signature électronique doit être fiable.",
-     "w": "ad9333fc",
-     "wq": "27708d03"
+     "answer": "Oui, si l'auteur est identifié et l'intégrité garantie",
+     "w": [
+      "d3328d07",
+      "ad9333fc"
+     ],
+     "wrongs": [
+      "Non, jamais",
+      "Seulement entre commerçants",
+      "Oui, sans condition"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une présomption ?",
-     "answer": "Tenir un fait pour établi à partir d'un autre.\n• Simple : la preuve contraire est possible\n• Irréfragable : elle ne l'est pas",
-     "w": "77674001",
-     "wq": "ab824457"
+     "question": "Une présomption irréfragable admet-elle la preuve contraire ?",
+     "answer": "Non",
+     "w": [
+      "81a5c21d",
+      "77674001"
+     ],
+     "wq": "ab824457",
+     "more": "Une présomption simple l'admet.",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, avec un témoin",
+      "Oui, devant la Cour de cassation"
+     ]
     },
     {
-     "question": "Quelle différence entre procès civil et procès pénal ?",
-     "answer": "• Civil : des personnes privées, pour un droit ou une réparation\n• Pénal : le ministère public poursuit l'auteur d'une infraction,\n  au nom de la société, pour obtenir une peine",
-     "w": "8c88d1df",
-     "wq": "e6d8e9c9"
+     "question": "Dans un procès pénal, qui poursuit l'auteur de l'infraction ?",
+     "answer": "Le ministère public",
+     "w": [
+      "9cd8f9d3",
+      "8c88d1df"
+     ],
+     "wq": [
+      "0226fc87",
+      "e6d8e9c9"
+     ],
+     "more": "Au nom de la société, pour obtenir une peine.",
+     "wrongs": [
+      "La victime seule",
+      "L'avocat de la défense",
+      "Le maire"
+     ]
     },
     {
-     "question": "Quelles sont les trois catégories d'infractions et leurs juridictions ?",
-     "answer": "• Contravention : tribunal de police\n• Délit : tribunal correctionnel\n• Crime : cour d'assises (ou cour criminelle départementale)",
-     "w": "2a0df319",
-     "wq": "fab1ef70"
+     "question": "Quelle juridiction juge les délits ?",
+     "answer": "Le tribunal correctionnel",
+     "w": [
+      "81de3725",
+      "2a0df319"
+     ],
+     "wq": "fab1ef70",
+     "more": "Contraventions : tribunal de police ; crimes : cour d'assises.",
+     "wrongs": [
+      "Le tribunal de police",
+      "La cour d'assises",
+      "Les prud'hommes"
+     ]
     },
     {
      "question": "Qu'est-ce que la compétence d'attribution ?",
-     "answer": "La règle qui désigne le type de juridiction selon la nature du litige.\nEx. : prud'hommes (employeur-salarié), tribunal de commerce (commerçants).",
-     "w": "5727cb2b",
-     "wq": "2ab90be1"
+     "answer": "Le type de juridiction selon la nature du litige",
+     "w": [
+      "7eb9b188",
+      "5727cb2b"
+     ],
+     "more": "Ex. : prud'hommes pour employeur-salarié.",
+     "wrongs": [
+      "Le lieu du tribunal",
+      "Le nombre de juges",
+      "La durée du procès"
+     ]
     },
     {
      "question": "Que signifie se constituer partie civile ?",
-     "answer": "Pour la victime d'une infraction : demander réparation dans le procès pénal.\nCela peut aussi déclencher les poursuites.",
-     "w": "7280be82",
-     "wq": "ca0f099a"
+     "answer": "Demander réparation dans le procès pénal",
+     "w": [
+      "dd2b7d74",
+      "7280be82"
+     ],
+     "wrongs": [
+      "Devenir juge",
+      "Faire appel",
+      "Retirer sa plainte"
+     ]
     },
     {
-     "question": "Quelles sont les voies de recours ?",
-     "answer": "• L'appel : nouvel examen en fait et en droit par la cour d'appel\n• Le pourvoi en cassation : porte uniquement sur l'application du droit",
-     "w": "9ec4ada2",
-     "wq": "32449d6b"
+     "question": "Le pourvoi en cassation porte-t-il sur les faits ?",
+     "answer": "Non, uniquement sur le droit",
+     "w": [
+      "23d75865",
+      "9ec4ada2"
+     ],
+     "wq": "32449d6b",
+     "more": "L'appel réexamine les faits et le droit.",
+     "wrongs": [
+      "Oui, uniquement",
+      "Oui, et sur le droit",
+      "Oui, avec de nouveaux témoins"
+     ]
     },
     {
-     "question": "Quelle différence entre jugement et arrêt ?",
-     "answer": "• Jugement : décision d'une juridiction de premier degré\n• Arrêt : décision d'une cour (d'appel, de cassation, d'assises)",
-     "w": "579844c0",
-     "wq": "297bc87c"
+     "question": "Comment appelle-t-on la décision d'une cour d'appel ?",
+     "answer": "Un arrêt",
+     "w": [
+      "77b0ad72",
+      "579844c0"
+     ],
+     "wq": [
+      "bf6c8ac2",
+      "297bc87c"
+     ],
+     "more": "Un jugement est rendu en premier degré.",
+     "wrongs": [
+      "Un jugement",
+      "Un décret",
+      "Une ordonnance"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une assignation ?",
-     "answer": "L'acte, délivré par un commissaire de justice,\nqui informe le défendeur du procès engagé contre lui\net le convoque devant la juridiction.",
-     "w": "e9f5f7fb",
-     "wq": "bc2dfe25"
+     "question": "Qui délivre une assignation ?",
+     "answer": "Un commissaire de justice",
+     "w": [
+      "6f944614",
+      "e9f5f7fb"
+     ],
+     "wq": "bc2dfe25",
+     "more": "Elle convoque le défendeur devant la juridiction.",
+     "wrongs": [
+      "Le juge",
+      "Le notaire",
+      "Le maire"
+     ]
     }
    ]
   },
@@ -122541,107 +122710,265 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'un marché ?",
-     "answer": "Le lieu, réel ou virtuel, où l'offre rencontre la demande\nd'un bien ou d'un service, et où se forme un prix.",
-     "w": "be32f4e6",
-     "wq": "b172cc02"
+     "answer": "Le lieu où l'offre rencontre la demande",
+     "w": [
+      "75945aaf",
+      "be32f4e6"
+     ],
+     "more": "Réel ou virtuel ; un prix s'y forme.",
+     "wrongs": [
+      "Un magasin",
+      "Une entreprise",
+      "Une banque"
+     ]
     },
     {
-     "question": "Qu'est-ce que le marché pertinent ?",
-     "answer": "Les produits jugés substituables par les consommateurs,\ndans une zone géographique donnée.\nIl sert à évaluer le degré de concurrence.",
-     "w": "e25dd008",
-     "wq": "279e7d1b"
+     "question": "Que regroupe le marché pertinent ?",
+     "answer": "Les produits jugés substituables dans une zone donnée",
+     "w": [
+      "7864076a",
+      "e25dd008"
+     ],
+     "wq": "279e7d1b",
+     "wrongs": [
+      "Tous les produits d'un pays",
+      "Les produits d'une seule marque",
+      "Les produits les plus chers"
+     ]
     },
     {
-     "question": "Comment l'offre et la demande réagissent-elles au prix ?",
-     "answer": "Quand le prix augmente :\n• la demande diminue\n• l'offre augmente",
-     "w": "b118ef9f",
-     "wq": "b1397cfc"
+     "question": "Quand le prix augmente, que fait la demande ?",
+     "answer": "Elle diminue",
+     "w": [
+      "24c10029",
+      "b118ef9f"
+     ],
+     "wq": "b1397cfc",
+     "more": "L'offre, elle, augmente.",
+     "wrongs": [
+      "Elle augmente",
+      "Elle ne change pas",
+      "Elle double"
+     ]
     },
     {
      "question": "Qu'est-ce que le prix d'équilibre ?",
-     "answer": "Le prix pour lequel la quantité offerte est égale à la quantité demandée."
+     "answer": "Le prix où quantité offerte = quantité demandée",
+     "w": "410b00d5",
+     "wrongs": [
+      "Le prix le plus bas",
+      "Le prix fixé par l'État",
+      "Le prix moyen de l'année"
+     ]
     },
     {
-     "question": "Que se passe-t-il si le prix est supérieur au prix d'équilibre ?",
-     "answer": "Excédent d'offre : le prix tend à baisser jusqu'à l'équilibre.",
-     "w": "dd2d4472",
-     "wq": "a5528f78"
+     "question": "Si le prix est au-dessus de l'équilibre, que se passe-t-il ?",
+     "answer": "Excédent d'offre, le prix baisse",
+     "w": [
+      "19af37e4",
+      "dd2d4472"
+     ],
+     "wq": "a5528f78",
+     "wrongs": [
+      "Pénurie, le prix monte",
+      "Rien ne change",
+      "La demande augmente"
+     ]
     },
     {
-     "question": "Comment calcule-t-on l'élasticité-prix de la demande ?",
-     "answer": "e = variation en % de la quantité / variation en % du prix\nEx. : prix +10 %, quantité −20 % → e = −2.",
-     "w": "d081da47",
-     "wq": "627b0dcf"
+     "question": "Prix +10 %, quantité −20 % : quelle élasticité-prix ?",
+     "answer": "−2",
+     "w": [
+      "da09e1a7",
+      "d081da47"
+     ],
+     "wq": "627b0dcf",
+     "wrongs": [
+      "−0,5",
+      "2",
+      "−10"
+     ]
     },
     {
-     "question": "Quand dit-on que la demande est élastique ou inélastique ?",
-     "answer": "• Élastique : |e| > 1 (la quantité varie plus que le prix)\n• Inélastique : |e| < 1 (carburant, produits de première nécessité)",
-     "w": "557edc13",
-     "wq": "6512f385"
+     "question": "La demande de carburant est-elle élastique ou inélastique ?",
+     "answer": "Inélastique",
+     "w": [
+      "58226d3f",
+      "557edc13"
+     ],
+     "wq": "6512f385",
+     "more": "|e| < 1 : la quantité varie moins que le prix.",
+     "wrongs": [
+      "Élastique",
+      "Parfaitement élastique",
+      "Nulle"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'élasticité croisée ?",
-     "answer": "La réaction de la demande d'un bien au prix d'un autre bien.\n• Positive : biens substituables\n• Négative : biens complémentaires",
-     "w": "af36eeb6",
-     "wq": "6df89e97"
+     "question": "Une élasticité croisée positive indique des biens…",
+     "answer": "Substituables",
+     "w": [
+      "4b00338e",
+      "af36eeb6"
+     ],
+     "wq": "6df89e97",
+     "more": "Négative : complémentaires.",
+     "wrongs": [
+      "Complémentaires",
+      "Indépendants",
+      "De luxe"
+     ]
     },
     {
-     "question": "Quelle différence entre biens substituables et complémentaires ?",
-     "answer": "• Substituables : satisfont le même besoin (beurre et margarine)\n• Complémentaires : s'utilisent ensemble (imprimante et cartouches)",
-     "w": "fac0bda3",
-     "wq": "3e91dec6"
+     "question": "Une imprimante et des cartouches sont des biens…",
+     "answer": "Complémentaires",
+     "w": [
+      "eb0d30e7",
+      "fac0bda3"
+     ],
+     "wq": [
+      "6b725f49",
+      "3e91dec6"
+     ],
+     "more": "Beurre et margarine sont substituables.",
+     "wrongs": [
+      "Substituables",
+      "Indépendants",
+      "Identiques"
+     ]
     },
     {
      "question": "Qu'est-ce que le coût marginal ?",
-     "answer": "Le coût d'une unité supplémentaire.\nProfit maximal quand coût marginal = recette marginale\n(le prix, en concurrence).",
-     "w": "f6a29a59",
-     "wq": "e8928398"
+     "answer": "Le coût d'une unité supplémentaire",
+     "w": [
+      "fb213a6d",
+      "f6a29a59"
+     ],
+     "wrongs": [
+      "Le coût total",
+      "Le coût moyen",
+      "Le prix de vente"
+     ]
     },
     {
      "question": "Comment calcule-t-on le coût moyen ?",
-     "answer": "Coût moyen = coût total / quantité produite."
+     "answer": "Coût total / quantité produite",
+     "w": "d5282d6d",
+     "wrongs": [
+      "Coût total × quantité",
+      "Prix − coût",
+      "Coût marginal × 2"
+     ]
     },
     {
-     "question": "Quelles sont les conditions de la concurrence pure et parfaite ?",
-     "answer": "• Atomicité : nombreux offreurs et demandeurs\n• Homogénéité des produits\n• Transparence de l'information\n• Libre entrée et sortie du marché\n• Libre circulation des facteurs de production",
-     "w": "ceb1fed4",
-     "wq": "cd7af7c5"
+     "question": "L'atomicité est-elle une condition de la concurrence pure et parfaite ?",
+     "answer": "Oui : de nombreux offreurs et demandeurs",
+     "w": [
+      "e2ab6717",
+      "ceb1fed4"
+     ],
+     "wq": "cd7af7c5",
+     "more": "Aussi : homogénéité, transparence, libre entrée, libre circulation.",
+     "wrongs": [
+      "Non, c'est le monopole",
+      "Non, c'est l'oligopole",
+      "Seulement pour les services"
+     ]
     },
     {
-     "question": "Quelle différence entre monopole et oligopole ?",
-     "answer": "• Monopole : un seul offreur face à de nombreux demandeurs\n• Oligopole : quelques offreurs (opérateurs de téléphonie mobile)",
-     "w": "8b1e9cf7",
-     "wq": "c031d5e5"
+     "question": "Comment appelle-t-on un marché avec quelques offreurs ?",
+     "answer": "Un oligopole",
+     "w": [
+      "b39fcee0",
+      "8b1e9cf7"
+     ],
+     "wq": [
+      "854bfbd9",
+      "c031d5e5"
+     ],
+     "more": "Monopole : un seul offreur.",
+     "wrongs": [
+      "Un monopole",
+      "Une concurrence parfaite",
+      "Un monopsone"
+     ]
     },
     {
-     "question": "Quelle différence entre preneur de prix et faiseur de prix ?",
-     "answer": "• Preneur : subit le prix du marché (concurrence)\n• Faiseur : a un pouvoir de marché pour fixer son prix (monopole, forte différenciation)",
-     "w": "a4f283fe",
-     "wq": "086dabb2"
+     "question": "Une entreprise qui a le pouvoir de fixer son prix est…",
+     "answer": "Faiseuse de prix",
+     "w": [
+      "73de574d",
+      "a4f283fe"
+     ],
+     "wq": [
+      "e68684c2",
+      "086dabb2"
+     ],
+     "more": "En concurrence, elle est preneuse de prix.",
+     "wrongs": [
+      "Preneuse de prix",
+      "En faillite",
+      "Atomique"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une barrière à l'entrée ?",
-     "answer": "Un obstacle à l'entrée de nouvelles entreprises :\n• investissements très élevés\n• brevets, réglementation\n• notoriété des marques installées",
-     "w": "a2b41624",
-     "wq": "3b03a7b6"
+     "question": "Un brevet est-il une barrière à l'entrée ?",
+     "answer": "Oui",
+     "w": [
+      "65f407e4",
+      "a2b41624"
+     ],
+     "wq": "3b03a7b6",
+     "more": "Comme des investissements élevés ou la notoriété des marques.",
+     "wrongs": [
+      "Non",
+      "Seulement en Europe",
+      "Non, c'est une aide"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une entente illicite ?",
-     "answer": "Un accord entre concurrents pour fixer les prix ou se partager le marché (cartel).\nInterdite, sanctionnée par l'Autorité de la concurrence ou la Commission européenne.",
-     "w": "c99f3b65",
-     "wq": "49594635"
+     "question": "Comment appelle-t-on un accord illicite entre concurrents pour fixer les prix ?",
+     "answer": "Un cartel",
+     "w": [
+      "bd7c3cd8",
+      "c99f3b65"
+     ],
+     "wq": "49594635",
+     "more": "Sanctionné par l'Autorité de la concurrence.",
+     "wrongs": [
+      "Un monopole",
+      "Une franchise",
+      "Une fusion"
+     ]
     },
     {
-     "question": "Comment mesure-t-on la concentration d'un marché ?",
-     "answer": "À partir des parts de marché :\n• part cumulée des quatre premières entreprises\n• indice de Herfindahl-Hirschman (somme des carrés des parts)",
-     "w": "2e936394",
-     "wq": "db1fa115"
+     "question": "Quel indice mesure la concentration d'un marché ?",
+     "answer": "L'indice de Herfindahl-Hirschman",
+     "w": [
+      "258f469f",
+      "2e936394"
+     ],
+     "wq": "db1fa115",
+     "more": "Somme des carrés des parts de marché.",
+     "wrongs": [
+      "L'indice des prix",
+      "Le PIB",
+      "Le taux de marge"
+     ]
     },
     {
-     "question": "Comment une entreprise peut-elle échapper à l'intensité concurrentielle ?",
-     "answer": "En innovant ou en différenciant ses produits.\nEx. : un monopole temporaire grâce à un brevet.",
-     "w": "f338fd96",
-     "wq": "c9e1245f"
+     "question": "Comment une entreprise peut-elle échapper à la concurrence ?",
+     "answer": "En innovant ou en différenciant ses produits",
+     "w": [
+      "bba72e0f",
+      "f338fd96"
+     ],
+     "wq": "c9e1245f",
+     "wrongs": [
+      "En baissant la qualité",
+      "En copiant ses concurrents",
+      "En réduisant sa publicité"
+     ]
     }
    ]
   },
@@ -122665,104 +122992,252 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce que le lien de subordination ?",
-     "answer": "Le pouvoir de l'employeur de donner des ordres,\nd'en contrôler l'exécution et de sanctionner les manquements.\nC'est le critère décisif du contrat de travail.",
-     "w": "424d7ccb",
-     "wq": "1a84f364"
+     "question": "Quel est le critère décisif du contrat de travail ?",
+     "answer": "Le lien de subordination",
+     "w": [
+      "f3ee86d1",
+      "424d7ccb"
+     ],
+     "wq": "1a84f364",
+     "more": "L'employeur donne des ordres, contrôle et sanctionne.",
+     "wrongs": [
+      "Le salaire élevé",
+      "La durée du contrat",
+      "Le lieu de travail"
+     ]
     },
     {
-     "question": "Quels sont les pouvoirs de l'employeur ?",
-     "answer": "• Pouvoir de direction\n• Pouvoir réglementaire (règlement intérieur)\n• Pouvoir disciplinaire",
-     "w": "b8c53e6a",
-     "wq": "4b54a6c1"
+     "question": "Le règlement intérieur relève de quel pouvoir de l'employeur ?",
+     "answer": "Le pouvoir réglementaire",
+     "w": [
+      "6ae1b920",
+      "b8c53e6a"
+     ],
+     "wq": "4b54a6c1",
+     "more": "Aussi : pouvoir de direction et pouvoir disciplinaire.",
+     "wrongs": [
+      "Le pouvoir disciplinaire",
+      "Le pouvoir de direction",
+      "Le pouvoir judiciaire"
+     ]
     },
     {
-     "question": "Dans quels cas peut-on conclure un CDD ?",
-     "answer": "Pour une tâche précise et temporaire :\n• remplacement d'un salarié absent\n• accroissement temporaire d'activité\n• emploi saisonnier\nJamais pour un emploi durable lié à l'activité normale.",
-     "w": "7f9540bd",
-     "wq": "128b5622"
+     "question": "Peut-on conclure un CDD pour un emploi durable lié à l'activité normale ?",
+     "answer": "Non",
+     "w": [
+      "7f95a610",
+      "7f9540bd"
+     ],
+     "wq": "128b5622",
+     "more": "Seulement pour remplacement, surcroît temporaire, emploi saisonnier.",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, avec l'accord du salarié",
+      "Oui, dans les petites entreprises"
+     ]
     },
     {
-     "question": "Quelle est la durée maximale d'un CDD ?",
-     "answer": "En principe 18 mois, renouvellements compris.\nDes durées différentes existent dans certains cas.",
-     "w": "faa5bf94",
-     "wq": "a3037adb"
+     "question": "Quelle est en principe la durée maximale d'un CDD ?",
+     "answer": "18 mois",
+     "w": [
+      "3a70fde6",
+      "faa5bf94"
+     ],
+     "wq": "a3037adb",
+     "wrongs": [
+      "6 mois",
+      "3 ans",
+      "5 ans"
+     ]
     },
     {
-     "question": "Que risque l'employeur qui ne respecte pas les règles du CDD ?",
-     "answer": "Le salarié peut demander au conseil de prud'hommes la requalification du CDD en CDI."
+     "question": "Quelle sanction en cas de non-respect des règles du CDD ?",
+     "answer": "La requalification en CDI",
+     "w": "438f5147",
+     "wq": "9ca149cb",
+     "wrongs": [
+      "Une amende au salarié",
+      "L'annulation du salaire",
+      "Aucune"
+     ]
     },
     {
-     "question": "Qu'est-ce que la période d'essai ?",
-     "answer": "Une période au début du contrat, prévue par écrit,\npour que chacun évalue l'autre (compétences, poste).\nChacun peut y mettre fin librement, avec un délai de prévenance.",
-     "w": "e00c9d40",
-     "wq": "8b1d3440"
+     "question": "Pendant la période d'essai, chacun peut-il rompre librement le contrat ?",
+     "answer": "Oui, avec un délai de prévenance",
+     "w": [
+      "4bd40697",
+      "e00c9d40"
+     ],
+     "wq": "8b1d3440",
+     "wrongs": [
+      "Non, jamais",
+      "Seulement l'employeur",
+      "Seulement le salarié"
+     ]
     },
     {
-     "question": "À quelles conditions une clause de non-concurrence est-elle valable ?",
-     "answer": "• Indispensable à la protection des intérêts de l'entreprise\n• Limitée dans le temps et dans l'espace\n• Adaptée aux spécificités de l'emploi\n• Avec une contrepartie financière",
-     "w": "8451dffb",
-     "wq": "64e7c2ea"
+     "question": "Une clause de non-concurrence doit-elle prévoir une contrepartie financière ?",
+     "answer": "Oui",
+     "w": [
+      "4f82f213",
+      "8451dffb"
+     ],
+     "wq": "64e7c2ea",
+     "more": "Elle doit aussi être limitée dans le temps et l'espace.",
+     "wrongs": [
+      "Non",
+      "Seulement pour les cadres",
+      "Seulement si le salarié démissionne"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'obligation de loyauté du salarié ?",
-     "answer": "Exécuter le contrat de bonne foi :\n• ne pas dénigrer l'employeur\n• ne pas lui faire concurrence pendant le contrat\n• ne pas divulguer d'informations confidentielles",
-     "w": "0b1d15f0",
-     "wq": "13bc606e"
+     "question": "Divulguer des informations confidentielles viole quelle obligation du salarié ?",
+     "answer": "L'obligation de loyauté",
+     "w": [
+      "6c0b4180",
+      "0b1d15f0"
+     ],
+     "wq": "13bc606e",
+     "wrongs": [
+      "L'obligation de sécurité",
+      "L'obligation de moyens",
+      "La période d'essai"
+     ]
     },
     {
      "question": "Le salarié dispose-t-il de la liberté d'expression ?",
-     "answer": "Oui, dans et hors de l'entreprise, sauf abus (injure, diffamation, excès).\nUne restriction doit être justifiée par la tâche et proportionnée\n(art. L1121-1 du Code du travail).",
-     "w": "20266995",
-     "wq": "ef1be888"
+     "answer": "Oui, sauf abus",
+     "w": [
+      "6b499662",
+      "20266995"
+     ],
+     "more": "Injure, diffamation, excès.",
+     "wrongs": [
+      "Non, jamais au travail",
+      "Seulement hors de l'entreprise",
+      "Seulement s'il est cadre"
+     ]
     },
     {
-     "question": "L'employeur peut-il surveiller ses salariés ?",
-     "answer": "Oui, si le dispositif (vidéo, contrôle informatique) est :\n• justifié et proportionné\n• porté à la connaissance des salariés avant sa mise en œuvre\nUne surveillance clandestine est illicite.",
-     "w": "2d036364",
-     "wq": "e17a2761"
+     "question": "Une surveillance clandestine des salariés est-elle licite ?",
+     "answer": "Non",
+     "w": [
+      "691d14e8",
+      "2d036364"
+     ],
+     "wq": "e17a2761",
+     "more": "Le dispositif doit être justifié, proportionné et annoncé.",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, si elle est filmée",
+      "Oui, pour les cadres"
+     ]
     },
     {
-     "question": "Le salarié a-t-il droit au respect de sa vie privée au travail ?",
-     "answer": "Oui : les fichiers ou messages « personnels » ne s'ouvrent\nqu'en présence du salarié ou après l'avoir appelé.\nLes fichiers non identifiés comme personnels sont présumés professionnels.",
-     "w": "09e66b1a",
-     "wq": "923cef83"
+     "question": "Un fichier non identifié comme personnel est présumé…",
+     "answer": "Professionnel",
+     "w": [
+      "ce191e13",
+      "09e66b1a"
+     ],
+     "wq": "923cef83",
+     "more": "Les fichiers personnels s'ouvrent en présence du salarié.",
+     "wrongs": [
+      "Personnel",
+      "Secret",
+      "Illégal"
+     ]
     },
     {
-     "question": "Quelle différence entre licenciement pour motif personnel et pour motif économique ?",
-     "answer": "• Personnel : lié au salarié (faute, insuffisance professionnelle)\n• Économique : non lié au salarié ; emploi supprimé ou transformé\n  (difficultés, mutations technologiques, réorganisation, cessation)",
-     "w": "3e6041f7",
-     "wq": "14ef3cdd"
+     "question": "Un licenciement pour suppression d'emploi après des difficultés est…",
+     "answer": "Économique",
+     "w": [
+      "a83e242e",
+      "3e6041f7"
+     ],
+     "wq": [
+      "91ff3d6b",
+      "14ef3cdd"
+     ],
+     "more": "Le motif personnel est lié au salarié (faute, insuffisance).",
+     "wrongs": [
+      "Pour motif personnel",
+      "Pour faute grave",
+      "Une démission"
+     ]
     },
     {
-     "question": "Quelles sont les étapes d'un licenciement pour motif personnel ?",
-     "answer": "1. Convocation à un entretien préalable\n2. Entretien (le salarié peut se faire assister)\n3. Notification par lettre recommandée avec accusé de réception, avec le motif",
-     "w": "9042ee4c",
-     "wq": "0c55df1e"
+     "question": "Quelle est la première étape d'un licenciement pour motif personnel ?",
+     "answer": "La convocation à un entretien préalable",
+     "w": [
+      "357c8651",
+      "9042ee4c"
+     ],
+     "wq": "0c55df1e",
+     "more": "Puis l'entretien, puis la lettre recommandée.",
+     "wrongs": [
+      "La lettre de licenciement",
+      "Le passage aux prud'hommes",
+      "Le préavis"
+     ]
     },
     {
-     "question": "Quels sont les degrés de gravité de la faute du salarié ?",
-     "answer": "• Faute simple (ou sérieuse)\n• Faute grave : maintien impossible ; ni préavis ni indemnité de licenciement\n• Faute lourde : commise avec l'intention de nuire à l'employeur",
-     "w": "6ee5c30e",
-     "wq": "f5761576"
+     "question": "Quelle faute est commise avec l'intention de nuire à l'employeur ?",
+     "answer": "La faute lourde",
+     "w": [
+      "3746b53b",
+      "6ee5c30e"
+     ],
+     "wq": "f5761576",
+     "more": "Faute grave : maintien impossible, sans préavis.",
+     "wrongs": [
+      "La faute simple",
+      "La faute grave",
+      "La faute sérieuse"
+     ]
     },
     {
      "question": "Qu'est-ce que la rupture conventionnelle ?",
-     "answer": "La rupture d'un CDI d'un commun accord, homologuée par l'administration.\nLe salarié perçoit une indemnité et peut toucher le chômage.",
-     "w": "61e57851",
-     "wq": "c38db790"
+     "answer": "La rupture d'un CDI d'un commun accord",
+     "w": [
+      "2e3d1480",
+      "61e57851"
+     ],
+     "more": "Homologuée ; le salarié peut toucher le chômage.",
+     "wrongs": [
+      "Un licenciement pour faute",
+      "Une démission",
+      "La fin d'un CDD"
+     ]
     },
     {
-     "question": "Qu'est-ce que la démission ?",
-     "answer": "La rupture du CDI à l'initiative du salarié,\npar une volonté claire et non équivoque.\nIl doit en principe effectuer un préavis.",
-     "w": "92e8f9d5",
-     "wq": "f16a014f"
+     "question": "Qui prend l'initiative d'une démission ?",
+     "answer": "Le salarié",
+     "w": [
+      "3e8de80e",
+      "92e8f9d5"
+     ],
+     "wq": "f16a014f",
+     "more": "Il doit en principe effectuer un préavis.",
+     "wrongs": [
+      "L'employeur",
+      "Le juge",
+      "Le syndicat"
+     ]
     },
     {
      "question": "Que peut obtenir un salarié licencié sans cause réelle et sérieuse ?",
-     "answer": "Devant le conseil de prud'hommes :\n• sa réintégration (si les deux parties l'acceptent)\n• ou une indemnité selon un barème lié à l'ancienneté",
-     "w": "a4a9663e",
-     "wq": "4462d301"
+     "answer": "Une indemnité selon un barème",
+     "w": [
+      "cd6022d9",
+      "a4a9663e"
+     ],
+     "more": "Ou sa réintégration si les deux parties l'acceptent.",
+     "wrongs": [
+      "Rien",
+      "La prison pour l'employeur",
+      "Une promotion"
+     ]
     }
    ]
   },
@@ -122786,110 +123261,277 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Pourquoi les intérêts des acteurs d'une organisation peuvent-ils diverger ?",
-     "answer": "Chacun a ses attentes :\n• Salariés : rémunération, conditions de travail\n• Actionnaires : rentabilité, dividendes\n• Dirigeants : croissance, pouvoir\n• Clients : prix, qualité\nTous convergent sur la pérennité de l'organisation.",
-     "w": "cd9ff0bd",
-     "wq": "c777bd75"
+     "question": "Sur quoi les intérêts de tous les acteurs d'une organisation convergent-ils ?",
+     "answer": "La pérennité de l'organisation",
+     "w": [
+      "1ab3fbee",
+      "cd9ff0bd"
+     ],
+     "wq": "c777bd75",
+     "more": "Sinon : salaires, dividendes, pouvoir, prix…",
+     "wrongs": [
+      "Les dividendes",
+      "Les salaires",
+      "Les prix bas"
+     ]
     },
     {
      "question": "Qu'est-ce que la culture organisationnelle ?",
-     "answer": "Les valeurs, normes, rites, symboles et l'histoire\npartagés par les membres d'une organisation,\nqui orientent leurs comportements.",
-     "w": "865d0bd6",
-     "wq": "b54f6fe0"
+     "answer": "Les valeurs, normes et rites partagés",
+     "w": [
+      "87075e65",
+      "865d0bd6"
+     ],
+     "wrongs": [
+      "Le chiffre d'affaires",
+      "L'organigramme",
+      "Le règlement intérieur"
+     ]
     },
     {
-     "question": "Quels sont les styles de direction identifiés par Likert ?",
-     "answer": "Autoritaire, paternaliste, consultatif et participatif."
+     "question": "Combien de styles de direction Likert distingue-t-il ?",
+     "answer": "4",
+     "w": "0cc8b4e9",
+     "wq": "24691184",
+     "more": "Autoritaire, paternaliste, consultatif, participatif.",
+     "wrongs": [
+      "2",
+      "3",
+      "6"
+     ]
     },
     {
-     "question": "Quelle différence entre style consultatif et style participatif ?",
-     "answer": "• Consultatif : le dirigeant recueille l'avis des salariés, mais décide seul\n• Participatif : les salariés sont associés à la décision",
-     "w": "c867319e",
-     "wq": "9c0f660a"
+     "question": "Dans le style consultatif, qui décide ?",
+     "answer": "Le dirigeant seul",
+     "w": [
+      "7beb324b",
+      "c867319e"
+     ],
+     "wq": [
+      "d62d3e98",
+      "9c0f660a"
+     ],
+     "more": "Après avoir recueilli l'avis des salariés.",
+     "wrongs": [
+      "Les salariés",
+      "Le vote de tous",
+      "Les actionnaires"
+     ]
     },
     {
-     "question": "Qu'est-ce que le leadership ?",
-     "answer": "La capacité à influencer un groupe et à l'entraîner vers des objectifs,\npar sa légitimité, ses compétences ou son charisme,\nau-delà du seul pouvoir hiérarchique.",
-     "w": "d19d7fc7",
-     "wq": "10eda279"
+     "question": "Le leadership repose-t-il seulement sur le pouvoir hiérarchique ?",
+     "answer": "Non",
+     "w": [
+      "78070168",
+      "d19d7fc7"
+     ],
+     "wq": "10eda279",
+     "more": "Aussi sur la légitimité, les compétences, le charisme.",
+     "wrongs": [
+      "Oui, uniquement",
+      "Oui, sur l'ancienneté",
+      "Oui, sur le salaire"
+     ]
     },
     {
      "question": "Qu'est-ce que la cohésion d'un groupe ?",
-     "answer": "La force des liens qui unissent les membres d'un groupe\net leur donnent envie de coopérer vers un objectif commun.",
-     "w": "e0f6158f",
-     "wq": "ae5baf56"
+     "answer": "La force des liens qui unissent ses membres",
+     "w": [
+      "97b62def",
+      "e0f6158f"
+     ],
+     "wrongs": [
+      "Le nombre de membres",
+      "Le salaire moyen",
+      "La taille des bureaux"
+     ]
     },
     {
-     "question": "Quelle différence entre motivation intrinsèque et extrinsèque ?",
-     "answer": "• Intrinsèque : vient du travail lui-même (intérêt, autonomie, défi)\n• Extrinsèque : vient de récompenses extérieures (salaire, primes, promotion)",
-     "w": "273ec349",
-     "wq": "a1d6f650"
+     "question": "L'intérêt pour son travail est une motivation…",
+     "answer": "Intrinsèque",
+     "w": [
+      "d558ca8e",
+      "273ec349"
+     ],
+     "wq": [
+      "76f8df46",
+      "a1d6f650"
+     ],
+     "more": "Extrinsèque : salaire, primes, promotion.",
+     "wrongs": [
+      "Extrinsèque",
+      "Financière",
+      "Hiérarchique"
+     ]
     },
     {
-     "question": "Que dit la théorie des deux facteurs de Herzberg ?",
-     "answer": "• Facteurs d'hygiène (salaire, conditions) : évitent l'insatisfaction, sans motiver\n• Facteurs moteurs (reconnaissance, responsabilités, intérêt) : motivent",
-     "w": "420f9987",
-     "wq": "2e487c36"
+     "question": "Selon Herzberg, le salaire est-il un facteur d'hygiène ou un facteur moteur ?",
+     "answer": "Un facteur d'hygiène",
+     "w": [
+      "f5b1c309",
+      "420f9987"
+     ],
+     "wq": "2e487c36",
+     "more": "Il évite l'insatisfaction sans motiver.",
+     "wrongs": [
+      "Un facteur moteur",
+      "Les deux",
+      "Aucun"
+     ]
     },
     {
-     "question": "Qu'est-ce que la qualité de vie au travail ?",
-     "answer": "Les conditions d'exercice du travail\net la capacité des salariés à s'exprimer sur son contenu :\nrelations, sens du travail, équilibre vie professionnelle / personnelle.",
-     "w": "59680793",
-     "wq": "e8cc693b"
+     "question": "L'équilibre vie professionnelle / personnelle relève-t-il de la qualité de vie au travail ?",
+     "answer": "Oui",
+     "w": [
+      "77e07733",
+      "59680793"
+     ],
+     "wq": "e8cc693b",
+     "wrongs": [
+      "Non",
+      "Seulement pour les cadres",
+      "Seulement dans le public"
+     ]
     },
     {
-     "question": "Quelle différence entre consommateur et usager ?",
-     "answer": "• Consommateur : achète un bien ou un service marchand\n• Usager : utilise un service public",
-     "w": "b0dcf8ea",
-     "wq": "93200d6e"
+     "question": "Comment appelle-t-on celui qui utilise un service public ?",
+     "answer": "Un usager",
+     "w": [
+      "eae51c31",
+      "b0dcf8ea"
+     ],
+     "wq": [
+      "24def1fa",
+      "93200d6e"
+     ],
+     "more": "Un consommateur achète un bien ou service marchand.",
+     "wrongs": [
+      "Un consommateur",
+      "Un client",
+      "Un actionnaire"
+     ]
     },
     {
-     "question": "Quelles sont les étapes du processus d'achat ?",
-     "answer": "1. Reconnaissance du besoin\n2. Recherche d'informations\n3. Évaluation des solutions\n4. Décision d'achat\n5. Comportement après l'achat",
-     "w": "352f6717",
-     "wq": "7787edef"
+     "question": "Quelle est la première étape du processus d'achat ?",
+     "answer": "La reconnaissance du besoin",
+     "w": [
+      "0178078a",
+      "352f6717"
+     ],
+     "wq": "7787edef",
+     "wrongs": [
+      "La décision d'achat",
+      "La recherche d'informations",
+      "L'évaluation des solutions"
+     ]
     },
     {
-     "question": "Quelle différence entre motivations et freins d'achat ?",
-     "answer": "• Motivations : poussent à acheter (plaisir, faire plaisir, s'affirmer)\n• Freins : peurs (risque, prix) et inhibitions (culpabilité, image de soi)",
-     "w": "fe266ff8",
-     "wq": "5fb57f5e"
+     "question": "La peur du risque est-elle une motivation ou un frein d'achat ?",
+     "answer": "Un frein",
+     "w": [
+      "e2e76fcb",
+      "fe266ff8"
+     ],
+     "wq": [
+      "ae0817ec",
+      "5fb57f5e"
+     ],
+     "wrongs": [
+      "Une motivation",
+      "Les deux",
+      "Ni l'un ni l'autre"
+     ]
     },
     {
-     "question": "Qu'est-ce que la digitalisation de la relation client ?",
-     "answer": "L'usage d'outils numériques (site, application, réseaux sociaux, chatbot, CRM)\npour mieux connaître le client, interagir avec lui\net personnaliser l'offre.",
-     "w": "f92dee34",
-     "wq": "71ac4c82"
+     "question": "Un chatbot fait-il partie de la digitalisation de la relation client ?",
+     "answer": "Oui",
+     "w": [
+      "19701dc7",
+      "f92dee34"
+     ],
+     "wq": "71ac4c82",
+     "more": "Comme le site, l'application, les réseaux sociaux, le CRM.",
+     "wrongs": [
+      "Non",
+      "Seulement pour les banques",
+      "Seulement hors ligne"
+     ]
     },
     {
      "question": "Que sont les traces numériques ?",
-     "answer": "Les données laissées en ligne (navigation, cookies, achats, publications),\nque les organisations exploitent pour connaître leurs clients.",
-     "w": "43d21f10",
-     "wq": "26428015"
+     "answer": "Les données laissées en ligne",
+     "w": [
+      "da571ab5",
+      "43d21f10"
+     ],
+     "more": "Navigation, cookies, achats, publications.",
+     "wrongs": [
+      "Des empreintes digitales",
+      "Des virus",
+      "Des mots de passe"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'administration électronique ?",
-     "answer": "Des démarches administratives en ligne pour les usagers.\nEx. : déclaration de revenus, demande de carte grise.",
-     "w": "18848bb9",
-     "wq": "6b04ad7c"
+     "question": "La déclaration de revenus en ligne est un exemple de…",
+     "answer": "L'administration électronique",
+     "w": [
+      "9ac346fe",
+      "18848bb9"
+     ],
+     "wq": "6b04ad7c",
+     "wrongs": [
+      "Commerce électronique",
+      "Communication interne",
+      "Marque employeur"
+     ]
     },
     {
-     "question": "Quelle différence entre communication interne et externe ?",
-     "answer": "• Interne : vers les membres de l'organisation (intranet, réunions)\n• Externe : vers les partenaires extérieurs (clients, fournisseurs, public)",
-     "w": "daf95d4c",
-     "wq": "c657f4ec"
+     "question": "L'intranet est un outil de communication…",
+     "answer": "Interne",
+     "w": [
+      "8a8651e3",
+      "daf95d4c"
+     ],
+     "wq": [
+      "f45a5018",
+      "c657f4ec"
+     ],
+     "wrongs": [
+      "Externe",
+      "Publicitaire",
+      "Commerciale"
+     ]
     },
     {
      "question": "Qu'est-ce que la communication globale ?",
-     "answer": "La coordination de toutes les actions de communication, interne et externe,\nautour d'une même identité et d'un message cohérent.",
-     "w": "214ef795",
-     "wq": "9d43f736"
+     "answer": "La coordination de toute la communication autour d'un message cohérent",
+     "w": [
+      "75def7cb",
+      "214ef795"
+     ],
+     "wrongs": [
+      "La communication à l'étranger",
+      "La publicité télévisée",
+      "La communication interne seule"
+     ]
     },
     {
-     "question": "Quelle différence entre marque employeur et e-réputation ?",
-     "answer": "• Marque employeur : image en tant qu'employeur, pour attirer et fidéliser\n• E-réputation : image sur internet (avis, réseaux sociaux)",
-     "w": "1b51e6c1",
-     "wq": "87d50dcc"
+     "question": "Qu'est-ce que l'e-réputation ?",
+     "answer": "L'image d'une organisation sur internet",
+     "w": [
+      "62933199",
+      "1b51e6c1"
+     ],
+     "wq": [
+      "e1722de4",
+      "87d50dcc"
+     ],
+     "more": "La marque employeur : son image en tant qu'employeur.",
+     "wrongs": [
+      "Son image auprès des salariés",
+      "Son chiffre d'affaires en ligne",
+      "Son site web"
+     ]
     }
    ]
   },
@@ -122914,109 +123556,273 @@
    "cards": [
     {
      "question": "Qu'est-ce que la segmentation ?",
-     "answer": "Le découpage d'un marché en groupes homogènes de consommateurs (segments),\nselon l'âge, le revenu, le mode de vie, le comportement d'achat…",
-     "w": "0ce8dd29",
-     "wq": "42a7ed70"
+     "answer": "Découper un marché en groupes homogènes",
+     "w": [
+      "82bd2bce",
+      "0ce8dd29"
+     ],
+     "wrongs": [
+      "Choisir un segment",
+      "Fixer un prix",
+      "Créer une marque"
+     ]
     },
     {
      "question": "Qu'est-ce que le ciblage ?",
-     "answer": "Le choix du ou des segments vers lesquels l'entreprise oriente son offre."
+     "answer": "Choisir le ou les segments visés",
+     "w": "410f8247",
+     "wrongs": [
+      "Découper le marché",
+      "Fixer le prix",
+      "Distribuer le produit"
+     ]
     },
     {
      "question": "Qu'est-ce que le positionnement ?",
-     "answer": "La place d'un produit ou d'une marque dans l'esprit des consommateurs,\npar rapport aux concurrents.",
-     "w": "17773727",
-     "wq": "cc6c67c0"
+     "answer": "La place du produit dans l'esprit des consommateurs",
+     "w": [
+      "90662c7b",
+      "17773727"
+     ],
+     "more": "Par rapport aux concurrents.",
+     "wrongs": [
+      "La place du produit en rayon",
+      "Le prix du produit",
+      "La taille du marché"
+     ]
     },
     {
-     "question": "Quels sont les quatre types de marketing selon la cible ?",
-     "answer": "• De masse : une même offre pour tous\n• Différencié : une offre par segment\n• Concentré : un seul segment visé\n• Individualisé (one-to-one) : une offre par client",
-     "w": "721be15e",
-     "wq": "add0b7b1"
+     "question": "Une offre par client correspond à quel marketing ?",
+     "answer": "Individualisé (one-to-one)",
+     "w": [
+      "7fccb353",
+      "721be15e"
+     ],
+     "wq": [
+      "495f1f05",
+      "add0b7b1"
+     ],
+     "more": "De masse, différencié, concentré, individualisé.",
+     "wrongs": [
+      "De masse",
+      "Différencié",
+      "Concentré"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une gamme de produits ?",
-     "answer": "L'ensemble des produits d'une entreprise.\n• Largeur : nombre de lignes de produits\n• Profondeur : nombre de références dans une ligne",
-     "w": "4b6a59dc",
-     "wq": "3e5adac9"
+     "question": "Que mesure la profondeur d'une gamme ?",
+     "answer": "Le nombre de références dans une ligne",
+     "w": [
+      "ce1e38d0",
+      "4b6a59dc"
+     ],
+     "wq": "3e5adac9",
+     "more": "La largeur : le nombre de lignes.",
+     "wrongs": [
+      "Le nombre de lignes",
+      "Le prix moyen",
+      "Le nombre de clients"
+     ]
     },
     {
-     "question": "Quelle différence entre B2B et B2C ?",
-     "answer": "• B2B (business to business) : vente entre professionnels\n• B2C (business to consumer) : vente à des particuliers",
-     "w": "aff49f49",
-     "wq": "429966f9"
+     "question": "Que signifie B2C ?",
+     "answer": "Vente aux particuliers",
+     "w": [
+      "a6a27d4a",
+      "aff49f49"
+     ],
+     "wq": [
+      "ce04d98f",
+      "429966f9"
+     ],
+     "more": "B2B : entre professionnels.",
+     "wrongs": [
+      "Vente entre professionnels",
+      "Vente entre particuliers",
+      "Vente à l'État"
+     ]
     },
     {
      "question": "Qu'est-ce que le marketing expérientiel ?",
-     "answer": "Faire vivre au client une expérience mémorable\n(émotions, sensations, ambiance) autour du produit ou du point de vente.",
-     "w": "3ec08e0d",
-     "wq": "4bb728a0"
+     "answer": "Faire vivre une expérience mémorable au client",
+     "w": [
+      "a110cbe5",
+      "3ec08e0d"
+     ],
+     "wrongs": [
+      "Tester un produit en laboratoire",
+      "Baisser les prix",
+      "Envoyer des courriels"
+     ]
     },
     {
-     "question": "Qu'est-ce que le yield management ?",
-     "answer": "Faire varier les prix selon la demande prévue et le taux de remplissage,\npour maximiser le chiffre d'affaires.\nEx. : billets de train, chambres d'hôtel.",
-     "w": "ff7b2510",
-     "wq": "bbbb896a"
+     "question": "Faire varier les prix des billets de train selon la demande, c'est…",
+     "answer": "Le yield management",
+     "w": [
+      "9bb202a7",
+      "ff7b2510"
+     ],
+     "wq": "bbbb896a",
+     "wrongs": [
+      "Le freemium",
+      "Le marketing de masse",
+      "La segmentation"
+     ]
     },
     {
      "question": "Qu'est-ce que le modèle freemium ?",
-     "answer": "Une offre de base gratuite + une version payante plus complète (premium).\nLa gratuité peut aussi être financée par la publicité ou les données.",
-     "w": "38a78ec1",
-     "wq": "8bda3737"
+     "answer": "Une offre gratuite et une version payante plus complète",
+     "w": [
+      "6ec7c90c",
+      "38a78ec1"
+     ],
+     "wrongs": [
+      "Une offre entièrement gratuite",
+      "Un abonnement obligatoire",
+      "Une vente aux enchères"
+     ]
     },
     {
-     "question": "Quelle différence entre distribution directe et indirecte ?",
-     "answer": "• Directe : du producteur au consommateur, sans intermédiaire\n• Indirecte : un intermédiaire (circuit court) ou plusieurs (circuit long)",
-     "w": "b5894cbe",
-     "wq": "1201c50b"
+     "question": "Un circuit avec plusieurs intermédiaires est appelé…",
+     "answer": "Circuit long",
+     "w": [
+      "8da99371",
+      "b5894cbe"
+     ],
+     "wq": [
+      "386ed8f7",
+      "1201c50b"
+     ],
+     "more": "Circuit court : un seul intermédiaire ; direct : aucun.",
+     "wrongs": [
+      "Circuit court",
+      "Distribution directe",
+      "Circuit fermé"
+     ]
     },
     {
-     "question": "Quelle différence entre distribution intensive, sélective et exclusive ?",
-     "answer": "• Intensive : le plus de points de vente possible\n• Sélective : distributeurs choisis (image, conseil)\n• Exclusive : un seul distributeur par zone",
-     "w": "4a8c5a5b",
-     "wq": "d7a048b1"
+     "question": "Un seul distributeur par zone : quelle distribution ?",
+     "answer": "Exclusive",
+     "w": [
+      "b2337475",
+      "4a8c5a5b"
+     ],
+     "wq": [
+      "e34b226b",
+      "d7a048b1"
+     ],
+     "more": "Intensive : un maximum de points de vente ; sélective : distributeurs choisis.",
+     "wrongs": [
+      "Intensive",
+      "Sélective",
+      "Directe"
+     ]
     },
     {
-     "question": "Quelle différence entre désintermédiation et réintermédiation ?",
-     "answer": "• Désintermédiation : suppression d'intermédiaires, souvent grâce au numérique\n• Réintermédiation : apparition de nouveaux intermédiaires (plateformes, comparateurs)",
-     "w": "1e9f0f1c",
-     "wq": "574e2497"
+     "question": "L'apparition de comparateurs en ligne est un exemple de…",
+     "answer": "Réintermédiation",
+     "w": [
+      "e59b0cab",
+      "1e9f0f1c"
+     ],
+     "wq": [
+      "9fa3b53f",
+      "574e2497"
+     ],
+     "more": "La désintermédiation supprime des intermédiaires.",
+     "wrongs": [
+      "Désintermédiation",
+      "Segmentation",
+      "Yield management"
+     ]
     },
     {
      "question": "Que signifie ROPO ?",
-     "answer": "Research Online, Purchase Offline :\ns'informer en ligne, puis acheter en magasin.",
-     "w": "f0ac7cc7",
-     "wq": "7d6ea679"
+     "answer": "S'informer en ligne, acheter en magasin",
+     "w": [
+      "823b2bd8",
+      "f0ac7cc7"
+     ],
+     "wrongs": [
+      "Acheter en ligne, retirer en magasin",
+      "Revendre en ligne",
+      "Payer en plusieurs fois"
+     ]
     },
     {
-     "question": "Quelle différence entre stratégie cross-canal et omnicanal ?",
-     "answer": "• Cross-canal : plusieurs canaux pour un même achat (commande en ligne, retrait en magasin)\n• Omnicanal : tous les canaux intégrés, expérience continue quel que soit le point de contact",
-     "w": "e9b98c04",
-     "wq": "5af965a2"
+     "question": "Tous les canaux intégrés en une expérience continue : quelle stratégie ?",
+     "answer": "Omnicanal",
+     "w": [
+      "35945aa1",
+      "e9b98c04"
+     ],
+     "wq": [
+      "1dc30b6e",
+      "5af965a2"
+     ],
+     "more": "Cross-canal : plusieurs canaux pour un même achat.",
+     "wrongs": [
+      "Cross-canal",
+      "Monocanal",
+      "Multicanal séparé"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une place de marché (marketplace) ?",
-     "answer": "Une plateforme en ligne où des vendeurs tiers proposent leurs produits.\nL'opérateur prend une commission sur les ventes.",
-     "w": "f75c0bc5",
-     "wq": "1f445919"
+     "question": "Comment se rémunère l'opérateur d'une place de marché ?",
+     "answer": "Par une commission sur les ventes",
+     "w": [
+      "2355f3fa",
+      "f75c0bc5"
+     ],
+     "wq": "1f445919",
+     "wrongs": [
+      "En fabriquant les produits",
+      "Par un impôt",
+      "Il n'est pas rémunéré"
+     ]
     },
     {
-     "question": "Que signifie l'approche POEM ?",
-     "answer": "• Paid media : médias achetés (publicité)\n• Owned media : médias détenus (site, page de marque)\n• Earned media : médias gagnés (avis, partages, bouche-à-oreille)",
-     "w": "e6987cb6",
-     "wq": "aa498e91"
+     "question": "Dans l'approche POEM, que sont les avis et partages des clients ?",
+     "answer": "Les earned media",
+     "w": [
+      "80704aaf",
+      "e6987cb6"
+     ],
+     "wq": "aa498e91",
+     "more": "Paid : publicité ; owned : site, page de marque.",
+     "wrongs": [
+      "Les paid media",
+      "Les owned media",
+      "Les mass media"
+     ]
     },
     {
-     "question": "Qu'est-ce que la valeur vie client (Life Time Value) ?",
-     "answer": "La somme des profits qu'un client rapporte pendant toute sa relation avec l'entreprise.\nElle justifie les efforts de fidélisation.",
-     "w": "a6374e71",
-     "wq": "80c906d1"
+     "question": "Que mesure la valeur vie client ?",
+     "answer": "Les profits rapportés par un client sur toute la relation",
+     "w": [
+      "e052a677",
+      "a6374e71"
+     ],
+     "wq": "80c906d1",
+     "wrongs": [
+      "L'âge moyen des clients",
+      "Le prix d'un produit",
+      "Le nombre de clients"
+     ]
     },
     {
-     "question": "Qu'est-ce que la gestion de la relation client (CRM) ?",
-     "answer": "Les outils et démarches pour collecter les données clients,\nmieux les connaître et personnaliser les échanges, afin de les fidéliser.",
-     "w": "85065b29",
-     "wq": "2b8ac145"
+     "question": "À quoi sert la gestion de la relation client (CRM) ?",
+     "answer": "Connaître et fidéliser les clients",
+     "w": [
+      "cff9dc9a",
+      "85065b29"
+     ],
+     "wq": "2b8ac145",
+     "wrongs": [
+      "Gérer la paie",
+      "Fabriquer les produits",
+      "Calculer les impôts"
+     ]
     }
    ]
   },
@@ -123040,106 +123846,247 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelles sont les fonctions de la chaîne de puissance (chaîne d'énergie) ?",
-     "answer": "1. Alimenter\n2. Distribuer (moduler)\n3. Convertir\n4. Transmettre\n… jusqu'à l'effecteur qui agit sur la matière d'œuvre.",
-     "w": "f544e647",
-     "wq": "fd6c1a21"
+     "question": "Quelle est la première fonction de la chaîne de puissance ?",
+     "answer": "Alimenter",
+     "w": [
+      "d9f1d4b8",
+      "f544e647"
+     ],
+     "wq": "fd6c1a21",
+     "more": "Puis distribuer, convertir, transmettre.",
+     "wrongs": [
+      "Convertir",
+      "Acquérir",
+      "Transmettre"
+     ]
     },
     {
      "question": "Quelles sont les fonctions de la chaîne d'information ?",
-     "answer": "1. Acquérir\n2. Traiter\n3. Communiquer\nElle élabore les ordres envoyés à la chaîne de puissance.",
-     "w": "35e28922",
-     "wq": "4014b960"
+     "answer": "Acquérir, traiter, communiquer",
+     "w": [
+      "a30d5d1d",
+      "35e28922"
+     ],
+     "wrongs": [
+      "Alimenter, distribuer, convertir",
+      "Acquérir, convertir, transmettre",
+      "Traiter, alimenter, transmettre"
+     ]
     },
     {
-     "question": "Que réalise la fonction « alimenter » ?",
-     "answer": "Fournir l'énergie à partir d'une source.\nEx. : réseau électrique, batterie, panneau photovoltaïque, air comprimé.",
-     "w": "f0203d31",
-     "wq": "ca0b38a4"
+     "question": "Une batterie assure quelle fonction ?",
+     "answer": "Alimenter",
+     "w": [
+      "6f23cddd",
+      "f0203d31"
+     ],
+     "wq": "ca0b38a4",
+     "wrongs": [
+      "Convertir",
+      "Acquérir",
+      "Traiter"
+     ]
     },
     {
-     "question": "Que réalise la fonction « distribuer » ?",
-     "answer": "Moduler ou aiguiller l'énergie vers le convertisseur, selon les ordres.\nEx. : relais, contacteur, variateur, hacheur, distributeur pneumatique.",
-     "w": "c6c3dc8d",
-     "wq": "52a91732"
+     "question": "Un relais ou un variateur assure quelle fonction ?",
+     "answer": "Distribuer",
+     "w": [
+      "d5dc941a",
+      "c6c3dc8d"
+     ],
+     "wq": "52a91732",
+     "wrongs": [
+      "Convertir",
+      "Alimenter",
+      "Acquérir"
+     ]
     },
     {
-     "question": "Que réalise la fonction « convertir » ?",
-     "answer": "Transformer l'énergie en une autre forme utile.\nEx. : moteur électrique (électrique → mécanique),\nvérin (pneumatique → mécanique), résistance chauffante, LED.",
-     "w": "e586fd3e",
-     "wq": "0ef9a123"
+     "question": "Un moteur électrique assure quelle fonction ?",
+     "answer": "Convertir",
+     "w": [
+      "39a62805",
+      "e586fd3e"
+     ],
+     "wq": "0ef9a123",
+     "more": "Électrique → mécanique.",
+     "wrongs": [
+      "Transmettre",
+      "Distribuer",
+      "Alimenter"
+     ]
     },
     {
-     "question": "Que réalise la fonction « transmettre » ?",
-     "answer": "Adapter et transmettre l'énergie mécanique jusqu'à l'effecteur.\nEx. : réducteur à engrenages, poulies-courroie, système vis-écrou.",
-     "w": "f80e9606",
-     "wq": "30edbcca"
+     "question": "Un réducteur à engrenages assure quelle fonction ?",
+     "answer": "Transmettre",
+     "w": [
+      "69624a9c",
+      "f80e9606"
+     ],
+     "wq": "30edbcca",
+     "wrongs": [
+      "Convertir",
+      "Distribuer",
+      "Acquérir"
+     ]
     },
     {
-     "question": "Que réalise la fonction « acquérir » ?",
-     "answer": "Prélever des informations sur le système ou son environnement :\n• capteurs\n• interfaces homme-machine (boutons, clavier, écran tactile)",
-     "w": "38dbc17e",
-     "wq": "3e3eddcf"
+     "question": "Un capteur assure quelle fonction ?",
+     "answer": "Acquérir",
+     "w": [
+      "b4d97df9",
+      "38dbc17e"
+     ],
+     "wq": "3e3eddcf",
+     "wrongs": [
+      "Traiter",
+      "Communiquer",
+      "Convertir"
+     ]
     },
     {
-     "question": "Que réalise la fonction « traiter » ?",
-     "answer": "Élaborer les ordres à partir des informations reçues,\npar un programme (microcontrôleur, automate, ordinateur).",
-     "w": "3a9d0039",
-     "wq": "72a836a8"
+     "question": "Un microcontrôleur assure quelle fonction ?",
+     "answer": "Traiter",
+     "w": [
+      "5ed69346",
+      "3a9d0039"
+     ],
+     "wq": "72a836a8",
+     "wrongs": [
+      "Acquérir",
+      "Communiquer",
+      "Alimenter"
+     ]
     },
     {
-     "question": "Que réalise la fonction « communiquer » ?",
-     "answer": "Transmettre des informations à l'utilisateur ou à d'autres systèmes.\nEx. : afficheur, voyant, liaison filaire ou sans fil (Wi-Fi, Bluetooth).",
-     "w": "fe15e8e5",
-     "wq": "4c3d17b8"
+     "question": "Un afficheur assure quelle fonction ?",
+     "answer": "Communiquer",
+     "w": [
+      "c21923a3",
+      "fe15e8e5"
+     ],
+     "wq": "4c3d17b8",
+     "wrongs": [
+      "Acquérir",
+      "Traiter",
+      "Distribuer"
+     ]
     },
     {
-     "question": "Quelle différence entre information logique (TOR), analogique et numérique ?",
-     "answer": "• Logique (TOR) : deux états, 0 ou 1 (capteur de fin de course)\n• Analogique : signal continu, image de la grandeur (sonde de température)\n• Numérique : valeur codée en binaire",
-     "w": "751eda3d",
-     "wq": "f2259d21"
+     "question": "Un capteur de fin de course donne une information…",
+     "answer": "Logique (tout ou rien)",
+     "w": [
+      "55135032",
+      "751eda3d"
+     ],
+     "wq": [
+      "979279cb",
+      "f2259d21"
+     ],
+     "more": "Analogique : signal continu ; numérique : codée en binaire.",
+     "wrongs": [
+      "Analogique",
+      "Numérique codée sur 8 bits",
+      "Continue"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un actionneur ?",
-     "answer": "Un convertisseur qui transforme l'énergie reçue en action physique.\nEx. : moteur, vérin, électroaimant, résistance chauffante.",
-     "w": "405d528a",
-     "wq": "1c498448"
+     "question": "Un vérin est-il un capteur ou un actionneur ?",
+     "answer": "Un actionneur",
+     "w": [
+      "b79a9bbc",
+      "405d528a"
+     ],
+     "wq": "1c498448",
+     "wrongs": [
+      "Un capteur",
+      "Un préactionneur",
+      "Une source d'énergie"
+     ]
     },
     {
-     "question": "Comment calcule-t-on le rendement d'une chaîne de puissance ?",
-     "answer": "η = puissance utile / puissance absorbée\nEn série, les rendements se multiplient : η = η1 × η2 × η3",
-     "w": "c6cde165",
-     "wq": "dcd125e8"
+     "question": "En série, comment se combinent les rendements ?",
+     "answer": "Ils se multiplient",
+     "w": [
+      "e01005ba",
+      "c6cde165"
+     ],
+     "wq": "dcd125e8",
+     "wrongs": [
+      "Ils s'additionnent",
+      "On garde le plus faible",
+      "On fait la moyenne"
+     ]
     },
     {
-     "question": "Un moteur de rendement 0,8 entraîne un réducteur de rendement 0,9 : quel est le rendement global ?",
-     "answer": "η = 0,8 × 0,9 = 0,72, soit 72 %.\n28 % de la puissance est perdue, surtout en chaleur.",
-     "w": "d363c127",
-     "wq": "4338f4a8"
+     "question": "Moteur η = 0,8 et réducteur η = 0,9 : quel rendement global ?",
+     "answer": "72 %",
+     "w": [
+      "69fbd7ac",
+      "d363c127"
+     ],
+     "wq": "4338f4a8",
+     "wrongs": [
+      "85 %",
+      "90 %",
+      "17 %"
+     ]
     },
     {
-     "question": "Quelle relation lie puissance mécanique, couple et vitesse de rotation ?",
-     "answer": "P = C × ω\nP en W, C en N·m, ω en rad/s\nSi N est en tr/min : ω = 2π × N / 60",
-     "w": "e9537835",
-     "wq": "16493ff6"
+     "question": "Quelle relation lie puissance, couple et vitesse angulaire ?",
+     "answer": "P = C × ω",
+     "w": [
+      "b22f7918",
+      "e9537835"
+     ],
+     "wq": "16493ff6",
+     "wrongs": [
+      "P = C / ω",
+      "P = U × I",
+      "P = F / S"
+     ]
     },
     {
-     "question": "À quoi sert le diagramme des exigences (SysML) ?",
-     "answer": "À lister et organiser les exigences issues du cahier des charges\n(fonctionnelles, de performance, environnementales).",
-     "w": "6cbdb41e",
-     "wq": "b4960d3c"
+     "question": "Quel diagramme SysML organise les exigences du cahier des charges ?",
+     "answer": "Le diagramme des exigences",
+     "w": [
+      "b6d90af6",
+      "6cbdb41e"
+     ],
+     "wq": "b4960d3c",
+     "wrongs": [
+      "Le diagramme de cas d'utilisation",
+      "Le diagramme de blocs internes",
+      "Le diagramme de séquence"
+     ]
     },
     {
-     "question": "À quoi sert le diagramme de cas d'utilisation (SysML) ?",
-     "answer": "À représenter les services rendus par le système\naux acteurs (utilisateurs ou autres systèmes) qui interagissent avec lui.",
-     "w": "fa4e51f5",
-     "wq": "fde7021d"
+     "question": "Quel diagramme SysML représente les services rendus aux acteurs ?",
+     "answer": "Le diagramme de cas d'utilisation",
+     "w": [
+      "dd95065b",
+      "fa4e51f5"
+     ],
+     "wq": "fde7021d",
+     "wrongs": [
+      "Le diagramme des exigences",
+      "Le diagramme de blocs internes",
+      "Le diagramme d'états"
+     ]
     },
     {
-     "question": "À quoi sert le diagramme de blocs internes (SysML) ?",
-     "answer": "À décrire la structure interne : les blocs (composants)\net les flux d'énergie, de matière et d'information entre eux.",
-     "w": "59b05e32",
-     "wq": "94965b15"
+     "question": "Quel diagramme SysML décrit les flux entre composants ?",
+     "answer": "Le diagramme de blocs internes",
+     "w": [
+      "947abd7f",
+      "59b05e32"
+     ],
+     "wq": "94965b15",
+     "wrongs": [
+      "Le diagramme des exigences",
+      "Le diagramme de cas d'utilisation",
+      "Le diagramme de Gantt"
+     ]
     }
    ]
   },
@@ -123163,106 +124110,267 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelles sont les grandes familles de matériaux ?",
-     "answer": "• Métaux et alliages\n• Polymères (matières plastiques)\n• Céramiques et verres\n• Composites\n• Matériaux naturels (bois)",
-     "w": "dd33168e",
-     "wq": "c45a204d"
+     "question": "Le bois appartient à quelle famille de matériaux ?",
+     "answer": "Les matériaux naturels",
+     "w": [
+      "4ec7fda4",
+      "dd33168e"
+     ],
+     "wq": "c45a204d",
+     "more": "Aussi : métaux, polymères, céramiques et verres, composites.",
+     "wrongs": [
+      "Les polymères",
+      "Les composites",
+      "Les céramiques"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un alliage ? Donnez des exemples.",
-     "answer": "Un métal mélangé à d'autres éléments pour améliorer ses propriétés.\n• Acier : fer + carbone\n• Laiton : cuivre + zinc\n• Bronze : cuivre + étain",
-     "w": "4541763c",
-     "wq": "98e9f450"
+     "question": "De quoi est composé l'acier ?",
+     "answer": "Fer + carbone",
+     "w": [
+      "f7043f60",
+      "4541763c"
+     ],
+     "wq": [
+      "2deccf38",
+      "98e9f450"
+     ],
+     "more": "Laiton : cuivre + zinc ; bronze : cuivre + étain.",
+     "wrongs": [
+      "Cuivre + zinc",
+      "Cuivre + étain",
+      "Fer + aluminium"
+     ]
     },
     {
-     "question": "Quelle différence entre thermoplastiques et thermodurcissables ?",
-     "answer": "• Thermoplastiques : se ramollissent à la chaleur, recyclables (PE, PP, PVC, PET)\n• Thermodurcissables : durcissent définitivement, non refondables (résines époxy)",
-     "w": "3205dad5",
-     "wq": "11e5c32f"
+     "question": "Quels plastiques se ramollissent à la chaleur et se recyclent ?",
+     "answer": "Les thermoplastiques",
+     "w": [
+      "98180034",
+      "3205dad5"
+     ],
+     "wq": [
+      "38d0ac35",
+      "11e5c32f"
+     ],
+     "more": "Les thermodurcissables durcissent définitivement.",
+     "wrongs": [
+      "Les thermodurcissables",
+      "Les céramiques",
+      "Les composites"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un matériau composite ?",
-     "answer": "L'association d'au moins deux matériaux non miscibles :\n• un renfort (fibres de verre, de carbone)\n• une matrice (résine)\nEx. de propriétés obtenues : légèreté et rigidité.",
-     "w": "b4e282f2",
-     "wq": "232719c1"
+     "question": "Dans un composite, quel rôle joue la résine ?",
+     "answer": "La matrice",
+     "w": [
+      "8294c4a8",
+      "b4e282f2"
+     ],
+     "wq": "232719c1",
+     "more": "Les fibres (verre, carbone) sont le renfort.",
+     "wrongs": [
+      "Le renfort",
+      "Le colorant",
+      "Le conducteur"
+     ]
     },
     {
-     "question": "Quelles sont les propriétés des céramiques ?",
-     "answer": "• Grande dureté\n• Résistance à la chaleur et à la corrosion\n• Isolantes électriques\n• Mais très fragiles",
-     "w": "822c892b",
-     "wq": "c7fda819"
+     "question": "Quel est le point faible des céramiques ?",
+     "answer": "Elles sont très fragiles",
+     "w": [
+      "da90af26",
+      "822c892b"
+     ],
+     "wq": "c7fda819",
+     "more": "Mais dures, résistantes à la chaleur et isolantes.",
+     "wrongs": [
+      "Elles conduisent l'électricité",
+      "Elles fondent facilement",
+      "Elles rouillent"
+     ]
     },
     {
-     "question": "Qu'est-ce que la masse volumique ?",
-     "answer": "ρ = m / V, en kg/m³\nEx. : acier ≈ 7 850 kg/m³, aluminium ≈ 2 700 kg/m³.",
-     "w": "fd525257",
-     "wq": "0e2657a4"
+     "question": "Quelle est la masse volumique de l'aluminium ?",
+     "answer": "Environ 2 700 kg/m³",
+     "w": [
+      "a895a6ee",
+      "fd525257"
+     ],
+     "wq": "0e2657a4",
+     "more": "Acier : environ 7 850 kg/m³.",
+     "wrongs": [
+      "Environ 7 850 kg/m³",
+      "Environ 1 000 kg/m³",
+      "Environ 19 300 kg/m³"
+     ]
     },
     {
      "question": "Comment calcule-t-on une contrainte normale de traction ?",
-     "answer": "σ = F / S\nEn Pa (N/m²), ou plus souvent en MPa (N/mm²).",
-     "w": "a3e2149b",
-     "wq": "48ff5a73"
+     "answer": "σ = F / S",
+     "w": [
+      "27a8265e",
+      "a3e2149b"
+     ],
+     "wrongs": [
+      "σ = F × S",
+      "σ = S / F",
+      "σ = m / V"
+     ]
     },
     {
-     "question": "Quelle différence entre déformation élastique et plastique ?",
-     "answer": "• Élastique : réversible, la pièce reprend sa forme\n• Plastique : permanente",
-     "w": "c36c2d98",
-     "wq": "a9200e1f"
+     "question": "Une déformation qui reste après l'effort est…",
+     "answer": "Plastique",
+     "w": [
+      "6c8a61a6",
+      "c36c2d98"
+     ],
+     "wq": [
+      "c93490a7",
+      "a9200e1f"
+     ],
+     "more": "Élastique : réversible.",
+     "wrongs": [
+      "Élastique",
+      "Thermique",
+      "Magnétique"
+     ]
     },
     {
      "question": "Qu'est-ce que la limite élastique Re ?",
-     "answer": "La contrainte au-delà de laquelle la déformation devient plastique.\nUne pièce est dimensionnée pour rester en dessous.",
-     "w": "cd63355e",
-     "wq": "b1ead9ea"
+     "answer": "La contrainte au-delà de laquelle la déformation devient plastique",
+     "w": [
+      "e85cf930",
+      "cd63355e"
+     ],
+     "wrongs": [
+      "La contrainte de rupture",
+      "La masse volumique",
+      "La température de fusion"
+     ]
     },
     {
-     "question": "Qu'est-ce que le module d'Young E ?",
-     "answer": "Le module d'élasticité, qui caractérise la rigidité.\nLoi de Hooke : σ = E × ε (domaine élastique)\nEx. : acier ≈ 210 GPa, aluminium ≈ 70 GPa.",
-     "w": "307019fc",
-     "wq": "8401171a"
+     "question": "Quel est le module d'Young de l'acier ?",
+     "answer": "Environ 210 GPa",
+     "w": [
+      "4cab380c",
+      "307019fc"
+     ],
+     "wq": "8401171a",
+     "more": "Aluminium : environ 70 GPa.",
+     "wrongs": [
+      "Environ 70 GPa",
+      "Environ 2 GPa",
+      "Environ 2 100 GPa"
+     ]
     },
     {
-     "question": "Quelle différence entre matériau ductile et matériau fragile ?",
-     "answer": "• Ductile : se déforme beaucoup avant de rompre (cuivre, acier doux)\n• Fragile : rompt sans déformation notable (verre, fonte, céramique)",
-     "w": "23abae80",
-     "wq": "ba925bc6"
+     "question": "Le verre est-il ductile ou fragile ?",
+     "answer": "Fragile",
+     "w": [
+      "3e7cad49",
+      "23abae80"
+     ],
+     "wq": [
+      "56a75d7a",
+      "ba925bc6"
+     ],
+     "more": "Ductile : cuivre, acier doux.",
+     "wrongs": [
+      "Ductile",
+      "Élastique à l'infini",
+      "Plastique"
+     ]
     },
     {
-     "question": "Qu'est-ce que la conductivité thermique ?",
-     "answer": "λ, en W/(m·K) : l'aptitude à conduire la chaleur.\nEx. : laine de verre ≈ 0,04 (isolant) ; cuivre ≈ 400.",
-     "w": "ba9d01bb",
-     "wq": "482101a5"
+     "question": "Quel matériau a une conductivité thermique d'environ 0,04 W/(m·K) ?",
+     "answer": "La laine de verre",
+     "w": [
+      "34d38acc",
+      "ba9d01bb"
+     ],
+     "wq": "482101a5",
+     "more": "Cuivre : environ 400.",
+     "wrongs": [
+      "Le cuivre",
+      "L'acier",
+      "L'aluminium"
+     ]
     },
     {
-     "question": "Quel matériau choisir pour un conducteur électrique ?",
-     "answer": "Un matériau de faible résistivité : le cuivre,\nou l'aluminium, plus léger, pour les lignes à haute tension.",
-     "w": "e692aa72",
-     "wq": "1667a9bc"
+     "question": "Quel métal utilise-t-on pour les lignes à haute tension, car plus léger que le cuivre ?",
+     "answer": "L'aluminium",
+     "w": [
+      "4e780f5c",
+      "e692aa72"
+     ],
+     "wq": "1667a9bc",
+     "wrongs": [
+      "Le fer",
+      "Le plomb",
+      "L'or"
+     ]
     },
     {
-     "question": "Qu'est-ce que la corrosion d'un métal ? Comment s'en protéger ?",
-     "answer": "Une dégradation par oxydation avec le milieu (eau, air). Ex. : la rouille.\nProtections :\n• peinture\n• galvanisation (couche de zinc)\n• acier inoxydable",
-     "w": "a436b26f",
-     "wq": "b71bcd58"
+     "question": "Qu'est-ce que la galvanisation ?",
+     "answer": "Une couche de zinc contre la corrosion",
+     "w": [
+      "5db74db2",
+      "a436b26f"
+     ],
+     "wq": "b71bcd58",
+     "wrongs": [
+      "Une peinture rouge",
+      "Un traitement thermique",
+      "Une soudure"
+     ]
     },
     {
-     "question": "Quels critères guident le choix d'un matériau ?",
-     "answer": "• Propriétés : mécaniques, thermiques, électriques\n• Procédés de mise en forme possibles\n• Coût et disponibilité\n• Impact environnemental et recyclabilité",
-     "w": "cb0b880a",
-     "wq": "22b468e0"
+     "question": "La recyclabilité est-elle un critère de choix d'un matériau ?",
+     "answer": "Oui",
+     "w": [
+      "9c3ee323",
+      "cb0b880a"
+     ],
+     "wq": "22b468e0",
+     "more": "Avec les propriétés, les procédés, le coût et l'impact environnemental.",
+     "wrongs": [
+      "Non",
+      "Seulement pour le bois",
+      "Seulement pour le verre"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un diagramme d'Ashby ?",
-     "answer": "Un graphique qui situe les familles de matériaux selon deux propriétés\n(ex. module d'Young et masse volumique)\npour choisir le matériau le mieux adapté.",
-     "w": "414576ae",
-     "wq": "a41d23cb"
+     "question": "À quoi sert un diagramme d'Ashby ?",
+     "answer": "Choisir un matériau en comparant deux propriétés",
+     "w": [
+      "a938e972",
+      "414576ae"
+     ],
+     "wq": "a41d23cb",
+     "wrongs": [
+      "Calculer une contrainte",
+      "Dessiner une pièce",
+      "Mesurer une température"
+     ]
     },
     {
-     "question": "Quels sont les principaux procédés d'obtention de pièces ?",
-     "answer": "• Moulage\n• Usinage (enlèvement de matière)\n• Formage (pliage, emboutissage)\n• Injection plastique\n• Fabrication additive (impression 3D)",
-     "w": "10924b1e",
-     "wq": "6a1052c3"
+     "question": "Comment appelle-t-on l'impression 3D ?",
+     "answer": "La fabrication additive",
+     "w": [
+      "83443d19",
+      "10924b1e"
+     ],
+     "wq": [
+      "459f672e",
+      "6a1052c3"
+     ],
+     "more": "Autres procédés : moulage, usinage, formage, injection.",
+     "wrongs": [
+      "L'usinage",
+      "Le moulage",
+      "L'emboutissage"
+     ]
     }
    ]
   },
