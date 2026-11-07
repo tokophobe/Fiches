@@ -84643,81 +84643,207 @@
    "cards": [
     {
      "question": "Avec quelles lettres écrit-on le son « ou » ?",
-     "answer": "Avec o et u : « ou », comme dans loup."
+     "answer": "o et u",
+     "w": "3d50e6db",
+     "more": "Comme dans loup.",
+     "wrongs": [
+      "u et o",
+      "o et w",
+      "a et u"
+     ]
     },
     {
      "question": "Avec quelles lettres écrit-on le son « ch » ?",
-     "answer": "Avec c et h : « ch », comme dans chat."
+     "answer": "c et h",
+     "w": "9ba6278a",
+     "more": "Comme dans chat.",
+     "wrongs": [
+      "s et h",
+      "c et k",
+      "c et s"
+     ]
     },
     {
      "question": "Avec quelles lettres écrit-on le son « oi » ?",
-     "answer": "Avec o et i : « oi », comme dans roi."
+     "answer": "o et i",
+     "w": "58ce7deb",
+     "more": "Comme dans roi.",
+     "wrongs": [
+      "o et a",
+      "w et a",
+      "u et i"
+     ]
     },
     {
-     "question": "Comment peut s'écrire le son « on » ?",
-     "answer": "• « on » : bonbon\n• « om » devant m, b, p : pompier",
-     "w": "950ba1c8",
-     "wq": "009116c9"
+     "question": "Devant m, b ou p, comment s'écrit le son « on » ?",
+     "answer": "om",
+     "w": [
+      "09c55f22",
+      "950ba1c8"
+     ],
+     "wq": "009116c9",
+     "more": "Comme dans pompier. Sinon « on » : bonbon.",
+     "wrongs": [
+      "on",
+      "un",
+      "am"
+     ]
     },
     {
-     "question": "Comment peut s'écrire le son « an » ?",
-     "answer": "• « an » : maman\n• « en » : enfant\n• « am », « em » devant m, b, p : lampe, temps",
-     "w": "f59696b8",
-     "wq": "0423d977"
+     "question": "Comment s'écrit le son « an » dans « enfant » au début ?",
+     "answer": "en",
+     "w": [
+      "ab86cd41",
+      "f59696b8"
+     ],
+     "wq": "0423d977",
+     "more": "Le son « an » s'écrit an, en, am ou em.",
+     "wrongs": [
+      "an",
+      "on",
+      "in"
+     ]
     },
     {
-     "question": "Comment peut s'écrire le son « in » ?",
-     "answer": "• « in » : lapin\n• « ain » : pain\n• « ein » : peinture\n• « im » devant m, b, p : timbre",
-     "w": "f52133ab",
-     "wq": "e714b9ef"
+     "question": "Comment s'écrit le son « in » dans « pain » ?",
+     "answer": "ain",
+     "w": [
+      "0197d5b1",
+      "f52133ab"
+     ],
+     "wq": "e714b9ef",
+     "more": "Aussi : in (lapin), ein (peinture), im (timbre).",
+     "wrongs": [
+      "in",
+      "ein",
+      "un"
+     ]
     },
     {
-     "question": "Comment peut s'écrire le son « é » ?",
-     "answer": "• « é » : bébé\n• « er » : manger\n• « ez » : nez",
-     "w": "7be0252b",
-     "wq": "e51860f3"
+     "question": "Comment s'écrit le son « é » dans « manger » ?",
+     "answer": "er",
+     "w": [
+      "fd2d1bee",
+      "7be0252b"
+     ],
+     "wq": "e51860f3",
+     "more": "Aussi : é (bébé), ez (nez).",
+     "wrongs": [
+      "é",
+      "ez",
+      "ai"
+     ]
     },
     {
-     "question": "Comment peut s'écrire le son « è » ?",
-     "answer": "• « è » : mère\n• « ê » : fête\n• « ai » : lait\n• « ei » : neige",
-     "w": "3d8040e8",
-     "wq": "89099cb0"
+     "question": "Comment s'écrit le son « è » dans « lait » ?",
+     "answer": "ai",
+     "w": [
+      "112ed558",
+      "3d8040e8"
+     ],
+     "wq": "89099cb0",
+     "more": "Aussi : è (mère), ê (fête), ei (neige).",
+     "wrongs": [
+      "è",
+      "ei",
+      "é"
+     ]
     },
     {
-     "question": "Comment peut s'écrire le son « o » ?",
-     "answer": "• « o » : vélo\n• « au » : auto\n• « eau » : bateau",
-     "w": "bff6c9b0",
-     "wq": "a3244985"
+     "question": "Comment s'écrit le son « o » dans « bateau » ?",
+     "answer": "eau",
+     "w": [
+      "b393597f",
+      "bff6c9b0"
+     ],
+     "wq": "a3244985",
+     "more": "Aussi : o (vélo), au (auto).",
+     "wrongs": [
+      "au",
+      "o",
+      "ot"
+     ]
     },
     {
-     "question": "Comment peut s'écrire le son « f » ?",
-     "answer": "• « f » : fée\n• « ph » : photo",
-     "w": "5b7c2581",
-     "wq": "a3d8922a"
+     "question": "Comment s'écrit le son « f » dans « photo » ?",
+     "answer": "ph",
+     "w": [
+      "50cbe197",
+      "5b7c2581"
+     ],
+     "wq": "a3d8922a",
+     "more": "Aussi : f (fée).",
+     "wrongs": [
+      "f",
+      "ff",
+      "v"
+     ]
     },
     {
      "question": "Avec quelles lettres écrit-on le son « gn » ?",
-     "answer": "Avec g et n : « gn », comme dans montagne."
+     "answer": "g et n",
+     "w": "6e10872f",
+     "more": "Comme dans montagne.",
+     "wrongs": [
+      "n et g",
+      "n et i",
+      "g et u"
+     ]
     },
     {
      "question": "Quel son fait la lettre c devant e ou i ?",
-     "answer": "Elle fait « s », comme dans cerise et citron."
+     "answer": "« s »",
+     "w": "88e3de2d",
+     "more": "Comme dans cerise et citron.",
+     "wrongs": [
+      "« k »",
+      "« ch »",
+      "« z »"
+     ]
     },
     {
      "question": "Quel son fait la lettre g devant e ou i ?",
-     "answer": "Elle fait « j », comme dans genou et girafe."
+     "answer": "« j »",
+     "w": "2fc08698",
+     "more": "Comme dans genou et girafe.",
+     "wrongs": [
+      "« g » (gu)",
+      "« k »",
+      "« z »"
+     ]
     },
     {
      "question": "Quel son fait un seul s entre deux voyelles ?",
-     "answer": "Il fait « z », comme dans maison."
+     "answer": "« z »",
+     "w": "f6a7feb7",
+     "more": "Comme dans maison.",
+     "wrongs": [
+      "« s »",
+      "« ch »",
+      "Aucun son"
+     ]
     },
     {
      "question": "Comment écrire le son « s » entre deux voyelles ?",
-     "answer": "On écrit deux s : « ss », comme dans poisson."
+     "answer": "Avec deux s",
+     "w": "4c096c9c",
+     "more": "Comme dans poisson.",
+     "wrongs": [
+      "Avec un seul s",
+      "Avec un z",
+      "Avec un x"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une lettre muette ?",
-     "answer": "Une lettre qu'on écrit mais qu'on n'entend pas, comme le t de chat."
+     "answer": "Une lettre qu'on écrit mais qu'on n'entend pas",
+     "w": "accfe659",
+     "more": "Comme le t de chat.",
+     "wrongs": [
+      "Une lettre qu'on entend mais qu'on n'écrit pas",
+      "Une lettre majuscule",
+      "Une voyelle"
+     ]
     }
    ]
   },
@@ -84740,89 +84866,208 @@
    "cards": [
     {
      "question": "Complète avec « et » ou « est » : Papa ___ maman.",
-     "answer": "Papa et maman.\n(On peut dire « Papa et puis maman ».)",
-     "w": "a695a93d",
-     "wq": "9496d5e2"
+     "answer": "et",
+     "w": [
+      "abefe9f2",
+      "a695a93d"
+     ],
+     "more": "On peut dire « Papa et puis maman ».",
+     "wrongs": [
+      "est",
+      "ai",
+      "es"
+     ]
     },
     {
      "question": "Complète avec « et » ou « est » : Le chat ___ noir.",
-     "answer": "Le chat est noir.\n(On peut dire « Le chat était noir ».)",
-     "w": "8ce4c7c0",
-     "wq": "bf3c0c89"
+     "answer": "est",
+     "w": [
+      "173dbbdb",
+      "8ce4c7c0"
+     ],
+     "more": "On peut dire « Le chat était noir ».",
+     "wrongs": [
+      "et",
+      "ai",
+      "es"
+     ]
     },
     {
      "question": "Complète avec « un » ou « une » : ___ fille.",
-     "answer": "Une fille."
+     "answer": "une",
+     "w": "3435c5a9",
+     "wrongs": [
+      "un",
+      "des",
+      "le"
+     ]
     },
     {
      "question": "Complète avec « un » ou « une » : ___ garçon.",
-     "answer": "Un garçon."
+     "answer": "un",
+     "w": "b2162e10",
+     "wrongs": [
+      "une",
+      "la",
+      "des"
+     ]
     },
     {
      "question": "Complète avec « le », « la » ou « les » : ___ pommes.",
-     "answer": "Les pommes\nIl y en a plusieurs.",
-     "w": "896261fa",
-     "wq": "616aa9a2"
+     "answer": "les",
+     "w": [
+      "aff56426",
+      "896261fa"
+     ],
+     "more": "Il y en a plusieurs.",
+     "wrongs": [
+      "le",
+      "la",
+      "un"
+     ]
     },
     {
      "question": "Complète : Le livre est ___ mon cartable. (dans / avec)",
-     "answer": "Le livre est dans mon cartable."
+     "answer": "dans",
+     "w": "7707637a",
+     "wrongs": [
+      "avec",
+      "sur",
+      "sans"
+     ]
     },
     {
      "question": "Complète : Je joue ___ mon ami. (avec / sur)",
-     "answer": "Je joue avec mon ami."
+     "answer": "avec",
+     "w": "058e8bc9",
+     "wrongs": [
+      "sur",
+      "sous",
+      "dans"
+     ]
     },
     {
      "question": "Complète : Le verre est ___ la table. (sur / sous)",
-     "answer": "Le verre est sur la table.\nIl est posé dessus.",
-     "w": "a7cd0124",
-     "wq": "acbf5008"
+     "answer": "sur",
+     "w": [
+      "1197db10",
+      "a7cd0124"
+     ],
+     "more": "Il est posé dessus.",
+     "wrongs": [
+      "sous",
+      "dans",
+      "avec"
+     ]
     },
     {
      "question": "Complète : Le chien dort ___ la table. (sur / sous)",
-     "answer": "Le chien dort sous la table.\nIl est en dessous.",
-     "w": "ab65fc29",
-     "wq": "b67e9338"
+     "answer": "sous",
+     "w": [
+      "303d51ad",
+      "ab65fc29"
+     ],
+     "more": "Il est en dessous.",
+     "wrongs": [
+      "sur",
+      "avec",
+      "et"
+     ]
     },
     {
      "question": "Quel petit mot remplace « le garçon » ?",
-     "answer": "« il »\nLe garçon court → Il court.",
-     "w": "b85a149d",
-     "wq": "2cbdc1ff"
+     "answer": "il",
+     "w": [
+      "a0bab02d",
+      "b85a149d"
+     ],
+     "more": "Le garçon court → Il court.",
+     "wrongs": [
+      "elle",
+      "ils",
+      "nous"
+     ]
     },
     {
      "question": "Quel petit mot remplace « la fille » ?",
-     "answer": "« elle »\nLa fille chante → Elle chante.",
-     "w": "f8be944d",
-     "wq": "594156b3"
+     "answer": "elle",
+     "w": [
+      "09725d99",
+      "f8be944d"
+     ],
+     "more": "La fille chante → Elle chante.",
+     "wrongs": [
+      "il",
+      "elles",
+      "vous"
+     ]
     },
     {
      "question": "Complète : Je veux jouer ___ il pleut. (mais / et)",
-     "answer": "Je veux jouer mais il pleut."
+     "answer": "mais",
+     "w": "dbe1c02e",
+     "wrongs": [
+      "et",
+      "ou",
+      "sur"
+     ]
     },
     {
      "question": "Complète : Tu veux du lait ___ du jus ? (ou / et)",
-     "answer": "Tu veux du lait ou du jus ?\nOn doit choisir.",
-     "w": "1c3de012",
-     "wq": "7cbf6ce3"
+     "answer": "ou",
+     "w": [
+      "2883a850",
+      "1c3de012"
+     ],
+     "more": "On doit choisir.",
+     "wrongs": [
+      "et",
+      "mais",
+      "sans"
+     ]
     },
     {
      "question": "Quel petit mot sert à poser une question sur un lieu ?",
-     "answer": "« où »\nOù est mon ballon ?",
-     "w": "bb1bbb16",
-     "wq": "bf325a0e"
+     "answer": "où",
+     "w": [
+      "aff2ec86",
+      "bb1bbb16"
+     ],
+     "more": "Où est mon ballon ?",
+     "wrongs": [
+      "quand",
+      "qui",
+      "ou"
+     ]
     },
     {
-     "question": "Quel petit mot veut dire « très souvent, tout le temps » ?",
-     "answer": "« toujours »\nIl est toujours content.",
-     "w": "78a9cf57",
-     "wq": "0f259bfe"
+     "question": "Quel petit mot veut dire « tout le temps » ?",
+     "answer": "toujours",
+     "w": [
+      "dc4be9fb",
+      "78a9cf57"
+     ],
+     "wq": "0f259bfe",
+     "more": "Il est toujours content.",
+     "wrongs": [
+      "jamais",
+      "parfois",
+      "hier"
+     ]
     },
     {
      "question": "Quel petit mot est le contraire de « avec » ?",
-     "answer": "« sans »\nun gâteau sans sucre",
-     "w": "fe3b73dd",
-     "wq": "0e803859"
+     "answer": "sans",
+     "w": [
+      "a91d3d51",
+      "fe3b73dd"
+     ],
+     "more": "Un gâteau sans sucre.",
+     "wrongs": [
+      "sous",
+      "dans",
+      "pour"
+     ]
     }
    ]
   },
@@ -84845,89 +85090,204 @@
    "cards": [
     {
      "question": "Combien d'unités dans une dizaine ?",
-     "answer": "10 unités font 1 dizaine."
+     "answer": "10",
+     "w": "81b3f012",
+     "wrongs": [
+      "100",
+      "5",
+      "1"
+     ]
     },
     {
-     "question": "Dans 47, combien de dizaines et d'unités ?",
-     "answer": "• 4 dizaines\n• 7 unités",
-     "w": "3c0c2e92",
-     "wq": "a917ae88"
+     "question": "Dans 47, combien y a-t-il de dizaines ?",
+     "answer": "4",
+     "w": [
+      "0c3eb089",
+      "3c0c2e92"
+     ],
+     "wq": "a917ae88",
+     "more": "Et 7 unités.",
+     "wrongs": [
+      "7",
+      "47",
+      "11"
+     ]
     },
     {
      "question": "Quel nombre font 6 dizaines et 3 unités ?",
-     "answer": "63."
+     "answer": "63",
+     "w": "e5acb4ee",
+     "wrongs": [
+      "36",
+      "9",
+      "603"
+     ]
     },
     {
      "question": "Combien faut-il ajouter à 7 pour faire 10 ?",
-     "answer": "3\n7 + 3 = 10",
-     "w": "33cffc3d",
-     "wq": "0f7b74dc"
+     "answer": "3",
+     "w": [
+      "41667d29",
+      "33cffc3d"
+     ],
+     "wrongs": [
+      "2",
+      "4",
+      "17"
+     ]
     },
     {
      "question": "Combien faut-il ajouter à 4 pour faire 10 ?",
-     "answer": "6\n4 + 6 = 10",
-     "w": "abc7b291",
-     "wq": "cbc3a399"
+     "answer": "6",
+     "w": [
+      "aa8d9e2d",
+      "abc7b291"
+     ],
+     "wrongs": [
+      "5",
+      "4",
+      "7"
+     ]
     },
     {
      "question": "Combien faut-il ajouter à 8 pour faire 10 ?",
-     "answer": "2\n8 + 2 = 10",
-     "w": "0b8023c9",
-     "wq": "20efbc25"
+     "answer": "2",
+     "w": [
+      "d29c03b5",
+      "0b8023c9"
+     ],
+     "wrongs": [
+      "3",
+      "1",
+      "18"
+     ]
     },
     {
      "question": "Combien font 5 + 5 ?",
-     "answer": "10\nC'est le double de 5.",
-     "w": "96fa223d",
-     "wq": "d7721839"
+     "answer": "10",
+     "w": [
+      "7702b393",
+      "96fa223d"
+     ],
+     "more": "C'est le double de 5.",
+     "wrongs": [
+      "55",
+      "9",
+      "11"
+     ]
     },
     {
      "question": "Combien font 9 + 1 ?",
-     "answer": "10."
+     "answer": "10",
+     "w": "437ebf85",
+     "wrongs": [
+      "8",
+      "91",
+      "11"
+     ]
     },
     {
      "question": "Quel nombre vient juste après 59 ?",
-     "answer": "60."
+     "answer": "60",
+     "w": "99570a62",
+     "wrongs": [
+      "58",
+      "50",
+      "510"
+     ]
     },
     {
      "question": "Quel nombre vient juste avant 80 ?",
-     "answer": "79."
+     "answer": "79",
+     "w": "85489942",
+     "wrongs": [
+      "81",
+      "70",
+      "78"
+     ]
     },
     {
      "question": "Comment écrit-on 70 en lettres ?",
-     "answer": "soixante-dix\n(60 + 10)",
-     "w": "c8a52eba",
-     "wq": "7bfb8045"
+     "answer": "soixante-dix",
+     "w": [
+      "73d6f096",
+      "c8a52eba"
+     ],
+     "more": "60 + 10",
+     "wrongs": [
+      "septante",
+      "sept-dix",
+      "soixante"
+     ]
     },
     {
      "question": "Comment écrit-on 80 en lettres ?",
-     "answer": "quatre-vingts\n(4 fois 20)",
-     "w": "ec50f495",
-     "wq": "fbe542a0"
+     "answer": "quatre-vingts",
+     "w": [
+      "6c15479f",
+      "ec50f495"
+     ],
+     "more": "4 fois 20",
+     "wrongs": [
+      "huitante",
+      "quatre-vingt-dix",
+      "soixante-vingt"
+     ]
     },
     {
      "question": "Qui est le plus grand : 38 ou 83 ?",
-     "answer": "83\n8 dizaines, alors que 38 n'en a que 3.",
-     "w": "a092350f",
-     "wq": "c8b2ac76"
+     "answer": "83",
+     "w": [
+      "2ce21673",
+      "a092350f"
+     ],
+     "more": "8 dizaines, alors que 38 n'en a que 3.",
+     "wrongs": [
+      "38",
+      "Ils sont égaux",
+      "On ne peut pas savoir"
+     ]
     },
     {
      "question": "Combien font 99 + 1 ?",
-     "answer": "100\nCent, c'est 10 dizaines.",
-     "w": "5a02823a",
-     "wq": "68630e8a"
+     "answer": "100",
+     "w": [
+      "63bb767a",
+      "5a02823a"
+     ],
+     "more": "Cent, c'est 10 dizaines.",
+     "wrongs": [
+      "991",
+      "90",
+      "1 000"
+     ]
     },
     {
      "question": "Combien font 20 + 30 ?",
-     "answer": "50\n2 dizaines + 3 dizaines = 5 dizaines",
-     "w": "93545527",
-     "wq": "b1495876"
+     "answer": "50",
+     "w": [
+      "cb266d9f",
+      "93545527"
+     ],
+     "more": "2 dizaines + 3 dizaines = 5 dizaines",
+     "wrongs": [
+      "23",
+      "60",
+      "5"
+     ]
     },
     {
      "question": "Combien manque-t-il à 26 pour aller à 30 ?",
-     "answer": "4\n26 + 4 = 30",
-     "w": "3dd73d18",
-     "wq": "94bcb152"
+     "answer": "4",
+     "w": [
+      "8abc5fe8",
+      "3dd73d18"
+     ],
+     "wrongs": [
+      "3",
+      "6",
+      "14"
+     ]
     }
    ]
   },
@@ -84950,89 +85310,208 @@
    "cards": [
     {
      "question": "Combien font 6 + 6 ?",
-     "answer": "12\nC'est le double de 6.",
-     "w": "c85c0798",
-     "wq": "b4156969"
+     "answer": "12",
+     "w": [
+      "2d2da306",
+      "c85c0798"
+     ],
+     "more": "C'est le double de 6.",
+     "wrongs": [
+      "11",
+      "13",
+      "36"
+     ]
     },
     {
      "question": "Combien font 7 + 7 ?",
-     "answer": "14\nC'est le double de 7.",
-     "w": "0b420c9b",
-     "wq": "9feb0939"
+     "answer": "14",
+     "w": [
+      "2f76985d",
+      "0b420c9b"
+     ],
+     "more": "C'est le double de 7.",
+     "wrongs": [
+      "13",
+      "15",
+      "49"
+     ]
     },
     {
      "question": "Combien font 8 + 8 ?",
-     "answer": "16\nC'est le double de 8.",
-     "w": "da389052",
-     "wq": "e7a4f239"
+     "answer": "16",
+     "w": [
+      "26b331d4",
+      "da389052"
+     ],
+     "more": "C'est le double de 8.",
+     "wrongs": [
+      "15",
+      "18",
+      "64"
+     ]
     },
     {
      "question": "Combien font 9 + 9 ?",
-     "answer": "18\nC'est le double de 9.",
-     "w": "926cf529",
-     "wq": "d9c641a9"
+     "answer": "18",
+     "w": [
+      "c3fc4be7",
+      "926cf529"
+     ],
+     "more": "C'est le double de 9.",
+     "wrongs": [
+      "17",
+      "19",
+      "81"
+     ]
     },
     {
      "question": "Combien font 7 + 8 ?",
-     "answer": "15\nAstuce : 7 + 7 = 14, plus 1",
-     "w": "c42086bc",
-     "wq": "4c6df01c"
+     "answer": "15",
+     "w": [
+      "f4cc89d4",
+      "c42086bc"
+     ],
+     "more": "Astuce : 7 + 7 = 14, plus 1.",
+     "wrongs": [
+      "14",
+      "16",
+      "13"
+     ]
     },
     {
      "question": "Combien font 6 + 7 ?",
-     "answer": "13\nAstuce : 6 + 6 = 12, plus 1",
-     "w": "94821876",
-     "wq": "20fc651e"
+     "answer": "13",
+     "w": [
+      "70ed0df2",
+      "94821876"
+     ],
+     "more": "Astuce : 6 + 6 = 12, plus 1.",
+     "wrongs": [
+      "12",
+      "14",
+      "11"
+     ]
     },
     {
      "question": "Combien font 9 + 5 ?",
-     "answer": "14\nAstuce : 10 + 5 = 15, moins 1",
-     "w": "dcf2b34f",
-     "wq": "be57ca6d"
+     "answer": "14",
+     "w": [
+      "63f614ad",
+      "dcf2b34f"
+     ],
+     "more": "Astuce : 10 + 5 = 15, moins 1.",
+     "wrongs": [
+      "15",
+      "13",
+      "12"
+     ]
     },
     {
      "question": "Combien font 9 + 7 ?",
-     "answer": "16\nAstuce : 10 + 7 = 17, moins 1",
-     "w": "31d47c43",
-     "wq": "98c39297"
+     "answer": "16",
+     "w": [
+      "38a97021",
+      "31d47c43"
+     ],
+     "more": "Astuce : 10 + 7 = 17, moins 1.",
+     "wrongs": [
+      "17",
+      "15",
+      "14"
+     ]
     },
     {
      "question": "Combien font 8 + 5 ?",
-     "answer": "13\nAstuce : 8 + 2 = 10, puis encore 3",
-     "w": "6aab9215",
-     "wq": "39bb4772"
+     "answer": "13",
+     "w": [
+      "f5ab4e47",
+      "6aab9215"
+     ],
+     "more": "Astuce : 8 + 2 = 10, puis encore 3.",
+     "wrongs": [
+      "12",
+      "14",
+      "15"
+     ]
     },
     {
      "question": "Combien font 8 + 6 ?",
-     "answer": "14."
+     "answer": "14",
+     "w": "b1587d3b",
+     "wrongs": [
+      "13",
+      "15",
+      "12"
+     ]
     },
     {
      "question": "Combien font 7 + 5 ?",
-     "answer": "12."
+     "answer": "12",
+     "w": "0a1baad1",
+     "wrongs": [
+      "11",
+      "13",
+      "14"
+     ]
     },
     {
      "question": "Combien font 6 + 9 ?",
-     "answer": "15."
+     "answer": "15",
+     "w": "1367c331",
+     "wrongs": [
+      "14",
+      "16",
+      "13"
+     ]
     },
     {
      "question": "Combien font 4 + 8 ?",
-     "answer": "12."
+     "answer": "12",
+     "w": "30cc40eb",
+     "wrongs": [
+      "11",
+      "13",
+      "10"
+     ]
     },
     {
      "question": "Combien font 5 + 6 ?",
-     "answer": "11."
+     "answer": "11",
+     "w": "17b926a9",
+     "wrongs": [
+      "10",
+      "12",
+      "13"
+     ]
     },
     {
      "question": "Combien font 10 + 7 ?",
-     "answer": "17\nOn ajoute 1 dizaine.",
-     "w": "f0e0068e",
-     "wq": "92086b33"
+     "answer": "17",
+     "w": [
+      "0cf20dca",
+      "f0e0068e"
+     ],
+     "more": "On ajoute 1 dizaine.",
+     "wrongs": [
+      "107",
+      "16",
+      "70"
+     ]
     },
     {
-     "question": "Pourquoi 3 + 8 fait-il autant que 8 + 3 ?",
-     "answer": "Dans une addition, on peut changer l'ordre des nombres :\nle résultat est le même, 11.",
-     "w": "fb6f49d8",
-     "wq": "55176d82"
+     "question": "3 + 8 fait-il autant que 8 + 3 ?",
+     "answer": "Oui, 11",
+     "w": [
+      "c0dbabfa",
+      "fb6f49d8"
+     ],
+     "wq": "55176d82",
+     "more": "Dans une addition, on peut changer l'ordre des nombres.",
+     "wrongs": [
+      "Non, 3 + 8 fait plus",
+      "Non, 8 + 3 fait plus",
+      "Oui, 12"
+     ]
     }
    ]
   },
@@ -85055,81 +85534,192 @@
    "cards": [
     {
      "question": "Combien de dizaines dans une centaine ?",
-     "answer": "10 dizaines font 1 centaine."
+     "answer": "10",
+     "w": "b160ce4c",
+     "wrongs": [
+      "100",
+      "1",
+      "1 000"
+     ]
     },
     {
      "question": "Combien d'unités dans une centaine ?",
-     "answer": "100 unités font 1 centaine."
+     "answer": "100",
+     "w": "63227dbe",
+     "wrongs": [
+      "10",
+      "1 000",
+      "1"
+     ]
     },
     {
      "question": "Combien de centaines dans 1 000 ?",
-     "answer": "10 centaines font 1 000 (mille)."
+     "answer": "10",
+     "w": "483f1a23",
+     "wrongs": [
+      "100",
+      "1",
+      "1 000"
+     ]
     },
     {
      "question": "Dans 345, que vaut le chiffre 3 ?",
-     "answer": "3 centaines\nsoit 300",
-     "w": "a30c712a",
-     "wq": "2110c258"
+     "answer": "300",
+     "w": [
+      "624e607e",
+      "a30c712a"
+     ],
+     "more": "3 centaines.",
+     "wrongs": [
+      "3",
+      "30",
+      "345"
+     ]
     },
     {
      "question": "Dans 345, quel est le chiffre des dizaines ?",
-     "answer": "4."
+     "answer": "4",
+     "w": "56b2d385",
+     "wrongs": [
+      "3",
+      "5",
+      "34"
+     ]
     },
     {
-     "question": "Décompose 672.",
-     "answer": "672 = 600 + 70 + 2\n6 centaines, 7 dizaines, 2 unités",
-     "w": "f7365e72",
-     "wq": "8e5ccb2d"
+     "question": "Comment décompose-t-on 672 ?",
+     "answer": "600 + 70 + 2",
+     "w": [
+      "e802bab1",
+      "f7365e72"
+     ],
+     "wq": "8e5ccb2d",
+     "more": "6 centaines, 7 dizaines, 2 unités.",
+     "wrongs": [
+      "6 + 7 + 2",
+      "60 + 70 + 2",
+      "600 + 7 + 2"
+     ]
     },
     {
      "question": "Quel nombre font 4 centaines, 0 dizaine et 8 unités ?",
-     "answer": "408."
+     "answer": "408",
+     "w": "77e11d9f",
+     "wrongs": [
+      "48",
+      "480",
+      "4 008"
+     ]
     },
     {
      "question": "Quel nombre vient juste après 299 ?",
-     "answer": "300."
+     "answer": "300",
+     "w": "7a9c6e9d",
+     "wrongs": [
+      "298",
+      "2 910",
+      "290"
+     ]
     },
     {
      "question": "Quel nombre vient juste avant 500 ?",
-     "answer": "499."
+     "answer": "499",
+     "w": "83741d19",
+     "wrongs": [
+      "501",
+      "400",
+      "490"
+     ]
     },
     {
      "question": "Qui est le plus grand : 516 ou 561 ?",
-     "answer": "561\nMême centaine, mais 6 dizaines contre 1.",
-     "w": "6d15f896",
-     "wq": "634542d6"
+     "answer": "561",
+     "w": [
+      "98efb076",
+      "6d15f896"
+     ],
+     "more": "Même centaine, mais 6 dizaines contre 1.",
+     "wrongs": [
+      "516",
+      "Ils sont égaux",
+      "On ne peut pas savoir"
+     ]
     },
     {
      "question": "Que veut dire le signe < ?",
-     "answer": "« plus petit que »\nEx. : 245 < 254",
-     "w": "a003ae30",
-     "wq": "acdf8e8e"
+     "answer": "Plus petit que",
+     "w": [
+      "95ebc339",
+      "a003ae30"
+     ],
+     "more": "Ex. : 245 < 254",
+     "wrongs": [
+      "Plus grand que",
+      "Égal à",
+      "Plus"
+     ]
     },
     {
      "question": "Que veut dire le signe > ?",
-     "answer": "« plus grand que »\nEx. : 800 > 799",
-     "w": "aeaacfd9",
-     "wq": "874b56b8"
+     "answer": "Plus grand que",
+     "w": [
+      "67c9af8a",
+      "aeaacfd9"
+     ],
+     "more": "Ex. : 800 > 799",
+     "wrongs": [
+      "Plus petit que",
+      "Égal à",
+      "Moins"
+     ]
     },
     {
      "question": "Combien font 400 + 300 ?",
-     "answer": "700\n4 centaines + 3 centaines = 7 centaines",
-     "w": "e335c060",
-     "wq": "dec8c754"
+     "answer": "700",
+     "w": [
+      "5226661a",
+      "e335c060"
+     ],
+     "more": "4 centaines + 3 centaines = 7 centaines",
+     "wrongs": [
+      "7",
+      "70",
+      "4 300"
+     ]
     },
     {
      "question": "Combien font 250 + 10 ?",
-     "answer": "260\nOn ajoute 1 dizaine.",
-     "w": "6f5eb89c",
-     "wq": "436d1f09"
+     "answer": "260",
+     "w": [
+      "1af32480",
+      "6f5eb89c"
+     ],
+     "more": "On ajoute 1 dizaine.",
+     "wrongs": [
+      "251",
+      "350",
+      "2 510"
+     ]
     },
     {
      "question": "Combien font 999 + 1 ?",
-     "answer": "1 000."
+     "answer": "1 000",
+     "w": "e3dd0f3d",
+     "wrongs": [
+      "9 991",
+      "990",
+      "100"
+     ]
     },
     {
      "question": "Range du plus petit au plus grand : 320, 302, 230.",
-     "answer": "230 < 302 < 320."
+     "answer": "230 < 302 < 320",
+     "w": "fb5ca776",
+     "wrongs": [
+      "302 < 230 < 320",
+      "320 < 302 < 230",
+      "230 < 320 < 302"
+     ]
     }
    ]
   },
@@ -85152,89 +85742,209 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'un nom ?",
-     "answer": "Un mot qui désigne une personne, un animal, une chose ou une idée.\nEx. : maman, chien, table",
-     "w": "8e21c781",
-     "wq": "2c9590e8"
+     "answer": "Un mot qui désigne une personne, un animal ou une chose",
+     "w": [
+      "4ffb7f08",
+      "8e21c781"
+     ],
+     "more": "Ex. : maman, chien, table.",
+     "wrongs": [
+      "Un mot qui dit ce qu'on fait",
+      "Un mot qui dit comment est une chose",
+      "Un petit mot devant le verbe"
+     ]
     },
     {
-     "question": "Quelle est la différence entre un nom commun et un nom propre ?",
-     "answer": "Le nom propre désigne une personne ou un lieu précis\net prend une majuscule : Léa, Paris.\nLe nom commun, non : ville.",
-     "w": "bbe7e47a",
-     "wq": "f206396e"
+     "question": "Quel nom prend une majuscule : un nom commun ou un nom propre ?",
+     "answer": "Un nom propre",
+     "w": [
+      "d59f1c74",
+      "bbe7e47a"
+     ],
+     "wq": "f206396e",
+     "more": "Ex. : Léa, Paris. Le nom commun (ville) n'en prend pas.",
+     "wrongs": [
+      "Un nom commun",
+      "Les deux",
+      "Aucun des deux"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un déterminant ?",
-     "answer": "Un petit mot placé devant le nom.\nEx. : le, la, les, un, une, des, mon, ce…",
-     "w": "9f71f96a",
-     "wq": "3c4e12b1"
+     "answer": "Un petit mot placé devant le nom",
+     "w": [
+      "feb53fe1",
+      "9f71f96a"
+     ],
+     "more": "Ex. : le, la, les, un, une, des, mon, ce…",
+     "wrongs": [
+      "Un mot qui dit ce qu'on fait",
+      "Un mot qui remplace le nom",
+      "Un mot qui dit comment est le nom"
+     ]
     },
     {
      "question": "Quel est le déterminant dans « une pomme » ?",
-     "answer": "« une »."
+     "answer": "une",
+     "w": "d57675c2",
+     "wrongs": [
+      "pomme",
+      "pom",
+      "Il n'y en a pas"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un adjectif ?",
-     "answer": "Un mot qui dit comment est le nom.\nEx. : un chat noir, une grande maison",
-     "w": "294712dd",
-     "wq": "0049f514"
+     "answer": "Un mot qui dit comment est le nom",
+     "w": [
+      "1ee58c3c",
+      "294712dd"
+     ],
+     "more": "Ex. : un chat noir, une grande maison.",
+     "wrongs": [
+      "Un mot qui dit ce qu'on fait",
+      "Un petit mot devant le nom",
+      "Un nom de personne"
+     ]
     },
     {
      "question": "Quel est l'adjectif dans « un petit oiseau » ?",
-     "answer": "« petit »."
+     "answer": "petit",
+     "w": "dc052a94",
+     "wrongs": [
+      "un",
+      "oiseau",
+      "Il n'y en a pas"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un verbe ?",
-     "answer": "Le mot qui dit ce que l'on fait ou ce qui se passe.\nIl change avec le temps : je mange, je mangeais.",
-     "w": "1199de8b",
-     "wq": "dd5818de"
+     "answer": "Le mot qui dit ce que l'on fait",
+     "w": [
+      "c1b1ecfd",
+      "1199de8b"
+     ],
+     "more": "Il change avec le temps : je mange, je mangeais.",
+     "wrongs": [
+      "Le mot qui dit comment est une chose",
+      "Le petit mot devant le nom",
+      "Le nom d'un lieu"
+     ]
     },
     {
      "question": "Comment trouver le verbe dans une phrase ?",
-     "answer": "On change le temps :\n« Tom joue » → « Tom jouera »\nLe mot qui change est le verbe.",
-     "w": "dccc0596",
-     "wq": "8f45d67e"
+     "answer": "On change le temps de la phrase",
+     "w": [
+      "ab760b52",
+      "dccc0596"
+     ],
+     "more": "« Tom joue » → « Tom jouera » : le mot qui change est le verbe.",
+     "wrongs": [
+      "On cherche le premier mot",
+      "On cherche le mot le plus long",
+      "On cherche la majuscule"
+     ]
     },
     {
      "question": "Quel est le verbe dans « Le chien aboie » ?",
-     "answer": "« aboie »\n(verbe aboyer)",
-     "w": "a07aeeba",
-     "wq": "9cf19a36"
+     "answer": "aboie",
+     "w": [
+      "624dcc1e",
+      "a07aeeba"
+     ],
+     "more": "Verbe aboyer.",
+     "wrongs": [
+      "chien",
+      "Le",
+      "Il n'y en a pas"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un verbe à l'infinitif ?",
-     "answer": "Le verbe sans conjugaison, comme dans le dictionnaire.\nEx. : chanter, finir, être",
-     "w": "e0111e4f",
-     "wq": "aa6d7c1b"
+     "answer": "Le verbe non conjugué, comme dans le dictionnaire",
+     "w": [
+      "746c5106",
+      "e0111e4f"
+     ],
+     "more": "Ex. : chanter, finir, être.",
+     "wrongs": [
+      "Le verbe au passé",
+      "Le verbe avec « nous »",
+      "Un verbe qui ne finit jamais"
+     ]
     },
     {
      "question": "Quel est l'infinitif de « nous dansons » ?",
-     "answer": "danser."
+     "answer": "danser",
+     "w": "5d3dbb4a",
+     "wrongs": [
+      "dansons",
+      "dansé",
+      "danse"
+     ]
     },
     {
      "question": "Quelle est la nature de « jardin » ?",
-     "answer": "Un nom commun."
+     "answer": "Un nom commun",
+     "w": "2669d5aa",
+     "wrongs": [
+      "Un verbe",
+      "Un adjectif",
+      "Un nom propre"
+     ]
     },
     {
      "question": "Quelle est la nature de « joli » ?",
-     "answer": "Un adjectif\nEx. : un joli dessin",
-     "w": "192bcb9e",
-     "wq": "0a0913b9"
+     "answer": "Un adjectif",
+     "w": [
+      "f5b1cce5",
+      "192bcb9e"
+     ],
+     "more": "Ex. : un joli dessin.",
+     "wrongs": [
+      "Un nom",
+      "Un verbe",
+      "Un déterminant"
+     ]
     },
     {
      "question": "Quelle est la nature de « les » dans « les enfants » ?",
-     "answer": "Un déterminant."
+     "answer": "Un déterminant",
+     "w": "cf5fcf95",
+     "wrongs": [
+      "Un nom",
+      "Un adjectif",
+      "Un verbe"
+     ]
     },
     {
      "question": "Quelle est la nature de « courir » ?",
-     "answer": "Un verbe\n(à l'infinitif)",
-     "w": "0da50539",
-     "wq": "bbdc080b"
+     "answer": "Un verbe",
+     "w": [
+      "18b7286b",
+      "0da50539"
+     ],
+     "more": "À l'infinitif.",
+     "wrongs": [
+      "Un nom",
+      "Un adjectif",
+      "Un déterminant"
+     ]
     },
     {
-     "question": "Dans « La petite fille lit », donne la nature de chaque mot.",
-     "answer": "• La : déterminant\n• petite : adjectif\n• fille : nom\n• lit : verbe",
-     "w": "f63d0e52",
-     "wq": "b2898e08"
+     "question": "Dans « La petite fille lit », quelle est la nature de « petite » ?",
+     "answer": "Un adjectif",
+     "w": [
+      "9172e45f",
+      "f63d0e52"
+     ],
+     "wq": "b2898e08",
+     "more": "La : déterminant ; fille : nom ; lit : verbe.",
+     "wrongs": [
+      "Un nom",
+      "Un verbe",
+      "Un déterminant"
+     ]
     }
    ]
   },
@@ -85256,78 +85966,197 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Conjugue « être » au présent avec je, tu, il.",
-     "answer": "je suis, tu es, il est."
+     "question": "Conjugue « être » au présent avec « tu ».",
+     "answer": "tu es",
+     "w": "98b7f219",
+     "wq": "99bf7989",
+     "more": "je suis, tu es, il est.",
+     "wrongs": [
+      "tu est",
+      "tu as",
+      "tu sont"
+     ]
     },
     {
-     "question": "Conjugue « être » au présent avec nous, vous, ils.",
-     "answer": "nous sommes, vous êtes, ils sont."
+     "question": "Conjugue « être » au présent avec « nous ».",
+     "answer": "nous sommes",
+     "w": "fd96e39b",
+     "wq": "2388904a",
+     "more": "nous sommes, vous êtes, ils sont.",
+     "wrongs": [
+      "nous avons",
+      "nous êtes",
+      "nous sont"
+     ]
     },
     {
-     "question": "Conjugue « avoir » au présent avec je, tu, il.",
-     "answer": "j'ai, tu as, il a."
+     "question": "Conjugue « avoir » au présent avec « il ».",
+     "answer": "il a",
+     "w": "27f5b07e",
+     "wq": "57dc56f1",
+     "more": "j'ai, tu as, il a.",
+     "wrongs": [
+      "il à",
+      "il as",
+      "il est"
+     ]
     },
     {
-     "question": "Conjugue « avoir » au présent avec nous, vous, ils.",
-     "answer": "nous avons, vous avez, ils ont."
+     "question": "Conjugue « avoir » au présent avec « ils ».",
+     "answer": "ils ont",
+     "w": "426dcb6b",
+     "wq": "c891b862",
+     "more": "nous avons, vous avez, ils ont.",
+     "wrongs": [
+      "ils sont",
+      "ils avons",
+      "ils on"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un verbe du 1er groupe ?",
-     "answer": "Un verbe dont l'infinitif finit par -er.\nEx. : chanter, jouer (sauf aller)",
-     "w": "7df7bc0d",
-     "wq": "7603686d"
+     "question": "Par quoi finit l'infinitif d'un verbe du 1er groupe ?",
+     "answer": "-er",
+     "w": [
+      "43a447bd",
+      "7df7bc0d"
+     ],
+     "wq": "7603686d",
+     "more": "Ex. : chanter, jouer (sauf aller).",
+     "wrongs": [
+      "-ir",
+      "-re",
+      "-oir"
+     ]
     },
     {
      "question": "Quelles sont les terminaisons du 1er groupe au présent ?",
-     "answer": "-e, -es, -e, -ons, -ez, -ent."
+     "answer": "-e, -es, -e, -ons, -ez, -ent",
+     "w": "b4fbae12",
+     "wrongs": [
+      "-s, -s, -t, -ons, -ez, -ent",
+      "-ai, -as, -a, -ons, -ez, -ont",
+      "-e, -e, -e, -ons, -ez, -ent"
+     ]
     },
     {
-     "question": "Conjugue « chanter » au présent avec je, tu, il.",
-     "answer": "je chante, tu chantes, il chante."
+     "question": "Conjugue « chanter » au présent avec « tu ».",
+     "answer": "tu chantes",
+     "w": "f2339635",
+     "wq": "7a7947c9",
+     "wrongs": [
+      "tu chante",
+      "tu chantent",
+      "tu chantez"
+     ]
     },
     {
-     "question": "Conjugue « chanter » au présent avec nous, vous, ils.",
-     "answer": "nous chantons, vous chantez, ils chantent."
+     "question": "Conjugue « chanter » au présent avec « vous ».",
+     "answer": "vous chantez",
+     "w": "5cbe2853",
+     "wq": "0e769f8a",
+     "more": "nous chantons, vous chantez, ils chantent.",
+     "wrongs": [
+      "vous chantons",
+      "vous chantent",
+      "vous chanter"
+     ]
     },
     {
      "question": "Complète : tu ___ (jouer).",
-     "answer": "tu joues\nAvec tu, on met un s.",
-     "w": "2ff017ee",
-     "wq": "00fb1125"
+     "answer": "tu joues",
+     "w": [
+      "c5f5b91e",
+      "2ff017ee"
+     ],
+     "more": "Avec tu, on met un s.",
+     "wrongs": [
+      "tu joue",
+      "tu jouent",
+      "tu jouez"
+     ]
     },
     {
      "question": "Complète : ils ___ (parler).",
-     "answer": "ils parlent\nAvec ils, on écrit -ent, qu'on n'entend pas.",
-     "w": "58c8bd90",
-     "wq": "39c8c703"
+     "answer": "ils parlent",
+     "w": [
+      "5eda9ef4",
+      "58c8bd90"
+     ],
+     "more": "Avec ils, on écrit -ent, qu'on n'entend pas.",
+     "wrongs": [
+      "ils parle",
+      "ils parles",
+      "ils parlez"
+     ]
     },
     {
      "question": "Complète : nous ___ (marcher).",
-     "answer": "nous marchons."
+     "answer": "nous marchons",
+     "w": "07b2b57b",
+     "wrongs": [
+      "nous marchez",
+      "nous marche",
+      "nous marchent"
+     ]
     },
     {
      "question": "Complète : vous ___ (danser).",
-     "answer": "vous dansez."
+     "answer": "vous dansez",
+     "w": "f29acd50",
+     "wrongs": [
+      "vous dansons",
+      "vous danse",
+      "vous dansé"
+     ]
     },
     {
      "question": "Complète : Les enfants ___ contents. (être)",
-     "answer": "Les enfants sont contents."
+     "answer": "sont",
+     "w": "0d9822f3",
+     "wrongs": [
+      "est",
+      "ont",
+      "son"
+     ]
     },
     {
      "question": "Complète : Léa ___ un vélo. (avoir)",
-     "answer": "Léa a un vélo."
+     "answer": "a",
+     "w": "ae56cc86",
+     "wrongs": [
+      "à",
+      "as",
+      "est"
+     ]
     },
     {
      "question": "Pourquoi écrit-on « j'ai » et pas « je ai » ?",
-     "answer": "Devant une voyelle, je devient j'.\nEx. : j'ai, j'aime",
-     "w": "a7a42d4c",
-     "wq": "71983e60"
+     "answer": "Devant une voyelle, je devient j'",
+     "w": [
+      "08f3218d",
+      "a7a42d4c"
+     ],
+     "more": "Ex. : j'ai, j'aime.",
+     "wrongs": [
+      "Parce que c'est plus court",
+      "Parce que ai est un nom",
+      "C'est une exception d'avoir"
+     ]
     },
     {
-     "question": "Comment savoir qu'un verbe est au présent ?",
-     "answer": "Il dit ce qui se passe maintenant.\nOn peut ajouter « aujourd'hui » :\nAujourd'hui, je mange.",
-     "w": "57beb2b3",
-     "wq": "f751015e"
+     "question": "Quel mot peut-on ajouter devant une phrase au présent ?",
+     "answer": "Aujourd'hui",
+     "w": [
+      "9fd2113f",
+      "57beb2b3"
+     ],
+     "wq": "f751015e",
+     "more": "Le présent dit ce qui se passe maintenant : Aujourd'hui, je mange.",
+     "wrongs": [
+      "Hier",
+      "Demain",
+      "Autrefois"
+     ]
     }
    ]
   },
@@ -85349,94 +86178,223 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quels sont les cinq sens ?",
-     "answer": "• La vue\n• L'ouïe\n• L'odorat\n• Le goût\n• Le toucher",
-     "w": "2f9a56f1",
-     "wq": "011ceebc"
+     "question": "Combien avons-nous de sens ?",
+     "answer": "Cinq",
+     "w": [
+      "74e2ab72",
+      "2f9a56f1"
+     ],
+     "wq": "011ceebc",
+     "more": "La vue, l'ouïe, l'odorat, le goût, le toucher.",
+     "wrongs": [
+      "Trois",
+      "Quatre",
+      "Six"
+     ]
     },
     {
      "question": "Avec quel organe voit-on ?",
-     "answer": "Avec les yeux\nC'est la vue.",
-     "w": "088d79ce",
-     "wq": "9c1687ce"
+     "answer": "Les yeux",
+     "w": [
+      "ad37547e",
+      "088d79ce"
+     ],
+     "more": "C'est la vue.",
+     "wrongs": [
+      "Les oreilles",
+      "Le nez",
+      "La peau"
+     ]
     },
     {
      "question": "Avec quel organe entend-on ?",
-     "answer": "Avec les oreilles\nC'est l'ouïe.",
-     "w": "1c69f240",
-     "wq": "e81dbcb6"
+     "answer": "Les oreilles",
+     "w": [
+      "c2483370",
+      "1c69f240"
+     ],
+     "more": "C'est l'ouïe.",
+     "wrongs": [
+      "Les yeux",
+      "La langue",
+      "Le nez"
+     ]
     },
     {
      "question": "Avec quel organe sent-on les odeurs ?",
-     "answer": "Avec le nez\nC'est l'odorat.",
-     "w": "07052f18",
-     "wq": "41b0295e"
+     "answer": "Le nez",
+     "w": [
+      "2f626074",
+      "07052f18"
+     ],
+     "more": "C'est l'odorat.",
+     "wrongs": [
+      "La langue",
+      "Les oreilles",
+      "La peau"
+     ]
     },
     {
      "question": "Avec quel organe sent-on le goût des aliments ?",
-     "answer": "Avec la langue\nC'est le goût.",
-     "w": "b9e4e04a",
-     "wq": "d5b4f621"
+     "answer": "La langue",
+     "w": [
+      "8e363516",
+      "b9e4e04a"
+     ],
+     "more": "C'est le goût.",
+     "wrongs": [
+      "Le nez",
+      "Les dents",
+      "Les yeux"
+     ]
     },
     {
-     "question": "Avec quel organe sent-on le chaud, le froid, le doux ?",
-     "answer": "Avec la peau\nC'est le toucher.",
-     "w": "5f97693d",
-     "wq": "749bb062"
+     "question": "Avec quel organe sent-on le chaud et le froid ?",
+     "answer": "La peau",
+     "w": [
+      "349cb3e1",
+      "5f97693d"
+     ],
+     "wq": "749bb062",
+     "more": "C'est le toucher.",
+     "wrongs": [
+      "Le nez",
+      "Les yeux",
+      "La langue"
+     ]
     },
     {
      "question": "Comment s'appelle l'ensemble des os du corps ?",
-     "answer": "Le squelette\nIl soutient le corps et protège des organes.",
-     "w": "a158d067",
-     "wq": "2ad0b748"
+     "answer": "Le squelette",
+     "w": [
+      "06de6a47",
+      "a158d067"
+     ],
+     "more": "Il soutient le corps et protège des organes.",
+     "wrongs": [
+      "Le muscle",
+      "Le crâne",
+      "La peau"
+     ]
     },
     {
      "question": "Quel os protège le cerveau ?",
-     "answer": "Le crâne."
+     "answer": "Le crâne",
+     "w": "823e7624",
+     "wrongs": [
+      "Le genou",
+      "Les côtes",
+      "La colonne"
+     ]
     },
     {
      "question": "À quoi servent les muscles ?",
-     "answer": "Ils tirent sur les os pour faire bouger le corps."
+     "answer": "À faire bouger le corps",
+     "w": "ef772af9",
+     "more": "Ils tirent sur les os.",
+     "wrongs": [
+      "À voir",
+      "À digérer",
+      "À respirer seulement"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une articulation ?",
-     "answer": "L'endroit où deux os se rejoignent et où le corps peut plier.\nEx. : le genou, le coude",
-     "w": "0db7be07",
-     "wq": "c1e24632"
+     "question": "Comment s'appelle l'endroit où deux os se rejoignent ?",
+     "answer": "Une articulation",
+     "w": [
+      "35d7ec1e",
+      "0db7be07"
+     ],
+     "wq": "c1e24632",
+     "more": "Le corps peut y plier. Ex. : le genou, le coude.",
+     "wrongs": [
+      "Un muscle",
+      "Un organe",
+      "Une veine"
+     ]
     },
     {
      "question": "Combien de dents de lait a un enfant ?",
-     "answer": "20 dents de lait\nElles tombent et sont remplacées par les dents définitives.",
-     "w": "61125e1e",
-     "wq": "b7be9089"
+     "answer": "20",
+     "w": [
+      "f0d6138c",
+      "61125e1e"
+     ],
+     "more": "Elles sont remplacées par les dents définitives.",
+     "wrongs": [
+      "32",
+      "10",
+      "28"
+     ]
     },
     {
-     "question": "Combien de fois par jour se brosser les dents ?",
-     "answer": "Au moins 2 fois par jour\nmatin et soir, pendant 2 minutes.",
-     "w": "fbaecbd1",
-     "wq": "52550c96"
+     "question": "Combien de fois par jour faut-il se brosser les dents ?",
+     "answer": "Au moins 2 fois",
+     "w": [
+      "2bd75505",
+      "fbaecbd1"
+     ],
+     "wq": "52550c96",
+     "more": "Matin et soir, pendant 2 minutes.",
+     "wrongs": [
+      "1 fois par semaine",
+      "1 fois par jour",
+      "Seulement après les bonbons"
+     ]
     },
     {
      "question": "Pourquoi se laver les mains avant de manger ?",
-     "answer": "Pour enlever les microbes qui pourraient nous rendre malades."
+     "answer": "Pour enlever les microbes",
+     "w": "563e0e5b",
+     "wrongs": [
+      "Pour avoir plus faim",
+      "Pour que la nourriture soit chaude",
+      "Pour sentir bon"
+     ]
     },
     {
-     "question": "Pourquoi faut-il bien dormir ?",
-     "answer": "Le sommeil repose le corps et aide à grandir et à apprendre.\nÀ ton âge : environ 10 heures par nuit.",
-     "w": "7e2b5e77",
-     "wq": "1c1aa01f"
+     "question": "Combien d'heures environ un enfant de ton âge doit-il dormir ?",
+     "answer": "Environ 10 heures",
+     "w": [
+      "051cfe0c",
+      "7e2b5e77"
+     ],
+     "wq": "1c1aa01f",
+     "more": "Le sommeil repose le corps et aide à grandir et à apprendre.",
+     "wrongs": [
+      "Environ 5 heures",
+      "Environ 3 heures",
+      "Environ 20 heures"
+     ]
     },
     {
      "question": "Qu'est-ce que manger équilibré ?",
-     "answer": "Manger de tout chaque jour, en bonne quantité :\nfruits, légumes, féculents, laitages, viande ou poisson.\nEt boire de l'eau.",
-     "w": "dc693619",
-     "wq": "46af10bf"
+     "answer": "Manger de tout chaque jour",
+     "w": [
+      "170fe0af",
+      "dc693619"
+     ],
+     "more": "Fruits, légumes, féculents, laitages, viande ou poisson. Et boire de l'eau.",
+     "wrongs": [
+      "Manger seulement des légumes",
+      "Manger beaucoup de sucre",
+      "Sauter des repas"
+     ]
     },
     {
-     "question": "Pourquoi bouger et faire du sport ?",
-     "answer": "• Des muscles et des os solides\n• Un cœur en forme\n• Une bonne santé",
-     "w": "621b746b",
-     "wq": "9db67987"
+     "question": "Faire du sport rend-il les os et les muscles plus solides ?",
+     "answer": "Oui",
+     "w": [
+      "bab5f075",
+      "621b746b"
+     ],
+     "wq": "9db67987",
+     "more": "Et il garde le cœur en forme.",
+     "wrongs": [
+      "Non, il les abîme",
+      "Seulement chez les adultes",
+      "Non, ça ne change rien"
+     ]
     }
    ]
   },
@@ -85459,93 +86417,216 @@
    "cards": [
     {
      "question": "Quels sont les trois états de l'eau ?",
-     "answer": "• Solide : la glace\n• Liquide : l'eau du robinet\n• Gazeux : la vapeur d'eau",
-     "w": "6a079b3c",
-     "wq": "7835e9e9"
+     "answer": "Solide, liquide, gazeux",
+     "w": [
+      "2a722132",
+      "6a079b3c"
+     ],
+     "more": "Glace, eau du robinet, vapeur d'eau.",
+     "wrongs": [
+      "Chaud, tiède, froid",
+      "Glace, neige, pluie",
+      "Eau douce, eau salée, eau gazeuse"
+     ]
     },
     {
      "question": "Comment s'appelle l'eau à l'état solide ?",
-     "answer": "La glace\nLa neige aussi est de l'eau solide.",
-     "w": "45e9e43a",
-     "wq": "bd4f0a23"
+     "answer": "La glace",
+     "w": [
+      "dfdf56b8",
+      "45e9e43a"
+     ],
+     "more": "La neige aussi est de l'eau solide.",
+     "wrongs": [
+      "La vapeur",
+      "La pluie",
+      "La buée"
+     ]
     },
     {
      "question": "Comment s'appelle l'eau à l'état gazeux ?",
-     "answer": "La vapeur d'eau\nElle est invisible.",
-     "w": "fa3049c5",
-     "wq": "0191b209"
+     "answer": "La vapeur d'eau",
+     "w": [
+      "443d29e1",
+      "fa3049c5"
+     ],
+     "more": "Elle est invisible.",
+     "wrongs": [
+      "La glace",
+      "La neige",
+      "La pluie"
+     ]
     },
     {
      "question": "À quelle température l'eau gèle-t-elle ?",
-     "answer": "À 0 °C (zéro degré)."
+     "answer": "0 °C",
+     "w": "9d3a535c",
+     "wrongs": [
+      "100 °C",
+      "10 °C",
+      "−100 °C"
+     ]
     },
     {
      "question": "À quelle température l'eau bout-elle ?",
-     "answer": "À 100 °C."
+     "answer": "100 °C",
+     "w": "1ee5d1c0",
+     "wrongs": [
+      "0 °C",
+      "50 °C",
+      "1 000 °C"
+     ]
     },
     {
-     "question": "Que se passe-t-il quand on sort un glaçon du congélateur ?",
-     "answer": "Il fond :\nla glace devient de l'eau liquide.",
-     "w": "11734ece",
-     "wq": "06b33605"
+     "question": "Que fait un glaçon sorti du congélateur ?",
+     "answer": "Il fond",
+     "w": [
+      "14a59fcc",
+      "11734ece"
+     ],
+     "wq": "06b33605",
+     "more": "La glace devient de l'eau liquide.",
+     "wrongs": [
+      "Il grossit",
+      "Il devient de la vapeur tout de suite",
+      "Il ne change pas"
+     ]
     },
     {
-     "question": "Que se passe-t-il quand on met de l'eau au congélateur ?",
-     "answer": "Elle gèle :\nl'eau liquide devient de la glace.",
-     "w": "9124c097",
-     "wq": "a4e4aa48"
+     "question": "Que fait l'eau mise au congélateur ?",
+     "answer": "Elle gèle",
+     "w": [
+      "cbdeb995",
+      "9124c097"
+     ],
+     "wq": "a4e4aa48",
+     "more": "L'eau liquide devient de la glace.",
+     "wrongs": [
+      "Elle bout",
+      "Elle s'évapore",
+      "Elle disparaît"
+     ]
     },
     {
      "question": "Comment s'appelle le passage de solide à liquide ?",
-     "answer": "La fusion\n(la glace fond)",
-     "w": "ffada0b1",
-     "wq": "2e0f8cfd"
+     "answer": "La fusion",
+     "w": [
+      "99a2eafa",
+      "ffada0b1"
+     ],
+     "more": "La glace fond.",
+     "wrongs": [
+      "La solidification",
+      "L'évaporation",
+      "La condensation"
+     ]
     },
     {
      "question": "Comment s'appelle le passage de liquide à solide ?",
-     "answer": "La solidification\n(l'eau gèle)",
-     "w": "b9fad4dc",
-     "wq": "0305f91b"
+     "answer": "La solidification",
+     "w": [
+      "b2535445",
+      "b9fad4dc"
+     ],
+     "more": "L'eau gèle.",
+     "wrongs": [
+      "La fusion",
+      "L'évaporation",
+      "L'ébullition"
+     ]
     },
     {
      "question": "Pourquoi une flaque disparaît-elle au soleil ?",
-     "answer": "L'eau s'évapore :\nelle devient de la vapeur d'eau dans l'air.",
-     "w": "6c16f25f",
-     "wq": "b354e71b"
+     "answer": "L'eau s'évapore",
+     "w": [
+      "2e21a8e5",
+      "6c16f25f"
+     ],
+     "more": "Elle devient de la vapeur d'eau dans l'air.",
+     "wrongs": [
+      "L'eau gèle",
+      "La terre la boit entièrement",
+      "Le soleil la transforme en glace"
+     ]
     },
     {
      "question": "Pourquoi y a-t-il de la buée sur le miroir après la douche ?",
-     "answer": "La vapeur d'eau touche le miroir froid\net redevient de petites gouttes d'eau liquide.",
-     "w": "b693b70e",
-     "wq": "125ce390"
+     "answer": "La vapeur redevient liquide sur le miroir froid",
+     "w": [
+      "89a00688",
+      "b693b70e"
+     ],
+     "wrongs": [
+      "Le miroir transpire",
+      "L'eau gèle sur le miroir",
+      "Le savon fait de la buée"
+     ]
     },
     {
      "question": "Un liquide a-t-il une forme à lui ?",
-     "answer": "Non : il prend la forme du récipient.\nSa surface reste plate et horizontale.",
-     "w": "7acda7a0",
-     "wq": "5b3e7013"
+     "answer": "Non",
+     "w": [
+      "90b73fcf",
+      "7acda7a0"
+     ],
+     "more": "Il prend la forme du récipient ; sa surface reste plate et horizontale.",
+     "wrongs": [
+      "Oui, toujours ronde",
+      "Oui, toujours carrée",
+      "Oui, comme un solide"
+     ]
     },
     {
-     "question": "Un glaçon a-t-il une forme à lui ?",
-     "answer": "Oui : un solide garde sa forme,\nmême dans un autre récipient.",
-     "w": "3489d448",
-     "wq": "89aff4b8"
+     "question": "Un glaçon garde-t-il sa forme dans un autre récipient ?",
+     "answer": "Oui",
+     "w": [
+      "9bc4972b",
+      "3489d448"
+     ],
+     "wq": "89aff4b8",
+     "more": "Un solide garde sa forme.",
+     "wrongs": [
+      "Non, il prend la forme du récipient",
+      "Non, il devient plat",
+      "Seulement s'il est rond"
+     ]
     },
     {
      "question": "Pourquoi le linge sèche-t-il plus vite au soleil ?",
-     "answer": "La chaleur fait s'évaporer l'eau plus vite."
+     "answer": "La chaleur fait s'évaporer l'eau plus vite",
+     "w": "a9fcd16a",
+     "wrongs": [
+      "Le soleil gèle l'eau",
+      "Le vent ne souffle qu'au soleil",
+      "Le linge boit la lumière"
+     ]
     },
     {
      "question": "D'où vient la pluie ?",
-     "answer": "Le cycle de l'eau :\n1. L'eau des mers s'évapore.\n2. Elle forme des nuages de petites gouttes.\n3. Elle retombe en pluie.",
-     "w": "9217ceb2",
-     "wq": "823662dd"
+     "answer": "Des nuages formés par l'eau évaporée",
+     "w": [
+      "13eeb265",
+      "9217ceb2"
+     ],
+     "more": "Cycle de l'eau : évaporation, nuages, pluie.",
+     "wrongs": [
+      "Des montagnes",
+      "Des arbres",
+      "Des étoiles"
+     ]
     },
     {
      "question": "Quand l'eau gèle, change-t-elle de matière ?",
-     "answer": "Non, c'est toujours de l'eau :\nseul son état change.",
-     "w": "9c3c9295",
-     "wq": "31ca1db8"
+     "answer": "Non, seul son état change",
+     "w": [
+      "6775f09f",
+      "9c3c9295"
+     ],
+     "wrongs": [
+      "Oui, elle devient du verre",
+      "Oui, elle devient du sel",
+      "Oui, elle devient de l'air"
+     ]
     }
    ]
   },
@@ -85568,77 +86649,186 @@
    "cards": [
     {
      "question": "Que veut dire 4 × 3 ?",
-     "answer": "4 fois 3\n3 + 3 + 3 + 3 = 12",
-     "w": "f4577489",
-     "wq": "7c5f9641"
+     "answer": "4 fois 3",
+     "w": [
+      "1285e675",
+      "f4577489"
+     ],
+     "more": "3 + 3 + 3 + 3 = 12",
+     "wrongs": [
+      "4 plus 3",
+      "4 moins 3",
+      "43"
+     ]
     },
     {
      "question": "Combien font 6 × 7 ?",
-     "answer": "42."
+     "answer": "42",
+     "w": "86d41ab3",
+     "wrongs": [
+      "36",
+      "48",
+      "13"
+     ]
     },
     {
      "question": "Combien font 7 × 8 ?",
-     "answer": "56."
+     "answer": "56",
+     "w": "bda92e8e",
+     "wrongs": [
+      "54",
+      "64",
+      "15"
+     ]
     },
     {
      "question": "Combien font 8 × 9 ?",
-     "answer": "72."
+     "answer": "72",
+     "w": "4fb06612",
+     "wrongs": [
+      "63",
+      "81",
+      "17"
+     ]
     },
     {
      "question": "Combien font 6 × 8 ?",
-     "answer": "48."
+     "answer": "48",
+     "w": "ef13b3cc",
+     "wrongs": [
+      "42",
+      "54",
+      "14"
+     ]
     },
     {
      "question": "Combien font 7 × 7 ?",
-     "answer": "49."
+     "answer": "49",
+     "w": "7579db0f",
+     "wrongs": [
+      "42",
+      "56",
+      "14"
+     ]
     },
     {
      "question": "Combien font 9 × 6 ?",
-     "answer": "54."
+     "answer": "54",
+     "w": "3057caec",
+     "wrongs": [
+      "45",
+      "56",
+      "63"
+     ]
     },
     {
      "question": "Combien font 4 × 7 ?",
-     "answer": "28."
+     "answer": "28",
+     "w": "7ad35121",
+     "wrongs": [
+      "24",
+      "32",
+      "11"
+     ]
     },
     {
      "question": "Combien font 3 × 9 ?",
-     "answer": "27."
+     "answer": "27",
+     "w": "6b3cd319",
+     "wrongs": [
+      "24",
+      "21",
+      "12"
+     ]
     },
     {
      "question": "Combien font 8 × 8 ?",
-     "answer": "64."
+     "answer": "64",
+     "w": "f8ca6958",
+     "wrongs": [
+      "56",
+      "72",
+      "16"
+     ]
     },
     {
      "question": "Combien font 5 × 9 ?",
-     "answer": "45."
+     "answer": "45",
+     "w": "bc525507",
+     "wrongs": [
+      "54",
+      "40",
+      "14"
+     ]
     },
     {
      "question": "Combien font 6 × 6 ?",
-     "answer": "36."
+     "answer": "36",
+     "w": "5488c085",
+     "wrongs": [
+      "12",
+      "30",
+      "42"
+     ]
     },
     {
-     "question": "Quelle astuce pour la table de 5 ?",
-     "answer": "Les résultats finissent toujours par 0 ou 5.\n5, 10, 15, 20…",
-     "w": "dc839e2e",
-     "wq": "0d580e66"
+     "question": "Par quoi finissent les résultats de la table de 5 ?",
+     "answer": "Par 0 ou 5",
+     "w": [
+      "46aa90b4",
+      "dc839e2e"
+     ],
+     "wq": "0d580e66",
+     "more": "5, 10, 15, 20…",
+     "wrongs": [
+      "Par 5 seulement",
+      "Par un nombre pair",
+      "Par 0 seulement"
+     ]
     },
     {
-     "question": "Quelle astuce pour la table de 9 ?",
-     "answer": "On fait × 10, puis on enlève le nombre.\nEx. : 9 × 7 = 70 − 7 = 63",
-     "w": "fb8a52de",
-     "wq": "40f333ba"
+     "question": "Quelle astuce pour calculer 9 × 7 ?",
+     "answer": "70 − 7 = 63",
+     "w": [
+      "00d23da9",
+      "fb8a52de"
+     ],
+     "wq": "40f333ba",
+     "more": "On fait × 10, puis on enlève le nombre.",
+     "wrongs": [
+      "90 − 9 = 81",
+      "7 + 9 = 16",
+      "70 + 7 = 77"
+     ]
     },
     {
-     "question": "Pourquoi 3 × 8 donne-t-il autant que 8 × 3 ?",
-     "answer": "Dans une multiplication, on peut changer l'ordre :\nles deux font 24.",
-     "w": "98f7792b",
-     "wq": "9fe6be4d"
+     "question": "3 × 8 donne-t-il autant que 8 × 3 ?",
+     "answer": "Oui, 24",
+     "w": [
+      "404e77e5",
+      "98f7792b"
+     ],
+     "wq": "9fe6be4d",
+     "more": "Dans une multiplication, on peut changer l'ordre.",
+     "wrongs": [
+      "Non, 3 × 8 fait plus",
+      "Non, 8 × 3 fait plus",
+      "Oui, 11"
+     ]
     },
     {
      "question": "Combien font 10 × 6 ?",
-     "answer": "60\n6 unités × 10 = 6 dizaines",
-     "w": "304bc33d",
-     "wq": "1966ccac"
+     "answer": "60",
+     "w": [
+      "a24ea361",
+      "304bc33d"
+     ],
+     "more": "6 unités × 10 = 6 dizaines",
+     "wrongs": [
+      "16",
+      "106",
+      "600"
+     ]
     }
    ]
   },
@@ -85661,71 +86851,186 @@
    "cards": [
     {
      "question": "Quel temps utilise-t-on pour parler de demain ?",
-     "answer": "Le futur\nEx. : Demain, je jouerai.",
-     "w": "93ab12ab",
-     "wq": "136a0f4d"
+     "answer": "Le futur",
+     "w": [
+      "4d83b4b0",
+      "93ab12ab"
+     ],
+     "more": "Ex. : Demain, je jouerai.",
+     "wrongs": [
+      "L'imparfait",
+      "Le passé composé",
+      "Le présent"
+     ]
     },
     {
      "question": "Quelles sont les terminaisons du futur ?",
-     "answer": "-rai, -ras, -ra, -rons, -rez, -ront."
+     "answer": "-rai, -ras, -ra, -rons, -rez, -ront",
+     "w": "f8138816",
+     "wrongs": [
+      "-ais, -ais, -ait, -ions, -iez, -aient",
+      "-e, -es, -e, -ons, -ez, -ent",
+      "-ai, -as, -a, -âmes, -âtes, -èrent"
+     ]
     },
     {
-     "question": "Conjugue « chanter » au futur avec je, tu, il.",
-     "answer": "je chanterai, tu chanteras, il chantera."
+     "question": "Conjugue « chanter » au futur avec « tu ».",
+     "answer": "tu chanteras",
+     "w": "9d923dc6",
+     "wq": "e3a86e1c",
+     "wrongs": [
+      "tu chantais",
+      "tu chantes",
+      "tu chantera"
+     ]
     },
     {
-     "question": "Conjugue « être » au futur avec je et nous.",
-     "answer": "je serai, nous serons."
+     "question": "Conjugue « être » au futur avec « nous ».",
+     "answer": "nous serons",
+     "w": "6f0fb68d",
+     "wq": "bc358c6a",
+     "more": "je serai, nous serons.",
+     "wrongs": [
+      "nous étions",
+      "nous sommes",
+      "nous aurons"
+     ]
     },
     {
-     "question": "Conjugue « avoir » au futur avec je et ils.",
-     "answer": "j'aurai, ils auront."
+     "question": "Conjugue « avoir » au futur avec « ils ».",
+     "answer": "ils auront",
+     "w": "0d660b0e",
+     "wq": "38582a77",
+     "more": "j'aurai, ils auront.",
+     "wrongs": [
+      "ils avaient",
+      "ils seront",
+      "ils ont"
+     ]
     },
     {
      "question": "Quelles sont les terminaisons de l'imparfait ?",
-     "answer": "-ais, -ais, -ait, -ions, -iez, -aient."
+     "answer": "-ais, -ais, -ait, -ions, -iez, -aient",
+     "w": "60033043",
+     "wrongs": [
+      "-rai, -ras, -ra, -rons, -rez, -ront",
+      "-e, -es, -e, -ons, -ez, -ent",
+      "-is, -is, -it, -îmes, -îtes, -irent"
+     ]
     },
     {
-     "question": "Conjugue « jouer » à l'imparfait avec je, tu, il.",
-     "answer": "je jouais, tu jouais, il jouait."
+     "question": "Conjugue « jouer » à l'imparfait avec « il ».",
+     "answer": "il jouait",
+     "w": "02172418",
+     "wq": "caf0b9e2",
+     "wrongs": [
+      "il jouera",
+      "il joue",
+      "il jouais"
+     ]
     },
     {
-     "question": "Conjugue « jouer » à l'imparfait avec nous, vous, ils.",
-     "answer": "nous jouions, vous jouiez, ils jouaient."
+     "question": "Conjugue « jouer » à l'imparfait avec « nous ».",
+     "answer": "nous jouions",
+     "w": "88b60712",
+     "wq": "5bca6503",
+     "more": "nous jouions, vous jouiez, ils jouaient.",
+     "wrongs": [
+      "nous jouons",
+      "nous jouerons",
+      "nous jouaient"
+     ]
     },
     {
-     "question": "Conjugue « être » à l'imparfait avec je et ils.",
-     "answer": "j'étais, ils étaient."
+     "question": "Conjugue « être » à l'imparfait avec « ils ».",
+     "answer": "ils étaient",
+     "w": "99879ae7",
+     "wq": "52a83c7f",
+     "more": "j'étais, ils étaient.",
+     "wrongs": [
+      "ils seront",
+      "ils sont",
+      "ils avaient"
+     ]
     },
     {
-     "question": "Conjugue « avoir » à l'imparfait avec tu et nous.",
-     "answer": "tu avais, nous avions."
+     "question": "Conjugue « avoir » à l'imparfait avec « nous ».",
+     "answer": "nous avions",
+     "w": "7176f187",
+     "wq": "47790428",
+     "more": "tu avais, nous avions.",
+     "wrongs": [
+      "nous avons",
+      "nous aurons",
+      "nous étions"
+     ]
     },
     {
      "question": "Comment est fait le passé composé ?",
-     "answer": "Avec deux mots :\nauxiliaire être ou avoir au présent + participe passé\nEx. : j'ai chanté",
-     "w": "e9cabd23",
-     "wq": "78f746c4"
+     "answer": "Être ou avoir au présent + participe passé",
+     "w": [
+      "4518f514",
+      "e9cabd23"
+     ],
+     "more": "Ex. : j'ai chanté.",
+     "wrongs": [
+      "Un seul mot qui finit par -ait",
+      "Le verbe + -ra",
+      "Aller + infinitif"
+     ]
     },
     {
-     "question": "Conjugue « manger » au passé composé avec je, tu, il.",
-     "answer": "j'ai mangé, tu as mangé, il a mangé."
+     "question": "Conjugue « manger » au passé composé avec « tu ».",
+     "answer": "tu as mangé",
+     "w": "566bdb46",
+     "wq": "9db6fdad",
+     "wrongs": [
+      "tu es mangé",
+      "tu mangeais",
+      "tu as manger"
+     ]
     },
     {
-     "question": "Conjugue « avoir » au passé composé avec je.",
-     "answer": "j'ai eu."
+     "question": "Conjugue « avoir » au passé composé avec « je ».",
+     "answer": "j'ai eu",
+     "w": "af539eac",
+     "wq": "f5dac78e",
+     "wrongs": [
+      "j'ai été",
+      "je suis eu",
+      "j'avais"
+     ]
     },
     {
-     "question": "Conjugue « être » au passé composé avec nous.",
-     "answer": "nous avons été."
+     "question": "Conjugue « être » au passé composé avec « nous ».",
+     "answer": "nous avons été",
+     "w": "083c8e07",
+     "wq": "edcece10",
+     "wrongs": [
+      "nous sommes été",
+      "nous avons eu",
+      "nous étions"
+     ]
     },
     {
      "question": "À quel temps est « elles parleront » ?",
-     "answer": "Au futur."
+     "answer": "Au futur",
+     "w": "c1e2889b",
+     "wrongs": [
+      "À l'imparfait",
+      "Au présent",
+      "Au passé composé"
+     ]
     },
     {
      "question": "À quel temps est « vous avez marché » ?",
-     "answer": "Au passé composé."
+     "answer": "Au passé composé",
+     "w": "650a4e20",
+     "wrongs": [
+      "Au présent",
+      "À l'imparfait",
+      "Au futur"
+     ]
     }
    ]
   },
@@ -85748,83 +87053,195 @@
    "cards": [
     {
      "question": "Combien de minutes dans une heure ?",
-     "answer": "60 minutes."
+     "answer": "60",
+     "w": "7a062f3c",
+     "wrongs": [
+      "100",
+      "24",
+      "30"
+     ]
     },
     {
      "question": "Combien de secondes dans une minute ?",
-     "answer": "60 secondes."
+     "answer": "60",
+     "w": "31cbbce5",
+     "wrongs": [
+      "100",
+      "10",
+      "30"
+     ]
     },
     {
      "question": "Combien d'heures dans une journée ?",
-     "answer": "24 heures."
+     "answer": "24",
+     "w": "a639c077",
+     "wrongs": [
+      "12",
+      "60",
+      "48"
+     ]
     },
     {
      "question": "Combien de jours dans une semaine ?",
-     "answer": "7 jours\nlundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche",
-     "w": "b76cf982",
-     "wq": "97588175"
+     "answer": "7",
+     "w": [
+      "e84deae4",
+      "b76cf982"
+     ],
+     "wrongs": [
+      "5",
+      "10",
+      "12"
+     ]
     },
     {
      "question": "Combien de mois dans une année ?",
-     "answer": "12 mois."
+     "answer": "12",
+     "w": "14b88831",
+     "wrongs": [
+      "10",
+      "52",
+      "365"
+     ]
     },
     {
      "question": "Combien de jours dans une année ?",
-     "answer": "365 jours\n(366 les années bissextiles)",
-     "w": "da7da450",
-     "wq": "4bdb28c8"
+     "answer": "365",
+     "w": [
+      "4d55c2db",
+      "da7da450"
+     ],
+     "more": "366 les années bissextiles.",
+     "wrongs": [
+      "100",
+      "300",
+      "52"
+     ]
     },
     {
-     "question": "Quels mois ont 31 jours ?",
-     "answer": "Janvier, mars, mai, juillet,\naoût, octobre et décembre",
-     "w": "24bd001a",
-     "wq": "c1f97ce6"
+     "question": "Le mois d'avril a-t-il 31 jours ?",
+     "answer": "Non, 30",
+     "w": [
+      "fc94d532",
+      "24bd001a"
+     ],
+     "wq": "c1f97ce6",
+     "more": "Ont 31 jours : janvier, mars, mai, juillet, août, octobre, décembre.",
+     "wrongs": [
+      "Oui, 31",
+      "Non, 28",
+      "Non, 29"
+     ]
     },
     {
      "question": "Combien de jours a le mois de février ?",
-     "answer": "28 jours\n(29 les années bissextiles)",
-     "w": "4995b9ad",
-     "wq": "592c431d"
+     "answer": "28",
+     "w": [
+      "005a2f84",
+      "4995b9ad"
+     ],
+     "more": "29 les années bissextiles.",
+     "wrongs": [
+      "30",
+      "31",
+      "27"
+     ]
     },
     {
      "question": "Combien de minutes dans un quart d'heure ?",
-     "answer": "15 minutes."
+     "answer": "15",
+     "w": "78c3b6a1",
+     "wrongs": [
+      "25",
+      "4",
+      "30"
+     ]
     },
     {
      "question": "Combien de minutes dans une demi-heure ?",
-     "answer": "30 minutes."
+     "answer": "30",
+     "w": "731d04f7",
+     "wrongs": [
+      "50",
+      "15",
+      "20"
+     ]
     },
     {
      "question": "Sur une horloge, que montre la grande aiguille ?",
-     "answer": "Les minutes\nLa petite aiguille montre les heures.",
-     "w": "9dd42e3d",
-     "wq": "e8bbef18"
+     "answer": "Les minutes",
+     "w": [
+      "878d2bdd",
+      "9dd42e3d"
+     ],
+     "more": "La petite aiguille montre les heures.",
+     "wrongs": [
+      "Les heures",
+      "Les jours",
+      "Les mois"
+     ]
     },
     {
      "question": "Comment dit-on 15 h à l'oral, l'après-midi ?",
-     "answer": "3 heures de l'après-midi."
+     "answer": "3 heures de l'après-midi",
+     "w": "9703660a",
+     "wrongs": [
+      "5 heures du soir",
+      "1 heure de l'après-midi",
+      "15 heures du matin"
+     ]
     },
     {
-     "question": "Que veut dire « 8 h 45 » ?",
-     "answer": "8 heures et 45 minutes\nsoit 9 heures moins le quart.",
-     "w": "5e59513d",
-     "wq": "ed0a9f18"
+     "question": "8 h 45, c'est aussi…",
+     "answer": "9 heures moins le quart",
+     "w": [
+      "9caf414e",
+      "5e59513d"
+     ],
+     "wq": "ed0a9f18",
+     "wrongs": [
+      "8 heures et quart",
+      "8 heures et demie",
+      "9 heures et quart"
+     ]
     },
     {
      "question": "Un film commence à 14 h et finit à 15 h 30. Combien dure-t-il ?",
-     "answer": "1 h 30 min\n(une heure et demie)",
-     "w": "8ee55301",
-     "wq": "c5508133"
+     "answer": "1 h 30 min",
+     "w": [
+      "14914413",
+      "8ee55301"
+     ],
+     "more": "Une heure et demie.",
+     "wrongs": [
+      "1 h",
+      "2 h",
+      "30 min"
+     ]
     },
     {
      "question": "La récréation commence à 10 h 15 et dure 15 minutes. À quelle heure finit-elle ?",
-     "answer": "À 10 h 30."
+     "answer": "10 h 30",
+     "w": "43780c3c",
+     "wrongs": [
+      "10 h 15",
+      "10 h 45",
+      "11 h"
+     ]
     },
     {
-     "question": "Quel jour vient après le dernier jour de décembre ?",
-     "answer": "Le 1er janvier\nLe début d'une nouvelle année.",
-     "w": "c0c9fc11",
-     "wq": "9c6decab"
+     "question": "Quel jour vient après le 31 décembre ?",
+     "answer": "Le 1er janvier",
+     "w": [
+      "e181ce3b",
+      "c0c9fc11"
+     ],
+     "wq": "9c6decab",
+     "wrongs": [
+      "Le 32 décembre",
+      "Le 1er décembre",
+      "Le 1er février"
+     ]
     }
    ]
   },
@@ -85846,98 +87263,234 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce qu'un animal herbivore ?",
-     "answer": "Un animal qui mange seulement des végétaux.\nEx. : la vache, le lapin",
-     "w": "ce07ce35",
-     "wq": "29556df8"
+     "question": "Comment appelle-t-on un animal qui ne mange que des végétaux ?",
+     "answer": "Herbivore",
+     "w": [
+      "e95d3846",
+      "ce07ce35"
+     ],
+     "wq": "29556df8",
+     "more": "Ex. : la vache, le lapin.",
+     "wrongs": [
+      "Carnivore",
+      "Omnivore",
+      "Insectivore"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un animal carnivore ?",
-     "answer": "Un animal qui mange d'autres animaux.\nEx. : le loup, le lion",
-     "w": "a64f8d6c",
-     "wq": "7a342b55"
+     "question": "Comment appelle-t-on un animal qui mange d'autres animaux ?",
+     "answer": "Carnivore",
+     "w": [
+      "40284bcd",
+      "a64f8d6c"
+     ],
+     "wq": "7a342b55",
+     "more": "Ex. : le loup, le lion.",
+     "wrongs": [
+      "Herbivore",
+      "Omnivore",
+      "Végétarien"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un animal omnivore ?",
-     "answer": "Un animal qui mange des végétaux et des animaux.\nEx. : le sanglier, l'humain",
-     "w": "8fa20c10",
-     "wq": "e3db1cd5"
+     "question": "Comment appelle-t-on un animal qui mange des végétaux et des animaux ?",
+     "answer": "Omnivore",
+     "w": [
+      "aac4d889",
+      "8fa20c10"
+     ],
+     "wq": "e3db1cd5",
+     "more": "Ex. : le sanglier, l'humain.",
+     "wrongs": [
+      "Herbivore",
+      "Carnivore",
+      "Insectivore"
+     ]
     },
     {
-     "question": "Le hérisson mange surtout des insectes et des vers. Comment le dit-on ?",
-     "answer": "Il est insectivore\n(une sorte de carnivore).",
-     "w": "1e4ee05a",
-     "wq": "6edc87d4"
+     "question": "Le hérisson mange surtout des insectes. Comment le dit-on ?",
+     "answer": "Insectivore",
+     "w": [
+      "1f87c2c3",
+      "1e4ee05a"
+     ],
+     "wq": "6edc87d4",
+     "more": "Une sorte de carnivore.",
+     "wrongs": [
+      "Herbivore",
+      "Omnivore",
+      "Granivore"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une chaîne alimentaire ?",
-     "answer": "Une suite « est mangé par ».\nEx. : herbe → lapin → renard",
-     "w": "914437a7",
-     "wq": "d8728065"
+     "answer": "Une suite « est mangé par »",
+     "w": [
+      "b3bccf8e",
+      "914437a7"
+     ],
+     "more": "Ex. : herbe → lapin → renard.",
+     "wrongs": [
+      "Un magasin d'alimentation",
+      "La liste des repas d'un animal",
+      "Un groupe d'animaux qui vivent ensemble"
+     ]
     },
     {
      "question": "Qu'y a-t-il toujours au début d'une chaîne alimentaire ?",
-     "answer": "Un végétal\nLes plantes fabriquent leur propre nourriture.",
-     "w": "59e78a59",
-     "wq": "b0313c66"
+     "answer": "Un végétal",
+     "w": [
+      "6e0c0e61",
+      "59e78a59"
+     ],
+     "more": "Les plantes fabriquent leur propre nourriture.",
+     "wrongs": [
+      "Un carnivore",
+      "Un insecte",
+      "L'humain"
+     ]
     },
     {
-     "question": "Que veut dire « ovipare » ?",
-     "answer": "L'animal naît d'un œuf pondu par la femelle.\nEx. : la poule, la tortue, le poisson",
-     "w": "20ae569c",
-     "wq": "ad7e9cdf"
+     "question": "Comment appelle-t-on un animal qui naît d'un œuf pondu ?",
+     "answer": "Ovipare",
+     "w": [
+      "902a64af",
+      "20ae569c"
+     ],
+     "wq": "ad7e9cdf",
+     "more": "Ex. : la poule, la tortue, le poisson.",
+     "wrongs": [
+      "Vivipare",
+      "Herbivore",
+      "Mammifère"
+     ]
     },
     {
-     "question": "Que veut dire « vivipare » ?",
-     "answer": "Le petit se développe dans le ventre de sa mère\net naît vivant.\nEx. : le chat, la vache",
-     "w": "c57da598",
-     "wq": "b9d4795d"
+     "question": "Comment appelle-t-on un animal qui naît vivant du ventre de sa mère ?",
+     "answer": "Vivipare",
+     "w": [
+      "18571dd3",
+      "c57da598"
+     ],
+     "wq": "b9d4795d",
+     "more": "Ex. : le chat, la vache.",
+     "wrongs": [
+      "Ovipare",
+      "Omnivore",
+      "Insectivore"
+     ]
     },
     {
-     "question": "Quelles sont les étapes de la vie de la grenouille ?",
-     "answer": "1. Œuf\n2. Têtard (il vit dans l'eau)\n3. Jeune grenouille\n4. Grenouille adulte",
-     "w": "52d712b1",
-     "wq": "99a1548b"
+     "question": "Comment s'appelle le petit de la grenouille qui vit dans l'eau ?",
+     "answer": "Le têtard",
+     "w": [
+      "b5bd931f",
+      "52d712b1"
+     ],
+     "wq": "99a1548b",
+     "more": "Œuf, têtard, jeune grenouille, grenouille adulte.",
+     "wrongs": [
+      "La chenille",
+      "Le poussin",
+      "La larve d'abeille"
+     ]
     },
     {
-     "question": "Quelles sont les étapes de la vie du papillon ?",
-     "answer": "1. Œuf\n2. Chenille\n3. Chrysalide\n4. Papillon",
-     "w": "69138aa6",
-     "wq": "45ef465d"
+     "question": "Dans la vie du papillon, que vient-il après la chenille ?",
+     "answer": "La chrysalide",
+     "w": [
+      "2fffef94",
+      "69138aa6"
+     ],
+     "wq": "45ef465d",
+     "more": "Œuf, chenille, chrysalide, papillon.",
+     "wrongs": [
+      "Le têtard",
+      "L'œuf",
+      "Le cocon de soie"
+     ]
     },
     {
-     "question": "Quelles sont les étapes de la vie de la poule ?",
-     "answer": "1. Œuf\n2. Poussin\n3. Poule adulte",
-     "w": "dcab1411",
-     "wq": "7e5e3038"
+     "question": "Comment s'appelle le petit de la poule ?",
+     "answer": "Le poussin",
+     "w": [
+      "531a5e87",
+      "dcab1411"
+     ],
+     "wq": "7e5e3038",
+     "more": "Œuf, poussin, poule adulte.",
+     "wrongs": [
+      "Le têtard",
+      "Le caneton",
+      "L'agneau"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une métamorphose ?",
-     "answer": "Un grand changement de forme pendant la croissance.\nEx. : la chenille qui devient papillon",
-     "w": "e3f5fd07",
-     "wq": "7f891a41"
+     "answer": "Un grand changement de forme en grandissant",
+     "w": [
+      "398d126b",
+      "e3f5fd07"
+     ],
+     "more": "Ex. : la chenille qui devient papillon.",
+     "wrongs": [
+      "Un changement de couleur",
+      "Un déménagement",
+      "Une maladie"
+     ]
     },
     {
-     "question": "Comment se nourrit un bébé mammifère ?",
-     "answer": "Il boit le lait de sa mère."
+     "question": "Que boit un bébé mammifère ?",
+     "answer": "Le lait de sa mère",
+     "w": "d3d477b9",
+     "wq": "4b394785",
+     "wrongs": [
+      "De l'eau de pluie",
+      "Du jus de fruits",
+      "Rien"
+     ]
     },
     {
      "question": "Quelles sont les grandes étapes de la vie d'un animal ?",
-     "answer": "Il naît, grandit, devient adulte,\npeut se reproduire, puis meurt.",
-     "w": "e565516e",
-     "wq": "4003fb0d"
+     "answer": "Naître, grandir, se reproduire, mourir",
+     "w": [
+      "ecf0ec1c",
+      "e565516e"
+     ],
+     "wrongs": [
+      "Naître et ne jamais changer",
+      "Grandir puis rapetisser",
+      "Naître, voler, nager"
+     ]
     },
     {
      "question": "Le chat est-il herbivore, carnivore ou omnivore ?",
-     "answer": "Carnivore\nIl mange de la viande ou des petits animaux.",
-     "w": "d9e6f5a3",
-     "wq": "4d74e2ed"
+     "answer": "Carnivore",
+     "w": [
+      "0e791c33",
+      "d9e6f5a3"
+     ],
+     "more": "Il mange de la viande ou des petits animaux.",
+     "wrongs": [
+      "Herbivore",
+      "Omnivore",
+      "Insectivore"
+     ]
     },
     {
-     "question": "Dans « herbe → lapin → renard », que mange le lapin et qui le mange ?",
-     "answer": "• Il mange l'herbe.\n• Il est mangé par le renard.",
-     "w": "d5c78136",
-     "wq": "0952cfdb"
+     "question": "Dans « herbe → lapin → renard », qui mange le lapin ?",
+     "answer": "Le renard",
+     "w": [
+      "4257783b",
+      "d5c78136"
+     ],
+     "wq": "0952cfdb",
+     "more": "Le lapin, lui, mange l'herbe.",
+     "wrongs": [
+      "L'herbe",
+      "Personne",
+      "Un autre lapin"
+     ]
     }
    ]
   },
@@ -85959,82 +87512,208 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment dit-on « bonjour » (le matin) en anglais ?",
-     "answer": "Good morning.\n(On peut aussi dire Hello.)",
-     "w": "7d6b1bb6",
-     "wq": "c15404e6"
+     "question": "Comment dit-on « bonjour » le matin en anglais ?",
+     "answer": "Good morning",
+     "w": [
+      "f0951b6d",
+      "7d6b1bb6"
+     ],
+     "wq": "c15404e6",
+     "more": "On peut aussi dire Hello.",
+     "wrongs": [
+      "Good night",
+      "Goodbye",
+      "Good evening"
+     ]
     },
     {
      "question": "Comment dit-on « au revoir » en anglais ?",
-     "answer": "Goodbye (ou Bye!)."
+     "answer": "Goodbye",
+     "w": "9dedbf6d",
+     "wrongs": [
+      "Hello",
+      "Good morning",
+      "Thank you"
+     ]
     },
     {
-     "question": "Comment demander « Comment t'appelles-tu ? » en anglais ?",
-     "answer": "What's your name?"
+     "question": "Comment demande-t-on « Comment t'appelles-tu ? » en anglais ?",
+     "answer": "What's your name?",
+     "w": "62e9f132",
+     "wq": "e75992b0",
+     "wrongs": [
+      "How are you?",
+      "How old are you?",
+      "Where are you?"
+     ]
     },
     {
-     "question": "Comment répondre « Je m'appelle Léo » en anglais ?",
-     "answer": "My name is Léo.\n(ou I'm Léo.)",
-     "w": "d872c70e",
-     "wq": "f5c526ae"
+     "question": "Comment dit-on « Je m'appelle Léo » en anglais ?",
+     "answer": "My name is Léo.",
+     "w": [
+      "b990c8e8",
+      "d872c70e"
+     ],
+     "wq": "f5c526ae",
+     "more": "Ou : I'm Léo.",
+     "wrongs": [
+      "Your name is Léo.",
+      "I have Léo.",
+      "How is Léo?"
+     ]
     },
     {
-     "question": "Comment demander « Comment vas-tu ? » en anglais ?",
-     "answer": "How are you?"
+     "question": "Comment demande-t-on « Comment vas-tu ? » en anglais ?",
+     "answer": "How are you?",
+     "w": "aaebae98",
+     "wq": "a104bb01",
+     "wrongs": [
+      "What's your name?",
+      "How old are you?",
+      "Who are you?"
+     ]
     },
     {
-     "question": "Comment répondre « Je vais bien, merci » en anglais ?",
-     "answer": "I'm fine, thank you."
+     "question": "Comment dit-on « Je vais bien, merci » en anglais ?",
+     "answer": "I'm fine, thank you.",
+     "w": "69125ae3",
+     "wq": "4b7be132",
+     "wrongs": [
+      "I'm eight, thank you.",
+      "Goodbye, thank you.",
+      "My name is fine."
+     ]
     },
     {
-     "question": "Comment demander « Quel âge as-tu ? » en anglais ?",
-     "answer": "How old are you?\nRéponse : I'm eight. (J'ai huit ans.)",
-     "w": "a03a8dc9",
-     "wq": "62e4ff41"
+     "question": "Comment demande-t-on « Quel âge as-tu ? » en anglais ?",
+     "answer": "How old are you?",
+     "w": [
+      "1601432b",
+      "a03a8dc9"
+     ],
+     "wq": "62e4ff41",
+     "more": "Réponse : I'm eight. (J'ai huit ans.)",
+     "wrongs": [
+      "How are you?",
+      "What's your name?",
+      "Where do you live?"
+     ]
     },
     {
-     "question": "Comment dit-on « rouge », « bleu », « vert » en anglais ?",
-     "answer": "• rouge : red\n• bleu : blue\n• vert : green",
-     "w": "db63a5c6",
-     "wq": "119e4afb"
+     "question": "Comment dit-on « vert » en anglais ?",
+     "answer": "green",
+     "w": [
+      "e9c3d075",
+      "db63a5c6"
+     ],
+     "wq": "119e4afb",
+     "more": "rouge : red ; bleu : blue.",
+     "wrongs": [
+      "red",
+      "blue",
+      "grey"
+     ]
     },
     {
-     "question": "Comment dit-on « jaune », « noir », « blanc » en anglais ?",
-     "answer": "• jaune : yellow\n• noir : black\n• blanc : white",
-     "w": "6a193dac",
-     "wq": "4d576aa3"
+     "question": "Comment dit-on « jaune » en anglais ?",
+     "answer": "yellow",
+     "w": [
+      "63dc4143",
+      "6a193dac"
+     ],
+     "wq": "4d576aa3",
+     "more": "noir : black ; blanc : white.",
+     "wrongs": [
+      "white",
+      "black",
+      "orange"
+     ]
     },
     {
-     "question": "Comment dit-on « orange », « rose », « violet » en anglais ?",
-     "answer": "• orange : orange\n• rose : pink\n• violet : purple",
-     "w": "1589bb81",
-     "wq": "43916632"
+     "question": "Comment dit-on « rose » en anglais ?",
+     "answer": "pink",
+     "w": [
+      "f7518bd1",
+      "1589bb81"
+     ],
+     "wq": "43916632",
+     "more": "orange : orange ; violet : purple.",
+     "wrongs": [
+      "purple",
+      "red",
+      "rose"
+     ]
     },
     {
      "question": "Que veut dire « brown » ?",
-     "answer": "marron."
+     "answer": "marron",
+     "w": "e3bc8de7",
+     "wrongs": [
+      "bleu",
+      "gris",
+      "vert"
+     ]
     },
     {
-     "question": "Compte de 1 à 5 en anglais.",
-     "answer": "one, two, three, four, five."
+     "question": "Comment dit-on « trois » en anglais ?",
+     "answer": "three",
+     "w": "5faccb2d",
+     "wq": "f14af762",
+     "more": "one, two, three, four, five.",
+     "wrongs": [
+      "tree",
+      "two",
+      "four"
+     ]
     },
     {
-     "question": "Compte de 6 à 10 en anglais.",
-     "answer": "six, seven, eight, nine, ten."
+     "question": "Comment dit-on « huit » en anglais ?",
+     "answer": "eight",
+     "w": "ebc13b5b",
+     "wq": "5864b2a1",
+     "more": "six, seven, eight, nine, ten.",
+     "wrongs": [
+      "nine",
+      "seven",
+      "height"
+     ]
     },
     {
-     "question": "Comment dit-on 11 et 12 en anglais ?",
-     "answer": "eleven, twelve."
+     "question": "Comment dit-on « douze » en anglais ?",
+     "answer": "twelve",
+     "w": "cc0e42b7",
+     "wq": "76f7351c",
+     "more": "11 : eleven.",
+     "wrongs": [
+      "eleven",
+      "twenty",
+      "two"
+     ]
     },
     {
      "question": "Comment dit-on 20 en anglais ?",
-     "answer": "twenty."
+     "answer": "twenty",
+     "w": "a939ad94",
+     "wrongs": [
+      "twelve",
+      "two",
+      "ten"
+     ]
     },
     {
-     "question": "Comment dit-on « merci » et « s'il te plaît » en anglais ?",
-     "answer": "• merci : thank you\n• s'il te plaît : please",
-     "w": "5be5bf66",
-     "wq": "49d2d198"
+     "question": "Comment dit-on « s'il te plaît » en anglais ?",
+     "answer": "please",
+     "w": [
+      "ebec840f",
+      "5be5bf66"
+     ],
+     "wq": "49d2d198",
+     "more": "merci : thank you.",
+     "wrongs": [
+      "thank you",
+      "sorry",
+      "hello"
+     ]
     }
    ]
   },
@@ -86057,89 +87736,208 @@
    "cards": [
     {
      "question": "À quoi servent les règles de vie de la classe ?",
-     "answer": "• Bien vivre ensemble\n• Travailler dans le calme\n• Se respecter",
-     "w": "3b8ca805",
-     "wq": "7d1576da"
+     "answer": "À bien vivre ensemble",
+     "w": [
+      "6b3551ee",
+      "3b8ca805"
+     ],
+     "more": "Travailler dans le calme et se respecter.",
+     "wrongs": [
+      "À punir les élèves",
+      "À faire plaisir au maître",
+      "À rien"
+     ]
     },
     {
      "question": "Qui doit respecter le règlement de l'école ?",
-     "answer": "Tout le monde :\nles élèves et les adultes de l'école.",
-     "w": "81021177",
-     "wq": "b9e9890d"
+     "answer": "Les élèves et les adultes",
+     "w": [
+      "3a17f10e",
+      "81021177"
+     ],
+     "wrongs": [
+      "Seulement les élèves",
+      "Seulement les grands",
+      "Seulement les adultes"
+     ]
     },
     {
-     "question": "Que se passe-t-il quand on ne respecte pas une règle ?",
-     "answer": "On peut avoir une sanction.\nElle aide à comprendre et à réparer son erreur.",
-     "w": "1c751468",
-     "wq": "411bfea8"
+     "question": "Que peut-il se passer si on ne respecte pas une règle ?",
+     "answer": "On peut avoir une sanction",
+     "w": [
+      "7bab7581",
+      "1c751468"
+     ],
+     "wq": "411bfea8",
+     "more": "Elle aide à comprendre et à réparer son erreur.",
+     "wrongs": [
+      "Rien du tout",
+      "On change d'école",
+      "On a une récompense"
+     ]
     },
     {
-     "question": "Cite un droit de l'enfant.",
-     "answer": "Au choix :\naller à l'école, être soigné, être protégé, jouer…",
-     "w": "006ef410",
-     "wq": "51703947"
+     "question": "Aller à l'école est-il un droit de l'enfant ?",
+     "answer": "Oui",
+     "w": [
+      "42bae6f4",
+      "006ef410"
+     ],
+     "wq": "51703947",
+     "more": "Aussi : être soigné, être protégé, jouer…",
+     "wrongs": [
+      "Non, c'est une punition",
+      "Seulement pour les garçons",
+      "Seulement après 10 ans"
+     ]
     },
     {
-     "question": "Cite un devoir de l'élève.",
-     "answer": "• Respecter les autres et le matériel\n• Écouter\n• Faire son travail",
-     "w": "775a449a",
-     "wq": "6189bbc4"
+     "question": "Respecter le matériel est-il un devoir de l'élève ?",
+     "answer": "Oui",
+     "w": [
+      "cae41454",
+      "775a449a"
+     ],
+     "wq": "6189bbc4",
+     "more": "Aussi : respecter les autres, écouter, faire son travail.",
+     "wrongs": [
+      "Non, c'est facultatif",
+      "Seulement le sien",
+      "Seulement en classe de sport"
+     ]
     },
     {
      "question": "Que faire si on voit un camarade se faire embêter ?",
-     "answer": "Le dire à un adulte de l'école.\nCe n'est pas « rapporter », c'est aider.",
-     "w": "ecc2a01f",
-     "wq": "b2d03d12"
+     "answer": "Le dire à un adulte de l'école",
+     "w": [
+      "534c73a1",
+      "ecc2a01f"
+     ],
+     "more": "Ce n'est pas « rapporter », c'est aider.",
+     "wrongs": [
+      "Ne rien dire",
+      "Rire avec les autres",
+      "Se battre"
+     ]
     },
     {
      "question": "Quelles sont les couleurs du drapeau français ?",
-     "answer": "Bleu, blanc, rouge."
+     "answer": "Bleu, blanc, rouge",
+     "w": "3c11723c",
+     "wrongs": [
+      "Bleu, jaune, rouge",
+      "Vert, blanc, rouge",
+      "Noir, rouge, jaune"
+     ]
     },
     {
      "question": "Quelle est la devise de la République française ?",
-     "answer": "Liberté, Égalité, Fraternité."
+     "answer": "Liberté, Égalité, Fraternité",
+     "w": "accde0fe",
+     "wrongs": [
+      "Paix, Travail, Joie",
+      "Liberté, Sécurité, Propriété",
+      "Unité, Justice, Paix"
+     ]
     },
     {
      "question": "Comment s'appelle l'hymne national de la France ?",
-     "answer": "La Marseillaise."
+     "answer": "La Marseillaise",
+     "w": "d5526064",
+     "wrongs": [
+      "Frère Jacques",
+      "Au clair de la lune",
+      "La Parisienne"
+     ]
     },
     {
      "question": "Qui est Marianne ?",
-     "answer": "Une femme qui représente la République française.\nSon buste est dans les mairies.",
-     "w": "71dbfaab",
-     "wq": "90d57f26"
+     "answer": "Une femme qui représente la République",
+     "w": [
+      "891abe7d",
+      "71dbfaab"
+     ],
+     "more": "Son buste est dans les mairies.",
+     "wrongs": [
+      "Une reine de France",
+      "La femme du président",
+      "Une chanteuse"
+     ]
     },
     {
      "question": "Quel jour est la fête nationale française ?",
-     "answer": "Le 14 juillet."
+     "answer": "Le 14 juillet",
+     "w": "cd2daddc",
+     "wrongs": [
+      "Le 1er janvier",
+      "Le 11 novembre",
+      "Le 25 décembre"
+     ]
     },
     {
      "question": "Que veut dire « égalité » ?",
-     "answer": "Tout le monde a les mêmes droits,\nfilles et garçons, quelle que soit son origine.",
-     "w": "6b51f235",
-     "wq": "978fd39e"
+     "answer": "Tout le monde a les mêmes droits",
+     "w": [
+      "947b719f",
+      "6b51f235"
+     ],
+     "more": "Filles et garçons, quelle que soit son origine.",
+     "wrongs": [
+      "Tout le monde a la même taille",
+      "Les plus forts ont plus de droits",
+      "Tout le monde pense pareil"
+     ]
     },
     {
      "question": "Que veut dire « fraternité » ?",
-     "answer": "S'entraider et être solidaires,\ncomme des frères et sœurs.",
-     "w": "1cf1c55b",
-     "wq": "6c1e0dff"
+     "answer": "S'entraider et être solidaires",
+     "w": [
+      "9e97bd41",
+      "1cf1c55b"
+     ],
+     "wrongs": [
+      "Avoir des frères",
+      "Faire ce qu'on veut",
+      "Être le plus fort"
+     ]
     },
     {
      "question": "Qui dirige la commune ?",
-     "answer": "Le maire\navec le conseil municipal élu par les habitants.",
-     "w": "67319eae",
-     "wq": "07a77e0c"
+     "answer": "Le maire",
+     "w": [
+      "ed662ca8",
+      "67319eae"
+     ],
+     "more": "Avec le conseil municipal élu par les habitants.",
+     "wrongs": [
+      "Le président",
+      "Le directeur d'école",
+      "Le préfet"
+     ]
     },
     {
      "question": "Comment s'appelle le chef de l'État en France ?",
-     "answer": "Le président de la République."
+     "answer": "Le président de la République",
+     "w": "77ed519d",
+     "wrongs": [
+      "Le roi",
+      "Le maire",
+      "Le Premier ministre"
+     ]
     },
     {
      "question": "Qu'est-ce que voter ?",
-     "answer": "Donner son avis pour choisir une personne ou une décision.\nLa majorité l'emporte.",
-     "w": "fa227cd3",
-     "wq": "a8e578f5"
+     "answer": "Donner son avis pour choisir",
+     "w": [
+      "29b59de1",
+      "fa227cd3"
+     ],
+     "more": "Une personne ou une décision ; la majorité l'emporte.",
+     "wrongs": [
+      "Tirer au sort",
+      "Obéir au chef",
+      "Écrire une loi"
+     ]
     }
    ]
   },
