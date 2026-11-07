@@ -88818,13 +88818,15 @@
      ]
     },
     {
-     "question": "Lequel de ces services est géré par la commune ?",
+     "question": "Quelle école est gérée par la commune ?",
      "answer": "L'école élémentaire",
      "w": [
+      "e3c5b372",
       "aac1930d",
       "199fd691"
      ],
      "wq": [
+      "83935b31",
       "9d000406"
      ],
      "more": "Aussi la cantine, la mairie et l'état civil, les rues, la bibliothèque municipale.",
@@ -88886,13 +88888,15 @@
      ]
     },
     {
-     "question": "Lequel de ces territoires est un territoire d'outre-mer ?",
+     "question": "Quelle île des Antilles est un territoire français d'outre-mer ?",
      "answer": "La Martinique",
      "w": [
+      "b5aba046",
       "131fa867",
       "cdecd283"
      ],
      "wq": [
+      "2b74164d",
       "bbe762bb"
      ],
      "more": "Aussi la Guadeloupe, la Guyane, La Réunion, Mayotte.",
@@ -92682,13 +92686,15 @@
      ]
     },
     {
-     "question": "Lequel de ces éléments doit toujours figurer sur un croquis ?",
+     "question": "Qu'est-ce qui doit toujours accompagner un croquis ?",
      "answer": "Une légende organisée",
      "w": [
+      "d26f4277",
       "c4e3b63f",
       "69829e3e"
      ],
      "wq": [
+      "6afd77cb",
       "2ab94dda"
      ],
      "more": "Aussi : un titre, l'orientation (le nord) ; si possible échelle et nomenclature.",
@@ -92869,13 +92875,15 @@
      ]
     },
     {
-     "question": "Lequel de ces outils n'est PAS utile pour un croquis au brevet ?",
+     "question": "Quel outil est inutile pour un croquis au brevet ?",
      "answer": "Un compas",
      "w": [
+      "ba8caeb0",
       "4ecb93d8",
       "5f8013cf"
      ],
      "wq": [
+      "ad7827d7",
       "b465a04e"
      ],
      "more": "Prévoir : crayons de couleur, feutre fin noir, crayon à papier, gomme, règle.",
@@ -93576,13 +93584,15 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Laquelle de ces protections porte-t-on en chimie ?",
+     "question": "Que porte-t-on pour se protéger les yeux en chimie ?",
      "answer": "Des lunettes de protection",
      "w": [
+      "a718753b",
       "8c72ac4e",
       "7dbf56e5"
      ],
      "wq": [
+      "3e9d66f0",
       "e77a3b95"
      ],
      "more": "Aussi : blouse en coton fermée, gants si le produit l'exige, cheveux longs attachés.",
@@ -94317,13 +94327,15 @@
      ]
     },
     {
-     "question": "Laquelle de ces règles s'applique au tracé d'un graphique ?",
+     "question": "Quel type d'échelle choisir sur les axes d'un graphique ?",
      "answer": "Une échelle régulière",
      "w": [
+      "6058f8b4",
       "cb74df50",
       "b15395a5"
      ],
      "wq": [
+      "e03efdfa",
       "42282222"
      ],
      "more": "Aussi : un titre, des axes orientés avec grandeurs et unités, des points précis puis une courbe ou une droite moyenne.",
@@ -94585,13 +94597,15 @@
      ]
     },
     {
-     "question": "Laquelle de ces phrases est correcte ?",
+     "question": "Comment dit-on correctement « j'ai des devoirs » en anglais ?",
      "answer": "I have some homework",
      "w": [
+      "66fd9dc8",
       "4389a509",
       "945f483d"
      ],
      "wq": [
+      "cbda8876",
       "033115d0"
      ],
      "more": "Homework est indénombrable : jamais « homeworks ».",
@@ -94825,13 +94839,15 @@
      ]
     },
     {
-     "question": "Laquelle de ces expressions sert à donner son opinion ?",
+     "question": "Quelle expression anglaise signifie « en ce qui me concerne » ?",
      "answer": "As far as I'm concerned",
      "w": [
+      "d316a014",
       "fb3ab3b1",
       "4a3f38db"
      ],
      "wq": [
+      "189b70fc",
       "dab6feab"
      ],
      "more": "Aussi : In my opinion…, I think that…, I agree / I disagree with…",
@@ -96444,13 +96460,15 @@
      "link": "https://fr.wikipedia.org/wiki/Acier"
     },
     {
-     "question": "Lequel de ces matériaux est un composite ?",
+     "question": "Quel matériau de construction est un composite ?",
      "answer": "Le béton armé",
      "w": [
+      "3212dc13",
       "d73719f9",
       "981e24bd"
      ],
      "wq": [
+      "eacdde94",
       "232719c1"
      ],
      "more": "Assemblage de plusieurs matériaux pour réunir leurs qualités. Aussi : la fibre de carbone.",
@@ -96462,13 +96480,15 @@
      "link": "https://fr.wikipedia.org/wiki/Matériau_composite"
     },
     {
-     "question": "Lequel de ces matériaux est un conducteur électrique ?",
+     "question": "Quel métal des fils électriques conduit le courant ?",
      "answer": "Le cuivre",
      "w": [
+      "d5d5a73e",
       "f76069c7",
       "fe152819"
      ],
      "wq": [
+      "a9aa60bc",
       "d27a37bd"
      ],
      "more": "Les métaux laissent passer le courant ; plastique et bois sont des isolants électriques.",
@@ -96514,13 +96534,15 @@
      "link": "https://fr.wikipedia.org/wiki/Aluminium"
     },
     {
-     "question": "Lequel de ces matériaux est recyclable ?",
+     "question": "Quel matériau des bouteilles se recycle à l'infini ?",
      "answer": "Le verre",
      "w": [
+      "81f83966",
       "e4c2460e",
       "5be5a8c8"
      ],
      "wq": [
+      "aa644166",
       "9d362212"
      ],
      "more": "Aussi aluminium, acier, papier : on les récupère pour fabriquer de nouveaux objets.",
@@ -97028,13 +97050,15 @@
      "link": "https://fr.wikipedia.org/wiki/Cellule_(biologie)"
     },
     {
-     "question": "Lequel de ces êtres vivants est unicellulaire ?",
+     "question": "Quel être vivant de l'eau des mares est unicellulaire ?",
      "answer": "La paramécie",
      "w": [
+      "42fd90b2",
       "7e3ca821",
       "89c36a4f"
      ],
      "wq": [
+      "f2a2d177",
       "e921492c"
      ],
      "more": "Aussi les bactéries. Pluricellulaires : chêne, humain.",
@@ -97045,13 +97069,15 @@
      ]
     },
     {
-     "question": "Lequel de ces éléments un végétal chlorophyllien ne prélève-t-il PAS pour se nourrir ?",
+     "question": "Que ne prélève pas un végétal chlorophyllien, puisqu'il le fabrique ?",
      "answer": "Du sucre",
      "w": [
+      "16ecb2c7",
       "67192e3c",
       "4951cbc9"
      ],
      "wq": [
+      "029060fd",
       "45187929"
      ],
      "more": "Il prélève lumière, eau, sels minéraux et dioxyde de carbone, et fabrique sa propre matière : c'est un producteur.",
@@ -97375,13 +97401,15 @@
      "link": "https://fr.wikipedia.org/wiki/Cerbère"
     },
     {
-     "question": "Lequel de ces êtres est un hybride homme-cheval ?",
+     "question": "Comment s'appelle l'être mythologique mi-homme mi-cheval ?",
      "answer": "Le centaure",
      "w": [
+      "3b38a4e3",
       "88d3e63a",
       "dce7752a"
      ],
      "wq": [
+      "b7b07196",
       "ea68b98a"
      ],
      "more": "Un être hybride mélange des parties de plusieurs espèces : aussi la sirène, le Minotaure.",
@@ -98263,13 +98291,15 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Laquelle de ces fonctions appartient à la chaîne d'information ?",
+     "question": "Quelle fonction de la chaîne d'information se situe entre acquérir et communiquer ?",
      "answer": "Traiter",
      "w": [
+      "cb98175f",
       "07e1cd0d",
       "a3c0bed8"
      ],
      "wq": [
+      "b17ea2b5",
       "5ced8919"
      ],
      "more": "Les trois fonctions : acquérir, traiter, communiquer (envoyer des ordres).",
@@ -98280,13 +98310,15 @@
      ]
     },
     {
-     "question": "Laquelle de ces fonctions appartient à la chaîne d'énergie ?",
+     "question": "Quelle fonction de la chaîne d'énergie se situe entre distribuer et transmettre ?",
      "answer": "Convertir",
      "w": [
+      "86d1ef85",
       "95761823",
       "29d88778"
      ],
      "wq": [
+      "5db6b210",
       "bad1f817"
      ],
      "more": "Les quatre fonctions : alimenter, distribuer, convertir, transmettre.",
@@ -98331,30 +98363,34 @@
      ]
     },
     {
-     "question": "Lequel de ces composants est un actionneur ?",
-     "answer": "Un buzzer",
+     "question": "Un buzzer est-il un capteur ou un actionneur ?",
+     "answer": "Un actionneur",
      "w": [
+      "c7493d5a",
       "ec1f6d49",
       "37ccd4d9"
      ],
      "wq": [
+      "1348243c",
       "1c498448"
      ],
      "more": "Il convertit l'énergie reçue pour agir. Aussi : moteur, lampe ou DEL, vérin.",
      "wrongs": [
-      "Un détecteur de mouvement",
-      "Un bouton-poussoir",
-      "Un capteur de température"
+      "Un capteur",
+      "Une source d'énergie",
+      "Un engrenage"
      ]
     },
     {
-     "question": "Lequel de ces éléments peut alimenter un objet en énergie ?",
+     "question": "Quel élément peut alimenter un objet en énergie grâce au soleil ?",
      "answer": "Un panneau solaire",
      "w": [
+      "da581ab4",
       "db4cb204",
       "db051902"
      ],
      "wq": [
+      "0d39e59b",
       "6d113f16"
      ],
      "more": "Aussi : une pile, une batterie, le secteur.",
@@ -98399,13 +98435,15 @@
      ]
     },
     {
-     "question": "Lequel de ces éléments transmet un mouvement ?",
+     "question": "Quel élément à roues dentées transmet un mouvement ?",
      "answer": "Un engrenage",
      "w": [
+      "10c7b882",
       "bdb8d5f0",
       "bdfa963a"
      ],
      "wq": [
+      "1b27236a",
       "29203f5c"
      ],
      "more": "Aussi : pignon-chaîne, poulies et courroie.",
@@ -98450,13 +98488,15 @@
      ]
     },
     {
-     "question": "Laquelle de ces informations est analogique ?",
+     "question": "Quelle grandeur, qui varie de façon continue, est une information analogique ?",
      "answer": "Une température",
      "w": [
+      "d2e29ff5",
       "83012865",
       "2c655ff1"
      ],
      "wq": [
+      "6e9aa2f8",
       "dd88c9e5"
      ],
      "more": "Elle varie de façon continue. Aussi : une luminosité.",
@@ -98484,13 +98524,15 @@
      ]
     },
     {
-     "question": "Laquelle de ces énergies est renouvelable ?",
+     "question": "Quelle source d'énergie utilisée par les éoliennes est renouvelable ?",
      "answer": "Le vent",
      "w": [
+      "3bc1051e",
       "c16c1e57",
       "513cbeba"
      ],
      "wq": [
+      "bf49f50d",
       "2eb92220"
      ],
      "more": "Aussi le soleil, l'eau. Non renouvelables : pétrole, charbon, gaz, uranium.",
@@ -98768,13 +98810,15 @@
      ]
     },
     {
-     "question": "Laquelle de ces langues n'est PAS issue du latin ?",
+     "question": "Quelle grande langue d'Europe de l'Ouest n'est pas issue du latin ?",
      "answer": "L'anglais",
      "w": [
+      "405508d6",
       "6733a579",
       "cc970957"
      ],
      "wq": [
+      "4146a0af",
       "8ab0405b"
      ],
      "more": "Les langues romanes : français, italien, espagnol, portugais, roumain.",
@@ -102443,13 +102487,15 @@
      ]
     },
     {
-     "question": "Laquelle de ces propriétés prouve qu'un quadrilatère est un parallélogramme ?",
+     "question": "Quelle propriété des diagonales prouve qu'un quadrilatère est un parallélogramme ?",
      "answer": "Ses diagonales ont le même milieu",
      "w": [
+      "b6d6893c",
       "146366b7",
       "13a8be23"
      ],
      "wq": [
+      "8aec24b7",
       "a3f1c707"
      ],
      "more": "Ou : deux côtés opposés parallèles et de même longueur (vecteurs égaux).",
@@ -104193,13 +104239,15 @@
      ]
     },
     {
-     "question": "Lequel de ces rôles appartient aux partis politiques ?",
+     "question": "Quel rôle les partis politiques jouent-ils lors des élections ?",
      "answer": "Sélectionner des candidats",
      "w": [
+      "6b7c07c5",
       "e2af5d1b",
       "fab0ad18"
      ],
      "wq": [
+      "b31f9ea2",
       "ecc70f57"
      ],
      "more": "Aussi : élaborer des programmes, mobiliser les électeurs, conquérir et exercer le pouvoir.",
@@ -104210,13 +104258,15 @@
      ]
     },
     {
-     "question": "Lequel de ces acteurs appartient à la société civile organisée ?",
+     "question": "Quel type d'organisation de défense des salariés appartient à la société civile organisée ?",
      "answer": "Un syndicat",
      "w": [
+      "51194610",
       "d8360aa4",
       "dfabfa89"
      ],
      "wq": [
+      "4dbb5f03",
       "76aac541"
      ],
      "more": "Aussi associations et groupes d'intérêt : ils informent, mobilisent et font pression, sans chercher à exercer le pouvoir.",
@@ -104227,13 +104277,15 @@
      ]
     },
     {
-     "question": "Lequel de ces rôles jouent les médias dans la vie politique ?",
+     "question": "Quel rôle les médias jouent-ils face aux gouvernants ?",
      "answer": "Rendre compte de l'action des gouvernants",
      "w": [
+      "727cfd80",
       "41a9f4e7",
       "bcea5386"
      ],
      "wq": [
+      "a6a4a7d3",
       "60b1602c"
      ],
      "more": "Aussi : informer les citoyens et contribuer au débat public.",
@@ -106862,13 +106914,15 @@
      "link": "https://fr.wikipedia.org/wiki/Révolution_verte"
     },
     {
-     "question": "Lequel de ces enjeux concerne les campagnes des pays en développement ?",
+     "question": "Quel enjeu vital concerne les campagnes des pays en développement ?",
      "answer": "L'accès à l'eau",
      "w": [
+      "67046f6b",
       "a45314bd",
       "4c5f4489"
      ],
      "wq": [
+      "b8458b4b",
       "11cd0205"
      ],
      "more": "Aussi : l'exode rural, la coexistence agriculture vivrière / d'exportation, l'accès aux services.",
