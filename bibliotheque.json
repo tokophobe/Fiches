@@ -34378,98 +34378,265 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment un son est-il produit et dans quels milieux se propage-t-il ?",
-     "answer": "Par la vibration d'un objet.\nDans un milieu matériel (gaz, liquide, solide), pas dans le vide.",
-     "w": "7097d61f",
-     "wq": "f692726a"
+     "question": "Comment un son est-il produit ?",
+     "answer": "Par la vibration d'un objet",
+     "w": [
+      "838d82bd",
+      "7097d61f"
+     ],
+     "wq": "f692726a",
+     "wrongs": [
+      "Par un courant électrique",
+      "Par la lumière",
+      "Par un changement de température"
+     ]
     },
     {
-     "question": "Quelle est la vitesse du son dans l'air et dans l'eau ?",
-     "answer": "Air : environ 340 m/s\nEau : environ 1 500 m/s\nEncore plus dans les solides.",
-     "w": "9457029c",
-     "wq": "0990f9e5"
+     "question": "Le son peut-il se propager dans le vide ?",
+     "answer": "Non, il lui faut un milieu matériel",
+     "more": "Gaz, liquide ou solide.",
+     "wrongs": [
+      "Oui, comme la lumière",
+      "Oui, mais plus lentement",
+      "Seulement dans le vide spatial"
+     ]
+    },
+    {
+     "question": "Quelle est la vitesse du son dans l'air ?",
+     "answer": "Environ 340 m/s",
+     "w": [
+      "a776802f",
+      "9457029c"
+     ],
+     "wq": "0990f9e5",
+     "wrongs": [
+      "Environ 1 500 m/s",
+      "Environ 300 000 km/s",
+      "Environ 34 m/s"
+     ]
+    },
+    {
+     "question": "Quelle est la vitesse du son dans l'eau ?",
+     "answer": "Environ 1 500 m/s",
+     "more": "Encore plus dans les solides.",
+     "wrongs": [
+      "Environ 340 m/s",
+      "Environ 15 m/s",
+      "Environ 300 000 km/s"
+     ]
     },
     {
      "question": "Quelle est la vitesse de la lumière dans le vide ?",
-     "answer": "Environ 300 000 km/s\n= 3 × 10⁸ m/s",
-     "w": "50832d69",
-     "wq": "3ad96947"
+     "answer": "Environ 300 000 km/s",
+     "w": [
+      "6b69a17f",
+      "50832d69"
+     ],
+     "more": "Soit 3 × 10⁸ m/s.",
+     "wrongs": [
+      "Environ 340 m/s",
+      "Environ 300 km/s",
+      "Environ 3 000 km/h"
+     ]
     },
     {
-     "question": "Quelle relation relie la fréquence et la période d'un signal ?",
-     "answer": "f = 1 ÷ T (f en Hz, T en s)\nEx. : T = 2 ms = 0,002 s → f = 500 Hz",
-     "w": "7f20bae8",
-     "wq": "c5549e9c"
+     "question": "Quelle est la fréquence d'un signal de période 2 ms ?",
+     "answer": "500 Hz",
+     "w": [
+      "eaca0b92",
+      "7f20bae8"
+     ],
+     "wq": "c5549e9c",
+     "more": "f = 1 ÷ T = 1 ÷ 0,002",
+     "wrongs": [
+      "2 Hz",
+      "50 Hz",
+      "0,5 Hz"
+     ]
     },
     {
      "question": "Quel est le domaine des fréquences audibles par l'être humain ?",
-     "answer": "De 20 Hz à 20 000 Hz environ."
+     "answer": "De 20 Hz à 20 000 Hz environ",
+     "w": "0278aef3",
+     "wrongs": [
+      "De 0 à 200 Hz",
+      "De 2 000 à 200 000 Hz",
+      "De 20 Hz à 2 000 Hz"
+     ]
     },
     {
-     "question": "Que sont les infrasons et les ultrasons ?",
-     "answer": "Infrasons : < 20 Hz\nUltrasons : > 20 000 Hz\nInaudibles pour l'homme.",
-     "w": "63c18f1e",
-     "wq": "76246800"
+     "question": "Comment appelle-t-on les sons de fréquence inférieure à 20 Hz ?",
+     "answer": "Les infrasons",
+     "w": [
+      "95feffd6",
+      "63c18f1e"
+     ],
+     "wq": "76246800",
+     "wrongs": [
+      "Les ultrasons",
+      "Les sons graves audibles",
+      "Les ondes radio"
+     ]
     },
     {
-     "question": "Donner deux applications des ultrasons.",
-     "answer": "• Échographie médicale\n• Sonar (profondeur, détection en mer)",
-     "w": "6114e1ce",
-     "wq": "676d9b4d"
+     "question": "Comment appelle-t-on les sons de fréquence supérieure à 20 000 Hz ?",
+     "answer": "Les ultrasons",
+     "wrongs": [
+      "Les infrasons",
+      "Les sons aigus audibles",
+      "Les rayons X"
+     ]
     },
     {
-     "question": "Quel lien entre la fréquence d'un son et sa hauteur ?",
-     "answer": "Fréquence élevée → son aigu\nFréquence basse → son grave",
-     "w": "b9b25379",
-     "wq": "1363610f"
+     "question": "Quelle application médicale utilise les ultrasons ?",
+     "answer": "L'échographie",
+     "w": [
+      "7ff5f5d7",
+      "6114e1ce"
+     ],
+     "wq": "676d9b4d",
+     "more": "Autre application : le sonar.",
+     "wrongs": [
+      "La radiographie",
+      "L'IRM",
+      "Le scanner"
+     ]
     },
     {
-     "question": "En quelle unité mesure-t-on le niveau sonore et avec quel appareil ?",
-     "answer": "En décibels (dB)\nAvec un sonomètre.",
-     "w": "cd897481",
-     "wq": "69d4e14a"
+     "question": "Un son de fréquence élevée est-il aigu ou grave ?",
+     "answer": "Aigu",
+     "w": [
+      "090a9309",
+      "b9b25379"
+     ],
+     "wq": "1363610f",
+     "wrongs": [
+      "Grave",
+      "Plus fort",
+      "Plus faible"
+     ]
     },
     {
-     "question": "À partir de quels niveaux sonores l'audition est-elle en danger ?",
-     "answer": "Vers 85 dB en exposition prolongée.\nSeuil de douleur : environ 120 dB.",
-     "w": "59db659b",
-     "wq": "dd058cb5"
+     "question": "En quelle unité mesure-t-on le niveau sonore ?",
+     "answer": "En décibels (dB)",
+     "w": [
+      "d2d7afdf",
+      "cd897481"
+     ],
+     "wq": "69d4e14a",
+     "wrongs": [
+      "En hertz (Hz)",
+      "En watts (W)",
+      "En newtons (N)"
+     ]
     },
     {
-     "question": "Un écho revient 2 s après le cri. À quelle distance est la paroi ?",
-     "answer": "Aller-retour : d = v × t ÷ 2\n= 340 × 2 ÷ 2 = 340 m",
-     "w": "660537a1",
-     "wq": "a49cbf3a"
+     "question": "Avec quel appareil mesure-t-on le niveau sonore ?",
+     "answer": "Un sonomètre",
+     "wrongs": [
+      "Un ampèremètre",
+      "Un thermomètre",
+      "Un baromètre"
+     ]
+    },
+    {
+     "question": "À partir de quel niveau sonore une exposition prolongée met-elle l'audition en danger ?",
+     "answer": "Environ 85 dB",
+     "w": [
+      "e480203e",
+      "59db659b"
+     ],
+     "wq": "dd058cb5",
+     "more": "Seuil de douleur : environ 120 dB.",
+     "wrongs": [
+      "Environ 20 dB",
+      "Environ 50 dB",
+      "Environ 200 dB"
+     ]
+    },
+    {
+     "question": "Un écho revient 2 s après un cri. À quelle distance est la paroi ?",
+     "answer": "340 m",
+     "w": [
+      "05cab6a1",
+      "660537a1"
+     ],
+     "wq": "a49cbf3a",
+     "more": "Aller-retour : d = 340 × 2 ÷ 2.",
+     "wrongs": [
+      "680 m",
+      "170 m",
+      "2 km"
+     ]
     },
     {
      "question": "On entend le tonnerre 3 s après l'éclair. À quelle distance est l'orage ?",
-     "answer": "d ≈ 340 × 3 = 1 020 m\nEnviron 1 km (la lumière arrive quasi instantanément).",
-     "w": "eeac9394",
-     "wq": "98a825c4"
+     "answer": "Environ 1 km",
+     "w": [
+      "4a093616",
+      "eeac9394"
+     ],
+     "more": "340 × 3 ≈ 1 020 m ; la lumière arrive quasi instantanément.",
+     "wrongs": [
+      "Environ 3 km",
+      "Environ 100 m",
+      "Environ 340 m"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une année-lumière ?",
-     "answer": "Une distance : celle parcourue par la lumière en un an,\nenviron 9,46 × 10¹² km.",
-     "w": "29b91cea",
-     "wq": "c4e330a5"
+     "answer": "Une distance : celle parcourue par la lumière en un an",
+     "w": [
+      "30acdf92",
+      "29b91cea"
+     ],
+     "more": "Environ 9,46 × 10¹² km.",
+     "wrongs": [
+      "Une durée d'un an",
+      "La vitesse de la lumière",
+      "L'âge d'une étoile"
+     ]
     },
     {
      "question": "Combien de temps met la lumière du Soleil pour arriver sur Terre ?",
-     "answer": "Environ 8 minutes\n(Soleil à environ 150 millions de km)",
-     "w": "cb8c3303",
-     "wq": "d1bda45a"
+     "answer": "Environ 8 minutes",
+     "w": [
+      "82ceaaf1",
+      "cb8c3303"
+     ],
+     "wrongs": [
+      "Environ 8 secondes",
+      "Environ 8 heures",
+      "Instantanément"
+     ]
     },
     {
-     "question": "Comment la lumière se propage-t-elle dans un milieu homogène et transparent ?",
-     "answer": "En ligne droite.\nOn la modélise par un rayon lumineux.",
-     "w": "028d05dc",
-     "wq": "e840a066"
+     "question": "Comment se propage la lumière dans un milieu homogène et transparent ?",
+     "answer": "En ligne droite",
+     "w": [
+      "6c9b6dea",
+      "028d05dc"
+     ],
+     "wq": "e840a066",
+     "more": "On la modélise par un rayon lumineux.",
+     "wrongs": [
+      "En zigzag",
+      "En cercle",
+      "Par vagues comme le son dans l'air"
+     ]
     },
     {
      "question": "Quels signaux transportent des informations à la vitesse de la lumière ?",
-     "answer": "• Signaux lumineux (fibre optique)\n• Ondes électromagnétiques : radio, Wi-Fi, 4G / 5G",
-     "w": "9883531f",
-     "wq": "bf6252f0"
+     "answer": "Les signaux lumineux et les ondes radio (Wi-Fi, 4G…)",
+     "w": [
+      "bb61ec20",
+      "9883531f"
+     ],
+     "wrongs": [
+      "Les signaux sonores",
+      "Les ultrasons",
+      "Les vibrations du sol"
+     ]
     }
    ]
   },
@@ -34840,104 +35007,273 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelle différence entre une transformation physique et une transformation chimique ?",
-     "answer": "Physique (fusion, dissolution…) : pas de nouvelles espèces.\nChimique : des réactifs disparaissent, de nouveaux produits apparaissent.",
-     "w": "8d794ed6",
-     "wq": "f72aed9b"
+     "question": "Qu'est-ce qui distingue une transformation chimique d'une transformation physique ?",
+     "answer": "De nouvelles espèces chimiques apparaissent",
+     "w": [
+      "6ec02818",
+      "8d794ed6"
+     ],
+     "wq": "f72aed9b",
+     "more": "Une transformation physique (fusion, dissolution…) ne crée pas de nouvelles espèces.",
+     "wrongs": [
+      "Elle change seulement l'état de la matière",
+      "La masse change",
+      "Elle est toujours réversible"
+     ]
     },
     {
-     "question": "Que sont les réactifs et les produits ?",
-     "answer": "Réactifs : espèces consommées.\nProduits : espèces formées.",
-     "w": "1958d653",
-     "wq": "1ca8c8db"
+     "question": "Comment appelle-t-on les espèces consommées lors d'une transformation chimique ?",
+     "answer": "Les réactifs",
+     "w": [
+      "3283642f",
+      "1958d653"
+     ],
+     "wq": "1ca8c8db",
+     "wrongs": [
+      "Les produits",
+      "Les catalyseurs",
+      "Les solvants"
+     ]
     },
     {
-     "question": "Que se conserve-t-il lors d'une transformation chimique ?",
-     "answer": "Les atomes (nombre et nature), donc la masse totale.\nMasse des réactifs consommés = masse des produits formés (Lavoisier).",
-     "w": "b416f735",
-     "wq": "025b1d22"
+     "question": "Comment appelle-t-on les espèces formées lors d'une transformation chimique ?",
+     "answer": "Les produits",
+     "wrongs": [
+      "Les réactifs",
+      "Les solutés",
+      "Les atomes"
+     ]
     },
     {
-     "question": "Quelle célèbre phrase résume la loi de conservation de la masse ?",
-     "answer": "« Rien ne se perd, rien ne se crée, tout se transforme »\nLavoisier",
-     "w": "a9c3459a",
-     "wq": "40193e2d"
+     "question": "Qu'est-ce qui se conserve lors d'une transformation chimique ?",
+     "answer": "Les atomes, donc la masse totale",
+     "w": [
+      "6b4c8392",
+      "b416f735"
+     ],
+     "wq": "025b1d22",
+     "more": "Masse des réactifs consommés = masse des produits formés.",
+     "wrongs": [
+      "Les molécules",
+      "Le volume",
+      "La couleur"
+     ]
+    },
+    {
+     "question": "Qui a dit « Rien ne se perd, rien ne se crée, tout se transforme » ?",
+     "answer": "Lavoisier",
+     "w": [
+      "d3d47f29",
+      "a9c3459a"
+     ],
+     "wq": "40193e2d",
+     "wrongs": [
+      "Newton",
+      "Pasteur",
+      "Marie Curie"
+     ]
     },
     {
      "question": "12 g de carbone réagissent avec 32 g de dioxygène. Quelle masse de CO₂ obtient-on ?",
-     "answer": "12 + 32 = 44 g de CO₂\n(conservation de la masse)",
-     "w": "ae538ce7",
-     "wq": "d9932690"
+     "answer": "44 g",
+     "w": [
+      "a9f19f1e",
+      "ae538ce7"
+     ],
+     "more": "Conservation de la masse : 12 + 32.",
+     "wrongs": [
+      "20 g",
+      "32 g",
+      "12 g"
+     ]
     },
     {
-     "question": "Écrire l'équation de la combustion complète du carbone.",
+     "question": "Quelle est l'équation de la combustion complète du carbone ?",
      "answer": "C + O₂ → CO₂",
-     "w": "3b3b851a",
-     "wq": "a6c38174"
+     "w": [
+      "2a3c7e90",
+      "3b3b851a"
+     ],
+     "wq": "a6c38174",
+     "wrongs": [
+      "C + O → CO",
+      "C + H₂O → CO₂",
+      "CO₂ → C + O₂"
+     ]
     },
     {
-     "question": "Écrire l'équation ajustée de la combustion du méthane.",
+     "question": "Quelle est l'équation ajustée de la combustion du méthane ?",
      "answer": "CH₄ + 2 O₂ → CO₂ + 2 H₂O",
-     "w": "687d28b7",
-     "wq": "eb5d3a5f"
+     "w": [
+      "351c42e3",
+      "687d28b7"
+     ],
+     "wq": "eb5d3a5f",
+     "wrongs": [
+      "CH₄ + O₂ → CO₂ + H₂O",
+      "CH₄ + 2 O₂ → C + 2 H₂O",
+      "CH₄ → C + 2 H₂"
+     ]
     },
     {
-     "question": "Écrire l'équation ajustée de la combustion du butane C₄H₁₀.",
+     "question": "Quelle est l'équation ajustée de la combustion du butane C₄H₁₀ ?",
      "answer": "2 C₄H₁₀ + 13 O₂ → 8 CO₂ + 10 H₂O",
-     "w": "1b8cd268",
-     "wq": "808bd7dc"
+     "w": [
+      "d58704d6",
+      "1b8cd268"
+     ],
+     "wq": "808bd7dc",
+     "wrongs": [
+      "C₄H₁₀ + O₂ → CO₂ + H₂O",
+      "C₄H₁₀ + 13 O₂ → 4 CO₂ + 5 H₂O",
+      "2 C₄H₁₀ + 8 O₂ → 8 CO₂ + 10 H₂O"
+     ]
     },
     {
-     "question": "Que se passe-t-il lors d'une combustion incomplète et pourquoi est-ce dangereux ?",
-     "answer": "Par manque de dioxygène : monoxyde de carbone CO (et suies).\nGaz incolore, inodore, très toxique.",
-     "w": "18be20ec",
-     "wq": "47425efc"
+     "question": "Quel gaz produit une combustion incomplète ?",
+     "answer": "Le monoxyde de carbone (CO)",
+     "w": [
+      "8ffd61c5",
+      "18be20ec"
+     ],
+     "wq": "47425efc",
+     "more": "Par manque de dioxygène ; il se forme aussi des suies.",
+     "wrongs": [
+      "Le dioxygène",
+      "Le diazote",
+      "La vapeur d'eau seule"
+     ]
+    },
+    {
+     "question": "Pourquoi le monoxyde de carbone est-il dangereux ?",
+     "answer": "Il est incolore, inodore et très toxique",
+     "wrongs": [
+      "Il est explosif au contact de l'eau",
+      "Il détruit la couche d'ozone",
+      "Il est radioactif"
+     ]
     },
     {
      "question": "Quels sont les trois éléments du triangle du feu ?",
-     "answer": "• Un combustible\n• Un comburant (le dioxygène)\n• Une source d'énergie (chaleur, étincelle)",
-     "w": "c49210c9",
-     "wq": "9a0bdde0"
+     "answer": "Combustible, comburant, source d'énergie",
+     "w": [
+      "43b08c63",
+      "c49210c9"
+     ],
+     "more": "Comburant : le dioxygène ; source : chaleur, étincelle.",
+     "wrongs": [
+      "Bois, eau, vent",
+      "Combustible, eau, fumée",
+      "Dioxygène, azote, carbone"
+     ]
     },
     {
      "question": "Comment identifier le dioxyde de carbone ?",
-     "answer": "Il trouble l'eau de chaux."
+     "answer": "Il trouble l'eau de chaux",
+     "w": "eee77237",
+     "wrongs": [
+      "Il rallume une bûchette incandescente",
+      "Il bleuit le sulfate de cuivre anhydre",
+      "Il fait une petite détonation"
+     ]
     },
     {
      "question": "Comment identifier l'eau ?",
-     "answer": "Le sulfate de cuivre anhydre\nblanc → bleu",
-     "w": "d7e8af6b",
-     "wq": "6e3cfbfe"
+     "answer": "Le sulfate de cuivre anhydre passe du blanc au bleu",
+     "w": [
+      "3a342f40",
+      "d7e8af6b"
+     ],
+     "wrongs": [
+      "Elle trouble l'eau de chaux",
+      "Elle rallume une bûchette",
+      "Elle fait une détonation"
+     ]
     },
     {
      "question": "Comment identifier le dioxygène ?",
-     "answer": "Il rallume une bûchette incandescente.",
-     "w": "f42b3db6",
-     "wq": "690bd1ec"
+     "answer": "Il rallume une bûchette incandescente",
+     "w": [
+      "dce02354",
+      "f42b3db6"
+     ],
+     "wrongs": [
+      "Il trouble l'eau de chaux",
+      "Il fait une petite détonation",
+      "Il bleuit le sulfate de cuivre"
+     ]
     },
     {
      "question": "Comment identifier le dihydrogène ?",
-     "answer": "Petite détonation près d'une flamme\n(« aboiement »)",
-     "w": "bcf937ed",
-     "wq": "c750e684"
+     "answer": "Une petite détonation près d'une flamme",
+     "w": [
+      "40cd543a",
+      "bcf937ed"
+     ],
+     "wrongs": [
+      "Il trouble l'eau de chaux",
+      "Il rallume une bûchette",
+      "Il colore la flamme en vert"
+     ]
     },
     {
-     "question": "Que se passe-t-il quand on met du fer dans de l'acide chlorhydrique ?",
-     "answer": "Le fer est attaqué :\ndihydrogène (gaz) + ions fer II Fe²⁺ en solution.",
-     "w": "582c899c",
-     "wq": "b39d846b"
+     "question": "Que produit l'action de l'acide chlorhydrique sur le fer ?",
+     "answer": "Du dihydrogène et des ions fer II (Fe²⁺)",
+     "w": [
+      "2e1a7775",
+      "582c899c"
+     ],
+     "wq": "b39d846b",
+     "wrongs": [
+      "Du dioxyde de carbone et de l'eau",
+      "Du dioxygène et des ions chlorure",
+      "De la rouille seulement"
+     ]
     },
     {
-     "question": "Comment identifier les ions Cu²⁺, Fe²⁺ et Fe³⁺ avec la soude ?",
-     "answer": "Avec la soude :\nCu²⁺ : précipité bleu\nFe²⁺ : précipité vert\nFe³⁺ : précipité rouille",
-     "w": "e0fcc6e3",
-     "wq": "640de837"
+     "question": "Quelle couleur de précipité donnent les ions Cu²⁺ avec la soude ?",
+     "answer": "Bleu",
+     "w": [
+      "601c325d",
+      "e0fcc6e3"
+     ],
+     "wq": "640de837",
+     "wrongs": [
+      "Vert",
+      "Rouille",
+      "Blanc"
+     ]
+    },
+    {
+     "question": "Quelle couleur de précipité donnent les ions Fe²⁺ avec la soude ?",
+     "answer": "Vert",
+     "wrongs": [
+      "Bleu",
+      "Rouille",
+      "Blanc"
+     ]
+    },
+    {
+     "question": "Quelle couleur de précipité donnent les ions Fe³⁺ avec la soude ?",
+     "answer": "Rouille",
+     "wrongs": [
+      "Vert",
+      "Bleu",
+      "Blanc"
+     ]
     },
     {
      "question": "Comment identifier les ions chlorure Cl⁻ ?",
-     "answer": "Avec le nitrate d'argent :\nprécipité blanc qui noircit à la lumière.",
-     "w": "c3069db5",
-     "wq": "231f388b"
+     "answer": "Avec du nitrate d'argent : précipité blanc qui noircit à la lumière",
+     "w": [
+      "972d6a94",
+      "c3069db5"
+     ],
+     "wrongs": [
+      "Avec la soude : précipité bleu",
+      "Avec l'eau de chaux : trouble blanc",
+      "Avec une bûchette : elle se rallume"
+     ]
     }
    ]
   },
@@ -34960,98 +35296,255 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment l'échelle de pH permet-elle de classer les solutions ?",
-     "answer": "pH de 0 à 14\n< 7 : acide\n= 7 : neutre\n> 7 : basique",
-     "w": "bab9e306",
-     "wq": "55233c63"
+     "question": "Quel est le pH d'une solution acide ?",
+     "answer": "Inférieur à 7",
+     "w": [
+      "c41d92df",
+      "bab9e306"
+     ],
+     "wq": "55233c63",
+     "more": "Neutre : pH = 7 ; basique : pH > 7.",
+     "wrongs": [
+      "Supérieur à 7",
+      "Égal à 7",
+      "Supérieur à 14"
+     ]
     },
     {
-     "question": "Quels ions caractérisent une solution acide ?",
-     "answer": "Plus d'ions H⁺ que d'ions HO⁻.",
-     "w": "f432876f",
-     "wq": "fc8cf348"
+     "question": "Quels ions sont majoritaires dans une solution acide ?",
+     "answer": "Les ions H⁺",
+     "w": [
+      "b4d3c72c",
+      "f432876f"
+     ],
+     "wq": "fc8cf348",
+     "wrongs": [
+      "Les ions HO⁻",
+      "Les ions Na⁺",
+      "Les ions Cl⁻"
+     ]
     },
     {
-     "question": "Quels ions caractérisent une solution basique ?",
-     "answer": "Plus d'ions HO⁻ que d'ions H⁺.",
-     "w": "c7fbd215",
-     "wq": "6a6f070a"
+     "question": "Quels ions sont majoritaires dans une solution basique ?",
+     "answer": "Les ions HO⁻",
+     "w": [
+      "f8089ca0",
+      "c7fbd215"
+     ],
+     "wq": "6a6f070a",
+     "wrongs": [
+      "Les ions H⁺",
+      "Les ions Cl⁻",
+      "Les ions Cu²⁺"
+     ]
     },
     {
-     "question": "Que peut-on dire d'une solution neutre ?",
-     "answer": "Autant d'ions H⁺ que d'ions HO⁻.\nEx. : l'eau pure (pH = 7 à 25 °C)",
-     "w": "969e384a",
-     "wq": "b2dc1a78"
+     "question": "Que contient une solution neutre ?",
+     "answer": "Autant d'ions H⁺ que d'ions HO⁻",
+     "w": [
+      "5478fdc1",
+      "969e384a"
+     ],
+     "wq": "b2dc1a78",
+     "more": "Ex. : l'eau pure (pH = 7 à 25 °C).",
+     "wrongs": [
+      "Aucun ion",
+      "Plus d'ions H⁺ que d'ions HO⁻",
+      "Plus d'ions HO⁻ que d'ions H⁺"
+     ]
     },
     {
-     "question": "Comment mesurer le pH d'une solution ?",
-     "answer": "Papier pH : valeur approchée.\npH-mètre : valeur précise.",
-     "w": "4649ea57",
-     "wq": "db6cad15"
+     "question": "Quel instrument donne une mesure précise du pH ?",
+     "answer": "Un pH-mètre",
+     "w": [
+      "e62c77aa",
+      "4649ea57"
+     ],
+     "wq": "db6cad15",
+     "more": "Le papier pH donne une valeur approchée.",
+     "wrongs": [
+      "Un thermomètre",
+      "Un ampèremètre",
+      "Un sonomètre"
+     ]
     },
     {
      "question": "Comment évolue le pH quand on dilue une solution acide ?",
-     "answer": "Il augmente et se rapproche de 7,\nsans jamais le dépasser.",
-     "w": "3dd55a3f",
-     "wq": "b026f604"
+     "answer": "Il augmente et se rapproche de 7",
+     "w": [
+      "9d507b81",
+      "3dd55a3f"
+     ],
+     "more": "Sans jamais le dépasser.",
+     "wrongs": [
+      "Il diminue",
+      "Il dépasse 7",
+      "Il ne change pas"
+     ]
     },
     {
      "question": "Comment évolue le pH quand on dilue une solution basique ?",
-     "answer": "Il diminue et se rapproche de 7."
+     "answer": "Il diminue et se rapproche de 7",
+     "w": "1e5cb0f0",
+     "wrongs": [
+      "Il augmente",
+      "Il devient inférieur à 7",
+      "Il ne change pas"
+     ]
     },
     {
-     "question": "Quelle précaution prendre pour diluer un acide concentré ?",
-     "answer": "Toujours verser l'acide dans l'eau, jamais l'inverse.\nBlouse, gants, lunettes.",
-     "w": "ac532bbb",
-     "wq": "c5588157"
+     "question": "Comment dilue-t-on un acide concentré sans danger ?",
+     "answer": "On verse l'acide dans l'eau, jamais l'inverse",
+     "w": [
+      "5552ad38",
+      "ac532bbb"
+     ],
+     "wq": "c5588157",
+     "more": "Avec blouse, gants et lunettes.",
+     "wrongs": [
+      "On verse l'eau dans l'acide",
+      "On chauffe l'acide d'abord",
+      "On mélange les deux d'un coup"
+     ]
     },
     {
-     "question": "Donner un exemple de solution acide, neutre et basique de la vie courante.",
-     "answer": "Acide : vinaigre (pH ≈ 3)\nNeutre : eau pure (pH = 7)\nBasique : eau de Javel (pH ≈ 11 à 12)",
-     "w": "21661e0e",
-     "wq": "c96e5c59"
+     "question": "Quel est le pH approximatif du vinaigre ?",
+     "answer": "Environ 3",
+     "w": [
+      "10a1ea72",
+      "21661e0e"
+     ],
+     "wq": "c96e5c59",
+     "wrongs": [
+      "Environ 7",
+      "Environ 11",
+      "Environ 14"
+     ]
     },
     {
-     "question": "Quels ions contient l'acide chlorhydrique ? Et la soude ?",
-     "answer": "Acide chlorhydrique : H⁺ et Cl⁻\nSoude : Na⁺ et HO⁻",
-     "w": "f258b032",
-     "wq": "2c52fc46"
+     "question": "L'eau de Javel est-elle acide, neutre ou basique ?",
+     "answer": "Basique (pH ≈ 11 à 12)",
+     "wrongs": [
+      "Acide",
+      "Neutre",
+      "Ni l'un ni l'autre"
+     ]
+    },
+    {
+     "question": "Quels ions contient l'acide chlorhydrique ?",
+     "answer": "H⁺ et Cl⁻",
+     "w": [
+      "1555205f",
+      "f258b032"
+     ],
+     "wq": "2c52fc46",
+     "wrongs": [
+      "Na⁺ et HO⁻",
+      "H⁺ et HO⁻",
+      "Na⁺ et Cl⁻"
+     ]
+    },
+    {
+     "question": "Quels ions contient la soude ?",
+     "answer": "Na⁺ et HO⁻",
+     "wrongs": [
+      "H⁺ et Cl⁻",
+      "Na⁺ et Cl⁻",
+      "Cu²⁺ et HO⁻"
+     ]
     },
     {
      "question": "Que se passe-t-il quand on mélange un acide et une base ?",
-     "answer": "H⁺ + HO⁻ → H₂O\nLa réaction dégage de la chaleur.",
-     "w": "857708bf",
-     "wq": "44e539fa"
+     "answer": "H⁺ + HO⁻ → H₂O, avec un dégagement de chaleur",
+     "w": [
+      "6457089a",
+      "857708bf"
+     ],
+     "wrongs": [
+      "Il ne se passe rien",
+      "Un gaz toxique se forme toujours",
+      "La solution gèle"
+     ]
     },
     {
      "question": "Que produit l'action de l'acide chlorhydrique sur le zinc ?",
-     "answer": "Du dihydrogène H₂ et des ions zinc Zn²⁺.\nLe métal est peu à peu consommé.",
-     "w": "7555fa0b",
-     "wq": "a7aef2db"
+     "answer": "Du dihydrogène et des ions zinc Zn²⁺",
+     "w": [
+      "8ff3d953",
+      "7555fa0b"
+     ],
+     "wrongs": [
+      "Du dioxygène et des ions chlorure",
+      "Du dioxyde de carbone",
+      "De l'eau seulement"
+     ]
     },
     {
-     "question": "Que signifie le pictogramme montrant une main et une surface rongées par un liquide ?",
-     "answer": "Produit corrosif :\nbrûlures graves de la peau et des yeux, attaque les métaux.",
-     "w": "c42cbf13",
-     "wq": "ce2f2360"
+     "question": "Que signale le pictogramme montrant une main et une surface rongées ?",
+     "answer": "Un produit corrosif",
+     "w": [
+      "87a81959",
+      "c42cbf13"
+     ],
+     "wq": "ce2f2360",
+     "more": "Brûlures graves de la peau et des yeux ; attaque les métaux.",
+     "wrongs": [
+      "Un produit inflammable",
+      "Un produit explosif",
+      "Un produit dangereux pour l'environnement"
+     ]
     },
     {
-     "question": "Que sont le soluté et le solvant d'une solution ?",
-     "answer": "Soluté : l'espèce dissoute.\nSolvant : le liquide qui dissout (l'eau).",
-     "w": "bb4b2d7a",
-     "wq": "32556741"
+     "question": "Comment appelle-t-on l'espèce dissoute dans une solution ?",
+     "answer": "Le soluté",
+     "w": [
+      "bf1a90eb",
+      "bb4b2d7a"
+     ],
+     "wq": "32556741",
+     "wrongs": [
+      "Le solvant",
+      "Le précipité",
+      "Le réactif"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on le liquide qui dissout ?",
+     "answer": "Le solvant",
+     "more": "Souvent l'eau.",
+     "wrongs": [
+      "Le soluté",
+      "La solution",
+      "Le produit"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une solution saturée ?",
-     "answer": "On ne peut plus y dissoudre de soluté :\nla quantité maximale (solubilité) est atteinte.",
-     "w": "f4a6cb86",
-     "wq": "37892d55"
+     "answer": "Une solution où l'on ne peut plus dissoudre de soluté",
+     "w": [
+      "21a713d5",
+      "f4a6cb86"
+     ],
+     "wrongs": [
+      "Une solution très diluée",
+      "Une solution sans soluté",
+      "Une solution qui a été chauffée"
+     ]
     },
     {
-     "question": "Comment calculer la concentration en masse d'une solution ?",
-     "answer": "Cm = m ÷ V (en g/L)\nEx. : 10 g de sel dans 0,5 L → 20 g/L",
-     "w": "1aade947",
-     "wq": "76e8ee10"
+     "question": "Quelle est la concentration en masse de 10 g de sel dans 0,5 L ?",
+     "answer": "20 g/L",
+     "w": [
+      "2e9126bd",
+      "1aade947"
+     ],
+     "wq": "76e8ee10",
+     "more": "Cm = m ÷ V",
+     "wrongs": [
+      "5 g/L",
+      "10 g/L",
+      "0,05 g/L"
+     ]
     }
    ]
   },
@@ -35074,97 +35567,244 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'un objet technique ?",
-     "answer": "Un objet conçu et fabriqué par l'être humain pour répondre à un besoin."
+     "answer": "Un objet fabriqué par l'être humain pour répondre à un besoin",
+     "w": "6aa0b9b9",
+     "wrongs": [
+      "Un objet trouvé dans la nature",
+      "Un objet qui contient forcément de l'électronique",
+      "Un objet décoratif"
+     ]
     },
     {
-     "question": "Quelles questions pose le diagramme « bête à cornes » ?",
-     "answer": "• À qui rend-il service ?\n• Sur quoi agit-il ?\n• Dans quel but ?\nIl exprime le besoin auquel répond l'objet.",
-     "w": "ba552d6e",
-     "wq": "e5e10f52"
+     "question": "Qu'exprime le diagramme « bête à cornes » ?",
+     "answer": "Le besoin auquel répond l'objet",
+     "w": [
+      "46e58180",
+      "ba552d6e"
+     ],
+     "wq": "e5e10f52",
+     "more": "À qui rend-il service ? Sur quoi agit-il ? Dans quel but ?",
+     "wrongs": [
+      "Le prix de l'objet",
+      "Les étapes de fabrication",
+      "Les matériaux utilisés"
+     ]
     },
     {
      "question": "Qu'est-ce que la fonction d'usage d'un objet ?",
-     "answer": "Ce à quoi il sert.\nEx. : un vélo sert à se déplacer.",
-     "w": "58bf0618",
-     "wq": "d2854058"
+     "answer": "Ce à quoi il sert",
+     "w": [
+      "bb4fc154",
+      "58bf0618"
+     ],
+     "more": "Ex. : un vélo sert à se déplacer.",
+     "wrongs": [
+      "Ce qui le rend beau",
+      "Le moyen choisi pour le fabriquer",
+      "Sa durée de vie"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une fonction technique ?",
-     "answer": "Une action d'un élément de l'objet, nécessaire à la fonction d'usage.\nEx. : transmettre le mouvement des pédales à la roue.",
-     "w": "11c5b2fc",
-     "wq": "6880436b"
+     "answer": "Une action d'un élément de l'objet, nécessaire à la fonction d'usage",
+     "w": [
+      "556cb95e",
+      "11c5b2fc"
+     ],
+     "more": "Ex. : transmettre le mouvement des pédales à la roue.",
+     "wrongs": [
+      "Ce à quoi sert l'objet",
+      "Ce qui rend l'objet désirable",
+      "Le prix de l'objet"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une solution technique ?",
-     "answer": "Le moyen concret choisi pour réaliser une fonction technique.\nEx. : une chaîne et des pignons.",
-     "w": "2c27e5fb",
-     "wq": "862ddf3a"
+     "answer": "Le moyen concret choisi pour réaliser une fonction technique",
+     "w": [
+      "94e26bd1",
+      "2c27e5fb"
+     ],
+     "more": "Ex. : une chaîne et des pignons.",
+     "wrongs": [
+      "Le besoin de l'utilisateur",
+      "Le nom de l'objet",
+      "Le cahier des charges"
+     ]
     },
     {
-     "question": "Qu'est-ce que la fonction d'estime ?",
-     "answer": "Ce qui rend l'objet agréable ou désirable, sans être indispensable.\nCouleur, forme, design, marque.",
-     "w": "b4da1984",
-     "wq": "54ef19f6"
+     "question": "Qu'est-ce que la fonction d'estime d'un objet ?",
+     "answer": "Ce qui le rend agréable ou désirable",
+     "w": [
+      "7fd62ea4",
+      "b4da1984"
+     ],
+     "wq": "54ef19f6",
+     "more": "Couleur, forme, design, marque.",
+     "wrongs": [
+      "Ce à quoi il sert",
+      "Son mécanisme",
+      "Son recyclage"
+     ]
     },
     {
      "question": "Que contient un cahier des charges ?",
-     "answer": "• Les fonctions à remplir\n• Les contraintes\n• Pour chacune : critères et niveaux (valeurs attendues)",
-     "w": "2e4afcfd",
-     "wq": "68cfa7d3"
+     "answer": "Les fonctions, les contraintes, avec critères et niveaux",
+     "w": [
+      "6efb2c40",
+      "2e4afcfd"
+     ],
+     "wrongs": [
+      "Le prix de vente seulement",
+      "La notice d'utilisation",
+      "La liste des clients"
+     ]
     },
     {
-     "question": "Quelles sont les grandes étapes du cycle de vie d'un objet ?",
-     "answer": "1. Extraction des matières premières\n2. Fabrication\n3. Distribution (transport)\n4. Utilisation\n5. Fin de vie (recyclage, valorisation, décharge)",
-     "w": "e72b70ef",
-     "wq": "12e117e3"
+     "question": "Quelle est la dernière étape du cycle de vie d'un objet ?",
+     "answer": "La fin de vie (recyclage, valorisation, décharge)",
+     "w": [
+      "b48b81e3",
+      "e72b70ef"
+     ],
+     "wq": "12e117e3",
+     "more": "Avant : extraction, fabrication, distribution, utilisation.",
+     "wrongs": [
+      "La fabrication",
+      "La distribution",
+      "L'extraction des matières premières"
+     ]
     },
     {
      "question": "À quoi sert l'analyse du cycle de vie (ACV) ?",
-     "answer": "Évaluer les impacts environnementaux à chaque étape :\nénergie, émissions de CO₂, déchets.",
-     "w": "fe26f323",
-     "wq": "28c0e229"
+     "answer": "À évaluer les impacts environnementaux à chaque étape",
+     "w": [
+      "05a55feb",
+      "fe26f323"
+     ],
+     "more": "Énergie, émissions de CO₂, déchets.",
+     "wrongs": [
+      "À fixer le prix de l'objet",
+      "À tester sa solidité",
+      "À choisir sa couleur"
+     ]
     },
     {
      "question": "Qu'est-ce que l'éco-conception ?",
-     "answer": "Réduire les impacts dès la conception :\nmoins de matière, matériaux recyclables, faible consommation, démontage facile.",
-     "w": "40a7a8c6",
-     "wq": "b9c07234"
+     "answer": "Réduire les impacts environnementaux dès la conception",
+     "w": [
+      "d29f5284",
+      "40a7a8c6"
+     ],
+     "more": "Moins de matière, matériaux recyclables, faible consommation, démontage facile.",
+     "wrongs": [
+      "Fabriquer au moindre coût",
+      "Décorer l'objet avec des motifs naturels",
+      "Vendre l'objet en magasin bio"
+     ]
     },
     {
      "question": "Quelles sont les grandes familles de matériaux ?",
-     "answer": "• Métaux\n• Organiques (bois, plastiques, textiles)\n• Céramiques et verres\n• Composites",
-     "w": "14c27d73",
-     "wq": "c45a204d"
+     "answer": "Métaux, organiques, céramiques et verres, composites",
+     "w": [
+      "60742f72",
+      "14c27d73"
+     ],
+     "wrongs": [
+      "Solides, liquides, gaz",
+      "Naturels et électriques",
+      "Bois, eau, air"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un matériau composite ?",
-     "answer": "Au moins deux matériaux non miscibles, dont on combine les propriétés.\nEx. : fibre de carbone et résine, béton armé",
-     "w": "f296b6e6",
-     "wq": "232719c1"
+     "answer": "Un assemblage d'au moins deux matériaux dont on combine les propriétés",
+     "w": [
+      "ad66599c",
+      "f296b6e6"
+     ],
+     "more": "Ex. : fibre de carbone et résine, béton armé.",
+     "wrongs": [
+      "Un métal pur",
+      "Un matériau recyclé",
+      "Un plastique transparent"
+     ]
     },
     {
-     "question": "Citer quatre propriétés utilisées pour choisir un matériau.",
-     "answer": "• Masse volumique\n• Conductivité électrique ou thermique\n• Dureté, élasticité\n• Résistance à la corrosion",
-     "w": "f1244824",
-     "wq": "dd3d9a7c"
+     "question": "Quelles propriétés sert-on à comparer pour choisir un matériau ?",
+     "answer": "Masse volumique, conductivité, dureté, résistance à la corrosion",
+     "w": [
+      "51d560af",
+      "f1244824"
+     ],
+     "wq": "dd3d9a7c",
+     "wrongs": [
+      "Couleur et odeur seulement",
+      "Prix et marque seulement",
+      "Nom et origine seulement"
+     ]
     },
     {
-     "question": "Quelle différence entre un thermoplastique et un thermodurcissable ?",
-     "answer": "Thermoplastique : se ramollit à la chaleur, refondable, recyclable.\nThermodurcissable : durcit définitivement, pas refondable.",
-     "w": "5b81bd98",
-     "wq": "68a76153"
+     "question": "Qu'est-ce qu'un thermoplastique ?",
+     "answer": "Un plastique qui se ramollit à la chaleur et peut être refondu",
+     "w": [
+      "9b2df13e",
+      "5b81bd98"
+     ],
+     "wq": "68a76153",
+     "more": "Il est recyclable.",
+     "wrongs": [
+      "Un plastique qui durcit définitivement",
+      "Un métal chauffé",
+      "Un plastique qui conduit l'électricité"
+     ]
+    },
+    {
+     "question": "Qu'est-ce qu'un thermodurcissable ?",
+     "answer": "Un plastique qui durcit définitivement et ne peut pas être refondu",
+     "wrongs": [
+      "Un plastique qui se ramollit à la chaleur",
+      "Un matériau composite",
+      "Un verre trempé"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une lignée d'objets techniques ?",
-     "answer": "Les objets qui répondent au même besoin avec le même principe, et évoluent dans le temps.\nEx. : téléphones fixes puis mobiles",
-     "w": "01727f26",
-     "wq": "957877ec"
+     "answer": "Des objets qui répondent au même besoin et évoluent dans le temps",
+     "w": [
+      "c8b50de6",
+      "01727f26"
+     ],
+     "more": "Ex. : téléphones fixes puis mobiles.",
+     "wrongs": [
+      "Des objets fabriqués dans la même usine",
+      "Des objets de même couleur",
+      "Des objets vendus ensemble"
+     ]
     },
     {
-     "question": "À quoi servent la CAO et le prototypage (impression 3D) ?",
-     "answer": "CAO : modéliser l'objet en 3D.\nPrototype : tester une solution avant la fabrication en série.",
-     "w": "b3f87318",
-     "wq": "14449ad4"
+     "question": "À quoi sert la CAO ?",
+     "answer": "À modéliser l'objet en 3D sur ordinateur",
+     "w": [
+      "24399e4b",
+      "b3f87318"
+     ],
+     "wq": "14449ad4",
+     "wrongs": [
+      "À vendre l'objet en ligne",
+      "À recycler l'objet",
+      "À calculer son prix"
+     ]
+    },
+    {
+     "question": "À quoi sert un prototype ?",
+     "answer": "À tester une solution avant la fabrication en série",
+     "more": "Souvent réalisé par impression 3D.",
+     "wrongs": [
+      "À remplacer l'objet final",
+      "À faire de la publicité",
+      "À calculer l'empreinte carbone"
+     ]
     }
    ]
   },
@@ -35188,97 +35828,227 @@
    "cards": [
     {
      "question": "Quelles sont les trois fonctions de la chaîne d'information ?",
-     "answer": "• Acquérir (capteurs)\n• Traiter (microcontrôleur, programme)\n• Communiquer (transmettre des ordres, informer l'utilisateur)",
-     "w": "580bd2cb",
-     "wq": "5ced8919"
+     "answer": "Acquérir, traiter, communiquer",
+     "w": [
+      "2a1c045a",
+      "580bd2cb"
+     ],
+     "wrongs": [
+      "Alimenter, distribuer, convertir",
+      "Concevoir, fabriquer, vendre",
+      "Stocker, transporter, recycler"
+     ]
     },
     {
      "question": "Quelles sont les fonctions de la chaîne d'énergie ?",
-     "answer": "• Alimenter (et stocker)\n• Distribuer\n• Convertir\n• Transmettre\n… jusqu'à l'action sur la matière d'œuvre.",
-     "w": "5f6dd173",
-     "wq": "9372a0e9"
+     "answer": "Alimenter, distribuer, convertir, transmettre",
+     "w": [
+      "4bfca9af",
+      "5f6dd173"
+     ],
+     "wrongs": [
+      "Acquérir, traiter, communiquer",
+      "Capter, afficher, enregistrer",
+      "Mesurer, comparer, décider"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un capteur ?",
-     "answer": "Un composant qui prélève une information physique\n(lumière, température, présence…)\net la transforme en signal électrique.",
-     "w": "a9929dcc",
-     "wq": "919e248e"
+     "answer": "Un composant qui transforme une information physique en signal électrique",
+     "w": [
+      "c266ceac",
+      "a9929dcc"
+     ],
+     "more": "Lumière, température, présence…",
+     "wrongs": [
+      "Un composant qui agit sur la matière",
+      "Un composant qui stocke l'énergie",
+      "Un composant qui exécute le programme"
+     ]
     },
     {
-     "question": "Citer quatre capteurs courants.",
-     "answer": "Au choix :\n• bouton poussoir\n• photorésistance (luminosité)\n• capteur de température\n• détecteur de présence infrarouge, capteur à ultrasons",
-     "w": "5ffbdc51",
-     "wq": "98135c08"
+     "question": "Quel capteur mesure la luminosité ?",
+     "answer": "Une photorésistance",
+     "w": [
+      "d7bf97e1",
+      "5ffbdc51"
+     ],
+     "wq": "98135c08",
+     "more": "Autres capteurs : bouton poussoir, capteur de température, détecteur de présence.",
+     "wrongs": [
+      "Un moteur",
+      "Un buzzer",
+      "Un relais"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un actionneur ?",
-     "answer": "Un composant qui convertit l'énergie reçue pour agir.\nEx. : moteur, vérin, résistance chauffante, lampe ou LED, buzzer",
-     "w": "f1ef66cc",
-     "wq": "1c498448"
+     "answer": "Un composant qui convertit l'énergie pour agir",
+     "w": [
+      "1cc8efb9",
+      "f1ef66cc"
+     ],
+     "more": "Ex. : moteur, vérin, lampe, buzzer.",
+     "wrongs": [
+      "Un composant qui prélève une information",
+      "Un composant qui traite les données",
+      "Un composant qui mesure la température"
+     ]
     },
     {
      "question": "Quel composant réalise la fonction « traiter » ?",
-     "answer": "Un microcontrôleur\n(carte programmable type Arduino ou micro:bit) qui exécute le programme.",
-     "w": "026f7803",
-     "wq": "c8d59b72"
+     "answer": "Un microcontrôleur",
+     "w": [
+      "26e5aa81",
+      "026f7803"
+     ],
+     "more": "Carte programmable type Arduino ou micro:bit.",
+     "wrongs": [
+      "Un capteur",
+      "Un moteur",
+      "Une batterie"
+     ]
     },
     {
      "question": "Quels composants réalisent la fonction « distribuer » ?",
-     "answer": "Les pré-actionneurs : relais, transistor, interrupteur, variateur.\nIls laissent passer ou non l'énergie vers l'actionneur.",
-     "w": "d75ee2d0",
-     "wq": "458a5240"
+     "answer": "Les pré-actionneurs : relais, transistor, interrupteur",
+     "w": [
+      "6b3f4322",
+      "d75ee2d0"
+     ],
+     "wrongs": [
+      "Les capteurs",
+      "Les actionneurs",
+      "Les batteries"
+     ]
     },
     {
      "question": "Quelle conversion d'énergie réalise un moteur électrique ?",
-     "answer": "Énergie électrique → énergie mécanique (rotation)\navec des pertes sous forme de chaleur.",
-     "w": "5858631c",
-     "wq": "f1c80f2d"
+     "answer": "Électrique → mécanique",
+     "w": [
+      "294003a8",
+      "5858631c"
+     ],
+     "more": "Avec des pertes sous forme de chaleur.",
+     "wrongs": [
+      "Mécanique → électrique",
+      "Chimique → électrique",
+      "Lumineuse → électrique"
+     ]
     },
     {
      "question": "Quel système transforme une rotation en translation ?",
-     "answer": "Le système pignon-crémaillère (ou le système vis-écrou)."
+     "answer": "Le pignon-crémaillère",
+     "w": "0e4f3c1e",
+     "more": "Ou le système vis-écrou.",
+     "wrongs": [
+      "Les poulies et la courroie",
+      "Les engrenages",
+      "La chaîne et les pignons"
+     ]
     },
     {
-     "question": "Citer trois systèmes de transmission d'un mouvement de rotation.",
-     "answer": "• Engrenages\n• Poulies et courroie\n• Pignons et chaîne\n(aussi : roue et vis sans fin)",
-     "w": "edf50bad",
-     "wq": "13238fe7"
+     "question": "Quels systèmes transmettent un mouvement de rotation ?",
+     "answer": "Engrenages, poulies et courroie, pignons et chaîne",
+     "w": [
+      "0edcff57",
+      "edf50bad"
+     ],
+     "wq": "13238fe7",
+     "wrongs": [
+      "Pignon-crémaillère seulement",
+      "Vérins et ressorts",
+      "Capteurs et LED"
+     ]
     },
     {
-     "question": "Une roue menante de 20 dents entraîne une roue menée de 40 dents. Que devient la vitesse de rotation ?",
-     "answer": "Rapport = 20 ÷ 40 = 0,5\nLa roue menée tourne deux fois moins vite,\net dans le sens inverse.",
-     "w": "661e4b61",
-     "wq": "d4200962"
+     "question": "Une roue de 20 dents entraîne une roue de 40 dents. Comment tourne la roue menée ?",
+     "answer": "Deux fois moins vite, en sens inverse",
+     "w": [
+      "04fb4d16",
+      "661e4b61"
+     ],
+     "wq": "d4200962",
+     "wrongs": [
+      "Deux fois plus vite, dans le même sens",
+      "À la même vitesse",
+      "Deux fois moins vite, dans le même sens"
+     ]
     },
     {
-     "question": "Qu'est-ce qui distingue une source d'énergie renouvelable d'une non renouvelable ?",
-     "answer": "Renouvelable : se reconstitue vite à l'échelle humaine (soleil, vent, eau, biomasse).\nNon renouvelable : s'épuise (pétrole, gaz, charbon, uranium).",
-     "w": "d9637ed9",
-     "wq": "d6b0cbae"
+     "question": "Qu'est-ce qu'une source d'énergie renouvelable ?",
+     "answer": "Une source qui se reconstitue vite à l'échelle humaine",
+     "w": [
+      "8e8f2ba4",
+      "d9637ed9"
+     ],
+     "wq": [
+      "2933fac8",
+      "d6b0cbae"
+     ],
+     "more": "Soleil, vent, eau, biomasse. Non renouvelables : pétrole, gaz, charbon, uranium.",
+     "wrongs": [
+      "Une source qu'on peut stocker",
+      "Une source qui ne pollue jamais",
+      "Une source qui produit de l'électricité"
+     ]
     },
     {
      "question": "Quelles sont les principales formes d'énergie ?",
-     "answer": "• Électrique\n• Mécanique (cinétique, de position)\n• Thermique\n• Lumineuse (rayonnante)\n• Chimique et nucléaire",
-     "w": "72daccc0",
-     "wq": "67adabf7"
+     "answer": "Électrique, mécanique, thermique, lumineuse, chimique, nucléaire",
+     "w": [
+      "07f0ac4a",
+      "72daccc0"
+     ],
+     "wrongs": [
+      "Solide, liquide, gazeuse",
+      "Renouvelable et fossile seulement",
+      "Électrique seulement"
+     ]
     },
     {
-     "question": "Comment calcule-t-on le rendement d'un convertisseur d'énergie ?",
-     "answer": "η = énergie utile ÷ énergie reçue\nToujours inférieur à 1 (100 %) à cause des pertes.\nEx. : 80 J utiles pour 100 J reçus → η = 0,8 = 80 %",
-     "w": "dc405e9f",
-     "wq": "c9fce1ba"
+     "question": "Un convertisseur reçoit 100 J et fournit 80 J utiles. Quel est son rendement ?",
+     "answer": "80 %",
+     "w": [
+      "82bb788f",
+      "dc405e9f"
+     ],
+     "wq": "c9fce1ba",
+     "more": "η = énergie utile ÷ énergie reçue ; toujours inférieur à 100 %.",
+     "wrongs": [
+      "125 %",
+      "20 %",
+      "180 %"
+     ]
     },
     {
-     "question": "Quelle différence entre un signal logique, analogique et numérique ?",
-     "answer": "• Logique : deux états seulement (0 ou 1)\n• Analogique : variation continue\n• Numérique : suite de valeurs codées en binaire",
-     "w": "27e1eb7a",
-     "wq": "d66742b2"
+     "question": "Combien d'états possède un signal logique ?",
+     "answer": "Deux (0 ou 1)",
+     "w": [
+      "a5f7b6fe",
+      "27e1eb7a"
+     ],
+     "wq": "d66742b2",
+     "more": "Analogique : variation continue ; numérique : valeurs codées en binaire.",
+     "wrongs": [
+      "Une infinité",
+      "Dix",
+      "Trois"
+     ]
     },
     {
      "question": "À quoi sert un accumulateur (batterie) dans la chaîne d'énergie ?",
-     "answer": "À stocker l'énergie sous forme chimique\npour la restituer sous forme électrique quand le système en a besoin.",
-     "w": "eea077b0",
-     "wq": "c200ea4f"
+     "answer": "À stocker l'énergie pour la restituer plus tard",
+     "w": [
+      "fd1cba26",
+      "eea077b0"
+     ],
+     "more": "Sous forme chimique, restituée sous forme électrique.",
+     "wrongs": [
+      "À convertir l'énergie en mouvement",
+      "À mesurer la température",
+      "À traiter les informations"
+     ]
     }
    ]
   },
@@ -35301,110 +36071,264 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelle différence entre un algorithme et un programme ?",
-     "answer": "Algorithme : suite d'instructions qui décrit comment résoudre un problème.\nProgramme : sa traduction dans un langage compréhensible par la machine.",
-     "w": "1f91dbfa",
-     "wq": "f8e0d93e"
+     "question": "Qu'est-ce qu'un programme ?",
+     "answer": "La traduction d'un algorithme dans un langage compris par la machine",
+     "w": [
+      "7f4ebd7f",
+      "1f91dbfa"
+     ],
+     "wq": "f8e0d93e",
+     "more": "L'algorithme décrit comment résoudre le problème.",
+     "wrongs": [
+      "Une suite d'idées sans ordre",
+      "Un réseau d'ordinateurs",
+      "Un composant électronique"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un événement en programmation ?",
-     "answer": "Une action qui déclenche l'exécution d'un script.\nEx. : appui sur un bouton, clic sur le drapeau vert, seuil d'un capteur atteint",
-     "w": "b911b0d0",
-     "wq": "0c24bdbe"
+     "answer": "Une action qui déclenche l'exécution d'un script",
+     "w": [
+      "bb6644ff",
+      "b911b0d0"
+     ],
+     "more": "Ex. : appui sur un bouton, clic sur le drapeau vert.",
+     "wrongs": [
+      "Une erreur dans le programme",
+      "Une variable",
+      "Une boucle infinie"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un bit et qu'est-ce qu'un octet ?",
-     "answer": "Bit : plus petite unité d'information (0 ou 1).\nOctet : groupe de 8 bits, soit 2⁸ = 256 valeurs possibles.",
-     "w": "d0ffb192",
-     "wq": "78e0bde7"
+     "question": "Qu'est-ce qu'un bit ?",
+     "answer": "La plus petite unité d'information (0 ou 1)",
+     "w": [
+      "e4c98239",
+      "d0ffb192"
+     ],
+     "wq": "78e0bde7",
+     "wrongs": [
+      "Un groupe de 8 octets",
+      "Un programme",
+      "Un câble réseau"
+     ]
     },
     {
-     "question": "Convertir le nombre binaire 1011 en décimal.",
-     "answer": "1 × 8 + 0 × 4 + 1 × 2 + 1 × 1\n= 11",
-     "w": "012b7b4f",
-     "wq": "bd0cdfca"
+     "question": "Combien de bits compte un octet ?",
+     "answer": "8",
+     "more": "Soit 2⁸ = 256 valeurs possibles.",
+     "wrongs": [
+      "2",
+      "10",
+      "16"
+     ]
+    },
+    {
+     "question": "Que vaut le nombre binaire 1011 en décimal ?",
+     "answer": "11",
+     "w": [
+      "1e883421",
+      "012b7b4f"
+     ],
+     "wq": "bd0cdfca",
+     "more": "1 × 8 + 0 × 4 + 1 × 2 + 1 × 1",
+     "wrongs": [
+      "1 011",
+      "13",
+      "9"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un réseau informatique ?",
-     "answer": "Un ensemble d'appareils reliés entre eux pour échanger des données.\nEx. : ordinateurs, imprimantes, smartphones",
-     "w": "09567da1",
-     "wq": "8b675303"
+     "answer": "Des appareils reliés pour échanger des données",
+     "w": [
+      "cd6a0125",
+      "09567da1"
+     ],
+     "wrongs": [
+      "Un seul ordinateur",
+      "Un logiciel",
+      "Un câble électrique"
+     ]
     },
     {
      "question": "Quel est le rôle d'un commutateur (switch) ?",
-     "answer": "Il relie les appareils d'un même réseau local\net transmet les données uniquement à l'appareil destinataire.",
-     "w": "e5328f47",
-     "wq": "a385fd5e"
+     "answer": "Relier les appareils d'un réseau local",
+     "w": [
+      "15fb5095",
+      "e5328f47"
+     ],
+     "more": "Il transmet les données uniquement au destinataire.",
+     "wrongs": [
+      "Relier des réseaux différents",
+      "Traduire les noms de domaine",
+      "Chiffrer les données"
+     ]
     },
     {
      "question": "Quel est le rôle d'un routeur ?",
-     "answer": "Il relie des réseaux différents et choisit le chemin des données.\nÀ la maison, la box internet joue ce rôle.",
-     "w": "166256a2",
-     "wq": "b0f3b227"
+     "answer": "Relier des réseaux différents et choisir le chemin des données",
+     "w": [
+      "ecf9d931",
+      "166256a2"
+     ],
+     "more": "À la maison, la box internet joue ce rôle.",
+     "wrongs": [
+      "Relier les appareils d'un même réseau local seulement",
+      "Stocker les données",
+      "Afficher les pages web"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une adresse IP ?",
-     "answer": "Un numéro qui identifie un appareil sur un réseau.\nEn IPv4 : 4 nombres de 0 à 255\nEx. : 192.168.1.12",
-     "w": "653f019b",
-     "wq": "edae2a6d"
+     "answer": "Un numéro qui identifie un appareil sur un réseau",
+     "w": [
+      "da9c0b7b",
+      "653f019b"
+     ],
+     "more": "En IPv4 : 4 nombres de 0 à 255. Ex. : 192.168.1.12",
+     "wrongs": [
+      "Le nom d'un site web",
+      "Un mot de passe",
+      "L'identifiant gravé par le fabricant"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une adresse MAC ?",
-     "answer": "Un identifiant unique gravé dans la carte réseau d'un appareil par son fabricant."
+     "answer": "Un identifiant unique gravé dans la carte réseau par le fabricant",
+     "w": "faaa7876",
+     "wrongs": [
+      "Un numéro attribué par la box",
+      "L'adresse d'un site web",
+      "Un modèle d'ordinateur"
+     ]
     },
     {
-     "question": "Quelle différence entre internet et le Web ?",
-     "answer": "Internet : le réseau mondial qui relie les réseaux entre eux.\nLe Web : un service d'internet pour consulter des pages reliées par des liens hypertextes.",
-     "w": "bb7a48bf",
-     "wq": "0626bc7a"
+     "question": "Quelle est la différence entre internet et le Web ?",
+     "answer": "Internet est le réseau mondial ; le Web est un service d'internet",
+     "w": [
+      "2b8c3b3b",
+      "bb7a48bf"
+     ],
+     "wq": "0626bc7a",
+     "more": "Le Web permet de consulter des pages reliées par des liens.",
+     "wrongs": [
+      "Ce sont deux noms pour la même chose",
+      "Le Web est le réseau ; internet est un service",
+      "Internet sert seulement aux e-mails"
+     ]
     },
     {
      "question": "À quoi sert le DNS ?",
-     "answer": "À traduire un nom de domaine en adresse IP du serveur.\nEx. : education.gouv.fr → adresse IP",
-     "w": "11e4b557",
-     "wq": "dc26db58"
+     "answer": "À traduire un nom de domaine en adresse IP",
+     "w": [
+      "ba62276c",
+      "11e4b557"
+     ],
+     "wrongs": [
+      "À chiffrer les échanges",
+      "À stocker les pages web",
+      "À relier les appareils d'un réseau local"
+     ]
     },
     {
      "question": "Comment les données circulent-elles sur internet ?",
-     "answer": "1. Elles sont découpées en paquets.\n2. Les paquets peuvent emprunter des chemins différents.\n3. Ils sont réassemblés à l'arrivée (protocole TCP/IP).",
-     "w": "4f100418",
-     "wq": "ab0d121f"
+     "answer": "Découpées en paquets, réassemblés à l'arrivée",
+     "w": [
+      "eb0e36ff",
+      "4f100418"
+     ],
+     "more": "Les paquets peuvent prendre des chemins différents (protocole TCP/IP).",
+     "wrongs": [
+      "En un seul bloc, par un chemin fixe",
+      "Par ondes sonores",
+      "Uniquement par satellite"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un protocole de communication ?",
-     "answer": "Un ensemble de règles communes pour que les machines échangent des données.\nEx. : TCP/IP, HTTP",
-     "w": "46515e04",
-     "wq": "c16d1bd6"
+     "answer": "Un ensemble de règles communes pour échanger des données",
+     "w": [
+      "cfc60982",
+      "46515e04"
+     ],
+     "more": "Ex. : TCP/IP, HTTP.",
+     "wrongs": [
+      "Un câble réseau",
+      "Un logiciel antivirus",
+      "Un mot de passe"
+     ]
     },
     {
      "question": "Que signifie le « s » de HTTPS ?",
-     "answer": "Sécurisé :\nles échanges entre le navigateur et le serveur sont chiffrés.",
-     "w": "44f8ee20",
-     "wq": "20e134b7"
+     "answer": "Sécurisé : les échanges sont chiffrés",
+     "w": [
+      "fab18c22",
+      "44f8ee20"
+     ],
+     "wrongs": [
+      "Serveur",
+      "Simple",
+      "Site"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une URL ?",
-     "answer": "L'adresse d'une ressource sur le Web :\nprotocole + nom de domaine + chemin\nEx. : https://www.exemple.fr/page",
-     "w": "f6722fb2",
-     "wq": "6a5b8e22"
+     "answer": "L'adresse d'une ressource sur le Web",
+     "w": [
+      "1da3a95c",
+      "f6722fb2"
+     ],
+     "more": "Protocole + nom de domaine + chemin. Ex. : https://www.exemple.fr/page",
+     "wrongs": [
+      "Un identifiant de carte réseau",
+      "Un type de câble",
+      "Un langage de programmation"
+     ]
     },
     {
-     "question": "Que signifie le modèle client-serveur ?",
-     "answer": "Le client (navigateur, application) envoie une requête,\nle serveur lui renvoie la ressource demandée.",
-     "w": "c06c50d6",
-     "wq": "b2c01a13"
+     "question": "Dans le modèle client-serveur, que fait le client ?",
+     "answer": "Il envoie une requête au serveur",
+     "w": [
+      "46dd3365",
+      "c06c50d6"
+     ],
+     "wq": "b2c01a13",
+     "more": "Le serveur lui renvoie la ressource demandée.",
+     "wrongs": [
+      "Il stocke toutes les pages web",
+      "Il relie les réseaux entre eux",
+      "Il traduit les noms de domaine"
+     ]
     },
     {
-     "question": "Quel est l'impact environnemental du stockage de données « dans le cloud » ?",
-     "answer": "Les données sont stockées dans des centres de données (datacenters)\nqui consomment beaucoup d'électricité pour fonctionner et être refroidis.",
-     "w": "a9ee3d86",
-     "wq": "8f591714"
+     "question": "Pourquoi le stockage « dans le cloud » a-t-il un impact environnemental ?",
+     "answer": "Les centres de données consomment beaucoup d'électricité",
+     "w": [
+      "24429970",
+      "a9ee3d86"
+     ],
+     "wq": "8f591714",
+     "more": "Pour fonctionner et être refroidis.",
+     "wrongs": [
+      "Il n'a aucun impact",
+      "Les données sont stockées dans les nuages",
+      "Il utilise du papier"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un mot de passe robuste ?",
-     "answer": "• Long (au moins 12 caractères)\n• Mêlant majuscules, minuscules, chiffres et symboles\n• Différent pour chaque service",
-     "w": "e3a1f0f2",
-     "wq": "942e4b0b"
+     "answer": "Long, varié et différent pour chaque service",
+     "w": [
+      "01c50f5e",
+      "e3a1f0f2"
+     ],
+     "more": "Au moins 12 caractères mêlant majuscules, minuscules, chiffres et symboles.",
+     "wrongs": [
+      "Sa date de naissance",
+      "Le même partout pour ne pas l'oublier",
+      "Un mot du dictionnaire"
+     ]
     }
    ]
   },
@@ -37046,94 +37970,232 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce qu'une aire urbaine (ou aire d'attraction d'une ville) ?",
-     "answer": "• Le pôle : ville-centre et banlieue\n• Les communes périurbaines\ndont une partie des actifs travaille dans le pôle.",
-     "w": "a8baada4",
-     "wq": "115468d9"
+     "question": "De quoi se compose une aire urbaine (aire d'attraction d'une ville) ?",
+     "answer": "Un pôle et des communes périurbaines",
+     "w": [
+      "f07977bc",
+      "a8baada4"
+     ],
+     "wq": "115468d9",
+     "more": "Pôle : ville-centre et banlieue ; une partie des actifs du périurbain travaille dans le pôle.",
+     "wrongs": [
+      "Une seule commune",
+      "Un ensemble de villages isolés",
+      "Un quartier d'affaires"
+     ]
     },
     {
-     "question": "Qu'est-ce que la périurbanisation ?",
-     "answer": "L'extension de la ville vers les campagnes environnantes.\nDes habitants qui travaillent en ville s'y installent,\nsouvent en maison individuelle.",
-     "w": "7545c19a",
-     "wq": "7fa806d5"
+     "question": "Comment appelle-t-on l'extension de la ville vers les campagnes environnantes ?",
+     "answer": "La périurbanisation",
+     "w": [
+      "8efcc9a0",
+      "7545c19a"
+     ],
+     "wq": "7fa806d5",
+     "more": "Souvent en maisons individuelles.",
+     "wrongs": [
+      "La métropolisation",
+      "La gentrification",
+      "La littoralisation"
+     ]
     },
     {
      "question": "Qu'est-ce que l'étalement urbain ?",
-     "answer": "La surface de la ville croît plus vite que sa population,\nau détriment des terres agricoles et naturelles.",
-     "w": "cbd47730",
-     "wq": "d40313e6"
+     "answer": "La surface de la ville croît plus vite que sa population",
+     "w": [
+      "2312008b",
+      "cbd47730"
+     ],
+     "more": "Au détriment des terres agricoles et naturelles.",
+     "wrongs": [
+      "La ville perd des habitants",
+      "La ville se construit en hauteur",
+      "La ville se vide de ses commerces"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une migration pendulaire ?",
-     "answer": "Le déplacement quotidien aller-retour\nentre le domicile et le lieu de travail ou d'études.",
-     "w": "fac8c1d3",
-     "wq": "741e8a68"
+     "question": "Comment appelle-t-on le trajet quotidien entre domicile et travail ?",
+     "answer": "Une migration pendulaire",
+     "w": [
+      "7e56cbfd",
+      "fac8c1d3"
+     ],
+     "wq": "741e8a68",
+     "wrongs": [
+      "Une migration internationale",
+      "Un exode rural",
+      "Une mobilité touristique"
+     ]
     },
     {
-     "question": "Qu'est-ce que la métropolisation ?",
-     "answer": "La concentration de la population, des activités et des fonctions de commandement\ndans les plus grandes villes : les métropoles.",
-     "w": "08866365",
-     "wq": "f04d6735"
+     "question": "Comment appelle-t-on la concentration des habitants, activités et pouvoirs dans les plus grandes villes ?",
+     "answer": "La métropolisation",
+     "w": [
+      "d9e1c2e7",
+      "08866365"
+     ],
+     "wq": "f04d6735",
+     "wrongs": [
+      "La périurbanisation",
+      "La désindustrialisation",
+      "La gentrification"
+     ]
     },
     {
-     "question": "Quelle est la principale aire urbaine française ?",
-     "answer": "L'aire de Paris : environ 13 millions d'habitants\nloin devant Lyon et Marseille-Aix.",
-     "w": "1e4a9b66",
-     "wq": "a8844e37"
+     "question": "Combien d'habitants compte l'aire urbaine de Paris ?",
+     "answer": "Environ 13 millions",
+     "w": [
+      "d14e083f",
+      "1e4a9b66"
+     ],
+     "wq": "a8844e37",
+     "more": "Loin devant Lyon et Marseille-Aix.",
+     "wrongs": [
+      "Environ 2 millions",
+      "Environ 30 millions",
+      "Environ 6 millions"
+     ]
     },
     {
      "question": "Quelle part des Français vit en ville ou sous l'influence d'une ville ?",
      "answer": "Plus des trois quarts",
      "w": "f159af92",
-     "wq": "20047eec"
+     "wq": "20047eec",
+     "wrongs": [
+      "Environ la moitié",
+      "Environ un quart",
+      "Moins d'un tiers"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un CBD ? Donnez un exemple français.",
-     "answer": "Un quartier d'affaires (Central Business District)\nqui concentre sièges sociaux et bureaux.\nEx. : La Défense, près de Paris",
-     "w": "8e413b30",
-     "wq": "861c5a75"
+     "question": "Qu'est-ce qu'un CBD ?",
+     "answer": "Un quartier d'affaires",
+     "w": [
+      "328698df",
+      "8e413b30"
+     ],
+     "wq": "861c5a75",
+     "more": "Central Business District : sièges sociaux et bureaux.",
+     "wrongs": [
+      "Un centre commercial",
+      "Une zone industrielle",
+      "Un quartier résidentiel"
+     ]
     },
     {
-     "question": "Qu'est-ce que la gentrification ?",
-     "answer": "Des catégories sociales aisées s'installent dans un quartier populaire.\nLes prix montent et les habitants modestes doivent partir.",
-     "w": "67be7a66",
-     "wq": "7a3b61fa"
+     "question": "Quel est le grand quartier d'affaires de la région parisienne ?",
+     "answer": "La Défense",
+     "wrongs": [
+      "Montmartre",
+      "Le Marais",
+      "Bercy"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un espace de faible densité ?",
-     "answer": "Un espace peu peuplé, souvent rural ou montagnard.\nDensité très inférieure à la moyenne française (environ 120 hab./km²).",
-     "w": "9f6d013e",
-     "wq": "ee971a0b"
+     "question": "Comment appelle-t-on l'installation de catégories aisées dans un quartier populaire ?",
+     "answer": "La gentrification",
+     "w": [
+      "5a9f3285",
+      "67be7a66"
+     ],
+     "wq": "7a3b61fa",
+     "more": "Les prix montent, les habitants modestes doivent partir.",
+     "wrongs": [
+      "La périurbanisation",
+      "La métropolisation",
+      "L'exode rural"
+     ]
+    },
+    {
+     "question": "Quelle est la densité moyenne de population en France ?",
+     "answer": "Environ 120 hab./km²",
+     "w": [
+      "5d27efcc",
+      "9f6d013e"
+     ],
+     "wq": "ee971a0b",
+     "more": "Les espaces de faible densité sont très en dessous.",
+     "wrongs": [
+      "Environ 12 hab./km²",
+      "Environ 1 200 hab./km²",
+      "Environ 40 hab./km²"
+     ]
     },
     {
      "question": "Qu'appelle-t-on la « diagonale du vide » ?",
-     "answer": "Une bande d'espaces peu peuplés à travers la France :\ndu nord-est (Ardennes, Meuse) au sud-ouest (Landes),\nen passant par le Massif central.",
-     "w": "55089ebf",
-     "wq": "de8bbfc1"
+     "answer": "Une bande d'espaces peu peuplés du nord-est au sud-ouest de la France",
+     "w": [
+      "df4b4a15",
+      "55089ebf"
+     ],
+     "more": "Des Ardennes aux Landes, en passant par le Massif central.",
+     "wrongs": [
+      "Une autoroute qui traverse la France",
+      "Le littoral atlantique",
+      "Les grandes plaines céréalières"
+     ]
     },
     {
      "question": "Qui sont les néoruraux ?",
-     "answer": "Des citadins qui s'installent à la campagne,\nparfois en télétravail ou en y créant une activité.",
-     "w": "31aa71fe",
-     "wq": "c68b6ebc"
+     "answer": "Des citadins qui s'installent à la campagne",
+     "w": [
+      "cd22b47a",
+      "31aa71fe"
+     ],
+     "wrongs": [
+      "Des agriculteurs qui partent en ville",
+      "Des touristes en vacances",
+      "Des habitants des banlieues"
+     ]
     },
     {
      "question": "Quelles difficultés rencontrent souvent les espaces de faible densité ?",
-     "answer": "• Vieillissement de la population\n• Éloignement des services (médecins, écoles, commerces)\n• Peu de transports publics\n• Parfois déclin de l'emploi",
-     "w": "6db9d4c2",
-     "wq": "41005b61"
+     "answer": "Vieillissement, éloignement des services, peu de transports",
+     "w": [
+      "3de6cfbf",
+      "6db9d4c2"
+     ],
+     "wrongs": [
+      "Embouteillages et pollution",
+      "Manque de terres agricoles",
+      "Prix des logements trop élevés"
+     ]
     },
     {
      "question": "Quelles activités font vivre de nombreux espaces de faible densité ?",
-     "answer": "• Agriculture\n• Tourisme vert ou de montagne, résidences secondaires\n• Artisanat\n• Activités de protection de la nature",
-     "w": "dbac0b3f",
-     "wq": "aa341849"
+     "answer": "Agriculture, tourisme vert, artisanat",
+     "w": [
+      "2b0522bd",
+      "dbac0b3f"
+     ],
+     "wrongs": [
+      "Finance et sièges sociaux",
+      "Industrie lourde",
+      "Grands ports"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un parc national ?",
-     "answer": "Un espace naturel protégé par l'État où les activités humaines sont réglementées.\nLa France en compte onze.\nEx. : les Cévennes, les Écrins",
-     "w": "d63784ef",
-     "wq": "9a60d42c"
+     "answer": "Un espace naturel protégé par l'État, aux activités réglementées",
+     "w": [
+      "210ade8d",
+      "d63784ef"
+     ],
+     "wrongs": [
+      "Un grand jardin public en ville",
+      "Un parc d'attractions",
+      "Une zone industrielle"
+     ]
+    },
+    {
+     "question": "Combien la France compte-t-elle de parcs nationaux ?",
+     "answer": "Onze",
+     "more": "Ex. : les Cévennes, les Écrins.",
+     "wrongs": [
+      "Trois",
+      "Vingt-cinq",
+      "Cinquante"
+     ]
     }
    ]
   },
@@ -37157,95 +38219,239 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'un espace productif ?",
-     "answer": "Un espace aménagé par les hommes pour produire des richesses :\nbiens agricoles, biens industriels ou services.",
-     "w": "36778026",
-     "wq": "6667ae3b"
+     "answer": "Un espace aménagé pour produire des richesses",
+     "w": [
+      "407caf28",
+      "36778026"
+     ],
+     "more": "Biens agricoles, biens industriels ou services.",
+     "wrongs": [
+      "Un espace naturel protégé",
+      "Un espace sans habitants",
+      "Un espace de loisirs"
+     ]
     },
     {
-     "question": "Quelle est la place de l'agriculture française en Europe ?",
-     "answer": "La France est le premier producteur agricole de l'Union européenne."
+     "question": "Quel est le rang de la France pour la production agricole dans l'UE ?",
+     "answer": "Premier producteur",
+     "w": "fad0ea02",
+     "wq": "47fa6b0c",
+     "wrongs": [
+      "Cinquième",
+      "Dernier",
+      "Deuxième après l'Espagne"
+     ]
     },
     {
-     "question": "Qu'est-ce que la PAC ?",
-     "answer": "La Politique agricole commune (1962)\nElle modernise l'agriculture et soutient les agriculteurs européens.",
-     "w": "fe7c8979",
-     "wq": "dfbf70e8"
+     "question": "Que signifie le sigle PAC ?",
+     "answer": "Politique agricole commune",
+     "w": [
+      "122680a7",
+      "fe7c8979"
+     ],
+     "wq": "dfbf70e8",
+     "more": "Créée en 1962, elle soutient les agriculteurs européens.",
+     "wrongs": [
+      "Plan d'aménagement des campagnes",
+      "Programme agricole climatique",
+      "Prix agricoles contrôlés"
+     ]
     },
     {
      "question": "Qu'est-ce que l'agriculture productiviste ?",
-     "answer": "Une agriculture qui cherche les plus hauts rendements :\nmécanisation, engrais, pesticides.\nEx. : la céréaliculture de la Beauce",
-     "w": "614ac091",
-     "wq": "a21c0442"
+     "answer": "Une agriculture qui cherche les plus hauts rendements",
+     "w": [
+      "6d92cf5c",
+      "614ac091"
+     ],
+     "more": "Mécanisation, engrais, pesticides. Ex. : la Beauce.",
+     "wrongs": [
+      "Une agriculture sans engrais",
+      "Une agriculture de subsistance",
+      "Une agriculture uniquement biologique"
+     ]
     },
     {
-     "question": "Qu'est-ce que le secteur agroalimentaire (IAA) ?",
-     "answer": "L'ensemble des industries qui transforment les produits agricoles en produits alimentaires."
+     "question": "Que fait le secteur agroalimentaire ?",
+     "answer": "Il transforme les produits agricoles en produits alimentaires",
+     "w": "050b6322",
+     "wq": "3b42d923",
+     "wrongs": [
+      "Il produit des engrais",
+      "Il fabrique des machines agricoles",
+      "Il vend des terres agricoles"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une agriculture biologique ?",
-     "answer": "Une agriculture sans engrais ni pesticides de synthèse,\nqui respecte l'environnement et le bien-être animal.",
-     "w": "d6cac768",
-     "wq": "066b7728"
+     "question": "Qu'est-ce que l'agriculture biologique ?",
+     "answer": "Une agriculture sans engrais ni pesticides de synthèse",
+     "w": [
+      "ffa03fae",
+      "d6cac768"
+     ],
+     "wq": "066b7728",
+     "wrongs": [
+      "Une agriculture très mécanisée",
+      "Une agriculture hors-sol",
+      "Une agriculture à très hauts rendements"
+     ]
     },
     {
      "question": "Qu'est-ce que la désindustrialisation ?",
-     "answer": "Le recul de l'emploi et des activités industrielles.\nEx. : anciens bassins miniers et sidérurgiques du Nord et de la Lorraine",
-     "w": "7cc89bf7",
-     "wq": "68c4e142"
+     "answer": "Le recul de l'emploi et des activités industrielles",
+     "w": [
+      "7374ecc1",
+      "7cc89bf7"
+     ],
+     "more": "Ex. : anciens bassins miniers du Nord et de la Lorraine.",
+     "wrongs": [
+      "La création de nouvelles usines",
+      "Le passage de l'agriculture à l'industrie",
+      "La hausse du nombre d'ouvriers"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une délocalisation ?",
-     "answer": "Le transfert d'une production vers un autre pays\noù les coûts, notamment salariaux, sont plus faibles.",
-     "w": "5a5689f1",
-     "wq": "73fce614"
+     "answer": "Le transfert d'une production vers un pays aux coûts plus faibles",
+     "w": [
+      "d9cd1bfb",
+      "5a5689f1"
+     ],
+     "wrongs": [
+      "Le retour d'une usine en France",
+      "La fermeture définitive d'une usine",
+      "Le déménagement d'un siège social à Paris"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un technopôle ? Citez un exemple.",
-     "answer": "Un espace qui rassemble entreprises de haute technologie,\nuniversités et centres de recherche.\nEx. : Sophia-Antipolis, près de Nice",
-     "w": "cef501f8",
-     "wq": "60bf997a"
+     "question": "Qu'est-ce qu'un technopôle ?",
+     "answer": "Un espace qui réunit entreprises de haute technologie, universités et recherche",
+     "w": [
+      "ffb3182b",
+      "cef501f8"
+     ],
+     "wq": "60bf997a",
+     "wrongs": [
+      "Un port industriel",
+      "Un centre commercial",
+      "Une zone agricole"
+     ]
+    },
+    {
+     "question": "Quel est le grand technopôle situé près de Nice ?",
+     "answer": "Sophia-Antipolis",
+     "wrongs": [
+      "La Défense",
+      "Fos-sur-Mer",
+      "Saclay"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un pôle de compétitivité ?",
-     "answer": "Un regroupement local d'entreprises, de laboratoires et de centres de formation\nautour d'un même domaine, pour innover.\n(politique lancée en 2005)",
-     "w": "7e60024c",
-     "wq": "b6b4a4b8"
+     "answer": "Un regroupement local d'entreprises, de laboratoires et de formations autour d'un domaine",
+     "w": [
+      "66a979a7",
+      "7e60024c"
+     ],
+     "more": "Politique lancée en 2005 pour innover.",
+     "wrongs": [
+      "Un club sportif",
+      "Une zone sans impôts",
+      "Une grande surface commerciale"
+     ]
     },
     {
      "question": "Quelle ville est le centre de l'industrie aéronautique française ?",
-     "answer": "Toulouse\nsiège et chaînes d'assemblage d'Airbus.",
-     "w": "7add4319",
-     "wq": "f0a76522"
+     "answer": "Toulouse",
+     "w": [
+      "f9761cd0",
+      "7add4319"
+     ],
+     "more": "Siège et chaînes d'assemblage d'Airbus.",
+     "wrongs": [
+      "Lyon",
+      "Bordeaux",
+      "Lille"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une zone industrialo-portuaire (ZIP) ? Citez un exemple.",
-     "answer": "Une zone industrielle dans un port\nqui reçoit directement les matières premières importées.\nEx. : Dunkerque, Fos-sur-Mer",
-     "w": "f870117f",
-     "wq": "64102d31"
+     "question": "Qu'est-ce qu'une zone industrialo-portuaire (ZIP) ?",
+     "answer": "Une zone industrielle dans un port, qui reçoit directement les matières importées",
+     "w": [
+      "8b8e99d6",
+      "f870117f"
+     ],
+     "wq": "64102d31",
+     "wrongs": [
+      "Un port de plaisance",
+      "Une zone commerciale près d'une gare",
+      "Un quartier d'affaires"
+     ]
+    },
+    {
+     "question": "Quelle ville possède une grande zone industrialo-portuaire en France ?",
+     "answer": "Dunkerque",
+     "more": "Aussi Fos-sur-Mer.",
+     "wrongs": [
+      "Toulouse",
+      "Strasbourg",
+      "Clermont-Ferrand"
+     ]
     },
     {
      "question": "Quelle part des emplois occupe le secteur tertiaire en France ?",
-     "answer": "Environ les trois quarts\n(commerce, transports, santé, éducation, finance, tourisme…)",
-     "w": "a01349d5",
-     "wq": "f4e8b804"
+     "answer": "Environ les trois quarts",
+     "w": [
+      "e06ce8ea",
+      "a01349d5"
+     ],
+     "more": "Commerce, transports, santé, éducation, finance, tourisme…",
+     "wrongs": [
+      "Environ un quart",
+      "Environ la moitié",
+      "Environ 10 %"
+     ]
     },
     {
      "question": "Quelle est la place de la France dans le tourisme mondial ?",
-     "answer": "Le premier pays au monde\npour les arrivées de touristes internationaux.",
-     "w": "4ea3db0e",
-     "wq": "f926649c"
+     "answer": "Premier pays pour les arrivées de touristes internationaux",
+     "w": [
+      "78b639a7",
+      "4ea3db0e"
+     ],
+     "wrongs": [
+      "Dixième pays",
+      "Deuxième après les États-Unis",
+      "Elle n'est pas dans les vingt premiers"
+     ]
     },
     {
      "question": "Quel est le premier port de commerce français en tonnage ?",
-     "answer": "Marseille-Fos\n(Le Havre est le premier pour les conteneurs.)",
-     "w": "2b62a612",
-     "wq": "5536055d"
+     "answer": "Marseille-Fos",
+     "w": [
+      "9a1f3192",
+      "2b62a612"
+     ],
+     "more": "Le Havre est le premier pour les conteneurs.",
+     "wrongs": [
+      "Le Havre",
+      "Dunkerque",
+      "Bordeaux"
+     ]
     },
     {
      "question": "Pourquoi dit-on que les espaces productifs se littoralisent ?",
-     "answer": "De nombreuses activités (industries, ports, tourisme) se concentrent sur les côtes,\nouvertes sur les échanges mondiaux.",
-     "w": "804becb1",
-     "wq": "8215f195"
+     "answer": "Industries, ports et tourisme se concentrent sur les côtes",
+     "w": [
+      "2e879bd9",
+      "804becb1"
+     ],
+     "more": "Les littoraux sont ouverts sur les échanges mondiaux.",
+     "wrongs": [
+      "Les usines s'installent en montagne",
+      "Les campagnes se vident",
+      "Les villes s'éloignent de la mer"
+     ]
     }
    ]
   },
@@ -37268,97 +38474,221 @@
    "cards": [
     {
      "question": "Qu'est-ce que l'aménagement du territoire ?",
-     "answer": "Les actions des pouvoirs publics pour organiser le territoire :\n• mieux répartir les activités\n• réduire les inégalités entre les régions",
-     "w": "91a166d7",
-     "wq": "588f7526"
+     "answer": "Les actions publiques pour mieux répartir les activités et réduire les inégalités",
+     "w": [
+      "824784bc",
+      "91a166d7"
+     ],
+     "wrongs": [
+      "La construction de logements privés",
+      "La décoration des villes",
+      "La protection des espèces animales"
+     ]
     },
     {
-     "question": "Quel livre de 1947 dénonce le déséquilibre entre la capitale et la province ?",
-     "answer": "« Paris et le désert français », de Jean-François Gravier."
+     "question": "Quel livre de 1947 dénonce le déséquilibre entre Paris et la province ?",
+     "answer": "« Paris et le désert français »",
+     "w": "8f282ffd",
+     "wq": "b1d087ae",
+     "more": "De Jean-François Gravier.",
+     "wrongs": [
+      "« La France rurale »",
+      "« Le Tour de la France par deux enfants »",
+      "« Les Misérables »"
+     ]
     },
     {
      "question": "Quel organisme est créé en 1963 pour aménager le territoire ?",
-     "answer": "La DATAR\nDélégation à l'aménagement du territoire et à l'action régionale.",
-     "w": "ad42a7e3",
-     "wq": "e73303ef"
+     "answer": "La DATAR",
+     "w": [
+      "da90a4ce",
+      "ad42a7e3"
+     ],
+     "more": "Délégation à l'aménagement du territoire et à l'action régionale.",
+     "wrongs": [
+      "La SNCF",
+      "L'INSEE",
+      "Le CNRS"
+     ]
     },
     {
      "question": "Quelles sont les trois collectivités territoriales principales ?",
-     "answer": "• La commune\n• Le département\n• La région",
-     "w": "adc638f1",
-     "wq": "6ab8d8e1"
+     "answer": "La commune, le département, la région",
+     "w": [
+      "5b29790a",
+      "adc638f1"
+     ],
+     "wrongs": [
+      "La ville, le pays, l'Europe",
+      "Le quartier, la ville, l'État",
+      "La préfecture, la mairie, le Sénat"
+     ]
     },
     {
      "question": "Combien de régions compte la France depuis 2016 ?",
-     "answer": "18 régions\n• 13 en métropole\n• 5 en outre-mer",
-     "w": "65170ba6",
-     "wq": "08f30cc8"
+     "answer": "18",
+     "w": [
+      "26e59683",
+      "65170ba6"
+     ],
+     "more": "13 en métropole et 5 en outre-mer.",
+     "wrongs": [
+      "22",
+      "13",
+      "27"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une intercommunalité ?",
-     "answer": "Un regroupement de communes qui mettent en commun des compétences.\nEx. : transports, déchets, eau, développement économique",
-     "w": "b33c6deb",
-     "wq": "50ef459f"
+     "answer": "Un regroupement de communes qui mettent en commun des compétences",
+     "w": [
+      "3ad089ef",
+      "b33c6deb"
+     ],
+     "more": "Ex. : transports, déchets, eau.",
+     "wrongs": [
+      "La fusion de deux départements",
+      "Un conseil de quartier",
+      "Une région d'outre-mer"
+     ]
     },
     {
      "question": "Quels acteurs participent à l'aménagement du territoire ?",
-     "answer": "• L'État\n• Les collectivités territoriales\n• L'Union européenne\n• Les entreprises\n• Les associations et les habitants",
-     "w": "8eb38695",
-     "wq": "2da21cd3"
+     "answer": "L'État, les collectivités, l'UE, les entreprises, les habitants",
+     "w": [
+      "d309f119",
+      "8eb38695"
+     ],
+     "wrongs": [
+      "L'État seulement",
+      "Les maires seulement",
+      "L'ONU seulement"
+     ]
     },
     {
-     "question": "Citez un grand aménagement de transport et sa date.",
-     "answer": "La première ligne TGV Paris-Lyon\ninaugurée en 1981.",
-     "w": "aeb208ec",
-     "wq": "657e6d30"
+     "question": "En quelle année est inaugurée la première ligne TGV Paris-Lyon ?",
+     "answer": "En 1981",
+     "w": [
+      "5e95adcd",
+      "aeb208ec"
+     ],
+     "wq": "657e6d30",
+     "wrongs": [
+      "En 1965",
+      "En 1994",
+      "En 2001"
+     ]
     },
     {
      "question": "Quels sont les cinq départements et régions d'outre-mer (DROM) ?",
-     "answer": "• Guadeloupe\n• Martinique\n• Guyane\n• La Réunion\n• Mayotte",
-     "w": "326ba8b3",
-     "wq": "8b9ccdc9"
+     "answer": "Guadeloupe, Martinique, Guyane, La Réunion, Mayotte",
+     "w": [
+      "7622a227",
+      "326ba8b3"
+     ],
+     "wrongs": [
+      "Polynésie, Nouvelle-Calédonie, Wallis, Saint-Pierre, Corse",
+      "Guadeloupe, Martinique, Tahiti, Corse, Réunion",
+      "Guyane, Polynésie, Mayotte, Monaco, Réunion"
+     ]
     },
     {
      "question": "Depuis quand Mayotte est-elle un département ?",
-     "answer": "Depuis 2011\nle 101e département français.",
-     "w": "1a0f2fbd",
-     "wq": "f4b47a03"
+     "answer": "Depuis 2011",
+     "w": [
+      "fd4f677c",
+      "1a0f2fbd"
+     ],
+     "more": "C'est le 101e département français.",
+     "wrongs": [
+      "Depuis 1946",
+      "Depuis 1975",
+      "Depuis 2020"
+     ]
     },
     {
-     "question": "Citez des collectivités d'outre-mer (COM).",
-     "answer": "• Polynésie française\n• Saint-Pierre-et-Miquelon\n• Wallis-et-Futuna\n• Saint-Martin, Saint-Barthélemy\n(La Nouvelle-Calédonie a un statut particulier.)",
-     "w": "e9537701",
-     "wq": "9c3c42f7"
+     "question": "Quel territoire est une collectivité d'outre-mer (COM) ?",
+     "answer": "La Polynésie française",
+     "w": [
+      "1aaa9b92",
+      "e9537701"
+     ],
+     "wq": "9c3c42f7",
+     "more": "Aussi : Saint-Pierre-et-Miquelon, Wallis-et-Futuna, Saint-Martin, Saint-Barthélemy.",
+     "wrongs": [
+      "La Guadeloupe",
+      "La Réunion",
+      "La Guyane"
+     ]
     },
     {
      "question": "Pourquoi les territoires ultramarins sont-ils un atout pour la France ?",
-     "answer": "• La deuxième zone économique exclusive (ZEE) du monde\n• Une présence sur tous les océans\n• Une grande biodiversité",
-     "w": "64f28212",
-     "wq": "3a735d27"
+     "answer": "Grande ZEE, présence sur tous les océans, biodiversité",
+     "w": [
+      "6f1ea57f",
+      "64f28212"
+     ],
+     "wrongs": [
+      "Ils fournissent tout le pétrole français",
+      "Ils accueillent la majorité de la population",
+      "Ils produisent l'essentiel de l'électricité"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une ZEE ?",
-     "answer": "Une zone économique exclusive :\nespace maritime jusqu'à 200 milles marins des côtes\noù un État exploite seul les ressources.",
-     "w": "47b78613",
-     "wq": "ca9dd75f"
+     "question": "Jusqu'où s'étend une zone économique exclusive (ZEE) ?",
+     "answer": "200 milles marins des côtes",
+     "w": [
+      "40e04050",
+      "47b78613"
+     ],
+     "wq": "ca9dd75f",
+     "more": "L'État y exploite seul les ressources.",
+     "wrongs": [
+      "12 milles marins",
+      "50 km",
+      "2 000 km"
+     ]
     },
     {
      "question": "Quel équipement majeur se trouve à Kourou, en Guyane ?",
-     "answer": "Le Centre spatial guyanais\nd'où partent les fusées européennes Ariane.",
-     "w": "3eeee5c8",
-     "wq": "7cd53704"
+     "answer": "Le Centre spatial guyanais",
+     "w": [
+      "37909a9b",
+      "3eeee5c8"
+     ],
+     "more": "D'où partent les fusées européennes Ariane.",
+     "wrongs": [
+      "Une centrale nucléaire",
+      "Le plus grand port de France",
+      "Une base navale"
+     ]
     },
     {
      "question": "Quelles difficultés rencontrent souvent les territoires ultramarins ?",
-     "answer": "• Éloignement de la métropole\n• Chômage élevé\n• Coût de la vie plus important\n• Risques naturels (cyclones, séismes, volcans)",
-     "w": "13c16349",
-     "wq": "561d061b"
+     "answer": "Éloignement, chômage élevé, vie chère, risques naturels",
+     "w": [
+      "2bc0240d",
+      "13c16349"
+     ],
+     "wrongs": [
+      "Manque de soleil et froid",
+      "Surpopulation et embouteillages",
+      "Absence de littoral"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une région ultrapériphérique (RUP) ?",
-     "answer": "Un territoire de l'UE situé loin du continent européen\nqui reçoit des aides spécifiques de l'UE.\nEx. : les DROM français",
-     "w": "06b51f4c",
-     "wq": "14dc2046"
+     "answer": "Un territoire de l'UE loin du continent européen, qui reçoit des aides spécifiques",
+     "w": [
+      "3a31e571",
+      "06b51f4c"
+     ],
+     "more": "Ex. : les DROM français.",
+     "wrongs": [
+      "Une région à la frontière d'un autre pays",
+      "Un territoire hors de l'UE",
+      "Une banlieue lointaine"
+     ]
     }
    ]
   },
