@@ -21922,98 +21922,310 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Chômeur au sens du BIT",
-     "answer": "Personne en âge de travailler :\n• sans emploi\n• disponible dans les 15 jours\n• ayant cherché activement un emploi le mois précédent",
-     "w": "404220b4",
-     "wq": "1b2327ba"
+     "question": "Qui est chômeur au sens du BIT ?",
+     "answer": "Une personne sans emploi, disponible et qui cherche activement un emploi",
+     "w": [
+      "7196dbcb",
+      "404220b4"
+     ],
+     "wq": "1b2327ba",
+     "more": "En âge de travailler, disponible dans les 15 jours, ayant cherché activement le mois précédent.",
+     "wrongs": [
+      "Toute personne sans emploi",
+      "Toute personne inscrite à France Travail",
+      "Toute personne qui travaille à temps partiel"
+     ]
     },
     {
-     "question": "Taux de chômage",
+     "question": "Comment calcule-t-on le taux de chômage ?",
      "answer": "Chômeurs / population active × 100",
-     "w": "28b53df1",
-     "wq": "000525c9"
+     "w": [
+      "f2f7d431",
+      "28b53df1"
+     ],
+     "wq": "000525c9",
+     "wrongs": [
+      "Chômeurs / population totale × 100",
+      "Chômeurs / population en emploi × 100",
+      "Population active / chômeurs × 100"
+     ]
     },
     {
-     "question": "Population active",
-     "answer": "Personnes en emploi + chômeurs."
+     "question": "Qui compose la population active ?",
+     "answer": "Les personnes en emploi et les chômeurs",
+     "w": "3316d423",
+     "wq": "1aa0eec0",
+     "wrongs": [
+      "Les personnes en emploi seulement",
+      "Toute la population de 15 à 64 ans",
+      "Les salariés et les retraités"
+     ]
     },
     {
-     "question": "Chômage structurel / conjoncturel",
-     "answer": "Structurel : lié au fonctionnement du marché du travail (rigidités, inadéquation des qualifications).\nConjoncturel : lié à un ralentissement de l'activité (demande insuffisante).",
-     "w": "3f82062e",
-     "wq": "08732e28"
+     "question": "Comment appelle-t-on le chômage lié au fonctionnement du marché du travail ?",
+     "answer": "Le chômage structurel",
+     "w": [
+      "2e24cbff",
+      "3f82062e"
+     ],
+     "wq": "08732e28",
+     "more": "Rigidités, inadéquation des qualifications.",
+     "wrongs": [
+      "Le chômage conjoncturel",
+      "Le chômage partiel",
+      "Le chômage saisonnier"
+     ]
     },
     {
-     "question": "Appariement et chômage",
-     "answer": "Difficulté à faire correspondre offres et demandes d'emploi (qualifications, géographie, information).\n→ chômage frictionnel et d'inadéquation",
-     "w": "70cb1df2",
-     "wq": "e7e6d049"
+     "question": "Comment appelle-t-on le chômage lié à un ralentissement de l'activité ?",
+     "answer": "Le chômage conjoncturel",
+     "more": "Dû à une demande insuffisante.",
+     "wrongs": [
+      "Le chômage structurel",
+      "Le chômage frictionnel",
+      "Le chômage technologique"
+     ]
     },
     {
-     "question": "Salaire d'efficience : de quoi s'agit-il, et quel effet sur le chômage ?",
-     "answer": "L'employeur verse un salaire supérieur à celui d'équilibre pour attirer et motiver les meilleurs salariés.\nCela peut créer du chômage.",
-     "w": "b45b5f1e",
-     "wq": "f9d93b9f"
+     "question": "Quel chômage naît de la difficulté à faire correspondre offres et demandes d'emploi ?",
+     "answer": "Le chômage frictionnel et d'inadéquation",
+     "w": [
+      "843f3c94",
+      "70cb1df2"
+     ],
+     "wq": "e7e6d049",
+     "more": "Problèmes d'appariement : qualifications, géographie, information.",
+     "wrongs": [
+      "Le chômage conjoncturel",
+      "Le chômage keynésien",
+      "Le chômage partiel"
+     ]
     },
     {
-     "question": "Politiques de lutte contre le chômage",
-     "answer": "• Soutien de la demande globale\n• Baisse du coût du travail\n• Formation\n• Flexibilisation du marché du travail",
-     "w": "3e92691f",
-     "wq": "412088ec"
+     "question": "Qu'est-ce que le salaire d'efficience ?",
+     "answer": "Un salaire plus élevé que celui d'équilibre, pour attirer et motiver les salariés",
+     "w": [
+      "6a6563bd",
+      "b45b5f1e"
+     ],
+     "wq": [
+      "6d734f57",
+      "f9d93b9f"
+     ],
+     "wrongs": [
+      "Le salaire minimum légal",
+      "Un salaire fixé par la loi de l'offre et de la demande",
+      "Un salaire versé selon le rendement"
+     ]
     },
     {
-     "question": "Bulle spéculative",
-     "answer": "Hausse auto-entretenue du prix d'un actif au-delà de sa valeur fondamentale, alimentée par les anticipations.\nElle finit par éclater (krach).",
-     "w": "e22f2157",
-     "wq": "0c98cb6c"
+     "question": "Quel effet le salaire d'efficience peut-il avoir sur le chômage ?",
+     "answer": "Il peut créer du chômage",
+     "wrongs": [
+      "Il le supprime",
+      "Il n'a aucun effet",
+      "Il réduit le chômage frictionnel à zéro"
+     ]
     },
     {
-     "question": "Crise des subprimes",
-     "answer": "2007-2008 : crise des crédits immobiliers à risque aux États-Unis.\nFaillite de Lehman Brothers (septembre 2008), crise financière puis récession mondiale.",
-     "w": "7b84e142",
-     "wq": "f24fb62d"
+     "question": "Quelles sont les grandes politiques de lutte contre le chômage ?",
+     "answer": "Soutien de la demande, baisse du coût du travail, formation, flexibilité",
+     "w": [
+      "eaa51ee7",
+      "3e92691f"
+     ],
+     "wq": "412088ec",
+     "wrongs": [
+      "Hausse des impôts et des taux d'intérêt",
+      "Fermeture des frontières seulement",
+      "Baisse de la formation"
+     ]
     },
     {
-     "question": "Panique bancaire",
-     "answer": "Retraits massifs de dépôts par crainte de la faillite d'une banque.\nElle peut se propager à tout le système (risque systémique).",
-     "w": "36f19114",
-     "wq": "9b10327d"
+     "question": "Qu'est-ce qu'une bulle spéculative ?",
+     "answer": "Une hausse auto-entretenue du prix d'un actif au-delà de sa valeur fondamentale",
+     "w": [
+      "92e2d496",
+      "e22f2157"
+     ],
+     "wq": "0c98cb6c",
+     "more": "Alimentée par les anticipations des acheteurs.",
+     "wrongs": [
+      "Une baisse durable des prix",
+      "Une hausse des salaires",
+      "Une forte inflation des biens courants"
+     ]
     },
     {
-     "question": "Régulation bancaire",
-     "answer": "• Ratios de fonds propres (accords de Bâle)\n• Supervision des banques\n• Garantie des dépôts",
-     "w": "5a4add66",
-     "wq": "69293d36"
+     "question": "Comment se termine une bulle spéculative ?",
+     "answer": "Par un krach",
+     "wrongs": [
+      "Par une stabilisation durable",
+      "Par une hausse des salaires",
+      "Par une baisse du chômage"
+     ]
     },
     {
-     "question": "Politique monétaire de la zone euro",
-     "answer": "Conduite par la BCE.\nObjectif : stabilité des prix (inflation proche de 2 % à moyen terme).\nInstrument principal : les taux directeurs.",
-     "w": "b76ae408",
-     "wq": "5cf49d48"
+     "question": "Quelle crise financière éclate aux États-Unis en 2007-2008 ?",
+     "answer": "La crise des subprimes",
+     "w": [
+      "133b998b",
+      "7b84e142"
+     ],
+     "wq": "f24fb62d",
+     "more": "Crise des crédits immobiliers à risque, puis récession mondiale.",
+     "wrongs": [
+      "La crise de 1929",
+      "La crise de la dette grecque",
+      "La bulle internet"
+     ]
     },
     {
-     "question": "Politique budgétaire",
-     "answer": "L'usage du budget de l'État (dépenses, impôts) pour agir sur l'activité.\nNationale dans la zone euro, encadrée par le pacte de stabilité :\ndéficit < 3 % du PIB, dette < 60 %.",
-     "w": "11e02c5a",
-     "wq": "9a77637d"
+     "question": "Quelle faillite bancaire de septembre 2008 aggrave la crise financière ?",
+     "answer": "Lehman Brothers",
+     "wrongs": [
+      "Goldman Sachs",
+      "Crédit Lyonnais",
+      "Deutsche Bank"
+     ]
     },
     {
-     "question": "Choc asymétrique",
-     "answer": "Un choc qui ne touche qu'un ou quelques pays d'une zone monétaire.\nDifficile à gérer avec une politique monétaire commune.",
-     "w": "86a3bad9",
-     "wq": "ed72b25b"
+     "question": "Qu'est-ce qu'une panique bancaire ?",
+     "answer": "Des retraits massifs de dépôts par crainte d'une faillite",
+     "w": [
+      "b6ab4e1a",
+      "36f19114"
+     ],
+     "wq": "9b10327d",
+     "wrongs": [
+      "Une hausse brutale des taux d'intérêt",
+      "Une baisse de la Bourse",
+      "Une fusion de banques"
+     ]
     },
     {
-     "question": "Marché unique européen",
-     "answer": "Libre circulation des marchandises, des services, des capitaux et des personnes.\nDepuis 1993.",
-     "w": "5424329d",
-     "wq": "08f12d07"
+     "question": "Comment appelle-t-on le risque qu'une crise se propage à tout le système financier ?",
+     "answer": "Le risque systémique",
+     "wrongs": [
+      "Le risque de change",
+      "L'aléa moral",
+      "Le risque de taux"
+     ]
     },
     {
-     "question": "Politique de la concurrence",
-     "answer": "Menée par la Commission européenne :\n• contrôle des concentrations\n• sanction des ententes et des abus de position dominante\n• contrôle des aides d'État",
-     "w": "dcca2787",
-     "wq": "36b20790"
+     "question": "Quels sont les principaux outils de régulation bancaire ?",
+     "answer": "Ratios de fonds propres, supervision, garantie des dépôts",
+     "w": [
+      "08687706",
+      "5a4add66"
+     ],
+     "wq": "69293d36",
+     "more": "Ratios fixés par les accords de Bâle.",
+     "wrongs": [
+      "Nationalisation de toutes les banques",
+      "Suppression du crédit",
+      "Fixation des prix par l'État"
+     ]
+    },
+    {
+     "question": "Qui conduit la politique monétaire de la zone euro ?",
+     "answer": "La Banque centrale européenne",
+     "w": [
+      "697daf88",
+      "b76ae408"
+     ],
+     "wq": "5cf49d48",
+     "wrongs": [
+      "La Commission européenne",
+      "Le Parlement européen",
+      "Les banques nationales seules"
+     ]
+    },
+    {
+     "question": "Quel est l'objectif principal de la BCE ?",
+     "answer": "La stabilité des prix",
+     "more": "Une inflation proche de 2 % à moyen terme ; instrument principal : les taux directeurs.",
+     "wrongs": [
+      "Le plein emploi",
+      "L'équilibre budgétaire des États",
+      "Un euro le plus fort possible"
+     ]
+    },
+    {
+     "question": "Qu'est-ce que la politique budgétaire ?",
+     "answer": "L'usage des dépenses et des impôts de l'État pour agir sur l'activité",
+     "w": [
+      "067445be",
+      "11e02c5a"
+     ],
+     "wq": "9a77637d",
+     "wrongs": [
+      "La fixation des taux d'intérêt",
+      "Le contrôle des banques",
+      "La gestion de la monnaie"
+     ]
+    },
+    {
+     "question": "Quels plafonds fixe le pacte de stabilité de la zone euro ?",
+     "answer": "Déficit < 3 % du PIB, dette < 60 % du PIB",
+     "wrongs": [
+      "Déficit < 6 % du PIB, dette < 100 % du PIB",
+      "Déficit < 1 % du PIB, dette < 30 % du PIB",
+      "Inflation < 3 %, chômage < 6 %"
+     ]
+    },
+    {
+     "question": "Qu'est-ce qu'un choc asymétrique ?",
+     "answer": "Un choc qui ne touche qu'un ou quelques pays d'une zone monétaire",
+     "w": [
+      "02789f98",
+      "86a3bad9"
+     ],
+     "wq": "ed72b25b",
+     "more": "Difficile à gérer avec une politique monétaire commune.",
+     "wrongs": [
+      "Un choc qui touche tous les pays de la même façon",
+      "Une hausse du prix du pétrole",
+      "Une variation du taux de change"
+     ]
+    },
+    {
+     "question": "Quelles libertés garantit le marché unique européen ?",
+     "answer": "Libre circulation des marchandises, services, capitaux et personnes",
+     "w": [
+      "9557d534",
+      "5424329d"
+     ],
+     "wq": "08f12d07",
+     "wrongs": [
+      "Une monnaie unique pour tous",
+      "Un impôt européen commun",
+      "Une armée commune"
+     ]
+    },
+    {
+     "question": "Depuis quand existe le marché unique européen ?",
+     "answer": "Depuis 1993",
+     "wrongs": [
+      "Depuis 1957",
+      "Depuis 2002",
+      "Depuis 1985"
+     ]
+    },
+    {
+     "question": "Qui mène la politique de la concurrence dans l'UE ?",
+     "answer": "La Commission européenne",
+     "w": [
+      "e6f7a06b",
+      "dcca2787"
+     ],
+     "wq": "36b20790",
+     "more": "Contrôle des concentrations, sanction des ententes et abus de position dominante, contrôle des aides d'État.",
+     "wrongs": [
+      "La BCE",
+      "Le Parlement européen",
+      "Chaque État seul"
+     ]
     }
    ]
   },
@@ -22036,92 +22248,271 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "PCS",
-     "answer": "Professions et catégories socioprofessionnelles (INSEE).\nClassement selon la profession, le statut, la qualification.\n6 groupes d'actifs.",
-     "w": "c8da58ec",
-     "wq": "e1070755"
+     "question": "Que signifie le sigle PCS ?",
+     "answer": "Professions et catégories socioprofessionnelles",
+     "w": [
+      "988bf040",
+      "c8da58ec"
+     ],
+     "wq": "e1070755",
+     "more": "Classement de l'INSEE selon la profession, le statut, la qualification ; 6 groupes d'actifs.",
+     "wrongs": [
+      "Population et classes sociales",
+      "Panel des catégories salariales",
+      "Professions et classes supérieures"
+     ]
     },
     {
-     "question": "Classes sociales chez Marx",
-     "answer": "Définies par la place dans les rapports de production :\nbourgeoisie (propriétaire des moyens de production) / prolétariat.\nClasse « en soi » et « pour soi » (conscience de classe).",
-     "w": "9d40dcf6",
-     "wq": "2937c4e6"
+     "question": "Selon Marx, qu'est-ce qui définit une classe sociale ?",
+     "answer": "La place dans les rapports de production",
+     "w": [
+      "a0fee67f",
+      "9d40dcf6"
+     ],
+     "wq": "2937c4e6",
+     "more": "Bourgeoisie (propriétaire des moyens de production) et prolétariat.",
+     "wrongs": [
+      "Le prestige",
+      "Le niveau de diplôme",
+      "Le lieu d'habitation"
+     ]
     },
     {
-     "question": "Stratification chez Weber",
-     "answer": "• Économique : les classes\n• Sociale : les groupes de statut (prestige)\n• Politique : les partis",
-     "w": "14701a22",
-     "wq": "a5a7c754"
+     "question": "Selon Marx, que faut-il à une classe « en soi » pour devenir une classe « pour soi » ?",
+     "answer": "Une conscience de classe",
+     "wrongs": [
+      "Un parti au pouvoir",
+      "Un revenu plus élevé",
+      "Un diplôme commun"
+     ]
     },
     {
-     "question": "Moyennisation",
-     "answer": "Rapprochement des modes de vie autour d'une vaste classe moyenne.\nMendras : la société en « toupie ».",
-     "w": "73cfc90f",
-     "wq": "f7bdb054"
+     "question": "Selon Weber, quelles sont les trois dimensions de la stratification sociale ?",
+     "answer": "Économique, sociale, politique",
+     "w": [
+      "95530702",
+      "14701a22"
+     ],
+     "wq": "a5a7c754",
+     "more": "Classes (économie), groupes de statut (prestige), partis (politique).",
+     "wrongs": [
+      "Bourgeoisie, prolétariat, paysannerie",
+      "Âge, sexe, origine",
+      "Revenu, diplôme, patrimoine"
+     ]
     },
     {
-     "question": "Mobilité sociale intergénérationnelle",
-     "answer": "Changement de position sociale d'un individu par rapport à celle de ses parents."
+     "question": "Comment appelle-t-on le rapprochement des modes de vie autour d'une vaste classe moyenne ?",
+     "answer": "La moyennisation",
+     "w": [
+      "2648b838",
+      "73cfc90f"
+     ],
+     "wq": "f7bdb054",
+     "more": "Mendras : la société en « toupie ».",
+     "wrongs": [
+      "La polarisation",
+      "La reproduction sociale",
+      "La mobilité structurelle"
+     ]
     },
     {
-     "question": "Table de destinée / table de recrutement",
-     "answer": "Destinée : que deviennent les enfants d'un groupe social d'origine ? (lecture en ligne)\nRecrutement : d'où viennent les membres d'un groupe social ? (lecture en colonne)",
-     "w": "fdb05b3e",
-     "wq": "f8e15e71"
+     "question": "Qu'est-ce que la mobilité sociale intergénérationnelle ?",
+     "answer": "Le changement de position sociale d'un individu par rapport à ses parents",
+     "w": "1c035dde",
+     "wq": "a8e5ac0e",
+     "wrongs": [
+      "Le changement de position au cours de sa carrière",
+      "Le déménagement d'une région à une autre",
+      "Le passage d'une génération à la suivante"
+     ]
     },
     {
-     "question": "Mobilité structurelle",
-     "answer": "Mobilité due à l'évolution de la structure des emplois entre deux générations.\nEx. : recul des agriculteurs.",
-     "w": "9b635a9e",
-     "wq": "d25159ac"
+     "question": "Quelle table de mobilité répond à : que deviennent les enfants d'un groupe social d'origine ?",
+     "answer": "La table de destinée",
+     "w": [
+      "0ca13841",
+      "fdb05b3e"
+     ],
+     "wq": "f8e15e71",
+     "more": "Lecture en ligne.",
+     "wrongs": [
+      "La table de recrutement",
+      "La table de mortalité",
+      "La courbe de Lorenz"
+     ]
     },
     {
-     "question": "Reproduction sociale (Bourdieu)",
-     "answer": "Transmission des positions sociales par le capital économique, culturel et social.\nL'école légitime les inégalités en valorisant la culture des classes dominantes.",
-     "w": "43fd8572",
-     "wq": "c4e3812f"
+     "question": "Quelle table de mobilité répond à : d'où viennent les membres d'un groupe social ?",
+     "answer": "La table de recrutement",
+     "more": "Lecture en colonne.",
+     "wrongs": [
+      "La table de destinée",
+      "La table de mortalité",
+      "La pyramide des âges"
+     ]
     },
     {
-     "question": "Capital culturel",
-     "answer": "Les ressources culturelles (diplômes, savoirs, pratiques)\ntransmises notamment par la famille.",
-     "w": "e79d46d3",
-     "wq": "aa316ce3"
+     "question": "Comment appelle-t-on la mobilité due à l'évolution de la structure des emplois ?",
+     "answer": "La mobilité structurelle",
+     "w": [
+      "d9765037",
+      "9b635a9e"
+     ],
+     "wq": "d25159ac",
+     "more": "Ex. : le recul des agriculteurs.",
+     "wrongs": [
+      "La mobilité nette",
+      "La mobilité ascendante",
+      "La mobilité géographique"
+     ]
     },
     {
-     "question": "Paradoxe d'Anderson",
-     "answer": "Les enfants peuvent avoir un diplôme plus élevé que leurs parents sans accéder à une position sociale plus élevée.\nCause : l'inflation des diplômes.",
-     "w": "58ff3934",
-     "wq": "26e59e1c"
+     "question": "Quel sociologue a analysé la reproduction sociale par le capital économique, culturel et social ?",
+     "answer": "Pierre Bourdieu",
+     "w": [
+      "c4a75db1",
+      "43fd8572"
+     ],
+     "wq": "c4e3812f",
+     "wrongs": [
+      "Raymond Boudon",
+      "Émile Durkheim",
+      "Karl Marx"
+     ]
     },
     {
-     "question": "Massification / démocratisation scolaire",
-     "answer": "Massification : les élèves sont scolarisés plus nombreux et plus longtemps.\nDémocratisation : les inégalités d'accès selon l'origine sociale diminuent.\nMerle : démocratisation « ségrégative ».",
-     "w": "2516b1b2",
-     "wq": "95995994"
+     "question": "Selon Bourdieu, comment l'école contribue-t-elle à la reproduction sociale ?",
+     "answer": "En valorisant la culture des classes dominantes",
+     "wrongs": [
+      "En supprimant toutes les inégalités",
+      "En favorisant les classes populaires",
+      "En notant au hasard"
+     ]
     },
     {
-     "question": "Stratégies des familles (Boudon)",
-     "answer": "Les familles font des choix scolaires selon un calcul coûts / avantages qui diffère selon leur position sociale.\nLes inégalités se cumulent à chaque palier d'orientation.",
-     "w": "4b277828",
-     "wq": "d957694b"
+     "question": "Qu'est-ce que le capital culturel ?",
+     "answer": "Les ressources culturelles transmises notamment par la famille",
+     "w": [
+      "31c6657c",
+      "e79d46d3"
+     ],
+     "wq": "aa316ce3",
+     "more": "Diplômes, savoirs, pratiques culturelles.",
+     "wrongs": [
+      "Le patrimoine financier",
+      "Le réseau de relations",
+      "Le salaire"
+     ]
     },
     {
-     "question": "Mutations du travail",
-     "answer": "• Tertiarisation\n• Féminisation\n• Salarisation\n• Montée des qualifications\n• Polarisation des emplois, travail des plateformes",
-     "w": "c194fded",
-     "wq": "6b3fa16f"
+     "question": "Que dit le paradoxe d'Anderson ?",
+     "answer": "Un diplôme plus élevé que ses parents ne garantit pas une position sociale plus élevée",
+     "w": [
+      "c6b88fd9",
+      "58ff3934"
+     ],
+     "wq": "26e59e1c",
+     "more": "Cause : l'inflation des diplômes.",
+     "wrongs": [
+      "Plus on étudie, plus on gagne",
+      "Les enfants ont toujours la position de leurs parents",
+      "Les diplômes n'ont aucune valeur"
+     ]
     },
     {
-     "question": "Organisation taylorienne du travail",
-     "answer": "Division verticale : conception / exécution\nDivision horizontale : tâches parcellisées\nSalaire au rendement",
-     "w": "9aa00c07",
-     "wq": "e8ca1803"
+     "question": "Qu'est-ce que la massification scolaire ?",
+     "answer": "Des élèves scolarisés plus nombreux et plus longtemps",
+     "w": [
+      "9aa6bf8b",
+      "2516b1b2"
+     ],
+     "wq": "95995994",
+     "wrongs": [
+      "La baisse des inégalités scolaires",
+      "La hausse du nombre d'écoles privées",
+      "La fusion des classes"
+     ]
     },
     {
-     "question": "Intégration sociale (Durkheim)",
-     "answer": "Solidarité mécanique : sociétés traditionnelles, fondée sur les similitudes.\nSolidarité organique : sociétés modernes, fondée sur la complémentarité (division du travail).",
-     "w": "6f318860",
-     "wq": "eb2d72d9"
+     "question": "Qu'est-ce que la démocratisation scolaire ?",
+     "answer": "La baisse des inégalités d'accès selon l'origine sociale",
+     "more": "Pierre Merle parle de démocratisation « ségrégative ».",
+     "wrongs": [
+      "La hausse du nombre d'élèves",
+      "Le vote des élèves",
+      "La gratuité de l'école"
+     ]
+    },
+    {
+     "question": "Selon Boudon, comment les familles font-elles leurs choix scolaires ?",
+     "answer": "Selon un calcul coûts / avantages qui dépend de leur position sociale",
+     "w": [
+      "04428c21",
+      "4b277828"
+     ],
+     "wq": "d957694b",
+     "more": "Les inégalités se cumulent à chaque palier d'orientation.",
+     "wrongs": [
+      "Au hasard",
+      "Selon les seules notes de l'élève",
+      "Selon la tradition religieuse"
+     ]
+    },
+    {
+     "question": "Quelles sont les grandes mutations du travail ?",
+     "answer": "Tertiarisation, féminisation, salarisation, montée des qualifications",
+     "w": [
+      "01593d53",
+      "c194fded"
+     ],
+     "wq": "6b3fa16f",
+     "more": "Aussi : polarisation des emplois, travail des plateformes.",
+     "wrongs": [
+      "Retour à l'agriculture",
+      "Baisse du travail des femmes",
+      "Disparition du salariat"
+     ]
+    },
+    {
+     "question": "Qu'est-ce qui caractérise l'organisation taylorienne du travail ?",
+     "answer": "Séparation conception / exécution et tâches parcellisées",
+     "w": [
+      "c82886cf",
+      "9aa00c07"
+     ],
+     "wq": "e8ca1803",
+     "more": "Avec un salaire au rendement.",
+     "wrongs": [
+      "Polyvalence et autonomie des ouvriers",
+      "Travail en équipes autonomes",
+      "Production à la demande"
+     ]
+    },
+    {
+     "question": "Selon Durkheim, sur quoi repose la solidarité mécanique ?",
+     "answer": "Sur les similitudes entre individus",
+     "w": [
+      "a9c02a9d",
+      "6f318860"
+     ],
+     "wq": "eb2d72d9",
+     "more": "Dans les sociétés traditionnelles.",
+     "wrongs": [
+      "Sur la complémentarité",
+      "Sur l'argent",
+      "Sur la loi seule"
+     ]
+    },
+    {
+     "question": "Selon Durkheim, sur quoi repose la solidarité organique ?",
+     "answer": "Sur la complémentarité entre individus",
+     "more": "Dans les sociétés modernes, grâce à la division du travail.",
+     "wrongs": [
+      "Sur les similitudes",
+      "Sur la religion",
+      "Sur la famille seule"
+     ]
     }
    ]
   },
@@ -22145,90 +22536,254 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Paradoxe de l'action collective (Olson)",
-     "answer": "Un individu rationnel a intérêt à ne pas participer à une action collective dont il profitera quand même.\nC'est le « passager clandestin ».",
-     "w": "761bde58",
-     "wq": "7e39a499"
+     "question": "Quel auteur a formulé le paradoxe de l'action collective ?",
+     "answer": "Mancur Olson",
+     "w": [
+      "b7f1e060",
+      "761bde58"
+     ],
+     "wq": "7e39a499",
+     "wrongs": [
+      "Charles Tilly",
+      "Pierre Bourdieu",
+      "Max Weber"
+     ]
     },
     {
-     "question": "Incitations sélectives",
-     "answer": "Avantages réservés aux participants, pour surmonter le paradoxe d'Olson.\nEx. : services offerts aux adhérents d'un syndicat.",
-     "w": "ff38acc7",
-     "wq": "d4f5a983"
+     "question": "Comment appelle-t-on celui qui profite d'une action collective sans y participer ?",
+     "answer": "Le passager clandestin",
+     "wrongs": [
+      "Le militant",
+      "Le lanceur d'alerte",
+      "Le syndicaliste"
+     ]
     },
     {
-     "question": "Rétributions symboliques de l'engagement",
-     "answer": "Des satisfactions non matérielles :\nsociabilité, reconnaissance, identité, sentiment d'utilité.",
-     "w": "459bf391",
-     "wq": "91589b45"
+     "question": "Que sont les incitations sélectives ?",
+     "answer": "Des avantages réservés aux participants d'une action collective",
+     "w": [
+      "f2d29c86",
+      "ff38acc7"
+     ],
+     "wq": "d4f5a983",
+     "more": "Ex. : services offerts aux adhérents d'un syndicat.",
+     "wrongs": [
+      "Des sanctions contre les grévistes",
+      "Des aides versées à tous",
+      "Des impôts réduits pour tous"
+     ]
     },
     {
-     "question": "Répertoire d'action collective (Tilly)",
-     "answer": "Les moyens de protestation disponibles à une époque :\ngrève, manifestation, pétition, occupation, boycott, mobilisation numérique.",
-     "w": "a5d79985",
-     "wq": "c801b968"
+     "question": "Que sont les rétributions symboliques de l'engagement ?",
+     "answer": "Des satisfactions non matérielles",
+     "w": [
+      "e1e700d3",
+      "459bf391"
+     ],
+     "wq": "91589b45",
+     "more": "Sociabilité, reconnaissance, identité, sentiment d'utilité.",
+     "wrongs": [
+      "Des primes en argent",
+      "Des avantages fiscaux",
+      "Des postes rémunérés"
+     ]
     },
     {
-     "question": "Nouveaux mouvements sociaux",
-     "answer": "Mobilisations depuis les années 1970 sur des enjeux qualitatifs :\nécologie, féminisme, droits des minorités.\nMoins centrées sur le travail.",
-     "w": "26ea9213",
-     "wq": "7fa7fc5d"
+     "question": "Comment Charles Tilly appelle-t-il les moyens de protestation disponibles à une époque ?",
+     "answer": "Le répertoire d'action collective",
+     "w": [
+      "a9d58b84",
+      "a5d79985"
+     ],
+     "wq": "c801b968",
+     "more": "Grève, manifestation, pétition, occupation, boycott, mobilisation numérique.",
+     "wrongs": [
+      "Les incitations sélectives",
+      "Les nouveaux mouvements sociaux",
+      "La structure des opportunités"
+     ]
     },
     {
-     "question": "Coefficient de Gini",
-     "answer": "Indicateur d'inégalité :\n0 = égalité parfaite\n1 = inégalité maximale",
-     "w": "f2689912",
-     "wq": "78b52516"
+     "question": "Sur quels enjeux portent les nouveaux mouvements sociaux ?",
+     "answer": "Écologie, féminisme, droits des minorités",
+     "w": [
+      "e5676a0a",
+      "26ea9213"
+     ],
+     "wq": "7fa7fc5d",
+     "more": "Depuis les années 1970, moins centrés sur le travail.",
+     "wrongs": [
+      "Les salaires uniquement",
+      "Le temps de travail uniquement",
+      "La défense des corporations"
+     ]
     },
     {
-     "question": "Rapport interdécile D9/D1",
-     "answer": "Revenu au-dessus duquel se situent les 10 % les plus riches\n÷ revenu en dessous duquel se situent les 10 % les plus pauvres.",
-     "w": "b931cda1",
-     "wq": "e0e70f22"
+     "question": "Que mesure le coefficient de Gini ?",
+     "answer": "Les inégalités : de 0 (égalité parfaite) à 1 (inégalité maximale)",
+     "w": [
+      "91fde40e",
+      "f2689912"
+     ],
+     "wq": "78b52516",
+     "wrongs": [
+      "La croissance : de 0 à 100 %",
+      "La pauvreté : de 0 à 10",
+      "Le chômage : de 0 à 1"
+     ]
     },
     {
-     "question": "Courbe de Lorenz",
-     "answer": "Part cumulée des revenus (ou patrimoines) détenue par une part cumulée de la population.\nPlus elle s'éloigne de la diagonale, plus les inégalités sont fortes.",
-     "w": "57add151",
-     "wq": "ccb0f1a8"
+     "question": "Que mesure le rapport interdécile D9/D1 ?",
+     "answer": "L'écart entre le seuil des 10 % les plus riches et celui des 10 % les plus pauvres",
+     "w": [
+      "1a3279d5",
+      "b931cda1"
+     ],
+     "wq": "e0e70f22",
+     "wrongs": [
+      "L'écart entre le revenu moyen et le revenu médian",
+      "La part des revenus des 1 % les plus riches",
+      "Le nombre de pauvres"
+     ]
     },
     {
-     "question": "Égalité des droits, des chances, des situations",
-     "answer": "Des droits : mêmes droits pour tous.\nDes chances : mêmes possibilités de réussite au départ.\nDes situations : écarts de revenus et de conditions de vie réduits.",
-     "w": "714720ad",
-     "wq": "f06949f9"
+     "question": "Que représente la courbe de Lorenz ?",
+     "answer": "La part cumulée des revenus détenue par une part cumulée de la population",
+     "w": [
+      "abf50a74",
+      "57add151"
+     ],
+     "wq": "ccb0f1a8",
+     "wrongs": [
+      "L'évolution du PIB dans le temps",
+      "Le lien entre chômage et inflation",
+      "La répartition des âges"
+     ]
     },
     {
-     "question": "Redistribution : horizontale / verticale",
-     "answer": "Horizontale : selon les risques (malades / bien-portants…).\nVerticale : des plus aisés vers les plus modestes."
+     "question": "Que signifie une courbe de Lorenz très éloignée de la diagonale ?",
+     "answer": "Des inégalités fortes",
+     "wrongs": [
+      "Des inégalités faibles",
+      "Une forte croissance",
+      "Un chômage faible"
+     ]
     },
     {
-     "question": "Impôt progressif",
-     "answer": "Le taux d'imposition augmente avec le revenu.\nEx. : l'impôt sur le revenu en France.",
-     "w": "3a22f242",
-     "wq": "69bee91b"
+     "question": "Qu'est-ce que l'égalité des chances ?",
+     "answer": "Les mêmes possibilités de réussite au départ",
+     "w": [
+      "5f6028ea",
+      "714720ad"
+     ],
+     "wq": "f06949f9",
+     "wrongs": [
+      "Les mêmes droits pour tous",
+      "Les mêmes revenus pour tous",
+      "Le même diplôme pour tous"
+     ]
     },
     {
-     "question": "Discrimination positive",
-     "answer": "Un traitement préférentiel temporaire accordé à un groupe défavorisé,\npour réduire les inégalités.",
-     "w": "183c69c2",
-     "wq": "cb6c9e3b"
+     "question": "Qu'est-ce que l'égalité des situations ?",
+     "answer": "Des écarts de revenus et de conditions de vie réduits",
+     "more": "L'égalité des droits : les mêmes droits pour tous.",
+     "wrongs": [
+      "Les mêmes droits pour tous",
+      "Les mêmes chances au départ",
+      "Le même métier pour tous"
+     ]
     },
     {
-     "question": "Problème public",
-     "answer": "Une situation devenue un enjeu qui appelle une action publique.\nDes acteurs (lanceurs d'alerte, ONG, experts, médias, partis) la font mettre à l'agenda.",
-     "w": "e99e60da",
-     "wq": "0a5d6d71"
+     "question": "Qu'est-ce que la redistribution horizontale ?",
+     "answer": "Une redistribution selon les risques",
+     "w": "eee6e5c7",
+     "wq": "b4a6067b",
+     "more": "Ex. : des bien-portants vers les malades.",
+     "wrongs": [
+      "Des plus aisés vers les plus modestes",
+      "Des jeunes vers les vieux uniquement",
+      "Entre régions"
+     ]
     },
     {
-     "question": "Mise à l'agenda",
-     "answer": "Processus par lequel un problème public est pris en charge par les autorités politiques."
+     "question": "Qu'est-ce que la redistribution verticale ?",
+     "answer": "Des plus aisés vers les plus modestes",
+     "wrongs": [
+      "Selon les risques (maladie, vieillesse)",
+      "Des modestes vers les aisés",
+      "Entre entreprises"
+     ]
     },
     {
-     "question": "Les COP",
-     "answer": "Conférences des parties de la convention-cadre des Nations unies sur les changements climatiques.\nNégociations internationales annuelles sur le climat.",
-     "w": "9a6896cd",
-     "wq": "0542cb41"
+     "question": "Qu'est-ce qu'un impôt progressif ?",
+     "answer": "Un impôt dont le taux augmente avec le revenu",
+     "w": [
+      "b27dd34e",
+      "3a22f242"
+     ],
+     "wq": "69bee91b",
+     "more": "Ex. : l'impôt sur le revenu en France.",
+     "wrongs": [
+      "Un impôt au même taux pour tous",
+      "Un impôt qui baisse avec le revenu",
+      "Un impôt sur la consommation"
+     ]
+    },
+    {
+     "question": "Qu'est-ce que la discrimination positive ?",
+     "answer": "Un traitement préférentiel temporaire accordé à un groupe défavorisé",
+     "w": [
+      "1ac56d98",
+      "183c69c2"
+     ],
+     "wq": "cb6c9e3b",
+     "more": "Pour réduire les inégalités.",
+     "wrongs": [
+      "Une discrimination interdite par la loi",
+      "Un traitement égal pour tous",
+      "Une sanction contre un groupe"
+     ]
+    },
+    {
+     "question": "Qu'est-ce qu'un problème public ?",
+     "answer": "Une situation devenue un enjeu qui appelle une action publique",
+     "w": [
+      "feecfdd7",
+      "e99e60da"
+     ],
+     "wq": "0a5d6d71",
+     "more": "Lanceurs d'alerte, ONG, experts, médias, partis le font mettre à l'agenda.",
+     "wrongs": [
+      "Un problème personnel",
+      "Un problème de mathématiques",
+      "Une panne d'un service public"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on la prise en charge d'un problème public par les autorités ?",
+     "answer": "La mise à l'agenda",
+     "w": "16227bd3",
+     "wq": "1fe308c4",
+     "wrongs": [
+      "La mobilisation",
+      "La redistribution",
+      "La régulation"
+     ]
+    },
+    {
+     "question": "Que sont les COP ?",
+     "answer": "Des conférences annuelles de l'ONU sur le climat",
+     "w": [
+      "872c643f",
+      "9a6896cd"
+     ],
+     "wq": "0542cb41",
+     "more": "Conférences des parties de la convention-cadre des Nations unies sur les changements climatiques.",
+     "wrongs": [
+      "Des sommets de l'OTAN",
+      "Des réunions du G7",
+      "Des tribunaux internationaux"
+     ]
     }
    ]
   },
@@ -22251,100 +22806,301 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Les 6 thèmes de Terminale en HGGSP",
-     "answer": "1. Nouveaux espaces de conquête (océan, espace)\n2. Faire la guerre, faire la paix\n3. Histoire et mémoires\n4. Le patrimoine\n5. L'environnement, entre exploitation et protection\n6. L'enjeu de la connaissance",
-     "w": "a0eace51",
-     "wq": "3273025a"
+     "question": "Combien de thèmes compte le programme de HGGSP en Terminale ?",
+     "answer": "6",
+     "w": [
+      "775919a3",
+      "a0eace51"
+     ],
+     "wq": "3273025a",
+     "more": "Océan et espace, guerre et paix, histoire et mémoires, patrimoine, environnement, connaissance.",
+     "wrongs": [
+      "4",
+      "8",
+      "3"
+     ]
     },
     {
-     "question": "Clausewitz : définition de la guerre",
-     "answer": "« La guerre est la simple continuation de la politique par d'autres moyens »\nDe la guerre, 1832",
-     "w": "46180749",
-     "wq": "c274f53b"
+     "question": "Qui a écrit « La guerre est la simple continuation de la politique par d'autres moyens » ?",
+     "answer": "Clausewitz",
+     "w": [
+      "f363fa10",
+      "46180749"
+     ],
+     "wq": "c274f53b",
+     "more": "Dans De la guerre (1832).",
+     "wrongs": [
+      "Machiavel",
+      "Sun Tzu",
+      "Napoléon"
+     ]
     },
     {
-     "question": "Traités de Westphalie",
-     "answer": "1648 : fin de la guerre de Trente Ans.\nOrdre international fondé sur des États souverains égaux (système westphalien).",
-     "w": "e1bb1990",
-     "wq": "d74d5942"
+     "question": "Quelle guerre les traités de Westphalie (1648) terminent-ils ?",
+     "answer": "La guerre de Trente Ans",
+     "w": [
+      "1778e51c",
+      "e1bb1990"
+     ],
+     "wq": "d74d5942",
+     "wrongs": [
+      "La guerre de Cent Ans",
+      "La guerre de Sept Ans",
+      "Les guerres de Religion"
+     ]
     },
     {
-     "question": "Guerre irrégulière / asymétrique",
-     "answer": "Un conflit entre acteurs de puissance très inégale.\nEx. : armée régulière contre guérilla ou groupe terroriste.",
-     "w": "1ad2fb4f",
-     "wq": "9826c13b"
+     "question": "Sur quoi repose l'ordre international issu des traités de Westphalie ?",
+     "answer": "Sur des États souverains égaux",
+     "wrongs": [
+      "Sur l'autorité du pape",
+      "Sur un empire universel",
+      "Sur l'ONU"
+     ]
     },
     {
-     "question": "Al-Qaïda et Daech",
-     "answer": "Organisations terroristes djihadistes.\nDaech proclame un « califat » en Irak et en Syrie en 2014, défait territorialement en 2017-2019.",
-     "w": "07a889ba",
-     "wq": "8472b27b"
+     "question": "Comment appelle-t-on un conflit entre acteurs de puissance très inégale ?",
+     "answer": "Une guerre asymétrique",
+     "w": [
+      "7e0597c2",
+      "1ad2fb4f"
+     ],
+     "wq": "9826c13b",
+     "more": "Ex. : armée régulière contre guérilla ou groupe terroriste.",
+     "wrongs": [
+      "Une guerre froide",
+      "Une guerre totale",
+      "Une guerre de position"
+     ]
     },
     {
-     "question": "Histoire / mémoire",
-     "answer": "Histoire : connaissance du passé, démarche critique fondée sur des sources.\nMémoire : souvenir subjectif, sélectif et souvent affectif d'un groupe.",
-     "w": "87dbbe92",
-     "wq": "a651ef6d"
+     "question": "Quelle organisation proclame un « califat » en Irak et en Syrie en 2014 ?",
+     "answer": "Daech",
+     "w": [
+      "b5146fcb",
+      "07a889ba"
+     ],
+     "wq": "8472b27b",
+     "more": "Défait territorialement en 2017-2019.",
+     "wrongs": [
+      "Al-Qaïda",
+      "Le Hezbollah",
+      "Les talibans"
+     ]
     },
     {
-     "question": "Justice transitionnelle",
-     "answer": "Les mesures prises après des crimes de masse :\ntribunaux, commissions vérité et réconciliation, réparations.\nEx. : les gacaca au Rwanda.",
-     "w": "d36406a2",
-     "wq": "fc23b1db"
+     "question": "Qu'est-ce que l'histoire ?",
+     "answer": "La connaissance critique du passé, fondée sur des sources",
+     "w": [
+      "e865b7a9",
+      "87dbbe92"
+     ],
+     "wq": "a651ef6d",
+     "wrongs": [
+      "Le souvenir affectif d'un groupe",
+      "Un récit officiel imposé par l'État",
+      "La commémoration des victimes"
+     ]
     },
     {
-     "question": "Tribunaux pénaux internationaux",
-     "answer": "TPIY (ex-Yougoslavie, 1993), TPIR (Rwanda, 1994).\nCour pénale internationale : statut de Rome (1998), en fonction depuis 2002.",
-     "w": "1c6129a3",
-     "wq": "01e9fe67"
+     "question": "Qu'est-ce que la mémoire ?",
+     "answer": "Le souvenir subjectif, sélectif et affectif d'un groupe",
+     "wrongs": [
+      "Une démarche critique fondée sur des sources",
+      "Un savoir scientifique",
+      "Un ensemble d'archives"
+     ]
     },
     {
-     "question": "Traité de l'espace",
-     "answer": "1967\nL'espace ne peut faire l'objet d'aucune appropriation nationale ; usage pacifique.",
-     "w": "c99943c7",
-     "wq": "5786122d"
+     "question": "Comment appelle-t-on les mesures prises après des crimes de masse (tribunaux, commissions, réparations) ?",
+     "answer": "La justice transitionnelle",
+     "w": [
+      "d1bcddca",
+      "d36406a2"
+     ],
+     "wq": "fc23b1db",
+     "more": "Ex. : les tribunaux gacaca au Rwanda.",
+     "wrongs": [
+      "La justice ordinaire",
+      "L'amnistie",
+      "La justice militaire"
+     ]
     },
     {
-     "question": "Course à l'espace",
-     "answer": "• Spoutnik (URSS, 1957)\n• Gagarine, premier homme dans l'espace (1961)\n• Apollo 11, premiers pas sur la Lune (juillet 1969)",
-     "w": "4cf29527",
-     "wq": "7a28ce02"
+     "question": "Pour quels conflits ont été créés le TPIY et le TPIR ?",
+     "answer": "L'ex-Yougoslavie et le Rwanda",
+     "w": [
+      "b0c8c571",
+      "1c6129a3"
+     ],
+     "wq": "01e9fe67",
+     "more": "TPIY en 1993, TPIR en 1994.",
+     "wrongs": [
+      "L'Irak et l'Afghanistan",
+      "Le Cambodge et le Chili",
+      "Le Soudan et la Libye"
+     ]
     },
     {
-     "question": "New Space",
-     "answer": "L'arrivée d'acteurs privés dans le spatial (SpaceX, Blue Origin).\nBaisse des coûts de lancement.",
-     "w": "5220e136",
-     "wq": "ded80bcf"
+     "question": "Depuis quand la Cour pénale internationale fonctionne-t-elle ?",
+     "answer": "Depuis 2002",
+     "more": "Statut de Rome adopté en 1998.",
+     "wrongs": [
+      "Depuis 1945",
+      "Depuis 1993",
+      "Depuis 2012"
+     ]
     },
     {
-     "question": "Patrimoine mondial de l'UNESCO",
-     "answer": "Convention de 1972.\nListe des biens culturels et naturels de valeur universelle exceptionnelle.",
-     "w": "41008572",
-     "wq": "223cb586"
+     "question": "En quelle année est signé le traité de l'espace ?",
+     "answer": "En 1967",
+     "w": [
+      "b70da72a",
+      "c99943c7"
+     ],
+     "wq": "5786122d",
+     "wrongs": [
+      "En 1957",
+      "En 1969",
+      "En 1982"
+     ]
     },
     {
-     "question": "Anthropocène",
-     "answer": "Proposition de nouvelle époque géologique,\nmarquée par l'impact des activités humaines sur la planète.",
-     "w": "66a8cc9d",
-     "wq": "4e93b946"
+     "question": "Que prévoit le traité de l'espace de 1967 ?",
+     "answer": "Aucune appropriation nationale et un usage pacifique",
+     "wrongs": [
+      "Le partage de la Lune entre les grandes puissances",
+      "L'interdiction des satellites",
+      "La propriété des astres pour les premiers arrivés"
+     ]
     },
     {
-     "question": "Société de la connaissance",
-     "answer": "Une société où produire, diffuser et utiliser les connaissances est au cœur de l'économie et du pouvoir.",
-     "w": "ca8470b4",
-     "wq": "b285b858"
+     "question": "Quel est le premier satellite artificiel, lancé par l'URSS en 1957 ?",
+     "answer": "Spoutnik",
+     "w": [
+      "53d12968",
+      "4cf29527"
+     ],
+     "wq": "7a28ce02",
+     "wrongs": [
+      "Vostok",
+      "Apollo",
+      "Explorer"
+     ]
     },
     {
-     "question": "Cyberespace : enjeux",
-     "answer": "Espace de communication numérique.\nNouveau champ de conflits (cyberattaques, désinformation, espionnage) et de puissance.",
-     "w": "df53d81d",
-     "wq": "8f4ffb8a"
+     "question": "Qui est le premier homme dans l'espace, en 1961 ?",
+     "answer": "Youri Gagarine",
+     "wrongs": [
+      "Neil Armstrong",
+      "John Glenn",
+      "Alexeï Leonov"
+     ]
     },
     {
-     "question": "Soft power / hard power",
-     "answer": "Soft power (Joseph Nye) : influence par l'attractivité (culture, valeurs).\nHard power : puissance par la contrainte (militaire, économique).",
-     "w": "2acecc5e",
-     "wq": "38c47d57"
+     "question": "Quelle mission permet les premiers pas sur la Lune, en juillet 1969 ?",
+     "answer": "Apollo 11",
+     "wrongs": [
+      "Apollo 13",
+      "Gemini 4",
+      "Spoutnik 2"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on l'arrivée d'acteurs privés dans le spatial ?",
+     "answer": "Le New Space",
+     "w": [
+      "bf860907",
+      "5220e136"
+     ],
+     "wq": "ded80bcf",
+     "more": "SpaceX, Blue Origin… avec une baisse des coûts de lancement.",
+     "wrongs": [
+      "La course à l'espace",
+      "Le soft power",
+      "La conquête spatiale"
+     ]
+    },
+    {
+     "question": "En quelle année est adoptée la convention du patrimoine mondial de l'UNESCO ?",
+     "answer": "En 1972",
+     "w": [
+      "0159327f",
+      "41008572"
+     ],
+     "wq": "223cb586",
+     "more": "Liste des biens culturels et naturels de valeur universelle exceptionnelle.",
+     "wrongs": [
+      "En 1945",
+      "En 1992",
+      "En 1960"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on la nouvelle époque géologique proposée, marquée par l'impact humain ?",
+     "answer": "L'Anthropocène",
+     "w": [
+      "dc04d36b",
+      "66a8cc9d"
+     ],
+     "wq": "4e93b946",
+     "wrongs": [
+      "L'Holocène",
+      "Le Pléistocène",
+      "Le Néolithique"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on une société où produire et diffuser les connaissances est au cœur de l'économie et du pouvoir ?",
+     "answer": "Une société de la connaissance",
+     "w": [
+      "89af7f89",
+      "ca8470b4"
+     ],
+     "wq": "b285b858",
+     "wrongs": [
+      "Une société de consommation",
+      "Une société industrielle",
+      "Une société de loisirs"
+     ]
+    },
+    {
+     "question": "Pourquoi le cyberespace est-il un enjeu de puissance ?",
+     "answer": "C'est un nouveau champ de conflits : cyberattaques, désinformation, espionnage",
+     "w": [
+      "47ac5da9",
+      "df53d81d"
+     ],
+     "wq": "8f4ffb8a",
+     "wrongs": [
+      "Parce qu'il est interdit aux États",
+      "Parce qu'il appartient à l'ONU",
+      "Parce qu'il n'a aucun usage militaire"
+     ]
+    },
+    {
+     "question": "Qu'est-ce que le soft power ?",
+     "answer": "L'influence par l'attractivité (culture, valeurs)",
+     "w": [
+      "45e85765",
+      "2acecc5e"
+     ],
+     "wq": "38c47d57",
+     "more": "Notion de Joseph Nye.",
+     "wrongs": [
+      "La puissance par la contrainte militaire",
+      "La puissance économique seule",
+      "La dissuasion nucléaire"
+     ]
+    },
+    {
+     "question": "Qu'est-ce que le hard power ?",
+     "answer": "La puissance par la contrainte (militaire, économique)",
+     "wrongs": [
+      "L'influence par la culture",
+      "L'attractivité des universités",
+      "La diplomatie culturelle"
+     ]
     }
    ]
   },
@@ -22368,88 +23124,225 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Les deux thèmes de HLP en Terminale",
-     "answer": "1. La recherche de soi (du romantisme au XXe siècle)\n2. L'humanité en question (période contemporaine)",
-     "w": "4ac916c7",
-     "wq": "f0e79c1b"
+     "question": "Quels sont les deux thèmes de HLP en Terminale ?",
+     "answer": "La recherche de soi et l'humanité en question",
+     "w": [
+      "2bb4e96f",
+      "4ac916c7"
+     ],
+     "wq": "f0e79c1b",
+     "wrongs": [
+      "Les pouvoirs de la parole et les représentations du monde",
+      "La guerre et la paix",
+      "Le patrimoine et la mémoire"
+     ]
     },
     {
-     "question": "Recherche de soi : les trois axes",
-     "answer": "• Éducation, transmission et émancipation\n• Les expressions de la sensibilité\n• Les métamorphoses du moi",
-     "w": "273ef319",
-     "wq": "e99d8d36"
+     "question": "Quels sont les trois axes du thème « La recherche de soi » ?",
+     "answer": "Éducation et émancipation, expressions de la sensibilité, métamorphoses du moi",
+     "w": [
+      "c74aa1ab",
+      "273ef319"
+     ],
+     "wq": "e99d8d36",
+     "wrongs": [
+      "Création, histoire et violence, limites de l'humain",
+      "Pouvoirs de la parole, autorité, séduction",
+      "Découverte du monde, pluralité des cultures, décrire"
+     ]
     },
     {
-     "question": "Humanité en question : les trois axes",
-     "answer": "• Création, continuités et ruptures\n• Histoire et violence\n• L'humain et ses limites",
-     "w": "c953e3d0",
-     "wq": "78f5def7"
+     "question": "Quels sont les trois axes du thème « L'humanité en question » ?",
+     "answer": "Création et ruptures, histoire et violence, l'humain et ses limites",
+     "w": [
+      "4e5d895a",
+      "c953e3d0"
+     ],
+     "wq": "78f5def7",
+     "wrongs": [
+      "Éducation, sensibilité, métamorphoses du moi",
+      "Parole, autorité, persuasion",
+      "Mémoire, patrimoine, transmission"
+     ]
     },
     {
-     "question": "Rousseau, Les Confessions",
-     "answer": "Autobiographie publiée à partir de 1782, après la mort de l'auteur.\n« Je forme une entreprise qui n'eut jamais d'exemple »\nSe montrer « dans toute la vérité de la nature ».",
-     "w": "91c99b5c",
-     "wq": "bb24640c"
+     "question": "Qui est l'auteur des Confessions, autobiographie publiée à partir de 1782 ?",
+     "answer": "Rousseau",
+     "w": [
+      "a3919528",
+      "91c99b5c"
+     ],
+     "wq": "bb24640c",
+     "more": "« Je forme une entreprise qui n'eut jamais d'exemple. »",
+     "wrongs": [
+      "Voltaire",
+      "Montaigne",
+      "Saint Augustin"
+     ]
     },
     {
-     "question": "Musset, La Confession d'un enfant du siècle",
-     "answer": "1836\nRoman du « mal du siècle » de la génération née sous l'Empire.",
-     "w": "cd59fc64",
-     "wq": "2eddfe13"
+     "question": "Quel projet Rousseau annonce-t-il dans Les Confessions ?",
+     "answer": "Se montrer « dans toute la vérité de la nature »",
+     "wrongs": [
+      "Raconter la vie d'un roi",
+      "Décrire un voyage",
+      "Écrire un traité de morale"
+     ]
     },
     {
-     "question": "Rimbaud : « Je est un autre »",
-     "answer": "Lettre du Voyant (1871) : le poète découvre en lui une altérité.\nSe faire voyant par un « dérèglement de tous les sens ».",
-     "w": "e36a6e2f",
-     "wq": "2f0b86ae"
+     "question": "Quel roman de Musset (1836) décrit le « mal du siècle » ?",
+     "answer": "La Confession d'un enfant du siècle",
+     "w": [
+      "9c589726",
+      "cd59fc64"
+     ],
+     "wq": "2eddfe13",
+     "wrongs": [
+      "Lorenzaccio",
+      "Les Confessions",
+      "René"
+     ]
     },
     {
-     "question": "Proust, À la recherche du temps perdu",
-     "answer": "La mémoire involontaire (la madeleine) fait resurgir le passé.\nLe moi se reconstruit par l'écriture.",
-     "w": "246584da",
-     "wq": "05c4d95e"
+     "question": "Quel poète a écrit « Je est un autre » dans la Lettre du Voyant (1871) ?",
+     "answer": "Rimbaud",
+     "w": [
+      "17f64074",
+      "e36a6e2f"
+     ],
+     "wq": "2f0b86ae",
+     "more": "Le poète doit se faire voyant par un « dérèglement de tous les sens ».",
+     "wrongs": [
+      "Verlaine",
+      "Baudelaire",
+      "Apollinaire"
+     ]
     },
     {
-     "question": "Primo Levi, Si c'est un homme",
-     "answer": "1947\nTémoignage sur Auschwitz et la déshumanisation dans les camps.",
-     "w": "50829f4d",
-     "wq": "158263ef"
+     "question": "Dans À la recherche du temps perdu de Proust, qu'est-ce qui fait resurgir le passé ?",
+     "answer": "La mémoire involontaire (la madeleine)",
+     "w": [
+      "828b7567",
+      "246584da"
+     ],
+     "wq": "05c4d95e",
+     "wrongs": [
+      "Un journal intime retrouvé",
+      "Une lettre d'amour",
+      "Un rêve prémonitoire"
+     ]
     },
     {
-     "question": "Hannah Arendt, la banalité du mal",
-     "answer": "Eichmann à Jérusalem (1963)\nLe mal extrême peut être commis par des individus ordinaires qui ont renoncé à penser.",
-     "w": "0bb8e1c9",
-     "wq": "b68b98ef"
+     "question": "Quel livre de Primo Levi (1947) témoigne d'Auschwitz ?",
+     "answer": "Si c'est un homme",
+     "w": [
+      "b5c0f4cd",
+      "50829f4d"
+     ],
+     "wq": "158263ef",
+     "wrongs": [
+      "La Nuit",
+      "L'Espèce humaine",
+      "Le Journal d'Anne Frank"
+     ]
     },
     {
-     "question": "Hans Jonas, Le Principe responsabilité",
-     "answer": "1979\n« Agis de façon que les effets de ton action soient compatibles avec la permanence d'une vie authentiquement humaine sur terre »",
-     "w": "4deadc1c",
-     "wq": "2ee85ad9"
+     "question": "Quelle philosophe a forgé l'expression « la banalité du mal » ?",
+     "answer": "Hannah Arendt",
+     "w": [
+      "c5b1a719",
+      "0bb8e1c9"
+     ],
+     "wq": "b68b98ef",
+     "more": "Dans Eichmann à Jérusalem (1963).",
+     "wrongs": [
+      "Simone de Beauvoir",
+      "Simone Weil",
+      "Simone Veil"
+     ]
     },
     {
-     "question": "Transhumanisme",
-     "answer": "Courant qui veut améliorer les capacités humaines par la technique :\nallonger la vie, augmenter le corps et l'intelligence.",
-     "w": "a9e53f74",
-     "wq": "38a8e920"
+     "question": "Que signifie « la banalité du mal » selon Arendt ?",
+     "answer": "Le mal extrême peut être commis par des gens ordinaires qui ont renoncé à penser",
+     "wrongs": [
+      "Le mal est rare et exceptionnel",
+      "Seuls les monstres commettent le mal",
+      "Le mal n'existe pas"
+     ]
     },
     {
-     "question": "Descartes : les animaux-machines",
-     "answer": "Les animaux seraient de simples mécanismes sans pensée (Discours de la méthode, 5e partie).\nThèse critiquée par Montaigne avant lui, et par beaucoup d'auteurs après.",
-     "w": "3e57fdbb",
-     "wq": "9612f783"
+     "question": "Quel philosophe a écrit Le Principe responsabilité (1979) ?",
+     "answer": "Hans Jonas",
+     "w": [
+      "410a3976",
+      "4deadc1c"
+     ],
+     "wq": "2ee85ad9",
+     "more": "« Agis de façon que les effets de ton action soient compatibles avec la permanence d'une vie authentiquement humaine sur terre. »",
+     "wrongs": [
+      "Hannah Arendt",
+      "Emmanuel Kant",
+      "Jean-Paul Sartre"
+     ]
     },
     {
-     "question": "Lévi-Strauss : « Le barbare, c'est d'abord l'homme qui croit à la barbarie »",
-     "answer": "Race et histoire (1952)\nCritique de l'ethnocentrisme.",
-     "w": "084d8826",
-     "wq": "4cb68580"
+     "question": "Comment appelle-t-on le courant qui veut améliorer les capacités humaines par la technique ?",
+     "answer": "Le transhumanisme",
+     "w": [
+      "365c8a45",
+      "a9e53f74"
+     ],
+     "wq": "38a8e920",
+     "more": "Allonger la vie, augmenter le corps et l'intelligence.",
+     "wrongs": [
+      "L'humanisme",
+      "Le posthumanisme écologique",
+      "Le naturalisme"
+     ]
     },
     {
-     "question": "Camus, Les Justes / L'Homme révolté",
-     "answer": "Réflexion sur la violence politique et ses limites :\npeut-on tuer au nom de la justice ?",
-     "w": "cff447b1",
-     "wq": "0c7471b3"
+     "question": "Quel philosophe a défendu la thèse des animaux-machines ?",
+     "answer": "Descartes",
+     "w": [
+      "ad758d0e",
+      "3e57fdbb"
+     ],
+     "wq": "9612f783",
+     "more": "Discours de la méthode, 5e partie ; thèse critiquée par Montaigne avant lui.",
+     "wrongs": [
+      "Montaigne",
+      "Rousseau",
+      "Spinoza"
+     ]
+    },
+    {
+     "question": "Qui a écrit « Le barbare, c'est d'abord l'homme qui croit à la barbarie » ?",
+     "answer": "Claude Lévi-Strauss",
+     "w": [
+      "abb2633a",
+      "084d8826"
+     ],
+     "wq": "4cb68580",
+     "more": "Dans Race et histoire (1952) : une critique de l'ethnocentrisme.",
+     "wrongs": [
+      "Montaigne",
+      "Albert Camus",
+      "Aimé Césaire"
+     ]
+    },
+    {
+     "question": "Quelle question pose Camus dans Les Justes ?",
+     "answer": "Peut-on tuer au nom de la justice ?",
+     "w": [
+      "8a995603",
+      "cff447b1"
+     ],
+     "wq": "0c7471b3",
+     "wrongs": [
+      "Le bonheur est-il possible ?",
+      "Dieu existe-t-il ?",
+      "Faut-il obéir aux lois injustes ?"
+     ]
     }
    ]
   },
@@ -22473,108 +23366,350 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Pile (stack)",
-     "answer": "LIFO (Last In, First Out) : le dernier ajouté sort le premier.\nOpérations : empiler, dépiler, est_vide",
-     "w": "200ab6d6",
-     "wq": "70ac67ca"
+     "question": "Quelle structure de données suit le principe LIFO ?",
+     "answer": "La pile",
+     "w": [
+      "0c0305e6",
+      "200ab6d6"
+     ],
+     "wq": "70ac67ca",
+     "more": "Last In, First Out : le dernier ajouté sort le premier. Opérations : empiler, dépiler, est_vide.",
+     "wrongs": [
+      "La file",
+      "Le dictionnaire",
+      "L'arbre binaire"
+     ]
     },
     {
-     "question": "File (queue)",
-     "answer": "FIFO (First In, First Out) : le premier ajouté sort le premier.\nOpérations : enfiler, défiler, est_vide",
-     "w": "f5cc1c9f",
-     "wq": "779fe7d1"
+     "question": "Quelle structure de données suit le principe FIFO ?",
+     "answer": "La file",
+     "w": [
+      "f6fde9b7",
+      "f5cc1c9f"
+     ],
+     "wq": "779fe7d1",
+     "more": "First In, First Out : le premier ajouté sort le premier. Opérations : enfiler, défiler, est_vide.",
+     "wrongs": [
+      "La pile",
+      "La liste chaînée",
+      "Le graphe"
+     ]
     },
     {
-     "question": "Liste chaînée",
-     "answer": "Suite de maillons contenant une valeur et un lien vers le maillon suivant."
+     "question": "De quoi est composée une liste chaînée ?",
+     "answer": "De maillons contenant une valeur et un lien vers le suivant",
+     "w": "a72463d1",
+     "wq": "7b827970",
+     "wrongs": [
+      "De couples clé-valeur",
+      "D'un tableau de taille fixe",
+      "De nœuds avec deux enfants"
+     ]
     },
     {
-     "question": "Dictionnaire",
-     "answer": "Ensemble de couples clé-valeur.\nAccès par clé en temps moyen constant (table de hachage).",
-     "w": "53be6b97",
-     "wq": "46fff506"
+     "question": "Qu'est-ce qu'un dictionnaire en informatique ?",
+     "answer": "Un ensemble de couples clé-valeur",
+     "w": [
+      "3edc8dae",
+      "53be6b97"
+     ],
+     "wq": "46fff506",
+     "wrongs": [
+      "Une liste triée de mots",
+      "Une pile de valeurs",
+      "Un arbre binaire"
+     ]
     },
     {
-     "question": "Arbre binaire : vocabulaire",
-     "answer": "Racine, nœuds, feuilles (sans enfant), sous-arbres gauche et droit.\nTaille : nombre de nœuds\nHauteur : profondeur maximale",
-     "w": "18da7ca9",
-     "wq": "7cd1cbfc"
+     "question": "En combien de temps accède-t-on à une valeur d'un dictionnaire par sa clé ?",
+     "answer": "En temps moyen constant",
+     "more": "Grâce à une table de hachage.",
+     "wrongs": [
+      "En temps linéaire",
+      "En temps logarithmique",
+      "En temps quadratique"
+     ]
     },
     {
-     "question": "Arbre binaire de recherche (ABR)",
-     "answer": "Pour chaque nœud : clés du sous-arbre gauche inférieures, clés du sous-arbre droit supérieures.\nRecherche en O(h).",
-     "w": "1046acae",
-     "wq": "18532dad"
+     "question": "Comment appelle-t-on un nœud sans enfant dans un arbre ?",
+     "answer": "Une feuille",
+     "w": [
+      "1d606883",
+      "18da7ca9"
+     ],
+     "wq": "7cd1cbfc",
+     "wrongs": [
+      "La racine",
+      "Un sous-arbre",
+      "Une branche"
+     ]
     },
     {
-     "question": "Parcours d'arbre en profondeur",
-     "answer": "Préfixe : racine, gauche, droite\nInfixe : gauche, racine, droite (ordre croissant dans un ABR)\nSuffixe : gauche, droite, racine",
-     "w": "0ccd485c",
-     "wq": "12ddb47c"
+     "question": "Qu'est-ce que la hauteur d'un arbre ?",
+     "answer": "Sa profondeur maximale",
+     "more": "La taille est le nombre de nœuds.",
+     "wrongs": [
+      "Son nombre de nœuds",
+      "Son nombre de feuilles",
+      "La valeur de sa racine"
+     ]
     },
     {
-     "question": "Parcours en largeur",
-     "answer": "Visite niveau par niveau.\nUtilise une file.",
-     "w": "7e064faf",
-     "wq": "867149e5"
+     "question": "Dans un arbre binaire de recherche, où sont les clés inférieures à celle d'un nœud ?",
+     "answer": "Dans son sous-arbre gauche",
+     "w": [
+      "39e3f979",
+      "1046acae"
+     ],
+     "wq": "18532dad",
+     "wrongs": [
+      "Dans son sous-arbre droit",
+      "À la racine",
+      "N'importe où"
+     ]
     },
     {
-     "question": "Graphe : représentations",
-     "answer": "• Matrice d'adjacence\n• Listes d'adjacence (dictionnaire de voisins)\nGraphe orienté ou non, pondéré ou non.",
-     "w": "2d9581c6",
-     "wq": "1ceb8586"
+     "question": "Quelle est la complexité d'une recherche dans un arbre binaire de recherche de hauteur h ?",
+     "answer": "O(h)",
+     "wrongs": [
+      "O(1)",
+      "O(n²)",
+      "O(2ʰ)"
+     ]
     },
     {
-     "question": "Parcours en profondeur (DFS) / largeur (BFS) d'un graphe",
-     "answer": "DFS : utilise une pile (ou la récursivité).\nBFS : utilise une file ; donne les plus courts chemins en nombre d'arêtes."
+     "question": "Dans quel ordre le parcours préfixe visite-t-il un arbre ?",
+     "answer": "Racine, gauche, droite",
+     "w": [
+      "e76bba94",
+      "0ccd485c"
+     ],
+     "wq": "12ddb47c",
+     "wrongs": [
+      "Gauche, racine, droite",
+      "Gauche, droite, racine",
+      "Niveau par niveau"
+     ]
     },
     {
-     "question": "Fonction récursive",
-     "answer": "Une fonction qui s'appelle elle-même.\nIl lui faut un cas de base qui arrête les appels.",
-     "w": "e7d164e4",
-     "wq": "4dd0a78b"
+     "question": "Quel parcours donne les clés d'un ABR dans l'ordre croissant ?",
+     "answer": "Le parcours infixe",
+     "more": "Gauche, racine, droite.",
+     "wrongs": [
+      "Le parcours préfixe",
+      "Le parcours suffixe",
+      "Le parcours en largeur"
+     ]
     },
     {
-     "question": "Complexité : tri par sélection/insertion vs tri fusion",
-     "answer": "Sélection, insertion : O(n²)\nTri fusion : O(n log n)",
-     "w": "9c35a104",
-     "wq": "49a01abf"
+     "question": "Dans quel ordre le parcours suffixe visite-t-il un arbre ?",
+     "answer": "Gauche, droite, racine",
+     "wrongs": [
+      "Racine, gauche, droite",
+      "Gauche, racine, droite",
+      "Droite, gauche, racine"
+     ]
     },
     {
-     "question": "Recherche dichotomique",
-     "answer": "Dans un tableau trié : on compare à l'élément du milieu et on divise l'intervalle par 2.\nO(log n)",
-     "w": "2cd69e9a",
-     "wq": "e35b0f6d"
+     "question": "Quelle structure utilise le parcours en largeur ?",
+     "answer": "Une file",
+     "w": [
+      "cfa1140c",
+      "7e064faf"
+     ],
+     "wq": "867149e5",
+     "more": "Il visite niveau par niveau.",
+     "wrongs": [
+      "Une pile",
+      "Un dictionnaire",
+      "Une liste chaînée triée"
+     ]
     },
     {
-     "question": "Diviser pour régner",
-     "answer": "Découper en sous-problèmes indépendants plus petits, les résoudre (souvent récursivement), puis combiner.\nEx. : tri fusion",
-     "w": "54dea769",
-     "wq": "b883f826"
+     "question": "Quelles sont les deux représentations classiques d'un graphe ?",
+     "answer": "Matrice d'adjacence et listes d'adjacence",
+     "w": [
+      "d56e2a62",
+      "2d9581c6"
+     ],
+     "wq": "1ceb8586",
+     "wrongs": [
+      "Pile et file",
+      "Arbre et tableau",
+      "Table de vérité et dictionnaire"
+     ]
     },
     {
-     "question": "Programmation dynamique",
-     "answer": "Résoudre une seule fois des sous-problèmes qui se chevauchent, en mémorisant les résultats (mémoïsation).\nEx. : rendu de monnaie, alignement de séquences.",
-     "w": "fc4e6aee",
-     "wq": "bc8b87da"
+     "question": "Quelle structure utilise le parcours en profondeur (DFS) d'un graphe ?",
+     "answer": "Une pile (ou la récursivité)",
+     "w": "c6a64075",
+     "wq": "6d2f8e23",
+     "wrongs": [
+      "Une file",
+      "Un dictionnaire trié",
+      "Une matrice"
+     ]
     },
     {
-     "question": "Algorithme glouton",
-     "answer": "À chaque étape, faire le choix localement optimal.\nNe donne pas toujours la solution optimale globale.",
-     "w": "1d29b60b",
-     "wq": "5ab35bf1"
+     "question": "Quel parcours de graphe donne les plus courts chemins en nombre d'arêtes ?",
+     "answer": "Le parcours en largeur (BFS)",
+     "more": "Il utilise une file.",
+     "wrongs": [
+      "Le parcours en profondeur (DFS)",
+      "Le parcours préfixe",
+      "Le parcours infixe"
+     ]
     },
     {
-     "question": "Recherche textuelle : Boyer-Moore",
-     "answer": "Compare le motif de droite à gauche.\nDécale le motif de plusieurs positions grâce à une table de sauts.",
-     "w": "1da1c38e",
-     "wq": "3060ee8c"
+     "question": "Que faut-il à une fonction récursive pour s'arrêter ?",
+     "answer": "Un cas de base",
+     "w": [
+      "ba48f4f3",
+      "e7d164e4"
+     ],
+     "wq": "4dd0a78b",
+     "wrongs": [
+      "Une boucle while",
+      "Une variable globale",
+      "Un dictionnaire"
+     ]
     },
     {
-     "question": "Programmation orientée objet : vocabulaire",
-     "answer": "Classe : modèle\nObjet : instance\nAttributs : données ; méthodes : fonctions\nConstructeur __init__ en Python",
-     "w": "5e4afebf",
-     "wq": "507be7a1"
+     "question": "Quelle est la complexité du tri par sélection ou par insertion ?",
+     "answer": "O(n²)",
+     "w": [
+      "0595ad7e",
+      "9c35a104"
+     ],
+     "wq": "49a01abf",
+     "wrongs": [
+      "O(n log n)",
+      "O(n)",
+      "O(log n)"
+     ]
+    },
+    {
+     "question": "Quelle est la complexité du tri fusion ?",
+     "answer": "O(n log n)",
+     "wrongs": [
+      "O(n²)",
+      "O(n)",
+      "O(2ⁿ)"
+     ]
+    },
+    {
+     "question": "Sur quel type de tableau fonctionne la recherche dichotomique ?",
+     "answer": "Un tableau trié",
+     "w": [
+      "7868934a",
+      "2cd69e9a"
+     ],
+     "wq": "e35b0f6d",
+     "wrongs": [
+      "Un tableau quelconque",
+      "Un tableau de taille paire",
+      "Un tableau de chaînes seulement"
+     ]
+    },
+    {
+     "question": "Quelle est la complexité de la recherche dichotomique ?",
+     "answer": "O(log n)",
+     "wrongs": [
+      "O(n)",
+      "O(n²)",
+      "O(1)"
+     ]
+    },
+    {
+     "question": "En quoi consiste la méthode « diviser pour régner » ?",
+     "answer": "Découper en sous-problèmes indépendants, les résoudre, puis combiner",
+     "w": [
+      "da48e62c",
+      "54dea769"
+     ],
+     "wq": "b883f826",
+     "more": "Ex. : le tri fusion.",
+     "wrongs": [
+      "Faire à chaque étape le meilleur choix local",
+      "Mémoriser les sous-problèmes qui se chevauchent",
+      "Tester toutes les solutions possibles"
+     ]
+    },
+    {
+     "question": "En quoi consiste la programmation dynamique ?",
+     "answer": "Résoudre une seule fois des sous-problèmes qui se chevauchent, en mémorisant les résultats",
+     "w": [
+      "b98ddf3e",
+      "fc4e6aee"
+     ],
+     "wq": "bc8b87da",
+     "more": "Ex. : rendu de monnaie, alignement de séquences.",
+     "wrongs": [
+      "Faire à chaque étape le choix localement optimal",
+      "Découper en sous-problèmes indépendants",
+      "Changer le programme pendant son exécution"
+     ]
+    },
+    {
+     "question": "En quoi consiste un algorithme glouton ?",
+     "answer": "Faire à chaque étape le choix localement optimal",
+     "w": [
+      "2d6d2d5a",
+      "1d29b60b"
+     ],
+     "wq": "5ab35bf1",
+     "wrongs": [
+      "Tester toutes les solutions",
+      "Mémoriser les sous-problèmes",
+      "Découper le problème en deux"
+     ]
+    },
+    {
+     "question": "Un algorithme glouton donne-t-il toujours la solution optimale ?",
+     "answer": "Non, pas toujours",
+     "wrongs": [
+      "Oui, toujours",
+      "Seulement pour les tris",
+      "Jamais"
+     ]
+    },
+    {
+     "question": "Dans quel sens l'algorithme de Boyer-Moore compare-t-il le motif ?",
+     "answer": "De droite à gauche",
+     "w": [
+      "ed9767e2",
+      "1da1c38e"
+     ],
+     "wq": "3060ee8c",
+     "more": "Il décale le motif de plusieurs positions grâce à une table de sauts.",
+     "wrongs": [
+      "De gauche à droite",
+      "Du milieu vers les bords",
+      "Au hasard"
+     ]
+    },
+    {
+     "question": "En programmation objet, comment appelle-t-on une instance d'une classe ?",
+     "answer": "Un objet",
+     "w": [
+      "2568278a",
+      "5e4afebf"
+     ],
+     "wq": "507be7a1",
+     "wrongs": [
+      "Un attribut",
+      "Une méthode",
+      "Un constructeur"
+     ]
+    },
+    {
+     "question": "Comment s'appelle le constructeur d'une classe en Python ?",
+     "answer": "__init__",
+     "wrongs": [
+      "__main__",
+      "__new_class__",
+      "constructor"
+     ]
     }
    ]
   },
@@ -22599,96 +23734,306 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Modèle relationnel : vocabulaire",
-     "answer": "Relation : table\nAttribut : colonne\nN-uplet (enregistrement) : ligne\nDomaine : type des valeurs",
-     "w": "17ad09d0",
-     "wq": "3dad0006"
+     "question": "Dans le modèle relationnel, comment appelle-t-on une ligne d'une table ?",
+     "answer": "Un n-uplet (enregistrement)",
+     "w": [
+      "5ca87e26",
+      "17ad09d0"
+     ],
+     "wq": "3dad0006",
+     "more": "Relation : table ; attribut : colonne ; domaine : type des valeurs.",
+     "wrongs": [
+      "Un attribut",
+      "Un domaine",
+      "Une relation"
+     ]
     },
     {
-     "question": "Clé primaire",
-     "answer": "Attribut (ou ensemble d'attributs) qui identifie de façon unique chaque enregistrement d'une table."
+     "question": "Qu'est-ce qu'une clé primaire ?",
+     "answer": "Un attribut qui identifie de façon unique chaque enregistrement",
+     "w": "b7743fc4",
+     "wq": "6e7751f4",
+     "wrongs": [
+      "Un attribut qui fait référence à une autre table",
+      "Le premier attribut d'une table",
+      "Un mot de passe de la base"
+     ]
     },
     {
-     "question": "Clé étrangère",
-     "answer": "Attribut qui fait référence à la clé primaire d'une autre table.\nIl assure l'intégrité référentielle.",
-     "w": "82a401eb",
-     "wq": "1e4c3b15"
+     "question": "Qu'est-ce qu'une clé étrangère ?",
+     "answer": "Un attribut qui fait référence à la clé primaire d'une autre table",
+     "w": [
+      "d7c0e18f",
+      "82a401eb"
+     ],
+     "wq": "1e4c3b15",
+     "more": "Elle assure l'intégrité référentielle.",
+     "wrongs": [
+      "Un attribut qui identifie chaque ligne",
+      "Une clé de chiffrement externe",
+      "Un index de tri"
+     ]
     },
     {
-     "question": "SQL : sélectionner des données",
-     "answer": "SELECT colonnes\nFROM table\nWHERE condition\nORDER BY colonne;",
-     "w": "9279217c",
-     "wq": "be998034"
+     "question": "Quel mot-clé SQL filtre les lignes selon une condition ?",
+     "answer": "WHERE",
+     "w": [
+      "15b57cd2",
+      "9279217c"
+     ],
+     "wq": "be998034",
+     "more": "SELECT colonnes FROM table WHERE condition ORDER BY colonne;",
+     "wrongs": [
+      "ORDER BY",
+      "FROM",
+      "GROUP"
+     ]
     },
     {
-     "question": "SQL : jointure",
-     "answer": "SELECT …\nFROM table1 JOIN table2\nON table1.cle = table2.cle_etrangere;",
-     "w": "16394b6f",
-     "wq": "e08df61d"
+     "question": "Quel mot-clé SQL permet une jointure entre deux tables ?",
+     "answer": "JOIN … ON …",
+     "w": [
+      "0ca7f0f3",
+      "16394b6f"
+     ],
+     "wq": "e08df61d",
+     "wrongs": [
+      "UNION … WITH …",
+      "MERGE … INTO …",
+      "LINK … BY …"
+     ]
     },
     {
-     "question": "SQL : insérer, modifier, supprimer",
-     "answer": "INSERT INTO t (a, b) VALUES (1, 2);\nUPDATE t SET a = 3 WHERE … ;\nDELETE FROM t WHERE … ;"
+     "question": "Quelle instruction SQL ajoute une ligne à une table ?",
+     "answer": "INSERT INTO",
+     "w": "2fe94645",
+     "wq": "9804ff6b",
+     "wrongs": [
+      "UPDATE",
+      "ADD ROW",
+      "SELECT INTO"
+     ]
     },
     {
-     "question": "SQL : agrégation",
-     "answer": "COUNT, SUM, AVG, MIN, MAX\nEx. : SELECT COUNT(*) FROM eleves;\nDISTINCT élimine les doublons.",
-     "w": "2a20b4d1",
-     "wq": "ffd03404"
+     "question": "Quelle instruction SQL modifie des lignes existantes ?",
+     "answer": "UPDATE",
+     "wrongs": [
+      "INSERT INTO",
+      "ALTER",
+      "CHANGE"
+     ]
     },
     {
-     "question": "SGBD",
-     "answer": "Système de gestion de bases de données.\nIl gère le stockage, les accès concurrents, la sécurité et l'intégrité des données.",
-     "w": "e4a101cb",
-     "wq": "79341cf9"
+     "question": "Quelle instruction SQL supprime des lignes ?",
+     "answer": "DELETE FROM",
+     "wrongs": [
+      "DROP",
+      "REMOVE",
+      "ERASE FROM"
+     ]
     },
     {
-     "question": "Processus : états",
-     "answer": "Prêt, élu (en cours d'exécution), bloqué.\nL'ordonnanceur du système décide quel processus s'exécute.",
-     "w": "e8684edc",
-     "wq": "dcdbd205"
+     "question": "Quelle fonction SQL compte le nombre de lignes ?",
+     "answer": "COUNT",
+     "w": [
+      "2c797736",
+      "2a20b4d1"
+     ],
+     "wq": "ffd03404",
+     "more": "Autres agrégats : SUM, AVG, MIN, MAX.",
+     "wrongs": [
+      "SUM",
+      "NUMBER",
+      "TOTAL"
+     ]
     },
     {
-     "question": "Interblocage (deadlock)",
-     "answer": "Plusieurs processus s'attendent mutuellement pour des ressources :\naucun ne peut progresser.",
-     "w": "1bb02472",
-     "wq": "32921548"
+     "question": "Quel mot-clé SQL élimine les doublons ?",
+     "answer": "DISTINCT",
+     "wrongs": [
+      "UNIQUE",
+      "SINGLE",
+      "NODUP"
+     ]
     },
     {
-     "question": "Protocole RIP",
-     "answer": "Routage à vecteur de distances : la route avec le moins de sauts (routeurs traversés).\nMaximum 15 sauts.",
-     "w": "99bbd972",
-     "wq": "b7347357"
+     "question": "Que signifie le sigle SGBD ?",
+     "answer": "Système de gestion de bases de données",
+     "w": [
+      "907b2c8a",
+      "e4a101cb"
+     ],
+     "wq": "79341cf9",
+     "more": "Il gère le stockage, les accès concurrents, la sécurité et l'intégrité.",
+     "wrongs": [
+      "Serveur général de bases distantes",
+      "Système graphique de bureau",
+      "Service de gestion des binaires"
+     ]
     },
     {
-     "question": "Protocole OSPF",
-     "answer": "Routage à état de liens : la route de plus faible coût (algorithme de Dijkstra).\nCoût = 10⁸ / débit (en bit/s)",
-     "w": "abe7020f",
-     "wq": "78245208"
+     "question": "Quels sont les trois états d'un processus ?",
+     "answer": "Prêt, élu, bloqué",
+     "w": [
+      "4529c0c5",
+      "e8684edc"
+     ],
+     "wq": "dcdbd205",
+     "wrongs": [
+      "Ouvert, fermé, suspendu",
+      "Créé, lu, écrit",
+      "Actif, passif, mort"
+     ]
     },
     {
-     "question": "Adresse IP et masque",
-     "answer": "IPv4 : 4 octets (ex. : 192.168.1.10/24).\nLe masque (/24) indique la partie réseau de l'adresse.",
-     "w": "6430a4c3",
-     "wq": "ebda7e2c"
+     "question": "Quel élément du système décide quel processus s'exécute ?",
+     "answer": "L'ordonnanceur",
+     "wrongs": [
+      "Le compilateur",
+      "Le routeur",
+      "Le SGBD"
+     ]
     },
     {
-     "question": "Chiffrement symétrique / asymétrique",
-     "answer": "Symétrique : la même clé chiffre et déchiffre (rapide ; ex. : AES).\nAsymétrique : clé publique pour chiffrer, clé privée pour déchiffrer (ex. : RSA).",
-     "w": "c75de79c",
-     "wq": "19800d5e"
+     "question": "Comment appelle-t-on la situation où des processus s'attendent mutuellement pour des ressources ?",
+     "answer": "Un interblocage (deadlock)",
+     "w": [
+      "939da3a5",
+      "1bb02472"
+     ],
+     "wq": "32921548",
+     "wrongs": [
+      "Un débordement de pile",
+      "Une boucle infinie",
+      "Une famine"
+     ]
     },
     {
-     "question": "HTTPS",
-     "answer": "HTTP sécurisé par TLS :\n1. Authentification du serveur par certificat\n2. Échange de clé asymétrique\n3. Chiffrement symétrique des échanges",
-     "w": "4399acae",
-     "wq": "87484a42"
+     "question": "Quel critère utilise le protocole de routage RIP ?",
+     "answer": "Le plus petit nombre de sauts",
+     "w": [
+      "660161f2",
+      "99bbd972"
+     ],
+     "wq": "b7347357",
+     "more": "Routage à vecteur de distances.",
+     "wrongs": [
+      "Le plus faible coût selon le débit",
+      "La plus courte distance en km",
+      "Le routeur le plus récent"
+     ]
     },
     {
-     "question": "Système sur puce (SoC)",
-     "answer": "Un circuit intégré qui regroupe processeur, mémoire et contrôleurs (ex. : smartphones).\nCompact et économe en énergie.",
-     "w": "8dab675c",
-     "wq": "96cb24af"
+     "question": "Combien de sauts au maximum le protocole RIP accepte-t-il ?",
+     "answer": "15",
+     "wrongs": [
+      "8",
+      "255",
+      "64"
+     ]
+    },
+    {
+     "question": "Quel critère utilise le protocole de routage OSPF ?",
+     "answer": "Le plus faible coût, selon le débit des liaisons",
+     "w": [
+      "1f43c1a4",
+      "abe7020f"
+     ],
+     "wq": "78245208",
+     "more": "Routage à état de liens, algorithme de Dijkstra.",
+     "wrongs": [
+      "Le plus petit nombre de sauts",
+      "La route la plus récente",
+      "La route au hasard"
+     ]
+    },
+    {
+     "question": "Comment calcule-t-on le coût d'une liaison en OSPF ?",
+     "answer": "10⁸ / débit (en bit/s)",
+     "wrongs": [
+      "Débit / 10⁸",
+      "Nombre de sauts × 10",
+      "10⁸ × débit"
+     ]
+    },
+    {
+     "question": "Combien d'octets compte une adresse IPv4 ?",
+     "answer": "4",
+     "w": [
+      "0333264e",
+      "6430a4c3"
+     ],
+     "wq": "ebda7e2c",
+     "more": "Ex. : 192.168.1.10/24.",
+     "wrongs": [
+      "6",
+      "8",
+      "16"
+     ]
+    },
+    {
+     "question": "Qu'indique le masque /24 d'une adresse IP ?",
+     "answer": "La partie réseau de l'adresse",
+     "wrongs": [
+      "Le nombre de machines connectées",
+      "Le numéro de la machine",
+      "La vitesse du réseau"
+     ]
+    },
+    {
+     "question": "Qu'est-ce que le chiffrement symétrique ?",
+     "answer": "La même clé chiffre et déchiffre",
+     "w": [
+      "95e74258",
+      "c75de79c"
+     ],
+     "wq": "19800d5e",
+     "more": "Rapide ; ex. : AES.",
+     "wrongs": [
+      "Une clé publique chiffre, une clé privée déchiffre",
+      "Le message est chiffré deux fois",
+      "Aucune clé n'est utilisée"
+     ]
+    },
+    {
+     "question": "Qu'est-ce que le chiffrement asymétrique ?",
+     "answer": "Une clé publique chiffre, une clé privée déchiffre",
+     "more": "Ex. : RSA.",
+     "wrongs": [
+      "La même clé chiffre et déchiffre",
+      "Le message est coupé en deux",
+      "Le chiffrement sans clé"
+     ]
+    },
+    {
+     "question": "Quel protocole sécurise HTTP dans HTTPS ?",
+     "answer": "TLS",
+     "w": [
+      "4d721103",
+      "4399acae"
+     ],
+     "wq": "87484a42",
+     "more": "Authentification du serveur par certificat, échange de clé asymétrique, puis chiffrement symétrique.",
+     "wrongs": [
+      "FTP",
+      "DNS",
+      "SMTP"
+     ]
+    },
+    {
+     "question": "Qu'est-ce qu'un système sur puce (SoC) ?",
+     "answer": "Un circuit qui regroupe processeur, mémoire et contrôleurs",
+     "w": [
+      "30b1dcf9",
+      "8dab675c"
+     ],
+     "wq": "96cb24af",
+     "more": "Compact et économe en énergie (ex. : smartphones).",
+     "wrongs": [
+      "Un logiciel de gestion de puces",
+      "Un réseau de capteurs",
+      "Un disque dur externe"
+     ]
     }
    ]
   },
