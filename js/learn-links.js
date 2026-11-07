@@ -72,6 +72,7 @@
     if (id && YT_ID.test(id)) {
       res.provider = "YouTube";
       res.kind = "video";
+      res.ytId = id; // v274 : miniature de la vidéo dans la Librairie
       res.embed = "https://www.youtube-nocookie.com/embed/" + id + "?rel=0&modestbranding=1&playsinline=1&autoplay=1" + (start ? "&start=" + start : "");
       res.label = "Vidéo YouTube";
       return res;
