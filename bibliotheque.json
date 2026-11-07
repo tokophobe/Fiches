@@ -47186,102 +47186,252 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelle est la différence entre un corps pur et un mélange ?",
-     "answer": "Corps pur : une seule espèce chimique.\nMélange : plusieurs espèces chimiques.",
-     "w": "0b732972",
-     "wq": "5f14c504"
+     "question": "Qu'est-ce qu'un corps pur ?",
+     "answer": "Une seule espèce chimique",
+     "w": [
+      "3dcc40ce",
+      "0b732972"
+     ],
+     "wq": "5f14c504",
+     "more": "Un mélange en contient plusieurs.",
+     "wrongs": [
+      "Plusieurs espèces chimiques",
+      "Un liquide transparent",
+      "Une substance naturelle"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un mélange homogène ?",
-     "answer": "On ne distingue pas ses constituants à l'œil nu.\nEx. : eau salée\n(Hétérogène : on les distingue, ex. : eau et huile.)",
-     "w": "2370cf34",
-     "wq": "52a0f014"
+     "answer": "Un mélange dont on ne distingue pas les constituants à l'œil nu",
+     "w": [
+      "e2ec134a",
+      "2370cf34"
+     ],
+     "more": "Ex. : eau salée. Hétérogène : eau et huile.",
+     "wrongs": [
+      "Un mélange dont on distingue les constituants",
+      "Un corps pur",
+      "Un mélange de deux solides"
+     ]
     },
     {
      "question": "Comment reconnaît-on un corps pur lors d'un changement d'état ?",
-     "answer": "Sa température reste constante pendant le changement d'état (palier).\nPour un mélange, elle varie en général.",
-     "w": "baa04915",
-     "wq": "7b53f7c5"
+     "answer": "Sa température reste constante (palier)",
+     "w": [
+      "9e2e9eb4",
+      "baa04915"
+     ],
+     "wrongs": [
+      "Sa température augmente sans arrêt",
+      "Sa masse diminue",
+      "Sa couleur change"
+     ]
     },
     {
      "question": "Quelle est la formule de la masse volumique ?",
-     "answer": "ρ = m / V\nEn g/mL ou kg/m³.\nEau : environ 1,0 g/mL",
-     "w": "0807189e",
-     "wq": "1a748a05"
+     "answer": "ρ = m / V",
+     "w": [
+      "695cffdf",
+      "0807189e"
+     ],
+     "more": "Eau : environ 1,0 g/mL.",
+     "wrongs": [
+      "ρ = V / m",
+      "ρ = m × V",
+      "ρ = m − V"
+     ]
     },
     {
      "question": "Comment met-on en évidence la présence d'eau ?",
-     "answer": "Le sulfate de cuivre anhydre, blanc,\ndevient bleu au contact de l'eau.",
-     "w": "ef58d9a1",
-     "wq": "0bcf4a61"
+     "answer": "Le sulfate de cuivre anhydre devient bleu",
+     "w": [
+      "3df3c3ff",
+      "ef58d9a1"
+     ],
+     "wrongs": [
+      "L'eau de chaux se trouble",
+      "Une bûchette se rallume",
+      "Une détonation se produit"
+     ]
     },
     {
      "question": "Comment met-on en évidence le dioxyde de carbone ?",
-     "answer": "Il trouble l'eau de chaux."
+     "answer": "Il trouble l'eau de chaux",
+     "w": "afdd29de",
+     "wrongs": [
+      "Il ravive une bûchette",
+      "Il bleuit le sulfate de cuivre",
+      "Il fait une détonation"
+     ]
     },
     {
      "question": "Comment met-on en évidence le dioxygène ?",
-     "answer": "Il ravive une bûchette incandescente."
+     "answer": "Il ravive une bûchette incandescente",
+     "w": "cf744c92",
+     "wrongs": [
+      "Il trouble l'eau de chaux",
+      "Il fait une détonation",
+      "Il bleuit le sulfate de cuivre"
+     ]
     },
     {
      "question": "Comment met-on en évidence le dihydrogène ?",
-     "answer": "Une légère détonation\nà l'approche d'une flamme.",
-     "w": "3828371a",
-     "wq": "a68208d9"
+     "answer": "Une légère détonation près d'une flamme",
+     "w": [
+      "b114802c",
+      "3828371a"
+     ],
+     "wrongs": [
+      "Il trouble l'eau de chaux",
+      "Il ravive une bûchette",
+      "Il colore la flamme en bleu"
+     ]
     },
     {
-     "question": "Quelle est la composition approximative de l'air ?",
-     "answer": "En volume :\n• environ 78 % de diazote\n• environ 21 % de dioxygène\n• environ 1 % d'autres gaz (argon, CO₂…)",
-     "w": "3a4e2aca",
-     "wq": "9529ed42"
+     "question": "Quelle est la composition approximative de l'air en volume ?",
+     "answer": "78 % de diazote, 21 % de dioxygène, 1 % d'autres gaz",
+     "w": [
+      "16f3b6f3",
+      "3a4e2aca"
+     ],
+     "wq": "9529ed42",
+     "wrongs": [
+      "78 % de dioxygène, 21 % de diazote",
+      "50 % de dioxygène, 50 % de diazote",
+      "21 % de CO₂, 78 % de dioxygène"
+     ]
     },
     {
-     "question": "Dans une solution, qu'appelle-t-on soluté et solvant ?",
-     "answer": "Soluté : l'espèce dissoute.\nSolvant : le liquide majoritaire qui la dissout\n(solution aqueuse si c'est l'eau).",
-     "w": "66ff8fcd",
-     "wq": "b8808d74"
+     "question": "Comment appelle-t-on l'espèce dissoute dans une solution ?",
+     "answer": "Le soluté",
+     "w": [
+      "cbdf9220",
+      "66ff8fcd"
+     ],
+     "wq": "b8808d74",
+     "wrongs": [
+      "Le solvant",
+      "Le précipité",
+      "Le filtrat"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on une solution dont le solvant est l'eau ?",
+     "answer": "Une solution aqueuse",
+     "wrongs": [
+      "Une solution saturée",
+      "Une solution mère",
+      "Une solution pure"
+     ]
     },
     {
      "question": "Quelle est la formule de la concentration en masse d'un soluté ?",
-     "answer": "Cm = m(soluté) / V(solution)\nen g/L",
-     "w": "f461913e",
-     "wq": "783217ae"
+     "answer": "Cm = m(soluté) / V(solution)",
+     "w": [
+      "cdbfec88",
+      "f461913e"
+     ],
+     "more": "En g/L.",
+     "wrongs": [
+      "Cm = V / m",
+      "Cm = m × V",
+      "Cm = n / V"
+     ]
     },
     {
      "question": "Qu'est-ce que la solubilité d'une espèce ?",
-     "answer": "La masse maximale qu'on peut dissoudre dans un litre de solvant,\nà une température donnée.\nAu-delà, la solution est saturée.",
-     "w": "a630e6ed",
-     "wq": "c775753b"
+     "answer": "La masse maximale dissoute dans un litre de solvant, à une température donnée",
+     "w": [
+      "e2303ce3",
+      "a630e6ed"
+     ],
+     "more": "Au-delà, la solution est saturée.",
+     "wrongs": [
+      "La masse de solvant",
+      "La vitesse de dissolution",
+      "Le volume de la solution"
+     ]
     },
     {
      "question": "Que se conserve-t-il lors d'une dilution ?",
-     "answer": "La masse de soluté :\nCm(mère) × V(mère) = Cm(fille) × V(fille)",
-     "w": "0fd3cced",
-     "wq": "da663c84"
+     "answer": "La masse de soluté",
+     "w": [
+      "96c76837",
+      "0fd3cced"
+     ],
+     "more": "Cm(mère) × V(mère) = Cm(fille) × V(fille)",
+     "wrongs": [
+      "La concentration",
+      "Le volume",
+      "La masse de solvant"
+     ]
     },
     {
-     "question": "Qu'est-ce que le facteur de dilution F ?",
-     "answer": "F = Cm(mère) / Cm(fille) = V(fille) / V(mère)\nToujours supérieur à 1.",
-     "w": "6c9bf8b4",
-     "wq": "767d7cbf"
+     "question": "Comment calcule-t-on le facteur de dilution F ?",
+     "answer": "F = Cm(mère) / Cm(fille)",
+     "w": [
+      "69631adc",
+      "6c9bf8b4"
+     ],
+     "wq": "767d7cbf",
+     "more": "Ou V(fille) / V(mère) ; toujours supérieur à 1.",
+     "wrongs": [
+      "F = Cm(fille) / Cm(mère)",
+      "F = V(mère) / V(fille)",
+      "F = Cm(mère) × Cm(fille)"
+     ]
     },
     {
-     "question": "Quelle verrerie utilise-t-on pour préparer précisément une solution par dilution ?",
-     "answer": "• Pipette jaugée : pour prélever la solution mère\n• Fiole jaugée : pour obtenir le volume final de solution fille",
-     "w": "118c1133",
-     "wq": "78322c1c"
+     "question": "Avec quelle verrerie prélève-t-on précisément la solution mère ?",
+     "answer": "Une pipette jaugée",
+     "w": [
+      "8c30d770",
+      "118c1133"
+     ],
+     "wq": "78322c1c",
+     "wrongs": [
+      "Une éprouvette graduée",
+      "Un bécher",
+      "Un erlenmeyer"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un dosage par étalonnage ?",
-     "answer": "1. On mesure une grandeur (couleur, absorbance…) pour des solutions de concentrations connues.\n2. On trace la courbe d'étalonnage.\n3. On y lit la concentration de la solution inconnue.",
-     "w": "6b5ef5da",
-     "wq": "6f5f5598"
+     "question": "Dans quelle verrerie prépare-t-on précisément la solution fille ?",
+     "answer": "Une fiole jaugée",
+     "wrongs": [
+      "Un bécher",
+      "Une éprouvette",
+      "Un tube à essai"
+     ]
     },
     {
-     "question": "Comment calcule-t-on le pourcentage massique d'un constituant dans un mélange ?",
+     "question": "Sur quoi repose un dosage par étalonnage ?",
+     "answer": "Comparer la solution inconnue à des solutions de concentrations connues",
+     "w": [
+      "ead34090",
+      "6b5ef5da"
+     ],
+     "wq": "6f5f5598",
+     "more": "On trace une courbe d'étalonnage et on y lit la concentration.",
+     "wrongs": [
+      "Peser la solution inconnue",
+      "Évaporer le solvant",
+      "Mesurer la température"
+     ]
+    },
+    {
+     "question": "Comment calcule-t-on le pourcentage massique d'un constituant ?",
      "answer": "w = m(constituant) / m(mélange) × 100",
-     "w": "7f31e928",
-     "wq": "6df0ae29"
+     "w": [
+      "a186cb16",
+      "7f31e928"
+     ],
+     "wq": "6df0ae29",
+     "wrongs": [
+      "w = m(mélange) / m(constituant) × 100",
+      "w = m(constituant) × m(mélange)",
+      "w = V(constituant) / V(mélange)"
+     ]
     }
    ]
   },
@@ -47322,20 +47472,22 @@
      "link": "https://fr.wikipedia.org/wiki/Valeur_ajoutée"
     },
     {
-     "question": "Lequel de ces éléments est une consommation intermédiaire ?",
-     "answer": "L'énergie utilisée pour produire",
+     "question": "L'énergie utilisée pour produire est-elle une consommation intermédiaire ?",
+     "answer": "Oui : elle est détruite ou transformée pendant la production",
      "w": [
+      "f5731245",
       "50b9420e",
       "451ba7fa"
      ],
      "wq": [
+      "fccebc80",
       "6dc66178"
      ],
-     "more": "Biens et services détruits ou transformés pendant la production : matières premières, énergie, services achetés.",
+     "more": "Les machines et bâtiments sont du capital fixe ; les salaires rémunèrent le travail.",
      "wrongs": [
-      "Une machine",
-      "Un bâtiment",
-      "Les salaires"
+      "Non : c'est du capital fixe",
+      "Non : c'est un salaire",
+      "Non : c'est un investissement"
      ]
     },
     {
@@ -47357,20 +47509,22 @@
      "link": "https://fr.wikipedia.org/wiki/Produit_intérieur_brut"
     },
     {
-     "question": "Lequel de ces éléments le PIB ne prend-il PAS en compte ?",
-     "answer": "Le travail domestique",
+     "question": "Le PIB prend-il en compte le travail domestique ?",
+     "answer": "Non",
      "w": [
+      "e84ebaa9",
       "5eef82b5",
       "2cde680e"
      ],
      "wq": [
+      "de195b32",
       "f47fcbd9"
      ],
-     "more": "Il ignore aussi le bénévolat, une partie de l'économie souterraine, les inégalités et les dégradations de l'environnement.",
+     "more": "Le PIB mesure la production marchande et non marchande des entreprises et administrations.",
      "wrongs": [
-      "La production des entreprises",
-      "Les services marchands",
-      "La production des administrations"
+      "Oui, entièrement",
+      "Oui, pour moitié",
+      "Seulement s'il est déclaré"
      ]
     },
     {
@@ -47511,20 +47665,22 @@
      ]
     },
     {
-     "question": "Laquelle de ces instances est une instance de socialisation ?",
-     "answer": "Le groupe de pairs",
+     "question": "Le groupe de pairs est-il une instance de socialisation ?",
+     "answer": "Oui",
      "w": [
+      "c0ae4baf",
       "8d062edf",
       "7a7a078c"
      ],
      "wq": [
+      "715f2c29",
       "87c0871a"
      ],
-     "more": "Aussi : la famille, l'école, les médias, le travail, les associations.",
+     "more": "Comme la famille, l'école ou les médias.",
      "wrongs": [
-      "La Banque centrale",
-      "Le marché boursier",
-      "Le PIB"
+      "Non, seule la famille l'est",
+      "Non, seule l'école l'est",
+      "Seulement pour les adultes"
      ]
     },
     {
@@ -47924,96 +48080,235 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce qu'une fonction polynôme du second degré ?",
-     "answer": "f(x) = ax² + bx + c\na, b, c réels et a ≠ 0",
-     "w": "4a585c13",
-     "wq": "b26ffa0b"
+     "question": "Quelle est la forme d'une fonction polynôme du second degré ?",
+     "answer": "f(x) = ax² + bx + c, avec a ≠ 0",
+     "w": [
+      "1867615d",
+      "4a585c13"
+     ],
+     "wq": "b26ffa0b",
+     "wrongs": [
+      "f(x) = ax + b",
+      "f(x) = ax³ + bx² + c",
+      "f(x) = a/x + b"
+     ]
     },
     {
      "question": "Quelle est la forme canonique de ax² + bx + c ?",
-     "answer": "f(x) = a(x − α)² + β\navec α = −b/(2a) et β = f(α)",
-     "w": "9a159077",
-     "wq": "c8fb62f4"
+     "answer": "a(x − α)² + β",
+     "w": [
+      "a0a4acc5",
+      "9a159077"
+     ],
+     "more": "α = −b/(2a) et β = f(α).",
+     "wrongs": [
+      "a(x − x₁)(x − x₂)",
+      "(ax + b)² + c",
+      "a(x + α)² − β²"
+     ]
     },
     {
-     "question": "Quelles sont les coordonnées du sommet de la parabole représentant f(x) = ax² + bx + c ?",
-     "answer": "S(α ; β)\navec α = −b/(2a) et β = f(α)\nAxe de symétrie : x = α",
-     "w": "ec09b335",
-     "wq": "295334f3"
+     "question": "Quelle est l'abscisse du sommet de la parabole de f(x) = ax² + bx + c ?",
+     "answer": "α = −b/(2a)",
+     "w": [
+      "3b1f7a79",
+      "ec09b335"
+     ],
+     "wq": "295334f3",
+     "more": "Axe de symétrie : x = α.",
+     "wrongs": [
+      "α = b/(2a)",
+      "α = −b/a",
+      "α = −c/(2a)"
+     ]
     },
     {
-     "question": "Comment l'orientation de la parabole dépend-elle de a ?",
-     "answer": "• a > 0 : tournée vers le haut, minimum β\n• a < 0 : tournée vers le bas, maximum β",
-     "w": "7b629c1e",
-     "wq": "51727e0f"
+     "question": "Si a > 0, comment est tournée la parabole ?",
+     "answer": "Vers le haut, avec un minimum",
+     "w": [
+      "c35fb144",
+      "7b629c1e"
+     ],
+     "wq": "51727e0f",
+     "wrongs": [
+      "Vers le bas, avec un maximum",
+      "Vers la droite",
+      "Elle est horizontale"
+     ]
     },
     {
      "question": "Comment calcule-t-on le discriminant d'un trinôme ?",
-     "answer": "Δ = b² − 4ac."
+     "answer": "Δ = b² − 4ac",
+     "w": "b3c19dbe",
+     "wrongs": [
+      "Δ = b² + 4ac",
+      "Δ = 4ac − b²",
+      "Δ = b − 4ac"
+     ]
     },
     {
-     "question": "Quelles sont les solutions de ax² + bx + c = 0 lorsque Δ > 0 ?",
-     "answer": "Deux racines distinctes :\nx₁ = (−b − √Δ) / (2a)\nx₂ = (−b + √Δ) / (2a)",
-     "w": "ff59c3db",
-     "wq": "d6c24c5a"
+     "question": "Quelles sont les racines de ax² + bx + c si Δ > 0 ?",
+     "answer": "x = (−b ± √Δ) / (2a)",
+     "w": [
+      "e390f786",
+      "ff59c3db"
+     ],
+     "wq": "d6c24c5a",
+     "wrongs": [
+      "x = (b ± √Δ) / (2a)",
+      "x = (−b ± Δ) / (2a)",
+      "x = −b / (2a) seulement"
+     ]
     },
     {
-     "question": "Quelles sont les solutions de ax² + bx + c = 0 lorsque Δ = 0 ?",
-     "answer": "Une racine double :\nx₀ = −b / (2a)",
-     "w": "1e17f863",
-     "wq": "19d5f977"
+     "question": "Quelle est la racine de ax² + bx + c si Δ = 0 ?",
+     "answer": "Une racine double : −b/(2a)",
+     "w": [
+      "88a9fa8f",
+      "1e17f863"
+     ],
+     "wq": "19d5f977",
+     "wrongs": [
+      "Deux racines : ±√b",
+      "Aucune racine",
+      "La racine c/a"
+     ]
     },
     {
      "question": "Que se passe-t-il lorsque Δ < 0 ?",
-     "answer": "• Aucune solution réelle\n• Pas de factorisation\n• La parabole ne coupe pas l'axe des abscisses",
-     "w": "b04a5920",
-     "wq": "d0bc0da9"
+     "answer": "Aucune solution réelle",
+     "w": [
+      "d3d92259",
+      "b04a5920"
+     ],
+     "more": "La parabole ne coupe pas l'axe des abscisses.",
+     "wrongs": [
+      "Deux solutions réelles",
+      "Une solution double",
+      "Une infinité de solutions"
+     ]
     },
     {
-     "question": "Quelle est la forme factorisée d'un trinôme lorsque Δ > 0 ?",
-     "answer": "f(x) = a(x − x₁)(x − x₂)\nx₁ et x₂ : les racines",
-     "w": "f8f7ab4d",
-     "wq": "b074cd39"
+     "question": "Quelle est la forme factorisée d'un trinôme si Δ > 0 ?",
+     "answer": "a(x − x₁)(x − x₂)",
+     "w": [
+      "355df105",
+      "f8f7ab4d"
+     ],
+     "wq": "b074cd39",
+     "wrongs": [
+      "a(x + x₁)(x + x₂)",
+      "(x − x₁)(x − x₂)",
+      "a(x − x₁)²"
+     ]
     },
     {
-     "question": "Quelle est la forme factorisée d'un trinôme lorsque Δ = 0 ?",
-     "answer": "f(x) = a(x − x0)²."
+     "question": "Quelle est la forme factorisée d'un trinôme si Δ = 0 ?",
+     "answer": "a(x − x₀)²",
+     "w": "6082373f",
+     "wq": "2a192bf0",
+     "wrongs": [
+      "a(x + x₀)²",
+      "(x − x₀)",
+      "a(x − x₀)(x + x₀)"
+     ]
     },
     {
-     "question": "Que valent la somme et le produit des racines d'un trinôme (quand elles existent) ?",
-     "answer": "• x₁ + x₂ = −b/a\n• x₁ × x₂ = c/a",
-     "w": "51ccb662",
-     "wq": "0e281acd"
+     "question": "Que vaut la somme des racines d'un trinôme ?",
+     "answer": "−b/a",
+     "w": [
+      "b15246e1",
+      "51ccb662"
+     ],
+     "wq": "0e281acd",
+     "wrongs": [
+      "b/a",
+      "c/a",
+      "−c/a"
+     ]
     },
     {
-     "question": "Quel est le signe d'un trinôme lorsque Δ > 0 ?",
-     "answer": "• Du signe de a à l'extérieur des racines\n• Du signe opposé à a entre les racines",
-     "w": "11bd2da6",
-     "wq": "c371fefc"
+     "question": "Que vaut le produit des racines d'un trinôme ?",
+     "answer": "c/a",
+     "wrongs": [
+      "−b/a",
+      "b/a",
+      "−c/a"
+     ]
     },
     {
-     "question": "Quel est le signe d'un trinôme lorsque Δ < 0 ?",
-     "answer": "Strictement du signe de a\npour tout réel x.",
-     "w": "a3ff19f9",
-     "wq": "0bea1ae2"
+     "question": "Si Δ > 0, quel est le signe du trinôme entre les racines ?",
+     "answer": "Le signe opposé à a",
+     "w": [
+      "e0bc190c",
+      "11bd2da6"
+     ],
+     "wq": "c371fefc",
+     "more": "À l'extérieur des racines, il est du signe de a.",
+     "wrongs": [
+      "Le signe de a",
+      "Toujours positif",
+      "Toujours négatif"
+     ]
     },
     {
-     "question": "Quel est le signe d'un trinôme lorsque Δ = 0 ?",
-     "answer": "Du signe de a,\net nul seulement en x₀ = −b/(2a).",
-     "w": "f039c5b3",
-     "wq": "561a9905"
+     "question": "Si Δ < 0, quel est le signe du trinôme ?",
+     "answer": "Toujours du signe de a",
+     "w": [
+      "132f5514",
+      "a3ff19f9"
+     ],
+     "wq": "0bea1ae2",
+     "wrongs": [
+      "Toujours positif",
+      "Toujours négatif",
+      "Du signe opposé à a"
+     ]
     },
     {
-     "question": "Comment trouver rapidement une racine évidente puis la seconde ?",
-     "answer": "1. On teste des valeurs simples : 0, 1, −1, 2…\n2. Si x₁ est racine : x₂ = (c/a) / x₁\n(produit des racines)",
-     "w": "afceb6b5",
-     "wq": "9ff7a7d6"
+     "question": "Si Δ = 0, quand le trinôme s'annule-t-il ?",
+     "answer": "Seulement en x₀ = −b/(2a)",
+     "w": [
+      "fcb0a888",
+      "f039c5b3"
+     ],
+     "wq": "561a9905",
+     "more": "Ailleurs, il est du signe de a.",
+     "wrongs": [
+      "Jamais",
+      "En deux points",
+      "Partout"
+     ]
     },
     {
-     "question": "Comment résoudre une équation bicarrée comme x⁴ − 5x² + 4 = 0 ?",
-     "answer": "1. On pose X = x².\n2. X² − 5X + 4 = 0 → X = 1 ou X = 4\n3. On revient à x : x ∈ {−2 ; −1 ; 1 ; 2}",
-     "w": "05bcc3f8",
-     "wq": "e90feaaf"
+     "question": "Si x₁ est une racine évidente, comment trouve-t-on la seconde ?",
+     "answer": "x₂ = (c/a) / x₁",
+     "w": [
+      "a36fbb6c",
+      "afceb6b5"
+     ],
+     "wq": "9ff7a7d6",
+     "more": "Grâce au produit des racines.",
+     "wrongs": [
+      "x₂ = −x₁",
+      "x₂ = b/a − x₁",
+      "x₂ = c/x₁"
+     ]
+    },
+    {
+     "question": "Comment résout-on une équation bicarrée comme x⁴ − 5x² + 4 = 0 ?",
+     "answer": "On pose X = x²",
+     "w": [
+      "36870472",
+      "05bcc3f8"
+     ],
+     "wq": "e90feaaf",
+     "more": "X² − 5X + 4 = 0 → X = 1 ou 4 → x ∈ {−2 ; −1 ; 1 ; 2}.",
+     "wrongs": [
+      "On pose X = x⁴",
+      "On divise par x²",
+      "On prend la racine carrée de chaque terme"
+     ]
     }
    ]
   },
@@ -48037,101 +48332,238 @@
    "cards": [
     {
      "question": "Quelles sont les deux façons principales de définir une suite ?",
-     "answer": "• Formule explicite : uₙ = f(n)\n• Par récurrence : un premier terme et uₙ₊₁ = f(uₙ)",
-     "w": "755fc446",
-     "wq": "405bd755"
+     "answer": "Par une formule explicite ou par récurrence",
+     "w": [
+      "ee5bb60c",
+      "755fc446"
+     ],
+     "wrongs": [
+      "Par un graphique ou par un tableau",
+      "Par une équation ou une inéquation",
+      "Par sa limite ou sa raison"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une suite arithmétique ?",
-     "answer": "On ajoute toujours le même réel r (la raison) :\nuₙ₊₁ = uₙ + r",
-     "w": "1aeb2279",
-     "wq": "b82bab6b"
+     "answer": "Une suite où l'on ajoute toujours le même réel r",
+     "w": [
+      "cdd38405",
+      "1aeb2279"
+     ],
+     "more": "uₙ₊₁ = uₙ + r",
+     "wrongs": [
+      "Une suite où l'on multiplie toujours par le même réel",
+      "Une suite toujours croissante",
+      "Une suite qui tend vers 0"
+     ]
     },
     {
      "question": "Quelle est la formule explicite d'une suite arithmétique ?",
-     "answer": "uₙ = u₀ + n·r\nPlus généralement : uₙ = uₚ + (n − p)·r",
-     "w": "a6d0bb17",
-     "wq": "6fa94145"
+     "answer": "uₙ = u₀ + n·r",
+     "w": [
+      "866c5a10",
+      "a6d0bb17"
+     ],
+     "wrongs": [
+      "uₙ = u₀ × rⁿ",
+      "uₙ = u₀ + rⁿ",
+      "uₙ = n·u₀ + r"
+     ]
     },
     {
-     "question": "Quel est le sens de variation d'une suite arithmétique de raison r ?",
-     "answer": "• r > 0 : croissante\n• r < 0 : décroissante\n• r = 0 : constante",
-     "w": "7d2ed61f",
-     "wq": "5d59d69f"
+     "question": "Si r < 0, comment varie une suite arithmétique ?",
+     "answer": "Elle est décroissante",
+     "w": [
+      "035f9aaf",
+      "7d2ed61f"
+     ],
+     "wq": "5d59d69f",
+     "wrongs": [
+      "Elle est croissante",
+      "Elle est constante",
+      "Elle alterne"
+     ]
     },
     {
      "question": "Que vaut la somme 1 + 2 + … + n ?",
-     "answer": "n(n + 1)/2."
+     "answer": "n(n + 1)/2",
+     "w": "74f65f18",
+     "wrongs": [
+      "n(n − 1)/2",
+      "n²/2",
+      "n(n + 1)"
+     ]
     },
     {
      "question": "Comment calcule-t-on la somme de termes consécutifs d'une suite arithmétique ?",
-     "answer": "S = nombre de termes × (premier terme + dernier terme) / 2",
-     "w": "4f58e669",
-     "wq": "d65bb581"
+     "answer": "Nombre de termes × (premier + dernier) / 2",
+     "w": [
+      "cd0365bd",
+      "4f58e669"
+     ],
+     "wrongs": [
+      "Nombre de termes × premier × dernier",
+      "(Premier + dernier) / 2",
+      "Dernier terme × raison"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une suite géométrique ?",
-     "answer": "On multiplie toujours par le même réel q (la raison) :\nuₙ₊₁ = q × uₙ",
-     "w": "06fa7f4e",
-     "wq": "181d0fee"
+     "answer": "Une suite où l'on multiplie toujours par le même réel q",
+     "w": [
+      "dbfb4d5e",
+      "06fa7f4e"
+     ],
+     "more": "uₙ₊₁ = q × uₙ",
+     "wrongs": [
+      "Une suite où l'on ajoute toujours le même réel",
+      "Une suite de nombres premiers",
+      "Une suite toujours décroissante"
+     ]
     },
     {
      "question": "Quelle est la formule explicite d'une suite géométrique ?",
-     "answer": "uₙ = u₀ × qⁿ\nPlus généralement : uₙ = uₚ × qⁿ⁻ᵖ",
-     "w": "47b80084",
-     "wq": "3f252fb4"
+     "answer": "uₙ = u₀ × qⁿ",
+     "w": [
+      "4deb3d5d",
+      "47b80084"
+     ],
+     "wrongs": [
+      "uₙ = u₀ + n·q",
+      "uₙ = u₀ × n·q",
+      "uₙ = qⁿ + u₀"
+     ]
     },
     {
-     "question": "Que vaut 1 + q + q² + … + q^n pour q ≠ 1 ?",
-     "answer": "(1 − q^(n+1)) / (1 − q)."
+     "question": "Que vaut 1 + q + q² + … + qⁿ pour q ≠ 1 ?",
+     "answer": "(1 − qⁿ⁺¹) / (1 − q)",
+     "w": "88f02f54",
+     "wq": "47aa17f3",
+     "wrongs": [
+      "(1 − qⁿ) / (1 − q)",
+      "(qⁿ − 1) / (1 + q)",
+      "n × qⁿ"
+     ]
     },
     {
-     "question": "Comment calcule-t-on la somme de termes consécutifs d'une suite géométrique de raison q ≠ 1 ?",
-     "answer": "S = premier terme × (1 − q^(nombre de termes)) / (1 − q)",
-     "w": "2ed6561c",
-     "wq": "1aa0f859"
+     "question": "Comment calcule-t-on la somme de termes consécutifs d'une suite géométrique (q ≠ 1) ?",
+     "answer": "Premier terme × (1 − q^(nombre de termes)) / (1 − q)",
+     "w": [
+      "8fb592da",
+      "2ed6561c"
+     ],
+     "wq": "1aa0f859",
+     "wrongs": [
+      "Nombre de termes × (premier + dernier) / 2",
+      "Premier terme × qⁿ",
+      "Dernier terme / (1 − q)"
+     ]
     },
     {
-     "question": "Quel est le sens de variation de la suite q^n pour q > 0 ?",
-     "answer": "• q > 1 : croissante\n• 0 < q < 1 : décroissante\n• q = 1 : constante",
-     "w": "6e888445",
-     "wq": "3d8fc17f"
+     "question": "Si 0 < q < 1, comment varie la suite qⁿ ?",
+     "answer": "Elle est décroissante",
+     "w": [
+      "73fb9599",
+      "6e888445"
+     ],
+     "wq": "3d8fc17f",
+     "more": "q > 1 : croissante ; q = 1 : constante.",
+     "wrongs": [
+      "Elle est croissante",
+      "Elle est constante",
+      "Elle alterne"
+     ]
     },
     {
      "question": "Quelle méthode générale permet d'étudier le sens de variation d'une suite ?",
-     "answer": "Étudier le signe de uₙ₊₁ − uₙ :\n• positif pour tout n : croissante\n• négatif pour tout n : décroissante",
-     "w": "1c318f50",
-     "wq": "b652cba0"
+     "answer": "Étudier le signe de uₙ₊₁ − uₙ",
+     "w": [
+      "5f315f85",
+      "1c318f50"
+     ],
+     "wrongs": [
+      "Calculer u₀",
+      "Étudier le signe de uₙ",
+      "Calculer la limite"
+     ]
     },
     {
-     "question": "Quelle autre méthode utiliser pour une suite à termes strictement positifs ?",
-     "answer": "Comparer uₙ₊₁ / uₙ à 1 :\n• supérieur à 1 : croissante\n• inférieur à 1 : décroissante",
-     "w": "f5715d97",
-     "wq": "16d60429"
+     "question": "Pour une suite à termes strictement positifs, si uₙ₊₁ / uₙ > 1, que peut-on dire ?",
+     "answer": "La suite est croissante",
+     "w": [
+      "930b77dc",
+      "f5715d97"
+     ],
+     "wq": "16d60429",
+     "wrongs": [
+      "La suite est décroissante",
+      "La suite est constante",
+      "La suite converge vers 1"
+     ]
     },
     {
      "question": "Comment démontrer qu'une suite est arithmétique ?",
-     "answer": "Montrer que uₙ₊₁ − uₙ est une constante r,\nindépendante de n.",
-     "w": "aabae68a",
-     "wq": "4d7e034c"
+     "answer": "Montrer que uₙ₊₁ − uₙ est une constante",
+     "w": [
+      "2aca87d3",
+      "aabae68a"
+     ],
+     "wrongs": [
+      "Montrer que uₙ₊₁ / uₙ est une constante",
+      "Montrer que uₙ est positif",
+      "Calculer u₀ et u₁ seulement"
+     ]
     },
     {
-     "question": "Comment démontrer qu'une suite à termes non nuls est géométrique ?",
-     "answer": "Montrer que uₙ₊₁ = q × uₙ pour tout n,\navec q indépendant de n\n(par exemple : uₙ₊₁ / uₙ constant).",
-     "w": "f7d8fd03",
-     "wq": "833f51dc"
+     "question": "Comment démontrer qu'une suite (non nulle) est géométrique ?",
+     "answer": "Montrer que uₙ₊₁ = q × uₙ avec q indépendant de n",
+     "w": [
+      "ad33fccc",
+      "f7d8fd03"
+     ],
+     "wq": "833f51dc",
+     "wrongs": [
+      "Montrer que uₙ₊₁ − uₙ est constant",
+      "Montrer que la suite est croissante",
+      "Calculer u₂ seulement"
+     ]
     },
     {
-     "question": "À quel type de suite correspond une augmentation régulière de 3 % par an ?",
-     "answer": "Une suite géométrique\nde raison q = 1,03.",
-     "w": "16ed4aba",
-     "wq": "1c33f37b"
+     "question": "Quelle suite modélise une augmentation régulière de 3 % par an ?",
+     "answer": "Une suite géométrique de raison 1,03",
+     "w": [
+      "61a1e15c",
+      "16ed4aba"
+     ],
+     "wq": "1c33f37b",
+     "wrongs": [
+      "Une suite arithmétique de raison 3",
+      "Une suite géométrique de raison 3",
+      "Une suite arithmétique de raison 1,03"
+     ]
     },
     {
-     "question": "Quel comportement a la suite q^n quand n devient grand, si q > 1 ? si 0 < q < 1 ?",
-     "answer": "• q > 1 : qⁿ tend vers +∞\n• 0 < q < 1 : qⁿ tend vers 0",
-     "w": "aa6e5839",
-     "wq": "669376f8"
+     "question": "Vers quoi tend qⁿ si q > 1 ?",
+     "answer": "+∞",
+     "w": [
+      "32b61d68",
+      "aa6e5839"
+     ],
+     "wq": "669376f8",
+     "wrongs": [
+      "0",
+      "1",
+      "q"
+     ]
+    },
+    {
+     "question": "Vers quoi tend qⁿ si 0 < q < 1 ?",
+     "answer": "0",
+     "wrongs": [
+      "+∞",
+      "1",
+      "q"
+     ]
     }
    ]
   },
@@ -48154,102 +48586,253 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment définit-on la probabilité de B sachant A (avec P(A) ≠ 0) ?",
-     "answer": "P_A(B) = P(A ∩ B) / P(A)",
-     "w": "e1ae6571",
-     "wq": "441b4576"
+     "question": "Comment définit-on P_A(B), la probabilité de B sachant A ?",
+     "answer": "P(A ∩ B) / P(A)",
+     "w": [
+      "2d656f45",
+      "e1ae6571"
+     ],
+     "wq": "441b4576",
+     "wrongs": [
+      "P(A ∩ B) / P(B)",
+      "P(A) × P(B)",
+      "P(A) + P(B)"
+     ]
     },
     {
-     "question": "Comment calcule-t-on P(A ∩ B) à partir d'une probabilité conditionnelle ?",
-     "answer": "P(A ∩ B) = P(A) × P_A(B)."
+     "question": "Comment calcule-t-on P(A ∩ B) avec une probabilité conditionnelle ?",
+     "answer": "P(A) × P_A(B)",
+     "w": "587fd5f8",
+     "wq": "344d357d",
+     "wrongs": [
+      "P(A) + P_A(B)",
+      "P_A(B) / P(A)",
+      "P(B) × P_B(B)"
+     ]
     },
     {
-     "question": "Quelle est la règle concernant les branches issues d'un même nœud dans un arbre pondéré ?",
-     "answer": "La somme des probabilités des branches issues d'un même nœud\nvaut 1.",
-     "w": "71755209",
-     "wq": "eb907dbf"
+     "question": "Que vaut la somme des probabilités des branches issues d'un même nœud ?",
+     "answer": "1",
+     "w": [
+      "93722678",
+      "71755209"
+     ],
+     "wq": "eb907dbf",
+     "wrongs": [
+      "0",
+      "0,5",
+      "Le nombre de branches"
+     ]
     },
     {
      "question": "Comment calcule-t-on la probabilité d'un chemin dans un arbre pondéré ?",
-     "answer": "On multiplie les probabilités\nportées par les branches de ce chemin.",
-     "w": "36fa4204",
-     "wq": "9579cac5"
+     "answer": "On multiplie les probabilités des branches",
+     "w": [
+      "374e5a06",
+      "36fa4204"
+     ],
+     "wrongs": [
+      "On additionne les probabilités des branches",
+      "On prend la plus grande",
+      "On divise par le nombre de branches"
+     ]
     },
     {
-     "question": "Énoncer la formule des probabilités totales avec A et Ā.",
-     "answer": "P(B) = P(A ∩ B) + P(Ā ∩ B)\n= P(A) × P_A(B) + P(Ā) × P_Ā(B)",
-     "w": "1497bc32",
-     "wq": "74467f7b"
+     "question": "Que dit la formule des probabilités totales avec A et Ā ?",
+     "answer": "P(B) = P(A ∩ B) + P(Ā ∩ B)",
+     "w": [
+      "535e4e8e",
+      "1497bc32"
+     ],
+     "wq": "74467f7b",
+     "wrongs": [
+      "P(B) = P(A) × P(Ā)",
+      "P(B) = P(A ∩ B) × P(Ā ∩ B)",
+      "P(B) = 1 − P(A)"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une partition de l'univers ?",
-     "answer": "Une famille d'événements :\n• deux à deux incompatibles\n• de probabilités non nulles\n• dont la réunion est l'univers entier",
-     "w": "c5abb818",
-     "wq": "3b108a31"
+     "answer": "Des événements deux à deux incompatibles dont la réunion est l'univers",
+     "w": [
+      "b3f7a280",
+      "c5abb818"
+     ],
+     "more": "Et de probabilités non nulles.",
+     "wrongs": [
+      "Des événements tous indépendants",
+      "Un seul événement certain",
+      "Des événements de même probabilité"
+     ]
     },
     {
-     "question": "Quand dit-on que deux événements A et B sont indépendants ?",
-     "answer": "P(A ∩ B) = P(A) × P(B)\nSi P(A) ≠ 0, cela équivaut à P_A(B) = P(B).",
-     "w": "9eaf529d",
-     "wq": "e14b7e3e"
+     "question": "Quand A et B sont-ils indépendants ?",
+     "answer": "Quand P(A ∩ B) = P(A) × P(B)",
+     "w": [
+      "3d0a05e3",
+      "9eaf529d"
+     ],
+     "wq": "e14b7e3e",
+     "wrongs": [
+      "Quand P(A ∩ B) = 0",
+      "Quand P(A) = P(B)",
+      "Quand P(A ∪ B) = 1"
+     ]
     },
     {
-     "question": "Si A et B sont indépendants, que peut-on dire de A et B̄ ?",
-     "answer": "A et B̄ sont aussi indépendants."
+     "question": "Si A et B sont indépendants, A et B̄ le sont-ils ?",
+     "answer": "Oui",
+     "w": "2022a0de",
+     "wq": "005b51ed",
+     "wrongs": [
+      "Non, jamais",
+      "Seulement si P(A) = 0,5",
+      "On ne peut pas savoir"
+     ]
     },
     {
-     "question": "Indépendants et incompatibles, est-ce la même chose ?",
-     "answer": "Non.\nDeux événements incompatibles de probabilités non nulles ne sont jamais indépendants :\nP(A ∩ B) = 0 ≠ P(A) × P(B)",
-     "w": "69fff92f",
-     "wq": "7544f0b3"
+     "question": "Deux événements incompatibles (de probabilités non nulles) sont-ils indépendants ?",
+     "answer": "Non, jamais",
+     "w": [
+      "1a8c7763",
+      "69fff92f"
+     ],
+     "wq": "7544f0b3",
+     "more": "P(A ∩ B) = 0 ≠ P(A) × P(B).",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, si P(A) = P(B)",
+      "Seulement s'ils sont contraires"
+     ]
     },
     {
-     "question": "Comment « retourner » un conditionnement pour calculer P_B(A) ?",
-     "answer": "P_B(A) = P(A ∩ B) / P(B)\navec P(B) obtenue par la formule des probabilités totales.",
-     "w": "54f9972d",
-     "wq": "ca0b2de4"
+     "question": "Comment calcule-t-on P_B(A) quand on connaît l'arbre partant de A ?",
+     "answer": "P(A ∩ B) / P(B), avec P(B) par les probabilités totales",
+     "w": [
+      "bb86be78",
+      "54f9972d"
+     ],
+     "wq": "ca0b2de4",
+     "wrongs": [
+      "P_A(B) seulement",
+      "1 − P_A(B)",
+      "P(A) × P(B)"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une variable aléatoire réelle ?",
-     "answer": "Une fonction qui associe un nombre réel\nà chaque issue d'une expérience aléatoire.",
-     "w": "5e9416f4",
-     "wq": "bcd1eb4c"
+     "answer": "Une fonction qui associe un nombre réel à chaque issue",
+     "w": [
+      "b3d8648e",
+      "5e9416f4"
+     ],
+     "wrongs": [
+      "Une probabilité",
+      "Un événement certain",
+      "Une issue particulière"
+     ]
     },
     {
-     "question": "Qu'est-ce que la loi de probabilité d'une variable aléatoire X ?",
-     "answer": "Les valeurs prises par X\net les probabilités P(X = xᵢ) correspondantes,\ndont la somme vaut 1.",
-     "w": "ab37c453",
-     "wq": "17acc433"
+     "question": "Que vaut la somme des probabilités P(X = xᵢ) d'une loi de probabilité ?",
+     "answer": "1",
+     "w": [
+      "9fff2f48",
+      "ab37c453"
+     ],
+     "wq": "17acc433",
+     "wrongs": [
+      "0",
+      "E(X)",
+      "Le nombre de valeurs"
+     ]
     },
     {
      "question": "Comment calcule-t-on l'espérance E(X) ?",
-     "answer": "E(X) = x₁·P(X = x₁) + x₂·P(X = x₂) + … + xₙ·P(X = xₙ)\nLa valeur moyenne de X sur un grand nombre de répétitions.",
-     "w": "3b652bb4",
-     "wq": "68c0d7ac"
+     "answer": "Somme des xᵢ × P(X = xᵢ)",
+     "w": [
+      "419b0855",
+      "3b652bb4"
+     ],
+     "more": "C'est la valeur moyenne de X sur un grand nombre de répétitions.",
+     "wrongs": [
+      "Somme des xᵢ divisée par n",
+      "Somme des P(X = xᵢ)",
+      "Plus grande valeur de X"
+     ]
     },
     {
-     "question": "Comment calcule-t-on la variance V(X) ?",
-     "answer": "V(X) = Σ P(X = xᵢ) × (xᵢ − E(X))²\nou V(X) = E(X²) − E(X)²\nÉcart type : σ(X) = √V(X)",
-     "w": "8fd897f8",
-     "wq": "5f818c04"
+     "question": "Quelle formule permet de calculer la variance V(X) ?",
+     "answer": "V(X) = E(X²) − E(X)²",
+     "w": [
+      "0229ea99",
+      "8fd897f8"
+     ],
+     "wq": "5f818c04",
+     "wrongs": [
+      "V(X) = E(X)² − E(X²)",
+      "V(X) = E(X) / n",
+      "V(X) = √E(X)"
+     ]
     },
     {
-     "question": "Que valent E(aX + b) et V(aX + b) ?",
-     "answer": "• E(aX + b) = a·E(X) + b\n• V(aX + b) = a²·V(X)",
-     "w": "bc0f3f32",
-     "wq": "13d8e0d7"
+     "question": "Comment obtient-on l'écart type de X ?",
+     "answer": "σ(X) = √V(X)",
+     "wrongs": [
+      "σ(X) = V(X)²",
+      "σ(X) = V(X) / 2",
+      "σ(X) = E(X)"
+     ]
     },
     {
-     "question": "Dans un jeu, que signifie une espérance de gain négative ?",
-     "answer": "En moyenne, sur un grand nombre de parties, le joueur perd de l'argent.\nLe jeu lui est défavorable.",
-     "w": "b2f7d4e5",
-     "wq": "50d7083f"
+     "question": "Que vaut E(aX + b) ?",
+     "answer": "a·E(X) + b",
+     "w": [
+      "65e1087f",
+      "bc0f3f32"
+     ],
+     "wq": "13d8e0d7",
+     "wrongs": [
+      "a·E(X)",
+      "a²·E(X) + b",
+      "E(X) + b"
+     ]
     },
     {
-     "question": "Comment représenter la répétition de deux épreuves indépendantes ?",
-     "answer": "Par un arbre où les probabilités du second niveau\nsont les mêmes quelle que soit l'issue de la première épreuve.\nProbabilité d'une liste d'issues : le produit des probabilités.",
-     "w": "dae1a6d4",
-     "wq": "2b2f0d4c"
+     "question": "Que vaut V(aX + b) ?",
+     "answer": "a²·V(X)",
+     "wrongs": [
+      "a·V(X) + b",
+      "a·V(X)",
+      "a²·V(X) + b"
+     ]
+    },
+    {
+     "question": "Que signifie une espérance de gain négative dans un jeu ?",
+     "answer": "En moyenne, le joueur perd de l'argent",
+     "w": [
+      "2ed0315c",
+      "b2f7d4e5"
+     ],
+     "wq": "50d7083f",
+     "wrongs": [
+      "Le joueur gagne toujours",
+      "Le joueur perd à chaque partie",
+      "Le jeu est équitable"
+     ]
+    },
+    {
+     "question": "Comment calcule-t-on la probabilité d'une liste d'issues d'épreuves indépendantes ?",
+     "answer": "On fait le produit des probabilités",
+     "w": [
+      "5d82cad0",
+      "dae1a6d4"
+     ],
+     "wq": "2b2f0d4c",
+     "wrongs": [
+      "On fait la somme des probabilités",
+      "On prend la plus petite",
+      "On divise par le nombre d'épreuves"
+     ]
     }
    ]
   },
@@ -48273,97 +48856,249 @@
    "cards": [
     {
      "question": "Quelle est l'expression de l'énergie cinétique ?",
-     "answer": "Ec = ½ m v²\nEc en J, m en kg, v en m/s",
-     "w": "8f2efa5e",
-     "wq": "b1c2071d"
+     "answer": "Ec = ½ m v²",
+     "w": [
+      "050275de",
+      "8f2efa5e"
+     ],
+     "wrongs": [
+      "Ec = m v²",
+      "Ec = ½ m v",
+      "Ec = m g z"
+     ]
     },
     {
      "question": "Quelle est l'expression de l'énergie potentielle de pesanteur ?",
-     "answer": "Epp = m g z\nAxe z vertical vers le haut,\nEpp = 0 à l'altitude de référence.",
-     "w": "0ba03edf",
-     "wq": "427727ab"
+     "answer": "Epp = m g z",
+     "w": [
+      "c0ec1ff4",
+      "0ba03edf"
+     ],
+     "more": "Axe z vertical vers le haut.",
+     "wrongs": [
+      "Epp = ½ m g z",
+      "Epp = m v²",
+      "Epp = m / (g z)"
+     ]
     },
     {
      "question": "Comment est définie l'énergie mécanique ?",
-     "answer": "Em = Ec + Epp."
+     "answer": "Em = Ec + Epp",
+     "w": "90295221",
+     "wrongs": [
+      "Em = Ec − Epp",
+      "Em = Ec × Epp",
+      "Em = Epp − Ec"
+     ]
     },
     {
-     "question": "Comment calcule-t-on le travail d'une force constante F sur un déplacement AB ?",
-     "answer": "W_AB(F) = F · AB (produit scalaire) = F × AB × cos(α)\nα : angle entre la force et le déplacement\nEn joules.",
-     "w": "e0108a25",
-     "wq": "e5acace0"
+     "question": "Comment calcule-t-on le travail d'une force constante sur un déplacement AB ?",
+     "answer": "W = F × AB × cos(α)",
+     "w": [
+      "d6d83866",
+      "e0108a25"
+     ],
+     "wq": "e5acace0",
+     "wrongs": [
+      "W = F × AB × sin(α)",
+      "W = F / AB",
+      "W = F + AB"
+     ]
     },
     {
-     "question": "Quand le travail d'une force est-il moteur, résistant ou nul ?",
-     "answer": "• Moteur : W > 0 (0 ≤ α < 90°)\n• Résistant : W < 0 (90° < α ≤ 180°)\n• Nul : force perpendiculaire au déplacement",
-     "w": "7359ffb1",
-     "wq": "1036d8d1"
+     "question": "Quand le travail d'une force est-il moteur ?",
+     "answer": "Quand W > 0 (angle inférieur à 90°)",
+     "w": [
+      "7cd3f57e",
+      "7359ffb1"
+     ],
+     "wq": "1036d8d1",
+     "wrongs": [
+      "Quand W < 0",
+      "Quand la force est perpendiculaire au déplacement",
+      "Quand W = 0"
+     ]
+    },
+    {
+     "question": "Quel est le travail d'une force perpendiculaire au déplacement ?",
+     "answer": "Nul",
+     "wrongs": [
+      "Moteur",
+      "Résistant",
+      "Maximal"
+     ]
     },
     {
      "question": "Quelle est l'expression du travail du poids entre A et B ?",
-     "answer": "W_AB(P) = m g (zA − zB)\nIl ne dépend pas du chemin suivi,\nseulement des altitudes de départ et d'arrivée.",
-     "w": "893d700c",
-     "wq": "6ca7dc47"
+     "answer": "W = m g (zA − zB)",
+     "w": [
+      "c7414c1a",
+      "893d700c"
+     ],
+     "wrongs": [
+      "W = m g (zB − zA)",
+      "W = m g × AB",
+      "W = ½ m g z"
+     ]
     },
     {
-     "question": "Énoncer le théorème de l'énergie cinétique.",
-     "answer": "Dans un référentiel galiléen :\nΔEc = Ec(B) − Ec(A) = Σ W_AB(F)\n(somme des travaux des forces appliquées)",
-     "w": "3de51c2e",
-     "wq": "d743aa0c"
+     "question": "Le travail du poids dépend-il du chemin suivi ?",
+     "answer": "Non, seulement des altitudes de départ et d'arrivée",
+     "wrongs": [
+      "Oui, il dépend de la longueur du chemin",
+      "Oui, il dépend de la vitesse",
+      "Oui, il dépend des frottements"
+     ]
+    },
+    {
+     "question": "Que dit le théorème de l'énergie cinétique ?",
+     "answer": "ΔEc = somme des travaux des forces appliquées",
+     "w": [
+      "5de630be",
+      "3de51c2e"
+     ],
+     "wq": "d743aa0c",
+     "more": "Dans un référentiel galiléen.",
+     "wrongs": [
+      "ΔEc = 0",
+      "ΔEc = somme des forces",
+      "ΔEc = ΔEpp"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une force conservative ?",
-     "answer": "Une force dont le travail ne dépend pas du chemin suivi.\nOn peut lui associer une énergie potentielle.\nEx. : le poids",
-     "w": "c7e0fe49",
-     "wq": "618ab617"
+     "answer": "Une force dont le travail ne dépend pas du chemin suivi",
+     "w": [
+      "e197591b",
+      "c7e0fe49"
+     ],
+     "more": "Ex. : le poids.",
+     "wrongs": [
+      "Une force qui conserve la vitesse",
+      "Une force de frottement",
+      "Une force toujours nulle"
+     ]
     },
     {
      "question": "Que devient l'énergie mécanique si seules des forces conservatives travaillent ?",
-     "answer": "Elle se conserve : Em reste constante.\nIl y a seulement conversion entre Ec et Epp.",
-     "w": "d662263e",
-     "wq": "91339b5b"
+     "answer": "Elle se conserve",
+     "w": [
+      "24b0c7ee",
+      "d662263e"
+     ],
+     "more": "Ec et Epp se convertissent l'une en l'autre.",
+     "wrongs": [
+      "Elle augmente",
+      "Elle diminue",
+      "Elle s'annule"
+     ]
     },
     {
      "question": "Quel est l'effet des frottements sur l'énergie mécanique ?",
-     "answer": "Les frottements (non conservatifs) ont un travail résistant :\nΔEm = W des forces non conservatives < 0\nL'énergie perdue est dissipée sous forme thermique.",
-     "w": "eac1a5e5",
-     "wq": "ddda9fed"
+     "answer": "Elle diminue : l'énergie est dissipée sous forme thermique",
+     "w": [
+      "fd8202cf",
+      "eac1a5e5"
+     ],
+     "wrongs": [
+      "Elle augmente",
+      "Elle reste constante",
+      "Elle double"
+     ]
     },
     {
-     "question": "Quelle vitesse atteint un objet lâché sans vitesse d'une hauteur h, sans frottements ?",
-     "answer": "v = √(2 g h)\nConservation de l'énergie mécanique : ½ m v² = m g h",
-     "w": "d660f418",
-     "wq": "640b37bc"
+     "question": "Quelle vitesse atteint un objet lâché d'une hauteur h, sans frottements ?",
+     "answer": "v = √(2 g h)",
+     "w": [
+      "7ed173d9",
+      "d660f418"
+     ],
+     "wq": "640b37bc",
+     "wrongs": [
+      "v = 2 g h",
+      "v = √(g h)",
+      "v = g h / 2"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une onde mécanique progressive ?",
-     "answer": "La propagation d'une perturbation dans un milieu matériel :\n• sans transport de matière\n• avec transport d'énergie",
-     "w": "984fae7e",
-     "wq": "ddd3ac4a"
+     "question": "Une onde mécanique progressive transporte-t-elle de la matière ?",
+     "answer": "Non, elle transporte de l'énergie sans transport de matière",
+     "w": [
+      "4330cb0e",
+      "984fae7e"
+     ],
+     "wq": "ddd3ac4a",
+     "wrongs": [
+      "Oui, elle transporte de la matière",
+      "Elle ne transporte rien",
+      "Elle transporte de la matière et pas d'énergie"
+     ]
     },
     {
-     "question": "Quelle différence entre une onde transversale et une onde longitudinale ?",
-     "answer": "Transversale : perturbation perpendiculaire à la propagation (corde).\nLongitudinale : perturbation parallèle à la propagation (son, ressort).",
-     "w": "99084f13",
-     "wq": "bbd4fdf1"
+     "question": "Qu'est-ce qu'une onde transversale ?",
+     "answer": "Une onde dont la perturbation est perpendiculaire à la propagation",
+     "w": [
+      "b090332b",
+      "99084f13"
+     ],
+     "wq": "bbd4fdf1",
+     "more": "Ex. : onde le long d'une corde.",
+     "wrongs": [
+      "Une onde dont la perturbation est parallèle à la propagation",
+      "Une onde qui se propage dans le vide",
+      "Une onde sonore"
+     ]
+    },
+    {
+     "question": "Le son est-il une onde transversale ou longitudinale ?",
+     "answer": "Longitudinale",
+     "wrongs": [
+      "Transversale",
+      "Électromagnétique",
+      "Ni l'une ni l'autre"
+     ]
     },
     {
      "question": "Comment calcule-t-on la célérité d'une onde ?",
-     "answer": "v = d / Δt\nd : distance parcourue par la perturbation pendant Δt",
-     "w": "722c5c32",
-     "wq": "71123e0a"
+     "answer": "v = d / Δt",
+     "w": [
+      "f04dfe3b",
+      "722c5c32"
+     ],
+     "wrongs": [
+      "v = d × Δt",
+      "v = Δt / d",
+      "v = λ × T"
+     ]
     },
     {
-     "question": "Qu'est-ce que le retard τ entre deux points d'un milieu atteints par une onde ?",
-     "answer": "La durée mise par la perturbation pour aller de l'un à l'autre :\nτ = d / v",
-     "w": "de08c9be",
-     "wq": "21b6a787"
+     "question": "Comment calcule-t-on le retard τ entre deux points distants de d ?",
+     "answer": "τ = d / v",
+     "w": [
+      "4bcbf236",
+      "de08c9be"
+     ],
+     "wq": "21b6a787",
+     "wrongs": [
+      "τ = v / d",
+      "τ = d × v",
+      "τ = λ / T"
+     ]
     },
     {
-     "question": "Quelle relation lie longueur d'onde, célérité et période d'une onde périodique ?",
-     "answer": "λ = v × T = v / f\nLa longueur d'onde est la périodicité spatiale de l'onde.",
-     "w": "0f27752d",
-     "wq": "76ff6fa0"
+     "question": "Quelle relation lie longueur d'onde, célérité et période ?",
+     "answer": "λ = v × T",
+     "w": [
+      "1ffc58f2",
+      "0f27752d"
+     ],
+     "wq": "76ff6fa0",
+     "more": "Ou λ = v / f.",
+     "wrongs": [
+      "λ = v / T",
+      "λ = T / v",
+      "λ = v × f"
+     ]
     }
    ]
   },
@@ -48387,111 +49122,272 @@
    "cards": [
     {
      "question": "Quelle relation lie quantité de matière, masse et masse molaire ?",
-     "answer": "n = m / M\nn en mol, m en g, M en g/mol",
-     "w": "4ec53621",
-     "wq": "5c9eeefa"
+     "answer": "n = m / M",
+     "w": [
+      "6cdff221",
+      "4ec53621"
+     ],
+     "wrongs": [
+      "n = m × M",
+      "n = M / m",
+      "n = m × N_A"
+     ]
     },
     {
-     "question": "Quelle relation lie quantité de matière et concentration en quantité de matière ?",
-     "answer": "n = C × V\nC en mol/L, V en L",
-     "w": "c7ee9ce7",
-     "wq": "81bf698f"
+     "question": "Quelle relation lie quantité de matière et concentration ?",
+     "answer": "n = C × V",
+     "w": [
+      "594ccc5f",
+      "c7ee9ce7"
+     ],
+     "wq": "81bf698f",
+     "wrongs": [
+      "n = C / V",
+      "n = V / C",
+      "n = C + V"
+     ]
     },
     {
-     "question": "Comment calcule-t-on la quantité de matière d'un gaz à partir de son volume ?",
-     "answer": "n = V / Vm\nVm : volume molaire (environ 24 L/mol à 20 °C sous 1 bar)",
-     "w": "e31c878a",
-     "wq": "0585b08f"
+     "question": "Comment calcule-t-on la quantité de matière d'un gaz ?",
+     "answer": "n = V / Vm",
+     "w": [
+      "fcc1aaad",
+      "e31c878a"
+     ],
+     "wq": "0585b08f",
+     "more": "Vm ≈ 24 L/mol à 20 °C sous 1 bar.",
+     "wrongs": [
+      "n = V × Vm",
+      "n = Vm / V",
+      "n = m × V"
+     ]
     },
     {
-     "question": "Que vaut la constante d'Avogadro et que représente-t-elle ?",
-     "answer": "N_A ≈ 6,02 × 10²³ mol⁻¹\nle nombre d'entités dans une mole.\nN = n × N_A",
-     "w": "8574758e",
-     "wq": "4467cec6"
+     "question": "Que vaut la constante d'Avogadro ?",
+     "answer": "6,02 × 10²³ mol⁻¹",
+     "w": [
+      "a59a3a00",
+      "8574758e"
+     ],
+     "wq": "4467cec6",
+     "more": "Le nombre d'entités dans une mole ; N = n × N_A.",
+     "wrongs": [
+      "6,67 × 10⁻¹¹ mol⁻¹",
+      "3,00 × 10⁸ mol⁻¹",
+      "1,6 × 10⁻¹⁹ mol⁻¹"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'avancement x d'une réaction ?",
-     "answer": "Une quantité de matière (en mol) qui décrit l'évolution du système.\nRéactifs et produits varient proportionnellement à x\net aux coefficients stœchiométriques.",
-     "w": "458c9544",
-     "wq": "18193764"
+     "question": "En quelle unité s'exprime l'avancement x d'une réaction ?",
+     "answer": "En mole",
+     "w": [
+      "eed49cc7",
+      "458c9544"
+     ],
+     "wq": "18193764",
+     "wrongs": [
+      "En gramme",
+      "En litre",
+      "Sans unité"
+     ]
     },
     {
      "question": "Comment détermine-t-on l'avancement maximal x_max ?",
-     "answer": "Pour chaque réactif, on résout n(initial) − a·x = 0.\nx_max est la plus petite des valeurs obtenues.",
-     "w": "cf804db6",
-     "wq": "62dd4618"
+     "answer": "La plus petite valeur annulant la quantité d'un réactif",
+     "w": [
+      "fabadfa1",
+      "cf804db6"
+     ],
+     "wrongs": [
+      "La plus grande valeur annulant la quantité d'un réactif",
+      "La moyenne des quantités initiales",
+      "La quantité du produit"
+     ]
     },
     {
      "question": "Qu'est-ce que le réactif limitant ?",
-     "answer": "Le réactif entièrement consommé à l'état final d'une transformation totale.\nC'est lui qui fixe x_max.",
-     "w": "49a57d7f",
-     "wq": "fb1ae9d2"
+     "answer": "Le réactif entièrement consommé à l'état final",
+     "w": [
+      "e322222a",
+      "49a57d7f"
+     ],
+     "more": "C'est lui qui fixe x_max.",
+     "wrongs": [
+      "Le réactif en excès",
+      "Le produit majoritaire",
+      "Le catalyseur"
+     ]
     },
     {
-     "question": "Quand un mélange est-il dans les proportions stœchiométriques ?",
-     "answer": "Quand les quantités initiales respectent les proportions des coefficients de l'équation.\nTous les réactifs sont alors épuisés en même temps.",
-     "w": "a6053622",
-     "wq": "82032b94"
+     "question": "Que se passe-t-il quand un mélange est dans les proportions stœchiométriques ?",
+     "answer": "Tous les réactifs sont épuisés en même temps",
+     "w": [
+      "cf5e37fe",
+      "a6053622"
+     ],
+     "wq": "82032b94",
+     "wrongs": [
+      "Un réactif reste en excès",
+      "Aucun produit ne se forme",
+      "La réaction est impossible"
+     ]
     },
     {
      "question": "Qu'est-ce que l'équivalence d'un titrage ?",
-     "answer": "Le moment où réactif titré et réactif titrant\nont été introduits dans les proportions stœchiométriques.\nLe réactif titrant devient alors en excès.",
-     "w": "1de8c826",
-     "wq": "884f0b78"
+     "answer": "Le moment où réactifs titré et titrant sont dans les proportions stœchiométriques",
+     "w": [
+      "a5539997",
+      "1de8c826"
+     ],
+     "wrongs": [
+      "Le moment où le pH vaut 7",
+      "Le début du titrage",
+      "Le moment où la couleur disparaît toujours"
+     ]
     },
     {
-     "question": "Pour un titrage selon aA + bB → produits, quelle relation est vérifiée à l'équivalence ?",
-     "answer": "n(A initial) / a = n(B versé à l'équivalence) / b",
-     "w": "35455a93",
-     "wq": "f2e67723"
+     "question": "Pour aA + bB → produits, quelle relation est vérifiée à l'équivalence ?",
+     "answer": "n(A initial) / a = n(B versé) / b",
+     "w": [
+      "4da0e32f",
+      "35455a93"
+     ],
+     "wq": "f2e67723",
+     "wrongs": [
+      "n(A) × a = n(B) × b",
+      "n(A) = n(B)",
+      "n(A) / b = n(B) / a"
+     ]
     },
     {
      "question": "Que dit la loi de Beer-Lambert ?",
-     "answer": "L'absorbance d'une solution diluée est proportionnelle\nà la concentration de l'espèce colorée :\nA = k × C",
-     "w": "1b5b7819",
-     "wq": "3c910e4c"
+     "answer": "L'absorbance est proportionnelle à la concentration : A = k × C",
+     "w": [
+      "c49d8d28",
+      "1b5b7819"
+     ],
+     "wrongs": [
+      "L'absorbance est inversement proportionnelle à la concentration",
+      "La couleur dépend de la température",
+      "A = k / C"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un oxydant ? un réducteur ?",
-     "answer": "Oxydant : capable de capter un ou plusieurs électrons.\nRéducteur : capable d'en céder.",
-     "w": "7c3f34e7",
-     "wq": "929d333e"
+     "question": "Qu'est-ce qu'un oxydant ?",
+     "answer": "Une espèce capable de capter des électrons",
+     "w": [
+      "d0c65e00",
+      "7c3f34e7"
+     ],
+     "wq": "929d333e",
+     "wrongs": [
+      "Une espèce capable de céder des électrons",
+      "Une espèce capable de céder un H⁺",
+      "Une espèce sans électrons"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un schéma de Lewis ?",
-     "answer": "La représentation d'une entité avec\nles doublets liants (liaisons) et non liants\ndes électrons de valence de chaque atome.",
-     "w": "ced9eaa2",
-     "wq": "82733c30"
+     "question": "Qu'est-ce qu'un réducteur ?",
+     "answer": "Une espèce capable de céder des électrons",
+     "wrongs": [
+      "Une espèce capable de capter des électrons",
+      "Une espèce qui contient de l'oxygène",
+      "Une espèce neutre"
+     ]
     },
     {
-     "question": "Énoncer les règles du duet et de l'octet.",
-     "answer": "• Duet : l'hydrogène s'entoure de 2 électrons.\n• Octet : C, N, O, F, Cl… tendent à s'entourer de 8 électrons (4 doublets).",
-     "w": "131a918a",
-     "wq": "a25617c3"
+     "question": "Que représente un schéma de Lewis ?",
+     "answer": "Les doublets liants et non liants des électrons de valence",
+     "w": [
+      "08eab33f",
+      "ced9eaa2"
+     ],
+     "wq": "82733c30",
+     "wrongs": [
+      "La masse des atomes",
+      "Les noyaux seulement",
+      "La forme 3D exacte de la molécule"
+     ]
     },
     {
-     "question": "Combien de liaisons covalentes forment habituellement H, C, N et O ?",
-     "answer": "• H : 1\n• C : 4\n• N : 3\n• O : 2",
-     "w": "2b225ebb",
-     "wq": "d490de01"
+     "question": "Que dit la règle du duet ?",
+     "answer": "L'hydrogène s'entoure de 2 électrons",
+     "w": [
+      "5e45173a",
+      "131a918a"
+     ],
+     "wq": "a25617c3",
+     "wrongs": [
+      "L'hydrogène s'entoure de 8 électrons",
+      "Le carbone s'entoure de 2 électrons",
+      "Tous les atomes ont 2 liaisons"
+     ]
+    },
+    {
+     "question": "Que dit la règle de l'octet ?",
+     "answer": "C, N, O… tendent à s'entourer de 8 électrons",
+     "wrongs": [
+      "Tous les atomes ont 8 protons",
+      "L'hydrogène a 8 électrons",
+      "Chaque atome forme 8 liaisons"
+     ]
+    },
+    {
+     "question": "Combien de liaisons covalentes forme habituellement le carbone ?",
+     "answer": "4",
+     "w": [
+      "a184a308",
+      "2b225ebb"
+     ],
+     "wq": "d490de01",
+     "more": "H : 1 ; N : 3 ; O : 2.",
+     "wrongs": [
+      "2",
+      "3",
+      "1"
+     ]
     },
     {
      "question": "Qu'est-ce que l'électronégativité ?",
-     "answer": "La capacité d'un atome à attirer les électrons d'une liaison covalente.\nEntre deux atomes d'électronégativités différentes,\nla liaison est polarisée.",
-     "w": "b0581fd7",
-     "wq": "2e034ad0"
+     "answer": "La capacité d'un atome à attirer les électrons d'une liaison",
+     "w": [
+      "f0202471",
+      "b0581fd7"
+     ],
+     "wrongs": [
+      "La charge d'un ion",
+      "Le nombre d'électrons d'un atome",
+      "La masse d'un atome"
+     ]
     },
     {
-     "question": "Pourquoi la molécule d'eau est-elle polaire alors que CO2 ne l'est pas ?",
-     "answer": "Eau : molécule coudée,\nles charges partielles + et − ne sont pas au même endroit.\nCO₂ : molécule linéaire,\nles deux liaisons polarisées se compensent.",
-     "w": "d9ae0b0c",
-     "wq": "5049c9ba"
+     "question": "Pourquoi la molécule de CO₂ n'est-elle pas polaire ?",
+     "answer": "Elle est linéaire : ses liaisons polarisées se compensent",
+     "w": [
+      "3d892f02",
+      "d9ae0b0c"
+     ],
+     "wq": "5049c9ba",
+     "more": "L'eau, coudée, est polaire.",
+     "wrongs": [
+      "Ses liaisons ne sont pas polarisées",
+      "Elle n'a pas d'électrons",
+      "Elle est coudée"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une liaison hydrogène ?",
-     "answer": "Une interaction entre :\n• un H lié à un atome très électronégatif (O, N, F)\n• un autre atome très électronégatif portant un doublet non liant\nPlus forte que les interactions de Van der Waals.",
-     "w": "cf9e4749",
-     "wq": "ecfb90e0"
+     "answer": "Une interaction entre un H lié à O, N ou F et un atome électronégatif voisin",
+     "w": [
+      "e0a111b3",
+      "cf9e4749"
+     ],
+     "more": "Plus forte que les interactions de Van der Waals.",
+     "wrongs": [
+      "Une liaison covalente entre deux H",
+      "Une liaison ionique",
+      "Une liaison entre deux métaux"
+     ]
     }
    ]
   },
@@ -49173,103 +50069,250 @@
    "cards": [
     {
      "question": "Quand s'ouvrent les États généraux ?",
-     "answer": "Le 5 mai 1789 à Versailles."
+     "answer": "Le 5 mai 1789",
+     "w": "1d9d09fd",
+     "more": "À Versailles.",
+     "wrongs": [
+      "Le 14 juillet 1789",
+      "Le 20 juin 1789",
+      "Le 4 août 1789"
+     ]
     },
     {
-     "question": "Qu'est-ce que le serment du Jeu de paume ?",
-     "answer": "Le 20 juin 1789, les députés du tiers état, proclamés Assemblée nationale,\njurent de ne pas se séparer\navant d'avoir donné une constitution à la France.",
-     "w": "60f4a946",
-     "wq": "ca190190"
+     "question": "Que jurent les députés du tiers état lors du serment du Jeu de paume ?",
+     "answer": "De ne pas se séparer avant d'avoir donné une constitution à la France",
+     "w": [
+      "13d6ecde",
+      "60f4a946"
+     ],
+     "wq": "ca190190",
+     "more": "Le 20 juin 1789.",
+     "wrongs": [
+      "De rester fidèles au roi",
+      "De prendre la Bastille",
+      "D'abolir l'esclavage"
+     ]
     },
     {
      "question": "Que se passe-t-il le 14 juillet 1789 ?",
-     "answer": "La prise de la Bastille par le peuple parisien,\nsymbole de la fin de l'absolutisme.",
-     "w": "5ffbc50f",
-     "wq": "9a756a90"
+     "answer": "La prise de la Bastille",
+     "w": [
+      "7f80c31d",
+      "5ffbc50f"
+     ],
+     "wrongs": [
+      "L'abolition des privilèges",
+      "L'exécution de Louis XVI",
+      "La proclamation de la République"
+     ]
     },
     {
      "question": "Que décide l'Assemblée dans la nuit du 4 août 1789 ?",
-     "answer": "L'abolition des privilèges et des droits féodaux."
+     "answer": "L'abolition des privilèges",
+     "w": "cd50fda7",
+     "wrongs": [
+      "La proclamation de la République",
+      "La Déclaration des droits de l'homme",
+      "L'exécution du roi"
+     ]
     },
     {
      "question": "Quand est adoptée la Déclaration des droits de l'homme et du citoyen ?",
-     "answer": "Le 26 août 1789\nElle affirme notamment :\n• la liberté\n• l'égalité en droits\n• la souveraineté de la nation",
-     "w": "f8738565",
-     "wq": "0264c396"
+     "answer": "Le 26 août 1789",
+     "w": [
+      "f3807899",
+      "f8738565"
+     ],
+     "wrongs": [
+      "Le 14 juillet 1789",
+      "Le 4 août 1789",
+      "Le 21 septembre 1792"
+     ]
     },
     {
      "question": "Quel régime instaure la Constitution de 1791 ?",
-     "answer": "Une monarchie constitutionnelle\n• séparation des pouvoirs\n• suffrage censitaire",
-     "w": "21e7c26f",
-     "wq": "466fc548"
+     "answer": "Une monarchie constitutionnelle",
+     "w": [
+      "6feca9a9",
+      "21e7c26f"
+     ],
+     "more": "Séparation des pouvoirs, suffrage censitaire.",
+     "wrongs": [
+      "Une république",
+      "Une monarchie absolue",
+      "Un empire"
+     ]
     },
     {
      "question": "Quand la République est-elle proclamée en France ?",
-     "answer": "Le 21 septembre 1792, après l'abolition de la royauté.\nLe 22 septembre 1792 devient le premier jour de l'an I.",
-     "w": "e36071b7",
-     "wq": "7720c7a5"
+     "answer": "Le 21 septembre 1792",
+     "w": [
+      "b1296c98",
+      "e36071b7"
+     ],
+     "wrongs": [
+      "Le 14 juillet 1789",
+      "Le 21 janvier 1793",
+      "Le 9 novembre 1799"
+     ]
     },
     {
      "question": "Quand Louis XVI est-il exécuté ?",
-     "answer": "Le 21 janvier 1793."
+     "answer": "Le 21 janvier 1793",
+     "w": "08ce51a3",
+     "wrongs": [
+      "Le 21 septembre 1792",
+      "Le 14 juillet 1789",
+      "Le 27 juillet 1794"
+     ]
     },
     {
-     "question": "Qu'est-ce que la Terreur ?",
-     "answer": "Le gouvernement d'exception de 1793-1794,\ndominé par le Comité de salut public et Robespierre.\nRépression massive contre les « suspects ».",
-     "w": "0bb1cd98",
-     "wq": "cc542ce9"
+     "question": "Qui domine le gouvernement de la Terreur (1793-1794) ?",
+     "answer": "Robespierre et le Comité de salut public",
+     "w": [
+      "fd6993ad",
+      "0bb1cd98"
+     ],
+     "wq": "cc542ce9",
+     "wrongs": [
+      "Bonaparte et les consuls",
+      "Louis XVI et ses ministres",
+      "Les cinq directeurs"
+     ]
     },
     {
-     "question": "Comment la Terreur prend-elle fin ?",
-     "answer": "Par la chute de Robespierre,\nle 9 thermidor an II (27 juillet 1794).",
-     "w": "42ddc00a",
-     "wq": "0056fa90"
+     "question": "Quel événement met fin à la Terreur ?",
+     "answer": "La chute de Robespierre, le 9 thermidor an II",
+     "w": [
+      "84a0b79e",
+      "42ddc00a"
+     ],
+     "wq": "0056fa90",
+     "more": "27 juillet 1794.",
+     "wrongs": [
+      "Le coup d'État du 18 brumaire",
+      "La prise de la Bastille",
+      "Le sacre de Napoléon"
+     ]
     },
     {
      "question": "Quand la Convention abolit-elle l'esclavage dans les colonies ?",
-     "answer": "Le 16 pluviôse an II (4 février 1794)\nBonaparte le rétablit en 1802.",
-     "w": "2f80d8d1",
-     "wq": "05c3a65f"
+     "answer": "Le 4 février 1794",
+     "w": [
+      "84e074d8",
+      "2f80d8d1"
+     ],
+     "more": "16 pluviôse an II.",
+     "wrongs": [
+      "Le 4 août 1789",
+      "Le 26 août 1789",
+      "Le 21 septembre 1792"
+     ]
+    },
+    {
+     "question": "Qui rétablit l'esclavage en 1802 ?",
+     "answer": "Bonaparte",
+     "wrongs": [
+      "Robespierre",
+      "Louis XVIII",
+      "Le Directoire"
+     ]
     },
     {
      "question": "Quel régime gouverne la France de 1795 à 1799 ?",
-     "answer": "Le Directoire\nRégime républicain dirigé par cinq directeurs, suffrage censitaire.",
-     "w": "50c6822d",
-     "wq": "f3491f4c"
+     "answer": "Le Directoire",
+     "w": [
+      "f60fa535",
+      "50c6822d"
+     ],
+     "more": "Cinq directeurs, suffrage censitaire.",
+     "wrongs": [
+      "Le Consulat",
+      "La Terreur",
+      "L'Empire"
+     ]
     },
     {
-     "question": "Qu'est-ce que le coup d'État du 18 brumaire an VIII ?",
-     "answer": "Le 9 novembre 1799, Bonaparte renverse le Directoire\net instaure le Consulat.",
-     "w": "d314ebb3",
-     "wq": "c3ea9e11"
+     "question": "Quel régime Bonaparte instaure-t-il après le coup d'État du 18 brumaire ?",
+     "answer": "Le Consulat",
+     "w": [
+      "18fad6a5",
+      "d314ebb3"
+     ],
+     "wq": "c3ea9e11",
+     "more": "9 novembre 1799.",
+     "wrongs": [
+      "L'Empire",
+      "Le Directoire",
+      "La monarchie constitutionnelle"
+     ]
     },
     {
      "question": "Qu'est-ce que le Concordat de 1801 ?",
-     "answer": "L'accord entre Bonaparte et le pape Pie VII :\n• il rétablit la paix religieuse\n• le catholicisme est reconnu religion de la majorité des Français\n• l'État rémunère le clergé",
-     "w": "d1f854c5",
-     "wq": "2a9d81f2"
+     "answer": "Un accord entre Bonaparte et le pape qui rétablit la paix religieuse",
+     "w": [
+      "7a0a9f58",
+      "d1f854c5"
+     ],
+     "more": "Le catholicisme est reconnu religion de la majorité ; l'État paie le clergé.",
+     "wrongs": [
+      "Un traité de paix avec l'Angleterre",
+      "Le Code civil",
+      "La séparation des Églises et de l'État"
+     ]
     },
     {
      "question": "Qu'est-ce que le Code civil de 1804 ?",
-     "answer": "Le recueil de lois civiles qui consacre des acquis de la Révolution\n(égalité devant la loi, propriété)\ntout en renforçant l'autorité du père et du mari.",
-     "w": "b495714b",
-     "wq": "98cb3770"
+     "answer": "Un recueil de lois civiles qui consacre des acquis de la Révolution",
+     "w": [
+      "adddda2f",
+      "b495714b"
+     ],
+     "more": "Égalité devant la loi, propriété ; mais autorité du père et du mari renforcée.",
+     "wrongs": [
+      "Une constitution républicaine",
+      "Un traité de paix",
+      "Un code militaire"
+     ]
     },
     {
      "question": "Quand Napoléon est-il sacré empereur ?",
-     "answer": "Le 2 décembre 1804\nà Notre-Dame de Paris.",
-     "w": "bd42f1b6",
-     "wq": "09f5bae2"
+     "answer": "Le 2 décembre 1804",
+     "w": [
+      "389ab380",
+      "bd42f1b6"
+     ],
+     "more": "À Notre-Dame de Paris.",
+     "wrongs": [
+      "Le 9 novembre 1799",
+      "Le 18 juin 1815",
+      "Le 2 décembre 1805"
+     ]
     },
     {
      "question": "Quelle bataille marque la défaite définitive de Napoléon ?",
-     "answer": "Waterloo, le 18 juin 1815."
+     "answer": "Waterloo, le 18 juin 1815",
+     "w": "7edf9761",
+     "wrongs": [
+      "Austerlitz, 1805",
+      "Trafalgar, 1805",
+      "Leipzig, 1813"
+     ]
     },
     {
-     "question": "Qu'est-ce que le congrès de Vienne ?",
-     "answer": "La réunion des vainqueurs de Napoléon (1814-1815).\n• Elle redessine la carte de l'Europe.\n• Elle restaure l'équilibre des puissances et le principe monarchique.",
-     "w": "3d00ace7",
-     "wq": "a9550946"
+     "question": "Qu'est-ce que le congrès de Vienne (1814-1815) ?",
+     "answer": "La réunion des vainqueurs de Napoléon qui redessine l'Europe",
+     "w": [
+      "dc5e8e75",
+      "3d00ace7"
+     ],
+     "wq": "a9550946",
+     "more": "Il restaure l'équilibre des puissances et le principe monarchique.",
+     "wrongs": [
+      "Le sacre de Napoléon",
+      "Un traité entre la France et l'Autriche en 1805",
+      "La première assemblée révolutionnaire"
+     ]
     }
    ]
   },
@@ -49614,106 +50657,260 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "La conscience : quelle citation de Descartes (Discours de la méthode, 1637) ?",
-     "answer": "« Je pense, donc je suis. »\nLe doute méthodique bute sur une certitude :\nla conscience que j'ai de penser.",
-     "w": "a71263ca",
-     "wq": "f30316b9"
+     "question": "Quel philosophe a écrit « Je pense, donc je suis » ?",
+     "answer": "Descartes",
+     "w": [
+      "5ef3e902",
+      "a71263ca"
+     ],
+     "wq": "f30316b9",
+     "more": "Discours de la méthode (1637) : la conscience de penser résiste au doute.",
+     "wrongs": [
+      "Pascal",
+      "Kant",
+      "Spinoza"
+     ]
     },
     {
-     "question": "L'inconscient : quelle formule de Freud décrit la « blessure » infligée par la psychanalyse ?",
-     "answer": "« Le moi n'est pas maître dans sa propre maison. »\n(Une difficulté de la psychanalyse, 1917)",
-     "w": "0030bebf",
-     "wq": "f6aad333"
+     "question": "Qui a écrit « Le moi n'est pas maître dans sa propre maison » ?",
+     "answer": "Freud",
+     "w": [
+      "94265b03",
+      "0030bebf"
+     ],
+     "wq": "f6aad333",
+     "more": "Une difficulté de la psychanalyse (1917).",
+     "wrongs": [
+      "Descartes",
+      "Sartre",
+      "Nietzsche"
+     ]
     },
     {
-     "question": "La liberté : quelle formule de Sartre (L'existentialisme est un humanisme, 1946) ?",
-     "answer": "« L'homme est condamné à être libre. »\nIl ne peut pas ne pas choisir\net il est responsable de ce qu'il fait de lui.",
-     "w": "8cfca0ee",
-     "wq": "8547bef2"
+     "question": "Qui a écrit « L'homme est condamné à être libre » ?",
+     "answer": "Sartre",
+     "w": [
+      "8c134232",
+      "8cfca0ee"
+     ],
+     "wq": "8547bef2",
+     "more": "L'existentialisme est un humanisme (1946).",
+     "wrongs": [
+      "Rousseau",
+      "Camus",
+      "Spinoza"
+     ]
     },
     {
-     "question": "La liberté : que dit Spinoza de l'illusion du libre arbitre (Éthique, III) ?",
-     "answer": "Les hommes se croient libres\nparce qu'ils sont conscients de leurs actions\net ignorants des causes qui les déterminent.",
-     "w": "9cf5d36d",
-     "wq": "74cdc734"
+     "question": "Selon Spinoza, pourquoi les hommes se croient-ils libres ?",
+     "answer": "Ils sont conscients de leurs actions mais ignorent leurs causes",
+     "w": [
+      "462b7d79",
+      "9cf5d36d"
+     ],
+     "wq": "74cdc734",
+     "more": "Éthique, III.",
+     "wrongs": [
+      "Parce qu'ils sont réellement libres",
+      "Parce qu'ils obéissent aux lois",
+      "Parce qu'ils ont une âme"
+     ]
     },
     {
-     "question": "La liberté et la loi : quelle phrase de Rousseau (Du contrat social, I, 8) ?",
-     "answer": "« L'obéissance à la loi qu'on s'est prescrite est liberté. »"
+     "question": "Qui a écrit « L'obéissance à la loi qu'on s'est prescrite est liberté » ?",
+     "answer": "Rousseau",
+     "w": "00f44281",
+     "wq": "d33746ea",
+     "more": "Du contrat social, I, 8.",
+     "wrongs": [
+      "Hobbes",
+      "Montesquieu",
+      "Kant"
+     ]
     },
     {
-     "question": "Le devoir : comment Kant formule-t-il l'impératif catégorique (Fondements de la métaphysique des mœurs, 1785) ?",
-     "answer": "« Agis uniquement d'après la maxime\nqui fait que tu puisses vouloir en même temps\nqu'elle devienne une loi universelle. »",
-     "w": "aa1bbf43",
-     "wq": "c066bdc5"
+     "question": "Quel philosophe a formulé l'impératif catégorique ?",
+     "answer": "Kant",
+     "w": [
+      "16fca74b",
+      "aa1bbf43"
+     ],
+     "wq": "c066bdc5",
+     "more": "« Agis uniquement d'après la maxime qui fait que tu puisses vouloir qu'elle devienne une loi universelle. »",
+     "wrongs": [
+      "Hegel",
+      "Rousseau",
+      "Aristote"
+     ]
     },
     {
-     "question": "Le devoir : quelle autre formule de l'impératif catégorique concerne la personne ?",
-     "answer": "Traiter l'humanité, en sa personne et en celle d'autrui,\ntoujours en même temps comme une fin,\net jamais simplement comme un moyen.",
-     "w": "8dfc4bb9",
-     "wq": "1823602d"
+     "question": "Selon Kant, comment faut-il traiter l'humanité en chaque personne ?",
+     "answer": "Toujours comme une fin, jamais simplement comme un moyen",
+     "w": [
+      "dac4b866",
+      "8dfc4bb9"
+     ],
+     "wq": "1823602d",
+     "wrongs": [
+      "Comme un moyen d'être heureux",
+      "Selon ses intérêts",
+      "Comme un objet de la nature"
+     ]
     },
     {
-     "question": "L'État : quelle définition de l'homme donne Aristote (Politique, I) ?",
-     "answer": "« L'homme est par nature un animal politique. »\nIl ne réalise sa nature que dans la cité.",
-     "w": "b9ff1a39",
-     "wq": "d88e0231"
+     "question": "Qui a défini l'homme comme « un animal politique » ?",
+     "answer": "Aristote",
+     "w": [
+      "ca1c9681",
+      "b9ff1a39"
+     ],
+     "wq": "d88e0231",
+     "more": "Politique, I.",
+     "wrongs": [
+      "Platon",
+      "Hobbes",
+      "Rousseau"
+     ]
     },
     {
-     "question": "L'État : quelle formule Hobbes reprend-il à Plaute dans le De Cive (1642) ?",
-     "answer": "« L'homme est un loup pour l'homme. »\nSans pouvoir commun, l'état de nature est\nune guerre de chacun contre chacun.",
-     "w": "e39dde3b",
-     "wq": "4efe87d2"
+     "question": "Quel philosophe reprend la formule « L'homme est un loup pour l'homme » ?",
+     "answer": "Hobbes",
+     "w": [
+      "5c376195",
+      "e39dde3b"
+     ],
+     "wq": "4efe87d2",
+     "more": "De Cive (1642) : l'état de nature est une guerre de chacun contre chacun.",
+     "wrongs": [
+      "Rousseau",
+      "Locke",
+      "Machiavel"
+     ]
     },
     {
-     "question": "La justice : quelle pensée de Pascal sur la force et le droit ?",
-     "answer": "« Ne pouvant faire que ce qui est juste fût fort,\non a fait que ce qui est fort fût juste. »\n(Pensées)",
-     "w": "c6052f89",
-     "wq": "8a559e9b"
+     "question": "Qui a écrit « Ne pouvant faire que ce qui est juste fût fort, on a fait que ce qui est fort fût juste » ?",
+     "answer": "Pascal",
+     "w": [
+      "0e63e47f",
+      "c6052f89"
+     ],
+     "wq": "8a559e9b",
+     "more": "Pensées.",
+     "wrongs": [
+      "Montaigne",
+      "Rousseau",
+      "Descartes"
+     ]
     },
     {
-     "question": "Le bonheur : que dit Kant du bonheur (Fondements de la métaphysique des mœurs) ?",
-     "answer": "« Le bonheur n'est pas un idéal de la raison, mais de l'imagination. »\nOn ne peut pas en déterminer le contenu de façon certaine.",
-     "w": "10aa76e7",
-     "wq": "957fc243"
+     "question": "Selon Kant, de quoi le bonheur est-il un idéal ?",
+     "answer": "De l'imagination, non de la raison",
+     "w": [
+      "a436cbad",
+      "10aa76e7"
+     ],
+     "wq": "957fc243",
+     "wrongs": [
+      "De la raison",
+      "De la religion",
+      "De la science"
+     ]
     },
     {
-     "question": "La technique : quelle formule de Descartes (Discours de la méthode, VI) ?",
-     "answer": "La science doit nous rendre\n« comme maîtres et possesseurs de la nature ».",
-     "w": "7d5aa62f",
-     "wq": "bfd9e2da"
+     "question": "Selon Descartes, la science doit nous rendre comme quoi ?",
+     "answer": "Maîtres et possesseurs de la nature",
+     "w": [
+      "9264ac15",
+      "7d5aa62f"
+     ],
+     "wq": "bfd9e2da",
+     "wrongs": [
+      "Esclaves de la nature",
+      "Égaux à Dieu",
+      "Indifférents à la nature"
+     ]
     },
     {
-     "question": "L'art : comment Kant définit-il le beau (Critique de la faculté de juger, 1790) ?",
-     "answer": "« Est beau ce qui plaît universellement sans concept. »"
+     "question": "Qui a défini le beau comme « ce qui plaît universellement sans concept » ?",
+     "answer": "Kant",
+     "w": "e9382b97",
+     "wq": "77f204ea",
+     "more": "Critique de la faculté de juger (1790).",
+     "wrongs": [
+      "Hegel",
+      "Platon",
+      "Nietzsche"
+     ]
     },
     {
-     "question": "La religion : quelle formule de Marx (1843) ?",
-     "answer": "« La religion est l'opium du peuple. »\nElle console de la misère réelle au lieu de la supprimer.\n(Contribution à la critique de la philosophie du droit de Hegel)",
-     "w": "a6b5d6a1",
-     "wq": "d19b1a20"
+     "question": "Qui a écrit « La religion est l'opium du peuple » ?",
+     "answer": "Marx",
+     "w": [
+      "4a95cca3",
+      "a6b5d6a1"
+     ],
+     "wq": "d19b1a20",
+     "wrongs": [
+      "Nietzsche",
+      "Freud",
+      "Voltaire"
+     ]
     },
     {
-     "question": "La science : quelle phrase de Bachelard (La Formation de l'esprit scientifique, 1938) ?",
-     "answer": "« Rien ne va de soi. Rien n'est donné. Tout est construit. »\nLa connaissance scientifique se construit contre l'opinion.",
-     "w": "80807f6e",
-     "wq": "b9762193"
+     "question": "Qui a écrit « Rien ne va de soi. Rien n'est donné. Tout est construit » ?",
+     "answer": "Bachelard",
+     "w": [
+      "51224150",
+      "80807f6e"
+     ],
+     "wq": "b9762193",
+     "more": "La Formation de l'esprit scientifique (1938).",
+     "wrongs": [
+      "Descartes",
+      "Popper",
+      "Kant"
+     ]
     },
     {
-     "question": "Le temps : quelle question de saint Augustin (Confessions, XI) ?",
-     "answer": "« Qu'est-ce donc que le temps ?\nSi personne ne me le demande, je le sais ;\nsi je veux l'expliquer à qui me le demande, je ne le sais plus. »",
-     "w": "d8f0a4aa",
-     "wq": "cb8b2e6c"
+     "question": "Quel penseur a dit du temps : « Si personne ne me le demande, je le sais » ?",
+     "answer": "Saint Augustin",
+     "w": [
+      "7c40ea62",
+      "d8f0a4aa"
+     ],
+     "wq": "cb8b2e6c",
+     "more": "Confessions, XI.",
+     "wrongs": [
+      "Bergson",
+      "Pascal",
+      "Heidegger"
+     ]
     },
     {
-     "question": "Le langage : quelle thèse de Hegel (Encyclopédie des sciences philosophiques) ?",
-     "answer": "« C'est dans les mots que nous pensons. »\nLa pensée sans mots, l'« ineffable », n'est qu'une pensée obscure.",
-     "w": "07ad41bc",
-     "wq": "3bcb1219"
+     "question": "Qui a écrit « C'est dans les mots que nous pensons » ?",
+     "answer": "Hegel",
+     "w": [
+      "af1de7b6",
+      "07ad41bc"
+     ],
+     "wq": "3bcb1219",
+     "wrongs": [
+      "Bergson",
+      "Descartes",
+      "Wittgenstein"
+     ]
     },
     {
-     "question": "La raison et l'histoire : quelle phrase de Hegel (La Raison dans l'histoire) ?",
-     "answer": "« Rien de grand ne s'est accompli dans le monde sans passion. »"
+     "question": "Qui a écrit « Rien de grand ne s'est accompli dans le monde sans passion » ?",
+     "answer": "Hegel",
+     "w": "75bb73fc",
+     "wq": "b56badf5",
+     "more": "La Raison dans l'histoire.",
+     "wrongs": [
+      "Spinoza",
+      "Descartes",
+      "Kant"
+     ]
     }
    ]
   },
@@ -50395,102 +51592,241 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce que la forme algébrique d'un nombre complexe ?",
-     "answer": "z = a + ib, avec a, b réels et i² = −1\n• a : partie réelle Re(z)\n• b : partie imaginaire Im(z)",
-     "w": "f7033b70",
-     "wq": "9a9d312c"
+     "question": "Dans z = a + ib, que vaut i² ?",
+     "answer": "−1",
+     "w": [
+      "22f513c9",
+      "f7033b70"
+     ],
+     "wq": "9a9d312c",
+     "more": "a est la partie réelle, b la partie imaginaire.",
+     "wrongs": [
+      "1",
+      "i",
+      "0"
+     ]
     },
     {
      "question": "Quel est le conjugué de z = a + ib ?",
-     "answer": "z̄ = a − ib\n• z + z̄ = 2 Re(z)\n• z − z̄ = 2i Im(z)\n• conjugué d'un produit = produit des conjugués",
-     "w": "67f5b5fc",
-     "wq": "c74acc75"
+     "answer": "a − ib",
+     "w": [
+      "cc4ec7d8",
+      "67f5b5fc"
+     ],
+     "wrongs": [
+      "−a + ib",
+      "−a − ib",
+      "b + ia"
+     ]
     },
     {
      "question": "Comment calcule-t-on le module de z = a + ib ?",
-     "answer": "|z| = √(a² + b²)\net z × z̄ = |z|²",
-     "w": "17f09795",
-     "wq": "14118541"
+     "answer": "|z| = √(a² + b²)",
+     "w": [
+      "6c14eecf",
+      "17f09795"
+     ],
+     "more": "Et z × z̄ = |z|².",
+     "wrongs": [
+      "|z| = a² + b²",
+      "|z| = a + b",
+      "|z| = √(a² − b²)"
+     ]
     },
     {
-     "question": "Comment calculer l'inverse 1/z d'un complexe non nul ?",
-     "answer": "On multiplie par le conjugué :\n1/z = z̄ / |z|²",
-     "w": "a503fc91",
-     "wq": "ff303bb8"
+     "question": "Comment écrit-on l'inverse 1/z d'un complexe non nul ?",
+     "answer": "z̄ / |z|²",
+     "w": [
+      "d460822f",
+      "a503fc91"
+     ],
+     "wq": "ff303bb8",
+     "wrongs": [
+      "z / |z|²",
+      "z̄ / |z|",
+      "1 / z̄"
+     ]
     },
     {
-     "question": "Quelles sont les propriétés du module pour un produit et un quotient ?",
-     "answer": "• |zz'| = |z| × |z'|\n• |z/z'| = |z| / |z'| (z' non nul)\n• |zⁿ| = |z|ⁿ",
-     "w": "f1ed347c",
-     "wq": "befa535e"
+     "question": "Que vaut le module d'un produit |zz'| ?",
+     "answer": "|z| × |z'|",
+     "w": [
+      "c7df9ea5",
+      "f1ed347c"
+     ],
+     "wq": "befa535e",
+     "wrongs": [
+      "|z| + |z'|",
+      "|z| / |z'|",
+      "|z|²"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'inégalité triangulaire ?",
-     "answer": "Pour tous complexes z et z' : |z + z'| ≤ |z| + |z'|."
+     "question": "Que dit l'inégalité triangulaire ?",
+     "answer": "|z + z'| ≤ |z| + |z'|",
+     "w": "e561afcd",
+     "wq": "7ce2ed65",
+     "wrongs": [
+      "|z + z'| ≥ |z| + |z'|",
+      "|z + z'| = |z| × |z'|",
+      "|z × z'| ≤ |z| + |z'|"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un argument de z non nul ?",
-     "answer": "Une mesure θ de l'angle orienté (u, OM), M d'affixe z,\ndéfinie à 2π près.\ncos θ = a/|z| et sin θ = b/|z|",
-     "w": "53ec98fc",
-     "wq": "ce3c52ce"
+     "question": "Si θ est un argument de z = a + ib, que vaut cos θ ?",
+     "answer": "a / |z|",
+     "w": [
+      "38e06ae6",
+      "53ec98fc"
+     ],
+     "wq": "ce3c52ce",
+     "more": "sin θ = b / |z|.",
+     "wrongs": [
+      "b / |z|",
+      "a / b",
+      "|z| / a"
+     ]
     },
     {
-     "question": "Quelles sont la forme trigonométrique et la forme exponentielle de z ?",
-     "answer": "z = r(cos θ + i sin θ) = r e^(iθ)\nr = |z| > 0, θ un argument de z",
-     "w": "77fe7d45",
-     "wq": "9a5662a7"
+     "question": "Quelle est la forme exponentielle de z de module r et d'argument θ ?",
+     "answer": "r e^(iθ)",
+     "w": [
+      "f391df47",
+      "77fe7d45"
+     ],
+     "wq": "9a5662a7",
+     "wrongs": [
+      "e^(rθ)",
+      "r e^θ",
+      "θ e^(ir)"
+     ]
     },
     {
-     "question": "Quelles sont les propriétés de l'argument pour un produit, un quotient, une puissance ?",
-     "answer": "À 2π près :\n• arg(zz') = arg z + arg z'\n• arg(z/z') = arg z − arg z'\n• arg(zⁿ) = n arg z",
-     "w": "175de062",
-     "wq": "f3217854"
+     "question": "Que vaut arg(zz') à 2π près ?",
+     "answer": "arg z + arg z'",
+     "w": [
+      "2008af35",
+      "175de062"
+     ],
+     "wq": "f3217854",
+     "wrongs": [
+      "arg z × arg z'",
+      "arg z − arg z'",
+      "arg z / arg z'"
+     ]
     },
     {
-     "question": "Énoncer la formule de Moivre.",
-     "answer": "(cos θ + i sin θ)ⁿ = cos(nθ) + i sin(nθ)\nsoit (e^(iθ))ⁿ = e^(inθ)",
-     "w": "ea922f37",
-     "wq": "5179567f"
+     "question": "Que dit la formule de Moivre ?",
+     "answer": "(cos θ + i sin θ)ⁿ = cos(nθ) + i sin(nθ)",
+     "w": [
+      "d64e8d1b",
+      "ea922f37"
+     ],
+     "wq": "5179567f",
+     "wrongs": [
+      "(cos θ + i sin θ)ⁿ = cosⁿθ + i sinⁿθ",
+      "(cos θ + i sin θ)ⁿ = n cos θ + i n sin θ",
+      "(e^(iθ))ⁿ = e^(iθ)"
+     ]
     },
     {
-     "question": "Énoncer les formules d'Euler.",
-     "answer": "cos θ = (e^(iθ) + e^(−iθ)) / 2\nsin θ = (e^(iθ) − e^(−iθ)) / (2i)",
-     "w": "075de9af",
-     "wq": "5c4d939e"
+     "question": "Que dit la formule d'Euler pour cos θ ?",
+     "answer": "cos θ = (e^(iθ) + e^(−iθ)) / 2",
+     "w": [
+      "119d6da9",
+      "075de9af"
+     ],
+     "wq": "5c4d939e",
+     "wrongs": [
+      "cos θ = (e^(iθ) − e^(−iθ)) / 2",
+      "cos θ = (e^(iθ) + e^(−iθ)) / (2i)",
+      "cos θ = e^(iθ) / 2"
+     ]
     },
     {
-     "question": "Comment résoudre az² + bz + c = 0 (a, b, c réels) lorsque Δ < 0 ?",
-     "answer": "Deux solutions complexes conjuguées :\nz = (−b ± i√(−Δ)) / (2a)",
-     "w": "efaa0cf8",
-     "wq": "3780e914"
+     "question": "Si Δ < 0, quelles sont les solutions de az² + bz + c = 0 (coefficients réels) ?",
+     "answer": "z = (−b ± i√(−Δ)) / (2a)",
+     "w": [
+      "65fd870b",
+      "efaa0cf8"
+     ],
+     "wq": "3780e914",
+     "wrongs": [
+      "z = (−b ± √Δ) / (2a) réels",
+      "Aucune solution",
+      "z = (b ± i√Δ) / a"
+     ]
     },
     {
-     "question": "Que sont les racines n-ièmes de l'unité ?",
-     "answer": "Les n solutions de zⁿ = 1 :\nz_k = e^(2ikπ/n), k = 0, 1, …, n − 1\nLeur somme est nulle (n ≥ 2) ;\nelles forment un polygone régulier inscrit dans le cercle unité.",
-     "w": "b7fe58c3",
-     "wq": "7403a94c"
+     "question": "Quelles sont les racines n-ièmes de l'unité ?",
+     "answer": "e^(2ikπ/n), pour k = 0, 1, …, n − 1",
+     "w": [
+      "9a30c5e4",
+      "b7fe58c3"
+     ],
+     "wq": "7403a94c",
+     "more": "Elles forment un polygone régulier inscrit dans le cercle unité.",
+     "wrongs": [
+      "1 et −1 seulement",
+      "e^(ikπ/n), pour k = 1, …, n",
+      "Les entiers de 1 à n"
+     ]
     },
     {
-     "question": "Comment calculer la distance AB avec les affixes ?",
-     "answer": "AB = |z_B - z_A|."
+     "question": "Comment calcule-t-on la distance AB avec les affixes ?",
+     "answer": "AB = |z_B − z_A|",
+     "w": "7ec421db",
+     "wq": "377af256",
+     "wrongs": [
+      "AB = |z_B + z_A|",
+      "AB = z_B − z_A",
+      "AB = |z_B| − |z_A|"
+     ]
     },
     {
-     "question": "Comment interpréter arg((z_C - z_A)/(z_B - z_A)) ?",
-     "answer": "Une mesure de l'angle orienté (AB, AC).\n• Quotient réel : A, B, C alignés\n• Quotient imaginaire pur : (AB) ⊥ (AC)",
-     "w": "82ff5dcc",
-     "wq": "e0520868"
+     "question": "Si (z_C − z_A)/(z_B − z_A) est réel, que peut-on dire de A, B, C ?",
+     "answer": "Ils sont alignés",
+     "w": [
+      "b4e64525",
+      "82ff5dcc"
+     ],
+     "wq": "e0520868",
+     "more": "S'il est imaginaire pur : (AB) ⊥ (AC).",
+     "wrongs": [
+      "(AB) ⊥ (AC)",
+      "ABC est équilatéral",
+      "Ils sont cocycliques"
+     ]
     },
     {
-     "question": "Quelle est l'affixe du milieu I de [AB] et celle du vecteur AB ?",
-     "answer": "• Milieu : z_I = (z_A + z_B) / 2\n• Vecteur AB : z_B − z_A",
-     "w": "22bccae4",
-     "wq": "873e1191"
+     "question": "Quelle est l'affixe du milieu I de [AB] ?",
+     "answer": "(z_A + z_B) / 2",
+     "w": [
+      "ba601b52",
+      "22bccae4"
+     ],
+     "wq": "873e1191",
+     "more": "L'affixe du vecteur AB est z_B − z_A.",
+     "wrongs": [
+      "z_B − z_A",
+      "(z_B − z_A) / 2",
+      "z_A × z_B"
+     ]
     },
     {
-     "question": "Comment caractériser un réel ou un imaginaire pur à l'aide du conjugué ?",
-     "answer": "• z réel ⇔ z̄ = z\n• z imaginaire pur ⇔ z̄ = −z",
-     "w": "f6c0eec3",
-     "wq": "88cbb439"
+     "question": "Quand un complexe z est-il imaginaire pur ?",
+     "answer": "Quand z̄ = −z",
+     "w": [
+      "78711429",
+      "f6c0eec3"
+     ],
+     "wq": "88cbb439",
+     "more": "z est réel quand z̄ = z.",
+     "wrongs": [
+      "Quand z̄ = z",
+      "Quand |z| = 1",
+      "Quand z² = 1"
+     ]
     }
    ]
   },
@@ -50514,99 +51850,233 @@
    "cards": [
     {
      "question": "Que signifie « a divise b » dans Z ?",
-     "answer": "Il existe un entier k tel que b = ka.\nSi a divise b et c, a divise toute combinaison ub + vc (u, v entiers).",
-     "w": "ab3d284c",
-     "wq": "4ada8c3c"
+     "answer": "Il existe un entier k tel que b = ka",
+     "w": [
+      "94e0ade8",
+      "ab3d284c"
+     ],
+     "wrongs": [
+      "Il existe un entier k tel que a = kb",
+      "a est plus petit que b",
+      "a et b sont premiers entre eux"
+     ]
     },
     {
-     "question": "Énoncer la division euclidienne dans Z.",
-     "answer": "Pour a entier et b entier naturel non nul,\nil existe un unique couple (q, r) tel que :\na = bq + r avec 0 ≤ r < b",
-     "w": "6cbd4e4c",
-     "wq": "b4ea04d8"
+     "question": "Dans la division euclidienne a = bq + r, quelle condition vérifie le reste ?",
+     "answer": "0 ≤ r < b",
+     "w": [
+      "45e266c4",
+      "6cbd4e4c"
+     ],
+     "wq": "b4ea04d8",
+     "wrongs": [
+      "0 < r ≤ b",
+      "r < 0",
+      "r = b"
+     ]
     },
     {
      "question": "Que signifie a ≡ b [n] ?",
-     "answer": "a et b ont le même reste dans la division par n.\nÉquivaut à : n divise a − b.",
-     "w": "2fab25f7",
-     "wq": "988fd921"
+     "answer": "n divise a − b",
+     "w": [
+      "7d44637e",
+      "2fab25f7"
+     ],
+     "more": "a et b ont le même reste dans la division par n.",
+     "wrongs": [
+      "n divise a + b",
+      "a = b × n",
+      "a et b sont divisibles par n"
+     ]
     },
     {
-     "question": "Quelles opérations sont compatibles avec les congruences ?",
-     "answer": "Si a ≡ b [n] et c ≡ d [n] :\n• a + c ≡ b + d [n]\n• ac ≡ bd [n]\n• aᵏ ≡ bᵏ [n]\nOn ne peut pas diviser en général.",
-     "w": "44728347",
-     "wq": "2c58d3e7"
+     "question": "Quelle opération n'est pas compatible en général avec les congruences ?",
+     "answer": "La division",
+     "w": [
+      "18531e1c",
+      "44728347"
+     ],
+     "wq": "2c58d3e7",
+     "more": "Addition, multiplication et puissances sont compatibles.",
+     "wrongs": [
+      "L'addition",
+      "La multiplication",
+      "La puissance"
+     ]
     },
     {
-     "question": "Qu'est-ce que le PGCD de deux entiers non tous deux nuls ?",
-     "answer": "Le plus grand diviseur commun.\nSes diviseurs sont exactement les diviseurs communs aux deux entiers.",
-     "w": "19f8a7fb",
-     "wq": "257a2999"
+     "question": "Qu'est-ce que le PGCD de deux entiers ?",
+     "answer": "Leur plus grand diviseur commun",
+     "w": [
+      "12b8b5ac",
+      "19f8a7fb"
+     ],
+     "wq": "257a2999",
+     "wrongs": [
+      "Leur plus petit multiple commun",
+      "Leur produit",
+      "Leur plus petit diviseur commun"
+     ]
     },
     {
-     "question": "Comment fonctionne l'algorithme d'Euclide ?",
-     "answer": "PGCD(a, b) = PGCD(b, r), r : reste de a par b.\nOn itère jusqu'à un reste nul.\nLe PGCD est le dernier reste non nul.",
-     "w": "69d84313",
-     "wq": "0d97fe2f"
+     "question": "Dans l'algorithme d'Euclide, quel nombre est le PGCD ?",
+     "answer": "Le dernier reste non nul",
+     "w": [
+      "0713874b",
+      "69d84313"
+     ],
+     "wq": "0d97fe2f",
+     "wrongs": [
+      "Le premier reste",
+      "Le dernier quotient",
+      "Le plus grand reste"
+     ]
     },
     {
      "question": "Que signifie « a et b sont premiers entre eux » ?",
-     "answer": "PGCD = 1\nLeurs seuls diviseurs communs sont 1 et −1.",
-     "w": "d324e475",
-     "wq": "2e668b90"
+     "answer": "Leur PGCD vaut 1",
+     "w": [
+      "5a590ebb",
+      "d324e475"
+     ],
+     "wrongs": [
+      "Ils sont tous deux premiers",
+      "Leur PGCD vaut 0",
+      "Ils sont égaux"
+     ]
     },
     {
-     "question": "Énoncer le théorème de Bézout.",
-     "answer": "a et b sont premiers entre eux\n⇔ il existe u, v entiers tels que au + bv = 1",
-     "w": "60545e56",
-     "wq": "76abb5aa"
+     "question": "Que dit le théorème de Bézout ?",
+     "answer": "a et b premiers entre eux ⇔ il existe u, v tels que au + bv = 1",
+     "w": [
+      "7c44a938",
+      "60545e56"
+     ],
+     "wq": "76abb5aa",
+     "wrongs": [
+      "a divise bc ⇒ a divise c",
+      "aᵖ ≡ a [p]",
+      "Tout entier se décompose en facteurs premiers"
+     ]
     },
     {
-     "question": "Quelle est l'identité de Bézout (cas général) ?",
-     "answer": "Il existe des entiers u et v tels que au + bv = PGCD(a, b)."
+     "question": "Que dit l'identité de Bézout dans le cas général ?",
+     "answer": "Il existe u, v tels que au + bv = PGCD(a, b)",
+     "w": "c4cef9be",
+     "wq": "bcb4c41b",
+     "wrongs": [
+      "au + bv = 1 toujours",
+      "au + bv = PPCM(a, b)",
+      "a + b = PGCD(a, b)"
+     ]
     },
     {
-     "question": "Énoncer le théorème de Gauss.",
-     "answer": "Si a divise bc et si a est premier avec b, alors a divise c."
+     "question": "Que dit le théorème de Gauss ?",
+     "answer": "Si a divise bc et a est premier avec b, alors a divise c",
+     "w": "4af5c66d",
+     "wq": "11c7ec0e",
+     "wrongs": [
+      "Si a divise bc, alors a divise b",
+      "a et b premiers entre eux ⇔ au + bv = 1",
+      "aᵖ⁻¹ ≡ 1 [p]"
+     ]
     },
     {
-     "question": "Quel corollaire du théorème de Gauss sert souvent ?",
-     "answer": "Si a et b sont premiers entre eux et divisent tous deux n, alors ab divise n."
+     "question": "Si a et b sont premiers entre eux et divisent n, que peut-on dire ?",
+     "answer": "ab divise n",
+     "w": "6e61a988",
+     "wq": "afbcc54a",
+     "wrongs": [
+      "a + b divise n",
+      "n divise ab",
+      "a divise b"
+     ]
     },
     {
-     "question": "Comment résoudre l'équation diophantienne ax + by = c ?",
-     "answer": "Solutions ⇔ PGCD(a, b) divise c.\n1. Trouver une solution particulière.\n2. Soustraire les deux égalités.\n3. Conclure avec le théorème de Gauss.",
-     "w": "3e5fc4ec",
-     "wq": "948ea97c"
+     "question": "Quand l'équation ax + by = c a-t-elle des solutions entières ?",
+     "answer": "Quand PGCD(a, b) divise c",
+     "w": [
+      "7c6b92a0",
+      "3e5fc4ec"
+     ],
+     "wq": "948ea97c",
+     "wrongs": [
+      "Toujours",
+      "Quand c est premier",
+      "Quand a = b"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un nombre premier ?",
-     "answer": "Un entier naturel qui a exactement deux diviseurs positifs :\n1 et lui-même (1 n'est donc pas premier).",
-     "w": "830c9099",
-     "wq": "f2dc0931"
+     "question": "Le nombre 1 est-il premier ?",
+     "answer": "Non",
+     "w": [
+      "bd6bd95b",
+      "830c9099"
+     ],
+     "wq": "f2dc0931",
+     "more": "Un nombre premier a exactement deux diviseurs positifs.",
+     "wrongs": [
+      "Oui",
+      "Oui, c'est le plus petit",
+      "Seulement dans Z"
+     ]
     },
     {
-     "question": "Comment tester si n est premier ?",
-     "answer": "Vérifier qu'aucun nombre premier p\ntel que p² ≤ n ne divise n.",
-     "w": "1b5a230d",
-     "wq": "ca137d48"
+     "question": "Pour tester si n est premier, jusqu'où faut-il chercher des diviseurs premiers p ?",
+     "answer": "Jusqu'à p² ≤ n",
+     "w": [
+      "b98eb4e2",
+      "1b5a230d"
+     ],
+     "wq": "ca137d48",
+     "wrongs": [
+      "Jusqu'à n",
+      "Jusqu'à n/2",
+      "Jusqu'à p ≤ 10"
+     ]
     },
     {
-     "question": "Pourquoi y a-t-il une infinité de nombres premiers ?",
-     "answer": "Par l'absurde : si p₁, …, pₖ étaient tous les premiers,\nN = p₁ × … × pₖ + 1 n'est divisible par aucun d'eux,\nmais il a un diviseur premier : contradiction.",
-     "w": "89c55386",
-     "wq": "78e32333"
+     "question": "Combien y a-t-il de nombres premiers ?",
+     "answer": "Une infinité",
+     "w": [
+      "6b224978",
+      "89c55386"
+     ],
+     "wq": "78e32333",
+     "more": "Preuve par l'absurde : p₁ × … × pₖ + 1 n'est divisible par aucun d'eux.",
+     "wrongs": [
+      "Exactement 100",
+      "Un nombre fini, encore inconnu",
+      "Environ un million"
+     ]
     },
     {
-     "question": "Énoncer le théorème fondamental de l'arithmétique.",
-     "answer": "Tout entier n ≥ 2 se décompose en produit de facteurs premiers,\nde façon unique à l'ordre près.",
-     "w": "33c265c3",
-     "wq": "3823df5f"
+     "question": "Que dit le théorème fondamental de l'arithmétique ?",
+     "answer": "Tout entier n ≥ 2 se décompose de façon unique en produit de facteurs premiers",
+     "w": [
+      "8d13f2d9",
+      "33c265c3"
+     ],
+     "wq": "3823df5f",
+     "wrongs": [
+      "Tout entier est premier",
+      "Tout entier pair est la somme de deux premiers",
+      "Il y a une infinité de premiers"
+     ]
     },
     {
-     "question": "Énoncer le petit théorème de Fermat.",
-     "answer": "Si p est premier et a non divisible par p :\na^(p−1) ≡ 1 [p]\nPour tout entier a : a^p ≡ a [p]",
-     "w": "565aa0c7",
-     "wq": "70c0951c"
+     "question": "Que dit le petit théorème de Fermat (p premier, a non divisible par p) ?",
+     "answer": "a^(p−1) ≡ 1 [p]",
+     "w": [
+      "af59816c",
+      "565aa0c7"
+     ],
+     "wq": "70c0951c",
+     "wrongs": [
+      "a^p ≡ 0 [p]",
+      "a^(p−1) ≡ 0 [p]",
+      "a^p ≡ 1 [p]"
+     ]
     }
    ]
   },
