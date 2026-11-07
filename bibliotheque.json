@@ -28319,37 +28319,41 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Laquelle de ces informations fait partie de la situation d'énonciation ?",
-     "answer": "Qui parle",
+     "question": "Quels éléments forment la situation d'énonciation ?",
+     "answer": "Qui parle, à qui, où et quand",
      "w": [
+      "b085c50b",
       "c0477b86",
       "13e062b9"
      ],
      "wq": [
+      "fbc49f17",
       "c546febc"
      ],
      "more": "Aussi : à qui, où et quand.",
      "wrongs": [
-      "Le nombre de pages",
-      "Le titre du livre",
-      "Le prix du journal"
+      "Le titre, l'auteur et l'éditeur",
+      "Le nombre de pages et le prix",
+      "Le genre et le registre du texte"
      ]
     },
     {
-     "question": "Lequel de ces mots indique un énoncé ancré dans la situation d'énonciation ?",
-     "answer": "Demain",
+     "question": "« Demain » indique-t-il un énoncé ancré ou coupé de la situation d'énonciation ?",
+     "answer": "Ancré dans la situation d'énonciation",
      "w": [
+      "3417f404",
       "0d3e4f1f",
       "b570df21"
      ],
      "wq": [
+      "f1969fdb",
       "cd91f8a8"
      ],
-     "more": "Aussi je / tu, ici, maintenant ; temps : présent, passé composé, futur.",
+     "more": "Dans un énoncé coupé, on dirait « le lendemain ».",
      "wrongs": [
-      "Le lendemain",
-      "Ce jour-là",
-      "La veille"
+      "Coupé de la situation d'énonciation",
+      "Ni l'un ni l'autre",
+      "Les deux à la fois"
      ]
     },
     {
@@ -28524,13 +28528,15 @@
      ]
     },
     {
-     "question": "Lequel de ces verbes de parole exprime un ton bas ?",
+     "question": "Quel verbe de parole exprime un ton bas : chuchoter, s'écrier, hurler ou ordonner ?",
      "answer": "Chuchoter",
      "w": [
+      "c3cf05e5",
       "b47cff75",
       "3f2baca6"
      ],
      "wq": [
+      "92ac1669",
       "3c857ce7"
      ],
      "more": "Aussi murmurer ; autres verbes : affirmer, répondre, s'écrier, répliquer, ordonner, avouer…",
@@ -28541,20 +28547,19 @@
      ]
     },
     {
-     "question": "Lequel de ces mots est un modalisateur ?",
-     "answer": "Peut-être",
+     "question": "Qu'est-ce qu'un modalisateur ?",
+     "answer": "Un mot qui exprime le degré de certitude ou l'avis du locuteur",
      "w": [
+      "0ec8d4c9",
       "8488a934",
       "88c4a741"
      ],
-     "wq": [
-      "a11a28fc"
-     ],
-     "more": "Il révèle la certitude ou le jugement de l'énonciateur : sans doute, sembler, conditionnel, termes mélioratifs ou péjoratifs.",
+     "wq": "699a4f46",
+     "more": "Ex. : peut-être, sans doute, heureusement.",
      "wrongs": [
-      "Table",
-      "Courir",
-      "Hier"
+      "Un mot qui situe l'action dans le temps",
+      "Un verbe qui introduit des paroles",
+      "Un mot qui relie deux propositions"
      ]
     },
     {
@@ -28832,20 +28837,22 @@
      ]
     },
     {
-     "question": "Laquelle de ces phrases est correcte ?",
-     "answer": "I know the answer.",
+     "question": "Faut-il dire « I know the answer » ou « I am knowing the answer » ?",
+     "answer": "I know the answer",
      "w": [
+      "3218f418",
       "0f475e53",
       "4a0752c5"
      ],
      "wq": [
+      "cbda8876",
       "dcd9ebb2"
      ],
-     "more": "Les verbes d'état (like, love, hate, want, know, believe, understand, need, own) ne s'emploient généralement pas à la forme be + -ing.",
+     "more": "Les verbes d'état (know, like, want…) ne se mettent pas à la forme -ing.",
      "wrongs": [
-      "I am knowing the answer.",
-      "I'm know the answer.",
-      "I knowing the answer."
+      "I am knowing the answer",
+      "Les deux se disent",
+      "I'm know the answer"
      ]
     },
     {
@@ -29661,89 +29668,283 @@
    "cards": [
     {
      "question": "Comment forme-t-on une question avec un verbe ordinaire au présent ?",
-     "answer": "Mot interrogatif + do / does + sujet + base verbale.\nEx. : « Where do you live? »",
-     "w": "02b3ff0a",
-     "wq": "6c1c7f51"
+     "answer": "Mot interrogatif + do / does + sujet + base verbale",
+     "w": [
+      "170ff79c",
+      "02b3ff0a"
+     ],
+     "more": "Ex. : « Where do you live? »",
+     "wrongs": [
+      "Mot interrogatif + sujet + verbe",
+      "Mot interrogatif + verbe + sujet",
+      "Do + mot interrogatif + verbe"
+     ]
     },
     {
-     "question": "Comment forme-t-on une question quand le mot interrogatif est sujet ?",
-     "answer": "Sans auxiliaire do.\nEx. : « Who called you? », « What happened? »",
-     "w": "900458d7",
-     "wq": "d62a05ea"
+     "question": "Faut-il l'auxiliaire « do » quand le mot interrogatif est sujet ?",
+     "answer": "Non",
+     "w": [
+      "f64a90c6",
+      "900458d7"
+     ],
+     "wq": "d62a05ea",
+     "more": "Ex. : « Who called you? », « What happened? »",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, au passé seulement",
+      "Oui, avec « who » seulement"
+     ]
     },
     {
-     "question": "Quelle différence entre « who », « whose » et « whom » ?",
-     "answer": "who = qui\nwhose = à qui, dont (« Whose bag is this? »)\nwhom = qui complément (langue soutenue)",
-     "w": "992e9b7d",
-     "wq": "088c32cb"
+     "question": "Que signifie « whose » ?",
+     "answer": "À qui, dont",
+     "w": [
+      "c71aa31b",
+      "992e9b7d"
+     ],
+     "wq": "088c32cb",
+     "more": "Ex. : « Whose bag is this? »",
+     "wrongs": [
+      "Qui (sujet)",
+      "Quand",
+      "Lequel"
+     ]
     },
     {
-     "question": "Comment demande-t-on la fréquence, la durée et la quantité ?",
-     "answer": "How often? : fréquence\nHow long? : durée\nHow much? (indénombrable) / How many? (dénombrable)",
-     "w": "0f5191cc",
-     "wq": "f54ffd40"
+     "question": "Quand emploie-t-on « whom » ?",
+     "answer": "Pour « qui » complément, en langue soutenue",
+     "wrongs": [
+      "Pour « qui » sujet",
+      "Pour « à qui » (possession)",
+      "Pour « où »"
+     ]
     },
     {
-     "question": "Comment demande-t-on l'âge, le prix et la distance ?",
-     "answer": "How old are you?\nHow much is it?\nHow far is it?",
-     "w": "a873f8d0",
-     "wq": "7392679c"
+     "question": "Comment demande-t-on la fréquence en anglais ?",
+     "answer": "How often?",
+     "w": [
+      "99689566",
+      "0f5191cc"
+     ],
+     "wq": "f54ffd40",
+     "wrongs": [
+      "How long?",
+      "How much?",
+      "How far?"
+     ]
     },
     {
-     "question": "Quelle différence entre « What » et « Which » ?",
-     "answer": "What : choix ouvert.\nWhich : choix limité.\nEx. : « Which colour do you prefer, red or blue? »",
-     "w": "ddddb480",
-     "wq": "910bd7a1"
+     "question": "Comment demande-t-on la durée en anglais ?",
+     "answer": "How long?",
+     "wrongs": [
+      "How often?",
+      "How many?",
+      "How old?"
+     ]
+    },
+    {
+     "question": "Avec quel nom emploie-t-on « How many? » ?",
+     "answer": "Un nom dénombrable",
+     "more": "« How much? » avec un nom indénombrable.",
+     "wrongs": [
+      "Un nom indénombrable",
+      "Un adjectif",
+      "Un verbe"
+     ]
+    },
+    {
+     "question": "Comment demande-t-on l'âge de quelqu'un en anglais ?",
+     "answer": "How old are you?",
+     "w": [
+      "0f384a92",
+      "a873f8d0"
+     ],
+     "wq": "7392679c",
+     "wrongs": [
+      "How many years have you?",
+      "What age you have?",
+      "How long are you?"
+     ]
+    },
+    {
+     "question": "Comment demande-t-on un prix en anglais ?",
+     "answer": "How much is it?",
+     "wrongs": [
+      "How many is it?",
+      "How far is it?",
+      "What cost it?"
+     ]
+    },
+    {
+     "question": "Comment demande-t-on une distance en anglais ?",
+     "answer": "How far is it?",
+     "wrongs": [
+      "How long is it?",
+      "How much is it?",
+      "How often is it?"
+     ]
+    },
+    {
+     "question": "Quand emploie-t-on « Which » plutôt que « What » ?",
+     "answer": "Pour un choix limité",
+     "w": [
+      "4c352379",
+      "ddddb480"
+     ],
+     "wq": "910bd7a1",
+     "more": "Ex. : « Which colour do you prefer, red or blue? »",
+     "wrongs": [
+      "Pour un choix ouvert",
+      "Pour une personne",
+      "Pour un lieu"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un question tag ?",
-     "answer": "Une petite question finale qui reprend l'auxiliaire et le pronom, en inversant la polarité.\nEx. : « You like tea, don't you? »\n« She isn't here, is she? »",
-     "w": "eb5cffcd",
-     "wq": "4677a958"
+     "answer": "Une courte question finale qui reprend l'auxiliaire en inversant la polarité",
+     "w": [
+      "e4a10aa2",
+      "eb5cffcd"
+     ],
+     "more": "Ex. : « You like tea, don't you? », « She isn't here, is she? »",
+     "wrongs": [
+      "Une question qui commence par un mot interrogatif",
+      "Une question au discours indirect",
+      "Une question sans verbe"
+     ]
     },
     {
-     "question": "Quels connecteurs expriment l'addition ?",
-     "answer": "and, also, too, moreover, furthermore, besides, in addition."
+     "question": "Quel connecteur anglais exprime l'addition ?",
+     "answer": "Moreover",
+     "w": "17607c6d",
+     "wq": "bdd7987a",
+     "more": "Aussi : and, also, too, furthermore, besides, in addition.",
+     "wrongs": [
+      "However",
+      "Therefore",
+      "Although"
+     ]
     },
     {
-     "question": "Quels connecteurs expriment l'opposition ou la concession ?",
-     "answer": "but, however, yet\nalthough / though (bien que)\nwhereas / while (alors que), on the other hand\ndespite / in spite of (+ nom ou V-ing)",
-     "w": "953ff9b9",
-     "wq": "3f0aaf1d"
+     "question": "Quel connecteur anglais exprime l'opposition ?",
+     "answer": "However",
+     "w": [
+      "d7e11d93",
+      "953ff9b9"
+     ],
+     "wq": "3f0aaf1d",
+     "more": "Aussi : but, yet, although, whereas, while, despite.",
+     "wrongs": [
+      "Moreover",
+      "Therefore",
+      "Because"
+     ]
     },
     {
-     "question": "Quels connecteurs expriment la cause et la conséquence ?",
-     "answer": "Cause : because, as, since, because of (+ nom)\nConséquence : so, therefore, that's why, as a result",
-     "w": "a645c2f1",
-     "wq": "f790174a"
+     "question": "Quel connecteur anglais exprime la cause ?",
+     "answer": "Because",
+     "w": [
+      "5e2971af",
+      "a645c2f1"
+     ],
+     "wq": "f790174a",
+     "more": "Aussi : as, since, because of (+ nom).",
+     "wrongs": [
+      "So",
+      "Therefore",
+      "However"
+     ]
     },
     {
-     "question": "Quels connecteurs servent à organiser un texte ?",
-     "answer": "first / first of all, then, next, after that\nfinally, to conclude, in conclusion",
-     "w": "0a58efa3",
-     "wq": "0a4faae5"
+     "question": "Quel connecteur anglais exprime la conséquence ?",
+     "answer": "Therefore",
+     "more": "Aussi : so, that's why, as a result.",
+     "wrongs": [
+      "Because",
+      "Although",
+      "Since"
+     ]
     },
     {
-     "question": "Comment donner son opinion en anglais ?",
-     "answer": "I think that…\nIn my opinion…\nAs far as I'm concerned…\nI agree / I disagree with…",
-     "w": "85411772",
-     "wq": "72831f9f"
+     "question": "Quel connecteur anglais sert à commencer un texte ?",
+     "answer": "First of all",
+     "w": [
+      "70e58bf9",
+      "0a58efa3"
+     ],
+     "wq": "0a4faae5",
+     "more": "Puis then, next, after that ; enfin finally, to conclude.",
+     "wrongs": [
+      "Finally",
+      "However",
+      "To conclude"
+     ]
+    },
+    {
+     "question": "Comment dit-on « à mon avis » en anglais ?",
+     "answer": "In my opinion",
+     "w": [
+      "c96eb859",
+      "85411772"
+     ],
+     "wq": "72831f9f",
+     "more": "Aussi : I think that…, as far as I'm concerned…",
+     "wrongs": [
+      "In my avis",
+      "For my opinion",
+      "At my mind"
+     ]
     },
     {
      "question": "Que signifie « unless » ?",
-     "answer": "« À moins que / sauf si »\nEx. : « I won't go unless you come with me. »",
-     "w": "0350850f",
-     "wq": "ea2e7e8f"
+     "answer": "À moins que, sauf si",
+     "w": [
+      "cc675361",
+      "0350850f"
+     ],
+     "more": "Ex. : « I won't go unless you come with me. »",
+     "wrongs": [
+      "Bien que",
+      "Parce que",
+      "Dès que"
+     ]
     },
     {
-     "question": "Comment donner un exemple en anglais ?",
-     "answer": "for example, for instance, such as, like."
+     "question": "Comment dit-on « par exemple » en anglais ?",
+     "answer": "For instance",
+     "w": "3a311d44",
+     "wq": "19469592",
+     "more": "Aussi : for example, such as, like.",
+     "wrongs": [
+      "In other words",
+      "Moreover",
+      "As a result"
+     ]
     },
     {
-     "question": "Quelle différence entre « despite » et « although » ?",
-     "answer": "despite + nom ou V-ing (« despite the rain »)\nalthough + proposition (« although it was raining »)",
-     "w": "9aa4319d",
-     "wq": "14bc391a"
+     "question": "Que suit « despite » ?",
+     "answer": "Un nom ou un verbe en -ing",
+     "w": [
+      "bcc9e865",
+      "9aa4319d"
+     ],
+     "wq": "14bc391a",
+     "more": "Ex. : « despite the rain »",
+     "wrongs": [
+      "Une proposition (sujet + verbe)",
+      "Un infinitif avec to",
+      "Un adjectif seul"
+     ]
+    },
+    {
+     "question": "Que suit « although » ?",
+     "answer": "Une proposition (sujet + verbe)",
+     "more": "Ex. : « although it was raining »",
+     "wrongs": [
+      "Un nom seul",
+      "Un verbe en -ing seul",
+      "Un infinitif avec to"
+     ]
     }
    ]
   },
@@ -29766,95 +29967,251 @@
    "cards": [
     {
      "question": "Quand emploie-t-on « ser » ?",
-     "answer": "Identité, nationalité, profession, caractéristique permanente, heure, matière.\nEx. : « Soy francés », « Es médico »",
-     "w": "bedbba28",
-     "wq": "24d09ed9"
+     "answer": "Pour l'identité, la nationalité, la profession, une caractéristique permanente",
+     "w": [
+      "00bcc98c",
+      "bedbba28"
+     ],
+     "more": "Aussi l'heure et la matière. Ex. : « Soy francés », « Es médico ».",
+     "wrongs": [
+      "Pour la localisation",
+      "Pour un état passager",
+      "Avec le gérondif"
+     ]
     },
     {
      "question": "Quand emploie-t-on « estar » ?",
-     "answer": "Localisation, état passager, avec le gérondif.\nEx. : « Estoy cansado », « Madrid está en España »",
-     "w": "2afc024a",
-     "wq": "c745730c"
+     "answer": "Pour la localisation et un état passager",
+     "w": [
+      "1c28cf07",
+      "2afc024a"
+     ],
+     "more": "Et avec le gérondif. Ex. : « Estoy cansado », « Madrid está en España ».",
+     "wrongs": [
+      "Pour la nationalité",
+      "Pour la profession",
+      "Pour l'heure"
+     ]
     },
     {
-     "question": "Comment se construit le verbe « gustar » ?",
-     "answer": "Ce qui plaît est le sujet :\nme / te / le / nos / os / les + gusta (singulier ou infinitif) / gustan (pluriel)\nEx. : « Me gusta el cine », « Me gustan los perros »",
-     "w": "1ec00f41",
-     "wq": "d35ff1df"
+     "question": "Dans « Me gustan los perros », quel est le sujet de « gustar » ?",
+     "answer": "Los perros (ce qui plaît)",
+     "w": [
+      "b7c9ebb0",
+      "1ec00f41"
+     ],
+     "wq": "d35ff1df",
+     "more": "D'où « gustan » au pluriel ; « me gusta » + singulier ou infinitif.",
+     "wrongs": [
+      "Me (la personne)",
+      "Yo",
+      "Il n'y a pas de sujet"
+     ]
     },
     {
-     "question": "Conjuguez « ser » au présent.",
-     "answer": "soy, eres, es, somos, sois, son."
+     "question": "Comment se conjugue « ser » au présent ?",
+     "answer": "soy, eres, es, somos, sois, son",
+     "w": "1bc9ba88",
+     "wq": "9a02b026",
+     "wrongs": [
+      "estoy, estás, está, estamos, estáis, están",
+      "soy, es, eres, somos, sois, son",
+      "so, eres, es, semos, seis, son"
+     ]
     },
     {
-     "question": "Conjuguez « estar » au présent.",
-     "answer": "estoy, estás, está, estamos, estáis, están."
+     "question": "Comment se conjugue « estar » au présent ?",
+     "answer": "estoy, estás, está, estamos, estáis, están",
+     "w": "c355211f",
+     "wq": "09a2583f",
+     "wrongs": [
+      "soy, eres, es, somos, sois, son",
+      "esto, estas, esta, estamos, estais, estan",
+      "estoy, estes, este, estemos, estéis, esten"
+     ]
     },
     {
-     "question": "Comment exprimer l'obligation personnelle et impersonnelle ?",
-     "answer": "Personnelle : tener que + infinitif (« Tengo que estudiar »)\nImpersonnelle : hay que + infinitif (« Hay que respetar la naturaleza »)",
-     "w": "67e4c60d",
-     "wq": "b91e5c2f"
+     "question": "Comment exprime-t-on une obligation personnelle en espagnol ?",
+     "answer": "tener que + infinitif",
+     "w": [
+      "aeec0ce4",
+      "67e4c60d"
+     ],
+     "wq": "b91e5c2f",
+     "more": "Ex. : « Tengo que estudiar. »",
+     "wrongs": [
+      "hay que + infinitif",
+      "ser que + infinitif",
+      "estar que + infinitif"
+     ]
+    },
+    {
+     "question": "Comment exprime-t-on une obligation impersonnelle en espagnol ?",
+     "answer": "hay que + infinitif",
+     "more": "Ex. : « Hay que respetar la naturaleza. »",
+     "wrongs": [
+      "tener que + infinitif",
+      "es que + infinitif",
+      "debo que + infinitif"
+     ]
     },
     {
      "question": "Que signifie « hay » ?",
-     "answer": "« Il y a » (forme invariable de haber)\nEx. : « Hay muchos turistas en la playa. »",
-     "w": "096fe771",
-     "wq": "aa00ad3d"
+     "answer": "Il y a",
+     "w": [
+      "3c8774ab",
+      "096fe771"
+     ],
+     "more": "Forme invariable de haber. Ex. : « Hay muchos turistas en la playa. »",
+     "wrongs": [
+      "Il faut",
+      "Il est",
+      "Il a"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une diphtongue au présent ?",
-     "answer": "La voyelle du radical change quand elle est accentuée :\ne → ie (querer → quiero)\no → ue (poder → puedo)\nSauf à nosotros et vosotros.",
-     "w": "e4ee742a",
-     "wq": "e56014ff"
+     "question": "Que devient le « o » accentué de « poder » au présent ?",
+     "answer": "ue : puedo",
+     "w": [
+      "88568074",
+      "e4ee742a"
+     ],
+     "wq": "e56014ff",
+     "more": "Diphtongue : e → ie (quiero), o → ue (puedo), sauf à nosotros et vosotros.",
+     "wrongs": [
+      "ie : piedo",
+      "u : pudo",
+      "Il ne change pas : podo"
+     ]
     },
     {
-     "question": "Comment exprimer le futur proche ?",
-     "answer": "ir a + infinitif\nEx. : « Voy a viajar a México. »",
-     "w": "cd5c1138",
-     "wq": "68a1cabf"
+     "question": "Comment exprime-t-on le futur proche en espagnol ?",
+     "answer": "ir a + infinitif",
+     "w": [
+      "1d83ec08",
+      "cd5c1138"
+     ],
+     "wq": "68a1cabf",
+     "more": "Ex. : « Voy a viajar a México. »",
+     "wrongs": [
+      "estar + gérondif",
+      "tener que + infinitif",
+      "haber + participe"
+     ]
     },
     {
-     "question": "Comment exprimer une action en cours ?",
-     "answer": "estar + gérondif (-ando, -iendo)\nEx. : « Estoy comiendo. »",
-     "w": "200fd5f3",
-     "wq": "63e5ade8"
+     "question": "Comment exprime-t-on une action en cours en espagnol ?",
+     "answer": "estar + gérondif",
+     "w": [
+      "e5a74a3e",
+      "200fd5f3"
+     ],
+     "wq": "63e5ade8",
+     "more": "Ex. : « Estoy comiendo. »",
+     "wrongs": [
+      "ser + gérondif",
+      "ir a + infinitif",
+      "haber + participe"
+     ]
     },
     {
-     "question": "Donnez les terminaisons du prétérit (pretérito indefinido) des verbes en -ar.",
-     "answer": "-é, -aste, -ó, -amos, -asteis, -aron\nEx. : hablé, hablaste, habló…",
-     "w": "3f0ee7f5",
-     "wq": "90c3c257"
+     "question": "Quelles sont les terminaisons du prétérit des verbes en -ar ?",
+     "answer": "-é, -aste, -ó, -amos, -asteis, -aron",
+     "w": [
+      "2d342599",
+      "3f0ee7f5"
+     ],
+     "wq": "90c3c257",
+     "more": "Ex. : hablé, hablaste, habló…",
+     "wrongs": [
+      "-í, -iste, -ió, -imos, -isteis, -ieron",
+      "-aba, -abas, -aba, -ábamos, -abais, -aban",
+      "-o, -as, -a, -amos, -áis, -an"
+     ]
     },
     {
-     "question": "Donnez les terminaisons du prétérit des verbes en -er et -ir.",
-     "answer": "-í, -iste, -ió, -imos, -isteis, -ieron\nEx. : comí, viviste, salió…",
-     "w": "8ea1187a",
-     "wq": "81ffaece"
+     "question": "Quelles sont les terminaisons du prétérit des verbes en -er et -ir ?",
+     "answer": "-í, -iste, -ió, -imos, -isteis, -ieron",
+     "w": [
+      "3a5ef6d8",
+      "8ea1187a"
+     ],
+     "wq": "81ffaece",
+     "more": "Ex. : comí, viviste, salió…",
+     "wrongs": [
+      "-é, -aste, -ó, -amos, -asteis, -aron",
+      "-ía, -ías, -ía, -íamos, -íais, -ían",
+      "-o, -es, -e, -emos, -éis, -en"
+     ]
     },
     {
      "question": "Quand emploie-t-on le prétérit (pretérito indefinido) ?",
-     "answer": "Action passée, ponctuelle, terminée, sans lien avec le présent.\nEx. : « Ayer fui al cine. »",
-     "w": "3b5d2784",
-     "wq": "85472bbd"
+     "answer": "Pour une action passée, ponctuelle et terminée",
+     "w": [
+      "e6fad3c1",
+      "3b5d2784"
+     ],
+     "more": "Sans lien avec le présent. Ex. : « Ayer fui al cine. »",
+     "wrongs": [
+      "Pour une habitude dans le passé",
+      "Pour une action en cours",
+      "Pour une action future"
+     ]
     },
     {
-     "question": "Comment s'adresse-t-on poliment à quelqu'un en espagnol ?",
-     "answer": "usted (singulier) / ustedes (pluriel) + verbe à la 3e personne\nEx. : « ¿Cómo está usted? »",
-     "w": "adc9f44f",
-     "wq": "4b8a6b40"
+     "question": "Comment vouvoie-t-on une personne en espagnol ?",
+     "answer": "usted + verbe à la 3e personne",
+     "w": [
+      "fa650a14",
+      "adc9f44f"
+     ],
+     "wq": "4b8a6b40",
+     "more": "Pluriel : ustedes. Ex. : « ¿Cómo está usted? »",
+     "wrongs": [
+      "vosotros + verbe à la 2e personne",
+      "tú + verbe à la 2e personne",
+      "vos + verbe à l'infinitif"
+     ]
     },
     {
-     "question": "Quelle différence entre « muy » et « mucho » ?",
-     "answer": "muy (très) : devant un adjectif ou un adverbe (« muy grande »).\nmucho (beaucoup) : avec un verbe ou un nom, s'accorde (« muchas casas »).",
-     "w": "7432ee32",
-     "wq": "8d91c465"
+     "question": "Quand emploie-t-on « muy » ?",
+     "answer": "Devant un adjectif ou un adverbe",
+     "w": [
+      "f3cae7dd",
+      "7432ee32"
+     ],
+     "wq": "8d91c465",
+     "more": "« Muy » = très. Ex. : « muy grande ».",
+     "wrongs": [
+      "Avec un verbe",
+      "Devant un nom",
+      "Seul en fin de phrase"
+     ]
     },
     {
-     "question": "Comment former une phrase négative en espagnol ?",
-     "answer": "« no » devant le verbe : « No hablo alemán. »\nAvec nunca, nada, nadie après le verbe, « no » reste devant : « No veo nada ».",
-     "w": "013aba46",
-     "wq": "2290ed20"
+     "question": "Quand emploie-t-on « mucho » ?",
+     "answer": "Avec un verbe ou un nom (il s'accorde)",
+     "more": "« Mucho » = beaucoup. Ex. : « muchas casas ».",
+     "wrongs": [
+      "Devant un adjectif",
+      "Devant un adverbe",
+      "Seulement au pluriel"
+     ]
+    },
+    {
+     "question": "Où se place « no » dans une phrase négative espagnole ?",
+     "answer": "Devant le verbe",
+     "w": [
+      "4d02dac1",
+      "013aba46"
+     ],
+     "wq": "2290ed20",
+     "more": "Ex. : « No hablo alemán » ; avec nada, nadie, nunca après le verbe : « No veo nada ».",
+     "wrongs": [
+      "Après le verbe",
+      "En fin de phrase",
+      "Devant le sujet seulement"
+     ]
     }
    ]
   },
@@ -30358,99 +30715,276 @@
    "cards": [
     {
      "question": "Où se place le verbe conjugué dans une phrase déclarative allemande ?",
-     "answer": "Toujours en 2e position.\nEx. : « Heute spiele ich Fußball. » (le sujet passe après le verbe)",
-     "w": "95800df4",
-     "wq": "d5129976"
+     "answer": "En 2e position",
+     "w": [
+      "74b9b2b4",
+      "95800df4"
+     ],
+     "more": "Ex. : « Heute spiele ich Fußball. »",
+     "wrongs": [
+      "En 1re position",
+      "À la fin",
+      "Après le sujet, toujours"
+     ]
     },
     {
-     "question": "Où se place le verbe conjugué dans une subordonnée ?",
-     "answer": "À la fin de la subordonnée.\nEx. : « Ich bleibe zu Hause, weil ich krank bin. »",
-     "w": "83099a39",
-     "wq": "75785298"
+     "question": "Où se place le verbe conjugué dans une subordonnée allemande ?",
+     "answer": "À la fin",
+     "w": [
+      "e471ed73",
+      "83099a39"
+     ],
+     "wq": "75785298",
+     "more": "Ex. : « Ich bleibe zu Hause, weil ich krank bin. »",
+     "wrongs": [
+      "En 2e position",
+      "En 1re position",
+      "Juste après la conjonction"
+     ]
     },
     {
-     "question": "Quels sont les trois genres et leurs articles définis au nominatif ?",
-     "answer": "Masculin : der\nFéminin : die\nNeutre : das\nPluriel : die",
-     "w": "9091b833",
-     "wq": "9e8951ff"
+     "question": "Quel est l'article défini du neutre au nominatif ?",
+     "answer": "das",
+     "w": [
+      "69a71a6d",
+      "9091b833"
+     ],
+     "wq": "9e8951ff",
+     "more": "Masculin : der ; féminin : die ; pluriel : die.",
+     "wrongs": [
+      "der",
+      "die",
+      "den"
+     ]
     },
     {
      "question": "Quels sont les quatre cas de l'allemand ?",
-     "answer": "• Nominatif : sujet\n• Accusatif : COD\n• Datif : COI, attribution\n• Génitif : complément du nom",
-     "w": "b3f49a18",
-     "wq": "d75244e3"
+     "answer": "Nominatif, accusatif, datif, génitif",
+     "w": [
+      "5cafe03a",
+      "b3f49a18"
+     ],
+     "more": "Sujet, COD, COI (attribution), complément du nom.",
+     "wrongs": [
+      "Nominatif, vocatif, ablatif, génitif",
+      "Sujet, objet, attribut, complément",
+      "Présent, passé, futur, conditionnel"
+     ]
     },
     {
-     "question": "Comment varie l'article masculin « der » selon les cas ?",
-     "answer": "Nominatif : der\nAccusatif : den\nDatif : dem\nGénitif : des",
-     "w": "a7d97f23",
-     "wq": "261e1b60"
+     "question": "Que devient « der » à l'accusatif ?",
+     "answer": "den",
+     "w": [
+      "c5d0fe4f",
+      "a7d97f23"
+     ],
+     "wq": "261e1b60",
+     "more": "Datif : dem ; génitif : des.",
+     "wrongs": [
+      "dem",
+      "des",
+      "die"
+     ]
     },
     {
-     "question": "Quelle particularité orthographique pour les noms allemands ?",
-     "answer": "Tous les noms communs prennent une majuscule.\nEx. : der Hund, die Schule",
-     "w": "0a8f82b2",
-     "wq": "baccfbc9"
+     "question": "Quelle particularité orthographique ont les noms communs allemands ?",
+     "answer": "Ils prennent tous une majuscule",
+     "w": [
+      "be7d5b12",
+      "0a8f82b2"
+     ],
+     "wq": "baccfbc9",
+     "more": "Ex. : der Hund, die Schule.",
+     "wrongs": [
+      "Ils n'ont jamais d'article",
+      "Ils finissent tous par -e",
+      "Ils s'écrivent sans voyelle"
+     ]
     },
     {
-     "question": "Quels sont les verbes de modalité allemands ?",
-     "answer": "können : pouvoir, savoir faire\nmüssen : devoir ; sollen : devoir (selon autrui)\ndürfen : avoir le droit ; wollen : vouloir ; mögen : aimer\nL'infinitif va en fin de phrase.",
-     "w": "d7d6f230",
-     "wq": "a10493fe"
+     "question": "Que signifie le verbe de modalité « können » ?",
+     "answer": "Pouvoir, savoir faire",
+     "w": [
+      "d0e4f30b",
+      "d7d6f230"
+     ],
+     "wq": "a10493fe",
+     "wrongs": [
+      "Devoir",
+      "Vouloir",
+      "Avoir le droit"
+     ]
     },
     {
-     "question": "Comment fonctionnent les verbes à particule séparable ?",
-     "answer": "La particule va en fin de proposition principale.\nEx. : aufstehen → « Ich stehe um 7 Uhr auf. »",
-     "w": "874b86f6",
-     "wq": "a19cc581"
+     "question": "Que signifie le verbe de modalité « müssen » ?",
+     "answer": "Devoir",
+     "wrongs": [
+      "Pouvoir",
+      "Vouloir",
+      "Aimer"
+     ]
+    },
+    {
+     "question": "Avec un verbe de modalité, où va l'infinitif ?",
+     "answer": "En fin de phrase",
+     "wrongs": [
+      "En 2e position",
+      "En 1re position",
+      "Juste après le sujet"
+     ]
+    },
+    {
+     "question": "Où va la particule d'un verbe séparable dans une principale ?",
+     "answer": "En fin de proposition",
+     "w": [
+      "48c188be",
+      "874b86f6"
+     ],
+     "wq": "a19cc581",
+     "more": "Ex. : aufstehen → « Ich stehe um 7 Uhr auf. »",
+     "wrongs": [
+      "En début de phrase",
+      "Collée au verbe",
+      "Juste après le sujet"
+     ]
     },
     {
      "question": "Comment se forme le Perfekt (passé composé) ?",
-     "answer": "haben ou sein au présent + participe passé en fin de phrase.\nEx. : « Ich habe gespielt », « Er ist gefahren »",
-     "w": "57f162d7",
-     "wq": "40e753a1"
+     "answer": "haben ou sein au présent + participe passé en fin de phrase",
+     "w": [
+      "ddadf731",
+      "57f162d7"
+     ],
+     "more": "Ex. : « Ich habe gespielt », « Er ist gefahren ».",
+     "wrongs": [
+      "werden + infinitif",
+      "haben + infinitif en 2e position",
+      "Le verbe au prétérit seul"
+     ]
     },
     {
-     "question": "Quelle différence entre « nicht » et « kein » ?",
-     "answer": "kein : nie un nom avec article indéfini ou sans article (« Ich habe keinen Hund »).\nnicht : nie le reste (« Ich spiele nicht »).",
-     "w": "7a302c2f",
-     "wq": "fe9b7a11"
+     "question": "Quand emploie-t-on « kein » ?",
+     "answer": "Pour nier un nom avec article indéfini ou sans article",
+     "w": [
+      "96c06c47",
+      "7a302c2f"
+     ],
+     "wq": "fe9b7a11",
+     "more": "Ex. : « Ich habe keinen Hund. »",
+     "wrongs": [
+      "Pour nier un verbe",
+      "Pour nier un adjectif",
+      "Pour nier toute la phrase"
+     ]
     },
     {
-     "question": "Comment se présenter en allemand ?",
-     "answer": "Ich heiße…\nIch bin … Jahre alt\nIch wohne in…",
-     "w": "e7ed389b",
-     "wq": "426bc6a8"
+     "question": "Quand emploie-t-on « nicht » ?",
+     "answer": "Pour nier tout le reste (verbe, adjectif…)",
+     "more": "Ex. : « Ich spiele nicht. »",
+     "wrongs": [
+      "Pour nier un nom avec article indéfini",
+      "Seulement en début de phrase",
+      "Seulement au pluriel"
+     ]
     },
     {
-     "question": "Comment donner son avis en allemand ?",
-     "answer": "Ich finde, dass…\nMeiner Meinung nach…\nIch glaube, dass…",
-     "w": "91ea990b",
-     "wq": "b86a0ee9"
+     "question": "Comment dit-on « je m'appelle… » en allemand ?",
+     "answer": "Ich heiße…",
+     "w": [
+      "42f69d65",
+      "e7ed389b"
+     ],
+     "wq": "426bc6a8",
+     "more": "Aussi : « Ich bin … Jahre alt », « Ich wohne in… ».",
+     "wrongs": [
+      "Ich nenne…",
+      "Ich bin genannt…",
+      "Mein Name heiße…"
+     ]
     },
     {
-     "question": "Comment exprimer un goût ou une préférence ?",
-     "answer": "verbe + gern : aimer (« Ich schwimme gern »)\nlieber : préférer\nam liebsten : préférer par-dessus tout",
-     "w": "4cbae3ff",
-     "wq": "7ba86e0e"
+     "question": "Comment dit-on « à mon avis » en allemand ?",
+     "answer": "Meiner Meinung nach",
+     "w": [
+      "ae746989",
+      "91ea990b"
+     ],
+     "wq": "b86a0ee9",
+     "more": "Aussi : « Ich finde, dass… », « Ich glaube, dass… ».",
+     "wrongs": [
+      "In meine Meinung",
+      "Mein Avis ist",
+      "Für meine Idee"
+     ]
     },
     {
-     "question": "Comment dire poliment « je voudrais » ?",
-     "answer": "Ich möchte… (+ nom à l'accusatif, ou infinitif en fin de phrase)\nEx. : « Ich möchte ein Wasser, bitte. »",
-     "w": "642497fe",
-     "wq": "e5e46ae7"
+     "question": "Comment dit-on « j'aime nager » en allemand ?",
+     "answer": "Ich schwimme gern",
+     "w": [
+      "403bbbc0",
+      "4cbae3ff"
+     ],
+     "wq": "7ba86e0e",
+     "wrongs": [
+      "Ich liebe schwimmen",
+      "Ich mag schwimmen gern",
+      "Ich gern schwimme"
+     ]
     },
     {
-     "question": "Comment vouvoyer quelqu'un en allemand ?",
-     "answer": "« Sie » (majuscule) + verbe à la 3e personne du pluriel.\nEx. : « Wie heißen Sie? »",
-     "w": "f803c320",
-     "wq": "5ecf2d46"
+     "question": "Que signifie « am liebsten » ?",
+     "answer": "Préférer par-dessus tout",
+     "more": "gern : aimer ; lieber : préférer.",
+     "wrongs": [
+      "Aimer un peu",
+      "Ne pas aimer",
+      "Aimer autant"
+     ]
     },
     {
-     "question": "Citez des prépositions toujours suivies du datif.",
-     "answer": "aus, bei, mit, nach, seit, von, zu\nEx. : « mit dem Bus »",
-     "w": "c9a3bef9",
-     "wq": "678c3f4f"
+     "question": "Comment dit-on poliment « je voudrais » en allemand ?",
+     "answer": "Ich möchte…",
+     "w": [
+      "ec2472d4",
+      "642497fe"
+     ],
+     "wq": "e5e46ae7",
+     "more": "Ex. : « Ich möchte ein Wasser, bitte. »",
+     "wrongs": [
+      "Ich will…",
+      "Ich muss…",
+      "Ich darf…"
+     ]
+    },
+    {
+     "question": "Comment vouvoie-t-on quelqu'un en allemand ?",
+     "answer": "Sie + verbe à la 3e personne du pluriel",
+     "w": [
+      "9b2f21b2",
+      "f803c320"
+     ],
+     "wq": "5ecf2d46",
+     "more": "Ex. : « Wie heißen Sie? »",
+     "wrongs": [
+      "Ihr + verbe à la 2e personne du pluriel",
+      "du + verbe à la 2e personne",
+      "Er + verbe à la 3e personne du singulier"
+     ]
+    },
+    {
+     "question": "Quelles prépositions sont toujours suivies du datif ?",
+     "answer": "aus, bei, mit, nach, seit, von, zu",
+     "w": [
+      "7026a571",
+      "c9a3bef9"
+     ],
+     "wq": "678c3f4f",
+     "more": "Ex. : « mit dem Bus ».",
+     "wrongs": [
+      "durch, für, gegen, ohne, um",
+      "in, an, auf, über, unter",
+      "wegen, trotz, während"
+     ]
     }
    ]
   },
@@ -30473,95 +31007,242 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'une langue à déclinaisons ?",
-     "answer": "Une langue où la terminaison des noms et adjectifs change selon leur fonction.\nEx. : le latin, d'où un ordre des mots assez libre.",
-     "w": "1e5c1b3f",
-     "wq": "6b340715"
+     "answer": "Une langue où la terminaison des noms change selon leur fonction",
+     "w": [
+      "0ee91e81",
+      "1e5c1b3f"
+     ],
+     "more": "Ex. : le latin, d'où un ordre des mots assez libre.",
+     "wrongs": [
+      "Une langue sans conjugaison",
+      "Une langue qui s'écrit de droite à gauche",
+      "Une langue qui n'a pas d'articles"
+     ]
     },
     {
-     "question": "Quels sont les six cas du latin ?",
-     "answer": "• Nominatif : sujet, attribut\n• Vocatif : apostrophe\n• Accusatif : COD\n• Génitif : complément du nom\n• Datif : attribution\n• Ablatif : compléments circonstanciels",
-     "w": "8ea395c4",
-     "wq": "3e85db98"
+     "question": "Combien de cas compte le latin ?",
+     "answer": "Six",
+     "w": [
+      "d58f9988",
+      "8ea395c4"
+     ],
+     "wq": "3e85db98",
+     "more": "Nominatif, vocatif, accusatif, génitif, datif, ablatif.",
+     "wrongs": [
+      "Quatre",
+      "Deux",
+      "Huit"
+     ]
     },
     {
-     "question": "Quel mot latin signifie « eau » et quels mots français en dérivent ?",
-     "answer": "aqua\n→ aquatique, aquarium, aqueduc",
-     "w": "11b2e763",
-     "wq": "ae74534b"
+     "question": "Quel mot latin signifie « eau » ?",
+     "answer": "aqua",
+     "w": [
+      "7661452f",
+      "11b2e763"
+     ],
+     "wq": "ae74534b",
+     "more": "D'où aquatique, aquarium, aqueduc.",
+     "wrongs": [
+      "terra",
+      "ignis",
+      "unda"
+     ]
     },
     {
-     "question": "De quels mots latins viennent « paternel » et « maternel » ?",
-     "answer": "De « pater » (père) et « mater » (mère)."
+     "question": "De quel mot latin vient « paternel » ?",
+     "answer": "pater (père)",
+     "w": "57113aab",
+     "wq": "323d7eca",
+     "more": "« Maternel » vient de mater (mère).",
+     "wrongs": [
+      "patria (patrie)",
+      "pax (paix)",
+      "panis (pain)"
+     ]
     },
     {
-     "question": "Que signifie « urbs » et quel mot français en vient ?",
-     "answer": "urbs = la ville (spécialement Rome)\n→ urbain, urbanisme",
-     "w": "312cb471",
-     "wq": "c9c6f025"
+     "question": "Que signifie le latin « urbs » ?",
+     "answer": "La ville",
+     "w": [
+      "38f17095",
+      "312cb471"
+     ],
+     "wq": "c9c6f025",
+     "more": "Spécialement Rome. D'où urbain, urbanisme.",
+     "wrongs": [
+      "La campagne",
+      "La maison",
+      "Le peuple"
+     ]
     },
     {
      "question": "Que signifie le latin « domus » ?",
-     "answer": "La maison\n→ domicile, domestique",
-     "w": "2e83ae19",
-     "wq": "8ff9f1b6"
+     "answer": "La maison",
+     "w": [
+      "d30a0467",
+      "2e83ae19"
+     ],
+     "more": "D'où domicile, domestique.",
+     "wrongs": [
+      "Le maître",
+      "La ville",
+      "Le jardin"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un doublet ?",
-     "answer": "Deux mots français issus du même mot latin : l'un populaire, l'autre savant.\nEx. : fragilis → frêle / fragile\npotio → poison / potion",
-     "w": "058df564",
-     "wq": "92bafb81"
+     "answer": "Deux mots français issus du même mot latin",
+     "w": [
+      "f6076fbc",
+      "058df564"
+     ],
+     "more": "L'un populaire, l'autre savant. Ex. : fragilis → frêle / fragile.",
+     "wrongs": [
+      "Deux mots de sens contraire",
+      "Un mot répété deux fois",
+      "Deux mots qui se prononcent pareil"
+     ]
     },
     {
      "question": "Que signifie « Carpe diem » ?",
-     "answer": "« Cueille le jour » (profite du moment présent)\nHorace",
-     "w": "e565ba3f",
-     "wq": "a6ea5f23"
+     "answer": "Cueille le jour",
+     "w": [
+      "b11fc452",
+      "e565ba3f"
+     ],
+     "more": "Profite du moment présent (Horace).",
+     "wrongs": [
+      "Le sort en est jeté",
+      "Je suis venu, j'ai vu, j'ai vaincu",
+      "Connais-toi toi-même"
+     ]
     },
     {
-     "question": "Que signifie « Veni, vidi, vici » et qui l'a dite ?",
-     "answer": "« Je suis venu, j'ai vu, j'ai vaincu »\nJules César, après une victoire éclair (47 av. J.-C.)",
-     "w": "744cffc5",
-     "wq": "6140f3ce"
+     "question": "Que signifie « Veni, vidi, vici » ?",
+     "answer": "Je suis venu, j'ai vu, j'ai vaincu",
+     "w": [
+      "56afee18",
+      "744cffc5"
+     ],
+     "wq": "6140f3ce",
+     "wrongs": [
+      "Le sort en est jeté",
+      "Cueille le jour",
+      "Diviser pour régner"
+     ]
+    },
+    {
+     "question": "Qui a dit « Veni, vidi, vici » ?",
+     "answer": "Jules César",
+     "more": "Après une victoire éclair, en 47 av. J.-C.",
+     "wrongs": [
+      "Auguste",
+      "Cicéron",
+      "Néron"
+     ]
     },
     {
      "question": "Que signifie « Alea jacta est » ?",
-     "answer": "« Le sort en est jeté »\nCésar, en franchissant le Rubicon (49 av. J.-C.)",
-     "w": "736d0f0c",
-     "wq": "69a9ea27"
+     "answer": "Le sort en est jeté",
+     "w": [
+      "e25947c7",
+      "736d0f0c"
+     ],
+     "more": "César, en franchissant le Rubicon (49 av. J.-C.).",
+     "wrongs": [
+      "Cueille le jour",
+      "Je suis venu, j'ai vu, j'ai vaincu",
+      "Malheur aux vaincus"
+     ]
     },
     {
-     "question": "Que signifient « a priori » et « a posteriori » ?",
-     "answer": "a priori : avant l'expérience, au premier abord\na posteriori : après coup, d'après l'expérience",
-     "w": "c62dc464",
-     "wq": "994925e1"
+     "question": "Que signifie « a priori » ?",
+     "answer": "Avant l'expérience, au premier abord",
+     "w": [
+      "7d31ca89",
+      "c62dc464"
+     ],
+     "wq": "994925e1",
+     "wrongs": [
+      "Après coup",
+      "Pour toujours",
+      "Par erreur"
+     ]
     },
     {
-     "question": "Que signifie « alibi » en latin ?",
-     "answer": "« Ailleurs »\nUn alibi prouve qu'on était ailleurs au moment des faits.",
-     "w": "a2aecd4b",
-     "wq": "a7df20f1"
+     "question": "Que signifie « a posteriori » ?",
+     "answer": "Après coup, d'après l'expérience",
+     "wrongs": [
+      "Au premier abord",
+      "Avant tout",
+      "À l'avance"
+     ]
+    },
+    {
+     "question": "Que signifie le mot latin « alibi » ?",
+     "answer": "Ailleurs",
+     "w": [
+      "68a9269b",
+      "a2aecd4b"
+     ],
+     "wq": "a7df20f1",
+     "more": "Un alibi prouve qu'on était ailleurs au moment des faits.",
+     "wrongs": [
+      "Innocent",
+      "Témoin",
+      "Preuve"
+     ]
     },
     {
      "question": "Que signifie « curriculum vitae » ?",
-     "answer": "« Le déroulement de la vie »\nLe document qui retrace un parcours.",
-     "w": "395f8515",
-     "wq": "1617ec37"
+     "answer": "Le déroulement de la vie",
+     "w": [
+      "c7ce6df4",
+      "395f8515"
+     ],
+     "wrongs": [
+      "La lettre de motivation",
+      "Le diplôme obtenu",
+      "Le travail quotidien"
+     ]
     },
     {
      "question": "Que signifie l'abréviation « etc. » ?",
-     "answer": "« et cetera »\n= et les autres choses",
-     "w": "a1929a51",
-     "wq": "da3e443c"
+     "answer": "Et cetera : et les autres choses",
+     "w": [
+      "47204c67",
+      "a1929a51"
+     ],
+     "wrongs": [
+      "Et encore une fois",
+      "Et c'est tout",
+      "Exemple"
+     ]
     },
     {
      "question": "Que signifie « SPQR » ?",
-     "answer": "Senatus Populusque Romanus\nLe Sénat et le peuple romain : devise de la République romaine.",
-     "w": "4554f505",
-     "wq": "c09b0049"
+     "answer": "Le Sénat et le peuple romain",
+     "w": [
+      "5505a511",
+      "4554f505"
+     ],
+     "more": "Senatus Populusque Romanus : devise de la République romaine.",
+     "wrongs": [
+      "Le sort en est jeté",
+      "Sa Puissance Que Rome",
+      "La paix de Rome"
+     ]
     },
     {
      "question": "De quel mot latin viennent « mur » et « muraille » ?",
-     "answer": "Du latin « murus » (mur)."
+     "answer": "murus",
+     "w": "415ad09c",
+     "wrongs": [
+      "mare",
+      "mundus",
+      "morus"
+     ]
     }
    ]
   },
@@ -31558,111 +32239,265 @@
    "cards": [
     {
      "question": "Pour f(x) = 2x − 3, quelle est l'image de 4 ?",
-     "answer": "f(4) = 2 × 4 − 3 = 5",
-     "w": "a4d4eb0b",
-     "wq": "8582abfc"
+     "answer": "5",
+     "w": [
+      "7b48ca11",
+      "a4d4eb0b"
+     ],
+     "more": "f(4) = 2 × 4 − 3 = 5",
+     "wrongs": [
+      "11",
+      "3,5",
+      "8"
+     ]
     },
     {
      "question": "Pour f(x) = 2x − 3, quel est l'antécédent de 7 ?",
-     "answer": "2x − 3 = 7, donc x = 5",
-     "w": "195ae18d",
-     "wq": "730a6e00"
+     "answer": "5",
+     "w": [
+      "09df8de6",
+      "195ae18d"
+     ],
+     "more": "2x − 3 = 7, donc x = 5",
+     "wrongs": [
+      "11",
+      "2",
+      "7"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une fonction linéaire ?",
-     "answer": "f(x) = ax\nSituation de proportionnalité.\nDroite passant par l'origine.",
-     "w": "e1f6fcf6",
-     "wq": "6b2029fc"
+     "question": "Quelle est la forme d'une fonction linéaire ?",
+     "answer": "f(x) = ax",
+     "w": [
+      "7ff14062",
+      "e1f6fcf6"
+     ],
+     "wq": "6b2029fc",
+     "more": "Situation de proportionnalité ; droite qui passe par l'origine.",
+     "wrongs": [
+      "f(x) = ax + b",
+      "f(x) = x²",
+      "f(x) = a/x"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une fonction affine ?",
-     "answer": "f(x) = ax + b\nDroite : a = coefficient directeur, b = ordonnée à l'origine.",
-     "w": "11ffddbb",
-     "wq": "bb88eb32"
+     "question": "Dans f(x) = ax + b, que représente b ?",
+     "answer": "L'ordonnée à l'origine",
+     "w": [
+      "34728049",
+      "11ffddbb"
+     ],
+     "wq": "bb88eb32",
+     "more": "a est le coefficient directeur.",
+     "wrongs": [
+      "Le coefficient directeur",
+      "L'antécédent de 0",
+      "La pente de la droite"
+     ]
     },
     {
-     "question": "Comment calculer le coefficient a d'une fonction affine connaissant deux images ?",
-     "answer": "a = (f(x₂) − f(x₁)) ÷ (x₂ − x₁)\nEx. : f(1) = 3, f(4) = 9 → a = 6 ÷ 3 = 2\nPuis b = 3 − 2 × 1 = 1",
-     "w": "033b503d",
-     "wq": "6de265e4"
+     "question": "Si f est affine avec f(1) = 3 et f(4) = 9, que vaut le coefficient a ?",
+     "answer": "2",
+     "w": [
+      "874ee1ee",
+      "033b503d"
+     ],
+     "wq": "6de265e4",
+     "more": "a = (9 − 3) ÷ (4 − 1) = 2 ; puis b = 3 − 2 × 1 = 1.",
+     "wrongs": [
+      "3",
+      "6",
+      "1"
+     ]
     },
     {
-     "question": "Comment le signe de a renseigne-t-il sur une fonction affine f(x) = ax + b ?",
-     "answer": "a > 0 : croissante\na < 0 : décroissante\na = 0 : constante",
-     "w": "4f8fb7a2",
-     "wq": "dedf4138"
+     "question": "Si a < 0, comment varie la fonction affine f(x) = ax + b ?",
+     "answer": "Elle est décroissante",
+     "w": [
+      "ff02d57d",
+      "4f8fb7a2"
+     ],
+     "wq": "dedf4138",
+     "more": "a > 0 : croissante ; a = 0 : constante.",
+     "wrongs": [
+      "Elle est croissante",
+      "Elle est constante",
+      "Elle n'est pas définie"
+     ]
     },
     {
-     "question": "Comment lire graphiquement l'image d'un nombre ?",
-     "answer": "Partir du nombre sur l'axe des abscisses,\naller jusqu'à la courbe,\nlire l'ordonnée du point.",
-     "w": "3a35a2d3",
-     "wq": "bd775920"
+     "question": "Comment lit-on graphiquement l'image d'un nombre ?",
+     "answer": "On part de l'axe des abscisses jusqu'à la courbe, puis on lit l'ordonnée",
+     "w": [
+      "17fdd284",
+      "3a35a2d3"
+     ],
+     "wq": "bd775920",
+     "wrongs": [
+      "On part de l'axe des ordonnées et on lit l'abscisse",
+      "On lit la pente de la courbe",
+      "On mesure la longueur de la courbe"
+     ]
     },
     {
-     "question": "Comment reconnaître une situation de proportionnalité sur un graphique ?",
-     "answer": "Points alignés sur une droite qui passe par l'origine.",
-     "w": "3224cd6a",
-     "wq": "71a0ba7d"
+     "question": "À quoi reconnaît-on une situation de proportionnalité sur un graphique ?",
+     "answer": "Points alignés sur une droite qui passe par l'origine",
+     "w": [
+      "cd028b47",
+      "3224cd6a"
+     ],
+     "wq": "71a0ba7d",
+     "wrongs": [
+      "Points alignés sur n'importe quelle droite",
+      "Points sur une courbe en cloche",
+      "Points tous à la même hauteur"
+     ]
     },
     {
-     "question": "Comment compléter un tableau de proportionnalité avec le produit en croix ?",
-     "answer": "4/6 = x/15\nx = 4 × 15 ÷ 6 = 10",
-     "w": "8d39c5aa",
-     "wq": "59d366f8"
+     "question": "Dans un tableau de proportionnalité, 6 correspond à 4. À quoi correspond 15 ?",
+     "answer": "10",
+     "w": [
+      "36bc3c55",
+      "8d39c5aa"
+     ],
+     "wq": "59d366f8",
+     "more": "Produit en croix : x = 4 × 15 ÷ 6 = 10",
+     "wrongs": [
+      "22,5",
+      "13",
+      "60"
+     ]
     },
     {
-     "question": "Comment calculer t % d'une quantité Q ?",
-     "answer": "Q × t/100\nEx. : 15 % de 80 = 80 × 0,15 = 12",
-     "w": "aa241ca0",
-     "wq": "e1171d8a"
+     "question": "Combien font 15 % de 80 ?",
+     "answer": "12",
+     "w": [
+      "971be990",
+      "aa241ca0"
+     ],
+     "wq": "e1171d8a",
+     "more": "80 × 0,15 = 12",
+     "wrongs": [
+      "15",
+      "8",
+      "1,2"
+     ]
     },
     {
      "question": "Par quel coefficient multiplie-t-on pour une hausse de t % ?",
-     "answer": "1 + t/100\nEx. : 80 € + 15 % → 80 × 1,15 = 92 €",
-     "w": "e4336bf3",
-     "wq": "ad223676"
+     "answer": "1 + t/100",
+     "w": [
+      "4c6e3132",
+      "e4336bf3"
+     ],
+     "more": "Ex. : 80 € + 15 % → 80 × 1,15 = 92 €",
+     "wrongs": [
+      "1 − t/100",
+      "t/100",
+      "1 + t"
+     ]
     },
     {
      "question": "Par quel coefficient multiplie-t-on pour une baisse de t % ?",
-     "answer": "1 − t/100\nEx. : 60 € − 20 % → 60 × 0,8 = 48 €",
-     "w": "e99f6947",
-     "wq": "26a437d8"
+     "answer": "1 − t/100",
+     "w": [
+      "91e61522",
+      "e99f6947"
+     ],
+     "more": "Ex. : 60 € − 20 % → 60 × 0,8 = 48 €",
+     "wrongs": [
+      "1 + t/100",
+      "t/100",
+      "1 − t"
+     ]
     },
     {
      "question": "Un prix vaut 92 € après une hausse de 15 %. Quel était le prix initial ?",
-     "answer": "On divise par le coefficient :\n92 ÷ 1,15 = 80 €",
-     "w": "dc9ec64d",
-     "wq": "03ee5b44"
+     "answer": "80 €",
+     "w": [
+      "b7e5155f",
+      "dc9ec64d"
+     ],
+     "more": "On divise par le coefficient : 92 ÷ 1,15 = 80 €",
+     "wrongs": [
+      "77 €",
+      "78,20 €",
+      "105,80 €"
+     ]
     },
     {
-     "question": "Deux hausses successives de 10 % font-elles une hausse de 20 % ?",
-     "answer": "Non : 1,1 × 1,1 = 1,21\n→ hausse de 21 %",
-     "w": "27792558",
-     "wq": "9563a779"
+     "question": "Deux hausses successives de 10 % donnent quelle hausse au total ?",
+     "answer": "21 %",
+     "w": [
+      "4e1564ef",
+      "27792558"
+     ],
+     "wq": "9563a779",
+     "more": "1,1 × 1,1 = 1,21",
+     "wrongs": [
+      "20 %",
+      "11 %",
+      "100 %"
+     ]
     },
     {
-     "question": "Comment exprimer une proportion en pourcentage ?",
-     "answer": "Partie ÷ total × 100\nEx. : 12 filles sur 30 élèves → 12 ÷ 30 = 0,4 = 40 %",
-     "w": "e1045213",
-     "wq": "8f9a5729"
+     "question": "12 filles sur 30 élèves : quel pourcentage ?",
+     "answer": "40 %",
+     "w": [
+      "e084f22f",
+      "e1045213"
+     ],
+     "wq": "8f9a5729",
+     "more": "12 ÷ 30 = 0,4",
+     "wrongs": [
+      "12 %",
+      "36 %",
+      "25 %"
+     ]
     },
     {
-     "question": "Comment calculer une vitesse moyenne ?",
-     "answer": "v = d ÷ t\nEx. : 150 km en 2 h 30 min (2,5 h) → 60 km/h",
-     "w": "149c796d",
-     "wq": "f841d3fc"
+     "question": "Quelle est la vitesse moyenne pour 150 km en 2 h 30 min ?",
+     "answer": "60 km/h",
+     "w": [
+      "14fde7e1",
+      "149c796d"
+     ],
+     "wq": "f841d3fc",
+     "more": "v = d ÷ t = 150 ÷ 2,5",
+     "wrongs": [
+      "50 km/h",
+      "65 km/h",
+      "75 km/h"
+     ]
     },
     {
-     "question": "Que signifie une échelle de 1/25 000 sur une carte ?",
-     "answer": "1 cm sur la carte = 25 000 cm = 250 m en réalité.",
-     "w": "6772742a",
-     "wq": "559fdf82"
+     "question": "Sur une carte au 1/25 000, que représente 1 cm ?",
+     "answer": "250 m",
+     "w": [
+      "1a1a80c0",
+      "6772742a"
+     ],
+     "wq": "559fdf82",
+     "more": "25 000 cm = 250 m",
+     "wrongs": [
+      "25 m",
+      "2,5 km",
+      "25 km"
+     ]
     },
     {
      "question": "Comment partager 50 dans le ratio 2 : 3 ?",
-     "answer": "2 + 3 = 5 parts de 10\n→ 20 et 30",
-     "w": "0c5e36d4",
-     "wq": "eb3d4b65"
+     "answer": "20 et 30",
+     "w": [
+      "321b1ee6",
+      "0c5e36d4"
+     ],
+     "more": "2 + 3 = 5 parts de 10.",
+     "wrongs": [
+      "25 et 25",
+      "10 et 40",
+      "2 et 3"
+     ]
     }
    ]
   },
@@ -32337,98 +33172,232 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment calculer une moyenne pondérée ?",
-     "answer": "Somme des produits valeur × effectif, divisée par l'effectif total.\nEx. : notes 10 (×2) et 16 (×1)\n→ (20 + 16) ÷ 3 = 12",
-     "w": "93a4cb11",
-     "wq": "6bc05d9d"
+     "question": "Quelle est la moyenne des notes 10 (coefficient 2) et 16 (coefficient 1) ?",
+     "answer": "12",
+     "w": [
+      "b52f17ff",
+      "93a4cb11"
+     ],
+     "wq": "6bc05d9d",
+     "more": "(10 × 2 + 16) ÷ 3 = 36 ÷ 3",
+     "wrongs": [
+      "13",
+      "11",
+      "14"
+     ]
     },
     {
-     "question": "Comment déterminer la médiane d'une série de 5 valeurs : 3 ; 5 ; 7 ; 8 ; 12 ?",
-     "answer": "On range les valeurs : effectif impair → la valeur centrale.\nMédiane : 7",
-     "w": "3c4f8895",
-     "wq": "b0d35021"
+     "question": "Quelle est la médiane de la série 3 ; 5 ; 7 ; 8 ; 12 ?",
+     "answer": "7",
+     "w": [
+      "246d241c",
+      "3c4f8895"
+     ],
+     "wq": "b0d35021",
+     "more": "Effectif impair : la valeur centrale de la série rangée.",
+     "wrongs": [
+      "5",
+      "7,5",
+      "8"
+     ]
     },
     {
      "question": "Quelle est la médiane de la série 2 ; 4 ; 6 ; 10 ?",
-     "answer": "Effectif pair : moyenne des deux valeurs centrales.\n(4 + 6) ÷ 2 = 5",
-     "w": "6a5f800d",
-     "wq": "950dab1e"
+     "answer": "5",
+     "w": [
+      "e1de5848",
+      "6a5f800d"
+     ],
+     "more": "Effectif pair : moyenne des deux valeurs centrales (4 + 6) ÷ 2.",
+     "wrongs": [
+      "4",
+      "6",
+      "5,5"
+     ]
     },
     {
-     "question": "Que signifie concrètement la médiane d'une série ?",
-     "answer": "Au moins la moitié des valeurs lui sont inférieures ou égales,\net au moins la moitié lui sont supérieures ou égales.",
-     "w": "1850959f",
-     "wq": "94101d84"
+     "question": "Que signifie la médiane d'une série ?",
+     "answer": "Au moins la moitié des valeurs lui sont inférieures ou égales, et au moins la moitié supérieures ou égales",
+     "w": [
+      "7b984d03",
+      "1850959f"
+     ],
+     "wq": "94101d84",
+     "wrongs": [
+      "C'est la valeur la plus fréquente",
+      "C'est la moyenne des valeurs",
+      "C'est l'écart entre la plus grande et la plus petite valeur"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'étendue d'une série ?",
-     "answer": "Plus grande valeur − plus petite valeur.\nEx. : 12 − 3 = 9\nElle mesure la dispersion.",
-     "w": "3a482439",
-     "wq": "34341351"
+     "question": "Comment calcule-t-on l'étendue d'une série ?",
+     "answer": "Plus grande valeur − plus petite valeur",
+     "w": [
+      "b011d7d1",
+      "3a482439"
+     ],
+     "wq": "34341351",
+     "more": "Elle mesure la dispersion.",
+     "wrongs": [
+      "Somme des valeurs ÷ effectif",
+      "Valeur centrale de la série",
+      "Plus grande valeur + plus petite valeur"
+     ]
     },
     {
-     "question": "Comment calculer une fréquence ?",
-     "answer": "Effectif de la valeur ÷ effectif total\nEntre 0 et 1 (ou en %).",
-     "w": "b63b11dd",
-     "wq": "20ff7810"
+     "question": "Comment calcule-t-on une fréquence ?",
+     "answer": "Effectif de la valeur ÷ effectif total",
+     "w": [
+      "237e4d6c",
+      "b63b11dd"
+     ],
+     "wq": "20ff7810",
+     "more": "Entre 0 et 1 (ou en %).",
+     "wrongs": [
+      "Effectif total ÷ effectif de la valeur",
+      "Effectif de la valeur × 100",
+      "Effectif de la valeur − effectif total"
+     ]
     },
     {
-     "question": "Comment calculer l'angle d'un secteur dans un diagramme circulaire ?",
-     "answer": "Angle = fréquence × 360°\nEx. : 25 % → 0,25 × 360 = 90°",
-     "w": "06031f48",
-     "wq": "b6cdd39c"
+     "question": "Dans un diagramme circulaire, quel angle représente 25 % ?",
+     "answer": "90°",
+     "w": [
+      "24ae8281",
+      "06031f48"
+     ],
+     "wq": "b6cdd39c",
+     "more": "Angle = fréquence × 360°",
+     "wrongs": [
+      "25°",
+      "45°",
+      "180°"
+     ]
     },
     {
      "question": "Entre quelles valeurs une probabilité est-elle comprise ?",
-     "answer": "Entre 0 et 1\n0 : impossible ; 1 : certain",
-     "w": "a789e758",
-     "wq": "a292d115"
+     "answer": "Entre 0 et 1",
+     "w": [
+      "12752425",
+      "a789e758"
+     ],
+     "more": "0 : impossible ; 1 : certain.",
+     "wrongs": [
+      "Entre −1 et 1",
+      "Entre 0 et 100",
+      "Entre 1 et 6"
+     ]
     },
     {
-     "question": "Comment calculer une probabilité en situation d'équiprobabilité ?",
-     "answer": "P = issues favorables ÷ issues possibles\nEx. : nombre pair avec un dé : 3/6 = 1/2",
-     "w": "ee76327e",
-     "wq": "242889f6"
+     "question": "Quelle est la probabilité d'obtenir un nombre pair avec un dé ?",
+     "answer": "1/2",
+     "w": [
+      "5990f948",
+      "ee76327e"
+     ],
+     "wq": "242889f6",
+     "more": "3 issues favorables sur 6.",
+     "wrongs": [
+      "1/6",
+      "1/3",
+      "2/3"
+     ]
     },
     {
      "question": "Une urne contient 3 boules rouges et 5 bleues. Quelle est la probabilité de tirer une rouge ?",
-     "answer": "P(rouge) = 3/8 = 0,375",
-     "w": "37419f58",
-     "wq": "e1693419"
+     "answer": "3/8",
+     "w": [
+      "34aeda66",
+      "37419f58"
+     ],
+     "wrongs": [
+      "3/5",
+      "5/8",
+      "1/3"
+     ]
     },
     {
-     "question": "Comment calculer la probabilité de l'événement contraire ?",
-     "answer": "P(non A) = 1 − P(A)\nEx. : P(A) = 0,3 → P(non A) = 0,7",
-     "w": "60400e99",
-     "wq": "28433aa2"
+     "question": "Si P(A) = 0,3, que vaut P(non A) ?",
+     "answer": "0,7",
+     "w": [
+      "25ead154",
+      "60400e99"
+     ],
+     "wq": "28433aa2",
+     "more": "P(non A) = 1 − P(A)",
+     "wrongs": [
+      "0,3",
+      "−0,3",
+      "1,3"
+     ]
     },
     {
      "question": "Que vaut la somme des probabilités de toutes les issues d'une expérience ?",
-     "answer": "Elle vaut toujours 1."
+     "answer": "1",
+     "w": "0a71608a",
+     "wrongs": [
+      "0",
+      "100",
+      "Le nombre d'issues"
+     ]
     },
     {
-     "question": "Comment utiliser un arbre pour une expérience à deux épreuves ?",
-     "answer": "On multiplie les probabilités le long d'un chemin.\nEx. : deux lancers de pièce : P(pile puis pile) = 1/2 × 1/2 = 1/4",
-     "w": "c7b0a4de",
-     "wq": "3ea5aa3e"
+     "question": "Quelle est la probabilité d'obtenir pile deux fois de suite ?",
+     "answer": "1/4",
+     "w": [
+      "30e971ae",
+      "c7b0a4de"
+     ],
+     "wq": "3ea5aa3e",
+     "more": "On multiplie le long du chemin de l'arbre : 1/2 × 1/2.",
+     "wrongs": [
+      "1/2",
+      "1",
+      "1/3"
+     ]
     },
     {
-     "question": "Quelle différence entre une issue et un événement ?",
-     "answer": "Issue : un résultat possible de l'expérience.\nÉvénement : un ensemble d'issues.\nEx. : « obtenir un nombre pair » = {2 ; 4 ; 6}",
-     "w": "eadfb33b",
-     "wq": "6762823b"
+     "question": "Qu'est-ce qu'un événement en probabilités ?",
+     "answer": "Un ensemble d'issues",
+     "w": [
+      "91264e1e",
+      "eadfb33b"
+     ],
+     "wq": "6762823b",
+     "more": "Ex. : « obtenir un nombre pair » = {2 ; 4 ; 6}. Une issue est un seul résultat possible.",
+     "wrongs": [
+      "Un seul résultat possible",
+      "Le nombre total de lancers",
+      "Une probabilité égale à 1"
+     ]
     },
     {
      "question": "Que dit la loi des grands nombres ?",
-     "answer": "En répétant une expérience un grand nombre de fois,\nla fréquence d'une issue se rapproche de sa probabilité.",
-     "w": "028810b2",
-     "wq": "f28a06ca"
+     "answer": "Avec beaucoup de répétitions, la fréquence se rapproche de la probabilité",
+     "w": [
+      "e6371b24",
+      "028810b2"
+     ],
+     "wrongs": [
+      "Plus on joue, plus on gagne",
+      "La probabilité augmente avec le nombre d'essais",
+      "Les grands nombres sont plus probables"
+     ]
     },
     {
-     "question": "Deux événements A et B sont incompatibles. Comment calculer P(A ou B) ?",
-     "answer": "P(A ou B) = P(A) + P(B)\n(ils ne peuvent pas se produire en même temps)",
-     "w": "de27f051",
-     "wq": "d4c4e418"
+     "question": "Si A et B sont incompatibles, que vaut P(A ou B) ?",
+     "answer": "P(A) + P(B)",
+     "w": [
+      "6a766520",
+      "de27f051"
+     ],
+     "wq": "d4c4e418",
+     "more": "Ils ne peuvent pas se produire en même temps.",
+     "wrongs": [
+      "P(A) × P(B)",
+      "P(A) − P(B)",
+      "1 − P(A)"
+     ]
     }
    ]
   },
@@ -32451,104 +33420,275 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce que la symétrie axiale d'axe (d) ?",
-     "answer": "(d) est la médiatrice de [MM'].\nC'est un pliage le long de (d).",
-     "w": "2612cdb4",
-     "wq": "f8aaa58a"
+     "question": "Dans une symétrie axiale d'axe (d), que représente (d) pour le segment [MM'] ?",
+     "answer": "Sa médiatrice",
+     "w": [
+      "d2a732cc",
+      "2612cdb4"
+     ],
+     "wq": "f8aaa58a",
+     "more": "C'est un pliage le long de (d).",
+     "wrongs": [
+      "Son milieu",
+      "Une parallèle",
+      "Sa diagonale"
+     ]
     },
     {
-     "question": "Qu'est-ce que la symétrie centrale de centre O ?",
-     "answer": "O est le milieu de [MM'].\nC'est un demi-tour autour de O.",
-     "w": "aa89e365",
-     "wq": "76ed7715"
+     "question": "Dans une symétrie centrale de centre O, que représente O pour [MM'] ?",
+     "answer": "Son milieu",
+     "w": [
+      "a3d3bf92",
+      "aa89e365"
+     ],
+     "wq": "76ed7715",
+     "more": "C'est un demi-tour autour de O.",
+     "wrongs": [
+      "Sa médiatrice",
+      "Une extrémité",
+      "Le point le plus éloigné"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une translation ?",
-     "answer": "Un glissement sans rotation : direction, sens, longueur.\nSi elle transforme A en B et M en M' : ABM'M est un parallélogramme.",
-     "w": "2db4e130",
-     "wq": "8f45dbb0"
+     "question": "Comment appelle-t-on un glissement sans rotation (direction, sens, longueur) ?",
+     "answer": "Une translation",
+     "w": [
+      "af440761",
+      "2db4e130"
+     ],
+     "wq": "8f45dbb0",
+     "more": "Si elle transforme A en B et M en M', ABM'M est un parallélogramme.",
+     "wrongs": [
+      "Une rotation",
+      "Une symétrie axiale",
+      "Une homothétie"
+     ]
     },
     {
-     "question": "Comment définit-on une rotation ?",
-     "answer": "Par un centre, un angle et un sens.\nOM' = OM, et l'angle MOM' est l'angle de la rotation.",
-     "w": "643e2f62",
-     "wq": "fe6ac2a0"
+     "question": "Que faut-il pour définir une rotation ?",
+     "answer": "Un centre, un angle et un sens",
+     "w": [
+      "0e5b8d72",
+      "643e2f62"
+     ],
+     "wq": "fe6ac2a0",
+     "wrongs": [
+      "Un axe seulement",
+      "Un vecteur",
+      "Un centre et un rapport"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une homothétie de centre O et de rapport k ?",
-     "answer": "O, M, M' alignés et OM' = |k| × OM.\nk > 0 : M' du même côté que M\nk < 0 : de l'autre côté",
-     "w": "ce8ef4cc",
-     "wq": "5f2a18ff"
+     "question": "Dans une homothétie de centre O et de rapport k, que vaut OM' ?",
+     "answer": "|k| × OM",
+     "w": [
+      "2ac39ab7",
+      "ce8ef4cc"
+     ],
+     "wq": "5f2a18ff",
+     "more": "O, M, M' alignés ; k > 0 : M' du même côté que M.",
+     "wrongs": [
+      "OM + k",
+      "OM / k",
+      "OM"
+     ]
     },
     {
-     "question": "Quand une homothétie est-elle un agrandissement ou une réduction ?",
-     "answer": "Agrandissement : |k| > 1\nRéduction : 0 < |k| < 1",
-     "w": "68c38298",
-     "wq": "8054612f"
+     "question": "Quand une homothétie est-elle un agrandissement ?",
+     "answer": "Quand |k| > 1",
+     "w": [
+      "4620cc68",
+      "68c38298"
+     ],
+     "wq": "8054612f",
+     "more": "Réduction : 0 < |k| < 1.",
+     "wrongs": [
+      "Quand 0 < |k| < 1",
+      "Quand k = 1",
+      "Quand k < 0"
+     ]
     },
     {
-     "question": "Quelle transformation est une homothétie de rapport −1 ?",
-     "answer": "La symétrie centrale de même centre."
+     "question": "À quelle transformation correspond une homothétie de rapport −1 ?",
+     "answer": "La symétrie centrale de même centre",
+     "w": "388a1fa4",
+     "wq": "8fa5cadb",
+     "wrongs": [
+      "La symétrie axiale",
+      "Une translation",
+      "Une rotation d'un quart de tour"
+     ]
     },
     {
-     "question": "Quelles propriétés conservent les symétries, translations et rotations ?",
-     "answer": "Longueurs, angles, aires,\nparallélisme et alignement.",
-     "w": "17c3918b",
-     "wq": "8375fea6"
+     "question": "Que conservent les symétries, translations et rotations ?",
+     "answer": "Longueurs, angles, aires, parallélisme et alignement",
+     "w": [
+      "fb1778d9",
+      "17c3918b"
+     ],
+     "wq": "8375fea6",
+     "wrongs": [
+      "Seulement les angles",
+      "Seulement l'alignement",
+      "Rien"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une homothétie de rapport k conserve et que modifie-t-elle ?",
-     "answer": "Conserve : angles, parallélisme, alignement.\nModifie : longueurs × |k|, aires × k².",
-     "w": "4c2f6ca2",
-     "wq": "3e960025"
+     "question": "Par combien une homothétie de rapport k multiplie-t-elle les longueurs ?",
+     "answer": "|k|",
+     "w": [
+      "46a43cb5",
+      "4c2f6ca2"
+     ],
+     "wq": "3e960025",
+     "more": "Elle conserve angles, parallélisme et alignement.",
+     "wrongs": [
+      "k²",
+      "k³",
+      "1"
+     ]
     },
     {
-     "question": "Quelle transformation permet de passer d'un motif à l'autre dans une frise ? Dans une rosace ?",
-     "answer": "Frise : translations répétées.\nRosace : rotations autour d'un même centre.",
-     "w": "400c8a7f",
-     "wq": "e4360621"
+     "question": "Par combien une homothétie de rapport k multiplie-t-elle les aires ?",
+     "answer": "k²",
+     "wrongs": [
+      "|k|",
+      "k³",
+      "2k"
+     ]
     },
     {
-     "question": "Dans Scratch, que fait le bloc « s'orienter à 90 » ?",
-     "answer": "Le lutin s'oriente vers la droite.\n0 : haut ; 180 : bas ; −90 : gauche",
-     "w": "c7941a3d",
-     "wq": "0564f4d9"
+     "question": "Quelle transformation permet de passer d'un motif à l'autre dans une frise ?",
+     "answer": "Une translation",
+     "w": [
+      "3b9fad2e",
+      "400c8a7f"
+     ],
+     "wq": "e4360621",
+     "wrongs": [
+      "Une rotation",
+      "Une homothétie",
+      "Une symétrie centrale"
+     ]
     },
     {
-     "question": "Quelles sont les coordonnées extrêmes de la scène Scratch ?",
-     "answer": "x de −240 à 240\ny de −180 à 180\nCentre : (0 ; 0)",
-     "w": "9ed7702c",
-     "wq": "eafb98e9"
+     "question": "Quelle transformation permet de passer d'un motif à l'autre dans une rosace ?",
+     "answer": "Une rotation",
+     "wrongs": [
+      "Une translation",
+      "Une homothétie",
+      "Une symétrie axiale"
+     ]
     },
     {
-     "question": "Quel script Scratch trace un polygone régulier à n côtés ?",
-     "answer": "répéter n fois : avancer de L, tourner de 360/n degrés\nEx. : hexagone → 6 fois, tourner de 60°",
-     "w": "f0761077",
-     "wq": "4a647a01"
+     "question": "Dans Scratch, vers où s'oriente le lutin avec « s'orienter à 90 » ?",
+     "answer": "Vers la droite",
+     "w": [
+      "683b7140",
+      "c7941a3d"
+     ],
+     "wq": "0564f4d9",
+     "more": "0 : haut ; 180 : bas ; −90 : gauche.",
+     "wrongs": [
+      "Vers le haut",
+      "Vers la gauche",
+      "Vers le bas"
+     ]
     },
     {
-     "question": "Quelle différence entre « répéter 10 fois » et « répéter jusqu'à » ?",
-     "answer": "« répéter 10 fois » : un nombre de fois fixé.\n« répéter jusqu'à » : tant que la condition n'est pas vraie.",
-     "w": "1327b36f",
-     "wq": "8b3f7a29"
+     "question": "Entre quelles valeurs varie x sur la scène Scratch ?",
+     "answer": "De −240 à 240",
+     "w": [
+      "da4b6688",
+      "9ed7702c"
+     ],
+     "wq": "eafb98e9",
+     "more": "y varie de −180 à 180 ; le centre est (0 ; 0).",
+     "wrongs": [
+      "De 0 à 480",
+      "De −180 à 180",
+      "De −100 à 100"
+     ]
+    },
+    {
+     "question": "Dans Scratch, de combien tourner pour tracer un hexagone régulier ?",
+     "answer": "60°",
+     "w": [
+      "999240ee",
+      "f0761077"
+     ],
+     "wq": "4a647a01",
+     "more": "Polygone à n côtés : répéter n fois avancer de L, tourner de 360/n.",
+     "wrongs": [
+      "120°",
+      "90°",
+      "45°"
+     ]
+    },
+    {
+     "question": "Que fait « répéter jusqu'à » dans Scratch ?",
+     "answer": "Il répète tant que la condition n'est pas vraie",
+     "w": [
+      "acadab9d",
+      "1327b36f"
+     ],
+     "wq": "8b3f7a29",
+     "more": "« Répéter 10 fois » répète un nombre fixé de fois.",
+     "wrongs": [
+      "Il répète un nombre de fois fixé",
+      "Il répète à l'infini",
+      "Il ne s'exécute qu'une fois"
+     ]
     },
     {
      "question": "À quoi sert une variable dans un programme ?",
-     "answer": "Stocker une valeur qui peut changer pendant l'exécution (score, compteur, longueur…).\nEx. : « mettre longueur à 50 »",
-     "w": "ebce2cd8",
-     "wq": "acd1ef07"
+     "answer": "À stocker une valeur qui peut changer",
+     "w": [
+      "f7c4579d",
+      "ebce2cd8"
+     ],
+     "more": "Score, compteur, longueur… Ex. : « mettre longueur à 50 ».",
+     "wrongs": [
+      "À dessiner une forme",
+      "À arrêter le programme",
+      "À changer de lutin"
+     ]
     },
     {
      "question": "À quoi sert le bloc « si … alors … sinon » ?",
-     "answer": "Exécuter des instructions différentes selon qu'une condition est vraie ou fausse.",
-     "w": "7c9e2be6",
-     "wq": "4bdf395b"
+     "answer": "À exécuter des instructions différentes selon une condition",
+     "w": [
+      "05413336",
+      "7c9e2be6"
+     ],
+     "wrongs": [
+      "À répéter des instructions",
+      "À attendre un temps donné",
+      "À créer une variable"
+     ]
     },
     {
-     "question": "Programme de calcul : choisir un nombre, le multiplier par 2, ajouter 5. Que donne-t-il pour 3 ? Pour x ?",
-     "answer": "Pour 3 : 3 × 2 + 5 = 11\nPour x : 2x + 5",
-     "w": "5b179b85",
-     "wq": "d313c5d8"
+     "question": "Programme : choisir un nombre, le multiplier par 2, ajouter 5. Que donne-t-il pour 3 ?",
+     "answer": "11",
+     "w": [
+      "79edbcdb",
+      "5b179b85"
+     ],
+     "wq": "d313c5d8",
+     "wrongs": [
+      "16",
+      "10",
+      "13"
+     ]
+    },
+    {
+     "question": "Programme : choisir x, le multiplier par 2, ajouter 5. Quelle expression obtient-on ?",
+     "answer": "2x + 5",
+     "wrongs": [
+      "2(x + 5)",
+      "x + 7",
+      "7x"
+     ]
     }
    ]
   },
@@ -38906,13 +40046,15 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Laquelle de ces caractéristiques ne concerne pas tous les êtres vivants ?",
+     "question": "Quelle caractéristique ne concerne pas tous les êtres vivants : se nourrir, se reproduire, mourir ou se déplacer ?",
      "answer": "Se déplacer",
      "w": [
+      "e614676e",
       "9c4017cb",
       "dd4e0545"
      ],
      "wq": [
+      "0b157833",
       "eba632fa"
      ],
      "more": "Un être vivant naît, se nourrit, grandit, se reproduit et meurt (une plante ne se déplace pas).",
@@ -38958,20 +40100,22 @@
      ]
     },
     {
-     "question": "Laquelle de ces ressources n'est pas nécessaire à une plante verte pour fabriquer sa matière ?",
-     "answer": "D'autres êtres vivants à manger",
+     "question": "Une plante verte doit-elle manger d'autres êtres vivants pour fabriquer sa matière ?",
+     "answer": "Non : lumière, eau, CO₂ et sels minéraux suffisent",
      "w": [
+      "e0032c3e",
       "7bfa29dc",
       "2ebd6e25"
      ],
      "wq": [
+      "c8fed343",
       "d665ede3"
      ],
      "more": "Elle a besoin de lumière, d'eau, de sels minéraux et de dioxyde de carbone.",
      "wrongs": [
-      "La lumière",
-      "L'eau",
-      "Le dioxyde de carbone"
+      "Oui, des insectes",
+      "Oui, des champignons",
+      "Oui, de petits animaux du sol"
      ]
     },
     {
@@ -39113,20 +40257,22 @@
      ]
     },
     {
-     "question": "Laquelle de ces sources d'énergie est renouvelable ?",
-     "answer": "Le vent",
+     "question": "Le vent est-il une source d'énergie renouvelable ?",
+     "answer": "Oui",
      "w": [
+      "cd51423c",
       "6fbd9dcb",
       "3a89a665"
      ],
      "wq": [
+      "45b350e3",
       "133c4df6"
      ],
-     "more": "Renouvelables : soleil, vent, eau, bois. Non renouvelables : pétrole, charbon, gaz naturel, uranium.",
+     "more": "Les énergies fossiles (charbon, pétrole, gaz) et l'uranium ne sont pas renouvelables.",
      "wrongs": [
-      "Le charbon",
-      "Le pétrole",
-      "L'uranium"
+      "Non, il finira par s'épuiser",
+      "Non, c'est une énergie fossile",
+      "Seulement en hiver"
      ],
      "link": "https://fr.wikipedia.org/wiki/Énergie_renouvelable"
     },
@@ -40712,20 +41858,22 @@
      ]
     },
     {
-     "question": "Laquelle de ces roches est une roche sédimentaire ?",
-     "answer": "Le calcaire",
+     "question": "Le calcaire est-il une roche sédimentaire, magmatique ou métamorphique ?",
+     "answer": "Sédimentaire",
      "w": [
+      "7e7dccbc",
       "851ec6f4",
       "550c21de"
      ],
      "wq": [
+      "41176872",
       "f62145eb"
      ],
-     "more": "Les sédiments se tassent et se cimentent avec le temps : grès, calcaire, argile.",
+     "more": "Le granite et le basalte sont magmatiques ; le marbre est métamorphique.",
      "wrongs": [
-      "Le granite",
-      "Le basalte",
-      "Le marbre"
+      "Magmatique",
+      "Métamorphique",
+      "Volcanique"
      ],
      "link": "https://fr.wikipedia.org/wiki/Roche_sédimentaire"
     },
