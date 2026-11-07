@@ -52101,103 +52101,245 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'une matrice de taille n × p ?",
-     "answer": "Un tableau de nombres à n lignes et p colonnes.\nLe coefficient a_ij est ligne i, colonne j.",
-     "w": "9963aee6",
-     "wq": "5cb732c7"
+     "answer": "Un tableau de nombres à n lignes et p colonnes",
+     "w": [
+      "b4fedb2d",
+      "9963aee6"
+     ],
+     "wrongs": [
+      "Un tableau à p lignes et n colonnes",
+      "Une liste de n × p nombres sans ordre",
+      "Un vecteur de taille n + p"
+     ]
     },
     {
      "question": "À quelle condition peut-on calculer le produit AB ?",
-     "answer": "Nombre de colonnes de A = nombre de lignes de B.\nA (n × p) et B (p × q) → AB (n × q)",
-     "w": "f0ad1de8",
-     "wq": "072d1823"
+     "answer": "Nombre de colonnes de A = nombre de lignes de B",
+     "w": [
+      "7f790d44",
+      "f0ad1de8"
+     ],
+     "more": "A (n × p) et B (p × q) donnent AB (n × q).",
+     "wrongs": [
+      "Nombre de lignes de A = nombre de lignes de B",
+      "A et B doivent être carrées",
+      "Nombre de colonnes de A = nombre de colonnes de B"
+     ]
     },
     {
      "question": "Le produit matriciel est-il commutatif ?",
-     "answer": "Non : en général AB ≠ BA.\nIl est en revanche associatif et distributif.",
-     "w": "45ebe90e",
-     "wq": "eb14b205"
+     "answer": "Non : en général AB ≠ BA",
+     "w": [
+      "ccc09e6c",
+      "45ebe90e"
+     ],
+     "more": "Il est associatif et distributif.",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, pour les matrices carrées",
+      "Seulement si A = B"
+     ]
     },
     {
      "question": "Qu'est-ce que la matrice identité Iₙ ?",
-     "answer": "La matrice carrée avec des 1 sur la diagonale et des 0 ailleurs.\nPour toute A carrée d'ordre n : AIₙ = IₙA = A",
-     "w": "36917149",
-     "wq": "e670bd47"
+     "answer": "La matrice carrée avec des 1 sur la diagonale et des 0 ailleurs",
+     "w": [
+      "51b9c8df",
+      "36917149"
+     ],
+     "wrongs": [
+      "La matrice remplie de 1",
+      "La matrice nulle",
+      "La matrice avec des 1 sur la première ligne"
+     ]
     },
     {
      "question": "Quand une matrice carrée A est-elle inversible ?",
-     "answer": "S'il existe B telle que AB = BA = Iₙ\nOn note B = A⁻¹.",
-     "w": "9ade8f70",
-     "wq": "c44c7595"
+     "answer": "S'il existe B telle que AB = BA = Iₙ",
+     "w": [
+      "633765d1",
+      "9ade8f70"
+     ],
+     "wrongs": [
+      "Si tous ses coefficients sont non nuls",
+      "Si elle est symétrique",
+      "Si sa diagonale est nulle"
+     ]
     },
     {
-     "question": "Comment inverser une matrice 2 × 2 A = (a b ; c d) ?",
-     "answer": "Inversible ⇔ ad − bc ≠ 0\nA⁻¹ = 1/(ad − bc) × (d −b ; −c a)",
-     "w": "376e5ad0",
-     "wq": "7260d969"
+     "question": "Quand la matrice 2 × 2 (a b ; c d) est-elle inversible ?",
+     "answer": "Quand ad − bc ≠ 0",
+     "w": [
+      "a92285d3",
+      "376e5ad0"
+     ],
+     "wq": "7260d969",
+     "more": "A⁻¹ = 1/(ad − bc) × (d −b ; −c a).",
+     "wrongs": [
+      "Quand ad + bc ≠ 0",
+      "Quand a = d",
+      "Quand b = c = 0"
+     ]
     },
     {
-     "question": "Comment résoudre un système écrit AX = B ?",
-     "answer": "Si A est inversible, l'unique solution est X = A⁻¹B."
+     "question": "Si A est inversible, quelle est la solution de AX = B ?",
+     "answer": "X = A⁻¹B",
+     "w": "86ed5b41",
+     "wq": "5e2d9591",
+     "wrongs": [
+      "X = BA⁻¹",
+      "X = B − A",
+      "X = AB"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'ordre et le degré dans un graphe ?",
-     "answer": "Ordre : le nombre de sommets.\nDegré d'un sommet : le nombre d'arêtes qui en partent\n(une boucle compte deux fois).",
-     "w": "2c65aa4a",
-     "wq": "29b877f9"
+     "question": "Qu'est-ce que l'ordre d'un graphe ?",
+     "answer": "Son nombre de sommets",
+     "w": [
+      "70cb3d91",
+      "2c65aa4a"
+     ],
+     "wq": "29b877f9",
+     "wrongs": [
+      "Son nombre d'arêtes",
+      "Le degré maximal",
+      "La longueur de la plus longue chaîne"
+     ]
     },
     {
-     "question": "Quel lien entre la somme des degrés et le nombre d'arêtes ?",
+     "question": "Qu'est-ce que le degré d'un sommet ?",
+     "answer": "Le nombre d'arêtes qui en partent",
+     "more": "Une boucle compte deux fois.",
+     "wrongs": [
+      "Le nombre de sommets du graphe",
+      "La distance au sommet le plus proche",
+      "Le numéro du sommet"
+     ]
+    },
+    {
+     "question": "Quel lien y a-t-il entre la somme des degrés et le nombre d'arêtes ?",
      "answer": "Somme des degrés = 2 × nombre d'arêtes",
-     "w": "e65d49c2",
-     "wq": "ef605b9a"
+     "w": [
+      "418e2d7d",
+      "e65d49c2"
+     ],
+     "wq": "ef605b9a",
+     "wrongs": [
+      "Somme des degrés = nombre d'arêtes",
+      "Somme des degrés = nombre de sommets",
+      "Somme des degrés = arêtes / 2"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un graphe complet ?",
-     "answer": "Un graphe non orienté où deux sommets distincts quelconques\nsont toujours reliés par une arête.",
-     "w": "a6247247",
-     "wq": "9be97c2f"
+     "answer": "Un graphe où deux sommets distincts sont toujours reliés par une arête",
+     "w": [
+      "bfff66b5",
+      "a6247247"
+     ],
+     "wrongs": [
+      "Un graphe sans arête",
+      "Un graphe avec une seule chaîne",
+      "Un graphe orienté"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un graphe connexe ?",
-     "answer": "Un graphe non orienté où deux sommets quelconques\nsont reliés par au moins une chaîne.",
-     "w": "1defd4aa",
-     "wq": "7526a425"
+     "answer": "Un graphe où deux sommets quelconques sont reliés par au moins une chaîne",
+     "w": [
+      "48d14152",
+      "1defd4aa"
+     ],
+     "wrongs": [
+      "Un graphe où tous les sommets sont reliés directement",
+      "Un graphe sans cycle",
+      "Un graphe avec une seule arête"
+     ]
     },
     {
-     "question": "Qu'est-ce que la matrice d'adjacence d'un graphe ?",
-     "answer": "La matrice carrée dont le coefficient a_ij\nest le nombre d'arêtes (ou d'arcs) du sommet i au sommet j.",
-     "w": "6498de15",
-     "wq": "b293a70f"
+     "question": "Que vaut le coefficient a_ij de la matrice d'adjacence d'un graphe ?",
+     "answer": "Le nombre d'arêtes du sommet i au sommet j",
+     "w": [
+      "1ece5d41",
+      "6498de15"
+     ],
+     "wq": "b293a70f",
+     "wrongs": [
+      "La distance entre i et j",
+      "Le degré du sommet i",
+      "La probabilité d'aller de i à j"
+     ]
     },
     {
-     "question": "Que donne le coefficient (i, j) de Aⁿ si A est la matrice d'adjacence ?",
-     "answer": "Le nombre de chaînes (ou chemins orientés) de longueur n\ndu sommet i au sommet j.",
-     "w": "97324927",
-     "wq": "278bc93e"
+     "question": "Que donne le coefficient (i, j) de Aⁿ (A matrice d'adjacence) ?",
+     "answer": "Le nombre de chaînes de longueur n de i à j",
+     "w": [
+      "ec33f17f",
+      "97324927"
+     ],
+     "wq": "278bc93e",
+     "wrongs": [
+      "La distance de i à j",
+      "Le nombre d'arêtes du graphe",
+      "La probabilité d'aller de i à j"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une matrice de transition d'une chaîne de Markov ?",
-     "answer": "La matrice P où p_ij est la probabilité\nde passer de l'état i à l'état j.\nLa somme de chaque ligne vaut 1.",
-     "w": "6d1c4029",
-     "wq": "f036b8c7"
+     "question": "Que vaut la somme de chaque ligne d'une matrice de transition ?",
+     "answer": "1",
+     "w": [
+      "74ea35c5",
+      "6d1c4029"
+     ],
+     "wq": "f036b8c7",
+     "more": "p_ij est la probabilité de passer de l'état i à l'état j.",
+     "wrongs": [
+      "0",
+      "Le nombre d'états",
+      "n"
+     ]
     },
     {
      "question": "Comment évolue la distribution πₙ d'une chaîne de Markov ?",
-     "answer": "πₙ en matrice ligne :\nπₙ₊₁ = πₙ P\ndonc πₙ = π₀ Pⁿ",
-     "w": "4b155571",
-     "wq": "8e72c87c"
+     "answer": "πₙ₊₁ = πₙ P, donc πₙ = π₀ Pⁿ",
+     "w": [
+      "97a57d80",
+      "4b155571"
+     ],
+     "wrongs": [
+      "πₙ₊₁ = P πₙ + π₀",
+      "πₙ = n P",
+      "πₙ = π₀ + nP"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une distribution invariante ?",
-     "answer": "Une distribution π (ligne positive de somme 1) telle que π = πP.\nElle est stable d'une étape à l'autre.",
-     "w": "70b1cea0",
-     "wq": "96a48036"
+     "question": "Qu'est-ce qu'une distribution invariante d'une chaîne de Markov ?",
+     "answer": "Une distribution π telle que π = πP",
+     "w": [
+      "9928c3b2",
+      "70b1cea0"
+     ],
+     "wq": "96a48036",
+     "wrongs": [
+      "Une distribution nulle",
+      "La matrice P elle-même",
+      "Une distribution telle que πP = 0"
+     ]
     },
     {
-     "question": "Comment étudier une suite Uₙ₊₁ = AUₙ + B ?",
-     "answer": "1. On cherche C tel que C = AC + B.\n2. Vₙ = Uₙ − C vérifie Vₙ₊₁ = AVₙ.\n3. Donc Vₙ = AⁿV₀ et Uₙ = Aⁿ(U₀ − C) + C.",
-     "w": "eec5c236",
-     "wq": "e5ae1df3"
+     "question": "Pour étudier Uₙ₊₁ = AUₙ + B, que cherche-t-on d'abord ?",
+     "answer": "Une matrice C telle que C = AC + B",
+     "w": [
+      "d94ecc6c",
+      "eec5c236"
+     ],
+     "wq": "e5ae1df3",
+     "more": "Puis Vₙ = Uₙ − C vérifie Vₙ₊₁ = AVₙ.",
+     "wrongs": [
+      "L'inverse de B",
+      "Le produit AB",
+      "Le déterminant de A seulement"
+     ]
     }
    ]
   },
@@ -53758,106 +53900,394 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Identités et échanges : « la mondialisation » et « émigrer » ?",
-     "answer": "• La mondialisation : la globalización (la mundialización)\n• Émigrer : emigrar (un emigrante)",
-     "w": "af8c2bcf",
-     "wq": "f3b6ae04"
+     "question": "Comment dit-on « la mondialisation » en espagnol ?",
+     "answer": "La globalización",
+     "w": [
+      "fa0a53cb",
+      "af8c2bcf"
+     ],
+     "wq": "f3b6ae04",
+     "more": "Aussi : la mundialización.",
+     "wrongs": [
+      "La mundiación",
+      "La globalidad",
+      "La internacionalidad"
+     ]
     },
     {
-     "question": "Identités et échanges : « la frontière » et « un sans-papiers » ?",
-     "answer": "• La frontière : la frontera\n• Un sans-papiers : un indocumentado (un sin papeles)",
-     "w": "2f6fee01",
-     "wq": "46dbe124"
+     "question": "Comment dit-on « émigrer » en espagnol ?",
+     "answer": "Emigrar",
+     "wrongs": [
+      "Emigrir",
+      "Salir",
+      "Mudar"
+     ]
     },
     {
-     "question": "Espace privé et espace public : « la vie privée » et « l'égalité hommes-femmes » ?",
-     "answer": "• La vie privée : la vida privada / la intimidad\n• L'égalité hommes-femmes : la igualdad entre hombres y mujeres",
-     "w": "16f30307",
-     "wq": "953ff5ec"
+     "question": "Comment dit-on « la frontière » en espagnol ?",
+     "answer": "La frontera",
+     "w": [
+      "f22b073d",
+      "2f6fee01"
+     ],
+     "wq": "46dbe124",
+     "wrongs": [
+      "La frontiera",
+      "El límite",
+      "La fronte"
+     ]
     },
     {
-     "question": "Espace privé et espace public : « les violences de genre » et « manifester » ?",
-     "answer": "• Les violences de genre : la violencia de género\n• Manifester : manifestarse (una manifestación)",
-     "w": "0d9052d3",
-     "wq": "e78fba55"
+     "question": "Comment dit-on « un sans-papiers » en espagnol ?",
+     "answer": "Un indocumentado",
+     "more": "Aussi : un sin papeles.",
+     "wrongs": [
+      "Un sinpapel",
+      "Un ilegal",
+      "Un desconocido"
+     ]
     },
     {
-     "question": "Art et pouvoir : « la censure » et « une fresque murale » ?",
-     "answer": "• La censure : la censura\n• Une fresque murale : un mural\n(le muralisme mexicain : el muralismo)",
-     "w": "205789eb",
-     "wq": "1c3b92fc"
+     "question": "Comment dit-on « la vie privée » en espagnol ?",
+     "answer": "La vida privada (la intimidad)",
+     "w": [
+      "767ff12b",
+      "16f30307"
+     ],
+     "wq": "953ff5ec",
+     "wrongs": [
+      "La vida privata",
+      "La privacía",
+      "La vida secreta"
+     ]
     },
     {
-     "question": "Art et pouvoir : « une dictature » et « dénoncer » ?",
-     "answer": "• Une dictature : una dictadura (un dictador)\n• Dénoncer : denunciar",
-     "w": "11ceb16c",
-     "wq": "ebf175f2"
+     "question": "Comment dit-on « l'égalité hommes-femmes » en espagnol ?",
+     "answer": "La igualdad entre hombres y mujeres",
+     "wrongs": [
+      "La igualidad de hombres y mujeres",
+      "La paridad",
+      "La equidad masculina"
+     ]
     },
     {
-     "question": "Citoyenneté et mondes virtuels : « les réseaux sociaux » et « un écran » ?",
-     "answer": "• Les réseaux sociaux : las redes sociales\n• Un écran : una pantalla",
-     "w": "cece65f1",
-     "wq": "66b345d8"
+     "question": "Comment dit-on « les violences de genre » en espagnol ?",
+     "answer": "La violencia de género",
+     "w": [
+      "ad932666",
+      "0d9052d3"
+     ],
+     "wq": "e78fba55",
+     "wrongs": [
+      "Las violencias del genre",
+      "La violencia sexual",
+      "La violencia familiar"
+     ]
     },
     {
-     "question": "Citoyenneté et mondes virtuels : « voter » et « un citoyen » ?",
-     "answer": "• Voter : votar (el voto)\n• Un citoyen : un ciudadano (la ciudadanía)",
-     "w": "4e0d6c89",
-     "wq": "9d23af89"
+     "question": "Comment dit-on « manifester » (dans la rue) en espagnol ?",
+     "answer": "Manifestarse",
+     "wrongs": [
+      "Manifester",
+      "Demostrar",
+      "Protestir"
+     ]
     },
     {
-     "question": "Fictions et réalités : « un roman », « une nouvelle » et « un personnage » ?",
-     "answer": "• Un roman : una novela\n• Une nouvelle : un cuento / un relato\n• Un personnage : un personaje",
-     "w": "a5494755",
-     "wq": "f1dd2be3"
+     "question": "Comment dit-on « la censure » en espagnol ?",
+     "answer": "La censura",
+     "w": [
+      "c8e4f76b",
+      "205789eb"
+     ],
+     "wq": "1c3b92fc",
+     "wrongs": [
+      "La censora",
+      "La censión",
+      "La prohibida"
+     ]
     },
     {
-     "question": "Fictions et réalités : « le réalisme magique » ?",
-     "answer": "El realismo mágico\nassocié à Gabriel García Márquez (Cien años de soledad).",
-     "w": "e7f9f26d",
-     "wq": "47b142ad"
+     "question": "Comment dit-on « une fresque murale » en espagnol ?",
+     "answer": "Un mural",
+     "more": "Le muralisme mexicain : el muralismo.",
+     "wrongs": [
+      "Una fresca",
+      "Un muro",
+      "Una pintada"
+     ]
     },
     {
-     "question": "Innovations scientifiques et responsabilité : « le réchauffement climatique » et « l'environnement » ?",
-     "answer": "• Le réchauffement climatique : el calentamiento global\n• L'environnement : el medio ambiente",
-     "w": "87dd8db3",
-     "wq": "7e5b1b8d"
+     "question": "Comment dit-on « une dictature » en espagnol ?",
+     "answer": "Una dictadura",
+     "w": [
+      "c1573858",
+      "11ceb16c"
+     ],
+     "wq": "ebf175f2",
+     "wrongs": [
+      "Una dictatura",
+      "Una dictación",
+      "Un dictado"
+     ]
     },
     {
-     "question": "Innovations scientifiques et responsabilité : « une découverte » et « un chercheur » ?",
-     "answer": "• Une découverte : un descubrimiento\n• Un chercheur : un investigador\n(la investigación = la recherche)",
-     "w": "d5dd187a",
-     "wq": "0cc4105a"
+     "question": "Comment dit-on « dénoncer » en espagnol ?",
+     "answer": "Denunciar",
+     "wrongs": [
+      "Denonciar",
+      "Acusar",
+      "Renunciar"
+     ]
     },
     {
-     "question": "Diversité et inclusion : « les peuples autochtones » et « le métissage » ?",
-     "answer": "• Les peuples autochtones : los pueblos indígenas / originarios\n• Le métissage : el mestizaje (un mestizo)",
-     "w": "37577100",
-     "wq": "de506dd3"
+     "question": "Comment dit-on « les réseaux sociaux » en espagnol ?",
+     "answer": "Las redes sociales",
+     "w": [
+      "fb1d298f",
+      "cece65f1"
+     ],
+     "wq": "66b345d8",
+     "wrongs": [
+      "Los réseaux sociales",
+      "Las mallas sociales",
+      "Los canales sociales"
+     ]
     },
     {
-     "question": "Diversité et inclusion : « l'exclusion » et « le racisme » ?",
-     "answer": "• L'exclusion : la exclusión / la marginación\n• Le racisme : el racismo",
-     "w": "13f1e82b",
-     "wq": "f5028b11"
+     "question": "Comment dit-on « un écran » en espagnol ?",
+     "answer": "Una pantalla",
+     "wrongs": [
+      "Un ecrán",
+      "Una pantalón",
+      "Un monitor"
+     ]
     },
     {
-     "question": "Territoire et mémoire : « la mémoire historique » et « un disparu » ?",
-     "answer": "• La mémoire historique : la memoria histórica (loi espagnole de 2007)\n• Un disparu : un desaparecido\n(dictatures argentine et chilienne)",
-     "w": "04612165",
-     "wq": "be4281c4"
+     "question": "Comment dit-on « voter » en espagnol ?",
+     "answer": "Votar",
+     "w": [
+      "6b058e62",
+      "4e0d6c89"
+     ],
+     "wq": "9d23af89",
+     "wrongs": [
+      "Botar",
+      "Votir",
+      "Elegar"
+     ]
     },
     {
-     "question": "Territoire et mémoire : « la guerre civile » et « l'exil » ?",
-     "answer": "• La guerre civile : la Guerra Civil (1936-1939)\n• L'exil : el exilio (un exiliado)",
-     "w": "626656a0",
-     "wq": "e141160f"
+     "question": "Comment dit-on « un citoyen » en espagnol ?",
+     "answer": "Un ciudadano",
+     "more": "La citoyenneté : la ciudadanía.",
+     "wrongs": [
+      "Un citadino",
+      "Un ciudadero",
+      "Un civil"
+     ]
     },
     {
-     "question": "Territoire et mémoire : « la conquête » et « l'héritage » ?",
-     "answer": "• La conquête : la conquista (los conquistadores)\n• L'héritage : la herencia / el legado",
-     "w": "727968ee",
-     "wq": "3f40efab"
+     "question": "Comment dit-on « un roman » en espagnol ?",
+     "answer": "Una novela",
+     "w": [
+      "8a1352b2",
+      "a5494755"
+     ],
+     "wq": "f1dd2be3",
+     "wrongs": [
+      "Un romano",
+      "Un cuento",
+      "Una historia"
+     ]
+    },
+    {
+     "question": "Comment dit-on « une nouvelle » (récit court) en espagnol ?",
+     "answer": "Un cuento (un relato)",
+     "wrongs": [
+      "Una novela",
+      "Una noticia",
+      "Una nueva"
+     ]
+    },
+    {
+     "question": "Quel courant littéraire est associé à Gabriel García Márquez ?",
+     "answer": "El realismo mágico",
+     "w": [
+      "7413b779",
+      "e7f9f26d"
+     ],
+     "wq": "47b142ad",
+     "more": "Cien años de soledad.",
+     "wrongs": [
+      "El surrealismo",
+      "El romanticismo",
+      "El naturalismo"
+     ]
+    },
+    {
+     "question": "Comment dit-on « le réchauffement climatique » en espagnol ?",
+     "answer": "El calentamiento global",
+     "w": [
+      "19c6e647",
+      "87dd8db3"
+     ],
+     "wq": "7e5b1b8d",
+     "wrongs": [
+      "El recalentamiento climático",
+      "El calor global",
+      "El clima caliente"
+     ]
+    },
+    {
+     "question": "Comment dit-on « l'environnement » en espagnol ?",
+     "answer": "El medio ambiente",
+     "wrongs": [
+      "El ambiente medio",
+      "El entorno natural",
+      "La naturaleza"
+     ]
+    },
+    {
+     "question": "Comment dit-on « une découverte » en espagnol ?",
+     "answer": "Un descubrimiento",
+     "w": [
+      "55d98747",
+      "d5dd187a"
+     ],
+     "wq": "0cc4105a",
+     "wrongs": [
+      "Una descubierta",
+      "Un descubierto",
+      "Una invención"
+     ]
+    },
+    {
+     "question": "Comment dit-on « un chercheur » en espagnol ?",
+     "answer": "Un investigador",
+     "more": "La recherche : la investigación.",
+     "wrongs": [
+      "Un buscador",
+      "Un científico",
+      "Un cercador"
+     ]
+    },
+    {
+     "question": "Comment dit-on « les peuples autochtones » en espagnol ?",
+     "answer": "Los pueblos indígenas",
+     "w": [
+      "2821dc73",
+      "37577100"
+     ],
+     "wq": "de506dd3",
+     "more": "Aussi : los pueblos originarios.",
+     "wrongs": [
+      "Los pueblos autóctonos",
+      "Las gentes nativas",
+      "Los indios"
+     ]
+    },
+    {
+     "question": "Comment dit-on « le métissage » en espagnol ?",
+     "answer": "El mestizaje",
+     "wrongs": [
+      "El mestizo",
+      "La mezcla",
+      "El metisaje"
+     ]
+    },
+    {
+     "question": "Comment dit-on « l'exclusion » en espagnol ?",
+     "answer": "La exclusión (la marginación)",
+     "w": [
+      "87c5eae2",
+      "13f1e82b"
+     ],
+     "wq": "f5028b11",
+     "wrongs": [
+      "La exclusa",
+      "La expulsión",
+      "La separación"
+     ]
+    },
+    {
+     "question": "Comment dit-on « le racisme » en espagnol ?",
+     "answer": "El racismo",
+     "wrongs": [
+      "La racia",
+      "El racisimo",
+      "El racial"
+     ]
+    },
+    {
+     "question": "Comment dit-on « la mémoire historique » en espagnol ?",
+     "answer": "La memoria histórica",
+     "w": [
+      "7b8cfbb7",
+      "04612165"
+     ],
+     "wq": "be4281c4",
+     "more": "Loi espagnole de 2007.",
+     "wrongs": [
+      "La memoria historial",
+      "El recuerdo histórico",
+      "La historia memorial"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on en espagnol les victimes enlevées par les dictatures argentine et chilienne ?",
+     "answer": "Los desaparecidos",
+     "wrongs": [
+      "Los perdidos",
+      "Los olvidados",
+      "Los exiliados"
+     ]
+    },
+    {
+     "question": "Quelles sont les dates de la guerre civile espagnole ?",
+     "answer": "1936-1939",
+     "w": [
+      "64653e6f",
+      "626656a0"
+     ],
+     "wq": "e141160f",
+     "wrongs": [
+      "1914-1918",
+      "1939-1945",
+      "1931-1934"
+     ]
+    },
+    {
+     "question": "Comment dit-on « l'exil » en espagnol ?",
+     "answer": "El exilio",
+     "wrongs": [
+      "El exil",
+      "La salida",
+      "El destierro forzoso"
+     ]
+    },
+    {
+     "question": "Comment dit-on « la conquête » en espagnol ?",
+     "answer": "La conquista",
+     "w": [
+      "1cc8611b",
+      "727968ee"
+     ],
+     "wq": "3f40efab",
+     "wrongs": [
+      "La conquesta",
+      "La conquiste",
+      "La invasión"
+     ]
+    },
+    {
+     "question": "Comment dit-on « l'héritage » (culturel) en espagnol ?",
+     "answer": "La herencia (el legado)",
+     "wrongs": [
+      "El heritaje",
+      "La hereditad",
+      "La heredera"
+     ]
     }
    ]
   },
@@ -53880,100 +54310,236 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce qu'une stratégie ?",
-     "answer": "L'ensemble des choix à long terme d'une organisation,\nqui engagent ses ressources\npour atteindre ses finalités dans son environnement.",
-     "w": "f7a24dec",
-     "wq": "46e66b67"
+     "question": "Qu'est-ce qu'une stratégie pour une organisation ?",
+     "answer": "L'ensemble de ses choix à long terme pour atteindre ses finalités",
+     "w": [
+      "40d1cd60",
+      "f7a24dec"
+     ],
+     "wq": "46e66b67",
+     "wrongs": [
+      "La gestion des affaires courantes",
+      "Une décision de court terme",
+      "Le plan de communication"
+     ]
     },
     {
-     "question": "Distinguer décisions stratégiques, tactiques et opérationnelles.",
-     "answer": "• Stratégiques : long terme, engagent toute l'organisation (direction)\n• Tactiques : moyen terme, mise en œuvre de la stratégie\n• Opérationnelles : court terme, gestion courante",
-     "w": "6b459555",
-     "wq": "dd1d1d6b"
+     "question": "Quelle est la portée d'une décision stratégique ?",
+     "answer": "Long terme, elle engage toute l'organisation",
+     "w": [
+      "a524fb75",
+      "6b459555"
+     ],
+     "wq": "dd1d1d6b",
+     "more": "Tactique : moyen terme ; opérationnelle : court terme.",
+     "wrongs": [
+      "Court terme, gestion courante",
+      "Moyen terme, un seul service",
+      "Une seule journée"
+     ]
     },
     {
-     "question": "Qu'est-ce que le diagnostic stratégique ?",
-     "answer": "L'analyse croisée :\n• diagnostic externe : opportunités et menaces\n• diagnostic interne : forces et faiblesses\nSynthèse : la matrice SWOT.",
-     "w": "4242affe",
-     "wq": "4e382597"
+     "question": "Quel outil synthétise le diagnostic stratégique ?",
+     "answer": "La matrice SWOT",
+     "w": [
+      "36adcbd0",
+      "4242affe"
+     ],
+     "wq": "4e382597",
+     "more": "Forces, faiblesses (interne) ; opportunités, menaces (externe).",
+     "wrongs": [
+      "Le bilan comptable",
+      "Le compte de résultat",
+      "La matrice d'adjacence"
+     ]
     },
     {
      "question": "Que signifie le sigle PESTEL ?",
-     "answer": "Les facteurs du macro-environnement :\nPolitiques, Économiques, Socioculturels,\nTechnologiques, Écologiques, Légaux.",
-     "w": "7e040137",
-     "wq": "8d74677d"
+     "answer": "Politique, Économique, Socioculturel, Technologique, Écologique, Légal",
+     "w": [
+      "75b70756",
+      "7e040137"
+     ],
+     "wrongs": [
+      "Production, Équipe, Stock, Trésorerie, Emploi, Logistique",
+      "Prix, Emballage, Service, Technique, Entretien, Livraison",
+      "Personnel, Encadrement, Salaires, Temps, Effectifs, Licenciements"
+     ]
     },
     {
      "question": "Quelles sont les cinq forces de la concurrence selon Porter ?",
-     "answer": "• La concurrence entre firmes existantes\n• La menace des nouveaux entrants\n• La menace des produits de substitution\n• Le pouvoir de négociation des clients\n• Le pouvoir de négociation des fournisseurs",
-     "w": "ea5cfa59",
-     "wq": "f8837ad6"
+     "answer": "Concurrents, nouveaux entrants, substituts, clients, fournisseurs",
+     "w": [
+      "6dcaa0b9",
+      "ea5cfa59"
+     ],
+     "wrongs": [
+      "Prix, produit, place, promotion, personnel",
+      "Forces, faiblesses, opportunités, menaces, risques",
+      "État, banques, salariés, syndicats, clients"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un domaine d'activité stratégique (DAS) ?",
-     "answer": "Un ensemble d'activités homogènes (mêmes clients, concurrents, technologies)\npour lequel l'entreprise définit une stratégie spécifique.",
-     "w": "f889b41c",
-     "wq": "6914eb88"
+     "answer": "Un ensemble d'activités homogènes avec une stratégie propre",
+     "w": [
+      "48104fac",
+      "f889b41c"
+     ],
+     "more": "Mêmes clients, concurrents, technologies.",
+     "wrongs": [
+      "Le siège social de l'entreprise",
+      "Un service administratif",
+      "Un pays d'implantation"
+     ]
     },
     {
-     "question": "Qu'est-ce que la stratégie de domination par les coûts ?",
-     "answer": "Proposer des prix plus bas que les concurrents\ngrâce à des coûts plus faibles\n(économies d'échelle, effet d'expérience).",
-     "w": "57e22c43",
-     "wq": "762d9a74"
+     "question": "En quoi consiste la stratégie de domination par les coûts ?",
+     "answer": "Proposer des prix plus bas grâce à des coûts plus faibles",
+     "w": [
+      "84b4277b",
+      "57e22c43"
+     ],
+     "wq": "762d9a74",
+     "more": "Économies d'échelle, effet d'expérience.",
+     "wrongs": [
+      "Proposer une offre unique plus chère",
+      "Se concentrer sur une niche",
+      "Racheter ses concurrents"
+     ]
     },
     {
-     "question": "Qu'est-ce que la stratégie de différenciation ?",
-     "answer": "Proposer une offre perçue comme unique\n(qualité, design, service, marque)\npour pratiquer un prix plus élevé.",
-     "w": "2a6c966f",
-     "wq": "0db180e5"
+     "question": "En quoi consiste la stratégie de différenciation ?",
+     "answer": "Proposer une offre perçue comme unique, vendue plus cher",
+     "w": [
+      "1d9be5ba",
+      "2a6c966f"
+     ],
+     "wq": "0db180e5",
+     "wrongs": [
+      "Vendre moins cher que les concurrents",
+      "Supprimer des produits",
+      "Copier le leader"
+     ]
     },
     {
-     "question": "Qu'est-ce que la stratégie de focalisation (niche) ?",
-     "answer": "Se concentrer sur un segment de marché étroit,\npar les coûts ou par la différenciation.",
-     "w": "336b2b3b",
-     "wq": "427fa317"
+     "question": "En quoi consiste la stratégie de focalisation ?",
+     "answer": "Se concentrer sur un segment de marché étroit (niche)",
+     "w": [
+      "ec5d7f9a",
+      "336b2b3b"
+     ],
+     "wq": "427fa317",
+     "wrongs": [
+      "S'adresser à tous les clients",
+      "Racheter des fournisseurs",
+      "Externaliser la production"
+     ]
     },
     {
      "question": "Qu'est-ce que la spécialisation ?",
-     "answer": "Concentrer ses ressources sur un seul métier\npour y développer une forte compétence.",
-     "w": "f31cadba",
-     "wq": "e191231e"
+     "answer": "Concentrer ses ressources sur un seul métier",
+     "w": [
+      "2197accd",
+      "f31cadba"
+     ],
+     "wrongs": [
+      "Étendre son activité à de nouveaux domaines",
+      "Racheter ses distributeurs",
+      "Confier une activité à un partenaire"
+     ]
     },
     {
      "question": "Qu'est-ce que la diversification ?",
-     "answer": "Étendre son activité à de nouveaux domaines (liés ou non au métier d'origine)\npour répartir les risques et trouver des relais de croissance.",
-     "w": "2d3af3b7",
-     "wq": "cfb30faf"
+     "answer": "Étendre son activité à de nouveaux domaines",
+     "w": [
+      "e503cae9",
+      "2d3af3b7"
+     ],
+     "more": "Pour répartir les risques et trouver des relais de croissance.",
+     "wrongs": [
+      "Se concentrer sur un seul métier",
+      "Baisser ses prix",
+      "Réduire ses effectifs"
+     ]
     },
     {
      "question": "Qu'est-ce que l'intégration verticale ?",
-     "answer": "Prendre le contrôle d'activités de la filière :\n• en amont (fournisseurs)\n• ou en aval (distribution)",
-     "w": "555c4287",
-     "wq": "ef8fa703"
+     "answer": "Prendre le contrôle d'activités en amont ou en aval de la filière",
+     "w": [
+      "c6a2a8e1",
+      "555c4287"
+     ],
+     "wrongs": [
+      "Racheter un concurrent direct",
+      "Se diversifier dans un autre secteur",
+      "Externaliser une activité"
+     ]
     },
     {
-     "question": "Distinguer croissance interne et croissance externe.",
-     "answer": "Interne : développement par ses propres investissements.\nExterne : rachat ou fusion avec d'autres entreprises.",
-     "w": "40f58d4a",
-     "wq": "ad4e1a78"
+     "question": "Qu'est-ce que la croissance interne ?",
+     "answer": "Se développer par ses propres investissements",
+     "w": [
+      "a7f4a9cb",
+      "40f58d4a"
+     ],
+     "wq": "ad4e1a78",
+     "wrongs": [
+      "Racheter d'autres entreprises",
+      "Fusionner avec un concurrent",
+      "Externaliser la production"
+     ]
+    },
+    {
+     "question": "Qu'est-ce que la croissance externe ?",
+     "answer": "Se développer par rachat ou fusion",
+     "wrongs": [
+      "Se développer par ses propres investissements",
+      "Ouvrir un nouvel atelier",
+      "Embaucher des salariés"
+     ]
     },
     {
      "question": "Qu'est-ce que l'externalisation (impartition) ?",
-     "answer": "Confier à un partenaire extérieur une activité réalisée en interne.\nEx. : sous-traitance, franchise, alliance",
-     "w": "ae8b0d56",
-     "wq": "089a5f23"
+     "answer": "Confier à un partenaire extérieur une activité réalisée en interne",
+     "w": [
+      "0cecef87",
+      "ae8b0d56"
+     ],
+     "more": "Ex. : sous-traitance, franchise.",
+     "wrongs": [
+      "Racheter un fournisseur",
+      "Exporter ses produits",
+      "Former ses salariés"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une alliance stratégique ?",
-     "answer": "Une coopération entre entreprises, souvent concurrentes,\nqui mettent en commun des ressources pour un projet\ntout en restant indépendantes.",
-     "w": "4028b9da",
-     "wq": "f1ba42ec"
+     "answer": "Une coopération entre entreprises qui restent indépendantes",
+     "w": [
+      "27f386fe",
+      "4028b9da"
+     ],
+     "wrongs": [
+      "Une fusion entre deux entreprises",
+      "Le rachat d'un concurrent",
+      "Un contrat de travail"
+     ]
     },
     {
-     "question": "Qu'est-ce que la responsabilité sociétale des entreprises (RSE) ?",
-     "answer": "L'intégration volontaire des préoccupations sociales et environnementales\ndans les activités de l'entreprise\net ses relations avec les parties prenantes.",
-     "w": "c6f14d5c",
-     "wq": "8667717e"
+     "question": "Que signifie le sigle RSE ?",
+     "answer": "Responsabilité sociétale des entreprises",
+     "w": [
+      "8a69be74",
+      "c6f14d5c"
+     ],
+     "wq": "8667717e",
+     "more": "Intégration volontaire des préoccupations sociales et environnementales.",
+     "wrongs": [
+      "Rentabilité sociale de l'entreprise",
+      "Réseau des salariés européens",
+      "Règlement de sécurité des employés"
+     ]
     }
    ]
   },
@@ -53997,98 +54563,237 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce que le bilan ?",
-     "answer": "Le patrimoine de l'entreprise à une date donnée :\n• actif : ce qu'elle possède (emplois)\n• passif : l'origine des ressources",
-     "w": "3af4dec9",
-     "wq": "d7cd65a4"
+     "question": "Que présente le bilan d'une entreprise ?",
+     "answer": "Son patrimoine à une date donnée : actif et passif",
+     "w": [
+      "fd957040",
+      "3af4dec9"
+     ],
+     "wq": "d7cd65a4",
+     "wrongs": [
+      "Ses charges et produits de l'année",
+      "Son chiffre d'affaires mensuel",
+      "Ses prévisions de ventes"
+     ]
     },
     {
-     "question": "Qu'est-ce que le compte de résultat ?",
-     "answer": "Le récapitulatif des charges et des produits d'un exercice.\nProduits − charges = résultat (bénéfice ou perte)",
-     "w": "ec6bc7fb",
-     "wq": "e7a9724b"
+     "question": "Comment obtient-on le résultat dans le compte de résultat ?",
+     "answer": "Produits − charges",
+     "w": [
+      "6dc8da04",
+      "ec6bc7fb"
+     ],
+     "wq": "e7a9724b",
+     "wrongs": [
+      "Actif − passif",
+      "Charges − produits",
+      "Chiffre d'affaires − salaires"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un amortissement ?",
-     "answer": "La constatation de la dépréciation irréversible d'une immobilisation\n(usage, temps).\nC'est une charge non décaissée.",
-     "w": "c69c295e",
-     "wq": "ea85c027"
+     "answer": "La constatation de la dépréciation irréversible d'une immobilisation",
+     "w": [
+      "92cdbb9a",
+      "c69c295e"
+     ],
+     "more": "C'est une charge non décaissée.",
+     "wrongs": [
+      "Le remboursement d'un emprunt",
+      "Une baisse des prix",
+      "Un paiement aux fournisseurs"
+     ]
     },
     {
      "question": "Comment calcule-t-on une annuité d'amortissement linéaire ?",
-     "answer": "Base amortissable ÷ durée d'utilisation (en années)\nproratisée la première année selon la date de mise en service.",
-     "w": "84361569",
-     "wq": "21aba204"
+     "answer": "Base amortissable ÷ durée d'utilisation",
+     "w": [
+      "7ac796eb",
+      "84361569"
+     ],
+     "more": "Proratisée la première année.",
+     "wrongs": [
+      "Base amortissable × durée",
+      "Prix de vente ÷ quantité",
+      "Durée ÷ base amortissable"
+     ]
     },
     {
-     "question": "Qu'est-ce que la valeur ajoutée ?",
-     "answer": "La richesse créée par l'entreprise :\nproduction de l'exercice (+ marge commerciale)\n− consommations en provenance de tiers",
-     "w": "c2598657",
-     "wq": "78c73c50"
+     "question": "Comment calcule-t-on la valeur ajoutée ?",
+     "answer": "Production (+ marge commerciale) − consommations en provenance de tiers",
+     "w": [
+      "9af4da81",
+      "c2598657"
+     ],
+     "wq": "78c73c50",
+     "wrongs": [
+      "Chiffre d'affaires − salaires",
+      "Produits − charges",
+      "Actif − passif"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'excédent brut d'exploitation (EBE) ?",
-     "answer": "La performance économique de l'exploitation :\nvaleur ajoutée + subventions d'exploitation\n− impôts et taxes − charges de personnel",
-     "w": "95537e53",
-     "wq": "0f701431"
+     "question": "Que mesure l'excédent brut d'exploitation (EBE) ?",
+     "answer": "La performance économique de l'exploitation",
+     "w": [
+      "082d1ae5",
+      "95537e53"
+     ],
+     "wq": "0f701431",
+     "more": "VA + subventions − impôts et taxes − charges de personnel.",
+     "wrongs": [
+      "Le patrimoine de l'entreprise",
+      "La trésorerie disponible",
+      "Le montant des dettes"
+     ]
     },
     {
-     "question": "Qu'est-ce que la capacité d'autofinancement (CAF) ?",
-     "answer": "Les ressources internes dégagées par l'activité, disponibles pour se financer.\nSimplement : résultat + dotations aux amortissements et provisions − reprises",
-     "w": "b3848483",
-     "wq": "c3da6257"
+     "question": "Que représente la capacité d'autofinancement (CAF) ?",
+     "answer": "Les ressources internes dégagées par l'activité",
+     "w": [
+      "dddfbf02",
+      "b3848483"
+     ],
+     "wq": "c3da6257",
+     "more": "Simplement : résultat + dotations aux amortissements et provisions − reprises.",
+     "wrongs": [
+      "Le montant des emprunts",
+      "Le chiffre d'affaires",
+      "Les apports des associés"
+     ]
     },
     {
-     "question": "Distinguer charges variables et charges fixes.",
-     "answer": "Variables : évoluent avec l'activité (matières premières).\nFixes : constantes à court terme (loyer, assurances).",
-     "w": "5c9ec30a",
-     "wq": "0d6aded6"
+     "question": "Qu'est-ce qu'une charge variable ?",
+     "answer": "Une charge qui évolue avec l'activité",
+     "w": [
+      "965e4a83",
+      "5c9ec30a"
+     ],
+     "wq": "0d6aded6",
+     "more": "Ex. : matières premières.",
+     "wrongs": [
+      "Une charge constante à court terme",
+      "Un amortissement",
+      "Un impôt"
+     ]
     },
     {
-     "question": "Qu'est-ce que la marge sur coût variable ?",
-     "answer": "MCV = chiffre d'affaires − charges variables\nTaux de MCV = MCV / CA",
-     "w": "473ad4ca",
-     "wq": "9c5f719d"
+     "question": "Qu'est-ce qu'une charge fixe ?",
+     "answer": "Une charge constante à court terme",
+     "more": "Ex. : loyer, assurances.",
+     "wrongs": [
+      "Une charge qui évolue avec l'activité",
+      "Une matière première",
+      "Une commission sur ventes"
+     ]
+    },
+    {
+     "question": "Comment calcule-t-on la marge sur coût variable ?",
+     "answer": "Chiffre d'affaires − charges variables",
+     "w": [
+      "c86061a7",
+      "473ad4ca"
+     ],
+     "wq": "9c5f719d",
+     "wrongs": [
+      "Chiffre d'affaires − charges fixes",
+      "Charges variables − charges fixes",
+      "Résultat − charges fixes"
+     ]
     },
     {
      "question": "Comment calcule-t-on le seuil de rentabilité ?",
-     "answer": "SR = charges fixes / taux de marge sur coût variable\nLe chiffre d'affaires pour lequel le résultat est nul.",
-     "w": "bb6c5d04",
-     "wq": "b8e93524"
+     "answer": "Charges fixes / taux de marge sur coût variable",
+     "w": [
+      "f167eada",
+      "bb6c5d04"
+     ],
+     "more": "Le chiffre d'affaires pour lequel le résultat est nul.",
+     "wrongs": [
+      "Charges variables / chiffre d'affaires",
+      "Charges fixes × taux de marge",
+      "Chiffre d'affaires − charges fixes"
+     ]
     },
     {
      "question": "Qu'est-ce que le point mort ?",
-     "answer": "La date à laquelle le seuil de rentabilité est atteint :\n(SR / CA) × 12 mois (ou 360 jours)\nsi l'activité est régulière.",
-     "w": "b8c164b2",
-     "wq": "c86ac8de"
+     "answer": "La date à laquelle le seuil de rentabilité est atteint",
+     "w": [
+      "94d6fed8",
+      "b8c164b2"
+     ],
+     "wrongs": [
+      "Le jour de la faillite",
+      "Le montant des charges fixes",
+      "Le chiffre d'affaires annuel"
+     ]
     },
     {
-     "question": "Qu'est-ce que le fonds de roulement net global (FRNG) ?",
-     "answer": "FRNG = ressources stables − emplois stables\nL'excédent de ressources durables disponible\npour financer le cycle d'exploitation.",
-     "w": "1e0fa662",
-     "wq": "de56aa02"
+     "question": "Comment calcule-t-on le fonds de roulement net global (FRNG) ?",
+     "answer": "Ressources stables − emplois stables",
+     "w": [
+      "4cdee253",
+      "1e0fa662"
+     ],
+     "wq": "de56aa02",
+     "wrongs": [
+      "Stocks + créances − dettes fournisseurs",
+      "Produits − charges",
+      "Trésorerie − BFR"
+     ]
     },
     {
-     "question": "Qu'est-ce que le besoin en fonds de roulement (BFR) ?",
-     "answer": "Le besoin de financement du cycle d'exploitation.\nSimplifié : stocks + créances clients − dettes fournisseurs",
-     "w": "5a006601",
-     "wq": "752ed2da"
+     "question": "Comment calcule-t-on simplement le besoin en fonds de roulement (BFR) ?",
+     "answer": "Stocks + créances clients − dettes fournisseurs",
+     "w": [
+      "c16637c8",
+      "5a006601"
+     ],
+     "wq": "752ed2da",
+     "wrongs": [
+      "Ressources stables − emplois stables",
+      "Capital + réserves",
+      "Chiffre d'affaires − charges"
+     ]
     },
     {
      "question": "Quelle relation lie FRNG, BFR et trésorerie ?",
-     "answer": "Trésorerie nette = FRNG - BFR."
+     "answer": "Trésorerie nette = FRNG − BFR",
+     "w": "1ca0b208",
+     "wrongs": [
+      "Trésorerie nette = FRNG + BFR",
+      "Trésorerie nette = BFR − FRNG",
+      "Trésorerie nette = FRNG × BFR"
+     ]
     },
     {
-     "question": "Quels sont les principaux modes de financement de l'entreprise ?",
-     "answer": "• Autofinancement\n• Apport des associés (augmentation de capital)\n• Emprunt bancaire\n• Crédit-bail\n• Financement participatif",
-     "w": "cab636b3",
-     "wq": "228ced45"
+     "question": "Quels sont les principaux modes de financement d'une entreprise ?",
+     "answer": "Autofinancement, apports des associés, emprunt, crédit-bail",
+     "w": [
+      "d4f36745",
+      "cab636b3"
+     ],
+     "wq": "228ced45",
+     "more": "Aussi : financement participatif.",
+     "wrongs": [
+      "Seulement l'emprunt",
+      "Seulement les subventions",
+      "Seulement le chiffre d'affaires"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'effet de levier ?",
-     "answer": "L'endettement augmente la rentabilité des capitaux propres\ntant que la rentabilité économique\nest supérieure au taux d'intérêt de la dette.",
-     "w": "5ab9d918",
-     "wq": "5f9764d2"
+     "question": "Quand l'effet de levier de l'endettement est-il favorable ?",
+     "answer": "Quand la rentabilité économique dépasse le taux d'intérêt de la dette",
+     "w": [
+      "81d27170",
+      "5ab9d918"
+     ],
+     "wq": "5f9764d2",
+     "wrongs": [
+      "Quand le taux d'intérêt dépasse la rentabilité",
+      "Toujours",
+      "Jamais"
+     ]
     }
    ]
   },
@@ -54112,106 +54817,252 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelles sont les conditions de validité d'un contrat (art. 1128 du Code civil) ?",
-     "answer": "• Le consentement des parties\n• Leur capacité de contracter\n• Un contenu licite et certain",
-     "w": "11a9cc1e",
-     "wq": "2e9eabce"
+     "question": "Quelles sont les conditions de validité d'un contrat ?",
+     "answer": "Consentement, capacité, contenu licite et certain",
+     "w": [
+      "7839d81d",
+      "11a9cc1e"
+     ],
+     "wq": "2e9eabce",
+     "more": "Article 1128 du Code civil.",
+     "wrongs": [
+      "Écrit, signature, notaire",
+      "Prix, durée, témoin",
+      "Consentement, prix, publicité"
+     ]
     },
     {
      "question": "Quels sont les vices du consentement ?",
-     "answer": "• L'erreur\n• Le dol (manœuvres ou mensonges pour tromper)\n• La violence (y compris l'abus d'état de dépendance)",
-     "w": "8fd136d9",
-     "wq": "60b1acf6"
+     "answer": "L'erreur, le dol, la violence",
+     "w": [
+      "ad153d24",
+      "8fd136d9"
+     ],
+     "wrongs": [
+      "Le prix, la durée, la forme",
+      "L'oubli, le retard, l'absence",
+      "La faute, le dommage, le lien de causalité"
+     ]
     },
     {
-     "question": "Que signifie la force obligatoire du contrat (art. 1103 du Code civil) ?",
-     "answer": "« Les contrats légalement formés tiennent lieu de loi à ceux qui les ont faits. »\nLes parties doivent les exécuter.",
-     "w": "5aaa1e92",
-     "wq": "6bd310ec"
+     "question": "Que signifie la force obligatoire du contrat ?",
+     "answer": "Le contrat tient lieu de loi aux parties",
+     "w": [
+      "64360e6a",
+      "5aaa1e92"
+     ],
+     "wq": "6bd310ec",
+     "more": "Article 1103 du Code civil : les parties doivent l'exécuter.",
+     "wrongs": [
+      "Le contrat peut être annulé à tout moment",
+      "Le contrat oblige tous les citoyens",
+      "Le contrat doit être signé devant un juge"
+     ]
     },
     {
-     "question": "Quelles sanctions en cas d'inexécution d'un contrat ?",
-     "answer": "• Exception d'inexécution\n• Exécution forcée en nature\n• Réduction du prix\n• Résolution du contrat\n• Dommages et intérêts",
-     "w": "5f416379",
-     "wq": "1c60dc12"
+     "question": "Quelles sanctions peut-on demander en cas d'inexécution d'un contrat ?",
+     "answer": "Exécution forcée, réduction du prix, résolution, dommages et intérêts",
+     "w": [
+      "1b39b928",
+      "5f416379"
+     ],
+     "wq": "1c60dc12",
+     "wrongs": [
+      "Une amende pénale",
+      "Une peine de prison",
+      "Aucune sanction"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une clause abusive ?",
-     "answer": "Entre professionnel et consommateur, une clause qui crée\nun déséquilibre significatif entre les droits et obligations des parties.\nElle est réputée non écrite.",
-     "w": "d5fb4f28",
-     "wq": "9d54e415"
+     "answer": "Une clause qui crée un déséquilibre significatif au détriment du consommateur",
+     "w": [
+      "fc899bdd",
+      "d5fb4f28"
+     ],
+     "more": "Elle est réputée non écrite.",
+     "wrongs": [
+      "Une clause illisible",
+      "Une clause qui fixe le prix",
+      "Une clause ajoutée après signature"
+     ]
     },
     {
-     "question": "Quelles sont les conditions de la responsabilité civile extracontractuelle pour faute ?",
-     "answer": "• Un fait générateur (faute)\n• Un dommage\n• Un lien de causalité entre les deux\n(art. 1240 du Code civil)",
-     "w": "fc2ca296",
-     "wq": "563d33f1"
+     "question": "Quelles sont les conditions de la responsabilité civile pour faute ?",
+     "answer": "Une faute, un dommage et un lien de causalité",
+     "w": [
+      "47629357",
+      "fc2ca296"
+     ],
+     "wq": "563d33f1",
+     "more": "Article 1240 du Code civil.",
+     "wrongs": [
+      "Un contrat, une signature, un témoin",
+      "Une plainte, un procès, une amende",
+      "Une faute seulement"
+     ]
     },
     {
      "question": "Qu'est-ce que la responsabilité sans faute ?",
-     "answer": "Une responsabilité engagée sans avoir à prouver de faute :\n• fait des choses\n• fait d'autrui (parents, employeurs)\n• produits défectueux, accidents de la circulation",
-     "w": "3f160898",
-     "wq": "7ba730de"
+     "answer": "Une responsabilité engagée sans avoir à prouver une faute",
+     "w": [
+      "5082430a",
+      "3f160898"
+     ],
+     "more": "Fait des choses, fait d'autrui, produits défectueux, accidents de la circulation.",
+     "wrongs": [
+      "L'absence totale de responsabilité",
+      "Une responsabilité pénale",
+      "Une responsabilité réservée aux mineurs"
+     ]
     },
     {
-     "question": "Quels sont les éléments qui caractérisent le contrat de travail ?",
-     "answer": "• Une prestation de travail\n• Une rémunération\n• Un lien de subordination juridique",
-     "w": "7b7179cf",
-     "wq": "bad7b68e"
+     "question": "Qu'est-ce qui caractérise le contrat de travail ?",
+     "answer": "Une prestation de travail, une rémunération, un lien de subordination",
+     "w": [
+      "26ef61f2",
+      "7b7179cf"
+     ],
+     "wq": "bad7b68e",
+     "wrongs": [
+      "Un contrat écrit et signé devant notaire",
+      "Une durée d'au moins un an",
+      "Une prime annuelle"
+     ]
     },
     {
      "question": "Quel est le contrat de travail de droit commun ?",
-     "answer": "Le CDI à temps plein\nCDD et intérim sont des exceptions limitées à des cas précis.",
-     "w": "b0cdf120",
-     "wq": "525866bd"
+     "answer": "Le CDI à temps plein",
+     "w": [
+      "4e9c6c5b",
+      "b0cdf120"
+     ],
+     "more": "CDD et intérim sont des exceptions.",
+     "wrongs": [
+      "Le CDD",
+      "L'intérim",
+      "Le stage"
+     ]
     },
     {
      "question": "Quelles sont les principales sources du droit du travail ?",
-     "answer": "• Le Code du travail\n• Les conventions et accords collectifs\n• Le règlement intérieur\n• Le contrat de travail\nArticulés par la hiérarchie des normes et le principe de faveur (aménagé par la loi).",
-     "w": "7fc26a6d",
-     "wq": "a9f91f1e"
+     "answer": "Code du travail, conventions collectives, règlement intérieur, contrat",
+     "w": [
+      "f23427de",
+      "7fc26a6d"
+     ],
+     "wrongs": [
+      "Le Code pénal seulement",
+      "Les décisions du chef d'entreprise seulement",
+      "La Constitution seulement"
+     ]
     },
     {
-     "question": "Quels sont les modes de rupture du contrat de travail à durée indéterminée ?",
-     "answer": "• La démission\n• Le licenciement (motif personnel ou économique)\n• La rupture conventionnelle\n• Le départ ou la mise à la retraite",
-     "w": "795a848a",
-     "wq": "4da834bc"
+     "question": "Quels sont les modes de rupture d'un CDI ?",
+     "answer": "Démission, licenciement, rupture conventionnelle, retraite",
+     "w": [
+      "83241317",
+      "795a848a"
+     ],
+     "wq": "4da834bc",
+     "wrongs": [
+      "Seulement le licenciement",
+      "Seulement la démission",
+      "L'arrivée du terme du contrat"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une cause réelle et sérieuse de licenciement ?",
-     "answer": "• Réelle : un motif exact, objectif et vérifiable\n• Sérieuse : suffisamment grave pour justifier la rupture",
-     "w": "a2aeb459",
-     "wq": "04c5bcaa"
+     "answer": "Un motif exact, vérifiable et assez grave pour justifier la rupture",
+     "w": [
+      "4ec64bfe",
+      "a2aeb459"
+     ],
+     "wrongs": [
+      "Un motif choisi librement par l'employeur",
+      "Une simple mésentente",
+      "Un retard unique"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une personne morale ?",
-     "answer": "Un groupement (société, association) doté de la personnalité juridique :\npatrimoine propre, droits et obligations\ndistincts de ceux de ses membres.",
-     "w": "0347f6eb",
-     "wq": "b13d7265"
+     "answer": "Un groupement doté de la personnalité juridique",
+     "w": [
+      "7f5d33b8",
+      "0347f6eb"
+     ],
+     "more": "Société, association : patrimoine propre, droits et obligations.",
+     "wrongs": [
+      "Une personne honnête",
+      "Un salarié d'une entreprise",
+      "Un enfant mineur"
+     ]
     },
     {
-     "question": "Quelle différence entre entreprise individuelle et société ?",
-     "answer": "Entreprise individuelle : pas de personnalité juridique distincte de l'entrepreneur.\nSociété : une personne morale créée par un contrat entre associés\n(ou un acte unilatéral).",
-     "w": "5f025e1a",
-     "wq": "5ea2c89f"
+     "question": "Une entreprise individuelle a-t-elle une personnalité juridique distincte de l'entrepreneur ?",
+     "answer": "Non",
+     "w": [
+      "156bcb75",
+      "5f025e1a"
+     ],
+     "wq": "5ea2c89f",
+     "more": "Une société, elle, est une personne morale.",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, si elle a des salariés",
+      "Oui, après un an"
+     ]
     },
     {
      "question": "Comment l'entrepreneur individuel est-il protégé depuis 2022 ?",
-     "answer": "Ses biens personnels sont séparés de ses biens professionnels.\nSeuls ces derniers constituent le gage de ses créanciers professionnels.",
-     "w": "abd24a09",
-     "wq": "a9c56da0"
+     "answer": "Ses biens personnels sont séparés de ses biens professionnels",
+     "w": [
+      "c39e72b9",
+      "abd24a09"
+     ],
+     "wrongs": [
+      "Il ne paie plus d'impôts",
+      "Il ne peut plus être poursuivi",
+      "Il devient salarié"
+     ]
     },
     {
-     "question": "Qu'est-ce que la propriété intellectuelle ?",
-     "answer": "Les droits sur les créations de l'esprit :\n• propriété littéraire et artistique (droit d'auteur)\n• propriété industrielle (brevets, marques, dessins et modèles)",
-     "w": "9aa0ea8c",
-     "wq": "e633135b"
+     "question": "Que protège la propriété intellectuelle ?",
+     "answer": "Les créations de l'esprit",
+     "w": [
+      "62a6e277",
+      "9aa0ea8c"
+     ],
+     "wq": "e633135b",
+     "more": "Droit d'auteur ; brevets, marques, dessins et modèles.",
+     "wrongs": [
+      "Les biens immobiliers",
+      "Les comptes bancaires",
+      "Les contrats de travail"
+     ]
     },
     {
-     "question": "Quelle est la durée de protection d'un brevet et d'une marque en France ?",
-     "answer": "• Brevet : 20 ans au maximum\n• Marque : 10 ans, renouvelables indéfiniment",
-     "w": "955c90b9",
-     "wq": "f7903345"
+     "question": "Combien de temps dure au maximum la protection d'un brevet en France ?",
+     "answer": "20 ans",
+     "w": [
+      "3662dc47",
+      "955c90b9"
+     ],
+     "wq": "f7903345",
+     "wrongs": [
+      "10 ans",
+      "50 ans",
+      "70 ans"
+     ]
+    },
+    {
+     "question": "Combien de temps dure la protection d'une marque en France ?",
+     "answer": "10 ans, renouvelables indéfiniment",
+     "wrongs": [
+      "20 ans, non renouvelables",
+      "5 ans",
+      "À vie"
+     ]
     }
    ]
   },
@@ -54235,99 +55086,250 @@
    "cards": [
     {
      "question": "Quelles sont les trois fonctions économiques de l'État selon Musgrave ?",
-     "answer": "• Allocation des ressources (biens collectifs, défaillances du marché)\n• Redistribution des revenus\n• Régulation (stabilisation) de l'activité",
-     "w": "f1382056",
-     "wq": "13bf69d2"
+     "answer": "Allocation, redistribution, régulation",
+     "w": [
+      "9adb1c3c",
+      "f1382056"
+     ],
+     "wrongs": [
+      "Production, vente, consommation",
+      "Police, justice, armée",
+      "Éducation, santé, culture"
+     ]
     },
     {
      "question": "Qu'est-ce que la politique budgétaire ?",
-     "answer": "L'utilisation des recettes et des dépenses publiques\npour agir sur l'activité (relance ou rigueur).",
-     "w": "ddd2d5f2",
-     "wq": "7a98b2ee"
+     "answer": "L'utilisation des recettes et dépenses publiques pour agir sur l'activité",
+     "w": [
+      "848b28e7",
+      "ddd2d5f2"
+     ],
+     "wrongs": [
+      "La fixation des taux d'intérêt",
+      "La gestion de la monnaie",
+      "Le contrôle des prix"
+     ]
     },
     {
-     "question": "Qu'est-ce que la politique monétaire et qui la mène dans la zone euro ?",
-     "answer": "Elle agit sur la quantité de monnaie et les taux d'intérêt\npour assurer la stabilité des prix.\nMenée par la BCE, qui vise 2 % d'inflation à moyen terme.",
-     "w": "6c436ca0",
-     "wq": "d94b1711"
+     "question": "Qui mène la politique monétaire de la zone euro ?",
+     "answer": "La BCE",
+     "w": [
+      "7eea074c",
+      "6c436ca0"
+     ],
+     "wq": "d94b1711",
+     "more": "Elle vise une inflation de 2 % à moyen terme.",
+     "wrongs": [
+      "La Commission européenne",
+      "Le gouvernement français",
+      "Le FMI"
+     ]
     },
     {
      "question": "Qu'est-ce que le déficit public ?",
-     "answer": "Les dépenses des administrations publiques dépassent leurs recettes sur un an.\nIl s'ajoute à la dette publique.",
-     "w": "229ae1b3",
-     "wq": "a11f209d"
+     "answer": "Des dépenses publiques supérieures aux recettes sur un an",
+     "w": [
+      "53e35f2e",
+      "229ae1b3"
+     ],
+     "more": "Il s'ajoute à la dette publique.",
+     "wrongs": [
+      "Le total des dettes de l'État",
+      "Un excédent de recettes",
+      "Le déficit commercial"
+     ]
     },
     {
      "question": "Qu'est-ce que l'effet multiplicateur ?",
-     "answer": "Une hausse initiale des dépenses (publiques ou d'investissement)\nentraîne une hausse plus que proportionnelle de la production,\nvia les revenus distribués et la consommation.",
-     "w": "ca799d1c",
-     "wq": "348cf5d4"
+     "answer": "Une hausse des dépenses entraîne une hausse plus que proportionnelle de la production",
+     "w": [
+      "a7383a5e",
+      "ca799d1c"
+     ],
+     "wrongs": [
+      "Une hausse des prix",
+      "Une baisse du chômage égale à la dépense",
+      "Le doublement de la dette"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une externalité ?",
-     "answer": "L'effet positif ou négatif de l'activité d'un agent sur un autre,\nsans contrepartie monétaire.\nEx. : pollution, formation des salariés",
-     "w": "6fe4269c",
-     "wq": "77754a9e"
+     "answer": "L'effet de l'activité d'un agent sur un autre, sans contrepartie monétaire",
+     "w": [
+      "b451aa19",
+      "6fe4269c"
+     ],
+     "more": "Ex. : pollution, formation des salariés.",
+     "wrongs": [
+      "Une exportation",
+      "Un bien collectif",
+      "Un impôt"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un bien collectif ?",
-     "answer": "Un bien :\n• non rival (l'usage de l'un ne diminue pas celui des autres)\n• non excluable (on ne peut empêcher personne de l'utiliser)\nEx. : l'éclairage public",
-     "w": "fb12fdd9",
-     "wq": "d234a12b"
+     "answer": "Un bien non rival et non excluable",
+     "w": [
+      "586658a4",
+      "fb12fdd9"
+     ],
+     "more": "Ex. : l'éclairage public.",
+     "wrongs": [
+      "Un bien vendu en grande quantité",
+      "Un bien appartenant à une entreprise",
+      "Un bien rare"
+     ]
     },
     {
-     "question": "Comment l'INSEE définit-il un chômeur au sens du BIT ?",
-     "answer": "Une personne de 15 ans ou plus :\n• sans emploi la semaine de référence\n• disponible dans les deux semaines\n• ayant cherché activement un emploi les quatre dernières semaines\n(ou en ayant trouvé un qui commence dans moins de trois mois)",
-     "w": "7cd13319",
-     "wq": "969c456f"
+     "question": "Qui est chômeur au sens du BIT ?",
+     "answer": "Une personne sans emploi, disponible, qui cherche activement un emploi",
+     "w": [
+      "3535c435",
+      "7cd13319"
+     ],
+     "wq": "969c456f",
+     "wrongs": [
+      "Toute personne sans emploi",
+      "Toute personne inscrite à France Travail",
+      "Toute personne à temps partiel"
+     ]
     },
     {
-     "question": "Distinguer chômage conjoncturel et chômage structurel.",
-     "answer": "Conjoncturel : lié à un ralentissement de l'activité.\nStructurel : lié au fonctionnement du marché du travail\n(inadéquation des qualifications, rigidités).",
-     "w": "32b54509",
-     "wq": "aaafadbd"
+     "question": "Qu'est-ce que le chômage conjoncturel ?",
+     "answer": "Un chômage lié à un ralentissement de l'activité",
+     "w": [
+      "b6851f86",
+      "32b54509"
+     ],
+     "wq": "aaafadbd",
+     "wrongs": [
+      "Un chômage lié aux rigidités du marché du travail",
+      "Un chômage saisonnier",
+      "Un chômage volontaire"
+     ]
     },
     {
-     "question": "Distinguer politiques de l'emploi actives et passives.",
-     "answer": "Actives : créer ou favoriser l'emploi (formation, aides à l'embauche).\nPassives : indemniser les chômeurs ou réduire l'offre de travail\n(allocations, préretraites).",
-     "w": "319a1b47",
-     "wq": "7a654daa"
+     "question": "Qu'est-ce que le chômage structurel ?",
+     "answer": "Un chômage lié au fonctionnement du marché du travail",
+     "more": "Inadéquation des qualifications, rigidités.",
+     "wrongs": [
+      "Un chômage lié à un ralentissement de l'activité",
+      "Un chômage de courte durée",
+      "Un chômage technique"
+     ]
+    },
+    {
+     "question": "Qu'est-ce qu'une politique de l'emploi active ?",
+     "answer": "Créer ou favoriser l'emploi (formation, aides à l'embauche)",
+     "w": [
+      "a1cad4d0",
+      "319a1b47"
+     ],
+     "wq": "7a654daa",
+     "wrongs": [
+      "Indemniser les chômeurs",
+      "Avancer l'âge de la retraite",
+      "Supprimer les allocations"
+     ]
+    },
+    {
+     "question": "Qu'est-ce qu'une politique de l'emploi passive ?",
+     "answer": "Indemniser les chômeurs ou réduire l'offre de travail",
+     "wrongs": [
+      "Former les chômeurs",
+      "Aider à l'embauche",
+      "Créer des emplois publics"
+     ]
     },
     {
      "question": "Qu'est-ce que la mondialisation ?",
-     "answer": "L'intensification des échanges à l'échelle de la planète\n(biens, services, capitaux, informations, personnes).\nElle accroît l'interdépendance des économies.",
-     "w": "8f5c6d42",
-     "wq": "581ecdf7"
+     "answer": "L'intensification des échanges à l'échelle de la planète",
+     "w": [
+      "ae9a520c",
+      "8f5c6d42"
+     ],
+     "wrongs": [
+      "La fermeture des frontières",
+      "La création de l'euro",
+      "La baisse du commerce"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une firme multinationale ?",
-     "answer": "Une entreprise qui possède au moins une filiale à l'étranger,\ncréée ou rachetée par des investissements directs à l'étranger (IDE).",
-     "w": "45e11ca4",
-     "wq": "9380ebc8"
+     "answer": "Une entreprise qui possède au moins une filiale à l'étranger",
+     "w": [
+      "41cb1562",
+      "45e11ca4"
+     ],
+     "wrongs": [
+      "Une entreprise qui exporte",
+      "Une entreprise publique",
+      "Une entreprise de plus de 1 000 salariés"
+     ]
     },
     {
-     "question": "Distinguer libre-échange et protectionnisme.",
-     "answer": "Libre-échange : supprimer les obstacles aux échanges.\nProtectionnisme : protéger la production nationale\n(droits de douane, quotas, normes, subventions).",
-     "w": "a4ae2a17",
-     "wq": "c7af2a03"
+     "question": "Qu'est-ce que le libre-échange ?",
+     "answer": "La suppression des obstacles aux échanges",
+     "w": [
+      "ea584e11",
+      "a4ae2a17"
+     ],
+     "wq": "c7af2a03",
+     "wrongs": [
+      "La protection de la production nationale",
+      "L'interdiction des importations",
+      "La gratuité des produits"
+     ]
     },
     {
-     "question": "Qu'est-ce que le développement durable (rapport Brundtland, 1987) ?",
-     "answer": "Un développement qui répond aux besoins du présent\nsans compromettre la capacité des générations futures\nde répondre aux leurs.",
-     "w": "0c83e4f8",
-     "wq": "849dd041"
+     "question": "Qu'est-ce que le protectionnisme ?",
+     "answer": "La protection de la production nationale (droits de douane, quotas…)",
+     "wrongs": [
+      "La suppression des obstacles aux échanges",
+      "La protection de l'environnement",
+      "La protection des consommateurs"
+     ]
+    },
+    {
+     "question": "Comment le rapport Brundtland (1987) définit-il le développement durable ?",
+     "answer": "Répondre aux besoins du présent sans compromettre ceux des générations futures",
+     "w": [
+      "334d5f40",
+      "0c83e4f8"
+     ],
+     "wq": "849dd041",
+     "wrongs": [
+      "Produire toujours plus",
+      "Arrêter toute croissance",
+      "Protéger seulement la nature"
+     ]
     },
     {
      "question": "Quels instruments l'État utilise-t-il pour protéger l'environnement ?",
-     "answer": "• La réglementation (normes, interdictions)\n• La taxation (principe pollueur-payeur)\n• Les subventions\n• Le marché de quotas d'émission (droits à polluer)",
-     "w": "2cd38da0",
-     "wq": "aab9d4dc"
+     "answer": "Réglementation, taxation, subventions, quotas d'émission",
+     "w": [
+      "cd8734b5",
+      "2cd38da0"
+     ],
+     "wrongs": [
+      "Seulement l'interdiction de produire",
+      "Seulement la publicité",
+      "Aucun instrument"
+     ]
     },
     {
-     "question": "Qu'est-ce que la croissance économique et comment la mesure-t-on ?",
-     "answer": "L'augmentation durable de la production de biens et services.\nMesure : le taux de variation du PIB en volume.",
-     "w": "c4bcf2e0",
-     "wq": "95ba0096"
+     "question": "Comment mesure-t-on la croissance économique ?",
+     "answer": "Par le taux de variation du PIB en volume",
+     "w": [
+      "5b37ddc2",
+      "c4bcf2e0"
+     ],
+     "wq": "95ba0096",
+     "wrongs": [
+      "Par le taux de chômage",
+      "Par le taux d'inflation",
+      "Par le nombre d'entreprises"
+     ]
     }
    ]
   },
@@ -54350,98 +55352,236 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelles sont les classes d'un grand nombre entier, de droite à gauche ?",
-     "answer": "De droite à gauche :\n• unités\n• milliers\n• millions\n• milliards\nChacune contient centaines, dizaines et unités.",
-     "w": "4f1ee6b6",
-     "wq": "1396bc2c"
+     "question": "Quelles sont les classes d'un grand nombre, de droite à gauche ?",
+     "answer": "Unités, milliers, millions, milliards",
+     "w": [
+      "e9effe06",
+      "4f1ee6b6"
+     ],
+     "wq": "1396bc2c",
+     "wrongs": [
+      "Milliards, millions, milliers, unités",
+      "Unités, dizaines, centaines, milliers",
+      "Dizaines, centaines, milliers, millions"
+     ]
     },
     {
      "question": "Pourquoi laisse-t-on un espace dans 12 450 300 ?",
-     "answer": "Pour séparer les classes par groupes de trois chiffres, depuis la droite.\nLe nombre est plus facile à lire.",
-     "w": "a3745a50",
-     "wq": "e7c75f59"
+     "answer": "Pour séparer les classes de trois chiffres",
+     "w": [
+      "0817fc20",
+      "a3745a50"
+     ],
+     "wrongs": [
+      "Pour séparer la partie décimale",
+      "Par erreur de frappe",
+      "Pour indiquer les dizaines"
+     ]
     },
     {
-     "question": "Dans 45 678, quel est le chiffre des centaines et quel est le nombre de centaines ?",
-     "answer": "• Chiffre des centaines : 6\n• Nombre de centaines : 456\n(tout ce qui est à gauche du chiffre des dizaines)",
-     "w": "4a287582",
-     "wq": "55102ab8"
+     "question": "Dans 45 678, quel est le chiffre des centaines ?",
+     "answer": "6",
+     "w": [
+      "2bfacc61",
+      "4a287582"
+     ],
+     "wq": "55102ab8",
+     "wrongs": [
+      "456",
+      "5",
+      "7"
+     ]
+    },
+    {
+     "question": "Dans 45 678, quel est le nombre de centaines ?",
+     "answer": "456",
+     "wrongs": [
+      "6",
+      "45",
+      "4 567"
+     ]
     },
     {
      "question": "Combien de zéros compte un milliard ?",
-     "answer": "Neuf zéros\n1 milliard = 1 000 000 000 = mille millions",
-     "w": "4e09e9f6",
-     "wq": "d522a8ca"
+     "answer": "Neuf",
+     "w": [
+      "6851e190",
+      "4e09e9f6"
+     ],
+     "more": "1 milliard = 1 000 000 000 = mille millions.",
+     "wrongs": [
+      "Six",
+      "Douze",
+      "Dix"
+     ]
     },
     {
-     "question": "Écris en chiffres : deux millions trente mille cinq.",
-     "answer": "2 030 005."
+     "question": "Comment écrit-on « deux millions trente mille cinq » en chiffres ?",
+     "answer": "2 030 005",
+     "w": "dee3aea4",
+     "wq": "0680e66d",
+     "wrongs": [
+      "2 300 005",
+      "2 030 500",
+      "2 003 005"
+     ]
     },
     {
-     "question": "Décompose 5 304 à l'aide de 1 000, 100, 10 et 1.",
-     "answer": "5 × 1 000 + 3 × 100 + 4 × 1\n(aucune dizaine)",
-     "w": "41cdce32",
-     "wq": "bdf09f6e"
+     "question": "Comment décompose-t-on 5 304 ?",
+     "answer": "5 × 1 000 + 3 × 100 + 4 × 1",
+     "w": [
+      "808566ed",
+      "41cdce32"
+     ],
+     "wq": "bdf09f6e",
+     "wrongs": [
+      "5 × 1 000 + 3 × 10 + 4 × 1",
+      "5 × 100 + 3 × 10 + 4",
+      "53 × 100 + 4 × 10"
+     ]
     },
     {
      "question": "Combien y a-t-il de dizaines dans 1 000 ?",
-     "answer": "100 dizaines\ncar 1 000 = 100 × 10",
-     "w": "40db861d",
-     "wq": "822d1fa1"
+     "answer": "100",
+     "w": [
+      "3105663f",
+      "40db861d"
+     ],
+     "wrongs": [
+      "10",
+      "1 000",
+      "1"
+     ]
     },
     {
-     "question": "Comment comparer deux nombres entiers ?",
-     "answer": "1. Le nombre qui a le plus de chiffres est le plus grand.\n2. À nombre de chiffres égal : on compare chiffre à chiffre depuis la gauche.\nEx. : 98 765 < 102 000",
-     "w": "f5b2266b",
-     "wq": "52a89516"
+     "question": "Quel est le plus grand : 98 765 ou 102 000 ?",
+     "answer": "102 000",
+     "w": [
+      "30dfc945",
+      "f5b2266b"
+     ],
+     "wq": "52a89516",
+     "more": "Le nombre qui a le plus de chiffres est le plus grand.",
+     "wrongs": [
+      "98 765",
+      "Ils sont égaux",
+      "On ne peut pas savoir"
+     ]
     },
     {
-     "question": "Que signifient les symboles < et > ?",
-     "answer": "• < : « est inférieur à »\n• > : « est supérieur à »\nLa pointe est tournée vers le plus petit : 7 < 12 et 12 > 7.",
-     "w": "0355e4fe",
-     "wq": "987ce972"
+     "question": "Que signifie le symbole < ?",
+     "answer": "« est inférieur à »",
+     "w": [
+      "cf62fc82",
+      "0355e4fe"
+     ],
+     "wq": "987ce972",
+     "more": "La pointe est tournée vers le plus petit : 7 < 12.",
+     "wrongs": [
+      "« est supérieur à »",
+      "« est égal à »",
+      "« est différent de »"
+     ]
     },
     {
      "question": "Quel est l'arrondi au millier de 47 620 ?",
-     "answer": "48 000\nLe chiffre des centaines (6) est supérieur ou égal à 5.",
-     "w": "c79aa7f3",
-     "wq": "9a4c7ced"
+     "answer": "48 000",
+     "w": [
+      "327a852d",
+      "c79aa7f3"
+     ],
+     "wrongs": [
+      "47 000",
+      "47 600",
+      "50 000"
+     ]
     },
     {
-     "question": "Quand écrit-on « vingt » et « cent » avec un s ?",
-     "answer": "Quand ils sont multipliés et terminent le nombre :\nquatre-vingts, deux cents\nMais : quatre-vingt-trois, deux cent cinq",
-     "w": "fb486442",
-     "wq": "46e19768"
+     "question": "Faut-il écrire « quatre-vingts » ou « quatre-vingt » seul ?",
+     "answer": "Quatre-vingts",
+     "w": [
+      "a45e82ac",
+      "fb486442"
+     ],
+     "wq": "46e19768",
+     "more": "Vingt et cent prennent un s quand ils sont multipliés et terminent le nombre ; mais quatre-vingt-trois.",
+     "wrongs": [
+      "Quatre-vingt",
+      "Quatres-vingts",
+      "Quatre-vingt-s"
+     ]
     },
     {
-     "question": "« Mille » et « million » prennent-ils un s au pluriel ?",
-     "answer": "• Mille : invariable (trois mille)\n• Million, milliard : des noms, ils s'accordent\n(deux millions, cinq milliards)",
-     "w": "f08bea92",
-     "wq": "fb6ca85e"
+     "question": "Écrit-on « trois mille » ou « trois milles » ?",
+     "answer": "Trois mille",
+     "w": [
+      "51d99f86",
+      "f08bea92"
+     ],
+     "wq": "fb6ca85e",
+     "more": "Mille est invariable ; million et milliard s'accordent.",
+     "wrongs": [
+      "Trois milles",
+      "Trois mil",
+      "Trois-mille-s"
+     ]
     },
     {
      "question": "Quel est le critère de divisibilité par 2 ?",
-     "answer": "Son chiffre des unités est 0, 2, 4, 6 ou 8 (nombre pair).\nEx. : 3 576",
-     "w": "7b6e1cc3",
-     "wq": "b257000a"
+     "answer": "Le chiffre des unités est 0, 2, 4, 6 ou 8",
+     "w": [
+      "86ac07a4",
+      "7b6e1cc3"
+     ],
+     "wrongs": [
+      "La somme des chiffres est paire",
+      "Le nombre se termine par 2",
+      "Le premier chiffre est pair"
+     ]
     },
     {
-     "question": "Quels sont les critères de divisibilité par 5 et par 10 ?",
-     "answer": "• Par 5 : unités 0 ou 5\n• Par 10 : unités 0\nEx. : 2 345 est divisible par 5, pas par 10.",
-     "w": "f24732e2",
-     "wq": "796eea89"
+     "question": "Quel est le critère de divisibilité par 5 ?",
+     "answer": "Le chiffre des unités est 0 ou 5",
+     "w": [
+      "0f324743",
+      "f24732e2"
+     ],
+     "wq": "796eea89",
+     "more": "Par 10 : chiffre des unités 0.",
+     "wrongs": [
+      "La somme des chiffres est divisible par 5",
+      "Le nombre se termine par 5 seulement",
+      "Le premier chiffre est 5"
+     ]
     },
     {
      "question": "Quel est le critère de divisibilité par 9 ?",
-     "answer": "La somme de ses chiffres est divisible par 9.\nEx. : 738 → 7 + 3 + 8 = 18\ndonc 738 est divisible par 9.",
-     "w": "c1bf42f1",
-     "wq": "38087a97"
+     "answer": "La somme des chiffres est divisible par 9",
+     "w": [
+      "abc1068b",
+      "c1bf42f1"
+     ],
+     "more": "Ex. : 738 → 7 + 3 + 8 = 18.",
+     "wrongs": [
+      "Le nombre se termine par 9",
+      "Le chiffre des unités est 0 ou 9",
+      "Le nombre est impair"
+     ]
     },
     {
-     "question": "Donne un ordre de grandeur de 398 × 21.",
-     "answer": "400 × 20 = 8 000\n(398 ≈ 400 et 21 ≈ 20)\nRésultat exact : 8 358",
-     "w": "3e67f671",
-     "wq": "08326cd2"
+     "question": "Quel est un ordre de grandeur de 398 × 21 ?",
+     "answer": "8 000",
+     "w": [
+      "08d571b7",
+      "3e67f671"
+     ],
+     "wq": "08326cd2",
+     "more": "400 × 20 ; résultat exact : 8 358.",
+     "wrongs": [
+      "800",
+      "80 000",
+      "4 000"
+     ]
     }
    ]
   },
@@ -54464,96 +55604,240 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelle est la différence entre (AB), [AB] et [AB) ?",
-     "answer": "• (AB) : la droite passant par A et B (illimitée)\n• [AB] : le segment d'extrémités A et B\n• [AB) : la demi-droite d'origine A passant par B",
-     "w": "f85c0f0d",
-     "wq": "b2edcc95"
+     "question": "Que désigne la notation (AB) ?",
+     "answer": "La droite passant par A et B",
+     "w": [
+      "5c512fbd",
+      "f85c0f0d"
+     ],
+     "wq": "b2edcc95",
+     "wrongs": [
+      "Le segment d'extrémités A et B",
+      "La demi-droite d'origine A",
+      "La longueur AB"
+     ]
     },
     {
-     "question": "Que note-t-on AB, sans crochets ni parenthèses ?",
-     "answer": "La longueur du segment [AB] (distance de A à B).\nEx. : AB = 5 cm",
-     "w": "466907d5",
-     "wq": "76f5450b"
+     "question": "Que désigne la notation [AB) ?",
+     "answer": "La demi-droite d'origine A passant par B",
+     "wrongs": [
+      "La droite (AB)",
+      "Le segment [AB]",
+      "La demi-droite d'origine B"
+     ]
     },
     {
-     "question": "Qu'est-ce que le milieu d'un segment ?",
-     "answer": "Le point du segment à égale distance de ses deux extrémités.\nI milieu de [AB] : IA = IB",
-     "w": "fcccebdb",
-     "wq": "dc557fc2"
+     "question": "Que désigne AB, sans crochets ni parenthèses ?",
+     "answer": "La longueur du segment [AB]",
+     "w": [
+      "5f955a71",
+      "466907d5"
+     ],
+     "wq": "76f5450b",
+     "wrongs": [
+      "La droite (AB)",
+      "Le milieu de [AB]",
+      "La demi-droite [AB)"
+     ]
+    },
+    {
+     "question": "Si I est le milieu de [AB], que peut-on dire de IA et IB ?",
+     "answer": "IA = IB",
+     "w": [
+      "c537f73b",
+      "fcccebdb"
+     ],
+     "wq": "dc557fc2",
+     "wrongs": [
+      "IA = 2 × IB",
+      "IA + IB = 0",
+      "IA > IB"
+     ]
     },
     {
      "question": "Que sont deux droites perpendiculaires ?",
-     "answer": "Deux droites qui se coupent en formant un angle droit.\nNotation : (d) ⊥ (d')\nVérification : à l'équerre",
-     "w": "08b5eb8e",
-     "wq": "b7d2159a"
+     "answer": "Deux droites qui se coupent en formant un angle droit",
+     "w": [
+      "886e666d",
+      "08b5eb8e"
+     ],
+     "wrongs": [
+      "Deux droites qui ne se coupent jamais",
+      "Deux droites confondues",
+      "Deux droites de même longueur"
+     ]
     },
     {
      "question": "Que sont deux droites parallèles ?",
-     "answer": "Deux droites qui ne se coupent jamais\n(même écartement partout).\nNotation : (d) // (d')",
-     "w": "e86b0739",
-     "wq": "dd161b51"
+     "answer": "Deux droites qui ne se coupent jamais",
+     "w": [
+      "abc55a59",
+      "e86b0739"
+     ],
+     "wrongs": [
+      "Deux droites qui se coupent à angle droit",
+      "Deux droites qui se croisent",
+      "Deux droites de même longueur"
+     ]
     },
     {
-     "question": "Si deux droites sont perpendiculaires à une même troisième droite, que peut-on dire ?",
-     "answer": "Elles sont parallèles entre elles."
+     "question": "Si deux droites sont perpendiculaires à une même droite, que peut-on dire ?",
+     "answer": "Elles sont parallèles entre elles",
+     "w": "3879b4f1",
+     "wq": "006c6eda",
+     "wrongs": [
+      "Elles sont perpendiculaires entre elles",
+      "Elles sont sécantes",
+      "On ne peut rien dire"
+     ]
     },
     {
      "question": "Si deux droites sont parallèles et qu'une troisième est perpendiculaire à l'une, que peut-on dire ?",
-     "answer": "Elle est aussi perpendiculaire à l'autre."
+     "answer": "Elle est aussi perpendiculaire à l'autre",
+     "w": "a2bbd954",
+     "wrongs": [
+      "Elle est parallèle à l'autre",
+      "Elle ne coupe pas l'autre",
+      "On ne peut rien dire"
+     ]
     },
     {
      "question": "Qu'est-ce que la distance d'un point à une droite ?",
-     "answer": "La longueur du segment perpendiculaire qui joint ce point à la droite.\nC'est le plus court chemin entre le point et la droite.",
-     "w": "bf5e3d49",
-     "wq": "31c174a6"
+     "answer": "La longueur du segment perpendiculaire qui joint ce point à la droite",
+     "w": [
+      "7f189020",
+      "bf5e3d49"
+     ],
+     "wrongs": [
+      "La longueur de n'importe quel segment joignant le point à la droite",
+      "La longueur de la droite",
+      "Toujours 1 cm"
+     ]
     },
     {
-     "question": "Quelle relation y a-t-il entre le rayon et le diamètre d'un cercle ?",
-     "answer": "d = 2 × r\nEx. : rayon 3 cm → diamètre 6 cm",
-     "w": "e6fb74fe",
-     "wq": "20333cc5"
+     "question": "Quel est le diamètre d'un cercle de rayon 3 cm ?",
+     "answer": "6 cm",
+     "w": [
+      "a286b679",
+      "e6fb74fe"
+     ],
+     "wq": "20333cc5",
+     "more": "d = 2 × r",
+     "wrongs": [
+      "3 cm",
+      "1,5 cm",
+      "9 cm"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une corde d'un cercle ?",
-     "answer": "Un segment qui joint deux points du cercle.\nUn diamètre est une corde qui passe par le centre.",
-     "w": "85364da6",
-     "wq": "2bb0899e"
+     "answer": "Un segment qui joint deux points du cercle",
+     "w": [
+      "351f547c",
+      "85364da6"
+     ],
+     "more": "Un diamètre est une corde qui passe par le centre.",
+     "wrongs": [
+      "Un segment qui joint le centre au cercle",
+      "Une droite qui touche le cercle en un point",
+      "La longueur du cercle"
+     ]
     },
     {
-     "question": "Comment nomme-t-on l'angle formé par les demi-droites [BA) et [BC) ?",
-     "answer": "ABC surmonté d'un « chapeau » (^)\nLe sommet, B, est toujours au milieu.",
-     "w": "40d64116",
-     "wq": "439e93af"
+     "question": "Dans l'angle ABC, quel point est le sommet ?",
+     "answer": "B",
+     "w": [
+      "a2bc6b7d",
+      "40d64116"
+     ],
+     "wq": "439e93af",
+     "more": "Le sommet est toujours au milieu.",
+     "wrongs": [
+      "A",
+      "C",
+      "Aucun"
+     ]
     },
     {
-     "question": "Quelle est l'unité de mesure des angles au collège ?",
-     "answer": "Le degré (°)\n• Angle droit : 90°\n• Angle plat : 180°",
-     "w": "4c20e277",
-     "wq": "611cac40"
+     "question": "Combien mesure un angle plat ?",
+     "answer": "180°",
+     "w": [
+      "c77ade9d",
+      "4c20e277"
+     ],
+     "wq": "611cac40",
+     "more": "Un angle droit mesure 90°.",
+     "wrongs": [
+      "90°",
+      "360°",
+      "100°"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un angle aigu et un angle obtus ?",
-     "answer": "• Aigu : moins de 90°\n• Obtus : entre 90° et 180°",
-     "w": "3dbba480",
-     "wq": "b7187b87"
+     "question": "Qu'est-ce qu'un angle aigu ?",
+     "answer": "Un angle de moins de 90°",
+     "w": [
+      "27dbe324",
+      "3dbba480"
+     ],
+     "wq": "b7187b87",
+     "wrongs": [
+      "Un angle entre 90° et 180°",
+      "Un angle de 90°",
+      "Un angle de 180°"
+     ]
     },
     {
-     "question": "Comment mesurer un angle avec un rapporteur ?",
-     "answer": "1. Centre du rapporteur sur le sommet.\n2. Graduation 0 sur un côté de l'angle.\n3. On lit, sur cette même graduation, là où passe l'autre côté.",
-     "w": "52f0f22e",
-     "wq": "2e880212"
+     "question": "Qu'est-ce qu'un angle obtus ?",
+     "answer": "Un angle entre 90° et 180°",
+     "wrongs": [
+      "Un angle de moins de 90°",
+      "Un angle de 90°",
+      "Un angle de plus de 180°"
+     ]
     },
     {
-     "question": "Comment savoir quelle graduation du rapporteur lire ?",
-     "answer": "Celle (intérieure ou extérieure) qui part de 0 sur le premier côté.\nUne estimation aide : un angle aigu mesure moins de 90°.",
-     "w": "8d06c548",
-     "wq": "7133cd7e"
+     "question": "Où place-t-on le centre du rapporteur pour mesurer un angle ?",
+     "answer": "Sur le sommet de l'angle",
+     "w": [
+      "0fe9f10b",
+      "52f0f22e"
+     ],
+     "wq": "2e880212",
+     "more": "Graduation 0 sur un côté, lecture là où passe l'autre côté.",
+     "wrongs": [
+      "Sur un côté de l'angle",
+      "À l'extrémité d'un côté",
+      "N'importe où"
+     ]
     },
     {
-     "question": "Avec quels instruments trace-t-on un cercle et reporte-t-on une longueur ?",
-     "answer": "Le compas\nSon écartement donne le rayon ou la longueur à reporter.",
-     "w": "c430737b",
-     "wq": "bef91fa2"
+     "question": "Quelle graduation du rapporteur faut-il lire ?",
+     "answer": "Celle qui part de 0 sur le premier côté",
+     "w": [
+      "a023fc20",
+      "8d06c548"
+     ],
+     "wq": "7133cd7e",
+     "wrongs": [
+      "Toujours la graduation extérieure",
+      "Toujours la graduation intérieure",
+      "La plus grande des deux"
+     ]
+    },
+    {
+     "question": "Avec quel instrument trace-t-on un cercle ?",
+     "answer": "Le compas",
+     "w": [
+      "79ae0abc",
+      "c430737b"
+     ],
+     "wq": "bef91fa2",
+     "wrongs": [
+      "L'équerre",
+      "Le rapporteur",
+      "La règle"
+     ]
     }
    ]
   },
@@ -54577,91 +55861,215 @@
    "cards": [
     {
      "question": "Que signifie « deux figures sont symétriques par rapport à une droite (d) » ?",
-     "answer": "Elles se superposent exactement\nquand on plie la feuille le long de (d), l'axe de symétrie.",
-     "w": "452643e3",
-     "wq": "16116e58"
+     "answer": "Elles se superposent par pliage le long de (d)",
+     "w": [
+      "14bc000c",
+      "452643e3"
+     ],
+     "wrongs": [
+      "Elles ont la même couleur",
+      "Elles sont l'une au-dessus de l'autre",
+      "Elles ont le même périmètre seulement"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un axe de symétrie d'une figure ?",
-     "answer": "Une droite qui partage la figure en deux parties superposables par pliage.\nLa figure est alors sa propre symétrique.",
-     "w": "ed73c775",
-     "wq": "92783826"
+     "answer": "Une droite qui partage la figure en deux parties superposables par pliage",
+     "w": [
+      "5dd41ec2",
+      "ed73c775"
+     ],
+     "wrongs": [
+      "La plus grande diagonale de la figure",
+      "Un côté de la figure",
+      "Une droite qui passe par un sommet"
+     ]
     },
     {
-     "question": "Si A' est le symétrique de A par rapport à (d), que représente (d) pour le segment [AA'] ?",
-     "answer": "(d) est la médiatrice de [AA'] :\nelle est perpendiculaire à [AA'] et passe par son milieu.",
-     "w": "ab20fb5f",
-     "wq": "d0588ecf"
+     "question": "Si A' est le symétrique de A par rapport à (d), que représente (d) pour [AA'] ?",
+     "answer": "Sa médiatrice",
+     "w": [
+      "cd3e782d",
+      "ab20fb5f"
+     ],
+     "wq": "d0588ecf",
+     "wrongs": [
+      "Une parallèle",
+      "Une de ses extrémités",
+      "Sa moitié"
+     ]
     },
     {
      "question": "Qu'est-ce que la médiatrice d'un segment ?",
-     "answer": "La droite perpendiculaire au segment\nqui passe par son milieu.",
-     "w": "e7d15e8b",
-     "wq": "0858451c"
+     "answer": "La droite perpendiculaire au segment qui passe par son milieu",
+     "w": [
+      "4e7d7a73",
+      "e7d15e8b"
+     ],
+     "wrongs": [
+      "La droite parallèle au segment",
+      "Le milieu du segment",
+      "Une droite qui passe par une extrémité"
+     ]
     },
     {
-     "question": "Quelle propriété ont les points de la médiatrice d'un segment [AB] ?",
-     "answer": "Tout point de la médiatrice est à égale distance de A et de B.\nRéciproquement, tout point équidistant de A et B est sur la médiatrice.",
-     "w": "bf3de168",
-     "wq": "00ea04fd"
+     "question": "Quelle propriété ont les points de la médiatrice de [AB] ?",
+     "answer": "Ils sont à égale distance de A et de B",
+     "w": [
+      "3a22d2dd",
+      "bf3de168"
+     ],
+     "wq": "00ea04fd",
+     "wrongs": [
+      "Ils sont plus près de A",
+      "Ils sont alignés avec A et B",
+      "Ils sont sur le segment [AB]"
+     ]
     },
     {
-     "question": "Comment tracer la médiatrice de [AB] au compas ?",
-     "answer": "1. Deux arcs de même rayon (plus grand que la moitié de AB),\ncentrés en A et en B, de chaque côté du segment.\n2. La droite qui joint leurs deux points d'intersection est la médiatrice.",
-     "w": "210ec6be",
-     "wq": "af24526f"
+     "question": "Comment trace-t-on la médiatrice de [AB] au compas ?",
+     "answer": "Deux arcs de même rayon centrés en A et B, puis la droite joignant leurs intersections",
+     "w": [
+      "213bfaf6",
+      "210ec6be"
+     ],
+     "wq": "af24526f",
+     "wrongs": [
+      "On trace un cercle de centre A",
+      "On mesure AB et on divise par 3",
+      "On trace une parallèle à [AB]"
+     ]
     },
     {
      "question": "Quel est le symétrique d'un point situé sur l'axe de symétrie ?",
-     "answer": "Le point lui-même."
+     "answer": "Le point lui-même",
+     "w": "8a1c32d4",
+     "wrongs": [
+      "Le point opposé",
+      "Il n'en a pas",
+      "Un point à 1 cm de l'axe"
+     ]
     },
     {
-     "question": "Comment construire le symétrique d'un point A avec une équerre et une règle ?",
-     "answer": "1. On trace la perpendiculaire à l'axe passant par A.\n2. On reporte la même distance de l'autre côté de l'axe.\nA' est à la même distance de l'axe que A.",
-     "w": "4f18b0cd",
-     "wq": "f10f63a6"
+     "question": "À quelle distance de l'axe se trouve le symétrique A' d'un point A ?",
+     "answer": "À la même distance que A",
+     "w": [
+      "dbe3efc5",
+      "4f18b0cd"
+     ],
+     "wq": "f10f63a6",
+     "wrongs": [
+      "Au double de la distance",
+      "À la moitié de la distance",
+      "Sur l'axe"
+     ]
     },
     {
      "question": "Que conserve la symétrie axiale ?",
-     "answer": "• Les longueurs\n• Les mesures d'angles\n• L'alignement\n• Les périmètres et les aires\nLa figure est identique, seulement « retournée ».",
-     "w": "fac181c9",
-     "wq": "79d25a3f"
+     "answer": "Longueurs, angles, alignement, périmètres et aires",
+     "w": [
+      "07a547dc",
+      "fac181c9"
+     ],
+     "wrongs": [
+      "Seulement les angles",
+      "Seulement l'orientation",
+      "Rien"
+     ]
     },
     {
-     "question": "Quel est le symétrique d'un segment de 4 cm ? D'un cercle de rayon 2 cm ?",
-     "answer": "• Un segment de 4 cm\n• Un cercle de rayon 2 cm,\ndont le centre est le symétrique du centre de départ",
-     "w": "5ffe9db6",
-     "wq": "aca885f1"
+     "question": "Quel est le symétrique d'un cercle de rayon 2 cm ?",
+     "answer": "Un cercle de rayon 2 cm",
+     "w": [
+      "aef12063",
+      "5ffe9db6"
+     ],
+     "wq": "aca885f1",
+     "wrongs": [
+      "Un cercle de rayon 4 cm",
+      "Un cercle de rayon 1 cm",
+      "Une ellipse"
+     ]
     },
     {
      "question": "Combien d'axes de symétrie a un carré ?",
-     "answer": "Quatre :\n• ses deux diagonales\n• les deux droites passant par les milieux des côtés opposés",
-     "w": "aef70f20",
-     "wq": "6bd9c73d"
+     "answer": "Quatre",
+     "w": [
+      "0d19cd9a",
+      "aef70f20"
+     ],
+     "wrongs": [
+      "Deux",
+      "Un",
+      "Huit"
+     ]
     },
     {
-     "question": "Combien d'axes de symétrie ont un rectangle et un losange (qui ne sont pas des carrés) ?",
-     "answer": "Deux chacun.\n• Rectangle : les droites passant par les milieux des côtés opposés\n• Losange : ses deux diagonales",
-     "w": "094b225e",
-     "wq": "b04f2749"
+     "question": "Combien d'axes de symétrie a un rectangle qui n'est pas un carré ?",
+     "answer": "Deux",
+     "w": [
+      "9bba5cbc",
+      "094b225e"
+     ],
+     "wq": "b04f2749",
+     "more": "Le losange (non carré) aussi : ses deux diagonales.",
+     "wrongs": [
+      "Quatre",
+      "Un",
+      "Aucun"
+     ]
     },
     {
-     "question": "Combien d'axes de symétrie ont un triangle isocèle et un triangle équilatéral ?",
-     "answer": "• Triangle isocèle (non équilatéral) : un, la médiatrice de la base\n• Triangle équilatéral : trois",
-     "w": "a92cc994",
-     "wq": "b2e8a936"
+     "question": "Combien d'axes de symétrie a un triangle isocèle non équilatéral ?",
+     "answer": "Un",
+     "w": [
+      "811127b1",
+      "a92cc994"
+     ],
+     "wq": "b2e8a936",
+     "wrongs": [
+      "Deux",
+      "Trois",
+      "Aucun"
+     ]
+    },
+    {
+     "question": "Combien d'axes de symétrie a un triangle équilatéral ?",
+     "answer": "Trois",
+     "wrongs": [
+      "Un",
+      "Deux",
+      "Six"
+     ]
     },
     {
      "question": "Combien d'axes de symétrie a un cercle ?",
-     "answer": "Une infinité :\ntoutes les droites qui passent par son centre.",
-     "w": "d91df14c",
-     "wq": "7364ea28"
+     "answer": "Une infinité",
+     "w": [
+      "5d88d16a",
+      "d91df14c"
+     ],
+     "more": "Toutes les droites qui passent par son centre.",
+     "wrongs": [
+      "Un",
+      "Deux",
+      "Quatre"
+     ]
     },
     {
-     "question": "Cite trois lettres majuscules qui ont un axe de symétrie vertical.",
-     "answer": "Ex. : A, M, T (ou U, V, W, Y)\nH en a deux : un vertical et un horizontal.",
-     "w": "524f1628",
-     "wq": "10c9b2b0"
+     "question": "Quelle lettre majuscule a un axe de symétrie vertical : A, F, G ou J ?",
+     "answer": "A",
+     "w": [
+      "48927e29",
+      "524f1628"
+     ],
+     "wq": "10c9b2b0",
+     "more": "Aussi M, T, U, V, W, Y.",
+     "wrongs": [
+      "F",
+      "G",
+      "J"
+     ]
     }
    ]
   },
@@ -56567,99 +57975,232 @@
    "cards": [
     {
      "question": "Combien d'êtres humains vivent sur Terre ?",
-     "answer": "Plus de 8 milliards\nCap franchi en novembre 2022.",
-     "w": "eb96aa11",
-     "wq": "7f8aa72b"
+     "answer": "Plus de 8 milliards",
+     "w": [
+      "1e0d998a",
+      "eb96aa11"
+     ],
+     "more": "Cap franchi en novembre 2022.",
+     "wrongs": [
+      "Environ 800 millions",
+      "Environ 2 milliards",
+      "Plus de 80 milliards"
+     ]
     },
     {
      "question": "Quels sont les trois grands foyers de peuplement du monde ?",
-     "answer": "• L'Asie de l'Est (Chine, Japon, Corée)\n• L'Asie du Sud (Inde, Pakistan, Bangladesh)\n• L'Europe",
-     "w": "e707aa15",
-     "wq": "ab527648"
+     "answer": "Asie de l'Est, Asie du Sud, Europe",
+     "w": [
+      "5837b022",
+      "e707aa15"
+     ],
+     "wrongs": [
+      "Afrique, Amérique, Océanie",
+      "Sahara, Sibérie, Antarctique",
+      "Amérique du Nord, Amérique du Sud, Afrique"
+     ]
     },
     {
      "question": "Quelle part de l'humanité vit en Asie ?",
      "answer": "Environ 6 humains sur 10",
      "w": "f761c5f5",
-     "wq": "f09671fc"
+     "wrongs": [
+      "Environ 1 humain sur 10",
+      "Environ 3 humains sur 10",
+      "Environ 9 humains sur 10"
+     ]
     },
     {
-     "question": "Quels sont les deux pays les plus peuplés du monde ?",
-     "answer": "• L'Inde (la plus peuplée depuis 2023)\n• La Chine\nChacune : plus de 1,4 milliard d'habitants.",
-     "w": "189b1cf9",
-     "wq": "c0df961d"
+     "question": "Quel est le pays le plus peuplé du monde depuis 2023 ?",
+     "answer": "L'Inde",
+     "w": [
+      "23d2f0e2",
+      "189b1cf9"
+     ],
+     "wq": "c0df961d",
+     "more": "Devant la Chine ; chacune compte plus de 1,4 milliard d'habitants.",
+     "wrongs": [
+      "La Chine",
+      "Les États-Unis",
+      "L'Indonésie"
+     ]
     },
     {
-     "question": "Cite des foyers de peuplement secondaires.",
-     "answer": "• Le nord-est des États-Unis\n• Le golfe de Guinée\n• La vallée du Nil\n• Le sud-est du Brésil",
-     "w": "885b897d",
-     "wq": "2bdc87de"
+     "question": "Quel est un foyer de peuplement secondaire ?",
+     "answer": "Le nord-est des États-Unis",
+     "w": [
+      "a49aca15",
+      "885b897d"
+     ],
+     "wq": "2bdc87de",
+     "more": "Aussi : golfe de Guinée, vallée du Nil, sud-est du Brésil.",
+     "wrongs": [
+      "Le Sahara",
+      "L'Antarctique",
+      "La Sibérie"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un foyer de peuplement ?",
-     "answer": "Une région où la population est nombreuse et concentrée,\navec de fortes densités.",
-     "w": "45946a3d",
-     "wq": "873aa377"
+     "answer": "Une région où la population est nombreuse et concentrée",
+     "w": [
+      "d019c793",
+      "45946a3d"
+     ],
+     "wrongs": [
+      "Une région presque vide d'habitants",
+      "Une grande ville",
+      "Un pays riche"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un désert humain ? Donne des exemples.",
-     "answer": "Un espace presque vide d'habitants.\n• Déserts chauds (Sahara)\n• Régions froides (Antarctique, nord du Canada, Sibérie)\n• Hautes montagnes, forêt amazonienne",
-     "w": "1faf15b2",
-     "wq": "8966b128"
+     "question": "Quel espace est un désert humain ?",
+     "answer": "Le Sahara",
+     "w": [
+      "00b5693a",
+      "1faf15b2"
+     ],
+     "wq": "8966b128",
+     "more": "Aussi : Antarctique, nord du Canada, Sibérie, forêt amazonienne.",
+     "wrongs": [
+      "La plaine du Gange",
+      "Le nord-est des États-Unis",
+      "La vallée du Nil"
+     ]
     },
     {
      "question": "Quels milieux attirent les populations ?",
-     "answer": "• Les littoraux\n• Les plaines et vallées des fleuves\n• Les régions tempérées ou bien arrosées\noù l'on peut cultiver et circuler facilement.",
-     "w": "1251cdf1",
-     "wq": "f630d336"
+     "answer": "Les littoraux, plaines, vallées et régions tempérées",
+     "w": [
+      "0c9c4ceb",
+      "1251cdf1"
+     ],
+     "wrongs": [
+      "Les déserts chauds",
+      "Les hautes montagnes",
+      "Les régions polaires"
+     ]
     },
     {
      "question": "Pourquoi certaines campagnes d'Asie sont-elles très peuplées ?",
-     "answer": "Grâce à la riziculture, pratiquée depuis très longtemps\ndans les plaines et les deltas (Gange, Mékong).\nElle nourrit beaucoup de monde sur peu d'espace.",
-     "w": "2dfa6c11",
-     "wq": "566f0e00"
+     "answer": "Grâce à la riziculture dans les plaines et les deltas",
+     "w": [
+      "dd71ad28",
+      "2dfa6c11"
+     ],
+     "wrongs": [
+      "Grâce aux mines d'or",
+      "Grâce au climat froid",
+      "Grâce au tourisme"
+     ]
     },
     {
-     "question": "La population urbaine est-elle majoritaire dans le monde ?",
-     "answer": "Oui : depuis la fin des années 2000,\nplus de la moitié de l'humanité vit en ville.",
-     "w": "ab4571ab",
-     "wq": "8728a32a"
+     "question": "Depuis quand la population urbaine est-elle majoritaire dans le monde ?",
+     "answer": "Depuis la fin des années 2000",
+     "w": [
+      "b5f9e014",
+      "ab4571ab"
+     ],
+     "wq": "8728a32a",
+     "wrongs": [
+      "Depuis 1900",
+      "Depuis 1950",
+      "Elle ne l'est pas encore"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une mégapole ? Donne des exemples.",
-     "answer": "Une ville de plus de 10 millions d'habitants.\nEx. : Tokyo, Delhi, Shanghai, Le Caire, Mexico, Lagos",
-     "w": "b71f58f6",
-     "wq": "ff1a28ac"
+     "question": "Qu'est-ce qu'une mégapole ?",
+     "answer": "Une ville de plus de 10 millions d'habitants",
+     "w": [
+      "f6ba4290",
+      "b71f58f6"
+     ],
+     "wq": "ff1a28ac",
+     "more": "Ex. : Tokyo, Delhi, Shanghai, Le Caire, Mexico, Lagos.",
+     "wrongs": [
+      "Une ville de plus de 100 000 habitants",
+      "Une capitale",
+      "Une ville de plus de 1 million d'habitants"
+     ]
     },
     {
      "question": "Qu'est-ce que l'exode rural ?",
-     "answer": "Le départ des habitants des campagnes vers les villes,\npour trouver du travail et de meilleures conditions de vie.",
-     "w": "59569a76",
-     "wq": "365de3a1"
+     "answer": "Le départ des habitants des campagnes vers les villes",
+     "w": [
+      "7e78e76c",
+      "59569a76"
+     ],
+     "wrongs": [
+      "Le départ des citadins vers la campagne",
+      "L'émigration vers l'étranger",
+      "Les vacances à la campagne"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'accroissement naturel ?",
-     "answer": "Naissances − décès\ndans une population pendant une année.",
-     "w": "d797a020",
-     "wq": "67188747"
+     "question": "Comment calcule-t-on l'accroissement naturel ?",
+     "answer": "Naissances − décès",
+     "w": [
+      "7b477331",
+      "d797a020"
+     ],
+     "wq": "67188747",
+     "wrongs": [
+      "Naissances + décès",
+      "Immigrés − émigrés",
+      "Population ÷ superficie"
+     ]
     },
     {
-     "question": "Quel continent connaît aujourd'hui la croissance démographique la plus rapide ?",
-     "answer": "L'Afrique\n(À l'inverse, la population européenne vieillit et augmente peu.)",
-     "w": "70e5e664",
-     "wq": "a0ce4c4d"
+     "question": "Quel continent connaît la croissance démographique la plus rapide ?",
+     "answer": "L'Afrique",
+     "w": [
+      "bf781dc9",
+      "70e5e664"
+     ],
+     "wq": "a0ce4c4d",
+     "wrongs": [
+      "L'Europe",
+      "L'Amérique du Nord",
+      "L'Océanie"
+     ]
     },
     {
      "question": "Combien d'habitants la Terre pourrait-elle compter à la fin du XXIe siècle selon l'ONU ?",
-     "answer": "Environ 10 milliards\nLa population continue d'augmenter, mais de plus en plus lentement.",
-     "w": "1a3c5080",
-     "wq": "15de317b"
+     "answer": "Environ 10 milliards",
+     "w": [
+      "8dcb1d8d",
+      "1a3c5080"
+     ],
+     "wrongs": [
+      "Environ 5 milliards",
+      "Environ 20 milliards",
+      "Environ 50 milliards"
+     ]
     },
     {
-     "question": "Quels sont les six continents et les cinq océans ?",
-     "answer": "Continents : Afrique, Amérique, Antarctique, Asie, Europe, Océanie.\nOcéans : Pacifique, Atlantique, Indien, Arctique, Austral.",
-     "w": "6a3ed826",
-     "wq": "47d87746"
+     "question": "Combien y a-t-il de continents ?",
+     "answer": "Six",
+     "w": [
+      "620cee24",
+      "6a3ed826"
+     ],
+     "wq": "47d87746",
+     "more": "Afrique, Amérique, Antarctique, Asie, Europe, Océanie.",
+     "wrongs": [
+      "Cinq",
+      "Sept",
+      "Quatre"
+     ]
+    },
+    {
+     "question": "Quel est le plus grand océan ?",
+     "answer": "L'océan Pacifique",
+     "more": "Les cinq océans : Pacifique, Atlantique, Indien, Arctique, Austral.",
+     "wrongs": [
+      "L'océan Atlantique",
+      "L'océan Indien",
+      "L'océan Arctique"
+     ]
     }
    ]
   },
