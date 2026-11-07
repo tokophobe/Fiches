@@ -175,7 +175,7 @@ def verifie(keys=None):
                 if not w or len(w) != 3:
                     print(f"[{b['key']}#{i}] QCM incomplet : {c['question'][:60]}")
                     pb += 1
-                elif len({norm(x).lower() for x in w} | {norm(c['answer']).lower()}) != 4:
+                elif len({norm(x) for x in w} | {norm(c["answer"])}) != 4:
                     print(f"[{b['key']}#{i}] réponses en double : {c['question'][:60]}")
                     pb += 1
             if w:

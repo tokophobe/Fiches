@@ -18168,126 +18168,393 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Augmentation de t % : coefficient multiplicateur",
-     "answer": "1 + t/100\nEx. : +20 % → × 1,2",
-     "w": "53cb6419",
-     "wq": "91436f48"
+     "question": "Quel est le coefficient multiplicateur d'une augmentation de t % ?",
+     "answer": "1 + t/100",
+     "w": [
+      "4c134d6c",
+      "53cb6419"
+     ],
+     "wq": "91436f48",
+     "more": "Ex. : +20 % → × 1,2",
+     "wrongs": [
+      "1 − t/100",
+      "t/100",
+      "1 + t"
+     ]
     },
     {
-     "question": "Diminution de t % : coefficient multiplicateur",
-     "answer": "1 − t/100\nEx. : −15 % → × 0,85",
-     "w": "edd956dd",
-     "wq": "e1c8e066"
+     "question": "Quel est le coefficient multiplicateur d'une diminution de t % ?",
+     "answer": "1 − t/100",
+     "w": [
+      "dd8f496e",
+      "edd956dd"
+     ],
+     "wq": "e1c8e066",
+     "more": "Ex. : −15 % → × 0,85",
+     "wrongs": [
+      "1 + t/100",
+      "−t/100",
+      "1/(1 + t/100)"
+     ]
     },
     {
-     "question": "Hausse de 20 % puis baisse de 20 % : évolution globale",
-     "answer": "1,2 × 0,8 = 0,96\n→ baisse de 4 %",
-     "w": "48b92d79",
-     "wq": "9f6e44db"
+     "question": "Une hausse de 20 % suivie d'une baisse de 20 % donne quelle évolution globale ?",
+     "answer": "Une baisse de 4 %",
+     "w": [
+      "fcd27803",
+      "48b92d79"
+     ],
+     "wq": "9f6e44db",
+     "more": "1,2 × 0,8 = 0,96",
+     "wrongs": [
+      "Aucune évolution",
+      "Une hausse de 4 %",
+      "Une baisse de 40 %"
+     ]
     },
     {
-     "question": "Taux réciproque d'une hausse de 25 %",
-     "answer": "Coefficient 1/1,25 = 0,8\n→ baisse de 20 %",
-     "w": "de6540d9",
-     "wq": "9343a8b7"
+     "question": "Quelle évolution compense une hausse de 25 % ?",
+     "answer": "Une baisse de 20 %",
+     "w": [
+      "bf72eeef",
+      "de6540d9"
+     ],
+     "wq": "9343a8b7",
+     "more": "Coefficient réciproque : 1/1,25 = 0,8",
+     "wrongs": [
+      "Une baisse de 25 %",
+      "Une baisse de 75 %",
+      "Une baisse de 12,5 %"
+     ]
     },
     {
-     "question": "Taux d'évolution entre V₀ et V₁",
-     "answer": "(V₁ − V₀) / V₀"
+     "question": "Quel est le taux d'évolution entre une valeur V₀ et une valeur V₁ ?",
+     "answer": "(V₁ − V₀) / V₀",
+     "w": "0138bb91",
+     "wq": "4013d32b",
+     "wrongs": [
+      "(V₁ − V₀) / V₁",
+      "V₁ / V₀",
+      "(V₀ − V₁) / V₀"
+     ]
     },
     {
-     "question": "Prendre 30 % de 70",
-     "answer": "0,3 × 70 = 21"
+     "question": "Combien font 30 % de 70 ?",
+     "answer": "21",
+     "w": "691fe749",
+     "wq": "8e1105ad",
+     "more": "0,3 × 70 = 21",
+     "wrongs": [
+      "2,1",
+      "210",
+      "23"
+     ]
     },
     {
-     "question": "aⁿ × aᵐ, aⁿ / aᵐ, (aⁿ)ᵐ",
-     "answer": "aⁿ⁺ᵐ ; aⁿ⁻ᵐ ; aⁿᵐ"
+     "question": "Que vaut aⁿ × aᵐ ?",
+     "answer": "aⁿ⁺ᵐ",
+     "w": "77572f04",
+     "wq": "73e8500e",
+     "wrongs": [
+      "aⁿᵐ",
+      "aⁿ⁻ᵐ",
+      "2aⁿ⁺ᵐ"
+     ]
     },
     {
-     "question": "a⁰ et a⁻ⁿ",
-     "answer": "a⁰ = 1 ; a⁻ⁿ = 1/aⁿ (a ≠ 0)"
+     "question": "Que vaut aⁿ / aᵐ ?",
+     "answer": "aⁿ⁻ᵐ",
+     "wrongs": [
+      "aⁿ⁺ᵐ",
+      "aⁿ/ᵐ",
+      "aᵐ⁻ⁿ"
+     ]
     },
     {
-     "question": "Les trois identités remarquables ?",
-     "answer": "(a + b)² = a² + 2ab + b²\n(a − b)² = a² − 2ab + b²\n(a + b)(a − b) = a² − b²",
-     "w": "53c16ab4",
-     "wq": "426d09f2"
+     "question": "Que vaut (aⁿ)ᵐ ?",
+     "answer": "aⁿᵐ",
+     "wrongs": [
+      "aⁿ⁺ᵐ",
+      "aⁿ⁻ᵐ",
+      "aⁿ × m"
+     ]
     },
     {
-     "question": "Factoriser x² − 9",
-     "answer": "(x − 3)(x + 3)"
+     "question": "Que vaut a⁰ (a ≠ 0) ?",
+     "answer": "1",
+     "w": "61d83b79",
+     "wq": "1db327dc",
+     "wrongs": [
+      "0",
+      "a",
+      "−1"
+     ]
     },
     {
-     "question": "Développer (2x − 1)²",
-     "answer": "4x² − 4x + 1"
+     "question": "Que vaut a⁻ⁿ (a ≠ 0) ?",
+     "answer": "1/aⁿ",
+     "wrongs": [
+      "−aⁿ",
+      "aⁿ/n",
+      "−1/aⁿ"
+     ]
     },
     {
-     "question": "Diviser par une fraction",
-     "answer": "a/b ÷ c/d = a/b × d/c"
+     "question": "Que vaut (a + b)² ?",
+     "answer": "a² + 2ab + b²",
+     "w": [
+      "2da1984c",
+      "53c16ab4"
+     ],
+     "wq": [
+      "3c4ec19a",
+      "426d09f2"
+     ],
+     "wrongs": [
+      "a² + b²",
+      "a² + ab + b²",
+      "a² − 2ab + b²"
+     ]
     },
     {
-     "question": "Calculer 1/3 + 1/6",
-     "answer": "2/6 + 1/6 = 3/6 = 1/2"
+     "question": "Que vaut (a − b)² ?",
+     "answer": "a² − 2ab + b²",
+     "wrongs": [
+      "a² − b²",
+      "a² + 2ab − b²",
+      "a² − ab + b²"
+     ]
     },
     {
-     "question": "Racines d'un trinôme ax² + bx + c",
-     "answer": "Δ = b² − 4ac\nΔ > 0 : x = (−b ± √Δ)/(2a)\nΔ = 0 : x = −b/(2a)\nΔ < 0 : pas de racine réelle",
-     "w": "53474f0a",
-     "wq": "653a5825"
+     "question": "Que vaut (a + b)(a − b) ?",
+     "answer": "a² − b²",
+     "wrongs": [
+      "a² + b²",
+      "(a − b)²",
+      "a² − 2ab − b²"
+     ]
     },
     {
-     "question": "Coefficient directeur de la droite passant par A et B",
-     "answer": "m = (yB − yA) / (xB − xA)"
+     "question": "Comment factoriser x² − 9 ?",
+     "answer": "(x − 3)(x + 3)",
+     "w": "1c6dfd8a",
+     "wq": "9be6f8bc",
+     "wrongs": [
+      "(x − 3)²",
+      "(x − 9)(x + 9)",
+      "(x + 3)²"
+     ]
     },
     {
-     "question": "Équation réduite d'une droite",
-     "answer": "y = mx + p\nm : coefficient directeur\np : ordonnée à l'origine",
-     "w": "2ec079b4",
-     "wq": "1d1b4ca1"
+     "question": "Comment développer (2x − 1)² ?",
+     "answer": "4x² − 4x + 1",
+     "w": "bc80904e",
+     "wq": "259c9899",
+     "wrongs": [
+      "4x² − 1",
+      "2x² − 4x + 1",
+      "4x² + 4x − 1"
+     ]
     },
     {
-     "question": "Résoudre 3x − 7 = 2",
-     "answer": "x = 3"
+     "question": "Comment divise-t-on a/b par c/d ?",
+     "answer": "a/b × d/c",
+     "w": "fc7040ba",
+     "wq": "f5ecf364",
+     "more": "Diviser par une fraction, c'est multiplier par son inverse.",
+     "wrongs": [
+      "a/b × c/d",
+      "(a × c) / (b × d)",
+      "(a ÷ c) / (b ÷ d) × 2"
+     ]
     },
     {
-     "question": "Résoudre −2x < 6",
-     "answer": "x > −3\nOn change le sens en divisant par un nombre négatif.",
-     "w": "f7a30450",
-     "wq": "83a4a1cc"
+     "question": "Combien font 1/3 + 1/6 ?",
+     "answer": "1/2",
+     "w": "d709f73f",
+     "wq": "77429cd4",
+     "more": "2/6 + 1/6 = 3/6 = 1/2",
+     "wrongs": [
+      "2/9",
+      "1/9",
+      "2/6"
+     ]
     },
     {
-     "question": "Moyenne pondérée",
-     "answer": "(Σ nᵢxᵢ) / (Σ nᵢ)"
+     "question": "Quel est le discriminant de ax² + bx + c ?",
+     "answer": "Δ = b² − 4ac",
+     "w": [
+      "9c1549b0",
+      "53474f0a"
+     ],
+     "wq": "653a5825",
+     "wrongs": [
+      "Δ = b² + 4ac",
+      "Δ = 4ac − b²",
+      "Δ = b − 4ac"
+     ]
     },
     {
-     "question": "Probabilité d'un événement en équiprobabilité",
-     "answer": "Nombre d'issues favorables / nombre d'issues possibles"
+     "question": "Si Δ > 0, quelles sont les racines de ax² + bx + c ?",
+     "answer": "x = (−b ± √Δ) / (2a)",
+     "more": "Si Δ = 0 : une racine double −b/(2a) ; si Δ < 0 : pas de racine réelle.",
+     "wrongs": [
+      "x = (b ± √Δ) / (2a)",
+      "x = (−b ± Δ) / (2a)",
+      "x = (−b ± √Δ) / a"
+     ]
     },
     {
-     "question": "Convertir 2,5 h en heures et minutes",
-     "answer": "2 h 30 min"
+     "question": "Quel est le coefficient directeur de la droite passant par A et B ?",
+     "answer": "m = (yB − yA) / (xB − xA)",
+     "w": "d5d7b4ef",
+     "wq": "b793a10d",
+     "wrongs": [
+      "m = (xB − xA) / (yB − yA)",
+      "m = (yB + yA) / (xB + xA)",
+      "m = yB × xA − yA × xB"
+     ]
     },
     {
-     "question": "Vitesse, distance, durée : quelle relation ? Combien font 90 km/h en m/s ?",
-     "answer": "v = d / t\n90 km/h = 25 m/s",
-     "w": "372b6321",
-     "wq": "f83d80f4"
+     "question": "Dans l'équation réduite y = mx + p, que représente p ?",
+     "answer": "L'ordonnée à l'origine",
+     "w": [
+      "d696a77f",
+      "2ec079b4"
+     ],
+     "wq": "1d1b4ca1",
+     "more": "m est le coefficient directeur.",
+     "wrongs": [
+      "Le coefficient directeur",
+      "L'abscisse à l'origine",
+      "La pente de la droite"
+     ]
     },
     {
-     "question": "Écriture scientifique de 0,000 45",
-     "answer": "4,5 × 10⁻⁴"
+     "question": "Quelle est la solution de 3x − 7 = 2 ?",
+     "answer": "x = 3",
+     "w": "b41a3290",
+     "wq": "9ab0380b",
+     "wrongs": [
+      "x = −3",
+      "x = 5/3",
+      "x = 9"
+     ]
     },
     {
-     "question": "Image et antécédent",
-     "answer": "Si f(2) = 5 :\n5 est l'image de 2\n2 est un antécédent de 5",
-     "w": "17ac5dfb",
-     "wq": "737fc98c"
+     "question": "Quelles sont les solutions de −2x < 6 ?",
+     "answer": "x > −3",
+     "w": [
+      "d5478193",
+      "f7a30450"
+     ],
+     "wq": "83a4a1cc",
+     "more": "On change le sens de l'inégalité en divisant par un nombre négatif.",
+     "wrongs": [
+      "x < −3",
+      "x < 3",
+      "x > 3"
+     ]
     },
     {
-     "question": "Signe de ax + b (a > 0)",
-     "answer": "Négatif avant −b/a\nPositif après",
-     "w": "71d7da4d",
-     "wq": "b72603f4"
+     "question": "Comment calcule-t-on une moyenne pondérée ?",
+     "answer": "(Σ nᵢxᵢ) / (Σ nᵢ)",
+     "w": "39fecb4c",
+     "wq": "fc870fbc",
+     "wrongs": [
+      "(Σ xᵢ) / (Σ nᵢ)",
+      "(Σ nᵢxᵢ) / n",
+      "Σ nᵢxᵢ"
+     ]
+    },
+    {
+     "question": "Quelle est la probabilité d'un événement en situation d'équiprobabilité ?",
+     "answer": "Issues favorables / issues possibles",
+     "w": "b69dd8da",
+     "wq": "c44e96df",
+     "wrongs": [
+      "Issues possibles / issues favorables",
+      "Issues favorables × issues possibles",
+      "Issues favorables − issues défavorables"
+     ]
+    },
+    {
+     "question": "Combien font 2,5 h en heures et minutes ?",
+     "answer": "2 h 30 min",
+     "w": "3cf4b5e5",
+     "wq": "746a0e21",
+     "wrongs": [
+      "2 h 50 min",
+      "2 h 05 min",
+      "2 h 25 min"
+     ]
+    },
+    {
+     "question": "Quelle relation relie vitesse, distance et durée ?",
+     "answer": "v = d / t",
+     "w": [
+      "70e236d4",
+      "372b6321"
+     ],
+     "wq": [
+      "df2ee500",
+      "f83d80f4"
+     ],
+     "wrongs": [
+      "v = d × t",
+      "v = t / d",
+      "v = d − t"
+     ]
+    },
+    {
+     "question": "Combien font 90 km/h en m/s ?",
+     "answer": "25 m/s",
+     "more": "On divise par 3,6.",
+     "wrongs": [
+      "324 m/s",
+      "9 m/s",
+      "15 m/s"
+     ]
+    },
+    {
+     "question": "Quelle est l'écriture scientifique de 0,000 45 ?",
+     "answer": "4,5 × 10⁻⁴",
+     "w": "34595e54",
+     "wq": "46749c41",
+     "wrongs": [
+      "4,5 × 10⁻⁵",
+      "45 × 10⁻⁵",
+      "4,5 × 10⁴"
+     ]
+    },
+    {
+     "question": "Si f(2) = 5, que représente 2 pour 5 ?",
+     "answer": "Un antécédent de 5",
+     "w": [
+      "e1fd5684",
+      "17ac5dfb"
+     ],
+     "wq": "737fc98c",
+     "more": "Et 5 est l'image de 2.",
+     "wrongs": [
+      "L'image de 5",
+      "La dérivée de 5",
+      "Le coefficient directeur"
+     ]
+    },
+    {
+     "question": "Si a > 0, quel est le signe de ax + b ?",
+     "answer": "Négatif avant −b/a, positif après",
+     "w": [
+      "63076c95",
+      "71d7da4d"
+     ],
+     "wq": "b72603f4",
+     "wrongs": [
+      "Positif avant −b/a, négatif après",
+      "Toujours positif",
+      "Négatif avant b/a, positif après"
+     ]
     }
    ]
   },
@@ -18310,108 +18577,332 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Vecteur vitesse et vecteur accélération",
-     "answer": "v⃗ = dOM⃗/dt\na⃗ = dv⃗/dt"
+     "question": "Comment définit-on le vecteur vitesse ?",
+     "answer": "v⃗ = dOM⃗/dt",
+     "w": "42e060cb",
+     "wq": "ff315ee7",
+     "wrongs": [
+      "v⃗ = d²OM⃗/dt²",
+      "v⃗ = OM⃗ × t",
+      "v⃗ = dt/dOM⃗"
+     ]
     },
     {
-     "question": "Première loi de Newton (principe d'inertie)",
-     "answer": "Dans un référentiel galiléen, si ΣF⃗ = 0⃗ :\nle centre de masse est au repos ou en mouvement rectiligne uniforme.\nEt réciproquement.",
-     "w": "5a5e1703",
-     "wq": "5fc40ebb"
+     "question": "Comment définit-on le vecteur accélération ?",
+     "answer": "a⃗ = dv⃗/dt",
+     "wrongs": [
+      "a⃗ = v⃗ × t",
+      "a⃗ = dOM⃗/dt",
+      "a⃗ = v⃗ / OM"
+     ]
     },
     {
-     "question": "Deuxième loi de Newton",
-     "answer": "Dans un référentiel galiléen :\nΣF⃗ = m a⃗ (m constante)",
-     "w": "2f901741",
-     "wq": "2491242a"
+     "question": "Que dit la première loi de Newton (principe d'inertie) ?",
+     "answer": "Si ΣF⃗ = 0⃗, le système est au repos ou en mouvement rectiligne uniforme",
+     "w": [
+      "9f64b538",
+      "5a5e1703"
+     ],
+     "wq": "5fc40ebb",
+     "more": "Dans un référentiel galiléen, et réciproquement.",
+     "wrongs": [
+      "Si ΣF⃗ = 0⃗, le système s'arrête toujours",
+      "ΣF⃗ = m a⃗",
+      "F⃗(A/B) = −F⃗(B/A)"
+     ]
     },
     {
-     "question": "Troisième loi de Newton",
-     "answer": "Principe des actions réciproques :\nF⃗(A/B) = −F⃗(B/A)",
-     "w": "1bf48bb6",
-     "wq": "2999b4cd"
+     "question": "Que dit la deuxième loi de Newton ?",
+     "answer": "ΣF⃗ = m a⃗",
+     "w": [
+      "a976bd57",
+      "2f901741"
+     ],
+     "wq": "2491242a",
+     "more": "Dans un référentiel galiléen, m constante.",
+     "wrongs": [
+      "ΣF⃗ = m v⃗",
+      "ΣF⃗ = 0⃗",
+      "F⃗(A/B) = −F⃗(B/A)"
+     ]
     },
     {
-     "question": "Chute libre : définition et accélération",
-     "answer": "Mouvement sous la seule action du poids.\na⃗ = g⃗ (g ≈ 9,81 m·s⁻² sur Terre)",
-     "w": "9aa53dc9",
-     "wq": "320ac094"
+     "question": "Que dit la troisième loi de Newton ?",
+     "answer": "F⃗(A/B) = −F⃗(B/A)",
+     "w": [
+      "90420076",
+      "1bf48bb6"
+     ],
+     "wq": "2999b4cd",
+     "more": "Principe des actions réciproques.",
+     "wrongs": [
+      "ΣF⃗ = m a⃗",
+      "F⃗(A/B) = F⃗(B/A)",
+      "ΣF⃗ = 0⃗"
+     ]
     },
     {
-     "question": "Équations horaires d'un projectile lancé avec v₀ sous un angle α",
-     "answer": "x(t) = v₀ cos(α) t\nz(t) = −½ g t² + v₀ sin(α) t (+ z₀)\nTrajectoire parabolique",
-     "w": "656b9f13",
-     "wq": "d9186b6b"
+     "question": "Qu'est-ce qu'une chute libre ?",
+     "answer": "Un mouvement sous la seule action du poids",
+     "w": [
+      "b523629b",
+      "9aa53dc9"
+     ],
+     "wq": "320ac094",
+     "wrongs": [
+      "Un mouvement sans aucune force",
+      "Un mouvement à vitesse constante",
+      "Une chute freinée par l'air"
+     ]
     },
     {
-     "question": "Mouvement circulaire uniforme : accélération",
-     "answer": "Centripète (vers le centre)\na = v²/R",
-     "w": "52aaa0a1",
-     "wq": "87f6b1a9"
+     "question": "Quelle est l'accélération d'un objet en chute libre ?",
+     "answer": "a⃗ = g⃗",
+     "more": "g ≈ 9,81 m·s⁻² sur Terre.",
+     "wrongs": [
+      "a⃗ = 0⃗",
+      "a⃗ = −g⃗",
+      "a⃗ = m g⃗"
+     ]
     },
     {
-     "question": "Base de Frenet : expression de l'accélération",
-     "answer": "a⃗ = (dv/dt) t⃗ + (v²/R) n⃗"
+     "question": "Quelle est l'équation horaire x(t) d'un projectile lancé avec v₀ sous un angle α ?",
+     "answer": "x(t) = v₀ cos(α) t",
+     "w": [
+      "dcfe5caf",
+      "656b9f13"
+     ],
+     "wq": "d9186b6b",
+     "wrongs": [
+      "x(t) = v₀ sin(α) t",
+      "x(t) = −½ g t² + v₀ t",
+      "x(t) = v₀ t²"
+     ]
     },
     {
-     "question": "Loi de la gravitation universelle",
-     "answer": "F = G × mA × mB / d²\nG ≈ 6,67 × 10⁻¹¹ N·m²·kg⁻²"
+     "question": "Quelle est l'équation horaire z(t) d'un projectile lancé avec v₀ sous un angle α ?",
+     "answer": "z(t) = −½ g t² + v₀ sin(α) t (+ z₀)",
+     "more": "La trajectoire est une parabole.",
+     "wrongs": [
+      "z(t) = v₀ cos(α) t",
+      "z(t) = ½ g t² + v₀ cos(α) t",
+      "z(t) = −g t + v₀"
+     ]
     },
     {
-     "question": "Vitesse d'un satellite en orbite circulaire",
-     "answer": "v = √(GM / r)\nr : rayon de l'orbite, M : masse de l'astre",
-     "w": "6f76b486",
-     "wq": "e2cc3042"
+     "question": "Vers où est dirigée l'accélération d'un mouvement circulaire uniforme ?",
+     "answer": "Vers le centre (centripète)",
+     "w": [
+      "11dfdfce",
+      "52aaa0a1"
+     ],
+     "wq": "87f6b1a9",
+     "wrongs": [
+      "Vers l'extérieur (centrifuge)",
+      "Tangente à la trajectoire",
+      "Elle est nulle"
+     ]
     },
     {
-     "question": "Troisième loi de Kepler",
-     "answer": "T² / r³ = 4π² / (GM)\nConstante pour tous les satellites d'un même astre.",
-     "w": "169b5d99",
-     "wq": "f0dbb4b5"
+     "question": "Quelle est la valeur de l'accélération d'un mouvement circulaire uniforme ?",
+     "answer": "a = v²/R",
+     "wrongs": [
+      "a = v/R",
+      "a = v R²",
+      "a = 0"
+     ]
     },
     {
-     "question": "Satellite géostationnaire",
-     "answer": "Orbite circulaire dans le plan de l'équateur, période ≈ 23 h 56 min (rotation de la Terre).\nIl paraît immobile depuis le sol.\nAltitude ≈ 36 000 km",
-     "w": "943619d9",
-     "wq": "657d78ae"
+     "question": "Comment s'écrit l'accélération dans la base de Frenet ?",
+     "answer": "a⃗ = (dv/dt) t⃗ + (v²/R) n⃗",
+     "w": "78568930",
+     "wq": "c65316cd",
+     "wrongs": [
+      "a⃗ = (v²/R) t⃗ + (dv/dt) n⃗",
+      "a⃗ = v t⃗ + R n⃗",
+      "a⃗ = (dv/dt) n⃗"
+     ]
     },
     {
-     "question": "Énergie cinétique",
-     "answer": "Ec = ½ m v²"
+     "question": "Quelle est la loi de la gravitation universelle ?",
+     "answer": "F = G × mA × mB / d²",
+     "w": "a7f17fb1",
+     "wq": "4b0eeaeb",
+     "more": "G ≈ 6,67 × 10⁻¹¹ N·m²·kg⁻²",
+     "wrongs": [
+      "F = G × mA × mB / d",
+      "F = G × (mA + mB) / d²",
+      "F = mA × mB × d²"
+     ]
     },
     {
-     "question": "Énergie potentielle de pesanteur",
-     "answer": "Epp = m g z (z vers le haut)"
+     "question": "Quelle est la vitesse d'un satellite en orbite circulaire de rayon r ?",
+     "answer": "v = √(GM / r)",
+     "w": [
+      "12b801d1",
+      "6f76b486"
+     ],
+     "wq": "e2cc3042",
+     "more": "M : masse de l'astre.",
+     "wrongs": [
+      "v = GM / r",
+      "v = √(G r / M)",
+      "v = √(GM r)"
+     ]
     },
     {
-     "question": "Énergie mécanique et sa conservation",
-     "answer": "Em = Ec + Ep\nConservée si les forces non conservatives (frottements) ne travaillent pas.",
-     "w": "0a6479c3",
-     "wq": "bfd2f3fc"
+     "question": "Que dit la troisième loi de Kepler ?",
+     "answer": "T² / r³ = constante",
+     "w": [
+      "cd731a99",
+      "169b5d99"
+     ],
+     "wq": "f0dbb4b5",
+     "more": "T² / r³ = 4π² / (GM), la même pour tous les satellites d'un même astre.",
+     "wrongs": [
+      "T / r = constante",
+      "T³ / r² = constante",
+      "T × r = constante"
+     ]
     },
     {
-     "question": "Théorème de l'énergie cinétique",
-     "answer": "ΔEc = Σ W(F⃗)\n(somme des travaux des forces)",
-     "w": "63c23936",
-     "wq": "628cd09b"
+     "question": "Quelle est la période d'un satellite géostationnaire ?",
+     "answer": "Environ 23 h 56 min",
+     "w": [
+      "2fb273d5",
+      "943619d9"
+     ],
+     "wq": "657d78ae",
+     "more": "La période de rotation de la Terre : il paraît immobile depuis le sol.",
+     "wrongs": [
+      "Environ 12 h",
+      "Environ 90 min",
+      "Environ 27 jours"
+     ]
     },
     {
-     "question": "Travail d'une force constante",
-     "answer": "W(F⃗) = F⃗ · AB⃗\n= F × AB × cos α",
-     "w": "513254ae",
-     "wq": "e659b0af"
+     "question": "À quelle altitude orbite un satellite géostationnaire ?",
+     "answer": "Environ 36 000 km",
+     "more": "Orbite circulaire dans le plan de l'équateur.",
+     "wrongs": [
+      "Environ 400 km",
+      "Environ 3 600 km",
+      "Environ 384 000 km"
+     ]
     },
     {
-     "question": "Particule chargée dans un champ électrique uniforme",
-     "answer": "F⃗ = q E⃗\nCondensateur plan : E = U/d",
-     "w": "004b7c73",
-     "wq": "432e2fd5"
+     "question": "Quelle est l'expression de l'énergie cinétique ?",
+     "answer": "Ec = ½ m v²",
+     "w": "0a87a617",
+     "wq": "7449057f",
+     "wrongs": [
+      "Ec = m v²",
+      "Ec = ½ m v",
+      "Ec = m g z"
+     ]
     },
     {
-     "question": "Poussée d'Archimède",
-     "answer": "Force verticale vers le haut, égale au poids du fluide déplacé :\nΠ = ρ_fluide × V_immergé × g",
-     "w": "f87c80c6",
-     "wq": "679f0719"
+     "question": "Quelle est l'expression de l'énergie potentielle de pesanteur ?",
+     "answer": "Epp = m g z",
+     "w": "2e526194",
+     "wq": "9a1f7127",
+     "more": "Axe z vers le haut.",
+     "wrongs": [
+      "Epp = ½ m g z",
+      "Epp = m v²",
+      "Epp = m g / z"
+     ]
+    },
+    {
+     "question": "Comment calcule-t-on l'énergie mécanique ?",
+     "answer": "Em = Ec + Ep",
+     "w": [
+      "b97cfd30",
+      "0a6479c3"
+     ],
+     "wq": "bfd2f3fc",
+     "wrongs": [
+      "Em = Ec − Ep",
+      "Em = Ec × Ep",
+      "Em = ½ m v²"
+     ]
+    },
+    {
+     "question": "Quand l'énergie mécanique se conserve-t-elle ?",
+     "answer": "Quand les frottements ne travaillent pas",
+     "more": "Plus précisément : quand les forces non conservatives ne travaillent pas.",
+     "wrongs": [
+      "Toujours",
+      "Quand la vitesse est constante",
+      "Quand le poids ne travaille pas"
+     ]
+    },
+    {
+     "question": "Que dit le théorème de l'énergie cinétique ?",
+     "answer": "ΔEc = somme des travaux des forces",
+     "w": [
+      "0c08b1a2",
+      "63c23936"
+     ],
+     "wq": "628cd09b",
+     "wrongs": [
+      "ΔEc = 0",
+      "ΔEc = somme des forces",
+      "ΔEc = m g Δz"
+     ]
+    },
+    {
+     "question": "Quel est le travail d'une force constante F⃗ sur un déplacement AB ?",
+     "answer": "W = F × AB × cos α",
+     "w": [
+      "b1ec7ed8",
+      "513254ae"
+     ],
+     "wq": "e659b0af",
+     "more": "W(F⃗) = F⃗ · AB⃗",
+     "wrongs": [
+      "W = F × AB × sin α",
+      "W = F / AB",
+      "W = F + AB"
+     ]
+    },
+    {
+     "question": "Quelle force subit une particule de charge q dans un champ électrique E⃗ ?",
+     "answer": "F⃗ = q E⃗",
+     "w": [
+      "1c7c3de3",
+      "004b7c73"
+     ],
+     "wq": "432e2fd5",
+     "wrongs": [
+      "F⃗ = E⃗ / q",
+      "F⃗ = q² E⃗",
+      "F⃗ = m E⃗"
+     ]
+    },
+    {
+     "question": "Quel est le champ électrique entre les armatures d'un condensateur plan ?",
+     "answer": "E = U / d",
+     "wrongs": [
+      "E = U × d",
+      "E = d / U",
+      "E = U / d²"
+     ]
+    },
+    {
+     "question": "Que vaut la poussée d'Archimède ?",
+     "answer": "Le poids du fluide déplacé",
+     "w": [
+      "5fa3fd98",
+      "f87c80c6"
+     ],
+     "wq": "679f0719",
+     "more": "Force verticale vers le haut : Π = ρ_fluide × V_immergé × g",
+     "wrongs": [
+      "Le poids de l'objet immergé",
+      "La masse du fluide déplacé",
+      "Le volume de l'objet × g"
+     ]
     }
    ]
   },
@@ -18435,92 +18926,303 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Célérité, longueur d'onde, période",
-     "answer": "λ = v × T = v / f"
+     "question": "Quelle relation relie longueur d'onde, célérité et période ?",
+     "answer": "λ = v × T",
+     "w": "0eb45244",
+     "wq": "f133450e",
+     "more": "Ou λ = v / f",
+     "wrongs": [
+      "λ = v / T",
+      "λ = T / v",
+      "λ = v × f"
+     ]
     },
     {
-     "question": "Niveau d'intensité sonore",
-     "answer": "L = 10 log(I / I₀), en dB\nI₀ = 1,0 × 10⁻¹² W·m⁻² (seuil d'audibilité)",
-     "w": "666c9f15",
-     "wq": "17cdc08f"
+     "question": "Comment calcule-t-on le niveau d'intensité sonore ?",
+     "answer": "L = 10 log(I / I₀)",
+     "w": [
+      "dc7a9c02",
+      "666c9f15"
+     ],
+     "wq": "17cdc08f",
+     "more": "En décibels (dB).",
+     "wrongs": [
+      "L = log(I / I₀)",
+      "L = 10 I / I₀",
+      "L = 10 ln(I₀ / I)"
+     ]
+    },
+    {
+     "question": "Quelle est l'intensité sonore de référence I₀ (seuil d'audibilité) ?",
+     "answer": "1,0 × 10⁻¹² W·m⁻²",
+     "wrongs": [
+      "1,0 W·m⁻²",
+      "1,0 × 10⁻⁶ W·m⁻²",
+      "1,0 × 10¹² W·m⁻²"
+     ]
     },
     {
      "question": "Si l'intensité sonore double, de combien augmente le niveau sonore ?",
-     "answer": "De 3 dB\n(10 log 2 ≈ 3)",
-     "w": "8c3c394d",
-     "wq": "2ff58098"
+     "answer": "De 3 dB",
+     "w": [
+      "ed4cab8e",
+      "8c3c394d"
+     ],
+     "wq": "2ff58098",
+     "more": "10 log 2 ≈ 3",
+     "wrongs": [
+      "De 2 dB",
+      "De 10 dB",
+      "Il double"
+     ]
     },
     {
-     "question": "Atténuation géométrique / par absorption",
-     "answer": "Géométrique : l'intensité diminue avec la distance (I = P / (4πr²)).\nPar absorption : le milieu absorbe une partie de l'énergie.",
-     "w": "072447c6",
-     "wq": "cfcb0d1d"
+     "question": "Comment appelle-t-on la baisse d'intensité sonore due à l'éloignement de la source ?",
+     "answer": "L'atténuation géométrique",
+     "w": [
+      "5817c93c",
+      "072447c6"
+     ],
+     "wq": "cfcb0d1d",
+     "more": "I = P / (4πr²)",
+     "wrongs": [
+      "L'atténuation par absorption",
+      "La diffraction",
+      "L'effet Doppler"
+     ]
     },
     {
-     "question": "Effet Doppler",
-     "answer": "Décalage de la fréquence perçue quand source et récepteur bougent l'un par rapport à l'autre.\nSource qui s'approche : plus aigu\nSource qui s'éloigne : plus grave",
-     "w": "845b073c",
-     "wq": "1b020d8d"
+     "question": "Comment appelle-t-on la baisse d'intensité sonore due au milieu traversé ?",
+     "answer": "L'atténuation par absorption",
+     "wrongs": [
+      "L'atténuation géométrique",
+      "La réfraction",
+      "Les interférences"
+     ]
     },
     {
-     "question": "Diffraction : condition et écart angulaire",
-     "answer": "Marquée quand l'ouverture a est de l'ordre de λ.\nθ = λ / a\n(θ en radians, demi-écart angulaire de la tache centrale)",
-     "w": "f0f3675c",
-     "wq": "c96cc159"
+     "question": "Comment appelle-t-on le décalage de fréquence perçu quand la source et le récepteur bougent l'un par rapport à l'autre ?",
+     "answer": "L'effet Doppler",
+     "w": [
+      "af7b43ad",
+      "845b073c"
+     ],
+     "wq": "1b020d8d",
+     "wrongs": [
+      "La diffraction",
+      "L'effet photoélectrique",
+      "Les interférences"
+     ]
     },
     {
-     "question": "Interférences : conditions",
-     "answer": "Deux ondes cohérentes (même fréquence, déphasage constant).\nConstructives : δ = kλ\nDestructives : δ = (k + ½)λ",
-     "w": "fd1d74f6",
-     "wq": "0a96c20a"
+     "question": "Comment paraît le son d'une source qui s'approche ?",
+     "answer": "Plus aigu",
+     "more": "Une source qui s'éloigne paraît plus grave.",
+     "wrongs": [
+      "Plus grave",
+      "Inchangé",
+      "Plus faible"
+     ]
     },
     {
-     "question": "Interfrange (fentes d'Young)",
-     "answer": "i = λ D / b\nD : distance fentes-écran\nb : écart entre les fentes",
-     "w": "c28f1399",
-     "wq": "8b69a961"
+     "question": "Quand la diffraction est-elle marquée ?",
+     "answer": "Quand l'ouverture est de l'ordre de la longueur d'onde",
+     "w": [
+      "8446c5c2",
+      "f0f3675c"
+     ],
+     "wq": "c96cc159",
+     "wrongs": [
+      "Quand l'ouverture est très grande devant λ",
+      "Quand la lumière est blanche",
+      "Quand la source est très puissante"
+     ]
     },
     {
-     "question": "Énergie d'un photon",
-     "answer": "E = h ν = h c / λ\nh = 6,63 × 10⁻³⁴ J·s"
+     "question": "Quel est l'écart angulaire de diffraction par une fente de largeur a ?",
+     "answer": "θ = λ / a",
+     "more": "θ en radians : demi-écart angulaire de la tache centrale.",
+     "wrongs": [
+      "θ = a / λ",
+      "θ = λ × a",
+      "θ = 2a / λ"
+     ]
     },
     {
-     "question": "Effet photoélectrique",
-     "answer": "Un métal éclairé émet des électrons seulement si hν dépasse le travail d'extraction W.\nEc max = hν − W\nPreuve de l'aspect corpusculaire de la lumière (Einstein, 1905).",
-     "w": "48a39b2e",
-     "wq": "cd1e225e"
+     "question": "Quelle condition faut-il pour que deux ondes interfèrent ?",
+     "answer": "Qu'elles soient cohérentes",
+     "w": [
+      "2065ff14",
+      "fd1d74f6"
+     ],
+     "wq": "0a96c20a",
+     "more": "Même fréquence, déphasage constant.",
+     "wrongs": [
+      "Qu'elles aient la même amplitude",
+      "Qu'elles viennent de deux sources différentes",
+      "Qu'elles soient de fréquences différentes"
+     ]
     },
     {
-     "question": "Dualité onde-particule",
-     "answer": "Lumière et matière ont un aspect ondulatoire (diffraction, interférences) et corpusculaire (photons).\nDe Broglie : λ = h / p",
-     "w": "a3195dd9",
-     "wq": "24c86f3f"
+     "question": "Quelle est la condition d'interférences constructives ?",
+     "answer": "δ = kλ",
+     "more": "Interférences destructives : δ = (k + ½)λ",
+     "wrongs": [
+      "δ = (k + ½)λ",
+      "δ = λ/k",
+      "δ = 0 seulement"
+     ]
     },
     {
-     "question": "Lunette astronomique afocale",
-     "answer": "Le foyer image de l'objectif coïncide avec le foyer objet de l'oculaire : image finale à l'infini.\nG = f'objectif / f'oculaire",
-     "w": "87df8381",
-     "wq": "a8a336a6"
+     "question": "Quelle est l'interfrange des fentes d'Young ?",
+     "answer": "i = λ D / b",
+     "w": [
+      "2bfb635e",
+      "c28f1399"
+     ],
+     "wq": "8b69a961",
+     "more": "D : distance fentes-écran ; b : écart entre les fentes.",
+     "wrongs": [
+      "i = λ b / D",
+      "i = b D / λ",
+      "i = λ / (b D)"
+     ]
     },
     {
-     "question": "Relation de conjugaison d'une lentille mince",
-     "answer": "1/OA' − 1/OA = 1/f'\n(valeurs algébriques)",
-     "w": "fa9dd2e7",
-     "wq": "6c15448c"
+     "question": "Quelle est l'énergie d'un photon ?",
+     "answer": "E = h ν",
+     "w": "783f8e16",
+     "wq": "0d702f60",
+     "more": "E = h c / λ, avec h = 6,63 × 10⁻³⁴ J·s.",
+     "wrongs": [
+      "E = h / ν",
+      "E = h λ",
+      "E = m c"
+     ]
     },
     {
-     "question": "Grandissement",
-     "answer": "γ = A'B' / AB = OA' / OA"
+     "question": "Quand un métal éclairé émet-il des électrons ?",
+     "answer": "Si hν dépasse le travail d'extraction W",
+     "w": [
+      "f1fac385",
+      "48a39b2e"
+     ],
+     "wq": "cd1e225e",
+     "more": "C'est l'effet photoélectrique (Einstein, 1905).",
+     "wrongs": [
+      "Si la lumière est assez intense",
+      "Toujours",
+      "Si la longueur d'onde est assez grande"
+     ]
     },
     {
-     "question": "Domaine du visible",
-     "answer": "Environ 400 nm (violet)\nà 800 nm (rouge)",
-     "w": "3cd6749a",
-     "wq": "57424ac9"
+     "question": "Quelle énergie cinétique maximale ont les électrons émis par effet photoélectrique ?",
+     "answer": "Ec max = hν − W",
+     "wrongs": [
+      "Ec max = hν + W",
+      "Ec max = W − hν",
+      "Ec max = hν"
+     ]
     },
     {
-     "question": "Célérité de la lumière dans le vide",
-     "answer": "c ≈ 3,00 × 10⁸ m·s⁻¹"
+     "question": "Qu'est-ce que la dualité onde-particule ?",
+     "answer": "La lumière et la matière ont un aspect ondulatoire et un aspect corpusculaire",
+     "w": [
+      "8c635562",
+      "a3195dd9"
+     ],
+     "wq": "24c86f3f",
+     "wrongs": [
+      "La lumière est seulement une onde",
+      "La matière est seulement faite de particules",
+      "Les ondes se transforment en particules en chauffant"
+     ]
+    },
+    {
+     "question": "Quelle est la longueur d'onde associée à une particule de quantité de mouvement p ?",
+     "answer": "λ = h / p",
+     "more": "Relation de De Broglie.",
+     "wrongs": [
+      "λ = h × p",
+      "λ = p / h",
+      "λ = h c / p"
+     ]
+    },
+    {
+     "question": "Où se forme l'image finale d'une lunette astronomique afocale ?",
+     "answer": "À l'infini",
+     "w": [
+      "df995028",
+      "87df8381"
+     ],
+     "wq": "a8a336a6",
+     "more": "Le foyer image de l'objectif coïncide avec le foyer objet de l'oculaire.",
+     "wrongs": [
+      "Sur l'oculaire",
+      "Au foyer de l'objectif",
+      "Sur la rétine directement"
+     ]
+    },
+    {
+     "question": "Quel est le grossissement d'une lunette afocale ?",
+     "answer": "G = f'objectif / f'oculaire",
+     "wrongs": [
+      "G = f'oculaire / f'objectif",
+      "G = f'objectif × f'oculaire",
+      "G = f'objectif + f'oculaire"
+     ]
+    },
+    {
+     "question": "Quelle est la relation de conjugaison d'une lentille mince ?",
+     "answer": "1/OA' − 1/OA = 1/f'",
+     "w": [
+      "c8432009",
+      "fa9dd2e7"
+     ],
+     "wq": "6c15448c",
+     "more": "Valeurs algébriques.",
+     "wrongs": [
+      "1/OA' + 1/OA = 1/f'",
+      "OA' − OA = f'",
+      "1/OA − 1/OA' = 1/f'"
+     ]
+    },
+    {
+     "question": "Comment calcule-t-on le grandissement γ d'une lentille ?",
+     "answer": "γ = A'B' / AB = OA' / OA",
+     "w": "f7607e94",
+     "wq": "834a3cc5",
+     "wrongs": [
+      "γ = AB / A'B'",
+      "γ = OA / OA'",
+      "γ = A'B' × AB"
+     ]
+    },
+    {
+     "question": "Quel est le domaine des longueurs d'onde du visible ?",
+     "answer": "Environ 400 à 800 nm",
+     "w": [
+      "31983a46",
+      "3cd6749a"
+     ],
+     "wq": "57424ac9",
+     "more": "Du violet (400 nm) au rouge (800 nm).",
+     "wrongs": [
+      "Environ 40 à 80 nm",
+      "Environ 4 à 8 µm",
+      "Environ 400 à 800 µm"
+     ]
+    },
+    {
+     "question": "Quelle est la célérité de la lumière dans le vide ?",
+     "answer": "3,00 × 10⁸ m·s⁻¹",
+     "w": "e3a2914d",
+     "wq": "25fd94a3",
+     "wrongs": [
+      "3,00 × 10⁵ m·s⁻¹",
+      "340 m·s⁻¹",
+      "3,00 × 10⁸ km·s⁻¹"
+     ]
     }
    ]
   },
@@ -18544,92 +19246,280 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Premier principe de la thermodynamique",
-     "answer": "ΔU = W + Q\nVariation d'énergie interne = travail + transfert thermique reçus",
-     "w": "2f638102",
-     "wq": "79037669"
+     "question": "Que dit le premier principe de la thermodynamique ?",
+     "answer": "ΔU = W + Q",
+     "w": [
+      "ec3eacf9",
+      "2f638102"
+     ],
+     "wq": "79037669",
+     "more": "Variation d'énergie interne = travail + transfert thermique reçus.",
+     "wrongs": [
+      "ΔU = W − Q",
+      "ΔU = W × Q",
+      "ΔU = 0"
+     ]
     },
     {
-     "question": "Variation d'énergie interne d'un solide ou liquide",
-     "answer": "ΔU = m c ΔT\nc : capacité thermique massique",
-     "w": "61eed527",
-     "wq": "b3e76164"
+     "question": "Quelle est la variation d'énergie interne d'un solide ou d'un liquide ?",
+     "answer": "ΔU = m c ΔT",
+     "w": [
+      "53294548",
+      "61eed527"
+     ],
+     "wq": "b3e76164",
+     "more": "c : capacité thermique massique.",
+     "wrongs": [
+      "ΔU = m c / ΔT",
+      "ΔU = c ΔT",
+      "ΔU = ½ m c ΔT²"
+     ]
     },
     {
-     "question": "Capacité thermique massique de l'eau",
-     "answer": "c ≈ 4,18 × 10³ J·kg⁻¹·K⁻¹\n4,18 kJ pour élever 1 kg d'eau de 1 °C",
-     "w": "111680b7",
-     "wq": "b5e4746a"
+     "question": "Quelle est la capacité thermique massique de l'eau ?",
+     "answer": "4,18 × 10³ J·kg⁻¹·K⁻¹",
+     "w": [
+      "8008b288",
+      "111680b7"
+     ],
+     "wq": "b5e4746a",
+     "more": "Il faut 4,18 kJ pour élever 1 kg d'eau de 1 °C.",
+     "wrongs": [
+      "4,18 J·kg⁻¹·K⁻¹",
+      "1,00 × 10³ J·kg⁻¹·K⁻¹",
+      "4,18 × 10⁶ J·kg⁻¹·K⁻¹"
+     ]
     },
     {
-     "question": "Les trois modes de transfert thermique",
-     "answer": "• Conduction : de proche en proche, sans déplacement de matière\n• Convection : avec déplacement de matière\n• Rayonnement : ondes électromagnétiques",
-     "w": "2ee234f0",
-     "wq": "bf38bd9c"
+     "question": "Comment appelle-t-on le transfert thermique de proche en proche, sans déplacement de matière ?",
+     "answer": "La conduction",
+     "w": [
+      "153c687d",
+      "2ee234f0"
+     ],
+     "wq": "bf38bd9c",
+     "wrongs": [
+      "La convection",
+      "Le rayonnement",
+      "L'évaporation"
+     ]
     },
     {
-     "question": "Flux thermique et résistance thermique",
-     "answer": "Φ = (T₁ − T₂) / R_th\nΦ en W",
-     "w": "5ecd38e9",
-     "wq": "a5afd3a4"
+     "question": "Comment appelle-t-on le transfert thermique avec déplacement de matière ?",
+     "answer": "La convection",
+     "wrongs": [
+      "La conduction",
+      "Le rayonnement",
+      "La diffusion"
+     ]
     },
     {
-     "question": "Loi phénoménologique de Newton (refroidissement)",
-     "answer": "Flux proportionnel à l'écart de température :\nΦ = h S (T_ext − T)\nT évolue de façon exponentielle vers T_ext.",
-     "w": "61d419ca",
-     "wq": "211a02e4"
+     "question": "Comment appelle-t-on le transfert thermique par ondes électromagnétiques ?",
+     "answer": "Le rayonnement",
+     "wrongs": [
+      "La conduction",
+      "La convection",
+      "L'induction"
+     ]
     },
     {
-     "question": "Équation d'état du gaz parfait",
-     "answer": "P V = n R T\nR = 8,314 J·mol⁻¹·K⁻¹\nT en K, P en Pa, V en m³",
-     "w": "95c126ef",
-     "wq": "ec9355f2"
+     "question": "Quelle relation relie flux thermique et résistance thermique ?",
+     "answer": "Φ = (T₁ − T₂) / R_th",
+     "w": [
+      "4936778a",
+      "5ecd38e9"
+     ],
+     "wq": "a5afd3a4",
+     "more": "Φ en watts.",
+     "wrongs": [
+      "Φ = (T₁ − T₂) × R_th",
+      "Φ = R_th / (T₁ − T₂)",
+      "Φ = T₁ × T₂ / R_th"
+     ]
     },
     {
-     "question": "Conversion degrés Celsius → kelvins",
-     "answer": "T(K) = θ(°C) + 273,15"
+     "question": "Que dit la loi de refroidissement de Newton ?",
+     "answer": "Le flux est proportionnel à l'écart de température",
+     "w": [
+      "9534b015",
+      "61d419ca"
+     ],
+     "wq": "211a02e4",
+     "more": "Φ = h S (T_ext − T)",
+     "wrongs": [
+      "Le flux est constant",
+      "Le flux est proportionnel au carré de la température",
+      "Le flux est inversement proportionnel à l'écart de température"
+     ]
     },
     {
-     "question": "Loi de Wien",
-     "answer": "λmax × T = 2,90 × 10⁻³ m·K\nPlus un corps est chaud, plus λmax est petite.",
-     "w": "d327ca66",
-     "wq": "6f632f55"
+     "question": "Comment évolue la température d'un corps qui refroidit selon la loi de Newton ?",
+     "answer": "De façon exponentielle vers T_ext",
+     "wrongs": [
+      "De façon linéaire jusqu'à 0 K",
+      "Elle oscille autour de T_ext",
+      "Elle reste constante"
+     ]
     },
     {
-     "question": "Charge d'un condensateur",
-     "answer": "q = C × u_C\nC en farads",
-     "w": "3daa1812",
-     "wq": "21d26884"
+     "question": "Quelle est l'équation d'état du gaz parfait ?",
+     "answer": "P V = n R T",
+     "w": [
+      "a4df9953",
+      "95c126ef"
+     ],
+     "wq": "ec9355f2",
+     "more": "T en K, P en Pa, V en m³.",
+     "wrongs": [
+      "P V = n T",
+      "P / V = n R T",
+      "P V = R T / n"
+     ]
     },
     {
-     "question": "Intensité et charge",
-     "answer": "i = dq/dt = C × du_C/dt"
+     "question": "Quelle est la valeur de la constante des gaz parfaits R ?",
+     "answer": "8,314 J·mol⁻¹·K⁻¹",
+     "wrongs": [
+      "6,02 × 10²³ J·mol⁻¹·K⁻¹",
+      "1,38 J·mol⁻¹·K⁻¹",
+      "0,082 J·mol⁻¹·K⁻¹"
+     ]
     },
     {
-     "question": "Constante de temps d'un circuit RC",
-     "answer": "τ = R × C\nen secondes",
-     "w": "78b8dd06",
-     "wq": "e37509bc"
+     "question": "Comment convertir des degrés Celsius en kelvins ?",
+     "answer": "T(K) = θ(°C) + 273,15",
+     "w": "526d0504",
+     "wq": "6c9cae61",
+     "wrongs": [
+      "T(K) = θ(°C) − 273,15",
+      "T(K) = θ(°C) × 273,15",
+      "T(K) = θ(°C) + 100"
+     ]
     },
     {
-     "question": "Charge d'un condensateur (échelon E)",
-     "answer": "u_C(t) = E (1 − e^(−t/τ))\nÀ t = τ : 63 % de E\nÀ t = 5τ : charge quasi complète",
-     "w": "59b2d2ff",
-     "wq": "1465e94a"
+     "question": "Que dit la loi de Wien ?",
+     "answer": "λmax × T = 2,90 × 10⁻³ m·K",
+     "w": [
+      "fa56b422",
+      "d327ca66"
+     ],
+     "wq": "6f632f55",
+     "more": "Plus un corps est chaud, plus λmax est petite.",
+     "wrongs": [
+      "λmax / T = 2,90 × 10⁻³ m·K⁻¹",
+      "λmax × T = 3,00 × 10⁸ m·K",
+      "λmax = T × 2,90 × 10⁻³"
+     ]
     },
     {
-     "question": "Décharge d'un condensateur",
-     "answer": "u_C(t) = E e^(−t/τ)\nÀ t = τ : 37 % de la tension initiale",
-     "w": "1f195a9e",
-     "wq": "32a4e90f"
+     "question": "Quelle relation relie la charge d'un condensateur et sa tension ?",
+     "answer": "q = C × u_C",
+     "w": [
+      "3446012f",
+      "3daa1812"
+     ],
+     "wq": "21d26884",
+     "more": "C en farads.",
+     "wrongs": [
+      "q = u_C / C",
+      "q = C / u_C",
+      "q = ½ C u_C²"
+     ]
     },
     {
-     "question": "Équation différentielle de la charge RC",
-     "answer": "RC du_C/dt + u_C = E"
+     "question": "Quelle relation relie l'intensité et la charge d'un condensateur ?",
+     "answer": "i = dq/dt = C × du_C/dt",
+     "w": "24751c01",
+     "wq": "079b4609",
+     "wrongs": [
+      "i = q × t",
+      "i = C × u_C",
+      "i = dt/dq"
+     ]
     },
     {
-     "question": "Énergie stockée dans un condensateur",
-     "answer": "E = ½ C u²"
+     "question": "Quelle est la constante de temps d'un circuit RC ?",
+     "answer": "τ = R × C",
+     "w": [
+      "490475af",
+      "78b8dd06"
+     ],
+     "wq": "e37509bc",
+     "more": "En secondes.",
+     "wrongs": [
+      "τ = R / C",
+      "τ = C / R",
+      "τ = 1 / (R C)"
+     ]
+    },
+    {
+     "question": "Quelle est la tension aux bornes d'un condensateur qui se charge sous une tension E ?",
+     "answer": "u_C(t) = E (1 − e^(−t/τ))",
+     "w": [
+      "6ced3b7a",
+      "59b2d2ff"
+     ],
+     "wq": "1465e94a",
+     "more": "La charge est quasi complète à t = 5τ.",
+     "wrongs": [
+      "u_C(t) = E e^(−t/τ)",
+      "u_C(t) = E t / τ",
+      "u_C(t) = E (1 + e^(−t/τ))"
+     ]
+    },
+    {
+     "question": "Quel pourcentage de E atteint u_C à t = τ, lors de la charge ?",
+     "answer": "63 %",
+     "wrongs": [
+      "37 %",
+      "50 %",
+      "99 %"
+     ]
+    },
+    {
+     "question": "Quelle est la tension aux bornes d'un condensateur qui se décharge ?",
+     "answer": "u_C(t) = E e^(−t/τ)",
+     "w": [
+      "7a876ae2",
+      "1f195a9e"
+     ],
+     "wq": "32a4e90f",
+     "wrongs": [
+      "u_C(t) = E (1 − e^(−t/τ))",
+      "u_C(t) = E − t/τ",
+      "u_C(t) = E e^(t/τ)"
+     ]
+    },
+    {
+     "question": "Quel pourcentage de la tension initiale reste-t-il à t = τ, lors de la décharge ?",
+     "answer": "37 %",
+     "wrongs": [
+      "63 %",
+      "50 %",
+      "0 %"
+     ]
+    },
+    {
+     "question": "Quelle est l'équation différentielle de la charge d'un circuit RC ?",
+     "answer": "RC du_C/dt + u_C = E",
+     "w": "d397850c",
+     "wq": "0d9de0b2",
+     "wrongs": [
+      "RC du_C/dt − u_C = E",
+      "du_C/dt + RC u_C = E",
+      "RC u_C + du_C/dt = 0"
+     ]
+    },
+    {
+     "question": "Quelle énergie est stockée dans un condensateur ?",
+     "answer": "E = ½ C u²",
+     "w": "6850ef04",
+     "wq": "ca10e412",
+     "wrongs": [
+      "E = C u²",
+      "E = ½ C u",
+      "E = ½ q u²"
+     ]
     }
    ]
   },
@@ -18652,90 +19542,279 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Acide et base selon Brønsted",
-     "answer": "Acide : espèce capable de céder un ion H⁺.\nBase : espèce capable de capter un ion H⁺."
+     "question": "Qu'est-ce qu'un acide selon Brønsted ?",
+     "answer": "Une espèce capable de céder un ion H⁺",
+     "w": "d95f133a",
+     "wq": "64f59074",
+     "wrongs": [
+      "Une espèce capable de capter un ion H⁺",
+      "Une espèce capable de céder un électron",
+      "Une espèce de pH supérieur à 7"
+     ]
     },
     {
-     "question": "Couple acide/base",
-     "answer": "AH / A⁻ : AH = A⁻ + H⁺"
+     "question": "Qu'est-ce qu'une base selon Brønsted ?",
+     "answer": "Une espèce capable de capter un ion H⁺",
+     "wrongs": [
+      "Une espèce capable de céder un ion H⁺",
+      "Une espèce capable de capter un électron",
+      "Une espèce de pH inférieur à 7"
+     ]
     },
     {
-     "question": "Définition du pH",
-     "answer": "pH = −log([H₃O⁺] / c°)\n[H₃O⁺] = c° × 10⁻ᵖᴴ\nc° = 1 mol·L⁻¹",
-     "w": "5ffd3a55",
-     "wq": "97df6bf5"
+     "question": "Quelle demi-équation définit un couple acide/base AH/A⁻ ?",
+     "answer": "AH = A⁻ + H⁺",
+     "w": "f4d16de3",
+     "wq": "523a3de7",
+     "wrongs": [
+      "AH = A⁻ + e⁻",
+      "A⁻ = AH + H⁺",
+      "AH + H⁺ = A⁻"
+     ]
     },
     {
-     "question": "Produit ionique de l'eau",
-     "answer": "Ke = [H₃O⁺][HO⁻] = 1,0 × 10⁻¹⁴ à 25 °C\npKe = 14",
-     "w": "9365c024",
-     "wq": "d9e3265d"
+     "question": "Comment définit-on le pH ?",
+     "answer": "pH = −log([H₃O⁺] / c°)",
+     "w": [
+      "8ed4a205",
+      "5ffd3a55"
+     ],
+     "wq": "97df6bf5",
+     "more": "Donc [H₃O⁺] = c° × 10⁻ᵖᴴ, avec c° = 1 mol·L⁻¹.",
+     "wrongs": [
+      "pH = log([H₃O⁺] / c°)",
+      "pH = −log([HO⁻] / c°)",
+      "pH = −ln([H₃O⁺] / c°)"
+     ]
     },
     {
-     "question": "Solution acide / neutre / basique à 25 °C",
-     "answer": "pH < 7 : acide\npH = 7 : neutre\npH > 7 : basique",
-     "w": "66c6ac19",
-     "wq": "6fdd337d"
+     "question": "Que vaut le produit ionique de l'eau Ke à 25 °C ?",
+     "answer": "1,0 × 10⁻¹⁴",
+     "w": [
+      "924c65bb",
+      "9365c024"
+     ],
+     "wq": "d9e3265d",
+     "more": "Ke = [H₃O⁺][HO⁻] ; pKe = 14.",
+     "wrongs": [
+      "1,0 × 10⁻⁷",
+      "1,0 × 10¹⁴",
+      "14"
+     ]
     },
     {
-     "question": "Constante d'acidité Ka",
-     "answer": "Ka = [A⁻][H₃O⁺] / [AH]\n(concentrations divisées par c°)\npKa = −log Ka",
-     "w": "8ae79b8b",
-     "wq": "5377e9d8"
+     "question": "À 25 °C, quel est le pH d'une solution basique ?",
+     "answer": "pH > 7",
+     "w": [
+      "04726f35",
+      "66c6ac19"
+     ],
+     "wq": "6fdd337d",
+     "more": "Acide : pH < 7 ; neutre : pH = 7.",
+     "wrongs": [
+      "pH < 7",
+      "pH = 7",
+      "pH > 14"
+     ]
     },
     {
-     "question": "Relation pH / pKa",
-     "answer": "pH = pKa + log([A⁻] / [AH])"
+     "question": "Comment s'écrit la constante d'acidité Ka du couple AH/A⁻ ?",
+     "answer": "Ka = [A⁻][H₃O⁺] / [AH]",
+     "w": [
+      "b9e6778a",
+      "8ae79b8b"
+     ],
+     "wq": "5377e9d8",
+     "more": "Concentrations divisées par c°.",
+     "wrongs": [
+      "Ka = [AH] / ([A⁻][H₃O⁺])",
+      "Ka = [A⁻][AH] / [H₃O⁺]",
+      "Ka = [H₃O⁺][HO⁻]"
+     ]
     },
     {
-     "question": "Diagramme de prédominance",
-     "answer": "pH < pKa : l'acide AH prédomine.\npH > pKa : la base A⁻ prédomine.\npH = pKa : [AH] = [A⁻]."
+     "question": "Quelle relation relie pKa et Ka ?",
+     "answer": "pKa = −log Ka",
+     "wrongs": [
+      "pKa = log Ka",
+      "pKa = 1/Ka",
+      "pKa = 14 − Ka"
+     ]
     },
     {
-     "question": "Acide fort / acide faible",
-     "answer": "Fort : réaction totale avec l'eau (pH = −log c pour un monoacide).\nFaible : réaction limitée (équilibre), taux d'avancement final < 1."
+     "question": "Quelle relation relie pH et pKa ?",
+     "answer": "pH = pKa + log([A⁻] / [AH])",
+     "w": "27af3304",
+     "wq": "46648d5e",
+     "wrongs": [
+      "pH = pKa − log([A⁻] / [AH])",
+      "pH = pKa × [A⁻] / [AH]",
+      "pH = pKa + log([AH] / [A⁻])"
+     ]
     },
     {
-     "question": "Solution tampon",
-     "answer": "Son pH varie peu par dilution ou ajout modéré d'acide ou de base.\nMélange d'un acide faible et de sa base conjuguée en quantités proches (pH ≈ pKa).",
-     "w": "9957e657",
-     "wq": "b2d60215"
+     "question": "Quelle espèce prédomine si pH < pKa ?",
+     "answer": "L'acide AH",
+     "w": "5f078572",
+     "wq": "a02cc0ca",
+     "wrongs": [
+      "La base A⁻",
+      "Aucune des deux",
+      "Les deux à parts égales"
+     ]
     },
     {
-     "question": "Équivalence d'un titrage",
-     "answer": "Les réactifs ont été introduits dans les proportions stœchiométriques : le réactif titré est entièrement consommé.\nPour aA + bB : n(A)/a = n(B)/b",
-     "w": "bdf8d9ec",
-     "wq": "c2c23593"
+     "question": "Quelle espèce prédomine si pH > pKa ?",
+     "answer": "La base A⁻",
+     "more": "Si pH = pKa : [AH] = [A⁻].",
+     "wrongs": [
+      "L'acide AH",
+      "Aucune des deux",
+      "Les deux à parts égales"
+     ]
     },
     {
-     "question": "Repérer l'équivalence d'un titrage pH-métrique",
-     "answer": "Par le saut de pH :\nméthode des tangentes ou maximum de dpH/dV.",
-     "w": "33c46409",
-     "wq": "7feb3f04"
+     "question": "Qu'est-ce qu'un acide fort ?",
+     "answer": "Un acide qui réagit totalement avec l'eau",
+     "w": "9bbfd6d0",
+     "wq": "5409f18a",
+     "more": "Pour un monoacide fort : pH = −log c.",
+     "wrongs": [
+      "Un acide très concentré",
+      "Un acide de pH inférieur à 1",
+      "Un acide qui réagit partiellement avec l'eau"
+     ]
     },
     {
-     "question": "Titrage conductimétrique : principe",
-     "answer": "On suit la conductivité σ.\nÉquivalence : changement de pente de σ = f(V).",
-     "w": "a7115733",
-     "wq": "1d7d6352"
+     "question": "Qu'est-ce qu'un acide faible ?",
+     "answer": "Un acide dont la réaction avec l'eau est limitée",
+     "more": "Équilibre : taux d'avancement final < 1.",
+     "wrongs": [
+      "Un acide très dilué",
+      "Un acide qui ne réagit pas avec l'eau",
+      "Un acide de pH proche de 7"
+     ]
     },
     {
-     "question": "Loi de Kohlrausch",
-     "answer": "σ = Σ λᵢ [Xᵢ]\n(conductivités molaires ioniques × concentrations)",
-     "w": "0fda775c",
-     "wq": "ad1b82c6"
+     "question": "Qu'est-ce qu'une solution tampon ?",
+     "answer": "Une solution dont le pH varie peu par dilution ou ajout modéré d'acide ou de base",
+     "w": [
+      "2a84a808",
+      "9957e657"
+     ],
+     "wq": "b2d60215",
+     "wrongs": [
+      "Une solution de pH égal à 7",
+      "Une solution sans ions",
+      "Une solution d'acide fort"
+     ]
+    },
+    {
+     "question": "Comment prépare-t-on une solution tampon ?",
+     "answer": "Avec un acide faible et sa base conjuguée en quantités proches",
+     "more": "Son pH est alors proche du pKa.",
+     "wrongs": [
+      "Avec un acide fort et une base forte",
+      "Avec de l'eau distillée seule",
+      "Avec un acide fort très dilué"
+     ]
+    },
+    {
+     "question": "Qu'est-ce que l'équivalence d'un titrage ?",
+     "answer": "Le moment où les réactifs ont été introduits dans les proportions stœchiométriques",
+     "w": [
+      "a96dee0d",
+      "bdf8d9ec"
+     ],
+     "wq": "c2c23593",
+     "more": "Le réactif titré est entièrement consommé ; pour aA + bB : n(A)/a = n(B)/b.",
+     "wrongs": [
+      "Le moment où le pH vaut 7",
+      "Le moment où la moitié du réactif titré a réagi",
+      "Le moment où on arrête de verser"
+     ]
+    },
+    {
+     "question": "Comment repère-t-on l'équivalence d'un titrage pH-métrique ?",
+     "answer": "Par le saut de pH",
+     "w": [
+      "508ae99c",
+      "33c46409"
+     ],
+     "wq": "7feb3f04",
+     "more": "Méthode des tangentes ou maximum de dpH/dV.",
+     "wrongs": [
+      "Quand le pH vaut 7",
+      "Par un changement de pente de la conductivité",
+      "Quand le pH vaut le pKa"
+     ]
+    },
+    {
+     "question": "Comment repère-t-on l'équivalence d'un titrage conductimétrique ?",
+     "answer": "Par un changement de pente de σ = f(V)",
+     "w": [
+      "e409c1c5",
+      "a7115733"
+     ],
+     "wq": "1d7d6352",
+     "wrongs": [
+      "Par un saut de pH",
+      "Quand σ devient nulle",
+      "Par un changement de couleur"
+     ]
+    },
+    {
+     "question": "Que dit la loi de Kohlrausch ?",
+     "answer": "σ = Σ λᵢ [Xᵢ]",
+     "w": [
+      "9bf37510",
+      "0fda775c"
+     ],
+     "wq": "ad1b82c6",
+     "more": "Somme des conductivités molaires ioniques × concentrations.",
+     "wrongs": [
+      "σ = Σ [Xᵢ] / λᵢ",
+      "σ = λ × V",
+      "σ = k × pH"
+     ]
     },
     {
      "question": "Comment choisir un indicateur coloré pour un titrage ?",
-     "answer": "Sa zone de virage doit contenir le pH à l'équivalence.",
-     "w": "32e92ea4",
-     "wq": "1868cb5e"
+     "answer": "Sa zone de virage doit contenir le pH à l'équivalence",
+     "w": [
+      "3ce886ec",
+      "32e92ea4"
+     ],
+     "wq": "1868cb5e",
+     "wrongs": [
+      "Sa zone de virage doit contenir le pH initial",
+      "Il doit être de la couleur de la solution",
+      "Sa zone de virage doit être autour de pH 7"
+     ]
     },
     {
-     "question": "Quotient de réaction et constante d'équilibre",
-     "answer": "Qr évolue vers K :\nQr < K : sens direct\nQr > K : sens inverse\nÀ l'équilibre : Qr = K",
-     "w": "9374df1d",
-     "wq": "3ed75041"
+     "question": "Si Qr < K, dans quel sens évolue le système ?",
+     "answer": "Dans le sens direct",
+     "w": [
+      "f195ecc9",
+      "9374df1d"
+     ],
+     "wq": "3ed75041",
+     "more": "Si Qr > K : sens inverse ; à l'équilibre, Qr = K.",
+     "wrongs": [
+      "Dans le sens inverse",
+      "Il n'évolue pas",
+      "Il oscille"
+     ]
+    },
+    {
+     "question": "Que vaut Qr à l'équilibre ?",
+     "answer": "Qr = K",
+     "wrongs": [
+      "Qr = 0",
+      "Qr = 1",
+      "Qr = 1/K"
+     ]
     }
    ]
   },
@@ -18759,90 +19838,285 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Vitesse volumique de disparition d'un réactif",
-     "answer": "v = −d[R]/dt\nen mol·L⁻¹·s⁻¹",
-     "w": "f2ea51dc",
-     "wq": "69a85ba4"
+     "question": "Comment définit-on la vitesse volumique de disparition d'un réactif R ?",
+     "answer": "v = −d[R]/dt",
+     "w": [
+      "5bf5528d",
+      "f2ea51dc"
+     ],
+     "wq": "69a85ba4",
+     "more": "En mol·L⁻¹·s⁻¹.",
+     "wrongs": [
+      "v = d[R]/dt",
+      "v = [R] × t",
+      "v = −[R]/t²"
+     ]
     },
     {
-     "question": "Facteurs cinétiques",
-     "answer": "• Température\n• Concentration des réactifs\n• Catalyseur\n• Surface de contact, solvant",
-     "w": "b90fba2b",
-     "wq": "150c0456"
+     "question": "Quels sont les principaux facteurs cinétiques ?",
+     "answer": "Température, concentration, catalyseur",
+     "w": [
+      "a1c895dd",
+      "b90fba2b"
+     ],
+     "wq": "150c0456",
+     "more": "Aussi : surface de contact, solvant.",
+     "wrongs": [
+      "Couleur, masse, volume",
+      "Pression atmosphérique seulement",
+      "pH seulement"
+     ]
     },
     {
-     "question": "Catalyseur",
-     "answer": "Une espèce qui accélère une réaction sans être consommée ni modifier l'état final.\nCatalyse homogène, hétérogène, enzymatique.",
-     "w": "34ee2ea5",
-     "wq": "a62cc6aa"
+     "question": "Qu'est-ce qu'un catalyseur ?",
+     "answer": "Une espèce qui accélère une réaction sans être consommée",
+     "w": [
+      "514bda7d",
+      "34ee2ea5"
+     ],
+     "wq": "a62cc6aa",
+     "more": "Il ne modifie pas l'état final. Catalyse homogène, hétérogène, enzymatique.",
+     "wrongs": [
+      "Une espèce qui ralentit une réaction",
+      "Un réactif en excès",
+      "Une espèce qui modifie l'état final"
+     ]
     },
     {
-     "question": "Temps de demi-réaction t½",
-     "answer": "La durée au bout de laquelle l'avancement atteint la moitié de sa valeur finale.",
-     "w": "d3173e08",
-     "wq": "a7f10eb7"
+     "question": "Qu'est-ce que le temps de demi-réaction t½ ?",
+     "answer": "La durée pour que l'avancement atteigne la moitié de sa valeur finale",
+     "w": [
+      "a5ab4c17",
+      "d3173e08"
+     ],
+     "wq": "a7f10eb7",
+     "wrongs": [
+      "La moitié de la durée totale de la réaction",
+      "La durée pour que la vitesse double",
+      "La durée pour consommer tous les réactifs"
+     ]
     },
     {
-     "question": "Loi de vitesse d'ordre 1",
-     "answer": "v = k[A]\n[A](t) = [A]₀ e^(−kt)\nt½ = ln 2 / k (indépendant de [A]₀)",
-     "w": "d3cd1749",
-     "wq": "2e21fa6b"
+     "question": "Quelle est la loi de vitesse d'ordre 1 ?",
+     "answer": "v = k[A]",
+     "w": [
+      "fc71c9fb",
+      "d3cd1749"
+     ],
+     "wq": "2e21fa6b",
+     "more": "[A](t) = [A]₀ e^(−kt).",
+     "wrongs": [
+      "v = k[A]²",
+      "v = k",
+      "v = k / [A]"
+     ]
     },
     {
-     "question": "Oxydant et réducteur",
-     "answer": "Oxydant : espèce capable de capter un ou des électrons.\nRéducteur : espèce capable de céder un ou des électrons."
+     "question": "Quel est le temps de demi-réaction d'une réaction d'ordre 1 ?",
+     "answer": "t½ = ln 2 / k",
+     "more": "Il ne dépend pas de [A]₀.",
+     "wrongs": [
+      "t½ = k / ln 2",
+      "t½ = 2 / k",
+      "t½ = ln 2 × k"
+     ]
     },
     {
-     "question": "Oxydation / réduction",
-     "answer": "Oxydation : perte d'électrons (le réducteur est oxydé).\nRéduction : gain d'électrons (l'oxydant est réduit)."
+     "question": "Qu'est-ce qu'un oxydant ?",
+     "answer": "Une espèce capable de capter des électrons",
+     "w": "a4441f0d",
+     "wq": "93988d1a",
+     "wrongs": [
+      "Une espèce capable de céder des électrons",
+      "Une espèce capable de céder un ion H⁺",
+      "Une espèce qui contient de l'oxygène"
+     ]
     },
     {
-     "question": "Demi-équation électronique : méthode",
-     "answer": "1. Équilibrer l'élément\n2. O avec H₂O\n3. H avec H⁺\n4. Les charges avec e⁻",
-     "w": "d6a2516b",
-     "wq": "5a589203"
+     "question": "Qu'est-ce qu'un réducteur ?",
+     "answer": "Une espèce capable de céder des électrons",
+     "wrongs": [
+      "Une espèce capable de capter des électrons",
+      "Une espèce capable de capter un ion H⁺",
+      "Une espèce qui perd de l'oxygène"
+     ]
     },
     {
-     "question": "Pile : définition",
-     "answer": "Un convertisseur d'énergie chimique en énergie électrique.\nSiège d'une oxydoréduction spontanée ; les électrons passent par le circuit extérieur.",
-     "w": "ab7a1c74",
-     "wq": "f40b8e94"
+     "question": "Qu'est-ce qu'une oxydation ?",
+     "answer": "Une perte d'électrons",
+     "w": "37e96946",
+     "wq": "0d3737b0",
+     "more": "Le réducteur est oxydé.",
+     "wrongs": [
+      "Un gain d'électrons",
+      "Un gain de protons",
+      "Une perte de protons"
+     ]
     },
     {
-     "question": "Anode / cathode",
-     "answer": "Anode : oxydation (pôle − d'une pile)\nCathode : réduction (pôle + d'une pile)",
-     "w": "5fb307ea",
-     "wq": "0e299997"
+     "question": "Qu'est-ce qu'une réduction ?",
+     "answer": "Un gain d'électrons",
+     "more": "L'oxydant est réduit.",
+     "wrongs": [
+      "Une perte d'électrons",
+      "Une perte de protons",
+      "Un gain d'oxygène"
+     ]
     },
     {
-     "question": "Rôle du pont salin",
-     "answer": "Assurer la neutralité électrique des solutions\net fermer le circuit (circulation d'ions).",
-     "w": "e2ee46d4",
-     "wq": "2d987041"
+     "question": "Dans quel ordre équilibre-t-on une demi-équation électronique ?",
+     "answer": "L'élément, O avec H₂O, H avec H⁺, les charges avec e⁻",
+     "w": [
+      "6b7ce301",
+      "d6a2516b"
+     ],
+     "wq": "5a589203",
+     "wrongs": [
+      "Les charges, puis H, puis O, puis l'élément",
+      "O avec H⁺, H avec H₂O, puis les charges",
+      "L'élément, puis les charges avec H⁺"
+     ]
     },
     {
-     "question": "Capacité électrique d'une pile",
-     "answer": "Q = n(e⁻) × F = I × Δt\nF = 96 500 C·mol⁻¹ (constante de Faraday)",
-     "w": "b8a538f9",
-     "wq": "efd617f3"
+     "question": "Qu'est-ce qu'une pile ?",
+     "answer": "Un convertisseur d'énergie chimique en énergie électrique",
+     "w": [
+      "e86927a4",
+      "ab7a1c74"
+     ],
+     "wq": "f40b8e94",
+     "more": "Siège d'une oxydoréduction spontanée ; les électrons passent par le circuit extérieur.",
+     "wrongs": [
+      "Un convertisseur d'énergie électrique en énergie chimique",
+      "Un réservoir d'électrons",
+      "Un générateur d'énergie nucléaire"
+     ]
     },
     {
-     "question": "Électrolyse",
-     "answer": "Une transformation forcée, imposée par un générateur : énergie électrique → énergie chimique.\nEx. : recharge d'un accumulateur, production de dihydrogène.",
-     "w": "beeaf17a",
-     "wq": "443c5908"
+     "question": "Quelle réaction a lieu à l'anode ?",
+     "answer": "Une oxydation",
+     "w": [
+      "5244ecc4",
+      "5fb307ea"
+     ],
+     "wq": "0e299997",
+     "more": "C'est le pôle − d'une pile.",
+     "wrongs": [
+      "Une réduction",
+      "Une neutralisation",
+      "Une précipitation"
+     ]
     },
     {
-     "question": "Radioactivité : loi de décroissance",
-     "answer": "N(t) = N₀ e^(−λt)\nDemi-vie : t½ = ln 2 / λ",
-     "w": "4d89d542",
-     "wq": "ddca4649"
+     "question": "Quelle réaction a lieu à la cathode ?",
+     "answer": "Une réduction",
+     "more": "C'est le pôle + d'une pile.",
+     "wrongs": [
+      "Une oxydation",
+      "Une neutralisation",
+      "Une combustion"
+     ]
     },
     {
-     "question": "Activité d'un échantillon radioactif",
-     "answer": "A = λN\nEn becquerels (Bq) : désintégrations par seconde",
-     "w": "c9f97d04",
-     "wq": "221b50bb"
+     "question": "Quel est le rôle du pont salin d'une pile ?",
+     "answer": "Assurer la neutralité électrique et fermer le circuit",
+     "w": [
+      "8c2c1d3a",
+      "e2ee46d4"
+     ],
+     "wq": "2d987041",
+     "more": "Par circulation d'ions.",
+     "wrongs": [
+      "Fournir les électrons",
+      "Augmenter la tension",
+      "Empêcher la réaction"
+     ]
+    },
+    {
+     "question": "Comment calcule-t-on la capacité électrique d'une pile ?",
+     "answer": "Q = n(e⁻) × F",
+     "w": [
+      "f3e7a2ed",
+      "b8a538f9"
+     ],
+     "wq": "efd617f3",
+     "more": "Ou Q = I × Δt.",
+     "wrongs": [
+      "Q = n(e⁻) / F",
+      "Q = U × I",
+      "Q = F / I"
+     ]
+    },
+    {
+     "question": "Quelle est la valeur de la constante de Faraday ?",
+     "answer": "F = 96 500 C·mol⁻¹",
+     "wrongs": [
+      "F = 6,02 × 10²³ C·mol⁻¹",
+      "F = 1,6 × 10⁻¹⁹ C·mol⁻¹",
+      "F = 8,314 C·mol⁻¹"
+     ]
+    },
+    {
+     "question": "Qu'est-ce qu'une électrolyse ?",
+     "answer": "Une transformation forcée, imposée par un générateur",
+     "w": [
+      "d59545b0",
+      "beeaf17a"
+     ],
+     "wq": "443c5908",
+     "more": "Énergie électrique → énergie chimique. Ex. : recharge d'un accumulateur, production de dihydrogène.",
+     "wrongs": [
+      "Une transformation spontanée",
+      "La décharge d'une pile",
+      "Une réaction acide-base"
+     ]
+    },
+    {
+     "question": "Quelle est la loi de décroissance radioactive ?",
+     "answer": "N(t) = N₀ e^(−λt)",
+     "w": [
+      "c57d900b",
+      "4d89d542"
+     ],
+     "wq": "ddca4649",
+     "wrongs": [
+      "N(t) = N₀ e^(λt)",
+      "N(t) = N₀ − λt",
+      "N(t) = N₀ / λt"
+     ]
+    },
+    {
+     "question": "Quelle est la demi-vie d'un noyau radioactif de constante λ ?",
+     "answer": "t½ = ln 2 / λ",
+     "wrongs": [
+      "t½ = λ / ln 2",
+      "t½ = 2λ",
+      "t½ = 1/λ"
+     ]
+    },
+    {
+     "question": "Comment calcule-t-on l'activité d'un échantillon radioactif ?",
+     "answer": "A = λN",
+     "w": [
+      "eb4c8800",
+      "c9f97d04"
+     ],
+     "wq": "221b50bb",
+     "wrongs": [
+      "A = N / λ",
+      "A = λ / N",
+      "A = N₀ e^(λt)"
+     ]
+    },
+    {
+     "question": "En quelle unité mesure-t-on l'activité radioactive ?",
+     "answer": "En becquerels (Bq)",
+     "more": "Nombre de désintégrations par seconde.",
+     "wrongs": [
+      "En sieverts (Sv)",
+      "En grays (Gy)",
+      "En curies par mole"
+     ]
     }
    ]
   },
@@ -18865,94 +20139,278 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Groupe hydroxyle / famille",
-     "answer": "–OH → alcools\nSuffixe « -ol »",
-     "w": "a6d74bad",
-     "wq": "03b8e362"
+     "question": "À quelle famille appartiennent les molécules portant le groupe hydroxyle –OH ?",
+     "answer": "Les alcools",
+     "w": [
+      "6f04b3b4",
+      "a6d74bad"
+     ],
+     "wq": "03b8e362",
+     "more": "Suffixe « -ol ».",
+     "wrongs": [
+      "Les acides carboxyliques",
+      "Les aldéhydes",
+      "Les esters"
+     ]
     },
     {
-     "question": "Groupe carbonyle / familles",
-     "answer": "C=O\nAldéhydes (« -al », en bout de chaîne)\nCétones (« -one »)",
-     "w": "1665b4cd",
-     "wq": "16a817f4"
+     "question": "Quelles familles portent le groupe carbonyle C=O ?",
+     "answer": "Les aldéhydes et les cétones",
+     "w": [
+      "16501eb2",
+      "1665b4cd"
+     ],
+     "wq": "16a817f4",
+     "wrongs": [
+      "Les alcools et les amines",
+      "Les esters et les amides",
+      "Les alcanes et les alcènes"
+     ]
     },
     {
-     "question": "Groupe carboxyle / famille",
-     "answer": "–COOH → acides carboxyliques\n« acide …-oïque »",
-     "w": "2686052b",
-     "wq": "671a00d5"
+     "question": "Quel suffixe porte le nom d'un aldéhyde ?",
+     "answer": "« -al »",
+     "more": "Le C=O est en bout de chaîne ; une cétone se termine en « -one ».",
+     "wrongs": [
+      "« -one »",
+      "« -ol »",
+      "« -oate »"
+     ]
     },
     {
-     "question": "Groupe ester / famille",
-     "answer": "–COO– → esters\n« …-oate de …-yle »",
-     "w": "ec720824",
-     "wq": "d9c44ca7"
+     "question": "À quelle famille appartiennent les molécules portant le groupe carboxyle –COOH ?",
+     "answer": "Les acides carboxyliques",
+     "w": [
+      "253275f6",
+      "2686052b"
+     ],
+     "wq": "671a00d5",
+     "more": "Nom : « acide …-oïque ».",
+     "wrongs": [
+      "Les esters",
+      "Les alcools",
+      "Les cétones"
+     ]
     },
     {
-     "question": "Groupe amine et amide",
-     "answer": "Amine : –N– (ex. : –NH₂), « -amine »\nAmide : –CO–N–, « -amide »",
-     "w": "2668aa1a",
-     "wq": "6db3c06e"
+     "question": "Comment se nomme un ester ?",
+     "answer": "« …-oate de …-yle »",
+     "w": [
+      "8ef3a2b7",
+      "ec720824"
+     ],
+     "wq": "d9c44ca7",
+     "more": "Groupe ester : –COO–.",
+     "wrongs": [
+      "« acide …-oïque »",
+      "« …-ol »",
+      "« …-amide »"
+     ]
     },
     {
-     "question": "Formule topologique",
-     "answer": "Les liaisons C–C sont des segments.\nLes atomes de C et leurs H ne sont pas écrits.",
-     "w": "8ccba2fe",
-     "wq": "d0a4d003"
+     "question": "Quel groupe caractérise une amine ?",
+     "answer": "–N– (ex. : –NH₂)",
+     "w": [
+      "0dd7e73d",
+      "2668aa1a"
+     ],
+     "wq": "6db3c06e",
+     "more": "Suffixe « -amine ».",
+     "wrongs": [
+      "–CO–N–",
+      "–OH",
+      "–COOH"
+     ]
     },
     {
-     "question": "Isomères",
-     "answer": "Espèces de même formule brute mais de formules développées (ou spatiales) différentes."
+     "question": "Quel groupe caractérise un amide ?",
+     "answer": "–CO–N–",
+     "more": "Suffixe « -amide ».",
+     "wrongs": [
+      "–NH₂ seul",
+      "–COO–",
+      "–C=O seul"
+     ]
     },
     {
-     "question": "Catégories de réactions",
-     "answer": "• Substitution\n• Addition\n• Élimination",
-     "w": "1dcf4bff",
-     "wq": "4aa51f14"
+     "question": "Dans une formule topologique, qu'est-ce qui n'est pas écrit ?",
+     "answer": "Les atomes de carbone et leurs hydrogènes",
+     "w": [
+      "7c5bd2d5",
+      "8ccba2fe"
+     ],
+     "wq": "d0a4d003",
+     "more": "Les liaisons C–C sont des segments.",
+     "wrongs": [
+      "Les atomes d'oxygène",
+      "Les liaisons doubles",
+      "Les groupes caractéristiques"
+     ]
     },
     {
-     "question": "Site donneur / accepteur de doublet",
-     "answer": "Donneur : atome riche en électrons (doublet non liant, liaison multiple, charge −).\nAccepteur : atome pauvre en électrons (charge +, δ+)."
+     "question": "Que sont des isomères ?",
+     "answer": "Des espèces de même formule brute mais de formules développées différentes",
+     "w": "000d2691",
+     "wq": "84b116d3",
+     "wrongs": [
+      "Des espèces de même formule développée",
+      "Des atomes de même numéro atomique",
+      "Des espèces de même masse mais de formules brutes différentes"
+     ]
     },
     {
-     "question": "Flèche courbe dans un mécanisme",
-     "answer": "Le déplacement d'un doublet d'électrons,\nd'un site donneur vers un site accepteur.",
-     "w": "a696ee5c",
-     "wq": "76c74bbe"
+     "question": "Quelles sont les trois grandes catégories de réactions en chimie organique ?",
+     "answer": "Substitution, addition, élimination",
+     "w": [
+      "2f4876dd",
+      "1dcf4bff"
+     ],
+     "wq": "4aa51f14",
+     "wrongs": [
+      "Oxydation, réduction, combustion",
+      "Fusion, fission, désintégration",
+      "Acide, base, neutralisation"
+     ]
     },
     {
-     "question": "Rendement d'une synthèse",
-     "answer": "η = n(produit obtenu) / n(produit maximal théorique)"
+     "question": "Qu'est-ce qu'un site donneur de doublet d'électrons ?",
+     "answer": "Un atome riche en électrons",
+     "w": "43eaf4ed",
+     "wq": "4563ace8",
+     "more": "Doublet non liant, liaison multiple, charge −.",
+     "wrongs": [
+      "Un atome pauvre en électrons",
+      "Un atome chargé +",
+      "Un atome d'hydrogène"
+     ]
     },
     {
-     "question": "Estérification",
-     "answer": "Acide carboxylique + alcool ⇌ ester + eau\nLente et limitée ; catalysée par un acide.\nMeilleur rendement : excès de réactif ou élimination de l'eau.",
-     "w": "b0244017",
-     "wq": "0c9e8958"
+     "question": "Qu'est-ce qu'un site accepteur de doublet d'électrons ?",
+     "answer": "Un atome pauvre en électrons",
+     "more": "Charge + ou charge partielle δ+.",
+     "wrongs": [
+      "Un atome riche en électrons",
+      "Un doublet non liant",
+      "Une liaison double"
+     ]
     },
     {
-     "question": "Chauffage à reflux : intérêt",
-     "answer": "Accélérer la réaction (température élevée)\nsans perte de matière : les vapeurs condensées retombent dans le ballon.",
-     "w": "16039e29",
-     "wq": "e654fbbd"
+     "question": "Que représente une flèche courbe dans un mécanisme réactionnel ?",
+     "answer": "Le déplacement d'un doublet d'électrons, du site donneur vers le site accepteur",
+     "w": [
+      "c8b85971",
+      "a696ee5c"
+     ],
+     "wq": "76c74bbe",
+     "wrongs": [
+      "Le déplacement d'un atome",
+      "Le sens de la réaction",
+      "Le déplacement d'un doublet du site accepteur vers le site donneur"
+     ]
     },
     {
-     "question": "Contrôler la pureté d'un produit",
-     "answer": "• Température de fusion (banc Kofler)\n• Chromatographie sur couche mince (CCM)\n• Spectroscopie IR",
-     "w": "b5779726",
-     "wq": "5e79289d"
+     "question": "Comment calcule-t-on le rendement d'une synthèse ?",
+     "answer": "η = n(produit obtenu) / n(produit maximal théorique)",
+     "w": "16504cfc",
+     "wq": "fe5138d6",
+     "wrongs": [
+      "η = n(produit maximal) / n(produit obtenu)",
+      "η = m(réactif) / m(produit)",
+      "η = n(produit obtenu) × n(réactif)"
+     ]
     },
     {
-     "question": "Spectroscopie IR : bandes caractéristiques",
-     "answer": "O–H alcool : large, vers 3 200-3 400 cm⁻¹\nC=O : fine et intense, vers 1 650-1 750 cm⁻¹\nO–H acide : très large, 2 500-3 200 cm⁻¹",
-     "w": "3ab06924",
-     "wq": "0cb50472"
+     "question": "Que donne la réaction d'un acide carboxylique avec un alcool ?",
+     "answer": "Un ester et de l'eau",
+     "w": [
+      "dbe24eb4",
+      "b0244017"
+     ],
+     "wq": "0c9e8958",
+     "more": "C'est l'estérification, lente et limitée, catalysée par un acide.",
+     "wrongs": [
+      "Un amide et de l'eau",
+      "Un aldéhyde et du dihydrogène",
+      "Un alcool et du dioxyde de carbone"
+     ]
     },
     {
-     "question": "Polymère",
-     "answer": "Une macromolécule formée par la répétition d'un motif.\nObtenue par polymérisation (addition ou condensation).",
-     "w": "3e184265",
-     "wq": "0d10e4cf"
+     "question": "Comment améliorer le rendement d'une estérification ?",
+     "answer": "Mettre un réactif en excès ou éliminer l'eau",
+     "wrongs": [
+      "Ajouter de l'eau",
+      "Refroidir le mélange",
+      "Retirer le catalyseur"
+     ]
+    },
+    {
+     "question": "Quel est l'intérêt d'un chauffage à reflux ?",
+     "answer": "Accélérer la réaction sans perte de matière",
+     "w": [
+      "57e5662d",
+      "16039e29"
+     ],
+     "wq": "e654fbbd",
+     "more": "Les vapeurs condensées retombent dans le ballon.",
+     "wrongs": [
+      "Séparer les produits",
+      "Refroidir le mélange",
+      "Augmenter le rendement final de l'équilibre"
+     ]
+    },
+    {
+     "question": "Comment contrôler la pureté d'un produit solide ?",
+     "answer": "Température de fusion, CCM, spectroscopie IR",
+     "w": [
+      "11b6091b",
+      "b5779726"
+     ],
+     "wq": "5e79289d",
+     "more": "Banc Kofler pour la température de fusion.",
+     "wrongs": [
+      "Par sa couleur seulement",
+      "Par sa masse seulement",
+      "Par son odeur"
+     ]
+    },
+    {
+     "question": "Où se situe la bande O–H d'un alcool en spectroscopie IR ?",
+     "answer": "Large, vers 3 200-3 400 cm⁻¹",
+     "w": [
+      "d37eed08",
+      "3ab06924"
+     ],
+     "wq": "0cb50472",
+     "more": "O–H d'un acide : très large, 2 500-3 200 cm⁻¹.",
+     "wrongs": [
+      "Fine, vers 1 700 cm⁻¹",
+      "Fine, vers 2 900 cm⁻¹",
+      "Large, vers 1 000 cm⁻¹"
+     ]
+    },
+    {
+     "question": "Où se situe la bande C=O en spectroscopie IR ?",
+     "answer": "Fine et intense, vers 1 650-1 750 cm⁻¹",
+     "wrongs": [
+      "Large, vers 3 300 cm⁻¹",
+      "Fine, vers 2 900 cm⁻¹",
+      "Très large, 2 500-3 200 cm⁻¹"
+     ]
+    },
+    {
+     "question": "Qu'est-ce qu'un polymère ?",
+     "answer": "Une macromolécule formée par la répétition d'un motif",
+     "w": [
+      "8c1d44b0",
+      "3e184265"
+     ],
+     "wq": "0d10e4cf",
+     "more": "Obtenu par polymérisation (addition ou condensation).",
+     "wrongs": [
+      "Un mélange de petites molécules",
+      "Un ion polyatomique",
+      "Un isomère d'un alcane"
+     ]
     }
    ]
   },
@@ -18976,106 +20434,309 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Méiose : rôle",
-     "answer": "Produit 4 cellules haploïdes (gamètes) à partir d'une cellule diploïde.\nDeux divisions successives.",
-     "w": "f3fcc616",
-     "wq": "00f972fe"
+     "question": "Que produit la méiose ?",
+     "answer": "4 cellules haploïdes à partir d'une cellule diploïde",
+     "w": [
+      "f823faaf",
+      "f3fcc616"
+     ],
+     "wq": "00f972fe",
+     "more": "Deux divisions successives ; elle produit les gamètes.",
+     "wrongs": [
+      "2 cellules diploïdes identiques",
+      "4 cellules diploïdes",
+      "2 cellules haploïdes"
+     ]
     },
     {
-     "question": "Brassage interchromosomique",
-     "answer": "En anaphase I :\nrépartition aléatoire et indépendante des homologues de chaque paire.",
-     "w": "314ecf76",
-     "wq": "96a882b4"
+     "question": "Lors de quelle phase a lieu le brassage interchromosomique ?",
+     "answer": "En anaphase I",
+     "w": [
+      "ee51f1ec",
+      "314ecf76"
+     ],
+     "wq": "96a882b4",
+     "more": "Répartition aléatoire et indépendante des homologues de chaque paire.",
+     "wrongs": [
+      "En prophase I",
+      "En anaphase II",
+      "Pendant la fécondation"
+     ]
     },
     {
-     "question": "Brassage intrachromosomique",
-     "answer": "En prophase I :\néchange de portions de chromatides entre homologues (crossing-over).",
-     "w": "f22863f4",
-     "wq": "c3addbae"
+     "question": "Lors de quelle phase a lieu le brassage intrachromosomique ?",
+     "answer": "En prophase I",
+     "w": [
+      "95a14ba9",
+      "f22863f4"
+     ],
+     "wq": "c3addbae",
+     "more": "Échange de portions de chromatides entre homologues : crossing-over.",
+     "wrongs": [
+      "En anaphase I",
+      "En métaphase II",
+      "Pendant la mitose"
+     ]
     },
     {
-     "question": "Fécondation : rôle dans la diversité",
-     "answer": "Réunion aléatoire de deux gamètes :\nrétablit la diploïdie et amplifie le brassage.",
-     "w": "3df91553",
-     "wq": "b46a9988"
+     "question": "Quel est le rôle de la fécondation dans la diversité génétique ?",
+     "answer": "Réunir au hasard deux gamètes",
+     "w": [
+      "fb7a8f59",
+      "3df91553"
+     ],
+     "wq": "b46a9988",
+     "more": "Elle rétablit la diploïdie et amplifie le brassage.",
+     "wrongs": [
+      "Dupliquer l'ADN",
+      "Créer des mutations",
+      "Réduire de moitié les chromosomes"
+     ]
     },
     {
-     "question": "Croisement test (test-cross)",
-     "answer": "On croise l'individu avec un homozygote récessif.\nPour connaître son génotype ou repérer des gènes liés (phénotypes recombinés).",
-     "w": "940618a7",
-     "wq": "f8611098"
+     "question": "Avec quel individu croise-t-on lors d'un test-cross ?",
+     "answer": "Un homozygote récessif",
+     "w": [
+      "fa905e04",
+      "940618a7"
+     ],
+     "wq": "f8611098",
+     "more": "Pour connaître un génotype ou repérer des gènes liés.",
+     "wrongs": [
+      "Un homozygote dominant",
+      "Un hétérozygote",
+      "Un individu de la même portée"
+     ]
     },
     {
-     "question": "Gènes indépendants / gènes liés",
-     "answer": "Indépendants : 4 phénotypes à 25 % chacun.\nLiés : surtout des phénotypes parentaux, peu de recombinés (crossing-over).",
-     "w": "fb2fc2ff",
-     "wq": "0595d350"
+     "question": "Que donne un test-cross avec deux gènes indépendants ?",
+     "answer": "4 phénotypes à 25 % chacun",
+     "w": [
+      "78c4c0b7",
+      "fb2fc2ff"
+     ],
+     "wq": "0595d350",
+     "wrongs": [
+      "Surtout des phénotypes parentaux",
+      "2 phénotypes à 50 %",
+      "Un seul phénotype"
+     ]
     },
     {
-     "question": "Mutation",
-     "answer": "Modification de la séquence d'ADN : substitution, délétion, insertion.\nSource de nouveaux allèles.\nSeules les mutations des cellules germinales sont transmises.",
-     "w": "9fd07a60",
-     "wq": "b12e4862"
+     "question": "Que donne un test-cross avec deux gènes liés ?",
+     "answer": "Surtout des phénotypes parentaux, peu de recombinés",
+     "more": "Les recombinés viennent des crossing-over.",
+     "wrongs": [
+      "4 phénotypes à 25 % chacun",
+      "Uniquement des phénotypes recombinés",
+      "Un seul phénotype"
+     ]
     },
     {
-     "question": "Duplication de gènes et famille multigénique",
-     "answer": "Une duplication suivie de mutations indépendantes produit des gènes apparentés.\nEx. : gènes des globines, des opsines.",
-     "w": "d122f488",
-     "wq": "8fcfcea5"
+     "question": "Qu'est-ce qu'une mutation ?",
+     "answer": "Une modification de la séquence d'ADN",
+     "w": [
+      "fc63598a",
+      "9fd07a60"
+     ],
+     "wq": "b12e4862",
+     "more": "Substitution, délétion, insertion : source de nouveaux allèles.",
+     "wrongs": [
+      "Un échange de chromosomes",
+      "Une division cellulaire",
+      "Une modification de l'environnement"
+     ]
     },
     {
-     "question": "Sélection naturelle",
-     "answer": "Les porteurs d'allèles avantageux dans un milieu ont plus de descendants.\nLa fréquence de ces allèles augmente (Darwin).",
-     "w": "fcea6781",
-     "wq": "fcc741a7"
+     "question": "Quelles mutations sont transmises à la descendance ?",
+     "answer": "Celles des cellules germinales",
+     "wrongs": [
+      "Celles des cellules somatiques",
+      "Toutes les mutations",
+      "Aucune"
+     ]
     },
     {
-     "question": "Dérive génétique",
-     "answer": "Variation aléatoire des fréquences alléliques d'une génération à l'autre.\nD'autant plus forte que la population est petite.",
-     "w": "b5169402",
-     "wq": "d7bb6ed9"
+     "question": "Comment se forme une famille multigénique ?",
+     "answer": "Par duplication de gènes suivie de mutations",
+     "w": [
+      "b1378cf9",
+      "d122f488"
+     ],
+     "wq": "8fcfcea5",
+     "more": "Ex. : gènes des globines, des opsines.",
+     "wrongs": [
+      "Par fécondation",
+      "Par transfert horizontal",
+      "Par sélection naturelle seule"
+     ]
     },
     {
-     "question": "Modèle de Hardy-Weinberg",
-     "answer": "Population idéale (grande, panmictique, sans mutation, migration ni sélection) :\nfréquences alléliques et génotypiques constantes.\np² + 2pq + q² = 1",
-     "w": "ad5cf725",
-     "wq": "06b7efd5"
+     "question": "Que fait la sélection naturelle ?",
+     "answer": "Elle augmente la fréquence des allèles avantageux",
+     "w": [
+      "28e45cec",
+      "fcea6781"
+     ],
+     "wq": "fcc741a7",
+     "more": "Les porteurs d'allèles avantageux dans un milieu ont plus de descendants (Darwin).",
+     "wrongs": [
+      "Elle crée de nouveaux allèles",
+      "Elle fait varier les allèles au hasard",
+      "Elle supprime toutes les mutations"
+     ]
     },
     {
-     "question": "Spéciation",
-     "answer": "La formation de nouvelles espèces à partir d'une population.\nSouvent après un isolement reproducteur (géographique, comportemental…).",
-     "w": "35590fcc",
-     "wq": "947c24e2"
+     "question": "Comment appelle-t-on la variation aléatoire des fréquences alléliques d'une génération à l'autre ?",
+     "answer": "La dérive génétique",
+     "w": [
+      "aefd4a2e",
+      "b5169402"
+     ],
+     "wq": "d7bb6ed9",
+     "wrongs": [
+      "La sélection naturelle",
+      "La mutation",
+      "La spéciation"
+     ]
     },
     {
-     "question": "Espèce : définition",
-     "answer": "Des individus capables de se reproduire entre eux avec une descendance fertile.",
-     "w": "1abb3290",
-     "wq": "118a0d50"
+     "question": "Dans quelles populations la dérive génétique est-elle la plus forte ?",
+     "answer": "Dans les petites populations",
+     "wrongs": [
+      "Dans les grandes populations",
+      "Dans les populations sans mutations",
+      "Elle est la même partout"
+     ]
     },
     {
-     "question": "Transferts horizontaux de gènes",
-     "answer": "Transmission de gènes entre organismes sans reproduction.\nEx. : entre bactéries, par des virus.",
-     "w": "b5486744",
-     "wq": "4b567fee"
+     "question": "Que prévoit le modèle de Hardy-Weinberg ?",
+     "answer": "Des fréquences alléliques et génotypiques constantes",
+     "w": [
+      "c96039b0",
+      "ad5cf725"
+     ],
+     "wq": "06b7efd5",
+     "more": "Pour une population idéale : grande, panmictique, sans mutation, migration ni sélection.",
+     "wrongs": [
+      "Une disparition des allèles récessifs",
+      "Une augmentation des mutations",
+      "Des fréquences qui varient au hasard"
+     ]
+    },
+    {
+     "question": "Quelle est l'équation de Hardy-Weinberg ?",
+     "answer": "p² + 2pq + q² = 1",
+     "wrongs": [
+      "p + q = 2",
+      "p² + q² = 1",
+      "2p + 2q = 1"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on la formation de nouvelles espèces ?",
+     "answer": "La spéciation",
+     "w": [
+      "3b4eda37",
+      "35590fcc"
+     ],
+     "wq": "947c24e2",
+     "wrongs": [
+      "La sélection",
+      "La dérive",
+      "La mutation"
+     ]
+    },
+    {
+     "question": "Qu'est-ce qui précède souvent la formation d'une nouvelle espèce ?",
+     "answer": "Un isolement reproducteur",
+     "more": "Géographique, comportemental…",
+     "wrongs": [
+      "Une fécondation",
+      "Une augmentation de la population",
+      "Une méiose"
+     ]
+    },
+    {
+     "question": "Comment définit-on une espèce ?",
+     "answer": "Des individus qui se reproduisent entre eux avec une descendance fertile",
+     "w": [
+      "8b1ade2e",
+      "1abb3290"
+     ],
+     "wq": "118a0d50",
+     "wrongs": [
+      "Des individus qui se ressemblent",
+      "Des individus qui vivent au même endroit",
+      "Des individus qui ont le même ADN"
+     ]
+    },
+    {
+     "question": "Qu'est-ce qu'un transfert horizontal de gènes ?",
+     "answer": "Une transmission de gènes sans reproduction",
+     "w": [
+      "c06b46dd",
+      "b5486744"
+     ],
+     "wq": "4b567fee",
+     "more": "Ex. : entre bactéries, par des virus.",
+     "wrongs": [
+      "Une transmission de parents à enfants",
+      "Un échange lors du crossing-over",
+      "Une duplication de gène"
+     ]
     },
     {
      "question": "D'où viennent les mitochondries et les chloroplastes ?",
-     "answer": "De bactéries intégrées dans une cellule ancestrale :\nc'est l'endosymbiose.",
-     "w": "1d78c306",
-     "wq": "1631fbe4"
+     "answer": "De bactéries intégrées dans une cellule ancestrale",
+     "w": [
+      "c1c5aa5e",
+      "1d78c306"
+     ],
+     "wq": "1631fbe4",
+     "more": "C'est l'endosymbiose.",
+     "wrongs": [
+      "D'une duplication du noyau",
+      "De virus",
+      "D'une mutation du cytoplasme"
+     ]
     },
     {
-     "question": "Phylogénie : principe",
-     "answer": "Les espèces qui partagent le plus de caractères dérivés (innovations)\nont un ancêtre commun plus récent.",
-     "w": "bc84829a",
-     "wq": "90749509"
+     "question": "En phylogénie, quelles espèces ont l'ancêtre commun le plus récent ?",
+     "answer": "Celles qui partagent le plus de caractères dérivés",
+     "w": [
+      "d195df96",
+      "bc84829a"
+     ],
+     "wq": "90749509",
+     "wrongs": [
+      "Celles qui se ressemblent le plus",
+      "Celles qui vivent dans le même milieu",
+      "Celles qui partagent le plus de caractères ancestraux"
+     ]
     },
     {
-     "question": "L'Homme et les grands singes",
-     "answer": "Ancêtre commun avec le chimpanzé : il y a environ 7 millions d'années.\nHomo sapiens apparaît en Afrique il y a environ 300 000 ans.",
-     "w": "06ebd9ba",
-     "wq": "6f702e09"
+     "question": "Quand vivait l'ancêtre commun de l'Homme et du chimpanzé ?",
+     "answer": "Il y a environ 7 millions d'années",
+     "w": [
+      "98b5a5d6",
+      "06ebd9ba"
+     ],
+     "wq": "6f702e09",
+     "wrongs": [
+      "Il y a environ 300 000 ans",
+      "Il y a environ 70 millions d'années",
+      "Il y a environ 700 000 ans"
+     ]
+    },
+    {
+     "question": "Quand et où Homo sapiens apparaît-il ?",
+     "answer": "En Afrique, il y a environ 300 000 ans",
+     "wrongs": [
+      "En Europe, il y a environ 40 000 ans",
+      "En Asie, il y a environ 1 million d'années",
+      "En Afrique, il y a environ 7 millions d'années"
+     ]
     }
    ]
   },
@@ -19098,88 +20759,269 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Principe de superposition",
-     "answer": "Une couche sédimentaire est plus récente que celle qu'elle recouvre (sauf déformation)."
+     "question": "Que dit le principe de superposition ?",
+     "answer": "Une couche est plus récente que celle qu'elle recouvre",
+     "w": "b4dc82c2",
+     "wq": "98f06c06",
+     "more": "Sauf déformation.",
+     "wrongs": [
+      "Une couche est plus ancienne que celle qu'elle recouvre",
+      "Une couche a le même âge partout",
+      "Une faille est plus ancienne que les couches"
+     ]
     },
     {
-     "question": "Principe de recoupement",
-     "answer": "Une structure (faille, filon) qui en recoupe une autre lui est postérieure."
+     "question": "Que dit le principe de recoupement ?",
+     "answer": "Une structure qui en recoupe une autre lui est postérieure",
+     "w": "516aec86",
+     "wq": "72189047",
+     "more": "Faille, filon…",
+     "wrongs": [
+      "Une structure qui en recoupe une autre lui est antérieure",
+      "Les éléments inclus sont plus récents",
+      "Une couche a le même âge partout"
+     ]
     },
     {
-     "question": "Principe d'inclusion",
-     "answer": "Les éléments inclus dans une roche sont plus anciens qu'elle."
+     "question": "Que dit le principe d'inclusion ?",
+     "answer": "Les éléments inclus dans une roche sont plus anciens qu'elle",
+     "w": "4f39f88d",
+     "wq": "4dde503a",
+     "wrongs": [
+      "Les éléments inclus sont plus récents que la roche",
+      "Les éléments inclus ont le même âge que la roche",
+      "Une couche recouvrante est plus récente"
+     ]
     },
     {
-     "question": "Principe de continuité",
-     "answer": "Une même couche a le même âge sur toute son étendue."
+     "question": "Que dit le principe de continuité ?",
+     "answer": "Une même couche a le même âge sur toute son étendue",
+     "w": "a78bba49",
+     "wq": "af0b5768",
+     "wrongs": [
+      "Une couche est plus récente que celle qu'elle recouvre",
+      "Une faille est postérieure aux couches",
+      "Les couches s'épaississent avec le temps"
+     ]
     },
     {
-     "question": "Fossile stratigraphique",
-     "answer": "Fossile d'une espèce à large répartition géographique et courte durée de vie.\nIl sert à dater et à corréler des couches.",
-     "w": "bbfaaadc",
-     "wq": "aa958c8f"
+     "question": "Qu'est-ce qu'un bon fossile stratigraphique ?",
+     "answer": "Une espèce à large répartition et courte durée de vie",
+     "w": [
+      "ccbee508",
+      "bbfaaadc"
+     ],
+     "wq": "aa958c8f",
+     "more": "Il sert à dater et à corréler des couches.",
+     "wrongs": [
+      "Une espèce locale ayant vécu très longtemps",
+      "Une espèce actuelle",
+      "Un fossile très bien conservé"
+     ]
     },
     {
-     "question": "Radiochronologie : principe",
-     "answer": "Un élément père se désintègre en élément fils à vitesse constante.\nN(t) = N₀ e^(−λt)\nt½ = ln 2 / λ",
-     "w": "c01fbd0e",
-     "wq": "d2f1433b"
+     "question": "Sur quel principe repose la radiochronologie ?",
+     "answer": "Un élément père se désintègre en élément fils à vitesse constante",
+     "w": [
+      "fcd8e1e5",
+      "c01fbd0e"
+     ],
+     "wq": "d2f1433b",
+     "more": "N(t) = N₀ e^(−λt) ; t½ = ln 2 / λ.",
+     "wrongs": [
+      "Les couches se déposent à vitesse constante",
+      "Les fossiles évoluent à vitesse constante",
+      "Les roches refroidissent à vitesse constante"
+     ]
     },
     {
-     "question": "Couples utilisés en datation absolue",
-     "answer": "• Carbone 14 (jusqu'à ≈ 50 000 ans)\n• Potassium-argon (K/Ar)\n• Rubidium-strontium (Rb/Sr, isochrones)\n• Uranium-plomb (U/Pb)",
-     "w": "85176e94",
-     "wq": "bcea04a4"
+     "question": "Jusqu'à quel âge peut-on dater avec le carbone 14 ?",
+     "answer": "Environ 50 000 ans",
+     "w": [
+      "00417630",
+      "85176e94"
+     ],
+     "wq": "bcea04a4",
+     "wrongs": [
+      "Environ 5 000 ans",
+      "Environ 5 millions d'années",
+      "Environ 4,5 milliards d'années"
+     ]
     },
     {
-     "question": "Méthode des isochrones (Rb/Sr)",
-     "answer": "Droite ⁸⁷Sr/⁸⁶Sr = f(⁸⁷Rb/⁸⁶Sr)\nPente = e^(λt) − 1\nOn en déduit l'âge t.",
-     "w": "59180aa0",
-     "wq": "c37e8e7b"
+     "question": "Quels couples permettent de dater des roches très anciennes ?",
+     "answer": "K/Ar, Rb/Sr, U/Pb",
+     "wrongs": [
+      "Carbone 14 seulement",
+      "O₂/CO₂",
+      "H/He"
+     ]
     },
     {
-     "question": "Âge de la Terre",
-     "answer": "Environ 4,56 milliards d'années."
+     "question": "Avec la méthode des isochrones (Rb/Sr), que permet de déterminer la pente de la droite ?",
+     "answer": "L'âge de la roche",
+     "w": [
+      "d33c40af",
+      "59180aa0"
+     ],
+     "wq": "c37e8e7b",
+     "more": "Pente = e^(λt) − 1.",
+     "wrongs": [
+      "La profondeur de la roche",
+      "La température de formation",
+      "La composition du manteau"
+     ]
     },
     {
-     "question": "Subduction",
-     "answer": "Plongement d'une lithosphère océanique dense sous une autre plaque.\nMarqueurs : fosse océanique, séismes (plan de Wadati-Benioff), volcanisme explosif.",
-     "w": "e42f15f9",
-     "wq": "073944cd"
+     "question": "Quel est l'âge de la Terre ?",
+     "answer": "Environ 4,56 milliards d'années",
+     "w": "69796e88",
+     "wq": "59092d39",
+     "wrongs": [
+      "Environ 13,8 milliards d'années",
+      "Environ 450 millions d'années",
+      "Environ 6 000 ans"
+     ]
     },
     {
-     "question": "Métamorphisme de la croûte océanique en subduction",
-     "answer": "Pression et température augmentent :\nschiste vert → schiste bleu (glaucophane) → éclogite (grenat, jadéite)",
-     "w": "4c53adff",
-     "wq": "a66e7825"
+     "question": "Qu'est-ce que la subduction ?",
+     "answer": "Le plongement d'une lithosphère océanique sous une autre plaque",
+     "w": [
+      "d5dd8aec",
+      "e42f15f9"
+     ],
+     "wq": "073944cd",
+     "wrongs": [
+      "L'affrontement de deux continents",
+      "L'écartement de deux plaques",
+      "La remontée du manteau sous un rift"
+     ]
     },
     {
-     "question": "Collision continentale",
-     "answer": "Affrontement de deux lithosphères continentales après la fermeture d'un océan : chaînes de montagnes (Alpes, Himalaya).\nMarqueurs : plis, failles inverses, nappes de charriage, ophiolites.",
-     "w": "65c67038",
-     "wq": "a7fc7589"
+     "question": "Quel type de volcanisme marque une zone de subduction ?",
+     "answer": "Un volcanisme explosif",
+     "more": "Autres marqueurs : fosse océanique, séismes (plan de Wadati-Benioff).",
+     "wrongs": [
+      "Un volcanisme effusif de point chaud",
+      "Aucun volcanisme",
+      "Un volcanisme de dorsale"
+     ]
     },
     {
-     "question": "Ophiolites",
-     "answer": "Fragments de lithosphère océanique charriés sur un continent.\nTémoins d'un ancien océan (ex. : le Chenaillet, dans les Alpes).",
-     "w": "476901c5",
-     "wq": "cabf0033"
+     "question": "Dans quel ordre la croûte océanique se transforme-t-elle en subduction ?",
+     "answer": "Schiste vert → schiste bleu → éclogite",
+     "w": [
+      "6570b119",
+      "4c53adff"
+     ],
+     "wq": "a66e7825",
+     "more": "Pression et température augmentent ; glaucophane, puis grenat et jadéite.",
+     "wrongs": [
+      "Éclogite → schiste bleu → schiste vert",
+      "Schiste bleu → schiste vert → éclogite",
+      "Granite → basalte → gabbro"
+     ]
     },
     {
-     "question": "Magmatisme de subduction",
-     "answer": "Déshydratation de la plaque plongeante\n→ fusion partielle de la péridotite du manteau\n→ magma andésitique, volcans explosifs, granitoïdes",
-     "w": "d0267614",
-     "wq": "4a957bb1"
+     "question": "Que provoque la collision de deux lithosphères continentales ?",
+     "answer": "La formation d'une chaîne de montagnes",
+     "w": [
+      "89d55eb1",
+      "65c67038"
+     ],
+     "wq": "a7fc7589",
+     "more": "Ex. : Alpes, Himalaya, après la fermeture d'un océan.",
+     "wrongs": [
+      "L'ouverture d'un océan",
+      "Une fosse océanique",
+      "Un point chaud"
+     ]
     },
     {
-     "question": "Croûte continentale / océanique",
-     "answer": "Continentale : granitique, épaisse (30-70 km), peu dense, âgée.\nOcéanique : basalte et gabbro, fine (≈ 7 km), plus dense, jeune (< 200 Ma)."
+     "question": "Quels indices marquent une collision continentale ?",
+     "answer": "Plis, failles inverses, nappes de charriage",
+     "more": "Et des ophiolites.",
+     "wrongs": [
+      "Failles normales et rifts",
+      "Dorsales et basaltes jeunes",
+      "Fosses et volcans explosifs seulement"
+     ]
     },
     {
-     "question": "Grandes crises biologiques",
-     "answer": "Des extinctions massives qui servent de limites à l'échelle des temps géologiques.\nEx. : fin du Permien (−252 Ma), fin du Crétacé (−66 Ma, dinosaures non aviens).",
-     "w": "757a64b9",
-     "wq": "b838f7ff"
+     "question": "Que sont les ophiolites ?",
+     "answer": "Des fragments de lithosphère océanique charriés sur un continent",
+     "w": [
+      "4a79219e",
+      "476901c5"
+     ],
+     "wq": "cabf0033",
+     "more": "Témoins d'un ancien océan (ex. : le Chenaillet, dans les Alpes).",
+     "wrongs": [
+      "Des roches volcaniques de point chaud",
+      "Des fossiles marins",
+      "Des roches de la croûte continentale profonde"
+     ]
+    },
+    {
+     "question": "Qu'est-ce qui déclenche le magmatisme de subduction ?",
+     "answer": "La déshydratation de la plaque plongeante",
+     "w": [
+      "5849820a",
+      "d0267614"
+     ],
+     "wq": "4a957bb1",
+     "more": "Elle provoque la fusion partielle de la péridotite du manteau → magma andésitique.",
+     "wrongs": [
+      "La fusion de la plaque plongeante entière",
+      "La chaleur du noyau",
+      "La décompression sous une dorsale"
+     ]
+    },
+    {
+     "question": "Comment est la croûte continentale ?",
+     "answer": "Granitique, épaisse, peu dense, âgée",
+     "w": "369f06bf",
+     "wq": "1450f130",
+     "more": "Épaisseur : 30 à 70 km.",
+     "wrongs": [
+      "Basaltique, fine, dense, jeune",
+      "Granitique, fine, dense, jeune",
+      "Basaltique, épaisse, peu dense, âgée"
+     ]
+    },
+    {
+     "question": "Comment est la croûte océanique ?",
+     "answer": "Basaltique, fine, dense, jeune",
+     "more": "Basalte et gabbro, environ 7 km, moins de 200 Ma.",
+     "wrongs": [
+      "Granitique, épaisse, peu dense, âgée",
+      "Granitique, fine, dense, âgée",
+      "Basaltique, épaisse, peu dense, âgée"
+     ]
+    },
+    {
+     "question": "À quoi servent les grandes crises biologiques en géologie ?",
+     "answer": "À délimiter les grandes périodes de l'échelle des temps",
+     "w": [
+      "ea92a586",
+      "757a64b9"
+     ],
+     "wq": "b838f7ff",
+     "wrongs": [
+      "À dater les roches par radioactivité",
+      "À mesurer l'âge de la Terre",
+      "À expliquer la tectonique des plaques"
+     ]
+    },
+    {
+     "question": "À quelle date a lieu la crise biologique de la fin du Crétacé ?",
+     "answer": "Il y a 66 millions d'années",
+     "more": "Disparition des dinosaures non aviens ; la crise de la fin du Permien date de −252 Ma.",
+     "wrongs": [
+      "Il y a 252 millions d'années",
+      "Il y a 6,6 millions d'années",
+      "Il y a 540 millions d'années"
+     ]
     }
    ]
   },
