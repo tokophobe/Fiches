@@ -116365,99 +116365,234 @@
    "cards": [
     {
      "question": "Quel ouvrage de Clausewitz sert de modèle pour penser la guerre ?",
-     "answer": "De la guerre\npublié en 1832, après sa mort.",
-     "w": "d40a9a17",
-     "wq": "bfce0252"
+     "answer": "De la guerre",
+     "w": [
+      "0cacf75b",
+      "d40a9a17"
+     ],
+     "more": "Publié en 1832, après sa mort.",
+     "wrongs": [
+      "L'Art de la guerre",
+      "Le Prince",
+      "Le Léviathan"
+     ]
     },
     {
-     "question": "Quelle est la formule la plus célèbre de Clausewitz ?",
-     "answer": "« La guerre est la continuation de la politique par d'autres moyens » :\nun instrument au service d'un objectif politique.",
-     "w": "a13ce2df",
-     "wq": "94946d4f"
+     "question": "Pour Clausewitz, la guerre est la continuation de quoi par d'autres moyens ?",
+     "answer": "De la politique",
+     "w": [
+      "c4a963cf",
+      "a13ce2df"
+     ],
+     "wq": "94946d4f",
+     "wrongs": [
+      "Du commerce",
+      "De la religion",
+      "De la diplomatie secrète"
+     ]
     },
     {
-     "question": "Qu'est-ce que la « trinité » de Clausewitz ?",
-     "answer": "Trois pôles :\n• le peuple : la passion\n• l'armée et son chef : le hasard, le talent\n• le gouvernement : la raison politique",
-     "w": "0fa345a0",
-     "wq": "dbb01ed1"
+     "question": "Dans la « trinité » de Clausewitz, quel pôle incarne la raison politique ?",
+     "answer": "Le gouvernement",
+     "w": [
+      "d296a41b",
+      "0fa345a0"
+     ],
+     "wq": "dbb01ed1",
+     "more": "Le peuple : la passion ; l'armée : le hasard et le talent.",
+     "wrongs": [
+      "Le peuple",
+      "L'armée",
+      "L'Église"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une guerre irrégulière ou asymétrique ?",
-     "answer": "Une armée régulière d'État contre des combattants non étatiques\n(guérilla, terroristes) aux moyens très inférieurs,\nqui évitent la bataille rangée.",
-     "w": "a477ec6d",
-     "wq": "7e14c3f4"
+     "question": "Une armée d'État contre une guérilla : quel type de guerre ?",
+     "answer": "Une guerre asymétrique",
+     "w": [
+      "d70c017f",
+      "a477ec6d"
+     ],
+     "wq": "7e14c3f4",
+     "more": "Ou irrégulière : l'adversaire non étatique évite la bataille rangée.",
+     "wrongs": [
+      "Une guerre conventionnelle",
+      "Une guerre froide",
+      "Une guerre de position"
+     ]
     },
     {
      "question": "Pourquoi Al-Qaïda et Daech mettent-ils à l'épreuve le modèle de Clausewitz ?",
-     "answer": "Des acteurs non étatiques,\nsans territoire fixe (Al-Qaïda) ou contestant les frontières (Daech),\nqui recourent au terrorisme : la guerre n'oppose plus des États.",
-     "w": "d2269708",
-     "wq": "4a9e9bb1"
+     "answer": "Ce sont des acteurs non étatiques",
+     "w": [
+      "0e905214",
+      "d2269708"
+     ],
+     "more": "Ils recourent au terrorisme : la guerre n'oppose plus des États.",
+     "wrongs": [
+      "Ils ont une armée régulière",
+      "Ils respectent le droit de la guerre",
+      "Ils sont membres de l'ONU"
+     ]
     },
     {
-     "question": "Quand Daech a-t-il proclamé un « califat » ?",
-     "answer": "En juin 2014\naprès la prise de Mossoul, à cheval sur l'Irak et la Syrie.",
-     "w": "882dcd33",
-     "wq": "6fa2f848"
+     "question": "En quelle année Daech proclame-t-il un « califat » ?",
+     "answer": "2014",
+     "w": [
+      "870bc87f",
+      "882dcd33"
+     ],
+     "wq": "6fa2f848",
+     "more": "Après la prise de Mossoul.",
+     "wrongs": [
+      "2001",
+      "2011",
+      "2019"
+     ]
     },
     {
-     "question": "Quels traités mettent fin à la guerre de Trente Ans ?",
-     "answer": "Les traités de Westphalie\n(Münster et Osnabrück), en 1648.",
-     "w": "fadcf4ef",
-     "wq": "da5178c4"
+     "question": "Quels traités mettent fin à la guerre de Trente Ans en 1648 ?",
+     "answer": "Les traités de Westphalie",
+     "w": [
+      "eb6019c6",
+      "fadcf4ef"
+     ],
+     "wq": "da5178c4",
+     "wrongs": [
+      "Le traité de Versailles",
+      "Les accords de Camp David",
+      "Le traité d'Utrecht"
+     ]
     },
     {
-     "question": "Pourquoi parle-t-on d'« ordre westphalien » ?",
-     "answer": "Un ordre européen d'États souverains :\n• égaux en droit\n• sans autorité supérieure\n• cherchant l'équilibre des puissances",
-     "w": "0d54ada1",
-     "wq": "10a03bf4"
+     "question": "L'ordre westphalien repose sur quel type d'États ?",
+     "answer": "Des États souverains égaux en droit",
+     "w": [
+      "8cdba95d",
+      "0d54ada1"
+     ],
+     "wq": "10a03bf4",
+     "wrongs": [
+      "Un empire universel",
+      "Des cités dominées par le pape",
+      "Une fédération européenne"
+     ]
     },
     {
-     "question": "Quand et où l'ONU a-t-elle été fondée ?",
-     "answer": "En 1945\nCharte signée à San Francisco le 26 juin 1945.",
-     "w": "833ea2e1",
-     "wq": "73082393"
+     "question": "Dans quelle ville la Charte de l'ONU est-elle signée en 1945 ?",
+     "answer": "San Francisco",
+     "w": [
+      "be5bab56",
+      "833ea2e1"
+     ],
+     "wq": "73082393",
+     "wrongs": [
+      "New York",
+      "Genève",
+      "Londres"
+     ]
     },
     {
-     "question": "Qui sont les membres permanents du Conseil de sécurité ?",
-     "answer": "• États-Unis\n• Russie (URSS en 1945)\n• Chine\n• Royaume-Uni, France\nChacun a un droit de veto.",
-     "w": "adf27d14",
-     "wq": "335924b2"
+     "question": "Combien de membres permanents compte le Conseil de sécurité ?",
+     "answer": "5",
+     "w": [
+      "755510ed",
+      "adf27d14"
+     ],
+     "wq": "335924b2",
+     "more": "États-Unis, Russie, Chine, Royaume-Uni, France, avec droit de veto.",
+     "wrongs": [
+      "3",
+      "10",
+      "15"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une opération de maintien de la paix ?",
-     "answer": "L'envoi par l'ONU de forces internationales (Casques bleus),\navec l'accord des parties,\npour surveiller un cessez-le-feu ou protéger des civils.",
-     "w": "f72189a7",
-     "wq": "bc0bef30"
+     "question": "Comment appelle-t-on les forces de maintien de la paix de l'ONU ?",
+     "answer": "Les Casques bleus",
+     "w": [
+      "91d6285f",
+      "f72189a7"
+     ],
+     "wq": "bc0bef30",
+     "wrongs": [
+      "Les Bérets verts",
+      "Les Gardes rouges",
+      "L'OTAN"
+     ]
     },
     {
-     "question": "Pourquoi la date de 1967 est-elle un repère pour le Moyen-Orient ?",
-     "answer": "La guerre des Six Jours (juin 1967) :\nIsraël occupe le Sinaï, Gaza, la Cisjordanie, Jérusalem-Est et le Golan.\nLa résolution 242 de l'ONU demande son retrait.",
-     "w": "d565e6df",
-     "wq": "c14ea3a0"
+     "question": "Quelle guerre a lieu en juin 1967 au Moyen-Orient ?",
+     "answer": "La guerre des Six Jours",
+     "w": [
+      "e1ded214",
+      "d565e6df"
+     ],
+     "wq": "c14ea3a0",
+     "more": "Israël occupe Sinaï, Gaza, Cisjordanie, Jérusalem-Est, Golan.",
+     "wrongs": [
+      "La guerre du Kippour",
+      "La guerre du Golfe",
+      "La guerre de Suez"
+     ]
     },
     {
-     "question": "Que sont les accords de Camp David (1978) ?",
-     "answer": "Des accords Israël – Égypte, sous l'égide des États-Unis.\nSuivis du traité de paix de 1979 et de la restitution du Sinaï.",
-     "w": "0912e992",
-     "wq": "c190f81a"
+     "question": "Entre quels pays sont signés les accords de Camp David en 1978 ?",
+     "answer": "Israël et l'Égypte",
+     "w": [
+      "aa47dae0",
+      "0912e992"
+     ],
+     "wq": "c190f81a",
+     "more": "Sous l'égide des États-Unis ; paix en 1979.",
+     "wrongs": [
+      "Israël et l'OLP",
+      "Israël et la Syrie",
+      "L'Irak et le Koweït"
+     ]
     },
     {
-     "question": "Que prévoient les accords d'Oslo (1993) ?",
-     "answer": "• Reconnaissance mutuelle Israël – OLP\n• Création d'une Autorité palestinienne autonome\nUne étape vers une paix qui n'a pas abouti.",
-     "w": "aabb5050",
-     "wq": "a1b26027"
+     "question": "Que créent les accords d'Oslo (1993) ?",
+     "answer": "Une Autorité palestinienne autonome",
+     "w": [
+      "7b700f37",
+      "aabb5050"
+     ],
+     "wq": "a1b26027",
+     "more": "Avec la reconnaissance mutuelle Israël – OLP.",
+     "wrongs": [
+      "Un État palestinien indépendant",
+      "Une alliance militaire",
+      "Une zone de libre-échange"
+     ]
     },
     {
-     "question": "Quels sont les deux conflits du Golfe ?",
-     "answer": "• 1991 : une coalition sous mandat de l'ONU libère le Koweït envahi par l'Irak.\n• 2003 : les États-Unis renversent Saddam Hussein, sans mandat de l'ONU.",
-     "w": "af1ae201",
-     "wq": "99c72e2c"
+     "question": "En 2003, l'intervention américaine en Irak a-t-elle un mandat de l'ONU ?",
+     "answer": "Non",
+     "w": [
+      "3158d539",
+      "af1ae201"
+     ],
+     "wq": "99c72e2c",
+     "more": "En 1991, la coalition qui libère le Koweït avait un mandat.",
+     "wrongs": [
+      "Oui, unanime",
+      "Oui, voté par la France",
+      "Oui, après un référendum"
+     ]
     },
     {
      "question": "Qu'est-ce que le multilatéralisme ?",
-     "answer": "La coopération entre de nombreux États\nau sein d'institutions et de règles communes (ONU)\npour régler les conflits.",
-     "w": "b254652d",
-     "wq": "76925eb0"
+     "answer": "La coopération de nombreux États dans des règles communes",
+     "w": [
+      "49a953a6",
+      "b254652d"
+     ],
+     "wrongs": [
+      "La domination d'une seule puissance",
+      "Une alliance entre deux pays",
+      "Le refus de toute négociation"
+     ]
     }
    ]
   },
@@ -116480,100 +116615,236 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelle différence entre histoire et mémoire ?",
-     "answer": "Mémoire : un souvenir vécu ou transmis, affectif et sélectif, propre à un groupe.\nHistoire : une connaissance critique du passé,\nconstruite par les historiens à partir de sources.",
-     "w": "fbbade51",
-     "wq": "ee8be727"
+     "question": "Quelle est la connaissance critique du passé, construite à partir de sources ?",
+     "answer": "L'histoire",
+     "w": [
+      "cfd8566e",
+      "fbbade51"
+     ],
+     "wq": "ee8be727",
+     "more": "La mémoire est un souvenir affectif et sélectif, propre à un groupe.",
+     "wrongs": [
+      "La mémoire",
+      "La commémoration",
+      "Le témoignage"
+     ]
     },
     {
-     "question": "Que sont les « lois mémorielles » ?",
-     "answer": "Des lois où l'État prend position sur le passé.\nEx. : loi Gayssot (1990) contre le négationnisme ;\nloi Taubira (2001) : traite et esclavage, crime contre l'humanité",
-     "w": "2f63758f",
-     "wq": "81070a32"
+     "question": "Quelle loi de 1990 lutte contre le négationnisme ?",
+     "answer": "La loi Gayssot",
+     "w": [
+      "4a478c87",
+      "2f63758f"
+     ],
+     "wq": "81070a32",
+     "more": "Loi Taubira (2001) : traite et esclavage, crime contre l'humanité.",
+     "wrongs": [
+      "La loi Taubira",
+      "La loi Veil",
+      "La loi Neuwirth"
+     ]
     },
     {
-     "question": "Quel article du traité de Versailles alimente le débat sur les causes de la Première Guerre mondiale ?",
-     "answer": "L'article 231\nqui fait de l'Allemagne et de ses alliés les responsables de la guerre.",
-     "w": "3dd75336",
-     "wq": "9eb1dbdb"
+     "question": "Quel article du traité de Versailles fait de l'Allemagne la responsable de la guerre ?",
+     "answer": "L'article 231",
+     "w": [
+      "0cce94ea",
+      "3dd75336"
+     ],
+     "wq": "9eb1dbdb",
+     "wrongs": [
+      "L'article 1",
+      "L'article 55",
+      "L'article 16"
+     ]
     },
     {
-     "question": "Quelle thèse Fritz Fischer défend-il en 1961 ?",
-     "answer": "L'Allemagne impériale porte une responsabilité majeure,\nà cause de ses buts de guerre expansionnistes.\nLa thèse provoque un vif débat en RFA.",
-     "w": "8817e550",
-     "wq": "f589edf3"
+     "question": "Quel historien défend en 1961 la responsabilité majeure de l'Allemagne impériale ?",
+     "answer": "Fritz Fischer",
+     "w": [
+      "7a357b67",
+      "8817e550"
+     ],
+     "wq": "f589edf3",
+     "wrongs": [
+      "Christopher Clark",
+      "Benjamin Stora",
+      "Henry Rousso"
+     ]
     },
     {
-     "question": "Quelle lecture propose Christopher Clark dans Les Somnambules (2012) ?",
-     "answer": "Les dirigeants européens ont glissé vers la guerre\npar une série de décisions, sans vraiment la vouloir :\nresponsabilité partagée.",
-     "w": "84ff4211",
-     "wq": "5ffc15ee"
+     "question": "Quelle thèse Christopher Clark défend-il dans Les Somnambules ?",
+     "answer": "Une responsabilité partagée",
+     "w": [
+      "e46a16b4",
+      "84ff4211"
+     ],
+     "wq": "5ffc15ee",
+     "more": "Les dirigeants ont glissé vers la guerre sans vraiment la vouloir.",
+     "wrongs": [
+      "La seule culpabilité allemande",
+      "La seule culpabilité française",
+      "Une guerre voulue par les peuples"
+     ]
     },
     {
      "question": "Pourquoi parle-t-on de mémoires plurielles de la guerre d'Algérie ?",
-     "answer": "Appelés, pieds-noirs, harkis, militants du FLN, immigrés algériens\nont des souvenirs différents, souvent concurrents.",
-     "w": "095e0cb3",
-     "wq": "46b44348"
+     "answer": "Chaque groupe a des souvenirs différents",
+     "w": [
+      "0640b708",
+      "095e0cb3"
+     ],
+     "more": "Appelés, pieds-noirs, harkis, FLN, immigrés algériens.",
+     "wrongs": [
+      "Il n'y a aucune source",
+      "La guerre a eu lieu plusieurs fois",
+      "Tous partagent la même mémoire"
+     ]
     },
     {
-     "question": "Quel historien a analysé l'oubli de la guerre d'Algérie dans La Gangrène et l'oubli (1991) ?",
+     "question": "Qui a écrit La Gangrène et l'oubli (1991) ?",
      "answer": "Benjamin Stora",
-     "w": "23c55e6b",
-     "wq": "e1a551c3"
+     "w": [
+      "c5c896e7",
+      "23c55e6b"
+     ],
+     "wq": "e1a551c3",
+     "wrongs": [
+      "Henry Rousso",
+      "Fritz Fischer",
+      "Pierre Nora"
+     ]
     },
     {
-     "question": "Quand la France reconnaît-elle officiellement l'expression « guerre d'Algérie » ?",
-     "answer": "Par une loi de 1999.\nAvant : « opérations de maintien de l'ordre », « événements ».",
-     "w": "874902b6",
-     "wq": "d8014553"
+     "question": "En quelle année la France reconnaît-elle l'expression « guerre d'Algérie » ?",
+     "answer": "1999",
+     "w": [
+      "6ed80790",
+      "874902b6"
+     ],
+     "wq": "d8014553",
+     "more": "Avant : « événements », « opérations de maintien de l'ordre ».",
+     "wrongs": [
+      "1962",
+      "1981",
+      "2012"
+     ]
     },
     {
-     "question": "Que sont les tribunaux gacaca ?",
-     "answer": "Des juridictions populaires locales au Rwanda (2002-2012).\nPrès de deux millions de dossiers liés au génocide des Tutsi (1994),\nen favorisant aveux et réconciliation.",
-     "w": "d276bc42",
-     "wq": "fe410fe7"
+     "question": "Dans quel pays ont siégé les tribunaux gacaca ?",
+     "answer": "Au Rwanda",
+     "w": [
+      "7ae0c851",
+      "d276bc42"
+     ],
+     "wq": "fe410fe7",
+     "more": "2002-2012, après le génocide des Tutsi.",
+     "wrongs": [
+      "En Bosnie",
+      "En Algérie",
+      "Au Cambodge"
+     ]
     },
     {
-     "question": "Qu'est-ce que le TPIY ?",
-     "answer": "Le Tribunal pénal international pour l'ex-Yougoslavie\n(ONU, 1993, La Haye)\nqui a jugé les crimes des guerres de Yougoslavie.",
-     "w": "30c31b93",
-     "wq": "4f934294"
+     "question": "Où siégeait le Tribunal pénal international pour l'ex-Yougoslavie ?",
+     "answer": "À La Haye",
+     "w": [
+      "17ea2849",
+      "30c31b93"
+     ],
+     "wq": "4f934294",
+     "wrongs": [
+      "À Genève",
+      "À Nuremberg",
+      "À Belgrade"
+     ]
     },
     {
      "question": "Quel massacre de 1995 a été qualifié de génocide par le TPIY ?",
-     "answer": "Srebrenica (juillet 1995)\nenviron 8 000 hommes et garçons bosniaques musulmans tués.",
-     "w": "3a74669a",
-     "wq": "bb724089"
+     "answer": "Srebrenica",
+     "w": [
+      "63450502",
+      "3a74669a"
+     ],
+     "more": "Environ 8 000 hommes et garçons bosniaques tués.",
+     "wrongs": [
+      "Sarajevo",
+      "Oradour",
+      "Sabra et Chatila"
+     ]
     },
     {
-     "question": "Qui a forgé le mot « génocide » et quand ?",
-     "answer": "Le juriste Raphael Lemkin, en 1944.\nConvention de l'ONU contre le génocide : 9 décembre 1948.",
-     "w": "3173056f",
-     "wq": "3aebe808"
+     "question": "Qui a forgé le mot « génocide » en 1944 ?",
+     "answer": "Raphael Lemkin",
+     "w": [
+      "d9f98537",
+      "3173056f"
+     ],
+     "wq": "3aebe808",
+     "more": "Convention de l'ONU : 9 décembre 1948.",
+     "wrongs": [
+      "René Cassin",
+      "Hannah Arendt",
+      "Simone Veil"
+     ]
     },
     {
-     "question": "Quel procès fonde la justice pénale internationale en 1945-1946 ?",
-     "answer": "Le procès de Nuremberg\nIl juge les dirigeants nazis et définit le crime contre l'humanité.",
-     "w": "1ac41a03",
-     "wq": "e31c07ab"
+     "question": "Quel procès de 1945-1946 définit le crime contre l'humanité ?",
+     "answer": "Le procès de Nuremberg",
+     "w": [
+      "97f90ae1",
+      "1ac41a03"
+     ],
+     "wq": "e31c07ab",
+     "wrongs": [
+      "Le procès Eichmann",
+      "Le procès Papon",
+      "Le procès de Tokyo"
+     ]
     },
     {
-     "question": "Pourquoi le procès Eichmann (Jérusalem, 1961) est-il un tournant mémoriel ?",
-     "answer": "Il donne largement la parole aux témoins rescapés\net place le génocide des Juifs\nau centre de la mémoire de la Seconde Guerre mondiale.",
-     "w": "88f56d60",
-     "wq": "65731cf1"
+     "question": "Dans quelle ville se tient le procès Eichmann en 1961 ?",
+     "answer": "Jérusalem",
+     "w": [
+      "340ae07c",
+      "88f56d60"
+     ],
+     "wq": "65731cf1",
+     "more": "Il donne la parole aux rescapés.",
+     "wrongs": [
+      "Nuremberg",
+      "Berlin",
+      "Paris"
+     ]
     },
     {
-     "question": "Que reconnaît Jacques Chirac dans son discours du 16 juillet 1995 ?",
-     "answer": "La responsabilité de l'État français dans la déportation des Juifs,\nlors de la commémoration de la rafle du Vel d'Hiv (juillet 1942).",
-     "w": "29b5186c",
-     "wq": "92401938"
+     "question": "Quel président reconnaît en 1995 la responsabilité de l'État français dans la déportation des Juifs ?",
+     "answer": "Jacques Chirac",
+     "w": [
+      "890ef832",
+      "29b5186c"
+     ],
+     "wq": "92401938",
+     "more": "Discours du Vel d'Hiv, 16 juillet 1995.",
+     "wrongs": [
+      "François Mitterrand",
+      "Charles de Gaulle",
+      "Nicolas Sarkozy"
+     ]
     },
     {
-     "question": "Qu'est-ce que le « syndrome de Vichy » selon Henry Rousso (1987) ?",
-     "answer": "La difficulté des Français à assumer le souvenir de Vichy :\ndu refoulement et du mythe résistancialiste\nà une obsession mémorielle.",
-     "w": "50e189d3",
-     "wq": "b0ed5349"
+     "question": "Qui a forgé l'expression « syndrome de Vichy » (1987) ?",
+     "answer": "Henry Rousso",
+     "w": [
+      "39299636",
+      "50e189d3"
+     ],
+     "wq": "b0ed5349",
+     "wrongs": [
+      "Benjamin Stora",
+      "Pierre Nora",
+      "Marc Bloch"
+     ]
     }
    ]
   },
@@ -116596,100 +116867,235 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment définir l'environnement en HGGSP ?",
-     "answer": "Les milieux et ressources où vivent les sociétés,\nà la fois naturels et construits par l'action humaine :\nune construction sociale.",
-     "w": "483176c2",
-     "wq": "eb787e49"
+     "question": "En HGGSP, l'environnement est-il seulement naturel ?",
+     "answer": "Non, c'est aussi une construction sociale",
+     "w": [
+      "8a63ac90",
+      "483176c2"
+     ],
+     "wq": "eb787e49",
+     "wrongs": [
+      "Oui, uniquement naturel",
+      "Oui, sans action humaine",
+      "Non, uniquement urbain"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'Anthropocène ?",
-     "answer": "Une notion de Paul Crutzen (2000) :\nune ère où l'humanité est devenue la principale force\nqui transforme la planète (climat, biodiversité, sols).",
-     "w": "2f371c4b",
-     "wq": "cea21331"
+     "question": "Qui a popularisé la notion d'Anthropocène en 2000 ?",
+     "answer": "Paul Crutzen",
+     "w": [
+      "3c83ea28",
+      "2f371c4b"
+     ],
+     "wq": "cea21331",
+     "more": "L'humanité devient la principale force qui transforme la planète.",
+     "wrongs": [
+      "Al Gore",
+      "Rachel Carson",
+      "Hans Jonas"
+     ]
     },
     {
-     "question": "Quel texte de 1669 est un repère dans la gestion de la forêt française ?",
-     "answer": "L'ordonnance de Colbert sur les eaux et forêts.\nElle réglemente l'exploitation,\nnotamment pour le bois de la marine royale.",
-     "w": "2f47d14f",
-     "wq": "ec2ce0ea"
+     "question": "Quel ministre signe en 1669 une ordonnance sur les eaux et forêts ?",
+     "answer": "Colbert",
+     "w": [
+      "8af555b3",
+      "2f47d14f"
+     ],
+     "wq": "ec2ce0ea",
+     "more": "Notamment pour le bois de la marine royale.",
+     "wrongs": [
+      "Richelieu",
+      "Sully",
+      "Mazarin"
+     ]
     },
     {
-     "question": "Comment la surface forestière française a-t-elle évolué depuis le XIXe siècle ?",
-     "answer": "Elle a presque doublé depuis le milieu du XIXe siècle :\n• exode rural\n• reboisements\n• recul du bois comme combustible",
-     "w": "634ccf49",
-     "wq": "b5e417ee"
+     "question": "Comment a évolué la forêt française depuis le milieu du XIXe siècle ?",
+     "answer": "Elle a presque doublé",
+     "w": [
+      "20bb6e47",
+      "634ccf49"
+     ],
+     "wq": "b5e417ee",
+     "more": "Exode rural, reboisements, recul du bois de chauffage.",
+     "wrongs": [
+      "Elle a diminué de moitié",
+      "Elle n'a pas changé",
+      "Elle a disparu"
+     ]
     },
     {
-     "question": "Quel établissement public gère les forêts publiques françaises depuis les années 1960 ?",
-     "answer": "L'Office national des forêts (ONF)\ncréé en 1964.",
-     "w": "f5c6daef",
-     "wq": "3cbab1a5"
+     "question": "Quel établissement gère les forêts publiques françaises depuis 1964 ?",
+     "answer": "L'ONF",
+     "w": [
+      "64861b3b",
+      "f5c6daef"
+     ],
+     "wq": "3cbab1a5",
+     "wrongs": [
+      "L'ADEME",
+      "Le GIEC",
+      "La SNCF"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'optimum climatique médiéval ?",
-     "answer": "Une période assez douce en Europe (environ Xe-XIIIe siècle),\nfavorable aux récoltes\net à la colonisation du Groenland par les Vikings.",
-     "w": "5b5ab39c",
-     "wq": "e5d869fa"
+     "question": "Quelle période douce permet aux Vikings de coloniser le Groenland ?",
+     "answer": "L'optimum climatique médiéval",
+     "w": [
+      "973131c0",
+      "5b5ab39c"
+     ],
+     "wq": "e5d869fa",
+     "more": "Environ Xe-XIIIe siècle.",
+     "wrongs": [
+      "Le petit âge glaciaire",
+      "L'Anthropocène",
+      "La dernière glaciation"
+     ]
     },
     {
-     "question": "Qu'est-ce que le petit âge glaciaire ?",
-     "answer": "Une période plus froide (environ XIVe-XIXe siècle) :\navancée des glaciers alpins, hivers rigoureux.\nÉtudiée par Emmanuel Le Roy Ladurie.",
-     "w": "c70fc303",
-     "wq": "247e023b"
+     "question": "Quel historien a étudié le petit âge glaciaire ?",
+     "answer": "Emmanuel Le Roy Ladurie",
+     "w": [
+      "76859cb8",
+      "c70fc303"
+     ],
+     "wq": "247e023b",
+     "more": "Période froide, environ XIVe-XIXe siècle.",
+     "wrongs": [
+      "Fernand Braudel",
+      "Marc Bloch",
+      "Benjamin Stora"
+     ]
     },
     {
-     "question": "Qu'est-ce que le GIEC ?",
-     "answer": "Le Groupe d'experts intergouvernemental sur l'évolution du climat (1988)\nIl synthétise les connaissances scientifiques sur le changement climatique.",
-     "w": "cb5372bb",
-     "wq": "66e308ee"
+     "question": "Que fait le GIEC, créé en 1988 ?",
+     "answer": "Il synthétise la science sur le changement climatique",
+     "w": [
+      "7b389ffe",
+      "cb5372bb"
+     ],
+     "wq": "66e308ee",
+     "wrongs": [
+      "Il fixe les prix de l'énergie",
+      "Il gère les parcs nationaux",
+      "Il vote les lois climat"
+     ]
     },
     {
-     "question": "Que se passe-t-il au Sommet de la Terre de Rio en 1992 ?",
-     "answer": "• La Convention-cadre des Nations unies sur les changements climatiques\n• La popularisation du développement durable",
-     "w": "99baf064",
-     "wq": "f8044780"
+     "question": "Quel sommet de 1992 crée la Convention-cadre sur les changements climatiques ?",
+     "answer": "Le Sommet de la Terre de Rio",
+     "w": [
+      "4f8bef28",
+      "99baf064"
+     ],
+     "wq": "f8044780",
+     "wrongs": [
+      "Le protocole de Kyoto",
+      "La COP21 à Paris",
+      "Le sommet de Stockholm"
+     ]
     },
     {
-     "question": "Que prévoit le protocole de Kyoto (1997) ?",
-     "answer": "Des objectifs chiffrés de réduction des gaz à effet de serre\npour les pays développés.\nLes États-Unis ne l'ont jamais ratifié.",
-     "w": "51be1293",
-     "wq": "536b21a6"
+     "question": "Quel grand pays n'a jamais ratifié le protocole de Kyoto ?",
+     "answer": "Les États-Unis",
+     "w": [
+      "62b7b0df",
+      "51be1293"
+     ],
+     "wq": "536b21a6",
+     "wrongs": [
+      "La France",
+      "L'Allemagne",
+      "Le Japon"
+     ]
     },
     {
-     "question": "Quel est l'objectif de l'accord de Paris (COP21, 2015) ?",
-     "answer": "Contenir le réchauffement nettement sous 2 °C\n(par rapport à l'ère préindustrielle), en visant 1,5 °C.\nChaque État fixe ses propres engagements.",
-     "w": "10d177f1",
-     "wq": "4775094e"
+     "question": "Quel objectif fixe l'accord de Paris (2015) ?",
+     "answer": "Rester nettement sous 2 °C de réchauffement",
+     "w": [
+      "bc0dab75",
+      "10d177f1"
+     ],
+     "wq": "4775094e",
+     "more": "En visant 1,5 °C.",
+     "wrongs": [
+      "Arrêter tout réchauffement en 2020",
+      "Moins 50 % de pétrole en 2016",
+      "Un réchauffement de 4 °C maximum"
+     ]
     },
     {
      "question": "Que signifie COP ?",
-     "answer": "Conférence des parties :\nla réunion annuelle des États signataires de la Convention-cadre sur le climat.",
-     "w": "d13885a0",
-     "wq": "732108d5"
+     "answer": "Conférence des parties",
+     "w": [
+      "d0ac8862",
+      "d13885a0"
+     ],
+     "more": "Réunion annuelle des États signataires de la Convention-cadre.",
+     "wrongs": [
+      "Comité des pollutions",
+      "Conseil de l'ONU pour la planète",
+      "Contrat d'objectifs partagés"
+     ]
     },
     {
      "question": "Quel est le premier parc national du monde ?",
-     "answer": "Yellowstone\ncréé aux États-Unis en 1872.",
-     "w": "ba2e8ddf",
-     "wq": "d256d752"
+     "answer": "Yellowstone",
+     "w": [
+      "c91a98fd",
+      "ba2e8ddf"
+     ],
+     "more": "Créé en 1872 aux États-Unis.",
+     "wrongs": [
+      "Yosemite",
+      "Le parc de la Vanoise",
+      "Le Grand Canyon"
+     ]
     },
     {
-     "question": "Quelle tension traverse la politique environnementale des États-Unis ?",
-     "answer": "Pionniers de la protection (parcs nationaux, Clean Air Act),\nils sont aussi parmi les premiers émetteurs de gaz à effet de serre,\net alternent engagement et retrait selon les présidents.",
-     "w": "fc7dadf4",
-     "wq": "bced48ca"
+     "question": "Les États-Unis sont-ils à la fois pionniers de la protection et gros émetteurs ?",
+     "answer": "Oui",
+     "w": [
+      "00ae1ffc",
+      "fc7dadf4"
+     ],
+     "wq": "bced48ca",
+     "more": "Parcs nationaux, Clean Air Act, mais engagement variable selon les présidents.",
+     "wrongs": [
+      "Non, ils ne protègent rien",
+      "Non, ils émettent très peu",
+      "Non, ils ont toujours été constants"
+     ]
     },
     {
-     "question": "Quelle a été l'attitude des États-Unis envers l'accord de Paris sous Trump puis Biden ?",
-     "answer": "• Trump : retrait annoncé en 2017, effectif en 2020\n• Biden : retour décidé dès 2021",
-     "w": "3a8a1a55",
-     "wq": "5c7da2de"
+     "question": "Quel président américain a ramené les États-Unis dans l'accord de Paris en 2021 ?",
+     "answer": "Joe Biden",
+     "w": [
+      "456d5c43",
+      "3a8a1a55"
+     ],
+     "wq": "5c7da2de",
+     "more": "Trump en avait annoncé le retrait en 2017.",
+     "wrongs": [
+      "Barack Obama",
+      "Donald Trump",
+      "George W. Bush"
+     ]
     },
     {
      "question": "Qu'est-ce que la transition énergétique ?",
-     "answer": "Le passage d'un système fondé sur les énergies fossiles\nà un système plus sobre, avec plus d'énergies renouvelables.",
-     "w": "91e8aa0f",
-     "wq": "d6314d4d"
+     "answer": "Passer des énergies fossiles à un système plus renouvelable",
+     "w": [
+      "aa8d6e1c",
+      "91e8aa0f"
+     ],
+     "wrongs": [
+      "Augmenter l'usage du charbon",
+      "Changer de fournisseur d'électricité",
+      "Supprimer toute énergie"
+     ]
     }
    ]
   },
@@ -116712,100 +117118,238 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quel événement ouvre la course à l'espace ?",
-     "answer": "Le lancement de Spoutnik 1 par l'URSS\npremier satellite artificiel, le 4 octobre 1957.",
-     "w": "63f90870",
-     "wq": "5608f3b9"
+     "question": "Quel satellite ouvre la course à l'espace en 1957 ?",
+     "answer": "Spoutnik 1",
+     "w": [
+      "881e868c",
+      "63f90870"
+     ],
+     "wq": "5608f3b9",
+     "wrongs": [
+      "Apollo 11",
+      "Explorer 1",
+      "Vostok 1"
+     ]
     },
     {
      "question": "Qui est le premier homme dans l'espace ?",
-     "answer": "Youri Gagarine (URSS)\nle 12 avril 1961.",
-     "w": "7e3f576f",
-     "wq": "a07f5a0c"
+     "answer": "Youri Gagarine",
+     "w": [
+      "a57bd0a6",
+      "7e3f576f"
+     ],
+     "more": "Le 12 avril 1961.",
+     "wrongs": [
+      "Neil Armstrong",
+      "John Glenn",
+      "Buzz Aldrin"
+     ]
     },
     {
-     "question": "Quand l'homme marche-t-il pour la première fois sur la Lune ?",
-     "answer": "En juillet 1969\nmission Apollo 11 (Neil Armstrong et Buzz Aldrin).",
-     "w": "d0db9fbb",
-     "wq": "7aafdc54"
+     "question": "En quelle année l'homme marche-t-il pour la première fois sur la Lune ?",
+     "answer": "1969",
+     "w": [
+      "de95e2f3",
+      "d0db9fbb"
+     ],
+     "wq": "7aafdc54",
+     "more": "Apollo 11 : Armstrong et Aldrin.",
+     "wrongs": [
+      "1961",
+      "1957",
+      "1975"
+     ]
     },
     {
-     "question": "Quand la NASA est-elle créée ?",
-     "answer": "En 1958\nen réaction au succès de Spoutnik.",
-     "w": "8ec35ae2",
-     "wq": "583a62fe"
+     "question": "En quelle année la NASA est-elle créée ?",
+     "answer": "1958",
+     "w": [
+      "8b619c2e",
+      "8ec35ae2"
+     ],
+     "wq": "583a62fe",
+     "more": "En réaction au succès de Spoutnik.",
+     "wrongs": [
+      "1945",
+      "1961",
+      "1969"
+     ]
     },
     {
-     "question": "Que prévoit le traité de l'espace de 1967 ?",
-     "answer": "• Aucune appropriation nationale de l'espace et des corps célestes\n• Interdiction des armes nucléaires dans l'espace",
-     "w": "6b145473",
-     "wq": "3d225ae5"
+     "question": "Le traité de l'espace de 1967 autorise-t-il l'appropriation de la Lune ?",
+     "answer": "Non",
+     "w": [
+      "854c7d96",
+      "6b145473"
+     ],
+     "wq": "3d225ae5",
+     "more": "Il interdit aussi les armes nucléaires dans l'espace.",
+     "wrongs": [
+      "Oui, au premier arrivé",
+      "Oui, pour les États-Unis",
+      "Oui, pour l'ONU"
+     ]
     },
     {
-     "question": "Pourquoi la Station spatiale internationale est-elle un symbole de coopération ?",
-     "answer": "Assemblée à partir de 1998, occupée en permanence depuis 2000,\nelle associe États-Unis, Russie, Europe, Japon et Canada\nmalgré leurs rivalités.",
-     "w": "9c0f8974",
-     "wq": "816e759a"
+     "question": "Depuis quand la Station spatiale internationale est-elle occupée en permanence ?",
+     "answer": "2000",
+     "w": [
+      "2ec2a995",
+      "9c0f8974"
+     ],
+     "wq": "816e759a",
+     "more": "Elle associe États-Unis, Russie, Europe, Japon, Canada.",
+     "wrongs": [
+      "1969",
+      "1986",
+      "2015"
+     ]
     },
     {
-     "question": "Quel rôle joue l'Europe dans l'espace ?",
-     "answer": "L'Agence spatiale européenne (ESA, 1975)\ndéveloppe notamment les lanceurs Ariane,\nlancés depuis Kourou (Guyane).",
-     "w": "e937f2b2",
-     "wq": "94b20828"
+     "question": "D'où sont lancées les fusées Ariane ?",
+     "answer": "De Kourou, en Guyane",
+     "w": [
+      "b3ac032f",
+      "e937f2b2"
+     ],
+     "wq": "94b20828",
+     "more": "Agence spatiale européenne (ESA, 1975).",
+     "wrongs": [
+      "De Cap Canaveral",
+      "De Baïkonour",
+      "De Toulouse"
+     ]
     },
     {
      "question": "Qu'appelle-t-on le « New Space » ?",
-     "answer": "L'arrivée d'entreprises privées (SpaceX, Blue Origin…)\nqui réduisent les coûts d'accès à l'espace\net concurrencent les agences publiques.",
-     "w": "384090fd",
-     "wq": "72bdb560"
+     "answer": "L'arrivée d'entreprises privées dans l'espace",
+     "w": [
+      "b063d8e1",
+      "384090fd"
+     ],
+     "more": "SpaceX, Blue Origin…",
+     "wrongs": [
+      "Une nouvelle planète",
+      "Une station chinoise",
+      "Un traité de 2020"
+     ]
     },
     {
-     "question": "Quelle convention fixe le droit de la mer ?",
-     "answer": "La convention des Nations unies sur le droit de la mer\nsignée à Montego Bay (Jamaïque) en 1982.",
-     "w": "2488fdb3",
-     "wq": "268a6e30"
+     "question": "Où est signée en 1982 la convention sur le droit de la mer ?",
+     "answer": "À Montego Bay",
+     "w": [
+      "dc790341",
+      "2488fdb3"
+     ],
+     "wq": "268a6e30",
+     "wrongs": [
+      "À Genève",
+      "À Rio",
+      "À New York"
+     ]
     },
     {
-     "question": "Quelle est la largeur de la mer territoriale et de la ZEE ?",
-     "answer": "• Mer territoriale : 12 milles marins, souveraineté de l'État\n• ZEE : jusqu'à 200 milles marins, droits exclusifs sur les ressources",
-     "w": "0c108541",
-     "wq": "6f22ccc6"
+     "question": "Quelle est la largeur de la mer territoriale ?",
+     "answer": "12 milles marins",
+     "w": [
+      "e9a672e0",
+      "0c108541"
+     ],
+     "wq": "6f22ccc6",
+     "more": "ZEE : jusqu'à 200 milles marins.",
+     "wrongs": [
+      "200 milles marins",
+      "3 milles marins",
+      "50 milles marins"
+     ]
     },
     {
-     "question": "Quelle est la particularité de la France pour les espaces maritimes ?",
-     "answer": "Grâce à ses outre-mer :\nla deuxième ZEE du monde, environ 10 millions de km².",
-     "w": "3d2b141b",
-     "wq": "d48384b2"
+     "question": "Quel rang a la ZEE française dans le monde ?",
+     "answer": "2e",
+     "w": [
+      "291f7ea3",
+      "3d2b141b"
+     ],
+     "wq": "d48384b2",
+     "more": "Environ 10 millions de km², grâce aux outre-mer.",
+     "wrongs": [
+      "1re",
+      "10e",
+      "5e"
+     ]
     },
     {
-     "question": "Quel statut a la haute mer ?",
-     "answer": "Au-delà des ZEE : libre et ouverte à tous.\nLes grands fonds de la « Zone » :\npatrimoine commun de l'humanité.",
-     "w": "9b049907",
-     "wq": "b7d12f61"
+     "question": "Quel statut ont les grands fonds de la haute mer (la « Zone ») ?",
+     "answer": "Patrimoine commun de l'humanité",
+     "w": [
+      "1acd0f11",
+      "9b049907"
+     ],
+     "wq": "b7d12f61",
+     "wrongs": [
+      "Propriété des États-Unis",
+      "Partie des ZEE",
+      "Territoire de l'ONU"
+     ]
     },
     {
-     "question": "Quand la Chine envoie-t-elle son premier taïkonaute dans l'espace ?",
-     "answer": "En 2003, avec Yang Liwei.\nTroisième pays à envoyer un homme dans l'espace par ses propres moyens.",
-     "w": "a64ece8b",
-     "wq": "a546d3b6"
+     "question": "En quelle année la Chine envoie-t-elle son premier taïkonaute ?",
+     "answer": "2003",
+     "w": [
+      "2fb1073f",
+      "a64ece8b"
+     ],
+     "wq": "a546d3b6",
+     "more": "Yang Liwei.",
+     "wrongs": [
+      "1970",
+      "1993",
+      "2013"
+     ]
     },
     {
-     "question": "Quel exploit spatial chinois a lieu en 2019 ?",
-     "answer": "La sonde Chang'e 4 se pose\npour la première fois sur la face cachée de la Lune.",
-     "w": "2841295e",
-     "wq": "b9057d34"
+     "question": "Quelle sonde chinoise se pose sur la face cachée de la Lune en 2019 ?",
+     "answer": "Chang'e 4",
+     "w": [
+      "4596f204",
+      "2841295e"
+     ],
+     "wq": "b9057d34",
+     "wrongs": [
+      "Tiangong",
+      "Shenzhou 5",
+      "Apollo 18"
+     ]
     },
     {
-     "question": "Qu'est-ce que la station Tiangong ?",
-     "answer": "La station spatiale chinoise\nmodule central lancé en 2021.",
-     "w": "191325f0",
-     "wq": "c53bd22b"
+     "question": "Comment s'appelle la station spatiale chinoise ?",
+     "answer": "Tiangong",
+     "w": [
+      "fa50ec28",
+      "191325f0"
+     ],
+     "wq": "c53bd22b",
+     "more": "Module central lancé en 2021.",
+     "wrongs": [
+      "Mir",
+      "Chang'e",
+      "Skylab"
+     ]
     },
     {
-     "question": "Comment la Chine affirme-t-elle sa puissance sur les mers ?",
-     "answer": "• Une grande marine militaire\n• Revendication de presque toute la mer de Chine méridionale\n(îles Spratleys et Paracels)\n• Des ports et une base à Djibouti (2017)",
-     "w": "74ffffcc",
-     "wq": "d6140d3d"
+     "question": "Où la Chine a-t-elle ouvert une base militaire en 2017 ?",
+     "answer": "À Djibouti",
+     "w": [
+      "70f3dd6e",
+      "74ffffcc"
+     ],
+     "wq": "d6140d3d",
+     "more": "Elle revendique aussi presque toute la mer de Chine méridionale.",
+     "wrongs": [
+      "À Madagascar",
+      "Au Sri Lanka",
+      "En Australie"
+     ]
     }
    ]
   },
@@ -116828,100 +117372,238 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelles sont les trois entrées du thème « l'humanité en question » ?",
-     "answer": "• Création, continuités et ruptures\n• Histoire et violence\n• L'humain et ses limites",
-     "w": "403c1b51",
-     "wq": "9e974f22"
+     "question": "« Histoire et violence » est-elle une entrée du thème « l'humanité en question » ?",
+     "answer": "Oui",
+     "w": [
+      "aaf8130d",
+      "403c1b51"
+     ],
+     "wq": "9e974f22",
+     "more": "Avec « Création, continuités et ruptures » et « L'humain et ses limites ».",
+     "wrongs": [
+      "Non, c'est un thème d'HGGSP",
+      "Non, c'est un thème de 1re",
+      "Non, il n'y a qu'une entrée"
+     ]
     },
     {
-     "question": "Quelle phrase de Paul Valéry ouvre La Crise de l'esprit (1919) ?",
-     "answer": "« Nous autres, civilisations,\nnous savons maintenant que nous sommes mortelles. »",
-     "w": "3f14bbe1",
-     "wq": "c7803d29"
+     "question": "Qui écrit « Nous autres, civilisations, nous savons maintenant que nous sommes mortelles » ?",
+     "answer": "Paul Valéry",
+     "w": [
+      "b258e467",
+      "3f14bbe1"
+     ],
+     "wq": "c7803d29",
+     "more": "La Crise de l'esprit, 1919.",
+     "wrongs": [
+      "Albert Camus",
+      "Sigmund Freud",
+      "Primo Levi"
+     ]
     },
     {
-     "question": "Que raconte Primo Levi dans Si c'est un homme (1947) ?",
-     "answer": "Sa déportation à Auschwitz\net la tentative nazie de détruire l'humanité des déportés,\nréduits à la faim, au froid et à la déshumanisation.",
-     "w": "b32f3f83",
-     "wq": "76d509a1"
+     "question": "Que raconte Primo Levi dans Si c'est un homme ?",
+     "answer": "Sa déportation à Auschwitz",
+     "w": [
+      "2b8ae253",
+      "b32f3f83"
+     ],
+     "wq": "76d509a1",
+     "wrongs": [
+      "Son voyage en Amérique",
+      "La guerre d'Espagne",
+      "Une épidémie à Oran"
+     ]
     },
     {
-     "question": "Quelle thèse Robert Antelme défend-il dans L'Espèce humaine (1947) ?",
-     "answer": "Malgré les camps, les bourreaux ne peuvent pas\nretrancher les déportés de l'espèce humaine :\nl'humanité est une et indivisible.",
-     "w": "12164624",
-     "wq": "4ebadb2a"
+     "question": "Selon Robert Antelme, les bourreaux peuvent-ils retrancher les déportés de l'espèce humaine ?",
+     "answer": "Non",
+     "w": [
+      "4e590960",
+      "12164624"
+     ],
+     "wq": "4ebadb2a",
+     "more": "L'Espèce humaine (1947) : l'humanité est une et indivisible.",
+     "wrongs": [
+      "Oui, par la faim",
+      "Oui, par le travail forcé",
+      "Oui, par la loi"
+     ]
     },
     {
-     "question": "Qu'entend Hannah Arendt par « banalité du mal » (Eichmann à Jérusalem, 1963) ?",
-     "answer": "Eichmann n'est pas un monstre mais un fonctionnaire ordinaire\nqui a cessé de penser :\nle mal extrême peut naître de l'absence de jugement.",
-     "w": "d3c93df5",
-     "wq": "ea6925bc"
+     "question": "Quelle expression Hannah Arendt emploie-t-elle à propos d'Eichmann ?",
+     "answer": "La banalité du mal",
+     "w": [
+      "aac874b5",
+      "d3c93df5"
+     ],
+     "wq": "ea6925bc",
+     "more": "Un fonctionnaire ordinaire qui a cessé de penser.",
+     "wrongs": [
+      "Le mal radical",
+      "La honte prométhéenne",
+      "Le malaise dans la civilisation"
+     ]
     },
     {
-     "question": "Que montre Freud dans Malaise dans la civilisation (1930) ?",
-     "answer": "La civilisation exige de renoncer aux pulsions, notamment agressives,\nce qui produit un malaise.\nLa violence humaine menace toujours la vie commune.",
-     "w": "19de2e86",
-     "wq": "35ff8653"
+     "question": "Selon Freud, à quoi la civilisation oblige-t-elle à renoncer ?",
+     "answer": "Aux pulsions, notamment agressives",
+     "w": [
+      "42e4f751",
+      "19de2e86"
+     ],
+     "wq": "35ff8653",
+     "more": "Malaise dans la civilisation (1930).",
+     "wrongs": [
+      "Au langage",
+      "Au travail",
+      "À la religion"
+     ]
     },
     {
-     "question": "Que signifie la célèbre phrase de Lévi-Strauss dans Race et histoire (1952) ?",
-     "answer": "« Le barbare, c'est d'abord l'homme qui croit à la barbarie » :\nrefuser l'humanité aux autres cultures,\nvoilà la vraie barbarie.",
-     "w": "a52d7d78",
-     "wq": "ba741e96"
+     "question": "Selon Lévi-Strauss, qui est d'abord le barbare ?",
+     "answer": "L'homme qui croit à la barbarie",
+     "w": [
+      "8fef67fd",
+      "a52d7d78"
+     ],
+     "wq": "ba741e96",
+     "more": "Race et histoire, 1952.",
+     "wrongs": [
+      "L'étranger",
+      "Le sauvage",
+      "Le guerrier"
+     ]
     },
     {
-     "question": "Comment Camus définit-il la révolte dans L'Homme révolté (1951) ?",
-     "answer": "Le révolté dit non à l'injustice\ntout en affirmant une valeur commune :\n« Je me révolte, donc nous sommes. »",
-     "w": "ec05d619",
-     "wq": "c64b6736"
+     "question": "Quelle formule résume la révolte selon Camus ?",
+     "answer": "« Je me révolte, donc nous sommes »",
+     "w": [
+      "65dfa585",
+      "ec05d619"
+     ],
+     "wq": "c64b6736",
+     "more": "L'Homme révolté, 1951.",
+     "wrongs": [
+      "« Je pense, donc je suis »",
+      "« L'enfer, c'est les autres »",
+      "« Il faut imaginer Sisyphe heureux »"
+     ]
     },
     {
-     "question": "Que symbolise La Peste de Camus (1947) ?",
-     "answer": "Une épidémie à Oran qui figure le mal et l'Occupation.\nLe docteur Rieux incarne la solidarité\net la lutte modeste contre le malheur.",
-     "w": "e634b0a6",
-     "wq": "dc96cf60"
+     "question": "Dans quelle ville se déroule La Peste de Camus ?",
+     "answer": "Oran",
+     "w": [
+      "6f8fd430",
+      "e634b0a6"
+     ],
+     "wq": "dc96cf60",
+     "more": "Elle figure le mal et l'Occupation ; le docteur Rieux incarne la solidarité.",
+     "wrongs": [
+      "Alger",
+      "Paris",
+      "Marseille"
+     ]
     },
     {
-     "question": "Quelle dystopie Huxley imagine-t-il dans Le Meilleur des mondes (1932) ?",
-     "answer": "Une société où les humains sont fabriqués en laboratoire\net conditionnés au bonheur,\nau prix de la liberté.",
-     "w": "41b7895f",
-     "wq": "7b12635f"
+     "question": "Dans quel roman de 1932 les humains sont-ils fabriqués en laboratoire ?",
+     "answer": "Le Meilleur des mondes",
+     "w": [
+      "d83302fb",
+      "41b7895f"
+     ],
+     "wq": "7b12635f",
+     "more": "Aldous Huxley.",
+     "wrongs": [
+      "1984",
+      "Fahrenheit 451",
+      "La Peste"
+     ]
     },
     {
-     "question": "Quel est le cadre de 1984 d'Orwell (1949) ?",
-     "answer": "Un État totalitaire où Big Brother surveille tout,\nréécrit le passé et appauvrit la langue (novlangue)\npour empêcher la pensée.",
-     "w": "89afb069",
-     "wq": "cfc3c006"
+     "question": "Comment s'appelle la langue appauvrie de 1984 d'Orwell ?",
+     "answer": "La novlangue",
+     "w": [
+      "e23f3f0d",
+      "89afb069"
+     ],
+     "wq": "cfc3c006",
+     "wrongs": [
+      "L'espéranto",
+      "Le newspeak latin",
+      "La langue de bois"
+     ]
     },
     {
      "question": "Qu'est-ce que la « honte prométhéenne » selon Günther Anders ?",
-     "answer": "Le sentiment de l'homme d'être inférieur\naux machines parfaites qu'il a lui-même fabriquées.\n(L'Obsolescence de l'homme, 1956)",
-     "w": "5a166a01",
-     "wq": "5da6dd96"
+     "answer": "Se sentir inférieur aux machines qu'on a créées",
+     "w": [
+      "6be1766b",
+      "5a166a01"
+     ],
+     "wrongs": [
+      "Avoir volé le feu aux dieux",
+      "Avoir honte de son passé",
+      "Refuser la technique"
+     ]
     },
     {
-     "question": "Que propose Hans Jonas dans Le Principe responsabilité (1979) ?",
-     "answer": "Une éthique adaptée à la puissance technique :\nagir de façon que nos actions soient compatibles\navec la permanence d'une vie humaine authentique sur Terre.",
-     "w": "683406ef",
-     "wq": "511a932c"
+     "question": "Qui a écrit Le Principe responsabilité (1979) ?",
+     "answer": "Hans Jonas",
+     "w": [
+      "dfd0419d",
+      "683406ef"
+     ],
+     "wq": "511a932c",
+     "wrongs": [
+      "Hannah Arendt",
+      "Günther Anders",
+      "Theodor Adorno"
+     ]
     },
     {
-     "question": "Qu'est-ce que le transhumanisme ?",
-     "answer": "Un courant qui veut dépasser les limites biologiques de l'humain\n(maladie, vieillissement, mort) par les techniques.\nIl pose la question de ce qui fait l'humain.",
-     "w": "ba79a577",
-     "wq": "eae6275b"
+     "question": "Que veut dépasser le transhumanisme ?",
+     "answer": "Les limites biologiques de l'humain",
+     "w": [
+      "e19b68c6",
+      "ba79a577"
+     ],
+     "wq": "eae6275b",
+     "more": "Maladie, vieillissement, mort.",
+     "wrongs": [
+      "Les frontières des États",
+      "La pensée rationnelle",
+      "Les inégalités sociales"
+     ]
     },
     {
-     "question": "Que dit Adorno de la poésie après Auschwitz ?",
-     "answer": "« Écrire un poème après Auschwitz est barbare » (1949) :\nil interroge la possibilité de la culture après la catastrophe.",
-     "w": "4c03314b",
-     "wq": "e050a9e0"
+     "question": "Qui a écrit « Écrire un poème après Auschwitz est barbare » ?",
+     "answer": "Adorno",
+     "w": [
+      "ea769e11",
+      "4c03314b"
+     ],
+     "wq": "e050a9e0",
+     "wrongs": [
+      "Primo Levi",
+      "Paul Celan",
+      "Camus"
+     ]
     },
     {
-     "question": "Pourquoi les avant-gardes du XXe siècle illustrent-elles « création, continuités et ruptures » ?",
-     "answer": "Dada, le surréalisme ou l'art abstrait\nrompent avec les règles héritées de la représentation,\ntout en dialoguant avec la tradition qu'ils contestent.",
-     "w": "262a8f8c",
-     "wq": "7e7afcc4"
+     "question": "Le surréalisme rompt-il avec les règles héritées de la représentation ?",
+     "answer": "Oui",
+     "w": [
+      "8496db1c",
+      "262a8f8c"
+     ],
+     "wq": "7e7afcc4",
+     "more": "Comme Dada ou l'art abstrait, tout en dialoguant avec la tradition.",
+     "wrongs": [
+      "Non, il les respecte strictement",
+      "Non, il copie l'Antiquité",
+      "Non, il n'existe pas"
+     ]
     }
    ]
   },
@@ -116944,100 +117626,229 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelles fonctions composent la chaîne de puissance ?",
-     "answer": "• Alimenter\n• Distribuer (moduler)\n• Convertir\n• Transmettre\n… jusqu'à l'effecteur qui agit sur la matière d'œuvre.",
-     "w": "5b33b428",
-     "wq": "24867fd4"
+     "question": "« Distribuer » est une fonction de quelle chaîne ?",
+     "answer": "La chaîne de puissance",
+     "w": [
+      "5575da81",
+      "5b33b428"
+     ],
+     "wq": "24867fd4",
+     "more": "Alimenter, distribuer, convertir, transmettre.",
+     "wrongs": [
+      "La chaîne d'information",
+      "Les deux",
+      "Aucune"
+     ]
     },
     {
-     "question": "Quelles fonctions composent la chaîne d'information ?",
-     "answer": "• Acquérir : capteurs\n• Traiter : microcontrôleur\n• Communiquer : ordres vers la chaîne de puissance, informations vers l'utilisateur",
-     "w": "fbbe450b",
-     "wq": "ac66679f"
+     "question": "Dans la chaîne d'information, quel constituant assure « traiter » ?",
+     "answer": "Le microcontrôleur",
+     "w": [
+      "417e4ac7",
+      "fbbe450b"
+     ],
+     "wq": "ac66679f",
+     "more": "Acquérir : capteurs ; communiquer : ordres et informations.",
+     "wrongs": [
+      "Le capteur",
+      "Le moteur",
+      "La batterie"
+     ]
     },
     {
-     "question": "Quelle différence entre un système en boucle ouverte et en boucle fermée ?",
-     "answer": "Boucle ouverte : la commande ignore le résultat.\nBoucle fermée (asservi) : un capteur mesure la sortie,\nla compare à la consigne et corrige l'écart.",
-     "w": "15f07767",
-     "wq": "9c637fa0"
+     "question": "Dans quel système un capteur mesure-t-il la sortie pour la comparer à la consigne ?",
+     "answer": "En boucle fermée",
+     "w": [
+      "17049e43",
+      "15f07767"
+     ],
+     "wq": "9c637fa0",
+     "more": "En boucle ouverte, la commande ignore le résultat.",
+     "wrongs": [
+      "En boucle ouverte",
+      "Dans tous les systèmes",
+      "Dans aucun système"
+     ]
     },
     {
-     "question": "Qu'est-ce que l'écart dans un système asservi ?",
-     "answer": "Consigne − mesure de la sortie\nLe correcteur l'utilise pour élaborer la commande.",
-     "w": "0e56a322",
-     "wq": "b05ea25e"
+     "question": "Dans un système asservi, que vaut l'écart ?",
+     "answer": "Consigne − mesure de la sortie",
+     "w": [
+      "dea1af62",
+      "0e56a322"
+     ],
+     "wq": "b05ea25e",
+     "wrongs": [
+      "Consigne + sortie",
+      "Sortie × consigne",
+      "Commande − consigne"
+     ]
     },
     {
      "question": "Quels sont les trois critères de performance d'un système asservi ?",
-     "answer": "• Stabilité\n• Rapidité\n• Précision",
-     "w": "ec8e7330",
-     "wq": "40cb9c38"
+     "answer": "Stabilité, rapidité, précision",
+     "w": [
+      "e673aa2a",
+      "ec8e7330"
+     ],
+     "wrongs": [
+      "Coût, poids, couleur",
+      "Puissance, tension, courant",
+      "Vitesse, couple, rendement"
+     ]
     },
     {
      "question": "Comment mesure-t-on la rapidité d'un système ?",
-     "answer": "Par le temps de réponse à 5 % :\nla durée au bout de laquelle la sortie reste\nà ±5 % de sa valeur finale.",
-     "w": "dca4b579",
-     "wq": "5b94c997"
+     "answer": "Par le temps de réponse à 5 %",
+     "w": [
+      "ceff0732",
+      "dca4b579"
+     ],
+     "wrongs": [
+      "Par l'erreur statique",
+      "Par le dépassement",
+      "Par le rendement"
+     ]
     },
     {
-     "question": "Comment évalue-t-on la précision ?",
-     "answer": "Par l'erreur statique :\nl'écart consigne – sortie en régime permanent.",
-     "w": "0ffcf764",
-     "wq": "130d0153"
+     "question": "Comment évalue-t-on la précision d'un système ?",
+     "answer": "Par l'erreur statique",
+     "w": [
+      "5d4841fe",
+      "0ffcf764"
+     ],
+     "wq": "130d0153",
+     "more": "Écart consigne – sortie en régime permanent.",
+     "wrongs": [
+      "Par le temps de réponse",
+      "Par le gain",
+      "Par la puissance"
+     ]
     },
     {
      "question": "Qu'est-ce que le dépassement ?",
-     "answer": "L'écart maximal de la sortie au-delà de sa valeur finale,\nsouvent en pourcentage.",
-     "w": "37373012",
-     "wq": "1d33f4e1"
+     "answer": "L'écart maximal de la sortie au-delà de sa valeur finale",
+     "w": [
+      "9f912760",
+      "37373012"
+     ],
+     "wrongs": [
+      "Le temps de réponse",
+      "L'erreur en régime permanent",
+      "La consigne maximale"
+     ]
     },
     {
-     "question": "Quel est l'effet d'une augmentation du gain d'un correcteur proportionnel ?",
-     "answer": "En général plus rapide et plus précis,\nmais le dépassement augmente\net le système peut devenir instable.",
-     "w": "f087638c",
-     "wq": "9e835ac4"
+     "question": "Si l'on augmente le gain d'un correcteur proportionnel, que devient le dépassement ?",
+     "answer": "Il augmente",
+     "w": [
+      "4c91cc34",
+      "f087638c"
+     ],
+     "wq": "9e835ac4",
+     "more": "Le système est plus rapide et précis, mais peut devenir instable.",
+     "wrongs": [
+      "Il diminue",
+      "Il disparaît",
+      "Il ne change pas"
+     ]
     },
     {
      "question": "Comment calcule-t-on une puissance mécanique en rotation ?",
-     "answer": "P = C × ω\nC : couple (N·m) · ω : vitesse angulaire (rad/s)",
-     "w": "220af518",
-     "wq": "e3b11fc9"
+     "answer": "P = C × ω",
+     "w": [
+      "0ed09c27",
+      "220af518"
+     ],
+     "wrongs": [
+      "P = U × I",
+      "P = F / S",
+      "P = C / ω"
+     ]
     },
     {
      "question": "Comment calcule-t-on une puissance électrique en courant continu ?",
-     "answer": "P = U × I\nen watts (U en volts, I en ampères)",
-     "w": "afbf9551",
-     "wq": "3080ac4c"
+     "answer": "P = U × I",
+     "w": [
+      "f991c3a8",
+      "afbf9551"
+     ],
+     "wrongs": [
+      "P = U / I",
+      "P = R × I",
+      "P = C × ω"
+     ]
     },
     {
-     "question": "Comment obtient-on le rendement global d'une chaîne de transmission ?",
-     "answer": "Le produit des rendements des composants en série :\nη = η₁ × η₂ × η₃\ntoujours inférieur à chacun d'eux.",
-     "w": "c25a4867",
-     "wq": "5e0f517d"
+     "question": "Comment obtient-on le rendement global de composants en série ?",
+     "answer": "En multipliant leurs rendements",
+     "w": [
+      "7b3d354f",
+      "c25a4867"
+     ],
+     "wq": "5e0f517d",
+     "wrongs": [
+      "En les additionnant",
+      "En gardant le plus grand",
+      "En faisant leur moyenne"
+     ]
     },
     {
      "question": "Comment calcule-t-on une contrainte normale en traction ?",
-     "answer": "σ = F / S\nen pascals (ou MPa)\nF : force · S : aire de la section",
-     "w": "1423c869",
-     "wq": "ac3cadeb"
+     "answer": "σ = F / S",
+     "w": [
+      "3d39673c",
+      "1423c869"
+     ],
+     "more": "En pascals (ou MPa).",
+     "wrongs": [
+      "σ = F × S",
+      "σ = S / F",
+      "σ = E × F"
+     ]
     },
     {
-     "question": "Énoncer la loi de Hooke.",
-     "answer": "Dans le domaine élastique : σ = E × ε\n• E : module d'Young du matériau\n• ε : allongement relatif ΔL/L₀",
-     "w": "52b531f2",
-     "wq": "6f1d4e73"
+     "question": "Que dit la loi de Hooke ?",
+     "answer": "σ = E × ε",
+     "w": [
+      "d5c4d3a0",
+      "52b531f2"
+     ],
+     "wq": "6f1d4e73",
+     "more": "E : module d'Young ; ε : allongement relatif.",
+     "wrongs": [
+      "σ = F × S",
+      "E = σ × ε",
+      "ε = F × L"
+     ]
     },
     {
-     "question": "Que signifie le principe fondamental de la statique ?",
-     "answer": "Pour un solide en équilibre :\n• somme des forces extérieures nulle\n• somme de leurs moments en un point nulle",
-     "w": "acd6e967",
-     "wq": "e168359d"
+     "question": "Pour un solide en équilibre, que vaut la somme des forces extérieures ?",
+     "answer": "Zéro",
+     "w": [
+      "46821b32",
+      "acd6e967"
+     ],
+     "wq": "e168359d",
+     "more": "La somme des moments en un point est aussi nulle.",
+     "wrongs": [
+      "Le poids du solide",
+      "Une force verticale",
+      "Elle est infinie"
+     ]
     },
     {
      "question": "Pourquoi compare-t-on performances simulées et mesurées ?",
-     "answer": "Pour valider le modèle :\nles écarts entre réel, simulé et cahier des charges\npermettent d'améliorer le modèle ou la conception.",
-     "w": "6cbb6ea9",
-     "wq": "9d3fe372"
+     "answer": "Pour valider le modèle",
+     "w": [
+      "df7c1275",
+      "6cbb6ea9"
+     ],
+     "wrongs": [
+      "Pour baisser le prix",
+      "Pour supprimer les capteurs",
+      "Pour changer le cahier des charges"
+     ]
     }
    ]
   },
