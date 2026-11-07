@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v273";
+  const APP_VERSION = "v274";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -7802,8 +7802,8 @@
   // affichée tant qu'on ne la ferme pas (croix ou toucher sur la bulle).
   const ORG_FILTER_TIPS = {
     rev: "Affichage des boîtes activées pour la révision.",
-    published: "Affichage des boîtes publiées dans la Librairie.",
-    unpublished: "Affichage des boîtes non publiées dans la Librairie.",
+    published: "Affichage de mes boîtes publiées dans la Librairie.",
+    unpublished: "Affichage de mes boîtes non publiées dans la Librairie.",
   };
   function showRobotTip(text) {
     bodyLogoSpeechTip = true;
@@ -7983,7 +7983,10 @@
       if (view === "account") renderAccountView();
       if (view === "classes") renderClassesView();
       if (view === "messages") renderMessagesView();
-      if (view === "library") renderLibraryView();
+      if (view === "library") {
+        libraryShuffleMap = new Map(); // v274 : nouvel ordre à chaque visite
+        renderLibraryView();
+      }
       if (view === "reports") renderReportsView();
       if (view === "reports-sent") renderSentReportsView();
       if (view === "reports-hub") refreshReportsBadge();
@@ -15937,6 +15940,22 @@
    *  ou email de l'auteur), sans re-requêter à chaque frappe — séparée de
    *  renderLibraryView pour être appelée seule depuis l'écouteur de saisie
    *  et après une prise (pour rafraîchir "Déjà pris" sans re-télécharger). */
+  /* v274 : tirage au sort de l'ordre des boîtes (et des boîtes qui montrent
+     leur vidéo), gardé pendant une visite de la Librairie, refait à la
+     suivante. Les boîtes publiées récemment ont plus de chances d'être en
+     tête (poids de 1 pour une boîte ancienne à 5 pour une boîte du jour). */
+  let libraryShuffleMap = new Map();
+  function libraryShuffle(col) {
+    let v = libraryShuffleMap.get(col.id);
+    if (!v) {
+      const t = Date.parse(col.shared_at || col.created_at || "");
+      const ageDays = Number.isFinite(t) ? Math.max(0, (Date.now() - t) / 86400000) : 365;
+      const w = 1 + 4 * Math.exp(-ageDays / 21);
+      v = { key: -Math.log(Math.random() || 1e-9) / w, video: Math.random() < 0.1 };
+      libraryShuffleMap.set(col.id, v);
+    }
+    return v;
+  }
   function renderLibraryList() {
     const list = el("library-list");
     const empty = el("library-empty");
@@ -15985,6 +16004,15 @@
       list.innerHTML = `<li class="field-hint">Aucun résultat.</li>`;
       return;
     }
+    // v274 : sans cycle choisi (et hors « Mes partages »), les boîtes
+    // arrivent dans un ordre au hasard, les plus récentes plus souvent en
+    // tête ; l'ordre reste le même pendant la visite de la Librairie.
+    if (!libraryOnlyMine && !(libraryTaxFilter && libraryTaxFilter.cycle)) {
+      collections = collections.slice().sort((a, b) => libraryShuffle(a).key - libraryShuffle(b).key);
+    }
+    // v274 : une vidéo de présentation (miniature, lue seulement si on la
+    // touche) dans la 1re boîte qui en a une, puis environ une sur dix.
+    let firstVideoDone = false;
     for (const col of collections) {
       const n = libraryCardCount(col);
       // Round 48 : bloc épuré — nom en entier, nombre de fiches et
@@ -16013,6 +16041,31 @@
         ${libraryShowSummaries && descriptionText ? `<p class="library-row-summary">${escapeHtml(descriptionText)}</p>` : ""}
         ${inRevisions ? `<span class="library-row-in-revisions">Déjà dans mes révisions</span>` : ""}
       `;
+      const vid = learnLinkInfo(col.link);
+      if (vid && vid.ytId && (!firstVideoDone || libraryShuffle(col).video)) {
+        firstVideoDone = true;
+        const box = document.createElement("div");
+        box.className = "library-row-video";
+        box.innerHTML = `<img src="https://i.ytimg.com/vi/${encodeURIComponent(vid.ytId)}/mqdefault.jpg" alt="" loading="lazy" decoding="async" /><span class="library-row-play" aria-hidden="true"></span>`;
+        const thumb = box.querySelector("img");
+        if (thumb) thumb.addEventListener("error", () => { thumb.style.visibility = "hidden"; }, { once: true });
+        box.setAttribute("role", "button");
+        box.setAttribute("tabindex", "0");
+        box.setAttribute("aria-label", `Lire la vidéo de présentation de « ${col.name || ""} »`);
+        const play = (e) => {
+          e.stopPropagation();
+          if (box.classList.contains("is-playing")) return;
+          box.classList.add("is-playing");
+          box.innerHTML = `<iframe src="${escapeHtml(vid.embed)}" title="${escapeHtml(col.name || "Vidéo")}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+        };
+        box.addEventListener("click", play);
+        box.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") play(e);
+        });
+        const meta = li.querySelector(".card-row-meta");
+        if (meta) meta.after(box);
+        else li.appendChild(box);
+      }
       // v245 : plus de bouton « Ajouter à mes révisions » sur le bloc (il
       // est sur la page de la boîte).
       const thumbEl = li.querySelector(".library-thumb");
@@ -16305,6 +16358,9 @@
       libraryMineToggleEl.classList.toggle("is-active", libraryOnlyMine);
       libraryMineToggleEl.setAttribute("aria-pressed", String(libraryOnlyMine));
       renderLibraryList();
+      // v274 : même principe que les filtres de l'organisation.
+      if (libraryOnlyMine) showRobotTip("Affichage de mes boîtes publiées dans la Librairie.");
+      else if (bodyLogoSpeechTip) closeBodyLogoSpeech();
     });
   }
 

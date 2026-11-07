@@ -389,7 +389,7 @@ leur place dans l'arborescence.
   - « Afficher mes boîtes publiées » ;
   - « Afficher mes boîtes non publiées ».
   Quand on active un filtre, le robot rappelle en une phrase ce qu'il
-  montre (« Affichage des boîtes publiées dans la Librairie »…) (utile sur téléphone, sans texte au survol). Sa bulle reste
+  montre (« Affichage de mes boîtes publiées dans la Librairie »…) (utile sur téléphone, sans texte au survol). Sa bulle reste
   affichée jusqu'à ce qu'on la ferme (croix ou toucher sur la bulle), même
   si l'on touche ailleurs (v272).
   Pour les deux derniers, les boîtes qui ne sont pas les miennes (classe,
@@ -579,6 +579,21 @@ tout de suite, la liste à jour suit.
 - Chaque boîte : nom, auteur (prénom et nom), description,
   classification, nombre de fiches, « pouces » des utilisateurs, aperçu
   des fiches.
+- **Ordre de la liste** (v274) : tant qu'aucun cycle n'est choisi (aucune
+  catégorie, ou une catégorie seule), les boîtes sont montrées dans un **ordre au hasard**, tiré
+  à nouveau à chaque arrivée sur la page, avec une **préférence pour les
+  boîtes récentes** (une boîte de moins de trois semaines a nettement plus
+  de chances d'être en haut). Dès qu'un cycle est choisi, ou avec « Mes
+  partages », l'ordre habituel revient.
+- **Vidéo de présentation** (v274) : si la boîte a pour lien une vidéo
+  YouTube, la vidéo peut apparaître en petit dans son bloc (largeur du
+  bloc) : toujours dans la première boîte de la liste qui en a une, puis
+  dans environ une boîte sur dix, au hasard. Pour ne pas ralentir
+  l'appli, seule l'image de la vidéo est chargée ; la vidéo ne se lance
+  qu'au toucher.
+- **« Mes partages »** : n'affiche que mes boîtes publiées ; en l'activant,
+  le robot l'explique dans sa bulle (« Affichage de mes boîtes publiées
+  dans la Librairie. »), comme pour les filtres de l'Organisation (v274).
 - Sans accès, l'aperçu montre des réponses **coupées**.
 - **« Ajouter à mes révisions »** : choix du dossier, puis une copie de la
   boîte arrive dans l'organisation ; elle suit les corrections faites dans
@@ -724,6 +739,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v274 | 8 nov. 2026 | Organisation : textes du robot « Affichage de mes boîtes publiées / non publiées dans la Librairie. ». Librairie : explication du robot sur « Mes partages » ; tant qu'aucun cycle n'est choisi, boîtes dans un ordre au hasard avec préférence pour les récentes ; vidéo de présentation en petit dans la première boîte qui en a une, puis environ une sur dix (image seule, vidéo lancée au toucher). |
 | v273 | 8 nov. 2026 | Page Réviser : on arrive toujours sur les trois ronds, en haut de la page (les explications ne restent plus ouvertes). Smiley « Je ne savais pas du tout » éclairci en mode jour (distinct de « vague idée »). Textes du robot raccourcis pour les filtres de l'Organisation. Darwin Admin : bouton « Importer la dernière version » qui lit les boîtes toutes prêtes dans le dépôt privé Fiches-contenu ; numéro de version de Darwin Admin remis à jour. |
 | v272 | 8 nov. 2026 | Page Réviser : ronds un peu plus grands, schémas plus petits alignés à droite, repliement des cadres animé, smileys de l'explication sans cadre et plus grands. Révision : animation entre le texte d'invitation et les boutons d'évaluation ; smileys clairs foncés en mode jour. Organisation : le robot explique chaque filtre quand on l'active (bulle fermée par la croix). Agenda : « Liste » et « Mois » deviennent deux pictogrammes à droite de « + Ajouter un événement ». |
 | v271 | 7 nov. 2026 | Révision : une fiche QCM avec un complément de réponse reste affichée avec « Continuer », même après une bonne réponse du premier coup (la suite d'une réponse sur plusieurs lignes passait toute seule) ; message du robot au passage aux fiches difficiles. Page Réviser « mixte » : contours colorés des trois ronds, aperçu du texte en dégradé dans les cadres repliés, nouveaux schémas dessinés par le propriétaire. |
