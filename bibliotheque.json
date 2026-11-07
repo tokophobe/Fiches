@@ -13339,82 +13339,312 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Décolonisation : définition ?",
-     "answer": "Le processus par lequel les colonies accèdent à l'indépendance.\nDe façon négociée ou au terme d'une guerre.",
-     "w": "f45f3dec",
-     "wq": "82ddc7bd"
+     "question": "Comment appelle-t-on le processus par lequel les colonies accèdent à l'indépendance ?",
+     "answer": "La décolonisation",
+     "w": [
+      "01fce0b8",
+      "f45f3dec"
+     ],
+     "wq": [
+      "2c5199c8",
+      "82ddc7bd"
+     ],
+     "more": "De façon négociée ou au terme d'une guerre.",
+     "wrongs": [
+      "La colonisation",
+      "Le néocolonialisme",
+      "Le non-alignement"
+     ]
     },
     {
-     "question": "Indépendance de l'Inde : quelle date ?",
-     "answer": "15 août 1947\nPartition avec le Pakistan, violences et déplacements massifs.\nRôle de Gandhi (non-violence) et de Nehru.",
-     "w": "66b6c95a",
-     "wq": "57de89b3"
+     "question": "En quelle année l'Inde devient-elle indépendante ?",
+     "answer": "En 1947",
+     "w": [
+      "8a42dfad",
+      "66b6c95a"
+     ],
+     "wq": [
+      "96ebfe40",
+      "57de89b3"
+     ],
+     "more": "Le 15 août 1947. Partition avec le Pakistan, violences et déplacements massifs. Rôle de Gandhi (non-violence) et de Nehru.",
+     "wrongs": [
+      "En 1945",
+      "En 1954",
+      "En 1962"
+     ]
     },
     {
-     "question": "Indépendance de l'Indonésie : quelles dates ?",
-     "answer": "Proclamée en 1945 par Soekarno.\nReconnue par les Pays-Bas en 1949, après une guerre.",
-     "w": "c81d7c3f",
-     "wq": "c8d64f2b"
+     "question": "En quelle année Soekarno proclame-t-il l'indépendance de l'Indonésie ?",
+     "answer": "En 1945",
+     "w": [
+      "f83f4d8c",
+      "c81d7c3f"
+     ],
+     "wq": [
+      "de527358",
+      "c8d64f2b"
+     ],
+     "more": "L'indépendance n'est reconnue par les Pays-Bas qu'en 1949, après une guerre.",
+     "wrongs": [
+      "En 1949",
+      "En 1939",
+      "En 1956"
+     ]
     },
     {
-     "question": "Guerre d'Indochine : dates et issue ?",
-     "answer": "1946-1954 : la France contre le Viet Minh d'Hô Chi Minh.\nDéfaite française à Diên Biên Phu (mai 1954).\nAccords de Genève (juillet 1954) : Vietnam coupé au 17e parallèle.",
-     "w": "ca40135c",
-     "wq": "3b1ed361"
+     "question": "En quelle année les Pays-Bas reconnaissent-ils l'indépendance de l'Indonésie ?",
+     "answer": "En 1949",
+     "more": "Après une guerre de quatre ans ; l'indépendance avait été proclamée en 1945.",
+     "wrongs": [
+      "En 1945",
+      "En 1956",
+      "En 1962"
+     ]
     },
     {
-     "question": "Guerre d'Algérie : quelle date et quel événement la déclenchent ?",
-     "answer": "1er novembre 1954\nAttentats de la « Toussaint rouge », organisés par le FLN.",
-     "w": "a153cd0e",
-     "wq": "2fd47ebb"
+     "question": "Quelles sont les dates de la guerre d'Indochine ?",
+     "answer": "1946-1954",
+     "w": [
+      "fba1313b",
+      "ca40135c"
+     ],
+     "wq": [
+      "96fb13e5",
+      "3b1ed361"
+     ],
+     "more": "La France contre le Viet Minh d'Hô Chi Minh.",
+     "wrongs": [
+      "1945-1949",
+      "1954-1962",
+      "1950-1958"
+     ]
     },
     {
-     "question": "Fin de la guerre d'Algérie : quelles dates ?",
-     "answer": "Accords d'Évian : 18 mars 1962 (cessez-le-feu le 19)\nIndépendance : 5 juillet 1962",
-     "w": "b0d8dfd2",
-     "wq": "7ac26ff6"
+     "question": "Quelle défaite française met fin à la guerre d'Indochine en 1954 ?",
+     "answer": "Diên Biên Phu",
+     "more": "Le camp retranché tombe en mai 1954.",
+     "wrongs": [
+      "Saïgon",
+      "Hué",
+      "Haïphong"
+     ]
     },
     {
-     "question": "Indépendances du Maroc et de la Tunisie : quand et comment ?",
-     "answer": "1956\nDe manière négociée avec la France.",
-     "w": "df9ddbb2",
-     "wq": "03972661"
+     "question": "Quels accords coupent le Vietnam en deux au 17e parallèle en 1954 ?",
+     "answer": "Les accords de Genève",
+     "more": "Signés en juillet 1954, ils mettent fin à la guerre d'Indochine.",
+     "wrongs": [
+      "Les accords d'Évian",
+      "Les accords de Paris",
+      "Les accords de Yalta"
+     ]
     },
     {
-     "question": "Indépendances de l'Afrique subsaharienne française : quelle année surtout ?",
-     "answer": "1960, « l'année de l'Afrique »\nSénégal, Côte d'Ivoire, Mali, Madagascar, Cameroun…",
-     "w": "8bf87bc5",
-     "wq": "f8000cfb"
+     "question": "Quand commence la guerre d'Algérie ?",
+     "answer": "Le 1er novembre 1954",
+     "w": [
+      "4ec78bb2",
+      "a153cd0e"
+     ],
+     "wq": [
+      "d308fac1",
+      "2fd47ebb"
+     ],
+     "more": "Attentats de la « Toussaint rouge ».",
+     "wrongs": [
+      "Le 8 mai 1945",
+      "Le 13 mai 1958",
+      "Le 18 mars 1962"
+     ]
+    },
+    {
+     "question": "Quelle organisation déclenche la guerre d'Algérie par les attentats de la « Toussaint rouge » ?",
+     "answer": "Le FLN",
+     "more": "Front de libération nationale, le 1er novembre 1954.",
+     "wrongs": [
+      "L'OAS",
+      "Le MNA",
+      "Le Viet Minh"
+     ]
+    },
+    {
+     "question": "Quelle est la date des accords d'Évian ?",
+     "answer": "18 mars 1962",
+     "w": [
+      "ee5a02ed",
+      "b0d8dfd2"
+     ],
+     "wq": [
+      "7a5a45c1",
+      "7ac26ff6"
+     ],
+     "more": "Le cessez-le-feu entre en vigueur le 19 mars.",
+     "wrongs": [
+      "5 juillet 1962",
+      "1er novembre 1954",
+      "13 mai 1958"
+     ]
+    },
+    {
+     "question": "Quelle est la date de l'indépendance de l'Algérie ?",
+     "answer": "5 juillet 1962",
+     "wrongs": [
+      "18 mars 1962",
+      "1er novembre 1954",
+      "5 juillet 1958"
+     ]
+    },
+    {
+     "question": "En quelle année le Maroc et la Tunisie deviennent-ils indépendants ?",
+     "answer": "En 1956",
+     "w": [
+      "485feaf6",
+      "df9ddbb2"
+     ],
+     "wq": [
+      "177f4301",
+      "03972661"
+     ],
+     "more": "De manière négociée avec la France.",
+     "wrongs": [
+      "En 1947",
+      "En 1960",
+      "En 1962"
+     ]
+    },
+    {
+     "question": "Quelle année surnomme-t-on « l'année de l'Afrique » ?",
+     "answer": "1960",
+     "w": [
+      "9a29b5ac",
+      "8bf87bc5"
+     ],
+     "wq": [
+      "65a48075",
+      "f8000cfb"
+     ],
+     "more": "17 pays africains deviennent indépendants, dont le Sénégal, la Côte d'Ivoire, le Mali, Madagascar, le Cameroun…",
+     "wrongs": [
+      "1945",
+      "1956",
+      "1962"
+     ]
     },
     {
      "question": "Quelle crise algérienne ramène De Gaulle au pouvoir ?",
-     "answer": "La crise du 13 mai 1958 à Alger.\nElle conduit à la naissance de la Ve République.",
-     "w": "12ff3e82",
-     "wq": "3e231c15"
+     "answer": "La crise du 13 mai 1958",
+     "w": [
+      "a7db4dd5",
+      "12ff3e82"
+     ],
+     "wq": "3e231c15",
+     "more": "Elle conduit à la naissance de la Ve République.",
+     "wrongs": [
+      "La Toussaint rouge de 1954",
+      "Le putsch des généraux de 1961",
+      "Les accords d'Évian de 1962"
+     ]
     },
     {
-     "question": "Tiers-monde : qui a créé l'expression, et que désigne-t-elle ?",
-     "answer": "Alfred Sauvy (1952)\nLes pays pauvres, souvent nouvellement indépendants, qui veulent peser entre les deux blocs.",
-     "w": "a4d0c36a",
-     "wq": "fdf27177"
+     "question": "Qui a créé l'expression « tiers-monde » en 1952 ?",
+     "answer": "Alfred Sauvy",
+     "w": [
+      "96b52947",
+      "a4d0c36a"
+     ],
+     "wq": [
+      "080fffc4",
+      "fdf27177"
+     ],
+     "wrongs": [
+      "Jean Fourastié",
+      "Frantz Fanon",
+      "Raymond Aron"
+     ]
     },
     {
-     "question": "Pieds-noirs et harkis : qui sont-ils ?",
-     "answer": "Pieds-noirs : Français d'Algérie, rapatriés en masse en 1962.\nHarkis : Algériens supplétifs de l'armée française, beaucoup massacrés ou abandonnés en 1962.",
-     "w": "232edd69",
-     "wq": "45de02eb"
+     "question": "Que désigne l'expression « tiers-monde » ?",
+     "answer": "Les pays pauvres, souvent nouvellement indépendants",
+     "more": "Ils veulent peser entre les deux blocs de la guerre froide.",
+     "wrongs": [
+      "Les pays communistes d'Europe de l'Est",
+      "Les pays riches du Nord",
+      "Les pays membres de l'OTAN"
+     ]
     },
     {
-     "question": "Néocolonialisme : de quoi s'agit-il ?",
-     "answer": "Une ancienne puissance coloniale garde une domination économique et politique sur ses anciennes colonies.\nEx. : la « Françafrique ».",
-     "w": "780989ce",
-     "wq": "6daf5ad5"
+     "question": "Qui sont les pieds-noirs ?",
+     "answer": "Les Français d'Algérie",
+     "w": [
+      "7f6d510c",
+      "232edd69"
+     ],
+     "wq": [
+      "9c557dfe",
+      "45de02eb"
+     ],
+     "more": "Ils sont rapatriés en masse en 1962.",
+     "wrongs": [
+      "Des Algériens engagés dans l'armée française",
+      "Les militants du FLN",
+      "Les soldats appelés en Algérie"
+     ]
     },
     {
-     "question": "Décolonisation portugaise : quand et quels pays ?",
-     "answer": "1974-1975, après la révolution des Œillets.\nAngola, Mozambique, Guinée-Bissau.",
-     "w": "a9ef0517",
-     "wq": "0ed9e407"
+     "question": "Qui sont les harkis ?",
+     "answer": "Des Algériens supplétifs de l'armée française",
+     "more": "Beaucoup sont massacrés ou abandonnés en 1962.",
+     "wrongs": [
+      "Les Français d'Algérie",
+      "Les combattants du FLN",
+      "Les généraux du putsch d'Alger"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on la domination qu'une ancienne puissance coloniale garde sur ses anciennes colonies ?",
+     "answer": "Le néocolonialisme",
+     "w": [
+      "21ac5019",
+      "780989ce"
+     ],
+     "wq": [
+      "5f120fef",
+      "6daf5ad5"
+     ],
+     "more": "Domination économique et politique. Ex. : la « Françafrique ».",
+     "wrongs": [
+      "Le tiers-mondisme",
+      "Le non-alignement",
+      "Le protectorat"
+     ]
+    },
+    {
+     "question": "Quand les colonies portugaises d'Afrique deviennent-elles indépendantes ?",
+     "answer": "En 1974-1975",
+     "w": [
+      "5636cf96",
+      "a9ef0517"
+     ],
+     "wq": [
+      "19339d83",
+      "0ed9e407"
+     ],
+     "more": "Après la révolution des Œillets au Portugal (1974).",
+     "wrongs": [
+      "En 1945-1946",
+      "En 1960",
+      "En 1990-1991"
+     ]
+    },
+    {
+     "question": "Quels pays obtiennent leur indépendance du Portugal en 1974-1975 ?",
+     "answer": "L'Angola, le Mozambique, la Guinée-Bissau",
+     "wrongs": [
+      "L'Algérie, la Tunisie, le Maroc",
+      "L'Inde, le Pakistan, Ceylan",
+      "Le Sénégal, le Mali, le Cameroun"
+     ]
     }
    ]
   },
@@ -13437,94 +13667,391 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Premier choc pétrolier : quelle date et quelles conséquences ?",
-     "answer": "1973, après la guerre du Kippour : l'OPEP quadruple le prix du pétrole.\nFin des Trente Glorieuses, stagflation (inflation + chômage).",
-     "w": "1afdc23e",
-     "wq": "5f07ebce"
+     "question": "En quelle année a lieu le premier choc pétrolier ?",
+     "answer": "En 1973",
+     "w": [
+      "330b4a98",
+      "1afdc23e"
+     ],
+     "wq": [
+      "ef9364ef",
+      "5f07ebce"
+     ],
+     "more": "Après la guerre du Kippour, l'OPEP quadruple le prix du pétrole.",
+     "wrongs": [
+      "En 1968",
+      "En 1979",
+      "En 1986"
+     ]
     },
     {
-     "question": "Second choc pétrolier : quelle date et quelle cause ?",
-     "answer": "1979\nLié à la révolution iranienne.",
-     "w": "531fd888",
-     "wq": "89bb6c40"
+     "question": "Quelle période le premier choc pétrolier de 1973 vient-il clore ?",
+     "answer": "Les Trente Glorieuses",
+     "more": "Il ouvre une période de stagflation (inflation + chômage).",
+     "wrongs": [
+      "Les Années folles",
+      "La Belle Époque",
+      "La guerre froide"
+     ]
     },
     {
-     "question": "Les Trente Glorieuses : qui a créé l'expression, et quelle période ?",
-     "answer": "Jean Fourastié\nForte croissance des pays développés, de 1945 à 1973 environ.",
-     "w": "e6a6504b",
-     "wq": "a9d98a15"
+     "question": "Quel événement de 1979 provoque le second choc pétrolier ?",
+     "answer": "La révolution iranienne",
+     "w": [
+      "afeed617",
+      "531fd888"
+     ],
+     "wq": [
+      "0c844887",
+      "89bb6c40"
+     ],
+     "wrongs": [
+      "La guerre du Kippour",
+      "La guerre du Golfe",
+      "L'invasion de l'Afghanistan"
+     ]
     },
     {
-     "question": "Néolibéralisme : en quoi consiste-t-il, et qui l'incarne ?",
-     "answer": "Réduction du rôle de l'État : privatisations, dérégulation.\nMargaret Thatcher (Royaume-Uni, 1979), Ronald Reagan (États-Unis, 1981).",
-     "w": "9ebe6dd1",
-     "wq": "77080e64"
+     "question": "Qui a créé l'expression « Trente Glorieuses » ?",
+     "answer": "Jean Fourastié",
+     "w": [
+      "55f8be93",
+      "e6a6504b"
+     ],
+     "wq": [
+      "1a7a49c3",
+      "a9d98a15"
+     ],
+     "wrongs": [
+      "Alfred Sauvy",
+      "John Maynard Keynes",
+      "Raymond Aron"
+     ]
     },
     {
-     "question": "Révolution iranienne : quelle date et quel résultat ?",
-     "answer": "1979 : chute du Shah.\nL'ayatollah Khomeyni instaure une République islamique.\nMontée de l'islamisme politique.",
-     "w": "253c2803",
-     "wq": "18bfc653"
+     "question": "Quelle période désignent les « Trente Glorieuses » ?",
+     "answer": "1945-1973 environ",
+     "more": "Forte croissance des pays développés.",
+     "wrongs": [
+      "1919-1949 environ",
+      "1958-1988 environ",
+      "1973-2003 environ"
+     ]
     },
     {
-     "question": "Démocratisation de l'Europe du Sud : quels pays, quand ?",
-     "answer": "Portugal : révolution des Œillets (1974)\nGrèce : chute des colonels (1974)\nEspagne : mort de Franco (1975), Constitution de 1978",
-     "w": "7c56079c",
-     "wq": "ef160828"
+     "question": "En quoi consiste le néolibéralisme ?",
+     "answer": "Réduire le rôle de l'État dans l'économie",
+     "w": [
+      "c0cbd332",
+      "9ebe6dd1"
+     ],
+     "wq": [
+      "5e2409b2",
+      "77080e64"
+     ],
+     "more": "Privatisations, dérégulation.",
+     "wrongs": [
+      "Nationaliser les grandes entreprises",
+      "Planifier toute l'économie",
+      "Augmenter les dépenses publiques"
+     ]
     },
     {
-     "question": "Intervention soviétique en Afghanistan : dates et issue ?",
-     "answer": "Décembre 1979 - 1989\nL'Armée rouge s'enlise face aux moudjahidines aidés par les États-Unis.",
-     "w": "ff3f316c",
-     "wq": "be5830d3"
+     "question": "Quels dirigeants incarnent le néolibéralisme au début des années 1980 ?",
+     "answer": "Margaret Thatcher et Ronald Reagan",
+     "more": "Thatcher au Royaume-Uni (1979), Reagan aux États-Unis (1981).",
+     "wrongs": [
+      "François Mitterrand et Helmut Kohl",
+      "Jimmy Carter et Harold Wilson",
+      "Mikhaïl Gorbatchev et Deng Xiaoping"
+     ]
     },
     {
-     "question": "Solidarność : de quoi s'agit-il ?",
-     "answer": "Un syndicat polonais indépendant, fondé en 1980 autour de Lech Wałęsa.\nOpposition au régime communiste.",
-     "w": "9ab9a0bc",
-     "wq": "099b1e76"
+     "question": "En quelle année a lieu la révolution iranienne ?",
+     "answer": "En 1979",
+     "w": [
+      "6a7cdec8",
+      "253c2803"
+     ],
+     "wq": [
+      "bfb85d4e",
+      "18bfc653"
+     ],
+     "more": "Chute du Shah.",
+     "wrongs": [
+      "En 1973",
+      "En 1968",
+      "En 1989"
+     ]
     },
     {
-     "question": "Gorbatchev : quand arrive-t-il au pouvoir et quelles réformes mène-t-il ?",
-     "answer": "1985\nPerestroïka : restructuration économique\nGlasnost : transparence",
-     "w": "aff94e2d",
-     "wq": "9aa2ff4a"
+     "question": "Quel régime l'ayatollah Khomeyni instaure-t-il en Iran en 1979 ?",
+     "answer": "Une République islamique",
+     "more": "Montée de l'islamisme politique.",
+     "wrongs": [
+      "Une monarchie constitutionnelle",
+      "Une démocratie laïque",
+      "Une république socialiste"
+     ]
     },
     {
-     "question": "Chute du mur de Berlin : quelle date ?",
-     "answer": "9 novembre 1989\nRéunification de l'Allemagne : 3 octobre 1990",
-     "w": "5cded685",
-     "wq": "761f59c4"
+     "question": "Quelle révolution met fin à la dictature au Portugal en 1974 ?",
+     "answer": "La révolution des Œillets",
+     "w": [
+      "9a7d787c",
+      "7c56079c"
+     ],
+     "wq": [
+      "e1eb2881",
+      "ef160828"
+     ],
+     "wrongs": [
+      "La révolution de Velours",
+      "La révolution des Roses",
+      "La révolution orange"
+     ]
     },
     {
-     "question": "Fin de l'URSS : quelle date ?",
-     "answer": "Décembre 1991 : dissolution de l'URSS.\nGorbatchev démissionne le 25 décembre 1991.\nFin de la guerre froide.",
-     "w": "a11699c8",
-     "wq": "05cc1fb7"
+     "question": "En quelle année la dictature des colonels prend-elle fin en Grèce ?",
+     "answer": "En 1974",
+     "wrongs": [
+      "En 1967",
+      "En 1981",
+      "En 1989"
+     ]
     },
     {
-     "question": "Quelles grandes lois de société la France adopte-t-elle de 1974 à 1982 ?",
-     "answer": "• 1974 : majorité à 18 ans\n• 1975 : loi Veil sur l'IVG\n• 1981 : abolition de la peine de mort (Badinter)\n• 1982 : dépénalisation de l'homosexualité",
-     "w": "8f1f33e2",
-     "wq": "854879c3"
+     "question": "Quel événement de 1975 ouvre la transition démocratique en Espagne ?",
+     "answer": "La mort de Franco",
+     "more": "Une nouvelle Constitution est adoptée en 1978.",
+     "wrongs": [
+      "L'entrée dans la CEE",
+      "La révolution des Œillets",
+      "La fin de la guerre civile"
+     ]
     },
     {
-     "question": "Élection de François Mitterrand : quelle date ?",
-     "answer": "10 mai 1981\nPremière alternance de gauche sous la Ve République.",
-     "w": "f06ffbe3",
-     "wq": "14a5a580"
+     "question": "Quelles sont les dates de l'intervention soviétique en Afghanistan ?",
+     "answer": "1979-1989",
+     "w": [
+      "43e50aa3",
+      "ff3f316c"
+     ],
+     "wq": [
+      "38b4e0f7",
+      "be5830d3"
+     ],
+     "wrongs": [
+      "1968-1978",
+      "1956-1962",
+      "1985-1991"
+     ]
     },
     {
-     "question": "Place Tian'anmen : que se passe-t-il en juin 1989 ?",
-     "answer": "La répression sanglante du mouvement étudiant prodémocratie, à Pékin.",
-     "w": "e2f1e1ec",
-     "wq": "08440c4d"
+     "question": "Face à qui l'Armée rouge s'enlise-t-elle en Afghanistan ?",
+     "answer": "Les moudjahidines",
+     "more": "Ils sont aidés par les États-Unis.",
+     "wrongs": [
+      "Les talibans",
+      "L'armée iranienne",
+      "Les troupes de l'OTAN"
+     ]
     },
     {
-     "question": "Désindustrialisation : de quoi s'agit-il ?",
-     "answer": "Le recul des emplois industriels (sidérurgie, textile, mines) dans les vieux pays industriels, dès les années 1970.\nChômage de masse.",
-     "w": "94d07a59",
-     "wq": "68888175"
+     "question": "Qu'est-ce que Solidarność ?",
+     "answer": "Un syndicat polonais indépendant",
+     "w": [
+      "eaaa0f41",
+      "9ab9a0bc"
+     ],
+     "wq": [
+      "73920e01",
+      "099b1e76"
+     ],
+     "more": "Fondé en 1980 autour de Lech Wałęsa, il s'oppose au régime communiste.",
+     "wrongs": [
+      "Un parti communiste hongrois",
+      "Un mouvement étudiant chinois",
+      "Une alliance militaire de l'Est"
+     ]
+    },
+    {
+     "question": "En quelle année Gorbatchev arrive-t-il au pouvoir en URSS ?",
+     "answer": "En 1985",
+     "w": [
+      "b16bce29",
+      "aff94e2d"
+     ],
+     "wq": [
+      "fe905bf8",
+      "9aa2ff4a"
+     ],
+     "wrongs": [
+      "En 1979",
+      "En 1982",
+      "En 1989"
+     ]
+    },
+    {
+     "question": "Comment s'appelle la restructuration économique lancée par Gorbatchev ?",
+     "answer": "La perestroïka",
+     "wrongs": [
+      "La glasnost",
+      "La NEP",
+      "La détente"
+     ]
+    },
+    {
+     "question": "Comment s'appelle la politique de transparence lancée par Gorbatchev ?",
+     "answer": "La glasnost",
+     "wrongs": [
+      "La perestroïka",
+      "La détente",
+      "Le dégel"
+     ]
+    },
+    {
+     "question": "Quelle est la date de la chute du mur de Berlin ?",
+     "answer": "9 novembre 1989",
+     "w": [
+      "7d28ede8",
+      "5cded685"
+     ],
+     "wq": [
+      "935ff90f",
+      "761f59c4"
+     ],
+     "wrongs": [
+      "13 août 1961",
+      "3 octobre 1990",
+      "25 décembre 1991"
+     ]
+    },
+    {
+     "question": "Quelle est la date de la réunification de l'Allemagne ?",
+     "answer": "3 octobre 1990",
+     "wrongs": [
+      "9 novembre 1989",
+      "8 mai 1945",
+      "25 décembre 1991"
+     ]
+    },
+    {
+     "question": "Quand l'URSS disparaît-elle ?",
+     "answer": "En décembre 1991",
+     "w": [
+      "b851a450",
+      "a11699c8"
+     ],
+     "wq": [
+      "ea83421c",
+      "05cc1fb7"
+     ],
+     "more": "Gorbatchev démissionne le 25 décembre 1991 : c'est la fin de la guerre froide.",
+     "wrongs": [
+      "En novembre 1989",
+      "En octobre 1990",
+      "En août 1985"
+     ]
+    },
+    {
+     "question": "En quelle année la majorité passe-t-elle à 18 ans en France ?",
+     "answer": "En 1974",
+     "w": [
+      "7a44bf1a",
+      "8f1f33e2"
+     ],
+     "wq": [
+      "99967e66",
+      "854879c3"
+     ],
+     "wrongs": [
+      "En 1968",
+      "En 1981",
+      "En 1962"
+     ]
+    },
+    {
+     "question": "En quelle année la loi Veil dépénalise-t-elle l'IVG ?",
+     "answer": "En 1975",
+     "wrongs": [
+      "En 1968",
+      "En 1981",
+      "En 1971"
+     ]
+    },
+    {
+     "question": "En quelle année la peine de mort est-elle abolie en France ?",
+     "answer": "En 1981",
+     "more": "Loi portée par Robert Badinter.",
+     "wrongs": [
+      "En 1975",
+      "En 1968",
+      "En 1986"
+     ]
+    },
+    {
+     "question": "En quelle année l'homosexualité est-elle dépénalisée en France ?",
+     "answer": "En 1982",
+     "wrongs": [
+      "En 1968",
+      "En 1975",
+      "En 1999"
+     ]
+    },
+    {
+     "question": "Quelle est la date de l'élection de François Mitterrand ?",
+     "answer": "10 mai 1981",
+     "w": [
+      "176911c2",
+      "f06ffbe3"
+     ],
+     "wq": [
+      "7da032c3",
+      "14a5a580"
+     ],
+     "more": "Première alternance de gauche sous la Ve République.",
+     "wrongs": [
+      "10 mai 1974",
+      "10 mai 1988",
+      "21 avril 1981"
+     ]
+    },
+    {
+     "question": "Que se passe-t-il place Tian'anmen en juin 1989 ?",
+     "answer": "La répression sanglante d'un mouvement étudiant",
+     "w": [
+      "a8e01468",
+      "e2f1e1ec"
+     ],
+     "wq": [
+      "3fc0e8e5",
+      "08440c4d"
+     ],
+     "more": "Le mouvement réclamait la démocratie, à Pékin.",
+     "wrongs": [
+      "La proclamation de la République populaire",
+      "La mort de Mao Zedong",
+      "Le début de la Révolution culturelle"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on le recul des emplois industriels dans les vieux pays industriels ?",
+     "answer": "La désindustrialisation",
+     "w": [
+      "45fcd29e",
+      "94d07a59"
+     ],
+     "wq": [
+      "46fa0176",
+      "68888175"
+     ],
+     "more": "Dès les années 1970 (sidérurgie, textile, mines) ; elle entraîne un chômage de masse.",
+     "wrongs": [
+      "La délocalisation",
+      "La tertiarisation",
+      "La déflation"
+     ]
     }
    ]
   },
@@ -13546,94 +14073,368 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Guerre du Golfe : dates et cause ?",
-     "answer": "1990-1991 : l'Irak envahit le Koweït.\nCoalition internationale sous mandat de l'ONU, menée par les États-Unis.",
-     "w": "931ffac2",
-     "wq": "3a229f05"
+     "question": "Quelles sont les dates de la guerre du Golfe ?",
+     "answer": "1990-1991",
+     "w": [
+      "d1ebd6bb",
+      "931ffac2"
+     ],
+     "wq": [
+      "bf83c251",
+      "3a229f05"
+     ],
+     "wrongs": [
+      "1980-1988",
+      "2003-2011",
+      "1979-1989"
+     ]
     },
     {
-     "question": "Traité de Maastricht : quelle date et que crée-t-il ?",
-     "answer": "1992\nL'Union européenne, la citoyenneté européenne, et il prévoit la monnaie unique.",
-     "w": "5deed67a",
-     "wq": "210198c3"
+     "question": "Quel événement déclenche la guerre du Golfe ?",
+     "answer": "L'invasion du Koweït par l'Irak",
+     "more": "Une coalition internationale menée par les États-Unis intervient, sous mandat de l'ONU.",
+     "wrongs": [
+      "Les attentats du 11 septembre",
+      "La révolution iranienne",
+      "L'invasion de l'Iran par l'Irak"
+     ]
     },
     {
-     "question": "Euro : quand est-il créé et quand arrive-t-il dans les porte-monnaie ?",
-     "answer": "Créé en 1999\nPièces et billets : 1er janvier 2002",
-     "w": "4287fe46",
-     "wq": "ebb8b250"
+     "question": "En quelle année est signé le traité de Maastricht ?",
+     "answer": "En 1992",
+     "w": [
+      "647641ae",
+      "5deed67a"
+     ],
+     "wq": [
+      "9794520a",
+      "210198c3"
+     ],
+     "wrongs": [
+      "En 1957",
+      "En 1986",
+      "En 2007"
+     ]
     },
     {
-     "question": "Grand élargissement de l'UE à l'Est : quelle année ?",
-     "answer": "2004\n10 pays, dont 8 anciens pays communistes (Pologne, Hongrie, République tchèque…).",
-     "w": "f390bf67",
-     "wq": "e50c7b55"
+     "question": "Que crée le traité de Maastricht ?",
+     "answer": "L'Union européenne",
+     "more": "Il crée aussi la citoyenneté européenne et prévoit la monnaie unique.",
+     "wrongs": [
+      "La CEE",
+      "La CECA",
+      "L'espace Schengen"
+     ]
     },
     {
-     "question": "Brexit : quelles dates ?",
-     "answer": "Référendum : juin 2016\nSortie effective : 31 janvier 2020",
-     "w": "0df4b223",
-     "wq": "0c4a9d55"
+     "question": "En quelle année l'euro est-il créé ?",
+     "answer": "En 1999",
+     "w": [
+      "fe7796c9",
+      "4287fe46"
+     ],
+     "wq": [
+      "ce749d3d",
+      "ebb8b250"
+     ],
+     "more": "D'abord comme monnaie de compte, sans pièces ni billets.",
+     "wrongs": [
+      "En 1992",
+      "En 2002",
+      "En 1995"
+     ]
     },
     {
-     "question": "Guerres de Yougoslavie : dates et massacre emblématique ?",
-     "answer": "1991-1999 : éclatement de la Yougoslavie.\nSrebrenica (1995), génocide reconnu par la justice internationale.",
-     "w": "b7914ee1",
-     "wq": "44c58a80"
+     "question": "Quand les pièces et billets en euros arrivent-ils dans les porte-monnaie ?",
+     "answer": "Le 1er janvier 2002",
+     "wrongs": [
+      "Le 1er janvier 1999",
+      "Le 1er janvier 1993",
+      "Le 1er janvier 2004"
+     ]
     },
     {
-     "question": "Génocide des Tutsi au Rwanda : quand et combien de victimes ?",
-     "answer": "Avril-juillet 1994\nEnviron 800 000 victimes.",
-     "w": "05120db0",
-     "wq": "83a96df5"
+     "question": "En quelle année a lieu le grand élargissement de l'UE à l'Est ?",
+     "answer": "En 2004",
+     "w": [
+      "d50d76ab",
+      "f390bf67"
+     ],
+     "wq": [
+      "8c0441e7",
+      "e50c7b55"
+     ],
+     "more": "10 pays, dont 8 anciens pays communistes (Pologne, Hongrie, République tchèque…).",
+     "wrongs": [
+      "En 1995",
+      "En 2007",
+      "En 1990"
+     ]
     },
     {
-     "question": "Fin de l'apartheid : quelles grandes dates ?",
-     "answer": "• 1990 : libération de Nelson Mandela\n• 1991 : abolition des lois de l'apartheid\n• 1994 : Mandela élu président",
-     "w": "6f93dcc4",
-     "wq": "64849df6"
+     "question": "En quelle année les Britanniques votent-ils le Brexit par référendum ?",
+     "answer": "En 2016",
+     "w": [
+      "3313a6fd",
+      "0df4b223"
+     ],
+     "wq": [
+      "464010c2",
+      "0c4a9d55"
+     ],
+     "wrongs": [
+      "En 2012",
+      "En 2020",
+      "En 2005"
+     ]
     },
     {
-     "question": "Attentats du 11 septembre 2001 : qui, quelles cibles, quelle riposte ?",
-     "answer": "Al-Qaïda : World Trade Center et Pentagone, près de 3 000 morts.\nRiposte américaine en Afghanistan (2001).",
-     "w": "2164bc16",
-     "wq": "e2424128"
+     "question": "Quand le Royaume-Uni sort-il effectivement de l'UE ?",
+     "answer": "Le 31 janvier 2020",
+     "wrongs": [
+      "Le 23 juin 2016",
+      "Le 1er janvier 2019",
+      "Le 31 décembre 2022"
+     ]
     },
     {
-     "question": "Guerre d'Irak : quelle date et quelle particularité ?",
-     "answer": "2003 : intervention américaine sans mandat de l'ONU.\nChute de Saddam Hussein.",
-     "w": "525c5208",
-     "wq": "c8623cf3"
+     "question": "Quelles sont les dates des guerres de Yougoslavie ?",
+     "answer": "1991-1999",
+     "w": [
+      "dbee10bb",
+      "b7914ee1"
+     ],
+     "wq": [
+      "430cd2b1",
+      "44c58a80"
+     ],
+     "wrongs": [
+      "1980-1985",
+      "2001-2008",
+      "1975-1989"
+     ]
     },
     {
-     "question": "Printemps arabes : où et quand commencent-ils ?",
-     "answer": "En Tunisie, en décembre 2010.\nSoulèvements contre les régimes autoritaires : Tunisie, Égypte, Libye, Syrie…",
-     "w": "92c799dc",
-     "wq": "22c15d29"
+     "question": "Quel massacre de 1995 est reconnu comme un génocide par la justice internationale ?",
+     "answer": "Srebrenica",
+     "more": "Pendant les guerres de Yougoslavie.",
+     "wrongs": [
+      "Sarajevo",
+      "Vukovar",
+      "Mostar"
+     ]
     },
     {
-     "question": "Russie et Ukraine : quelles dates clés ?",
-     "answer": "2014 : annexion de la Crimée\n24 février 2022 : invasion à grande échelle de l'Ukraine",
-     "w": "42d2b5ba",
-     "wq": "aef7ffed"
+     "question": "Quand a lieu le génocide des Tutsi au Rwanda ?",
+     "answer": "D'avril à juillet 1994",
+     "w": [
+      "37a45ec9",
+      "05120db0"
+     ],
+     "wq": [
+      "fc7a1ac6",
+      "83a96df5"
+     ],
+     "wrongs": [
+      "D'avril à juillet 1990",
+      "D'avril à juillet 1999",
+      "D'avril à juillet 1985"
+     ]
     },
     {
-     "question": "Parité en politique : quels textes en France ?",
-     "answer": "Révision constitutionnelle de 1999 et loi de 2000.\nÉgal accès des femmes et des hommes aux mandats électoraux.",
-     "w": "c988824b",
-     "wq": "04b72e41"
+     "question": "Combien de victimes fait le génocide des Tutsi au Rwanda ?",
+     "answer": "Environ 800 000",
+     "wrongs": [
+      "Environ 80 000",
+      "Environ 8 millions",
+      "Environ 20 000"
+     ]
     },
     {
-     "question": "Mariage pour tous : quelle année ?",
-     "answer": "2013\nMariage ouvert aux couples de même sexe.",
-     "w": "d9704b08",
-     "wq": "540f70c4"
+     "question": "En quelle année Nelson Mandela est-il libéré ?",
+     "answer": "En 1990",
+     "w": [
+      "cb6ca4fb",
+      "6f93dcc4"
+     ],
+     "wq": [
+      "9f7db143",
+      "64849df6"
+     ],
+     "wrongs": [
+      "En 1985",
+      "En 1994",
+      "En 1976"
+     ]
     },
     {
-     "question": "Quinquennat : quand est-il adopté ?",
-     "answer": "Référendum de 2000 : mandat présidentiel de 7 à 5 ans.\nAppliqué dès 2002.",
-     "w": "fe1a650b",
-     "wq": "5b6d5718"
+     "question": "En quelle année les lois de l'apartheid sont-elles abolies ?",
+     "answer": "En 1991",
+     "wrongs": [
+      "En 1985",
+      "En 1994",
+      "En 1999"
+     ]
+    },
+    {
+     "question": "En quelle année Nelson Mandela est-il élu président de l'Afrique du Sud ?",
+     "answer": "En 1994",
+     "wrongs": [
+      "En 1990",
+      "En 1991",
+      "En 1999"
+     ]
+    },
+    {
+     "question": "Quelle organisation commet les attentats du 11 septembre 2001 ?",
+     "answer": "Al-Qaïda",
+     "w": [
+      "66d62806",
+      "2164bc16"
+     ],
+     "wq": [
+      "c8a87b81",
+      "e2424128"
+     ],
+     "more": "World Trade Center et Pentagone : près de 3 000 morts.",
+     "wrongs": [
+      "Daech",
+      "Le Hezbollah",
+      "Le Hamas"
+     ]
+    },
+    {
+     "question": "Où les États-Unis ripostent-ils après les attentats du 11 septembre 2001 ?",
+     "answer": "En Afghanistan",
+     "wrongs": [
+      "En Iran",
+      "En Syrie",
+      "Au Liban"
+     ]
+    },
+    {
+     "question": "En quelle année les États-Unis interviennent-ils en Irak ?",
+     "answer": "En 2003",
+     "w": [
+      "b312a746",
+      "525c5208"
+     ],
+     "wq": [
+      "c5ee02ae",
+      "c8623cf3"
+     ],
+     "more": "L'intervention entraîne la chute de Saddam Hussein.",
+     "wrongs": [
+      "En 1991",
+      "En 2001",
+      "En 2011"
+     ]
+    },
+    {
+     "question": "Quelle est la particularité de l'intervention américaine en Irak en 2003 ?",
+     "answer": "Elle a lieu sans mandat de l'ONU",
+     "wrongs": [
+      "Elle est menée par l'OTAN",
+      "Elle répond à l'invasion du Koweït",
+      "Elle est votée par le Conseil de sécurité"
+     ]
+    },
+    {
+     "question": "Dans quel pays commencent les printemps arabes ?",
+     "answer": "En Tunisie",
+     "w": [
+      "97387d22",
+      "92c799dc"
+     ],
+     "wq": [
+      "c90de870",
+      "22c15d29"
+     ],
+     "more": "En décembre 2010 ; puis Égypte, Libye, Syrie… contre des régimes autoritaires.",
+     "wrongs": [
+      "En Égypte",
+      "En Syrie",
+      "En Libye"
+     ]
+    },
+    {
+     "question": "En quelle année la Russie annexe-t-elle la Crimée ?",
+     "answer": "En 2014",
+     "w": [
+      "daafec6f",
+      "42d2b5ba"
+     ],
+     "wq": [
+      "864af9e8",
+      "aef7ffed"
+     ],
+     "wrongs": [
+      "En 2008",
+      "En 2022",
+      "En 1991"
+     ]
+    },
+    {
+     "question": "Quelle est la date de l'invasion à grande échelle de l'Ukraine par la Russie ?",
+     "answer": "24 février 2022",
+     "wrongs": [
+      "18 mars 2014",
+      "24 août 1991",
+      "24 février 2020"
+     ]
+    },
+    {
+     "question": "Quand la parité en politique entre-t-elle dans la loi en France ?",
+     "answer": "En 1999-2000",
+     "w": [
+      "ef61d4c1",
+      "c988824b"
+     ],
+     "wq": [
+      "b5ae6f61",
+      "04b72e41"
+     ],
+     "more": "Révision constitutionnelle de 1999 et loi de 2000 : égal accès des femmes et des hommes aux mandats électoraux.",
+     "wrongs": [
+      "En 1944-1945",
+      "En 1974-1975",
+      "En 2012-2013"
+     ]
+    },
+    {
+     "question": "En quelle année le mariage est-il ouvert aux couples de même sexe en France ?",
+     "answer": "En 2013",
+     "w": [
+      "0452f450",
+      "d9704b08"
+     ],
+     "wq": [
+      "f7d69580",
+      "540f70c4"
+     ],
+     "wrongs": [
+      "En 1999",
+      "En 2008",
+      "En 2017"
+     ]
+    },
+    {
+     "question": "En quelle année le quinquennat est-il adopté par référendum ?",
+     "answer": "En 2000",
+     "w": [
+      "8372ecca",
+      "fe1a650b"
+     ],
+     "wq": [
+      "896e1bf3",
+      "5b6d5718"
+     ],
+     "more": "Le mandat présidentiel passe de 7 à 5 ans, appliqué dès 2002.",
+     "wrongs": [
+      "En 1962",
+      "En 1995",
+      "En 2008"
+     ]
     }
    ]
   },
@@ -13657,76 +14458,353 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Constitution de la Ve République : quelles dates ?",
-     "answer": "Approuvée par référendum le 28 septembre 1958\nPromulguée le 4 octobre 1958\nRédigée sous l'impulsion de De Gaulle et de Michel Debré.",
-     "w": "57b2896b",
-     "wq": "d8574f0b"
+     "question": "Quand la Constitution de la Ve République est-elle approuvée par référendum ?",
+     "answer": "Le 28 septembre 1958",
+     "w": [
+      "95adf9ba",
+      "57b2896b"
+     ],
+     "wq": [
+      "1c62ecb8",
+      "d8574f0b"
+     ],
+     "more": "Rédigée sous l'impulsion de De Gaulle et de Michel Debré.",
+     "wrongs": [
+      "Le 4 octobre 1958",
+      "Le 13 mai 1958",
+      "Le 28 octobre 1962"
+     ]
     },
     {
-     "question": "Élection du président au suffrage universel direct : quand ?",
-     "answer": "Adoptée par référendum en 1962.\nPremière élection en 1965.",
-     "w": "6db34e6d",
-     "wq": "db2a65e4"
+     "question": "Quelle est la date de promulgation de la Constitution de la Ve République ?",
+     "answer": "Le 4 octobre 1958",
+     "wrongs": [
+      "Le 28 septembre 1958",
+      "Le 13 mai 1958",
+      "Le 8 janvier 1959"
+     ]
     },
     {
-     "question": "Quels sont les pouvoirs propres du président ?",
-     "answer": "• Référendum (art. 11)\n• Dissolution de l'Assemblée (art. 12)\n• Pleins pouvoirs en cas de crise grave (art. 16)\n• Nomination du Premier ministre\n• Saisine du Conseil constitutionnel",
-     "w": "945932d6",
-     "wq": "221d0af4"
+     "question": "En quelle année l'élection du président au suffrage universel direct est-elle adoptée ?",
+     "answer": "En 1962",
+     "w": [
+      "b1c97fbd",
+      "6db34e6d"
+     ],
+     "wq": [
+      "74ad69cc",
+      "db2a65e4"
+     ],
+     "more": "Par référendum.",
+     "wrongs": [
+      "En 1958",
+      "En 1965",
+      "En 1969"
+     ]
     },
     {
-     "question": "Article 49.3 : que permet-il ?",
-     "answer": "Au gouvernement de faire adopter un texte sans vote,\nsauf si l'Assemblée vote une motion de censure.",
-     "w": "56a9975b",
-     "wq": "958873ef"
+     "question": "En quelle année a lieu la première élection présidentielle au suffrage universel direct de la Ve République ?",
+     "answer": "En 1965",
+     "wrongs": [
+      "En 1958",
+      "En 1962",
+      "En 1969"
+     ]
     },
     {
-     "question": "Mai 1968 : que se passe-t-il ?",
-     "answer": "Révolte étudiante puis grève générale ouvrière.\nAccords de Grenelle.\nDe Gaulle dissout l'Assemblée et gagne les élections de juin 1968.",
-     "w": "3d06324b",
-     "wq": "cf80525e"
+     "question": "Quel article de la Constitution permet au président de recourir au référendum ?",
+     "answer": "L'article 11",
+     "w": [
+      "8687abbf",
+      "945932d6"
+     ],
+     "wq": [
+      "082ed147",
+      "221d0af4"
+     ],
+     "wrongs": [
+      "L'article 12",
+      "L'article 16",
+      "L'article 49"
+     ]
     },
     {
-     "question": "Pourquoi De Gaulle part-il en avril 1969 ?",
-     "answer": "Il démissionne après l'échec du référendum sur la régionalisation et la réforme du Sénat.",
-     "w": "9ba0c40e",
-     "wq": "397c14a1"
+     "question": "Quel article de la Constitution permet au président de dissoudre l'Assemblée nationale ?",
+     "answer": "L'article 12",
+     "wrongs": [
+      "L'article 11",
+      "L'article 16",
+      "L'article 49"
+     ]
     },
     {
-     "question": "Les présidents de la Ve République (1959-1995)",
-     "answer": "• De Gaulle (1959-1969)\n• Pompidou (1969-1974)\n• Giscard d'Estaing (1974-1981)\n• Mitterrand (1981-1995)",
-     "w": "3fe603d3",
-     "wq": "c393479b"
+     "question": "Quel article de la Constitution donne les pleins pouvoirs au président en cas de crise grave ?",
+     "answer": "L'article 16",
+     "wrongs": [
+      "L'article 11",
+      "L'article 12",
+      "L'article 49"
+     ]
     },
     {
-     "question": "Les présidents de la Ve République depuis 1995",
-     "answer": "• Chirac (1995-2007)\n• Sarkozy (2007-2012)\n• Hollande (2012-2017)\n• Macron (depuis 2017)",
-     "w": "67f9ba41",
-     "wq": "9f84a5ad"
+     "question": "Que permet l'article 49.3 de la Constitution ?",
+     "answer": "Faire adopter un texte sans vote",
+     "w": [
+      "d5df29a0",
+      "56a9975b"
+     ],
+     "wq": [
+      "8026b0fa",
+      "958873ef"
+     ],
+     "more": "Sauf si l'Assemblée vote une motion de censure contre le gouvernement.",
+     "wrongs": [
+      "Dissoudre l'Assemblée nationale",
+      "Organiser un référendum",
+      "Donner les pleins pouvoirs au président"
+     ]
     },
     {
-     "question": "Cohabitation : définition et exemples",
-     "answer": "Président et majorité parlementaire de bords opposés.\n• Mitterrand-Chirac (1986-1988)\n• Mitterrand-Balladur (1993-1995)\n• Chirac-Jospin (1997-2002)",
-     "w": "75d9eac2",
-     "wq": "d67c0023"
+     "question": "Que se passe-t-il en France en mai 1968 ?",
+     "answer": "Une révolte étudiante puis une grève générale",
+     "w": [
+      "4bdb49a6",
+      "3d06324b"
+     ],
+     "wq": [
+      "f5b75c9d",
+      "cf80525e"
+     ],
+     "wrongs": [
+      "Un coup d'État militaire",
+      "Une crise pétrolière",
+      "Un référendum sur la Constitution"
+     ]
     },
     {
-     "question": "Lois de décentralisation : quand et quel contenu ?",
-     "answer": "1982-1983 (lois Defferre)\nTransfert de compétences de l'État vers les communes, départements et régions.",
-     "w": "cadc7f52",
-     "wq": "b82769b8"
+     "question": "Quels accords signés en mai 1968 accordent des hausses de salaires ?",
+     "answer": "Les accords de Grenelle",
+     "wrongs": [
+      "Les accords de Matignon",
+      "Les accords d'Évian",
+      "Les accords de Genève"
+     ]
     },
     {
-     "question": "Conseil constitutionnel : quel rôle ?",
-     "answer": "Il vérifie la conformité des lois à la Constitution.\nDepuis 2008, la QPC permet à un justiciable de le saisir indirectement.",
-     "w": "369a43cf",
-     "wq": "199f5881"
+     "question": "Comment De Gaulle sort-il de la crise de mai 1968 ?",
+     "answer": "Il dissout l'Assemblée et gagne les élections",
+     "more": "Élections législatives de juin 1968.",
+     "wrongs": [
+      "Il démissionne aussitôt",
+      "Il déclare l'état de siège",
+      "Il change de Premier ministre sans élections"
+     ]
     },
     {
-     "question": "Le Parlement : quelles sont ses deux chambres ?",
-     "answer": "Assemblée nationale : députés, suffrage direct, 5 ans\nSénat : sénateurs, suffrage indirect, 6 ans",
-     "w": "aa6e7a86",
-     "wq": "ad14391e"
+     "question": "Pourquoi De Gaulle quitte-t-il le pouvoir en avril 1969 ?",
+     "answer": "Après l'échec d'un référendum",
+     "w": [
+      "4a151630",
+      "9ba0c40e"
+     ],
+     "wq": [
+      "3fad6526",
+      "397c14a1"
+     ],
+     "more": "Référendum sur la régionalisation et la réforme du Sénat.",
+     "wrongs": [
+      "Après sa défaite à l'élection présidentielle",
+      "Pour des raisons de santé",
+      "Après les événements de mai 1968"
+     ]
+    },
+    {
+     "question": "Quel président de la Ve République gouverne de 1959 à 1969 ?",
+     "answer": "Charles de Gaulle",
+     "w": [
+      "763540d7",
+      "3fe603d3"
+     ],
+     "wq": "c393479b",
+     "wrongs": [
+      "Georges Pompidou",
+      "René Coty",
+      "Valéry Giscard d'Estaing"
+     ]
+    },
+    {
+     "question": "Quel président de la Ve République gouverne de 1969 à 1974 ?",
+     "answer": "Georges Pompidou",
+     "wrongs": [
+      "Charles de Gaulle",
+      "Valéry Giscard d'Estaing",
+      "Alain Poher"
+     ]
+    },
+    {
+     "question": "Quel président de la Ve République gouverne de 1974 à 1981 ?",
+     "answer": "Valéry Giscard d'Estaing",
+     "wrongs": [
+      "Georges Pompidou",
+      "François Mitterrand",
+      "Jacques Chirac"
+     ]
+    },
+    {
+     "question": "Quel président de la Ve République gouverne de 1981 à 1995 ?",
+     "answer": "François Mitterrand",
+     "wrongs": [
+      "Jacques Chirac",
+      "Valéry Giscard d'Estaing",
+      "Lionel Jospin"
+     ]
+    },
+    {
+     "question": "Quel président de la Ve République gouverne de 1995 à 2007 ?",
+     "answer": "Jacques Chirac",
+     "w": [
+      "5556f6f9",
+      "67f9ba41"
+     ],
+     "wq": "9f84a5ad",
+     "wrongs": [
+      "Nicolas Sarkozy",
+      "François Mitterrand",
+      "Lionel Jospin"
+     ]
+    },
+    {
+     "question": "Quel président de la Ve République gouverne de 2007 à 2012 ?",
+     "answer": "Nicolas Sarkozy",
+     "wrongs": [
+      "Jacques Chirac",
+      "François Hollande",
+      "Emmanuel Macron"
+     ]
+    },
+    {
+     "question": "Quel président de la Ve République gouverne de 2012 à 2017 ?",
+     "answer": "François Hollande",
+     "wrongs": [
+      "Nicolas Sarkozy",
+      "Emmanuel Macron",
+      "Jacques Chirac"
+     ]
+    },
+    {
+     "question": "Depuis quelle année Emmanuel Macron est-il président de la République ?",
+     "answer": "Depuis 2017",
+     "wrongs": [
+      "Depuis 2012",
+      "Depuis 2022",
+      "Depuis 2007"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on la situation où le président et la majorité de l'Assemblée sont de bords opposés ?",
+     "answer": "La cohabitation",
+     "w": [
+      "9cb1616a",
+      "75d9eac2"
+     ],
+     "wq": "d67c0023",
+     "wrongs": [
+      "L'alternance",
+      "La dissolution",
+      "La motion de censure"
+     ]
+    },
+    {
+     "question": "Quelle a été la première cohabitation de la Ve République ?",
+     "answer": "Mitterrand-Chirac (1986-1988)",
+     "more": "Puis Mitterrand-Balladur (1993-1995) et Chirac-Jospin (1997-2002).",
+     "wrongs": [
+      "Mitterrand-Balladur (1993-1995)",
+      "Chirac-Jospin (1997-2002)",
+      "Giscard-Chirac (1974-1976)"
+     ]
+    },
+    {
+     "question": "En quelles années sont votées les premières lois de décentralisation ?",
+     "answer": "En 1982-1983",
+     "w": [
+      "51730f2b",
+      "cadc7f52"
+     ],
+     "wq": [
+      "5874b91a",
+      "b82769b8"
+     ],
+     "more": "Lois Defferre.",
+     "wrongs": [
+      "En 1958-1959",
+      "En 1968-1969",
+      "En 2003-2004"
+     ]
+    },
+    {
+     "question": "Que prévoient les lois de décentralisation de 1982-1983 ?",
+     "answer": "Transférer des compétences de l'État aux collectivités",
+     "more": "Communes, départements et régions.",
+     "wrongs": [
+      "Supprimer les départements",
+      "Renforcer le pouvoir des préfets",
+      "Regrouper les communes en régions"
+     ]
+    },
+    {
+     "question": "Quel est le rôle du Conseil constitutionnel ?",
+     "answer": "Vérifier que les lois respectent la Constitution",
+     "w": [
+      "16f1c46f",
+      "369a43cf"
+     ],
+     "wq": [
+      "b44e21ab",
+      "199f5881"
+     ],
+     "wrongs": [
+      "Voter les lois",
+      "Juger les crimes",
+      "Conseiller le président"
+     ]
+    },
+    {
+     "question": "Qu'est-ce que la QPC, créée en 2008 ?",
+     "answer": "La saisine du Conseil constitutionnel par un justiciable",
+     "more": "Question prioritaire de constitutionnalité : un justiciable peut contester une loi déjà en vigueur, à l'occasion d'un procès.",
+     "wrongs": [
+      "Un référendum d'initiative populaire",
+      "Une motion de censure",
+      "Un recours devant la Cour européenne"
+     ]
+    },
+    {
+     "question": "Quelles sont les deux chambres du Parlement français ?",
+     "answer": "L'Assemblée nationale et le Sénat",
+     "w": [
+      "4594ebdc",
+      "aa6e7a86"
+     ],
+     "wq": [
+      "567860d4",
+      "ad14391e"
+     ],
+     "wrongs": [
+      "L'Assemblée nationale et le Conseil d'État",
+      "Le Sénat et le Conseil constitutionnel",
+      "L'Assemblée nationale et le Conseil économique"
+     ]
+    },
+    {
+     "question": "Comment les sénateurs sont-ils élus ?",
+     "answer": "Au suffrage indirect, pour 6 ans",
+     "more": "Les députés sont élus au suffrage direct, pour 5 ans.",
+     "wrongs": [
+      "Au suffrage direct, pour 5 ans",
+      "Au suffrage direct, pour 6 ans",
+      "Ils sont nommés par le président"
+     ]
     }
    ]
   },
@@ -13749,94 +14827,325 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Maritimisation : définition ?",
-     "answer": "La place croissante des mers et océans dans l'économie mondiale.\nEnviron 80 à 90 % du commerce mondial (en volume) passe par la mer.",
-     "w": "b85cfdf9",
-     "wq": "9f4822f5"
+     "question": "Comment appelle-t-on la place croissante des mers et océans dans l'économie mondiale ?",
+     "answer": "La maritimisation",
+     "w": [
+      "a52b82c0",
+      "b85cfdf9"
+     ],
+     "wq": [
+      "79adfec1",
+      "9f4822f5"
+     ],
+     "more": "Environ 80 à 90 % du commerce mondial (en volume) passe par la mer.",
+     "wrongs": [
+      "La littoralisation",
+      "La conteneurisation",
+      "La mondialisation"
+     ]
     },
     {
-     "question": "Littoralisation : définition ?",
-     "answer": "Concentration des populations et des activités sur les littoraux.",
-     "w": "915cfb72",
-     "wq": "9ff0a89b"
+     "question": "Comment appelle-t-on la concentration des populations et des activités sur les littoraux ?",
+     "answer": "La littoralisation",
+     "w": [
+      "93990b9a",
+      "915cfb72"
+     ],
+     "wq": [
+      "675cbf63",
+      "9ff0a89b"
+     ],
+     "wrongs": [
+      "La maritimisation",
+      "La métropolisation",
+      "La périurbanisation"
+     ]
     },
     {
-     "question": "Conteneurisation : définition ?",
-     "answer": "Transport des marchandises dans des boîtes standardisées (EVP : équivalent vingt pieds).\nElle facilite le transbordement et baisse les coûts.",
-     "w": "94374baa",
-     "wq": "c89707fb"
+     "question": "Comment appelle-t-on le transport de marchandises dans des boîtes standardisées ?",
+     "answer": "La conteneurisation",
+     "w": [
+      "1af822bd",
+      "94374baa"
+     ],
+     "wq": [
+      "355c9143",
+      "c89707fb"
+     ],
+     "more": "Unité de mesure : l'EVP (équivalent vingt pieds). Elle facilite le transbordement et baisse les coûts.",
+     "wrongs": [
+      "La maritimisation",
+      "Le cabotage",
+      "Le vrac"
+     ]
     },
     {
-     "question": "ZEE : jusqu'où s'étend-elle et que permet-elle ?",
-     "answer": "Jusqu'à 200 milles marins (environ 370 km) des côtes.\nL'État y exploite seul les ressources.\nConvention de Montego Bay (1982).",
-     "w": "89b6dee3",
-     "wq": "6cf77c01"
+     "question": "Jusqu'où s'étend la zone économique exclusive (ZEE) d'un État ?",
+     "answer": "200 milles marins des côtes",
+     "w": [
+      "3b8be3a8",
+      "89b6dee3"
+     ],
+     "wq": [
+      "07aca0f4",
+      "6cf77c01"
+     ],
+     "more": "Soit environ 370 km. Définie par la convention de Montego Bay (1982).",
+     "wrongs": [
+      "12 milles marins des côtes",
+      "24 milles marins des côtes",
+      "500 milles marins des côtes"
+     ]
     },
     {
-     "question": "Mer territoriale : quelle largeur ?",
-     "answer": "12 milles marins (environ 22 km)\nL'État côtier y est souverain.",
-     "w": "c1e19174",
-     "wq": "3306f563"
+     "question": "Que permet à un État sa zone économique exclusive (ZEE) ?",
+     "answer": "Exploiter seul les ressources de la mer",
+     "wrongs": [
+      "Interdire tout passage de navires",
+      "Y exercer une souveraineté totale",
+      "Y percevoir un droit de passage"
+     ]
     },
     {
-     "question": "Haute mer : définition ?",
-     "answer": "L'espace au-delà des ZEE, libre d'accès (environ 60 % des océans).\nTraité de l'ONU sur la haute mer adopté en 2023.",
-     "w": "1f189301",
-     "wq": "9808b6ca"
+     "question": "Quelle est la largeur de la mer territoriale ?",
+     "answer": "12 milles marins",
+     "w": [
+      "90008cd3",
+      "c1e19174"
+     ],
+     "wq": [
+      "6b2af346",
+      "3306f563"
+     ],
+     "more": "Environ 22 km ; l'État côtier y est souverain.",
+     "wrongs": [
+      "200 milles marins",
+      "3 milles marins",
+      "50 milles marins"
+     ]
     },
     {
-     "question": "Convention de Montego Bay : quelle date et quel objet ?",
-     "answer": "1982 : convention de l'ONU sur le droit de la mer.\nElle définit mer territoriale, ZEE, plateau continental, haute mer.",
-     "w": "374d6b81",
-     "wq": "96101aae"
+     "question": "Comment appelle-t-on l'espace maritime au-delà des ZEE, libre d'accès ?",
+     "answer": "La haute mer",
+     "w": [
+      "ec11444e",
+      "1f189301"
+     ],
+     "wq": [
+      "2bae9924",
+      "9808b6ca"
+     ],
+     "more": "Environ 60 % des océans. Un traité de l'ONU sur la haute mer a été adopté en 2023.",
+     "wrongs": [
+      "La mer territoriale",
+      "Le plateau continental",
+      "Les eaux intérieures"
+     ]
     },
     {
-     "question": "ZEE française : quelle superficie et quel rang ?",
-     "answer": "Environ 10-11 millions de km²\n2e du monde (après les États-Unis), grâce aux outre-mer.",
-     "w": "028b8ca0",
-     "wq": "f7bf363b"
+     "question": "En quelle année est signée la convention de Montego Bay ?",
+     "answer": "En 1982",
+     "w": [
+      "ed3d6b09",
+      "374d6b81"
+     ],
+     "wq": [
+      "940d20f5",
+      "96101aae"
+     ],
+     "wrongs": [
+      "En 1945",
+      "En 1994",
+      "En 1973"
+     ]
     },
     {
-     "question": "Quels sont les grands détroits et canaux stratégiques ?",
-     "answer": "Détroits : Malacca, Ormuz, Bab-el-Mandeb, Gibraltar, Pas-de-Calais, Bosphore\nCanaux : Suez, Panama",
-     "w": "257e5547",
-     "wq": "541608e5"
+     "question": "Quel est l'objet de la convention de Montego Bay ?",
+     "answer": "Le droit de la mer",
+     "more": "Convention de l'ONU : elle définit mer territoriale, ZEE, plateau continental, haute mer.",
+     "wrongs": [
+      "La protection des baleines",
+      "Le climat",
+      "Le commerce mondial"
+     ]
     },
     {
-     "question": "Où sont les grands ports mondiaux ?",
-     "answer": "Surtout en Asie : Shanghai (1er port à conteneurs), Singapour, Ningbo-Zhoushan, Shenzhen…\nEn Europe : Rotterdam, Anvers, Hambourg.",
-     "w": "64eea708",
-     "wq": "3e4ea3a3"
+     "question": "Quelle est la superficie de la ZEE française ?",
+     "answer": "Environ 10 à 11 millions de km²",
+     "w": [
+      "6c923a97",
+      "028b8ca0"
+     ],
+     "wq": [
+      "03b681e9",
+      "f7bf363b"
+     ],
+     "wrongs": [
+      "Environ 550 000 km²",
+      "Environ 3 millions de km²",
+      "Environ 25 millions de km²"
+     ]
     },
     {
-     "question": "Façade maritime : définition ?",
-     "answer": "Un littoral ouvert sur la mer, avec plusieurs grands ports et leur arrière-pays.\nEx. : la Northern Range, du Havre à Hambourg.",
-     "w": "202916db",
-     "wq": "98477a37"
+     "question": "Quel est le rang mondial de la ZEE française ?",
+     "answer": "2e du monde",
+     "more": "Après celle des États-Unis, grâce aux outre-mer.",
+     "wrongs": [
+      "1re du monde",
+      "5e du monde",
+      "10e du monde"
+     ]
     },
     {
-     "question": "Hinterland / avant-pays",
-     "answer": "Hinterland : arrière-pays desservi par un port.\nAvant-pays (foreland) : espaces maritimes et ports reliés à ce port.",
-     "w": "2b0cf4ab",
-     "wq": "b68a76ad"
+     "question": "Quels sont les deux grands canaux maritimes stratégiques ?",
+     "answer": "Suez et Panama",
+     "w": [
+      "f3929f43",
+      "257e5547"
+     ],
+     "wq": [
+      "5b8cfd17",
+      "541608e5"
+     ],
+     "wrongs": [
+      "Corinthe et Kiel",
+      "Suez et Malacca",
+      "Panama et Gibraltar"
+     ]
+    },
+    {
+     "question": "Quel détroit relie l'océan Indien à la mer de Chine ?",
+     "answer": "Le détroit de Malacca",
+     "more": "Autres détroits stratégiques : Ormuz, Bab-el-Mandeb, Gibraltar, Pas-de-Calais, Bosphore.",
+     "wrongs": [
+      "Le détroit d'Ormuz",
+      "Le détroit de Gibraltar",
+      "Le détroit de Bab-el-Mandeb"
+     ]
+    },
+    {
+     "question": "Sur quel continent se trouvent la plupart des grands ports mondiaux ?",
+     "answer": "En Asie",
+     "w": [
+      "2ef27805",
+      "64eea708"
+     ],
+     "wq": [
+      "28c7a4ce",
+      "3e4ea3a3"
+     ],
+     "more": "Shanghai, Singapour, Ningbo-Zhoushan, Shenzhen…",
+     "wrongs": [
+      "En Europe",
+      "En Amérique du Nord",
+      "En Afrique"
+     ]
+    },
+    {
+     "question": "Quel est le premier port à conteneurs du monde ?",
+     "answer": "Shanghai",
+     "wrongs": [
+      "Rotterdam",
+      "Singapour",
+      "Los Angeles"
+     ]
+    },
+    {
+     "question": "Quel est le premier port d'Europe ?",
+     "answer": "Rotterdam",
+     "more": "Puis Anvers et Hambourg.",
+     "wrongs": [
+      "Marseille",
+      "Hambourg",
+      "Le Havre"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on un littoral avec plusieurs grands ports et leur arrière-pays ?",
+     "answer": "Une façade maritime",
+     "w": [
+      "a970e52f",
+      "202916db"
+     ],
+     "wq": [
+      "65dca34f",
+      "98477a37"
+     ],
+     "more": "Ex. : la Northern Range, du Havre à Hambourg.",
+     "wrongs": [
+      "Une interface",
+      "Une ZEE",
+      "Un hinterland"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on l'arrière-pays desservi par un port ?",
+     "answer": "L'hinterland",
+     "w": [
+      "8cd3f8e5",
+      "2b0cf4ab"
+     ],
+     "wq": "b68a76ad",
+     "wrongs": [
+      "L'avant-pays",
+      "La façade maritime",
+      "La ZEE"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on les espaces maritimes et les ports reliés à un port ?",
+     "answer": "L'avant-pays (foreland)",
+     "wrongs": [
+      "L'hinterland",
+      "La façade maritime",
+      "La mer territoriale"
+     ]
     },
     {
      "question": "Quelle part des communications numériques intercontinentales passe par les câbles sous-marins ?",
      "answer": "Plus de 95 %",
      "w": "758c71d8",
-     "wq": "74a192bf"
+     "wq": "74a192bf",
+     "wrongs": [
+      "Environ 50 %",
+      "Environ 20 %",
+      "Moins de 5 %"
+     ]
     },
     {
-     "question": "Quelles sont les menaces sur les océans ?",
-     "answer": "• Surpêche\n• Pollution plastique (« continents de plastique »)\n• Réchauffement et acidification\n• Marées noires",
-     "w": "19fb42f8",
-     "wq": "91bda2c4"
+     "question": "Quelles sont les principales menaces sur les océans ?",
+     "answer": "Surpêche, pollution, réchauffement",
+     "w": [
+      "934db84a",
+      "19fb42f8"
+     ],
+     "wq": [
+      "991d15e2",
+      "91bda2c4"
+     ],
+     "more": "Pollution plastique (« continents de plastique »), marées noires, réchauffement et acidification.",
+     "wrongs": [
+      "Tsunamis, séismes, volcans",
+      "Courants, marées, vagues",
+      "Icebergs, tempêtes, brouillard"
+     ]
     },
     {
-     "question": "Piraterie maritime : quels sont ses principaux foyers ?",
-     "answer": "Golfe d'Aden, golfe de Guinée, détroit de Malacca.",
-     "w": "7fba7042",
-     "wq": "c333bbba"
+     "question": "Où se trouvent les principaux foyers de piraterie maritime ?",
+     "answer": "Golfe d'Aden, golfe de Guinée, détroit de Malacca",
+     "w": [
+      "61ebd1c7",
+      "7fba7042"
+     ],
+     "wq": [
+      "8594a6ef",
+      "c333bbba"
+     ],
+     "wrongs": [
+      "Manche, mer du Nord, Baltique",
+      "Méditerranée, mer Noire, Caspienne",
+      "Caraïbes, golfe du Mexique, Bermudes"
+     ]
     }
    ]
   },
@@ -13859,94 +15168,283 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Mondialisation : définition ?",
-     "answer": "La mise en relation des territoires du monde par l'intensification des échanges.\nMarchandises, capitaux, personnes, informations.",
-     "w": "b26f74ee",
-     "wq": "8e161c57"
+     "question": "Comment appelle-t-on la mise en relation des territoires du monde par l'intensification des échanges ?",
+     "answer": "La mondialisation",
+     "w": [
+      "8f8b66d1",
+      "b26f74ee"
+     ],
+     "wq": [
+      "c89083de",
+      "8e161c57"
+     ],
+     "more": "Échanges de marchandises, de capitaux, de personnes, d'informations.",
+     "wrongs": [
+      "La métropolisation",
+      "La maritimisation",
+      "La littoralisation"
+     ]
     },
     {
-     "question": "FTN : que signifie le sigle ?",
-     "answer": "Firme transnationale\nEntreprise présente dans plusieurs pays (filiales), acteur majeur de la mondialisation.",
-     "w": "facc5f3f",
-     "wq": "96be3c74"
+     "question": "Que signifie le sigle FTN ?",
+     "answer": "Firme transnationale",
+     "w": [
+      "51361fee",
+      "facc5f3f"
+     ],
+     "wq": [
+      "97973c74",
+      "96be3c74"
+     ],
+     "more": "Entreprise présente dans plusieurs pays par ses filiales, acteur majeur de la mondialisation.",
+     "wrongs": [
+      "Fédération des travailleurs nationaux",
+      "Fonds de transition numérique",
+      "Filière de transport national"
+     ]
     },
     {
-     "question": "DIPP : que signifie le sigle ?",
-     "answer": "Division internationale des processus productifs\nLes étapes de fabrication sont réparties entre plusieurs pays selon leurs avantages (coûts, compétences).",
-     "w": "3994062e",
-     "wq": "0296b13e"
+     "question": "Que signifie le sigle DIPP ?",
+     "answer": "Division internationale des processus productifs",
+     "w": [
+      "e83c3394",
+      "3994062e"
+     ],
+     "wq": [
+      "5829a9fd",
+      "0296b13e"
+     ],
+     "more": "Les étapes de fabrication sont réparties entre plusieurs pays selon leurs avantages (coûts, compétences).",
+     "wrongs": [
+      "Délocalisation internationale de la production publique",
+      "Développement industriel des pays pauvres",
+      "Direction internationale des ports et du pétrole"
+     ]
     },
     {
-     "question": "IDE : que signifie le sigle ?",
-     "answer": "Investissement direct à l'étranger\nCapitaux investis pour créer ou acheter une entreprise dans un autre pays.",
-     "w": "31758fd0",
-     "wq": "f5aa2b3f"
+     "question": "Que signifie le sigle IDE ?",
+     "answer": "Investissement direct à l'étranger",
+     "w": [
+      "9c61d563",
+      "31758fd0"
+     ],
+     "wq": [
+      "d3b9c988",
+      "f5aa2b3f"
+     ],
+     "more": "Capitaux investis pour créer ou acheter une entreprise dans un autre pays.",
+     "wrongs": [
+      "Indice de développement économique",
+      "Impôt sur les dividendes étrangers",
+      "Importation de denrées étrangères"
+     ]
     },
     {
-     "question": "Métropolisation : définition ?",
-     "answer": "La concentration des populations, des activités et des pouvoirs de commandement dans les grandes villes.",
-     "w": "0a27b2e3",
-     "wq": "0f934032"
+     "question": "Comment appelle-t-on la concentration des populations, des activités et des pouvoirs dans les grandes villes ?",
+     "answer": "La métropolisation",
+     "w": [
+      "6207402d",
+      "0a27b2e3"
+     ],
+     "wq": [
+      "74bec92c",
+      "0f934032"
+     ],
+     "wrongs": [
+      "La périurbanisation",
+      "La littoralisation",
+      "La désindustrialisation"
+     ]
     },
     {
-     "question": "Ville mondiale : définition et exemples ?",
-     "answer": "Métropole aux fonctions de commandement mondiales (finance, sièges sociaux, culture).\nNew York, Londres, Tokyo, Paris",
-     "w": "300951b4",
-     "wq": "87d94f9e"
+     "question": "Comment appelle-t-on une métropole aux fonctions de commandement mondiales ?",
+     "answer": "Une ville mondiale",
+     "w": [
+      "6aab3f1d",
+      "300951b4"
+     ],
+     "wq": [
+      "4da83224",
+      "87d94f9e"
+     ],
+     "more": "Finance, sièges sociaux, culture.",
+     "wrongs": [
+      "Une mégapole",
+      "Une ville moyenne",
+      "Une métropole régionale"
+     ]
     },
     {
-     "question": "Interface : définition ?",
-     "answer": "Zone de contact entre deux espaces différents, qui favorise les échanges.\nEx. : littoral, frontière.",
-     "w": "8ce1b271",
-     "wq": "7d000dd0"
+     "question": "Quelles villes sont les grandes villes mondiales ?",
+     "answer": "New York, Londres, Tokyo, Paris",
+     "wrongs": [
+      "Lagos, Dacca, Karachi, Kinshasa",
+      "Lyon, Marseille, Lille, Bordeaux",
+      "Genève, Bruxelles, Vienne, Prague"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on une zone de contact entre deux espaces différents, qui favorise les échanges ?",
+     "answer": "Une interface",
+     "w": [
+      "30195ebf",
+      "8ce1b271"
+     ],
+     "wq": [
+      "2ed41786",
+      "7d000dd0"
+     ],
+     "more": "Ex. : un littoral, une frontière.",
+     "wrongs": [
+      "Une marge",
+      "Un hinterland",
+      "Une périphérie"
+     ]
     },
     {
      "question": "Qui sont les acteurs de la mondialisation ?",
-     "answer": "• États, FTN\n• Organisations internationales (OMC, FMI, ONU), ONG\n• Individus (migrants, touristes)\n• Organisations criminelles",
-     "w": "e22f11e9",
-     "wq": "980ca261"
+     "answer": "États, FTN, organisations internationales, ONG, individus",
+     "w": [
+      "de08a949",
+      "e22f11e9"
+     ],
+     "wq": "980ca261",
+     "more": "Organisations internationales (OMC, FMI, ONU), migrants, touristes, mais aussi organisations criminelles.",
+     "wrongs": [
+      "Seulement les États",
+      "Seulement les entreprises",
+      "Seulement l'ONU et l'OMC"
+     ]
     },
     {
-     "question": "OMC : que signifie le sigle et quel est son rôle ?",
-     "answer": "Organisation mondiale du commerce (1995, succède au GATT).\nFavorise le libre-échange et règle les différends commerciaux.",
-     "w": "cb98593b",
-     "wq": "eb09637e"
+     "question": "Que signifie le sigle OMC ?",
+     "answer": "Organisation mondiale du commerce",
+     "w": [
+      "fd0c528a",
+      "cb98593b"
+     ],
+     "wq": [
+      "09f4c958",
+      "eb09637e"
+     ],
+     "more": "Créée en 1995, elle succède au GATT.",
+     "wrongs": [
+      "Organisation mondiale de la croissance",
+      "Office mondial des capitaux",
+      "Organisation des marchés communs"
+     ]
     },
     {
-     "question": "Paradis fiscal : définition ?",
-     "answer": "Un territoire à la fiscalité très faible et opaque, qui attire les capitaux étrangers.",
-     "w": "b65bd693",
-     "wq": "175ba361"
+     "question": "Quel est le rôle de l'OMC ?",
+     "answer": "Favoriser le libre-échange et régler les différends commerciaux",
+     "wrongs": [
+      "Prêter de l'argent aux États en difficulté",
+      "Maintenir la paix dans le monde",
+      "Fixer le prix du pétrole"
+     ]
     },
     {
-     "question": "BRICS : quels pays ?",
-     "answer": "Brésil, Russie, Inde, Chine, Afrique du Sud\nÉlargis en 2024 à d'autres pays.\nPays émergents : forte croissance, insertion dans la mondialisation.",
-     "w": "9ea6297b",
-     "wq": "e822a7ba"
+     "question": "Comment appelle-t-on un territoire à la fiscalité très faible et opaque, qui attire les capitaux ?",
+     "answer": "Un paradis fiscal",
+     "w": [
+      "349c483d",
+      "b65bd693"
+     ],
+     "wq": [
+      "42dbca5d",
+      "175ba361"
+     ],
+     "wrongs": [
+      "Une zone franche",
+      "Une place boursière",
+      "Une ZEE"
+     ]
     },
     {
-     "question": "Délocalisation : définition ?",
-     "answer": "Transférer une production vers un pays aux coûts (souvent salariaux) plus bas.",
-     "w": "18ce3cb2",
-     "wq": "f7883d8e"
+     "question": "Quels pays forment les BRICS à l'origine ?",
+     "answer": "Brésil, Russie, Inde, Chine, Afrique du Sud",
+     "w": [
+      "30683550",
+      "9ea6297b"
+     ],
+     "wq": [
+      "1f4183f2",
+      "e822a7ba"
+     ],
+     "more": "Pays émergents, élargis en 2024 à d'autres pays.",
+     "wrongs": [
+      "Belgique, Royaume-Uni, Italie, Canada, Suède",
+      "Brésil, Russie, Indonésie, Chili, Singapour",
+      "Bolivie, Roumanie, Irlande, Corée, Soudan"
+     ]
     },
     {
-     "question": "Relocalisation : de quoi s'agit-il ?",
-     "answer": "Le retour de productions dans le pays d'origine ou à proximité (nearshoring).\nSurtout après la crise du Covid-19, pour sécuriser les approvisionnements.",
-     "w": "0ec34054",
-     "wq": "2cd592ab"
+     "question": "Comment appelle-t-on le transfert d'une production vers un pays aux coûts plus bas ?",
+     "answer": "Une délocalisation",
+     "w": [
+      "01990569",
+      "18ce3cb2"
+     ],
+     "wq": [
+      "36666cc8",
+      "f7883d8e"
+     ],
+     "wrongs": [
+      "Une relocalisation",
+      "Une décentralisation",
+      "Une nationalisation"
+     ]
     },
     {
-     "question": "Marge (périphérie) : définition ?",
-     "answer": "Un espace peu intégré à la mondialisation, dominé par les centres.\nEx. : pays les moins avancés, espaces enclavés.",
-     "w": "b490025d",
-     "wq": "1e769af1"
+     "question": "Comment appelle-t-on le retour d'une production dans son pays d'origine ?",
+     "answer": "Une relocalisation",
+     "w": [
+      "4d9c220c",
+      "0ec34054"
+     ],
+     "wq": [
+      "8cce7797",
+      "2cd592ab"
+     ],
+     "more": "Surtout après la crise du Covid-19, pour sécuriser les approvisionnements (nearshoring : à proximité).",
+     "wrongs": [
+      "Une délocalisation",
+      "Une désindustrialisation",
+      "Une privatisation"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on un espace peu intégré à la mondialisation, dominé par les centres ?",
+     "answer": "Une marge (ou périphérie)",
+     "w": [
+      "c0d28fe3",
+      "b490025d"
+     ],
+     "wq": [
+      "121b98af",
+      "1e769af1"
+     ],
+     "more": "Ex. : pays les moins avancés, espaces enclavés.",
+     "wrongs": [
+      "Une interface",
+      "Une métropole",
+      "Une façade maritime"
+     ]
     },
     {
      "question": "Quelles sont les fonctions d'une frontière ?",
-     "answer": "• Délimiter un territoire et la souveraineté d'un État\n• Contrôler les flux (barrière)\n• Favoriser les échanges (interface)",
-     "w": "0532fc91",
-     "wq": "34771579"
+     "answer": "Délimiter, contrôler les flux, favoriser les échanges",
+     "w": [
+      "7a7efd0d",
+      "0532fc91"
+     ],
+     "wq": "34771579",
+     "more": "Elle délimite la souveraineté d'un État, peut faire barrière ou servir d'interface.",
+     "wrongs": [
+      "Uniquement séparer deux pays",
+      "Uniquement percevoir des taxes",
+      "Uniquement défendre un territoire"
+     ]
     }
    ]
   },
@@ -13969,82 +15467,296 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Combien d'États membres compte l'UE ?",
-     "answer": "27 depuis le Brexit (2020).",
-     "w": "3a10a523",
-     "wq": "d73605cd"
+     "question": "Combien d'États membres compte l'Union européenne ?",
+     "answer": "27",
+     "w": [
+      "756845ab",
+      "3a10a523"
+     ],
+     "wq": [
+      "35d6ddc5",
+      "d73605cd"
+     ],
+     "more": "Depuis le Brexit (2020).",
+     "wrongs": [
+      "28",
+      "25",
+      "30"
+     ]
     },
     {
-     "question": "Espace Schengen : définition et dates ?",
-     "answer": "Libre circulation des personnes sans contrôle aux frontières intérieures.\nAccord signé en 1985, appliqué à partir de 1995.",
-     "w": "f101f42a",
-     "wq": "b05dcb67"
+     "question": "Que permet l'espace Schengen ?",
+     "answer": "Circuler sans contrôle aux frontières intérieures",
+     "w": [
+      "364ad5d9",
+      "f101f42a"
+     ],
+     "wq": [
+      "ca6502d3",
+      "b05dcb67"
+     ],
+     "wrongs": [
+      "Utiliser une monnaie unique",
+      "Voter aux élections européennes",
+      "Commercer sans droits de douane"
+     ]
     },
     {
-     "question": "Zone euro : combien de pays en 2026 ?",
-     "answer": "21 pays, depuis l'entrée de la Bulgarie le 1er janvier 2026.\nLa Croatie l'avait adopté en 2023.",
-     "w": "b0ec0d30",
-     "wq": "07041df8"
+     "question": "En quelle année l'accord de Schengen est-il signé ?",
+     "answer": "En 1985",
+     "more": "Il est appliqué à partir de 1995.",
+     "wrongs": [
+      "En 1957",
+      "En 1992",
+      "En 2002"
+     ]
     },
     {
-     "question": "Politique de cohésion : quel objectif ?",
-     "answer": "Réduire les écarts de développement entre régions européennes.\nFonds structurels : FEDER, FSE.",
-     "w": "7808c3bb",
-     "wq": "f0b97efd"
+     "question": "Combien de pays compte la zone euro en 2026 ?",
+     "answer": "21",
+     "w": [
+      "845d4a08",
+      "b0ec0d30"
+     ],
+     "wq": [
+      "5ba89aad",
+      "07041df8"
+     ],
+     "more": "Depuis l'entrée de la Bulgarie le 1er janvier 2026 (la Croatie l'avait rejointe en 2023).",
+     "wrongs": [
+      "19",
+      "27",
+      "15"
+     ]
     },
     {
-     "question": "PAC : que signifie le sigle et quand est-elle créée ?",
-     "answer": "Politique agricole commune, 1962\nSoutien aux agriculteurs, sécurité alimentaire ; aujourd'hui aussi objectifs environnementaux.",
-     "w": "588d2f5f",
-     "wq": "990b132b"
+     "question": "Quel est l'objectif de la politique de cohésion de l'UE ?",
+     "answer": "Réduire les écarts de développement entre régions",
+     "w": [
+      "5b649f3c",
+      "7808c3bb"
+     ],
+     "wq": [
+      "536f5c92",
+      "f0b97efd"
+     ],
+     "more": "Fonds structurels : FEDER, FSE.",
+     "wrongs": [
+      "Protéger les frontières extérieures",
+      "Fixer les taux d'intérêt",
+      "Soutenir les prix agricoles"
+     ]
     },
     {
-     "question": "RUP françaises : lesquelles ?",
-     "answer": "Guadeloupe, Martinique, Guyane, La Réunion, Mayotte, Saint-Martin\nRégions de l'UE situées loin du continent européen.",
-     "w": "63debd33",
-     "wq": "0f82ff8a"
+     "question": "Que signifie le sigle PAC ?",
+     "answer": "Politique agricole commune",
+     "w": [
+      "d1b5e0d4",
+      "588d2f5f"
+     ],
+     "wq": [
+      "07d80035",
+      "990b132b"
+     ],
+     "more": "Soutien aux agriculteurs, sécurité alimentaire ; aujourd'hui aussi des objectifs environnementaux.",
+     "wrongs": [
+      "Pacte d'aide à la croissance",
+      "Plan d'action climatique",
+      "Politique d'aménagement du continent"
+     ]
     },
     {
-     "question": "Coopération transfrontalière : exemple en France ?",
-     "answer": "Grand Est avec l'Allemagne, la Suisse, le Luxembourg.\nCoopération entre régions de part et d'autre d'une frontière ; travailleurs frontaliers.",
-     "w": "7b3b727e",
-     "wq": "dbdd479e"
+     "question": "En quelle année la PAC est-elle créée ?",
+     "answer": "En 1962",
+     "wrongs": [
+      "En 1957",
+      "En 1992",
+      "En 1951"
+     ]
     },
     {
-     "question": "Quelles sont les grandes métropoles françaises ?",
-     "answer": "Paris domine (macrocéphalie).\nMétropoles régionales : Lyon, Marseille, Toulouse, Lille, Bordeaux, Nantes…",
-     "w": "04fba117",
-     "wq": "96927e14"
+     "question": "Quelles sont les régions ultrapériphériques (RUP) françaises ?",
+     "answer": "Guadeloupe, Martinique, Guyane, La Réunion, Mayotte, Saint-Martin",
+     "w": [
+      "918a041b",
+      "63debd33"
+     ],
+     "wq": [
+      "ebce8063",
+      "0f82ff8a"
+     ],
+     "more": "Régions de l'UE situées loin du continent européen.",
+     "wrongs": [
+      "Corse, Bretagne, Alsace, Savoie",
+      "Nouvelle-Calédonie, Polynésie française, Wallis-et-Futuna",
+      "Monaco, Andorre, Luxembourg"
+     ]
     },
     {
-     "question": "Quels sont les grands ports français ?",
-     "answer": "• Marseille-Fos (1er port français)\n• Le Havre (HAROPA, avec Rouen et Paris)\n• Dunkerque",
-     "w": "82670875",
-     "wq": "decdb4f9"
+     "question": "Quelle région française coopère avec l'Allemagne, la Suisse et le Luxembourg ?",
+     "answer": "Le Grand Est",
+     "w": [
+      "17677507",
+      "7b3b727e"
+     ],
+     "wq": [
+      "a3c38bab",
+      "dbdd479e"
+     ],
+     "more": "Coopération transfrontalière : travailleurs frontaliers, projets communs.",
+     "wrongs": [
+      "La Bretagne",
+      "L'Occitanie",
+      "La Nouvelle-Aquitaine"
+     ]
     },
     {
-     "question": "Commission européenne : rôle et siège ?",
-     "answer": "Elle propose les lois européennes et veille à leur application.\nSiège : Bruxelles",
-     "w": "8886698b",
-     "wq": "7040e8ce"
+     "question": "Comment appelle-t-on le poids écrasant de Paris dans le réseau urbain français ?",
+     "answer": "La macrocéphalie",
+     "w": [
+      "5a7e4bf0",
+      "04fba117"
+     ],
+     "wq": [
+      "84f56d32",
+      "96927e14"
+     ],
+     "wrongs": [
+      "La métropolisation",
+      "La périurbanisation",
+      "La littoralisation"
+     ]
     },
     {
-     "question": "Parlement européen : élu comment, rôle, siège ?",
-     "answer": "Élu au suffrage universel direct tous les 5 ans.\nVote les lois avec le Conseil de l'UE.\nSiège : Strasbourg",
-     "w": "b0831f56",
-     "wq": "ea97af6e"
+     "question": "Quelles sont les grandes métropoles régionales françaises ?",
+     "answer": "Lyon, Marseille, Toulouse, Lille, Bordeaux, Nantes",
+     "wrongs": [
+      "Vichy, Auch, Tulle, Guéret",
+      "Bruxelles, Genève, Luxembourg",
+      "Versailles, Créteil, Nanterre"
+     ]
     },
     {
-     "question": "Institutions européennes : Conseil européen et Conseil de l'UE",
-     "answer": "Conseil européen : chefs d'État et de gouvernement, grandes orientations.\nConseil de l'UE : ministres des États, vote les lois avec le Parlement.",
-     "w": "90088a11",
-     "wq": "32b568bd"
+     "question": "Quel est le premier port français ?",
+     "answer": "Marseille-Fos",
+     "w": [
+      "a29751cc",
+      "82670875"
+     ],
+     "wq": [
+      "8b043ef6",
+      "decdb4f9"
+     ],
+     "more": "Puis Le Havre (HAROPA, avec Rouen et Paris) et Dunkerque.",
+     "wrongs": [
+      "Le Havre",
+      "Dunkerque",
+      "Bordeaux"
+     ]
     },
     {
-     "question": "Banque centrale européenne : siège et rôle ?",
-     "answer": "Francfort\nElle conduit la politique monétaire de la zone euro.",
-     "w": "fbf73526",
-     "wq": "03c06153"
+     "question": "Quel est le rôle de la Commission européenne ?",
+     "answer": "Proposer les lois européennes et veiller à leur application",
+     "w": [
+      "39ae0674",
+      "8886698b"
+     ],
+     "wq": [
+      "59c1e8ad",
+      "7040e8ce"
+     ],
+     "wrongs": [
+      "Voter les lois européennes",
+      "Conduire la politique monétaire",
+      "Juger les États membres"
+     ]
+    },
+    {
+     "question": "Où siège la Commission européenne ?",
+     "answer": "À Bruxelles",
+     "wrongs": [
+      "À Strasbourg",
+      "À Luxembourg",
+      "À Francfort"
+     ]
+    },
+    {
+     "question": "Comment le Parlement européen est-il élu ?",
+     "answer": "Au suffrage universel direct, tous les 5 ans",
+     "w": [
+      "1d8f7161",
+      "b0831f56"
+     ],
+     "wq": [
+      "c43948c7",
+      "ea97af6e"
+     ],
+     "wrongs": [
+      "Par les parlements nationaux",
+      "Au suffrage indirect, tous les 6 ans",
+      "Il est nommé par la Commission"
+     ]
+    },
+    {
+     "question": "Où siège le Parlement européen ?",
+     "answer": "À Strasbourg",
+     "more": "Il vote les lois européennes avec le Conseil de l'UE.",
+     "wrongs": [
+      "À Bruxelles",
+      "À Luxembourg",
+      "À La Haye"
+     ]
+    },
+    {
+     "question": "Qui siège au Conseil européen ?",
+     "answer": "Les chefs d'État et de gouvernement",
+     "w": [
+      "0849caed",
+      "90088a11"
+     ],
+     "wq": "32b568bd",
+     "more": "Il fixe les grandes orientations de l'UE.",
+     "wrongs": [
+      "Les ministres des États",
+      "Les députés européens",
+      "Les commissaires européens"
+     ]
+    },
+    {
+     "question": "Qui siège au Conseil de l'UE ?",
+     "answer": "Les ministres des États membres",
+     "more": "Il vote les lois avec le Parlement européen.",
+     "wrongs": [
+      "Les chefs d'État et de gouvernement",
+      "Les députés européens",
+      "Les juges européens"
+     ]
+    },
+    {
+     "question": "Où siège la Banque centrale européenne ?",
+     "answer": "À Francfort",
+     "w": [
+      "b310fd22",
+      "fbf73526"
+     ],
+     "wq": [
+      "805dc32e",
+      "03c06153"
+     ],
+     "wrongs": [
+      "À Bruxelles",
+      "À Paris",
+      "À Luxembourg"
+     ]
+    },
+    {
+     "question": "Quel est le rôle de la Banque centrale européenne ?",
+     "answer": "Conduire la politique monétaire de la zone euro",
+     "wrongs": [
+      "Voter le budget de l'UE",
+      "Prêter aux particuliers",
+      "Fixer les impôts européens"
+     ]
     }
    ]
   },
@@ -14067,98 +15779,338 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quelle est la devise de la République ?",
-     "answer": "« Liberté, Égalité, Fraternité »\nArticle 2 de la Constitution de 1958.",
-     "w": "441f8a32",
-     "wq": "ff2a6397"
+     "question": "Quelle est la devise de la République française ?",
+     "answer": "« Liberté, Égalité, Fraternité »",
+     "w": [
+      "6b33b525",
+      "441f8a32"
+     ],
+     "wq": [
+      "36c4c619",
+      "ff2a6397"
+     ],
+     "more": "Article 2 de la Constitution de 1958.",
+     "wrongs": [
+      "« Travail, Famille, Patrie »",
+      "« Unité, Travail, Progrès »",
+      "« Honneur et Patrie »"
+     ]
     },
     {
-     "question": "Que dit l'article 1er de la Constitution ?",
-     "answer": "« La France est une République indivisible, laïque, démocratique et sociale. »",
-     "w": "a52facf0",
-     "wq": "e10795e6"
+     "question": "Selon l'article 1er de la Constitution, quelle République est la France ?",
+     "answer": "Indivisible, laïque, démocratique et sociale",
+     "w": [
+      "8b5c4ce4",
+      "a52facf0"
+     ],
+     "wq": [
+      "292ea052",
+      "e10795e6"
+     ],
+     "wrongs": [
+      "Fédérale, laïque, démocratique et libérale",
+      "Indivisible, chrétienne, démocratique et sociale",
+      "Unie, parlementaire, sociale et solidaire"
+     ]
     },
     {
-     "question": "Laïcité : définition ?",
-     "answer": "Séparation des Églises et de l'État, neutralité de l'État.\nLiberté de conscience et libre exercice des cultes.\nLoi du 9 décembre 1905",
-     "w": "600684cb",
-     "wq": "b501f4f3"
+     "question": "Que signifie la laïcité ?",
+     "answer": "La séparation des Églises et de l'État",
+     "w": [
+      "bd4eab88",
+      "600684cb"
+     ],
+     "wq": [
+      "551fdaa2",
+      "b501f4f3"
+     ],
+     "more": "Neutralité de l'État, liberté de conscience et libre exercice des cultes.",
+     "wrongs": [
+      "L'interdiction de toute religion",
+      "Une religion officielle d'État",
+      "L'obligation d'être croyant"
+     ]
     },
     {
-     "question": "DDHC : quelle date, et que dit son article 1er ?",
-     "answer": "26 août 1789\n« Les hommes naissent et demeurent libres et égaux en droits. »",
-     "w": "60d4e3d1",
-     "wq": "a1926d8c"
+     "question": "Quelle loi sépare les Églises et l'État en France ?",
+     "answer": "La loi du 9 décembre 1905",
+     "wrongs": [
+      "La loi du 4 août 1789",
+      "La loi du 1er juillet 1901",
+      "La loi du 28 mars 1882"
+     ]
     },
     {
-     "question": "Déclaration universelle des droits de l'homme : quand et où ?",
-     "answer": "10 décembre 1948, à Paris, par l'Assemblée générale de l'ONU.\nRôle de René Cassin.",
-     "w": "fc03b8ef",
-     "wq": "f829277e"
+     "question": "Quelle est la date de la Déclaration des droits de l'homme et du citoyen ?",
+     "answer": "26 août 1789",
+     "w": [
+      "7469324d",
+      "60d4e3d1"
+     ],
+     "wq": [
+      "985a25d8",
+      "a1926d8c"
+     ],
+     "wrongs": [
+      "14 juillet 1789",
+      "4 août 1789",
+      "21 septembre 1792"
+     ]
     },
     {
-     "question": "Démocratie directe / représentative",
-     "answer": "Directe : les citoyens votent eux-mêmes les lois (référendum).\nReprésentative : ils élisent des représentants qui décident en leur nom."
+     "question": "Que dit l'article 1er de la DDHC ?",
+     "answer": "« Les hommes naissent et demeurent libres et égaux en droits. »",
+     "wrongs": [
+      "« La loi est l'expression de la volonté générale. »",
+      "« Nul ne peut être inquiété pour ses opinions. »",
+      "« La propriété est un droit inviolable et sacré. »"
+     ]
     },
     {
-     "question": "Séparation des pouvoirs : qui l'a théorisée, et quels sont les 3 pouvoirs ?",
-     "answer": "Montesquieu, De l'esprit des lois (1748)\n• Législatif : voter les lois\n• Exécutif : les appliquer\n• Judiciaire : juger",
-     "w": "647f6ede",
-     "wq": "9f46bd6e"
+     "question": "En quelle année est adoptée la Déclaration universelle des droits de l'homme ?",
+     "answer": "En 1948",
+     "w": [
+      "fa895a12",
+      "fc03b8ef"
+     ],
+     "wq": [
+      "a6b3cf61",
+      "f829277e"
+     ],
+     "more": "Le 10 décembre 1948, à Paris, par l'Assemblée générale de l'ONU.",
+     "wrongs": [
+      "En 1945",
+      "En 1789",
+      "En 1958"
+     ]
     },
     {
-     "question": "État de droit : définition ?",
-     "answer": "Tous, gouvernants compris, sont soumis au droit.\nHiérarchie des normes, justice indépendante.",
-     "w": "110d6e30",
-     "wq": "ea14bbd6"
+     "question": "Quel juriste français a joué un grand rôle dans la Déclaration universelle des droits de l'homme ?",
+     "answer": "René Cassin",
+     "wrongs": [
+      "Robert Badinter",
+      "Jean Monnet",
+      "Léon Blum"
+     ]
     },
     {
-     "question": "Citoyenneté : droits et devoirs",
-     "answer": "Droits : voter, être élu, libertés fondamentales.\nDevoirs : respecter la loi, payer l'impôt, participer à la défense, être juré si tiré au sort.",
-     "w": "434056cc",
-     "wq": "52c17df4"
+     "question": "Comment appelle-t-on la démocratie où les citoyens votent eux-mêmes les lois ?",
+     "answer": "La démocratie directe",
+     "w": "32884dcc",
+     "wq": "2bd4115a",
+     "more": "Par exemple par référendum.",
+     "wrongs": [
+      "La démocratie représentative",
+      "La démocratie parlementaire",
+      "La monarchie constitutionnelle"
+     ]
     },
     {
-     "question": "Conditions pour voter en France",
-     "answer": "• Nationalité française\n• 18 ans\n• Droits civiques\n• Inscription sur les listes électorales\nCitoyens de l'UE : municipales et européennes.",
-     "w": "4784c7aa",
-     "wq": "72d6b2bb"
+     "question": "Comment appelle-t-on la démocratie où les citoyens élisent des représentants qui décident en leur nom ?",
+     "answer": "La démocratie représentative",
+     "wrongs": [
+      "La démocratie directe",
+      "La démocratie participative",
+      "L'oligarchie"
+     ]
     },
     {
-     "question": "Défenseur des droits : rôle ?",
-     "answer": "Autorité indépendante (2011) qui défend les droits des citoyens face aux administrations.\nLutte contre les discriminations, défense des droits de l'enfant.",
-     "w": "1bd74734",
-     "wq": "6bf8cd88"
+     "question": "Qui a théorisé la séparation des pouvoirs ?",
+     "answer": "Montesquieu",
+     "w": [
+      "26636f5b",
+      "647f6ede"
+     ],
+     "wq": [
+      "9e0d95df",
+      "9f46bd6e"
+     ],
+     "more": "Dans De l'esprit des lois (1748).",
+     "wrongs": [
+      "Rousseau",
+      "Voltaire",
+      "Locke"
+     ]
     },
     {
-     "question": "Liberté d'expression : quelles limites ?",
-     "answer": "Interdits par la loi :\n• diffamation, injure\n• incitation à la haine ou à la violence\n• apologie du terrorisme",
-     "w": "e6c1c722",
-     "wq": "3e623c86"
+     "question": "Quels sont les trois pouvoirs à séparer ?",
+     "answer": "Législatif, exécutif, judiciaire",
+     "more": "Voter les lois, les appliquer, juger.",
+     "wrongs": [
+      "Politique, économique, religieux",
+      "Législatif, militaire, religieux",
+      "Exécutif, médiatique, judiciaire"
+     ]
     },
     {
-     "question": "Discrimination : définition ?",
-     "answer": "Traitement défavorable fondé sur un critère interdit par la loi (origine, sexe, handicap, religion…).\nPuni par le Code pénal.",
-     "w": "b7321ae7",
-     "wq": "6bd3c678"
+     "question": "Comment appelle-t-on un État où tous, gouvernants compris, sont soumis au droit ?",
+     "answer": "Un État de droit",
+     "w": [
+      "baef0d17",
+      "110d6e30"
+     ],
+     "wq": [
+      "fe531dd0",
+      "ea14bbd6"
+     ],
+     "more": "Hiérarchie des normes, justice indépendante.",
+     "wrongs": [
+      "Un État providence",
+      "Un État fédéral",
+      "Un État totalitaire"
+     ]
     },
     {
-     "question": "Bioéthique : de quoi s'agit-il ?",
-     "answer": "Réflexion sur les questions morales posées par les progrès de la médecine et de la biologie.\nPMA, fin de vie, génétique ; lois révisées régulièrement.",
-     "w": "e2983216",
-     "wq": "3aeff990"
+     "question": "Quels sont les principaux droits du citoyen ?",
+     "answer": "Voter, être élu, jouir des libertés fondamentales",
+     "w": [
+      "4b8e7a3f",
+      "434056cc"
+     ],
+     "wq": "52c17df4",
+     "wrongs": [
+      "Ne pas payer d'impôts",
+      "Choisir les lois à respecter",
+      "Être juré quand il le souhaite"
+     ]
+    },
+    {
+     "question": "Quels sont les principaux devoirs du citoyen ?",
+     "answer": "Respecter la loi, payer l'impôt, participer à la défense",
+     "more": "Et être juré s'il est tiré au sort.",
+     "wrongs": [
+      "Voter à chaque élection sous peine d'amende",
+      "Adhérer à un parti politique",
+      "Faire un service militaire de deux ans"
+     ]
+    },
+    {
+     "question": "Quelles sont les conditions pour voter en France ?",
+     "answer": "Être Français, majeur, avoir ses droits civiques, être inscrit",
+     "w": [
+      "bd738826",
+      "4784c7aa"
+     ],
+     "wq": "72d6b2bb",
+     "more": "Les citoyens de l'UE peuvent voter aux municipales et aux européennes.",
+     "wrongs": [
+      "Avoir 16 ans et payer des impôts",
+      "Être né en France et avoir 21 ans",
+      "Résider en France depuis 5 ans"
+     ]
+    },
+    {
+     "question": "Quel est le rôle du Défenseur des droits ?",
+     "answer": "Défendre les droits des citoyens face aux administrations",
+     "w": [
+      "74113fe3",
+      "1bd74734"
+     ],
+     "wq": [
+      "ade87f37",
+      "6bf8cd88"
+     ],
+     "more": "Autorité indépendante créée en 2011 ; lutte aussi contre les discriminations et défend les droits de l'enfant.",
+     "wrongs": [
+      "Défendre les accusés lors des procès",
+      "Vérifier la conformité des lois",
+      "Représenter la France à l'ONU"
+     ]
+    },
+    {
+     "question": "Quelles sont les limites de la liberté d'expression ?",
+     "answer": "Diffamation, injure, incitation à la haine, apologie du terrorisme",
+     "w": [
+      "17504db5",
+      "e6c1c722"
+     ],
+     "wq": [
+      "cace37ea",
+      "3e623c86"
+     ],
+     "more": "Ces propos sont interdits par la loi.",
+     "wrongs": [
+      "Toute critique du gouvernement",
+      "Toute caricature religieuse",
+      "Il n'y a aucune limite"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on un traitement défavorable fondé sur un critère interdit par la loi ?",
+     "answer": "Une discrimination",
+     "w": [
+      "5c626df5",
+      "b7321ae7"
+     ],
+     "wq": [
+      "620ae50e",
+      "6bd3c678"
+     ],
+     "more": "Critères : origine, sexe, handicap, religion… Puni par le Code pénal.",
+     "wrongs": [
+      "Une diffamation",
+      "Une injure",
+      "Un préjudice"
+     ]
+    },
+    {
+     "question": "Comment appelle-t-on la réflexion sur les questions morales posées par les progrès de la médecine et de la biologie ?",
+     "answer": "La bioéthique",
+     "w": [
+      "7dcd775a",
+      "e2983216"
+     ],
+     "wq": [
+      "c3804173",
+      "3aeff990"
+     ],
+     "more": "PMA, fin de vie, génétique ; les lois de bioéthique sont révisées régulièrement.",
+     "wrongs": [
+      "La déontologie",
+      "L'écologie",
+      "La biotechnologie"
+     ]
     },
     {
      "question": "Quelles sont les formes d'engagement citoyen ?",
-     "answer": "• Vote, militantisme politique ou syndical\n• Associations, bénévolat\n• Service civique, réserve militaire\n• Pétitions",
-     "w": "de3897a2",
-     "wq": "5878ed0e"
+     "answer": "Vote, militantisme, associations, bénévolat",
+     "w": [
+      "b656c3b6",
+      "de3897a2"
+     ],
+     "wq": "5878ed0e",
+     "more": "Aussi : service civique, réserve militaire, pétitions.",
+     "wrongs": [
+      "Uniquement le vote",
+      "Uniquement le service militaire",
+      "Uniquement le paiement de l'impôt"
+     ]
     },
     {
-     "question": "JDC : pour qui est-elle obligatoire ?",
-     "answer": "Pour tous les jeunes Français entre 16 et 25 ans.\nJournée défense et citoyenneté.",
-     "w": "44b74b67",
-     "wq": "ebc6b87d"
+     "question": "Que signifie le sigle JDC ?",
+     "answer": "Journée défense et citoyenneté",
+     "w": [
+      "0179d3ae",
+      "44b74b67"
+     ],
+     "wq": [
+      "1822ff28",
+      "ebc6b87d"
+     ],
+     "wrongs": [
+      "Journée des citoyens",
+      "Jeunesse de la défense civile",
+      "Journée du droit civique"
+     ]
+    },
+    {
+     "question": "Pour qui la Journée défense et citoyenneté est-elle obligatoire ?",
+     "answer": "Pour tous les jeunes Français de 16 à 25 ans",
+     "wrongs": [
+      "Pour les garçons de 18 ans seulement",
+      "Pour les volontaires seulement",
+      "Pour les étudiants seulement"
+     ]
     }
    ]
   },
@@ -14181,96 +16133,278 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Suite arithmétique : terme général",
-     "answer": "uₙ = u₀ + n·r\n(ou uₙ = uₚ + (n − p)·r)"
+     "question": "Quel est le terme général d'une suite arithmétique de raison r ?",
+     "answer": "uₙ = u₀ + n·r",
+     "w": "cf4abe6d",
+     "wq": "c72658ae",
+     "more": "Plus généralement : uₙ = uₚ + (n − p)·r.",
+     "wrongs": [
+      "uₙ = u₀ × rⁿ",
+      "uₙ = u₀ + rⁿ",
+      "uₙ = n·u₀ + r"
+     ]
     },
     {
-     "question": "Suite géométrique : terme général",
-     "answer": "uₙ = u₀ × qⁿ\n(ou uₙ = uₚ × qⁿ⁻ᵖ)"
+     "question": "Quel est le terme général d'une suite géométrique de raison q ?",
+     "answer": "uₙ = u₀ × qⁿ",
+     "w": "c9e32bfe",
+     "wq": "909972dd",
+     "more": "Plus généralement : uₙ = uₚ × qⁿ⁻ᵖ.",
+     "wrongs": [
+      "uₙ = u₀ + n·q",
+      "uₙ = u₀ × n·q",
+      "uₙ = qⁿ + u₀"
+     ]
     },
     {
-     "question": "Somme 1 + 2 + … + n",
-     "answer": "n(n + 1) / 2"
+     "question": "Que vaut la somme 1 + 2 + … + n ?",
+     "answer": "n(n + 1) / 2",
+     "w": "7c3b4059",
+     "wq": "78a7736c",
+     "wrongs": [
+      "n(n − 1) / 2",
+      "n² / 2",
+      "n(n + 1)"
+     ]
     },
     {
-     "question": "Somme 1 + q + q² + … + qⁿ (q ≠ 1)",
-     "answer": "(1 − qⁿ⁺¹) / (1 − q)"
+     "question": "Que vaut la somme 1 + q + q² + … + qⁿ (q ≠ 1) ?",
+     "answer": "(1 − qⁿ⁺¹) / (1 − q)",
+     "w": "012d4542",
+     "wq": "2d1777c8",
+     "wrongs": [
+      "(1 − qⁿ) / (1 − q)",
+      "(qⁿ⁺¹ − 1) / (1 + q)",
+      "n × qⁿ / 2"
+     ]
     },
     {
-     "question": "Somme des termes d'une suite arithmétique",
-     "answer": "Nombre de termes × (premier + dernier terme) / 2",
-     "w": "bf79dfbb",
-     "wq": "6c22d199"
+     "question": "Que vaut la somme des termes consécutifs d'une suite arithmétique ?",
+     "answer": "Nombre de termes × (premier + dernier) / 2",
+     "w": [
+      "a5254e20",
+      "bf79dfbb"
+     ],
+     "wq": "6c22d199",
+     "wrongs": [
+      "Nombre de termes × premier × dernier",
+      "(Premier + dernier) / 2",
+      "Nombre de termes × raison / 2"
+     ]
     },
     {
-     "question": "Raisonnement par récurrence : les étapes",
-     "answer": "1. Initialisation : P(n₀) est vraie.\n2. Hérédité : si P(n) est vraie (n ≥ n₀), alors P(n + 1) est vraie.\n3. Conclusion : P(n) est vraie pour tout n ≥ n₀.",
-     "w": "2b4a10e6",
-     "wq": "06874a3b"
+     "question": "Quelle est la première étape d'un raisonnement par récurrence ?",
+     "answer": "L'initialisation : P(n₀) est vraie",
+     "w": [
+      "dcd726ac",
+      "2b4a10e6"
+     ],
+     "wq": "06874a3b",
+     "more": "Puis l'hérédité, puis la conclusion.",
+     "wrongs": [
+      "L'hérédité : P(n) ⇒ P(n + 1)",
+      "La conclusion : P(n) vraie pour tout n",
+      "Le calcul de la limite"
+     ]
     },
     {
-     "question": "Limite de qⁿ selon q",
-     "answer": "q > 1 : qⁿ → +∞\nq = 1 : qⁿ = 1\n−1 < q < 1 : qⁿ → 0\nq ≤ −1 : pas de limite"
+     "question": "Que montre l'étape d'hérédité d'une récurrence ?",
+     "answer": "Si P(n) est vraie, alors P(n + 1) est vraie",
+     "wrongs": [
+      "P(n₀) est vraie",
+      "P(n) est vraie pour tout n",
+      "Si P(n + 1) est vraie, alors P(n) est vraie"
+     ]
     },
     {
-     "question": "Suite convergente : définition",
-     "answer": "(uₙ) converge vers ℓ si tout intervalle ouvert contenant ℓ\ncontient tous les termes à partir d'un certain rang.",
-     "w": "ae197763",
-     "wq": "fa050c60"
+     "question": "Quelle est la limite de qⁿ si q > 1 ?",
+     "answer": "+∞",
+     "w": "06b047b5",
+     "wq": "8fcdbfd4",
+     "wrongs": [
+      "0",
+      "1",
+      "Pas de limite"
+     ]
     },
     {
-     "question": "Théorème de convergence monotone",
-     "answer": "Toute suite croissante et majorée converge.\nToute suite décroissante et minorée converge."
+     "question": "Quelle est la limite de qⁿ si −1 < q < 1 ?",
+     "answer": "0",
+     "wrongs": [
+      "+∞",
+      "1",
+      "q"
+     ]
     },
     {
-     "question": "Suite croissante non majorée",
-     "answer": "Elle tend vers +∞."
+     "question": "Quelle est la limite de qⁿ si q ≤ −1 ?",
+     "answer": "Pas de limite",
+     "wrongs": [
+      "−∞",
+      "0",
+      "+∞"
+     ]
     },
     {
-     "question": "Théorème des gendarmes",
-     "answer": "Si vₙ ≤ uₙ ≤ wₙ à partir d'un certain rang,\net si (vₙ) et (wₙ) convergent vers ℓ,\nalors (uₙ) converge vers ℓ.",
-     "w": "c62659f0",
-     "wq": "2aba3ff5"
+     "question": "Quand dit-on qu'une suite (uₙ) converge vers ℓ ?",
+     "answer": "Si tout intervalle ouvert contenant ℓ contient tous les termes à partir d'un certain rang",
+     "w": [
+      "87642537",
+      "ae197763"
+     ],
+     "wq": "fa050c60",
+     "wrongs": [
+      "Si un terme de la suite est égal à ℓ",
+      "Si tous les termes sont inférieurs à ℓ",
+      "Si la suite est croissante et que u₀ = ℓ"
+     ]
     },
     {
-     "question": "Théorème de comparaison",
-     "answer": "Si uₙ ≤ vₙ à partir d'un certain rang et uₙ → +∞,\nalors vₙ → +∞.\nDe même : si vₙ → −∞, alors uₙ → −∞.",
-     "w": "f061f0dc",
-     "wq": "0e152262"
+     "question": "Que dit le théorème de convergence monotone ?",
+     "answer": "Une suite croissante et majorée converge",
+     "w": "f5a5dd2e",
+     "wq": "14e4825c",
+     "more": "De même, une suite décroissante et minorée converge.",
+     "wrongs": [
+      "Une suite croissante tend vers +∞",
+      "Une suite majorée converge",
+      "Une suite croissante et minorée converge"
+     ]
     },
     {
-     "question": "Comment étudier le sens de variation d'une suite ?",
-     "answer": "• Signe de uₙ₊₁ − uₙ\n• Comparer uₙ₊₁/uₙ à 1 (termes strictement positifs)\n• Étudier f si uₙ = f(n)\n• Par récurrence",
-     "w": "c58b5fe2",
-     "wq": "687cd800"
+     "question": "Que fait une suite croissante non majorée ?",
+     "answer": "Elle tend vers +∞",
+     "w": "34b01613",
+     "wq": "b49a7322",
+     "wrongs": [
+      "Elle converge",
+      "Elle tend vers 0",
+      "Elle n'a pas de limite"
+     ]
     },
     {
-     "question": "uₙ₊₁ = f(uₙ), f continue : si (uₙ) converge vers ℓ, que vérifie ℓ ?",
-     "answer": "f(ℓ) = ℓ\nℓ est un point fixe de f (si f est continue en ℓ).",
-     "w": "1023c175",
-     "wq": "d83661aa"
+     "question": "Si vₙ ≤ uₙ ≤ wₙ et si (vₙ) et (wₙ) convergent vers ℓ, que fait (uₙ) ?",
+     "answer": "Elle converge vers ℓ",
+     "w": [
+      "6a026be2",
+      "c62659f0"
+     ],
+     "wq": "2aba3ff5",
+     "more": "C'est le théorème des gendarmes.",
+     "wrongs": [
+      "Elle tend vers +∞",
+      "Elle n'a pas de limite",
+      "Elle converge vers 0"
+     ]
     },
     {
-     "question": "Formes indéterminées",
-     "answer": "∞ − ∞ ; 0 × ∞ ; ∞/∞ ; 0/0"
+     "question": "Si uₙ ≤ vₙ à partir d'un certain rang et uₙ → +∞, que fait (vₙ) ?",
+     "answer": "Elle tend vers +∞",
+     "w": [
+      "aee7009b",
+      "f061f0dc"
+     ],
+     "wq": "0e152262",
+     "more": "Théorème de comparaison ; de même, si vₙ → −∞, alors uₙ → −∞.",
+     "wrongs": [
+      "Elle converge",
+      "Elle tend vers −∞",
+      "On ne peut rien dire"
+     ]
     },
     {
-     "question": "Comment lever une indétermination en +∞ pour un polynôme ou une fraction rationnelle ?",
-     "answer": "Factoriser par le terme de plus haut degré\n(au numérateur et au dénominateur).",
-     "w": "14015859",
-     "wq": "6d51d0d0"
+     "question": "Quelle méthode classique permet d'étudier le sens de variation d'une suite ?",
+     "answer": "Étudier le signe de uₙ₊₁ − uₙ",
+     "w": [
+      "ddf05f6a",
+      "c58b5fe2"
+     ],
+     "wq": [
+      "c8993abe",
+      "687cd800"
+     ],
+     "more": "Ou comparer uₙ₊₁/uₙ à 1 (termes positifs), étudier f si uₙ = f(n), ou raisonner par récurrence.",
+     "wrongs": [
+      "Calculer la limite de la suite",
+      "Calculer u₀ seulement",
+      "Étudier le signe de uₙ"
+     ]
     },
     {
-     "question": "Inégalité de Bernoulli",
-     "answer": "Pour a > 0 et n entier naturel :\n(1 + a)ⁿ ≥ 1 + na\nSe démontre par récurrence.",
-     "w": "beabe4ac",
-     "wq": "d5a3f374"
+     "question": "Si uₙ₊₁ = f(uₙ) avec f continue et (uₙ) converge vers ℓ, que vérifie ℓ ?",
+     "answer": "f(ℓ) = ℓ",
+     "w": [
+      "e3f8cb09",
+      "1023c175"
+     ],
+     "wq": [
+      "2b8e2c47",
+      "d83661aa"
+     ],
+     "more": "ℓ est un point fixe de f.",
+     "wrongs": [
+      "f(ℓ) = 0",
+      "f'(ℓ) = 0",
+      "f(ℓ) = u₀"
+     ]
     },
     {
-     "question": "Suite majorée : définition",
-     "answer": "Il existe un réel M tel que\nuₙ ≤ M pour tout n.",
-     "w": "aab55c08",
-     "wq": "528bcbab"
+     "question": "Quelles sont les quatre formes indéterminées ?",
+     "answer": "∞ − ∞ ; 0 × ∞ ; ∞/∞ ; 0/0",
+     "w": "2d862436",
+     "wq": "914f33ef",
+     "wrongs": [
+      "∞ + ∞ ; 0 × 0 ; 1/∞ ; ∞/0",
+      "∞ × ∞ ; 0 + ∞ ; 0/∞ ; 1/0",
+      "∞ − 0 ; 1 × ∞ ; ∞/1 ; 0/1"
+     ]
+    },
+    {
+     "question": "Comment lever une indétermination en +∞ pour une fraction rationnelle ?",
+     "answer": "Factoriser par le terme de plus haut degré",
+     "w": [
+      "7420364e",
+      "14015859"
+     ],
+     "wq": [
+      "2a58884f",
+      "6d51d0d0"
+     ],
+     "more": "Au numérateur et au dénominateur.",
+     "wrongs": [
+      "Factoriser par le terme constant",
+      "Multiplier par la quantité conjuguée",
+      "Dériver le numérateur"
+     ]
+    },
+    {
+     "question": "Que dit l'inégalité de Bernoulli pour a > 0 ?",
+     "answer": "(1 + a)ⁿ ≥ 1 + na",
+     "w": [
+      "4ad08003",
+      "beabe4ac"
+     ],
+     "wq": "d5a3f374",
+     "more": "Pour tout entier naturel n ; elle se démontre par récurrence.",
+     "wrongs": [
+      "(1 + a)ⁿ ≤ 1 + na",
+      "(1 + a)ⁿ ≥ 1 + aⁿ",
+      "(1 + a)ⁿ = 1 + na"
+     ]
+    },
+    {
+     "question": "Quand dit-on qu'une suite (uₙ) est majorée ?",
+     "answer": "S'il existe un réel M tel que uₙ ≤ M pour tout n",
+     "w": [
+      "da4fcf16",
+      "aab55c08"
+     ],
+     "wq": "528bcbab",
+     "wrongs": [
+      "S'il existe un réel M tel que uₙ ≥ M pour tout n",
+      "Si elle est croissante",
+      "Si elle converge vers 0"
+     ]
     }
    ]
   },
@@ -14293,90 +16427,242 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Asymptote horizontale",
-     "answer": "Si lim f(x) = ℓ en +∞ (ou −∞) :\nla droite y = ℓ est asymptote horizontale.",
-     "w": "85e32fbe",
-     "wq": "81539c20"
+     "question": "Si lim f(x) = ℓ en +∞, que possède la courbe de f ?",
+     "answer": "Une asymptote horizontale y = ℓ",
+     "w": [
+      "f3a0c3d1",
+      "85e32fbe"
+     ],
+     "wq": "81539c20",
+     "wrongs": [
+      "Une asymptote verticale x = ℓ",
+      "Une tangente horizontale en ℓ",
+      "Une asymptote oblique"
+     ]
     },
     {
-     "question": "Asymptote verticale",
-     "answer": "Si lim f(x) = ±∞ quand x → a :\nla droite x = a est asymptote verticale.",
-     "w": "60bfbdc5",
-     "wq": "c72899fe"
+     "question": "Si lim f(x) = ±∞ quand x → a, que possède la courbe de f ?",
+     "answer": "Une asymptote verticale x = a",
+     "w": [
+      "3ad1a425",
+      "60bfbdc5"
+     ],
+     "wq": "c72899fe",
+     "wrongs": [
+      "Une asymptote horizontale y = a",
+      "Une tangente verticale en a",
+      "Un point d'inflexion en a"
+     ]
     },
     {
-     "question": "Limites de 1/x en 0",
-     "answer": "En 0⁺ : +∞\nEn 0⁻ : −∞"
+     "question": "Quelle est la limite de 1/x en 0⁺ ?",
+     "answer": "+∞",
+     "w": "10a50c39",
+     "wq": "6beb7412",
+     "more": "En 0⁻ : −∞.",
+     "wrongs": [
+      "−∞",
+      "0",
+      "1"
+     ]
     },
     {
-     "question": "Limites de eˣ",
-     "answer": "En +∞ : +∞\nEn −∞ : 0"
+     "question": "Quelle est la limite de eˣ en −∞ ?",
+     "answer": "0",
+     "w": "96a05162",
+     "wq": "805be03d",
+     "more": "En +∞ : +∞.",
+     "wrongs": [
+      "−∞",
+      "1",
+      "+∞"
+     ]
     },
     {
-     "question": "Limites de ln(x)",
-     "answer": "En +∞ : +∞\nEn 0⁺ : −∞"
+     "question": "Quelle est la limite de ln(x) en 0⁺ ?",
+     "answer": "−∞",
+     "w": "a77eead7",
+     "wq": "b4eca2be",
+     "more": "En +∞ : +∞.",
+     "wrongs": [
+      "0",
+      "+∞",
+      "1"
+     ]
     },
     {
-     "question": "Croissances comparées (exponentielle)",
-     "answer": "eˣ / xⁿ → +∞ en +∞\nxⁿ eˣ → 0 en −∞"
+     "question": "Quelle est la limite de eˣ / xⁿ en +∞ ?",
+     "answer": "+∞",
+     "w": "5abd66be",
+     "wq": "c52c95fa",
+     "more": "Croissances comparées : l'exponentielle l'emporte. Et xⁿeˣ → 0 en −∞.",
+     "wrongs": [
+      "0",
+      "1",
+      "Pas de limite"
+     ]
     },
     {
-     "question": "Croissances comparées (logarithme)",
-     "answer": "ln(x) / x → 0 en +∞\nx ln(x) → 0 en 0⁺"
+     "question": "Quelle est la limite de ln(x) / x en +∞ ?",
+     "answer": "0",
+     "w": "a99b768b",
+     "wq": "7e6a727e",
+     "more": "Croissances comparées. Et x ln(x) → 0 en 0⁺.",
+     "wrongs": [
+      "+∞",
+      "1",
+      "−∞"
+     ]
     },
     {
-     "question": "Limite de (eˣ − 1)/x en 0",
-     "answer": "1\nC'est le nombre dérivé de exp en 0.",
-     "w": "95ceb567",
-     "wq": "0de5e464"
+     "question": "Quelle est la limite de (eˣ − 1)/x en 0 ?",
+     "answer": "1",
+     "w": [
+      "e80bc1b4",
+      "95ceb567"
+     ],
+     "wq": "0de5e464",
+     "more": "C'est le nombre dérivé de exp en 0.",
+     "wrongs": [
+      "0",
+      "e",
+      "+∞"
+     ]
     },
     {
-     "question": "Limite de ln(1 + x)/x en 0",
-     "answer": "1"
+     "question": "Quelle est la limite de ln(1 + x)/x en 0 ?",
+     "answer": "1",
+     "w": "ca65a87b",
+     "wq": "0fefa599",
+     "wrongs": [
+      "0",
+      "e",
+      "+∞"
+     ]
     },
     {
-     "question": "Limite de sin(x)/x en 0",
-     "answer": "1"
+     "question": "Quelle est la limite de sin(x)/x en 0 ?",
+     "answer": "1",
+     "w": "bd7a2231",
+     "wq": "967d123f",
+     "wrongs": [
+      "0",
+      "π",
+      "+∞"
+     ]
     },
     {
-     "question": "Limite d'une fonction composée",
-     "answer": "Si u(x) → b quand x → a\net g(X) → c quand X → b,\nalors g(u(x)) → c quand x → a.",
-     "w": "e5b77136",
-     "wq": "1c2698c7"
+     "question": "Si u(x) → b quand x → a et g(X) → c quand X → b, vers quoi tend g(u(x)) ?",
+     "answer": "c",
+     "w": [
+      "fcae3573",
+      "e5b77136"
+     ],
+     "wq": "1c2698c7",
+     "more": "Limite d'une fonction composée.",
+     "wrongs": [
+      "b",
+      "a",
+      "g(a)"
+     ]
     },
     {
-     "question": "Continuité : définition",
-     "answer": "f est continue en a si lim f(x) = f(a) quand x → a.\nGraphiquement : courbe tracée « sans lever le crayon ».",
-     "w": "639161f4",
-     "wq": "9d7a6536"
+     "question": "Quand dit-on que f est continue en a ?",
+     "answer": "Si lim f(x) = f(a) quand x → a",
+     "w": [
+      "52159232",
+      "639161f4"
+     ],
+     "wq": "9d7a6536",
+     "more": "Graphiquement : la courbe se trace « sans lever le crayon ».",
+     "wrongs": [
+      "Si f est dérivable en a",
+      "Si f(a) = 0",
+      "Si f est croissante autour de a"
+     ]
     },
     {
-     "question": "Une fonction dérivable est-elle continue ? Et la réciproque ?",
-     "answer": "Oui : dérivable sur un intervalle ⇒ continue.\nRéciproque fausse : |x| est continue mais non dérivable en 0.",
-     "w": "42227f1c",
-     "wq": "a874b8fa"
+     "question": "Une fonction dérivable sur un intervalle est-elle continue ?",
+     "answer": "Oui, toujours",
+     "w": [
+      "4b5a05cf",
+      "42227f1c"
+     ],
+     "wq": [
+      "cbca2a56",
+      "a874b8fa"
+     ],
+     "wrongs": [
+      "Non, jamais",
+      "Seulement si elle est croissante",
+      "Seulement si sa dérivée est positive"
+     ]
     },
     {
-     "question": "Théorème des valeurs intermédiaires",
-     "answer": "Si f est continue sur [a ; b],\npour tout k entre f(a) et f(b),\nf(x) = k a au moins une solution dans [a ; b].",
-     "w": "d02aa171",
-     "wq": "450b9858"
+     "question": "Une fonction continue est-elle toujours dérivable ?",
+     "answer": "Non",
+     "more": "Exemple : |x| est continue mais non dérivable en 0.",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, si elle est positive",
+      "Oui, sur un intervalle fermé"
+     ]
     },
     {
-     "question": "Corollaire du TVI (bijection)",
-     "answer": "Si f est continue et strictement monotone sur [a ; b],\npour tout k entre f(a) et f(b),\nf(x) = k a une unique solution dans [a ; b].",
-     "w": "429fed52",
-     "wq": "fd943645"
+     "question": "Si f est continue sur [a ; b] et k compris entre f(a) et f(b), que peut-on dire de f(x) = k ?",
+     "answer": "Elle a au moins une solution dans [a ; b]",
+     "w": [
+      "1a7c6cb0",
+      "d02aa171"
+     ],
+     "wq": "450b9858",
+     "more": "Théorème des valeurs intermédiaires.",
+     "wrongs": [
+      "Elle a exactement une solution",
+      "Elle n'a aucune solution",
+      "Elle a deux solutions"
+     ]
     },
     {
-     "question": "Comment approcher la solution de f(x) = k",
-     "answer": "Par balayage ou dichotomie (algorithme).\nOn encadre la solution avec la précision voulue.",
-     "w": "58680a5f",
-     "wq": "d37e4abe"
+     "question": "Si f est continue et strictement monotone sur [a ; b], combien f(x) = k a-t-elle de solutions pour k entre f(a) et f(b) ?",
+     "answer": "Une unique solution",
+     "w": [
+      "4eccfc06",
+      "429fed52"
+     ],
+     "wq": "fd943645",
+     "more": "Corollaire du théorème des valeurs intermédiaires.",
+     "wrongs": [
+      "Au moins deux solutions",
+      "Aucune solution",
+      "Une infinité de solutions"
+     ]
     },
     {
-     "question": "Fonction composée : dérivée de g(u(x))",
-     "answer": "(g ∘ u)'(x) = u'(x) × g'(u(x))"
+     "question": "Comment approcher la solution de f(x) = k ?",
+     "answer": "Par balayage ou par dichotomie",
+     "w": [
+      "4a482073",
+      "58680a5f"
+     ],
+     "wq": "d37e4abe",
+     "more": "On encadre la solution avec la précision voulue.",
+     "wrongs": [
+      "Par récurrence",
+      "Par intégration par parties",
+      "Par dérivation"
+     ]
+    },
+    {
+     "question": "Quelle est la dérivée de g(u(x)) ?",
+     "answer": "u'(x) × g'(u(x))",
+     "w": "17893107",
+     "wq": "262708f1",
+     "wrongs": [
+      "g'(x) × u'(x)",
+      "g'(u'(x))",
+      "u(x) × g'(u(x))"
+     ]
     }
    ]
   },
@@ -14818,70 +17104,271 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Fonction convexe : définition graphique",
-     "answer": "Sa courbe est au-dessus de chacune de ses tangentes\n(et en dessous de ses cordes).",
-     "w": "d0b31e0d",
-     "wq": "7ff5cf8c"
+     "question": "Où se situe la courbe d'une fonction convexe par rapport à ses tangentes ?",
+     "answer": "Au-dessus",
+     "w": [
+      "b9fef327",
+      "d0b31e0d"
+     ],
+     "wq": "7ff5cf8c",
+     "more": "Et en dessous de ses cordes.",
+     "wrongs": [
+      "En dessous",
+      "Elle les traverse",
+      "Elle se confond avec elles"
+     ]
     },
     {
-     "question": "Convexité et dérivée seconde",
-     "answer": "f convexe sur I ⟺ f'' ≥ 0 ⟺ f' croissante\nf concave sur I ⟺ f'' ≤ 0 ⟺ f' décroissante",
-     "w": "b2600189",
-     "wq": "52650f32"
+     "question": "Quel est le signe de f'' si f est convexe sur I ?",
+     "answer": "f'' ≥ 0",
+     "w": [
+      "b5126c56",
+      "b2600189"
+     ],
+     "wq": "52650f32",
+     "more": "Cela équivaut à : f' croissante sur I.",
+     "wrongs": [
+      "f'' ≤ 0",
+      "f'' = 0",
+      "f'' change de signe"
+     ]
     },
     {
-     "question": "Point d'inflexion",
-     "answer": "Point où la courbe traverse sa tangente : la convexité change.\nSi f'' s'annule en changeant de signe en a : inflexion en a.",
-     "w": "f10ecdac",
-     "wq": "7ac26f20"
+     "question": "Quel est le signe de f'' si f est concave sur I ?",
+     "answer": "f'' ≤ 0",
+     "more": "Cela équivaut à : f' décroissante sur I.",
+     "wrongs": [
+      "f'' ≥ 0",
+      "f'' = 0",
+      "f'' = f'"
+     ]
     },
     {
-     "question": "Exemples de fonctions convexes / concaves",
-     "answer": "Convexes : x², eˣ\nConcaves : ln(x), √x\nx³ : concave sur ]−∞ ; 0], convexe sur [0 ; +∞[",
-     "w": "82a734e8",
-     "wq": "1eec2606"
+     "question": "Comment appelle-t-on un point où la courbe traverse sa tangente ?",
+     "answer": "Un point d'inflexion",
+     "w": [
+      "6a93180a",
+      "f10ecdac"
+     ],
+     "wq": "7ac26f20",
+     "more": "La convexité y change : f'' s'annule en changeant de signe.",
+     "wrongs": [
+      "Un extremum",
+      "Un point anguleux",
+      "Un point fixe"
+     ]
     },
     {
-     "question": "Inégalité de convexité classique",
-     "answer": "ln(x) ≤ x − 1 pour x > 0\n(courbe de ln sous sa tangente en 1)",
-     "w": "3178b95e",
-     "wq": "c2213941"
+     "question": "Laquelle des fonctions x², eˣ, ln(x) est concave ?",
+     "answer": "ln(x)",
+     "w": [
+      "6d0f008c",
+      "82a734e8"
+     ],
+     "wq": "1eec2606",
+     "more": "x² et eˣ sont convexes ; ln(x) et √x sont concaves.",
+     "wrongs": [
+      "x²",
+      "eˣ",
+      "Aucune"
+     ]
     },
     {
-     "question": "Valeurs remarquables de cos et sin",
-     "answer": "0 : cos = 1, sin = 0\nπ/6 : cos = √3/2, sin = 1/2\nπ/4 : cos = sin = √2/2\nπ/3 : cos = 1/2, sin = √3/2\nπ/2 : cos = 0, sin = 1"
+     "question": "Quelle est la convexité de x³ ?",
+     "answer": "Concave sur ]−∞ ; 0], convexe sur [0 ; +∞[",
+     "wrongs": [
+      "Convexe sur ℝ",
+      "Concave sur ℝ",
+      "Convexe sur ]−∞ ; 0], concave sur [0 ; +∞["
+     ]
     },
     {
-     "question": "cos² x + sin² x",
-     "answer": "= 1"
+     "question": "Quelle inégalité de convexité classique vérifie ln(x) pour x > 0 ?",
+     "answer": "ln(x) ≤ x − 1",
+     "w": [
+      "2ac138ee",
+      "3178b95e"
+     ],
+     "wq": "c2213941",
+     "more": "La courbe de ln est sous sa tangente en 1.",
+     "wrongs": [
+      "ln(x) ≥ x − 1",
+      "ln(x) ≤ x − 2",
+      "ln(x) ≥ x"
+     ]
     },
     {
-     "question": "Parité et périodicité de sin et cos",
-     "answer": "cos est paire, sin est impaire.\nToutes deux sont 2π-périodiques."
+     "question": "Que valent cos(π/6) et sin(π/6) ?",
+     "answer": "cos = √3/2, sin = 1/2",
+     "w": "300decec",
+     "wq": "c0b44ff6",
+     "wrongs": [
+      "cos = 1/2, sin = √3/2",
+      "cos = sin = √2/2",
+      "cos = 0, sin = 1"
+     ]
     },
     {
-     "question": "Dérivées de sin et cos",
-     "answer": "sin' = cos\ncos' = −sin"
+     "question": "Que valent cos(π/4) et sin(π/4) ?",
+     "answer": "√2/2 tous les deux",
+     "wrongs": [
+      "1/2 tous les deux",
+      "cos = √3/2, sin = 1/2",
+      "cos = 1, sin = 0"
+     ]
     },
     {
-     "question": "Dérivées de sin(ax + b) et cos(ax + b)",
-     "answer": "a cos(ax + b)\n−a sin(ax + b)"
+     "question": "Que valent cos(π/3) et sin(π/3) ?",
+     "answer": "cos = 1/2, sin = √3/2",
+     "wrongs": [
+      "cos = √3/2, sin = 1/2",
+      "cos = sin = √2/2",
+      "cos = 1, sin = 0"
+     ]
     },
     {
-     "question": "cos(π − x), sin(π − x)",
-     "answer": "cos(π − x) = −cos x\nsin(π − x) = sin x"
+     "question": "Que valent cos(π/2) et sin(π/2) ?",
+     "answer": "cos = 0, sin = 1",
+     "wrongs": [
+      "cos = 1, sin = 0",
+      "cos = −1, sin = 0",
+      "cos = sin = √2/2"
+     ]
     },
     {
-     "question": "cos(−x), sin(−x)",
-     "answer": "cos(−x) = cos x\nsin(−x) = −sin x"
+     "question": "Que vaut cos² x + sin² x ?",
+     "answer": "1",
+     "w": "ed70c420",
+     "wq": "9a3edb7d",
+     "wrongs": [
+      "0",
+      "2",
+      "cos 2x"
+     ]
     },
     {
-     "question": "Résoudre cos x = cos a",
-     "answer": "x = a + 2kπ ou x = −a + 2kπ (k entier)"
+     "question": "Quelle est la parité des fonctions cos et sin ?",
+     "answer": "cos est paire, sin est impaire",
+     "w": "56876e36",
+     "wq": "b83ab5b3",
+     "wrongs": [
+      "cos est impaire, sin est paire",
+      "Toutes deux sont paires",
+      "Toutes deux sont impaires"
+     ]
     },
     {
-     "question": "Résoudre sin x = sin a",
-     "answer": "x = a + 2kπ ou x = π − a + 2kπ (k entier)"
+     "question": "Quelle est la période des fonctions sin et cos ?",
+     "answer": "2π",
+     "wrongs": [
+      "π",
+      "π/2",
+      "4π"
+     ]
+    },
+    {
+     "question": "Quelle est la dérivée de sin ?",
+     "answer": "cos",
+     "w": "3870c3a2",
+     "wq": "d907820b",
+     "wrongs": [
+      "−cos",
+      "sin",
+      "−sin"
+     ]
+    },
+    {
+     "question": "Quelle est la dérivée de cos ?",
+     "answer": "−sin",
+     "wrongs": [
+      "sin",
+      "cos",
+      "−cos"
+     ]
+    },
+    {
+     "question": "Quelle est la dérivée de sin(ax + b) ?",
+     "answer": "a cos(ax + b)",
+     "w": "e24beed7",
+     "wq": "53d0e2d5",
+     "wrongs": [
+      "cos(ax + b)",
+      "−a cos(ax + b)",
+      "a sin(ax + b)"
+     ]
+    },
+    {
+     "question": "Quelle est la dérivée de cos(ax + b) ?",
+     "answer": "−a sin(ax + b)",
+     "wrongs": [
+      "a sin(ax + b)",
+      "−sin(ax + b)",
+      "a cos(ax + b)"
+     ]
+    },
+    {
+     "question": "Que vaut cos(π − x) ?",
+     "answer": "−cos x",
+     "w": "ce63b899",
+     "wq": "54095502",
+     "wrongs": [
+      "cos x",
+      "sin x",
+      "−sin x"
+     ]
+    },
+    {
+     "question": "Que vaut sin(π − x) ?",
+     "answer": "sin x",
+     "wrongs": [
+      "−sin x",
+      "cos x",
+      "−cos x"
+     ]
+    },
+    {
+     "question": "Que vaut cos(−x) ?",
+     "answer": "cos x",
+     "w": "e677a27f",
+     "wq": "76243080",
+     "wrongs": [
+      "−cos x",
+      "sin x",
+      "−sin x"
+     ]
+    },
+    {
+     "question": "Que vaut sin(−x) ?",
+     "answer": "−sin x",
+     "wrongs": [
+      "sin x",
+      "cos x",
+      "−cos x"
+     ]
+    },
+    {
+     "question": "Quelles sont les solutions de cos x = cos a ?",
+     "answer": "x = a + 2kπ ou x = −a + 2kπ",
+     "w": "ac35034a",
+     "wq": "da8747fa",
+     "more": "k entier relatif.",
+     "wrongs": [
+      "x = a + 2kπ ou x = π − a + 2kπ",
+      "x = a + kπ",
+      "x = −a + kπ seulement"
+     ]
+    },
+    {
+     "question": "Quelles sont les solutions de sin x = sin a ?",
+     "answer": "x = a + 2kπ ou x = π − a + 2kπ",
+     "w": "e6c7b872",
+     "wq": "59a6deda",
+     "more": "k entier relatif.",
+     "wrongs": [
+      "x = a + 2kπ ou x = −a + 2kπ",
+      "x = a + kπ",
+      "x = π + a + 2kπ seulement"
+     ]
     }
    ]
   },
@@ -14905,92 +17392,273 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Primitive : définition",
-     "answer": "F est une primitive de f sur I si F est dérivable sur I et F' = f.\nDeux primitives diffèrent d'une constante.",
-     "w": "a1c57e13",
-     "wq": "8e1459b5"
+     "question": "Quand dit-on que F est une primitive de f sur I ?",
+     "answer": "Si F est dérivable sur I et F' = f",
+     "w": [
+      "25a30f51",
+      "a1c57e13"
+     ],
+     "wq": "8e1459b5",
+     "more": "Deux primitives d'une même fonction diffèrent d'une constante.",
+     "wrongs": [
+      "Si f' = F",
+      "Si F = f + constante",
+      "Si F(0) = f(0)"
+     ]
     },
     {
-     "question": "Primitives de xⁿ (n ≠ −1)",
-     "answer": "xⁿ⁺¹ / (n + 1)"
+     "question": "Quelle est une primitive de xⁿ (n ≠ −1) ?",
+     "answer": "xⁿ⁺¹ / (n + 1)",
+     "w": "2373734c",
+     "wq": "c48c3a8b",
+     "wrongs": [
+      "n xⁿ⁻¹",
+      "xⁿ⁺¹",
+      "xⁿ⁻¹ / (n − 1)"
+     ]
     },
     {
-     "question": "Primitive de 1/x (x > 0)",
-     "answer": "ln(x)"
+     "question": "Quelle est une primitive de 1/x sur ]0 ; +∞[ ?",
+     "answer": "ln(x)",
+     "w": "1a60d168",
+     "wq": "b8505f70",
+     "wrongs": [
+      "−1/x²",
+      "eˣ",
+      "1/x²"
+     ]
     },
     {
-     "question": "Primitive de 1/x² (x ≠ 0)",
-     "answer": "−1/x"
+     "question": "Quelle est une primitive de 1/x² ?",
+     "answer": "−1/x",
+     "w": "7f4884a7",
+     "wq": "0385399a",
+     "wrongs": [
+      "1/x",
+      "ln(x²)",
+      "−2/x³"
+     ]
     },
     {
-     "question": "Primitive de 1/√x (x > 0)",
-     "answer": "2√x"
+     "question": "Quelle est une primitive de 1/√x sur ]0 ; +∞[ ?",
+     "answer": "2√x",
+     "w": "8dc5f619",
+     "wq": "38831c70",
+     "wrongs": [
+      "√x / 2",
+      "−1/(2x√x)",
+      "ln(√x)"
+     ]
     },
     {
-     "question": "Primitives de eˣ et e^(ax+b)",
-     "answer": "eˣ\n(1/a) e^(ax+b)"
+     "question": "Quelle est une primitive de e^(ax+b) (a ≠ 0) ?",
+     "answer": "(1/a) e^(ax+b)",
+     "w": "7f0a54f0",
+     "wq": "e4af52e5",
+     "more": "Une primitive de eˣ est eˣ.",
+     "wrongs": [
+      "a e^(ax+b)",
+      "e^(ax+b)",
+      "(ax + b) e^(ax+b)"
+     ]
     },
     {
-     "question": "Primitives de sin x et cos x",
-     "answer": "∫ sin = −cos\n∫ cos = sin"
+     "question": "Quelle est une primitive de sin x ?",
+     "answer": "−cos x",
+     "w": "1f82e1e1",
+     "wq": "4ea48c56",
+     "wrongs": [
+      "cos x",
+      "−sin x",
+      "sin x"
+     ]
     },
     {
-     "question": "Primitives de u'·e^u, u'/u, u'·uⁿ",
-     "answer": "e^u\nln(u) (si u > 0)\nuⁿ⁺¹/(n + 1)"
+     "question": "Quelle est une primitive de cos x ?",
+     "answer": "sin x",
+     "wrongs": [
+      "−sin x",
+      "−cos x",
+      "cos x"
+     ]
     },
     {
-     "question": "Intégrale et primitive",
-     "answer": "∫ₐᵇ f(x) dx = F(b) − F(a), où F est une primitive de f."
+     "question": "Quelle est une primitive de u'·e^u ?",
+     "answer": "e^u",
+     "w": "cd9c373a",
+     "wq": "8190cd18",
+     "wrongs": [
+      "u·e^u",
+      "u'·e^u",
+      "e^(u')"
+     ]
     },
     {
-     "question": "Interprétation géométrique de l'intégrale",
-     "answer": "Si f est continue et positive sur [a ; b] :\n∫ₐᵇ f(x) dx = aire du domaine entre la courbe, l'axe des abscisses et les droites x = a et x = b (en unités d'aire).",
-     "w": "443fcdc1",
-     "wq": "cb4cb511"
+     "question": "Quelle est une primitive de u'/u (u > 0) ?",
+     "answer": "ln(u)",
+     "wrongs": [
+      "1/u",
+      "−1/u²",
+      "ln(u')"
+     ]
     },
     {
-     "question": "Relation de Chasles",
+     "question": "Quelle est une primitive de u'·uⁿ (n ≠ −1) ?",
+     "answer": "uⁿ⁺¹ / (n + 1)",
+     "wrongs": [
+      "n·uⁿ⁻¹",
+      "u'·uⁿ⁺¹",
+      "uⁿ⁺¹"
+     ]
+    },
+    {
+     "question": "Comment calcule-t-on ∫ₐᵇ f(x) dx avec une primitive F de f ?",
+     "answer": "F(b) − F(a)",
+     "w": "5635b57e",
+     "wq": "676418d4",
+     "wrongs": [
+      "F(a) − F(b)",
+      "F(b) + F(a)",
+      "f(b) − f(a)"
+     ]
+    },
+    {
+     "question": "Si f est continue et positive sur [a ; b], que représente ∫ₐᵇ f(x) dx ?",
+     "answer": "L'aire sous la courbe de f, entre a et b",
+     "w": [
+      "8bd67d21",
+      "443fcdc1"
+     ],
+     "wq": "cb4cb511",
+     "more": "Domaine entre la courbe, l'axe des abscisses et les droites x = a et x = b (en unités d'aire).",
+     "wrongs": [
+      "La pente de la courbe entre a et b",
+      "La longueur de la courbe entre a et b",
+      "La valeur maximale de f sur [a ; b]"
+     ]
+    },
+    {
+     "question": "Que dit la relation de Chasles pour les intégrales ?",
      "answer": "∫ₐᶜ f = ∫ₐᵇ f + ∫ (de b à c) f",
-     "w": "13aaa167",
-     "wq": "0a93b6b5"
+     "w": [
+      "e43eba13",
+      "13aaa167"
+     ],
+     "wq": "0a93b6b5",
+     "wrongs": [
+      "∫ₐᶜ f = ∫ₐᵇ f × ∫ (de b à c) f",
+      "∫ₐᶜ f = ∫ₐᵇ f − ∫ (de b à c) f",
+      "∫ₐᶜ f = (c − a) f(b)"
+     ]
     },
     {
-     "question": "Linéarité de l'intégrale",
-     "answer": "∫(αf + βg) = α∫f + β∫g"
+     "question": "Que dit la linéarité de l'intégrale ?",
+     "answer": "∫(αf + βg) = α∫f + β∫g",
+     "w": "284d5275",
+     "wq": "f2d894cf",
+     "wrongs": [
+      "∫(f × g) = ∫f × ∫g",
+      "∫(αf + βg) = αβ∫(f + g)",
+      "∫(f + g) = ∫f − ∫g"
+     ]
     },
     {
-     "question": "Positivité et croissance de l'intégrale",
-     "answer": "Si f ≥ 0 sur [a ; b] (a ≤ b) : ∫ₐᵇ f ≥ 0\nSi f ≤ g : ∫ₐᵇ f ≤ ∫ₐᵇ g",
-     "w": "5f72a38c",
-     "wq": "84d19449"
+     "question": "Si f ≥ 0 sur [a ; b] (a ≤ b), quel est le signe de ∫ₐᵇ f ?",
+     "answer": "Positif ou nul",
+     "w": [
+      "47f90cee",
+      "5f72a38c"
+     ],
+     "wq": "84d19449",
+     "more": "Positivité de l'intégrale.",
+     "wrongs": [
+      "Négatif",
+      "Nul",
+      "On ne peut rien dire"
+     ]
     },
     {
-     "question": "Valeur moyenne d'une fonction",
-     "answer": "μ = (1/(b − a)) ∫ₐᵇ f(x) dx"
+     "question": "Si f ≤ g sur [a ; b] (a ≤ b), que peut-on dire de leurs intégrales ?",
+     "answer": "∫ₐᵇ f ≤ ∫ₐᵇ g",
+     "more": "Croissance de l'intégrale.",
+     "wrongs": [
+      "∫ₐᵇ f ≥ ∫ₐᵇ g",
+      "∫ₐᵇ f = ∫ₐᵇ g",
+      "On ne peut rien dire"
+     ]
     },
     {
-     "question": "Intégration par parties",
-     "answer": "∫ₐᵇ u v' = [u v]ₐᵇ − ∫ₐᵇ u' v"
+     "question": "Quelle est la valeur moyenne de f sur [a ; b] ?",
+     "answer": "(1/(b − a)) ∫ₐᵇ f(x) dx",
+     "w": "5490e57e",
+     "wq": "77a89b7a",
+     "wrongs": [
+      "(f(a) + f(b)) / 2",
+      "(b − a) ∫ₐᵇ f(x) dx",
+      "∫ₐᵇ f(x) dx / 2"
+     ]
     },
     {
-     "question": "Aire entre deux courbes (f ≥ g sur [a ; b])",
-     "answer": "∫ₐᵇ (f(x) − g(x)) dx"
+     "question": "Quelle est la formule de l'intégration par parties ?",
+     "answer": "∫ₐᵇ u v' = [u v]ₐᵇ − ∫ₐᵇ u' v",
+     "w": "d24354d0",
+     "wq": "1cf93ea6",
+     "wrongs": [
+      "∫ₐᵇ u v' = [u v]ₐᵇ + ∫ₐᵇ u' v",
+      "∫ₐᵇ u v' = u' v − ∫ₐᵇ u v",
+      "∫ₐᵇ u v' = ∫ₐᵇ u × ∫ₐᵇ v'"
+     ]
     },
     {
-     "question": "Solutions de y' = ay",
-     "answer": "y(x) = C e^(ax), C réel."
+     "question": "Si f ≥ g sur [a ; b], comment calcule-t-on l'aire entre leurs deux courbes ?",
+     "answer": "∫ₐᵇ (f(x) − g(x)) dx",
+     "w": "7dcca6ed",
+     "wq": "a26bdfd6",
+     "wrongs": [
+      "∫ₐᵇ (f(x) + g(x)) dx",
+      "∫ₐᵇ f(x) dx × ∫ₐᵇ g(x) dx",
+      "∫ₐᵇ (g(x) − f(x)) dx"
+     ]
     },
     {
-     "question": "Solutions de y' = ay + b (a ≠ 0)",
-     "answer": "y(x) = C e^(ax) − b/a, C réel\n(−b/a est la solution constante)",
-     "w": "c892a63b",
-     "wq": "ba4ab85c"
+     "question": "Quelles sont les solutions de l'équation différentielle y' = ay ?",
+     "answer": "y(x) = C e^(ax), C réel",
+     "w": "e763f3e6",
+     "wq": "9ba83849",
+     "wrongs": [
+      "y(x) = C e^(x/a)",
+      "y(x) = ax + C",
+      "y(x) = C a eˣ"
+     ]
     },
     {
-     "question": "Solutions de y' = ay + f",
-     "answer": "Solution générale =\nune solution particulière de y' = ay + f\n+ les solutions de y' = ay",
-     "w": "39847fd1",
-     "wq": "0cb79e92"
+     "question": "Quelles sont les solutions de y' = ay + b (a ≠ 0) ?",
+     "answer": "y(x) = C e^(ax) − b/a",
+     "w": [
+      "2d69a1c1",
+      "c892a63b"
+     ],
+     "wq": "ba4ab85c",
+     "more": "−b/a est la solution constante.",
+     "wrongs": [
+      "y(x) = C e^(ax) + b/a",
+      "y(x) = C e^(ax) + b",
+      "y(x) = C e^(bx) − a/b"
+     ]
+    },
+    {
+     "question": "Comment s'écrivent les solutions de y' = ay + f ?",
+     "answer": "Une solution particulière + les solutions de y' = ay",
+     "w": [
+      "bfe31ed3",
+      "39847fd1"
+     ],
+     "wq": "0cb79e92",
+     "wrongs": [
+      "Les solutions de y' = ay seulement",
+      "Une solution particulière seulement",
+      "Une solution particulière × les solutions de y' = ay"
+     ]
     }
    ]
   },
@@ -15273,86 +17941,211 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Vecteurs colinéaires",
-     "answer": "S'il existe un réel k tel que v⃗ = k u⃗\n(ou u⃗ = 0⃗)",
-     "w": "84ee7eac",
-     "wq": "ce6ab592"
+     "question": "Quand deux vecteurs u⃗ et v⃗ sont-ils colinéaires ?",
+     "answer": "S'il existe un réel k tel que v⃗ = k u⃗",
+     "w": [
+      "84902384",
+      "84ee7eac"
+     ],
+     "wq": "ce6ab592",
+     "more": "(ou si u⃗ = 0⃗)",
+     "wrongs": [
+      "Si u⃗ · v⃗ = 0",
+      "Si ‖u⃗‖ = ‖v⃗‖",
+      "S'ils ont la même origine"
+     ]
     },
     {
-     "question": "Vecteurs coplanaires",
-     "answer": "S'il existe des réels a et b tels que w⃗ = a u⃗ + b v⃗\n(u⃗, v⃗ non colinéaires)",
-     "w": "2b343dd2",
-     "wq": "8030e471"
+     "question": "Quand trois vecteurs u⃗, v⃗, w⃗ sont-ils coplanaires ?",
+     "answer": "S'il existe des réels a et b tels que w⃗ = a u⃗ + b v⃗",
+     "w": [
+      "27ff8626",
+      "2b343dd2"
+     ],
+     "wq": "8030e471",
+     "more": "Avec u⃗ et v⃗ non colinéaires.",
+     "wrongs": [
+      "Si u⃗ · v⃗ · w⃗ = 0",
+      "S'ils ont la même norme",
+      "Si w⃗ = u⃗ × v⃗"
+     ]
     },
     {
-     "question": "Représentation paramétrique d'une droite",
-     "answer": "Droite passant par A(xA ; yA ; zA), de vecteur directeur u⃗(a ; b ; c) :\nx = xA + ta\ny = yA + tb\nz = zA + tc (t réel)",
-     "w": "a530c8c5",
-     "wq": "b6796558"
+     "question": "Quelle est une représentation paramétrique de la droite passant par A, de vecteur directeur u⃗(a ; b ; c) ?",
+     "answer": "x = xA + ta, y = yA + tb, z = zA + tc (t réel)",
+     "w": [
+      "0386c5c8",
+      "a530c8c5"
+     ],
+     "wq": "b6796558",
+     "wrongs": [
+      "ax + by + cz + d = 0",
+      "x = a + t xA, y = b + t yA, z = c + t zA",
+      "x = t xA, y = t yA, z = t zA"
+     ]
     },
     {
-     "question": "Produit scalaire en repère orthonormé",
-     "answer": "u⃗ · v⃗ = xx' + yy' + zz'"
+     "question": "Comment calcule-t-on le produit scalaire u⃗ · v⃗ en repère orthonormé ?",
+     "answer": "xx' + yy' + zz'",
+     "w": "0a4cbb9b",
+     "wq": "edb75062",
+     "wrongs": [
+      "xy' + yz' + zx'",
+      "(x + x')(y + y')(z + z')",
+      "xx' − yy' − zz'"
+     ]
     },
     {
-     "question": "Norme d'un vecteur",
-     "answer": "‖u⃗‖ = √(x² + y² + z²)"
+     "question": "Quelle est la norme du vecteur u⃗(x ; y ; z) ?",
+     "answer": "√(x² + y² + z²)",
+     "w": "456643f0",
+     "wq": "334a6c1e",
+     "wrongs": [
+      "x² + y² + z²",
+      "|x| + |y| + |z|",
+      "√(x + y + z)"
+     ]
     },
     {
-     "question": "Vecteurs orthogonaux",
-     "answer": "u⃗ · v⃗ = 0"
+     "question": "Quand deux vecteurs u⃗ et v⃗ sont-ils orthogonaux ?",
+     "answer": "Quand u⃗ · v⃗ = 0",
+     "w": "34b1d390",
+     "wq": "170ee85e",
+     "wrongs": [
+      "Quand u⃗ · v⃗ = 1",
+      "Quand v⃗ = k u⃗",
+      "Quand ‖u⃗‖ = ‖v⃗‖"
+     ]
     },
     {
-     "question": "Produit scalaire et angle",
-     "answer": "u⃗ · v⃗ = ‖u⃗‖ × ‖v⃗‖ × cos(u⃗, v⃗)"
+     "question": "Quelle formule relie le produit scalaire et l'angle entre u⃗ et v⃗ ?",
+     "answer": "u⃗ · v⃗ = ‖u⃗‖ × ‖v⃗‖ × cos(u⃗, v⃗)",
+     "w": "34c42298",
+     "wq": "26c93eb4",
+     "wrongs": [
+      "u⃗ · v⃗ = ‖u⃗‖ × ‖v⃗‖ × sin(u⃗, v⃗)",
+      "u⃗ · v⃗ = ‖u⃗‖ + ‖v⃗‖",
+      "u⃗ · v⃗ = cos(u⃗, v⃗)"
+     ]
     },
     {
-     "question": "Vecteur normal à un plan",
-     "answer": "Un vecteur non nul orthogonal à deux vecteurs non colinéaires du plan.",
-     "w": "92cd910a",
-     "wq": "f6729f3e"
+     "question": "Qu'est-ce qu'un vecteur normal à un plan ?",
+     "answer": "Un vecteur non nul orthogonal à deux vecteurs non colinéaires du plan",
+     "w": [
+      "c474c1bf",
+      "92cd910a"
+     ],
+     "wq": "f6729f3e",
+     "wrongs": [
+      "Un vecteur contenu dans le plan",
+      "Un vecteur de norme 1",
+      "Un vecteur colinéaire à un vecteur du plan"
+     ]
     },
     {
-     "question": "Équation cartésienne d'un plan",
-     "answer": "Plan de vecteur normal n⃗(a ; b ; c) :\nax + by + cz + d = 0",
-     "w": "4aaeed34",
-     "wq": "b705d9f5"
+     "question": "Quelle est la forme de l'équation cartésienne d'un plan de vecteur normal n⃗(a ; b ; c) ?",
+     "answer": "ax + by + cz + d = 0",
+     "w": [
+      "43f285f4",
+      "4aaeed34"
+     ],
+     "wq": "b705d9f5",
+     "wrongs": [
+      "x = a + t, y = b + t, z = c + t",
+      "ax + by + cz = 1",
+      "a/x + b/y + c/z = d"
+     ]
     },
     {
      "question": "Quand une droite est-elle orthogonale à un plan ?",
-     "answer": "Quand elle est orthogonale à deux droites sécantes du plan.\nSon vecteur directeur est alors normal au plan.",
-     "w": "b214e70c",
-     "wq": "ff805e40"
+     "answer": "Quand elle est orthogonale à deux droites sécantes du plan",
+     "w": [
+      "8a1e49eb",
+      "b214e70c"
+     ],
+     "wq": "ff805e40",
+     "more": "Son vecteur directeur est alors normal au plan.",
+     "wrongs": [
+      "Quand elle est orthogonale à une droite du plan",
+      "Quand elle est parallèle à une droite du plan",
+      "Quand elle coupe le plan"
+     ]
     },
     {
-     "question": "Positions relatives de deux droites de l'espace",
-     "answer": "Coplanaires : sécantes ou parallèles\nOu non coplanaires",
-     "w": "b6972dbf",
-     "wq": "f14af858"
+     "question": "Quelles sont les positions relatives possibles de deux droites de l'espace ?",
+     "answer": "Sécantes, parallèles ou non coplanaires",
+     "w": [
+      "8d54d19e",
+      "b6972dbf"
+     ],
+     "wq": "f14af858",
+     "wrongs": [
+      "Seulement sécantes ou parallèles",
+      "Seulement parallèles",
+      "Sécantes, perpendiculaires ou confondues seulement"
+     ]
     },
     {
-     "question": "Positions relatives d'une droite et d'un plan",
-     "answer": "• Incluse dans le plan\n• Strictement parallèle\n• Sécante (un point d'intersection)",
-     "w": "104583a5",
-     "wq": "a8eef35c"
+     "question": "Quelles sont les positions relatives possibles d'une droite et d'un plan ?",
+     "answer": "Incluse, strictement parallèle ou sécante",
+     "w": [
+      "df0eb5b0",
+      "104583a5"
+     ],
+     "wq": "a8eef35c",
+     "wrongs": [
+      "Seulement sécante",
+      "Incluse ou non coplanaire",
+      "Parallèle ou orthogonale seulement"
+     ]
     },
     {
-     "question": "Projeté orthogonal d'un point M sur un plan P",
-     "answer": "Le point H de P tel que MH⃗ est normal à P.\nMH est la distance de M au plan.",
-     "w": "b1cfeb24",
-     "wq": "904dce64"
+     "question": "Qu'est-ce que le projeté orthogonal d'un point M sur un plan P ?",
+     "answer": "Le point H de P tel que MH⃗ est normal à P",
+     "w": [
+      "cfbc83b4",
+      "b1cfeb24"
+     ],
+     "wq": "904dce64",
+     "more": "MH est la distance de M au plan.",
+     "wrongs": [
+      "Le point de P le plus éloigné de M",
+      "Le milieu de M et d'un point de P",
+      "Le point H de P tel que MH⃗ est dans P"
+     ]
     },
     {
-     "question": "Distance entre deux points A et B",
-     "answer": "AB = √((xB − xA)² + (yB − yA)² + (zB − zA)²)"
+     "question": "Comment calcule-t-on la distance AB dans l'espace ?",
+     "answer": "√((xB − xA)² + (yB − yA)² + (zB − zA)²)",
+     "w": "4adbcd5b",
+     "wq": "2f83f7db",
+     "wrongs": [
+      "(xB − xA) + (yB − yA) + (zB − zA)",
+      "√((xB + xA)² + (yB + yA)² + (zB + zA)²)",
+      "(xB − xA)² + (yB − yA)² + (zB − zA)²"
+     ]
     },
     {
-     "question": "Milieu d'un segment [AB]",
-     "answer": "((xA + xB)/2 ; (yA + yB)/2 ; (zA + zB)/2)"
+     "question": "Quelles sont les coordonnées du milieu de [AB] ?",
+     "answer": "((xA + xB)/2 ; (yA + yB)/2 ; (zA + zB)/2)",
+     "w": "84d6c3bc",
+     "wq": "c9dd726e",
+     "wrongs": [
+      "((xB − xA)/2 ; (yB − yA)/2 ; (zB − zA)/2)",
+      "(xA + xB ; yA + yB ; zA + zB)",
+      "(xA × xB ; yA × yB ; zA × zB)"
+     ]
     },
     {
-     "question": "Volume d'une pyramide et d'un tétraèdre",
-     "answer": "V = (1/3) × aire de la base × hauteur"
+     "question": "Quel est le volume d'une pyramide (ou d'un tétraèdre) ?",
+     "answer": "(1/3) × aire de la base × hauteur",
+     "w": "205ffeb1",
+     "wq": "2b95a169",
+     "wrongs": [
+      "Aire de la base × hauteur",
+      "(1/2) × aire de la base × hauteur",
+      "(4/3) × aire de la base × hauteur"
+     ]
     }
    ]
   },
