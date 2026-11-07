@@ -68550,91 +68550,250 @@
    "cards": [
     {
      "question": "Quelle est la section d'un cube par un plan parallèle à une face ?",
-     "answer": "Un carré de même dimension que la face."
+     "answer": "Un carré",
+     "w": "89492d12",
+     "more": "De mêmes dimensions que la face.",
+     "wrongs": [
+      "Un rectangle quelconque",
+      "Un triangle",
+      "Un losange"
+     ]
     },
     {
      "question": "Quelle est la section d'un pavé droit par un plan parallèle à une face ?",
-     "answer": "Un rectangle de mêmes dimensions que cette face."
+     "answer": "Un rectangle identique à la face",
+     "w": "2ae4bd43",
+     "wrongs": [
+      "Un carré",
+      "Un triangle",
+      "Un rectangle plus petit"
+     ]
     },
     {
      "question": "Quelle est la section d'un pavé droit par un plan parallèle à une arête ?",
-     "answer": "Un rectangle\ndont une dimension est la longueur de cette arête.",
-     "w": "5fff9f57",
-     "wq": "68ee2132"
+     "answer": "Un rectangle",
+     "w": [
+      "72c5d82a",
+      "5fff9f57"
+     ],
+     "more": "Une de ses dimensions est la longueur de cette arête.",
+     "wrongs": [
+      "Un triangle",
+      "Un trapèze",
+      "Un cercle"
+     ]
     },
     {
      "question": "Quelle est la section d'un cylindre par un plan perpendiculaire à son axe ?",
-     "answer": "Un disque de même rayon que la base."
+     "answer": "Un disque",
+     "w": "44eb3e86",
+     "more": "De même rayon que la base.",
+     "wrongs": [
+      "Un rectangle",
+      "Une ellipse",
+      "Un carré"
+     ]
     },
     {
      "question": "Quelle est la section d'un cylindre par un plan parallèle à son axe ?",
-     "answer": "Un rectangle."
+     "answer": "Un rectangle",
+     "w": "0574eec9",
+     "wrongs": [
+      "Un disque",
+      "Un triangle",
+      "Une ellipse"
+     ]
     },
     {
-     "question": "Quelle est la section d'une pyramide ou d'un cône par un plan parallèle à la base ?",
-     "answer": "Une réduction de la base :\n• pyramide : un polygone de même forme\n• cône : un disque",
-     "w": "83a62bf1",
-     "wq": "f624ab4a"
+     "question": "Quelle est la section d'une pyramide par un plan parallèle à la base ?",
+     "answer": "Une réduction de la base",
+     "w": [
+      "c2be7d61",
+      "83a62bf1"
+     ],
+     "wq": "f624ab4a",
+     "more": "Un polygone de même forme que la base, plus petit.",
+     "wrongs": [
+      "Un triangle quelconque",
+      "Un agrandissement de la base",
+      "Un cercle"
+     ]
+    },
+    {
+     "question": "Quelle est la section d'un cône par un plan parallèle à la base ?",
+     "answer": "Un disque",
+     "more": "C'est une réduction de la base.",
+     "wrongs": [
+      "Un triangle",
+      "Un carré",
+      "Un rectangle"
+     ]
     },
     {
      "question": "Quelle est la section d'une sphère par un plan ?",
-     "answer": "Un cercle\n(ou un point si le plan est tangent)",
-     "w": "23d4f288",
-     "wq": "1011b1fc"
+     "answer": "Un cercle",
+     "w": [
+      "7e4c4c81",
+      "23d4f288"
+     ],
+     "more": "Ou un seul point si le plan est tangent.",
+     "wrongs": [
+      "Un carré",
+      "Une sphère plus petite",
+      "Un triangle"
+     ]
     },
     {
-     "question": "Comment calculer le rayon r de la section d'une sphère de rayon R par un plan situé à la distance d du centre ?",
-     "answer": "Par Pythagore : r² = R² − d²\nEx. : R = 5 cm, d = 3 cm\n→ r² = 25 − 9 = 16, r = 4 cm",
-     "w": "a06f6887",
-     "wq": "a571b457"
+     "question": "Quelle formule donne le rayon r de la section d'une sphère de rayon R à la distance d du centre ?",
+     "answer": "r² = R² − d²",
+     "w": [
+      "89436aaa",
+      "a06f6887"
+     ],
+     "wq": "a571b457",
+     "more": "Par Pythagore. Ex. : R = 5 cm, d = 3 cm → r² = 16, r = 4 cm.",
+     "wrongs": [
+      "r = R − d",
+      "r² = R² + d²",
+      "r = R × d"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un grand cercle d'une sphère ?",
-     "answer": "Un cercle obtenu par un plan passant par le centre.\nSon rayon est celui de la sphère.",
-     "w": "5182099f",
-     "wq": "60abc25d"
+     "answer": "Un cercle dont le plan passe par le centre",
+     "w": [
+      "8f5a6a4f",
+      "5182099f"
+     ],
+     "more": "Son rayon est celui de la sphère.",
+     "wrongs": [
+      "Le plus grand parallèle sauf l'équateur",
+      "Un cercle tangent à la sphère",
+      "Un cercle de rayon double"
+     ]
     },
     {
-     "question": "Quelle différence entre une sphère et une boule ?",
-     "answer": "Sphère : la surface (points à distance R du centre).\nBoule : le solide plein (points à distance ≤ R).",
-     "w": "610f0bbf",
-     "wq": "7d222417"
+     "question": "La boule est-elle la surface ou le solide plein ?",
+     "answer": "Le solide plein",
+     "w": [
+      "f7d7f09c",
+      "610f0bbf"
+     ],
+     "wq": "7d222417",
+     "more": "La sphère est la surface ; la boule contient aussi l'intérieur.",
+     "wrongs": [
+      "La surface",
+      "Le centre seulement",
+      "Un grand cercle"
+     ]
     },
     {
-     "question": "Qu'est-ce que la latitude d'un point sur Terre ?",
-     "answer": "Sa position au nord ou au sud de l'équateur :\nun angle de 0° à 90° Nord ou Sud.",
-     "w": "f48baf41",
-     "wq": "5f01a6f4"
+     "question": "Qu'indique la latitude d'un point sur Terre ?",
+     "answer": "Sa position au nord ou au sud de l'équateur",
+     "w": [
+      "f1e07ed2",
+      "f48baf41"
+     ],
+     "wq": "5f01a6f4",
+     "more": "Un angle de 0° à 90° Nord ou Sud.",
+     "wrongs": [
+      "Sa position à l'est ou à l'ouest de Greenwich",
+      "Son altitude",
+      "Sa distance au pôle Nord en km"
+     ]
     },
     {
-     "question": "Qu'est-ce que la longitude d'un point sur Terre ?",
-     "answer": "Sa position à l'est ou à l'ouest du méridien de Greenwich :\nun angle de 0° à 180° Est ou Ouest.",
-     "w": "cb6bd1d9",
-     "wq": "f8bec145"
+     "question": "Qu'indique la longitude d'un point sur Terre ?",
+     "answer": "Sa position à l'est ou à l'ouest de Greenwich",
+     "w": [
+      "178287c4",
+      "cb6bd1d9"
+     ],
+     "wq": "f8bec145",
+     "more": "Un angle de 0° à 180° Est ou Ouest.",
+     "wrongs": [
+      "Sa position au nord ou au sud de l'équateur",
+      "Son altitude",
+      "Son fuseau horaire"
+     ]
     },
     {
-     "question": "Que sont les méridiens et les parallèles ?",
-     "answer": "Méridiens : demi-grands cercles d'un pôle à l'autre (même longitude).\nParallèles : cercles parallèles à l'équateur (même latitude).",
-     "w": "a3285ed2",
-     "wq": "d0b63576"
+     "question": "Que sont les méridiens ?",
+     "answer": "Des demi-cercles d'un pôle à l'autre",
+     "w": [
+      "2741be71",
+      "a3285ed2"
+     ],
+     "wq": "d0b63576",
+     "more": "Les points d'un même méridien ont la même longitude.",
+     "wrongs": [
+      "Des cercles parallèles à l'équateur",
+      "Des lignes de même altitude",
+      "Des fuseaux horaires"
+     ]
     },
     {
-     "question": "Comment repère-t-on un point dans un pavé droit ?",
-     "answer": "Par trois coordonnées, depuis un sommet pris comme origine :\nabscisse, ordonnée, altitude (cote).",
-     "w": "20420e97",
-     "wq": "51091a60"
+     "question": "Que sont les parallèles ?",
+     "answer": "Des cercles parallèles à l'équateur",
+     "more": "Les points d'un même parallèle ont la même latitude.",
+     "wrongs": [
+      "Des demi-cercles d'un pôle à l'autre",
+      "Des lignes de même altitude",
+      "Des fuseaux horaires"
+     ]
     },
     {
-     "question": "Dans un agrandissement ou une réduction de rapport k, que deviennent les longueurs, les aires et les volumes ?",
-     "answer": "• Longueurs : × k\n• Aires : × k²\n• Volumes : × k³",
-     "w": "8ee870b8",
-     "wq": "fa608e62"
+     "question": "Combien de coordonnées faut-il pour repérer un point dans un pavé droit ?",
+     "answer": "Trois",
+     "w": [
+      "aa645173",
+      "20420e97"
+     ],
+     "wq": "51091a60",
+     "more": "Abscisse, ordonnée et altitude (cote), depuis un sommet pris comme origine.",
+     "wrongs": [
+      "Deux",
+      "Une",
+      "Quatre"
+     ]
+    },
+    {
+     "question": "Dans un agrandissement de rapport k, par combien sont multipliées les aires ?",
+     "answer": "Par k²",
+     "w": [
+      "91b3e445",
+      "8ee870b8"
+     ],
+     "wq": "fa608e62",
+     "more": "Les longueurs sont multipliées par k.",
+     "wrongs": [
+      "Par k",
+      "Par k³",
+      "Par 2k"
+     ]
+    },
+    {
+     "question": "Dans un agrandissement de rapport k, par combien sont multipliés les volumes ?",
+     "answer": "Par k³",
+     "wrongs": [
+      "Par k",
+      "Par k²",
+      "Par 3k"
+     ]
     },
     {
      "question": "Une pyramide de volume 270 cm³ est réduite de rapport 1/3. Quel est le volume obtenu ?",
-     "answer": "10 cm³\n270 × (1/3)³ = 270 ÷ 27 = 10",
-     "w": "cf37f466",
-     "wq": "4f9809e3"
+     "answer": "10 cm³",
+     "w": [
+      "161ad4cf",
+      "cf37f466"
+     ],
+     "more": "270 × (1/3)³ = 270 ÷ 27 = 10",
+     "wrongs": [
+      "90 cm³",
+      "30 cm³",
+      "3 cm³"
+     ]
     }
    ]
   },
@@ -68657,89 +68816,210 @@
    "cards": [
     {
      "question": "Qu'est-ce qu'une fonction ?",
-     "answer": "Un processus qui associe à un nombre x\nun unique nombre noté f(x).\nNotation : f : x ↦ f(x)",
-     "w": "7ddb1917",
-     "wq": "a83a3d79"
+     "answer": "Un procédé qui associe à x un unique nombre f(x)",
+     "w": [
+      "47b56bcd",
+      "7ddb1917"
+     ],
+     "more": "Notation : f : x ↦ f(x)",
+     "wrongs": [
+      "Une équation à résoudre",
+      "Un nombre qui ne change pas",
+      "Un procédé qui associe à x plusieurs nombres"
+     ]
     },
     {
-     "question": "Comment lit-on « f(3) = 10 » ?",
-     "answer": "« f de 3 égale 10 » :\n• l'image de 3 par f est 10\n• 3 est un antécédent de 10",
-     "w": "9fd3339e",
-     "wq": "6cbb12d8"
+     "question": "Si f(3) = 10, quelle est l'image de 3 par f ?",
+     "answer": "10",
+     "w": [
+      "1aa968c1",
+      "9fd3339e"
+     ],
+     "wq": "6cbb12d8",
+     "more": "On dit aussi que 3 est un antécédent de 10.",
+     "wrongs": [
+      "3",
+      "30",
+      "13"
+     ]
     },
     {
      "question": "Un nombre peut-il avoir plusieurs images par une fonction ?",
-     "answer": "Non : un nombre a une seule image.\nMais il peut avoir zéro, un ou plusieurs antécédents.",
-     "w": "eb50f27f",
-     "wq": "1ebe19e4"
+     "answer": "Non, une seule",
+     "w": [
+      "ff6f7667",
+      "eb50f27f"
+     ],
+     "more": "Mais il peut avoir zéro, un ou plusieurs antécédents.",
+     "wrongs": [
+      "Oui, toujours deux",
+      "Oui, autant qu'on veut",
+      "Ça dépend de la fonction"
+     ]
     },
     {
      "question": "Soit g(x) = x². Quels sont les antécédents de 9 ?",
-     "answer": "3 et −3\ncar 3² = 9 et (−3)² = 9",
-     "w": "17265004",
-     "wq": "c4847d12"
+     "answer": "3 et −3",
+     "w": [
+      "f819f8bc",
+      "17265004"
+     ],
+     "more": "Car 3² = 9 et (−3)² = 9.",
+     "wrongs": [
+      "3 seulement",
+      "81",
+      "4,5"
+     ]
     },
     {
      "question": "Soit g(x) = x². Le nombre −4 a-t-il un antécédent ?",
-     "answer": "Non\nUn carré est toujours positif ou nul.",
-     "w": "1376141c",
-     "wq": "7012d53e"
+     "answer": "Non",
+     "w": [
+      "a322a524",
+      "1376141c"
+     ],
+     "more": "Un carré est toujours positif ou nul.",
+     "wrongs": [
+      "Oui : −2",
+      "Oui : 2 et −2",
+      "Oui : 16"
+     ]
     },
     {
-     "question": "Soit h(x) = 3x² − 1. Calculer h(−2).",
-     "answer": "11\n3 × (−2)² − 1 = 3 × 4 − 1 = 11",
-     "w": "cd77ff82",
-     "wq": "a84a00d8"
+     "question": "Soit h(x) = 3x² − 1. Que vaut h(−2) ?",
+     "answer": "11",
+     "w": [
+      "b584f9ea",
+      "cd77ff82"
+     ],
+     "wq": "a84a00d8",
+     "more": "3 × (−2)² − 1 = 3 × 4 − 1 = 11",
+     "wrongs": [
+      "−13",
+      "35",
+      "−7"
+     ]
     },
     {
      "question": "Quels sont les trois modes de représentation d'une fonction ?",
-     "answer": "• Une formule (expression algébrique)\n• Un tableau de valeurs\n• Une représentation graphique (courbe)",
-     "w": "aad4ca5d",
-     "wq": "23230a32"
+     "answer": "Formule, tableau de valeurs, courbe",
+     "w": [
+      "ca7275ef",
+      "aad4ca5d"
+     ],
+     "wrongs": [
+      "Formule, histogramme, diagramme",
+      "Tableau, liste, phrase",
+      "Courbe, cercle, droite"
+     ]
     },
     {
-     "question": "Dans un tableau de valeurs, où lit-on les images ?",
-     "answer": "Sur la ligne f(x),\nsous chaque valeur de x.",
-     "w": "7cd5db13",
-     "wq": "4a367b97"
+     "question": "Dans un tableau de valeurs, sur quelle ligne lit-on les images ?",
+     "answer": "Sur la ligne f(x)",
+     "w": [
+      "626cde80",
+      "7cd5db13"
+     ],
+     "wq": "4a367b97",
+     "more": "Sous chaque valeur de x.",
+     "wrongs": [
+      "Sur la ligne x",
+      "Dans la première colonne",
+      "On ne peut pas les lire"
+     ]
     },
     {
      "question": "Qu'est-ce que la courbe représentative d'une fonction f ?",
-     "answer": "L'ensemble des points de coordonnées (x ; f(x))\ndans un repère.",
-     "w": "ef5c015c",
-     "wq": "f939073a"
+     "answer": "L'ensemble des points (x ; f(x))",
+     "w": [
+      "754128de",
+      "ef5c015c"
+     ],
+     "wrongs": [
+      "L'ensemble des points (f(x) ; x)",
+      "La droite y = x",
+      "L'axe des abscisses"
+     ]
     },
     {
-     "question": "Comment lire graphiquement un antécédent de k ?",
-     "answer": "1. Repérer k sur l'axe des ordonnées.\n2. Tracer l'horizontale jusqu'à la courbe.\n3. Lire l'abscisse de chaque point d'intersection.",
-     "w": "83310361",
-     "wq": "a85dd1e7"
+     "question": "Pour lire graphiquement un antécédent de k, où repère-t-on k ?",
+     "answer": "Sur l'axe des ordonnées",
+     "w": [
+      "e3ea0a31",
+      "83310361"
+     ],
+     "wq": "a85dd1e7",
+     "more": "On trace l'horizontale jusqu'à la courbe et on lit l'abscisse des points d'intersection.",
+     "wrongs": [
+      "Sur l'axe des abscisses",
+      "À l'origine",
+      "Sur la courbe directement"
+     ]
     },
     {
-     "question": "Comment savoir si le point A(2 ; 7) appartient à la courbe de f(x) = 4x − 1 ?",
-     "answer": "On calcule f(2) = 4 × 2 − 1 = 7.\nC'est l'ordonnée de A : A appartient à la courbe.",
-     "w": "a9413451",
-     "wq": "5931f3b7"
+     "question": "Le point A(2 ; 7) appartient-il à la courbe de f(x) = 4x − 1 ?",
+     "answer": "Oui",
+     "w": [
+      "60fef9d3",
+      "a9413451"
+     ],
+     "wq": "5931f3b7",
+     "more": "f(2) = 4 × 2 − 1 = 7, c'est bien l'ordonnée de A.",
+     "wrongs": [
+      "Non, car f(2) = 8",
+      "Non, car f(7) = 27",
+      "On ne peut pas savoir"
+     ]
     },
     {
-     "question": "Comment résoudre graphiquement l'équation f(x) = 5 ?",
-     "answer": "On cherche les abscisses des points de la courbe d'ordonnée 5\n(les antécédents de 5).",
-     "w": "b28c3f4f",
-     "wq": "97b47744"
+     "question": "Résoudre graphiquement f(x) = 5, c'est chercher quoi ?",
+     "answer": "Les abscisses des points d'ordonnée 5",
+     "w": [
+      "5445e08c",
+      "b28c3f4f"
+     ],
+     "wq": "97b47744",
+     "more": "Ce sont les antécédents de 5.",
+     "wrongs": [
+      "L'image de 5",
+      "L'ordonnée du point d'abscisse 5",
+      "Le point d'intersection avec l'axe des x"
+     ]
     },
     {
      "question": "Sur un graphique, quel axe correspond à la variable x ?",
-     "answer": "L'axe horizontal (axe des abscisses).\nLes images f(x) se lisent sur l'axe vertical (ordonnées).",
-     "w": "9ea5599b",
-     "wq": "0e4e7868"
+     "answer": "L'axe horizontal (abscisses)",
+     "w": [
+      "2c241c54",
+      "9ea5599b"
+     ],
+     "more": "Les images f(x) se lisent sur l'axe vertical.",
+     "wrongs": [
+      "L'axe vertical (ordonnées)",
+      "Les deux axes",
+      "La diagonale"
+     ]
     },
     {
-     "question": "Dans un tableur, quelle formule écrire en B2 pour calculer f(x) = 2x² + 1 avec x en A2 ?",
-     "answer": "=2*A2^2+1"
+     "question": "Dans un tableur, quelle formule écrire en B2 pour f(x) = 2x² + 1 avec x en A2 ?",
+     "answer": "=2*A2^2+1",
+     "w": "f695d44a",
+     "wq": "6e99e0db",
+     "wrongs": [
+      "=2*B2^2+1",
+      "2A2²+1",
+      "=(2*A2)^2+1"
+     ]
     },
     {
      "question": "Quelle est la représentation graphique d'une fonction linéaire ?",
-     "answer": "Une droite qui passe par l'origine du repère."
+     "answer": "Une droite passant par l'origine",
+     "w": "1d747c27",
+     "wrongs": [
+      "Une parabole",
+      "Une droite ne passant pas par l'origine",
+      "Un cercle"
+     ]
     }
    ]
   },
@@ -68762,99 +69042,264 @@
    "cards": [
     {
      "question": "Quelles sont les couleurs primaires en peinture ?",
-     "answer": "• En peinture : rouge, jaune, bleu\n• En imprimerie : magenta, jaune, cyan\nOn ne peut pas les obtenir par mélange.",
-     "w": "9351a1b3",
-     "wq": "64bbfc7a"
+     "answer": "Rouge, jaune, bleu",
+     "w": [
+      "ad16c1e5",
+      "9351a1b3"
+     ],
+     "more": "On ne peut pas les obtenir par mélange.",
+     "wrongs": [
+      "Rouge, vert, bleu",
+      "Orange, vert, violet",
+      "Noir, blanc, gris"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une couleur complémentaire ?",
-     "answer": "La couleur opposée sur le cercle chromatique ;\njuxtaposées, elles se renforcent.\nEx. : rouge/vert, bleu/orange, jaune/violet",
-     "w": "76ddfd6b",
-     "wq": "55c54abb"
+     "question": "Quelles sont les couleurs primaires en imprimerie ?",
+     "answer": "Magenta, jaune, cyan",
+     "wrongs": [
+      "Rouge, vert, bleu",
+      "Rouge, jaune, bleu",
+      "Noir, blanc, gris"
+     ]
     },
     {
-     "question": "Quelle différence entre couleurs chaudes et couleurs froides ?",
-     "answer": "Chaudes (rouge, orange, jaune) : évoquent la chaleur, semblent avancer.\nFroides (bleu, vert, violet) : évoquent le froid, semblent reculer.",
-     "w": "ade54e53",
-     "wq": "81412e6d"
+     "question": "Quelle est la couleur complémentaire du rouge ?",
+     "answer": "Le vert",
+     "w": [
+      "bf2008cc",
+      "76ddfd6b"
+     ],
+     "wq": "55c54abb",
+     "more": "Opposées sur le cercle chromatique, elles se renforcent quand on les juxtapose. Aussi : bleu/orange, jaune/violet.",
+     "wrongs": [
+      "L'orange",
+      "Le bleu",
+      "Le violet"
+     ]
+    },
+    {
+     "question": "Le bleu est-il une couleur chaude ou froide ?",
+     "answer": "Froide",
+     "w": [
+      "41926688",
+      "ade54e53"
+     ],
+     "wq": "81412e6d",
+     "more": "Les couleurs froides (bleu, vert, violet) semblent reculer ; les chaudes (rouge, orange, jaune) semblent avancer.",
+     "wrongs": [
+      "Chaude",
+      "Neutre",
+      "Primaire seulement"
+     ]
     },
     {
      "question": "Qu'est-ce que la composition d'une œuvre ?",
-     "answer": "L'organisation des éléments dans l'image :\nlignes de force, plans, équilibre, points de tension.",
-     "w": "ece36a84",
-     "wq": "f93b1b98"
+     "answer": "L'organisation des éléments dans l'image",
+     "w": [
+      "a6ff6dff",
+      "ece36a84"
+     ],
+     "more": "Lignes de force, plans, équilibre, points de tension.",
+     "wrongs": [
+      "Le choix des couleurs",
+      "Le titre de l'œuvre",
+      "Le matériau utilisé"
+     ]
     },
     {
-     "question": "Qu'est-ce que le cadrage ?",
-     "answer": "Le choix de ce qui est montré dans l'image\net de ce qui reste hors du cadre (le hors-champ).",
-     "w": "cb89ca41",
-     "wq": "cb062041"
+     "question": "Comment appelle-t-on ce qui reste en dehors du cadre ?",
+     "answer": "Le hors-champ",
+     "w": [
+      "725dda99",
+      "cb89ca41"
+     ],
+     "wq": "cb062041",
+     "more": "Le cadrage est le choix de ce qui est montré dans l'image.",
+     "wrongs": [
+      "Le contrechamp",
+      "L'arrière-plan",
+      "Le premier plan"
+     ]
     },
     {
-     "question": "Que sont la plongée et la contre-plongée ?",
-     "answer": "Plongée : vue du dessus, elle écrase le sujet.\nContre-plongée : vue du dessous, elle le grandit.",
-     "w": "726359f9",
-     "wq": "929316ee"
+     "question": "Quel effet produit une vue en plongée ?",
+     "answer": "Elle écrase le sujet",
+     "w": [
+      "256452fb",
+      "726359f9"
+     ],
+     "wq": "929316ee",
+     "more": "La plongée est une vue du dessus.",
+     "wrongs": [
+      "Elle grandit le sujet",
+      "Elle rend le sujet flou",
+      "Elle n'a aucun effet"
+     ]
     },
     {
-     "question": "Quelle différence entre figuration et abstraction ?",
-     "answer": "Figurative : représente des éléments reconnaissables du réel.\nAbstraite : n'en représente pas, joue sur formes, couleurs et lignes.",
-     "w": "8b7d43e8",
-     "wq": "2a89e44e"
+     "question": "Quel effet produit une vue en contre-plongée ?",
+     "answer": "Elle grandit le sujet",
+     "more": "La contre-plongée est une vue du dessous.",
+     "wrongs": [
+      "Elle écrase le sujet",
+      "Elle rend le sujet flou",
+      "Elle n'a aucun effet"
+     ]
+    },
+    {
+     "question": "Une œuvre qui ne représente rien de reconnaissable est dite…",
+     "answer": "Abstraite",
+     "w": [
+      "841005bc",
+      "8b7d43e8"
+     ],
+     "wq": "2a89e44e",
+     "more": "Elle joue sur formes, couleurs et lignes. Une œuvre figurative représente le réel.",
+     "wrongs": [
+      "Figurative",
+      "Réaliste",
+      "Classique"
+     ]
     },
     {
      "question": "Qu'est-ce que la matérialité d'une œuvre ?",
-     "answer": "Ses qualités physiques :\nmatériaux, support, matière, texture, épaisseur,\nqui participent au sens de l'œuvre.",
-     "w": "1f0d23e4",
-     "wq": "d3eafbad"
+     "answer": "Ses qualités physiques",
+     "w": [
+      "a901bac1",
+      "1f0d23e4"
+     ],
+     "more": "Matériaux, support, texture, épaisseur, qui participent au sens.",
+     "wrongs": [
+      "Son prix",
+      "Son sujet",
+      "Son titre"
+     ]
     },
     {
-     "question": "Quelle différence entre support, médium et outil ?",
-     "answer": "• Support : reçoit l'œuvre (toile, papier, mur)\n• Médium : la matière utilisée (gouache, fusain)\n• Outil : sert à l'appliquer (pinceau, couteau)",
-     "w": "1b15219d",
-     "wq": "51feaac1"
+     "question": "En arts plastiques, qu'est-ce que le support ?",
+     "answer": "Ce qui reçoit l'œuvre",
+     "w": [
+      "c44c0aa4",
+      "1b15219d"
+     ],
+     "wq": "51feaac1",
+     "more": "Ex. : toile, papier, mur.",
+     "wrongs": [
+      "La matière utilisée",
+      "L'outil qui applique la matière",
+      "Le cadre"
+     ]
+    },
+    {
+     "question": "En arts plastiques, qu'est-ce que le médium ?",
+     "answer": "La matière utilisée",
+     "more": "Ex. : gouache, fusain. L'outil (pinceau, couteau) sert à l'appliquer.",
+     "wrongs": [
+      "Ce qui reçoit l'œuvre",
+      "L'outil",
+      "Le sujet représenté"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un ready-made ?",
-     "answer": "Un objet manufacturé choisi par l'artiste et exposé comme œuvre.\nEx. : Fontaine de Marcel Duchamp (1917),\nun urinoir signé « R. Mutt »",
-     "w": "22cefca6",
-     "wq": "305f521f"
+     "answer": "Un objet manufacturé exposé comme œuvre",
+     "w": [
+      "9a0317ee",
+      "22cefca6"
+     ],
+     "more": "Ex. : Fontaine de Marcel Duchamp (1917), un urinoir signé « R. Mutt ».",
+     "wrongs": [
+      "Une peinture faite rapidement",
+      "Une sculpture en marbre",
+      "Une œuvre faite sur commande"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un collage ?",
-     "answer": "Coller sur un support des éléments divers (papiers, photos, tissus).\nPicasso et Braque créent les papiers collés vers 1912.",
-     "w": "449d8e2d",
-     "wq": "fedc0ad7"
+     "question": "Quels artistes créent les papiers collés vers 1912 ?",
+     "answer": "Picasso et Braque",
+     "w": [
+      "f5203461",
+      "449d8e2d"
+     ],
+     "wq": "fedc0ad7",
+     "more": "Un collage assemble sur un support des papiers, photos, tissus…",
+     "wrongs": [
+      "Monet et Renoir",
+      "Duchamp et Klein",
+      "Matisse et Dalí"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une installation ?",
-     "answer": "Des éléments disposés dans un espace que le spectateur parcourt.\nL'espace fait partie de l'œuvre.",
-     "w": "98c164c6",
-     "wq": "93c8e4eb"
+     "answer": "Des éléments disposés dans un espace à parcourir",
+     "w": [
+      "b13bef55",
+      "98c164c6"
+     ],
+     "more": "L'espace fait partie de l'œuvre.",
+     "wrongs": [
+      "Une peinture accrochée au mur",
+      "Une action devant un public",
+      "Un objet de série signé"
+     ]
     },
     {
      "question": "Que signifie « in situ » ?",
-     "answer": "Une œuvre conçue pour un lieu précis,\nqui perd son sens si on la déplace.",
-     "w": "1ed81a65",
-     "wq": "ae350825"
+     "answer": "Conçue pour un lieu précis",
+     "w": [
+      "0bb0339b",
+      "1ed81a65"
+     ],
+     "more": "L'œuvre perd son sens si on la déplace.",
+     "wrongs": [
+      "Faite en atelier",
+      "Exposée dans un musée",
+      "Réalisée en plein air"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une performance ?",
-     "answer": "Une action réalisée par l'artiste devant un public, à un moment donné.\nIl en reste souvent des traces (photos, vidéos).",
-     "w": "ddbce676",
-     "wq": "23910881"
+     "answer": "Une action de l'artiste devant un public",
+     "w": [
+      "2de00ca8",
+      "ddbce676"
+     ],
+     "more": "Il en reste souvent des traces : photos, vidéos.",
+     "wrongs": [
+      "Une sculpture monumentale",
+      "Un tableau très réaliste",
+      "Une exposition collective"
+     ]
     },
     {
      "question": "Qu'est-ce que le land art ?",
-     "answer": "Un courant de la fin des années 1960 :\ncréer dans la nature avec ses matériaux (pierres, terre, branches).\nEx. : Spiral Jetty de Robert Smithson (1970)",
-     "w": "e62d1618",
-     "wq": "4674e8de"
+     "answer": "Créer dans la nature avec ses matériaux",
+     "w": [
+      "c5e645c9",
+      "e62d1618"
+     ],
+     "more": "Fin des années 1960. Ex. : Spiral Jetty de Robert Smithson (1970).",
+     "wrongs": [
+      "Peindre des paysages",
+      "Sculpter le marbre",
+      "Photographier la campagne"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un monochrome ?",
-     "answer": "Une œuvre peinte d'une seule couleur.\nEx. : les monochromes bleus d'Yves Klein (bleu IKB)",
-     "w": "7f1215e8",
-     "wq": "6e6e19e5"
+     "question": "Quel artiste est célèbre pour ses monochromes bleus ?",
+     "answer": "Yves Klein",
+     "w": [
+      "1c97f64c",
+      "7f1215e8"
+     ],
+     "wq": "6e6e19e5",
+     "more": "Un monochrome est peint d'une seule couleur (bleu IKB).",
+     "wrongs": [
+      "Pablo Picasso",
+      "Marcel Duchamp",
+      "Claude Monet"
+     ]
     }
    ]
   },
@@ -68877,97 +69322,239 @@
    "cards": [
     {
      "question": "Quels sont les quatre paramètres du son ?",
-     "answer": "• Hauteur : grave / aigu\n• Durée : court / long\n• Intensité : faible / fort\n• Timbre : la couleur propre à chaque instrument ou voix",
-     "w": "6d7e6414",
-     "wq": "73ff1f30"
+     "answer": "Hauteur, durée, intensité, timbre",
+     "w": [
+      "7f8b8685",
+      "6d7e6414"
+     ],
+     "more": "Hauteur : grave/aigu. Durée : court/long. Intensité : faible/fort. Timbre : la couleur propre à chaque instrument ou voix.",
+     "wrongs": [
+      "Hauteur, tempo, rythme, mélodie",
+      "Volume, vitesse, note, accord",
+      "Pulsation, nuance, timbre, harmonie"
+     ]
     },
     {
      "question": "Qu'est-ce que la pulsation ?",
-     "answer": "Le battement régulier\nsur lequel on peut frapper dans les mains.",
-     "w": "7d2e60ca",
-     "wq": "3889a42f"
+     "answer": "Le battement régulier de la musique",
+     "w": [
+      "32e49297",
+      "7d2e60ca"
+     ],
+     "more": "Celui sur lequel on peut frapper dans les mains.",
+     "wrongs": [
+      "La vitesse de la musique",
+      "La hauteur d'une note",
+      "Un motif répété"
+     ]
     },
     {
      "question": "Qu'est-ce que le tempo ?",
-     "answer": "La vitesse de la pulsation.\nEx. : lento (lent), andante (modéré), allegro (rapide)",
-     "w": "b2739c96",
-     "wq": "c10893ff"
+     "answer": "La vitesse de la pulsation",
+     "w": [
+      "18048e42",
+      "b2739c96"
+     ],
+     "more": "Ex. : lento (lent), andante (modéré), allegro (rapide).",
+     "wrongs": [
+      "Le volume sonore",
+      "La hauteur des notes",
+      "Le nombre d'instruments"
+     ]
     },
     {
-     "question": "Quelle différence entre pulsation et rythme ?",
-     "answer": "Pulsation : régulière.\nRythme : l'organisation des durées (longues et courtes) sur cette pulsation.",
-     "w": "ccedba58",
-     "wq": "88bcacea"
+     "question": "Comment appelle-t-on l'organisation des durées longues et courtes ?",
+     "answer": "Le rythme",
+     "w": [
+      "6fd85ff7",
+      "ccedba58"
+     ],
+     "wq": "88bcacea",
+     "more": "Il s'organise sur la pulsation, qui elle est régulière.",
+     "wrongs": [
+      "Le tempo",
+      "Le timbre",
+      "La nuance"
+     ]
     },
     {
-     "question": "Que désignent les nuances piano, forte et crescendo ?",
-     "answer": "• Piano (p) : doux\n• Forte (f) : fort\n• Crescendo : de plus en plus fort\n(decrescendo : de moins en moins fort)",
-     "w": "8ac86b0a",
-     "wq": "14e0a1c7"
+     "question": "Que signifie la nuance « piano » (p) ?",
+     "answer": "Doux",
+     "w": [
+      "426d88b6",
+      "8ac86b0a"
+     ],
+     "wq": "14e0a1c7",
+     "more": "Forte (f) signifie fort.",
+     "wrongs": [
+      "Fort",
+      "Rapide",
+      "Lent"
+     ]
+    },
+    {
+     "question": "Que signifie « crescendo » ?",
+     "answer": "De plus en plus fort",
+     "more": "Decrescendo : de moins en moins fort.",
+     "wrongs": [
+      "De moins en moins fort",
+      "De plus en plus vite",
+      "De plus en plus aigu"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un ostinato ?",
-     "answer": "Un motif mélodique ou rythmique répété en boucle.\nEx. : la caisse claire du Boléro de Ravel",
-     "w": "642fd4c8",
-     "wq": "af0087e5"
+     "answer": "Un motif répété en boucle",
+     "w": [
+      "25b3bcf8",
+      "642fd4c8"
+     ],
+     "more": "Ex. : la caisse claire du Boléro de Ravel.",
+     "wrongs": [
+      "Une note tenue longtemps",
+      "Un changement de tempo",
+      "Un solo improvisé"
+     ]
     },
     {
-     "question": "Quelle différence entre monodie et polyphonie ?",
-     "answer": "Monodie : une seule ligne mélodique (à l'unisson).\nPolyphonie : plusieurs lignes mélodiques superposées.",
-     "w": "e7f338a8",
-     "wq": "2f6415b8"
+     "question": "Plusieurs lignes mélodiques superposées forment une…",
+     "answer": "Polyphonie",
+     "w": [
+      "f9efbf22",
+      "e7f338a8"
+     ],
+     "wq": "2f6415b8",
+     "more": "La monodie est une seule ligne mélodique, à l'unisson.",
+     "wrongs": [
+      "Monodie",
+      "Ostinato",
+      "Pulsation"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un canon ?",
-     "answer": "Une même mélodie chantée par plusieurs voix\nqui entrent successivement, en décalé.\nEx. : Frère Jacques",
-     "w": "e5e8b6da",
-     "wq": "4e07db15"
+     "answer": "Une mélodie reprise en décalé par plusieurs voix",
+     "w": [
+      "abceba70",
+      "e5e8b6da"
+     ],
+     "more": "Ex. : Frère Jacques.",
+     "wrongs": [
+      "Un chant sans accompagnement",
+      "Une musique improvisée",
+      "Un motif rythmique répété"
+     ]
     },
     {
      "question": "Que signifie « a cappella » ?",
-     "answer": "Chanté par des voix seules, sans accompagnement instrumental."
+     "answer": "Voix seules, sans instruments",
+     "w": "a3cdfc9f",
+     "wrongs": [
+      "Avec orchestre",
+      "Très lentement",
+      "Avec un seul instrument"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un accord ?",
-     "answer": "Plusieurs notes jouées en même temps.\nLeur enchaînement forme l'harmonie.",
-     "w": "5a6b147a",
-     "wq": "dc9d1b94"
+     "answer": "Plusieurs notes jouées en même temps",
+     "w": [
+      "81410cdd",
+      "5a6b147a"
+     ],
+     "more": "Leur enchaînement forme l'harmonie.",
+     "wrongs": [
+      "Une note seule très longue",
+      "Deux musiciens qui jouent ensemble",
+      "Un changement de tempo"
+     ]
     },
     {
-     "question": "Que signifie une forme ABA ?",
-     "answer": "A, puis une partie contrastée B, puis le retour de A.\n(forme ternaire)",
-     "w": "a8d701ee",
-     "wq": "462926de"
+     "question": "Comment s'appelle une forme A B A ?",
+     "answer": "Forme ternaire",
+     "w": [
+      "88ecac67",
+      "a8d701ee"
+     ],
+     "wq": "462926de",
+     "more": "A, puis une partie contrastée B, puis le retour de A.",
+     "wrongs": [
+      "Forme binaire",
+      "Forme rondo",
+      "Forme canon"
+     ]
     },
     {
-     "question": "Quelle différence entre couplet et refrain ?",
-     "answer": "Refrain : même musique et mêmes paroles à chaque retour.\nCouplets : même musique, paroles différentes.",
-     "w": "4cbaeba0",
-     "wq": "c5f3a717"
+     "question": "Quelle partie d'une chanson garde les mêmes paroles à chaque retour ?",
+     "answer": "Le refrain",
+     "w": [
+      "24eafdaa",
+      "4cbaeba0"
+     ],
+     "wq": "c5f3a717",
+     "more": "Les couplets ont la même musique mais des paroles différentes.",
+     "wrongs": [
+      "Le couplet",
+      "L'introduction",
+      "Le pont"
+     ]
     },
     {
-     "question": "Quelles sont les grandes familles d'instruments de l'orchestre symphonique ?",
-     "answer": "• Cordes : violon, alto, violoncelle, contrebasse\n• Bois : flûte, hautbois, clarinette, basson\n• Cuivres : trompette, cor, trombone, tuba\n• Percussions",
-     "w": "560e5c3d",
-     "wq": "9a680dfa"
+     "question": "Le hautbois appartient à quelle famille de l'orchestre ?",
+     "answer": "Les bois",
+     "w": [
+      "cc1c9fa9",
+      "560e5c3d"
+     ],
+     "wq": "9a680dfa",
+     "more": "Familles : cordes, bois (flûte, hautbois, clarinette, basson), cuivres, percussions.",
+     "wrongs": [
+      "Les cuivres",
+      "Les cordes",
+      "Les percussions"
+     ]
     },
     {
      "question": "De quels instruments se compose un quatuor à cordes ?",
-     "answer": "• Deux violons\n• Un alto\n• Un violoncelle",
-     "w": "d5758725",
-     "wq": "c176c301"
+     "answer": "Deux violons, un alto, un violoncelle",
+     "w": [
+      "e421d0fa",
+      "d5758725"
+     ],
+     "wrongs": [
+      "Quatre violons",
+      "Violon, alto, violoncelle, contrebasse",
+      "Deux violons, deux violoncelles"
+     ]
     },
     {
-     "question": "Quelle différence entre soliste et tutti ?",
-     "answer": "Soliste : joue ou chante seul une partie importante.\nTutti : tous les musiciens ensemble.",
-     "w": "424d117a",
-     "wq": "83d88019"
+     "question": "Que signifie « tutti » ?",
+     "answer": "Tous les musiciens ensemble",
+     "w": [
+      "a61b6e32",
+      "424d117a"
+     ],
+     "wq": "83d88019",
+     "more": "Le soliste joue ou chante seul une partie importante.",
+     "wrongs": [
+      "Un seul musicien",
+      "Très vite",
+      "Très doucement"
+     ]
     },
     {
      "question": "Qu'est-ce qu'une improvisation ?",
-     "answer": "Une musique inventée au moment où on la joue.\nTrès présente dans le jazz.",
-     "w": "c720c023",
-     "wq": "bb239881"
+     "answer": "Une musique inventée en la jouant",
+     "w": [
+      "ce5678f7",
+      "c720c023"
+     ],
+     "more": "Très présente dans le jazz.",
+     "wrongs": [
+      "Une musique apprise par cœur",
+      "Une musique sans rythme",
+      "Une reprise d'un morceau connu"
+     ]
     }
    ]
   },
@@ -69298,100 +69885,243 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quels sont les articles définis masculins singuliers en italien ?",
-     "answer": "• il : il libro\n• lo : devant s + consonne, z, gn, ps (lo studente, lo zaino)\n• l' : devant voyelle (l'amico)",
-     "w": "fe325e23",
-     "wq": "83b4edb8"
+     "question": "Quel article défini met-on devant « studente » ?",
+     "answer": "lo",
+     "w": [
+      "4d536b5f",
+      "fe325e23"
+     ],
+     "wq": "83b4edb8",
+     "more": "il : il libro ; lo devant s + consonne, z, gn, ps ; l' devant voyelle.",
+     "wrongs": [
+      "il",
+      "l'",
+      "la"
+     ]
     },
     {
-     "question": "Quels sont les articles définis pluriels ?",
-     "answer": "• Masculin : i (i libri), gli (gli studenti, gli amici)\n• Féminin : le (le ragazze)",
-     "w": "eaf96493",
-     "wq": "ca0cae69"
+     "question": "Quel est le pluriel de « lo studente » ?",
+     "answer": "gli studenti",
+     "w": [
+      "bc4e816e",
+      "eaf96493"
+     ],
+     "wq": "ca0cae69",
+     "more": "Pluriels : i (i libri), gli (gli studenti), le au féminin (le ragazze).",
+     "wrongs": [
+      "i studenti",
+      "le studenti",
+      "lo studenti"
+     ]
     },
     {
-     "question": "Conjuguez essere au présent.",
-     "answer": "io sono, tu sei, lui/lei è,\nnoi siamo, voi siete, loro sono",
-     "w": "05baba14",
-     "wq": "affcbf57"
+     "question": "Comment dit-on « nous sommes » en italien ?",
+     "answer": "noi siamo",
+     "w": [
+      "e4a68348",
+      "05baba14"
+     ],
+     "wq": "affcbf57",
+     "more": "essere : sono, sei, è, siamo, siete, sono.",
+     "wrongs": [
+      "noi abbiamo",
+      "noi sono",
+      "noi siete"
+     ]
     },
     {
-     "question": "Conjuguez avere au présent.",
-     "answer": "io ho, tu hai, lui/lei ha,\nnoi abbiamo, voi avete, loro hanno",
-     "w": "c981fae6",
-     "wq": "29cd0847"
+     "question": "Comment dit-on « ils ont » en italien ?",
+     "answer": "loro hanno",
+     "w": [
+      "b43bf672",
+      "c981fae6"
+     ],
+     "wq": "29cd0847",
+     "more": "avere : ho, hai, ha, abbiamo, avete, hanno.",
+     "wrongs": [
+      "loro sono",
+      "loro avete",
+      "loro ha"
+     ]
     },
     {
-     "question": "Conjuguez parlare au présent.",
-     "answer": "parlo, parli, parla,\nparliamo, parlate, parlano",
-     "w": "c8fc8a8b",
-     "wq": "c76ca269"
+     "question": "Comment dit-on « nous parlons » en italien ?",
+     "answer": "parliamo",
+     "w": [
+      "578cff59",
+      "c8fc8a8b"
+     ],
+     "wq": "c76ca269",
+     "more": "parlo, parli, parla, parliamo, parlate, parlano.",
+     "wrongs": [
+      "parlate",
+      "parlano",
+      "parlamo"
+     ]
     },
     {
-     "question": "Comment forme-t-on le pluriel des noms en -o, -a et -e ?",
-     "answer": "• -o → -i : il ragazzo → i ragazzi\n• -a → -e : la casa → le case\n• -e → -i : il cane → i cani",
-     "w": "ee33dd99",
-     "wq": "b73294bc"
+     "question": "Quel est le pluriel de « la casa » ?",
+     "answer": "le case",
+     "w": [
+      "6e674325",
+      "ee33dd99"
+     ],
+     "wq": "b73294bc",
+     "more": "-o → -i (ragazzi), -a → -e (case), -e → -i (cani).",
+     "wrongs": [
+      "le casi",
+      "la case",
+      "i case"
+     ]
     },
     {
-     "question": "Comment exprime-t-on la forme de politesse en italien ?",
-     "answer": "Lei + verbe à la 3e personne du singulier.\nEx. : « Come sta, signora ? » (Comment allez-vous, madame ?)",
-     "w": "861f5737",
-     "wq": "d125f716"
+     "question": "Quel pronom utilise-t-on pour la forme de politesse ?",
+     "answer": "Lei",
+     "w": [
+      "1f79a705",
+      "861f5737"
+     ],
+     "wq": "d125f716",
+     "more": "Avec le verbe à la 3e personne du singulier : « Come sta, signora ? »",
+     "wrongs": [
+      "Voi",
+      "Tu",
+      "Loro"
+     ]
     },
     {
-     "question": "Comment dit-on « j'aime le chocolat » et « j'aime les chats » ?",
-     "answer": "• Mi piace il cioccolato. (sujet singulier)\n• Mi piacciono i gatti. (sujet pluriel)",
-     "w": "66d16c35",
-     "wq": "5c34c02a"
+     "question": "Comment dit-on « j'aime les chats » en italien ?",
+     "answer": "Mi piacciono i gatti",
+     "w": [
+      "f5d93cd6",
+      "66d16c35"
+     ],
+     "wq": "5c34c02a",
+     "more": "piacciono avec un sujet pluriel ; mi piace il cioccolato avec un singulier.",
+     "wrongs": [
+      "Mi piace i gatti",
+      "Io piaccio i gatti",
+      "Mi piacciono il gatto"
+     ]
     },
     {
-     "question": "Comment se forme la négation ?",
-     "answer": "Non devant le verbe.\nEx. : « Non parlo tedesco. » (Je ne parle pas allemand.)",
-     "w": "54ff2357",
-     "wq": "f3ee7eb0"
+     "question": "Comment se forme la négation en italien ?",
+     "answer": "Non devant le verbe",
+     "w": [
+      "c72713a3",
+      "54ff2357"
+     ],
+     "wq": "f3ee7eb0",
+     "more": "Ex. : « Non parlo tedesco. »",
+     "wrongs": [
+      "Ne… pas autour du verbe",
+      "No après le verbe",
+      "Mai devant le verbe"
+     ]
     },
     {
-     "question": "Que signifient « c'è » et « ci sono » ?",
-     "answer": "« Il y a » :\n• c'è + singulier (c'è un problema)\n• ci sono + pluriel (ci sono tre gatti)",
-     "w": "a0ab6981",
-     "wq": "5fe20bd3"
+     "question": "Que signifie « c'è » ?",
+     "answer": "Il y a (+ singulier)",
+     "w": [
+      "9549375b",
+      "a0ab6981"
+     ],
+     "wq": "5fe20bd3",
+     "more": "ci sono + pluriel : ci sono tre gatti.",
+     "wrongs": [
+      "C'est",
+      "Il est",
+      "Ici"
+     ]
     },
     {
      "question": "Comment se forme le passato prossimo ?",
-     "answer": "Auxiliaire avere ou essere au présent + participe passé\nEx. : ho mangiato (j'ai mangé),\nsono andato/andata (je suis allé/allée)",
-     "w": "783a2371",
-     "wq": "7a5aef30"
+     "answer": "Avere ou essere au présent + participe passé",
+     "w": [
+      "85bebf5d",
+      "783a2371"
+     ],
+     "more": "Ex. : ho mangiato, sono andato/andata.",
+     "wrongs": [
+      "Avere à l'imparfait + infinitif",
+      "Le verbe + la terminaison -ò",
+      "Stare + gérondif"
+     ]
     },
     {
-     "question": "Comment forme-t-on le participe passé des verbes réguliers ?",
-     "answer": "• -are → -ato (parlato)\n• -ere → -uto (venduto)\n• -ire → -ito (finito)",
-     "w": "2f7dc12b",
-     "wq": "1f0e6f3e"
+     "question": "Quel est le participe passé de « finire » ?",
+     "answer": "finito",
+     "w": [
+      "2c224919",
+      "2f7dc12b"
+     ],
+     "wq": "1f0e6f3e",
+     "more": "-are → -ato, -ere → -uto, -ire → -ito.",
+     "wrongs": [
+      "finuto",
+      "finato",
+      "finisto"
+     ]
     },
     {
-     "question": "Que signifient chi, dove, quando, perché, come ?",
-     "answer": "• chi : qui\n• dove : où\n• quando : quand\n• perché : pourquoi (et « parce que »)\n• come : comment",
-     "w": "7030962f",
-     "wq": "eb6c5c28"
+     "question": "Que signifie « dove » ?",
+     "answer": "Où",
+     "w": [
+      "343bdbb7",
+      "7030962f"
+     ],
+     "wq": "eb6c5c28",
+     "more": "chi : qui ; quando : quand ; perché : pourquoi ; come : comment.",
+     "wrongs": [
+      "Quand",
+      "Qui",
+      "Comment"
+     ]
     },
     {
-     "question": "Comment saluer en italien selon le moment ?",
-     "answer": "• Buongiorno : bonjour\n• Buonasera : bonsoir · Buonanotte : bonne nuit\n• Ciao : salut (entre proches)\n• Arrivederci : au revoir",
-     "w": "f1d93ae2",
-     "wq": "30401870"
+     "question": "Comment dit-on « au revoir » en italien ?",
+     "answer": "Arrivederci",
+     "w": [
+      "92e5e807",
+      "f1d93ae2"
+     ],
+     "wq": "30401870",
+     "more": "Buongiorno : bonjour ; Buonasera : bonsoir ; Ciao : salut.",
+     "wrongs": [
+      "Buonanotte",
+      "Prego",
+      "Grazie"
+     ]
     },
     {
-     "question": "Pourquoi dit-on « mia madre » mais « il mio libro » ?",
-     "answer": "Le possessif est en général précédé de l'article,\nsauf devant un nom de parenté au singulier non modifié\n(mia madre, mio fratello).",
-     "w": "de502100",
-     "wq": "336d4f13"
+     "question": "Pourquoi dit-on « mia madre » sans article ?",
+     "answer": "Nom de parenté au singulier",
+     "w": [
+      "68f8d868",
+      "de502100"
+     ],
+     "wq": "336d4f13",
+     "more": "Le possessif prend en général l'article (il mio libro), sauf devant un nom de parenté au singulier non modifié.",
+     "wrongs": [
+      "Parce que madre est féminin",
+      "C'est une erreur",
+      "Parce que c'est un nom propre"
+     ]
     },
     {
-     "question": "Quels sont les jours de la semaine en italien ?",
-     "answer": "lunedì, martedì, mercoledì, giovedì,\nvenerdì, sabato, domenica",
-     "w": "e4a10d51",
-     "wq": "b6e7aea8"
+     "question": "Comment dit-on « mercredi » en italien ?",
+     "answer": "mercoledì",
+     "w": [
+      "917a1b93",
+      "e4a10d51"
+     ],
+     "wq": "b6e7aea8",
+     "more": "lunedì, martedì, mercoledì, giovedì, venerdì, sabato, domenica.",
+     "wrongs": [
+      "martedì",
+      "giovedì",
+      "miercoles"
+     ]
     }
    ]
   },
@@ -70945,13 +71675,15 @@
      ]
     },
     {
-     "question": "Laquelle de ces actions permet de vérifier la fiabilité d'une information ?",
-     "answer": "Croiser avec d'autres médias",
+     "question": "Quel bon réflexe permet de vérifier la fiabilité d'une information ?",
+     "answer": "La croiser avec d'autres médias",
      "w": [
+      "a3ddb2ec",
       "39bce2ed",
       "a7c9568d"
      ],
      "wq": [
+      "9be1075f",
       "429ef517"
      ],
      "more": "Aussi : identifier la source et l'auteur, vérifier la date, distinguer faits et opinions.",
@@ -73244,20 +73976,22 @@
      "link": "https://fr.wikipedia.org/wiki/Déclaration_des_droits_de_l'homme_et_du_citoyen_de_1789"
     },
     {
-     "question": "Laquelle de ces libertés est une liberté collective ?",
-     "answer": "La liberté de manifestation",
+     "question": "La liberté de manifestation est-elle une liberté individuelle ou collective ?",
+     "answer": "Collective",
      "w": [
+      "857683ce",
       "7816cb54",
       "57b13f2e"
      ],
      "wq": [
+      "24e34586",
       "83eeb196"
      ],
-     "more": "Collectives : réunion, association, manifestation, grève, liberté syndicale. Individuelles : aller et venir, conscience, vie privée.",
+     "more": "Elle s'exerce à plusieurs. La liberté d'aller et venir ou de conscience sont, elles, individuelles.",
      "wrongs": [
-      "La liberté d'aller et venir",
-      "La liberté de conscience",
-      "Le respect de la vie privée"
+      "Individuelle",
+      "Ni l'une ni l'autre",
+      "Ce n'est pas une liberté"
      ]
     },
     {
@@ -73278,16 +74012,18 @@
      ]
     },
     {
-     "question": "Laquelle de ces paroles est sanctionnée par la loi française ?",
+     "question": "Quelle parole est sanctionnée par la loi française ?",
      "answer": "L'incitation à la haine",
      "w": [
+      "8e5785d0",
       "9a63273c",
       "e29135a6"
      ],
      "wq": [
+      "99f8be70",
       "91740414"
      ],
-     "more": "Aussi : diffamation et injure, apologie du terrorisme.",
+     "more": "La critique du gouvernement ou la satire restent permises.",
      "wrongs": [
       "La critique du gouvernement",
       "La satire",
@@ -73732,13 +74468,15 @@
      ]
     },
     {
-     "question": "Laquelle de ces maladies est une infection sexuellement transmissible ?",
+     "question": "Quelle est une infection sexuellement transmissible (IST) fréquente ?",
      "answer": "La chlamydia",
      "w": [
+      "922b1257",
       "0a696692",
       "d69df1ee"
      ],
      "wq": [
+      "915beae1",
       "fc2d8e0e"
      ],
      "more": "Autres IST : VIH, papillomavirus (HPV). Certaines sont asymptomatiques : d'où l'importance du dépistage.",
@@ -74140,102 +74878,243 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment mesure-t-on une intensité électrique ?",
-     "answer": "Un ampèremètre, branché en série\nUnité : l'ampère (A)",
-     "w": "1ec98906",
-     "wq": "609de279"
+     "question": "Avec quel appareil mesure-t-on une intensité électrique ?",
+     "answer": "Un ampèremètre, en série",
+     "w": [
+      "d51e2a7d",
+      "1ec98906"
+     ],
+     "wq": "609de279",
+     "more": "Unité : l'ampère (A).",
+     "wrongs": [
+      "Un voltmètre, en dérivation",
+      "Un ohmmètre, en série",
+      "Un ampèremètre, en dérivation"
+     ]
     },
     {
-     "question": "Comment mesure-t-on une tension électrique ?",
-     "answer": "Un voltmètre, branché en dérivation aux bornes du dipôle\nUnité : le volt (V)",
-     "w": "6d4039b4",
-     "wq": "5f2f5670"
+     "question": "Avec quel appareil mesure-t-on une tension électrique ?",
+     "answer": "Un voltmètre, en dérivation",
+     "w": [
+      "d3f09084",
+      "6d4039b4"
+     ],
+     "wq": "5f2f5670",
+     "more": "Branché aux bornes du dipôle. Unité : le volt (V).",
+     "wrongs": [
+      "Un ampèremètre, en série",
+      "Un voltmètre, en série",
+      "Un ohmmètre, en dérivation"
+     ]
     },
     {
-     "question": "Quel est le sens conventionnel du courant ?",
-     "answer": "À l'extérieur du générateur :\nde la borne + vers la borne −.",
-     "w": "2646ae50",
-     "wq": "992ead6a"
+     "question": "Quel est le sens conventionnel du courant hors du générateur ?",
+     "answer": "De la borne + vers la borne −",
+     "w": [
+      "9b1e737a",
+      "2646ae50"
+     ],
+     "wq": "992ead6a",
+     "wrongs": [
+      "De la borne − vers la borne +",
+      "Dans les deux sens",
+      "Il n'y a pas de sens"
+     ]
     },
     {
-     "question": "Énoncer la loi des nœuds.",
-     "answer": "Somme des intensités qui arrivent à un nœud\n= somme des intensités qui en repartent.",
-     "w": "c8131ece",
-     "wq": "0fd92ba5"
+     "question": "Que dit la loi des nœuds ?",
+     "answer": "Somme des courants entrants = somme des sortants",
+     "w": [
+      "4cc039cd",
+      "c8131ece"
+     ],
+     "wq": "0fd92ba5",
+     "wrongs": [
+      "La somme des tensions d'une maille est nulle",
+      "U = R × I",
+      "Le courant est le même partout"
+     ]
     },
     {
-     "question": "Énoncer la loi des mailles.",
-     "answer": "Dans une maille, la somme algébrique des tensions est nulle\n(en tenant compte du sens de parcours).",
-     "w": "3019934b",
-     "wq": "57f56ea7"
+     "question": "Que dit la loi des mailles ?",
+     "answer": "La somme algébrique des tensions est nulle",
+     "w": [
+      "66db0682",
+      "3019934b"
+     ],
+     "wq": "57f56ea7",
+     "more": "En tenant compte du sens de parcours de la maille.",
+     "wrongs": [
+      "La somme des intensités est nulle",
+      "Les tensions sont toutes égales",
+      "U = R × I"
+     ]
     },
     {
-     "question": "Que peut-on dire de l'intensité dans un circuit en série ?",
-     "answer": "Elle est la même en tout point du circuit."
+     "question": "Dans un circuit en série, comment est l'intensité ?",
+     "answer": "La même partout",
+     "w": "2216a3d7",
+     "wq": "a22b88bd",
+     "wrongs": [
+      "Plus forte près du générateur",
+      "Elle se partage entre les dipôles",
+      "Nulle à la fin du circuit"
+     ]
     },
     {
-     "question": "Que peut-on dire des tensions aux bornes de dipôles en dérivation ?",
-     "answer": "Elles sont égales."
+     "question": "Comment sont les tensions aux bornes de dipôles en dérivation ?",
+     "answer": "Égales",
+     "w": "cb2b26f2",
+     "wq": "516d8e0f",
+     "wrongs": [
+      "Elles s'additionnent",
+      "Nulles",
+      "Proportionnelles aux résistances"
+     ]
     },
     {
-     "question": "Dans un circuit série avec un générateur de 12 V, une lampe a 7 V à ses bornes. Quelle est la tension aux bornes de l'autre dipôle ?",
-     "answer": "5 V\nLoi des mailles : 12 − 7 = 5",
-     "w": "0cc48652",
-     "wq": "f438372e"
+     "question": "Circuit série, générateur 12 V, lampe 7 V : quelle tension aux bornes de l'autre dipôle ?",
+     "answer": "5 V",
+     "w": [
+      "e765ccd1",
+      "0cc48652"
+     ],
+     "wq": "f438372e",
+     "more": "Loi des mailles : 12 − 7 = 5.",
+     "wrongs": [
+      "19 V",
+      "12 V",
+      "7 V"
+     ]
     },
     {
-     "question": "Énoncer la loi d'Ohm.",
-     "answer": "Pour un conducteur ohmique : U = R × I\nU en volts, R en ohms (Ω), I en ampères.",
-     "w": "474dc7ee",
-     "wq": "28de17db"
+     "question": "Que dit la loi d'Ohm ?",
+     "answer": "U = R × I",
+     "w": [
+      "f41394c9",
+      "474dc7ee"
+     ],
+     "wq": "28de17db",
+     "more": "U en volts, R en ohms (Ω), I en ampères.",
+     "wrongs": [
+      "U = R / I",
+      "I = R × U",
+      "P = U × I"
+     ]
     },
     {
-     "question": "Quelle est la tension aux bornes d'une résistance de 100 Ω parcourue par 0,05 A ?",
-     "answer": "5 V\nU = 100 × 0,05",
-     "w": "3909f4d3",
-     "wq": "e971b4ea"
+     "question": "Quelle tension aux bornes d'une résistance de 100 Ω parcourue par 0,05 A ?",
+     "answer": "5 V",
+     "w": [
+      "6191e70d",
+      "3909f4d3"
+     ],
+     "wq": "e971b4ea",
+     "more": "U = 100 × 0,05",
+     "wrongs": [
+      "2 000 V",
+      "0,5 V",
+      "50 V"
+     ]
     },
     {
-     "question": "Qu'est-ce que la caractéristique d'un dipôle ?",
-     "answer": "La courbe donnant la tension U à ses bornes\nen fonction de l'intensité I qui le traverse (ou l'inverse).",
-     "w": "1fc65257",
-     "wq": "9b936569"
+     "question": "Que représente la caractéristique d'un dipôle ?",
+     "answer": "La tension U en fonction de l'intensité I",
+     "w": [
+      "7246fcdc",
+      "1fc65257"
+     ],
+     "wq": "9b936569",
+     "wrongs": [
+      "La puissance en fonction du temps",
+      "La résistance en fonction de la température",
+      "L'intensité en fonction du temps"
+     ]
     },
     {
      "question": "À quoi ressemble la caractéristique d'un conducteur ohmique ?",
-     "answer": "Une droite passant par l'origine :\nU et I proportionnelles,\ncoefficient directeur R.",
-     "w": "dbc6fa8d",
-     "wq": "9c3385a2"
+     "answer": "Une droite passant par l'origine",
+     "w": [
+      "b87ab8cf",
+      "dbc6fa8d"
+     ],
+     "more": "U et I sont proportionnelles, de coefficient R.",
+     "wrongs": [
+      "Une parabole",
+      "Une droite horizontale",
+      "Une courbe en S"
+     ]
     },
     {
-     "question": "Comment se comporte une diode ?",
-     "answer": "Elle laisse passer le courant dans un seul sens (passant)\net le bloque dans l'autre (bloquant).",
-     "w": "4c159a7f",
-     "wq": "b43fd183"
+     "question": "Que fait une diode ?",
+     "answer": "Elle laisse passer le courant dans un seul sens",
+     "w": [
+      "fc259d3d",
+      "4c159a7f"
+     ],
+     "wq": "b43fd183",
+     "wrongs": [
+      "Elle bloque le courant dans les deux sens",
+      "Elle augmente la tension",
+      "Elle stocke l'énergie"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un capteur ?",
-     "answer": "Un dispositif qui convertit une grandeur physique\n(température, lumière, pression…)\nen signal électrique mesurable.",
-     "w": "6930db1c",
-     "wq": "919e248e"
+     "answer": "Il convertit une grandeur physique en signal électrique",
+     "w": [
+      "13bce125",
+      "6930db1c"
+     ],
+     "more": "Ex. : température, lumière, pression.",
+     "wrongs": [
+      "Il stocke l'électricité",
+      "Il produit de la lumière",
+      "Il protège le circuit"
+     ]
     },
     {
-     "question": "Comment varie la résistance d'une thermistance CTN ?",
-     "answer": "Elle diminue quand la température augmente.\n(CTN : coefficient de température négatif)",
-     "w": "f5ecba1f",
-     "wq": "a7f6174f"
+     "question": "Quand la température augmente, la résistance d'une thermistance CTN…",
+     "answer": "Diminue",
+     "w": [
+      "fcd80935",
+      "f5ecba1f"
+     ],
+     "wq": "a7f6174f",
+     "more": "CTN : coefficient de température négatif.",
+     "wrongs": [
+      "Augmente",
+      "Ne change pas",
+      "Devient nulle"
+     ]
     },
     {
-     "question": "Comment varie la résistance d'une photorésistance ?",
-     "answer": "Elle diminue\nquand l'éclairement augmente.",
-     "w": "9f54aee6",
-     "wq": "eb4a88e8"
+     "question": "Quand l'éclairement augmente, la résistance d'une photorésistance…",
+     "answer": "Diminue",
+     "w": [
+      "539d3627",
+      "9f54aee6"
+     ],
+     "wq": "eb4a88e8",
+     "wrongs": [
+      "Augmente",
+      "Ne change pas",
+      "Double"
+     ]
     },
     {
      "question": "Qu'est-ce que l'étalonnage d'un capteur ?",
-     "answer": "Établir la courbe qui relie la grandeur électrique mesurée (résistance, tension)\nà la grandeur physique,\npour ensuite déterminer une valeur inconnue.",
-     "w": "d675be26",
-     "wq": "fc2d9372"
+     "answer": "Tracer la courbe reliant mesure électrique et grandeur physique",
+     "w": [
+      "c944e6de",
+      "d675be26"
+     ],
+     "more": "Elle sert ensuite à déterminer une valeur inconnue.",
+     "wrongs": [
+      "Changer les piles du capteur",
+      "Régler sa sensibilité au maximum",
+      "Le comparer à un autre capteur"
+     ]
     }
    ]
   },
@@ -74258,104 +75137,253 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce qu'une transformation physique ?",
-     "answer": "Les espèces chimiques restent les mêmes :\nseul leur état change,\nou elles se mélangent, se dissolvent.",
-     "w": "dce05f7c",
-     "wq": "911b2a00"
+     "question": "Lors d'une transformation physique, les espèces chimiques changent-elles ?",
+     "answer": "Non",
+     "w": [
+      "3fd95361",
+      "dce05f7c"
+     ],
+     "wq": "911b2a00",
+     "more": "Seul leur état change, ou elles se mélangent, se dissolvent.",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, de nouveaux éléments apparaissent",
+      "Oui, les noyaux changent"
+     ]
     },
     {
-     "question": "Nommer les changements d'état entre solide, liquide et gaz.",
-     "answer": "• Fusion : solide → liquide\n• Solidification : liquide → solide\n• Vaporisation : liquide → gaz · Liquéfaction : gaz → liquide\n• Sublimation : solide → gaz · Condensation : gaz → solide",
-     "w": "9532d81c",
-     "wq": "530ff30d"
+     "question": "Comment s'appelle le passage de liquide à gaz ?",
+     "answer": "La vaporisation",
+     "w": [
+      "901d584c",
+      "9532d81c"
+     ],
+     "wq": "530ff30d",
+     "more": "L'inverse (gaz → liquide) est la liquéfaction.",
+     "wrongs": [
+      "La liquéfaction",
+      "La sublimation",
+      "La fusion"
+     ]
     },
     {
-     "question": "Quels changements d'état sont endothermiques ?",
-     "answer": "La fusion, la vaporisation et la sublimation :\nle corps reçoit de l'énergie.\nLes transformations inverses sont exothermiques.",
-     "w": "5c81c632",
-     "wq": "0538b2d3"
+     "question": "Comment s'appelle le passage de solide à gaz ?",
+     "answer": "La sublimation",
+     "more": "L'inverse (gaz → solide) est la condensation.",
+     "wrongs": [
+      "La vaporisation",
+      "La fusion",
+      "La solidification"
+     ]
+    },
+    {
+     "question": "La fusion est-elle endothermique ou exothermique ?",
+     "answer": "Endothermique",
+     "w": [
+      "e971abe7",
+      "5c81c632"
+     ],
+     "wq": "0538b2d3",
+     "more": "Le corps reçoit de l'énergie, comme pour la vaporisation et la sublimation. Les inverses sont exothermiques.",
+     "wrongs": [
+      "Exothermique",
+      "Ni l'un ni l'autre",
+      "Ça dépend du corps"
+     ]
     },
     {
      "question": "Quelle relation donne l'énergie échangée lors d'un changement d'état ?",
-     "answer": "Q = m × L\n• m : masse (kg)\n• L : énergie massique de changement d'état (J/kg)",
-     "w": "66c4d5a7",
-     "wq": "9cae022b"
+     "answer": "Q = m × L",
+     "w": [
+      "f1d0c21c",
+      "66c4d5a7"
+     ],
+     "more": "m : masse (kg) ; L : énergie massique de changement d'état (J/kg).",
+     "wrongs": [
+      "Q = m / L",
+      "Q = m × c × ΔT",
+      "Q = L / m"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une transformation chimique ?",
-     "answer": "Des espèces chimiques (les réactifs) disparaissent\net de nouvelles espèces (les produits) apparaissent.",
-     "w": "c50455ee",
-     "wq": "bd45776d"
+     "question": "Lors d'une transformation chimique, que se passe-t-il ?",
+     "answer": "Des réactifs disparaissent, des produits apparaissent",
+     "w": [
+      "d2b4b32b",
+      "c50455ee"
+     ],
+     "wq": "bd45776d",
+     "wrongs": [
+      "Seul l'état physique change",
+      "Les noyaux des atomes changent",
+      "Rien ne disparaît"
+     ]
     },
     {
      "question": "Que se conserve-t-il au cours d'une réaction chimique ?",
-     "answer": "• Les éléments chimiques (même nombre d'atomes de chaque élément)\n• La charge électrique\nDonc la masse totale est conservée.",
-     "w": "c5a5c338",
-     "wq": "4d0c23f6"
+     "answer": "Les éléments et la charge, donc la masse",
+     "w": [
+      "1de47dbe",
+      "c5a5c338"
+     ],
+     "wrongs": [
+      "Les molécules",
+      "Le nombre de molécules",
+      "Le volume"
+     ]
     },
     {
-     "question": "Ajuster l'équation de la combustion du méthane : CH4 + O2 → CO2 + H2O.",
-     "answer": "CH4 + 2 O2 → CO2 + 2 H2O."
+     "question": "Quelle est l'équation ajustée de la combustion du méthane ?",
+     "answer": "CH4 + 2 O2 → CO2 + 2 H2O",
+     "w": "8ce97ebb",
+     "wq": "ed03750b",
+     "wrongs": [
+      "CH4 + O2 → CO2 + H2O",
+      "CH4 + 2 O2 → CO2 + H2O",
+      "2 CH4 + O2 → 2 CO2 + H2O"
+     ]
     },
     {
      "question": "Qu'est-ce que le réactif limitant ?",
-     "answer": "Le réactif entièrement consommé en premier,\nqui arrête la transformation.\nL'autre est en excès.",
-     "w": "5adac14d",
-     "wq": "fb1ae9d2"
+     "answer": "Le réactif entièrement consommé en premier",
+     "w": [
+      "3364b7a6",
+      "5adac14d"
+     ],
+     "more": "Il arrête la transformation ; l'autre est en excès.",
+     "wrongs": [
+      "Le réactif en excès",
+      "Le produit formé en premier",
+      "Le catalyseur"
+     ]
     },
     {
-     "question": "Que signifie un mélange dans les proportions stœchiométriques ?",
-     "answer": "Les réactifs sont introduits dans les proportions\ndes nombres stœchiométriques de l'équation :\nils sont tous consommés en même temps.",
-     "w": "1bde34dd",
-     "wq": "664de2b8"
+     "question": "Dans les proportions stœchiométriques, comment sont consommés les réactifs ?",
+     "answer": "Tous en même temps",
+     "w": [
+      "a4328ff6",
+      "1bde34dd"
+     ],
+     "wq": "664de2b8",
+     "wrongs": [
+      "L'un avant l'autre",
+      "Aucun ne disparaît",
+      "Seulement à moitié"
+     ]
     },
     {
      "question": "Une transformation chimique peut-elle être endothermique ?",
-     "answer": "Oui : certaines absorbent de l'énergie\n(ex. : décomposition du calcaire par chauffage).\nD'autres en libèrent (ex. : combustions, exothermiques).",
-     "w": "62bab2a0",
-     "wq": "e2af4032"
+     "answer": "Oui",
+     "w": [
+      "88857d39",
+      "62bab2a0"
+     ],
+     "more": "Ex. : décomposition du calcaire par chauffage. Les combustions, elles, sont exothermiques.",
+     "wrongs": [
+      "Non, jamais",
+      "Seulement les combustions",
+      "Seulement si c'est nucléaire"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'une transformation nucléaire ?",
-     "answer": "Une transformation qui modifie les noyaux des atomes :\nde nouveaux éléments chimiques sont formés.",
-     "w": "3fd9ed80",
-     "wq": "a1d46a9c"
+     "question": "Que modifie une transformation nucléaire ?",
+     "answer": "Les noyaux des atomes",
+     "w": [
+      "406e506a",
+      "3fd9ed80"
+     ],
+     "wq": "a1d46a9c",
+     "more": "De nouveaux éléments chimiques sont formés.",
+     "wrongs": [
+      "Seulement l'état physique",
+      "Les molécules, pas les noyaux",
+      "Seulement les électrons"
+     ]
     },
     {
      "question": "Que se conserve-t-il lors d'une transformation nucléaire ?",
-     "answer": "• Le nombre total de nucléons (A)\n• La charge électrique, donc le nombre total de protons (Z)",
-     "w": "d0c3a680",
-     "wq": "6dc54459"
+     "answer": "Le nombre de nucléons A et la charge Z",
+     "w": [
+      "72796b85",
+      "d0c3a680"
+     ],
+     "wrongs": [
+      "Les éléments chimiques",
+      "Seulement la masse",
+      "Le nombre de molécules"
+     ]
     },
     {
      "question": "Qu'est-ce que la fission nucléaire ?",
-     "answer": "Un noyau lourd (uranium 235), percuté par un neutron,\nse casse en deux noyaux plus légers,\navec émission de neutrons et d'énergie.\nUtilisée dans les centrales nucléaires.",
-     "w": "e5c3456d",
-     "wq": "0b96b4c5"
+     "answer": "Un noyau lourd qui se casse en deux",
+     "w": [
+      "18da0df0",
+      "e5c3456d"
+     ],
+     "more": "Ex. : uranium 235 percuté par un neutron. Utilisée dans les centrales.",
+     "wrongs": [
+      "Deux noyaux légers qui s'unissent",
+      "Une combustion d'uranium",
+      "Un changement d'état"
+     ]
     },
     {
      "question": "Qu'est-ce que la fusion nucléaire ?",
-     "answer": "Deux noyaux légers (isotopes de l'hydrogène)\ns'unissent en un noyau plus lourd (hélium).\nElle libère l'énergie des étoiles comme le Soleil.",
-     "w": "c7978b98",
-     "wq": "55967d88"
+     "answer": "Deux noyaux légers qui s'unissent",
+     "w": [
+      "430fa4ed",
+      "c7978b98"
+     ],
+     "more": "Elle produit l'énergie des étoiles comme le Soleil.",
+     "wrongs": [
+      "Un noyau lourd qui se casse",
+      "Le passage de solide à liquide",
+      "Une réaction chimique"
+     ]
     },
     {
-     "question": "Compléter l'équation de fusion : 2H + 3H → 4He + ?",
-     "answer": "Un neutron\n• A : 2 + 3 = 4 + 1\n• Z : 1 + 1 = 2 + 0",
-     "w": "18b4feaa",
-     "wq": "1148cfd3"
+     "question": "Complétez : ²H + ³H → ⁴He + ?",
+     "answer": "Un neutron",
+     "w": [
+      "01f6aa15",
+      "18b4feaa"
+     ],
+     "wq": "1148cfd3",
+     "more": "A : 2 + 3 = 4 + 1 ; Z : 1 + 1 = 2 + 0.",
+     "wrongs": [
+      "Un proton",
+      "Un électron",
+      "Un noyau d'hélium"
+     ]
     },
     {
      "question": "Que sont des isotopes ?",
-     "answer": "Des atomes de même numéro atomique Z (même élément)\nmais avec des nombres de neutrons différents (A différents).\nEx. : carbone 12 et carbone 14",
-     "w": "fd5cd867",
-     "wq": "49254163"
+     "answer": "Même Z, nombre de neutrons différent",
+     "w": [
+      "1a7da270",
+      "fd5cd867"
+     ],
+     "more": "Ex. : carbone 12 et carbone 14.",
+     "wrongs": [
+      "Même A, Z différent",
+      "Même nombre de neutrons, Z différent",
+      "Des molécules identiques"
+     ]
     },
     {
-     "question": "Comment se compare l'énergie libérée par une transformation nucléaire à celle d'une réaction chimique ?",
-     "answer": "Beaucoup plus grande :\nà masse égale, de l'ordre d'un million de fois plus\nque pour une combustion.",
-     "w": "5d4c15c9",
-     "wq": "754f4a26"
+     "question": "À masse égale, l'énergie d'une réaction nucléaire est…",
+     "answer": "Environ un million de fois plus grande",
+     "w": [
+      "4f06fbcd",
+      "5d4c15c9"
+     ],
+     "wq": "754f4a26",
+     "more": "Qu'une combustion.",
+     "wrongs": [
+      "Égale",
+      "Dix fois plus petite",
+      "Deux fois plus grande"
+     ]
     }
    ]
   },
@@ -75267,94 +76295,233 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce qu'un vecteur normal à une droite ?",
-     "answer": "Un vecteur non nul orthogonal à un vecteur directeur de la droite.\nPour ax + by + c = 0 : n(a ; b) est normal.",
-     "w": "0489ce25",
-     "wq": "2ad25a5a"
+     "question": "Quel est un vecteur normal à la droite ax + by + c = 0 ?",
+     "answer": "n(a ; b)",
+     "w": [
+      "2e96a7ea",
+      "0489ce25"
+     ],
+     "wq": "2ad25a5a",
+     "wrongs": [
+      "n(−b ; a)",
+      "n(b ; a)",
+      "n(a ; c)"
+     ]
     },
     {
-     "question": "Quel est un vecteur directeur de la droite d'équation ax + by + c = 0 ?",
-     "answer": "u(−b ; a)\northogonal au vecteur normal n(a ; b).",
-     "w": "c65fe437",
-     "wq": "718c6a31"
+     "question": "Quel est un vecteur directeur de la droite ax + by + c = 0 ?",
+     "answer": "u(−b ; a)",
+     "w": [
+      "49664591",
+      "c65fe437"
+     ],
+     "wq": "718c6a31",
+     "wrongs": [
+      "u(a ; b)",
+      "u(b ; a)",
+      "u(a ; −c)"
+     ]
     },
     {
-     "question": "Déterminer une équation de la droite passant par A(1 ; 2) et de vecteur normal n(3 ; −1).",
-     "answer": "3x − y − 1 = 0\nAM·n = 0 : 3(x − 1) − (y − 2) = 0",
-     "w": "833ffedd",
-     "wq": "bcd1b3ef"
+     "question": "Droite passant par A(1 ; 2), de vecteur normal n(3 ; −1) ?",
+     "answer": "3x − y − 1 = 0",
+     "w": [
+      "df4e640e",
+      "833ffedd"
+     ],
+     "wq": "bcd1b3ef",
+     "more": "3(x − 1) − (y − 2) = 0",
+     "wrongs": [
+      "3x − y + 1 = 0",
+      "x + 3y − 7 = 0",
+      "3x + y − 5 = 0"
+     ]
     },
     {
-     "question": "Quelle est l'équation du cercle de centre Ω(a ; b) et de rayon r ?",
+     "question": "Équation du cercle de centre Ω(a ; b) et de rayon r ?",
      "answer": "(x − a)² + (y − b)² = r²",
-     "w": "f44abe54",
-     "wq": "8dd1bea5"
+     "w": [
+      "22ff8cf2",
+      "f44abe54"
+     ],
+     "wq": "8dd1bea5",
+     "wrongs": [
+      "(x + a)² + (y + b)² = r²",
+      "(x − a)² + (y − b)² = r",
+      "(x − a) + (y − b) = r²"
+     ]
     },
     {
-     "question": "Déterminer le centre et le rayon du cercle d'équation x² + y² − 4x + 6y − 3 = 0.",
-     "answer": "Centre (2 ; −3), rayon 4\nOn complète les carrés :\n(x − 2)² − 4 + (y + 3)² − 9 − 3 = 0\n(x − 2)² + (y + 3)² = 16",
-     "w": "9040ca0a",
-     "wq": "203730a3"
+     "question": "Quel est le centre du cercle x² + y² − 4x + 6y − 3 = 0 ?",
+     "answer": "(2 ; −3)",
+     "w": [
+      "02354497",
+      "9040ca0a"
+     ],
+     "wq": "203730a3",
+     "more": "On complète les carrés : (x − 2)² + (y + 3)² = 16.",
+     "wrongs": [
+      "(−2 ; 3)",
+      "(4 ; −6)",
+      "(2 ; 3)"
+     ]
     },
     {
-     "question": "Comment obtenir une équation du cercle de diamètre [AB] ?",
-     "answer": "M est sur le cercle ⇔ MA·MB = 0\n(x − xA)(x − xB) + (y − yA)(y − yB) = 0",
-     "w": "3d4a225e",
-     "wq": "647c6871"
+     "question": "Quel est le rayon du cercle x² + y² − 4x + 6y − 3 = 0 ?",
+     "answer": "4",
+     "more": "(x − 2)² + (y + 3)² = 16",
+     "wrongs": [
+      "16",
+      "3",
+      "√3"
+     ]
     },
     {
-     "question": "À quelle condition deux droites d'équations ax + by + c = 0 et a'x + b'y + c' = 0 sont-elles perpendiculaires ?",
-     "answer": "Vecteurs normaux orthogonaux :\naa' + bb' = 0",
-     "w": "06ba7539",
-     "wq": "23c15f44"
+     "question": "M est sur le cercle de diamètre [AB] si et seulement si…",
+     "answer": "MA·MB = 0",
+     "w": [
+      "19f760e7",
+      "3d4a225e"
+     ],
+     "wq": "647c6871",
+     "wrongs": [
+      "MA = MB",
+      "MA + MB = AB",
+      "MA·AB = 0"
+     ]
     },
     {
-     "question": "À quelle condition ces deux droites sont-elles parallèles ?",
-     "answer": "Vecteurs normaux colinéaires :\nab' − a'b = 0",
-     "w": "950e1864",
-     "wq": "1b0693c2"
+     "question": "Condition pour que ax + by + c = 0 et a'x + b'y + c' = 0 soient perpendiculaires ?",
+     "answer": "aa' + bb' = 0",
+     "w": [
+      "e6957040",
+      "06ba7539"
+     ],
+     "wq": "23c15f44",
+     "more": "Les vecteurs normaux sont orthogonaux.",
+     "wrongs": [
+      "ab' − a'b = 0",
+      "a = a' et b = b'",
+      "c = c'"
+     ]
     },
     {
-     "question": "Déterminer une équation de la médiatrice de [AB] avec A(1 ; 1) et B(3 ; 5).",
-     "answer": "x + 2y − 8 = 0\nAB(2 ; 4) est normal, milieu I(2 ; 3) :\n2(x − 2) + 4(y − 3) = 0",
-     "w": "0b2d306c",
-     "wq": "1a8dcde6"
+     "question": "Condition pour que ces deux droites soient parallèles ?",
+     "answer": "ab' − a'b = 0",
+     "w": [
+      "cb432835",
+      "950e1864"
+     ],
+     "wq": "1b0693c2",
+     "more": "Les vecteurs normaux sont colinéaires.",
+     "wrongs": [
+      "aa' + bb' = 0",
+      "c = c'",
+      "a + b = a' + b'"
+     ]
     },
     {
-     "question": "Comment déterminer le projeté orthogonal H d'un point A sur une droite d ?",
-     "answer": "H est l'intersection de d\net de la perpendiculaire à d passant par A\n(dirigée par un vecteur normal de d).",
-     "w": "e42329b7",
-     "wq": "abf99b6f"
+     "question": "Médiatrice de [AB] avec A(1 ; 1) et B(3 ; 5) ?",
+     "answer": "x + 2y − 8 = 0",
+     "w": [
+      "df9eacd7",
+      "0b2d306c"
+     ],
+     "wq": "1a8dcde6",
+     "more": "AB(2 ; 4) est normal, milieu I(2 ; 3).",
+     "wrongs": [
+      "2x − y − 1 = 0",
+      "x + 2y − 3 = 0",
+      "2x + y − 7 = 0"
+     ]
     },
     {
-     "question": "Comment obtenir la tangente en un point A à un cercle de centre Ω ?",
-     "answer": "La droite passant par A, perpendiculaire au rayon :\nΩA est un vecteur normal de la tangente.",
-     "w": "504144c0",
-     "wq": "f415d8c6"
+     "question": "Le projeté orthogonal H de A sur d est l'intersection de d avec…",
+     "answer": "La perpendiculaire à d passant par A",
+     "w": [
+      "ba4d349c",
+      "e42329b7"
+     ],
+     "wq": "abf99b6f",
+     "wrongs": [
+      "La parallèle à d passant par A",
+      "L'axe des abscisses",
+      "La médiatrice de d"
+     ]
     },
     {
-     "question": "Le point A(4 ; 1) appartient-il au cercle d'équation (x − 1)² + (y − 5)² = 25 ?",
-     "answer": "Oui\n(4 − 1)² + (1 − 5)² = 9 + 16 = 25",
-     "w": "5cbab766",
-     "wq": "9fd924d4"
+     "question": "Pour la tangente en A à un cercle de centre Ω, quel vecteur est normal ?",
+     "answer": "ΩA",
+     "w": [
+      "e20f3564",
+      "504144c0"
+     ],
+     "wq": "f415d8c6",
+     "more": "La tangente est perpendiculaire au rayon.",
+     "wrongs": [
+      "Un vecteur directeur de ΩA",
+      "Le vecteur nul",
+      "OA, avec O l'origine"
+     ]
     },
     {
-     "question": "Comment étudier l'intersection d'une droite et d'un cercle ?",
-     "answer": "On résout le système des deux équations :\nune équation du second degré\n→ 0, 1 (tangente) ou 2 points d'intersection.",
-     "w": "f8f33e20",
-     "wq": "89695b3a"
+     "question": "A(4 ; 1) appartient-il au cercle (x − 1)² + (y − 5)² = 25 ?",
+     "answer": "Oui",
+     "w": [
+      "1854bbd0",
+      "5cbab766"
+     ],
+     "wq": "9fd924d4",
+     "more": "(4 − 1)² + (1 − 5)² = 9 + 16 = 25",
+     "wrongs": [
+      "Non, on trouve 7",
+      "Non, on trouve 13",
+      "Non, A est le centre"
+     ]
     },
     {
-     "question": "Quel est l'axe de symétrie de la parabole d'équation y = ax² + bx + c (a ≠ 0) ?",
-     "answer": "La droite x = −b/(2a)\nqui passe par le sommet.",
-     "w": "df3e5660",
-     "wq": "abec7552"
+     "question": "Combien de points d'intersection peut avoir une droite et un cercle ?",
+     "answer": "0, 1 ou 2",
+     "w": [
+      "d92bc2a4",
+      "f8f33e20"
+     ],
+     "wq": "89695b3a",
+     "more": "On résout le système : équation du second degré. 1 point : droite tangente.",
+     "wrongs": [
+      "Toujours 2",
+      "0 ou 2 seulement",
+      "Une infinité"
+     ]
+    },
+    {
+     "question": "Quel est l'axe de symétrie de la parabole y = ax² + bx + c ?",
+     "answer": "x = −b/(2a)",
+     "w": [
+      "4808cb81",
+      "df3e5660"
+     ],
+     "wq": "abec7552",
+     "more": "Il passe par le sommet.",
+     "wrongs": [
+      "x = b/(2a)",
+      "y = −b/(2a)",
+      "x = −c/a"
+     ]
     },
     {
      "question": "Quel est le sommet de la parabole y = 2x² − 8x + 3 ?",
-     "answer": "S(2 ; −5)\nx = −(−8)/(2 × 2) = 2\ny = 8 − 16 + 3 = −5",
-     "w": "51f8b402",
-     "wq": "48c0e4bd"
+     "answer": "S(2 ; −5)",
+     "w": [
+      "d23cdceb",
+      "51f8b402"
+     ],
+     "more": "x = 8/4 = 2 ; y = 8 − 16 + 3 = −5",
+     "wrongs": [
+      "S(−2 ; 27)",
+      "S(4 ; 3)",
+      "S(2 ; 3)"
+     ]
     }
    ]
   },
@@ -75951,94 +77118,235 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Qu'est-ce qu'un oxydant ? un réducteur ?",
-     "answer": "Oxydant : capable de capter un ou plusieurs électrons.\nRéducteur : capable d'en céder.",
-     "w": "06a2cbb1",
-     "wq": "929d333e"
+     "question": "Qu'est-ce qu'un oxydant ?",
+     "answer": "Une espèce capable de capter des électrons",
+     "w": [
+      "d0c65e00",
+      "06a2cbb1"
+     ],
+     "wq": "929d333e",
+     "wrongs": [
+      "Une espèce capable de céder des électrons",
+      "Un acide fort",
+      "Une espèce qui capte des protons"
+     ]
     },
     {
-     "question": "Que sont une oxydation et une réduction ?",
-     "answer": "• Oxydation : perte d'électrons\n• Réduction : gain d'électrons",
-     "w": "784ae522",
-     "wq": "1f334bf6"
+     "question": "Qu'est-ce qu'un réducteur ?",
+     "answer": "Une espèce capable de céder des électrons",
+     "wrongs": [
+      "Une espèce capable de capter des électrons",
+      "Une base forte",
+      "Une espèce qui cède des protons"
+     ]
     },
     {
-     "question": "Comment écrit-on la demi-équation d'un couple oxydant/réducteur ?",
-     "answer": "Ox + n e⁻ = Red\nEx. : Cu²⁺ + 2 e⁻ = Cu",
-     "w": "5843c88b",
-     "wq": "c1db5b8e"
+     "question": "Qu'est-ce qu'une oxydation ?",
+     "answer": "Une perte d'électrons",
+     "w": [
+      "18e1b9fe",
+      "784ae522"
+     ],
+     "wq": "1f334bf6",
+     "more": "Une réduction est un gain d'électrons.",
+     "wrongs": [
+      "Un gain d'électrons",
+      "Un gain de protons",
+      "Une perte de protons"
+     ]
     },
     {
-     "question": "Écrire la demi-équation du couple I₂/I⁻.",
-     "answer": "I₂ + 2 e⁻ = 2 I⁻."
+     "question": "Comment s'écrit la demi-équation d'un couple Ox/Red ?",
+     "answer": "Ox + n e⁻ = Red",
+     "w": [
+      "4ad06048",
+      "5843c88b"
+     ],
+     "wq": "c1db5b8e",
+     "more": "Ex. : Cu²⁺ + 2 e⁻ = Cu",
+     "wrongs": [
+      "Red + n e⁻ = Ox",
+      "Ox + n H⁺ = Red",
+      "Ox = Red + n e⁻ + H₂O"
+     ]
     },
     {
-     "question": "Écrire la demi-équation du couple MnO₄⁻/Mn²⁺ en milieu acide.",
-     "answer": "MnO₄⁻ + 8 H⁺ + 5 e⁻ = Mn²⁺ + 4 H₂O."
+     "question": "Demi-équation du couple I₂/I⁻ ?",
+     "answer": "I₂ + 2 e⁻ = 2 I⁻",
+     "w": "5e100065",
+     "wq": "9c13de47",
+     "wrongs": [
+      "I₂ + e⁻ = I⁻",
+      "I₂ = 2 I⁻ + 2 e⁻",
+      "I⁻ + e⁻ = I₂"
+     ]
     },
     {
-     "question": "Quelle est l'équation de la réaction entre les ions cuivre(II) et le zinc métallique ?",
-     "answer": "Cu²⁺ + Zn → Cu + Zn²⁺\n• le zinc est oxydé\n• les ions cuivre(II) sont réduits",
-     "w": "7e37643a",
-     "wq": "d083a7e5"
+     "question": "Demi-équation du couple MnO₄⁻/Mn²⁺ en milieu acide ?",
+     "answer": "MnO₄⁻ + 8 H⁺ + 5 e⁻ = Mn²⁺ + 4 H₂O",
+     "w": "f4eaa757",
+     "wq": "72d7de04",
+     "wrongs": [
+      "MnO₄⁻ + 4 H⁺ + 3 e⁻ = Mn²⁺ + 2 H₂O",
+      "MnO₄⁻ + 8 H⁺ + 2 e⁻ = Mn²⁺ + 4 H₂O",
+      "MnO₄⁻ + 5 e⁻ = Mn²⁺ + 4 O"
+     ]
     },
     {
-     "question": "Comment obtient-on l'équation d'une réaction d'oxydoréduction ?",
-     "answer": "On combine la demi-équation de l'oxydant d'un couple\net celle du réducteur d'un autre couple,\nmultipliées pour que les électrons s'éliminent.",
-     "w": "2d5d1c9a",
-     "wq": "4ce4d6d0"
+     "question": "Dans Cu²⁺ + Zn → Cu + Zn²⁺, quelle espèce est oxydée ?",
+     "answer": "Le zinc",
+     "w": [
+      "2d5090ae",
+      "7e37643a"
+     ],
+     "wq": "d083a7e5",
+     "more": "Les ions cuivre(II) sont réduits.",
+     "wrongs": [
+      "Les ions cuivre(II)",
+      "Le cuivre métal",
+      "Les ions zinc"
+     ]
     },
     {
-     "question": "Écrire l'équation de la réaction entre MnO₄⁻ et Fe²⁺ (couple Fe³⁺/Fe²⁺) en milieu acide.",
-     "answer": "MnO₄⁻ + 8 H⁺ + 5 Fe²⁺ → Mn²⁺ + 5 Fe³⁺ + 4 H₂O."
+     "question": "Comment obtient-on l'équation d'oxydoréduction ?",
+     "answer": "En combinant deux demi-équations pour éliminer les électrons",
+     "w": [
+      "98d4d978",
+      "2d5d1c9a"
+     ],
+     "wq": "4ce4d6d0",
+     "wrongs": [
+      "En additionnant les masses",
+      "En ajoutant des ions H⁺ au hasard",
+      "En gardant les électrons dans l'équation"
+     ]
+    },
+    {
+     "question": "Équation de la réaction entre MnO₄⁻ et Fe²⁺ en milieu acide ?",
+     "answer": "MnO₄⁻ + 8 H⁺ + 5 Fe²⁺ → Mn²⁺ + 5 Fe³⁺ + 4 H₂O",
+     "w": "948bb0e6",
+     "wq": "b3293b77",
+     "wrongs": [
+      "MnO₄⁻ + 8 H⁺ + Fe²⁺ → Mn²⁺ + Fe³⁺ + 4 H₂O",
+      "MnO₄⁻ + 5 Fe³⁺ → Mn²⁺ + 5 Fe²⁺",
+      "MnO₄⁻ + 2 Fe²⁺ → Mn²⁺ + 2 Fe³⁺"
+     ]
     },
     {
      "question": "Quel est le but d'un titrage ?",
-     "answer": "Déterminer la quantité de matière (ou la concentration) d'une espèce titrée\nen la faisant réagir avec une espèce titrante de concentration connue.",
-     "w": "1ded5941",
-     "wq": "153fa4f5"
+     "answer": "Déterminer une quantité de matière inconnue",
+     "w": [
+      "e2ea8333",
+      "1ded5941"
+     ],
+     "more": "On fait réagir l'espèce titrée avec une espèce titrante de concentration connue.",
+     "wrongs": [
+      "Fabriquer un nouveau produit",
+      "Changer la couleur d'une solution",
+      "Mesurer une température"
+     ]
     },
     {
      "question": "Quelles qualités doit avoir la réaction support d'un titrage ?",
-     "answer": "• Totale\n• Rapide\n• Unique",
-     "w": "8f7cf7b3",
-     "wq": "7d341345"
+     "answer": "Totale, rapide, unique",
+     "w": [
+      "ad3c36ff",
+      "8f7cf7b3"
+     ],
+     "wrongs": [
+      "Lente, partielle, colorée",
+      "Exothermique et réversible",
+      "Totale, lente, multiple"
+     ]
     },
     {
      "question": "Qu'est-ce que l'équivalence d'un titrage ?",
-     "answer": "Les réactifs ont été introduits dans les proportions stœchiométriques :\nle réactif limitant change.",
-     "w": "e89ef0aa",
-     "wq": "884f0b78"
+     "answer": "Réactifs dans les proportions stœchiométriques",
+     "w": [
+      "9164a73c",
+      "e89ef0aa"
+     ],
+     "more": "Le réactif limitant change.",
+     "wrongs": [
+      "La moitié du titrant est versée",
+      "La solution devient neutre",
+      "Le titrant est en excès"
+     ]
     },
     {
-     "question": "Quelle relation écrit-on à l'équivalence pour la réaction a A + b B → … ?",
-     "answer": "n(A) initiale / a = n(B) versée / b\nSi a = b = 1 : C(A) × V(A) = C(B) × V(E)",
-     "w": "e36c2f5e",
-     "wq": "e7c102ef"
+     "question": "À l'équivalence de a A + b B → …, quelle relation est vraie ?",
+     "answer": "n(A) / a = n(B) / b",
+     "w": [
+      "9cb1f086",
+      "e36c2f5e"
+     ],
+     "wq": "e7c102ef",
+     "more": "Si a = b = 1 : C(A) × V(A) = C(B) × V(E).",
+     "wrongs": [
+      "n(A) × a = n(B) × b",
+      "n(A) = n(B)",
+      "a × n(B) = b × n(B)"
+     ]
     },
     {
-     "question": "Comment repère-t-on l'équivalence lors d'un titrage colorimétrique ?",
-     "answer": "Par un changement de couleur.\nEx. : avec le permanganate,\nla teinte violette persiste dès l'équivalence dépassée.",
-     "w": "05ff08ff",
-     "wq": "c3223a23"
+     "question": "Lors d'un titrage colorimétrique, comment repère-t-on l'équivalence ?",
+     "answer": "Par un changement de couleur",
+     "w": [
+      "400bc885",
+      "05ff08ff"
+     ],
+     "wq": "c3223a23",
+     "more": "Ex. : avec le permanganate, la teinte violette persiste après l'équivalence.",
+     "wrongs": [
+      "Par un dégagement gazeux",
+      "Par une hausse de température",
+      "Par un précipité blanc"
+     ]
     },
     {
-     "question": "10,0 mL d'une solution de Fe²⁺ sont titrés par MnO₄⁻ à 0,020 mol/L ; VE = 12,0 mL. Quelle est la concentration en Fe²⁺ ?",
-     "answer": "C = 0,12 mol/L\nn(MnO₄⁻) = 0,020 × 0,0120 = 2,4 × 10⁻⁴ mol\nn(Fe²⁺) = 5 × 2,4 × 10⁻⁴ = 1,2 × 10⁻³ mol\nC = 1,2 × 10⁻³ / 0,0100",
-     "w": "dcf51207",
-     "wq": "c78f5c77"
+     "question": "10,0 mL de Fe²⁺ titrés par MnO₄⁻ à 0,020 mol/L, VE = 12,0 mL. Concentration en Fe²⁺ ?",
+     "answer": "0,12 mol/L",
+     "w": [
+      "9675f9f6",
+      "dcf51207"
+     ],
+     "wq": "c78f5c77",
+     "more": "n(MnO₄⁻) = 2,4 × 10⁻⁴ mol ; n(Fe²⁺) = 5 × n(MnO₄⁻) = 1,2 × 10⁻³ mol ; C = 1,2 × 10⁻³ / 0,0100.",
+     "wrongs": [
+      "0,024 mol/L",
+      "0,60 mol/L",
+      "0,012 mol/L"
+     ]
     },
     {
-     "question": "Quel matériel utilise-t-on pour un titrage ?",
-     "answer": "• Burette graduée : solution titrante\n• Pipette jaugée : prélever la solution titrée\n• Bécher ou erlenmeyer\n• Agitateur magnétique",
-     "w": "8d2ae22c",
-     "wq": "4ade3d81"
+     "question": "Avec quel instrument verse-t-on la solution titrante ?",
+     "answer": "Une burette graduée",
+     "w": [
+      "098538eb",
+      "8d2ae22c"
+     ],
+     "wq": "4ade3d81",
+     "more": "La solution titrée est prélevée à la pipette jaugée.",
+     "wrongs": [
+      "Une pipette jaugée",
+      "Une éprouvette",
+      "Un bécher"
+     ]
     },
     {
-     "question": "Qu'énonce la loi de Beer-Lambert utilisée pour un dosage par étalonnage ?",
-     "answer": "L'absorbance d'une solution diluée est proportionnelle\nà la concentration de l'espèce colorée : A = k × C.\nOn lit C sur une droite d'étalonnage.",
-     "w": "79ce56f4",
-     "wq": "f665de32"
+     "question": "Que dit la loi de Beer-Lambert ?",
+     "answer": "L'absorbance est proportionnelle à la concentration",
+     "w": [
+      "dbe5f0af",
+      "79ce56f4"
+     ],
+     "wq": "f665de32",
+     "more": "A = k × C ; on lit C sur une droite d'étalonnage.",
+     "wrongs": [
+      "L'absorbance est inversement proportionnelle à C",
+      "La couleur ne dépend pas de C",
+      "L'absorbance double quand C est divisée par deux"
+     ]
     }
    ]
   },
@@ -76586,20 +77894,22 @@
      ]
     },
     {
-     "question": "Laquelle de ces échelles n'est PAS une échelle du phénotype ?",
-     "answer": "Atomique",
+     "question": "Quelles sont les trois échelles du phénotype ?",
+     "answer": "Moléculaire, cellulaire, macroscopique",
      "w": [
+      "d9eae8e6",
       "e902a4f4",
       "3bb452e0"
      ],
      "wq": [
+      "f8b81ed8",
       "d5a5b530"
      ],
      "more": "Le phénotype se définit aux échelles moléculaire, cellulaire et macroscopique.",
      "wrongs": [
-      "Moléculaire",
-      "Cellulaire",
-      "Macroscopique"
+      "Atomique, moléculaire, cellulaire",
+      "Cellulaire, tissulaire, atomique",
+      "Génétique, chimique, physique"
      ]
     },
     {
@@ -77607,37 +78917,41 @@
      ]
     },
     {
-     "question": "Lequel de ces éléments est une fonction de commandement ?",
-     "answer": "Un siège social",
+     "question": "Un siège social est-il une fonction de commandement ?",
+     "answer": "Oui",
      "w": [
+      "2e41782d",
       "7ad71fd9",
       "4bcc8f6e"
      ],
      "wq": [
+      "2abe4496",
       "f0f93a79"
      ],
-     "more": "Aussi places boursières, institutions politiques et internationales.",
+     "more": "Les fonctions de commandement (sièges sociaux, bourses, pouvoir politique) se concentrent dans les métropoles.",
      "wrongs": [
-      "Un entrepôt",
-      "Un champ de blé",
-      "Un supermarché de quartier"
+      "Non, c'est une fonction agricole",
+      "Non, c'est une fonction logistique",
+      "Seulement s'il est à l'étranger"
      ]
     },
     {
-     "question": "Laquelle de ces villes est une ville mondiale ?",
+     "question": "Quelle ville est une ville mondiale : Tokyo, Lille ou Clermont-Ferrand ?",
      "answer": "Tokyo",
      "w": [
+      "ec1b3da4",
       "f18db022",
       "4ef89bf5"
      ],
      "wq": [
+      "f5eb669b",
       "75c6a92c"
      ],
-     "more": "Métropole au rayonnement planétaire : aussi New York, Londres, Paris.",
+     "more": "Avec New York, Londres et Paris, elle fait partie des villes qui commandent l'économie mondiale.",
      "wrongs": [
       "Lille",
-      "Lagos",
-      "Clermont-Ferrand"
+      "Clermont-Ferrand",
+      "Aucune des trois"
      ],
      "link": "https://fr.wikipedia.org/wiki/Ville_mondiale"
     },
@@ -77728,16 +79042,18 @@
      ]
     },
     {
-     "question": "Lequel de ces traits caractérise les métropoles des pays en développement ?",
+     "question": "Quel trait caractérise souvent les métropoles des pays en développement ?",
      "answer": "Beaucoup d'habitat informel",
      "w": [
+      "8381d41a",
       "03de4cb5",
       "c1f52103"
      ],
      "wq": [
+      "3abe38db",
       "c2e5c10c"
      ],
-     "more": "Aussi : croissance démographique très rapide, emplois informels, infrastructures insuffisantes. Ex. : Lagos.",
+     "more": "Bidonvilles, croissance très rapide de la population, infrastructures insuffisantes.",
      "wrongs": [
       "Une population en baisse",
       "Des infrastructures surabondantes",
@@ -77796,30 +79112,34 @@
      ]
     },
     {
-     "question": "Lequel de ces aménagements illustre la compétition entre métropoles ?",
-     "answer": "Les JO de Paris 2024",
+     "question": "Accueillir les Jeux olympiques illustre-t-il la compétition entre métropoles ?",
+     "answer": "Oui",
      "w": [
+      "b5ab87d5",
       "17d78094",
       "3b4f0774"
      ],
      "wq": [
+      "ab152cf3",
       "9e8e544f"
      ],
-     "more": "Aussi quartiers d'affaires (La Défense), musées et architecture emblématiques.",
+     "more": "Ex. : les JO de Paris 2024. Les grands événements renforcent l'attractivité internationale.",
      "wrongs": [
-      "Un champ agricole",
-      "Une route communale",
-      "Une école de village"
+      "Non, c'est un projet local",
+      "Non, ça n'a aucun lien",
+      "Seulement pour les petites villes"
      ]
     },
     {
-     "question": "Lequel de ces effets négatifs peut provoquer la métropolisation ?",
+     "question": "Quel effet négatif la métropolisation peut-elle provoquer ?",
      "answer": "La hausse du prix du logement",
      "w": [
+      "27c0381e",
       "2f49e1f8",
       "423b830e"
      ],
      "wq": [
+      "163f9c83",
       "e2712464"
      ],
      "more": "Aussi : inégalités avec les villes moyennes et rurales, congestion, pollution.",
@@ -80063,20 +81383,22 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Laquelle de ces espèces n'apparaît PAS dans le quotient de réaction Qr ?",
-     "answer": "Le solvant (l'eau)",
+     "question": "Le solvant (l'eau) apparaît-il dans le quotient de réaction Qr ?",
+     "answer": "Non",
      "w": [
+      "138488d7",
       "c47a6af7",
       "f0310d92"
      ],
      "wq": [
+      "245bf6ad",
       "9d2f17ac"
      ],
-     "more": "Ni les solides (activité 1). Les espèces dissoutes interviennent par concentration / c°, avec c° = 1 mol/L.",
+     "more": "Seules les espèces dissoutes y figurent ; le solvant et les solides n'y apparaissent pas.",
      "wrongs": [
-      "Un ion dissous",
-      "Un réactif dissous",
-      "Un produit dissous"
+      "Oui, toujours",
+      "Oui, au dénominateur",
+      "Seulement s'il est réactif"
      ]
     },
     {
@@ -80184,33 +81506,37 @@
      "link": "https://fr.wikipedia.org/wiki/Constante_de_Faraday"
     },
     {
-     "question": "Lequel de ces métaux est produit par électrolyse ?",
+     "question": "Quel métal produit-on industriellement par électrolyse ?",
      "answer": "L'aluminium",
      "w": [
+      "ad8e9f00",
       "dc796ce5",
       "af8d575c"
      ],
      "wq": [
+      "38a4de9f",
       "164c0180"
      ],
      "more": "Aussi le dichlore et la soude ; autres applications : galvanoplastie, recharge d'un accumulateur.",
      "wrongs": [
       "L'or",
-      "Le fer de hauts fourneaux",
-      "Le mercure natif"
+      "Le fer",
+      "Le mercure"
      ]
     },
     {
-     "question": "Lequel de ces moyens augmente la vitesse d'une synthèse ?",
+     "question": "Quel moyen augmente la vitesse d'une synthèse ?",
      "answer": "Utiliser un catalyseur",
      "w": [
+      "ac8db082",
       "19886c19",
       "d9e802ad"
      ],
      "wq": [
+      "b3fc5534",
       "c5441cd6"
      ],
-     "more": "Aussi : élever la température, augmenter la concentration des réactifs.",
+     "more": "Chauffer et augmenter la concentration des réactifs l'accélèrent aussi.",
      "wrongs": [
       "Refroidir le mélange",
       "Diluer les réactifs",
@@ -80598,38 +81924,42 @@
      ]
     },
     {
-     "question": "Lequel de ces composés est un métabolite secondaire de défense ?",
-     "answer": "Un alcaloïde",
+     "question": "Un alcaloïde est-il un métabolite primaire ou secondaire ?",
+     "answer": "Secondaire",
      "w": [
+      "c094cbe8",
       "dda7e11c",
       "e7be842a"
      ],
      "wq": [
+      "45fde166",
       "c429d280"
      ],
-     "more": "Aussi les tanins. Les anthocyanes colorent les fleurs et attirent les pollinisateurs.",
+     "more": "Il sert à la défense de la plante, contrairement au glucose ou à l'amidon (primaires).",
      "wrongs": [
-      "Le glucose",
-      "La chlorophylle",
-      "L'amidon"
+      "Primaire",
+      "Ni l'un ni l'autre",
+      "C'est un minéral"
      ],
      "link": "https://fr.wikipedia.org/wiki/Métabolite_secondaire"
     },
     {
-     "question": "Laquelle de ces défenses d'une plante est structurale ?",
-     "answer": "Des épines",
+     "question": "Les épines sont-elles une défense chimique ou structurale ?",
+     "answer": "Structurale",
      "w": [
+      "2a7b13c0",
       "fff6ed79",
       "def996d0"
      ],
      "wq": [
+      "ac7fc72f",
       "e01046e3"
      ],
-     "more": "Aussi cuticule, poils. Défenses chimiques : molécules toxiques ou répulsives, parfois produites en réponse à l'attaque.",
+     "more": "Les tanins ou les molécules toxiques sont des défenses chimiques.",
      "wrongs": [
-      "Une molécule toxique",
-      "Un tanin",
-      "Une odeur répulsive"
+      "Chimique",
+      "Immunitaire",
+      "Ce n'est pas une défense"
      ]
     },
     {
@@ -80719,20 +82049,22 @@
      ]
     },
     {
-     "question": "Lequel de ces caractères la domestication a-t-elle sélectionné ?",
+     "question": "Quel caractère des épis la domestication des céréales a-t-elle sélectionné ?",
      "answer": "Des épis qui ne s'égrènent pas",
      "w": [
+      "98693d33",
       "b90cc0e2",
       "61b01b19"
      ],
      "wq": [
+      "66af4154",
       "292dbaee"
      ],
-     "more": "Aussi : graines plus grosses, moins de toxicité. Sélection humaine sur des milliers d'années.",
+     "more": "Les grains restent sur l'épi jusqu'à la récolte.",
      "wrongs": [
+      "Des épis qui s'égrènent seuls",
       "Des graines plus petites",
-      "Plus de toxicité",
-      "Des épis qui s'égrènent tout seuls"
+      "Plus de toxicité"
      ]
     },
     {
