@@ -224,7 +224,12 @@ testables ainsi.
 
 ## Points en suspens (à revoir plus tard avec le propriétaire)
 
-- Boîtes toutes prêtes : `bibliotheque.json` (racine du dépôt, déposé le
-  7 nov. 2026) ; `tools/build_site_pages.py` attend `packs/bibliotheque.json`.
-  Mise à jour par lots de 50 boîtes avec `tools/maj_boites.py` (règles du
-  §5.7 ; marqueurs `w`/`wq` tenus à jour pour Darwin Admin).
+- Boîtes toutes prêtes : `bibliotheque.json` (contenu payant). **Ne pas le
+  committer** (il est dans `.gitignore`) : le dépôt est public et GitHub
+  Pages / Netlify servent tout le dépôt. Copie de travail locale à la
+  racine ; dernière version suivie dans git au commit `478df3c` (lots 1 à
+  6, avant son retrait en v271 : `git show 478df3c:bibliotheque.json`).
+  Le propriétaire importe le fichier dans Darwin Admin. Mise à jour par
+  lots de 50 boîtes avec `tools/maj_boites.py` (règles du §5.7 ; marqueurs
+  `w`/`wq` tenus à jour pour Darwin Admin). Question ouverte : où stocker
+  ce contenu (§8).

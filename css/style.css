@@ -9046,3 +9046,36 @@ body.is-view-home .desk { background-color: var(--home-bg-color, var(--app-bg-co
   transition: transform 0.25s ease;
 }
 .rx-frame.is-open .rx-fold-tri { transform: rotate(180deg); }
+
+/* ==================================================================
+   v271 : page Réviser (présentation mixte)
+   - les grands ronds ont le contour de la couleur de leur cadre ;
+   - nouveaux schémas au-dessus des cadres (dessins du propriétaire) ;
+   - replié, un cadre montre le début de son texte en dégradé.
+   ================================================================== */
+#view-review-hub.rx-mix #review-hub-advised-btn { --rm-c: #e8743b; }
+#view-review-hub.rx-mix #review-hub-reinforce-btn { --rm-c: #2f9e6b; }
+#view-review-hub.rx-mix #review-hub-manual-btn { --rm-c: #4a7fd9; }
+:root.is-night-mode #view-review-hub.rx-mix #review-hub-advised-btn { --rm-c: color-mix(in srgb, #e8743b 75%, #ffffff); }
+:root.is-night-mode #view-review-hub.rx-mix #review-hub-reinforce-btn { --rm-c: color-mix(in srgb, #2f9e6b 65%, #ffffff); }
+:root.is-night-mode #view-review-hub.rx-mix #review-hub-manual-btn { --rm-c: color-mix(in srgb, #4a7fd9 65%, #ffffff); }
+#view-review-hub.rx-mix #review-hub-circles .classes-role-circle {
+  box-shadow: inset 0 0 0 3px var(--rm-c), var(--shadow-home-square, var(--shadow-deep));
+}
+.rx-schema .rm-schema.rm-schema--wide { width: auto; height: 46px; max-width: 100%; }
+.rx-icon { top: 37px; }
+.rm-w-soft { --rm-w: color-mix(in srgb, var(--rm-c) 38%, var(--paper)); }
+.rm-w-line { stroke: var(--rm-w, var(--rm-c)); stroke-width: 4; }
+.rm-w-pole { stroke: var(--rm-w, var(--rm-c)); stroke-width: 5; }
+.rm-w-fill { fill: var(--rm-w, var(--rm-c)); }
+.rm-w-hop { fill: none; stroke: var(--rm-w, var(--rm-c)); stroke-width: 6; stroke-dasharray: 16 10; }
+.rm-w-ico { fill: none; stroke: var(--rm-c); stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+.rm-w-box { fill: none; stroke: var(--rm-c); stroke-width: 5; }
+.rm-w-check { fill: none; stroke: #ffffff; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
+.rm-w-cursor { fill: var(--paper); stroke: var(--rm-c); stroke-width: 5; stroke-linejoin: round; }
+.rx-frame:not(.is-open) .rx-more {
+  max-height: 66px; padding-top: 4px; cursor: pointer;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+}
+.rx-frame:not(.is-open) .rx-fold { margin-top: -4px; }

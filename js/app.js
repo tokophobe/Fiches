@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v270";
+  const APP_VERSION = "v271";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -4505,6 +4505,34 @@
     });
   }
 
+  /** Fiches dues pas encore vues, et fiches difficiles pas encore revues
+   *  deux fois, dans la séance en cours. */
+  function sessionLeftCounts() {
+    const alive = new Set(subjectCards().map((c) => c.id));
+    let dueLeft = 0;
+    sessionState.dueAtStart.forEach((id) => {
+      if (alive.has(id) && !(sessionState.seen.get(id) >= 1)) dueLeft++;
+    });
+    let lowLeft = 0;
+    sessionState.low.forEach((id) => {
+      if (alive.has(id) && (sessionState.seen.get(id) || 0) < 2) lowLeft++;
+    });
+    return { dueLeft, lowLeft };
+  }
+  /** v271 : au passage de « X fiches à revoir » à « On revoit les fiches
+   *  difficiles », le robot explique ce qui se passe (une fois par séance). */
+  function maybeAnnounceDifficultCards() {
+    if (!currentCard || proposalOpen || sessionState.lowAnnounced) return;
+    if (!sessionState.dueAtStart.size) return;
+    const { dueLeft, lowLeft } = sessionLeftCounts();
+    if (dueLeft > 0 || lowLeft === 0) return;
+    sessionState.lowAnnounced = true;
+    const n = lowLeft > 1 ? `les ${lowLeft} fiches` : "la fiche";
+    robotAlert(
+      `Bravo, tu as vu toutes les fiches prévues ! Avant de finir, on revoit ${n} qui t'${lowLeft > 1 ? "ont" : "a"} posé problème : les revoir une deuxième fois tout de suite aide à mieux les retenir.`
+    );
+  }
+
   /* Round 52 : sous la fiche, le nombre de fiches à revoir — puis, une
      fois les fiches dues vues, « On revoit les fiches difficiles : » + leur
      nombre — puis, si l'on a choisi de continuer après le message du robot,
@@ -4519,15 +4547,7 @@
     }
     st.hidden = false;
     const plural = (n) => `${n} fiche${n > 1 ? "s" : ""} à revoir`;
-    const alive = new Set(subjectCards().map((c) => c.id));
-    let dueLeft = 0;
-    sessionState.dueAtStart.forEach((id) => {
-      if (alive.has(id) && !(sessionState.seen.get(id) >= 1)) dueLeft++;
-    });
-    let lowLeft = 0;
-    sessionState.low.forEach((id) => {
-      if (alive.has(id) && (sessionState.seen.get(id) || 0) < 2) lowLeft++;
-    });
+    const { dueLeft, lowLeft } = sessionLeftCounts();
     let html;
     if (dueLeft > 0) html = escapeHtml(plural(dueLeft));
     else if (lowLeft > 0) html = `On revoit les fiches difficiles :<br>${escapeHtml(plural(lowLeft))}`;
@@ -4597,6 +4617,7 @@
       dueDoneToastShown: false,
       proposalShown: false,
       proposalArmed: false,
+      lowAnnounced: false, // v271 : message du robot « fiches difficiles » déjà montré
     };
   }
   let sessionState = freshSessionState();
@@ -5101,7 +5122,12 @@
         // l'ait lu (bouton « Continuer »).
         // v237 : idem avec un lien « Pour aller plus loin » (le temps de
         // pouvoir le toucher).
-        const hasMore = !!(currentCard.more && stripHtml(currentCard.more).trim()) || !!learnLinkInfo(currentCard.link);
+        // v271 : la suite d'une réponse sur plusieurs lignes compte aussi
+        // comme complément (avant, la fiche passait toute seule).
+        const hasMore =
+          !!qcmAnswerParts(currentCard).rest ||
+          !!(currentCard.more && stripHtml(currentCard.more).trim()) ||
+          !!learnLinkInfo(currentCard.link);
         if (firstTry && !hasMore) {
           // « Je sais » : la fiche repassera en mode normal.
           st.timer = setTimeout(() => finishQcm(cardId, "good", false), 1300);
@@ -5243,6 +5269,7 @@
     // de gauche à droite.
     requestAnimationFrame(() => triggerReviewChartWave(0, updated.interval));
     maybeProposeNextBox();
+    maybeAnnounceDifficultCards();
   }
 
   async function rateScheduledCard(rating, extra) {
@@ -10584,25 +10611,64 @@
     }
     return v === "guide" || v === "mix" ? v : "classic";
   }
-  const RM_SCHEMAS = {
-    event:
-      '<svg viewBox="0 0 120 44" class="rm-schema" aria-hidden="true"><line x1="4" y1="32" x2="104" y2="32" class="rm-s-line"/>' +
-      [8, 40, 62, 77, 87, 94, 99].map((x) => `<circle cx="${x}" cy="32" r="3.6" class="rm-s-dot"/>`).join("") +
-      '<line x1="108" y1="8" x2="108" y2="38" class="rm-s-pole"/><path d="M108 8 L120 13 L108 18 Z" class="rm-s-flag"/><text x="84" y="42" class="rm-s-text">jour J</text></svg>',
-    reinforce:
-      '<svg viewBox="0 0 120 44" class="rm-schema" aria-hidden="true"><line x1="4" y1="34" x2="118" y2="34" class="rm-s-line"/>' +
-      [[6, 14], [14, 30], [30, 60], [60, 114]]
-        .map(([a, b], i) => `<path d="M${a} 34 Q ${(a + b) / 2} ${30 - (i + 1) * 6} ${b} 34" class="rm-s-hop"/>`)
+  /* v271 : schémas au-dessus des cadres, d'après les dessins du
+     propriétaire (couleur du cadre ; partie claire = hors échéance). */
+  function rmHops(xs, peaks, y0, cls, openEnd) {
+    let out = "";
+    for (let i = 0; i < xs.length - 1; i++) {
+      const a = xs[i], b = xs[i + 1], c = 2 * peaks[i] - y0;
+      out += `<path d="M${a} ${y0} Q ${(a + b) / 2} ${c} ${b} ${y0}" class="${cls[i] || cls[0]}"/>`;
+    }
+    if (openEnd) out += `<path d="M${openEnd[0]} ${y0} Q ${openEnd[1]} ${openEnd[2]} ${openEnd[3]} ${openEnd[4]}" class="${openEnd[5]}"/>`;
+    return out;
+  }
+  const RM_SCHEMAS = (() => {
+    // Révisions prioritaires : le rythme s'accélère jusqu'à l'échéance.
+    const evLight = [18, 80, 185, 379];
+    const evDark = [379, 524, 631, 719, 794, 862, 925, 972, 1015];
+    const evAfter = [1015, 1163, 1376];
+    const event =
+      '<svg viewBox="0 0 1575 220" class="rm-schema rm-schema--wide" aria-hidden="true">' +
+      '<line x1="18" y1="197" x2="1575" y2="197" class="rm-w-line rm-w-soft"/>' +
+      '<line x1="379" y1="197" x2="1015" y2="197" class="rm-w-line"/>' +
+      '<line x1="18" y1="25" x2="18" y2="197" class="rm-w-pole rm-w-soft"/><path d="M18 25 L128 68 L18 110 Z" class="rm-w-fill rm-w-soft"/>' +
+      rmHops(evLight, [172, 160, 130], 197, ["rm-w-hop rm-w-soft"]) +
+      rmHops(evDark, [148, 160, 166, 168, 172, 175, 178, 180], 197, ["rm-w-hop"]) +
+      rmHops(evAfter, [123, 123], 197, ["rm-w-hop rm-w-soft"], [1376, 1440, 70, 1555, 83, "rm-w-hop rm-w-soft"]) +
+      [...evLight.slice(0, 3), ...evAfter.slice(1)].map((x) => `<circle cx="${x}" cy="197" r="19" class="rm-w-fill rm-w-soft"/>`).join("") +
+      evDark.map((x) => `<circle cx="${x}" cy="197" r="19" class="rm-w-fill"/>`).join("") +
+      // chronomètre
+      '<line x1="379" y1="130" x2="379" y2="168" class="rm-w-line"/>' +
+      '<circle cx="379" cy="70" r="42" class="rm-w-ico"/><path d="M366 5 H392 M379 5 V26 M402 22 L412 13 M379 46 V72 H400 M297 70 H326 M312 56 H332 M314 85 H332" class="rm-w-ico"/>' +
+      // calendrier avec « ! »
+      '<line x1="1017" y1="132" x2="1017" y2="168" class="rm-w-line"/>' +
+      '<rect x="970" y="22" width="98" height="96" rx="14" class="rm-w-ico"/><path d="M970 46 H1068 M995 8 V34 M1043 8 V34 M1017 62 V84" class="rm-w-ico"/><circle cx="1017" cy="100" r="5" class="rm-w-fill"/>' +
+      "</svg>";
+    // Renforcer : les révisions s'espacent de plus en plus.
+    const reX = [18, 81, 186, 377, 696, 1167];
+    const reinforce =
+      '<svg viewBox="0 0 1575 250" class="rm-schema rm-schema--wide" aria-hidden="true">' +
+      '<line x1="18" y1="232" x2="1575" y2="232" class="rm-w-line"/>' +
+      '<line x1="18" y1="63" x2="18" y2="232" class="rm-w-pole"/><path d="M18 63 L128 105 L18 147 Z" class="rm-w-fill"/>' +
+      rmHops(reX, [207, 195, 165, 125, 72], 232, ["rm-w-hop"], [1167, 1330, -10, 1560, 4, "rm-w-hop"]) +
+      reX.map((x) => `<circle cx="${x}" cy="232" r="19" class="rm-w-fill"/>`).join("") +
+      "</svg>";
+    // Sélection manuelle : je coche ce que je veux.
+    const boxes = [2, 105, 210, 314, 420, 523, 627, 733, 836, 942, 1047, 1150];
+    const picked = [105, 523, 627, 836];
+    const manual =
+      '<svg viewBox="0 0 1230 190" class="rm-schema rm-schema--wide" aria-hidden="true">' +
+      boxes
+        .map((x) =>
+          picked.includes(x)
+            ? `<rect x="${x}" y="18" width="76" height="76" rx="13" class="rm-w-fill"/><path d="M${x + 20} ${58} L${x + 33} ${73} L${x + 57} ${38}" class="rm-w-check"/>`
+            : `<rect x="${x}" y="54" width="74" height="74" rx="13" class="rm-w-box"/>`
+        )
         .join("") +
-      [6, 14, 30, 60, 114].map((x) => `<circle cx="${x}" cy="34" r="3.6" class="rm-s-dot"/>`).join("") +
-      "</svg>",
-    manual:
-      '<svg viewBox="0 0 120 44" class="rm-schema" aria-hidden="true">' +
-      [8, 34, 60, 86]
-        .map((x, i) => `<rect x="${x}" y="${i === 2 ? 8 : 14}" width="22" height="18" rx="3" class="${i === 2 ? "rm-s-box rm-s-box--picked" : "rm-s-box"}"/>`)
-        .join("") +
-      '<path d="M76 30 l0 11 l3 -3 l3 6 l2.5 -1.2 l-3 -6 l4.5 -0.6 z" class="rm-s-hand"/></svg>',
-  };
+      '<path d="M897 72 L897 158 L920 137 L941 184 L962 175 L941 129 L970 129 Z" class="rm-w-cursor"/>' +
+      "</svg>";
+    return { event, reinforce, manual };
+  })();
   /** Met à jour le bouton « Comment ça marche ? » et le contenu des cadres
    *  (appelé à chaque affichage de la page à trois ronds). */
   function renderReviewExplain() {
@@ -10611,6 +10677,9 @@
     if (!view || !btn) return;
     const isMix = reviewVariant() === "mix";
     btn.hidden = !isMix;
+    // v271 : en présentation mixte, les grands ronds ont le contour de la
+    // couleur de leur cadre.
+    view.classList.toggle("rx-mix", isMix);
     if (!isMix && view.classList.contains("is-explaining")) setReviewExplain(false, false);
     if (!isMix) return;
     // Schémas, et le petit rond de chaque cadre (même picto que le grand).
@@ -10729,16 +10798,7 @@
   }
   /** Replie tous les cadres (ils s'affichent repliés à chaque ouverture). */
   function rxFoldAll() {
-    document.querySelectorAll("#rx-explain .rx-frame").forEach((f) => {
-      f.classList.remove("is-open");
-      const more = f.querySelector(".rx-more");
-      if (more) more.hidden = true;
-      const b = f.querySelector(".rx-fold");
-      if (b) {
-        b.setAttribute("aria-expanded", "false");
-        b.setAttribute("aria-label", "Lire la suite");
-      }
-    });
+    document.querySelectorAll("#rx-explain .rx-frame").forEach((f) => rxSetOpen(f, false, false));
   }
   async function setReviewExplain(on, animate = true) {
     const view = el("view-review-hub");
@@ -10820,19 +10880,38 @@
   el("rx-how-btn")?.addEventListener("click", () => setReviewExplain(true));
   el("rx-ok-btn")?.addEventListener("click", () => setReviewExplain(false));
   // v270 : chaque cadre se déplie avec le triangle en bas.
+  // v271 : replié, le cadre montre déjà le début du texte, qui s'efface en
+  // dégradé (on comprend qu'il y a une suite) ; toucher cet aperçu déplie
+  // aussi. L'aperçu est « inert » : ses boutons ne sont pas actifs.
+  function rxSetOpen(f, open, animate) {
+    const more = f.querySelector(".rx-more");
+    const b = f.querySelector(".rx-fold");
+    if (!more) return;
+    const from = more.getBoundingClientRect().height;
+    more.hidden = false;
+    more.inert = !open;
+    f.classList.toggle("is-open", open);
+    if (b) {
+      b.setAttribute("aria-expanded", String(open));
+      b.setAttribute("aria-label", open ? "Replier" : "Lire la suite");
+    }
+    if (animate && from) {
+      const to = more.getBoundingClientRect().height;
+      rxAnim(more, [{ height: `${from}px` }, { height: `${to}px` }], { duration: 340, easing: "ease-out" });
+    }
+  }
   document.querySelectorAll("#rx-explain .rx-fold").forEach((b) => {
     b.addEventListener("click", () => {
       const f = b.closest(".rx-frame");
-      const more = f.querySelector(".rx-more");
-      const open = more.hidden;
-      more.hidden = !open;
-      f.classList.toggle("is-open", open);
-      b.setAttribute("aria-expanded", String(open));
-      b.setAttribute("aria-label", open ? "Replier" : "Lire la suite");
-      if (open) {
-        const h = more.scrollHeight;
-        rxAnim(more, [{ height: "0px", opacity: 0 }, { height: `${h}px`, opacity: 1 }], { duration: 320, easing: "ease-out" });
-      }
+      rxSetOpen(f, !f.classList.contains("is-open"), true);
+    });
+  });
+  // (l'aperçu étant « inert », le toucher arrive sur le corps du cadre)
+  document.querySelectorAll("#rx-explain .rx-frame-body").forEach((body) => {
+    body.addEventListener("click", (e) => {
+      const f = body.closest(".rx-frame");
+      if (f.classList.contains("is-open") || e.target.closest(".rx-fold")) return;
+      rxSetOpen(f, true, true);
     });
   });
 
