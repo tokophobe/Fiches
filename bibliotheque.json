@@ -109400,13 +109400,15 @@
      ]
     },
     {
-     "question": "Lequel de ces verbes est suivi d'un complément de personne ?",
+     "question": "Quel verbe anglais signifiant « dire » est suivi directement d'un complément de personne ?",
      "answer": "Tell",
      "w": [
+      "fa2adc16",
       "c9584186",
       "c7e5d7d5"
      ],
      "wq": [
+      "daefe9b2",
       "c3283f7e"
      ],
      "more": "He told me the truth. Say s'emploie sans : He said it was true.",
@@ -109417,16 +109419,18 @@
      ]
     },
     {
-     "question": "« Where do you live? » au discours indirect : quelle phrase est correcte ?",
+     "question": "Comment traduit-on « Elle m'a demandé où j'habitais » ?",
      "answer": "She asked me where I lived",
      "w": [
+      "41580265",
       "d6b08e63",
       "b268112d"
      ],
      "wq": [
+      "a21e1f94",
       "b11328b4"
      ],
-     "more": "Sans inversion ni do. Question fermée : if ou whether.",
+     "more": "Au discours indirect, pas d'inversion ni de do : l'ordre sujet-verbe revient.",
      "wrongs": [
       "She asked me where did I live",
       "She asked me where do I live",
@@ -109659,100 +109663,233 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quel est le taux de variation d'une fonction f entre a et a + h (h ≠ 0) ?",
-     "answer": "(f(a + h) − f(a)) / h\nLe coefficient directeur de la sécante\npassant par les points d'abscisses a et a + h.",
-     "w": "da8bc130",
-     "wq": "03f7494c"
+     "question": "Quel est le taux de variation de f entre a et a + h ?",
+     "answer": "(f(a + h) − f(a)) / h",
+     "w": [
+      "67985af1",
+      "da8bc130"
+     ],
+     "wq": "03f7494c",
+     "more": "C'est le coefficient directeur de la sécante.",
+     "wrongs": [
+      "(f(a + h) + f(a)) / h",
+      "f(a + h) − f(a)",
+      "h / (f(a + h) − f(a))"
+     ]
     },
     {
-     "question": "Quand dit-on que f est dérivable en a ?",
-     "answer": "Quand (f(a + h) − f(a)) / h tend vers un réel L quand h tend vers 0.\nL est le nombre dérivé de f en a : f'(a).",
-     "w": "10012118",
-     "wq": "8ded0623"
+     "question": "f est dérivable en a si le taux de variation tend vers un réel quand h tend vers…",
+     "answer": "0",
+     "w": [
+      "447e7a25",
+      "10012118"
+     ],
+     "wq": "8ded0623",
+     "more": "La limite est le nombre dérivé f'(a).",
+     "wrongs": [
+      "1",
+      "a",
+      "l'infini"
+     ]
     },
     {
-     "question": "Quelle est l'interprétation graphique du nombre dérivé f'(a) ?",
-     "answer": "Le coefficient directeur (la pente) de la tangente\nà la courbe de f au point A(a ; f(a)).",
-     "w": "d88a284e",
-     "wq": "174ea0e9"
+     "question": "Graphiquement, que représente f'(a) ?",
+     "answer": "La pente de la tangente au point d'abscisse a",
+     "w": [
+      "f936ec1f",
+      "d88a284e"
+     ],
+     "wq": "174ea0e9",
+     "wrongs": [
+      "L'ordonnée du point d'abscisse a",
+      "L'aire sous la courbe",
+      "Le maximum de f"
+     ]
     },
     {
-     "question": "Comment la tangente se déduit-elle des sécantes ?",
-     "answer": "Quand h tend vers 0, le point d'abscisse a + h se rapproche de A :\nla sécante tend vers une position limite, la tangente en A.",
-     "w": "b69d4b6a",
-     "wq": "006bdc9e"
+     "question": "Quand h tend vers 0, vers quoi tend la sécante ?",
+     "answer": "Vers la tangente en A",
+     "w": [
+      "4deac123",
+      "b69d4b6a"
+     ],
+     "wq": "006bdc9e",
+     "wrongs": [
+      "Vers l'axe des abscisses",
+      "Vers une droite verticale",
+      "Vers la droite y = x"
+     ]
     },
     {
-     "question": "Quelle est l'équation réduite de la tangente à la courbe de f au point d'abscisse a ?",
+     "question": "Quelle est l'équation de la tangente à la courbe de f au point d'abscisse a ?",
      "answer": "y = f'(a)(x − a) + f(a)",
-     "w": "f4fa3421",
-     "wq": "826ebfb8"
+     "w": [
+      "627253d5",
+      "f4fa3421"
+     ],
+     "wq": "826ebfb8",
+     "wrongs": [
+      "y = f(a)(x − a) + f'(a)",
+      "y = f'(a)x + f(a)",
+      "y = f'(a)(x + a) − f(a)"
+     ]
     },
     {
-     "question": "Calculer f'(3) pour f(x) = x² à l'aide du taux de variation.",
-     "answer": "f'(3) = 6\n(9 + 6h + h² − 9) / h = 6 + h\nqui tend vers 6 quand h tend vers 0.",
-     "w": "8829c8a3",
-     "wq": "29f113e2"
+     "question": "Pour f(x) = x², que vaut f'(3) ?",
+     "answer": "6",
+     "w": [
+      "86e66501",
+      "8829c8a3"
+     ],
+     "wq": "29f113e2",
+     "more": "Taux de variation : 6 + h, qui tend vers 6.",
+     "wrongs": [
+      "9",
+      "3",
+      "2"
+     ]
     },
     {
-     "question": "Donner l'équation de la tangente à la parabole y = x² au point d'abscisse 3.",
-     "answer": "y = 6x − 9\nf(3) = 9, f'(3) = 6\ny = 6(x − 3) + 9",
-     "w": "5cdf2e66",
-     "wq": "a6306cf4"
+     "question": "Quelle est la tangente à y = x² au point d'abscisse 3 ?",
+     "answer": "y = 6x − 9",
+     "w": [
+      "f77bfab8",
+      "5cdf2e66"
+     ],
+     "wq": "a6306cf4",
+     "more": "y = 6(x − 3) + 9",
+     "wrongs": [
+      "y = 6x + 9",
+      "y = 3x",
+      "y = 9x − 6"
+     ]
     },
     {
-     "question": "Calculer f'(1) pour f(x) = 1/x à l'aide du taux de variation.",
-     "answer": "f'(1) = −1\n(1/(1 + h) − 1) / h = −1/(1 + h)\nqui tend vers −1.",
-     "w": "e4ff60f0",
-     "wq": "36f4847c"
+     "question": "Pour f(x) = 1/x, que vaut f'(1) ?",
+     "answer": "−1",
+     "w": [
+      "21aecb33",
+      "e4ff60f0"
+     ],
+     "wq": "36f4847c",
+     "wrongs": [
+      "1",
+      "0",
+      "−2"
+     ]
     },
     {
-     "question": "On sait que f(1) = 2 et f'(1) = −1. Quelle est la tangente au point d'abscisse 1 ?",
-     "answer": "y = −x + 3\ny = −1 × (x − 1) + 2",
-     "w": "0a7ab809",
-     "wq": "048f0c06"
+     "question": "f(1) = 2 et f'(1) = −1 : quelle est la tangente au point d'abscisse 1 ?",
+     "answer": "y = −x + 3",
+     "w": [
+      "510c55d0",
+      "0a7ab809"
+     ],
+     "wq": "048f0c06",
+     "wrongs": [
+      "y = 2x − 1",
+      "y = −x + 1",
+      "y = x + 1"
+     ]
     },
     {
-     "question": "Comment lire graphiquement un nombre dérivé ?",
-     "answer": "On lit le coefficient directeur de la tangente avec deux de ses points :\n(yB − yA) / (xB − xA)\nEx. : (1 ; 2) et (3 ; 6) → 4/2 = 2",
-     "w": "732d2b6c",
-     "wq": "6ea8b202"
+     "question": "La tangente passe par (1 ; 2) et (3 ; 6) : quel est le nombre dérivé ?",
+     "answer": "2",
+     "w": [
+      "0d40c997",
+      "732d2b6c"
+     ],
+     "wq": "6ea8b202",
+     "more": "(6 − 2) / (3 − 1)",
+     "wrongs": [
+      "4",
+      "0,5",
+      "3"
+     ]
     },
     {
      "question": "Que signifie f'(a) = 0 graphiquement ?",
-     "answer": "La tangente est horizontale\n(parallèle à l'axe des abscisses).",
-     "w": "9683f085",
-     "wq": "727fbe73"
+     "answer": "La tangente est horizontale",
+     "w": [
+      "e99caf81",
+      "9683f085"
+     ],
+     "wrongs": [
+      "La tangente est verticale",
+      "La courbe coupe l'axe des abscisses",
+      "f n'est pas dérivable"
+     ]
     },
     {
      "question": "La fonction racine carrée est-elle dérivable en 0 ?",
-     "answer": "Non : √h / h = 1/√h devient aussi grand que l'on veut (h > 0).\nLa courbe a en 0 une tangente verticale.",
-     "w": "1d368d2a",
-     "wq": "43d76727"
+     "answer": "Non",
+     "w": [
+      "0b3319b5",
+      "1d368d2a"
+     ],
+     "more": "√h / h = 1/√h devient infini : tangente verticale.",
+     "wrongs": [
+      "Oui, f'(0) = 0",
+      "Oui, f'(0) = 1",
+      "Oui, f'(0) = 1/2"
+     ]
     },
     {
      "question": "La fonction valeur absolue est-elle dérivable en 0 ?",
-     "answer": "Non : |h|/h vaut 1 si h > 0 et −1 si h < 0,\npas de limite unique.\nLa courbe a un « point anguleux » en 0.",
-     "w": "429292f9",
-     "wq": "da0a42b5"
+     "answer": "Non",
+     "w": [
+      "9573d99a",
+      "429292f9"
+     ],
+     "more": "|h|/h vaut 1 ou −1 : point anguleux.",
+     "wrongs": [
+      "Oui, f'(0) = 0",
+      "Oui, f'(0) = 1",
+      "Oui, f'(0) = −1"
+     ]
     },
     {
-     "question": "Qu'appelle-t-on fonction dérivée de f ?",
-     "answer": "Si f est dérivable sur tout l'intervalle I :\nla fonction x ↦ f'(x) sur I.",
-     "w": "e2708435",
-     "wq": "24936242"
+     "question": "Qu'appelle-t-on fonction dérivée de f sur I ?",
+     "answer": "La fonction x ↦ f'(x)",
+     "w": [
+      "3289cecb",
+      "e2708435"
+     ],
+     "wq": "24936242",
+     "wrongs": [
+      "La fonction x ↦ f(x)/x",
+      "La primitive de f",
+      "La tangente en 0"
+     ]
     },
     {
      "question": "Quelle est la dérivée de x ↦ g(ax + b) ?",
-     "answer": "x ↦ a × g'(ax + b)\nEx. : ((3x − 1)²)' = 3 × 2(3x − 1) = 6(3x − 1)",
-     "w": "bb88a21f",
-     "wq": "a1137432"
+     "answer": "x ↦ a × g'(ax + b)",
+     "w": [
+      "14a2f68c",
+      "bb88a21f"
+     ],
+     "more": "Ex. : ((3x − 1)²)' = 6(3x − 1)",
+     "wrongs": [
+      "x ↦ g'(ax + b)",
+      "x ↦ a × g(ax + b)",
+      "x ↦ g'(a)x + b"
+     ]
     },
     {
-     "question": "Quel lien existe-t-il entre nombre dérivé et vitesse instantanée ?",
-     "answer": "d(t) : distance parcourue à l'instant t.\n• Vitesse moyenne entre t et t + h : un taux de variation\n• Vitesse instantanée : le nombre dérivé d'(t)",
-     "w": "1da8e6e6",
-     "wq": "6c9ca27c"
+     "question": "Si d(t) est la distance parcourue, que représente d'(t) ?",
+     "answer": "La vitesse instantanée",
+     "w": [
+      "6fd5c224",
+      "1da8e6e6"
+     ],
+     "wq": "6c9ca27c",
+     "more": "La vitesse moyenne est un taux de variation.",
+     "wrongs": [
+      "La vitesse moyenne",
+      "L'accélération",
+      "La distance totale"
+     ]
     }
    ]
   },
@@ -112160,13 +112297,15 @@
      "link": "https://fr.wikipedia.org/wiki/Cancer"
     },
     {
-     "question": "Lequel de ces facteurs est un agent mutagène ?",
+     "question": "Quel rayonnement solaire est un agent mutagène ?",
      "answer": "Les rayons UV",
      "w": [
+      "67721214",
       "0bc30d88",
       "89751054"
      ],
      "wq": [
+      "97266958",
       "626cfe7d"
      ],
      "more": "Aussi substances du tabac (benzopyrène), certains virus (papillomavirus).",
@@ -112178,13 +112317,15 @@
      "link": "https://fr.wikipedia.org/wiki/Mutagène"
     },
     {
-     "question": "Lequel de ces moyens limite le risque de cancer ?",
+     "question": "Quelle vaccination limite le risque de cancer du col de l'utérus ?",
      "answer": "La vaccination contre les papillomavirus",
      "w": [
+      "71b0c680",
       "2972a517",
       "ca4c5ed9"
      ],
      "wq": [
+      "6b87c1a2",
       "4f33b577"
      ],
      "more": "Aussi : éviter tabac, alcool, excès de soleil ; participer aux dépistages.",
@@ -112280,13 +112421,15 @@
      ]
     },
     {
-     "question": "Lequel de ces gestes limite l'apparition de résistances ?",
+     "question": "Quel bon usage des antibiotiques limite l'apparition de résistances ?",
      "answer": "Respecter la dose et la durée prescrites",
      "w": [
+      "61210e6b",
       "d824739a",
       "8917df7f"
      ],
      "wq": [
+      "47eca7aa",
       "b18d105f"
      ],
      "more": "Aussi : ne les utiliser que pour des infections bactériennes, limiter leur usage en élevage, renforcer l'hygiène.",
@@ -112369,13 +112512,15 @@
      ]
     },
     {
-     "question": "Lequel de ces moyens est un mode individuel de gestion des risques ?",
+     "question": "Quelle forme d'épargne est un mode individuel de gestion des risques ?",
      "answer": "L'épargne de précaution",
      "w": [
+      "006f7f7b",
       "06644568",
       "01fe0f21"
      ],
      "wq": [
+      "2b76c510",
       "e00b1df6"
      ],
      "more": "Aussi la prévention : réduire la probabilité ou la gravité du dommage.",
@@ -112438,13 +112583,15 @@
      "link": "https://fr.wikipedia.org/wiki/Aléa_moral"
     },
     {
-     "question": "Lequel de ces outils limite l'aléa moral ?",
+     "question": "Quel outil, laissant une part du dommage à l'assuré, limite l'aléa moral ?",
      "answer": "La franchise",
      "w": [
+      "ac8f2f9a",
       "e2c6865a",
       "336c9046"
      ],
      "wq": [
+      "cd7b6ac7",
       "19b037c0"
      ],
      "more": "Aussi le bonus-malus et les clauses d'exclusion.",
@@ -112473,13 +112620,15 @@
      "link": "https://fr.wikipedia.org/wiki/Antisélection"
     },
     {
-     "question": "Lequel de ces risques est un risque social couvert par la protection sociale ?",
+     "question": "Quel risque lié à l'âge est couvert par la protection sociale ?",
      "answer": "La vieillesse",
      "w": [
+      "ed32dcf1",
       "09031d07",
       "167b435b"
      ],
      "wq": [
+      "1497c5ae",
       "0406d805"
      ],
      "more": "Aussi : maladie, accidents du travail, famille, chômage, logement, pauvreté et exclusion.",
@@ -112507,13 +112656,15 @@
      ]
     },
     {
-     "question": "Lequel de ces dispositifs relève de la logique d'assistance ?",
+     "question": "Quel minimum social relève de la logique d'assistance ?",
      "answer": "Le RSA",
      "w": [
+      "72e9067e",
       "cf38bb15",
       "3ae15967"
      ],
      "wq": [
+      "55a15c84",
       "ae3d1b25"
      ],
      "more": "Non contributive : financée par l'impôt, sous condition de ressources (aussi minimum vieillesse).",
@@ -112649,13 +112800,15 @@
      ]
     },
     {
-     "question": "Lequel de ces acteurs exerce un contrôle social formel ?",
+     "question": "Quelle institution chargée de l'ordre exerce un contrôle social formel ?",
      "answer": "La police",
      "w": [
+      "1c883cbf",
       "46880580",
       "b753cfa0"
      ],
      "wq": [
+      "e3e63a2d",
       "e5ee7a90"
      ],
      "more": "Aussi la justice, l'école ; le contrôle informel vient de l'entourage (famille, pairs, voisins).",
@@ -112910,98 +113063,233 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quel est le coût d'un parcours séquentiel d'un tableau de n éléments (recherche d'une valeur, d'un maximum, calcul d'une moyenne) ?",
-     "answer": "Un coût linéaire :\nproportionnel à n\n(chaque élément examiné une fois au pire).",
-     "w": "c8ff7d45",
-     "wq": "eae00d59"
+     "question": "Quel est le coût d'un parcours séquentiel d'un tableau de n éléments ?",
+     "answer": "Linéaire",
+     "w": [
+      "8dfff702",
+      "c8ff7d45"
+     ],
+     "wq": "eae00d59",
+     "more": "Proportionnel à n.",
+     "wrongs": [
+      "Constant",
+      "Quadratique",
+      "Logarithmique"
+     ]
     },
     {
-     "question": "Quel est le principe du tri par sélection ?",
-     "answer": "À chaque étape i :\nchercher le plus petit élément de la partie non triée\net l'échanger avec l'élément d'indice i.",
-     "w": "ed0d51c4",
-     "wq": "abc04da5"
+     "question": "Quel tri cherche à chaque étape le plus petit élément de la partie non triée ?",
+     "answer": "Le tri par sélection",
+     "w": [
+      "37a6c372",
+      "ed0d51c4"
+     ],
+     "wq": "abc04da5",
+     "more": "On l'échange avec l'élément d'indice i.",
+     "wrongs": [
+      "Le tri par insertion",
+      "La recherche dichotomique",
+      "Le tri fusion"
+     ]
     },
     {
-     "question": "Quel est le principe du tri par insertion ?",
-     "answer": "Parcourir le tableau de gauche à droite\net insérer chaque élément à sa place dans la partie gauche triée,\nen décalant les plus grands.",
-     "w": "12f50d6f",
-     "wq": "61b923be"
+     "question": "Quel tri insère chaque élément à sa place dans la partie gauche déjà triée ?",
+     "answer": "Le tri par insertion",
+     "w": [
+      "4d467da9",
+      "12f50d6f"
+     ],
+     "wq": "61b923be",
+     "wrongs": [
+      "Le tri par sélection",
+      "Le tri à bulles",
+      "La recherche dichotomique"
+     ]
     },
     {
-     "question": "Appliquer le tri par insertion au tableau [5, 2, 4].",
-     "answer": "1. On insère 2 avant 5 : [2, 5, 4]\n2. On insère 4 entre 2 et 5 : [2, 4, 5]",
-     "w": "776d6629",
-     "wq": "d38a616b"
+     "question": "Avec le tri par insertion, que devient [5, 2, 4] après la première insertion ?",
+     "answer": "[2, 5, 4]",
+     "w": [
+      "af7fb790",
+      "776d6629"
+     ],
+     "wq": "d38a616b",
+     "more": "Puis [2, 4, 5].",
+     "wrongs": [
+      "[2, 4, 5]",
+      "[5, 4, 2]",
+      "[4, 2, 5]"
+     ]
     },
     {
      "question": "Quel est le coût des tris par sélection et par insertion dans le pire des cas ?",
-     "answer": "Quadratique : de l'ordre de n² comparaisons.\nLe tri par sélection fait toujours n(n − 1)/2 comparaisons.",
-     "w": "396cb066",
-     "wq": "5176fa93"
+     "answer": "Quadratique (n²)",
+     "w": [
+      "74ccd214",
+      "396cb066"
+     ],
+     "wrongs": [
+      "Linéaire (n)",
+      "Logarithmique",
+      "Constant"
+     ]
     },
     {
-     "question": "Dans quel cas le tri par insertion est-il rapide ?",
-     "answer": "Quand le tableau est déjà trié (ou presque) :\nle coût devient linéaire.",
-     "w": "03674692",
-     "wq": "d682b5c5"
+     "question": "Quand le tri par insertion est-il rapide ?",
+     "answer": "Quand le tableau est déjà presque trié",
+     "w": [
+      "f963d181",
+      "03674692"
+     ],
+     "wq": "d682b5c5",
+     "more": "Le coût devient linéaire.",
+     "wrongs": [
+      "Quand le tableau est trié à l'envers",
+      "Quand le tableau est très grand",
+      "Jamais"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un invariant de boucle ? Donner celui du tri par sélection.",
-     "answer": "Une propriété vraie avant et après chaque tour de boucle,\nqui prouve la correction.\nTri par sélection : après i tours, les i premiers éléments\nsont triés et à leur place définitive.",
-     "w": "c948ebff",
-     "wq": "d3ab5f3e"
+     "question": "Qu'est-ce qu'un invariant de boucle ?",
+     "answer": "Une propriété vraie avant et après chaque tour",
+     "w": [
+      "de90aec7",
+      "c948ebff"
+     ],
+     "wq": "d3ab5f3e",
+     "more": "Il prouve la correction. Tri par sélection : après i tours, les i premiers éléments sont à leur place définitive.",
+     "wrongs": [
+      "Une variable qui ne change jamais",
+      "Le nombre de tours de boucle",
+      "Une quantité qui décroît"
+     ]
     },
     {
-     "question": "Comment prouve-t-on la terminaison d'une boucle « while » ?",
-     "answer": "Avec un variant :\nune quantité entière positive qui décroît strictement à chaque tour.",
-     "w": "5153a65e",
-     "wq": "0398b26b"
+     "question": "Avec quoi prouve-t-on la terminaison d'une boucle while ?",
+     "answer": "Un variant",
+     "w": [
+      "2ea68bbb",
+      "5153a65e"
+     ],
+     "wq": "0398b26b",
+     "more": "Une quantité entière positive qui décroît strictement.",
+     "wrongs": [
+      "Un invariant",
+      "Un test unitaire",
+      "Une assertion"
+     ]
     },
     {
      "question": "Quelle condition est indispensable pour une recherche dichotomique ?",
-     "answer": "Le tableau doit être trié."
+     "answer": "Le tableau doit être trié",
+     "w": "fe6944df",
+     "wrongs": [
+      "Le tableau doit être petit",
+      "Les valeurs doivent être distinctes",
+      "Le tableau doit être vide"
+     ]
     },
     {
-     "question": "Quel est le principe de la recherche dichotomique ?",
-     "answer": "On compare à l'élément du milieu, m = (g + d) // 2.\nSelon le résultat, on continue dans la moitié gauche ou droite,\njusqu'à trouver la valeur ou obtenir un intervalle vide.",
-     "w": "736df142",
-     "wq": "7e2febf8"
+     "question": "En dichotomie, à quel élément compare-t-on la valeur cherchée ?",
+     "answer": "À l'élément du milieu",
+     "w": [
+      "ff8a3cf5",
+      "736df142"
+     ],
+     "wq": "7e2febf8",
+     "more": "m = (g + d) // 2, puis on garde une moitié.",
+     "wrongs": [
+      "Au premier élément",
+      "Au dernier élément",
+      "À un élément au hasard"
+     ]
     },
     {
      "question": "Quel est le coût de la recherche dichotomique ?",
-     "answer": "Logarithmique : la zone est divisée par 2 à chaque étape.\nEx. : 1 000 éléments → une dizaine de comparaisons (2¹⁰ = 1 024)",
-     "w": "c369b23f",
-     "wq": "acb8f97d"
+     "answer": "Logarithmique",
+     "w": [
+      "2c360a79",
+      "c369b23f"
+     ],
+     "more": "1 000 éléments → une dizaine de comparaisons.",
+     "wrongs": [
+      "Linéaire",
+      "Quadratique",
+      "Constant"
+     ]
     },
     {
      "question": "Qu'est-ce qu'un algorithme glouton ?",
-     "answer": "Un algorithme d'optimisation qui fait, à chaque étape,\nle choix qui semble le meilleur sur le moment,\nsans revenir en arrière.",
-     "w": "6c903af9",
-     "wq": "d7a5995c"
+     "answer": "Il fait à chaque étape le meilleur choix immédiat",
+     "w": [
+      "d8b9ebc0",
+      "6c903af9"
+     ],
+     "more": "Sans revenir en arrière.",
+     "wrongs": [
+      "Il teste toutes les solutions",
+      "Il trie d'abord les données",
+      "Il revient sur ses choix"
+     ]
     },
     {
-     "question": "Un algorithme glouton donne-t-il toujours la solution optimale au rendu de monnaie ?",
-     "answer": "Non.\nSystème euro : oui.\nPièces de 1, 3, 4 pour rendre 6 :\nglouton 4 + 1 + 1 (3 pièces), optimal 3 + 3 (2 pièces).",
-     "w": "887f4ad8",
-     "wq": "5232e16c"
+     "question": "Un algorithme glouton donne-t-il toujours le rendu de monnaie optimal ?",
+     "answer": "Non",
+     "w": [
+      "238450e6",
+      "887f4ad8"
+     ],
+     "wq": "5232e16c",
+     "more": "Pièces 1, 3, 4 pour 6 : glouton 4+1+1, optimal 3+3. Avec l'euro, oui.",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, si les pièces sont triées",
+      "Non, jamais"
+     ]
     },
     {
-     "question": "Quel est le principe de l'algorithme des k plus proches voisins ?",
-     "answer": "1. Calculer la distance de la nouvelle donnée à toutes les données étiquetées.\n2. Retenir les k plus proches.\n3. Lui attribuer la classe majoritaire parmi elles.",
-     "w": "bab1e0d3",
-     "wq": "5b557770"
+     "question": "Dans les k plus proches voisins, quelle classe attribue-t-on à la nouvelle donnée ?",
+     "answer": "La classe majoritaire parmi les k plus proches",
+     "w": [
+      "0ca991f4",
+      "bab1e0d3"
+     ],
+     "wq": "5b557770",
+     "wrongs": [
+      "La classe du point le plus éloigné",
+      "Une classe au hasard",
+      "La classe la moins représentée"
+     ]
     },
     {
-     "question": "Quelle est l'influence du choix de k dans l'algorithme des k plus proches voisins ?",
-     "answer": "• k trop petit : sensible aux données isolées ou erronées\n• k trop grand : mélange des classes éloignées\nSouvent k impair, pour éviter les égalités.",
-     "w": "06ccfdc9",
-     "wq": "70a9d1a3"
+     "question": "Pourquoi choisit-on souvent k impair ?",
+     "answer": "Pour éviter les égalités",
+     "w": [
+      "f6b8e56c",
+      "06ccfdc9"
+     ],
+     "wq": "70a9d1a3",
+     "more": "k trop petit : sensible aux erreurs ; trop grand : mélange les classes.",
+     "wrongs": [
+      "Pour aller plus vite",
+      "C'est obligatoire en Python",
+      "Pour avoir plus de voisins"
+     ]
     },
     {
-     "question": "Quelle différence entre sorted(t) et t.sort() en Python ?",
-     "answer": "• sorted(t) : renvoie une nouvelle liste triée, t inchangée\n• t.sort() : trie t en place et renvoie None",
-     "w": "2c90d23a",
-     "wq": "6caf9288"
+     "question": "Que renvoie t.sort() en Python ?",
+     "answer": "None",
+     "w": [
+      "bb151533",
+      "2c90d23a"
+     ],
+     "wq": "6caf9288",
+     "more": "Il trie t en place ; sorted(t) renvoie une nouvelle liste.",
+     "wrongs": [
+      "Une nouvelle liste triée",
+      "La liste t triée",
+      "Le plus petit élément"
+     ]
     }
    ]
   },
@@ -113025,100 +113313,236 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Quels sont les rôles respectifs de HTML, CSS et JavaScript ?",
-     "answer": "• HTML : structure et contenu (balises)\n• CSS : mise en forme (couleurs, polices, disposition)\n• JavaScript : comportements dynamiques, exécutés par le navigateur",
-     "w": "39a72d1f",
-     "wq": "7d49c657"
+     "question": "Quel langage gère la mise en forme d'une page web ?",
+     "answer": "CSS",
+     "w": [
+      "99e33174",
+      "39a72d1f"
+     ],
+     "wq": "7d49c657",
+     "more": "HTML : structure et contenu ; JavaScript : comportements dynamiques.",
+     "wrongs": [
+      "HTML",
+      "JavaScript",
+      "HTTP"
+     ]
     },
     {
-     "question": "Comment crée-t-on un lien hypertexte en HTML ?",
-     "answer": "Avec la balise a et son attribut href :\n<a href=\"page2.html\">Suite</a>",
-     "w": "ae976368",
-     "wq": "1891046c"
+     "question": "Avec quelle balise crée-t-on un lien hypertexte ?",
+     "answer": "<a href=\"…\">",
+     "w": [
+      "327cbf60",
+      "ae976368"
+     ],
+     "wq": "1891046c",
+     "wrongs": [
+      "<link src=\"…\">",
+      "<p href=\"…\">",
+      "<url>"
+     ]
     },
     {
-     "question": "Qu'est-ce qu'un événement en JavaScript ? Donner un exemple.",
-     "answer": "Une action détectée par le navigateur (clic, survol, clavier, chargement)\nà laquelle on associe une fonction.\nEx. : bouton.addEventListener(\"click\", afficher)",
-     "w": "f20ab050",
-     "wq": "1604b246"
+     "question": "Quelle instruction associe une fonction au clic sur un bouton ?",
+     "answer": "bouton.addEventListener(\"click\", afficher)",
+     "w": [
+      "3365daf2",
+      "f20ab050"
+     ],
+     "wq": "1604b246",
+     "wrongs": [
+      "bouton.click = print()",
+      "onclick(afficher, bouton)",
+      "bouton.event(\"afficher\")"
+     ]
     },
     {
      "question": "Qu'est-ce que le DOM ?",
-     "answer": "La représentation de la page en arbre d'éléments,\nque JavaScript peut lire et modifier\npour changer la page sans la recharger.",
-     "w": "18f2ac13",
-     "wq": "6611544c"
+     "answer": "La représentation de la page en arbre d'éléments",
+     "w": [
+      "86e563de",
+      "18f2ac13"
+     ],
+     "more": "JavaScript peut le lire et le modifier sans recharger la page.",
+     "wrongs": [
+      "Un serveur web",
+      "Un nom de domaine",
+      "Un langage de style"
+     ]
     },
     {
-     "question": "Décrire le modèle client-serveur sur le Web.",
-     "answer": "1. Le client (navigateur) envoie une requête au serveur.\n2. Le serveur renvoie une réponse (page HTML, image, données).\n3. Le client l'affiche.",
-     "w": "66c375b1",
-     "wq": "331fe85e"
+     "question": "Dans le modèle client-serveur, qui envoie la requête ?",
+     "answer": "Le client (navigateur)",
+     "w": [
+      "c5c12114",
+      "66c375b1"
+     ],
+     "wq": "331fe85e",
+     "wrongs": [
+      "Le serveur",
+      "Le routeur",
+      "Le DNS"
+     ]
     },
     {
-     "question": "De quoi se compose une URL comme https://www.exemple.fr/recherche?mot=chat ?",
-     "answer": "• Protocole : https\n• Nom de domaine : www.exemple.fr\n• Chemin : /recherche\n• Paramètres après « ? » : mot=chat",
-     "w": "6249602d",
-     "wq": "cfb4686b"
+     "question": "Dans https://www.exemple.fr/recherche?mot=chat, que représente « mot=chat » ?",
+     "answer": "Un paramètre",
+     "w": [
+      "29d19eee",
+      "6249602d"
+     ],
+     "wq": "cfb4686b",
+     "more": "Protocole https, domaine www.exemple.fr, chemin /recherche.",
+     "wrongs": [
+      "Le nom de domaine",
+      "Le protocole",
+      "Le chemin"
+     ]
     },
     {
      "question": "Que contient une requête HTTP ?",
-     "answer": "• Une méthode (GET, POST…)\n• Le chemin de la ressource\n• La version du protocole\n• Des en-têtes (navigateur, langue…)\n• Éventuellement un corps (données envoyées)",
-     "w": "ab192891",
-     "wq": "759100fd"
+     "answer": "Une méthode, un chemin et des en-têtes",
+     "w": [
+      "cf0267cb",
+      "ab192891"
+     ],
+     "more": "Et éventuellement un corps.",
+     "wrongs": [
+      "Seulement l'adresse IP",
+      "Seulement la page HTML",
+      "Un code de statut"
+     ]
     },
     {
-     "question": "Que contient une réponse HTTP ?",
-     "answer": "• Une ligne de statut avec un code (ex. : 200)\n• Des en-têtes (type de contenu…)\n• Un corps avec la ressource demandée",
-     "w": "033123b6",
-     "wq": "7a879ab3"
+     "question": "Que contient la première ligne d'une réponse HTTP ?",
+     "answer": "Un code de statut",
+     "w": [
+      "a1b603f8",
+      "033123b6"
+     ],
+     "wq": "7a879ab3",
+     "more": "Ex. : 200 ; puis des en-têtes et un corps.",
+     "wrongs": [
+      "La méthode GET",
+      "Le mot de passe",
+      "Le nom du client"
+     ]
     },
     {
-     "question": "Que signifient les codes HTTP 200, 404 et 500 ?",
-     "answer": "• 200 : requête réussie\n• 404 : ressource introuvable\n• 500 : erreur interne du serveur\n(3xx : redirection)",
-     "w": "61cd34de",
-     "wq": "82c75eb7"
+     "question": "Que signifie le code HTTP 404 ?",
+     "answer": "Ressource introuvable",
+     "w": [
+      "2b28c942",
+      "61cd34de"
+     ],
+     "wq": "82c75eb7",
+     "more": "200 : réussie ; 500 : erreur interne du serveur.",
+     "wrongs": [
+      "Requête réussie",
+      "Erreur interne du serveur",
+      "Redirection"
+     ]
     },
     {
-     "question": "Quels attributs de la balise form indiquent où et comment envoyer les données ?",
-     "answer": "• action : l'adresse du programme qui traitera les données\n• method : la méthode HTTP (get ou post)\nChaque champ input est identifié par son attribut name.",
-     "w": "ad1bbfe7",
-     "wq": "c1824525"
+     "question": "Quel attribut de la balise form indique l'adresse qui traitera les données ?",
+     "answer": "action",
+     "w": [
+      "65542a7d",
+      "ad1bbfe7"
+     ],
+     "wq": "c1824525",
+     "more": "method indique get ou post ; chaque input a un name.",
+     "wrongs": [
+      "method",
+      "name",
+      "href"
+     ]
     },
     {
-     "question": "Comment les données d'un formulaire sont-elles transmises avec la méthode GET ?",
-     "answer": "Ajoutées à l'URL : ?nom1=valeur1&nom2=valeur2\nVisibles, enregistrées dans l'historique, de taille limitée.",
-     "w": "e8e4bb71",
-     "wq": "7e62ec1c"
+     "question": "Avec la méthode GET, où sont transmises les données d'un formulaire ?",
+     "answer": "Dans l'URL",
+     "w": [
+      "17803d64",
+      "e8e4bb71"
+     ],
+     "wq": "7e62ec1c",
+     "more": "Visibles et enregistrées dans l'historique.",
+     "wrongs": [
+      "Dans le corps de la requête",
+      "Dans un cookie",
+      "Elles ne sont pas transmises"
+     ]
     },
     {
-     "question": "Comment les données d'un formulaire sont-elles transmises avec la méthode POST ?",
-     "answer": "Dans le corps de la requête, absentes de l'URL.\nPour des données volumineuses\nou qui modifient l'état du serveur.",
-     "w": "a4aa40bf",
-     "wq": "17f0efc4"
+     "question": "Avec la méthode POST, où sont transmises les données ?",
+     "answer": "Dans le corps de la requête",
+     "w": [
+      "e584620c",
+      "a4aa40bf"
+     ],
+     "wq": "17f0efc4",
+     "wrongs": [
+      "Dans l'URL",
+      "Dans le nom de domaine",
+      "Dans le code de statut"
+     ]
     },
     {
-     "question": "La méthode POST suffit-elle à protéger un mot de passe ?",
-     "answer": "Non : sans chiffrement, les données circulent en clair.\nIl faut HTTPS, qui chiffre les échanges (protocole TLS).",
-     "w": "c880dd12",
-     "wq": "a39e428b"
+     "question": "Qu'est-ce qui protège vraiment un mot de passe envoyé ?",
+     "answer": "HTTPS",
+     "w": [
+      "8af61f83",
+      "c880dd12"
+     ],
+     "wq": "a39e428b",
+     "more": "POST seul ne chiffre rien ; HTTPS chiffre avec TLS.",
+     "wrongs": [
+      "La méthode POST",
+      "La méthode GET",
+      "Un cookie"
+     ]
     },
     {
-     "question": "Quelle est la différence entre une page statique et une page dynamique ?",
-     "answer": "Statique : envoyée telle qu'elle est stockée sur le serveur.\nDynamique : générée par un programme côté serveur (PHP, Python…)\nselon la requête, par exemple depuis une base de données.",
-     "w": "b7039b56",
-     "wq": "d130cc00"
+     "question": "Qu'est-ce qu'une page dynamique ?",
+     "answer": "Une page générée par un programme côté serveur",
+     "w": [
+      "68fc0722",
+      "b7039b56"
+     ],
+     "wq": "d130cc00",
+     "more": "Une page statique est envoyée telle qu'elle est stockée.",
+     "wrongs": [
+      "Une page avec des animations",
+      "Une page qui ne change jamais",
+      "Une page sans HTML"
+     ]
     },
     {
-     "question": "Quelle différence entre un traitement côté client et côté serveur ?",
-     "answer": "Client : le code (JavaScript) s'exécute dans le navigateur.\nServeur : le code s'exécute sur la machine distante,\navant l'envoi de la réponse.",
-     "w": "e25b8e40",
-     "wq": "e9dd146f"
+     "question": "Où s'exécute le code JavaScript d'une page ?",
+     "answer": "Dans le navigateur (côté client)",
+     "w": [
+      "903bc1be",
+      "e25b8e40"
+     ],
+     "wq": "e9dd146f",
+     "wrongs": [
+      "Sur le serveur",
+      "Dans le DNS",
+      "Dans le routeur"
+     ]
     },
     {
      "question": "Pourquoi utilise-t-on des cookies ?",
-     "answer": "HTTP ne garde aucune mémoire d'une requête à l'autre.\nLes cookies, stockés par le navigateur et renvoyés au serveur,\nconservent par exemple une session ou un panier.",
-     "w": "e5337f7e",
-     "wq": "a6db44c5"
+     "answer": "HTTP ne garde aucune mémoire entre deux requêtes",
+     "w": [
+      "0bb59e7f",
+      "e5337f7e"
+     ],
+     "more": "Ils conservent par exemple une session ou un panier.",
+     "wrongs": [
+      "Pour accélérer le réseau",
+      "Pour chiffrer les données",
+      "Pour afficher les images"
+     ]
     }
    ]
   },
@@ -113142,106 +113566,253 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "À quoi sert le diagramme des exigences en SysML ?",
-     "answer": "Il liste et organise les exigences du produit\n(fonctions, performances, contraintes),\navec parfois des valeurs chiffrées.",
-     "w": "6cf43ad3",
-     "wq": "0be3652c"
+     "question": "Quel diagramme SysML liste les exigences du produit ?",
+     "answer": "Le diagramme des exigences",
+     "w": [
+      "3bd17646",
+      "6cf43ad3"
+     ],
+     "wq": "0be3652c",
+     "wrongs": [
+      "Le diagramme des cas d'utilisation",
+      "Le diagramme de blocs internes",
+      "Le schéma cinématique"
+     ]
     },
     {
-     "question": "Que représente le diagramme des cas d'utilisation ?",
-     "answer": "• Les services rendus par le système\n• Les acteurs qui interagissent avec lui (utilisateurs, autres systèmes)",
-     "w": "13aeba0f",
-     "wq": "d7230b25"
+     "question": "Quel diagramme SysML montre les services rendus et les acteurs ?",
+     "answer": "Le diagramme des cas d'utilisation",
+     "w": [
+      "75586704",
+      "13aeba0f"
+     ],
+     "wq": "d7230b25",
+     "wrongs": [
+      "Le diagramme des exigences",
+      "Le diagramme de définition de blocs",
+      "Le schéma cinématique"
+     ]
     },
     {
-     "question": "Que décrivent les diagrammes de définition de blocs et de blocs internes ?",
-     "answer": "Définition de blocs : la composition du système (ses constituants).\nBlocs internes : les échanges de matière, d'énergie et d'information\nentre ces constituants.",
-     "w": "7ec28d93",
-     "wq": "d01efdcc"
+     "question": "Quel diagramme décrit les échanges d'énergie et d'information entre constituants ?",
+     "answer": "Le diagramme de blocs internes",
+     "w": [
+      "66f054e0",
+      "7ec28d93"
+     ],
+     "wq": "d01efdcc",
+     "more": "Le diagramme de définition de blocs décrit la composition.",
+     "wrongs": [
+      "Le diagramme des exigences",
+      "Le diagramme des cas d'utilisation",
+      "Le diagramme de définition de blocs"
+     ]
     },
     {
-     "question": "Quelles sont les fonctions de la chaîne de puissance ?",
-     "answer": "• Alimenter\n• Moduler (distribuer)\n• Convertir\n• Transmettre\n… pour agir sur la matière d'œuvre.",
-     "w": "4338930d",
-     "wq": "35ed7f39"
+     "question": "« Convertir » est une fonction de quelle chaîne ?",
+     "answer": "La chaîne de puissance",
+     "w": [
+      "ef705998",
+      "4338930d"
+     ],
+     "wq": "35ed7f39",
+     "more": "Alimenter, moduler, convertir, transmettre.",
+     "wrongs": [
+      "La chaîne d'information",
+      "Les deux",
+      "Aucune"
+     ]
     },
     {
-     "question": "Quelles sont les fonctions de la chaîne d'information ?",
-     "answer": "• Acquérir : capteurs, interface\n• Traiter : microcontrôleur\n• Communiquer : ordres à la chaîne de puissance,\nmessages à l'utilisateur ou à d'autres systèmes",
-     "w": "2084c0cc",
-     "wq": "4014b960"
+     "question": "« Acquérir » est une fonction de quelle chaîne ?",
+     "answer": "La chaîne d'information",
+     "w": [
+      "8a44f753",
+      "2084c0cc"
+     ],
+     "wq": "4014b960",
+     "more": "Acquérir, traiter, communiquer.",
+     "wrongs": [
+      "La chaîne de puissance",
+      "Les deux",
+      "Aucune"
+     ]
     },
     {
-     "question": "Quel est le rôle d'un capteur ? Donner un exemple.",
-     "answer": "Convertir une grandeur physique\nen signal exploitable par la chaîne d'information.\nEx. : une thermistance (résistance qui varie avec la température)",
-     "w": "5544a82a",
-     "wq": "bdc80188"
+     "question": "Quel est le rôle d'un capteur ?",
+     "answer": "Convertir une grandeur physique en signal exploitable",
+     "w": [
+      "3effa79d",
+      "5544a82a"
+     ],
+     "wq": "bdc80188",
+     "more": "Ex. : une thermistance.",
+     "wrongs": [
+      "Fournir l'énergie",
+      "Mettre en mouvement",
+      "Traiter l'information"
+     ]
     },
     {
-     "question": "Quels constituants assurent les fonctions « moduler » et « convertir » ?",
-     "answer": "• Moduler : un préactionneur (variateur, relais, contacteur)\n• Convertir : un actionneur (moteur, vérin),\nex. électrique → mécanique",
-     "w": "cef73d5f",
-     "wq": "e6a0de30"
+     "question": "Quel constituant assure la fonction « convertir » ?",
+     "answer": "Un actionneur",
+     "w": [
+      "a8d93f35",
+      "cef73d5f"
+     ],
+     "wq": "e6a0de30",
+     "more": "Ex. : moteur, vérin. « Moduler » : un préactionneur (variateur, relais).",
+     "wrongs": [
+      "Un préactionneur",
+      "Un capteur",
+      "Un microcontrôleur"
+     ]
     },
     {
-     "question": "Comment s'écrit la puissance à l'aide de grandeurs effort et flux ?",
-     "answer": "P = effort × flux\n• Électrique : P = U × I\n• Translation : P = F × v\n• Rotation : P = C × ω\n• Hydraulique : P = p × qv",
-     "w": "8cca16a7",
-     "wq": "f5b92140"
+     "question": "Comment s'écrit la puissance en rotation ?",
+     "answer": "P = C × ω",
+     "w": [
+      "1819212c",
+      "8cca16a7"
+     ],
+     "wq": "f5b92140",
+     "more": "Électrique : U × I ; translation : F × v.",
+     "wrongs": [
+      "P = F × v",
+      "P = U × I",
+      "P = C / ω"
+     ]
     },
     {
-     "question": "Comment convertir une fréquence de rotation N (tr/min) en vitesse angulaire ω (rad/s) ?",
-     "answer": "ω = 2π × N / 60\nEx. : 3 000 tr/min → ω ≈ 314 rad/s",
-     "w": "975a0281",
-     "wq": "4e02128f"
+     "question": "Comment convertir N (tr/min) en ω (rad/s) ?",
+     "answer": "ω = 2π × N / 60",
+     "w": [
+      "92e463f9",
+      "975a0281"
+     ],
+     "wq": "4e02128f",
+     "more": "3 000 tr/min → ω ≈ 314 rad/s.",
+     "wrongs": [
+      "ω = N / 60",
+      "ω = 2π × N",
+      "ω = 60 × N / 2π"
+     ]
     },
     {
-     "question": "Quelle est la puissance mécanique d'un moteur fournissant un couple de 2 N·m à 100 rad/s ?",
-     "answer": "200 W\nP = C × ω = 2 × 100",
-     "w": "09218c48",
-     "wq": "67292448"
+     "question": "Quelle puissance pour un couple de 2 N·m à 100 rad/s ?",
+     "answer": "200 W",
+     "w": [
+      "7cfde743",
+      "09218c48"
+     ],
+     "wq": "67292448",
+     "wrongs": [
+      "50 W",
+      "102 W",
+      "20 W"
+     ]
     },
     {
      "question": "Comment définit-on le rendement d'un constituant ?",
-     "answer": "η = puissance utile / puissance absorbée\nSans unité, toujours inférieur à 1.\nLa différence est dissipée, surtout en chaleur.",
-     "w": "6a98511a",
-     "wq": "b6d173fd"
+     "answer": "Puissance utile / puissance absorbée",
+     "w": [
+      "06d203d1",
+      "6a98511a"
+     ],
+     "more": "Sans unité, toujours inférieur à 1.",
+     "wrongs": [
+      "Puissance absorbée / puissance utile",
+      "Puissance utile − pertes",
+      "Énergie × temps"
+     ]
     },
     {
-     "question": "Quel est le rendement global d'une chaîne moteur (η = 0,8) + réducteur (η = 0,9) ?",
-     "answer": "72 %\nLes rendements se multiplient : 0,8 × 0,9 = 0,72",
-     "w": "bbe9ca68",
-     "wq": "5b0f73a2"
+     "question": "Moteur (η = 0,8) + réducteur (η = 0,9) : quel rendement global ?",
+     "answer": "72 %",
+     "w": [
+      "bae2c5b7",
+      "bbe9ca68"
+     ],
+     "wq": "5b0f73a2",
+     "more": "Les rendements se multiplient.",
+     "wrongs": [
+      "85 %",
+      "170 %",
+      "10 %"
+     ]
     },
     {
-     "question": "Quelle est la différence entre un signal analogique et un signal numérique ?",
-     "answer": "Analogique : varie de façon continue.\nNumérique : un nombre fini de valeurs codées en binaire.",
-     "w": "a4bcf555",
-     "wq": "3bf8eb7c"
+     "question": "Quel signal ne prend qu'un nombre fini de valeurs codées en binaire ?",
+     "answer": "Le signal numérique",
+     "w": [
+      "71f8284f",
+      "a4bcf555"
+     ],
+     "wq": "3bf8eb7c",
+     "more": "Le signal analogique varie de façon continue.",
+     "wrongs": [
+      "Le signal analogique",
+      "Le signal sinusoïdal",
+      "Le signal continu"
+     ]
     },
     {
-     "question": "Combien de valeurs un convertisseur analogique-numérique de n bits peut-il fournir, et quel est son quantum ?",
-     "answer": "2ⁿ valeurs\nQuantum = plage de mesure ÷ 2ⁿ\nEx. : 10 bits sur 0-5 V → 1 024 valeurs, quantum ≈ 4,9 mV",
-     "w": "c7ed0325",
-     "wq": "c701673c"
+     "question": "Combien de valeurs fournit un convertisseur analogique-numérique de 10 bits ?",
+     "answer": "1 024",
+     "w": [
+      "c5eba6b5",
+      "c7ed0325"
+     ],
+     "wq": "c701673c",
+     "more": "2ⁿ valeurs ; quantum = plage ÷ 2ⁿ.",
+     "wrongs": [
+      "10",
+      "100",
+      "1 000"
+     ]
     },
     {
-     "question": "Qu'appelle-t-on degrés de liberté d'une liaison mécanique ?",
-     "answer": "Les mouvements relatifs possibles entre deux pièces :\nau maximum 6 (3 translations, 3 rotations).\nUne liaison encastrement n'en laisse aucun.",
-     "w": "3fea3939",
-     "wq": "f6fbb77b"
+     "question": "Combien de degrés de liberté laisse une liaison encastrement ?",
+     "answer": "0",
+     "w": [
+      "19f174c0",
+      "3fea3939"
+     ],
+     "wq": "f6fbb77b",
+     "more": "6 au maximum : 3 translations et 3 rotations.",
+     "wrongs": [
+      "1",
+      "3",
+      "6"
+     ]
     },
     {
-     "question": "Quels mouvements autorisent les liaisons pivot, glissière et pivot glissant ?",
-     "answer": "• Pivot : une rotation autour d'un axe\n• Glissière : une translation selon un axe\n• Pivot glissant : une rotation et une translation selon le même axe",
-     "w": "6b04c09b",
-     "wq": "06a7f001"
+     "question": "Quel mouvement autorise une liaison glissière ?",
+     "answer": "Une translation selon un axe",
+     "w": [
+      "8f232bdf",
+      "6b04c09b"
+     ],
+     "wq": "06a7f001",
+     "more": "Pivot : une rotation ; pivot glissant : rotation et translation.",
+     "wrongs": [
+      "Une rotation autour d'un axe",
+      "Aucun mouvement",
+      "Tous les mouvements"
+     ]
     },
     {
      "question": "À quoi sert un schéma cinématique ?",
-     "answer": "Représenter un mécanisme de façon simplifiée,\navec les symboles normalisés des liaisons\nentre ses classes d'équivalence, pour analyser ses mouvements.",
-     "w": "4f24995d",
-     "wq": "f9125a99"
+     "answer": "Représenter un mécanisme simplifié pour analyser ses mouvements",
+     "w": [
+      "9eb36e3e",
+      "4f24995d"
+     ],
+     "wrongs": [
+      "Calculer le prix du système",
+      "Programmer le microcontrôleur",
+      "Lister les exigences"
+     ]
     }
    ]
   },
@@ -113265,97 +113836,231 @@
    "cards": [
     {
      "question": "Que désigne la composée g∘u ?",
-     "answer": "La fonction x ↦ g(u(x)) :\non applique u, puis g au résultat.\nDéfinie pour les x tels que u(x) est dans le domaine de g.",
-     "w": "9801a651",
-     "wq": "438c7356"
+     "answer": "x ↦ g(u(x))",
+     "w": [
+      "3d56bf34",
+      "9801a651"
+     ],
+     "more": "On applique u, puis g.",
+     "wrongs": [
+      "x ↦ u(g(x))",
+      "x ↦ g(x) × u(x)",
+      "x ↦ g(x) + u(x)"
+     ]
     },
     {
-     "question": "Décomposer h(x) = √(x² + 1).",
-     "answer": "h = g∘u\n• u(x) = x² + 1\n• g(X) = √X",
-     "w": "813dcd91",
-     "wq": "62e99e65"
+     "question": "Si h(x) = √(x² + 1) = g(u(x)), que vaut u(x) ?",
+     "answer": "x² + 1",
+     "w": [
+      "def398f5",
+      "813dcd91"
+     ],
+     "wq": "62e99e65",
+     "more": "Et g(X) = √X.",
+     "wrongs": [
+      "√x",
+      "x²",
+      "√(x² + 1)"
+     ]
     },
     {
      "question": "A-t-on en général g∘u = u∘g ?",
-     "answer": "Non.\nEx. : u(x) = x + 1, g(x) = x²\ng(u(x)) = (x + 1)² mais u(g(x)) = x² + 1",
-     "w": "ddcfc1f0",
-     "wq": "3178535a"
+     "answer": "Non",
+     "w": [
+      "e4e470da",
+      "ddcfc1f0"
+     ],
+     "more": "u(x) = x + 1, g(x) = x² : (x + 1)² ≠ x² + 1.",
+     "wrongs": [
+      "Oui, toujours",
+      "Oui, pour les fonctions affines",
+      "Oui, si g = u"
+     ]
     },
     {
-     "question": "Quelle est la formule de dérivation de g∘u ?",
-     "answer": "(g∘u)' = u' × (g'∘u)\nc'est-à-dire (g∘u)'(x) = u'(x) × g'(u(x))\n(u dérivable sur I, g dérivable sur un intervalle contenant u(I))",
-     "w": "d8f88149",
-     "wq": "a3237396"
+     "question": "Quelle est la dérivée de g∘u ?",
+     "answer": "u' × (g'∘u)",
+     "w": [
+      "e24cd5c0",
+      "d8f88149"
+     ],
+     "wq": "a3237396",
+     "wrongs": [
+      "g' × (u'∘g)",
+      "g'∘u'",
+      "u' × g'"
+     ]
     },
     {
-     "question": "Quelle est la dérivée de x ↦ g(ax + b) ?",
-     "answer": "x ↦ a × g'(ax + b)\nEx. : (cos(3x + 1))' = −3 sin(3x + 1)",
-     "w": "ed214b14",
-     "wq": "a1137432"
+     "question": "Quelle est la dérivée de x ↦ cos(3x + 1) ?",
+     "answer": "−3 sin(3x + 1)",
+     "w": [
+      "6e22a83a",
+      "ed214b14"
+     ],
+     "wq": "a1137432",
+     "wrongs": [
+      "3 sin(3x + 1)",
+      "−sin(3x + 1)",
+      "3 cos(3x + 1)"
+     ]
     },
     {
-     "question": "Quelle est la dérivée de e^u ?",
-     "answer": "(e^u)' = u' e^u\nEx. : (e^(x²))' = 2x e^(x²)",
-     "w": "ac6e5b50",
-     "wq": "f59ab9ba"
+     "question": "Quelle est la dérivée de x ↦ e^(x²) ?",
+     "answer": "2x e^(x²)",
+     "w": [
+      "d6b2d2ca",
+      "ac6e5b50"
+     ],
+     "wq": "f59ab9ba",
+     "more": "(e^u)' = u' e^u",
+     "wrongs": [
+      "e^(x²)",
+      "x² e^(x²−1)",
+      "2x e^x"
+     ]
     },
     {
-     "question": "Quelle est la dérivée de ln(u), avec u > 0 ?",
-     "answer": "(ln u)' = u'/u\nEx. : (ln(x² + 1))' = 2x/(x² + 1)",
-     "w": "1e618bae",
-     "wq": "8f9ff1b2"
+     "question": "Quelle est la dérivée de x ↦ ln(x² + 1) ?",
+     "answer": "2x / (x² + 1)",
+     "w": [
+      "bdb498cc",
+      "1e618bae"
+     ],
+     "wq": "8f9ff1b2",
+     "more": "(ln u)' = u'/u",
+     "wrongs": [
+      "1 / (x² + 1)",
+      "2x ln(x² + 1)",
+      "1 / 2x"
+     ]
     },
     {
-     "question": "Quelle est la dérivée de √u, avec u > 0 ?",
-     "answer": "(√u)' = u'/(2√u)\nEx. : (√(3x + 4))' = 3/(2√(3x + 4))",
-     "w": "0b4d2074",
-     "wq": "c1712f19"
+     "question": "Quelle est la dérivée de √u (u > 0) ?",
+     "answer": "u' / (2√u)",
+     "w": [
+      "9a72a400",
+      "0b4d2074"
+     ],
+     "wq": "c1712f19",
+     "wrongs": [
+      "1 / (2√u)",
+      "u' √u",
+      "2u' / √u"
+     ]
     },
     {
-     "question": "Quelle est la dérivée de u^n (n entier non nul) ?",
-     "answer": "(uⁿ)' = n u' uⁿ⁻¹\n(pour n < 0 : là où u ne s'annule pas)\nEx. : ((2x + 1)⁵)' = 10(2x + 1)⁴",
-     "w": "cf0eb123",
-     "wq": "9ad60cbf"
+     "question": "Quelle est la dérivée de x ↦ (2x + 1)⁵ ?",
+     "answer": "10(2x + 1)⁴",
+     "w": [
+      "7f17a355",
+      "cf0eb123"
+     ],
+     "wq": "9ad60cbf",
+     "more": "(uⁿ)' = n u' uⁿ⁻¹",
+     "wrongs": [
+      "5(2x + 1)⁴",
+      "10(2x + 1)⁵",
+      "2(2x + 1)⁴"
+     ]
     },
     {
      "question": "Quelle est la dérivée de 1/u ?",
-     "answer": "(1/u)' = −u'/u²\nlà où u ne s'annule pas.",
-     "w": "92786fac",
-     "wq": "b7c0a17b"
+     "answer": "−u' / u²",
+     "w": [
+      "157cbd73",
+      "92786fac"
+     ],
+     "wrongs": [
+      "1 / u'",
+      "u' / u²",
+      "−1 / u²"
+     ]
     },
     {
-     "question": "Quelles sont les dérivées de cos(u) et sin(u) ?",
-     "answer": "• (cos u)' = −u' sin u\n• (sin u)' = u' cos u",
-     "w": "8afad2a7",
-     "wq": "7c057055"
+     "question": "Quelle est la dérivée de sin(u) ?",
+     "answer": "u' cos u",
+     "w": [
+      "3cc5bbf8",
+      "8afad2a7"
+     ],
+     "wq": "7c057055",
+     "more": "(cos u)' = −u' sin u",
+     "wrongs": [
+      "−u' cos u",
+      "cos u",
+      "u' sin u"
+     ]
     },
     {
-     "question": "Comment obtient-on le sens de variation d'une fonction dérivable ?",
-     "answer": "Par le signe de f' :\n• f' ≥ 0 : f croissante\n• f' ≤ 0 : f décroissante\n(stricte si f' ne s'annule qu'en des points isolés)",
-     "w": "4addc17c",
-     "wq": "259f32ed"
+     "question": "Si f' ≥ 0 sur un intervalle, comment est f ?",
+     "answer": "Croissante",
+     "w": [
+      "446ca58e",
+      "4addc17c"
+     ],
+     "wq": "259f32ed",
+     "wrongs": [
+      "Décroissante",
+      "Constante",
+      "Positive"
+     ]
     },
     {
-     "question": "Quel est le sens de variation de g∘u si u et g ont le même sens de variation ?",
-     "answer": "• Même sens de variation : g∘u croissante\n• Sens contraires : g∘u décroissante",
-     "w": "8adc9175",
-     "wq": "7ebdc5c7"
+     "question": "Si u et g ont des sens de variation contraires, comment est g∘u ?",
+     "answer": "Décroissante",
+     "w": [
+      "be66eb0e",
+      "8adc9175"
+     ],
+     "wq": "7ebdc5c7",
+     "more": "Même sens : croissante.",
+     "wrongs": [
+      "Croissante",
+      "Constante",
+      "On ne peut pas savoir"
+     ]
     },
     {
-     "question": "Pourquoi x ↦ e^(−x²) est-elle croissante sur ]−∞ ; 0] ?",
-     "answer": "Sa dérivée vaut −2x e^(−x²),\npositive pour x ≤ 0 car e^(−x²) > 0.",
-     "w": "0aaa4bc1",
-     "wq": "feddeb35"
+     "question": "x ↦ e^(−x²) est-elle croissante sur ]−∞ ; 0] ?",
+     "answer": "Oui",
+     "w": [
+      "88d736ef",
+      "0aaa4bc1"
+     ],
+     "wq": "feddeb35",
+     "more": "Sa dérivée −2x e^(−x²) est positive pour x ≤ 0.",
+     "wrongs": [
+      "Non, décroissante",
+      "Non, constante",
+      "Non, elle n'est pas dérivable"
+     ]
     },
     {
-     "question": "Qu'appelle-t-on dérivée seconde ?",
-     "answer": "La dérivée de la dérivée : f'' = (f')'\nEx. : f(x) = x³ → f'(x) = 3x² → f''(x) = 6x",
-     "w": "bca4ed48",
-     "wq": "ae60dd52"
+     "question": "Si f(x) = x³, que vaut f''(x) ?",
+     "answer": "6x",
+     "w": [
+      "9a40b768",
+      "bca4ed48"
+     ],
+     "wq": "ae60dd52",
+     "more": "f'' = (f')' ; f'(x) = 3x².",
+     "wrongs": [
+      "3x²",
+      "6",
+      "x"
+     ]
     },
     {
-     "question": "Quelle est l'équation de la tangente à la courbe de f au point d'abscisse a ?",
-     "answer": "y = f'(a)(x − a) + f(a)."
+     "question": "Quelle est l'équation de la tangente au point d'abscisse a ?",
+     "answer": "y = f'(a)(x − a) + f(a)",
+     "w": "7fccb0f3",
+     "wq": "e465dc56",
+     "wrongs": [
+      "y = f(a)(x − a) + f'(a)",
+      "y = f'(a)x + a",
+      "y = f'(x)(x − a)"
+     ]
     }
    ]
   },
@@ -113378,100 +114083,249 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Comment créer en Python la liste des carrés des entiers de 0 à 9 en compréhension ?",
-     "answer": "L = [k**2 for k in range(10)]\n→ [0, 1, 4, …, 81]",
-     "w": "35a70171",
-     "wq": "1150bb50"
+     "question": "Quelle instruction crée la liste des carrés de 0 à 9 ?",
+     "answer": "[k**2 for k in range(10)]",
+     "w": [
+      "21949d31",
+      "35a70171"
+     ],
+     "wq": "1150bb50",
+     "wrongs": [
+      "[k*2 for k in range(10)]",
+      "[k**2 for k in range(9)]",
+      "range(k**2, 10)"
+     ]
     },
     {
      "question": "Que fait L.append(x) ?",
-     "answer": "Elle ajoute x\nà la fin de la liste L.",
-     "w": "6de5a511",
-     "wq": "e9b9b036"
+     "answer": "Ajoute x à la fin de L",
+     "w": [
+      "f936422c",
+      "6de5a511"
+     ],
+     "wrongs": [
+      "Ajoute x au début de L",
+      "Supprime x de L",
+      "Renvoie la position de x"
+     ]
     },
     {
-     "question": "Que renvoient len(L) et L[0] ?",
-     "answer": "• len(L) : le nombre d'éléments\n• L[0] : le premier élément (indices à partir de 0)\n• L[-1] : le dernier",
-     "w": "475c6798",
-     "wq": "aa011d36"
+     "question": "Que renvoie len(L) ?",
+     "answer": "Le nombre d'éléments de L",
+     "w": [
+      "b05b19fd",
+      "475c6798"
+     ],
+     "wq": "aa011d36",
+     "wrongs": [
+      "Le dernier élément",
+      "La somme des éléments",
+      "Le plus grand élément"
+     ]
+    },
+    {
+     "question": "Que renvoie L[0] ?",
+     "answer": "Le premier élément",
+     "more": "Les indices commencent à 0 ; L[-1] est le dernier.",
+     "wrongs": [
+      "Le dernier élément",
+      "Une erreur",
+      "Le nombre d'éléments"
+     ]
     },
     {
      "question": "Que contient range(2, 8) ?",
-     "answer": "2, 3, 4, 5, 6, 7\nLa borne de fin est exclue.",
-     "w": "80aff49c",
-     "wq": "eeb32c77"
+     "answer": "2, 3, 4, 5, 6, 7",
+     "w": [
+      "43ab07cc",
+      "80aff49c"
+     ],
+     "more": "La borne de fin est exclue.",
+     "wrongs": [
+      "2, 3, 4, 5, 6, 7, 8",
+      "3, 4, 5, 6, 7, 8",
+      "2, 8"
+     ]
     },
     {
-     "question": "Quelle est la structure d'un algorithme de seuil pour une suite croissante (u0 = 1, u(n+1) = 1,05 un) ?",
-     "answer": "n = 0 ; u = 1\nwhile u <= S :\n    u = 1.05*u ; n = n + 1\nOn renvoie n, le premier rang où uₙ dépasse S.",
-     "w": "96c601e3",
-     "wq": "ddba8146"
+     "question": "Dans un algorithme de seuil, quelle condition de boucle utilise-t-on pour une suite croissante ?",
+     "answer": "while u <= S",
+     "w": [
+      "492730dd",
+      "96c601e3"
+     ],
+     "wq": "ddba8146",
+     "more": "On renvoie n, le premier rang où uₙ dépasse S.",
+     "wrongs": [
+      "while u > S",
+      "for u in S",
+      "if u == S"
+     ]
     },
     {
-     "question": "Pourquoi utilise-t-on une boucle while et non for dans un algorithme de seuil ?",
-     "answer": "On ne connaît pas à l'avance le nombre d'itérations :\non répète tant que la condition est vraie.",
-     "w": "e81e28aa",
-     "wq": "6ab39200"
+     "question": "Pourquoi utilise-t-on while dans un algorithme de seuil ?",
+     "answer": "On ne connaît pas le nombre d'itérations",
+     "w": [
+      "56378466",
+      "e81e28aa"
+     ],
+     "wq": "6ab39200",
+     "wrongs": [
+      "for n'existe pas en Python",
+      "while est plus rapide",
+      "Pour éviter les listes"
+     ]
     },
     {
-     "question": "Comment calculer la somme u0 + u1 + … + un avec une boucle ?",
-     "answer": "s = 0\npour k dans range(n+1) : on ajoute uₖ à s\nOn renvoie s.",
-     "w": "9cdea058",
-     "wq": "ab7c15e0"
+     "question": "Pour calculer u0 + … + un, avec quelle valeur initialise-t-on s ?",
+     "answer": "0",
+     "w": [
+      "f41b9fcf",
+      "9cdea058"
+     ],
+     "wq": "ab7c15e0",
+     "more": "Puis on ajoute uₖ pour k dans range(n+1).",
+     "wrongs": [
+      "1",
+      "u0",
+      "n"
+     ]
     },
     {
-     "question": "Quel est le principe de la dichotomie pour résoudre f(x) = 0 sur [a ; b] ?",
-     "answer": "Si f est continue et f(a), f(b) de signes contraires :\n1. calculer m = (a + b)/2\n2. garder la moitié où f change de signe\n3. recommencer jusqu'à b − a < précision",
-     "w": "c6f2f364",
-     "wq": "f7b412ec"
+     "question": "En dichotomie sur [a ; b], quelle moitié garde-t-on ?",
+     "answer": "Celle où f change de signe",
+     "w": [
+      "9dd82d8d",
+      "c6f2f364"
+     ],
+     "wq": "f7b412ec",
+     "more": "m = (a + b)/2.",
+     "wrongs": [
+      "Toujours la gauche",
+      "La plus grande",
+      "Celle où f est positive"
+     ]
     },
     {
-     "question": "Combien d'étapes de dichotomie faut-il pour passer d'un intervalle de longueur 1 à une longueur inférieure à 10^(−3) ?",
-     "answer": "10 étapes\nLa longueur est divisée par 2 à chaque étape :\n2¹⁰ = 1 024 > 1 000",
-     "w": "be227b08",
-     "wq": "53f5897b"
+     "question": "Combien d'étapes de dichotomie pour passer de 1 à moins de 10⁻³ ?",
+     "answer": "10",
+     "w": [
+      "54cf58e3",
+      "be227b08"
+     ],
+     "wq": "53f5897b",
+     "more": "2¹⁰ = 1 024 > 1 000",
+     "wrongs": [
+      "3",
+      "100",
+      "1 000"
+     ]
     },
     {
      "question": "Que renvoie random() du module random ?",
-     "answer": "random() : un réel pseudo-aléatoire de [0 ; 1[\nrandint(a, b) : un entier entre a et b inclus",
-     "w": "a2b1ca0c",
-     "wq": "3d74865b"
+     "answer": "Un réel de [0 ; 1[",
+     "w": [
+      "0eb02f8b",
+      "a2b1ca0c"
+     ],
+     "wrongs": [
+      "Un entier de 0 à 10",
+      "Un réel de [0 ; 1]",
+      "0 ou 1"
+     ]
+    },
+    {
+     "question": "Que renvoie randint(a, b) ?",
+     "answer": "Un entier entre a et b inclus",
+     "wrongs": [
+      "Un entier entre a et b exclu",
+      "Un réel entre a et b",
+      "a ou b"
+     ]
     },
     {
      "question": "Comment simuler une épreuve de Bernoulli de paramètre p ?",
-     "answer": "if random() < p : succès (1)\nsinon : échec (0)",
-     "w": "586ea90c",
-     "wq": "5477c004"
+     "answer": "Succès si random() < p",
+     "w": [
+      "b36bbe87",
+      "586ea90c"
+     ],
+     "wrongs": [
+      "Succès si random() > p",
+      "Succès si randint(0, 1) == p",
+      "Succès si p > 0,5"
+     ]
     },
     {
-     "question": "Comment simuler une variable de loi binomiale B(n, p) ?",
-     "answer": "Répéter n fois une épreuve de Bernoulli de paramètre p\net compter les succès.",
-     "w": "27f8fc58",
-     "wq": "aa4351a0"
+     "question": "Comment simuler une loi binomiale B(n, p) ?",
+     "answer": "Compter les succès de n épreuves de Bernoulli",
+     "w": [
+      "738a81a7",
+      "27f8fc58"
+     ],
+     "wq": "aa4351a0",
+     "wrongs": [
+      "Tirer un seul nombre au hasard",
+      "Calculer n × p",
+      "Répéter p fois l'épreuve"
+     ]
     },
     {
-     "question": "Quel est le principe de la méthode de Monte-Carlo pour estimer π ?",
-     "answer": "Tirer N points au hasard dans le carré [0 ; 1]²\net compter ceux tels que x² + y² ≤ 1 :\nla proportion approche π/4.",
-     "w": "beb445ae",
-     "wq": "3623ff45"
+     "question": "Méthode de Monte-Carlo : vers quoi tend la proportion de points tels que x² + y² ≤ 1 ?",
+     "answer": "π/4",
+     "w": [
+      "330175e6",
+      "beb445ae"
+     ],
+     "wq": "3623ff45",
+     "wrongs": [
+      "π",
+      "1/2",
+      "π/2"
+     ]
     },
     {
-     "question": "Comment approcher une intégrale par la méthode des rectangles ?",
-     "answer": "Découper [a ; b] en n intervalles de largeur h = (b − a)/n,\nadditionner h × f(a + kh) pour k de 0 à n − 1.\nLa somme approche l'intégrale quand n augmente.",
-     "w": "e1c1559f",
-     "wq": "72def2d6"
+     "question": "Méthode des rectangles : quelle largeur h pour n intervalles sur [a ; b] ?",
+     "answer": "(b − a)/n",
+     "w": [
+      "6509f039",
+      "e1c1559f"
+     ],
+     "wq": "72def2d6",
+     "wrongs": [
+      "n/(b − a)",
+      "b − a",
+      "(b + a)/n"
+     ]
     },
     {
-     "question": "Comment écrire en Python une fonction qui renvoie la moyenne d'une liste ?",
-     "answer": "def moyenne(L):\n    return sum(L)/len(L)",
-     "w": "76b8f39e",
-     "wq": "3c49013f"
+     "question": "Quelle expression renvoie la moyenne d'une liste L ?",
+     "answer": "sum(L)/len(L)",
+     "w": [
+      "e3ba88d8",
+      "76b8f39e"
+     ],
+     "wq": "3c49013f",
+     "wrongs": [
+      "len(L)/sum(L)",
+      "sum(L)",
+      "max(L)/2"
+     ]
     },
     {
-     "question": "Quelle différence entre = et == en Python ?",
-     "answer": "• = : affecte une valeur à une variable\n• == : teste l'égalité (True ou False)",
-     "w": "2d3ce7d9",
-     "wq": "1b41fa00"
+     "question": "Que fait == en Python ?",
+     "answer": "Il teste l'égalité",
+     "w": [
+      "19ef6e1e",
+      "2d3ce7d9"
+     ],
+     "wq": "1b41fa00",
+     "more": "= affecte une valeur.",
+     "wrongs": [
+      "Il affecte une valeur",
+      "Il compare des types",
+      "Il copie une liste"
+     ]
     }
    ]
   },
@@ -114382,97 +115236,221 @@
    "cards": [
     {
      "question": "Quel est le but d'un titrage ?",
-     "answer": "Déterminer la quantité de matière (donc la concentration) d'une espèce titrée,\npar réaction avec une solution titrante de concentration connue.",
-     "w": "4180af1d",
-     "wq": "153fa4f5"
+     "answer": "Déterminer la concentration d'une espèce",
+     "w": [
+      "30c7bfcc",
+      "4180af1d"
+     ],
+     "wrongs": [
+      "Fabriquer un produit",
+      "Mesurer une température",
+      "Changer le pH"
+     ]
     },
     {
      "question": "Quelles qualités doit avoir la réaction support d'un titrage ?",
-     "answer": "Elle doit être unique, rapide et totale."
+     "answer": "Unique, rapide et totale",
+     "w": "3890272f",
+     "wrongs": [
+      "Lente et partielle",
+      "Colorée et lente",
+      "Réversible et rapide"
+     ]
     },
     {
      "question": "Qu'est-ce que l'équivalence ?",
-     "answer": "Les réactifs ont été introduits dans les proportions stœchiométriques :\nle réactif limitant change.",
-     "w": "b9101f4e",
-     "wq": "575b4464"
+     "answer": "Réactifs en proportions stœchiométriques",
+     "w": [
+      "adac17a8",
+      "b9101f4e"
+     ],
+     "more": "Le réactif limitant change.",
+     "wrongs": [
+      "Le pH vaut 7",
+      "La moitié du titrant est versée",
+      "La couleur disparaît"
+     ]
     },
     {
-     "question": "Quelle relation écrit-on à l'équivalence pour la réaction aA + bB → … ?",
-     "answer": "n(A) initial / a = n(B) versé à l'équivalence / b\nsoit CA × VA / a = CB × VE / b",
-     "w": "c42c4ee5",
-     "wq": "33a3f07f"
+     "question": "À l'équivalence de aA + bB → …, quelle relation est vraie ?",
+     "answer": "CA × VA / a = CB × VE / b",
+     "w": [
+      "7b610d5d",
+      "c42c4ee5"
+     ],
+     "wq": "33a3f07f",
+     "wrongs": [
+      "CA × VA × a = CB × VE × b",
+      "CA = CB",
+      "VA / a = VE / b"
+     ]
     },
     {
-     "question": "Un titrage d'acide chlorhydrique (VA = 10,0 mL) par la soude à 0,100 mol/L donne VE = 12,0 mL. Que vaut CA ?",
-     "answer": "0,120 mol/L\nRéaction 1 pour 1 : CA = CB × VE / VA\n= 0,100 × 12,0 / 10,0",
-     "w": "d97d4b22",
-     "wq": "c8ecb305"
+     "question": "VA = 10,0 mL, CB = 0,100 mol/L, VE = 12,0 mL (1 pour 1) : que vaut CA ?",
+     "answer": "0,120 mol/L",
+     "w": [
+      "3d59e953",
+      "d97d4b22"
+     ],
+     "wq": "c8ecb305",
+     "wrongs": [
+      "0,083 mol/L",
+      "1,20 mol/L",
+      "0,012 mol/L"
+     ]
     },
     {
      "question": "Quelle est la réaction support du titrage d'un acide fort par la soude ?",
      "answer": "H₃O⁺ + HO⁻ → 2 H₂O",
      "w": "24176ca2",
-     "wq": "b6d6b105"
+     "wrongs": [
+      "H₂O + HO⁻ → H₃O⁺",
+      "Na⁺ + Cl⁻ → NaCl",
+      "H⁺ + Cl⁻ → HCl"
+     ]
     },
     {
-     "question": "Comment se présente la courbe d'un titrage pH-métrique ?",
-     "answer": "1. Le pH varie lentement.\n2. Saut de pH brutal autour de l'équivalence.\n3. Le pH varie à nouveau lentement.",
-     "w": "55b060cd",
-     "wq": "58cb0a33"
+     "question": "Sur une courbe de titrage pH-métrique, que se passe-t-il autour de l'équivalence ?",
+     "answer": "Un saut de pH brutal",
+     "w": [
+      "3ead74f5",
+      "55b060cd"
+     ],
+     "wq": "58cb0a33",
+     "wrongs": [
+      "Le pH reste constant",
+      "Le pH baisse lentement",
+      "La courbe s'arrête"
+     ]
     },
     {
      "question": "Comment repère-t-on l'équivalence sur une courbe pH = f(V) ?",
-     "answer": "• Méthode des tangentes parallèles\n• Ou maximum de la dérivée dpH/dV",
-     "w": "9905a270",
-     "wq": "b98e859b"
+     "answer": "Par la méthode des tangentes parallèles",
+     "w": [
+      "d0c8e368",
+      "9905a270"
+     ],
+     "more": "Ou le maximum de dpH/dV.",
+     "wrongs": [
+      "Au point où pH = 0",
+      "Au début de la courbe",
+      "À la moitié du volume versé"
+     ]
     },
     {
-     "question": "Comment choisit-on un indicateur coloré pour un titrage ?",
-     "answer": "Sa zone de virage doit contenir le pH à l'équivalence,\nlu sur le saut de pH.",
-     "w": "91c32b36",
-     "wq": "43985fd8"
+     "question": "Comment choisit-on un indicateur coloré ?",
+     "answer": "Sa zone de virage contient le pH à l'équivalence",
+     "w": [
+      "818e35f0",
+      "91c32b36"
+     ],
+     "wq": "43985fd8",
+     "wrongs": [
+      "Il doit être incolore",
+      "Sa couleur doit être rouge",
+      "Sa zone de virage doit être à pH 0"
+     ]
     },
     {
-     "question": "Pour le titrage d'un acide faible AH par la soude, que vaut le pH à la demi-équivalence ?",
-     "answer": "pH = pKa du couple AH/A⁻\ncar [AH] = [A⁻] à ce moment-là.",
-     "w": "6ef2fa9c",
-     "wq": "580b712c"
+     "question": "À la demi-équivalence du titrage d'un acide faible, que vaut le pH ?",
+     "answer": "Le pKa du couple",
+     "w": [
+      "bbb90650",
+      "6ef2fa9c"
+     ],
+     "wq": "580b712c",
+     "more": "Car [AH] = [A⁻].",
+     "wrongs": [
+      "7",
+      "0",
+      "14"
+     ]
     },
     {
      "question": "Sur quelle loi repose le suivi conductimétrique ?",
-     "answer": "La loi de Kohlrausch : σ = Σ λᵢ [Xᵢ]\nLa conductivité dépend des concentrations des ions\net de leurs conductivités molaires ioniques.",
-     "w": "32a6c768",
-     "wq": "fff55908"
+     "answer": "La loi de Kohlrausch",
+     "w": [
+      "e1b726e2",
+      "32a6c768"
+     ],
+     "more": "σ = Σ λᵢ [Xᵢ]",
+     "wrongs": [
+      "La loi d'Ohm",
+      "La loi de Beer-Lambert",
+      "La loi de Newton"
+     ]
     },
     {
      "question": "Comment repère-t-on l'équivalence en conductimétrie ?",
-     "answer": "La courbe σ = f(V) a deux portions de droite :\nl'équivalence est à leur intersection (changement de pente).",
-     "w": "0dc333d7",
-     "wq": "ddff0401"
+     "answer": "Au changement de pente de σ = f(V)",
+     "w": [
+      "e86991af",
+      "0dc333d7"
+     ],
+     "wrongs": [
+      "Au saut de pH",
+      "Au changement de couleur",
+      "Quand σ = 0"
+     ]
     },
     {
-     "question": "Pourquoi σ diminue-t-elle avant l'équivalence lors du titrage de HCl par la soude ?",
-     "answer": "Les ions H₃O⁺, très conducteurs, sont consommés\net remplacés par des ions Na⁺, moins conducteurs.",
-     "w": "74d3c16d",
-     "wq": "b9f855ec"
+     "question": "Titrage de HCl par la soude : pourquoi σ diminue-t-elle avant l'équivalence ?",
+     "answer": "Les H₃O⁺ sont remplacés par des Na⁺ moins conducteurs",
+     "w": [
+      "c01cb3e5",
+      "74d3c16d"
+     ],
+     "wq": "b9f855ec",
+     "wrongs": [
+      "La solution se dilue",
+      "Les ions Cl⁻ disparaissent",
+      "La température baisse"
+     ]
     },
     {
-     "question": "Pourquoi σ augmente-t-elle après l'équivalence dans ce même titrage ?",
-     "answer": "Les ions Na⁺ et HO⁻ ajoutés ne réagissent plus et s'accumulent ;\nHO⁻ est très conducteur.",
-     "w": "be63bb1a",
-     "wq": "87b60285"
+     "question": "Dans ce titrage, pourquoi σ augmente-t-elle après l'équivalence ?",
+     "answer": "Les ions Na⁺ et HO⁻ s'accumulent",
+     "w": [
+      "4d707dec",
+      "be63bb1a"
+     ],
+     "wq": "87b60285",
+     "more": "HO⁻ est très conducteur.",
+     "wrongs": [
+      "Les H₃O⁺ réapparaissent",
+      "Le chlore s'évapore",
+      "L'eau devient conductrice"
+     ]
     },
     {
-     "question": "Pourquoi ajoute-t-on souvent un grand volume d'eau dans le bécher avant un titrage conductimétrique ?",
-     "answer": "Pour que la dilution due au titrant soit négligeable\net que les portions de courbe soient des droites.",
-     "w": "70f8a78c",
-     "wq": "b55b22b8"
+     "question": "Pourquoi ajoute-t-on beaucoup d'eau avant un titrage conductimétrique ?",
+     "answer": "Pour rendre la dilution négligeable",
+     "w": [
+      "b81e1b82",
+      "70f8a78c"
+     ],
+     "wq": "b55b22b8",
+     "more": "Les portions de courbe sont alors des droites.",
+     "wrongs": [
+      "Pour accélérer la réaction",
+      "Pour changer le pH",
+      "Pour colorer la solution"
+     ]
     },
     {
-     "question": "Quel matériel utilise-t-on pour prélever la solution titrée et verser le titrant ?",
-     "answer": "• Pipette jaugée : prélever la solution titrée\n• Burette graduée : verser le titrant",
-     "w": "668f17ea",
-     "wq": "173331bd"
+     "question": "Avec quoi verse-t-on le titrant ?",
+     "answer": "Une burette graduée",
+     "w": [
+      "17fd3e94",
+      "668f17ea"
+     ],
+     "wq": "173331bd",
+     "more": "On prélève la solution titrée à la pipette jaugée.",
+     "wrongs": [
+      "Une pipette jaugée",
+      "Une éprouvette",
+      "Un bécher"
+     ]
     }
    ]
   },
@@ -114998,13 +115976,15 @@
      ]
     },
     {
-     "question": "Lequel de ces arguments soutient l'origine bactérienne des mitochondries ?",
+     "question": "Quel type d'ADN des mitochondries soutient leur origine bactérienne ?",
      "answer": "Un ADN circulaire propre",
      "w": [
+      "b81664af",
       "9c24454a",
       "4e0e85f7"
      ],
      "wq": [
+      "2f9bb71f",
       "058b36be"
      ],
      "more": "Aussi : double membrane, ribosomes de type bactérien, division binaire.",
@@ -115224,13 +116204,15 @@
      ]
     },
     {
-     "question": "Laquelle de ces défenses est chimique ?",
+     "question": "Quelles molécules toxiques sont une défense chimique des plantes ?",
      "answer": "Les alcaloïdes",
      "w": [
+      "2c36dc25",
       "a6838ca4",
       "a7cc6f60"
      ],
      "wq": [
+      "9f8975e3",
       "f1e04cc5"
      ],
      "more": "Aussi les tanins. Défenses structurales : épines, poils, cuticule épaisse.",
@@ -116827,13 +117809,15 @@
      ]
     },
     {
-     "question": "Lequel de ces exemples est un signal, et non un signe ?",
+     "question": "Quel élément du code de la route est un signal, et non un signe ?",
      "answer": "Un feu rouge",
      "w": [
+      "24e161ef",
       "82718dd3",
       "84349b69"
      ],
      "wq": [
+      "08e1363b",
       "2b7ab6b0"
      ],
      "more": "Le signal déclenche une réaction immédiate ; le signe renvoie à un sens à interpréter.",
@@ -118399,13 +119383,15 @@
    "priceTokens": 0,
    "cards": [
     {
-     "question": "Lequel de ces critères distingue une démocratie d'un régime autoritaire ?",
+     "question": "Quel type d'élections distingue une démocratie d'un régime autoritaire ?",
      "answer": "Des élections libres et pluralistes",
      "w": [
+      "9dfb3bc0",
       "3cf2a494",
       "78e5fbde"
      ],
      "wq": [
+      "69b4341f",
       "6e3c9b58"
      ],
      "more": "Aussi : séparation des pouvoirs, État de droit, respect des libertés, alternance possible.",
@@ -118521,13 +119507,15 @@
      "link": "https://fr.wikipedia.org/wiki/Règlement_sur_les_services_numériques"
     },
     {
-     "question": "Laquelle de ces actions aide à vérifier une information en ligne ?",
+     "question": "Quel bon réflexe aide à vérifier une information en ligne ?",
      "answer": "Croiser avec d'autres sources fiables",
      "w": [
+      "c091c98d",
       "1efa2b4c",
       "82d21330"
      ],
      "wq": [
+      "7c53032d",
       "1924f724"
      ],
      "more": "Aussi : identifier la source et l'auteur, vérifier la date, distinguer faits et opinions, se méfier des images sorties de leur contexte.",
@@ -118589,13 +119577,15 @@
      ]
     },
     {
-     "question": "Lequel de ces outils encourage la parité en politique ?",
+     "question": "Quelle règle sur les listes électorales encourage la parité en politique ?",
      "answer": "Les listes alternées femmes-hommes",
      "w": [
+      "1ce08c33",
       "b2aadad2",
       "6923c7ba"
      ],
      "wq": [
+      "21571d40",
       "f8d0e7b7"
      ],
      "more": "Révision constitutionnelle de 1999, loi du 6 juin 2000, pénalités financières pour les partis.",
@@ -118830,13 +119820,15 @@
      "link": "https://fr.wikipedia.org/wiki/Cadre_européen_commun_de_référence_pour_les_langues"
     },
     {
-     "question": "Laquelle de ces questions se pose-t-on d'abord face à un document ?",
+     "question": "Quelles questions se pose-t-on d'abord face à un document en anglais ?",
      "answer": "Who? What? Where? When? Why?",
      "w": [
+      "bae60829",
       "0630ad27",
       "507f2ebd"
      ],
      "wq": [
+      "2c7a6a3c",
       "822c073b"
      ],
      "more": "Nature, source, auteur, date, thème, destinataire, intention.",
@@ -119077,13 +120069,15 @@
      ]
     },
     {
-     "question": "Lequel de ces éléments aide à réussir une expression écrite argumentée ?",
+     "question": "Quelle règle de base aide à réussir une expression écrite argumentée ?",
      "answer": "Respecter le format demandé",
      "w": [
+      "905c70ec",
       "5076d61d",
       "fbb46708"
      ],
      "wq": [
+      "65300adc",
       "fdeb799b"
      ],
      "more": "Article, lettre, essai ; annoncer son point de vue ; paragraphes reliés par des connecteurs ; exemples précis.",
