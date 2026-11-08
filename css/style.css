@@ -9167,3 +9167,10 @@ body.is-view-home .desk { background-color: var(--home-bg-color, var(--app-bg-co
 .calendar-top-row .calendar-view-toggle { margin: 0; flex: 0 0 auto; gap: 6px; }
 .calendar-top-row .calendar-view-toggle-btn { flex: 0 0 auto; width: 42px; height: 42px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
 .calendar-top-row .calendar-view-toggle-btn svg { display: block; }
+
+/* v275 : publication réservée au profil enseignant — en profil élève, pas
+   de filtres « mes boîtes publiées / non publiées » dans l'organisation ni
+   de « Mes boîtes publiées » dans la Librairie. */
+body:not(.profile-teacher) .org-filter-btn[data-org-filter="published"],
+body:not(.profile-teacher) .org-filter-btn[data-org-filter="unpublished"],
+body:not(.profile-teacher) #library-mine-toggle { display: none !important; }

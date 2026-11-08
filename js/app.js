@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v274";
+  const APP_VERSION = "v275";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -3741,13 +3741,13 @@
         container.appendChild(sectionTitle);
         libraryOptions.forEach((col) => {
           const n = libraryCardCount(col);
-          const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || "quelqu'un";
           const { li } = buildPickerRow({
             depth: 0,
             isFolder: false,
             iconMarkup: iconSvgMarkup("share", "icon-inline-svg"),
             nameText: col.name,
-            countLabel: `${n} fiche${n > 1 ? "s" : ""} — ${ownerName}`,
+            // v275 : plus d'auteur affiché pour les boîtes de la Librairie.
+            countLabel: `${n} fiche${n > 1 ? "s" : ""}`,
             selectControl: "none",
             dataKind: "library",
             value: col.id,
@@ -7985,6 +7985,7 @@
       if (view === "messages") renderMessagesView();
       if (view === "library") {
         libraryShuffleMap = new Map(); // v274 : nouvel ordre à chaque visite
+        libraryVideoPrefOnVisit(); // v275
         renderLibraryView();
       }
       if (view === "reports") renderReportsView();
@@ -11449,6 +11450,17 @@
     // v256 (Q6) : profil enseignant (avec ou sans usage élève) — pas de
     // révisions : voir css/style.css (body.profile-teacher).
     document.body.classList.toggle("profile-teacher", signedIn && role === "teacher");
+    // v275 : en profil élève, plus de filtres « mes boîtes publiées / non
+    // publiées » ni de « Mes boîtes publiées » dans la Librairie (masqués
+    // en CSS) : on les désactive s'ils étaient actifs.
+    if (!(signedIn && role === "teacher")) {
+      try {
+        if (orgFilter === "published" || orgFilter === "unpublished") setOrgFilter("none");
+        libraryOnlyMine = false;
+      } catch (e) {
+        /* appelé avant l'initialisation de ces réglages : rien à faire */
+      }
+    }
     // v264 : robot aux couleurs du compte enseignant (bleus → vert, diode
     // verte → bleue ; image icons/logo-enseignant.png).
     const robotSrc = signedIn && role === "teacher" ? "./icons/logo-enseignant.png" : "./icons/logo.png";
@@ -15338,6 +15350,41 @@
   // Round 48 : résumés des collections affichés dans les blocs (masqués
   // par défaut).
   let libraryShowSummaries = false;
+  /* v275 : vidéos de cours dans les blocs — affichées par défaut. Si on
+     les masque, ce choix est retenu, mais pour un temps seulement :
+     l'affichage par défaut revient au bout de 10 visites de la Librairie
+     ou de 5 jours (le premier des deux atteint). */
+  const LIBRARY_VIDEO_PREF_KEY = "fiches_library_videos_off";
+  function readLibraryVideoPref() {
+    try {
+      const v = JSON.parse(localStorage.getItem(LIBRARY_VIDEO_PREF_KEY) || "null");
+      return v && typeof v === "object" ? v : null;
+    } catch (e) {
+      return null;
+    }
+  }
+  function writeLibraryVideoPref(v) {
+    try {
+      if (v) localStorage.setItem(LIBRARY_VIDEO_PREF_KEY, JSON.stringify(v));
+      else localStorage.removeItem(LIBRARY_VIDEO_PREF_KEY);
+    } catch (e) {
+      /* stockage indisponible : le choix vaut pour cette ouverture */
+    }
+  }
+  let libraryShowVideos = !readLibraryVideoPref();
+  /** À chaque arrivée sur la Librairie : compte la visite et, au-delà de
+   *  10 visites ou 5 jours, oublie le choix « vidéos masquées ». */
+  function libraryVideoPrefOnVisit() {
+    const pref = readLibraryVideoPref();
+    const r = LibraryRules.videoPrefOnVisit(pref, Date.now());
+    if (pref) writeLibraryVideoPref(r.pref);
+    libraryShowVideos = r.showVideos;
+    const btn = el("library-video-toggle");
+    if (btn) {
+      btn.classList.toggle("is-active", libraryShowVideos);
+      btn.setAttribute("aria-pressed", String(libraryShowVideos));
+    }
+  }
 
   // Round 18, item 15 : niveaux scolaires proposés au partage et au tri —
   // liste reprise telle que demandée ("6ème, 5ème,..., 2nd, 1ère,
@@ -15876,7 +15923,8 @@
     // déconnectant, pour ne pas laisser un filtre actif mais invisible.
     const mineToggle = el("library-mine-toggle");
     if (mineToggle) {
-      if (freshUser) {
+      // v275 : réservé au profil enseignant.
+      if (freshUser && activeRole() === "teacher") {
         mineToggle.hidden = false;
       } else {
         mineToggle.hidden = true;
@@ -15948,13 +15996,112 @@
   function libraryShuffle(col) {
     let v = libraryShuffleMap.get(col.id);
     if (!v) {
-      const t = Date.parse(col.shared_at || col.created_at || "");
-      const ageDays = Number.isFinite(t) ? Math.max(0, (Date.now() - t) / 86400000) : 365;
-      const w = 1 + 4 * Math.exp(-ageDays / 21);
-      v = { key: -Math.log(Math.random() || 1e-9) / w, video: Math.random() < 0.1 };
+      const w = LibraryRules.recencyWeight(Date.parse(col.shared_at || col.created_at || ""), Date.now());
+      v = { key: LibraryRules.shuffleKey(w, Math.random()) };
       libraryShuffleMap.set(col.id, v);
     }
     return v;
+  }
+
+  /* v275 : vidéos de cours dans les blocs de la Librairie, lisibles d'un
+     seul toucher. Sur iPhone, une vidéo créée au toucher ne démarre pas
+     toute seule avec le son (il fallait toucher deux fois). Le lecteur
+     YouTube est donc préparé à l'avance, mais seulement pour les blocs
+     visibles à l'écran (après un court arrêt du défilement), et retiré
+     quand le bloc s'éloigne, sauf si on l'a utilisé : la page reste légère
+     même avec beaucoup de boîtes. Ailleurs, seule la miniature (image)
+     est chargée, et seulement quand elle approche de l'écran. */
+  const LIBRARY_VIDEO_MAX_PLAYERS = 4;
+  let libraryVideoIO = null;
+  const libraryVideoPlayers = [];
+  function libraryVideoEmbedUrl(embed, autoplay) {
+    const base = String(embed || "").replace(/([?&])autoplay=1(&|$)/, (m, a, b) => (b ? a : "")).replace(/[?&]$/, "");
+    return autoplay ? base + (base.includes("?") ? "&" : "?") + "autoplay=1" : base;
+  }
+  function libraryVideoUpgrade(box, autoplay) {
+    const info = box && box._libVideo;
+    if (!info || (box.querySelector("iframe") && !autoplay)) return;
+    if (autoplay) box.classList.add("is-playing");
+    box.dataset.engaged = autoplay ? "1" : box.dataset.engaged || "";
+    box.innerHTML = `<iframe src="${escapeHtml(libraryVideoEmbedUrl(info.embed, autoplay))}" title="${escapeHtml(info.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+    box.removeAttribute("role");
+    box.removeAttribute("tabindex");
+    const i = libraryVideoPlayers.indexOf(box);
+    if (i >= 0) libraryVideoPlayers.splice(i, 1);
+    libraryVideoPlayers.push(box);
+    // Pas plus de quelques lecteurs à la fois : les plus anciens, non
+    // utilisés, redeviennent de simples images.
+    for (let k = 0; libraryVideoPlayers.length > LIBRARY_VIDEO_MAX_PLAYERS && k < libraryVideoPlayers.length; ) {
+      const old = libraryVideoPlayers[k];
+      if (old !== box && !old.dataset.engaged) libraryVideoDowngrade(old);
+      else k++;
+    }
+  }
+  function libraryVideoDowngrade(box) {
+    const info = box && box._libVideo;
+    const i = libraryVideoPlayers.indexOf(box);
+    if (i >= 0) libraryVideoPlayers.splice(i, 1);
+    if (!info || box.dataset.engaged || !box.querySelector("iframe")) return;
+    box.innerHTML = info.thumbHtml;
+    box.setAttribute("role", "button");
+    box.setAttribute("tabindex", "0");
+  }
+  function libraryVideoReset() {
+    if (libraryVideoIO) libraryVideoIO.disconnect();
+    libraryVideoPlayers.length = 0;
+    libraryVideoIO = null;
+    if (typeof IntersectionObserver !== "function") return;
+    libraryVideoIO = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((en) => {
+          const box = en.target;
+          clearTimeout(box._libVideoTimer);
+          if (en.isIntersecting) {
+            box._libVideoTimer = setTimeout(() => libraryVideoUpgrade(box, false), 350);
+          } else {
+            libraryVideoDowngrade(box);
+          }
+        });
+      },
+      { rootMargin: "120px 0px" }
+    );
+  }
+  function libraryVideoObserve(box) {
+    if (libraryVideoIO) libraryVideoIO.observe(box);
+  }
+  // Un toucher dans le lecteur (iframe) fait perdre le focus à la page :
+  // ce lecteur est alors « utilisé » et n'est plus retiré tout seul.
+  window.addEventListener("blur", () => {
+    const a = document.activeElement;
+    const box = a && a.tagName === "IFRAME" ? a.closest(".library-row-video") : null;
+    if (box) box.dataset.engaged = "1";
+  });
+
+  /** v275 : re-dessine la liste de la Librairie (bouton résumés / vidéos)
+   *  sans perdre sa place : la boîte au centre de l'écran y reste. */
+  function renderLibraryListKeepingPlace() {
+    const list = el("library-list");
+    const mid = window.innerHeight / 2;
+    let anchor = null;
+    let anchorTop = 0;
+    if (list) {
+      let best = Infinity;
+      list.querySelectorAll(".library-row").forEach((li) => {
+        const r = li.getBoundingClientRect();
+        const d = r.bottom < mid ? mid - r.bottom : r.top > mid ? r.top - mid : 0;
+        if (d < best) {
+          best = d;
+          anchor = li.dataset.colId;
+          anchorTop = (r.top + r.bottom) / 2;
+        }
+      });
+    }
+    renderLibraryList();
+    if (!anchor || !list) return;
+    const li = list.querySelector(`.library-row[data-col-id="${CSS.escape(anchor)}"]`);
+    if (!li) return;
+    const r = li.getBoundingClientRect();
+    window.scrollBy(0, (r.top + r.bottom) / 2 - anchorTop);
   }
   function renderLibraryList() {
     const list = el("library-list");
@@ -15976,14 +16123,12 @@
     }
     if (q) {
       collections = collections.filter((col) => {
-        const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim();
         // Round 23 : la recherche texte porte aussi sur les tags et le
         // classement (ex. "anglais", "terminale").
         // v244 : plus de tags à saisir ; la recherche lit aussi le résumé
         // et la description (et les anciens tags, s'il y en a).
         return (
           (col.name || "").toLowerCase().includes(q) ||
-          ownerName.toLowerCase().includes(q) ||
           collectionDescriptionText(col).toLowerCase().includes(q) ||
           collectionTags(col).some((t) => t.includes(q)) ||
           taxonomyFullLabel(collectionTaxonomy(col)).toLowerCase().includes(q)
@@ -16004,15 +16149,18 @@
       list.innerHTML = `<li class="field-hint">Aucun résultat.</li>`;
       return;
     }
-    // v274 : sans cycle choisi (et hors « Mes partages »), les boîtes
-    // arrivent dans un ordre au hasard, les plus récentes plus souvent en
-    // tête ; l'ordre reste le même pendant la visite de la Librairie.
-    if (!libraryOnlyMine && !(libraryTaxFilter && libraryTaxFilter.cycle)) {
+    // v274 : les boîtes arrivent dans un ordre au hasard, les plus récentes
+    // plus souvent en tête ; l'ordre reste le même pendant la visite de la
+    // Librairie. v275 : à tous les niveaux de filtrage (catégorie, cycle…
+    // jusqu'à la matière) ; seul « Mes boîtes publiées » garde l'ordre
+    // habituel (les plus récentes d'abord).
+    if (!libraryOnlyMine) {
       collections = collections.slice().sort((a, b) => libraryShuffle(a).key - libraryShuffle(b).key);
     }
-    // v274 : une vidéo de présentation (miniature, lue seulement si on la
-    // touche) dans la 1re boîte qui en a une, puis environ une sur dix.
-    let firstVideoDone = false;
+    // v275 : avec « Afficher les vidéos de cours », chaque boîte dont le
+    // lien est une vidéo YouTube la montre dans son bloc (voir
+    // libraryVideoObserve).
+    libraryVideoReset();
     for (const col of collections) {
       const n = libraryCardCount(col);
       // Round 48 : bloc épuré — nom en entier, nombre de fiches et
@@ -16042,8 +16190,7 @@
         ${inRevisions ? `<span class="library-row-in-revisions">Déjà dans mes révisions</span>` : ""}
       `;
       const vid = learnLinkInfo(col.link);
-      if (vid && vid.ytId && (!firstVideoDone || libraryShuffle(col).video)) {
-        firstVideoDone = true;
+      if (vid && vid.ytId && libraryShowVideos) {
         const box = document.createElement("div");
         box.className = "library-row-video";
         box.innerHTML = `<img src="https://i.ytimg.com/vi/${encodeURIComponent(vid.ytId)}/mqdefault.jpg" alt="" loading="lazy" decoding="async" /><span class="library-row-play" aria-hidden="true"></span>`;
@@ -16052,16 +16199,20 @@
         box.setAttribute("role", "button");
         box.setAttribute("tabindex", "0");
         box.setAttribute("aria-label", `Lire la vidéo de présentation de « ${col.name || ""} »`);
+        box._libVideo = { embed: vid.embed, title: col.name || "Vidéo", thumbHtml: box.innerHTML };
+        // Touché avant que le lecteur ne soit prêt : lecteur lancé tout de
+        // suite (autoplay ; sur iPhone, un second toucher peut rester
+        // nécessaire dans ce cas précis).
         const play = (e) => {
           e.stopPropagation();
           if (box.classList.contains("is-playing")) return;
-          box.classList.add("is-playing");
-          box.innerHTML = `<iframe src="${escapeHtml(vid.embed)}" title="${escapeHtml(col.name || "Vidéo")}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+          libraryVideoUpgrade(box, true);
         };
         box.addEventListener("click", play);
         box.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " ") play(e);
         });
+        libraryVideoObserve(box);
         const meta = li.querySelector(".card-row-meta");
         if (meta) meta.after(box);
         else li.appendChild(box);
@@ -16091,14 +16242,14 @@
   function openLibraryDetailView(col) {
     libraryDetailCollection = col;
     const n = libraryCardCount(col);
-    const ownerName = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || "quelqu'un";
     const { count, liked } = libraryCollectionLikeStats(col.id);
 
     const titleEl = el("library-detail-title");
     if (titleEl) titleEl.textContent = col.name || "Collection";
     const metaEl = el("library-detail-meta");
     if (metaEl) {
-      metaEl.innerHTML = `${n} fiche${n > 1 ? "s" : ""} · par ${escapeHtml(ownerName)}`;
+      // v275 : plus d'auteur affiché (« par … » retiré).
+      metaEl.innerHTML = `${n} fiche${n > 1 ? "s" : ""}`;
     }
     // Round 23 : classement complet (catégorie › … › matière) et tags.
     const detailTax = taxonomyFullLabel(collectionTaxonomy(col));
@@ -16348,7 +16499,19 @@
       libraryShowSummaries = !libraryShowSummaries;
       librarySummaryToggleEl.classList.toggle("is-active", libraryShowSummaries);
       librarySummaryToggleEl.setAttribute("aria-pressed", String(libraryShowSummaries));
-      renderLibraryList();
+      renderLibraryListKeepingPlace();
+    });
+  }
+  // v275 : bouton « Afficher les vidéos de cours » (actif par défaut ;
+  // masquer les vidéos est retenu 10 visites ou 5 jours au plus).
+  const libraryVideoToggleEl = el("library-video-toggle");
+  if (libraryVideoToggleEl) {
+    libraryVideoToggleEl.addEventListener("click", () => {
+      libraryShowVideos = !libraryShowVideos;
+      libraryVideoToggleEl.classList.toggle("is-active", libraryShowVideos);
+      libraryVideoToggleEl.setAttribute("aria-pressed", String(libraryShowVideos));
+      writeLibraryVideoPref(libraryShowVideos ? null : { since: Date.now(), visits: 0 });
+      renderLibraryListKeepingPlace();
     });
   }
   const libraryMineToggleEl = el("library-mine-toggle");
@@ -17422,6 +17585,11 @@
   async function shareSubjectToLibrary(subjectId) {
     const s = subjects.find((x) => x.id === subjectId);
     if (!s) return;
+    // v275 : publier dans la Librairie est réservé au profil enseignant.
+    if (!ProfileRules.canPublishToLibrary(activeRole())) {
+      await robotAlert("La publication dans la Librairie est réservée aux comptes enseignants.");
+      return;
+    }
     if (await blockIfSharedReadonly(subjectId)) return;
     if (await blockIfLibraryMirror(subjectId, "partager à nouveau")) return;
     if (!Sync.isConfigured()) {
@@ -17437,30 +17605,8 @@
       await robotAlert("Cette boîte est vide : ajoute des fiches avant de la partager.");
       return;
     }
-    // Round 19, item 4 : bug corrigé — la Bibliothèque affiche encore
-    // l'email de l'auteur au lieu de son prénom/nom, alors même que la
-    // migration SQL a été exécutée. Cause réelle : le prénom/nom affiché
-    // vient des métadonnées du COMPTE (Mon compte), lues au moment du
-    // partage — la migration SQL ne fait qu'ajouter les colonnes, elle ne
-    // peut pas deviner rétroactivement un prénom/nom jamais renseigné. Si
-    // le compte n'a encore ni prénom ni nom, on les demande ici, une
-    // bonne fois, avant de continuer le partage (et on les enregistre
-    // dans Mon compte au passage, comme le fait déjà cette page) — sans
-    // ça, le partage continuerait sinon à retomber sur l'email pour
-    // toujours, sans que Stéphane comprenne pourquoi.
-    const freshUser = (await Sync.auth.getUser()) || accountCurrentUser;
-    const freshMeta = (freshUser && freshUser.user_metadata) || {};
-    if (!freshMeta.first_name && !freshMeta.last_name) {
-      const firstName = await robotPrompt(
-        "Pour être crédité·e par ton nom plutôt que ton email dans la Librairie, quel est ton prénom ? (facultatif, laisse vide pour garder l'email)",
-        ""
-      );
-      const lastName = firstName && firstName.trim() ? await robotPrompt("Et ton nom ?", "") : "";
-      if (firstName && firstName.trim()) {
-        await Sync.auth.updateProfile(firstName.trim(), (lastName || "").trim());
-        accountCurrentUser = await Sync.auth.getUser();
-      }
-    }
+    // v275 : l'auteur n'est plus affiché dans la Librairie : on ne demande
+    // plus de prénom / nom pour « créditer » la publication.
     // Round 20, item 5 : empêche de partager deux fois la même boîte (elle
     // apparaissait alors en double dans la Bibliothèque) — vérifié côté
     // serveur (par id de boîte d'origine), pas seulement localement, pour
@@ -17501,7 +17647,7 @@
     if (hintEl) {
       hintEl.hidden = !classMode;
       hintEl.textContent = classMode
-        ? "Ta boîte sera partagée tout de suite avec ta classe. Elle sera aussi proposée à darwin pour la Librairie : après relecture (et éventuelles corrections), elle pourra y être publiée à ton nom, pour profiter à d'autres élèves. Pour cela, renseigne son classement (et, si tu veux, une description)."
+        ? "Ta boîte sera partagée tout de suite avec ta classe. Elle sera aussi proposée à darwin pour la Librairie : après relecture (et éventuelles corrections), elle pourra y être publiée, pour profiter à d'autres élèves. Pour cela, renseigne son classement (et, si tu veux, une description)."
         : "";
     }
     if (submitBtnEl) submitBtnEl.textContent = classMode ? "Partager avec la classe" : "Partager";
@@ -17774,8 +17920,14 @@
     // blocs, en haut ; un seul bloc « Librairie » (publication puis
     // classification, un seul bouton : Classifier → Publier dans la
     // Librairie → Voir dans la Librairie) ; plus de bloc « Mes révisions ».
+    // v275 : en profil élève, plus de « Publier dans la Librairie » (réservé
+    // aux enseignants) ; « Voir dans la Librairie » reste pour une boîte
+    // déjà publiée.
+    const canPublish = ProfileRules.canPublishToLibrary(activeRole());
     const libraryAction = col
       ? actBtn("publish", "Voir dans la Librairie")
+      : !canPublish
+      ? actBtn("classify", "Classifier")
       : taxFull
       ? actBtn("publish", "Publier dans la Librairie")
       : actBtn("classify", "Classifier");
@@ -17785,10 +17937,10 @@
       creationDetailPlainRow("Pour aller plus loin", linkValue, actBtn("link", s.link ? "Modifier" : "Ajouter un lien")),
       creationDetailCardsBlockHtml(n),
       `<section class="info-block info-block--library">
-        <div class="info-block-head"><span class="info-block-title">Librairie</span></div>
+        <div class="info-block-head"><span class="info-block-title">${canPublish || col ? "Librairie" : "Classification"}</span></div>
         <div class="info-block-lines">
           <div class="info-block-lines-text">
-            <span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>
+            ${canPublish || col ? `<span class="creations-status${col ? " creations-status--published" : ""}">${col ? "Publiée" : "Non publiée"}</span>` : ""}
             <span class="info-block-sub">${taxFull ? escapeHtml(taxFull) : `<span class="creations-unclassified">Classification à définir</span>`}${
               // v253 : classification modifiable tant que la boîte n'est pas
               // publiée (une fois publiée, c'est celle de la publication qui
@@ -18366,7 +18518,8 @@
         const col = await Sync.library.get(s.libraryOriginId);
         if (col && col.owner_id) {
           row = { author_id: col.owner_id, source_kind: "library", source_id: String(col.id) };
-          authorLabel = `${col.owner_first_name || ""} ${col.owner_last_name || ""}`.trim() || "l'auteur de la collection";
+          // v275 : le nom de l'auteur n'est plus affiché.
+          authorLabel = "l'auteur de la boîte";
         }
       } else if (s.sharedBoxId) {
         const authorId = await Sync.reports.sharedBoxAuthor(s.sharedBoxId);

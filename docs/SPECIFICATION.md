@@ -144,6 +144,7 @@ personnel ou pour rejoindre les classes de tes enseignants » et il est
 | Nouvelle boîte (v256) | Rangée dans un dossier, elle entre dans mes révisions | Rangée dans un dossier, elle reste **hors** de mes révisions (on pourra l'y ajouter depuis le compte élève) |
 | Mon agenda (v256) | Évènements créés dans le compte élève + échéances reçues des classes suivies | Évènements créés dans le compte enseignant + échéances données à ses classes |
 | Librairie : bouton d'une boîte (v257) | « Ajouter à mes révisions » / « Retirer de mes révisions » | « Ajouter aux révisions » / « Retirer des révisions » (celles du compte élève) |
+| Publier une boîte dans la Librairie (v275) | **Non** : ni bouton « Publier dans la Librairie » (le bloc de la page d'une boîte s'appelle alors « Classification »), ni filtres « mes boîtes publiées / non publiées » dans l'organisation, ni « Mes boîtes publiées » dans la Librairie | Oui |
 | Librairie (le reste), fiches, statistiques, défi du jour | Identiques | Identiques |
 
 ---
@@ -386,8 +387,8 @@ leur place dans l'arborescence.
   retour sur la page ; re-toucher le filtre actif l'enlève), qui grisent
   ce qui n'est pas concerné :
   - « Afficher les boîtes activées pour la révision » (compte élève) ;
-  - « Afficher mes boîtes publiées » ;
-  - « Afficher mes boîtes non publiées ».
+  - « Afficher mes boîtes publiées » (compte enseignant, v275) ;
+  - « Afficher mes boîtes non publiées » (compte enseignant, v275).
   Quand on active un filtre, le robot rappelle en une phrase ce qu'il
   montre (« Affichage de mes boîtes publiées dans la Librairie »…) (utile sur téléphone, sans texte au survol). Sa bulle reste
   affichée jusqu'à ce qu'on la ferme (croix ou toucher sur la bulle), même
@@ -427,7 +428,10 @@ leur place dans l'arborescence.
 6. Bloc **Librairie** : « Publiée » / « Non publiée », puis la
    classification ou « Classification à définir ». Un seul bouton :
    **Classifier** → **Publier dans la Librairie** → **Voir dans la
-   Librairie**. Tant que la boîte n'est pas publiée, un lien
+   Librairie**. En compte élève (v275), le bloc s'appelle
+   **« Classification »** : ni « Publiée / Non publiée », ni « Publier »
+   (seulement « Classifier »), sauf pour une boîte déjà publiée
+   autrefois (« Voir dans la Librairie »). Tant que la boîte n'est pas publiée, un lien
    **« Modifier »** à côté de la classification permet de la changer
    (une fois publiée, c'est la classification de la publication qui
    compte).
@@ -576,24 +580,46 @@ tout de suite, la liste à jour suit.
 - La Librairie se parcourt par **classification** (catégorie → cycle →
   niveau → année → spécialité → matière), lue dans le fichier Excel
   `data/taxonomie.xlsx`, avec filtres et recherche.
-- Chaque boîte : nom, auteur (prénom et nom), description,
-  classification, nombre de fiches, « pouces » des utilisateurs, aperçu
-  des fiches.
-- **Ordre de la liste** (v274) : tant qu'aucun cycle n'est choisi (aucune
-  catégorie, ou une catégorie seule), les boîtes sont montrées dans un **ordre au hasard**, tiré
-  à nouveau à chaque arrivée sur la page, avec une **préférence pour les
-  boîtes récentes** (une boîte de moins de trois semaines a nettement plus
-  de chances d'être en haut). Dès qu'un cycle est choisi, ou avec « Mes
-  partages », l'ordre habituel revient.
-- **Vidéo de présentation** (v274) : si la boîte a pour lien une vidéo
-  YouTube, la vidéo peut apparaître en petit dans son bloc (largeur du
-  bloc) : toujours dans la première boîte de la liste qui en a une, puis
-  dans environ une boîte sur dix, au hasard. Pour ne pas ralentir
-  l'appli, seule l'image de la vidéo est chargée ; la vidéo ne se lance
-  qu'au toucher.
-- **« Mes partages »** : n'affiche que mes boîtes publiées ; en l'activant,
-  le robot l'explique dans sa bulle (« Affichage de mes boîtes publiées
-  dans la Librairie. »), comme pour les filtres de l'Organisation (v274).
+- Chaque boîte : nom, description, classification, nombre de fiches,
+  « pouces » des utilisateurs, aperçu des fiches. **L'auteur n'est plus
+  affiché nulle part** (v275) : ni dans la liste, ni sur la page de la
+  boîte, ni dans le choix d'une boîte ; la recherche par mots clés ne
+  porte plus sur son nom ; un signalement indique « l'auteur de la
+  boîte », sans son nom.
+- **Ordre de la liste** (v274, étendu en v275) : les boîtes sont montrées
+  dans un **ordre au hasard**, tiré à nouveau à chaque arrivée sur la
+  page et gardé pendant la visite, avec une **préférence pour les boîtes
+  récentes** : une boîte du jour a 5 fois plus de chances qu'une boîte
+  ancienne d'être en haut, avantage qui s'efface en quelques semaines.
+  Cela vaut **à tous les niveaux de filtrage**, de la catégorie jusqu'à la
+  matière, et avec la recherche. Seul « Mes boîtes publiées » garde
+  l'ordre habituel (les plus récentes d'abord).
+- **Vidéos de cours** (v275, remplace la vidéo « une boîte sur dix » de
+  la v274) : bouton **« Afficher les vidéos de cours »** à côté de
+  « Afficher les résumés », **actif par défaut**. Actif, **chaque boîte**
+  dont le lien est une vidéo YouTube la montre en petit dans son bloc
+  (largeur du bloc).
+  - **Mémoire temporaire** : si on masque les vidéos, ce choix est retenu
+    sur l'appareil pendant les **10 visites suivantes** de la Librairie et
+    **au plus 5 jours** ; au premier des deux atteint, les vidéos
+    reviennent. Réactiver les vidéos efface la mémoire.
+  - **Un seul toucher pour lancer une vidéo** : le lecteur YouTube est
+    préparé à l'avance pour les blocs visibles à l'écran (après un court
+    arrêt du défilement), au plus 4 à la fois ; il est retiré quand le
+    bloc s'éloigne, sauf si on l'a utilisé. Plus loin, seule l'image de
+    la vidéo est chargée, quand elle approche de l'écran. Si l'on touche
+    une image avant que le lecteur soit prêt, la vidéo se lance
+    directement (sur iPhone, un second toucher peut alors rester
+    nécessaire).
+  - Toucher la vidéo n'ouvre pas la boîte.
+- **Garder sa place** (v275) : quand on active ou désactive « Afficher les
+  résumés » ou « Afficher les vidéos de cours », la boîte qui était au
+  centre de l'écran y reste.
+- **« Mes boîtes publiées »** (ex-« Mes partages », renommé en v275) :
+  **compte enseignant seulement**. N'affiche que mes boîtes publiées ; en
+  l'activant, le robot l'explique dans sa bulle (« Affichage de mes boîtes
+  publiées dans la Librairie. »), comme pour les filtres de
+  l'Organisation (v274).
 - Sans accès, l'aperçu montre des réponses **coupées**.
 - **« Ajouter à mes révisions »** : choix du dossier, puis une copie de la
   boîte arrive dans l'organisation ; elle suit les corrections faites dans
@@ -607,7 +633,13 @@ tout de suite, la liste à jour suit.
 
 ### 7.2 Publier une boîte
 
-Deux chemins existent aujourd'hui :
+**Réservé au compte enseignant** (v275). En compte élève, le bouton
+« Publier dans la Librairie » n'existe plus ; si on y arrive quand même,
+le robot répond que la publication est réservée aux comptes enseignants.
+Plus de demande de prénom / nom « pour être crédité » : l'auteur n'est
+plus affiché.
+
+Deux chemins existent aujourd'hui (en attendant le chantier ci-dessous) :
 
 | Depuis | Comment | Visible |
 |---|---|---|
@@ -620,6 +652,17 @@ Deux chemins existent aujourd'hui :
   correction s'applique à tous ceux qui ont pris la boîte).
 - Une boîte ne peut être publiée qu'une fois.
 - Voir la question Q3 (§8) : qui garde les droits sur une boîte publiée ?
+
+**Chantier à venir (décidé le 8 nov. 2026, à préparer ensemble)** :
+- l'enseignant publie soit de lui-même, soit en partageant une boîte avec
+  une classe ;
+- dans les deux cas, il **accepte que darwin devienne propriétaire** de la
+  boîte publiée (voir Q13 pour le côté juridique) ;
+- la boîte est **tout de suite partagée avec sa classe**, mais elle
+  n'apparaît dans la Librairie **qu'après validation par darwin**
+  (vérifier, compléter si besoin) ;
+- à préciser : comment gérer et synchroniser les modifications faites
+  par darwin et celles de l'enseignant (lié à Q3, Q4, Q15).
 
 ### 7.3 Accès à la Librairie
 
@@ -686,6 +729,71 @@ moi, relecture pour une boîte de classe). Faut-il les unifier ? (lié à Q3)
 >
 > ⏳ *Claude : à réaliser avec Q3 (chantier « publication avec relecture »).*
 
+**Q13 — Cession à darwin des boîtes publiées : ce que dit le droit
+(analyse de Claude, à faire valider par un juriste avant le lancement).**
+Une boîte de fiches rédigée par un enseignant peut être une « œuvre »
+protégée par le droit d'auteur (Code de la propriété intellectuelle).
+1. **Ce qui peut être cédé** : les droits d'exploitation (copier,
+   diffuser, modifier, adapter). Ce qui ne peut **jamais** être cédé :
+   le « droit moral » (être reconnu comme auteur, s'opposer à une
+   dénaturation). Ne plus afficher le nom est possible si l'enseignant
+   l'accepte (il choisit de rester anonyme), mais darwin ne doit jamais
+   se présenter comme l'auteur.
+2. **Forme** : un écrit qui cite chaque droit cédé et précise l'étendue,
+   l'usage, le lieu et la durée (une case à cocher avec un texte clair,
+   enregistrée avec la date et la version du texte, convient). Une
+   cession gratuite est permise.
+3. **Boîte par boîte** : céder d'avance « toutes ses boîtes futures » est
+   interdit. Il faut donc faire accepter la cession **à chaque
+   publication** (case à cocher au moment de publier ou de partager avec
+   une classe), en plus d'une clause dans les CGU.
+4. **Ce que l'enseignant garde** : le droit d'utiliser sa boîte avec ses
+   classes et pour lui-même (une « licence en retour » à écrire dans le
+   texte), sinon il ne pourrait plus s'en servir.
+5. **Garantie** : il affirme que le contenu est de lui (pas de copie de
+   manuels, d'images ou de textes protégés) ; darwin pourra retirer une
+   boîte qui pose problème.
+6. **Enseignants fonctionnaires** : leurs supports de cours restent en
+   principe leur propriété (pas à leur employeur) ; ils peuvent donc les
+   céder.
+7. **Alternative plus simple et plus solide** : au lieu d'une cession
+   complète, une **licence exclusive**, gratuite, mondiale, pour toute la
+   durée des droits, irrévocable, avec le droit de modifier et de
+   proposer la boîte aux utilisateurs. Pour darwin, l'effet est presque
+   le même, et c'est moins contestable.
+8. **Conséquence sur l'appli** : aujourd'hui, supprimer son compte
+   supprime aussi ses boîtes publiées (§3.1). Avec la cession, elles
+   devront **rester** dans la Librairie.
+> Réponse :
+
+**Q14 — Catégories de la Librairie : seulement « école & études » et
+« autres » (demande du 8 nov. 2026).** Il suffit de modifier l'onglet
+`listes` du fichier `data/taxonomie.xlsx` (colonne « catégories ») :
+garder la ligne `CAT001 – école & études`, renommer `CAT002 – langues`
+en `CAT002 – autres`, effacer les lignes `CAT003` à `CAT005`
+(identifiant et libellé). L'onglet `catégorie-cycles` n'a pas besoin
+d'être touché (seule « école & études » y a des cycles). Points
+d'attention : les boîtes déjà classées « langues » deviendront « autres »
+(même identifiant) ; celles classées « professionnel », « culture
+générale » ou « personnel » ne seront plus retrouvées par le filtre
+(seulement avec « Toutes catégories ») et seront à reclasser (une seule
+boîte toute prête est concernée : « Pays et capitales du monde »).
+Faut-il des sous-niveaux (cycle, matière…) sous « autres », ou la
+catégorie seule suffit-elle ?
+> Réponse :
+
+**Q15 — Signaler une erreur dans une boîte de la Librairie : à qui ?**
+Aujourd'hui le signalement va à l'auteur de la boîte. Si darwin en devient
+propriétaire (Q13), faut-il l'envoyer à darwin (Darwin Admin) plutôt qu'à
+l'enseignant, ou aux deux ?
+> Réponse :
+
+**Q16 — Boîtes déjà publiées par des élèves.** Depuis la v275, seuls les
+enseignants peuvent publier. Les boîtes publiées autrefois depuis un
+compte élève restent pour l'instant dans la Librairie. Faut-il les
+garder, les faire valider par darwin, ou les retirer ?
+> Réponse :
+
 **Q11 — Page Réviser : quelle présentation garder ?** La page à trois
 boutons, le « parcours guidé » (v267) ou la présentation « mixte » (v268,
 §4.5) ? Pour comparer : sur la page Réviser, liens « Autres
@@ -739,6 +847,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v275 | 8 nov. 2026 | Librairie : bouton « Afficher les vidéos de cours », actif par défaut, qui montre la vidéo de chaque boîte (masquer est retenu 10 visites ou 5 jours) ; vidéo lancée d'un seul toucher (lecteur préparé pour les blocs à l'écran) ; la boîte au centre de l'écran y reste quand on bascule résumés ou vidéos ; ordre au hasard (préférence aux récentes) à tous les niveaux de filtrage. Auteur des boîtes plus affiché nulle part. Publication dans la Librairie, filtres « mes boîtes publiées / non publiées » et « Mes boîtes publiées » (ex-« Mes partages ») réservés au compte enseignant. Nouvelles questions Q13 (cession des boîtes à darwin), Q14 (catégories), Q15, Q16. |
 | v274 | 8 nov. 2026 | Organisation : textes du robot « Affichage de mes boîtes publiées / non publiées dans la Librairie. ». Librairie : explication du robot sur « Mes partages » ; tant qu'aucun cycle n'est choisi, boîtes dans un ordre au hasard avec préférence pour les récentes ; vidéo de présentation en petit dans la première boîte qui en a une, puis environ une sur dix (image seule, vidéo lancée au toucher). |
 | v273 | 8 nov. 2026 | Page Réviser : on arrive toujours sur les trois ronds, en haut de la page (les explications ne restent plus ouvertes). Smiley « Je ne savais pas du tout » éclairci en mode jour (distinct de « vague idée »). Textes du robot raccourcis pour les filtres de l'Organisation. Darwin Admin : bouton « Importer la dernière version » qui lit les boîtes toutes prêtes dans le dépôt privé Fiches-contenu ; numéro de version de Darwin Admin remis à jour. |
 | v272 | 8 nov. 2026 | Page Réviser : ronds un peu plus grands, schémas plus petits alignés à droite, repliement des cadres animé, smileys de l'explication sans cadre et plus grands. Révision : animation entre le texte d'invitation et les boutons d'évaluation ; smileys clairs foncés en mode jour. Organisation : le robot explique chaque filtre quand on l'active (bulle fermée par la croix). Agenda : « Liste » et « Mois » deviennent deux pictogrammes à droite de « + Ajouter un événement ». |
