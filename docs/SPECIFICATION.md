@@ -275,20 +275,9 @@ Les pastilles du bouton « Réviser » de l'accueil comptent les échéances
 proches qui ont des fiches à revoir et les boîtes à renforcer. Les
 révisions n'existent pas dans le compte enseignant (§3.2).
 
-**Seconde présentation, à l'essai (v267) : « parcours guidé ».** Même
-contenu, plus explicite sur la méthode :
-- en haut, la situation du jour (« N fiches à revoir aujourd'hui ») et une
-  phrase qui résume la méthode ;
-- un « chemin du jour » en trois étapes numérotées, l'étape conseillée en
-  avant, chacune avec ses chiffres et son « pourquoi » : 1. Préparer mes
-  échéances (prochaine échéance, jours restants, fiches à revoir ; sans
-  échéance, invitation à en ajouter une dans l'agenda) ; 2. Entretenir ce
-  que je sais (boîtes et fiches à revoir) ; 3. Réviser ce que je veux ;
-- « Comment noter mes réponses ? » : les quatre réponses et le délai
-  avant le retour de la fiche (lu dans les réglages de l'algorithme).
-**Troisième présentation, à l'essai (v268, refaite en v269 d'après la
-maquette du propriétaire) : « mixte ».** La page à trois boutons, avec en
-plus un bouton « Comment ça marche ? ». Ce bouton lance une animation en
+**Présentation de la page (« mixte », v268-v269, seule présentation depuis
+la v277, décision Q11).** La page à trois boutons, avec en plus un bouton
+« Comment ça marche ? ». Ce bouton lance une animation en
 trois temps (v270) : le texte des ronds s'efface et leur picto grandit
 jusqu'à remplir le rond ; puis chaque grand rond glisse lentement vers la
 gauche en rapetissant, jusqu'au petit rond de son cadre ; enfin les trois
@@ -316,9 +305,9 @@ son bouton :
 - **« Révisions libres »** (bleu, des cases cochées au choix) : bouton « Choisir ».
 « OK » ramène aux trois ronds (même animation à l'envers). Les cadres
 sont de nouveau repliés à chaque ouverture.
-La page à trois boutons reste celle par défaut. Pour comparer, des liens
-« Autres présentations » n'apparaissent qu'aux administrateurs (choix
-mémorisé sur l'appareil). Voir §8, Q11.
+Les autres présentations essayées (la page à trois boutons seule, le
+« parcours guidé » de la v267) et les liens « Autres présentations » ont
+été supprimés en v277 (Q11).
 
 ### 4.6 La jauge de progression
 
@@ -664,7 +653,14 @@ Deux chemins existent aujourd'hui (en attendant le chantier ci-dessous) :
   n'apparaît dans la Librairie **qu'après validation par darwin**
   (vérifier, compléter si besoin) ;
 - à préciser : comment gérer et synchroniser les modifications faites
-  par darwin et celles de l'enseignant (lié à Q3, Q4, Q15).
+  par darwin et celles de l'enseignant (lié à Q3, Q4).
+- forme juridique : licence exclusive acceptée à chaque publication
+  (décision Q13) ;
+- un signalement d'erreur sur une boîte de la Librairie va à darwin, qui
+  corrige puis transmet la correction à l'enseignant, qui peut répondre
+  (décision Q15) ;
+- à l'ouverture au public, la Librairie ne proposera que les boîtes
+  créées par darwin (décision Q16).
 
 ### 7.3 Accès à la Librairie
 
@@ -731,76 +727,11 @@ moi, relecture pour une boîte de classe). Faut-il les unifier ? (lié à Q3)
 >
 > ⏳ *Claude : à réaliser avec Q3 (chantier « publication avec relecture »).*
 
-**Q13 — Cession à darwin des boîtes publiées : ce que dit le droit
-(analyse de Claude, à faire valider par un juriste avant le lancement).**
-Une boîte de fiches rédigée par un enseignant peut être une « œuvre »
-protégée par le droit d'auteur (Code de la propriété intellectuelle).
-1. **Ce qui peut être cédé** : les droits d'exploitation (copier,
-   diffuser, modifier, adapter). Ce qui ne peut **jamais** être cédé :
-   le « droit moral » (être reconnu comme auteur, s'opposer à une
-   dénaturation). Ne plus afficher le nom est possible si l'enseignant
-   l'accepte (il choisit de rester anonyme), mais darwin ne doit jamais
-   se présenter comme l'auteur.
-2. **Forme** : un écrit qui cite chaque droit cédé et précise l'étendue,
-   l'usage, le lieu et la durée (une case à cocher avec un texte clair,
-   enregistrée avec la date et la version du texte, convient). Une
-   cession gratuite est permise.
-3. **Boîte par boîte** : céder d'avance « toutes ses boîtes futures » est
-   interdit. Il faut donc faire accepter la cession **à chaque
-   publication** (case à cocher au moment de publier ou de partager avec
-   une classe), en plus d'une clause dans les CGU.
-4. **Ce que l'enseignant garde** : le droit d'utiliser sa boîte avec ses
-   classes et pour lui-même (une « licence en retour » à écrire dans le
-   texte), sinon il ne pourrait plus s'en servir.
-5. **Garantie** : il affirme que le contenu est de lui (pas de copie de
-   manuels, d'images ou de textes protégés) ; darwin pourra retirer une
-   boîte qui pose problème.
-6. **Enseignants fonctionnaires** : leurs supports de cours restent en
-   principe leur propriété (pas à leur employeur) ; ils peuvent donc les
-   céder.
-7. **Alternative plus simple et plus solide** : au lieu d'une cession
-   complète, une **licence exclusive**, gratuite, mondiale, pour toute la
-   durée des droits, irrévocable, avec le droit de modifier et de
-   proposer la boîte aux utilisateurs. Pour darwin, l'effet est presque
-   le même, et c'est moins contestable.
-8. **Conséquence sur l'appli** : aujourd'hui, supprimer son compte
-   supprime aussi ses boîtes publiées (§3.1). Avec la cession, elles
-   devront **rester** dans la Librairie.
-> Réponse : si j'ai bien compris, tu préconises le point 7 de ta question. OK pour faire comme tu dis.
-
-**Q14 — Catégories de la Librairie : seulement « école & études » et
-« autres » (demande du 8 nov. 2026).** Il suffit de modifier l'onglet
-`listes` du fichier `data/taxonomie.xlsx` (colonne « catégories ») :
-garder la ligne `CAT001 – école & études`, renommer `CAT002 – langues`
-en `CAT002 – autres`, effacer les lignes `CAT003` à `CAT005`
-(identifiant et libellé). L'onglet `catégorie-cycles` n'a pas besoin
-d'être touché (seule « école & études » y a des cycles). Points
-d'attention : les boîtes déjà classées « langues » deviendront « autres »
-(même identifiant) ; celles classées « professionnel », « culture
-générale » ou « personnel » ne seront plus retrouvées par le filtre
-(seulement avec « Toutes catégories ») et seront à reclasser (une seule
-boîte toute prête est concernée : « Pays et capitales du monde »).
-✅ *Fait le 8 nov. 2026 par le propriétaire (fichier Excel mis à jour) ; la boîte toute prête « Pays et capitales du monde » est reclassée dans « autres ».* Faut-il des sous-niveaux (cycle, matière…) sous « autres », ou la
-catégorie seule suffit-elle ?
-> Réponse : il y aura certainement des sous-niveaux à autres mais je ne sais pas encore lesquels. Ce n'est pas le plus urgent, la clientèle cible de l'appli concerne les collégiens, lycées et étudiants.
-
-**Q15 — Signaler une erreur dans une boîte de la Librairie : à qui ?**
-Aujourd'hui le signalement va à l'auteur de la boîte. Si darwin en devient
-propriétaire (Q13), faut-il l'envoyer à darwin (Darwin Admin) plutôt qu'à
-l'enseignant, ou aux deux ?
-> Réponse : à mon avis, le mieux c'est de l'envoyer à darwin. La modification faite par darwin sera alors envoyer à l'enseignant qui pourra répondre à darwin.
-
-**Q16 — Boîtes déjà publiées par des élèves.** Depuis la v275, seuls les
-enseignants peuvent publier. Les boîtes publiées autrefois depuis un
-compte élève restent pour l'instant dans la Librairie. Faut-il les
-garder, les faire valider par darwin, ou les retirer ?
-> Réponse : pour l'instant, l'appli n'est pas encore public. Les seules boites qui seront proposées à l'ouverture au public seront les boites créées par darwin (claude)
-
-**Q11 — Page Réviser : quelle présentation garder ?** La page à trois
-boutons, le « parcours guidé » (v267) ou la présentation « mixte » (v268,
-§4.5) ? Pour comparer : sur la page Réviser, liens « Autres
-présentations » en bas (visibles seulement pour les administrateurs).
-> Réponse : la présentation actuel est la bonne ; on peut enlever les autres présentations
+**Q14 bis — Sous-niveaux de la catégorie « autres ».** Les catégories
+sont désormais « école & études » et « autres » (fait le 8 nov. 2026).
+> Réponse (8 nov. 2026) : il y aura certainement des sous-niveaux sous
+> « autres », lesquels reste à définir ; pas urgent (la cible est
+> collégiens, lycéens, étudiants).
 
 **Q8 — Avant l'ouverture au public : une adresse de test.**
 Aujourd'hui, fusionner une branche publie la version pour tout le monde,
@@ -822,6 +753,11 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Question | Décision | Où c'est appliqué |
 |---|---|---|
+| Q11 — Présentation de la page Réviser | La présentation « mixte » (trois ronds + « Comment ça marche ? ») ; les autres sont supprimées (8 nov. 2026). | §4.5 (v277) |
+| Q13 — Droits sur les boîtes publiées | Une **licence exclusive**, gratuite, mondiale, pour toute la durée des droits, irrévocable, avec droit de modifier et de proposer la boîte aux utilisateurs (point 7 de l'analyse), acceptée à **chaque** publication (case à cocher datée) + clause des CGU ; l'enseignant garde le droit d'utiliser sa boîte avec ses classes ; il garantit que le contenu est de lui ; ses boîtes publiées restent si son compte est supprimé. Texte à faire relire par un juriste avant le lancement (8 nov. 2026). | §7.2 — chantier « publication avec relecture » |
+| Q14 — Catégories de la Librairie | « école & études » et « autres » (Excel mis à jour par le propriétaire, 8 nov. 2026) ; « Pays et capitales du monde » reclassée dans « autres ». Sous-niveaux de « autres » : voir Q14 bis. | §7.1 |
+| Q15 — Signalement d'une erreur dans une boîte de la Librairie | Envoyé à **darwin** (Darwin Admin) ; la correction faite par darwin est ensuite envoyée à l'enseignant auteur, qui peut répondre à darwin (8 nov. 2026). | §6.5, §7.2 — chantier « publication avec relecture » |
+| Q16 — Boîtes publiées par des élèves | Sans objet : l'appli n'est pas encore publique ; à l'ouverture, seules les boîtes créées par darwin seront proposées dans la Librairie (8 nov. 2026). | §7.1, bilan de lancement |
 | Q1 — « Je ne sais pas » à 3 jours, « Vague idée » à 1 jour | Voulu pour l'instant (renforcer tout de suite ce qu'on commence à savoir ; pas trop de fiches par jour). | §4.2 (v253) |
 | Q2 — Prix et noms des formules | Les CGV font foi ; site vitrine corrigé. | §7.4, site (v253) |
 | Q7 — Modifier la classification d'une boîte classée | Oui, lien « Modifier » tant qu'elle n'est pas publiée. | §5.4 (v253) |
@@ -849,6 +785,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v277 | 8 nov. 2026 | Page Réviser : une seule présentation, la « mixte » (trois ronds + « Comment ça marche ? ») ; le « parcours guidé » et les liens « Autres présentations » sont supprimés (Q11). Décisions Q13 (licence exclusive), Q14 (catégories), Q15 (signalements à darwin), Q16 (Librairie de darwin à l'ouverture) reportées dans la spécification. |
 | v276 | 8 nov. 2026 | Librairie : une seule vidéo de cours à la fois (quand une vidéo démarre, les autres se mettent en pause ; depuis la v275, plusieurs pouvaient jouer en même temps). |
 | v275 | 8 nov. 2026 | Librairie : bouton « Afficher les vidéos de cours », actif par défaut, qui montre la vidéo de chaque boîte (masquer est retenu 10 visites ou 5 jours) ; vidéo lancée d'un seul toucher (lecteur préparé pour les blocs à l'écran) ; la boîte au centre de l'écran y reste quand on bascule résumés ou vidéos ; ordre au hasard (préférence aux récentes) à tous les niveaux de filtrage. Auteur des boîtes plus affiché nulle part. Publication dans la Librairie, filtres « mes boîtes publiées / non publiées » et « Mes boîtes publiées » (ex-« Mes partages ») réservés au compte enseignant. Nouvelles questions Q13 (cession des boîtes à darwin), Q14 (catégories), Q15, Q16. |
 | v274 | 8 nov. 2026 | Organisation : textes du robot « Affichage de mes boîtes publiées / non publiées dans la Librairie. ». Librairie : explication du robot sur « Mes partages » ; tant qu'aucun cycle n'est choisi, boîtes dans un ordre au hasard avec préférence pour les récentes ; vidéo de présentation en petit dans la première boîte qui en a une, puis environ une sur dix (image seule, vidéo lancée au toucher). |

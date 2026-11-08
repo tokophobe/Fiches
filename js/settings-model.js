@@ -399,7 +399,6 @@
     // Round 47 : un message par page (bulle « … » partout), modifiable dans
     // le mode développeur.
     "review-hub": ["Choisis comment réviser : les révisions prioritaires préparent tes prochaines échéances (c'est ce que je te conseille), le renforcement fait travailler les boîtes où tu es le plus en retard, et la sélection manuelle te laisse choisir toi-même."],
-    "review-guide": ["Voici ton chemin du jour : commence par l'étape conseillée. En bas de la page, je t'explique comment noter tes réponses."],
     "revision-program": ["A ta place, voici ce que je réviserais en priorité : les boîtes de tes prochaines échéances, la plus proche d'abord. Décoche ce que tu ne veux pas réviser."],
     "revision-reinforce": ["Voici tes boîtes, celles sur lesquelles tu es le plus en retard d'abord. La barre montre où tu en es dans l'apprentissage de chacune."],
     review: ["Touche la fiche pour voir la réponse, puis dis-moi si tu la savais. Je m'occupe de te la reposer au bon moment.", "Les fiches marquées QCM se jouent avec 4 réponses : trouve la bonne. Une erreur grise la réponse et tu as droit à un second essai."],
@@ -443,7 +442,6 @@
   // mode développeur — mêmes clés que DEFAULT_HELP_MESSAGES_BY_VIEW.
   const HELP_VIEW_LABELS = {
     "review-hub": "Réviser (choix)",
-    "review-guide": "Réviser (parcours guidé)",
     "revision-program": "Révisions prioritaires",
     "revision-reinforce": "Renforcer mes connaissances",
     review: "Réviser (fiches)",
