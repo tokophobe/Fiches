@@ -766,7 +766,7 @@ protégée par le droit d'auteur (Code de la propriété intellectuelle).
 8. **Conséquence sur l'appli** : aujourd'hui, supprimer son compte
    supprime aussi ses boîtes publiées (§3.1). Avec la cession, elles
    devront **rester** dans la Librairie.
-> Réponse :
+> Réponse : si j'ai bien compris, tu préconises le point 7 de ta question. OK pour faire comme tu dis.
 
 **Q14 — Catégories de la Librairie : seulement « école & études » et
 « autres » (demande du 8 nov. 2026).** Il suffit de modifier l'onglet
@@ -782,25 +782,25 @@ générale » ou « personnel » ne seront plus retrouvées par le filtre
 boîte toute prête est concernée : « Pays et capitales du monde »).
 ✅ *Fait le 8 nov. 2026 par le propriétaire (fichier Excel mis à jour) ; la boîte toute prête « Pays et capitales du monde » est reclassée dans « autres ».* Faut-il des sous-niveaux (cycle, matière…) sous « autres », ou la
 catégorie seule suffit-elle ?
-> Réponse :
+> Réponse : il y aura certainement des sous-niveaux à autres mais je ne sais pas encore lesquels. Ce n'est pas le plus urgent, la clientèle cible de l'appli concerne les collégiens, lycées et étudiants.
 
 **Q15 — Signaler une erreur dans une boîte de la Librairie : à qui ?**
 Aujourd'hui le signalement va à l'auteur de la boîte. Si darwin en devient
 propriétaire (Q13), faut-il l'envoyer à darwin (Darwin Admin) plutôt qu'à
 l'enseignant, ou aux deux ?
-> Réponse :
+> Réponse : à mon avis, le mieux c'est de l'envoyer à darwin. La modification faite par darwin sera alors envoyer à l'enseignant qui pourra répondre à darwin.
 
 **Q16 — Boîtes déjà publiées par des élèves.** Depuis la v275, seuls les
 enseignants peuvent publier. Les boîtes publiées autrefois depuis un
 compte élève restent pour l'instant dans la Librairie. Faut-il les
 garder, les faire valider par darwin, ou les retirer ?
-> Réponse :
+> Réponse : pour l'instant, l'appli n'est pas encore public. Les seules boites qui seront proposées à l'ouverture au public seront les boites créées par darwin (claude)
 
 **Q11 — Page Réviser : quelle présentation garder ?** La page à trois
 boutons, le « parcours guidé » (v267) ou la présentation « mixte » (v268,
 §4.5) ? Pour comparer : sur la page Réviser, liens « Autres
 présentations » en bas (visibles seulement pour les administrateurs).
-> Réponse :
+> Réponse : la présentation actuel est la bonne ; on peut enlever les autres présentations
 
 **Q8 — Avant l'ouverture au public : une adresse de test.**
 Aujourd'hui, fusionner une branche publie la version pour tout le monde,
