@@ -612,6 +612,8 @@ tout de suite, la liste à jour suit.
     directement (sur iPhone, un second toucher peut alors rester
     nécessaire).
   - Toucher la vidéo n'ouvre pas la boîte.
+  - **Une seule vidéo à la fois** (v276) : quand une vidéo démarre, les
+    autres vidéos de la Librairie se mettent en pause.
 - **Garder sa place** (v275) : quand on active ou désactive « Afficher les
   résumés » ou « Afficher les vidéos de cours », la boîte qui était au
   centre de l'écran y reste.
@@ -778,7 +780,7 @@ d'attention : les boîtes déjà classées « langues » deviendront « autres �
 générale » ou « personnel » ne seront plus retrouvées par le filtre
 (seulement avec « Toutes catégories ») et seront à reclasser (une seule
 boîte toute prête est concernée : « Pays et capitales du monde »).
-Faut-il des sous-niveaux (cycle, matière…) sous « autres », ou la
+✅ *Fait le 8 nov. 2026 par le propriétaire (fichier Excel mis à jour) ; la boîte toute prête « Pays et capitales du monde » est reclassée dans « autres ».* Faut-il des sous-niveaux (cycle, matière…) sous « autres », ou la
 catégorie seule suffit-elle ?
 > Réponse :
 
@@ -847,6 +849,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v276 | 8 nov. 2026 | Librairie : une seule vidéo de cours à la fois (quand une vidéo démarre, les autres se mettent en pause ; depuis la v275, plusieurs pouvaient jouer en même temps). |
 | v275 | 8 nov. 2026 | Librairie : bouton « Afficher les vidéos de cours », actif par défaut, qui montre la vidéo de chaque boîte (masquer est retenu 10 visites ou 5 jours) ; vidéo lancée d'un seul toucher (lecteur préparé pour les blocs à l'écran) ; la boîte au centre de l'écran y reste quand on bascule résumés ou vidéos ; ordre au hasard (préférence aux récentes) à tous les niveaux de filtrage. Auteur des boîtes plus affiché nulle part. Publication dans la Librairie, filtres « mes boîtes publiées / non publiées » et « Mes boîtes publiées » (ex-« Mes partages ») réservés au compte enseignant. Nouvelles questions Q13 (cession des boîtes à darwin), Q14 (catégories), Q15, Q16. |
 | v274 | 8 nov. 2026 | Organisation : textes du robot « Affichage de mes boîtes publiées / non publiées dans la Librairie. ». Librairie : explication du robot sur « Mes partages » ; tant qu'aucun cycle n'est choisi, boîtes dans un ordre au hasard avec préférence pour les récentes ; vidéo de présentation en petit dans la première boîte qui en a une, puis environ une sur dix (image seule, vidéo lancée au toucher). |
 | v273 | 8 nov. 2026 | Page Réviser : on arrive toujours sur les trois ronds, en haut de la page (les explications ne restent plus ouvertes). Smiley « Je ne savais pas du tout » éclairci en mode jour (distinct de « vague idée »). Textes du robot raccourcis pour les filtres de l'Organisation. Darwin Admin : bouton « Importer la dernière version » qui lit les boîtes toutes prêtes dans le dépôt privé Fiches-contenu ; numéro de version de Darwin Admin remis à jour. |

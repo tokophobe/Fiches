@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v275";
+  const APP_VERSION = "v276";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -16015,15 +16015,73 @@
   let libraryVideoIO = null;
   const libraryVideoPlayers = [];
   function libraryVideoEmbedUrl(embed, autoplay) {
-    const base = String(embed || "").replace(/([?&])autoplay=1(&|$)/, (m, a, b) => (b ? a : "")).replace(/[?&]$/, "");
+    let base = String(embed || "").replace(/([?&])autoplay=1(&|$)/, (m, a, b) => (b ? a : "")).replace(/[?&]$/, "");
+    // v276 : enablejsapi permet au lecteur de nous dire quand il démarre
+    // (pour mettre les autres vidéos en pause).
+    if (/youtube(-nocookie)?\.com\/embed\//.test(base)) {
+      base += (base.includes("?") ? "&" : "?") + "enablejsapi=1&origin=" + encodeURIComponent(location.origin);
+    }
     return autoplay ? base + (base.includes("?") ? "&" : "?") + "autoplay=1" : base;
   }
+  /* v276 : une seule vidéo de cours à la fois. Chaque lecteur YouTube de la
+     Librairie nous prévient (messages « postMessage », sans charger de
+     bibliothèque YouTube) quand il se met à jouer : on met alors tous les
+     autres en pause. */
+  function libraryVideoListen(iframe) {
+    const hello = () => {
+      try {
+        iframe.contentWindow.postMessage(JSON.stringify({ event: "listening", id: iframe.dataset.vid || "", channel: "widget" }), "*");
+      } catch (e) {
+        /* lecteur pas encore prêt */
+      }
+    };
+    iframe.addEventListener("load", () => {
+      hello();
+      setTimeout(hello, 600);
+    });
+  }
+  function libraryVideoPauseOthers(playingWin) {
+    document.querySelectorAll(".library-row-video iframe").forEach((f) => {
+      if (f.contentWindow === playingWin) return;
+      try {
+        f.contentWindow.postMessage(JSON.stringify({ event: "command", func: "pauseVideo", args: [] }), "*");
+      } catch (e) {
+        /* ignoré */
+      }
+    });
+  }
+  window.addEventListener("message", (e) => {
+    if (!/^https:\/\/www\.youtube(-nocookie)?\.com$/.test(e.origin)) return;
+    let data = e.data;
+    if (typeof data === "string") {
+      try {
+        data = JSON.parse(data);
+      } catch (err) {
+        return;
+      }
+    }
+    if (!data || typeof data !== "object") return;
+    const playing =
+      (data.event === "onStateChange" && data.info === 1) ||
+      (data.event === "infoDelivery" && data.info && data.info.playerState === 1);
+    if (!playing) return;
+    const frame = [...document.querySelectorAll(".library-row-video iframe")].find((f) => f.contentWindow === e.source);
+    if (!frame) return;
+    const box = frame.closest(".library-row-video");
+    if (box) box.dataset.engaged = "1";
+    libraryVideoPauseOthers(e.source);
+  });
   function libraryVideoUpgrade(box, autoplay) {
     const info = box && box._libVideo;
     if (!info || (box.querySelector("iframe") && !autoplay)) return;
     if (autoplay) box.classList.add("is-playing");
     box.dataset.engaged = autoplay ? "1" : box.dataset.engaged || "";
     box.innerHTML = `<iframe src="${escapeHtml(libraryVideoEmbedUrl(info.embed, autoplay))}" title="${escapeHtml(info.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+    const frame = box.querySelector("iframe");
+    if (frame) {
+      frame.dataset.vid = String(Math.random()).slice(2);
+      libraryVideoListen(frame);
+    }
     box.removeAttribute("role");
     box.removeAttribute("tabindex");
     const i = libraryVideoPlayers.indexOf(box);
