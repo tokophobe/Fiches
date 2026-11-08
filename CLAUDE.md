@@ -49,7 +49,9 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
 - La logique testable vit hors de `app.js`, dans des fichiers sans
   écran ni stockage, l'heure étant passée en paramètre : `js/revision-algo.js`
   (algorithme, §4 de la spécification), `js/profile-rules.js` (agenda et
-  révisions selon le compte élève / enseignant). Pour ajouter un test sur une
+  révisions selon le compte élève / enseignant, droit de publier),
+  `js/library-rules.js` (Librairie : ordre au hasard, mémoire du bouton
+  « vidéos de cours », v275). Pour ajouter un test sur une
   autre règle, extraire de la même façon la logique concernée.
 - **Lancer les tests avant chaque livraison.** Quand une règle de la
   spécification change, mettre à jour son test dans la même branche ;
@@ -60,7 +62,7 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
 - `index.html` : l'appli (tous les écrans sont dans ce fichier). Les
   scripts sont chargés dans cet ordre, sans modules ni bundler :
   `config.js`, `error-report.js`, `user-scope.js` (dans le `<head>`),
-  puis supabase-js (CDN), `sm2.js`, `revision-algo.js`, `profile-rules.js`, `db.js`, `sync.js`, `taxonomy.js`,
+  puis supabase-js (CDN), `sm2.js`, `revision-algo.js`, `profile-rules.js`, `library-rules.js`, `db.js`, `sync.js`, `taxonomy.js`,
   `settings-model.js`, `defi-questions.js`, `defi.js`, `learn-links.js`,
   `app.js`.
 - `js/app.js` (~18 000 lignes) : toute la logique de l'interface, dans une
@@ -109,6 +111,11 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   `showTeacherNoRevisionMessage`). Agenda par compte et échéances qui
   comptent pour les révisions : `js/profile-rules.js` (champ `profile`
   des évènements, `profileCalendarEvents` / `revisionCalendarEvents`).
+- v275 : publier dans la Librairie (et filtres « mes boîtes publiées /
+  non publiées », « Mes boîtes publiées ») réservé au profil enseignant
+  (`ProfileRules.canPublishToLibrary`, CSS `body:not(.profile-teacher)`).
+  L'auteur des boîtes n'est plus affiché. Chantier à venir : cession à
+  darwin + validation avant la Librairie (spéc. §7.2, Q13).
 - Les autres différences sont à préciser avec le propriétaire (spéc. §3.2).
 
 ## Organisation des boîtes (v248, v254)
@@ -238,3 +245,9 @@ testables ainsi.
   (Librairie → Boîtes toutes prêtes → « Importer la dernière version »,
   qui le lit sur GitHub avec une clé en lecture seule enregistrée dans son
   navigateur).
+- Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
+  intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
+  rediffusion en direct, interview, chaîne pour étrangers apprenant le
+  français). Vérifier avec `python3 tools/verifier_videos.py --liste`
+  (accès à www.youtube.com, autorisé dans l'environnement cloud
+  « Fiches (darwin) »).

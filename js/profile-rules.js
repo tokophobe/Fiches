@@ -32,7 +32,13 @@
     return eventProfile(ev) === "student";
   }
 
-  const api = { eventProfile, eventVisibleInProfile, eventCountsForRevisions };
+  /** v275 : publier une boîte dans la Librairie (et voir ses boîtes
+   *  publiées / non publiées) est réservé au profil enseignant. */
+  function canPublishToLibrary(role) {
+    return role === "teacher";
+  }
+
+  const api = { eventProfile, eventVisibleInProfile, eventCountsForRevisions, canPublishToLibrary };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.ProfileRules = api;
 })(typeof window !== "undefined" ? window : globalThis);
