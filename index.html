@@ -330,7 +330,6 @@
     <button class="tab" role="tab" aria-selected="false" data-view="sync" hidden>Sync</button>
     <button class="tab" role="tab" aria-selected="false" data-view="calendar" hidden>Agenda</button>
     <button class="tab" role="tab" aria-selected="false" data-view="review-hub" hidden>Réviser</button>
-    <button class="tab" role="tab" aria-selected="false" data-view="review-guide" hidden>Réviser</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-program" hidden>Révisions prioritaires</button>
     <button class="tab" role="tab" aria-selected="false" data-view="revision-reinforce" hidden>Renforcer mes connaissances</button>
     <button class="tab" role="tab" aria-selected="false" data-view="reports-hub" hidden>Signalements</button>
@@ -571,25 +570,6 @@
         </section>
         <div class="rx-ok"><button type="button" class="btn btn--primary" id="rx-ok-btn">OK</button></div>
       </div>
-      <!-- v267 : essai d'autres présentations (administrateurs). -->
-      <p class="review-variant-switch" hidden></p>
-    </section>
-
-    <!-- v267 : « Réviser — parcours guidé » : seconde présentation de la page
-         Réviser, plus explicite sur la méthode (la page à trois boutons
-         ci-dessus est gardée ; choix à faire plus tard). Remplie par
-         renderReviewGuide (js/app.js). -->
-    <section id="view-review-guide" class="view" aria-labelledby="tab-review-guide">
-      <div class="rg-today" id="rg-today"></div>
-      <h3 class="rg-path-title">Ton chemin du jour</h3>
-      <ol class="rg-path" id="rg-path"></ol>
-      <details class="rg-how">
-        <summary>Comment noter mes réponses ?</summary>
-        <p class="rg-how-intro">Après chaque fiche, dis honnêtement si tu savais. darwin choisit alors quand te la reposer :</p>
-        <ul class="rg-how-list" id="rg-how-list"></ul>
-        <p class="rg-how-note">Une fiche ratée revient aussi deux fois dans la même séance, pour la fixer tout de suite.</p>
-      </details>
-      <p class="review-variant-switch" hidden></p>
     </section>
 
     <!-- VUE PROGRAMME DE RÉVISION (item 7) : étape intermédiaire avant
