@@ -642,25 +642,110 @@ Deux chemins existent aujourd'hui (en attendant le chantier ci-dessous) :
 - Seul un **administrateur** peut corriger les fiches publiées (la
   correction s'applique à tous ceux qui ont pris la boîte).
 - Une boîte ne peut être publiée qu'une fois.
-- Voir la question Q3 (§8) : qui garde les droits sur une boîte publiée ?
+- Ces règles changent avec le chantier ci-dessous (décisions Q3, Q4, Q13).
 
-**Chantier à venir (décidé le 8 nov. 2026, à préparer ensemble)** :
-- l'enseignant publie soit de lui-même, soit en partageant une boîte avec
-  une classe ;
-- dans les deux cas, il **accepte que darwin devienne propriétaire** de la
-  boîte publiée (voir Q13 pour le côté juridique) ;
-- la boîte est **tout de suite partagée avec sa classe**, mais elle
-  n'apparaît dans la Librairie **qu'après validation par darwin**
-  (vérifier, compléter si besoin) ;
-- à préciser : comment gérer et synchroniser les modifications faites
-  par darwin et celles de l'enseignant (lié à Q3, Q4).
-- forme juridique : licence exclusive acceptée à chaque publication
-  (décision Q13) ;
-- un signalement d'erreur sur une boîte de la Librairie va à darwin, qui
-  corrige puis transmet la correction à l'enseignant, qui peut répondre
-  (décision Q15) ;
-- à l'ouverture au public, la Librairie ne proposera que les boîtes
-  créées par darwin (décision Q16).
+**Chantier « publication avec relecture »** (plan validé le 9 nov. 2026,
+à livrer en plusieurs versions, A à F ; tant qu'une étape n'est pas
+livrée, les règles ci-dessus restent celles de l'appli).
+
+*Principe* : **un seul circuit**. Toute boîte qui doit entrer dans la
+Librairie devient une **proposition**, relue par darwin, qui garde le
+dernier mot. Rien n'arrive dans la Librairie sans cette relecture.
+
+*Côté enseignant*
+- **Deux déclencheurs**, qui mènent au même circuit :
+  - le bouton « Publier dans la Librairie » de la page d'une boîte
+    (gardé, décision du 9 nov.) ;
+  - **partager une boîte avec une classe** : la boîte est alors
+    **toujours** envoyée à darwin, sans case « proposer aussi à la
+    Librairie ». C'est la contrepartie du partage : l'enseignant partage
+    avec ses classes, darwin peut reprendre la boîte pour la Librairie.
+- **Un seul accord par boîte** : une case « J'accepte de céder… »
+  (licence non exclusive, voir Q13), cochée au premier partage ou à la
+  première publication de cette boîte ; sans elle, ni partage ni
+  publication. L'accord est enregistré avec sa date et la version du
+  texte ; il couvre ensuite les modifications de la même boîte.
+- Le **partage avec la classe est immédiat**, la Librairie attend la
+  relecture.
+- **Discrétion** : l'enseignant ne voit ni « en attente » ni « publiée »
+  (« Mes boîtes publiées » reste comme aujourd'hui). Il n'entend parler de
+  darwin que si darwin a besoin de lui : demande de modification, refus,
+  ou correction de son contenu.
+- **Modifications après publication** : sa boîte et celle de sa classe
+  changent tout de suite ; la nouvelle version part **automatiquement et
+  sans rien lui dire** à darwin. Si darwin l'accepte, la Librairie est mise
+  à jour ; sinon l'ancienne version y reste et l'enseignant reçoit un
+  message.
+- **« Messages de darwin »** (page de l'appli, pastille sur l'accueil
+  comme pour les signalements ; pas d'e-mail au début) : la boîte
+  concernée, les fiches modifiées **avant / après**, le mot de darwin, un
+  champ **Répondre**, un bouton **« Appliquer à ma boîte »** (pour que sa
+  propre boîte profite de la correction s'il le veut) et un bouton
+  **« Demander le retrait »** d'une boîte publiée (darwin accepte ou non).
+
+*Les états d'une proposition*
+
+| État | Ce qui peut suivre |
+|---|---|
+| envoyée (en relecture) | publiée · à modifier · refusée |
+| à modifier | renvoyée par l'enseignant → en relecture |
+| refusée | (fin ; une nouvelle version de la boîte peut être renvoyée) |
+| publiée | nouvelle version proposée → en relecture · retirée par darwin |
+
+- Un élève ne peut jamais proposer.
+- Seul darwin publie, demande une modification, refuse, corrige ou
+  retire.
+
+*Côté darwin (Darwin Admin)*
+- Liste **« Propositions à relire »**, les plus anciennes d'abord ; pour
+  chacune : corriger ou compléter (fiches, classification, vidéo),
+  publier, demander une modification (avec message), refuser (avec
+  message).
+- **Relecture confiée à Claude** : bouton « Exporter les propositions à
+  relire » (un fichier) → le propriétaire le joint dans une conversation
+  → Claude relit (règles du §5.7, vidéos vérifiées) et rend un fichier de
+  **décisions** → « Importer les décisions » → le propriétaire valide ou
+  ajuste chaque décision d'un clic. Claude n'a jamais d'accès direct à la
+  base.
+- Quand darwin publie une nouvelle version, ceux qui avaient pris la
+  boîte la reçoivent **automatiquement** (comme aujourd'hui).
+
+*Signalements*
+- Nouveau : **« Signaler cette boîte »** (remarque générale), en plus du
+  signalement d'une fiche.
+- Boîte de la Librairie → le signalement va à **darwin** ; boîte partagée
+  par un enseignant à sa classe → à l'enseignant (comme aujourd'hui).
+- Si darwin corrige, l'enseignant reçoit la correction dans « Messages de
+  darwin » et peut répondre (décision Q15).
+
+*Autres règles*
+- **Suppression d'un compte enseignant** : ses boîtes publiées restent
+  dans la Librairie (la licence est irrévocable) ; son nom n'y apparaît
+  déjà plus.
+- **Boîtes déjà publiées** par des enseignants avant ce chantier :
+  remises « en relecture » (retirées de la Librairie jusqu'à validation).
+- **Ouverture au public** (Q16) : réglage de Darwin Admin « Librairie :
+  seulement les boîtes darwin », activé au départ ; les propositions
+  s'accumulent et sont relues, elles deviennent visibles quand le réglage
+  est désactivé.
+- **Vie privée** : darwin ne lit **jamais** une boîte privée, sauf si son
+  auteur l'a proposée ou si quelqu'un l'a signalée (décision du 9 nov.).
+  Les boîtes partagées avec une classe sont de toute façon relues, puisqu'
+  elles sont proposées : c'est la modération des contenus vus par les
+  élèves.
+
+*Découpage en versions*
+
+| Étape | Contenu |
+|---|---|
+| A ✅ (9 nov.) | Base de données (`supabase/publication_relecture_A_migration.sql`, à exécuter), règles testées, brouillon du texte de licence et de la clause des CGU (`docs/brouillon-licence-publication.md`) |
+| B | Partage avec une classe et bouton « Publier » : accord obligatoire, envoi à darwin ; fin de la publication directe ; nouvelles versions renvoyées sans bruit ; boîtes déjà publiées remises en relecture |
+| C | Darwin Admin : liste de relecture (corriger, publier, demander une modification, refuser) ; export / import des décisions pour la relecture par Claude |
+| D | « Messages de darwin » : pastille, avant / après, réponse, « Appliquer à ma boîte », demande de retrait |
+| E | « Signaler cette boîte », signalements de la Librairie vers darwin, boîtes gardées après suppression du compte, réglage « seulement les boîtes darwin » |
+| F (plus tard) | Signalements de boîtes privées (modération) et offre « Proposez vos boîtes à darwin, un mois offert si elles sont retenues » (accord explicite de l'auteur ; CGU et confidentialité mises à jour d'abord) |
+
+Chaque étape est d'abord essayée sur la copie de test (base darwin-test).
 
 ### 7.3 Accès à la Librairie
 
@@ -711,21 +796,12 @@ font foi).
 > Décisions à prendre ou incohérences repérées. Répondez directement
 > sous chaque question ; Claude reportera la réponse dans les règles.
 
-**Q3 — Droits sur une boîte publiée dans la Librairie.**
-Aujourd'hui : publication immédiate, copie figée, l'auteur ne peut plus la
-mettre à jour, seul darwin peut corriger. Proposition de Claude : publier =
-proposer (relecture par darwin) ; ensuite l'auteur propose ses
-modifications, darwin garde le dernier mot ; l'auteur ne supprime pas, il
-demande le retrait ; une phrase dans les CGU.
-> Réponse : d'accord pour que Publier = proposer avec relecture par darwin. Pour la gestion des modifications et suppression, je ne sais pas encore trop ; fais ce que tu propose mais laisse ce sujet en suspend quelquepart
->
-> ⏳ *Claude : chantier « publication avec relecture » (avec Q4), à préparer d'abord sous forme de plan. La gestion des modifications et des suppressions restera ensuite ouverte ici.*
-
-**Q4 — Deux chemins de publication différents** (immédiat pour une boîte à
-moi, relecture pour une boîte de classe). Faut-il les unifier ? (lié à Q3)
-> Réponse : oui
->
-> ⏳ *Claude : à réaliser avec Q3 (chantier « publication avec relecture »).*
+**Q17 — Relecture du texte de licence par un juriste.** Le brouillon
+(`docs/brouillon-licence-publication.md`, avec la liste des questions à
+poser) devra être relu avant l'ouverture au public : licence non
+exclusive imposée comme condition du partage avec une classe, garantie
+de l'auteur, boîtes gardées après suppression du compte.
+> Réponse :
 
 **Q14 bis — Sous-niveaux de la catégorie « autres ».** Les catégories
 sont désormais « école & études » et « autres » (fait le 8 nov. 2026).
@@ -754,9 +830,10 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | Question | Décision | Où c'est appliqué |
 |---|---|---|
 | Q11 — Présentation de la page Réviser | La présentation « mixte » (trois ronds + « Comment ça marche ? ») ; les autres sont supprimées (8 nov. 2026). | §4.5 (v277) |
-| Q13 — Droits sur les boîtes publiées | Une **licence exclusive**, gratuite, mondiale, pour toute la durée des droits, irrévocable, avec droit de modifier et de proposer la boîte aux utilisateurs (point 7 de l'analyse), acceptée à **chaque** publication (case à cocher datée) + clause des CGU ; l'enseignant garde le droit d'utiliser sa boîte avec ses classes ; il garantit que le contenu est de lui ; ses boîtes publiées restent si son compte est supprimé. Texte à faire relire par un juriste avant le lancement (8 nov. 2026). | §7.2 — chantier « publication avec relecture » |
+| Q13 — Droits sur les boîtes publiées | Une **licence non exclusive** (décision du 9 nov. 2026, qui remplace la licence exclusive du 8 nov.) : gratuite, mondiale, pour toute la durée des droits, irrévocable, avec droit de modifier, d'adapter et de proposer la boîte aux utilisateurs ; l'enseignant reste libre d'utiliser et de diffuser sa boîte ailleurs. Acceptée **une fois par boîte** (case à cocher datée, version du texte enregistrée) + clause des CGU ; il garantit que le contenu est de lui ; ses boîtes publiées restent si son compte est supprimé. Texte à faire relire par un juriste avant le lancement. | §7.2 — chantier « publication avec relecture » |
 | Q14 — Catégories de la Librairie | « école & études » et « autres » (Excel mis à jour par le propriétaire, 8 nov. 2026) ; « Pays et capitales du monde » reclassée dans « autres ». Sous-niveaux de « autres » : voir Q14 bis. | §7.1 |
 | Q15 — Signalement d'une erreur dans une boîte de la Librairie | Envoyé à **darwin** (Darwin Admin) ; la correction faite par darwin est ensuite envoyée à l'enseignant auteur, qui peut répondre à darwin (8 nov. 2026). | §6.5, §7.2 — chantier « publication avec relecture » |
+| Q3 / Q4 — Droits et chemins de publication | Publier = proposer, relecture par darwin, un seul circuit ; modifications renvoyées automatiquement, darwin garde le dernier mot ; l'enseignant demande le retrait, darwin décide. Plan détaillé validé le 9 nov. 2026 : bouton « Publier » gardé, partage avec une classe = envoi d'office à darwin, l'enseignant n'est sollicité qu'en cas de besoin, pastille sans e-mail, boîtes déjà publiées remises en relecture, mises à jour automatiques chez ceux qui ont pris la boîte, jamais de lecture des boîtes privées non proposées ni signalées. | §7.2 — chantier « publication avec relecture » (étapes A à F) |
 | Q16 — Boîtes publiées par des élèves | Sans objet : l'appli n'est pas encore publique ; à l'ouverture, seules les boîtes créées par darwin seront proposées dans la Librairie (8 nov. 2026). | §7.1, bilan de lancement |
 | Q1 — « Je ne sais pas » à 3 jours, « Vague idée » à 1 jour | Voulu pour l'instant (renforcer tout de suite ce qu'on commence à savoir ; pas trop de fiches par jour). | §4.2 (v253) |
 | Q2 — Prix et noms des formules | Les CGV font foi ; site vitrine corrigé. | §7.4, site (v253) |
@@ -785,6 +862,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 9 nov. 2026 | Chantier « publication avec relecture » : plan validé et inscrit au §7.2 (décisions Q3, Q4, Q13 — licence désormais **non exclusive**). Étape A (rien de visible dans l'appli) : préparation de la base de données (états « à modifier », « remplacée », « retirée » ; accord de licence une fois par boîte, gardé même après suppression du compte ; messages darwin ↔ enseignant ; nouvelle version qui remplace la proposition ouverte et met à jour la boîte déjà publiée ; Darwin Admin peut demander une modification), règles testées, brouillon juridique. Nouvelle question Q17 (juriste). |
 | v277 | 8 nov. 2026 | Page Réviser : une seule présentation, la « mixte » (trois ronds + « Comment ça marche ? ») ; le « parcours guidé » et les liens « Autres présentations » sont supprimés (Q11). Décisions Q13 (licence exclusive), Q14 (catégories), Q15 (signalements à darwin), Q16 (Librairie de darwin à l'ouverture) reportées dans la spécification. |
 | v276 | 8 nov. 2026 | Librairie : une seule vidéo de cours à la fois (quand une vidéo démarre, les autres se mettent en pause ; depuis la v275, plusieurs pouvaient jouer en même temps). |
 | v275 | 8 nov. 2026 | Librairie : bouton « Afficher les vidéos de cours », actif par défaut, qui montre la vidéo de chaque boîte (masquer est retenu 10 visites ou 5 jours) ; vidéo lancée d'un seul toucher (lecteur préparé pour les blocs à l'écran) ; la boîte au centre de l'écran y reste quand on bascule résumés ou vidéos ; ordre au hasard (préférence aux récentes) à tous les niveaux de filtrage. Auteur des boîtes plus affiché nulle part. Publication dans la Librairie, filtres « mes boîtes publiées / non publiées » et « Mes boîtes publiées » (ex-« Mes partages ») réservés au compte enseignant. Nouvelles questions Q13 (cession des boîtes à darwin), Q14 (catégories), Q15, Q16. |

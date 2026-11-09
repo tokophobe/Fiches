@@ -51,7 +51,8 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   (algorithme, §4 de la spécification), `js/profile-rules.js` (agenda et
   révisions selon le compte élève / enseignant, droit de publier),
   `js/library-rules.js` (Librairie : ordre au hasard, mémoire du bouton
-  « vidéos de cours », v275). Pour ajouter un test sur une
+  « vidéos de cours », v275), `js/publication-rules.js` (publication avec
+  relecture, étape A). Pour ajouter un test sur une
   autre règle, extraire de la même façon la logique concernée.
 - **Lancer les tests avant chaque livraison.** Quand une règle de la
   spécification change, mettre à jour son test dans la même branche ;
@@ -114,8 +115,17 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
 - v275 : publier dans la Librairie (et filtres « mes boîtes publiées /
   non publiées », « Mes boîtes publiées ») réservé au profil enseignant
   (`ProfileRules.canPublishToLibrary`, CSS `body:not(.profile-teacher)`).
-  L'auteur des boîtes n'est plus affiché. Chantier à venir : cession à
-  darwin + validation avant la Librairie (spéc. §7.2, Q13).
+  L'auteur des boîtes n'est plus affiché.
+- Chantier « publication avec relecture » (plan validé le 9 nov. 2026,
+  spéc. §7.2, étapes A à F) : toute boîte destinée à la Librairie devient
+  une proposition (`library_submissions`) relue par darwin ; licence non
+  exclusive acceptée une fois par boîte (`library_license_acceptances`) ;
+  échanges dans `library_submission_messages`. Étape A livrée :
+  `supabase/publication_relecture_A_migration.sql`, règles dans
+  `js/publication-rules.js` (pas encore chargé par l'appli : l'ajouter à
+  `index.html`, `admin/` et `CORE_ASSETS` à l'étape B/C), brouillon
+  juridique `docs/brouillon-licence-publication.md`. La publication
+  directe (`Sync.library.share`) sera fermée côté base à l'étape B.
 - Les autres différences sont à préciser avec le propriétaire (spéc. §3.2).
 
 ## Organisation des boîtes (v248, v254)
