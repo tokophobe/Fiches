@@ -1517,6 +1517,63 @@ async function acceptLibraryLicense(sourceSubjectId, licenseVersion) {
   return { error: error ? error.message : null };
 }
 
+/** v279 (publication avec relecture, étape D) : « Messages de darwin ».
+ *  Messages de MES propositions (jointure sur le propriétaire, pour qu'un
+ *  administrateur qui utilise l'appli ne voie que les siens ici). */
+async function listMyDarwinMessages() {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { data: [], error: "non connecté" };
+  const { data, error } = await c
+    .from("library_submission_messages")
+    .select("id, submission_id, from_admin, kind, body, created_at, seen_at, library_submissions!inner(owner_id)")
+    .eq("library_submissions.owner_id", user.id)
+    .order("created_at", { ascending: true })
+    .limit(2000);
+  return { data: (data || []).map(({ library_submissions, ...m }) => m), error: error ? error.message : null };
+}
+
+/** v279 : nombre de messages de darwin pas encore lus. */
+async function countMyUnseenDarwinMessages() {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return 0;
+  const { count, error } = await c
+    .from("library_submission_messages")
+    .select("id, library_submissions!inner(owner_id)", { count: "exact", head: true })
+    .eq("library_submissions.owner_id", user.id)
+    .eq("from_admin", true)
+    .is("seen_at", null);
+  return error ? 0 : count || 0;
+}
+
+/** v279 : message de l'enseignant à darwin (« message » ou
+ *  « withdrawal_request » = demande de retrait). */
+async function sendDarwinMessage(submissionId, body, kind) {
+  const c = getClient();
+  if (!c) return { error: "non connecté" };
+  const { error } = await c
+    .from("library_submission_messages")
+    .insert({ submission_id: submissionId, body: body || "", kind: kind || "message", from_admin: false });
+  return { error: error ? error.message : null };
+}
+
+async function markDarwinMessagesSeen(ids) {
+  const c = getClient();
+  if (!c || !ids || !ids.length) return { error: null };
+  const { error } = await c.rpc("library_messages_mark_seen", { p_ids: ids });
+  return { error: error ? error.message : null };
+}
+
+/** v279 : fiches de MA boîte publiée (version de darwin), pour l'avant /
+ *  après et « Appliquer à ma boîte ». */
+async function getMyLibraryCollectionCards(id) {
+  const c = getClient();
+  if (!c || !id) return null;
+  const { data, error } = await c.from("library_collections").select("id, name, cards").eq("id", id).maybeSingle();
+  return error ? null : data || null;
+}
+
 async function deleteLibraryCollection(id) {
   const c = getClient();
   if (!c) return { error: "Sync non configurée (URL/clé Supabase manquantes)." };
@@ -1990,6 +2047,11 @@ window.Sync = {
     mySubmissions: listMyLibrarySubmissions,
     myAcceptances: listMyLicenseAcceptances,
     acceptLicense: acceptLibraryLicense,
+    darwinMessages: listMyDarwinMessages,
+    darwinUnseenCount: countMyUnseenDarwinMessages,
+    sendDarwinMessage,
+    markDarwinMessagesSeen,
+    myCollectionCards: getMyLibraryCollectionCards,
     rate: rateLibraryCollection,
     unrate: unrateLibraryCollection,
     listRatings: listLibraryRatings,

@@ -418,3 +418,12 @@ pre.code {
 .legend-dot.s3 { background: #9aa6b2; }
 .sub-title { font-size: 13px; font-weight: 650; margin: 16px 0 8px; color: var(--muted); }
 .stack { display: flex; flex-direction: column; gap: 12px; }
+
+/* v279 (publication avec relecture, étape D) : fiches complètes et
+   messages avec l'enseignant dans la fenêtre d'une proposition. */
+.submission-card-field { margin: 0; }
+.submission-card-field > span { font-size: 12px; color: var(--muted, #6b7280); }
+.submission-wrongs { display: grid; gap: 4px; }
+.submission-thread { display: grid; gap: 6px; margin: 4px 0 6px; }
+.submission-msg { padding: 8px 10px; border-radius: 10px; background: #f3f5f4; white-space: pre-line; }
+.submission-msg--admin { background: #e8f0fb; }

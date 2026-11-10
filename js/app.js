@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v278";
+  const APP_VERSION = "v279";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -2494,6 +2494,12 @@
     const current = publicationSignature(boxCards, subject.name, subject.link);
     const lastSent = publicationSignature(latest.cards || [], latest.name, latest.link);
     if (!PublicationRules.shouldResubmit(latest.status, lastSent, current)) return;
+    // v279 : ma boîte a repris la version de darwin (« Appliquer à ma
+    // boîte ») : identique à la Librairie, rien à renvoyer.
+    if (latest.status === PublicationRules.STATUS.PUBLISHED && latest.collection_id && subject.name === latest.name && (subject.link || "") === (latest.link || "")) {
+      const col = await Sync.library.myCollectionCards(latest.collection_id);
+      if (col && PublicationRules.cardsSignature(col.cards || []) === PublicationRules.cardsSignature(boxCards)) return;
+    }
     // Boîte publiée avant la v278 sans accord enregistré : elle sera
     // renvoyée après le prochain accord (partage ou publication).
     if (licenseNeededFor(subjectId)) return;
@@ -8121,6 +8127,7 @@
       }
       if (view === "reports") renderReportsView();
       if (view === "reports-sent") renderSentReportsView();
+      if (view === "darwin-messages") renderDarwinMessagesView(); // v279
       if (view === "reports-hub") refreshReportsBadge();
       // Round 10, item 2 : resynchronise les collections prises dans la
       // Bibliothèque en ouvrant Mes collections — indépendant d'un Compte
@@ -8377,6 +8384,7 @@
     reports: { text: "Signalements reçus", hide: ["#view-reports > h2.section-title"] },
     "reports-hub": "Signalements",
     "reports-sent": "Signalements émis",
+    "darwin-messages": "Messages de darwin",
     classes: { text: "Mes classes", hide: ["#view-classes > h2.section-title"] },
     "classes-student": { text: "Mes classes", hide: ["#view-classes-student > h2.section-title"] },
     "classes-join": { text: "Rejoindre une classe", hide: ["#view-classes-join > h2.section-title"] },
@@ -8656,7 +8664,8 @@
     }
     if (
       (el("view-reports") && el("view-reports").classList.contains("is-active")) ||
-      (el("view-reports-sent") && el("view-reports-sent").classList.contains("is-active"))
+      (el("view-reports-sent") && el("view-reports-sent").classList.contains("is-active")) ||
+      (el("view-darwin-messages") && el("view-darwin-messages").classList.contains("is-active"))
     ) {
       const tab = document.querySelector('.tab[data-view="reports-hub"]');
       if (tab) tab.click();
@@ -17795,7 +17804,7 @@
           await refreshPublicationState();
           closeLibraryShareView();
           renderSubjectManageList();
-          await robotAlert(`Merci ! « ${name} » est envoyée à darwin, qui la relira avant de la mettre dans la Librairie.`);
+          await robotAlert(`Merci ! « ${name} » est envoyée à darwin, qui la relira avant de la publier dans la Librairie. En attendant, tu peux déjà partager ta version à tes élèves, via tes classes.`);
           return;
         }
         if (classMode) {
@@ -17990,6 +17999,10 @@
     const linkValue = learnLinkChipHtml(s.link, "box", s.name) || `<span class="field-hint">Aucun lien</span>`;
     const libraryExtras = [
       col && col.name && col.name !== s.name ? `<p class="info-block-note">Publiée sous le nom « ${escapeHtml(col.name)} »</p>` : "",
+      // v279 : l'enseignant ne retire pas lui-même, il le demande à darwin.
+      col && !accountIsAdminFlag && ProfileRules.canPublishToLibrary(activeRole())
+        ? `<p class="info-block-note"><button type="button" class="info-block-link" data-act="withdraw">Demander le retrait de la Librairie</button></p>`
+        : "",
       tags.length ? `<span class="tag-chips tag-chips--row">${tagChipsHtml(tags)}</span>` : "",
     ].join("");
     // v250 : « Ma progression » et « Pour aller plus loin » hors des
@@ -18057,6 +18070,8 @@
         } else if (act === "link") {
           await editSubjectLearnLink(s, col);
           renderCreationDetail();
+        } else if (act === "withdraw") {
+          await requestLibraryWithdrawal(s.id);
         } else if (act === "classify") {
           await openBoxEditView(s.id);
         } else if (act === "delete") {
@@ -18708,11 +18723,17 @@
       return;
     }
     const c = await Sync.reports.countMine();
+    // v279 : messages de darwin non lus (publication avec relecture).
+    const darwinUnseen = Sync.library && Sync.library.darwinUnseenCount ? await Sync.library.darwinUnseenCount() : 0;
+    const hasDarwin = darwinUnseen > 0 || mySubmissionsLatest.size > 0;
+    const darwinBtn = el("reports-hub-darwin-btn");
+    if (darwinBtn) darwinBtn.hidden = !hasDarwin;
+    setBadgeEl("reports-hub-darwin-badge", darwinUnseen);
     // Round 55 : plus de lien « Signalements » dans Mes créations (la page
     // reste accessible depuis l'accueil).
     if (hubBtn) hubBtn.hidden = true;
-    if (homeCircle) homeCircle.hidden = c.receivedTotal + c.sentTotal === 0;
-    setBadgeEl("home-reports-badge", c.open + c.sentUnseen);
+    if (homeCircle) homeCircle.hidden = c.receivedTotal + c.sentTotal === 0 && !hasDarwin;
+    setBadgeEl("home-reports-badge", c.open + c.sentUnseen + darwinUnseen);
     setBadgeEl("fiches-hub-reports-badge", c.open);
     setBadgeEl("reports-hub-received-badge", c.open);
     setBadgeEl("reports-hub-sent-badge", c.sentUnseen);
@@ -18872,6 +18893,265 @@
       await Sync.reports.markSeen(unseen);
       refreshReportsBadge();
     }
+  }
+  /* ---------------------------------------------------------
+     v279 — publication avec relecture, étape D : « Messages de darwin »
+     (docs/SPECIFICATION.md §7.2). Échanges regroupés par boîte ; une
+     correction de darwin montre l'avant / après et propose « Appliquer à
+     ma boîte » ; l'enseignant peut répondre ou demander le retrait.
+     --------------------------------------------------------- */
+  const DARWIN_MSG_LABELS = {
+    changes_requested: "darwin te demande une modification",
+    rejected: "darwin n'a pas retenu cette boîte pour la Librairie",
+    published_with_changes: "Publiée dans la Librairie, avec des corrections de darwin",
+    withdrawn: "Retirée de la Librairie par darwin",
+    withdrawal_request: "Tu as demandé le retrait de la Librairie",
+  };
+  const DARWIN_STATUS_LABELS = {
+    pending: "En relecture chez darwin",
+    changes_requested: "Modification demandée",
+    published: "Dans la Librairie",
+    rejected: "Non retenue pour la Librairie",
+    withdrawn: "Retirée de la Librairie",
+    superseded: "En relecture chez darwin",
+  };
+  /** Réponse complète d'une fiche (avec QCM, complément et lien), en texte. */
+  function darwinCardAnswerText(c) {
+    const parts = [stripHtmlFast(c.answer || "")];
+    if (Array.isArray(c.wrongs) && c.wrongs.length) parts.push("Mauvaises réponses du QCM : " + c.wrongs.map((w) => stripHtmlFast(w)).join(" · "));
+    if (c.more) parts.push("Pour aller plus loin : " + stripHtmlFast(c.more));
+    if (c.link) parts.push("Lien : " + c.link);
+    return parts.filter(Boolean).join("\n");
+  }
+  function darwinDiffHtml(diff) {
+    const out = [];
+    diff.changed.forEach(({ before, after }) => {
+      out.push(
+        `<div class="rp-cards">${reportMiniCardHtml("Avant", stripHtmlFast(before.question || ""), darwinCardAnswerText(before))}${reportMiniCardHtml(
+          "Après correction",
+          stripHtmlFast(after.question || ""),
+          darwinCardAnswerText(after),
+          true
+        )}</div>`
+      );
+    });
+    diff.added.forEach((c) => out.push(reportMiniCardHtml("Fiche ajoutée par darwin", stripHtmlFast(c.question || ""), darwinCardAnswerText(c), true)));
+    diff.removed.forEach((c) => out.push(reportMiniCardHtml("Fiche retirée par darwin", stripHtmlFast(c.question || ""), darwinCardAnswerText(c))));
+    return out.join("");
+  }
+  let darwinThreadsCache = new Map(); // boîte → { latest, colCards }
+  async function renderDarwinMessagesView() {
+    const list = el("darwin-messages-list");
+    const empty = el("darwin-messages-empty");
+    if (!list) return;
+    list.innerHTML = `<li class="field-hint">Chargement…</li>`;
+    const [subsRes, msgsRes] = await Promise.all([Sync.library.mySubmissions(), Sync.library.darwinMessages()]);
+    await refreshPublicationState();
+    list.innerHTML = "";
+    const err = subsRes.error || msgsRes.error;
+    const subsById = new Map((subsRes.data || []).map((x) => [x.id, x]));
+    const threads = new Map();
+    (msgsRes.data || []).forEach((m) => {
+      const sub = subsById.get(m.submission_id);
+      if (!sub) return;
+      const key = sub.source_subject_id || sub.id;
+      if (!threads.has(key)) threads.set(key, { key, msgs: [], subs: new Map() });
+      const t = threads.get(key);
+      t.msgs.push(m);
+      t.subs.set(sub.id, sub);
+    });
+    if (empty) {
+      empty.hidden = threads.size > 0;
+      empty.textContent = err && !threads.size ? `Les messages ne sont pas disponibles : ${err}` : "Aucun message de darwin pour l'instant.";
+    }
+    const ordered = Array.from(threads.values()).sort((a, b) =>
+      String(b.msgs[b.msgs.length - 1].created_at).localeCompare(String(a.msgs[a.msgs.length - 1].created_at))
+    );
+    darwinThreadsCache = new Map();
+    const unseen = [];
+    for (const t of ordered) {
+      const allSubs = (subsRes.data || []).filter((x) => (x.source_subject_id || x.id) === t.key);
+      const latest = allSubs[0] || Array.from(t.subs.values())[0];
+      const subject = subjects.find((x) => x.id === t.key && !x.deleted);
+      const name = (subject && subject.name) || latest.name || "Boîte";
+      const hasNew = t.msgs.some((m) => m.from_admin && !m.seen_at);
+      t.msgs.forEach((m) => {
+        if (m.from_admin && !m.seen_at) unseen.push(m.id);
+      });
+      // Dernière correction de darwin : avant (version envoyée) / après
+      // (version publiée).
+      let diffHtml = "";
+      let colCards = null;
+      const lastCorr = t.msgs.filter((m) => m.kind === "published_with_changes").pop();
+      const publishedSub = allSubs.find((x) => x.status === "published" && x.collection_id);
+      if (lastCorr && publishedSub) {
+        const col = await Sync.library.myCollectionCards(publishedSub.collection_id);
+        if (col && Array.isArray(col.cards)) {
+          colCards = col.cards;
+          const corrSub = subsById.get(lastCorr.submission_id) || publishedSub;
+          const d = PublicationRules.cardsDiff(corrSub.cards || [], colCards);
+          if (d.any) diffHtml = `<div class="dm-diff"><span class="dm-diff-title">Corrections de darwin</span>${darwinDiffHtml(d)}</div>`;
+        }
+      }
+      darwinThreadsCache.set(t.key, { latest, colCards, publishedSub });
+      const canApply =
+        !!(subject && colCards && PublicationRules.cardsDiff(cards.filter((c) => !c.deleted && c.subject === subject.id), colCards).any);
+      const bubbles = t.msgs
+        .map((m) => {
+          const label = DARWIN_MSG_LABELS[m.kind] || "";
+          const text = label ? label + (m.body ? " — " + m.body : "") : m.body;
+          return reportBubbleHtml(m.from_admin ? "darwin" : "Toi", text, m.from_admin ? "other" : "mine");
+        })
+        .join("");
+      const li = document.createElement("li");
+      li.className = "subject-row report-row rp dm-thread" + (hasNew ? " report-row--new" : "");
+      li.dataset.source = t.key;
+      li.innerHTML = `
+        <div class="rp-head">
+          <span class="rp-box">${escapeHtml(name)}</span>
+          <span class="rp-date">${escapeHtml(formatReportDate(t.msgs[t.msgs.length - 1].created_at))}</span>
+        </div>
+        <div class="rp-status">${escapeHtml(DARWIN_STATUS_LABELS[latest.status] || "")}${hasNew ? ` <span class="rp-new">nouveau</span>` : ""}</div>
+        ${latest.status === "changes_requested" ? `<p class="field-hint">Modifie ta boîte : la nouvelle version sera envoyée d'elle-même à darwin.</p>` : ""}
+        ${diffHtml}
+        ${canApply ? `<div class="dm-actions"><button type="button" class="btn btn--primary" data-dm-act="apply">Appliquer à ma boîte</button></div>` : ""}
+        <div class="rp-thread">${bubbles}</div>
+        <div class="dm-reply">
+          <textarea rows="2" class="dm-reply-text" placeholder="Répondre à darwin…"></textarea>
+          <div class="dm-actions">
+            <button type="button" class="btn btn--primary" data-dm-act="reply">Envoyer</button>
+            ${publishedSub ? `<button type="button" class="btn btn--ghost" data-dm-act="withdraw">Demander le retrait</button>` : ""}
+          </div>
+        </div>`;
+      list.appendChild(li);
+    }
+    if (unseen.length) {
+      await Sync.library.markDarwinMessagesSeen(unseen);
+      refreshReportsBadge().catch(() => {});
+    }
+  }
+  const darwinMessagesList = el("darwin-messages-list");
+  if (darwinMessagesList) {
+    darwinMessagesList.addEventListener("click", async (e) => {
+      const btn = e.target.closest("[data-dm-act]");
+      if (!btn) return;
+      const li = btn.closest("li[data-source]");
+      const key = li && li.dataset.source;
+      const t = key && darwinThreadsCache.get(key);
+      if (!t) return;
+      const act = btn.dataset.dmAct;
+      if (act === "reply") {
+        const ta = li.querySelector(".dm-reply-text");
+        const body = ((ta && ta.value) || "").trim();
+        if (!body) {
+          await robotAlert("Écris d'abord ton message.");
+          return;
+        }
+        btn.disabled = true;
+        const r = await Sync.library.sendDarwinMessage(t.latest.id, body, "message");
+        btn.disabled = false;
+        if (r.error) {
+          await robotAlert("Le message n'a pas pu être envoyé : " + r.error);
+          return;
+        }
+        showToast("Message envoyé à darwin");
+        renderDarwinMessagesView();
+      } else if (act === "apply") {
+        if (await applyDarwinVersionToBox(key, t.colCards)) renderDarwinMessagesView();
+      } else if (act === "withdraw") {
+        if (await requestLibraryWithdrawal(key)) renderDarwinMessagesView();
+      }
+    });
+  }
+  /** « Appliquer à ma boîte » : ma boîte prend la version publiée par
+   *  darwin (fiches modifiées, ajoutées, retirées). La progression des
+   *  fiches gardées est conservée. */
+  async function applyDarwinVersionToBox(subjectId, colCards) {
+    const subject = subjects.find((x) => x.id === subjectId && !x.deleted);
+    if (!subject || !Array.isArray(colCards)) {
+      await robotAlert("Ta boîte n'a pas été retrouvée sur cet appareil.");
+      return false;
+    }
+    const local = cards.filter((c) => !c.deleted && c.subject === subjectId);
+    const d = PublicationRules.cardsDiff(local, colCards);
+    if (!d.any) {
+      await robotAlert("Ta boîte est déjà identique à la version de darwin.");
+      return false;
+    }
+    const parts = [];
+    if (d.changed.length) parts.push(`${d.changed.length} fiche${d.changed.length > 1 ? "s" : ""} corrigée${d.changed.length > 1 ? "s" : ""}`);
+    if (d.added.length) parts.push(`${d.added.length} ajoutée${d.added.length > 1 ? "s" : ""}`);
+    if (d.removed.length) parts.push(`${d.removed.length} retirée${d.removed.length > 1 ? "s" : ""}`);
+    const ok = await robotConfirm(
+      `Mettre ta boîte « ${subject.name} » à jour avec la version de darwin (${parts.join(", ")}) ? Ta progression sur les fiches gardées est conservée.`,
+      { okLabel: "Appliquer" }
+    );
+    if (!ok) return false;
+    const copyContent = (target, src) => {
+      const next = { ...target, question: src.question || "", answer: src.answer || "" };
+      if (Array.isArray(src.wrongs) && src.wrongs.length === 3) next.wrongs = src.wrongs.slice();
+      else delete next.wrongs;
+      if (src.more) next.more = src.more;
+      else delete next.more;
+      if (src.link) next.link = src.link;
+      else delete next.link;
+      return next;
+    };
+    for (const { after } of d.changed) {
+      const i = cards.findIndex((c) => c.id === after.id);
+      if (i < 0) continue;
+      const updated = touch(copyContent(cards[i], after));
+      await persist(updated);
+      cards[i] = updated;
+    }
+    for (const a of d.added) {
+      const nc = copyContent(newCard(a.question || "", a.answer || "", subjectId), a);
+      if (a.id && !cards.some((c) => c.id === a.id)) nc.id = a.id;
+      await persist(nc);
+      cards.push(nc);
+    }
+    for (const r of d.removed) {
+      const i = cards.findIndex((c) => c.id === r.id);
+      if (i < 0) continue;
+      const updated = touch({ ...cards[i], deleted: true });
+      await persist(updated);
+      cards[i] = updated;
+    }
+    // Mêmes fiches que la Librairie : pas de renvoi à darwin (voir
+    // resubmitBoxToDarwin) ; les classes reçoivent la nouvelle version.
+    await pushSharedBoxUpdatesForSubject(subjectId);
+    renderAll();
+    showToast("Ta boîte est à jour avec la version de darwin");
+    return true;
+  }
+  /** Demande de retrait d'une boîte publiée (darwin décide). */
+  async function requestLibraryWithdrawal(subjectId) {
+    await refreshPublicationState();
+    const latest = mySubmissionsLatest.get(subjectId);
+    if (!latest) {
+      await robotAlert("Cette boîte n'a pas été envoyée à darwin : il n'y a rien à retirer de la Librairie.");
+      return false;
+    }
+    const reason = await robotPrompt(
+      "Pourquoi souhaites-tu que darwin retire cette boîte de la Librairie ? darwin étudiera ta demande et te répondra dans « Messages de darwin ». Ceux qui ont déjà pris la boîte la gardent.",
+      ""
+    );
+    if (reason === null) return false;
+    const r = await Sync.library.sendDarwinMessage(latest.id, reason, "withdrawal_request");
+    if (r.error) {
+      await robotAlert("La demande n'a pas pu être envoyée : " + r.error);
+      return false;
+    }
+    showToast("Demande de retrait envoyée à darwin");
+    refreshReportsBadge().catch(() => {});
+    return true;
+  }
+  const reportsHubDarwinBtn = el("reports-hub-darwin-btn");
+  if (reportsHubDarwinBtn) {
+    reportsHubDarwinBtn.addEventListener("click", () => {
+      const tab = document.querySelector('.tab[data-view="darwin-messages"]');
+      if (tab) tab.click();
+    });
   }
   const reportsHubSentBtn = el("reports-hub-sent-btn");
   if (reportsHubSentBtn) {

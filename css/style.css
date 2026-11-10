@@ -9112,3 +9112,11 @@ body:not(.profile-teacher) #library-mine-toggle { display: none !important; }
 .library-license p { margin: 0 0 8px; }
 .library-license .library-license-title { font-weight: 700; font-size: 14.5px; }
 .library-license .account-terms-check { margin-bottom: 0; }
+
+/* v279 (publication avec relecture, étape D) : « Messages de darwin ». */
+.dm-thread .dm-diff { margin: 8px 0; display: flex; flex-direction: column; gap: 6px; }
+.dm-thread .dm-diff-title { font-weight: 700; font-size: 13px; color: var(--ink); }
+.dm-thread .rp-card-a { white-space: pre-line; }
+.dm-thread .dm-reply { margin-top: 8px; }
+.dm-thread .dm-reply-text { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px; padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(0, 0, 0, 0.15); background: var(--card-bg, #fff); color: var(--ink); resize: vertical; }
+.dm-thread .dm-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }

@@ -335,6 +335,7 @@
     <button class="tab" role="tab" aria-selected="false" data-view="reports-hub" hidden>Signalements</button>
     <button class="tab" role="tab" aria-selected="false" data-view="reports" hidden>Signalements reçus</button>
     <button class="tab" role="tab" aria-selected="false" data-view="reports-sent" hidden>Signalements émis</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="darwin-messages" hidden>Messages de darwin</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes" hidden>Classes</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes-join" hidden>Rejoindre une classe</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes-create" hidden>Créer une classe</button>
@@ -1483,6 +1484,13 @@
           <span>Signalements reçus</span>
           <span class="home-circle-badge" id="reports-hub-received-badge" hidden>0</span>
         </button>
+        <!-- v279 (publication avec relecture, étape D) : échanges avec darwin
+             sur les boîtes partagées ou publiées. -->
+        <button type="button" class="classes-role-circle" id="reports-hub-darwin-btn" hidden>
+          <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+          <span>Messages de darwin</span>
+          <span class="home-circle-badge" id="reports-hub-darwin-badge" hidden>0</span>
+        </button>
       </div>
     </section>
 
@@ -1492,6 +1500,11 @@
       <p class="field-hint" id="reports-empty" hidden>Aucun signalement reçu.</p>
     </section>
 
+    <!-- v279 : Messages de darwin (docs/SPECIFICATION.md §7.2). -->
+    <section id="view-darwin-messages" class="view" aria-labelledby="tab-darwin-messages">
+      <ul class="subject-list" id="darwin-messages-list"></ul>
+      <p class="field-hint" id="darwin-messages-empty" hidden>Aucun message de darwin pour l'instant.</p>
+    </section>
     <section id="view-reports-sent" class="view" aria-labelledby="tab-reports-sent">
       <ul class="subject-list" id="reports-sent-list"></ul>
       <p class="field-hint" id="reports-sent-empty" hidden>Tu n'as encore signalé aucune fiche.</p>

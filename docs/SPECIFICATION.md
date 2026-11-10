@@ -555,6 +555,8 @@ tout de suite, la liste à jour suit.
 - **Messagerie** : une discussion par classe (enseignant + tous les
   élèves), en temps réel. Pastille de messages non lus sur « Mes
   classes » (accueil) et sur la page de la classe.
+- **Messages de darwin** (v279) : rangés avec les signalements ; voir
+  §7.2.
 - **Signalements** : un élève signale une fiche erronée à son auteur ;
   l'auteur les retrouve dans « Signalements reçus », l'élève dans
   « Signalements émis ». Un bouton d'accueil « Signalements » n'apparaît
@@ -667,6 +669,47 @@ avant de la publier depuis Darwin Admin.
   avec une classe).
 - Un compte élève ne peut rien envoyer à darwin (vérifié aussi par la
   base de données).
+- Après « Envoyer à darwin », le robot répond : « Merci ! … est envoyée à
+  darwin, qui la relira avant de la publier dans la Librairie. En
+  attendant, tu peux déjà partager ta version à tes élèves, via tes
+  classes. » (v279)
+
+**« Messages de darwin »** (v279, étape D) — page rangée dans
+« Signalements » (troisième rond, visible dès qu'on a envoyé une boîte à
+darwin ou reçu un message) ; la pastille de l'accueil compte aussi les
+messages de darwin non lus (pas d'e-mail).
+- Un fil par boîte : état (en relecture, modification demandée, dans la
+  Librairie, non retenue, retirée), messages de darwin et de
+  l'enseignant, dans l'ordre.
+- darwin écrit à l'enseignant quand il **corrige** ses fiches en publiant
+  (message automatique « Publiée avec des corrections de darwin »),
+  **refuse**, **retire**, ou lui laisse un mot. Une publication sans
+  retouche ni mot ne donne aucun message.
+- **Corrections** : avant / après de chaque fiche modifiée (question,
+  réponse, mauvaises réponses du QCM, « pour aller plus loin », lien),
+  fiches ajoutées ou retirées par darwin.
+- **« Appliquer à ma boîte »** (si sa boîte diffère de la version de
+  darwin) : sa boîte prend la version de darwin, après confirmation ; la
+  progression des fiches gardées est conservée ; ses classes reçoivent la
+  nouvelle version ; rien n'est renvoyé à darwin (la boîte est identique
+  à la Librairie). Sinon, sa boîte reste comme il l'a écrite.
+- **Répondre** : l'enseignant écrit à darwin sous chaque fil.
+- **Demander le retrait** (fil d'une boîte publiée, ou lien « Demander
+  le retrait de la Librairie » sur la page de la boîte) : l'enseignant
+  explique pourquoi ; darwin décide. S'il retire la boîte, ceux qui
+  l'avaient prise la gardent.
+
+**Côté Darwin Admin** (Librairie → Propositions des enseignants) :
+- la fenêtre d'une proposition montre **tous les champs** de chaque fiche
+  (question, réponse, 3 mauvaises réponses du QCM, « pour aller plus
+  loin », lien), modifiables ; un QCM doit garder ses 3 mauvaises
+  réponses ou n'en avoir aucune (v279) ;
+- les messages avec l'enseignant (toutes les versions de la boîte), et
+  un champ pour lui écrire ; la « Note » est envoyée à l'enseignant avec
+  la décision ;
+- filtre « Messages non lus » (réponses, demandes de retrait) et colonne
+  « Messages » ;
+- « Retirer de la Librairie » pour une boîte publiée.
 - darwin (compte administrateur) publie toujours directement ses propres
   boîtes (boîtes toutes prêtes).
 
@@ -767,7 +810,7 @@ dernier mot. Rien n'arrive dans la Librairie sans cette relecture.
 | A ✅ (9 nov.) | Base de données (`supabase/publication_relecture_A_migration.sql`, exécuté le 10 nov.), règles testées, brouillon du texte de licence et de la clause des CGU (`docs/brouillon-licence-publication.md`) |
 | B ✅ (v278) | Partage avec une classe et bouton « Publier » : accord obligatoire, envoi à darwin ; fin de la publication directe ; nouvelles versions renvoyées sans bruit ; boîtes déjà publiées remises en relecture |
 | C | Darwin Admin : liste de relecture (corriger, publier, demander une modification, refuser) ; export / import des décisions pour la relecture par Claude |
-| D | « Messages de darwin » : pastille, avant / après, réponse, « Appliquer à ma boîte », demande de retrait |
+| D ✅ (v279) | « Messages de darwin » : pastille, avant / après, réponse, « Appliquer à ma boîte », demande de retrait |
 | E | « Signaler cette boîte », signalements de la Librairie vers darwin, boîtes gardées après suppression du compte, réglage « seulement les boîtes darwin » |
 | F (plus tard) | Signalements de boîtes privées (modération) et offre « Proposez vos boîtes à darwin, un mois offert si elles sont retenues » (accord explicite de l'auteur ; CGU et confidentialité mises à jour d'abord) |
 
@@ -888,6 +931,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v279 | 10 nov. 2026 | Publication avec relecture, étape D : page « Messages de darwin » (dans Signalements, pastille sur l'accueil) — corrections de darwin en avant / après, « Appliquer à ma boîte », réponse à darwin, demande de retrait (aussi depuis la page de la boîte) ; Darwin Admin : fil des messages, écrire à l'enseignant, filtre « Messages non lus », « Retirer de la Librairie ». Darwin Admin montre et permet de corriger tous les champs des fiches proposées (QCM, « pour aller plus loin », lien). Nouveau message après « Envoyer à darwin » (on peut déjà partager sa version avec ses classes). |
 | v278 | 10 nov. 2026 | Publication avec relecture, étape B : plus de publication directe ; « Publier dans la Librairie » et le partage d'une boîte avec une classe envoient la boîte à darwin, qui la relit avant de la mettre dans la Librairie ; accord de licence (non exclusive) demandé une fois par boîte ; les modifications d'une boîte déjà envoyée ou publiée repartent d'elles-mêmes chez darwin ; les boîtes publiées par des enseignants avant cette version sont remises en relecture ; seul darwin modifie la Librairie. CGU (§4 « Tes contenus ») et politique de confidentialité mises à jour (licence, nom de l'auteur plus affiché, relecture, preuve de l'accord). |
 | — | 9 nov. 2026 | Chantier « publication avec relecture » : plan validé et inscrit au §7.2 (décisions Q3, Q4, Q13 — licence désormais **non exclusive**). Étape A (rien de visible dans l'appli) : préparation de la base de données (états « à modifier », « remplacée », « retirée » ; accord de licence une fois par boîte, gardé même après suppression du compte ; messages darwin ↔ enseignant ; nouvelle version qui remplace la proposition ouverte et met à jour la boîte déjà publiée ; Darwin Admin peut demander une modification), règles testées, brouillon juridique. Nouvelle question Q17 (juriste). |
 | v277 | 8 nov. 2026 | Page Réviser : une seule présentation, la « mixte » (trois ronds + « Comment ça marche ? ») ; le « parcours guidé » et les liens « Autres présentations » sont supprimés (Q11). Décisions Q13 (licence exclusive), Q14 (catégories), Q15 (signalements à darwin), Q16 (Librairie de darwin à l'ouverture) reportées dans la spécification. |

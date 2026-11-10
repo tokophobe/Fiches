@@ -130,7 +130,13 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   `refreshPublicationState`, `licenseNeededFor`, `ensureLicenseByConfirm`,
   `boxInPublicationCircuit`, renvoi automatique `scheduleLibraryResubmit`
   (appelé par `pushSharedBoxUpdatesForSubject`). `Sync.library.share`
-  ne sert plus qu'à un administrateur. À l'étape C, charger
+  ne sert plus qu'à un administrateur. Étape D (v279) :
+  `supabase/publication_relecture_D_migration.sql`
+  (`admin_withdraw_submission`) ; vue `darwin-messages`
+  (`renderDarwinMessagesView`, `applyDarwinVersionToBox`,
+  `requestLibraryWithdrawal`) rangée dans `reports-hub`, pastille dans
+  `refreshReportsBadge` ; Darwin Admin `openSubmission` : tous les champs
+  des fiches, fil des messages, retrait. À l'étape C, charger
   `publication-rules.js` aussi dans `admin/`.
 - Les autres différences sont à préciser avec le propriétaire (spéc. §3.2).
 
