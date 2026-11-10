@@ -630,23 +630,49 @@ le robot répond que la publication est réservée aux comptes enseignants.
 Plus de demande de prénom / nom « pour être crédité » : l'auteur n'est
 plus affiché.
 
-Deux chemins existent aujourd'hui (en attendant le chantier ci-dessous) :
+**Depuis la v278 (étape B du chantier ci-dessous)**, un seul circuit :
+toute boîte destinée à la Librairie est **envoyée à darwin**, qui la relit
+avant de la publier depuis Darwin Admin.
 
-| Depuis | Comment | Visible |
+| Depuis | Comment | Librairie |
 |---|---|---|
-| **Une boîte à moi** (page de la boîte) | Classifier, puis « Publier dans la Librairie » : nom, classification, description | **Tout de suite** dans la Librairie |
-| **Une boîte partagée avec une classe** (enseignant) | Proposition envoyée à darwin | Après relecture et publication depuis **Darwin Admin** |
+| **Une boîte à moi** (page de la boîte) | « Publier dans la Librairie » : nom, classement, description, accord de licence, puis « Envoyer à darwin » | Après relecture par darwin |
+| **Partager une boîte à moi avec une classe** | La première fois : même formulaire (« Partager avec la classe »), avec l'accord ; partage **immédiat** avec la classe et envoi **d'office** à darwin (pas de case « proposer aussi ») | Après relecture par darwin |
+| **Partager avec une autre classe** une boîte déjà envoyée ou publiée | Partage direct ; le robot demande l'accord s'il n'a jamais été donné pour cette boîte | (déjà dans le circuit) |
 
-- La boîte publiée est une **copie figée** au moment de la publication :
-  si l'auteur modifie ensuite sa boîte, **la Librairie ne change pas**.
-- Seul un **administrateur** peut corriger les fiches publiées (la
-  correction s'applique à tous ceux qui ont pris la boîte).
-- Une boîte ne peut être publiée qu'une fois.
-- Ces règles changent avec le chantier ci-dessous (décisions Q3, Q4, Q13).
+- **Accord de licence** : une case « J'ai lu et j'accepte ces conditions
+  pour cette boîte », demandée **une seule fois par boîte** ; sans elle,
+  ni partage ni envoi. Texte : licence non exclusive (CGU, « Tes
+  contenus »).
+- **Discrétion** : après un partage avec une classe, l'enseignant ne voit
+  que « partagée avec la classe ». Après « Publier », le robot confirme
+  l'envoi à darwin. Il n'est pas prévenu de la suite tant que darwin
+  n'a pas besoin de lui (« Messages de darwin » : étape D).
+- **Modifications** : quand l'enseignant modifie une boîte déjà envoyée
+  ou publiée, la nouvelle version part **d'elle-même** chez darwin,
+  30 secondes après la dernière modification (ou quand l'appli passe en
+  arrière-plan), sans message. Elle remplace la version encore en
+  relecture ; pour une boîte publiée, la Librairie n'est mise à jour
+  qu'une fois darwin d'accord. Pas de renvoi après un refus ou un
+  retrait.
+- **Seul darwin** met une boîte dans la Librairie, la modifie (fiches,
+  lien vidéo, classement) ou la supprime. L'enseignant ne peut plus le
+  faire lui-même, même pour ses propres boîtes publiées.
+- **Boîtes publiées avant la v278** par des enseignants : remises « en
+  relecture ». Elles disparaissent de la Librairie (sauf pour leur
+  auteur, qui les voit toujours, et pour ceux qui les avaient déjà
+  prises, qui les gardent) jusqu'à ce que darwin les publie. Leur auteur
+  n'avait pas encore donné l'accord : ses modifications ne repartent chez
+  darwin qu'après un premier accord (par exemple en partageant la boîte
+  avec une classe).
+- Un compte élève ne peut rien envoyer à darwin (vérifié aussi par la
+  base de données).
+- darwin (compte administrateur) publie toujours directement ses propres
+  boîtes (boîtes toutes prêtes).
 
 **Chantier « publication avec relecture »** (plan validé le 9 nov. 2026,
-à livrer en plusieurs versions, A à F ; tant qu'une étape n'est pas
-livrée, les règles ci-dessus restent celles de l'appli).
+à livrer en plusieurs versions, A à F ; les étapes livrées sont décrites
+ci-dessus, les autres restent à faire).
 
 *Principe* : **un seul circuit**. Toute boîte qui doit entrer dans la
 Librairie devient une **proposition**, relue par darwin, qui garde le
@@ -738,8 +764,8 @@ dernier mot. Rien n'arrive dans la Librairie sans cette relecture.
 
 | Étape | Contenu |
 |---|---|
-| A ✅ (9 nov.) | Base de données (`supabase/publication_relecture_A_migration.sql`, à exécuter), règles testées, brouillon du texte de licence et de la clause des CGU (`docs/brouillon-licence-publication.md`) |
-| B | Partage avec une classe et bouton « Publier » : accord obligatoire, envoi à darwin ; fin de la publication directe ; nouvelles versions renvoyées sans bruit ; boîtes déjà publiées remises en relecture |
+| A ✅ (9 nov.) | Base de données (`supabase/publication_relecture_A_migration.sql`, exécuté le 10 nov.), règles testées, brouillon du texte de licence et de la clause des CGU (`docs/brouillon-licence-publication.md`) |
+| B ✅ (v278) | Partage avec une classe et bouton « Publier » : accord obligatoire, envoi à darwin ; fin de la publication directe ; nouvelles versions renvoyées sans bruit ; boîtes déjà publiées remises en relecture |
 | C | Darwin Admin : liste de relecture (corriger, publier, demander une modification, refuser) ; export / import des décisions pour la relecture par Claude |
 | D | « Messages de darwin » : pastille, avant / après, réponse, « Appliquer à ma boîte », demande de retrait |
 | E | « Signaler cette boîte », signalements de la Librairie vers darwin, boîtes gardées après suppression du compte, réglage « seulement les boîtes darwin » |
@@ -862,6 +888,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v278 | 10 nov. 2026 | Publication avec relecture, étape B : plus de publication directe ; « Publier dans la Librairie » et le partage d'une boîte avec une classe envoient la boîte à darwin, qui la relit avant de la mettre dans la Librairie ; accord de licence (non exclusive) demandé une fois par boîte ; les modifications d'une boîte déjà envoyée ou publiée repartent d'elles-mêmes chez darwin ; les boîtes publiées par des enseignants avant cette version sont remises en relecture ; seul darwin modifie la Librairie. CGU (§4 « Tes contenus ») et politique de confidentialité mises à jour (licence, nom de l'auteur plus affiché, relecture, preuve de l'accord). |
 | — | 9 nov. 2026 | Chantier « publication avec relecture » : plan validé et inscrit au §7.2 (décisions Q3, Q4, Q13 — licence désormais **non exclusive**). Étape A (rien de visible dans l'appli) : préparation de la base de données (états « à modifier », « remplacée », « retirée » ; accord de licence une fois par boîte, gardé même après suppression du compte ; messages darwin ↔ enseignant ; nouvelle version qui remplace la proposition ouverte et met à jour la boîte déjà publiée ; Darwin Admin peut demander une modification), règles testées, brouillon juridique. Nouvelle question Q17 (juriste). |
 | v277 | 8 nov. 2026 | Page Réviser : une seule présentation, la « mixte » (trois ronds + « Comment ça marche ? ») ; le « parcours guidé » et les liens « Autres présentations » sont supprimés (Q11). Décisions Q13 (licence exclusive), Q14 (catégories), Q15 (signalements à darwin), Q16 (Librairie de darwin à l'ouverture) reportées dans la spécification. |
 | v276 | 8 nov. 2026 | Librairie : une seule vidéo de cours à la fois (quand une vidéo démarre, les autres se mettent en pause ; depuis la v275, plusieurs pouvaient jouer en même temps). |

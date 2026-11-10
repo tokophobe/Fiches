@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v277";
+  const APP_VERSION = "v278";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -2388,6 +2388,133 @@
     return !manageOnlyPublished && inside.length === 0 && boitesInside.length === 0;
   }
 
+  /* ---------------------------------------------------------
+     v278 — publication avec relecture (docs/SPECIFICATION.md §7.2,
+     règles : js/publication-rules.js). Toute boîte destinée à la
+     Librairie devient une proposition relue par darwin ; l'accord de
+     licence se donne une fois par boîte ; une boîte déjà passée par le
+     circuit est renvoyée automatiquement (sans rien dire à l'enseignant)
+     quand il la modifie.
+     --------------------------------------------------------- */
+  let myLicenseSourceIds = new Set();
+  let mySubmissionsLatest = new Map(); // boîte d'origine → dernière proposition
+  let publicationStateLoaded = false;
+  async function refreshPublicationState() {
+    if (!Sync.isConfigured() || !accountCurrentUser || !Sync.library.mySubmissions) {
+      myLicenseSourceIds = new Set();
+      mySubmissionsLatest = new Map();
+      publicationStateLoaded = false;
+      return;
+    }
+    try {
+      const [subs, acc] = await Promise.all([Sync.library.mySubmissions(), Sync.library.myAcceptances()]);
+      if (!subs.error) {
+        const latest = new Map();
+        // Liste triée de la plus récente à la plus ancienne.
+        subs.data.forEach((row) => {
+          if (row.source_subject_id && !latest.has(row.source_subject_id)) latest.set(row.source_subject_id, row);
+        });
+        mySubmissionsLatest = latest;
+      }
+      if (!acc.error) myLicenseSourceIds = new Set(acc.data.map((a) => a.source_subject_id));
+      publicationStateLoaded = !subs.error && !acc.error;
+    } catch (e) {
+      console.warn("Librairie : échec du chargement des propositions", e);
+    }
+  }
+  /** L'accord de licence est-il encore à donner pour cette boîte ?
+   *  (jamais pour darwin, qui publie ses propres boîtes). */
+  function licenseNeededFor(subjectId) {
+    if (accountIsAdminFlag) return false;
+    return PublicationRules.needsLicenseAcceptance(
+      Array.from(myLicenseSourceIds, (id) => ({ sourceSubjectId: id })),
+      subjectId
+    );
+  }
+  async function recordLicenseAcceptance(subjectId) {
+    const r = await Sync.library.acceptLicense(subjectId, PublicationRules.LICENSE_VERSION);
+    if (!r.error) myLicenseSourceIds.add(subjectId);
+    return r;
+  }
+  /** La boîte est-elle déjà passée par le circuit (publiée, ou proposée
+   *  et ni refusée ni retirée) ? */
+  function boxInPublicationCircuit(subjectId) {
+    if (myPublishedSourceIds.has(subjectId)) return true;
+    const latest = mySubmissionsLatest.get(subjectId);
+    return !!latest && latest.status !== PublicationRules.STATUS.REJECTED && latest.status !== PublicationRules.STATUS.WITHDRAWN;
+  }
+  function publicationSignature(boxCards, name, link) {
+    return PublicationRules.cardsSignature(boxCards) + "\u0001" + (name || "") + "\u0001" + (link || "");
+  }
+  const LICENSE_CONFIRM_TEXT =
+    "Partager, c'est aussi enrichir la Librairie de darwin. En partageant cette boîte, tu autorises darwin à la reprendre dans sa Librairie : la relire, la corriger, la compléter, la classer et la proposer à tous ses utilisateurs, gratuitement, sans limite de durée ni de lieu, même si tu supprimes ensuite ton compte. Ta boîte reste à toi : tu peux continuer à l'utiliser, la modifier et la diffuser ailleurs. Ton nom n'est pas affiché. Tu confirmes que tu as le droit de la partager (contenu écrit par toi). Conditions complètes : CGU, « Tes contenus ».";
+  /** Demande l'accord (fenêtre du robot) s'il manque ; false si refusé. */
+  async function ensureLicenseByConfirm(subjectId) {
+    if (!licenseNeededFor(subjectId)) return true;
+    const ok = await robotConfirm(LICENSE_CONFIRM_TEXT, { okLabel: "J'accepte" });
+    if (!ok) return false;
+    const r = await recordLicenseAcceptance(subjectId);
+    if (r.error) {
+      await robotAlert("L'accord n'a pas pu être enregistré : " + r.error);
+      return false;
+    }
+    return true;
+  }
+  // Renvoi automatique d'une nouvelle version, 30 s après la dernière
+  // modification (ou quand l'appli passe en arrière-plan).
+  const libraryResubmitTimers = new Map();
+  function scheduleLibraryResubmit(subjectId) {
+    if (!subjectId || accountIsAdminFlag || !accountCurrentUser || !Sync.isConfigured()) return;
+    if (!mySubmissionsLatest.has(subjectId)) return;
+    clearTimeout(libraryResubmitTimers.get(subjectId));
+    libraryResubmitTimers.set(
+      subjectId,
+      setTimeout(() => {
+        libraryResubmitTimers.delete(subjectId);
+        resubmitBoxToDarwin(subjectId);
+      }, 30000)
+    );
+  }
+  function flushLibraryResubmits() {
+    for (const [id, t] of Array.from(libraryResubmitTimers)) {
+      clearTimeout(t);
+      libraryResubmitTimers.delete(id);
+      resubmitBoxToDarwin(id);
+    }
+  }
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") flushLibraryResubmits();
+  });
+  async function resubmitBoxToDarwin(subjectId) {
+    const latest = mySubmissionsLatest.get(subjectId);
+    const subject = subjects.find((x) => x.id === subjectId && !x.deleted);
+    if (!latest || !subject || accountIsAdminFlag) return;
+    const boxCards = cards.filter((c) => !c.deleted && c.subject === subjectId);
+    if (!boxCards.length) return;
+    const current = publicationSignature(boxCards, subject.name, subject.link);
+    const lastSent = publicationSignature(latest.cards || [], latest.name, latest.link);
+    if (!PublicationRules.shouldResubmit(latest.status, lastSent, current)) return;
+    // Boîte publiée avant la v278 sans accord enregistré : elle sera
+    // renvoyée après le prochain accord (partage ou publication).
+    if (licenseNeededFor(subjectId)) return;
+    const r = await Sync.library.submit({
+      name: subject.name,
+      summary: latest.summary || "",
+      description: latest.description || "",
+      taxonomy: latest.taxonomy || {},
+      tags: latest.tags || [],
+      cards: boxCards,
+      classId: latest.class_id || null,
+      className: latest.class_name || "",
+      sharedBoxId: latest.shared_box_id || null,
+      sourceSubjectId: subjectId,
+      link: subject.link || "",
+      origin: latest.origin || "class",
+    });
+    if (r.error) console.warn("Librairie : nouvelle version non envoyée à darwin", r.error);
+    else await refreshPublicationState();
+  }
+
   async function refreshMyPublishedSubjects() {
     if (!Sync.isConfigured() || !accountCurrentUser) {
       myPublishedSourceIds = new Set();
@@ -2409,6 +2536,8 @@
       myPublishedLegacyNames = names;
       creationsMyCollections = mine;
       myCollectionsLoaded = true;
+      // v278 : où en sont mes propositions et mes accords de licence.
+      await refreshPublicationState();
     } catch (e) {
       console.warn("Librairie : échec du chargement de mes publications", e);
     }
@@ -4169,6 +4298,8 @@
    *  n'est pas configurée ou si la boîte n'est liée à aucune classe. */
   async function pushSharedBoxUpdatesForSubject(subjectId) {
     if (!Sync.isConfigured()) return;
+    // v278 : une boîte déjà proposée / publiée repart chez darwin.
+    scheduleLibraryResubmit(subjectId);
     const subject = subjects.find((s) => s.id === subjectId);
     if (!subject || !subject.sharedShares || !subject.sharedShares.length) return;
     const boxCards = cards.filter((c) => !c.deleted && c.subject === subjectId);
@@ -14871,11 +15002,15 @@
             // Round 69 : une boîte créée par l'enseignant et pas encore dans
             // la Librairie → formulaire de la Librairie d'abord (classement,
             // résumé…), puis partage avec la classe + proposition à darwin.
-            if (isOwnCreatedSubject(subject) && !myPublishedSourceIds.has(subject.id)) {
+            // v278 : idem tant qu'elle n'est ni publiée ni déjà proposée.
+            if (isOwnCreatedSubject(subject) && !boxInPublicationCircuit(subject.id)) {
               closeBoitePickerView();
               await openClassShareForm(klass, subject);
               return;
             }
+            // v278 : partager avec une classe suppose l'accord de licence
+            // pour cette boîte (une seule fois).
+            if (isOwnCreatedSubject(subject) && !(await ensureLicenseByConfirm(subject.id))) return;
             name = subject.name;
             boxLink = subject.link || "";
             boxCards = cards.filter((c) => !c.deleted && c.subject === id);
@@ -14956,15 +15091,18 @@
           sharedBoxId: data.id,
           sourceSubjectId: subject.id,
           link: subject.link || "",
+          origin: "class",
         });
         libraryShareClassOpts = null;
         backToClass();
         showToast(`« ${subject.name} » partagée avec la classe`);
-        await robotAlert(
-          sub.error
-            ? `« ${subject.name} » est partagée avec ta classe. (La proposition pour la Librairie n'a pas pu être envoyée : ${sub.error})`
-            : `« ${subject.name} » est partagée avec ta classe. Merci ! Elle est aussi proposée à darwin pour la Librairie : tu la verras dans la Librairie si elle y est publiée.`
-        );
+        // v278 : discrétion — rien à signaler à l'enseignant si tout va bien.
+        if (sub.error) {
+          console.warn("Librairie : proposition non envoyée", sub.error);
+          await robotAlert(`« ${subject.name} » est partagée avec ta classe. (L'envoi à darwin n'a pas pu se faire : ${sub.error})`);
+        } else {
+          await refreshPublicationState();
+        }
       },
     });
   }
@@ -17487,8 +17625,21 @@
     // rester valable même après un changement d'appareil.
     const existing = await Sync.library.findBySourceSubject(subjectId);
     if (existing) {
-      await robotAlert(`Cette boîte a déjà été partagée dans la Librairie sous le nom « ${existing.name} ». Une même boîte ne peut être partagée qu'une seule fois.`);
+      await robotAlert(
+        accountIsAdminFlag
+          ? `Cette boîte a déjà été partagée dans la Librairie sous le nom « ${existing.name} ». Une même boîte ne peut être partagée qu'une seule fois.`
+          : `Cette boîte est déjà dans la Librairie (« ${existing.name} »). Tes modifications sont envoyées d'elles-mêmes à darwin, qui met la Librairie à jour.`
+      );
       return;
+    }
+    // v278 : déjà envoyée à darwin, en cours de relecture.
+    if (!accountIsAdminFlag) {
+      if (!publicationStateLoaded) await refreshPublicationState();
+      const latest = mySubmissionsLatest.get(subjectId);
+      if (latest && PublicationRules.isOpen(latest.status)) {
+        await robotAlert("Cette boîte est déjà envoyée à darwin, qui la relit avant de la mettre dans la Librairie. Tes modifications lui sont transmises d'elles-mêmes.");
+        return;
+      }
     }
     // Round 20, item 2 : tous les champs du partage (nom, niveau, résumé,
     // description, prix) réunis sur une page dédiée plutôt qu'une série de
@@ -17517,15 +17668,22 @@
     const titleEl = el("library-share-title");
     const hintEl = el("library-share-class-hint");
     const submitBtnEl = el("library-share-submit");
-    if (titleEl) titleEl.textContent = classMode ? `Partager avec « ${shareOpts.className} »` : "Partager dans la librairie";
+    if (titleEl) titleEl.textContent = classMode ? `Partager avec « ${shareOpts.className} »` : accountIsAdminFlag ? "Partager dans la librairie" : "Publier dans la Librairie";
     if (hintEl) {
       hintEl.hidden = !classMode;
       hintEl.textContent = classMode
-        ? "Ta boîte sera partagée tout de suite avec ta classe. Elle sera aussi proposée à darwin pour la Librairie : après relecture (et éventuelles corrections), elle pourra y être publiée, pour profiter à d'autres élèves. Pour cela, renseigne son classement (et, si tu veux, une description)."
+        ? "Ta boîte sera partagée tout de suite avec ta classe. darwin pourra aussi la reprendre dans sa Librairie, après relecture, pour qu'elle profite à d'autres élèves. Renseigne son classement (et, si tu veux, une description)."
         : "";
     }
-    if (submitBtnEl) submitBtnEl.textContent = classMode ? "Partager avec la classe" : "Partager";
+    if (submitBtnEl) submitBtnEl.textContent = classMode ? "Partager avec la classe" : accountIsAdminFlag ? "Partager" : "Envoyer à darwin";
     libraryShareClassOpts = classMode ? shareOpts : null;
+    // v278 : accord de licence, une seule fois par boîte.
+    if (!accountIsAdminFlag && !publicationStateLoaded) await refreshPublicationState();
+    const licenseBlockEl = el("library-share-license-block");
+    const licenseBoxEl = el("library-share-license");
+    const licenseNeeded = licenseNeededFor(subject.id);
+    if (licenseBlockEl) licenseBlockEl.hidden = !licenseNeeded;
+    if (licenseBoxEl) licenseBoxEl.checked = false;
     const nameEl = el("library-share-name");
     const taxEl = el("library-share-taxonomy");
     const tagsEl = el("library-share-tags");
@@ -17596,6 +17754,50 @@
         // v244 : plus de saisie de tags (les tags existants sont gardés).
         const tags = libraryShareTagInput ? libraryShareTagInput.getTags() : libraryShareKeptTags;
         const submitBtn = el("library-share-submit");
+        // v278 : sans accord, ni partage ni publication.
+        if (licenseNeeded) {
+          if (!licenseBoxEl || !licenseBoxEl.checked) {
+            await robotAlert("Coche la case « J'accepte ces conditions pour cette boîte » pour continuer.");
+            return;
+          }
+          if (submitBtn) submitBtn.disabled = true;
+          const lr = await recordLicenseAcceptance(subject.id);
+          if (submitBtn) submitBtn.disabled = false;
+          if (lr.error) {
+            await robotAlert("L'accord n'a pas pu être enregistré : " + lr.error);
+            return;
+          }
+        }
+        // v278 : un enseignant envoie une proposition à darwin (plus de
+        // publication directe, réservée à darwin).
+        if (!classMode && !accountIsAdminFlag) {
+          if (submitBtn) submitBtn.disabled = true;
+          const sub = await Sync.library.submit({
+            name,
+            summary: "",
+            description: ((descriptionEl && descriptionEl.value) || "").trim(),
+            taxonomy,
+            tags,
+            cards: boxCards,
+            sourceSubjectId: subject.id,
+            link: subject.link || "",
+            origin: "publish",
+          });
+          if (submitBtn) submitBtn.disabled = false;
+          if (sub.error) {
+            await robotAlert(`L'envoi à darwin a échoué : ${sub.error}`);
+            return;
+          }
+          subject.taxonomy = taxonomy;
+          if (name !== subject.name) subject.name = name;
+          subject.updatedAt = new Date().toISOString();
+          await persistSubject(subject);
+          await refreshPublicationState();
+          closeLibraryShareView();
+          renderSubjectManageList();
+          await robotAlert(`Merci ! « ${name} » est envoyée à darwin, qui la relira avant de la mettre dans la Librairie.`);
+          return;
+        }
         if (classMode) {
           if (submitBtn) submitBtn.disabled = true;
           try {
@@ -17888,7 +18090,9 @@
     s.updatedAt = new Date().toISOString();
     await persistSubject(s);
     await pushSharedBoxUpdatesForSubject(s.id);
-    if (col && col.id && Sync.library && Sync.library.updateMeta) {
+    // v278 : seul darwin modifie la Librairie ; pour un enseignant, la
+    // nouvelle version part d'elle-même chez darwin (renvoi automatique).
+    if (accountIsAdminFlag && col && col.id && Sync.library && Sync.library.updateMeta) {
       const r = await Sync.library.updateMeta(col.id, { link: res.link || null });
       if (r && r.error) await robotAlert(`Le lien est enregistré dans ta boîte, mais pas dans la Librairie : ${r.error}`);
     }

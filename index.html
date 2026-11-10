@@ -2036,6 +2036,19 @@
           <span>Description (optionnel)</span>
           <textarea id="library-share-description" rows="4" placeholder="Quelques lignes pour présenter cette boîte… Ex. Vocabulaire d'anglais niveau 5ème : les couleurs, les animaux, la maison."></textarea>
         </label>
+        <!-- v278 (publication avec relecture, §7.2) : accord de licence,
+             demandé une seule fois par boîte (texte :
+             docs/brouillon-licence-publication.md, en attente du juriste). -->
+        <div class="library-license" id="library-share-license-block" hidden>
+          <p class="library-license-title">Partager, c'est aussi enrichir la Librairie de darwin</p>
+          <p>En partageant cette boîte avec une classe ou en la publiant, tu autorises darwin à la reprendre dans sa Librairie : darwin pourra la relire, la corriger, la compléter, la classer et la proposer à tous ses utilisateurs, gratuitement, sans limite de durée ni de lieu, même si tu supprimes ensuite ton compte.</p>
+          <p>Ta boîte reste à toi : tu peux continuer à l'utiliser, à la modifier et à la diffuser ailleurs comme tu le souhaites. Ton nom n'est pas affiché.</p>
+          <p>Tu confirmes que tu as le droit de la partager (contenu écrit par toi, pas de copie d'un manuel ou d'un site sans autorisation).</p>
+          <label class="account-terms-check">
+            <input type="checkbox" id="library-share-license" />
+            <span>J'ai lu et j'accepte ces conditions pour cette boîte (<a href="legal/cgu.html#contenus" target="_blank" rel="noopener">conditions complètes</a>).</span>
+          </label>
+        </div>
         <div class="form-actions" style="margin-top:0;">
           <button type="submit" class="btn btn--primary" id="library-share-submit">Partager</button>
           <button type="button" class="btn btn--ghost" id="library-share-back-btn">Annuler</button>
@@ -2124,6 +2137,7 @@
 <script src="js/revision-algo.js"></script>
 <script src="js/profile-rules.js"></script>
 <script src="js/library-rules.js"></script>
+<script src="js/publication-rules.js"></script>
 <script src="js/db.js"></script>
 <script src="js/sync.js"></script>
 <script src="js/taxonomy.js"></script>

@@ -9104,3 +9104,11 @@ body.is-view-home .desk { background-color: var(--home-bg-color, var(--app-bg-co
 body:not(.profile-teacher) .org-filter-btn[data-org-filter="published"],
 body:not(.profile-teacher) .org-filter-btn[data-org-filter="unpublished"],
 body:not(.profile-teacher) #library-mine-toggle { display: none !important; }
+
+/* v278 (publication avec relecture, §7.2) : accord de licence dans le
+   formulaire de partage / publication. */
+.library-license { margin: 4px 0 12px; padding: 12px 14px; border-radius: 12px; background: var(--card-bg, #fff); border: 1px solid rgba(0, 0, 0, 0.08); font-size: 13.5px; line-height: 1.45; color: var(--ink); }
+.library-license[hidden] { display: none; }
+.library-license p { margin: 0 0 8px; }
+.library-license .library-license-title { font-weight: 700; font-size: 14.5px; }
+.library-license .account-terms-check { margin-bottom: 0; }

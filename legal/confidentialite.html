@@ -31,6 +31,7 @@
       <tr><td>Prénom, nom, niveau scolaire, usages choisis (élève, enseignant), date de naissance</td><td>Personnaliser l'appli, présenter les boîtes de ton niveau, t'identifier dans tes classes, vérifier l'âge pour l'accord parental</td><td>Exécution du contrat ; obligation légale pour l'âge</td></tr>
       <tr><td>Tes boîtes, fiches, dossiers, notes de révision, progression, évènements de l'agenda</td><td>Faire fonctionner l'appli et synchroniser tes appareils</td><td>Exécution du contrat</td></tr>
       <tr><td>Classes, messages de classe, boîtes partagées, signalements, boîtes publiées ou proposées dans la Librairie, notes données aux boîtes</td><td>Le travail en classe et la Librairie</td><td>Exécution du contrat</td></tr>
+      <tr><td>Accord de licence donné pour une boîte partagée avec une classe ou publiée (boîte concernée, date, version des conditions) ; messages échangés avec darwin à propos de ces boîtes</td><td>Relire les boîtes avant de les reprendre dans la Librairie, et prouver ton accord</td><td>Exécution du contrat ; intérêt légitime (preuve)</td></tr>
       <tr><td>Pour un enfant de moins de 15 ans : email du parent, date et réponse de l'accord</td><td>Recueillir et prouver l'accord d'un parent</td><td>Obligation légale</td></tr>
       <tr><td>Abonnement : formule, état, dates, identifiants Stripe ; carte bancaire limitée à la marque, aux 4 derniers chiffres et à la date d'expiration</td><td>Gérer l'abonnement, te prévenir si ta carte expire avant le prochain prélèvement</td><td>Exécution du contrat</td></tr>
       <tr><td>Factures (chez Stripe)</td><td>Comptabilité</td><td>Obligation légale</td></tr>
@@ -42,8 +43,8 @@
     <h2>3. Qui voit tes données ?</h2>
     <ul>
       <li><strong>Dans une classe</strong> : l'enseignant et les élèves voient le prénom et le nom des membres de la classe, et les messages de la classe. Ton adresse email n'est jamais montrée aux autres utilisateurs.</li>
-      <li><strong>Dans la Librairie</strong> : une boîte publiée est visible par tous les utilisateurs, avec le prénom et le nom de son auteur.</li>
-      <li><strong>L'équipe darwin</strong> : uniquement quand c'est nécessaire (assistance, signalement, relecture d'une boîte proposée pour la Librairie, abus).</li>
+      <li><strong>Dans la Librairie</strong> : une boîte publiée est visible par tous les utilisateurs, sans le nom de son auteur.</li>
+      <li><strong>L'équipe darwin</strong> : uniquement quand c'est nécessaire (assistance, signalement, abus) et pour relire les boîtes partagées avec une classe ou publiées, avant de les reprendre dans la Librairie. <strong>darwin ne lit jamais une boîte privée</strong>, sauf si son auteur l'a proposée ou si quelqu'un l'a signalée.</li>
       <li><strong>Nos prestataires</strong>, qui agissent pour notre compte et sous contrat :
         <ul>
           <li>Supabase, Inc. : hébergement des comptes et des données, <mark class="todo">[région des serveurs, ex. Union européenne (Francfort)]</mark> ;</li>
@@ -60,6 +61,7 @@
     <ul>
       <li>Compte et contenus : tant que ton compte existe. « Supprimer mon compte » (dans Mon compte) efface définitivement tes données sur tous tes appareils et sur nos serveurs. Un compte qui n'a pas servi pendant <strong>2 ans</strong> est supprimé automatiquement, après un email d'avertissement envoyé 30 jours avant (et un rappel une semaine avant) : il suffit d'ouvrir l'appli pour le garder. Ne sont pas concernés les comptes qui ont un abonnement en cours. Un compte dont l'adresse email n'a jamais été confirmée, et qui n'a jamais servi, est supprimé au bout de 30 jours.</li>
       <li>Boîtes publiées dans la Librairie : supprimées avec ton compte.</li>
+      <li>Accords de licence pour les boîtes partagées ou publiées : gardés comme preuve, même après la suppression du compte, <mark class="todo">[durée à préciser avec le juriste]</mark>.</li>
       <li>Factures : 10 ans, chez Stripe (obligation comptable), même après la suppression du compte.</li>
       <li>Journaux techniques : <mark class="todo">[durée, ex. 12 mois au plus]</mark>.</li>
       <li>Erreurs de fonctionnement de l'appli : 90 jours.</li>

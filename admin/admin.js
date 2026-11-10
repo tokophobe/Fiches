@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v277";
+  const ADMIN_VERSION = "v278";
   async function checkAdminVersion() {
     const label = $("#sidebar-version");
     if (label) label.textContent = `Darwin Admin ${ADMIN_VERSION}`;
@@ -1725,7 +1725,15 @@
   /* ---- Round 69 : propositions des enseignants (boîtes partagées avec
      une classe) : relecture, modification, publication dans la Librairie
      au nom de l'enseignant, ou refus. ---- */
-  const SUBMISSION_STATUS = { pending: ["À relire", "warn"], published: ["Publiée", "ok"], rejected: ["Refusée", null] };
+  // v278 (publication avec relecture) : nouveaux états.
+  const SUBMISSION_STATUS = {
+    pending: ["À relire", "warn"],
+    changes_requested: ["À modifier (enseignant)", "warn"],
+    published: ["Publiée", "ok"],
+    rejected: ["Refusée", null],
+    superseded: ["Remplacée par une version plus récente", null],
+    withdrawn: ["Retirée", null],
+  };
   async function librarySubmissionsTab(root, live) {
     const listCard = h("div", { class: "card card--flush" }, h("p", { class: "muted", style: { padding: "14px" } }, "Chargement…"));
     let filter = "pending";
@@ -1756,7 +1764,7 @@
     root.appendChild(
       card(
         null,
-        "Quand un enseignant partage une boîte qu'il a créée avec une de ses classes, elle est partagée tout de suite et proposée ici. Relis-la, corrige-la si besoin, puis publie-la dans la Librairie (à son nom) ou refuse-la.",
+        "v278 : toute boîte d'enseignant destinée à la Librairie arrive ici — bouton « Publier dans la Librairie », partage d'une boîte avec une classe, nouvelle version d'une boîte déjà publiée (elle met à jour la même boîte), ou boîte publiée avant la v278 remise en relecture. Relis-la, corrige-la si besoin, puis publie-la (sans le nom de l'auteur) ou refuse-la.",
         h("div", { class: "toolbar" }, seg)
       )
     );

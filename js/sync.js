@@ -1461,12 +1461,59 @@ async function submitLibraryProposal(p) {
     cards: (p.cards || []).map(shareableCard),
   };
   if (p.link) row.link = p.link;
+  // Chantier « publication avec relecture » (v278) : d'où vient la
+  // proposition (« publish » = bouton Publier, « class » = partage avec
+  // une classe).
+  if (p.origin) row.origin = p.origin;
   let { error } = await c.from("library_submissions").insert(row);
   if (isMissingLinkColumn(error)) {
     delete row.link;
     ({ error } = await c.from("library_submissions").insert(row));
   }
   if (error && /library_submissions/i.test(error.message || "")) return { error: "la base n'a pas encore la table des propositions (supabase/round69_migration.sql)" };
+  return { error: error ? error.message : null };
+}
+
+/** v278 (publication avec relecture) : mes propositions à la Librairie,
+ *  les plus récentes d'abord (pour savoir où en est chaque boîte et
+ *  renvoyer automatiquement une nouvelle version). */
+async function listMyLibrarySubmissions() {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { data: [], error: "non connecté" };
+  const { data, error } = await c
+    .from("library_submissions")
+    .select("id, source_subject_id, status, origin, name, summary, description, taxonomy, tags, cards, link, class_id, class_name, shared_box_id, collection_id, created_at")
+    .eq("owner_id", user.id)
+    .order("created_at", { ascending: false })
+    .limit(1000);
+  return { data: data || [], error: error ? error.message : null };
+}
+
+/** v278 : mes accords de licence (un par boîte). */
+async function listMyLicenseAcceptances() {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { data: [], error: "non connecté" };
+  const { data, error } = await c
+    .from("library_license_acceptances")
+    .select("source_subject_id, license_version, accepted_at")
+    .eq("owner_id", user.id);
+  return { data: data || [], error: error ? error.message : null };
+}
+
+/** v278 : enregistre l'accord de licence pour une boîte (date fixée par
+ *  le serveur). Un accord déjà donné pour cette boîte compte comme un
+ *  succès. */
+async function acceptLibraryLicense(sourceSubjectId, licenseVersion) {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { error: "non connecté" };
+  const { error } = await c
+    .from("library_license_acceptances")
+    .insert({ owner_id: user.id, source_subject_id: sourceSubjectId, license_version: licenseVersion });
+  if (error && (error.code === "23505" || /duplicate key/i.test(error.message || ""))) return { error: null };
+  if (error && /library_license_acceptances/i.test(error.message || "")) return { error: "la base n'a pas encore la table des accords (supabase/publication_relecture_A_migration.sql)" };
   return { error: error ? error.message : null };
 }
 
@@ -1940,6 +1987,9 @@ window.Sync = {
     pickFree: (id) => schoolRpc("pick_free_library_box", { p_id: id }),
     releaseFree: (id) => schoolRpc("release_free_library_box", { p_id: id }),
     submit: submitLibraryProposal,
+    mySubmissions: listMyLibrarySubmissions,
+    myAcceptances: listMyLicenseAcceptances,
+    acceptLicense: acceptLibraryLicense,
     rate: rateLibraryCollection,
     unrate: unrateLibraryCollection,
     listRatings: listLibraryRatings,

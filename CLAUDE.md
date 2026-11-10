@@ -120,12 +120,18 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   spéc. §7.2, étapes A à F) : toute boîte destinée à la Librairie devient
   une proposition (`library_submissions`) relue par darwin ; licence non
   exclusive acceptée une fois par boîte (`library_license_acceptances`) ;
-  échanges dans `library_submission_messages`. Étape A livrée :
+  échanges dans `library_submission_messages`. Étape A :
   `supabase/publication_relecture_A_migration.sql`, règles dans
-  `js/publication-rules.js` (pas encore chargé par l'appli : l'ajouter à
-  `index.html`, `admin/` et `CORE_ASSETS` à l'étape B/C), brouillon
-  juridique `docs/brouillon-licence-publication.md`. La publication
-  directe (`Sync.library.share`) sera fermée côté base à l'étape B.
+  `js/publication-rules.js`, brouillon juridique
+  `docs/brouillon-licence-publication.md`. Étape B (v278) :
+  `supabase/publication_relecture_B_migration.sql` (publication directe
+  réservée à darwin, boîtes d'enseignants « en relecture » via
+  `library_collections.review_hold`) ; dans `app.js` :
+  `refreshPublicationState`, `licenseNeededFor`, `ensureLicenseByConfirm`,
+  `boxInPublicationCircuit`, renvoi automatique `scheduleLibraryResubmit`
+  (appelé par `pushSharedBoxUpdatesForSubject`). `Sync.library.share`
+  ne sert plus qu'à un administrateur. À l'étape C, charger
+  `publication-rules.js` aussi dans `admin/`.
 - Les autres différences sont à préciser avec le propriétaire (spéc. §3.2).
 
 ## Organisation des boîtes (v248, v254)
