@@ -865,11 +865,31 @@ font foi).
 > Décisions à prendre ou incohérences repérées. Répondez directement
 > sous chaque question ; Claude reportera la réponse dans les règles.
 
-**Q17 — Relecture du texte de licence par un juriste.** Le brouillon
-(`docs/brouillon-licence-publication.md`, avec la liste des questions à
-poser) devra être relu avant l'ouverture au public : licence non
-exclusive imposée comme condition du partage avec une classe, garantie
-de l'auteur, boîtes gardées après suppression du compte.
+**Q17 — Relecture du texte de licence par un juriste.** Une première
+analyse a été reçue le 11 nov. 2026 (résumé et propositions :
+`docs/brouillon-licence-publication.md`, §5). Reste à faire valider par
+un avocat spécialisé en propriété intellectuelle avant l'ouverture au
+public, surtout : licence gratuite pour une exploitation dans un
+abonnement payant (CPI L131-4 d'ordre public depuis 2024), partage avec
+une classe conditionné à la publication (Code de la consommation
+L212-1), enseignants agents publics (droit de préférence de l'État).
+> Réponse :
+
+**Q18 — Suites de l'analyse juridique (à décider avant de coder).**
+a) Deux cases distinctes au partage / à la publication : la licence de
+partage, puis une **autorisation spécifique** (non pré-cochée) pour
+l'exploitation gratuite dans l'abonnement — les deux obligatoires pour
+partager avec une classe, comme vous l'avez choisi ? b) **Mention de
+l'auteur** : anonyme par défaut, mais possibilité de demander son nom ou
+un pseudonyme, modifiable à tout moment (ce qui revient en partie sur
+« auteur plus affiché nulle part », v275) ? c) **Vidéos lisibles sans
+compte** dans la Librairie (règle YouTube : ne jamais faire payer
+l'accès aux vidéos) : à vérifier dans l'appli et à garantir. d) Preuve :
+garder le **texte intégral** de chaque version des conditions et une
+**empreinte de la boîte** à chaque accord, et une archive gardée 5 ans
+après la fin de l'exploitation. e) Nouvelles clauses des CGU : respect de
+l'œuvre, agents publics, contenus de tiers, vidéos YouTube (avec lien
+vers les conditions de YouTube).
 > Réponse :
 
 **Q14 bis — Sous-niveaux de la catégorie « autres ».** Les catégories

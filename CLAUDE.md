@@ -16,6 +16,32 @@ tout ce qui risquerait d'obliger un jour à « tout reprendre » (dette
 technique, choix difficiles à défaire, absence de tests, risques de mise
 en ligne). Rester concret et proportionné : un conseil utile, pas un cours.
 
+## Consignes permanentes du propriétaire (11 nov. 2026)
+
+- **Propreté du code, en continu** : coder dans les règles de l'art, de
+  façon structurée ; à chaque intervention, nettoyer ce qui est touché
+  (code mort, doublons, styles CSS qui s'écrasent les uns les autres —
+  `css/style.css` est très gros et contient des règles empilées) et le
+  signaler. Un nettoyage plus large se propose, il ne s'impose pas en
+  douce.
+- **Appli pas encore ouverte au public** (date non fixée) : ne pas perdre
+  de temps sur des cas qui n'existent pas encore (ex. boîtes créées par
+  des enseignants pendant le développement : pas de reprise de données
+  sophistiquée). Tenir à jour ce qu'il reste à faire avant l'ouverture
+  (§8 de la spécification et bilan `tools/lancement.py`) et dire quand on
+  pourra être prêt.
+- **Le nom « darwin » peut changer** (vérification juridique en cours) :
+  ne pas l'éparpiller davantage ; le jour venu, le changement devra
+  toucher toute l'appli, le site, les pages légales et Darwin Admin
+  (≈ 560 occurrences dans 38 fichiers au 11 nov. 2026).
+- **Avant l'ouverture au public, rappeler** au propriétaire qu'il faut
+  d'abord rédiger avec lui une **feuille de route d'exploitation** très
+  complète : tâches quotidiennes / hebdomadaires / mensuelles (relecture
+  des propositions dans Darwin Admin, signalements, quotas Supabase,
+  Stripe, sauvegardes…), points de vigilance et seuils (quand changer de
+  forfait), obligations administratives (déclarations de chiffre
+  d'affaires…), pour qu'aucun utilisateur ne soit bloqué par un oubli.
+
 ## Spécification fonctionnelle (à lire en premier)
 
 `docs/SPECIFICATION.md` est **la référence de la logique de l'appli**,
