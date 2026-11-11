@@ -1461,6 +1461,15 @@ async function submitLibraryProposal(p) {
     cards: (p.cards || []).map(shareableCard),
   };
   if (p.link) row.link = p.link;
+  // Chantier « publication avec relecture » (v278) : d'où vient la
+  // proposition (« publish » = bouton Publier, « class » = partage avec
+  // une classe).
+  if (p.origin) row.origin = p.origin;
+  // v280 (Q18 b) : mention de l'auteur choisie au moment de proposer.
+  if (p.authorMode) {
+    row.author_mode = p.authorMode;
+    row.author_label = p.authorLabel || "";
+  }
   let { error } = await c.from("library_submissions").insert(row);
   if (isMissingLinkColumn(error)) {
     delete row.link;
@@ -1468,6 +1477,146 @@ async function submitLibraryProposal(p) {
   }
   if (error && /library_submissions/i.test(error.message || "")) return { error: "la base n'a pas encore la table des propositions (supabase/round69_migration.sql)" };
   return { error: error ? error.message : null };
+}
+
+/** v278 (publication avec relecture) : mes propositions à la Librairie,
+ *  les plus récentes d'abord (pour savoir où en est chaque boîte et
+ *  renvoyer automatiquement une nouvelle version). */
+async function listMyLibrarySubmissions() {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { data: [], error: "non connecté" };
+  const { data, error } = await c
+    .from("library_submissions")
+    .select("id, source_subject_id, status, origin, name, summary, description, taxonomy, tags, cards, link, class_id, class_name, shared_box_id, collection_id, created_at, author_mode, author_label")
+    .eq("owner_id", user.id)
+    .order("created_at", { ascending: false })
+    .limit(1000);
+  return { data: data || [], error: error ? error.message : null };
+}
+
+/** v278 : mes accords de licence (un par boîte). */
+async function listMyLicenseAcceptances() {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { data: [], error: "non connecté" };
+  const { data, error } = await c
+    .from("library_license_acceptances")
+    .select("source_subject_id, license_version, accepted_at, commercial_consent")
+    .eq("owner_id", user.id);
+  return { data: data || [], error: error ? error.message : null };
+}
+
+/** v278-v280 : enregistre l'accord pour une boîte — licence de partage
+ *  et autorisation « abonnement » (`commercial`), version du texte et
+ *  empreinte de la boîte (`boxHash`) ; la date est fixée par le serveur.
+ *  Un accord déjà donné pour cette boîte et cette version compte comme un
+ *  succès. */
+async function acceptLibraryLicense(sourceSubjectId, licenseVersion, opts) {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { error: "non connecté" };
+  opts = opts || {};
+  const { error } = await c.from("library_license_acceptances").insert({
+    owner_id: user.id,
+    source_subject_id: sourceSubjectId,
+    license_version: licenseVersion,
+    commercial_consent: !!opts.commercial,
+    box_hash: opts.boxHash || "",
+  });
+  if (error && (error.code === "23505" || /duplicate key/i.test(error.message || ""))) return { error: null };
+  if (error && /commercial_consent|box_hash/i.test(error.message || "")) return { error: "la base n'a pas encore la mise à jour v280 (supabase/v280_migration.sql)" };
+  if (error && /library_license_acceptances/i.test(error.message || "")) return { error: "la base n'a pas encore la table des accords (supabase/publication_relecture_A_migration.sql)" };
+  return { error: error ? error.message : null };
+}
+
+/** v280 : texte intégral d'une version de la licence (celui qui est
+ *  affiché, et dont l'accord garde la version). null si indisponible. */
+async function getLibraryLicenseText(version) {
+  const c = getClient();
+  if (!c) return null;
+  const { data, error } = await c.from("library_license_texts").select("version, body").eq("version", version).maybeSingle();
+  return error ? null : data || null;
+}
+
+/** v280 (Q18 b) : mention de l'auteur d'une de mes boîtes (propositions
+ *  et boîte publiée), modifiable à tout moment. */
+async function setBoxAuthorMention(sourceSubjectId, mode, label) {
+  const c = getClient();
+  if (!c) return { error: "non connecté" };
+  const { error } = await c.rpc("set_box_author_mention", { p_source: sourceSubjectId, p_mode: mode, p_label: label || "" });
+  return { error: error ? error.message : null };
+}
+
+/** v280 : nouveaux messages darwin ↔ enseignant en temps réel (la base
+ *  ne transmet que ceux que le compte a le droit de lire). */
+function subscribeDarwinMessagesRealtime(onInsert) {
+  const c = getClient();
+  if (!c) return () => {};
+  const channel = c
+    .channel("darwin-messages")
+    .on("postgres_changes", { event: "INSERT", schema: "public", table: "library_submission_messages" }, (payload) => {
+      if (payload.new) onInsert(payload.new);
+    })
+    .subscribe();
+  return () => c.removeChannel(channel);
+}
+
+/** v279 (publication avec relecture, étape D) : « Messages de darwin ».
+ *  Messages de MES propositions (jointure sur le propriétaire, pour qu'un
+ *  administrateur qui utilise l'appli ne voie que les siens ici). */
+async function listMyDarwinMessages() {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return { data: [], error: "non connecté" };
+  const { data, error } = await c
+    .from("library_submission_messages")
+    .select("id, submission_id, from_admin, kind, body, created_at, seen_at, library_submissions!inner(owner_id)")
+    .eq("library_submissions.owner_id", user.id)
+    .order("created_at", { ascending: true })
+    .limit(2000);
+  return { data: (data || []).map(({ library_submissions, ...m }) => m), error: error ? error.message : null };
+}
+
+/** v279 : nombre de messages de darwin pas encore lus. */
+async function countMyUnseenDarwinMessages() {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return 0;
+  const { count, error } = await c
+    .from("library_submission_messages")
+    .select("id, library_submissions!inner(owner_id)", { count: "exact", head: true })
+    .eq("library_submissions.owner_id", user.id)
+    .eq("from_admin", true)
+    .is("seen_at", null);
+  return error ? 0 : count || 0;
+}
+
+/** v279 : message de l'enseignant à darwin (« message » ou
+ *  « withdrawal_request » = demande de retrait). */
+async function sendDarwinMessage(submissionId, body, kind) {
+  const c = getClient();
+  if (!c) return { error: "non connecté" };
+  const { error } = await c
+    .from("library_submission_messages")
+    .insert({ submission_id: submissionId, body: body || "", kind: kind || "message", from_admin: false });
+  return { error: error ? error.message : null };
+}
+
+async function markDarwinMessagesSeen(ids) {
+  const c = getClient();
+  if (!c || !ids || !ids.length) return { error: null };
+  const { error } = await c.rpc("library_messages_mark_seen", { p_ids: ids });
+  return { error: error ? error.message : null };
+}
+
+/** v279 : fiches de MA boîte publiée (version de darwin), pour l'avant /
+ *  après et « Appliquer à ma boîte ». */
+async function getMyLibraryCollectionCards(id) {
+  const c = getClient();
+  if (!c || !id) return null;
+  const { data, error } = await c.from("library_collections").select("id, name, cards, description, summary, link, taxonomy").eq("id", id).maybeSingle();
+  return error ? null : data || null;
 }
 
 async function deleteLibraryCollection(id) {
@@ -1685,6 +1834,20 @@ function subscribeClassMessagesRealtime(classId, onNewMessage) {
   return () => c.removeChannel(channel);
 }
 
+/** v280 : tous les nouveaux messages des classes du compte (la base ne
+ *  transmet que ceux qu'il a le droit de lire), pour les pastilles. */
+function subscribeAllClassMessagesRealtime(onNewMessage) {
+  const c = getClient();
+  if (!c) return () => {};
+  const channel = c
+    .channel("class-messages-all")
+    .on("postgres_changes", { event: "INSERT", schema: "public", table: "class_messages" }, (payload) => {
+      if (payload.new) onNewMessage(payload.new);
+    })
+    .subscribe();
+  return () => c.removeChannel(channel);
+}
+
 /** Round 50 : le compte connecté est-il administrateur (table admins) ?
  *  false si le serveur n'a pas encore la mise à jour. */
 async function isAdmin() {
@@ -1838,6 +2001,7 @@ window.Sync = {
     send: sendClassMessage,
     countUnread: countUnreadClassMessages,
     subscribeRealtime: subscribeClassMessagesRealtime,
+    subscribeAll: subscribeAllClassMessagesRealtime,
     getLastMessage: getLastClassMessage,
   },
   pushCardsBulk,
@@ -1940,6 +2104,17 @@ window.Sync = {
     pickFree: (id) => schoolRpc("pick_free_library_box", { p_id: id }),
     releaseFree: (id) => schoolRpc("release_free_library_box", { p_id: id }),
     submit: submitLibraryProposal,
+    mySubmissions: listMyLibrarySubmissions,
+    myAcceptances: listMyLicenseAcceptances,
+    acceptLicense: acceptLibraryLicense,
+    darwinMessages: listMyDarwinMessages,
+    darwinUnseenCount: countMyUnseenDarwinMessages,
+    sendDarwinMessage,
+    markDarwinMessagesSeen,
+    myCollectionCards: getMyLibraryCollectionCards,
+    licenseText: getLibraryLicenseText,
+    setAuthorMention: setBoxAuthorMention,
+    subscribeDarwinMessages: subscribeDarwinMessagesRealtime,
     rate: rateLibraryCollection,
     unrate: unrateLibraryCollection,
     listRatings: listLibraryRatings,

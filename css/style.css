@@ -1855,10 +1855,12 @@ body.is-login-locked .home-circle:not([data-key="account"]) { display: none; }
    .home-circle est déjà en position:absolute (voir plus haut), ce qui
    sert aussi de contexte de positionnement à cette pastille : pas besoin
    d'y toucher. */
+/* v280 : pastilles en haut à GAUCHE des boutons ronds (accueil, pages à
+   ronds), plus lisible avec la disposition des boutons. */
 .home-circle-badge {
   position: absolute;
   top: 4px;
-  right: 8px;
+  left: 8px;
   min-width: 18px;
   height: 18px;
   padding: 0 4px;
@@ -4974,7 +4976,6 @@ button.home-btn {
 /* Pastilles de notifications : `display: flex` (centrage du chiffre)
    l'emportait sur l'attribut `hidden` — la pastille restait affichée avec
    « 0 ». Sélecteur plus spécifique pour que `hidden` soit respecté. */
-.home-circle-badge[hidden],
 .construction-filter-badge[hidden] {
   display: none;
 }
@@ -5203,17 +5204,8 @@ button.home-btn {
   text-transform: uppercase;
   color: var(--ink-soft);
 }
-.class-detail-section-action {
-  padding: 4px 10px;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--rule);
-  font-family: var(--font-type);
-  font-size: 12.5px;
-  font-weight: 600;
-  cursor: pointer;
-}
+/* v280 : « + Dossier », « + Partager », « + Ajouter » suivent la charte des
+   boutons (classes .btn .btn--small dans index.html) : plus de style propre. */
 .class-detail-section-action[hidden] { display: none; }
 .class-detail-empty {
   margin: 4px 0 2px;
@@ -5841,7 +5833,7 @@ body.is-view-library {
 .classes-role-circle { position: relative; }
 .classes-role-circle .home-circle-badge {
   top: 6px;
-  right: 10px;
+  left: 10px;
 }
 .report-card-preview {
   border: 1px solid var(--rule, #d5dce6);
@@ -6150,16 +6142,6 @@ body.layout-v2 #view-class-detail .class-detail-section-head h3 {
 }
 body:not(.v1-pages) #view-creations .round-add-card-btn span { white-space: nowrap; }
 body.layout-v2 #view-class-detail .class-detail-section-head h3 { text-transform: none; color: var(--ink); }
-body.layout-v2 #view-class-detail .class-detail-section-action {
-  border: none;
-  background: transparent;
-  color: var(--rule);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  padding: 4px 0;
-}
 
 /* ==================================================================
    Round 45 : navigation commune et titre de page à droite du robot.
@@ -6223,18 +6205,15 @@ body:not(.v1-pages) #view-manage .org-children { margin-right: 0; }
 /* --- Plus de bleu dans les boutons et liens texte ---------------- */
 /* Liens texte / boutons secondaires. */
 #calendar-add-event-btn,
-.class-detail-section-action,
 #creations-search-toggle,
 .creations-search-toggle,
 .body-logo-speech-prev,
 .body-logo-speech-next,
 body:not(.v1-pages) #view-creations .round-add-card-btn,
 body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) .classes-role-circle,
-body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-go,
-body.layout-v2 #view-class-detail .class-detail-section-action {
+body:not(.v1-pages) :is(#view-revision-program, #view-revision-reinforce) .revision-event-go {
   color: var(--action-color);
 }
-.class-detail-section-action { border-color: var(--rule-soft); }
 .creations-search-toggle {
   font-family: var(--font-mono);
   font-size: 11.5px;
@@ -8129,7 +8108,7 @@ body.is-qcm-review .card-learn-link { display: none; }
 /* v242 : pastilles de Réviser — vert (prioritaires), vert pâle (renforcer). */
 .home-circle-badge.home-circle-badge--urgent { background: #1f9d55; color: #fff; }
 .home-circle-badge.home-circle-badge--reinforce { background: #b5e3c4; color: #14532d; }
-.home-circle-badges { position: absolute; top: 4px; right: 8px; display: flex; gap: 3px; pointer-events: none; }
+.home-circle-badges { position: absolute; top: 4px; left: 8px; display: flex; gap: 3px; pointer-events: none; }
 .home-circle-badges .home-circle-badge { position: static; }
 .hub-advised-tag[hidden] { display: none; }
 
@@ -8839,9 +8818,9 @@ body.is-view-home .desk { background-color: var(--home-bg-color, var(--app-bg-co
 /* v264 : pastille des petits boutons en picto seul (Signalements) décalée
    vers le coin, pour ne plus cacher le picto. */
 .home-circle.home-circle--icon-only .home-circle-badge {
-  /* coin haut-droit du picto (28 px, centré dans le bouton) */
+  /* v280 : coin haut-gauche du picto (28 px, centré dans le bouton) */
   top: calc(50% - 24px);
-  right: calc(50% - 26px);
+  left: calc(50% - 26px);
   transform: none;
   min-width: 16px;
   height: 16px;
@@ -9037,8 +9016,6 @@ body.is-view-home .desk { background-color: var(--home-bg-color, var(--app-bg-co
 #view-review-hub.rx-mix #review-hub-circles .classes-role-circle {
   box-shadow: inset 0 0 0 3px var(--rm-c), var(--shadow-home-square, var(--shadow-deep));
 }
-.rx-schema .rm-schema.rm-schema--wide { width: auto; height: 46px; max-width: 100%; }
-.rx-icon { top: 37px; }
 .rm-w-soft { --rm-w: color-mix(in srgb, var(--rm-c) 38%, var(--paper)); }
 .rm-w-line { stroke: var(--rm-w, var(--rm-c)); stroke-width: 4; }
 .rm-w-pole { stroke: var(--rm-w, var(--rm-c)); stroke-width: 5; }
@@ -9061,7 +9038,10 @@ body.is-view-home .desk { background-color: var(--home-bg-color, var(--app-bg-co
 /* 1. Schémas un peu plus petits, alignés à droite (le petit rond du cadre
    est à gauche et les cachait en partie). */
 .rx-schema { justify-content: flex-end; padding-left: 52px; }
-.rx-schema .rm-schema.rm-schema--wide { height: 38px; }
+/* v280 : les trois schémas ont la même largeur, celle du schéma orange
+   (38 px de haut, proportions 1575 × 220) : alignés à droite, ils sont
+   aussi alignés entre eux à gauche ; leur hauteur suit leurs proportions. */
+.rx-schema .rm-schema.rm-schema--wide { width: calc(38px * 1575 / 220); height: auto; max-width: 100%; }
 .rx-icon { top: 29px; }
 /* 3. Smileys de l'explication « Renforcer » : sans cadre, plus grands. */
 .rx-rate-ico { background: transparent; box-shadow: none; border-radius: 0; width: 38px; height: 38px; }
@@ -9104,3 +9084,53 @@ body.is-view-home .desk { background-color: var(--home-bg-color, var(--app-bg-co
 body:not(.profile-teacher) .org-filter-btn[data-org-filter="published"],
 body:not(.profile-teacher) .org-filter-btn[data-org-filter="unpublished"],
 body:not(.profile-teacher) #library-mine-toggle { display: none !important; }
+
+/* v278 (publication avec relecture, §7.2) : accord de licence dans le
+   formulaire de partage / publication. */
+.library-license { margin: 4px 0 12px; padding: 12px 14px; border-radius: 12px; background: var(--card-bg, #fff); border: 1px solid rgba(0, 0, 0, 0.08); font-size: 13.5px; line-height: 1.45; color: var(--ink); }
+.library-license[hidden] { display: none; }
+.library-license p { margin: 0 0 8px; }
+.library-license .library-license-title { font-weight: 700; font-size: 14.5px; }
+.library-license .account-terms-check { margin-bottom: 0; }
+
+/* v279 (publication avec relecture, étape D) : « Messages de darwin ». */
+.dm-thread { list-style: none; margin: 0 0 18px; }
+.dm-thread .dm-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.dm-thread .dm-box { font-weight: 700; font-size: 16px; color: var(--main-text-color, var(--ink)); }
+.dm-thread .dm-date { font-size: 12px; color: var(--ink-soft); }
+.dm-thread .dm-status { margin: 2px 0 8px; font-size: 13px; color: var(--ink-soft); }
+.dm-thread--new .dm-box::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: #e0453c; vertical-align: middle; }
+.dm-thread .info-blocks { display: flex; flex-direction: column; gap: 10px; }
+.dm-thread .dm-intro { margin: 0; font-size: 14px; font-weight: 600; color: var(--ink); }
+.dm-thread .info-block-body { padding: 0 12px 12px; }
+/* Une fiche corrigée : titre, puis chaque champ avec son étiquette. */
+.dm-card { margin: 0 0 10px; padding: 10px 12px; border-radius: 10px; background: color-mix(in srgb, var(--ink) 4%, var(--paper)); }
+.dm-card--removed { opacity: 0.75; }
+.dm-card-title { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-soft); }
+.dm-field { margin: 0 0 6px; }
+.dm-field:last-child { margin-bottom: 0; }
+.dm-field-label { display: block; font-size: 11.5px; font-weight: 600; color: var(--ink-soft); }
+.dm-field-value { font-size: 14.5px; line-height: 1.45; color: var(--ink); overflow-wrap: anywhere; white-space: pre-line; }
+/* Suivi des modifications : supprimé barré en rouge, ajouté souligné en vert. */
+.dm-del { color: #c0392b; text-decoration: line-through; background: color-mix(in srgb, #c0392b 10%, transparent); }
+.dm-ins { color: #1e7d46; text-decoration: underline; text-decoration-thickness: 2px; background: color-mix(in srgb, #1e7d46 12%, transparent); }
+.dm-card--removed .dm-field-value { text-decoration: line-through; color: #c0392b; }
+.dm-card--added .dm-field-value { color: #1e7d46; }
+/* Échanges : demande de retrait bien visible, réponse automatique discrète. */
+.rp-bubble.rp-bubble--withdrawal { border: 1.5px solid #d14b3a; background: color-mix(in srgb, #d14b3a 10%, var(--paper)); font-weight: 600; }
+.rp-bubble.rp-bubble--auto { font-style: italic; opacity: 0.85; border: 1px dashed var(--rule-soft, #c8d0db); background: transparent; }
+.dm-thread .dm-reply { margin-top: 8px; }
+.dm-thread .dm-reply-text { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px; padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(0, 0, 0, 0.15); background: var(--card-bg, #fff); color: var(--ink); resize: vertical; }
+.dm-thread .dm-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.library-license .library-license-text { white-space: pre-line; max-height: 260px; overflow-y: auto; margin: 0 0 10px; padding: 8px 10px; border-radius: 8px; background: rgba(0, 0, 0, 0.03); font-size: 13px; }
+
+/* v280 : messages non lus sur chaque classe de « Mes classes ». */
+.class-card { position: relative; }
+.class-card .class-card-badge { top: 6px; left: auto; right: 34px; }
+/* v280 : « Boîtes ou dossiers à réviser » — texte passif + bouton. */
+.calendar-link-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.calendar-link-value { font-family: var(--font-type); font-size: 15px; font-weight: 400; letter-spacing: normal; text-transform: none; color: var(--ink); overflow-wrap: anywhere; }
+.calendar-link-row .btn { flex-shrink: 0; }
+/* v280 : saisie sur plusieurs lignes dans la fenêtre du robot. */
+.robot-modal-textarea { resize: none; min-height: 72px; line-height: 1.4; font-family: inherit; overflow-y: auto; }
+.dm-del + .dm-ins { margin-left: 4px; }

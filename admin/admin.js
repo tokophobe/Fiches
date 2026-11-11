@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v277";
+  const ADMIN_VERSION = "v280";
   async function checkAdminVersion() {
     const label = $("#sidebar-version");
     if (label) label.textContent = `Darwin Admin ${ADMIN_VERSION}`;
@@ -340,7 +340,7 @@
     {
       group: "Contenus",
       items: [
-        { key: "library", label: "Librairie", icon: "book" },
+        { key: "library", label: "Librairie", icon: "book", badge: "library" },
         { key: "boxes", label: "Boîtes", icon: "box" },
         { key: "classes", label: "Classes", icon: "school" },
         { key: "reports", label: "Signalements", icon: "flag", badge: "reports" },
@@ -367,7 +367,10 @@
       ],
     },
   ];
-  const badges = { reports: 0, errors: 0 };
+  // v280 : « library » = propositions à relire + messages non lus des
+  // enseignants (réponses, demandes de retrait).
+  const badges = { reports: 0, errors: 0, library: 0 };
+  const libraryCounts = { pending: 0, unread: 0 };
   function renderNav(activeKey) {
     const nav = $("#nav");
     nav.innerHTML = "";
@@ -443,6 +446,7 @@
     if (!location.hash || location.hash === "#" || location.hash === "#/") location.hash = "#/dashboard";
     else route();
     refreshBadges();
+    startLibraryLive();
   }
   async function refreshBadges() {
     if (state.limited) return;
@@ -456,11 +460,52 @@
       } catch (e) {
         badges.errors = 0;
       }
+      await refreshLibraryCounts();
       renderNav(currentNavKey);
       return o;
     } catch (e) {
       return null;
     }
+  }
+  /** v280 : propositions à relire et messages non lus des enseignants. */
+  async function refreshLibraryCounts() {
+    try {
+      const [p, m] = await Promise.all([
+        client().from("library_submissions").select("id", { count: "exact", head: true }).eq("status", "pending"),
+        client().from("library_submission_messages").select("id", { count: "exact", head: true }).eq("from_admin", false).is("seen_at", null),
+      ]);
+      libraryCounts.pending = p.error ? 0 : Number(p.count) || 0;
+      libraryCounts.unread = m.error ? 0 : Number(m.count) || 0;
+    } catch (e) {
+      libraryCounts.pending = 0;
+      libraryCounts.unread = 0;
+    }
+    badges.library = libraryCounts.pending + libraryCounts.unread;
+    document.querySelectorAll("[data-library-count]").forEach((n) => {
+      const v = libraryCounts[n.dataset.libraryCount] || 0;
+      n.hidden = !v;
+      n.textContent = String(v);
+    });
+  }
+  /** v280 : nouvelles propositions et nouveaux messages d'enseignants en
+   *  temps réel (supabase/v280_migration.sql) : pastilles à jour. */
+  let libraryLiveStarted = false;
+  function startLibraryLive() {
+    if (libraryLiveStarted || state.limited || !client()) return;
+    libraryLiveStarted = true;
+    let t = null;
+    const bump = () => {
+      clearTimeout(t);
+      t = setTimeout(async () => {
+        await refreshLibraryCounts();
+        renderNav(currentNavKey);
+      }, 400);
+    };
+    client()
+      .channel("admin-library-live")
+      .on("postgres_changes", { event: "*", schema: "public", table: "library_submission_messages" }, bump)
+      .on("postgres_changes", { event: "*", schema: "public", table: "library_submissions" }, bump)
+      .subscribe();
   }
   $("#login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -1252,7 +1297,20 @@
         ["packs", "Boîtes toutes prêtes", "#/library/packs"],
         ["qcm", "Questions QCM", "#/library/qcm"],
         ["taxonomy", "Classement (Excel)", "#/library/taxonomy"],
-      ].map(([k, l, href]) => h("a", { href, class: k === active ? "is-active" : null }, l))
+      ].map(([k, l, href]) =>
+        h(
+          "a",
+          { href, class: k === active ? "is-active" : null },
+          l,
+          // v280 : pastilles « à relire » et « messages non lus ».
+          k === "submissions"
+            ? [
+                h("span", { class: "nav-badge tab-badge", title: "Propositions à relire", "data-library-count": "pending", hidden: !libraryCounts.pending }, String(libraryCounts.pending)),
+                h("span", { class: "nav-badge tab-badge tab-badge--msg", title: "Messages non lus", "data-library-count": "unread", hidden: !libraryCounts.unread }, String(libraryCounts.unread)),
+              ]
+            : null
+        )
+      )
     );
   }
   function taxonomyShort(t, level) {
@@ -1725,7 +1783,15 @@
   /* ---- Round 69 : propositions des enseignants (boîtes partagées avec
      une classe) : relecture, modification, publication dans la Librairie
      au nom de l'enseignant, ou refus. ---- */
-  const SUBMISSION_STATUS = { pending: ["À relire", "warn"], published: ["Publiée", "ok"], rejected: ["Refusée", null] };
+  // v278 (publication avec relecture) : nouveaux états.
+  const SUBMISSION_STATUS = {
+    pending: ["À relire", "warn"],
+    changes_requested: ["À modifier (enseignant)", "warn"],
+    published: ["Publiée", "ok"],
+    rejected: ["Refusée", null],
+    superseded: ["Remplacée par une version plus récente", null],
+    withdrawn: ["Retirée", null],
+  };
   async function librarySubmissionsTab(root, live) {
     const listCard = h("div", { class: "card card--flush" }, h("p", { class: "muted", style: { padding: "14px" } }, "Chargement…"));
     let filter = "pending";
@@ -1736,6 +1802,7 @@
         ["pending", "À relire"],
         ["published", "Publiées"],
         ["rejected", "Refusées"],
+        ["unread", "Messages non lus"],
         ["all", "Toutes"],
       ].map(([v, l]) =>
         h(
@@ -1756,14 +1823,22 @@
     root.appendChild(
       card(
         null,
-        "Quand un enseignant partage une boîte qu'il a créée avec une de ses classes, elle est partagée tout de suite et proposée ici. Relis-la, corrige-la si besoin, puis publie-la dans la Librairie (à son nom) ou refuse-la.",
+        "v278 : toute boîte d'enseignant destinée à la Librairie arrive ici — bouton « Publier dans la Librairie », partage d'une boîte avec une classe, nouvelle version d'une boîte déjà publiée (elle met à jour la même boîte), ou boîte publiée avant la v278 remise en relecture. Relis-la, corrige-la si besoin, puis publie-la (sans le nom de l'auteur) ou refuse-la.",
         h("div", { class: "toolbar" }, seg)
       )
     );
     root.appendChild(listCard);
     async function load() {
       let q = client().from("library_submissions").select("*").order("created_at", { ascending: false }).limit(200);
-      if (filter !== "all") q = q.eq("status", filter);
+      // v279 : propositions dont l'enseignant a écrit (réponse, demande de
+      // retrait) sans que darwin ait encore lu.
+      let unreadBySub = new Map();
+      {
+        const r = await client().from("library_submission_messages").select("submission_id").eq("from_admin", false).is("seen_at", null);
+        if (!r.error) (r.data || []).forEach((m) => unreadBySub.set(m.submission_id, (unreadBySub.get(m.submission_id) || 0) + 1));
+      }
+      if (filter === "unread") q = q.in("id", Array.from(unreadBySub.keys()).concat(["00000000-0000-0000-0000-000000000000"]));
+      else if (filter !== "all") q = q.eq("status", filter);
       const { data, error } = await q;
       if (!live()) return;
       if (error) {
@@ -1779,15 +1854,22 @@
             { label: "Boîte", render: (r) => h("div", null, r.name, h("div", { class: "cell-sub" }, taxonomyShort(r.taxonomy, ""))) },
             { label: "Fiches", cls: "num", render: (r) => fmtN(Array.isArray(r.cards) ? r.cards.length : 0) },
             { label: "État", render: (r) => badge(...(SUBMISSION_STATUS[r.status] || [r.status])) },
+            { label: "Messages", render: (r) => (unreadBySub.get(r.id) ? badge(`${unreadBySub.get(r.id)} non lu${unreadBySub.get(r.id) > 1 ? "s" : ""}`, "warn") : "") },
           ],
           data || [],
-          { empty: filter === "pending" ? "Aucune proposition à relire." : "Aucune proposition.", onRow: (r) => openSubmission(r, load) }
+          { empty: filter === "pending" ? "Aucune proposition à relire." : filter === "unread" ? "Aucun message non lu." : "Aucune proposition.", onRow: (r) => openSubmission(r, load) }
         )
       );
     }
     load();
   }
   async function openSubmission(sub, reload) {
+    // v280 : une boîte publiée se corrige sur sa version de la Librairie
+    // (celle que voient les abonnés), pas sur la proposition d'origine.
+    if (sub.status === "published" && sub.collection_id) {
+      const { data: col } = await client().from("library_collections").select("name, description, summary, link, cards").eq("id", sub.collection_id).maybeSingle();
+      if (col) sub = { ...sub, name: col.name, description: col.description, summary: col.summary, link: col.link, cards: col.cards };
+    }
     const field = (label, node) => h("label", { class: "form-field" }, h("span", null, label), node);
     const nameIn = h("input", { type: "text", class: "input", value: sub.name || "" });
     // v245 : un seul champ « Description » (ancien résumé fusionné dedans).
@@ -1798,20 +1880,68 @@
     let cardsData = (Array.isArray(sub.cards) ? sub.cards : []).map((c) => ({ ...c }));
     const cardsWrap = h("div", { class: "submission-cards" });
     const cardsCount = h("b", null, "");
+    // v279 : tous les champs d'une fiche (question, réponse, 3 mauvaises
+    // réponses du QCM, « Pour aller plus loin », lien), pas seulement
+    // question / réponse.
     const drawCards = () => {
       cardsCount.textContent = `Fiches (${cardsData.length})`;
+      const area = (label, value, rows, onInput) => {
+        const t = h("textarea", { class: "input", rows: String(rows) });
+        t.value = value || "";
+        t.addEventListener("input", () => onInput(t.value));
+        return h("label", { class: "form-field submission-card-field" }, h("span", null, label), t);
+      };
       cardsWrap.replaceChildren(
         ...cardsData.map((c, i) => {
-          const q = h("textarea", { class: "input", rows: "2" });
-          q.value = c.question || "";
-          q.addEventListener("input", () => (cardsData[i].question = q.value));
-          const a = h("textarea", { class: "input", rows: "2" });
-          a.value = c.answer || "";
-          a.addEventListener("input", () => (cardsData[i].answer = a.value));
-          const del = h("button", { type: "button", class: "btn btn--small", onclick: () => { cardsData.splice(i, 1); drawCards(); } }, "Retirer");
-          return h("div", { class: "submission-card" }, h("div", { class: "cell-sub" }, `Fiche ${i + 1}`), q, a, del);
+          const wrongs = Array.isArray(c.wrongs) ? c.wrongs.slice(0, 3) : [];
+          while (wrongs.length < 3) wrongs.push("");
+          const setWrong = (k, v) => {
+            const w = (Array.isArray(cardsData[i].wrongs) ? cardsData[i].wrongs.slice(0, 3) : []);
+            while (w.length < 3) w.push("");
+            w[k] = v;
+            cardsData[i].wrongs = w;
+          };
+          const wrongInputs = wrongs.map((w, k) => {
+            const inp = h("input", { type: "text", class: "input", value: w, placeholder: `Mauvaise réponse ${k + 1}` });
+            inp.addEventListener("input", () => setWrong(k, inp.value));
+            return inp;
+          });
+          const linkInp = h("input", { type: "text", class: "input", value: c.link || "", placeholder: "https://…", inputmode: "url" });
+          linkInp.addEventListener("input", () => (cardsData[i].link = linkInp.value.trim()));
+          const del = h("button", { type: "button", class: "btn btn--small", onclick: () => { cardsData.splice(i, 1); drawCards(); } }, "Retirer la fiche");
+          return h(
+            "div",
+            { class: "submission-card" },
+            h("div", { class: "cell-sub" }, `Fiche ${i + 1}${wrongs.some((w) => w) ? " · QCM" : ""}`),
+            area("Question", c.question, 2, (v) => (cardsData[i].question = v)),
+            area("Réponse", c.answer, 2, (v) => (cardsData[i].answer = v)),
+            h("label", { class: "form-field submission-card-field" }, h("span", null, "Mauvaises réponses du QCM (les 3, ou aucune)"), h("div", { class: "submission-wrongs" }, ...wrongInputs)),
+            area("Pour aller plus loin (facultatif)", c.more, 2, (v) => (cardsData[i].more = v)),
+            h("label", { class: "form-field submission-card-field" }, h("span", null, "Lien de la fiche (facultatif)"), linkInp),
+            del
+          );
         })
       );
+    };
+    /** Fiches prêtes à publier : champs vides retirés ; null si un QCM
+     *  n'a pas ses 3 mauvaises réponses. */
+    const cleanCards = () => {
+      const out = [];
+      for (const c of cardsData) {
+        if (!(c.question || "").trim() || !(c.answer || "").trim()) continue;
+        const next = { ...c };
+        const w = (Array.isArray(c.wrongs) ? c.wrongs : []).map((x) => (x || "").trim());
+        const filled = w.filter(Boolean).length;
+        if (filled === 3) next.wrongs = w;
+        else if (filled === 0) delete next.wrongs;
+        else return null;
+        if ((c.more || "").trim()) next.more = c.more;
+        else delete next.more;
+        if ((c.link || "").trim()) next.link = c.link.trim();
+        else delete next.link;
+        out.push(next);
+      }
+      return out;
     };
     drawCards();
     const latestBtn = h(
@@ -1836,7 +1966,81 @@
       },
       "Recharger la dernière version (classe)"
     );
-    const readOnly = sub.status === "published";
+    // v279-v280 : à relire → publier / refuser ; publiée → corriger ou
+    // retirer ; refusée, retirée ou remplacée → lecture seule.
+    const isPublished = sub.status === "published";
+    const readOnly = !["pending", "changes_requested", "published"].includes(sub.status);
+    // v279 (étape D) : échanges avec l'enseignant (toutes les versions de
+    // la même boîte) ; darwin peut lui écrire.
+    const threadWrap = h("div", { class: "submission-thread" }, h("p", { class: "muted" }, "Chargement des messages…"));
+    const MSG_LABELS = {
+      changes_requested: "Modification demandée",
+      rejected: "Refus",
+      published_with_changes: "Publiée avec corrections",
+      withdrawn: "Retirée de la Librairie",
+      withdrawal_request: "DEMANDE DE RETRAIT",
+      auto_reply: "Réponse automatique",
+    };
+    const drawThread = async () => {
+      try {
+        let ids = [sub.id];
+        if (sub.source_subject_id) {
+          const r = await client().from("library_submissions").select("id").eq("owner_id", sub.owner_id).eq("source_subject_id", sub.source_subject_id);
+          if (!r.error && r.data) ids = r.data.map((x) => x.id);
+        }
+        const { data, error } = await client().from("library_submission_messages").select("*").in("submission_id", ids).order("created_at", { ascending: true });
+        if (error) throw new Error(friendlyError(error));
+        const msgs = data || [];
+        threadWrap.replaceChildren(
+          ...(msgs.length
+            ? msgs.map((m) =>
+                h(
+                  "div",
+                  {
+                    class:
+                      "submission-msg" +
+                      (m.from_admin ? " submission-msg--admin" : "") +
+                      (m.kind === "withdrawal_request" ? " submission-msg--withdrawal" : "") +
+                      (m.kind === "auto_reply" ? " submission-msg--auto" : ""),
+                  },
+                  h("div", { class: "cell-sub" }, `${m.from_admin ? "darwin" : "Enseignant"} · ${fmtDate(m.created_at)}${MSG_LABELS[m.kind] ? " · " + MSG_LABELS[m.kind] : ""}${!m.from_admin && !m.seen_at ? " · nouveau" : ""}`),
+                  m.body ? h("div", null, m.body) : null
+                )
+              )
+            : [h("p", { class: "muted" }, "Aucun message.")])
+        );
+        const unseen = msgs.filter((m) => !m.from_admin && !m.seen_at).map((m) => m.id);
+        if (unseen.length) {
+          await rpc("library_messages_mark_seen", { p_ids: unseen }).catch(() => {});
+          await refreshLibraryCounts();
+          renderNav(currentNavKey);
+        }
+      } catch (e) {
+        threadWrap.replaceChildren(h("p", { class: "form-error" }, e.message));
+      }
+    };
+    drawThread();
+    const msgIn = h("textarea", { class: "input", rows: "2", placeholder: "Écrire à l'enseignant…" });
+    const msgBtn = h(
+      "button",
+      {
+        type: "button",
+        class: "btn btn--small",
+        onclick: async () => {
+          const text = msgIn.value.trim();
+          if (!text) return;
+          const { error } = await client().from("library_submission_messages").insert({ submission_id: sub.id, from_admin: true, kind: "message", body: text });
+          if (error) {
+            toast(friendlyError(error), true);
+            return;
+          }
+          msgIn.value = "";
+          toast("Message envoyé à l'enseignant");
+          drawThread();
+        },
+      },
+      "Envoyer le message"
+    );
     // v237 : lien de la boîte (vidéo de cours…), facultatif.
     const linkIn = h("input", { type: "text", class: "input", value: sub.link || "", placeholder: "https://…", inputmode: "url" });
     const body = h(
@@ -1848,7 +2052,11 @@
       field("Lien « Pour aller plus loin »", linkIn),
       h("div", { class: "toolbar" }, cardsCount, latestBtn),
       cardsWrap,
-      field("Note", noteIn)
+      field("Note (envoyée à l'enseignant avec la décision)", noteIn),
+      h("b", null, "Messages avec l'enseignant"),
+      threadWrap,
+      msgIn,
+      h("div", { class: "toolbar" }, msgBtn)
     );
     const patch = () => ({
       name: nameIn.value.trim(),
@@ -1856,11 +2064,57 @@
       description: descIn.value.trim(),
       // v244 : plus de tags à saisir ; ceux de la proposition sont gardés.
       tags: Array.isArray(sub.tags) ? sub.tags : [],
-      cards: cardsData.filter((c) => (c.question || "").trim() && (c.answer || "").trim()),
+      cards: cleanCards(),
       note: noteIn.value.trim(),
       link: window.LearnLinks ? window.LearnLinks.normalize(linkIn.value) : linkIn.value.trim(),
     });
-    const buttons = readOnly
+    const buttons = isPublished
+      ? [
+          { label: "Fermer" },
+          {
+            label: "Retirer de la Librairie",
+            danger: true,
+            onClick: async () => {
+              if (!(await confirmDialog("Retirer cette boîte de la Librairie ? Ceux qui l'ont déjà prise la gardent. La note est envoyée à l'enseignant.", { danger: true, okLabel: "Retirer" }))) return false;
+              try {
+                await rpc("admin_withdraw_submission", { p_id: sub.id, p_note: noteIn.value.trim() });
+                toast("Boîte retirée de la Librairie");
+                reload();
+              } catch (e) {
+                toast(/admin_withdraw_submission/.test(e.message || "") ? "Exécute d'abord supabase/publication_relecture_D_migration.sql." : e.message, true);
+                return false;
+              }
+            },
+          },
+          {
+            label: "Enregistrer les corrections",
+            primary: true,
+            onClick: async () => {
+              const p = patch();
+              if (p.cards === null) {
+                toast("Un QCM doit avoir ses 3 mauvaises réponses (ou aucune).", true);
+                return false;
+              }
+              if (!p.name || !p.cards.length) {
+                toast("Il faut un nom et au moins une fiche.", true);
+                return false;
+              }
+              if (p.link === null) {
+                toast("Le lien n'est pas valable (adresse complète en https://).", true);
+                return false;
+              }
+              try {
+                await rpc("admin_update_published_submission", { p_id: sub.id, p_patch: p });
+                toast("Corrections enregistrées dans la Librairie");
+                reload();
+              } catch (e) {
+                toast(/admin_update_published_submission/.test(e.message || "") ? "Exécute d'abord supabase/v280_migration.sql." : e.message, true);
+                return false;
+              }
+            },
+          },
+        ]
+      : readOnly
       ? [{ label: "Fermer" }]
       : [
           { label: "Fermer" },
@@ -1883,6 +2137,10 @@
             primary: true,
             onClick: async () => {
               const p = patch();
+              if (p.cards === null) {
+                toast("Un QCM doit avoir ses 3 mauvaises réponses (ou aucune).", true);
+                return false;
+              }
               if (!p.name || !p.cards.length) {
                 toast("Il faut un nom et au moins une fiche.", true);
                 return false;
@@ -1904,6 +2162,14 @@
             },
           },
         ];
+    // v280 : proposition close → champs en lecture seule (les messages
+    // restent possibles) ; boîte publiée → note vide (pas de renvoi de
+    // l'ancienne note avec une nouvelle correction).
+    if (isPublished) noteIn.value = "";
+    if (readOnly) {
+      [nameIn, descIn, linkIn, noteIn, latestBtn].forEach((n) => (n.disabled = true));
+      cardsWrap.querySelectorAll("input, textarea, button").forEach((n) => (n.disabled = true));
+    }
     await openModal({ title: sub.name || "Proposition", body, wide: true, buttons });
   }
 

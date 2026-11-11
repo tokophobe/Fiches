@@ -309,6 +309,9 @@
              remplacer les derniers prompt() natifs restants — masqué pour
              un simple message/confirmation. -->
         <input type="text" class="robot-modal-input" id="robot-modal-input" hidden />
+        <!-- v280 : saisie sur plusieurs lignes (input.multiline), qui grandit
+             avec le texte. -->
+        <textarea class="robot-modal-input robot-modal-textarea" id="robot-modal-textarea" rows="3" hidden></textarea>
         <div class="robot-modal-actions" id="robot-modal-actions"></div>
       </div>
     </div>
@@ -335,6 +338,7 @@
     <button class="tab" role="tab" aria-selected="false" data-view="reports-hub" hidden>Signalements</button>
     <button class="tab" role="tab" aria-selected="false" data-view="reports" hidden>Signalements reçus</button>
     <button class="tab" role="tab" aria-selected="false" data-view="reports-sent" hidden>Signalements émis</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="darwin-messages" hidden>Messages de darwin</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes" hidden>Classes</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes-join" hidden>Rejoindre une classe</button>
     <button class="tab" role="tab" aria-selected="false" data-view="classes-create" hidden>Créer une classe</button>
@@ -1043,10 +1047,15 @@
              au-dessus, même habillage que le bouton Date) plutôt que le
              style "pilule" du sélecteur de Nouvelle fiche, qui détonnait
              ici. -->
-        <label class="field">
+        <!-- v280 : le choix actuel est un simple texte ; le bouton « + Ajouter »
+             (« Modifier » quand des boîtes sont choisies) ouvre le choix. -->
+        <div class="field">
           <span>Boîtes ou dossiers à réviser <small class="field-optional">(facultatif)</small></span>
-          <button type="button" class="calendar-date-btn" id="calendar-event-subject-btn" aria-label="Choisir la boîte ou le dossier lié">Aucune boîte/dossier liés</button>
-        </label>
+          <div class="calendar-link-row">
+            <div class="calendar-link-value" id="calendar-event-subject-btn">Aucune boîte/dossier liés</div>
+            <button type="button" class="btn btn--small" id="calendar-event-subject-add">+ Ajouter</button>
+          </div>
+        </div>
 
         <!-- Round 21, item 2 : champ libre pour des précisions (salle,
              matériel à apporter, chapitres concernés...), optionnel. -->
@@ -1483,6 +1492,13 @@
           <span>Signalements reçus</span>
           <span class="home-circle-badge" id="reports-hub-received-badge" hidden>0</span>
         </button>
+        <!-- v279 (publication avec relecture, étape D) : échanges avec darwin
+             sur les boîtes partagées ou publiées. -->
+        <button type="button" class="classes-role-circle" id="reports-hub-darwin-btn" hidden>
+          <span class="classes-role-circle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+          <span>Messages de darwin</span>
+          <span class="home-circle-badge" id="reports-hub-darwin-badge" hidden>0</span>
+        </button>
       </div>
     </section>
 
@@ -1492,6 +1508,11 @@
       <p class="field-hint" id="reports-empty" hidden>Aucun signalement reçu.</p>
     </section>
 
+    <!-- v279 : Messages de darwin (docs/SPECIFICATION.md §7.2). -->
+    <section id="view-darwin-messages" class="view" aria-labelledby="tab-darwin-messages">
+      <ul class="subject-list" id="darwin-messages-list"></ul>
+      <p class="field-hint" id="darwin-messages-empty" hidden>Aucun message de darwin pour l'instant.</p>
+    </section>
     <section id="view-reports-sent" class="view" aria-labelledby="tab-reports-sent">
       <ul class="subject-list" id="reports-sent-list"></ul>
       <p class="field-hint" id="reports-sent-empty" hidden>Tu n'as encore signalé aucune fiche.</p>
@@ -1670,8 +1691,8 @@
         </div>
         <div class="info-block-body">
           <div class="info-block-actions">
-            <button type="button" class="class-detail-section-action" id="class-detail-new-folder-btn" hidden>+ Dossier</button>
-            <button type="button" class="class-detail-section-action" id="class-detail-share-open-btn" hidden>+ Partager</button>
+            <button type="button" class="btn btn--small class-detail-section-action" id="class-detail-new-folder-btn" hidden>+ Dossier</button>
+            <button type="button" class="btn btn--small class-detail-section-action" id="class-detail-share-open-btn" hidden>+ Partager</button>
           </div>
           <div class="class-tree" id="class-detail-boxes"></div>
         </div>
@@ -1682,7 +1703,7 @@
         </div>
         <div class="info-block-body">
           <div class="info-block-actions">
-            <button type="button" class="class-detail-section-action" id="class-detail-add-event-btn" hidden>+ Ajouter</button>
+            <button type="button" class="btn btn--small class-detail-section-action" id="class-detail-add-event-btn" hidden>+ Ajouter</button>
           </div>
           <ul class="class-event-list" id="class-detail-events"></ul>
           <p class="class-detail-empty" id="class-detail-events-empty" hidden>Aucun évènement à venir pour cette classe.</p>
@@ -2036,6 +2057,38 @@
           <span>Description (optionnel)</span>
           <textarea id="library-share-description" rows="4" placeholder="Quelques lignes pour présenter cette boîte… Ex. Vocabulaire d'anglais niveau 5ème : les couleurs, les animaux, la maison."></textarea>
         </label>
+        <!-- v278 (publication avec relecture, §7.2) : accord de licence,
+             demandé une seule fois par boîte (texte :
+             docs/brouillon-licence-publication.md, en attente du juriste). -->
+        <div class="library-license" id="library-share-license-block" hidden>
+          <!-- v280 (Q18) : texte intégral lu dans la base (version gardée
+               avec l'accord), puis deux accords distincts, non cochés. -->
+          <p class="library-license-title">Partager, c'est aussi enrichir la Librairie de darwin</p>
+          <div class="library-license-text" id="library-share-license-text">Chargement des conditions…</div>
+          <label class="account-terms-check">
+            <input type="checkbox" id="library-share-license" />
+            <span>J'accepte la <strong>licence de partage</strong> (1) pour cette boîte.</span>
+          </label>
+          <label class="account-terms-check">
+            <input type="checkbox" id="library-share-commercial" />
+            <span>J'autorise gratuitement l'utilisation de cette boîte dans l'<strong>abonnement darwin</strong> (2).</span>
+          </label>
+          <p class="field-hint">Conditions complètes : <a href="legal/cgu.html#contenus" target="_blank" rel="noopener">CGU, « Tes contenus »</a>.</p>
+        </div>
+        <!-- v280 (Q18 b) : mention de l'auteur, modifiable plus tard depuis
+             la page de la boîte. -->
+        <label class="field" id="library-share-author-field" hidden>
+          <span>Mention de l'auteur dans la Librairie</span>
+          <select id="library-share-author-mode">
+            <option value="anonymous">Anonyme (par défaut)</option>
+            <option value="name">Mon nom</option>
+            <option value="pseudonym">Un pseudonyme</option>
+          </select>
+        </label>
+        <label class="field" id="library-share-author-label-field" hidden>
+          <span>Pseudonyme</span>
+          <input type="text" id="library-share-author-label" maxlength="80" />
+        </label>
         <div class="form-actions" style="margin-top:0;">
           <button type="submit" class="btn btn--primary" id="library-share-submit">Partager</button>
           <button type="button" class="btn btn--ghost" id="library-share-back-btn">Annuler</button>
@@ -2065,14 +2118,14 @@
             <li>Résiliable à tout moment</li>
             <li>Paiement par un adulte (si tu as moins de 18 ans, demande à un parent)</li>
           </ul>
-          <button type="button" class="subs-offer-btn" id="subs-individuel-btn" disabled>Bientôt disponible</button>
-          <button type="button" class="subs-offer-btn" id="subs-annuel-btn" hidden>Annuel — 20 € / an</button>
+          <button type="button" class="btn btn--primary subs-offer-btn" id="subs-individuel-btn" disabled>Bientôt disponible</button>
+          <button type="button" class="btn btn--primary subs-offer-btn" id="subs-annuel-btn" hidden>Annuel — 20 € / an</button>
           <button type="button" class="subs-manage-link" id="subs-manage-btn" hidden>Gérer mon abonnement et mes factures</button>
           <!-- v232 : boutons de l'abonnement en cours, placés par l'appli dans
                la carte de la formule souscrite. -->
           <div class="subs-offer-manage" id="subs-individuel-manage-slot">
             <div class="subs-current-actions" id="subs-current-actions" hidden>
-              <button type="button" class="subs-offer-btn" id="subs-current-manage-btn">Gérer mon abonnement</button>
+              <button type="button" class="btn btn--primary subs-offer-btn" id="subs-current-manage-btn">Gérer mon abonnement</button>
               <!-- Round 70 : résiliation en quelques clics (code de la consommation, art. L215-1-1). -->
               <button type="button" class="subs-manage-link" id="subs-cancel-btn">Résilier mon abonnement</button>
             </div>
@@ -2095,7 +2148,7 @@
           </ul>
           <!-- Round 68 : choix des classes couvertes. -->
           <div class="subs-super-classes" id="subs-super-classes" hidden></div>
-          <button type="button" class="subs-offer-btn" id="subs-super-btn" disabled>Bientôt disponible</button>
+          <button type="button" class="btn btn--primary subs-offer-btn" id="subs-super-btn" disabled>Bientôt disponible</button>
           <div class="subs-offer-manage" id="subs-super-manage-slot"></div>
         </li>
         <li class="subs-offer">
@@ -2109,7 +2162,7 @@
           </ul>
           <!-- v238 : formulaire de l'établissement (responsable). -->
           <div class="subs-school-panel" id="subs-school-panel" hidden></div>
-          <button type="button" class="subs-offer-btn" id="subs-school-btn" disabled>Bientôt disponible</button>
+          <button type="button" class="btn btn--primary subs-offer-btn" id="subs-school-btn" disabled>Bientôt disponible</button>
           <div class="subs-offer-manage" id="subs-school-manage-slot"></div>
         </li>
       </ul>
@@ -2124,6 +2177,7 @@
 <script src="js/revision-algo.js"></script>
 <script src="js/profile-rules.js"></script>
 <script src="js/library-rules.js"></script>
+<script src="js/publication-rules.js"></script>
 <script src="js/db.js"></script>
 <script src="js/sync.js"></script>
 <script src="js/taxonomy.js"></script>

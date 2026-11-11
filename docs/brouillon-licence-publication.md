@@ -125,3 +125,104 @@ L'appli enregistre la date, la boîte concernée et la version du texte.
   préciser que darwin décide : à remplacer par le point c) ci-dessus.
 - Politique de confidentialité : ajouter la conservation des accords de
   licence (date, boîte, version du texte) après la suppression du compte.
+
+---
+
+## 5. Analyse reçue le 11 nov. 2026 (réponses aux questions du §3)
+
+> Analyse fournie par le propriétaire (document Word). Elle n'est pas une
+> consultation d'avocat et le dit elle-même à plusieurs reprises : **à
+> faire valider par un avocat spécialisé en propriété intellectuelle avant
+> l'ouverture au public**, surtout le point 5.4.
+
+### 5.1 Ce qui est jugé acceptable
+Licence non exclusive, gratuite, mondiale ; reproduction, hébergement,
+mise à disposition dans darwin ; recours aux prestataires (pour le compte
+de darwin) ; preuve de l'accord par case à cocher (à compléter, 5.6).
+
+### 5.2 À corriger dans le texte
+- « pour cette boîte et ses versions **successives que tu partages** »
+  (pas « ses versions suivantes »).
+- **Respect de l'œuvre** : garder « corriger, compléter, traduire,
+  réorganiser, classer », mais ajouter : les adaptations améliorent la
+  qualité, l'exactitude, la présentation ou l'organisation ; elles
+  respectent le sens et la finalité de la boîte et le droit moral de
+  l'auteur ; elles ne dénaturent pas l'œuvre ni ne portent atteinte à
+  l'honneur ou à la réputation de l'auteur ; la licence n'est pas une
+  renonciation aux droits moraux.
+- **Paternité** : remplacer toute idée de « tu acceptes de ne pas être
+  cité » par : darwin peut diffuser sans mentionner l'auteur, **mais
+  l'auteur peut demander à tout moment** que son nom (ou un pseudonyme)
+  soit mentionné ; darwin le fait pour les diffusions suivantes ; ce
+  n'est jamais une renonciation (Cass. 1re civ., 12 juillet 2006,
+  n° 05-12.016). Idée d'écran : « Mention de l'auteur : anonyme (par
+  défaut) / mon nom / un pseudonyme », modifiable.
+- **Enseignants agents publics** (professeurs des écoles, collèges,
+  lycées publics) : leurs droits d'exploitation peuvent être cédés de
+  plein droit à l'État pour la mission de service public, avec un **droit
+  de préférence de l'État** pour l'exploitation commerciale (CPI L131-3-1)
+  ; exception pour les enseignants-chercheurs. Clause proposée :
+  l'enseignant garantit disposer des droits nécessaires, reconnaît que
+  ces articles peuvent s'appliquer, et s'engage à avoir obtenu les
+  accords requis de son employeur public. Une case cochée ne règle pas
+  ce point à elle seule.
+- **Contenus de tiers** (extraits de manuels, images, vidéos) : clause
+  dédiée — citer la source ne suffit pas ; courte citation seulement si
+  courte, secondaire, justifiée pédagogiquement et sourcée ; images
+  entières de manuels = autorisation nécessaire ; l'exception
+  pédagogique ne couvre pas une Librairie payante ; darwin peut retirer
+  un contenu signalé. Une boîte peut être utilisable en classe sans être
+  publiable dans la Librairie.
+- **Vidéos YouTube** : clause dédiée (lecteur officiel, pas de
+  téléchargement, l'utilisateur déclare avoir vérifié la licéité,
+  retrait possible), **lien vers les conditions d'utilisation de
+  YouTube** dans les CGU, mode « confidentialité renforcée » et lecteur
+  chargé seulement à la demande. L'abonnement doit porter sur la
+  révision, **jamais sur l'accès aux vidéos** : les vidéos doivent rester
+  lisibles gratuitement dans la Librairie, sans abonnement ni compte.
+
+### 5.3 Exploitation commerciale : deux consentements distincts
+L'analyse recommande de **séparer** :
+1. la licence nécessaire au partage (fonctionnement, correction,
+   adaptation) ;
+2. une **autorisation spécifique, case non pré-cochée**, pour
+   l'exploitation gratuite dans l'offre payante (abonnement donnant accès
+   à toute la Librairie), avec le texte : « tu reconnais que darwin peut
+   tirer des revenus de ses abonnements sans rémunération individuelle
+   attachée à ta boîte, sous réserve des dispositions légales
+   impératives ».
+
+**Choix du propriétaire (dans le document)** : toute boîte partagée avec
+une classe alimente la Librairie, à condition que l'enseignant ait coché
+cette autorisation spécifique ; l'abonnement donne accès à toutes les
+boîtes publiées. L'analyse juge ce choix **plus risqué** que « partage
+privé + publication facultative » (déséquilibre possible, Code de la
+consommation L212-1) et demande alors : information très visible avant
+le partage, case spécifique non pré-cochée, explication claire de
+l'accès des abonnés, distinction des deux droits, possibilité de retirer
+la boîte de la Librairie pour l'avenir.
+
+### 5.4 Point qui conditionne le modèle économique (avocat)
+Depuis le 17 février 2024, l'article L131-4 du CPI (d'ordre public)
+prévoit une rémunération proportionnelle aux recettes pour les cessions
+de droits, sauf exceptions. Une licence gratuite reste possible
+(L122-7, L122-7-1) si elle est expresse et justifiée, mais rien ne
+garantit qu'elle suffise pour une exploitation dans un abonnement
+payant. Le mois d'abonnement offert est un avantage, pas une
+rémunération des droits. **À faire trancher par un avocat PI.**
+
+### 5.5 Élèves mineurs
+Une publication par des élèves (incitation envisagée, chantier F)
+demande un consentement adapté à l'âge, avec les parents si besoin.
+
+### 5.6 Preuve de l'accord
+Conserver, pour chaque accord, en archive séparée du compte : compte,
+date et heure, boîte **et sa version** (copie ou empreinte), **texte
+intégral** des conditions acceptées (pas seulement un numéro), trace de
+l'autorisation commerciale ; éventuellement l'adresse IP. Durée : tant
+que la boîte est exploitée, puis **5 ans** (prescription, Code civil
+2224), plus la durée d'un éventuel litige ; ensuite suppression ou
+anonymisation. Enregistrer séparément suppression du compte, retrait de
+la Librairie et révocation d'une autorisation. Formulation proposée pour
+la politique de confidentialité : voir l'analyse (§ « Conservation des
+preuves de publication et d'autorisation »).

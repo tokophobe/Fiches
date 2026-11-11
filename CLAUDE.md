@@ -16,6 +16,32 @@ tout ce qui risquerait d'obliger un jour à « tout reprendre » (dette
 technique, choix difficiles à défaire, absence de tests, risques de mise
 en ligne). Rester concret et proportionné : un conseil utile, pas un cours.
 
+## Consignes permanentes du propriétaire (11 nov. 2026)
+
+- **Propreté du code, en continu** : coder dans les règles de l'art, de
+  façon structurée ; à chaque intervention, nettoyer ce qui est touché
+  (code mort, doublons, styles CSS qui s'écrasent les uns les autres —
+  `css/style.css` est très gros et contient des règles empilées) et le
+  signaler. Un nettoyage plus large se propose, il ne s'impose pas en
+  douce.
+- **Appli pas encore ouverte au public** (date non fixée) : ne pas perdre
+  de temps sur des cas qui n'existent pas encore (ex. boîtes créées par
+  des enseignants pendant le développement : pas de reprise de données
+  sophistiquée). Tenir à jour ce qu'il reste à faire avant l'ouverture
+  (§8 de la spécification et bilan `tools/lancement.py`) et dire quand on
+  pourra être prêt.
+- **Le nom « darwin » peut changer** (vérification juridique en cours) :
+  ne pas l'éparpiller davantage ; le jour venu, le changement devra
+  toucher toute l'appli, le site, les pages légales et Darwin Admin
+  (≈ 560 occurrences dans 38 fichiers au 11 nov. 2026).
+- **Avant l'ouverture au public, rappeler** au propriétaire qu'il faut
+  d'abord rédiger avec lui une **feuille de route d'exploitation** très
+  complète : tâches quotidiennes / hebdomadaires / mensuelles (relecture
+  des propositions dans Darwin Admin, signalements, quotas Supabase,
+  Stripe, sauvegardes…), points de vigilance et seuils (quand changer de
+  forfait), obligations administratives (déclarations de chiffre
+  d'affaires…), pour qu'aucun utilisateur ne soit bloqué par un oubli.
+
 ## Spécification fonctionnelle (à lire en premier)
 
 `docs/SPECIFICATION.md` est **la référence de la logique de l'appli**,
@@ -120,12 +146,34 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   spéc. §7.2, étapes A à F) : toute boîte destinée à la Librairie devient
   une proposition (`library_submissions`) relue par darwin ; licence non
   exclusive acceptée une fois par boîte (`library_license_acceptances`) ;
-  échanges dans `library_submission_messages`. Étape A livrée :
+  échanges dans `library_submission_messages`. Étape A :
   `supabase/publication_relecture_A_migration.sql`, règles dans
-  `js/publication-rules.js` (pas encore chargé par l'appli : l'ajouter à
-  `index.html`, `admin/` et `CORE_ASSETS` à l'étape B/C), brouillon
-  juridique `docs/brouillon-licence-publication.md`. La publication
-  directe (`Sync.library.share`) sera fermée côté base à l'étape B.
+  `js/publication-rules.js`, brouillon juridique
+  `docs/brouillon-licence-publication.md`. Étape B (v278) :
+  `supabase/publication_relecture_B_migration.sql` (publication directe
+  réservée à darwin, boîtes d'enseignants « en relecture » via
+  `library_collections.review_hold`) ; dans `app.js` :
+  `refreshPublicationState`, `licenseNeededFor`,
+  `boxInPublicationCircuit`, renvoi automatique `scheduleLibraryResubmit`
+  (appelé par `pushSharedBoxUpdatesForSubject`). `Sync.library.share`
+  ne sert plus qu'à un administrateur. Étape D (v279) :
+  `supabase/publication_relecture_D_migration.sql`
+  (`admin_withdraw_submission`) ; vue `darwin-messages`
+  (`renderDarwinMessagesView`, `applyDarwinVersionToBox`,
+  `requestLibraryWithdrawal`) rangée dans `reports-hub`, pastille dans
+  `refreshReportsBadge` ; Darwin Admin `openSubmission` : tous les champs
+  des fiches, fil des messages, retrait. v280
+  (`supabase/v280_migration.sql`) : accord en deux cases
+  (`commercial_consent`, `box_hash`), textes de licence dans
+  `library_license_texts` (l'appli affiche celui de
+  `PublicationRules.LICENSE_VERSION`), mention de l'auteur
+  (`author_mode` / `author_label`, `set_box_author_mention`),
+  `admin_update_published_submission`, réponse automatique aux demandes
+  de retrait (`auto_reply`), temps réel (`class_messages`,
+  `library_submission_messages` dans la publication `supabase_realtime` ;
+  `startLiveNotifications` dans `app.js`, `startLibraryLive` dans
+  `admin.js`). Suivi des modifications : `PublicationRules.wordDiff`.
+  À l'étape C, charger `publication-rules.js` aussi dans `admin/`.
 - Les autres différences sont à préciser avec le propriétaire (spéc. §3.2).
 
 ## Organisation des boîtes (v248, v254)
