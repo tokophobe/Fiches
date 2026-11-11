@@ -550,7 +550,8 @@ tout de suite, la liste à jour suit.
   classe éventuelle. Une échéance reçue d'un enseignant ne peut être ni
   modifiée ni supprimée par l'élève (sauf suppression une fois passée).
   Quand l'élève quitte la classe, ses échéances disparaissent de son
-  agenda (v284).
+  agenda (v284), y compris s'il l'a quittée sur un autre appareil (v286).
+  Pas d'alerte « Aucune boîte associée » sur une échéance reçue (v286).
 - Affichage par mois : toucher un jour qui a des évènements ouvre la page
   « évènements du jour » (titre = la date), comme les autres pages
   (v284).
@@ -1003,6 +1004,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v286 | 11 nov. 2026 | Classes quittées : à chaque synchronisation, ce qui reste d'une classe dont l'élève ne fait plus partie (boîtes, dossiers, échéances) est retiré, même si elle a été quittée sur un autre appareil ou avant la v284. Échéance reçue d'une classe : plus d'alerte « Aucune boîte associée : ajoute les fiches… » (l'élève ne peut pas en ajouter, c'est l'enseignant qui les choisit). |
 | v285 | 11 nov. 2026 | Texte de l'accord reformulé (nouvelle version gardée dans la base, même règle) : chaque case est « à cocher pour pouvoir partager ou publier ta boîte » ; la 2e s'intitule « Utilisation de ta boîte dans l'abonnement darwin » et précise que partager ou publier ne demande aucun abonnement (l'abonnement sert à réviser les boîtes de la Librairie). CGU alignées. Les accords déjà donnés restent valables. |
 | v284 | 11 nov. 2026 | Quitter une classe retire aussi ses évènements de l'agenda. Évènements d'un jour (clic sur un jour du mois) : vraie page, avec bandeau, robot et titre, comme le reste de l'appli (avant : panneau superposé). Messages de darwin : fiche retirée affichée normalement avec l'étiquette « RETIRÉE » bien visible, « MODIFIÉE » un peu moins, « AJOUTÉE » en vert. Nouvelle fiche : « Annuler » quitte la page sans rien enregistrer (avant, en création, il effaçait seulement les champs). |
 | — | 11 nov. 2026 | Base de données (script v284, rien à changer dans l'appli) : une boîte de la Librairie partagée avec une classe suit désormais la Librairie — quand darwin publie une nouvelle version ou corrige la boîte, les classes qui l'ont reçue sont mises à jour aussitôt (avant : copie figée au moment du partage). |

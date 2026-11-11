@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v285";
+  const APP_VERSION = "v286";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -9357,7 +9357,9 @@
     const teacher = activeRole() === "teacher";
     return profileCalendarEvents()
       .filter((ev) => !teacher || (ev.classShare && ev.classShare.classId))
-      .filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0 && calendarEventHasNoBox(ev))
+      // v286 : pas d'alerte pour une échéance reçue d'une classe : l'élève
+      // ne peut pas lui ajouter de boîte (c'est l'enseignant qui les choisit).
+      .filter((ev) => ev && ev.date && calendarDiffDays(ev.date) >= 0 && !isSharedReadonlyEvent(ev) && calendarEventHasNoBox(ev))
       .sort((a, b) => a.date.localeCompare(b.date));
   }
 
@@ -9998,7 +10000,7 @@
     // Alerte : évènement à venir sans boîte associée (rien à réviser pour
     // s'y préparer — il n'apparaît pas non plus dans le Programme).
     const noBoxWarningHtml =
-      !isPast && calendarEventHasNoBox(ev)
+      !isPast && !isSharedReadonlyEvent(ev) && calendarEventHasNoBox(ev)
         ? `<p class="calendar-event-warning">${iconSvgMarkup("alertTriangle", "icon-inline-svg")}<span>Aucune boîte associée : ajoute les fiches à réviser pour cet évènement.</span></p>`
         : "";
     main.innerHTML = `
@@ -13476,7 +13478,12 @@
     if (!Sync.isConfigured()) return;
     if (!accountCurrentUser) return;
     try {
-      const myClasses = await Sync.classes.listAsStudent();
+      // v286 : liste « sûre » (null en cas d'échec) pour pouvoir retirer,
+      // sans risque, ce qui reste des classes que l'élève a quittées
+      // (même depuis un autre appareil) : boîtes, dossiers et évènements.
+      const strict = Sync.classes.listAsStudentStrict ? await Sync.classes.listAsStudentStrict() : null;
+      const myClasses = strict || (await Sync.classes.listAsStudent());
+      if (strict) await removeLeftClassLeftovers(new Set(strict.map((k) => k.id)));
       // Round 3, item 1 : dossiers de miroir de classe encore utiles à la
       // fin de cette synchro (racine de chaque classe + tous les
       // sous-dossiers reconstitués depuis les chemins reçus) — tout dossier
@@ -13973,6 +13980,19 @@
     return [...seen.values()];
   }
   /** Retire les copies locales (boîtes, fiches, dossiers) d'une classe. */
+  /** v286 : restes (boîtes, dossiers, évènements reçus) des classes dont
+   *  l'élève ne fait plus partie. `currentClassIds` doit venir d'une
+   *  liste lue avec succès. */
+  async function removeLeftClassLeftovers(currentClassIds) {
+    const left = new Set();
+    subjects.forEach((s) => s.sharedBoxId && s.sharedClassId && !currentClassIds.has(s.sharedClassId) && left.add(s.sharedClassId));
+    folders.forEach((f) => f.sharedClassId && !currentClassIds.has(f.sharedClassId) && left.add(f.sharedClassId));
+    loadCalendarEvents().forEach((ev) => ev.sharedEventId && ev.sharedClassId && !currentClassIds.has(ev.sharedClassId) && left.add(ev.sharedClassId));
+    // Mes propres classes d'enseignant ne sont jamais concernées.
+    const taught = new Set(((await Sync.classes.listAsTeacher()) || []).map((k) => k.id));
+    for (const classId of left) if (!taught.has(classId)) await removeClassMirrors(classId);
+    if (left.size) refreshAfterSharedBoxesSync();
+  }
   async function removeClassMirrors(classId) {
     const mirrors = subjects.filter((s) => s.sharedBoxId && s.sharedClassId === classId);
     for (const s of mirrors) {

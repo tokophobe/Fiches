@@ -1081,6 +1081,18 @@ async function listClassesAsStudent() {
   return (data || []).map((row) => row.classes).filter(Boolean);
 }
 
+/** v286 : comme listClassesAsStudent, mais null en cas d'échec (au lieu
+ *  d'une liste vide), pour ne jamais prendre une panne pour un départ de
+ *  toutes les classes. */
+async function listClassesAsStudentStrict() {
+  const c = getClient();
+  const user = await authGetUser();
+  if (!c || !user) return null;
+  const { data, error } = await c.from("class_members").select("class_id, role, classes(*)").eq("user_id", user.id);
+  if (error) return null;
+  return (data || []).map((row) => row.classes).filter(Boolean);
+}
+
 async function classMemberCount(classId) {
   const c = getClient();
   if (!c) return 0;
@@ -1989,6 +2001,7 @@ window.Sync = {
   },
   classes: {
     subscribeSharedBoxes: subscribeSharedBoxesRealtime,
+    listAsStudentStrict: listClassesAsStudentStrict,
     create: createClass,
     listAsTeacher: listClassesAsTeacher,
     get: getClassById,
