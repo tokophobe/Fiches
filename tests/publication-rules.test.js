@@ -34,12 +34,24 @@ test("Seul darwin retire une boîte publiée ; refus et retrait sont définitifs
   assert.deepEqual(Object.keys(R.TRANSITIONS.withdrawn), []);
 });
 
-test("L'accord de licence se donne une seule fois par boîte", () => {
-  const accords = [{ sourceSubjectId: "boite-1", licenseVersion: "ancienne", acceptedAt: "2026-11-01" }];
+test("L'accord se donne une seule fois par boîte, avec ses deux cases (licence et abonnement)", () => {
+  const accords = [
+    { sourceSubjectId: "boite-1", commercialConsent: true },
+    { sourceSubjectId: "boite-3", commercialConsent: false },
+  ];
   assert.equal(R.needsLicenseAcceptance(accords, "boite-1"), false);
   assert.equal(R.needsLicenseAcceptance(accords, "boite-2"), true);
+  assert.equal(R.needsLicenseAcceptance(accords, "boite-3"), true, "accord sans l'autorisation abonnement");
   assert.equal(R.needsLicenseAcceptance([], "boite-1"), true);
   assert.equal(R.needsLicenseAcceptance(accords, null), true);
+});
+
+test("Mention de l'auteur : rien par défaut, nom ou pseudonyme seulement si demandé", () => {
+  assert.equal(R.authorMention("anonymous", "Jean Dupont"), "");
+  assert.equal(R.authorMention(undefined, "x"), "");
+  assert.equal(R.authorMention("name", " Jean Dupont "), "Jean Dupont");
+  assert.equal(R.authorMention("pseudonym", "Prof Sciences"), "Prof Sciences");
+  assert.equal(R.authorMention("pseudonym", "x".repeat(100)).length, 80);
 });
 
 test("Discrétion : l'enseignant n'est prévenu que si darwin a besoin de lui ou a changé son contenu", () => {
@@ -81,4 +93,26 @@ test("Librairie à l'ouverture : avec « seulement les boîtes darwin », les bo
   assert.equal(R.visibleInLibrary({ origin: "darwin" }, true), true);
   assert.equal(R.visibleInLibrary({ origin: "teacher" }, true), false);
   assert.equal(R.visibleInLibrary({ origin: "teacher" }, false), true);
+});
+
+test("Suivi des modifications : mots supprimés et ajoutés repérés, le reste inchangé", () => {
+  const d = R.wordDiff("La capitale est Sydney.", "La capitale est Canberra.");
+  assert.deepEqual(d.map((x) => x.type), ["same", "del", "ins"]);
+  assert.equal(d[0].text, "La capitale est ");
+  assert.equal(d[1].text, "Sydney.");
+  assert.equal(d[2].text, "Canberra.");
+  assert.deepEqual(R.wordDiff("même texte", "même texte"), [{ type: "same", text: "même texte" }]);
+  assert.deepEqual(R.wordDiff("", "ajout"), [{ type: "ins", text: "ajout" }]);
+  assert.deepEqual(R.wordDiff("retrait", ""), [{ type: "del", text: "retrait" }]);
+  // On retrouve bien les deux textes à partir des morceaux.
+  const d2 = R.wordDiff("un deux trois quatre", "un trois cinq quatre");
+  assert.equal(d2.filter((x) => x.type !== "ins").map((x) => x.text).join(""), "un deux trois quatre");
+  assert.equal(d2.filter((x) => x.type !== "del").map((x) => x.text).join(""), "un trois cinq quatre");
+});
+
+test("Suivi des modifications : un passage réécrit donne un seul bloc barré puis un seul bloc ajouté", () => {
+  const d = R.wordDiff("Sydney, la plus grande ville.", "Canberra, et non Sydney.");
+  assert.deepEqual(d.map((x) => x.type).filter((t) => t !== "same").join(","), "del,ins");
+  assert.equal(d.filter((x) => x.type !== "ins").map((x) => x.text).join(""), "Sydney, la plus grande ville.");
+  assert.equal(d.filter((x) => x.type !== "del").map((x) => x.text).join(""), "Canberra, et non Sydney.");
 });

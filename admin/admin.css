@@ -427,3 +427,9 @@ pre.code {
 .submission-thread { display: grid; gap: 6px; margin: 4px 0 6px; }
 .submission-msg { padding: 8px 10px; border-radius: 10px; background: #f3f5f4; white-space: pre-line; }
 .submission-msg--admin { background: #e8f0fb; }
+/* v280 : pastilles de l'onglet « Propositions des enseignants ». */
+.tab-badge { margin-left: 6px; }
+.tab-badge[hidden] { display: none; }
+.tab-badge--msg { background: #2f6fd1; }
+.submission-msg--withdrawal { background: #fdecea; border: 1.5px solid #d14b3a; font-weight: 600; }
+.submission-msg--auto { background: transparent; border: 1px dashed #b8c2cf; font-style: italic; }

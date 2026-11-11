@@ -11,10 +11,12 @@
 (function (root) {
   "use strict";
 
-  /** Version du texte de licence que l'enseignant accepte (brouillon :
-   *  docs/brouillon-licence-publication.md). À changer à chaque nouvelle
-   *  version du texte ; l'accord déjà donné pour une boîte reste valable. */
-  const LICENSE_VERSION = "2026-11-09-brouillon";
+  /** Version du texte de licence que l'enseignant accepte. Le texte
+   *  intégral de chaque version est gardé dans la base (table
+   *  library_license_texts, supabase/v280_migration.sql) : c'est lui que
+   *  l'appli affiche. Une nouvelle version = une nouvelle ligne, et cette
+   *  constante change. */
+  const LICENSE_VERSION = "2026-11-11";
 
   /** États d'une proposition (colonne status de library_submissions). */
   const STATUS = Object.freeze({
@@ -54,13 +56,23 @@
     return role === "teacher";
   }
 
-  /** L'accord de licence se donne UNE fois par boîte : il en faut un si
-   *  aucun accord n'existe encore pour cette boîte (quelle que soit la
-   *  version du texte acceptée à l'époque). `acceptances` : liste de
-   *  { sourceSubjectId, licenseVersion, acceptedAt }. */
+  /** L'accord se donne UNE fois par boîte, avec ses deux cases (v280,
+   *  Q18 a) : la licence de partage ET l'autorisation pour l'abonnement.
+   *  Il en faut un nouveau si aucun accord complet n'existe pour cette
+   *  boîte (un ancien accord sans l'autorisation « abonnement » ne suffit
+   *  plus). `acceptances` : liste de { sourceSubjectId, commercialConsent }. */
   function needsLicenseAcceptance(acceptances, sourceSubjectId) {
     if (!sourceSubjectId) return true;
-    return !(acceptances || []).some((a) => a && a.sourceSubjectId === sourceSubjectId);
+    return !(acceptances || []).some((a) => a && a.sourceSubjectId === sourceSubjectId && a.commercialConsent === true);
+  }
+
+  /** Mention de l'auteur (Q18 b) : anonyme par défaut ; nom ou pseudonyme
+   *  sur demande, modifiable à tout moment. Renvoie le texte à afficher
+   *  (vide = rien). */
+  const AUTHOR_MODES = ["anonymous", "name", "pseudonym"];
+  function authorMention(mode, label) {
+    if (mode !== "name" && mode !== "pseudonym") return "";
+    return String(label || "").trim().slice(0, 80);
   }
 
   /** Discrétion envers l'enseignant : il n'est prévenu (pastille
@@ -123,6 +135,98 @@
     return { changed, added, removed, any: changed.length + added.length + removed.length > 0 };
   }
 
+  /** Suivi des modifications façon traitement de texte (v280) : compare
+   *  deux textes mot à mot et renvoie des morceaux { type, text } —
+   *  « same » (inchangé), « del » (supprimé), « ins » (ajouté). Les espaces
+   *  restent collés aux mots. Au-delà d'une certaine taille, on se contente
+   *  de « tout supprimé / tout ajouté » (calcul trop long sinon). */
+  function wordDiff(before, after) {
+    const a = String(before || "");
+    const b = String(after || "");
+    if (a === b) return a ? [{ type: "same", text: a }] : [];
+    const tok = (t) => t.match(/\s+|[^\s]+/g) || [];
+    const x = tok(a);
+    const y = tok(b);
+    if (x.length * y.length > 250000) {
+      return [a && { type: "del", text: a }, b && { type: "ins", text: b }].filter(Boolean);
+    }
+    // Plus longue sous-suite commune (programmation dynamique).
+    const m = x.length;
+    const n = y.length;
+    const L = Array.from({ length: m + 1 }, () => new Uint16Array(n + 1));
+    for (let i = m - 1; i >= 0; i--) {
+      for (let j = n - 1; j >= 0; j--) {
+        L[i][j] = x[i] === y[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+      }
+    }
+    const out = [];
+    const push = (type, text) => {
+      const last = out[out.length - 1];
+      if (last && last.type === type) last.text += text;
+      else out.push({ type, text });
+    };
+    let i = 0;
+    let j = 0;
+    while (i < m && j < n) {
+      if (x[i] === y[j]) {
+        push("same", x[i]);
+        i++;
+        j++;
+      } else if (L[i + 1][j] >= L[i][j + 1]) {
+        push("del", x[i++]);
+      } else {
+        push("ins", y[j++]);
+      }
+    }
+    while (i < m) push("del", x[i++]);
+    while (j < n) push("ins", y[j++]);
+    return groupChanges(out);
+  }
+  /** Regroupe un passage modifié (morceaux supprimés / ajoutés séparés
+   *  seulement par des espaces) en UN bloc supprimé suivi d'UN bloc ajouté :
+   *  « ~~Sydney, la plus grande ville.~~ Canberra, et non Sydney. » plutôt
+   *  qu'une alternance mot à mot illisible. */
+  function groupChanges(parts) {
+    const out = [];
+    let del = "";
+    let ins = "";
+    let pendingSpace = "";
+    const flush = () => {
+      if (del) out.push({ type: "del", text: del });
+      if (ins) out.push({ type: "ins", text: ins });
+      del = "";
+      ins = "";
+    };
+    const pushSame = (text) => {
+      const last = out[out.length - 1];
+      if (last && last.type === "same") last.text += text;
+      else out.push({ type: "same", text });
+    };
+    parts.forEach((p) => {
+      if (p.type === "same") {
+        if ((del || ins) && /^\s+$/.test(p.text)) {
+          pendingSpace += p.text; // espace au milieu d'un passage modifié
+          return;
+        }
+        flush();
+        if (pendingSpace) pushSame(pendingSpace);
+        pendingSpace = "";
+        pushSame(p.text);
+        return;
+      }
+      if (pendingSpace) {
+        if (del) del += pendingSpace;
+        if (ins) ins += pendingSpace;
+        pendingSpace = "";
+      }
+      if (p.type === "del") del += p.text;
+      else ins += p.text;
+    });
+    flush();
+    if (pendingSpace) pushSame(pendingSpace);
+    return out;
+  }
+
   /** Librairie à l'ouverture (Q16) : avec le réglage « seulement les
    *  boîtes darwin », une boîte venue d'un enseignant n'est pas montrée. */
   function visibleInLibrary(collection, darwinOnly) {
@@ -131,9 +235,9 @@
   }
 
   const api = {
-    LICENSE_VERSION, STATUS, TRANSITIONS,
-    canTransition, isOpen, canPropose, needsLicenseAcceptance, teacherNotified,
-    shouldResubmit, cardsSignature, cardsDiff, visibleInLibrary,
+    LICENSE_VERSION, STATUS, TRANSITIONS, AUTHOR_MODES,
+    canTransition, isOpen, canPropose, needsLicenseAcceptance, authorMention, teacherNotified,
+    shouldResubmit, cardsSignature, cardsDiff, wordDiff, visibleInLibrary,
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.PublicationRules = api;

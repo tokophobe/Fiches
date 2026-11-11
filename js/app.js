@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v279";
+  const APP_VERSION = "v280";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -660,7 +660,13 @@
     const overlay = el("robot-modal-overlay");
     const textEl = el("robot-modal-text");
     const actions = el("robot-modal-actions");
-    const inputEl = el("robot-modal-input");
+    const lineInputEl = el("robot-modal-input");
+    const areaEl = el("robot-modal-textarea");
+    // v280 : `input.multiline` → zone de plusieurs lignes qui grandit.
+    const multiline = !!(opts.input && opts.input.multiline && areaEl);
+    const inputEl = multiline ? areaEl : lineInputEl;
+    const otherInputEl = multiline ? lineInputEl : areaEl;
+    if (otherInputEl) otherInputEl.hidden = true;
     if (!overlay || !textEl || !actions) {
       // Repli très défensif si jamais le balisage manque (ne devrait pas
       // arriver) : on ne bloque pas l'appli, on résout juste positivement.
@@ -678,10 +684,19 @@
         if (hasInput) {
           inputEl.value = opts.input.defaultValue || "";
           inputEl.placeholder = opts.input.placeholder || "";
-          // round 55 (mot de passe), v231 (date, email)
-          inputEl.type = ["password", "date", "email"].includes(opts.input.type) ? opts.input.type : "text";
-          if (opts.input.type === "date") inputEl.max = new Date().toISOString().slice(0, 10);
-          else inputEl.removeAttribute("max");
+          if (multiline) {
+            const grow = () => {
+              inputEl.style.height = "auto";
+              inputEl.style.height = `${Math.min(inputEl.scrollHeight + 2, 260)}px`;
+            };
+            inputEl.oninput = grow;
+            requestAnimationFrame(grow);
+          } else {
+            // round 55 (mot de passe), v231 (date, email)
+            inputEl.type = ["password", "date", "email"].includes(opts.input.type) ? opts.input.type : "text";
+            if (opts.input.type === "date") inputEl.max = new Date().toISOString().slice(0, 10);
+            else inputEl.removeAttribute("max");
+          }
         }
       }
       let settled = false;
@@ -697,7 +712,7 @@
         if (e.key === "Escape") {
           e.preventDefault();
           close(opts.cancelValue !== undefined ? opts.cancelValue : false);
-        } else if (hasInput && e.key === "Enter") {
+        } else if (hasInput && !multiline && e.key === "Enter") {
           e.preventDefault();
           const primaryBtn = actions.querySelector(".robot-modal-btn--primary");
           if (primaryBtn) primaryBtn.click();
@@ -2416,23 +2431,38 @@
         });
         mySubmissionsLatest = latest;
       }
-      if (!acc.error) myLicenseSourceIds = new Set(acc.data.map((a) => a.source_subject_id));
+      // v280 : seuls les accords complets (licence + abonnement) comptent.
+      if (!acc.error) myLicenseSourceIds = new Set(acc.data.filter((a) => a.commercial_consent).map((a) => a.source_subject_id));
       publicationStateLoaded = !subs.error && !acc.error;
     } catch (e) {
       console.warn("Librairie : échec du chargement des propositions", e);
     }
   }
-  /** L'accord de licence est-il encore à donner pour cette boîte ?
-   *  (jamais pour darwin, qui publie ses propres boîtes). */
+  /** L'accord (licence + abonnement) est-il encore à donner pour cette
+   *  boîte ? (jamais pour darwin, qui publie ses propres boîtes). */
   function licenseNeededFor(subjectId) {
     if (accountIsAdminFlag) return false;
     return PublicationRules.needsLicenseAcceptance(
-      Array.from(myLicenseSourceIds, (id) => ({ sourceSubjectId: id })),
+      Array.from(myLicenseSourceIds, (id) => ({ sourceSubjectId: id, commercialConsent: true })),
       subjectId
     );
   }
-  async function recordLicenseAcceptance(subjectId) {
-    const r = await Sync.library.acceptLicense(subjectId, PublicationRules.LICENSE_VERSION);
+  /** Empreinte SHA-256 du contenu de la boîte au moment de l'accord
+   *  (preuve de la version acceptée, Q18 d). */
+  async function boxContentHash(boxCards) {
+    try {
+      const bytes = new TextEncoder().encode(PublicationRules.cardsSignature(boxCards));
+      const digest = await crypto.subtle.digest("SHA-256", bytes);
+      return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
+    } catch (e) {
+      return "";
+    }
+  }
+  async function recordLicenseAcceptance(subjectId, boxCards) {
+    const r = await Sync.library.acceptLicense(subjectId, PublicationRules.LICENSE_VERSION, {
+      commercial: true,
+      boxHash: await boxContentHash(boxCards || []),
+    });
     if (!r.error) myLicenseSourceIds.add(subjectId);
     return r;
   }
@@ -2445,20 +2475,6 @@
   }
   function publicationSignature(boxCards, name, link) {
     return PublicationRules.cardsSignature(boxCards) + "\u0001" + (name || "") + "\u0001" + (link || "");
-  }
-  const LICENSE_CONFIRM_TEXT =
-    "Partager, c'est aussi enrichir la Librairie de darwin. En partageant cette boîte, tu autorises darwin à la reprendre dans sa Librairie : la relire, la corriger, la compléter, la classer et la proposer à tous ses utilisateurs, gratuitement, sans limite de durée ni de lieu, même si tu supprimes ensuite ton compte. Ta boîte reste à toi : tu peux continuer à l'utiliser, la modifier et la diffuser ailleurs. Ton nom n'est pas affiché. Tu confirmes que tu as le droit de la partager (contenu écrit par toi). Conditions complètes : CGU, « Tes contenus ».";
-  /** Demande l'accord (fenêtre du robot) s'il manque ; false si refusé. */
-  async function ensureLicenseByConfirm(subjectId) {
-    if (!licenseNeededFor(subjectId)) return true;
-    const ok = await robotConfirm(LICENSE_CONFIRM_TEXT, { okLabel: "J'accepte" });
-    if (!ok) return false;
-    const r = await recordLicenseAcceptance(subjectId);
-    if (r.error) {
-      await robotAlert("L'accord n'a pas pu être enregistré : " + r.error);
-      return false;
-    }
-    return true;
   }
   // Renvoi automatique d'une nouvelle version, 30 s après la dernière
   // modification (ou quand l'appli passe en arrière-plan).
@@ -3827,8 +3843,21 @@
     function rerender() {
       container.innerHTML = "";
       container.classList.add("picker-tree");
-      prependAllBoxesRootRow(container, ctx);
+      // v280 : « Toutes les boîtes » seulement s'il y a des boîtes dans les
+      // révisions (dans le compte enseignant, toutes sont hors révisions).
+      if (subjectIdsInFolder(ROOT_FOLDER_ID).length > 0) prependAllBoxesRootRow(container, ctx);
       renderFolderTreeForPicker(container, ROOT_FOLDER_ID, 0, ctx);
+      // v280 : boîtes hors révisions (compte enseignant : agenda de classe).
+      if (opts && opts.includeOutOfRevisions) {
+        const outs = subjects.filter((x) => x.outOfRevisions && !x.deleted).sort((a, b) => a.name.localeCompare(b.name, "fr"));
+        if (outs.length > 0) {
+          const t = document.createElement("li");
+          t.className = "picker-section-title";
+          t.textContent = "Hors de mes révisions";
+          container.appendChild(t);
+          outs.forEach((x) => appendPickerBoiteRow(container, 0, x.id, x.name, cards.filter((c) => !c.deleted && c.subject === x.id).length, ctx));
+        }
+      }
       if (opts && opts.greyEmpty) greyEmptyPickerRows(container);
     }
     rerender();
@@ -4054,7 +4083,7 @@
 
     if (ctx.mode === "multi") {
       const selection = new Set(ctx.initialSelection || []);
-      renderMultiBoitePicker(list, selection, undefined, { greyEmpty: !!ctx.greyEmpty });
+      renderMultiBoitePicker(list, selection, undefined, { greyEmpty: !!ctx.greyEmpty, includeOutOfRevisions: !!ctx.includeOutOfRevisions });
       if (actions) actions.hidden = false;
       if (confirmBtn) {
         confirmBtn.hidden = false;
@@ -4065,7 +4094,7 @@
         noneBtn.onclick = ctx.showNoneButton
           ? () => {
               selection.clear();
-              renderMultiBoitePicker(list, selection, undefined, { greyEmpty: !!ctx.greyEmpty });
+              renderMultiBoitePicker(list, selection, undefined, { greyEmpty: !!ctx.greyEmpty, includeOutOfRevisions: !!ctx.includeOutOfRevisions });
             }
           : null;
       }
@@ -5032,11 +5061,12 @@
     const L = (i) => NAMES[REVISION_ALGO_RATING_ORDER[i]] || "";
     const text = jumpUp
       ? `La dernière fois, tu avais noté cette fiche « ${L(prev)} ». Tu la notes maintenant « ${L(idx)} » : tu es sûr(e) ? Elle ne reviendra pas avant longtemps.`
-      : `La dernière fois, tu avais noté cette fiche « ${L(prev)} ». Tu la notes maintenant « ${L(idx)} » : c'est bien ça ? Elle reviendra bientôt.`;
+      : `La dernière fois, tu avais noté cette fiche « ${L(prev)} ». Tu la notes maintenant « ${L(idx)} » : tu confirmes ?`;
     return showRobotMessage(text, {
       buttons: [
         { label: "Changer ma note", value: false },
-        { label: `Oui, « ${L(idx)} »`, value: true, primary: true },
+        // v280 : « Oui, je confirme » (au lieu de « Oui, « Je ne savais pas » »).
+        { label: "Oui, je confirme", value: true, primary: true },
       ],
     });
   }
@@ -9499,9 +9529,16 @@
   // mode multi-choix (round 18, item 13) — cocher un dossier lie toutes
   // les boîtes qu'il contient ; le bouton "Aucun lien" (au-dessus de la
   // liste) vide la sélection entière.
-  const calendarEventSubjectBtn = el("calendar-event-subject-btn");
-  if (calendarEventSubjectBtn) {
-    calendarEventSubjectBtn.addEventListener("click", () => {
+  const calendarEventSubjectBtn = el("calendar-event-subject-btn"); // v280 : texte passif
+  const calendarEventSubjectAdd = el("calendar-event-subject-add");
+  if (calendarEventSubjectBtn && calendarEventSubjectAdd) {
+    // « + Ajouter » tant que rien n'est choisi, « Modifier » ensuite.
+    const syncAddLabel = () => {
+      calendarEventSubjectAdd.textContent = calendarEventSubjectBtn.classList.contains("is-placeholder") ? "+ Ajouter" : "Modifier";
+    };
+    new MutationObserver(syncAddLabel).observe(calendarEventSubjectBtn, { attributes: true, attributeFilter: ["class"] });
+    syncAddLabel();
+    calendarEventSubjectAdd.addEventListener("click", () => {
       openBoitePickerView({
         mode: "multi",
         // Round 18, item 13 : ce message est donné par le robot plutôt
@@ -9511,6 +9548,9 @@
         // le préfixe "subject:") — voir renderMultiBoitePicker.
         initialSelection: Array.from(calendarEventLinkIds).map((linkId) => linkId.split(":")[1]),
         showNoneButton: true,
+        // v280 : dans le compte enseignant, toutes les boîtes sont hors
+        // révisions — sans cela, la liste était vide.
+        includeOutOfRevisions: activeRole() === "teacher",
         onConfirm: (selection) => {
           calendarEventLinkIds = new Set(Array.from(selection).map((id) => `subject:${id}`));
           calendarEventSubjectBtn.textContent = calendarLinkIdsLabel(calendarEventLinkIds);
@@ -11694,6 +11734,7 @@
     updateAccountHomeButton();
     if (accountCurrentUser) refreshHomeDefi(); // v265 : défi des autres appareils
     if (accountCurrentUser) syncSharedBoxesForStudent();
+    if (accountCurrentUser) startLiveNotifications(); // v280
     touchActivity();
     // Round 26, item 2 : complète le nom du prof sur ses anciens partages.
     if (accountCurrentUser && Sync.classes.backfillSharedEventsTeacherName) {
@@ -14046,11 +14087,36 @@
       btn.type = "button";
       // v250 : chaque classe dans un bloc à coins arrondis.
       btn.className = "class-card info-block";
+      btn.dataset.classId = klass.id;
       btn.innerHTML = classCircleHtml(klass, counts ? counts[klass.id] : undefined, upcoming);
       btn.addEventListener("click", () => openClassDetailView(klass, role));
       frag.appendChild(btn);
     });
     list.replaceChildren(frag);
+    refreshClassCardBadges(role);
+  }
+  /** v280 : pastille des messages non lus sur chaque classe de « Mes
+   *  classes » (comme sur le bouton Messagerie de la page de la classe). */
+  function refreshClassCardBadges(role) {
+    const list = el(role === "teacher" ? "classes-teacher-list" : "classes-student-list");
+    if (!list || !accountCurrentUser || !Sync.messages || !Sync.messages.countUnread) return;
+    const lastReadMap = loadMessagesLastRead();
+    list.querySelectorAll(".class-card[data-class-id]").forEach((card) => {
+      const id = card.dataset.classId;
+      Sync.messages
+        .countUnread(id, lastReadMap[id])
+        .then((n) => {
+          let b = card.querySelector(".class-card-badge");
+          if (!b) {
+            b = document.createElement("span");
+            b.className = "home-circle-badge class-card-badge";
+            card.appendChild(b);
+          }
+          b.hidden = !(n > 0);
+          b.textContent = n > 99 ? "99+" : String(n || 0);
+        })
+        .catch(() => {});
+    });
   }
   async function renderClassList(role) {
     // v241 : deux affichages lancés coup sur coup ajoutaient chacun leurs
@@ -15011,15 +15077,13 @@
             // Round 69 : une boîte créée par l'enseignant et pas encore dans
             // la Librairie → formulaire de la Librairie d'abord (classement,
             // résumé…), puis partage avec la classe + proposition à darwin.
-            // v278 : idem tant qu'elle n'est ni publiée ni déjà proposée.
-            if (isOwnCreatedSubject(subject) && !boxInPublicationCircuit(subject.id)) {
+            // v278 : idem tant qu'elle n'est ni publiée ni déjà proposée ;
+            // v280 : idem si l'accord (deux cases) manque encore pour elle.
+            if (isOwnCreatedSubject(subject) && (!boxInPublicationCircuit(subject.id) || licenseNeededFor(subject.id))) {
               closeBoitePickerView();
               await openClassShareForm(klass, subject);
               return;
             }
-            // v278 : partager avec une classe suppose l'accord de licence
-            // pour cette boîte (une seule fois).
-            if (isOwnCreatedSubject(subject) && !(await ensureLicenseByConfirm(subject.id))) return;
             name = subject.name;
             boxLink = subject.link || "";
             boxCards = cards.filter((c) => !c.deleted && c.subject === id);
@@ -15101,6 +15165,8 @@
           sourceSubjectId: subject.id,
           link: subject.link || "",
           origin: "class",
+          authorMode: meta.author ? meta.author.mode : "anonymous",
+          authorLabel: meta.author ? meta.author.label : "",
         });
         libraryShareClassOpts = null;
         backToClass();
@@ -15182,6 +15248,44 @@
   // Round 13, item 4 : la pastille de notifications de messagerie migre du
   // cercle d'accueil "Messagerie" (retiré) vers le cercle "École" et
   // apparaît aussi sur le bouton rond "Messagerie" du nouveau hub École.
+  /** v280 : messagerie « push ». Les nouveaux messages de classe et de
+   *  darwin arrivent en temps réel (supabase/v280_migration.sql) : toutes
+   *  les pastilles et la page ouverte se mettent à jour sans changer de
+   *  page. Un seul abonnement par type, pour toute la session (l'appli se
+   *  recharge quand on change de compte). */
+  let liveNotificationsStarted = false;
+  let liveBadgeTimer = null;
+  function startLiveNotifications() {
+    if (liveNotificationsStarted || !accountCurrentUser || !Sync.isConfigured()) return;
+    liveNotificationsStarted = true;
+    if (Sync.messages && Sync.messages.subscribeAll) {
+      Sync.messages.subscribeAll((msg) => {
+        if (msg.sender_id === accountCurrentUser.id) return;
+        clearTimeout(liveBadgeTimer);
+        liveBadgeTimer = setTimeout(refreshAllMessageBadges, 400);
+      });
+    }
+    if (Sync.library && Sync.library.subscribeDarwinMessages) {
+      Sync.library.subscribeDarwinMessages((m) => {
+        if (!m.from_admin) return;
+        refreshReportsBadge().catch(() => {});
+        if (isViewActive("darwin-messages")) renderDarwinMessagesView();
+      });
+    }
+  }
+  function isViewActive(name) {
+    const v = el(`view-${name}`);
+    return !!(v && v.classList.contains("is-active"));
+  }
+  /** Toutes les pastilles de messagerie de classe : accueil, page « Mes
+   *  classes », page de la classe ouverte, liste des discussions. */
+  function refreshAllMessageBadges() {
+    refreshMessagesBadge();
+    if (isViewActive("messages")) renderMessagesView();
+    if (isViewActive("classes-teacher")) refreshClassCardBadges("teacher");
+    if (isViewActive("classes-student")) refreshClassCardBadges("student");
+    if (isViewActive("class-detail") && classDetailContext) refreshClassDetailToolBadges(classDetailContext.klass, classDetailContext.role);
+  }
   async function refreshMessagesBadge() {
     refreshReportsBadge().catch(() => {});
     const homeBadge = el("home-school-badge");
@@ -16269,8 +16373,10 @@
     if (titleEl) titleEl.textContent = col.name || "Collection";
     const metaEl = el("library-detail-meta");
     if (metaEl) {
-      // v275 : plus d'auteur affiché (« par … » retiré).
-      metaEl.innerHTML = `${n} fiche${n > 1 ? "s" : ""}`;
+      // v275 : plus d'auteur affiché par défaut ; v280 (Q18 b) : « par … »
+      // seulement si l'auteur l'a demandé (nom ou pseudonyme).
+      const by = PublicationRules.authorMention(col.author_mode, col.author_label);
+      metaEl.innerHTML = `${n} fiche${n > 1 ? "s" : ""}${by ? ` · par ${escapeHtml(by)}` : ""}`;
     }
     // Round 23 : classement complet (catégorie › … › matière) et tags.
     const detailTax = taxonomyFullLabel(collectionTaxonomy(col));
@@ -17690,9 +17796,49 @@
     if (!accountIsAdminFlag && !publicationStateLoaded) await refreshPublicationState();
     const licenseBlockEl = el("library-share-license-block");
     const licenseBoxEl = el("library-share-license");
+    const commercialBoxEl = el("library-share-commercial");
+    const licenseTextEl = el("library-share-license-text");
     const licenseNeeded = licenseNeededFor(subject.id);
+    let licenseTextReady = false;
     if (licenseBlockEl) licenseBlockEl.hidden = !licenseNeeded;
     if (licenseBoxEl) licenseBoxEl.checked = false;
+    if (commercialBoxEl) commercialBoxEl.checked = false;
+    if (licenseNeeded && licenseTextEl) {
+      // v280 (Q18 d) : le texte affiché est celui gardé dans la base pour
+      // cette version — c'est lui que l'accord prouve.
+      licenseTextEl.textContent = "Chargement des conditions…";
+      Sync.library.licenseText(PublicationRules.LICENSE_VERSION).then((t) => {
+        licenseTextReady = !!(t && t.body);
+        licenseTextEl.textContent = licenseTextReady
+          ? t.body
+          : "Les conditions n'ont pas pu être chargées (connexion, ou base sans la mise à jour v280). Réessaie plus tard.";
+      });
+    }
+    // v280 (Q18 b) : mention de l'auteur (enseignant uniquement).
+    const authorField = el("library-share-author-field");
+    const authorModeEl = el("library-share-author-mode");
+    const authorLabelField = el("library-share-author-label-field");
+    const authorLabelEl = el("library-share-author-label");
+    const showAuthor = !accountIsAdminFlag;
+    const prevSub = mySubmissionsLatest.get(subject.id);
+    if (authorField) authorField.hidden = !showAuthor;
+    if (authorModeEl) {
+      authorModeEl.value = (prevSub && prevSub.author_mode) || "anonymous";
+      authorModeEl.onchange = () => {
+        if (authorLabelField) authorLabelField.hidden = authorModeEl.value !== "pseudonym";
+      };
+    }
+    if (authorLabelEl) authorLabelEl.value = prevSub && prevSub.author_mode === "pseudonym" ? prevSub.author_label || "" : "";
+    if (authorLabelField) authorLabelField.hidden = !showAuthor || !authorModeEl || authorModeEl.value !== "pseudonym";
+    const readAuthor = () => {
+      const mode = showAuthor && authorModeEl ? authorModeEl.value : "anonymous";
+      if (mode === "name") {
+        const meta = (accountCurrentUser && accountCurrentUser.user_metadata) || {};
+        return { mode, label: `${meta.first_name || ""} ${meta.last_name || ""}`.trim() };
+      }
+      if (mode === "pseudonym") return { mode, label: ((authorLabelEl && authorLabelEl.value) || "").trim() };
+      return { mode: "anonymous", label: "" };
+    };
     const nameEl = el("library-share-name");
     const taxEl = el("library-share-taxonomy");
     const tagsEl = el("library-share-tags");
@@ -17763,14 +17909,24 @@
         // v244 : plus de saisie de tags (les tags existants sont gardés).
         const tags = libraryShareTagInput ? libraryShareTagInput.getTags() : libraryShareKeptTags;
         const submitBtn = el("library-share-submit");
-        // v278 : sans accord, ni partage ni publication.
+        const author = readAuthor();
+        if (author.mode !== "anonymous" && !author.label) {
+          await robotAlert(author.mode === "name" ? "Ton nom n'est pas renseigné dans ton compte : choisis plutôt un pseudonyme." : "Écris le pseudonyme à afficher.");
+          return;
+        }
+        // v278 : sans accord, ni partage ni publication ; v280 : les deux
+        // cases (licence de partage, abonnement) sont nécessaires.
         if (licenseNeeded) {
-          if (!licenseBoxEl || !licenseBoxEl.checked) {
-            await robotAlert("Coche la case « J'accepte ces conditions pour cette boîte » pour continuer.");
+          if (!licenseTextReady) {
+            await robotAlert("Les conditions n'ont pas pu être chargées : impossible de continuer pour l'instant.");
+            return;
+          }
+          if (!licenseBoxEl || !licenseBoxEl.checked || !commercialBoxEl || !commercialBoxEl.checked) {
+            await robotAlert("Pour partager ou publier cette boîte, coche les deux cases : la licence de partage (1) et l'abonnement darwin (2).");
             return;
           }
           if (submitBtn) submitBtn.disabled = true;
-          const lr = await recordLicenseAcceptance(subject.id);
+          const lr = await recordLicenseAcceptance(subject.id, boxCards);
           if (submitBtn) submitBtn.disabled = false;
           if (lr.error) {
             await robotAlert("L'accord n'a pas pu être enregistré : " + lr.error);
@@ -17791,6 +17947,8 @@
             sourceSubjectId: subject.id,
             link: subject.link || "",
             origin: "publish",
+            authorMode: author.mode,
+            authorLabel: author.label,
           });
           if (submitBtn) submitBtn.disabled = false;
           if (sub.error) {
@@ -17810,7 +17968,7 @@
         if (classMode) {
           if (submitBtn) submitBtn.disabled = true;
           try {
-            await shareOpts.onSubmit({ name, taxonomy, tags, summary: "", description: ((descriptionEl && descriptionEl.value) || "").trim() });
+            await shareOpts.onSubmit({ name, taxonomy, tags, summary: "", description: ((descriptionEl && descriptionEl.value) || "").trim(), author });
           } finally {
             if (submitBtn) submitBtn.disabled = false;
           }
@@ -17999,6 +18157,10 @@
     const linkValue = learnLinkChipHtml(s.link, "box", s.name) || `<span class="field-hint">Aucun lien</span>`;
     const libraryExtras = [
       col && col.name && col.name !== s.name ? `<p class="info-block-note">Publiée sous le nom « ${escapeHtml(col.name)} »</p>` : "",
+      // v280 (Q18 b) : mention de l'auteur, modifiable à tout moment.
+      !accountIsAdminFlag && ProfileRules.canPublishToLibrary(activeRole()) && (col || mySubmissionsLatest.has(s.id))
+        ? `<p class="info-block-note">Mention de l'auteur : ${escapeHtml(authorMentionLabel(s.id))} <button type="button" class="info-block-link" data-act="author">Modifier</button></p>`
+        : "",
       // v279 : l'enseignant ne retire pas lui-même, il le demande à darwin.
       col && !accountIsAdminFlag && ProfileRules.canPublishToLibrary(activeRole())
         ? `<p class="info-block-note"><button type="button" class="info-block-link" data-act="withdraw">Demander le retrait de la Librairie</button></p>`
@@ -18072,6 +18234,8 @@
           renderCreationDetail();
         } else if (act === "withdraw") {
           await requestLibraryWithdrawal(s.id);
+        } else if (act === "author") {
+          if (await editAuthorMention(s.id)) renderCreationDetail();
         } else if (act === "classify") {
           await openBoxEditView(s.id);
         } else if (act === "delete") {
@@ -18757,7 +18921,9 @@
     }</div>`;
   }
   function reportBubbleHtml(who, text, side) {
-    return `<div class="rp-bubble rp-bubble--${side}"><span class="rp-bubble-who">${escapeHtml(who)}</span><span class="rp-bubble-text">${escapeHtml(text || "")}</span></div>`;
+    // v280 : `side` peut porter une classe de plus (« mine rp-bubble--withdrawal »).
+    const [base, ...more] = String(side).split(" ");
+    return `<div class="rp-bubble rp-bubble--${base}${more.length ? " " + more.join(" ") : ""}"><span class="rp-bubble-who">${escapeHtml(who)}</span><span class="rp-bubble-text">${escapeHtml(text || "")}</span></div>`;
   }
   function reportCardBlockHtml(label, q, a) {
     return `<div class="report-row-card"><span class="report-row-label">${label}</span><div class="report-row-q">${escapeHtml(q || "")}</div>${
@@ -18915,39 +19081,71 @@
     withdrawn: "Retirée de la Librairie",
     superseded: "En relecture chez darwin",
   };
-  /** Réponse complète d'une fiche (avec QCM, complément et lien), en texte. */
-  function darwinCardAnswerText(c) {
-    const parts = [stripHtmlFast(c.answer || "")];
-    if (Array.isArray(c.wrongs) && c.wrongs.length) parts.push("Mauvaises réponses du QCM : " + c.wrongs.map((w) => stripHtmlFast(w)).join(" · "));
-    if (c.more) parts.push("Pour aller plus loin : " + stripHtmlFast(c.more));
-    if (c.link) parts.push("Lien : " + c.link);
-    return parts.filter(Boolean).join("\n");
+  /* v280 : présentation en blocs dépliables (comme les pages de classe) :
+     « Corrections générales de la boîte », « Corrections des fiches »,
+     « Échanges avec darwin ». Les changements sont montrés façon suivi
+     des modifications : supprimé barré en rouge, ajouté souligné en vert. */
+  const DM_CHEVRON = '<svg class="info-block-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg>';
+  function dmBlockHtml(blockId, title, summary, bodyHtml) {
+    return `<section class="info-block is-collapsible dm-block" data-block="${escapeHtml(blockId)}">
+      <div class="info-block-head"><button type="button" class="info-block-toggle">${DM_CHEVRON}<span class="info-block-title">${escapeHtml(title)}</span><span class="info-block-summary">${escapeHtml(summary)}</span></button></div>
+      <div class="info-block-body">${bodyHtml}</div>
+    </section>`;
   }
-  function darwinDiffHtml(diff) {
-    const out = [];
-    diff.changed.forEach(({ before, after }) => {
-      out.push(
-        `<div class="rp-cards">${reportMiniCardHtml("Avant", stripHtmlFast(before.question || ""), darwinCardAnswerText(before))}${reportMiniCardHtml(
-          "Après correction",
-          stripHtmlFast(after.question || ""),
-          darwinCardAnswerText(after),
-          true
-        )}</div>`
-      );
-    });
-    diff.added.forEach((c) => out.push(reportMiniCardHtml("Fiche ajoutée par darwin", stripHtmlFast(c.question || ""), darwinCardAnswerText(c), true)));
-    diff.removed.forEach((c) => out.push(reportMiniCardHtml("Fiche retirée par darwin", stripHtmlFast(c.question || ""), darwinCardAnswerText(c))));
-    return out.join("");
+  /** Texte avec suivi des modifications (supprimé / ajouté). */
+  function dmTrackedHtml(before, after) {
+    return PublicationRules.wordDiff(before, after)
+      .map((p) => (p.type === "same" ? escapeHtml(p.text) : `<${p.type === "del" ? "del" : "ins"} class="dm-${p.type}">${escapeHtml(p.text)}</${p.type === "del" ? "del" : "ins"}>`))
+      .join("");
   }
-  let darwinThreadsCache = new Map(); // boîte → { latest, colCards }
+  /** Un champ (étiquette + valeur) ; avec `before`, la valeur montre le
+   *  suivi des modifications. Rien si le champ est vide des deux côtés. */
+  function dmFieldHtml(label, before, after, tracked) {
+    const b = before || "";
+    const a = after || "";
+    if (!b && !a) return "";
+    const value = tracked ? dmTrackedHtml(b, a) : escapeHtml(a || b);
+    return `<div class="dm-field"><span class="dm-field-label">${escapeHtml(label)}</span><div class="dm-field-value">${value}</div></div>`;
+  }
+  /** Les champs d'une fiche, en texte (question, réponse, QCM, etc.). */
+  function dmCardFields(c) {
+    c = c || {};
+    return {
+      Question: stripHtmlFast(c.question || ""),
+      Réponse: stripHtmlFast(c.answer || ""),
+      "Mauvaises réponses du QCM": Array.isArray(c.wrongs) ? c.wrongs.map((w) => stripHtmlFast(w)).join(" · ") : "",
+      "Pour aller plus loin": stripHtmlFast(c.more || ""),
+      Lien: c.link || "",
+    };
+  }
+  function dmCardHtml(title, before, after) {
+    const fb = dmCardFields(before);
+    const fa = dmCardFields(after);
+    const fields = Object.keys(fa)
+      .map((k) => (before && after ? dmFieldHtml(k, fb[k], fa[k], fb[k] !== fa[k]) : dmFieldHtml(k, "", after ? fa[k] : fb[k], false)))
+      .join("");
+    return `<div class="dm-card${!after ? " dm-card--removed" : !before ? " dm-card--added" : ""}"><span class="dm-card-title">${escapeHtml(title)}</span>${fields}</div>`;
+  }
+  /** Corrections générales (nom, description, lien de la boîte). */
+  function dmGeneralChanges(sent, col) {
+    const rows = [];
+    const add = (label, a, b) => {
+      if ((a || "") !== (b || "")) rows.push(dmFieldHtml(label, a || "", b || "", true));
+    };
+    add("Nom", sent.name, col.name);
+    add("Description", mergeSummaryDescription(sent.summary, sent.description), mergeSummaryDescription(col.summary, col.description));
+    add("Lien « Pour aller plus loin »", sent.link, col.link);
+    add("Classement", taxonomyFullLabel(sent.taxonomy || {}), taxonomyFullLabel(col.taxonomy || {}));
+    return rows;
+  }
+  let darwinThreadsCache = new Map(); // boîte → { latest, colCards, publishedSub }
   async function renderDarwinMessagesView() {
     const list = el("darwin-messages-list");
     const empty = el("darwin-messages-empty");
     if (!list) return;
-    list.innerHTML = `<li class="field-hint">Chargement…</li>`;
+    if (!list.children.length) list.innerHTML = `<li class="field-hint">Chargement…</li>`;
     const [subsRes, msgsRes] = await Promise.all([Sync.library.mySubmissions(), Sync.library.darwinMessages()]);
     await refreshPublicationState();
-    list.innerHTML = "";
     const err = subsRes.error || msgsRes.error;
     const subsById = new Map((subsRes.data || []).map((x) => [x.id, x]));
     const threads = new Map();
@@ -18955,10 +19153,8 @@
       const sub = subsById.get(m.submission_id);
       if (!sub) return;
       const key = sub.source_subject_id || sub.id;
-      if (!threads.has(key)) threads.set(key, { key, msgs: [], subs: new Map() });
-      const t = threads.get(key);
-      t.msgs.push(m);
-      t.subs.set(sub.id, sub);
+      if (!threads.has(key)) threads.set(key, { key, msgs: [] });
+      threads.get(key).msgs.push(m);
     });
     if (empty) {
       empty.hidden = threads.size > 0;
@@ -18967,64 +19163,102 @@
     const ordered = Array.from(threads.values()).sort((a, b) =>
       String(b.msgs[b.msgs.length - 1].created_at).localeCompare(String(a.msgs[a.msgs.length - 1].created_at))
     );
-    darwinThreadsCache = new Map();
+    const nextCache = new Map();
     const unseen = [];
+    const items = [];
     for (const t of ordered) {
       const allSubs = (subsRes.data || []).filter((x) => (x.source_subject_id || x.id) === t.key);
-      const latest = allSubs[0] || Array.from(t.subs.values())[0];
+      const latest = allSubs[0];
+      if (!latest) continue;
       const subject = subjects.find((x) => x.id === t.key && !x.deleted);
       const name = (subject && subject.name) || latest.name || "Boîte";
       const hasNew = t.msgs.some((m) => m.from_admin && !m.seen_at);
       t.msgs.forEach((m) => {
         if (m.from_admin && !m.seen_at) unseen.push(m.id);
       });
-      // Dernière correction de darwin : avant (version envoyée) / après
-      // (version publiée).
-      let diffHtml = "";
-      let colCards = null;
-      const lastCorr = t.msgs.filter((m) => m.kind === "published_with_changes").pop();
+      // Corrections de darwin : version envoyée (proposition corrigée) /
+      // version publiée dans la Librairie.
       const publishedSub = allSubs.find((x) => x.status === "published" && x.collection_id);
-      if (lastCorr && publishedSub) {
+      const lastCorr = t.msgs.filter((m) => m.kind === "published_with_changes").pop();
+      let colCards = null;
+      let generalRows = [];
+      let cardParts = [];
+      if (publishedSub) {
         const col = await Sync.library.myCollectionCards(publishedSub.collection_id);
         if (col && Array.isArray(col.cards)) {
           colCards = col.cards;
-          const corrSub = subsById.get(lastCorr.submission_id) || publishedSub;
-          const d = PublicationRules.cardsDiff(corrSub.cards || [], colCards);
-          if (d.any) diffHtml = `<div class="dm-diff"><span class="dm-diff-title">Corrections de darwin</span>${darwinDiffHtml(d)}</div>`;
+          if (lastCorr) {
+            const sent = subsById.get(lastCorr.submission_id) || publishedSub;
+            generalRows = dmGeneralChanges(sent, col);
+            const d = PublicationRules.cardsDiff(sent.cards || [], colCards);
+            const pos = new Map((sent.cards || []).map((c, i) => [c.id, i + 1]));
+            d.changed.forEach(({ before, after }) => cardParts.push(dmCardHtml(`Fiche ${pos.get(before.id) || ""} — modifiée`, before, after)));
+            d.added.forEach((c) => cardParts.push(dmCardHtml("Fiche ajoutée", null, c)));
+            d.removed.forEach((c) => cardParts.push(dmCardHtml(`Fiche ${pos.get(c.id) || ""} — retirée`, c, null)));
+          }
         }
       }
-      darwinThreadsCache.set(t.key, { latest, colCards, publishedSub });
-      const canApply =
-        !!(subject && colCards && PublicationRules.cardsDiff(cards.filter((c) => !c.deleted && c.subject === subject.id), colCards).any);
+      nextCache.set(t.key, { latest, colCards, publishedSub });
+      const canApply = !!(subject && colCards && PublicationRules.cardsDiff(cards.filter((c) => !c.deleted && c.subject === subject.id), colCards).any);
+      const bid = (part) => `dm-${t.key}-${part}`;
+      const blocks = [];
+      if (generalRows.length || cardParts.length) {
+        blocks.push(`<p class="dm-intro">Darwin a procédé aux modifications suivantes :</p>`);
+        if (generalRows.length) {
+          blocks.push(dmBlockHtml(bid("general"), "Corrections générales de la boîte", `${generalRows.length} changement${generalRows.length > 1 ? "s" : ""}`, generalRows.join("")));
+        }
+        if (cardParts.length) {
+          const applyHtml = canApply
+            ? `<div class="dm-actions"><button type="button" class="btn btn--primary" data-dm-act="apply">Appliquer à ma boîte</button></div><p class="field-hint">Ta boîte reste comme tu l'as écrite tant que tu n'appliques pas ces corrections.</p>`
+            : subject
+            ? `<p class="field-hint">Ta boîte est identique à la version de darwin.</p>`
+            : "";
+          blocks.push(dmBlockHtml(bid("cards"), "Corrections des fiches", `${cardParts.length} fiche${cardParts.length > 1 ? "s" : ""}`, cardParts.join("") + applyHtml));
+        }
+      }
       const bubbles = t.msgs
         .map((m) => {
           const label = DARWIN_MSG_LABELS[m.kind] || "";
           const text = label ? label + (m.body ? " — " + m.body : "") : m.body;
-          return reportBubbleHtml(m.from_admin ? "darwin" : "Toi", text, m.from_admin ? "other" : "mine");
+          const extra = m.kind === "withdrawal_request" ? " rp-bubble--withdrawal" : m.kind === "auto_reply" ? " rp-bubble--auto" : "";
+          return reportBubbleHtml(m.kind === "auto_reply" ? "darwin (automatique)" : m.from_admin ? "darwin" : "Toi", text, (m.from_admin ? "other" : "mine") + extra);
         })
         .join("");
+      blocks.push(
+        dmBlockHtml(
+          bid("talk"),
+          "Échanges avec darwin",
+          `${t.msgs.length} message${t.msgs.length > 1 ? "s" : ""}`,
+          `<div class="rp-thread">${bubbles}</div>
+          <div class="dm-reply">
+            <textarea rows="2" class="dm-reply-text" placeholder="Répondre à darwin…"></textarea>
+            <div class="dm-actions">
+              <button type="button" class="btn btn--primary" data-dm-act="reply">Envoyer</button>
+              ${publishedSub ? `<button type="button" class="btn btn--ghost" data-dm-act="withdraw">Demander le retrait</button>` : ""}
+            </div>
+          </div>`
+        )
+      );
+      // Blocs ouverts par défaut la première fois : corrections et échanges.
+      [bid("cards"), bid("talk")].forEach((id) => {
+        if (!infoBlockOpen.has(id)) infoBlockOpen.set(id, true);
+      });
       const li = document.createElement("li");
-      li.className = "subject-row report-row rp dm-thread" + (hasNew ? " report-row--new" : "");
+      li.className = "dm-thread" + (hasNew ? " dm-thread--new" : "");
       li.dataset.source = t.key;
       li.innerHTML = `
-        <div class="rp-head">
-          <span class="rp-box">${escapeHtml(name)}</span>
-          <span class="rp-date">${escapeHtml(formatReportDate(t.msgs[t.msgs.length - 1].created_at))}</span>
+        <div class="dm-head">
+          <span class="dm-box">${escapeHtml(name)}</span>
+          <span class="dm-date">${escapeHtml(formatReportDate(t.msgs[t.msgs.length - 1].created_at))}</span>
         </div>
-        <div class="rp-status">${escapeHtml(DARWIN_STATUS_LABELS[latest.status] || "")}${hasNew ? ` <span class="rp-new">nouveau</span>` : ""}</div>
+        <div class="dm-status">${escapeHtml(DARWIN_STATUS_LABELS[latest.status] || "")}${hasNew ? ` <span class="rp-new">nouveau</span>` : ""}</div>
         ${latest.status === "changes_requested" ? `<p class="field-hint">Modifie ta boîte : la nouvelle version sera envoyée d'elle-même à darwin.</p>` : ""}
-        ${diffHtml}
-        ${canApply ? `<div class="dm-actions"><button type="button" class="btn btn--primary" data-dm-act="apply">Appliquer à ma boîte</button></div>` : ""}
-        <div class="rp-thread">${bubbles}</div>
-        <div class="dm-reply">
-          <textarea rows="2" class="dm-reply-text" placeholder="Répondre à darwin…"></textarea>
-          <div class="dm-actions">
-            <button type="button" class="btn btn--primary" data-dm-act="reply">Envoyer</button>
-            ${publishedSub ? `<button type="button" class="btn btn--ghost" data-dm-act="withdraw">Demander le retrait</button>` : ""}
-          </div>
-        </div>`;
-      list.appendChild(li);
+        <div class="info-blocks">${blocks.join("")}</div>`;
+      items.push(li);
     }
+    darwinThreadsCache = nextCache;
+    list.replaceChildren(...items);
+    applyInfoBlockStates(list);
     if (unseen.length) {
       await Sync.library.markDarwinMessagesSeen(unseen);
       refreshReportsBadge().catch(() => {});
@@ -19124,6 +19358,47 @@
     showToast("Ta boîte est à jour avec la version de darwin");
     return true;
   }
+  /** v280 (Q18 b) : mention de l'auteur d'une boîte proposée ou publiée. */
+  function authorMentionLabel(subjectId) {
+    const latest = mySubmissionsLatest.get(subjectId);
+    const by = latest ? PublicationRules.authorMention(latest.author_mode, latest.author_label) : "";
+    return by ? `« ${by} »` : "anonyme";
+  }
+  async function editAuthorMention(subjectId) {
+    const choice = await showRobotMessage(
+      "Comment veux-tu apparaître dans la Librairie pour cette boîte ? Tu peux changer d'avis à tout moment.",
+      {
+        cancelValue: null,
+        buttons: [
+          { label: "Annuler", value: null },
+          { label: "Anonyme", value: "anonymous" },
+          { label: "Mon nom", value: "name" },
+          { label: "Un pseudonyme", value: "pseudonym", primary: true },
+        ],
+      }
+    );
+    if (!choice) return false;
+    let label = "";
+    if (choice === "name") {
+      const meta = (accountCurrentUser && accountCurrentUser.user_metadata) || {};
+      label = `${meta.first_name || ""} ${meta.last_name || ""}`.trim();
+      if (!label) {
+        await robotAlert("Ton nom n'est pas renseigné dans ton compte : choisis plutôt un pseudonyme.");
+        return false;
+      }
+    } else if (choice === "pseudonym") {
+      label = await robotPrompt("Pseudonyme à afficher :", "");
+      if (!label) return false;
+    }
+    const r = await Sync.library.setAuthorMention(subjectId, choice, label);
+    if (r.error) {
+      await robotAlert("La mention n'a pas pu être enregistrée : " + r.error);
+      return false;
+    }
+    await refreshPublicationState();
+    showToast("Mention de l'auteur enregistrée");
+    return true;
+  }
   /** Demande de retrait d'une boîte publiée (darwin décide). */
   async function requestLibraryWithdrawal(subjectId) {
     await refreshPublicationState();
@@ -19132,9 +19407,16 @@
       await robotAlert("Cette boîte n'a pas été envoyée à darwin : il n'y a rien à retirer de la Librairie.");
       return false;
     }
-    const reason = await robotPrompt(
+    const reason = await showRobotMessage(
       "Pourquoi souhaites-tu que darwin retire cette boîte de la Librairie ? darwin étudiera ta demande et te répondra dans « Messages de darwin ». Ceux qui ont déjà pris la boîte la gardent.",
-      ""
+      {
+        input: { multiline: true, placeholder: "Explique ta demande…" },
+        cancelValue: null,
+        buttons: [
+          { label: "Annuler", value: null },
+          { label: "Envoyer la demande", value: true, primary: true },
+        ],
+      }
     );
     if (reason === null) return false;
     const r = await Sync.library.sendDarwinMessage(latest.id, reason, "withdrawal_request");

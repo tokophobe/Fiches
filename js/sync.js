@@ -1465,6 +1465,11 @@ async function submitLibraryProposal(p) {
   // proposition (« publish » = bouton Publier, « class » = partage avec
   // une classe).
   if (p.origin) row.origin = p.origin;
+  // v280 (Q18 b) : mention de l'auteur choisie au moment de proposer.
+  if (p.authorMode) {
+    row.author_mode = p.authorMode;
+    row.author_label = p.authorLabel || "";
+  }
   let { error } = await c.from("library_submissions").insert(row);
   if (isMissingLinkColumn(error)) {
     delete row.link;
@@ -1483,7 +1488,7 @@ async function listMyLibrarySubmissions() {
   if (!c || !user) return { data: [], error: "non connecté" };
   const { data, error } = await c
     .from("library_submissions")
-    .select("id, source_subject_id, status, origin, name, summary, description, taxonomy, tags, cards, link, class_id, class_name, shared_box_id, collection_id, created_at")
+    .select("id, source_subject_id, status, origin, name, summary, description, taxonomy, tags, cards, link, class_id, class_name, shared_box_id, collection_id, created_at, author_mode, author_label")
     .eq("owner_id", user.id)
     .order("created_at", { ascending: false })
     .limit(1000);
@@ -1497,24 +1502,64 @@ async function listMyLicenseAcceptances() {
   if (!c || !user) return { data: [], error: "non connecté" };
   const { data, error } = await c
     .from("library_license_acceptances")
-    .select("source_subject_id, license_version, accepted_at")
+    .select("source_subject_id, license_version, accepted_at, commercial_consent")
     .eq("owner_id", user.id);
   return { data: data || [], error: error ? error.message : null };
 }
 
-/** v278 : enregistre l'accord de licence pour une boîte (date fixée par
- *  le serveur). Un accord déjà donné pour cette boîte compte comme un
+/** v278-v280 : enregistre l'accord pour une boîte — licence de partage
+ *  et autorisation « abonnement » (`commercial`), version du texte et
+ *  empreinte de la boîte (`boxHash`) ; la date est fixée par le serveur.
+ *  Un accord déjà donné pour cette boîte et cette version compte comme un
  *  succès. */
-async function acceptLibraryLicense(sourceSubjectId, licenseVersion) {
+async function acceptLibraryLicense(sourceSubjectId, licenseVersion, opts) {
   const c = getClient();
   const user = await authGetUser();
   if (!c || !user) return { error: "non connecté" };
-  const { error } = await c
-    .from("library_license_acceptances")
-    .insert({ owner_id: user.id, source_subject_id: sourceSubjectId, license_version: licenseVersion });
+  opts = opts || {};
+  const { error } = await c.from("library_license_acceptances").insert({
+    owner_id: user.id,
+    source_subject_id: sourceSubjectId,
+    license_version: licenseVersion,
+    commercial_consent: !!opts.commercial,
+    box_hash: opts.boxHash || "",
+  });
   if (error && (error.code === "23505" || /duplicate key/i.test(error.message || ""))) return { error: null };
+  if (error && /commercial_consent|box_hash/i.test(error.message || "")) return { error: "la base n'a pas encore la mise à jour v280 (supabase/v280_migration.sql)" };
   if (error && /library_license_acceptances/i.test(error.message || "")) return { error: "la base n'a pas encore la table des accords (supabase/publication_relecture_A_migration.sql)" };
   return { error: error ? error.message : null };
+}
+
+/** v280 : texte intégral d'une version de la licence (celui qui est
+ *  affiché, et dont l'accord garde la version). null si indisponible. */
+async function getLibraryLicenseText(version) {
+  const c = getClient();
+  if (!c) return null;
+  const { data, error } = await c.from("library_license_texts").select("version, body").eq("version", version).maybeSingle();
+  return error ? null : data || null;
+}
+
+/** v280 (Q18 b) : mention de l'auteur d'une de mes boîtes (propositions
+ *  et boîte publiée), modifiable à tout moment. */
+async function setBoxAuthorMention(sourceSubjectId, mode, label) {
+  const c = getClient();
+  if (!c) return { error: "non connecté" };
+  const { error } = await c.rpc("set_box_author_mention", { p_source: sourceSubjectId, p_mode: mode, p_label: label || "" });
+  return { error: error ? error.message : null };
+}
+
+/** v280 : nouveaux messages darwin ↔ enseignant en temps réel (la base
+ *  ne transmet que ceux que le compte a le droit de lire). */
+function subscribeDarwinMessagesRealtime(onInsert) {
+  const c = getClient();
+  if (!c) return () => {};
+  const channel = c
+    .channel("darwin-messages")
+    .on("postgres_changes", { event: "INSERT", schema: "public", table: "library_submission_messages" }, (payload) => {
+      if (payload.new) onInsert(payload.new);
+    })
+    .subscribe();
+  return () => c.removeChannel(channel);
 }
 
 /** v279 (publication avec relecture, étape D) : « Messages de darwin ».
@@ -1570,7 +1615,7 @@ async function markDarwinMessagesSeen(ids) {
 async function getMyLibraryCollectionCards(id) {
   const c = getClient();
   if (!c || !id) return null;
-  const { data, error } = await c.from("library_collections").select("id, name, cards").eq("id", id).maybeSingle();
+  const { data, error } = await c.from("library_collections").select("id, name, cards, description, summary, link, taxonomy").eq("id", id).maybeSingle();
   return error ? null : data || null;
 }
 
@@ -1789,6 +1834,20 @@ function subscribeClassMessagesRealtime(classId, onNewMessage) {
   return () => c.removeChannel(channel);
 }
 
+/** v280 : tous les nouveaux messages des classes du compte (la base ne
+ *  transmet que ceux qu'il a le droit de lire), pour les pastilles. */
+function subscribeAllClassMessagesRealtime(onNewMessage) {
+  const c = getClient();
+  if (!c) return () => {};
+  const channel = c
+    .channel("class-messages-all")
+    .on("postgres_changes", { event: "INSERT", schema: "public", table: "class_messages" }, (payload) => {
+      if (payload.new) onNewMessage(payload.new);
+    })
+    .subscribe();
+  return () => c.removeChannel(channel);
+}
+
 /** Round 50 : le compte connecté est-il administrateur (table admins) ?
  *  false si le serveur n'a pas encore la mise à jour. */
 async function isAdmin() {
@@ -1942,6 +2001,7 @@ window.Sync = {
     send: sendClassMessage,
     countUnread: countUnreadClassMessages,
     subscribeRealtime: subscribeClassMessagesRealtime,
+    subscribeAll: subscribeAllClassMessagesRealtime,
     getLastMessage: getLastClassMessage,
   },
   pushCardsBulk,
@@ -2052,6 +2112,9 @@ window.Sync = {
     sendDarwinMessage,
     markDarwinMessagesSeen,
     myCollectionCards: getMyLibraryCollectionCards,
+    licenseText: getLibraryLicenseText,
+    setAuthorMention: setBoxAuthorMention,
+    subscribeDarwinMessages: subscribeDarwinMessagesRealtime,
     rate: rateLibraryCollection,
     unrate: unrateLibraryCollection,
     listRatings: listLibraryRatings,

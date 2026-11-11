@@ -153,7 +153,7 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   `supabase/publication_relecture_B_migration.sql` (publication directe
   réservée à darwin, boîtes d'enseignants « en relecture » via
   `library_collections.review_hold`) ; dans `app.js` :
-  `refreshPublicationState`, `licenseNeededFor`, `ensureLicenseByConfirm`,
+  `refreshPublicationState`, `licenseNeededFor`,
   `boxInPublicationCircuit`, renvoi automatique `scheduleLibraryResubmit`
   (appelé par `pushSharedBoxUpdatesForSubject`). `Sync.library.share`
   ne sert plus qu'à un administrateur. Étape D (v279) :
@@ -162,8 +162,18 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   (`renderDarwinMessagesView`, `applyDarwinVersionToBox`,
   `requestLibraryWithdrawal`) rangée dans `reports-hub`, pastille dans
   `refreshReportsBadge` ; Darwin Admin `openSubmission` : tous les champs
-  des fiches, fil des messages, retrait. À l'étape C, charger
-  `publication-rules.js` aussi dans `admin/`.
+  des fiches, fil des messages, retrait. v280
+  (`supabase/v280_migration.sql`) : accord en deux cases
+  (`commercial_consent`, `box_hash`), textes de licence dans
+  `library_license_texts` (l'appli affiche celui de
+  `PublicationRules.LICENSE_VERSION`), mention de l'auteur
+  (`author_mode` / `author_label`, `set_box_author_mention`),
+  `admin_update_published_submission`, réponse automatique aux demandes
+  de retrait (`auto_reply`), temps réel (`class_messages`,
+  `library_submission_messages` dans la publication `supabase_realtime` ;
+  `startLiveNotifications` dans `app.js`, `startLibraryLive` dans
+  `admin.js`). Suivi des modifications : `PublicationRules.wordDiff`.
+  À l'étape C, charger `publication-rules.js` aussi dans `admin/`.
 - Les autres différences sont à préciser avec le propriétaire (spéc. §3.2).
 
 ## Organisation des boîtes (v248, v254)

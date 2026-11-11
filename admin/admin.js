@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v279";
+  const ADMIN_VERSION = "v280";
   async function checkAdminVersion() {
     const label = $("#sidebar-version");
     if (label) label.textContent = `Darwin Admin ${ADMIN_VERSION}`;
@@ -340,7 +340,7 @@
     {
       group: "Contenus",
       items: [
-        { key: "library", label: "Librairie", icon: "book" },
+        { key: "library", label: "Librairie", icon: "book", badge: "library" },
         { key: "boxes", label: "Boîtes", icon: "box" },
         { key: "classes", label: "Classes", icon: "school" },
         { key: "reports", label: "Signalements", icon: "flag", badge: "reports" },
@@ -367,7 +367,10 @@
       ],
     },
   ];
-  const badges = { reports: 0, errors: 0 };
+  // v280 : « library » = propositions à relire + messages non lus des
+  // enseignants (réponses, demandes de retrait).
+  const badges = { reports: 0, errors: 0, library: 0 };
+  const libraryCounts = { pending: 0, unread: 0 };
   function renderNav(activeKey) {
     const nav = $("#nav");
     nav.innerHTML = "";
@@ -443,6 +446,7 @@
     if (!location.hash || location.hash === "#" || location.hash === "#/") location.hash = "#/dashboard";
     else route();
     refreshBadges();
+    startLibraryLive();
   }
   async function refreshBadges() {
     if (state.limited) return;
@@ -456,11 +460,52 @@
       } catch (e) {
         badges.errors = 0;
       }
+      await refreshLibraryCounts();
       renderNav(currentNavKey);
       return o;
     } catch (e) {
       return null;
     }
+  }
+  /** v280 : propositions à relire et messages non lus des enseignants. */
+  async function refreshLibraryCounts() {
+    try {
+      const [p, m] = await Promise.all([
+        client().from("library_submissions").select("id", { count: "exact", head: true }).eq("status", "pending"),
+        client().from("library_submission_messages").select("id", { count: "exact", head: true }).eq("from_admin", false).is("seen_at", null),
+      ]);
+      libraryCounts.pending = p.error ? 0 : Number(p.count) || 0;
+      libraryCounts.unread = m.error ? 0 : Number(m.count) || 0;
+    } catch (e) {
+      libraryCounts.pending = 0;
+      libraryCounts.unread = 0;
+    }
+    badges.library = libraryCounts.pending + libraryCounts.unread;
+    document.querySelectorAll("[data-library-count]").forEach((n) => {
+      const v = libraryCounts[n.dataset.libraryCount] || 0;
+      n.hidden = !v;
+      n.textContent = String(v);
+    });
+  }
+  /** v280 : nouvelles propositions et nouveaux messages d'enseignants en
+   *  temps réel (supabase/v280_migration.sql) : pastilles à jour. */
+  let libraryLiveStarted = false;
+  function startLibraryLive() {
+    if (libraryLiveStarted || state.limited || !client()) return;
+    libraryLiveStarted = true;
+    let t = null;
+    const bump = () => {
+      clearTimeout(t);
+      t = setTimeout(async () => {
+        await refreshLibraryCounts();
+        renderNav(currentNavKey);
+      }, 400);
+    };
+    client()
+      .channel("admin-library-live")
+      .on("postgres_changes", { event: "*", schema: "public", table: "library_submission_messages" }, bump)
+      .on("postgres_changes", { event: "*", schema: "public", table: "library_submissions" }, bump)
+      .subscribe();
   }
   $("#login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -1252,7 +1297,20 @@
         ["packs", "Boîtes toutes prêtes", "#/library/packs"],
         ["qcm", "Questions QCM", "#/library/qcm"],
         ["taxonomy", "Classement (Excel)", "#/library/taxonomy"],
-      ].map(([k, l, href]) => h("a", { href, class: k === active ? "is-active" : null }, l))
+      ].map(([k, l, href]) =>
+        h(
+          "a",
+          { href, class: k === active ? "is-active" : null },
+          l,
+          // v280 : pastilles « à relire » et « messages non lus ».
+          k === "submissions"
+            ? [
+                h("span", { class: "nav-badge tab-badge", title: "Propositions à relire", "data-library-count": "pending", hidden: !libraryCounts.pending }, String(libraryCounts.pending)),
+                h("span", { class: "nav-badge tab-badge tab-badge--msg", title: "Messages non lus", "data-library-count": "unread", hidden: !libraryCounts.unread }, String(libraryCounts.unread)),
+              ]
+            : null
+        )
+      )
     );
   }
   function taxonomyShort(t, level) {
@@ -1806,6 +1864,12 @@
     load();
   }
   async function openSubmission(sub, reload) {
+    // v280 : une boîte publiée se corrige sur sa version de la Librairie
+    // (celle que voient les abonnés), pas sur la proposition d'origine.
+    if (sub.status === "published" && sub.collection_id) {
+      const { data: col } = await client().from("library_collections").select("name, description, summary, link, cards").eq("id", sub.collection_id).maybeSingle();
+      if (col) sub = { ...sub, name: col.name, description: col.description, summary: col.summary, link: col.link, cards: col.cards };
+    }
     const field = (label, node) => h("label", { class: "form-field" }, h("span", null, label), node);
     const nameIn = h("input", { type: "text", class: "input", value: sub.name || "" });
     // v245 : un seul champ « Description » (ancien résumé fusionné dedans).
@@ -1902,8 +1966,10 @@
       },
       "Recharger la dernière version (classe)"
     );
-    // v279 : publiée, retirée, refusée ou remplacée = lecture seule.
-    const readOnly = !["pending", "changes_requested"].includes(sub.status);
+    // v279-v280 : à relire → publier / refuser ; publiée → corriger ou
+    // retirer ; refusée, retirée ou remplacée → lecture seule.
+    const isPublished = sub.status === "published";
+    const readOnly = !["pending", "changes_requested", "published"].includes(sub.status);
     // v279 (étape D) : échanges avec l'enseignant (toutes les versions de
     // la même boîte) ; darwin peut lui écrire.
     const threadWrap = h("div", { class: "submission-thread" }, h("p", { class: "muted" }, "Chargement des messages…"));
@@ -1913,6 +1979,7 @@
       published_with_changes: "Publiée avec corrections",
       withdrawn: "Retirée de la Librairie",
       withdrawal_request: "DEMANDE DE RETRAIT",
+      auto_reply: "Réponse automatique",
     };
     const drawThread = async () => {
       try {
@@ -1929,7 +1996,13 @@
             ? msgs.map((m) =>
                 h(
                   "div",
-                  { class: "submission-msg" + (m.from_admin ? " submission-msg--admin" : "") },
+                  {
+                    class:
+                      "submission-msg" +
+                      (m.from_admin ? " submission-msg--admin" : "") +
+                      (m.kind === "withdrawal_request" ? " submission-msg--withdrawal" : "") +
+                      (m.kind === "auto_reply" ? " submission-msg--auto" : ""),
+                  },
                   h("div", { class: "cell-sub" }, `${m.from_admin ? "darwin" : "Enseignant"} · ${fmtDate(m.created_at)}${MSG_LABELS[m.kind] ? " · " + MSG_LABELS[m.kind] : ""}${!m.from_admin && !m.seen_at ? " · nouveau" : ""}`),
                   m.body ? h("div", null, m.body) : null
                 )
@@ -1937,7 +2010,11 @@
             : [h("p", { class: "muted" }, "Aucun message.")])
         );
         const unseen = msgs.filter((m) => !m.from_admin && !m.seen_at).map((m) => m.id);
-        if (unseen.length) await rpc("library_messages_mark_seen", { p_ids: unseen }).catch(() => {});
+        if (unseen.length) {
+          await rpc("library_messages_mark_seen", { p_ids: unseen }).catch(() => {});
+          await refreshLibraryCounts();
+          renderNav(currentNavKey);
+        }
       } catch (e) {
         threadWrap.replaceChildren(h("p", { class: "form-error" }, e.message));
       }
@@ -1991,28 +2068,54 @@
       note: noteIn.value.trim(),
       link: window.LearnLinks ? window.LearnLinks.normalize(linkIn.value) : linkIn.value.trim(),
     });
-    const buttons = readOnly
-      ? [{ label: "Fermer" }].concat(
-          sub.status === "published"
-            ? [
-                {
-                  label: "Retirer de la Librairie",
-                  danger: true,
-                  onClick: async () => {
-                    if (!(await confirmDialog("Retirer cette boîte de la Librairie ? Ceux qui l'ont déjà prise la gardent. La note est envoyée à l'enseignant.", { danger: true, okLabel: "Retirer" }))) return false;
-                    try {
-                      await rpc("admin_withdraw_submission", { p_id: sub.id, p_note: noteIn.value.trim() });
-                      toast("Boîte retirée de la Librairie");
-                      reload();
-                    } catch (e) {
-                      toast(/admin_withdraw_submission/.test(e.message || "") ? "Exécute d'abord supabase/publication_relecture_D_migration.sql." : e.message, true);
-                      return false;
-                    }
-                  },
-                },
-              ]
-            : []
-        )
+    const buttons = isPublished
+      ? [
+          { label: "Fermer" },
+          {
+            label: "Retirer de la Librairie",
+            danger: true,
+            onClick: async () => {
+              if (!(await confirmDialog("Retirer cette boîte de la Librairie ? Ceux qui l'ont déjà prise la gardent. La note est envoyée à l'enseignant.", { danger: true, okLabel: "Retirer" }))) return false;
+              try {
+                await rpc("admin_withdraw_submission", { p_id: sub.id, p_note: noteIn.value.trim() });
+                toast("Boîte retirée de la Librairie");
+                reload();
+              } catch (e) {
+                toast(/admin_withdraw_submission/.test(e.message || "") ? "Exécute d'abord supabase/publication_relecture_D_migration.sql." : e.message, true);
+                return false;
+              }
+            },
+          },
+          {
+            label: "Enregistrer les corrections",
+            primary: true,
+            onClick: async () => {
+              const p = patch();
+              if (p.cards === null) {
+                toast("Un QCM doit avoir ses 3 mauvaises réponses (ou aucune).", true);
+                return false;
+              }
+              if (!p.name || !p.cards.length) {
+                toast("Il faut un nom et au moins une fiche.", true);
+                return false;
+              }
+              if (p.link === null) {
+                toast("Le lien n'est pas valable (adresse complète en https://).", true);
+                return false;
+              }
+              try {
+                await rpc("admin_update_published_submission", { p_id: sub.id, p_patch: p });
+                toast("Corrections enregistrées dans la Librairie");
+                reload();
+              } catch (e) {
+                toast(/admin_update_published_submission/.test(e.message || "") ? "Exécute d'abord supabase/v280_migration.sql." : e.message, true);
+                return false;
+              }
+            },
+          },
+        ]
+      : readOnly
+      ? [{ label: "Fermer" }]
       : [
           { label: "Fermer" },
           {
@@ -2059,6 +2162,14 @@
             },
           },
         ];
+    // v280 : proposition close → champs en lecture seule (les messages
+    // restent possibles) ; boîte publiée → note vide (pas de renvoi de
+    // l'ancienne note avec une nouvelle correction).
+    if (isPublished) noteIn.value = "";
+    if (readOnly) {
+      [nameIn, descIn, linkIn, noteIn, latestBtn].forEach((n) => (n.disabled = true));
+      cardsWrap.querySelectorAll("input, textarea, button").forEach((n) => (n.disabled = true));
+    }
     await openModal({ title: sub.name || "Proposition", body, wide: true, buttons });
   }
 

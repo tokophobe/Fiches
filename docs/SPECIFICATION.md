@@ -553,8 +553,12 @@ tout de suite, la liste à jour suit.
 ### 6.5 Messagerie et signalements
 
 - **Messagerie** : une discussion par classe (enseignant + tous les
-  élèves), en temps réel. Pastille de messages non lus sur « Mes
-  classes » (accueil) et sur la page de la classe.
+  élèves), **en temps réel** : depuis la v280, un nouveau message
+  apparaît tout de suite chez le destinataire, et toutes les pastilles se
+  mettent à jour sans changer de page (avant, la base ne diffusait pas
+  les messages de classe). Pastille de messages non lus sur « Mes
+  classes » (accueil), sur **chaque classe** de la page « Mes classes »
+  (v280) et sur le bouton « Messagerie » de la page de la classe.
 - **Messages de darwin** (v279) : rangés avec les signalements ; voir
   §7.2.
 - **Signalements** : un élève signale une fiche erronée à son auteur ;
@@ -640,12 +644,25 @@ avant de la publier depuis Darwin Admin.
 |---|---|---|
 | **Une boîte à moi** (page de la boîte) | « Publier dans la Librairie » : nom, classement, description, accord de licence, puis « Envoyer à darwin » | Après relecture par darwin |
 | **Partager une boîte à moi avec une classe** | La première fois : même formulaire (« Partager avec la classe »), avec l'accord ; partage **immédiat** avec la classe et envoi **d'office** à darwin (pas de case « proposer aussi ») | Après relecture par darwin |
-| **Partager avec une autre classe** une boîte déjà envoyée ou publiée | Partage direct ; le robot demande l'accord s'il n'a jamais été donné pour cette boîte | (déjà dans le circuit) |
+| **Partager avec une autre classe** une boîte déjà envoyée ou publiée | Partage direct ; si l'accord complet (deux cases, v280) manque encore pour cette boîte, le formulaire s'ouvre pour le donner | (déjà dans le circuit) |
 
-- **Accord de licence** : une case « J'ai lu et j'accepte ces conditions
-  pour cette boîte », demandée **une seule fois par boîte** ; sans elle,
-  ni partage ni envoi. Texte : licence non exclusive (CGU, « Tes
-  contenus »).
+- **Accord** (v280, décision Q18) : demandé **une seule fois par boîte**,
+  avec **deux cases distinctes, non cochées**, toutes deux nécessaires
+  pour partager ou publier : (1) la **licence de partage** (non
+  exclusive : darwin peut reproduire, corriger, compléter, traduire,
+  réorganiser, classer, en respectant le sens de la boîte) ; (2)
+  l'**abonnement darwin** (la boîte peut être proposée gratuitement dans
+  l'abonnement, qui donne accès à toute la Librairie, sans rémunération
+  attachée à la boîte). Le texte affiché est lu dans la base, où chaque
+  version est gardée en entier ; l'accord enregistre la date (fixée par
+  le serveur), la version du texte, les deux cases et une empreinte du
+  contenu de la boîte. Un accord donné avant la v280 (une seule case) ne
+  suffit plus : il est redemandé.
+- **Mention de l'auteur** (v280, Q18 b) : anonyme par défaut ; dans le
+  formulaire, ou plus tard sur la page de la boîte (« Mention de
+  l'auteur : … Modifier »), l'enseignant peut choisir « Mon nom » ou « Un
+  pseudonyme », et changer d'avis à tout moment. La Librairie affiche
+  alors « par … » dans la présentation de la boîte.
 - **Discrétion** : après un partage avec une classe, l'enseignant ne voit
   que « partagée avec la classe ». Après « Publier », le robot confirme
   l'envoi à darwin. Il n'est pas prévenu de la suite tant que darwin
@@ -678,15 +695,22 @@ avant de la publier depuis Darwin Admin.
 « Signalements » (troisième rond, visible dès qu'on a envoyé une boîte à
 darwin ou reçu un message) ; la pastille de l'accueil compte aussi les
 messages de darwin non lus (pas d'e-mail).
-- Un fil par boîte : état (en relecture, modification demandée, dans la
-  Librairie, non retenue, retirée), messages de darwin et de
-  l'enseignant, dans l'ordre.
+- Un fil par boîte : nom, date, état (en relecture, modification
+  demandée, dans la Librairie, non retenue, retirée), puis des **blocs
+  dépliables** (v280, comme sur la page d'une classe) : « Corrections
+  générales de la boîte » (nom, description, lien, classement), «
+  Corrections des fiches », « Échanges avec darwin ». Quand darwin a
+  corrigé, ils sont introduits par « Darwin a procédé aux modifications
+  suivantes : ». Les nouveaux messages arrivent **en temps réel**.
 - darwin écrit à l'enseignant quand il **corrige** ses fiches en publiant
   (message automatique « Publiée avec des corrections de darwin »),
   **refuse**, **retire**, ou lui laisse un mot. Une publication sans
   retouche ni mot ne donne aucun message.
-- **Corrections** : avant / après de chaque fiche modifiée (question,
-  réponse, mauvaises réponses du QCM, « pour aller plus loin », lien),
+- **Corrections** : pour chaque fiche modifiée, chaque champ (question,
+  réponse, mauvaises réponses du QCM, « pour aller plus loin », lien)
+  avec son étiquette, et les changements montrés **façon suivi des
+  modifications** : texte supprimé barré en rouge, texte ajouté souligné
+  en vert (un passage réécrit = un bloc barré suivi d'un bloc ajouté) ;
   fiches ajoutées ou retirées par darwin.
 - **« Appliquer à ma boîte »** (si sa boîte diffère de la version de
   darwin) : sa boîte prend la version de darwin, après confirmation ; la
@@ -696,7 +720,12 @@ messages de darwin non lus (pas d'e-mail).
 - **Répondre** : l'enseignant écrit à darwin sous chaque fil.
 - **Demander le retrait** (fil d'une boîte publiée, ou lien « Demander
   le retrait de la Librairie » sur la page de la boîte) : l'enseignant
-  explique pourquoi ; darwin décide. S'il retire la boîte, ceux qui
+  explique pourquoi, dans une zone de plusieurs lignes qui grandit avec
+  le texte ; sa demande apparaît dans une bulle bien visible (encadrée de
+  rouge, ici et dans Darwin Admin), suivie d'une **réponse
+  automatique** : « Message automatique : votre demande de retrait va
+  être prise en compte dans les meilleurs délais. Vous serez informé
+  après traitement. » darwin décide. S'il retire la boîte, ceux qui
   l'avaient prise la gardent.
 
 **Côté Darwin Admin** (Librairie → Propositions des enseignants) :
@@ -709,7 +738,17 @@ messages de darwin non lus (pas d'e-mail).
   la décision ;
 - filtre « Messages non lus » (réponses, demandes de retrait) et colonne
   « Messages » ;
-- « Retirer de la Librairie » pour une boîte publiée.
+- **pastilles** (v280) : sur « Librairie » dans le menu (propositions à
+  relire + messages non lus) et sur l'onglet « Propositions des
+  enseignants » (une rouge pour les propositions à relire, une bleue pour
+  les messages non lus), mises à jour en temps réel ;
+- une **boîte publiée** s'ouvre sur sa version de la Librairie et se
+  corrige directement : « Enregistrer les corrections » (v280 ; avant,
+  seuls « Fermer » et « Retirer » existaient et les modifications étaient
+  perdues). Si des fiches changent, l'enseignant reçoit le message «
+  publiée avec des corrections » ;
+- « Retirer de la Librairie » pour une boîte publiée ; une proposition
+  refusée, retirée ou remplacée s'affiche en lecture seule.
 - darwin (compte administrateur) publie toujours directement ses propres
   boîtes (boîtes toutes prêtes).
 
@@ -875,21 +914,13 @@ une classe conditionné à la publication (Code de la consommation
 L212-1), enseignants agents publics (droit de préférence de l'État).
 > Réponse :
 
-**Q18 — Suites de l'analyse juridique (à décider avant de coder).**
-a) Deux cases distinctes au partage / à la publication : la licence de
-partage, puis une **autorisation spécifique** (non pré-cochée) pour
-l'exploitation gratuite dans l'abonnement — les deux obligatoires pour
-partager avec une classe, comme vous l'avez choisi ? b) **Mention de
-l'auteur** : anonyme par défaut, mais possibilité de demander son nom ou
-un pseudonyme, modifiable à tout moment (ce qui revient en partie sur
-« auteur plus affiché nulle part », v275) ? c) **Vidéos lisibles sans
-compte** dans la Librairie (règle YouTube : ne jamais faire payer
-l'accès aux vidéos) : à vérifier dans l'appli et à garantir. d) Preuve :
-garder le **texte intégral** de chaque version des conditions et une
-**empreinte de la boîte** à chaque accord, et une archive gardée 5 ans
-après la fin de l'exploitation. e) Nouvelles clauses des CGU : respect de
-l'œuvre, agents publics, contenus de tiers, vidéos YouTube (avec lien
-vers les conditions de YouTube).
+**Q19 — Voir la Librairie (et ses vidéos) sans compte ?** Aujourd'hui,
+toute l'appli demande de se connecter : la Librairie et ses vidéos sont
+lisibles **sans abonnement**, mais pas **sans compte** (un compte gratuit
+suffit). L'analyse juridique conseille que les vidéos YouTube restent
+lisibles sans condition. Faut-il ouvrir une Librairie consultable sans
+compte (dans l'appli, ou sur le site vitrine), ou un compte gratuit
+suffit-il ? À poser aussi à l'avocat.
 > Réponse :
 
 **Q14 bis — Sous-niveaux de la catégorie « autres ».** Les catégories
@@ -923,6 +954,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | Q14 — Catégories de la Librairie | « école & études » et « autres » (Excel mis à jour par le propriétaire, 8 nov. 2026) ; « Pays et capitales du monde » reclassée dans « autres ». Sous-niveaux de « autres » : voir Q14 bis. | §7.1 |
 | Q15 — Signalement d'une erreur dans une boîte de la Librairie | Envoyé à **darwin** (Darwin Admin) ; la correction faite par darwin est ensuite envoyée à l'enseignant auteur, qui peut répondre à darwin (8 nov. 2026). | §6.5, §7.2 — chantier « publication avec relecture » |
 | Q3 / Q4 — Droits et chemins de publication | Publier = proposer, relecture par darwin, un seul circuit ; modifications renvoyées automatiquement, darwin garde le dernier mot ; l'enseignant demande le retrait, darwin décide. Plan détaillé validé le 9 nov. 2026 : bouton « Publier » gardé, partage avec une classe = envoi d'office à darwin, l'enseignant n'est sollicité qu'en cas de besoin, pastille sans e-mail, boîtes déjà publiées remises en relecture, mises à jour automatiques chez ceux qui ont pris la boîte, jamais de lecture des boîtes privées non proposées ni signalées. | §7.2 — chantier « publication avec relecture » (étapes A à F) |
+| Q18 — Suites de l'analyse juridique | Oui à tout (11 nov. 2026) : deux accords distincts (licence de partage + abonnement), tous deux nécessaires pour partager avec une classe ; mention de l'auteur anonyme par défaut, nom ou pseudonyme sur demande ; vidéos lisibles sans abonnement (sans compte : voir Q19) ; preuve renforcée (texte intégral, empreinte de la boîte) ; nouvelles clauses des CGU. | §7.2, CGU, confidentialité (v280) |
 | Q16 — Boîtes publiées par des élèves | Sans objet : l'appli n'est pas encore publique ; à l'ouverture, seules les boîtes créées par darwin seront proposées dans la Librairie (8 nov. 2026). | §7.1, bilan de lancement |
 | Q1 — « Je ne sais pas » à 3 jours, « Vague idée » à 1 jour | Voulu pour l'instant (renforcer tout de suite ce qu'on commence à savoir ; pas trop de fiches par jour). | §4.2 (v253) |
 | Q2 — Prix et noms des formules | Les CGV font foi ; site vitrine corrigé. | §7.4, site (v253) |
@@ -951,6 +983,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v280 | 11 nov. 2026 | Licence en deux accords distincts (partage + abonnement), texte intégral gardé dans la base, empreinte de la boîte ; mention de l'auteur (anonyme par défaut, nom ou pseudonyme modifiable) ; CGU (respect de l'œuvre, paternité, agents publics, contenus de tiers, vidéos YouTube) et confidentialité (conservation des preuves) mises à jour (Q18). Messagerie en temps réel et pastilles sur chaque classe de « Mes classes ». « Messages de darwin » en blocs dépliables, suivi des modifications façon traitement de texte, « Darwin a procédé aux modifications suivantes : » ; demande de retrait sur plusieurs lignes, bulle mise en évidence, réponse automatique. Darwin Admin : corriger une boîte publiée, pastilles des propositions et messages, propositions closes en lecture seule. Pastilles de l'accueil et des pages à ronds en haut à gauche. Page Réviser : trois schémas de même largeur. Révision : « … tu confirmes ? » / « Oui, je confirme ». Agenda : « Aucune boîte/dossier liés » en simple texte avec un bouton « + Ajouter » ; correction du choix des boîtes d'un évènement dans le compte enseignant (liste vide). Boutons « + Dossier », « + Partager », « + Ajouter » de la page d'une classe et boutons de la page Abonnements aux couleurs de la charte. |
 | v279 | 10 nov. 2026 | Publication avec relecture, étape D : page « Messages de darwin » (dans Signalements, pastille sur l'accueil) — corrections de darwin en avant / après, « Appliquer à ma boîte », réponse à darwin, demande de retrait (aussi depuis la page de la boîte) ; Darwin Admin : fil des messages, écrire à l'enseignant, filtre « Messages non lus », « Retirer de la Librairie ». Darwin Admin montre et permet de corriger tous les champs des fiches proposées (QCM, « pour aller plus loin », lien). Nouveau message après « Envoyer à darwin » (on peut déjà partager sa version avec ses classes). |
 | v278 | 10 nov. 2026 | Publication avec relecture, étape B : plus de publication directe ; « Publier dans la Librairie » et le partage d'une boîte avec une classe envoient la boîte à darwin, qui la relit avant de la mettre dans la Librairie ; accord de licence (non exclusive) demandé une fois par boîte ; les modifications d'une boîte déjà envoyée ou publiée repartent d'elles-mêmes chez darwin ; les boîtes publiées par des enseignants avant cette version sont remises en relecture ; seul darwin modifie la Librairie. CGU (§4 « Tes contenus ») et politique de confidentialité mises à jour (licence, nom de l'auteur plus affiché, relecture, preuve de l'accord). |
 | — | 9 nov. 2026 | Chantier « publication avec relecture » : plan validé et inscrit au §7.2 (décisions Q3, Q4, Q13 — licence désormais **non exclusive**). Étape A (rien de visible dans l'appli) : préparation de la base de données (états « à modifier », « remplacée », « retirée » ; accord de licence une fois par boîte, gardé même après suppression du compte ; messages darwin ↔ enseignant ; nouvelle version qui remplace la proposition ouverte et met à jour la boîte déjà publiée ; Darwin Admin peut demander une modification), règles testées, brouillon juridique. Nouvelle question Q17 (juriste). |
