@@ -1848,6 +1848,21 @@ function subscribeAllClassMessagesRealtime(onNewMessage) {
   return () => c.removeChannel(channel);
 }
 
+/** v282 : boîtes partagées avec mes classes (ajout, modification par
+ *  l'enseignant), en temps réel ; la base ne transmet que celles des
+ *  classes du compte (supabase/v282_migration.sql). */
+function subscribeSharedBoxesRealtime(onChange) {
+  const c = getClient();
+  if (!c) return () => {};
+  const channel = c
+    .channel("shared-boxes-all")
+    .on("postgres_changes", { event: "*", schema: "public", table: "shared_boxes" }, (payload) => {
+      onChange(payload.new || payload.old || null);
+    })
+    .subscribe();
+  return () => c.removeChannel(channel);
+}
+
 /** Round 50 : le compte connecté est-il administrateur (table admins) ?
  *  false si le serveur n'a pas encore la mise à jour. */
 async function isAdmin() {
@@ -1973,6 +1988,7 @@ window.Sync = {
     deleteMyAccount: authDeleteMyAccount,
   },
   classes: {
+    subscribeSharedBoxes: subscribeSharedBoxesRealtime,
     create: createClass,
     listAsTeacher: listClassesAsTeacher,
     get: getClassById,

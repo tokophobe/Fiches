@@ -433,3 +433,15 @@ pre.code {
 .tab-badge--msg { background: #2f6fd1; }
 .submission-msg--withdrawal { background: #fdecea; border: 1.5px solid #d14b3a; font-weight: 600; }
 .submission-msg--auto { background: transparent; border: 1px dashed #b8c2cf; font-style: italic; }
+/* v283 : changements d'une nouvelle version (suivi des modifications). */
+.chg-summary { padding: 10px 12px; border-radius: 10px; background: #fff8e6; border: 1px solid #f0d58a; font-size: 13.5px; display: grid; gap: 6px; }
+.chg-row { display: grid; gap: 2px; }
+.chg-label { font-size: 11.5px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.03em; }
+.chg-del { color: #b42318; text-decoration: line-through; background: #fde8e6; }
+.chg-ins { color: #116932; text-decoration: underline; text-decoration-thickness: 2px; background: #e3f6e9; }
+.chg-del + .chg-ins { margin-left: 3px; }
+.chg-box { display: grid; gap: 6px; padding: 8px 10px; border-radius: 8px; background: #fff8e6; border-left: 3px solid #e0a734; }
+.chg-tag { margin-left: 8px; padding: 1px 8px; border-radius: 999px; background: #e0a734; color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.chg-tag--new { background: #1f9d55; }
+.submission-card--changed { border-color: #e0a734; border-width: 2px; }
+.submission-card--new { border-color: #1f9d55; border-width: 2px; }
