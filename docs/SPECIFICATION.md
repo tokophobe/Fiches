@@ -669,6 +669,10 @@ avant de la publier depuis Darwin Admin.
   que « partagée avec la classe ». Après « Publier », le robot confirme
   l'envoi à darwin. Il n'est pas prévenu de la suite tant que darwin
   n'a pas besoin de lui (« Messages de darwin » : étape D).
+- **Deux sortes de boîtes de classe** : la boîte de l'enseignant (« Depuis
+  mes boîtes » : elle suit chacune de ses modifications) et une boîte de
+  la Librairie (« Depuis la Librairie » : elle suit la version de darwin,
+  mise à jour quand darwin publie ou corrige ; v284).
 - **Modifications** : quand l'enseignant modifie une boîte déjà envoyée
   ou publiée, ses classes la reçoivent **tout de suite** (v282), et la
   nouvelle version part **d'elle-même** chez darwin,
@@ -991,6 +995,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 11 nov. 2026 | Base de données (script v284, rien à changer dans l'appli) : une boîte de la Librairie partagée avec une classe suit désormais la Librairie — quand darwin publie une nouvelle version ou corrige la boîte, les classes qui l'ont reçue sont mises à jour aussitôt (avant : copie figée au moment du partage). |
 | v283 | 11 nov. 2026 | Boîtes de classe chez l'élève : mise à jour de secours à chaque retour sur l'appli (onglet, fenêtre, téléphone) et toutes les 2 minutes, et tout l'affichage rafraîchi après la mise à jour. Darwin Admin : une nouvelle version d'une boîte est comparée à la version publiée (ou à la précédente) — résumé des changements en tête, fiches « nouvelle » / « modifiée » encadrées, suivi des modifications (supprimé barré en rouge, ajouté souligné en vert), fiches retirées listées. |
 | v282 | 11 nov. 2026 | Boîtes de classe à jour en direct chez les élèves quand l'enseignant les modifie (avant : seulement en rouvrant l'appli ou « Mes classes ») ; mise à jour aussi quand l'appli redevient visible. Renvoi automatique à darwin fiabilisé (il n'avait lieu que si certaines pages avaient été ouvertes avant) ; si l'accord de la boîte doit être redonné (accord d'avant la v280), le robot le propose au lieu de ne rien envoyer. |
 | v281 | 11 nov. 2026 | Corrections d'erreurs remontées dans Darwin Admin : une vérification automatique de mise à jour qui échoue (hors ligne, ou copie de test protégée → « 401 ») n'est plus signalée comme une erreur ; les boutons d'action des fenêtres de Darwin Admin ne plantent plus après leur action (la fenêtre se ferme normalement) ; les erreurs de Darwin Admin indiquent leur version. |
