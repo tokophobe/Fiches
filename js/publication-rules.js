@@ -16,7 +16,7 @@
    *  library_license_texts, supabase/v280_migration.sql) : c'est lui que
    *  l'appli affiche. Une nouvelle version = une nouvelle ligne, et cette
    *  constante change. */
-  const LICENSE_VERSION = "2026-11-11";
+  const LICENSE_VERSION = "2026-11-11-v2"; // v285 : texte reformulé (même règle)
 
   /** États d'une proposition (colonne status de library_submissions). */
   const STATUS = Object.freeze({

@@ -549,6 +549,11 @@ tout de suite, la liste à jour suit.
 - Une échéance : titre, date, boîtes et dossiers reliés, commentaire,
   classe éventuelle. Une échéance reçue d'un enseignant ne peut être ni
   modifiée ni supprimée par l'élève (sauf suppression une fois passée).
+  Quand l'élève quitte la classe, ses échéances disparaissent de son
+  agenda (v284).
+- Affichage par mois : toucher un jour qui a des évènements ouvre la page
+  « évènements du jour » (titre = la date), comme les autres pages
+  (v284).
 
 ### 6.5 Messagerie et signalements
 
@@ -651,9 +656,12 @@ avant de la publier depuis Darwin Admin.
   pour partager ou publier : (1) la **licence de partage** (non
   exclusive : darwin peut reproduire, corriger, compléter, traduire,
   réorganiser, classer, en respectant le sens de la boîte) ; (2)
-  l'**abonnement darwin** (la boîte peut être proposée gratuitement dans
-  l'abonnement, qui donne accès à toute la Librairie, sans rémunération
-  attachée à la boîte). Le texte affiché est lu dans la base, où chaque
+  l'**utilisation de la boîte dans l'abonnement darwin** (la boîte peut
+  être proposée gratuitement dans l'abonnement, qui permet de réviser
+  toute la Librairie, sans rémunération attachée à la boîte). Ces deux
+  cases sont demandées à l'enseignant qui partage ; **partager ou publier
+  ne lui demande aucun abonnement** (v285 : texte reformulé en ce sens,
+  même règle ; les accords déjà donnés restent valables). Le texte affiché est lu dans la base, où chaque
   version est gardée en entier ; l'accord enregistre la date (fixée par
   le serveur), la version du texte, les deux cases et une empreinte du
   contenu de la boîte. Un accord donné avant la v280 (une seule case) ne
@@ -995,6 +1003,8 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v285 | 11 nov. 2026 | Texte de l'accord reformulé (nouvelle version gardée dans la base, même règle) : chaque case est « à cocher pour pouvoir partager ou publier ta boîte » ; la 2e s'intitule « Utilisation de ta boîte dans l'abonnement darwin » et précise que partager ou publier ne demande aucun abonnement (l'abonnement sert à réviser les boîtes de la Librairie). CGU alignées. Les accords déjà donnés restent valables. |
+| v284 | 11 nov. 2026 | Quitter une classe retire aussi ses évènements de l'agenda. Évènements d'un jour (clic sur un jour du mois) : vraie page, avec bandeau, robot et titre, comme le reste de l'appli (avant : panneau superposé). Messages de darwin : fiche retirée affichée normalement avec l'étiquette « RETIRÉE » bien visible, « MODIFIÉE » un peu moins, « AJOUTÉE » en vert. Nouvelle fiche : « Annuler » quitte la page sans rien enregistrer (avant, en création, il effaçait seulement les champs). |
 | — | 11 nov. 2026 | Base de données (script v284, rien à changer dans l'appli) : une boîte de la Librairie partagée avec une classe suit désormais la Librairie — quand darwin publie une nouvelle version ou corrige la boîte, les classes qui l'ont reçue sont mises à jour aussitôt (avant : copie figée au moment du partage). |
 | v283 | 11 nov. 2026 | Boîtes de classe chez l'élève : mise à jour de secours à chaque retour sur l'appli (onglet, fenêtre, téléphone) et toutes les 2 minutes, et tout l'affichage rafraîchi après la mise à jour. Darwin Admin : une nouvelle version d'une boîte est comparée à la version publiée (ou à la précédente) — résumé des changements en tête, fiches « nouvelle » / « modifiée » encadrées, suivi des modifications (supprimé barré en rouge, ajouté souligné en vert), fiches retirées listées. |
 | v282 | 11 nov. 2026 | Boîtes de classe à jour en direct chez les élèves quand l'enseignant les modifie (avant : seulement en rouvrant l'appli ou « Mes classes ») ; mise à jour aussi quand l'appli redevient visible. Renvoi automatique à darwin fiabilisé (il n'avait lieu que si certaines pages avaient été ouvertes avant) ; si l'accord de la boîte doit être redonné (accord d'avant la v280), le robot le propose au lieu de ne rien envoyer. |
