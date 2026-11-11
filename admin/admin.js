@@ -20,7 +20,10 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v280";
+  const ADMIN_VERSION = "v281";
+  // v281 : les erreurs de Darwin Admin portent aussi leur version
+  // (js/error-report.js lit window.FICHES_APP_VERSION).
+  window.FICHES_APP_VERSION = ADMIN_VERSION;
   async function checkAdminVersion() {
     const label = $("#sidebar-version");
     if (label) label.textContent = `Darwin Admin ${ADMIN_VERSION}`;
@@ -197,9 +200,17 @@
             class: `btn${b.primary ? " btn--primary" : ""}${b.danger ? " btn--danger-solid" : ""}`,
             onclick: async (e) => {
               if (b.onClick) {
-                e.currentTarget.disabled = true;
-                const keep = await b.onClick();
-                e.currentTarget.disabled = false;
+                // v281 : `e.currentTarget` n'existe plus après l'attente
+                // (erreur « Cannot set properties of null ») — on garde le
+                // bouton de côté.
+                const btn = e.currentTarget;
+                btn.disabled = true;
+                let keep;
+                try {
+                  keep = await b.onClick();
+                } finally {
+                  btn.disabled = false;
+                }
                 if (keep === false) return;
               }
               closeModal(b.value);
