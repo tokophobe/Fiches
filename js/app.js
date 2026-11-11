@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v280";
+  const APP_VERSION = "v281";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -20199,19 +20199,24 @@
         // toute nouvelle version, et donc toute mise à jour, indéfiniment.
         .register("sw.js", { updateViaCache: "none" })
         .then((registration) => {
+          // v281 : une vérification automatique qui échoue (hors ligne, ou
+          // copie de test protégée par mot de passe → réponse 401) est sans
+          // conséquence : on réessaiera plus tard. Avant, l'échec remontait
+          // comme une erreur dans Darwin Admin.
+          const checkForUpdate = () => registration.update().catch(() => {});
           // Vérifie immédiatement s'il existe une version plus récente.
-          registration.update();
+          checkForUpdate();
 
           // Et à nouveau chaque fois que l'appli redevient visible
           // (ex. rouverte depuis l'écran d'accueil de l'iPhone).
           document.addEventListener("visibilitychange", () => {
             if (document.visibilityState === "visible") {
-              registration.update();
+              checkForUpdate();
             }
           });
 
           // Filet de sécurité si l'appli reste ouverte longtemps en arrière-plan.
-          setInterval(() => registration.update(), 60 * 60 * 1000);
+          setInterval(checkForUpdate, 60 * 60 * 1000);
 
           // Bouton "Vérifier les mises à jour" (Réglages) : les
           // déclencheurs automatiques ci-dessus ne se déclenchent pas
