@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v284";
+  const APP_VERSION = "v285";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -18002,7 +18002,7 @@
             return;
           }
           if (!licenseBoxEl || !licenseBoxEl.checked || !commercialBoxEl || !commercialBoxEl.checked) {
-            await robotAlert("Pour partager ou publier cette boîte, coche les deux cases : la licence de partage (1) et l'abonnement darwin (2).");
+            await robotAlert("Pour partager ou publier cette boîte, coche les deux cases : la licence de partage (1) et l'utilisation de ta boîte dans l'abonnement darwin (2). Aucun abonnement ne t'est demandé.");
             return;
           }
           if (submitBtn) submitBtn.disabled = true;
