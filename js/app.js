@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v283";
+  const APP_VERSION = "v284";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -5940,18 +5940,14 @@
     });
   }
 
+  // v284 : « Annuler » quitte la page sans rien enregistrer, en création
+  // comme en modification (avant, en création, il effaçait seulement les
+  // champs et restait sur la page : il semblait ne rien faire).
   cancelEditBtn.addEventListener("click", () => {
-    if (editingId) {
-      // Annuler une MODIFICATION : rien à garder, on repart d'où on venait.
-      editReturnToReview = false;
-      exitEditMode();
-      resetCardForm();
-      closeNewCardView();
-    } else {
-      // Item 7 : annuler une CRÉATION efface juste le contenu (question/
-      // réponse), garde la boîte choisie, et reste sur cette page.
-      resetCardForm();
-    }
+    editReturnToReview = false;
+    exitEditMode();
+    resetCardForm();
+    closeNewCardView();
   });
 
   const deleteEditingCardBtn = el("delete-editing-card");
@@ -8296,6 +8292,7 @@
   const NAV_TRANSIENT = new Set(["role-picker", "class-share", "boite-picker", "calendar-event-form", "new-card", "box-create", "report-card", "library-share", "classes-join", "classes-create"]);
   const NAV_OWN_BACK = {
     "calendar-event-detail": "calendar-detail-back-btn",
+    "calendar-day": "calendar-day-back-btn",
     "creation-detail": "creation-detail-back-btn",
     "classes-join": "classes-join-back-btn",
     "classes-create": "classes-create-back-btn",
@@ -8309,7 +8306,7 @@
     "box-create": "box-create-cancel-btn",
     "library-share": "library-share-back-btn",
   };
-  ["calendar-detail-back-btn", "creation-detail-back-btn", "classes-join-back-btn", "classes-create-back-btn", "class-detail-back-btn", "message-thread-back-btn", "boite-picker-back-btn", "library-detail-back-btn", "library-cards-back-btn"].forEach((id) => {
+  ["calendar-detail-back-btn", "calendar-day-back-btn", "creation-detail-back-btn", "classes-join-back-btn", "classes-create-back-btn", "class-detail-back-btn", "message-thread-back-btn", "boite-picker-back-btn", "library-detail-back-btn", "library-cards-back-btn"].forEach((id) => {
     const b = el(id);
     if (b) b.classList.add("nav-legacy-back");
   });
@@ -8421,6 +8418,7 @@
     calendar: { dynamic: () => (calendarClassFilter ? "Agenda de la classe" : "Mon agenda") },
     "calendar-event-form": { from: "#calendar-event-form-title" },
     "calendar-event-detail": { from: "#view-calendar-event-detail .view-title" },
+    "calendar-day": { from: "#view-calendar-day .view-title" },
     sync: "Synchronisation",
     account: { text: "Mon compte", hide: ["#view-account > h2.section-title"] },
     "box-create": { from: "#box-create-title" },
@@ -10162,7 +10160,7 @@
           dotsWrap.appendChild(dot);
         }
         cell.appendChild(dotsWrap);
-        cell.addEventListener("click", () => openCalendarDayPopup(year, month, day, eventMap[day]));
+        cell.addEventListener("click", () => openCalendarDayView(year, month, day));
       }
       grid.appendChild(cell);
     }
@@ -10231,37 +10229,49 @@
   const calendarYearNextBtn = el("calendar-year-next");
   if (calendarYearNextBtn) calendarYearNextBtn.addEventListener("click", () => { calendarYearAnchor += 1; renderCalendarYearView(); });
 
-  function openCalendarDayPopup(year, month, day, events) {
-    const popup = el("calendar-day-popup");
-    const title = el("calendar-day-popup-title");
-    const list = el("calendar-day-popup-list");
-    if (!popup || !list) return;
-    if (title) title.textContent = new Date(year, month, day).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  /** v284 : page « évènements d'un jour » (clic sur un jour du mois). */
+  let calendarDayContext = null; // { year, month, day }
+  function openCalendarDayView(year, month, day) {
+    calendarDayContext = { year, month, day };
+    renderCalendarDayView();
+    boitePickerActivateView("view-calendar-day");
+    applyBodyLogoSpeech("calendar-day");
+  }
+  function renderCalendarDayView() {
+    const list = el("calendar-day-list");
+    const title = el("calendar-day-title");
+    if (!list || !calendarDayContext) return;
+    const { year, month, day } = calendarDayContext;
+    if (title) {
+      const label = new Date(year, month, day).toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+      title.textContent = label.charAt(0).toUpperCase() + label.slice(1);
+    }
+    const events = calendarEventsByDay(year, month)[day] || [];
     list.innerHTML = "";
+    if (!events.length) {
+      list.innerHTML = `<li class="field-hint">Aucun évènement ce jour-là.</li>`;
+      return;
+    }
     events.forEach((ev) => {
       list.appendChild(
         buildCalendarEventRow(ev, {
-          onOpen: () => {
-            popup.hidden = true;
-            openCalendarEventDetailView(ev);
-          },
+          onOpen: () => openCalendarEventDetailView(ev),
           onDelete: async () => {
             await deleteOwnCalendarEvent(ev);
-            popup.hidden = true;
             renderCalendarEvents();
+            renderCalendarDayView();
           },
         })
       );
     });
-    popup.hidden = false;
   }
-  const calendarDayPopupCloseBtn = el("calendar-day-popup-close");
-  if (calendarDayPopupCloseBtn) {
-    calendarDayPopupCloseBtn.addEventListener("click", () => {
-      const popup = el("calendar-day-popup");
-      if (popup) popup.hidden = true;
-    });
+  function closeCalendarDayView() {
+    calendarDayContext = null;
+    boitePickerActivateView("view-calendar");
+    applyBodyLogoSpeech("calendar");
   }
+  const calendarDayBackBtn = el("calendar-day-back-btn");
+  if (calendarDayBackBtn) calendarDayBackBtn.addEventListener("click", closeCalendarDayView);
 
   // Item 2 : bascule liste / calendrier / année.
   document.querySelectorAll(".calendar-view-toggle-btn").forEach((btn) => {
@@ -13985,6 +13995,13 @@
       if (Sync.isConfigured()) await Sync.pushFolder({ ...f, deleted: true, updatedAt: new Date().toISOString() });
       folders = folders.filter((x) => x.id !== f.id);
       await DB.removeFolder(f.id);
+    }
+    // v284 : les évènements reçus de cette classe quittent aussi l'agenda.
+    const events = loadCalendarEvents();
+    const keptEvents = events.filter((x) => !(x.sharedEventId && x.sharedClassId === classId));
+    if (keptEvents.length !== events.length) {
+      saveCalendarEvents(keptEvents);
+      refreshHomeEventWarning();
     }
     return mirrors.length;
   }
@@ -19187,7 +19204,10 @@
     const fields = Object.keys(fa)
       .map((k) => (before && after ? dmFieldHtml(k, fb[k], fa[k], fb[k] !== fa[k]) : dmFieldHtml(k, "", after ? fa[k] : fb[k], false)))
       .join("");
-    return `<div class="dm-card${!after ? " dm-card--removed" : !before ? " dm-card--added" : ""}"><span class="dm-card-title">${escapeHtml(title)}</span>${fields}</div>`;
+    // v284 : les champs s'affichent normalement ; c'est l'étiquette qui dit
+    // l'état (RETIRÉE très visible, MODIFIÉE un peu moins, AJOUTÉE).
+    const state = !after ? ["removed", "Retirée"] : !before ? ["added", "Ajoutée"] : ["changed", "Modifiée"];
+    return `<div class="dm-card dm-card--${state[0]}"><span class="dm-card-title">${escapeHtml(title)}<span class="dm-tag dm-tag--${state[0]}">${state[1]}</span></span>${fields}</div>`;
   }
   /** Corrections générales (nom, description, lien de la boîte). */
   function dmGeneralChanges(sent, col) {
@@ -19255,9 +19275,9 @@
             generalRows = dmGeneralChanges(sent, col);
             const d = PublicationRules.cardsDiff(sent.cards || [], colCards);
             const pos = new Map((sent.cards || []).map((c, i) => [c.id, i + 1]));
-            d.changed.forEach(({ before, after }) => cardParts.push(dmCardHtml(`Fiche ${pos.get(before.id) || ""} — modifiée`, before, after)));
-            d.added.forEach((c) => cardParts.push(dmCardHtml("Fiche ajoutée", null, c)));
-            d.removed.forEach((c) => cardParts.push(dmCardHtml(`Fiche ${pos.get(c.id) || ""} — retirée`, c, null)));
+            d.changed.forEach(({ before, after }) => cardParts.push(dmCardHtml(`Fiche ${pos.get(before.id) || ""}`, before, after)));
+            d.added.forEach((c) => cardParts.push(dmCardHtml("Nouvelle fiche", null, c)));
+            d.removed.forEach((c) => cardParts.push(dmCardHtml(`Fiche ${pos.get(c.id) || ""}`, c, null)));
           }
         }
       }

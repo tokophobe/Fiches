@@ -998,13 +998,18 @@
         <p class="field-hint settings-block-hint" id="calendar-months-loading" style="text-align:center;">Fais défiler pour voir la suite…</p>
       </div>
 
-      <!-- Popup listant les événements d'un jour cliqué. -->
-      <div class="multi-subject-picker" id="calendar-day-popup" hidden>
-        <p class="field-hint settings-block-hint" id="calendar-day-popup-title"></p>
-        <ul class="card-list" id="calendar-day-popup-list"></ul>
-        <div class="multi-subject-picker-actions">
-          <button type="button" class="btn btn--ghost btn--small" id="calendar-day-popup-close">Fermer</button>
-        </div>
+    </section>
+
+    <!-- v284 : les évènements d'un jour (clic sur un jour du mois) dans une
+         vraie page, comme le reste de l'appli (bandeau, robot, titre),
+         au lieu d'un panneau superposé. -->
+    <section id="view-calendar-day" class="view">
+      <div class="list-header">
+        <button class="btn btn--ghost btn--small" id="calendar-day-back-btn" type="button">← Retour</button>
+      </div>
+      <h2 class="view-title" id="calendar-day-title">Évènements du jour</h2>
+      <div class="card-form">
+        <ul class="card-list" id="calendar-day-list"></ul>
       </div>
     </section>
 
