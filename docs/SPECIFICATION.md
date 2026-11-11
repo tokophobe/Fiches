@@ -657,7 +657,9 @@ avant de la publier depuis Darwin Admin.
   version est gardée en entier ; l'accord enregistre la date (fixée par
   le serveur), la version du texte, les deux cases et une empreinte du
   contenu de la boîte. Un accord donné avant la v280 (une seule case) ne
-  suffit plus : il est redemandé.
+  suffit plus : il est redemandé — à la prochaine modification de la
+  boîte, le robot propose de le redonner (une fois par boîte et par
+  session ; v282), sinon la nouvelle version n'est pas envoyée.
 - **Mention de l'auteur** (v280, Q18 b) : anonyme par défaut ; dans le
   formulaire, ou plus tard sur la page de la boîte (« Mention de
   l'auteur : … Modifier »), l'enseignant peut choisir « Mon nom » ou « Un
@@ -668,7 +670,8 @@ avant de la publier depuis Darwin Admin.
   l'envoi à darwin. Il n'est pas prévenu de la suite tant que darwin
   n'a pas besoin de lui (« Messages de darwin » : étape D).
 - **Modifications** : quand l'enseignant modifie une boîte déjà envoyée
-  ou publiée, la nouvelle version part **d'elle-même** chez darwin,
+  ou publiée, ses classes la reçoivent **tout de suite** (v282), et la
+  nouvelle version part **d'elle-même** chez darwin,
   30 secondes après la dernière modification (ou quand l'appli passe en
   arrière-plan), sans message. Elle remplace la version encore en
   relecture ; pour une boîte publiée, la Librairie n'est mise à jour
@@ -983,6 +986,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v282 | 11 nov. 2026 | Boîtes de classe à jour en direct chez les élèves quand l'enseignant les modifie (avant : seulement en rouvrant l'appli ou « Mes classes ») ; mise à jour aussi quand l'appli redevient visible. Renvoi automatique à darwin fiabilisé (il n'avait lieu que si certaines pages avaient été ouvertes avant) ; si l'accord de la boîte doit être redonné (accord d'avant la v280), le robot le propose au lieu de ne rien envoyer. |
 | v281 | 11 nov. 2026 | Corrections d'erreurs remontées dans Darwin Admin : une vérification automatique de mise à jour qui échoue (hors ligne, ou copie de test protégée → « 401 ») n'est plus signalée comme une erreur ; les boutons d'action des fenêtres de Darwin Admin ne plantent plus après leur action (la fenêtre se ferme normalement) ; les erreurs de Darwin Admin indiquent leur version. |
 | v280 | 11 nov. 2026 | Licence en deux accords distincts (partage + abonnement), texte intégral gardé dans la base, empreinte de la boîte ; mention de l'auteur (anonyme par défaut, nom ou pseudonyme modifiable) ; CGU (respect de l'œuvre, paternité, agents publics, contenus de tiers, vidéos YouTube) et confidentialité (conservation des preuves) mises à jour (Q18). Messagerie en temps réel et pastilles sur chaque classe de « Mes classes ». « Messages de darwin » en blocs dépliables, suivi des modifications façon traitement de texte, « Darwin a procédé aux modifications suivantes : » ; demande de retrait sur plusieurs lignes, bulle mise en évidence, réponse automatique. Darwin Admin : corriger une boîte publiée, pastilles des propositions et messages, propositions closes en lecture seule. Pastilles de l'accueil et des pages à ronds en haut à gauche. Page Réviser : trois schémas de même largeur. Révision : « … tu confirmes ? » / « Oui, je confirme ». Agenda : « Aucune boîte/dossier liés » en simple texte avec un bouton « + Ajouter » ; correction du choix des boîtes d'un évènement dans le compte enseignant (liste vide). Boutons « + Dossier », « + Partager », « + Ajouter » de la page d'une classe et boutons de la page Abonnements aux couleurs de la charte. |
 | v279 | 10 nov. 2026 | Publication avec relecture, étape D : page « Messages de darwin » (dans Signalements, pastille sur l'accueil) — corrections de darwin en avant / après, « Appliquer à ma boîte », réponse à darwin, demande de retrait (aussi depuis la page de la boîte) ; Darwin Admin : fil des messages, écrire à l'enseignant, filtre « Messages non lus », « Retirer de la Librairie ». Darwin Admin montre et permet de corriger tous les champs des fiches proposées (QCM, « pour aller plus loin », lien). Nouveau message après « Envoyer à darwin » (on peut déjà partager sa version avec ses classes). |

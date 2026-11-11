@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v281";
+  const APP_VERSION = "v282";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -2481,7 +2481,10 @@
   const libraryResubmitTimers = new Map();
   function scheduleLibraryResubmit(subjectId) {
     if (!subjectId || accountIsAdminFlag || !accountCurrentUser || !Sync.isConfigured()) return;
-    if (!mySubmissionsLatest.has(subjectId)) return;
+    // v282 : on ne teste plus ici si la boîte est déjà proposée (l'état des
+    // publications n'est pas toujours chargé à ce moment-là, et le renvoi
+    // n'avait alors jamais lieu) : resubmitBoxToDarwin le vérifie.
+    if (publicationStateLoaded && !mySubmissionsLatest.has(subjectId)) return;
     clearTimeout(libraryResubmitTimers.get(subjectId));
     libraryResubmitTimers.set(
       subjectId,
@@ -2502,6 +2505,7 @@
     if (document.visibilityState === "hidden") flushLibraryResubmits();
   });
   async function resubmitBoxToDarwin(subjectId) {
+    if (!publicationStateLoaded) await refreshPublicationState();
     const latest = mySubmissionsLatest.get(subjectId);
     const subject = subjects.find((x) => x.id === subjectId && !x.deleted);
     if (!latest || !subject || accountIsAdminFlag) return;
@@ -2516,9 +2520,13 @@
       const col = await Sync.library.myCollectionCards(latest.collection_id);
       if (col && PublicationRules.cardsSignature(col.cards || []) === PublicationRules.cardsSignature(boxCards)) return;
     }
-    // Boîte publiée avant la v278 sans accord enregistré : elle sera
-    // renvoyée après le prochain accord (partage ou publication).
-    if (licenseNeededFor(subjectId)) return;
+    // Accord manquant (boîte proposée avant la v280, quand l'accord n'avait
+    // qu'une case) : v282 — on le dit à l'enseignant (une fois par boîte et
+    // par session) au lieu de ne rien envoyer en silence.
+    if (licenseNeededFor(subjectId)) {
+      await askLicenseForResubmit(subject, boxCards);
+      return;
+    }
     const r = await Sync.library.submit({
       name: subject.name,
       summary: latest.summary || "",
@@ -2535,6 +2543,27 @@
     });
     if (r.error) console.warn("Librairie : nouvelle version non envoyée à darwin", r.error);
     else await refreshPublicationState();
+  }
+
+  const licenseAskedThisSession = new Set();
+  async function askLicenseForResubmit(subject, boxCards) {
+    if (licenseAskedThisSession.has(subject.id)) return;
+    licenseAskedThisSession.add(subject.id);
+    const go = await showRobotMessage(
+      `Tu as modifié « ${subject.name} », que darwin relit pour la Librairie. Les conditions de partage ont changé : pour que darwin reçoive ta nouvelle version, redonne ton accord pour cette boîte (deux cases à cocher).`,
+      {
+        cancelValue: false,
+        buttons: [
+          { label: "Plus tard", value: false },
+          { label: "Donner mon accord", value: true, primary: true },
+        ],
+      }
+    );
+    if (!go) return;
+    // Le formulaire de publication recueille l'accord et envoie la nouvelle
+    // version à darwin.
+    libraryShareReturnView = "manage";
+    await openLibraryShareView(subject, boxCards);
   }
 
   async function refreshMyPublishedSubjects() {
@@ -15265,6 +15294,25 @@
         liveBadgeTimer = setTimeout(refreshAllMessageBadges, 400);
       });
     }
+    // v282 : boîtes partagées avec mes classes mises à jour en direct
+    // (ajout / modification par l'enseignant) ; filet de sécurité quand
+    // l'appli redevient visible (au plus une fois par minute).
+    if (Sync.classes && Sync.classes.subscribeSharedBoxes) {
+      let t = null;
+      Sync.classes.subscribeSharedBoxes((row) => {
+        if (row && row.shared_by === accountCurrentUser.id) return;
+        clearTimeout(t);
+        t = setTimeout(() => syncSharedBoxesForStudent().then(refreshAfterSharedBoxesSync).catch(() => {}), 800);
+      });
+    }
+    let lastVisibleSync = Date.now();
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState !== "visible" || Date.now() - lastVisibleSync < 60000) return;
+      lastVisibleSync = Date.now();
+      syncSharedBoxesForStudent().then(refreshAfterSharedBoxesSync).catch(() => {});
+    });
+    // État des propositions chargé dès le départ (renvoi automatique).
+    refreshPublicationState().catch(() => {});
     if (Sync.library && Sync.library.subscribeDarwinMessages) {
       Sync.library.subscribeDarwinMessages((m) => {
         if (!m.from_admin) return;
@@ -15272,6 +15320,11 @@
         if (isViewActive("darwin-messages")) renderDarwinMessagesView();
       });
     }
+  }
+  /** Après une synchro des boîtes de classe : listes à jour à l'écran. */
+  function refreshAfterSharedBoxesSync() {
+    renderSubjectManageList();
+    if (isViewActive("class-detail") && classDetailContext) renderClassDetailView();
   }
   function isViewActive(name) {
     const v = el(`view-${name}`);
