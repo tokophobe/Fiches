@@ -752,6 +752,11 @@ messages de darwin non lus (pas d'e-mail).
   publiée avec des corrections » ;
 - « Retirer de la Librairie » pour une boîte publiée ; une proposition
   refusée, retirée ou remplacée s'affiche en lecture seule.
+- **Nouvelle version d'une boîte** (v283) : la fenêtre la compare à la
+  version publiée (ou, à défaut, à la version précédente proposée) :
+  résumé en tête (fiches modifiées, nouvelles, retirées ; nom,
+  description, lien), fiches modifiées encadrées en orange, nouvelles en
+  vert, et pour chaque champ changé le suivi des modifications.
 - darwin (compte administrateur) publie toujours directement ses propres
   boîtes (boîtes toutes prêtes).
 
@@ -986,6 +991,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v283 | 11 nov. 2026 | Boîtes de classe chez l'élève : mise à jour de secours à chaque retour sur l'appli (onglet, fenêtre, téléphone) et toutes les 2 minutes, et tout l'affichage rafraîchi après la mise à jour. Darwin Admin : une nouvelle version d'une boîte est comparée à la version publiée (ou à la précédente) — résumé des changements en tête, fiches « nouvelle » / « modifiée » encadrées, suivi des modifications (supprimé barré en rouge, ajouté souligné en vert), fiches retirées listées. |
 | v282 | 11 nov. 2026 | Boîtes de classe à jour en direct chez les élèves quand l'enseignant les modifie (avant : seulement en rouvrant l'appli ou « Mes classes ») ; mise à jour aussi quand l'appli redevient visible. Renvoi automatique à darwin fiabilisé (il n'avait lieu que si certaines pages avaient été ouvertes avant) ; si l'accord de la boîte doit être redonné (accord d'avant la v280), le robot le propose au lieu de ne rien envoyer. |
 | v281 | 11 nov. 2026 | Corrections d'erreurs remontées dans Darwin Admin : une vérification automatique de mise à jour qui échoue (hors ligne, ou copie de test protégée → « 401 ») n'est plus signalée comme une erreur ; les boutons d'action des fenêtres de Darwin Admin ne plantent plus après leur action (la fenêtre se ferme normalement) ; les erreurs de Darwin Admin indiquent leur version. |
 | v280 | 11 nov. 2026 | Licence en deux accords distincts (partage + abonnement), texte intégral gardé dans la base, empreinte de la boîte ; mention de l'auteur (anonyme par défaut, nom ou pseudonyme modifiable) ; CGU (respect de l'œuvre, paternité, agents publics, contenus de tiers, vidéos YouTube) et confidentialité (conservation des preuves) mises à jour (Q18). Messagerie en temps réel et pastilles sur chaque classe de « Mes classes ». « Messages de darwin » en blocs dépliables, suivi des modifications façon traitement de texte, « Darwin a procédé aux modifications suivantes : » ; demande de retrait sur plusieurs lignes, bulle mise en évidence, réponse automatique. Darwin Admin : corriger une boîte publiée, pastilles des propositions et messages, propositions closes en lecture seule. Pastilles de l'accueil et des pages à ronds en haut à gauche. Page Réviser : trois schémas de même largeur. Révision : « … tu confirmes ? » / « Oui, je confirme ». Agenda : « Aucune boîte/dossier liés » en simple texte avec un bouton « + Ajouter » ; correction du choix des boîtes d'un évènement dans le compte enseignant (liste vide). Boutons « + Dossier », « + Partager », « + Ajouter » de la page d'une classe et boutons de la page Abonnements aux couleurs de la charte. |

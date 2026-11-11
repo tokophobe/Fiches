@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v282";
+  const APP_VERSION = "v283";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -15305,12 +15305,18 @@
         t = setTimeout(() => syncSharedBoxesForStudent().then(refreshAfterSharedBoxesSync).catch(() => {}), 800);
       });
     }
-    let lastVisibleSync = Date.now();
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState !== "visible" || Date.now() - lastVisibleSync < 60000) return;
-      lastVisibleSync = Date.now();
+    // v283 : filet de sécurité si le temps réel ne passe pas : à chaque
+    // retour sur l'appli (onglet, fenêtre ou téléphone) et toutes les 2
+    // minutes tant qu'elle est affichée, au plus une fois par 30 secondes.
+    let lastSharedSync = Date.now();
+    const sharedSafetySync = () => {
+      if (document.visibilityState !== "visible" || Date.now() - lastSharedSync < 30000) return;
+      lastSharedSync = Date.now();
       syncSharedBoxesForStudent().then(refreshAfterSharedBoxesSync).catch(() => {});
-    });
+    };
+    document.addEventListener("visibilitychange", sharedSafetySync);
+    window.addEventListener("focus", sharedSafetySync);
+    setInterval(sharedSafetySync, 120000);
     // État des propositions chargé dès le départ (renvoi automatique).
     refreshPublicationState().catch(() => {});
     if (Sync.library && Sync.library.subscribeDarwinMessages) {
@@ -15323,7 +15329,11 @@
   }
   /** Après une synchro des boîtes de classe : listes à jour à l'écran. */
   function refreshAfterSharedBoxesSync() {
+    // v283 : tout l'affichage (listes, fiches, compteurs), plus la page de
+    // la boîte ou de la classe ouverte.
+    renderAll();
     renderSubjectManageList();
+    if (isViewActive("creation-detail")) renderCreationDetail();
     if (isViewActive("class-detail") && classDetailContext) renderClassDetailView();
   }
   function isViewActive(name) {

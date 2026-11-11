@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v282";
+  const ADMIN_VERSION = "v283";
   // v281 : les erreurs de Darwin Admin portent aussi leur version
   // (js/error-report.js lit window.FICHES_APP_VERSION).
   window.FICHES_APP_VERSION = ADMIN_VERSION;
@@ -1874,6 +1874,82 @@
     }
     load();
   }
+  /* v283 : comparaison d'une proposition avec la version de référence. */
+  async function submissionReference(sub) {
+    try {
+      if (["pending", "changes_requested"].includes(sub.status) && sub.target_collection_id) {
+        const { data } = await client().from("library_collections").select("name, description, summary, link, cards").eq("id", sub.target_collection_id).maybeSingle();
+        if (data) return { label: "la version publiée dans la Librairie", ...data };
+      }
+      if (sub.source_subject_id) {
+        const { data } = await client()
+          .from("library_submissions")
+          .select("name, description, summary, link, cards, created_at")
+          .eq("owner_id", sub.owner_id)
+          .eq("source_subject_id", sub.source_subject_id)
+          .lt("created_at", sub.created_at)
+          .order("created_at", { ascending: false })
+          .limit(1);
+        if (data && data[0]) return { label: `la version précédente proposée (${fmtDate(data[0].created_at)})`, ...data[0] };
+      }
+    } catch (e) {
+      /* pas de comparaison possible : la fenêtre s'ouvre quand même */
+    }
+    return null;
+  }
+  function trackedHtml(a, b) {
+    const esc = (t) => String(t).replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]);
+    return window.PublicationRules.wordDiff(a || "", b || "")
+      .map((p) => (p.type === "same" ? esc(p.text) : `<span class="chg-${p.type}">${esc(p.text)}</span>`))
+      .join("");
+  }
+  const plainText = (t) => String(t || "").replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
+  function cardFieldsText(c) {
+    return {
+      Question: plainText(c.question),
+      Réponse: plainText(c.answer),
+      "Mauvaises réponses du QCM": Array.isArray(c.wrongs) ? c.wrongs.map(plainText).join(" · ") : "",
+      "Pour aller plus loin": plainText(c.more),
+      Lien: c.link || "",
+    };
+  }
+  /** Changements d'une fiche (suivi des modifications) ; null si aucun. */
+  function cardChangesNode(before, after) {
+    if (!window.PublicationRules) return null;
+    const a = cardFieldsText(before);
+    const b = cardFieldsText(after);
+    const rows = Object.keys(b)
+      .filter((k) => a[k] !== b[k])
+      .map((k) => h("div", { class: "chg-row" }, h("span", { class: "chg-label" }, k), h("span", { html: trackedHtml(a[k], b[k]) })));
+    return rows.length ? h("div", { class: "chg-box" }, ...rows) : null;
+  }
+  /** Résumé en tête de fenêtre : ce qui a changé par rapport à la référence. */
+  function changesSummaryNode(ref, sub) {
+    if (!window.PublicationRules) return null;
+    const d = window.PublicationRules.cardsDiff(ref.cards || [], Array.isArray(sub.cards) ? sub.cards : []);
+    const meta = [];
+    const metaRow = (label, a, b) => {
+      if ((a || "") !== (b || "")) meta.push(h("div", { class: "chg-row" }, h("span", { class: "chg-label" }, label), h("span", { html: trackedHtml(a, b) })));
+    };
+    metaRow("Nom", ref.name, sub.name);
+    metaRow("Description", mergeSummaryDescription(ref.summary, ref.description), mergeSummaryDescription(sub.summary, sub.description));
+    metaRow("Lien", ref.link, sub.link);
+    const counts = [
+      d.changed.length ? `${d.changed.length} fiche${d.changed.length > 1 ? "s" : ""} modifiée${d.changed.length > 1 ? "s" : ""}` : "",
+      d.added.length ? `${d.added.length} nouvelle${d.added.length > 1 ? "s" : ""}` : "",
+      d.removed.length ? `${d.removed.length} retirée${d.removed.length > 1 ? "s" : ""}` : "",
+    ].filter(Boolean);
+    return h(
+      "div",
+      { class: "chg-summary" },
+      h("div", null, h("b", null, `Changements par rapport à ${ref.label} : `), counts.length ? counts.join(", ") : meta.length ? "fiches inchangées" : "aucun changement"),
+      ...meta,
+      d.removed.length
+        ? h("div", { class: "chg-row" }, h("span", { class: "chg-label" }, "Fiches retirées"), ...d.removed.map((c) => h("div", { class: "chg-del" }, plainText(c.question))))
+        : null,
+      h("div", { class: "cell-sub" }, "Dans les fiches ci-dessous : supprimé en rouge barré, ajouté en vert souligné ; cadre orange = fiche modifiée, cadre vert = nouvelle fiche.")
+    );
+  }
   async function openSubmission(sub, reload) {
     // v280 : une boîte publiée se corrige sur sa version de la Librairie
     // (celle que voient les abonnés), pas sur la proposition d'origine.
@@ -1881,6 +1957,10 @@
       const { data: col } = await client().from("library_collections").select("name, description, summary, link, cards").eq("id", sub.collection_id).maybeSingle();
       if (col) sub = { ...sub, name: col.name, description: col.description, summary: col.summary, link: col.link, cards: col.cards };
     }
+    // v283 : nouvelle version d'une boîte → on la compare à la version
+    // publiée (ou, sinon, à la version précédente proposée) pour montrer
+    // clairement ce qui a changé.
+    const ref = await submissionReference(sub);
     const field = (label, node) => h("label", { class: "form-field" }, h("span", null, label), node);
     const nameIn = h("input", { type: "text", class: "input", value: sub.name || "" });
     // v245 : un seul champ « Description » (ancien résumé fusionné dedans).
@@ -1894,6 +1974,7 @@
     // v279 : tous les champs d'une fiche (question, réponse, 3 mauvaises
     // réponses du QCM, « Pour aller plus loin », lien), pas seulement
     // question / réponse.
+    const refById = ref ? new Map((ref.cards || []).map((c) => [c.id, c])) : null;
     const drawCards = () => {
       cardsCount.textContent = `Fiches (${cardsData.length})`;
       const area = (label, value, rows, onInput) => {
@@ -1920,10 +2001,20 @@
           const linkInp = h("input", { type: "text", class: "input", value: c.link || "", placeholder: "https://…", inputmode: "url" });
           linkInp.addEventListener("input", () => (cardsData[i].link = linkInp.value.trim()));
           const del = h("button", { type: "button", class: "btn btn--small", onclick: () => { cardsData.splice(i, 1); drawCards(); } }, "Retirer la fiche");
+          // v283 : étiquette « nouvelle » / « modifiée » et changements.
+          const before = refById ? refById.get(c.id) : null;
+          const isNew = !!refById && !before;
+          const changes = before ? cardChangesNode(before, c) : null;
           return h(
             "div",
-            { class: "submission-card" },
-            h("div", { class: "cell-sub" }, `Fiche ${i + 1}${wrongs.some((w) => w) ? " · QCM" : ""}`),
+            { class: "submission-card" + (isNew ? " submission-card--new" : changes ? " submission-card--changed" : "") },
+            h(
+              "div",
+              { class: "cell-sub" },
+              `Fiche ${i + 1}${wrongs.some((w) => w) ? " · QCM" : ""}`,
+              isNew ? h("span", { class: "chg-tag chg-tag--new" }, "nouvelle") : changes ? h("span", { class: "chg-tag" }, "modifiée") : null
+            ),
+            changes,
             area("Question", c.question, 2, (v) => (cardsData[i].question = v)),
             area("Réponse", c.answer, 2, (v) => (cardsData[i].answer = v)),
             h("label", { class: "form-field submission-card-field" }, h("span", null, "Mauvaises réponses du QCM (les 3, ou aucune)"), h("div", { class: "submission-wrongs" }, ...wrongInputs)),
@@ -2057,6 +2148,7 @@
     const body = h(
       "div",
       { class: "submission-form" },
+      ref ? changesSummaryNode(ref, sub) : null,
       h("p", { class: "muted" }, `Proposée par ${`${sub.owner_first_name || ""} ${sub.owner_last_name || ""}`.trim() || "un enseignant"}${sub.class_name ? ` (classe « ${sub.class_name} »)` : ""}, le ${fmtDate(sub.created_at)}. Classement : ${taxonomyShort(sub.taxonomy, "—") || "—"}.`),
       field("Nom", nameIn),
       field("Description (optionnel)", descIn),
