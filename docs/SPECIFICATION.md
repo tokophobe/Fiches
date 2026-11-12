@@ -567,10 +567,20 @@ tout de suite, la liste à jour suit.
   (v280) et sur le bouton « Messagerie » de la page de la classe.
 - **Messages de darwin** (v279) : rangés avec les signalements ; voir
   §7.2.
-- **Signalements** : un élève signale une fiche erronée à son auteur ;
-  l'auteur les retrouve dans « Signalements reçus », l'élève dans
-  « Signalements émis ». Un bouton d'accueil « Signalements » n'apparaît
-  que s'il y en a.
+- **Signalements** : on signale une fiche erronée (drapeau), ou depuis
+  la v287 **toute la boîte** (bouton « Signaler cette boîte » en bas de
+  la page d'une boîte de classe ou prise dans la Librairie).
+  - Boîte partagée avec une **classe** → le signalement va à
+    l'enseignant qui l'a partagée ; il le retrouve dans « Signalements
+    reçus ».
+  - Boîte de la **Librairie** → il va à **darwin** (page Signalements de
+    Darwin Admin), même si la boîte vient d'un enseignant, qui ne le voit
+    pas. darwin répond et le marque traité ; s'il corrige une boîte
+    d'enseignant, l'enseignant reçoit la correction dans « Messages de
+    darwin » (Q15).
+  - Celui qui a signalé suit la réponse dans « Signalements émis »
+    (« En attente de darwin » ou « de l'auteur »). Un bouton d'accueil
+    « Signalements » n'apparaît que s'il y en a.
 
 ---
 
@@ -839,24 +849,29 @@ dernier mot. Rien n'arrive dans la Librairie sans cette relecture.
 - Quand darwin publie une nouvelle version, ceux qui avaient pris la
   boîte la reçoivent **automatiquement** (comme aujourd'hui).
 
-*Signalements*
-- Nouveau : **« Signaler cette boîte »** (remarque générale), en plus du
+*Signalements* (v287, détail au §6.5)
+- **« Signaler cette boîte »** (remarque générale), en plus du
   signalement d'une fiche.
 - Boîte de la Librairie → le signalement va à **darwin** ; boîte partagée
-  par un enseignant à sa classe → à l'enseignant (comme aujourd'hui).
+  par un enseignant à sa classe → à l'enseignant (comme avant).
 - Si darwin corrige, l'enseignant reçoit la correction dans « Messages de
   darwin » et peut répondre (décision Q15).
 
 *Autres règles*
-- **Suppression d'un compte enseignant** : ses boîtes publiées restent
-  dans la Librairie (la licence est irrévocable) ; son nom n'y apparaît
-  déjà plus.
+- **Suppression d'un compte enseignant** (v287) : ses boîtes publiées
+  restent dans la Librairie (la licence est irrévocable). Elles passent au
+  nom de darwin, sans son nom, son e-mail ni sa mention d'auteur ; ceux
+  qui les ont prises les gardent. Ses boîtes encore en relecture sont
+  supprimées avec le compte.
 - **Boîtes déjà publiées** par des enseignants avant ce chantier :
   remises « en relecture » (retirées de la Librairie jusqu'à validation).
-- **Ouverture au public** (Q16) : réglage de Darwin Admin « Librairie :
-  seulement les boîtes darwin », activé au départ ; les propositions
-  s'accumulent et sont relues, elles deviennent visibles quand le réglage
-  est désactivé.
+- **Ouverture au public** (Q16, v287) : réglage de Darwin Admin
+  « Librairie : seulement les boîtes darwin » (page Abonnements, bloc
+  « Accès aux boîtes de la Librairie »), **activé** tant qu'on ne l'a pas
+  désactivé. Les boîtes des enseignants, même relues et publiées, restent
+  alors cachées dans la Librairie, sauf pour leur auteur et pour darwin.
+  Elles apparaissent quand le réglage est désactivé. Les boîtes partagées
+  avec une classe ne sont pas concernées (la classe les reçoit toujours).
 - **Vie privée** : darwin ne lit **jamais** une boîte privée, sauf si son
   auteur l'a proposée ou si quelqu'un l'a signalée (décision du 9 nov.).
   Les boîtes partagées avec une classe sont de toute façon relues, puisqu'
@@ -871,7 +886,7 @@ dernier mot. Rien n'arrive dans la Librairie sans cette relecture.
 | B ✅ (v278) | Partage avec une classe et bouton « Publier » : accord obligatoire, envoi à darwin ; fin de la publication directe ; nouvelles versions renvoyées sans bruit ; boîtes déjà publiées remises en relecture |
 | C | Darwin Admin : liste de relecture (corriger, publier, demander une modification, refuser) ; export / import des décisions pour la relecture par Claude |
 | D ✅ (v279) | « Messages de darwin » : pastille, avant / après, réponse, « Appliquer à ma boîte », demande de retrait |
-| E | « Signaler cette boîte », signalements de la Librairie vers darwin, boîtes gardées après suppression du compte, réglage « seulement les boîtes darwin » |
+| E ✅ (v287) | « Signaler cette boîte », signalements de la Librairie vers darwin, boîtes gardées après suppression du compte, réglage « seulement les boîtes darwin » (`supabase/v287_migration.sql`) |
 | F (plus tard) | Signalements de boîtes privées (modération) et offre « Proposez vos boîtes à darwin, un mois offert si elles sont retenues » (accord explicite de l'auteur ; CGU et confidentialité mises à jour d'abord) |
 
 Chaque étape est d'abord essayée sur la copie de test (base darwin-test).
@@ -1004,6 +1019,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v287 | 12 nov. 2026 | Publication avec relecture, étape E : bouton « Signaler cette boîte » (page d'une boîte de classe ou de la Librairie) ; les signalements des boîtes de la Librairie vont à darwin (Darwin Admin : voir la boîte, répondre, marquer traité), ceux des boîtes de classe à l'enseignant ; réglage « Librairie : seulement les boîtes darwin », activé ; à la suppression d'un compte enseignant, ses boîtes publiées restent dans la Librairie au nom de darwin. Message de suppression du compte corrigé en conséquence. |
 | v286 | 11 nov. 2026 | Classes quittées : à chaque synchronisation, ce qui reste d'une classe dont l'élève ne fait plus partie (boîtes, dossiers, échéances) est retiré, même si elle a été quittée sur un autre appareil ou avant la v284. Échéance reçue d'une classe : plus d'alerte « Aucune boîte associée : ajoute les fiches… » (l'élève ne peut pas en ajouter, c'est l'enseignant qui les choisit). |
 | v285 | 11 nov. 2026 | Texte de l'accord reformulé (nouvelle version gardée dans la base, même règle) : chaque case est « à cocher pour pouvoir partager ou publier ta boîte » ; la 2e s'intitule « Utilisation de ta boîte dans l'abonnement darwin » et précise que partager ou publier ne demande aucun abonnement (l'abonnement sert à réviser les boîtes de la Librairie). CGU alignées. Les accords déjà donnés restent valables. |
 | v284 | 11 nov. 2026 | Quitter une classe retire aussi ses évènements de l'agenda. Évènements d'un jour (clic sur un jour du mois) : vraie page, avec bandeau, robot et titre, comme le reste de l'appli (avant : panneau superposé). Messages de darwin : fiche retirée affichée normalement avec l'étiquette « RETIRÉE » bien visible, « MODIFIÉE » un peu moins, « AJOUTÉE » en vert. Nouvelle fiche : « Annuler » quitte la page sans rien enregistrer (avant, en création, il effaçait seulement les champs). |
@@ -1088,6 +1104,9 @@ Darwin Admin (`admin/`) permet de régler, pour tous les utilisateurs :
 - l'**apparence** : couleurs, pictos, disposition des boutons de
   l'accueil, textes d'aide du robot ;
 - la **Librairie** : propositions des enseignants, corrections,
-  modération, vérification des questions QCM (§5.7) ;
+  modération, vérification des questions QCM (§5.7), réglage « seulement
+  les boîtes darwin » (§7.2, v287) ;
+- les **signalements** des boîtes de la Librairie (répondre, marquer
+  traité — v287) ;
 - les **établissements** (Super école) : devis, factures, enseignants
   désignés.

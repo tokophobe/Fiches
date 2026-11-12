@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v286";
+  const APP_VERSION = "v287";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -5960,7 +5960,7 @@
     // peut la corriger, et la correction va dans la Librairie elle-même.
     if (isLibraryMirrorSubject(card.subject) && !accountIsAdminFlag) {
       const go = await showRobotMessage(
-        "Cette fiche vient de la Librairie : elle se met à jour toute seule, tu ne peux pas la modifier. Si tu y vois une erreur, signale-la avec le drapeau : son auteur sera prévenu.",
+        "Cette fiche vient de la Librairie : elle se met à jour toute seule, tu ne peux pas la modifier. Si tu y vois une erreur, signale-la avec le drapeau : darwin sera prévenu.",
         {
           buttons: [
             { label: "OK", value: false },
@@ -5968,7 +5968,7 @@
           ],
         }
       );
-      if (go) openReportCardView(card);
+      if (go) openReportView(subjects.find((x) => x.id === card.subject), card);
       return;
     }
     openNewCardView();
@@ -8437,7 +8437,17 @@
         return boxIconMarkup(s);
       },
     },
-    "report-card": { text: "Signaler une fiche", hide: ["#view-report-card .settings-block-title"] },
+    // v287 : « Signaler cette boîte » utilise la même page.
+    "report-card": {
+      dynamic: () => {
+        try {
+          return reportCardContext && !reportCardContext.card ? "Signaler une boîte" : "Signaler une fiche";
+        } catch {
+          return "Signaler une fiche";
+        }
+      },
+      hide: ["#view-report-card .settings-block-title"],
+    },
     reports: { text: "Signalements reçus", hide: ["#view-reports > h2.section-title"] },
     "reports-hub": "Signalements",
     "reports-sent": "Signalements émis",
@@ -13232,7 +13242,7 @@
       if (!accountCurrentUser) return;
       const uid = accountCurrentUser.id;
       const go = await showRobotMessage(
-        "Supprimer ton compte ? Tout sera effacé définitivement, sur tous tes appareils : tes boîtes et tes fiches, ta progression, ton agenda, tes messages, les boîtes que tu as publiées dans la Librairie et, si tu es enseignant, tes classes (tes élèves ne les verront plus). On ne pourra rien récupérer.",
+        "Supprimer ton compte ? Tout sera effacé définitivement, sur tous tes appareils : tes boîtes et tes fiches, ta progression, ton agenda, tes messages, tes propositions à la Librairie et, si tu es enseignant, tes classes (tes élèves ne les verront plus). On ne pourra rien récupérer. Seules les boîtes que darwin a déjà publiées dans la Librairie y restent, sans ton nom (licence acceptée à l'envoi).",
         {
           buttons: [
             { label: "Annuler", value: false },
@@ -18400,12 +18410,20 @@
         ${s.link ? creationDetailPlainRow("Pour aller plus loin", learnLinkChipHtml(s.link, "box", s.name)) : ""}
         ${creationDetailCardsBlockHtml(n)}
       </div>
+      ${
+        // v287 (étape E) : signaler toute la boîte (Librairie → darwin,
+        // classe → l'enseignant qui l'a partagée).
+        isReportableBox(s)
+          ? `<div class="creation-detail-foot"><button type="button" class="btn btn--ghost creation-detail-act" data-act="report-box">Signaler cette boîte</button></div>`
+          : ""
+      }
     `;
     applyInfoBlockStates(wrap);
     fillCreationDetailCards(s);
     wrap.querySelectorAll("[data-act]").forEach((btn) => {
       btn.addEventListener("click", () => {
         if (btn.dataset.act === "review") startReviewOfBox(s.id);
+        else if (btn.dataset.act === "report-box") openReportView(s, null);
       });
     });
   }
@@ -18853,19 +18871,26 @@
     const card = cards.find((c) => c.id === cardId);
     if (!card) return;
     if (isReadonlyMirrorCard(card)) {
-      await openReportCardView(card);
+      await openReportView(subjects.find((x) => x.id === card.subject), card);
       return;
     }
     await toggleUnderConstruction(cardId);
   }
 
+  /** v287 (étape E) : boîte d'une classe ou prise dans la Librairie — on
+   *  peut la signaler (fiche ou boîte entière). */
+  function isReportableBox(s) {
+    return !!(s && (s.sharedBoxId || (s.fromLibrary && s.libraryOriginId)));
+  }
+
+  // v287 : `card` vaut null pour un signalement de toute la boîte.
   let reportCardContext = null; // { card, row, returnViewId }
-  async function openReportCardView(card) {
-    const s = subjects.find((x) => x.id === card.subject);
+  async function openReportView(s, card) {
     if (!s) return;
-    if (!(await requireParentalConsent("signaler une fiche à son auteur"))) return;
+    const what = card ? "une fiche" : "une boîte";
+    if (!(await requireParentalConsent(`signaler ${what}`))) return;
     if (!Sync.isConfigured() || !accountCurrentUser) {
-      await robotAlert("Connecte-toi à ton compte pour signaler une fiche à son auteur.");
+      await robotAlert(`Connecte-toi à ton compte pour signaler ${what}.`);
       return;
     }
     let row = null;
@@ -18875,8 +18900,9 @@
         const col = await Sync.library.get(s.libraryOriginId);
         if (col && col.owner_id) {
           row = { author_id: col.owner_id, source_kind: "library", source_id: String(col.id) };
-          // v275 : le nom de l'auteur n'est plus affiché.
-          authorLabel = "l'auteur de la boîte";
+          // v287 (étape E) : les signalements de la Librairie vont à darwin,
+          // qui relit les boîtes publiées (même celles d'un enseignant).
+          authorLabel = "darwin, qui relit les boîtes de la Librairie";
         }
       } else if (s.sharedBoxId) {
         const authorId = await Sync.reports.sharedBoxAuthor(s.sharedBoxId);
@@ -18889,21 +18915,37 @@
       row = null;
     }
     if (!row) {
-      await robotAlert("Impossible de retrouver l'auteur de cette fiche (hors ligne ?). Réessaie plus tard.");
+      await robotAlert(`Impossible de retrouver l'auteur de cette ${card ? "fiche" : "boîte"} (hors ligne ?). Réessaie plus tard.`);
       return;
     }
     if (row.author_id === accountCurrentUser.id) {
-      // Sa propre collection prise en Librairie : simple marque locale.
-      await toggleUnderConstruction(card.id);
+      // Sa propre collection prise en Librairie : simple marque locale
+      // (rien à signaler pour toute la boîte : on la corrige soi-même).
+      if (card) await toggleUnderConstruction(card.id);
+      else await robotAlert("C'est ta propre boîte : corrige-la directement depuis tes créations.");
       return;
     }
     const current = document.querySelector(".view.is-active");
-    reportCardContext = { card, row: { ...row, box_name: s.name }, returnViewId: current ? current.id : "view-home" };
+    reportCardContext = {
+      card: card || null,
+      row: { ...row, box_name: s.name },
+      recipient: PublicationRules.reportRecipient(row.source_kind),
+      returnViewId: current ? current.id : "view-home",
+    };
     const meta = el("report-card-meta");
     if (meta) meta.textContent = `Boîte « ${s.name} » — ton message sera envoyé à ${authorLabel}.`;
+    const title = el("report-card-title");
+    if (title) title.textContent = card ? "Signaler une fiche" : "Signaler une boîte";
+    const label = el("report-card-message-label");
+    if (label) label.textContent = row.source_kind === "library" ? "Ton message à darwin" : "Ton message à l'auteur";
     const preview = el("report-card-preview");
     if (preview) {
-      preview.innerHTML = `<div class="report-card-q">${toDisplayHtml(card.question)}</div><div class="report-card-a">${toDisplayHtml(card.answer)}</div>`;
+      if (card) {
+        preview.innerHTML = `<div class="report-card-q">${toDisplayHtml(card.question)}</div><div class="report-card-a">${toDisplayHtml(card.answer)}</div>`;
+      } else {
+        const n = cards.filter((c) => !c.deleted && c.subject === s.id).length;
+        preview.innerHTML = `<div class="report-card-q">Toute la boîte « ${escapeHtml(s.name)} »</div><div class="report-card-a">${n} fiche${n > 1 ? "s" : ""} — par exemple une erreur qui revient, un classement faux, une vidéo qui ne marche plus.</div>`;
+      }
     }
     const msg = el("report-card-message");
     if (msg) msg.value = "";
@@ -18911,7 +18953,8 @@
     const homeBtnEl = el("home-btn");
     if (homeBtnEl) homeBtnEl.hidden = false;
     if (el("body-logo-row")) el("body-logo-row").hidden = false;
-    applyBodyLogoSpeech("report-card");
+    applyBodyLogoSpeech(card ? "report-card" : "report-box");
+    updatePageHeaderTitle();
   }
   function closeReportCardView() {
     const back = (reportCardContext && reportCardContext.returnViewId) || "view-home";
@@ -18931,29 +18974,41 @@
       const msgEl = el("report-card-message");
       const message = ((msgEl && msgEl.value) || "").trim();
       if (!message) {
-        await robotAlert("Écris quelques mots pour expliquer à l'auteur ce qui ne va pas.");
+        await robotAlert(`Écris quelques mots pour expliquer à ${reportCardContext.recipient === "darwin" ? "darwin" : "l'auteur"} ce qui ne va pas.`);
         return;
       }
       const meta = (accountCurrentUser && accountCurrentUser.user_metadata) || {};
       const reporterName = `${meta.first_name || ""} ${meta.last_name || ""}`.trim() || (accountCurrentUser && accountCurrentUser.email) || "";
-      const { card, row } = reportCardContext;
+      const { card, row, recipient } = reportCardContext;
       const submitBtn = el("report-card-submit");
       if (submitBtn) submitBtn.disabled = true;
-      const { error } = await Sync.reports.send({
-        ...row,
-        reporter_name: reporterName,
-        card_id: mirrorSourceId(card),
-        card_question: stripHtmlFast(card.question).slice(0, 1000),
-        card_answer: stripHtmlFast(card.answer).slice(0, 1000),
-        message,
-      });
+      // v287 : signalement de toute la boîte (colonne `scope`,
+      // supabase/v287_migration.sql) ; pour une fiche, rien ne change.
+      const { error } = await Sync.reports.send(
+        card
+          ? {
+              ...row,
+              reporter_name: reporterName,
+              card_id: mirrorSourceId(card),
+              card_question: stripHtmlFast(card.question).slice(0, 1000),
+              card_answer: stripHtmlFast(card.answer).slice(0, 1000),
+              message,
+            }
+          : { ...row, reporter_name: reporterName, scope: "box", message }
+      );
       if (submitBtn) submitBtn.disabled = false;
       if (error) {
-        await robotAlert(/card_reports|schema cache|relation/i.test(error) ? "Les signalements ne sont pas encore activés sur le serveur (supabase/card_reports_migration.sql)." : `Le signalement n'a pas pu être envoyé : ${error}`);
+        await robotAlert(
+          /scope/i.test(error)
+            ? "Le signalement d'une boîte entière n'est pas encore activé sur le serveur (supabase/v287_migration.sql). Tu peux signaler une fiche en attendant."
+            : /card_reports|schema cache|relation/i.test(error)
+            ? "Les signalements ne sont pas encore activés sur le serveur (supabase/card_reports_migration.sql)."
+            : `Le signalement n'a pas pu être envoyé : ${error}`
+        );
         return;
       }
       closeReportCardView();
-      showToast("Signalement envoyé à l'auteur");
+      showToast(recipient === "darwin" ? "Signalement envoyé à darwin" : "Signalement envoyé à l'auteur");
     });
   }
   const reportCardCancel = el("report-card-cancel");
@@ -19069,7 +19124,7 @@
         <span class="rp-date">${escapeHtml(formatReportDate(r.created_at))}</span>
       </div>
       ${r.resolved ? `<div class="rp-status rp-status--done">Traité${r.resolved_at ? ` le ${escapeHtml(formatReportDate(r.resolved_at))}` : ""}</div>` : ""}
-      ${reportMiniCardHtml("Fiche signalée", r.card_question, r.card_answer)}
+      ${r.scope === "box" ? reportMiniCardHtml("Boîte signalée", "Remarque sur toute la boîte", "") : reportMiniCardHtml("Fiche signalée", r.card_question, r.card_answer)}
       <div class="rp-thread">
         ${reportBubbleHtml(r.reporter_name || "Un utilisateur", r.message, "other")}
         ${r.author_reply ? reportBubbleHtml("Toi", r.author_reply, "mine") : ""}
@@ -19125,7 +19180,7 @@
     list.innerHTML = "";
     if (empty) {
       empty.hidden = reports.length > 0;
-      empty.textContent = reports.error ? reportsMigrationHint(reports.error) : "Tu n'as encore signalé aucune fiche.";
+      empty.textContent = reports.error ? reportsMigrationHint(reports.error) : "Tu n'as encore rien signalé.";
     }
     const unseen = [];
     reports.forEach((r) => {
@@ -19138,20 +19193,24 @@
       const li = document.createElement("li");
       li.className = "subject-row report-row rp" + (r.resolved ? " report-row--done" : "") + (isNew ? " report-row--new" : "");
       const notChanged = r.resolved && r.resolved_question != null && !changed;
+      // v287 (étape E) : les signalements de la Librairie sont traités par darwin.
+      const toDarwin = PublicationRules.reportRecipient(r.source_kind) === "darwin";
       li.innerHTML = `
         <div class="rp-head">
           <span class="rp-box">${escapeHtml(r.box_name || "Boîte")}</span>
           <span class="rp-date">${escapeHtml(formatReportDate(r.created_at))}</span>
         </div>
         <div class="rp-status${r.resolved ? " rp-status--done" : " rp-status--wait"}">${
-          r.resolved ? `Traité${r.resolved_at ? ` le ${escapeHtml(formatReportDate(r.resolved_at))}` : ""}` : "En attente de l'auteur"
+          r.resolved ? `Traité${r.resolved_at ? ` le ${escapeHtml(formatReportDate(r.resolved_at))}` : ""}` : toDarwin ? "En attente de darwin" : "En attente de l'auteur"
         }${isNew ? ` <span class="rp-new">nouveau</span>` : ""}</div>
-        ${changed
+        ${r.scope === "box"
+          ? reportMiniCardHtml("Boîte signalée", "Remarque sur toute la boîte", "")
+          : changed
           ? `<div class="rp-cards">${reportMiniCardHtml("Avant", r.card_question, r.card_answer)}${reportMiniCardHtml("Après correction", r.resolved_question, r.resolved_answer, true)}</div>`
           : reportMiniCardHtml(notChanged ? "Fiche signalée (non modifiée)" : "Fiche signalée", r.card_question, r.card_answer)}
         <div class="rp-thread">
           ${reportBubbleHtml("Toi", r.message, "mine")}
-          ${r.author_reply ? reportBubbleHtml("L'auteur de la fiche", r.author_reply, "other") : ""}
+          ${r.author_reply ? reportBubbleHtml(toDarwin ? "darwin" : "L'auteur de la fiche", r.author_reply, "other") : ""}
         </div>`;
       list.appendChild(li);
     });

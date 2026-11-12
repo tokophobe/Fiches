@@ -41,6 +41,9 @@ en ligne). Rester concret et proportionné : un conseil utile, pas un cours.
   Stripe, sauvegardes…), points de vigilance et seuils (quand changer de
   forfait), obligations administratives (déclarations de chiffre
   d'affaires…), pour qu'aucun utilisateur ne soit bloqué par un oubli.
+  Brouillon commencé le 12 nov. 2026 :
+  `docs/FEUILLE-DE-ROUTE-EXPLOITATION.md` (questions ❓ en attente de
+  réponse ; à tenir à jour à chaque nouvelle tâche d'administration).
 
 ## Spécification fonctionnelle (à lire en premier)
 
@@ -173,6 +176,15 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   `library_submission_messages` dans la publication `supabase_realtime` ;
   `startLiveNotifications` dans `app.js`, `startLibraryLive` dans
   `admin.js`). Suivi des modifications : `PublicationRules.wordDiff`.
+  Étape E (v287, `supabase/v287_migration.sql`) : « Signaler cette
+  boîte » (`openReportView(s, null)`, colonne `card_reports.scope`) ;
+  signalements Librairie lus et traités par darwin seulement (RLS,
+  `admin_handle_report`, `PublicationRules.reportRecipient`) ; réglage
+  `libraryPolicy.darwinOnly` appliqué par la vue `library_catalog`
+  (`library_darwin_only()`) ; déclencheur
+  `keep_published_boxes_on_user_delete` sur `auth.users`. Reste
+  l'étape C (export / import des décisions pour la relecture par Claude)
+  et F (plus tard).
   À l'étape C, charger `publication-rules.js` aussi dans `admin/`.
 - Les autres différences sont à préciser avec le propriétaire (spéc. §3.2).
 

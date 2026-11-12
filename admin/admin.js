@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v286";
+  const ADMIN_VERSION = "v287";
   // v281 : les erreurs de Darwin Admin portent aussi leur version
   // (js/error-report.js lit window.FICHES_APP_VERSION).
   window.FICHES_APP_VERSION = ADMIN_VERSION;
@@ -999,7 +999,7 @@
         body: h(
           "div",
           { class: "stack" },
-          h("p", { style: { margin: 0 } }, `Le compte ${u.email}, ses boîtes, fiches, classes, messages et publications dans la Librairie seront supprimés définitivement. Ses élèves perdront les boîtes de ses classes.`),
+          h("p", { style: { margin: 0 } }, `Le compte ${u.email}, ses boîtes, fiches, classes, messages et propositions en relecture seront supprimés définitivement. Ses élèves perdront les boîtes de ses classes. Ses boîtes déjà publiées dans la Librairie restent, au nom de darwin (licence irrévocable, v287).`),
           h("label", { class: "field" }, h("span", null, "Pour confirmer, écris l'email du compte"), typed)
         ),
         buttons: [
@@ -1160,6 +1160,12 @@
     if (!live()) return;
     policyCard.replaceChildren(
       h("div", { class: "card-head" }, h("div", null, h("h2", { class: "card-title" }, "Accès aux boîtes de la Librairie"))),
+      // v287 (publication avec relecture, étape E, spéc. Q16).
+      setRow(
+        "Librairie : seulement les boîtes darwin",
+        switchCtrl(["libraryPolicy", "darwinOnly"], { defaultTrue: true }),
+        "Activé : la Librairie ne montre que les boîtes de darwin (boîtes toutes prêtes). Les boîtes des enseignants, relues et publiées, restent cachées (sauf pour leur auteur et pour darwin) : à garder tant que l'appli n'est pas ouverte au public. Désactivé : elles apparaissent. Appliqué par le serveur (supabase/v287_migration.sql)."
+      ),
       setRow(
         "Réserver les boîtes de la Librairie aux abonnés",
         switchCtrl(["subscriptionPolicy", "enforce"]),
@@ -2997,6 +3003,47 @@
      Signalements
      ================================================================ */
   const reportsQuery = { status: "open", offset: 0 };
+  /** v287 : boutons de traitement d'un signalement de la Librairie. */
+  function reportActions(r) {
+    const handle = async (reply, resolve) => {
+      try {
+        await rpc("admin_handle_report", { p_id: r.id, p_reply: reply || null, p_resolve: !!resolve });
+        toast(resolve ? "Signalement traité — la personne qui l'a fait en est informée" : "Réponse envoyée");
+        route();
+      } catch (e) {
+        toast(/admin_handle_report|schema cache/i.test(e.message || "") ? "Fonction absente : exécute supabase/v287_migration.sql." : e.message, true);
+      }
+    };
+    const replyBtn = h("button", { type: "button", class: "btn btn--small" }, r.author_reply ? "Modifier la réponse" : "Répondre");
+    replyBtn.addEventListener("click", async () => {
+      const area = h("textarea", { class: "input", rows: 4, maxlength: 2000, placeholder: "Merci, c'est corrigé." }, r.author_reply || "");
+      const resolveBox = h("input", { type: "checkbox", checked: !r.resolved });
+      const ok = await openModal({
+        title: "Répondre à la personne qui a signalé",
+        body: h("div", { class: "stack" }, area, r.resolved ? null : h("label", { style: { display: "flex", gap: "8px", alignItems: "center" } }, resolveBox, "Marquer aussi comme traité")),
+        buttons: [
+          { label: "Annuler", value: false },
+          {
+            label: "Envoyer",
+            primary: true,
+            value: true,
+            onClick: () => {
+              if (!area.value.trim()) {
+                toast("Écris une réponse.", true);
+                return false;
+              }
+            },
+          },
+        ],
+      });
+      if (ok === true) handle(area.value.trim(), !r.resolved && resolveBox.checked);
+    });
+    const viewBtn = h("button", { type: "button", class: "btn btn--small" }, "Voir la boîte");
+    viewBtn.addEventListener("click", () => openCollectionCards(r.source_id, r.box_name));
+    const doneBtn = r.resolved ? null : h("button", { type: "button", class: "btn btn--small btn--primary" }, "Marquer traité");
+    if (doneBtn) doneBtn.addEventListener("click", () => handle(null, true));
+    return h("div", { class: "report-actions", style: { display: "flex", gap: "8px", flexWrap: "wrap", marginTop: "10px" } }, viewBtn, replyBtn, doneBtn);
+  }
   PAGES.reports = async (root, params, live) => {
     setTitle("Signalements", [{ label: "Contenus" }]);
     if (state.limited) {
@@ -3025,7 +3072,13 @@
       );
     drawSeg();
     root.appendChild(h("div", { class: "toolbar" }, segWrap, count));
-    root.appendChild(h("p", { class: "card-hint", style: { marginTop: 0 } }, "C'est l'auteur de la fiche qui traite le signalement depuis l'appli. Cette page sert à suivre ce qui reste en attente."));
+    root.appendChild(
+      h(
+        "p",
+        { class: "card-hint", style: { marginTop: 0 } },
+        "Librairie : c'est à toi (darwin) de traiter le signalement — réponds à la personne qui l'a fait et marque-le traité ; pour corriger la boîte, passe par Librairie (boîte toute prête) ou par la proposition de l'enseignant (il recevra la correction dans « Messages de darwin »). Classe : c'est l'enseignant qui le traite depuis l'appli ; cette page sert alors seulement à suivre."
+      )
+    );
     root.appendChild(list);
     const load = async () => {
       list.replaceChildren(loadingCard());
@@ -3053,18 +3106,22 @@
               { class: "report-head" },
               r.resolved ? badge("Traité", "ok") : badge("À traiter", "danger"),
               badge(r.source_kind === "library" ? "Librairie" : "Classe"),
+              r.scope === "box" ? badge("Boîte entière", "warn") : null,
               h("b", null, r.box_name || "Boîte"),
               h("span", null, "·", " ", fmtDateTime(r.created_at)),
               h("span", null, "·", " de ", h("a", { href: `#/users/${r.reporter_id}` }, r.reporter_name || r.reporter_email), " à ", h("a", { href: `#/users/${r.author_id}` }, r.author_name || r.author_email))
             ),
-            h("div", { class: "quote-label" }, "Fiche signalée"),
-            h("div", { class: "quote" }, h("b", null, stripHtml(r.card_question)), "\n", stripHtml(r.card_answer)),
+            r.scope === "box"
+              ? null
+              : [h("div", { class: "quote-label" }, "Fiche signalée"), h("div", { class: "quote" }, h("b", null, stripHtml(r.card_question)), "\n", stripHtml(r.card_answer))],
             h("div", { class: "quote-label" }, "Message du signaleur"),
             h("div", { class: "quote quote--msg" }, r.message),
             r.resolved && (r.resolved_question || r.resolved_answer)
               ? [h("div", { class: "quote-label" }, `Après correction (${fmtDate(r.resolved_at)})`), h("div", { class: "quote quote--after" }, h("b", null, stripHtml(r.resolved_question)), "\n", stripHtml(r.resolved_answer))]
               : null,
-            r.author_reply ? [h("div", { class: "quote-label" }, "Réponse de l'auteur"), h("div", { class: "quote" }, r.author_reply)] : null
+            r.author_reply ? [h("div", { class: "quote-label" }, r.source_kind === "library" ? "Réponse de darwin" : "Réponse de l'auteur"), h("div", { class: "quote" }, r.author_reply)] : null,
+            // v287 (étape E) : darwin traite les signalements de la Librairie.
+            r.source_kind === "library" ? reportActions(r) : null
           )
         )
       );

@@ -104,8 +104,10 @@ def report():
     stats = os.path.join(ROOT, "site", "assets", "stats-config.js")
     if os.path.exists(stats) and re.search(r'url:\s*""', read(stats)):
         todo.append("site/assets/stats-config.js vide : les visites du site ne sont pas comptées.")
+    # v287 : site/defi.html n'existe plus (le défi est dans l'appli) — on
+    # ne vérifie que les pages présentes.
     for p in ("site/index.html", "site/defi.html"):
-        if 'rel="canonical"' not in read(os.path.join(ROOT, p)):
+        if os.path.exists(os.path.join(ROOT, p)) and 'rel="canonical"' not in read(os.path.join(ROOT, p)):
             todo.append(f"{p} : adresse « canonical » absente.")
 
     print("=== Lancement : bilan des fichiers ===\n")
@@ -115,24 +117,26 @@ def report():
         print("  ✗", x)
     print(
         """
-=== Hors fichiers (voir claude/checklist-mise-en-ligne.md) ===
-  • Supabase : toutes les migrations jusqu'à round80, formule Pro et
-    sauvegardes, URL du site (Authentication → URL Configuration),
-    SMTP de l'authentification, captcha.
+=== Hors fichiers ===
+  • Feuille de route d'exploitation (docs/FEUILLE-DE-ROUTE-EXPLOITATION.md)
+    complétée et validée avec Claude AVANT l'ouverture.
+  • Supabase (base RÉELLE) : toutes les migrations de supabase/ jusqu'à
+    v287, formule Pro et sauvegardes, URL du site (Authentication → URL
+    Configuration), SMTP de l'authentification, captcha.
   • Fonctions serveur à jour ; tâche de nuit « inactive-accounts »
     (README-stripe §13).
   • Stripe en réel : clés live, prix live, webhook live.
+  • Licence et CGU relues par un avocat (spéc. Q17, Q19).
   • Darwin Admin :
       - Abonnements → « Réserver les boîtes de la Librairie aux abonnés » ;
       - Abonnements → « Ouvrir les paiements » ;
+      - Abonnements → « Librairie : seulement les boîtes darwin » : décider
+        s'il faut le désactiver à l'ouverture (v287) ;
       - Suivi → Comptes inactifs → « Suppression automatique activée » ;
       - Comptes → supprimer les comptes de test (bouton en bas de la fiche) ;
       - Librairie → retirer les collections de test.
   • Retirer packs/ de l'hébergement (le contenu passe par Darwin Admin).
   • Google Search Console : déclarer le site et sitemap.xml.
-  • Adresse de test (v252) : une copie de l'appli, avec sa propre base,
-    pour essayer chaque version avant de la mettre en ligne (fusionner
-    = publier pour tous les utilisateurs).
 """
     )
     return not todo

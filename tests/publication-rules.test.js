@@ -116,3 +116,9 @@ test("Suivi des modifications : un passage réécrit donne un seul bloc barré p
   assert.equal(d.filter((x) => x.type !== "ins").map((x) => x.text).join(""), "Sydney, la plus grande ville.");
   assert.equal(d.filter((x) => x.type !== "del").map((x) => x.text).join(""), "Canberra, et non Sydney.");
 });
+
+test("Un signalement d'une boîte de la Librairie va à darwin, celui d'une boîte de classe à l'enseignant", () => {
+  assert.equal(R.reportRecipient("library"), "darwin");
+  assert.equal(R.reportRecipient("class"), "teacher");
+  assert.equal(R.reportRecipient("autre"), null);
+});
