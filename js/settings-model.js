@@ -406,7 +406,9 @@
     creations: ["Ici, toutes les boîtes que tu as créées. Publie-les dans la Librairie, ou ajoute-les à tes révisions pour les ranger dans l'organisation de tes boîtes."],
     "creation-detail": ["Le résumé de ta boîte : ses fiches, son classement, sa place dans tes révisions. Le bouton + ajoute une fiche."],
     "box-create": ["Donne un nom à ta boîte et classe-la : ce classement servira aux filtres, et sera repris si tu la publies dans la Librairie."],
-    "report-card": ["Explique à l'auteur ce qui ne va pas dans cette fiche : il recevra ton message et pourra la corriger."],
+    "report-card": ["Explique ce qui ne va pas dans cette fiche : l'auteur (ou darwin, pour une boîte de la Librairie) recevra ton message et pourra la corriger."],
+    // v287 (étape E) : signaler toute une boîte.
+    "report-box": ["Explique ce qui ne va pas dans cette boîte (une erreur qui revient, un mauvais classement, une vidéo qui ne marche plus…) : ton professeur, ou darwin pour une boîte de la Librairie, recevra ton message."],
     reports: ["Voici les fiches que d'autres utilisateurs t'ont signalées. Corrige-les, écris si besoin à la personne qui les a signalées, puis marque le signalement comme traité : elle en sera informée."],
     "reports-hub": ["Retrouve ici les fiches que tu as signalées à leur auteur, et celles que d'autres t'ont signalées. Si tu partages ou publies des boîtes, « Messages de darwin » rassemble aussi tes échanges avec darwin."],
     "darwin-messages": ["Ici, darwin te parle de tes boîtes partagées ou publiées : corrections (tu peux les appliquer à ta boîte), demandes de modification, réponses. Tu peux lui répondre, ou lui demander de retirer une boîte de la Librairie."],
@@ -452,6 +454,7 @@
     "creation-detail": "Résumé d'une boîte",
     "box-create": "Créer / classer une boîte",
     "report-card": "Signaler une fiche à son auteur",
+    "report-box": "Signaler une boîte",
     reports: "Signalements reçus",
     "reports-hub": "Signalements (choix)",
     "reports-sent": "Signalements émis",
@@ -760,6 +763,13 @@
             referralMaxMonthsPerYear: n("referralMaxMonthsPerYear", 12, 60),
           };
         })(),
+      },
+      // v287 (publication avec relecture, étape E) : tant que l'appli
+      // n'est pas ouverte au public, la Librairie ne montre que les boîtes
+      // de darwin (activé tant qu'on ne l'a pas désactivé). Appliqué par le
+      // serveur (vue library_catalog, supabase/v287_migration.sql).
+      libraryPolicy: {
+        darwinOnly: !(parsed.libraryPolicy && parsed.libraryPolicy.darwinOnly === false),
       },
       textColors: Array.isArray(parsed.textColors) && parsed.textColors.length > 0 ? parsed.textColors : DEFAULT_TEXT_COLORS,
       // Horodatage de la dernière modification (posé par saveDevSettings) —

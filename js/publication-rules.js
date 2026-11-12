@@ -234,10 +234,18 @@
     return !darwinOnly || collection.origin === "darwin";
   }
 
+  /** v287 (étape E) : qui reçoit un signalement (d'une fiche ou de toute
+   *  la boîte). Boîte de la Librairie → darwin, même si elle vient d'un
+   *  enseignant ; boîte partagée avec une classe → l'enseignant qui l'a
+   *  partagée. */
+  function reportRecipient(sourceKind) {
+    return sourceKind === "library" ? "darwin" : sourceKind === "class" ? "teacher" : null;
+  }
+
   const api = {
     LICENSE_VERSION, STATUS, TRANSITIONS, AUTHOR_MODES,
     canTransition, isOpen, canPropose, needsLicenseAcceptance, authorMention, teacherNotified,
-    shouldResubmit, cardsSignature, cardsDiff, wordDiff, visibleInLibrary,
+    shouldResubmit, cardsSignature, cardsDiff, wordDiff, visibleInLibrary, reportRecipient,
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.PublicationRules = api;
