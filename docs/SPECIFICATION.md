@@ -979,7 +979,7 @@ programme » du site montre aussi ce qui manque (208 chapitres au 13 nov.
 2026). Utile pour suivre le travail, mais à l'ouverture au public, faut-il
 les garder visibles, les masquer, ou garder la page seulement pour
 l'équipe ? Aujourd'hui, tout le site est marqué « ne pas indexer ».
-> Réponse :
+> Réponse : on les gardera visibles à l'ouverture au public mais au lieu de mettre la mention "à créer", on mettra la mention "bientôt disponible"
 
 **Q17 — Relecture du texte de licence par un juriste.** Une première
 analyse a été reçue le 11 nov. 2026 (résumé et propositions :
@@ -998,7 +998,7 @@ suffit). L'analyse juridique conseille que les vidéos YouTube restent
 lisibles sans condition. Faut-il ouvrir une Librairie consultable sans
 compte (dans l'appli, ou sur le site vitrine), ou un compte gratuit
 suffit-il ? À poser aussi à l'avocat.
-> Réponse :
+> Réponse : on reste comme actuellement, il faut créer un compte (gratuit) pour accéder à la page d'accueil de l'appli où est le bouton librairie
 
 **Q14 bis — Sous-niveaux de la catégorie « autres ».** Les catégories
 sont désormais « école & études » et « autres » (fait le 8 nov. 2026).
