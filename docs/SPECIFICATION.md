@@ -501,8 +501,12 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    défini ainsi le 13 nov. 2026 (français, maths, histoire, géographie,
    EMC, SVT, physique, chimie), puis la 4e (français, maths, histoire,
    géographie, SVT, physique), la 5e (français, maths, histoire,
-   géographie, SVT) et la 6e (français, maths, sciences, histoire,
-   géographie).
+   géographie, SVT), la 6e (français, maths, sciences, histoire,
+   géographie) et le lycée (Seconde, Première, Terminale : français,
+   maths, histoire, géographie, SVT, physique, chimie, et SES en
+   Terminale). Au lycée, les boîtes d'exercices types (« … en
+   exercices ») sont des sous-thèmes du chapitre qu'elles entraînent ;
+   les boîtes des séries technologiques gardent leur propre chapitre.
 7. **Contrôles automatiques** de la règle 1 (v289 : ils repèrent aussi
    « Laquelle n'est pas… ? », « Lequel est un… ? », « parmi ceux-ci »,
    « Quelle phrase est correcte ? », « Quelle forme convient ? », « la
@@ -1075,6 +1079,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 13 nov. 2026 | Site, page « Le programme » (§7.6, rien ne change dans l'appli) : lycée refait comme le collège — Seconde, Première et Terminale (français, maths, histoire, géographie, SVT, physique, chimie, SES de Terminale) regroupés par grands thèmes du programme officiel avec « l'essentiel » et sous-thèmes, chapitres « Révisions du bac » (ou « de l'année ») pour les méthodes, repères et notions. Les 356 boîtes du lycée y sont toutes rangées. |
 | — | 13 nov. 2026 | Site, page « Le programme » (§7.6, rien ne change dans l'appli) : programmes de 5e et de 6e refaits comme la 3e et la 4e — grands thèmes du programme officiel avec « l'essentiel » et sous-thèmes (5e : français, maths, histoire, géographie, SVT ; 6e : français, maths, sciences, histoire, géographie), chapitre « Révisions de l'année » pour les boîtes qui mélangent plusieurs chapitres. Les 85 boîtes de 5e et de 6e y sont toutes rangées. |
 | — | 13 nov. 2026 | Site, page « Le programme » (§7.6, rien ne change dans l'appli) : programme de 4e refait de la même façon que la 3e — chapitres du programme officiel avec « l'essentiel » et sous-thèmes (français, maths, histoire, géographie, SVT, physique), et un chapitre « Révisions de l'année » pour les boîtes qui mélangent plusieurs chapitres. Les 54 boîtes de 4e y sont toutes rangées. |
 | — | 13 nov. 2026 | Site, page « Le programme » (§7.6, rien ne change dans l'appli) : programme de 3e refait d'après le programme officiel pour le français, les maths, l'histoire, la géographie, l'EMC, la SVT, la physique et la chimie — chaque chapitre a sa boîte « l'essentiel » et ses sous-thèmes (déjà faits ou « bientôt disponible »), et un chapitre « Révisions du brevet » par matière. Les 134 boîtes de 3e y sont toutes rangées. |

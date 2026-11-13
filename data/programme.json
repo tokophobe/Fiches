@@ -10108,16 +10108,6 @@
      "nom": "Français",
      "chapitres": [
       {
-       "titre": "Les figures de style",
-       "boites": [
-        {
-         "cle": "francais-figures-de-style",
-         "titre": "Français — Les figures de style",
-         "fiches": 30
-        }
-       ]
-      },
-      {
        "titre": "La poésie du Moyen Âge au XVIIIe siècle",
        "boites": [
         {
@@ -10125,15 +10115,37 @@
          "titre": "Seconde — Français : la poésie du Moyen Âge au XVIIIe siècle",
          "fiches": 17
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Le sonnet et la poésie de la Pléiade",
+         "boites": []
+        },
+        {
+         "titre": "Versification : vers, rimes et strophes",
+         "boites": []
+        }
        ]
       },
       {
-       "titre": "Le théâtre du XVIIe au XXIe siècle",
+       "titre": "La littérature d'idées et la presse du XIXe au XXIe siècle",
        "boites": [
         {
-         "cle": "r37-fr-theatre",
-         "titre": "Seconde — Français : le théâtre du XVIIe au XXIe siècle",
-         "fiches": 18
+         "cle": "r37-fr-idees",
+         "titre": "Seconde — Français : la littérature d'idées et la presse du XIXe au XXIe siècle",
+         "fiches": 17
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Le vocabulaire de l'argumentation",
+         "boites": [
+          {
+           "cle": "r57-2nde-francais-argumentation",
+           "titre": "Seconde — Français : le vocabulaire de l'argumentation",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -10145,15 +10157,35 @@
          "titre": "Seconde — Français : le roman et le récit du XVIIIe au XXIe siècle",
          "fiches": 19
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Réalisme et naturalisme",
+         "boites": []
+        },
+        {
+         "titre": "Narrateur et point de vue",
+         "boites": []
+        }
        ]
       },
       {
-       "titre": "La littérature d'idées et la presse du XIXe au XXIe siècle",
+       "titre": "Le théâtre du XVIIe au XXIe siècle",
        "boites": [
         {
-         "cle": "r37-fr-idees",
-         "titre": "Seconde — Français : la littérature d'idées et la presse du XIXe au XXIe siècle",
-         "fiches": 17
+         "cle": "r37-fr-theatre",
+         "titre": "Seconde — Français : le théâtre du XVIIe au XXIe siècle",
+         "fiches": 18
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Tragédie et comédie classiques",
+         "boites": []
+        },
+        {
+         "titre": "Le théâtre moderne et contemporain",
+         "boites": []
         }
        ]
       },
@@ -10168,12 +10200,12 @@
        ]
       },
       {
-       "titre": "Le vocabulaire de l'argumentation",
+       "titre": "Les figures de style",
        "boites": [
         {
-         "cle": "r57-2nde-francais-argumentation",
-         "titre": "Seconde — Français : le vocabulaire de l'argumentation",
-         "fiches": 16
+         "cle": "francais-figures-de-style",
+         "titre": "Français — Les figures de style",
+         "fiches": 30
         }
        ]
       },
@@ -10188,12 +10220,44 @@
      "nom": "Mathématiques",
      "chapitres": [
       {
-       "titre": "Nombres, intervalles et calculs",
+       "titre": "Nombres et calculs",
        "boites": [
         {
          "cle": "r35-2nde-maths-nombres",
          "titre": "Seconde — Maths : nombres, intervalles et calculs",
          "fiches": 21
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Multiples, diviseurs et nombres premiers",
+         "boites": [
+          {
+           "cle": "r40-b6-arithmetique",
+           "titre": "Seconde — Maths : multiples, diviseurs et nombres premiers",
+           "fiches": 16
+          }
+         ]
+        },
+        {
+         "titre": "Calcul littéral, développer et factoriser",
+         "boites": [
+          {
+           "cle": "r40-b6-calcul-litteral",
+           "titre": "Seconde — Maths : calcul littéral, développer et factoriser",
+           "fiches": 17
+          }
+         ]
+        },
+        {
+         "titre": "Équations, inéquations et tableaux de signes",
+         "boites": [
+          {
+           "cle": "r37-maths-equations",
+           "titre": "Seconde — Maths : équations, inéquations et tableaux de signes",
+           "fiches": 17
+          }
+         ]
         }
        ]
       },
@@ -10205,6 +10269,32 @@
          "titre": "Seconde — Maths : vecteurs, repérage et droites",
          "fiches": 18
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Fonctions affines et équations de droites",
+         "boites": []
+        },
+        {
+         "titre": "Systèmes de deux équations à deux inconnues",
+         "boites": [
+          {
+           "cle": "r40-b6-systemes",
+           "titre": "Seconde — Maths : systèmes de deux équations à deux inconnues",
+           "fiches": 16
+          }
+         ]
+        },
+        {
+         "titre": "Géométrie plane, projeté orthogonal et trigonométrie",
+         "boites": [
+          {
+           "cle": "r38-a5-maths-geometrie",
+           "titre": "Seconde — Maths : géométrie plane, projeté orthogonal et trigonométrie",
+           "fiches": 18
+          }
+         ]
+        }
        ]
       },
       {
@@ -10214,6 +10304,16 @@
          "cle": "r35-2nde-maths-fonctions",
          "titre": "Seconde — Maths : fonctions de référence et variations",
          "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Fonctions carré, inverse, racine carrée et cube",
+         "boites": []
+        },
+        {
+         "titre": "Variations, extremums et signe d'une fonction",
+         "boites": []
         }
        ]
       },
@@ -10225,15 +10325,25 @@
          "titre": "Seconde — Maths : statistiques, évolutions et probabilités",
          "fiches": 17
         }
-       ]
-      },
-      {
-       "titre": "Équations, inéquations et tableaux de signes",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r37-maths-equations",
-         "titre": "Seconde — Maths : équations, inéquations et tableaux de signes",
-         "fiches": 17
+         "titre": "Évolutions et pourcentages",
+         "boites": []
+        },
+        {
+         "titre": "Modéliser une expérience aléatoire",
+         "boites": [
+          {
+           "cle": "r40-b6-proba-modelisation",
+           "titre": "Seconde — Maths : modéliser une expérience aléatoire",
+           "fiches": 20
+          }
+         ]
+        },
+        {
+         "titre": "Échantillonnage et fluctuation",
+         "boites": []
         }
        ]
       },
@@ -10246,64 +10356,6 @@
          "fiches": 19
         }
        ]
-      },
-      {
-       "titre": "Géométrie plane, projeté orthogonal et trigonométrie",
-       "boites": [
-        {
-         "cle": "r38-a5-maths-geometrie",
-         "titre": "Seconde — Maths : géométrie plane, projeté orthogonal et trigonométrie",
-         "fiches": 18
-        }
-       ]
-      },
-      {
-       "titre": "Calcul littéral, développer et factoriser",
-       "boites": [
-        {
-         "cle": "r40-b6-calcul-litteral",
-         "titre": "Seconde — Maths : calcul littéral, développer et factoriser",
-         "fiches": 17
-        }
-       ]
-      },
-      {
-       "titre": "Systèmes de deux équations à deux inconnues",
-       "boites": [
-        {
-         "cle": "r40-b6-systemes",
-         "titre": "Seconde — Maths : systèmes de deux équations à deux inconnues",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Multiples, diviseurs et nombres premiers",
-       "boites": [
-        {
-         "cle": "r40-b6-arithmetique",
-         "titre": "Seconde — Maths : multiples, diviseurs et nombres premiers",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Modéliser une expérience aléatoire",
-       "boites": [
-        {
-         "cle": "r40-b6-proba-modelisation",
-         "titre": "Seconde — Maths : modéliser une expérience aléatoire",
-         "fiches": 20
-        }
-       ]
-      },
-      {
-       "titre": "Fonctions affines et équations de droites",
-       "boites": []
-      },
-      {
-       "titre": "Échantillonnage et fluctuation",
-       "boites": []
       }
      ]
     },
@@ -10311,6 +10363,46 @@
      "id": "histoire",
      "nom": "Histoire",
      "chapitres": [
+      {
+       "titre": "Le monde méditerranéen, de l'Antiquité au Moyen Âge",
+       "boites": [
+        {
+         "cle": "r38-a5-hist-mediterranee",
+         "titre": "Seconde — Histoire : le monde méditerranéen, de l'Antiquité au Moyen Âge",
+         "fiches": 18
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "La Méditerranée antique : Athènes et Rome",
+         "boites": []
+        },
+        {
+         "titre": "La Méditerranée médiévale : chrétientés et islam",
+         "boites": []
+        }
+       ]
+      },
+      {
+       "titre": "XVe-XVIe siècles, un nouveau rapport au monde",
+       "boites": [
+        {
+         "cle": "r38-a5-hist-nouveau-monde",
+         "titre": "Seconde — Histoire : XVe-XVIe siècles, un nouveau rapport au monde",
+         "fiches": 17
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Grandes découvertes et premiers empires coloniaux",
+         "boites": []
+        },
+        {
+         "titre": "Renaissance, humanisme et réformes religieuses",
+         "boites": []
+        }
+       ]
+      },
       {
        "titre": "L'affirmation de l'État dans le royaume de France",
        "boites": [
@@ -10332,26 +10424,6 @@
        ]
       },
       {
-       "titre": "Le monde méditerranéen, de l'Antiquité au Moyen Âge",
-       "boites": [
-        {
-         "cle": "r38-a5-hist-mediterranee",
-         "titre": "Seconde — Histoire : le monde méditerranéen, de l'Antiquité au Moyen Âge",
-         "fiches": 18
-        }
-       ]
-      },
-      {
-       "titre": "XVe-XVIe siècles, un nouveau rapport au monde",
-       "boites": [
-        {
-         "cle": "r38-a5-hist-nouveau-monde",
-         "titre": "Seconde — Histoire : XVe-XVIe siècles, un nouveau rapport au monde",
-         "fiches": 17
-        }
-       ]
-      },
-      {
        "titre": "Les Lumières, les sciences et la société d'ordres",
        "boites": [
         {
@@ -10359,15 +10431,17 @@
          "titre": "Seconde — Histoire : les Lumières, les sciences et la société d'ordres",
          "fiches": 17
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Traites et économie atlantique au XVIIIe siècle",
+         "boites": []
+        },
+        {
+         "titre": "Tensions et crises de l'Ancien Régime",
+         "boites": []
+        }
        ]
-      },
-      {
-       "titre": "Traites et économie atlantique au XVIIIe siècle",
-       "boites": []
-      },
-      {
-       "titre": "Tensions et crises de l'Ancien Régime",
-       "boites": []
       }
      ]
     },
@@ -10383,15 +10457,17 @@
          "titre": "Seconde — Géographie : sociétés et environnements, des équilibres fragiles",
          "fiches": 17
         }
-       ]
-      },
-      {
-       "titre": "Des mobilités généralisées",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r37-geo-mobilites",
-         "titre": "Seconde — Géographie : des mobilités généralisées",
-         "fiches": 16
+         "titre": "La France : des milieux entre valorisation et protection",
+         "boites": [
+          {
+           "cle": "r40-b6-france-milieux",
+           "titre": "Seconde — Géographie : la France, des milieux entre valorisation et protection",
+           "fiches": 17
+          }
+         ]
         }
        ]
       },
@@ -10406,31 +10482,33 @@
        ]
       },
       {
+       "titre": "Des mobilités généralisées",
+       "boites": [
+        {
+         "cle": "r37-geo-mobilites",
+         "titre": "Seconde — Géographie : des mobilités généralisées",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "La France : mobilités, transports et aménagement",
+         "boites": [
+          {
+           "cle": "r40-b6-france-mobilites",
+           "titre": "Seconde — Géographie : la France, mobilités, transports et aménagement",
+           "fiches": 17
+          }
+         ]
+        }
+       ]
+      },
+      {
        "titre": "L'Afrique australe, un espace en profonde mutation",
        "boites": [
         {
          "cle": "r38-a5-geo-afrique-australe",
          "titre": "Seconde — Géographie : l'Afrique australe, un espace en profonde mutation",
-         "fiches": 17
-        }
-       ]
-      },
-      {
-       "titre": "La France, mobilités, transports et aménagement",
-       "boites": [
-        {
-         "cle": "r40-b6-france-mobilites",
-         "titre": "Seconde — Géographie : la France, mobilités, transports et aménagement",
-         "fiches": 17
-        }
-       ]
-      },
-      {
-       "titre": "La France, des milieux entre valorisation et protection",
-       "boites": [
-        {
-         "cle": "r40-b6-france-milieux",
-         "titre": "Seconde — Géographie : la France, des milieux entre valorisation et protection",
          "fiches": 17
         }
        ]
@@ -10468,32 +10546,44 @@
      "nom": "SVT",
      "chapitres": [
       {
-       "titre": "Cellule, ADN et biodiversité",
+       "titre": "Cellule, ADN et organisation du vivant",
        "boites": [
         {
          "cle": "svt-cellule-adn-seconde",
          "titre": "SVT — Cellule, ADN et biodiversité",
          "fiches": 27
         }
-       ]
-      },
-      {
-       "titre": "Procréation et sexualité humaine",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r37-svt-procreation",
-         "titre": "Seconde — SVT : procréation et sexualité humaine",
-         "fiches": 18
-        }
-       ]
-      },
-      {
-       "titre": "Agrosystèmes, sols et développement durable",
-       "boites": [
+         "titre": "L'organisme pluricellulaire, un ensemble de cellules spécialisées",
+         "boites": [
+          {
+           "cle": "r40-b6-pluricellulaire",
+           "titre": "Seconde — SVT : l'organisme pluricellulaire, un ensemble de cellules spécialisées",
+           "fiches": 17
+          }
+         ]
+        },
         {
-         "cle": "r37-svt-agrosystemes",
-         "titre": "Seconde — SVT : agrosystèmes, sols et développement durable",
-         "fiches": 16
+         "titre": "Métabolisme des cellules et enzymes",
+         "boites": [
+          {
+           "cle": "r40-b6-metabolisme",
+           "titre": "Seconde — SVT : métabolisme des cellules et enzymes",
+           "fiches": 17
+          }
+         ]
+        },
+        {
+         "titre": "La biodiversité, résultat et étape de l'évolution",
+         "boites": [
+          {
+           "cle": "r40-b6-biodiversite-evolution",
+           "titre": "Seconde — SVT : la biodiversité, résultat et étape de l'évolution",
+           "fiches": 17
+          }
+         ]
         }
        ]
       },
@@ -10508,32 +10598,22 @@
        ]
       },
       {
-       "titre": "L'organisme pluricellulaire, un ensemble de cellules spécialisées",
+       "titre": "Agrosystèmes, sols et développement durable",
        "boites": [
         {
-         "cle": "r40-b6-pluricellulaire",
-         "titre": "Seconde — SVT : l'organisme pluricellulaire, un ensemble de cellules spécialisées",
-         "fiches": 17
+         "cle": "r37-svt-agrosystemes",
+         "titre": "Seconde — SVT : agrosystèmes, sols et développement durable",
+         "fiches": 16
         }
        ]
       },
       {
-       "titre": "Métabolisme des cellules et enzymes",
+       "titre": "Procréation et sexualité humaine",
        "boites": [
         {
-         "cle": "r40-b6-metabolisme",
-         "titre": "Seconde — SVT : métabolisme des cellules et enzymes",
-         "fiches": 17
-        }
-       ]
-      },
-      {
-       "titre": "La biodiversité, résultat et étape de l'évolution",
-       "boites": [
-        {
-         "cle": "r40-b6-biodiversite-evolution",
-         "titre": "Seconde — SVT : la biodiversité, résultat et étape de l'évolution",
-         "fiches": 17
+         "cle": "r37-svt-procreation",
+         "titre": "Seconde — SVT : procréation et sexualité humaine",
+         "fiches": 18
         }
        ]
       },
@@ -10554,16 +10634,6 @@
      "nom": "Physique",
      "chapitres": [
       {
-       "titre": "Formules et constantes de Seconde",
-       "boites": [
-        {
-         "cle": "physique-chimie-seconde",
-         "titre": "Physique-chimie — Formules et constantes de Seconde",
-         "fiches": 30
-        }
-       ]
-      },
-      {
        "titre": "Mouvements, forces et signaux",
        "boites": [
         {
@@ -10571,15 +10641,17 @@
          "titre": "Seconde — Physique : mouvements, forces et signaux",
          "fiches": 18
         }
-       ]
-      },
-      {
-       "titre": "Circuits électriques et capteurs",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r37-phys-electricite",
-         "titre": "Seconde — Physique : circuits électriques et capteurs",
-         "fiches": 17
+         "titre": "Actions mécaniques et modélisation par des forces",
+         "boites": [
+          {
+           "cle": "r40-b6-forces",
+           "titre": "Seconde — Physique : actions mécaniques et modélisation par des forces",
+           "fiches": 18
+          }
+         ]
         }
        ]
       },
@@ -10604,18 +10676,28 @@
        ]
       },
       {
-       "titre": "Actions mécaniques et modélisation par des forces",
+       "titre": "Circuits électriques et capteurs",
        "boites": [
         {
-         "cle": "r40-b6-forces",
-         "titre": "Seconde — Physique : actions mécaniques et modélisation par des forces",
-         "fiches": 18
+         "cle": "r37-phys-electricite",
+         "titre": "Seconde — Physique : circuits électriques et capteurs",
+         "fiches": 17
         }
        ]
       },
       {
        "titre": "Mesure et incertitudes",
        "boites": []
+      },
+      {
+       "titre": "Révisions de l'année",
+       "boites": [
+        {
+         "cle": "physique-chimie-seconde",
+         "titre": "Physique-chimie — Formules et constantes de Seconde",
+         "fiches": 30
+        }
+       ]
       }
      ]
     },
@@ -10631,15 +10713,11 @@
          "titre": "Seconde — Chimie : corps purs, mélanges et solutions",
          "fiches": 19
         }
-       ]
-      },
-      {
-       "titre": "Transformations physiques, chimiques et nucléaires",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r37-chim-transformations",
-         "titre": "Seconde — Chimie : transformations physiques, chimiques et nucléaires",
-         "fiches": 18
+         "titre": "Quantité de matière, concentration et dosage par étalonnage",
+         "boites": []
         }
        ]
       },
@@ -10651,31 +10729,41 @@
          "titre": "Seconde — Chimie : atome, configuration électronique et tableau périodique",
          "fiches": 18
         }
-       ]
-      },
-      {
-       "titre": "Ions, molécules, schémas de Lewis et la mole",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r38-a5-chim-entites-mole",
-         "titre": "Seconde — Chimie : ions, molécules, schémas de Lewis et la mole",
-         "fiches": 19
+         "titre": "Ions, molécules, schémas de Lewis et la mole",
+         "boites": [
+          {
+           "cle": "r38-a5-chim-entites-mole",
+           "titre": "Seconde — Chimie : ions, molécules, schémas de Lewis et la mole",
+           "fiches": 19
+          }
+         ]
         }
        ]
       },
       {
-       "titre": "Synthèse, extraction et identification d'espèces chimiques",
+       "titre": "Transformations physiques, chimiques et nucléaires",
        "boites": [
         {
-         "cle": "r40-b6-synthese",
-         "titre": "Seconde — Chimie : synthèse, extraction et identification d'espèces chimiques",
-         "fiches": 17
+         "cle": "r37-chim-transformations",
+         "titre": "Seconde — Chimie : transformations physiques, chimiques et nucléaires",
+         "fiches": 18
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Synthèse, extraction et identification d'espèces chimiques",
+         "boites": [
+          {
+           "cle": "r40-b6-synthese",
+           "titre": "Seconde — Chimie : synthèse, extraction et identification d'espèces chimiques",
+           "fiches": 17
+          }
+         ]
         }
        ]
-      },
-      {
-       "titre": "Quantité de matière, concentration et dosage par étalonnage",
-       "boites": []
       }
      ]
     },
@@ -10947,52 +11035,24 @@
      "nom": "Français",
      "chapitres": [
       {
-       "titre": "Les mouvements littéraires",
+       "titre": "La poésie du XIXe au XXIe siècle",
        "boites": [
         {
-         "cle": "bac-francais-mouvements-litteraires",
-         "titre": "Français — Les mouvements littéraires",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Versification et poésie",
-       "boites": [
-        {
-         "cle": "bac-francais-versification-poesie",
-         "titre": "Français — Versification et poésie",
-         "fiches": 18
-        }
-       ]
-      },
-      {
-       "titre": "Vocabulaire d'analyse",
-       "boites": [
-        {
-         "cle": "bac-francais-theatre-roman",
-         "titre": "Français — Théâtre et roman : vocabulaire d'analyse",
-         "fiches": 21
-        }
-       ]
-      },
-      {
-       "titre": "Grammaire pour l'oral du bac",
-       "boites": [
-        {
-         "cle": "bac-francais-grammaire-oral",
-         "titre": "Français — Grammaire pour l'oral du bac",
-         "fiches": 18
-        }
-       ]
-      },
-      {
-       "titre": "Commentaire, dissertation, oral",
-       "boites": [
-        {
-         "cle": "bac-francais-methodologie",
-         "titre": "Français — Méthodes : commentaire, dissertation, oral",
+         "cle": "r40-b7-fr-poesie",
+         "titre": "1ère — Français : la poésie du XIXe au XXIe siècle",
          "fiches": 17
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Versification et poésie",
+         "boites": [
+          {
+           "cle": "bac-francais-versification-poesie",
+           "titre": "Français — Versification et poésie",
+           "fiches": 18
+          }
+         ]
         }
        ]
       },
@@ -11027,16 +11087,6 @@
        ]
       },
       {
-       "titre": "La poésie du XIXe au XXIe siècle",
-       "boites": [
-        {
-         "cle": "r40-b7-fr-poesie",
-         "titre": "1ère — Français : la poésie du XIXe au XXIe siècle",
-         "fiches": 17
-        }
-       ]
-      },
-      {
        "titre": "Repères d'histoire littéraire du Moyen Âge à nos jours",
        "boites": [
         {
@@ -11044,35 +11094,81 @@
          "titre": "1ère — Français : repères d'histoire littéraire du Moyen Âge à nos jours",
          "fiches": 16
         }
-       ]
-      },
-      {
-       "titre": "Procédés d'écriture et leurs effets pour le commentaire",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r40-b7-fr-procedes",
-         "titre": "1ère — Français : procédés d'écriture et leurs effets pour le commentaire",
-         "fiches": 18
+         "titre": "Les mouvements littéraires",
+         "boites": [
+          {
+           "cle": "bac-francais-mouvements-litteraires",
+           "titre": "Français — Les mouvements littéraires",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
-       "titre": "Méthode et outils de la dissertation",
+       "titre": "Méthodes de l'écrit : commentaire et dissertation",
        "boites": [
         {
-         "cle": "r40-b7-fr-dissertation",
-         "titre": "1ère — Français : méthode et outils de la dissertation",
+         "cle": "bac-francais-methodologie",
+         "titre": "Français — Méthodes : commentaire, dissertation, oral",
          "fiches": 17
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Procédés d'écriture et leurs effets",
+         "boites": [
+          {
+           "cle": "r40-b7-fr-procedes",
+           "titre": "1ère — Français : procédés d'écriture et leurs effets pour le commentaire",
+           "fiches": 18
+          }
+         ]
+        },
+        {
+         "titre": "Vocabulaire d'analyse du théâtre et du roman",
+         "boites": [
+          {
+           "cle": "bac-francais-theatre-roman",
+           "titre": "Français — Théâtre et roman : vocabulaire d'analyse",
+           "fiches": 21
+          }
+         ]
+        },
+        {
+         "titre": "Méthode et outils de la dissertation",
+         "boites": [
+          {
+           "cle": "r40-b7-fr-dissertation",
+           "titre": "1ère — Français : méthode et outils de la dissertation",
+           "fiches": 17
+          }
+         ]
+        }
        ]
       },
       {
-       "titre": "Réussir l'oral de l'épreuve anticipée",
+       "titre": "L'oral de l'épreuve anticipée",
        "boites": [
         {
          "cle": "r40-b7-fr-oral",
          "titre": "1ère — Français : réussir l'oral de l'épreuve anticipée",
          "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "La question de grammaire",
+         "boites": [
+          {
+           "cle": "bac-francais-grammaire-oral",
+           "titre": "Français — Grammaire pour l'oral du bac",
+           "fiches": 18
+          }
+         ]
         }
        ]
       }
@@ -11082,26 +11178,6 @@
      "id": "mathématiques",
      "nom": "Mathématiques",
      "chapitres": [
-      {
-       "titre": "Les dérivées usuelles",
-       "boites": [
-        {
-         "cle": "maths-derivees",
-         "titre": "Maths — Les dérivées usuelles",
-         "fiches": 34
-        }
-       ]
-      },
-      {
-       "titre": "Automatismes (épreuve anticipée de 1ère)",
-       "boites": [
-        {
-         "cle": "bac-maths-epreuve-anticipee",
-         "titre": "Maths — Automatismes (épreuve anticipée de 1ère)",
-         "fiches": 32
-        }
-       ]
-      },
       {
        "titre": "Le second degré",
        "boites": [
@@ -11120,35 +11196,59 @@
          "titre": "1ère spé Maths — Suites arithmétiques et géométriques",
          "fiches": 18
         }
-       ]
-      },
-      {
-       "titre": "Probabilités conditionnelles et variables aléatoires",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r35-1-maths-probas-cond",
-         "titre": "1ère spé Maths — Probabilités conditionnelles et variables aléatoires",
-         "fiches": 19
+         "titre": "Modes de génération, sens de variation et algorithmes",
+         "boites": [
+          {
+           "cle": "r40-b7-ma-suites-algo",
+           "titre": "1ère spé Maths — Suites : modes de génération, sens de variation et algorithmes",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
-       "titre": "Le produit scalaire",
+       "titre": "Dérivation",
        "boites": [
         {
-         "cle": "r37-1-maths-produit-scalaire",
-         "titre": "1ère spé Maths — Le produit scalaire",
-         "fiches": 15
+         "cle": "maths-derivees",
+         "titre": "Maths — Les dérivées usuelles",
+         "fiches": 34
         }
-       ]
-      },
-      {
-       "titre": "Cercle trigonométrique, radian, cosinus et sinus",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r37-1-maths-trigonometrie",
-         "titre": "1ère spé Maths — Cercle trigonométrique, radian, cosinus et sinus",
-         "fiches": 18
+         "titre": "Nombre dérivé et tangente",
+         "boites": [
+          {
+           "cle": "r38-a7-maths-nombre-derive",
+           "titre": "1ère spé Maths — Nombre dérivé et tangente",
+           "fiches": 16
+          }
+         ]
+        },
+        {
+         "titre": "Opérations sur les dérivées",
+         "boites": [
+          {
+           "cle": "r40-b7-ma-derivees",
+           "titre": "1ère spé Maths — Opérations sur les dérivées et dérivée de x ↦ g(ax + b)",
+           "fiches": 17
+          }
+         ]
+        },
+        {
+         "titre": "Variations et extremums",
+         "boites": [
+          {
+           "cle": "r38-a7-maths-variations",
+           "titre": "1ère spé Maths — Dérivation : variations et extremums",
+           "fiches": 15
+          }
+         ]
         }
        ]
       },
@@ -11163,62 +11263,64 @@
        ]
       },
       {
-       "titre": "Droites, cercles et paraboles",
+       "titre": "Cercle trigonométrique, radian, cosinus et sinus",
        "boites": [
         {
-         "cle": "r37-1-maths-geometrie-reperee",
-         "titre": "1ère spé Maths — Géométrie repérée : droites, cercles et paraboles",
-         "fiches": 16
+         "cle": "r37-1-maths-trigonometrie",
+         "titre": "1ère spé Maths — Cercle trigonométrique, radian, cosinus et sinus",
+         "fiches": 18
         }
        ]
       },
       {
-       "titre": "Nombre dérivé et tangente",
+       "titre": "Le produit scalaire",
        "boites": [
         {
-         "cle": "r38-a7-maths-nombre-derive",
-         "titre": "1ère spé Maths — Nombre dérivé et tangente",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Variations et extremums",
-       "boites": [
-        {
-         "cle": "r38-a7-maths-variations",
-         "titre": "1ère spé Maths — Dérivation : variations et extremums",
+         "cle": "r37-1-maths-produit-scalaire",
+         "titre": "1ère spé Maths — Le produit scalaire",
          "fiches": 15
         }
-       ]
-      },
-      {
-       "titre": "Modes de génération, sens de variation et algorithmes",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r40-b7-ma-suites-algo",
-         "titre": "1ère spé Maths — Suites : modes de génération, sens de variation et algorithmes",
-         "fiches": 16
+         "titre": "Droites, cercles et paraboles dans un repère",
+         "boites": [
+          {
+           "cle": "r37-1-maths-geometrie-reperee",
+           "titre": "1ère spé Maths — Géométrie repérée : droites, cercles et paraboles",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
-       "titre": "Opérations sur les dérivées et dérivée de x ↦ g(ax + b)",
+       "titre": "Probabilités conditionnelles et variables aléatoires",
        "boites": [
         {
-         "cle": "r40-b7-ma-derivees",
-         "titre": "1ère spé Maths — Opérations sur les dérivées et dérivée de x ↦ g(ax + b)",
-         "fiches": 17
+         "cle": "r35-1-maths-probas-cond",
+         "titre": "1ère spé Maths — Probabilités conditionnelles et variables aléatoires",
+         "fiches": 19
         }
        ]
       },
       {
-       "titre": "Taux d'évolution, coefficients multiplicateurs et suites",
+       "titre": "Taux d'évolution, coefficients multiplicateurs et suites (STMG)",
        "boites": [
         {
          "cle": "r40-b10-1stmg-maths-evolutions-suites",
          "titre": "1ère STMG — Maths : taux d'évolution, coefficients multiplicateurs et suites",
          "fiches": 16
+        }
+       ]
+      },
+      {
+       "titre": "Révisions du bac",
+       "boites": [
+        {
+         "cle": "bac-maths-epreuve-anticipee",
+         "titre": "Maths — Automatismes (épreuve anticipée de 1ère)",
+         "fiches": 32
         }
        ]
       }
@@ -11229,42 +11331,24 @@
      "nom": "Histoire",
      "chapitres": [
       {
-       "titre": "Révolution française et Empire (1789-1815)",
+       "titre": "L'Europe face aux révolutions (1789-1848)",
        "boites": [
         {
          "cle": "r35-1-histoire-revolution-empire",
          "titre": "1ère — Histoire : Révolution française et Empire (1789-1815)",
          "fiches": 19
         }
-       ]
-      },
-      {
-       "titre": "La IIIe République, mise en œuvre du projet républicain",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r37-1-histoire-troisieme-republique",
-         "titre": "1ère — Histoire : la IIIe République, mise en œuvre du projet républicain",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "La Première Guerre mondiale et la fin des empires",
-       "boites": [
-        {
-         "cle": "r37-1-histoire-premiere-guerre",
-         "titre": "1ère — Histoire : la Première Guerre mondiale et la fin des empires",
-         "fiches": 17
-        }
-       ]
-      },
-      {
-       "titre": "L'Europe entre restauration et révolution (1814-1848)",
-       "boites": [
-        {
-         "cle": "r38-a6-hist-restauration-1848",
-         "titre": "1ère — Histoire : l'Europe entre restauration et révolution (1814-1848)",
-         "fiches": 16
+         "titre": "L'Europe entre restauration et révolution (1814-1848)",
+         "boites": [
+          {
+           "cle": "r38-a6-hist-restauration-1848",
+           "titre": "1ère — Histoire : l'Europe entre restauration et révolution (1814-1848)",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -11276,25 +11360,55 @@
          "titre": "1ère — Histoire : la France dans l'Europe des nationalités (1848-1871)",
          "fiches": 17
         }
-       ]
-      },
-      {
-       "titre": "Société française et empire colonial (1870-1914)",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r38-a6-hist-societe-colonies",
-         "titre": "1ère — Histoire : société française et empire colonial (1870-1914)",
-         "fiches": 16
+         "titre": "L'industrialisation et l'accélération des transformations",
+         "boites": []
         }
        ]
       },
       {
-       "titre": "Sortir de la guerre, les traités de paix (1918-1925)",
+       "titre": "La IIIe République avant 1914",
        "boites": [
         {
-         "cle": "r38-a6-hist-sortir-guerre",
-         "titre": "1ère — Histoire : sortir de la guerre, les traités de paix (1918-1925)",
+         "cle": "r37-1-histoire-troisieme-republique",
+         "titre": "1ère — Histoire : la IIIe République, mise en œuvre du projet républicain",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Société française et empire colonial (1870-1914)",
+         "boites": [
+          {
+           "cle": "r38-a6-hist-societe-colonies",
+           "titre": "1ère — Histoire : société française et empire colonial (1870-1914)",
+           "fiches": 16
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "titre": "La Première Guerre mondiale et la fin des empires",
+       "boites": [
+        {
+         "cle": "r37-1-histoire-premiere-guerre",
+         "titre": "1ère — Histoire : la Première Guerre mondiale et la fin des empires",
          "fiches": 17
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Sortir de la guerre, les traités de paix (1918-1925)",
+         "boites": [
+          {
+           "cle": "r38-a6-hist-sortir-guerre",
+           "titre": "1ère — Histoire : sortir de la guerre, les traités de paix (1918-1925)",
+           "fiches": 17
+          }
+         ]
         }
        ]
       }
@@ -11312,6 +11426,12 @@
          "titre": "1ère — Géographie : la métropolisation, un processus mondial différencié",
          "fiches": 15
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "La France : la métropolisation et ses effets",
+         "boites": []
+        }
        ]
       },
       {
@@ -11322,6 +11442,12 @@
          "titre": "1ère — Géographie : les espaces productifs dans la mondialisation",
          "fiches": 16
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "La France : les espaces productifs",
+         "boites": []
+        }
        ]
       },
       {
@@ -11331,6 +11457,12 @@
          "cle": "r38-a6-geo-espaces-ruraux",
          "titre": "1ère — Géographie : les espaces ruraux, multifonctionnalité ou fragmentation ?",
          "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "La France : des espaces ruraux multifonctionnels",
+         "boites": []
         }
        ]
       },
@@ -11345,7 +11477,7 @@
        ]
       },
       {
-       "titre": "Notions clés et vocabulaire",
+       "titre": "Révisions de l'année",
        "boites": [
         {
          "cle": "r57-1re-geographie-notions",
@@ -11353,10 +11485,6 @@
          "fiches": 16
         }
        ]
-      },
-      {
-       "titre": "La France, métropolisation et espaces productifs",
-       "boites": []
       }
      ]
     },
@@ -11391,31 +11519,43 @@
      "nom": "SVT",
      "chapitres": [
       {
-       "titre": "Divisions cellulaires, méiose et mutations",
+       "titre": "Transmission, variation et expression du patrimoine génétique",
        "boites": [
         {
          "cle": "r35-1-svt-meiose",
          "titre": "1ère spé SVT — Divisions cellulaires, méiose et mutations",
          "fiches": 19
         }
-       ]
-      },
-      {
-       "titre": "Le fonctionnement du système immunitaire",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r37-1-svt-immunite",
-         "titre": "1ère spé SVT — Le fonctionnement du système immunitaire",
-         "fiches": 17
+         "titre": "L'expression du patrimoine génétique",
+         "boites": [
+          {
+           "cle": "r37-1-svt-expression-genes",
+           "titre": "1ère spé SVT — L'expression du patrimoine génétique",
+           "fiches": 16
+          }
+         ]
+        },
+        {
+         "titre": "Les enzymes, des biomolécules aux propriétés catalytiques",
+         "boites": [
+          {
+           "cle": "r40-b7-svt-enzymes",
+           "titre": "1ère spé SVT — Les enzymes, des biomolécules aux propriétés catalytiques",
+           "fiches": 17
+          }
+         ]
         }
        ]
       },
       {
-       "titre": "L'expression du patrimoine génétique",
+       "titre": "Structure du globe et dynamique de la lithosphère",
        "boites": [
         {
-         "cle": "r37-1-svt-expression-genes",
-         "titre": "1ère spé SVT — L'expression du patrimoine génétique",
+         "cle": "r38-a7-svt-lithosphere",
+         "titre": "1ère spé SVT — Structure du globe et dynamique de la lithosphère",
          "fiches": 16
         }
        ]
@@ -11431,16 +11571,6 @@
        ]
       },
       {
-       "titre": "Structure du globe et dynamique de la lithosphère",
-       "boites": [
-        {
-         "cle": "r38-a7-svt-lithosphere",
-         "titre": "1ère spé SVT — Structure du globe et dynamique de la lithosphère",
-         "fiches": 16
-        }
-       ]
-      },
-      {
        "titre": "Variation génétique et santé",
        "boites": [
         {
@@ -11451,11 +11581,11 @@
        ]
       },
       {
-       "titre": "Les enzymes, des biomolécules aux propriétés catalytiques",
+       "titre": "Le fonctionnement du système immunitaire",
        "boites": [
         {
-         "cle": "r40-b7-svt-enzymes",
-         "titre": "1ère spé SVT — Les enzymes, des biomolécules aux propriétés catalytiques",
+         "cle": "r37-1-svt-immunite",
+         "titre": "1ère spé SVT — Le fonctionnement du système immunitaire",
          "fiches": 17
         }
        ]
@@ -11467,22 +11597,24 @@
      "nom": "Physique",
      "chapitres": [
       {
-       "titre": "Énergie mécanique, travail et ondes",
-       "boites": [
-        {
-         "cle": "r35-1-pc-energie-ondes",
-         "titre": "1ère spé Physique-chimie — Énergie mécanique, travail et ondes",
-         "fiches": 19
-        }
-       ]
-      },
-      {
        "titre": "Interactions fondamentales et notion de champ",
        "boites": [
         {
          "cle": "r37-1-pc-champs-forces",
          "titre": "1ère spé Physique-chimie — Interactions fondamentales et notion de champ",
          "fiches": 15
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Mouvement et deuxième loi de Newton",
+         "boites": [
+          {
+           "cle": "r38-a7-phys-mouvement-newton",
+           "titre": "1ère spé Physique-chimie — Mouvement et deuxième loi de Newton",
+           "fiches": 15
+          }
+         ]
         }
        ]
       },
@@ -11494,40 +11626,52 @@
          "titre": "1ère spé Physique-chimie — Électricité : puissance, énergie et rendement",
          "fiches": 16
         }
-       ]
-      },
-      {
-       "titre": "Mouvement et deuxième loi de Newton",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r38-a7-phys-mouvement-newton",
-         "titre": "1ère spé Physique-chimie — Mouvement et deuxième loi de Newton",
-         "fiches": 15
+         "titre": "Énergie cinétique, potentielle et mécanique",
+         "boites": []
         }
        ]
       },
       {
-       "titre": "Lentilles minces convergentes et images",
+       "titre": "Ondes et signaux : célérité, retard, période et longueur d'onde",
        "boites": [
         {
-         "cle": "r38-a7-phys-lentilles",
-         "titre": "1ère spé Physique-chimie — Lentilles minces convergentes et images",
-         "fiches": 15
+         "cle": "r40-b7-pc-ondes",
+         "titre": "1ère spé Physique-chimie — Ondes mécaniques progressives : célérité, retard, période et longueur d'onde",
+         "fiches": 18
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Lentilles minces convergentes et images",
+         "boites": [
+          {
+           "cle": "r38-a7-phys-lentilles",
+           "titre": "1ère spé Physique-chimie — Lentilles minces convergentes et images",
+           "fiches": 15
+          }
+         ]
+        },
+        {
+         "titre": "Synthèses additive et soustractive",
+         "boites": [
+          {
+           "cle": "r38-a7-phys-couleurs",
+           "titre": "1ère spé Physique-chimie — Couleurs : synthèses additive et soustractive",
+           "fiches": 15
+          }
+         ]
         }
        ]
       },
       {
-       "titre": "Synthèses additive et soustractive",
-       "boites": [
-        {
-         "cle": "r38-a7-phys-couleurs",
-         "titre": "1ère spé Physique-chimie — Couleurs : synthèses additive et soustractive",
-         "fiches": 15
-        }
-       ]
+       "titre": "Mesure et incertitudes",
+       "boites": []
       },
       {
-       "titre": "Énergie et puissance",
+       "titre": "Énergie et puissance (STI2D)",
        "boites": [
         {
          "cle": "r38-a10-1sti2d-physique-energie",
@@ -11537,18 +11681,14 @@
        ]
       },
       {
-       "titre": "Célérité, retard, période et longueur d'onde",
+       "titre": "Révisions de l'année",
        "boites": [
         {
-         "cle": "r40-b7-pc-ondes",
-         "titre": "1ère spé Physique-chimie — Ondes mécaniques progressives : célérité, retard, période et longueur d'onde",
-         "fiches": 18
+         "cle": "r35-1-pc-energie-ondes",
+         "titre": "1ère spé Physique-chimie — Énergie mécanique, travail et ondes",
+         "fiches": 19
         }
        ]
-      },
-      {
-       "titre": "Mesure et incertitudes",
-       "boites": []
       }
      ]
     },
@@ -11557,27 +11697,29 @@
      "nom": "Chimie",
      "chapitres": [
       {
-       "titre": "Quantité de matière, avancement et Lewis",
+       "titre": "Suivi de l'évolution d'un système : quantité de matière et avancement",
        "boites": [
         {
          "cle": "r35-1-pc-matiere",
          "titre": "1ère spé Physique-chimie — Quantité de matière, avancement et Lewis",
          "fiches": 20
         }
-       ]
-      },
-      {
-       "titre": "Oxydoréduction et dosages",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r37-1-pc-oxydoreduction-titrages",
-         "titre": "1ère spé Physique-chimie — Oxydoréduction et dosages",
-         "fiches": 17
+         "titre": "Oxydoréduction et dosages",
+         "boites": [
+          {
+           "cle": "r37-1-pc-oxydoreduction-titrages",
+           "titre": "1ère spé Physique-chimie — Oxydoréduction et dosages",
+           "fiches": 17
+          }
+         ]
         }
        ]
       },
       {
-       "titre": "Polarité, cohésion et solubilité",
+       "titre": "De la structure des entités aux propriétés : polarité, cohésion et solubilité",
        "boites": [
         {
          "cle": "r38-a7-chim-cohesion",
@@ -11594,20 +11736,22 @@
          "titre": "1ère spé Physique-chimie — Molécules organiques et synthèse",
          "fiches": 15
         }
-       ]
-      },
-      {
-       "titre": "Combustions et énergie libérée",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r40-b7-pc-combustions",
-         "titre": "1ère spé Physique-chimie — Combustions et énergie libérée",
-         "fiches": 18
+         "titre": "Combustions et énergie libérée",
+         "boites": [
+          {
+           "cle": "r40-b7-pc-combustions",
+           "titre": "1ère spé Physique-chimie — Combustions et énergie libérée",
+           "fiches": 18
+          }
+         ]
         }
        ]
       },
       {
-       "titre": "Réactions acido-basiques, pH et solutions tampons",
+       "titre": "Réactions acido-basiques, pH et solutions tampons (STL)",
        "boites": [
         {
          "cle": "r40-b10-1stl-chimie-acide-base",
@@ -12303,6 +12447,18 @@
          "titre": "Maths — Suites et récurrence",
          "fiches": 21
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Suites, méthodes classiques du bac",
+         "boites": [
+          {
+           "cle": "r40-b8-maths-suites-methodes",
+           "titre": "Terminale spé — Maths : suites, méthodes classiques du bac",
+           "fiches": 17
+          }
+         ]
+        }
        ]
       },
       {
@@ -12316,6 +12472,38 @@
        ]
       },
       {
+       "titre": "Fonctions composées, dérivation et convexité",
+       "boites": [
+        {
+         "cle": "r38-a8-maths-composees-derivation",
+         "titre": "Terminale spé — Maths : fonctions composées et dérivation",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Convexité et fonctions trigonométriques",
+         "boites": [
+          {
+           "cle": "bac-maths-convexite-trigo",
+           "titre": "Maths — Convexité et fonctions trigonométriques",
+           "fiches": 24
+          }
+         ]
+        },
+        {
+         "titre": "Étude de fonction, le plan type du bac",
+         "boites": [
+          {
+           "cle": "r40-b8-maths-etude-fonction",
+           "titre": "Terminale spé — Maths : étude de fonction, le plan type du bac",
+           "fiches": 16
+          }
+         ]
+        }
+       ]
+      },
+      {
        "titre": "Exponentielle et logarithme népérien",
        "boites": [
         {
@@ -12323,15 +12511,17 @@
          "titre": "Maths — Exponentielle et logarithme népérien",
          "fiches": 32
         }
-       ]
-      },
-      {
-       "titre": "Convexité et fonctions trigonométriques",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "bac-maths-convexite-trigo",
-         "titre": "Maths — Convexité et fonctions trigonométriques",
-         "fiches": 24
+         "titre": "Logarithme népérien en exercices",
+         "boites": [
+          {
+           "cle": "r40-b8-maths-ln-exos",
+           "titre": "Terminale spé — Maths : logarithme népérien en exercices",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -12353,6 +12543,18 @@
          "titre": "Maths — Dénombrement et probabilités",
          "fiches": 22
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Loi binomiale en exercices",
+         "boites": [
+          {
+           "cle": "r40-b8-maths-binomiale-exos",
+           "titre": "Terminale spé — Maths : loi binomiale en exercices",
+           "fiches": 18
+          }
+         ]
+        }
        ]
       },
       {
@@ -12363,15 +12565,17 @@
          "titre": "Maths — Géométrie dans l'espace",
          "fiches": 16
         }
-       ]
-      },
-      {
-       "titre": "Fonctions composées et dérivation",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r38-a8-maths-composees-derivation",
-         "titre": "Terminale spé — Maths : fonctions composées et dérivation",
-         "fiches": 16
+         "titre": "Droites et plans de l'espace en exercices",
+         "boites": [
+          {
+           "cle": "r40-b8-maths-espace-exos",
+           "titre": "Terminale spé — Maths : droites et plans de l'espace en exercices",
+           "fiches": 17
+          }
+         ]
         }
        ]
       },
@@ -12386,57 +12590,7 @@
        ]
       },
       {
-       "titre": "Étude de fonction, le plan type du bac",
-       "boites": [
-        {
-         "cle": "r40-b8-maths-etude-fonction",
-         "titre": "Terminale spé — Maths : étude de fonction, le plan type du bac",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Suites, méthodes classiques du bac",
-       "boites": [
-        {
-         "cle": "r40-b8-maths-suites-methodes",
-         "titre": "Terminale spé — Maths : suites, méthodes classiques du bac",
-         "fiches": 17
-        }
-       ]
-      },
-      {
-       "titre": "Loi binomiale en exercices",
-       "boites": [
-        {
-         "cle": "r40-b8-maths-binomiale-exos",
-         "titre": "Terminale spé — Maths : loi binomiale en exercices",
-         "fiches": 18
-        }
-       ]
-      },
-      {
-       "titre": "Droites et plans de l'espace en exercices",
-       "boites": [
-        {
-         "cle": "r40-b8-maths-espace-exos",
-         "titre": "Terminale spé — Maths : droites et plans de l'espace en exercices",
-         "fiches": 17
-        }
-       ]
-      },
-      {
-       "titre": "Logarithme népérien en exercices",
-       "boites": [
-        {
-         "cle": "r40-b8-maths-ln-exos",
-         "titre": "Terminale spé — Maths : logarithme népérien en exercices",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Nombres complexes et forme exponentielle",
+       "titre": "Nombres complexes et forme exponentielle (STI2D)",
        "boites": [
         {
          "cle": "r40-b10-tsti2d-maths-complexes",
@@ -12920,42 +13074,27 @@
        ]
       },
       {
-       "titre": "Acteurs et personnages clés (1929-années 2010)",
+       "titre": "Révisions du bac",
        "boites": [
         {
          "cle": "r38-a9-hist-acteurs",
          "titre": "Terminale — Histoire : acteurs et personnages clés (1929-années 2010)",
          "fiches": 18
-        }
-       ]
-      },
-      {
-       "titre": "Grandes lois et réformes de la France (1945-années 2010)",
-       "boites": [
+        },
         {
          "cle": "r38-a9-hist-lois-france",
          "titre": "Terminale — Histoire : grandes lois et réformes de la France (1945-années 2010)",
          "fiches": 17
-        }
-       ]
-      },
-      {
-       "titre": "Méthode de l'analyse de document et de la question problématisée",
-       "boites": [
-        {
-         "cle": "r40-b9-histoire-methode",
-         "titre": "Terminale — Histoire : méthode de l'analyse de document et de la question problématisée",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Grandes conférences et traités (1938-années 2000)",
-       "boites": [
+        },
         {
          "cle": "r40-b9-histoire-conferences",
          "titre": "Terminale — Histoire : grandes conférences et traités (1938-années 2000)",
          "fiches": 21
+        },
+        {
+         "cle": "r40-b9-histoire-methode",
+         "titre": "Terminale — Histoire : méthode de l'analyse de document et de la question problématisée",
+         "fiches": 16
         }
        ]
       }
@@ -12986,48 +13125,40 @@
        ]
       },
       {
-       "titre": "La France et l'Union européenne",
+       "titre": "La France et l'Union européenne dans la mondialisation",
        "boites": [
         {
          "cle": "bac-geo-france-ue",
          "titre": "Géographie — La France et l'Union européenne",
          "fiches": 20
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "La France dans le monde",
+         "boites": [
+          {
+           "cle": "r38-a9-geo-france-monde",
+           "titre": "Terminale — Géographie : la France dans le monde",
+           "fiches": 15
+          }
+         ]
+        }
        ]
       },
       {
-       "titre": "Repères spatiaux et cartes pour le croquis",
+       "titre": "Révisions du bac",
        "boites": [
         {
          "cle": "r38-a9-geo-reperes",
          "titre": "Terminale — Géographie : repères spatiaux et cartes pour le croquis",
          "fiches": 17
-        }
-       ]
-      },
-      {
-       "titre": "La France dans le monde",
-       "boites": [
-        {
-         "cle": "r38-a9-geo-france-monde",
-         "titre": "Terminale — Géographie : la France dans le monde",
-         "fiches": 15
-        }
-       ]
-      },
-      {
-       "titre": "Méthode du croquis et du schéma",
-       "boites": [
+        },
         {
          "cle": "r40-b9-geo-croquis-methode",
          "titre": "Terminale — Géographie : méthode du croquis et du schéma",
          "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Glossaire des notions clés",
-       "boites": [
+        },
         {
          "cle": "r40-b9-geo-glossaire",
          "titre": "Terminale — Géographie : glossaire des notions clés",
@@ -13085,6 +13216,28 @@
          "titre": "SVT — Génétique et évolution",
          "fiches": 23
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "L'origine du génotype, analyser des croisements",
+         "boites": [
+          {
+           "cle": "r40-b8-svt-origine-genotype",
+           "titre": "Terminale spé — SVT : l'origine du génotype, analyser des croisements",
+           "fiches": 18
+          }
+         ]
+        },
+        {
+         "titre": "Complexification des génomes",
+         "boites": [
+          {
+           "cle": "r38-a8-svt-complexification-genomes",
+           "titre": "Terminale spé — SVT : complexification des génomes",
+           "fiches": 16
+          }
+         ]
+        }
        ]
       },
       {
@@ -13098,12 +13251,24 @@
        ]
       },
       {
-       "titre": "Immunité, nerfs, muscles, glycémie",
+       "titre": "De la plante sauvage à la plante domestiquée",
        "boites": [
         {
-         "cle": "bac-svt-corps-humain",
-         "titre": "SVT — Corps humain : immunité, nerfs, muscles, glycémie",
+         "cle": "r37-tle-svt-plante-domestiquee",
+         "titre": "Terminale — SVT : de la plante sauvage à la plante domestiquée",
          "fiches": 18
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "La vie fixée des plantes",
+         "boites": [
+          {
+           "cle": "r38-a8-svt-vie-fixee-plantes",
+           "titre": "Terminale spé — SVT : la vie fixée des plantes",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -13118,72 +13283,44 @@
        ]
       },
       {
-       "titre": "Comportement, stress et cerveau",
+       "titre": "Corps humain et santé : immunité, nerfs, muscles, glycémie",
        "boites": [
         {
-         "cle": "r35-tle-svt-comportement-stress",
-         "titre": "Terminale — SVT : comportement, stress et cerveau",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "De la plante sauvage à la plante domestiquée",
-       "boites": [
-        {
-         "cle": "r37-tle-svt-plante-domestiquee",
-         "titre": "Terminale — SVT : de la plante sauvage à la plante domestiquée",
+         "cle": "bac-svt-corps-humain",
+         "titre": "SVT — Corps humain : immunité, nerfs, muscles, glycémie",
          "fiches": 18
         }
-       ]
-      },
-      {
-       "titre": "Complexification des génomes",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r38-a8-svt-complexification-genomes",
-         "titre": "Terminale spé — SVT : complexification des génomes",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "La vie fixée des plantes",
-       "boites": [
+         "titre": "Cerveau et mouvement volontaire",
+         "boites": [
+          {
+           "cle": "r40-b8-svt-mouvement-volontaire",
+           "titre": "Terminale spé — SVT : cerveau et mouvement volontaire",
+           "fiches": 16
+          }
+         ]
+        },
         {
-         "cle": "r38-a8-svt-vie-fixee-plantes",
-         "titre": "Terminale spé — SVT : la vie fixée des plantes",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Cerveau et mouvement volontaire",
-       "boites": [
+         "titre": "Produire le mouvement, contraction musculaire et énergie",
+         "boites": [
+          {
+           "cle": "r40-b8-svt-contraction-energie",
+           "titre": "Terminale spé — SVT : produire le mouvement, contraction musculaire et énergie",
+           "fiches": 16
+          }
+         ]
+        },
         {
-         "cle": "r40-b8-svt-mouvement-volontaire",
-         "titre": "Terminale spé — SVT : cerveau et mouvement volontaire",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "L'origine du génotype, analyser des croisements",
-       "boites": [
-        {
-         "cle": "r40-b8-svt-origine-genotype",
-         "titre": "Terminale spé — SVT : l'origine du génotype, analyser des croisements",
-         "fiches": 18
-        }
-       ]
-      },
-      {
-       "titre": "Produire le mouvement, contraction musculaire et énergie",
-       "boites": [
-        {
-         "cle": "r40-b8-svt-contraction-energie",
-         "titre": "Terminale spé — SVT : produire le mouvement, contraction musculaire et énergie",
-         "fiches": 16
+         "titre": "Comportement, stress et cerveau",
+         "boites": [
+          {
+           "cle": "r35-tle-svt-comportement-stress",
+           "titre": "Terminale — SVT : comportement, stress et cerveau",
+           "fiches": 16
+          }
+         ]
         }
        ]
       }
@@ -13201,6 +13338,28 @@
          "titre": "Physique — Mécanique : mouvements et lois de Newton",
          "fiches": 26
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Mouvement dans un champ et lois de Kepler",
+         "boites": [
+          {
+           "cle": "r35-tle-physique-champ-kepler",
+           "titre": "Terminale — Physique : mouvement dans un champ et lois de Kepler",
+           "fiches": 16
+          }
+         ]
+        },
+        {
+         "titre": "Satellites et planètes, exercices types",
+         "boites": [
+          {
+           "cle": "r40-b8-physique-satellites-exos",
+           "titre": "Terminale spé — Physique : satellites et planètes, exercices types",
+           "fiches": 16
+          }
+         ]
+        }
        ]
       },
       {
@@ -13211,25 +13370,27 @@
          "titre": "Physique — Ondes, son et lumière",
          "fiches": 24
         }
-       ]
-      },
-      {
-       "titre": "Thermodynamique et circuits RC",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "bac-pc-thermo-electricite",
-         "titre": "Physique — Thermodynamique et circuits RC",
-         "fiches": 22
-        }
-       ]
-      },
-      {
-       "titre": "Mouvement dans un champ et lois de Kepler",
-       "boites": [
+         "titre": "Diffraction, interférences et effet Doppler en exercices",
+         "boites": [
+          {
+           "cle": "r40-b8-physique-ondes-exos",
+           "titre": "Terminale spé — Physique : diffraction, interférences et effet Doppler en exercices",
+           "fiches": 16
+          }
+         ]
+        },
         {
-         "cle": "r35-tle-physique-champ-kepler",
-         "titre": "Terminale — Physique : mouvement dans un champ et lois de Kepler",
-         "fiches": 16
+         "titre": "Le photon, l'effet photoélectrique et le photovoltaïque",
+         "boites": [
+          {
+           "cle": "r37-tle-physique-photon-effet-photoelectrique",
+           "titre": "Terminale — Physique : le photon, l'effet photoélectrique et le photovoltaïque",
+           "fiches": 17
+          }
+         ]
         }
        ]
       },
@@ -13244,22 +13405,12 @@
        ]
       },
       {
-       "titre": "Le photon, l'effet photoélectrique et le photovoltaïque",
+       "titre": "Thermodynamique et circuits RC",
        "boites": [
         {
-         "cle": "r37-tle-physique-photon-effet-photoelectrique",
-         "titre": "Terminale — Physique : le photon, l'effet photoélectrique et le photovoltaïque",
-         "fiches": 17
-        }
-       ]
-      },
-      {
-       "titre": "Mesure et incertitudes",
-       "boites": [
-        {
-         "cle": "r38-a8-phys-mesure-incertitudes",
-         "titre": "Terminale spé — Physique : mesure et incertitudes",
-         "fiches": 16
+         "cle": "bac-pc-thermo-electricite",
+         "titre": "Physique — Thermodynamique et circuits RC",
+         "fiches": 22
         }
        ]
       },
@@ -13274,27 +13425,17 @@
        ]
       },
       {
-       "titre": "Satellites et planètes, exercices types",
+       "titre": "Mesure et incertitudes",
        "boites": [
         {
-         "cle": "r40-b8-physique-satellites-exos",
-         "titre": "Terminale spé — Physique : satellites et planètes, exercices types",
+         "cle": "r38-a8-phys-mesure-incertitudes",
+         "titre": "Terminale spé — Physique : mesure et incertitudes",
          "fiches": 16
         }
        ]
       },
       {
-       "titre": "Diffraction, interférences et effet Doppler en exercices",
-       "boites": [
-        {
-         "cle": "r40-b8-physique-ondes-exos",
-         "titre": "Terminale spé — Physique : diffraction, interférences et effet Doppler en exercices",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Ondes sonores et ondes électromagnétiques",
+       "titre": "Ondes sonores et ondes électromagnétiques (STI2D)",
        "boites": [
         {
          "cle": "r40-b10-tsti2d-phys-ondes",
@@ -13304,7 +13445,7 @@
        ]
       },
       {
-       "titre": "Énergie électrique en régime sinusoïdal",
+       "titre": "Énergie électrique en régime sinusoïdal (STI2D)",
        "boites": [
         {
          "cle": "r40-b10-tsti2d-phys-sinusoidal",
@@ -13314,7 +13455,7 @@
        ]
       },
       {
-       "titre": "Énergie mécanique, rotation et statique des fluides",
+       "titre": "Énergie mécanique, rotation et statique des fluides (STI2D)",
        "boites": [
         {
          "cle": "r40-b10-tsti2d-phys-mecanique",
@@ -13337,6 +13478,28 @@
          "titre": "Chimie — Acides, bases et pH",
          "fiches": 22
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Titrages pH-métrique et conductimétrique",
+         "boites": [
+          {
+           "cle": "r38-a8-chim-titrages",
+           "titre": "Terminale spé — Chimie : titrages pH-métrique et conductimétrique",
+           "fiches": 16
+          }
+         ]
+        },
+        {
+         "titre": "Force des acides et des bases en exercices",
+         "boites": [
+          {
+           "cle": "r40-b8-chimie-acides-exos",
+           "titre": "Terminale spé — Chimie : force des acides et des bases en exercices",
+           "fiches": 16
+          }
+         ]
+        }
        ]
       },
       {
@@ -13347,15 +13510,17 @@
          "titre": "Chimie — Cinétique, oxydoréduction et piles",
          "fiches": 22
         }
-       ]
-      },
-      {
-       "titre": "Chimie organique",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "bac-chimie-organique",
-         "titre": "Chimie — Chimie organique",
-         "fiches": 21
+         "titre": "Suivi temporel et cinétique en exercices",
+         "boites": [
+          {
+           "cle": "r40-b8-chimie-cinetique-exos",
+           "titre": "Terminale spé — Chimie : suivi temporel et cinétique en exercices",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -13367,60 +13532,44 @@
          "titre": "Terminale — Chimie : sens d'évolution, électrolyse et stratégie de synthèse",
          "fiches": 16
         }
-       ]
-      },
-      {
-       "titre": "Titrages pH-métrique et conductimétrique",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r38-a8-chim-titrages",
-         "titre": "Terminale spé — Chimie : titrages pH-métrique et conductimétrique",
-         "fiches": 16
+         "titre": "Prévoir le sens d'évolution en exercices",
+         "boites": [
+          {
+           "cle": "r40-b8-chimie-sens-evolution-exos",
+           "titre": "Terminale spé — Chimie : prévoir le sens d'évolution en exercices",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
-       "titre": "Méthodes physiques d'analyse",
+       "titre": "Chimie organique",
        "boites": [
         {
-         "cle": "r38-a8-chim-methodes-physiques",
-         "titre": "Terminale spé — Chimie : méthodes physiques d'analyse",
-         "fiches": 16
+         "cle": "bac-chimie-organique",
+         "titre": "Chimie — Chimie organique",
+         "fiches": 21
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Méthodes physiques d'analyse",
+         "boites": [
+          {
+           "cle": "r38-a8-chim-methodes-physiques",
+           "titre": "Terminale spé — Chimie : méthodes physiques d'analyse",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
-       "titre": "Prévoir le sens d'évolution en exercices",
-       "boites": [
-        {
-         "cle": "r40-b8-chimie-sens-evolution-exos",
-         "titre": "Terminale spé — Chimie : prévoir le sens d'évolution en exercices",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Suivi temporel et cinétique en exercices",
-       "boites": [
-        {
-         "cle": "r40-b8-chimie-cinetique-exos",
-         "titre": "Terminale spé — Chimie : suivi temporel et cinétique en exercices",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Force des acides et des bases en exercices",
-       "boites": [
-        {
-         "cle": "r40-b8-chimie-acides-exos",
-         "titre": "Terminale spé — Chimie : force des acides et des bases en exercices",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Acides aminés, protéines et lipides",
+       "titre": "Acides aminés, protéines et lipides (ST2S)",
        "boites": [
         {
          "cle": "r40-b10-tst2s-chimie-biomolecules",
@@ -13542,41 +13691,26 @@
        ]
       },
       {
-       "titre": "Auteurs et notions clés à citer",
+       "titre": "Révisions du bac",
        "boites": [
         {
          "cle": "r35-tle-ses-auteurs-notions",
          "titre": "Terminale — SES : auteurs et notions clés à citer",
          "fiches": 18
-        }
-       ]
-      },
-      {
-       "titre": "Méthode de l'épreuve composée",
-       "boites": [
+        },
+        {
+         "cle": "r40-b8-ses-calculs",
+         "titre": "Terminale spé — SES : calculs et lecture de données statistiques",
+         "fiches": 16
+        },
         {
          "cle": "r40-b8-ses-methode-ec",
          "titre": "Terminale spé — SES : méthode de l'épreuve composée",
          "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Méthode de la dissertation",
-       "boites": [
+        },
         {
          "cle": "r40-b8-ses-methode-dissertation",
          "titre": "Terminale spé — SES : méthode de la dissertation",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Calculs et lecture de données statistiques",
-       "boites": [
-        {
-         "cle": "r40-b8-ses-calculs",
-         "titre": "Terminale spé — SES : calculs et lecture de données statistiques",
          "fiches": 16
         }
        ]

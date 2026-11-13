@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1132 chapitres couverts sur 1300** (87 %), 1180 boîtes, 19456 fiches.
+Mise à jour : 13/11/2026. **1066 chapitres couverts sur 1228** (87 %), 1180 boîtes, 19456 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -20,9 +20,9 @@ Mise à jour : 13/11/2026. **1132 chapitres couverts sur 1300** (87 %), 1180 bo�
 | [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
 | [4e](#4e) | 52 / 82 | 30 | 54 | 916 |
 | [3e](#3e) | 96 / 108 | 12 | 134 | 2565 |
-| [Seconde](#seconde) | 70 / 82 | 12 | 70 | 1243 |
-| [Première](#première) | 113 / 124 | 11 | 113 | 1931 |
-| [Terminale](#terminale) | 173 / 175 | 2 | 173 | 3175 |
+| [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
+| [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
+| [Terminale](#terminale) | 143 / 145 | 2 | 173 | 3175 |
 | [Autres boîtes](#autres-boîtes) | 1 / 1 | 0 | 1 | 68 |
 
 ## CP
@@ -1456,88 +1456,101 @@ Collège — 96 chapitres couverts sur 108, 134 boîtes.
 
 ## Seconde
 
-Lycée — 70 chapitres couverts sur 82, 70 boîtes.
+Lycée — 55 chapitres couverts sur 62, 70 boîtes.
 
-### Seconde — Français (7 / 8)
+### Seconde — Français (6 / 7)
 
-- [x] Les figures de style — Français — Les figures de style (30 fiches)
-- [x] La poésie du Moyen Âge au XVIIIe siècle — Seconde — Français : la poésie du Moyen Âge au XVIIIe siècle (17 fiches)
-- [x] Le théâtre du XVIIe au XXIe siècle — Seconde — Français : le théâtre du XVIIe au XXIe siècle (18 fiches)
-- [x] Le roman et le récit du XVIIIe au XXIe siècle — Seconde — Français : le roman et le récit du XVIIIe au XXIe siècle (19 fiches)
-- [x] La littérature d'idées et la presse du XIXe au XXIe siècle — Seconde — Français : la littérature d'idées et la presse du XIXe au XXIe siècle (17 fiches)
+- [x] La poésie du Moyen Âge au XVIIIe siècle — l'essentiel — Seconde — Français : la poésie du Moyen Âge au XVIIIe siècle (17 fiches)
+  - [ ] Le sonnet et la poésie de la Pléiade — *à créer*
+  - [ ] Versification : vers, rimes et strophes — *à créer*
+- [x] La littérature d'idées et la presse du XIXe au XXIe siècle — l'essentiel — Seconde — Français : la littérature d'idées et la presse du XIXe au XXIe siècle (17 fiches)
+  - [x] Le vocabulaire de l'argumentation — Seconde — Français : le vocabulaire de l'argumentation (16 fiches)
+- [x] Le roman et le récit du XVIIIe au XXIe siècle — l'essentiel — Seconde — Français : le roman et le récit du XVIIIe au XXIe siècle (19 fiches)
+  - [ ] Réalisme et naturalisme — *à créer*
+  - [ ] Narrateur et point de vue — *à créer*
+- [x] Le théâtre du XVIIe au XXIe siècle — l'essentiel — Seconde — Français : le théâtre du XVIIe au XXIe siècle (18 fiches)
+  - [ ] Tragédie et comédie classiques — *à créer*
+  - [ ] Le théâtre moderne et contemporain — *à créer*
 - [x] Grammaire, accords, valeurs du verbe et propositions — Seconde — Français : grammaire, accords, valeurs du verbe et propositions (19 fiches)
-- [x] Le vocabulaire de l'argumentation — Seconde — Français : le vocabulaire de l'argumentation (16 fiches)
+- [x] Les figures de style — Français — Les figures de style (30 fiches)
 - [ ] Méthode du commentaire de texte — *à créer*
 
-### Seconde — Mathématiques (11 / 13)
+### Seconde — Mathématiques (5 / 5)
 
-- [x] Nombres, intervalles et calculs — Seconde — Maths : nombres, intervalles et calculs (21 fiches)
-- [x] Vecteurs, repérage et droites — Seconde — Maths : vecteurs, repérage et droites (18 fiches)
-- [x] Fonctions de référence et variations — Seconde — Maths : fonctions de référence et variations (16 fiches)
-- [x] Statistiques, évolutions et probabilités — Seconde — Maths : statistiques, évolutions et probabilités (17 fiches)
-- [x] Équations, inéquations et tableaux de signes — Seconde — Maths : équations, inéquations et tableaux de signes (17 fiches)
+- [x] Nombres et calculs — l'essentiel — Seconde — Maths : nombres, intervalles et calculs (21 fiches)
+  - [x] Multiples, diviseurs et nombres premiers — Seconde — Maths : multiples, diviseurs et nombres premiers (16 fiches)
+  - [x] Calcul littéral, développer et factoriser — Seconde — Maths : calcul littéral, développer et factoriser (17 fiches)
+  - [x] Équations, inéquations et tableaux de signes — Seconde — Maths : équations, inéquations et tableaux de signes (17 fiches)
+- [x] Vecteurs, repérage et droites — l'essentiel — Seconde — Maths : vecteurs, repérage et droites (18 fiches)
+  - [ ] Fonctions affines et équations de droites — *à créer*
+  - [x] Systèmes de deux équations à deux inconnues — Seconde — Maths : systèmes de deux équations à deux inconnues (16 fiches)
+  - [x] Géométrie plane, projeté orthogonal et trigonométrie — Seconde — Maths : géométrie plane, projeté orthogonal et trigonométrie (18 fiches)
+- [x] Fonctions de référence et variations — l'essentiel — Seconde — Maths : fonctions de référence et variations (16 fiches)
+  - [ ] Fonctions carré, inverse, racine carrée et cube — *à créer*
+  - [ ] Variations, extremums et signe d'une fonction — *à créer*
+- [x] Statistiques, évolutions et probabilités — l'essentiel — Seconde — Maths : statistiques, évolutions et probabilités (17 fiches)
+  - [ ] Évolutions et pourcentages — *à créer*
+  - [x] Modéliser une expérience aléatoire — Seconde — Maths : modéliser une expérience aléatoire (20 fiches)
+  - [ ] Échantillonnage et fluctuation — *à créer*
 - [x] Algorithmique et programmation en Python — Seconde — Maths : algorithmique et programmation en Python (19 fiches)
-- [x] Géométrie plane, projeté orthogonal et trigonométrie — Seconde — Maths : géométrie plane, projeté orthogonal et trigonométrie (18 fiches)
-- [x] Calcul littéral, développer et factoriser — Seconde — Maths : calcul littéral, développer et factoriser (17 fiches)
-- [x] Systèmes de deux équations à deux inconnues — Seconde — Maths : systèmes de deux équations à deux inconnues (16 fiches)
-- [x] Multiples, diviseurs et nombres premiers — Seconde — Maths : multiples, diviseurs et nombres premiers (16 fiches)
-- [x] Modéliser une expérience aléatoire — Seconde — Maths : modéliser une expérience aléatoire (20 fiches)
-- [ ] Fonctions affines et équations de droites — *à créer*
-- [ ] Échantillonnage et fluctuation — *à créer*
 
-### Seconde — Histoire (5 / 7)
+### Seconde — Histoire (5 / 5)
 
+- [x] Le monde méditerranéen, de l'Antiquité au Moyen Âge — l'essentiel — Seconde — Histoire : le monde méditerranéen, de l'Antiquité au Moyen Âge (18 fiches)
+  - [ ] La Méditerranée antique : Athènes et Rome — *à créer*
+  - [ ] La Méditerranée médiévale : chrétientés et islam — *à créer*
+- [x] XVe-XVIe siècles, un nouveau rapport au monde — l'essentiel — Seconde — Histoire : XVe-XVIe siècles, un nouveau rapport au monde (17 fiches)
+  - [ ] Grandes découvertes et premiers empires coloniaux — *à créer*
+  - [ ] Renaissance, humanisme et réformes religieuses — *à créer*
 - [x] L'affirmation de l'État dans le royaume de France — Seconde — Histoire : l'affirmation de l'État dans le royaume de France (17 fiches)
 - [x] Le modèle britannique et son influence — Seconde — Histoire : le modèle britannique et son influence (17 fiches)
-- [x] Le monde méditerranéen, de l'Antiquité au Moyen Âge — Seconde — Histoire : le monde méditerranéen, de l'Antiquité au Moyen Âge (18 fiches)
-- [x] XVe-XVIe siècles, un nouveau rapport au monde — Seconde — Histoire : XVe-XVIe siècles, un nouveau rapport au monde (17 fiches)
-- [x] Les Lumières, les sciences et la société d'ordres — Seconde — Histoire : les Lumières, les sciences et la société d'ordres (17 fiches)
-- [ ] Traites et économie atlantique au XVIIIe siècle — *à créer*
-- [ ] Tensions et crises de l'Ancien Régime — *à créer*
+- [x] Les Lumières, les sciences et la société d'ordres — l'essentiel — Seconde — Histoire : les Lumières, les sciences et la société d'ordres (17 fiches)
+  - [ ] Traites et économie atlantique au XVIIIe siècle — *à créer*
+  - [ ] Tensions et crises de l'Ancien Régime — *à créer*
 
-### Seconde — Géographie (6 / 6)
+### Seconde — Géographie (4 / 4)
 
-- [x] Sociétés et environnements, des équilibres fragiles — Seconde — Géographie : sociétés et environnements, des équilibres fragiles (17 fiches)
-- [x] Des mobilités généralisées — Seconde — Géographie : des mobilités généralisées (16 fiches)
+- [x] Sociétés et environnements, des équilibres fragiles — l'essentiel — Seconde — Géographie : sociétés et environnements, des équilibres fragiles (17 fiches)
+  - [x] La France : des milieux entre valorisation et protection — Seconde — Géographie : la France, des milieux entre valorisation et protection (17 fiches)
 - [x] Développement et trajectoires démographiques — Seconde — Géographie : développement et trajectoires démographiques (16 fiches)
+- [x] Des mobilités généralisées — l'essentiel — Seconde — Géographie : des mobilités généralisées (16 fiches)
+  - [x] La France : mobilités, transports et aménagement — Seconde — Géographie : la France, mobilités, transports et aménagement (17 fiches)
 - [x] L'Afrique australe, un espace en profonde mutation — Seconde — Géographie : l'Afrique australe, un espace en profonde mutation (17 fiches)
-- [x] La France, mobilités, transports et aménagement — Seconde — Géographie : la France, mobilités, transports et aménagement (17 fiches)
-- [x] La France, des milieux entre valorisation et protection — Seconde — Géographie : la France, des milieux entre valorisation et protection (17 fiches)
 
 ### Seconde — EMC (2 / 2)
 
 - [x] La liberté, les libertés — Seconde — EMC : la liberté, les libertés (16 fiches)
 - [x] Droits de l'homme, DDHC et État de droit — Seconde — EMC : droits de l'homme, DDHC et État de droit (16 fiches)
 
-### Seconde — SVT (8 / 8)
+### Seconde — SVT (5 / 5)
 
-- [x] Cellule, ADN et biodiversité — SVT — Cellule, ADN et biodiversité (27 fiches)
-- [x] Procréation et sexualité humaine — Seconde — SVT : procréation et sexualité humaine (18 fiches)
-- [x] Agrosystèmes, sols et développement durable — Seconde — SVT : agrosystèmes, sols et développement durable (16 fiches)
+- [x] Cellule, ADN et organisation du vivant — l'essentiel — SVT — Cellule, ADN et biodiversité (27 fiches)
+  - [x] L'organisme pluricellulaire, un ensemble de cellules spécialisées — Seconde — SVT : l'organisme pluricellulaire, un ensemble de cellules spécialisées (17 fiches)
+  - [x] Métabolisme des cellules et enzymes — Seconde — SVT : métabolisme des cellules et enzymes (17 fiches)
+  - [x] La biodiversité, résultat et étape de l'évolution — Seconde — SVT : la biodiversité, résultat et étape de l'évolution (17 fiches)
 - [x] Érosion, sédimentation et dynamique des paysages — Seconde — SVT : érosion, sédimentation et dynamique des paysages (16 fiches)
-- [x] L'organisme pluricellulaire, un ensemble de cellules spécialisées — Seconde — SVT : l'organisme pluricellulaire, un ensemble de cellules spécialisées (17 fiches)
-- [x] Métabolisme des cellules et enzymes — Seconde — SVT : métabolisme des cellules et enzymes (17 fiches)
-- [x] La biodiversité, résultat et étape de l'évolution — Seconde — SVT : la biodiversité, résultat et étape de l'évolution (17 fiches)
+- [x] Agrosystèmes, sols et développement durable — Seconde — SVT : agrosystèmes, sols et développement durable (16 fiches)
+- [x] Procréation et sexualité humaine — Seconde — SVT : procréation et sexualité humaine (18 fiches)
 - [x] Microorganismes, microbiote humain et santé — Seconde — SVT : microorganismes, microbiote humain et santé (16 fiches)
 
-### Seconde — Physique (6 / 7)
+### Seconde — Physique (5 / 6)
 
-- [x] Formules et constantes de Seconde — Physique-chimie — Formules et constantes de Seconde (30 fiches)
-- [x] Mouvements, forces et signaux — Seconde — Physique : mouvements, forces et signaux (18 fiches)
-- [x] Circuits électriques et capteurs — Seconde — Physique : circuits électriques et capteurs (17 fiches)
+- [x] Mouvements, forces et signaux — l'essentiel — Seconde — Physique : mouvements, forces et signaux (18 fiches)
+  - [x] Actions mécaniques et modélisation par des forces — Seconde — Physique : actions mécaniques et modélisation par des forces (18 fiches)
 - [x] Émission, propagation et perception du son — Seconde — Physique : émission, propagation et perception du son (16 fiches)
 - [x] Lumière, spectres et lentilles minces — Seconde — Physique : lumière, spectres et lentilles minces (17 fiches)
-- [x] Actions mécaniques et modélisation par des forces — Seconde — Physique : actions mécaniques et modélisation par des forces (18 fiches)
+- [x] Circuits électriques et capteurs — Seconde — Physique : circuits électriques et capteurs (17 fiches)
 - [ ] Mesure et incertitudes — *à créer*
+- [x] Révisions de l'année — Physique-chimie — Formules et constantes de Seconde (30 fiches)
 
-### Seconde — Chimie (5 / 6)
+### Seconde — Chimie (3 / 3)
 
-- [x] Corps purs, mélanges et solutions — Seconde — Chimie : corps purs, mélanges et solutions (19 fiches)
-- [x] Transformations physiques, chimiques et nucléaires — Seconde — Chimie : transformations physiques, chimiques et nucléaires (18 fiches)
-- [x] Atome, configuration électronique et tableau périodique — Seconde — Chimie : atome, configuration électronique et tableau périodique (18 fiches)
-- [x] Ions, molécules, schémas de Lewis et la mole — Seconde — Chimie : ions, molécules, schémas de Lewis et la mole (19 fiches)
-- [x] Synthèse, extraction et identification d'espèces chimiques — Seconde — Chimie : synthèse, extraction et identification d'espèces chimiques (17 fiches)
-- [ ] Quantité de matière, concentration et dosage par étalonnage — *à créer*
+- [x] Corps purs, mélanges et solutions — l'essentiel — Seconde — Chimie : corps purs, mélanges et solutions (19 fiches)
+  - [ ] Quantité de matière, concentration et dosage par étalonnage — *à créer*
+- [x] Atome, configuration électronique et tableau périodique — l'essentiel — Seconde — Chimie : atome, configuration électronique et tableau périodique (18 fiches)
+  - [x] Ions, molécules, schémas de Lewis et la mole — Seconde — Chimie : ions, molécules, schémas de Lewis et la mole (19 fiches)
+- [x] Transformations physiques, chimiques et nucléaires — l'essentiel — Seconde — Chimie : transformations physiques, chimiques et nucléaires (18 fiches)
+  - [x] Synthèse, extraction et identification d'espèces chimiques — Seconde — Chimie : synthèse, extraction et identification d'espèces chimiques (17 fiches)
 
 ### Seconde — SNT (4 / 6)
 
@@ -1585,95 +1598,99 @@ Lycée — 70 chapitres couverts sur 82, 70 boîtes.
 
 ## Première
 
-Lycée — 113 chapitres couverts sur 124, 113 boîtes.
+Lycée — 92 chapitres couverts sur 102, 113 boîtes.
 
-### Première — Français (13 / 13)
+### Première — Français (7 / 7)
 
-- [x] Les mouvements littéraires — Français — Les mouvements littéraires (16 fiches)
-- [x] Versification et poésie — Français — Versification et poésie (18 fiches)
-- [x] Vocabulaire d'analyse — Français — Théâtre et roman : vocabulaire d'analyse (21 fiches)
-- [x] Grammaire pour l'oral du bac — Français — Grammaire pour l'oral du bac (18 fiches)
-- [x] Commentaire, dissertation, oral — Français — Méthodes : commentaire, dissertation, oral (17 fiches)
+- [x] La poésie du XIXe au XXIe siècle — l'essentiel — 1ère — Français : la poésie du XIXe au XXIe siècle (17 fiches)
+  - [x] Versification et poésie — Français — Versification et poésie (18 fiches)
 - [x] La littérature d'idées du XVIe au XVIIIe siècle — 1ère — Français : la littérature d'idées du XVIe au XVIIIe siècle (18 fiches)
 - [x] Le roman et le récit du Moyen Âge au XXIe siècle — 1ère — Français : le roman et le récit du Moyen Âge au XXIe siècle (17 fiches)
 - [x] Le théâtre du XVIIe au XXIe siècle — 1ère — Français : le théâtre du XVIIe au XXIe siècle (17 fiches)
-- [x] La poésie du XIXe au XXIe siècle — 1ère — Français : la poésie du XIXe au XXIe siècle (17 fiches)
-- [x] Repères d'histoire littéraire du Moyen Âge à nos jours — 1ère — Français : repères d'histoire littéraire du Moyen Âge à nos jours (16 fiches)
-- [x] Procédés d'écriture et leurs effets pour le commentaire — 1ère — Français : procédés d'écriture et leurs effets pour le commentaire (18 fiches)
-- [x] Méthode et outils de la dissertation — 1ère — Français : méthode et outils de la dissertation (17 fiches)
-- [x] Réussir l'oral de l'épreuve anticipée — 1ère — Français : réussir l'oral de l'épreuve anticipée (16 fiches)
+- [x] Repères d'histoire littéraire du Moyen Âge à nos jours — l'essentiel — 1ère — Français : repères d'histoire littéraire du Moyen Âge à nos jours (16 fiches)
+  - [x] Les mouvements littéraires — Français — Les mouvements littéraires (16 fiches)
+- [x] Méthodes de l'écrit : commentaire et dissertation — l'essentiel — Français — Méthodes : commentaire, dissertation, oral (17 fiches)
+  - [x] Procédés d'écriture et leurs effets — 1ère — Français : procédés d'écriture et leurs effets pour le commentaire (18 fiches)
+  - [x] Vocabulaire d'analyse du théâtre et du roman — Français — Théâtre et roman : vocabulaire d'analyse (21 fiches)
+  - [x] Méthode et outils de la dissertation — 1ère — Français : méthode et outils de la dissertation (17 fiches)
+- [x] L'oral de l'épreuve anticipée — l'essentiel — 1ère — Français : réussir l'oral de l'épreuve anticipée (16 fiches)
+  - [x] La question de grammaire — Français — Grammaire pour l'oral du bac (18 fiches)
 
-### Première — Mathématiques (14 / 14)
+### Première — Mathématiques (9 / 9)
 
-- [x] Les dérivées usuelles — Maths — Les dérivées usuelles (34 fiches)
-- [x] Automatismes (épreuve anticipée de 1ère) — Maths — Automatismes (épreuve anticipée de 1ère) (32 fiches)
 - [x] Le second degré — 1ère spé Maths — Le second degré (17 fiches)
-- [x] Suites arithmétiques et géométriques — 1ère spé Maths — Suites arithmétiques et géométriques (18 fiches)
-- [x] Probabilités conditionnelles et variables aléatoires — 1ère spé Maths — Probabilités conditionnelles et variables aléatoires (19 fiches)
-- [x] Le produit scalaire — 1ère spé Maths — Le produit scalaire (15 fiches)
-- [x] Cercle trigonométrique, radian, cosinus et sinus — 1ère spé Maths — Cercle trigonométrique, radian, cosinus et sinus (18 fiches)
+- [x] Suites arithmétiques et géométriques — l'essentiel — 1ère spé Maths — Suites arithmétiques et géométriques (18 fiches)
+  - [x] Modes de génération, sens de variation et algorithmes — 1ère spé Maths — Suites : modes de génération, sens de variation et algorithmes (16 fiches)
+- [x] Dérivation — l'essentiel — Maths — Les dérivées usuelles (34 fiches)
+  - [x] Nombre dérivé et tangente — 1ère spé Maths — Nombre dérivé et tangente (16 fiches)
+  - [x] Opérations sur les dérivées — 1ère spé Maths — Opérations sur les dérivées et dérivée de x ↦ g(ax + b) (17 fiches)
+  - [x] Variations et extremums — 1ère spé Maths — Dérivation : variations et extremums (15 fiches)
 - [x] La fonction exponentielle — 1ère spé Maths — La fonction exponentielle (16 fiches)
-- [x] Droites, cercles et paraboles — 1ère spé Maths — Géométrie repérée : droites, cercles et paraboles (16 fiches)
-- [x] Nombre dérivé et tangente — 1ère spé Maths — Nombre dérivé et tangente (16 fiches)
-- [x] Variations et extremums — 1ère spé Maths — Dérivation : variations et extremums (15 fiches)
-- [x] Modes de génération, sens de variation et algorithmes — 1ère spé Maths — Suites : modes de génération, sens de variation et algorithmes (16 fiches)
-- [x] Opérations sur les dérivées et dérivée de x ↦ g(ax + b) — 1ère spé Maths — Opérations sur les dérivées et dérivée de x ↦ g(ax + b) (17 fiches)
-- [x] Taux d'évolution, coefficients multiplicateurs et suites — 1ère STMG — Maths : taux d'évolution, coefficients multiplicateurs et suites (16 fiches)
+- [x] Cercle trigonométrique, radian, cosinus et sinus — 1ère spé Maths — Cercle trigonométrique, radian, cosinus et sinus (18 fiches)
+- [x] Le produit scalaire — l'essentiel — 1ère spé Maths — Le produit scalaire (15 fiches)
+  - [x] Droites, cercles et paraboles dans un repère — 1ère spé Maths — Géométrie repérée : droites, cercles et paraboles (16 fiches)
+- [x] Probabilités conditionnelles et variables aléatoires — 1ère spé Maths — Probabilités conditionnelles et variables aléatoires (19 fiches)
+- [x] Taux d'évolution, coefficients multiplicateurs et suites (STMG) — 1ère STMG — Maths : taux d'évolution, coefficients multiplicateurs et suites (16 fiches)
+- [x] Révisions du bac — Maths — Automatismes (épreuve anticipée de 1ère) (32 fiches)
 
-### Première — Histoire (7 / 7)
+### Première — Histoire (4 / 4)
 
-- [x] Révolution française et Empire (1789-1815) — 1ère — Histoire : Révolution française et Empire (1789-1815) (19 fiches)
-- [x] La IIIe République, mise en œuvre du projet républicain — 1ère — Histoire : la IIIe République, mise en œuvre du projet républicain (16 fiches)
-- [x] La Première Guerre mondiale et la fin des empires — 1ère — Histoire : la Première Guerre mondiale et la fin des empires (17 fiches)
-- [x] L'Europe entre restauration et révolution (1814-1848) — 1ère — Histoire : l'Europe entre restauration et révolution (1814-1848) (16 fiches)
-- [x] La France dans l'Europe des nationalités (1848-1871) — 1ère — Histoire : la France dans l'Europe des nationalités (1848-1871) (17 fiches)
-- [x] Société française et empire colonial (1870-1914) — 1ère — Histoire : société française et empire colonial (1870-1914) (16 fiches)
-- [x] Sortir de la guerre, les traités de paix (1918-1925) — 1ère — Histoire : sortir de la guerre, les traités de paix (1918-1925) (17 fiches)
+- [x] L'Europe face aux révolutions (1789-1848) — l'essentiel — 1ère — Histoire : Révolution française et Empire (1789-1815) (19 fiches)
+  - [x] L'Europe entre restauration et révolution (1814-1848) — 1ère — Histoire : l'Europe entre restauration et révolution (1814-1848) (16 fiches)
+- [x] La France dans l'Europe des nationalités (1848-1871) — l'essentiel — 1ère — Histoire : la France dans l'Europe des nationalités (1848-1871) (17 fiches)
+  - [ ] L'industrialisation et l'accélération des transformations — *à créer*
+- [x] La IIIe République avant 1914 — l'essentiel — 1ère — Histoire : la IIIe République, mise en œuvre du projet républicain (16 fiches)
+  - [x] Société française et empire colonial (1870-1914) — 1ère — Histoire : société française et empire colonial (1870-1914) (16 fiches)
+- [x] La Première Guerre mondiale et la fin des empires — l'essentiel — 1ère — Histoire : la Première Guerre mondiale et la fin des empires (17 fiches)
+  - [x] Sortir de la guerre, les traités de paix (1918-1925) — 1ère — Histoire : sortir de la guerre, les traités de paix (1918-1925) (17 fiches)
 
-### Première — Géographie (5 / 6)
+### Première — Géographie (5 / 5)
 
-- [x] La métropolisation, un processus mondial différencié — 1ère — Géographie : la métropolisation, un processus mondial différencié (15 fiches)
-- [x] Les espaces productifs dans la mondialisation — 1ère — Géographie : les espaces productifs dans la mondialisation (16 fiches)
-- [x] Les espaces ruraux, multifonctionnalité ou fragmentation ? — 1ère — Géographie : les espaces ruraux, multifonctionnalité ou fragmentation ? (16 fiches)
+- [x] La métropolisation, un processus mondial différencié — l'essentiel — 1ère — Géographie : la métropolisation, un processus mondial différencié (15 fiches)
+  - [ ] La France : la métropolisation et ses effets — *à créer*
+- [x] Les espaces productifs dans la mondialisation — l'essentiel — 1ère — Géographie : les espaces productifs dans la mondialisation (16 fiches)
+  - [ ] La France : les espaces productifs — *à créer*
+- [x] Les espaces ruraux, multifonctionnalité ou fragmentation ? — l'essentiel — 1ère — Géographie : les espaces ruraux, multifonctionnalité ou fragmentation ? (16 fiches)
+  - [ ] La France : des espaces ruraux multifonctionnels — *à créer*
 - [x] La Chine, des recompositions spatiales multiples — 1ère — Géographie : la Chine, des recompositions spatiales multiples (16 fiches)
-- [x] Notions clés et vocabulaire — 1ère — Géographie : notions clés et vocabulaire (16 fiches)
-- [ ] La France, métropolisation et espaces productifs — *à créer*
+- [x] Révisions de l'année — 1ère — Géographie : notions clés et vocabulaire (16 fiches)
 
 ### Première — EMC (2 / 2)
 
 - [x] Cohésion sociale, fraternité et lutte contre les discriminations — 1ère — EMC : cohésion sociale, fraternité et lutte contre les discriminations (16 fiches)
 - [x] Démocratie, institutions et engagement — 1ère — EMC : démocratie, institutions et engagement (16 fiches)
 
-### Première — SVT (7 / 7)
+### Première — SVT (5 / 5)
 
-- [x] Divisions cellulaires, méiose et mutations — 1ère spé SVT — Divisions cellulaires, méiose et mutations (19 fiches)
-- [x] Le fonctionnement du système immunitaire — 1ère spé SVT — Le fonctionnement du système immunitaire (17 fiches)
-- [x] L'expression du patrimoine génétique — 1ère spé SVT — L'expression du patrimoine génétique (16 fiches)
-- [x] Écosystèmes et services environnementaux — 1ère spé SVT — Écosystèmes et services environnementaux (15 fiches)
+- [x] Transmission, variation et expression du patrimoine génétique — l'essentiel — 1ère spé SVT — Divisions cellulaires, méiose et mutations (19 fiches)
+  - [x] L'expression du patrimoine génétique — 1ère spé SVT — L'expression du patrimoine génétique (16 fiches)
+  - [x] Les enzymes, des biomolécules aux propriétés catalytiques — 1ère spé SVT — Les enzymes, des biomolécules aux propriétés catalytiques (17 fiches)
 - [x] Structure du globe et dynamique de la lithosphère — 1ère spé SVT — Structure du globe et dynamique de la lithosphère (16 fiches)
+- [x] Écosystèmes et services environnementaux — 1ère spé SVT — Écosystèmes et services environnementaux (15 fiches)
 - [x] Variation génétique et santé — 1ère spé SVT — Variation génétique et santé (15 fiches)
-- [x] Les enzymes, des biomolécules aux propriétés catalytiques — 1ère spé SVT — Les enzymes, des biomolécules aux propriétés catalytiques (17 fiches)
+- [x] Le fonctionnement du système immunitaire — 1ère spé SVT — Le fonctionnement du système immunitaire (17 fiches)
 
-### Première — Physique (8 / 9)
+### Première — Physique (5 / 6)
 
-- [x] Énergie mécanique, travail et ondes — 1ère spé Physique-chimie — Énergie mécanique, travail et ondes (19 fiches)
-- [x] Interactions fondamentales et notion de champ — 1ère spé Physique-chimie — Interactions fondamentales et notion de champ (15 fiches)
-- [x] Puissance, énergie et rendement — 1ère spé Physique-chimie — Électricité : puissance, énergie et rendement (16 fiches)
-- [x] Mouvement et deuxième loi de Newton — 1ère spé Physique-chimie — Mouvement et deuxième loi de Newton (15 fiches)
-- [x] Lentilles minces convergentes et images — 1ère spé Physique-chimie — Lentilles minces convergentes et images (15 fiches)
-- [x] Synthèses additive et soustractive — 1ère spé Physique-chimie — Couleurs : synthèses additive et soustractive (15 fiches)
-- [x] Énergie et puissance — 1ère STI2D — Physique : énergie et puissance (18 fiches)
-- [x] Célérité, retard, période et longueur d'onde — 1ère spé Physique-chimie — Ondes mécaniques progressives : célérité, retard, période et longueur d'onde (18 fiches)
+- [x] Interactions fondamentales et notion de champ — l'essentiel — 1ère spé Physique-chimie — Interactions fondamentales et notion de champ (15 fiches)
+  - [x] Mouvement et deuxième loi de Newton — 1ère spé Physique-chimie — Mouvement et deuxième loi de Newton (15 fiches)
+- [x] Puissance, énergie et rendement — l'essentiel — 1ère spé Physique-chimie — Électricité : puissance, énergie et rendement (16 fiches)
+  - [ ] Énergie cinétique, potentielle et mécanique — *à créer*
+- [x] Ondes et signaux : célérité, retard, période et longueur d'onde — l'essentiel — 1ère spé Physique-chimie — Ondes mécaniques progressives : célérité, retard, période et longueur d'onde (18 fiches)
+  - [x] Lentilles minces convergentes et images — 1ère spé Physique-chimie — Lentilles minces convergentes et images (15 fiches)
+  - [x] Synthèses additive et soustractive — 1ère spé Physique-chimie — Couleurs : synthèses additive et soustractive (15 fiches)
 - [ ] Mesure et incertitudes — *à créer*
+- [x] Énergie et puissance (STI2D) — 1ère STI2D — Physique : énergie et puissance (18 fiches)
+- [x] Révisions de l'année — 1ère spé Physique-chimie — Énergie mécanique, travail et ondes (19 fiches)
 
-### Première — Chimie (6 / 6)
+### Première — Chimie (4 / 4)
 
-- [x] Quantité de matière, avancement et Lewis — 1ère spé Physique-chimie — Quantité de matière, avancement et Lewis (20 fiches)
-- [x] Oxydoréduction et dosages — 1ère spé Physique-chimie — Oxydoréduction et dosages (17 fiches)
-- [x] Polarité, cohésion et solubilité — 1ère spé Physique-chimie — Polarité, cohésion et solubilité (16 fiches)
-- [x] Molécules organiques et synthèse — 1ère spé Physique-chimie — Molécules organiques et synthèse (15 fiches)
-- [x] Combustions et énergie libérée — 1ère spé Physique-chimie — Combustions et énergie libérée (18 fiches)
-- [x] Réactions acido-basiques, pH et solutions tampons — 1ère STL — Chimie : réactions acido-basiques, pH et solutions tampons (17 fiches)
+- [x] Suivi de l'évolution d'un système : quantité de matière et avancement — l'essentiel — 1ère spé Physique-chimie — Quantité de matière, avancement et Lewis (20 fiches)
+  - [x] Oxydoréduction et dosages — 1ère spé Physique-chimie — Oxydoréduction et dosages (17 fiches)
+- [x] De la structure des entités aux propriétés : polarité, cohésion et solubilité — 1ère spé Physique-chimie — Polarité, cohésion et solubilité (16 fiches)
+- [x] Molécules organiques et synthèse — l'essentiel — 1ère spé Physique-chimie — Molécules organiques et synthèse (15 fiches)
+  - [x] Combustions et énergie libérée — 1ère spé Physique-chimie — Combustions et énergie libérée (18 fiches)
+- [x] Réactions acido-basiques, pH et solutions tampons (STL) — 1ère STL — Chimie : réactions acido-basiques, pH et solutions tampons (17 fiches)
 
 ### Première — NSI (5 / 7)
 
@@ -1798,25 +1815,25 @@ Lycée — 113 chapitres couverts sur 124, 113 boîtes.
 
 ## Terminale
 
-Lycée — 173 chapitres couverts sur 175, 173 boîtes.
+Lycée — 143 chapitres couverts sur 145, 173 boîtes.
 
-### Terminale — Mathématiques (15 / 15)
+### Terminale — Mathématiques (9 / 9)
 
-- [x] Suites et récurrence — Maths — Suites et récurrence (21 fiches)
+- [x] Suites et récurrence — l'essentiel — Maths — Suites et récurrence (21 fiches)
+  - [x] Suites, méthodes classiques du bac — Terminale spé — Maths : suites, méthodes classiques du bac (17 fiches)
 - [x] Limites de fonctions et continuité — Maths — Limites de fonctions et continuité (18 fiches)
-- [x] Exponentielle et logarithme népérien — Maths — Exponentielle et logarithme népérien (32 fiches)
-- [x] Convexité et fonctions trigonométriques — Maths — Convexité et fonctions trigonométriques (24 fiches)
+- [x] Fonctions composées, dérivation et convexité — l'essentiel — Terminale spé — Maths : fonctions composées et dérivation (16 fiches)
+  - [x] Convexité et fonctions trigonométriques — Maths — Convexité et fonctions trigonométriques (24 fiches)
+  - [x] Étude de fonction, le plan type du bac — Terminale spé — Maths : étude de fonction, le plan type du bac (16 fiches)
+- [x] Exponentielle et logarithme népérien — l'essentiel — Maths — Exponentielle et logarithme népérien (32 fiches)
+  - [x] Logarithme népérien en exercices — Terminale spé — Maths : logarithme népérien en exercices (16 fiches)
 - [x] Primitives, intégrales et équations différentielles — Maths — Primitives, intégrales et équations différentielles (23 fiches)
-- [x] Dénombrement et probabilités — Maths — Dénombrement et probabilités (22 fiches)
-- [x] Géométrie dans l'espace — Maths — Géométrie dans l'espace (16 fiches)
-- [x] Fonctions composées et dérivation — Terminale spé — Maths : fonctions composées et dérivation (16 fiches)
+- [x] Dénombrement et probabilités — l'essentiel — Maths — Dénombrement et probabilités (22 fiches)
+  - [x] Loi binomiale en exercices — Terminale spé — Maths : loi binomiale en exercices (18 fiches)
+- [x] Géométrie dans l'espace — l'essentiel — Maths — Géométrie dans l'espace (16 fiches)
+  - [x] Droites et plans de l'espace en exercices — Terminale spé — Maths : droites et plans de l'espace en exercices (17 fiches)
 - [x] Algorithmique et Python — Terminale spé — Maths : algorithmique et Python (18 fiches)
-- [x] Étude de fonction, le plan type du bac — Terminale spé — Maths : étude de fonction, le plan type du bac (16 fiches)
-- [x] Suites, méthodes classiques du bac — Terminale spé — Maths : suites, méthodes classiques du bac (17 fiches)
-- [x] Loi binomiale en exercices — Terminale spé — Maths : loi binomiale en exercices (18 fiches)
-- [x] Droites et plans de l'espace en exercices — Terminale spé — Maths : droites et plans de l'espace en exercices (17 fiches)
-- [x] Logarithme népérien en exercices — Terminale spé — Maths : logarithme népérien en exercices (16 fiches)
-- [x] Nombres complexes et forme exponentielle — Terminale STI2D — Maths : nombres complexes et forme exponentielle (16 fiches)
+- [x] Nombres complexes et forme exponentielle (STI2D) — Terminale STI2D — Maths : nombres complexes et forme exponentielle (16 fiches)
 
 ### Terminale — Mathématiques complémentaires (4 / 4)
 
@@ -1865,7 +1882,7 @@ Lycée — 173 chapitres couverts sur 175, 173 boîtes.
 - [x] Grands auteurs des XVIIe et XVIIIe siècles — Terminale — Philosophie : grands auteurs des XVIIe et XVIIIe siècles (16 fiches)
 - [x] Grands auteurs des XIXe et XXe siècles — Terminale — Philosophie : grands auteurs des XIXe et XXe siècles (16 fiches)
 
-### Terminale — Histoire (11 / 11)
+### Terminale — Histoire (8 / 8)
 
 - [x] La crise des années 1930 et les totalitarismes — Histoire — La crise des années 1930 et les totalitarismes (19 fiches)
 - [x] La Seconde Guerre mondiale — Histoire — La Seconde Guerre mondiale (21 fiches)
@@ -1874,20 +1891,15 @@ Lycée — 173 chapitres couverts sur 175, 173 boîtes.
 - [x] Les remises en cause (1970-1991) — Histoire — Les remises en cause (1970-1991) (28 fiches)
 - [x] Le monde, l'Europe et la France depuis 1990 — Histoire — Le monde, l'Europe et la France depuis 1990 (26 fiches)
 - [x] La Ve République — Histoire — La Ve République (28 fiches)
-- [x] Acteurs et personnages clés (1929-années 2010) — Terminale — Histoire : acteurs et personnages clés (1929-années 2010) (18 fiches)
-- [x] Grandes lois et réformes de la France (1945-années 2010) — Terminale — Histoire : grandes lois et réformes de la France (1945-années 2010) (17 fiches)
-- [x] Méthode de l'analyse de document et de la question problématisée — Terminale — Histoire : méthode de l'analyse de document et de la question problématisée (16 fiches)
-- [x] Grandes conférences et traités (1938-années 2000) — Terminale — Histoire : grandes conférences et traités (1938-années 2000) (21 fiches)
+- [x] Révisions du bac — Terminale — Histoire : acteurs et personnages clés (1929-années 2010) (18 fiches) ; Terminale — Histoire : grandes lois et réformes de la France (1945-années 2010) (17 fiches) ; Terminale — Histoire : grandes conférences et traités (1938-années 2000) (21 fiches) ; Terminale — Histoire : méthode de l'analyse de document et de la question problématisée (16 fiches)
 
-### Terminale — Géographie (7 / 7)
+### Terminale — Géographie (4 / 4)
 
 - [x] Mers et océans — Géographie — Mers et océans (22 fiches)
 - [x] Mondialisation et dynamiques territoriales — Géographie — Mondialisation et dynamiques territoriales (17 fiches)
-- [x] La France et l'Union européenne — Géographie — La France et l'Union européenne (20 fiches)
-- [x] Repères spatiaux et cartes pour le croquis — Terminale — Géographie : repères spatiaux et cartes pour le croquis (17 fiches)
-- [x] La France dans le monde — Terminale — Géographie : la France dans le monde (15 fiches)
-- [x] Méthode du croquis et du schéma — Terminale — Géographie : méthode du croquis et du schéma (16 fiches)
-- [x] Glossaire des notions clés — Terminale — Géographie : glossaire des notions clés (16 fiches)
+- [x] La France et l'Union européenne dans la mondialisation — l'essentiel — Géographie — La France et l'Union européenne (20 fiches)
+  - [x] La France dans le monde — Terminale — Géographie : la France dans le monde (15 fiches)
+- [x] Révisions du bac — Terminale — Géographie : repères spatiaux et cartes pour le croquis (17 fiches) ; Terminale — Géographie : méthode du croquis et du schéma (16 fiches) ; Terminale — Géographie : glossaire des notions clés (16 fiches)
 
 ### Terminale — EMC (3 / 3)
 
@@ -1895,48 +1907,48 @@ Lycée — 173 chapitres couverts sur 175, 173 boîtes.
 - [x] La vie démocratique — Terminale — EMC : la vie démocratique (16 fiches)
 - [x] Débat démocratique, information et engagement — Terminale — EMC : débat démocratique, information et engagement (16 fiches)
 
-### Terminale — SVT (11 / 11)
+### Terminale — SVT (5 / 5)
 
-- [x] Génétique et évolution — SVT — Génétique et évolution (23 fiches)
+- [x] Génétique et évolution — l'essentiel — SVT — Génétique et évolution (23 fiches)
+  - [x] L'origine du génotype, analyser des croisements — Terminale spé — SVT : l'origine du génotype, analyser des croisements (18 fiches)
+  - [x] Complexification des génomes — Terminale spé — SVT : complexification des génomes (16 fiches)
 - [x] Temps, roches et tectonique — SVT — Géologie : temps, roches et tectonique (21 fiches)
-- [x] Immunité, nerfs, muscles, glycémie — SVT — Corps humain : immunité, nerfs, muscles, glycémie (18 fiches)
+- [x] De la plante sauvage à la plante domestiquée — l'essentiel — Terminale — SVT : de la plante sauvage à la plante domestiquée (18 fiches)
+  - [x] La vie fixée des plantes — Terminale spé — SVT : la vie fixée des plantes (16 fiches)
 - [x] Plantes et climats du passé — SVT — Plantes et climats du passé (21 fiches)
-- [x] Comportement, stress et cerveau — Terminale — SVT : comportement, stress et cerveau (16 fiches)
-- [x] De la plante sauvage à la plante domestiquée — Terminale — SVT : de la plante sauvage à la plante domestiquée (18 fiches)
-- [x] Complexification des génomes — Terminale spé — SVT : complexification des génomes (16 fiches)
-- [x] La vie fixée des plantes — Terminale spé — SVT : la vie fixée des plantes (16 fiches)
-- [x] Cerveau et mouvement volontaire — Terminale spé — SVT : cerveau et mouvement volontaire (16 fiches)
-- [x] L'origine du génotype, analyser des croisements — Terminale spé — SVT : l'origine du génotype, analyser des croisements (18 fiches)
-- [x] Produire le mouvement, contraction musculaire et énergie — Terminale spé — SVT : produire le mouvement, contraction musculaire et énergie (16 fiches)
+- [x] Corps humain et santé : immunité, nerfs, muscles, glycémie — l'essentiel — SVT — Corps humain : immunité, nerfs, muscles, glycémie (18 fiches)
+  - [x] Cerveau et mouvement volontaire — Terminale spé — SVT : cerveau et mouvement volontaire (16 fiches)
+  - [x] Produire le mouvement, contraction musculaire et énergie — Terminale spé — SVT : produire le mouvement, contraction musculaire et énergie (16 fiches)
+  - [x] Comportement, stress et cerveau — Terminale — SVT : comportement, stress et cerveau (16 fiches)
 
-### Terminale — Physique (13 / 13)
+### Terminale — Physique (9 / 9)
 
-- [x] Mouvements et lois de Newton — Physique — Mécanique : mouvements et lois de Newton (26 fiches)
-- [x] Ondes, son et lumière — Physique — Ondes, son et lumière (24 fiches)
-- [x] Thermodynamique et circuits RC — Physique — Thermodynamique et circuits RC (22 fiches)
-- [x] Mouvement dans un champ et lois de Kepler — Terminale — Physique : mouvement dans un champ et lois de Kepler (16 fiches)
+- [x] Mouvements et lois de Newton — l'essentiel — Physique — Mécanique : mouvements et lois de Newton (26 fiches)
+  - [x] Mouvement dans un champ et lois de Kepler — Terminale — Physique : mouvement dans un champ et lois de Kepler (16 fiches)
+  - [x] Satellites et planètes, exercices types — Terminale spé — Physique : satellites et planètes, exercices types (16 fiches)
+- [x] Ondes, son et lumière — l'essentiel — Physique — Ondes, son et lumière (24 fiches)
+  - [x] Diffraction, interférences et effet Doppler en exercices — Terminale spé — Physique : diffraction, interférences et effet Doppler en exercices (16 fiches)
+  - [x] Le photon, l'effet photoélectrique et le photovoltaïque — Terminale — Physique : le photon, l'effet photoélectrique et le photovoltaïque (17 fiches)
 - [x] Lunette astronomique et mécanique des fluides — Terminale — Physique : lunette astronomique et mécanique des fluides (16 fiches)
-- [x] Le photon, l'effet photoélectrique et le photovoltaïque — Terminale — Physique : le photon, l'effet photoélectrique et le photovoltaïque (17 fiches)
-- [x] Mesure et incertitudes — Terminale spé — Physique : mesure et incertitudes (16 fiches)
+- [x] Thermodynamique et circuits RC — Physique — Thermodynamique et circuits RC (22 fiches)
 - [x] Décroissance radioactive et datation — Terminale spé — Physique : décroissance radioactive et datation (16 fiches)
-- [x] Satellites et planètes, exercices types — Terminale spé — Physique : satellites et planètes, exercices types (16 fiches)
-- [x] Diffraction, interférences et effet Doppler en exercices — Terminale spé — Physique : diffraction, interférences et effet Doppler en exercices (16 fiches)
-- [x] Ondes sonores et ondes électromagnétiques — Terminale STI2D — Physique : ondes sonores et ondes électromagnétiques (18 fiches)
-- [x] Énergie électrique en régime sinusoïdal — Terminale STI2D — Physique : énergie électrique en régime sinusoïdal (16 fiches)
-- [x] Énergie mécanique, rotation et statique des fluides — Terminale STI2D — Physique : énergie mécanique, rotation et statique des fluides (16 fiches)
+- [x] Mesure et incertitudes — Terminale spé — Physique : mesure et incertitudes (16 fiches)
+- [x] Ondes sonores et ondes électromagnétiques (STI2D) — Terminale STI2D — Physique : ondes sonores et ondes électromagnétiques (18 fiches)
+- [x] Énergie électrique en régime sinusoïdal (STI2D) — Terminale STI2D — Physique : énergie électrique en régime sinusoïdal (16 fiches)
+- [x] Énergie mécanique, rotation et statique des fluides (STI2D) — Terminale STI2D — Physique : énergie mécanique, rotation et statique des fluides (16 fiches)
 
-### Terminale — Chimie (10 / 10)
+### Terminale — Chimie (5 / 5)
 
-- [x] Acides, bases et pH — Chimie — Acides, bases et pH (22 fiches)
-- [x] Cinétique, oxydoréduction et piles — Chimie — Cinétique, oxydoréduction et piles (22 fiches)
-- [x] Chimie organique — Chimie — Chimie organique (21 fiches)
-- [x] Sens d'évolution, électrolyse et stratégie de synthèse — Terminale — Chimie : sens d'évolution, électrolyse et stratégie de synthèse (16 fiches)
-- [x] Titrages pH-métrique et conductimétrique — Terminale spé — Chimie : titrages pH-métrique et conductimétrique (16 fiches)
-- [x] Méthodes physiques d'analyse — Terminale spé — Chimie : méthodes physiques d'analyse (16 fiches)
-- [x] Prévoir le sens d'évolution en exercices — Terminale spé — Chimie : prévoir le sens d'évolution en exercices (16 fiches)
-- [x] Suivi temporel et cinétique en exercices — Terminale spé — Chimie : suivi temporel et cinétique en exercices (16 fiches)
-- [x] Force des acides et des bases en exercices — Terminale spé — Chimie : force des acides et des bases en exercices (16 fiches)
-- [x] Acides aminés, protéines et lipides — Terminale ST2S — Chimie : acides aminés, protéines et lipides (17 fiches)
+- [x] Acides, bases et pH — l'essentiel — Chimie — Acides, bases et pH (22 fiches)
+  - [x] Titrages pH-métrique et conductimétrique — Terminale spé — Chimie : titrages pH-métrique et conductimétrique (16 fiches)
+  - [x] Force des acides et des bases en exercices — Terminale spé — Chimie : force des acides et des bases en exercices (16 fiches)
+- [x] Cinétique, oxydoréduction et piles — l'essentiel — Chimie — Cinétique, oxydoréduction et piles (22 fiches)
+  - [x] Suivi temporel et cinétique en exercices — Terminale spé — Chimie : suivi temporel et cinétique en exercices (16 fiches)
+- [x] Sens d'évolution, électrolyse et stratégie de synthèse — l'essentiel — Terminale — Chimie : sens d'évolution, électrolyse et stratégie de synthèse (16 fiches)
+  - [x] Prévoir le sens d'évolution en exercices — Terminale spé — Chimie : prévoir le sens d'évolution en exercices (16 fiches)
+- [x] Chimie organique — l'essentiel — Chimie — Chimie organique (21 fiches)
+  - [x] Méthodes physiques d'analyse — Terminale spé — Chimie : méthodes physiques d'analyse (16 fiches)
+- [x] Acides aminés, protéines et lipides (ST2S) — Terminale ST2S — Chimie : acides aminés, protéines et lipides (17 fiches)
 
 ### Terminale — NSI (6 / 6)
 
@@ -1947,16 +1959,13 @@ Lycée — 173 chapitres couverts sur 175, 173 boîtes.
 - [x] Bases de données relationnelles et SQL — Terminale spé NSI — Bases de données relationnelles et SQL (16 fiches)
 - [x] Récursivité, programmation objet et diviser pour régner — Terminale spé NSI — Récursivité, programmation objet et diviser pour régner (16 fiches)
 
-### Terminale — SES (8 / 8)
+### Terminale — SES (5 / 5)
 
 - [x] Croissance, commerce international, environnement — SES — Croissance, commerce international, environnement (17 fiches)
 - [x] Chômage, crises financières, politiques européennes — SES — Chômage, crises financières, politiques européennes (24 fiches)
 - [x] Structure sociale, mobilité, école — SES — Structure sociale, mobilité, école (20 fiches)
 - [x] Engagement, justice sociale, environnement — SES — Engagement, justice sociale, environnement (19 fiches)
-- [x] Auteurs et notions clés à citer — Terminale — SES : auteurs et notions clés à citer (18 fiches)
-- [x] Méthode de l'épreuve composée — Terminale spé — SES : méthode de l'épreuve composée (16 fiches)
-- [x] Méthode de la dissertation — Terminale spé — SES : méthode de la dissertation (16 fiches)
-- [x] Calculs et lecture de données statistiques — Terminale spé — SES : calculs et lecture de données statistiques (16 fiches)
+- [x] Révisions du bac — Terminale — SES : auteurs et notions clés à citer (18 fiches) ; Terminale spé — SES : calculs et lecture de données statistiques (16 fiches) ; Terminale spé — SES : méthode de l'épreuve composée (16 fiches) ; Terminale spé — SES : méthode de la dissertation (16 fiches)
 
 ### Terminale — HGGSP (7 / 7)
 
