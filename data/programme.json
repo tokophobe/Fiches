@@ -9000,19 +9000,43 @@
        "sousthemes": [
         {
          "titre": "1914-1918 : une guerre de masse (Verdun, la vie des poilus)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-hist-1418-guerre-masse",
+           "titre": "3ème — Histoire : 1914-1918, une guerre de masse : Verdun et la vie des poilus",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les civils dans la guerre totale",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-hist-1418-civils",
+           "titre": "3ème — Histoire : les civils dans la guerre totale (1914-1918)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le génocide des Arméniens",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-hist-1418-armeniens",
+           "titre": "3ème — Histoire : le génocide des Arméniens (1915-1916)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Sortir de la guerre (1918-1923)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-hist-1418-sortir-guerre",
+           "titre": "3ème — Histoire : sortir de la guerre (1918-1923)",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9094,7 +9118,13 @@
       },
       {
        "titre": "Indépendances et construction de nouveaux États",
-       "boites": [],
+       "boites": [
+        {
+         "cle": "r3e-hist-decolonisation",
+         "titre": "3ème — Histoire : indépendances et construction de nouveaux États (l'essentiel)",
+         "fiches": 16
+        }
+       ],
        "sousthemes": [
         {
          "titre": "Les décolonisations (Inde, Afrique)",
@@ -9118,7 +9148,13 @@
       },
       {
        "titre": "Un monde bipolaire au temps de la guerre froide",
-       "boites": [],
+       "boites": [
+        {
+         "cle": "r3e-hist-guerre-froide",
+         "titre": "3ème — Histoire : un monde bipolaire au temps de la guerre froide (l'essentiel)",
+         "fiches": 16
+        }
+       ],
        "sousthemes": [
         {
          "titre": "La naissance de la guerre froide et Berlin (1947-1961)",
@@ -9132,7 +9168,13 @@
       },
       {
        "titre": "Affirmation et mise en œuvre du projet européen",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r3e-hist-europe",
+         "titre": "3ème — Histoire : affirmation et mise en œuvre du projet européen",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Enjeux et conflits dans le monde après 1989",
@@ -9146,11 +9188,23 @@
       },
       {
        "titre": "1944-1947 : refonder la République",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r3e-hist-1944-1947",
+         "titre": "3ème — Histoire : 1944-1947, refonder la République, redéfinir la démocratie",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "La Ve République, de de Gaulle aux cohabitations",
-       "boites": [],
+       "boites": [
+        {
+         "cle": "r3e-hist-ve-republique",
+         "titre": "3ème — Histoire : la Ve République, de de Gaulle aux cohabitations (l'essentiel)",
+         "fiches": 16
+        }
+       ],
        "sousthemes": [
         {
          "titre": "La naissance de la Ve République et la République gaullienne",

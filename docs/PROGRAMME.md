@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1066 chapitres couverts sur 1228** (87 %), 1180 boîtes, 19456 fiches.
+Mise à jour : 13/11/2026. **1071 chapitres couverts sur 1228** (87 %), 1189 boîtes, 19600 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -19,7 +19,7 @@ Mise à jour : 13/11/2026. **1066 chapitres couverts sur 1228** (87 %), 1180 bo�
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
 | [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
 | [4e](#4e) | 52 / 82 | 30 | 54 | 916 |
-| [3e](#3e) | 96 / 108 | 12 | 134 | 2565 |
+| [3e](#3e) | 101 / 108 | 7 | 143 | 2709 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
 | [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
 | [Terminale](#terminale) | 143 / 145 | 2 | 173 | 3175 |
@@ -1224,7 +1224,7 @@ Collège — 52 chapitres couverts sur 82, 54 boîtes.
 
 ## 3e
 
-Collège — 96 chapitres couverts sur 108, 134 boîtes.
+Collège — 101 chapitres couverts sur 108, 143 boîtes.
 
 ### 3e — Français (17 / 17)
 
@@ -1290,13 +1290,13 @@ Collège — 96 chapitres couverts sur 108, 134 boîtes.
   - [x] Lire et écrire des formules dans un tableur — Brevet — Maths : lire et écrire des formules dans un tableur (15 fiches)
 - [x] Révisions du brevet — Maths — Formules et théorèmes du collège (46 fiches) ; Brevet — Maths : calcul mental, automatismes et programmes de calcul (22 fiches)
 
-### 3e — Histoire (7 / 12)
+### 3e — Histoire (12 / 12)
 
 - [x] Civils et militaires dans la Première Guerre mondiale — l'essentiel — Brevet — Histoire : la Première Guerre mondiale (19 fiches)
-  - [ ] 1914-1918 : une guerre de masse (Verdun, la vie des poilus) — *à créer*
-  - [ ] Les civils dans la guerre totale — *à créer*
-  - [ ] Le génocide des Arméniens — *à créer*
-  - [ ] Sortir de la guerre (1918-1923) — *à créer*
+  - [x] 1914-1918 : une guerre de masse (Verdun, la vie des poilus) — 3ème — Histoire : 1914-1918, une guerre de masse : Verdun et la vie des poilus (16 fiches)
+  - [x] Les civils dans la guerre totale — 3ème — Histoire : les civils dans la guerre totale (1914-1918) (16 fiches)
+  - [x] Le génocide des Arméniens — 3ème — Histoire : le génocide des Arméniens (1915-1916) (16 fiches)
+  - [x] Sortir de la guerre (1918-1923) — 3ème — Histoire : sortir de la guerre (1918-1923) (16 fiches)
 - [x] Démocraties fragilisées et expériences totalitaires (1918-1939) — l'essentiel — Brevet — Histoire : démocraties et totalitarismes (1918-1939) (16 fiches)
   - [ ] L'URSS de Staline — *à créer*
   - [ ] L'Allemagne nazie — *à créer*
@@ -1306,17 +1306,17 @@ Collège — 96 chapitres couverts sur 108, 134 boîtes.
   - [x] Le génocide des Juifs et des Tsiganes — 3ème — Histoire : le génocide des Juifs et des Tsiganes (20 fiches)
   - [x] La France défaite et occupée : Vichy et la collaboration — 3ème — Histoire : la France défaite et occupée, Vichy et la collaboration (20 fiches)
   - [x] La France libre, la Résistance et la Libération — 3ème — Histoire : la France libre, la Résistance et la Libération (20 fiches)
-- [ ] Indépendances et construction de nouveaux États — l'essentiel — *à créer*
+- [x] Indépendances et construction de nouveaux États — l'essentiel — 3ème — Histoire : indépendances et construction de nouveaux États (l'essentiel) (16 fiches)
   - [ ] Les décolonisations (Inde, Afrique) — *à créer*
   - [x] La guerre d'Algérie (1954-1962) — Brevet — Histoire : la guerre d'Algérie (1954-1962) (17 fiches)
   - [ ] Les nouveaux États et le tiers-monde — *à créer*
-- [ ] Un monde bipolaire au temps de la guerre froide — l'essentiel — *à créer*
+- [x] Un monde bipolaire au temps de la guerre froide — l'essentiel — 3ème — Histoire : un monde bipolaire au temps de la guerre froide (l'essentiel) (16 fiches)
   - [ ] La naissance de la guerre froide et Berlin (1947-1961) — *à créer*
   - [ ] Crises, détente et fin de la guerre froide (1962-1991) — *à créer*
-- [ ] Affirmation et mise en œuvre du projet européen — *à créer*
+- [x] Affirmation et mise en œuvre du projet européen — 3ème — Histoire : affirmation et mise en œuvre du projet européen (16 fiches)
 - [x] Enjeux et conflits dans le monde après 1989 — Brevet — Histoire : enjeux et conflits dans le monde après 1989 (16 fiches)
-- [ ] 1944-1947 : refonder la République — *à créer*
-- [ ] La Ve République, de de Gaulle aux cohabitations — l'essentiel — *à créer*
+- [x] 1944-1947 : refonder la République — 3ème — Histoire : 1944-1947, refonder la République, redéfinir la démocratie (16 fiches)
+- [x] La Ve République, de de Gaulle aux cohabitations — l'essentiel — 3ème — Histoire : la Ve République, de de Gaulle aux cohabitations (l'essentiel) (16 fiches)
   - [ ] La naissance de la Ve République et la République gaullienne — *à créer*
   - [ ] Alternances et cohabitations (1981-2002) — *à créer*
 - [x] Femmes et hommes dans la société des années 1950 aux années 1980 — Brevet — Histoire : femmes et hommes dans la société (1950-1980) (16 fiches)
