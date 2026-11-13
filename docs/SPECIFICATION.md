@@ -494,7 +494,10 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    (utile avant un examen). Au primaire, une boîte par notion, comme
    aujourd'hui. Les sous-thèmes sont prévus dans la page « Le programme »
    (§7.6), sous le chapitre concerné.
-7. **Contrôles automatiques** de la règle 1 :
+7. **Contrôles automatiques** de la règle 1 (v289 : ils repèrent aussi
+   « Laquelle n'est pas… ? », « Lequel est un… ? », « parmi ceux-ci »,
+   « Quelle phrase est correcte ? », « Quelle forme convient ? », « la
+   bonne orthographe », « le bon accord ») :
    - **dans l'appli**, en enregistrant une fiche QCM dont la question
      renvoie à des propositions, le robot prévient et propose de
      reformuler (on peut garder quand même) ; un rappel est écrit sous
@@ -1058,6 +1061,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v289 | 13 nov. 2026 | Règle d'écriture des fiches QCM (§5.7) : le contrôle repère aussi les questions qui supposent une liste sans la donner (« Laquelle n'est pas une planète ? », « Lequel est un mammifère ? », « Quelle phrase est correcte ? », « Quelle forme convient ? », « parmi ceux-ci »…), dans l'appli (avertissement à l'enregistrement) et dans Darwin Admin (onglet « Questions QCM »). 38 questions de plus repérées dans les boîtes toutes prêtes, corrigées pendant la relecture. |
 | — | 13 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : lot 13, 100 boîtes de CM1 relues (français, anglais, maths, histoire-géographie, sciences, technologie) selon le §5.7 — 3 réponses fausses par fiche, réponses raccourcies avec les précisions dans « En savoir plus », questions doubles séparées (1 469 fiches), questions QCM rendues autonomes, une vidéo de cours par boîte ; 7 liens Wikipédia de fiches remplacés par une courte vidéo sur le sujet (4) ou retirés (3). Pages « Fiches par matière » et « Le programme » mises à jour (nombre de fiches). |
 | — | 13 nov. 2026 | Site et boîtes (rien ne change dans l'appli) : page « Le programme », les chapitres sans boîte sont marqués « bientôt disponible » (Q20). Nouvelle règle (§5.7) : le titre d'un lien de fiche doit correspondre au sujet de la fiche ; 4 liens vidéo corrigés (fiche « Qu'est-ce que la Shoah ? » : vidéo sur les génocides ; 3 liens trop éloignés retirés). |
 | — | 13 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : essai du découpage d'un chapitre en sous-thèmes (§5.7, règle 6) sur la Seconde Guerre mondiale en 3e — 4 nouvelles boîtes (guerre d'anéantissement ; génocide des Juifs et des Tsiganes ; France défaite et occupée, Vichy et la collaboration ; France libre, Résistance et Libération), 78 fiches, en plus de la boîte « l'essentiel » existante. |
