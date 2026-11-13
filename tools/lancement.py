@@ -69,6 +69,33 @@ def build_settings():
     return noindex, base
 
 
+def bilan_contenu():
+    """Couverture du programme (data/programme.json) : chapitres et
+    sous-thèmes encore « bientôt disponible » (spéc. §7.6, Q20 : ils restent
+    visibles à l'ouverture). Plan détaillé : docs/PLAN-CREATION.md."""
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
+    try:
+        import programme
+        prog = programme.charger()
+    except Exception as e:  # le bilan des fichiers reste utile sans programme
+        return [f"Programme illisible ({e})."]
+    lignes = []
+    tous = []
+    for n in prog["niveaux"]:
+        if n["id"] == "autres":
+            continue
+        ch = programme.tous_chapitres(n)
+        tous += ch
+        chap, sts = programme.a_creer(ch)
+        if chap or sts:
+            lignes.append(f"{n['label']} : {len(chap)} chapitre(s) sans boîte, {len(sts)} sous-thème(s) à créer")
+    chap, sts = programme.a_creer(tous)
+    faits, total, _, _ = programme.compter(tous)
+    lignes.insert(0, f"Programme couvert : {faits}/{total} chapitres ; reste {len(chap) + len(sts)} boîtes "
+                  f"à créer ({len(chap)} chapitres, {len(sts)} sous-thèmes) — voir docs/PLAN-CREATION.md")
+    return lignes
+
+
 def report():
     todo = []
     ok = []
@@ -111,10 +138,15 @@ def report():
             todo.append(f"{p} : adresse « canonical » absente.")
 
     print("=== Lancement : bilan des fichiers ===\n")
+    contenu = bilan_contenu()
     for x in ok:
         print("  ✓", x)
     for x in todo:
         print("  ✗", x)
+    if contenu:
+        print("\n=== Boîtes toutes prêtes (n'empêche pas l'ouverture) ===")
+        for x in contenu:
+            print("  •", x)
     print(
         """
 === Hors fichiers ===
