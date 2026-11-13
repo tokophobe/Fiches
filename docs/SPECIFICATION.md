@@ -933,12 +933,45 @@ font foi).
   deux appareils ne sont pas d'accord, la partie la plus avancée
   l'emporte (terminée d'abord, sinon celle qui a le plus de réponses).
 
+### 7.6 Le programme, classe par classe (site)
+
+Une page du site vitrine, « Le programme » (lien en haut et en bas de la
+page d'accueil du site), présente **tout le programme scolaire du CP à
+la Terminale** et les boîtes toutes prêtes qui le couvrent.
+
+- Classe par classe (CP, CE1… Seconde, Première, Terminale, puis
+  « Autres boîtes » pour ce qui est hors programme), puis matière par
+  matière, puis chapitre par chapitre.
+- Chaque matière est un bloc à déplier, avec une barre de progression et
+  le nombre de chapitres couverts. Un chapitre couvert est coché et
+  montre sa ou ses boîtes avec leur nombre de fiches ; un chapitre sans
+  boîte est marqué « à créer ».
+- En haut : la part du programme couverte, le nombre de chapitres, de
+  boîtes et de fiches, et la date de mise à jour. Des pastilles mènent à
+  chaque classe ; une recherche (chapitre ou boîte) et la case
+  « Seulement à créer » filtrent la liste.
+- La même liste existe en fichier texte pour le suivi du travail
+  (`docs/PROGRAMME.md`, avec des cases à cocher).
+- Mise à jour à chaque lot de boîtes : une nouvelle boîte s'ajoute
+  d'elle-même à sa classe et à sa matière ; si elle couvre un chapitre
+  « à créer », Claude l'y rattache. Seuls les titres des boîtes et leur
+  nombre de fiches sont montrés, jamais le contenu des fiches.
+- Les pages du site sont toujours lues en ligne (jamais l'ancienne copie
+  gardée par l'appli installée).
+
 ---
 
 ## 8. Questions ouvertes
 
 > Décisions à prendre ou incohérences repérées. Répondez directement
 > sous chaque question ; Claude reportera la réponse dans les règles.
+
+**Q20 — Montrer les chapitres « à créer » au public ?** La page « Le
+programme » du site montre aussi ce qui manque (208 chapitres au 13 nov.
+2026). Utile pour suivre le travail, mais à l'ouverture au public, faut-il
+les garder visibles, les masquer, ou garder la page seulement pour
+l'équipe ? Aujourd'hui, tout le site est marqué « ne pas indexer ».
+> Réponse :
 
 **Q17 — Relecture du texte de licence par un juriste.** Une première
 analyse a été reçue le 11 nov. 2026 (résumé et propositions :
@@ -1019,6 +1052,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v288 | 13 nov. 2026 | Site : nouvelle page « Le programme, classe par classe » (§7.6) — tout le programme du CP à la Terminale, par matière et par chapitre, avec les boîtes toutes prêtes associées et les 208 chapitres encore « à créer » ; liens depuis la page d'accueil du site. Même liste dans `docs/PROGRAMME.md`. Les pages du site ne sont plus gardées en cache par l'appli installée. |
 | v287 | 12 nov. 2026 | Publication avec relecture, étape E : bouton « Signaler cette boîte » (page d'une boîte de classe ou de la Librairie) ; les signalements des boîtes de la Librairie vont à darwin (Darwin Admin : voir la boîte, répondre, marquer traité), ceux des boîtes de classe à l'enseignant ; réglage « Librairie : seulement les boîtes darwin », activé ; à la suppression d'un compte enseignant, ses boîtes publiées restent dans la Librairie au nom de darwin. Message de suppression du compte corrigé en conséquence. |
 | v286 | 11 nov. 2026 | Classes quittées : à chaque synchronisation, ce qui reste d'une classe dont l'élève ne fait plus partie (boîtes, dossiers, échéances) est retiré, même si elle a été quittée sur un autre appareil ou avant la v284. Échéance reçue d'une classe : plus d'alerte « Aucune boîte associée : ajoute les fiches… » (l'élève ne peut pas en ajouter, c'est l'enseignant qui les choisit). |
 | v285 | 11 nov. 2026 | Texte de l'accord reformulé (nouvelle version gardée dans la base, même règle) : chaque case est « à cocher pour pouvoir partager ou publier ta boîte » ; la 2e s'intitule « Utilisation de ta boîte dans l'abonnement darwin » et précise que partager ou publier ne demande aucun abonnement (l'abonnement sert à réviser les boîtes de la Librairie). CGU alignées. Les accords déjà donnés restent valables. |

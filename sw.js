@@ -1,4 +1,4 @@
-const CACHE_NAME = "fiches-cache-v287";
+const CACHE_NAME = "fiches-cache-v288";
 
 const CORE_ASSETS = [
   "./",
@@ -68,6 +68,9 @@ self.addEventListener("fetch", (event) => {
   // Round 50 : l'appli d'administration (admin/) n'est jamais servie depuis
   // le cache de l'appli Fiches — toujours la version en ligne.
   if (isCoreAsset && url.pathname.includes("/admin/")) return;
+  // v288 : le site vitrine (site/) non plus — sa page « Le programme » est
+  // régénérée à chaque lot de boîtes, sans nouvelle version de l'appli.
+  if (isCoreAsset && url.pathname.includes("/site/")) return;
   // Vrai uniquement pour une navigation de page (l'utilisateur charge/recharge
   // l'appli elle-même) — jamais pour un script, une feuille de style ou une
   // police. Sert à limiter le repli "hors-ligne -> sers index.html" au SEUL
