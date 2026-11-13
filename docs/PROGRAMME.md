@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1175 chapitres couverts sur 1383** (85 %), 1180 boîtes, 19456 fiches.
+Mise à jour : 13/11/2026. **1141 chapitres couverts sur 1358** (84 %), 1180 boîtes, 19456 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -19,7 +19,7 @@ Mise à jour : 13/11/2026. **1175 chapitres couverts sur 1383** (85 %), 1180 bo�
 | [6e](#6e) | 43 / 99 | 56 | 43 | 730 |
 | [5e](#5e) | 42 / 99 | 57 | 42 | 730 |
 | [4e](#4e) | 54 / 91 | 37 | 54 | 916 |
-| [3e](#3e) | 130 / 133 | 3 | 134 | 2565 |
+| [3e](#3e) | 96 / 108 | 12 | 134 | 2565 |
 | [Seconde](#seconde) | 70 / 82 | 12 | 70 | 1243 |
 | [Première](#première) | 113 / 124 | 11 | 113 | 1931 |
 | [Terminale](#terminale) | 173 / 175 | 2 | 173 | 3175 |
@@ -1173,12 +1173,25 @@ Collège — 54 chapitres couverts sur 91, 54 boîtes.
 
 ## 3e
 
-Collège — 130 chapitres couverts sur 133, 134 boîtes.
+Collège — 96 chapitres couverts sur 108, 134 boîtes.
 
-### 3e — Français (23 / 23)
+### 3e — Français (17 / 17)
 
-- [x] Grammaire et orthographe — Brevet — Français : grammaire et orthographe (35 fiches)
-- [x] Outils d'analyse littéraire — Brevet — Français : outils d'analyse littéraire (43 fiches)
+- [x] Se raconter, se représenter — l'essentiel — Brevet — Français : se raconter, se représenter (autobiographie) (16 fiches)
+  - [ ] L'autobiographie et le pacte autobiographique — *à créer*
+  - [ ] Récits d'enfance, journaux intimes et autoportraits — *à créer*
+- [x] Dénoncer les travers de la société — l'essentiel — Brevet — Français : dénoncer les travers de la société (17 fiches)
+  - [ ] Satire, ironie et apologues (Voltaire, La Fontaine…) — *à créer*
+  - [ ] Le roman réaliste et naturaliste (Hugo, Zola, Maupassant) — *à créer*
+- [x] Visions poétiques du monde — l'essentiel — Brevet — Français : visions poétiques du monde (17 fiches)
+  - [ ] Le lyrisme et la poésie de la nature — *à créer*
+  - [ ] Versification et formes poétiques — *à créer*
+- [x] Agir dans la cité : individu et pouvoir — l'essentiel — Brevet — Français : agir dans la cité, engagement et guerre (16 fiches)
+  - [ ] Écrire la guerre : témoignages et poésie de la Résistance — *à créer*
+  - [ ] L'individu face au pouvoir au théâtre (Antigone…) — *à créer*
+- [x] Progrès et rêves scientifiques — l'essentiel — Brevet — Français : progrès et rêves scientifiques (15 fiches)
+  - [ ] Science-fiction et récits d'anticipation — *à créer*
+  - [ ] Le progrès en débat : argumenter — *à créer*
 - [x] Les classes grammaticales des mots — Brevet — Français : les classes grammaticales des mots (16 fiches)
 - [x] Les fonctions grammaticales — Brevet — Français : les fonctions grammaticales (16 fiches)
 - [x] Propositions et phrase complexe — Brevet — Français : propositions et phrase complexe (16 fiches)
@@ -1186,118 +1199,148 @@ Collège — 130 chapitres couverts sur 133, 134 boîtes.
 - [x] Subjonctif, conditionnel et impératif — Brevet — Français : subjonctif, conditionnel et impératif (23 fiches)
 - [x] L'accord du participe passé — Brevet — Français : l'accord du participe passé (15 fiches)
 - [x] Les homophones grammaticaux — Brevet — Français : les homophones grammaticaux (16 fiches)
-- [x] Vocabulaire et formation des mots — Brevet — Français : vocabulaire et formation des mots (27 fiches)
+- [x] Vocabulaire et formation des mots — l'essentiel — Brevet — Français : vocabulaire et formation des mots (27 fiches)
+  - [x] Lexique des émotions et du jugement — Brevet — Français : lexique des émotions et du jugement (16 fiches)
 - [x] Discours rapporté et énonciation — Brevet — Français : discours rapporté et énonciation (15 fiches)
-- [x] Se raconter, se représenter (autobiographie) — Brevet — Français : se raconter, se représenter (autobiographie) (16 fiches)
-- [x] Dénoncer les travers de la société — Brevet — Français : dénoncer les travers de la société (17 fiches)
-- [x] Visions poétiques du monde — Brevet — Français : visions poétiques du monde (17 fiches)
-- [x] Agir dans la cité, engagement et guerre — Brevet — Français : agir dans la cité, engagement et guerre (16 fiches)
-- [x] Progrès et rêves scientifiques — Brevet — Français : progrès et rêves scientifiques (15 fiches)
-- [x] Réussir l'épreuve orale — Brevet — Français : réussir l'épreuve orale (15 fiches)
-- [x] Auteurs et œuvres repères du collège — Brevet — Français : auteurs et œuvres repères du collège (17 fiches)
-- [x] Réussir l'exercice de réécriture — Brevet — Français : réussir l'exercice de réécriture (16 fiches)
-- [x] Les pièges orthographiques de la dictée — Brevet — Français : les pièges orthographiques de la dictée (17 fiches)
 - [x] Ponctuation et connecteurs logiques — Brevet — Français : ponctuation et connecteurs logiques (16 fiches)
-- [x] Lexique des émotions et du jugement — Brevet — Français : lexique des émotions et du jugement (16 fiches)
-- [x] Méthode de la rédaction — Brevet — Français : méthode de la rédaction (16 fiches)
+- [x] Analyser un texte littéraire — Brevet — Français : outils d'analyse littéraire (43 fiches)
+- [x] Révisions du brevet — Brevet — Français : grammaire et orthographe (35 fiches) ; Brevet — Français : auteurs et œuvres repères du collège (17 fiches) ; Brevet — Français : les pièges orthographiques de la dictée (17 fiches) ; Brevet — Français : réussir l'exercice de réécriture (16 fiches) ; Brevet — Français : méthode de la rédaction (16 fiches) ; Brevet — Français : réussir l'épreuve orale (15 fiches)
 
-### 3e — Mathématiques (23 / 23)
+### 3e — Mathématiques (11 / 12)
 
-- [x] Formules et théorèmes du collège — Maths — Formules et théorèmes du collège (46 fiches)
-- [x] Fractions, puissances et racines carrées — Brevet — Maths : fractions, puissances et racines carrées (19 fiches)
-- [x] Diviseurs, nombres premiers et PGCD — Brevet — Maths : diviseurs, nombres premiers et PGCD (17 fiches)
-- [x] Calcul littéral, équations et inéquations — Brevet — Maths : calcul littéral, équations et inéquations (19 fiches)
-- [x] Fonctions, proportionnalité et pourcentages — Brevet — Maths : fonctions, proportionnalité et pourcentages (18 fiches)
-- [x] Pythagore, Thalès et trigonométrie — Brevet — Maths : Pythagore, Thalès et trigonométrie (18 fiches)
-- [x] Aires, volumes et conversions — Brevet — Maths : aires, volumes et conversions (19 fiches)
-- [x] Statistiques et probabilités — Brevet — Maths : statistiques et probabilités (16 fiches)
-- [x] Transformations et algorithmique Scratch — Brevet — Maths : transformations et algorithmique Scratch (20 fiches)
-- [x] Vitesse, débit et grandeurs composées — Brevet — Maths : vitesse, débit et grandeurs composées (17 fiches)
-- [x] Probabilités, vocabulaire et arbres — Brevet — Maths : probabilités, vocabulaire et arbres (17 fiches)
-- [x] Sections de solides et repérage sur la sphère — Brevet — Maths : sections de solides et repérage sur la sphère (19 fiches)
-- [x] Notion de fonction et lecture graphique — Brevet — Maths : notion de fonction et lecture graphique (15 fiches)
-- [x] Calcul mental, automatismes et programmes de calcul — Brevet — Maths : calcul mental, automatismes et programmes de calcul (22 fiches)
-- [x] Puissances de 10 et écriture scientifique — Brevet — Maths : puissances de 10 et écriture scientifique (18 fiches)
-- [x] Résoudre un problème par une mise en équation — Brevet — Maths : résoudre un problème par une mise en équation (16 fiches)
-- [x] Lire et écrire des formules dans un tableur — Brevet — Maths : lire et écrire des formules dans un tableur (15 fiches)
-- [x] Agrandissement, réduction et effets sur aires et volumes — Brevet — Maths : agrandissement, réduction et effets sur aires et volumes (15 fiches)
-- [x] Triangles semblables et homothétie — Brevet — Maths : triangles semblables et homothétie (15 fiches)
-- [x] Déterminer et interpréter une fonction affine — Brevet — Maths : déterminer et interpréter une fonction affine (16 fiches)
+- [x] Fractions, puissances et racines carrées — l'essentiel — Brevet — Maths : fractions, puissances et racines carrées (19 fiches)
+  - [x] Puissances de 10 et écriture scientifique — Brevet — Maths : puissances de 10 et écriture scientifique (18 fiches)
+  - [ ] Racines carrées — *à créer*
+- [x] Diviseurs, nombres premiers et fractions irréductibles — Brevet — Maths : diviseurs, nombres premiers et PGCD (17 fiches)
+- [x] Calcul littéral, équations et inéquations — l'essentiel — Brevet — Maths : calcul littéral, équations et inéquations (19 fiches)
+  - [ ] Développer, factoriser, identités remarquables — *à créer*
+  - [ ] Équations, inéquations et équations produit nul — *à créer*
+  - [x] Mettre un problème en équation — Brevet — Maths : résoudre un problème par une mise en équation (16 fiches)
+- [x] Fonctions — l'essentiel — Brevet — Maths : fonctions, proportionnalité et pourcentages (18 fiches)
+  - [x] Notion de fonction et lecture graphique — Brevet — Maths : notion de fonction et lecture graphique (15 fiches)
+  - [x] Fonctions linéaires et affines — Brevet — Maths : déterminer et interpréter une fonction affine (16 fiches)
+- [x] Proportionnalité, ratios et grandeurs composées — l'essentiel — Brevet — Maths : ratios, échelles et partages proportionnels (15 fiches)
+  - [x] Vitesse, débit et grandeurs composées — Brevet — Maths : vitesse, débit et grandeurs composées (17 fiches)
+- [x] Statistiques et probabilités — l'essentiel — Brevet — Maths : statistiques et probabilités (16 fiches)
+  - [x] Moyenne, médiane et étendue — Brevet — Maths : moyenne pondérée, médiane et étendue en exercices (15 fiches)
+  - [x] Probabilités, vocabulaire et arbres — Brevet — Maths : probabilités, vocabulaire et arbres (17 fiches)
+- [x] Pythagore, Thalès et trigonométrie — l'essentiel — Brevet — Maths : Pythagore, Thalès et trigonométrie (18 fiches)
+  - [ ] Théorème de Pythagore et sa réciproque — *à créer*
+  - [x] Théorème de Thalès et triangles semblables — Brevet — Maths : triangles semblables et homothétie (15 fiches)
+  - [ ] Trigonométrie dans le triangle rectangle — *à créer*
 - [x] Angles, droites parallèles et polygones réguliers — Brevet — Maths : angles, droites parallèles et polygones réguliers (16 fiches)
-- [x] Ratios, échelles et partages proportionnels — Brevet — Maths : ratios, échelles et partages proportionnels (15 fiches)
-- [x] Moyenne pondérée, médiane et étendue en exercices — Brevet — Maths : moyenne pondérée, médiane et étendue en exercices (15 fiches)
+- [x] Transformations du plan — l'essentiel — Brevet — Maths : transformations et algorithmique Scratch (20 fiches)
+  - [ ] Translations, rotations et homothéties — *à créer*
+  - [x] Agrandissement, réduction et effets sur aires et volumes — Brevet — Maths : agrandissement, réduction et effets sur aires et volumes (15 fiches)
+- [x] Aires, volumes et conversions — l'essentiel — Brevet — Maths : aires, volumes et conversions (19 fiches)
+  - [x] Sections de solides et repérage sur la sphère — Brevet — Maths : sections de solides et repérage sur la sphère (19 fiches)
+- [ ] Algorithmique et programmation — l'essentiel — *à créer*
+  - [ ] Programmer avec Scratch — *à créer*
+  - [x] Lire et écrire des formules dans un tableur — Brevet — Maths : lire et écrire des formules dans un tableur (15 fiches)
+- [x] Révisions du brevet — Maths — Formules et théorèmes du collège (46 fiches) ; Brevet — Maths : calcul mental, automatismes et programmes de calcul (22 fiches)
 
-### 3e — Histoire (13 / 13)
+### 3e — Histoire (7 / 12)
 
-- [x] Les dates clés du Brevet — Histoire — Les dates clés du Brevet (53 fiches)
-- [x] Notions et personnages clés — Brevet — Histoire : notions et personnages clés (36 fiches)
-- [x] La Première Guerre mondiale — Brevet — Histoire : la Première Guerre mondiale (19 fiches)
-- [x] Démocraties et totalitarismes (1918-1939) — Brevet — Histoire : démocraties et totalitarismes (1918-1939) (16 fiches)
-- [x] La Seconde Guerre mondiale (1939-1945) : l'essentiel et 4 sous-thèmes — Brevet — Histoire : Seconde Guerre mondiale, Vichy et Résistance (20 fiches) ; 3ème — Histoire : 1939-1945, une guerre d'anéantissement (18 fiches) ; 3ème — Histoire : le génocide des Juifs et des Tsiganes (20 fiches) ; 3ème — Histoire : la France défaite et occupée, Vichy et la collaboration (20 fiches) ; 3ème — Histoire : la France libre, la Résistance et la Libération (20 fiches)
-- [x] Guerre froide, décolonisation et Europe — Brevet — Histoire : guerre froide, décolonisation et Europe (19 fiches)
-- [x] La France de 1944 à nos jours — Brevet — Histoire : la France de 1944 à nos jours (18 fiches)
-- [x] Les arts au XXe siècle — Brevet — Histoire des arts : les arts au XXe siècle (17 fiches)
-- [x] Lieux et repères spatiaux du programme — Brevet — Histoire : lieux et repères spatiaux du programme (19 fiches)
-- [x] Grands discours et textes patrimoniaux — Brevet — Histoire : grands discours et textes patrimoniaux (20 fiches)
-- [x] La guerre d'Algérie (1954-1962) — Brevet — Histoire : la guerre d'Algérie (1954-1962) (17 fiches)
-- [x] Femmes et hommes dans la société (1950-1980) — Brevet — Histoire : femmes et hommes dans la société (1950-1980) (16 fiches)
+- [x] Civils et militaires dans la Première Guerre mondiale — l'essentiel — Brevet — Histoire : la Première Guerre mondiale (19 fiches)
+  - [ ] 1914-1918 : une guerre de masse (Verdun, la vie des poilus) — *à créer*
+  - [ ] Les civils dans la guerre totale — *à créer*
+  - [ ] Le génocide des Arméniens — *à créer*
+  - [ ] Sortir de la guerre (1918-1923) — *à créer*
+- [x] Démocraties fragilisées et expériences totalitaires (1918-1939) — l'essentiel — Brevet — Histoire : démocraties et totalitarismes (1918-1939) (16 fiches)
+  - [ ] L'URSS de Staline — *à créer*
+  - [ ] L'Allemagne nazie — *à créer*
+  - [ ] La France des années 1930 et le Front populaire — *à créer*
+- [x] La Seconde Guerre mondiale (1939-1945) — l'essentiel — Brevet — Histoire : Seconde Guerre mondiale, Vichy et Résistance (20 fiches)
+  - [x] 1939-1945, une guerre d'anéantissement — 3ème — Histoire : 1939-1945, une guerre d'anéantissement (18 fiches)
+  - [x] Le génocide des Juifs et des Tsiganes — 3ème — Histoire : le génocide des Juifs et des Tsiganes (20 fiches)
+  - [x] La France défaite et occupée : Vichy et la collaboration — 3ème — Histoire : la France défaite et occupée, Vichy et la collaboration (20 fiches)
+  - [x] La France libre, la Résistance et la Libération — 3ème — Histoire : la France libre, la Résistance et la Libération (20 fiches)
+- [ ] Indépendances et construction de nouveaux États — l'essentiel — *à créer*
+  - [ ] Les décolonisations (Inde, Afrique) — *à créer*
+  - [x] La guerre d'Algérie (1954-1962) — Brevet — Histoire : la guerre d'Algérie (1954-1962) (17 fiches)
+  - [ ] Les nouveaux États et le tiers-monde — *à créer*
+- [ ] Un monde bipolaire au temps de la guerre froide — l'essentiel — *à créer*
+  - [ ] La naissance de la guerre froide et Berlin (1947-1961) — *à créer*
+  - [ ] Crises, détente et fin de la guerre froide (1962-1991) — *à créer*
+- [ ] Affirmation et mise en œuvre du projet européen — *à créer*
 - [x] Enjeux et conflits dans le monde après 1989 — Brevet — Histoire : enjeux et conflits dans le monde après 1989 (16 fiches)
+- [ ] 1944-1947 : refonder la République — *à créer*
+- [ ] La Ve République, de de Gaulle aux cohabitations — l'essentiel — *à créer*
+  - [ ] La naissance de la Ve République et la République gaullienne — *à créer*
+  - [ ] Alternances et cohabitations (1981-2002) — *à créer*
+- [x] Femmes et hommes dans la société des années 1950 aux années 1980 — Brevet — Histoire : femmes et hommes dans la société (1950-1980) (16 fiches)
+- [x] Histoire des arts : les arts au XXe siècle — Brevet — Histoire des arts : les arts au XXe siècle (17 fiches)
+- [x] Révisions du brevet — Histoire — Les dates clés du Brevet (53 fiches) ; Brevet — Histoire : notions et personnages clés (36 fiches) ; Brevet — Histoire : guerre froide, décolonisation et Europe (19 fiches) ; Brevet — Histoire : la France de 1944 à nos jours (18 fiches) ; Brevet — Histoire : lieux et repères spatiaux du programme (19 fiches) ; Brevet — Histoire : grands discours et textes patrimoniaux (20 fiches)
 
-### 3e — Géographie (8 / 8)
+### 3e — Géographie (5 / 8)
 
-- [x] Notions et repères — Brevet — Géographie : notions et repères (30 fiches)
-- [x] Aires urbaines et espaces peu denses — Brevet — Géographie : aires urbaines et espaces peu denses (17 fiches)
-- [x] Les espaces productifs français — Brevet — Géographie : les espaces productifs français (18 fiches)
-- [x] Aménagement et territoires ultramarins — Brevet — Géographie : aménagement et territoires ultramarins (16 fiches)
-- [x] La France et l'UE dans le monde — Brevet — Géographie : la France et l'UE dans le monde (16 fiches)
-- [x] Fleuves, massifs, métropoles et régions — Brevet — Géographie : fleuves, massifs, métropoles et régions (19 fiches)
-- [x] Méthode du croquis et de la légende — Brevet — Géographie : méthode du croquis et de la légende (16 fiches)
-- [x] Mobilités et réseaux de transport en France — Brevet — Géographie : mobilités et réseaux de transport en France (16 fiches)
+- [x] Les aires urbaines, une France mondialisée — l'essentiel — Brevet — Géographie : aires urbaines et espaces peu denses (17 fiches)
+  - [ ] Métropoles et métropolisation — *à créer*
+  - [ ] Périurbanisation et mobilités quotidiennes — *à créer*
+- [x] Les espaces productifs et leurs évolutions — l'essentiel — Brevet — Géographie : les espaces productifs français (18 fiches)
+  - [ ] Espaces industriels — *à créer*
+  - [ ] Espaces agricoles — *à créer*
+  - [ ] Espaces de services et du tourisme — *à créer*
+- [ ] Les espaces de faible densité et leurs atouts — *à créer*
+- [x] Aménager les territoires français — l'essentiel — Brevet — Géographie : aménagement et territoires ultramarins (16 fiches)
+  - [ ] Les acteurs de l'aménagement — *à créer*
+  - [x] Mobilités et réseaux de transport — Brevet — Géographie : mobilités et réseaux de transport en France (16 fiches)
+- [ ] Les territoires ultramarins français — *à créer*
+- [ ] L'Union européenne, un territoire d'appartenance — *à créer*
+- [x] La France et l'Europe dans le monde — Brevet — Géographie : la France et l'UE dans le monde (16 fiches)
+- [x] Révisions du brevet — Brevet — Géographie : notions et repères (30 fiches) ; Brevet — Géographie : fleuves, massifs, métropoles et régions (19 fiches) ; Brevet — Géographie : méthode du croquis et de la légende (16 fiches)
 
 ### 3e — EMC (6 / 6)
 
-- [x] Valeurs, institutions et citoyenneté — Brevet — EMC : valeurs, institutions et citoyenneté (33 fiches)
-- [x] La défense et la paix — Brevet — EMC : la défense et la paix (16 fiches)
+- [x] Les institutions de la Ve République — Brevet — EMC : les institutions de la Ve République en détail (16 fiches)
+- [x] Le vote, la citoyenneté et les élections — Brevet — EMC : le vote et les élections en France (16 fiches)
 - [x] Laïcité, engagement, droits et justice — Brevet — EMC : laïcité, engagement, droits et justice (17 fiches)
-- [x] Les institutions de la Ve République en détail — Brevet — EMC : les institutions de la Ve République en détail (16 fiches)
-- [x] Le vote et les élections en France — Brevet — EMC : le vote et les élections en France (16 fiches)
+- [x] La Défense et la paix — Brevet — EMC : la défense et la paix (16 fiches)
 - [x] Médias, information et esprit critique — Brevet — EMC : médias, information et esprit critique (16 fiches)
+- [x] Révisions du brevet — Brevet — EMC : valeurs, institutions et citoyenneté (33 fiches)
 
-### 3e — SVT (12 / 12)
+### 3e — SVT (10 / 10)
 
-- [x] L'essentiel du cycle 4 — Brevet — SVT : l'essentiel du cycle 4 (37 fiches)
-- [x] Génétique et hérédité — Brevet — SVT : génétique et hérédité (16 fiches)
+- [x] Génétique et hérédité — l'essentiel — Brevet — SVT : génétique et hérédité (16 fiches)
+  - [ ] Chromosomes, ADN et gènes — *à créer*
+  - [ ] Reproduction sexuée et diversité génétique — *à créer*
 - [x] Évolution et biodiversité — Brevet — SVT : évolution et biodiversité (16 fiches)
-- [x] Immunité, microbes et vaccination — Brevet — SVT : immunité, microbes et vaccination (16 fiches)
-- [x] Nutrition, respiration et circulation — Brevet — SVT : nutrition, respiration et circulation (16 fiches)
-- [x] Système nerveux et santé — Brevet — SVT : système nerveux et santé (18 fiches)
-- [x] La Terre, ses risques et ses ressources — Brevet — SVT : la Terre, ses risques et ses ressources (19 fiches)
-- [x] Activité physique, effort et santé — Brevet — SVT : activité physique, effort et santé (16 fiches)
 - [x] Écosystèmes et activités humaines — Brevet — SVT : écosystèmes et activités humaines (15 fiches)
-- [x] Météorologie, climat et changement climatique — Brevet — SVT : météorologie, climat et changement climatique (15 fiches)
 - [x] Nutrition et organisation des plantes — Brevet — SVT : nutrition et organisation des plantes (15 fiches)
-- [x] Démarche scientifique et exploitation de documents — Brevet — SVT : démarche scientifique et exploitation de documents (15 fiches)
+- [x] Nutrition, respiration et circulation — l'essentiel — Brevet — SVT : nutrition, respiration et circulation (16 fiches)
+  - [ ] Digestion et alimentation — *à créer*
+  - [ ] Respiration et circulation sanguine — *à créer*
+- [x] Immunité, microbes et vaccination — l'essentiel — Brevet — SVT : immunité, microbes et vaccination (16 fiches)
+  - [ ] Micro-organismes, hygiène et antibiotiques — *à créer*
+  - [ ] Les défenses de l'organisme et la vaccination — *à créer*
+- [x] Système nerveux et santé — Brevet — SVT : système nerveux et santé (18 fiches)
+- [x] Activité physique, effort et santé — Brevet — SVT : activité physique, effort et santé (16 fiches)
+- [x] La Terre, ses risques et ses ressources — l'essentiel — Brevet — SVT : la Terre, ses risques et ses ressources (19 fiches)
+  - [ ] Séismes, volcans et tectonique des plaques — *à créer*
+  - [x] Météorologie, climat et changement climatique — Brevet — SVT : météorologie, climat et changement climatique (15 fiches)
+  - [ ] Ressources naturelles et environnement — *à créer*
+- [x] Révisions du brevet — Brevet — SVT : l'essentiel du cycle 4 (37 fiches) ; Brevet — SVT : démarche scientifique et exploitation de documents (15 fiches)
 
-### 3e — Physique (9 / 9)
+### 3e — Physique (5 / 5)
 
-- [x] L'essentiel du cycle 4 — Brevet — Physique-chimie : l'essentiel du cycle 4 (57 fiches)
-- [x] Électricité, loi d'Ohm et énergie — Brevet — Physique : électricité, loi d'Ohm et énergie (19 fiches)
-- [x] Mouvements, forces et gravitation — Brevet — Physique : mouvements, forces et gravitation (19 fiches)
+- [x] Mouvements, forces et gravitation — l'essentiel — Brevet — Physique : mouvements, forces et gravitation (19 fiches)
+  - [ ] Gravitation, poids et masse — *à créer*
+  - [x] Énergie cinétique et sécurité routière — Brevet — Physique : énergie cinétique et sécurité routière (16 fiches)
+- [x] Électricité, loi d'Ohm et énergie — l'essentiel — Brevet — Physique : électricité, loi d'Ohm et énergie (19 fiches)
+  - [ ] Circuits et loi d'Ohm — *à créer*
+  - [x] Puissance et consommation électrique d'un logement — Brevet — Physique : puissance et consommation électrique d'un logement (16 fiches)
 - [x] Signaux sonores et lumineux — Brevet — Physique : signaux sonores et lumineux (20 fiches)
-- [x] Grandeurs, unités et conversions du cycle 4 — Brevet — Physique : grandeurs, unités et conversions du cycle 4 (19 fiches)
-- [x] Méthodologie de l'épreuve de sciences — Brevet — Physique : méthodologie de l'épreuve de sciences (16 fiches)
-- [x] Énergie cinétique et sécurité routière — Brevet — Physique : énergie cinétique et sécurité routière (16 fiches)
-- [x] Puissance et consommation électrique d'un logement — Brevet — Physique : puissance et consommation électrique d'un logement (16 fiches)
 - [x] L'Univers et le système solaire — Brevet — Physique : l'Univers et le système solaire (16 fiches)
+- [x] Révisions du brevet — Brevet — Physique-chimie : l'essentiel du cycle 4 (57 fiches) ; Brevet — Physique : grandeurs, unités et conversions du cycle 4 (19 fiches) ; Brevet — Physique : méthodologie de l'épreuve de sciences (16 fiches)
 
-### 3e — Chimie (6 / 6)
+### 3e — Chimie (5 / 5)
 
 - [x] Atomes, ions et molécules — Brevet — Chimie : atomes, ions et molécules (21 fiches)
 - [x] Transformations chimiques et combustions — Brevet — Chimie : transformations chimiques et combustions (21 fiches)
-- [x] Acides, bases, pH et solutions — Brevet — Chimie : acides, bases, pH et solutions (19 fiches)
-- [x] Sécurité, verrerie et méthode au laboratoire — Brevet — Chimie : sécurité, verrerie et méthode au laboratoire (16 fiches)
-- [x] Masse volumique et flottaison en exercices — Brevet — Chimie : masse volumique et flottaison en exercices (15 fiches)
-- [x] Tests d'identification des ions et des gaz — Brevet — Chimie : tests d'identification des ions et des gaz (16 fiches)
+- [x] Acides, bases, pH et solutions — l'essentiel — Brevet — Chimie : acides, bases, pH et solutions (19 fiches)
+  - [x] Tests d'identification des ions et des gaz — Brevet — Chimie : tests d'identification des ions et des gaz (16 fiches)
+- [x] Masse volumique et flottaison — Brevet — Chimie : masse volumique et flottaison en exercices (15 fiches)
+- [x] Révisions du brevet — Brevet — Chimie : sécurité, verrerie et méthode au laboratoire (16 fiches)
 
 ### 3e — Technologie (7 / 7)
 
