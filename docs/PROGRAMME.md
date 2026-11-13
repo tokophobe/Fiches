@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1175 chapitres couverts sur 1383** (85 %), 1180 boîtes, 19380 fiches.
+Mise à jour : 13/11/2026. **1175 chapitres couverts sur 1383** (85 %), 1180 boîtes, 19394 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -14,7 +14,7 @@ Mise à jour : 13/11/2026. **1175 chapitres couverts sur 1383** (85 %), 1180 bo�
 | [CP](#cp) | 107 / 111 | 4 | 107 | 1527 |
 | [CE1](#ce1) | 110 / 114 | 4 | 110 | 1621 |
 | [CE2](#ce2) | 110 / 112 | 2 | 110 | 1636 |
-| [CM1](#cm1) | 130 / 133 | 3 | 130 | 1891 |
+| [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1394 |
 | [6e](#6e) | 43 / 99 | 56 | 43 | 725 |
 | [5e](#5e) | 42 / 99 | 57 | 42 | 714 |
@@ -462,7 +462,7 @@ Primaire — 130 chapitres couverts sur 133, 130 boîtes.
 - [x] L'accord du participe passé avec être — CM1 — Français : l'accord du participe passé avec être (13 fiches)
 - [x] L'accord du verbe avec son sujet — CM1 — Français : l'accord du verbe avec son sujet (13 fiches)
 - [x] Les accords dans le groupe nominal — CM1 — Français : les accords dans le groupe nominal (15 fiches)
-- [x] Les pluriels particuliers — CM1 — Français : les pluriels particuliers (15 fiches)
+- [x] Les pluriels particuliers — CM1 — Français : les pluriels particuliers (16 fiches)
 - [x] -é, -er ou -ez à la fin du verbe ? — CM1 — Français : -é, -er ou -ez à la fin du verbe ? (13 fiches)
 - [x] Ce/se, c'est/s'est, on/on n' — CM1 — Français : ce/se, c'est/s'est, on/on n' (14 fiches)
 - [x] Leur/leurs et la/l'a/là — CM1 — Français : leur/leurs et la/l'a/là (14 fiches)
@@ -470,7 +470,7 @@ Primaire — 130 chapitres couverts sur 133, 130 boîtes.
 - [x] Les préfixes et leur sens — CM1 — Français : les préfixes et leur sens (15 fiches)
 - [x] Les suffixes et leur sens — CM1 — Français : les suffixes et leur sens (14 fiches)
 - [x] Les familles de mots et le radical — CM1 — Français : les familles de mots et le radical (14 fiches)
-- [x] Synonymes, antonymes et homonymes — CM1 — Français : synonymes, antonymes et homonymes (15 fiches)
+- [x] Synonymes, antonymes et homonymes — CM1 — Français : synonymes, antonymes et homonymes (16 fiches)
 - [x] Polysémie, sens propre et sens figuré — CM1 — Français : polysémie, sens propre et sens figuré (14 fiches)
 - [x] Mots génériques et champ lexical — CM1 — Français : mots génériques et champ lexical (14 fiches)
 - [x] Niveaux de langue et expressions imagées — CM1 — Français : niveaux de langue et expressions imagées (14 fiches)
@@ -500,11 +500,11 @@ Primaire — 130 chapitres couverts sur 133, 130 boîtes.
 - [x] Multiplier et diviser un nombre par 10 ou 100 — CM1 — Maths : multiplier et diviser un nombre par 10 ou 100 (15 fiches)
 - [x] Calcul mental et calcul en ligne avec parenthèses — CM1 — Maths : calcul mental et calcul en ligne avec parenthèses (16 fiches)
 - [x] Multiples et diviseurs — CM1 — Maths : multiples et diviseurs (16 fiches)
-- [x] Critères de divisibilité par 2, 5 et 10 — CM1 — Maths : critères de divisibilité par 2, 5 et 10 (15 fiches)
+- [x] Critères de divisibilité par 2, 5 et 10 — CM1 — Maths : critères de divisibilité par 2, 5 et 10 (16 fiches)
 - [x] Poser une division par un nombre à un chiffre — CM1 — Maths : poser une division par un nombre à un chiffre (15 fiches)
 - [x] Ordre de grandeur et vérification à la calculatrice — CM1 — Maths : ordre de grandeur et vérification à la calculatrice (14 fiches)
 - [x] Les unités de longueur et les conversions — CM1 — Maths : les unités de longueur et les conversions (16 fiches)
-- [x] Les unités de masse et les conversions — CM1 — Maths : les unités de masse et les conversions (15 fiches)
+- [x] Les unités de masse et les conversions — CM1 — Maths : les unités de masse et les conversions (16 fiches)
 - [x] Les unités de contenance et les conversions — CM1 — Maths : les unités de contenance et les conversions (15 fiches)
 - [x] Heures, minutes, secondes — CM1 — Maths : heures, minutes, secondes (15 fiches)
 - [x] Jours, semaines, mois, années et siècles — CM1 — Maths : jours, semaines, mois, années et siècles (15 fiches)
@@ -516,7 +516,7 @@ Primaire — 130 chapitres couverts sur 133, 130 boîtes.
 - [x] Droites perpendiculaires et parallèles — CM1 — Maths : droites perpendiculaires et parallèles (15 fiches)
 - [x] Carré, rectangle, losange et leurs diagonales — CM1 — Maths : carré, rectangle, losange et leurs diagonales (15 fiches)
 - [x] Le cercle et l'usage du compas — CM1 — Maths : le cercle et l'usage du compas (14 fiches)
-- [x] Les solides et leurs patrons — CM1 — Maths : les solides et leurs patrons (16 fiches)
+- [x] Les solides et leurs patrons — CM1 — Maths : les solides et leurs patrons (18 fiches)
 - [x] La symétrie axiale — CM1 — Maths : la symétrie axiale (15 fiches)
 - [x] Suivre un programme de construction — CM1 — Maths : suivre un programme de construction (14 fiches)
 - [x] Se repérer sur un quadrillage et sur un plan — CM1 — Maths : se repérer sur un quadrillage et sur un plan (14 fiches)
@@ -549,11 +549,11 @@ Primaire — 130 chapitres couverts sur 133, 130 boîtes.
 - [x] La romanisation de la Gaule — CM1 — Histoire : la romanisation de la Gaule (15 fiches)
 - [x] Les grands déplacements de populations (IVe-Xe siècle) — CM1 — Histoire : les grands déplacements de populations (IVe-Xe siècle) (15 fiches)
 - [x] Les rois francs, de Clovis à Charlemagne — CM1 — Histoire : les rois francs, de Clovis à Charlemagne (16 fiches)
-- [x] Louis IX, un roi chrétien au Moyen Âge — CM1 — Histoire : Louis IX, un roi chrétien au Moyen Âge (15 fiches)
+- [x] Louis IX, un roi chrétien au Moyen Âge — CM1 — Histoire : Louis IX, un roi chrétien au Moyen Âge (16 fiches)
 - [x] François Ier, la Renaissance et Henri IV — CM1 — Histoire : François Ier, la Renaissance et Henri IV (16 fiches)
 - [x] Louis XIV, Versailles et la monarchie absolue — CM1 — Histoire : Louis XIV, Versailles et la monarchie absolue (15 fiches)
 - [x] La Révolution française, de 1789 à la République — CM1 — Histoire : la Révolution française, de 1789 à la République (16 fiches)
-- [x] Napoléon Bonaparte, du Consulat à l'Empire — CM1 — Histoire : Napoléon Bonaparte, du Consulat à l'Empire (16 fiches)
+- [x] Napoléon Bonaparte, du Consulat à l'Empire — CM1 — Histoire : Napoléon Bonaparte, du Consulat à l'Empire (17 fiches)
 
 ### CM1 — Géographie (11 / 11)
 
@@ -588,13 +588,13 @@ Primaire — 130 chapitres couverts sur 133, 130 boîtes.
 
 ### CM1 — Anglais (10 / 12)
 
-- [x] Se présenter, nationalité et épeler — CM1 — Anglais : se présenter, nationalité et épeler (15 fiches)
+- [x] Se présenter, nationalité et épeler — CM1 — Anglais : se présenter, nationalité et épeler (16 fiches)
 - [x] Les nombres jusqu'à 100 — CM1 — Anglais : les nombres jusqu'à 100 (15 fiches)
-- [x] Dire l'heure — CM1 — Anglais : dire l'heure (14 fiches)
-- [x] Les mois, les saisons et la date — CM1 — Anglais : les mois, les saisons et la date (14 fiches)
-- [x] Le corps et décrire quelqu'un (have got) — CM1 — Anglais : le corps et décrire quelqu'un (have got) (14 fiches)
+- [x] Dire l'heure — CM1 — Anglais : dire l'heure (15 fiches)
+- [x] Les mois, les saisons et la date — CM1 — Anglais : les mois, les saisons et la date (15 fiches)
+- [x] Le corps et décrire quelqu'un (have got) — CM1 — Anglais : le corps et décrire quelqu'un (have got) (15 fiches)
 - [x] La ville et les directions — CM1 — Anglais : la ville et les directions (14 fiches)
-- [x] La nourriture et les goûts — CM1 — Anglais : la nourriture et les goûts (14 fiches)
+- [x] La nourriture et les goûts — CM1 — Anglais : la nourriture et les goûts (16 fiches)
 - [x] Les animaux et leurs habitats — CM1 — Anglais : les animaux et leurs habitats (14 fiches)
 - [x] Fêtes et traditions des pays anglophones — CM1 — Anglais : fêtes et traditions des pays anglophones (14 fiches)
 - [x] Les verbes d'action au présent simple — CM1 — Anglais : les verbes d'action au présent simple (14 fiches)
