@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1071 chapitres couverts sur 1228** (87 %), 1198 boîtes, 19744 fiches.
+Mise à jour : 13/11/2026. **1072 chapitres couverts sur 1228** (87 %), 1206 boîtes, 19872 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -19,7 +19,7 @@ Mise à jour : 13/11/2026. **1071 chapitres couverts sur 1228** (87 %), 1198 bo�
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
 | [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
 | [4e](#4e) | 52 / 82 | 30 | 54 | 916 |
-| [3e](#3e) | 101 / 108 | 7 | 152 | 2853 |
+| [3e](#3e) | 102 / 108 | 6 | 160 | 2981 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
 | [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
 | [Terminale](#terminale) | 143 / 145 | 2 | 173 | 3175 |
@@ -1224,7 +1224,7 @@ Collège — 52 chapitres couverts sur 82, 54 boîtes.
 
 ## 3e
 
-Collège — 101 chapitres couverts sur 108, 152 boîtes.
+Collège — 102 chapitres couverts sur 108, 160 boîtes.
 
 ### 3e — Français (17 / 17)
 
@@ -1257,15 +1257,15 @@ Collège — 101 chapitres couverts sur 108, 152 boîtes.
 - [x] Analyser un texte littéraire — Brevet — Français : outils d'analyse littéraire (43 fiches)
 - [x] Révisions du brevet — Brevet — Français : grammaire et orthographe (35 fiches) ; Brevet — Français : auteurs et œuvres repères du collège (17 fiches) ; Brevet — Français : les pièges orthographiques de la dictée (17 fiches) ; Brevet — Français : réussir l'exercice de réécriture (16 fiches) ; Brevet — Français : méthode de la rédaction (16 fiches) ; Brevet — Français : réussir l'épreuve orale (15 fiches)
 
-### 3e — Mathématiques (11 / 12)
+### 3e — Mathématiques (12 / 12)
 
 - [x] Fractions, puissances et racines carrées — l'essentiel — Brevet — Maths : fractions, puissances et racines carrées (19 fiches)
   - [x] Puissances de 10 et écriture scientifique — Brevet — Maths : puissances de 10 et écriture scientifique (18 fiches)
-  - [ ] Racines carrées — *à créer*
+  - [x] Racines carrées — 3ème — Maths : racines carrées (16 fiches)
 - [x] Diviseurs, nombres premiers et fractions irréductibles — Brevet — Maths : diviseurs, nombres premiers et PGCD (17 fiches)
 - [x] Calcul littéral, équations et inéquations — l'essentiel — Brevet — Maths : calcul littéral, équations et inéquations (19 fiches)
-  - [ ] Développer, factoriser, identités remarquables — *à créer*
-  - [ ] Équations, inéquations et équations produit nul — *à créer*
+  - [x] Développer, factoriser, identités remarquables — 3ème — Maths : développer, factoriser, identités remarquables (16 fiches)
+  - [x] Équations, inéquations et équations produit nul — 3ème — Maths : équations, inéquations et équations produit nul (16 fiches)
   - [x] Mettre un problème en équation — Brevet — Maths : résoudre un problème par une mise en équation (16 fiches)
 - [x] Fonctions — l'essentiel — Brevet — Maths : fonctions, proportionnalité et pourcentages (18 fiches)
   - [x] Notion de fonction et lecture graphique — Brevet — Maths : notion de fonction et lecture graphique (15 fiches)
@@ -1276,17 +1276,17 @@ Collège — 101 chapitres couverts sur 108, 152 boîtes.
   - [x] Moyenne, médiane et étendue — Brevet — Maths : moyenne pondérée, médiane et étendue en exercices (15 fiches)
   - [x] Probabilités, vocabulaire et arbres — Brevet — Maths : probabilités, vocabulaire et arbres (17 fiches)
 - [x] Pythagore, Thalès et trigonométrie — l'essentiel — Brevet — Maths : Pythagore, Thalès et trigonométrie (18 fiches)
-  - [ ] Théorème de Pythagore et sa réciproque — *à créer*
+  - [x] Théorème de Pythagore et sa réciproque — 3ème — Maths : théorème de Pythagore et sa réciproque (16 fiches)
   - [x] Théorème de Thalès et triangles semblables — Brevet — Maths : triangles semblables et homothétie (15 fiches)
-  - [ ] Trigonométrie dans le triangle rectangle — *à créer*
+  - [x] Trigonométrie dans le triangle rectangle — 3ème — Maths : trigonométrie dans le triangle rectangle (16 fiches)
 - [x] Angles, droites parallèles et polygones réguliers — Brevet — Maths : angles, droites parallèles et polygones réguliers (16 fiches)
 - [x] Transformations du plan — l'essentiel — Brevet — Maths : transformations et algorithmique Scratch (20 fiches)
-  - [ ] Translations, rotations et homothéties — *à créer*
+  - [x] Translations, rotations et homothéties — 3ème — Maths : translations, rotations et homothéties (16 fiches)
   - [x] Agrandissement, réduction et effets sur aires et volumes — Brevet — Maths : agrandissement, réduction et effets sur aires et volumes (15 fiches)
 - [x] Aires, volumes et conversions — l'essentiel — Brevet — Maths : aires, volumes et conversions (19 fiches)
   - [x] Sections de solides et repérage sur la sphère — Brevet — Maths : sections de solides et repérage sur la sphère (19 fiches)
-- [ ] Algorithmique et programmation — l'essentiel — *à créer*
-  - [ ] Programmer avec Scratch — *à créer*
+- [x] Algorithmique et programmation — l'essentiel — 3ème — Maths : algorithmique et programmation (l'essentiel) (16 fiches)
+  - [x] Programmer avec Scratch — 3ème — Maths : programmer avec Scratch (16 fiches)
   - [x] Lire et écrire des formules dans un tableur — Brevet — Maths : lire et écrire des formules dans un tableur (15 fiches)
 - [x] Révisions du brevet — Maths — Formules et théorèmes du collège (46 fiches) ; Brevet — Maths : calcul mental, automatismes et programmes de calcul (22 fiches)
 
