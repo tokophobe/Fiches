@@ -9451,11 +9451,23 @@
        "sousthemes": [
         {
          "titre": "Métropoles et métropolisation",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-geo-metropoles",
+           "titre": "3ème — Géographie : métropoles et métropolisation",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Périurbanisation et mobilités quotidiennes",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-geo-periurbanisation",
+           "titre": "3ème — Géographie : périurbanisation et mobilités quotidiennes",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9471,21 +9483,45 @@
        "sousthemes": [
         {
          "titre": "Espaces industriels",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-geo-espaces-industriels",
+           "titre": "3ème — Géographie : espaces productifs industriels",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Espaces agricoles",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-geo-espaces-agricoles",
+           "titre": "3ème — Géographie : espaces productifs agricoles",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Espaces de services et du tourisme",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-geo-espaces-services-tourisme",
+           "titre": "3ème — Géographie : espaces de services et du tourisme",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "Les espaces de faible densité et leurs atouts",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r3e-geo-faible-densite",
+         "titre": "3ème — Géographie : les espaces de faible densité et leurs atouts",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Aménager les territoires français",
@@ -9499,7 +9535,13 @@
        "sousthemes": [
         {
          "titre": "Les acteurs de l'aménagement",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-geo-acteurs-amenagement",
+           "titre": "3ème — Géographie : les acteurs de l'aménagement",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Mobilités et réseaux de transport",
@@ -9515,11 +9557,23 @@
       },
       {
        "titre": "Les territoires ultramarins français",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r3e-geo-outre-mer",
+         "titre": "3ème — Géographie : les territoires ultramarins français",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "L'Union européenne, un territoire d'appartenance",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r3e-geo-union-europeenne",
+         "titre": "3ème — Géographie : l'Union européenne, un territoire d'appartenance",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "La France et l'Europe dans le monde",

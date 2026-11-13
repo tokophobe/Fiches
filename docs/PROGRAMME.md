@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1072 chapitres couverts sur 1228** (87 %), 1216 boîtes, 20032 fiches.
+Mise à jour : 13/11/2026. **1075 chapitres couverts sur 1228** (88 %), 1225 boîtes, 20176 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -19,7 +19,7 @@ Mise à jour : 13/11/2026. **1072 chapitres couverts sur 1228** (87 %), 1216 bo�
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
 | [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
 | [4e](#4e) | 52 / 82 | 30 | 54 | 916 |
-| [3e](#3e) | 102 / 108 | 6 | 170 | 3141 |
+| [3e](#3e) | 105 / 108 | 3 | 179 | 3285 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
 | [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
 | [Terminale](#terminale) | 143 / 145 | 2 | 173 | 3175 |
@@ -1224,7 +1224,7 @@ Collège — 52 chapitres couverts sur 82, 54 boîtes.
 
 ## 3e
 
-Collège — 102 chapitres couverts sur 108, 170 boîtes.
+Collège — 105 chapitres couverts sur 108, 179 boîtes.
 
 ### 3e — Français (17 / 17)
 
@@ -1323,21 +1323,21 @@ Collège — 102 chapitres couverts sur 108, 170 boîtes.
 - [x] Histoire des arts : les arts au XXe siècle — Brevet — Histoire des arts : les arts au XXe siècle (17 fiches)
 - [x] Révisions du brevet — Histoire — Les dates clés du Brevet (53 fiches) ; Brevet — Histoire : notions et personnages clés (36 fiches) ; Brevet — Histoire : guerre froide, décolonisation et Europe (19 fiches) ; Brevet — Histoire : la France de 1944 à nos jours (18 fiches) ; Brevet — Histoire : lieux et repères spatiaux du programme (19 fiches) ; Brevet — Histoire : grands discours et textes patrimoniaux (20 fiches)
 
-### 3e — Géographie (5 / 8)
+### 3e — Géographie (8 / 8)
 
 - [x] Les aires urbaines, une France mondialisée — l'essentiel — Brevet — Géographie : aires urbaines et espaces peu denses (17 fiches)
-  - [ ] Métropoles et métropolisation — *à créer*
-  - [ ] Périurbanisation et mobilités quotidiennes — *à créer*
+  - [x] Métropoles et métropolisation — 3ème — Géographie : métropoles et métropolisation (16 fiches)
+  - [x] Périurbanisation et mobilités quotidiennes — 3ème — Géographie : périurbanisation et mobilités quotidiennes (16 fiches)
 - [x] Les espaces productifs et leurs évolutions — l'essentiel — Brevet — Géographie : les espaces productifs français (18 fiches)
-  - [ ] Espaces industriels — *à créer*
-  - [ ] Espaces agricoles — *à créer*
-  - [ ] Espaces de services et du tourisme — *à créer*
-- [ ] Les espaces de faible densité et leurs atouts — *à créer*
+  - [x] Espaces industriels — 3ème — Géographie : espaces productifs industriels (16 fiches)
+  - [x] Espaces agricoles — 3ème — Géographie : espaces productifs agricoles (16 fiches)
+  - [x] Espaces de services et du tourisme — 3ème — Géographie : espaces de services et du tourisme (16 fiches)
+- [x] Les espaces de faible densité et leurs atouts — 3ème — Géographie : les espaces de faible densité et leurs atouts (16 fiches)
 - [x] Aménager les territoires français — l'essentiel — Brevet — Géographie : aménagement et territoires ultramarins (16 fiches)
-  - [ ] Les acteurs de l'aménagement — *à créer*
+  - [x] Les acteurs de l'aménagement — 3ème — Géographie : les acteurs de l'aménagement (16 fiches)
   - [x] Mobilités et réseaux de transport — Brevet — Géographie : mobilités et réseaux de transport en France (16 fiches)
-- [ ] Les territoires ultramarins français — *à créer*
-- [ ] L'Union européenne, un territoire d'appartenance — *à créer*
+- [x] Les territoires ultramarins français — 3ème — Géographie : les territoires ultramarins français (16 fiches)
+- [x] L'Union européenne, un territoire d'appartenance — 3ème — Géographie : l'Union européenne, un territoire d'appartenance (16 fiches)
 - [x] La France et l'Europe dans le monde — Brevet — Géographie : la France et l'UE dans le monde (16 fiches)
 - [x] Révisions du brevet — Brevet — Géographie : notions et repères (30 fiches) ; Brevet — Géographie : fleuves, massifs, métropoles et régions (19 fiches) ; Brevet — Géographie : méthode du croquis et de la légende (16 fiches)
 
