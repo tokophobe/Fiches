@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de mathématiques en CP — darwin</title>
+<meta name="description" content="33 boîtes et 473 fiches de mathématiques en CP, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de mathématiques en CP — darwin" />
+<meta property="og:description" content="33 boîtes et 473 fiches de mathématiques en CP, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Primaire › CP › Mathématiques</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de mathématiques en CP</h1>
+        <div class="facts">
+          <div><b>33</b><span>boîtes</span></div>
+          <div><b>473</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en CP. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de mathématiques en CP</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>CP — Maths : additionner, soustraire et petits problèmes</h3><p>Ajouter, enlever et résoudre de petits problèmes de la vie de tous les jours.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Maths : ajouter ou enlever des dizaines</h3><p>Ajouter ou enlever 10, 20, 30… à un nombre jusqu&#x27;à 100.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : aller jusqu&#x27;à la dizaine suivante</h3><p>Trouver combien il manque pour arriver à la dizaine juste au-dessus.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : avant, après, entre et encadrer un nombre</h3><p>Trouver le nombre d&#x27;avant, d&#x27;après, entre deux nombres et les dizaines voisines.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : calcul en ligne, additionner en passant la dizaine</h3><p>Additionner en passant par la dizaine pour calculer plus facilement.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : comparer des masses</h3><p>Savoir dire quel objet est le plus lourd ou le plus léger, avec les mains ou une balance.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : comparer deux nombres avec &lt;, &gt; et =</h3><p>Dire quel nombre est le plus grand et utiliser les signes &lt;, &gt; et =.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Maths : compter de 2 en 2, de 5 en 5 et de 10 en 10</h3><p>Continuer une suite de nombres, en avançant ou en reculant.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Maths : dix-sept, dix-huit, dix-neuf et les dizaines en lettres</h3><p>Écrire en lettres 17, 18, 19 et les dizaines de vingt à cent.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : doubles et moitiés jusqu&#x27;à 20</h3><p>Connaître les doubles jusqu&#x27;à 10 + 10 et les moitiés jusqu&#x27;à 20.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : décomposer 10 et 20</h3><p>Connaître les nombres qui vont ensemble pour faire 10 ou 20.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : décomposer les nombres jusqu&#x27;à 9</h3><p>Trouver les deux nombres qui forment un nombre jusqu&#x27;à 9.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : décrire les figures (côtés et sommets)</h3><p>Décrire un carré, un rectangle, un triangle ou un rond avec les bons mots.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : dénombrer une collection jusqu&#x27;à 10</h3><p>Compter des objets sans en oublier ni en compter deux fois.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : gauche, droite et le quadrillage</h3><p>Se repérer à gauche ou à droite et trouver une case dans un quadrillage.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : la soustraction, enlever et trouver l&#x27;écart</h3><p>Comprendre la soustraction et calculer de petites différences de tête.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Maths : le mètre et le centimètre</h3><p>Découvrir le mètre et choisir la bonne unité : mètre ou centimètre.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : les additions à connaître par cœur</h3><p>Calculer vite des petites additions et utiliser des astuces.</p><span class="n">13 fiches</span></li>
+        <li><h3>CP — Maths : les formes et les solides</h3><p>Reconnaître et nommer le carré, le rectangle, le triangle, le cercle et quelques solides.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Maths : les nombres jusqu&#x27;à 100 et les compléments à 10</h3><p>Dizaines et unités, comparer et ranger les nombres jusqu&#x27;à 100, retrouver vite les compléments à 10.</p><span class="n">16 fiches</span></li>
+        <li><h3>CP — Maths : les paquets de dix et la valeur des chiffres</h3><p>Faire des paquets de 10 et savoir ce que vaut chaque chiffre d&#x27;un nombre.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : les pièces et les billets en euros</h3><p>Reconnaître les pièces et les billets en euros, et faire des petits achats.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : lire et écrire les nombres de 21 à 69</h3><p>Passer des chiffres aux lettres pour les nombres de 21 à 69.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Maths : lire et écrire les nombres de 70 à 99</h3><p>Les nombres difficiles de 70 à 99 : soixante-dix et quatre-vingts.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Maths : lire les heures et comparer des durées</h3><p>Lire les heures entières sur une horloge et comparer des durées.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : lire un calendrier et compter les jours</h3><p>Lire une date sur un calendrier et compter des durées en jours et en semaines.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Maths : lire un énoncé et un tableau</h3><p>Comprendre un énoncé de problème, trouver la question et lire un tableau simple.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : mesurer une longueur en centimètres</h3><p>Comparer des longueurs et les mesurer avec la règle, en centimètres.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : premier, deuxième, troisième (la place)</h3><p>Dire et écrire la place d&#x27;une personne ou d&#x27;un objet dans une file.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Maths : premiers pas vers la multiplication et le partage</h3><p>Compter des paquets identiques et partager en parts égales.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : ranger des nombres du plus petit au plus grand</h3><p>Ranger des nombres dans l&#x27;ordre croissant ou décroissant.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : tracer à la règle et les points alignés</h3><p>Tracer des traits droits, repérer des points alignés et reproduire une figure.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Maths : écrire en lettres les nombres de zéro à seize</h3><p>Lire et écrire en lettres les nombres de 0 à 16.</p><span class="n">15 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en CP</h2><ul class="links"><li><a href="emc-cp.html">EMC</a></li><li><a href="anglais-cp.html">Anglais</a></li><li><a href="francais-cp.html">Français</a></li><li><a href="questionner-le-monde-cp.html">Questionner le monde</a></li><li><a href="education-artistique-cp.html">Éducation artistique</a></li><li><a href="education-physique-cp.html">Éducation physique</a></li></ul>
+      <h2>Mathématiques : autres niveaux</h2><ul class="links"><li><a href="mathematiques-ce1.html">Mathématiques <small>CE1</small></a></li><li><a href="mathematiques-ce2.html">Mathématiques <small>CE2</small></a></li><li><a href="mathematiques-cm1.html">Mathématiques <small>CM1</small></a></li><li><a href="mathematiques-cm2.html">Mathématiques <small>CM2</small></a></li><li><a href="mathematiques-6e.html">Mathématiques <small>6e</small></a></li><li><a href="mathematiques-5e.html">Mathématiques <small>5e</small></a></li><li><a href="mathematiques-4e.html">Mathématiques <small>4e</small></a></li><li><a href="mathematiques-3e.html">Mathématiques <small>3e</small></a></li><li><a href="mathematiques-seconde.html">Mathématiques <small>seconde</small></a></li><li><a href="mathematiques-premiere.html">Mathématiques <small>1re</small></a></li><li><a href="mathematiques-terminale.html">Mathématiques <small>terminale</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Maths : les nombres jusqu'à 100 et les compléments à 10", "q": "Combien d'unités dans une dizaine ?", "a": "10", "more": ""}, {"theme": "Maths : les formes et les solides", "q": "Combien de côtés a un triangle ?", "a": "3", "more": "Et 3 sommets (les « pointes »)."}, {"theme": "Maths : additionner, soustraire et petits problèmes", "q": "Que veut dire le signe + ?", "a": "On ajoute", "more": "3 + 2 = 5"}, {"theme": "Maths : dénombrer une collection jusqu'à 10", "q": "Quand je compte des objets, combien de fois dois-je montrer chaque objet ?", "a": "Une seule fois, en disant un nombre à chaque objet.", "more": ""}, {"theme": "Maths : premier, deuxième, troisième (la place)", "q": "Dans une course, qui arrive premier : celui qui gagne ou celui qui arrive à la fin ?", "a": "Celui qui gagne : il arrive en premier.", "more": ""}, {"theme": "Maths : écrire en lettres les nombres de zéro à seize", "q": "Comment écrit-on 0 en lettres ?", "a": "Zéro, avec un accent sur le é.", "more": ""}, {"theme": "Maths : dix-sept, dix-huit, dix-neuf et les dizaines en lettres", "q": "Comment écrit-on 17 en lettres ?", "a": "Dix-sept, avec un tiret.", "more": ""}, {"theme": "Maths : lire et écrire les nombres de 21 à 69", "q": "Comment écrit-on 21 en lettres ?", "a": "Vingt et un (on peut aussi écrire vingt-et-un).", "more": ""}, {"theme": "Maths : lire et écrire les nombres de 70 à 99", "q": "Comment dit-on 71 ?", "a": "Soixante et onze, car 60 et 11 font 71.", "more": ""}, {"theme": "Maths : les paquets de dix et la valeur des chiffres", "q": "J'ai 3 paquets de 10 crayons et 4 crayons tout seuls. Combien ai-je de crayons ?", "a": "J'ai 34 crayons.", "more": ""}, {"theme": "Maths : comparer deux nombres avec <, > et =", "q": "Que veut dire le signe < ?", "a": "« Est plus petit que » : 3 < 5.", "more": ""}, {"theme": "Maths : ranger des nombres du plus petit au plus grand", "q": "Que veut dire ranger dans l'ordre croissant ?", "a": "Ranger du plus petit au plus grand.", "more": ""}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

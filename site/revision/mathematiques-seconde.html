@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de mathématiques en seconde — darwin</title>
+<meta name="description" content="11 boîtes et 195 fiches de mathématiques en seconde, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de mathématiques en seconde — darwin" />
+<meta property="og:description" content="11 boîtes et 195 fiches de mathématiques en seconde, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Lycée › seconde › Mathématiques</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de mathématiques en seconde</h1>
+        <div class="facts">
+          <div><b>11</b><span>boîtes</span></div>
+          <div><b>195</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en seconde. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de mathématiques en seconde</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>Seconde — Maths : algorithmique et programmation en Python</h3><p>Variables et types, affectation, instructions conditionnelles, boucles for et while, fonctions en Python.</p><span class="n">19 fiches</span></li>
+        <li><h3>Seconde — Maths : calcul littéral, développer et factoriser</h3><p>Développer, factoriser, identités remarquables et fractions : choisir la forme adaptée d&#x27;une expression.</p><span class="n">17 fiches</span></li>
+        <li><h3>Seconde — Maths : fonctions de référence et variations</h3><p>Image, antécédent, fonctions affines, carré, inverse, racine carrée et cube : courbes et variations.</p><span class="n">16 fiches</span></li>
+        <li><h3>Seconde — Maths : géométrie plane, projeté orthogonal et trigonométrie</h3><p>Projeté orthogonal, Pythagore, Thalès, cosinus et sinus, droites remarquables, aires et volumes.</p><span class="n">18 fiches</span></li>
+        <li><h3>Seconde — Maths : modéliser une expérience aléatoire</h3><p>Univers, événements, loi de probabilité, arbres et tableaux à double entrée, simulation : les probabilités sur un ensemble fini.</p><span class="n">20 fiches</span></li>
+        <li><h3>Seconde — Maths : multiples, diviseurs et nombres premiers</h3><p>Multiples, diviseurs, parité, nombres premiers, décomposition et fractions irréductibles, avec les démonstrations exigibles.</p><span class="n">16 fiches</span></li>
+        <li><h3>Seconde — Maths : nombres, intervalles et calculs</h3><p>Les ensembles de nombres, les intervalles, la valeur absolue, les puissances et les racines carrées.</p><span class="n">21 fiches</span></li>
+        <li><h3>Seconde — Maths : statistiques, évolutions et probabilités</h3><p>Moyenne, médiane, quartiles, écart type, taux d&#x27;évolution, coefficient multiplicateur et calcul de probabilités.</p><span class="n">17 fiches</span></li>
+        <li><h3>Seconde — Maths : systèmes de deux équations à deux inconnues</h3><p>Résoudre un système linéaire 2×2 par substitution ou combinaison, l&#x27;interpréter graphiquement et modéliser un problème.</p><span class="n">16 fiches</span></li>
+        <li><h3>Seconde — Maths : vecteurs, repérage et droites</h3><p>Coordonnées de vecteurs, milieu, distance, colinéarité et équations de droites dans un repère.</p><span class="n">18 fiches</span></li>
+        <li><h3>Seconde — Maths : équations, inéquations et tableaux de signes</h3><p>Résoudre équations et inéquations du 1er degré, équations produit et quotient, x² = a, signe de ax + b et tableaux de signes.</p><span class="n">17 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en seconde</h2><ul class="links"><li><a href="emc-seconde.html">EMC</a></li><li><a href="ses-seconde.html">SES</a></li><li><a href="snt-seconde.html">SNT</a></li><li><a href="svt-seconde.html">SVT</a></li><li><a href="allemand-seconde.html">Allemand</a></li><li><a href="anglais-seconde.html">Anglais</a></li><li><a href="chimie-seconde.html">Chimie</a></li><li><a href="espagnol-seconde.html">Espagnol</a></li><li><a href="francais-seconde.html">Français</a></li><li><a href="geographie-seconde.html">Géographie</a></li><li><a href="histoire-seconde.html">Histoire</a></li><li><a href="italien-seconde.html">Italien</a></li><li><a href="physique-seconde.html">Physique</a></li></ul>
+      <h2>Mathématiques : autres niveaux</h2><ul class="links"><li><a href="mathematiques-cp.html">Mathématiques <small>CP</small></a></li><li><a href="mathematiques-ce1.html">Mathématiques <small>CE1</small></a></li><li><a href="mathematiques-ce2.html">Mathématiques <small>CE2</small></a></li><li><a href="mathematiques-cm1.html">Mathématiques <small>CM1</small></a></li><li><a href="mathematiques-cm2.html">Mathématiques <small>CM2</small></a></li><li><a href="mathematiques-6e.html">Mathématiques <small>6e</small></a></li><li><a href="mathematiques-5e.html">Mathématiques <small>5e</small></a></li><li><a href="mathematiques-4e.html">Mathématiques <small>4e</small></a></li><li><a href="mathematiques-3e.html">Mathématiques <small>3e</small></a></li><li><a href="mathematiques-premiere.html">Mathématiques <small>1re</small></a></li><li><a href="mathematiques-terminale.html">Mathématiques <small>terminale</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Maths : nombres, intervalles et calculs", "q": "Dans quel ordre les ensembles N, Z, D, Q et R sont-ils inclus ?", "a": "N ⊂ Z ⊂ D ⊂ Q ⊂ R", "more": ""}, {"theme": "Maths : nombres, intervalles et calculs", "q": "Qu'est-ce qu'un nombre décimal ?", "a": "Un nombre qui s'écrit a/10ⁿ (a entier relatif)", "more": "Il a un nombre fini de chiffres après la virgule."}, {"theme": "Maths : vecteurs, repérage et droites", "q": "À quelle transformation est associé le vecteur AB ?", "a": "La translation qui transforme A en B", "more": ""}, {"theme": "Maths : vecteurs, repérage et droites", "q": "Que dit la relation de Chasles pour les vecteurs ?", "a": "AB + BC = AC", "more": ""}, {"theme": "Maths : fonctions de référence et variations", "q": "Combien d'images un nombre a-t-il par une fonction ?", "a": "Une seule", "more": ""}, {"theme": "Maths : fonctions de référence et variations", "q": "Combien d'antécédents un nombre peut-il avoir par une fonction ?", "a": "Zéro, un ou plusieurs", "more": ""}, {"theme": "Maths : statistiques, évolutions et probabilités", "q": "Comment calcule-t-on la moyenne d'une série de valeurs xᵢ d'effectifs nᵢ ?", "a": "(n₁x₁ + n₂x₂ + … + nₚxₚ) / N", "more": "N : effectif total."}, {"theme": "Maths : statistiques, évolutions et probabilités", "q": "Que signifie la médiane d'une série ?", "a": "Au moins 50 % des valeurs lui sont inférieures ou égales, et au moins 50 % supérieures ou égales", "more": ""}, {"theme": "Maths : équations, inéquations et tableaux de signes", "q": "Que devient le sens d'une inégalité quand on multiplie par un nombre négatif ?", "a": "Il change", "more": "Il est conservé si on ajoute ou soustrait un même nombre, ou si on multiplie ou divise par un nombre strictement positif."}, {"theme": "Maths : équations, inéquations et tableaux de signes", "q": "Résoudre 3x − 5 = 7.", "a": "x = 4", "more": "3x = 12, donc S = {4}."}, {"theme": "Maths : algorithmique et programmation en Python", "q": "Que fait l'instruction a = 3 en Python ?", "a": "Elle affecte la valeur 3 à la variable a", "more": "À ne pas confondre avec a == 3, qui teste l'égalité (True ou False)."}, {"theme": "Maths : algorithmique et programmation en Python", "q": "Quel est le type de la valeur 3.5 en Python ?", "a": "float", "more": "int : entier ; float : nombre à virgule ; str : chaîne de caractères ; bool : booléen (True ou False)."}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

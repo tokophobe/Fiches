@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de français en 5e — darwin</title>
+<meta name="description" content="5 boîtes et 87 fiches de français en 5e, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de français en 5e — darwin" />
+<meta property="og:description" content="5 boîtes et 87 fiches de français en 5e, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Collège › 5e › Français</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de français en 5e</h1>
+        <div class="facts">
+          <div><b>5</b><span>boîtes</span></div>
+          <div><b>87</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en 5e. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de français en 5e</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>5ème — Français : avec autrui, la comédie et Molière</h3><p>Vocabulaire du théâtre, formes du comique et grandes comédies de Molière autour des relations familiales.</p><span class="n">19 fiches</span></li>
+        <li><h3>5ème — Français : chevaliers, littérature du Moyen Âge et grammaire</h3><p>Romans de chevalerie, chansons de geste, fabliaux et farces, plus les notions de grammaire clés de 5ème.</p><span class="n">16 fiches</span></li>
+        <li><h3>5ème — Français : l&#x27;accord du participe passé</h3><p>Accorder le participe passé employé seul, avec être et avec avoir. Programme de 5ème (cycle 4), français, étude de la langue : orthographe grammaticale — accords du participe passé avec être et avec avoir.</p><span class="n">16 fiches</span></li>
+        <li><h3>5ème — Français : types de phrases, propositions, passé composé et plus-que-parfait</h3><p>Types et formes de phrases, phrase simple ou complexe, passé composé, plus-que-parfait et impératif.</p><span class="n">19 fiches</span></li>
+        <li><h3>5ème — Français : voyage, aventure, héros et univers imaginaires</h3><p>Récits d&#x27;aventure et de voyage, héros et héroïsme, univers imaginaires et outils d&#x27;analyse du récit et du poème.</p><span class="n">17 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en 5e</h2><ul class="links"><li><a href="emc-5e.html">EMC</a></li><li><a href="svt-5e.html">SVT</a></li><li><a href="allemand-5e.html">Allemand</a></li><li><a href="anglais-5e.html">Anglais</a></li><li><a href="arts-plastiques-5e.html">Arts plastiques</a></li><li><a href="chimie-5e.html">Chimie</a></li><li><a href="espagnol-5e.html">Espagnol</a></li><li><a href="geographie-5e.html">Géographie</a></li><li><a href="histoire-5e.html">Histoire</a></li><li><a href="italien-5e.html">Italien</a></li><li><a href="latin-5e.html">Latin</a></li><li><a href="mathematiques-5e.html">Mathématiques</a></li><li><a href="physique-5e.html">Physique</a></li><li><a href="technologie-5e.html">Technologie</a></li></ul>
+      <h2>Français : autres niveaux</h2><ul class="links"><li><a href="francais-cp.html">Français <small>CP</small></a></li><li><a href="francais-ce1.html">Français <small>CE1</small></a></li><li><a href="francais-ce2.html">Français <small>CE2</small></a></li><li><a href="francais-cm1.html">Français <small>CM1</small></a></li><li><a href="francais-cm2.html">Français <small>CM2</small></a></li><li><a href="francais-6e.html">Français <small>6e</small></a></li><li><a href="francais-4e.html">Français <small>4e</small></a></li><li><a href="francais-3e.html">Français <small>3e</small></a></li><li><a href="francais-seconde.html">Français <small>seconde</small></a></li><li><a href="francais-premiere.html">Français <small>1re</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Chevaliers, littérature du Moyen Âge et grammaire", "q": "Comment appelle-t-on la cérémonie où un jeune noble devient chevalier ?", "a": "L'adoubement", "more": "Il reçoit ses armes, notamment l'épée."}, {"theme": "Chevaliers, littérature du Moyen Âge et grammaire", "q": "Quel auteur du XIIe siècle invente le roman de chevalerie ?", "a": "Chrétien de Troyes", "more": "Ex. : Yvain ou le Chevalier au lion, Lancelot, Perceval."}, {"theme": "Chevaliers, littérature du Moyen Âge et grammaire", "q": "Comment appelle-t-on un long poème médiéval qui raconte des exploits guerriers ?", "a": "Une chanson de geste", "more": "Ex. : La Chanson de Roland."}, {"theme": "Types de phrases, propositions, passé composé et plus-que-parfait", "q": "Quel type de phrase exprime une émotion ?", "a": "Le type exclamatif", "more": "Déclaratif : on affirme. Interrogatif : on pose une question. Injonctif (impératif) : ordre, conseil. Exclamatif : émotion."}, {"theme": "Types de phrases, propositions, passé composé et plus-que-parfait", "q": "De quel type est la phrase « Ferme la porte ! » ?", "a": "Injonctif", "more": "Elle donne un ordre, même si elle se termine par un point d'exclamation."}, {"theme": "Types de phrases, propositions, passé composé et plus-que-parfait", "q": "« Où vas-tu ? » est-elle une interrogation totale ou partielle ?", "a": "Partielle", "more": "Partielle : elle porte sur un élément, avec un mot interrogatif. Totale : réponse oui ou non (« Viens-tu ? »)."}, {"theme": "Voyage, aventure, héros et univers imaginaires", "q": "« Le voyage et l'aventure » est-il une entrée du programme de français de 5e ?", "a": "Oui", "more": "« Dénoncer les travers de la société » relève de la 3e."}, {"theme": "Voyage, aventure, héros et univers imaginaires", "q": "Que fait le héros au début d'un récit d'aventure ?", "a": "Il quitte son univers familier pour l'inconnu", "more": "Il affronte ensuite dangers et péripéties dans des lieux lointains ; le récit crée du suspense."}, {"theme": "Voyage, aventure, héros et univers imaginaires", "q": "Quelle est la 3e étape du schéma narratif ?", "a": "Les péripéties", "more": "1. Situation initiale ; 2. Élément perturbateur ; 3. Péripéties ; 4. Élément de résolution ; 5. Situation finale."}, {"theme": "Avec autrui, la comédie et Molière", "q": "Comment se termine en général une comédie ?", "a": "Par une fin heureuse", "more": "Elle cherche à faire rire en se moquant des défauts humains, avec des personnages ordinaires."}, {"theme": "Avec autrui, la comédie et Molière", "q": "Quel roi soutient Molière ?", "a": "Louis XIV", "more": "Jean-Baptiste Poquelin (1622-1673) : auteur, comédien et chef de troupe."}, {"theme": "Avec autrui, la comédie et Molière", "q": "En quelle année Molière écrit-il L'Avare ?", "a": "1668", "more": "Le Médecin malgré lui (1666), L'Avare (1668), Le Bourgeois gentilhomme (1670), Les Fourberies de Scapin (1671), Le Malade imaginaire (1673)."}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

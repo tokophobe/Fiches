@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de géographie en CM2 — darwin</title>
+<meta name="description" content="12 boîtes et 180 fiches de géographie en CM2, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de géographie en CM2 — darwin" />
+<meta property="og:description" content="12 boîtes et 180 fiches de géographie en CM2, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Primaire › CM2 › Géographie</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de géographie en CM2</h1>
+        <div class="facts">
+          <div><b>12</b><span>boîtes</span></div>
+          <div><b>180</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en CM2. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de géographie en CM2</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>CM2 — Géographie : Internet au quotidien, outils et usages</h3><p>Site web, navigateur, wifi, courriel, visioconférence, achats en ligne : comment Internet change notre vie.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM2 — Géographie : communiquer d&#x27;un bout à l&#x27;autre du monde grâce à Internet</h3><p>Les réseaux qui relient le monde, l&#x27;habitant connecté et les inégalités d&#x27;accès à Internet.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM2 — Géographie : mieux habiter dans un écoquartier</h3><p>Énergie, eau, transports, vie de quartier : ce qui fait d&#x27;un quartier un écoquartier, en France et ailleurs.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM2 — Géographie : mieux habiter en recyclant ses déchets</h3><p>Bac jaune, verre, compost, déchetterie, ressourcerie : réduire, réutiliser et recycler ses déchets.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM2 — Géographie : mieux habiter, la nature en ville</h3><p>Parcs, toits végétalisés, jardins partagés, îlots de fraîcheur : pourquoi et comment faire entrer la nature en ville.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM2 — Géographie : repères sur l&#x27;Union européenne (pays, capitales, symboles)</h3><p>Les pays et capitales de l&#x27;Union européenne, son drapeau, son hymne, sa devise et l&#x27;euro.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Géographie : repères, les continents et les océans</h3><p>Les 6 continents et les 5 océans : les nommer, les situer et les comparer.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM2 — Géographie : repères, les grands records et lignes du monde</h3><p>Équateur, pôles, Everest, Sahara, Amazonie, pays les plus grands et les plus peuplés : les grands repères du monde.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Géographie : se déplacer</h3><p>Se déplacer au quotidien, en France et dans le monde : moyens de transport, réseaux et mobilités.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM2 — Géographie : se déplacer au quotidien ailleurs dans le monde</h3><p>Métro de Tokyo, vélos d&#x27;Amsterdam, bateaux de Venise, téléphérique de La Paz : se déplacer au quotidien ailleurs.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM2 — Géographie : se déplacer en Europe et dans le monde</h3><p>Tunnel sous la Manche, espace Schengen, avions, porte-conteneurs et grands canaux : voyager loin.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM2 — Géographie : voyager de ville en ville en France</h3><p>TGV, autoroutes, cars, avions et covoiturage : comment on voyage d&#x27;une ville à l&#x27;autre en France.</p><span class="n">15 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en CM2</h2><ul class="links"><li><a href="emc-cm2.html">EMC</a></li><li><a href="anglais-cm2.html">Anglais</a></li><li><a href="francais-cm2.html">Français</a></li><li><a href="histoire-cm2.html">Histoire</a></li><li><a href="mathematiques-cm2.html">Mathématiques</a></li><li><a href="sciences-cm2.html">Sciences</a></li><li><a href="technologie-cm2.html">Technologie</a></li></ul>
+      <h2>Géographie : autres niveaux</h2><ul class="links"><li><a href="geographie-cm1.html">Géographie <small>CM1</small></a></li><li><a href="geographie-6e.html">Géographie <small>6e</small></a></li><li><a href="geographie-5e.html">Géographie <small>5e</small></a></li><li><a href="geographie-4e.html">Géographie <small>4e</small></a></li><li><a href="geographie-3e.html">Géographie <small>3e</small></a></li><li><a href="geographie-seconde.html">Géographie <small>seconde</small></a></li><li><a href="geographie-premiere.html">Géographie <small>1re</small></a></li><li><a href="geographie-terminale.html">Géographie <small>terminale</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Se déplacer", "q": "Qu'est-ce que la mobilité ?", "a": "La capacité à se déplacer", "more": ""}, {"theme": "Communiquer d'un bout à l'autre du monde grâce à Internet", "q": "Comment appelle-t-on l'immense réseau qui relie des ordinateurs et des téléphones du monde entier ?", "a": "Internet", "more": ""}, {"theme": "Se déplacer au quotidien ailleurs dans le monde", "q": "Quelle agglomération japonaise de plus de 30 millions d'habitants a l'un des métros les plus fréquentés du monde ?", "a": "Tokyo", "more": "La capitale du Japon."}, {"theme": "Voyager de ville en ville en France", "q": "Qu'est-ce qu'une LGV ?", "a": "Une ligne à grande vitesse :\ndes rails spéciaux où le TGV peut rouler très vite.", "more": ""}, {"theme": "Se déplacer en Europe et dans le monde", "q": "Quel tunnel, ouvert en 1994, relie la France et l'Angleterre ?", "a": "Le tunnel sous la Manche.", "more": ""}, {"theme": "Internet au quotidien, outils et usages", "q": "Qui a inventé le Web en 1989, au CERN près de Genève ?", "a": "Tim Berners-Lee", "more": "Un chercheur britannique."}, {"theme": "Mieux habiter, la nature en ville", "q": "Qu'est-ce que la biodiversité ?", "a": "L'ensemble des êtres vivants d'un milieu", "more": "Plantes, animaux…"}, {"theme": "Mieux habiter en recyclant ses déchets", "q": "Que veut dire « recycler » ?", "a": "Transformer un déchet en une matière\nqui sert à fabriquer un nouvel objet.", "more": ""}, {"theme": "Mieux habiter dans un écoquartier", "q": "Qu'est-ce qu'un écoquartier ?", "a": "Un quartier construit pour respecter l'environnement\net offrir une bonne qualité de vie à ses habitants.", "more": ""}, {"theme": "Repères sur l'Union européenne (pays, capitales, symboles)", "q": "Vrai ou faux ? L'Union européenne compte 27 pays.", "a": "Vrai,\ndepuis le départ du Royaume-Uni en 2020.", "more": ""}, {"theme": "Repères, les continents et les océans", "q": "Qu'est-ce qu'un planisphère ?", "a": "Une carte qui représente\ntoute la surface de la Terre à plat.", "more": ""}, {"theme": "Repères, les grands records et lignes du monde", "q": "Qu'est-ce que l'équateur ?", "a": "Une ligne imaginaire qui fait le tour de la Terre\nà égale distance des deux pôles.", "more": ""}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

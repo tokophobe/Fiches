@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de mathématiques en CM2 — darwin</title>
+<meta name="description" content="21 boîtes et 333 fiches de mathématiques en CM2, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de mathématiques en CM2 — darwin" />
+<meta property="og:description" content="21 boîtes et 333 fiches de mathématiques en CM2, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Primaire › CM2 › Mathématiques</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de mathématiques en CM2</h1>
+        <div class="facts">
+          <div><b>21</b><span>boîtes</span></div>
+          <div><b>333</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en CM2. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de mathématiques en CM2</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>CM2 — Maths : additionner des fractions et prendre une fraction d&#x27;une quantité</h3><p>Additionner et soustraire des fractions, multiplier une fraction par un entier, calculer une fraction d&#x27;une quantité.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : additionner et soustraire des décimaux jusqu&#x27;aux millièmes</h3><p>Poser et calculer des additions et des soustractions de nombres décimaux.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : axes de symétrie et programmes de construction</h3><p>Trouver les axes de symétrie, construire un symétrique et suivre un programme de construction.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : calcul mental et estimation</h3><p>Astuces de calcul mental (×5, ×50, ÷4, ÷8, doubles et moitiés) et ordres de grandeur.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : convertir longueurs, masses et contenances avec des décimaux</h3><p>Convertir des longueurs, des masses et des contenances, y compris avec des nombres décimaux.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : diagrammes en barres, circulaires et courbes</h3><p>Lire et interpréter un tableau, un diagramme en barres, un diagramme circulaire ou une courbe.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : diviser par 10, 100, 1 000 et la division décimale</h3><p>Diviser par 10, 100, 1 000 et calculer un quotient décimal avec un diviseur à un chiffre.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : l&#x27;aire du triangle rectangle et des figures composées</h3><p>Calculer l&#x27;aire d&#x27;un triangle rectangle et d&#x27;une figure composée, et choisir la bonne unité d&#x27;aire.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : les fractions égales</h3><p>Trouver des fractions égales en multipliant ou divisant le numérateur et le dénominateur.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : les grands nombres jusqu&#x27;au milliard</h3><p>Lire, écrire, comparer et arrondir les nombres entiers jusqu&#x27;au milliard.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : les nombres décimaux jusqu&#x27;aux millièmes</h3><p>Valeur des chiffres jusqu&#x27;aux millièmes, comparer, ranger, encadrer et arrondir les décimaux.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : les probabilités, « a chances sur b »</h3><p>Trouver les issues d&#x27;une expérience au hasard et exprimer une probabilité sous la forme « a chances sur b ».</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : lire l&#x27;heure et résoudre des problèmes de durées</h3><p>Lire l&#x27;heure, convertir des durées et résoudre des problèmes avec des horaires.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : multiples, diviseurs et critères de divisibilité</h3><p>Reconnaître multiples et diviseurs, et utiliser les critères de divisibilité par 2, 3, 5, 9 et 10.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : multiplier un décimal par un entier ou par 10, 100, 1 000</h3><p>Multiplier un nombre décimal par 10, 100, 1 000 et par un nombre entier.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : passer d&#x27;une fraction à un nombre décimal</h3><p>Passer de l&#x27;écriture fractionnaire à l&#x27;écriture à virgule, et inversement, jusqu&#x27;aux millièmes.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : pourcentages simples et échelles</h3><p>Calculer 10 %, 25 %, 50 %, 75 % d&#x27;une quantité et utiliser l&#x27;échelle d&#x27;un plan ou d&#x27;une carte.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM2 — Maths : prismes, pyramides et autres solides</h3><p>Nommer et décrire le prisme droit, la pyramide, le cylindre, le cône et la boule, et reconnaître leurs patrons.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM2 — Maths : périmètre, aire et angles</h3><p>Calculer le périmètre et l&#x27;aire du carré et du rectangle, et reconnaître les angles droit, aigu et obtus.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM2 — Maths : résoudre des problèmes de proportionnalité</h3><p>Reconnaître une situation de proportionnalité et la résoudre : coefficient, passage à l&#x27;unité, linéarité.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM2 — Maths : triangles particuliers, quadrilatères et trapèze</h3><p>Reconnaître et nommer les triangles et quadrilatères particuliers grâce à leur définition.</p><span class="n">16 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en CM2</h2><ul class="links"><li><a href="emc-cm2.html">EMC</a></li><li><a href="anglais-cm2.html">Anglais</a></li><li><a href="francais-cm2.html">Français</a></li><li><a href="geographie-cm2.html">Géographie</a></li><li><a href="histoire-cm2.html">Histoire</a></li><li><a href="sciences-cm2.html">Sciences</a></li><li><a href="technologie-cm2.html">Technologie</a></li></ul>
+      <h2>Mathématiques : autres niveaux</h2><ul class="links"><li><a href="mathematiques-cp.html">Mathématiques <small>CP</small></a></li><li><a href="mathematiques-ce1.html">Mathématiques <small>CE1</small></a></li><li><a href="mathematiques-ce2.html">Mathématiques <small>CE2</small></a></li><li><a href="mathematiques-cm1.html">Mathématiques <small>CM1</small></a></li><li><a href="mathematiques-6e.html">Mathématiques <small>6e</small></a></li><li><a href="mathematiques-5e.html">Mathématiques <small>5e</small></a></li><li><a href="mathematiques-4e.html">Mathématiques <small>4e</small></a></li><li><a href="mathematiques-3e.html">Mathématiques <small>3e</small></a></li><li><a href="mathematiques-seconde.html">Mathématiques <small>seconde</small></a></li><li><a href="mathematiques-premiere.html">Mathématiques <small>1re</small></a></li><li><a href="mathematiques-terminale.html">Mathématiques <small>terminale</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Maths : périmètre, aire et angles", "q": "Qu'est-ce que le périmètre d'une figure ?", "a": "La longueur de son contour", "more": ""}, {"theme": "Maths : les grands nombres jusqu'au milliard", "q": "Quelles sont les classes d'un nombre jusqu'au milliard, de gauche à droite ?", "a": "• Milliards\n• Millions\n• Mille\n• Unités", "more": ""}, {"theme": "Maths : les fractions égales", "q": "Que sont deux fractions égales ?", "a": "Deux fractions qui représentent la même quantité.\nEx. : 1/2 = 2/4.", "more": ""}, {"theme": "Maths : passer d'une fraction à un nombre décimal", "q": "Qu'est-ce qu'une fraction décimale ?", "a": "Une fraction dont le dénominateur est 10, 100, 1 000…\nEx. : 7/100.", "more": ""}, {"theme": "Maths : additionner des fractions et prendre une fraction d'une quantité", "q": "Comment additionne-t-on deux fractions qui ont le même dénominateur ?", "a": "On additionne les numérateurs et on garde le dénominateur.\nEx. : 2/7 + 3/7 = 5/7.", "more": ""}, {"theme": "Maths : les nombres décimaux jusqu'aux millièmes", "q": "Dans 3,482, quel est le chiffre des centièmes ?", "a": "C'est 8.", "more": ""}, {"theme": "Maths : additionner et soustraire des décimaux jusqu'aux millièmes", "q": "Quelle est la règle pour poser une addition de nombres décimaux ?", "a": "On aligne les virgules :\nunités sous unités, dixièmes sous dixièmes, etc.", "more": ""}, {"theme": "Maths : multiplier un décimal par un entier ou par 10, 100, 1 000", "q": "Que se passe-t-il quand on multiplie un nombre par 10 ?", "a": "Chaque chiffre prend une valeur 10 fois plus grande :\nil avance d'un rang vers la gauche.", "more": ""}, {"theme": "Maths : diviser par 10, 100, 1 000 et la division décimale", "q": "Que se passe-t-il quand on divise un nombre par 100 ?", "a": "Chaque chiffre prend une valeur 100 fois plus petite :\nil recule de deux rangs vers la droite.", "more": ""}, {"theme": "Maths : calcul mental et estimation", "q": "Quelle astuce permet de multiplier un nombre par 5 ?", "a": "On le multiplie par 10, puis on prend la moitié.\nEx. : 48 × 5 = 480 ÷ 2 = 240.", "more": ""}, {"theme": "Maths : multiples, diviseurs et critères de divisibilité", "q": "Qu'est-ce qu'un multiple de 6 ?", "a": "Un nombre qui est dans la table de 6.\nEx. : 6, 12, 18, 24…", "more": ""}, {"theme": "Maths : résoudre des problèmes de proportionnalité", "q": "Quand dit-on qu'une situation est une situation de proportionnalité ?", "a": "Quand multiplier une quantité par un nombre multiplie l'autre par le même nombre.\nEx. : 2 fois plus de baguettes, 2 fois plus cher.", "more": ""}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

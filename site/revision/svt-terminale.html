@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de SVT en terminale — darwin</title>
+<meta name="description" content="11 boîtes et 199 fiches de SVT en terminale, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de SVT en terminale — darwin" />
+<meta property="og:description" content="11 boîtes et 199 fiches de SVT en terminale, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Lycée › terminale › SVT</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de SVT en terminale</h1>
+        <div class="facts">
+          <div><b>11</b><span>boîtes</span></div>
+          <div><b>199</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en terminale. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de SVT en terminale</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>SVT — Corps humain : immunité, nerfs, muscles, glycémie</h3><p>Réponse immunitaire, vaccination, réflexe myotatique, contraction musculaire, régulation de la glycémie. Spécialité SVT de Terminale : comportements, mouvement, système immunitaire et régulations.</p><span class="n">18 fiches</span></li>
+        <li><h3>SVT — Génétique et évolution</h3><p>Méiose, brassages, mutations, sélection naturelle, dérive génétique, spéciation. Spécialité SVT de Terminale : origine de la diversité génétique et mécanismes de l&#x27;évolution.</p><span class="n">23 fiches</span></li>
+        <li><h3>SVT — Géologie : temps, roches et tectonique</h3><p>Chronologie relative et absolue, radiochronologie, subduction, collision, magmatisme. Spécialité SVT de Terminale : à la recherche du passé géologique de notre planète.</p><span class="n">21 fiches</span></li>
+        <li><h3>SVT — Plantes et climats du passé</h3><p>Vie fixée des plantes, photosynthèse, reproduction, paléoclimats et effet de serre. Spécialité SVT de Terminale : l&#x27;organisation des plantes et la reconstitution des climats passés.</p><span class="n">21 fiches</span></li>
+        <li><h3>Terminale spé — SVT : cerveau et mouvement volontaire</h3><p>Cortex moteur, voies motrices croisées, motoneurone intégrateur, PPSE et PPSI, plasticité cérébrale.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale spé — SVT : complexification des génomes</h3><p>Transferts horizontaux de gènes, gènes d&#x27;origine virale, endosymbiose et origine des mitochondries et chloroplastes.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale spé — SVT : l&#x27;origine du génotype, analyser des croisements</h3><p>Clones et mutations, méiose et fécondation, test-cross, gènes liés ou indépendants, échiquier et anomalies de méiose.</p><span class="n">18 fiches</span></li>
+        <li><h3>Terminale spé — SVT : la vie fixée des plantes</h3><p>Surfaces d&#x27;échange, circulation des sèves, défense, reproduction sexuée et coévolution avec les pollinisateurs.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale spé — SVT : produire le mouvement, contraction musculaire et énergie</h3><p>Fibre musculaire, sarcomère, actine et myosine, rôle de l&#x27;ATP et du calcium, voies de régénération de l&#x27;ATP.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — SVT : comportement, stress et cerveau</h3><p>Stress aigu et chronique, axe corticotrope, adrénaline, cortisol et plasticité cérébrale.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — SVT : de la plante sauvage à la plante domestiquée</h3><p>Organisation de la plante à fleurs, production de matière organique, reproduction et domestication.</p><span class="n">18 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en terminale</h2><ul class="links"><li><a href="dgemc-terminale.html">DGEMC</a></li><li><a href="emc-terminale.html">EMC</a></li><li><a href="hggsp-terminale.html">HGGSP</a></li><li><a href="hlp-terminale.html">HLP</a></li><li><a href="llcer-terminale.html">LLCER</a></li><li><a href="nsi-terminale.html">NSI</a></li><li><a href="ses-terminale.html">SES</a></li><li><a href="allemand-terminale.html">Allemand</a></li><li><a href="anglais-terminale.html">Anglais</a></li><li><a href="biochimie-terminale.html">Biochimie</a></li><li><a href="biologie-et-physiopathologie-humaines-terminale.html">Biologie et physiopathologie humaines</a></li><li><a href="biotechnologies-terminale.html">Biotechnologies</a></li><li><a href="chimie-terminale.html">Chimie</a></li><li><a href="droit-et-economie-terminale.html">Droit et économie</a></li><li><a href="enseignement-scientifique-terminale.html">Enseignement scientifique</a></li><li><a href="espagnol-terminale.html">Espagnol</a></li><li><a href="geographie-terminale.html">Géographie</a></li><li><a href="histoire-terminale.html">Histoire</a></li><li><a href="ingenierie-et-developpement-durable-2i2d-terminale.html">Ingénierie et développement durable (2I2D)</a></li><li><a href="italien-terminale.html">Italien</a></li><li><a href="management-terminale.html">Management</a></li><li><a href="mathematiques-terminale.html">Mathématiques</a></li><li><a href="mathematiques-complementaires-terminale.html">Mathématiques complémentaires</a></li><li><a href="mathematiques-expertes-terminale.html">Mathématiques expertes</a></li><li><a href="philosophie-terminale.html">Philosophie</a></li><li><a href="physique-terminale.html">Physique</a></li><li><a href="sciences-de-gestion-et-numerique-terminale.html">Sciences de gestion et numérique</a></li><li><a href="sciences-de-l-ingenieur-terminale.html">Sciences de l&#x27;ingénieur</a></li><li><a href="sciences-et-techniques-sanitaires-et-sociales-terminale.html">Sciences et techniques sanitaires et sociales</a></li></ul>
+      <h2>SVT : autres niveaux</h2><ul class="links"><li><a href="svt-5e.html">SVT <small>5e</small></a></li><li><a href="svt-4e.html">SVT <small>4e</small></a></li><li><a href="svt-3e.html">SVT <small>3e</small></a></li><li><a href="svt-seconde.html">SVT <small>seconde</small></a></li><li><a href="svt-premiere.html">SVT <small>1re</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Génétique et évolution", "q": "Que produit la méiose ?", "a": "4 cellules haploïdes à partir d'une cellule diploïde", "more": "Deux divisions successives ; elle produit les gamètes."}, {"theme": "Génétique et évolution", "q": "Lors de quelle phase a lieu le brassage interchromosomique ?", "a": "En anaphase I", "more": "Répartition aléatoire et indépendante des homologues de chaque paire."}, {"theme": "Géologie : temps, roches et tectonique", "q": "Que dit le principe de superposition ?", "a": "Une couche est plus récente que celle qu'elle recouvre", "more": "Sauf déformation."}, {"theme": "Géologie : temps, roches et tectonique", "q": "Que dit le principe de recoupement ?", "a": "Une structure qui en recoupe une autre lui est postérieure", "more": "Faille, filon…"}, {"theme": "Corps humain : immunité, nerfs, muscles, glycémie", "q": "Quelle immunité donne une réponse immédiate et non spécifique ?", "a": "L'immunité innée", "more": "Héritée : réaction inflammatoire (rougeur, chaleur, gonflement, douleur) et phagocytose par les macrophages et granulocytes."}, {"theme": "Corps humain : immunité, nerfs, muscles, glycémie", "q": "Quelle immunité est spécifique d'un antigène et garde une mémoire ?", "a": "L'immunité adaptative", "more": "Réponse plus lente, assurée par les lymphocytes B et T."}, {"theme": "Plantes et climats du passé", "q": "Quel est le bilan de la photosynthèse ?", "a": "6 CO₂ + 6 H₂O → C₆H₁₂O₆ + 6 O₂", "more": ""}, {"theme": "Plantes et climats du passé", "q": "Où se déroule la photosynthèse ?", "a": "Dans les chloroplastes", "more": "Grâce à l'énergie lumineuse."}, {"theme": "Comportement, stress et cerveau", "q": "Comment appelle-t-on une situation perçue comme une menace qui déclenche le stress ?", "a": "Un agent stresseur", "more": "Physique, psychologique ou sociale."}, {"theme": "Comportement, stress et cerveau", "q": "Le stress aigu est-il une réponse adaptative ?", "a": "Oui", "more": "Réponse de courte durée face à un danger (fuite ou lutte), suivie d'un retour à l'équilibre : syndrome général d'adaptation."}, {"theme": "De la plante sauvage à la plante domestiquée", "q": "Pourquoi la plante à fleurs a-t-elle de très grandes surfaces d'échange ?", "a": "Elle vit fixée", "more": "Elle doit prélever sur place eau, ions et CO₂ et capter la lumière : feuilles et racines ramifiées (poils absorbants)."}, {"theme": "De la plante sauvage à la plante domestiquée", "q": "Par quoi le CO₂ entre-t-il dans la feuille ?", "a": "Par les stomates", "more": "Orifices de l'épiderme bordés de deux cellules de garde ; aussi sortie d'O₂ et transpiration. Ils se ferment pour limiter les pertes d'eau."}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

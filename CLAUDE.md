@@ -121,8 +121,16 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   Netlify (ignoré par GitHub Pages).
 - `tools/` : scripts Python (`lancement.py` : bilan / passage en public ;
   `programme.py` : page « Le programme » du site et `docs/PROGRAMME.md` ;
-  `build_site_pages.py` : génère les pages SEO depuis
-  `packs/bibliotheque.json`, dossier absent du dépôt pour l'instant).
+  `build_site_pages.py` : génère les pages « Fiches par matière »
+  `site/revision/` et `site/sitemap.xml` depuis `bibliotheque.json` (copie
+  de travail à la racine) et recopie dans `site/assets/` les fichiers du
+  défi du jour (`js/defi.js`, `js/defi-questions.js`, `css/defi.css`) ;
+  à relancer après chaque lot de boîtes, comme `programme.py`).
+- Site vitrine (v288) : `site/index.html`, `site/defi.html`,
+  `site/programme.html`, styles communs `site/assets/site.css` et polices
+  locales `site/assets/fonts.css`. Le site de la v272 n'avait jamais été
+  enregistré dans le dépôt (restauré le 13 nov. 2026 depuis la copie du
+  propriétaire) : **tout fichier du site doit être committé**.
 
 ## Compte élève / compte enseignant (v247)
 
@@ -322,7 +330,7 @@ testables ainsi.
   titres et nombres de fiches, ajoute les nouvelles boîtes comme chapitres
   et réécrit `docs/PROGRAMME.md` et `site/programme.html` (ne pas modifier
   ces deux fichiers à la main). **Après chaque lot de boîtes** : lancer
-  `genere`, rattacher à la main dans `data/programme.json` chaque nouvelle
+  `python3 tools/build_site_pages.py` puis `genere`, rattacher à la main dans `data/programme.json` chaque nouvelle
   boîte qui couvre un chapitre « à créer » (déplacer la boîte, supprimer
   le chapitre ajouté), relancer `genere` et livrer dans ce dépôt-ci.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,

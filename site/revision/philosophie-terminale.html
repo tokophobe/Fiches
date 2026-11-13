@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de philosophie en terminale — darwin</title>
+<meta name="description" content="29 boîtes et 530 fiches de philosophie en terminale, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de philosophie en terminale — darwin" />
+<meta property="og:description" content="29 boîtes et 530 fiches de philosophie en terminale, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Lycée › terminale › Philosophie</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de philosophie en terminale</h1>
+        <div class="facts">
+          <div><b>29</b><span>boîtes</span></div>
+          <div><b>530</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en terminale. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de philosophie en terminale</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>Philosophie — Auteurs et œuvres majeurs</h3><p>Une vingtaine de grands philosophes : époque, œuvre principale et idée-force à retenir.</p><span class="n">44 fiches</span></li>
+        <li><h3>Philosophie — Définir les 17 notions</h3><p>Une définition simple et un problème classique pour chacune des 17 notions du programme. Pour bien démarrer une dissertation : définir précisément la notion et repérer la tension qui en fait un problème philosophique.</p><span class="n">18 fiches</span></li>
+        <li><h3>Philosophie — Méthode de la dissertation et de l&#x27;explication</h3><p>Analyser un sujet, construire une problématique, bâtir un plan, expliquer un texte. Épreuve de philosophie (4 heures) : trois sujets au choix, deux dissertations et une explication de texte.</p><span class="n">13 fiches</span></li>
+        <li><h3>Philosophie — Notions, repères et citations du bac</h3><p>Les 17 notions, les repères conceptuels et une vingtaine de citations d&#x27;auteurs pour la dissertation et l&#x27;explication de texte.</p><span class="n">40 fiches</span></li>
+        <li><h3>Terminale — Philosophie : citations clés classées par notion</h3><p>Une citation authentique et bien attribuée pour chaque grande notion du programme. Pour chaque notion, une citation célèbre avec son auteur et son œuvre, à glisser dans une dissertation.</p><span class="n">18 fiches</span></li>
+        <li><h3>Terminale — Philosophie : grands auteurs de l&#x27;Antiquité à la Renaissance</h3><p>Penseurs de l&#x27;Antiquité, du Moyen Âge et de la Renaissance : dates, œuvres et thèse majeure de chacun.</p><span class="n">17 fiches</span></li>
+        <li><h3>Terminale — Philosophie : grands auteurs des XIXe et XXe siècles</h3><p>Penseurs des XIXe et XXe siècles : dates, œuvres et thèse majeure de chacun.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — Philosophie : grands auteurs des XVIIe et XVIIIe siècles</h3><p>Penseurs de l&#x27;âge classique et des Lumières : dates, œuvres et thèse majeure de chacun.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — Philosophie : l&#x27;art en détail</h3><p>L&#x27;art en détail : œuvre, sublime, inspiration, engagement, ready-made, reproductibilité et fonctions de l&#x27;art.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — Philosophie : l&#x27;art, la technique et le travail</h3><p>Définitions, distinctions et auteurs de référence pour traiter l&#x27;art, la technique et le travail.</p><span class="n">18 fiches</span></li>
+        <li><h3>Terminale — Philosophie : l&#x27;État en détail</h3><p>L&#x27;État en détail : souveraineté, légitimité, État de droit, critiques de l&#x27;État, totalitarisme et despotisme doux.</p><span class="n">17 fiches</span></li>
+        <li><h3>Terminale — Philosophie : la conscience et l&#x27;inconscient en détail</h3><p>Thèses, auteurs et concepts sur la conscience et l&#x27;inconscient, de Descartes à Freud et Sartre.</p><span class="n">17 fiches</span></li>
+        <li><h3>Terminale — Philosophie : la justice en détail</h3><p>La justice en détail : légal et légitime, force et droit, sens de la peine, justice sociale et redistribution.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — Philosophie : la justice, l&#x27;État et le devoir</h3><p>Distinctions et auteurs clés de la philosophie politique et morale : justice, État, devoir.</p><span class="n">18 fiches</span></li>
+        <li><h3>Terminale — Philosophie : la liberté en détail</h3><p>Libre arbitre, déterminisme, autonomie, liberté politique : Descartes, Spinoza, Kant, Sartre, Montesquieu, Mill.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — Philosophie : la nature en détail</h3><p>Nature, culture, état de nature, maîtrise et respect de la nature : Aristote, Bacon, Rousseau, Lévi-Strauss, Jonas.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — Philosophie : la raison en détail</h3><p>La raison en détail : méthode, principes logiques, rationalisme et empirisme, limites et critiques de la raison.</p><span class="n">17 fiches</span></li>
+        <li><h3>Terminale — Philosophie : la religion en détail</h3><p>La religion en détail : sacré, preuves de l&#x27;existence de Dieu, problème du mal, critiques et laïcité.</p><span class="n">17 fiches</span></li>
+        <li><h3>Terminale — Philosophie : la science en détail</h3><p>La science en détail : faits et théories, expérimentation, positivisme, sciences humaines, limites et usages de la science.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — Philosophie : la science, la vérité et la religion</h3><p>Critères du vrai, démarche scientifique et approches de la religion : les références pour argumenter.</p><span class="n">17 fiches</span></li>
+        <li><h3>Terminale — Philosophie : la technique en détail</h3><p>La technique en détail : outil et machine, homo faber, progrès, responsabilité, précaution et culture technique.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — Philosophie : la vérité en détail</h3><p>La vérité en détail : vrai et réel, doute, scepticisme, relativisme, opinion et savoir, vérité et politique.</p><span class="n">15 fiches</span></li>
+        <li><h3>Terminale — Philosophie : le bonheur et le désir en détail</h3><p>Bonheur, plaisir, désir : définitions, distinctions et thèses d&#x27;Aristote, Épicure, Spinoza, Pascal, Schopenhauer.</p><span class="n">18 fiches</span></li>
+        <li><h3>Terminale — Philosophie : le devoir en détail</h3><p>Le devoir en détail : obligation et contrainte, formules kantiennes, conflits de devoirs, généalogie et critique du devoir.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — Philosophie : le langage en détail</h3><p>Langue, parole, signe, communication animale, pouvoir des mots : Aristote, Descartes, Saussure, Benveniste, Austin.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — Philosophie : le temps en détail</h3><p>Temps mesuré et durée vécue, mémoire, finitude : Aristote, Augustin, Kant, Bergson, Pascal, Heidegger.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — Philosophie : le travail en détail</h3><p>Le travail en détail : peine ou libération, division du travail, taylorisme, exploitation, éloge et critique du travail.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — Philosophie : les repères conceptuels expliqués</h3><p>Les couples de repères du programme (absolu/relatif, cause/fin…) définis simplement. Les distinctions conceptuelles officielles du programme, définies avec un exemple pour les mobiliser en dissertation.</p><span class="n">18 fiches</span></li>
+        <li><h3>Terminale — Philosophie : sujets classiques de dissertation et problématiques</h3><p>Analyser un sujet, repérer le présupposé et formuler une problématique : formules types et sujets classiques par notion.</p><span class="n">16 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en terminale</h2><ul class="links"><li><a href="dgemc-terminale.html">DGEMC</a></li><li><a href="emc-terminale.html">EMC</a></li><li><a href="hggsp-terminale.html">HGGSP</a></li><li><a href="hlp-terminale.html">HLP</a></li><li><a href="llcer-terminale.html">LLCER</a></li><li><a href="nsi-terminale.html">NSI</a></li><li><a href="ses-terminale.html">SES</a></li><li><a href="svt-terminale.html">SVT</a></li><li><a href="allemand-terminale.html">Allemand</a></li><li><a href="anglais-terminale.html">Anglais</a></li><li><a href="biochimie-terminale.html">Biochimie</a></li><li><a href="biologie-et-physiopathologie-humaines-terminale.html">Biologie et physiopathologie humaines</a></li><li><a href="biotechnologies-terminale.html">Biotechnologies</a></li><li><a href="chimie-terminale.html">Chimie</a></li><li><a href="droit-et-economie-terminale.html">Droit et économie</a></li><li><a href="enseignement-scientifique-terminale.html">Enseignement scientifique</a></li><li><a href="espagnol-terminale.html">Espagnol</a></li><li><a href="geographie-terminale.html">Géographie</a></li><li><a href="histoire-terminale.html">Histoire</a></li><li><a href="ingenierie-et-developpement-durable-2i2d-terminale.html">Ingénierie et développement durable (2I2D)</a></li><li><a href="italien-terminale.html">Italien</a></li><li><a href="management-terminale.html">Management</a></li><li><a href="mathematiques-terminale.html">Mathématiques</a></li><li><a href="mathematiques-complementaires-terminale.html">Mathématiques complémentaires</a></li><li><a href="mathematiques-expertes-terminale.html">Mathématiques expertes</a></li><li><a href="physique-terminale.html">Physique</a></li><li><a href="sciences-de-gestion-et-numerique-terminale.html">Sciences de gestion et numérique</a></li><li><a href="sciences-de-l-ingenieur-terminale.html">Sciences de l&#x27;ingénieur</a></li><li><a href="sciences-et-techniques-sanitaires-et-sociales-terminale.html">Sciences et techniques sanitaires et sociales</a></li></ul>
+      
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Notions, repères et citations du bac", "q": "Combien de notions compte le programme de philosophie de Terminale générale ?", "a": "17", "more": "L'art, le bonheur, la conscience, le devoir, l'État, l'inconscient, la justice, le langage, la liberté, la nature, la raison, la religion, la science, la technique, le temps, le travail, la vérité."}, {"theme": "Auteurs et œuvres majeurs", "q": "Quel philosophe grec, disciple de Socrate, a écrit « La République » et « Le Banquet » ?", "a": "Platon", "more": "Vers 428-348 av. J.-C. Autres œuvres : Gorgias, Phédon…"}, {"theme": "Définir les 17 notions", "q": "Quelle notion désigne l'activité qui produit des œuvres à contempler pour elles-mêmes ?", "a": "L'art", "more": "Problème : le beau est-il objectif ou affaire de goût ? L'art imite-t-il ou crée-t-il ?"}, {"theme": "Méthode de la dissertation et de l'explication", "q": "Combien de temps dure l'épreuve de philosophie du bac ?", "a": "4 heures", "more": ""}, {"theme": "Citations clés classées par notion", "q": "Quel philosophe a écrit « Je pense, donc je suis » ?", "a": "Descartes", "more": "Discours de la méthode (1637) : la conscience de penser résiste au doute."}, {"theme": "Les repères conceptuels expliqués", "q": "Ce qui n'existe ou ne vaut que par rapport à autre chose est… ?", "a": "Relatif", "more": "Absolu : ne dépend de rien d'autre, vaut sans condition."}, {"theme": "La conscience et l'inconscient en détail", "q": "Quelle conscience se prend elle-même pour objet (« je sais que je pense ») ?", "a": "La conscience réfléchie", "more": "La conscience spontanée accompagne nos actes sans retour sur soi."}, {"theme": "L'art, la technique et le travail", "q": "Quel mot grec désigne à la fois le métier et l'art ?", "a": "Technè", "more": "La technique : procédés et savoir-faire transmissibles par lesquels l'homme transforme la nature pour une fin utile."}, {"theme": "La justice, l'État et le devoir", "q": "Quelle justice, selon Aristote, répartit honneurs et biens selon le mérite ?", "a": "La justice distributive", "more": "La justice commutative règle les échanges selon une égalité stricte (Éthique à Nicomaque, V)."}, {"theme": "La science, la vérité et la religion", "q": "Qui définit la vérité comme « adéquation de l'intellect et de la chose » ?", "a": "Thomas d'Aquin", "more": "Un énoncé est vrai s'il est conforme à la réalité."}, {"theme": "Le bonheur et le désir en détail", "q": "Quelle satisfaction est complète et durable, contrairement au plaisir ?", "a": "Le bonheur", "more": "Le plaisir est une satisfaction ponctuelle et passagère, souvent liée au corps."}, {"theme": "Le temps en détail", "q": "Comment appelle-t-on le temps de la conscience, par opposition au temps mesurable ?", "a": "Le temps vécu", "more": "Le temps : milieu où les événements se succèdent de manière irréversible ; le temps objectif est mesurable."}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

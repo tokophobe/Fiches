@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de SES en terminale — darwin</title>
+<meta name="description" content="8 boîtes et 146 fiches de SES en terminale, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de SES en terminale — darwin" />
+<meta property="og:description" content="8 boîtes et 146 fiches de SES en terminale, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Lycée › terminale › SES</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de SES en terminale</h1>
+        <div class="facts">
+          <div><b>8</b><span>boîtes</span></div>
+          <div><b>146</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en terminale. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de SES en terminale</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>SES — Chômage, crises financières, politiques européennes</h3><p>Mesure et causes du chômage, crises financières, politique monétaire et budgétaire en zone euro. Spécialité SES de Terminale : marché du travail, finance et intégration européenne.</p><span class="n">24 fiches</span></li>
+        <li><h3>SES — Croissance, commerce international, environnement</h3><p>Sources de la croissance, PGF, progrès technique, avantages comparatifs, FTN, politiques climatiques. Spécialité SES de Terminale (science économique) : les définitions et mécanismes attendus au bac.</p><span class="n">17 fiches</span></li>
+        <li><h3>SES — Engagement, justice sociale, environnement</h3><p>Engagement politique, paradoxe de l&#x27;action collective, inégalités, justice sociale, action publique pour l&#x27;environnement. Spécialité SES de Terminale : science politique et regards croisés.</p><span class="n">19 fiches</span></li>
+        <li><h3>SES — Structure sociale, mobilité, école</h3><p>PCS, classes sociales, mobilité sociale, école et inégalités, travail. Spécialité SES de Terminale (sociologie) : les notions et auteurs attendus.</p><span class="n">20 fiches</span></li>
+        <li><h3>Terminale spé — SES : calculs et lecture de données statistiques</h3><p>Proportions, taux de variation, coefficient multiplicateur, indices, points de %, taux moyen annuel, médiane.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale spé — SES : méthode de l&#x27;épreuve composée</h3><p>Les trois parties de l&#x27;épreuve composée : mobilisation des connaissances, étude d&#x27;un document, raisonnement sur dossier.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale spé — SES : méthode de la dissertation</h3><p>Analyser le sujet, problématiser, construire le plan, rédiger introduction, parties, transitions et conclusion.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — SES : auteurs et notions clés à citer</h3><p>Les économistes, sociologues et politistes à mobiliser au bac de SES, avec leur concept phare. Une fiche par auteur incontournable du programme de SES de terminale, avec la notion ou la thèse à citer en dissertation.</p><span class="n">18 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en terminale</h2><ul class="links"><li><a href="dgemc-terminale.html">DGEMC</a></li><li><a href="emc-terminale.html">EMC</a></li><li><a href="hggsp-terminale.html">HGGSP</a></li><li><a href="hlp-terminale.html">HLP</a></li><li><a href="llcer-terminale.html">LLCER</a></li><li><a href="nsi-terminale.html">NSI</a></li><li><a href="svt-terminale.html">SVT</a></li><li><a href="allemand-terminale.html">Allemand</a></li><li><a href="anglais-terminale.html">Anglais</a></li><li><a href="biochimie-terminale.html">Biochimie</a></li><li><a href="biologie-et-physiopathologie-humaines-terminale.html">Biologie et physiopathologie humaines</a></li><li><a href="biotechnologies-terminale.html">Biotechnologies</a></li><li><a href="chimie-terminale.html">Chimie</a></li><li><a href="droit-et-economie-terminale.html">Droit et économie</a></li><li><a href="enseignement-scientifique-terminale.html">Enseignement scientifique</a></li><li><a href="espagnol-terminale.html">Espagnol</a></li><li><a href="geographie-terminale.html">Géographie</a></li><li><a href="histoire-terminale.html">Histoire</a></li><li><a href="ingenierie-et-developpement-durable-2i2d-terminale.html">Ingénierie et développement durable (2I2D)</a></li><li><a href="italien-terminale.html">Italien</a></li><li><a href="management-terminale.html">Management</a></li><li><a href="mathematiques-terminale.html">Mathématiques</a></li><li><a href="mathematiques-complementaires-terminale.html">Mathématiques complémentaires</a></li><li><a href="mathematiques-expertes-terminale.html">Mathématiques expertes</a></li><li><a href="philosophie-terminale.html">Philosophie</a></li><li><a href="physique-terminale.html">Physique</a></li><li><a href="sciences-de-gestion-et-numerique-terminale.html">Sciences de gestion et numérique</a></li><li><a href="sciences-de-l-ingenieur-terminale.html">Sciences de l&#x27;ingénieur</a></li><li><a href="sciences-et-techniques-sanitaires-et-sociales-terminale.html">Sciences et techniques sanitaires et sociales</a></li></ul>
+      <h2>SES : autres niveaux</h2><ul class="links"><li><a href="ses-seconde.html">SES <small>seconde</small></a></li><li><a href="ses-premiere.html">SES <small>1re</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Croissance, commerce international, environnement", "q": "Par quel indicateur mesure-t-on la croissance économique ?", "a": "Le taux de variation du PIB en volume", "more": "La croissance est l'augmentation durable de la production de biens et services d'un pays."}, {"theme": "Croissance, commerce international, environnement", "q": "Le PIB est la somme de quoi ?", "a": "Des valeurs ajoutées des unités résidentes", "more": "Plus les impôts sur les produits, moins les subventions."}, {"theme": "Chômage, crises financières, politiques européennes", "q": "Qui est chômeur au sens du BIT ?", "a": "Une personne sans emploi, disponible et qui cherche activement un emploi", "more": "En âge de travailler, disponible dans les 15 jours, ayant cherché activement le mois précédent."}, {"theme": "Chômage, crises financières, politiques européennes", "q": "Comment calcule-t-on le taux de chômage ?", "a": "Chômeurs / population active × 100", "more": ""}, {"theme": "Structure sociale, mobilité, école", "q": "Que signifie le sigle PCS ?", "a": "Professions et catégories socioprofessionnelles", "more": "Classement de l'INSEE selon la profession, le statut, la qualification ; 6 groupes d'actifs."}, {"theme": "Structure sociale, mobilité, école", "q": "Selon Marx, qu'est-ce qui définit une classe sociale ?", "a": "La place dans les rapports de production", "more": "Bourgeoisie (propriétaire des moyens de production) et prolétariat."}, {"theme": "Engagement, justice sociale, environnement", "q": "Quel auteur a formulé le paradoxe de l'action collective ?", "a": "Mancur Olson", "more": ""}, {"theme": "Engagement, justice sociale, environnement", "q": "Comment appelle-t-on celui qui profite d'une action collective sans y participer ?", "a": "Le passager clandestin", "more": ""}, {"theme": "Auteurs et notions clés à citer", "q": "Quel économiste propose la théorie des avantages comparatifs (1817) ?", "a": "David Ricardo", "more": "Chaque pays gagne à se spécialiser là où il est relativement le plus efficace, même sans avantage absolu."}, {"theme": "Auteurs et notions clés à citer", "q": "Selon le modèle HOS, dans quoi un pays se spécialise-t-il ?", "a": "Ce qui utilise le facteur dont il est le mieux doté", "more": "Heckscher, Ohlin et Samuelson : facteur travail ou capital."}, {"theme": "Méthode de l'épreuve composée", "q": "Sur combien de points est notée la partie 3 (raisonnement) de l'épreuve composée ?", "a": "10 points", "more": "Partie 1 (mobilisation des connaissances) : 4 points ; partie 2 (étude d'un document) : 6 points."}, {"theme": "Méthode de l'épreuve composée", "q": "Combien de temps dure l'épreuve écrite de SES ?", "a": "4 heures", "more": "Le candidat choisit entre dissertation et épreuve composée."}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

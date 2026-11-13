@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de mathématiques en CM1 — darwin</title>
+<meta name="description" content="43 boîtes et 635 fiches de mathématiques en CM1, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de mathématiques en CM1 — darwin" />
+<meta property="og:description" content="43 boîtes et 635 fiches de mathématiques en CM1, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Primaire › CM1 › Mathématiques</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de mathématiques en CM1</h1>
+        <div class="facts">
+          <div><b>43</b><span>boîtes</span></div>
+          <div><b>635</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en CM1. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de mathématiques en CM1</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>CM1 — Maths : additionner et soustraire des fractions de même dénominateur</h3><p>Ajouter ou enlever des fractions qui ont le même dénominateur.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : additionner et soustraire des nombres décimaux</h3><p>Poser et calculer des additions et des soustractions de nombres à virgule.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : calcul mental et calcul en ligne avec parenthèses</h3><p>Utiliser des astuces de calcul mental et calculer une expression avec des parenthèses.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM1 — Maths : calculer la fraction d&#x27;une quantité</h3><p>Calculer un tiers, un quart ou trois quarts d&#x27;une quantité.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : calculer une durée, une heure de début ou de fin</h3><p>Trouver une durée, une heure de début ou une heure de fin.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : carré, rectangle, losange et leurs diagonales</h3><p>Les côtés, angles et diagonales des quadrilatères particuliers.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : comparer et ranger les grands nombres</h3><p>Comparer deux grands nombres et les ranger dans l&#x27;ordre croissant ou décroissant.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : comparer et ranger les nombres décimaux</h3><p>Comparer deux nombres à virgule et les ranger, sans tomber dans les pièges.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : critères de divisibilité par 2, 5 et 10</h3><p>Savoir en un coup d&#x27;œil si un nombre est divisible par 2, par 5 ou par 10.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : droites perpendiculaires et parallèles</h3><p>Reconnaître et tracer des droites perpendiculaires et parallèles.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : décomposer les grands nombres</h3><p>Décomposer un grand nombre et trouver combien il contient de dizaines, de centaines ou de milliers.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : encadrer et arrondir les grands nombres</h3><p>Encadrer un grand nombre, l&#x27;arrondir et le placer sur une droite graduée.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : fractions décimales et écriture à virgule</h3><p>Reconnaître une fraction décimale et la transformer en nombre à virgule, et inversement.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : fractions et nombres décimaux</h3><p>Comprendre, lire et comparer des fractions simples et des nombres décimaux (dixièmes, centièmes).</p><span class="n">16 fiches</span></li>
+        <li><h3>CM1 — Maths : fractions plus grandes que 1 et décomposition</h3><p>Savoir si une fraction est plus petite, égale ou plus grande que 1, et l&#x27;écrire comme un entier plus une fraction.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : fractions sur une droite graduée et comparaison</h3><p>Placer des fractions sur une droite graduée et comparer des fractions simples.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : heures, minutes, secondes</h3><p>Convertir des durées en heures, minutes et secondes.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : jours, semaines, mois, années et siècles</h3><p>Les longues durées : jours, semaines, mois, années, siècles.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : l&#x27;aire, comparer et compter des carreaux</h3><p>Comprendre l&#x27;aire et la mesurer en comptant des carreaux.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : la symétrie axiale</h3><p>Reconnaître un axe de symétrie et compléter une figure par symétrie.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : le cercle et l&#x27;usage du compas</h3><p>Tracer des cercles et utiliser le compas pour reporter des longueurs.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : le périmètre du carré et du rectangle</h3><p>Calculer le périmètre d&#x27;un polygone, d&#x27;un carré et d&#x27;un rectangle.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : les angles aigus, droits et obtus</h3><p>Reconnaître, nommer et comparer des angles.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : les classes et la valeur des chiffres jusqu&#x27;au million</h3><p>Repérer la classe des mille et la classe des unités, et trouver la valeur de chaque chiffre.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : les figures planes</h3><p>Polygones, quadrilatères, triangles particuliers et cercle : reconnaître et décrire les figures.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : les solides et leurs patrons</h3><p>Faces, arêtes et sommets des solides, et patrons du cube et du pavé.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM1 — Maths : les unités de contenance et les conversions</h3><p>Connaître L, dL, cL, mL et convertir des contenances.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : les unités de longueur et les conversions</h3><p>Connaître km, m, dm, cm, mm et passer d&#x27;une unité à l&#x27;autre.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM1 — Maths : les unités de masse et les conversions</h3><p>Connaître t, kg, g, mg, peser et convertir des masses.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : lire des tableaux, graphiques et diagrammes</h3><p>Lire, organiser et interpréter des données.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : lire les nombres décimaux et la valeur des chiffres</h3><p>Lire et écrire un nombre décimal et dire ce que vaut chaque chiffre.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : multiples et diviseurs</h3><p>Reconnaître les multiples d&#x27;un nombre et trouver ses diviseurs.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM1 — Maths : multiplication posée et division</h3><p>Poser une multiplication, comprendre la division : dividende, diviseur, quotient et reste.</p><span class="n">16 fiches</span></li>
+        <li><h3>CM1 — Maths : multiplier et diviser un nombre par 10 ou 100</h3><p>Multiplier un nombre par 10 ou 100, et le diviser par 10 ou 100, même avec une virgule.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : nombres décimaux sur une droite graduée, encadrer et arrondir</h3><p>Placer un nombre décimal sur une droite graduée, l&#x27;encadrer et l&#x27;arrondir à l&#x27;unité.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : ordre de grandeur et vérification à la calculatrice</h3><p>Estimer le résultat d&#x27;un calcul avec des nombres arrondis pour vérifier s&#x27;il est plausible.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : point, droite, segment et milieu</h3><p>Le vocabulaire de base de la géométrie et ses notations.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : poser une division par un nombre à un chiffre</h3><p>Poser et calculer des divisions de grands nombres par un nombre à un chiffre.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : premières situations de proportionnalité</h3><p>Reconnaître et résoudre des problèmes simples de proportionnalité.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : résoudre des problèmes à étapes</h3><p>Problèmes en plusieurs étapes avec la méthode pour les réussir.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Maths : se repérer sur un quadrillage et sur un plan</h3><p>Repérer une case ou un nœud, coder un déplacement, lire un plan.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : suivre un programme de construction</h3><p>Comprendre le vocabulaire et les étapes d&#x27;un programme de construction.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Maths : écrire les grands nombres en chiffres et en lettres</h3><p>Passer d&#x27;un grand nombre écrit en chiffres à son écriture en lettres, et inversement.</p><span class="n">15 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en CM1</h2><ul class="links"><li><a href="emc-cm1.html">EMC</a></li><li><a href="anglais-cm1.html">Anglais</a></li><li><a href="francais-cm1.html">Français</a></li><li><a href="geographie-cm1.html">Géographie</a></li><li><a href="histoire-cm1.html">Histoire</a></li><li><a href="sciences-cm1.html">Sciences</a></li><li><a href="technologie-cm1.html">Technologie</a></li></ul>
+      <h2>Mathématiques : autres niveaux</h2><ul class="links"><li><a href="mathematiques-cp.html">Mathématiques <small>CP</small></a></li><li><a href="mathematiques-ce1.html">Mathématiques <small>CE1</small></a></li><li><a href="mathematiques-ce2.html">Mathématiques <small>CE2</small></a></li><li><a href="mathematiques-cm2.html">Mathématiques <small>CM2</small></a></li><li><a href="mathematiques-6e.html">Mathématiques <small>6e</small></a></li><li><a href="mathematiques-5e.html">Mathématiques <small>5e</small></a></li><li><a href="mathematiques-4e.html">Mathématiques <small>4e</small></a></li><li><a href="mathematiques-3e.html">Mathématiques <small>3e</small></a></li><li><a href="mathematiques-seconde.html">Mathématiques <small>seconde</small></a></li><li><a href="mathematiques-premiere.html">Mathématiques <small>1re</small></a></li><li><a href="mathematiques-terminale.html">Mathématiques <small>terminale</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Maths : fractions et nombres décimaux", "q": "Dans la fraction 3/4, comment s'appelle le 4 ?", "a": "Le dénominateur", "more": "L'unité est partagée en 4 parts égales."}, {"theme": "Maths : multiplication posée et division", "q": "Comment s'appelle le résultat d'une multiplication ?", "a": "Le produit", "more": "Dans 6 × 4 = 24, le produit est 24."}, {"theme": "Maths : les figures planes", "q": "Comment appelle-t-on une figure fermée faite uniquement de segments ?", "a": "Un polygone", "more": ""}, {"theme": "Maths : les classes et la valeur des chiffres jusqu'au million", "q": "Comment appelle-t-on les groupes de 3 chiffres dans un grand nombre ?", "a": "Les classes.\nEx. : dans 527 384, deux classes : 527 et 384.", "more": ""}, {"theme": "Maths : écrire les grands nombres en chiffres et en lettres", "q": "Avec l'orthographe rectifiée, où met-on des traits d'union dans un nombre écrit en lettres ?", "a": "Entre tous les mots du nombre.\nEx. : vingt-et-un-mille-trois-cents.", "more": ""}, {"theme": "Maths : décomposer les grands nombres", "q": "Décompose 45 207 avec des additions.", "a": "40 000 + 5 000 + 200 + 7", "more": ""}, {"theme": "Maths : comparer et ranger les grands nombres", "q": "Pour comparer deux nombres entiers, que regarde-t-on d'abord ?", "a": "Le nombre de chiffres :\ncelui qui en a le plus est le plus grand.", "more": ""}, {"theme": "Maths : encadrer et arrondir les grands nombres", "q": "Encadre 4 678 entre deux milliers qui se suivent.", "a": "4 000 < 4 678 < 5 000.", "more": ""}, {"theme": "Maths : calculer la fraction d'une quantité", "q": "Comment calcule-t-on 1/3 de 12 ?", "a": "On partage 12 en 3 parts égales :\n12 : 3 = 4.", "more": ""}, {"theme": "Maths : fractions plus grandes que 1 et décomposition", "q": "Quand une fraction est-elle égale à 1 ?", "a": "Quand le numérateur est égal au dénominateur.\nEx. : 5/5 = 1.", "more": ""}, {"theme": "Maths : fractions sur une droite graduée et comparaison", "q": "Sur une droite, l'unité est partagée en 4 parts égales. Combien vaut chaque petit intervalle ?", "a": "1/4\n(un quart).", "more": ""}, {"theme": "Maths : additionner et soustraire des fractions de même dénominateur", "q": "Comment additionne-t-on deux fractions qui ont le même dénominateur ?", "a": "On ajoute les numérateurs et on garde le dénominateur.\nEx. : 2/5 + 1/5 = 3/5.", "more": ""}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

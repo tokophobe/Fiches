@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de français en CE2 — darwin</title>
+<meta name="description" content="43 boîtes et 623 fiches de français en CE2, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de français en CE2 — darwin" />
+<meta property="og:description" content="43 boîtes et 623 fiches de français en CE2, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Primaire › CE2 › Français</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de français en CE2</h1>
+        <div class="facts">
+          <div><b>43</b><span>boîtes</span></div>
+          <div><b>623</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en CE2. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de français en CE2</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>CE2 — Français : comprendre ce que le texte ne dit pas (inférences)</h3><p>Trouver une information cachée grâce aux indices du texte.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE2 — Français : futur, imparfait et passé composé</h3><p>Conjuguer être, avoir et les verbes en -er au futur, à l&#x27;imparfait et au passé composé.</p><span class="n">16 fiches</span></li>
+        <li><h3>CE2 — Français : l&#x27;accord du verbe avec un sujet éloigné ou inversé</h3><p>Accorder le verbe avec son sujet, même quand il est loin ou placé après.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE2 — Français : l&#x27;imparfait de aller, faire, dire, venir, pouvoir, voir, vouloir et prendre</h3><p>Conjuguer à l&#x27;imparfait les verbes irréguliers les plus courants.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : la fable</h3><p>Reconnaître une fable, ses personnages animaux et sa morale.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE2 — Français : la forme affirmative et la forme négative</h3><p>Passer de la forme affirmative à la forme négative avec ne… pas, ne… jamais, ne… plus, ne… rien.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : la poésie, vers, strophes et rimes</h3><p>Reconnaître un poème : vers, strophes, rimes et poète.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE2 — Français : le champ lexical</h3><p>Regrouper des mots qui parlent d&#x27;un même thème.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : le conte merveilleux</h3><p>Reconnaître un conte : formules, personnages, merveilleux et étapes du récit.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE2 — Français : le futur de aller, faire, dire, venir, pouvoir, voir, vouloir et prendre</h3><p>Conjuguer au futur les verbes irréguliers les plus courants.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : le genre et le nombre, les accords dans le groupe nominal</h3><p>Masculin ou féminin, singulier ou pluriel : accorder le déterminant, le nom et l&#x27;adjectif.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE2 — Français : le groupe nominal, l&#x27;adjectif et le complément du nom</h3><p>Enrichir un nom avec un adjectif ou un complément du nom.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : le narrateur et les personnages</h3><p>Savoir qui raconte l&#x27;histoire et repérer les personnages d&#x27;un récit.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : le nom et le déterminant</h3><p>Reconnaître les noms communs, les noms propres et les déterminants.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : le passé composé avec être et des verbes irréguliers</h3><p>Conjuguer au passé composé aller, venir, faire, dire, pouvoir, voir, vouloir et prendre.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : le présent de venir, pouvoir, voir, vouloir et prendre</h3><p>Conjuguer au présent venir, pouvoir, voir, vouloir et prendre.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : le présent de être, avoir, aller, faire et dire</h3><p>Conjuguer au présent cinq verbes très fréquents : être, avoir, aller, faire, dire.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : le sens propre et le sens figuré</h3><p>Comprendre qu&#x27;un mot peut avoir un sens propre et un sens figuré.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : le sujet du verbe</h3><p>Trouver le sujet d&#x27;un verbe et dire si c&#x27;est un nom, un groupe nominal ou un pronom.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : le texte de théâtre</h3><p>Lire une pièce de théâtre : répliques, didascalies, actes et scènes.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE2 — Français : le verbe et les pronoms personnels sujets</h3><p>Reconnaître le verbe, son infinitif et les pronoms personnels sujets.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : les compléments de phrase et les compléments du verbe</h3><p>Repérer les compléments qui disent où, quand, comment, et ceux qui complètent le verbe.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : les doubles consonnes courantes</h3><p>Savoir quand doubler une consonne dans les mots fréquents.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE2 — Français : les familles de mots</h3><p>Trouver des mots de la même famille, le radical, les préfixes et les suffixes.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE2 — Français : les féminins particuliers des noms et des adjectifs</h3><p>Former les féminins en -ve, -euse, -trice, -enne, -elle…</p><span class="n">16 fiches</span></li>
+        <li><h3>CE2 — Français : les homonymes</h3><p>Distinguer des mots qui se prononcent pareil mais n&#x27;ont pas le même sens.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : les homophones a / à et et / est</h3><p>Choisir entre a et à, et entre et et est, avec une astuce simple.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE2 — Français : les homophones ces / ses et mais / mes</h3><p>Choisir entre ces et ses, et entre mais et mes, avec une astuce simple.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : les homophones ou / où et ce / se</h3><p>Choisir entre ou et où, et entre ce et se, avec une astuce simple.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : les homophones son / sont et on / ont</h3><p>Choisir entre son et sont, et entre on et ont, avec une astuce simple.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE2 — Français : les mots invariables à connaître</h3><p>Écrire sans faute les petits mots invariables les plus fréquents.</p><span class="n">16 fiches</span></li>
+        <li><h3>CE2 — Français : les niveaux de langue</h3><p>Reconnaître la langue familière, courante et soutenue.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : les pluriels en -al, -ail, -ou, -eau, -au et -eu</h3><p>Écrire le pluriel des noms en -al, -ail, -ou, -eau, -au et -eu.</p><span class="n">16 fiches</span></li>
+        <li><h3>CE2 — Français : les synonymes et les antonymes</h3><p>Trouver un mot de sens proche ou un mot de sens contraire.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : les types de phrases</h3><p>Reconnaître une phrase déclarative, interrogative, exclamative ou impérative.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : lire un texte documentaire</h3><p>Se repérer dans un documentaire : titre, intertitres, légendes, sommaire.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : lire une bande dessinée</h3><p>Connaître les mots de la BD : planche, vignette, bulle, onomatopée.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : paragraphes et mots pour dire l&#x27;ordre du temps</h3><p>Repérer les paragraphes et les mots qui montrent l&#x27;ordre des événements.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : phrase verbale et phrase non verbale</h3><p>Savoir si une phrase contient un verbe conjugué ou non. Programme de CE2, français (cycle 2), étude de la langue, la phrase : phrase verbale et phrase non verbale — pour reconnaître une phrase et repérer son verbe.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : radical, terminaison et présent des verbes en -er</h3><p>Distinguer radical et terminaison, et conjuguer les verbes en -er au présent.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : trouver la lettre finale muette</h3><p>Trouver la lettre muette à la fin d&#x27;un mot grâce au féminin ou à un mot de la même famille.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE2 — Français : utiliser le dictionnaire</h3><p>Ranger des mots dans l&#x27;ordre alphabétique et lire un article de dictionnaire.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE2 — Français : écrire une phrase, un paragraphe et un dialogue bien ponctués</h3><p>Bien ponctuer ses phrases et écrire un dialogue avec tirets et guillemets.</p><span class="n">15 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en CE2</h2><ul class="links"><li><a href="emc-ce2.html">EMC</a></li><li><a href="anglais-ce2.html">Anglais</a></li><li><a href="mathematiques-ce2.html">Mathématiques</a></li><li><a href="questionner-le-monde-ce2.html">Questionner le monde</a></li><li><a href="education-artistique-ce2.html">Éducation artistique</a></li><li><a href="education-physique-ce2.html">Éducation physique</a></li></ul>
+      <h2>Français : autres niveaux</h2><ul class="links"><li><a href="francais-cp.html">Français <small>CP</small></a></li><li><a href="francais-ce1.html">Français <small>CE1</small></a></li><li><a href="francais-cm1.html">Français <small>CM1</small></a></li><li><a href="francais-cm2.html">Français <small>CM2</small></a></li><li><a href="francais-6e.html">Français <small>6e</small></a></li><li><a href="francais-5e.html">Français <small>5e</small></a></li><li><a href="francais-4e.html">Français <small>4e</small></a></li><li><a href="francais-3e.html">Français <small>3e</small></a></li><li><a href="francais-seconde.html">Français <small>seconde</small></a></li><li><a href="francais-premiere.html">Français <small>1re</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Futur, imparfait et passé composé", "q": "Quel temps utilise-t-on pour parler de demain ?", "a": "Le futur", "more": "Ex. : Demain, je jouerai."}, {"theme": "Le genre et le nombre, les accords dans le groupe nominal", "q": "Le genre d'un nom peut être masculin ou…", "a": "Féminin", "more": "Masculin : un, le ; féminin : une, la."}, {"theme": "Les familles de mots", "q": "Comment appelle-t-on des mots formés à partir du même mot de base ?", "a": "Une famille de mots", "more": "Ex. : dent, dentiste, dentifrice."}, {"theme": "La fable", "q": "Qu'est-ce qu'une fable ?", "a": "Une courte histoire, souvent en vers,\nqui se termine par une leçon : la morale.", "more": ""}, {"theme": "Le conte merveilleux", "q": "Par quelle formule commencent souvent les contes ?", "a": "« Il était une fois… »", "more": ""}, {"theme": "La poésie, vers, strophes et rimes", "q": "Comment s'appelle une ligne d'un poème ?", "a": "Un vers.", "more": ""}, {"theme": "Le texte de théâtre", "q": "Comment appelle-t-on un texte écrit pour être joué devant un public ?", "a": "Une pièce de théâtre.", "more": ""}, {"theme": "Lire un texte documentaire", "q": "À quoi sert un texte documentaire ?", "a": "À donner des informations vraies\nsur un sujet.", "more": ""}, {"theme": "Lire une bande dessinée", "q": "Comment appelle-t-on une page entière de bande dessinée ?", "a": "Une planche.", "more": ""}, {"theme": "Le narrateur et les personnages", "q": "Qu'est-ce que le narrateur ?", "a": "Celui qui raconte l'histoire.", "more": ""}, {"theme": "Paragraphes et mots pour dire l'ordre du temps", "q": "Qu'est-ce qu'un paragraphe ?", "a": "Un groupe de phrases qui parlent\nd'une même idée ou d'un même moment.", "more": ""}, {"theme": "Comprendre ce que le texte ne dit pas (inférences)", "q": "Qu'est-ce que faire une inférence ?", "a": "Comprendre une information que le texte ne dit pas,\ngrâce à des indices.", "more": ""}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

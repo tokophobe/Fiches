@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de questionner le monde en CE1 — darwin</title>
+<meta name="description" content="17 boîtes et 253 fiches de questionner le monde en CE1, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de questionner le monde en CE1 — darwin" />
+<meta property="og:description" content="17 boîtes et 253 fiches de questionner le monde en CE1, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Primaire › CE1 › Questionner le monde</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de questionner le monde en CE1</h1>
+        <div class="facts">
+          <div><b>17</b><span>boîtes</span></div>
+          <div><b>253</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en CE1. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de questionner le monde en CE1</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>CE1 — Questionner le monde : ce dont les plantes ont besoin pour pousser</h3><p>Eau, lumière, chaleur : découvre ce qu&#x27;il faut à une graine pour germer et à une plante pour grandir.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : de la graine à la plante</h3><p>La graine germe, la plante grandit, fleurit et donne des fruits avec de nouvelles graines.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : l&#x27;eau et ses états</h3><p>L&#x27;eau solide, liquide ou gazeuse : la glace qui fond, l&#x27;eau qui gèle, s&#x27;évapore ou forme de la buée.</p><span class="n">16 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : la France sur une carte</h3><p>La capitale, les mers, les montagnes et les grands fleuves de la France à repérer sur une carte.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : la famille et les objets d&#x27;autrefois</h3><p>L&#x27;arbre généalogique, les membres de la famille et les objets que l&#x27;on utilisait autrefois.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : le circuit électrique simple</h3><p>Pile, ampoule, fils et interrupteur : allumer une ampoule, reconnaître conducteurs et isolants, éviter les dangers.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : le corps humain et les cinq sens</h3><p>Les cinq sens et leurs organes, le squelette et les muscles, et quelques règles d&#x27;hygiène pour rester en bonne santé.</p><span class="n">16 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : le cycle de vie des animaux</h3><p>Naître, grandir, se reproduire, mourir : la vie d&#x27;un animal, de l&#x27;œuf à l&#x27;adulte.</p><span class="n">16 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : les familles d&#x27;aliments et une bonne hygiène de vie</h3><p>Les familles d&#x27;aliments, les repas de la journée, le sommeil et le sport pour rester en bonne santé.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : les milieux de vie des animaux</h3><p>Forêt, mare, mer, désert, banquise : chaque animal vit dans un milieu qui lui convient.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : les paysages de ville, de campagne, de mer et de montagne</h3><p>Reconnaître les paysages urbains, ruraux, littoraux et de montagne grâce à ce qu&#x27;on y voit.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : les saisons et le temps qui passe</h3><p>Les quatre saisons, avant/après, la frise du temps et les générations d&#x27;une famille.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : mesurer le temps, de la seconde au siècle</h3><p>Sablier, chronomètre, cadran solaire et unités de temps : de la seconde au siècle.</p><span class="n">16 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : mélanges, dissolution et matières qui fondent</h3><p>Le sucre disparaît dans l&#x27;eau, l&#x27;huile flotte, le chocolat fond : expériences simples avec la matière.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : os, muscles, articulations et dents</h3><p>Comment le corps bouge grâce aux os, aux muscles et aux articulations, et à quoi servent nos différentes dents.</p><span class="n">16 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : plan de l&#x27;école, carte et points cardinaux</h3><p>Lire un plan de l&#x27;école, comprendre une légende et connaître les quatre points cardinaux.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Questionner le monde : qui mange quoi ? Régimes et chaînes alimentaires</h3><p>Herbivore, carnivore, omnivore et chaînes alimentaires simples : qui mange qui dans la nature ?</p><span class="n">15 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en CE1</h2><ul class="links"><li><a href="emc-ce1.html">EMC</a></li><li><a href="anglais-ce1.html">Anglais</a></li><li><a href="francais-ce1.html">Français</a></li><li><a href="mathematiques-ce1.html">Mathématiques</a></li><li><a href="education-artistique-ce1.html">Éducation artistique</a></li><li><a href="education-physique-ce1.html">Éducation physique</a></li></ul>
+      <h2>Questionner le monde : autres niveaux</h2><ul class="links"><li><a href="questionner-le-monde-cp.html">Questionner le monde <small>CP</small></a></li><li><a href="questionner-le-monde-ce2.html">Questionner le monde <small>CE2</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Le corps humain et les cinq sens", "q": "Combien avons-nous de sens ?", "a": "Cinq", "more": "La vue, l'ouïe, l'odorat, le goût, le toucher."}, {"theme": "L'eau et ses états", "q": "Quels sont les trois états de l'eau ?", "a": "Solide, liquide, gazeux", "more": "Glace, eau du robinet, vapeur d'eau."}, {"theme": "Les saisons et le temps qui passe", "q": "Combien y a-t-il de saisons dans une année ?", "a": "4", "more": "Le printemps, l'été, l'automne et l'hiver."}, {"theme": "Le cycle de vie des animaux", "q": "Quelles sont les grandes étapes de la vie d'un animal ?", "a": "1. Il naît\n2. Il grandit\n3. Il se reproduit (il a des petits)\n4. Il meurt", "more": ""}, {"theme": "De la graine à la plante", "q": "Vrai ou faux ? Une plante est un être vivant.", "a": "Vrai.\nElle naît, grandit, se reproduit et meurt.", "more": ""}, {"theme": "Ce dont les plantes ont besoin pour pousser", "q": "De quoi une graine a-t-elle besoin pour germer ?", "a": "• D'eau\n• D'air\n• D'une température douce", "more": ""}, {"theme": "Qui mange quoi ? Régimes et chaînes alimentaires", "q": "Comment appelle-t-on un animal qui mange seulement des plantes ?", "a": "Un herbivore.\nEx. : la vache, le lapin.", "more": ""}, {"theme": "Les milieux de vie des animaux", "q": "Qu'est-ce qu'un milieu de vie ?", "a": "L'endroit où vit un être vivant, où il trouve à manger et un abri.\nEx. : la forêt, la mare.", "more": ""}, {"theme": "Os, muscles, articulations et dents", "q": "Comment s'appelle la grande « colonne » d'os qui tient le dos droit ?", "a": "La colonne vertébrale.\nElle est faite de petits os : les vertèbres.", "more": ""}, {"theme": "Les familles d'aliments et une bonne hygiène de vie", "q": "Dans quelle famille d'aliments range-t-on le lait, le yaourt et le fromage ?", "a": "Les produits laitiers.", "more": ""}, {"theme": "Mélanges, dissolution et matières qui fondent", "q": "Que se passe-t-il quand on mélange du sucre dans un verre d'eau ?", "a": "Il se dissout :\non ne le voit plus, mais l'eau a un goût sucré.", "more": ""}, {"theme": "Le circuit électrique simple", "q": "Pour allumer une petite ampoule avec une pile, a-t-on besoin d'un aimant ?", "a": "Non : il faut une pile,\ndes fils et l'ampoule.", "more": "Il faut une pile, une ampoule et des fils électriques."}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>
