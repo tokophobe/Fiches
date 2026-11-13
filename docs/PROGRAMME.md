@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1175 chapitres couverts sur 1383** (85 %), 1176 boîtes, 19302 fiches.
+Mise à jour : 13/11/2026. **1175 chapitres couverts sur 1383** (85 %), 1180 boîtes, 19380 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -19,7 +19,7 @@ Mise à jour : 13/11/2026. **1175 chapitres couverts sur 1383** (85 %), 1176 bo�
 | [6e](#6e) | 43 / 99 | 56 | 43 | 725 |
 | [5e](#5e) | 42 / 99 | 57 | 42 | 714 |
 | [4e](#4e) | 54 / 91 | 37 | 54 | 909 |
-| [3e](#3e) | 130 / 133 | 3 | 130 | 2487 |
+| [3e](#3e) | 130 / 133 | 3 | 134 | 2565 |
 | [Seconde](#seconde) | 70 / 82 | 12 | 70 | 1232 |
 | [Première](#première) | 113 / 124 | 11 | 113 | 1925 |
 | [Terminale](#terminale) | 173 / 175 | 2 | 173 | 3173 |
@@ -1173,7 +1173,7 @@ Collège — 54 chapitres couverts sur 91, 54 boîtes.
 
 ## 3e
 
-Collège — 130 chapitres couverts sur 133, 130 boîtes.
+Collège — 130 chapitres couverts sur 133, 134 boîtes.
 
 ### 3e — Français (23 / 23)
 
@@ -1233,7 +1233,7 @@ Collège — 130 chapitres couverts sur 133, 130 boîtes.
 - [x] Notions et personnages clés — Brevet — Histoire : notions et personnages clés (36 fiches)
 - [x] La Première Guerre mondiale — Brevet — Histoire : la Première Guerre mondiale (19 fiches)
 - [x] Démocraties et totalitarismes (1918-1939) — Brevet — Histoire : démocraties et totalitarismes (1918-1939) (16 fiches)
-- [x] Seconde Guerre mondiale, Vichy et Résistance — Brevet — Histoire : Seconde Guerre mondiale, Vichy et Résistance (20 fiches)
+- [x] La Seconde Guerre mondiale (1939-1945) : l'essentiel et 4 sous-thèmes — Brevet — Histoire : Seconde Guerre mondiale, Vichy et Résistance (20 fiches) ; 3ème — Histoire : 1939-1945, une guerre d'anéantissement (18 fiches) ; 3ème — Histoire : le génocide des Juifs et des Tsiganes (20 fiches) ; 3ème — Histoire : la France défaite et occupée, Vichy et la collaboration (20 fiches) ; 3ème — Histoire : la France libre, la Résistance et la Libération (20 fiches)
 - [x] Guerre froide, décolonisation et Europe — Brevet — Histoire : guerre froide, décolonisation et Europe (19 fiches)
 - [x] La France de 1944 à nos jours — Brevet — Histoire : la France de 1944 à nos jours (18 fiches)
 - [x] Les arts au XXe siècle — Brevet — Histoire des arts : les arts au XXe siècle (17 fiches)
