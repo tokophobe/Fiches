@@ -477,7 +477,15 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
      tout le sujet (ex. : une vidéo de cours complète).
    - **Fiche** : seulement si c'est utile, et jamais un contenu trop long
      (vidéo) ou trop dense (page de type Wikipédia).
-6. **Contrôles automatiques** de la règle 1 :
+6. **Découpage des boîtes toutes prêtes** (décidé le 13 nov. 2026, en
+   essai sur la Seconde Guerre mondiale en 3e) : au collège et au lycée,
+   un chapitre du programme est découpé en **sous-thèmes de 15 à 20
+   fiches**, une boîte par sous-thème (ce qu'un contrôle évalue
+   d'habitude), plus une boîte « l'essentiel » qui résume le chapitre
+   (utile avant un examen). Au primaire, une boîte par notion, comme
+   aujourd'hui. Les sous-thèmes sont prévus dans la page « Le programme »
+   (§7.6), sous le chapitre concerné.
+7. **Contrôles automatiques** de la règle 1 :
    - **dans l'appli**, en enregistrant une fiche QCM dont la question
      renvoie à des propositions, le robot prévient et propose de
      reformuler (on peut garder quand même) ; un rappel est écrit sous
@@ -1052,6 +1060,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 13 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : essai du découpage d'un chapitre en sous-thèmes (§5.7, règle 6) sur la Seconde Guerre mondiale en 3e — 4 nouvelles boîtes (guerre d'anéantissement ; génocide des Juifs et des Tsiganes ; France défaite et occupée, Vichy et la collaboration ; France libre, Résistance et Libération), 78 fiches, en plus de la boîte « l'essentiel » existante. |
 | — | 13 nov. 2026 | Site seulement (rien ne change dans l'appli) : Site vitrine complet de la v272 rétabli (il n'avait jamais été enregistré : accueil avec fiche à essayer et robot, défi du jour, pages « Fiches par matière », polices et styles) ; pages « Fiches par matière » refaites avec les 1 176 boîtes actuelles. |
 | v288 | 13 nov. 2026 | Site : nouvelle page « Le programme, classe par classe » (§7.6) — tout le programme du CP à la Terminale, par matière et par chapitre, avec les boîtes toutes prêtes associées et les 208 chapitres encore « à créer » ; liens depuis toutes les pages du site. Même liste dans `docs/PROGRAMME.md`. Les pages du site ne sont plus gardées en cache par l'appli installée. |
 | v287 | 12 nov. 2026 | Publication avec relecture, étape E : bouton « Signaler cette boîte » (page d'une boîte de classe ou de la Librairie) ; les signalements des boîtes de la Librairie vont à darwin (Darwin Admin : voir la boîte, répondre, marquer traité), ceux des boîtes de classe à l'enseignant ; réglage « Librairie : seulement les boîtes darwin », activé ; à la suppression d'un compte enseignant, ses boîtes publiées restent dans la Librairie au nom de darwin. Message de suppression du compte corrigé en conséquence. |

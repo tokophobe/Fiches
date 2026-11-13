@@ -8663,11 +8663,31 @@
        ]
       },
       {
-       "titre": "Seconde Guerre mondiale, Vichy et Résistance",
+       "titre": "La Seconde Guerre mondiale (1939-1945) : l'essentiel et 4 sous-thèmes",
        "boites": [
         {
          "cle": "r35-brevet-hist-39-45",
          "titre": "Brevet — Histoire : Seconde Guerre mondiale, Vichy et Résistance",
+         "fiches": 20
+        },
+        {
+         "cle": "r3e-hist-3945-guerre",
+         "titre": "3ème — Histoire : 1939-1945, une guerre d'anéantissement",
+         "fiches": 18
+        },
+        {
+         "cle": "r3e-hist-3945-genocide",
+         "titre": "3ème — Histoire : le génocide des Juifs et des Tsiganes",
+         "fiches": 20
+        },
+        {
+         "cle": "r3e-hist-3945-vichy",
+         "titre": "3ème — Histoire : la France défaite et occupée, Vichy et la collaboration",
+         "fiches": 20
+        },
+        {
+         "cle": "r3e-hist-3945-resistance",
+         "titre": "3ème — Histoire : la France libre, la Résistance et la Libération",
          "fiches": 20
         }
        ]
