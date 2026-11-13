@@ -4920,7 +4920,7 @@
         {
          "cle": "r43-a22-pronoms",
          "titre": "CM2 — Français : pronoms personnels, possessifs et démonstratifs",
-         "fiches": 14
+         "fiches": 15
         }
        ]
       },
@@ -4940,7 +4940,7 @@
         {
          "cle": "r43-a22-futur-conditionnel",
          "titre": "CM2 — Français : futur simple et conditionnel présent",
-         "fiches": 15
+         "fiches": 17
         }
        ]
       },
@@ -5270,7 +5270,7 @@
         {
          "cle": "r43-a23-solides-prismes-pyramides",
          "titre": "CM2 — Maths : prismes, pyramides et autres solides",
-         "fiches": 16
+         "fiches": 18
         }
        ]
       },
@@ -5356,7 +5356,7 @@
         {
          "cle": "r43-a25-sci-corps-respiration-circulation-mouvement",
          "titre": "CM2 — Sciences : respirer, faire circuler le sang et bouger",
-         "fiches": 16
+         "fiches": 18
         }
        ]
       },
@@ -5376,7 +5376,7 @@
         {
          "cle": "r43-a25-sci-energie-electricite",
          "titre": "CM2 — Sciences : les sources d'énergie et l'électricité en sécurité",
-         "fiches": 15
+         "fiches": 16
         }
        ]
       },
@@ -5396,7 +5396,7 @@
         {
          "cle": "r43-a25-sci-lune-phases-eclipses",
          "titre": "CM2 — Sciences : la Lune, ses phases et les éclipses",
-         "fiches": 15
+         "fiches": 16
         }
        ]
       },
@@ -5610,7 +5610,7 @@
         {
          "cle": "r43-a24-geo-ville-en-ville-france",
          "titre": "CM2 — Géographie : voyager de ville en ville en France",
-         "fiches": 15
+         "fiches": 16
         }
        ]
       },
@@ -5690,7 +5690,7 @@
         {
          "cle": "r43-a24-geo-grands-reperes-monde",
          "titre": "CM2 — Géographie : repères, les grands records et lignes du monde",
-         "fiches": 16
+         "fiches": 17
         }
        ]
       }
@@ -5828,7 +5828,7 @@
         {
          "cle": "r43-a25-ang-daily-routine",
          "titre": "CM2 — Anglais : ma journée (daily routine)",
-         "fiches": 15
+         "fiches": 17
         }
        ]
       },
@@ -5838,7 +5838,7 @@
         {
          "cle": "r43-a25-ang-pays-nationalites",
          "titre": "CM2 — Anglais : les pays et les nationalités du monde anglophone",
-         "fiches": 15
+         "fiches": 16
         }
        ]
       },
@@ -5858,7 +5858,7 @@
         {
          "cle": "r43-a25-ang-prepositions-chambre",
          "titre": "CM2 — Anglais : les prépositions de lieu et ma chambre",
-         "fiches": 15
+         "fiches": 16
         }
        ]
       },
@@ -6511,7 +6511,7 @@
         {
          "cle": "r56-6e-anglais-heure-date",
          "titre": "6ème — Anglais : l'heure, la date et les saisons",
-         "fiches": 16
+         "fiches": 19
         }
        ]
       },
@@ -6583,7 +6583,7 @@
         {
          "cle": "r56-6e-musique-instruments-vocabulaire",
          "titre": "6ème — Éducation musicale : instruments et vocabulaire de la musique",
-         "fiches": 16
+         "fiches": 18
         }
        ]
       },
@@ -6654,7 +6654,7 @@
         {
          "cle": "r56-5e-francais-participe-passe",
          "titre": "5ème — Français : l'accord du participe passé",
-         "fiches": 16
+         "fiches": 17
         }
        ]
       },
@@ -6876,7 +6876,7 @@
         {
          "cle": "r56-5e-histoire-eglise-moyen-age",
          "titre": "5ème — Histoire : l'Église au Moyen Âge",
-         "fiches": 16
+         "fiches": 17
         }
        ]
       },
@@ -7014,7 +7014,7 @@
         {
          "cle": "r56-5e-svt-ecosystemes",
          "titre": "5ème — SVT : écosystèmes, chaînes alimentaires et biodiversité",
-         "fiches": 16
+         "fiches": 18
         }
        ]
       },
@@ -7158,7 +7158,7 @@
         {
          "cle": "r56-5e-anglais-present-continu",
          "titre": "5ème — Anglais : présent en be + -ing et activités",
-         "fiches": 16
+         "fiches": 17
         }
        ]
       },
@@ -7168,7 +7168,7 @@
         {
          "cle": "r56-5e-anglais-ville-directions",
          "titre": "5ème — Anglais : la ville, les directions et les prépositions de lieu",
-         "fiches": 16
+         "fiches": 18
         }
        ]
       },
@@ -7210,7 +7210,7 @@
         {
          "cle": "r56-5e-espagnol-nombres-heure-date",
          "titre": "5ème — Espagnol : nombres, heure, jours et date",
-         "fiches": 16
+         "fiches": 18
         }
        ]
       },
@@ -7276,7 +7276,7 @@
         {
          "cle": "r56-5e-italien-premiers-pas",
          "titre": "5ème — Italien : premiers pas en LV2",
-         "fiches": 16
+         "fiches": 19
         }
        ]
       },
@@ -7324,7 +7324,7 @@
         {
          "cle": "r56-5e-arts-plastiques-vocabulaire",
          "titre": "5ème — Arts plastiques : couleurs, composition et vocabulaire",
-         "fiches": 16
+         "fiches": 20
         }
        ]
       },
@@ -7859,7 +7859,7 @@
         {
          "cle": "r56-4e-physique-forces-interactions",
          "titre": "4ème — Physique : interactions et forces",
-         "fiches": 16
+         "fiches": 18
         }
        ]
       },
@@ -7993,7 +7993,7 @@
         {
          "cle": "r56-4e-anglais-futur-preterit-ing",
          "titre": "4ème — Anglais : futur (will, be going to) et prétérit en be + -ing",
-         "fiches": 16
+         "fiches": 17
         }
        ]
       },
@@ -8027,7 +8027,7 @@
         {
          "cle": "r56-4e-espagnol-futur-imperatif",
          "titre": "4ème — Espagnol : futur, ir a + infinitif et impératif",
-         "fiches": 16
+         "fiches": 17
         }
        ]
       },
@@ -8061,7 +8061,7 @@
         {
          "cle": "r56-4e-allemand-datif-prepositions",
          "titre": "4ème — Allemand : datif, prépositions et localisation",
-         "fiches": 16
+         "fiches": 17
         }
        ]
       },
@@ -8085,7 +8085,7 @@
         {
          "cle": "r56-4e-italien-presente-routine",
          "titre": "4ème — Italien : le présent et la vie quotidienne",
-         "fiches": 16
+         "fiches": 18
         }
        ]
       },
@@ -10311,7 +10311,7 @@
         {
          "cle": "r57-2nde-anglais-grammaire",
          "titre": "Seconde — Anglais : grammaire essentielle (temps, modaux, passif)",
-         "fiches": 16
+         "fiches": 17
         }
        ]
       },
@@ -10321,7 +10321,7 @@
         {
          "cle": "r57-2nde-anglais-identites-echanges",
          "titre": "Seconde — Anglais : vocabulaire des axes (identités, sauver la planète, création)",
-         "fiches": 16
+         "fiches": 20
         }
        ]
       }
@@ -10357,7 +10357,7 @@
         {
          "cle": "r57-2nde-espagnol-passe",
          "titre": "Seconde — Espagnol : raconter au passé (passé simple et imparfait)",
-         "fiches": 16
+         "fiches": 18
         }
        ]
       },
@@ -10367,7 +10367,7 @@
         {
          "cle": "r57-2nde-espagnol-vocabulaire-axes",
          "titre": "Seconde — Espagnol : vocabulaire de l'environnement, de la ville et de la société",
-         "fiches": 16
+         "fiches": 20
         }
        ]
       }
@@ -11392,7 +11392,7 @@
         {
          "cle": "r57-1re-ens-sci-bilan-radiatif",
          "titre": "1ère — Enseignement scientifique : énergie solaire, bilan radiatif et photosynthèse",
-         "fiches": 16
+         "fiches": 17
         }
        ]
       }
@@ -11418,7 +11418,7 @@
         {
          "cle": "r57-1re-anglais-axes-vocabulaire",
          "titre": "1ère — Anglais : vocabulaire des axes du cycle terminal",
-         "fiches": 16
+         "fiches": 19
         }
        ]
       },
@@ -11428,7 +11428,7 @@
         {
          "cle": "r57-1re-anglais-oral",
          "titre": "1ère — Anglais : expressions pour présenter un document et prendre la parole",
-         "fiches": 16
+         "fiches": 18
         }
        ]
       }
@@ -11971,7 +11971,7 @@
         {
          "cle": "r57-tle-maths-comp-suites-modeles",
          "titre": "Terminale — Maths complémentaires : suites, modèles d'évolution et logarithme",
-         "fiches": 16
+         "fiches": 17
         }
        ]
       }
@@ -13377,7 +13377,7 @@
         {
          "cle": "r57-tle-allemand-civilisation",
          "titre": "Terminale — Allemand : repères de civilisation (Allemagne depuis 1945)",
-         "fiches": 16
+         "fiches": 17
         }
        ]
       }

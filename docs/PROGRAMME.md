@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1175 chapitres couverts sur 1383** (85 %), 1180 boîtes, 19394 fiches.
+Mise à jour : 13/11/2026. **1175 chapitres couverts sur 1383** (85 %), 1180 boîtes, 19456 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -15,14 +15,14 @@ Mise à jour : 13/11/2026. **1175 chapitres couverts sur 1383** (85 %), 1180 bo�
 | [CE1](#ce1) | 110 / 114 | 4 | 110 | 1621 |
 | [CE2](#ce2) | 110 / 112 | 2 | 110 | 1636 |
 | [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
-| [CM2](#cm2) | 93 / 110 | 17 | 93 | 1394 |
-| [6e](#6e) | 43 / 99 | 56 | 43 | 725 |
-| [5e](#5e) | 42 / 99 | 57 | 42 | 714 |
-| [4e](#4e) | 54 / 91 | 37 | 54 | 909 |
+| [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
+| [6e](#6e) | 43 / 99 | 56 | 43 | 730 |
+| [5e](#5e) | 42 / 99 | 57 | 42 | 730 |
+| [4e](#4e) | 54 / 91 | 37 | 54 | 916 |
 | [3e](#3e) | 130 / 133 | 3 | 134 | 2565 |
-| [Seconde](#seconde) | 70 / 82 | 12 | 70 | 1232 |
-| [Première](#première) | 113 / 124 | 11 | 113 | 1925 |
-| [Terminale](#terminale) | 173 / 175 | 2 | 173 | 3173 |
+| [Seconde](#seconde) | 70 / 82 | 12 | 70 | 1243 |
+| [Première](#première) | 113 / 124 | 11 | 113 | 1931 |
+| [Terminale](#terminale) | 173 / 175 | 2 | 173 | 3175 |
 | [Autres boîtes](#autres-boîtes) | 1 / 1 | 0 | 1 | 68 |
 
 ## CP
@@ -616,9 +616,9 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 - [x] L'attribut du sujet et les verbes d'état — CM2 — Français : l'attribut du sujet et les verbes d'état (13 fiches)
 - [x] Mots variables et mots invariables — CM2 — Français : mots variables et mots invariables (14 fiches)
 - [x] Enrichir le groupe nominal — CM2 — Français : enrichir le groupe nominal (14 fiches)
-- [x] Pronoms personnels, possessifs et démonstratifs — CM2 — Français : pronoms personnels, possessifs et démonstratifs (14 fiches)
+- [x] Pronoms personnels, possessifs et démonstratifs — CM2 — Français : pronoms personnels, possessifs et démonstratifs (15 fiches)
 - [x] Le présent des verbes irréguliers et ses valeurs — CM2 — Français : le présent des verbes irréguliers et ses valeurs (14 fiches)
-- [x] Futur simple et conditionnel présent — CM2 — Français : futur simple et conditionnel présent (15 fiches)
+- [x] Futur simple et conditionnel présent — CM2 — Français : futur simple et conditionnel présent (17 fiches)
 - [x] L'impératif présent — CM2 — Français : l'impératif présent (14 fiches)
 - [x] Premier plan et arrière-plan du récit — CM2 — Français : premier plan et arrière-plan du récit (14 fiches)
 - [x] Accorder le participe passé avec être ou avoir — CM2 — Français : accorder le participe passé avec être ou avoir (14 fiches)
@@ -657,7 +657,7 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 - [x] Lire l'heure et résoudre des problèmes de durées — CM2 — Maths : lire l'heure et résoudre des problèmes de durées (16 fiches)
 - [x] Triangles particuliers, quadrilatères et trapèze — CM2 — Maths : triangles particuliers, quadrilatères et trapèze (16 fiches)
 - [x] Axes de symétrie et programmes de construction — CM2 — Maths : axes de symétrie et programmes de construction (16 fiches)
-- [x] Prismes, pyramides et autres solides — CM2 — Maths : prismes, pyramides et autres solides (16 fiches)
+- [x] Prismes, pyramides et autres solides — CM2 — Maths : prismes, pyramides et autres solides (18 fiches)
 - [x] Diagrammes en barres, circulaires et courbes — CM2 — Maths : diagrammes en barres, circulaires et courbes (16 fiches)
 - [x] Les probabilités, « a chances sur b » — CM2 — Maths : les probabilités, « a chances sur b » (16 fiches)
 - [ ] Le cercle, rayon, diamètre et compas — *à créer*
@@ -671,11 +671,11 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 - [x] La Terre dans le système solaire — CM2 — Sciences : la Terre dans le système solaire (16 fiches)
 - [x] Les chaînes alimentaires — CM2 — Sciences : les chaînes alimentaires (15 fiches)
 - [x] Les mélanges et comment les séparer — CM2 — Sciences : les mélanges et comment les séparer (15 fiches)
-- [x] Respirer, faire circuler le sang et bouger — CM2 — Sciences : respirer, faire circuler le sang et bouger (16 fiches)
+- [x] Respirer, faire circuler le sang et bouger — CM2 — Sciences : respirer, faire circuler le sang et bouger (18 fiches)
 - [x] La reproduction humaine et la puberté — CM2 — Sciences : la reproduction humaine et la puberté (15 fiches)
-- [x] Les sources d'énergie et l'électricité en sécurité — CM2 — Sciences : les sources d'énergie et l'électricité en sécurité (15 fiches)
+- [x] Les sources d'énergie et l'électricité en sécurité — CM2 — Sciences : les sources d'énergie et l'électricité en sécurité (16 fiches)
 - [x] La lumière et les ombres — CM2 — Sciences : la lumière et les ombres (15 fiches)
-- [x] La Lune, ses phases et les éclipses — CM2 — Sciences : la Lune, ses phases et les éclipses (15 fiches)
+- [x] La Lune, ses phases et les éclipses — CM2 — Sciences : la Lune, ses phases et les éclipses (16 fiches)
 - [x] Les volcans et les séismes — CM2 — Sciences : les volcans et les séismes (15 fiches)
 - [x] Le cycle de l'eau et l'eau potable — CM2 — Sciences : le cycle de l'eau et l'eau potable (15 fiches)
 - [ ] Classer les êtres vivants — *à créer*
@@ -703,7 +703,7 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 - [x] Se déplacer — CM2 — Géographie : se déplacer (15 fiches)
 - [x] Communiquer d'un bout à l'autre du monde grâce à Internet — CM2 — Géographie : communiquer d'un bout à l'autre du monde grâce à Internet (15 fiches)
 - [x] Se déplacer au quotidien ailleurs dans le monde — CM2 — Géographie : se déplacer au quotidien ailleurs dans le monde (14 fiches)
-- [x] Voyager de ville en ville en France — CM2 — Géographie : voyager de ville en ville en France (15 fiches)
+- [x] Voyager de ville en ville en France — CM2 — Géographie : voyager de ville en ville en France (16 fiches)
 - [x] Se déplacer en Europe et dans le monde — CM2 — Géographie : se déplacer en Europe et dans le monde (15 fiches)
 - [x] Internet au quotidien, outils et usages — CM2 — Géographie : Internet au quotidien, outils et usages (14 fiches)
 - [x] Mieux habiter, la nature en ville — CM2 — Géographie : mieux habiter, la nature en ville (15 fiches)
@@ -711,7 +711,7 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 - [x] Mieux habiter dans un écoquartier — CM2 — Géographie : mieux habiter dans un écoquartier (15 fiches)
 - [x] Repères sur l'Union européenne (pays, capitales, symboles) — CM2 — Géographie : repères sur l'Union européenne (pays, capitales, symboles) (16 fiches)
 - [x] Repères, les continents et les océans — CM2 — Géographie : repères, les continents et les océans (15 fiches)
-- [x] Repères, les grands records et lignes du monde — CM2 — Géographie : repères, les grands records et lignes du monde (16 fiches)
+- [x] Repères, les grands records et lignes du monde — CM2 — Géographie : repères, les grands records et lignes du monde (17 fiches)
 
 ### CM2 — EMC (5 / 5)
 
@@ -732,10 +732,10 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 ### CM2 — Anglais (5 / 8)
 
 - [x] Se présenter et le présent simple — CM2 — Anglais : se présenter et le présent simple (15 fiches)
-- [x] Ma journée (daily routine) — CM2 — Anglais : ma journée (daily routine) (15 fiches)
-- [x] Les pays et les nationalités du monde anglophone — CM2 — Anglais : les pays et les nationalités du monde anglophone (15 fiches)
+- [x] Ma journée (daily routine) — CM2 — Anglais : ma journée (daily routine) (17 fiches)
+- [x] Les pays et les nationalités du monde anglophone — CM2 — Anglais : les pays et les nationalités du monde anglophone (16 fiches)
 - [x] Villes, capitales et monuments anglophones — CM2 — Anglais : villes, capitales et monuments anglophones (15 fiches)
-- [x] Les prépositions de lieu et ma chambre — CM2 — Anglais : les prépositions de lieu et ma chambre (15 fiches)
+- [x] Les prépositions de lieu et ma chambre — CM2 — Anglais : les prépositions de lieu et ma chambre (16 fiches)
 - [ ] Le prétérit des verbes courants — *à créer*
 - [ ] Les animaux et décrire un animal — *à créer*
 - [ ] Faire des achats et la monnaie — *à créer*
@@ -852,7 +852,7 @@ Collège — 43 chapitres couverts sur 99, 43 boîtes.
 - [x] Vocabulaire de base (famille, école, jours, nombres, couleurs) — 6ème — Anglais : vocabulaire de base (famille, école, jours, nombres, couleurs) (17 fiches)
 - [x] Grammaire de base (be, présent simple, pluriels) — 6ème — Anglais : grammaire de base (be, présent simple, pluriels) (21 fiches)
 - [x] Routine quotidienne, fréquence et goûts — 6ème — Anglais : routine quotidienne, fréquence et goûts (17 fiches)
-- [x] L'heure, la date et les saisons — 6ème — Anglais : l'heure, la date et les saisons (16 fiches)
+- [x] L'heure, la date et les saisons — 6ème — Anglais : l'heure, la date et les saisons (19 fiches)
 - [x] Have got, possessifs et description physique — 6ème — Anglais : have got, possessifs et description physique (16 fiches)
 - [ ] Le présent en be + -ing — *à créer*
 - [ ] Can / can't et les capacités — *à créer*
@@ -870,7 +870,7 @@ Collège — 43 chapitres couverts sur 99, 43 boîtes.
 
 ### 6e — Éducation musicale (1 / 3)
 
-- [x] Instruments et vocabulaire de la musique — 6ème — Éducation musicale : instruments et vocabulaire de la musique (16 fiches)
+- [x] Instruments et vocabulaire de la musique — 6ème — Éducation musicale : instruments et vocabulaire de la musique (18 fiches)
 - [ ] Les grands compositeurs — *à créer*
 - [ ] Rythme, mélodie et pulsation — *à créer*
 
@@ -885,7 +885,7 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 - [x] Types de phrases, propositions, passé composé et plus-que-parfait — 5ème — Français : types de phrases, propositions, passé composé et plus-que-parfait (19 fiches)
 - [x] Voyage, aventure, héros et univers imaginaires — 5ème — Français : voyage, aventure, héros et univers imaginaires (17 fiches)
 - [x] Avec autrui, la comédie et Molière — 5ème — Français : avec autrui, la comédie et Molière (19 fiches)
-- [x] L'accord du participe passé — 5ème — Français : l'accord du participe passé (16 fiches)
+- [x] L'accord du participe passé — 5ème — Français : l'accord du participe passé (17 fiches)
 - [ ] Imaginer des univers nouveaux (science-fiction, fantasy) — *à créer*
 - [ ] L'être humain est-il maître de la nature ? — *à créer*
 - [ ] Le conte et le merveilleux — *à créer*
@@ -924,7 +924,7 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 - [x] Grandes découvertes, Renaissance et Réformes — 5ème — Histoire : Grandes découvertes, Renaissance et Réformes (18 fiches)
 - [x] Seigneurs, paysans, villes et pouvoir royal (XIe-XVe s.) — 5ème — Histoire : seigneurs, paysans, villes et pouvoir royal (XIe-XVe s.) (20 fiches)
 - [x] Du prince de la Renaissance au roi absolu — 5ème — Histoire : du prince de la Renaissance au roi absolu (17 fiches)
-- [x] L'Église au Moyen Âge — 5ème — Histoire : l'Église au Moyen Âge (16 fiches)
+- [x] L'Église au Moyen Âge — 5ème — Histoire : l'Église au Moyen Âge (17 fiches)
 - [ ] L'Empire carolingien — *à créer*
 - [ ] Les croisades et la Reconquista — *à créer*
 - [ ] La Renaissance artistique — *à créer*
@@ -951,7 +951,7 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 - [x] Respiration, digestion et paysages — 5ème — SVT : respiration, digestion et paysages (16 fiches)
 - [x] Séismes, volcans et tectonique des plaques — 5ème — SVT : séismes, volcans et tectonique des plaques (17 fiches)
 - [x] Nutrition et reproduction des plantes à fleurs — 5ème — SVT : nutrition et reproduction des plantes à fleurs (17 fiches)
-- [x] Écosystèmes, chaînes alimentaires et biodiversité — 5ème — SVT : écosystèmes, chaînes alimentaires et biodiversité (16 fiches)
+- [x] Écosystèmes, chaînes alimentaires et biodiversité — 5ème — SVT : écosystèmes, chaînes alimentaires et biodiversité (18 fiches)
 - [ ] La cellule, unité du vivant — *à créer*
 - [ ] Les fossiles et l'histoire de la Terre — *à créer*
 - [ ] Hygiène, microbes et santé — *à créer*
@@ -981,8 +981,8 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 
 - [x] Prétérit simple et there is / there are — 5ème — Anglais : prétérit simple et there is / there are (16 fiches)
 - [x] Comparatifs, superlatifs et futur — 5ème — Anglais : comparatifs, superlatifs et futur (16 fiches)
-- [x] Présent en be + -ing et activités — 5ème — Anglais : présent en be + -ing et activités (16 fiches)
-- [x] La ville, les directions et les prépositions de lieu — 5ème — Anglais : la ville, les directions et les prépositions de lieu (16 fiches)
+- [x] Présent en be + -ing et activités — 5ème — Anglais : présent en be + -ing et activités (17 fiches)
+- [x] La ville, les directions et les prépositions de lieu — 5ème — Anglais : la ville, les directions et les prépositions de lieu (18 fiches)
 - [ ] Les verbes irréguliers du prétérit — *à créer*
 - [ ] Les quantifieurs (some, any, much, many) — *à créer*
 - [ ] Les pays et la culture anglophones — *à créer*
@@ -991,7 +991,7 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 ### 5e — Espagnol (2 / 6)
 
 - [x] Premiers pas en LV2 — 5ème — Espagnol : premiers pas en LV2 (18 fiches)
-- [x] Nombres, heure, jours et date — 5ème — Espagnol : nombres, heure, jours et date (16 fiches)
+- [x] Nombres, heure, jours et date — 5ème — Espagnol : nombres, heure, jours et date (18 fiches)
 - [ ] Se présenter et la famille — *à créer*
 - [ ] Le présent de l'indicatif — *à créer*
 - [ ] Les goûts avec gustar — *à créer*
@@ -1006,7 +1006,7 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 
 ### 5e — Italien (1 / 3)
 
-- [x] Premiers pas en LV2 — 5ème — Italien : premiers pas en LV2 (16 fiches)
+- [x] Premiers pas en LV2 — 5ème — Italien : premiers pas en LV2 (19 fiches)
 - [ ] La famille et la description — *à créer*
 - [ ] Le présent des verbes réguliers — *à créer*
 
@@ -1018,7 +1018,7 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 
 ### 5e — Arts plastiques (1 / 2)
 
-- [x] Couleurs, composition et vocabulaire — 5ème — Arts plastiques : couleurs, composition et vocabulaire (16 fiches)
+- [x] Couleurs, composition et vocabulaire — 5ème — Arts plastiques : couleurs, composition et vocabulaire (20 fiches)
 - [ ] La matérialité de l'œuvre — *à créer*
 
 ### 5e — Éducation musicale (0 / 2)
@@ -1110,7 +1110,7 @@ Collège — 54 chapitres couverts sur 91, 54 boîtes.
 - [x] Circuits électriques et vitesse — 4ème — Physique : circuits électriques et vitesse (16 fiches)
 - [x] Formes d'énergie et conversions — 4ème — Physique : formes d'énergie et conversions (16 fiches)
 - [x] Signaux sonores et lumineux — 4ème — Physique : signaux sonores et lumineux (16 fiches)
-- [x] Interactions et forces — 4ème — Physique : interactions et forces (16 fiches)
+- [x] Interactions et forces — 4ème — Physique : interactions et forces (18 fiches)
 - [ ] Lumière, couleurs et vision — *à créer*
 
 ### 4e — Chimie (3 / 4)
@@ -1133,27 +1133,27 @@ Collège — 54 chapitres couverts sur 91, 54 boîtes.
 - [x] Comparatifs et superlatifs — 4ème — Anglais : comparatifs et superlatifs (16 fiches)
 - [x] Prétérit ou present perfect — 4ème — Anglais : prétérit ou present perfect (17 fiches)
 - [x] Les modaux (can, must, should, may...) — 4ème — Anglais : les modaux (can, must, should, may...) (15 fiches)
-- [x] Futur (will, be going to) et prétérit en be + -ing — 4ème — Anglais : futur (will, be going to) et prétérit en be + -ing (16 fiches)
+- [x] Futur (will, be going to) et prétérit en be + -ing — 4ème — Anglais : futur (will, be going to) et prétérit en be + -ing (17 fiches)
 - [ ] Les pronoms relatifs — *à créer*
 - [ ] Les quantifieurs et les dénombrables — *à créer*
 
 ### 4e — Espagnol (2 / 4)
 
 - [x] Ser et estar, gustar et le passé composé — 4ème — Espagnol : ser et estar, gustar et le passé composé (16 fiches)
-- [x] Futur, ir a + infinitif et impératif — 4ème — Espagnol : futur, ir a + infinitif et impératif (16 fiches)
+- [x] Futur, ir a + infinitif et impératif — 4ème — Espagnol : futur, ir a + infinitif et impératif (17 fiches)
 - [ ] Le passé simple (pretérito indefinido) — *à créer*
 - [ ] Les pays hispanophones — *à créer*
 
 ### 4e — Allemand (2 / 4)
 
 - [x] Perfekt, verbes de modalité et place du verbe — 4ème — Allemand : Perfekt, verbes de modalité et place du verbe (16 fiches)
-- [x] Datif, prépositions et localisation — 4ème — Allemand : datif, prépositions et localisation (16 fiches)
+- [x] Datif, prépositions et localisation — 4ème — Allemand : datif, prépositions et localisation (17 fiches)
 - [ ] Le prétérit des auxiliaires et des modaux — *à créer*
 - [ ] Les pays germanophones — *à créer*
 
 ### 4e — Italien (1 / 3)
 
-- [x] Le présent et la vie quotidienne — 4ème — Italien : le présent et la vie quotidienne (16 fiches)
+- [x] Le présent et la vie quotidienne — 4ème — Italien : le présent et la vie quotidienne (18 fiches)
 - [ ] Le passé composé — *à créer*
 - [ ] Les villes et les régions d'Italie — *à créer*
 
@@ -1468,15 +1468,15 @@ Lycée — 70 chapitres couverts sur 82, 70 boîtes.
 
 - [x] Vivre entre générations (vocabulaire et expressions) — Seconde — Anglais : vivre entre générations (vocabulaire et expressions) (16 fiches)
 - [x] Les univers professionnels, le monde du travail — Seconde — Anglais : les univers professionnels, le monde du travail (18 fiches)
-- [x] Grammaire essentielle (temps, modaux, passif) — Seconde — Anglais : grammaire essentielle (temps, modaux, passif) (16 fiches)
-- [x] Vocabulaire des axes (identités, sauver la planète, création) — Seconde — Anglais : vocabulaire des axes (identités, sauver la planète, création) (16 fiches)
+- [x] Grammaire essentielle (temps, modaux, passif) — Seconde — Anglais : grammaire essentielle (temps, modaux, passif) (17 fiches)
+- [x] Vocabulaire des axes (identités, sauver la planète, création) — Seconde — Anglais : vocabulaire des axes (identités, sauver la planète, création) (20 fiches)
 
 ### Seconde — Espagnol (4 / 4)
 
 - [x] El pueblo, el barrio, la ciudad — Seconde — Espagnol : el pueblo, el barrio, la ciudad (17 fiches)
 - [x] El mundo laboral — Seconde — Espagnol : el mundo laboral (18 fiches)
-- [x] Raconter au passé (passé simple et imparfait) — Seconde — Espagnol : raconter au passé (passé simple et imparfait) (16 fiches)
-- [x] Vocabulaire de l'environnement, de la ville et de la société — Seconde — Espagnol : vocabulaire de l'environnement, de la ville et de la société (16 fiches)
+- [x] Raconter au passé (passé simple et imparfait) — Seconde — Espagnol : raconter au passé (passé simple et imparfait) (18 fiches)
+- [x] Vocabulaire de l'environnement, de la ville et de la société — Seconde — Espagnol : vocabulaire de l'environnement, de la ville et de la société (20 fiches)
 
 ### Seconde — Allemand (2 / 2)
 
@@ -1623,13 +1623,13 @@ Lycée — 113 chapitres couverts sur 124, 113 boîtes.
 - [x] Une longue histoire de la matière — 1ère — Enseignement scientifique : une longue histoire de la matière (19 fiches)
 - [x] L'âge de la Terre et sa place dans l'Univers — 1ère — Enseignement scientifique : l'âge de la Terre et sa place dans l'Univers (16 fiches)
 - [x] Son, musique et audition — 1ère — Enseignement scientifique : son, musique et audition (16 fiches)
-- [x] Énergie solaire, bilan radiatif et photosynthèse — 1ère — Enseignement scientifique : énergie solaire, bilan radiatif et photosynthèse (16 fiches)
+- [x] Énergie solaire, bilan radiatif et photosynthèse — 1ère — Enseignement scientifique : énergie solaire, bilan radiatif et photosynthèse (17 fiches)
 
 ### Première — Anglais (3 / 3)
 
 - [x] Grammaire pour argumenter et raconter (B1-B2) — 1ère — Anglais : grammaire pour argumenter et raconter (B1-B2) (17 fiches)
-- [x] Vocabulaire des axes du cycle terminal — 1ère — Anglais : vocabulaire des axes du cycle terminal (16 fiches)
-- [x] Expressions pour présenter un document et prendre la parole — 1ère — Anglais : expressions pour présenter un document et prendre la parole (16 fiches)
+- [x] Vocabulaire des axes du cycle terminal — 1ère — Anglais : vocabulaire des axes du cycle terminal (19 fiches)
+- [x] Expressions pour présenter un document et prendre la parole — 1ère — Anglais : expressions pour présenter un document et prendre la parole (18 fiches)
 
 ### Première — LLCER anglais (1 / 3)
 
@@ -1729,7 +1729,7 @@ Lycée — 173 chapitres couverts sur 175, 173 boîtes.
 - [x] Lois discrètes et lois à densité — Terminale — Maths complémentaires : lois discrètes et lois à densité (19 fiches)
 - [x] Statistique à deux variables et inégalités — Terminale — Maths complémentaires : statistique à deux variables et inégalités (16 fiches)
 - [x] Modèles d'évolution discrets et continus — Terminale — Maths complémentaires : modèles d'évolution discrets et continus (16 fiches)
-- [x] Suites, modèles d'évolution et logarithme — Terminale — Maths complémentaires : suites, modèles d'évolution et logarithme (16 fiches)
+- [x] Suites, modèles d'évolution et logarithme — Terminale — Maths complémentaires : suites, modèles d'évolution et logarithme (17 fiches)
 
 ### Terminale — Mathématiques expertes (5 / 5)
 
@@ -1911,7 +1911,7 @@ Lycée — 173 chapitres couverts sur 175, 173 boîtes.
 
 - [x] Expressions et grammaire utiles au bac — Allemand — Expressions et grammaire utiles au bac (22 fiches)
 - [x] Vocabulaire et repères des axes du cycle terminal — Terminale — Allemand : vocabulaire et repères des axes du cycle terminal (16 fiches)
-- [x] Repères de civilisation (Allemagne depuis 1945) — Terminale — Allemand : repères de civilisation (Allemagne depuis 1945) (16 fiches)
+- [x] Repères de civilisation (Allemagne depuis 1945) — Terminale — Allemand : repères de civilisation (Allemagne depuis 1945) (17 fiches)
 
 ### Terminale — Italien (2 / 2)
 
