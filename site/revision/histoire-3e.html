@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision d&#x27;histoire en 3e — darwin</title>
+<meta name="description" content="13 boîtes et 286 fiches d&#x27;histoire en 3e, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision d&#x27;histoire en 3e — darwin" />
+<meta property="og:description" content="13 boîtes et 286 fiches d&#x27;histoire en 3e, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Collège › 3e › Histoire</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision d&#x27;histoire en 3e</h1>
+        <div class="facts">
+          <div><b>13</b><span>boîtes</span></div>
+          <div><b>286</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en 3e. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes d'histoire en 3e</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>Brevet — Histoire : Seconde Guerre mondiale, Vichy et Résistance</h3><p>Guerre d&#x27;anéantissement, génocides, régime de Vichy et Résistance : les repères de 1939-1945.</p><span class="n">20 fiches</span></li>
+        <li><h3>Brevet — Histoire : démocraties et totalitarismes (1918-1939)</h3><p>URSS de Staline, Allemagne nazie et France du Front populaire : l&#x27;entre-deux-guerres en fiches.</p><span class="n">16 fiches</span></li>
+        <li><h3>Brevet — Histoire : enjeux et conflits dans le monde après 1989</h3><p>Fin de la guerre froide, hyperpuissance américaine, terrorisme, nouveaux conflits et monde multipolaire.</p><span class="n">16 fiches</span></li>
+        <li><h3>Brevet — Histoire : femmes et hommes dans la société (1950-1980)</h3><p>Trente Glorieuses, consommation, mai 68 et conquête de nouveaux droits pour les femmes et les jeunes.</p><span class="n">16 fiches</span></li>
+        <li><h3>Brevet — Histoire : grands discours et textes patrimoniaux</h3><p>Auteur, date et idée principale des grands discours et textes du XXe siècle étudiés en 3ème.</p><span class="n">20 fiches</span></li>
+        <li><h3>Brevet — Histoire : guerre froide, décolonisation et Europe</h3><p>Le monde après 1945 : affrontement des blocs, indépendances et construction européenne. Dates, notions et crises clés de la guerre froide (1947-1991), des décolonisations et des étapes de la construction européenne.</p><span class="n">19 fiches</span></li>
+        <li><h3>Brevet — Histoire : la France de 1944 à nos jours</h3><p>Refonder la République, la Ve République et l&#x27;évolution de la place des femmes depuis 1944.</p><span class="n">18 fiches</span></li>
+        <li><h3>Brevet — Histoire : la Première Guerre mondiale</h3><p>Les causes, les grandes batailles, la guerre totale et le bilan de la Grande Guerre (1914-1918).</p><span class="n">19 fiches</span></li>
+        <li><h3>Brevet — Histoire : la guerre d&#x27;Algérie (1954-1962)</h3><p>De la Toussaint rouge aux accords d&#x27;Évian : les étapes, les acteurs et les mémoires de la guerre d&#x27;Algérie.</p><span class="n">17 fiches</span></li>
+        <li><h3>Brevet — Histoire : lieux et repères spatiaux du programme</h3><p>Situer sur une carte les lieux clés des guerres mondiales, de la guerre froide et du monde depuis 1945.</p><span class="n">19 fiches</span></li>
+        <li><h3>Brevet — Histoire : notions et personnages clés</h3><p>Le vocabulaire et les grands personnages du programme d&#x27;histoire de 3ème, pour compléter les dates.</p><span class="n">36 fiches</span></li>
+        <li><h3>Brevet — Histoire des arts : les arts au XXe siècle</h3><p>Mouvements, œuvres et artistes majeurs du XXe siècle en lien avec l&#x27;histoire de 3ème.</p><span class="n">17 fiches</span></li>
+        <li><h3>Histoire — Les dates clés du Brevet</h3><p>Les grandes dates du programme d&#x27;histoire de 3ème, de 1914 à nos jours.</p><span class="n">53 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en 3e</h2><ul class="links"><li><a href="emc-3e.html">EMC</a></li><li><a href="svt-3e.html">SVT</a></li><li><a href="allemand-3e.html">Allemand</a></li><li><a href="anglais-3e.html">Anglais</a></li><li><a href="arts-plastiques-3e.html">Arts plastiques</a></li><li><a href="chimie-3e.html">Chimie</a></li><li><a href="espagnol-3e.html">Espagnol</a></li><li><a href="francais-3e.html">Français</a></li><li><a href="grec-ancien-3e.html">Grec ancien</a></li><li><a href="geographie-3e.html">Géographie</a></li><li><a href="italien-3e.html">Italien</a></li><li><a href="latin-3e.html">Latin</a></li><li><a href="mathematiques-3e.html">Mathématiques</a></li><li><a href="physique-3e.html">Physique</a></li><li><a href="technologie-3e.html">Technologie</a></li><li><a href="education-musicale-3e.html">Éducation musicale</a></li></ul>
+      <h2>Histoire : autres niveaux</h2><ul class="links"><li><a href="histoire-cm1.html">Histoire <small>CM1</small></a></li><li><a href="histoire-cm2.html">Histoire <small>CM2</small></a></li><li><a href="histoire-6e.html">Histoire <small>6e</small></a></li><li><a href="histoire-5e.html">Histoire <small>5e</small></a></li><li><a href="histoire-4e.html">Histoire <small>4e</small></a></li><li><a href="histoire-seconde.html">Histoire <small>seconde</small></a></li><li><a href="histoire-premiere.html">Histoire <small>1re</small></a></li><li><a href="histoire-terminale.html">Histoire <small>terminale</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Les dates clés du Brevet", "q": "Début de la Première Guerre mondiale : quelle date ?", "a": "1914 (août)\nL'Allemagne déclare la guerre à la Russie puis à la France.", "more": ""}, {"theme": "Notions et personnages clés", "q": "Comment appelle-t-on une guerre qui mobilise toutes les ressources d'un pays et touche les civils ?", "a": "Une guerre totale", "more": "Ressources humaines, économiques et morales sont mobilisées. Ex. : les deux guerres mondiales."}, {"theme": "La Première Guerre mondiale", "q": "Quel événement déclenche la crise qui mène à la Première Guerre mondiale ?", "a": "L'assassinat de l'archiduc François-Ferdinand à Sarajevo", "more": "Le 28 juin 1914, l'héritier de l'Autriche-Hongrie est tué par le nationaliste serbe Gavrilo Princip."}, {"theme": "Démocraties et totalitarismes (1918-1939)", "q": "Comment appelle-t-on un régime qui contrôle tous les aspects de la vie des individus ?", "a": "Un régime totalitaire", "more": "Parti unique, chef tout-puissant, propagande et terreur, contrôle de l'économie et de la jeunesse : il veut créer un « homme nouveau »."}, {"theme": "Seconde Guerre mondiale, Vichy et Résistance", "q": "Quel pacte est signé entre Hitler et Staline le 23 août 1939 ?", "a": "Le pacte germano-soviétique", "more": "Un pacte de non-agression qui prévoit secrètement le partage de la Pologne."}, {"theme": "Guerre froide, décolonisation et Europe", "q": "Qu'est-ce que la guerre froide ?", "a": "L'affrontement indirect entre les États-Unis et l'URSS, de 1947 à 1991", "more": "Bloc de l'Ouest capitaliste contre bloc de l'Est communiste, sans guerre directe entre eux."}, {"theme": "La France de 1944 à nos jours", "q": "Quel gouvernement rétablit la République à la Libération ?", "a": "Le GPRF (Gouvernement provisoire de la République française)", "more": "De 1944 à 1946, dirigé d'abord par de Gaulle."}, {"theme": "Histoire des arts : les arts au XXe siècle", "q": "Quels peintres lancent le cubisme vers 1907-1908 ?", "a": "Picasso et Braque", "more": "Les objets sont représentés sous plusieurs angles à la fois, en formes géométriques. Ex. : Les Demoiselles d'Avignon (1907)."}, {"theme": "Lieux et repères spatiaux du programme", "q": "Dans quel département se trouve Verdun ?", "a": "La Meuse", "more": "Au nord-est de la France. De février à décembre 1916, Français contre Allemands : le symbole de la guerre d'usure."}, {"theme": "Grands discours et textes patrimoniaux", "q": "Qui déclare en 1918 : « Politique intérieure, je fais la guerre » ?", "a": "Georges Clemenceau", "more": "« Politique extérieure, je fais toujours la guerre. » Il veut mener la guerre jusqu'à la victoire."}, {"theme": "La guerre d'Algérie (1954-1962)", "q": "En quelle année commence la conquête de l'Algérie par la France ?", "a": "1830", "more": "L'Algérie est ensuite organisée en départements français."}, {"theme": "Femmes et hommes dans la société (1950-1980)", "q": "Comment appelle-t-on la forte croissance économique de 1945 au milieu des années 1970 ?", "a": "Les Trente Glorieuses", "more": "Expression de Jean Fourastié (1979)."}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

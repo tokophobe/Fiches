@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de français en CP — darwin</title>
+<meta name="description" content="43 boîtes et 611 fiches de français en CP, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de français en CP — darwin" />
+<meta property="og:description" content="43 boîtes et 611 fiches de français en CP, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Primaire › CP › Français</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de français en CP</h1>
+        <div class="facts">
+          <div><b>43</b><span>boîtes</span></div>
+          <div><b>611</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en CP. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de français en CP</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>CP — Français : deviner grâce aux indices du texte</h3><p>Je trouve ce que le texte ne dit pas, grâce aux indices.</p><span class="n">13 fiches</span></li>
+        <li><h3>CP — Français : l&#x27;alphabet et le nom des lettres</h3><p>Connaître l&#x27;ordre des lettres, leur nom, les voyelles et les consonnes.</p><span class="n">16 fiches</span></li>
+        <li><h3>CP — Français : l&#x27;ordre des événements d&#x27;une histoire</h3><p>Je remets les étapes d&#x27;une histoire dans le bon ordre.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : la lettre c et le son « k » (c, ç, k, qu)</h3><p>Savoir quand c fait « k » ou « s », et écrire le son « k » avec c, k ou qu.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : la lettre g (g, gu, ge)</h3><p>Savoir quand g fait « g » ou « j », et à quoi servent gu et ge.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : la phrase, la majuscule et le point</h3><p>Je sais reconnaître et écrire une phrase correcte.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : le déterminant devant le nom</h3><p>Je reconnais le petit mot placé devant le nom.</p><span class="n">13 fiches</span></li>
+        <li><h3>CP — Français : le point d&#x27;interrogation et le point d&#x27;exclamation</h3><p>Je choisis le bon signe à la fin de la phrase : . ? ou !</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : le son « an » (an, am, en, em)</h3><p>Lire et écrire le son « an » avec an, am, en ou em.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : le son « eu » (eu, œu)</h3><p>Lire et écrire le son « eu » avec eu ou œu.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : le son « f » écrit f, ff ou ph</h3><p>Savoir lire ph comme un f et retrouver l&#x27;écriture du son « f » dans des mots.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : le son « ill » (ill, ail, eil, euil, ouil)</h3><p>Lire le son « ill » et ses familles : ail, eil, euil, ouil.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : le son « in » (in, im, ain, ein)</h3><p>Lire et écrire le son « in » avec in, im, ain ou ein.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : le son « o » (o, au, eau)</h3><p>Lire et écrire le son « o » avec o, au ou eau.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : le son « oi »</h3><p>Lire et écrire le son « oi » et le son « oin » dans des mots du quotidien.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : le son « on » (on, om)</h3><p>Lire le son « on » et savoir quand on l&#x27;écrit avec un m.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : le son « ou »</h3><p>Reconnaître et lire le son « ou » dans les mots, sans le confondre avec « u ».</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : le son « è » (è, ê, ai, ei, et)</h3><p>Lire et écrire le son « è » avec è, ê, ai, ei ou et.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : le son « é » (é, er, ez)</h3><p>Lire le son « é » écrit é, er ou ez, surtout à la fin des mots.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : le verbe qui dit l&#x27;action</h3><p>Je trouve le mot qui dit ce que l&#x27;on fait. Programme de CP, français (cycle 2), étude de la langue, identifier les classes de mots : le verbe qui dit l&#x27;action — pour repérer le verbe dans une phrase simple.</p><span class="n">13 fiches</span></li>
+        <li><h3>CP — Français : les familles de mots</h3><p>Je reconnais les mots d&#x27;une même famille. Programme de CP, français (cycle 2), étude de la langue, vocabulaire : les familles de mots — pour comprendre et écrire des mots nouveaux à partir d&#x27;un mot connu.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : les jours de la semaine</h3><p>Je connais les jours de la semaine dans l&#x27;ordre. Programme de CP, français (cycle 2), étude de la langue, vocabulaire : les mots du temps, les jours de la semaine — pour les dire, les écrire et les ranger dans l&#x27;ordre.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : les mois et les saisons</h3><p>Je connais les mois de l&#x27;année et les quatre saisons. Programme de CP, français (cycle 2), étude de la langue, vocabulaire : les mots du temps, mois et saisons — pour les nommer et les ranger dans l&#x27;ordre de l&#x27;année.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Français : les mots contraires</h3><p>Je trouve le mot qui veut dire le contraire. Programme de CP, français (cycle 2), étude de la langue, vocabulaire : les contraires (antonymes) — pour enrichir son vocabulaire en associant les mots par paires opposées.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Français : les mots qui veulent dire la même chose</h3><p>Je trouve un mot qui veut dire presque la même chose. Programme de CP, français (cycle 2), étude de la langue, vocabulaire : les synonymes simples — pour apprendre à remplacer un mot par un autre de même sens.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : les personnages d&#x27;une histoire</h3><p>Je retrouve qui fait quoi dans une petite histoire.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : les petits mots-outils</h3><p>Les petits mots très fréquents à reconnaître d&#x27;un coup d&#x27;œil : et, est, avec, dans, sur, mais…</p><span class="n">16 fiches</span></li>
+        <li><h3>CP — Français : les sons et leurs écritures</h3><p>Les sons du CP et les lettres qui les écrivent : ou, on, an, in, oi, ch, é, è…</p><span class="n">16 fiches</span></li>
+        <li><h3>CP — Français : les sons « ch » et « gn »</h3><p>Lire les sons « ch » et « gn », écrits avec deux lettres.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : les sons « s » et « z » (s, ss, z)</h3><p>Ne plus confondre poisson et poison : bien lire s, ss et z.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : les syllabes et les lettres muettes</h3><p>Découper un mot en syllabes et repérer les lettres qu&#x27;on écrit mais qu&#x27;on n&#x27;entend pas.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Français : lire des syllabes simples et inversées</h3><p>Assembler une consonne et une voyelle pour lire une syllabe, puis un mot.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Français : lire les syllabes avec deux consonnes (bl, pr, tr…)</h3><p>Lire des syllabes comme bra, pli ou tro, où deux consonnes se suivent.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Français : masculin et féminin</h3><p>Je sais si un nom est masculin ou féminin. Programme de CP, français (cycle 2), étude de la langue, le genre des noms : masculin et féminin — pour choisir le bon déterminant et former le féminin de noms courants.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : ne pas confondre f et v, ch et j</h3><p>Bien entendre et écrire f ou v, ch ou j dans les mots.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : ne pas confondre p et b, t et d</h3><p>Bien entendre et écrire p ou b, t ou d dans les mots.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : où et quand se passe l&#x27;histoire</h3><p>Je retrouve le lieu et le moment d&#x27;une petite histoire. Programme de CP, français (cycle 2), lecture et compréhension de l&#x27;écrit : repérer le lieu et le moment d&#x27;un récit — pour apprendre à répondre aux questions « où ?</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : ranger les mots dans l&#x27;ordre alphabétique</h3><p>Je range des mots dans l&#x27;ordre de l&#x27;alphabet. Programme de CP, français (cycle 2), écriture et étude de la langue : connaître l&#x27;ordre alphabétique — pour ranger des mots et préparer l&#x27;usage du dictionnaire.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : ranger les mots par catégories</h3><p>Je trouve le mot qui regroupe d&#x27;autres mots, et l&#x27;intrus. Programme de CP, français (cycle 2), étude de la langue, vocabulaire : catégoriser les mots et trouver le mot générique — pour organiser son vocabulaire.</p><span class="n">15 fiches</span></li>
+        <li><h3>CP — Français : reconnaître le nom</h3><p>Je reconnais les noms : personnes, animaux, choses, lieux.</p><span class="n">14 fiches</span></li>
+        <li><h3>CP — Français : singulier et pluriel</h3><p>Je sais écrire un nom quand il y en a un seul ou plusieurs. Programme de CP, français (cycle 2), étude de la langue, le nombre des noms : singulier et pluriel, la marque -s — pour accorder les noms à l&#x27;écrit.</p><span class="n">13 fiches</span></li>
+        <li><h3>CP — Français : écrire les majuscules et les minuscules</h3><p>Je passe d&#x27;une minuscule à une majuscule et je copie sans erreur.</p><span class="n">13 fiches</span></li>
+        <li><h3>CP — Français : écrire les mots invariables courants</h3><p>J&#x27;apprends à écrire sans erreur les petits mots qui ne changent jamais.</p><span class="n">16 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en CP</h2><ul class="links"><li><a href="emc-cp.html">EMC</a></li><li><a href="anglais-cp.html">Anglais</a></li><li><a href="mathematiques-cp.html">Mathématiques</a></li><li><a href="questionner-le-monde-cp.html">Questionner le monde</a></li><li><a href="education-artistique-cp.html">Éducation artistique</a></li><li><a href="education-physique-cp.html">Éducation physique</a></li></ul>
+      <h2>Français : autres niveaux</h2><ul class="links"><li><a href="francais-ce1.html">Français <small>CE1</small></a></li><li><a href="francais-ce2.html">Français <small>CE2</small></a></li><li><a href="francais-cm1.html">Français <small>CM1</small></a></li><li><a href="francais-cm2.html">Français <small>CM2</small></a></li><li><a href="francais-6e.html">Français <small>6e</small></a></li><li><a href="francais-5e.html">Français <small>5e</small></a></li><li><a href="francais-4e.html">Français <small>4e</small></a></li><li><a href="francais-3e.html">Français <small>3e</small></a></li><li><a href="francais-seconde.html">Français <small>seconde</small></a></li><li><a href="francais-premiere.html">Français <small>1re</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Les sons et leurs écritures", "q": "Avec quelles lettres écrit-on le son « ou » ?", "a": "o et u", "more": "Comme dans loup."}, {"theme": "Les petits mots-outils", "q": "Complète avec « et » ou « est » : Papa ___ maman.", "a": "et", "more": "On peut dire « Papa et puis maman »."}, {"theme": "Les syllabes et les lettres muettes", "q": "Comment appelle-t-on un morceau de mot qu'on dit d'un seul coup de voix ?", "a": "Une syllabe", "more": "Ex. : ma-man."}, {"theme": "L'alphabet et le nom des lettres", "q": "Combien y a-t-il de lettres dans l'alphabet ?", "a": "Il y a 26 lettres.", "more": ""}, {"theme": "Lire des syllabes simples et inversées", "q": "Lis la syllabe : m + a.", "a": "ma, comme au début de « maman ».", "more": ""}, {"theme": "Le son « ou »", "q": "Entends-tu le son « ou » dans « loup » ?", "a": "Oui : l-ou-p, le p est muet.", "more": ""}, {"theme": "Le son « oi »", "q": "Entends-tu le son « oi » dans « voiture » ?", "a": "Oui : voi-ture.", "more": ""}, {"theme": "Le son « on » (on, om)", "q": "Entends-tu le son « on » dans « mouton » ?", "a": "Oui, à la fin : mou-ton.", "more": ""}, {"theme": "Le son « an » (an, am, en, em)", "q": "Entends-tu le son « an » dans « maman » ?", "a": "Oui, à la fin : ma-man.", "more": ""}, {"theme": "Le son « in » (in, im, ain, ein)", "q": "Entends-tu le son « in » dans « lapin » ?", "a": "Oui, à la fin : la-pin.", "more": ""}, {"theme": "Le son « eu » (eu, œu)", "q": "Entends-tu le son « eu » dans « feu » ?", "a": "Oui : f-eu.", "more": ""}, {"theme": "Le son « o » (o, au, eau)", "q": "Entends-tu le son « o » dans « vélo » ?", "a": "Oui, à la fin : vé-lo.", "more": ""}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

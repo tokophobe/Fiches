@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de français en CM1 — darwin</title>
+<meta name="description" content="31 boîtes et 440 fiches de français en CM1, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de français en CM1 — darwin" />
+<meta property="og:description" content="31 boîtes et 440 fiches de français en CM1, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Primaire › CM1 › Français</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de français en CM1</h1>
+        <div class="facts">
+          <div><b>31</b><span>boîtes</span></div>
+          <div><b>440</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en CM1. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de français en CM1</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>CM1 — Français : -é, -er ou -ez à la fin du verbe ?</h3><p>Choisir entre l&#x27;infinitif en -er, le participe passé en -é et la terminaison -ez.</p><span class="n">13 fiches</span></li>
+        <li><h3>CM1 — Français : adverbes, prépositions et conjonctions de coordination</h3><p>Reconnaître les mots invariables : adverbes, prépositions et conjonctions de coordination.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : bien utiliser le dictionnaire</h3><p>Trouver vite un mot dans le dictionnaire et comprendre ce qu&#x27;on y lit : entrée, abréviations, sens, exemples.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : ce/se, c&#x27;est/s&#x27;est, on/on n&#x27;</h3><p>Choisir entre ce et se, c&#x27;est et s&#x27;est, et ne pas oublier le n&#x27; de la négation après on.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : complément du verbe et complément de phrase</h3><p>Distinguer le complément du verbe, qu&#x27;on ne peut pas déplacer, du complément de phrase, mobile.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : conte, fable et récit d&#x27;aventure</h3><p>Reconnaître un conte, une fable ou un récit d&#x27;aventure, et savoir qui raconte l&#x27;histoire.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Français : l&#x27;accord du participe passé avec être</h3><p>Accorder le participe passé employé avec l&#x27;auxiliaire être avec le sujet du verbe.</p><span class="n">13 fiches</span></li>
+        <li><h3>CM1 — Français : l&#x27;accord du verbe avec son sujet</h3><p>Accorder le verbe avec son sujet, même dans les cas pièges.</p><span class="n">13 fiches</span></li>
+        <li><h3>CM1 — Français : l&#x27;imparfait</h3><p>Conjuguer à l&#x27;imparfait et savoir quand on l&#x27;emploie dans un récit.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : la phrase simple et ses constituants</h3><p>Repérer le verbe conjugué, le sujet et les compléments dans une phrase simple.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : le futur simple</h3><p>Conjuguer au futur les verbes réguliers et les verbes irréguliers les plus courants.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : le groupe nominal, épithète et complément du nom</h3><p>Trouver le nom noyau d&#x27;un groupe nominal et ses expansions : adjectif épithète et complément du nom.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : le passé composé</h3><p>Former le passé composé avec l&#x27;auxiliaire être ou avoir et le participe passé.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : le passé simple aux 3es personnes</h3><p>Conjuguer au passé simple à la 3e personne du singulier et du pluriel, le temps des récits.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Français : le présent des verbes fréquents</h3><p>Conjuguer au présent les verbes en -er, en -ir comme finir et les verbes irréguliers fréquents.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Français : le sujet du verbe sous toutes ses formes</h3><p>Trouver le sujet même quand il est inversé, éloigné ou composé de plusieurs mots.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : les accords dans le groupe nominal</h3><p>Accorder déterminant, nom et adjectif en genre et en nombre, et former le féminin.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Français : les classes de mots (nature et fonction)</h3><p>Reconnaître la classe d&#x27;un mot : nom, déterminant, adjectif, verbe, pronom…</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : les familles de mots et le radical</h3><p>Une famille de mots regroupe des mots formés sur le même radical et liés par le sens.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : les homophones grammaticaux</h3><p>a/à, et/est, son/sont, on/ont, ou/où, ces/ses : l&#x27;astuce pour choisir la bonne écriture.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Français : les pluriels particuliers</h3><p>Écrire le pluriel des noms en -al, -eau, -eu, -ou, -ail et des noms en -s, -x, -z.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Français : les pronoms personnels</h3><p>Utiliser les pronoms personnels pour remplacer un nom et éviter les répétitions.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : les préfixes et leur sens</h3><p>Les préfixes se placent devant le radical et changent le sens du mot : re-, in-, dé-, pré-…</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Français : les suffixes et leur sens</h3><p>Les suffixes se placent après le radical : -eur, -ette, -able, -age, -erie… Ils changent le sens ou la classe du mot.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : leur/leurs et la/l&#x27;a/là</h3><p>Distinguer leur pronom et leur(s) déterminant, puis la, l&#x27;a et là.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : mais/mes/met et peu/peut/peux</h3><p>Choisir entre mais, mes et met, puis entre peu, peut et peux.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : mots génériques et champ lexical</h3><p>Un mot générique englobe d&#x27;autres mots (fruit → pomme). Un champ lexical regroupe les mots d&#x27;un même thème.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : niveaux de langue et expressions imagées</h3><p>On ne parle pas pareil à un copain et au directeur : langage familier, courant, soutenu. Et les expressions imagées !</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : polysémie, sens propre et sens figuré</h3><p>Un mot peut avoir plusieurs sens. Le contexte aide à trouver le bon sens, propre ou figuré.</p><span class="n">14 fiches</span></li>
+        <li><h3>CM1 — Français : poésie et théâtre</h3><p>Vers, strophes et rimes pour la poésie ; répliques, didascalies et scènes pour le théâtre.</p><span class="n">15 fiches</span></li>
+        <li><h3>CM1 — Français : synonymes, antonymes et homonymes</h3><p>Synonymes : même sens. Antonymes : sens contraire. Homonymes : même prononciation, sens différent.</p><span class="n">15 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en CM1</h2><ul class="links"><li><a href="emc-cm1.html">EMC</a></li><li><a href="anglais-cm1.html">Anglais</a></li><li><a href="geographie-cm1.html">Géographie</a></li><li><a href="histoire-cm1.html">Histoire</a></li><li><a href="mathematiques-cm1.html">Mathématiques</a></li><li><a href="sciences-cm1.html">Sciences</a></li><li><a href="technologie-cm1.html">Technologie</a></li></ul>
+      <h2>Français : autres niveaux</h2><ul class="links"><li><a href="francais-cp.html">Français <small>CP</small></a></li><li><a href="francais-ce1.html">Français <small>CE1</small></a></li><li><a href="francais-ce2.html">Français <small>CE2</small></a></li><li><a href="francais-cm2.html">Français <small>CM2</small></a></li><li><a href="francais-6e.html">Français <small>6e</small></a></li><li><a href="francais-5e.html">Français <small>5e</small></a></li><li><a href="francais-4e.html">Français <small>4e</small></a></li><li><a href="francais-3e.html">Français <small>3e</small></a></li><li><a href="francais-seconde.html">Français <small>seconde</small></a></li><li><a href="francais-premiere.html">Français <small>1re</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Les homophones grammaticaux", "q": "Qu'est-ce qu'un homophone ?", "a": "Un mot qui se prononce comme un autre mais s'écrit autrement", "more": "Ex. : a / à."}, {"theme": "La phrase simple et ses constituants", "q": "Combien de verbes conjugués a une phrase simple ?", "a": "Un seul", "more": "Ex. : « Le chat dort sur le canapé. »"}, {"theme": "Le sujet du verbe sous toutes ses formes", "q": "Quels types de mots peuvent être sujet du verbe ?", "a": "• Un nom propre : Paul\n• Un groupe nominal : le petit chien\n• Un pronom : il, nous", "more": ""}, {"theme": "Complément du verbe et complément de phrase", "q": "Qu'est-ce qu'un complément du verbe ?", "a": "Un groupe qui complète le verbe, ni déplaçable ni supprimable", "more": "En général. Ex. : « Léo mange une pomme. »"}, {"theme": "Les classes de mots (nature et fonction)", "q": "Qu'est-ce que la classe (ou nature) d'un mot ?", "a": "Ce qu'est le mot, comme dans le dictionnaire : nom, verbe, adjectif…\nElle ne change pas selon la phrase.", "more": ""}, {"theme": "Les pronoms personnels", "q": "À quoi sert un pronom ?", "a": "À remplacer un nom ou un groupe nominal pour éviter de le répéter.\nEx. : « Léa joue. Elle rit. »", "more": ""}, {"theme": "Adverbes, prépositions et conjonctions de coordination", "q": "Que veut dire « mot invariable » ?", "a": "Un mot qui ne change jamais :\nni au féminin, ni au pluriel.", "more": ""}, {"theme": "Le groupe nominal, épithète et complément du nom", "q": "Qu'est-ce qu'un groupe nominal (GN) ?", "a": "Un groupe de mots organisé autour d'un nom, le nom noyau.\nEx. : « un gros chat noir ».", "more": ""}, {"theme": "Le présent des verbes fréquents", "q": "Quelles sont les terminaisons du présent des verbes en -er (comme chanter) ?", "a": "-e, -es, -e, -ons, -ez, -ent.\nEx. : je chante, tu chantes, il chante, nous chantons, vous chantez, ils chantent.", "more": ""}, {"theme": "Le futur simple", "q": "À quoi sert le futur ?", "a": "À exprimer une action qui aura lieu plus tard.\nEx. : « Demain, je partirai. »", "more": ""}, {"theme": "L'imparfait", "q": "Quelles sont les terminaisons de l'imparfait ?", "a": "-ais, -ais, -ait, -ions, -iez, -aient\n(les mêmes pour tous les verbes).", "more": ""}, {"theme": "Le passé simple aux 3es personnes", "q": "Dans quels textes rencontre-t-on souvent le passé simple ?", "a": "Dans les récits écrits : contes, romans, histoires.\nEx. : « Le loup entra dans la maison. »", "more": ""}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

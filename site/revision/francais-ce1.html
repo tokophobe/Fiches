@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de français en CE1 — darwin</title>
+<meta name="description" content="43 boîtes et 607 fiches de français en CE1, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de français en CE1 — darwin" />
+<meta property="og:description" content="43 boîtes et 607 fiches de français en CE1, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Primaire › CE1 › Français</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de français en CE1</h1>
+        <div class="facts">
+          <div><b>43</b><span>boîtes</span></div>
+          <div><b>607</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en CE1. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de français en CE1</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>CE1 — Français : c ou ç (la cédille)</h3><p>Quand le c fait « k » ou « s », et quand mettre une cédille. Programme de CE1, français (cycle 2), orthographe : valeurs de la lettre c et emploi de la cédille — pour écrire « garçon » et « leçon » sans erreur.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : g, ge ou gu</h3><p>Gare, girafe, guitare, pigeon : bien écrire les sons « g » et « j ». Programme de CE1, français (cycle 2), orthographe : valeurs de la lettre g et écritures ge, gu — pour écrire les sons « g » et « j » correctement.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : l&#x27;adjectif</h3><p>Trouver l&#x27;adjectif qui dit comment est le nom et savoir à quoi il sert.</p><span class="n">13 fiches</span></li>
+        <li><h3>CE1 — Français : l&#x27;imparfait de être, avoir et des verbes en -er</h3><p>Conjuguer être, avoir et les verbes en -er à l&#x27;imparfait pour raconter le passé.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : l&#x27;ordre alphabétique et le dictionnaire</h3><p>Ranger des mots dans l&#x27;ordre alphabétique et chercher un mot dans le dictionnaire.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : la forme négative ne… pas</h3><p>Dire le contraire d&#x27;une phrase avec ne… pas, et ne pas oublier le « ne ». Programme de CE1, français (cycle 2), étude de la langue, la phrase : passer de la forme affirmative à la forme négative avec ne…</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : la phrase et les types de phrases</h3><p>Reconnaître une phrase et savoir si elle raconte, pose une question ou montre une émotion.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : le futur de être, avoir et des verbes en -er</h3><p>Conjuguer être, avoir et les verbes en -er au futur pour parler de demain.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : le groupe nominal</h3><p>Reconnaître un groupe nominal et l&#x27;enrichir avec un adjectif.</p><span class="n">13 fiches</span></li>
+        <li><h3>CE1 — Français : le nom commun et le nom propre</h3><p>Distinguer le nom commun du nom propre et savoir quand mettre une majuscule.</p><span class="n">13 fiches</span></li>
+        <li><h3>CE1 — Français : le passé composé de être, avoir et des verbes en -er</h3><p>Former le passé composé avec avoir et le participe passé pour raconter ce qu&#x27;on a fait.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : le pluriel des noms</h3><p>Mettre un nom au pluriel : le s, le x des noms en -eau, -au, -eu, et les noms qui ne changent pas.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE1 — Français : le présent de être, avoir et des verbes en -er</h3><p>Conjuguer au présent être, avoir et les verbes du 1er groupe comme chanter, avec les bonnes terminaisons.</p><span class="n">16 fiches</span></li>
+        <li><h3>CE1 — Français : le sujet et le verbe</h3><p>Trouver le verbe et son sujet dans une phrase, et les accorder.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : les accents é, è, ê et le mot où</h3><p>Accent aigu, grave ou circonflexe : savoir lequel mettre.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE1 — Français : les accords dans le groupe nominal</h3><p>Accorder le déterminant, le nom et l&#x27;adjectif en genre et en nombre.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : les contraires</h3><p>Trouver le mot qui dit le contraire d&#x27;un autre : chaud / froid, monter / descendre.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : les déterminants</h3><p>Reconnaître les déterminants placés devant le nom : le, une, des, mon, ce…</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : les familles de mots</h3><p>Trouver les mots de la même famille, qui se ressemblent et ont un sens proche.</p><span class="n">13 fiches</span></li>
+        <li><h3>CE1 — Français : les homophones a et à</h3><p>A ou à ? L&#x27;astuce pour ne plus se tromper. Programme de CE1, français (cycle 2), orthographe : homophones grammaticaux a / à — pour choisir la bonne écriture grâce à une astuce de remplacement.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : les homophones et et est</h3><p>Et ou est ? L&#x27;astuce pour bien choisir. Programme de CE1, français (cycle 2), orthographe : homophones grammaticaux et / est — pour choisir la bonne écriture grâce à une astuce de remplacement.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : les homophones on et ont</h3><p>On ou ont ? L&#x27;astuce pour bien choisir. Programme de CE1, français (cycle 2), orthographe : homophones grammaticaux on / ont — pour choisir la bonne écriture grâce à une astuce de remplacement.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : les homophones son et sont</h3><p>Son ou sont ? L&#x27;astuce pour bien choisir. Programme de CE1, français (cycle 2), orthographe : homophones grammaticaux son / sont — pour choisir la bonne écriture grâce à une astuce de remplacement.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : les lettres muettes en fin de mot et les mots de la même famille</h3><p>Trouver la lettre muette d&#x27;un mot grâce à un mot de sa famille.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE1 — Français : les mots génériques</h3><p>Trouver le mot qui regroupe d&#x27;autres mots : pomme, poire, banane sont des fruits.</p><span class="n">13 fiches</span></li>
+        <li><h3>CE1 — Français : les mots invariables à connaître</h3><p>Avec, dans, toujours, beaucoup… des mots qui ne changent jamais. Programme de CE1, français (cycle 2), orthographe : mémorisation des mots invariables fréquents — pour écrire sans erreur ces petits mots très utilisés.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE1 — Français : les mots à plusieurs sens, sens propre et sens figuré</h3><p>Comprendre qu&#x27;un même mot peut avoir plusieurs sens selon la phrase.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : les personnages et l&#x27;ordre des événements d&#x27;une histoire</h3><p>Qui ? Où ? Quand ? Dans quel ordre ? Comprendre une histoire.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE1 — Français : les pronoms personnels sujets</h3><p>Connaître je, tu, il, elle, on, nous, vous, ils, elles et savoir qui ils remplacent.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : les préfixes re-, dé- et in-</h3><p>Comprendre comment un préfixe placé devant un mot change son sens.</p><span class="n">13 fiches</span></li>
+        <li><h3>CE1 — Français : les synonymes</h3><p>Trouver des mots qui veulent dire presque la même chose pour éviter les répétitions.</p><span class="n">13 fiches</span></li>
+        <li><h3>CE1 — Français : les écritures du son « è » (è, ê, ai, ei, et)</h3><p>Mère, fête, lait, neige, jouet : les façons d&#x27;écrire le son « è ».</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : lire entre les lignes et trouver le bon titre</h3><p>Deviner ce que le texte ne dit pas et choisir un bon titre.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : lire et dire un poème</h3><p>Vers, strophes et rimes : reconnaître un poème.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : lire un texte documentaire</h3><p>À quoi sert un documentaire et comment le lire. Programme de CE1, français (cycle 2), lecture et compréhension de l&#x27;écrit : le texte documentaire — pour reconnaître un texte qui informe et savoir trouver une information.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : lire une recette et un texte qui explique comment faire</h3><p>Ingrédients, ustensiles, étapes : bien lire une recette.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : nom, verbe, déterminant, adjectif</h3><p>Reconnaître la nature des mots dans une phrase : le nom, le déterminant, l&#x27;adjectif et le verbe.</p><span class="n">16 fiches</span></li>
+        <li><h3>CE1 — Français : on écrit m devant m, b, p</h3><p>Pourquoi on écrit « jambe » mais « jante » : la règle du m devant m, b, p.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE1 — Français : passé, présent, futur et infinitif</h3><p>Savoir si une action se passe hier, aujourd&#x27;hui ou demain, et trouver l&#x27;infinitif d&#x27;un verbe.</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : reconnaître et comprendre un conte</h3><p>Les formules, les personnages et la magie des contes. Programme de CE1, français (cycle 2), lecture et compréhension de l&#x27;écrit : le conte — pour reconnaître un conte et se souvenir de contes célèbres.</p><span class="n">15 fiches</span></li>
+        <li><h3>CE1 — Français : s ou ss entre deux voyelles</h3><p>Poison ou poisson ? Bien choisir entre s et ss. Programme de CE1, français (cycle 2), orthographe : valeur de la lettre s (son « z » entre deux voyelles) et écriture ss — pour ne plus confondre « poison » et « poisson ».</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : écrire et lire un dialogue</h3><p>Guillemets, tirets, verbes de parole : qui parle dans le texte ?</p><span class="n">14 fiches</span></li>
+        <li><h3>CE1 — Français : écrire une phrase avec majuscules et ponctuation</h3><p>Majuscule, point, point d&#x27;interrogation, point d&#x27;exclamation : bien écrire une phrase.</p><span class="n">15 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en CE1</h2><ul class="links"><li><a href="emc-ce1.html">EMC</a></li><li><a href="anglais-ce1.html">Anglais</a></li><li><a href="mathematiques-ce1.html">Mathématiques</a></li><li><a href="questionner-le-monde-ce1.html">Questionner le monde</a></li><li><a href="education-artistique-ce1.html">Éducation artistique</a></li><li><a href="education-physique-ce1.html">Éducation physique</a></li></ul>
+      <h2>Français : autres niveaux</h2><ul class="links"><li><a href="francais-cp.html">Français <small>CP</small></a></li><li><a href="francais-ce2.html">Français <small>CE2</small></a></li><li><a href="francais-cm1.html">Français <small>CM1</small></a></li><li><a href="francais-cm2.html">Français <small>CM2</small></a></li><li><a href="francais-6e.html">Français <small>6e</small></a></li><li><a href="francais-5e.html">Français <small>5e</small></a></li><li><a href="francais-4e.html">Français <small>4e</small></a></li><li><a href="francais-3e.html">Français <small>3e</small></a></li><li><a href="francais-seconde.html">Français <small>seconde</small></a></li><li><a href="francais-premiere.html">Français <small>1re</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Nom, verbe, déterminant, adjectif", "q": "Qu'est-ce qu'un nom ?", "a": "Un mot qui désigne une personne, un animal ou une chose", "more": "Ex. : maman, chien, table."}, {"theme": "Le présent de être, avoir et des verbes en -er", "q": "Conjugue « être » au présent avec « tu ».", "a": "tu es", "more": "je suis, tu es, il est."}, {"theme": "Le pluriel des noms", "q": "Comment appelle-t-on un nom qui désigne plusieurs choses ou personnes ?", "a": "Un nom au pluriel", "more": "Ex. : des chats."}, {"theme": "Reconnaître et comprendre un conte", "q": "Par quelle formule commence souvent un conte ?", "a": "« Il était une fois… »", "more": ""}, {"theme": "Lire un texte documentaire", "q": "À quoi sert un texte documentaire ?", "a": "À donner des informations vraies sur un sujet\n(un animal, un pays, une machine…).", "more": ""}, {"theme": "Lire une recette et un texte qui explique comment faire", "q": "À quoi sert une recette ?", "a": "À expliquer comment préparer un plat, étape par étape.", "more": ""}, {"theme": "Lire et dire un poème", "q": "Comment s'appelle une personne qui écrit des poèmes ?", "a": "Un poète (ou une poétesse).", "more": ""}, {"theme": "Les personnages et l'ordre des événements d'une histoire", "q": "Qu'est-ce que le personnage principal d'une histoire ?", "a": "Le personnage le plus important,\ncelui dont on parle le plus.", "more": ""}, {"theme": "Lire entre les lignes et trouver le bon titre", "q": "Que veut dire « lire entre les lignes » ?", "a": "Comprendre ce que le texte ne dit pas directement,\ngrâce à des indices.", "more": ""}, {"theme": "On écrit m devant m, b, p", "q": "Quelle est la règle du m devant m, b, p ?", "a": "Devant m, b ou p, on écrit m au lieu de n :\n« am », « em », « im », « om ».", "more": ""}, {"theme": "S ou ss entre deux voyelles", "q": "Quel son fait la lettre s entre deux voyelles ?", "a": "Le son « z »,\ncomme dans « rose » ou « maison ».", "more": ""}, {"theme": "C ou ç (la cédille)", "q": "Quel son fait la lettre c devant a, o, u ?", "a": "Le son « k »,\ncomme dans « carotte », « cochon », « cube ».", "more": ""}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

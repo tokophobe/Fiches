@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Fiches de révision de physique en terminale — darwin</title>
+<meta name="description" content="13 boîtes et 235 fiches de physique en terminale, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:title" content="Fiches de révision de physique en terminale — darwin" />
+<meta property="og:description" content="13 boîtes et 235 fiches de physique en terminale, prêtes à réviser avec darwin : l&#x27;appli te fait revoir chaque fiche juste avant que tu l&#x27;oublies." />
+<meta property="og:image" content="../assets/robot.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="stylesheet" href="../assets/fonts.css" />
+<link rel="stylesheet" href="../assets/site.css" />
+<style>
+  .crumbs { font-size: 15px; color: var(--slate); margin: 0 0 12px; }
+  .crumbs a { color: var(--slate); }
+  .subject-hero { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; align-items: center; padding: 6px 0 56px; grid-template-areas: "title play" "copy play"; }
+  .sh-title { grid-area: title; align-self: end; }
+  .sh-copy { grid-area: copy; align-self: start; }
+  .subject-hero .play { grid-area: play; }
+  .play-note { margin: 0 0 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .facts { display: flex; gap: 28px; margin: 6px 0 26px; }
+  .facts b { display: block; font-size: 34px; line-height: 1; color: var(--sky-strong); }
+  .facts span { font-size: 15px; color: var(--slate); }
+  .boxes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .boxes li { background: var(--paper); border-radius: 16px; padding: 18px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.07); }
+  .boxes h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; }
+  .boxes p { margin: 0; color: var(--body); font-size: 16px; }
+  .boxes .n { display: inline-block; margin-top: 10px; font-size: 14px; color: var(--slate); }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; padding: 0; list-style: none; }
+  .links a { display: inline-block; padding: 7px 14px; border-radius: 999px; background: var(--paper); text-decoration: none; font-size: 16px; box-shadow: 0 3px 10px rgba(30, 60, 100, 0.06); }
+  .links a small { color: var(--slate); }
+  .idx-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center; padding: 6px 0 40px; }
+  .idx-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+  .idx-stats div { background: var(--paper); border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(30, 60, 100, 0.08); min-width: 120px; }
+  .idx-stats b { display: block; font-size: 30px; line-height: 1.05; color: var(--sky-strong); }
+  .idx-stats span { font-size: 15px; color: var(--slate); }
+  .jump { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; padding: 0; list-style: none; }
+  .jump a { display: inline-block; padding: 8px 16px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; }
+  .cycle { padding: 44px 0 10px; scroll-margin-top: 10px; }
+  .cycle-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .cycle-head h2 { margin: 0; }
+  .cycle-head span { color: var(--slate); font-size: 16px; }
+  .levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .level { background: var(--paper); border-radius: 20px; padding: 20px 22px 22px; box-shadow: 0 10px 26px rgba(30, 60, 100, 0.08); border-top: 6px solid var(--accent); }
+  .level h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+  .level .meta { margin: 4px 0 14px; font-size: 15px; color: var(--slate); }
+  .subjects { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .subjects a { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 10px; background: var(--mist); text-decoration: none; font-size: 15.5px; line-height: 1.25; transition: background 0.15s ease; }
+  .subjects a:hover { background: var(--sky-soft); }
+  .subjects i { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .subjects small { color: var(--slate); font-size: 13px; }
+  .primaire { --accent: #e0a23a; } .college { --accent: var(--sky); } .lycee { --accent: var(--violet); }
+  .jump .primaire { background: #e0a23a; } .jump .college { background: var(--sky); } .jump .lycee { background: var(--violet); }
+  @media (max-width: 860px) {
+    .subject-hero { grid-template-columns: 1fr; row-gap: 18px; grid-template-areas: "title" "play" "copy"; }
+    .boxes { grid-template-columns: 1fr; gap: 16px; }
+    .idx-hero { grid-template-columns: 1fr; gap: 20px; }
+    .levels { grid-template-columns: 1fr; }
+    .idx-stats { flex-wrap: nowrap; gap: 10px; }
+    .idx-stats div { min-width: 0; flex: 1; padding: 12px 14px; }
+    .idx-stats b { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="../defi.html">Défi du jour</a>
+      <a href="../revision/index.html">Fiches par matière</a>
+      <a href="../programme.html">Le programme</a>
+      <a class="install-link" href="../../index.html">Ouvrir l'appli</a>
+    </nav>
+  </header>
+  <main>
+    <p class="crumbs"><a href="index.html">Fiches de révision</a> › Lycée › terminale › Physique</p>
+    <section class="subject-hero">
+      <div class="sh-title">
+        <h1>Fiches de révision de physique en terminale</h1>
+        <div class="facts">
+          <div><b>13</b><span>boîtes</span></div>
+          <div><b>235</b><span>fiches</span></div>
+        </div>
+      </div>
+      <div class="sh-copy">
+        <p class="lead">Des fiches question / réponse prêtes à l'emploi, conformes au programme en terminale. Ajoute-les à tes révisions dans darwin : l'appli te les repose au bon moment, juste avant que tu les oublies.</p>
+        <a class="cta" href="../../index.html">Réviser avec darwin</a>
+      </div>
+      <div class="play">
+        <p class="play-note">Essaie quelques fiches ici, sans inscription</p>
+        <div id="robot"></div>
+        <div id="deck"></div>
+        <p class="score" id="score"></p>
+      </div>
+    </section>
+    <section class="band">
+      <h2>Les boîtes de physique en terminale</h2>
+      <p class="intro">Toutes ces boîtes sont dans la Librairie de darwin.</p>
+      <ul class="boxes">
+        <li><h3>Physique — Mécanique : mouvements et lois de Newton</h3><p>Vitesse, accélération, lois de Newton, chute libre, mouvement circulaire, satellites. Spécialité physique-chimie de Terminale : décrire un mouvement et le prévoir avec les lois de Newton.</p><span class="n">26 fiches</span></li>
+        <li><h3>Physique — Ondes, son et lumière</h3><p>Intensité sonore, effet Doppler, diffraction, interférences, effet photoélectrique, lunette. Spécialité physique-chimie de Terminale : propriétés des ondes et de la lumière.</p><span class="n">24 fiches</span></li>
+        <li><h3>Physique — Thermodynamique et circuits RC</h3><p>Énergie interne, transferts thermiques, gaz parfait, loi de Newton du refroidissement, dipôle RC. Spécialité physique-chimie de Terminale : bilans d&#x27;énergie et évolution temporelle d&#x27;un circuit RC.</p><span class="n">22 fiches</span></li>
+        <li><h3>Terminale STI2D — Physique : ondes sonores et ondes électromagnétiques</h3><p>Célérité, longueur d&#x27;onde, spectre, hauteur et timbre, niveau sonore en dB, ondes électromagnétiques et transmission d&#x27;informations.</p><span class="n">18 fiches</span></li>
+        <li><h3>Terminale STI2D — Physique : énergie mécanique, rotation et statique des fluides</h3><p>Principe fondamental de la dynamique, frottements, moment d&#x27;une force, couple, puissance en rotation, pression et statique des fluides.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale STI2D — Physique : énergie électrique en régime sinusoïdal</h3><p>Tension sinusoïdale, valeur efficace, puissances active et apparente, facteur de puissance, transport et protection électrique.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale spé — Physique : diffraction, interférences et effet Doppler en exercices</h3><p>Calculer une tache de diffraction, un interfrange, un décalage Doppler ; exploiter des mesures et des graphiques.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale spé — Physique : décroissance radioactive et datation</h3><p>Désintégrations α, β− et β+, loi de décroissance exponentielle, demi-vie, activité et datation au carbone 14.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale spé — Physique : mesure et incertitudes</h3><p>Variabilité, incertitude-type de type A et B, incertitude composée, écriture du résultat et écart normalisé.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale spé — Physique : satellites et planètes, exercices types</h3><p>Établir v et T d&#x27;un satellite, retrouver la 3e loi de Kepler, calculer une orbite, peser un astre : les étapes du bac.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — Physique : le photon, l&#x27;effet photoélectrique et le photovoltaïque</h3><p>Énergie du photon, effet photoélectrique, cellule photovoltaïque et diode électroluminescente.</p><span class="n">17 fiches</span></li>
+        <li><h3>Terminale — Physique : lunette astronomique et mécanique des fluides</h3><p>Lentilles, lunette afocale et grossissement, pression, Archimède, débit et relation de Bernoulli.</p><span class="n">16 fiches</span></li>
+        <li><h3>Terminale — Physique : mouvement dans un champ et lois de Kepler</h3><p>Mouvements dans un champ uniforme, satellites, mouvement circulaire et les trois lois de Kepler.</p><span class="n">16 fiches</span></li>
+      </ul>
+    </section>
+    <section class="band">
+      <h2>Autres matières en terminale</h2><ul class="links"><li><a href="dgemc-terminale.html">DGEMC</a></li><li><a href="emc-terminale.html">EMC</a></li><li><a href="hggsp-terminale.html">HGGSP</a></li><li><a href="hlp-terminale.html">HLP</a></li><li><a href="llcer-terminale.html">LLCER</a></li><li><a href="nsi-terminale.html">NSI</a></li><li><a href="ses-terminale.html">SES</a></li><li><a href="svt-terminale.html">SVT</a></li><li><a href="allemand-terminale.html">Allemand</a></li><li><a href="anglais-terminale.html">Anglais</a></li><li><a href="biochimie-terminale.html">Biochimie</a></li><li><a href="biologie-et-physiopathologie-humaines-terminale.html">Biologie et physiopathologie humaines</a></li><li><a href="biotechnologies-terminale.html">Biotechnologies</a></li><li><a href="chimie-terminale.html">Chimie</a></li><li><a href="droit-et-economie-terminale.html">Droit et économie</a></li><li><a href="enseignement-scientifique-terminale.html">Enseignement scientifique</a></li><li><a href="espagnol-terminale.html">Espagnol</a></li><li><a href="geographie-terminale.html">Géographie</a></li><li><a href="histoire-terminale.html">Histoire</a></li><li><a href="ingenierie-et-developpement-durable-2i2d-terminale.html">Ingénierie et développement durable (2I2D)</a></li><li><a href="italien-terminale.html">Italien</a></li><li><a href="management-terminale.html">Management</a></li><li><a href="mathematiques-terminale.html">Mathématiques</a></li><li><a href="mathematiques-complementaires-terminale.html">Mathématiques complémentaires</a></li><li><a href="mathematiques-expertes-terminale.html">Mathématiques expertes</a></li><li><a href="philosophie-terminale.html">Philosophie</a></li><li><a href="sciences-de-gestion-et-numerique-terminale.html">Sciences de gestion et numérique</a></li><li><a href="sciences-de-l-ingenieur-terminale.html">Sciences de l&#x27;ingénieur</a></li><li><a href="sciences-et-techniques-sanitaires-et-sociales-terminale.html">Sciences et techniques sanitaires et sociales</a></li></ul>
+      <h2>Physique : autres niveaux</h2><ul class="links"><li><a href="physique-5e.html">Physique <small>5e</small></a></li><li><a href="physique-4e.html">Physique <small>4e</small></a></li><li><a href="physique-3e.html">Physique <small>3e</small></a></li><li><a href="physique-seconde.html">Physique <small>seconde</small></a></li><li><a href="physique-premiere.html">Physique <small>1re</small></a></li></ul>
+    </section>
+  </main>
+  <script src="../assets/deck.js"></script>
+  <script>
+  (() => {
+    const CARDS = [{"theme": "Mécanique : mouvements et lois de Newton", "q": "Comment définit-on le vecteur vitesse ?", "a": "v⃗ = dOM⃗/dt", "more": ""}, {"theme": "Ondes, son et lumière", "q": "Quelle relation relie longueur d'onde, célérité et période ?", "a": "λ = v × T", "more": "Ou λ = v / f"}, {"theme": "Thermodynamique et circuits RC", "q": "Que dit le premier principe de la thermodynamique ?", "a": "ΔU = W + Q", "more": "Variation d'énergie interne = travail + transfert thermique reçus."}, {"theme": "Mouvement dans un champ et lois de Kepler", "q": "Quelle est l'expression du champ électrique entre deux plaques parallèles ?", "a": "E = U / d", "more": "Champ uniforme en V/m, dirigé de la plaque positive vers la plaque négative."}, {"theme": "Lunette astronomique et mécanique des fluides", "q": "Quelle est la relation de conjugaison d'une lentille mince ?", "a": "1/OA' − 1/OA = 1/f'", "more": "En mesures algébriques. O : centre optique ; A : objet ; A' : image ; f' : distance focale image."}, {"theme": "Le photon, l'effet photoélectrique et le photovoltaïque", "q": "Quelle relation donne l'énergie d'un photon ?", "a": "E = hν = hc/λ", "more": "h = 6,63 × 10⁻³⁴ J·s ; c = 3,00 × 10⁸ m/s."}, {"theme": "Mesure et incertitudes", "q": "Pourquoi des mesures répétées d'une même grandeur diffèrent-elles ?", "a": "À cause de la variabilité de la mesure", "more": "Opérateur, instrument, environnement introduisent des erreurs aléatoires."}, {"theme": "Décroissance radioactive et datation", "q": "Comment appelle-t-on un noyau instable qui se désintègre spontanément ?", "a": "Un noyau radioactif", "more": "Il émet une particule et souvent un rayonnement γ."}, {"theme": "Satellites et planètes, exercices types", "q": "Quels système et référentiel choisir pour un satellite terrestre ?", "a": "• Système : le satellite, assimilé à un point\n• Référentiel : géocentrique, supposé galiléen\n• Seule force : l'attraction gravitationnelle de la Terre", "more": ""}, {"theme": "Diffraction, interférences et effet Doppler en exercices", "q": "Quelle relation donne l'écart angulaire de diffraction par une fente de largeur a ?", "a": "θ = λ/a", "more": "θ en radians (petit angle), λ et a dans la même unité."}, {"theme": "Ondes sonores et ondes électromagnétiques", "q": "Quelle différence entre onde mécanique et onde électromagnétique ?", "a": "• Mécanique (son) : a besoin d'un milieu matériel\n• Électromagnétique (lumière, radio) : se propage aussi dans le vide", "more": ""}, {"theme": "Énergie électrique en régime sinusoïdal", "q": "Quelle est l'expression d'une tension sinusoïdale ?", "a": "u(t) = Umax × sin(ωt + φ)\n• Umax : amplitude (V)\n• ω : pulsation (rad/s)\n• φ : phase à l'origine (rad)", "more": ""}];
+    const robot = DarwinDeck.robot(document.getElementById("robot"), "../assets/");
+    const score = document.getElementById("score");
+    let known = 0;
+    robot.say("Essaie une fiche de cette matière : touche-la pour voir la réponse.");
+    DarwinDeck.mount(document.getElementById("deck"), CARDS, {
+      onFlip: () => robot.say("Alors, tu savais ?"),
+      onRate: (r, _c, n) => {
+        if (r === "good" || r === "easy") { known += 1; robot.happy(); }
+        robot.say(r === "again" || r === "hard" ? "Dans l'appli, je te la reposerais bientôt." : "Bien joué ! Dans l'appli, elle attendrait quelques jours.");
+        score.textContent = `${n} fiche${n > 1 ? "s" : ""} · ${known} sue${known > 1 ? "s" : ""}`;
+      },
+    });
+  })();
+  </script>
+
+  <footer>
+    <a href="../index.html" aria-label="Accueil darwin"><img class="logo" src="../assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="../index.html">Accueil</a><a href="../defi.html">Défi du jour</a><a href="../revision/index.html">Fiches par matière et niveau</a><a href="../programme.html">Le programme, classe par classe</a><a href="../../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../../guide/aide.html">Aide</a><a href="../../legal/mentions-legales.html">Mentions légales</a><a href="../../legal/confidentialite.html">Confidentialité</a><a href="../../legal/cgu.html">Conditions d'utilisation</a><a href="../../legal/cgv.html">Conditions de vente</a></nav>
+  </footer>
+</div>
+<script src="../assets/stats-config.js"></script>
+<script src="../assets/stats.js" defer></script>
+</body>
+</html>

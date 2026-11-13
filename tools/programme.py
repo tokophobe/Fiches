@@ -288,28 +288,13 @@ GABARIT = """<!doctype html>
 <title>Le programme — darwin</title>
 <meta name="description" content="Tout le programme du CP à la Terminale, matière par matière, chapitre par chapitre, avec les boîtes de fiches toutes prêtes de la Librairie." />
 <link rel="icon" href="../icons/icon-192.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/fonts.css" />
+<link rel="stylesheet" href="assets/site.css" />
 <style>
-  :root {{
-    --sky: #4a9fe0; --ink: #1f2937; --slate: #64748b; --mist: #eef2f8; --paper: #ffffff;
-    --ok: #3e7c6b; --todo: #b6604a; --line: rgba(31, 41, 55, 0.12);
-    --primaire: #d9922e; --college: #4a9fe0; --lycee: #8a63c9; --hors: #64748b;
-  }}
-  * {{ box-sizing: border-box; }}
-  html {{ -webkit-text-size-adjust: 100%; scroll-padding-top: 130px; }}
-  body {{ margin: 0; background: var(--mist); color: var(--ink);
-    font-family: "Atkinson Hyperlegible", system-ui, sans-serif; font-size: 17px; line-height: 1.5; }}
-  a {{ color: inherit; }}
-  :focus-visible {{ outline: 3px solid var(--sky); outline-offset: 3px; border-radius: 4px; }}
-  .wrap {{ max-width: 1040px; margin: 0 auto; padding: 0 16px; }}
-  header.top {{ display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }}
-  header.top .logo {{ display: block; width: 92px; height: 37px; background: var(--sky);
-    -webkit-mask: url(darwin-logo.png) left center / contain no-repeat; mask: url(darwin-logo.png) left center / contain no-repeat; }}
-  .install-link {{ font-weight: 700; font-size: 16px; text-decoration: none; padding: 9px 16px; border-radius: 999px; background: var(--ink); color: #fff; }}
-  h1 {{ font-size: clamp(32px, 5.5vw, 52px); line-height: 1.06; letter-spacing: -0.02em; margin: 8px 0 14px; }}
-  .lead {{ font-size: 19px; color: #334155; max-width: 36em; margin: 0 0 24px; }}
+  /* Page « Le programme » (styles communs : assets/site.css). */
+  :root {{ --ok: var(--easy); --todo: var(--again); --primaire: #d9922e; --college: var(--sky); --lycee: var(--violet); --hors: var(--slate); }}
+  html {{ scroll-padding-top: 130px; }}
+  body {{ font-size: 17px; line-height: 1.5; }}
   .stats {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 0 0 14px; }}
   .stat {{ background: var(--paper); border-radius: 14px; padding: 14px 16px; }}
   .stat b {{ display: block; font-size: 28px; line-height: 1.1; }}
@@ -360,7 +345,7 @@ GABARIT = """<!doctype html>
   .boxes li {{ display: flex; gap: 8px; justify-content: space-between; }}
   .boxes .nb {{ white-space: nowrap; font-variant-numeric: tabular-nums; }}
   .hide {{ display: none !important; }}
-  footer {{ padding: 36px 0 48px; margin-top: 30px; border-top: 1px solid var(--line); color: var(--slate); font-size: 15px; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }}
+  footer {{ margin-top: 30px; }}
   @media (max-width: 720px) {{
     .stats {{ grid-template-columns: 1fr 1fr; }}
     .subjects {{ grid-template-columns: 1fr; }}
@@ -372,8 +357,12 @@ GABARIT = """<!doctype html>
 <body>
 <div class="wrap">
   <header class="top">
-    <a href="index.html" class="logo" aria-label="darwin, retour au site"></a>
-    <a class="install-link" href="../index.html">Ouvrir l'appli</a>
+    <a href="index.html" aria-label="Accueil darwin"><img class="logo" src="assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav class="top-links">
+      <a href="defi.html">Défi du jour</a>
+      <a href="revision/index.html">Fiches par matière</a>
+      <a class="install-link" href="../index.html">Ouvrir l'appli</a>
+    </nav>
   </header>
   <main>
     <h1>Le programme, classe par classe</h1>
@@ -399,8 +388,9 @@ GABARIT = """<!doctype html>
 {sections}
   </main>
   <footer>
-    <span>darwin — révision par fiches</span>
-    <a href="index.html">Retour au site</a>
+    <a href="index.html" aria-label="Accueil darwin"><img class="logo" src="assets/darwin-logo-blue.png" alt="darwin" /></a>
+    <nav><a href="index.html">Accueil</a><a href="defi.html">Défi du jour</a><a href="revision/index.html">Fiches par matière et niveau</a><a href="../index.html">Ouvrir l'appli</a></nav>
+    <nav class="legal-nav"><a href="../guide/aide.html">Aide</a><a href="../legal/mentions-legales.html">Mentions légales</a><a href="../legal/confidentialite.html">Confidentialité</a><a href="../legal/cgu.html">Conditions d'utilisation</a><a href="../legal/cgv.html">Conditions de vente</a></nav>
   </footer>
 </div>
 <script>
@@ -447,6 +437,8 @@ GABARIT = """<!doctype html>
   }}
 }})();
 </script>
+<script src="assets/stats-config.js"></script>
+<script src="assets/stats.js" defer></script>
 </body>
 </html>
 """

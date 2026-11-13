@@ -17,7 +17,11 @@ import unicodedata
 from collections import defaultdict
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PACK = os.path.join(ROOT, "packs", "bibliotheque.json")
+# v288 : le pack vit dans le dépôt privé Fiches-contenu ; sa copie de travail
+# (ignorée par git) est à la racine du dépôt.
+PACK = os.path.join(ROOT, "bibliotheque.json")
+if not os.path.exists(PACK):
+    PACK = os.path.join(ROOT, "packs", "bibliotheque.json")
 OUT = os.path.join(ROOT, "site", "revision")
 SITEMAP = os.path.join(ROOT, "site", "sitemap.xml")
 
@@ -42,6 +46,7 @@ LEVELS = [
 ]
 LEVEL = {v: (slug, label, cycle) for v, slug, label, cycle in LEVELS}
 LEVEL_ORDER = [v for v, *_ in LEVELS]
+LEVEL_CI = {v.lower(): v for v in LEVEL}  # « Terminale » = « terminale »
 ACRONYMS = {"SVT", "EMC", "SES", "NSI", "HGGSP", "HLP", "SNT", "LLCER", "DGEMC"}
 
 
@@ -162,13 +167,14 @@ def page(title, description, body, depth=1, extra_head=""):
     <nav class="top-links">
       <a href="{up}defi.html">Défi du jour</a>
       <a href="{up}revision/index.html">Fiches par matière</a>
+      <a href="{up}programme.html">Le programme</a>
       <a class="install-link" href="{up}../index.html">Ouvrir l'appli</a>
     </nav>
   </header>
 {body}
   <footer>
     <a href="{up}index.html" aria-label="Accueil darwin"><img class="logo" src="{up}assets/darwin-logo-blue.png" alt="darwin" /></a>
-    <nav><a href="{up}index.html">Accueil</a><a href="{up}defi.html">Défi du jour</a><a href="{up}revision/index.html">Fiches par matière et niveau</a><a href="{up}../index.html">Ouvrir l'appli</a></nav>
+    <nav><a href="{up}index.html">Accueil</a><a href="{up}defi.html">Défi du jour</a><a href="{up}revision/index.html">Fiches par matière et niveau</a><a href="{up}programme.html">Le programme, classe par classe</a><a href="{up}../index.html">Ouvrir l'appli</a></nav>
     <nav class="legal-nav"><a href="{up}../guide/aide.html">Aide</a><a href="{up}../legal/mentions-legales.html">Mentions légales</a><a href="{up}../legal/confidentialite.html">Confidentialité</a><a href="{up}../legal/cgu.html">Conditions d'utilisation</a><a href="{up}../legal/cgv.html">Conditions de vente</a></nav>
   </footer>
 </div>
@@ -196,8 +202,8 @@ def main():
     groups = defaultdict(list)
     for b in boxes:
         t = b.get("taxonomy") or {}
-        lv, m = t.get("niveau"), t.get("matiere")
-        if lv in LEVEL and m:
+        lv, m = LEVEL_CI.get((t.get("niveau") or "").lower()), t.get("matiere")
+        if lv and m:
             groups[(lv, m)].append(b)
 
     os.makedirs(OUT, exist_ok=True)
