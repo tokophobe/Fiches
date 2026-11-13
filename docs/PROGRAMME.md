@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1141 chapitres couverts sur 1358** (84 %), 1180 boîtes, 19456 fiches.
+Mise à jour : 13/11/2026. **1139 chapitres couverts sur 1349** (84 %), 1180 boîtes, 19456 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -18,7 +18,7 @@ Mise à jour : 13/11/2026. **1141 chapitres couverts sur 1358** (84 %), 1180 bo�
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
 | [6e](#6e) | 43 / 99 | 56 | 43 | 730 |
 | [5e](#5e) | 42 / 99 | 57 | 42 | 730 |
-| [4e](#4e) | 54 / 91 | 37 | 54 | 916 |
+| [4e](#4e) | 52 / 82 | 30 | 54 | 916 |
 | [3e](#3e) | 96 / 108 | 12 | 134 | 2565 |
 | [Seconde](#seconde) | 70 / 82 | 12 | 70 | 1243 |
 | [Première](#première) | 113 / 124 | 11 | 113 | 1931 |
@@ -1029,63 +1029,87 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 
 ## 4e
 
-Collège — 54 chapitres couverts sur 91, 54 boîtes.
+Collège — 52 chapitres couverts sur 82, 54 boîtes.
 
-### 4e — Français (9 / 16)
+### 4e — Français (9 / 15)
 
-- [x] Le récit au XIXe siècle et le théâtre de Molière — 4ème — Français : le récit au XIXe siècle et le théâtre de Molière (17 fiches)
-- [x] Dire l'amour, la poésie lyrique — 4ème — Français : dire l'amour, la poésie lyrique (16 fiches)
-- [x] Informer, s'informer, déformer — 4ème — Français : informer, s'informer, déformer (17 fiches)
-- [x] La nouvelle réaliste et fantastique — 4ème — Français : la nouvelle réaliste et fantastique (15 fiches)
-- [x] Individu et société, Le Cid et la tragédie — 4ème — Français : individu et société, Le Cid et la tragédie (16 fiches)
-- [x] Subordonnées relatives et complétives — 4ème — Français : subordonnées relatives et complétives (16 fiches)
-- [x] Voix active et voix passive — 4ème — Français : voix active et voix passive (15 fiches)
-- [x] Subjonctif présent et conditionnel — 4ème — Français : subjonctif présent et conditionnel (15 fiches)
-- [x] Les figures de style — 4ème — Français : les figures de style (16 fiches)
-- [ ] La lettre, se raconter et convaincre — *à créer*
+- [x] Dire l'amour — l'essentiel — 4ème — Français : dire l'amour, la poésie lyrique (16 fiches)
+  - [ ] La poésie lyrique et ses images (Ronsard, Labé, Hugo…) — *à créer*
+  - [ ] L'amour au théâtre et dans le roman — *à créer*
+- [x] Individu et société : confrontations de valeurs — l'essentiel — 4ème — Français : individu et société, Le Cid et la tragédie (16 fiches)
+  - [ ] Le Cid et la tragédie classique — *à créer*
+  - [ ] Molière et la comédie — *à créer*
+- [x] La fiction pour interroger le réel — l'essentiel — 4ème — Français : la nouvelle réaliste et fantastique (15 fiches)
+  - [ ] Le roman réaliste et naturaliste (Balzac, Flaubert, Zola) — *à créer*
+  - [ ] Le récit fantastique (Maupassant, Mérimée, Gautier) — *à créer*
+- [x] Informer, s'informer, déformer — l'essentiel — 4ème — Français : informer, s'informer, déformer (17 fiches)
+  - [ ] La presse, du XIXe siècle à aujourd'hui — *à créer*
+  - [ ] Repérer une fausse information — *à créer*
 - [ ] La ville, lieu de tous les possibles — *à créer*
+- [ ] Argumenter : thèse, arguments et exemples — *à créer*
+- [x] Subordonnées relatives et complétives — 4ème — Français : subordonnées relatives et complétives (16 fiches)
 - [ ] Les subordonnées circonstancielles — *à créer*
-- [ ] Le discours rapporté — *à créer*
+- [x] Voix active et voix passive — 4ème — Français : voix active et voix passive (15 fiches)
 - [ ] Les valeurs des temps de l'indicatif — *à créer*
-- [ ] Argumenter, thèse, arguments et exemples — *à créer*
+- [x] Subjonctif présent et conditionnel — 4ème — Français : subjonctif présent et conditionnel (15 fiches)
+- [ ] Le discours rapporté — *à créer*
+- [x] Les figures de style — 4ème — Français : les figures de style (16 fiches)
 - [ ] Le vocabulaire des sentiments — *à créer*
+- [x] Révisions de l'année — 4ème — Français : le récit au XIXe siècle et le théâtre de Molière (17 fiches)
 
-### 4e — Mathématiques (8 / 14)
+### 4e — Mathématiques (7 / 13)
 
-- [x] Puissances, calcul littéral et Pythagore — 4ème — Maths : puissances, calcul littéral et Pythagore (16 fiches)
-- [x] Multiplier et diviser fractions et nombres relatifs — 4ème — Maths : multiplier et diviser fractions et nombres relatifs (16 fiches)
-- [x] Théorème de Thalès et cosinus — 4ème — Maths : théorème de Thalès et cosinus (16 fiches)
-- [x] Équations, proportionnalité et vitesse — 4ème — Maths : équations, proportionnalité et vitesse (16 fiches)
-- [x] Statistiques, moyenne, médiane et étendue — 4ème — Maths : statistiques, moyenne, médiane et étendue (16 fiches)
-- [x] Premières probabilités — 4ème — Maths : premières probabilités (15 fiches)
-- [x] Pyramides, cônes et volumes — 4ème — Maths : pyramides, cônes et volumes (16 fiches)
-- [x] Translation, rotation et frises — 4ème — Maths : translation, rotation et frises (16 fiches)
-- [ ] Additionner et soustraire des fractions — *à créer*
-- [ ] Puissances de 10 et notation scientifique — *à créer*
-- [ ] Développer et réduire avec la distributivité — *à créer*
+- [x] Fractions et nombres relatifs — l'essentiel — 4ème — Maths : multiplier et diviser fractions et nombres relatifs (16 fiches)
+  - [ ] Additionner et soustraire des fractions — *à créer*
+  - [ ] Multiplier et diviser des fractions — *à créer*
+  - [ ] Les quatre opérations sur les nombres relatifs — *à créer*
+- [ ] Puissances et notation scientifique — *à créer*
 - [ ] Nombres premiers et décomposition — *à créer*
-- [ ] Proportionnalité, pourcentages et graphiques — *à créer*
+- [ ] Calcul littéral et équations — l'essentiel — *à créer*
+  - [ ] Développer et réduire avec la distributivité — *à créer*
+  - [ ] Résoudre une équation du premier degré — *à créer*
+- [ ] Proportionnalité, pourcentages et vitesse — *à créer*
+- [x] Statistiques : moyenne, médiane et étendue — 4ème — Maths : statistiques, moyenne, médiane et étendue (16 fiches)
+- [x] Premières probabilités — 4ème — Maths : premières probabilités (15 fiches)
+- [ ] Le théorème de Pythagore — *à créer*
+- [x] Théorème de Thalès et cosinus — l'essentiel — 4ème — Maths : théorème de Thalès et cosinus (16 fiches)
+  - [ ] Le théorème de Thalès dans le triangle — *à créer*
+  - [ ] Le cosinus d'un angle aigu — *à créer*
+- [x] Translations, rotations et frises — 4ème — Maths : translation, rotation et frises (16 fiches)
+- [x] Pyramides, cônes et volumes — 4ème — Maths : pyramides, cônes et volumes (16 fiches)
 - [ ] Algorithmique et programmation — *à créer*
+- [x] Révisions de l'année — 4ème — Maths : puissances, calcul littéral et Pythagore (16 fiches) ; 4ème — Maths : équations, proportionnalité et vitesse (16 fiches)
 
-### 4e — Histoire (5 / 7)
+### 4e — Histoire (4 / 4)
 
-- [x] Lumières, Révolution française et Empire — 4ème — Histoire : Lumières, Révolution française et Empire (17 fiches)
-- [x] Industrialisation et conquêtes coloniales au XIXe siècle — 4ème — Histoire : industrialisation et conquêtes coloniales au XIXe siècle (18 fiches)
-- [x] Voter, la IIIe République et les femmes au XIXe siècle — 4ème — Histoire : voter, la IIIe République et les femmes au XIXe siècle (16 fiches)
-- [x] Bourgeoisies marchandes et traites négrières au XVIIIe siècle — 4ème — Histoire : bourgeoisies marchandes et traites négrières au XVIIIe siècle (16 fiches)
-- [x] Les régimes politiques en France au XIXe siècle — 4ème — Histoire : les régimes politiques en France au XIXe siècle (16 fiches)
-- [ ] Les révolutions de 1830 et 1848 — *à créer*
-- [ ] Société, ouvriers et bourgeois au XIXe siècle — *à créer*
+- [x] Bourgeoisies marchandes, négoces et traites négrières au XVIIIe siècle — l'essentiel — 4ème — Histoire : bourgeoisies marchandes et traites négrières au XVIIIe siècle (16 fiches)
+  - [ ] Le commerce triangulaire et les ports négriers — *à créer*
+  - [ ] L'esclavage dans les colonies et son abolition — *à créer*
+- [x] Lumières, Révolution française et Empire — l'essentiel — 4ème — Histoire : Lumières, Révolution française et Empire (17 fiches)
+  - [ ] L'Europe des Lumières — *à créer*
+  - [ ] La Révolution française (1789-1799) — *à créer*
+  - [ ] Napoléon et l'Empire — *à créer*
+- [x] L'Europe et le monde au XIXe siècle — l'essentiel — 4ème — Histoire : industrialisation et conquêtes coloniales au XIXe siècle (18 fiches)
+  - [ ] La révolution industrielle — *à créer*
+  - [ ] Ouvriers et bourgeois dans la société industrielle — *à créer*
+  - [ ] Conquêtes et sociétés coloniales — *à créer*
+- [x] Société, culture et politique dans la France du XIXe siècle — l'essentiel — 4ème — Histoire : voter, la IIIe République et les femmes au XIXe siècle (16 fiches)
+  - [x] Les régimes politiques en France de 1815 à 1870 — 4ème — Histoire : les régimes politiques en France au XIXe siècle (16 fiches)
+  - [ ] Les révolutions de 1830 et 1848 — *à créer*
+  - [ ] La IIIe République — *à créer*
+  - [ ] Conditions féminines au XIXe siècle — *à créer*
 
-### 4e — Géographie (5 / 7)
+### 4e — Géographie (5 / 5)
 
-- [x] L'urbanisation du monde — 4ème — Géographie : l'urbanisation du monde (16 fiches)
-- [x] Migrants et tourisme, les mobilités transnationales — 4ème — Géographie : migrants et tourisme, les mobilités transnationales (16 fiches)
+- [x] L'urbanisation du monde — l'essentiel — 4ème — Géographie : l'urbanisation du monde (16 fiches)
+  - [ ] Espaces et paysages de l'urbanisation — *à créer*
+  - [ ] Des métropoles inégalement connectées — *à créer*
+- [x] Les mobilités humaines transnationales — l'essentiel — 4ème — Géographie : migrants et tourisme, les mobilités transnationales (16 fiches)
+  - [ ] Un monde de migrants — *à créer*
+  - [ ] Le tourisme et ses espaces — *à créer*
 - [x] Mers et océans, un monde maritimisé — 4ème — Géographie : mers et océans, un monde maritimisé (16 fiches)
 - [x] Le territoire des États-Unis dans la mondialisation — 4ème — Géographie : le territoire des États-Unis dans la mondialisation (16 fiches)
 - [x] Les dynamiques de l'Afrique de l'Ouest — 4ème — Géographie : les dynamiques de l'Afrique de l'Ouest (15 fiches)
-- [ ] Les métropoles et leurs inégalités — *à créer*
-- [ ] Les espaces du tourisme — *à créer*
 
 ### 4e — EMC (2 / 4)
 
@@ -1094,24 +1118,26 @@ Collège — 54 chapitres couverts sur 91, 54 boîtes.
 - [ ] Le harcèlement et le cyberharcèlement — *à créer*
 - [ ] L'engagement citoyen et associatif — *à créer*
 
-### 4e — SVT (5 / 8)
+### 4e — SVT (5 / 7)
 
-- [x] Puberté et reproduction humaine — 4ème — SVT : puberté et reproduction humaine (16 fiches)
+- [x] Puberté et reproduction humaine — l'essentiel — 4ème — SVT : puberté et reproduction humaine (16 fiches)
+  - [ ] Puberté et appareils reproducteurs — *à créer*
+  - [ ] Fécondation, grossesse et contraception — *à créer*
 - [x] L'organisme pendant l'effort et la commande nerveuse — 4ème — SVT : l'organisme pendant l'effort et la commande nerveuse (16 fiches)
-- [x] Séismes, volcans et tectonique des plaques — 4ème — SVT : séismes, volcans et tectonique des plaques (16 fiches)
-- [x] Digestion, nutriments et micro-organismes — 4ème — SVT : digestion, nutriments et micro-organismes (16 fiches)
-- [x] Météo, climats et activité humaine — 4ème — SVT : météo, climats et activité humaine (16 fiches)
 - [ ] Le cœur et la circulation sanguine — *à créer*
-- [ ] Microbes et défenses de l'organisme — *à créer*
+- [x] Digestion, nutriments et micro-organismes — l'essentiel — 4ème — SVT : digestion, nutriments et micro-organismes (16 fiches)
+  - [ ] Microbes et défenses de l'organisme — *à créer*
 - [ ] La nutrition des végétaux — *à créer*
+- [x] Séismes, volcans et tectonique des plaques — 4ème — SVT : séismes, volcans et tectonique des plaques (16 fiches)
+- [x] Météo, climats et activité humaine — 4ème — SVT : météo, climats et activité humaine (16 fiches)
 
-### 4e — Physique (4 / 5)
+### 4e — Physique (4 / 4)
 
 - [x] Circuits électriques et vitesse — 4ème — Physique : circuits électriques et vitesse (16 fiches)
 - [x] Formes d'énergie et conversions — 4ème — Physique : formes d'énergie et conversions (16 fiches)
-- [x] Signaux sonores et lumineux — 4ème — Physique : signaux sonores et lumineux (16 fiches)
+- [x] Signaux sonores et lumineux — l'essentiel — 4ème — Physique : signaux sonores et lumineux (16 fiches)
+  - [ ] Lumière, couleurs et vision — *à créer*
 - [x] Interactions et forces — 4ème — Physique : interactions et forces (18 fiches)
-- [ ] Lumière, couleurs et vision — *à créer*
 
 ### 4e — Chimie (3 / 4)
 

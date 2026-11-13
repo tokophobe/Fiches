@@ -7360,22 +7360,62 @@
      "nom": "Français",
      "chapitres": [
       {
-       "titre": "Le récit au XIXe siècle et le théâtre de Molière",
-       "boites": [
-        {
-         "cle": "r35-4e-francais-recit-xixe-theatre",
-         "titre": "4ème — Français : le récit au XIXe siècle et le théâtre de Molière",
-         "fiches": 17
-        }
-       ]
-      },
-      {
-       "titre": "Dire l'amour, la poésie lyrique",
+       "titre": "Dire l'amour",
        "boites": [
         {
          "cle": "r37-4e-francais-dire-amour",
          "titre": "4ème — Français : dire l'amour, la poésie lyrique",
          "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "La poésie lyrique et ses images (Ronsard, Labé, Hugo…)",
+         "boites": []
+        },
+        {
+         "titre": "L'amour au théâtre et dans le roman",
+         "boites": []
+        }
+       ]
+      },
+      {
+       "titre": "Individu et société : confrontations de valeurs",
+       "boites": [
+        {
+         "cle": "r40-b3-fr-confrontations",
+         "titre": "4ème — Français : individu et société, Le Cid et la tragédie",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Le Cid et la tragédie classique",
+         "boites": []
+        },
+        {
+         "titre": "Molière et la comédie",
+         "boites": []
+        }
+       ]
+      },
+      {
+       "titre": "La fiction pour interroger le réel",
+       "boites": [
+        {
+         "cle": "r40-b3-fr-fantastique",
+         "titre": "4ème — Français : la nouvelle réaliste et fantastique",
+         "fiches": 15
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Le roman réaliste et naturaliste (Balzac, Flaubert, Zola)",
+         "boites": []
+        },
+        {
+         "titre": "Le récit fantastique (Maupassant, Mérimée, Gautier)",
+         "boites": []
         }
        ]
       },
@@ -7387,27 +7427,25 @@
          "titre": "4ème — Français : informer, s'informer, déformer",
          "fiches": 17
         }
-       ]
-      },
-      {
-       "titre": "La nouvelle réaliste et fantastique",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r40-b3-fr-fantastique",
-         "titre": "4ème — Français : la nouvelle réaliste et fantastique",
-         "fiches": 15
+         "titre": "La presse, du XIXe siècle à aujourd'hui",
+         "boites": []
+        },
+        {
+         "titre": "Repérer une fausse information",
+         "boites": []
         }
        ]
       },
       {
-       "titre": "Individu et société, Le Cid et la tragédie",
-       "boites": [
-        {
-         "cle": "r40-b3-fr-confrontations",
-         "titre": "4ème — Français : individu et société, Le Cid et la tragédie",
-         "fiches": 16
-        }
-       ]
+       "titre": "La ville, lieu de tous les possibles",
+       "boites": []
+      },
+      {
+       "titre": "Argumenter : thèse, arguments et exemples",
+       "boites": []
       },
       {
        "titre": "Subordonnées relatives et complétives",
@@ -7420,6 +7458,10 @@
        ]
       },
       {
+       "titre": "Les subordonnées circonstancielles",
+       "boites": []
+      },
+      {
        "titre": "Voix active et voix passive",
        "boites": [
         {
@@ -7428,6 +7470,10 @@
          "fiches": 15
         }
        ]
+      },
+      {
+       "titre": "Les valeurs des temps de l'indicatif",
+       "boites": []
       },
       {
        "titre": "Subjonctif présent et conditionnel",
@@ -7440,6 +7486,10 @@
        ]
       },
       {
+       "titre": "Le discours rapporté",
+       "boites": []
+      },
+      {
        "titre": "Les figures de style",
        "boites": [
         {
@@ -7450,32 +7500,18 @@
        ]
       },
       {
-       "titre": "La lettre, se raconter et convaincre",
-       "boites": []
-      },
-      {
-       "titre": "La ville, lieu de tous les possibles",
-       "boites": []
-      },
-      {
-       "titre": "Les subordonnées circonstancielles",
-       "boites": []
-      },
-      {
-       "titre": "Le discours rapporté",
-       "boites": []
-      },
-      {
-       "titre": "Les valeurs des temps de l'indicatif",
-       "boites": []
-      },
-      {
-       "titre": "Argumenter, thèse, arguments et exemples",
-       "boites": []
-      },
-      {
        "titre": "Le vocabulaire des sentiments",
        "boites": []
+      },
+      {
+       "titre": "Révisions de l'année",
+       "boites": [
+        {
+         "cle": "r35-4e-francais-recit-xixe-theatre",
+         "titre": "4ème — Français : le récit au XIXe siècle et le théâtre de Molière",
+         "fiches": 17
+        }
+       ]
       }
      ]
     },
@@ -7484,47 +7520,57 @@
      "nom": "Mathématiques",
      "chapitres": [
       {
-       "titre": "Puissances, calcul littéral et Pythagore",
-       "boites": [
-        {
-         "cle": "r35-4e-maths-puissances-litteral-pythagore",
-         "titre": "4ème — Maths : puissances, calcul littéral et Pythagore",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Multiplier et diviser fractions et nombres relatifs",
+       "titre": "Fractions et nombres relatifs",
        "boites": [
         {
          "cle": "r37-4e-maths-fractions-relatifs",
          "titre": "4ème — Maths : multiplier et diviser fractions et nombres relatifs",
          "fiches": 16
         }
-       ]
-      },
-      {
-       "titre": "Théorème de Thalès et cosinus",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r37-4e-maths-thales-cosinus",
-         "titre": "4ème — Maths : théorème de Thalès et cosinus",
-         "fiches": 16
+         "titre": "Additionner et soustraire des fractions",
+         "boites": []
+        },
+        {
+         "titre": "Multiplier et diviser des fractions",
+         "boites": []
+        },
+        {
+         "titre": "Les quatre opérations sur les nombres relatifs",
+         "boites": []
         }
        ]
       },
       {
-       "titre": "Équations, proportionnalité et vitesse",
-       "boites": [
+       "titre": "Puissances et notation scientifique",
+       "boites": []
+      },
+      {
+       "titre": "Nombres premiers et décomposition",
+       "boites": []
+      },
+      {
+       "titre": "Calcul littéral et équations",
+       "boites": [],
+       "sousthemes": [
         {
-         "cle": "r37-4e-maths-equations-proportionnalite",
-         "titre": "4ème — Maths : équations, proportionnalité et vitesse",
-         "fiches": 16
+         "titre": "Développer et réduire avec la distributivité",
+         "boites": []
+        },
+        {
+         "titre": "Résoudre une équation du premier degré",
+         "boites": []
         }
        ]
       },
       {
-       "titre": "Statistiques, moyenne, médiane et étendue",
+       "titre": "Proportionnalité, pourcentages et vitesse",
+       "boites": []
+      },
+      {
+       "titre": "Statistiques : moyenne, médiane et étendue",
        "boites": [
         {
          "cle": "r40-b3-maths-stats",
@@ -7544,6 +7590,40 @@
        ]
       },
       {
+       "titre": "Le théorème de Pythagore",
+       "boites": []
+      },
+      {
+       "titre": "Théorème de Thalès et cosinus",
+       "boites": [
+        {
+         "cle": "r37-4e-maths-thales-cosinus",
+         "titre": "4ème — Maths : théorème de Thalès et cosinus",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Le théorème de Thalès dans le triangle",
+         "boites": []
+        },
+        {
+         "titre": "Le cosinus d'un angle aigu",
+         "boites": []
+        }
+       ]
+      },
+      {
+       "titre": "Translations, rotations et frises",
+       "boites": [
+        {
+         "cle": "r56-4e-maths-transformations",
+         "titre": "4ème — Maths : translation, rotation et frises",
+         "fiches": 16
+        }
+       ]
+      },
+      {
        "titre": "Pyramides, cônes et volumes",
        "boites": [
         {
@@ -7554,38 +7634,23 @@
        ]
       },
       {
-       "titre": "Translation, rotation et frises",
+       "titre": "Algorithmique et programmation",
+       "boites": []
+      },
+      {
+       "titre": "Révisions de l'année",
        "boites": [
         {
-         "cle": "r56-4e-maths-transformations",
-         "titre": "4ème — Maths : translation, rotation et frises",
+         "cle": "r35-4e-maths-puissances-litteral-pythagore",
+         "titre": "4ème — Maths : puissances, calcul littéral et Pythagore",
+         "fiches": 16
+        },
+        {
+         "cle": "r37-4e-maths-equations-proportionnalite",
+         "titre": "4ème — Maths : équations, proportionnalité et vitesse",
          "fiches": 16
         }
        ]
-      },
-      {
-       "titre": "Additionner et soustraire des fractions",
-       "boites": []
-      },
-      {
-       "titre": "Puissances de 10 et notation scientifique",
-       "boites": []
-      },
-      {
-       "titre": "Développer et réduire avec la distributivité",
-       "boites": []
-      },
-      {
-       "titre": "Nombres premiers et décomposition",
-       "boites": []
-      },
-      {
-       "titre": "Proportionnalité, pourcentages et graphiques",
-       "boites": []
-      },
-      {
-       "titre": "Algorithmique et programmation",
-       "boites": []
       }
      ]
     },
@@ -7594,6 +7659,26 @@
      "nom": "Histoire",
      "chapitres": [
       {
+       "titre": "Bourgeoisies marchandes, négoces et traites négrières au XVIIIe siècle",
+       "boites": [
+        {
+         "cle": "r40-b3-hist-traites",
+         "titre": "4ème — Histoire : bourgeoisies marchandes et traites négrières au XVIIIe siècle",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Le commerce triangulaire et les ports négriers",
+         "boites": []
+        },
+        {
+         "titre": "L'esclavage dans les colonies et son abolition",
+         "boites": []
+        }
+       ]
+      },
+      {
        "titre": "Lumières, Révolution française et Empire",
        "boites": [
         {
@@ -7601,55 +7686,79 @@
          "titre": "4ème — Histoire : Lumières, Révolution française et Empire",
          "fiches": 17
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "L'Europe des Lumières",
+         "boites": []
+        },
+        {
+         "titre": "La Révolution française (1789-1799)",
+         "boites": []
+        },
+        {
+         "titre": "Napoléon et l'Empire",
+         "boites": []
+        }
        ]
       },
       {
-       "titre": "Industrialisation et conquêtes coloniales au XIXe siècle",
+       "titre": "L'Europe et le monde au XIXe siècle",
        "boites": [
         {
          "cle": "r37-4e-histoire-industrialisation-colonisation",
          "titre": "4ème — Histoire : industrialisation et conquêtes coloniales au XIXe siècle",
          "fiches": 18
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "La révolution industrielle",
+         "boites": []
+        },
+        {
+         "titre": "Ouvriers et bourgeois dans la société industrielle",
+         "boites": []
+        },
+        {
+         "titre": "Conquêtes et sociétés coloniales",
+         "boites": []
+        }
        ]
       },
       {
-       "titre": "Voter, la IIIe République et les femmes au XIXe siècle",
+       "titre": "Société, culture et politique dans la France du XIXe siècle",
        "boites": [
         {
          "cle": "r37-4e-histoire-france-xixe-republique",
          "titre": "4ème — Histoire : voter, la IIIe République et les femmes au XIXe siècle",
          "fiches": 16
         }
-       ]
-      },
-      {
-       "titre": "Bourgeoisies marchandes et traites négrières au XVIIIe siècle",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r40-b3-hist-traites",
-         "titre": "4ème — Histoire : bourgeoisies marchandes et traites négrières au XVIIIe siècle",
-         "fiches": 16
+         "titre": "Les régimes politiques en France de 1815 à 1870",
+         "boites": [
+          {
+           "cle": "r56-4e-histoire-regimes-xixe",
+           "titre": "4ème — Histoire : les régimes politiques en France au XIXe siècle",
+           "fiches": 16
+          }
+         ]
+        },
+        {
+         "titre": "Les révolutions de 1830 et 1848",
+         "boites": []
+        },
+        {
+         "titre": "La IIIe République",
+         "boites": []
+        },
+        {
+         "titre": "Conditions féminines au XIXe siècle",
+         "boites": []
         }
        ]
-      },
-      {
-       "titre": "Les régimes politiques en France au XIXe siècle",
-       "boites": [
-        {
-         "cle": "r56-4e-histoire-regimes-xixe",
-         "titre": "4ème — Histoire : les régimes politiques en France au XIXe siècle",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Les révolutions de 1830 et 1848",
-       "boites": []
-      },
-      {
-       "titre": "Société, ouvriers et bourgeois au XIXe siècle",
-       "boites": []
       }
      ]
     },
@@ -7665,15 +7774,35 @@
          "titre": "4ème — Géographie : l'urbanisation du monde",
          "fiches": 16
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Espaces et paysages de l'urbanisation",
+         "boites": []
+        },
+        {
+         "titre": "Des métropoles inégalement connectées",
+         "boites": []
+        }
        ]
       },
       {
-       "titre": "Migrants et tourisme, les mobilités transnationales",
+       "titre": "Les mobilités humaines transnationales",
        "boites": [
         {
          "cle": "r37-4e-geo-mobilites-transnationales",
          "titre": "4ème — Géographie : migrants et tourisme, les mobilités transnationales",
          "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Un monde de migrants",
+         "boites": []
+        },
+        {
+         "titre": "Le tourisme et ses espaces",
+         "boites": []
         }
        ]
       },
@@ -7706,14 +7835,6 @@
          "fiches": 15
         }
        ]
-      },
-      {
-       "titre": "Les métropoles et leurs inégalités",
-       "boites": []
-      },
-      {
-       "titre": "Les espaces du tourisme",
-       "boites": []
       }
      ]
     },
@@ -7763,6 +7884,16 @@
          "titre": "4ème — SVT : puberté et reproduction humaine",
          "fiches": 16
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Puberté et appareils reproducteurs",
+         "boites": []
+        },
+        {
+         "titre": "Fécondation, grossesse et contraception",
+         "boites": []
+        }
        ]
       },
       {
@@ -7776,14 +7907,8 @@
        ]
       },
       {
-       "titre": "Séismes, volcans et tectonique des plaques",
-       "boites": [
-        {
-         "cle": "r40-b3-svt-geologie",
-         "titre": "4ème — SVT : séismes, volcans et tectonique des plaques",
-         "fiches": 16
-        }
-       ]
+       "titre": "Le cœur et la circulation sanguine",
+       "boites": []
       },
       {
        "titre": "Digestion, nutriments et micro-organismes",
@@ -7791,6 +7916,26 @@
         {
          "cle": "r40-b3-svt-nutrition-microbes",
          "titre": "4ème — SVT : digestion, nutriments et micro-organismes",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Microbes et défenses de l'organisme",
+         "boites": []
+        }
+       ]
+      },
+      {
+       "titre": "La nutrition des végétaux",
+       "boites": []
+      },
+      {
+       "titre": "Séismes, volcans et tectonique des plaques",
+       "boites": [
+        {
+         "cle": "r40-b3-svt-geologie",
+         "titre": "4ème — SVT : séismes, volcans et tectonique des plaques",
          "fiches": 16
         }
        ]
@@ -7804,18 +7949,6 @@
          "fiches": 16
         }
        ]
-      },
-      {
-       "titre": "Le cœur et la circulation sanguine",
-       "boites": []
-      },
-      {
-       "titre": "Microbes et défenses de l'organisme",
-       "boites": []
-      },
-      {
-       "titre": "La nutrition des végétaux",
-       "boites": []
       }
      ]
     },
@@ -7851,6 +7984,12 @@
          "titre": "4ème — Physique : signaux sonores et lumineux",
          "fiches": 16
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Lumière, couleurs et vision",
+         "boites": []
+        }
        ]
       },
       {
@@ -7862,10 +8001,6 @@
          "fiches": 18
         }
        ]
-      },
-      {
-       "titre": "Lumière, couleurs et vision",
-       "boites": []
       }
      ]
     },
