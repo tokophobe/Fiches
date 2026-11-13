@@ -500,7 +500,9 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    les autres classes) à la fin de chaque matière. Programme de 3e
    défini ainsi le 13 nov. 2026 (français, maths, histoire, géographie,
    EMC, SVT, physique, chimie), puis la 4e (français, maths, histoire,
-   géographie, SVT, physique).
+   géographie, SVT, physique), la 5e (français, maths, histoire,
+   géographie, SVT) et la 6e (français, maths, sciences, histoire,
+   géographie).
 7. **Contrôles automatiques** de la règle 1 (v289 : ils repèrent aussi
    « Laquelle n'est pas… ? », « Lequel est un… ? », « parmi ceux-ci »,
    « Quelle phrase est correcte ? », « Quelle forme convient ? », « la
@@ -1073,6 +1075,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 13 nov. 2026 | Site, page « Le programme » (§7.6, rien ne change dans l'appli) : programmes de 5e et de 6e refaits comme la 3e et la 4e — grands thèmes du programme officiel avec « l'essentiel » et sous-thèmes (5e : français, maths, histoire, géographie, SVT ; 6e : français, maths, sciences, histoire, géographie), chapitre « Révisions de l'année » pour les boîtes qui mélangent plusieurs chapitres. Les 85 boîtes de 5e et de 6e y sont toutes rangées. |
 | — | 13 nov. 2026 | Site, page « Le programme » (§7.6, rien ne change dans l'appli) : programme de 4e refait de la même façon que la 3e — chapitres du programme officiel avec « l'essentiel » et sous-thèmes (français, maths, histoire, géographie, SVT, physique), et un chapitre « Révisions de l'année » pour les boîtes qui mélangent plusieurs chapitres. Les 54 boîtes de 4e y sont toutes rangées. |
 | — | 13 nov. 2026 | Site, page « Le programme » (§7.6, rien ne change dans l'appli) : programme de 3e refait d'après le programme officiel pour le français, les maths, l'histoire, la géographie, l'EMC, la SVT, la physique et la chimie — chaque chapitre a sa boîte « l'essentiel » et ses sous-thèmes (déjà faits ou « bientôt disponible »), et un chapitre « Révisions du brevet » par matière. Les 134 boîtes de 3e y sont toutes rangées. |
 | — | 13 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : lot 14, les 148 dernières boîtes relues (CM1-CM2, 6e à Terminale : langues, EMC, sciences, technologie, NSI, maths…) selon le §5.7 — 3 réponses fausses par fiche, réponses courtes et « En savoir plus », questions doubles séparées (2 327 fiches), une vidéo de cours par boîte ; 8 liens Wikipédia de fiches remplacés par une courte vidéo (5) ou retirés (3). Avec le contrôle complété de la v289, 171 questions d'anciennes boîtes qui supposaient une liste (« Lequel de ces… ? ») contiennent maintenant leurs propositions. Toutes les boîtes toutes prêtes sont relues ; les 1 121 vidéos sont publiques et intégrables. |
