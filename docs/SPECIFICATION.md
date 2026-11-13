@@ -477,6 +477,11 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
      tout le sujet (ex. : une vidéo de cours complète).
    - **Fiche** : seulement si c'est utile, et jamais un contenu trop long
      (vidéo) ou trop dense (page de type Wikipédia).
+   - **Le titre de la vidéo ou de la page doit correspondre au sujet de
+     la fiche** (13 nov. 2026) : une vidéo sur tout le chapitre ne va pas
+     sur une fiche qui porte sur une notion précise (ex. : une vidéo
+     « guerre d'anéantissement » sur la fiche « Qu'est-ce que la
+     Shoah ? »). Sans vidéo qui convienne, la fiche n'a pas de lien.
 6. **Découpage des boîtes toutes prêtes** (décidé le 13 nov. 2026, en
    essai sur la Seconde Guerre mondiale en 3e) : au collège et au lycée,
    un chapitre du programme est découpé en **sous-thèmes de 15 à 20
@@ -953,11 +958,13 @@ la Terminale** et les boîtes toutes prêtes qui le couvrent.
 - Chaque matière est un bloc à déplier, avec une barre de progression et
   le nombre de chapitres couverts. Un chapitre couvert est coché et
   montre sa ou ses boîtes avec leur nombre de fiches ; un chapitre sans
-  boîte est marqué « à créer ».
+  boîte est marqué « bientôt disponible » (décision Q20 : ces chapitres
+  restent visibles à l'ouverture au public). Le fichier de suivi
+  `docs/PROGRAMME.md` garde, lui, la mention « à créer ».
 - En haut : la part du programme couverte, le nombre de chapitres, de
   boîtes et de fiches, et la date de mise à jour. Des pastilles mènent à
   chaque classe ; une recherche (chapitre ou boîte) et la case
-  « Seulement à créer » filtrent la liste.
+  « Seulement bientôt disponible » filtrent la liste.
 - La même liste existe en fichier texte pour le suivi du travail
   (`docs/PROGRAMME.md`, avec des cases à cocher).
 - Mise à jour à chaque lot de boîtes : une nouvelle boîte s'ajoute
@@ -974,13 +981,6 @@ la Terminale** et les boîtes toutes prêtes qui le couvrent.
 > Décisions à prendre ou incohérences repérées. Répondez directement
 > sous chaque question ; Claude reportera la réponse dans les règles.
 
-**Q20 — Montrer les chapitres « à créer » au public ?** La page « Le
-programme » du site montre aussi ce qui manque (208 chapitres au 13 nov.
-2026). Utile pour suivre le travail, mais à l'ouverture au public, faut-il
-les garder visibles, les masquer, ou garder la page seulement pour
-l'équipe ? Aujourd'hui, tout le site est marqué « ne pas indexer ».
-> Réponse : on les gardera visibles à l'ouverture au public mais au lieu de mettre la mention "à créer", on mettra la mention "bientôt disponible"
-
 **Q17 — Relecture du texte de licence par un juriste.** Une première
 analyse a été reçue le 11 nov. 2026 (résumé et propositions :
 `docs/brouillon-licence-publication.md`, §5). Reste à faire valider par
@@ -990,15 +990,6 @@ abonnement payant (CPI L131-4 d'ordre public depuis 2024), partage avec
 une classe conditionné à la publication (Code de la consommation
 L212-1), enseignants agents publics (droit de préférence de l'État).
 > Réponse :
-
-**Q19 — Voir la Librairie (et ses vidéos) sans compte ?** Aujourd'hui,
-toute l'appli demande de se connecter : la Librairie et ses vidéos sont
-lisibles **sans abonnement**, mais pas **sans compte** (un compte gratuit
-suffit). L'analyse juridique conseille que les vidéos YouTube restent
-lisibles sans condition. Faut-il ouvrir une Librairie consultable sans
-compte (dans l'appli, ou sur le site vitrine), ou un compte gratuit
-suffit-il ? À poser aussi à l'avocat.
-> Réponse : on reste comme actuellement, il faut créer un compte (gratuit) pour accéder à la page d'accueil de l'appli où est le bouton librairie
 
 **Q14 bis — Sous-niveaux de la catégorie « autres ».** Les catégories
 sont désormais « école & études » et « autres » (fait le 8 nov. 2026).
@@ -1026,6 +1017,8 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Question | Décision | Où c'est appliqué |
 |---|---|---|
+| Q20 — Chapitres « à créer » sur la page « Le programme » | Gardés visibles à l'ouverture au public, avec la mention « bientôt disponible » (13 nov. 2026). | §7.6 |
+| Q19 — Voir la Librairie sans compte | Non : on reste comme aujourd'hui, un compte gratuit est nécessaire pour accéder à l'appli et à sa Librairie (13 nov. 2026). | §7 |
 | Q11 — Présentation de la page Réviser | La présentation « mixte » (trois ronds + « Comment ça marche ? ») ; les autres sont supprimées (8 nov. 2026). | §4.5 (v277) |
 | Q13 — Droits sur les boîtes publiées | Une **licence non exclusive** (décision du 9 nov. 2026, qui remplace la licence exclusive du 8 nov.) : gratuite, mondiale, pour toute la durée des droits, irrévocable, avec droit de modifier, d'adapter et de proposer la boîte aux utilisateurs ; l'enseignant reste libre d'utiliser et de diffuser sa boîte ailleurs. Acceptée **une fois par boîte** (case à cocher datée, version du texte enregistrée) + clause des CGU ; il garantit que le contenu est de lui ; ses boîtes publiées restent si son compte est supprimé. Texte à faire relire par un juriste avant le lancement. | §7.2 — chantier « publication avec relecture » |
 | Q14 — Catégories de la Librairie | « école & études » et « autres » (Excel mis à jour par le propriétaire, 8 nov. 2026) ; « Pays et capitales du monde » reclassée dans « autres ». Sous-niveaux de « autres » : voir Q14 bis. | §7.1 |
@@ -1060,6 +1053,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 13 nov. 2026 | Site et boîtes (rien ne change dans l'appli) : page « Le programme », les chapitres sans boîte sont marqués « bientôt disponible » (Q20). Nouvelle règle (§5.7) : le titre d'un lien de fiche doit correspondre au sujet de la fiche ; 4 liens vidéo corrigés (fiche « Qu'est-ce que la Shoah ? » : vidéo sur les génocides ; 3 liens trop éloignés retirés). |
 | — | 13 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : essai du découpage d'un chapitre en sous-thèmes (§5.7, règle 6) sur la Seconde Guerre mondiale en 3e — 4 nouvelles boîtes (guerre d'anéantissement ; génocide des Juifs et des Tsiganes ; France défaite et occupée, Vichy et la collaboration ; France libre, Résistance et Libération), 78 fiches, en plus de la boîte « l'essentiel » existante. |
 | — | 13 nov. 2026 | Site seulement (rien ne change dans l'appli) : Site vitrine complet de la v272 rétabli (il n'avait jamais été enregistré : accueil avec fiche à essayer et robot, défi du jour, pages « Fiches par matière », polices et styles) ; pages « Fiches par matière » refaites avec les 1 176 boîtes actuelles. |
 | v288 | 13 nov. 2026 | Site : nouvelle page « Le programme, classe par classe » (§7.6) — tout le programme du CP à la Terminale, par matière et par chapitre, avec les boîtes toutes prêtes associées et les 208 chapitres encore « à créer » ; liens depuis toutes les pages du site. Même liste dans `docs/PROGRAMME.md`. Les pages du site ne sont plus gardées en cache par l'appli installée. |
