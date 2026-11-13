@@ -120,6 +120,7 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
 - `sw.js` : service worker (cache hors-ligne). `_headers` : en-têtes pour
   Netlify (ignoré par GitHub Pages).
 - `tools/` : scripts Python (`lancement.py` : bilan / passage en public ;
+  `programme.py` : page « Le programme » du site et `docs/PROGRAMME.md` ;
   `build_site_pages.py` : génère les pages SEO depuis
   `packs/bibliotheque.json`, dossier absent du dépôt pour l'instant).
 
@@ -315,6 +316,15 @@ testables ainsi.
   (Librairie → Boîtes toutes prêtes → « Importer la dernière version »,
   qui le lit sur GitHub avec une clé en lecture seule enregistrée dans son
   navigateur).
+- Programme couvert (v288, spéc. §7.6) : `data/programme.json` (classes →
+  matières → chapitres → boîtes) est la référence ; `python3
+  tools/programme.py genere` (avec `bibliotheque.json` présent) rafraîchit
+  titres et nombres de fiches, ajoute les nouvelles boîtes comme chapitres
+  et réécrit `docs/PROGRAMME.md` et `site/programme.html` (ne pas modifier
+  ces deux fichiers à la main). **Après chaque lot de boîtes** : lancer
+  `genere`, rattacher à la main dans `data/programme.json` chaque nouvelle
+  boîte qui couvre un chapitre « à créer » (déplacer la boîte, supprimer
+  le chapitre ajouté), relancer `genere` et livrer dans ce dépôt-ci.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
   rediffusion en direct, interview, chaîne pour étrangers apprenant le

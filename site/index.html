@@ -42,6 +42,8 @@
 
   header.top { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
   header.top .logo { display: block; width: 92px; height: 37px; background: var(--sky); -webkit-mask: url(darwin-logo.png) left center / contain no-repeat; mask: url(darwin-logo.png) left center / contain no-repeat; }
+  .top-links { display: flex; align-items: center; gap: 16px; }
+  .prog-link { font-weight: 700; font-size: 16px; }
   .install-link {
     font-weight: 700; font-size: 16px; text-decoration: none;
     padding: 9px 16px; border-radius: 999px; background: var(--ink); color: #fff;
@@ -132,7 +134,10 @@
 <div class="wrap">
   <header class="top">
     <span class="logo" role="img" aria-label="darwin"></span>
-    <a class="install-link" href="../index.html">Ouvrir l'appli</a>
+    <nav class="top-links">
+      <a class="prog-link" href="programme.html">Le programme</a>
+      <a class="install-link" href="../index.html">Ouvrir l'appli</a>
+    </nav>
   </header>
 
   <main>
@@ -179,7 +184,7 @@
       <div class="people">
         <div><h3>Les élèves et étudiants</h3><p>Du collège aux études supérieures : vocabulaire, dates, formules, définitions… tout ce qui s'apprend par cœur.</p></div>
         <div><h3>Les enseignants</h3><p>Crée une classe, partage tes boîtes et tes dates de contrôle : tes élèves les reçoivent directement, toujours à jour.</p></div>
-        <div><h3>La Librairie</h3><p>Des boîtes publiées par d'autres utilisateurs et par darwin, classées par niveau et par matière.</p></div>
+        <div><h3>La Librairie</h3><p>Des boîtes publiées par d'autres utilisateurs et par darwin, classées par niveau et par matière. <a href="programme.html">Voir le programme couvert</a>.</p></div>
       </div>
     </section>
 
@@ -211,6 +216,7 @@
 
   <footer>
     <span>darwin — révision par fiches</span>
+    <a href="programme.html">Le programme, classe par classe</a>
     <a href="../index.html">Ouvrir l'appli</a>
   </footer>
 </div>
