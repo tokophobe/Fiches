@@ -482,6 +482,10 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
      sur une fiche qui porte sur une notion précise (ex. : une vidéo
      « guerre d'anéantissement » sur la fiche « Qu'est-ce que la
      Shoah ? »). Sans vidéo qui convienne, la fiche n'a pas de lien.
+   - **Liens Wikipédia déjà posés** (décision Q21, 13 nov. 2026) : à
+     chaque relecture d'une boîte, un lien Wikipédia est remplacé par une
+     courte vidéo de cours sur le sujet précis de la fiche quand elle
+     existe ; sinon, le lien est retiré.
 6. **Découpage des boîtes toutes prêtes** (décidé le 13 nov. 2026, en
    essai sur la Seconde Guerre mondiale en 3e) : au collège et au lycée,
    un chapitre du programme est découpé en **sous-thèmes de 15 à 20
@@ -1017,6 +1021,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Question | Décision | Où c'est appliqué |
 |---|---|---|
+| Q21 — Liens Wikipédia sur les fiches (1 259 fiches, contraires à la règle 5 du §5.7) | Remplacés par une courte vidéo de cours sur le sujet précis quand elle existe, sinon retirés ; au fil de la relecture des boîtes (13 nov. 2026). | §5.7 |
 | Q20 — Chapitres « à créer » sur la page « Le programme » | Gardés visibles à l'ouverture au public, avec la mention « bientôt disponible » (13 nov. 2026). | §7.6 |
 | Q19 — Voir la Librairie sans compte | Non : on reste comme aujourd'hui, un compte gratuit est nécessaire pour accéder à l'appli et à sa Librairie (13 nov. 2026). | §7 |
 | Q11 — Présentation de la page Réviser | La présentation « mixte » (trois ronds + « Comment ça marche ? ») ; les autres sont supprimées (8 nov. 2026). | §4.5 (v277) |
