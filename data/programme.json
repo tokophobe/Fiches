@@ -5888,32 +5888,26 @@
      "nom": "Français",
      "chapitres": [
       {
-       "titre": "Récits de création, Ulysse et contes",
+       "titre": "Récits de création, création poétique",
        "boites": [
         {
          "cle": "r35-6e-francais-mythes-contes",
          "titre": "6ème — Français : récits de création, Ulysse et contes",
          "fiches": 16
         }
-       ]
-      },
-      {
-       "titre": "Classes de mots, fonctions et phrase",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r37-6e-francais-grammaire-phrase",
-         "titre": "6ème — Français : classes de mots, fonctions et phrase",
-         "fiches": 17
-        }
-       ]
-      },
-      {
-       "titre": "Conjugaison (présent, imparfait, futur, passé simple)",
-       "boites": [
+         "titre": "Les récits de création (Genèse, mythes grecs)",
+         "boites": []
+        },
         {
-         "cle": "r37-6e-francais-conjugaison",
-         "titre": "6ème — Français : conjugaison (présent, imparfait, futur, passé simple)",
-         "fiches": 22
+         "titre": "Ulysse et l'Odyssée",
+         "boites": []
+        },
+        {
+         "titre": "La poésie : jouer avec les mots et les sons",
+         "boites": []
         }
        ]
       },
@@ -5928,12 +5922,94 @@
        ]
       },
       {
-       "titre": "Résister au plus fort, fables, ruses et masques",
+       "titre": "Récits d'aventures",
+       "boites": [
+        {
+         "cle": "r40-b2-6-recits-aventures",
+         "titre": "6ème — Français : récits d'aventures, péripéties et suspense",
+         "fiches": 17
+        }
+       ]
+      },
+      {
+       "titre": "Résister au plus fort : ruses, mensonges et masques",
        "boites": [
         {
          "cle": "r38-a4-6e-francais-fables-ruse",
          "titre": "6ème — Français : résister au plus fort, fables, ruses et masques",
          "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Les fables de La Fontaine",
+         "boites": []
+        },
+        {
+         "titre": "Le théâtre : farces et comédies",
+         "boites": []
+        }
+       ]
+      },
+      {
+       "titre": "Classes de mots, fonctions et phrase",
+       "boites": [
+        {
+         "cle": "r37-6e-francais-grammaire-phrase",
+         "titre": "6ème — Français : classes de mots, fonctions et phrase",
+         "fiches": 17
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Déterminants et pronoms",
+         "boites": [
+          {
+           "cle": "r56-6e-francais-determinants-pronoms",
+           "titre": "6ème — Français : déterminants et pronoms",
+           "fiches": 16
+          }
+         ]
+        },
+        {
+         "titre": "Les compléments du verbe (COD, COI)",
+         "boites": []
+        },
+        {
+         "titre": "Les compléments circonstanciels",
+         "boites": []
+        },
+        {
+         "titre": "Le groupe nominal et ses expansions",
+         "boites": []
+        },
+        {
+         "titre": "Les types et les formes de phrases",
+         "boites": []
+        },
+        {
+         "titre": "Juxtaposition et coordination",
+         "boites": []
+        }
+       ]
+      },
+      {
+       "titre": "Conjugaison (présent, imparfait, futur, passé simple)",
+       "boites": [
+        {
+         "cle": "r37-6e-francais-conjugaison",
+         "titre": "6ème — Français : conjugaison (présent, imparfait, futur, passé simple)",
+         "fiches": 22
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Le passé composé et le plus-que-parfait",
+         "boites": []
+        },
+        {
+         "titre": "L'impératif présent",
+         "boites": []
         }
        ]
       },
@@ -5944,6 +6020,12 @@
          "cle": "r40-b2-6-orthographe-accords",
          "titre": "6ème — Français : orthographe, accord sujet-verbe et homophones",
          "fiches": 18
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Les accords dans le groupe nominal",
+         "boites": []
         }
        ]
       },
@@ -5956,66 +6038,6 @@
          "fiches": 17
         }
        ]
-      },
-      {
-       "titre": "Récits d'aventures, péripéties et suspense",
-       "boites": [
-        {
-         "cle": "r40-b2-6-recits-aventures",
-         "titre": "6ème — Français : récits d'aventures, péripéties et suspense",
-         "fiches": 17
-        }
-       ]
-      },
-      {
-       "titre": "Déterminants et pronoms",
-       "boites": [
-        {
-         "cle": "r56-6e-francais-determinants-pronoms",
-         "titre": "6ème — Français : déterminants et pronoms",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "La poésie, jouer avec les mots et les sons",
-       "boites": []
-      },
-      {
-       "titre": "Le théâtre, farces et comédies",
-       "boites": []
-      },
-      {
-       "titre": "Les compléments du verbe (COD, COI)",
-       "boites": []
-      },
-      {
-       "titre": "Les compléments circonstanciels",
-       "boites": []
-      },
-      {
-       "titre": "Le groupe nominal et ses expansions",
-       "boites": []
-      },
-      {
-       "titre": "Les types et les formes de phrases",
-       "boites": []
-      },
-      {
-       "titre": "Juxtaposition et coordination",
-       "boites": []
-      },
-      {
-       "titre": "Les accords dans le groupe nominal",
-       "boites": []
-      },
-      {
-       "titre": "Le passé composé et le plus-que-parfait",
-       "boites": []
-      },
-      {
-       "titre": "L'impératif présent",
-       "boites": []
       }
      ]
     },
@@ -6023,16 +6045,6 @@
      "id": "mathématiques",
      "nom": "Mathématiques",
      "chapitres": [
-      {
-       "titre": "Nombres décimaux, fractions et division",
-       "boites": [
-        {
-         "cle": "r35-6e-maths-decimaux-fractions",
-         "titre": "6ème — Maths : nombres décimaux, fractions et division",
-         "fiches": 17
-        }
-       ]
-      },
       {
        "titre": "Nombres entiers et grands nombres",
        "boites": [
@@ -6044,12 +6056,108 @@
        ]
       },
       {
+       "titre": "Nombres décimaux, fractions et division",
+       "boites": [
+        {
+         "cle": "r35-6e-maths-decimaux-fractions",
+         "titre": "6ème — Maths : nombres décimaux, fractions et division",
+         "fiches": 17
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Calculer avec les nombres décimaux",
+         "boites": [
+          {
+           "cle": "r56-6e-maths-calcul-decimaux",
+           "titre": "6ème — Maths : calculer avec les nombres décimaux",
+           "fiches": 16
+          }
+         ]
+        },
+        {
+         "titre": "Multiplier des nombres décimaux",
+         "boites": []
+        },
+        {
+         "titre": "Diviser un décimal par un entier",
+         "boites": []
+        },
+        {
+         "titre": "Additionner et soustraire des fractions de même dénominateur",
+         "boites": []
+        }
+       ]
+      },
+      {
+       "titre": "Division euclidienne, multiples et diviseurs",
+       "boites": [
+        {
+         "cle": "r40-b2-6-division-euclidienne",
+         "titre": "6ème — Maths : division euclidienne, multiples et diviseurs",
+         "fiches": 17
+        }
+       ]
+      },
+      {
+       "titre": "Ordre de grandeur et calcul mental",
+       "boites": []
+      },
+      {
+       "titre": "Proportionnalité, pourcentages et échelles",
+       "boites": [
+        {
+         "cle": "r37-6e-maths-proportionnalite",
+         "titre": "6ème — Maths : proportionnalité, pourcentages et échelles",
+         "fiches": 15
+        }
+       ]
+      },
+      {
+       "titre": "Demi-droite graduée, tableaux et graphiques",
+       "boites": [
+        {
+         "cle": "r40-b2-6-droite-graduee-donnees",
+         "titre": "6ème — Maths : demi-droite graduée, tableaux et graphiques",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Repérage dans le plan et sur une droite graduée",
+         "boites": []
+        },
+        {
+         "titre": "Lire et construire des diagrammes",
+         "boites": []
+        }
+       ]
+      },
+      {
        "titre": "Droites, cercles et angles",
        "boites": [
         {
          "cle": "r37-6e-maths-droites-cercles-angles",
          "titre": "6ème — Maths : droites, cercles et angles",
          "fiches": 18
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Mesurer et construire des angles au rapporteur",
+         "boites": []
+        },
+        {
+         "titre": "Construire des triangles",
+         "boites": []
+        },
+        {
+         "titre": "Les quadrilatères particuliers",
+         "boites": []
+        },
+        {
+         "titre": "La médiatrice d'un segment",
+         "boites": []
         }
        ]
       },
@@ -6071,25 +6179,11 @@
          "titre": "6ème — Maths : périmètres et aires",
          "fiches": 16
         }
-       ]
-      },
-      {
-       "titre": "Proportionnalité, pourcentages et échelles",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r37-6e-maths-proportionnalite",
-         "titre": "6ème — Maths : proportionnalité, pourcentages et échelles",
-         "fiches": 15
-        }
-       ]
-      },
-      {
-       "titre": "Division euclidienne, multiples et diviseurs",
-       "boites": [
-        {
-         "cle": "r40-b2-6-division-euclidienne",
-         "titre": "6ème — Maths : division euclidienne, multiples et diviseurs",
-         "fiches": 17
+         "titre": "Le périmètre du cercle et l'aire du disque",
+         "boites": []
         }
        ]
       },
@@ -6100,6 +6194,12 @@
          "cle": "r40-b2-6-solides-volumes",
          "titre": "6ème — Maths : solides, patrons et volume du pavé droit",
          "fiches": 18
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Contenances et unités de volume",
+         "boites": []
         }
        ]
       },
@@ -6114,75 +6214,7 @@
        ]
       },
       {
-       "titre": "Demi-droite graduée, tableaux et graphiques",
-       "boites": [
-        {
-         "cle": "r40-b2-6-droite-graduee-donnees",
-         "titre": "6ème — Maths : demi-droite graduée, tableaux et graphiques",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Calculer avec les nombres décimaux",
-       "boites": [
-        {
-         "cle": "r56-6e-maths-calcul-decimaux",
-         "titre": "6ème — Maths : calculer avec les nombres décimaux",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Additionner et soustraire des fractions de même dénominateur",
-       "boites": []
-      },
-      {
-       "titre": "Multiplier des nombres décimaux",
-       "boites": []
-      },
-      {
-       "titre": "Diviser un décimal par un entier",
-       "boites": []
-      },
-      {
-       "titre": "Repérage dans le plan et sur une droite graduée",
-       "boites": []
-      },
-      {
-       "titre": "Construire des triangles",
-       "boites": []
-      },
-      {
-       "titre": "Les quadrilatères particuliers",
-       "boites": []
-      },
-      {
-       "titre": "La médiatrice d'un segment",
-       "boites": []
-      },
-      {
-       "titre": "Mesurer et construire des angles au rapporteur",
-       "boites": []
-      },
-      {
-       "titre": "Le périmètre du cercle et l'aire du disque",
-       "boites": []
-      },
-      {
-       "titre": "Lire et construire des diagrammes",
-       "boites": []
-      },
-      {
        "titre": "Programmes de calcul et premiers algorithmes (Scratch)",
-       "boites": []
-      },
-      {
-       "titre": "Contenances et unités de volume",
-       "boites": []
-      },
-      {
-       "titre": "Ordre de grandeur et calcul mental",
        "boites": []
       }
      ]
@@ -6192,12 +6224,26 @@
      "nom": "Sciences",
      "chapitres": [
       {
-       "titre": "Le vivant, la matière et l'énergie",
+       "titre": "Classer le vivant, cellules, nutrition et développement",
        "boites": [
         {
-         "cle": "r35-6e-sciences-vivant-matiere-energie",
-         "titre": "6ème — Sciences : le vivant, la matière et l'énergie",
+         "cle": "r38-a4-6e-sciences-vivant-classer",
+         "titre": "6ème — Sciences : classer le vivant, cellules, nutrition et développement",
          "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Les besoins des végétaux et la photosynthèse",
+         "boites": []
+        },
+        {
+         "titre": "La digestion et l'alimentation humaine",
+         "boites": []
+        },
+        {
+         "titre": "Reproduction et développement des êtres vivants",
+         "boites": []
         }
        ]
       },
@@ -6209,15 +6255,11 @@
          "titre": "6ème — Sciences : la planète Terre et les êtres vivants dans leur environnement",
          "fiches": 17
         }
-       ]
-      },
-      {
-       "titre": "Classer le vivant, cellules, nutrition et développement",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r38-a4-6e-sciences-vivant-classer",
-         "titre": "6ème — Sciences : classer le vivant, cellules, nutrition et développement",
-         "fiches": 16
+         "titre": "Le système solaire et les mouvements de la Terre",
+         "boites": []
         }
        ]
       },
@@ -6232,14 +6274,6 @@
        ]
       },
       {
-       "titre": "Les besoins des végétaux et la photosynthèse",
-       "boites": []
-      },
-      {
-       "titre": "La digestion et l'alimentation humaine",
-       "boites": []
-      },
-      {
        "titre": "Les matériaux et les propriétés de la matière",
        "boites": []
       },
@@ -6252,12 +6286,14 @@
        "boites": []
       },
       {
-       "titre": "Le système solaire et les mouvements de la Terre",
-       "boites": []
-      },
-      {
-       "titre": "Reproduction et développement des êtres vivants",
-       "boites": []
+       "titre": "Révisions de l'année",
+       "boites": [
+        {
+         "cle": "r35-6e-sciences-vivant-matiere-energie",
+         "titre": "6ème — Sciences : le vivant, la matière et l'énergie",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -6266,74 +6302,96 @@
      "nom": "Histoire",
      "chapitres": [
       {
-       "titre": "Premiers États, Grèce, Rome et monothéismes",
-       "boites": [
-        {
-         "cle": "r35-6e-histoire-antiquite",
-         "titre": "6ème — Histoire : premiers États, Grèce, Rome et monothéismes",
-         "fiches": 19
-        }
-       ]
-      },
-      {
-       "titre": "Préhistoire, Néolithique et migrations",
+       "titre": "La longue histoire de l'humanité et des migrations",
        "boites": [
         {
          "cle": "r37-6e-histoire-prehistoire-neolithique",
          "titre": "6ème — Histoire : Préhistoire, Néolithique et migrations",
          "fiches": 18
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Les débuts de l'humanité",
+         "boites": []
+        },
+        {
+         "titre": "La révolution néolithique",
+         "boites": []
+        },
+        {
+         "titre": "Premiers États et premières écritures (Mésopotamie, Égypte)",
+         "boites": []
+        }
        ]
       },
       {
-       "titre": "L'Empire romain, conquêtes et romanisation, la Chine des Han",
+       "titre": "Récits fondateurs, croyances et citoyenneté dans la Méditerranée antique",
+       "boites": [
+        {
+         "cle": "r35-6e-histoire-antiquite",
+         "titre": "6ème — Histoire : premiers États, Grèce, Rome et monothéismes",
+         "fiches": 19
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Les cités grecques, leurs dieux et leurs héros",
+         "boites": [
+          {
+           "cle": "r40-b2-6-grece-mythes",
+           "titre": "6ème — Histoire : mythes, dieux et héros des cités grecques",
+           "fiches": 18
+          }
+         ]
+        },
+        {
+         "titre": "Athènes, citoyenneté et démocratie",
+         "boites": [
+          {
+           "cle": "r56-6e-histoire-athenes-democratie",
+           "titre": "6ème — Histoire : Athènes, citoyenneté et démocratie",
+           "fiches": 16
+          }
+         ]
+        },
+        {
+         "titre": "Alexandre et le monde grec",
+         "boites": []
+        },
+        {
+         "titre": "Rome, du mythe à l'histoire",
+         "boites": []
+        },
+        {
+         "titre": "Le peuple hébreu et le monothéisme juif",
+         "boites": []
+        }
+       ]
+      },
+      {
+       "titre": "L'Empire romain dans le monde antique",
        "boites": [
         {
          "cle": "r37-6e-histoire-empire-romain-han",
          "titre": "6ème — Histoire : l'Empire romain, conquêtes et romanisation, la Chine des Han",
          "fiches": 18
         }
-       ]
-      },
-      {
-       "titre": "Mythes, dieux et héros des cités grecques",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r40-b2-6-grece-mythes",
-         "titre": "6ème — Histoire : mythes, dieux et héros des cités grecques",
-         "fiches": 18
+         "titre": "Conquêtes, paix romaine et romanisation",
+         "boites": []
+        },
+        {
+         "titre": "Les débuts du christianisme",
+         "boites": []
+        },
+        {
+         "titre": "Rome et la Chine des Han",
+         "boites": []
         }
        ]
-      },
-      {
-       "titre": "Athènes, citoyenneté et démocratie",
-       "boites": [
-        {
-         "cle": "r56-6e-histoire-athenes-democratie",
-         "titre": "6ème — Histoire : Athènes, citoyenneté et démocratie",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Mésopotamie et Égypte, premiers États et premières écritures",
-       "boites": []
-      },
-      {
-       "titre": "Le peuple hébreu et le monothéisme juif",
-       "boites": []
-      },
-      {
-       "titre": "Les débuts du christianisme",
-       "boites": []
-      },
-      {
-       "titre": "Rome, de la fondation à la République",
-       "boites": []
-      },
-      {
-       "titre": "Alexandre et le monde grec",
-       "boites": []
       }
      ]
     },
@@ -6342,12 +6400,26 @@
      "nom": "Géographie",
      "chapitres": [
       {
-       "titre": "Habiter les villes, les littoraux et les espaces peu peuplés",
+       "titre": "Habiter le monde : villes, espaces peu peuplés et littoraux",
        "boites": [
         {
          "cle": "r35-6e-geographie-habiter",
          "titre": "6ème — Géographie : habiter les villes, les littoraux et les espaces peu peuplés",
          "fiches": 15
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Habiter une métropole",
+         "boites": []
+        },
+        {
+         "titre": "Habiter un espace de faible densité (rural, montagne, désert)",
+         "boites": []
+        },
+        {
+         "titre": "Habiter les littoraux industriels et touristiques",
+         "boites": []
         }
        ]
       },
@@ -6370,18 +6442,6 @@
          "fiches": 16
         }
        ]
-      },
-      {
-       "titre": "Habiter une métropole",
-       "boites": []
-      },
-      {
-       "titre": "Habiter un espace de faible densité (rural, montagne, désert)",
-       "boites": []
-      },
-      {
-       "titre": "Habiter les littoraux industriels et touristiques",
-       "boites": []
       },
       {
        "titre": "Lire et réaliser un croquis simple",
@@ -6609,65 +6669,75 @@
      "nom": "Français",
      "chapitres": [
       {
-       "titre": "Chevaliers, littérature du Moyen Âge et grammaire",
-       "boites": [
-        {
-         "cle": "r35-5e-francais-chevalerie-grammaire",
-         "titre": "5ème — Français : chevaliers, littérature du Moyen Âge et grammaire",
-         "fiches": 16
-        }
-       ]
-      },
-      {
-       "titre": "Types de phrases, propositions, passé composé et plus-que-parfait",
-       "boites": [
-        {
-         "cle": "r37-5e-francais-phrases-temps-composes",
-         "titre": "5ème — Français : types de phrases, propositions, passé composé et plus-que-parfait",
-         "fiches": 19
-        }
-       ]
-      },
-      {
-       "titre": "Voyage, aventure, héros et univers imaginaires",
+       "titre": "Le voyage et l'aventure",
        "boites": [
         {
          "cle": "r37-5e-francais-aventure-heros",
          "titre": "5ème — Français : voyage, aventure, héros et univers imaginaires",
          "fiches": 17
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Récits de voyage et d'exploration",
+         "boites": []
+        },
+        {
+         "titre": "Romans d'aventure",
+         "boites": []
+        }
        ]
       },
       {
-       "titre": "Avec autrui, la comédie et Molière",
+       "titre": "Avec autrui : familles, amis, réseaux",
        "boites": [
         {
          "cle": "r40-b2-5-theatre-moliere",
          "titre": "5ème — Français : avec autrui, la comédie et Molière",
          "fiches": 19
         }
-       ]
-      },
-      {
-       "titre": "L'accord du participe passé",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r56-5e-francais-participe-passe",
-         "titre": "5ème — Français : l'accord du participe passé",
-         "fiches": 17
+         "titre": "Amitié et famille dans le roman",
+         "boites": []
         }
        ]
       },
       {
-       "titre": "Imaginer des univers nouveaux (science-fiction, fantasy)",
-       "boites": []
+       "titre": "Imaginer des univers nouveaux",
+       "boites": [],
+       "sousthemes": [
+        {
+         "titre": "La science-fiction",
+         "boites": []
+        },
+        {
+         "titre": "Contes, merveilleux et fantasy",
+         "boites": []
+        }
+       ]
+      },
+      {
+       "titre": "Héros, héroïnes et héroïsmes",
+       "boites": [],
+       "sousthemes": [
+        {
+         "titre": "Chevaliers et romans de la Table ronde",
+         "boites": []
+        },
+        {
+         "titre": "Héros d'épopée et héros d'aujourd'hui",
+         "boites": []
+        }
+       ]
       },
       {
        "titre": "L'être humain est-il maître de la nature ?",
        "boites": []
       },
       {
-       "titre": "Le conte et le merveilleux",
+       "titre": "Types de phrases et propositions",
        "boites": []
       },
       {
@@ -6683,6 +6753,20 @@
        "boites": []
       },
       {
+       "titre": "Le passé composé et le plus-que-parfait",
+       "boites": []
+      },
+      {
+       "titre": "L'accord du participe passé",
+       "boites": [
+        {
+         "cle": "r56-5e-francais-participe-passe",
+         "titre": "5ème — Français : l'accord du participe passé",
+         "fiches": 17
+        }
+       ]
+      },
+      {
        "titre": "Le discours direct et indirect",
        "boites": []
       },
@@ -6693,6 +6777,21 @@
       {
        "titre": "Le vocabulaire et la formation des mots",
        "boites": []
+      },
+      {
+       "titre": "Révisions de l'année",
+       "boites": [
+        {
+         "cle": "r35-5e-francais-chevalerie-grammaire",
+         "titre": "5ème — Français : chevaliers, littérature du Moyen Âge et grammaire",
+         "fiches": 16
+        },
+        {
+         "cle": "r37-5e-francais-phrases-temps-composes",
+         "titre": "5ème — Français : types de phrases, propositions, passé composé et plus-que-parfait",
+         "fiches": 19
+        }
+       ]
       }
      ]
     },
@@ -6701,14 +6800,16 @@
      "nom": "Mathématiques",
      "chapitres": [
       {
-       "titre": "Nombres relatifs, priorités et proportionnalité",
-       "boites": [
-        {
-         "cle": "r35-5e-maths-relatifs-proportionnalite",
-         "titre": "5ème — Maths : nombres relatifs, priorités et proportionnalité",
-         "fiches": 17
-        }
-       ]
+       "titre": "Additionner et soustraire des nombres relatifs",
+       "boites": []
+      },
+      {
+       "titre": "Repérage dans le plan avec les relatifs",
+       "boites": []
+      },
+      {
+       "titre": "Priorités de calcul et distributivité",
+       "boites": []
       },
       {
        "titre": "Fractions, comparaison et addition",
@@ -6718,25 +6819,11 @@
          "titre": "5ème — Maths : fractions, comparaison et addition",
          "fiches": 17
         }
-       ]
-      },
-      {
-       "titre": "Triangles, inégalité triangulaire et angles",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r37-5e-maths-triangles-angles",
-         "titre": "5ème — Maths : triangles, inégalité triangulaire et angles",
-         "fiches": 19
-        }
-       ]
-      },
-      {
-       "titre": "Parallélogramme et symétrie centrale",
-       "boites": [
-        {
-         "cle": "r37-5e-maths-parallelogramme-symetrie",
-         "titre": "5ème — Maths : parallélogramme et symétrie centrale",
-         "fiches": 17
+         "titre": "Fractions égales et simplification",
+         "boites": []
         }
        ]
       },
@@ -6751,6 +6838,14 @@
        ]
       },
       {
+       "titre": "Multiples, diviseurs et nombres premiers",
+       "boites": []
+      },
+      {
+       "titre": "Proportionnalité et pourcentages",
+       "boites": []
+      },
+      {
        "titre": "Statistiques et premières probabilités",
        "boites": [
         {
@@ -6761,12 +6856,32 @@
        ]
       },
       {
-       "titre": "Prismes droits et cylindres, patrons et volumes",
+       "titre": "Triangles, inégalité triangulaire et angles",
        "boites": [
         {
-         "cle": "r40-b2-5-prismes-cylindres",
-         "titre": "5ème — Maths : prismes droits et cylindres, patrons et volumes",
-         "fiches": 16
+         "cle": "r37-5e-maths-triangles-angles",
+         "titre": "5ème — Maths : triangles, inégalité triangulaire et angles",
+         "fiches": 19
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Angles alternes-internes et correspondants",
+         "boites": []
+        },
+        {
+         "titre": "Médiatrices et cercle circonscrit",
+         "boites": []
+        }
+       ]
+      },
+      {
+       "titre": "Parallélogramme et symétrie centrale",
+       "boites": [
+        {
+         "cle": "r37-5e-maths-parallelogramme-symetrie",
+         "titre": "5ème — Maths : parallélogramme et symétrie centrale",
+         "fiches": 17
         }
        ]
       },
@@ -6781,35 +6896,23 @@
        ]
       },
       {
-       "titre": "Additionner et soustraire des nombres relatifs",
-       "boites": []
+       "titre": "Prismes droits et cylindres, patrons et volumes",
+       "boites": [
+        {
+         "cle": "r40-b2-5-prismes-cylindres",
+         "titre": "5ème — Maths : prismes droits et cylindres, patrons et volumes",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Volumes et conversions des unités de volume",
+         "boites": []
+        }
+       ]
       },
       {
-       "titre": "Repérage dans le plan avec les relatifs",
-       "boites": []
-      },
-      {
-       "titre": "Priorités de calcul et distributivité",
-       "boites": []
-      },
-      {
-       "titre": "Fractions égales et simplification",
-       "boites": []
-      },
-      {
-       "titre": "Proportionnalité et pourcentages",
-       "boites": []
-      },
-      {
-       "titre": "Multiples, diviseurs et nombres premiers",
-       "boites": []
-      },
-      {
-       "titre": "Angles alternes-internes et correspondants",
-       "boites": []
-      },
-      {
-       "titre": "Médiatrices et cercle circonscrit",
+       "titre": "Durées et vitesses",
        "boites": []
       },
       {
@@ -6817,12 +6920,14 @@
        "boites": []
       },
       {
-       "titre": "Volumes et conversions des unités de volume",
-       "boites": []
-      },
-      {
-       "titre": "Durées et vitesses",
-       "boites": []
+       "titre": "Révisions de l'année",
+       "boites": [
+        {
+         "cle": "r35-5e-maths-relatifs-proportionnalite",
+         "titre": "5ème — Maths : nombres relatifs, priorités et proportionnalité",
+         "fiches": 17
+        }
+       ]
       }
      ]
     },
@@ -6831,70 +6936,96 @@
      "nom": "Histoire",
      "chapitres": [
       {
-       "titre": "Byzance, l'Islam et l'Occident médiéval",
+       "titre": "Chrétientés et islam, des mondes en contact (VIe-XIIIe siècles)",
        "boites": [
         {
          "cle": "r35-5e-histoire-moyen-age",
          "titre": "5ème — Histoire : Byzance, l'Islam et l'Occident médiéval",
          "fiches": 18
         }
-       ]
-      },
-      {
-       "titre": "Grandes découvertes, Renaissance et Réformes",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r35-5e-histoire-xvie-siecle",
-         "titre": "5ème — Histoire : Grandes découvertes, Renaissance et Réformes",
-         "fiches": 18
+         "titre": "Byzance et l'Empire carolingien",
+         "boites": []
+        },
+        {
+         "titre": "De la naissance de l'islam à la prise de Bagdad",
+         "boites": []
+        },
+        {
+         "titre": "Croisades et Reconquista",
+         "boites": []
         }
        ]
       },
       {
-       "titre": "Seigneurs, paysans, villes et pouvoir royal (XIe-XVe s.)",
+       "titre": "Société, Église et pouvoir dans l'Occident féodal (XIe-XVe siècles)",
        "boites": [
         {
          "cle": "r37-5e-histoire-seigneurs-villes-roi",
          "titre": "5ème — Histoire : seigneurs, paysans, villes et pouvoir royal (XIe-XVe s.)",
          "fiches": 20
         }
-       ]
-      },
-      {
-       "titre": "Du prince de la Renaissance au roi absolu",
-       "boites": [
+       ],
+       "sousthemes": [
         {
-         "cle": "r40-b2-5-roi-absolu",
-         "titre": "5ème — Histoire : du prince de la Renaissance au roi absolu",
-         "fiches": 17
+         "titre": "Seigneurs et paysans",
+         "boites": []
+        },
+        {
+         "titre": "L'Église au Moyen Âge",
+         "boites": [
+          {
+           "cle": "r56-5e-histoire-eglise-moyen-age",
+           "titre": "5ème — Histoire : l'Église au Moyen Âge",
+           "fiches": 17
+          }
+         ]
+        },
+        {
+         "titre": "L'essor des villes et des marchands",
+         "boites": []
+        },
+        {
+         "titre": "L'affirmation du pouvoir royal (Capétiens et Valois)",
+         "boites": []
         }
        ]
       },
       {
-       "titre": "L'Église au Moyen Âge",
+       "titre": "L'Europe et le monde aux XVIe et XVIIe siècles",
        "boites": [
         {
-         "cle": "r56-5e-histoire-eglise-moyen-age",
-         "titre": "5ème — Histoire : l'Église au Moyen Âge",
-         "fiches": 17
+         "cle": "r35-5e-histoire-xvie-siecle",
+         "titre": "5ème — Histoire : Grandes découvertes, Renaissance et Réformes",
+         "fiches": 18
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Grandes découvertes, Charles Quint et Soliman",
+         "boites": []
+        },
+        {
+         "titre": "Humanisme et Renaissance artistique",
+         "boites": []
+        },
+        {
+         "titre": "Réformes et guerres de religion",
+         "boites": []
+        },
+        {
+         "titre": "Du prince de la Renaissance au roi absolu",
+         "boites": [
+          {
+           "cle": "r40-b2-5-roi-absolu",
+           "titre": "5ème — Histoire : du prince de la Renaissance au roi absolu",
+           "fiches": 17
+          }
+         ]
         }
        ]
-      },
-      {
-       "titre": "L'Empire carolingien",
-       "boites": []
-      },
-      {
-       "titre": "Les croisades et la Reconquista",
-       "boites": []
-      },
-      {
-       "titre": "La Renaissance artistique",
-       "boites": []
-      },
-      {
-       "titre": "Les Réformes protestante et catholique",
-       "boites": []
       }
      ]
     },
@@ -6903,22 +7034,46 @@
      "nom": "Géographie",
      "chapitres": [
       {
-       "titre": "Croissance démographique et développement",
+       "titre": "La question démographique et l'inégal développement",
        "boites": [
         {
          "cle": "r37-5e-geo-demographie-developpement",
          "titre": "5ème — Géographie : croissance démographique et développement",
          "fiches": 17
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Croissance démographique : l'exemple de l'Inde ou de la Chine",
+         "boites": []
+        },
+        {
+         "titre": "Richesse et pauvreté dans le monde",
+         "boites": []
+        }
        ]
       },
       {
-       "titre": "Énergie, eau et alimentation",
+       "titre": "Des ressources limitées, à gérer et à renouveler",
        "boites": [
         {
          "cle": "r37-5e-geo-ressources",
          "titre": "5ème — Géographie : énergie, eau et alimentation",
          "fiches": 17
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "L'énergie",
+         "boites": []
+        },
+        {
+         "titre": "L'eau",
+         "boites": []
+        },
+        {
+         "titre": "Nourrir l'humanité",
+         "boites": []
         }
        ]
       },
@@ -6930,19 +7085,17 @@
          "titre": "5ème — Géographie : prévenir les risques, s'adapter au changement global",
          "fiches": 18
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Le changement climatique et ses effets",
+         "boites": []
+        },
+        {
+         "titre": "Les risques industriels et technologiques",
+         "boites": []
+        }
        ]
-      },
-      {
-       "titre": "L'Inde ou la Chine, population et développement",
-       "boites": []
-      },
-      {
-       "titre": "Le changement climatique et ses effets",
-       "boites": []
-      },
-      {
-       "titre": "Les risques industriels et technologiques",
-       "boites": []
       }
      ]
     },
@@ -6979,24 +7132,12 @@
      "nom": "SVT",
      "chapitres": [
       {
-       "titre": "Respiration, digestion et paysages",
-       "boites": [
-        {
-         "cle": "r35-5e-svt-respiration-digestion-geologie",
-         "titre": "5ème — SVT : respiration, digestion et paysages",
-         "fiches": 16
-        }
-       ]
+       "titre": "La cellule, unité du vivant",
+       "boites": []
       },
       {
-       "titre": "Séismes, volcans et tectonique des plaques",
-       "boites": [
-        {
-         "cle": "r37-5e-svt-seismes-volcans",
-         "titre": "5ème — SVT : séismes, volcans et tectonique des plaques",
-         "fiches": 17
-        }
-       ]
+       "titre": "Respiration et digestion",
+       "boites": []
       },
       {
        "titre": "Nutrition et reproduction des plantes à fleurs",
@@ -7019,16 +7160,34 @@
        ]
       },
       {
-       "titre": "La cellule, unité du vivant",
-       "boites": []
-      },
-      {
-       "titre": "Les fossiles et l'histoire de la Terre",
-       "boites": []
-      },
-      {
        "titre": "Hygiène, microbes et santé",
        "boites": []
+      },
+      {
+       "titre": "Séismes, volcans et tectonique des plaques",
+       "boites": [
+        {
+         "cle": "r37-5e-svt-seismes-volcans",
+         "titre": "5ème — SVT : séismes, volcans et tectonique des plaques",
+         "fiches": 17
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Les fossiles et l'histoire de la Terre",
+         "boites": []
+        }
+       ]
+      },
+      {
+       "titre": "Révisions de l'année",
+       "boites": [
+        {
+         "cle": "r35-5e-svt-respiration-digestion-geologie",
+         "titre": "5ème — SVT : respiration, digestion et paysages",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },

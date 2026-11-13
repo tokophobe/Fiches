@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1139 chapitres couverts sur 1349** (84 %), 1180 boîtes, 19456 fiches.
+Mise à jour : 13/11/2026. **1132 chapitres couverts sur 1300** (87 %), 1180 boîtes, 19456 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -16,8 +16,8 @@ Mise à jour : 13/11/2026. **1139 chapitres couverts sur 1349** (84 %), 1180 bo�
 | [CE2](#ce2) | 110 / 112 | 2 | 110 | 1636 |
 | [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
-| [6e](#6e) | 43 / 99 | 56 | 43 | 730 |
-| [5e](#5e) | 42 / 99 | 57 | 42 | 730 |
+| [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
+| [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
 | [4e](#4e) | 52 / 82 | 30 | 54 | 916 |
 | [3e](#3e) | 96 / 108 | 12 | 134 | 2565 |
 | [Seconde](#seconde) | 70 / 82 | 12 | 70 | 1243 |
@@ -743,92 +743,99 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 
 ## 6e
 
-Collège — 43 chapitres couverts sur 99, 43 boîtes.
+Collège — 39 chapitres couverts sur 62, 43 boîtes.
 
-### 6e — Français (9 / 19)
+### 6e — Français (8 / 8)
 
-- [x] Récits de création, Ulysse et contes — 6ème — Français : récits de création, Ulysse et contes (16 fiches)
-- [x] Classes de mots, fonctions et phrase — 6ème — Français : classes de mots, fonctions et phrase (17 fiches)
-- [x] Conjugaison (présent, imparfait, futur, passé simple) — 6ème — Français : conjugaison (présent, imparfait, futur, passé simple) (22 fiches)
+- [x] Récits de création, création poétique — l'essentiel — 6ème — Français : récits de création, Ulysse et contes (16 fiches)
+  - [ ] Les récits de création (Genèse, mythes grecs) — *à créer*
+  - [ ] Ulysse et l'Odyssée — *à créer*
+  - [ ] La poésie : jouer avec les mots et les sons — *à créer*
 - [x] Le monstre, aux limites de l'humain — 6ème — Français : le monstre, aux limites de l'humain (16 fiches)
-- [x] Résister au plus fort, fables, ruses et masques — 6ème — Français : résister au plus fort, fables, ruses et masques (16 fiches)
-- [x] Orthographe, accord sujet-verbe et homophones — 6ème — Français : orthographe, accord sujet-verbe et homophones (18 fiches)
+- [x] Récits d'aventures — 6ème — Français : récits d'aventures, péripéties et suspense (17 fiches)
+- [x] Résister au plus fort : ruses, mensonges et masques — l'essentiel — 6ème — Français : résister au plus fort, fables, ruses et masques (16 fiches)
+  - [ ] Les fables de La Fontaine — *à créer*
+  - [ ] Le théâtre : farces et comédies — *à créer*
+- [x] Classes de mots, fonctions et phrase — l'essentiel — 6ème — Français : classes de mots, fonctions et phrase (17 fiches)
+  - [x] Déterminants et pronoms — 6ème — Français : déterminants et pronoms (16 fiches)
+  - [ ] Les compléments du verbe (COD, COI) — *à créer*
+  - [ ] Les compléments circonstanciels — *à créer*
+  - [ ] Le groupe nominal et ses expansions — *à créer*
+  - [ ] Les types et les formes de phrases — *à créer*
+  - [ ] Juxtaposition et coordination — *à créer*
+- [x] Conjugaison (présent, imparfait, futur, passé simple) — l'essentiel — 6ème — Français : conjugaison (présent, imparfait, futur, passé simple) (22 fiches)
+  - [ ] Le passé composé et le plus-que-parfait — *à créer*
+  - [ ] L'impératif présent — *à créer*
+- [x] Orthographe, accord sujet-verbe et homophones — l'essentiel — 6ème — Français : orthographe, accord sujet-verbe et homophones (18 fiches)
+  - [ ] Les accords dans le groupe nominal — *à créer*
 - [x] Vocabulaire, formation des mots et sens des mots — 6ème — Français : vocabulaire, formation des mots et sens des mots (17 fiches)
-- [x] Récits d'aventures, péripéties et suspense — 6ème — Français : récits d'aventures, péripéties et suspense (17 fiches)
-- [x] Déterminants et pronoms — 6ème — Français : déterminants et pronoms (16 fiches)
-- [ ] La poésie, jouer avec les mots et les sons — *à créer*
-- [ ] Le théâtre, farces et comédies — *à créer*
-- [ ] Les compléments du verbe (COD, COI) — *à créer*
-- [ ] Les compléments circonstanciels — *à créer*
-- [ ] Le groupe nominal et ses expansions — *à créer*
-- [ ] Les types et les formes de phrases — *à créer*
-- [ ] Juxtaposition et coordination — *à créer*
-- [ ] Les accords dans le groupe nominal — *à créer*
-- [ ] Le passé composé et le plus-que-parfait — *à créer*
-- [ ] L'impératif présent — *à créer*
 
-### 6e — Mathématiques (11 / 24)
+### 6e — Mathématiques (10 / 12)
 
-- [x] Nombres décimaux, fractions et division — 6ème — Maths : nombres décimaux, fractions et division (17 fiches)
 - [x] Nombres entiers et grands nombres — 6ème — Maths : nombres entiers et grands nombres (17 fiches)
-- [x] Droites, cercles et angles — 6ème — Maths : droites, cercles et angles (18 fiches)
-- [x] La symétrie axiale — 6ème — Maths : la symétrie axiale (16 fiches)
-- [x] Périmètres et aires — 6ème — Maths : périmètres et aires (16 fiches)
-- [x] Proportionnalité, pourcentages et échelles — 6ème — Maths : proportionnalité, pourcentages et échelles (15 fiches)
+- [x] Nombres décimaux, fractions et division — l'essentiel — 6ème — Maths : nombres décimaux, fractions et division (17 fiches)
+  - [x] Calculer avec les nombres décimaux — 6ème — Maths : calculer avec les nombres décimaux (16 fiches)
+  - [ ] Multiplier des nombres décimaux — *à créer*
+  - [ ] Diviser un décimal par un entier — *à créer*
+  - [ ] Additionner et soustraire des fractions de même dénominateur — *à créer*
 - [x] Division euclidienne, multiples et diviseurs — 6ème — Maths : division euclidienne, multiples et diviseurs (17 fiches)
-- [x] Solides, patrons et volume du pavé droit — 6ème — Maths : solides, patrons et volume du pavé droit (18 fiches)
-- [x] Durées, horaires et conversions d'unités — 6ème — Maths : durées, horaires et conversions d'unités (17 fiches)
-- [x] Demi-droite graduée, tableaux et graphiques — 6ème — Maths : demi-droite graduée, tableaux et graphiques (16 fiches)
-- [x] Calculer avec les nombres décimaux — 6ème — Maths : calculer avec les nombres décimaux (16 fiches)
-- [ ] Additionner et soustraire des fractions de même dénominateur — *à créer*
-- [ ] Multiplier des nombres décimaux — *à créer*
-- [ ] Diviser un décimal par un entier — *à créer*
-- [ ] Repérage dans le plan et sur une droite graduée — *à créer*
-- [ ] Construire des triangles — *à créer*
-- [ ] Les quadrilatères particuliers — *à créer*
-- [ ] La médiatrice d'un segment — *à créer*
-- [ ] Mesurer et construire des angles au rapporteur — *à créer*
-- [ ] Le périmètre du cercle et l'aire du disque — *à créer*
-- [ ] Lire et construire des diagrammes — *à créer*
-- [ ] Programmes de calcul et premiers algorithmes (Scratch) — *à créer*
-- [ ] Contenances et unités de volume — *à créer*
 - [ ] Ordre de grandeur et calcul mental — *à créer*
+- [x] Proportionnalité, pourcentages et échelles — 6ème — Maths : proportionnalité, pourcentages et échelles (15 fiches)
+- [x] Demi-droite graduée, tableaux et graphiques — l'essentiel — 6ème — Maths : demi-droite graduée, tableaux et graphiques (16 fiches)
+  - [ ] Repérage dans le plan et sur une droite graduée — *à créer*
+  - [ ] Lire et construire des diagrammes — *à créer*
+- [x] Droites, cercles et angles — l'essentiel — 6ème — Maths : droites, cercles et angles (18 fiches)
+  - [ ] Mesurer et construire des angles au rapporteur — *à créer*
+  - [ ] Construire des triangles — *à créer*
+  - [ ] Les quadrilatères particuliers — *à créer*
+  - [ ] La médiatrice d'un segment — *à créer*
+- [x] La symétrie axiale — 6ème — Maths : la symétrie axiale (16 fiches)
+- [x] Périmètres et aires — l'essentiel — 6ème — Maths : périmètres et aires (16 fiches)
+  - [ ] Le périmètre du cercle et l'aire du disque — *à créer*
+- [x] Solides, patrons et volume du pavé droit — l'essentiel — 6ème — Maths : solides, patrons et volume du pavé droit (18 fiches)
+  - [ ] Contenances et unités de volume — *à créer*
+- [x] Durées, horaires et conversions d'unités — 6ème — Maths : durées, horaires et conversions d'unités (17 fiches)
+- [ ] Programmes de calcul et premiers algorithmes (Scratch) — *à créer*
 
-### 6e — Sciences (4 / 11)
+### 6e — Sciences (4 / 7)
 
-- [x] Le vivant, la matière et l'énergie — 6ème — Sciences : le vivant, la matière et l'énergie (16 fiches)
-- [x] La planète Terre et les êtres vivants dans leur environnement — 6ème — Sciences : la planète Terre et les êtres vivants dans leur environnement (17 fiches)
-- [x] Classer le vivant, cellules, nutrition et développement — 6ème — Sciences : classer le vivant, cellules, nutrition et développement (16 fiches)
+- [x] Classer le vivant, cellules, nutrition et développement — l'essentiel — 6ème — Sciences : classer le vivant, cellules, nutrition et développement (16 fiches)
+  - [ ] Les besoins des végétaux et la photosynthèse — *à créer*
+  - [ ] La digestion et l'alimentation humaine — *à créer*
+  - [ ] Reproduction et développement des êtres vivants — *à créer*
+- [x] La planète Terre et les êtres vivants dans leur environnement — l'essentiel — 6ème — Sciences : la planète Terre et les êtres vivants dans leur environnement (17 fiches)
+  - [ ] Le système solaire et les mouvements de la Terre — *à créer*
 - [x] L'eau, ses états et son cycle — 6ème — Sciences : l'eau, ses états et son cycle (16 fiches)
-- [ ] Les besoins des végétaux et la photosynthèse — *à créer*
-- [ ] La digestion et l'alimentation humaine — *à créer*
 - [ ] Les matériaux et les propriétés de la matière — *à créer*
 - [ ] Mouvements et vitesse — *à créer*
 - [ ] Signaux et information — *à créer*
-- [ ] Le système solaire et les mouvements de la Terre — *à créer*
-- [ ] Reproduction et développement des êtres vivants — *à créer*
+- [x] Révisions de l'année — 6ème — Sciences : le vivant, la matière et l'énergie (16 fiches)
 
-### 6e — Histoire (5 / 10)
+### 6e — Histoire (3 / 3)
 
-- [x] Premiers États, Grèce, Rome et monothéismes — 6ème — Histoire : premiers États, Grèce, Rome et monothéismes (19 fiches)
-- [x] Préhistoire, Néolithique et migrations — 6ème — Histoire : Préhistoire, Néolithique et migrations (18 fiches)
-- [x] L'Empire romain, conquêtes et romanisation, la Chine des Han — 6ème — Histoire : l'Empire romain, conquêtes et romanisation, la Chine des Han (18 fiches)
-- [x] Mythes, dieux et héros des cités grecques — 6ème — Histoire : mythes, dieux et héros des cités grecques (18 fiches)
-- [x] Athènes, citoyenneté et démocratie — 6ème — Histoire : Athènes, citoyenneté et démocratie (16 fiches)
-- [ ] Mésopotamie et Égypte, premiers États et premières écritures — *à créer*
-- [ ] Le peuple hébreu et le monothéisme juif — *à créer*
-- [ ] Les débuts du christianisme — *à créer*
-- [ ] Rome, de la fondation à la République — *à créer*
-- [ ] Alexandre et le monde grec — *à créer*
+- [x] La longue histoire de l'humanité et des migrations — l'essentiel — 6ème — Histoire : Préhistoire, Néolithique et migrations (18 fiches)
+  - [ ] Les débuts de l'humanité — *à créer*
+  - [ ] La révolution néolithique — *à créer*
+  - [ ] Premiers États et premières écritures (Mésopotamie, Égypte) — *à créer*
+- [x] Récits fondateurs, croyances et citoyenneté dans la Méditerranée antique — l'essentiel — 6ème — Histoire : premiers États, Grèce, Rome et monothéismes (19 fiches)
+  - [x] Les cités grecques, leurs dieux et leurs héros — 6ème — Histoire : mythes, dieux et héros des cités grecques (18 fiches)
+  - [x] Athènes, citoyenneté et démocratie — 6ème — Histoire : Athènes, citoyenneté et démocratie (16 fiches)
+  - [ ] Alexandre et le monde grec — *à créer*
+  - [ ] Rome, du mythe à l'histoire — *à créer*
+  - [ ] Le peuple hébreu et le monothéisme juif — *à créer*
+- [x] L'Empire romain dans le monde antique — l'essentiel — 6ème — Histoire : l'Empire romain, conquêtes et romanisation, la Chine des Han (18 fiches)
+  - [ ] Conquêtes, paix romaine et romanisation — *à créer*
+  - [ ] Les débuts du christianisme — *à créer*
+  - [ ] Rome et la Chine des Han — *à créer*
 
-### 6e — Géographie (3 / 7)
+### 6e — Géographie (3 / 4)
 
-- [x] Habiter les villes, les littoraux et les espaces peu peuplés — 6ème — Géographie : habiter les villes, les littoraux et les espaces peu peuplés (15 fiches)
+- [x] Habiter le monde : villes, espaces peu peuplés et littoraux — l'essentiel — 6ème — Géographie : habiter les villes, les littoraux et les espaces peu peuplés (15 fiches)
+  - [ ] Habiter une métropole — *à créer*
+  - [ ] Habiter un espace de faible densité (rural, montagne, désert) — *à créer*
+  - [ ] Habiter les littoraux industriels et touristiques — *à créer*
 - [x] Le monde habité, répartition de la population — 6ème — Géographie : le monde habité, répartition de la population (17 fiches)
 - [x] Se repérer sur la Terre — 6ème — Géographie : se repérer sur la Terre (16 fiches)
-- [ ] Habiter une métropole — *à créer*
-- [ ] Habiter un espace de faible densité (rural, montagne, désert) — *à créer*
-- [ ] Habiter les littoraux industriels et touristiques — *à créer*
 - [ ] Lire et réaliser un croquis simple — *à créer*
 
 ### 6e — EMC (3 / 5)
@@ -877,67 +884,84 @@ Collège — 43 chapitres couverts sur 99, 43 boîtes.
 
 ## 5e
 
-Collège — 42 chapitres couverts sur 99, 42 boîtes.
+Collège — 39 chapitres couverts sur 87, 42 boîtes.
 
-### 5e — Français (5 / 14)
+### 5e — Français (4 / 15)
 
-- [x] Chevaliers, littérature du Moyen Âge et grammaire — 5ème — Français : chevaliers, littérature du Moyen Âge et grammaire (16 fiches)
-- [x] Types de phrases, propositions, passé composé et plus-que-parfait — 5ème — Français : types de phrases, propositions, passé composé et plus-que-parfait (19 fiches)
-- [x] Voyage, aventure, héros et univers imaginaires — 5ème — Français : voyage, aventure, héros et univers imaginaires (17 fiches)
-- [x] Avec autrui, la comédie et Molière — 5ème — Français : avec autrui, la comédie et Molière (19 fiches)
-- [x] L'accord du participe passé — 5ème — Français : l'accord du participe passé (17 fiches)
-- [ ] Imaginer des univers nouveaux (science-fiction, fantasy) — *à créer*
+- [x] Le voyage et l'aventure — l'essentiel — 5ème — Français : voyage, aventure, héros et univers imaginaires (17 fiches)
+  - [ ] Récits de voyage et d'exploration — *à créer*
+  - [ ] Romans d'aventure — *à créer*
+- [x] Avec autrui : familles, amis, réseaux — l'essentiel — 5ème — Français : avec autrui, la comédie et Molière (19 fiches)
+  - [ ] Amitié et famille dans le roman — *à créer*
+- [ ] Imaginer des univers nouveaux — l'essentiel — *à créer*
+  - [ ] La science-fiction — *à créer*
+  - [ ] Contes, merveilleux et fantasy — *à créer*
+- [ ] Héros, héroïnes et héroïsmes — l'essentiel — *à créer*
+  - [ ] Chevaliers et romans de la Table ronde — *à créer*
+  - [ ] Héros d'épopée et héros d'aujourd'hui — *à créer*
 - [ ] L'être humain est-il maître de la nature ? — *à créer*
-- [ ] Le conte et le merveilleux — *à créer*
+- [ ] Types de phrases et propositions — *à créer*
 - [ ] Les fonctions dans la phrase (COD, COI, attribut) — *à créer*
 - [ ] Les compléments circonstanciels — *à créer*
 - [ ] L'imparfait et le passé simple dans le récit — *à créer*
+- [ ] Le passé composé et le plus-que-parfait — *à créer*
+- [x] L'accord du participe passé — 5ème — Français : l'accord du participe passé (17 fiches)
 - [ ] Le discours direct et indirect — *à créer*
 - [ ] Les homophones grammaticaux — *à créer*
 - [ ] Le vocabulaire et la formation des mots — *à créer*
+- [x] Révisions de l'année — 5ème — Français : chevaliers, littérature du Moyen Âge et grammaire (16 fiches) ; 5ème — Français : types de phrases, propositions, passé composé et plus-que-parfait (19 fiches)
 
-### 5e — Mathématiques (8 / 19)
+### 5e — Mathématiques (8 / 15)
 
-- [x] Nombres relatifs, priorités et proportionnalité — 5ème — Maths : nombres relatifs, priorités et proportionnalité (17 fiches)
-- [x] Fractions, comparaison et addition — 5ème — Maths : fractions, comparaison et addition (17 fiches)
-- [x] Triangles, inégalité triangulaire et angles — 5ème — Maths : triangles, inégalité triangulaire et angles (19 fiches)
-- [x] Parallélogramme et symétrie centrale — 5ème — Maths : parallélogramme et symétrie centrale (17 fiches)
-- [x] Premiers pas en calcul littéral — 5ème — Maths : premiers pas en calcul littéral (17 fiches)
-- [x] Statistiques et premières probabilités — 5ème — Maths : statistiques et premières probabilités (17 fiches)
-- [x] Prismes droits et cylindres, patrons et volumes — 5ème — Maths : prismes droits et cylindres, patrons et volumes (16 fiches)
-- [x] Aires du triangle, du parallélogramme et du disque — 5ème — Maths : aires du triangle, du parallélogramme et du disque (16 fiches)
 - [ ] Additionner et soustraire des nombres relatifs — *à créer*
 - [ ] Repérage dans le plan avec les relatifs — *à créer*
 - [ ] Priorités de calcul et distributivité — *à créer*
-- [ ] Fractions égales et simplification — *à créer*
-- [ ] Proportionnalité et pourcentages — *à créer*
+- [x] Fractions, comparaison et addition — l'essentiel — 5ème — Maths : fractions, comparaison et addition (17 fiches)
+  - [ ] Fractions égales et simplification — *à créer*
+- [x] Premiers pas en calcul littéral — 5ème — Maths : premiers pas en calcul littéral (17 fiches)
 - [ ] Multiples, diviseurs et nombres premiers — *à créer*
-- [ ] Angles alternes-internes et correspondants — *à créer*
-- [ ] Médiatrices et cercle circonscrit — *à créer*
-- [ ] Algorithmique avec Scratch — *à créer*
-- [ ] Volumes et conversions des unités de volume — *à créer*
+- [ ] Proportionnalité et pourcentages — *à créer*
+- [x] Statistiques et premières probabilités — 5ème — Maths : statistiques et premières probabilités (17 fiches)
+- [x] Triangles, inégalité triangulaire et angles — l'essentiel — 5ème — Maths : triangles, inégalité triangulaire et angles (19 fiches)
+  - [ ] Angles alternes-internes et correspondants — *à créer*
+  - [ ] Médiatrices et cercle circonscrit — *à créer*
+- [x] Parallélogramme et symétrie centrale — 5ème — Maths : parallélogramme et symétrie centrale (17 fiches)
+- [x] Aires du triangle, du parallélogramme et du disque — 5ème — Maths : aires du triangle, du parallélogramme et du disque (16 fiches)
+- [x] Prismes droits et cylindres, patrons et volumes — l'essentiel — 5ème — Maths : prismes droits et cylindres, patrons et volumes (16 fiches)
+  - [ ] Volumes et conversions des unités de volume — *à créer*
 - [ ] Durées et vitesses — *à créer*
+- [ ] Algorithmique avec Scratch — *à créer*
+- [x] Révisions de l'année — 5ème — Maths : nombres relatifs, priorités et proportionnalité (17 fiches)
 
-### 5e — Histoire (5 / 9)
+### 5e — Histoire (3 / 3)
 
-- [x] Byzance, l'Islam et l'Occident médiéval — 5ème — Histoire : Byzance, l'Islam et l'Occident médiéval (18 fiches)
-- [x] Grandes découvertes, Renaissance et Réformes — 5ème — Histoire : Grandes découvertes, Renaissance et Réformes (18 fiches)
-- [x] Seigneurs, paysans, villes et pouvoir royal (XIe-XVe s.) — 5ème — Histoire : seigneurs, paysans, villes et pouvoir royal (XIe-XVe s.) (20 fiches)
-- [x] Du prince de la Renaissance au roi absolu — 5ème — Histoire : du prince de la Renaissance au roi absolu (17 fiches)
-- [x] L'Église au Moyen Âge — 5ème — Histoire : l'Église au Moyen Âge (17 fiches)
-- [ ] L'Empire carolingien — *à créer*
-- [ ] Les croisades et la Reconquista — *à créer*
-- [ ] La Renaissance artistique — *à créer*
-- [ ] Les Réformes protestante et catholique — *à créer*
+- [x] Chrétientés et islam, des mondes en contact (VIe-XIIIe siècles) — l'essentiel — 5ème — Histoire : Byzance, l'Islam et l'Occident médiéval (18 fiches)
+  - [ ] Byzance et l'Empire carolingien — *à créer*
+  - [ ] De la naissance de l'islam à la prise de Bagdad — *à créer*
+  - [ ] Croisades et Reconquista — *à créer*
+- [x] Société, Église et pouvoir dans l'Occident féodal (XIe-XVe siècles) — l'essentiel — 5ème — Histoire : seigneurs, paysans, villes et pouvoir royal (XIe-XVe s.) (20 fiches)
+  - [ ] Seigneurs et paysans — *à créer*
+  - [x] L'Église au Moyen Âge — 5ème — Histoire : l'Église au Moyen Âge (17 fiches)
+  - [ ] L'essor des villes et des marchands — *à créer*
+  - [ ] L'affirmation du pouvoir royal (Capétiens et Valois) — *à créer*
+- [x] L'Europe et le monde aux XVIe et XVIIe siècles — l'essentiel — 5ème — Histoire : Grandes découvertes, Renaissance et Réformes (18 fiches)
+  - [ ] Grandes découvertes, Charles Quint et Soliman — *à créer*
+  - [ ] Humanisme et Renaissance artistique — *à créer*
+  - [ ] Réformes et guerres de religion — *à créer*
+  - [x] Du prince de la Renaissance au roi absolu — 5ème — Histoire : du prince de la Renaissance au roi absolu (17 fiches)
 
-### 5e — Géographie (3 / 6)
+### 5e — Géographie (3 / 3)
 
-- [x] Croissance démographique et développement — 5ème — Géographie : croissance démographique et développement (17 fiches)
-- [x] Énergie, eau et alimentation — 5ème — Géographie : énergie, eau et alimentation (17 fiches)
-- [x] Prévenir les risques, s'adapter au changement global — 5ème — Géographie : prévenir les risques, s'adapter au changement global (18 fiches)
-- [ ] L'Inde ou la Chine, population et développement — *à créer*
-- [ ] Le changement climatique et ses effets — *à créer*
-- [ ] Les risques industriels et technologiques — *à créer*
+- [x] La question démographique et l'inégal développement — l'essentiel — 5ème — Géographie : croissance démographique et développement (17 fiches)
+  - [ ] Croissance démographique : l'exemple de l'Inde ou de la Chine — *à créer*
+  - [ ] Richesse et pauvreté dans le monde — *à créer*
+- [x] Des ressources limitées, à gérer et à renouveler — l'essentiel — 5ème — Géographie : énergie, eau et alimentation (17 fiches)
+  - [ ] L'énergie — *à créer*
+  - [ ] L'eau — *à créer*
+  - [ ] Nourrir l'humanité — *à créer*
+- [x] Prévenir les risques, s'adapter au changement global — l'essentiel — 5ème — Géographie : prévenir les risques, s'adapter au changement global (18 fiches)
+  - [ ] Le changement climatique et ses effets — *à créer*
+  - [ ] Les risques industriels et technologiques — *à créer*
 
 ### 5e — EMC (1 / 4)
 
@@ -948,13 +972,14 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 
 ### 5e — SVT (4 / 7)
 
-- [x] Respiration, digestion et paysages — 5ème — SVT : respiration, digestion et paysages (16 fiches)
-- [x] Séismes, volcans et tectonique des plaques — 5ème — SVT : séismes, volcans et tectonique des plaques (17 fiches)
+- [ ] La cellule, unité du vivant — *à créer*
+- [ ] Respiration et digestion — *à créer*
 - [x] Nutrition et reproduction des plantes à fleurs — 5ème — SVT : nutrition et reproduction des plantes à fleurs (17 fiches)
 - [x] Écosystèmes, chaînes alimentaires et biodiversité — 5ème — SVT : écosystèmes, chaînes alimentaires et biodiversité (18 fiches)
-- [ ] La cellule, unité du vivant — *à créer*
-- [ ] Les fossiles et l'histoire de la Terre — *à créer*
 - [ ] Hygiène, microbes et santé — *à créer*
+- [x] Séismes, volcans et tectonique des plaques — l'essentiel — 5ème — SVT : séismes, volcans et tectonique des plaques (17 fiches)
+  - [ ] Les fossiles et l'histoire de la Terre — *à créer*
+- [x] Révisions de l'année — 5ème — SVT : respiration, digestion et paysages (16 fiches)
 
 ### 5e — Physique (2 / 5)
 
