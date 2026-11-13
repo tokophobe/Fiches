@@ -333,6 +333,11 @@ testables ainsi.
   `python3 tools/build_site_pages.py` puis `genere`, rattacher à la main dans `data/programme.json` chaque nouvelle
   boîte qui couvre un chapitre « à créer » (déplacer la boîte, supprimer
   le chapitre ajouté), relancer `genere` et livrer dans ce dépôt-ci.
+- Liens des fiches (spéc. §5.7, règle 5 et Q21) : le titre de la vidéo
+  doit correspondre au sujet précis de la fiche (vérifier le titre via
+  oEmbed). À chaque relecture de boîte, remplacer chaque lien Wikipédia
+  par une courte vidéo de cours sur ce sujet, ou le retirer s'il n'y en
+  a pas (1 259 liens Wikipédia au 13 nov. 2026).
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
   rediffusion en direct, interview, chaîne pour étrangers apprenant le
