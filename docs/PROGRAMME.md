@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1072 chapitres couverts sur 1228** (87 %), 1206 boîtes, 19872 fiches.
+Mise à jour : 13/11/2026. **1072 chapitres couverts sur 1228** (87 %), 1216 boîtes, 20032 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -19,7 +19,7 @@ Mise à jour : 13/11/2026. **1072 chapitres couverts sur 1228** (87 %), 1206 bo�
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
 | [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
 | [4e](#4e) | 52 / 82 | 30 | 54 | 916 |
-| [3e](#3e) | 102 / 108 | 6 | 160 | 2981 |
+| [3e](#3e) | 102 / 108 | 6 | 170 | 3141 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
 | [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
 | [Terminale](#terminale) | 143 / 145 | 2 | 173 | 3175 |
@@ -1224,25 +1224,25 @@ Collège — 52 chapitres couverts sur 82, 54 boîtes.
 
 ## 3e
 
-Collège — 102 chapitres couverts sur 108, 160 boîtes.
+Collège — 102 chapitres couverts sur 108, 170 boîtes.
 
 ### 3e — Français (17 / 17)
 
 - [x] Se raconter, se représenter — l'essentiel — Brevet — Français : se raconter, se représenter (autobiographie) (16 fiches)
-  - [ ] L'autobiographie et le pacte autobiographique — *à créer*
-  - [ ] Récits d'enfance, journaux intimes et autoportraits — *à créer*
+  - [x] L'autobiographie et le pacte autobiographique — 3ème — Français : l'autobiographie et le pacte autobiographique (16 fiches)
+  - [x] Récits d'enfance, journaux intimes et autoportraits — 3ème — Français : récits d'enfance, journaux intimes et autoportraits (16 fiches)
 - [x] Dénoncer les travers de la société — l'essentiel — Brevet — Français : dénoncer les travers de la société (17 fiches)
-  - [ ] Satire, ironie et apologues (Voltaire, La Fontaine…) — *à créer*
-  - [ ] Le roman réaliste et naturaliste (Hugo, Zola, Maupassant) — *à créer*
+  - [x] Satire, ironie et apologues (Voltaire, La Fontaine…) — 3ème — Français : satire, ironie et apologues (Voltaire, La Fontaine…) (16 fiches)
+  - [x] Le roman réaliste et naturaliste (Hugo, Zola, Maupassant) — 3ème — Français : le roman réaliste et naturaliste (Hugo, Zola, Maupassant) (16 fiches)
 - [x] Visions poétiques du monde — l'essentiel — Brevet — Français : visions poétiques du monde (17 fiches)
-  - [ ] Le lyrisme et la poésie de la nature — *à créer*
-  - [ ] Versification et formes poétiques — *à créer*
+  - [x] Le lyrisme et la poésie de la nature — 3ème — Français : le lyrisme et la poésie de la nature (16 fiches)
+  - [x] Versification et formes poétiques — 3ème — Français : versification et formes poétiques (16 fiches)
 - [x] Agir dans la cité : individu et pouvoir — l'essentiel — Brevet — Français : agir dans la cité, engagement et guerre (16 fiches)
-  - [ ] Écrire la guerre : témoignages et poésie de la Résistance — *à créer*
-  - [ ] L'individu face au pouvoir au théâtre (Antigone…) — *à créer*
+  - [x] Écrire la guerre : témoignages et poésie de la Résistance — 3ème — Français : écrire la guerre : témoignages et poésie de la Résistance (16 fiches)
+  - [x] L'individu face au pouvoir au théâtre (Antigone…) — 3ème — Français : l'individu face au pouvoir au théâtre (Antigone…) (16 fiches)
 - [x] Progrès et rêves scientifiques — l'essentiel — Brevet — Français : progrès et rêves scientifiques (15 fiches)
-  - [ ] Science-fiction et récits d'anticipation — *à créer*
-  - [ ] Le progrès en débat : argumenter — *à créer*
+  - [x] Science-fiction et récits d'anticipation — 3ème — Français : science-fiction et récits d'anticipation (16 fiches)
+  - [x] Le progrès en débat : argumenter — 3ème — Français : le progrès en débat : argumenter (16 fiches)
 - [x] Les classes grammaticales des mots — Brevet — Français : les classes grammaticales des mots (16 fiches)
 - [x] Les fonctions grammaticales — Brevet — Français : les fonctions grammaticales (16 fiches)
 - [x] Propositions et phrase complexe — Brevet — Français : propositions et phrase complexe (16 fiches)

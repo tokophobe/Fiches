@@ -8456,11 +8456,23 @@
        "sousthemes": [
         {
          "titre": "L'autobiographie et le pacte autobiographique",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-pacte-autobiographique",
+           "titre": "3ème — Français : l'autobiographie et le pacte autobiographique",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Récits d'enfance, journaux intimes et autoportraits",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-recits-enfance",
+           "titre": "3ème — Français : récits d'enfance, journaux intimes et autoportraits",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -8476,11 +8488,23 @@
        "sousthemes": [
         {
          "titre": "Satire, ironie et apologues (Voltaire, La Fontaine…)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-satire-apologues",
+           "titre": "3ème — Français : satire, ironie et apologues (Voltaire, La Fontaine…)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le roman réaliste et naturaliste (Hugo, Zola, Maupassant)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-roman-realiste",
+           "titre": "3ème — Français : le roman réaliste et naturaliste (Hugo, Zola, Maupassant)",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -8496,11 +8520,23 @@
        "sousthemes": [
         {
          "titre": "Le lyrisme et la poésie de la nature",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-lyrisme-nature",
+           "titre": "3ème — Français : le lyrisme et la poésie de la nature",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Versification et formes poétiques",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-versification",
+           "titre": "3ème — Français : versification et formes poétiques",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -8516,11 +8552,23 @@
        "sousthemes": [
         {
          "titre": "Écrire la guerre : témoignages et poésie de la Résistance",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-ecrire-guerre",
+           "titre": "3ème — Français : écrire la guerre : témoignages et poésie de la Résistance",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'individu face au pouvoir au théâtre (Antigone…)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-antigone",
+           "titre": "3ème — Français : l'individu face au pouvoir au théâtre (Antigone…)",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -8536,11 +8584,23 @@
        "sousthemes": [
         {
          "titre": "Science-fiction et récits d'anticipation",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-science-fiction",
+           "titre": "3ème — Français : science-fiction et récits d'anticipation",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le progrès en débat : argumenter",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-argumenter-progres",
+           "titre": "3ème — Français : le progrès en débat : argumenter",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
