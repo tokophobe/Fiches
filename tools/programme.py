@@ -4,6 +4,9 @@
 Source de vérité : data/programme.json
   niveaux → matières → chapitres → boîtes (clé, titre, nombre de fiches).
 Un chapitre sans boîte est « à créer ».
+Au collège et au lycée (spéc. §5.7, règle 6), un chapitre peut avoir des
+« sousthemes » : [{"titre", "boites"}]. Ses « boites » sont alors
+« l'essentiel » du chapitre ; chaque sous-thème a sa boîte (ou est à créer).
 
 Commandes :
   python3 tools/programme.py genere   met à jour data/programme.json à partir
@@ -130,19 +133,25 @@ def synchroniser(prog):
         return
     boites = {b["key"]: b for b in json.loads(BIBLIO.read_text(encoding="utf-8"))["boxes"]}
     vus = set()
+
+    def rafraichir(liste):
+        garde = []
+        for b in liste:
+            src = boites.get(b["cle"])
+            if not src:
+                print(f"Boîte disparue, retirée : {b['cle']} ({b['titre']})")
+                continue
+            b["titre"], b["fiches"] = src["name"], len(src.get("cards") or [])
+            vus.add(b["cle"])
+            garde.append(b)
+        return garde
+
     for n in prog["niveaux"]:
         for m in n["matieres"]:
             for c in m["chapitres"]:
-                garde = []
-                for b in c["boites"]:
-                    src = boites.get(b["cle"])
-                    if not src:
-                        print(f"Boîte disparue, retirée : {b['cle']} ({b['titre']})")
-                        continue
-                    b["titre"], b["fiches"] = src["name"], len(src.get("cards") or [])
-                    vus.add(b["cle"])
-                    garde.append(b)
-                c["boites"] = garde
+                c["boites"] = rafraichir(c["boites"])
+                for st in c.get("sousthemes", []):
+                    st["boites"] = rafraichir(st["boites"])
     nouvelles = 0
     for cle, src in boites.items():
         if cle in vus:
@@ -160,10 +169,16 @@ def synchroniser(prog):
               "(à rattacher à un chapitre « à créer » si besoin).")
 
 
+def boites_de(c):
+    """Toutes les boîtes d'un chapitre : l'essentiel et ses sous-thèmes."""
+    return c["boites"] + [b for st in c.get("sousthemes", []) for b in st["boites"]]
+
+
 def compter(chapitres):
+    """Un chapitre compte comme couvert quand il a sa boîte (l'essentiel)."""
     faits = sum(1 for c in chapitres if c["boites"])
-    boites = sum(len(c["boites"]) for c in chapitres)
-    fiches = sum(b["fiches"] for c in chapitres for b in c["boites"])
+    boites = sum(len(boites_de(c)) for c in chapitres)
+    fiches = sum(b["fiches"] for c in chapitres for b in boites_de(c))
     return faits, len(chapitres), boites, fiches
 
 
@@ -212,11 +227,19 @@ def ecrire_md(prog):
             mf, mt, _, _ = compter(m["chapitres"])
             L += [f"### {n['label']} — {m['nom']} ({mf} / {mt})", ""]
             for c in m["chapitres"]:
+                sts = c.get("sousthemes", [])
+                titre = c["titre"] + (" — l'essentiel" if sts else "")
                 if not c["boites"]:
-                    L.append(f"- [ ] {c['titre']} — *à créer*")
-                    continue
-                det = " ; ".join(f"{b['titre']} ({b['fiches']} fiches)" for b in c["boites"])
-                L.append(f"- [x] {c['titre']} — {det}")
+                    L.append(f"- [ ] {titre} — *à créer*")
+                else:
+                    det = " ; ".join(f"{b['titre']} ({b['fiches']} fiches)" for b in c["boites"])
+                    L.append(f"- [x] {titre} — {det}")
+                for st in sts:
+                    if st["boites"]:
+                        det = " ; ".join(f"{b['titre']} ({b['fiches']} fiches)" for b in st["boites"])
+                        L.append(f"  - [x] {st['titre']} — {det}")
+                    else:
+                        L.append(f"  - [ ] {st['titre']} — *à créer*")
             L.append("")
     MD.write_text("\n".join(L).rstrip() + "\n", encoding="utf-8")
 
@@ -235,6 +258,12 @@ def e(t):
     return html.escape(t, quote=True)
 
 
+def nom_boite(x, titre_ch, avec_sous):
+    if avec_sous:
+        return "L'essentiel"
+    return "Boîte toute prête" if titre_chapitre(x["titre"]) == titre_ch else e(x["titre"])
+
+
 def ecrire_page(prog):
     faits, total, boites, fiches = totaux(prog)
     pills, sections = [], []
@@ -248,18 +277,35 @@ def ecrire_page(prog):
             mf, mt, mb, _ = compter(m["chapitres"])
             items = []
             for c in m["chapitres"]:
-                cherche = sans_accents(" ".join([c["titre"]] + [x["titre"] for x in c["boites"]]))
+                sts = c.get("sousthemes", [])
+                cherche = sans_accents(" ".join(
+                    [c["titre"]] + [x["titre"] for x in boites_de(c)] + [st["titre"] for st in sts]))
+                tag = '<span class="tag">bientôt disponible</span>'  # Q20
                 if c["boites"]:
                     # Nom de la boîte répété seulement s'il diffère du chapitre.
                     bx = "".join(
                         f'<li><span class="bname">'
-                        f'{"Boîte toute prête" if titre_chapitre(x["titre"]) == c["titre"] else e(x["titre"])}</span>'
+                        f'{nom_boite(x, c["titre"], bool(sts))}</span>'
                         f'<span class="nb">{x["fiches"]} fiches</span></li>' for x in c["boites"])
-                    items.append(f'<li class="ch ok" data-q="{e(cherche)}"><span class="ct">{e(c["titre"])}</span>'
-                                 f'<ul class="boxes">{bx}</ul></li>')
+                    corps = f'<ul class="boxes">{bx}</ul>'
                 else:
-                    items.append(f'<li class="ch todo" data-q="{e(cherche)}"><span class="ct">{e(c["titre"])}</span>'
-                                 f'<span class="tag">bientôt disponible</span></li>')  # Q20
+                    corps = (f'<ul class="boxes"><li><span class="bname">L\'essentiel</span>{tag}</li></ul>'
+                             if sts else tag)
+                sous = ""
+                if sts:  # spéc. §5.7, règle 6 : sous-thèmes du chapitre
+                    lis = []
+                    for st in sts:
+                        if st["boites"]:
+                            nb = sum(x["fiches"] for x in st["boites"])
+                            lis.append(f'<li class="st ok"><span class="stt">{e(st["titre"])}</span>'
+                                       f'<span class="nb">{nb} fiches</span></li>')
+                        else:
+                            lis.append(f'<li class="st todo"><span class="stt">{e(st["titre"])}</span>{tag}</li>')
+                    sous = f'<ul class="sts">{"".join(lis)}</ul>'
+                todo_sous = any(not st["boites"] for st in sts)
+                cls = ("ok" if c["boites"] else "todo") + (" subtodo" if todo_sous else "")
+                items.append(f'<li class="ch {cls}" data-q="{e(cherche)}"><span class="ct">{e(c["titre"])}</span>'
+                             f'{corps}{sous}</li>')
             p = pourcent(mf, mt)
             mats.append(
                 f'<details class="subj"><summary><span class="sn">{e(m["nom"])}</span>'
@@ -344,6 +390,13 @@ GABARIT = """<!doctype html>
   .boxes {{ list-style: none; margin: 3px 0 0; padding: 0; font-size: 14px; color: var(--slate); }}
   .boxes li {{ display: flex; gap: 8px; justify-content: space-between; }}
   .boxes .nb {{ white-space: nowrap; font-variant-numeric: tabular-nums; }}
+  .sts {{ list-style: none; margin: 4px 0 0; padding: 0 0 0 4px; font-size: 14px; }}
+  .st {{ display: flex; gap: 8px; justify-content: space-between; align-items: baseline; padding: 2px 0 2px 16px; position: relative; color: #475569; }}
+  .st::before {{ position: absolute; left: 0; top: 3px; font-size: 12px; font-weight: 700; }}
+  .st.ok::before {{ content: "✓"; color: var(--ok); }}
+  .st.todo::before {{ content: "○"; color: var(--todo); }}
+  .st .nb {{ white-space: nowrap; color: var(--slate); font-variant-numeric: tabular-nums; }}
+  .st .tag {{ margin-left: auto; }}
   .hide {{ display: none !important; }}
   footer {{ margin-top: 30px; }}
   @media (max-width: 720px) {{
@@ -406,7 +459,7 @@ GABARIT = """<!doctype html>
       var name = norm(s.querySelector(".sn").textContent), shown = 0;
       [].forEach.call(s.querySelectorAll(".ch"), function (c) {{
         var txt = c.getAttribute("data-q") + " " + name;
-        var ok = (!onlyTodo || c.classList.contains("todo")) && words.every(function (w) {{ return txt.indexOf(w) >= 0; }});
+        var ok = (!onlyTodo || c.classList.contains("todo") || c.classList.contains("subtodo")) && words.every(function (w) {{ return txt.indexOf(w) >= 0; }});
         c.classList.toggle("hide", !ok); if (ok) shown++;
       }});
       s.classList.toggle("hide", shown === 0);

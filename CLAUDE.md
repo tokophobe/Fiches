@@ -325,7 +325,7 @@ testables ainsi.
   qui le lit sur GitHub avec une clé en lecture seule enregistrée dans son
   navigateur).
 - Programme couvert (v288, spéc. §7.6) : `data/programme.json` (classes →
-  matières → chapitres → boîtes) est la référence ; `python3
+  matières → chapitres → boîtes ; un chapitre découpé a aussi `sousthemes` : [{titre, boites}], ses `boites` étant alors « l'essentiel ») est la référence ; `python3
   tools/programme.py genere` (avec `bibliotheque.json` présent) rafraîchit
   titres et nombres de fiches, ajoute les nouvelles boîtes comme chapitres
   et réécrit `docs/PROGRAMME.md` et `site/programme.html` (ne pas modifier

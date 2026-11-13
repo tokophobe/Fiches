@@ -1107,6 +1107,18 @@
     /\b(coche|cochez|entoure|entourez) (la|les|le)\b/,
     /\bci-(dessous|dessus)\b/,
     /\b(quatre|4|trois|3) (propositions|reponses|choix|options)\b/,
+    // v289 : formulations qui supposent aussi une liste absente.
+    // « Laquelle n'est pas une planète ? », « Lequel des deux… »
+    /^(laquelle|lequel|lesquelles|lesquels)\b/,
+    // « Quel animal, parmi ceux-ci… », « Lequel de celles-là… »
+    /\b(de|parmi) (ceux|celles|celui|celle)-(ci|la)\b/,
+    // « Quelle phrase est correcte ? », « Quel mot est mal écrit ? »
+    /\b(est|sont) (bien |mal )?(correcte?s?|juste|exacte?s?|ecrite?s?|orthographiee?s?|accordee?s?)\s*\??$/,
+    // « Quelle forme convient ? »
+    /\bconvien(t|nent)\s*\??$/,
+    // « Quelle est la bonne orthographe ? », « Quel est le bon accord ? »
+    /\b(la bonne|la mauvaise) (orthographe|ecriture|forme|phrase|reponse|proposition)\b/,
+    /\ble (bon|mauvais) (accord|mot|calcul|resultat|choix)\b/,
   ];
   function qcmQuestionNeedsChoices(text) {
     const plain = String(text || "")
@@ -1121,7 +1133,9 @@
     if (!plain) return null;
     // Les choix sont écrits dans la question (liste après « : », « ? »,
     // tirets, points-virgules, plusieurs virgules, « ou ») : elle se suffit.
-    const selfContained = /[:;–—]|\?\s*\S/.test(plain) || (plain.match(/,/g) || []).length >= 2 || /\sou\s/.test(plain);
+    // (Une incise « , parmi ceux-ci, » n'est pas une liste.)
+    const commas = (plain.replace(/,? (de|parmi) (ceux|celles|celui|celle)-(ci|la),?/g, " ").match(/,/g) || []).length;
+    const selfContained = /[:;–—]|\?\s*\S/.test(plain) || commas >= 2 || /\sou\s/.test(plain);
     if (selfContained) return null;
     for (const re of QCM_DEPENDENT_PATTERNS) {
       const m = re.exec(plain);

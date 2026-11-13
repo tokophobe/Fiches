@@ -493,8 +493,16 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    d'habitude), plus une boîte « l'essentiel » qui résume le chapitre
    (utile avant un examen). Au primaire, une boîte par notion, comme
    aujourd'hui. Les sous-thèmes sont prévus dans la page « Le programme »
-   (§7.6), sous le chapitre concerné.
-7. **Contrôles automatiques** de la règle 1 :
+   (§7.6), sous le chapitre concerné. Les chapitres suivent le programme
+   officiel ; les boîtes de révision qui couvrent plusieurs chapitres
+   (dates clés, notions, méthode, épreuves) sont rangées dans un chapitre
+   « Révisions du brevet » (ou du bac) à la fin de chaque matière.
+   Programme de 3e défini ainsi le 13 nov. 2026 (français, maths,
+   histoire, géographie, EMC, SVT, physique, chimie).
+7. **Contrôles automatiques** de la règle 1 (v289 : ils repèrent aussi
+   « Laquelle n'est pas… ? », « Lequel est un… ? », « parmi ceux-ci »,
+   « Quelle phrase est correcte ? », « Quelle forme convient ? », « la
+   bonne orthographe », « le bon accord ») :
    - **dans l'appli**, en enregistrant une fiche QCM dont la question
      renvoie à des propositions, le robot prévient et propose de
      reformuler (on peut garder quand même) ; un rappel est écrit sous
@@ -965,6 +973,11 @@ la Terminale** et les boîtes toutes prêtes qui le couvrent.
   boîte est marqué « bientôt disponible » (décision Q20 : ces chapitres
   restent visibles à l'ouverture au public). Le fichier de suivi
   `docs/PROGRAMME.md` garde, lui, la mention « à créer ».
+- Un chapitre découpé (règle 6 du §5.7) montre d'abord sa boîte
+  « L'essentiel », puis la liste de ses sous-thèmes, chacun coché avec
+  son nombre de fiches, ou marqué « bientôt disponible ». Le chapitre est
+  coché dès que « l'essentiel » existe ; la case « Seulement bientôt
+  disponible » le garde affiché tant qu'un de ses sous-thèmes manque.
 - En haut : la part du programme couverte, le nombre de chapitres, de
   boîtes et de fiches, et la date de mise à jour. Des pastilles mènent à
   chaque classe ; une recherche (chapitre ou boîte) et la case
@@ -1058,6 +1071,10 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 13 nov. 2026 | Site, page « Le programme » (§7.6, rien ne change dans l'appli) : programme de 3e refait d'après le programme officiel pour le français, les maths, l'histoire, la géographie, l'EMC, la SVT, la physique et la chimie — chaque chapitre a sa boîte « l'essentiel » et ses sous-thèmes (déjà faits ou « bientôt disponible »), et un chapitre « Révisions du brevet » par matière. Les 134 boîtes de 3e y sont toutes rangées. |
+| — | 13 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : lot 14, les 148 dernières boîtes relues (CM1-CM2, 6e à Terminale : langues, EMC, sciences, technologie, NSI, maths…) selon le §5.7 — 3 réponses fausses par fiche, réponses courtes et « En savoir plus », questions doubles séparées (2 327 fiches), une vidéo de cours par boîte ; 8 liens Wikipédia de fiches remplacés par une courte vidéo (5) ou retirés (3). Avec le contrôle complété de la v289, 171 questions d'anciennes boîtes qui supposaient une liste (« Lequel de ces… ? ») contiennent maintenant leurs propositions. Toutes les boîtes toutes prêtes sont relues ; les 1 121 vidéos sont publiques et intégrables. |
+| v289 | 13 nov. 2026 | Règle d'écriture des fiches QCM (§5.7) : le contrôle repère aussi les questions qui supposent une liste sans la donner (« Laquelle n'est pas une planète ? », « Lequel est un mammifère ? », « Quelle phrase est correcte ? », « Quelle forme convient ? », « parmi ceux-ci »…), dans l'appli (avertissement à l'enregistrement) et dans Darwin Admin (onglet « Questions QCM »). 38 questions de plus repérées dans les boîtes toutes prêtes, corrigées pendant la relecture. |
+| — | 13 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : lot 13, 100 boîtes de CM1 relues (français, anglais, maths, histoire-géographie, sciences, technologie) selon le §5.7 — 3 réponses fausses par fiche, réponses raccourcies avec les précisions dans « En savoir plus », questions doubles séparées (1 469 fiches), questions QCM rendues autonomes, une vidéo de cours par boîte ; 7 liens Wikipédia de fiches remplacés par une courte vidéo sur le sujet (4) ou retirés (3). Pages « Fiches par matière » et « Le programme » mises à jour (nombre de fiches). |
 | — | 13 nov. 2026 | Site et boîtes (rien ne change dans l'appli) : page « Le programme », les chapitres sans boîte sont marqués « bientôt disponible » (Q20). Nouvelle règle (§5.7) : le titre d'un lien de fiche doit correspondre au sujet de la fiche ; 4 liens vidéo corrigés (fiche « Qu'est-ce que la Shoah ? » : vidéo sur les génocides ; 3 liens trop éloignés retirés). |
 | — | 13 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : essai du découpage d'un chapitre en sous-thèmes (§5.7, règle 6) sur la Seconde Guerre mondiale en 3e — 4 nouvelles boîtes (guerre d'anéantissement ; génocide des Juifs et des Tsiganes ; France défaite et occupée, Vichy et la collaboration ; France libre, Résistance et Libération), 78 fiches, en plus de la boîte « l'essentiel » existante. |
 | — | 13 nov. 2026 | Site seulement (rien ne change dans l'appli) : Site vitrine complet de la v272 rétabli (il n'avait jamais été enregistré : accueil avec fiche à essayer et robot, défi du jour, pages « Fiches par matière », polices et styles) ; pages « Fiches par matière » refaites avec les 1 176 boîtes actuelles. |

@@ -19,6 +19,17 @@ test("QCM : repère les questions qui renvoient à des propositions absentes", (
     "Quelle est la bonne réponse parmi les suivantes ?",
     "Quel est l'intrus ?",
     "Lequel de ces nombres est premier ?",
+    // v289 : formulations qui supposent aussi une liste absente
+    "Laquelle n'est pas une planète ?",
+    "Lequel est un mammifère ?",
+    "Lesquels sont des multiples de 3 ?",
+    "Lequel des deux est le plus grand ?",
+    "Quel animal, parmi ceux-ci, vole ?",
+    "Quelle phrase est correcte ?",
+    "Quel mot est mal écrit ?",
+    "Quelle forme verbale convient ?",
+    "Quelle est la bonne orthographe ?",
+    "Quel est le bon accord ?",
   ].forEach((q) => assert.ok(detect(q), `devrait être repérée : ${q}`));
 });
 
@@ -35,5 +46,10 @@ test("QCM : laisse passer les questions qui ont du sens seules", () => {
     "Laquelle fournit le plus d'énergie : la respiration ou la fermentation ?",
     "Quel monument est entouré par la mer lors des grandes marées ?",
     "Quelle est l'identité remarquable (a + b)(a − b) ?",
+    "Quel déterminant convient devant « arbre » ?",
+    "Cette phrase est-elle correcte ?",
+    "Quel est le plus grand nombre à 5 chiffres ?",
+    "Quelle phrase est correcte : « ils sont » ou « ils son » ?",
+    "Dans quelle ville est née Marie Curie ?",
   ].forEach((q) => assert.equal(detect(q), null, `ne devrait pas être repérée : ${q}`));
 });

@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1175 chapitres couverts sur 1383** (85 %), 1180 boîtes, 19380 fiches.
+Mise à jour : 13/11/2026. **1141 chapitres couverts sur 1358** (84 %), 1180 boîtes, 19456 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -14,15 +14,15 @@ Mise à jour : 13/11/2026. **1175 chapitres couverts sur 1383** (85 %), 1180 bo�
 | [CP](#cp) | 107 / 111 | 4 | 107 | 1527 |
 | [CE1](#ce1) | 110 / 114 | 4 | 110 | 1621 |
 | [CE2](#ce2) | 110 / 112 | 2 | 110 | 1636 |
-| [CM1](#cm1) | 130 / 133 | 3 | 130 | 1891 |
-| [CM2](#cm2) | 93 / 110 | 17 | 93 | 1394 |
-| [6e](#6e) | 43 / 99 | 56 | 43 | 725 |
-| [5e](#5e) | 42 / 99 | 57 | 42 | 714 |
-| [4e](#4e) | 54 / 91 | 37 | 54 | 909 |
-| [3e](#3e) | 130 / 133 | 3 | 134 | 2565 |
-| [Seconde](#seconde) | 70 / 82 | 12 | 70 | 1232 |
-| [Première](#première) | 113 / 124 | 11 | 113 | 1925 |
-| [Terminale](#terminale) | 173 / 175 | 2 | 173 | 3173 |
+| [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
+| [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
+| [6e](#6e) | 43 / 99 | 56 | 43 | 730 |
+| [5e](#5e) | 42 / 99 | 57 | 42 | 730 |
+| [4e](#4e) | 54 / 91 | 37 | 54 | 916 |
+| [3e](#3e) | 96 / 108 | 12 | 134 | 2565 |
+| [Seconde](#seconde) | 70 / 82 | 12 | 70 | 1243 |
+| [Première](#première) | 113 / 124 | 11 | 113 | 1931 |
+| [Terminale](#terminale) | 173 / 175 | 2 | 173 | 3175 |
 | [Autres boîtes](#autres-boîtes) | 1 / 1 | 0 | 1 | 68 |
 
 ## CP
@@ -462,7 +462,7 @@ Primaire — 130 chapitres couverts sur 133, 130 boîtes.
 - [x] L'accord du participe passé avec être — CM1 — Français : l'accord du participe passé avec être (13 fiches)
 - [x] L'accord du verbe avec son sujet — CM1 — Français : l'accord du verbe avec son sujet (13 fiches)
 - [x] Les accords dans le groupe nominal — CM1 — Français : les accords dans le groupe nominal (15 fiches)
-- [x] Les pluriels particuliers — CM1 — Français : les pluriels particuliers (15 fiches)
+- [x] Les pluriels particuliers — CM1 — Français : les pluriels particuliers (16 fiches)
 - [x] -é, -er ou -ez à la fin du verbe ? — CM1 — Français : -é, -er ou -ez à la fin du verbe ? (13 fiches)
 - [x] Ce/se, c'est/s'est, on/on n' — CM1 — Français : ce/se, c'est/s'est, on/on n' (14 fiches)
 - [x] Leur/leurs et la/l'a/là — CM1 — Français : leur/leurs et la/l'a/là (14 fiches)
@@ -470,7 +470,7 @@ Primaire — 130 chapitres couverts sur 133, 130 boîtes.
 - [x] Les préfixes et leur sens — CM1 — Français : les préfixes et leur sens (15 fiches)
 - [x] Les suffixes et leur sens — CM1 — Français : les suffixes et leur sens (14 fiches)
 - [x] Les familles de mots et le radical — CM1 — Français : les familles de mots et le radical (14 fiches)
-- [x] Synonymes, antonymes et homonymes — CM1 — Français : synonymes, antonymes et homonymes (15 fiches)
+- [x] Synonymes, antonymes et homonymes — CM1 — Français : synonymes, antonymes et homonymes (16 fiches)
 - [x] Polysémie, sens propre et sens figuré — CM1 — Français : polysémie, sens propre et sens figuré (14 fiches)
 - [x] Mots génériques et champ lexical — CM1 — Français : mots génériques et champ lexical (14 fiches)
 - [x] Niveaux de langue et expressions imagées — CM1 — Français : niveaux de langue et expressions imagées (14 fiches)
@@ -500,11 +500,11 @@ Primaire — 130 chapitres couverts sur 133, 130 boîtes.
 - [x] Multiplier et diviser un nombre par 10 ou 100 — CM1 — Maths : multiplier et diviser un nombre par 10 ou 100 (15 fiches)
 - [x] Calcul mental et calcul en ligne avec parenthèses — CM1 — Maths : calcul mental et calcul en ligne avec parenthèses (16 fiches)
 - [x] Multiples et diviseurs — CM1 — Maths : multiples et diviseurs (16 fiches)
-- [x] Critères de divisibilité par 2, 5 et 10 — CM1 — Maths : critères de divisibilité par 2, 5 et 10 (15 fiches)
+- [x] Critères de divisibilité par 2, 5 et 10 — CM1 — Maths : critères de divisibilité par 2, 5 et 10 (16 fiches)
 - [x] Poser une division par un nombre à un chiffre — CM1 — Maths : poser une division par un nombre à un chiffre (15 fiches)
 - [x] Ordre de grandeur et vérification à la calculatrice — CM1 — Maths : ordre de grandeur et vérification à la calculatrice (14 fiches)
 - [x] Les unités de longueur et les conversions — CM1 — Maths : les unités de longueur et les conversions (16 fiches)
-- [x] Les unités de masse et les conversions — CM1 — Maths : les unités de masse et les conversions (15 fiches)
+- [x] Les unités de masse et les conversions — CM1 — Maths : les unités de masse et les conversions (16 fiches)
 - [x] Les unités de contenance et les conversions — CM1 — Maths : les unités de contenance et les conversions (15 fiches)
 - [x] Heures, minutes, secondes — CM1 — Maths : heures, minutes, secondes (15 fiches)
 - [x] Jours, semaines, mois, années et siècles — CM1 — Maths : jours, semaines, mois, années et siècles (15 fiches)
@@ -516,7 +516,7 @@ Primaire — 130 chapitres couverts sur 133, 130 boîtes.
 - [x] Droites perpendiculaires et parallèles — CM1 — Maths : droites perpendiculaires et parallèles (15 fiches)
 - [x] Carré, rectangle, losange et leurs diagonales — CM1 — Maths : carré, rectangle, losange et leurs diagonales (15 fiches)
 - [x] Le cercle et l'usage du compas — CM1 — Maths : le cercle et l'usage du compas (14 fiches)
-- [x] Les solides et leurs patrons — CM1 — Maths : les solides et leurs patrons (16 fiches)
+- [x] Les solides et leurs patrons — CM1 — Maths : les solides et leurs patrons (18 fiches)
 - [x] La symétrie axiale — CM1 — Maths : la symétrie axiale (15 fiches)
 - [x] Suivre un programme de construction — CM1 — Maths : suivre un programme de construction (14 fiches)
 - [x] Se repérer sur un quadrillage et sur un plan — CM1 — Maths : se repérer sur un quadrillage et sur un plan (14 fiches)
@@ -549,11 +549,11 @@ Primaire — 130 chapitres couverts sur 133, 130 boîtes.
 - [x] La romanisation de la Gaule — CM1 — Histoire : la romanisation de la Gaule (15 fiches)
 - [x] Les grands déplacements de populations (IVe-Xe siècle) — CM1 — Histoire : les grands déplacements de populations (IVe-Xe siècle) (15 fiches)
 - [x] Les rois francs, de Clovis à Charlemagne — CM1 — Histoire : les rois francs, de Clovis à Charlemagne (16 fiches)
-- [x] Louis IX, un roi chrétien au Moyen Âge — CM1 — Histoire : Louis IX, un roi chrétien au Moyen Âge (15 fiches)
+- [x] Louis IX, un roi chrétien au Moyen Âge — CM1 — Histoire : Louis IX, un roi chrétien au Moyen Âge (16 fiches)
 - [x] François Ier, la Renaissance et Henri IV — CM1 — Histoire : François Ier, la Renaissance et Henri IV (16 fiches)
 - [x] Louis XIV, Versailles et la monarchie absolue — CM1 — Histoire : Louis XIV, Versailles et la monarchie absolue (15 fiches)
 - [x] La Révolution française, de 1789 à la République — CM1 — Histoire : la Révolution française, de 1789 à la République (16 fiches)
-- [x] Napoléon Bonaparte, du Consulat à l'Empire — CM1 — Histoire : Napoléon Bonaparte, du Consulat à l'Empire (16 fiches)
+- [x] Napoléon Bonaparte, du Consulat à l'Empire — CM1 — Histoire : Napoléon Bonaparte, du Consulat à l'Empire (17 fiches)
 
 ### CM1 — Géographie (11 / 11)
 
@@ -588,13 +588,13 @@ Primaire — 130 chapitres couverts sur 133, 130 boîtes.
 
 ### CM1 — Anglais (10 / 12)
 
-- [x] Se présenter, nationalité et épeler — CM1 — Anglais : se présenter, nationalité et épeler (15 fiches)
+- [x] Se présenter, nationalité et épeler — CM1 — Anglais : se présenter, nationalité et épeler (16 fiches)
 - [x] Les nombres jusqu'à 100 — CM1 — Anglais : les nombres jusqu'à 100 (15 fiches)
-- [x] Dire l'heure — CM1 — Anglais : dire l'heure (14 fiches)
-- [x] Les mois, les saisons et la date — CM1 — Anglais : les mois, les saisons et la date (14 fiches)
-- [x] Le corps et décrire quelqu'un (have got) — CM1 — Anglais : le corps et décrire quelqu'un (have got) (14 fiches)
+- [x] Dire l'heure — CM1 — Anglais : dire l'heure (15 fiches)
+- [x] Les mois, les saisons et la date — CM1 — Anglais : les mois, les saisons et la date (15 fiches)
+- [x] Le corps et décrire quelqu'un (have got) — CM1 — Anglais : le corps et décrire quelqu'un (have got) (15 fiches)
 - [x] La ville et les directions — CM1 — Anglais : la ville et les directions (14 fiches)
-- [x] La nourriture et les goûts — CM1 — Anglais : la nourriture et les goûts (14 fiches)
+- [x] La nourriture et les goûts — CM1 — Anglais : la nourriture et les goûts (16 fiches)
 - [x] Les animaux et leurs habitats — CM1 — Anglais : les animaux et leurs habitats (14 fiches)
 - [x] Fêtes et traditions des pays anglophones — CM1 — Anglais : fêtes et traditions des pays anglophones (14 fiches)
 - [x] Les verbes d'action au présent simple — CM1 — Anglais : les verbes d'action au présent simple (14 fiches)
@@ -616,9 +616,9 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 - [x] L'attribut du sujet et les verbes d'état — CM2 — Français : l'attribut du sujet et les verbes d'état (13 fiches)
 - [x] Mots variables et mots invariables — CM2 — Français : mots variables et mots invariables (14 fiches)
 - [x] Enrichir le groupe nominal — CM2 — Français : enrichir le groupe nominal (14 fiches)
-- [x] Pronoms personnels, possessifs et démonstratifs — CM2 — Français : pronoms personnels, possessifs et démonstratifs (14 fiches)
+- [x] Pronoms personnels, possessifs et démonstratifs — CM2 — Français : pronoms personnels, possessifs et démonstratifs (15 fiches)
 - [x] Le présent des verbes irréguliers et ses valeurs — CM2 — Français : le présent des verbes irréguliers et ses valeurs (14 fiches)
-- [x] Futur simple et conditionnel présent — CM2 — Français : futur simple et conditionnel présent (15 fiches)
+- [x] Futur simple et conditionnel présent — CM2 — Français : futur simple et conditionnel présent (17 fiches)
 - [x] L'impératif présent — CM2 — Français : l'impératif présent (14 fiches)
 - [x] Premier plan et arrière-plan du récit — CM2 — Français : premier plan et arrière-plan du récit (14 fiches)
 - [x] Accorder le participe passé avec être ou avoir — CM2 — Français : accorder le participe passé avec être ou avoir (14 fiches)
@@ -657,7 +657,7 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 - [x] Lire l'heure et résoudre des problèmes de durées — CM2 — Maths : lire l'heure et résoudre des problèmes de durées (16 fiches)
 - [x] Triangles particuliers, quadrilatères et trapèze — CM2 — Maths : triangles particuliers, quadrilatères et trapèze (16 fiches)
 - [x] Axes de symétrie et programmes de construction — CM2 — Maths : axes de symétrie et programmes de construction (16 fiches)
-- [x] Prismes, pyramides et autres solides — CM2 — Maths : prismes, pyramides et autres solides (16 fiches)
+- [x] Prismes, pyramides et autres solides — CM2 — Maths : prismes, pyramides et autres solides (18 fiches)
 - [x] Diagrammes en barres, circulaires et courbes — CM2 — Maths : diagrammes en barres, circulaires et courbes (16 fiches)
 - [x] Les probabilités, « a chances sur b » — CM2 — Maths : les probabilités, « a chances sur b » (16 fiches)
 - [ ] Le cercle, rayon, diamètre et compas — *à créer*
@@ -671,11 +671,11 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 - [x] La Terre dans le système solaire — CM2 — Sciences : la Terre dans le système solaire (16 fiches)
 - [x] Les chaînes alimentaires — CM2 — Sciences : les chaînes alimentaires (15 fiches)
 - [x] Les mélanges et comment les séparer — CM2 — Sciences : les mélanges et comment les séparer (15 fiches)
-- [x] Respirer, faire circuler le sang et bouger — CM2 — Sciences : respirer, faire circuler le sang et bouger (16 fiches)
+- [x] Respirer, faire circuler le sang et bouger — CM2 — Sciences : respirer, faire circuler le sang et bouger (18 fiches)
 - [x] La reproduction humaine et la puberté — CM2 — Sciences : la reproduction humaine et la puberté (15 fiches)
-- [x] Les sources d'énergie et l'électricité en sécurité — CM2 — Sciences : les sources d'énergie et l'électricité en sécurité (15 fiches)
+- [x] Les sources d'énergie et l'électricité en sécurité — CM2 — Sciences : les sources d'énergie et l'électricité en sécurité (16 fiches)
 - [x] La lumière et les ombres — CM2 — Sciences : la lumière et les ombres (15 fiches)
-- [x] La Lune, ses phases et les éclipses — CM2 — Sciences : la Lune, ses phases et les éclipses (15 fiches)
+- [x] La Lune, ses phases et les éclipses — CM2 — Sciences : la Lune, ses phases et les éclipses (16 fiches)
 - [x] Les volcans et les séismes — CM2 — Sciences : les volcans et les séismes (15 fiches)
 - [x] Le cycle de l'eau et l'eau potable — CM2 — Sciences : le cycle de l'eau et l'eau potable (15 fiches)
 - [ ] Classer les êtres vivants — *à créer*
@@ -703,7 +703,7 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 - [x] Se déplacer — CM2 — Géographie : se déplacer (15 fiches)
 - [x] Communiquer d'un bout à l'autre du monde grâce à Internet — CM2 — Géographie : communiquer d'un bout à l'autre du monde grâce à Internet (15 fiches)
 - [x] Se déplacer au quotidien ailleurs dans le monde — CM2 — Géographie : se déplacer au quotidien ailleurs dans le monde (14 fiches)
-- [x] Voyager de ville en ville en France — CM2 — Géographie : voyager de ville en ville en France (15 fiches)
+- [x] Voyager de ville en ville en France — CM2 — Géographie : voyager de ville en ville en France (16 fiches)
 - [x] Se déplacer en Europe et dans le monde — CM2 — Géographie : se déplacer en Europe et dans le monde (15 fiches)
 - [x] Internet au quotidien, outils et usages — CM2 — Géographie : Internet au quotidien, outils et usages (14 fiches)
 - [x] Mieux habiter, la nature en ville — CM2 — Géographie : mieux habiter, la nature en ville (15 fiches)
@@ -711,7 +711,7 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 - [x] Mieux habiter dans un écoquartier — CM2 — Géographie : mieux habiter dans un écoquartier (15 fiches)
 - [x] Repères sur l'Union européenne (pays, capitales, symboles) — CM2 — Géographie : repères sur l'Union européenne (pays, capitales, symboles) (16 fiches)
 - [x] Repères, les continents et les océans — CM2 — Géographie : repères, les continents et les océans (15 fiches)
-- [x] Repères, les grands records et lignes du monde — CM2 — Géographie : repères, les grands records et lignes du monde (16 fiches)
+- [x] Repères, les grands records et lignes du monde — CM2 — Géographie : repères, les grands records et lignes du monde (17 fiches)
 
 ### CM2 — EMC (5 / 5)
 
@@ -732,10 +732,10 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 ### CM2 — Anglais (5 / 8)
 
 - [x] Se présenter et le présent simple — CM2 — Anglais : se présenter et le présent simple (15 fiches)
-- [x] Ma journée (daily routine) — CM2 — Anglais : ma journée (daily routine) (15 fiches)
-- [x] Les pays et les nationalités du monde anglophone — CM2 — Anglais : les pays et les nationalités du monde anglophone (15 fiches)
+- [x] Ma journée (daily routine) — CM2 — Anglais : ma journée (daily routine) (17 fiches)
+- [x] Les pays et les nationalités du monde anglophone — CM2 — Anglais : les pays et les nationalités du monde anglophone (16 fiches)
 - [x] Villes, capitales et monuments anglophones — CM2 — Anglais : villes, capitales et monuments anglophones (15 fiches)
-- [x] Les prépositions de lieu et ma chambre — CM2 — Anglais : les prépositions de lieu et ma chambre (15 fiches)
+- [x] Les prépositions de lieu et ma chambre — CM2 — Anglais : les prépositions de lieu et ma chambre (16 fiches)
 - [ ] Le prétérit des verbes courants — *à créer*
 - [ ] Les animaux et décrire un animal — *à créer*
 - [ ] Faire des achats et la monnaie — *à créer*
@@ -852,7 +852,7 @@ Collège — 43 chapitres couverts sur 99, 43 boîtes.
 - [x] Vocabulaire de base (famille, école, jours, nombres, couleurs) — 6ème — Anglais : vocabulaire de base (famille, école, jours, nombres, couleurs) (17 fiches)
 - [x] Grammaire de base (be, présent simple, pluriels) — 6ème — Anglais : grammaire de base (be, présent simple, pluriels) (21 fiches)
 - [x] Routine quotidienne, fréquence et goûts — 6ème — Anglais : routine quotidienne, fréquence et goûts (17 fiches)
-- [x] L'heure, la date et les saisons — 6ème — Anglais : l'heure, la date et les saisons (16 fiches)
+- [x] L'heure, la date et les saisons — 6ème — Anglais : l'heure, la date et les saisons (19 fiches)
 - [x] Have got, possessifs et description physique — 6ème — Anglais : have got, possessifs et description physique (16 fiches)
 - [ ] Le présent en be + -ing — *à créer*
 - [ ] Can / can't et les capacités — *à créer*
@@ -870,7 +870,7 @@ Collège — 43 chapitres couverts sur 99, 43 boîtes.
 
 ### 6e — Éducation musicale (1 / 3)
 
-- [x] Instruments et vocabulaire de la musique — 6ème — Éducation musicale : instruments et vocabulaire de la musique (16 fiches)
+- [x] Instruments et vocabulaire de la musique — 6ème — Éducation musicale : instruments et vocabulaire de la musique (18 fiches)
 - [ ] Les grands compositeurs — *à créer*
 - [ ] Rythme, mélodie et pulsation — *à créer*
 
@@ -885,7 +885,7 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 - [x] Types de phrases, propositions, passé composé et plus-que-parfait — 5ème — Français : types de phrases, propositions, passé composé et plus-que-parfait (19 fiches)
 - [x] Voyage, aventure, héros et univers imaginaires — 5ème — Français : voyage, aventure, héros et univers imaginaires (17 fiches)
 - [x] Avec autrui, la comédie et Molière — 5ème — Français : avec autrui, la comédie et Molière (19 fiches)
-- [x] L'accord du participe passé — 5ème — Français : l'accord du participe passé (16 fiches)
+- [x] L'accord du participe passé — 5ème — Français : l'accord du participe passé (17 fiches)
 - [ ] Imaginer des univers nouveaux (science-fiction, fantasy) — *à créer*
 - [ ] L'être humain est-il maître de la nature ? — *à créer*
 - [ ] Le conte et le merveilleux — *à créer*
@@ -924,7 +924,7 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 - [x] Grandes découvertes, Renaissance et Réformes — 5ème — Histoire : Grandes découvertes, Renaissance et Réformes (18 fiches)
 - [x] Seigneurs, paysans, villes et pouvoir royal (XIe-XVe s.) — 5ème — Histoire : seigneurs, paysans, villes et pouvoir royal (XIe-XVe s.) (20 fiches)
 - [x] Du prince de la Renaissance au roi absolu — 5ème — Histoire : du prince de la Renaissance au roi absolu (17 fiches)
-- [x] L'Église au Moyen Âge — 5ème — Histoire : l'Église au Moyen Âge (16 fiches)
+- [x] L'Église au Moyen Âge — 5ème — Histoire : l'Église au Moyen Âge (17 fiches)
 - [ ] L'Empire carolingien — *à créer*
 - [ ] Les croisades et la Reconquista — *à créer*
 - [ ] La Renaissance artistique — *à créer*
@@ -951,7 +951,7 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 - [x] Respiration, digestion et paysages — 5ème — SVT : respiration, digestion et paysages (16 fiches)
 - [x] Séismes, volcans et tectonique des plaques — 5ème — SVT : séismes, volcans et tectonique des plaques (17 fiches)
 - [x] Nutrition et reproduction des plantes à fleurs — 5ème — SVT : nutrition et reproduction des plantes à fleurs (17 fiches)
-- [x] Écosystèmes, chaînes alimentaires et biodiversité — 5ème — SVT : écosystèmes, chaînes alimentaires et biodiversité (16 fiches)
+- [x] Écosystèmes, chaînes alimentaires et biodiversité — 5ème — SVT : écosystèmes, chaînes alimentaires et biodiversité (18 fiches)
 - [ ] La cellule, unité du vivant — *à créer*
 - [ ] Les fossiles et l'histoire de la Terre — *à créer*
 - [ ] Hygiène, microbes et santé — *à créer*
@@ -981,8 +981,8 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 
 - [x] Prétérit simple et there is / there are — 5ème — Anglais : prétérit simple et there is / there are (16 fiches)
 - [x] Comparatifs, superlatifs et futur — 5ème — Anglais : comparatifs, superlatifs et futur (16 fiches)
-- [x] Présent en be + -ing et activités — 5ème — Anglais : présent en be + -ing et activités (16 fiches)
-- [x] La ville, les directions et les prépositions de lieu — 5ème — Anglais : la ville, les directions et les prépositions de lieu (16 fiches)
+- [x] Présent en be + -ing et activités — 5ème — Anglais : présent en be + -ing et activités (17 fiches)
+- [x] La ville, les directions et les prépositions de lieu — 5ème — Anglais : la ville, les directions et les prépositions de lieu (18 fiches)
 - [ ] Les verbes irréguliers du prétérit — *à créer*
 - [ ] Les quantifieurs (some, any, much, many) — *à créer*
 - [ ] Les pays et la culture anglophones — *à créer*
@@ -991,7 +991,7 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 ### 5e — Espagnol (2 / 6)
 
 - [x] Premiers pas en LV2 — 5ème — Espagnol : premiers pas en LV2 (18 fiches)
-- [x] Nombres, heure, jours et date — 5ème — Espagnol : nombres, heure, jours et date (16 fiches)
+- [x] Nombres, heure, jours et date — 5ème — Espagnol : nombres, heure, jours et date (18 fiches)
 - [ ] Se présenter et la famille — *à créer*
 - [ ] Le présent de l'indicatif — *à créer*
 - [ ] Les goûts avec gustar — *à créer*
@@ -1006,7 +1006,7 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 
 ### 5e — Italien (1 / 3)
 
-- [x] Premiers pas en LV2 — 5ème — Italien : premiers pas en LV2 (16 fiches)
+- [x] Premiers pas en LV2 — 5ème — Italien : premiers pas en LV2 (19 fiches)
 - [ ] La famille et la description — *à créer*
 - [ ] Le présent des verbes réguliers — *à créer*
 
@@ -1018,7 +1018,7 @@ Collège — 42 chapitres couverts sur 99, 42 boîtes.
 
 ### 5e — Arts plastiques (1 / 2)
 
-- [x] Couleurs, composition et vocabulaire — 5ème — Arts plastiques : couleurs, composition et vocabulaire (16 fiches)
+- [x] Couleurs, composition et vocabulaire — 5ème — Arts plastiques : couleurs, composition et vocabulaire (20 fiches)
 - [ ] La matérialité de l'œuvre — *à créer*
 
 ### 5e — Éducation musicale (0 / 2)
@@ -1110,7 +1110,7 @@ Collège — 54 chapitres couverts sur 91, 54 boîtes.
 - [x] Circuits électriques et vitesse — 4ème — Physique : circuits électriques et vitesse (16 fiches)
 - [x] Formes d'énergie et conversions — 4ème — Physique : formes d'énergie et conversions (16 fiches)
 - [x] Signaux sonores et lumineux — 4ème — Physique : signaux sonores et lumineux (16 fiches)
-- [x] Interactions et forces — 4ème — Physique : interactions et forces (16 fiches)
+- [x] Interactions et forces — 4ème — Physique : interactions et forces (18 fiches)
 - [ ] Lumière, couleurs et vision — *à créer*
 
 ### 4e — Chimie (3 / 4)
@@ -1133,27 +1133,27 @@ Collège — 54 chapitres couverts sur 91, 54 boîtes.
 - [x] Comparatifs et superlatifs — 4ème — Anglais : comparatifs et superlatifs (16 fiches)
 - [x] Prétérit ou present perfect — 4ème — Anglais : prétérit ou present perfect (17 fiches)
 - [x] Les modaux (can, must, should, may...) — 4ème — Anglais : les modaux (can, must, should, may...) (15 fiches)
-- [x] Futur (will, be going to) et prétérit en be + -ing — 4ème — Anglais : futur (will, be going to) et prétérit en be + -ing (16 fiches)
+- [x] Futur (will, be going to) et prétérit en be + -ing — 4ème — Anglais : futur (will, be going to) et prétérit en be + -ing (17 fiches)
 - [ ] Les pronoms relatifs — *à créer*
 - [ ] Les quantifieurs et les dénombrables — *à créer*
 
 ### 4e — Espagnol (2 / 4)
 
 - [x] Ser et estar, gustar et le passé composé — 4ème — Espagnol : ser et estar, gustar et le passé composé (16 fiches)
-- [x] Futur, ir a + infinitif et impératif — 4ème — Espagnol : futur, ir a + infinitif et impératif (16 fiches)
+- [x] Futur, ir a + infinitif et impératif — 4ème — Espagnol : futur, ir a + infinitif et impératif (17 fiches)
 - [ ] Le passé simple (pretérito indefinido) — *à créer*
 - [ ] Les pays hispanophones — *à créer*
 
 ### 4e — Allemand (2 / 4)
 
 - [x] Perfekt, verbes de modalité et place du verbe — 4ème — Allemand : Perfekt, verbes de modalité et place du verbe (16 fiches)
-- [x] Datif, prépositions et localisation — 4ème — Allemand : datif, prépositions et localisation (16 fiches)
+- [x] Datif, prépositions et localisation — 4ème — Allemand : datif, prépositions et localisation (17 fiches)
 - [ ] Le prétérit des auxiliaires et des modaux — *à créer*
 - [ ] Les pays germanophones — *à créer*
 
 ### 4e — Italien (1 / 3)
 
-- [x] Le présent et la vie quotidienne — 4ème — Italien : le présent et la vie quotidienne (16 fiches)
+- [x] Le présent et la vie quotidienne — 4ème — Italien : le présent et la vie quotidienne (18 fiches)
 - [ ] Le passé composé — *à créer*
 - [ ] Les villes et les régions d'Italie — *à créer*
 
@@ -1173,12 +1173,25 @@ Collège — 54 chapitres couverts sur 91, 54 boîtes.
 
 ## 3e
 
-Collège — 130 chapitres couverts sur 133, 134 boîtes.
+Collège — 96 chapitres couverts sur 108, 134 boîtes.
 
-### 3e — Français (23 / 23)
+### 3e — Français (17 / 17)
 
-- [x] Grammaire et orthographe — Brevet — Français : grammaire et orthographe (35 fiches)
-- [x] Outils d'analyse littéraire — Brevet — Français : outils d'analyse littéraire (43 fiches)
+- [x] Se raconter, se représenter — l'essentiel — Brevet — Français : se raconter, se représenter (autobiographie) (16 fiches)
+  - [ ] L'autobiographie et le pacte autobiographique — *à créer*
+  - [ ] Récits d'enfance, journaux intimes et autoportraits — *à créer*
+- [x] Dénoncer les travers de la société — l'essentiel — Brevet — Français : dénoncer les travers de la société (17 fiches)
+  - [ ] Satire, ironie et apologues (Voltaire, La Fontaine…) — *à créer*
+  - [ ] Le roman réaliste et naturaliste (Hugo, Zola, Maupassant) — *à créer*
+- [x] Visions poétiques du monde — l'essentiel — Brevet — Français : visions poétiques du monde (17 fiches)
+  - [ ] Le lyrisme et la poésie de la nature — *à créer*
+  - [ ] Versification et formes poétiques — *à créer*
+- [x] Agir dans la cité : individu et pouvoir — l'essentiel — Brevet — Français : agir dans la cité, engagement et guerre (16 fiches)
+  - [ ] Écrire la guerre : témoignages et poésie de la Résistance — *à créer*
+  - [ ] L'individu face au pouvoir au théâtre (Antigone…) — *à créer*
+- [x] Progrès et rêves scientifiques — l'essentiel — Brevet — Français : progrès et rêves scientifiques (15 fiches)
+  - [ ] Science-fiction et récits d'anticipation — *à créer*
+  - [ ] Le progrès en débat : argumenter — *à créer*
 - [x] Les classes grammaticales des mots — Brevet — Français : les classes grammaticales des mots (16 fiches)
 - [x] Les fonctions grammaticales — Brevet — Français : les fonctions grammaticales (16 fiches)
 - [x] Propositions et phrase complexe — Brevet — Français : propositions et phrase complexe (16 fiches)
@@ -1186,118 +1199,148 @@ Collège — 130 chapitres couverts sur 133, 134 boîtes.
 - [x] Subjonctif, conditionnel et impératif — Brevet — Français : subjonctif, conditionnel et impératif (23 fiches)
 - [x] L'accord du participe passé — Brevet — Français : l'accord du participe passé (15 fiches)
 - [x] Les homophones grammaticaux — Brevet — Français : les homophones grammaticaux (16 fiches)
-- [x] Vocabulaire et formation des mots — Brevet — Français : vocabulaire et formation des mots (27 fiches)
+- [x] Vocabulaire et formation des mots — l'essentiel — Brevet — Français : vocabulaire et formation des mots (27 fiches)
+  - [x] Lexique des émotions et du jugement — Brevet — Français : lexique des émotions et du jugement (16 fiches)
 - [x] Discours rapporté et énonciation — Brevet — Français : discours rapporté et énonciation (15 fiches)
-- [x] Se raconter, se représenter (autobiographie) — Brevet — Français : se raconter, se représenter (autobiographie) (16 fiches)
-- [x] Dénoncer les travers de la société — Brevet — Français : dénoncer les travers de la société (17 fiches)
-- [x] Visions poétiques du monde — Brevet — Français : visions poétiques du monde (17 fiches)
-- [x] Agir dans la cité, engagement et guerre — Brevet — Français : agir dans la cité, engagement et guerre (16 fiches)
-- [x] Progrès et rêves scientifiques — Brevet — Français : progrès et rêves scientifiques (15 fiches)
-- [x] Réussir l'épreuve orale — Brevet — Français : réussir l'épreuve orale (15 fiches)
-- [x] Auteurs et œuvres repères du collège — Brevet — Français : auteurs et œuvres repères du collège (17 fiches)
-- [x] Réussir l'exercice de réécriture — Brevet — Français : réussir l'exercice de réécriture (16 fiches)
-- [x] Les pièges orthographiques de la dictée — Brevet — Français : les pièges orthographiques de la dictée (17 fiches)
 - [x] Ponctuation et connecteurs logiques — Brevet — Français : ponctuation et connecteurs logiques (16 fiches)
-- [x] Lexique des émotions et du jugement — Brevet — Français : lexique des émotions et du jugement (16 fiches)
-- [x] Méthode de la rédaction — Brevet — Français : méthode de la rédaction (16 fiches)
+- [x] Analyser un texte littéraire — Brevet — Français : outils d'analyse littéraire (43 fiches)
+- [x] Révisions du brevet — Brevet — Français : grammaire et orthographe (35 fiches) ; Brevet — Français : auteurs et œuvres repères du collège (17 fiches) ; Brevet — Français : les pièges orthographiques de la dictée (17 fiches) ; Brevet — Français : réussir l'exercice de réécriture (16 fiches) ; Brevet — Français : méthode de la rédaction (16 fiches) ; Brevet — Français : réussir l'épreuve orale (15 fiches)
 
-### 3e — Mathématiques (23 / 23)
+### 3e — Mathématiques (11 / 12)
 
-- [x] Formules et théorèmes du collège — Maths — Formules et théorèmes du collège (46 fiches)
-- [x] Fractions, puissances et racines carrées — Brevet — Maths : fractions, puissances et racines carrées (19 fiches)
-- [x] Diviseurs, nombres premiers et PGCD — Brevet — Maths : diviseurs, nombres premiers et PGCD (17 fiches)
-- [x] Calcul littéral, équations et inéquations — Brevet — Maths : calcul littéral, équations et inéquations (19 fiches)
-- [x] Fonctions, proportionnalité et pourcentages — Brevet — Maths : fonctions, proportionnalité et pourcentages (18 fiches)
-- [x] Pythagore, Thalès et trigonométrie — Brevet — Maths : Pythagore, Thalès et trigonométrie (18 fiches)
-- [x] Aires, volumes et conversions — Brevet — Maths : aires, volumes et conversions (19 fiches)
-- [x] Statistiques et probabilités — Brevet — Maths : statistiques et probabilités (16 fiches)
-- [x] Transformations et algorithmique Scratch — Brevet — Maths : transformations et algorithmique Scratch (20 fiches)
-- [x] Vitesse, débit et grandeurs composées — Brevet — Maths : vitesse, débit et grandeurs composées (17 fiches)
-- [x] Probabilités, vocabulaire et arbres — Brevet — Maths : probabilités, vocabulaire et arbres (17 fiches)
-- [x] Sections de solides et repérage sur la sphère — Brevet — Maths : sections de solides et repérage sur la sphère (19 fiches)
-- [x] Notion de fonction et lecture graphique — Brevet — Maths : notion de fonction et lecture graphique (15 fiches)
-- [x] Calcul mental, automatismes et programmes de calcul — Brevet — Maths : calcul mental, automatismes et programmes de calcul (22 fiches)
-- [x] Puissances de 10 et écriture scientifique — Brevet — Maths : puissances de 10 et écriture scientifique (18 fiches)
-- [x] Résoudre un problème par une mise en équation — Brevet — Maths : résoudre un problème par une mise en équation (16 fiches)
-- [x] Lire et écrire des formules dans un tableur — Brevet — Maths : lire et écrire des formules dans un tableur (15 fiches)
-- [x] Agrandissement, réduction et effets sur aires et volumes — Brevet — Maths : agrandissement, réduction et effets sur aires et volumes (15 fiches)
-- [x] Triangles semblables et homothétie — Brevet — Maths : triangles semblables et homothétie (15 fiches)
-- [x] Déterminer et interpréter une fonction affine — Brevet — Maths : déterminer et interpréter une fonction affine (16 fiches)
+- [x] Fractions, puissances et racines carrées — l'essentiel — Brevet — Maths : fractions, puissances et racines carrées (19 fiches)
+  - [x] Puissances de 10 et écriture scientifique — Brevet — Maths : puissances de 10 et écriture scientifique (18 fiches)
+  - [ ] Racines carrées — *à créer*
+- [x] Diviseurs, nombres premiers et fractions irréductibles — Brevet — Maths : diviseurs, nombres premiers et PGCD (17 fiches)
+- [x] Calcul littéral, équations et inéquations — l'essentiel — Brevet — Maths : calcul littéral, équations et inéquations (19 fiches)
+  - [ ] Développer, factoriser, identités remarquables — *à créer*
+  - [ ] Équations, inéquations et équations produit nul — *à créer*
+  - [x] Mettre un problème en équation — Brevet — Maths : résoudre un problème par une mise en équation (16 fiches)
+- [x] Fonctions — l'essentiel — Brevet — Maths : fonctions, proportionnalité et pourcentages (18 fiches)
+  - [x] Notion de fonction et lecture graphique — Brevet — Maths : notion de fonction et lecture graphique (15 fiches)
+  - [x] Fonctions linéaires et affines — Brevet — Maths : déterminer et interpréter une fonction affine (16 fiches)
+- [x] Proportionnalité, ratios et grandeurs composées — l'essentiel — Brevet — Maths : ratios, échelles et partages proportionnels (15 fiches)
+  - [x] Vitesse, débit et grandeurs composées — Brevet — Maths : vitesse, débit et grandeurs composées (17 fiches)
+- [x] Statistiques et probabilités — l'essentiel — Brevet — Maths : statistiques et probabilités (16 fiches)
+  - [x] Moyenne, médiane et étendue — Brevet — Maths : moyenne pondérée, médiane et étendue en exercices (15 fiches)
+  - [x] Probabilités, vocabulaire et arbres — Brevet — Maths : probabilités, vocabulaire et arbres (17 fiches)
+- [x] Pythagore, Thalès et trigonométrie — l'essentiel — Brevet — Maths : Pythagore, Thalès et trigonométrie (18 fiches)
+  - [ ] Théorème de Pythagore et sa réciproque — *à créer*
+  - [x] Théorème de Thalès et triangles semblables — Brevet — Maths : triangles semblables et homothétie (15 fiches)
+  - [ ] Trigonométrie dans le triangle rectangle — *à créer*
 - [x] Angles, droites parallèles et polygones réguliers — Brevet — Maths : angles, droites parallèles et polygones réguliers (16 fiches)
-- [x] Ratios, échelles et partages proportionnels — Brevet — Maths : ratios, échelles et partages proportionnels (15 fiches)
-- [x] Moyenne pondérée, médiane et étendue en exercices — Brevet — Maths : moyenne pondérée, médiane et étendue en exercices (15 fiches)
+- [x] Transformations du plan — l'essentiel — Brevet — Maths : transformations et algorithmique Scratch (20 fiches)
+  - [ ] Translations, rotations et homothéties — *à créer*
+  - [x] Agrandissement, réduction et effets sur aires et volumes — Brevet — Maths : agrandissement, réduction et effets sur aires et volumes (15 fiches)
+- [x] Aires, volumes et conversions — l'essentiel — Brevet — Maths : aires, volumes et conversions (19 fiches)
+  - [x] Sections de solides et repérage sur la sphère — Brevet — Maths : sections de solides et repérage sur la sphère (19 fiches)
+- [ ] Algorithmique et programmation — l'essentiel — *à créer*
+  - [ ] Programmer avec Scratch — *à créer*
+  - [x] Lire et écrire des formules dans un tableur — Brevet — Maths : lire et écrire des formules dans un tableur (15 fiches)
+- [x] Révisions du brevet — Maths — Formules et théorèmes du collège (46 fiches) ; Brevet — Maths : calcul mental, automatismes et programmes de calcul (22 fiches)
 
-### 3e — Histoire (13 / 13)
+### 3e — Histoire (7 / 12)
 
-- [x] Les dates clés du Brevet — Histoire — Les dates clés du Brevet (53 fiches)
-- [x] Notions et personnages clés — Brevet — Histoire : notions et personnages clés (36 fiches)
-- [x] La Première Guerre mondiale — Brevet — Histoire : la Première Guerre mondiale (19 fiches)
-- [x] Démocraties et totalitarismes (1918-1939) — Brevet — Histoire : démocraties et totalitarismes (1918-1939) (16 fiches)
-- [x] La Seconde Guerre mondiale (1939-1945) : l'essentiel et 4 sous-thèmes — Brevet — Histoire : Seconde Guerre mondiale, Vichy et Résistance (20 fiches) ; 3ème — Histoire : 1939-1945, une guerre d'anéantissement (18 fiches) ; 3ème — Histoire : le génocide des Juifs et des Tsiganes (20 fiches) ; 3ème — Histoire : la France défaite et occupée, Vichy et la collaboration (20 fiches) ; 3ème — Histoire : la France libre, la Résistance et la Libération (20 fiches)
-- [x] Guerre froide, décolonisation et Europe — Brevet — Histoire : guerre froide, décolonisation et Europe (19 fiches)
-- [x] La France de 1944 à nos jours — Brevet — Histoire : la France de 1944 à nos jours (18 fiches)
-- [x] Les arts au XXe siècle — Brevet — Histoire des arts : les arts au XXe siècle (17 fiches)
-- [x] Lieux et repères spatiaux du programme — Brevet — Histoire : lieux et repères spatiaux du programme (19 fiches)
-- [x] Grands discours et textes patrimoniaux — Brevet — Histoire : grands discours et textes patrimoniaux (20 fiches)
-- [x] La guerre d'Algérie (1954-1962) — Brevet — Histoire : la guerre d'Algérie (1954-1962) (17 fiches)
-- [x] Femmes et hommes dans la société (1950-1980) — Brevet — Histoire : femmes et hommes dans la société (1950-1980) (16 fiches)
+- [x] Civils et militaires dans la Première Guerre mondiale — l'essentiel — Brevet — Histoire : la Première Guerre mondiale (19 fiches)
+  - [ ] 1914-1918 : une guerre de masse (Verdun, la vie des poilus) — *à créer*
+  - [ ] Les civils dans la guerre totale — *à créer*
+  - [ ] Le génocide des Arméniens — *à créer*
+  - [ ] Sortir de la guerre (1918-1923) — *à créer*
+- [x] Démocraties fragilisées et expériences totalitaires (1918-1939) — l'essentiel — Brevet — Histoire : démocraties et totalitarismes (1918-1939) (16 fiches)
+  - [ ] L'URSS de Staline — *à créer*
+  - [ ] L'Allemagne nazie — *à créer*
+  - [ ] La France des années 1930 et le Front populaire — *à créer*
+- [x] La Seconde Guerre mondiale (1939-1945) — l'essentiel — Brevet — Histoire : Seconde Guerre mondiale, Vichy et Résistance (20 fiches)
+  - [x] 1939-1945, une guerre d'anéantissement — 3ème — Histoire : 1939-1945, une guerre d'anéantissement (18 fiches)
+  - [x] Le génocide des Juifs et des Tsiganes — 3ème — Histoire : le génocide des Juifs et des Tsiganes (20 fiches)
+  - [x] La France défaite et occupée : Vichy et la collaboration — 3ème — Histoire : la France défaite et occupée, Vichy et la collaboration (20 fiches)
+  - [x] La France libre, la Résistance et la Libération — 3ème — Histoire : la France libre, la Résistance et la Libération (20 fiches)
+- [ ] Indépendances et construction de nouveaux États — l'essentiel — *à créer*
+  - [ ] Les décolonisations (Inde, Afrique) — *à créer*
+  - [x] La guerre d'Algérie (1954-1962) — Brevet — Histoire : la guerre d'Algérie (1954-1962) (17 fiches)
+  - [ ] Les nouveaux États et le tiers-monde — *à créer*
+- [ ] Un monde bipolaire au temps de la guerre froide — l'essentiel — *à créer*
+  - [ ] La naissance de la guerre froide et Berlin (1947-1961) — *à créer*
+  - [ ] Crises, détente et fin de la guerre froide (1962-1991) — *à créer*
+- [ ] Affirmation et mise en œuvre du projet européen — *à créer*
 - [x] Enjeux et conflits dans le monde après 1989 — Brevet — Histoire : enjeux et conflits dans le monde après 1989 (16 fiches)
+- [ ] 1944-1947 : refonder la République — *à créer*
+- [ ] La Ve République, de de Gaulle aux cohabitations — l'essentiel — *à créer*
+  - [ ] La naissance de la Ve République et la République gaullienne — *à créer*
+  - [ ] Alternances et cohabitations (1981-2002) — *à créer*
+- [x] Femmes et hommes dans la société des années 1950 aux années 1980 — Brevet — Histoire : femmes et hommes dans la société (1950-1980) (16 fiches)
+- [x] Histoire des arts : les arts au XXe siècle — Brevet — Histoire des arts : les arts au XXe siècle (17 fiches)
+- [x] Révisions du brevet — Histoire — Les dates clés du Brevet (53 fiches) ; Brevet — Histoire : notions et personnages clés (36 fiches) ; Brevet — Histoire : guerre froide, décolonisation et Europe (19 fiches) ; Brevet — Histoire : la France de 1944 à nos jours (18 fiches) ; Brevet — Histoire : lieux et repères spatiaux du programme (19 fiches) ; Brevet — Histoire : grands discours et textes patrimoniaux (20 fiches)
 
-### 3e — Géographie (8 / 8)
+### 3e — Géographie (5 / 8)
 
-- [x] Notions et repères — Brevet — Géographie : notions et repères (30 fiches)
-- [x] Aires urbaines et espaces peu denses — Brevet — Géographie : aires urbaines et espaces peu denses (17 fiches)
-- [x] Les espaces productifs français — Brevet — Géographie : les espaces productifs français (18 fiches)
-- [x] Aménagement et territoires ultramarins — Brevet — Géographie : aménagement et territoires ultramarins (16 fiches)
-- [x] La France et l'UE dans le monde — Brevet — Géographie : la France et l'UE dans le monde (16 fiches)
-- [x] Fleuves, massifs, métropoles et régions — Brevet — Géographie : fleuves, massifs, métropoles et régions (19 fiches)
-- [x] Méthode du croquis et de la légende — Brevet — Géographie : méthode du croquis et de la légende (16 fiches)
-- [x] Mobilités et réseaux de transport en France — Brevet — Géographie : mobilités et réseaux de transport en France (16 fiches)
+- [x] Les aires urbaines, une France mondialisée — l'essentiel — Brevet — Géographie : aires urbaines et espaces peu denses (17 fiches)
+  - [ ] Métropoles et métropolisation — *à créer*
+  - [ ] Périurbanisation et mobilités quotidiennes — *à créer*
+- [x] Les espaces productifs et leurs évolutions — l'essentiel — Brevet — Géographie : les espaces productifs français (18 fiches)
+  - [ ] Espaces industriels — *à créer*
+  - [ ] Espaces agricoles — *à créer*
+  - [ ] Espaces de services et du tourisme — *à créer*
+- [ ] Les espaces de faible densité et leurs atouts — *à créer*
+- [x] Aménager les territoires français — l'essentiel — Brevet — Géographie : aménagement et territoires ultramarins (16 fiches)
+  - [ ] Les acteurs de l'aménagement — *à créer*
+  - [x] Mobilités et réseaux de transport — Brevet — Géographie : mobilités et réseaux de transport en France (16 fiches)
+- [ ] Les territoires ultramarins français — *à créer*
+- [ ] L'Union européenne, un territoire d'appartenance — *à créer*
+- [x] La France et l'Europe dans le monde — Brevet — Géographie : la France et l'UE dans le monde (16 fiches)
+- [x] Révisions du brevet — Brevet — Géographie : notions et repères (30 fiches) ; Brevet — Géographie : fleuves, massifs, métropoles et régions (19 fiches) ; Brevet — Géographie : méthode du croquis et de la légende (16 fiches)
 
 ### 3e — EMC (6 / 6)
 
-- [x] Valeurs, institutions et citoyenneté — Brevet — EMC : valeurs, institutions et citoyenneté (33 fiches)
-- [x] La défense et la paix — Brevet — EMC : la défense et la paix (16 fiches)
+- [x] Les institutions de la Ve République — Brevet — EMC : les institutions de la Ve République en détail (16 fiches)
+- [x] Le vote, la citoyenneté et les élections — Brevet — EMC : le vote et les élections en France (16 fiches)
 - [x] Laïcité, engagement, droits et justice — Brevet — EMC : laïcité, engagement, droits et justice (17 fiches)
-- [x] Les institutions de la Ve République en détail — Brevet — EMC : les institutions de la Ve République en détail (16 fiches)
-- [x] Le vote et les élections en France — Brevet — EMC : le vote et les élections en France (16 fiches)
+- [x] La Défense et la paix — Brevet — EMC : la défense et la paix (16 fiches)
 - [x] Médias, information et esprit critique — Brevet — EMC : médias, information et esprit critique (16 fiches)
+- [x] Révisions du brevet — Brevet — EMC : valeurs, institutions et citoyenneté (33 fiches)
 
-### 3e — SVT (12 / 12)
+### 3e — SVT (10 / 10)
 
-- [x] L'essentiel du cycle 4 — Brevet — SVT : l'essentiel du cycle 4 (37 fiches)
-- [x] Génétique et hérédité — Brevet — SVT : génétique et hérédité (16 fiches)
+- [x] Génétique et hérédité — l'essentiel — Brevet — SVT : génétique et hérédité (16 fiches)
+  - [ ] Chromosomes, ADN et gènes — *à créer*
+  - [ ] Reproduction sexuée et diversité génétique — *à créer*
 - [x] Évolution et biodiversité — Brevet — SVT : évolution et biodiversité (16 fiches)
-- [x] Immunité, microbes et vaccination — Brevet — SVT : immunité, microbes et vaccination (16 fiches)
-- [x] Nutrition, respiration et circulation — Brevet — SVT : nutrition, respiration et circulation (16 fiches)
-- [x] Système nerveux et santé — Brevet — SVT : système nerveux et santé (18 fiches)
-- [x] La Terre, ses risques et ses ressources — Brevet — SVT : la Terre, ses risques et ses ressources (19 fiches)
-- [x] Activité physique, effort et santé — Brevet — SVT : activité physique, effort et santé (16 fiches)
 - [x] Écosystèmes et activités humaines — Brevet — SVT : écosystèmes et activités humaines (15 fiches)
-- [x] Météorologie, climat et changement climatique — Brevet — SVT : météorologie, climat et changement climatique (15 fiches)
 - [x] Nutrition et organisation des plantes — Brevet — SVT : nutrition et organisation des plantes (15 fiches)
-- [x] Démarche scientifique et exploitation de documents — Brevet — SVT : démarche scientifique et exploitation de documents (15 fiches)
+- [x] Nutrition, respiration et circulation — l'essentiel — Brevet — SVT : nutrition, respiration et circulation (16 fiches)
+  - [ ] Digestion et alimentation — *à créer*
+  - [ ] Respiration et circulation sanguine — *à créer*
+- [x] Immunité, microbes et vaccination — l'essentiel — Brevet — SVT : immunité, microbes et vaccination (16 fiches)
+  - [ ] Micro-organismes, hygiène et antibiotiques — *à créer*
+  - [ ] Les défenses de l'organisme et la vaccination — *à créer*
+- [x] Système nerveux et santé — Brevet — SVT : système nerveux et santé (18 fiches)
+- [x] Activité physique, effort et santé — Brevet — SVT : activité physique, effort et santé (16 fiches)
+- [x] La Terre, ses risques et ses ressources — l'essentiel — Brevet — SVT : la Terre, ses risques et ses ressources (19 fiches)
+  - [ ] Séismes, volcans et tectonique des plaques — *à créer*
+  - [x] Météorologie, climat et changement climatique — Brevet — SVT : météorologie, climat et changement climatique (15 fiches)
+  - [ ] Ressources naturelles et environnement — *à créer*
+- [x] Révisions du brevet — Brevet — SVT : l'essentiel du cycle 4 (37 fiches) ; Brevet — SVT : démarche scientifique et exploitation de documents (15 fiches)
 
-### 3e — Physique (9 / 9)
+### 3e — Physique (5 / 5)
 
-- [x] L'essentiel du cycle 4 — Brevet — Physique-chimie : l'essentiel du cycle 4 (57 fiches)
-- [x] Électricité, loi d'Ohm et énergie — Brevet — Physique : électricité, loi d'Ohm et énergie (19 fiches)
-- [x] Mouvements, forces et gravitation — Brevet — Physique : mouvements, forces et gravitation (19 fiches)
+- [x] Mouvements, forces et gravitation — l'essentiel — Brevet — Physique : mouvements, forces et gravitation (19 fiches)
+  - [ ] Gravitation, poids et masse — *à créer*
+  - [x] Énergie cinétique et sécurité routière — Brevet — Physique : énergie cinétique et sécurité routière (16 fiches)
+- [x] Électricité, loi d'Ohm et énergie — l'essentiel — Brevet — Physique : électricité, loi d'Ohm et énergie (19 fiches)
+  - [ ] Circuits et loi d'Ohm — *à créer*
+  - [x] Puissance et consommation électrique d'un logement — Brevet — Physique : puissance et consommation électrique d'un logement (16 fiches)
 - [x] Signaux sonores et lumineux — Brevet — Physique : signaux sonores et lumineux (20 fiches)
-- [x] Grandeurs, unités et conversions du cycle 4 — Brevet — Physique : grandeurs, unités et conversions du cycle 4 (19 fiches)
-- [x] Méthodologie de l'épreuve de sciences — Brevet — Physique : méthodologie de l'épreuve de sciences (16 fiches)
-- [x] Énergie cinétique et sécurité routière — Brevet — Physique : énergie cinétique et sécurité routière (16 fiches)
-- [x] Puissance et consommation électrique d'un logement — Brevet — Physique : puissance et consommation électrique d'un logement (16 fiches)
 - [x] L'Univers et le système solaire — Brevet — Physique : l'Univers et le système solaire (16 fiches)
+- [x] Révisions du brevet — Brevet — Physique-chimie : l'essentiel du cycle 4 (57 fiches) ; Brevet — Physique : grandeurs, unités et conversions du cycle 4 (19 fiches) ; Brevet — Physique : méthodologie de l'épreuve de sciences (16 fiches)
 
-### 3e — Chimie (6 / 6)
+### 3e — Chimie (5 / 5)
 
 - [x] Atomes, ions et molécules — Brevet — Chimie : atomes, ions et molécules (21 fiches)
 - [x] Transformations chimiques et combustions — Brevet — Chimie : transformations chimiques et combustions (21 fiches)
-- [x] Acides, bases, pH et solutions — Brevet — Chimie : acides, bases, pH et solutions (19 fiches)
-- [x] Sécurité, verrerie et méthode au laboratoire — Brevet — Chimie : sécurité, verrerie et méthode au laboratoire (16 fiches)
-- [x] Masse volumique et flottaison en exercices — Brevet — Chimie : masse volumique et flottaison en exercices (15 fiches)
-- [x] Tests d'identification des ions et des gaz — Brevet — Chimie : tests d'identification des ions et des gaz (16 fiches)
+- [x] Acides, bases, pH et solutions — l'essentiel — Brevet — Chimie : acides, bases, pH et solutions (19 fiches)
+  - [x] Tests d'identification des ions et des gaz — Brevet — Chimie : tests d'identification des ions et des gaz (16 fiches)
+- [x] Masse volumique et flottaison — Brevet — Chimie : masse volumique et flottaison en exercices (15 fiches)
+- [x] Révisions du brevet — Brevet — Chimie : sécurité, verrerie et méthode au laboratoire (16 fiches)
 
 ### 3e — Technologie (7 / 7)
 
@@ -1468,15 +1511,15 @@ Lycée — 70 chapitres couverts sur 82, 70 boîtes.
 
 - [x] Vivre entre générations (vocabulaire et expressions) — Seconde — Anglais : vivre entre générations (vocabulaire et expressions) (16 fiches)
 - [x] Les univers professionnels, le monde du travail — Seconde — Anglais : les univers professionnels, le monde du travail (18 fiches)
-- [x] Grammaire essentielle (temps, modaux, passif) — Seconde — Anglais : grammaire essentielle (temps, modaux, passif) (16 fiches)
-- [x] Vocabulaire des axes (identités, sauver la planète, création) — Seconde — Anglais : vocabulaire des axes (identités, sauver la planète, création) (16 fiches)
+- [x] Grammaire essentielle (temps, modaux, passif) — Seconde — Anglais : grammaire essentielle (temps, modaux, passif) (17 fiches)
+- [x] Vocabulaire des axes (identités, sauver la planète, création) — Seconde — Anglais : vocabulaire des axes (identités, sauver la planète, création) (20 fiches)
 
 ### Seconde — Espagnol (4 / 4)
 
 - [x] El pueblo, el barrio, la ciudad — Seconde — Espagnol : el pueblo, el barrio, la ciudad (17 fiches)
 - [x] El mundo laboral — Seconde — Espagnol : el mundo laboral (18 fiches)
-- [x] Raconter au passé (passé simple et imparfait) — Seconde — Espagnol : raconter au passé (passé simple et imparfait) (16 fiches)
-- [x] Vocabulaire de l'environnement, de la ville et de la société — Seconde — Espagnol : vocabulaire de l'environnement, de la ville et de la société (16 fiches)
+- [x] Raconter au passé (passé simple et imparfait) — Seconde — Espagnol : raconter au passé (passé simple et imparfait) (18 fiches)
+- [x] Vocabulaire de l'environnement, de la ville et de la société — Seconde — Espagnol : vocabulaire de l'environnement, de la ville et de la société (20 fiches)
 
 ### Seconde — Allemand (2 / 2)
 
@@ -1623,13 +1666,13 @@ Lycée — 113 chapitres couverts sur 124, 113 boîtes.
 - [x] Une longue histoire de la matière — 1ère — Enseignement scientifique : une longue histoire de la matière (19 fiches)
 - [x] L'âge de la Terre et sa place dans l'Univers — 1ère — Enseignement scientifique : l'âge de la Terre et sa place dans l'Univers (16 fiches)
 - [x] Son, musique et audition — 1ère — Enseignement scientifique : son, musique et audition (16 fiches)
-- [x] Énergie solaire, bilan radiatif et photosynthèse — 1ère — Enseignement scientifique : énergie solaire, bilan radiatif et photosynthèse (16 fiches)
+- [x] Énergie solaire, bilan radiatif et photosynthèse — 1ère — Enseignement scientifique : énergie solaire, bilan radiatif et photosynthèse (17 fiches)
 
 ### Première — Anglais (3 / 3)
 
 - [x] Grammaire pour argumenter et raconter (B1-B2) — 1ère — Anglais : grammaire pour argumenter et raconter (B1-B2) (17 fiches)
-- [x] Vocabulaire des axes du cycle terminal — 1ère — Anglais : vocabulaire des axes du cycle terminal (16 fiches)
-- [x] Expressions pour présenter un document et prendre la parole — 1ère — Anglais : expressions pour présenter un document et prendre la parole (16 fiches)
+- [x] Vocabulaire des axes du cycle terminal — 1ère — Anglais : vocabulaire des axes du cycle terminal (19 fiches)
+- [x] Expressions pour présenter un document et prendre la parole — 1ère — Anglais : expressions pour présenter un document et prendre la parole (18 fiches)
 
 ### Première — LLCER anglais (1 / 3)
 
@@ -1729,7 +1772,7 @@ Lycée — 173 chapitres couverts sur 175, 173 boîtes.
 - [x] Lois discrètes et lois à densité — Terminale — Maths complémentaires : lois discrètes et lois à densité (19 fiches)
 - [x] Statistique à deux variables et inégalités — Terminale — Maths complémentaires : statistique à deux variables et inégalités (16 fiches)
 - [x] Modèles d'évolution discrets et continus — Terminale — Maths complémentaires : modèles d'évolution discrets et continus (16 fiches)
-- [x] Suites, modèles d'évolution et logarithme — Terminale — Maths complémentaires : suites, modèles d'évolution et logarithme (16 fiches)
+- [x] Suites, modèles d'évolution et logarithme — Terminale — Maths complémentaires : suites, modèles d'évolution et logarithme (17 fiches)
 
 ### Terminale — Mathématiques expertes (5 / 5)
 
@@ -1911,7 +1954,7 @@ Lycée — 173 chapitres couverts sur 175, 173 boîtes.
 
 - [x] Expressions et grammaire utiles au bac — Allemand — Expressions et grammaire utiles au bac (22 fiches)
 - [x] Vocabulaire et repères des axes du cycle terminal — Terminale — Allemand : vocabulaire et repères des axes du cycle terminal (16 fiches)
-- [x] Repères de civilisation (Allemagne depuis 1945) — Terminale — Allemand : repères de civilisation (Allemagne depuis 1945) (16 fiches)
+- [x] Repères de civilisation (Allemagne depuis 1945) — Terminale — Allemand : repères de civilisation (Allemagne depuis 1945) (17 fiches)
 
 ### Terminale — Italien (2 / 2)
 
