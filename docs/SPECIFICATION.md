@@ -992,6 +992,12 @@ la Terminale** et les boîtes toutes prêtes qui le couvrent.
   « Seulement bientôt disponible » filtrent la liste.
 - La même liste existe en fichier texte pour le suivi du travail
   (`docs/PROGRAMME.md`, avec des cases à cocher).
+- Un plan de création (`docs/PLAN-CREATION.md`, produit en même temps)
+  numérote les boîtes qui manquent par ordre de priorité : le collège
+  d'abord, en commençant par la 3e (brevet), puis le lycée, puis le
+  primaire ; dans chaque classe, l'histoire, les maths et le français en
+  premier. Le bilan de lancement en donne le décompte (cela n'empêche pas
+  l'ouverture, décision Q20).
 - Mise à jour à chaque lot de boîtes : une nouvelle boîte s'ajoute
   d'elle-même à sa classe et à sa matière ; si elle couvre un chapitre
   « à créer », Claude l'y rattache. Seuls les titres des boîtes et leur
@@ -1079,6 +1085,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 13 nov. 2026 | Plan de création des boîtes toutes prêtes (§7.6) : liste numérotée par priorité des 333 boîtes qui manquent (162 chapitres sans boîte, 171 sous-thèmes), mise à jour à chaque lot ; décompte ajouté au bilan de lancement. Rien ne change dans l'appli. |
 | — | 13 nov. 2026 | Site, page « Le programme » (§7.6, rien ne change dans l'appli) : lycée refait comme le collège — Seconde, Première et Terminale (français, maths, histoire, géographie, SVT, physique, chimie, SES de Terminale) regroupés par grands thèmes du programme officiel avec « l'essentiel » et sous-thèmes, chapitres « Révisions du bac » (ou « de l'année ») pour les méthodes, repères et notions. Les 356 boîtes du lycée y sont toutes rangées. |
 | — | 13 nov. 2026 | Site, page « Le programme » (§7.6, rien ne change dans l'appli) : programmes de 5e et de 6e refaits comme la 3e et la 4e — grands thèmes du programme officiel avec « l'essentiel » et sous-thèmes (5e : français, maths, histoire, géographie, SVT ; 6e : français, maths, sciences, histoire, géographie), chapitre « Révisions de l'année » pour les boîtes qui mélangent plusieurs chapitres. Les 85 boîtes de 5e et de 6e y sont toutes rangées. |
 | — | 13 nov. 2026 | Site, page « Le programme » (§7.6, rien ne change dans l'appli) : programme de 4e refait de la même façon que la 3e — chapitres du programme officiel avec « l'essentiel » et sous-thèmes (français, maths, histoire, géographie, SVT, physique), et un chapitre « Révisions de l'année » pour les boîtes qui mélangent plusieurs chapitres. Les 54 boîtes de 4e y sont toutes rangées. |

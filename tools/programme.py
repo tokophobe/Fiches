@@ -13,6 +13,8 @@ Commandes :
                                        de bibliotheque.json (s'il est présent
                                        à la racine), puis écrit
                                        docs/PROGRAMME.md et site/programme.html
+                                       et docs/PLAN-CREATION.md (boîtes à
+                                       créer, par ordre de priorité)
   python3 tools/programme.py bilan    affiche la couverture par classe
 
 Quand bibliotheque.json est présent, « genere » :
@@ -38,6 +40,7 @@ PROGRAMME = RACINE / "data" / "programme.json"
 BIBLIO = RACINE / "bibliotheque.json"
 MD = RACINE / "docs" / "PROGRAMME.md"
 PAGE = RACINE / "site" / "programme.html"
+PLAN = RACINE / "docs" / "PLAN-CREATION.md"
 
 # id = valeur « niveau » de la taxonomie des boîtes, en minuscules.
 NIVEAUX = [
@@ -497,12 +500,80 @@ GABARIT = """<!doctype html>
 """
 
 
+def a_creer(chapitres):
+    """Ce qui manque : chapitres sans « l'essentiel » et sous-thèmes sans boîte."""
+    chap = [c for c in chapitres if not c["boites"]]
+    sts = [(c, st) for c in chapitres for st in c.get("sousthemes", []) if not st["boites"]]
+    return chap, sts
+
+
+# Ordre de création (plan validé le 13 nov. 2026) : collège d'abord, en
+# commençant par la classe du brevet, puis le lycée, puis le primaire ;
+# dans chaque classe, histoire, maths et français en premier.
+ORDRE_NIVEAUX = ["3ème", "4ème", "5ème", "6ème", "2nde", "1ère", "terminale",
+                 "cm2", "cm1", "ce2", "ce1", "cp"]
+ORDRE_MATIERES = ["histoire", "mathématiques", "français", "géographie", "SVT",
+                  "physique", "chimie", "sciences", "EMC"]
+
+
+def ecrire_plan(prog):
+    """docs/PLAN-CREATION.md : les boîtes à créer, numérotées par priorité."""
+    niveaux = {n["id"]: n for n in prog["niveaux"]}
+    rang = {m: i for i, m in enumerate(ORDRE_MATIERES)}
+    lignes, num = [], 0
+    tot_ch = tot_st = 0
+    for nid in ORDRE_NIVEAUX:
+        n = niveaux.get(nid)
+        if not n:
+            continue
+        mats = sorted(n["matieres"], key=lambda m: rang.get(m["id"], len(rang)))
+        bloc = []
+        for m in mats:
+            chap, sts = a_creer(m["chapitres"])
+            if not chap and not sts:
+                continue
+            bloc.append(f"\n### {n['label']} — {m['nom']}\n")
+            for c in chap:
+                num += 1
+                quoi = "l'essentiel" if c.get("sousthemes") else "boîte du chapitre"
+                bloc.append(f"{num}. {c['titre']} — *{quoi}*")
+            for c, st in sts:
+                num += 1
+                bloc.append(f"{num}. {st['titre']} — *sous-thème de « {c['titre']} »*")
+            tot_ch += len(chap)
+            tot_st += len(sts)
+        if bloc:
+            lignes.append(f"\n## {n['label']}")
+            lignes += bloc
+    tete = [
+        "# Plan de création des boîtes toutes prêtes",
+        "",
+        "> Fichier produit par `python3 tools/programme.py genere` à partir de",
+        "> `data/programme.json` : ne pas le modifier à la main.",
+        "",
+        f"Mis à jour le {prog.get('maj', '')}. **{num} boîtes à créer** : "
+        f"{tot_ch} chapitres sans boîte et {tot_st} sous-thèmes.",
+        "",
+        "Ordre de priorité (13 nov. 2026) : le collège d'abord, en commençant "
+        "par la 3e (brevet), puis le lycée, puis le primaire ; dans chaque "
+        "classe, l'histoire, les maths et le français en premier. Chaque boîte "
+        "suit les règles du §5.7 de la spécification (15 à 20 fiches, QCM "
+        "complets, une vidéo de cours vérifiée). On avance par lots, dans "
+        "l'ordre des numéros ; une boîte créée disparaît d'elle-même de cette "
+        "liste au lot suivant.",
+    ]
+    PLAN.write_text("\n".join(tete + lignes) + "\n", encoding="utf-8")
+    return num
+
+
 def bilan(prog):
     faits, total, boites, fiches = totaux(prog)
     print(f"{faits}/{total} chapitres couverts ({pourcent(faits, total)} %), {boites} boîtes, {fiches} fiches")
     for n in prog["niveaux"]:
         f, t, b, _ = compter(tous_chapitres(n))
-        print(f"  {n['label']:<14} {f:>4}/{t:<4} à créer : {t - f:>3}   boîtes : {b}")
+        _, sts = a_creer(tous_chapitres(n))
+        print(f"  {n['label']:<14} {f:>4}/{t:<4} à créer : {t - f:>3}   "
+              f"sous-thèmes à créer : {len(sts):>3}   boîtes : {b}")
 
 
 def main():
@@ -514,8 +585,9 @@ def main():
         PROGRAMME.write_text(json.dumps(prog, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         ecrire_md(prog)
         ecrire_page(prog)
+        ecrire_plan(prog)
         bilan(prog)
-        print("Écrit : data/programme.json, docs/PROGRAMME.md, site/programme.html")
+        print("Écrit : data/programme.json, docs/PROGRAMME.md, site/programme.html, docs/PLAN-CREATION.md")
     elif cmd == "bilan":
         bilan(prog)
     else:
