@@ -259,7 +259,7 @@ def ecrire_page(prog):
                                  f'<ul class="boxes">{bx}</ul></li>')
                 else:
                     items.append(f'<li class="ch todo" data-q="{e(cherche)}"><span class="ct">{e(c["titre"])}</span>'
-                                 f'<span class="tag">à créer</span></li>')
+                                 f'<span class="tag">bientôt disponible</span></li>')  # Q20
             p = pourcent(mf, mt)
             mats.append(
                 f'<details class="subj"><summary><span class="sn">{e(m["nom"])}</span>'
@@ -374,13 +374,13 @@ GABARIT = """<!doctype html>
       <div class="stat"><b>{fiches}</b><span>fiches</span></div>
     </div>
     <div class="meter" aria-hidden="true"><i style="width:{pc}%"></i></div>
-    <p class="note">Mis à jour le {maj}. {acreer} chapitres sont encore à créer : la liste s'enrichit au fil des nouvelles boîtes.</p>
+    <p class="note">Mis à jour le {maj}. {acreer} chapitres seront bientôt disponibles : la liste s'enrichit au fil des nouvelles boîtes.</p>
 
     <div class="bar-tools">
       <nav class="pills" aria-label="Classes">{pills}</nav>
       <div class="filters">
         <input type="search" id="q" placeholder="Chercher un chapitre ou une boîte…" aria-label="Chercher un chapitre ou une boîte" />
-        <label><input type="checkbox" id="todo" /> Seulement « à créer »</label>
+        <label><input type="checkbox" id="todo" /> Seulement « bientôt disponible »</label>
         <button type="button" id="all">Tout ouvrir</button>
       </div>
       <p class="found" id="found" aria-live="polite"></p>
