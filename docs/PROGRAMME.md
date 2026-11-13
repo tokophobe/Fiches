@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1071 chapitres couverts sur 1228** (87 %), 1189 boîtes, 19600 fiches.
+Mise à jour : 13/11/2026. **1072 chapitres couverts sur 1228** (87 %), 1206 boîtes, 19872 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -19,7 +19,7 @@ Mise à jour : 13/11/2026. **1071 chapitres couverts sur 1228** (87 %), 1189 bo�
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
 | [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
 | [4e](#4e) | 52 / 82 | 30 | 54 | 916 |
-| [3e](#3e) | 101 / 108 | 7 | 143 | 2709 |
+| [3e](#3e) | 102 / 108 | 6 | 160 | 2981 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
 | [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
 | [Terminale](#terminale) | 143 / 145 | 2 | 173 | 3175 |
@@ -1224,7 +1224,7 @@ Collège — 52 chapitres couverts sur 82, 54 boîtes.
 
 ## 3e
 
-Collège — 101 chapitres couverts sur 108, 143 boîtes.
+Collège — 102 chapitres couverts sur 108, 160 boîtes.
 
 ### 3e — Français (17 / 17)
 
@@ -1257,15 +1257,15 @@ Collège — 101 chapitres couverts sur 108, 143 boîtes.
 - [x] Analyser un texte littéraire — Brevet — Français : outils d'analyse littéraire (43 fiches)
 - [x] Révisions du brevet — Brevet — Français : grammaire et orthographe (35 fiches) ; Brevet — Français : auteurs et œuvres repères du collège (17 fiches) ; Brevet — Français : les pièges orthographiques de la dictée (17 fiches) ; Brevet — Français : réussir l'exercice de réécriture (16 fiches) ; Brevet — Français : méthode de la rédaction (16 fiches) ; Brevet — Français : réussir l'épreuve orale (15 fiches)
 
-### 3e — Mathématiques (11 / 12)
+### 3e — Mathématiques (12 / 12)
 
 - [x] Fractions, puissances et racines carrées — l'essentiel — Brevet — Maths : fractions, puissances et racines carrées (19 fiches)
   - [x] Puissances de 10 et écriture scientifique — Brevet — Maths : puissances de 10 et écriture scientifique (18 fiches)
-  - [ ] Racines carrées — *à créer*
+  - [x] Racines carrées — 3ème — Maths : racines carrées (16 fiches)
 - [x] Diviseurs, nombres premiers et fractions irréductibles — Brevet — Maths : diviseurs, nombres premiers et PGCD (17 fiches)
 - [x] Calcul littéral, équations et inéquations — l'essentiel — Brevet — Maths : calcul littéral, équations et inéquations (19 fiches)
-  - [ ] Développer, factoriser, identités remarquables — *à créer*
-  - [ ] Équations, inéquations et équations produit nul — *à créer*
+  - [x] Développer, factoriser, identités remarquables — 3ème — Maths : développer, factoriser, identités remarquables (16 fiches)
+  - [x] Équations, inéquations et équations produit nul — 3ème — Maths : équations, inéquations et équations produit nul (16 fiches)
   - [x] Mettre un problème en équation — Brevet — Maths : résoudre un problème par une mise en équation (16 fiches)
 - [x] Fonctions — l'essentiel — Brevet — Maths : fonctions, proportionnalité et pourcentages (18 fiches)
   - [x] Notion de fonction et lecture graphique — Brevet — Maths : notion de fonction et lecture graphique (15 fiches)
@@ -1276,17 +1276,17 @@ Collège — 101 chapitres couverts sur 108, 143 boîtes.
   - [x] Moyenne, médiane et étendue — Brevet — Maths : moyenne pondérée, médiane et étendue en exercices (15 fiches)
   - [x] Probabilités, vocabulaire et arbres — Brevet — Maths : probabilités, vocabulaire et arbres (17 fiches)
 - [x] Pythagore, Thalès et trigonométrie — l'essentiel — Brevet — Maths : Pythagore, Thalès et trigonométrie (18 fiches)
-  - [ ] Théorème de Pythagore et sa réciproque — *à créer*
+  - [x] Théorème de Pythagore et sa réciproque — 3ème — Maths : théorème de Pythagore et sa réciproque (16 fiches)
   - [x] Théorème de Thalès et triangles semblables — Brevet — Maths : triangles semblables et homothétie (15 fiches)
-  - [ ] Trigonométrie dans le triangle rectangle — *à créer*
+  - [x] Trigonométrie dans le triangle rectangle — 3ème — Maths : trigonométrie dans le triangle rectangle (16 fiches)
 - [x] Angles, droites parallèles et polygones réguliers — Brevet — Maths : angles, droites parallèles et polygones réguliers (16 fiches)
 - [x] Transformations du plan — l'essentiel — Brevet — Maths : transformations et algorithmique Scratch (20 fiches)
-  - [ ] Translations, rotations et homothéties — *à créer*
+  - [x] Translations, rotations et homothéties — 3ème — Maths : translations, rotations et homothéties (16 fiches)
   - [x] Agrandissement, réduction et effets sur aires et volumes — Brevet — Maths : agrandissement, réduction et effets sur aires et volumes (15 fiches)
 - [x] Aires, volumes et conversions — l'essentiel — Brevet — Maths : aires, volumes et conversions (19 fiches)
   - [x] Sections de solides et repérage sur la sphère — Brevet — Maths : sections de solides et repérage sur la sphère (19 fiches)
-- [ ] Algorithmique et programmation — l'essentiel — *à créer*
-  - [ ] Programmer avec Scratch — *à créer*
+- [x] Algorithmique et programmation — l'essentiel — 3ème — Maths : algorithmique et programmation (l'essentiel) (16 fiches)
+  - [x] Programmer avec Scratch — 3ème — Maths : programmer avec Scratch (16 fiches)
   - [x] Lire et écrire des formules dans un tableur — Brevet — Maths : lire et écrire des formules dans un tableur (15 fiches)
 - [x] Révisions du brevet — Maths — Formules et théorèmes du collège (46 fiches) ; Brevet — Maths : calcul mental, automatismes et programmes de calcul (22 fiches)
 
@@ -1298,27 +1298,27 @@ Collège — 101 chapitres couverts sur 108, 143 boîtes.
   - [x] Le génocide des Arméniens — 3ème — Histoire : le génocide des Arméniens (1915-1916) (16 fiches)
   - [x] Sortir de la guerre (1918-1923) — 3ème — Histoire : sortir de la guerre (1918-1923) (16 fiches)
 - [x] Démocraties fragilisées et expériences totalitaires (1918-1939) — l'essentiel — Brevet — Histoire : démocraties et totalitarismes (1918-1939) (16 fiches)
-  - [ ] L'URSS de Staline — *à créer*
-  - [ ] L'Allemagne nazie — *à créer*
-  - [ ] La France des années 1930 et le Front populaire — *à créer*
+  - [x] L'URSS de Staline — 3ème — Histoire : l'URSS de Staline (16 fiches)
+  - [x] L'Allemagne nazie — 3ème — Histoire : l'Allemagne nazie (16 fiches)
+  - [x] La France des années 1930 et le Front populaire — 3ème — Histoire : la France des années 1930 et le Front populaire (16 fiches)
 - [x] La Seconde Guerre mondiale (1939-1945) — l'essentiel — Brevet — Histoire : Seconde Guerre mondiale, Vichy et Résistance (20 fiches)
   - [x] 1939-1945, une guerre d'anéantissement — 3ème — Histoire : 1939-1945, une guerre d'anéantissement (18 fiches)
   - [x] Le génocide des Juifs et des Tsiganes — 3ème — Histoire : le génocide des Juifs et des Tsiganes (20 fiches)
   - [x] La France défaite et occupée : Vichy et la collaboration — 3ème — Histoire : la France défaite et occupée, Vichy et la collaboration (20 fiches)
   - [x] La France libre, la Résistance et la Libération — 3ème — Histoire : la France libre, la Résistance et la Libération (20 fiches)
 - [x] Indépendances et construction de nouveaux États — l'essentiel — 3ème — Histoire : indépendances et construction de nouveaux États (l'essentiel) (16 fiches)
-  - [ ] Les décolonisations (Inde, Afrique) — *à créer*
+  - [x] Les décolonisations (Inde, Afrique) — 3ème — Histoire : les décolonisations : Inde, Algérie, Afrique noire (16 fiches)
   - [x] La guerre d'Algérie (1954-1962) — Brevet — Histoire : la guerre d'Algérie (1954-1962) (17 fiches)
-  - [ ] Les nouveaux États et le tiers-monde — *à créer*
+  - [x] Les nouveaux États et le tiers-monde — 3ème — Histoire : les nouveaux États et le tiers-monde (16 fiches)
 - [x] Un monde bipolaire au temps de la guerre froide — l'essentiel — 3ème — Histoire : un monde bipolaire au temps de la guerre froide (l'essentiel) (16 fiches)
-  - [ ] La naissance de la guerre froide et Berlin (1947-1961) — *à créer*
-  - [ ] Crises, détente et fin de la guerre froide (1962-1991) — *à créer*
+  - [x] La naissance de la guerre froide et Berlin (1947-1961) — 3ème — Histoire : la naissance de la guerre froide et Berlin (1947-1961) (16 fiches)
+  - [x] Crises, détente et fin de la guerre froide (1962-1991) — 3ème — Histoire : crises, détente et fin de la guerre froide (1962-1991) (16 fiches)
 - [x] Affirmation et mise en œuvre du projet européen — 3ème — Histoire : affirmation et mise en œuvre du projet européen (16 fiches)
 - [x] Enjeux et conflits dans le monde après 1989 — Brevet — Histoire : enjeux et conflits dans le monde après 1989 (16 fiches)
 - [x] 1944-1947 : refonder la République — 3ème — Histoire : 1944-1947, refonder la République, redéfinir la démocratie (16 fiches)
 - [x] La Ve République, de de Gaulle aux cohabitations — l'essentiel — 3ème — Histoire : la Ve République, de de Gaulle aux cohabitations (l'essentiel) (16 fiches)
-  - [ ] La naissance de la Ve République et la République gaullienne — *à créer*
-  - [ ] Alternances et cohabitations (1981-2002) — *à créer*
+  - [x] La naissance de la Ve République et la République gaullienne — 3ème — Histoire : la naissance de la Ve République et la République gaullienne (1958-1969) (16 fiches)
+  - [x] Alternances et cohabitations (1981-2002) — 3ème — Histoire : alternances et cohabitations (1974-2002) (16 fiches)
 - [x] Femmes et hommes dans la société des années 1950 aux années 1980 — Brevet — Histoire : femmes et hommes dans la société (1950-1980) (16 fiches)
 - [x] Histoire des arts : les arts au XXe siècle — Brevet — Histoire des arts : les arts au XXe siècle (17 fiches)
 - [x] Révisions du brevet — Histoire — Les dates clés du Brevet (53 fiches) ; Brevet — Histoire : notions et personnages clés (36 fiches) ; Brevet — Histoire : guerre froide, décolonisation et Europe (19 fiches) ; Brevet — Histoire : la France de 1944 à nos jours (18 fiches) ; Brevet — Histoire : lieux et repères spatiaux du programme (19 fiches) ; Brevet — Histoire : grands discours et textes patrimoniaux (20 fiches)

@@ -8729,7 +8729,13 @@
         },
         {
          "titre": "Racines carrées",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-maths-racines-carrees",
+           "titre": "3ème — Maths : racines carrées",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -8755,11 +8761,23 @@
        "sousthemes": [
         {
          "titre": "Développer, factoriser, identités remarquables",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-maths-identites-remarquables",
+           "titre": "3ème — Maths : développer, factoriser, identités remarquables",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Équations, inéquations et équations produit nul",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-maths-equations-produit-nul",
+           "titre": "3ème — Maths : équations, inéquations et équations produit nul",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Mettre un problème en équation",
@@ -8871,7 +8889,13 @@
        "sousthemes": [
         {
          "titre": "Théorème de Pythagore et sa réciproque",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-maths-pythagore",
+           "titre": "3ème — Maths : théorème de Pythagore et sa réciproque",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Théorème de Thalès et triangles semblables",
@@ -8885,7 +8909,13 @@
         },
         {
          "titre": "Trigonométrie dans le triangle rectangle",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-maths-trigonometrie",
+           "titre": "3ème — Maths : trigonométrie dans le triangle rectangle",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -8911,7 +8941,13 @@
        "sousthemes": [
         {
          "titre": "Translations, rotations et homothéties",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-maths-transformations",
+           "titre": "3ème — Maths : translations, rotations et homothéties",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Agrandissement, réduction et effets sur aires et volumes",
@@ -8949,11 +8985,23 @@
       },
       {
        "titre": "Algorithmique et programmation",
-       "boites": [],
+       "boites": [
+        {
+         "cle": "r3e-maths-algorithmique",
+         "titre": "3ème — Maths : algorithmique et programmation (l'essentiel)",
+         "fiches": 16
+        }
+       ],
        "sousthemes": [
         {
          "titre": "Programmer avec Scratch",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-maths-scratch",
+           "titre": "3ème — Maths : programmer avec Scratch",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Lire et écrire des formules dans un tableur",
@@ -9052,15 +9100,33 @@
        "sousthemes": [
         {
          "titre": "L'URSS de Staline",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-hist-urss-staline",
+           "titre": "3ème — Histoire : l'URSS de Staline",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'Allemagne nazie",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-hist-allemagne-nazie",
+           "titre": "3ème — Histoire : l'Allemagne nazie",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "La France des années 1930 et le Front populaire",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-hist-front-populaire",
+           "titre": "3ème — Histoire : la France des années 1930 et le Front populaire",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9128,7 +9194,13 @@
        "sousthemes": [
         {
          "titre": "Les décolonisations (Inde, Afrique)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-hist-decolonisations-inde-afrique",
+           "titre": "3ème — Histoire : les décolonisations : Inde, Algérie, Afrique noire",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "La guerre d'Algérie (1954-1962)",
@@ -9142,7 +9214,13 @@
         },
         {
          "titre": "Les nouveaux États et le tiers-monde",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-hist-tiers-monde",
+           "titre": "3ème — Histoire : les nouveaux États et le tiers-monde",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9158,11 +9236,23 @@
        "sousthemes": [
         {
          "titre": "La naissance de la guerre froide et Berlin (1947-1961)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-hist-guerre-froide-1947-1961",
+           "titre": "3ème — Histoire : la naissance de la guerre froide et Berlin (1947-1961)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Crises, détente et fin de la guerre froide (1962-1991)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-hist-guerre-froide-1962-1991",
+           "titre": "3ème — Histoire : crises, détente et fin de la guerre froide (1962-1991)",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9208,11 +9298,23 @@
        "sousthemes": [
         {
          "titre": "La naissance de la Ve République et la République gaullienne",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-hist-ve-republique-gaullienne",
+           "titre": "3ème — Histoire : la naissance de la Ve République et la République gaullienne (1958-1969)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Alternances et cohabitations (1981-2002)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-hist-alternances-cohabitations",
+           "titre": "3ème — Histoire : alternances et cohabitations (1974-2002)",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
