@@ -6077,15 +6077,33 @@
         },
         {
          "titre": "Multiplier des nombres décimaux",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-multiplier-decimaux",
+           "titre": "6ème — Maths : multiplier des nombres décimaux",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Diviser un décimal par un entier",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-diviser-decimal-entier",
+           "titre": "6ème — Maths : diviser un décimal par un entier",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Additionner et soustraire des fractions de même dénominateur",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-fractions-meme-denominateur",
+           "titre": "6ème — Maths : additionner et soustraire des fractions de même dénominateur",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6101,7 +6119,13 @@
       },
       {
        "titre": "Ordre de grandeur et calcul mental",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-maths-ordre-grandeur-calcul-mental",
+         "titre": "6ème — Maths : ordre de grandeur et calcul mental",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Proportionnalité, pourcentages et échelles",
@@ -6125,11 +6149,23 @@
        "sousthemes": [
         {
          "titre": "Repérage dans le plan et sur une droite graduée",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-reperage-droite-graduee",
+           "titre": "6ème — Maths : repérage dans le plan et sur une droite graduée",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Lire et construire des diagrammes",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-diagrammes",
+           "titre": "6ème — Maths : lire et construire des diagrammes",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6145,19 +6181,43 @@
        "sousthemes": [
         {
          "titre": "Mesurer et construire des angles au rapporteur",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-angles-rapporteur",
+           "titre": "6ème — Maths : mesurer et construire des angles au rapporteur",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Construire des triangles",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-construire-triangles",
+           "titre": "6ème — Maths : construire des triangles",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les quadrilatères particuliers",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-quadrilateres",
+           "titre": "6ème — Maths : les quadrilatères particuliers",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "La médiatrice d'un segment",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-mediatrice",
+           "titre": "6ème — Maths : la médiatrice d'un segment",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6183,7 +6243,13 @@
        "sousthemes": [
         {
          "titre": "Le périmètre du cercle et l'aire du disque",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-cercle-disque",
+           "titre": "6ème — Maths : le périmètre du cercle et l'aire du disque",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6199,7 +6265,13 @@
        "sousthemes": [
         {
          "titre": "Contenances et unités de volume",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-contenances-volumes",
+           "titre": "6ème — Maths : contenances et unités de volume",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6215,7 +6287,13 @@
       },
       {
        "titre": "Programmes de calcul et premiers algorithmes (Scratch)",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-maths-programmes-calcul-scratch",
+         "titre": "6ème — Maths : programmes de calcul et premiers algorithmes (Scratch)",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -6313,15 +6391,33 @@
        "sousthemes": [
         {
          "titre": "Les débuts de l'humanité",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-debuts-humanite",
+           "titre": "6ème — Histoire : les débuts de l'humanité",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "La révolution néolithique",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-revolution-neolithique",
+           "titre": "6ème — Histoire : la révolution néolithique",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Premiers États et premières écritures (Mésopotamie, Égypte)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-premiers-etats-ecritures",
+           "titre": "6ème — Histoire : premiers États et premières écritures (Mésopotamie, Égypte)",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6357,15 +6453,33 @@
         },
         {
          "titre": "Alexandre et le monde grec",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-alexandre-monde-grec",
+           "titre": "6ème — Histoire : Alexandre et le monde grec",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Rome, du mythe à l'histoire",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-rome-mythe-histoire",
+           "titre": "6ème — Histoire : Rome, du mythe à l'histoire",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le peuple hébreu et le monothéisme juif",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-hebreux-monotheisme",
+           "titre": "6ème — Histoire : le peuple hébreu et le monothéisme juif",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6381,15 +6495,33 @@
        "sousthemes": [
         {
          "titre": "Conquêtes, paix romaine et romanisation",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-conquetes-paix-romaine",
+           "titre": "6ème — Histoire : conquêtes, paix romaine et romanisation",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les débuts du christianisme",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-debuts-christianisme",
+           "titre": "6ème — Histoire : les débuts du christianisme",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Rome et la Chine des Han",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-rome-chine-han",
+           "titre": "6ème — Histoire : Rome et la Chine des Han",
+           "fiches": 16
+          }
+         ]
         }
        ]
       }

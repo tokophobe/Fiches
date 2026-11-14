@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1156 chapitres couverts sur 1228** (94 %), 1378 boîtes, 22619 fiches.
+Mise à jour : 14/11/2026. **1158 chapitres couverts sur 1228** (94 %), 1400 boîtes, 22971 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -16,7 +16,7 @@ Mise à jour : 14/11/2026. **1156 chapitres couverts sur 1228** (94 %), 1378 bo�
 | [CE2](#ce2) | 110 / 112 | 2 | 110 | 1636 |
 | [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
-| [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
+| [6e](#6e) | 41 / 62 | 21 | 65 | 1082 |
 | [5e](#5e) | 87 / 87 | 0 | 118 | 1945 |
 | [4e](#4e) | 82 / 82 | 0 | 118 | 1940 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
@@ -743,7 +743,7 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 
 ## 6e
 
-Collège — 39 chapitres couverts sur 62, 43 boîtes.
+Collège — 41 chapitres couverts sur 62, 65 boîtes.
 
 ### 6e — Français (8 / 8)
 
@@ -770,32 +770,32 @@ Collège — 39 chapitres couverts sur 62, 43 boîtes.
   - [ ] Les accords dans le groupe nominal — *à créer*
 - [x] Vocabulaire, formation des mots et sens des mots — 6ème — Français : vocabulaire, formation des mots et sens des mots (17 fiches)
 
-### 6e — Mathématiques (10 / 12)
+### 6e — Mathématiques (12 / 12)
 
 - [x] Nombres entiers et grands nombres — 6ème — Maths : nombres entiers et grands nombres (17 fiches)
 - [x] Nombres décimaux, fractions et division — l'essentiel — 6ème — Maths : nombres décimaux, fractions et division (17 fiches)
   - [x] Calculer avec les nombres décimaux — 6ème — Maths : calculer avec les nombres décimaux (16 fiches)
-  - [ ] Multiplier des nombres décimaux — *à créer*
-  - [ ] Diviser un décimal par un entier — *à créer*
-  - [ ] Additionner et soustraire des fractions de même dénominateur — *à créer*
+  - [x] Multiplier des nombres décimaux — 6ème — Maths : multiplier des nombres décimaux (16 fiches)
+  - [x] Diviser un décimal par un entier — 6ème — Maths : diviser un décimal par un entier (16 fiches)
+  - [x] Additionner et soustraire des fractions de même dénominateur — 6ème — Maths : additionner et soustraire des fractions de même dénominateur (16 fiches)
 - [x] Division euclidienne, multiples et diviseurs — 6ème — Maths : division euclidienne, multiples et diviseurs (17 fiches)
-- [ ] Ordre de grandeur et calcul mental — *à créer*
+- [x] Ordre de grandeur et calcul mental — 6ème — Maths : ordre de grandeur et calcul mental (16 fiches)
 - [x] Proportionnalité, pourcentages et échelles — 6ème — Maths : proportionnalité, pourcentages et échelles (15 fiches)
 - [x] Demi-droite graduée, tableaux et graphiques — l'essentiel — 6ème — Maths : demi-droite graduée, tableaux et graphiques (16 fiches)
-  - [ ] Repérage dans le plan et sur une droite graduée — *à créer*
-  - [ ] Lire et construire des diagrammes — *à créer*
+  - [x] Repérage dans le plan et sur une droite graduée — 6ème — Maths : repérage dans le plan et sur une droite graduée (16 fiches)
+  - [x] Lire et construire des diagrammes — 6ème — Maths : lire et construire des diagrammes (16 fiches)
 - [x] Droites, cercles et angles — l'essentiel — 6ème — Maths : droites, cercles et angles (18 fiches)
-  - [ ] Mesurer et construire des angles au rapporteur — *à créer*
-  - [ ] Construire des triangles — *à créer*
-  - [ ] Les quadrilatères particuliers — *à créer*
-  - [ ] La médiatrice d'un segment — *à créer*
+  - [x] Mesurer et construire des angles au rapporteur — 6ème — Maths : mesurer et construire des angles au rapporteur (16 fiches)
+  - [x] Construire des triangles — 6ème — Maths : construire des triangles (16 fiches)
+  - [x] Les quadrilatères particuliers — 6ème — Maths : les quadrilatères particuliers (16 fiches)
+  - [x] La médiatrice d'un segment — 6ème — Maths : la médiatrice d'un segment (16 fiches)
 - [x] La symétrie axiale — 6ème — Maths : la symétrie axiale (16 fiches)
 - [x] Périmètres et aires — l'essentiel — 6ème — Maths : périmètres et aires (16 fiches)
-  - [ ] Le périmètre du cercle et l'aire du disque — *à créer*
+  - [x] Le périmètre du cercle et l'aire du disque — 6ème — Maths : le périmètre du cercle et l'aire du disque (16 fiches)
 - [x] Solides, patrons et volume du pavé droit — l'essentiel — 6ème — Maths : solides, patrons et volume du pavé droit (18 fiches)
-  - [ ] Contenances et unités de volume — *à créer*
+  - [x] Contenances et unités de volume — 6ème — Maths : contenances et unités de volume (16 fiches)
 - [x] Durées, horaires et conversions d'unités — 6ème — Maths : durées, horaires et conversions d'unités (17 fiches)
-- [ ] Programmes de calcul et premiers algorithmes (Scratch) — *à créer*
+- [x] Programmes de calcul et premiers algorithmes (Scratch) — 6ème — Maths : programmes de calcul et premiers algorithmes (Scratch) (16 fiches)
 
 ### 6e — Sciences (4 / 7)
 
@@ -814,19 +814,19 @@ Collège — 39 chapitres couverts sur 62, 43 boîtes.
 ### 6e — Histoire (3 / 3)
 
 - [x] La longue histoire de l'humanité et des migrations — l'essentiel — 6ème — Histoire : Préhistoire, Néolithique et migrations (18 fiches)
-  - [ ] Les débuts de l'humanité — *à créer*
-  - [ ] La révolution néolithique — *à créer*
-  - [ ] Premiers États et premières écritures (Mésopotamie, Égypte) — *à créer*
+  - [x] Les débuts de l'humanité — 6ème — Histoire : les débuts de l'humanité (16 fiches)
+  - [x] La révolution néolithique — 6ème — Histoire : la révolution néolithique (16 fiches)
+  - [x] Premiers États et premières écritures (Mésopotamie, Égypte) — 6ème — Histoire : premiers États et premières écritures (Mésopotamie, Égypte) (16 fiches)
 - [x] Récits fondateurs, croyances et citoyenneté dans la Méditerranée antique — l'essentiel — 6ème — Histoire : premiers États, Grèce, Rome et monothéismes (19 fiches)
   - [x] Les cités grecques, leurs dieux et leurs héros — 6ème — Histoire : mythes, dieux et héros des cités grecques (18 fiches)
   - [x] Athènes, citoyenneté et démocratie — 6ème — Histoire : Athènes, citoyenneté et démocratie (16 fiches)
-  - [ ] Alexandre et le monde grec — *à créer*
-  - [ ] Rome, du mythe à l'histoire — *à créer*
-  - [ ] Le peuple hébreu et le monothéisme juif — *à créer*
+  - [x] Alexandre et le monde grec — 6ème — Histoire : Alexandre et le monde grec (16 fiches)
+  - [x] Rome, du mythe à l'histoire — 6ème — Histoire : Rome, du mythe à l'histoire (16 fiches)
+  - [x] Le peuple hébreu et le monothéisme juif — 6ème — Histoire : le peuple hébreu et le monothéisme juif (16 fiches)
 - [x] L'Empire romain dans le monde antique — l'essentiel — 6ème — Histoire : l'Empire romain, conquêtes et romanisation, la Chine des Han (18 fiches)
-  - [ ] Conquêtes, paix romaine et romanisation — *à créer*
-  - [ ] Les débuts du christianisme — *à créer*
-  - [ ] Rome et la Chine des Han — *à créer*
+  - [x] Conquêtes, paix romaine et romanisation — 6ème — Histoire : conquêtes, paix romaine et romanisation (16 fiches)
+  - [x] Les débuts du christianisme — 6ème — Histoire : les débuts du christianisme (16 fiches)
+  - [x] Rome et la Chine des Han — 6ème — Histoire : Rome et la Chine des Han (16 fiches)
 
 ### 6e — Géographie (3 / 4)
 
