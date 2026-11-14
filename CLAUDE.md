@@ -335,6 +335,11 @@ testables ainsi.
   `python3 tools/build_site_pages.py` puis `genere`, rattacher à la main dans `data/programme.json` chaque nouvelle
   boîte qui couvre un chapitre « à créer » (déplacer la boîte, supprimer
   le chapitre ajouté), relancer `genere` et livrer dans ce dépôt-ci.
+- Fiches hors sujet (14 nov. 2026, spéc. §5.7 règle 8) : aucune fiche sur
+  l'organisation de l'école (axes ou thèmes d'un programme, épreuves) hors
+  des boîtes de méthode ; `tools/maj_boites.py verifie` les signale
+  (`hors_sujet`). À chaque relecture, vérifier aussi que chaque fiche
+  correspond au titre de sa boîte.
 - Fiches datées (14 nov. 2026) : `tools/fiches_a_verifier.py` retrouve, par
   thèmes, les fiches dont le contenu change avec le temps (zone euro,
   population, tourisme, CO₂…) et écrit la liste dans le dépôt privé

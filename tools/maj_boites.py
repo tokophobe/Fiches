@@ -91,6 +91,25 @@ def plusieurs_questions(q):
     return bool(re.search(r"\b(où et quand|quand et où|qui et quand|et pourquoi|et comment|et quand|et où|et qui|et quel(le)?s?)\b", q, re.I))
 
 
+# Fiches « hors sujet » (14 nov. 2026, spéc. §5.7 règle 8) : une fiche doit
+# porter sur le savoir de la boîte, pas sur l'organisation de l'école
+# (nombre d'axes, de thèmes ou de notions d'un programme, déroulement d'une
+# épreuve…). Ces questions sont admises seulement dans les boîtes de méthode.
+HORS_SUJET = re.compile(
+    r"(combien (d'|de )?(axes|thèmes|notions|entrées|chapitres|objets d'étude|questionnements)\b.*programme"
+    r"|\b(axes?|thèmes?|notions?|entrées?|objets? d'étude) (du|de ce|d'un) programme"
+    r"|programme (officiel |de [a-zé]+ )?(de|du|des) (cycle|seconde|première|terminale|[0-9]e\b|6e|5e|4e|3e)"
+    r"|(fait|font)(-elle|-il)? partie du programme|une entrée du programme|cycle terminal"
+    r"|(épreuve|sujets?) (de [a-zé]+ )?(du|au) (brevet|bac(calauréat)?)\b|coefficient de l'épreuve)",
+    re.I)
+BOITE_METHODE = re.compile(r"méthod|épreuve|oral\b|réussir|révisions? du|automatism", re.I)
+
+
+def hors_sujet(question, nom_boite):
+    """Vrai si la fiche parle de l'organisation de l'école plutôt que du savoir."""
+    return bool(HORS_SUJET.search(question)) and not BOITE_METHODE.search(nom_boite)
+
+
 def charge():
     return json.loads(FICHIER.read_text(encoding="utf-8"))
 
@@ -178,6 +197,9 @@ def verifie(keys=None):
                 elif len({norm(x) for x in w} | {norm(c["answer"])}) != 4:
                     print(f"[{b['key']}#{i}] réponses en double : {c['question'][:60]}")
                     pb += 1
+            if hors_sujet(c["question"], b.get("name", "")):
+                print(f"[{b['key']}#{i}] fiche hors sujet (programme, épreuve…) : {c['question'][:80]}")
+                pb += 1
             if w:
                 qs.append(c["question"])
                 where.append(f"{b['key']}#{i}")

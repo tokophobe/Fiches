@@ -518,6 +518,17 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    - **dans Darwin Admin** (Librairie → onglet « Questions QCM ») : liste
      des questions à revoir dans toute la Librairie en ligne et dans le
      fichier des boîtes toutes prêtes.
+8. **Une fiche porte sur le savoir de sa boîte, pas sur l'organisation
+   de l'école** (décidé le 14 nov. 2026, après une fiche « Combien d'axes
+   compte le programme de langues du cycle terminal ? » trouvée dans une
+   boîte d'anglais). Pas de question sur le nombre d'axes, de thèmes ou de
+   notions d'un programme, sur ce qui « fait partie du programme », ni sur
+   le déroulement d'une épreuve (brevet, bac) : l'élève révise des
+   connaissances, pas le texte officiel. Seules les boîtes de méthode
+   (« Méthode… », « Réussir l'épreuve… », « Révisions du… ») peuvent parler
+   des épreuves. Contrôle automatique pour les boîtes toutes prêtes à
+   chaque lot ; à la relecture, vérifier aussi qu'aucune fiche ne sort du
+   sujet annoncé par le titre de la boîte.
 
 ---
 
@@ -1085,6 +1096,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 14 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : nouvelle règle 8 du §5.7 — une fiche porte sur le savoir de sa boîte, pas sur l'organisation de l'école (programme, épreuves), avec un contrôle automatique à chaque lot. 5 fiches de ce type retirées (anglais de Terminale : les axes du programme de langues, signalée par le propriétaire ; philosophie : nombre de notions et notion « hors programme » ; HGGSP : nombre de thèmes ; français de 5e : « est-ce une entrée du programme ? ») et une remplacée (français de 3e : les sujets de l'épreuve de rédaction). Au passage, une question d'anglais qui renvoyait à ses propositions (« Quelle est la forme négative correcte ? ») a été reformulée. |
 | — | 14 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : lot 29, 17 boîtes de 5e — anglais (prétérit irrégulier, quantifieurs, pays anglophones, corps et santé), espagnol (se présenter, présent, gustar, collège et quotidien), allemand (école et loisirs, présent et place du verbe), italien (famille, présent), latin (vie quotidienne à Rome, dieux et héros), arts plastiques (matérialité), musique (instruments et orchestre, du Moyen Âge au baroque). 272 fiches, une vidéo de cours vérifiée par boîte. **Le programme de 5e est entièrement couvert** (87 chapitres sur 87). |
 | — | 14 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : lot 28, 21 boîtes de 5e — géographie (démographie, richesse et pauvreté, énergie, eau, nourrir l'humanité, changement climatique, risques industriels), SVT (cellule, respiration et digestion, hygiène et microbes, fossiles), physique (énergie, mouvement et vitesse, système solaire), chimie (états de l'eau), EMC (laïcité, justice, médias), technologie (matériaux, objets connectés, représenter un objet). 336 fiches, une vidéo de cours vérifiée par boîte. |
 | — | 14 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : lot 27, 18 boîtes de français de 5e — l'essentiel des univers imaginaires et des héros, l'homme et la nature, grammaire (types de phrases, fonctions, compléments circonstanciels, imparfait et passé simple, passé composé et plus-que-parfait, discours rapporté, homophones, formation des mots), récits de voyage, romans d'aventure, amitié et famille, science-fiction, contes et fantasy, chevaliers de la Table ronde, héros d'épopée et d'aujourd'hui. 288 fiches, une vidéo de cours vérifiée par boîte. Le français de 5e est entièrement couvert. |

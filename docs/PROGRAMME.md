@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1156 chapitres couverts sur 1228** (94 %), 1378 boîtes, 22624 fiches.
+Mise à jour : 14/11/2026. **1156 chapitres couverts sur 1228** (94 %), 1378 boîtes, 22619 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -17,12 +17,12 @@ Mise à jour : 14/11/2026. **1156 chapitres couverts sur 1228** (94 %), 1378 bo�
 | [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
-| [5e](#5e) | 87 / 87 | 0 | 118 | 1946 |
+| [5e](#5e) | 87 / 87 | 0 | 118 | 1945 |
 | [4e](#4e) | 82 / 82 | 0 | 118 | 1940 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
 | [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
-| [Terminale](#terminale) | 143 / 145 | 2 | 173 | 3175 |
+| [Terminale](#terminale) | 143 / 145 | 2 | 173 | 3171 |
 | [Autres boîtes](#autres-boîtes) | 1 / 1 | 0 | 1 | 68 |
 
 ## CP
@@ -888,7 +888,7 @@ Collège — 87 chapitres couverts sur 87, 118 boîtes.
 
 ### 5e — Français (15 / 15)
 
-- [x] Le voyage et l'aventure — l'essentiel — 5ème — Français : voyage, aventure, héros et univers imaginaires (17 fiches)
+- [x] Le voyage et l'aventure — l'essentiel — 5ème — Français : voyage, aventure, héros et univers imaginaires (16 fiches)
   - [x] Récits de voyage et d'exploration — 5ème — Français : récits de voyage et d'exploration (16 fiches)
   - [x] Romans d'aventure — 5ème — Français : romans d'aventure (16 fiches)
 - [x] Avec autrui : familles, amis, réseaux — l'essentiel — 5ème — Français : avec autrui, la comédie et Molière (19 fiches)
@@ -1852,7 +1852,7 @@ Lycée — 143 chapitres couverts sur 145, 173 boîtes.
 
 ### Terminale — Philosophie (29 / 29)
 
-- [x] Notions, repères et citations du bac — Philosophie — Notions, repères et citations du bac (40 fiches)
+- [x] Notions, repères et citations du bac — Philosophie — Notions, repères et citations du bac (38 fiches)
 - [x] Auteurs et œuvres majeurs — Philosophie — Auteurs et œuvres majeurs (44 fiches)
 - [x] Définir les 17 notions — Philosophie — Définir les 17 notions (18 fiches)
 - [x] Méthode de la dissertation et de l'explication — Philosophie — Méthode de la dissertation et de l'explication (13 fiches)
@@ -1969,7 +1969,7 @@ Lycée — 143 chapitres couverts sur 145, 173 boîtes.
 
 ### Terminale — HGGSP (7 / 7)
 
-- [x] Concepts et thèmes de Terminale — HGGSP — Concepts et thèmes de Terminale (23 fiches)
+- [x] Concepts et thèmes de Terminale — HGGSP — Concepts et thèmes de Terminale (22 fiches)
 - [x] Repères chronologiques de Terminale — HGGSP — Repères chronologiques de Terminale (15 fiches)
 - [x] Faire la guerre, faire la paix — Terminale spé — HGGSP : faire la guerre, faire la paix (16 fiches)
 - [x] Histoire et mémoires — Terminale spé — HGGSP : histoire et mémoires (16 fiches)
@@ -1992,7 +1992,7 @@ Lycée — 143 chapitres couverts sur 145, 173 boîtes.
 
 ### Terminale — Anglais (5 / 5)
 
-- [x] Connecteurs et expressions pour argumenter — Anglais — Connecteurs et expressions pour argumenter (24 fiches)
+- [x] Connecteurs et expressions pour argumenter — Anglais — Connecteurs et expressions pour argumenter (23 fiches)
 - [x] Vocabulaire des axes du programme — Terminale — Anglais : vocabulaire des axes du programme (17 fiches)
 - [x] Méthode de l'écrit et de l'oral, exprimer et nuancer son opinion — Terminale — Anglais : méthode de l'écrit et de l'oral, exprimer et nuancer son opinion (17 fiches)
 - [x] Vocabulaire approfondi (art, fiction, territoire et mémoire) — Terminale — Anglais : vocabulaire approfondi (art, fiction, territoire et mémoire) (16 fiches)
