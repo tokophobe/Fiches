@@ -7690,43 +7690,97 @@
        "sousthemes": [
         {
          "titre": "Additionner et soustraire des fractions",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-maths-additionner-fractions",
+           "titre": "4ème — Maths : additionner et soustraire des fractions",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Multiplier et diviser des fractions",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-maths-multiplier-fractions",
+           "titre": "4ème — Maths : multiplier et diviser des fractions",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les quatre opérations sur les nombres relatifs",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-maths-nombres-relatifs",
+           "titre": "4ème — Maths : les quatre opérations sur les nombres relatifs",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "Puissances et notation scientifique",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-maths-puissances",
+         "titre": "4ème — Maths : puissances et notation scientifique",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Nombres premiers et décomposition",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-maths-nombres-premiers",
+         "titre": "4ème — Maths : nombres premiers et décomposition",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Calcul littéral et équations",
-       "boites": [],
+       "boites": [
+        {
+         "cle": "r4e-maths-calcul-litteral",
+         "titre": "4ème — Maths : calcul littéral et équations (l'essentiel)",
+         "fiches": 16
+        }
+       ],
        "sousthemes": [
         {
          "titre": "Développer et réduire avec la distributivité",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-maths-distributivite",
+           "titre": "4ème — Maths : développer et réduire avec la distributivité",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Résoudre une équation du premier degré",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-maths-equations",
+           "titre": "4ème — Maths : résoudre une équation du premier degré",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "Proportionnalité, pourcentages et vitesse",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-maths-proportionnalite",
+         "titre": "4ème — Maths : proportionnalité, pourcentages et vitesse",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Statistiques : moyenne, médiane et étendue",
@@ -7750,7 +7804,13 @@
       },
       {
        "titre": "Le théorème de Pythagore",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-maths-pythagore",
+         "titre": "4ème — Maths : le théorème de Pythagore",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Théorème de Thalès et cosinus",
@@ -7764,11 +7824,23 @@
        "sousthemes": [
         {
          "titre": "Le théorème de Thalès dans le triangle",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-maths-thales",
+           "titre": "4ème — Maths : le théorème de Thalès dans le triangle",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le cosinus d'un angle aigu",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-maths-cosinus",
+           "titre": "4ème — Maths : le cosinus d'un angle aigu",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7794,7 +7866,13 @@
       },
       {
        "titre": "Algorithmique et programmation",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-maths-algorithmique",
+         "titre": "4ème — Maths : algorithmique et programmation",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Révisions de l'année",

@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1078 chapitres couverts sur 1228** (88 %), 1249 boîtes, 20560 fiches.
+Mise à jour : 14/11/2026. **1084 chapitres couverts sur 1228** (88 %), 1262 boîtes, 20768 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -18,7 +18,7 @@ Mise à jour : 14/11/2026. **1078 chapitres couverts sur 1228** (88 %), 1249 bo�
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
 | [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
-| [4e](#4e) | 52 / 82 | 30 | 65 | 1092 |
+| [4e](#4e) | 58 / 82 | 24 | 78 | 1300 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
 | [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
@@ -1054,7 +1054,7 @@ Collège — 39 chapitres couverts sur 87, 42 boîtes.
 
 ## 4e
 
-Collège — 52 chapitres couverts sur 82, 65 boîtes.
+Collège — 58 chapitres couverts sur 82, 78 boîtes.
 
 ### 4e — Français (9 / 15)
 
@@ -1082,27 +1082,27 @@ Collège — 52 chapitres couverts sur 82, 65 boîtes.
 - [ ] Le vocabulaire des sentiments — *à créer*
 - [x] Révisions de l'année — 4ème — Français : le récit au XIXe siècle et le théâtre de Molière (17 fiches)
 
-### 4e — Mathématiques (7 / 13)
+### 4e — Mathématiques (13 / 13)
 
 - [x] Fractions et nombres relatifs — l'essentiel — 4ème — Maths : multiplier et diviser fractions et nombres relatifs (16 fiches)
-  - [ ] Additionner et soustraire des fractions — *à créer*
-  - [ ] Multiplier et diviser des fractions — *à créer*
-  - [ ] Les quatre opérations sur les nombres relatifs — *à créer*
-- [ ] Puissances et notation scientifique — *à créer*
-- [ ] Nombres premiers et décomposition — *à créer*
-- [ ] Calcul littéral et équations — l'essentiel — *à créer*
-  - [ ] Développer et réduire avec la distributivité — *à créer*
-  - [ ] Résoudre une équation du premier degré — *à créer*
-- [ ] Proportionnalité, pourcentages et vitesse — *à créer*
+  - [x] Additionner et soustraire des fractions — 4ème — Maths : additionner et soustraire des fractions (16 fiches)
+  - [x] Multiplier et diviser des fractions — 4ème — Maths : multiplier et diviser des fractions (16 fiches)
+  - [x] Les quatre opérations sur les nombres relatifs — 4ème — Maths : les quatre opérations sur les nombres relatifs (16 fiches)
+- [x] Puissances et notation scientifique — 4ème — Maths : puissances et notation scientifique (16 fiches)
+- [x] Nombres premiers et décomposition — 4ème — Maths : nombres premiers et décomposition (16 fiches)
+- [x] Calcul littéral et équations — l'essentiel — 4ème — Maths : calcul littéral et équations (l'essentiel) (16 fiches)
+  - [x] Développer et réduire avec la distributivité — 4ème — Maths : développer et réduire avec la distributivité (16 fiches)
+  - [x] Résoudre une équation du premier degré — 4ème — Maths : résoudre une équation du premier degré (16 fiches)
+- [x] Proportionnalité, pourcentages et vitesse — 4ème — Maths : proportionnalité, pourcentages et vitesse (16 fiches)
 - [x] Statistiques : moyenne, médiane et étendue — 4ème — Maths : statistiques, moyenne, médiane et étendue (16 fiches)
 - [x] Premières probabilités — 4ème — Maths : premières probabilités (15 fiches)
-- [ ] Le théorème de Pythagore — *à créer*
+- [x] Le théorème de Pythagore — 4ème — Maths : le théorème de Pythagore (16 fiches)
 - [x] Théorème de Thalès et cosinus — l'essentiel — 4ème — Maths : théorème de Thalès et cosinus (16 fiches)
-  - [ ] Le théorème de Thalès dans le triangle — *à créer*
-  - [ ] Le cosinus d'un angle aigu — *à créer*
+  - [x] Le théorème de Thalès dans le triangle — 4ème — Maths : le théorème de Thalès dans le triangle (16 fiches)
+  - [x] Le cosinus d'un angle aigu — 4ème — Maths : le cosinus d'un angle aigu (16 fiches)
 - [x] Translations, rotations et frises — 4ème — Maths : translation, rotation et frises (16 fiches)
 - [x] Pyramides, cônes et volumes — 4ème — Maths : pyramides, cônes et volumes (16 fiches)
-- [ ] Algorithmique et programmation — *à créer*
+- [x] Algorithmique et programmation — 4ème — Maths : algorithmique et programmation (16 fiches)
 - [x] Révisions de l'année — 4ème — Maths : puissances, calcul littéral et Pythagore (16 fiches) ; 4ème — Maths : équations, proportionnalité et vitesse (16 fiches)
 
 ### 4e — Histoire (4 / 4)
