@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1167 chapitres couverts sur 1228** (95 %), 1429 boîtes, 23435 fiches.
+Mise à jour : 14/11/2026. **1179 chapitres couverts sur 1228** (96 %), 1441 boîtes, 23627 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -16,7 +16,7 @@ Mise à jour : 14/11/2026. **1167 chapitres couverts sur 1228** (95 %), 1429 bo�
 | [CE2](#ce2) | 110 / 112 | 2 | 110 | 1636 |
 | [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
-| [6e](#6e) | 50 / 62 | 12 | 94 | 1546 |
+| [6e](#6e) | 62 / 62 | 0 | 106 | 1738 |
 | [5e](#5e) | 87 / 87 | 0 | 118 | 1945 |
 | [4e](#4e) | 82 / 82 | 0 | 118 | 1940 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
@@ -743,7 +743,7 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 
 ## 6e
 
-Collège — 50 chapitres couverts sur 62, 94 boîtes.
+Collège — 62 chapitres couverts sur 62, 106 boîtes.
 
 ### 6e — Français (8 / 8)
 
@@ -854,32 +854,32 @@ Collège — 50 chapitres couverts sur 62, 94 boîtes.
 - [x] Programmer avec Scratch — 6ème — Technologie : programmer avec Scratch (16 fiches)
 - [x] Concevoir un objet, du croquis au prototype — 6ème — Technologie : concevoir un objet, du croquis au prototype (16 fiches)
 
-### 6e — Anglais (5 / 12)
+### 6e — Anglais (12 / 12)
 
 - [x] Vocabulaire de base (famille, école, jours, nombres, couleurs) — 6ème — Anglais : vocabulaire de base (famille, école, jours, nombres, couleurs) (17 fiches)
 - [x] Grammaire de base (be, présent simple, pluriels) — 6ème — Anglais : grammaire de base (be, présent simple, pluriels) (21 fiches)
 - [x] Routine quotidienne, fréquence et goûts — 6ème — Anglais : routine quotidienne, fréquence et goûts (17 fiches)
 - [x] L'heure, la date et les saisons — 6ème — Anglais : l'heure, la date et les saisons (19 fiches)
 - [x] Have got, possessifs et description physique — 6ème — Anglais : have got, possessifs et description physique (16 fiches)
-- [ ] Le présent en be + -ing — *à créer*
-- [ ] Can / can't et les capacités — *à créer*
-- [ ] La maison et les pièces — *à créer*
-- [ ] Les animaux — *à créer*
-- [ ] La nourriture et les quantités — *à créer*
-- [ ] Le prétérit de be (was / were) — *à créer*
-- [ ] Les pays anglophones et leurs symboles — *à créer*
+- [x] Le présent en be + -ing — 6ème — Anglais : le présent en be + -ing (16 fiches)
+- [x] Can / can't et les capacités — 6ème — Anglais : can / can't et les capacités (16 fiches)
+- [x] La maison et les pièces — 6ème — Anglais : la maison et les pièces (16 fiches)
+- [x] Les animaux — 6ème — Anglais : les animaux (16 fiches)
+- [x] La nourriture et les quantités — 6ème — Anglais : la nourriture et les quantités (16 fiches)
+- [x] Le prétérit de be (was / were) — 6ème — Anglais : le prétérit de be (was / were) (16 fiches)
+- [x] Les pays anglophones et leurs symboles — 6ème — Anglais : les pays anglophones et leurs symboles (16 fiches)
 
-### 6e — Arts plastiques (0 / 3)
+### 6e — Arts plastiques (3 / 3)
 
-- [ ] La représentation, l'image et la fiction — *à créer*
-- [ ] Les matériaux, les outils et les gestes — *à créer*
-- [ ] L'objet et l'œuvre d'art — *à créer*
+- [x] La représentation, l'image et la fiction — 6ème — Arts plastiques : la représentation, l'image et la fiction (16 fiches)
+- [x] Les matériaux, les outils et les gestes — 6ème — Arts plastiques : les matériaux, les outils et les gestes (16 fiches)
+- [x] L'objet et l'œuvre d'art — 6ème — Arts plastiques : l'objet et l'œuvre d'art (16 fiches)
 
-### 6e — Éducation musicale (1 / 3)
+### 6e — Éducation musicale (3 / 3)
 
 - [x] Instruments et vocabulaire de la musique — 6ème — Éducation musicale : instruments et vocabulaire de la musique (18 fiches)
-- [ ] Les grands compositeurs — *à créer*
-- [ ] Rythme, mélodie et pulsation — *à créer*
+- [x] Les grands compositeurs — 6ème — Éducation musicale : les grands compositeurs (16 fiches)
+- [x] Rythme, mélodie et pulsation — 6ème — Éducation musicale : rythme, mélodie et pulsation (16 fiches)
 
 
 ## 5e

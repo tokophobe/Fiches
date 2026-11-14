@@ -6893,31 +6893,73 @@
       },
       {
        "titre": "Le présent en be + -ing",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-ang-present-be-ing",
+         "titre": "6ème — Anglais : le présent en be + -ing",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Can / can't et les capacités",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-ang-can-capacites",
+         "titre": "6ème — Anglais : can / can't et les capacités",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "La maison et les pièces",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-ang-maison-pieces",
+         "titre": "6ème — Anglais : la maison et les pièces",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les animaux",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-ang-animaux",
+         "titre": "6ème — Anglais : les animaux",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "La nourriture et les quantités",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-ang-nourriture-quantites",
+         "titre": "6ème — Anglais : la nourriture et les quantités",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le prétérit de be (was / were)",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-ang-was-were",
+         "titre": "6ème — Anglais : le prétérit de be (was / were)",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les pays anglophones et leurs symboles",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-ang-pays-anglophones",
+         "titre": "6ème — Anglais : les pays anglophones et leurs symboles",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -6927,15 +6969,33 @@
      "chapitres": [
       {
        "titre": "La représentation, l'image et la fiction",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-arts-representation-image",
+         "titre": "6ème — Arts plastiques : la représentation, l'image et la fiction",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les matériaux, les outils et les gestes",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-arts-materiaux-outils-gestes",
+         "titre": "6ème — Arts plastiques : les matériaux, les outils et les gestes",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "L'objet et l'œuvre d'art",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-arts-objet-oeuvre",
+         "titre": "6ème — Arts plastiques : l'objet et l'œuvre d'art",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -6955,11 +7015,23 @@
       },
       {
        "titre": "Les grands compositeurs",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-musique-compositeurs",
+         "titre": "6ème — Éducation musicale : les grands compositeurs",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Rythme, mélodie et pulsation",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-musique-rythme-melodie",
+         "titre": "6ème — Éducation musicale : rythme, mélodie et pulsation",
+         "fiches": 16
+        }
+       ]
       }
      ]
     }
