@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v291";
+  const ADMIN_VERSION = "v292";
   // v281 : les erreurs de Darwin Admin portent aussi leur version
   // (js/error-report.js lit window.FICHES_APP_VERSION).
   window.FICHES_APP_VERSION = ADMIN_VERSION;
@@ -2691,7 +2691,7 @@
         fields.cards = merged.cards;
         plan.cardsChanged += merged.changed;
       }
-      if (Object.keys(fields).length) plan.toUpdate.push({ box, existing, fields });
+      if (Object.keys(fields).length) plan.toUpdate.push({ box, existing, fields, cardsChanged: merged.changed, cardsRemoved: merged.removed });
       else plan.upToDate++;
     });
     return plan;
@@ -2709,12 +2709,24 @@
     let ok = 0;
     let fail = 0;
     let done = 0;
+    // v292 : liste des boîtes publiées ou modifiées, avec un accès direct à
+    // leurs fiches, pour vérifier le résultat de l'import.
+    const results = [];
+    const updateDetail = (it) => {
+      const parts = [];
+      if (it.cardsChanged) parts.push(plural(it.cardsChanged - (it.cardsRemoved || 0), "fiche modifiée ou ajoutée", "fiches modifiées ou ajoutées"));
+      if (it.cardsRemoved) parts.push(plural(it.cardsRemoved, "fiche retirée", "fiches retirées"));
+      const other = Object.keys(it.fields).filter((k) => k !== "cards");
+      if (other.length) parts.push("nom, description, classement ou lien");
+      return parts.join(" · ") || "mise à jour";
+    };
     const tasks = [
       ...plan.toUpdate.map((it) => async () => {
         const { error } = await client()
           .from("library_collections")
           .update({ ...it.fields, updated_at: new Date().toISOString() })
           .eq("id", it.existing.id);
+        if (!error) results.push({ id: it.existing.id, name: it.fields.name || it.existing.name, kind: "Mise à jour", detail: updateDetail(it) });
         return error ? `${it.box.name} : ${friendlyError(error)}` : null;
       }),
       ...plan.toCreate.map((it) => async () => {
@@ -2734,7 +2746,8 @@
           ...(plan.hasLinkColumn && packLink(it.box.link) ? { link: packLink(it.box.link) } : {}),
           cards: it.packCards.map((c, k) => withLink(withMore(withWrongs({ id: `${it.sid}-${k + 1}`, question: c.question, answer: c.answer }, c.wrongs), c.more), c.link)),
         };
-        const { error } = await client().from("library_collections").insert(row);
+        const { data, error } = await client().from("library_collections").insert(row).select("id").single();
+        if (!error && data) results.push({ id: data.id, name: it.box.name, kind: "Nouvelle", detail: plural(it.packCards.length, "fiche", "fiches") });
         return error ? `${it.box.name} : ${friendlyError(error)}` : null;
       }),
     ];
@@ -2760,6 +2773,27 @@
     await Promise.all([worker(), worker(), worker(), worker()]);
     line(`Terminé : ${ok} réussie(s), ${fail} échec(s).`);
     toast(fail ? `${fail} échec(s) — voir le détail` : "Librairie à jour", !!fail);
+    if (results.length) log.after(packResultsList(results));
+  }
+  /** v292 : boîtes publiées ou modifiées par l'import, avec leurs fiches. */
+  function packResultsList(results) {
+    results.sort((a, b) => a.kind.localeCompare(b.kind) || a.name.localeCompare(b.name, "fr"));
+    const rows = results.map((r) =>
+      h(
+        "li",
+        { class: "pack-result" },
+        h("span", { class: "pack-result__name" }, badge(r.kind, r.kind === "Nouvelle" ? "ok" : null), " ", r.name),
+        h("span", { class: "cell-sub" }, r.detail),
+        h("button", { type: "button", class: "btn btn--small", onclick: () => openCollectionCards(r.id, r.name) }, "Voir les fiches")
+      )
+    );
+    return h(
+      "div",
+      { class: "card pack-results" },
+      h("h3", null, `${plural(results.length, "boîte publiée ou modifiée", "boîtes publiées ou modifiées")}`),
+      h("p", { class: "card-hint" }, "Ouvre une ou deux de ces boîtes pour vérifier le résultat de l'import."),
+      h("ul", { class: "pack-results__list" }, ...rows)
+    );
   }
 
   /* ================================================================
