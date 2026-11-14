@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1072 chapitres couverts sur 1228** (87 %), 1206 boîtes, 19872 fiches.
+Mise à jour : 14/11/2026. **1156 chapitres couverts sur 1228** (94 %), 1378 boîtes, 22624 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -17,9 +17,9 @@ Mise à jour : 13/11/2026. **1072 chapitres couverts sur 1228** (87 %), 1206 bo�
 | [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
-| [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
-| [4e](#4e) | 52 / 82 | 30 | 54 | 916 |
-| [3e](#3e) | 102 / 108 | 6 | 160 | 2981 |
+| [5e](#5e) | 87 / 87 | 0 | 118 | 1946 |
+| [4e](#4e) | 82 / 82 | 0 | 118 | 1940 |
+| [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
 | [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
 | [Terminale](#terminale) | 143 / 145 | 2 | 173 | 3175 |
@@ -884,275 +884,275 @@ Collège — 39 chapitres couverts sur 62, 43 boîtes.
 
 ## 5e
 
-Collège — 39 chapitres couverts sur 87, 42 boîtes.
+Collège — 87 chapitres couverts sur 87, 118 boîtes.
 
-### 5e — Français (4 / 15)
+### 5e — Français (15 / 15)
 
 - [x] Le voyage et l'aventure — l'essentiel — 5ème — Français : voyage, aventure, héros et univers imaginaires (17 fiches)
-  - [ ] Récits de voyage et d'exploration — *à créer*
-  - [ ] Romans d'aventure — *à créer*
+  - [x] Récits de voyage et d'exploration — 5ème — Français : récits de voyage et d'exploration (16 fiches)
+  - [x] Romans d'aventure — 5ème — Français : romans d'aventure (16 fiches)
 - [x] Avec autrui : familles, amis, réseaux — l'essentiel — 5ème — Français : avec autrui, la comédie et Molière (19 fiches)
-  - [ ] Amitié et famille dans le roman — *à créer*
-- [ ] Imaginer des univers nouveaux — l'essentiel — *à créer*
-  - [ ] La science-fiction — *à créer*
-  - [ ] Contes, merveilleux et fantasy — *à créer*
-- [ ] Héros, héroïnes et héroïsmes — l'essentiel — *à créer*
-  - [ ] Chevaliers et romans de la Table ronde — *à créer*
-  - [ ] Héros d'épopée et héros d'aujourd'hui — *à créer*
-- [ ] L'être humain est-il maître de la nature ? — *à créer*
-- [ ] Types de phrases et propositions — *à créer*
-- [ ] Les fonctions dans la phrase (COD, COI, attribut) — *à créer*
-- [ ] Les compléments circonstanciels — *à créer*
-- [ ] L'imparfait et le passé simple dans le récit — *à créer*
-- [ ] Le passé composé et le plus-que-parfait — *à créer*
+  - [x] Amitié et famille dans le roman — 5ème — Français : amitié et famille dans le roman (16 fiches)
+- [x] Imaginer des univers nouveaux — l'essentiel — 5ème — Français : imaginer des univers nouveaux (l'essentiel) (16 fiches)
+  - [x] La science-fiction — 5ème — Français : la science-fiction (16 fiches)
+  - [x] Contes, merveilleux et fantasy — 5ème — Français : contes, merveilleux et fantasy (16 fiches)
+- [x] Héros, héroïnes et héroïsmes — l'essentiel — 5ème — Français : héros, héroïnes et héroïsmes (l'essentiel) (16 fiches)
+  - [x] Chevaliers et romans de la Table ronde — 5ème — Français : chevaliers et romans de la Table ronde (16 fiches)
+  - [x] Héros d'épopée et héros d'aujourd'hui — 5ème — Français : héros d'épopée et héros d'aujourd'hui (16 fiches)
+- [x] L'être humain est-il maître de la nature ? — 5ème — Français : l'être humain est-il maître de la nature ? (16 fiches)
+- [x] Types de phrases et propositions — 5ème — Français : types de phrases et propositions (16 fiches)
+- [x] Les fonctions dans la phrase (COD, COI, attribut) — 5ème — Français : les fonctions dans la phrase (COD, COI, attribut) (16 fiches)
+- [x] Les compléments circonstanciels — 5ème — Français : les compléments circonstanciels (16 fiches)
+- [x] L'imparfait et le passé simple dans le récit — 5ème — Français : l'imparfait et le passé simple dans le récit (16 fiches)
+- [x] Le passé composé et le plus-que-parfait — 5ème — Français : le passé composé et le plus-que-parfait (16 fiches)
 - [x] L'accord du participe passé — 5ème — Français : l'accord du participe passé (17 fiches)
-- [ ] Le discours direct et indirect — *à créer*
-- [ ] Les homophones grammaticaux — *à créer*
-- [ ] Le vocabulaire et la formation des mots — *à créer*
+- [x] Le discours direct et indirect — 5ème — Français : le discours direct et indirect (16 fiches)
+- [x] Les homophones grammaticaux — 5ème — Français : les homophones grammaticaux (16 fiches)
+- [x] Le vocabulaire et la formation des mots — 5ème — Français : le vocabulaire et la formation des mots (16 fiches)
 - [x] Révisions de l'année — 5ème — Français : chevaliers, littérature du Moyen Âge et grammaire (16 fiches) ; 5ème — Français : types de phrases, propositions, passé composé et plus-que-parfait (19 fiches)
 
-### 5e — Mathématiques (8 / 15)
+### 5e — Mathématiques (15 / 15)
 
-- [ ] Additionner et soustraire des nombres relatifs — *à créer*
-- [ ] Repérage dans le plan avec les relatifs — *à créer*
-- [ ] Priorités de calcul et distributivité — *à créer*
+- [x] Additionner et soustraire des nombres relatifs — 5ème — Maths : additionner et soustraire des nombres relatifs (16 fiches)
+- [x] Repérage dans le plan avec les relatifs — 5ème — Maths : repérage dans le plan avec les relatifs (16 fiches)
+- [x] Priorités de calcul et distributivité — 5ème — Maths : priorités de calcul et distributivité (16 fiches)
 - [x] Fractions, comparaison et addition — l'essentiel — 5ème — Maths : fractions, comparaison et addition (17 fiches)
-  - [ ] Fractions égales et simplification — *à créer*
+  - [x] Fractions égales et simplification — 5ème — Maths : fractions égales et simplification (16 fiches)
 - [x] Premiers pas en calcul littéral — 5ème — Maths : premiers pas en calcul littéral (17 fiches)
-- [ ] Multiples, diviseurs et nombres premiers — *à créer*
-- [ ] Proportionnalité et pourcentages — *à créer*
+- [x] Multiples, diviseurs et nombres premiers — 5ème — Maths : multiples, diviseurs et nombres premiers (16 fiches)
+- [x] Proportionnalité et pourcentages — 5ème — Maths : proportionnalité et pourcentages (16 fiches)
 - [x] Statistiques et premières probabilités — 5ème — Maths : statistiques et premières probabilités (17 fiches)
 - [x] Triangles, inégalité triangulaire et angles — l'essentiel — 5ème — Maths : triangles, inégalité triangulaire et angles (19 fiches)
-  - [ ] Angles alternes-internes et correspondants — *à créer*
-  - [ ] Médiatrices et cercle circonscrit — *à créer*
+  - [x] Angles alternes-internes et correspondants — 5ème — Maths : angles alternes-internes et correspondants (16 fiches)
+  - [x] Médiatrices et cercle circonscrit — 5ème — Maths : médiatrices et cercle circonscrit (16 fiches)
 - [x] Parallélogramme et symétrie centrale — 5ème — Maths : parallélogramme et symétrie centrale (17 fiches)
 - [x] Aires du triangle, du parallélogramme et du disque — 5ème — Maths : aires du triangle, du parallélogramme et du disque (16 fiches)
 - [x] Prismes droits et cylindres, patrons et volumes — l'essentiel — 5ème — Maths : prismes droits et cylindres, patrons et volumes (16 fiches)
-  - [ ] Volumes et conversions des unités de volume — *à créer*
-- [ ] Durées et vitesses — *à créer*
-- [ ] Algorithmique avec Scratch — *à créer*
+  - [x] Volumes et conversions des unités de volume — 5ème — Maths : volumes et conversions des unités de volume (16 fiches)
+- [x] Durées et vitesses — 5ème — Maths : durées et vitesses (16 fiches)
+- [x] Algorithmique avec Scratch — 5ème — Maths : algorithmique avec Scratch (16 fiches)
 - [x] Révisions de l'année — 5ème — Maths : nombres relatifs, priorités et proportionnalité (17 fiches)
 
 ### 5e — Histoire (3 / 3)
 
 - [x] Chrétientés et islam, des mondes en contact (VIe-XIIIe siècles) — l'essentiel — 5ème — Histoire : Byzance, l'Islam et l'Occident médiéval (18 fiches)
-  - [ ] Byzance et l'Empire carolingien — *à créer*
-  - [ ] De la naissance de l'islam à la prise de Bagdad — *à créer*
-  - [ ] Croisades et Reconquista — *à créer*
+  - [x] Byzance et l'Empire carolingien — 5ème — Histoire : Byzance et l'Empire carolingien (16 fiches)
+  - [x] De la naissance de l'islam à la prise de Bagdad — 5ème — Histoire : de la naissance de l'islam à la prise de Bagdad (16 fiches)
+  - [x] Croisades et Reconquista — 5ème — Histoire : croisades et Reconquista (16 fiches)
 - [x] Société, Église et pouvoir dans l'Occident féodal (XIe-XVe siècles) — l'essentiel — 5ème — Histoire : seigneurs, paysans, villes et pouvoir royal (XIe-XVe s.) (20 fiches)
-  - [ ] Seigneurs et paysans — *à créer*
+  - [x] Seigneurs et paysans — 5ème — Histoire : seigneurs et paysans (16 fiches)
   - [x] L'Église au Moyen Âge — 5ème — Histoire : l'Église au Moyen Âge (17 fiches)
-  - [ ] L'essor des villes et des marchands — *à créer*
-  - [ ] L'affirmation du pouvoir royal (Capétiens et Valois) — *à créer*
+  - [x] L'essor des villes et des marchands — 5ème — Histoire : l'essor des villes et des marchands (16 fiches)
+  - [x] L'affirmation du pouvoir royal (Capétiens et Valois) — 5ème — Histoire : l'affirmation du pouvoir royal (Capétiens et Valois) (16 fiches)
 - [x] L'Europe et le monde aux XVIe et XVIIe siècles — l'essentiel — 5ème — Histoire : Grandes découvertes, Renaissance et Réformes (18 fiches)
-  - [ ] Grandes découvertes, Charles Quint et Soliman — *à créer*
-  - [ ] Humanisme et Renaissance artistique — *à créer*
-  - [ ] Réformes et guerres de religion — *à créer*
+  - [x] Grandes découvertes, Charles Quint et Soliman — 5ème — Histoire : grandes découvertes, Charles Quint et Soliman (16 fiches)
+  - [x] Humanisme et Renaissance artistique — 5ème — Histoire : humanisme et Renaissance artistique (16 fiches)
+  - [x] Réformes et guerres de religion — 5ème — Histoire : réformes et guerres de religion (16 fiches)
   - [x] Du prince de la Renaissance au roi absolu — 5ème — Histoire : du prince de la Renaissance au roi absolu (17 fiches)
 
 ### 5e — Géographie (3 / 3)
 
 - [x] La question démographique et l'inégal développement — l'essentiel — 5ème — Géographie : croissance démographique et développement (17 fiches)
-  - [ ] Croissance démographique : l'exemple de l'Inde ou de la Chine — *à créer*
-  - [ ] Richesse et pauvreté dans le monde — *à créer*
+  - [x] Croissance démographique : l'exemple de l'Inde ou de la Chine — 5ème — Géographie : croissance démographique : l'exemple de l'Inde ou de la Chine (16 fiches)
+  - [x] Richesse et pauvreté dans le monde — 5ème — Géographie : richesse et pauvreté dans le monde (16 fiches)
 - [x] Des ressources limitées, à gérer et à renouveler — l'essentiel — 5ème — Géographie : énergie, eau et alimentation (17 fiches)
-  - [ ] L'énergie — *à créer*
-  - [ ] L'eau — *à créer*
-  - [ ] Nourrir l'humanité — *à créer*
+  - [x] L'énergie — 5ème — Géographie : l'énergie (16 fiches)
+  - [x] L'eau — 5ème — Géographie : l'eau (16 fiches)
+  - [x] Nourrir l'humanité — 5ème — Géographie : nourrir l'humanité (16 fiches)
 - [x] Prévenir les risques, s'adapter au changement global — l'essentiel — 5ème — Géographie : prévenir les risques, s'adapter au changement global (18 fiches)
-  - [ ] Le changement climatique et ses effets — *à créer*
-  - [ ] Les risques industriels et technologiques — *à créer*
+  - [x] Le changement climatique et ses effets — 5ème — Géographie : le changement climatique et ses effets (16 fiches)
+  - [x] Les risques industriels et technologiques — 5ème — Géographie : les risques industriels et technologiques (16 fiches)
 
-### 5e — EMC (1 / 4)
+### 5e — EMC (4 / 4)
 
 - [x] Égalité et lutte contre les discriminations — 5ème — EMC : égalité et lutte contre les discriminations (16 fiches)
-- [ ] La laïcité — *à créer*
-- [ ] La justice et les droits — *à créer*
-- [ ] Les médias et la responsabilité — *à créer*
+- [x] La laïcité — 5ème — EMC : la laïcité (16 fiches)
+- [x] La justice et les droits — 5ème — EMC : la justice et les droits (16 fiches)
+- [x] Les médias et la responsabilité — 5ème — EMC : les médias et la responsabilité (16 fiches)
 
-### 5e — SVT (4 / 7)
+### 5e — SVT (7 / 7)
 
-- [ ] La cellule, unité du vivant — *à créer*
-- [ ] Respiration et digestion — *à créer*
+- [x] La cellule, unité du vivant — 5ème — SVT : la cellule, unité du vivant (16 fiches)
+- [x] Respiration et digestion — 5ème — SVT : respiration et digestion (16 fiches)
 - [x] Nutrition et reproduction des plantes à fleurs — 5ème — SVT : nutrition et reproduction des plantes à fleurs (17 fiches)
 - [x] Écosystèmes, chaînes alimentaires et biodiversité — 5ème — SVT : écosystèmes, chaînes alimentaires et biodiversité (18 fiches)
-- [ ] Hygiène, microbes et santé — *à créer*
+- [x] Hygiène, microbes et santé — 5ème — SVT : hygiène, microbes et santé (16 fiches)
 - [x] Séismes, volcans et tectonique des plaques — l'essentiel — 5ème — SVT : séismes, volcans et tectonique des plaques (17 fiches)
-  - [ ] Les fossiles et l'histoire de la Terre — *à créer*
+  - [x] Les fossiles et l'histoire de la Terre — 5ème — SVT : les fossiles et l'histoire de la Terre (16 fiches)
 - [x] Révisions de l'année — 5ème — SVT : respiration, digestion et paysages (16 fiches)
 
-### 5e — Physique (2 / 5)
+### 5e — Physique (5 / 5)
 
 - [x] Lumière, propagation et ombres — 5ème — Physique : lumière, propagation et ombres (16 fiches)
 - [x] Circuits électriques en série et en dérivation — 5ème — Physique : circuits électriques en série et en dérivation (17 fiches)
-- [ ] L'énergie et ses conversions — *à créer*
-- [ ] Mouvements et vitesse — *à créer*
-- [ ] Le système solaire — *à créer*
+- [x] L'énergie et ses conversions — 5ème — Physique : l'énergie et ses conversions (16 fiches)
+- [x] Mouvements et vitesse — 5ème — Physique : mouvements et vitesse (16 fiches)
+- [x] Le système solaire — 5ème — Physique : le système solaire (16 fiches)
 
-### 5e — Chimie (2 / 3)
+### 5e — Chimie (3 / 3)
 
 - [x] États de la matière et masse volumique — 5ème — Chimie : états de la matière et masse volumique (21 fiches)
 - [x] Mélanges, solutions et techniques de séparation — 5ème — Chimie : mélanges, solutions et techniques de séparation (17 fiches)
-- [ ] L'eau dans tous ses états — *à créer*
+- [x] L'eau dans tous ses états — 5ème — Chimie : l'eau dans tous ses états (16 fiches)
 
-### 5e — Technologie (1 / 4)
+### 5e — Technologie (4 / 4)
 
 - [x] Chaîne d'information et chaîne d'énergie — 5ème — Technologie : chaîne d'information et chaîne d'énergie (16 fiches)
-- [ ] Matériaux et objets techniques — *à créer*
-- [ ] Programmation et objets connectés — *à créer*
-- [ ] Représenter un objet, croquis et modélisation 3D — *à créer*
+- [x] Matériaux et objets techniques — 5ème — Technologie : matériaux et objets techniques (16 fiches)
+- [x] Programmation et objets connectés — 5ème — Technologie : programmation et objets connectés (16 fiches)
+- [x] Représenter un objet, croquis et modélisation 3D — 5ème — Technologie : représenter un objet, croquis et modélisation 3D (16 fiches)
 
-### 5e — Anglais (4 / 8)
+### 5e — Anglais (8 / 8)
 
 - [x] Prétérit simple et there is / there are — 5ème — Anglais : prétérit simple et there is / there are (16 fiches)
 - [x] Comparatifs, superlatifs et futur — 5ème — Anglais : comparatifs, superlatifs et futur (16 fiches)
 - [x] Présent en be + -ing et activités — 5ème — Anglais : présent en be + -ing et activités (17 fiches)
 - [x] La ville, les directions et les prépositions de lieu — 5ème — Anglais : la ville, les directions et les prépositions de lieu (18 fiches)
-- [ ] Les verbes irréguliers du prétérit — *à créer*
-- [ ] Les quantifieurs (some, any, much, many) — *à créer*
-- [ ] Les pays et la culture anglophones — *à créer*
-- [ ] Le corps et la santé — *à créer*
+- [x] Les verbes irréguliers du prétérit — 5ème — Anglais : les verbes irréguliers du prétérit (16 fiches)
+- [x] Les quantifieurs (some, any, much, many) — 5ème — Anglais : les quantifieurs (some, any, much, many) (16 fiches)
+- [x] Les pays et la culture anglophones — 5ème — Anglais : les pays et la culture anglophones (16 fiches)
+- [x] Le corps et la santé — 5ème — Anglais : le corps et la santé (16 fiches)
 
-### 5e — Espagnol (2 / 6)
+### 5e — Espagnol (6 / 6)
 
 - [x] Premiers pas en LV2 — 5ème — Espagnol : premiers pas en LV2 (18 fiches)
 - [x] Nombres, heure, jours et date — 5ème — Espagnol : nombres, heure, jours et date (18 fiches)
-- [ ] Se présenter et la famille — *à créer*
-- [ ] Le présent de l'indicatif — *à créer*
-- [ ] Les goûts avec gustar — *à créer*
-- [ ] Le collège et la vie quotidienne — *à créer*
+- [x] Se présenter et la famille — 5ème — Espagnol : se présenter et la famille (16 fiches)
+- [x] Le présent de l'indicatif — 5ème — Espagnol : le présent de l'indicatif (16 fiches)
+- [x] Les goûts avec gustar — 5ème — Espagnol : les goûts avec gustar (16 fiches)
+- [x] Le collège et la vie quotidienne — 5ème — Espagnol : le collège et la vie quotidienne (16 fiches)
 
-### 5e — Allemand (2 / 4)
+### 5e — Allemand (4 / 4)
 
 - [x] Premiers pas en LV2 — 5ème — Allemand : premiers pas en LV2 (18 fiches)
 - [x] Famille, animaux et accusatif — 5ème — Allemand : famille, animaux et accusatif (16 fiches)
-- [ ] L'école, les loisirs et les goûts — *à créer*
-- [ ] Le présent et la place du verbe — *à créer*
+- [x] L'école, les loisirs et les goûts — 5ème — Allemand : l'école, les loisirs et les goûts (16 fiches)
+- [x] Le présent et la place du verbe — 5ème — Allemand : le présent et la place du verbe (16 fiches)
 
-### 5e — Italien (1 / 3)
+### 5e — Italien (3 / 3)
 
 - [x] Premiers pas en LV2 — 5ème — Italien : premiers pas en LV2 (19 fiches)
-- [ ] La famille et la description — *à créer*
-- [ ] Le présent des verbes réguliers — *à créer*
+- [x] La famille et la description — 5ème — Italien : la famille et la description (16 fiches)
+- [x] Le présent des verbes réguliers — 5ème — Italien : le présent des verbes réguliers (16 fiches)
 
-### 5e — Latin (1 / 3)
+### 5e — Latin (3 / 3)
 
 - [x] Cas, 1re et 2e déclinaisons, être et aimer au présent — 5ème — Latin : cas, 1re et 2e déclinaisons, être et aimer au présent (17 fiches)
-- [ ] La vie quotidienne à Rome — *à créer*
-- [ ] Dieux et héros de la mythologie — *à créer*
+- [x] La vie quotidienne à Rome — 5ème — Latin : la vie quotidienne à Rome (16 fiches)
+- [x] Dieux et héros de la mythologie — 5ème — Latin : dieux et héros de la mythologie (16 fiches)
 
-### 5e — Arts plastiques (1 / 2)
+### 5e — Arts plastiques (2 / 2)
 
 - [x] Couleurs, composition et vocabulaire — 5ème — Arts plastiques : couleurs, composition et vocabulaire (20 fiches)
-- [ ] La matérialité de l'œuvre — *à créer*
+- [x] La matérialité de l'œuvre — 5ème — Arts plastiques : la matérialité de l'œuvre (16 fiches)
 
-### 5e — Éducation musicale (0 / 2)
+### 5e — Éducation musicale (2 / 2)
 
-- [ ] Les familles d'instruments et l'orchestre — *à créer*
-- [ ] Du Moyen Âge au baroque, repères musicaux — *à créer*
+- [x] Les familles d'instruments et l'orchestre — 5ème — Éducation musicale : les familles d'instruments et l'orchestre (16 fiches)
+- [x] Du Moyen Âge au baroque, repères musicaux — 5ème — Éducation musicale : du Moyen Âge au baroque, repères musicaux (16 fiches)
 
 
 ## 4e
 
-Collège — 52 chapitres couverts sur 82, 54 boîtes.
+Collège — 82 chapitres couverts sur 82, 118 boîtes.
 
-### 4e — Français (9 / 15)
+### 4e — Français (15 / 15)
 
 - [x] Dire l'amour — l'essentiel — 4ème — Français : dire l'amour, la poésie lyrique (16 fiches)
-  - [ ] La poésie lyrique et ses images (Ronsard, Labé, Hugo…) — *à créer*
-  - [ ] L'amour au théâtre et dans le roman — *à créer*
+  - [x] La poésie lyrique et ses images (Ronsard, Labé, Hugo…) — 4ème — Français : la poésie lyrique et ses images (Ronsard, Labé, Hugo…) (16 fiches)
+  - [x] L'amour au théâtre et dans le roman — 4ème — Français : l'amour au théâtre et dans le roman (16 fiches)
 - [x] Individu et société : confrontations de valeurs — l'essentiel — 4ème — Français : individu et société, Le Cid et la tragédie (16 fiches)
-  - [ ] Le Cid et la tragédie classique — *à créer*
-  - [ ] Molière et la comédie — *à créer*
+  - [x] Le Cid et la tragédie classique — 4ème — Français : Le Cid et la tragédie classique (16 fiches)
+  - [x] Molière et la comédie — 4ème — Français : Molière et la comédie (16 fiches)
 - [x] La fiction pour interroger le réel — l'essentiel — 4ème — Français : la nouvelle réaliste et fantastique (15 fiches)
-  - [ ] Le roman réaliste et naturaliste (Balzac, Flaubert, Zola) — *à créer*
-  - [ ] Le récit fantastique (Maupassant, Mérimée, Gautier) — *à créer*
+  - [x] Le roman réaliste et naturaliste (Balzac, Flaubert, Zola) — 4ème — Français : le roman réaliste et naturaliste (Balzac, Flaubert, Zola) (16 fiches)
+  - [x] Le récit fantastique (Maupassant, Mérimée, Gautier) — 4ème — Français : le récit fantastique (Maupassant, Mérimée, Gautier) (16 fiches)
 - [x] Informer, s'informer, déformer — l'essentiel — 4ème — Français : informer, s'informer, déformer (17 fiches)
-  - [ ] La presse, du XIXe siècle à aujourd'hui — *à créer*
-  - [ ] Repérer une fausse information — *à créer*
-- [ ] La ville, lieu de tous les possibles — *à créer*
-- [ ] Argumenter : thèse, arguments et exemples — *à créer*
+  - [x] La presse, du XIXe siècle à aujourd'hui — 4ème — Français : la presse, du XIXe siècle à aujourd'hui (16 fiches)
+  - [x] Repérer une fausse information — 4ème — Français : repérer une fausse information (16 fiches)
+- [x] La ville, lieu de tous les possibles — 4ème — Français : la ville, lieu de tous les possibles (16 fiches)
+- [x] Argumenter : thèse, arguments et exemples — 4ème — Français : argumenter : thèse, arguments et exemples (16 fiches)
 - [x] Subordonnées relatives et complétives — 4ème — Français : subordonnées relatives et complétives (16 fiches)
-- [ ] Les subordonnées circonstancielles — *à créer*
+- [x] Les subordonnées circonstancielles — 4ème — Français : les subordonnées circonstancielles (16 fiches)
 - [x] Voix active et voix passive — 4ème — Français : voix active et voix passive (15 fiches)
-- [ ] Les valeurs des temps de l'indicatif — *à créer*
+- [x] Les valeurs des temps de l'indicatif — 4ème — Français : les valeurs des temps de l'indicatif (16 fiches)
 - [x] Subjonctif présent et conditionnel — 4ème — Français : subjonctif présent et conditionnel (15 fiches)
-- [ ] Le discours rapporté — *à créer*
+- [x] Le discours rapporté — 4ème — Français : le discours rapporté (16 fiches)
 - [x] Les figures de style — 4ème — Français : les figures de style (16 fiches)
-- [ ] Le vocabulaire des sentiments — *à créer*
+- [x] Le vocabulaire des sentiments — 4ème — Français : le vocabulaire des sentiments (16 fiches)
 - [x] Révisions de l'année — 4ème — Français : le récit au XIXe siècle et le théâtre de Molière (17 fiches)
 
-### 4e — Mathématiques (7 / 13)
+### 4e — Mathématiques (13 / 13)
 
 - [x] Fractions et nombres relatifs — l'essentiel — 4ème — Maths : multiplier et diviser fractions et nombres relatifs (16 fiches)
-  - [ ] Additionner et soustraire des fractions — *à créer*
-  - [ ] Multiplier et diviser des fractions — *à créer*
-  - [ ] Les quatre opérations sur les nombres relatifs — *à créer*
-- [ ] Puissances et notation scientifique — *à créer*
-- [ ] Nombres premiers et décomposition — *à créer*
-- [ ] Calcul littéral et équations — l'essentiel — *à créer*
-  - [ ] Développer et réduire avec la distributivité — *à créer*
-  - [ ] Résoudre une équation du premier degré — *à créer*
-- [ ] Proportionnalité, pourcentages et vitesse — *à créer*
+  - [x] Additionner et soustraire des fractions — 4ème — Maths : additionner et soustraire des fractions (16 fiches)
+  - [x] Multiplier et diviser des fractions — 4ème — Maths : multiplier et diviser des fractions (16 fiches)
+  - [x] Les quatre opérations sur les nombres relatifs — 4ème — Maths : les quatre opérations sur les nombres relatifs (16 fiches)
+- [x] Puissances et notation scientifique — 4ème — Maths : puissances et notation scientifique (16 fiches)
+- [x] Nombres premiers et décomposition — 4ème — Maths : nombres premiers et décomposition (16 fiches)
+- [x] Calcul littéral et équations — l'essentiel — 4ème — Maths : calcul littéral et équations (l'essentiel) (16 fiches)
+  - [x] Développer et réduire avec la distributivité — 4ème — Maths : développer et réduire avec la distributivité (16 fiches)
+  - [x] Résoudre une équation du premier degré — 4ème — Maths : résoudre une équation du premier degré (16 fiches)
+- [x] Proportionnalité, pourcentages et vitesse — 4ème — Maths : proportionnalité, pourcentages et vitesse (16 fiches)
 - [x] Statistiques : moyenne, médiane et étendue — 4ème — Maths : statistiques, moyenne, médiane et étendue (16 fiches)
 - [x] Premières probabilités — 4ème — Maths : premières probabilités (15 fiches)
-- [ ] Le théorème de Pythagore — *à créer*
+- [x] Le théorème de Pythagore — 4ème — Maths : le théorème de Pythagore (16 fiches)
 - [x] Théorème de Thalès et cosinus — l'essentiel — 4ème — Maths : théorème de Thalès et cosinus (16 fiches)
-  - [ ] Le théorème de Thalès dans le triangle — *à créer*
-  - [ ] Le cosinus d'un angle aigu — *à créer*
+  - [x] Le théorème de Thalès dans le triangle — 4ème — Maths : le théorème de Thalès dans le triangle (16 fiches)
+  - [x] Le cosinus d'un angle aigu — 4ème — Maths : le cosinus d'un angle aigu (16 fiches)
 - [x] Translations, rotations et frises — 4ème — Maths : translation, rotation et frises (16 fiches)
 - [x] Pyramides, cônes et volumes — 4ème — Maths : pyramides, cônes et volumes (16 fiches)
-- [ ] Algorithmique et programmation — *à créer*
+- [x] Algorithmique et programmation — 4ème — Maths : algorithmique et programmation (16 fiches)
 - [x] Révisions de l'année — 4ème — Maths : puissances, calcul littéral et Pythagore (16 fiches) ; 4ème — Maths : équations, proportionnalité et vitesse (16 fiches)
 
 ### 4e — Histoire (4 / 4)
 
 - [x] Bourgeoisies marchandes, négoces et traites négrières au XVIIIe siècle — l'essentiel — 4ème — Histoire : bourgeoisies marchandes et traites négrières au XVIIIe siècle (16 fiches)
-  - [ ] Le commerce triangulaire et les ports négriers — *à créer*
-  - [ ] L'esclavage dans les colonies et son abolition — *à créer*
+  - [x] Le commerce triangulaire et les ports négriers — 4ème — Histoire : le commerce triangulaire et les ports négriers (16 fiches)
+  - [x] L'esclavage dans les colonies et son abolition — 4ème — Histoire : l'esclavage dans les colonies et son abolition (16 fiches)
 - [x] Lumières, Révolution française et Empire — l'essentiel — 4ème — Histoire : Lumières, Révolution française et Empire (17 fiches)
-  - [ ] L'Europe des Lumières — *à créer*
-  - [ ] La Révolution française (1789-1799) — *à créer*
-  - [ ] Napoléon et l'Empire — *à créer*
+  - [x] L'Europe des Lumières — 4ème — Histoire : l'Europe des Lumières (16 fiches)
+  - [x] La Révolution française (1789-1799) — 4ème — Histoire : la Révolution française (1789-1799) (16 fiches)
+  - [x] Napoléon et l'Empire — 4ème — Histoire : Napoléon et l'Empire (16 fiches)
 - [x] L'Europe et le monde au XIXe siècle — l'essentiel — 4ème — Histoire : industrialisation et conquêtes coloniales au XIXe siècle (18 fiches)
-  - [ ] La révolution industrielle — *à créer*
-  - [ ] Ouvriers et bourgeois dans la société industrielle — *à créer*
-  - [ ] Conquêtes et sociétés coloniales — *à créer*
+  - [x] La révolution industrielle — 4ème — Histoire : la révolution industrielle (16 fiches)
+  - [x] Ouvriers et bourgeois dans la société industrielle — 4ème — Histoire : ouvriers et bourgeois dans la société industrielle (16 fiches)
+  - [x] Conquêtes et sociétés coloniales — 4ème — Histoire : conquêtes et sociétés coloniales au XIXe siècle (16 fiches)
 - [x] Société, culture et politique dans la France du XIXe siècle — l'essentiel — 4ème — Histoire : voter, la IIIe République et les femmes au XIXe siècle (16 fiches)
   - [x] Les régimes politiques en France de 1815 à 1870 — 4ème — Histoire : les régimes politiques en France au XIXe siècle (16 fiches)
-  - [ ] Les révolutions de 1830 et 1848 — *à créer*
-  - [ ] La IIIe République — *à créer*
-  - [ ] Conditions féminines au XIXe siècle — *à créer*
+  - [x] Les révolutions de 1830 et 1848 — 4ème — Histoire : les révolutions de 1830 et 1848 (16 fiches)
+  - [x] La IIIe République — 4ème — Histoire : la IIIe République (16 fiches)
+  - [x] Conditions féminines au XIXe siècle — 4ème — Histoire : conditions féminines au XIXe siècle (16 fiches)
 
 ### 4e — Géographie (5 / 5)
 
 - [x] L'urbanisation du monde — l'essentiel — 4ème — Géographie : l'urbanisation du monde (16 fiches)
-  - [ ] Espaces et paysages de l'urbanisation — *à créer*
-  - [ ] Des métropoles inégalement connectées — *à créer*
+  - [x] Espaces et paysages de l'urbanisation — 4ème — Géographie : espaces et paysages de l'urbanisation (16 fiches)
+  - [x] Des métropoles inégalement connectées — 4ème — Géographie : des métropoles inégalement connectées (16 fiches)
 - [x] Les mobilités humaines transnationales — l'essentiel — 4ème — Géographie : migrants et tourisme, les mobilités transnationales (16 fiches)
-  - [ ] Un monde de migrants — *à créer*
-  - [ ] Le tourisme et ses espaces — *à créer*
+  - [x] Un monde de migrants — 4ème — Géographie : un monde de migrants (16 fiches)
+  - [x] Le tourisme et ses espaces — 4ème — Géographie : le tourisme et ses espaces (16 fiches)
 - [x] Mers et océans, un monde maritimisé — 4ème — Géographie : mers et océans, un monde maritimisé (16 fiches)
 - [x] Le territoire des États-Unis dans la mondialisation — 4ème — Géographie : le territoire des États-Unis dans la mondialisation (16 fiches)
 - [x] Les dynamiques de l'Afrique de l'Ouest — 4ème — Géographie : les dynamiques de l'Afrique de l'Ouest (15 fiches)
 
-### 4e — EMC (2 / 4)
+### 4e — EMC (4 / 4)
 
 - [x] Le droit et la justice en France — 4ème — EMC : le droit et la justice en France (18 fiches)
 - [x] Les libertés et la laïcité — 4ème — EMC : les libertés et la laïcité (16 fiches)
-- [ ] Le harcèlement et le cyberharcèlement — *à créer*
-- [ ] L'engagement citoyen et associatif — *à créer*
+- [x] Le harcèlement et le cyberharcèlement — 4ème — EMC : le harcèlement et le cyberharcèlement (16 fiches)
+- [x] L'engagement citoyen et associatif — 4ème — EMC : l'engagement citoyen et associatif (16 fiches)
 
-### 4e — SVT (5 / 7)
+### 4e — SVT (7 / 7)
 
 - [x] Puberté et reproduction humaine — l'essentiel — 4ème — SVT : puberté et reproduction humaine (16 fiches)
-  - [ ] Puberté et appareils reproducteurs — *à créer*
-  - [ ] Fécondation, grossesse et contraception — *à créer*
+  - [x] Puberté et appareils reproducteurs — 4ème — SVT : puberté et appareils reproducteurs (16 fiches)
+  - [x] Fécondation, grossesse et contraception — 4ème — SVT : fécondation, grossesse et contraception (16 fiches)
 - [x] L'organisme pendant l'effort et la commande nerveuse — 4ème — SVT : l'organisme pendant l'effort et la commande nerveuse (16 fiches)
-- [ ] Le cœur et la circulation sanguine — *à créer*
+- [x] Le cœur et la circulation sanguine — 4ème — SVT : le cœur et la circulation sanguine (16 fiches)
 - [x] Digestion, nutriments et micro-organismes — l'essentiel — 4ème — SVT : digestion, nutriments et micro-organismes (16 fiches)
-  - [ ] Microbes et défenses de l'organisme — *à créer*
-- [ ] La nutrition des végétaux — *à créer*
+  - [x] Microbes et défenses de l'organisme — 4ème — SVT : microbes et défenses de l'organisme (16 fiches)
+- [x] La nutrition des végétaux — 4ème — SVT : la nutrition des végétaux (16 fiches)
 - [x] Séismes, volcans et tectonique des plaques — 4ème — SVT : séismes, volcans et tectonique des plaques (16 fiches)
 - [x] Météo, climats et activité humaine — 4ème — SVT : météo, climats et activité humaine (16 fiches)
 
@@ -1161,88 +1161,88 @@ Collège — 52 chapitres couverts sur 82, 54 boîtes.
 - [x] Circuits électriques et vitesse — 4ème — Physique : circuits électriques et vitesse (16 fiches)
 - [x] Formes d'énergie et conversions — 4ème — Physique : formes d'énergie et conversions (16 fiches)
 - [x] Signaux sonores et lumineux — l'essentiel — 4ème — Physique : signaux sonores et lumineux (16 fiches)
-  - [ ] Lumière, couleurs et vision — *à créer*
+  - [x] Lumière, couleurs et vision — 4ème — Physique : lumière, couleurs et vision (16 fiches)
 - [x] Interactions et forces — 4ème — Physique : interactions et forces (18 fiches)
 
-### 4e — Chimie (3 / 4)
+### 4e — Chimie (4 / 4)
 
 - [x] Atomes, molécules et transformations chimiques — 4ème — Chimie : atomes, molécules et transformations chimiques (16 fiches)
 - [x] Corps purs, mélanges et solutions — 4ème — Chimie : corps purs, mélanges et solutions (16 fiches)
 - [x] Combustions et tests de reconnaissance — 4ème — Chimie : combustions et tests de reconnaissance (15 fiches)
-- [ ] Masse volumique et conservation de la masse — *à créer*
+- [x] Masse volumique et conservation de la masse — 4ème — Chimie : masse volumique et conservation de la masse (16 fiches)
 
-### 4e — Technologie (2 / 4)
+### 4e — Technologie (4 / 4)
 
 - [x] Algorithmes, programmation et réseaux — 4ème — Technologie : algorithmes, programmation et réseaux (16 fiches)
 - [x] Capteurs, actionneurs et objets connectés — 4ème — Technologie : capteurs, actionneurs et objets connectés (16 fiches)
-- [ ] Concevoir et modéliser un objet — *à créer*
-- [ ] Matériaux et cycle de vie — *à créer*
+- [x] Concevoir et modéliser un objet — 4ème — Technologie : concevoir et modéliser un objet (16 fiches)
+- [x] Matériaux et cycle de vie — 4ème — Technologie : matériaux et cycle de vie (16 fiches)
 
-### 4e — Anglais (5 / 7)
+### 4e — Anglais (7 / 7)
 
 - [x] Les verbes irréguliers essentiels — Anglais — Les verbes irréguliers essentiels (59 fiches)
 - [x] Comparatifs et superlatifs — 4ème — Anglais : comparatifs et superlatifs (16 fiches)
 - [x] Prétérit ou present perfect — 4ème — Anglais : prétérit ou present perfect (17 fiches)
 - [x] Les modaux (can, must, should, may...) — 4ème — Anglais : les modaux (can, must, should, may...) (15 fiches)
 - [x] Futur (will, be going to) et prétérit en be + -ing — 4ème — Anglais : futur (will, be going to) et prétérit en be + -ing (17 fiches)
-- [ ] Les pronoms relatifs — *à créer*
-- [ ] Les quantifieurs et les dénombrables — *à créer*
+- [x] Les pronoms relatifs — 4ème — Anglais : les pronoms relatifs (16 fiches)
+- [x] Les quantifieurs et les dénombrables — 4ème — Anglais : les quantifieurs et les dénombrables (16 fiches)
 
-### 4e — Espagnol (2 / 4)
+### 4e — Espagnol (4 / 4)
 
 - [x] Ser et estar, gustar et le passé composé — 4ème — Espagnol : ser et estar, gustar et le passé composé (16 fiches)
 - [x] Futur, ir a + infinitif et impératif — 4ème — Espagnol : futur, ir a + infinitif et impératif (17 fiches)
-- [ ] Le passé simple (pretérito indefinido) — *à créer*
-- [ ] Les pays hispanophones — *à créer*
+- [x] Le passé simple (pretérito indefinido) — 4ème — Espagnol : le passé simple (pretérito indefinido) (16 fiches)
+- [x] Les pays hispanophones — 4ème — Espagnol : les pays hispanophones (16 fiches)
 
-### 4e — Allemand (2 / 4)
+### 4e — Allemand (4 / 4)
 
 - [x] Perfekt, verbes de modalité et place du verbe — 4ème — Allemand : Perfekt, verbes de modalité et place du verbe (16 fiches)
 - [x] Datif, prépositions et localisation — 4ème — Allemand : datif, prépositions et localisation (17 fiches)
-- [ ] Le prétérit des auxiliaires et des modaux — *à créer*
-- [ ] Les pays germanophones — *à créer*
+- [x] Le prétérit des auxiliaires et des modaux — 4ème — Allemand : le prétérit des auxiliaires et des modaux (16 fiches)
+- [x] Les pays germanophones — 4ème — Allemand : les pays germanophones (16 fiches)
 
-### 4e — Italien (1 / 3)
+### 4e — Italien (3 / 3)
 
 - [x] Le présent et la vie quotidienne — 4ème — Italien : le présent et la vie quotidienne (18 fiches)
-- [ ] Le passé composé — *à créer*
-- [ ] Les villes et les régions d'Italie — *à créer*
+- [x] Le passé composé — 4ème — Italien : le passé composé (16 fiches)
+- [x] Les villes et les régions d'Italie — 4ème — Italien : les villes et les régions d'Italie (16 fiches)
 
-### 4e — Latin (1 / 2)
+### 4e — Latin (2 / 2)
 
 - [x] 3e déclinaison, imparfait, parfait et institutions romaines — 4ème — Latin : 3e déclinaison, imparfait, parfait et institutions romaines (17 fiches)
-- [ ] Mythologie et héros romains — *à créer*
+- [x] Mythologie et héros romains — 4ème — Latin : mythologie et héros romains (16 fiches)
 
-### 4e — Arts plastiques (0 / 1)
+### 4e — Arts plastiques (1 / 1)
 
-- [ ] L'œuvre, l'espace et le spectateur — *à créer*
+- [x] L'œuvre, l'espace et le spectateur — 4ème — Arts plastiques : l'œuvre, l'espace et le spectateur (16 fiches)
 
-### 4e — Éducation musicale (0 / 1)
+### 4e — Éducation musicale (1 / 1)
 
-- [ ] Musiques classique et romantique, repères — *à créer*
+- [x] Musiques classique et romantique, repères — 4ème — Éducation musicale : musiques classique et romantique, repères (16 fiches)
 
 
 ## 3e
 
-Collège — 102 chapitres couverts sur 108, 160 boîtes.
+Collège — 108 chapitres couverts sur 108, 192 boîtes.
 
 ### 3e — Français (17 / 17)
 
 - [x] Se raconter, se représenter — l'essentiel — Brevet — Français : se raconter, se représenter (autobiographie) (16 fiches)
-  - [ ] L'autobiographie et le pacte autobiographique — *à créer*
-  - [ ] Récits d'enfance, journaux intimes et autoportraits — *à créer*
+  - [x] L'autobiographie et le pacte autobiographique — 3ème — Français : l'autobiographie et le pacte autobiographique (16 fiches)
+  - [x] Récits d'enfance, journaux intimes et autoportraits — 3ème — Français : récits d'enfance, journaux intimes et autoportraits (16 fiches)
 - [x] Dénoncer les travers de la société — l'essentiel — Brevet — Français : dénoncer les travers de la société (17 fiches)
-  - [ ] Satire, ironie et apologues (Voltaire, La Fontaine…) — *à créer*
-  - [ ] Le roman réaliste et naturaliste (Hugo, Zola, Maupassant) — *à créer*
+  - [x] Satire, ironie et apologues (Voltaire, La Fontaine…) — 3ème — Français : satire, ironie et apologues (Voltaire, La Fontaine…) (16 fiches)
+  - [x] Le roman réaliste et naturaliste (Hugo, Zola, Maupassant) — 3ème — Français : le roman réaliste et naturaliste (Hugo, Zola, Maupassant) (16 fiches)
 - [x] Visions poétiques du monde — l'essentiel — Brevet — Français : visions poétiques du monde (17 fiches)
-  - [ ] Le lyrisme et la poésie de la nature — *à créer*
-  - [ ] Versification et formes poétiques — *à créer*
+  - [x] Le lyrisme et la poésie de la nature — 3ème — Français : le lyrisme et la poésie de la nature (16 fiches)
+  - [x] Versification et formes poétiques — 3ème — Français : versification et formes poétiques (16 fiches)
 - [x] Agir dans la cité : individu et pouvoir — l'essentiel — Brevet — Français : agir dans la cité, engagement et guerre (16 fiches)
-  - [ ] Écrire la guerre : témoignages et poésie de la Résistance — *à créer*
-  - [ ] L'individu face au pouvoir au théâtre (Antigone…) — *à créer*
+  - [x] Écrire la guerre : témoignages et poésie de la Résistance — 3ème — Français : écrire la guerre : témoignages et poésie de la Résistance (16 fiches)
+  - [x] L'individu face au pouvoir au théâtre (Antigone…) — 3ème — Français : l'individu face au pouvoir au théâtre (Antigone…) (16 fiches)
 - [x] Progrès et rêves scientifiques — l'essentiel — Brevet — Français : progrès et rêves scientifiques (15 fiches)
-  - [ ] Science-fiction et récits d'anticipation — *à créer*
-  - [ ] Le progrès en débat : argumenter — *à créer*
+  - [x] Science-fiction et récits d'anticipation — 3ème — Français : science-fiction et récits d'anticipation (16 fiches)
+  - [x] Le progrès en débat : argumenter — 3ème — Français : le progrès en débat : argumenter (16 fiches)
 - [x] Les classes grammaticales des mots — Brevet — Français : les classes grammaticales des mots (16 fiches)
 - [x] Les fonctions grammaticales — Brevet — Français : les fonctions grammaticales (16 fiches)
 - [x] Propositions et phrase complexe — Brevet — Français : propositions et phrase complexe (16 fiches)
@@ -1323,21 +1323,21 @@ Collège — 102 chapitres couverts sur 108, 160 boîtes.
 - [x] Histoire des arts : les arts au XXe siècle — Brevet — Histoire des arts : les arts au XXe siècle (17 fiches)
 - [x] Révisions du brevet — Histoire — Les dates clés du Brevet (53 fiches) ; Brevet — Histoire : notions et personnages clés (36 fiches) ; Brevet — Histoire : guerre froide, décolonisation et Europe (19 fiches) ; Brevet — Histoire : la France de 1944 à nos jours (18 fiches) ; Brevet — Histoire : lieux et repères spatiaux du programme (19 fiches) ; Brevet — Histoire : grands discours et textes patrimoniaux (20 fiches)
 
-### 3e — Géographie (5 / 8)
+### 3e — Géographie (8 / 8)
 
 - [x] Les aires urbaines, une France mondialisée — l'essentiel — Brevet — Géographie : aires urbaines et espaces peu denses (17 fiches)
-  - [ ] Métropoles et métropolisation — *à créer*
-  - [ ] Périurbanisation et mobilités quotidiennes — *à créer*
+  - [x] Métropoles et métropolisation — 3ème — Géographie : métropoles et métropolisation (16 fiches)
+  - [x] Périurbanisation et mobilités quotidiennes — 3ème — Géographie : périurbanisation et mobilités quotidiennes (16 fiches)
 - [x] Les espaces productifs et leurs évolutions — l'essentiel — Brevet — Géographie : les espaces productifs français (18 fiches)
-  - [ ] Espaces industriels — *à créer*
-  - [ ] Espaces agricoles — *à créer*
-  - [ ] Espaces de services et du tourisme — *à créer*
-- [ ] Les espaces de faible densité et leurs atouts — *à créer*
+  - [x] Espaces industriels — 3ème — Géographie : espaces productifs industriels (16 fiches)
+  - [x] Espaces agricoles — 3ème — Géographie : espaces productifs agricoles (16 fiches)
+  - [x] Espaces de services et du tourisme — 3ème — Géographie : espaces de services et du tourisme (16 fiches)
+- [x] Les espaces de faible densité et leurs atouts — 3ème — Géographie : les espaces de faible densité et leurs atouts (16 fiches)
 - [x] Aménager les territoires français — l'essentiel — Brevet — Géographie : aménagement et territoires ultramarins (16 fiches)
-  - [ ] Les acteurs de l'aménagement — *à créer*
+  - [x] Les acteurs de l'aménagement — 3ème — Géographie : les acteurs de l'aménagement (16 fiches)
   - [x] Mobilités et réseaux de transport — Brevet — Géographie : mobilités et réseaux de transport en France (16 fiches)
-- [ ] Les territoires ultramarins français — *à créer*
-- [ ] L'Union européenne, un territoire d'appartenance — *à créer*
+- [x] Les territoires ultramarins français — 3ème — Géographie : les territoires ultramarins français (16 fiches)
+- [x] L'Union européenne, un territoire d'appartenance — 3ème — Géographie : l'Union européenne, un territoire d'appartenance (16 fiches)
 - [x] La France et l'Europe dans le monde — Brevet — Géographie : la France et l'UE dans le monde (16 fiches)
 - [x] Révisions du brevet — Brevet — Géographie : notions et repères (30 fiches) ; Brevet — Géographie : fleuves, massifs, métropoles et régions (19 fiches) ; Brevet — Géographie : méthode du croquis et de la légende (16 fiches)
 
@@ -1353,32 +1353,32 @@ Collège — 102 chapitres couverts sur 108, 160 boîtes.
 ### 3e — SVT (10 / 10)
 
 - [x] Génétique et hérédité — l'essentiel — Brevet — SVT : génétique et hérédité (16 fiches)
-  - [ ] Chromosomes, ADN et gènes — *à créer*
-  - [ ] Reproduction sexuée et diversité génétique — *à créer*
+  - [x] Chromosomes, ADN et gènes — 3ème — SVT : chromosomes, ADN et gènes (16 fiches)
+  - [x] Reproduction sexuée et diversité génétique — 3ème — SVT : reproduction sexuée et diversité génétique (16 fiches)
 - [x] Évolution et biodiversité — Brevet — SVT : évolution et biodiversité (16 fiches)
 - [x] Écosystèmes et activités humaines — Brevet — SVT : écosystèmes et activités humaines (15 fiches)
 - [x] Nutrition et organisation des plantes — Brevet — SVT : nutrition et organisation des plantes (15 fiches)
 - [x] Nutrition, respiration et circulation — l'essentiel — Brevet — SVT : nutrition, respiration et circulation (16 fiches)
-  - [ ] Digestion et alimentation — *à créer*
-  - [ ] Respiration et circulation sanguine — *à créer*
+  - [x] Digestion et alimentation — 3ème — SVT : digestion et alimentation (16 fiches)
+  - [x] Respiration et circulation sanguine — 3ème — SVT : respiration et circulation sanguine (16 fiches)
 - [x] Immunité, microbes et vaccination — l'essentiel — Brevet — SVT : immunité, microbes et vaccination (16 fiches)
-  - [ ] Micro-organismes, hygiène et antibiotiques — *à créer*
-  - [ ] Les défenses de l'organisme et la vaccination — *à créer*
+  - [x] Micro-organismes, hygiène et antibiotiques — 3ème — SVT : micro-organismes, hygiène et antibiotiques (16 fiches)
+  - [x] Les défenses de l'organisme et la vaccination — 3ème — SVT : les défenses de l'organisme et la vaccination (16 fiches)
 - [x] Système nerveux et santé — Brevet — SVT : système nerveux et santé (18 fiches)
 - [x] Activité physique, effort et santé — Brevet — SVT : activité physique, effort et santé (16 fiches)
 - [x] La Terre, ses risques et ses ressources — l'essentiel — Brevet — SVT : la Terre, ses risques et ses ressources (19 fiches)
-  - [ ] Séismes, volcans et tectonique des plaques — *à créer*
+  - [x] Séismes, volcans et tectonique des plaques — 3ème — SVT : séismes, volcans et tectonique des plaques (16 fiches)
   - [x] Météorologie, climat et changement climatique — Brevet — SVT : météorologie, climat et changement climatique (15 fiches)
-  - [ ] Ressources naturelles et environnement — *à créer*
+  - [x] Ressources naturelles et environnement — 3ème — SVT : ressources naturelles et environnement (16 fiches)
 - [x] Révisions du brevet — Brevet — SVT : l'essentiel du cycle 4 (37 fiches) ; Brevet — SVT : démarche scientifique et exploitation de documents (15 fiches)
 
 ### 3e — Physique (5 / 5)
 
 - [x] Mouvements, forces et gravitation — l'essentiel — Brevet — Physique : mouvements, forces et gravitation (19 fiches)
-  - [ ] Gravitation, poids et masse — *à créer*
+  - [x] Gravitation, poids et masse — 3ème — Physique : gravitation, poids et masse (16 fiches)
   - [x] Énergie cinétique et sécurité routière — Brevet — Physique : énergie cinétique et sécurité routière (16 fiches)
 - [x] Électricité, loi d'Ohm et énergie — l'essentiel — Brevet — Physique : électricité, loi d'Ohm et énergie (19 fiches)
-  - [ ] Circuits et loi d'Ohm — *à créer*
+  - [x] Circuits et loi d'Ohm — 3ème — Physique : circuits et loi d'Ohm (16 fiches)
   - [x] Puissance et consommation électrique d'un logement — Brevet — Physique : puissance et consommation électrique d'un logement (16 fiches)
 - [x] Signaux sonores et lumineux — Brevet — Physique : signaux sonores et lumineux (20 fiches)
 - [x] L'Univers et le système solaire — Brevet — Physique : l'Univers et le système solaire (16 fiches)
@@ -1427,21 +1427,21 @@ Collège — 102 chapitres couverts sur 108, 160 boîtes.
 - [x] Conjuguer au passé — Brevet — Allemand : conjuguer au passé (17 fiches)
 - [x] Vocabulaire thématique essentiel — Brevet — Allemand : vocabulaire thématique essentiel (17 fiches)
 
-### 3e — Italien (1 / 3)
+### 3e — Italien (3 / 3)
 
 - [x] Grammaire et vocabulaire de base — Brevet — Italien : grammaire et vocabulaire de base (16 fiches)
-- [ ] Conjuguer au passé — *à créer*
-- [ ] Vocabulaire thématique essentiel — *à créer*
+- [x] Conjuguer au passé — 3ème — Italien : conjuguer au passé (16 fiches)
+- [x] Vocabulaire thématique essentiel — 3ème — Italien : vocabulaire thématique essentiel (16 fiches)
 
 ### 3e — Latin (2 / 2)
 
 - [x] Mots latins et héritage en français — Brevet — Latin : mots latins et héritage en français (18 fiches)
 - [x] Rome, sa civilisation et ses mythes — Brevet — Latin : Rome, sa civilisation et ses mythes (16 fiches)
 
-### 3e — Grec ancien (1 / 2)
+### 3e — Grec ancien (2 / 2)
 
 - [x] L'alphabet et les mots grecs du français — Brevet — Grec ancien : l'alphabet et les mots grecs du français (19 fiches)
-- [ ] Mythologie et héros grecs — *à créer*
+- [x] Mythologie et héros grecs — 3ème — Grec ancien : mythologie et héros grecs (16 fiches)
 
 ### 3e — Arts plastiques (2 / 2)
 

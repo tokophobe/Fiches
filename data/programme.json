@@ -1,5 +1,5 @@
 {
- "maj": "13/11/2026",
+ "maj": "14/11/2026",
  "niveaux": [
   {
    "id": "cp",
@@ -6680,11 +6680,23 @@
        "sousthemes": [
         {
          "titre": "Récits de voyage et d'exploration",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-fr-recits-voyage",
+           "titre": "5ème — Français : récits de voyage et d'exploration",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Romans d'aventure",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-fr-romans-aventure",
+           "titre": "5ème — Français : romans d'aventure",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6700,61 +6712,139 @@
        "sousthemes": [
         {
          "titre": "Amitié et famille dans le roman",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-fr-amitie-famille",
+           "titre": "5ème — Français : amitié et famille dans le roman",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "Imaginer des univers nouveaux",
-       "boites": [],
+       "boites": [
+        {
+         "cle": "r5e-fr-univers-nouveaux",
+         "titre": "5ème — Français : imaginer des univers nouveaux (l'essentiel)",
+         "fiches": 16
+        }
+       ],
        "sousthemes": [
         {
          "titre": "La science-fiction",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-fr-science-fiction",
+           "titre": "5ème — Français : la science-fiction",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Contes, merveilleux et fantasy",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-fr-contes-fantasy",
+           "titre": "5ème — Français : contes, merveilleux et fantasy",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "Héros, héroïnes et héroïsmes",
-       "boites": [],
+       "boites": [
+        {
+         "cle": "r5e-fr-heros",
+         "titre": "5ème — Français : héros, héroïnes et héroïsmes (l'essentiel)",
+         "fiches": 16
+        }
+       ],
        "sousthemes": [
         {
          "titre": "Chevaliers et romans de la Table ronde",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-fr-chevaliers-table-ronde",
+           "titre": "5ème — Français : chevaliers et romans de la Table ronde",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Héros d'épopée et héros d'aujourd'hui",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-fr-heros-epopee",
+           "titre": "5ème — Français : héros d'épopée et héros d'aujourd'hui",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "L'être humain est-il maître de la nature ?",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-homme-nature",
+         "titre": "5ème — Français : l'être humain est-il maître de la nature ?",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Types de phrases et propositions",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-types-phrases",
+         "titre": "5ème — Français : types de phrases et propositions",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les fonctions dans la phrase (COD, COI, attribut)",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-fonctions",
+         "titre": "5ème — Français : les fonctions dans la phrase (COD, COI, attribut)",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les compléments circonstanciels",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-complements-circonstanciels",
+         "titre": "5ème — Français : les compléments circonstanciels",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "L'imparfait et le passé simple dans le récit",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-imparfait-passe-simple",
+         "titre": "5ème — Français : l'imparfait et le passé simple dans le récit",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le passé composé et le plus-que-parfait",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-pc-pqp",
+         "titre": "5ème — Français : le passé composé et le plus-que-parfait",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "L'accord du participe passé",
@@ -6768,15 +6858,33 @@
       },
       {
        "titre": "Le discours direct et indirect",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-discours-direct-indirect",
+         "titre": "5ème — Français : le discours direct et indirect",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les homophones grammaticaux",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-homophones",
+         "titre": "5ème — Français : les homophones grammaticaux",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le vocabulaire et la formation des mots",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-formation-mots",
+         "titre": "5ème — Français : le vocabulaire et la formation des mots",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Révisions de l'année",
@@ -6801,15 +6909,33 @@
      "chapitres": [
       {
        "titre": "Additionner et soustraire des nombres relatifs",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-maths-relatifs-addition",
+         "titre": "5ème — Maths : additionner et soustraire des nombres relatifs",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Repérage dans le plan avec les relatifs",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-maths-reperage",
+         "titre": "5ème — Maths : repérage dans le plan avec les relatifs",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Priorités de calcul et distributivité",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-maths-priorites",
+         "titre": "5ème — Maths : priorités de calcul et distributivité",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Fractions, comparaison et addition",
@@ -6823,7 +6949,13 @@
        "sousthemes": [
         {
          "titre": "Fractions égales et simplification",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-maths-fractions-egales",
+           "titre": "5ème — Maths : fractions égales et simplification",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6839,11 +6971,23 @@
       },
       {
        "titre": "Multiples, diviseurs et nombres premiers",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-maths-multiples-diviseurs",
+         "titre": "5ème — Maths : multiples, diviseurs et nombres premiers",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Proportionnalité et pourcentages",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-maths-proportionnalite",
+         "titre": "5ème — Maths : proportionnalité et pourcentages",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Statistiques et premières probabilités",
@@ -6867,11 +7011,23 @@
        "sousthemes": [
         {
          "titre": "Angles alternes-internes et correspondants",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-maths-angles-paralleles",
+           "titre": "5ème — Maths : angles alternes-internes et correspondants",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Médiatrices et cercle circonscrit",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-maths-mediatrices",
+           "titre": "5ème — Maths : médiatrices et cercle circonscrit",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6907,17 +7063,35 @@
        "sousthemes": [
         {
          "titre": "Volumes et conversions des unités de volume",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-maths-volumes-unites",
+           "titre": "5ème — Maths : volumes et conversions des unités de volume",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "Durées et vitesses",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-maths-durees-vitesses",
+         "titre": "5ème — Maths : durées et vitesses",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Algorithmique avec Scratch",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-maths-scratch",
+         "titre": "5ème — Maths : algorithmique avec Scratch",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Révisions de l'année",
@@ -6947,15 +7121,33 @@
        "sousthemes": [
         {
          "titre": "Byzance et l'Empire carolingien",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-byzance-carolingiens",
+           "titre": "5ème — Histoire : Byzance et l'Empire carolingien",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "De la naissance de l'islam à la prise de Bagdad",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-islam",
+           "titre": "5ème — Histoire : de la naissance de l'islam à la prise de Bagdad",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Croisades et Reconquista",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-croisades-reconquista",
+           "titre": "5ème — Histoire : croisades et Reconquista",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6971,7 +7163,13 @@
        "sousthemes": [
         {
          "titre": "Seigneurs et paysans",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-seigneurs-paysans",
+           "titre": "5ème — Histoire : seigneurs et paysans",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'Église au Moyen Âge",
@@ -6985,11 +7183,23 @@
         },
         {
          "titre": "L'essor des villes et des marchands",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-villes-marchands",
+           "titre": "5ème — Histoire : l'essor des villes et des marchands",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'affirmation du pouvoir royal (Capétiens et Valois)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-pouvoir-royal",
+           "titre": "5ème — Histoire : l'affirmation du pouvoir royal (Capétiens et Valois)",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7005,15 +7215,33 @@
        "sousthemes": [
         {
          "titre": "Grandes découvertes, Charles Quint et Soliman",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-grandes-decouvertes",
+           "titre": "5ème — Histoire : grandes découvertes, Charles Quint et Soliman",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Humanisme et Renaissance artistique",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-humanisme-renaissance",
+           "titre": "5ème — Histoire : humanisme et Renaissance artistique",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Réformes et guerres de religion",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-reformes-guerres-religion",
+           "titre": "5ème — Histoire : réformes et guerres de religion",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Du prince de la Renaissance au roi absolu",
@@ -7045,11 +7273,23 @@
        "sousthemes": [
         {
          "titre": "Croissance démographique : l'exemple de l'Inde ou de la Chine",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-geo-demographie-inde-chine",
+           "titre": "5ème — Géographie : croissance démographique : l'exemple de l'Inde ou de la Chine",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Richesse et pauvreté dans le monde",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-geo-richesse-pauvrete",
+           "titre": "5ème — Géographie : richesse et pauvreté dans le monde",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7065,15 +7305,33 @@
        "sousthemes": [
         {
          "titre": "L'énergie",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-geo-energie",
+           "titre": "5ème — Géographie : l'énergie",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'eau",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-geo-eau",
+           "titre": "5ème — Géographie : l'eau",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Nourrir l'humanité",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-geo-nourrir-humanite",
+           "titre": "5ème — Géographie : nourrir l'humanité",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7089,11 +7347,23 @@
        "sousthemes": [
         {
          "titre": "Le changement climatique et ses effets",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-geo-changement-climatique",
+           "titre": "5ème — Géographie : le changement climatique et ses effets",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les risques industriels et technologiques",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-geo-risques-industriels",
+           "titre": "5ème — Géographie : les risques industriels et technologiques",
+           "fiches": 16
+          }
+         ]
         }
        ]
       }
@@ -7115,15 +7385,33 @@
       },
       {
        "titre": "La laïcité",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-emc-laicite",
+         "titre": "5ème — EMC : la laïcité",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "La justice et les droits",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-emc-justice-droits",
+         "titre": "5ème — EMC : la justice et les droits",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les médias et la responsabilité",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-emc-medias",
+         "titre": "5ème — EMC : les médias et la responsabilité",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7133,11 +7421,23 @@
      "chapitres": [
       {
        "titre": "La cellule, unité du vivant",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-svt-cellule",
+         "titre": "5ème — SVT : la cellule, unité du vivant",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Respiration et digestion",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-svt-respiration-digestion",
+         "titre": "5ème — SVT : respiration et digestion",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Nutrition et reproduction des plantes à fleurs",
@@ -7161,7 +7461,13 @@
       },
       {
        "titre": "Hygiène, microbes et santé",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-svt-hygiene-microbes",
+         "titre": "5ème — SVT : hygiène, microbes et santé",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Séismes, volcans et tectonique des plaques",
@@ -7175,7 +7481,13 @@
        "sousthemes": [
         {
          "titre": "Les fossiles et l'histoire de la Terre",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-svt-fossiles",
+           "titre": "5ème — SVT : les fossiles et l'histoire de la Terre",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7217,15 +7529,33 @@
       },
       {
        "titre": "L'énergie et ses conversions",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-phys-energie",
+         "titre": "5ème — Physique : l'énergie et ses conversions",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Mouvements et vitesse",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-phys-mouvement-vitesse",
+         "titre": "5ème — Physique : mouvements et vitesse",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le système solaire",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-phys-systeme-solaire",
+         "titre": "5ème — Physique : le système solaire",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7255,7 +7585,13 @@
       },
       {
        "titre": "L'eau dans tous ses états",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-chim-etats-eau",
+         "titre": "5ème — Chimie : l'eau dans tous ses états",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7275,15 +7611,33 @@
       },
       {
        "titre": "Matériaux et objets techniques",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-techno-materiaux-objets",
+         "titre": "5ème — Technologie : matériaux et objets techniques",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Programmation et objets connectés",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-techno-objets-connectes",
+         "titre": "5ème — Technologie : programmation et objets connectés",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Représenter un objet, croquis et modélisation 3D",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-techno-representer-objet",
+         "titre": "5ème — Technologie : représenter un objet, croquis et modélisation 3D",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7333,19 +7687,43 @@
       },
       {
        "titre": "Les verbes irréguliers du prétérit",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-ang-preterit-irreguliers",
+         "titre": "5ème — Anglais : les verbes irréguliers du prétérit",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les quantifieurs (some, any, much, many)",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-ang-quantifieurs",
+         "titre": "5ème — Anglais : les quantifieurs (some, any, much, many)",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les pays et la culture anglophones",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-ang-pays-anglophones",
+         "titre": "5ème — Anglais : les pays et la culture anglophones",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le corps et la santé",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-ang-corps-sante",
+         "titre": "5ème — Anglais : le corps et la santé",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7375,19 +7753,43 @@
       },
       {
        "titre": "Se présenter et la famille",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-esp-presentation-famille",
+         "titre": "5ème — Espagnol : se présenter et la famille",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le présent de l'indicatif",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-esp-present",
+         "titre": "5ème — Espagnol : le présent de l'indicatif",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les goûts avec gustar",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-esp-gustar",
+         "titre": "5ème — Espagnol : les goûts avec gustar",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le collège et la vie quotidienne",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-esp-college-quotidien",
+         "titre": "5ème — Espagnol : le collège et la vie quotidienne",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7417,11 +7819,23 @@
       },
       {
        "titre": "L'école, les loisirs et les goûts",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-all-ecole-loisirs",
+         "titre": "5ème — Allemand : l'école, les loisirs et les goûts",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le présent et la place du verbe",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-all-present-place-verbe",
+         "titre": "5ème — Allemand : le présent et la place du verbe",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7441,11 +7855,23 @@
       },
       {
        "titre": "La famille et la description",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-ita-famille-description",
+         "titre": "5ème — Italien : la famille et la description",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le présent des verbes réguliers",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-ita-present-reguliers",
+         "titre": "5ème — Italien : le présent des verbes réguliers",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7465,11 +7891,23 @@
       },
       {
        "titre": "La vie quotidienne à Rome",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-lat-vie-quotidienne-rome",
+         "titre": "5ème — Latin : la vie quotidienne à Rome",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Dieux et héros de la mythologie",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-lat-dieux-heros",
+         "titre": "5ème — Latin : dieux et héros de la mythologie",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7489,7 +7927,13 @@
       },
       {
        "titre": "La matérialité de l'œuvre",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-arts-materialite",
+         "titre": "5ème — Arts plastiques : la matérialité de l'œuvre",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7499,11 +7943,23 @@
      "chapitres": [
       {
        "titre": "Les familles d'instruments et l'orchestre",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-mus-instruments-orchestre",
+         "titre": "5ème — Éducation musicale : les familles d'instruments et l'orchestre",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Du Moyen Âge au baroque, repères musicaux",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-mus-moyen-age-baroque",
+         "titre": "5ème — Éducation musicale : du Moyen Âge au baroque, repères musicaux",
+         "fiches": 16
+        }
+       ]
       }
      ]
     }
@@ -7530,11 +7986,23 @@
        "sousthemes": [
         {
          "titre": "La poésie lyrique et ses images (Ronsard, Labé, Hugo…)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-poesie-amour",
+           "titre": "4ème — Français : la poésie lyrique et ses images (Ronsard, Labé, Hugo…)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'amour au théâtre et dans le roman",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-amour-theatre-roman",
+           "titre": "4ème — Français : l'amour au théâtre et dans le roman",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7550,11 +8018,23 @@
        "sousthemes": [
         {
          "titre": "Le Cid et la tragédie classique",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-le-cid",
+           "titre": "4ème — Français : Le Cid et la tragédie classique",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Molière et la comédie",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-moliere",
+           "titre": "4ème — Français : Molière et la comédie",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7570,11 +8050,23 @@
        "sousthemes": [
         {
          "titre": "Le roman réaliste et naturaliste (Balzac, Flaubert, Zola)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-roman-realiste",
+           "titre": "4ème — Français : le roman réaliste et naturaliste (Balzac, Flaubert, Zola)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le récit fantastique (Maupassant, Mérimée, Gautier)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-fantastique",
+           "titre": "4ème — Français : le récit fantastique (Maupassant, Mérimée, Gautier)",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7590,21 +8082,45 @@
        "sousthemes": [
         {
          "titre": "La presse, du XIXe siècle à aujourd'hui",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-presse",
+           "titre": "4ème — Français : la presse, du XIXe siècle à aujourd'hui",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Repérer une fausse information",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-fausses-informations",
+           "titre": "4ème — Français : repérer une fausse information",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "La ville, lieu de tous les possibles",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-fr-ville",
+         "titre": "4ème — Français : la ville, lieu de tous les possibles",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Argumenter : thèse, arguments et exemples",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-fr-argumenter",
+         "titre": "4ème — Français : argumenter : thèse, arguments et exemples",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Subordonnées relatives et complétives",
@@ -7618,7 +8134,13 @@
       },
       {
        "titre": "Les subordonnées circonstancielles",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-fr-circonstancielles",
+         "titre": "4ème — Français : les subordonnées circonstancielles",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Voix active et voix passive",
@@ -7632,7 +8154,13 @@
       },
       {
        "titre": "Les valeurs des temps de l'indicatif",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-fr-valeurs-temps",
+         "titre": "4ème — Français : les valeurs des temps de l'indicatif",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Subjonctif présent et conditionnel",
@@ -7646,7 +8174,13 @@
       },
       {
        "titre": "Le discours rapporté",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-fr-discours-rapporte",
+         "titre": "4ème — Français : le discours rapporté",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les figures de style",
@@ -7660,7 +8194,13 @@
       },
       {
        "titre": "Le vocabulaire des sentiments",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-fr-vocabulaire-sentiments",
+         "titre": "4ème — Français : le vocabulaire des sentiments",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Révisions de l'année",
@@ -7690,43 +8230,97 @@
        "sousthemes": [
         {
          "titre": "Additionner et soustraire des fractions",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-maths-additionner-fractions",
+           "titre": "4ème — Maths : additionner et soustraire des fractions",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Multiplier et diviser des fractions",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-maths-multiplier-fractions",
+           "titre": "4ème — Maths : multiplier et diviser des fractions",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les quatre opérations sur les nombres relatifs",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-maths-nombres-relatifs",
+           "titre": "4ème — Maths : les quatre opérations sur les nombres relatifs",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "Puissances et notation scientifique",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-maths-puissances",
+         "titre": "4ème — Maths : puissances et notation scientifique",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Nombres premiers et décomposition",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-maths-nombres-premiers",
+         "titre": "4ème — Maths : nombres premiers et décomposition",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Calcul littéral et équations",
-       "boites": [],
+       "boites": [
+        {
+         "cle": "r4e-maths-calcul-litteral",
+         "titre": "4ème — Maths : calcul littéral et équations (l'essentiel)",
+         "fiches": 16
+        }
+       ],
        "sousthemes": [
         {
          "titre": "Développer et réduire avec la distributivité",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-maths-distributivite",
+           "titre": "4ème — Maths : développer et réduire avec la distributivité",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Résoudre une équation du premier degré",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-maths-equations",
+           "titre": "4ème — Maths : résoudre une équation du premier degré",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "Proportionnalité, pourcentages et vitesse",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-maths-proportionnalite",
+         "titre": "4ème — Maths : proportionnalité, pourcentages et vitesse",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Statistiques : moyenne, médiane et étendue",
@@ -7750,7 +8344,13 @@
       },
       {
        "titre": "Le théorème de Pythagore",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-maths-pythagore",
+         "titre": "4ème — Maths : le théorème de Pythagore",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Théorème de Thalès et cosinus",
@@ -7764,11 +8364,23 @@
        "sousthemes": [
         {
          "titre": "Le théorème de Thalès dans le triangle",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-maths-thales",
+           "titre": "4ème — Maths : le théorème de Thalès dans le triangle",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le cosinus d'un angle aigu",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-maths-cosinus",
+           "titre": "4ème — Maths : le cosinus d'un angle aigu",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7794,7 +8406,13 @@
       },
       {
        "titre": "Algorithmique et programmation",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-maths-algorithmique",
+         "titre": "4ème — Maths : algorithmique et programmation",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Révisions de l'année",
@@ -7829,11 +8447,23 @@
        "sousthemes": [
         {
          "titre": "Le commerce triangulaire et les ports négriers",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-commerce-triangulaire",
+           "titre": "4ème — Histoire : le commerce triangulaire et les ports négriers",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'esclavage dans les colonies et son abolition",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-esclavage-abolition",
+           "titre": "4ème — Histoire : l'esclavage dans les colonies et son abolition",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7849,15 +8479,33 @@
        "sousthemes": [
         {
          "titre": "L'Europe des Lumières",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-lumieres",
+           "titre": "4ème — Histoire : l'Europe des Lumières",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "La Révolution française (1789-1799)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-revolution-francaise",
+           "titre": "4ème — Histoire : la Révolution française (1789-1799)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Napoléon et l'Empire",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-napoleon-empire",
+           "titre": "4ème — Histoire : Napoléon et l'Empire",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7873,15 +8521,33 @@
        "sousthemes": [
         {
          "titre": "La révolution industrielle",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-revolution-industrielle",
+           "titre": "4ème — Histoire : la révolution industrielle",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Ouvriers et bourgeois dans la société industrielle",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-ouvriers-bourgeois",
+           "titre": "4ème — Histoire : ouvriers et bourgeois dans la société industrielle",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Conquêtes et sociétés coloniales",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-colonies-xixe",
+           "titre": "4ème — Histoire : conquêtes et sociétés coloniales au XIXe siècle",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7907,15 +8573,33 @@
         },
         {
          "titre": "Les révolutions de 1830 et 1848",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-revolutions-1830-1848",
+           "titre": "4ème — Histoire : les révolutions de 1830 et 1848",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "La IIIe République",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-troisieme-republique",
+           "titre": "4ème — Histoire : la IIIe République",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Conditions féminines au XIXe siècle",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-conditions-feminines",
+           "titre": "4ème — Histoire : conditions féminines au XIXe siècle",
+           "fiches": 16
+          }
+         ]
         }
        ]
       }
@@ -7937,11 +8621,23 @@
        "sousthemes": [
         {
          "titre": "Espaces et paysages de l'urbanisation",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-geo-paysages-urbanisation",
+           "titre": "4ème — Géographie : espaces et paysages de l'urbanisation",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Des métropoles inégalement connectées",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-geo-metropoles-connectees",
+           "titre": "4ème — Géographie : des métropoles inégalement connectées",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7957,11 +8653,23 @@
        "sousthemes": [
         {
          "titre": "Un monde de migrants",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-geo-migrants",
+           "titre": "4ème — Géographie : un monde de migrants",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le tourisme et ses espaces",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-geo-tourisme",
+           "titre": "4ème — Géographie : le tourisme et ses espaces",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -8023,11 +8731,23 @@
       },
       {
        "titre": "Le harcèlement et le cyberharcèlement",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-emc-harcelement",
+         "titre": "4ème — EMC : le harcèlement et le cyberharcèlement",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "L'engagement citoyen et associatif",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-emc-engagement",
+         "titre": "4ème — EMC : l'engagement citoyen et associatif",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8047,11 +8767,23 @@
        "sousthemes": [
         {
          "titre": "Puberté et appareils reproducteurs",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-svt-puberte",
+           "titre": "4ème — SVT : puberté et appareils reproducteurs",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Fécondation, grossesse et contraception",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-svt-fecondation-contraception",
+           "titre": "4ème — SVT : fécondation, grossesse et contraception",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -8067,7 +8799,13 @@
       },
       {
        "titre": "Le cœur et la circulation sanguine",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-svt-coeur-circulation",
+         "titre": "4ème — SVT : le cœur et la circulation sanguine",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Digestion, nutriments et micro-organismes",
@@ -8081,13 +8819,25 @@
        "sousthemes": [
         {
          "titre": "Microbes et défenses de l'organisme",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-svt-microbes-defenses",
+           "titre": "4ème — SVT : microbes et défenses de l'organisme",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "La nutrition des végétaux",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-svt-nutrition-vegetaux",
+         "titre": "4ème — SVT : la nutrition des végétaux",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Séismes, volcans et tectonique des plaques",
@@ -8147,7 +8897,13 @@
        "sousthemes": [
         {
          "titre": "Lumière, couleurs et vision",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-phys-lumiere-couleurs",
+           "titre": "4ème — Physique : lumière, couleurs et vision",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -8199,7 +8955,13 @@
       },
       {
        "titre": "Masse volumique et conservation de la masse",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-chim-masse-volumique",
+         "titre": "4ème — Chimie : masse volumique et conservation de la masse",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8229,11 +8991,23 @@
       },
       {
        "titre": "Concevoir et modéliser un objet",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-techno-concevoir-objet",
+         "titre": "4ème — Technologie : concevoir et modéliser un objet",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Matériaux et cycle de vie",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-techno-materiaux-cycle-vie",
+         "titre": "4ème — Technologie : matériaux et cycle de vie",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8293,11 +9067,23 @@
       },
       {
        "titre": "Les pronoms relatifs",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-ang-pronoms-relatifs",
+         "titre": "4ème — Anglais : les pronoms relatifs",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les quantifieurs et les dénombrables",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-ang-quantifieurs",
+         "titre": "4ème — Anglais : les quantifieurs et les dénombrables",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8327,11 +9113,23 @@
       },
       {
        "titre": "Le passé simple (pretérito indefinido)",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-esp-preterito",
+         "titre": "4ème — Espagnol : le passé simple (pretérito indefinido)",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les pays hispanophones",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-esp-pays-hispanophones",
+         "titre": "4ème — Espagnol : les pays hispanophones",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8361,11 +9159,23 @@
       },
       {
        "titre": "Le prétérit des auxiliaires et des modaux",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-all-preterit",
+         "titre": "4ème — Allemand : le prétérit des auxiliaires et des modaux",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les pays germanophones",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-all-pays-germanophones",
+         "titre": "4ème — Allemand : les pays germanophones",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8385,11 +9195,23 @@
       },
       {
        "titre": "Le passé composé",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-ita-passe-compose",
+         "titre": "4ème — Italien : le passé composé",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les villes et les régions d'Italie",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-ita-regions-villes",
+         "titre": "4ème — Italien : les villes et les régions d'Italie",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8409,7 +9231,13 @@
       },
       {
        "titre": "Mythologie et héros romains",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-lat-mythologie-romaine",
+         "titre": "4ème — Latin : mythologie et héros romains",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8419,7 +9247,13 @@
      "chapitres": [
       {
        "titre": "L'œuvre, l'espace et le spectateur",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-arts-oeuvre-espace-spectateur",
+         "titre": "4ème — Arts plastiques : l'œuvre, l'espace et le spectateur",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8429,7 +9263,13 @@
      "chapitres": [
       {
        "titre": "Musiques classique et romantique, repères",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-mus-classique-romantique",
+         "titre": "4ème — Éducation musicale : musiques classique et romantique, repères",
+         "fiches": 16
+        }
+       ]
       }
      ]
     }
@@ -8456,11 +9296,23 @@
        "sousthemes": [
         {
          "titre": "L'autobiographie et le pacte autobiographique",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-pacte-autobiographique",
+           "titre": "3ème — Français : l'autobiographie et le pacte autobiographique",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Récits d'enfance, journaux intimes et autoportraits",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-recits-enfance",
+           "titre": "3ème — Français : récits d'enfance, journaux intimes et autoportraits",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -8476,11 +9328,23 @@
        "sousthemes": [
         {
          "titre": "Satire, ironie et apologues (Voltaire, La Fontaine…)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-satire-apologues",
+           "titre": "3ème — Français : satire, ironie et apologues (Voltaire, La Fontaine…)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le roman réaliste et naturaliste (Hugo, Zola, Maupassant)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-roman-realiste",
+           "titre": "3ème — Français : le roman réaliste et naturaliste (Hugo, Zola, Maupassant)",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -8496,11 +9360,23 @@
        "sousthemes": [
         {
          "titre": "Le lyrisme et la poésie de la nature",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-lyrisme-nature",
+           "titre": "3ème — Français : le lyrisme et la poésie de la nature",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Versification et formes poétiques",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-versification",
+           "titre": "3ème — Français : versification et formes poétiques",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -8516,11 +9392,23 @@
        "sousthemes": [
         {
          "titre": "Écrire la guerre : témoignages et poésie de la Résistance",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-ecrire-guerre",
+           "titre": "3ème — Français : écrire la guerre : témoignages et poésie de la Résistance",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'individu face au pouvoir au théâtre (Antigone…)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-antigone",
+           "titre": "3ème — Français : l'individu face au pouvoir au théâtre (Antigone…)",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -8536,11 +9424,23 @@
        "sousthemes": [
         {
          "titre": "Science-fiction et récits d'anticipation",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-science-fiction",
+           "titre": "3ème — Français : science-fiction et récits d'anticipation",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le progrès en débat : argumenter",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-fr-argumenter-progres",
+           "titre": "3ème — Français : le progrès en débat : argumenter",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9391,11 +10291,23 @@
        "sousthemes": [
         {
          "titre": "Métropoles et métropolisation",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-geo-metropoles",
+           "titre": "3ème — Géographie : métropoles et métropolisation",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Périurbanisation et mobilités quotidiennes",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-geo-periurbanisation",
+           "titre": "3ème — Géographie : périurbanisation et mobilités quotidiennes",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9411,21 +10323,45 @@
        "sousthemes": [
         {
          "titre": "Espaces industriels",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-geo-espaces-industriels",
+           "titre": "3ème — Géographie : espaces productifs industriels",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Espaces agricoles",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-geo-espaces-agricoles",
+           "titre": "3ème — Géographie : espaces productifs agricoles",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Espaces de services et du tourisme",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-geo-espaces-services-tourisme",
+           "titre": "3ème — Géographie : espaces de services et du tourisme",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "Les espaces de faible densité et leurs atouts",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r3e-geo-faible-densite",
+         "titre": "3ème — Géographie : les espaces de faible densité et leurs atouts",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Aménager les territoires français",
@@ -9439,7 +10375,13 @@
        "sousthemes": [
         {
          "titre": "Les acteurs de l'aménagement",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-geo-acteurs-amenagement",
+           "titre": "3ème — Géographie : les acteurs de l'aménagement",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Mobilités et réseaux de transport",
@@ -9455,11 +10397,23 @@
       },
       {
        "titre": "Les territoires ultramarins français",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r3e-geo-outre-mer",
+         "titre": "3ème — Géographie : les territoires ultramarins français",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "L'Union européenne, un territoire d'appartenance",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r3e-geo-union-europeenne",
+         "titre": "3ème — Géographie : l'Union européenne, un territoire d'appartenance",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "La France et l'Europe dans le monde",
@@ -9575,11 +10529,23 @@
        "sousthemes": [
         {
          "titre": "Chromosomes, ADN et gènes",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-chromosomes-adn",
+           "titre": "3ème — SVT : chromosomes, ADN et gènes",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Reproduction sexuée et diversité génétique",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-reproduction-diversite",
+           "titre": "3ème — SVT : reproduction sexuée et diversité génétique",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9625,11 +10591,23 @@
        "sousthemes": [
         {
          "titre": "Digestion et alimentation",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-digestion",
+           "titre": "3ème — SVT : digestion et alimentation",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Respiration et circulation sanguine",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-respiration-circulation",
+           "titre": "3ème — SVT : respiration et circulation sanguine",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9645,11 +10623,23 @@
        "sousthemes": [
         {
          "titre": "Micro-organismes, hygiène et antibiotiques",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-microbes-antibiotiques",
+           "titre": "3ème — SVT : micro-organismes, hygiène et antibiotiques",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les défenses de l'organisme et la vaccination",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-defenses-vaccination",
+           "titre": "3ème — SVT : les défenses de l'organisme et la vaccination",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9685,7 +10675,13 @@
        "sousthemes": [
         {
          "titre": "Séismes, volcans et tectonique des plaques",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-seismes-volcans",
+           "titre": "3ème — SVT : séismes, volcans et tectonique des plaques",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Météorologie, climat et changement climatique",
@@ -9699,7 +10695,13 @@
         },
         {
          "titre": "Ressources naturelles et environnement",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-ressources-environnement",
+           "titre": "3ème — SVT : ressources naturelles et environnement",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9736,7 +10738,13 @@
        "sousthemes": [
         {
          "titre": "Gravitation, poids et masse",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-phys-gravitation-poids",
+           "titre": "3ème — Physique : gravitation, poids et masse",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Énergie cinétique et sécurité routière",
@@ -9762,7 +10770,13 @@
        "sousthemes": [
         {
          "titre": "Circuits et loi d'Ohm",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-phys-loi-ohm",
+           "titre": "3ème — Physique : circuits et loi d'Ohm",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Puissance et consommation électrique d'un logement",
@@ -10146,11 +11160,23 @@
       },
       {
        "titre": "Conjuguer au passé",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r3e-italien-passe",
+         "titre": "3ème — Italien : conjuguer au passé",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Vocabulaire thématique essentiel",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r3e-italien-vocabulaire",
+         "titre": "3ème — Italien : vocabulaire thématique essentiel",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -10196,7 +11222,13 @@
       },
       {
        "titre": "Mythologie et héros grecs",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r3e-grec-mythologie",
+         "titre": "3ème — Grec ancien : mythologie et héros grecs",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
