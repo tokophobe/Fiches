@@ -5899,15 +5899,33 @@
        "sousthemes": [
         {
          "titre": "Les récits de création (Genèse, mythes grecs)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-recits-creation",
+           "titre": "6ème — Français : les récits de création (Genèse, mythes grecs)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Ulysse et l'Odyssée",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-ulysse-odyssee",
+           "titre": "6ème — Français : Ulysse et l'Odyssée",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "La poésie : jouer avec les mots et les sons",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-poesie-mots-sons",
+           "titre": "6ème — Français : la poésie : jouer avec les mots et les sons",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -5943,11 +5961,23 @@
        "sousthemes": [
         {
          "titre": "Les fables de La Fontaine",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-fables-la-fontaine",
+           "titre": "6ème — Français : les fables de La Fontaine",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le théâtre : farces et comédies",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-theatre-farce-comedie",
+           "titre": "6ème — Français : le théâtre : farces et comédies",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -5973,23 +6003,53 @@
         },
         {
          "titre": "Les compléments du verbe (COD, COI)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-complements-verbe",
+           "titre": "6ème — Français : les compléments du verbe (COD, COI)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les compléments circonstanciels",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-complements-circonstanciels",
+           "titre": "6ème — Français : les compléments circonstanciels",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le groupe nominal et ses expansions",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-groupe-nominal",
+           "titre": "6ème — Français : le groupe nominal et ses expansions",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les types et les formes de phrases",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-types-formes-phrases",
+           "titre": "6ème — Français : les types et les formes de phrases",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Juxtaposition et coordination",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-juxtaposition-coordination",
+           "titre": "6ème — Français : juxtaposition et coordination",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6005,11 +6065,23 @@
        "sousthemes": [
         {
          "titre": "Le passé composé et le plus-que-parfait",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-passe-compose-pqp",
+           "titre": "6ème — Français : le passé composé et le plus-que-parfait",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'impératif présent",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-imperatif-present",
+           "titre": "6ème — Français : l'impératif présent",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6025,7 +6097,13 @@
        "sousthemes": [
         {
          "titre": "Les accords dans le groupe nominal",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-accords-groupe-nominal",
+           "titre": "6ème — Français : les accords dans le groupe nominal",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6077,15 +6155,33 @@
         },
         {
          "titre": "Multiplier des nombres décimaux",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-multiplier-decimaux",
+           "titre": "6ème — Maths : multiplier des nombres décimaux",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Diviser un décimal par un entier",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-diviser-decimal-entier",
+           "titre": "6ème — Maths : diviser un décimal par un entier",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Additionner et soustraire des fractions de même dénominateur",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-fractions-meme-denominateur",
+           "titre": "6ème — Maths : additionner et soustraire des fractions de même dénominateur",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6101,7 +6197,13 @@
       },
       {
        "titre": "Ordre de grandeur et calcul mental",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-maths-ordre-grandeur-calcul-mental",
+         "titre": "6ème — Maths : ordre de grandeur et calcul mental",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Proportionnalité, pourcentages et échelles",
@@ -6125,11 +6227,23 @@
        "sousthemes": [
         {
          "titre": "Repérage dans le plan et sur une droite graduée",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-reperage-droite-graduee",
+           "titre": "6ème — Maths : repérage dans le plan et sur une droite graduée",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Lire et construire des diagrammes",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-diagrammes",
+           "titre": "6ème — Maths : lire et construire des diagrammes",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6145,19 +6259,43 @@
        "sousthemes": [
         {
          "titre": "Mesurer et construire des angles au rapporteur",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-angles-rapporteur",
+           "titre": "6ème — Maths : mesurer et construire des angles au rapporteur",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Construire des triangles",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-construire-triangles",
+           "titre": "6ème — Maths : construire des triangles",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les quadrilatères particuliers",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-quadrilateres",
+           "titre": "6ème — Maths : les quadrilatères particuliers",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "La médiatrice d'un segment",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-mediatrice",
+           "titre": "6ème — Maths : la médiatrice d'un segment",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6183,7 +6321,13 @@
        "sousthemes": [
         {
          "titre": "Le périmètre du cercle et l'aire du disque",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-cercle-disque",
+           "titre": "6ème — Maths : le périmètre du cercle et l'aire du disque",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6199,7 +6343,13 @@
        "sousthemes": [
         {
          "titre": "Contenances et unités de volume",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-maths-contenances-volumes",
+           "titre": "6ème — Maths : contenances et unités de volume",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6215,7 +6365,13 @@
       },
       {
        "titre": "Programmes de calcul et premiers algorithmes (Scratch)",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-maths-programmes-calcul-scratch",
+         "titre": "6ème — Maths : programmes de calcul et premiers algorithmes (Scratch)",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -6235,15 +6391,33 @@
        "sousthemes": [
         {
          "titre": "Les besoins des végétaux et la photosynthèse",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-sci-vegetaux-photosynthese",
+           "titre": "6ème — Sciences : les besoins des végétaux et la photosynthèse",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "La digestion et l'alimentation humaine",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-sci-digestion-alimentation",
+           "titre": "6ème — Sciences : la digestion et l'alimentation humaine",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Reproduction et développement des êtres vivants",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-sci-reproduction-developpement",
+           "titre": "6ème — Sciences : reproduction et développement des êtres vivants",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6259,7 +6433,13 @@
        "sousthemes": [
         {
          "titre": "Le système solaire et les mouvements de la Terre",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-sci-systeme-solaire-terre",
+           "titre": "6ème — Sciences : le système solaire et les mouvements de la Terre",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6275,15 +6455,33 @@
       },
       {
        "titre": "Les matériaux et les propriétés de la matière",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-sci-materiaux-matiere",
+         "titre": "6ème — Sciences : les matériaux et les propriétés de la matière",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Mouvements et vitesse",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-sci-mouvements-vitesse",
+         "titre": "6ème — Sciences : mouvements et vitesse",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Signaux et information",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-sci-signaux-information",
+         "titre": "6ème — Sciences : signaux et information",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Révisions de l'année",
@@ -6313,15 +6511,33 @@
        "sousthemes": [
         {
          "titre": "Les débuts de l'humanité",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-debuts-humanite",
+           "titre": "6ème — Histoire : les débuts de l'humanité",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "La révolution néolithique",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-revolution-neolithique",
+           "titre": "6ème — Histoire : la révolution néolithique",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Premiers États et premières écritures (Mésopotamie, Égypte)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-premiers-etats-ecritures",
+           "titre": "6ème — Histoire : premiers États et premières écritures (Mésopotamie, Égypte)",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6357,15 +6573,33 @@
         },
         {
          "titre": "Alexandre et le monde grec",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-alexandre-monde-grec",
+           "titre": "6ème — Histoire : Alexandre et le monde grec",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Rome, du mythe à l'histoire",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-rome-mythe-histoire",
+           "titre": "6ème — Histoire : Rome, du mythe à l'histoire",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le peuple hébreu et le monothéisme juif",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-hebreux-monotheisme",
+           "titre": "6ème — Histoire : le peuple hébreu et le monothéisme juif",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6381,15 +6615,33 @@
        "sousthemes": [
         {
          "titre": "Conquêtes, paix romaine et romanisation",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-conquetes-paix-romaine",
+           "titre": "6ème — Histoire : conquêtes, paix romaine et romanisation",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les débuts du christianisme",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-debuts-christianisme",
+           "titre": "6ème — Histoire : les débuts du christianisme",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Rome et la Chine des Han",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-hist-rome-chine-han",
+           "titre": "6ème — Histoire : Rome et la Chine des Han",
+           "fiches": 16
+          }
+         ]
         }
        ]
       }
@@ -6411,15 +6663,33 @@
        "sousthemes": [
         {
          "titre": "Habiter une métropole",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-geo-habiter-metropole",
+           "titre": "6ème — Géographie : habiter une métropole",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Habiter un espace de faible densité (rural, montagne, désert)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-geo-faible-densite",
+           "titre": "6ème — Géographie : habiter un espace de faible densité (rural, montagne, désert)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Habiter les littoraux industriels et touristiques",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-geo-littoraux",
+           "titre": "6ème — Géographie : habiter les littoraux industriels et touristiques",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6445,7 +6715,13 @@
       },
       {
        "titre": "Lire et réaliser un croquis simple",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-geo-croquis",
+         "titre": "6ème — Géographie : lire et réaliser un croquis simple",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -6485,11 +6761,23 @@
       },
       {
        "titre": "La sécurité et les règles de la vie collective",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-emc-securite-regles",
+         "titre": "6ème — EMC : la sécurité et les règles de la vie collective",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le harcèlement et la solidarité",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-emc-harcelement-solidarite",
+         "titre": "6ème — EMC : le harcèlement et la solidarité",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -6519,15 +6807,33 @@
       },
       {
        "titre": "Le fonctionnement d'un objet, énergie et information",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-techno-objet-energie-information",
+         "titre": "6ème — Technologie : le fonctionnement d'un objet, énergie et information",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Programmer avec Scratch",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-techno-scratch",
+         "titre": "6ème — Technologie : programmer avec Scratch",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Concevoir un objet, du croquis au prototype",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-techno-concevoir-objet",
+         "titre": "6ème — Technologie : concevoir un objet, du croquis au prototype",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -6587,31 +6893,73 @@
       },
       {
        "titre": "Le présent en be + -ing",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-ang-present-be-ing",
+         "titre": "6ème — Anglais : le présent en be + -ing",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Can / can't et les capacités",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-ang-can-capacites",
+         "titre": "6ème — Anglais : can / can't et les capacités",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "La maison et les pièces",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-ang-maison-pieces",
+         "titre": "6ème — Anglais : la maison et les pièces",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les animaux",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-ang-animaux",
+         "titre": "6ème — Anglais : les animaux",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "La nourriture et les quantités",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-ang-nourriture-quantites",
+         "titre": "6ème — Anglais : la nourriture et les quantités",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le prétérit de be (was / were)",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-ang-was-were",
+         "titre": "6ème — Anglais : le prétérit de be (was / were)",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les pays anglophones et leurs symboles",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-ang-pays-anglophones",
+         "titre": "6ème — Anglais : les pays anglophones et leurs symboles",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -6621,15 +6969,33 @@
      "chapitres": [
       {
        "titre": "La représentation, l'image et la fiction",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-arts-representation-image",
+         "titre": "6ème — Arts plastiques : la représentation, l'image et la fiction",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les matériaux, les outils et les gestes",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-arts-materiaux-outils-gestes",
+         "titre": "6ème — Arts plastiques : les matériaux, les outils et les gestes",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "L'objet et l'œuvre d'art",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-arts-objet-oeuvre",
+         "titre": "6ème — Arts plastiques : l'objet et l'œuvre d'art",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -6649,11 +7015,23 @@
       },
       {
        "titre": "Les grands compositeurs",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-musique-compositeurs",
+         "titre": "6ème — Éducation musicale : les grands compositeurs",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Rythme, mélodie et pulsation",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-musique-rythme-melodie",
+         "titre": "6ème — Éducation musicale : rythme, mélodie et pulsation",
+         "fiches": 16
+        }
+       ]
       }
      ]
     }

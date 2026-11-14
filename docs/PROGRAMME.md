@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1156 chapitres couverts sur 1228** (94 %), 1378 boîtes, 22619 fiches.
+Mise à jour : 14/11/2026. **1179 chapitres couverts sur 1228** (96 %), 1441 boîtes, 23627 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -16,7 +16,7 @@ Mise à jour : 14/11/2026. **1156 chapitres couverts sur 1228** (94 %), 1378 bo�
 | [CE2](#ce2) | 110 / 112 | 2 | 110 | 1636 |
 | [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
-| [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
+| [6e](#6e) | 62 / 62 | 0 | 106 | 1738 |
 | [5e](#5e) | 87 / 87 | 0 | 118 | 1945 |
 | [4e](#4e) | 82 / 82 | 0 | 118 | 1940 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
@@ -743,143 +743,143 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 
 ## 6e
 
-Collège — 39 chapitres couverts sur 62, 43 boîtes.
+Collège — 62 chapitres couverts sur 62, 106 boîtes.
 
 ### 6e — Français (8 / 8)
 
 - [x] Récits de création, création poétique — l'essentiel — 6ème — Français : récits de création, Ulysse et contes (16 fiches)
-  - [ ] Les récits de création (Genèse, mythes grecs) — *à créer*
-  - [ ] Ulysse et l'Odyssée — *à créer*
-  - [ ] La poésie : jouer avec les mots et les sons — *à créer*
+  - [x] Les récits de création (Genèse, mythes grecs) — 6ème — Français : les récits de création (Genèse, mythes grecs) (16 fiches)
+  - [x] Ulysse et l'Odyssée — 6ème — Français : Ulysse et l'Odyssée (16 fiches)
+  - [x] La poésie : jouer avec les mots et les sons — 6ème — Français : la poésie : jouer avec les mots et les sons (16 fiches)
 - [x] Le monstre, aux limites de l'humain — 6ème — Français : le monstre, aux limites de l'humain (16 fiches)
 - [x] Récits d'aventures — 6ème — Français : récits d'aventures, péripéties et suspense (17 fiches)
 - [x] Résister au plus fort : ruses, mensonges et masques — l'essentiel — 6ème — Français : résister au plus fort, fables, ruses et masques (16 fiches)
-  - [ ] Les fables de La Fontaine — *à créer*
-  - [ ] Le théâtre : farces et comédies — *à créer*
+  - [x] Les fables de La Fontaine — 6ème — Français : les fables de La Fontaine (16 fiches)
+  - [x] Le théâtre : farces et comédies — 6ème — Français : le théâtre : farces et comédies (16 fiches)
 - [x] Classes de mots, fonctions et phrase — l'essentiel — 6ème — Français : classes de mots, fonctions et phrase (17 fiches)
   - [x] Déterminants et pronoms — 6ème — Français : déterminants et pronoms (16 fiches)
-  - [ ] Les compléments du verbe (COD, COI) — *à créer*
-  - [ ] Les compléments circonstanciels — *à créer*
-  - [ ] Le groupe nominal et ses expansions — *à créer*
-  - [ ] Les types et les formes de phrases — *à créer*
-  - [ ] Juxtaposition et coordination — *à créer*
+  - [x] Les compléments du verbe (COD, COI) — 6ème — Français : les compléments du verbe (COD, COI) (16 fiches)
+  - [x] Les compléments circonstanciels — 6ème — Français : les compléments circonstanciels (16 fiches)
+  - [x] Le groupe nominal et ses expansions — 6ème — Français : le groupe nominal et ses expansions (16 fiches)
+  - [x] Les types et les formes de phrases — 6ème — Français : les types et les formes de phrases (16 fiches)
+  - [x] Juxtaposition et coordination — 6ème — Français : juxtaposition et coordination (16 fiches)
 - [x] Conjugaison (présent, imparfait, futur, passé simple) — l'essentiel — 6ème — Français : conjugaison (présent, imparfait, futur, passé simple) (22 fiches)
-  - [ ] Le passé composé et le plus-que-parfait — *à créer*
-  - [ ] L'impératif présent — *à créer*
+  - [x] Le passé composé et le plus-que-parfait — 6ème — Français : le passé composé et le plus-que-parfait (16 fiches)
+  - [x] L'impératif présent — 6ème — Français : l'impératif présent (16 fiches)
 - [x] Orthographe, accord sujet-verbe et homophones — l'essentiel — 6ème — Français : orthographe, accord sujet-verbe et homophones (18 fiches)
-  - [ ] Les accords dans le groupe nominal — *à créer*
+  - [x] Les accords dans le groupe nominal — 6ème — Français : les accords dans le groupe nominal (16 fiches)
 - [x] Vocabulaire, formation des mots et sens des mots — 6ème — Français : vocabulaire, formation des mots et sens des mots (17 fiches)
 
-### 6e — Mathématiques (10 / 12)
+### 6e — Mathématiques (12 / 12)
 
 - [x] Nombres entiers et grands nombres — 6ème — Maths : nombres entiers et grands nombres (17 fiches)
 - [x] Nombres décimaux, fractions et division — l'essentiel — 6ème — Maths : nombres décimaux, fractions et division (17 fiches)
   - [x] Calculer avec les nombres décimaux — 6ème — Maths : calculer avec les nombres décimaux (16 fiches)
-  - [ ] Multiplier des nombres décimaux — *à créer*
-  - [ ] Diviser un décimal par un entier — *à créer*
-  - [ ] Additionner et soustraire des fractions de même dénominateur — *à créer*
+  - [x] Multiplier des nombres décimaux — 6ème — Maths : multiplier des nombres décimaux (16 fiches)
+  - [x] Diviser un décimal par un entier — 6ème — Maths : diviser un décimal par un entier (16 fiches)
+  - [x] Additionner et soustraire des fractions de même dénominateur — 6ème — Maths : additionner et soustraire des fractions de même dénominateur (16 fiches)
 - [x] Division euclidienne, multiples et diviseurs — 6ème — Maths : division euclidienne, multiples et diviseurs (17 fiches)
-- [ ] Ordre de grandeur et calcul mental — *à créer*
+- [x] Ordre de grandeur et calcul mental — 6ème — Maths : ordre de grandeur et calcul mental (16 fiches)
 - [x] Proportionnalité, pourcentages et échelles — 6ème — Maths : proportionnalité, pourcentages et échelles (15 fiches)
 - [x] Demi-droite graduée, tableaux et graphiques — l'essentiel — 6ème — Maths : demi-droite graduée, tableaux et graphiques (16 fiches)
-  - [ ] Repérage dans le plan et sur une droite graduée — *à créer*
-  - [ ] Lire et construire des diagrammes — *à créer*
+  - [x] Repérage dans le plan et sur une droite graduée — 6ème — Maths : repérage dans le plan et sur une droite graduée (16 fiches)
+  - [x] Lire et construire des diagrammes — 6ème — Maths : lire et construire des diagrammes (16 fiches)
 - [x] Droites, cercles et angles — l'essentiel — 6ème — Maths : droites, cercles et angles (18 fiches)
-  - [ ] Mesurer et construire des angles au rapporteur — *à créer*
-  - [ ] Construire des triangles — *à créer*
-  - [ ] Les quadrilatères particuliers — *à créer*
-  - [ ] La médiatrice d'un segment — *à créer*
+  - [x] Mesurer et construire des angles au rapporteur — 6ème — Maths : mesurer et construire des angles au rapporteur (16 fiches)
+  - [x] Construire des triangles — 6ème — Maths : construire des triangles (16 fiches)
+  - [x] Les quadrilatères particuliers — 6ème — Maths : les quadrilatères particuliers (16 fiches)
+  - [x] La médiatrice d'un segment — 6ème — Maths : la médiatrice d'un segment (16 fiches)
 - [x] La symétrie axiale — 6ème — Maths : la symétrie axiale (16 fiches)
 - [x] Périmètres et aires — l'essentiel — 6ème — Maths : périmètres et aires (16 fiches)
-  - [ ] Le périmètre du cercle et l'aire du disque — *à créer*
+  - [x] Le périmètre du cercle et l'aire du disque — 6ème — Maths : le périmètre du cercle et l'aire du disque (16 fiches)
 - [x] Solides, patrons et volume du pavé droit — l'essentiel — 6ème — Maths : solides, patrons et volume du pavé droit (18 fiches)
-  - [ ] Contenances et unités de volume — *à créer*
+  - [x] Contenances et unités de volume — 6ème — Maths : contenances et unités de volume (16 fiches)
 - [x] Durées, horaires et conversions d'unités — 6ème — Maths : durées, horaires et conversions d'unités (17 fiches)
-- [ ] Programmes de calcul et premiers algorithmes (Scratch) — *à créer*
+- [x] Programmes de calcul et premiers algorithmes (Scratch) — 6ème — Maths : programmes de calcul et premiers algorithmes (Scratch) (16 fiches)
 
-### 6e — Sciences (4 / 7)
+### 6e — Sciences (7 / 7)
 
 - [x] Classer le vivant, cellules, nutrition et développement — l'essentiel — 6ème — Sciences : classer le vivant, cellules, nutrition et développement (16 fiches)
-  - [ ] Les besoins des végétaux et la photosynthèse — *à créer*
-  - [ ] La digestion et l'alimentation humaine — *à créer*
-  - [ ] Reproduction et développement des êtres vivants — *à créer*
+  - [x] Les besoins des végétaux et la photosynthèse — 6ème — Sciences : les besoins des végétaux et la photosynthèse (16 fiches)
+  - [x] La digestion et l'alimentation humaine — 6ème — Sciences : la digestion et l'alimentation humaine (16 fiches)
+  - [x] Reproduction et développement des êtres vivants — 6ème — Sciences : reproduction et développement des êtres vivants (16 fiches)
 - [x] La planète Terre et les êtres vivants dans leur environnement — l'essentiel — 6ème — Sciences : la planète Terre et les êtres vivants dans leur environnement (17 fiches)
-  - [ ] Le système solaire et les mouvements de la Terre — *à créer*
+  - [x] Le système solaire et les mouvements de la Terre — 6ème — Sciences : le système solaire et les mouvements de la Terre (16 fiches)
 - [x] L'eau, ses états et son cycle — 6ème — Sciences : l'eau, ses états et son cycle (16 fiches)
-- [ ] Les matériaux et les propriétés de la matière — *à créer*
-- [ ] Mouvements et vitesse — *à créer*
-- [ ] Signaux et information — *à créer*
+- [x] Les matériaux et les propriétés de la matière — 6ème — Sciences : les matériaux et les propriétés de la matière (16 fiches)
+- [x] Mouvements et vitesse — 6ème — Sciences : mouvements et vitesse (16 fiches)
+- [x] Signaux et information — 6ème — Sciences : signaux et information (16 fiches)
 - [x] Révisions de l'année — 6ème — Sciences : le vivant, la matière et l'énergie (16 fiches)
 
 ### 6e — Histoire (3 / 3)
 
 - [x] La longue histoire de l'humanité et des migrations — l'essentiel — 6ème — Histoire : Préhistoire, Néolithique et migrations (18 fiches)
-  - [ ] Les débuts de l'humanité — *à créer*
-  - [ ] La révolution néolithique — *à créer*
-  - [ ] Premiers États et premières écritures (Mésopotamie, Égypte) — *à créer*
+  - [x] Les débuts de l'humanité — 6ème — Histoire : les débuts de l'humanité (16 fiches)
+  - [x] La révolution néolithique — 6ème — Histoire : la révolution néolithique (16 fiches)
+  - [x] Premiers États et premières écritures (Mésopotamie, Égypte) — 6ème — Histoire : premiers États et premières écritures (Mésopotamie, Égypte) (16 fiches)
 - [x] Récits fondateurs, croyances et citoyenneté dans la Méditerranée antique — l'essentiel — 6ème — Histoire : premiers États, Grèce, Rome et monothéismes (19 fiches)
   - [x] Les cités grecques, leurs dieux et leurs héros — 6ème — Histoire : mythes, dieux et héros des cités grecques (18 fiches)
   - [x] Athènes, citoyenneté et démocratie — 6ème — Histoire : Athènes, citoyenneté et démocratie (16 fiches)
-  - [ ] Alexandre et le monde grec — *à créer*
-  - [ ] Rome, du mythe à l'histoire — *à créer*
-  - [ ] Le peuple hébreu et le monothéisme juif — *à créer*
+  - [x] Alexandre et le monde grec — 6ème — Histoire : Alexandre et le monde grec (16 fiches)
+  - [x] Rome, du mythe à l'histoire — 6ème — Histoire : Rome, du mythe à l'histoire (16 fiches)
+  - [x] Le peuple hébreu et le monothéisme juif — 6ème — Histoire : le peuple hébreu et le monothéisme juif (16 fiches)
 - [x] L'Empire romain dans le monde antique — l'essentiel — 6ème — Histoire : l'Empire romain, conquêtes et romanisation, la Chine des Han (18 fiches)
-  - [ ] Conquêtes, paix romaine et romanisation — *à créer*
-  - [ ] Les débuts du christianisme — *à créer*
-  - [ ] Rome et la Chine des Han — *à créer*
+  - [x] Conquêtes, paix romaine et romanisation — 6ème — Histoire : conquêtes, paix romaine et romanisation (16 fiches)
+  - [x] Les débuts du christianisme — 6ème — Histoire : les débuts du christianisme (16 fiches)
+  - [x] Rome et la Chine des Han — 6ème — Histoire : Rome et la Chine des Han (16 fiches)
 
-### 6e — Géographie (3 / 4)
+### 6e — Géographie (4 / 4)
 
 - [x] Habiter le monde : villes, espaces peu peuplés et littoraux — l'essentiel — 6ème — Géographie : habiter les villes, les littoraux et les espaces peu peuplés (15 fiches)
-  - [ ] Habiter une métropole — *à créer*
-  - [ ] Habiter un espace de faible densité (rural, montagne, désert) — *à créer*
-  - [ ] Habiter les littoraux industriels et touristiques — *à créer*
+  - [x] Habiter une métropole — 6ème — Géographie : habiter une métropole (16 fiches)
+  - [x] Habiter un espace de faible densité (rural, montagne, désert) — 6ème — Géographie : habiter un espace de faible densité (rural, montagne, désert) (16 fiches)
+  - [x] Habiter les littoraux industriels et touristiques — 6ème — Géographie : habiter les littoraux industriels et touristiques (16 fiches)
 - [x] Le monde habité, répartition de la population — 6ème — Géographie : le monde habité, répartition de la population (17 fiches)
 - [x] Se repérer sur la Terre — 6ème — Géographie : se repérer sur la Terre (16 fiches)
-- [ ] Lire et réaliser un croquis simple — *à créer*
+- [x] Lire et réaliser un croquis simple — 6ème — Géographie : lire et réaliser un croquis simple (16 fiches)
 
-### 6e — EMC (3 / 5)
+### 6e — EMC (5 / 5)
 
 - [x] Vivre ensemble au collège et symboles de la République — 6ème — EMC : vivre ensemble au collège et symboles de la République (17 fiches)
 - [x] S'informer, débattre et utiliser Internet de façon responsable — 6ème — EMC : s'informer, débattre et utiliser Internet de façon responsable (17 fiches)
 - [x] Les droits de l'enfant et l'égalité filles-garçons — 6ème — EMC : les droits de l'enfant et l'égalité filles-garçons (16 fiches)
-- [ ] La sécurité et les règles de la vie collective — *à créer*
-- [ ] Le harcèlement et la solidarité — *à créer*
+- [x] La sécurité et les règles de la vie collective — 6ème — EMC : la sécurité et les règles de la vie collective (16 fiches)
+- [x] Le harcèlement et la solidarité — 6ème — EMC : le harcèlement et la solidarité (16 fiches)
 
-### 6e — Technologie (2 / 5)
+### 6e — Technologie (5 / 5)
 
 - [x] Objets techniques, fonctions et matériaux — 6ème — Technologie : objets techniques, fonctions et matériaux (16 fiches)
 - [x] L'évolution des objets techniques — 6ème — Technologie : l'évolution des objets techniques (16 fiches)
-- [ ] Le fonctionnement d'un objet, énergie et information — *à créer*
-- [ ] Programmer avec Scratch — *à créer*
-- [ ] Concevoir un objet, du croquis au prototype — *à créer*
+- [x] Le fonctionnement d'un objet, énergie et information — 6ème — Technologie : le fonctionnement d'un objet, énergie et information (16 fiches)
+- [x] Programmer avec Scratch — 6ème — Technologie : programmer avec Scratch (16 fiches)
+- [x] Concevoir un objet, du croquis au prototype — 6ème — Technologie : concevoir un objet, du croquis au prototype (16 fiches)
 
-### 6e — Anglais (5 / 12)
+### 6e — Anglais (12 / 12)
 
 - [x] Vocabulaire de base (famille, école, jours, nombres, couleurs) — 6ème — Anglais : vocabulaire de base (famille, école, jours, nombres, couleurs) (17 fiches)
 - [x] Grammaire de base (be, présent simple, pluriels) — 6ème — Anglais : grammaire de base (be, présent simple, pluriels) (21 fiches)
 - [x] Routine quotidienne, fréquence et goûts — 6ème — Anglais : routine quotidienne, fréquence et goûts (17 fiches)
 - [x] L'heure, la date et les saisons — 6ème — Anglais : l'heure, la date et les saisons (19 fiches)
 - [x] Have got, possessifs et description physique — 6ème — Anglais : have got, possessifs et description physique (16 fiches)
-- [ ] Le présent en be + -ing — *à créer*
-- [ ] Can / can't et les capacités — *à créer*
-- [ ] La maison et les pièces — *à créer*
-- [ ] Les animaux — *à créer*
-- [ ] La nourriture et les quantités — *à créer*
-- [ ] Le prétérit de be (was / were) — *à créer*
-- [ ] Les pays anglophones et leurs symboles — *à créer*
+- [x] Le présent en be + -ing — 6ème — Anglais : le présent en be + -ing (16 fiches)
+- [x] Can / can't et les capacités — 6ème — Anglais : can / can't et les capacités (16 fiches)
+- [x] La maison et les pièces — 6ème — Anglais : la maison et les pièces (16 fiches)
+- [x] Les animaux — 6ème — Anglais : les animaux (16 fiches)
+- [x] La nourriture et les quantités — 6ème — Anglais : la nourriture et les quantités (16 fiches)
+- [x] Le prétérit de be (was / were) — 6ème — Anglais : le prétérit de be (was / were) (16 fiches)
+- [x] Les pays anglophones et leurs symboles — 6ème — Anglais : les pays anglophones et leurs symboles (16 fiches)
 
-### 6e — Arts plastiques (0 / 3)
+### 6e — Arts plastiques (3 / 3)
 
-- [ ] La représentation, l'image et la fiction — *à créer*
-- [ ] Les matériaux, les outils et les gestes — *à créer*
-- [ ] L'objet et l'œuvre d'art — *à créer*
+- [x] La représentation, l'image et la fiction — 6ème — Arts plastiques : la représentation, l'image et la fiction (16 fiches)
+- [x] Les matériaux, les outils et les gestes — 6ème — Arts plastiques : les matériaux, les outils et les gestes (16 fiches)
+- [x] L'objet et l'œuvre d'art — 6ème — Arts plastiques : l'objet et l'œuvre d'art (16 fiches)
 
-### 6e — Éducation musicale (1 / 3)
+### 6e — Éducation musicale (3 / 3)
 
 - [x] Instruments et vocabulaire de la musique — 6ème — Éducation musicale : instruments et vocabulaire de la musique (18 fiches)
-- [ ] Les grands compositeurs — *à créer*
-- [ ] Rythme, mélodie et pulsation — *à créer*
+- [x] Les grands compositeurs — 6ème — Éducation musicale : les grands compositeurs (16 fiches)
+- [x] Rythme, mélodie et pulsation — 6ème — Éducation musicale : rythme, mélodie et pulsation (16 fiches)
 
 
 ## 5e
