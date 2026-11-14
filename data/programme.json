@@ -6391,15 +6391,33 @@
        "sousthemes": [
         {
          "titre": "Les besoins des végétaux et la photosynthèse",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-sci-vegetaux-photosynthese",
+           "titre": "6ème — Sciences : les besoins des végétaux et la photosynthèse",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "La digestion et l'alimentation humaine",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-sci-digestion-alimentation",
+           "titre": "6ème — Sciences : la digestion et l'alimentation humaine",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Reproduction et développement des êtres vivants",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-sci-reproduction-developpement",
+           "titre": "6ème — Sciences : reproduction et développement des êtres vivants",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6415,7 +6433,13 @@
        "sousthemes": [
         {
          "titre": "Le système solaire et les mouvements de la Terre",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-sci-systeme-solaire-terre",
+           "titre": "6ème — Sciences : le système solaire et les mouvements de la Terre",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6431,15 +6455,33 @@
       },
       {
        "titre": "Les matériaux et les propriétés de la matière",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-sci-materiaux-matiere",
+         "titre": "6ème — Sciences : les matériaux et les propriétés de la matière",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Mouvements et vitesse",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-sci-mouvements-vitesse",
+         "titre": "6ème — Sciences : mouvements et vitesse",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Signaux et information",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-sci-signaux-information",
+         "titre": "6ème — Sciences : signaux et information",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Révisions de l'année",
@@ -6719,11 +6761,23 @@
       },
       {
        "titre": "La sécurité et les règles de la vie collective",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-emc-securite-regles",
+         "titre": "6ème — EMC : la sécurité et les règles de la vie collective",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le harcèlement et la solidarité",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-emc-harcelement-solidarite",
+         "titre": "6ème — EMC : le harcèlement et la solidarité",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -6753,15 +6807,33 @@
       },
       {
        "titre": "Le fonctionnement d'un objet, énergie et information",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-techno-objet-energie-information",
+         "titre": "6ème — Technologie : le fonctionnement d'un objet, énergie et information",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Programmer avec Scratch",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-techno-scratch",
+         "titre": "6ème — Technologie : programmer avec Scratch",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Concevoir un objet, du croquis au prototype",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-techno-concevoir-objet",
+         "titre": "6ème — Technologie : concevoir un objet, du croquis au prototype",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },

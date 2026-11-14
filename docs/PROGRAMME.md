@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1159 chapitres couverts sur 1228** (94 %), 1417 boîtes, 23243 fiches.
+Mise à jour : 14/11/2026. **1167 chapitres couverts sur 1228** (95 %), 1429 boîtes, 23435 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -16,7 +16,7 @@ Mise à jour : 14/11/2026. **1159 chapitres couverts sur 1228** (94 %), 1417 bo�
 | [CE2](#ce2) | 110 / 112 | 2 | 110 | 1636 |
 | [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
-| [6e](#6e) | 42 / 62 | 20 | 82 | 1354 |
+| [6e](#6e) | 50 / 62 | 12 | 94 | 1546 |
 | [5e](#5e) | 87 / 87 | 0 | 118 | 1945 |
 | [4e](#4e) | 82 / 82 | 0 | 118 | 1940 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
@@ -743,7 +743,7 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 
 ## 6e
 
-Collège — 42 chapitres couverts sur 62, 82 boîtes.
+Collège — 50 chapitres couverts sur 62, 94 boîtes.
 
 ### 6e — Français (8 / 8)
 
@@ -797,18 +797,18 @@ Collège — 42 chapitres couverts sur 62, 82 boîtes.
 - [x] Durées, horaires et conversions d'unités — 6ème — Maths : durées, horaires et conversions d'unités (17 fiches)
 - [x] Programmes de calcul et premiers algorithmes (Scratch) — 6ème — Maths : programmes de calcul et premiers algorithmes (Scratch) (16 fiches)
 
-### 6e — Sciences (4 / 7)
+### 6e — Sciences (7 / 7)
 
 - [x] Classer le vivant, cellules, nutrition et développement — l'essentiel — 6ème — Sciences : classer le vivant, cellules, nutrition et développement (16 fiches)
-  - [ ] Les besoins des végétaux et la photosynthèse — *à créer*
-  - [ ] La digestion et l'alimentation humaine — *à créer*
-  - [ ] Reproduction et développement des êtres vivants — *à créer*
+  - [x] Les besoins des végétaux et la photosynthèse — 6ème — Sciences : les besoins des végétaux et la photosynthèse (16 fiches)
+  - [x] La digestion et l'alimentation humaine — 6ème — Sciences : la digestion et l'alimentation humaine (16 fiches)
+  - [x] Reproduction et développement des êtres vivants — 6ème — Sciences : reproduction et développement des êtres vivants (16 fiches)
 - [x] La planète Terre et les êtres vivants dans leur environnement — l'essentiel — 6ème — Sciences : la planète Terre et les êtres vivants dans leur environnement (17 fiches)
-  - [ ] Le système solaire et les mouvements de la Terre — *à créer*
+  - [x] Le système solaire et les mouvements de la Terre — 6ème — Sciences : le système solaire et les mouvements de la Terre (16 fiches)
 - [x] L'eau, ses états et son cycle — 6ème — Sciences : l'eau, ses états et son cycle (16 fiches)
-- [ ] Les matériaux et les propriétés de la matière — *à créer*
-- [ ] Mouvements et vitesse — *à créer*
-- [ ] Signaux et information — *à créer*
+- [x] Les matériaux et les propriétés de la matière — 6ème — Sciences : les matériaux et les propriétés de la matière (16 fiches)
+- [x] Mouvements et vitesse — 6ème — Sciences : mouvements et vitesse (16 fiches)
+- [x] Signaux et information — 6ème — Sciences : signaux et information (16 fiches)
 - [x] Révisions de l'année — 6ème — Sciences : le vivant, la matière et l'énergie (16 fiches)
 
 ### 6e — Histoire (3 / 3)
@@ -838,21 +838,21 @@ Collège — 42 chapitres couverts sur 62, 82 boîtes.
 - [x] Se repérer sur la Terre — 6ème — Géographie : se repérer sur la Terre (16 fiches)
 - [x] Lire et réaliser un croquis simple — 6ème — Géographie : lire et réaliser un croquis simple (16 fiches)
 
-### 6e — EMC (3 / 5)
+### 6e — EMC (5 / 5)
 
 - [x] Vivre ensemble au collège et symboles de la République — 6ème — EMC : vivre ensemble au collège et symboles de la République (17 fiches)
 - [x] S'informer, débattre et utiliser Internet de façon responsable — 6ème — EMC : s'informer, débattre et utiliser Internet de façon responsable (17 fiches)
 - [x] Les droits de l'enfant et l'égalité filles-garçons — 6ème — EMC : les droits de l'enfant et l'égalité filles-garçons (16 fiches)
-- [ ] La sécurité et les règles de la vie collective — *à créer*
-- [ ] Le harcèlement et la solidarité — *à créer*
+- [x] La sécurité et les règles de la vie collective — 6ème — EMC : la sécurité et les règles de la vie collective (16 fiches)
+- [x] Le harcèlement et la solidarité — 6ème — EMC : le harcèlement et la solidarité (16 fiches)
 
-### 6e — Technologie (2 / 5)
+### 6e — Technologie (5 / 5)
 
 - [x] Objets techniques, fonctions et matériaux — 6ème — Technologie : objets techniques, fonctions et matériaux (16 fiches)
 - [x] L'évolution des objets techniques — 6ème — Technologie : l'évolution des objets techniques (16 fiches)
-- [ ] Le fonctionnement d'un objet, énergie et information — *à créer*
-- [ ] Programmer avec Scratch — *à créer*
-- [ ] Concevoir un objet, du croquis au prototype — *à créer*
+- [x] Le fonctionnement d'un objet, énergie et information — 6ème — Technologie : le fonctionnement d'un objet, énergie et information (16 fiches)
+- [x] Programmer avec Scratch — 6ème — Technologie : programmer avec Scratch (16 fiches)
+- [x] Concevoir un objet, du croquis au prototype — 6ème — Technologie : concevoir un objet, du croquis au prototype (16 fiches)
 
 ### 6e — Anglais (5 / 12)
 
