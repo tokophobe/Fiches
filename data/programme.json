@@ -7829,11 +7829,23 @@
        "sousthemes": [
         {
          "titre": "Le commerce triangulaire et les ports négriers",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-commerce-triangulaire",
+           "titre": "4ème — Histoire : le commerce triangulaire et les ports négriers",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'esclavage dans les colonies et son abolition",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-esclavage-abolition",
+           "titre": "4ème — Histoire : l'esclavage dans les colonies et son abolition",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7849,15 +7861,33 @@
        "sousthemes": [
         {
          "titre": "L'Europe des Lumières",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-lumieres",
+           "titre": "4ème — Histoire : l'Europe des Lumières",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "La Révolution française (1789-1799)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-revolution-francaise",
+           "titre": "4ème — Histoire : la Révolution française (1789-1799)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Napoléon et l'Empire",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-napoleon-empire",
+           "titre": "4ème — Histoire : Napoléon et l'Empire",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7873,15 +7903,33 @@
        "sousthemes": [
         {
          "titre": "La révolution industrielle",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-revolution-industrielle",
+           "titre": "4ème — Histoire : la révolution industrielle",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Ouvriers et bourgeois dans la société industrielle",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-ouvriers-bourgeois",
+           "titre": "4ème — Histoire : ouvriers et bourgeois dans la société industrielle",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Conquêtes et sociétés coloniales",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-colonies-xixe",
+           "titre": "4ème — Histoire : conquêtes et sociétés coloniales au XIXe siècle",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7907,15 +7955,33 @@
         },
         {
          "titre": "Les révolutions de 1830 et 1848",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-revolutions-1830-1848",
+           "titre": "4ème — Histoire : les révolutions de 1830 et 1848",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "La IIIe République",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-troisieme-republique",
+           "titre": "4ème — Histoire : la IIIe République",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Conditions féminines au XIXe siècle",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-hist-conditions-feminines",
+           "titre": "4ème — Histoire : conditions féminines au XIXe siècle",
+           "fiches": 16
+          }
+         ]
         }
        ]
       }

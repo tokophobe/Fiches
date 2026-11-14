@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1078 chapitres couverts sur 1228** (88 %), 1238 boîtes, 20384 fiches.
+Mise à jour : 14/11/2026. **1078 chapitres couverts sur 1228** (88 %), 1249 boîtes, 20560 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -18,7 +18,7 @@ Mise à jour : 14/11/2026. **1078 chapitres couverts sur 1228** (88 %), 1238 bo�
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
 | [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
-| [4e](#4e) | 52 / 82 | 30 | 54 | 916 |
+| [4e](#4e) | 52 / 82 | 30 | 65 | 1092 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
 | [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
@@ -1054,7 +1054,7 @@ Collège — 39 chapitres couverts sur 87, 42 boîtes.
 
 ## 4e
 
-Collège — 52 chapitres couverts sur 82, 54 boîtes.
+Collège — 52 chapitres couverts sur 82, 65 boîtes.
 
 ### 4e — Français (9 / 15)
 
@@ -1108,21 +1108,21 @@ Collège — 52 chapitres couverts sur 82, 54 boîtes.
 ### 4e — Histoire (4 / 4)
 
 - [x] Bourgeoisies marchandes, négoces et traites négrières au XVIIIe siècle — l'essentiel — 4ème — Histoire : bourgeoisies marchandes et traites négrières au XVIIIe siècle (16 fiches)
-  - [ ] Le commerce triangulaire et les ports négriers — *à créer*
-  - [ ] L'esclavage dans les colonies et son abolition — *à créer*
+  - [x] Le commerce triangulaire et les ports négriers — 4ème — Histoire : le commerce triangulaire et les ports négriers (16 fiches)
+  - [x] L'esclavage dans les colonies et son abolition — 4ème — Histoire : l'esclavage dans les colonies et son abolition (16 fiches)
 - [x] Lumières, Révolution française et Empire — l'essentiel — 4ème — Histoire : Lumières, Révolution française et Empire (17 fiches)
-  - [ ] L'Europe des Lumières — *à créer*
-  - [ ] La Révolution française (1789-1799) — *à créer*
-  - [ ] Napoléon et l'Empire — *à créer*
+  - [x] L'Europe des Lumières — 4ème — Histoire : l'Europe des Lumières (16 fiches)
+  - [x] La Révolution française (1789-1799) — 4ème — Histoire : la Révolution française (1789-1799) (16 fiches)
+  - [x] Napoléon et l'Empire — 4ème — Histoire : Napoléon et l'Empire (16 fiches)
 - [x] L'Europe et le monde au XIXe siècle — l'essentiel — 4ème — Histoire : industrialisation et conquêtes coloniales au XIXe siècle (18 fiches)
-  - [ ] La révolution industrielle — *à créer*
-  - [ ] Ouvriers et bourgeois dans la société industrielle — *à créer*
-  - [ ] Conquêtes et sociétés coloniales — *à créer*
+  - [x] La révolution industrielle — 4ème — Histoire : la révolution industrielle (16 fiches)
+  - [x] Ouvriers et bourgeois dans la société industrielle — 4ème — Histoire : ouvriers et bourgeois dans la société industrielle (16 fiches)
+  - [x] Conquêtes et sociétés coloniales — 4ème — Histoire : conquêtes et sociétés coloniales au XIXe siècle (16 fiches)
 - [x] Société, culture et politique dans la France du XIXe siècle — l'essentiel — 4ème — Histoire : voter, la IIIe République et les femmes au XIXe siècle (16 fiches)
   - [x] Les régimes politiques en France de 1815 à 1870 — 4ème — Histoire : les régimes politiques en France au XIXe siècle (16 fiches)
-  - [ ] Les révolutions de 1830 et 1848 — *à créer*
-  - [ ] La IIIe République — *à créer*
-  - [ ] Conditions féminines au XIXe siècle — *à créer*
+  - [x] Les révolutions de 1830 et 1848 — 4ème — Histoire : les révolutions de 1830 et 1848 (16 fiches)
+  - [x] La IIIe République — 4ème — Histoire : la IIIe République (16 fiches)
+  - [x] Conditions féminines au XIXe siècle — 4ème — Histoire : conditions féminines au XIXe siècle (16 fiches)
 
 ### 4e — Géographie (5 / 5)
 
