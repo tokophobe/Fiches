@@ -6680,11 +6680,23 @@
        "sousthemes": [
         {
          "titre": "Récits de voyage et d'exploration",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-fr-recits-voyage",
+           "titre": "5ème — Français : récits de voyage et d'exploration",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Romans d'aventure",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-fr-romans-aventure",
+           "titre": "5ème — Français : romans d'aventure",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6700,61 +6712,139 @@
        "sousthemes": [
         {
          "titre": "Amitié et famille dans le roman",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-fr-amitie-famille",
+           "titre": "5ème — Français : amitié et famille dans le roman",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "Imaginer des univers nouveaux",
-       "boites": [],
+       "boites": [
+        {
+         "cle": "r5e-fr-univers-nouveaux",
+         "titre": "5ème — Français : imaginer des univers nouveaux (l'essentiel)",
+         "fiches": 16
+        }
+       ],
        "sousthemes": [
         {
          "titre": "La science-fiction",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-fr-science-fiction",
+           "titre": "5ème — Français : la science-fiction",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Contes, merveilleux et fantasy",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-fr-contes-fantasy",
+           "titre": "5ème — Français : contes, merveilleux et fantasy",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "Héros, héroïnes et héroïsmes",
-       "boites": [],
+       "boites": [
+        {
+         "cle": "r5e-fr-heros",
+         "titre": "5ème — Français : héros, héroïnes et héroïsmes (l'essentiel)",
+         "fiches": 16
+        }
+       ],
        "sousthemes": [
         {
          "titre": "Chevaliers et romans de la Table ronde",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-fr-chevaliers-table-ronde",
+           "titre": "5ème — Français : chevaliers et romans de la Table ronde",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Héros d'épopée et héros d'aujourd'hui",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-fr-heros-epopee",
+           "titre": "5ème — Français : héros d'épopée et héros d'aujourd'hui",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "L'être humain est-il maître de la nature ?",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-homme-nature",
+         "titre": "5ème — Français : l'être humain est-il maître de la nature ?",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Types de phrases et propositions",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-types-phrases",
+         "titre": "5ème — Français : types de phrases et propositions",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les fonctions dans la phrase (COD, COI, attribut)",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-fonctions",
+         "titre": "5ème — Français : les fonctions dans la phrase (COD, COI, attribut)",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les compléments circonstanciels",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-complements-circonstanciels",
+         "titre": "5ème — Français : les compléments circonstanciels",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "L'imparfait et le passé simple dans le récit",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-imparfait-passe-simple",
+         "titre": "5ème — Français : l'imparfait et le passé simple dans le récit",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le passé composé et le plus-que-parfait",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-pc-pqp",
+         "titre": "5ème — Français : le passé composé et le plus-que-parfait",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "L'accord du participe passé",
@@ -6768,15 +6858,33 @@
       },
       {
        "titre": "Le discours direct et indirect",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-discours-direct-indirect",
+         "titre": "5ème — Français : le discours direct et indirect",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les homophones grammaticaux",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-homophones",
+         "titre": "5ème — Français : les homophones grammaticaux",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le vocabulaire et la formation des mots",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-fr-formation-mots",
+         "titre": "5ème — Français : le vocabulaire et la formation des mots",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Révisions de l'année",

@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1115 chapitres couverts sur 1228** (91 %), 1322 boîtes, 21728 fiches.
+Mise à jour : 14/11/2026. **1126 chapitres couverts sur 1228** (92 %), 1340 boîtes, 22016 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -17,7 +17,7 @@ Mise à jour : 14/11/2026. **1115 chapitres couverts sur 1228** (91 %), 1322 bo�
 | [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
-| [5e](#5e) | 46 / 87 | 41 | 62 | 1050 |
+| [5e](#5e) | 57 / 87 | 30 | 80 | 1338 |
 | [4e](#4e) | 82 / 82 | 0 | 118 | 1940 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
@@ -884,31 +884,31 @@ Collège — 39 chapitres couverts sur 62, 43 boîtes.
 
 ## 5e
 
-Collège — 46 chapitres couverts sur 87, 62 boîtes.
+Collège — 57 chapitres couverts sur 87, 80 boîtes.
 
-### 5e — Français (4 / 15)
+### 5e — Français (15 / 15)
 
 - [x] Le voyage et l'aventure — l'essentiel — 5ème — Français : voyage, aventure, héros et univers imaginaires (17 fiches)
-  - [ ] Récits de voyage et d'exploration — *à créer*
-  - [ ] Romans d'aventure — *à créer*
+  - [x] Récits de voyage et d'exploration — 5ème — Français : récits de voyage et d'exploration (16 fiches)
+  - [x] Romans d'aventure — 5ème — Français : romans d'aventure (16 fiches)
 - [x] Avec autrui : familles, amis, réseaux — l'essentiel — 5ème — Français : avec autrui, la comédie et Molière (19 fiches)
-  - [ ] Amitié et famille dans le roman — *à créer*
-- [ ] Imaginer des univers nouveaux — l'essentiel — *à créer*
-  - [ ] La science-fiction — *à créer*
-  - [ ] Contes, merveilleux et fantasy — *à créer*
-- [ ] Héros, héroïnes et héroïsmes — l'essentiel — *à créer*
-  - [ ] Chevaliers et romans de la Table ronde — *à créer*
-  - [ ] Héros d'épopée et héros d'aujourd'hui — *à créer*
-- [ ] L'être humain est-il maître de la nature ? — *à créer*
-- [ ] Types de phrases et propositions — *à créer*
-- [ ] Les fonctions dans la phrase (COD, COI, attribut) — *à créer*
-- [ ] Les compléments circonstanciels — *à créer*
-- [ ] L'imparfait et le passé simple dans le récit — *à créer*
-- [ ] Le passé composé et le plus-que-parfait — *à créer*
+  - [x] Amitié et famille dans le roman — 5ème — Français : amitié et famille dans le roman (16 fiches)
+- [x] Imaginer des univers nouveaux — l'essentiel — 5ème — Français : imaginer des univers nouveaux (l'essentiel) (16 fiches)
+  - [x] La science-fiction — 5ème — Français : la science-fiction (16 fiches)
+  - [x] Contes, merveilleux et fantasy — 5ème — Français : contes, merveilleux et fantasy (16 fiches)
+- [x] Héros, héroïnes et héroïsmes — l'essentiel — 5ème — Français : héros, héroïnes et héroïsmes (l'essentiel) (16 fiches)
+  - [x] Chevaliers et romans de la Table ronde — 5ème — Français : chevaliers et romans de la Table ronde (16 fiches)
+  - [x] Héros d'épopée et héros d'aujourd'hui — 5ème — Français : héros d'épopée et héros d'aujourd'hui (16 fiches)
+- [x] L'être humain est-il maître de la nature ? — 5ème — Français : l'être humain est-il maître de la nature ? (16 fiches)
+- [x] Types de phrases et propositions — 5ème — Français : types de phrases et propositions (16 fiches)
+- [x] Les fonctions dans la phrase (COD, COI, attribut) — 5ème — Français : les fonctions dans la phrase (COD, COI, attribut) (16 fiches)
+- [x] Les compléments circonstanciels — 5ème — Français : les compléments circonstanciels (16 fiches)
+- [x] L'imparfait et le passé simple dans le récit — 5ème — Français : l'imparfait et le passé simple dans le récit (16 fiches)
+- [x] Le passé composé et le plus-que-parfait — 5ème — Français : le passé composé et le plus-que-parfait (16 fiches)
 - [x] L'accord du participe passé — 5ème — Français : l'accord du participe passé (17 fiches)
-- [ ] Le discours direct et indirect — *à créer*
-- [ ] Les homophones grammaticaux — *à créer*
-- [ ] Le vocabulaire et la formation des mots — *à créer*
+- [x] Le discours direct et indirect — 5ème — Français : le discours direct et indirect (16 fiches)
+- [x] Les homophones grammaticaux — 5ème — Français : les homophones grammaticaux (16 fiches)
+- [x] Le vocabulaire et la formation des mots — 5ème — Français : le vocabulaire et la formation des mots (16 fiches)
 - [x] Révisions de l'année — 5ème — Français : chevaliers, littérature du Moyen Âge et grammaire (16 fiches) ; 5ème — Français : types de phrases, propositions, passé composé et plus-que-parfait (19 fiches)
 
 ### 5e — Mathématiques (15 / 15)
