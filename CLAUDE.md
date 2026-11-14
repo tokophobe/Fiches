@@ -335,6 +335,12 @@ testables ainsi.
   `python3 tools/build_site_pages.py` puis `genere`, rattacher à la main dans `data/programme.json` chaque nouvelle
   boîte qui couvre un chapitre « à créer » (déplacer la boîte, supprimer
   le chapitre ajouté), relancer `genere` et livrer dans ce dépôt-ci.
+- Fiches datées (14 nov. 2026) : `tools/fiches_a_verifier.py` retrouve, par
+  thèmes, les fiches dont le contenu change avec le temps (zone euro,
+  population, tourisme, CO₂…) et écrit la liste dans le dépôt privé
+  (`Fiches-contenu/A-VERIFIER-CHAQUE-ANNEE.md`, jamais ici : elle contient
+  le texte des fiches). Relecture chaque été (feuille de route §4). Toute
+  nouvelle fiche datée doit être retrouvée par un thème du script.
 - Liens des fiches (spéc. §5.7, règle 5 et Q21) : le titre de la vidéo
   doit correspondre au sujet précis de la fiche (vérifier le titre via
   oEmbed). À chaque relecture de boîte, remplacer chaque lien Wikipédia
