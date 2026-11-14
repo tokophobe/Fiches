@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v290";
+  const ADMIN_VERSION = "v291";
   // v281 : les erreurs de Darwin Admin portent aussi leur version
   // (js/error-report.js lit window.FICHES_APP_VERSION).
   window.FICHES_APP_VERSION = ADMIN_VERSION;
@@ -1705,7 +1705,12 @@
     return card;
   }
   /** Fiches d'une collection publiée recalées sur la version du fichier. */
-  function mergePackCards(colCards, packCards, sid) {
+  function mergePackCards(colCards, packCards, sid, retirees) {
+    // v291 : empreintes des fiches retirées du fichier (champ « retirees »
+    // de la boîte, tenu par tools/maj_boites.py) : supprimées de la
+    // collection publiée au lieu d'être gardées « non retrouvées ».
+    const removedSet = new Set(Array.isArray(retirees) ? retirees : retirees ? [retirees] : []);
+    let removed = 0;
     const curQA = new Map();
     const curQ = new Map();
     const oldQA = new Map();
@@ -1766,9 +1771,13 @@
         changed++;
         return withLink(withMore(withWrongs({ ...c, question: p.question, answer: p.answer }, p.wrongs), p.more), p.link);
       }
+      if (removedSet.has(qa) || (c.corr && removedSet.has(c.corr.from))) {
+        removed++;
+        return null;
+      }
       unmatched++;
       return c;
-    });
+    }).filter(Boolean);
     // v233 : fiches nouvelles du fichier (par exemple une fiche coupée en
     // deux) : ajoutées à la collection, avec un identifiant nouveau.
     let added = 0;
@@ -1785,7 +1794,7 @@
         added++;
       });
     }
-    return { cards, changed: changed + added, unmatched, missing: sid ? 0 : packCards.length - used.size, added, kept };
+    return { cards, changed: changed + added + removed, unmatched, missing: sid ? 0 : packCards.length - used.size, added, kept, removed };
   }
   async function fetchAllRows(build, pageSize) {
     const out = [];
@@ -2409,7 +2418,7 @@
     root.appendChild(
       card(
         "Publication dans la Librairie",
-        "Les boîtes toutes prêtes sont dans le fichier bibliotheque.json, rangé dans le dépôt privé Fiches-contenu (jamais en ligne avec l'appli). « Importer la dernière version » le lit directement là-bas puis l'analyse ; « Choisir le fichier… » reste possible avec un fichier sur l'ordinateur. Les boîtes sont publiées au nom de « darwin ». Une boîte déjà publiée garde sa place et l'identifiant de ses fiches : son nom, son résumé, son classement et le texte de ses fiches sont mis à jour.",
+        "Les boîtes toutes prêtes sont dans le fichier bibliotheque.json, rangé dans le dépôt privé Fiches-contenu (jamais en ligne avec l'appli). « Importer la dernière version » le lit directement là-bas puis l'analyse ; « Choisir le fichier… » reste possible avec un fichier sur l'ordinateur. Les boîtes sont publiées au nom de « darwin ». Une boîte déjà publiée garde sa place et l'identifiant de ses fiches : son nom, son résumé, son classement et le texte de ses fiches sont mis à jour, et les fiches retirées du fichier en sont supprimées.",
         h("div", { class: "toolbar" }, remoteBtn, h("span", { class: "muted" }, "ou"), pickBtn, fileName, fileInput, analyse),
         tokenBox,
         out,
@@ -2437,7 +2446,7 @@
           { class: "grid grid--kpi" },
           kpi("Boîtes dans le fichier", plan.total),
           kpi("Publiées et à jour", plan.upToDate),
-          kpi("À mettre à jour", plan.toUpdate.length, `${plural(plan.cardsChanged, "fiche modifiée", "fiches modifiées")}`),
+          kpi("À mettre à jour", plan.toUpdate.length, `${plural(plan.cardsChanged, "fiche modifiée", "fiches modifiées")}${plan.cardsRemoved ? `, dont ${plural(plan.cardsRemoved, "fiche retirée", "fiches retirées")}` : ""}`),
           kpi("Nouvelles à publier", plan.toCreate.length)
         ),
         plan.cardsUnmatched
@@ -2644,7 +2653,7 @@
       hasLinkColumn = false;
       mine = await fetchMine(false);
     }
-    const plan = { total: 0, upToDate: 0, toUpdate: [], toCreate: [], user, cardsChanged: 0, cardsUnmatched: 0, cardsMissing: 0, corrections: [], pack, hasLinkColumn };
+    const plan = { total: 0, upToDate: 0, toUpdate: [], toCreate: [], user, cardsChanged: 0, cardsRemoved: 0, cardsUnmatched: 0, cardsMissing: 0, corrections: [], pack, hasLinkColumn };
     (pack.boxes || []).forEach((box) => {
       plan.total++;
       const sid = `pack-${box.key}`;
@@ -2673,7 +2682,8 @@
       });
       if (Object.keys(taxonomy).length && sortedJson(existing.taxonomy || {}) !== sortedJson(taxonomy)) fields.taxonomy = taxonomy;
       if (tags.length && sortedJson((existing.tags || []).map(normalizeTag)) !== sortedJson(tags)) fields.tags = tags;
-      const merged = mergePackCards(existing.cards || [], packCards, sid);
+      const merged = mergePackCards(existing.cards || [], packCards, sid, box.retirees);
+      plan.cardsRemoved += merged.removed;
       merged.kept.forEach((k) => plan.corrections.push({ key: box.key, boxName: box.name, packIndex: k.packIndex, card: k.card }));
       plan.cardsUnmatched += merged.unmatched;
       plan.cardsMissing += merged.missing;
@@ -2688,7 +2698,7 @@
   }
   async function runPackPlan(plan, btn, log) {
     const n = plan.toCreate.length + plan.toUpdate.length;
-    if (!(await confirmDialog(`Publier ${plural(plan.toCreate.length, "nouvelle boîte", "nouvelles boîtes")} et mettre à jour ${plural(plan.toUpdate.length, "boîte", "boîtes")} (${plural(plan.cardsChanged, "fiche modifiée", "fiches modifiées")}) dans la Librairie, au nom de « darwin » ?`, { okLabel: "Publier" }))) return;
+    if (!(await confirmDialog(`Publier ${plural(plan.toCreate.length, "nouvelle boîte", "nouvelles boîtes")} et mettre à jour ${plural(plan.toUpdate.length, "boîte", "boîtes")} (${plural(plan.cardsChanged, "fiche modifiée", "fiches modifiées")}${plan.cardsRemoved ? `, dont ${plural(plan.cardsRemoved, "fiche retirée", "fiches retirées")}` : ""}) dans la Librairie, au nom de « darwin » ?`, { okLabel: "Publier" }))) return;
     btn.disabled = true;
     log.hidden = false;
     log.textContent = "";
