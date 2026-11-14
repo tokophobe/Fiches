@@ -52,3 +52,59 @@ test("Publication dans la Librairie : réservée au profil enseignant", () => {
   assert.equal(P.canPublishToLibrary("student"), false);
   assert.equal(P.canPublishToLibrary(undefined), false);
 });
+
+/* v293 : Librairie rangée par chapitres quand une matière est choisie. */
+const programme3eFr = [
+  {
+    key: "3ème|français",
+    niveau: "3e",
+    chapitres: [
+      { t: "Se raconter", b: ["essentiel-raconter"], s: [{ t: "Le pacte autobiographique", b: ["pacte"] }, { t: "Vide", b: [] }] },
+      { t: "Visions poétiques", b: ["poesie"] },
+      { t: "Chapitre sans boîte affichée", b: ["absente"] },
+    ],
+  },
+];
+const titres = (rows) => rows.map((r) => (r.kind === "item" ? r.id : `[${r.kind}] ${r.title}`));
+
+test("Chapitres : ordre du programme, l'essentiel puis les sous-thèmes, titres seulement s'ils ont une boîte", () => {
+  const items = [
+    { id: "p", packKey: "poesie" },
+    { id: "pa", packKey: "pacte" },
+    { id: "e", packKey: "essentiel-raconter" },
+  ];
+  assert.deepEqual(titres(L.groupByChapters(items, programme3eFr)), [
+    "[chapter] Se raconter",
+    "e",
+    "[sub] Le pacte autobiographique",
+    "pa",
+    "[chapter] Visions poétiques",
+    "p",
+  ]);
+});
+
+test("Chapitres : la boîte d'un enseignant rangée par darwin va dans son chapitre, les autres dans « Autres chapitres »", () => {
+  const items = [
+    { id: "prof-sans", chapterRef: "" },
+    { id: "prof", chapterRef: "3ème|français|visions POÉTIQUES " },
+    { id: "p", packKey: "poesie" },
+  ];
+  assert.deepEqual(titres(L.groupByChapters(items, programme3eFr)), [
+    "[chapter] Visions poétiques",
+    "p",
+    "prof",
+    "[chapter] Autres chapitres",
+    "prof-sans",
+  ]);
+});
+
+test("Chapitres : sans aucune boîte rangée, liste simple sans titre", () => {
+  const items = [{ id: "a" }, { id: "b" }];
+  assert.deepEqual(titres(L.groupByChapters(items, programme3eFr)), ["a", "b"]);
+});
+
+test("Chapitres : plusieurs classes affichées → la classe précède le titre du chapitre", () => {
+  const deux = [...programme3eFr, { key: "4ème|français", niveau: "4e", chapitres: [{ t: "Le récit", b: ["recit"] }] }];
+  const items = [{ id: "r", packKey: "recit" }, { id: "p", packKey: "poesie" }];
+  assert.deepEqual(titres(L.groupByChapters(items, deux)), ["[chapter] 3e · Visions poétiques", "p", "[chapter] 4e · Le récit", "r"]);
+});

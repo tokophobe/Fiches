@@ -1,4 +1,4 @@
-const CACHE_NAME = "fiches-cache-v292";
+const CACHE_NAME = "fiches-cache-v293";
 
 const CORE_ASSETS = [
   "./",
@@ -21,6 +21,7 @@ const CORE_ASSETS = [
   "./js/defi-questions.js",
   "./js/defi.js",
   "./data/taxonomie.xlsx",
+  "./data/chapitres.json",
   "./js/learn-links.js",
   "./js/app.js",
   "./icons/icon-192.png",
@@ -86,8 +87,10 @@ self.addEventListener("fetch", (event) => {
   // Darwin Admin, dont la page est aussi sous le contrôle de ce service
   // worker, lisait une ancienne copie du fichier et ne voyait aucune
   // modification à publier.
+  // v293 : idem pour data/chapitres.json (chapitres de la Librairie),
+  // réécrit à chaque lot de boîtes.
   const fromAdmin = (request.referrer || "").includes("/admin/");
-  if (isCoreAsset && (fromAdmin || url.pathname.includes("/packs/") || url.pathname.endsWith("/data/taxonomie.xlsx") || url.pathname.endsWith("/js/config.js"))) {
+  if (isCoreAsset && (fromAdmin || url.pathname.includes("/packs/") || url.pathname.endsWith("/data/taxonomie.xlsx") || url.pathname.endsWith("/data/chapitres.json") || url.pathname.endsWith("/js/config.js"))) {
     event.respondWith(
       fetch(request)
         .then((response) => {

@@ -331,7 +331,13 @@ testables ainsi.
   et réécrit `docs/PROGRAMME.md`, `site/programme.html` et
   `docs/PLAN-CREATION.md` (boîtes à créer numérotées par priorité, suivies
   aussi par le bilan `tools/lancement.py`) ; ne pas modifier ces fichiers
-  à la main. **Après chaque lot de boîtes** : lancer
+  à la main. `genere` écrit aussi `data/chapitres.json` (v293) : petit
+  index « niveau|matière » → chapitres et clés des boîtes, qui range la
+  Librairie par chapitres (`LibraryRules.groupByChapters`,
+  `libraryChapterRows` dans `app.js`) ; une boîte d'enseignant a son
+  chapitre dans `library_collections.programme_chapter`
+  (« niveau|matière|titre », choisi par darwin dans `openSubmission`,
+  `supabase/v293_migration.sql`). **Après chaque lot de boîtes** : lancer
   `python3 tools/build_site_pages.py` puis `genere`, rattacher à la main dans `data/programme.json` chaque nouvelle
   boîte qui couvre un chapitre « à créer » (déplacer la boîte, supprimer
   le chapitre ajouté), relancer `genere` et livrer dans ce dépôt-ci.

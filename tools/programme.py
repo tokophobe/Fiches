@@ -14,7 +14,9 @@ Commandes :
                                        à la racine), puis écrit
                                        docs/PROGRAMME.md et site/programme.html
                                        et docs/PLAN-CREATION.md (boîtes à
-                                       créer, par ordre de priorité)
+                                       créer, par ordre de priorité) et
+                                       data/chapitres.json (chapitres de la
+                                       Librairie dans l'appli, v293)
   python3 tools/programme.py bilan    affiche la couverture par classe
 
 Quand bibliotheque.json est présent, « genere » :
@@ -37,6 +39,7 @@ from pathlib import Path
 
 RACINE = Path(__file__).resolve().parent.parent
 PROGRAMME = RACINE / "data" / "programme.json"
+INDEX_CHAPITRES = RACINE / "data" / "chapitres.json"
 BIBLIO = RACINE / "bibliotheque.json"
 MD = RACINE / "docs" / "PROGRAMME.md"
 PAGE = RACINE / "site" / "programme.html"
@@ -576,6 +579,28 @@ def bilan(prog):
               f"sous-thèmes à créer : {len(sts):>3}   boîtes : {b}")
 
 
+def ecrire_index(prog):
+    """v293 : petit index lu par l'appli et Darwin Admin pour ranger la
+    Librairie par chapitres (le programme complet est trop lourd pour un
+    téléphone). Pour chaque « niveau|matière » : les chapitres dans l'ordre
+    du programme, avec les clés de leurs boîtes (« b ») et leurs sous-thèmes
+    (« s »). La classe « autres » n'a pas de chapitres."""
+    out = {"maj": prog.get("maj", ""), "matieres": {}}
+    for n in prog["niveaux"]:
+        if n["id"] == "autres":
+            continue
+        for m in n["matieres"]:
+            chap = []
+            for c in m["chapitres"]:
+                x = {"t": c["titre"], "b": [b["cle"] for b in c["boites"]]}
+                st = [{"t": s["titre"], "b": [b["cle"] for b in s["boites"]]} for s in c.get("sousthemes", [])]
+                if st:
+                    x["s"] = st
+                chap.append(x)
+            out["matieres"][f"{n['id']}|{m['id']}"] = {"niveau": n["label"], "matiere": m["nom"], "chapitres": chap}
+    INDEX_CHAPITRES.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+
+
 def main():
     cmd = sys.argv[1] if len(sys.argv) > 1 else ""
     prog = charger()
@@ -586,8 +611,9 @@ def main():
         ecrire_md(prog)
         ecrire_page(prog)
         ecrire_plan(prog)
+        ecrire_index(prog)
         bilan(prog)
-        print("Écrit : data/programme.json, docs/PROGRAMME.md, site/programme.html, docs/PLAN-CREATION.md")
+        print("Écrit : data/programme.json, docs/PROGRAMME.md, site/programme.html, docs/PLAN-CREATION.md, data/chapitres.json")
     elif cmd == "bilan":
         bilan(prog)
     else:
