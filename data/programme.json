@@ -8611,11 +8611,23 @@
       },
       {
        "titre": "Les pronoms relatifs",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-ang-pronoms-relatifs",
+         "titre": "4ème — Anglais : les pronoms relatifs",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les quantifieurs et les dénombrables",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-ang-quantifieurs",
+         "titre": "4ème — Anglais : les quantifieurs et les dénombrables",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8645,11 +8657,23 @@
       },
       {
        "titre": "Le passé simple (pretérito indefinido)",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-esp-preterito",
+         "titre": "4ème — Espagnol : le passé simple (pretérito indefinido)",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les pays hispanophones",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-esp-pays-hispanophones",
+         "titre": "4ème — Espagnol : les pays hispanophones",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8679,11 +8703,23 @@
       },
       {
        "titre": "Le prétérit des auxiliaires et des modaux",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-all-preterit",
+         "titre": "4ème — Allemand : le prétérit des auxiliaires et des modaux",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les pays germanophones",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-all-pays-germanophones",
+         "titre": "4ème — Allemand : les pays germanophones",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8703,11 +8739,23 @@
       },
       {
        "titre": "Le passé composé",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-ita-passe-compose",
+         "titre": "4ème — Italien : le passé composé",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les villes et les régions d'Italie",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-ita-regions-villes",
+         "titre": "4ème — Italien : les villes et les régions d'Italie",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8727,7 +8775,13 @@
       },
       {
        "titre": "Mythologie et héros romains",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-lat-mythologie-romaine",
+         "titre": "4ème — Latin : mythologie et héros romains",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8737,7 +8791,13 @@
      "chapitres": [
       {
        "titre": "L'œuvre, l'espace et le spectateur",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-arts-oeuvre-espace-spectateur",
+         "titre": "4ème — Arts plastiques : l'œuvre, l'espace et le spectateur",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -8747,7 +8807,13 @@
      "chapitres": [
       {
        "titre": "Musiques classique et romantique, repères",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-mus-classique-romantique",
+         "titre": "4ème — Éducation musicale : musiques classique et romantique, repères",
+         "fiches": 16
+        }
+       ]
       }
      ]
     }

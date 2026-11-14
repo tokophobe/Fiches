@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1097 chapitres couverts sur 1228** (89 %), 1291 boîtes, 21232 fiches.
+Mise à jour : 14/11/2026. **1108 chapitres couverts sur 1228** (90 %), 1302 boîtes, 21408 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -18,7 +18,7 @@ Mise à jour : 14/11/2026. **1097 chapitres couverts sur 1228** (89 %), 1291 bo�
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
 | [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
-| [4e](#4e) | 71 / 82 | 11 | 107 | 1764 |
+| [4e](#4e) | 82 / 82 | 0 | 118 | 1940 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
 | [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
@@ -1054,7 +1054,7 @@ Collège — 39 chapitres couverts sur 87, 42 boîtes.
 
 ## 4e
 
-Collège — 71 chapitres couverts sur 82, 107 boîtes.
+Collège — 82 chapitres couverts sur 82, 118 boîtes.
 
 ### 4e — Français (15 / 15)
 
@@ -1178,48 +1178,48 @@ Collège — 71 chapitres couverts sur 82, 107 boîtes.
 - [x] Concevoir et modéliser un objet — 4ème — Technologie : concevoir et modéliser un objet (16 fiches)
 - [x] Matériaux et cycle de vie — 4ème — Technologie : matériaux et cycle de vie (16 fiches)
 
-### 4e — Anglais (5 / 7)
+### 4e — Anglais (7 / 7)
 
 - [x] Les verbes irréguliers essentiels — Anglais — Les verbes irréguliers essentiels (59 fiches)
 - [x] Comparatifs et superlatifs — 4ème — Anglais : comparatifs et superlatifs (16 fiches)
 - [x] Prétérit ou present perfect — 4ème — Anglais : prétérit ou present perfect (17 fiches)
 - [x] Les modaux (can, must, should, may...) — 4ème — Anglais : les modaux (can, must, should, may...) (15 fiches)
 - [x] Futur (will, be going to) et prétérit en be + -ing — 4ème — Anglais : futur (will, be going to) et prétérit en be + -ing (17 fiches)
-- [ ] Les pronoms relatifs — *à créer*
-- [ ] Les quantifieurs et les dénombrables — *à créer*
+- [x] Les pronoms relatifs — 4ème — Anglais : les pronoms relatifs (16 fiches)
+- [x] Les quantifieurs et les dénombrables — 4ème — Anglais : les quantifieurs et les dénombrables (16 fiches)
 
-### 4e — Espagnol (2 / 4)
+### 4e — Espagnol (4 / 4)
 
 - [x] Ser et estar, gustar et le passé composé — 4ème — Espagnol : ser et estar, gustar et le passé composé (16 fiches)
 - [x] Futur, ir a + infinitif et impératif — 4ème — Espagnol : futur, ir a + infinitif et impératif (17 fiches)
-- [ ] Le passé simple (pretérito indefinido) — *à créer*
-- [ ] Les pays hispanophones — *à créer*
+- [x] Le passé simple (pretérito indefinido) — 4ème — Espagnol : le passé simple (pretérito indefinido) (16 fiches)
+- [x] Les pays hispanophones — 4ème — Espagnol : les pays hispanophones (16 fiches)
 
-### 4e — Allemand (2 / 4)
+### 4e — Allemand (4 / 4)
 
 - [x] Perfekt, verbes de modalité et place du verbe — 4ème — Allemand : Perfekt, verbes de modalité et place du verbe (16 fiches)
 - [x] Datif, prépositions et localisation — 4ème — Allemand : datif, prépositions et localisation (17 fiches)
-- [ ] Le prétérit des auxiliaires et des modaux — *à créer*
-- [ ] Les pays germanophones — *à créer*
+- [x] Le prétérit des auxiliaires et des modaux — 4ème — Allemand : le prétérit des auxiliaires et des modaux (16 fiches)
+- [x] Les pays germanophones — 4ème — Allemand : les pays germanophones (16 fiches)
 
-### 4e — Italien (1 / 3)
+### 4e — Italien (3 / 3)
 
 - [x] Le présent et la vie quotidienne — 4ème — Italien : le présent et la vie quotidienne (18 fiches)
-- [ ] Le passé composé — *à créer*
-- [ ] Les villes et les régions d'Italie — *à créer*
+- [x] Le passé composé — 4ème — Italien : le passé composé (16 fiches)
+- [x] Les villes et les régions d'Italie — 4ème — Italien : les villes et les régions d'Italie (16 fiches)
 
-### 4e — Latin (1 / 2)
+### 4e — Latin (2 / 2)
 
 - [x] 3e déclinaison, imparfait, parfait et institutions romaines — 4ème — Latin : 3e déclinaison, imparfait, parfait et institutions romaines (17 fiches)
-- [ ] Mythologie et héros romains — *à créer*
+- [x] Mythologie et héros romains — 4ème — Latin : mythologie et héros romains (16 fiches)
 
-### 4e — Arts plastiques (0 / 1)
+### 4e — Arts plastiques (1 / 1)
 
-- [ ] L'œuvre, l'espace et le spectateur — *à créer*
+- [x] L'œuvre, l'espace et le spectateur — 4ème — Arts plastiques : l'œuvre, l'espace et le spectateur (16 fiches)
 
-### 4e — Éducation musicale (0 / 1)
+### 4e — Éducation musicale (1 / 1)
 
-- [ ] Musiques classique et romantique, repères — *à créer*
+- [x] Musiques classique et romantique, repères — 4ème — Éducation musicale : musiques classique et romantique, repères (16 fiches)
 
 
 ## 3e
