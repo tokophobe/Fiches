@@ -350,7 +350,7 @@ testables ainsi.
   doit correspondre au sujet précis de la fiche (vérifier le titre via
   oEmbed). À chaque relecture de boîte, remplacer chaque lien Wikipédia
   par une courte vidéo de cours sur ce sujet, ou le retirer s'il n'y en
-  a pas (1 259 liens Wikipédia au 13 nov. 2026).
+  a pas (1 259 liens Wikipédia au 13 nov. 2026, tous sur des fiches : les liens de boîte sont tous des vidéos depuis la v292).
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
   rediffusion en direct, interview, chaîne pour étrangers apprenant le

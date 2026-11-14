@@ -486,6 +486,9 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
      chaque relecture d'une boîte, un lien Wikipédia est remplacé par une
      courte vidéo de cours sur le sujet précis de la fiche quand elle
      existe ; sinon, le lien est retiré.
+   - **Lien d'une boîte** (v292) : toujours une vidéo de cours (plus de
+     page Wikipédia) ; 109 liens de boîte remplacés le 14 nov. 2026, 5
+     retirés faute de vidéo de cours adaptée.
 6. **Découpage des boîtes toutes prêtes** (décidé le 13 nov. 2026, en
    essai sur la Seconde Guerre mondiale en 3e) : au collège et au lycée,
    un chapitre du programme est découpé en **sous-thèmes de 15 à 20
@@ -618,7 +621,9 @@ tout de suite, la liste à jour suit.
   la page d'une boîte de classe ou prise dans la Librairie).
   - Boîte partagée avec une **classe** → le signalement va à
     l'enseignant qui l'a partagée ; il le retrouve dans « Signalements
-    reçus ».
+    reçus ». Chaque signalement y propose (v292) « Corriger la fiche »
+    (si elle est sur l'appareil), « Ouvrir la boîte », « Répondre » et
+    « Marquer traité », en boutons ovales comme partout dans l'appli.
   - Boîte de la **Librairie** → il va à **darwin** (page Signalements de
     Darwin Admin), même si la boîte vient d'un enseignant, qui ne le voit
     pas. darwin répond et le marque traité ; s'il corrige une boîte
@@ -1098,6 +1103,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v292 | 14 nov. 2026 | Darwin Admin : après un import des boîtes toutes prêtes, liste des boîtes créées ou mises à jour (avec le nombre de fiches modifiées ou retirées) et bouton « Voir les fiches » pour vérifier ; sur iPhone, le bouton du menu ne passe plus sous l'heure. Mon compte : « Super enseignant » et « Super école » sont dans le bloc « Formules pour les enseignants ». Signalements reçus : boutons « Ouvrir la boîte » et « Corriger la fiche » (aussi pour darwin sur une boîte de la Librairie), boutons ovales de la charte. Boîtes toutes prêtes : liens de boîte Wikipédia remplacés par des vidéos de cours (109) ou retirés (5). |
 | v291 | 14 nov. 2026 | Darwin Admin, import des boîtes toutes prêtes : une fiche retirée du fichier est maintenant aussi supprimée de la boîte déjà publiée dans la Librairie (avant, elle restait en place). Le fichier garde pour cela l'empreinte des fiches retirées. Le décompte « fiches retirées » s'affiche avant de publier. Les copies prises par les élèves suivent toutes seules à leur prochaine ouverture de l'appli. Les 5 fiches hors sujet retirées le 14 nov. disparaîtront à la prochaine importation. |
 | v290 | 14 nov. 2026 | Règle d'écriture des fiches QCM (§5.7, règle 7) : le contrôle repère aussi les questions dont l'adjectif est rejeté en fin de phrase (« Quelle est la forme négative correcte ? », « Quelle est la traduction juste ? ») et « … correctement écrite ? », dans l'appli et dans Darwin Admin. Aucune autre question de ce type dans les boîtes toutes prêtes. |
 | — | 14 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : nouvelle règle 8 du §5.7 — une fiche porte sur le savoir de sa boîte, pas sur l'organisation de l'école (programme, épreuves), avec un contrôle automatique à chaque lot. 5 fiches de ce type retirées (anglais de Terminale : les axes du programme de langues, signalée par le propriétaire ; philosophie : nombre de notions et notion « hors programme » ; HGGSP : nombre de thèmes ; français de 5e : « est-ce une entrée du programme ? ») et une remplacée (français de 3e : les sujets de l'épreuve de rédaction). Au passage, une question d'anglais qui renvoyait à ses propositions (« Quelle est la forme négative correcte ? ») a été reformulée. |

@@ -7313,19 +7313,8 @@ body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) .classes-
 .rp-bubble--mine { align-self: flex-end; border-bottom-right-radius: 4px; background: var(--msg-mine-bg, rgba(74, 144, 217, 0.16)); }
 .rp-bubble-who { font-size: 10.5px; font-weight: 600; color: var(--msg-sender-color, #3e7c6b); }
 .rp-bubble-text { font-size: 13.5px; line-height: 1.35; color: var(--ink); white-space: pre-wrap; overflow-wrap: anywhere; }
-.rp-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 2px 14px; }
-.rp-act {
-  padding: 4px 0;
-  border: none;
-  background: transparent;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--action-color);
-  cursor: pointer;
-}
-.rp-act--main { font-weight: 700; color: var(--ink); }
+/* v292 : boutons oblongs de la charte (.btn), plus de style propre. */
+.rp-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
 
 /* ==================================================================
    Round 54
@@ -8093,7 +8082,17 @@ body.is-qcm-review .card-learn-link { display: none; }
 .teacher-plans[open] > .teacher-plans-toggle::after { transform: rotate(180deg); }
 .teacher-plans[open] > .teacher-plans-toggle { margin-bottom: 12px; }
 .teacher-plans-body { display: flex; flex-direction: column; gap: 12px; }
-#view-account .teacher-plans { margin: 0; }
+/* v292 : sur Mon compte, le bloc « Formules pour les enseignants » contient
+   visuellement Super enseignant et Super école (au lieu de trois blocs
+   séparés) : le cadre passe du titre au bloc entier. */
+#view-account .teacher-plans {
+  margin: 0; border-radius: 14px; background: var(--paper, #fff);
+  box-shadow: 0 4px 14px rgba(30, 60, 100, 0.07); border-left: 5px solid #4a9fe0; overflow: hidden;
+}
+#view-account .teacher-plans > .teacher-plans-toggle { background: transparent; box-shadow: none; border-left: 0; border-radius: 0; }
+#view-account .teacher-plans[open] > .teacher-plans-toggle { margin-bottom: 0; }
+#view-account .teacher-plans-body { padding: 0 12px 12px; }
+#view-account .teacher-plans-body > .plan-card { box-shadow: none; border: 1px solid var(--rule-soft, rgba(0, 0, 0, 0.08)); }
 #view-subscriptions .teacher-plans > .teacher-plans-toggle { background: transparent; box-shadow: none; border-left: 0; border-radius: 0; border-top: 1px solid var(--rule-soft); padding: 14px 2px; }
 #view-subscriptions .teacher-plans[open] > .teacher-plans-toggle { margin-bottom: 0; }
 

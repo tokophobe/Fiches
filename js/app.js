@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v291";
+  const APP_VERSION = "v292";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -18227,6 +18227,15 @@
   }
   function closeCreationDetail() {
     creationDetailSubjectId = null;
+    // v292 : ouverte depuis « Signalements reçus » → retour à cette page.
+    if (creationDetailOrigin === "reports") {
+      creationDetailOrigin = "manage";
+      const tab = document.querySelector('.tab[data-view="reports"]');
+      if (tab) {
+        tab.click();
+        return;
+      }
+    }
     // v254 : plus de « Mes créations » — retour à l'organisation.
     openManageInMode("all");
   }
@@ -19112,8 +19121,56 @@
     if (unreadIds.length) await Sync.reports.markRead(unreadIds);
     refreshReportsBadge();
   }
+  /** v292 : la fiche signalée, si on peut la corriger ici — sa propre
+   *  fiche, ou (pour darwin) la copie d'une boîte de la Librairie, dont la
+   *  correction part dans la Librairie elle-même. */
+  function reportTargetCard(r) {
+    if (r.scope === "box" || !r.card_id) return null;
+    const own = cards.find((c) => c.id === r.card_id && !c.deleted && !isReadonlyMirrorCard(c));
+    if (own) return own;
+    if (accountIsAdminFlag && r.source_kind === "library") {
+      return cards.find((c) => !c.deleted && mirrorSourceId(c) === r.card_id && isLibraryMirrorSubject(c.subject)) || null;
+    }
+    return null;
+  }
+  /** v292 : la boîte signalée, si elle est sur cet appareil. */
+  function reportTargetSubject(r, card) {
+    const alive = (s) => s && !s.deleted;
+    if (card) {
+      const s = subjects.find((x) => x.id === card.subject);
+      if (alive(s)) return s;
+    }
+    if (r.source_kind === "library") {
+      const col = (creationsMyCollections || []).find((c) => String(c.id) === String(r.source_id));
+      const src = col && col.source_subject_id && subjects.find((x) => x.id === col.source_subject_id);
+      if (alive(src)) return src;
+      if (accountIsAdminFlag) {
+        const mirror = subjects.find((x) => alive(x) && x.fromLibrary && String(x.libraryOriginId) === String(r.source_id));
+        if (mirror) return mirror;
+      }
+    }
+    // Boîte à soi (partagée à une classe) : retrouvée par son nom.
+    return subjects.find((x) => alive(x) && !isReportableBox(x) && x.name === r.box_name) || null;
+  }
+  async function openReportedBox(r, subject) {
+    if (subject) {
+      openCreationDetail(subject.id, "reports");
+      return;
+    }
+    if (r.source_kind === "library") {
+      const col = await Sync.library.get(r.source_id).catch(() => null);
+      if (col) {
+        libraryDetailReturnView = "reports";
+        openLibraryDetailView(col);
+        return;
+      }
+    }
+    await robotAlert("Cette boîte n'est pas sur cet appareil (ou n'existe plus).");
+  }
   function buildReceivedReportRow(r) {
-    const local = cards.find((c) => c.id === r.card_id && !c.deleted && !isReadonlyMirrorCard(c));
+    const local = reportTargetCard(r);
+    const box = reportTargetSubject(r, local);
+    const canOpenBox = !!box || r.source_kind === "library";
     const li = document.createElement("li");
     li.className = "subject-row report-row rp" + (r.resolved ? " report-row--done" : "");
     // Round 53 : présentation épurée — en-tête (boîte, date), statut, la
@@ -19130,12 +19187,15 @@
         ${r.author_reply ? reportBubbleHtml("Toi", r.author_reply, "mine") : ""}
       </div>
       <div class="rp-actions">
-        ${local ? `<button type="button" class="rp-act" data-act="edit">Corriger la fiche</button>` : ""}
-        <button type="button" class="rp-act" data-act="reply">${r.author_reply ? "Modifier ma réponse" : "Répondre"}</button>
-        ${r.resolved ? "" : `<button type="button" class="rp-act rp-act--main" data-act="done">Marquer traité</button>`}
+        ${local ? `<button type="button" class="btn btn--small" data-act="edit">Corriger la fiche</button>` : ""}
+        ${canOpenBox ? `<button type="button" class="btn btn--small" data-act="box">Ouvrir la boîte</button>` : ""}
+        <button type="button" class="btn btn--small" data-act="reply">${r.author_reply ? "Modifier ma réponse" : "Répondre"}</button>
+        ${r.resolved ? "" : `<button type="button" class="btn btn--small btn--primary" data-act="done">Marquer traité</button>`}
       </div>`;
     const editBtn = li.querySelector('[data-act="edit"]');
     if (editBtn) editBtn.addEventListener("click", () => enterEditMode(local));
+    const boxBtn = li.querySelector('[data-act="box"]');
+    if (boxBtn) boxBtn.addEventListener("click", () => openReportedBox(r, box));
     li.querySelector('[data-act="reply"]').addEventListener("click", async () => {
       const text = await showRobotMessage(`Ton message à ${r.reporter_name || "la personne qui a signalé la fiche"} :`, {
         input: { defaultValue: r.author_reply || "", placeholder: "Merci, j'ai corrigé la réponse." },
@@ -19158,7 +19218,7 @@
     const doneBtn = li.querySelector('[data-act="done"]');
     if (doneBtn) {
       doneBtn.addEventListener("click", async () => {
-        const fresh = cards.find((c) => c.id === r.card_id && !c.deleted && !isReadonlyMirrorCard(c));
+        const fresh = reportTargetCard(r);
         const fixed = fresh ? { question: stripHtmlFast(fresh.question).trim().slice(0, 1000), answer: stripHtmlFast(fresh.answer).trim().slice(0, 1000) } : null;
         const { error } = await Sync.reports.resolve(r.id, fixed);
         if (error) {

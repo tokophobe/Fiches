@@ -360,7 +360,13 @@ pre.code {
   body.nav-open .sidebar { transform: none; }
   body.nav-open .sidebar-backdrop { display: block; position: fixed; inset: 0; z-index: 50; background: rgba(15, 25, 21, 0.4); }
   .menu-btn { display: inline-flex; }
-  .topbar { padding: 12px 16px; }
+  /* v292 : sur iPhone (viewport-fit=cover), la barre du haut et le menu
+     passent sous l'heure et l'encoche : on réserve la zone sûre. */
+  .topbar {
+    padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left));
+  }
+  .sidebar-head { padding-top: max(18px, env(safe-area-inset-top)); }
+  .sidebar-foot { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
   .main { padding: 16px 16px 48px; }
   .notice { margin: 12px 16px 0; }
   .grid--2 { grid-template-columns: minmax(0, 1fr); }
@@ -398,6 +404,12 @@ pre.code {
 .pack-corr-box h3 { margin: 0 0 6px; }
 .pack-corrections { margin: 8px 0 12px; padding-left: 20px; }
 .pack-corrections li { margin: 2px 0; }
+/* v292 : boîtes publiées ou modifiées par l'import */
+.pack-results { margin-top: 14px; }
+.pack-results h3 { margin: 0 0 4px; }
+.pack-results__list { list-style: none; margin: 8px 0 0; padding: 0; }
+.pack-result { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 8px 0; border-top: 1px solid var(--line, rgba(0, 0, 0, 0.08)); }
+.pack-result__name { flex: 1 1 260px; font-weight: 600; }
 
 /* v236 : page Erreurs */
 .error-detail { white-space: pre-wrap; word-break: break-word; font-size: 12.5px; line-height: 1.45; max-height: 60vh; overflow: auto; background: var(--bg, #f6f6f3); padding: 12px; border-radius: 8px; margin: 0; }
