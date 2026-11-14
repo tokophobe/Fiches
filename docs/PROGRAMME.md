@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1090 chapitres couverts sur 1228** (89 %), 1276 boîtes, 20992 fiches.
+Mise à jour : 14/11/2026. **1097 chapitres couverts sur 1228** (89 %), 1291 boîtes, 21232 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -18,7 +18,7 @@ Mise à jour : 14/11/2026. **1090 chapitres couverts sur 1228** (89 %), 1276 bo�
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
 | [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
-| [4e](#4e) | 64 / 82 | 18 | 92 | 1524 |
+| [4e](#4e) | 71 / 82 | 11 | 107 | 1764 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
 | [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
@@ -1054,7 +1054,7 @@ Collège — 39 chapitres couverts sur 87, 42 boîtes.
 
 ## 4e
 
-Collège — 64 chapitres couverts sur 82, 92 boîtes.
+Collège — 71 chapitres couverts sur 82, 107 boîtes.
 
 ### 4e — Français (15 / 15)
 
@@ -1127,32 +1127,32 @@ Collège — 64 chapitres couverts sur 82, 92 boîtes.
 ### 4e — Géographie (5 / 5)
 
 - [x] L'urbanisation du monde — l'essentiel — 4ème — Géographie : l'urbanisation du monde (16 fiches)
-  - [ ] Espaces et paysages de l'urbanisation — *à créer*
-  - [ ] Des métropoles inégalement connectées — *à créer*
+  - [x] Espaces et paysages de l'urbanisation — 4ème — Géographie : espaces et paysages de l'urbanisation (16 fiches)
+  - [x] Des métropoles inégalement connectées — 4ème — Géographie : des métropoles inégalement connectées (16 fiches)
 - [x] Les mobilités humaines transnationales — l'essentiel — 4ème — Géographie : migrants et tourisme, les mobilités transnationales (16 fiches)
-  - [ ] Un monde de migrants — *à créer*
-  - [ ] Le tourisme et ses espaces — *à créer*
+  - [x] Un monde de migrants — 4ème — Géographie : un monde de migrants (16 fiches)
+  - [x] Le tourisme et ses espaces — 4ème — Géographie : le tourisme et ses espaces (16 fiches)
 - [x] Mers et océans, un monde maritimisé — 4ème — Géographie : mers et océans, un monde maritimisé (16 fiches)
 - [x] Le territoire des États-Unis dans la mondialisation — 4ème — Géographie : le territoire des États-Unis dans la mondialisation (16 fiches)
 - [x] Les dynamiques de l'Afrique de l'Ouest — 4ème — Géographie : les dynamiques de l'Afrique de l'Ouest (15 fiches)
 
-### 4e — EMC (2 / 4)
+### 4e — EMC (4 / 4)
 
 - [x] Le droit et la justice en France — 4ème — EMC : le droit et la justice en France (18 fiches)
 - [x] Les libertés et la laïcité — 4ème — EMC : les libertés et la laïcité (16 fiches)
-- [ ] Le harcèlement et le cyberharcèlement — *à créer*
-- [ ] L'engagement citoyen et associatif — *à créer*
+- [x] Le harcèlement et le cyberharcèlement — 4ème — EMC : le harcèlement et le cyberharcèlement (16 fiches)
+- [x] L'engagement citoyen et associatif — 4ème — EMC : l'engagement citoyen et associatif (16 fiches)
 
-### 4e — SVT (5 / 7)
+### 4e — SVT (7 / 7)
 
 - [x] Puberté et reproduction humaine — l'essentiel — 4ème — SVT : puberté et reproduction humaine (16 fiches)
-  - [ ] Puberté et appareils reproducteurs — *à créer*
-  - [ ] Fécondation, grossesse et contraception — *à créer*
+  - [x] Puberté et appareils reproducteurs — 4ème — SVT : puberté et appareils reproducteurs (16 fiches)
+  - [x] Fécondation, grossesse et contraception — 4ème — SVT : fécondation, grossesse et contraception (16 fiches)
 - [x] L'organisme pendant l'effort et la commande nerveuse — 4ème — SVT : l'organisme pendant l'effort et la commande nerveuse (16 fiches)
-- [ ] Le cœur et la circulation sanguine — *à créer*
+- [x] Le cœur et la circulation sanguine — 4ème — SVT : le cœur et la circulation sanguine (16 fiches)
 - [x] Digestion, nutriments et micro-organismes — l'essentiel — 4ème — SVT : digestion, nutriments et micro-organismes (16 fiches)
-  - [ ] Microbes et défenses de l'organisme — *à créer*
-- [ ] La nutrition des végétaux — *à créer*
+  - [x] Microbes et défenses de l'organisme — 4ème — SVT : microbes et défenses de l'organisme (16 fiches)
+- [x] La nutrition des végétaux — 4ème — SVT : la nutrition des végétaux (16 fiches)
 - [x] Séismes, volcans et tectonique des plaques — 4ème — SVT : séismes, volcans et tectonique des plaques (16 fiches)
 - [x] Météo, climats et activité humaine — 4ème — SVT : météo, climats et activité humaine (16 fiches)
 
@@ -1161,22 +1161,22 @@ Collège — 64 chapitres couverts sur 82, 92 boîtes.
 - [x] Circuits électriques et vitesse — 4ème — Physique : circuits électriques et vitesse (16 fiches)
 - [x] Formes d'énergie et conversions — 4ème — Physique : formes d'énergie et conversions (16 fiches)
 - [x] Signaux sonores et lumineux — l'essentiel — 4ème — Physique : signaux sonores et lumineux (16 fiches)
-  - [ ] Lumière, couleurs et vision — *à créer*
+  - [x] Lumière, couleurs et vision — 4ème — Physique : lumière, couleurs et vision (16 fiches)
 - [x] Interactions et forces — 4ème — Physique : interactions et forces (18 fiches)
 
-### 4e — Chimie (3 / 4)
+### 4e — Chimie (4 / 4)
 
 - [x] Atomes, molécules et transformations chimiques — 4ème — Chimie : atomes, molécules et transformations chimiques (16 fiches)
 - [x] Corps purs, mélanges et solutions — 4ème — Chimie : corps purs, mélanges et solutions (16 fiches)
 - [x] Combustions et tests de reconnaissance — 4ème — Chimie : combustions et tests de reconnaissance (15 fiches)
-- [ ] Masse volumique et conservation de la masse — *à créer*
+- [x] Masse volumique et conservation de la masse — 4ème — Chimie : masse volumique et conservation de la masse (16 fiches)
 
-### 4e — Technologie (2 / 4)
+### 4e — Technologie (4 / 4)
 
 - [x] Algorithmes, programmation et réseaux — 4ème — Technologie : algorithmes, programmation et réseaux (16 fiches)
 - [x] Capteurs, actionneurs et objets connectés — 4ème — Technologie : capteurs, actionneurs et objets connectés (16 fiches)
-- [ ] Concevoir et modéliser un objet — *à créer*
-- [ ] Matériaux et cycle de vie — *à créer*
+- [x] Concevoir et modéliser un objet — 4ème — Technologie : concevoir et modéliser un objet (16 fiches)
+- [x] Matériaux et cycle de vie — 4ème — Technologie : matériaux et cycle de vie (16 fiches)
 
 ### 4e — Anglais (5 / 7)
 
