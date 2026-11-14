@@ -510,7 +510,9 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
 7. **Contrôles automatiques** de la règle 1 (v289 : ils repèrent aussi
    « Laquelle n'est pas… ? », « Lequel est un… ? », « parmi ceux-ci »,
    « Quelle phrase est correcte ? », « Quelle forme convient ? », « la
-   bonne orthographe », « le bon accord ») :
+   bonne orthographe », « le bon accord » ; v290 : « Quelle est la forme
+   négative correcte ? », « Quelle est la traduction juste ? », « Quelle
+   phrase est correctement écrite ? ») :
    - **dans l'appli**, en enregistrant une fiche QCM dont la question
      renvoie à des propositions, le robot prévient et propose de
      reformuler (on peut garder quand même) ; un rappel est écrit sous
@@ -1096,6 +1098,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v290 | 14 nov. 2026 | Règle d'écriture des fiches QCM (§5.7, règle 7) : le contrôle repère aussi les questions dont l'adjectif est rejeté en fin de phrase (« Quelle est la forme négative correcte ? », « Quelle est la traduction juste ? ») et « … correctement écrite ? », dans l'appli et dans Darwin Admin. Aucune autre question de ce type dans les boîtes toutes prêtes. |
 | — | 14 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : nouvelle règle 8 du §5.7 — une fiche porte sur le savoir de sa boîte, pas sur l'organisation de l'école (programme, épreuves), avec un contrôle automatique à chaque lot. 5 fiches de ce type retirées (anglais de Terminale : les axes du programme de langues, signalée par le propriétaire ; philosophie : nombre de notions et notion « hors programme » ; HGGSP : nombre de thèmes ; français de 5e : « est-ce une entrée du programme ? ») et une remplacée (français de 3e : les sujets de l'épreuve de rédaction). Au passage, une question d'anglais qui renvoyait à ses propositions (« Quelle est la forme négative correcte ? ») a été reformulée. |
 | — | 14 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : lot 29, 17 boîtes de 5e — anglais (prétérit irrégulier, quantifieurs, pays anglophones, corps et santé), espagnol (se présenter, présent, gustar, collège et quotidien), allemand (école et loisirs, présent et place du verbe), italien (famille, présent), latin (vie quotidienne à Rome, dieux et héros), arts plastiques (matérialité), musique (instruments et orchestre, du Moyen Âge au baroque). 272 fiches, une vidéo de cours vérifiée par boîte. **Le programme de 5e est entièrement couvert** (87 chapitres sur 87). |
 | — | 14 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : lot 28, 21 boîtes de 5e — géographie (démographie, richesse et pauvreté, énergie, eau, nourrir l'humanité, changement climatique, risques industriels), SVT (cellule, respiration et digestion, hygiène et microbes, fossiles), physique (énergie, mouvement et vitesse, système solaire), chimie (états de l'eau), EMC (laïcité, justice, médias), technologie (matériaux, objets connectés, représenter un objet). 336 fiches, une vidéo de cours vérifiée par boîte. |
