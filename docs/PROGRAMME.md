@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1108 chapitres couverts sur 1228** (90 %), 1302 boîtes, 21408 fiches.
+Mise à jour : 14/11/2026. **1115 chapitres couverts sur 1228** (91 %), 1322 boîtes, 21728 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -17,7 +17,7 @@ Mise à jour : 14/11/2026. **1108 chapitres couverts sur 1228** (90 %), 1302 bo�
 | [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
-| [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
+| [5e](#5e) | 46 / 87 | 41 | 62 | 1050 |
 | [4e](#4e) | 82 / 82 | 0 | 118 | 1940 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
@@ -884,7 +884,7 @@ Collège — 39 chapitres couverts sur 62, 43 boîtes.
 
 ## 5e
 
-Collège — 39 chapitres couverts sur 87, 42 boîtes.
+Collège — 46 chapitres couverts sur 87, 62 boîtes.
 
 ### 5e — Français (4 / 15)
 
@@ -911,43 +911,43 @@ Collège — 39 chapitres couverts sur 87, 42 boîtes.
 - [ ] Le vocabulaire et la formation des mots — *à créer*
 - [x] Révisions de l'année — 5ème — Français : chevaliers, littérature du Moyen Âge et grammaire (16 fiches) ; 5ème — Français : types de phrases, propositions, passé composé et plus-que-parfait (19 fiches)
 
-### 5e — Mathématiques (8 / 15)
+### 5e — Mathématiques (15 / 15)
 
-- [ ] Additionner et soustraire des nombres relatifs — *à créer*
-- [ ] Repérage dans le plan avec les relatifs — *à créer*
-- [ ] Priorités de calcul et distributivité — *à créer*
+- [x] Additionner et soustraire des nombres relatifs — 5ème — Maths : additionner et soustraire des nombres relatifs (16 fiches)
+- [x] Repérage dans le plan avec les relatifs — 5ème — Maths : repérage dans le plan avec les relatifs (16 fiches)
+- [x] Priorités de calcul et distributivité — 5ème — Maths : priorités de calcul et distributivité (16 fiches)
 - [x] Fractions, comparaison et addition — l'essentiel — 5ème — Maths : fractions, comparaison et addition (17 fiches)
-  - [ ] Fractions égales et simplification — *à créer*
+  - [x] Fractions égales et simplification — 5ème — Maths : fractions égales et simplification (16 fiches)
 - [x] Premiers pas en calcul littéral — 5ème — Maths : premiers pas en calcul littéral (17 fiches)
-- [ ] Multiples, diviseurs et nombres premiers — *à créer*
-- [ ] Proportionnalité et pourcentages — *à créer*
+- [x] Multiples, diviseurs et nombres premiers — 5ème — Maths : multiples, diviseurs et nombres premiers (16 fiches)
+- [x] Proportionnalité et pourcentages — 5ème — Maths : proportionnalité et pourcentages (16 fiches)
 - [x] Statistiques et premières probabilités — 5ème — Maths : statistiques et premières probabilités (17 fiches)
 - [x] Triangles, inégalité triangulaire et angles — l'essentiel — 5ème — Maths : triangles, inégalité triangulaire et angles (19 fiches)
-  - [ ] Angles alternes-internes et correspondants — *à créer*
-  - [ ] Médiatrices et cercle circonscrit — *à créer*
+  - [x] Angles alternes-internes et correspondants — 5ème — Maths : angles alternes-internes et correspondants (16 fiches)
+  - [x] Médiatrices et cercle circonscrit — 5ème — Maths : médiatrices et cercle circonscrit (16 fiches)
 - [x] Parallélogramme et symétrie centrale — 5ème — Maths : parallélogramme et symétrie centrale (17 fiches)
 - [x] Aires du triangle, du parallélogramme et du disque — 5ème — Maths : aires du triangle, du parallélogramme et du disque (16 fiches)
 - [x] Prismes droits et cylindres, patrons et volumes — l'essentiel — 5ème — Maths : prismes droits et cylindres, patrons et volumes (16 fiches)
-  - [ ] Volumes et conversions des unités de volume — *à créer*
-- [ ] Durées et vitesses — *à créer*
-- [ ] Algorithmique avec Scratch — *à créer*
+  - [x] Volumes et conversions des unités de volume — 5ème — Maths : volumes et conversions des unités de volume (16 fiches)
+- [x] Durées et vitesses — 5ème — Maths : durées et vitesses (16 fiches)
+- [x] Algorithmique avec Scratch — 5ème — Maths : algorithmique avec Scratch (16 fiches)
 - [x] Révisions de l'année — 5ème — Maths : nombres relatifs, priorités et proportionnalité (17 fiches)
 
 ### 5e — Histoire (3 / 3)
 
 - [x] Chrétientés et islam, des mondes en contact (VIe-XIIIe siècles) — l'essentiel — 5ème — Histoire : Byzance, l'Islam et l'Occident médiéval (18 fiches)
-  - [ ] Byzance et l'Empire carolingien — *à créer*
-  - [ ] De la naissance de l'islam à la prise de Bagdad — *à créer*
-  - [ ] Croisades et Reconquista — *à créer*
+  - [x] Byzance et l'Empire carolingien — 5ème — Histoire : Byzance et l'Empire carolingien (16 fiches)
+  - [x] De la naissance de l'islam à la prise de Bagdad — 5ème — Histoire : de la naissance de l'islam à la prise de Bagdad (16 fiches)
+  - [x] Croisades et Reconquista — 5ème — Histoire : croisades et Reconquista (16 fiches)
 - [x] Société, Église et pouvoir dans l'Occident féodal (XIe-XVe siècles) — l'essentiel — 5ème — Histoire : seigneurs, paysans, villes et pouvoir royal (XIe-XVe s.) (20 fiches)
-  - [ ] Seigneurs et paysans — *à créer*
+  - [x] Seigneurs et paysans — 5ème — Histoire : seigneurs et paysans (16 fiches)
   - [x] L'Église au Moyen Âge — 5ème — Histoire : l'Église au Moyen Âge (17 fiches)
-  - [ ] L'essor des villes et des marchands — *à créer*
-  - [ ] L'affirmation du pouvoir royal (Capétiens et Valois) — *à créer*
+  - [x] L'essor des villes et des marchands — 5ème — Histoire : l'essor des villes et des marchands (16 fiches)
+  - [x] L'affirmation du pouvoir royal (Capétiens et Valois) — 5ème — Histoire : l'affirmation du pouvoir royal (Capétiens et Valois) (16 fiches)
 - [x] L'Europe et le monde aux XVIe et XVIIe siècles — l'essentiel — 5ème — Histoire : Grandes découvertes, Renaissance et Réformes (18 fiches)
-  - [ ] Grandes découvertes, Charles Quint et Soliman — *à créer*
-  - [ ] Humanisme et Renaissance artistique — *à créer*
-  - [ ] Réformes et guerres de religion — *à créer*
+  - [x] Grandes découvertes, Charles Quint et Soliman — 5ème — Histoire : grandes découvertes, Charles Quint et Soliman (16 fiches)
+  - [x] Humanisme et Renaissance artistique — 5ème — Histoire : humanisme et Renaissance artistique (16 fiches)
+  - [x] Réformes et guerres de religion — 5ème — Histoire : réformes et guerres de religion (16 fiches)
   - [x] Du prince de la Renaissance au roi absolu — 5ème — Histoire : du prince de la Renaissance au roi absolu (17 fiches)
 
 ### 5e — Géographie (3 / 3)

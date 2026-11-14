@@ -6801,15 +6801,33 @@
      "chapitres": [
       {
        "titre": "Additionner et soustraire des nombres relatifs",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-maths-relatifs-addition",
+         "titre": "5ème — Maths : additionner et soustraire des nombres relatifs",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Repérage dans le plan avec les relatifs",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-maths-reperage",
+         "titre": "5ème — Maths : repérage dans le plan avec les relatifs",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Priorités de calcul et distributivité",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-maths-priorites",
+         "titre": "5ème — Maths : priorités de calcul et distributivité",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Fractions, comparaison et addition",
@@ -6823,7 +6841,13 @@
        "sousthemes": [
         {
          "titre": "Fractions égales et simplification",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-maths-fractions-egales",
+           "titre": "5ème — Maths : fractions égales et simplification",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6839,11 +6863,23 @@
       },
       {
        "titre": "Multiples, diviseurs et nombres premiers",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-maths-multiples-diviseurs",
+         "titre": "5ème — Maths : multiples, diviseurs et nombres premiers",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Proportionnalité et pourcentages",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-maths-proportionnalite",
+         "titre": "5ème — Maths : proportionnalité et pourcentages",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Statistiques et premières probabilités",
@@ -6867,11 +6903,23 @@
        "sousthemes": [
         {
          "titre": "Angles alternes-internes et correspondants",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-maths-angles-paralleles",
+           "titre": "5ème — Maths : angles alternes-internes et correspondants",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Médiatrices et cercle circonscrit",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-maths-mediatrices",
+           "titre": "5ème — Maths : médiatrices et cercle circonscrit",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6907,17 +6955,35 @@
        "sousthemes": [
         {
          "titre": "Volumes et conversions des unités de volume",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-maths-volumes-unites",
+           "titre": "5ème — Maths : volumes et conversions des unités de volume",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "Durées et vitesses",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-maths-durees-vitesses",
+         "titre": "5ème — Maths : durées et vitesses",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Algorithmique avec Scratch",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-maths-scratch",
+         "titre": "5ème — Maths : algorithmique avec Scratch",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Révisions de l'année",
@@ -6947,15 +7013,33 @@
        "sousthemes": [
         {
          "titre": "Byzance et l'Empire carolingien",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-byzance-carolingiens",
+           "titre": "5ème — Histoire : Byzance et l'Empire carolingien",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "De la naissance de l'islam à la prise de Bagdad",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-islam",
+           "titre": "5ème — Histoire : de la naissance de l'islam à la prise de Bagdad",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Croisades et Reconquista",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-croisades-reconquista",
+           "titre": "5ème — Histoire : croisades et Reconquista",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6971,7 +7055,13 @@
        "sousthemes": [
         {
          "titre": "Seigneurs et paysans",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-seigneurs-paysans",
+           "titre": "5ème — Histoire : seigneurs et paysans",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'Église au Moyen Âge",
@@ -6985,11 +7075,23 @@
         },
         {
          "titre": "L'essor des villes et des marchands",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-villes-marchands",
+           "titre": "5ème — Histoire : l'essor des villes et des marchands",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'affirmation du pouvoir royal (Capétiens et Valois)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-pouvoir-royal",
+           "titre": "5ème — Histoire : l'affirmation du pouvoir royal (Capétiens et Valois)",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7005,15 +7107,33 @@
        "sousthemes": [
         {
          "titre": "Grandes découvertes, Charles Quint et Soliman",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-grandes-decouvertes",
+           "titre": "5ème — Histoire : grandes découvertes, Charles Quint et Soliman",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Humanisme et Renaissance artistique",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-humanisme-renaissance",
+           "titre": "5ème — Histoire : humanisme et Renaissance artistique",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Réformes et guerres de religion",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-hist-reformes-guerres-religion",
+           "titre": "5ème — Histoire : réformes et guerres de religion",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Du prince de la Renaissance au roi absolu",
