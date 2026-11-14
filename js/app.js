@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v293";
+  const APP_VERSION = "v294";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -19200,9 +19200,14 @@
     const own = cards.find((c) => c.id === r.card_id && !c.deleted && !isReadonlyMirrorCard(c));
     if (own) return own;
     if (accountIsAdminFlag && r.source_kind === "library") {
-      return cards.find((c) => !c.deleted && mirrorSourceId(c) === r.card_id && isLibraryMirrorSubject(c.subject)) || null;
+      const mirror = cards.find((c) => !c.deleted && mirrorSourceId(c) === r.card_id && isLibraryMirrorSubject(c.subject));
+      if (mirror) return mirror;
     }
-    return null;
+    // v294 : sinon, la fiche de la boîte signalée qui a la même question.
+    const box = reportTargetSubject(r, null);
+    const q = stripHtmlFast(r.card_question || "").trim();
+    if (!box || !q) return null;
+    return cards.find((c) => !c.deleted && c.subject === box.id && stripHtmlFast(c.question).trim() === q) || null;
   }
   /** v292 : la boîte signalée, si elle est sur cet appareil. */
   function reportTargetSubject(r, card) {
@@ -19220,7 +19225,12 @@
         if (mirror) return mirror;
       }
     }
-    // Boîte à soi (partagée à une classe) : retrouvée par son nom.
+    // v294 : boîte à soi partagée avec une classe — retrouvée par ses
+    // partages (la v292 ne la cherchait que par son nom).
+    if (r.source_kind === "class") {
+      const shared = subjects.find((x) => alive(x) && (x.sharedShares || []).some((sh) => String(sh.boxId) === String(r.source_id)));
+      if (shared) return shared;
+    }
     return subjects.find((x) => alive(x) && !isReportableBox(x) && x.name === r.box_name) || null;
   }
   async function openReportedBox(r, subject) {
@@ -19241,7 +19251,6 @@
   function buildReceivedReportRow(r) {
     const local = reportTargetCard(r);
     const box = reportTargetSubject(r, local);
-    const canOpenBox = !!box || r.source_kind === "library";
     const li = document.createElement("li");
     li.className = "subject-row report-row rp" + (r.resolved ? " report-row--done" : "");
     // Round 53 : présentation épurée — en-tête (boîte, date), statut, la
@@ -19259,14 +19268,14 @@
       </div>
       <div class="rp-actions">
         ${local ? `<button type="button" class="btn btn--small" data-act="edit">Corriger la fiche</button>` : ""}
-        ${canOpenBox ? `<button type="button" class="btn btn--small" data-act="box">Ouvrir la boîte</button>` : ""}
+        <button type="button" class="btn btn--small" data-act="box">Ouvrir la boîte</button>
         <button type="button" class="btn btn--small" data-act="reply">${r.author_reply ? "Modifier ma réponse" : "Répondre"}</button>
         ${r.resolved ? "" : `<button type="button" class="btn btn--small btn--primary" data-act="done">Marquer traité</button>`}
       </div>`;
     const editBtn = li.querySelector('[data-act="edit"]');
     if (editBtn) editBtn.addEventListener("click", () => enterEditMode(local));
-    const boxBtn = li.querySelector('[data-act="box"]');
-    if (boxBtn) boxBtn.addEventListener("click", () => openReportedBox(r, box));
+    // v294 : toujours proposé (message clair si la boîte n'est pas ici).
+    li.querySelector('[data-act="box"]').addEventListener("click", () => openReportedBox(r, box));
     li.querySelector('[data-act="reply"]').addEventListener("click", async () => {
       const text = await showRobotMessage(`Ton message à ${r.reporter_name || "la personne qui a signalé la fiche"} :`, {
         input: { defaultValue: r.author_reply || "", placeholder: "Merci, j'ai corrigé la réponse." },

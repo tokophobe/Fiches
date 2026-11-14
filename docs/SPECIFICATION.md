@@ -621,8 +621,8 @@ tout de suite, la liste à jour suit.
   la page d'une boîte de classe ou prise dans la Librairie).
   - Boîte partagée avec une **classe** → le signalement va à
     l'enseignant qui l'a partagée ; il le retrouve dans « Signalements
-    reçus ». Chaque signalement y propose (v292) « Corriger la fiche »
-    (si elle est sur l'appareil), « Ouvrir la boîte », « Répondre » et
+    reçus ». Chaque signalement y propose (v292, v294) « Corriger la
+    fiche » (si elle est sur l'appareil), « Ouvrir la boîte » (toujours), « Répondre » et
     « Marquer traité », en boutons ovales comme partout dans l'appli.
   - Boîte de la **Librairie** → il va à **darwin** (page Signalements de
     Darwin Admin), même si la boîte vient d'un enseignant, qui ne le voit
@@ -1118,6 +1118,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v294 | 14 nov. 2026 | Signalements reçus : « Ouvrir la boîte » est toujours proposé, et la boîte d'un enseignant partagée avec une classe est maintenant bien retrouvée (en v292, elle n'était cherchée que par son nom : les boutons n'apparaissaient pas) ; « Corriger la fiche » retrouve aussi la fiche par sa question. |
 | v293 | 14 nov. 2026 | Librairie rangée par chapitres du programme dès qu'une matière est choisie (titres des chapitres et sous-thèmes en séparateurs, boîtes sans chapitre sous « Autres chapitres ») ; boîtes d'enseignants rangées par darwin dans Darwin Admin (chapitre proposé d'après le titre et les fiches). Migration supabase/v293_migration.sql. |
 | v292 | 14 nov. 2026 | Darwin Admin : après un import des boîtes toutes prêtes, liste des boîtes créées ou mises à jour (avec le nombre de fiches modifiées ou retirées) et bouton « Voir les fiches » pour vérifier ; sur iPhone, le bouton du menu ne passe plus sous l'heure. Mon compte : « Super enseignant » et « Super école » sont dans le bloc « Formules pour les enseignants ». Signalements reçus : boutons « Ouvrir la boîte » et « Corriger la fiche » (aussi pour darwin sur une boîte de la Librairie), boutons ovales de la charte. Boîtes toutes prêtes : liens de boîte Wikipédia remplacés par des vidéos de cours (109) ou retirés (5). |
 | v291 | 14 nov. 2026 | Darwin Admin, import des boîtes toutes prêtes : une fiche retirée du fichier est maintenant aussi supprimée de la boîte déjà publiée dans la Librairie (avant, elle restait en place). Le fichier garde pour cela l'empreinte des fiches retirées. Le décompte « fiches retirées » s'affiche avant de publier. Les copies prises par les élèves suivent toutes seules à leur prochaine ouverture de l'appli. Les 5 fiches hors sujet retirées le 14 nov. disparaîtront à la prochaine importation. |
