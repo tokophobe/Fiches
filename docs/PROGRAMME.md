@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 13/11/2026. **1075 chapitres couverts sur 1228** (88 %), 1225 boîtes, 20176 fiches.
+Mise à jour : 14/11/2026. **1078 chapitres couverts sur 1228** (88 %), 1238 boîtes, 20384 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -19,7 +19,7 @@ Mise à jour : 13/11/2026. **1075 chapitres couverts sur 1228** (88 %), 1225 bo�
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
 | [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
 | [4e](#4e) | 52 / 82 | 30 | 54 | 916 |
-| [3e](#3e) | 105 / 108 | 3 | 179 | 3285 |
+| [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
 | [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
 | [Terminale](#terminale) | 143 / 145 | 2 | 173 | 3175 |
@@ -1224,7 +1224,7 @@ Collège — 52 chapitres couverts sur 82, 54 boîtes.
 
 ## 3e
 
-Collège — 105 chapitres couverts sur 108, 179 boîtes.
+Collège — 108 chapitres couverts sur 108, 192 boîtes.
 
 ### 3e — Français (17 / 17)
 
@@ -1353,32 +1353,32 @@ Collège — 105 chapitres couverts sur 108, 179 boîtes.
 ### 3e — SVT (10 / 10)
 
 - [x] Génétique et hérédité — l'essentiel — Brevet — SVT : génétique et hérédité (16 fiches)
-  - [ ] Chromosomes, ADN et gènes — *à créer*
-  - [ ] Reproduction sexuée et diversité génétique — *à créer*
+  - [x] Chromosomes, ADN et gènes — 3ème — SVT : chromosomes, ADN et gènes (16 fiches)
+  - [x] Reproduction sexuée et diversité génétique — 3ème — SVT : reproduction sexuée et diversité génétique (16 fiches)
 - [x] Évolution et biodiversité — Brevet — SVT : évolution et biodiversité (16 fiches)
 - [x] Écosystèmes et activités humaines — Brevet — SVT : écosystèmes et activités humaines (15 fiches)
 - [x] Nutrition et organisation des plantes — Brevet — SVT : nutrition et organisation des plantes (15 fiches)
 - [x] Nutrition, respiration et circulation — l'essentiel — Brevet — SVT : nutrition, respiration et circulation (16 fiches)
-  - [ ] Digestion et alimentation — *à créer*
-  - [ ] Respiration et circulation sanguine — *à créer*
+  - [x] Digestion et alimentation — 3ème — SVT : digestion et alimentation (16 fiches)
+  - [x] Respiration et circulation sanguine — 3ème — SVT : respiration et circulation sanguine (16 fiches)
 - [x] Immunité, microbes et vaccination — l'essentiel — Brevet — SVT : immunité, microbes et vaccination (16 fiches)
-  - [ ] Micro-organismes, hygiène et antibiotiques — *à créer*
-  - [ ] Les défenses de l'organisme et la vaccination — *à créer*
+  - [x] Micro-organismes, hygiène et antibiotiques — 3ème — SVT : micro-organismes, hygiène et antibiotiques (16 fiches)
+  - [x] Les défenses de l'organisme et la vaccination — 3ème — SVT : les défenses de l'organisme et la vaccination (16 fiches)
 - [x] Système nerveux et santé — Brevet — SVT : système nerveux et santé (18 fiches)
 - [x] Activité physique, effort et santé — Brevet — SVT : activité physique, effort et santé (16 fiches)
 - [x] La Terre, ses risques et ses ressources — l'essentiel — Brevet — SVT : la Terre, ses risques et ses ressources (19 fiches)
-  - [ ] Séismes, volcans et tectonique des plaques — *à créer*
+  - [x] Séismes, volcans et tectonique des plaques — 3ème — SVT : séismes, volcans et tectonique des plaques (16 fiches)
   - [x] Météorologie, climat et changement climatique — Brevet — SVT : météorologie, climat et changement climatique (15 fiches)
-  - [ ] Ressources naturelles et environnement — *à créer*
+  - [x] Ressources naturelles et environnement — 3ème — SVT : ressources naturelles et environnement (16 fiches)
 - [x] Révisions du brevet — Brevet — SVT : l'essentiel du cycle 4 (37 fiches) ; Brevet — SVT : démarche scientifique et exploitation de documents (15 fiches)
 
 ### 3e — Physique (5 / 5)
 
 - [x] Mouvements, forces et gravitation — l'essentiel — Brevet — Physique : mouvements, forces et gravitation (19 fiches)
-  - [ ] Gravitation, poids et masse — *à créer*
+  - [x] Gravitation, poids et masse — 3ème — Physique : gravitation, poids et masse (16 fiches)
   - [x] Énergie cinétique et sécurité routière — Brevet — Physique : énergie cinétique et sécurité routière (16 fiches)
 - [x] Électricité, loi d'Ohm et énergie — l'essentiel — Brevet — Physique : électricité, loi d'Ohm et énergie (19 fiches)
-  - [ ] Circuits et loi d'Ohm — *à créer*
+  - [x] Circuits et loi d'Ohm — 3ème — Physique : circuits et loi d'Ohm (16 fiches)
   - [x] Puissance et consommation électrique d'un logement — Brevet — Physique : puissance et consommation électrique d'un logement (16 fiches)
 - [x] Signaux sonores et lumineux — Brevet — Physique : signaux sonores et lumineux (20 fiches)
 - [x] L'Univers et le système solaire — Brevet — Physique : l'Univers et le système solaire (16 fiches)
@@ -1427,21 +1427,21 @@ Collège — 105 chapitres couverts sur 108, 179 boîtes.
 - [x] Conjuguer au passé — Brevet — Allemand : conjuguer au passé (17 fiches)
 - [x] Vocabulaire thématique essentiel — Brevet — Allemand : vocabulaire thématique essentiel (17 fiches)
 
-### 3e — Italien (1 / 3)
+### 3e — Italien (3 / 3)
 
 - [x] Grammaire et vocabulaire de base — Brevet — Italien : grammaire et vocabulaire de base (16 fiches)
-- [ ] Conjuguer au passé — *à créer*
-- [ ] Vocabulaire thématique essentiel — *à créer*
+- [x] Conjuguer au passé — 3ème — Italien : conjuguer au passé (16 fiches)
+- [x] Vocabulaire thématique essentiel — 3ème — Italien : vocabulaire thématique essentiel (16 fiches)
 
 ### 3e — Latin (2 / 2)
 
 - [x] Mots latins et héritage en français — Brevet — Latin : mots latins et héritage en français (18 fiches)
 - [x] Rome, sa civilisation et ses mythes — Brevet — Latin : Rome, sa civilisation et ses mythes (16 fiches)
 
-### 3e — Grec ancien (1 / 2)
+### 3e — Grec ancien (2 / 2)
 
 - [x] L'alphabet et les mots grecs du français — Brevet — Grec ancien : l'alphabet et les mots grecs du français (19 fiches)
-- [ ] Mythologie et héros grecs — *à créer*
+- [x] Mythologie et héros grecs — 3ème — Grec ancien : mythologie et héros grecs (16 fiches)
 
 ### 3e — Arts plastiques (2 / 2)
 

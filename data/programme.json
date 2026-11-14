@@ -1,5 +1,5 @@
 {
- "maj": "13/11/2026",
+ "maj": "14/11/2026",
  "niveaux": [
   {
    "id": "cp",
@@ -9689,11 +9689,23 @@
        "sousthemes": [
         {
          "titre": "Chromosomes, ADN et gènes",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-chromosomes-adn",
+           "titre": "3ème — SVT : chromosomes, ADN et gènes",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Reproduction sexuée et diversité génétique",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-reproduction-diversite",
+           "titre": "3ème — SVT : reproduction sexuée et diversité génétique",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9739,11 +9751,23 @@
        "sousthemes": [
         {
          "titre": "Digestion et alimentation",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-digestion",
+           "titre": "3ème — SVT : digestion et alimentation",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Respiration et circulation sanguine",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-respiration-circulation",
+           "titre": "3ème — SVT : respiration et circulation sanguine",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9759,11 +9783,23 @@
        "sousthemes": [
         {
          "titre": "Micro-organismes, hygiène et antibiotiques",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-microbes-antibiotiques",
+           "titre": "3ème — SVT : micro-organismes, hygiène et antibiotiques",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les défenses de l'organisme et la vaccination",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-defenses-vaccination",
+           "titre": "3ème — SVT : les défenses de l'organisme et la vaccination",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9799,7 +9835,13 @@
        "sousthemes": [
         {
          "titre": "Séismes, volcans et tectonique des plaques",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-seismes-volcans",
+           "titre": "3ème — SVT : séismes, volcans et tectonique des plaques",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Météorologie, climat et changement climatique",
@@ -9813,7 +9855,13 @@
         },
         {
          "titre": "Ressources naturelles et environnement",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-svt-ressources-environnement",
+           "titre": "3ème — SVT : ressources naturelles et environnement",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -9850,7 +9898,13 @@
        "sousthemes": [
         {
          "titre": "Gravitation, poids et masse",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-phys-gravitation-poids",
+           "titre": "3ème — Physique : gravitation, poids et masse",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Énergie cinétique et sécurité routière",
@@ -9876,7 +9930,13 @@
        "sousthemes": [
         {
          "titre": "Circuits et loi d'Ohm",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r3e-phys-loi-ohm",
+           "titre": "3ème — Physique : circuits et loi d'Ohm",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Puissance et consommation électrique d'un logement",
@@ -10260,11 +10320,23 @@
       },
       {
        "titre": "Conjuguer au passé",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r3e-italien-passe",
+         "titre": "3ème — Italien : conjuguer au passé",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Vocabulaire thématique essentiel",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r3e-italien-vocabulaire",
+         "titre": "3ème — Italien : vocabulaire thématique essentiel",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -10310,7 +10382,13 @@
       },
       {
        "titre": "Mythologie et héros grecs",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r3e-grec-mythologie",
+         "titre": "3ème — Grec ancien : mythologie et héros grecs",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
