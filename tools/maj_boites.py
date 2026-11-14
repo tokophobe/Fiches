@@ -147,6 +147,15 @@ def nouvelle_fiche(src, ch, garder_marques):
     return out
 
 
+def retire(box, card):
+    """Note l'empreinte d'une fiche retirée (et de ses anciennes versions)."""
+    deja = as_list(box.get("retirees"))
+    for h in [pack_qa_hash(card["question"], card["answer"])] + as_list(card.get("w")):
+        if h not in deja:
+            deja.append(h)
+    box["retirees"] = deja
+
+
 def applique(lot_path):
     d = charge()
     lot = json.loads(Path(lot_path).read_text(encoding="utf-8"))
@@ -167,6 +176,10 @@ def applique(lot_path):
             if k not in cards:
                 new.append(c)
             elif cards[k] is None:
+                # v291 : fiche retirée — son empreinte est notée dans la
+                # boîte (« retirees ») pour que Darwin Admin la supprime
+                # aussi de la collection déjà publiée.
+                retire(b, c)
                 continue
             elif isinstance(cards[k], list):
                 for j, part in enumerate(cards[k]):
