@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1139 chapitres couverts sur 1228** (93 %), 1361 boîtes, 22352 fiches.
+Mise à jour : 14/11/2026. **1156 chapitres couverts sur 1228** (94 %), 1378 boîtes, 22624 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -17,7 +17,7 @@ Mise à jour : 14/11/2026. **1139 chapitres couverts sur 1228** (93 %), 1361 bo�
 | [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
-| [5e](#5e) | 70 / 87 | 17 | 101 | 1674 |
+| [5e](#5e) | 87 / 87 | 0 | 118 | 1946 |
 | [4e](#4e) | 82 / 82 | 0 | 118 | 1940 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
@@ -884,7 +884,7 @@ Collège — 39 chapitres couverts sur 62, 43 boîtes.
 
 ## 5e
 
-Collège — 70 chapitres couverts sur 87, 101 boîtes.
+Collège — 87 chapitres couverts sur 87, 118 boîtes.
 
 ### 5e — Français (15 / 15)
 
@@ -1002,54 +1002,54 @@ Collège — 70 chapitres couverts sur 87, 101 boîtes.
 - [x] Programmation et objets connectés — 5ème — Technologie : programmation et objets connectés (16 fiches)
 - [x] Représenter un objet, croquis et modélisation 3D — 5ème — Technologie : représenter un objet, croquis et modélisation 3D (16 fiches)
 
-### 5e — Anglais (4 / 8)
+### 5e — Anglais (8 / 8)
 
 - [x] Prétérit simple et there is / there are — 5ème — Anglais : prétérit simple et there is / there are (16 fiches)
 - [x] Comparatifs, superlatifs et futur — 5ème — Anglais : comparatifs, superlatifs et futur (16 fiches)
 - [x] Présent en be + -ing et activités — 5ème — Anglais : présent en be + -ing et activités (17 fiches)
 - [x] La ville, les directions et les prépositions de lieu — 5ème — Anglais : la ville, les directions et les prépositions de lieu (18 fiches)
-- [ ] Les verbes irréguliers du prétérit — *à créer*
-- [ ] Les quantifieurs (some, any, much, many) — *à créer*
-- [ ] Les pays et la culture anglophones — *à créer*
-- [ ] Le corps et la santé — *à créer*
+- [x] Les verbes irréguliers du prétérit — 5ème — Anglais : les verbes irréguliers du prétérit (16 fiches)
+- [x] Les quantifieurs (some, any, much, many) — 5ème — Anglais : les quantifieurs (some, any, much, many) (16 fiches)
+- [x] Les pays et la culture anglophones — 5ème — Anglais : les pays et la culture anglophones (16 fiches)
+- [x] Le corps et la santé — 5ème — Anglais : le corps et la santé (16 fiches)
 
-### 5e — Espagnol (2 / 6)
+### 5e — Espagnol (6 / 6)
 
 - [x] Premiers pas en LV2 — 5ème — Espagnol : premiers pas en LV2 (18 fiches)
 - [x] Nombres, heure, jours et date — 5ème — Espagnol : nombres, heure, jours et date (18 fiches)
-- [ ] Se présenter et la famille — *à créer*
-- [ ] Le présent de l'indicatif — *à créer*
-- [ ] Les goûts avec gustar — *à créer*
-- [ ] Le collège et la vie quotidienne — *à créer*
+- [x] Se présenter et la famille — 5ème — Espagnol : se présenter et la famille (16 fiches)
+- [x] Le présent de l'indicatif — 5ème — Espagnol : le présent de l'indicatif (16 fiches)
+- [x] Les goûts avec gustar — 5ème — Espagnol : les goûts avec gustar (16 fiches)
+- [x] Le collège et la vie quotidienne — 5ème — Espagnol : le collège et la vie quotidienne (16 fiches)
 
-### 5e — Allemand (2 / 4)
+### 5e — Allemand (4 / 4)
 
 - [x] Premiers pas en LV2 — 5ème — Allemand : premiers pas en LV2 (18 fiches)
 - [x] Famille, animaux et accusatif — 5ème — Allemand : famille, animaux et accusatif (16 fiches)
-- [ ] L'école, les loisirs et les goûts — *à créer*
-- [ ] Le présent et la place du verbe — *à créer*
+- [x] L'école, les loisirs et les goûts — 5ème — Allemand : l'école, les loisirs et les goûts (16 fiches)
+- [x] Le présent et la place du verbe — 5ème — Allemand : le présent et la place du verbe (16 fiches)
 
-### 5e — Italien (1 / 3)
+### 5e — Italien (3 / 3)
 
 - [x] Premiers pas en LV2 — 5ème — Italien : premiers pas en LV2 (19 fiches)
-- [ ] La famille et la description — *à créer*
-- [ ] Le présent des verbes réguliers — *à créer*
+- [x] La famille et la description — 5ème — Italien : la famille et la description (16 fiches)
+- [x] Le présent des verbes réguliers — 5ème — Italien : le présent des verbes réguliers (16 fiches)
 
-### 5e — Latin (1 / 3)
+### 5e — Latin (3 / 3)
 
 - [x] Cas, 1re et 2e déclinaisons, être et aimer au présent — 5ème — Latin : cas, 1re et 2e déclinaisons, être et aimer au présent (17 fiches)
-- [ ] La vie quotidienne à Rome — *à créer*
-- [ ] Dieux et héros de la mythologie — *à créer*
+- [x] La vie quotidienne à Rome — 5ème — Latin : la vie quotidienne à Rome (16 fiches)
+- [x] Dieux et héros de la mythologie — 5ème — Latin : dieux et héros de la mythologie (16 fiches)
 
-### 5e — Arts plastiques (1 / 2)
+### 5e — Arts plastiques (2 / 2)
 
 - [x] Couleurs, composition et vocabulaire — 5ème — Arts plastiques : couleurs, composition et vocabulaire (20 fiches)
-- [ ] La matérialité de l'œuvre — *à créer*
+- [x] La matérialité de l'œuvre — 5ème — Arts plastiques : la matérialité de l'œuvre (16 fiches)
 
-### 5e — Éducation musicale (0 / 2)
+### 5e — Éducation musicale (2 / 2)
 
-- [ ] Les familles d'instruments et l'orchestre — *à créer*
-- [ ] Du Moyen Âge au baroque, repères musicaux — *à créer*
+- [x] Les familles d'instruments et l'orchestre — 5ème — Éducation musicale : les familles d'instruments et l'orchestre (16 fiches)
+- [x] Du Moyen Âge au baroque, repères musicaux — 5ème — Éducation musicale : du Moyen Âge au baroque, repères musicaux (16 fiches)
 
 
 ## 4e

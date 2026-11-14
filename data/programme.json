@@ -7687,19 +7687,43 @@
       },
       {
        "titre": "Les verbes irréguliers du prétérit",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-ang-preterit-irreguliers",
+         "titre": "5ème — Anglais : les verbes irréguliers du prétérit",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les quantifieurs (some, any, much, many)",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-ang-quantifieurs",
+         "titre": "5ème — Anglais : les quantifieurs (some, any, much, many)",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les pays et la culture anglophones",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-ang-pays-anglophones",
+         "titre": "5ème — Anglais : les pays et la culture anglophones",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le corps et la santé",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-ang-corps-sante",
+         "titre": "5ème — Anglais : le corps et la santé",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7729,19 +7753,43 @@
       },
       {
        "titre": "Se présenter et la famille",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-esp-presentation-famille",
+         "titre": "5ème — Espagnol : se présenter et la famille",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le présent de l'indicatif",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-esp-present",
+         "titre": "5ème — Espagnol : le présent de l'indicatif",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les goûts avec gustar",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-esp-gustar",
+         "titre": "5ème — Espagnol : les goûts avec gustar",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le collège et la vie quotidienne",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-esp-college-quotidien",
+         "titre": "5ème — Espagnol : le collège et la vie quotidienne",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7771,11 +7819,23 @@
       },
       {
        "titre": "L'école, les loisirs et les goûts",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-all-ecole-loisirs",
+         "titre": "5ème — Allemand : l'école, les loisirs et les goûts",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le présent et la place du verbe",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-all-present-place-verbe",
+         "titre": "5ème — Allemand : le présent et la place du verbe",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7795,11 +7855,23 @@
       },
       {
        "titre": "La famille et la description",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-ita-famille-description",
+         "titre": "5ème — Italien : la famille et la description",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le présent des verbes réguliers",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-ita-present-reguliers",
+         "titre": "5ème — Italien : le présent des verbes réguliers",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7819,11 +7891,23 @@
       },
       {
        "titre": "La vie quotidienne à Rome",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-lat-vie-quotidienne-rome",
+         "titre": "5ème — Latin : la vie quotidienne à Rome",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Dieux et héros de la mythologie",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-lat-dieux-heros",
+         "titre": "5ème — Latin : dieux et héros de la mythologie",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7843,7 +7927,13 @@
       },
       {
        "titre": "La matérialité de l'œuvre",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-arts-materialite",
+         "titre": "5ème — Arts plastiques : la matérialité de l'œuvre",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7853,11 +7943,23 @@
      "chapitres": [
       {
        "titre": "Les familles d'instruments et l'orchestre",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-mus-instruments-orchestre",
+         "titre": "5ème — Éducation musicale : les familles d'instruments et l'orchestre",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Du Moyen Âge au baroque, repères musicaux",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-mus-moyen-age-baroque",
+         "titre": "5ème — Éducation musicale : du Moyen Âge au baroque, repères musicaux",
+         "fiches": 16
+        }
+       ]
       }
      ]
     }
