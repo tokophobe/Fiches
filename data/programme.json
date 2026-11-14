@@ -5899,15 +5899,33 @@
        "sousthemes": [
         {
          "titre": "Les récits de création (Genèse, mythes grecs)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-recits-creation",
+           "titre": "6ème — Français : les récits de création (Genèse, mythes grecs)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Ulysse et l'Odyssée",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-ulysse-odyssee",
+           "titre": "6ème — Français : Ulysse et l'Odyssée",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "La poésie : jouer avec les mots et les sons",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-poesie-mots-sons",
+           "titre": "6ème — Français : la poésie : jouer avec les mots et les sons",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -5943,11 +5961,23 @@
        "sousthemes": [
         {
          "titre": "Les fables de La Fontaine",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-fables-la-fontaine",
+           "titre": "6ème — Français : les fables de La Fontaine",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le théâtre : farces et comédies",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-theatre-farce-comedie",
+           "titre": "6ème — Français : le théâtre : farces et comédies",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -5973,23 +6003,53 @@
         },
         {
          "titre": "Les compléments du verbe (COD, COI)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-complements-verbe",
+           "titre": "6ème — Français : les compléments du verbe (COD, COI)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les compléments circonstanciels",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-complements-circonstanciels",
+           "titre": "6ème — Français : les compléments circonstanciels",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le groupe nominal et ses expansions",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-groupe-nominal",
+           "titre": "6ème — Français : le groupe nominal et ses expansions",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les types et les formes de phrases",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-types-formes-phrases",
+           "titre": "6ème — Français : les types et les formes de phrases",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Juxtaposition et coordination",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-juxtaposition-coordination",
+           "titre": "6ème — Français : juxtaposition et coordination",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6005,11 +6065,23 @@
        "sousthemes": [
         {
          "titre": "Le passé composé et le plus-que-parfait",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-passe-compose-pqp",
+           "titre": "6ème — Français : le passé composé et le plus-que-parfait",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'impératif présent",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-imperatif-present",
+           "titre": "6ème — Français : l'impératif présent",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6025,7 +6097,13 @@
        "sousthemes": [
         {
          "titre": "Les accords dans le groupe nominal",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-fr-accords-groupe-nominal",
+           "titre": "6ème — Français : les accords dans le groupe nominal",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6543,15 +6621,33 @@
        "sousthemes": [
         {
          "titre": "Habiter une métropole",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-geo-habiter-metropole",
+           "titre": "6ème — Géographie : habiter une métropole",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Habiter un espace de faible densité (rural, montagne, désert)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-geo-faible-densite",
+           "titre": "6ème — Géographie : habiter un espace de faible densité (rural, montagne, désert)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Habiter les littoraux industriels et touristiques",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r6e-geo-littoraux",
+           "titre": "6ème — Géographie : habiter les littoraux industriels et touristiques",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -6577,7 +6673,13 @@
       },
       {
        "titre": "Lire et réaliser un croquis simple",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r6e-geo-croquis",
+         "titre": "6ème — Géographie : lire et réaliser un croquis simple",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },

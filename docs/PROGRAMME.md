@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1158 chapitres couverts sur 1228** (94 %), 1400 boîtes, 22971 fiches.
+Mise à jour : 14/11/2026. **1159 chapitres couverts sur 1228** (94 %), 1417 boîtes, 23243 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -16,7 +16,7 @@ Mise à jour : 14/11/2026. **1158 chapitres couverts sur 1228** (94 %), 1400 bo�
 | [CE2](#ce2) | 110 / 112 | 2 | 110 | 1636 |
 | [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
-| [6e](#6e) | 41 / 62 | 21 | 65 | 1082 |
+| [6e](#6e) | 42 / 62 | 20 | 82 | 1354 |
 | [5e](#5e) | 87 / 87 | 0 | 118 | 1945 |
 | [4e](#4e) | 82 / 82 | 0 | 118 | 1940 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
@@ -743,31 +743,31 @@ Primaire — 93 chapitres couverts sur 110, 93 boîtes.
 
 ## 6e
 
-Collège — 41 chapitres couverts sur 62, 65 boîtes.
+Collège — 42 chapitres couverts sur 62, 82 boîtes.
 
 ### 6e — Français (8 / 8)
 
 - [x] Récits de création, création poétique — l'essentiel — 6ème — Français : récits de création, Ulysse et contes (16 fiches)
-  - [ ] Les récits de création (Genèse, mythes grecs) — *à créer*
-  - [ ] Ulysse et l'Odyssée — *à créer*
-  - [ ] La poésie : jouer avec les mots et les sons — *à créer*
+  - [x] Les récits de création (Genèse, mythes grecs) — 6ème — Français : les récits de création (Genèse, mythes grecs) (16 fiches)
+  - [x] Ulysse et l'Odyssée — 6ème — Français : Ulysse et l'Odyssée (16 fiches)
+  - [x] La poésie : jouer avec les mots et les sons — 6ème — Français : la poésie : jouer avec les mots et les sons (16 fiches)
 - [x] Le monstre, aux limites de l'humain — 6ème — Français : le monstre, aux limites de l'humain (16 fiches)
 - [x] Récits d'aventures — 6ème — Français : récits d'aventures, péripéties et suspense (17 fiches)
 - [x] Résister au plus fort : ruses, mensonges et masques — l'essentiel — 6ème — Français : résister au plus fort, fables, ruses et masques (16 fiches)
-  - [ ] Les fables de La Fontaine — *à créer*
-  - [ ] Le théâtre : farces et comédies — *à créer*
+  - [x] Les fables de La Fontaine — 6ème — Français : les fables de La Fontaine (16 fiches)
+  - [x] Le théâtre : farces et comédies — 6ème — Français : le théâtre : farces et comédies (16 fiches)
 - [x] Classes de mots, fonctions et phrase — l'essentiel — 6ème — Français : classes de mots, fonctions et phrase (17 fiches)
   - [x] Déterminants et pronoms — 6ème — Français : déterminants et pronoms (16 fiches)
-  - [ ] Les compléments du verbe (COD, COI) — *à créer*
-  - [ ] Les compléments circonstanciels — *à créer*
-  - [ ] Le groupe nominal et ses expansions — *à créer*
-  - [ ] Les types et les formes de phrases — *à créer*
-  - [ ] Juxtaposition et coordination — *à créer*
+  - [x] Les compléments du verbe (COD, COI) — 6ème — Français : les compléments du verbe (COD, COI) (16 fiches)
+  - [x] Les compléments circonstanciels — 6ème — Français : les compléments circonstanciels (16 fiches)
+  - [x] Le groupe nominal et ses expansions — 6ème — Français : le groupe nominal et ses expansions (16 fiches)
+  - [x] Les types et les formes de phrases — 6ème — Français : les types et les formes de phrases (16 fiches)
+  - [x] Juxtaposition et coordination — 6ème — Français : juxtaposition et coordination (16 fiches)
 - [x] Conjugaison (présent, imparfait, futur, passé simple) — l'essentiel — 6ème — Français : conjugaison (présent, imparfait, futur, passé simple) (22 fiches)
-  - [ ] Le passé composé et le plus-que-parfait — *à créer*
-  - [ ] L'impératif présent — *à créer*
+  - [x] Le passé composé et le plus-que-parfait — 6ème — Français : le passé composé et le plus-que-parfait (16 fiches)
+  - [x] L'impératif présent — 6ème — Français : l'impératif présent (16 fiches)
 - [x] Orthographe, accord sujet-verbe et homophones — l'essentiel — 6ème — Français : orthographe, accord sujet-verbe et homophones (18 fiches)
-  - [ ] Les accords dans le groupe nominal — *à créer*
+  - [x] Les accords dans le groupe nominal — 6ème — Français : les accords dans le groupe nominal (16 fiches)
 - [x] Vocabulaire, formation des mots et sens des mots — 6ème — Français : vocabulaire, formation des mots et sens des mots (17 fiches)
 
 ### 6e — Mathématiques (12 / 12)
@@ -828,15 +828,15 @@ Collège — 41 chapitres couverts sur 62, 65 boîtes.
   - [x] Les débuts du christianisme — 6ème — Histoire : les débuts du christianisme (16 fiches)
   - [x] Rome et la Chine des Han — 6ème — Histoire : Rome et la Chine des Han (16 fiches)
 
-### 6e — Géographie (3 / 4)
+### 6e — Géographie (4 / 4)
 
 - [x] Habiter le monde : villes, espaces peu peuplés et littoraux — l'essentiel — 6ème — Géographie : habiter les villes, les littoraux et les espaces peu peuplés (15 fiches)
-  - [ ] Habiter une métropole — *à créer*
-  - [ ] Habiter un espace de faible densité (rural, montagne, désert) — *à créer*
-  - [ ] Habiter les littoraux industriels et touristiques — *à créer*
+  - [x] Habiter une métropole — 6ème — Géographie : habiter une métropole (16 fiches)
+  - [x] Habiter un espace de faible densité (rural, montagne, désert) — 6ème — Géographie : habiter un espace de faible densité (rural, montagne, désert) (16 fiches)
+  - [x] Habiter les littoraux industriels et touristiques — 6ème — Géographie : habiter les littoraux industriels et touristiques (16 fiches)
 - [x] Le monde habité, répartition de la population — 6ème — Géographie : le monde habité, répartition de la population (17 fiches)
 - [x] Se repérer sur la Terre — 6ème — Géographie : se repérer sur la Terre (16 fiches)
-- [ ] Lire et réaliser un croquis simple — *à créer*
+- [x] Lire et réaliser un croquis simple — 6ème — Géographie : lire et réaliser un croquis simple (16 fiches)
 
 ### 6e — EMC (3 / 5)
 
