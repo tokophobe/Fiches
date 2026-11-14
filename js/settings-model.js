@@ -1119,6 +1119,11 @@
     // « Quelle est la bonne orthographe ? », « Quel est le bon accord ? »
     /\b(la bonne|la mauvaise) (orthographe|ecriture|forme|phrase|reponse|proposition)\b/,
     /\ble (bon|mauvais) (accord|mot|calcul|resultat|choix)\b/,
+    // v290 : « Quelle est la forme négative correcte ? », « Quelle est la
+    // traduction juste ? » (l'adjectif est rejeté en fin de question)
+    /^(quel|quelle|quels|quelles) (est|sont) (le|la|les|l') ?[a-z' -]{0,30}? (correcte?s?|juste|exacte?s?|bonne?s?|valable)\s*\??$/,
+    // « Quelle phrase est correctement écrite ? »
+    /\b(correctement|bien) (ecrite?s?|orthographiee?s?|accordee?s?|conjuguee?s?|ponctuee?s?)\s*\??$/,
   ];
   function qcmQuestionNeedsChoices(text) {
     const plain = String(text || "")
