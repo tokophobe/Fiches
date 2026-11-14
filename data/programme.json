@@ -7530,11 +7530,23 @@
        "sousthemes": [
         {
          "titre": "La poésie lyrique et ses images (Ronsard, Labé, Hugo…)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-poesie-amour",
+           "titre": "4ème — Français : la poésie lyrique et ses images (Ronsard, Labé, Hugo…)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'amour au théâtre et dans le roman",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-amour-theatre-roman",
+           "titre": "4ème — Français : l'amour au théâtre et dans le roman",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7550,11 +7562,23 @@
        "sousthemes": [
         {
          "titre": "Le Cid et la tragédie classique",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-le-cid",
+           "titre": "4ème — Français : Le Cid et la tragédie classique",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Molière et la comédie",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-moliere",
+           "titre": "4ème — Français : Molière et la comédie",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7570,11 +7594,23 @@
        "sousthemes": [
         {
          "titre": "Le roman réaliste et naturaliste (Balzac, Flaubert, Zola)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-roman-realiste",
+           "titre": "4ème — Français : le roman réaliste et naturaliste (Balzac, Flaubert, Zola)",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Le récit fantastique (Maupassant, Mérimée, Gautier)",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-fantastique",
+           "titre": "4ème — Français : le récit fantastique (Maupassant, Mérimée, Gautier)",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7590,21 +7626,45 @@
        "sousthemes": [
         {
          "titre": "La presse, du XIXe siècle à aujourd'hui",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-presse",
+           "titre": "4ème — Français : la presse, du XIXe siècle à aujourd'hui",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Repérer une fausse information",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r4e-fr-fausses-informations",
+           "titre": "4ème — Français : repérer une fausse information",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
       {
        "titre": "La ville, lieu de tous les possibles",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-fr-ville",
+         "titre": "4ème — Français : la ville, lieu de tous les possibles",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Argumenter : thèse, arguments et exemples",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-fr-argumenter",
+         "titre": "4ème — Français : argumenter : thèse, arguments et exemples",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Subordonnées relatives et complétives",
@@ -7618,7 +7678,13 @@
       },
       {
        "titre": "Les subordonnées circonstancielles",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-fr-circonstancielles",
+         "titre": "4ème — Français : les subordonnées circonstancielles",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Voix active et voix passive",
@@ -7632,7 +7698,13 @@
       },
       {
        "titre": "Les valeurs des temps de l'indicatif",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-fr-valeurs-temps",
+         "titre": "4ème — Français : les valeurs des temps de l'indicatif",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Subjonctif présent et conditionnel",
@@ -7646,7 +7718,13 @@
       },
       {
        "titre": "Le discours rapporté",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-fr-discours-rapporte",
+         "titre": "4ème — Français : le discours rapporté",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les figures de style",
@@ -7660,7 +7738,13 @@
       },
       {
        "titre": "Le vocabulaire des sentiments",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r4e-fr-vocabulaire-sentiments",
+         "titre": "4ème — Français : le vocabulaire des sentiments",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Révisions de l'année",

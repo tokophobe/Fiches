@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1084 chapitres couverts sur 1228** (88 %), 1262 boîtes, 20768 fiches.
+Mise à jour : 14/11/2026. **1090 chapitres couverts sur 1228** (89 %), 1276 boîtes, 20992 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -18,7 +18,7 @@ Mise à jour : 14/11/2026. **1084 chapitres couverts sur 1228** (88 %), 1262 bo�
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
 | [5e](#5e) | 39 / 87 | 48 | 42 | 730 |
-| [4e](#4e) | 58 / 82 | 24 | 78 | 1300 |
+| [4e](#4e) | 64 / 82 | 18 | 92 | 1524 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
 | [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
@@ -1054,32 +1054,32 @@ Collège — 39 chapitres couverts sur 87, 42 boîtes.
 
 ## 4e
 
-Collège — 58 chapitres couverts sur 82, 78 boîtes.
+Collège — 64 chapitres couverts sur 82, 92 boîtes.
 
-### 4e — Français (9 / 15)
+### 4e — Français (15 / 15)
 
 - [x] Dire l'amour — l'essentiel — 4ème — Français : dire l'amour, la poésie lyrique (16 fiches)
-  - [ ] La poésie lyrique et ses images (Ronsard, Labé, Hugo…) — *à créer*
-  - [ ] L'amour au théâtre et dans le roman — *à créer*
+  - [x] La poésie lyrique et ses images (Ronsard, Labé, Hugo…) — 4ème — Français : la poésie lyrique et ses images (Ronsard, Labé, Hugo…) (16 fiches)
+  - [x] L'amour au théâtre et dans le roman — 4ème — Français : l'amour au théâtre et dans le roman (16 fiches)
 - [x] Individu et société : confrontations de valeurs — l'essentiel — 4ème — Français : individu et société, Le Cid et la tragédie (16 fiches)
-  - [ ] Le Cid et la tragédie classique — *à créer*
-  - [ ] Molière et la comédie — *à créer*
+  - [x] Le Cid et la tragédie classique — 4ème — Français : Le Cid et la tragédie classique (16 fiches)
+  - [x] Molière et la comédie — 4ème — Français : Molière et la comédie (16 fiches)
 - [x] La fiction pour interroger le réel — l'essentiel — 4ème — Français : la nouvelle réaliste et fantastique (15 fiches)
-  - [ ] Le roman réaliste et naturaliste (Balzac, Flaubert, Zola) — *à créer*
-  - [ ] Le récit fantastique (Maupassant, Mérimée, Gautier) — *à créer*
+  - [x] Le roman réaliste et naturaliste (Balzac, Flaubert, Zola) — 4ème — Français : le roman réaliste et naturaliste (Balzac, Flaubert, Zola) (16 fiches)
+  - [x] Le récit fantastique (Maupassant, Mérimée, Gautier) — 4ème — Français : le récit fantastique (Maupassant, Mérimée, Gautier) (16 fiches)
 - [x] Informer, s'informer, déformer — l'essentiel — 4ème — Français : informer, s'informer, déformer (17 fiches)
-  - [ ] La presse, du XIXe siècle à aujourd'hui — *à créer*
-  - [ ] Repérer une fausse information — *à créer*
-- [ ] La ville, lieu de tous les possibles — *à créer*
-- [ ] Argumenter : thèse, arguments et exemples — *à créer*
+  - [x] La presse, du XIXe siècle à aujourd'hui — 4ème — Français : la presse, du XIXe siècle à aujourd'hui (16 fiches)
+  - [x] Repérer une fausse information — 4ème — Français : repérer une fausse information (16 fiches)
+- [x] La ville, lieu de tous les possibles — 4ème — Français : la ville, lieu de tous les possibles (16 fiches)
+- [x] Argumenter : thèse, arguments et exemples — 4ème — Français : argumenter : thèse, arguments et exemples (16 fiches)
 - [x] Subordonnées relatives et complétives — 4ème — Français : subordonnées relatives et complétives (16 fiches)
-- [ ] Les subordonnées circonstancielles — *à créer*
+- [x] Les subordonnées circonstancielles — 4ème — Français : les subordonnées circonstancielles (16 fiches)
 - [x] Voix active et voix passive — 4ème — Français : voix active et voix passive (15 fiches)
-- [ ] Les valeurs des temps de l'indicatif — *à créer*
+- [x] Les valeurs des temps de l'indicatif — 4ème — Français : les valeurs des temps de l'indicatif (16 fiches)
 - [x] Subjonctif présent et conditionnel — 4ème — Français : subjonctif présent et conditionnel (15 fiches)
-- [ ] Le discours rapporté — *à créer*
+- [x] Le discours rapporté — 4ème — Français : le discours rapporté (16 fiches)
 - [x] Les figures de style — 4ème — Français : les figures de style (16 fiches)
-- [ ] Le vocabulaire des sentiments — *à créer*
+- [x] Le vocabulaire des sentiments — 4ème — Français : le vocabulaire des sentiments (16 fiches)
 - [x] Révisions de l'année — 4ème — Français : le récit au XIXe siècle et le théâtre de Molière (17 fiches)
 
 ### 4e — Mathématiques (13 / 13)
