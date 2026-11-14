@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1126 chapitres couverts sur 1228** (92 %), 1340 boîtes, 22016 fiches.
+Mise à jour : 14/11/2026. **1139 chapitres couverts sur 1228** (93 %), 1361 boîtes, 22352 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -17,7 +17,7 @@ Mise à jour : 14/11/2026. **1126 chapitres couverts sur 1228** (92 %), 1340 bo�
 | [CM1](#cm1) | 130 / 133 | 3 | 130 | 1905 |
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
 | [6e](#6e) | 39 / 62 | 23 | 43 | 730 |
-| [5e](#5e) | 57 / 87 | 30 | 80 | 1338 |
+| [5e](#5e) | 70 / 87 | 17 | 101 | 1674 |
 | [4e](#4e) | 82 / 82 | 0 | 118 | 1940 |
 | [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
@@ -884,7 +884,7 @@ Collège — 39 chapitres couverts sur 62, 43 boîtes.
 
 ## 5e
 
-Collège — 57 chapitres couverts sur 87, 80 boîtes.
+Collège — 70 chapitres couverts sur 87, 101 boîtes.
 
 ### 5e — Français (15 / 15)
 
@@ -953,54 +953,54 @@ Collège — 57 chapitres couverts sur 87, 80 boîtes.
 ### 5e — Géographie (3 / 3)
 
 - [x] La question démographique et l'inégal développement — l'essentiel — 5ème — Géographie : croissance démographique et développement (17 fiches)
-  - [ ] Croissance démographique : l'exemple de l'Inde ou de la Chine — *à créer*
-  - [ ] Richesse et pauvreté dans le monde — *à créer*
+  - [x] Croissance démographique : l'exemple de l'Inde ou de la Chine — 5ème — Géographie : croissance démographique : l'exemple de l'Inde ou de la Chine (16 fiches)
+  - [x] Richesse et pauvreté dans le monde — 5ème — Géographie : richesse et pauvreté dans le monde (16 fiches)
 - [x] Des ressources limitées, à gérer et à renouveler — l'essentiel — 5ème — Géographie : énergie, eau et alimentation (17 fiches)
-  - [ ] L'énergie — *à créer*
-  - [ ] L'eau — *à créer*
-  - [ ] Nourrir l'humanité — *à créer*
+  - [x] L'énergie — 5ème — Géographie : l'énergie (16 fiches)
+  - [x] L'eau — 5ème — Géographie : l'eau (16 fiches)
+  - [x] Nourrir l'humanité — 5ème — Géographie : nourrir l'humanité (16 fiches)
 - [x] Prévenir les risques, s'adapter au changement global — l'essentiel — 5ème — Géographie : prévenir les risques, s'adapter au changement global (18 fiches)
-  - [ ] Le changement climatique et ses effets — *à créer*
-  - [ ] Les risques industriels et technologiques — *à créer*
+  - [x] Le changement climatique et ses effets — 5ème — Géographie : le changement climatique et ses effets (16 fiches)
+  - [x] Les risques industriels et technologiques — 5ème — Géographie : les risques industriels et technologiques (16 fiches)
 
-### 5e — EMC (1 / 4)
+### 5e — EMC (4 / 4)
 
 - [x] Égalité et lutte contre les discriminations — 5ème — EMC : égalité et lutte contre les discriminations (16 fiches)
-- [ ] La laïcité — *à créer*
-- [ ] La justice et les droits — *à créer*
-- [ ] Les médias et la responsabilité — *à créer*
+- [x] La laïcité — 5ème — EMC : la laïcité (16 fiches)
+- [x] La justice et les droits — 5ème — EMC : la justice et les droits (16 fiches)
+- [x] Les médias et la responsabilité — 5ème — EMC : les médias et la responsabilité (16 fiches)
 
-### 5e — SVT (4 / 7)
+### 5e — SVT (7 / 7)
 
-- [ ] La cellule, unité du vivant — *à créer*
-- [ ] Respiration et digestion — *à créer*
+- [x] La cellule, unité du vivant — 5ème — SVT : la cellule, unité du vivant (16 fiches)
+- [x] Respiration et digestion — 5ème — SVT : respiration et digestion (16 fiches)
 - [x] Nutrition et reproduction des plantes à fleurs — 5ème — SVT : nutrition et reproduction des plantes à fleurs (17 fiches)
 - [x] Écosystèmes, chaînes alimentaires et biodiversité — 5ème — SVT : écosystèmes, chaînes alimentaires et biodiversité (18 fiches)
-- [ ] Hygiène, microbes et santé — *à créer*
+- [x] Hygiène, microbes et santé — 5ème — SVT : hygiène, microbes et santé (16 fiches)
 - [x] Séismes, volcans et tectonique des plaques — l'essentiel — 5ème — SVT : séismes, volcans et tectonique des plaques (17 fiches)
-  - [ ] Les fossiles et l'histoire de la Terre — *à créer*
+  - [x] Les fossiles et l'histoire de la Terre — 5ème — SVT : les fossiles et l'histoire de la Terre (16 fiches)
 - [x] Révisions de l'année — 5ème — SVT : respiration, digestion et paysages (16 fiches)
 
-### 5e — Physique (2 / 5)
+### 5e — Physique (5 / 5)
 
 - [x] Lumière, propagation et ombres — 5ème — Physique : lumière, propagation et ombres (16 fiches)
 - [x] Circuits électriques en série et en dérivation — 5ème — Physique : circuits électriques en série et en dérivation (17 fiches)
-- [ ] L'énergie et ses conversions — *à créer*
-- [ ] Mouvements et vitesse — *à créer*
-- [ ] Le système solaire — *à créer*
+- [x] L'énergie et ses conversions — 5ème — Physique : l'énergie et ses conversions (16 fiches)
+- [x] Mouvements et vitesse — 5ème — Physique : mouvements et vitesse (16 fiches)
+- [x] Le système solaire — 5ème — Physique : le système solaire (16 fiches)
 
-### 5e — Chimie (2 / 3)
+### 5e — Chimie (3 / 3)
 
 - [x] États de la matière et masse volumique — 5ème — Chimie : états de la matière et masse volumique (21 fiches)
 - [x] Mélanges, solutions et techniques de séparation — 5ème — Chimie : mélanges, solutions et techniques de séparation (17 fiches)
-- [ ] L'eau dans tous ses états — *à créer*
+- [x] L'eau dans tous ses états — 5ème — Chimie : l'eau dans tous ses états (16 fiches)
 
-### 5e — Technologie (1 / 4)
+### 5e — Technologie (4 / 4)
 
 - [x] Chaîne d'information et chaîne d'énergie — 5ème — Technologie : chaîne d'information et chaîne d'énergie (16 fiches)
-- [ ] Matériaux et objets techniques — *à créer*
-- [ ] Programmation et objets connectés — *à créer*
-- [ ] Représenter un objet, croquis et modélisation 3D — *à créer*
+- [x] Matériaux et objets techniques — 5ème — Technologie : matériaux et objets techniques (16 fiches)
+- [x] Programmation et objets connectés — 5ème — Technologie : programmation et objets connectés (16 fiches)
+- [x] Représenter un objet, croquis et modélisation 3D — 5ème — Technologie : représenter un objet, croquis et modélisation 3D (16 fiches)
 
 ### 5e — Anglais (4 / 8)
 

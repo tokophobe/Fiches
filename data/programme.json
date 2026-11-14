@@ -7273,11 +7273,23 @@
        "sousthemes": [
         {
          "titre": "Croissance démographique : l'exemple de l'Inde ou de la Chine",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-geo-demographie-inde-chine",
+           "titre": "5ème — Géographie : croissance démographique : l'exemple de l'Inde ou de la Chine",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Richesse et pauvreté dans le monde",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-geo-richesse-pauvrete",
+           "titre": "5ème — Géographie : richesse et pauvreté dans le monde",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7293,15 +7305,33 @@
        "sousthemes": [
         {
          "titre": "L'énergie",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-geo-energie",
+           "titre": "5ème — Géographie : l'énergie",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "L'eau",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-geo-eau",
+           "titre": "5ème — Géographie : l'eau",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Nourrir l'humanité",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-geo-nourrir-humanite",
+           "titre": "5ème — Géographie : nourrir l'humanité",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7317,11 +7347,23 @@
        "sousthemes": [
         {
          "titre": "Le changement climatique et ses effets",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-geo-changement-climatique",
+           "titre": "5ème — Géographie : le changement climatique et ses effets",
+           "fiches": 16
+          }
+         ]
         },
         {
          "titre": "Les risques industriels et technologiques",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-geo-risques-industriels",
+           "titre": "5ème — Géographie : les risques industriels et technologiques",
+           "fiches": 16
+          }
+         ]
         }
        ]
       }
@@ -7343,15 +7385,33 @@
       },
       {
        "titre": "La laïcité",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-emc-laicite",
+         "titre": "5ème — EMC : la laïcité",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "La justice et les droits",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-emc-justice-droits",
+         "titre": "5ème — EMC : la justice et les droits",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Les médias et la responsabilité",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-emc-medias",
+         "titre": "5ème — EMC : les médias et la responsabilité",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7361,11 +7421,23 @@
      "chapitres": [
       {
        "titre": "La cellule, unité du vivant",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-svt-cellule",
+         "titre": "5ème — SVT : la cellule, unité du vivant",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Respiration et digestion",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-svt-respiration-digestion",
+         "titre": "5ème — SVT : respiration et digestion",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Nutrition et reproduction des plantes à fleurs",
@@ -7389,7 +7461,13 @@
       },
       {
        "titre": "Hygiène, microbes et santé",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-svt-hygiene-microbes",
+         "titre": "5ème — SVT : hygiène, microbes et santé",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Séismes, volcans et tectonique des plaques",
@@ -7403,7 +7481,13 @@
        "sousthemes": [
         {
          "titre": "Les fossiles et l'histoire de la Terre",
-         "boites": []
+         "boites": [
+          {
+           "cle": "r5e-svt-fossiles",
+           "titre": "5ème — SVT : les fossiles et l'histoire de la Terre",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -7445,15 +7529,33 @@
       },
       {
        "titre": "L'énergie et ses conversions",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-phys-energie",
+         "titre": "5ème — Physique : l'énergie et ses conversions",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Mouvements et vitesse",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-phys-mouvement-vitesse",
+         "titre": "5ème — Physique : mouvements et vitesse",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Le système solaire",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-phys-systeme-solaire",
+         "titre": "5ème — Physique : le système solaire",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7483,7 +7585,13 @@
       },
       {
        "titre": "L'eau dans tous ses états",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-chim-etats-eau",
+         "titre": "5ème — Chimie : l'eau dans tous ses états",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
@@ -7503,15 +7611,33 @@
       },
       {
        "titre": "Matériaux et objets techniques",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-techno-materiaux-objets",
+         "titre": "5ème — Technologie : matériaux et objets techniques",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Programmation et objets connectés",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-techno-objets-connectes",
+         "titre": "5ème — Technologie : programmation et objets connectés",
+         "fiches": 16
+        }
+       ]
       },
       {
        "titre": "Représenter un objet, croquis et modélisation 3D",
-       "boites": []
+       "boites": [
+        {
+         "cle": "r5e-techno-representer-objet",
+         "titre": "5ème — Technologie : représenter un objet, croquis et modélisation 3D",
+         "fiches": 16
+        }
+       ]
       }
      ]
     },
