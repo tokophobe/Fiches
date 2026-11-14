@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v292";
+  const APP_VERSION = "v293";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -16155,7 +16155,7 @@
         });
       }
     }
-    const [collections, ratings] = await Promise.all([Sync.library.list(), Sync.library.listRatings()]);
+    const [collections, ratings] = await Promise.all([Sync.library.list(), Sync.library.listRatings(), loadLibraryChapters()]);
     libraryCollectionsCache = collections;
     libraryRatingsCache = ratings;
     renderLibraryList();
@@ -16396,7 +16396,7 @@
     // lien est une vidéo YouTube la montre dans son bloc (voir
     // libraryVideoObserve).
     libraryVideoReset();
-    for (const col of collections) {
+    const buildRow = (col) => {
       const n = libraryCardCount(col);
       // Round 48 : bloc épuré — nom en entier, nombre de fiches et
       // classement, résumé (si l'affichage des résumés est activé), pouce.
@@ -16465,8 +16465,79 @@
         rememberLibraryListScroll(col, li);
         openLibraryDetailView(col);
       });
-      list.appendChild(li);
+      return li;
+    };
+    // v293 : une matière choisie (et pas de recherche) → boîtes rangées
+    // par chapitres du programme, titres des chapitres en séparateurs.
+    const rows = q || libraryOnlyMine ? null : libraryChapterRows(collections);
+    if (!rows) {
+      collections.forEach((col) => list.appendChild(buildRow(col)));
+      return;
     }
+    const byId = new Map(collections.map((col) => [String(col.id), col]));
+    rows.forEach((r) => {
+      if (r.kind === "item") {
+        const col = byId.get(String(r.id));
+        if (col) list.appendChild(buildRow(col));
+        return;
+      }
+      const h = document.createElement("li");
+      h.className = r.kind === "sub" ? "library-subchapter-title" : "library-chapter-title" + (r.other ? " library-chapter-title--other" : "");
+      h.textContent = r.title;
+      list.appendChild(h);
+    });
+  }
+
+  /* v293 : index des chapitres du programme (data/chapitres.json, écrit
+     par tools/programme.py) — chargé une fois, sans bloquer la Librairie
+     s'il manque (liste simple). */
+  let libraryChaptersIndex = null;
+  let libraryChaptersLoading = null;
+  function loadLibraryChapters() {
+    if (libraryChaptersIndex) return Promise.resolve(libraryChaptersIndex);
+    if (!libraryChaptersLoading) {
+      libraryChaptersLoading = fetch("./data/chapitres.json")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => {
+          libraryChaptersIndex = data && data.matieres ? data : null;
+          return libraryChaptersIndex;
+        })
+        .catch(() => null)
+        .finally(() => {
+          libraryChaptersLoading = null;
+        });
+    }
+    return libraryChaptersLoading;
+  }
+  /** v293 : lignes à afficher (titres de chapitres et boîtes) quand une
+   *  matière est choisie ; null pour une liste simple. */
+  function libraryChapterRows(collections) {
+    const sel = libraryTaxFilter || {};
+    if (!sel.matiere || !libraryChaptersIndex) return null;
+    const tax = Taxonomy.get();
+    const labelOf = (k) => {
+      const item = Taxonomy.findItem(tax, k, sel[k]);
+      return Taxonomy.norm(item ? item.label : sel[k]);
+    };
+    const matiere = labelOf("matiere");
+    const niveau = sel.niveau ? labelOf("niveau") : "";
+    const items = collections.map((col) => {
+      const sid = String(col.source_subject_id || "");
+      return { id: String(col.id), packKey: sid.startsWith(LIBRARY_PACK_PREFIX) ? sid.slice(LIBRARY_PACK_PREFIX.length) : "", chapterRef: col.programme_chapter || "" };
+    });
+    const packKeys = new Set(items.map((it) => it.packKey).filter(Boolean));
+    const refs = items.map((it) => it.chapterRef).filter(Boolean);
+    const entries = Object.entries(libraryChaptersIndex.matieres)
+      .map(([key, e]) => ({ key, niveau: e.niveau, chapitres: e.chapitres }))
+      .filter((e) => {
+        const [niv, mat] = e.key.split("|");
+        if (Taxonomy.norm(mat) !== matiere) return false;
+        if (niveau && Taxonomy.norm(niv) !== niveau) return false;
+        // Seulement les classes qui ont des boîtes affichées.
+        return refs.some((r) => r.startsWith(e.key + "|")) || e.chapitres.some((c) => c.b.some((k) => packKeys.has(k)) || (c.s || []).some((st) => st.b.some((k) => packKeys.has(k))));
+      });
+    if (!entries.length) return null;
+    return LibraryRules.groupByChapters(items, entries);
   }
 
   /** Round 19, item 11 : page de détail d'une collection partagée — nom,

@@ -653,9 +653,24 @@ tout de suite, la liste à jour suit.
   page et gardé pendant la visite, avec une **préférence pour les boîtes
   récentes** : une boîte du jour a 5 fois plus de chances qu'une boîte
   ancienne d'être en haut, avantage qui s'efface en quelques semaines.
-  Cela vaut **à tous les niveaux de filtrage**, de la catégorie jusqu'à la
-  matière, et avec la recherche. Seul « Mes boîtes publiées » garde
-  l'ordre habituel (les plus récentes d'abord).
+  Cela vaut à tous les niveaux de filtrage **jusqu'au choix d'une
+  matière** (voir ci-dessous), et avec la recherche. Seul « Mes boîtes
+  publiées » garde l'ordre habituel (les plus récentes d'abord).
+- **Rangement par chapitres** (v293, plan validé le 14 nov. 2026) : dès
+  qu'une **matière** est choisie (et tant qu'aucune recherche n'est
+  tapée), la liste suit le **programme**, comme la page « Le programme »
+  du site : le titre de chaque chapitre sert de séparateur, puis viennent
+  la boîte « l'essentiel » du chapitre, les boîtes d'enseignants rangées
+  dans ce chapitre, et chaque sous-thème (petit titre) avec sa boîte. Les
+  chapitres et sous-thèmes sans boîte ne sont pas montrés. Les boîtes
+  sans chapitre finissent sous **« Autres chapitres »**, dans l'ordre au
+  hasard. Si plusieurs classes sont affichées (matière choisie sans
+  niveau), la classe précède le titre du chapitre (« 3e · … »).
+  - Les **boîtes toutes prêtes** sont rangées d'après le programme.
+  - Les **boîtes d'enseignants** sont rangées **par darwin**, jamais par
+    l'enseignant : en relisant une proposition, Darwin Admin propose un
+    chapitre d'après le titre et les fiches de la boîte, darwin le
+    confirme ou en choisit un autre (ou « Autres chapitres »).
 - **Vidéos de cours** (v275, remplace la vidéo « une boîte sur dix » de
   la v274) : bouton **« Afficher les vidéos de cours »** à côté de
   « Afficher les résumés », **actif par défaut**. Actif, **chaque boîte**
@@ -1103,6 +1118,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v293 | 14 nov. 2026 | Librairie rangée par chapitres du programme dès qu'une matière est choisie (titres des chapitres et sous-thèmes en séparateurs, boîtes sans chapitre sous « Autres chapitres ») ; boîtes d'enseignants rangées par darwin dans Darwin Admin (chapitre proposé d'après le titre et les fiches). Migration supabase/v293_migration.sql. |
 | v292 | 14 nov. 2026 | Darwin Admin : après un import des boîtes toutes prêtes, liste des boîtes créées ou mises à jour (avec le nombre de fiches modifiées ou retirées) et bouton « Voir les fiches » pour vérifier ; sur iPhone, le bouton du menu ne passe plus sous l'heure. Mon compte : « Super enseignant » et « Super école » sont dans le bloc « Formules pour les enseignants ». Signalements reçus : boutons « Ouvrir la boîte » et « Corriger la fiche » (aussi pour darwin sur une boîte de la Librairie), boutons ovales de la charte. Boîtes toutes prêtes : liens de boîte Wikipédia remplacés par des vidéos de cours (109) ou retirés (5). |
 | v291 | 14 nov. 2026 | Darwin Admin, import des boîtes toutes prêtes : une fiche retirée du fichier est maintenant aussi supprimée de la boîte déjà publiée dans la Librairie (avant, elle restait en place). Le fichier garde pour cela l'empreinte des fiches retirées. Le décompte « fiches retirées » s'affiche avant de publier. Les copies prises par les élèves suivent toutes seules à leur prochaine ouverture de l'appli. Les 5 fiches hors sujet retirées le 14 nov. disparaîtront à la prochaine importation. |
 | v290 | 14 nov. 2026 | Règle d'écriture des fiches QCM (§5.7, règle 7) : le contrôle repère aussi les questions dont l'adjectif est rejeté en fin de phrase (« Quelle est la forme négative correcte ? », « Quelle est la traduction juste ? ») et « … correctement écrite ? », dans l'appli et dans Darwin Admin. Aucune autre question de ce type dans les boîtes toutes prêtes. |

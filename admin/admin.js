@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v292";
+  const ADMIN_VERSION = "v293";
   // v281 : les erreurs de Darwin Admin portent aussi leur version
   // (js/error-report.js lit window.FICHES_APP_VERSION).
   window.FICHES_APP_VERSION = ADMIN_VERSION;
@@ -1965,7 +1965,72 @@
       h("div", { class: "cell-sub" }, "Dans les fiches ci-dessous : supprimé en rouge barré, ajouté en vert souligné ; cadre orange = fiche modifiée, cadre vert = nouvelle fiche.")
     );
   }
+  /* v293 : chapitres du programme (data/chapitres.json, écrit par
+     tools/programme.py) — darwin range chaque boîte d'enseignant dans un
+     chapitre ; l'appli range la Librairie par chapitres. */
+  let chaptersIndexPromise = null;
+  function loadChaptersIndex() {
+    if (!chaptersIndexPromise) {
+      chaptersIndexPromise = fetch("../data/chapitres.json", { cache: "no-store" })
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null);
+    }
+    return chaptersIndexPromise;
+  }
+  /** Chapitres possibles pour une boîte, d'après sa classe et sa matière :
+   *  [{ ref: « niveau|matière|titre », label }]. */
+  function chapterOptionsFor(index, taxonomy) {
+    const T = window.Taxonomy;
+    const t = taxonomy || {};
+    if (!index || !index.matieres || !t.matiere) return [];
+    const mat = T.norm(t.matiere.label);
+    const niv = t.niveau ? T.norm(t.niveau.label) : "";
+    const out = [];
+    Object.entries(index.matieres).forEach(([key, e]) => {
+      const [n, m] = key.split("|");
+      if (T.norm(m) !== mat || (niv && T.norm(n) !== niv)) return;
+      e.chapitres.forEach((c) => out.push({ ref: `${key}|${c.t}`, label: niv ? c.t : `${e.niveau} · ${c.t}`, words: [c.t, ...(c.s || []).map((s) => s.t)].join(" ") }));
+    });
+    return out;
+  }
+  /** Chapitre le plus proche du nom et des questions de la boîte (mots en
+   *  commun) ; "" si aucun mot ne correspond. */
+  function guessChapter(options, name, cards) {
+    const T = window.Taxonomy;
+    const words = (s) => new Set(T.norm(s).split(/[^a-z0-9]+/).filter((w) => w.length > 3));
+    const text = words([name, ...(cards || []).slice(0, 20).map((c) => c.question || "")].join(" "));
+    let best = "";
+    let bestScore = 0;
+    options.forEach((o) => {
+      let score = 0;
+      words(o.words).forEach((w) => {
+        if (text.has(w)) score++;
+      });
+      if (score > bestScore) {
+        bestScore = score;
+        best = o.ref;
+      }
+    });
+    return best;
+  }
+  async function saveCollectionChapter(collectionId, ref) {
+    if (!collectionId) return;
+    try {
+      await rpc("admin_set_collection_chapter", { p_collection_id: collectionId, p_chapter: ref || "" });
+    } catch (e) {
+      toast(/admin_set_collection_chapter/.test(e.message || "") ? "Chapitre non enregistré : exécute d'abord supabase/v293_migration.sql." : e.message, true);
+    }
+  }
+
   async function openSubmission(sub, reload) {
+    // v293 : chapitre actuel de la boîte publiée (ou de la boîte que cette
+    // nouvelle version remplacera).
+    const chapterColId = sub.collection_id || sub.target_collection_id || null;
+    let currentChapter = null;
+    if (chapterColId) {
+      const r = await client().from("library_collections").select("programme_chapter").eq("id", chapterColId).maybeSingle();
+      if (!r.error && r.data) currentChapter = r.data.programme_chapter || "";
+    }
     // v280 : une boîte publiée se corrige sur sa version de la Librairie
     // (celle que voient les abonnés), pas sur la proposition d'origine.
     if (sub.status === "published" && sub.collection_id) {
@@ -2160,6 +2225,29 @@
     );
     // v237 : lien de la boîte (vidéo de cours…), facultatif.
     const linkIn = h("input", { type: "text", class: "input", value: sub.link || "", placeholder: "https://…", inputmode: "url" });
+    // v293 : chapitre du programme où la boîte apparaît dans la Librairie
+    // (proposé d'après son titre et ses fiches, à confirmer).
+    const chapterSel = h("select", { class: "input" }, h("option", { value: "" }, "Chargement…"));
+    const chapterHint = h("span", { class: "cell-sub" }, "");
+    let chapterTouched = false;
+    chapterSel.addEventListener("change", () => (chapterTouched = true));
+    loadChaptersIndex().then((index) => {
+      const options = chapterOptionsFor(index, sub.taxonomy);
+      chapterSel.replaceChildren(h("option", { value: "" }, "Autres chapitres"), ...options.map((o) => h("option", { value: o.ref }, o.label)));
+      if (!options.length) {
+        chapterHint.textContent = "Aucun chapitre connu pour cette classe et cette matière : la boîte ira dans « Autres chapitres ».";
+        return;
+      }
+      if (chapterTouched) return;
+      if (currentChapter !== null && (currentChapter === "" || options.some((o) => o.ref === currentChapter))) {
+        chapterSel.value = currentChapter;
+        if (currentChapter === "") chapterHint.textContent = "Rangée aujourd'hui dans « Autres chapitres ».";
+      } else {
+        const guess = guessChapter(options, sub.name, sub.cards);
+        chapterSel.value = guess;
+        chapterHint.textContent = guess ? "Chapitre proposé d'après le titre et les fiches : à vérifier." : "Aucun chapitre ne ressemble à cette boîte : choisis-en un, ou laisse « Autres chapitres ».";
+      }
+    });
     const body = h(
       "div",
       { class: "submission-form" },
@@ -2168,6 +2256,7 @@
       field("Nom", nameIn),
       field("Description (optionnel)", descIn),
       field("Lien « Pour aller plus loin »", linkIn),
+      h("label", { class: "form-field" }, h("span", null, "Chapitre dans la Librairie"), chapterSel, chapterHint),
       h("div", { class: "toolbar" }, cardsCount, latestBtn),
       cardsWrap,
       field("Note (envoyée à l'enseignant avec la décision)", noteIn),
@@ -2223,6 +2312,7 @@
               }
               try {
                 await rpc("admin_update_published_submission", { p_id: sub.id, p_patch: p });
+                await saveCollectionChapter(sub.collection_id, chapterSel.value);
                 toast("Corrections enregistrées dans la Librairie");
                 reload();
               } catch (e) {
@@ -2271,6 +2361,10 @@
               if (sub.link === undefined && !p.link) delete p.link;
               try {
                 await rpc("admin_publish_submission", { p_id: sub.id, p_patch: p });
+                // v293 : la boîte publiée (nouvelle ou remplacée) prend le
+                // chapitre choisi.
+                const { data: done } = await client().from("library_submissions").select("collection_id").eq("id", sub.id).maybeSingle();
+                await saveCollectionChapter((done && done.collection_id) || chapterColId, chapterSel.value);
                 toast("Publiée dans la Librairie");
                 reload();
               } catch (e) {
@@ -2285,7 +2379,7 @@
     // l'ancienne note avec une nouvelle correction).
     if (isPublished) noteIn.value = "";
     if (readOnly) {
-      [nameIn, descIn, linkIn, noteIn, latestBtn].forEach((n) => (n.disabled = true));
+      [nameIn, descIn, linkIn, chapterSel, noteIn, latestBtn].forEach((n) => (n.disabled = true));
       cardsWrap.querySelectorAll("input, textarea, button").forEach((n) => (n.disabled = true));
     }
     await openModal({ title: sub.name || "Proposition", body, wide: true, buttons });
