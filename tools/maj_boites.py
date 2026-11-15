@@ -6,6 +6,7 @@ Utilisation :
   python3 tools/maj_boites.py montre CLE...      -> fiches des boîtes (pour relecture)
   python3 tools/maj_boites.py applique LOT.json  -> applique un lot de corrections
   python3 tools/maj_boites.py verifie [CLE...]   -> contrôles (QCM complets, questions)
+  python3 tools/maj_boites.py decoupe PLAN.json  -> découpe des boîtes trop larges
 
 Format d'un lot (LOT.json) :
   { "cle-de-boite": {
@@ -16,6 +17,18 @@ Format d'un lot (LOT.json) :
         "5": [ {fiche 1}, {fiche 2} ],         (fiche coupée en plusieurs)
         "6": null                              (fiche supprimée)
       } } }
+
+Format d'un plan de découpage (PLAN.json, 16 nov. 2026) — chaque fiche de la
+boîte d'origine va dans exactement une partie :
+  { "cle-de-boite": {
+      "garde": {"name": "…", "description": "…", "link": "…", "fiches": [0, 1, …]},
+      "nouvelles": [ {"key": "…", "name": "…", "description": "…", "link": "…",
+                      "soustheme": "Titre court", "fiches": [12, 13, …]} ] } }
+La boîte d'origine garde sa clé (et sa place dans le programme) avec les
+fiches de « garde » ; les autres fiches y sont notées « retirées » (Darwin
+Admin les enlève de la boîte publiée) et passent dans les nouvelles boîtes,
+ajoutées juste après elle et rangées comme sous-thèmes du même chapitre dans
+data/programme.json.
 
 Les marqueurs `w` / `wq` (empreintes des anciennes versions de la fiche)
 sont tenus à jour comme le fait Darwin Admin, pour que les boîtes déjà
@@ -191,6 +204,56 @@ def applique(lot_path):
     verifie(list(lot.keys()))
 
 
+def decoupe(plan_path):
+    d = charge()
+    plan = json.loads(Path(plan_path).read_text(encoding="utf-8"))
+    prog_path = FICHIER.parent / "data" / "programme.json"
+    prog = json.loads(prog_path.read_text(encoding="utf-8"))
+    cles = {b["key"] for b in d["boxes"]}
+    touchees = []
+    for key, p in plan.items():
+        i = next(j for j, b in enumerate(d["boxes"]) if b["key"] == key)
+        b = d["boxes"][i]
+        parts = [p["garde"]] + p["nouvelles"]
+        vus = sorted(n for part in parts for n in part["fiches"])
+        assert vus == list(range(len(b["cards"]))), f"{key} : chaque fiche doit aller dans une seule partie"
+        cartes = b["cards"]
+        nouvelles = []
+        for part in p["nouvelles"]:
+            assert part["key"] not in cles, part["key"]
+            cles.add(part["key"])
+            nb = {
+                "key": part["key"], "name": part["name"], "level": b.get("level"),
+                "description": part["description"], "link": part["link"],
+                "cards": [cartes[n] for n in part["fiches"]],
+                "priceTokens": b.get("priceTokens", 0),
+                "taxonomy": b.get("taxonomy"), "tags": part.get("tags", b.get("tags", [])),
+            }
+            nouvelles.append({k: v for k, v in nb.items() if v is not None})
+            for n in part["fiches"]:
+                retire(b, cartes[n])
+        b["name"], b["description"], b["link"] = p["garde"]["name"], p["garde"]["description"], p["garde"]["link"]
+        b["cards"] = [cartes[n] for n in p["garde"]["fiches"]]
+        d["boxes"][i + 1:i + 1] = nouvelles
+        touchees += [key] + [nb["key"] for nb in nouvelles]
+        # Programme : nouvelles boîtes en sous-thèmes du chapitre d'origine.
+        place = False
+        for niv in prog["niveaux"]:
+            for m in niv["matieres"]:
+                for c in m["chapitres"]:
+                    dans_sous = next((k for k, st in enumerate(c.get("sousthemes", [])) if any(x["cle"] == key for x in st["boites"])), None)
+                    if any(x["cle"] == key for x in c["boites"]) or dans_sous is not None:
+                        st = c.setdefault("sousthemes", [])
+                        pos = len(st) if dans_sous is None else dans_sous + 1
+                        st[pos:pos] = [{"titre": part["soustheme"], "boites": [{"cle": part["key"], "titre": part["name"], "fiches": len(part["fiches"])}]} for part in p["nouvelles"]]
+                        place = True
+        if not place:
+            print(f"(boîte {key} absente du programme : nouvelles boîtes à ranger à la main)")
+    sauve(d)
+    prog_path.write_text(json.dumps(prog, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    verifie(touchees)
+
+
 def verifie(keys=None):
     d = charge()
     pb = 0
@@ -247,6 +310,8 @@ def main():
         applique(sys.argv[2])
     elif cmd == "verifie":
         verifie(sys.argv[2:] or None)
+    elif cmd == "decoupe":
+        decoupe(sys.argv[2])
 
 
 if __name__ == "__main__":

@@ -9401,6 +9401,28 @@
          "titre": "Anglais — Les verbes irréguliers essentiels",
          "fiches": 59
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Verbes irréguliers de fly à see",
+         "boites": [
+          {
+           "cle": "anglais-verbes-irreguliers-2",
+           "titre": "Anglais — Verbes irréguliers (2) : de fly à see",
+           "fiches": 20
+          }
+         ]
+        },
+        {
+         "titre": "Verbes irréguliers de sell à write",
+         "boites": [
+          {
+           "cle": "anglais-verbes-irreguliers-3",
+           "titre": "Anglais — Verbes irréguliers (3) : de sell à write",
+           "fiches": 19
+          }
+         ]
+        }
        ]
       },
       {
@@ -10306,6 +10328,28 @@
          "titre": "Brevet — Maths : calcul mental, automatismes et programmes de calcul",
          "fiches": 22
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Théorèmes, aires et volumes",
+         "boites": [
+          {
+           "cle": "maths-formules-college-geometrie",
+           "titre": "Maths — Formules du collège : théorèmes, aires et volumes",
+           "fiches": 17
+          }
+         ]
+        },
+        {
+         "titre": "Fonctions, pourcentages, statistiques et probabilités",
+         "boites": [
+          {
+           "cle": "maths-formules-college-fonctions-donnees",
+           "titre": "Maths — Formules du collège : fonctions, pourcentages et probabilités",
+           "fiches": 11
+          }
+         ]
+        }
        ]
       }
      ]
@@ -10649,6 +10693,48 @@
          "titre": "Brevet — Histoire : grands discours et textes patrimoniaux",
          "fiches": 20
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Dates de la Seconde Guerre mondiale",
+         "boites": [
+          {
+           "cle": "histoire-dates-brevet-1939-1945",
+           "titre": "Histoire — Dates clés du Brevet : la Seconde Guerre mondiale",
+           "fiches": 15
+          }
+         ]
+        },
+        {
+         "titre": "Dates de 1945 à 1962",
+         "boites": [
+          {
+           "cle": "histoire-dates-brevet-1945-1962",
+           "titre": "Histoire — Dates clés du Brevet : 1945-1962",
+           "fiches": 15
+          }
+         ]
+        },
+        {
+         "titre": "Dates de 1962 à nos jours",
+         "boites": [
+          {
+           "cle": "histoire-dates-brevet-depuis-1962",
+           "titre": "Histoire — Dates clés du Brevet : de 1962 à nos jours",
+           "fiches": 11
+          }
+         ]
+        },
+        {
+         "titre": "Notions et personnages depuis 1945",
+         "boites": [
+          {
+           "cle": "brevet-histoire-notions-1945",
+           "titre": "Brevet — Histoire : notions et personnages depuis 1945",
+           "fiches": 17
+          }
+         ]
+        }
        ]
       }
      ]
@@ -10821,6 +10907,18 @@
          "titre": "Brevet — Géographie : méthode du croquis et de la légende",
          "fiches": 16
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Aménagement, outre-mer et Union européenne",
+         "boites": [
+          {
+           "cle": "brevet-geographie-amenagement-europe",
+           "titre": "Brevet — Géographie : aménagement, outre-mer et Union européenne",
+           "fiches": 14
+          }
+         ]
+        }
        ]
       }
      ]
@@ -10886,6 +10984,18 @@
          "cle": "brevet-emc",
          "titre": "Brevet — EMC : valeurs, institutions et citoyenneté",
          "fiches": 33
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Vote, justice et citoyenneté",
+         "boites": [
+          {
+           "cle": "brevet-emc-citoyennete-justice",
+           "titre": "Brevet — EMC : vote, justice et citoyenneté",
+           "fiches": 16
+          }
+         ]
         }
        ]
       }
@@ -11205,6 +11315,28 @@
          "cle": "r38-a3-phys-methodo-sciences",
          "titre": "Brevet — Physique : méthodologie de l'épreuve de sciences",
          "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Matière, mouvements et forces",
+         "boites": [
+          {
+           "cle": "brevet-physique-chimie-matiere-mouvement",
+           "titre": "Brevet — Physique-chimie : matière, mouvements et forces",
+           "fiches": 19
+          }
+         ]
+        },
+        {
+         "titre": "Énergie, électricité, lumière et son",
+         "boites": [
+          {
+           "cle": "brevet-physique-chimie-energie-signaux",
+           "titre": "Brevet — Physique-chimie : énergie, électricité, lumière et son",
+           "fiches": 18
+          }
+         ]
         }
        ]
       }
@@ -11773,6 +11905,18 @@
          "titre": "Français — Les figures de style",
          "fiches": 30
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Figures de substitution, de sonorité et de construction",
+         "boites": [
+          {
+           "cle": "francais-figures-de-style-substitution-sonorites",
+           "titre": "Français — Figures de style : substitution, sonorités et construction",
+           "fiches": 15
+          }
+         ]
+        }
        ]
       },
       {
@@ -12150,6 +12294,16 @@
            "fiches": 17
           }
          ]
+        },
+        {
+         "titre": "ADN, gènes et biodiversité",
+         "boites": [
+          {
+           "cle": "svt-adn-biodiversite-seconde",
+           "titre": "SVT — Seconde : ADN, gènes et biodiversité",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -12262,6 +12416,18 @@
          "cle": "physique-chimie-seconde",
          "titre": "Physique-chimie — Formules et constantes de Seconde",
          "fiches": 30
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Formules de chimie et d'électricité",
+         "boites": [
+          {
+           "cle": "physique-chimie-seconde-chimie-electricite",
+           "titre": "Physique-chimie — Seconde : formules de chimie et d'électricité",
+           "fiches": 16
+          }
+         ]
         }
        ]
       }
@@ -12813,6 +12979,16 @@
            "cle": "r38-a7-maths-variations",
            "titre": "1ère spé Maths — Dérivation : variations et extremums",
            "fiches": 15
+          }
+         ]
+        },
+        {
+         "titre": "Opérations sur les dérivées et variations",
+         "boites": [
+          {
+           "cle": "maths-derivees-operations-variations",
+           "titre": "Maths — Dérivation : opérations et variations",
+           "fiches": 20
           }
          ]
         }
@@ -14281,6 +14457,18 @@
          "titre": "Philosophie — Notions, repères et citations du bac",
          "fiches": 38
         }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Citations célèbres et leurs auteurs",
+         "boites": [
+          {
+           "cle": "philosophie-bac-citations",
+           "titre": "Philosophie — Bac : citations célèbres et leurs auteurs",
+           "fiches": 19
+          }
+         ]
+        }
        ]
       },
       {
@@ -14290,6 +14478,28 @@
          "cle": "bac-philo-auteurs-oeuvres",
          "titre": "Philosophie — Auteurs et œuvres majeurs",
          "fiches": 44
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Auteurs des XVIIe et XVIIIe siècles",
+         "boites": [
+          {
+           "cle": "bac-philo-auteurs-modernes",
+           "titre": "Philosophie — Auteurs : XVIIe et XVIIIe siècles",
+           "fiches": 14
+          }
+         ]
+        },
+        {
+         "titre": "Auteurs des XIXe et XXe siècles",
+         "boites": [
+          {
+           "cle": "bac-philo-auteurs-contemporains",
+           "titre": "Philosophie — Auteurs : XIXe et XXe siècles",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -15927,6 +16137,48 @@
          "cle": "geographie-capitales",
          "titre": "Géographie — Pays et capitales du monde",
          "fiches": 68
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Capitales d'Europe centrale et orientale",
+         "boites": [
+          {
+           "cle": "geographie-capitales-europe-est",
+           "titre": "Géographie — Capitales d'Europe centrale, d'Europe de l'Est et d'Asie centrale",
+           "fiches": 10
+          }
+         ]
+        },
+        {
+         "titre": "Capitales d'Afrique",
+         "boites": [
+          {
+           "cle": "geographie-capitales-afrique",
+           "titre": "Géographie — Capitales d'Afrique",
+           "fiches": 14
+          }
+         ]
+        },
+        {
+         "titre": "Capitales des Amériques",
+         "boites": [
+          {
+           "cle": "geographie-capitales-ameriques",
+           "titre": "Géographie — Capitales des Amériques",
+           "fiches": 11
+          }
+         ]
+        },
+        {
+         "titre": "Capitales d'Asie et d'Océanie",
+         "boites": [
+          {
+           "cle": "geographie-capitales-asie-oceanie",
+           "titre": "Géographie — Capitales d'Asie et d'Océanie",
+           "fiches": 17
+          }
+         ]
         }
        ]
       }
