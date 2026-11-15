@@ -367,7 +367,12 @@ testables ainsi.
   et à créer des extraits pour les fiches : lien
   `…watch?v=ID&t=DÉBUT&end=FIN` (secondes), géré par `js/learn-links.js`
   (v295, testé dans `tests/learn-links.test.js`). Jamais de transcription
-  dans ce dépôt public.
+  dans ce dépôt public. Mémoire (15 nov. 2026) : `transcriptions.json.gz`
+  est l'archive permanente (chaque entrée datée ; l'outil la relit et ne
+  redemande que les vidéos nouvelles) ; noter chaque vérification de
+  vidéo et chaque extrait créé dans `Fiches-contenu/verifications-videos.json`
+  ({id: {date, verdict, boites, extraits}}) et ne pas refaire ce qui y
+  figure.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
   rediffusion en direct, interview, chaîne pour étrangers apprenant le

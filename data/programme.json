@@ -1,5 +1,5 @@
 {
- "maj": "14/11/2026",
+ "maj": "15/11/2026",
  "niveaux": [
   {
    "id": "cp",
@@ -9398,8 +9398,30 @@
        "boites": [
         {
          "cle": "anglais-verbes-irreguliers",
-         "titre": "Anglais — Les verbes irréguliers essentiels",
-         "fiches": 59
+         "titre": "Anglais — Verbes irréguliers (1) : de be à find",
+         "fiches": 20
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Verbes irréguliers de fly à see",
+         "boites": [
+          {
+           "cle": "anglais-verbes-irreguliers-2",
+           "titre": "Anglais — Verbes irréguliers (2) : de fly à see",
+           "fiches": 20
+          }
+         ]
+        },
+        {
+         "titre": "Verbes irréguliers de sell à write",
+         "boites": [
+          {
+           "cle": "anglais-verbes-irreguliers-3",
+           "titre": "Anglais — Verbes irréguliers (3) : de sell à write",
+           "fiches": 19
+          }
+         ]
         }
        ]
       },
@@ -9897,8 +9919,8 @@
        "boites": [
         {
          "cle": "r35-brevet-fr-vocabulaire",
-         "titre": "Brevet — Français : vocabulaire et formation des mots",
-         "fiches": 27
+         "titre": "Brevet — Français : formation des mots",
+         "fiches": 17
         }
        ],
        "sousthemes": [
@@ -9909,6 +9931,16 @@
            "cle": "r40-b4-fr-lexique-emotions",
            "titre": "Brevet — Français : lexique des émotions et du jugement",
            "fiches": 16
+          }
+         ]
+        },
+        {
+         "titre": "Le sens des mots",
+         "boites": [
+          {
+           "cle": "r35-brevet-fr-sens-des-mots",
+           "titre": "Brevet — Français : sens des mots",
+           "fiches": 10
           }
          ]
         }
@@ -9939,8 +9971,30 @@
        "boites": [
         {
          "cle": "brevet-francais-analyse",
-         "titre": "Brevet — Français : outils d'analyse littéraire",
-         "fiches": 43
+         "titre": "Brevet — Français : récit, genres et argumentation",
+         "fiches": 14
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Registres et mouvements littéraires",
+         "boites": [
+          {
+           "cle": "brevet-francais-registres-mouvements",
+           "titre": "Brevet — Français : registres et mouvements littéraires",
+           "fiches": 14
+          }
+         ]
+        },
+        {
+         "titre": "Analyser la poésie et le théâtre",
+         "boites": [
+          {
+           "cle": "brevet-francais-poesie-theatre",
+           "titre": "Brevet — Français : outils d'analyse de la poésie et du théâtre",
+           "fiches": 15
+          }
+         ]
         }
        ]
       },
@@ -9949,8 +10003,8 @@
        "boites": [
         {
          "cle": "brevet-francais-grammaire",
-         "titre": "Brevet — Français : grammaire et orthographe",
-         "fiches": 35
+         "titre": "Brevet — Français : classes grammaticales et fonctions",
+         "fiches": 15
         },
         {
          "cle": "r40-b4-fr-reperes-litteraires",
@@ -9976,6 +10030,18 @@
          "cle": "r37-oral-brevet",
          "titre": "Brevet — Français : réussir l'épreuve orale",
          "fiches": 15
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Phrase complexe, verbe et orthographe",
+         "boites": [
+          {
+           "cle": "brevet-francais-phrase-verbe-orthographe",
+           "titre": "Brevet — Français : phrase complexe, verbe et orthographe",
+           "fiches": 20
+          }
+         ]
         }
        ]
       }
@@ -10298,13 +10364,35 @@
        "boites": [
         {
          "cle": "maths-formules-college",
-         "titre": "Maths — Formules et théorèmes du collège",
-         "fiches": 46
+         "titre": "Maths — Formules du collège : calcul littéral, puissances et fractions",
+         "fiches": 18
         },
         {
          "cle": "r38-a3-maths-automatismes",
          "titre": "Brevet — Maths : calcul mental, automatismes et programmes de calcul",
          "fiches": 22
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Théorèmes, aires et volumes",
+         "boites": [
+          {
+           "cle": "maths-formules-college-geometrie",
+           "titre": "Maths — Formules du collège : théorèmes, aires et volumes",
+           "fiches": 17
+          }
+         ]
+        },
+        {
+         "titre": "Fonctions, pourcentages, statistiques et probabilités",
+         "boites": [
+          {
+           "cle": "maths-formules-college-fonctions-donnees",
+           "titre": "Maths — Formules du collège : fonctions, pourcentages et probabilités",
+           "fiches": 11
+          }
+         ]
         }
        ]
       }
@@ -10621,13 +10709,13 @@
        "boites": [
         {
          "cle": "histoire-dates-brevet",
-         "titre": "Histoire — Les dates clés du Brevet",
-         "fiches": 53
+         "titre": "Histoire — Dates clés du Brevet : 1914-1939",
+         "fiches": 12
         },
         {
          "cle": "brevet-histoire-notions-personnages",
-         "titre": "Brevet — Histoire : notions et personnages clés",
-         "fiches": 36
+         "titre": "Brevet — Histoire : notions et personnages des guerres mondiales et des totalitarismes",
+         "fiches": 19
         },
         {
          "cle": "r35-brevet-hist-monde-1945",
@@ -10648,6 +10736,48 @@
          "cle": "r38-a3-hist-discours",
          "titre": "Brevet — Histoire : grands discours et textes patrimoniaux",
          "fiches": 20
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Dates de la Seconde Guerre mondiale",
+         "boites": [
+          {
+           "cle": "histoire-dates-brevet-1939-1945",
+           "titre": "Histoire — Dates clés du Brevet : la Seconde Guerre mondiale",
+           "fiches": 15
+          }
+         ]
+        },
+        {
+         "titre": "Dates de 1945 à 1962",
+         "boites": [
+          {
+           "cle": "histoire-dates-brevet-1945-1962",
+           "titre": "Histoire — Dates clés du Brevet : 1945-1962",
+           "fiches": 15
+          }
+         ]
+        },
+        {
+         "titre": "Dates de 1962 à nos jours",
+         "boites": [
+          {
+           "cle": "histoire-dates-brevet-depuis-1962",
+           "titre": "Histoire — Dates clés du Brevet : de 1962 à nos jours",
+           "fiches": 11
+          }
+         ]
+        },
+        {
+         "titre": "Notions et personnages depuis 1945",
+         "boites": [
+          {
+           "cle": "brevet-histoire-notions-1945",
+           "titre": "Brevet — Histoire : notions et personnages depuis 1945",
+           "fiches": 17
+          }
+         ]
         }
        ]
       }
@@ -10808,8 +10938,8 @@
        "boites": [
         {
          "cle": "brevet-geographie-notions",
-         "titre": "Brevet — Géographie : notions et repères",
-         "fiches": 30
+         "titre": "Brevet — Géographie : villes et espaces productifs",
+         "fiches": 16
         },
         {
          "cle": "r38-a3-geo-reperes-france",
@@ -10820,6 +10950,18 @@
          "cle": "r38-a3-geo-croquis",
          "titre": "Brevet — Géographie : méthode du croquis et de la légende",
          "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Aménagement, outre-mer et Union européenne",
+         "boites": [
+          {
+           "cle": "brevet-geographie-amenagement-europe",
+           "titre": "Brevet — Géographie : aménagement, outre-mer et Union européenne",
+           "fiches": 14
+          }
+         ]
         }
        ]
       }
@@ -10884,8 +11026,20 @@
        "boites": [
         {
          "cle": "brevet-emc",
-         "titre": "Brevet — EMC : valeurs, institutions et citoyenneté",
-         "fiches": 33
+         "titre": "Brevet — EMC : valeurs, droits et institutions",
+         "fiches": 17
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Vote, justice et citoyenneté",
+         "boites": [
+          {
+           "cle": "brevet-emc-citoyennete-justice",
+           "titre": "Brevet — EMC : vote, justice et citoyenneté",
+           "fiches": 16
+          }
+         ]
         }
        ]
       }
@@ -11088,13 +11242,35 @@
        "boites": [
         {
          "cle": "brevet-svt",
-         "titre": "Brevet — SVT : l'essentiel du cycle 4",
-         "fiches": 37
+         "titre": "Brevet — SVT : génétique et reproduction",
+         "fiches": 10
         },
         {
          "cle": "r40-b5-methode-documents",
          "titre": "Brevet — SVT : démarche scientifique et exploitation de documents",
          "fiches": 15
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Corps humain et santé",
+         "boites": [
+          {
+           "cle": "brevet-svt-corps-sante",
+           "titre": "Brevet — SVT : corps humain et santé",
+           "fiches": 18
+          }
+         ]
+        },
+        {
+         "titre": "Évolution, planète Terre et environnement",
+         "boites": [
+          {
+           "cle": "brevet-svt-evolution-planete",
+           "titre": "Brevet — SVT : évolution, planète Terre et environnement",
+           "fiches": 9
+          }
+         ]
         }
        ]
       }
@@ -11193,8 +11369,8 @@
        "boites": [
         {
          "cle": "brevet-physique-chimie",
-         "titre": "Brevet — Physique-chimie : l'essentiel du cycle 4",
-         "fiches": 57
+         "titre": "Brevet — Physique-chimie : atomes, ions, pH et transformations chimiques",
+         "fiches": 20
         },
         {
          "cle": "r38-a3-phys-unites",
@@ -11205,6 +11381,28 @@
          "cle": "r38-a3-phys-methodo-sciences",
          "titre": "Brevet — Physique : méthodologie de l'épreuve de sciences",
          "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Matière, mouvements et forces",
+         "boites": [
+          {
+           "cle": "brevet-physique-chimie-matiere-mouvement",
+           "titre": "Brevet — Physique-chimie : matière, mouvements et forces",
+           "fiches": 19
+          }
+         ]
+        },
+        {
+         "titre": "Énergie, électricité, lumière et son",
+         "boites": [
+          {
+           "cle": "brevet-physique-chimie-energie-signaux",
+           "titre": "Brevet — Physique-chimie : énergie, électricité, lumière et son",
+           "fiches": 18
+          }
+         ]
         }
        ]
       }
@@ -11383,8 +11581,30 @@
        "boites": [
         {
          "cle": "r35-brevet-ang-vocabulaire",
-         "titre": "Brevet — Anglais : vocabulaire du quotidien et de la société",
-         "fiches": 39
+         "titre": "Brevet — Anglais : vocabulaire de l'école, de la famille, de l'environnement et de la ville",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Médias, santé, métiers et société",
+         "boites": [
+          {
+           "cle": "r35-brevet-ang-vocabulaire-societe",
+           "titre": "Brevet — Anglais : vocabulaire des médias, de la santé, des métiers et de la société",
+           "fiches": 16
+          }
+         ]
+        },
+        {
+         "titre": "Faux amis et mots utiles",
+         "boites": [
+          {
+           "cle": "r35-brevet-ang-faux-amis",
+           "titre": "Brevet — Anglais : faux amis et mots utiles",
+           "fiches": 7
+          }
+         ]
         }
        ]
       },
@@ -11459,8 +11679,20 @@
        "boites": [
         {
          "cle": "r35-brevet-esp-expressions",
-         "titre": "Brevet — Espagnol : vocabulaire et expressions essentielles",
-         "fiches": 37
+         "titre": "Brevet — Espagnol : se présenter et parler du quotidien",
+         "fiches": 19
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Donner son avis et relier ses idées",
+         "boites": [
+          {
+           "cle": "r35-brevet-esp-avis-connecteurs",
+           "titre": "Brevet — Espagnol : donner son avis et relier ses idées",
+           "fiches": 18
+          }
+         ]
         }
        ]
       },
@@ -11770,8 +12002,20 @@
        "boites": [
         {
          "cle": "francais-figures-de-style",
-         "titre": "Français — Les figures de style",
-         "fiches": 30
+         "titre": "Français — Figures de style : analogie, opposition et insistance",
+         "fiches": 15
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Figures de substitution, de sonorité et de construction",
+         "boites": [
+          {
+           "cle": "francais-figures-de-style-substitution-sonorites",
+           "titre": "Français — Figures de style : substitution, sonorités et construction",
+           "fiches": 15
+          }
+         ]
         }
        ]
       },
@@ -12116,8 +12360,8 @@
        "boites": [
         {
          "cle": "svt-cellule-adn-seconde",
-         "titre": "SVT — Cellule, ADN et biodiversité",
-         "fiches": 27
+         "titre": "SVT — Seconde : la cellule et son métabolisme",
+         "fiches": 11
         }
        ],
        "sousthemes": [
@@ -12148,6 +12392,16 @@
            "cle": "r40-b6-biodiversite-evolution",
            "titre": "Seconde — SVT : la biodiversité, résultat et étape de l'évolution",
            "fiches": 17
+          }
+         ]
+        },
+        {
+         "titre": "ADN, gènes et biodiversité",
+         "boites": [
+          {
+           "cle": "svt-adn-biodiversite-seconde",
+           "titre": "SVT — Seconde : ADN, gènes et biodiversité",
+           "fiches": 16
           }
          ]
         }
@@ -12260,8 +12514,20 @@
        "boites": [
         {
          "cle": "physique-chimie-seconde",
-         "titre": "Physique-chimie — Formules et constantes de Seconde",
-         "fiches": 30
+         "titre": "Physique-chimie — Seconde : formules du mouvement, des forces et des ondes",
+         "fiches": 14
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Formules de chimie et d'électricité",
+         "boites": [
+          {
+           "cle": "physique-chimie-seconde-chimie-electricite",
+           "titre": "Physique-chimie — Seconde : formules de chimie et d'électricité",
+           "fiches": 16
+          }
+         ]
         }
        ]
       }
@@ -12781,8 +13047,8 @@
        "boites": [
         {
          "cle": "maths-derivees",
-         "titre": "Maths — Les dérivées usuelles",
-         "fiches": 34
+         "titre": "Maths — Dérivation : nombre dérivé et dérivées usuelles",
+         "fiches": 14
         }
        ],
        "sousthemes": [
@@ -12813,6 +13079,16 @@
            "cle": "r38-a7-maths-variations",
            "titre": "1ère spé Maths — Dérivation : variations et extremums",
            "fiches": 15
+          }
+         ]
+        },
+        {
+         "titre": "Opérations sur les dérivées et variations",
+         "boites": [
+          {
+           "cle": "maths-derivees-operations-variations",
+           "titre": "Maths — Dérivation : opérations et variations",
+           "fiches": 20
           }
          ]
         }
@@ -12885,8 +13161,20 @@
        "boites": [
         {
          "cle": "bac-maths-epreuve-anticipee",
-         "titre": "Maths — Automatismes (épreuve anticipée de 1ère)",
-         "fiches": 32
+         "titre": "Maths — Automatismes de 1ère : pourcentages, puissances et calcul",
+         "fiches": 18
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Équations, fonctions, statistiques et conversions",
+         "boites": [
+          {
+           "cle": "bac-maths-automatismes-fonctions-donnees",
+           "titre": "Maths — Automatismes de 1ère : équations, fonctions et données",
+           "fiches": 14
+          }
+         ]
         }
        ]
       }
@@ -14074,8 +14362,8 @@
        "boites": [
         {
          "cle": "bac-maths-exp-ln",
-         "titre": "Maths — Exponentielle et logarithme népérien",
-         "fiches": 32
+         "titre": "Maths — Terminale : la fonction exponentielle",
+         "fiches": 12
         }
        ],
        "sousthemes": [
@@ -14086,6 +14374,16 @@
            "cle": "r40-b8-maths-ln-exos",
            "titre": "Terminale spé — Maths : logarithme népérien en exercices",
            "fiches": 16
+          }
+         ]
+        },
+        {
+         "titre": "La fonction logarithme népérien",
+         "boites": [
+          {
+           "cle": "bac-maths-logarithme",
+           "titre": "Maths — Terminale : la fonction logarithme népérien",
+           "fiches": 20
           }
          ]
         }
@@ -14278,8 +14576,20 @@
        "boites": [
         {
          "cle": "philosophie-bac",
-         "titre": "Philosophie — Notions, repères et citations du bac",
-         "fiches": 38
+         "titre": "Philosophie — Bac : les repères conceptuels essentiels",
+         "fiches": 19
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Citations célèbres et leurs auteurs",
+         "boites": [
+          {
+           "cle": "philosophie-bac-citations",
+           "titre": "Philosophie — Bac : citations célèbres et leurs auteurs",
+           "fiches": 19
+          }
+         ]
         }
        ]
       },
@@ -14288,8 +14598,30 @@
        "boites": [
         {
          "cle": "bac-philo-auteurs-oeuvres",
-         "titre": "Philosophie — Auteurs et œuvres majeurs",
-         "fiches": 44
+         "titre": "Philosophie — Auteurs : de l'Antiquité à la Renaissance",
+         "fiches": 14
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Auteurs des XVIIe et XVIIIe siècles",
+         "boites": [
+          {
+           "cle": "bac-philo-auteurs-modernes",
+           "titre": "Philosophie — Auteurs : XVIIe et XVIIIe siècles",
+           "fiches": 14
+          }
+         ]
+        },
+        {
+         "titre": "Auteurs des XIXe et XXe siècles",
+         "boites": [
+          {
+           "cle": "bac-philo-auteurs-contemporains",
+           "titre": "Philosophie — Auteurs : XIXe et XXe siècles",
+           "fiches": 16
+          }
+         ]
         }
        ]
       },
@@ -14594,8 +14926,20 @@
        "boites": [
         {
          "cle": "bac-histoire-monde-bipolaire",
-         "titre": "Histoire — Un monde bipolaire (1945-1970)",
-         "fiches": 38
+         "titre": "Histoire — Monde bipolaire : ONU, guerre froide et débuts de l'Europe",
+         "fiches": 20
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Conflits, crises et décolonisation (1950-1970)",
+         "boites": [
+          {
+           "cle": "bac-histoire-monde-bipolaire-crises",
+           "titre": "Histoire — Monde bipolaire : conflits, crises et décolonisation",
+           "fiches": 18
+          }
+         ]
         }
        ]
       },
@@ -14614,8 +14958,20 @@
        "boites": [
         {
          "cle": "bac-histoire-1970-1991",
-         "titre": "Histoire — Les remises en cause (1970-1991)",
-         "fiches": 28
+         "titre": "Histoire — 1970-1991 : chocs pétroliers, néolibéralisme et transitions démocratiques",
+         "fiches": 13
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Fin de la guerre froide et France (1974-1991)",
+         "boites": [
+          {
+           "cle": "bac-histoire-1970-1991-fin-guerre-froide",
+           "titre": "Histoire — 1970-1991 : fin de la guerre froide et France des années 1970-1980",
+           "fiches": 15
+          }
+         ]
         }
        ]
       },
@@ -14624,8 +14980,20 @@
        "boites": [
         {
          "cle": "bac-histoire-depuis-1990",
-         "titre": "Histoire — Le monde, l'Europe et la France depuis 1990",
-         "fiches": 26
+         "titre": "Histoire — Depuis 1990 : conflits et nouveaux rapports de force",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Union européenne et France depuis 1990",
+         "boites": [
+          {
+           "cle": "bac-histoire-depuis-1990-europe-france",
+           "titre": "Histoire — Depuis 1990 : Union européenne et France",
+           "fiches": 10
+          }
+         ]
         }
        ]
       },
@@ -14634,8 +15002,20 @@
        "boites": [
         {
          "cle": "bac-histoire-ve-republique",
-         "titre": "Histoire — La Ve République",
-         "fiches": 28
+         "titre": "Histoire — Ve République : les institutions",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Présidents et grands moments de la Ve République",
+         "boites": [
+          {
+           "cle": "bac-histoire-ve-republique-presidents",
+           "titre": "Histoire — Ve République : présidents et grands moments",
+           "fiches": 12
+          }
+         ]
         }
        ]
       },
@@ -14901,8 +15281,8 @@
        "boites": [
         {
          "cle": "bac-pc-mecanique",
-         "titre": "Physique — Mécanique : mouvements et lois de Newton",
-         "fiches": 26
+         "titre": "Physique — Mécanique : mouvements, lois de Newton et chute libre",
+         "fiches": 12
         }
        ],
        "sousthemes": [
@@ -14923,6 +15303,16 @@
            "cle": "r40-b8-physique-satellites-exos",
            "titre": "Terminale spé — Physique : satellites et planètes, exercices types",
            "fiches": 16
+          }
+         ]
+        },
+        {
+         "titre": "Gravitation, énergie et champs",
+         "boites": [
+          {
+           "cle": "bac-pc-gravitation-energie",
+           "titre": "Physique — Mécanique : gravitation, énergie et champs",
+           "fiches": 14
           }
          ]
         }
@@ -15155,8 +15545,20 @@
        "boites": [
         {
          "cle": "bac-nsi-structures-algos",
-         "titre": "NSI — Structures de données et algorithmique",
-         "fiches": 28
+         "titre": "NSI — Structures de données",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Algorithmique",
+         "boites": [
+          {
+           "cle": "bac-nsi-algorithmique",
+           "titre": "NSI — Algorithmique",
+           "fiches": 12
+          }
+         ]
         }
        ]
       },
@@ -15398,8 +15800,20 @@
        "boites": [
         {
          "cle": "bac-ens-scientifique-terminale",
-         "titre": "Enseignement scientifique — L'essentiel de Terminale",
-         "fiches": 27
+         "titre": "Enseignement scientifique — Terminale : climat et énergies",
+         "fiches": 20
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Histoire du vivant et modèles",
+         "boites": [
+          {
+           "cle": "bac-ens-scientifique-vivant-modeles",
+           "titre": "Enseignement scientifique — Terminale : histoire du vivant et modèles",
+           "fiches": 7
+          }
+         ]
         }
        ]
       },
@@ -15536,8 +15950,20 @@
        "boites": [
         {
          "cle": "r35-tle-espagnol-vocabulaire-axes",
-         "titre": "Terminale — Espagnol : vocabulaire des axes du programme",
-         "fiches": 33
+         "titre": "Terminale — Espagnol : vocabulaire des axes (identités, espace public, art et pouvoir, citoyenneté)",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Vocabulaire des axes : fiction, innovations, diversité, mémoire",
+         "boites": [
+          {
+           "cle": "r35-tle-espagnol-vocabulaire-axes-2",
+           "titre": "Terminale — Espagnol : vocabulaire des axes (fiction, innovations, diversité, mémoire)",
+           "fiches": 17
+          }
+         ]
         }
        ]
       },
@@ -15925,8 +16351,50 @@
        "boites": [
         {
          "cle": "geographie-capitales",
-         "titre": "Géographie — Pays et capitales du monde",
-         "fiches": 68
+         "titre": "Géographie — Capitales d'Europe de l'Ouest et du Nord",
+         "fiches": 16
+        }
+       ],
+       "sousthemes": [
+        {
+         "titre": "Capitales d'Europe centrale et orientale",
+         "boites": [
+          {
+           "cle": "geographie-capitales-europe-est",
+           "titre": "Géographie — Capitales d'Europe centrale, d'Europe de l'Est et d'Asie centrale",
+           "fiches": 10
+          }
+         ]
+        },
+        {
+         "titre": "Capitales d'Afrique",
+         "boites": [
+          {
+           "cle": "geographie-capitales-afrique",
+           "titre": "Géographie — Capitales d'Afrique",
+           "fiches": 14
+          }
+         ]
+        },
+        {
+         "titre": "Capitales des Amériques",
+         "boites": [
+          {
+           "cle": "geographie-capitales-ameriques",
+           "titre": "Géographie — Capitales des Amériques",
+           "fiches": 11
+          }
+         ]
+        },
+        {
+         "titre": "Capitales d'Asie et d'Océanie",
+         "boites": [
+          {
+           "cle": "geographie-capitales-asie-oceanie",
+           "titre": "Géographie — Capitales d'Asie et d'Océanie",
+           "fiches": 17
+          }
+         ]
         }
        ]
       }
