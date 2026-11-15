@@ -486,6 +486,16 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
      chaque relecture d'une boîte, un lien Wikipédia est remplacé par une
      courte vidéo de cours sur le sujet précis de la fiche quand elle
      existe ; sinon, le lien est retiré.
+   - **Extraits de vidéo** (v295) : le lien d'une fiche peut ne montrer
+     qu'un passage d'une vidéo (début et fin, par exemple de 1 min 35 à
+     2 min 50) ; l'appli l'annonce « Extrait vidéo (1:35 → 2:50) » et la
+     vidéo s'arrête à la fin du passage. Le passage est choisi d'après la
+     transcription de la vidéo, pour qu'il explique bien la réponse.
+   - **Vérification par la transcription** (15 nov. 2026) : le texte dit
+     dans chaque vidéo (sous-titres) est récupéré avec un outil lancé sur
+     l'ordinateur du propriétaire (YouTube bloque les serveurs), gardé dans
+     le dépôt privé, puis comparé aux fiches de la boîte : vidéo qui couvre
+     la boîte, qui n'en couvre qu'une partie, ou hors sujet (à remplacer).
    - **Lien d'une boîte** (v292) : toujours une vidéo de cours (plus de
      page Wikipédia) ; 109 liens de boîte remplacés le 14 nov. 2026, 5
      retirés faute de vidéo de cours adaptée.
@@ -1118,6 +1128,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v295 | 15 nov. 2026 | Liens « Pour aller plus loin » : extraits de vidéo (début et fin), annoncés « Extrait vidéo (1:35 → 2:50) ». Outil de récupération des transcriptions des vidéos (Mac), dans le dépôt privé, pour vérifier le contenu des vidéos et choisir les extraits. |
 | — | 14 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : lot 33, 12 boîtes de 6e — anglais (présent be + -ing, can / can't, maison, animaux, nourriture et quantités, was / were, pays anglophones), arts plastiques (représentation et image, matériaux et gestes, objet et œuvre d'art) et éducation musicale (grands compositeurs ; rythme, mélodie et pulsation). **La 6e est entièrement couverte** (lots 30 à 33 : 63 boîtes). |
 | — | 14 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : lot 32, 12 boîtes de 6e — sciences (matériaux et matière, mouvements et vitesse, signaux et information, besoins des végétaux et photosynthèse, digestion et alimentation, reproduction et développement, système solaire et mouvements de la Terre), EMC (sécurité et règles de vie collective, harcèlement et solidarité) et technologie (objet, énergie et information ; programmer avec Scratch ; concevoir un objet). |
 | — | 14 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : lot 31, 17 boîtes de 6e — français (récits de création, Ulysse et l'Odyssée, poésie, fables de La Fontaine, farces et comédies, COD et COI, compléments circonstanciels, groupe nominal, types et formes de phrases, juxtaposition et coordination, passé composé et plus-que-parfait, impératif, accords dans le groupe nominal) et géographie (croquis, habiter une métropole, espaces de faible densité, littoraux). Français et géographie de 6e entièrement couverts. |
