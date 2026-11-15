@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 14/11/2026. **1179 chapitres couverts sur 1228** (96 %), 1441 boîtes, 23627 fiches.
+Mise à jour : 15/11/2026. **1179 chapitres couverts sur 1228** (96 %), 1483 boîtes, 23627 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -18,12 +18,12 @@ Mise à jour : 14/11/2026. **1179 chapitres couverts sur 1228** (96 %), 1441 bo�
 | [CM2](#cm2) | 93 / 110 | 17 | 93 | 1409 |
 | [6e](#6e) | 62 / 62 | 0 | 106 | 1738 |
 | [5e](#5e) | 87 / 87 | 0 | 118 | 1945 |
-| [4e](#4e) | 82 / 82 | 0 | 118 | 1940 |
-| [3e](#3e) | 108 / 108 | 0 | 192 | 3493 |
-| [Seconde](#seconde) | 55 / 62 | 7 | 70 | 1243 |
-| [Première](#première) | 92 / 102 | 10 | 113 | 1931 |
-| [Terminale](#terminale) | 143 / 145 | 2 | 173 | 3171 |
-| [Autres boîtes](#autres-boîtes) | 1 / 1 | 0 | 1 | 68 |
+| [4e](#4e) | 82 / 82 | 0 | 120 | 1940 |
+| [3e](#3e) | 108 / 108 | 0 | 211 | 3493 |
+| [Seconde](#seconde) | 55 / 62 | 7 | 73 | 1243 |
+| [Première](#première) | 92 / 102 | 10 | 115 | 1931 |
+| [Terminale](#terminale) | 143 / 145 | 2 | 185 | 3171 |
+| [Autres boîtes](#autres-boîtes) | 1 / 1 | 0 | 5 | 68 |
 
 ## CP
 
@@ -1054,7 +1054,7 @@ Collège — 87 chapitres couverts sur 87, 118 boîtes.
 
 ## 4e
 
-Collège — 82 chapitres couverts sur 82, 118 boîtes.
+Collège — 82 chapitres couverts sur 82, 120 boîtes.
 
 ### 4e — Français (15 / 15)
 
@@ -1180,7 +1180,9 @@ Collège — 82 chapitres couverts sur 82, 118 boîtes.
 
 ### 4e — Anglais (7 / 7)
 
-- [x] Les verbes irréguliers essentiels — Anglais — Les verbes irréguliers essentiels (59 fiches)
+- [x] Les verbes irréguliers essentiels — l'essentiel — Anglais — Verbes irréguliers (1) : de be à find (20 fiches)
+  - [x] Verbes irréguliers de fly à see — Anglais — Verbes irréguliers (2) : de fly à see (20 fiches)
+  - [x] Verbes irréguliers de sell à write — Anglais — Verbes irréguliers (3) : de sell à write (19 fiches)
 - [x] Comparatifs et superlatifs — 4ème — Anglais : comparatifs et superlatifs (16 fiches)
 - [x] Prétérit ou present perfect — 4ème — Anglais : prétérit ou present perfect (17 fiches)
 - [x] Les modaux (can, must, should, may...) — 4ème — Anglais : les modaux (can, must, should, may...) (15 fiches)
@@ -1224,7 +1226,7 @@ Collège — 82 chapitres couverts sur 82, 118 boîtes.
 
 ## 3e
 
-Collège — 108 chapitres couverts sur 108, 192 boîtes.
+Collège — 108 chapitres couverts sur 108, 211 boîtes.
 
 ### 3e — Français (17 / 17)
 
@@ -1250,12 +1252,16 @@ Collège — 108 chapitres couverts sur 108, 192 boîtes.
 - [x] Subjonctif, conditionnel et impératif — Brevet — Français : subjonctif, conditionnel et impératif (23 fiches)
 - [x] L'accord du participe passé — Brevet — Français : l'accord du participe passé (15 fiches)
 - [x] Les homophones grammaticaux — Brevet — Français : les homophones grammaticaux (16 fiches)
-- [x] Vocabulaire et formation des mots — l'essentiel — Brevet — Français : vocabulaire et formation des mots (27 fiches)
+- [x] Vocabulaire et formation des mots — l'essentiel — Brevet — Français : formation des mots (17 fiches)
   - [x] Lexique des émotions et du jugement — Brevet — Français : lexique des émotions et du jugement (16 fiches)
+  - [x] Le sens des mots — Brevet — Français : sens des mots (10 fiches)
 - [x] Discours rapporté et énonciation — Brevet — Français : discours rapporté et énonciation (15 fiches)
 - [x] Ponctuation et connecteurs logiques — Brevet — Français : ponctuation et connecteurs logiques (16 fiches)
-- [x] Analyser un texte littéraire — Brevet — Français : outils d'analyse littéraire (43 fiches)
-- [x] Révisions du brevet — Brevet — Français : grammaire et orthographe (35 fiches) ; Brevet — Français : auteurs et œuvres repères du collège (17 fiches) ; Brevet — Français : les pièges orthographiques de la dictée (17 fiches) ; Brevet — Français : réussir l'exercice de réécriture (16 fiches) ; Brevet — Français : méthode de la rédaction (16 fiches) ; Brevet — Français : réussir l'épreuve orale (15 fiches)
+- [x] Analyser un texte littéraire — l'essentiel — Brevet — Français : récit, genres et argumentation (14 fiches)
+  - [x] Registres et mouvements littéraires — Brevet — Français : registres et mouvements littéraires (14 fiches)
+  - [x] Analyser la poésie et le théâtre — Brevet — Français : outils d'analyse de la poésie et du théâtre (15 fiches)
+- [x] Révisions du brevet — l'essentiel — Brevet — Français : classes grammaticales et fonctions (15 fiches) ; Brevet — Français : auteurs et œuvres repères du collège (17 fiches) ; Brevet — Français : les pièges orthographiques de la dictée (17 fiches) ; Brevet — Français : réussir l'exercice de réécriture (16 fiches) ; Brevet — Français : méthode de la rédaction (16 fiches) ; Brevet — Français : réussir l'épreuve orale (15 fiches)
+  - [x] Phrase complexe, verbe et orthographe — Brevet — Français : phrase complexe, verbe et orthographe (20 fiches)
 
 ### 3e — Mathématiques (12 / 12)
 
@@ -1288,7 +1294,9 @@ Collège — 108 chapitres couverts sur 108, 192 boîtes.
 - [x] Algorithmique et programmation — l'essentiel — 3ème — Maths : algorithmique et programmation (l'essentiel) (16 fiches)
   - [x] Programmer avec Scratch — 3ème — Maths : programmer avec Scratch (16 fiches)
   - [x] Lire et écrire des formules dans un tableur — Brevet — Maths : lire et écrire des formules dans un tableur (15 fiches)
-- [x] Révisions du brevet — Maths — Formules et théorèmes du collège (46 fiches) ; Brevet — Maths : calcul mental, automatismes et programmes de calcul (22 fiches)
+- [x] Révisions du brevet — l'essentiel — Maths — Formules du collège : calcul littéral, puissances et fractions (18 fiches) ; Brevet — Maths : calcul mental, automatismes et programmes de calcul (22 fiches)
+  - [x] Théorèmes, aires et volumes — Maths — Formules du collège : théorèmes, aires et volumes (17 fiches)
+  - [x] Fonctions, pourcentages, statistiques et probabilités — Maths — Formules du collège : fonctions, pourcentages et probabilités (11 fiches)
 
 ### 3e — Histoire (12 / 12)
 
@@ -1321,7 +1329,11 @@ Collège — 108 chapitres couverts sur 108, 192 boîtes.
   - [x] Alternances et cohabitations (1981-2002) — 3ème — Histoire : alternances et cohabitations (1974-2002) (16 fiches)
 - [x] Femmes et hommes dans la société des années 1950 aux années 1980 — Brevet — Histoire : femmes et hommes dans la société (1950-1980) (16 fiches)
 - [x] Histoire des arts : les arts au XXe siècle — Brevet — Histoire des arts : les arts au XXe siècle (17 fiches)
-- [x] Révisions du brevet — Histoire — Les dates clés du Brevet (53 fiches) ; Brevet — Histoire : notions et personnages clés (36 fiches) ; Brevet — Histoire : guerre froide, décolonisation et Europe (19 fiches) ; Brevet — Histoire : la France de 1944 à nos jours (18 fiches) ; Brevet — Histoire : lieux et repères spatiaux du programme (19 fiches) ; Brevet — Histoire : grands discours et textes patrimoniaux (20 fiches)
+- [x] Révisions du brevet — l'essentiel — Histoire — Dates clés du Brevet : 1914-1939 (12 fiches) ; Brevet — Histoire : notions et personnages des guerres mondiales et des totalitarismes (19 fiches) ; Brevet — Histoire : guerre froide, décolonisation et Europe (19 fiches) ; Brevet — Histoire : la France de 1944 à nos jours (18 fiches) ; Brevet — Histoire : lieux et repères spatiaux du programme (19 fiches) ; Brevet — Histoire : grands discours et textes patrimoniaux (20 fiches)
+  - [x] Dates de la Seconde Guerre mondiale — Histoire — Dates clés du Brevet : la Seconde Guerre mondiale (15 fiches)
+  - [x] Dates de 1945 à 1962 — Histoire — Dates clés du Brevet : 1945-1962 (15 fiches)
+  - [x] Dates de 1962 à nos jours — Histoire — Dates clés du Brevet : de 1962 à nos jours (11 fiches)
+  - [x] Notions et personnages depuis 1945 — Brevet — Histoire : notions et personnages depuis 1945 (17 fiches)
 
 ### 3e — Géographie (8 / 8)
 
@@ -1339,7 +1351,8 @@ Collège — 108 chapitres couverts sur 108, 192 boîtes.
 - [x] Les territoires ultramarins français — 3ème — Géographie : les territoires ultramarins français (16 fiches)
 - [x] L'Union européenne, un territoire d'appartenance — 3ème — Géographie : l'Union européenne, un territoire d'appartenance (16 fiches)
 - [x] La France et l'Europe dans le monde — Brevet — Géographie : la France et l'UE dans le monde (16 fiches)
-- [x] Révisions du brevet — Brevet — Géographie : notions et repères (30 fiches) ; Brevet — Géographie : fleuves, massifs, métropoles et régions (19 fiches) ; Brevet — Géographie : méthode du croquis et de la légende (16 fiches)
+- [x] Révisions du brevet — l'essentiel — Brevet — Géographie : villes et espaces productifs (16 fiches) ; Brevet — Géographie : fleuves, massifs, métropoles et régions (19 fiches) ; Brevet — Géographie : méthode du croquis et de la légende (16 fiches)
+  - [x] Aménagement, outre-mer et Union européenne — Brevet — Géographie : aménagement, outre-mer et Union européenne (14 fiches)
 
 ### 3e — EMC (6 / 6)
 
@@ -1348,7 +1361,8 @@ Collège — 108 chapitres couverts sur 108, 192 boîtes.
 - [x] Laïcité, engagement, droits et justice — Brevet — EMC : laïcité, engagement, droits et justice (17 fiches)
 - [x] La Défense et la paix — Brevet — EMC : la défense et la paix (16 fiches)
 - [x] Médias, information et esprit critique — Brevet — EMC : médias, information et esprit critique (16 fiches)
-- [x] Révisions du brevet — Brevet — EMC : valeurs, institutions et citoyenneté (33 fiches)
+- [x] Révisions du brevet — l'essentiel — Brevet — EMC : valeurs, droits et institutions (17 fiches)
+  - [x] Vote, justice et citoyenneté — Brevet — EMC : vote, justice et citoyenneté (16 fiches)
 
 ### 3e — SVT (10 / 10)
 
@@ -1370,7 +1384,9 @@ Collège — 108 chapitres couverts sur 108, 192 boîtes.
   - [x] Séismes, volcans et tectonique des plaques — 3ème — SVT : séismes, volcans et tectonique des plaques (16 fiches)
   - [x] Météorologie, climat et changement climatique — Brevet — SVT : météorologie, climat et changement climatique (15 fiches)
   - [x] Ressources naturelles et environnement — 3ème — SVT : ressources naturelles et environnement (16 fiches)
-- [x] Révisions du brevet — Brevet — SVT : l'essentiel du cycle 4 (37 fiches) ; Brevet — SVT : démarche scientifique et exploitation de documents (15 fiches)
+- [x] Révisions du brevet — l'essentiel — Brevet — SVT : génétique et reproduction (10 fiches) ; Brevet — SVT : démarche scientifique et exploitation de documents (15 fiches)
+  - [x] Corps humain et santé — Brevet — SVT : corps humain et santé (18 fiches)
+  - [x] Évolution, planète Terre et environnement — Brevet — SVT : évolution, planète Terre et environnement (9 fiches)
 
 ### 3e — Physique (5 / 5)
 
@@ -1382,7 +1398,9 @@ Collège — 108 chapitres couverts sur 108, 192 boîtes.
   - [x] Puissance et consommation électrique d'un logement — Brevet — Physique : puissance et consommation électrique d'un logement (16 fiches)
 - [x] Signaux sonores et lumineux — Brevet — Physique : signaux sonores et lumineux (20 fiches)
 - [x] L'Univers et le système solaire — Brevet — Physique : l'Univers et le système solaire (16 fiches)
-- [x] Révisions du brevet — Brevet — Physique-chimie : l'essentiel du cycle 4 (57 fiches) ; Brevet — Physique : grandeurs, unités et conversions du cycle 4 (19 fiches) ; Brevet — Physique : méthodologie de l'épreuve de sciences (16 fiches)
+- [x] Révisions du brevet — l'essentiel — Brevet — Physique-chimie : atomes, ions, pH et transformations chimiques (20 fiches) ; Brevet — Physique : grandeurs, unités et conversions du cycle 4 (19 fiches) ; Brevet — Physique : méthodologie de l'épreuve de sciences (16 fiches)
+  - [x] Matière, mouvements et forces — Brevet — Physique-chimie : matière, mouvements et forces (19 fiches)
+  - [x] Énergie, électricité, lumière et son — Brevet — Physique-chimie : énergie, électricité, lumière et son (18 fiches)
 
 ### 3e — Chimie (5 / 5)
 
@@ -1407,7 +1425,9 @@ Collège — 108 chapitres couverts sur 108, 192 boîtes.
 
 - [x] Les temps du présent, du passé et du futur — Brevet — Anglais : les temps du présent, du passé et du futur (16 fiches)
 - [x] Les auxiliaires de modalité — Brevet — Anglais : les auxiliaires de modalité (15 fiches)
-- [x] Vocabulaire du quotidien et de la société — Brevet — Anglais : vocabulaire du quotidien et de la société (39 fiches)
+- [x] Vocabulaire du quotidien et de la société — l'essentiel — Brevet — Anglais : vocabulaire de l'école, de la famille, de l'environnement et de la ville (16 fiches)
+  - [x] Médias, santé, métiers et société — Brevet — Anglais : vocabulaire des médias, de la santé, des métiers et de la société (16 fiches)
+  - [x] Faux amis et mots utiles — Brevet — Anglais : faux amis et mots utiles (7 fiches)
 - [x] Questions et mots de liaison — Brevet — Anglais : questions et mots de liaison (22 fiches)
 - [x] Voyage, école, environnement et réseaux — Brevet — Anglais : voyage, école, environnement et réseaux (24 fiches)
 - [x] Les verbes à particule courants — Brevet — Anglais : les verbes à particule courants (17 fiches)
@@ -1417,7 +1437,8 @@ Collège — 108 chapitres couverts sur 108, 192 boîtes.
 ### 3e — Espagnol (4 / 4)
 
 - [x] Les bases de la grammaire — Brevet — Espagnol : les bases de la grammaire (18 fiches)
-- [x] Vocabulaire et expressions essentielles — Brevet — Espagnol : vocabulaire et expressions essentielles (37 fiches)
+- [x] Vocabulaire et expressions essentielles — l'essentiel — Brevet — Espagnol : se présenter et parler du quotidien (19 fiches)
+  - [x] Donner son avis et relier ses idées — Brevet — Espagnol : donner son avis et relier ses idées (18 fiches)
 - [x] Conjuguer au passé — Brevet — Espagnol : conjuguer au passé (17 fiches)
 - [x] Pays hispanophones et civilisation — Brevet — Espagnol : pays hispanophones et civilisation (16 fiches)
 
@@ -1456,7 +1477,7 @@ Collège — 108 chapitres couverts sur 108, 192 boîtes.
 
 ## Seconde
 
-Lycée — 55 chapitres couverts sur 62, 70 boîtes.
+Lycée — 55 chapitres couverts sur 62, 73 boîtes.
 
 ### Seconde — Français (6 / 7)
 
@@ -1472,7 +1493,8 @@ Lycée — 55 chapitres couverts sur 62, 70 boîtes.
   - [ ] Tragédie et comédie classiques — *à créer*
   - [ ] Le théâtre moderne et contemporain — *à créer*
 - [x] Grammaire, accords, valeurs du verbe et propositions — Seconde — Français : grammaire, accords, valeurs du verbe et propositions (19 fiches)
-- [x] Les figures de style — Français — Les figures de style (30 fiches)
+- [x] Les figures de style — l'essentiel — Français — Figures de style : analogie, opposition et insistance (15 fiches)
+  - [x] Figures de substitution, de sonorité et de construction — Français — Figures de style : substitution, sonorités et construction (15 fiches)
 - [ ] Méthode du commentaire de texte — *à créer*
 
 ### Seconde — Mathématiques (5 / 5)
@@ -1524,10 +1546,11 @@ Lycée — 55 chapitres couverts sur 62, 70 boîtes.
 
 ### Seconde — SVT (5 / 5)
 
-- [x] Cellule, ADN et organisation du vivant — l'essentiel — SVT — Cellule, ADN et biodiversité (27 fiches)
+- [x] Cellule, ADN et organisation du vivant — l'essentiel — SVT — Seconde : la cellule et son métabolisme (11 fiches)
   - [x] L'organisme pluricellulaire, un ensemble de cellules spécialisées — Seconde — SVT : l'organisme pluricellulaire, un ensemble de cellules spécialisées (17 fiches)
   - [x] Métabolisme des cellules et enzymes — Seconde — SVT : métabolisme des cellules et enzymes (17 fiches)
   - [x] La biodiversité, résultat et étape de l'évolution — Seconde — SVT : la biodiversité, résultat et étape de l'évolution (17 fiches)
+  - [x] ADN, gènes et biodiversité — SVT — Seconde : ADN, gènes et biodiversité (16 fiches)
 - [x] Érosion, sédimentation et dynamique des paysages — Seconde — SVT : érosion, sédimentation et dynamique des paysages (16 fiches)
 - [x] Agrosystèmes, sols et développement durable — Seconde — SVT : agrosystèmes, sols et développement durable (16 fiches)
 - [x] Procréation et sexualité humaine — Seconde — SVT : procréation et sexualité humaine (18 fiches)
@@ -1541,7 +1564,8 @@ Lycée — 55 chapitres couverts sur 62, 70 boîtes.
 - [x] Lumière, spectres et lentilles minces — Seconde — Physique : lumière, spectres et lentilles minces (17 fiches)
 - [x] Circuits électriques et capteurs — Seconde — Physique : circuits électriques et capteurs (17 fiches)
 - [ ] Mesure et incertitudes — *à créer*
-- [x] Révisions de l'année — Physique-chimie — Formules et constantes de Seconde (30 fiches)
+- [x] Révisions de l'année — l'essentiel — Physique-chimie — Seconde : formules du mouvement, des forces et des ondes (14 fiches)
+  - [x] Formules de chimie et d'électricité — Physique-chimie — Seconde : formules de chimie et d'électricité (16 fiches)
 
 ### Seconde — Chimie (3 / 3)
 
@@ -1598,7 +1622,7 @@ Lycée — 55 chapitres couverts sur 62, 70 boîtes.
 
 ## Première
 
-Lycée — 92 chapitres couverts sur 102, 113 boîtes.
+Lycée — 92 chapitres couverts sur 102, 115 boîtes.
 
 ### Première — Français (7 / 7)
 
@@ -1621,17 +1645,19 @@ Lycée — 92 chapitres couverts sur 102, 113 boîtes.
 - [x] Le second degré — 1ère spé Maths — Le second degré (17 fiches)
 - [x] Suites arithmétiques et géométriques — l'essentiel — 1ère spé Maths — Suites arithmétiques et géométriques (18 fiches)
   - [x] Modes de génération, sens de variation et algorithmes — 1ère spé Maths — Suites : modes de génération, sens de variation et algorithmes (16 fiches)
-- [x] Dérivation — l'essentiel — Maths — Les dérivées usuelles (34 fiches)
+- [x] Dérivation — l'essentiel — Maths — Dérivation : nombre dérivé et dérivées usuelles (14 fiches)
   - [x] Nombre dérivé et tangente — 1ère spé Maths — Nombre dérivé et tangente (16 fiches)
   - [x] Opérations sur les dérivées — 1ère spé Maths — Opérations sur les dérivées et dérivée de x ↦ g(ax + b) (17 fiches)
   - [x] Variations et extremums — 1ère spé Maths — Dérivation : variations et extremums (15 fiches)
+  - [x] Opérations sur les dérivées et variations — Maths — Dérivation : opérations et variations (20 fiches)
 - [x] La fonction exponentielle — 1ère spé Maths — La fonction exponentielle (16 fiches)
 - [x] Cercle trigonométrique, radian, cosinus et sinus — 1ère spé Maths — Cercle trigonométrique, radian, cosinus et sinus (18 fiches)
 - [x] Le produit scalaire — l'essentiel — 1ère spé Maths — Le produit scalaire (15 fiches)
   - [x] Droites, cercles et paraboles dans un repère — 1ère spé Maths — Géométrie repérée : droites, cercles et paraboles (16 fiches)
 - [x] Probabilités conditionnelles et variables aléatoires — 1ère spé Maths — Probabilités conditionnelles et variables aléatoires (19 fiches)
 - [x] Taux d'évolution, coefficients multiplicateurs et suites (STMG) — 1ère STMG — Maths : taux d'évolution, coefficients multiplicateurs et suites (16 fiches)
-- [x] Révisions du bac — Maths — Automatismes (épreuve anticipée de 1ère) (32 fiches)
+- [x] Révisions du bac — l'essentiel — Maths — Automatismes de 1ère : pourcentages, puissances et calcul (18 fiches)
+  - [x] Équations, fonctions, statistiques et conversions — Maths — Automatismes de 1ère : équations, fonctions et données (14 fiches)
 
 ### Première — Histoire (4 / 4)
 
@@ -1815,7 +1841,7 @@ Lycée — 92 chapitres couverts sur 102, 113 boîtes.
 
 ## Terminale
 
-Lycée — 143 chapitres couverts sur 145, 173 boîtes.
+Lycée — 143 chapitres couverts sur 145, 185 boîtes.
 
 ### Terminale — Mathématiques (9 / 9)
 
@@ -1825,8 +1851,9 @@ Lycée — 143 chapitres couverts sur 145, 173 boîtes.
 - [x] Fonctions composées, dérivation et convexité — l'essentiel — Terminale spé — Maths : fonctions composées et dérivation (16 fiches)
   - [x] Convexité et fonctions trigonométriques — Maths — Convexité et fonctions trigonométriques (24 fiches)
   - [x] Étude de fonction, le plan type du bac — Terminale spé — Maths : étude de fonction, le plan type du bac (16 fiches)
-- [x] Exponentielle et logarithme népérien — l'essentiel — Maths — Exponentielle et logarithme népérien (32 fiches)
+- [x] Exponentielle et logarithme népérien — l'essentiel — Maths — Terminale : la fonction exponentielle (12 fiches)
   - [x] Logarithme népérien en exercices — Terminale spé — Maths : logarithme népérien en exercices (16 fiches)
+  - [x] La fonction logarithme népérien — Maths — Terminale : la fonction logarithme népérien (20 fiches)
 - [x] Primitives, intégrales et équations différentielles — Maths — Primitives, intégrales et équations différentielles (23 fiches)
 - [x] Dénombrement et probabilités — l'essentiel — Maths — Dénombrement et probabilités (22 fiches)
   - [x] Loi binomiale en exercices — Terminale spé — Maths : loi binomiale en exercices (18 fiches)
@@ -1852,8 +1879,11 @@ Lycée — 143 chapitres couverts sur 145, 173 boîtes.
 
 ### Terminale — Philosophie (29 / 29)
 
-- [x] Notions, repères et citations du bac — Philosophie — Notions, repères et citations du bac (38 fiches)
-- [x] Auteurs et œuvres majeurs — Philosophie — Auteurs et œuvres majeurs (44 fiches)
+- [x] Notions, repères et citations du bac — l'essentiel — Philosophie — Bac : les repères conceptuels essentiels (19 fiches)
+  - [x] Citations célèbres et leurs auteurs — Philosophie — Bac : citations célèbres et leurs auteurs (19 fiches)
+- [x] Auteurs et œuvres majeurs — l'essentiel — Philosophie — Auteurs : de l'Antiquité à la Renaissance (14 fiches)
+  - [x] Auteurs des XVIIe et XVIIIe siècles — Philosophie — Auteurs : XVIIe et XVIIIe siècles (14 fiches)
+  - [x] Auteurs des XIXe et XXe siècles — Philosophie — Auteurs : XIXe et XXe siècles (16 fiches)
 - [x] Définir les 17 notions — Philosophie — Définir les 17 notions (18 fiches)
 - [x] Méthode de la dissertation et de l'explication — Philosophie — Méthode de la dissertation et de l'explication (13 fiches)
 - [x] Citations clés classées par notion — Terminale — Philosophie : citations clés classées par notion (18 fiches)
@@ -1886,11 +1916,15 @@ Lycée — 143 chapitres couverts sur 145, 173 boîtes.
 
 - [x] La crise des années 1930 et les totalitarismes — Histoire — La crise des années 1930 et les totalitarismes (19 fiches)
 - [x] La Seconde Guerre mondiale — Histoire — La Seconde Guerre mondiale (21 fiches)
-- [x] Un monde bipolaire (1945-1970) — Histoire — Un monde bipolaire (1945-1970) (38 fiches)
+- [x] Un monde bipolaire (1945-1970) — l'essentiel — Histoire — Monde bipolaire : ONU, guerre froide et débuts de l'Europe (20 fiches)
+  - [x] Conflits, crises et décolonisation (1950-1970) — Histoire — Monde bipolaire : conflits, crises et décolonisation (18 fiches)
 - [x] Les décolonisations — Histoire — Les décolonisations (21 fiches)
-- [x] Les remises en cause (1970-1991) — Histoire — Les remises en cause (1970-1991) (28 fiches)
-- [x] Le monde, l'Europe et la France depuis 1990 — Histoire — Le monde, l'Europe et la France depuis 1990 (26 fiches)
-- [x] La Ve République — Histoire — La Ve République (28 fiches)
+- [x] Les remises en cause (1970-1991) — l'essentiel — Histoire — 1970-1991 : chocs pétroliers, néolibéralisme et transitions démocratiques (13 fiches)
+  - [x] Fin de la guerre froide et France (1974-1991) — Histoire — 1970-1991 : fin de la guerre froide et France des années 1970-1980 (15 fiches)
+- [x] Le monde, l'Europe et la France depuis 1990 — l'essentiel — Histoire — Depuis 1990 : conflits et nouveaux rapports de force (16 fiches)
+  - [x] Union européenne et France depuis 1990 — Histoire — Depuis 1990 : Union européenne et France (10 fiches)
+- [x] La Ve République — l'essentiel — Histoire — Ve République : les institutions (16 fiches)
+  - [x] Présidents et grands moments de la Ve République — Histoire — Ve République : présidents et grands moments (12 fiches)
 - [x] Révisions du bac — Terminale — Histoire : acteurs et personnages clés (1929-années 2010) (18 fiches) ; Terminale — Histoire : grandes lois et réformes de la France (1945-années 2010) (17 fiches) ; Terminale — Histoire : grandes conférences et traités (1938-années 2000) (21 fiches) ; Terminale — Histoire : méthode de l'analyse de document et de la question problématisée (16 fiches)
 
 ### Terminale — Géographie (4 / 4)
@@ -1923,9 +1957,10 @@ Lycée — 143 chapitres couverts sur 145, 173 boîtes.
 
 ### Terminale — Physique (9 / 9)
 
-- [x] Mouvements et lois de Newton — l'essentiel — Physique — Mécanique : mouvements et lois de Newton (26 fiches)
+- [x] Mouvements et lois de Newton — l'essentiel — Physique — Mécanique : mouvements, lois de Newton et chute libre (12 fiches)
   - [x] Mouvement dans un champ et lois de Kepler — Terminale — Physique : mouvement dans un champ et lois de Kepler (16 fiches)
   - [x] Satellites et planètes, exercices types — Terminale spé — Physique : satellites et planètes, exercices types (16 fiches)
+  - [x] Gravitation, énergie et champs — Physique — Mécanique : gravitation, énergie et champs (14 fiches)
 - [x] Ondes, son et lumière — l'essentiel — Physique — Ondes, son et lumière (24 fiches)
   - [x] Diffraction, interférences et effet Doppler en exercices — Terminale spé — Physique : diffraction, interférences et effet Doppler en exercices (16 fiches)
   - [x] Le photon, l'effet photoélectrique et le photovoltaïque — Terminale — Physique : le photon, l'effet photoélectrique et le photovoltaïque (17 fiches)
@@ -1952,7 +1987,8 @@ Lycée — 143 chapitres couverts sur 145, 173 boîtes.
 
 ### Terminale — NSI (6 / 6)
 
-- [x] Structures de données et algorithmique — NSI — Structures de données et algorithmique (28 fiches)
+- [x] Structures de données et algorithmique — l'essentiel — NSI — Structures de données (16 fiches)
+  - [x] Algorithmique — NSI — Algorithmique (12 fiches)
 - [x] Bases de données, réseaux et systèmes — NSI — Bases de données, réseaux et systèmes (24 fiches)
 - [x] Récursivité, paradigmes et calculabilité — Terminale — NSI : récursivité, paradigmes et calculabilité (16 fiches)
 - [x] Requêtes SQL types du bac — Terminale spé — NSI : requêtes SQL types du bac (16 fiches)
@@ -1985,7 +2021,8 @@ Lycée — 143 chapitres couverts sur 145, 173 boîtes.
 
 ### Terminale — Enseignement scientifique (4 / 4)
 
-- [x] L'essentiel de Terminale — Enseignement scientifique — L'essentiel de Terminale (27 fiches)
+- [x] L'essentiel de Terminale — l'essentiel — Enseignement scientifique — Terminale : climat et énergies (20 fiches)
+  - [x] Histoire du vivant et modèles — Enseignement scientifique — Terminale : histoire du vivant et modèles (7 fiches)
 - [x] Une histoire du vivant — Terminale — Enseignement scientifique : une histoire du vivant (17 fiches)
 - [x] Le futur des énergies en détail — Terminale — Enseignement scientifique : le futur des énergies en détail (16 fiches)
 - [x] Science, climat et société en détail — Terminale — Enseignement scientifique : science, climat et société en détail (17 fiches)
@@ -2006,7 +2043,8 @@ Lycée — 143 chapitres couverts sur 145, 173 boîtes.
 ### Terminale — Espagnol (4 / 4)
 
 - [x] Expressions et grammaire utiles au bac — Espagnol — Expressions et grammaire utiles au bac (21 fiches)
-- [x] Vocabulaire des axes du programme — Terminale — Espagnol : vocabulaire des axes du programme (33 fiches)
+- [x] Vocabulaire des axes du programme — l'essentiel — Terminale — Espagnol : vocabulaire des axes (identités, espace public, art et pouvoir, citoyenneté) (16 fiches)
+  - [x] Vocabulaire des axes : fiction, innovations, diversité, mémoire — Terminale — Espagnol : vocabulaire des axes (fiction, innovations, diversité, mémoire) (17 fiches)
 - [x] Repères culturels des axes du cycle terminal — Terminale — Espagnol : repères culturels des axes du cycle terminal (17 fiches)
 - [x] Subjonctif imparfait, concordance des temps et hypothèse — Terminale — Espagnol : subjonctif imparfait, concordance des temps et hypothèse (16 fiches)
 
@@ -2077,8 +2115,12 @@ Lycée — 143 chapitres couverts sur 145, 173 boîtes.
 
 ## Autres boîtes
 
-Hors programme — 1 chapitres couverts sur 1, 1 boîtes.
+Hors programme — 1 chapitres couverts sur 1, 5 boîtes.
 
 ### Autres boîtes — Divers (1 / 1)
 
-- [x] Pays et capitales du monde — Géographie — Pays et capitales du monde (68 fiches)
+- [x] Pays et capitales du monde — l'essentiel — Géographie — Capitales d'Europe de l'Ouest et du Nord (16 fiches)
+  - [x] Capitales d'Europe centrale et orientale — Géographie — Capitales d'Europe centrale, d'Europe de l'Est et d'Asie centrale (10 fiches)
+  - [x] Capitales d'Afrique — Géographie — Capitales d'Afrique (14 fiches)
+  - [x] Capitales des Amériques — Géographie — Capitales des Amériques (11 fiches)
+  - [x] Capitales d'Asie et d'Océanie — Géographie — Capitales d'Asie et d'Océanie (17 fiches)
