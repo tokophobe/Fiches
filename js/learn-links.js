@@ -45,6 +45,16 @@
     if (!m) return 0;
     return Number(m[1] || 0) * 3600 + Number(m[2] || 0) * 60 + Number(m[3] || 0);
   }
+  /** v295 : 95 → « 1:35 », 3725 → « 1:02:05 ». */
+  function clock(sec) {
+    var h = Math.floor(sec / 3600);
+    var m = Math.floor((sec % 3600) / 60);
+    var s = sec % 60;
+    var two = function (n) {
+      return (n < 10 ? "0" : "") + n;
+    };
+    return h ? h + ":" + two(m) + ":" + two(s) : m + ":" + two(s);
+  }
   var YT_ID = /^[A-Za-z0-9_-]{6,20}$/;
 
   /** Ce que l'appli sait faire de ce lien :
@@ -58,6 +68,7 @@
     var id = "";
     var list = "";
     var start = 0;
+    var end = 0;
     if (h === "youtube.com" || h === "music.youtube.com" || h === "youtube-nocookie.com") {
       var p = u.pathname.split("/").filter(Boolean);
       if (p[0] === "watch") id = u.searchParams.get("v") || "";
@@ -69,12 +80,20 @@
       list = u.searchParams.get("list") || "";
       start = seconds(u.searchParams.get("t") || u.searchParams.get("start") || "");
     }
+    // v295 : fin d'un extrait (« &end=170 ») ; ignorée si elle n'est pas
+    // après le début.
+    end = seconds(u.searchParams.get("end") || "");
+    if (end <= start) end = 0;
     if (id && YT_ID.test(id)) {
       res.provider = "YouTube";
       res.kind = "video";
       res.ytId = id; // v274 : miniature de la vidéo dans la Librairie
-      res.embed = "https://www.youtube-nocookie.com/embed/" + id + "?rel=0&modestbranding=1&playsinline=1&autoplay=1" + (start ? "&start=" + start : "");
-      res.label = "Vidéo YouTube";
+      res.embed = "https://www.youtube-nocookie.com/embed/" + id + "?rel=0&modestbranding=1&playsinline=1&autoplay=1" + (start ? "&start=" + start : "") + (end ? "&end=" + end : "");
+      res.label = end ? "Extrait vidéo (" + clock(start) + " → " + clock(end) + ")" : "Vidéo YouTube";
+      if (end) {
+        res.start = start;
+        res.end = end;
+      }
       return res;
     }
     if (!id && list && /^[A-Za-z0-9_-]{10,64}$/.test(list)) {
@@ -107,5 +126,8 @@
     return res;
   }
 
-  window.LearnLinks = { normalize: normalize, info: info, MAX_LEN: MAX_LEN };
+  var api = { normalize: normalize, info: info, MAX_LEN: MAX_LEN };
+  // v295 : chargeable aussi par les tests (node).
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  else window.LearnLinks = api;
 })();

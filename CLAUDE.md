@@ -357,6 +357,17 @@ testables ainsi.
   oEmbed). À chaque relecture de boîte, remplacer chaque lien Wikipédia
   par une courte vidéo de cours sur ce sujet, ou le retirer s'il n'y en
   a pas (1 259 liens Wikipédia au 13 nov. 2026, tous sur des fiches : les liens de boîte sont tous des vidéos depuis la v292).
+- Transcriptions des vidéos (15 nov. 2026) : YouTube bloque les serveurs
+  (page « sorry ») ; ne pas contourner. Le propriétaire lance sur son Mac
+  `outils/transcriptions.py` du dépôt privé (mode d'emploi
+  `outils/MODE-EMPLOI-TRANSCRIPTIONS-MAC.md`, module youtube-transcript-api)
+  et dépose `transcriptions.json.gz` dans Fiches-contenu
+  ({videos: {id: {langue, auto, segments: [[début, durée, texte]]} ou
+  {erreur}}}). Sert à vérifier chaque vidéo contre les fiches de sa boîte
+  et à créer des extraits pour les fiches : lien
+  `…watch?v=ID&t=DÉBUT&end=FIN` (secondes), géré par `js/learn-links.js`
+  (v295, testé dans `tests/learn-links.test.js`). Jamais de transcription
+  dans ce dépôt public.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
   rediffusion en direct, interview, chaîne pour étrangers apprenant le
