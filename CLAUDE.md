@@ -343,8 +343,9 @@ testables ainsi.
   le chapitre ajouté), relancer `genere` et livrer dans ce dépôt-ci.
 - Fiches hors sujet (14 nov. 2026, spéc. §5.7 règle 8) : aucune fiche sur
   l'organisation de l'école (axes ou thèmes d'un programme, épreuves) hors
-  des boîtes de méthode ; `tools/maj_boites.py verifie` les signale
-  (`hors_sujet`). À chaque relecture, vérifier aussi que chaque fiche
+  des boîtes de méthode, ni (16 nov. 2026) sur la méthode d'un exercice
+  (dissertation, commentaire, introduction, plan… : `METHODE_FICHE`) ;
+  `tools/maj_boites.py verifie` les signale (`hors_sujet`). À chaque relecture, vérifier aussi que chaque fiche
   correspond au titre de sa boîte.
 - Fiches datées (14 nov. 2026) : `tools/fiches_a_verifier.py` retrouve, par
   thèmes, les fiches dont le contenu change avec le temps (zone euro,

@@ -544,6 +544,14 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    des épreuves. Contrôle automatique pour les boîtes toutes prêtes à
    chaque lot ; à la relecture, vérifier aussi qu'aucune fiche ne sort du
    sujet annoncé par le titre de la boîte.
+   - **Fiches de méthode d'exercice** (16 nov. 2026, après une fiche
+     « Quelle est la 2e étape d'une introduction de dissertation ? »
+     trouvée dans la boîte « Philosophie — Définir les 17 notions ») : une
+     question sur la façon de faire un exercice (dissertation, commentaire,
+     explication de texte, étude de documents, introduction, problématique,
+     plan, conclusion d'une copie…) ne va que dans une boîte de méthode,
+     jamais dans une boîte de connaissances. Le même contrôle automatique
+     la signale.
 
 ---
 
@@ -1128,6 +1136,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 16 nov. 2026 | Règle 8 complétée : les fiches de méthode d'exercice (dissertation, commentaire, introduction, plan…) seulement dans les boîtes de méthode ; contrôle automatique étendu ; fiche « 2e étape d'une introduction de dissertation » retirée de « Philosophie — Définir les 17 notions » (seule fiche concernée sur 23 600). |
 | — | 16 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : vérification des vidéos par leur transcription (premières 22 vidéos) ; les 30 boîtes anciennes trop larges (27 à 68 fiches, plusieurs chapitres chacune) sont découpées en 72 boîtes au périmètre précis (règle 6), chacune avec sa vidéo ; les 4 vidéos trop longues (34 min à 2 h 32) sont remplacées. Chaque boîte d'origine garde sa place (et ses élèves) avec sa première partie ; les autres parties deviennent des sous-thèmes du même chapitre. Philosophie : 33 fiches reçoivent un extrait de vidéo choisi d'après la transcription. |
 | v295 | 15 nov. 2026 | Liens « Pour aller plus loin » : extraits de vidéo (début et fin), annoncés « Extrait vidéo (1:35 → 2:50) ». Outil de récupération des transcriptions des vidéos (Mac), dans le dépôt privé, pour vérifier le contenu des vidéos et choisir les extraits. |
 | — | 14 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : lot 33, 12 boîtes de 6e — anglais (présent be + -ing, can / can't, maison, animaux, nourriture et quantités, was / were, pays anglophones), arts plastiques (représentation et image, matériaux et gestes, objet et œuvre d'art) et éducation musicale (grands compositeurs ; rythme, mélodie et pulsation). **La 6e est entièrement couverte** (lots 30 à 33 : 63 boîtes). |
