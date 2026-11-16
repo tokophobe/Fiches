@@ -314,6 +314,86 @@ Les autres présentations essayées (la page à trois boutons seule, le
 Barre à 4 couleurs (du gris au vert) : part des fiches de la boîte (ou du
 dossier) selon leur **dernière note** (jamais notée = 0).
 
+### 4.7 Niveaux d'une fiche — 🟡 en réflexion (rien n'est codé)
+
+> Projet proposé par le propriétaire le 16 nov. 2026. Cette partie décrit
+> l'intention et les premières décisions ; les points encore ouverts sont
+> les questions Q22 à Q25 (§8). **Rien ne sera codé avant validation.**
+
+**Idée.** Aujourd'hui une fiche a deux niveaux : le QCM, puis la question
+classique (§4.4). Le projet en ajoute deux pour un apprentissage
+progressif. Les quatre niveaux forment **deux paires** ; dans chaque
+paire, on passe de « reconnaître parmi des propositions » à « retrouver
+seul » :
+
+| Paire | Ce qu'on apprend | Avec propositions | Sans aide |
+|---|---|---|---|
+| **A** | l'information de base | **Niveau 1** : QCM (actuel) | **Niveau 2** : question / réponse (actuel) |
+| **B** | l'information développée | **Niveau 3** : texte à trous, chaque trou avec ses propositions | **Niveau 4** : question reformulée, sans aide |
+
+Chaque niveau « avec propositions » entraîne au niveau suivant : seule la
+forme change. La paire B apporte des **informations nouvelles** (le
+« quoi », le « pourquoi »), pas la même question retournée.
+
+**Exemple** (boîte « 6ème — Histoire : Rome et la Chine des Han ») :
+- Niveau 1 : « Quel penseur chinois enseigne le respect des ancêtres, de
+  l'ordre et des devoirs ? » avec 4 propositions (Confucius, Lao Tseu,
+  Bouddha, Aristote).
+- Niveau 2 : la même question, sans propositions → Confucius.
+- Niveau 3 : « Le penseur chinois ___ enseigne le respect ___, de ___ et
+  des ___. » ; chaque trou a ses 4 propositions (Confucius / des ancêtres
+  / l'ordre / devoirs).
+- Niveau 4 : « Qu'enseigne le penseur chinois Confucius ? » → le respect
+  des ancêtres, de l'ordre et des devoirs.
+
+**Premières décisions (16 nov. 2026)**
+- **Ordre des niveaux** : QCM → question / réponse → texte à trous →
+  question reformulée (l'ordre du propriétaire : deux paires successives).
+- **Un seul calendrier par fiche** : l'algorithme (§4.1 à §4.3) ne change
+  pas ; la fiche garde en plus son **niveau**, qui décide de la forme de
+  la question posée. Pas de « fiches cachées » qui doubleraient les
+  révisions.
+- **Arrivée au sommet** : une fiche qui a atteint le niveau 4 est posée
+  tantôt au niveau 4, tantôt au niveau 2 (son nom, sa date, sa notion de
+  base restent à entretenir : ce sont deux souvenirs différents). La
+  proportion reste à régler (Q23).
+- **Échec au sommet** : un échec au niveau 2 renvoie la paire A au QCM
+  (niveau 1) sans effacer la paire B ; un échec au niveau 4 renvoie au
+  texte à trous (niveau 3). L'appli retient donc où en est l'élève dans
+  chacune des deux paires.
+- **Fiche sans paire B** (fiche simple, fiche écrite par un élève ou un
+  enseignant qui n'a pas rempli les niveaux 3 et 4) : elle reste à deux
+  niveaux, comme aujourd'hui.
+
+**Pistes proposées (à valider)**
+- **Délai maximal par niveau**, réglable dans Darwin Admin : une fiche
+  qu'on sait seulement reconnaître ne doit pas partir pour des mois (par
+  exemple : au plus 1 semaine au niveau 1, 1 mois au niveau 2, délai
+  complet ensuite) — Q24.
+- **Échéance proche (sprint)** : la fiche est posée au plus haut niveau
+  déjà atteint, pour s'entraîner dans les conditions du contrôle.
+- **Texte à trous** : 2 ou 3 trous au plus, pour qu'une fiche ne devienne
+  pas un exercice trop long.
+- **Progression affichée** : sur chaque fiche, 4 petits points (le niveau
+  atteint) ; pour une boîte, la part des fiches arrivées à un niveau
+  donné — Q25.
+
+**Rédaction des fiches** (à ajouter au §5.7 une fois validé)
+- Le niveau 3 développe la réponse : il apporte le « quoi » ou le
+  « pourquoi », souvent déjà présent dans le complément « en savoir
+  plus » des fiches toutes prêtes.
+- Le niveau 4 interroge sur ces informations nouvelles, pas sur la
+  question du niveau 2 simplement retournée ; il suit les mêmes règles que
+  les autres questions (sens sans propositions, dans le sujet de la
+  boîte).
+
+**Étapes envisagées** (une fois les questions tranchées) : 1) règles et
+algorithme des niveaux, avec tests automatiques, sans changement visible ;
+2) niveau 4 (même écran que la question classique), essayé sur quelques
+boîtes de 6e avec un ou deux élèves ; 3) niveau 3 (nouvel écran de texte
+à trous) ; 4) affichage de la progression, puis rédaction du contenu des
+boîtes toutes prêtes, lot par lot (23 600 fiches : plusieurs semaines).
+
 ---
 
 ## 5. Boîtes, dossiers et organisation
@@ -1063,6 +1143,29 @@ la Terminale** et les boîtes toutes prêtes qui le couvrent.
 > Décisions à prendre ou incohérences repérées. Répondez directement
 > sous chaque question ; Claude reportera la réponse dans les règles.
 
+**Q22 — Niveaux d'une fiche : quand passe-t-on au niveau suivant ?**
+(§4.7) Pistes : « Parfaitement » une fois ; ou « Je sais » deux fois de
+suite ; aux niveaux avec propositions, juste du premier coup (comme le
+QCM aujourd'hui). Et quand redescend-on : un seul niveau à la fois sur
+« Je ne sais pas » ?
+> Réponse :
+
+**Q23 — Niveaux d'une fiche : une fois au niveau 4, à quelle fréquence
+revient le niveau 2 ?** (§4.7) Pistes : une fois sur deux (alternance) ;
+une fois sur trois ; ou plus souvent le niveau le moins bien réussi.
+> Réponse :
+
+**Q24 — Niveaux d'une fiche : délai maximal par niveau ?** (§4.7)
+Proposition : au plus 1 semaine au niveau 1, 1 mois au niveau 2, délai
+complet aux niveaux 3 et 4 (réglable dans Darwin Admin).
+> Réponse :
+
+**Q25 — Niveaux d'une fiche : quelle progression afficher ?** (§4.7)
+Pistes : 4 petits points sur chaque fiche ; pour une boîte, la jauge
+actuelle (dernière note) ou une jauge par niveau atteint (« 60 % des
+fiches au niveau 3 ou plus »).
+> Réponse :
+
 **Q17 — Relecture du texte de licence par un juriste.** Une première
 analyse a été reçue le 11 nov. 2026 (résumé et propositions :
 `docs/brouillon-licence-publication.md`, §5). Reste à faire valider par
@@ -1128,6 +1231,9 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 >
 > Modèle : `- [ ] (date) Ce que je veux…`
 
+- [ ] (16 nov. 2026) Niveaux d'une fiche pour un apprentissage progressif
+  (QCM → question → texte à trous → question reformulée) : en réflexion,
+  voir §4.7 et les questions Q22 à Q25.
 - [ ] 
 
 ---
@@ -1136,6 +1242,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 16 nov. 2026 | Spécification seulement (rien ne change dans l'appli) : nouvelle partie §4.7 « Niveaux d'une fiche », en réflexion — deux paires de niveaux (QCM → question ; texte à trous → question reformulée), un seul calendrier par fiche, retour au niveau 2 une fois le sommet atteint ; questions Q22 à Q25. |
 | — | 16 nov. 2026 | Règle 8 complétée : les fiches de méthode d'exercice (dissertation, commentaire, introduction, plan…) seulement dans les boîtes de méthode ; contrôle automatique étendu ; fiche « 2e étape d'une introduction de dissertation » retirée de « Philosophie — Définir les 17 notions » (seule fiche concernée sur 23 600). |
 | — | 16 nov. 2026 | Boîtes toutes prêtes (rien ne change dans l'appli) : vérification des vidéos par leur transcription (premières 22 vidéos) ; les 30 boîtes anciennes trop larges (27 à 68 fiches, plusieurs chapitres chacune) sont découpées en 72 boîtes au périmètre précis (règle 6), chacune avec sa vidéo ; les 4 vidéos trop longues (34 min à 2 h 32) sont remplacées. Chaque boîte d'origine garde sa place (et ses élèves) avec sa première partie ; les autres parties deviennent des sous-thèmes du même chapitre. Philosophie : 33 fiches reçoivent un extrait de vidéo choisi d'après la transcription. |
 | v295 | 15 nov. 2026 | Liens « Pour aller plus loin » : extraits de vidéo (début et fin), annoncés « Extrait vidéo (1:35 → 2:50) ». Outil de récupération des transcriptions des vidéos (Mac), dans le dépôt privé, pour vérifier le contenu des vidéos et choisir les extraits. |
