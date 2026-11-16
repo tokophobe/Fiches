@@ -115,12 +115,22 @@ HORS_SUJET = re.compile(
     r"|(fait|font)(-elle|-il)? partie du programme|une entrée du programme|cycle terminal"
     r"|(épreuve|sujets?) (de [a-zé]+ )?(du|au) (brevet|bac(calauréat)?)\b|coefficient de l'épreuve)",
     re.I)
-BOITE_METHODE = re.compile(r"méthod|épreuve|oral\b|réussir|révisions? du|automatism", re.I)
+# 16 nov. 2026 : les fiches de méthode d'exercice (dissertation,
+# commentaire, introduction, problématique, plan…) n'ont leur place que
+# dans une boîte de méthode, pas dans une boîte de connaissances.
+METHODE_FICHE = re.compile(
+    r"(dissertation|commentaire (de texte|composé|littéraire)|explication de texte|analyse linéaire"
+    r"|étude (critique )?de documents?|paragraphe argumenté|réponse organisée"
+    r"|(introduction|conclusion|problématique|annonce du plan|accroche)\b.*\b(copie|dissertation|commentaire|devoir|sujet)"
+    r"|(étapes?|parties?) d'une (introduction|conclusion|dissertation)|plan (dialectique|thématique|analytique))",
+    re.I)
+BOITE_METHODE = re.compile(r"méthod|épreuve|oral\b|réussir|révisions? du|automatism|dissertation|commentaire|écrit d", re.I)
 
 
 def hors_sujet(question, nom_boite):
-    """Vrai si la fiche parle de l'organisation de l'école plutôt que du savoir."""
-    return bool(HORS_SUJET.search(question)) and not BOITE_METHODE.search(nom_boite)
+    """Vrai si la fiche parle de l'organisation de l'école (ou de la méthode
+    d'un exercice) dans une boîte qui n'est pas une boîte de méthode."""
+    return bool(HORS_SUJET.search(question) or METHODE_FICHE.search(question)) and not BOITE_METHODE.search(nom_boite)
 
 
 def charge():
