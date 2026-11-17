@@ -317,7 +317,7 @@ dossier) selon leur **dernière note** (jamais notée = 0).
 ### 4.7 Niveaux d'une fiche — 🟡 en réflexion (rien n'est codé)
 
 > Projet du propriétaire (16 et 17 nov. 2026). Règles décidées le
-> 17 nov. 2026 ; restent ouvertes Q24 et Q25 (§8). **Rien ne sera codé
+> 17 nov. 2026 ; reste ouverte Q24 (§8). **Rien ne sera codé
 > avant validation de l'ensemble.**
 
 #### Les quatre formes d'une fiche
@@ -409,6 +409,27 @@ Une fiche peut être posée sous quatre formes, en deux niveaux :
   « 1 heure plus tard » en plus.
 - Le délai de **1 heure** sera réglable dans Darwin Admin.
 
+#### Jauge de progression et couleurs (décision Q25, 17 nov. 2026)
+
+- **Fiche à un seul niveau** ((b) seul, ou (a) + (b)) : principe actuel
+  (§4.6), couleur selon la dernière note.
+- **Fiche à deux niveaux** ((a)/(b) et (c)/(d)) : **4 nouvelles
+  couleurs** s'ajoutent aux 4 actuelles. Tant que la fiche est au
+  niveau 1 ((a) ou (b)), elle prend l'une des 4 premières couleurs selon
+  sa dernière note ; au niveau 2 ((c) ou (d)), l'une des 4 nouvelles.
+  Les 8 couleurs peuvent coexister sur une même jauge (certaines fiches
+  encore au niveau 1, d'autres déjà au niveau 2).
+- Les 8 couleurs forment un **dégradé logique de progression** (par
+  exemple du gris vers le vert, puis vers le bleu ; choix final sur
+  maquette).
+- **Pour qu'une boîte entièrement sue soit toute de la même couleur**, une
+  fiche à un seul niveau prend le gris pour « Je ne sais pas » et les
+  **3 couleurs les plus avancées** pour les autres notes : quand tout est
+  su, la jauge est toute bleue, quel que soit le type des fiches.
+- **Les smileys des boutons d'évaluation** prennent la couleur de la
+  jauge correspondante (couleurs du niveau 1 ou du niveau 2 selon la
+  forme posée ; couleurs d'une fiche à un seul niveau pour celle-ci).
+
 #### Rédaction des fiches (à reporter au §5.7 une fois validé)
 
 - (b) existe toujours et a du sens seul (règles actuelles).
@@ -423,10 +444,8 @@ Une fiche peut être posée sous quatre formes, en deux niveaux :
 
 #### Encore ouvert
 
-- **Q24** — un délai maximal par forme (une fiche qu'on ne sait que
-  reconnaître ne doit pas partir pour des mois) ?
-- **Q25** — quelle progression afficher (forme atteinte sur chaque fiche,
-  jauge d'une boîte) ?
+- **Q24** — délai appliqué à la montée de forme : le même que le dernier
+  délai, selon la lecture 1 ou 2 (voir §8).
 
 #### Étapes envisagées (après validation)
 
@@ -1187,17 +1206,23 @@ la Terminale** et les boîtes toutes prêtes qui le couvrent.
 > Décisions à prendre ou incohérences repérées. Répondez directement
 > sous chaque question ; Claude reportera la réponse dans les règles.
 
-**Q24 — Formes d'une fiche : délai maximal par forme ?** (§4.7)
-Proposition : au plus 1 semaine en (a), 1 mois en (b), délai complet en
-(c) et (d) (réglable dans Darwin Admin) — pour qu'une fiche qu'on sait
-seulement reconnaître ne parte pas pour des mois.
+**Q24 — Formes d'une fiche : quel délai à la montée de forme ?** (§4.7)
+Le 17 nov., le propriétaire propose d'« appliquer le même délai que le
+dernier délai appliqué », ce qui évite aussi qu'une fiche parte pour des
+mois tant qu'elle n'est pas montée (ancienne question du délai maximal
+par forme). Deux lectures possibles, sur l'exemple : lundi « Je sais »
+en QCM, départ pour 5 jours ; samedi, juste du premier coup en QCM, la
+fiche monte en (b).
+- **Lecture 1** : la fiche revient sous sa nouvelle forme après **le même
+  délai**, 5 jours (jeudi suivant), au lieu de 1 heure ; la note qui fait
+  monter n'allonge pas le délai.
+- **Lecture 2** : la fiche revient **1 heure** plus tard sous sa nouvelle
+  forme ; la note donnée alors est calculée en repartant du dernier délai
+  (5 jours) comme s'il venait d'être appliqué : « Je sais » →
+  (5 − 0) + 0 × 2 ≈ **5 jours**, au lieu des 10 jours de la règle écrite
+  plus haut.
 > Réponse :
 
-**Q25 — Formes d'une fiche : quelle progression afficher ?** (§4.7)
-Pistes : la forme atteinte sur chaque fiche (a, b, c, d — 4 petits
-points) ; pour une boîte, la jauge actuelle (dernière note) ou une jauge
-par forme atteinte (« 60 % des fiches en (c) ou (d) »).
-> Réponse :
 
 **Q17 — Relecture du texte de licence par un juriste.** Une première
 analyse a été reçue le 11 nov. 2026 (résumé et propositions :
@@ -1237,6 +1262,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 |---|---|---|
 | Q22 — Formes d'une fiche : passage d'une forme à l'autre | Tableau du §4.7 (17 nov. 2026) : (a) juste du 1er coup → (b) ; (b) « Parfaitement » ou « Je sais » 2 fois de suite → (c) ou (d) ; (c) tout juste à la 1re tentative 2 fois de suite → (d) ; « Je ne sais pas » redescend d'une forme ; texte à trous noté par tentatives. |
 | Q23 — Retour périodique en (b) une fois en (d) | Pas pour l'instant : la fiche reste à sa forme la plus haute (17 nov. 2026), à revoir après essai. |
+| Q25 — Formes d'une fiche : progression affichée | Jauge à 8 couleurs (4 du niveau 1, 4 du niveau 2) en dégradé ; une fiche à un seul niveau prend le gris puis les 3 couleurs les plus avancées ; smileys aux couleurs de la jauge (17 nov. 2026, §4.7). |
 | Q21 — Liens Wikipédia sur les fiches (1 259 fiches, contraires à la règle 5 du §5.7) | Remplacés par une courte vidéo de cours sur le sujet précis quand elle existe, sinon retirés ; au fil de la relecture des boîtes (13 nov. 2026). | §5.7 |
 | Q20 — Chapitres « à créer » sur la page « Le programme » | Gardés visibles à l'ouverture au public, avec la mention « bientôt disponible » (13 nov. 2026). | §7.6 |
 | Q19 — Voir la Librairie sans compte | Non : on reste comme aujourd'hui, un compte gratuit est nécessaire pour accéder à l'appli et à sa Librairie (13 nov. 2026). | §7 |
@@ -1268,7 +1294,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 - [ ] (16 nov. 2026) Niveaux d'une fiche pour un apprentissage progressif
   (QCM → question → texte à trous → question poussée) : règles décidées
-  le 17 nov. (§4.7) ; restent Q24 et Q25.
+  le 17 nov. (§4.7) ; reste Q24 (montée de forme, à préciser).
 - [ ] 
 
 ---
@@ -1277,6 +1303,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 17 nov. 2026 | Spécification seulement : jauge de progression des fiches à deux niveaux (8 couleurs en dégradé, smileys assortis, décision Q25) ; Q24 reformulée (délai à la montée de forme). |
 | — | 17 nov. 2026 | Spécification seulement (rien ne change dans l'appli) : §4.7 réécrit avec les règles décidées — formes (a) QCM, (b) question, (c) texte à trous, (d) question poussée (toujours au moins (b)), tableau de passage d'une forme à l'autre, texte à trous noté par tentatives, montée de forme sans effet sur le calendrier (retour 1 heure plus tard), descente sans interrogation supplémentaire ; Q22 et Q23 répondues. |
 | — | 16 nov. 2026 | Spécification seulement (rien ne change dans l'appli) : nouvelle partie §4.7 « Niveaux d'une fiche », en réflexion — deux paires de niveaux (QCM → question ; texte à trous → question reformulée), un seul calendrier par fiche, retour au niveau 2 une fois le sommet atteint ; questions Q22 à Q25. |
 | — | 16 nov. 2026 | Règle 8 complétée : les fiches de méthode d'exercice (dissertation, commentaire, introduction, plan…) seulement dans les boîtes de méthode ; contrôle automatique étendu ; fiche « 2e étape d'une introduction de dissertation » retirée de « Philosophie — Définir les 17 notions » (seule fiche concernée sur 23 600). |
