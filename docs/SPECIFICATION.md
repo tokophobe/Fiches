@@ -317,8 +317,8 @@ dossier) selon leur **dernière note** (jamais notée = 0).
 ### 4.7 Niveaux d'une fiche — 🟡 en réflexion (rien n'est codé)
 
 > Projet du propriétaire (16 et 17 nov. 2026). Règles décidées le
-> 17 nov. 2026 ; reste ouverte Q24 (§8). **Rien ne sera codé
-> avant validation de l'ensemble.**
+> 17 nov. 2026 ; toutes les questions (Q22 à Q25) sont tranchées. Seul
+> le choix final des couleurs se fera sur maquette.
 
 #### Les quatre formes d'une fiche
 
@@ -391,18 +391,21 @@ Une fiche peut être posée sous quatre formes, en deux niveaux :
 - **Un seul calendrier par fiche** : l'algorithme (§4.1 à §4.3) ne
   change pas ; la fiche retient en plus sa **forme actuelle** et, pour la
   règle « 2 fois de suite », le nombre de réussites de suite.
-- **Monter de forme** (par ex. de (a) à (b)) : la note qui fait monter
-  **ne compte pas** pour l'algorithme. Le dernier délai et la date de la
-  dernière interrogation restent ceux d'avant cette note ; la fiche
-  revient simplement **1 heure plus tard** sous sa nouvelle forme (ou à la
-  connexion suivante). C'est la note donnée à cette nouvelle forme qui
-  est calculée, avec les paramètres d'avant la montée.
+- **Monter de forme** (par ex. de (a) à (b)) — décision Q24 : la note qui
+  fait monter **n'allonge pas le délai**. Le dernier délai reste celui
+  d'avant ; la date de la dernière interrogation devient celle de la
+  montée ; la fiche revient **1 heure plus tard** sous sa nouvelle forme
+  (ou à la connexion suivante). La note donnée à cette nouvelle forme est
+  ensuite calculée normalement à partir de ce dernier délai.
   *Exemple* : le lundi, la fiche est notée « Je sais » en QCM et part pour
   5 jours (dernier délai : 5 jours). Le samedi, elle est juste du premier
-  coup en QCM : elle passe en (b) et revient 1 heure plus tard ; rien
-  d'autre ne change. Si l'élève répond alors « Je sais » en (b), le calcul
-  part du lundi : temps écoulé = 5 jours, nouveau délai = (5 − 5) + 5 × 2
-  = **10 jours**, comme si l'interrogation de montée n'avait pas eu lieu.
+  coup en QCM : elle passe en (b) et revient 1 heure plus tard, le dernier
+  délai restant 5 jours. Si l'élève répond alors « Je sais » en (b) :
+  - 1 heure plus tard : nouveau délai ≈ (5 − 0) + 0 × 2 = **5 jours** ;
+  - le lendemain (prochaine connexion) : (5 − 1) + 1 × 2 = **6 jours**.
+
+  Une fiche ne gagne donc pas de délai tant qu'elle n'a pas réussi sa
+  nouvelle forme : pas besoin de délai maximal par forme.
 - **Descendre de forme** (par ex. de (b) à (a)) : la note est calculée
   normalement ; la fiche revient deux fois dans la séance en cours, comme
   toute fiche ratée (§4.4), à sa forme inférieure. Pas d'interrogation
@@ -441,11 +444,6 @@ Une fiche peut être posée sous quatre formes, en deux niveaux :
   difficile (d'abord de l'anglais vers le français en (a)/(b), puis du
   français vers l'anglais en (d)).
 - Toutes les formes restent dans le sujet de la boîte (§5.7, règle 8).
-
-#### Encore ouvert
-
-- **Q24** — délai appliqué à la montée de forme : le même que le dernier
-  délai, selon la lecture 1 ou 2 (voir §8).
 
 #### Étapes envisagées (après validation)
 
@@ -1206,24 +1204,6 @@ la Terminale** et les boîtes toutes prêtes qui le couvrent.
 > Décisions à prendre ou incohérences repérées. Répondez directement
 > sous chaque question ; Claude reportera la réponse dans les règles.
 
-**Q24 — Formes d'une fiche : quel délai à la montée de forme ?** (§4.7)
-Le 17 nov., le propriétaire propose d'« appliquer le même délai que le
-dernier délai appliqué », ce qui évite aussi qu'une fiche parte pour des
-mois tant qu'elle n'est pas montée (ancienne question du délai maximal
-par forme). Deux lectures possibles, sur l'exemple : lundi « Je sais »
-en QCM, départ pour 5 jours ; samedi, juste du premier coup en QCM, la
-fiche monte en (b).
-- **Lecture 1** : la fiche revient sous sa nouvelle forme après **le même
-  délai**, 5 jours (jeudi suivant), au lieu de 1 heure ; la note qui fait
-  monter n'allonge pas le délai.
-- **Lecture 2** : la fiche revient **1 heure** plus tard sous sa nouvelle
-  forme ; la note donnée alors est calculée en repartant du dernier délai
-  (5 jours) comme s'il venait d'être appliqué : « Je sais » →
-  (5 − 0) + 0 × 2 ≈ **5 jours**, au lieu des 10 jours de la règle écrite
-  plus haut.
-> Réponse :
-
-
 **Q17 — Relecture du texte de licence par un juriste.** Une première
 analyse a été reçue le 11 nov. 2026 (résumé et propositions :
 `docs/brouillon-licence-publication.md`, §5). Reste à faire valider par
@@ -1262,6 +1242,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 |---|---|---|
 | Q22 — Formes d'une fiche : passage d'une forme à l'autre | Tableau du §4.7 (17 nov. 2026) : (a) juste du 1er coup → (b) ; (b) « Parfaitement » ou « Je sais » 2 fois de suite → (c) ou (d) ; (c) tout juste à la 1re tentative 2 fois de suite → (d) ; « Je ne sais pas » redescend d'une forme ; texte à trous noté par tentatives. |
 | Q23 — Retour périodique en (b) une fois en (d) | Pas pour l'instant : la fiche reste à sa forme la plus haute (17 nov. 2026), à revoir après essai. |
+| Q24 — Formes d'une fiche : délai à la montée de forme | Lecture 2 (17 nov. 2026) : retour 1 heure plus tard sous la nouvelle forme, le dernier délai restant celui d'avant ; la note suivante repart de ce délai (≈ 5 jours au lieu de 10 dans l'exemple du §4.7). |
 | Q25 — Formes d'une fiche : progression affichée | Jauge à 8 couleurs (4 du niveau 1, 4 du niveau 2) en dégradé ; une fiche à un seul niveau prend le gris puis les 3 couleurs les plus avancées ; smileys aux couleurs de la jauge (17 nov. 2026, §4.7). |
 | Q21 — Liens Wikipédia sur les fiches (1 259 fiches, contraires à la règle 5 du §5.7) | Remplacés par une courte vidéo de cours sur le sujet précis quand elle existe, sinon retirés ; au fil de la relecture des boîtes (13 nov. 2026). | §5.7 |
 | Q20 — Chapitres « à créer » sur la page « Le programme » | Gardés visibles à l'ouverture au public, avec la mention « bientôt disponible » (13 nov. 2026). | §7.6 |
@@ -1294,7 +1275,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 - [ ] (16 nov. 2026) Niveaux d'une fiche pour un apprentissage progressif
   (QCM → question → texte à trous → question poussée) : règles décidées
-  le 17 nov. (§4.7) ; reste Q24 (montée de forme, à préciser).
+  le 17 nov. (§4.7), toutes les questions tranchées ; prêt pour l'étape 1.
 - [ ] 
 
 ---
@@ -1303,6 +1284,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 17 nov. 2026 | Spécification seulement : montée de forme (décision Q24, lecture 2) — retour 1 heure plus tard, le dernier délai reste celui d'avant, la note suivante repart de ce délai ; §4.7 entièrement tranchée. |
 | — | 17 nov. 2026 | Spécification seulement : jauge de progression des fiches à deux niveaux (8 couleurs en dégradé, smileys assortis, décision Q25) ; Q24 reformulée (délai à la montée de forme). |
 | — | 17 nov. 2026 | Spécification seulement (rien ne change dans l'appli) : §4.7 réécrit avec les règles décidées — formes (a) QCM, (b) question, (c) texte à trous, (d) question poussée (toujours au moins (b)), tableau de passage d'une forme à l'autre, texte à trous noté par tentatives, montée de forme sans effet sur le calendrier (retour 1 heure plus tard), descente sans interrogation supplémentaire ; Q22 et Q23 répondues. |
 | — | 16 nov. 2026 | Spécification seulement (rien ne change dans l'appli) : nouvelle partie §4.7 « Niveaux d'une fiche », en réflexion — deux paires de niveaux (QCM → question ; texte à trous → question reformulée), un seul calendrier par fiche, retour au niveau 2 une fois le sommet atteint ; questions Q22 à Q25. |
