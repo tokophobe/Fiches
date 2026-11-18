@@ -7724,6 +7724,24 @@ body:has(#view-library.is-active[data-cycle]) {
   background: var(--action-color, #2f6fae); color: #fff; font-family: var(--font-type); font-size: 15px; font-weight: 700; cursor: pointer;
 }
 .qcm-continue[hidden] { display: none; }
+/* v298 : texte à trous (forme c, spéc. §4.7) — trous dans le texte de la
+   fiche QCM ; le trou actif est entouré en orange, ses 4 propositions
+   s'affichent dessous. */
+.cloze-blank {
+  display: inline-block; min-width: 3.2em; margin: 1px 2px; padding: 0 6px; border: none; border-bottom: 2px dashed var(--ink-soft);
+  border-radius: 6px 6px 0 0; background: rgba(127, 127, 127, 0.1); color: var(--ink-soft);
+  font: inherit; line-height: 1.35; text-align: center; vertical-align: baseline; cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.cloze-blank.is-filled { color: var(--card-text-color, var(--ink)); border-bottom-style: solid; }
+.cloze-blank.is-active { outline: 2px solid #ef7d2d; outline-offset: 1px; background: color-mix(in srgb, #ef7d2d 18%, transparent); }
+.cloze-blank.is-right { color: #3e7c6b; border-bottom: 2px solid #3e7c6b; background: color-mix(in srgb, #3e7c6b 12%, transparent); cursor: default; }
+.cloze-blank.is-fixed { color: #3e7c6b; border-bottom: 2px solid #b6604a; background: color-mix(in srgb, #b6604a 10%, transparent); cursor: default; }
+.cloze-blank.is-fixed s { color: #b6604a; text-decoration-color: #b6604a; }
+.cloze-blank:focus:not(:focus-visible) { outline: none; }
+.cloze-blank.is-active:focus:not(:focus-visible) { outline: 2px solid #ef7d2d; }
+.qcm-choice.is-selected { border-color: #ef7d2d; background: color-mix(in srgb, #ef7d2d 14%, var(--card-bg-color, var(--paper))); }
+:root.is-night-mode .cloze-blank.is-right, :root.is-night-mode .cloze-blank.is-fixed { color: #7fd1b5; }
+:root.is-night-mode .cloze-blank.is-fixed s { color: #f0a28c; }
 body.is-qcm-review #review-score-info { display: none !important; }
 /* v232 : le nombre de fiches à revoir reste affiché en QCM (au-dessus de
    la fiche QCM s'ils se chevauchent). */

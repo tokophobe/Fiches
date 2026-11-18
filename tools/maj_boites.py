@@ -271,6 +271,24 @@ def decoupe(plan_path):
     verifie(touchees)
 
 
+def probleme_texte_a_trous(cloze):
+    """Défauts d'un texte à trous (forme c, spéc. §4.7) : même règle que
+    validCloze dans js/card-forms.js, plus les propositions en double."""
+    if not isinstance(cloze, dict) or not isinstance(cloze.get("blanks"), list) or not cloze["blanks"]:
+        return ["format incorrect"]
+    out = []
+    trous = len(re.findall(r"_{3,}", str(cloze.get("text", ""))))
+    if trous != len(cloze["blanks"]):
+        out.append(f"{trous} trou(s) « ___ » dans le texte pour {len(cloze['blanks'])} réponse(s)")
+    for k, t in enumerate(cloze["blanks"], 1):
+        props = [str(t.get("answer", "")).strip()] + [str(w).strip() for w in t.get("wrongs") or []]
+        if len(props) != 4 or not all(props):
+            out.append(f"trou {k} : il faut 1 réponse et 3 mauvaises réponses")
+        elif len({norm(x) for x in props}) != 4:
+            out.append(f"trou {k} : propositions en double")
+    return out
+
+
 def verifie(keys=None):
     d = charge()
     pb = 0
@@ -296,6 +314,10 @@ def verifie(keys=None):
             if bool(c.get("q2", "").strip()) != bool(c.get("a2", "").strip()):
                 print(f"[{b['key']}#{i}] question poussée sans réponse (ou l'inverse) : {c['question'][:60]}")
                 pb += 1
+            if c.get("cloze") is not None:
+                for msg in probleme_texte_a_trous(c["cloze"]):
+                    print(f"[{b['key']}#{i}] texte à trous : {msg} : {c['question'][:60]}")
+                    pb += 1
             if w:
                 qs.append(c["question"])
                 where.append(f"{b['key']}#{i}")

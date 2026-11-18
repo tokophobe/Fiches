@@ -656,7 +656,7 @@
                sous la fiche. -->
           <div class="qcm-panel" id="qcm-panel" hidden>
             <div class="qcm-sheet" id="qcm-sheet">
-              <span class="card-label">Question <span class="qcm-chip">QCM</span></span>
+              <span class="card-label">Question <span class="qcm-chip" id="qcm-sheet-chip">QCM</span></span>
               <div class="qcm-sheet-rule" aria-hidden="true"></div>
               <div class="card-text qcm-question" id="qcm-question"></div>
               <div class="qcm-choices" id="qcm-choices" role="group" aria-label="Réponses"></div>
@@ -665,6 +665,9 @@
               <button type="button" class="learn-link-chip qcm-learn-link" id="qcm-learn-link" hidden></button>
             </div>
             <button type="button" class="qcm-continue" id="qcm-continue" hidden>Continuer →</button>
+            <!-- v298 : texte à trous (forme c, spéc. §4.7) — même fiche que
+                 le QCM ; « Vérifier » une fois tous les trous remplis. -->
+            <button type="button" class="qcm-continue" id="cloze-check" hidden>Vérifier</button>
           </div>
           <!-- v237 : lien « Pour aller plus loin » de la fiche, visible une
                fois la réponse affichée. -->

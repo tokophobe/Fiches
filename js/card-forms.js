@@ -40,6 +40,12 @@
     return holes === cloze.blanks.length && cloze.blanks.every((b) => b && clean(b.answer) && hasWrongs(b.wrongs));
   }
 
+  /** Morceaux de texte autour des trous (un de plus que de trous) :
+   *  « A ___ B ___ C » → ["A ", " B ", " C"]. */
+  function clozeSegments(text) {
+    return String(text == null ? "" : text).split(BLANK);
+  }
+
   /** Formes disponibles pour cette fiche. */
   function forms(card) {
     const c = card || {};
@@ -207,7 +213,7 @@
   }
 
   const api = {
-    ORDER, FORM_UP_DELAY_MIN, validCloze, forms, hasLevel2, currentForm, afterRating, scheduleFormUp, clozeRating,
+    ORDER, FORM_UP_DELAY_MIN, validCloze, clozeSegments, forms, hasLevel2, currentForm, afterRating, scheduleFormUp, clozeRating,
     legacyFormRatings, withFormRating, gaugeNotes, gaugeCounts,
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;

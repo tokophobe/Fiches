@@ -84,8 +84,10 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   relecture, étape A), `js/card-forms.js` (formes d'une fiche, spéc. §4.7 :
   (a) QCM, (b) question, (c) texte à trous `cloze`, (d) question poussée
   `q2`/`a2` ; suivi `form`, `formMax`, `formStreak`). Branché en v296
-  (étape 2) : dans `app.js`, `reviewForm` donne la forme posée ((c) posée
-  en (b) tant que son écran n'existe pas), `nextAfterRating` applique
+  (étape 2) : dans `app.js`, `reviewForm` donne la forme posée ;
+  texte à trous (v298) dans la fiche du QCM (`qcm-panel`, `qcmState` avec
+  `kind: "cloze"`, `startCloze`, `drawCloze`, bouton `#cloze-check`),
+  `nextAfterRating` applique
   montée / descente, `lastRatedForm` évite le « Tu es sûr ? » d'une forme
   à l'autre ; `qcmMode` n'est plus qu'un reflet de `form === "a"`. Les
   champs `q2`, `a2`, `cloze` doivent suivre la fiche partout

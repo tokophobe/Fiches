@@ -259,3 +259,12 @@ test("jauge : des formes ajoutées à une fiche déjà sue partent en gris (déc
   const enrichie = { ...sue, q2: "Quelle est la capitale de l'Espagne, au centre du pays ?", a2: "Madrid" };
   assert.deepEqual(F.gaugeNotes(enrichie), [EASY, EASY, AGAIN]);
 });
+
+/* ---------- Texte à trous : découpage du texte (écran de l'étape 3) ---------- */
+
+test("texte à trous : le texte est coupé autour de chaque trou « ___ »", () => {
+  const parts = F.clozeSegments(CONFUCIUS.cloze.text);
+  assert.equal(parts.length, CONFUCIUS.cloze.blanks.length + 1, "un morceau de plus que de trous");
+  assert.deepEqual(parts, ["Le penseur chinois ", " enseigne le respect ", ", de ", " et des ", "."]);
+  assert.deepEqual(F.clozeSegments("___ commence"), ["", " commence"], "un trou en tout début de phrase");
+});
