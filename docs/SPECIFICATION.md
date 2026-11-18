@@ -843,8 +843,9 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    revient plus. Au 18 nov. 2026, sur toute la Librairie : 838 alertes
    « indice » et 2 128 « réponse plus détaillée » ; **collège traité** le
    même jour (6e : 304 fiches corrigées, 8 alertes acceptées ; 5e : 465
-   et 9 ; 4e : 381 et 13 ; 3e : 375 et 69) ; reste 430 « indice » et 890
-   « détail », à traiter niveau par niveau (lycée, puis primaire).
+   et 9 ; 4e : 381 et 13 ; 3e : 375 et 69) ; **lycée traité** le même jour (2nde : 113
+   fiches corrigées, 34 alertes acceptées ; 1ère : 191 et 59 ; terminale :
+   346 et 82) ; reste 223 « indice » et 407 « détail », au primaire.
 
 ---
 
