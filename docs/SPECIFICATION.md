@@ -853,6 +853,18 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    la réponse est dans le texte, ce qui est le but de l'exercice) :
    **plus aucune alerte dans toute la Librairie**. À vérifier pour
    chaque nouvelle boîte.
+10. **Ne pas plagier les vidéos** (demande du propriétaire, 18 nov.
+   2026). La transcription d'une vidéo YouTube sert seulement à vérifier
+   que la vidéo correspond aux fiches et à trouver le bon passage. Les
+   fiches, les textes à trous et les questions poussées sont écrits avec
+   nos propres mots, à partir du programme : on ne recopie ni ne
+   reformule de près les phrases, les exemples ou le plan d'une vidéo
+   (les faits eux-mêmes ne sont pas protégés, leur formulation l'est).
+   Aucune transcription n'est mise dans l'appli ni dans le dépôt public.
+   Un « extrait » n'est qu'un lien vers la vidéo sur YouTube avec un
+   début et une fin : la vidéo est lue chez YouTube, dans son lecteur,
+   avec le nom de sa chaîne. Une vidéo dont la chaîne interdit
+   l'intégration n'est pas utilisée.
 
 ---
 
