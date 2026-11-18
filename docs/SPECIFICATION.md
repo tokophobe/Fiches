@@ -831,9 +831,11 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    alerte relue et gardée (le mot commun fait partie de la notion, comme
    « complément circonstanciel de cause ») est notée « acceptée » et ne
    revient plus. Au 18 nov. 2026, sur toute la Librairie : 838 alertes
-   « indice » et 2 128 « réponse plus détaillée » ; **niveau 6e traité**
-   le même jour (304 fiches corrigées, 8 alertes acceptées) ; reste
-   742 « indice » et 1 894 « détail », à traiter niveau par niveau.
+   « indice » et 2 128 « réponse plus détaillée » ; **niveaux 6e et 5e
+   traités** le même jour (6e : 304 fiches corrigées, 8 alertes acceptées ;
+   5e : 465 fiches corrigées, 9 alertes acceptées) ; reste 648 « indice »
+   et 1 524 « détail », à traiter niveau par niveau (4e, 3e, lycée,
+   primaire).
 
 ---
 
