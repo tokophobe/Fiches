@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v298";
+  const APP_VERSION = "v299";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -4446,7 +4446,7 @@
     if (currentCard && currentCard.id === updated.id) {
       const before = currentCard;
       const textChanged =
-        before.question !== updated.question || before.answer !== updated.answer || before.q2 !== updated.q2 || before.a2 !== updated.a2 || JSON.stringify(cardWrongs(before)) !== JSON.stringify(cardWrongs(updated));
+        before.question !== updated.question || before.answer !== updated.answer || before.q2 !== updated.q2 || before.a2 !== updated.a2 || JSON.stringify(before.cloze || null) !== JSON.stringify(updated.cloze || null) || JSON.stringify(cardWrongs(before)) !== JSON.stringify(cardWrongs(updated));
       currentCard = updated;
       // v233 : affichage mis à jour même si la page Réviser n'est pas
       // visible (on y revient après « Enregistrer les modifications »),
@@ -5253,8 +5253,6 @@
     if (hint) hint.textContent = qcm || cloze ? "Choisis la bonne réponse ci-dessous" : "Touche la fiche pour voir la réponse";
     const chip = el("qcm-sheet-chip");
     if (chip) chip.textContent = cloze ? "Texte à trous" : "QCM";
-    const check = el("cloze-check");
-    if (check) check.hidden = true;
     if (cloze) {
       answerSeenCardId = null;
       setRatingInvite(false, true);
@@ -5409,8 +5407,10 @@
 
   /* ---------- v298 : texte à trous (forme c, spéc. §4.7) ----------
      L'élève touche un trou, choisit parmi ses 4 propositions (le curseur
-     passe au trou suivant), puis « Vérifier » : les trous justes restent,
-     les faux se vident pour une 2e tentative. Note donnée par l'appli :
+     passe au trou suivant) ; quand tout est rempli, l'appli vérifie
+     d'elle-même (v299, plus de bouton « Vérifier ») : les trous justes
+     restent, les faux se vident pour une 2e tentative, la réponse fausse
+     restant barrée dans le trou et dans ses propositions. Note donnée par l'appli :
      tout juste du premier coup = « Je sais », à la 2e = « Vague idée »,
      sinon « Je ne sais pas » (bonnes réponses montrées). */
   function startCloze(card, panel) {
@@ -5420,6 +5420,7 @@
       value: null,
       locked: false,
       failed: false,
+      tried: null, // v299 : réponse fausse du 1er essai (barrée au 2e)
     }));
     qcmState = { kind: "cloze", cardId: card.id, blanks, active: 0, attempt: 1, done: false, timer: null };
     const moreEl = el("qcm-more");
@@ -5443,7 +5444,6 @@
     const qEl = el("qcm-question");
     const box = el("qcm-choices");
     const msg = el("qcm-msg");
-    const check = el("cloze-check");
     const cont = el("qcm-continue");
     if (!st || !card || !qEl || !box) return;
     if (document.activeElement && box.contains(document.activeElement)) document.activeElement.blur();
@@ -5454,7 +5454,7 @@
         const b = st.blanks[i];
         if (!b) return html;
         let cls = "cloze-blank";
-        let inner = b.value ? escapeHtml(b.value) : `&nbsp;${i + 1}&nbsp;`;
+        let inner = b.value ? escapeHtml(b.value) : b.tried ? `<s>${escapeHtml(b.tried)}</s>` : `&nbsp;${i + 1}&nbsp;`;
         if (b.locked) cls += " is-right";
         else if (b.failed) {
           cls += " is-fixed";
@@ -5470,14 +5470,17 @@
       st.done || !b || b.locked
         ? ""
         : b.choices
-            .map((c, i) => `<button type="button" class="qcm-choice${b.value === c ? " is-selected" : ""}" data-i="${i}"><span class="qcm-letter">${QCM_LETTERS[i]}</span><span class="qcm-text">${escapeHtml(c)}</span></button>`)
+            .map((c, i) => {
+              const tried = b.tried === c;
+              const cls = tried ? " is-wrong" : b.value === c ? " is-selected" : "";
+              return `<button type="button" class="qcm-choice${cls}" data-i="${i}"${tried ? " disabled" : ""}><span class="qcm-letter">${QCM_LETTERS[i]}</span><span class="qcm-text">${escapeHtml(c)}</span></button>`;
+            })
             .join("");
     if (msg) {
       msg.textContent = message || "";
       msg.className = `qcm-msg${tone ? ` is-${tone}` : ""}`;
       msg.hidden = !message;
     }
-    if (check) check.hidden = st.done || st.blanks.some((x) => !x.locked && !x.value);
     if (cont && !st.done) cont.hidden = true;
     layoutQcmPanel();
     clearTimeout(drawQcm.relayout);
@@ -5486,7 +5489,7 @@
   function chooseClozeAnswer(i) {
     const st = qcmState;
     const b = st && st.blanks[st.active];
-    if (!b || b.locked) return;
+    if (!b || b.locked || st.checking || b.choices[i] === b.tried) return;
     b.value = b.choices[i];
     // Au trou suivant encore vide (dans l'ordre, en revenant au début).
     const n = st.blanks.length;
@@ -5497,58 +5500,71 @@
         break;
       }
     }
-    drawCloze(st.blanks.some((x) => !x.locked && !x.value) ? "" : "Tout est rempli : vérifie !");
+    if (st.blanks.some((x) => !x.locked && !x.value)) {
+      drawCloze("");
+      return;
+    }
+    // Tout est rempli : vérification d'elle-même, après un court instant
+    // pour voir la dernière réponse en place.
+    st.checking = true;
+    drawCloze("");
+    const cardId = st.cardId;
+    setTimeout(() => {
+      if (qcmState !== st || !currentCard || currentCard.id !== cardId) return;
+      st.checking = false;
+      checkCloze();
+    }, 450);
   }
   const clozeTextEl = el("qcm-question");
   if (clozeTextEl) {
     clozeTextEl.addEventListener("click", (e) => {
       const btn = e.target.closest(".cloze-blank");
       const st = qcmState;
-      if (!btn || !st || st.kind !== "cloze" || st.done) return;
+      if (!btn || !st || st.kind !== "cloze" || st.done || st.checking) return;
       const i = Number(btn.dataset.b);
       if (st.blanks[i].locked) return;
       st.active = i;
       drawCloze("");
     });
   }
-  const clozeCheckEl = el("cloze-check");
-  if (clozeCheckEl) {
-    clozeCheckEl.addEventListener("click", () => {
-      const st = qcmState;
-      if (!st || st.kind !== "cloze" || st.done || !currentCard || st.cardId !== currentCard.id) return;
-      if (st.blanks.some((x) => !x.locked && !x.value)) return;
-      const cardId = st.cardId;
-      let wrong = 0;
-      st.blanks.forEach((x) => {
-        if (x.locked) return;
-        if (x.value === x.answer) x.locked = true;
-        else wrong += 1;
-      });
-      if (wrong && st.attempt === 1) {
-        st.attempt = 2;
-        st.blanks.forEach((x) => {
-          if (!x.locked) x.value = null;
-        });
-        st.active = st.blanks.findIndex((x) => !x.locked);
-        drawCloze(wrong === 1 ? "Un trou n'est pas juste. Encore un essai !" : `${wrong} trous ne sont pas justes. Encore un essai !`, "wrong");
-        return;
-      }
-      st.done = true;
-      st.blanks.forEach((x) => {
-        if (!x.locked) x.failed = true;
-      });
-      const idx = CardForms.clozeRating(st.attempt === 1 && !wrong, !wrong);
-      const rating = REVISION_ALGO_RATING_ORDER[idx];
-      drawCloze(idx === 2 ? "Tout est juste !" : idx === 1 ? "Tout est juste, au deuxième essai." : "Raté… Les bonnes réponses sont en vert.", idx ? "ok" : "fail");
-      revealQcmAnswer();
-      const hasMore = !!(currentCard.more && stripHtml(currentCard.more).trim()) || !!learnLinkInfo(currentCard.link);
-      const cont = el("qcm-continue");
-      if (idx === 2 && !hasMore) st.timer = setTimeout(() => finishQcm(cardId, rating), 1300);
-      else if (cont) {
-        cont.hidden = false;
-        cont.onclick = () => finishQcm(cardId, rating);
-      }
+  function checkCloze() {
+    const st = qcmState;
+    if (!st || st.kind !== "cloze" || st.done || !currentCard || st.cardId !== currentCard.id) return;
+    if (st.blanks.some((x) => !x.locked && !x.value)) return;
+    const cardId = st.cardId;
+    let wrong = 0;
+    st.blanks.forEach((x) => {
+      if (x.locked) return;
+      if (x.value === x.answer) x.locked = true;
+      else wrong += 1;
     });
+    if (wrong && st.attempt === 1) {
+      st.attempt = 2;
+      st.blanks.forEach((x) => {
+        if (!x.locked) {
+          x.tried = x.value;
+          x.value = null;
+        }
+      });
+      st.active = st.blanks.findIndex((x) => !x.locked);
+      drawCloze(wrong === 1 ? "Un trou n'est pas juste. Encore un essai !" : `${wrong} trous ne sont pas justes. Encore un essai !`, "wrong");
+      return;
+    }
+    st.done = true;
+    st.blanks.forEach((x) => {
+      if (!x.locked) x.failed = true;
+    });
+    const idx = CardForms.clozeRating(st.attempt === 1 && !wrong, !wrong);
+    const rating = REVISION_ALGO_RATING_ORDER[idx];
+    drawCloze(idx === 2 ? "Tout est juste !" : idx === 1 ? "Tout est juste, au deuxième essai." : "Raté… Les bonnes réponses sont en vert.", idx ? "ok" : "fail");
+    revealQcmAnswer();
+    const hasMore = !!(currentCard.more && stripHtml(currentCard.more).trim()) || !!learnLinkInfo(currentCard.link);
+    const cont = el("qcm-continue");
+    if (idx === 2 && !hasMore) st.timer = setTimeout(() => finishQcm(cardId, rating), 1300);
+    else if (cont) {
+      cont.hidden = false;
+      cont.onclick = () => finishQcm(cardId, rating);
+    }
   }
   const qcmChoicesEl = el("qcm-choices");
   if (qcmChoicesEl) {
@@ -5922,6 +5938,73 @@
     if (inputAnswer) inputAnswer.innerHTML = "";
     if (el("input-more")) el("input-more").innerHTML = "";
     setQcmFields(null);
+    setLevel2Fields(null);
+  }
+
+  /* ---------------------------------------------------------
+     v299 : saisie des formes poussées (spéc. §4.7). Texte à trous (c) :
+     la phrase avec les mots à cacher entre crochets ; sous la phrase, une
+     ligne de 3 réponses fausses par trou, créée au fil de la frappe (les
+     réponses déjà tapées sont gardées, retrouvées par leur mot). Question
+     poussée (d) : question et réponse, toutes les deux ou aucune.
+  --------------------------------------------------------- */
+  const clozeInputEl = el("input-cloze");
+  const clozeWrongsEl = el("cloze-wrongs");
+  let clozeWrongsMemory = new Map(); // mot caché (minuscules) -> [3 réponses fausses]
+  function rememberClozeWrongs() {
+    if (!clozeWrongsEl) return;
+    clozeWrongsEl.querySelectorAll(".cloze-wrongs-row").forEach((row) => {
+      clozeWrongsMemory.set(row.dataset.answer, Array.from(row.querySelectorAll("input"), (i) => i.value));
+    });
+  }
+  function renderClozeWrongs() {
+    if (!clozeInputEl || !clozeWrongsEl) return;
+    rememberClozeWrongs();
+    const answers = CardForms.bracketAnswers(clozeInputEl.value).filter(Boolean);
+    clozeWrongsEl.innerHTML = answers
+      .map((a, i) => {
+        const key = a.toLowerCase();
+        const vals = clozeWrongsMemory.get(key) || [];
+        const inputs = [0, 1, 2]
+          .map((k) => `<input type="text" class="qcm-wrong-input" autocomplete="off" value="${escapeHtml(vals[k] || "")}" placeholder="Réponse fausse ${k + 1}" aria-label="Trou ${i + 1}, réponse fausse ${k + 1}" />`)
+          .join("");
+        return `<div class="cloze-wrongs-row" data-answer="${escapeHtml(key)}"><p class="cloze-wrongs-title">Trou ${i + 1} : <strong>${escapeHtml(a)}</strong></p>${inputs}</div>`;
+      })
+      .join("");
+  }
+  if (clozeInputEl) clozeInputEl.addEventListener("input", renderClozeWrongs);
+  function setLevel2Fields(card) {
+    clozeWrongsMemory = new Map();
+    const cloze = card && CardForms.validCloze(card.cloze) ? card.cloze : null;
+    if (cloze) cloze.blanks.forEach((b) => clozeWrongsMemory.set(String(b.answer).trim().toLowerCase(), b.wrongs.slice()));
+    if (clozeWrongsEl) clozeWrongsEl.innerHTML = "";
+    if (clozeInputEl) clozeInputEl.value = cloze ? CardForms.clozeToBrackets(cloze) : "";
+    renderClozeWrongs();
+    if (el("input-q2")) el("input-q2").value = (card && card.q2) || "";
+    if (el("input-a2")) el("input-a2").value = (card && card.a2) || "";
+  }
+  /** Formes poussées saisies : { cloze, q2, a2 } ou { error }. */
+  function readLevel2Fields() {
+    const rows = clozeWrongsEl ? Array.from(clozeWrongsEl.querySelectorAll(".cloze-wrongs-row")) : [];
+    const res = CardForms.clozeFromBrackets(clozeInputEl ? clozeInputEl.value : "", rows.map((r) => Array.from(r.querySelectorAll("input"), (i) => i.value)));
+    if (res.error) return { error: res.error };
+    const q2 = el("input-q2") ? el("input-q2").value.trim() : "";
+    const a2 = el("input-a2") ? el("input-a2").value.trim() : "";
+    if (!q2 !== !a2) return { error: q2 ? "Question poussée : écris aussi sa réponse." : "Question poussée : écris aussi la question." };
+    return { cloze: res.cloze, q2, a2 };
+  }
+  /** Copie les formes poussées saisies dans la fiche (ou les retire). */
+  function applyLevel2Fields(card, level2) {
+    if (level2.cloze) card.cloze = level2.cloze;
+    else delete card.cloze;
+    if (level2.q2) {
+      card.q2 = level2.q2;
+      card.a2 = level2.a2;
+    } else {
+      delete card.q2;
+      delete card.a2;
+    }
+    return card;
   }
 
   /* ---------------------------------------------------------
@@ -6013,6 +6096,8 @@
   const FIELD_HELP_TEXTS = {
     qcm: "Si tu remplis les 3 réponses fausses, la fiche te sera d'abord posée en QCM : la bonne réponse mélangée à ces 3 réponses fausses. Laisse les 3 cases vides pour une fiche classique. Attention : elle te sera aussi posée sans les propositions. Écris donc une question qui se suffit à elle-même (« Quelle est la capitale de l'Australie ? », pas « Laquelle de ces villes… »).",
     link: "Une courte vidéo ou une page qui explique bien cette fiche, d'une source sérieuse (chaîne de l'auteur, site éducatif). Le lien sera proposé pendant la révision.",
+    cloze: "Une fois la question bien sue, la fiche te sera posée en texte à trous. Écris une phrase qui développe la réponse, et mets entre crochets les mots à cacher : « Le penseur chinois [Confucius] enseigne le respect [des ancêtres], de [l'ordre] et des [devoirs]. » Pour chaque trou, donne 3 réponses fausses. 3 ou 4 trous, c'est l'idéal.",
+    q2: "La dernière étape : une question plus difficile, à laquelle on répond sans aide. Elle reprend ce que le texte à trous a fait apprendre, et sa réponse reprend la même phrase : « Qui est Confucius ? » → « Le penseur chinois qui enseigne le respect des ancêtres, de l'ordre et des devoirs. » Pour un mot de vocabulaire, pose la question dans le sens le plus difficile (du français vers l'anglais, par exemple).",
   };
   document.querySelectorAll(".field-help-btn[data-field-help]").forEach((b) => {
     b.addEventListener("click", (e) => {
@@ -6054,6 +6139,11 @@
       await robotAlert(qcm.error);
       return;
     }
+    const level2 = readLevel2Fields();
+    if (level2.error) {
+      await robotAlert(level2.error);
+      return;
+    }
     // v251 : une fiche QCM est aussi posée SANS les propositions (mode
     // normal) : la question doit garder son sens toute seule.
     if (qcm.wrongs.length) {
@@ -6092,6 +6182,7 @@
         else delete updated.more;
         if (link) updated.link = link;
         else delete updated.link;
+        applyLevel2Fields(updated, level2);
         if (qcm.wrongs.length) {
           // Réponses fausses ajoutées à une fiche qui n'en avait pas : elle
           // repasse en QCM à sa prochaine interrogation.
@@ -6142,6 +6233,7 @@
       if (qcm.wrongs.length) card.wrongs = qcm.wrongs;
       if (more) card.more = more;
       if (link) card.link = link;
+      applyLevel2Fields(card, level2);
       await persist(card);
       cards.push(card);
       await pushSharedBoxUpdatesForSubject(newCardSubjectId);
@@ -6202,6 +6294,7 @@
     if (el("input-more")) el("input-more").innerHTML = card.more ? toDisplayHtml(card.more) : "";
     if (el("input-link")) el("input-link").value = card.link || "";
     setQcmFields(card);
+    setLevel2Fields(card);
     submitBtn.textContent = "Enregistrer les modifications";
     cancelEditBtn.hidden = false;
     // Round 54 : en modification, pas de choix de boîte (la fiche reste dans

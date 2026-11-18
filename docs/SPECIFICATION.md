@@ -459,10 +459,17 @@ abandonnée : trop de couleurs, risque de confusion.
 
 - (b) existe toujours et a du sens seul (règles actuelles).
 - (c) développe la réponse : le « quoi » ou le « pourquoi » (souvent déjà
-  dans le complément « en savoir plus » des fiches toutes prêtes) ; 2 ou 3
-  trous de préférence.
+  dans le complément « en savoir plus » des fiches toutes prêtes) ;
+  **3 ou 4 trous** (demande du 18 nov. 2026) : le texte à trous
+  « pré-mâche » au maximum ce qu'il faudra retrouver seul en (d).
 - (d) reprend les éléments travaillés en (c), pour que l'élève sache ce
-  qu'il doit retrouver ; pour une correspondance, (d) est le sens le plus
+  qu'il doit retrouver ; **sa réponse reprend la phrase du texte à trous,
+  complétée** (même ordre, mêmes mots), et sa question est tournée pour
+  appeler cette phrase. Exemple : (c) « Le penseur chinois [Confucius]
+  enseigne le respect [des ancêtres], de [l'ordre] et des [devoirs]. » →
+  (d) « Qui est Confucius ? » → « Le penseur chinois qui enseigne le
+  respect des ancêtres, de l'ordre et des devoirs. » Pour une
+  correspondance, (d) est le sens le plus
   difficile (d'abord de l'anglais vers le français en (a)/(b), puis du
   français vers l'anglais en (d)).
 - Toutes les formes restent dans le sujet de la boîte (§5.7, règle 8).
@@ -507,20 +514,31 @@ abandonnée : trop de couleurs, risque de confusion.
      orange), choisit parmi ses 4 propositions affichées dessous, et
      l'appli passe d'elle-même au trou vide suivant ; il peut retoucher
      un trou pour changer sa réponse ;
-   - une fois tous les trous remplis, bouton **« Vérifier »** : les trous
-     justes passent en vert et restent ; les faux se vident pour une
-     **2e tentative** ;
+   - dès que tous les trous sont remplis, l'appli **vérifie d'elle-même**
+     (v299 : plus de bouton « Vérifier ») : les trous justes passent en
+     vert et restent ; les faux se vident pour une **2e tentative**, la
+     réponse fausse restant **barrée** dans le trou et dans ses
+     propositions (où elle ne peut plus être choisie) ;
    - à la fin : « Tout est juste ! » (Je sais), « Tout est juste, au
      deuxième essai. » (Vague idée) ou « Raté… Les bonnes réponses sont en
      vert. » (Je ne sais pas : la réponse choisie est barrée, la bonne
      écrite à côté) ; note donnée par l'appli, comme pour le QCM ;
    - tout juste du premier coup et sans complément : la fiche passe toute
      seule à la suivante ; sinon bouton « Continuer ».
-   **Contenu d'essai** : 14 textes à trous, sur les fiches qui ont déjà
-   une question poussée — « Rome et la Chine des Han » (8, dont
-   Confucius) et « Les débuts du christianisme » (6).
-   **Pas encore fait** : champs « texte à trous » dans l'écran de création
-   / modification d'une fiche.
+   **Contenu d'essai** (revu en v299) : 26 fiches à 4 formes, avec des
+   textes à trous de 3 ou 4 trous et des questions poussées dont la
+   réponse reprend la phrase du texte à trous — « Rome et la Chine des
+   Han » (14 fiches sur 16) et « Les débuts du christianisme » (12 sur 16).
+   **Saisie (v299)** : l'écran de création / modification d'une fiche a
+   deux nouveaux blocs facultatifs, chacun avec son aide :
+   - « Texte à trous » : on écrit la phrase en mettant **entre crochets**
+     les mots à cacher (« Le penseur chinois [Confucius] enseigne… ») ;
+     sous la phrase apparaissent, au fil de la frappe, 3 cases de
+     réponses fausses par trou (les réponses déjà tapées sont gardées si
+     on retouche la phrase) ; le robot signale un crochet mal placé, un
+     trou sans ses 3 réponses fausses ou des propositions en double ;
+   - « Question poussée » : la question et sa réponse (les deux, ou
+     aucune).
 4. ✅ **Affichage de la progression fait (v297, 18 nov. 2026)** : jauge à
    une case par forme (§4.6). Reste : rédaction de (c) et (d) pour les
    boîtes toutes prêtes, lot par lot.
@@ -1346,8 +1364,8 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 - [ ] (16 nov. 2026) Niveaux d'une fiche pour un apprentissage progressif
   (QCM → question → texte à trous → question poussée) : règles décidées
   le 17 nov. (§4.7) ; étapes 1 et 2 faites (v296), jauge (v297), écran
-  du texte à trous (v298) ; essai en cours avec des élèves. Restent :
-  champs (c) et (d) dans l'écran de création d'une fiche, rédaction des
+  du texte à trous (v298), vérification automatique et saisie des formes
+  poussées (v299) ; essai en cours avec des élèves. Reste : rédaction des
   formes poussées des boîtes toutes prêtes, lot par lot.
 - [ ] 
 
@@ -1357,6 +1375,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v299 | 18 nov. 2026 | Formes d'une fiche : texte à trous vérifié tout seul dès que tous les trous sont remplis (plus de bouton « Vérifier ») ; au 2e essai, la réponse fausse reste barrée dans le trou et dans les propositions. Nouveaux blocs « Texte à trous » (phrase à crochets, 3 réponses fausses par trou) et « Question poussée » dans l'écran d'une fiche. Règle d'écriture : 3 ou 4 trous, et réponse de la question poussée qui reprend la phrase du texte à trous. Contenu d'essai revu : 26 fiches à 4 formes. |
 | v298 | 18 nov. 2026 | Formes d'une fiche, étape 3 (§4.7) : écran du texte à trous, dans la même fiche que le QCM — on touche un trou, on choisit parmi ses 4 propositions, puis « Vérifier » ; 2e tentative pour les trous faux ; note donnée par l'appli (Je sais / Vague idée / Je ne sais pas). Contenu d'essai : 14 textes à trous dans 2 boîtes d'histoire de 6e. |
 | v297 | 18 nov. 2026 | Jauge de progression des fiches à plusieurs formes (§4.6, Q25 revue) : toujours 4 couleurs, mais une case par forme de chaque fiche au lieu d'une par fiche ; chaque case garde la dernière note à sa forme ; « Je sais » compte « Parfaitement » en QCM et en texte à trous ; anciennes fiches : une forme dépassée compte comme sue. Même règle pour le tri des échéances à date égale. |
 | v296 | 18 nov. 2026 | Formes d'une fiche, étape 2 (§4.7) : règles branchées dans l'appli ; question poussée (d) posée sur l'écran de la question classique avec la pastille « Approfondie » ; un QCM juste du premier coup fait revenir la fiche 1 heure plus tard en question sans allonger son délai ; pas de « Tu es sûr ? » quand la forme a changé ; formes poussées gardées au partage, à la publication, à l'import des boîtes toutes prêtes et à la copie depuis la Librairie. Contenu d'essai : 26 questions poussées dans 2 boîtes d'histoire de 6e. |

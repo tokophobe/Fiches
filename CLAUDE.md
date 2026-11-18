@@ -86,7 +86,10 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   `q2`/`a2` ; suivi `form`, `formMax`, `formStreak`). Branché en v296
   (étape 2) : dans `app.js`, `reviewForm` donne la forme posée ;
   texte à trous (v298) dans la fiche du QCM (`qcm-panel`, `qcmState` avec
-  `kind: "cloze"`, `startCloze`, `drawCloze`, bouton `#cloze-check`),
+  `kind: "cloze"`, `startCloze`, `drawCloze`, `checkCloze` lancé tout
+  seul quand tous les trous sont remplis, v299) ; saisie dans l'écran
+  d'une fiche (v299) : phrase à [crochets] (`CardForms.clozeFromBrackets`
+  / `clozeToBrackets`), `setLevel2Fields` / `readLevel2Fields`,
   `nextAfterRating` applique
   montée / descente, `lastRatedForm` évite le « Tu es sûr ? » d'une forme
   à l'autre ; `qcmMode` n'est plus qu'un reflet de `form === "a"`. Les

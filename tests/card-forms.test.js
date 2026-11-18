@@ -268,3 +268,28 @@ test("texte à trous : le texte est coupé autour de chaque trou « ___ »", () 
   assert.deepEqual(parts, ["Le penseur chinois ", " enseigne le respect ", ", de ", " et des ", "."]);
   assert.deepEqual(F.clozeSegments("___ commence"), ["", " commence"], "un trou en tout début de phrase");
 });
+
+/* ---------- Saisie d'un texte à trous : la phrase à crochets (v299) ---------- */
+
+test("saisie : les mots entre crochets deviennent les trous, avec leurs 3 réponses fausses", () => {
+  const wrongs = CONFUCIUS.cloze.blanks.map((b) => b.wrongs);
+  const res = F.clozeFromBrackets("Le penseur chinois [Confucius] enseigne le respect [des ancêtres], de [l'ordre] et des [devoirs].", wrongs);
+  assert.deepEqual(res.cloze, CONFUCIUS.cloze);
+  assert.ok(F.validCloze(res.cloze));
+});
+
+test("saisie : une fiche existante se réécrit avec ses crochets (aller-retour sans perte)", () => {
+  const text = F.clozeToBrackets(CONFUCIUS.cloze);
+  assert.equal(text, "Le penseur chinois [Confucius] enseigne le respect [des ancêtres], de [l'ordre] et des [devoirs].");
+  assert.deepEqual(F.bracketAnswers(text), ["Confucius", "des ancêtres", "l'ordre", "devoirs"]);
+  assert.deepEqual(F.clozeFromBrackets(text, CONFUCIUS.cloze.blanks.map((b) => b.wrongs)).cloze, CONFUCIUS.cloze);
+});
+
+test("saisie : phrase vide = pas de texte à trous ; erreurs expliquées à l'auteur", () => {
+  assert.deepEqual(F.clozeFromBrackets("  ", []), { cloze: null });
+  assert.match(F.clozeFromBrackets("Pas de crochet ici.", []).error, /entre crochets/);
+  assert.match(F.clozeFromBrackets("Un [crochet mal fermé.", []).error, /mal placé/);
+  assert.match(F.clozeFromBrackets("Un [] vide.", []).error, /vide/);
+  assert.match(F.clozeFromBrackets("La capitale est [Paris].", [["Lyon", "Nice"]]).error, /3 réponses fausses pour le trou 1/);
+  assert.match(F.clozeFromBrackets("La capitale est [Paris].", [["Lyon", "paris", "Nice"]]).error, /différentes/);
+});

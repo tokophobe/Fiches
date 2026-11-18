@@ -46,6 +46,47 @@
     return String(text == null ? "" : text).split(BLANK);
   }
 
+  /* v299 : saisie d'un texte à trous dans l'écran de création d'une fiche :
+     la phrase s'écrit avec les mots à cacher entre crochets,
+     « Le penseur chinois [Confucius] enseigne… ». */
+  const BRACKET = /\[([^\[\]]*)\]/g;
+
+  /** Mots entre crochets, dans l'ordre. */
+  function bracketAnswers(text) {
+    return Array.from(String(text == null ? "" : text).matchAll(BRACKET), (m) => m[1].trim());
+  }
+
+  /** Phrase à crochets d'un texte à trous existant (pour le modifier). */
+  function clozeToBrackets(cloze) {
+    if (!cloze || !Array.isArray(cloze.blanks)) return "";
+    let i = 0;
+    return String(cloze.text || "").replace(BLANK, () => `[${(cloze.blanks[i++] || {}).answer || ""}]`);
+  }
+
+  /** Texte à trous à partir de la phrase à crochets et des 3 mauvaises
+   *  réponses de chaque trou. Renvoie { cloze } (null si la phrase est
+   *  vide) ou { error } (message pour l'auteur de la fiche). */
+  function clozeFromBrackets(text, wrongsList) {
+    const src = clean(text);
+    if (!src) return { cloze: null };
+    const opened = (src.match(/\[/g) || []).length;
+    const closed = (src.match(/\]/g) || []).length;
+    if (opened !== closed || /\[[^\]]*\[/.test(src)) return { error: "Texte à trous : un crochet [ ou ] est mal placé. Chaque mot à cacher s'écrit entre [ et ]." };
+    const answers = bracketAnswers(src);
+    if (!answers.length) return { error: "Texte à trous : mets entre crochets les mots à cacher, par exemple « Le penseur chinois [Confucius] enseigne… »." };
+    if (answers.some((a) => !a)) return { error: "Texte à trous : un des crochets est vide." };
+    if (/_{3,}/.test(src.replace(BRACKET, ""))) return { error: "Texte à trous : écris les mots à cacher entre crochets, pas avec des tirets « ___ »." };
+    const norm = (t) => clean(t).replace(/\s+/g, " ").toLowerCase();
+    const blanks = [];
+    for (let i = 0; i < answers.length; i++) {
+      const wrongs = ((wrongsList || [])[i] || []).map(clean).filter(Boolean);
+      if (wrongs.length !== 3) return { error: `Texte à trous : il faut 3 réponses fausses pour le trou ${i + 1} (« ${answers[i]} »).` };
+      if (new Set([answers[i], ...wrongs].map(norm)).size !== 4) return { error: `Texte à trous : les 4 propositions du trou ${i + 1} (« ${answers[i]} ») doivent être différentes.` };
+      blanks.push({ answer: answers[i], wrongs });
+    }
+    return { cloze: { text: src.replace(BRACKET, "___"), blanks } };
+  }
+
   /** Formes disponibles pour cette fiche. */
   function forms(card) {
     const c = card || {};
@@ -213,7 +254,7 @@
   }
 
   const api = {
-    ORDER, FORM_UP_DELAY_MIN, validCloze, clozeSegments, forms, hasLevel2, currentForm, afterRating, scheduleFormUp, clozeRating,
+    ORDER, FORM_UP_DELAY_MIN, validCloze, clozeSegments, bracketAnswers, clozeToBrackets, clozeFromBrackets, forms, hasLevel2, currentForm, afterRating, scheduleFormUp, clozeRating,
     legacyFormRatings, withFormRating, gaugeNotes, gaugeCounts,
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
