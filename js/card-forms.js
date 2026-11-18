@@ -1,0 +1,141 @@
+/* ============================================================
+   Fiches — formes d'une fiche (spéc. §4.7, décidé les 16-17 nov. 2026).
+   Logique pure, sans écran ni stockage, l'heure étant passée en
+   paramètre : testée dans tests/card-forms.test.js.
+
+   Quatre formes, en deux niveaux :
+     niveau 1 (question basique) : (a) QCM, (b) question / réponse ;
+     niveau 2 (question poussée) : (c) texte à trous, (d) question / réponse.
+   Toute fiche a au moins (b). Champs d'une fiche :
+     (a) `wrongs` : 3 mauvaises réponses (existant) ;
+     (c) `cloze` : { text: "… ___ … ___ …", blanks: [{ answer, wrongs: [3] }] } ;
+     (d) `q2` / `a2` : question et réponse poussées ;
+     suivi : `form` (forme actuelle), `formMax` (plus haute atteinte),
+             `formStreak` (réussites de suite à la forme actuelle).
+   Étape 1 (v296) : règles seulement, pas encore branchées dans l'appli.
+   ============================================================ */
+(function (root) {
+  "use strict";
+
+  const ORDER = ["a", "b", "c", "d"];
+  /** Délai avant la première interrogation sous une forme supérieure. */
+  const FORM_UP_DELAY_MIN = 60;
+  const BLANK = /_{3,}/g;
+
+  function clean(v) {
+    return String(v == null ? "" : v).trim();
+  }
+  function hasWrongs(list) {
+    return Array.isArray(list) && list.map(clean).filter(Boolean).length === 3;
+  }
+
+  /** Texte à trous valable : autant de trous « ___ » dans le texte que de
+   *  réponses, chacune avec ses 3 mauvaises réponses. */
+  function validCloze(cloze) {
+    if (!cloze || typeof cloze !== "object" || !Array.isArray(cloze.blanks) || !cloze.blanks.length) return false;
+    const holes = (clean(cloze.text).match(BLANK) || []).length;
+    return holes === cloze.blanks.length && cloze.blanks.every((b) => b && clean(b.answer) && hasWrongs(b.wrongs));
+  }
+
+  /** Formes disponibles pour cette fiche. */
+  function forms(card) {
+    const c = card || {};
+    return {
+      a: hasWrongs(c.wrongs),
+      b: true,
+      c: validCloze(c.cloze),
+      d: !!(clean(c.q2) && clean(c.a2)),
+    };
+  }
+  /** La fiche a-t-elle une question poussée (niveau 2) ? */
+  function hasLevel2(card) {
+    const f = forms(card);
+    return f.c || f.d;
+  }
+
+  /** Forme disponible la plus proche en dessous (ou égale). */
+  function atOrBelow(f, form) {
+    for (let i = ORDER.indexOf(form); i >= 0; i--) if (f[ORDER[i]]) return ORDER[i];
+    return "b";
+  }
+  function above(f, form) {
+    for (let i = ORDER.indexOf(form) + 1; i < ORDER.length; i++) if (f[ORDER[i]]) return ORDER[i];
+    return null;
+  }
+  function below(f, form) {
+    for (let i = ORDER.indexOf(form) - 1; i >= 0; i--) if (f[ORDER[i]]) return ORDER[i];
+    return null;
+  }
+
+  /** Forme sous laquelle poser la fiche. Fiche sans `form` (fiches
+   *  actuelles) : QCM tant que `qcmMode` n'est pas `false`, comme avant.
+   *  Une forme retirée de la fiche retombe sur la plus proche en dessous.
+   *  Échéance proche (sprint) : la forme la plus haute déjà atteinte. */
+  function currentForm(card, opts) {
+    const c = card || {};
+    const f = forms(c);
+    if (opts && opts.sprint && ORDER.includes(c.formMax)) return atOrBelow(f, c.formMax);
+    if (ORDER.includes(c.form)) return atOrBelow(f, c.form);
+    return f.a && c.qcmMode !== false ? "a" : "b";
+  }
+
+  /** Nouvelle forme après une note (0 = Je ne sais pas … 3 = Parfaitement)
+   *  donnée à la forme `form` (tableau du §4.7).
+   *  Renvoie { form, formMax, formStreak, change: "up" | "down" | "same" }. */
+  function afterRating(card, form, rating) {
+    const c = card || {};
+    const f = forms(c);
+    const streak = Number(c.form === form ? c.formStreak : 0) || 0;
+    let next = form;
+    let nextStreak = 0;
+    if (form === "a") {
+      // Juste du premier coup (« Je sais ») → (b).
+      if (rating >= 2) next = "b";
+    } else if (form === "b") {
+      if (rating === 0) next = below(f, "b") || "b";
+      else if (rating >= 2) {
+        nextStreak = rating === 3 ? 2 : streak + 1;
+        if (nextStreak >= 2 && above(f, "b")) next = above(f, "b");
+      }
+    } else if (form === "c") {
+      // Tout juste à la 1re tentative (« Je sais »), 2 fois de suite → (d).
+      if (rating >= 2) {
+        nextStreak = streak + 1;
+        if (nextStreak >= 2 && above(f, "c")) next = above(f, "c");
+      }
+    } else if (form === "d") {
+      if (rating === 0) next = below(f, "d") || "d";
+    }
+    const change = ORDER.indexOf(next) > ORDER.indexOf(form) ? "up" : ORDER.indexOf(next) < ORDER.indexOf(form) ? "down" : "same";
+    if (change !== "same") nextStreak = 0;
+    else nextStreak = Math.min(nextStreak, 2);
+    const prevMax = ORDER.includes(c.formMax) ? c.formMax : form;
+    const formMax = ORDER.indexOf(next) > ORDER.indexOf(prevMax) ? next : prevMax;
+    return { form: next, formMax, formStreak: nextStreak, change };
+  }
+
+  /** Montée de forme (décision Q24) : la note qui fait monter n'allonge pas
+   *  le délai. Le dernier délai reste celui d'avant, la date de dernière
+   *  interrogation devient celle de la montée, et la fiche revient 1 heure
+   *  plus tard sous sa nouvelle forme. Champs à fusionner dans la fiche. */
+  function scheduleFormUp(card, now, delayMin) {
+    const d = typeof delayMin === "number" && delayMin > 0 ? delayMin : FORM_UP_DELAY_MIN;
+    return {
+      dd: card && typeof card.dd === "number" ? card.dd : 0,
+      lastReviewed: now.toISOString(),
+      dueDate: new Date(now.getTime() + d * 60000).toISOString(),
+    };
+  }
+
+  /** Note d'un texte à trous, donnée par l'appli (pas par l'élève) :
+   *  tout juste à la 1re tentative → 2 (Je sais) ; à la 2e → 1 (Vague
+   *  idée) ; encore faux → 0 (Je ne sais pas). */
+  function clozeRating(firstAllRight, secondAllRight) {
+    if (firstAllRight) return 2;
+    return secondAllRight ? 1 : 0;
+  }
+
+  const api = { ORDER, FORM_UP_DELAY_MIN, validCloze, forms, hasLevel2, currentForm, afterRating, scheduleFormUp, clozeRating };
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  else root.CardForms = api;
+})(typeof window !== "undefined" ? window : globalThis);

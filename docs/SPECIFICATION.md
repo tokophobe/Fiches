@@ -447,8 +447,13 @@ Une fiche peut être posée sous quatre formes, en deux niveaux :
 
 #### Étapes envisagées (après validation)
 
-1. Règles et algorithme des formes, avec un test automatique par ligne du
-   tableau ci-dessus — rien de visible ne change.
+1. ✅ **Fait (18 nov. 2026)** : règles et algorithme des formes, avec un
+   test automatique par ligne du tableau ci-dessus (28 tests). Pas encore
+   branchés dans l'appli : rien de visible ne change.
+   ⚠ **À savoir pour l'étape 2** : une fois les règles branchées, les
+   fiches QCM actuelles suivront aussi la règle de montée — un QCM juste du
+   premier coup fera revenir la fiche 1 heure plus tard en question, sans
+   allonger son délai (aujourd'hui, elle part pour 3 à 30 jours).
 2. Forme (d) (même écran que la question classique), essai sur quelques
    boîtes de 6e avec un ou deux élèves.
 3. Forme (c), nouvel écran de texte à trous.
@@ -1284,6 +1289,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 18 nov. 2026 | Formes d'une fiche, étape 1 (rien ne change dans l'appli) : règles du §4.7 écrites dans un fichier à part et vérifiées par 28 tests automatiques (tableau de passage, formes manquantes, fiches actuelles, sprint, montée de forme avec l'exemple chiffré). |
 | — | 17 nov. 2026 | Spécification seulement : montée de forme (décision Q24, lecture 2) — retour 1 heure plus tard, le dernier délai reste celui d'avant, la note suivante repart de ce délai ; §4.7 entièrement tranchée. |
 | — | 17 nov. 2026 | Spécification seulement : jauge de progression des fiches à deux niveaux (8 couleurs en dégradé, smileys assortis, décision Q25) ; Q24 reformulée (délai à la montée de forme). |
 | — | 17 nov. 2026 | Spécification seulement (rien ne change dans l'appli) : §4.7 réécrit avec les règles décidées — formes (a) QCM, (b) question, (c) texte à trous, (d) question poussée (toujours au moins (b)), tableau de passage d'une forme à l'autre, texte à trous noté par tentatives, montée de forme sans effet sur le calendrier (retour 1 heure plus tard), descente sans interrogation supplémentaire ; Q22 et Q23 répondues. |

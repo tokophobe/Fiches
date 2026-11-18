@@ -8,6 +8,9 @@ par le code. Chaque test porte le nom de la règle qu'il vérifie.
 |---|---|
 | `revision-algo.test.js` | L'algorithme de révision (§4) : délais du mode fond, mode sprint, entrée et sortie de sprint avec l'agenda, ordre des fiches dans une séance. |
 | `qcm-questions.test.js` | Le repérage des questions QCM qui n'ont pas de sens sans leurs propositions (§5.7). |
+| `library-rules.test.js` | Les règles de la Librairie (§7.1) : ordre au hasard, mémoire du bouton « vidéos de cours », rangement par chapitres. |
+| `learn-links.test.js` | Les liens « Pour aller plus loin » (§5.7) : extraits de vidéo (début et fin). |
+| `card-forms.test.js` | Les formes d'une fiche (§4.7) : une ligne du tableau de passage par test, formes manquantes, fiches actuelles, montée de forme et calendrier. |
 
 ## Quand sont-ils lancés ?
 
