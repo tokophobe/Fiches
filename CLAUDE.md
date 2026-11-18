@@ -81,7 +81,11 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   révisions selon le compte élève / enseignant, droit de publier),
   `js/library-rules.js` (Librairie : ordre au hasard, mémoire du bouton
   « vidéos de cours », v275), `js/publication-rules.js` (publication avec
-  relecture, étape A). Pour ajouter un test sur une
+  relecture, étape A), `js/card-forms.js` (formes d'une fiche, spéc. §4.7 :
+  (a) QCM, (b) question, (c) texte à trous `cloze`, (d) question poussée
+  `q2`/`a2` ; suivi `form`, `formMax`, `formStreak` ; étape 1 du
+  18 nov. 2026, pas encore chargé par l'appli — à l'étape 2, l'ajouter à
+  `index.html`, `sw.js` et remplacer `isQcmCard` / `qcmMode`). Pour ajouter un test sur une
   autre règle, extraire de la même façon la logique concernée.
 - **Lancer les tests avant chaque livraison.** Quand une règle de la
   spécification change, mettre à jour son test dans la même branche ;
