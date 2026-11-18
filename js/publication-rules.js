@@ -106,9 +106,12 @@
 
   /** Contenu publié d'une fiche (mêmes champs que shareableCard dans
    *  js/sync.js) : question, réponse, 3 mauvaises réponses du QCM, « pour
-   *  aller plus loin » et lien. */
+   *  aller plus loin » et lien ; v296 : formes poussées (§4.7), seulement
+   *  si la fiche en a (l'empreinte des autres fiches ne change pas). */
   function cardContentKey(c) {
-    return JSON.stringify([c.question || "", c.answer || "", Array.isArray(c.wrongs) ? c.wrongs : null, c.more || "", c.link || ""]);
+    const key = [c.question || "", c.answer || "", Array.isArray(c.wrongs) ? c.wrongs : null, c.more || "", c.link || ""];
+    if (c.q2 || c.a2 || c.cloze) key.push(c.q2 || "", c.a2 || "", c.cloze || null);
+    return JSON.stringify(key);
   }
 
   /** Empreinte d'un ensemble de fiches (pour savoir si le contenu a

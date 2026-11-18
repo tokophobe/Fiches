@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v295";
+  const APP_VERSION = "v296";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -1982,7 +1982,10 @@
     // question elle-même passe par toDisplayHtml (item 13 : contenu riche).
     // Round 46 : le nom de la boîte n'est plus dans la fiche mais au-dessus
     // (à la place du sélecteur de boîtes), avec sa jauge.
-    questionTextEl.innerHTML = toDisplayHtml(card.question);
+    questionTextEl.innerHTML = toDisplayHtml(reviewQuestion(card));
+    // v296 : question poussée (forme d, §4.7) signalée sur la fiche.
+    const levelBadge = el("card-level-badge");
+    if (levelBadge) levelBadge.hidden = reviewForm(card) !== "d";
     renderReviewCurrentBox(card);
     renderSubjectBarCount();
     const constructionBtn = el("construction-current-btn");
@@ -4443,13 +4446,13 @@
     if (currentCard && currentCard.id === updated.id) {
       const before = currentCard;
       const textChanged =
-        before.question !== updated.question || before.answer !== updated.answer || JSON.stringify(cardWrongs(before)) !== JSON.stringify(cardWrongs(updated));
+        before.question !== updated.question || before.answer !== updated.answer || before.q2 !== updated.q2 || before.a2 !== updated.a2 || JSON.stringify(cardWrongs(before)) !== JSON.stringify(cardWrongs(updated));
       currentCard = updated;
       // v233 : affichage mis à jour même si la page Réviser n'est pas
       // visible (on y revient après « Enregistrer les modifications »),
       // y compris la fiche QCM (question, choix et réponses fausses).
       renderQuestionText(currentCard);
-      answerTextEl.innerHTML = answerWithMoreHtml(currentCard);
+      answerTextEl.innerHTML = reviewAnswerHtml(currentCard);
       renderCardLearnLink(currentCard);
       if (qcmState && qcmState.cardId === updated.id && qcmState.done && el("qcm-learn-link")) el("qcm-learn-link").hidden = !learnLinkInfo(updated.link);
       updateRatingPreviews();
@@ -4897,7 +4900,7 @@
     }
     currentCard = fresh;
     renderQuestionText(currentCard);
-    answerTextEl.innerHTML = answerWithMoreHtml(currentCard);
+    answerTextEl.innerHTML = reviewAnswerHtml(currentCard);
     renderCardLearnLink(currentCard);
     updateRatingPreviews();
   }
@@ -4950,7 +4953,7 @@
     // question comme côté réponse) : on ne les cache plus au retournement.
     ratingRowEl.hidden = false;
     renderQuestionText(currentCard);
-    answerTextEl.innerHTML = answerWithMoreHtml(currentCard);
+    answerTextEl.innerHTML = reviewAnswerHtml(currentCard);
     renderReviewMode(currentCard);
     renderSessionProgress();
     updateRatingPreviews();
@@ -4965,9 +4968,11 @@
     const previews = {};
     const futureDelaysMin = {};
     for (const rating of ["again", "hard", "good", "easy"]) {
-      const next = computeAlgoNext(currentCard, rating);
-      previews[rating] = formatDelayMinutes(next.dd);
-      futureDelaysMin[rating] = next.dd;
+      // v296 : une note qui fait monter de forme fait revenir la fiche
+      // 1 heure plus tard (§4.7).
+      const next = nextAfterRating(currentCard, rating);
+      previews[rating] = formatDelayMinutes(next.previewMin);
+      futureDelaysMin[rating] = next.previewMin;
     }
     el("sub-again").textContent = previews.again;
     el("sub-hard").textContent = previews.hard;
@@ -5083,6 +5088,9 @@
     const prev = previousRatingIndex(card);
     const idx = ratingIndex(rating);
     if (prev === null || idx < 0) return true;
+    // v296 : pas de comparaison entre deux formes différentes (§4.7) — la
+    // dernière note portait sur une autre forme de la question.
+    if (card.lastRatedForm && card.lastRatedForm !== reviewForm(card)) return true;
     const jumpUp = idx === 3 && prev <= 1;
     const jumpDown = idx <= 1 && prev === 3;
     if (!jumpUp && !jumpDown) return true;
@@ -5371,10 +5379,10 @@
       });
     }
   }
-  async function finishQcm(cardId, rating, keepQcm) {
+  async function finishQcm(cardId, rating) {
     if (!currentCard || currentCard.id !== cardId) return;
     qcmState = null;
-    await rateCurrentCard(rating, { qcmMode: keepQcm });
+    await rateCurrentCard(rating);
   }
   const qcmChoicesEl = el("qcm-choices");
   if (qcmChoicesEl) {
@@ -5403,13 +5411,13 @@
           !!learnLinkInfo(currentCard.link);
         if (firstTry && !hasMore) {
           // « Je sais » : la fiche repassera en mode normal.
-          st.timer = setTimeout(() => finishQcm(cardId, "good", false), 1300);
+          st.timer = setTimeout(() => finishQcm(cardId, "good"), 1300);
         } else if (firstTry && cont) {
           cont.hidden = false;
-          cont.onclick = () => finishQcm(cardId, "good", false);
+          cont.onclick = () => finishQcm(cardId, "good");
         } else if (cont) {
           cont.hidden = false;
-          cont.onclick = () => finishQcm(cardId, "hard", true);
+          cont.onclick = () => finishQcm(cardId, "hard");
         }
         return;
       }
@@ -5420,7 +5428,7 @@
         revealQcmAnswer();
         if (cont) {
           cont.hidden = false;
-          cont.onclick = () => finishQcm(cardId, "again", true);
+          cont.onclick = () => finishQcm(cardId, "again");
         }
         return;
       }
@@ -5501,7 +5509,7 @@
     requestAnimationFrame(() => flipCardEl.classList.remove("no-flip-transition"));
     isFlipped = false;
     renderQuestionText(currentCard);
-    answerTextEl.innerHTML = answerWithMoreHtml(currentCard);
+    answerTextEl.innerHTML = reviewAnswerHtml(currentCard);
     renderReviewMode(currentCard);
     updateRatingPreviews();
     renderReviewChart();
@@ -5520,11 +5528,8 @@
 
   async function rateCurrentCard(rating, extra) {
     if (!currentCard) return;
-    // Round 60 : une fiche QCM repassée en mode normal puis ratée
-    // (« Je ne savais pas ») repasse en QCM.
-    if (!(extra && "qcmMode" in extra) && rating === "again" && cardWrongs(currentCard).length === 3 && currentCard.qcmMode === false) {
-      extra = { ...(extra || {}), qcmMode: true };
-    }
+    // v296 : le retour au QCM après un échec (ancien round 60) et le
+    // passage d'une forme à l'autre se font dans nextAfterRating (§4.7).
     const ratingLogId = await logRating(currentCard, rating);
     captureRatingSnapshot(ratingLogId);
     const updated = await rateScheduledCard(rating, extra);
@@ -5546,13 +5551,17 @@
   }
 
   async function rateScheduledCard(rating, extra) {
-    const next = computeAlgoNext(currentCard, rating);
-    delete next.mode;
+    const next = nextAfterRating(currentCard, rating);
+    const formUp = next.formUp;
+    delete next.formUp;
+    delete next.previewMin;
     const updated = touch({
       ...currentCard,
       ...next,
       ...(extra || {}),
-      lastReviewed: new Date().toISOString(),
+      // Montée de forme : la date de dernière interrogation vient de
+      // scheduleFormUp (§4.7, décision Q24).
+      lastReviewed: formUp ? next.lastReviewed : new Date().toISOString(),
       reviewCount: (currentCard.reviewCount || 0) + 1,
     });
     trackCardInterval(updated, updated.interval);
@@ -5747,11 +5756,11 @@
 
   /* ---------------------------------------------------------
      Round 59 : mode QCM. Une fiche peut avoir 3 réponses fausses
-     (`wrongs`). Tant que `qcmMode` n'est pas `false`, elle est posée en
-     QCM : bonne réponse du premier coup → « Je sais » et retour au mode
-     normal ; erreur puis bonne réponse → « Vague idée » ; deux erreurs →
-     « Je ne savais pas » (la bonne réponse est montrée) ; dans ces deux
-     cas, la fiche reste en QCM.
+     (`wrongs`) : c'est la forme (a) (§4.7, v296 : la forme posée est
+     décidée par reviewForm). Bonne réponse du premier coup → « Je sais »
+     et passage en (b) ; erreur puis bonne réponse → « Vague idée » ; deux
+     erreurs → « Je ne savais pas » (la bonne réponse est montrée) ; dans
+     ces deux cas, la fiche reste en QCM.
   --------------------------------------------------------- */
   const QCM_WRONG_IDS = ["input-wrong-1", "input-wrong-2", "input-wrong-3"];
   /** Round 60 : réponse + complément (sous la réponse, mis en forme à part). */
@@ -5762,8 +5771,43 @@
   function cardWrongs(card) {
     return Array.isArray(card && card.wrongs) ? card.wrongs.map((w) => String(w || "").trim()).filter(Boolean) : [];
   }
+  /* v296 : formes d'une fiche (spéc. §4.7, js/card-forms.js) — (a) QCM,
+     (b) question, (c) texte à trous (pas encore à l'écran), (d) question
+     poussée. La forme posée remplace l'ancien `qcmMode` (gardé à jour
+     pour les fiches QCM). Échéance proche : la forme la plus haute déjà
+     atteinte. */
+  function reviewForm(card) {
+    if (!card) return "b";
+    const form = CardForms.currentForm(card, { sprint: !!card.inSprint });
+    // Le texte à trous (c) n'a pas encore d'écran : posé comme (b).
+    return form === "c" ? "b" : form;
+  }
   function isQcmCard(card) {
-    return !!card && cardWrongs(card).length === 3 && card.qcmMode !== false;
+    return reviewForm(card) === "a";
+  }
+  function reviewQuestion(card) {
+    return reviewForm(card) === "d" ? card.q2 : card.question;
+  }
+  function reviewAnswerHtml(card) {
+    if (reviewForm(card) !== "d") return answerWithMoreHtml(card);
+    return toDisplayHtml(card.a2 || "");
+  }
+  /** Champs à fusionner dans la fiche après une note : forme suivante
+   *  (tableau du §4.7) et calendrier. Une montée de forme n'allonge pas le
+   *  délai : retour 1 heure plus tard sous la nouvelle forme (décision Q24). */
+  function nextAfterRating(card, rating) {
+    const idx = ratingIndex(rating);
+    const posed = reviewForm(card);
+    const step = CardForms.afterRating(card, posed, idx);
+    const fields = { form: step.form, formMax: step.formMax, formStreak: step.formStreak, lastRatedForm: posed };
+    if (cardWrongs(card).length === 3) fields.qcmMode = step.form === "a";
+    if (step.change === "up") {
+      const up = CardForms.scheduleFormUp(card, new Date());
+      return { ...fields, ...up, lastRating: idx, formUp: true, previewMin: CardForms.FORM_UP_DELAY_MIN };
+    }
+    const next = computeAlgoNext(card, rating);
+    delete next.mode;
+    return { ...fields, ...next, previewMin: next.dd };
   }
   function setQcmFields(card) {
     const wrongs = card ? cardWrongs(card) : [];
@@ -5875,7 +5919,11 @@
         if (qcm.wrongs.length) {
           // Réponses fausses ajoutées à une fiche qui n'en avait pas : elle
           // repasse en QCM à sa prochaine interrogation.
-          if (!cardWrongs(prev).length) delete updated.qcmMode;
+          if (!cardWrongs(prev).length) {
+            delete updated.qcmMode;
+            // v296 : retour à la forme (a) pour une fiche en (b).
+            if (updated.form === "b") delete updated.form;
+          }
           updated.wrongs = qcm.wrongs;
         } else {
           delete updated.wrongs;
@@ -13625,6 +13673,7 @@
     else delete next.wrongs;
     if (updated.link) next.link = updated.link;
     else delete next.link;
+    copyLevel2Fields(updated, next);
     list[i] = next;
     const r = await Sync.library.updateCards(colId, list);
     if (r.error) {
@@ -13633,6 +13682,21 @@
     }
     showToast("Fiche corrigée dans la Librairie, pour tous les comptes");
     return true;
+  }
+  /* v296 : champs des formes poussées d'une fiche (§4.7) — (c) texte à
+     trous `cloze`, (d) question et réponse `q2` / `a2` — recopiés comme
+     les autres champs dans les copies (classe, Librairie). */
+  const LEVEL2_FIELDS = ["q2", "a2", "cloze"];
+  function copyLevel2Fields(from, to) {
+    LEVEL2_FIELDS.forEach((k) => {
+      const v = from && from[k];
+      if (v && (typeof v !== "string" || v.trim())) to[k] = JSON.parse(JSON.stringify(v));
+      else delete to[k];
+    });
+    return to;
+  }
+  function level2Signature(card) {
+    return JSON.stringify(LEVEL2_FIELDS.map((k) => (card && card[k]) || ""));
   }
   function mirrorSourceId(card) {
     return card.mirrorSrcId || card.id;
@@ -13654,6 +13718,7 @@
           existing.answer !== (rc.answer || "") ||
           (existing.more || "") !== (rc.more || "") ||
           (existing.link || "") !== (rc.link || "") ||
+          level2Signature(existing) !== level2Signature(rc) ||
           JSON.stringify(cardWrongs(existing)) !== JSON.stringify(rcWrongs || []);
         if (existing.deleted || contentChanged) {
           const updated = { ...existing, question: rc.question || "", answer: rc.answer || "", deleted: false, updatedAt: nowIso };
@@ -13663,6 +13728,7 @@
           else delete updated.more;
           if (rc.link) updated.link = String(rc.link);
           else delete updated.link;
+          copyLevel2Fields(rc, updated);
           await persist(updated);
           cards[idx] = updated;
         }
@@ -13671,6 +13737,7 @@
         if (Array.isArray(rc.wrongs) && rc.wrongs.length === 3) card.wrongs = rc.wrongs.map(String);
         if (rc.more) card.more = String(rc.more);
         if (rc.link) card.link = String(rc.link);
+        copyLevel2Fields(rc, card);
         await persist(card);
         cards.push(card);
       }

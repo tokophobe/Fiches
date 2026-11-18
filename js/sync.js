@@ -119,6 +119,12 @@ function shareableCard(card) {
   if (card.more) out.more = card.more;
   // v237 : lien « Pour aller plus loin ».
   if (card.link) out.link = card.link;
+  // v296 : formes poussées (§4.7) — texte à trous et question poussée.
+  if (card.q2 && card.a2) {
+    out.q2 = card.q2;
+    out.a2 = card.a2;
+  }
+  if (card.cloze && typeof card.cloze === "object") out.cloze = JSON.parse(JSON.stringify(card.cloze));
   return out;
 }
 
