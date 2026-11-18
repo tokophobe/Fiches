@@ -7676,7 +7676,6 @@ body:has(#view-library.is-active[data-cycle]) {
 }
 .qcm-wrong-input:focus { outline: 2px solid #ef7d2d; outline-offset: 0; }
 /* Liste des fiches */
-.card-row-wrongs { margin: 4px 0 0; font-family: var(--font-type); font-size: 12.5px; color: var(--ink-soft); }
 /* Révision */
 .card-qcm-badge { margin-left: 6px; }
 .card-qcm-badge[hidden] { display: none; }
@@ -8002,20 +8001,44 @@ body.is-qcm-review .qcm-sheet { padding-bottom: 46px; }
 /* Bouton « Enregistrer mon profil » centré. */
 #view-account .btn.btn--primary.account-profile-save { align-self: center; display: block; margin-left: auto; margin-right: auto; }
 
-/* v235 : listes de fiches — réponses fausses l'une sous l'autre, gélule
-   QCM discrète. */
-.card-row-wrongs .qcm-chip { background: transparent; color: var(--ink-soft); border: 1px solid currentColor; font-weight: 600; opacity: 0.85; }
-.card-row-wrongs-list { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 2px; }
+/* v235 : listes de fiches — réponses fausses l'une sous l'autre (v302 :
+   dans la section « QCM » ou « Texte à trous » de la fiche). */
+.card-row-wrongs-list { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 2px; font-family: var(--font-type); font-size: 12.5px; color: var(--ink-soft); }
 .card-row-wrongs-list li { line-height: 1.4; }
 .card-row-wrong-tag { font-style: italic; opacity: 0.75; }
-/* v301 : formes poussées dans les listes de fiches. */
-.card-row-level2 { margin: 8px 0 0; font-family: var(--font-type); font-size: 12.5px; color: var(--ink-soft); }
-.card-row-level2 .qcm-chip { font-size: 10px; }
-.card-row-cloze, .card-row-q2, .card-row-a2 { margin: 4px 0 0; font-size: 13.5px; line-height: 1.4; color: var(--card-text-color, var(--ink)); }
-.card-row-a2 { color: var(--ink-soft); }
+/* v302 : une fiche = un bloc ; à l'intérieur, une section par forme
+   (QCM, question, texte à trous, question poussée) séparées par un trait
+   fin ; seule la plus poussée est visible par défaut, le bouton filtre
+   « toutes les formes » (body.card-forms-all) montre les autres. Le trait
+   et la marge de la première section visible sont masqués par le
+   décalage de .card-secs-in. */
+.card-secs { overflow: hidden; }
+.card-secs-in { margin-top: -21px; } /* marge + trait + retrait de la 1re section visible */
+.card-sec { border-top: 1px solid var(--rule-soft, rgba(0, 0, 0, 0.1)); padding-top: 10px; margin-top: 10px; }
+.card-sec--extra { display: none; }
+body.card-forms-all .card-sec--extra { display: block; }
+.card-sec-label { display: block; margin: 0 0 4px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.card-sec .card-row-q { margin: 0 0 4px; }
+.card-sec .card-row-a { margin: 0; }
+.card-sec .card-row-wrongs-list { margin-top: 0; }
+.card-row-cloze { margin: 0 0 4px; font-family: var(--font-type); font-size: 13.5px; line-height: 1.45; color: var(--card-text-color, var(--ink)); }
 .card-row-blank { padding: 0 3px; border-radius: 4px; color: #3e7c6b; background: color-mix(in srgb, #3e7c6b 12%, transparent); font-weight: 600; }
 :root.is-night-mode .card-row-blank { color: #8fd3bb; background: color-mix(in srgb, #8fd3bb 14%, transparent); }
-div.card-row-wrongs { margin: 4px 0 0; }
+#view-cards .card-row.card-row--r47,
+#view-creation-detail .creation-detail-cards .card-row.card-row--r47 {
+  background: var(--card-bg-color, var(--paper));
+  border: 1px solid var(--rule-soft, rgba(0, 0, 0, 0.1));
+  border-radius: 12px;
+  padding: 12px 12px 12px 14px;
+  margin: 0 0 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+.card-forms-filter-btn { display: inline-flex; align-items: center; justify-content: center; color: var(--ink-soft); }
+.card-forms-filter-btn[hidden] { display: none; }
+.card-forms-filter-btn .icon-inline-svg { width: 17px; height: 17px; }
+.card-forms-filter-btn.is-active { color: var(--ink); }
+.library-cards-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.library-cards-head .library-detail-cards-title { margin-bottom: 0; }
 
 /* ---------------------------------------------------------
    v237 : liens « Pour aller plus loin » (fiche, boîte) et lecteur.
@@ -8329,7 +8352,6 @@ body:has(#view-library.is-active[data-cycle]) { background: var(--app-bg-color, 
 #view-library-detail .library-detail-cards .card-row-q { font-weight: 600; margin: 0 0 6px; }
 #view-library-detail .library-detail-cards .card-row-a { margin: 0; color: var(--ink-soft); border-left: none; padding-left: 0; }
 #view-library-detail .library-detail-cards .library-card-answer--cut { user-select: none; -webkit-user-select: none; }
-#view-library-detail .library-detail-cards .card-row-wrongs,
 #view-library-detail .library-detail-cards .card-row-link { margin-top: 8px; }
 #view-library-detail .library-detail-cards li.field-hint { border: none; box-shadow: none; background: transparent; padding: 4px 0; }
 /* Mon compte : « Enregistrer mon profil » et « Renvoyer l'email » suivent

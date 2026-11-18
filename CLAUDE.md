@@ -99,8 +99,10 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   spéc. §4.6) : une case par forme, dernière note à chaque forme dans
   `formRatings` (fiches plus anciennes : `legacyFormRatings`) ;
   `CardForms.gaugeCounts` sert à `buildPersGaugeSvg` et au tri des
-  échéances. Listes de fiches (v301) : `level2RowsHtml` (appli) affiche
-  texte à trous et question poussée ; `dmCardFields` (appli) et
+  échéances. Listes de fiches (v302) : `cardSectionsHtml` (une section
+  par forme, la plus poussée seule par défaut ; bouton filtre
+  `.card-forms-filter-btn`, classe `card-forms-all` sur `<body>`, choix
+  gardé dans `fiches_card_forms_all`) ; `dmCardFields` (appli) et
   `cardFieldsText` (Darwin Admin, qui charge aussi `card-forms.js`)
   comparent ces champs (`CardForms.clozeSummary`). Pour ajouter un test sur une
   autre règle, extraire de la même façon la logique concernée.
@@ -375,9 +377,9 @@ testables ainsi.
   `tools/maj_boites.py qualite [CLE…]` liste les alertes ; une alerte se
   relit, ce n'est pas toujours une erreur : `accepte CLE#N` note la
   question dans le champ `qualite_ok` de la boîte (ignoré par Darwin
-  Admin). Avancement : 6e et 5e traitées le 18 nov. 2026 ; reste 648
-  « indice » et 1 524 « détail », à traiter niveau par niveau (ordre
-  proposé : 4e, 3e, puis lycée et primaire). Méthode : lister les alertes
+  Admin). Avancement : 6e, 5e et 4e traitées le 18 nov. 2026 ; reste 559
+  « indice » et 1 223 « détail », à traiter niveau par niveau (ordre
+  proposé : 3e, puis lycée et primaire). Méthode : lister les alertes
   d'un niveau, écrire un lot (`applique`), relancer `qualite`, corriger
   le reste, `accepte` les alertes où le mot commun est la notion même. Corriger avant d'écrire les formes
   poussées d'une boîte.
