@@ -63,6 +63,24 @@
     return String(cloze.text || "").replace(BLANK, () => `[${(cloze.blanks[i++] || {}).answer || ""}]`);
   }
 
+  /** v301 : texte à trous en une ligne (pages qui comparent deux
+   *  versions d'une fiche) : la phrase à crochets, puis les réponses
+   *  fausses de chaque trou. */
+  function clozeSummary(cloze) {
+    if (!validCloze(cloze)) return "";
+    const wrongs = cloze.blanks.map((b, i) => `trou ${i + 1} : ${b.wrongs.map(clean).join(" · ")}`).join(" ; ");
+    return `${clozeToBrackets(cloze)} — réponses fausses : ${wrongs}`;
+  }
+
+  /** Réponses fausses de chaque trou, saisies une ligne par trou, séparées
+   *  par « ; » (Darwin Admin) ; et l'inverse. */
+  function parseBlankWrongs(text) {
+    return String(text == null ? "" : text).split("\n").map((l) => l.split(";").map(clean).filter(Boolean)).filter((l) => l.length);
+  }
+  function blankWrongsText(cloze) {
+    return validCloze(cloze) ? cloze.blanks.map((b) => b.wrongs.map(clean).join(" ; ")).join("\n") : "";
+  }
+
   /** Texte à trous à partir de la phrase à crochets et des 3 mauvaises
    *  réponses de chaque trou. Renvoie { cloze } (null si la phrase est
    *  vide) ou { error } (message pour l'auteur de la fiche). */
@@ -260,7 +278,7 @@
   }
 
   const api = {
-    ORDER, FORM_UP_DELAY_MIN, validCloze, clozeSegments, bracketAnswers, clozeToBrackets, clozeFromBrackets, forms, hasLevel2, currentForm, afterRating, scheduleFormUp, clozeRating,
+    ORDER, FORM_UP_DELAY_MIN, validCloze, clozeSegments, bracketAnswers, clozeToBrackets, clozeFromBrackets, clozeSummary, parseBlankWrongs, blankWrongsText, forms, hasLevel2, currentForm, afterRating, scheduleFormUp, clozeRating,
     legacyFormRatings, withFormRating, gaugeNotes, gaugeCounts,
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;

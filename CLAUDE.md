@@ -99,7 +99,10 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   spéc. §4.6) : une case par forme, dernière note à chaque forme dans
   `formRatings` (fiches plus anciennes : `legacyFormRatings`) ;
   `CardForms.gaugeCounts` sert à `buildPersGaugeSvg` et au tri des
-  échéances. Pour ajouter un test sur une
+  échéances. Listes de fiches (v301) : `level2RowsHtml` (appli) affiche
+  texte à trous et question poussée ; `dmCardFields` (appli) et
+  `cardFieldsText` (Darwin Admin, qui charge aussi `card-forms.js`)
+  comparent ces champs (`CardForms.clozeSummary`). Pour ajouter un test sur une
   autre règle, extraire de la même façon la logique concernée.
 - **Lancer les tests avant chaque livraison.** Quand une règle de la
   spécification change, mettre à jour son test dans la même branche ;

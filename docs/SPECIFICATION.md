@@ -537,6 +537,16 @@ abandonnée : trop de couleurs, risque de confusion.
    textes à trous de 3 ou 4 trous et des questions poussées dont la
    réponse reprend la phrase du texte à trous — « Rome et la Chine des
    Han » (14 fiches sur 16) et « Les débuts du christianisme » (12 sur 16).
+   **Consultation (v301)** : partout où l'on regarde les fiches d'une
+   boîte (page d'une boîte depuis l'organisation, liste des fiches,
+   boîte de la Librairie pour qui y a accès, « Messages de darwin »,
+   relecture dans Darwin Admin), la fiche apparaît en entier : question et
+   réponse, QCM, **texte à trous** (phrase complétée, mots cachés en
+   couleur, réponses fausses de chaque trou) et **question poussée** avec
+   sa réponse. L'aperçu d'une boîte de la Librairie sans abonnement reste
+   limité à la question et à la moitié de la réponse. Dans Darwin Admin,
+   la relecture d'une proposition permet aussi de corriger le texte à
+   trous et la question poussée.
    **Saisie (v299 ; v300 : les blocs facultatifs — complément, réponses
    fausses, texte à trous, question poussée — sont pliés, et se déplient
    avec leur chevron ⌄ ; ceux d'une fiche modifiée qui sont remplis
@@ -1414,6 +1424,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v301 | 18 nov. 2026 | La fiche s'affiche en entier partout où l'on consulte une boîte (organisation, liste des fiches, Librairie, Messages de darwin, Darwin Admin) : texte à trous et question poussée en plus du QCM. Darwin Admin : texte à trous et question poussée modifiables à la relecture d'une proposition, et gardés à l'export des corrections. Règle « 2 réussites de suite au texte à trous » confirmée (18 nov. 2026). |
 | v300 | 18 nov. 2026 | Remarques du propriétaire après essai des 2 boîtes de 6e : bouton « Supprimer cette fiche » plus coupé ; fiches de la pile allongées sous une fiche QCM ou texte à trous plus haute ; « Continuer » plus détaché de la fiche ; pastilles « Texte à trous » et « Approfondie » en couleur douce ; jauge enfin toute vert foncé quand tout est su (forme ajoutée en dessous de la forme actuelle comptée comme sue) ; écran d'une fiche avec blocs facultatifs pliés et exemples accordés. Nouvelle règle d'écriture (§5.7, règle 9) : pas d'indice dans la question, bonne réponse pas plus détaillée que les fausses, fausses réponses crédibles, articles dans les trous ; contenu d'essai corrigé en ce sens. |
 | v299 | 18 nov. 2026 | Formes d'une fiche : texte à trous vérifié tout seul dès que tous les trous sont remplis (plus de bouton « Vérifier ») ; au 2e essai, la réponse fausse reste barrée dans le trou et dans les propositions. Nouveaux blocs « Texte à trous » (phrase à crochets, 3 réponses fausses par trou) et « Question poussée » dans l'écran d'une fiche. Règle d'écriture : 3 ou 4 trous, et réponse de la question poussée qui reprend la phrase du texte à trous. Contenu d'essai revu : 26 fiches à 4 formes. |
 | v298 | 18 nov. 2026 | Formes d'une fiche, étape 3 (§4.7) : écran du texte à trous, dans la même fiche que le QCM — on touche un trou, on choisit parmi ses 4 propositions, puis « Vérifier » ; 2e tentative pour les trous faux ; note donnée par l'appli (Je sais / Vague idée / Je ne sais pas). Contenu d'essai : 14 textes à trous dans 2 boîtes d'histoire de 6e. |
