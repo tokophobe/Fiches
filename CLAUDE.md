@@ -99,8 +99,10 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   spéc. §4.6) : une case par forme, dernière note à chaque forme dans
   `formRatings` (fiches plus anciennes : `legacyFormRatings`) ;
   `CardForms.gaugeCounts` sert à `buildPersGaugeSvg` et au tri des
-  échéances. Listes de fiches (v301) : `level2RowsHtml` (appli) affiche
-  texte à trous et question poussée ; `dmCardFields` (appli) et
+  échéances. Listes de fiches (v302) : `cardSectionsHtml` (une section
+  par forme, la plus poussée seule par défaut ; bouton filtre
+  `.card-forms-filter-btn`, classe `card-forms-all` sur `<body>`, choix
+  gardé dans `fiches_card_forms_all`) ; `dmCardFields` (appli) et
   `cardFieldsText` (Darwin Admin, qui charge aussi `card-forms.js`)
   comparent ces champs (`CardForms.clozeSummary`). Pour ajouter un test sur une
   autre règle, extraire de la même façon la logique concernée.

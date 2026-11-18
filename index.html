@@ -904,6 +904,8 @@
           <span id="construction-filter-icon">🚩</span>
           <span class="construction-filter-badge" id="construction-filter-badge" hidden>0</span>
         </button>
+        <!-- v302 : toutes les formes de chaque fiche (sinon la plus poussée). -->
+        <button type="button" class="construction-filter-btn card-forms-filter-btn" id="cards-forms-filter" title="Afficher toutes les formes de chaque fiche (QCM, question, texte à trous, question poussée)" aria-pressed="false" hidden><svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 3 21 8 12 13 3 8 12 3"/><polyline points="3 12.5 12 17.5 21 12.5"/><polyline points="3 17 12 22 21 17"/></svg></button>
       </div>
       <ul class="card-list" id="card-list"></ul>
     </section>
@@ -2052,7 +2054,10 @@
       <p class="library-detail-link" id="library-detail-link" hidden><button type="button" class="learn-link-chip learn-link-chip--box" id="library-detail-link-btn"></button></p>
       <!-- v245 : les fiches sont affichées directement ici, en blocs (plus
            de page « Voir les fiches »). -->
-      <p class="cards-count-title library-detail-cards-title" id="library-cards-count"></p>
+      <div class="library-cards-head">
+        <p class="cards-count-title library-detail-cards-title" id="library-cards-count"></p>
+        <button type="button" class="construction-filter-btn card-forms-filter-btn" id="library-forms-filter" title="Afficher toutes les formes de chaque fiche (QCM, question, texte à trous, question poussée)" aria-pressed="false" hidden><svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 3 21 8 12 13 3 8 12 3"/><polyline points="3 12.5 12 17.5 21 12.5"/><polyline points="3 17 12 22 21 17"/></svg></button>
+      </div>
       <p class="field-hint library-cards-note" id="library-cards-note" hidden></p>
       <ul class="library-cards-list" id="library-cards-list"></ul>
     </section>

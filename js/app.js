@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v301";
+  const APP_VERSION = "v302";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -5212,14 +5212,28 @@
   function qcmWrongsListHtml(wrongs) {
     return `<ul class="card-row-wrongs-list">${wrongs.map((x) => `<li>${escapeHtml(x)} <span class="card-row-wrong-tag">(réponse fausse)</span></li>`).join("")}</ul>`;
   }
-  /** v301 : formes poussées d'une fiche (§4.7) dans les listes de fiches —
-   *  page d'une boîte, organisation, liste « Fiches », Librairie : le texte
-   *  à trous (phrase complétée, mots cachés en couleur, réponses fausses de
-   *  chaque trou) et la question poussée avec sa réponse. */
-  function level2RowsHtml(card) {
+  /** v302 : contenu d'une fiche dans les listes (page d'une boîte,
+   *  organisation, liste « Fiches », Librairie) — une section par forme
+   *  (§4.7), séparées par un trait fin : question (b) et réponses fausses
+   *  du QCM (a), texte à trous (c), question poussée (d). Par défaut seule la plus poussée est
+   *  visible ((d), sinon (b)) ; le bouton filtre « toutes les formes »
+   *  montre les autres (classe card-forms-all sur <body>). `full` :
+   *  réponses entières (sinon aperçu de la Librairie : question et début
+   *  de réponse seulement). */
+  function cardSectionsHtml(card, full) {
     const f = CardForms.forms(card || {});
-    let html = "";
-    if (f.c) {
+    const top = f.d ? "d" : "b";
+    const sec = (form, label, body) =>
+      `<div class="card-sec card-sec--${form}${form === top ? "" : " card-sec--extra"}"><span class="card-sec-label">${label}</span>${body}</div>`;
+    // La question d'abord, puis ses réponses fausses (QCM) : le QCM pose
+    // la même question.
+    let html = sec(
+      "b",
+      "Question",
+      `<p class="card-row-q">${toDisplayHtml(card.question || "")}</p><p class="card-row-a${full ? "" : " library-card-answer--cut"}">${full ? answerWithMoreHtml(card) : escapeHtml(card.answer || "")}</p>`
+    );
+    if (full && cardWrongs(card).length === 3) html += sec("a", "QCM — réponses fausses", qcmWrongsListHtml(cardWrongs(card)));
+    if (full && f.c) {
       const blanks = card.cloze.blanks;
       const sentence = CardForms.clozeSegments(card.cloze.text)
         .map((t, i) => escapeHtml(t) + (blanks[i] ? `<span class="card-row-blank">${escapeHtml(blanks[i].answer)}</span>` : ""))
@@ -5227,12 +5241,55 @@
       const wrongs = blanks
         .map((b, i) => `<li>Trou ${i + 1} : ${b.wrongs.map((w) => escapeHtml(w)).join(" · ")} <span class="card-row-wrong-tag">(réponses fausses)</span></li>`)
         .join("");
-      html += `<div class="card-row-level2"><span class="qcm-chip qcm-chip--level2">Texte à trous</span><p class="card-row-cloze">${sentence}</p><ul class="card-row-wrongs-list">${wrongs}</ul></div>`;
+      html += sec("c", "Texte à trous", `<p class="card-row-cloze">${sentence}</p><ul class="card-row-wrongs-list">${wrongs}</ul>`);
     }
-    if (f.d) {
-      html += `<div class="card-row-level2"><span class="qcm-chip qcm-chip--level2">Question poussée</span><p class="card-row-q2">${escapeHtml(card.q2)}</p><p class="card-row-a2">${escapeHtml(card.a2)}</p></div>`;
+    if (full && f.d) html += sec("d", "Question poussée", `<p class="card-row-q">${escapeHtml(card.q2)}</p><p class="card-row-a">${escapeHtml(card.a2)}</p>`);
+    return `<div class="card-secs"><div class="card-secs-in">${html}</div></div>`;
+  }
+  /** La fiche a-t-elle d'autres formes que celle affichée par défaut ? */
+  function cardHasExtraForms(card) {
+    const f = CardForms.forms(card || {});
+    return f.a || f.c || f.d;
+  }
+  /* v302 : bouton filtre « toutes les formes », commun aux listes de
+     fiches ; le choix est retenu sur cet appareil. */
+  const CARD_FORMS_ALL_KEY = "fiches_card_forms_all";
+  let cardFormsAll = false;
+  try {
+    cardFormsAll = localStorage.getItem(CARD_FORMS_ALL_KEY) === "1";
+  } catch (e) {
+    /* stockage indisponible : réglage par défaut */
+  }
+  const CARD_FORMS_ICON =
+    '<svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 3 21 8 12 13 3 8 12 3"/><polyline points="3 12.5 12 17.5 21 12.5"/><polyline points="3 17 12 22 21 17"/></svg>';
+  function cardFormsFilterBtnHtml(id) {
+    return `<button type="button" class="construction-filter-btn card-forms-filter-btn" id="${id}" title="Afficher toutes les formes de chaque fiche (QCM, question, texte à trous, question poussée)" aria-pressed="false">${CARD_FORMS_ICON}</button>`;
+  }
+  function applyCardFormsMode() {
+    document.body.classList.toggle("card-forms-all", cardFormsAll);
+    document.querySelectorAll(".card-forms-filter-btn").forEach((b) => {
+      b.classList.toggle("is-active", cardFormsAll);
+      b.setAttribute("aria-pressed", String(cardFormsAll));
+    });
+  }
+  /** Branche un bouton filtre et ne le montre que si une des fiches
+   *  listées a plusieurs formes. */
+  function bindCardFormsFilter(btn, listCards) {
+    if (!btn) return;
+    btn.hidden = !listCards.some(cardHasExtraForms);
+    if (!btn.dataset.bound) {
+      btn.dataset.bound = "1";
+      btn.addEventListener("click", () => {
+        cardFormsAll = !cardFormsAll;
+        try {
+          localStorage.setItem(CARD_FORMS_ALL_KEY, cardFormsAll ? "1" : "0");
+        } catch (e) {
+          /* rien : le choix vaut pour cette visite */
+        }
+        applyCardFormsMode();
+      });
     }
-    return html;
+    applyCardFormsMode();
   }
   /** v232 : en QCM, seule la 1re ligne d'une réponse en texte simple est
    *  proposée parmi les choix (les réponses fausses n'ont qu'une ligne :
@@ -6610,6 +6667,7 @@
       badge.textContent = String(constructionCount);
     }
     if (constructionFilterBtn) constructionFilterBtn.classList.toggle("is-active", cardsConstructionFilter);
+    bindCardFormsFilter(el("cards-forms-filter"), visible);
 
     if (visible.length === 0) {
       const li = document.createElement("li");
@@ -6649,27 +6707,9 @@
     const main = document.createElement("div");
     main.className = "card-row-main";
 
-    const q = document.createElement("p");
-    q.className = "card-row-q";
-    q.innerHTML = toDisplayHtml(card.question);
-
-    const a = document.createElement("p");
-    a.className = "card-row-a";
-    a.innerHTML = answerWithMoreHtml(card);
-
-    main.appendChild(q);
-    main.appendChild(a);
-    // Round 59 : fiche en mode QCM (3 réponses fausses).
-    const wrongsForRow = cardWrongs(card);
-    if (wrongsForRow.length === 3) {
-      const w = document.createElement("p");
-      w.className = "card-row-wrongs";
-      // v235 : une réponse fausse par ligne, marquée « (réponse fausse) ».
-      w.innerHTML = `<span class="qcm-chip">QCM</span>${qcmWrongsListHtml(wrongsForRow)}`;
-      main.appendChild(w);
-    }
-    const level2 = level2RowsHtml(card);
-    if (level2) main.insertAdjacentHTML("beforeend", level2);
+    // v302 : une section par forme de la fiche (QCM, question, texte à
+    // trous, question poussée), la plus poussée seule par défaut.
+    main.insertAdjacentHTML("beforeend", cardSectionsHtml(card, true));
     // v237 : lien « Pour aller plus loin ».
     if (card.link && learnLinkInfo(card.link)) {
       const l = document.createElement("div");
@@ -17128,6 +17168,7 @@
     }
     const cards = res.cards;
     const fullAccess = res.full;
+    bindCardFormsFilter(el("library-forms-filter"), fullAccess ? cards : []);
     if (listEl) {
       listEl.className = "library-cards-list library-detail-cards";
       listEl.innerHTML =
@@ -17136,10 +17177,7 @@
             (c) => `
         <li class="library-card-item">
           <div class="card-row-main">
-            <p class="card-row-q">${toDisplayHtml(c.question || "")}</p>
-            <p class="card-row-a${fullAccess ? "" : " library-card-answer--cut"}">${fullAccess ? answerWithMoreHtml(c) : escapeHtml(c.answer || "")}</p>
-            ${cardWrongs(c).length === 3 ? `<div class="card-row-wrongs"><span class="qcm-chip">QCM</span>${fullAccess ? qcmWrongsListHtml(cardWrongs(c)) : ""}</div>` : ""}
-            ${fullAccess ? level2RowsHtml(c) : ""}
+            ${cardSectionsHtml(c, fullAccess)}
             ${fullAccess && c.link ? `<div class="card-row-link">${learnLinkChipHtml(c.link, "card", stripHtml(c.question || "").slice(0, 120))}</div>` : ""}
           </div>
         </li>
@@ -18927,6 +18965,7 @@
             ? `<div class="info-block-tools">
           <input type="search" class="info-block-search" id="creation-detail-search" placeholder="Rechercher une fiche…" value="${escapeHtml(creationDetailCardQuery)}" aria-label="Rechercher une fiche (question ou réponse)" />
           <button type="button" class="construction-filter-btn${creationDetailFlaggedOnly ? " is-active" : ""}" id="creation-detail-flag-filter" title="N'afficher que les fiches signalées" aria-pressed="${creationDetailFlaggedOnly}">${getIconMarkupFor("construction")}</button>
+          ${cardFormsFilterBtnHtml("creation-detail-forms-filter")}
         </div>`
             : ""
         }
@@ -18959,6 +18998,7 @@
       });
     }
     const allBoxCards = cards.filter((c) => !c.deleted && c.subject === s.id).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+    bindCardFormsFilter(el("creation-detail-forms-filter"), allBoxCards);
     const q = creationDetailCardQuery.trim().toLowerCase();
     const boxCards = allBoxCards.filter(
       (c) =>
