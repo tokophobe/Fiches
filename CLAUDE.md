@@ -375,9 +375,11 @@ testables ainsi.
   `tools/maj_boites.py qualite [CLE…]` liste les alertes ; une alerte se
   relit, ce n'est pas toujours une erreur : `accepte CLE#N` note la
   question dans le champ `qualite_ok` de la boîte (ignoré par Darwin
-  Admin). Avancement : 6e traitée le 18 nov. 2026 ; reste 742 « indice »
-  et 1 894 « détail », à traiter niveau par niveau (ordre proposé : 5e,
-  4e, 3e, puis lycée et primaire). Corriger avant d'écrire les formes
+  Admin). Avancement : 6e et 5e traitées le 18 nov. 2026 ; reste 648
+  « indice » et 1 524 « détail », à traiter niveau par niveau (ordre
+  proposé : 4e, 3e, puis lycée et primaire). Méthode : lister les alertes
+  d'un niveau, écrire un lot (`applique`), relancer `qualite`, corriger
+  le reste, `accepte` les alertes où le mot commun est la notion même. Corriger avant d'écrire les formes
   poussées d'une boîte.
 - Fiches datées (14 nov. 2026) : `tools/fiches_a_verifier.py` retrouve, par
   thèmes, les fiches dont le contenu change avec le temps (zone euro,
