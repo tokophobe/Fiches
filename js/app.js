@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v297";
+  const APP_VERSION = "v298";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -5113,6 +5113,8 @@
 
   /* ---- Round 59 : mode QCM pendant la révision ---- */
   let qcmState = null; // { cardId, items: [{ html, ok }], wrong: [indices], done, timer }
+  // v298 : texte à trous dans la même fiche : { kind: "cloze", cardId,
+  // blanks: [{ answer, choices, value, locked, failed }], active, attempt, done, timer }.
   /* Round 61 : « Cherche la réponse, tourne la fiche, puis évalue-toi »
      à la place des boutons tant que la réponse de la fiche en cours n'a pas
      été vue ; une fois vue, les boutons restent (même si on retourne la
@@ -5243,10 +5245,23 @@
     const badge = el("card-qcm-badge");
     const hint = document.querySelector("#flip-card .tap-hint");
     if (qcmState && qcmState.timer) clearTimeout(qcmState.timer);
+    const cloze = isClozeCard(card);
     const qcm = isQcmCard(card);
-    document.body.classList.toggle("is-qcm-review", qcm);
+    // v298 : le texte à trous se fait dans la même fiche que le QCM.
+    document.body.classList.toggle("is-qcm-review", qcm || cloze);
     if (badge) badge.hidden = !qcm;
-    if (hint) hint.textContent = qcm ? "Choisis la bonne réponse ci-dessous" : "Touche la fiche pour voir la réponse";
+    if (hint) hint.textContent = qcm || cloze ? "Choisis la bonne réponse ci-dessous" : "Touche la fiche pour voir la réponse";
+    const chip = el("qcm-sheet-chip");
+    if (chip) chip.textContent = cloze ? "Texte à trous" : "QCM";
+    const check = el("cloze-check");
+    if (check) check.hidden = true;
+    if (cloze) {
+      answerSeenCardId = null;
+      setRatingInvite(false, true);
+      ratingRowEl.hidden = true;
+      startCloze(card, panel);
+      return;
+    }
     if (!qcm) {
       qcmState = null;
       if (panel) panel.hidden = true;
@@ -5295,6 +5310,10 @@
     const cont = el("qcm-continue");
     if (!box || !qcmState) return;
     const st = qcmState;
+    if (st.kind === "cloze") {
+      drawCloze(message, tone);
+      return;
+    }
     // Round 62 : on retire le focus avant de redessiner (sinon le bouton
     // touché à la question précédente restait en surbrillance).
     if (document.activeElement && box.contains(document.activeElement)) document.activeElement.blur();
@@ -5364,7 +5383,7 @@
   function revealQcmAnswer() {
     const moreEl = el("qcm-more");
     const card = currentCard;
-    const rest = card ? qcmAnswerParts(card).rest : "";
+    const rest = card && !(qcmState && qcmState.kind === "cloze") ? qcmAnswerParts(card).rest : "";
     const extra = card && card.more && stripHtml(card.more).trim() ? card.more : "";
     const more = rest || extra;
     const qLink = el("qcm-learn-link");
@@ -5387,12 +5406,160 @@
     qcmState = null;
     await rateCurrentCard(rating);
   }
+
+  /* ---------- v298 : texte à trous (forme c, spéc. §4.7) ----------
+     L'élève touche un trou, choisit parmi ses 4 propositions (le curseur
+     passe au trou suivant), puis « Vérifier » : les trous justes restent,
+     les faux se vident pour une 2e tentative. Note donnée par l'appli :
+     tout juste du premier coup = « Je sais », à la 2e = « Vague idée »,
+     sinon « Je ne sais pas » (bonnes réponses montrées). */
+  function startCloze(card, panel) {
+    const blanks = card.cloze.blanks.map((b) => ({
+      answer: String(b.answer).trim(),
+      choices: shuffledCopy([String(b.answer).trim()].concat(b.wrongs.map((w) => String(w).trim()))),
+      value: null,
+      locked: false,
+      failed: false,
+    }));
+    qcmState = { kind: "cloze", cardId: card.id, blanks, active: 0, attempt: 1, done: false, timer: null };
+    const moreEl = el("qcm-more");
+    if (moreEl) {
+      moreEl.innerHTML = "";
+      moreEl.hidden = true;
+    }
+    const sheet = el("qcm-sheet");
+    if (sheet) {
+      sheet.scrollTop = 0;
+      sheet.classList.remove("is-arriving");
+      void sheet.offsetWidth;
+      sheet.classList.add("is-arriving");
+    }
+    if (panel) panel.hidden = false;
+    drawCloze("Touche un trou, puis choisis sa réponse.");
+  }
+  function drawCloze(message, tone) {
+    const st = qcmState;
+    const card = currentCard;
+    const qEl = el("qcm-question");
+    const box = el("qcm-choices");
+    const msg = el("qcm-msg");
+    const check = el("cloze-check");
+    const cont = el("qcm-continue");
+    if (!st || !card || !qEl || !box) return;
+    if (document.activeElement && box.contains(document.activeElement)) document.activeElement.blur();
+    const parts = CardForms.clozeSegments(card.cloze.text);
+    qEl.innerHTML = parts
+      .map((txt, i) => {
+        let html = escapeHtml(txt).replace(/\n/g, "<br>");
+        const b = st.blanks[i];
+        if (!b) return html;
+        let cls = "cloze-blank";
+        let inner = b.value ? escapeHtml(b.value) : `&nbsp;${i + 1}&nbsp;`;
+        if (b.locked) cls += " is-right";
+        else if (b.failed) {
+          cls += " is-fixed";
+          inner = `${b.value ? `<s>${escapeHtml(b.value)}</s> ` : ""}${escapeHtml(b.answer)}`;
+        } else if (b.value) cls += " is-filled";
+        if (!st.done && !b.locked && i === st.active) cls += " is-active";
+        const dis = st.done || b.locked ? " disabled" : "";
+        return `${html}<button type="button" class="${cls}" data-b="${i}"${dis}>${inner}</button>`;
+      })
+      .join("");
+    const b = st.blanks[st.active];
+    box.innerHTML =
+      st.done || !b || b.locked
+        ? ""
+        : b.choices
+            .map((c, i) => `<button type="button" class="qcm-choice${b.value === c ? " is-selected" : ""}" data-i="${i}"><span class="qcm-letter">${QCM_LETTERS[i]}</span><span class="qcm-text">${escapeHtml(c)}</span></button>`)
+            .join("");
+    if (msg) {
+      msg.textContent = message || "";
+      msg.className = `qcm-msg${tone ? ` is-${tone}` : ""}`;
+      msg.hidden = !message;
+    }
+    if (check) check.hidden = st.done || st.blanks.some((x) => !x.locked && !x.value);
+    if (cont && !st.done) cont.hidden = true;
+    layoutQcmPanel();
+    clearTimeout(drawQcm.relayout);
+    drawQcm.relayout = setTimeout(layoutQcmPanel, 750);
+  }
+  function chooseClozeAnswer(i) {
+    const st = qcmState;
+    const b = st && st.blanks[st.active];
+    if (!b || b.locked) return;
+    b.value = b.choices[i];
+    // Au trou suivant encore vide (dans l'ordre, en revenant au début).
+    const n = st.blanks.length;
+    for (let k = 1; k <= n; k++) {
+      const j = (st.active + k) % n;
+      if (!st.blanks[j].locked && !st.blanks[j].value) {
+        st.active = j;
+        break;
+      }
+    }
+    drawCloze(st.blanks.some((x) => !x.locked && !x.value) ? "" : "Tout est rempli : vérifie !");
+  }
+  const clozeTextEl = el("qcm-question");
+  if (clozeTextEl) {
+    clozeTextEl.addEventListener("click", (e) => {
+      const btn = e.target.closest(".cloze-blank");
+      const st = qcmState;
+      if (!btn || !st || st.kind !== "cloze" || st.done) return;
+      const i = Number(btn.dataset.b);
+      if (st.blanks[i].locked) return;
+      st.active = i;
+      drawCloze("");
+    });
+  }
+  const clozeCheckEl = el("cloze-check");
+  if (clozeCheckEl) {
+    clozeCheckEl.addEventListener("click", () => {
+      const st = qcmState;
+      if (!st || st.kind !== "cloze" || st.done || !currentCard || st.cardId !== currentCard.id) return;
+      if (st.blanks.some((x) => !x.locked && !x.value)) return;
+      const cardId = st.cardId;
+      let wrong = 0;
+      st.blanks.forEach((x) => {
+        if (x.locked) return;
+        if (x.value === x.answer) x.locked = true;
+        else wrong += 1;
+      });
+      if (wrong && st.attempt === 1) {
+        st.attempt = 2;
+        st.blanks.forEach((x) => {
+          if (!x.locked) x.value = null;
+        });
+        st.active = st.blanks.findIndex((x) => !x.locked);
+        drawCloze(wrong === 1 ? "Un trou n'est pas juste. Encore un essai !" : `${wrong} trous ne sont pas justes. Encore un essai !`, "wrong");
+        return;
+      }
+      st.done = true;
+      st.blanks.forEach((x) => {
+        if (!x.locked) x.failed = true;
+      });
+      const idx = CardForms.clozeRating(st.attempt === 1 && !wrong, !wrong);
+      const rating = REVISION_ALGO_RATING_ORDER[idx];
+      drawCloze(idx === 2 ? "Tout est juste !" : idx === 1 ? "Tout est juste, au deuxième essai." : "Raté… Les bonnes réponses sont en vert.", idx ? "ok" : "fail");
+      revealQcmAnswer();
+      const hasMore = !!(currentCard.more && stripHtml(currentCard.more).trim()) || !!learnLinkInfo(currentCard.link);
+      const cont = el("qcm-continue");
+      if (idx === 2 && !hasMore) st.timer = setTimeout(() => finishQcm(cardId, rating), 1300);
+      else if (cont) {
+        cont.hidden = false;
+        cont.onclick = () => finishQcm(cardId, rating);
+      }
+    });
+  }
   const qcmChoicesEl = el("qcm-choices");
   if (qcmChoicesEl) {
     qcmChoicesEl.addEventListener("click", (e) => {
       const btn = e.target.closest(".qcm-choice");
       const st = qcmState;
       if (!btn || !st || st.done || !currentCard || st.cardId !== currentCard.id) return;
+      if (st.kind === "cloze") {
+        chooseClozeAnswer(Number(btn.dataset.i));
+        return;
+      }
       const i = Number(btn.dataset.i);
       if (st.wrong.includes(i)) return;
       const cont = el("qcm-continue");
@@ -5781,12 +5948,14 @@
      atteinte. */
   function reviewForm(card) {
     if (!card) return "b";
-    const form = CardForms.currentForm(card, { sprint: !!card.inSprint });
-    // Le texte à trous (c) n'a pas encore d'écran : posé comme (b).
-    return form === "c" ? "b" : form;
+    return CardForms.currentForm(card, { sprint: !!card.inSprint });
   }
   function isQcmCard(card) {
     return reviewForm(card) === "a";
+  }
+  /** v298 : texte à trous (forme c, §4.7). */
+  function isClozeCard(card) {
+    return reviewForm(card) === "c";
   }
   function reviewQuestion(card) {
     return reviewForm(card) === "d" ? card.q2 : card.question;

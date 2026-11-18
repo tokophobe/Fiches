@@ -350,7 +350,7 @@ QCM juste, puis question « Parfaitement », puis texte à trous juste au
   la même règle (part des cases « Je sais » ou « Parfaitement »).
 - Les smileys des boutons d'évaluation gardent leurs couleurs.
 
-### 4.7 Niveaux d'une fiche — 🟠 en cours (étapes 2 et 4 livrées, v296-v297)
+### 4.7 Niveaux d'une fiche — 🟠 en cours (étapes 1 à 4 livrées, v296-v298)
 
 > Projet du propriétaire (16 et 17 nov. 2026). Règles décidées le
 > 17 nov. 2026 ; toutes les questions (Q22 à Q25) sont tranchées. Jauge
@@ -485,8 +485,8 @@ abandonnée : trop de couleurs, risque de confusion.
    - la question de confirmation « Tu es sûr ? » (note très différente de
      la précédente) n'apparaît plus quand la forme posée a changé depuis
      la dernière note ;
-   - une fiche qui a une forme (c) mais pas encore son écran est posée en
-     (b) en attendant l'étape 3 ;
+   - (jusqu'à la v297, une fiche ayant une forme (c) était posée en (b) :
+     l'écran du texte à trous est arrivé en v298, étape 3) ;
    - les formes poussées suivent la fiche partout : partage avec une
      classe, publication dans la Librairie, import des boîtes toutes
      prêtes dans Darwin Admin, copie d'une boîte de la Librairie.
@@ -501,7 +501,26 @@ abandonnée : trop de couleurs, risque de confusion.
    création / modification d'une fiche (les formes existantes sont
    gardées quand on modifie une fiche) ; réglage du délai de 1 heure dans
    Darwin Admin (fixé à 1 heure en attendant).
-3. Forme (c), nouvel écran de texte à trous.
+3. ✅ **Fait (v298, 18 nov. 2026)** : écran du texte à trous (c), dans la
+   même fiche que le QCM (pastille « Texte à trous ») :
+   - les trous sont dans la phrase ; l'élève touche un trou (entouré en
+     orange), choisit parmi ses 4 propositions affichées dessous, et
+     l'appli passe d'elle-même au trou vide suivant ; il peut retoucher
+     un trou pour changer sa réponse ;
+   - une fois tous les trous remplis, bouton **« Vérifier »** : les trous
+     justes passent en vert et restent ; les faux se vident pour une
+     **2e tentative** ;
+   - à la fin : « Tout est juste ! » (Je sais), « Tout est juste, au
+     deuxième essai. » (Vague idée) ou « Raté… Les bonnes réponses sont en
+     vert. » (Je ne sais pas : la réponse choisie est barrée, la bonne
+     écrite à côté) ; note donnée par l'appli, comme pour le QCM ;
+   - tout juste du premier coup et sans complément : la fiche passe toute
+     seule à la suivante ; sinon bouton « Continuer ».
+   **Contenu d'essai** : 14 textes à trous, sur les fiches qui ont déjà
+   une question poussée — « Rome et la Chine des Han » (8, dont
+   Confucius) et « Les débuts du christianisme » (6).
+   **Pas encore fait** : champs « texte à trous » dans l'écran de création
+   / modification d'une fiche.
 4. ✅ **Affichage de la progression fait (v297, 18 nov. 2026)** : jauge à
    une case par forme (§4.6). Reste : rédaction de (c) et (d) pour les
    boîtes toutes prêtes, lot par lot.
@@ -1326,9 +1345,10 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 - [ ] (16 nov. 2026) Niveaux d'une fiche pour un apprentissage progressif
   (QCM → question → texte à trous → question poussée) : règles décidées
-  le 17 nov. (§4.7) ; étapes 1 et 2 faites (v296), jauge faite (v297),
-  essai en cours avec des élèves ; prochaine étape : écran du texte à
-  trous (étape 3).
+  le 17 nov. (§4.7) ; étapes 1 et 2 faites (v296), jauge (v297), écran
+  du texte à trous (v298) ; essai en cours avec des élèves. Restent :
+  champs (c) et (d) dans l'écran de création d'une fiche, rédaction des
+  formes poussées des boîtes toutes prêtes, lot par lot.
 - [ ] 
 
 ---
@@ -1337,6 +1357,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v298 | 18 nov. 2026 | Formes d'une fiche, étape 3 (§4.7) : écran du texte à trous, dans la même fiche que le QCM — on touche un trou, on choisit parmi ses 4 propositions, puis « Vérifier » ; 2e tentative pour les trous faux ; note donnée par l'appli (Je sais / Vague idée / Je ne sais pas). Contenu d'essai : 14 textes à trous dans 2 boîtes d'histoire de 6e. |
 | v297 | 18 nov. 2026 | Jauge de progression des fiches à plusieurs formes (§4.6, Q25 revue) : toujours 4 couleurs, mais une case par forme de chaque fiche au lieu d'une par fiche ; chaque case garde la dernière note à sa forme ; « Je sais » compte « Parfaitement » en QCM et en texte à trous ; anciennes fiches : une forme dépassée compte comme sue. Même règle pour le tri des échéances à date égale. |
 | v296 | 18 nov. 2026 | Formes d'une fiche, étape 2 (§4.7) : règles branchées dans l'appli ; question poussée (d) posée sur l'écran de la question classique avec la pastille « Approfondie » ; un QCM juste du premier coup fait revenir la fiche 1 heure plus tard en question sans allonger son délai ; pas de « Tu es sûr ? » quand la forme a changé ; formes poussées gardées au partage, à la publication, à l'import des boîtes toutes prêtes et à la copie depuis la Librairie. Contenu d'essai : 26 questions poussées dans 2 boîtes d'histoire de 6e. |
 | — | 18 nov. 2026 | Formes d'une fiche, étape 1 (rien ne change dans l'appli) : règles du §4.7 écrites dans un fichier à part et vérifiées par 28 tests automatiques (tableau de passage, formes manquantes, fiches actuelles, sprint, montée de forme avec l'exemple chiffré). |
