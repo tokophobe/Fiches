@@ -8719,6 +8719,15 @@ body.profile-teacher #subject-list .rev-state { display: none !important; }
 .field-help-btn:hover, .field-help-btn:focus-visible { color: var(--action-color, var(--ink)); }
 #view-new-card .qcm-fields { margin: 0 0 16px; }
 #view-new-card .qcm-inputs { margin-top: 0; }
+/* v299 : saisie du texte à trous (phrase à crochets) et de la question
+   poussée ; une ligne de 3 réponses fausses par trou. */
+#view-new-card .cloze-fields, #view-new-card .level2-fields { margin: 0 0 16px; }
+.cloze-input, #input-a2 { resize: vertical; line-height: 1.4; }
+.cloze-wrongs { display: grid; gap: 12px; margin-top: 10px; }
+.cloze-wrongs:empty { display: none; }
+.cloze-wrongs-row { display: grid; gap: 6px; }
+.cloze-wrongs-title { margin: 0; font-family: var(--font-type); font-size: 13.5px; color: var(--ink-soft); text-transform: none; letter-spacing: normal; }
+.cloze-wrongs-title strong { color: var(--ink); font-weight: 700; }
 /* v261 : page évènement en blocs ; le bloc « Partage » disparaît quand
    son champ est masqué (compte élève, ou aucune classe). */
 #view-calendar-event-form .form-block:has(> #calendar-event-class-field[hidden]) { display: none; }

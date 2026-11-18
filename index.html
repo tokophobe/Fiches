@@ -665,9 +665,6 @@
               <button type="button" class="learn-link-chip qcm-learn-link" id="qcm-learn-link" hidden></button>
             </div>
             <button type="button" class="qcm-continue" id="qcm-continue" hidden>Continuer →</button>
-            <!-- v298 : texte à trous (forme c, spéc. §4.7) — même fiche que
-                 le QCM ; « Vérifier » une fois tous les trous remplis. -->
-            <button type="button" class="qcm-continue" id="cloze-check" hidden>Vérifier</button>
           </div>
           <!-- v237 : lien « Pour aller plus loin » de la fiche, visible une
                fois la réponse affichée. -->
@@ -835,6 +832,25 @@
             <input type="text" class="qcm-wrong-input" id="input-wrong-1" placeholder="Réponse fausse 1 (facultatif)" autocomplete="off" />
             <input type="text" class="qcm-wrong-input" id="input-wrong-2" placeholder="Réponse fausse 2 (facultatif)" autocomplete="off" />
             <input type="text" class="qcm-wrong-input" id="input-wrong-3" placeholder="Réponse fausse 3 (facultatif)" autocomplete="off" />
+          </div>
+        </div>
+        </section>
+        <!-- v299 : formes poussées (spéc. §4.7) — texte à trous (c), saisi
+             avec les mots à cacher entre crochets (3 réponses fausses par
+             trou, cases créées au fil de la frappe), et question poussée (d). -->
+        <section class="form-block">
+        <div class="field cloze-fields" id="cloze-fields">
+          <span>Texte à trous <small class="field-optional">(facultatif)</small> <button type="button" class="field-help-btn" data-field-help="cloze" aria-label="Aide : texte à trous" title="Aide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button></span>
+          <textarea id="input-cloze" class="qcm-wrong-input cloze-input" rows="3" autocomplete="off" placeholder="Ex. Le penseur chinois [Confucius] enseigne le respect [des ancêtres], de [l'ordre] et des [devoirs]."></textarea>
+          <div class="cloze-wrongs" id="cloze-wrongs"></div>
+        </div>
+        </section>
+        <section class="form-block">
+        <div class="field level2-fields">
+          <span>Question poussée <small class="field-optional">(facultatif)</small> <button type="button" class="field-help-btn" data-field-help="q2" aria-label="Aide : question poussée" title="Aide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button></span>
+          <div class="qcm-inputs">
+            <input type="text" class="qcm-wrong-input" id="input-q2" autocomplete="off" placeholder="Ex. Qui est Confucius ?" aria-label="Question poussée" />
+            <textarea id="input-a2" class="qcm-wrong-input" rows="2" autocomplete="off" placeholder="Ex. Le penseur chinois qui enseigne le respect des ancêtres, de l'ordre et des devoirs." aria-label="Réponse à la question poussée"></textarea>
           </div>
         </div>
         </section>
