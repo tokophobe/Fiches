@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v296";
+  const APP_VERSION = "v297";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -1630,7 +1630,7 @@
       // Chantier (item 16) : fiche marquée à corriger/compléter plus tard.
       underConstruction: false,
       // Algorithme v2 : dd en MINUTES (voir computeAlgoNext) ; jamais
-      // notée (lastRating absent = 0 pour la jauge).
+      // notée (lastRating / formRatings absents = 0 pour la jauge).
       dd: 0,
       interval: 0,
       deadlineDaysRaw: 0,
@@ -4527,13 +4527,16 @@
     const settings = loadDevSettings();
     const colors = settings.persGaugeColors;
     const list = pool || [];
-    // Round 42 : proportion des fiches selon leur DERNIÈRE NOTE (0 à 3,
-    // jamais notée = 0) — dégradé gris -> vert vif.
-    const counts = { court: 0, moyen: 0, long: 0, tresLong: 0 };
-    for (const c of list) {
-      counts[PERS_GAUGE_ZONE_ORDER[cardLastRating(c)]] += 1;
-    }
-    const total = list.length;
+    // Round 42 : proportion selon la DERNIÈRE NOTE (0 à 3, jamais notée =
+    // 0) — dégradé gris -> vert vif. v297 (§4.6) : une case par forme de
+    // chaque fiche (QCM, question, texte à trous, question poussée) au
+    // lieu d'une par fiche.
+    const notes = CardForms.gaugeCounts(list, cardLastRating);
+    const counts = {};
+    PERS_GAUGE_ZONE_ORDER.forEach((key, i) => {
+      counts[key] = notes[i];
+    });
+    const total = notes.reduce((a, b) => a + b, 0);
     const barY = 2;
     const height = barY * 2 + barHeight + (showLabels ? 14 : 0);
     // Round 22, item 1 : les extrémités de la barre (gauche ET droite)
@@ -5799,7 +5802,11 @@
     const idx = ratingIndex(rating);
     const posed = reviewForm(card);
     const step = CardForms.afterRating(card, posed, idx);
-    const fields = { form: step.form, formMax: step.formMax, formStreak: step.formStreak, lastRatedForm: posed };
+    const fields = {
+      form: step.form, formMax: step.formMax, formStreak: step.formStreak, lastRatedForm: posed,
+      // v297 : dernière note à chaque forme, pour la jauge (§4.6).
+      formRatings: CardForms.withFormRating(card, posed, idx, cardLastRating(card)),
+    };
     if (cardWrongs(card).length === 3) fields.qcmMode = step.form === "a";
     if (step.change === "up") {
       const up = CardForms.scheduleFormUp(card, new Date());
@@ -10386,9 +10393,11 @@
       // le tri à égalité de date devient la proportion (%) de fiches déjà
       // en persistance moyen/long/très long terme (donc pas "court terme").
       const list = pool || [];
-      // Round 42 : part des fiches dont la dernière note est 2 ou 3.
-      const wellPersisted = list.filter((c) => cardLastRating(c) >= 2).length;
-      const score = list.length > 0 ? Math.round((wellPersisted / list.length) * 100) : 0;
+      // Round 42 : part des notes 2 ou 3 ; v297 : comptées par forme, comme
+      // la jauge (§4.6).
+      const notes = CardForms.gaugeCounts(list, cardLastRating);
+      const slots = notes.reduce((a, b) => a + b, 0);
+      const score = slots > 0 ? Math.round(((notes[2] + notes[3]) / slots) * 100) : 0;
       return {
         linkId,
         type,

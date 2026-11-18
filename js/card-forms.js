@@ -12,7 +12,10 @@
      (d) `q2` / `a2` : question et réponse poussées ;
      suivi : `form` (forme actuelle), `formMax` (plus haute atteinte),
              `formStreak` (réussites de suite à la forme actuelle).
-   Étape 1 (v296) : règles seulement, pas encore branchées dans l'appli.
+             `formRatings` (v297) : dernière note à chaque forme, pour la
+             jauge — { a: 0-3, b: 0-3, c: 0-3, d: 0-3 }.
+   Étape 1 : règles seules ; branchées dans l'appli en v296 (étape 2) ;
+   jauge (§4.6) en v297.
    ============================================================ */
 (function (root) {
   "use strict";
@@ -135,7 +138,78 @@
     return secondAllRight ? 1 : 0;
   }
 
-  const api = { ORDER, FORM_UP_DELAY_MIN, validCloze, forms, hasLevel2, currentForm, afterRating, scheduleFormUp, clozeRating };
+  /* ---------- Jauge de progression (§4.6, décidé le 18 nov. 2026) ----------
+     Une case par forme de la fiche : (b) seul = 1 case, (a)+(b) = 2,
+     fiche complète = 4. Chaque case garde la dernière note obtenue à sa
+     forme ; une forme jamais posée compte « Je ne sais pas ». En (a) et
+     (c), « Je sais » compte « Parfaitement » (ces formes n'ont pas de
+     « Parfaitement » : la fiche monte). */
+
+  function isNote(n) {
+    return Number.isInteger(n) && n >= 0 && n <= 3;
+  }
+
+  /** Notes par forme d'une fiche notée avant la v297 (sans `formRatings`),
+   *  d'après sa seule dernière note `lastRating` : elle porte sur la forme
+   *  `lastRatedForm` (sinon la forme actuelle) ; une forme déjà dépassée
+   *  compte comme sue. Seules les formes atteintes sont renseignées. */
+  function legacyFormRatings(card, lastRating) {
+    const c = card || {};
+    const f = forms(c);
+    const cur = currentForm(c);
+    const rated = ORDER.includes(c.lastRatedForm) && f[c.lastRatedForm] ? c.lastRatedForm : cur;
+    const top = ORDER.indexOf(rated) > ORDER.indexOf(cur) ? rated : cur;
+    const out = {};
+    ORDER.forEach((k) => {
+      if (!f[k] || ORDER.indexOf(k) > ORDER.indexOf(top)) return;
+      if (k === rated) {
+        if (isNote(lastRating)) out[k] = lastRating;
+      } else if (ORDER.indexOf(k) < ORDER.indexOf(cur)) out[k] = 3;
+    });
+    return out;
+  }
+
+  /** Notes par forme connues de la fiche (`formRatings`, sinon reprises de
+   *  l'ancienne dernière note). */
+  function formRatingsOf(card, lastRating) {
+    const c = card || {};
+    if (c.formRatings && typeof c.formRatings === "object") return c.formRatings;
+    return legacyFormRatings(c, lastRating === undefined ? c.lastRating : lastRating);
+  }
+
+  /** Notes après une note `rating` donnée à la forme `form`. */
+  function withFormRating(card, form, rating, lastRating) {
+    return { ...formRatingsOf(card, lastRating), [form]: rating };
+  }
+
+  /** Cases de la jauge d'une fiche : une note (0-3) par forme qu'elle a,
+   *  dans l'ordre (a) (b) (c) (d). */
+  function gaugeNotes(card, lastRating) {
+    const f = forms(card);
+    const notes = formRatingsOf(card, lastRating);
+    return ORDER.filter((k) => f[k]).map((k) => {
+      const n = isNote(notes[k]) ? notes[k] : 0;
+      return (k === "a" || k === "c") && n === 2 ? 3 : n;
+    });
+  }
+
+  /** Nombre de cases par note [0, 1, 2, 3] pour un ensemble de fiches ;
+   *  `lastRatingOf(card)` donne l'ancienne dernière note (fiches d'avant
+   *  la v297). Le total des cases remplace le nombre de fiches. */
+  function gaugeCounts(cards, lastRatingOf) {
+    const counts = [0, 0, 0, 0];
+    (cards || []).forEach((c) => {
+      gaugeNotes(c, lastRatingOf ? lastRatingOf(c) : undefined).forEach((n) => {
+        counts[n] += 1;
+      });
+    });
+    return counts;
+  }
+
+  const api = {
+    ORDER, FORM_UP_DELAY_MIN, validCloze, forms, hasLevel2, currentForm, afterRating, scheduleFormUp, clozeRating,
+    legacyFormRatings, withFormRating, gaugeNotes, gaugeCounts,
+  };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.CardForms = api;
 })(typeof window !== "undefined" ? window : globalThis);
