@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v300";
+  const ADMIN_VERSION = "v301";
   // v281 : les erreurs de Darwin Admin portent aussi leur version
   // (js/error-report.js lit window.FICHES_APP_VERSION).
   window.FICHES_APP_VERSION = ADMIN_VERSION;
@@ -1951,6 +1951,10 @@
       "Mauvaises réponses du QCM": Array.isArray(c.wrongs) ? c.wrongs.map(plainText).join(" · ") : "",
       "Pour aller plus loin": plainText(c.more),
       Lien: c.link || "",
+      // v301 : formes poussées (spéc. §4.7).
+      "Texte à trous": window.CardForms ? window.CardForms.clozeSummary(c.cloze) : "",
+      "Question poussée": c.q2 || "",
+      "Réponse à la question poussée": c.a2 || "",
     };
   }
   /** Changements d'une fiche (suivi des modifications) ; null si aucun. */
@@ -2105,6 +2109,13 @@
           });
           const linkInp = h("input", { type: "text", class: "input", value: c.link || "", placeholder: "https://…", inputmode: "url" });
           linkInp.addEventListener("input", () => (cardsData[i].link = linkInp.value.trim()));
+          // v301 : formes poussées, modifiables comme le reste (texte à
+          // trous : phrase à [crochets] + réponses fausses, une ligne par trou).
+          const CF = window.CardForms;
+          if (CF && c._clozeText === undefined) {
+            c._clozeText = CF.clozeToBrackets(c.cloze);
+            c._clozeWrongs = CF.blankWrongsText(c.cloze);
+          }
           const del = h("button", { type: "button", class: "btn btn--small", onclick: () => { cardsData.splice(i, 1); drawCards(); } }, "Retirer la fiche");
           // v283 : étiquette « nouvelle » / « modifiée » et changements.
           const before = refById ? refById.get(c.id) : null;
@@ -2125,6 +2136,10 @@
             h("label", { class: "form-field submission-card-field" }, h("span", null, "Mauvaises réponses du QCM (les 3, ou aucune)"), h("div", { class: "submission-wrongs" }, ...wrongInputs)),
             area("Pour aller plus loin (facultatif)", c.more, 2, (v) => (cardsData[i].more = v)),
             h("label", { class: "form-field submission-card-field" }, h("span", null, "Lien de la fiche (facultatif)"), linkInp),
+            CF ? area("Texte à trous (facultatif) : mots cachés entre [crochets], article compris", c._clozeText, 2, (v) => (cardsData[i]._clozeText = v)) : null,
+            CF ? area("Réponses fausses des trous : une ligne par trou, 3 réponses séparées par « ; »", c._clozeWrongs, 3, (v) => (cardsData[i]._clozeWrongs = v)) : null,
+            area("Question poussée (facultatif)", c.q2, 2, (v) => (cardsData[i].q2 = v)),
+            area("Réponse à la question poussée", c.a2, 2, (v) => (cardsData[i].a2 = v)),
             del
           );
         })
@@ -2132,16 +2147,44 @@
     };
     /** Fiches prêtes à publier : champs vides retirés ; null si un QCM
      *  n'a pas ses 3 mauvaises réponses. */
+    let cleanError = "";
     const cleanCards = () => {
       const out = [];
+      cleanError = "Un QCM doit avoir ses 3 mauvaises réponses (ou aucune).";
       for (const c of cardsData) {
         if (!(c.question || "").trim() || !(c.answer || "").trim()) continue;
         const next = { ...c };
+        delete next._clozeText;
+        delete next._clozeWrongs;
         const w = (Array.isArray(c.wrongs) ? c.wrongs : []).map((x) => (x || "").trim());
         const filled = w.filter(Boolean).length;
         if (filled === 3) next.wrongs = w;
         else if (filled === 0) delete next.wrongs;
         else return null;
+        // v301 : formes poussées.
+        const CF = window.CardForms;
+        if (CF && c._clozeText !== undefined) {
+          const res = CF.clozeFromBrackets(c._clozeText, CF.parseBlankWrongs(c._clozeWrongs));
+          if (res.error) {
+            cleanError = `Fiche « ${plainText(c.question).slice(0, 40)} » — ${res.error}`;
+            return null;
+          }
+          if (res.cloze) next.cloze = res.cloze;
+          else delete next.cloze;
+        }
+        const q2 = (c.q2 || "").trim();
+        const a2 = (c.a2 || "").trim();
+        if (!q2 !== !a2) {
+          cleanError = `Fiche « ${plainText(c.question).slice(0, 40)} » — la question poussée et sa réponse vont ensemble.`;
+          return null;
+        }
+        if (q2) {
+          next.q2 = q2;
+          next.a2 = a2;
+        } else {
+          delete next.q2;
+          delete next.a2;
+        }
         if ((c.more || "").trim()) next.more = c.more;
         else delete next.more;
         if ((c.link || "").trim()) next.link = c.link.trim();
@@ -2324,7 +2367,7 @@
             onClick: async () => {
               const p = patch();
               if (p.cards === null) {
-                toast("Un QCM doit avoir ses 3 mauvaises réponses (ou aucune).", true);
+                toast(cleanError, true);
                 return false;
               }
               if (!p.name || !p.cards.length) {
@@ -2371,7 +2414,7 @@
             onClick: async () => {
               const p = patch();
               if (p.cards === null) {
-                toast("Un QCM doit avoir ses 3 mauvaises réponses (ou aucune).", true);
+                toast(cleanError, true);
                 return false;
               }
               if (!p.name || !p.cards.length) {
@@ -2613,6 +2656,10 @@
         else delete next.wrongs;
         if (c.link) next.link = c.link;
         else delete next.link;
+        LEVEL2_FIELDS.forEach((f) => {
+          if (c[f]) next[f] = c[f]; // v301 : formes poussées corrigées aussi
+          else delete next[f];
+        });
         box.cards[k.packIndex] = next;
         done++;
       });

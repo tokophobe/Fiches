@@ -305,3 +305,18 @@ test("jauge : une forme ajoutée en dessous de la forme actuelle compte comme su
   assert.equal(F.currentForm(redescendue), "c");
   assert.deepEqual(F.gaugeNotes(redescendue), [EASY, EASY, AGAIN, AGAIN]);
 });
+
+/* ---------- Texte à trous en une ligne, et saisie des réponses fausses par ligne (v301) ---------- */
+
+test("texte à trous en une ligne : phrase à crochets puis réponses fausses de chaque trou", () => {
+  const two = { text: "La capitale de ___ est ___.", blanks: [{ answer: "l'Islande", wrongs: ["la Norvège", "la Suède", "la Finlande"] }, { answer: "Reykjavik", wrongs: ["Oslo", "Stockholm", "Helsinki"] }] };
+  assert.equal(F.clozeSummary(two), "La capitale de [l'Islande] est [Reykjavik]. — réponses fausses : trou 1 : la Norvège · la Suède · la Finlande ; trou 2 : Oslo · Stockholm · Helsinki");
+  assert.equal(F.clozeSummary(null), "");
+});
+
+test("réponses fausses des trous : une ligne par trou, séparées par « ; » (aller-retour)", () => {
+  const text = F.blankWrongsText(CONFUCIUS.cloze);
+  assert.equal(text.split("\n").length, 4);
+  assert.deepEqual(F.parseBlankWrongs(text), CONFUCIUS.cloze.blanks.map((b) => b.wrongs));
+  assert.deepEqual(F.parseBlankWrongs("a ; b ; c\n\n d;e;f "), [["a", "b", "c"], ["d", "e", "f"]]);
+});

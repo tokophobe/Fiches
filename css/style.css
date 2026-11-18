@@ -8008,6 +8008,13 @@ body.is-qcm-review .qcm-sheet { padding-bottom: 46px; }
 .card-row-wrongs-list { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 2px; }
 .card-row-wrongs-list li { line-height: 1.4; }
 .card-row-wrong-tag { font-style: italic; opacity: 0.75; }
+/* v301 : formes poussées dans les listes de fiches. */
+.card-row-level2 { margin: 8px 0 0; font-family: var(--font-type); font-size: 12.5px; color: var(--ink-soft); }
+.card-row-level2 .qcm-chip { font-size: 10px; }
+.card-row-cloze, .card-row-q2, .card-row-a2 { margin: 4px 0 0; font-size: 13.5px; line-height: 1.4; color: var(--card-text-color, var(--ink)); }
+.card-row-a2 { color: var(--ink-soft); }
+.card-row-blank { padding: 0 3px; border-radius: 4px; color: #3e7c6b; background: color-mix(in srgb, #3e7c6b 12%, transparent); font-weight: 600; }
+:root.is-night-mode .card-row-blank { color: #8fd3bb; background: color-mix(in srgb, #8fd3bb 14%, transparent); }
 div.card-row-wrongs { margin: 4px 0 0; }
 
 /* ---------------------------------------------------------

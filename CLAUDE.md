@@ -99,7 +99,10 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   spéc. §4.6) : une case par forme, dernière note à chaque forme dans
   `formRatings` (fiches plus anciennes : `legacyFormRatings`) ;
   `CardForms.gaugeCounts` sert à `buildPersGaugeSvg` et au tri des
-  échéances. Pour ajouter un test sur une
+  échéances. Listes de fiches (v301) : `level2RowsHtml` (appli) affiche
+  texte à trous et question poussée ; `dmCardFields` (appli) et
+  `cardFieldsText` (Darwin Admin, qui charge aussi `card-forms.js`)
+  comparent ces champs (`CardForms.clozeSummary`). Pour ajouter un test sur une
   autre règle, extraire de la même façon la logique concernée.
 - **Lancer les tests avant chaque livraison.** Quand une règle de la
   spécification change, mettre à jour son test dans la même branche ;
@@ -369,9 +372,13 @@ testables ainsi.
   dans la question, bonne réponse pas plus longue que les fausses
   (précisions en 2e ligne de la réponse), fausses réponses crédibles ;
   texte à trous : articles dans les trous, pas de trous collés.
-  `tools/maj_boites.py qualite [CLE…]` liste les alertes (838 « indice »
-  et 2 128 « détail » sur toute la Librairie au 18 nov. 2026, à traiter
-  lot par lot) ; une alerte se relit, ce n'est pas toujours une erreur.
+  `tools/maj_boites.py qualite [CLE…]` liste les alertes ; une alerte se
+  relit, ce n'est pas toujours une erreur : `accepte CLE#N` note la
+  question dans le champ `qualite_ok` de la boîte (ignoré par Darwin
+  Admin). Avancement : 6e traitée le 18 nov. 2026 ; reste 742 « indice »
+  et 1 894 « détail », à traiter niveau par niveau (ordre proposé : 5e,
+  4e, 3e, puis lycée et primaire). Corriger avant d'écrire les formes
+  poussées d'une boîte.
 - Fiches datées (14 nov. 2026) : `tools/fiches_a_verifier.py` retrouve, par
   thèmes, les fiches dont le contenu change avec le temps (zone euro,
   population, tourisme, CO₂…) et écrit la liste dans le dépôt privé

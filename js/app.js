@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v300";
+  const APP_VERSION = "v301";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -5212,6 +5212,28 @@
   function qcmWrongsListHtml(wrongs) {
     return `<ul class="card-row-wrongs-list">${wrongs.map((x) => `<li>${escapeHtml(x)} <span class="card-row-wrong-tag">(réponse fausse)</span></li>`).join("")}</ul>`;
   }
+  /** v301 : formes poussées d'une fiche (§4.7) dans les listes de fiches —
+   *  page d'une boîte, organisation, liste « Fiches », Librairie : le texte
+   *  à trous (phrase complétée, mots cachés en couleur, réponses fausses de
+   *  chaque trou) et la question poussée avec sa réponse. */
+  function level2RowsHtml(card) {
+    const f = CardForms.forms(card || {});
+    let html = "";
+    if (f.c) {
+      const blanks = card.cloze.blanks;
+      const sentence = CardForms.clozeSegments(card.cloze.text)
+        .map((t, i) => escapeHtml(t) + (blanks[i] ? `<span class="card-row-blank">${escapeHtml(blanks[i].answer)}</span>` : ""))
+        .join("");
+      const wrongs = blanks
+        .map((b, i) => `<li>Trou ${i + 1} : ${b.wrongs.map((w) => escapeHtml(w)).join(" · ")} <span class="card-row-wrong-tag">(réponses fausses)</span></li>`)
+        .join("");
+      html += `<div class="card-row-level2"><span class="qcm-chip qcm-chip--level2">Texte à trous</span><p class="card-row-cloze">${sentence}</p><ul class="card-row-wrongs-list">${wrongs}</ul></div>`;
+    }
+    if (f.d) {
+      html += `<div class="card-row-level2"><span class="qcm-chip qcm-chip--level2">Question poussée</span><p class="card-row-q2">${escapeHtml(card.q2)}</p><p class="card-row-a2">${escapeHtml(card.a2)}</p></div>`;
+    }
+    return html;
+  }
   /** v232 : en QCM, seule la 1re ligne d'une réponse en texte simple est
    *  proposée parmi les choix (les réponses fausses n'ont qu'une ligne :
    *  sinon la bonne réponse se repérait à sa longueur) ; les lignes
@@ -6646,6 +6668,8 @@
       w.innerHTML = `<span class="qcm-chip">QCM</span>${qcmWrongsListHtml(wrongsForRow)}`;
       main.appendChild(w);
     }
+    const level2 = level2RowsHtml(card);
+    if (level2) main.insertAdjacentHTML("beforeend", level2);
     // v237 : lien « Pour aller plus loin ».
     if (card.link && learnLinkInfo(card.link)) {
       const l = document.createElement("div");
@@ -17115,6 +17139,7 @@
             <p class="card-row-q">${toDisplayHtml(c.question || "")}</p>
             <p class="card-row-a${fullAccess ? "" : " library-card-answer--cut"}">${fullAccess ? answerWithMoreHtml(c) : escapeHtml(c.answer || "")}</p>
             ${cardWrongs(c).length === 3 ? `<div class="card-row-wrongs"><span class="qcm-chip">QCM</span>${fullAccess ? qcmWrongsListHtml(cardWrongs(c)) : ""}</div>` : ""}
+            ${fullAccess ? level2RowsHtml(c) : ""}
             ${fullAccess && c.link ? `<div class="card-row-link">${learnLinkChipHtml(c.link, "card", stripHtml(c.question || "").slice(0, 120))}</div>` : ""}
           </div>
         </li>
@@ -19788,6 +19813,10 @@
       "Mauvaises réponses du QCM": Array.isArray(c.wrongs) ? c.wrongs.map((w) => stripHtmlFast(w)).join(" · ") : "",
       "Pour aller plus loin": stripHtmlFast(c.more || ""),
       Lien: c.link || "",
+      // v301 : formes poussées (§4.7).
+      "Texte à trous": CardForms.clozeSummary(c.cloze),
+      "Question poussée": c.q2 || "",
+      "Réponse à la question poussée": c.a2 || "",
     };
   }
   function dmCardHtml(title, before, after) {
