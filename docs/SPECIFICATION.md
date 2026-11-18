@@ -827,9 +827,13 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    collés, et assez de mots visibles pour comprendre la phrase.
    Contrôle : les « alertes de qualité » de l'outil des boîtes toutes prêtes
    (indice, réponse trop détaillée, article qui trahit, trous collés) ;
-   une alerte est à relire, ce n'est pas toujours une erreur. Au
-   18 nov. 2026, sur toute la Librairie : **838 alertes « indice » et
-   2 128 « réponse plus détaillée »**, à traiter lot par lot.
+   une alerte est à relire, ce n'est pas toujours une erreur : une
+   alerte relue et gardée (le mot commun fait partie de la notion, comme
+   « complément circonstanciel de cause ») est notée « acceptée » et ne
+   revient plus. Au 18 nov. 2026, sur toute la Librairie : 838 alertes
+   « indice » et 2 128 « réponse plus détaillée » ; **niveau 6e traité**
+   le même jour (304 fiches corrigées, 8 alertes acceptées) ; reste
+   742 « indice » et 1 894 « détail », à traiter niveau par niveau.
 
 ---
 

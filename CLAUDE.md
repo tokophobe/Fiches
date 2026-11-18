@@ -372,9 +372,13 @@ testables ainsi.
   dans la question, bonne réponse pas plus longue que les fausses
   (précisions en 2e ligne de la réponse), fausses réponses crédibles ;
   texte à trous : articles dans les trous, pas de trous collés.
-  `tools/maj_boites.py qualite [CLE…]` liste les alertes (838 « indice »
-  et 2 128 « détail » sur toute la Librairie au 18 nov. 2026, à traiter
-  lot par lot) ; une alerte se relit, ce n'est pas toujours une erreur.
+  `tools/maj_boites.py qualite [CLE…]` liste les alertes ; une alerte se
+  relit, ce n'est pas toujours une erreur : `accepte CLE#N` note la
+  question dans le champ `qualite_ok` de la boîte (ignoré par Darwin
+  Admin). Avancement : 6e traitée le 18 nov. 2026 ; reste 742 « indice »
+  et 1 894 « détail », à traiter niveau par niveau (ordre proposé : 5e,
+  4e, 3e, puis lycée et primaire). Corriger avant d'écrire les formes
+  poussées d'une boîte.
 - Fiches datées (14 nov. 2026) : `tools/fiches_a_verifier.py` retrouve, par
   thèmes, les fiches dont le contenu change avec le temps (zone euro,
   population, tourisme, CO₂…) et écrit la liste dans le dépôt privé

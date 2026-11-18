@@ -8,6 +8,7 @@ Utilisation :
   python3 tools/maj_boites.py verifie [CLE...]   -> contrôles (QCM complets, questions)
   python3 tools/maj_boites.py qualite [CLE...]   -> alertes à relire : indice dans la question,
                                                     bonne réponse trop détaillée, texte à trous
+  python3 tools/maj_boites.py accepte CLE#N...   -> alerte de qualité relue et acceptée
   python3 tools/maj_boites.py decoupe PLAN.json  -> découpe des boîtes trop larges
 
 Format d'un lot (LOT.json) :
@@ -315,7 +316,8 @@ def commence_par_voyelle(t):
 
 MOTS_VIDES = {"comment", "quelle", "quels", "quelles", "pourquoi", "combien", "dans", "avec", "pour", "entre", "leurs", "selon",
               "cette", "cela", "sont", "était", "étaient", "appelle", "appellent", "appelle-t-on", "nomme", "est-ce", "elles",
-              "aussi", "plus", "moins", "après", "avant", "depuis", "pendant", "sous", "contre", "chez", "vers", "toute", "tous"}
+              "aussi", "plus", "moins", "après", "avant", "depuis", "pendant", "sous", "contre", "chez", "vers", "toute", "tous",
+              "quand", "quelle", "quels", "lequel", "laquelle"}
 
 
 def mots(t):
@@ -335,7 +337,10 @@ def qualite(keys=None):
     for b in d["boxes"]:
         if keys and b["key"] not in keys:
             continue
+        acceptees = set(as_list(b.get("qualite_ok")))
         for i, c in enumerate(b["cards"]):
+            if c["question"] in acceptees:
+                continue  # alerte relue et acceptée (commande « accepte »)
             w = c.get("wrongs") or []
             principale = re.sub(r"<[^>]+>", " ", c["answer"]).split("\n")[0].strip()
             if w:
@@ -357,6 +362,25 @@ def qualite(keys=None):
                     stats["texte à trous"] += 1
                     print(f"[{b['key']}#{i}] texte à trous : {msg}")
     print("alertes :", ", ".join(f"{k} {v}" for k, v in stats.items()))
+
+
+def accepte(refs):
+    """Marque des alertes de qualité comme relues et acceptées (le mot
+    commun fait partie de la notion à apprendre, la question cite ses
+    propositions…) : « CLE#N » ; la question est notée dans le champ
+    « qualite_ok » de la boîte, et la commande « qualite » ne la signale
+    plus (tant que la question ne change pas)."""
+    d = charge()
+    boites = {b["key"]: b for b in d["boxes"]}
+    for ref in refs:
+        cle, _, n = ref.partition("#")
+        b = boites[cle]
+        q = b["cards"][int(n)]["question"]
+        ok = as_list(b.get("qualite_ok"))
+        if q not in ok:
+            b["qualite_ok"] = ok + [q]
+        print(f"accepté : [{ref}] {q[:70]}")
+    sauve(d)
 
 
 def verifie(keys=None):
@@ -424,6 +448,8 @@ def main():
         verifie(sys.argv[2:] or None)
     elif cmd == "qualite":
         qualite(sys.argv[2:] or None)
+    elif cmd == "accepte":
+        accepte(sys.argv[2:])
     elif cmd == "decoupe":
         decoupe(sys.argv[2])
 
