@@ -293,3 +293,15 @@ test("saisie : phrase vide = pas de texte à trous ; erreurs expliquées à l'au
   assert.match(F.clozeFromBrackets("La capitale est [Paris].", [["Lyon", "Nice"]]).error, /3 réponses fausses pour le trou 1/);
   assert.match(F.clozeFromBrackets("La capitale est [Paris].", [["Lyon", "paris", "Nice"]]).error, /différentes/);
 });
+
+test("jauge : une forme ajoutée en dessous de la forme actuelle compte comme sue (v300)", () => {
+  // Fiche déjà en question poussée (d), notée avant l'arrivée de son texte
+  // à trous : elle n'y redescendra pas tant qu'elle est sue.
+  const enD = { ...CONFUCIUS, form: "d", formMax: "d", formRatings: { a: GOOD, b: EASY, d: EASY } };
+  assert.deepEqual(F.gaugeNotes(enD), [EASY, EASY, EASY, EASY]);
+  // Après un « Je ne sais pas » en (d), elle redescend en (c) : sa case (c)
+  // n'est plus dépassée et compte en gris tant qu'elle n'est pas réussie.
+  const redescendue = rate(enD, AGAIN);
+  assert.equal(F.currentForm(redescendue), "c");
+  assert.deepEqual(F.gaugeNotes(redescendue), [EASY, EASY, AGAIN, AGAIN]);
+});

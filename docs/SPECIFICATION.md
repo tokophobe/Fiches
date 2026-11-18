@@ -346,6 +346,11 @@ QCM juste, puis question « Parfaitement », puis texte à trous juste au
 - **Forme ajoutée à une fiche** (par exemple une question poussée
   rédigée plus tard) : sa case part en gris, la jauge de la boîte
   baisse — il y a du nouveau à apprendre (accepté le 18 nov. 2026).
+  Exception (v300) : une forme ajoutée **en dessous** de la forme où la
+  fiche est déjà (un texte à trous ajouté à une fiche déjà en question
+  poussée) compte comme sue, puisque la fiche n'y redescend que si
+  l'élève échoue ; sans cela, une boîte entièrement sue ne devenait
+  jamais toute vert foncé (constaté par le propriétaire le 18 nov. 2026).
 - Le tri des échéances du programme de révision, à date égale, utilise
   la même règle (part des cases « Je sais » ou « Parfaitement »).
 - Les smileys des boutons d'évaluation gardent leurs couleurs.
@@ -472,7 +477,10 @@ abandonnée : trop de couleurs, risque de confusion.
   correspondance, (d) est le sens le plus
   difficile (d'abord de l'anglais vers le français en (a)/(b), puis du
   français vers l'anglais en (d)).
-- Toutes les formes restent dans le sujet de la boîte (§5.7, règle 8).
+- Toutes les formes restent dans le sujet de la boîte (§5.7, règle 8),
+  et ne doivent pas se deviner (§5.7, règle 9 : pas d'indice, propositions
+  de même forme et crédibles, articles dans les trous, pas de trous
+  collés).
 
 #### Étapes envisagées (après validation)
 
@@ -529,8 +537,13 @@ abandonnée : trop de couleurs, risque de confusion.
    textes à trous de 3 ou 4 trous et des questions poussées dont la
    réponse reprend la phrase du texte à trous — « Rome et la Chine des
    Han » (14 fiches sur 16) et « Les débuts du christianisme » (12 sur 16).
-   **Saisie (v299)** : l'écran de création / modification d'une fiche a
-   deux nouveaux blocs facultatifs, chacun avec son aide :
+   **Saisie (v299 ; v300 : les blocs facultatifs — complément, réponses
+   fausses, texte à trous, question poussée — sont pliés, et se déplient
+   avec leur chevron ⌄ ; ceux d'une fiche modifiée qui sont remplis
+   s'ouvrent d'office ; les exemples grisés des champs suivent tous la même
+   fiche, « Capitale de l'Islande ? » → « Reykjavik »)** : l'écran de
+   création / modification d'une fiche a deux nouveaux blocs facultatifs,
+   chacun avec son aide :
    - « Texte à trous » : on écrit la phrase en mettant **entre crochets**
      les mots à cacher (« Le penseur chinois [Confucius] enseigne… ») ;
      sous la phrase apparaissent, au fil de la frappe, 3 cases de
@@ -781,6 +794,32 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
      plan, conclusion d'une copie…) ne va que dans une boîte de méthode,
      jamais dans une boîte de connaissances. Le même contrôle automatique
      la signale.
+9. **Le QCM ne doit pas se deviner** (relecture du propriétaire, 18 nov.
+   2026, sur les 2 boîtes d'essai de 6e) :
+   - **pas d'indice dans la question** : la question ne contient pas un
+     mot de la bonne réponse qu'on ne retrouve dans aucune réponse fausse
+     (« Quelle grande muraille… ? » → « La Grande Muraille » ; « Comment
+     les Romains appellent-ils les Chinois, d'après la soie ? » → « Les
+     Sères ») ;
+   - **la bonne réponse n'est pas plus détaillée que les fausses** : les
+     4 propositions ont la même longueur et la même forme ; les
+     précisions vont sur une **2e ligne** de la réponse (elles
+     s'affichent une fois la bonne réponse trouvée) ou dans le
+     complément ;
+   - **des réponses fausses crédibles** pour le niveau : de la même
+     époque, du même domaine, du même type que la bonne (pas « le mur
+     des Lamentations » pour une muraille chinoise, ni « l'Amérique » pour
+     la Méditerranée antique).
+   **Texte à trous** : les mots qui dépendent du nom caché (articles
+   « le, la, l', un, une, du, au, des… ») vont **dans le trou**, avec la
+   même forme dans les 4 propositions, sinon l'accord élimine d'office des
+   propositions (« l'___ » face à « serviteur ») ; jamais deux trous
+   collés, et assez de mots visibles pour comprendre la phrase.
+   Contrôle : les « alertes de qualité » de l'outil des boîtes toutes prêtes
+   (indice, réponse trop détaillée, article qui trahit, trous collés) ;
+   une alerte est à relire, ce n'est pas toujours une erreur. Au
+   18 nov. 2026, sur toute la Librairie : **838 alertes « indice » et
+   2 128 « réponse plus détaillée »**, à traiter lot par lot.
 
 ---
 
@@ -1375,6 +1414,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v300 | 18 nov. 2026 | Remarques du propriétaire après essai des 2 boîtes de 6e : bouton « Supprimer cette fiche » plus coupé ; fiches de la pile allongées sous une fiche QCM ou texte à trous plus haute ; « Continuer » plus détaché de la fiche ; pastilles « Texte à trous » et « Approfondie » en couleur douce ; jauge enfin toute vert foncé quand tout est su (forme ajoutée en dessous de la forme actuelle comptée comme sue) ; écran d'une fiche avec blocs facultatifs pliés et exemples accordés. Nouvelle règle d'écriture (§5.7, règle 9) : pas d'indice dans la question, bonne réponse pas plus détaillée que les fausses, fausses réponses crédibles, articles dans les trous ; contenu d'essai corrigé en ce sens. |
 | v299 | 18 nov. 2026 | Formes d'une fiche : texte à trous vérifié tout seul dès que tous les trous sont remplis (plus de bouton « Vérifier ») ; au 2e essai, la réponse fausse reste barrée dans le trou et dans les propositions. Nouveaux blocs « Texte à trous » (phrase à crochets, 3 réponses fausses par trou) et « Question poussée » dans l'écran d'une fiche. Règle d'écriture : 3 ou 4 trous, et réponse de la question poussée qui reprend la phrase du texte à trous. Contenu d'essai revu : 26 fiches à 4 formes. |
 | v298 | 18 nov. 2026 | Formes d'une fiche, étape 3 (§4.7) : écran du texte à trous, dans la même fiche que le QCM — on touche un trou, on choisit parmi ses 4 propositions, puis « Vérifier » ; 2e tentative pour les trous faux ; note donnée par l'appli (Je sais / Vague idée / Je ne sais pas). Contenu d'essai : 14 textes à trous dans 2 boîtes d'histoire de 6e. |
 | v297 | 18 nov. 2026 | Jauge de progression des fiches à plusieurs formes (§4.6, Q25 revue) : toujours 4 couleurs, mais une case par forme de chaque fiche au lieu d'une par fiche ; chaque case garde la dernière note à sa forme ; « Je sais » compte « Parfaitement » en QCM et en texte à trous ; anciennes fiches : une forme dépassée compte comme sue. Même règle pour le tri des échéances à date égale. |

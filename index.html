@@ -640,7 +640,7 @@
             <button class="stack-card stack-card--front" id="flip-card" type="button" aria-label="Retourner la fiche">
               <div class="rule-line"></div>
               <div class="card-face card-face--question">
-                <span class="card-label">Question <span class="qcm-chip card-qcm-badge" id="card-qcm-badge" hidden>QCM</span><span class="qcm-chip card-qcm-badge" id="card-level-badge" hidden>Approfondie</span></span>
+                <span class="card-label">Question <span class="qcm-chip card-qcm-badge" id="card-qcm-badge" hidden>QCM</span><span class="qcm-chip qcm-chip--level2 card-qcm-badge" id="card-level-badge" hidden>Approfondie</span></span>
                 <p class="card-text" id="question-text"></p>
                 <span class="tap-hint">Touche la fiche pour voir la réponse</span>
               </div>
@@ -814,43 +814,45 @@
         <!-- Round 60 : complément de réponse (explications), séparé de la
              réponse : affiché sous la réponse, et jamais dans les choix du
              QCM (seulement une fois la réponse trouvée). -->
-        <section class="form-block">
-        <label class="field">
-          <span>Complément de réponse <small class="field-optional">(facultatif)</small></span>
+        <!-- v300 : les blocs facultatifs sont pliés ; on les déplie avec
+             le bouton ⌄ (dépliés d'office s'ils sont remplis). -->
+        <section class="form-block form-block--fold is-folded" data-fold="more">
+        <div class="field">
+          <span class="fold-title">Complément de réponse <small class="field-optional">(facultatif)</small> <button type="button" class="fold-toggle" aria-expanded="false" aria-label="Déplier"></button></span>
           <div class="rich-editor rich-editor--more" id="input-more" aria-label="Complément de réponse" contenteditable="true" data-placeholder="Ex. C'est la capitale la plus au nord du monde." role="textbox" aria-multiline="true"></div>
-        </label>
+        </div>
         </section>
         <!-- Round 59 : mode QCM facultatif — 3 réponses fausses en plus de la
              bonne. La fiche est alors d'abord posée en QCM (voir js/app.js,
              « Mode QCM »). v261 : toujours affiché, au même format que les
              autres champs ; les explications sont derrière le picto d'aide
              (le robot les lit, voir FIELD_HELP_TEXTS). -->
-        <section class="form-block">
+        <section class="form-block form-block--fold is-folded" data-fold="qcm">
         <div class="field qcm-fields" id="qcm-fields">
-          <span>Réponses fausses (mode QCM) <small class="field-optional">(facultatif)</small> <button type="button" class="field-help-btn" data-field-help="qcm" aria-label="Aide : mode QCM" title="Aide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button></span>
+          <span class="fold-title">Réponses fausses (mode QCM) <small class="field-optional">(facultatif)</small> <button type="button" class="field-help-btn" data-field-help="qcm" aria-label="Aide : mode QCM" title="Aide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button> <button type="button" class="fold-toggle" aria-expanded="false" aria-label="Déplier"></button></span>
           <div class="qcm-inputs" id="qcm-inputs">
-            <input type="text" class="qcm-wrong-input" id="input-wrong-1" placeholder="Réponse fausse 1 (facultatif)" autocomplete="off" />
-            <input type="text" class="qcm-wrong-input" id="input-wrong-2" placeholder="Réponse fausse 2 (facultatif)" autocomplete="off" />
-            <input type="text" class="qcm-wrong-input" id="input-wrong-3" placeholder="Réponse fausse 3 (facultatif)" autocomplete="off" />
+            <input type="text" class="qcm-wrong-input" id="input-wrong-1" placeholder="Ex. Oslo" autocomplete="off" />
+            <input type="text" class="qcm-wrong-input" id="input-wrong-2" placeholder="Ex. Helsinki" autocomplete="off" />
+            <input type="text" class="qcm-wrong-input" id="input-wrong-3" placeholder="Ex. Copenhague" autocomplete="off" />
           </div>
         </div>
         </section>
         <!-- v299 : formes poussées (spéc. §4.7) — texte à trous (c), saisi
              avec les mots à cacher entre crochets (3 réponses fausses par
              trou, cases créées au fil de la frappe), et question poussée (d). -->
-        <section class="form-block">
+        <section class="form-block form-block--fold is-folded" data-fold="cloze">
         <div class="field cloze-fields" id="cloze-fields">
-          <span>Texte à trous <small class="field-optional">(facultatif)</small> <button type="button" class="field-help-btn" data-field-help="cloze" aria-label="Aide : texte à trous" title="Aide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button></span>
-          <textarea id="input-cloze" class="qcm-wrong-input cloze-input" rows="3" autocomplete="off" placeholder="Ex. Le penseur chinois [Confucius] enseigne le respect [des ancêtres], de [l'ordre] et des [devoirs]."></textarea>
+          <span class="fold-title">Texte à trous <small class="field-optional">(facultatif)</small> <button type="button" class="field-help-btn" data-field-help="cloze" aria-label="Aide : texte à trous" title="Aide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button> <button type="button" class="fold-toggle" aria-expanded="false" aria-label="Déplier"></button></span>
+          <textarea id="input-cloze" class="qcm-wrong-input cloze-input" rows="3" autocomplete="off" placeholder="Ex. [Reykjavik] est [la capitale] la plus [au nord] du monde."></textarea>
           <div class="cloze-wrongs" id="cloze-wrongs"></div>
         </div>
         </section>
-        <section class="form-block">
+        <section class="form-block form-block--fold is-folded" data-fold="q2">
         <div class="field level2-fields">
-          <span>Question poussée <small class="field-optional">(facultatif)</small> <button type="button" class="field-help-btn" data-field-help="q2" aria-label="Aide : question poussée" title="Aide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button></span>
+          <span class="fold-title">Question poussée <small class="field-optional">(facultatif)</small> <button type="button" class="field-help-btn" data-field-help="q2" aria-label="Aide : question poussée" title="Aide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button> <button type="button" class="fold-toggle" aria-expanded="false" aria-label="Déplier"></button></span>
           <div class="qcm-inputs">
-            <input type="text" class="qcm-wrong-input" id="input-q2" autocomplete="off" placeholder="Ex. Qui est Confucius ?" aria-label="Question poussée" />
-            <textarea id="input-a2" class="qcm-wrong-input" rows="2" autocomplete="off" placeholder="Ex. Le penseur chinois qui enseigne le respect des ancêtres, de l'ordre et des devoirs." aria-label="Réponse à la question poussée"></textarea>
+            <input type="text" class="qcm-wrong-input" id="input-q2" autocomplete="off" placeholder="Ex. Quelle est la particularité de Reykjavik ?" aria-label="Question poussée" />
+            <textarea id="input-a2" class="qcm-wrong-input" rows="2" autocomplete="off" placeholder="Ex. C'est la capitale la plus au nord du monde." aria-label="Réponse à la question poussée"></textarea>
           </div>
         </div>
         </section>

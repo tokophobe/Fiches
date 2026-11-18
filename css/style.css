@@ -7351,10 +7351,12 @@ body.layout-v2 :is(#classes-teacher-actions, #classes-student-actions) .classes-
 #card-form.is-editing .form-actions {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  /* v300 : retour à la ligne permis (« Supprimer cette fiche » était
+     coupé à droite sur téléphone). */
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start;
-  gap: 18px;
+  gap: 10px 18px;
 }
 #card-form.is-editing #submit-btn { font-weight: 400; }
 #card-form.is-editing .form-actions .btn { flex: 0 0 auto; width: auto; white-space: nowrap; padding-left: 4px; padding-right: 4px; }
@@ -7644,14 +7646,27 @@ body:has(#view-library.is-active[data-cycle]) {
   display: inline-block; padding: 1px 7px; border-radius: 999px; font-family: var(--font-type);
   font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; background: #c2570f; color: #fff; vertical-align: 1px;
 }
+/* v300 : pastilles « Texte à trous » et « Approfondie » (niveau 2, §4.7)
+   dans une couleur douce : fond pâle, texte vert sourd. */
+.qcm-chip.qcm-chip--level2 { background: color-mix(in srgb, #3e7c6b 14%, transparent); color: #3e7c6b; border: 1px solid color-mix(in srgb, #3e7c6b 35%, transparent); padding: 0 6px; }
+:root.is-night-mode .qcm-chip.qcm-chip--level2 { color: #8fd3bb; background: color-mix(in srgb, #8fd3bb 14%, transparent); border-color: color-mix(in srgb, #8fd3bb 35%, transparent); }
 /* Formulaire de fiche */
 .qcm-fields { margin: 2px 0 14px; }
-.qcm-toggle {
-  display: inline-flex; align-items: center; gap: 8px; padding: 6px 2px; border: none; background: transparent;
-  font-family: var(--font-type); font-size: 14px; color: var(--action-color, var(--ink)); cursor: pointer;
+/* v300 : blocs facultatifs de l'écran d'une fiche, pliés par défaut ;
+   le titre (et son chevron ⌄) les déplie. Remplace l'ancien bouton
+   « mode QCM » (.qcm-toggle, supprimé en v261). */
+.form-block--fold .fold-title { display: flex; align-items: center; gap: 4px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.form-block--fold .fold-title .field-optional { margin-left: 2px; }
+.fold-toggle {
+  display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;
+  width: 30px; height: 30px; margin: -8px -6px -8px auto; padding: 0; border: none; border-radius: 50%;
+  background: transparent; color: var(--ink-soft); cursor: pointer;
 }
-.qcm-toggle::after { content: ""; width: 7px; height: 7px; border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: rotate(45deg); margin: -3px 0 0 2px; transition: transform 0.2s ease; }
-.qcm-toggle.is-open::after { transform: rotate(-135deg); margin-top: 3px; }
+.fold-toggle::after { content: ""; width: 8px; height: 8px; border-right: 1.8px solid currentColor; border-bottom: 1.8px solid currentColor; transform: rotate(45deg); margin-top: -4px; transition: transform 0.2s ease; }
+.form-block--fold:not(.is-folded) .fold-toggle::after { transform: rotate(-135deg); margin-top: 4px; }
+.fold-toggle:hover, .fold-toggle:focus-visible { color: var(--action-color, var(--ink)); }
+#view-new-card .form-block--fold.is-folded .field { margin-bottom: 0; }
+.form-block--fold.is-folded .field > :not(.fold-title) { display: none; }
 .qcm-inputs { display: grid; gap: 8px; margin-top: 6px; }
 .qcm-inputs[hidden] { display: none; }
 .qcm-inputs .field-hint { margin: 0 0 2px; }
@@ -7668,7 +7683,8 @@ body:has(#view-library.is-active[data-cycle]) {
 .qcm-panel {
   /* Round 62 : dans la pile de la fiche, à la place de la fiche. */
   position: absolute; top: 0; left: 0; right: 0; z-index: 4;
-  display: flex; flex-direction: column; align-items: stretch; gap: 10px;
+  /* v300 : bouton « Continuer » un peu plus détaché de la fiche. */
+  display: flex; flex-direction: column; align-items: stretch; gap: 20px;
   font-family: var(--font-type);
 }
 .qcm-panel[hidden] { display: none; }
@@ -7813,6 +7829,9 @@ select optgroup {
    (qui peut être plus haute que la fiche normale), avec la place qu'il
    faut sous le texte. */
 body.is-qcm-review .card-undo-btn { bottom: calc(10px - var(--qcm-sheet-extra, 0px)); }
+/* v300 : les fiches de la pile, sous une fiche QCM / texte à trous plus
+   haute que la fiche normale, s'allongent avec elle. */
+body.is-qcm-review .stack-card--back-1, body.is-qcm-review .stack-card--back-2 { bottom: calc(-1 * var(--qcm-sheet-extra, 0px)); }
 body.is-qcm-review .qcm-sheet { padding-bottom: 46px; }
 
 /* Round 63 : le texte d'invitation est un seul bloc centré (avant, chaque
