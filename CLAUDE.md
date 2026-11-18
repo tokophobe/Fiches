@@ -83,9 +83,14 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   « vidéos de cours », v275), `js/publication-rules.js` (publication avec
   relecture, étape A), `js/card-forms.js` (formes d'une fiche, spéc. §4.7 :
   (a) QCM, (b) question, (c) texte à trous `cloze`, (d) question poussée
-  `q2`/`a2` ; suivi `form`, `formMax`, `formStreak` ; étape 1 du
-  18 nov. 2026, pas encore chargé par l'appli — à l'étape 2, l'ajouter à
-  `index.html`, `sw.js` et remplacer `isQcmCard` / `qcmMode`). Pour ajouter un test sur une
+  `q2`/`a2` ; suivi `form`, `formMax`, `formStreak`). Branché en v296
+  (étape 2) : dans `app.js`, `reviewForm` donne la forme posée ((c) posée
+  en (b) tant que son écran n'existe pas), `nextAfterRating` applique
+  montée / descente, `lastRatedForm` évite le « Tu es sûr ? » d'une forme
+  à l'autre ; `qcmMode` n'est plus qu'un reflet de `form === "a"`. Les
+  champs `q2`, `a2`, `cloze` doivent suivre la fiche partout
+  (`LEVEL2_FIELDS` dans `app.js` et `admin/admin.js`, `shareableCard`
+  dans `sync.js`, `cardContentKey`, `tools/maj_boites.py`). Pour ajouter un test sur une
   autre règle, extraire de la même façon la logique concernée.
 - **Lancer les tests avant chaque livraison.** Quand une règle de la
   spécification change, mettre à jour son test dans la même branche ;
@@ -96,7 +101,7 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
 - `index.html` : l'appli (tous les écrans sont dans ce fichier). Les
   scripts sont chargés dans cet ordre, sans modules ni bundler :
   `config.js`, `error-report.js`, `user-scope.js` (dans le `<head>`),
-  puis supabase-js (CDN), `sm2.js`, `revision-algo.js`, `profile-rules.js`, `library-rules.js`, `db.js`, `sync.js`, `taxonomy.js`,
+  puis supabase-js (CDN), `sm2.js`, `revision-algo.js`, `profile-rules.js`, `library-rules.js`, `card-forms.js`, `db.js`, `sync.js`, `taxonomy.js`,
   `settings-model.js`, `defi-questions.js`, `defi.js`, `learn-links.js`,
   `app.js`.
 - `js/app.js` (~18 000 lignes) : toute la logique de l'interface, dans une

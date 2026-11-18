@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v295";
+  const ADMIN_VERSION = "v296";
   // v281 : les erreurs de Darwin Admin portent aussi leur version
   // (js/error-report.js lit window.FICHES_APP_VERSION).
   window.FICHES_APP_VERSION = ADMIN_VERSION;
@@ -1704,6 +1704,31 @@
     else delete card.wrongs;
     return card;
   }
+  /* v296 : formes poussées d'une fiche (spéc. §4.7) — (c) texte à trous
+     `cloze`, (d) question et réponse `q2` / `a2`. */
+  const LEVEL2_FIELDS = ["q2", "a2", "cloze"];
+  function packLevel2(c) {
+    const out = {};
+    if (c.q2 && c.a2) {
+      out.q2 = String(c.q2);
+      out.a2 = String(c.a2);
+    }
+    if (c.cloze && typeof c.cloze === "object") out.cloze = JSON.parse(JSON.stringify(c.cloze));
+    return out;
+  }
+  function sameLevel2(c, p) {
+    return LEVEL2_FIELDS.every((k) => JSON.stringify(c[k] || null) === JSON.stringify(p[k] || null));
+  }
+  /** Fiche recalée sur une fiche du fichier : réponses fausses, complément,
+   *  lien et formes poussées. */
+  function withPackExtras(card, p) {
+    withLink(withMore(withWrongs(card, p.wrongs), p.more), p.link);
+    LEVEL2_FIELDS.forEach((k) => {
+      if (p[k]) card[k] = p[k];
+      else delete card[k];
+    });
+    return card;
+  }
   /** Fiches d'une collection publiée recalées sur la version du fichier. */
   function mergePackCards(colCards, packCards, sid, retirees) {
     // v291 : empreintes des fiches retirées du fichier (champ « retirees »
@@ -1742,13 +1767,13 @@
         // la question / réponse est la même qu'avant : le fichier ne
         // contient la correction que si tout est identique.
         const pNow = iNow != null ? packCards[iNow] : null;
-        const fileHasIt = pNow && (qa !== c.corr.from || (sameWrongs(c.wrongs, pNow.wrongs) && (c.more || "") === (pNow.more || "") && (c.link || "") === (pNow.link || "")));
+        const fileHasIt = pNow && (qa !== c.corr.from || (sameWrongs(c.wrongs, pNow.wrongs) && (c.more || "") === (pNow.more || "") && (c.link || "") === (pNow.link || "") && sameLevel2(c, pNow)));
         if (fileHasIt && !used.has(iNow)) {
           used.add(iNow);
           const out = { ...c };
           delete out.corr;
           changed++;
-          return withLink(withMore(withWrongs(out, packCards[iNow].wrongs), packCards[iNow].more), packCards[iNow].link);
+          return withPackExtras(out, packCards[iNow]);
         }
         const iFrom = [curQA.get(c.corr.from), oldQA.get(c.corr.from)].find((m) => m != null && !used.has(m));
         if (iFrom != null) used.add(iFrom);
@@ -1759,17 +1784,17 @@
       if (i0 != null && !used.has(i0)) {
         used.add(i0);
         // Round 59 : réponses fausses (mode QCM) ajoutées ou modifiées.
-        if (sameWrongs(c.wrongs, packCards[i0].wrongs) && (c.more || "") === packCards[i0].more && (c.link || "") === packCards[i0].link) return c;
+        if (sameWrongs(c.wrongs, packCards[i0].wrongs) && (c.more || "") === packCards[i0].more && (c.link || "") === packCards[i0].link && sameLevel2(c, packCards[i0])) return c;
         changed++;
-        return withLink(withMore(withWrongs({ ...c }, packCards[i0].wrongs), packCards[i0].more), packCards[i0].link);
+        return withPackExtras({ ...c }, packCards[i0]);
       }
       for (const m of [oldQA.get(qa), curQ.get(q), oldQ.get(q)]) {
         if (m == null || used.has(m)) continue;
         used.add(m);
         const p = packCards[m];
-        if (p.question === c.question && p.answer === c.answer && sameWrongs(c.wrongs, p.wrongs) && (c.more || "") === p.more && (c.link || "") === p.link) return c;
+        if (p.question === c.question && p.answer === c.answer && sameWrongs(c.wrongs, p.wrongs) && (c.more || "") === p.more && (c.link || "") === p.link && sameLevel2(c, p)) return c;
         changed++;
-        return withLink(withMore(withWrongs({ ...c, question: p.question, answer: p.answer }, p.wrongs), p.more), p.link);
+        return withPackExtras({ ...c, question: p.question, answer: p.answer }, p);
       }
       if (removedSet.has(qa) || (c.corr && removedSet.has(c.corr.from))) {
         removed++;
@@ -1790,7 +1815,7 @@
       packCards.forEach((p, i) => {
         if (used.has(i)) return;
         maxN += 1;
-        cards.push(withLink(withMore(withWrongs({ id: `${sid}-${maxN}`, question: p.question, answer: p.answer }, p.wrongs), p.more), p.link));
+        cards.push(withPackExtras({ id: `${sid}-${maxN}`, question: p.question, answer: p.answer }, p));
         added++;
       });
     }
@@ -2753,7 +2778,7 @@
       const sid = `pack-${box.key}`;
       const taxonomy = taxValueFromSelection(packSelection(box));
       const tags = Array.isArray(box.tags) ? box.tags.map(normalizeTag).filter(Boolean) : [];
-      const packCards = (box.cards || []).map((c) => ({ question: c.question || "", answer: c.answer || "", w: c.w, wq: c.wq, wrongs: packWrongs(c), more: c.more || "", link: packLink(c.link) }));
+      const packCards = (box.cards || []).map((c) => ({ question: c.question || "", answer: c.answer || "", w: c.w, wq: c.wq, wrongs: packWrongs(c), more: c.more || "", link: packLink(c.link), ...packLevel2(c) }));
       const existing = mine.find((c) => c.source_subject_id === sid) || mine.find((c) => !c.source_subject_id && c.name === box.name);
       if (!existing) {
         if (packCards.length) plan.toCreate.push({ box, taxonomy, tags, sid, packCards });
@@ -2838,7 +2863,7 @@
           taxonomy: it.taxonomy,
           tags: it.tags,
           ...(plan.hasLinkColumn && packLink(it.box.link) ? { link: packLink(it.box.link) } : {}),
-          cards: it.packCards.map((c, k) => withLink(withMore(withWrongs({ id: `${it.sid}-${k + 1}`, question: c.question, answer: c.answer }, c.wrongs), c.more), c.link)),
+          cards: it.packCards.map((c, k) => withPackExtras({ id: `${it.sid}-${k + 1}`, question: c.question, answer: c.answer }, c)),
         };
         const { data, error } = await client().from("library_collections").insert(row).select("id").single();
         if (!error && data) results.push({ id: data.id, name: it.box.name, kind: "Nouvelle", detail: plural(it.packCards.length, "fiche", "fiches") });

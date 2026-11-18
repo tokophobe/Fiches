@@ -15,7 +15,8 @@ Format d'un lot (LOT.json) :
         "3": {"wrongs": ["…", "…", "…"]},      (fiche n° 3 : réponses fausses)
         "4": {"q": "…", "a": "…", "wrongs": […], "more": "…", "link": "…"},
         "5": [ {fiche 1}, {fiche 2} ],         (fiche coupée en plusieurs)
-        "6": null                              (fiche supprimée)
+        "6": null,                             (fiche supprimée)
+        "7": {"q2": "…", "a2": "…"}            (question poussée, spéc. §4.7)
       } } }
 
 Format d'un plan de découpage (PLAN.json, 16 nov. 2026) — chaque fiche de la
@@ -167,6 +168,12 @@ def nouvelle_fiche(src, ch, garder_marques):
     link = ch.get("link", src.get("link") if src else None)
     if link:
         out["link"] = link
+    # Formes poussées (spéc. §4.7, v296) : question poussée q2/a2 et texte à
+    # trous cloze ; gardées si le lot ne les change pas.
+    for champ in ("q2", "a2", "cloze"):
+        val = ch.get(champ, src.get(champ) if src else None)
+        if val:
+            out[champ] = val
     return out
 
 
@@ -283,8 +290,11 @@ def verifie(keys=None):
                 elif len({norm(x) for x in w} | {norm(c["answer"])}) != 4:
                     print(f"[{b['key']}#{i}] réponses en double : {c['question'][:60]}")
                     pb += 1
-            if hors_sujet(c["question"], b.get("name", "")):
+            if hors_sujet(c["question"], b.get("name", "")) or (c.get("q2") and hors_sujet(c["q2"], b.get("name", ""))):
                 print(f"[{b['key']}#{i}] fiche hors sujet (programme, épreuve…) : {c['question'][:80]}")
+                pb += 1
+            if bool(c.get("q2", "").strip()) != bool(c.get("a2", "").strip()):
+                print(f"[{b['key']}#{i}] question poussée sans réponse (ou l'inverse) : {c['question'][:60]}")
                 pb += 1
             if w:
                 qs.append(c["question"])

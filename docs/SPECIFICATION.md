@@ -314,7 +314,7 @@ Les autres présentations essayées (la page à trois boutons seule, le
 Barre à 4 couleurs (du gris au vert) : part des fiches de la boîte (ou du
 dossier) selon leur **dernière note** (jamais notée = 0).
 
-### 4.7 Niveaux d'une fiche — 🟡 en réflexion (rien n'est codé)
+### 4.7 Niveaux d'une fiche — 🟠 en cours (étape 2 livrée, v296)
 
 > Projet du propriétaire (16 et 17 nov. 2026). Règles décidées le
 > 17 nov. 2026 ; toutes les questions (Q22 à Q25) sont tranchées. Seul
@@ -454,8 +454,31 @@ Une fiche peut être posée sous quatre formes, en deux niveaux :
    fiches QCM actuelles suivront aussi la règle de montée — un QCM juste du
    premier coup fera revenir la fiche 1 heure plus tard en question, sans
    allonger son délai (aujourd'hui, elle part pour 3 à 30 jours).
-2. Forme (d) (même écran que la question classique), essai sur quelques
-   boîtes de 6e avec un ou deux élèves.
+2. ✅ **Fait (v296, 18 nov. 2026)** : règles branchées dans l'appli et
+   forme (d) posée sur le même écran que la question classique, avec la
+   pastille « Approfondie » à côté de « Question ». Ce qui change :
+   - un QCM juste du premier coup fait revenir la fiche 1 heure plus tard
+     en question, sans allonger son délai (règle de montée) ; les délais
+     affichés sous les boutons d'évaluation en tiennent compte (« 1 h ») ;
+   - la question de confirmation « Tu es sûr ? » (note très différente de
+     la précédente) n'apparaît plus quand la forme posée a changé depuis
+     la dernière note ;
+   - une fiche qui a une forme (c) mais pas encore son écran est posée en
+     (b) en attendant l'étape 3 ;
+   - les formes poussées suivent la fiche partout : partage avec une
+     classe, publication dans la Librairie, import des boîtes toutes
+     prêtes dans Darwin Admin, copie d'une boîte de la Librairie.
+   **Contenu d'essai** : questions poussées dans 2 boîtes toutes prêtes de
+   6e — « Histoire : Rome et la Chine des Han » (14 fiches sur 16) et
+   « Histoire : les débuts du christianisme » (12 fiches sur 16). Les
+   fiches dont la question poussée ferait doublon avec la question
+   classique n'en ont pas. Pas de boîte d'anglais : celles de 6e posent
+   déjà la question dans le sens le plus difficile (du français vers
+   l'anglais).
+   **Pas encore fait** : champs « question poussée » dans l'écran de
+   création / modification d'une fiche (les formes existantes sont
+   gardées quand on modifie une fiche) ; réglage du délai de 1 heure dans
+   Darwin Admin (fixé à 1 heure en attendant).
 3. Forme (c), nouvel écran de texte à trous.
 4. Affichage de la progression, puis rédaction de (c) et (d) pour les
    boîtes toutes prêtes, lot par lot.
@@ -1280,7 +1303,8 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 - [ ] (16 nov. 2026) Niveaux d'une fiche pour un apprentissage progressif
   (QCM → question → texte à trous → question poussée) : règles décidées
-  le 17 nov. (§4.7), toutes les questions tranchées ; prêt pour l'étape 1.
+  le 17 nov. (§4.7) ; étapes 1 et 2 faites (v296), essai en cours avec
+  des élèves ; prochaine étape : écran du texte à trous (étape 3).
 - [ ] 
 
 ---
@@ -1289,6 +1313,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v296 | 18 nov. 2026 | Formes d'une fiche, étape 2 (§4.7) : règles branchées dans l'appli ; question poussée (d) posée sur l'écran de la question classique avec la pastille « Approfondie » ; un QCM juste du premier coup fait revenir la fiche 1 heure plus tard en question sans allonger son délai ; pas de « Tu es sûr ? » quand la forme a changé ; formes poussées gardées au partage, à la publication, à l'import des boîtes toutes prêtes et à la copie depuis la Librairie. Contenu d'essai : 26 questions poussées dans 2 boîtes d'histoire de 6e. |
 | — | 18 nov. 2026 | Formes d'une fiche, étape 1 (rien ne change dans l'appli) : règles du §4.7 écrites dans un fichier à part et vérifiées par 28 tests automatiques (tableau de passage, formes manquantes, fiches actuelles, sprint, montée de forme avec l'exemple chiffré). |
 | — | 17 nov. 2026 | Spécification seulement : montée de forme (décision Q24, lecture 2) — retour 1 heure plus tard, le dernier délai reste celui d'avant, la note suivante repart de ce délai ; §4.7 entièrement tranchée. |
 | — | 17 nov. 2026 | Spécification seulement : jauge de progression des fiches à deux niveaux (8 couleurs en dégradé, smileys assortis, décision Q25) ; Q24 reformulée (délai à la montée de forme). |
