@@ -410,6 +410,13 @@ testables ainsi.
   vidéo et chaque extrait créé dans `Fiches-contenu/verifications-videos.json`
   ({id: {date, verdict, boites, extraits}}) et ne pas refaire ce qui y
   figure.
+  Formes (c)/(d) (18 nov. 2026) : on les écrit d'abord pour les boîtes
+  dont la vidéo est transcrite, en un seul passage par boîte (vérifier la
+  vidéo, ajuster les fiches, écrire (c)/(d), créer les extraits). Lot
+  d'essai : 5 boîtes de 3e. **Ne jamais plagier une vidéo** (spéc. §5.7
+  règle 10) : écrire avec nos mots, la transcription ne sert qu'à vérifier
+  et à minuter les extraits. Outils dans le bloc-notes de session
+  (`voir.py` : fiches + transcription par tranches de 20 s).
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
   rediffusion en direct, interview, chaîne pour étrangers apprenant le
