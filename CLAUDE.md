@@ -90,7 +90,11 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   à l'autre ; `qcmMode` n'est plus qu'un reflet de `form === "a"`. Les
   champs `q2`, `a2`, `cloze` doivent suivre la fiche partout
   (`LEVEL2_FIELDS` dans `app.js` et `admin/admin.js`, `shareableCard`
-  dans `sync.js`, `cardContentKey`, `tools/maj_boites.py`). Pour ajouter un test sur une
+  dans `sync.js`, `cardContentKey`, `tools/maj_boites.py`). Jauge (v297,
+  spéc. §4.6) : une case par forme, dernière note à chaque forme dans
+  `formRatings` (fiches plus anciennes : `legacyFormRatings`) ;
+  `CardForms.gaugeCounts` sert à `buildPersGaugeSvg` et au tri des
+  échéances. Pour ajouter un test sur une
   autre règle, extraire de la même façon la logique concernée.
 - **Lancer les tests avant chaque livraison.** Quand une règle de la
   spécification change, mettre à jour son test dans la même branche ;

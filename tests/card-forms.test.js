@@ -180,3 +180,82 @@ test("Exemple du §4.7 : « Je sais » en (b) après la montée → environ 5 jo
   const lendemain = A.computeNext(card, GOOD, S, new Date(samedi.getTime() + DAY * 60000), null, {});
   assert.ok(Math.abs(lendemain.dd - 6 * DAY) < 1, `6 jours : ${lendemain.dd / DAY}`);
 });
+
+/* ---------- Jauge de progression : une case par forme (§4.6, 18 nov. 2026) ---------- */
+
+// Note donnée à la forme posée : nouvelle forme + note retenue pour la jauge.
+function rate(card, rating) {
+  const posed = F.currentForm(card);
+  const step = F.afterRating(card, posed, rating);
+  return { ...card, form: step.form, formMax: step.formMax, formStreak: step.formStreak, lastRatedForm: posed, lastRating: rating, formRatings: F.withFormRating(card, posed, rating, card.lastRating) };
+}
+const B_ONLY = { question: "Capitale de l'Italie ?", answer: "Rome" };
+const AB = { question: "Capitale de l'Espagne ?", answer: "Madrid", wrongs: ["Séville", "Barcelone", "Valence"] };
+
+test("jauge : une case par forme — (b) seul 1, (a)+(b) 2, fiche complète 4", () => {
+  assert.equal(F.gaugeNotes(B_ONLY).length, 1);
+  assert.equal(F.gaugeNotes(AB).length, 2);
+  assert.equal(F.gaugeNotes(CONFUCIUS).length, 4);
+  assert.deepEqual(F.gaugeCounts([B_ONLY, AB, CONFUCIUS]), [7, 0, 0, 0], "au début, tout est gris : 7 cases sur 7");
+});
+
+test("jauge : l'exemple du propriétaire (boîte de 3 fiches, 7 cases)", () => {
+  let ab = AB;
+  let full = CONFUCIUS;
+  const box = () => F.gaugeCounts([B_ONLY, ab, full]);
+  ab = rate(ab, GOOD); // QCM juste du premier coup : « Je sais » compte « Parfaitement »
+  assert.deepEqual(box(), [6, 0, 0, 1]);
+  assert.equal(F.currentForm(ab), "b");
+  ab = rate(ab, AGAIN); // en (b), « Je ne sais pas » : la case (a) reste verte
+  assert.deepEqual(box(), [6, 0, 0, 1]);
+  assert.equal(F.currentForm(ab), "a");
+  ab = rate(ab, AGAIN); // en (a), raté deux fois : retour au tout gris
+  assert.deepEqual(box(), [7, 0, 0, 0]);
+  full = rate(full, GOOD); // fiche complète : QCM juste du premier coup
+  full = rate(full, EASY); // (b) « Parfaitement »
+  assert.equal(F.currentForm(full), "c");
+  full = rate(full, F.clozeRating(false, true)); // (c) juste à la 2e tentative
+  assert.deepEqual(box(), [4, 1, 0, 2], "2/7 vert foncé, 1/7 « Vague idée », 4/7 gris");
+});
+
+test("jauge : en (a) et (c), « Je sais » compte « Parfaitement », pas en (b) ni en (d)", () => {
+  const notes = F.gaugeNotes({ ...CONFUCIUS, formRatings: { a: GOOD, b: GOOD, c: GOOD, d: GOOD } });
+  assert.deepEqual(notes, [EASY, GOOD, EASY, GOOD]);
+});
+
+test("jauge : boîte entièrement sue = toute vert foncé, quel que soit le type des fiches", () => {
+  const sue = [
+    { ...B_ONLY, lastRating: EASY },
+    { ...AB, form: "b", formRatings: { a: GOOD, b: EASY } },
+    { ...CONFUCIUS, form: "d", formRatings: { a: GOOD, b: EASY, c: GOOD, d: EASY } },
+  ];
+  assert.deepEqual(F.gaugeCounts(sue), [0, 0, 0, 7]);
+});
+
+test("jauge : en descendant de (d) à (c), seule la case (d) devient grise", () => {
+  let full = { ...CONFUCIUS, form: "d", formMax: "d", formRatings: { a: GOOD, b: EASY, c: GOOD, d: EASY } };
+  full = rate(full, AGAIN);
+  assert.equal(F.currentForm(full), "c");
+  assert.deepEqual(F.gaugeNotes(full), [EASY, EASY, EASY, AGAIN]);
+});
+
+test("jauge : fiches notées avant la mise à jour — une forme déjà dépassée compte comme sue", () => {
+  // Ancienne fiche QCM passée en question, dernière note « Parfaitement ».
+  assert.deepEqual(F.gaugeNotes({ ...AB, qcmMode: false, lastRating: EASY }), [EASY, EASY]);
+  // Ancienne fiche encore en QCM, dernière note « Vague idée ».
+  assert.deepEqual(F.gaugeNotes({ ...AB, lastRating: HARD }), [HARD, AGAIN]);
+  // Fiche (b) seul : sa dernière note, comme avant.
+  assert.deepEqual(F.gaugeNotes({ ...B_ONLY, lastRating: GOOD }), [GOOD]);
+  // Fiche montée de (a) à (b) en v296 : la case (a) est verte, (b) pas encore notée…
+  let v296 = { ...AB, form: "b", formMax: "b", lastRatedForm: "a", lastRating: GOOD };
+  assert.deepEqual(F.gaugeNotes(v296), [EASY, AGAIN]);
+  // … et le reste après un « Je ne sais pas » en (b).
+  v296 = rate(v296, AGAIN);
+  assert.deepEqual(F.gaugeNotes(v296), [EASY, AGAIN]);
+});
+
+test("jauge : des formes ajoutées à une fiche déjà sue partent en gris (décision du 18 nov. 2026)", () => {
+  const sue = { ...AB, form: "b", formRatings: { a: GOOD, b: EASY } };
+  const enrichie = { ...sue, q2: "Quelle est la capitale de l'Espagne, au centre du pays ?", a2: "Madrid" };
+  assert.deepEqual(F.gaugeNotes(enrichie), [EASY, EASY, AGAIN]);
+});

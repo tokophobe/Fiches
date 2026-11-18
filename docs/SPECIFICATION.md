@@ -311,14 +311,50 @@ Les autres présentations essayées (la page à trois boutons seule, le
 
 ### 4.6 La jauge de progression
 
-Barre à 4 couleurs (du gris au vert) : part des fiches de la boîte (ou du
-dossier) selon leur **dernière note** (jamais notée = 0).
+Barre à 4 couleurs (du gris au vert), une par note : « Je ne sais pas »
+(gris, ce qui n'a jamais été noté compte aussi ici), « Vague idée »,
+« Je sais », « Parfaitement » (vert foncé).
 
-### 4.7 Niveaux d'une fiche — 🟠 en cours (étape 2 livrée, v296)
+Depuis la v297 (décision du 18 nov. 2026, qui remplace les 8 couleurs
+envisagées) : la jauge ne compte plus des fiches mais des **cases**, une
+par **forme** de chaque fiche (§4.7) :
+- une fiche en question seule = 1 case ; QCM + question = 2 cases ;
+  fiche complète (QCM, question, texte à trous, question poussée) =
+  4 cases ;
+- chaque case garde la **dernière note obtenue à sa forme** ; une forme
+  jamais posée compte « Je ne sais pas » ;
+- en QCM (a) et en texte à trous (c), qui n'ont pas de « Parfaitement »
+  (la fiche monte d'une forme), **« Je sais » compte « Parfaitement »**,
+  pour la jauge seulement ;
+- chaque couleur occupe la part de ses cases dans le total des cases de
+  la boîte (ou du dossier). Une boîte entièrement sue est donc toute vert
+  foncé, quelles que soient ses fiches.
+
+*Exemple* (boîte de 3 fiches : question seule ; QCM + question ; fiche
+complète → 1 + 2 + 4 = 7 cases). Au début : 7/7 gris. QCM de la 2e fiche
+juste du premier coup : 1/7 vert foncé. La même fiche, revenue en
+question, « Je ne sais pas » : toujours 1/7 (sa case QCM garde sa note),
+et elle redescend en QCM ; QCM raté deux fois : 7/7 gris. Fiche complète :
+QCM juste, puis question « Parfaitement », puis texte à trous juste au
+2e essai : 2/7 vert foncé, 1/7 « Vague idée », 4/7 gris.
+
+- **Descente** : seule la case de la forme ratée change ; celle de la
+  forme où la fiche redescend garde sa note.
+- **Fiches notées avant la v297**, qui ne retenaient qu'une seule note :
+  cette note va à la forme où elle a été donnée, et une forme déjà
+  dépassée (QCM d'une fiche passée en question) compte comme sue.
+- **Forme ajoutée à une fiche** (par exemple une question poussée
+  rédigée plus tard) : sa case part en gris, la jauge de la boîte
+  baisse — il y a du nouveau à apprendre (accepté le 18 nov. 2026).
+- Le tri des échéances du programme de révision, à date égale, utilise
+  la même règle (part des cases « Je sais » ou « Parfaitement »).
+- Les smileys des boutons d'évaluation gardent leurs couleurs.
+
+### 4.7 Niveaux d'une fiche — 🟠 en cours (étapes 2 et 4 livrées, v296-v297)
 
 > Projet du propriétaire (16 et 17 nov. 2026). Règles décidées le
-> 17 nov. 2026 ; toutes les questions (Q22 à Q25) sont tranchées. Seul
-> le choix final des couleurs se fera sur maquette.
+> 17 nov. 2026 ; toutes les questions (Q22 à Q25) sont tranchées. Jauge
+> revue le 18 nov. 2026 (Q25 : 4 couleurs, une case par forme, §4.6).
 
 #### Les quatre formes d'une fiche
 
@@ -412,26 +448,12 @@ Une fiche peut être posée sous quatre formes, en deux niveaux :
   « 1 heure plus tard » en plus.
 - Le délai de **1 heure** sera réglable dans Darwin Admin.
 
-#### Jauge de progression et couleurs (décision Q25, 17 nov. 2026)
+#### Jauge de progression (décision Q25 revue le 18 nov. 2026)
 
-- **Fiche à un seul niveau** ((b) seul, ou (a) + (b)) : principe actuel
-  (§4.6), couleur selon la dernière note.
-- **Fiche à deux niveaux** ((a)/(b) et (c)/(d)) : **4 nouvelles
-  couleurs** s'ajoutent aux 4 actuelles. Tant que la fiche est au
-  niveau 1 ((a) ou (b)), elle prend l'une des 4 premières couleurs selon
-  sa dernière note ; au niveau 2 ((c) ou (d)), l'une des 4 nouvelles.
-  Les 8 couleurs peuvent coexister sur une même jauge (certaines fiches
-  encore au niveau 1, d'autres déjà au niveau 2).
-- Les 8 couleurs forment un **dégradé logique de progression** (par
-  exemple du gris vers le vert, puis vers le bleu ; choix final sur
-  maquette).
-- **Pour qu'une boîte entièrement sue soit toute de la même couleur**, une
-  fiche à un seul niveau prend le gris pour « Je ne sais pas » et les
-  **3 couleurs les plus avancées** pour les autres notes : quand tout est
-  su, la jauge est toute bleue, quel que soit le type des fiches.
-- **Les smileys des boutons d'évaluation** prennent la couleur de la
-  jauge correspondante (couleurs du niveau 1 ou du niveau 2 selon la
-  forme posée ; couleurs d'une fiche à un seul niveau pour celle-ci).
+Les 4 couleurs actuelles sont gardées ; la jauge compte une case par
+forme de chaque fiche (règle et exemple au §4.6). L'idée d'abord retenue
+le 17 nov. (8 couleurs, 4 par niveau, et smileys assortis) est
+abandonnée : trop de couleurs, risque de confusion.
 
 #### Rédaction des fiches (à reporter au §5.7 une fois validé)
 
@@ -480,7 +502,8 @@ Une fiche peut être posée sous quatre formes, en deux niveaux :
    gardées quand on modifie une fiche) ; réglage du délai de 1 heure dans
    Darwin Admin (fixé à 1 heure en attendant).
 3. Forme (c), nouvel écran de texte à trous.
-4. Affichage de la progression, puis rédaction de (c) et (d) pour les
+4. ✅ **Affichage de la progression fait (v297, 18 nov. 2026)** : jauge à
+   une case par forme (§4.6). Reste : rédaction de (c) et (d) pour les
    boîtes toutes prêtes, lot par lot.
 
 ---
@@ -1271,7 +1294,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | Q22 — Formes d'une fiche : passage d'une forme à l'autre | Tableau du §4.7 (17 nov. 2026) : (a) juste du 1er coup → (b) ; (b) « Parfaitement » ou « Je sais » 2 fois de suite → (c) ou (d) ; (c) tout juste à la 1re tentative 2 fois de suite → (d) ; « Je ne sais pas » redescend d'une forme ; texte à trous noté par tentatives. |
 | Q23 — Retour périodique en (b) une fois en (d) | Pas pour l'instant : la fiche reste à sa forme la plus haute (17 nov. 2026), à revoir après essai. |
 | Q24 — Formes d'une fiche : délai à la montée de forme | Lecture 2 (17 nov. 2026) : retour 1 heure plus tard sous la nouvelle forme, le dernier délai restant celui d'avant ; la note suivante repart de ce délai (≈ 5 jours au lieu de 10 dans l'exemple du §4.7). |
-| Q25 — Formes d'une fiche : progression affichée | Jauge à 8 couleurs (4 du niveau 1, 4 du niveau 2) en dégradé ; une fiche à un seul niveau prend le gris puis les 3 couleurs les plus avancées ; smileys aux couleurs de la jauge (17 nov. 2026, §4.7). |
+| Q25 — Formes d'une fiche : progression affichée | Revue le 18 nov. 2026 : on garde les 4 couleurs ; la jauge compte une case par forme de chaque fiche (dernière note à chaque forme, « Je sais » vaut « Parfaitement » en QCM et en texte à trous, forme jamais posée = gris) ; fiches notées avant : une forme dépassée compte comme sue ; une forme ajoutée part en gris ; smileys inchangés. (L'idée des 8 couleurs du 17 nov. est abandonnée.) | §4.6 (v297) |
 | Q21 — Liens Wikipédia sur les fiches (1 259 fiches, contraires à la règle 5 du §5.7) | Remplacés par une courte vidéo de cours sur le sujet précis quand elle existe, sinon retirés ; au fil de la relecture des boîtes (13 nov. 2026). | §5.7 |
 | Q20 — Chapitres « à créer » sur la page « Le programme » | Gardés visibles à l'ouverture au public, avec la mention « bientôt disponible » (13 nov. 2026). | §7.6 |
 | Q19 — Voir la Librairie sans compte | Non : on reste comme aujourd'hui, un compte gratuit est nécessaire pour accéder à l'appli et à sa Librairie (13 nov. 2026). | §7 |
@@ -1303,8 +1326,9 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 - [ ] (16 nov. 2026) Niveaux d'une fiche pour un apprentissage progressif
   (QCM → question → texte à trous → question poussée) : règles décidées
-  le 17 nov. (§4.7) ; étapes 1 et 2 faites (v296), essai en cours avec
-  des élèves ; prochaine étape : écran du texte à trous (étape 3).
+  le 17 nov. (§4.7) ; étapes 1 et 2 faites (v296), jauge faite (v297),
+  essai en cours avec des élèves ; prochaine étape : écran du texte à
+  trous (étape 3).
 - [ ] 
 
 ---
@@ -1313,6 +1337,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v297 | 18 nov. 2026 | Jauge de progression des fiches à plusieurs formes (§4.6, Q25 revue) : toujours 4 couleurs, mais une case par forme de chaque fiche au lieu d'une par fiche ; chaque case garde la dernière note à sa forme ; « Je sais » compte « Parfaitement » en QCM et en texte à trous ; anciennes fiches : une forme dépassée compte comme sue. Même règle pour le tri des échéances à date égale. |
 | v296 | 18 nov. 2026 | Formes d'une fiche, étape 2 (§4.7) : règles branchées dans l'appli ; question poussée (d) posée sur l'écran de la question classique avec la pastille « Approfondie » ; un QCM juste du premier coup fait revenir la fiche 1 heure plus tard en question sans allonger son délai ; pas de « Tu es sûr ? » quand la forme a changé ; formes poussées gardées au partage, à la publication, à l'import des boîtes toutes prêtes et à la copie depuis la Librairie. Contenu d'essai : 26 questions poussées dans 2 boîtes d'histoire de 6e. |
 | — | 18 nov. 2026 | Formes d'une fiche, étape 1 (rien ne change dans l'appli) : règles du §4.7 écrites dans un fichier à part et vérifiées par 28 tests automatiques (tableau de passage, formes manquantes, fiches actuelles, sprint, montée de forme avec l'exemple chiffré). |
 | — | 17 nov. 2026 | Spécification seulement : montée de forme (décision Q24, lecture 2) — retour 1 heure plus tard, le dernier délai reste celui d'avant, la note suivante repart de ce délai ; §4.7 entièrement tranchée. |
