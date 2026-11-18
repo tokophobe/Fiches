@@ -825,7 +825,10 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
      4 propositions ont la même longueur et la même forme ; les
      précisions vont sur une **2e ligne** de la réponse (elles
      s'affichent une fois la bonne réponse trouvée) ou dans le
-     complément ;
+     complément ; **au primaire** (CP à CM2), pas de 2e ligne : la
+     réponse reste courte et l'explication va dans le complément
+     (« Pour aller plus loin »), plus facile à lire pour un jeune
+     enfant ;
    - **des réponses fausses crédibles** pour le niveau : de la même
      époque, du même domaine, du même type que la bonne (pas « le mur
      des Lamentations » pour une muraille chinoise, ni « l'Amérique » pour
@@ -845,7 +848,11 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    même jour (6e : 304 fiches corrigées, 8 alertes acceptées ; 5e : 465
    et 9 ; 4e : 381 et 13 ; 3e : 375 et 69) ; **lycée traité** le même jour (2nde : 113
    fiches corrigées, 34 alertes acceptées ; 1ère : 191 et 59 ; terminale :
-   346 et 82) ; reste 223 « indice » et 407 « détail », au primaire.
+   346 et 82) ; **primaire traité** le même jour (427 fiches
+   corrigées, 191 alertes acceptées, surtout des questions de lecture où
+   la réponse est dans le texte, ce qui est le but de l'exercice) :
+   **plus aucune alerte dans toute la Librairie**. À vérifier pour
+   chaque nouvelle boîte.
 
 ---
 

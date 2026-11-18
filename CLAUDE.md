@@ -377,8 +377,9 @@ testables ainsi.
   `tools/maj_boites.py qualite [CLE…]` liste les alertes ; une alerte se
   relit, ce n'est pas toujours une erreur : `accepte CLE#N` note la
   question dans le champ `qualite_ok` de la boîte (ignoré par Darwin
-  Admin). Avancement : collège et lycée traités le 18 nov. 2026 ; reste 223
-  « indice » et 407 « détail », au primaire (CP à CM2). Méthode : lister les alertes
+  Admin). Toute la Librairie traitée le 18 nov. 2026 (0 alerte) ; lancer
+  `qualite` sur chaque nouvelle boîte. Au primaire, pas de 2e ligne :
+  réponse courte, explication dans `more` (« Pour aller plus loin »). Méthode : lister les alertes
   d'un niveau, écrire un lot (`applique`), relancer `qualite`, corriger
   le reste, `accepte` les alertes où le mot commun est la notion même. Corriger avant d'écrire les formes
   poussées d'une boîte.
