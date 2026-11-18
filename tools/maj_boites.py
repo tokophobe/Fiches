@@ -390,7 +390,9 @@ def verifie(keys=None):
     for b in d["boxes"]:
         if keys and b["key"] not in keys:
             continue
-        if keys and not b.get("link"):
+        # 18 nov. 2026 : toutes les boîtes ont une vidéo ; le contrôle vaut
+        # désormais pour toute la Librairie (avant, seulement les boîtes modifiées).
+        if not b.get("link"):
             print(f"[{b['key']}] pas de lien de boîte")
             pb += 1
         for i, c in enumerate(b["cards"]):
