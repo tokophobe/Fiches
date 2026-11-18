@@ -230,12 +230,18 @@
   }
 
   /** Cases de la jauge d'une fiche : une note (0-3) par forme qu'elle a,
-   *  dans l'ordre (a) (b) (c) (d). */
+   *  dans l'ordre (a) (b) (c) (d) (forme jamais notée : sue si déjà
+   *  dépassée, sinon « Je ne sais pas »). */
   function gaugeNotes(card, lastRating) {
     const f = forms(card);
     const notes = formRatingsOf(card, lastRating);
+    // v300 : une forme jamais notée mais déjà dépassée (par exemple un
+    // texte à trous ajouté à une fiche déjà en question poussée, qui n'y
+    // redescendra jamais si elle est sue) compte comme sue ; une forme
+    // ajoutée au-dessus de la forme actuelle part en gris.
+    const cur = ORDER.indexOf(currentForm(card));
     return ORDER.filter((k) => f[k]).map((k) => {
-      const n = isNote(notes[k]) ? notes[k] : 0;
+      const n = isNote(notes[k]) ? notes[k] : ORDER.indexOf(k) < cur ? 3 : 0;
       return (k === "a" || k === "c") && n === 2 ? 3 : n;
     });
   }

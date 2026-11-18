@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v299";
+  const APP_VERSION = "v300";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -5252,7 +5252,10 @@
     if (badge) badge.hidden = !qcm;
     if (hint) hint.textContent = qcm || cloze ? "Choisis la bonne réponse ci-dessous" : "Touche la fiche pour voir la réponse";
     const chip = el("qcm-sheet-chip");
-    if (chip) chip.textContent = cloze ? "Texte à trous" : "QCM";
+    if (chip) {
+      chip.textContent = cloze ? "Texte à trous" : "QCM";
+      chip.classList.toggle("qcm-chip--level2", cloze); // couleur douce (v300)
+    }
     if (cloze) {
       answerSeenCardId = null;
       setRatingInvite(false, true);
@@ -5365,7 +5368,7 @@
       if (headerBottom < r0.top - 2) body.style.setProperty("--review-card-top", `${Math.round(headerBottom)}px`);
     }
     const r = stack ? stack.getBoundingClientRect() : { top: 110, height: 380 };
-    const contH = 44 + 10;
+    const contH = 44 + 20; // bouton « Continuer » et son écart (v300)
     const avail = Math.max(160, window.innerHeight - 8 - r.top - contH);
     sheet.style.maxHeight = `${Math.round(avail)}px`;
     sheet.style.minHeight = `${Math.round(Math.min(r.height, avail))}px`;
@@ -5939,6 +5942,7 @@
     if (el("input-more")) el("input-more").innerHTML = "";
     setQcmFields(null);
     setLevel2Fields(null);
+    setFoldStates(null);
   }
 
   /* ---------------------------------------------------------
@@ -6074,7 +6078,6 @@
       const input = el(id);
       if (input) input.value = wrongs[i] || "";
     });
-    toggleQcmFields(wrongs.length > 0);
   }
   /* v262 : « Choisir une date » et « Aucune boîte/dossier liés » sont des
      textes d'exemple : même gris que les autres tant que rien n'est choisi
@@ -6089,14 +6092,43 @@
     sync();
     new MutationObserver(sync).observe(node, { childList: true, characterData: true, subtree: true });
   });
-  /** v261 : les cases du QCM sont toujours affichées (plus de bouton pour
-   *  les ouvrir) — gardé pour les appels existants. */
-  function toggleQcmFields() {}
+  /* v300 : blocs facultatifs de l'écran d'une fiche (complément, QCM,
+     texte à trous, question poussée), pliés par défaut ; le titre et son
+     chevron ⌄ les déplient. Une fiche modifiée ouvre ceux qui sont remplis. */
+  function setFoldBlock(key, open) {
+    const block = document.querySelector(`#view-new-card .form-block--fold[data-fold="${key}"]`);
+    if (!block) return;
+    block.classList.toggle("is-folded", !open);
+    const btn = block.querySelector(".fold-toggle");
+    if (btn) {
+      btn.setAttribute("aria-expanded", String(!!open));
+      btn.setAttribute("aria-label", open ? "Replier" : "Déplier");
+    }
+  }
+  function setFoldStates(card) {
+    setFoldBlock("more", !!(card && card.more && stripHtml(card.more).trim()));
+    setFoldBlock("qcm", !!(card && cardWrongs(card).length));
+    setFoldBlock("cloze", !!(card && card.cloze));
+    setFoldBlock("q2", !!(card && (card.q2 || card.a2)));
+  }
+  document.querySelectorAll("#view-new-card .form-block--fold .fold-title").forEach((title) => {
+    title.addEventListener("click", (e) => {
+      if (e.target.closest(".field-help-btn")) return;
+      e.preventDefault();
+      const block = title.closest(".form-block--fold");
+      const open = block.classList.contains("is-folded");
+      setFoldBlock(block.dataset.fold, open);
+      if (open) {
+        const first = block.querySelector("input, textarea, [contenteditable='true']");
+        if (first) first.focus();
+      }
+    });
+  });
   /* v261 : picto d'aide ⓘ à côté d'un champ — le robot lit l'explication. */
   const FIELD_HELP_TEXTS = {
     qcm: "Si tu remplis les 3 réponses fausses, la fiche te sera d'abord posée en QCM : la bonne réponse mélangée à ces 3 réponses fausses. Laisse les 3 cases vides pour une fiche classique. Attention : elle te sera aussi posée sans les propositions. Écris donc une question qui se suffit à elle-même (« Quelle est la capitale de l'Australie ? », pas « Laquelle de ces villes… »).",
     link: "Une courte vidéo ou une page qui explique bien cette fiche, d'une source sérieuse (chaîne de l'auteur, site éducatif). Le lien sera proposé pendant la révision.",
-    cloze: "Une fois la question bien sue, la fiche te sera posée en texte à trous. Écris une phrase qui développe la réponse, et mets entre crochets les mots à cacher : « Le penseur chinois [Confucius] enseigne le respect [des ancêtres], de [l'ordre] et des [devoirs]. » Pour chaque trou, donne 3 réponses fausses. 3 ou 4 trous, c'est l'idéal.",
+    cloze: "Une fois la question bien sue, la fiche te sera posée en texte à trous. Écris une phrase qui développe la réponse, et mets entre crochets les mots à cacher, avec leur article : « Le penseur chinois [Confucius] enseigne le respect [des ancêtres], [de l'ordre] et [des devoirs]. » Pour chaque trou, donne 3 réponses fausses de la même forme (même article, même longueur, toutes crédibles). 3 ou 4 trous, c'est l'idéal.",
     q2: "La dernière étape : une question plus difficile, à laquelle on répond sans aide. Elle reprend ce que le texte à trous a fait apprendre, et sa réponse reprend la même phrase : « Qui est Confucius ? » → « Le penseur chinois qui enseigne le respect des ancêtres, de l'ordre et des devoirs. » Pour un mot de vocabulaire, pose la question dans le sens le plus difficile (du français vers l'anglais, par exemple).",
   };
   document.querySelectorAll(".field-help-btn[data-field-help]").forEach((b) => {
@@ -6136,11 +6168,13 @@
     const more = moreEl && !isRichEditorEmpty(moreEl) ? moreEl.innerHTML.trim() : "";
     const qcm = readQcmFields(answer);
     if (qcm.error) {
+      setFoldBlock("qcm", true);
       await robotAlert(qcm.error);
       return;
     }
     const level2 = readLevel2Fields();
     if (level2.error) {
+      setFoldBlock(level2.error.startsWith("Question poussée") ? "q2" : "cloze", true);
       await robotAlert(level2.error);
       return;
     }
@@ -6295,6 +6329,7 @@
     if (el("input-link")) el("input-link").value = card.link || "";
     setQcmFields(card);
     setLevel2Fields(card);
+    setFoldStates(card);
     submitBtn.textContent = "Enregistrer les modifications";
     cancelEditBtn.hidden = false;
     // Round 54 : en modification, pas de choix de boîte (la fiche reste dans

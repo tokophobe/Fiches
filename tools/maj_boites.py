@@ -6,6 +6,8 @@ Utilisation :
   python3 tools/maj_boites.py montre CLE...      -> fiches des boîtes (pour relecture)
   python3 tools/maj_boites.py applique LOT.json  -> applique un lot de corrections
   python3 tools/maj_boites.py verifie [CLE...]   -> contrôles (QCM complets, questions)
+  python3 tools/maj_boites.py qualite [CLE...]   -> alertes à relire : indice dans la question,
+                                                    bonne réponse trop détaillée, texte à trous
   python3 tools/maj_boites.py decoupe PLAN.json  -> découpe des boîtes trop larges
 
 Format d'un lot (LOT.json) :
@@ -39,6 +41,7 @@ la première partie ; les autres sont nouvelles.
 import json
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 FICHIER = Path(__file__).resolve().parent.parent / "bibliotheque.json"
@@ -284,9 +287,76 @@ def probleme_texte_a_trous(cloze):
         props = [str(t.get("answer", "")).strip()] + [str(w).strip() for w in t.get("wrongs") or []]
         if len(props) != 4 or not all(props):
             out.append(f"trou {k} : il faut 1 réponse et 3 mauvaises réponses")
-        elif len({norm(x) for x in props}) != 4:
+        elif len({norm(x).lower() for x in props}) != 4:
             out.append(f"trou {k} : propositions en double")
+    texte = str(cloze.get("text", ""))
+    if re.search(r"_{3,}\s*_{3,}", texte):
+        out.append("deux trous collés (garder des mots visibles entre les trous)")
+    # Article élidé ou non devant un trou, que les propositions ne suivent
+    # pas toutes (« l'___ » avec une proposition qui commence par une
+    # consonne) : la bonne réponse se devine. Mettre l'article DANS le trou.
+    for k, (avant, t) in enumerate(zip(re.split(r"_{3,}", texte), cloze["blanks"]), 1):
+        props = [str(t.get("answer", "")).strip()] + [str(w).strip() for w in t.get("wrongs") or []]
+        voyelles = [commence_par_voyelle(x) for x in props if x]
+        if re.search(r"(?:^|[\s(«])[lLdDjJ][’']\s*$", avant) and not all(voyelles):
+            out.append(f"trou {k} : « {avant.strip()[-2:]} » devant le trou, mais toutes les propositions ne commencent pas par une voyelle (mettre l'article dans le trou)")
+        elif re.search(r"(?:^|\s)(le|la|de|du|au|que|ce)\s*$", avant, re.I) and any(voyelles):
+            out.append(f"trou {k} : « {avant.split()[-1]} » devant le trou, mais une proposition commence par une voyelle (mettre l'article dans le trou)")
     return out
+
+
+VOYELLES = "aeiouyhàâäéèêëîïôöùûüœæ"
+
+
+def commence_par_voyelle(t):
+    t = str(t).strip().lower()
+    return bool(t) and t[0] in VOYELLES
+
+
+MOTS_VIDES = {"comment", "quelle", "quels", "quelles", "pourquoi", "combien", "dans", "avec", "pour", "entre", "leurs", "selon",
+              "cette", "cela", "sont", "était", "étaient", "appelle", "appellent", "appelle-t-on", "nomme", "est-ce", "elles",
+              "aussi", "plus", "moins", "après", "avant", "depuis", "pendant", "sous", "contre", "chez", "vers", "toute", "tous"}
+
+
+def mots(t):
+    """Mots significatifs (5 lettres ou plus, sans accents ni majuscules)."""
+    t = unicodedata.normalize("NFD", str(t or "").lower())
+    t = "".join(ch for ch in t if unicodedata.category(ch) != "Mn")
+    return {m for m in re.findall(r"[a-z]{5,}", t) if m not in MOTS_VIDES}
+
+
+def qualite(keys=None):
+    """Défauts de qualité des fiches QCM (remarques du 18 nov. 2026, spéc.
+    §5.7) : indice dans la question, bonne réponse plus détaillée que les
+    fausses ; et textes à trous (article qui trahit, trous collés).
+    Liste à relire : une alerte n'est pas toujours une erreur."""
+    d = charge()
+    stats = {"indice": 0, "détail": 0, "texte à trous": 0}
+    for b in d["boxes"]:
+        if keys and b["key"] not in keys:
+            continue
+        for i, c in enumerate(b["cards"]):
+            w = c.get("wrongs") or []
+            principale = re.sub(r"<[^>]+>", " ", c["answer"]).split("\n")[0].strip()
+            if w:
+                # Indice : un mot de la question qu'on retrouve dans la bonne
+                # réponse et dans AUCUNE des fausses (sinon rien ne se devine).
+                dans_fausses = set().union(*({m[:6] for m in mots(x)} for x in w))
+                commun = ({m[:6] for m in mots(principale)} & {m[:6] for m in mots(c["question"])}) - dans_fausses
+                if dans_fausses & {m[:6] for m in mots(c["question"])}:
+                    commun = set()  # la question cite aussi des propositions fausses
+                if commun:
+                    stats["indice"] += 1
+                    print(f"[{b['key']}#{i}] indice dans la question ({', '.join(sorted(commun))}) : {c['question'][:70]} → {principale[:40]}")
+                plus_long = max(len(x) for x in w)
+                if len(principale) > 1.6 * plus_long and len(principale) - plus_long > 15:
+                    stats["détail"] += 1
+                    print(f"[{b['key']}#{i}] bonne réponse plus détaillée que les fausses ({len(principale)} / {plus_long} caractères) : {principale[:60]}")
+            if c.get("cloze"):
+                for msg in probleme_texte_a_trous(c["cloze"]):
+                    stats["texte à trous"] += 1
+                    print(f"[{b['key']}#{i}] texte à trous : {msg}")
+    print("alertes :", ", ".join(f"{k} {v}" for k, v in stats.items()))
 
 
 def verifie(keys=None):
@@ -352,6 +422,8 @@ def main():
         applique(sys.argv[2])
     elif cmd == "verifie":
         verifie(sys.argv[2:] or None)
+    elif cmd == "qualite":
+        qualite(sys.argv[2:] or None)
     elif cmd == "decoupe":
         decoupe(sys.argv[2])
 

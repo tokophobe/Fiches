@@ -365,6 +365,13 @@ testables ainsi.
   (dissertation, commentaire, introduction, plan… : `METHODE_FICHE`) ;
   `tools/maj_boites.py verifie` les signale (`hors_sujet`). À chaque relecture, vérifier aussi que chaque fiche
   correspond au titre de sa boîte.
+- QCM qui se devine (18 nov. 2026, spéc. §5.7 règle 9) : pas d'indice
+  dans la question, bonne réponse pas plus longue que les fausses
+  (précisions en 2e ligne de la réponse), fausses réponses crédibles ;
+  texte à trous : articles dans les trous, pas de trous collés.
+  `tools/maj_boites.py qualite [CLE…]` liste les alertes (838 « indice »
+  et 2 128 « détail » sur toute la Librairie au 18 nov. 2026, à traiter
+  lot par lot) ; une alerte se relit, ce n'est pas toujours une erreur.
 - Fiches datées (14 nov. 2026) : `tools/fiches_a_verifier.py` retrouve, par
   thèmes, les fiches dont le contenu change avec le temps (zone euro,
   population, tourisme, CO₂…) et écrit la liste dans le dépôt privé
