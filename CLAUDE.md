@@ -417,7 +417,12 @@ testables ainsi.
   du propriétaire (spéc. §5.7 règle 11 : réponse (d) = texte à trous
   complété, question (d) différente de (b) et qui ne donne pas les trous,
   un trou par information importante, QCM de même forme ; contrôles
-  automatiques dans `qualite`). **Ne jamais plagier une vidéo** (spéc. §5.7
+  automatiques dans `qualite`). 2e remarques (19 nov. 2026, chimie) : (d)
+  demande plus que (b) et ne donne pas le plus difficile, pas de nom qui
+  « tombe du ciel », complément qui explique les fausses réponses,
+  « Exemple : » devant un exemple, rester dans l'essentiel du programme,
+  extraits calés sur les segments de la transcription (`cale` dans
+  `run.py` du bloc-notes). **Ne jamais plagier une vidéo** (spéc. §5.7
   règle 10) : écrire avec nos mots, la transcription ne sert qu'à vérifier
   et à minuter les extraits. Outils dans le bloc-notes de session
   (`voir.py` : fiches + transcription par tranches de 20 s).

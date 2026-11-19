@@ -338,6 +338,8 @@ def qualite(keys=None):
         if keys and b["key"] not in keys:
             continue
         acceptees = set(as_list(b.get("qualite_ok")))
+        # Noms déjà présents dans la boîte (titre, description, fiches (a)/(b)).
+        contexte = " ".join([b.get("name", ""), b.get("description", "")] + [x["question"] + " " + x["answer"] + " " + (x.get("more") or "") for x in b["cards"]])
         for i, c in enumerate(b["cards"]):
             if c["question"] in acceptees:
                 continue  # alerte relue et acceptée (commande « accepte »)
@@ -369,7 +371,7 @@ def qualite(keys=None):
                 for msg in probleme_texte_a_trous(c["cloze"]):
                     stats["texte à trous"] += 1
                     print(f"[{b['key']}#{i}] texte à trous : {msg}")
-            for msg in probleme_formes_poussees(c):
+            for msg in probleme_formes_poussees(c, contexte):
                 stats["formes poussées"] += 1
                 print(f"[{b['key']}#{i}] {msg} : {c['question'][:60]}")
     print("alertes :", ", ".join(f"{k} {v}" for k, v in stats.items()))
@@ -389,7 +391,7 @@ def infos(t):
     return mots(t) | set(re.findall(r"\d{3,}", t or ""))
 
 
-def probleme_formes_poussees(c):
+def probleme_formes_poussees(c, contexte=""):
     """Règles des formes (c) et (d) (spéc. §5.7 règle 11, 19 nov. 2026)."""
     out = []
     q2, a2, cloze = c.get("q2") or "", c.get("a2") or "", c.get("cloze")
@@ -397,6 +399,20 @@ def probleme_formes_poussees(c):
         mq, mq2 = mots(c["question"]), mots(q2)
         if mq and mq2 and len(mq & mq2) / len(mq | mq2) >= 0.6:
             out.append("question poussée trop proche de la question")
+    if a2:
+        # 19 nov. 2026 (2e remarques) : la forme poussée doit demander plus
+        # que la question (b), pas redire sa réponse.
+        ia2 = infos(a2)
+        if ia2 and len(ia2 & infos(c["question"] + " " + c["answer"])) / len(ia2) >= 0.7:
+            out.append("réponse poussée presque identique à la question et à la réponse (b)")
+    if q2:
+        # Un nom propre qui « tombe du ciel » dans la question poussée doit
+        # d'abord apparaître dans la fiche (question, réponse ou complément).
+        connu = norm(" ".join([c["question"], c["answer"], c.get("more") or "", contexte])).lower()
+        noms = {m for m in re.findall(r"(?<![.?!]\s)(?<!^)\b([A-ZÉÈ][a-zéèêëïîôûç]{3,})", q2)}
+        nouveaux = sorted(n for n in noms if norm(n).lower() not in connu)
+        if nouveaux:
+            out.append(f"nom nouveau dans la question poussée, absent du reste de la boîte ({', '.join(nouveaux)})")
     if cloze and a2:
         rempli = mots(texte_complete(cloze))
         if rempli and len(rempli & mots(a2)) / len(rempli) < 0.7:

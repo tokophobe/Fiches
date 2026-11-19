@@ -904,9 +904,39 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
        année ? ») ;
      - elle **guide l'élève** en annonçant ce qui est attendu (« Que sont
        les DROM, quels sont-ils et quel statut ont-ils ? »).
+   Compléments (2e remarques du propriétaire, 19 nov. 2026, boîte de
+   chimie) :
+   - **(d) demande plus que (b)** : sa réponse ne redit pas la réponse de
+     (b) ; elle ajoute des informations. La question (d) **annonce tout
+     ce qu'il faut dire** (si la réponse parle de l'ion fer II, la
+     question le demande) et **ne donne pas le plus difficile** : pour
+     les anions, c'est le nom « anion » et le signe qu'il faut retrouver,
+     pas les recevoir.
+   - **Pas de nom qui « tombe du ciel »** : un nom propre (« Mendeleïev »)
+     apparaît d'abord dans la question (b), puis devient un trou en (c) ;
+     il ne surgit pas dans la question (d).
+   - **Le complément explique les fausses réponses** du QCM quand c'est
+     possible (« CO : monoxyde de carbone ; C₂O n'existe pas »), plutôt
+     qu'une information sans lien. Un exemple est toujours annoncé par
+     « Exemple : », pour éviter les confusions (« Exemple : Na⁺ »).
+   - **Le contexte ne trahit pas la réponse** : dans un texte à trous, les
+     mots autour d'un trou ne doivent pas permettre d'éliminer les
+     fausses réponses (pas « ions ___ positifs » quand les fausses sont
+     négatives) ; les notions clés sont des trous (« électrons »).
+   - **Fausses réponses réalistes et dans le cadre de la question** : si
+     la question oppose deux choix (« gagné ou perdu des électrons ? »),
+     les fausses réponses ne parlent pas d'autre chose (protons,
+     neutrons) ; mieux, la question n'est pas formulée en alternative.
+   - **Rester dans l'essentiel du programme** : pas d'information
+     anecdotique à apprendre (l'origine latine des symboles Na ou Fe).
+   - **Extraits vidéo calés sur les phrases** : ils commencent un peu
+     avant la phrase utile et se terminent après la fin de l'explication
+     (l'outil cale les bornes sur le découpage de la transcription).
    Vérification : l'outil de vérification des boîtes signale une question poussée trop proche de
    la question, une réponse poussée trop éloignée du texte à trous, une
-   question poussée qui donne une réponse des trous, et des fausses
+   question poussée qui donne une réponse des trous, une réponse poussée
+   presque identique à la question et à la réponse (b), un nom propre
+   absent du reste de la boîte dans une question poussée, et des fausses
    réponses du QCM qui partagent un mot restrictif.
 
 ---
