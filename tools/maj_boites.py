@@ -4,7 +4,8 @@
 Utilisation :
   python3 tools/maj_boites.py liste [N]          -> les N prochaines boîtes à revoir
   python3 tools/maj_boites.py montre CLE...      -> fiches des boîtes (pour relecture)
-  python3 tools/maj_boites.py applique LOT.json  -> applique un lot de corrections
+  python3 tools/maj_boites.py applique LOT.json  -> applique un lot de corrections, puis lance
+                                                   tout seul les contrôles ET la qualité (19 nov. 2026)
   python3 tools/maj_boites.py verifie [CLE...]   -> contrôles (QCM complets, questions)
   python3 tools/maj_boites.py qualite [CLE...]   -> alertes à relire : indice dans la question,
                                                     bonne réponse trop détaillée, texte à trous
@@ -222,7 +223,7 @@ def applique(lot_path):
                 new.append(nouvelle_fiche(c, cards[k], True))
         b["cards"] = new
     sauve(d)
-    verifie(list(lot.keys()))
+    controles_apres_enregistrement(list(lot.keys()))
 
 
 def decoupe(plan_path):
@@ -272,7 +273,7 @@ def decoupe(plan_path):
             print(f"(boîte {key} absente du programme : nouvelles boîtes à ranger à la main)")
     sauve(d)
     prog_path.write_text(json.dumps(prog, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    verifie(touchees)
+    controles_apres_enregistrement(touchees)
 
 
 def probleme_texte_a_trous(cloze):
@@ -375,6 +376,24 @@ def qualite(keys=None):
                 stats["formes poussées"] += 1
                 print(f"[{b['key']}#{i}] {msg} : {c['question'][:60]}")
     print("alertes :", ", ".join(f"{k} {v}" for k, v in stats.items()))
+    return sum(stats.values())
+
+
+def controles_apres_enregistrement(keys):
+    """19 nov. 2026 (demande du propriétaire) : à chaque enregistrement de
+    boîtes, contrôles de base ET contrôles de qualité (spéc. §5.7, règles
+    9 à 11) sur les boîtes touchées. S'il reste des alertes, l'outil le dit
+    clairement et se termine en erreur : le lot est enregistré, mais il
+    faut corriger chaque alerte ou l'accepter (« accepte CLE#N ») après
+    relecture."""
+    verifie(keys)
+    print("\n— Contrôles de qualité (spéc. §5.7, règles 9 à 11) —")
+    n = qualite(keys)
+    if n:
+        print(f"\n⚠ {n} alerte(s) de qualité sur les boîtes enregistrées : à corriger, "
+              "ou à accepter après relecture (commande « accepte CLE#N »).")
+        sys.exit(2)
+    print("Qualité : aucune alerte.")
 
 
 def texte_complete(cloze):
