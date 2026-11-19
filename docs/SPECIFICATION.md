@@ -942,6 +942,11 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    seuls à chaque enregistrement de boîtes** : s'il reste une alerte,
    l'outil le signale clairement ; chaque alerte doit être corrigée, ou
    acceptée après relecture quand ce n'est pas une erreur.
+   Le 19 nov. 2026, toute la Librairie a été remise à zéro alerte avec
+   ces nouveaux contrôles : 26 QCM dont les fausses réponses n'avaient pas
+   la même forme que la bonne, et les formes (c)/(d) des deux boîtes
+   d'essai de 6e (débuts du christianisme, Rome et la Chine des Han),
+   réécrites selon la règle 11.
 
 ---
 

@@ -379,7 +379,8 @@ testables ainsi.
   reste des alertes, 19 nov. 2026) ; une alerte se
   relit, ce n'est pas toujours une erreur : `accepte CLE#N` note la
   question dans le champ `qualite_ok` de la boîte (ignoré par Darwin
-  Admin). Toute la Librairie traitée le 18 nov. 2026 (0 alerte) ; lancer
+  Admin). Toute la Librairie traitée le 18 nov. 2026, puis remise à 0 alerte le
+  19 nov. 2026 avec les contrôles « forme » et « formes poussées » ; lancer
   `qualite` sur chaque nouvelle boîte. Au primaire, pas de 2e ligne :
   réponse courte, explication dans `more` (« Pour aller plus loin »). Méthode : lister les alertes
   d'un niveau, écrire un lot (`applique`), relancer `qualite`, corriger
