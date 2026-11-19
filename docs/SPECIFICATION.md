@@ -938,6 +938,10 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    presque identique à la question et à la réponse (b), un nom propre
    absent du reste de la boîte dans une question poussée, et des fausses
    réponses du QCM qui partagent un mot restrictif.
+   Depuis le 19 nov. 2026, ces contrôles de qualité sont lancés **tout
+   seuls à chaque enregistrement de boîtes** : s'il reste une alerte,
+   l'outil le signale clairement ; chaque alerte doit être corrigée, ou
+   acceptée après relecture quand ce n'est pas une erreur.
 
 ---
 

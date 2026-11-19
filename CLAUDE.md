@@ -374,7 +374,9 @@ testables ainsi.
   dans la question, bonne réponse pas plus longue que les fausses
   (précisions en 2e ligne de la réponse), fausses réponses crédibles ;
   texte à trous : articles dans les trous, pas de trous collés.
-  `tools/maj_boites.py qualite [CLE…]` liste les alertes ; une alerte se
+  `tools/maj_boites.py qualite [CLE…]` liste les alertes (lancé aussi
+  tout seul après `applique` et `decoupe`, qui se terminent en erreur s'il
+  reste des alertes, 19 nov. 2026) ; une alerte se
   relit, ce n'est pas toujours une erreur : `accepte CLE#N` note la
   question dans le champ `qualite_ok` de la boîte (ignoré par Darwin
   Admin). Toute la Librairie traitée le 18 nov. 2026 (0 alerte) ; lancer
