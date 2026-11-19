@@ -422,9 +422,9 @@ testables ainsi.
   « tombe du ciel », complément qui explique les fausses réponses,
   « Exemple : » devant un exemple, rester dans l'essentiel du programme,
   extraits calés sur les segments de la transcription (`cale` dans
-  `run.py` du bloc-notes). **Ne jamais plagier une vidéo** (spéc. §5.7
+  `Fiches-contenu/outils/formes/run.py`). **Ne jamais plagier une vidéo** (spéc. §5.7
   règle 10) : écrire avec nos mots, la transcription ne sert qu'à vérifier
-  et à minuter les extraits. Outils dans le bloc-notes de session
+  et à minuter les extraits. Outils dans `Fiches-contenu/outils/formes/`
   (`voir.py` : fiches + transcription par tranches de 20 s).
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
