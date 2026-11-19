@@ -413,7 +413,11 @@ testables ainsi.
   Formes (c)/(d) (18 nov. 2026) : on les écrit d'abord pour les boîtes
   dont la vidéo est transcrite, en un seul passage par boîte (vérifier la
   vidéo, ajuster les fiches, écrire (c)/(d), créer les extraits). Lot
-  d'essai : 5 boîtes de 3e. **Ne jamais plagier une vidéo** (spéc. §5.7
+  d'essai : 5 boîtes de 3e, réécrites le 19 nov. 2026 après les remarques
+  du propriétaire (spéc. §5.7 règle 11 : réponse (d) = texte à trous
+  complété, question (d) différente de (b) et qui ne donne pas les trous,
+  un trou par information importante, QCM de même forme ; contrôles
+  automatiques dans `qualite`). **Ne jamais plagier une vidéo** (spéc. §5.7
   règle 10) : écrire avec nos mots, la transcription ne sert qu'à vérifier
   et à minuter les extraits. Outils dans le bloc-notes de session
   (`voir.py` : fiches + transcription par tranches de 20 s).

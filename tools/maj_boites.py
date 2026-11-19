@@ -333,7 +333,7 @@ def qualite(keys=None):
     fausses ; et textes à trous (article qui trahit, trous collés).
     Liste à relire : une alerte n'est pas toujours une erreur."""
     d = charge()
-    stats = {"indice": 0, "détail": 0, "texte à trous": 0}
+    stats = {"indice": 0, "détail": 0, "forme": 0, "texte à trous": 0, "formes poussées": 0}
     for b in d["boxes"]:
         if keys and b["key"] not in keys:
             continue
@@ -357,11 +357,57 @@ def qualite(keys=None):
                 if len(principale) > 1.6 * plus_long and len(principale) - plus_long > 15:
                     stats["détail"] += 1
                     print(f"[{b['key']}#{i}] bonne réponse plus détaillée que les fausses ({len(principale)} / {plus_long} caractères) : {principale[:60]}")
+                # 19 nov. 2026 (remarques du propriétaire) : un mot présent
+                # dans les 3 fausses et absent de la bonne (« seulement »…)
+                # donne la forme de la bonne réponse.
+                forme = set.intersection(*({m[:6] for m in mots(x)} for x in w)) - {m[:6] for m in mots(c["answer"])}
+                forme &= {"seulem", "unique", "toujou", "jamais", "aucune"}  # mots qui restreignent
+                if len(w) == 3 and forme:
+                    stats["forme"] += 1
+                    print(f"[{b['key']}#{i}] fausses réponses de même forme ({', '.join(sorted(forme))}) : {c['question'][:70]}")
             if c.get("cloze"):
                 for msg in probleme_texte_a_trous(c["cloze"]):
                     stats["texte à trous"] += 1
                     print(f"[{b['key']}#{i}] texte à trous : {msg}")
+            for msg in probleme_formes_poussees(c):
+                stats["formes poussées"] += 1
+                print(f"[{b['key']}#{i}] {msg} : {c['question'][:60]}")
     print("alertes :", ", ".join(f"{k} {v}" for k, v in stats.items()))
+
+
+def texte_complete(cloze):
+    """Texte à trous rempli avec les bonnes réponses."""
+    morceaux = re.split(r"_{3,}", str(cloze.get("text", "")))
+    out = morceaux[0]
+    for t, suite in zip(cloze.get("blanks", []), morceaux[1:]):
+        out += str(t.get("answer", "")) + suite
+    return out
+
+
+def infos(t):
+    """Mots significatifs et nombres (dates…) d'un texte."""
+    return mots(t) | set(re.findall(r"\d{3,}", t or ""))
+
+
+def probleme_formes_poussees(c):
+    """Règles des formes (c) et (d) (spéc. §5.7 règle 11, 19 nov. 2026)."""
+    out = []
+    q2, a2, cloze = c.get("q2") or "", c.get("a2") or "", c.get("cloze")
+    if q2:
+        mq, mq2 = mots(c["question"]), mots(q2)
+        if mq and mq2 and len(mq & mq2) / len(mq | mq2) >= 0.6:
+            out.append("question poussée trop proche de la question")
+    if cloze and a2:
+        rempli = mots(texte_complete(cloze))
+        if rempli and len(rempli & mots(a2)) / len(rempli) < 0.7:
+            out.append("réponse poussée trop éloignée du texte à trous")
+    if cloze and q2:
+        devoile = set()
+        for t in cloze.get("blanks", []):
+            devoile |= infos(str(t.get("answer", ""))) & infos(q2)
+        if devoile:
+            out.append(f"question poussée qui donne une réponse du texte à trous ({', '.join(sorted(devoile))})")
+    return out
 
 
 def accepte(refs):

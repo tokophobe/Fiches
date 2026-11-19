@@ -465,8 +465,10 @@ abandonnée : trop de couleurs, risque de confusion.
 - (b) existe toujours et a du sens seul (règles actuelles).
 - (c) développe la réponse : le « quoi » ou le « pourquoi » (souvent déjà
   dans le complément « en savoir plus » des fiches toutes prêtes) ;
-  **3 ou 4 trous** (demande du 18 nov. 2026) : le texte à trous
-  « pré-mâche » au maximum ce qu'il faudra retrouver seul en (d).
+  **3 ou 4 trous** (demande du 18 nov. 2026 ; jusqu'à 5 ou 6 si la fiche
+  contient plus d'informations importantes, voir §5.7 règle 11) : le
+  texte à trous « pré-mâche » au maximum ce qu'il faudra retrouver seul
+  en (d).
 - (d) reprend les éléments travaillés en (c), pour que l'élève sache ce
   qu'il doit retrouver ; **sa réponse reprend la phrase du texte à trous,
   complétée** (même ordre, mêmes mots), et sa question est tournée pour
@@ -865,6 +867,47 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    début et une fin : la vidéo est lue chez YouTube, dans son lecteur,
    avec le nom de sa chaîne. Une vidéo dont la chaîne interdit
    l'intégration n'est pas utilisée.
+11. **Les quatre formes d'une fiche** (remarques du propriétaire sur le
+   lot d'essai, 19 nov. 2026). Exemple de référence : la fiche sur
+   « Paris et le désert français ».
+   - **(b) question** : la réponse est **courte** (les précisions vont
+     dans le complément). En question ouverte, elle n'a **qu'une seule
+     bonne réponse possible** : pas de « Quel territoire est une
+     collectivité d'outre-mer ? » (il y en a plusieurs), mais « Quel
+     type de territoire sont la Polynésie française, Wallis-et-Futuna… ? ».
+   - **(a) QCM** : les fausses réponses ont **la même forme** que la
+     bonne : si la bonne est une liste (« L'État, les collectivités,
+     l'UE… »), les fausses le sont aussi ; pas de mot qui ne se trouve
+     que dans les fausses (« seulement », « uniquement », « toujours »,
+     « jamais ») : l'élève retiendrait la forme et non la réponse. Elles
+     restent **crédibles et du même domaine** (« vers la province »,
+     « vers l'ouest » plutôt que « sous la mer », « vers l'Afrique »).
+   - **(c) texte à trous** :
+     - **un trou pour chaque information importante** : noms, dates,
+       titres d'œuvres, notions (ex. : « En [1947], dans [Paris et le
+       désert français], [Jean-François Gravier] dénonce un pays où
+       [Paris] concentre… ») ; pas de trou sur un mot sans intérêt
+       (« ensemble ») quand une information est à côté (« services ») ;
+     - le texte **se suffit à lui-même** : il rappelle de quoi il parle
+       (« Les acteurs de l'aménagement du territoire sont… ») ;
+     - les fausses réponses ne **contredisent** pas le reste de la phrase
+       (pas « séparément » dans « les communes se regroupent pour gérer
+       ___ ») ;
+   - **(d) question poussée** :
+     - sa **réponse est le texte à trous complété**, presque mot pour mot ;
+     - sa **question est vraiment différente** de la question (b) : elle
+       demande toutes les informations du texte à trous ;
+     - elle **ne donne pas** les réponses des trous ; si une information
+       doit servir de point d'appui (on ne peut pas tout demander), on
+       n'en sacrifie qu'**une seule** (ex. : « Qui est l'auteur de
+       « Paris et le désert français », que dénonce-t-il et en quelle
+       année ? ») ;
+     - elle **guide l'élève** en annonçant ce qui est attendu (« Que sont
+       les DROM, quels sont-ils et quel statut ont-ils ? »).
+   Vérification : l'outil de vérification des boîtes signale une question poussée trop proche de
+   la question, une réponse poussée trop éloignée du texte à trous, une
+   question poussée qui donne une réponse des trous, et des fausses
+   réponses du QCM qui partagent un mot restrictif.
 
 ---
 
