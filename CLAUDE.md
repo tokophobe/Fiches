@@ -439,8 +439,11 @@ testables ainsi.
   faire) ; lot 3 (`lot3/`) : les 16 boîtes `r35-brevet-` de maths,
   physique, chimie et technologie (297 fiches, 70 extraits). `run.py` ne
   remplace jamais un lien vidéo déjà présent sur une fiche ; `voir2.py`
-  donne une vue compacte. Suite : SVT, histoire-géo, français et langues
-  du brevet, puis lycée et autres niveaux.
+  donne une vue compacte. Lot 4 (`lot4/`) : les 15 boîtes `r35-brevet-`
+  de SVT, histoire, géographie et EMC (261 fiches). Vidéos à remplacer
+  (rediffusions de directs) : `r35-brevet-svt-terre`,
+  `r35-brevet-geo-urbain-rural`. Suite : français et langues du brevet,
+  puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
   rediffusion en direct, interview, chaîne pour étrangers apprenant le
