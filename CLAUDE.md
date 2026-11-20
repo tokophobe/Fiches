@@ -435,7 +435,12 @@ testables ainsi.
   et `r3e-geo-periurbanisation` échangées. Lot 2 (20 nov. 2026) : les 17
   autres boîtes `r3e-` transcrites (272 fiches, 121 extraits), fichiers
   dans `lot2/` ; toutes les boîtes `r3e-` ont maintenant leurs formes
-  (c)/(d). Les boîtes `r35-brevet-` attendent leurs transcriptions.
+  (c)/(d). 21 nov. 2026 : 84 nouvelles transcriptions (206 boîtes à
+  faire) ; lot 3 (`lot3/`) : les 16 boîtes `r35-brevet-` de maths,
+  physique, chimie et technologie (297 fiches, 70 extraits). `run.py` ne
+  remplace jamais un lien vidéo déjà présent sur une fiche ; `voir2.py`
+  donne une vue compacte. Suite : SVT, histoire-géo, français et langues
+  du brevet, puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
   rediffusion en direct, interview, chaîne pour étrangers apprenant le
