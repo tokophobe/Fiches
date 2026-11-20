@@ -432,8 +432,10 @@ testables ainsi.
   Lot 1 (20 nov. 2026) : 20 boîtes `r3e-` (5 maths, 10 histoire, 5
   géographie, 334 fiches, 180 extraits), fichiers dans
   `Fiches-contenu/outils/formes/lot1/` ; vidéos de `r3e-geo-metropoles`
-  et `r3e-geo-periurbanisation` échangées. Reste 17 boîtes `r3e-`
-  transcrites ; les boîtes `r35-brevet-` attendent leurs transcriptions.
+  et `r3e-geo-periurbanisation` échangées. Lot 2 (20 nov. 2026) : les 17
+  autres boîtes `r3e-` transcrites (272 fiches, 121 extraits), fichiers
+  dans `lot2/` ; toutes les boîtes `r3e-` ont maintenant leurs formes
+  (c)/(d). Les boîtes `r35-brevet-` attendent leurs transcriptions.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
   rediffusion en direct, interview, chaîne pour étrangers apprenant le
