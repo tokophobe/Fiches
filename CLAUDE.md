@@ -429,6 +429,11 @@ testables ainsi.
   règle 10) : écrire avec nos mots, la transcription ne sert qu'à vérifier
   et à minuter les extraits. Outils dans `Fiches-contenu/outils/formes/`
   (`voir.py` : fiches + transcription par tranches de 20 s).
+  Lot 1 (20 nov. 2026) : 20 boîtes `r3e-` (5 maths, 10 histoire, 5
+  géographie, 334 fiches, 180 extraits), fichiers dans
+  `Fiches-contenu/outils/formes/lot1/` ; vidéos de `r3e-geo-metropoles`
+  et `r3e-geo-periurbanisation` échangées. Reste 17 boîtes `r3e-`
+  transcrites ; les boîtes `r35-brevet-` attendent leurs transcriptions.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
   rediffusion en direct, interview, chaîne pour étrangers apprenant le

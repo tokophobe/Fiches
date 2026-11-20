@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 15/11/2026. **1179 chapitres couverts sur 1228** (96 %), 1483 boîtes, 23627 fiches.
+Mise à jour : 20/11/2026. **1179 chapitres couverts sur 1228** (96 %), 1483 boîtes, 23626 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
@@ -22,7 +22,7 @@ Mise à jour : 15/11/2026. **1179 chapitres couverts sur 1228** (96 %), 1483 bo�
 | [3e](#3e) | 108 / 108 | 0 | 211 | 3493 |
 | [Seconde](#seconde) | 55 / 62 | 7 | 73 | 1243 |
 | [Première](#première) | 92 / 102 | 10 | 115 | 1931 |
-| [Terminale](#terminale) | 143 / 145 | 2 | 185 | 3171 |
+| [Terminale](#terminale) | 143 / 145 | 2 | 185 | 3170 |
 | [Autres boîtes](#autres-boîtes) | 1 / 1 | 0 | 5 | 68 |
 
 ## CP
@@ -1884,7 +1884,7 @@ Lycée — 143 chapitres couverts sur 145, 185 boîtes.
 - [x] Auteurs et œuvres majeurs — l'essentiel — Philosophie — Auteurs : de l'Antiquité à la Renaissance (14 fiches)
   - [x] Auteurs des XVIIe et XVIIIe siècles — Philosophie — Auteurs : XVIIe et XVIIIe siècles (14 fiches)
   - [x] Auteurs des XIXe et XXe siècles — Philosophie — Auteurs : XIXe et XXe siècles (16 fiches)
-- [x] Définir les 17 notions — Philosophie — Définir les 17 notions (18 fiches)
+- [x] Définir les 17 notions — Philosophie — Définir les 17 notions (17 fiches)
 - [x] Méthode de la dissertation et de l'explication — Philosophie — Méthode de la dissertation et de l'explication (13 fiches)
 - [x] Citations clés classées par notion — Terminale — Philosophie : citations clés classées par notion (18 fiches)
 - [x] Les repères conceptuels expliqués — Terminale — Philosophie : les repères conceptuels expliqués (18 fiches)

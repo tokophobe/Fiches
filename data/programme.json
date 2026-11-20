@@ -1,5 +1,5 @@
 {
- "maj": "15/11/2026",
+ "maj": "20/11/2026",
  "niveaux": [
   {
    "id": "cp",
@@ -14631,7 +14631,7 @@
         {
          "cle": "bac-philo-definir-notions",
          "titre": "Philosophie — Définir les 17 notions",
-         "fiches": 18
+         "fiches": 17
         }
        ]
       },
