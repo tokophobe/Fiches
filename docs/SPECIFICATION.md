@@ -932,12 +932,41 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    - **Extraits vidéo calés sur les phrases** : ils commencent un peu
      avant la phrase utile et se terminent après la fin de l'explication
      (l'outil cale les bornes sur le découpage de la transcription).
+   Boîtes de langue (3es remarques du propriétaire, 21 nov. 2026, boîte
+   d'anglais sur les temps) :
+   - **(b) dit ce qu'il faut employer** : « Complète avec le verbe play :
+     « She … tennis every Sunday. » » → plays ; sans le verbe, l'élève ne
+     peut pas deviner la phrase attendue.
+   - **La bonne réponse du QCM n'a pas de précision en plus** (pas
+     « She plays (present simple) » face à des fausses réponses nues).
+   - **(c) est un petit exercice qui se suffit à lui-même**, comme en
+     classe, le verbe à employer entre parenthèses ; il ne répond pas à
+     une question (d) que l'élève n'a pas encore vue.
+   - **(c) a au moins deux trous où deux temps s'opposent** (« Every
+     Sunday, my father ___ (go) to the market, but today he is ill: right
+     now, he ___ (sleep). ») : avec un seul trou, (c) poserait la même
+     question que le QCM. Pas de trou sur le petit mot qui indique le
+     temps (« every day », « yesterday ») : plusieurs combinaisons
+     pourraient rester justes.
+   - **(d) n'est pas théorique** : c'est la traduction de la phrase du
+     texte à trous, sans aide (« Traduis en anglais : « Tous les
+     dimanches, mon père va au marché… » »).
+   - **Le complément reste sur le sujet de la fiche** : sur la forme
+     négative, ne pas donner un exemple de question.
+   - **Rester au niveau de la classe** et dans ce que le programme
+     demande (au collège : phrases courtes de la vie courante).
+   - Vidéos : éviter la chaîne Englishhello.
+   - L'ordre des formes reste (a), (b), (c), (d) (décision du 21 nov.
+     2026 ; l'ordre (a), (c), (b) a été envisagé puis écarté pour
+     l'instant).
    Vérification : l'outil de vérification des boîtes signale une question poussée trop proche de
    la question, une réponse poussée trop éloignée du texte à trous, une
    question poussée qui donne une réponse des trous, une réponse poussée
    presque identique à la question et à la réponse (b), un nom propre
    absent du reste de la boîte dans une question poussée, et des fausses
-   réponses du QCM qui partagent un mot restrictif.
+   réponses du QCM qui partagent un mot restrictif. Dans une boîte de langue,
+   le verbe entre parenthèses d'un texte à trous et le premier mot d'une
+   phrase citée à traduire ne déclenchent pas d'alerte.
    Depuis le 19 nov. 2026, ces contrôles de qualité sont lancés **tout
    seuls à chaque enregistrement de boîtes** : s'il reste une alerte,
    l'outil le signale clairement ; chaque alerte doit être corrigée, ou
@@ -1541,6 +1570,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 21 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : règles d'écriture des boîtes de langue (§5.7, règle 11) après les 3es remarques du propriétaire — question (b) qui donne le verbe, texte à trous autonome à deux trous où deux temps s'opposent, forme (d) = traduction ; ordre des formes (a), (b), (c), (d) gardé ; boîte d'anglais « les temps » refaite en essai, vidéo changée. |
 | v302 | 18 nov. 2026 | Pages qui montrent les fiches d'une boîte (page d'une boîte, liste « Fiches », Librairie) : une fiche par bloc, une section par forme séparée par un trait fin ; par défaut seule la forme la plus poussée ; bouton filtre « toutes les formes » en haut à droite. |
 | v301 | 18 nov. 2026 | La fiche s'affiche en entier partout où l'on consulte une boîte (organisation, liste des fiches, Librairie, Messages de darwin, Darwin Admin) : texte à trous et question poussée en plus du QCM. Darwin Admin : texte à trous et question poussée modifiables à la relecture d'une proposition, et gardés à l'export des corrections. Règle « 2 réussites de suite au texte à trous » confirmée (18 nov. 2026). |
 | v300 | 18 nov. 2026 | Remarques du propriétaire après essai des 2 boîtes de 6e : bouton « Supprimer cette fiche » plus coupé ; fiches de la pile allongées sous une fiche QCM ou texte à trous plus haute ; « Continuer » plus détaché de la fiche ; pastilles « Texte à trous » et « Approfondie » en couleur douce ; jauge enfin toute vert foncé quand tout est su (forme ajoutée en dessous de la forme actuelle comptée comme sue) ; écran d'une fiche avec blocs facultatifs pliés et exemples accordés. Nouvelle règle d'écriture (§5.7, règle 9) : pas d'indice dans la question, bonne réponse pas plus détaillée que les fausses, fausses réponses crédibles, articles dans les trous ; contenu d'essai corrigé en ce sens. |
