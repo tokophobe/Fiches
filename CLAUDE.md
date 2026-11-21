@@ -446,7 +446,10 @@ testables ainsi.
   `r35-brevet-ang-temps` refaite après les 3es remarques (question (b)
   qui donne le verbe, texte à trous = exercice autonome avec le verbe entre
   parenthèses, forme (d) = traduction de cette phrase) ; **éviter la chaîne
-  Englishhello**. Suite : français et langues du brevet,
+  Englishhello**. Alternatives (21 nov. 2026, spéc. §5.7 règle 9) : une
+  question ne cite jamais une partie de ses propositions (« A ou B ? »,
+  « Vrai ou faux ? ») ; `qualite` le signale et l'alerte ne s'accepte
+  pas (`question_alternative`) ; 309 fiches reformulées le 21 nov. 2026. Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,

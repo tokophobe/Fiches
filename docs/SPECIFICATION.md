@@ -834,7 +834,19 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
    - **des réponses fausses crédibles** pour le niveau : de la même
      époque, du même domaine, du même type que la bonne (pas « le mur
      des Lamentations » pour une muraille chinoise, ni « l'Amérique » pour
-     la Méditerranée antique).
+     la Méditerranée antique) ;
+   - **la question ne propose pas d'alternative tirée des propositions**
+     (remarque du propriétaire, 21 nov. 2026) : pas de « for ou since ? »,
+     « bien ou service ? », « Vrai ou faux ? » face à 4 propositions, sinon
+     l'élève élimine les autres sans réfléchir. On demande directement
+     (« Complète : « I have lived here … 2016. » », « Dans quelle
+     catégorie l'économie classe-t-elle une coupe de cheveux ? ») ; pour
+     comparer des nombres, la question peut citer **les 4** propositions.
+     Quand la réponse ne peut être que oui ou non, les 4 propositions ont
+     la même forme (« Non, pas toujours » face à « Oui, toujours »…),
+     jamais un « Vrai » ou « Faux » seul face à des réponses détaillées.
+     Ce défaut ne s'accepte pas : il faut reformuler. Le 21 nov. 2026,
+     les 309 fiches concernées de la Librairie ont été reformulées.
    **Texte à trous** : les mots qui dépendent du nom caché (articles
    « le, la, l', un, une, du, au, des… ») vont **dans le trou**, avec la
    même forme dans les 4 propositions, sinon l'accord élimine d'office des
@@ -1570,6 +1582,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 21 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : nouvelle règle d'écriture (§5.7, règle 9) — une question ne propose plus d'alternative tirée de ses propositions (« A ou B ? », « Vrai ou faux ? ») ; 309 fiches de la Librairie reformulées, fausses réponses rendues crédibles ; contrôle automatique qui ne peut pas être accepté. |
 | — | 21 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : règles d'écriture des boîtes de langue (§5.7, règle 11) après les 3es remarques du propriétaire — question (b) qui donne le verbe, texte à trous autonome à deux trous où deux temps s'opposent, forme (d) = traduction ; ordre des formes (a), (b), (c), (d) gardé ; boîte d'anglais « les temps » refaite en essai, vidéo changée. |
 | v302 | 18 nov. 2026 | Pages qui montrent les fiches d'une boîte (page d'une boîte, liste « Fiches », Librairie) : une fiche par bloc, une section par forme séparée par un trait fin ; par défaut seule la forme la plus poussée ; bouton filtre « toutes les formes » en haut à droite. |
 | v301 | 18 nov. 2026 | La fiche s'affiche en entier partout où l'on consulte une boîte (organisation, liste des fiches, Librairie, Messages de darwin, Darwin Admin) : texte à trous et question poussée en plus du QCM. Darwin Admin : texte à trous et question poussée modifiables à la relecture d'une proposition, et gardés à l'export des corrections. Règle « 2 réussites de suite au texte à trous » confirmée (18 nov. 2026). |

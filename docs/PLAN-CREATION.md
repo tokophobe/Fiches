@@ -3,7 +3,7 @@
 > Fichier produit par `python3 tools/programme.py genere` à partir de
 > `data/programme.json` : ne pas le modifier à la main.
 
-Mis à jour le 20/11/2026. **72 boîtes à créer** : 49 chapitres sans boîte et 23 sous-thèmes.
+Mis à jour le 21/11/2026. **72 boîtes à créer** : 49 chapitres sans boîte et 23 sous-thèmes.
 
 Ordre de priorité (13 nov. 2026) : le collège d'abord, en commençant par la 3e (brevet), puis le lycée, puis le primaire ; dans chaque classe, l'histoire, les maths et le français en premier. Chaque boîte suit les règles du §5.7 de la spécification (15 à 20 fiches, QCM complets, une vidéo de cours vérifiée). On avance par lots, dans l'ordre des numéros ; une boîte créée disparaît d'elle-même de cette liste au lot suivant.
 
