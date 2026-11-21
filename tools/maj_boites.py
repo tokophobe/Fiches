@@ -328,6 +328,27 @@ def mots(t):
     return {m for m in re.findall(r"[a-z]{5,}", t) if m not in MOTS_VIDES}
 
 
+def question_alternative(q, props):
+    """Propositions du QCM citées dans la question sous forme d'alternative
+    (« A ou B »), quand toutes ne le sont pas ; liste vide sinon."""
+    props = [re.sub(r"<[^>]+>", " ", str(x)).split("\n")[0].strip() for x in props if str(x).strip()]
+    if len(props) < 3:
+        return []
+    low = q.lower()
+    def pos(x):
+        m = re.search(r"(?<!\w)" + re.escape(x.lower()) + r"(?!\w)", low)
+        return m.start() if m else -1
+    cites = [x for x in props if pos(x) >= 0]
+    if len(cites) < 2 or len(cites) == len(props):
+        return []
+    cites.sort(key=pos)
+    for x, y in zip(cites, cites[1:]):
+        entre = low[pos(x) + len(x):pos(y)]
+        if len(entre) <= 12 and re.search(r"\bou\b|\bor\b", entre):
+            return [x, y]
+    return []
+
+
 def qualite(keys=None):
     """Défauts de qualité des fiches QCM (remarques du 18 nov. 2026, spéc.
     §5.7) : indice dans la question, bonne réponse plus détaillée que les
@@ -342,9 +363,17 @@ def qualite(keys=None):
         # Noms déjà présents dans la boîte (titre, description, fiches (a)/(b)).
         contexte = " ".join([b.get("name", ""), b.get("description", "")] + [x["question"] + " " + x["answer"] + " " + (x.get("more") or "") for x in b["cards"]])
         for i, c in enumerate(b["cards"]):
+            w = c.get("wrongs") or []
+            # 21 nov. 2026 (remarque du propriétaire) : une question qui
+            # propose une alternative tirée des propositions (« for ou
+            # since ? ») laisse éliminer les autres sans réfléchir. Cette
+            # alerte ne s'accepte pas : il faut reformuler la question.
+            alt = question_alternative(c["question"], [c["answer"]] + w)
+            if alt:
+                stats["indice"] += 1
+                print(f"[{b['key']}#{i}] la question propose une alternative ({' ou '.join(alt)}) : reformuler sans citer les propositions : {c['question'][:70]}")
             if c["question"] in acceptees:
                 continue  # alerte relue et acceptée (commande « accepte »)
-            w = c.get("wrongs") or []
             principale = re.sub(r"<[^>]+>", " ", c["answer"]).split("\n")[0].strip()
             if w:
                 # Indice : un mot de la question qu'on retrouve dans la bonne
