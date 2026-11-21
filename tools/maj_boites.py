@@ -335,17 +335,22 @@ def question_alternative(q, props):
     if len(props) < 3:
         return []
     low = q.lower()
-    def pos(x):
-        m = re.search(r"(?<!\w)" + re.escape(x.lower()) + r"(?!\w)", low)
-        return m.start() if m else -1
-    cites = [x for x in props if pos(x) >= 0]
+    def positions(x):
+        return [m.start() for m in re.finditer(r"(?<!\w)" + re.escape(x.lower()) + r"(?!\w)", low)]
+    cites = [x for x in props if positions(x)]
     if len(cites) < 2 or len(cites) == len(props):
         return []
-    cites.sort(key=pos)
-    for x, y in zip(cites, cites[1:]):
-        entre = low[pos(x) + len(x):pos(y)]
-        if len(entre) <= 12 and re.search(r"\bou\b|\bor\b", entre):
-            return [x, y]
+    # 21 nov. 2026 : on regarde chaque apparition (« à » peut figurer aussi
+    # plus tôt dans la phrase citée).
+    for x in cites:
+        for y in cites:
+            if x == y:
+                continue
+            for px in positions(x):
+                for py in positions(y):
+                    entre = low[px + len(x):py]
+                    if 0 < len(entre) <= 12 and re.search(r"\bou\b|\bor\b", entre):
+                        return [x, y]
     return []
 
 

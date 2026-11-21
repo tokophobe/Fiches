@@ -449,7 +449,11 @@ testables ainsi.
   Englishhello**. Alternatives (21 nov. 2026, spéc. §5.7 règle 9) : une
   question ne cite jamais une partie de ses propositions (« A ou B ? »,
   « Vrai ou faux ? ») ; `qualite` le signale et l'alerte ne s'accepte
-  pas (`question_alternative`) ; 309 fiches reformulées le 21 nov. 2026. Suite : français et langues du brevet,
+  pas (`question_alternative`) ; 309 fiches reformulées le 21 nov. 2026. Lot 6 (`lot6/`) : 8 boîtes
+  `r35-brevet-fr-` (135 fiches) ; (c) = petit exercice autonome à 2 trous
+  ou plus qui s'opposent, (d) = même exercice sans propositions ; vidéos
+  de l'indicatif (Englishhello) et des homophones changées, à transcrire ;
+  chaîne « français pratique » (`r35-brevet-fr-modes`) à vérifier. Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
