@@ -4,7 +4,7 @@ Fichier **généré** par `python3 tools/programme.py genere` à partir de
 `data/programme.json` : ne pas le modifier à la main. La même liste est
 présentée sur le site, page `site/programme.html`.
 
-Mise à jour : 20/11/2026. **1179 chapitres couverts sur 1228** (96 %), 1483 boîtes, 23626 fiches.
+Mise à jour : 21/11/2026. **1179 chapitres couverts sur 1228** (96 %), 1483 boîtes, 23626 fiches.
 
 - [x] chapitre couvert — boîte(s) associée(s) et nombre de fiches
 - [ ] chapitre **à créer**
