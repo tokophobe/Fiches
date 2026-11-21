@@ -428,12 +428,16 @@ def probleme_formes_poussees(c, contexte=""):
         # Un nom propre qui « tombe du ciel » dans la question poussée doit
         # d'abord apparaître dans la fiche (question, réponse ou complément).
         connu = norm(" ".join([c["question"], c["answer"], c.get("more") or "", contexte])).lower()
-        noms = {m for m in re.findall(r"(?<![.?!]\s)(?<!^)\b([A-ZÉÈ][a-zéèêëïîôûç]{3,})", q2)}
+        # 21 nov. 2026 : le premier mot d'une phrase citée (« Regarde ! … »,
+        # phrase à traduire d'une boîte de langue) n'est pas un nom.
+        noms = {m for m in re.findall(r"(?<![.?!«]\s)(?<!^)\b([A-ZÉÈ][a-zéèêëïîôûç]{3,})", q2)}
         nouveaux = sorted(n for n in noms if norm(n).lower() not in connu)
         if nouveaux:
             out.append(f"nom nouveau dans la question poussée, absent du reste de la boîte ({', '.join(nouveaux)})")
     if cloze and a2:
-        rempli = mots(texte_complete(cloze))
+        # 21 nov. 2026 : dans un exercice de langue, le verbe à employer est
+        # donné entre parenthèses (« (go) ») ; il ne compte pas dans la phrase.
+        rempli = mots(re.sub(r"\([^()]*\)", " ", texte_complete(cloze)))
         if rempli and len(rempli & mots(a2)) / len(rempli) < 0.7:
             out.append("réponse poussée trop éloignée du texte à trous")
     if cloze and q2:

@@ -442,7 +442,11 @@ testables ainsi.
   donne une vue compacte. Lot 4 (`lot4/`) : les 15 boîtes `r35-brevet-`
   de SVT, histoire, géographie et EMC (261 fiches). Vidéos à remplacer
   (rediffusions de directs) : `r35-brevet-svt-terre`,
-  `r35-brevet-geo-urbain-rural`. Suite : français et langues du brevet,
+  `r35-brevet-geo-urbain-rural`. Lot 5 (21 nov. 2026, essai langues) : 3 boîtes ;
+  `r35-brevet-ang-temps` refaite après les 3es remarques (question (b)
+  qui donne le verbe, texte à trous = exercice autonome avec le verbe entre
+  parenthèses, forme (d) = traduction de cette phrase) ; **éviter la chaîne
+  Englishhello**. Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
