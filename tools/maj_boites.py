@@ -444,9 +444,36 @@ def infos(t):
     return mots(t) | set(re.findall(r"\d{3,}", t or ""))
 
 
+# 21 nov. 2026 (remarque du propriétaire) : au stade (c), l'élève n'a pas
+# encore vu la question (d) ; un texte à trous qui commence par « Il »,
+# « Ce vers », « On »… ne dit pas de quoi il parle. Sont admis les phrases
+# d'exercice (verbe entre parenthèses) et les transformations qui citent
+# d'abord la phrase de départ entre guillemets.
+DEBUT_SANS_SUJET = re.compile(
+    r"^(Ce|Cet|Cette|Ces|Il|Elle|Ils|Elles|On|Son|Sa|Ses|Leur|Leurs|Le premier|"
+    r"La première|Le second|La seconde|Les deux|Chacun|Chacune|Celui|Celle|Ceux|Cela)\b")
+
+
+def texte_a_trous_sans_sujet(cloze):
+    """Vrai si le texte à trous commence par un mot qui renvoie à un sujet
+    qu'il ne nomme pas (voir DEBUT_SANS_SUJET)."""
+    t = (cloze or {}).get("text", "").strip()
+    if not DEBUT_SANS_SUJET.match(t):
+        return False
+    avant = t.split("___")[0]
+    if "(" in t or "«" in avant:
+        return False
+    # Tournures impersonnelles : « Il y a… », « Il faut… », « On dit que… »
+    if re.match(r"^(Il y a|Il faut|Il suffit|Il existe|Il n'existe|On dit|On parle|On appelle|On distingue)\b", t):
+        return False
+    return True
+
+
 def probleme_formes_poussees(c, contexte=""):
     """Règles des formes (c) et (d) (spéc. §5.7 règle 11, 19 nov. 2026)."""
     out = []
+    if texte_a_trous_sans_sujet(c.get("cloze")):
+        out.append("texte à trous qui ne dit pas de quoi il parle (il commence par un pronom ou « ce ») : nommer le sujet")
     q2, a2, cloze = c.get("q2") or "", c.get("a2") or "", c.get("cloze")
     if q2:
         mq, mq2 = mots(c["question"]), mots(q2)
