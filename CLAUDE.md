@@ -461,7 +461,13 @@ testables ainsi.
   anciennes boîtes `brevet-…` de 3e (141 fiches, 30 extraits). Lot 10
   (`lot10/`) : les 7 dernières boîtes de 3e transcrites (français, latin,
   grec, italien ; 116 fiches) : toute la 3e transcrite est faite. Lot 11
-  (`lot11/`) : les 8 boîtes de 4e transcrites (134 fiches, 36 extraits). Suite : français et langues du brevet,
+  (`lot11/`) : les 8 boîtes de 4e transcrites (134 fiches, 36 extraits). Texte à trous
+  qui se suffit (21 nov. 2026, remarque du propriétaire) : jamais de
+  « Ce vers… », « Il… », « On les… » renvoyant à la question (d) ; nommer
+  le sujet, citer le vers, l'équation ou la phrase de départ ; `qualite`
+  le signale (`texte_a_trous_sans_sujet`) ; 188 fiches corrigées
+  (`Fiches-contenu/outils/corrections/sujets_r1.py`). **Y veiller à
+  chaque lot.** Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,

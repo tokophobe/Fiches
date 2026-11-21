@@ -901,7 +901,16 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
        [Paris] concentre… ») ; pas de trou sur un mot sans intérêt
        (« ensemble ») quand une information est à côté (« services ») ;
      - le texte **se suffit à lui-même** : il rappelle de quoi il parle
-       (« Les acteurs de l'aménagement du territoire sont… ») ;
+       (« Les acteurs de l'aménagement du territoire sont… »). Au stade
+       (c), l'élève n'a **pas encore vu la question (d)** : le texte ne
+       commence jamais par « Ce vers… », « Il… », « Elle… », « On les… »
+       qui renverraient à elle. Il cite le vers étudié (« « C'est un trou
+       de verdure où chante une rivière » compte [12] syllabes… »), donne
+       l'équation à résoudre (« Pour résoudre 3x − 5 = 7, on… ») ou la
+       phrase de départ d'une transformation (« Il dit : « Je viendrai. »
+       → Il dit [qu'il viendra] ») (remarque du propriétaire, 22 nov.
+       2026 ; contrôle automatique, seules les phrases d'exercice
+       complètes — « Il peut venir… » — s'acceptent) ;
      - les fausses réponses ne **contredisent** pas le reste de la phrase
        (pas « séparément » dans « les communes se regroupent pour gérer
        ___ ») ;
@@ -1583,6 +1592,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | Version | Date | Changements |
 |---|---|---|
 | — | 21 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : nouvelle règle d'écriture (§5.7, règle 9) — une question ne propose plus d'alternative tirée de ses propositions (« A ou B ? », « Vrai ou faux ? ») ; 309 fiches de la Librairie reformulées, fausses réponses rendues crédibles ; contrôle automatique qui ne peut pas être accepté. |
+| — | 21 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : un texte à trous dit toujours de quoi il parle (§5.7, règle 11) — plus de « Ce vers… », « Il… », « On les… » qui renvoient à la question (d) que l'élève n'a pas encore vue ; 188 textes à trous de la Librairie réécrits (et leurs réponses (d)) ; contrôle automatique ajouté. |
 | — | 21 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : règles d'écriture des boîtes de langue (§5.7, règle 11) après les 3es remarques du propriétaire — question (b) qui donne le verbe, texte à trous autonome à deux trous où deux temps s'opposent, forme (d) = traduction ; ordre des formes (a), (b), (c), (d) gardé ; boîte d'anglais « les temps » refaite en essai, vidéo changée. |
 | v302 | 18 nov. 2026 | Pages qui montrent les fiches d'une boîte (page d'une boîte, liste « Fiches », Librairie) : une fiche par bloc, une section par forme séparée par un trait fin ; par défaut seule la forme la plus poussée ; bouton filtre « toutes les formes » en haut à droite. |
 | v301 | 18 nov. 2026 | La fiche s'affiche en entier partout où l'on consulte une boîte (organisation, liste des fiches, Librairie, Messages de darwin, Darwin Admin) : texte à trous et question poussée en plus du QCM. Darwin Admin : texte à trous et question poussée modifiables à la relecture d'une proposition, et gardés à l'export des corrections. Règle « 2 réussites de suite au texte à trous » confirmée (18 nov. 2026). |
