@@ -463,8 +463,9 @@ def probleme_formes_poussees(c, contexte=""):
         # d'abord apparaître dans la fiche (question, réponse ou complément).
         connu = norm(" ".join([c["question"], c["answer"], c.get("more") or "", contexte])).lower()
         # 21 nov. 2026 : le premier mot d'une phrase citée (« Regarde ! … »,
-        # phrase à traduire d'une boîte de langue) n'est pas un nom.
-        noms = {m for m in re.findall(r"(?<![.?!«]\s)(?<!^)\b([A-ZÉÈ][a-zéèêëïîôûç]{3,})", q2)}
+        # phrase à traduire d'une boîte de langue) ou d'une réplique après un
+        # tiret (« — Elle a douze ans ») n'est pas un nom.
+        noms = {m for m in re.findall(r"(?<![.?!«—]\s)(?<!^)\b([A-ZÉÈ][a-zéèêëïîôûç]{3,})", q2)}
         nouveaux = sorted(n for n in noms if norm(n).lower() not in connu)
         if nouveaux:
             out.append(f"nom nouveau dans la question poussée, absent du reste de la boîte ({', '.join(nouveaux)})")

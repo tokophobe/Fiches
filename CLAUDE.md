@@ -453,7 +453,10 @@ testables ainsi.
   `r35-brevet-fr-` (135 fiches) ; (c) = petit exercice autonome à 2 trous
   ou plus qui s'opposent, (d) = même exercice sans propositions ; vidéos
   de l'indicatif (Englishhello) et des homophones changées, à transcrire ;
-  chaîne « français pratique » (`r35-brevet-fr-modes`) à vérifier. Suite : français et langues du brevet,
+  chaîne « français pratique » (`r35-brevet-fr-modes`) à vérifier. Lot 7 (`lot7/`) : 5 boîtes de
+  langues du brevet (anglais, espagnol, allemand ; 94 fiches) ; (d) =
+  traduction de la phrase du texte à trous ; vidéo de
+  `r35-brevet-esp-grammaire` à remplacer (83 min, ser/estar seulement). Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
