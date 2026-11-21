@@ -458,8 +458,9 @@ testables ainsi.
   traduction de la phrase du texte à trous ; vidéo de
   `r35-brevet-esp-grammaire` à remplacer (83 min, ser/estar seulement). Lot 8 (`lot8/`) : 10 boîtes `r3e-`
   de SVT et de physique (160 fiches, 65 extraits). Lot 9 (`lot9/`) : 9
-  anciennes boîtes `brevet-…` de 3e (141 fiches, 30 extraits) ; restent 7
-  boîtes de 3e transcrites (français, latin, grec, italien). Suite : français et langues du brevet,
+  anciennes boîtes `brevet-…` de 3e (141 fiches, 30 extraits). Lot 10
+  (`lot10/`) : les 7 dernières boîtes de 3e transcrites (français, latin,
+  grec, italien ; 116 fiches) : toute la 3e transcrite est faite. Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,
