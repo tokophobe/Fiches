@@ -104,7 +104,13 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   `.card-forms-filter-btn`, classe `card-forms-all` sur `<body>`, choix
   gardé dans `fiches_card_forms_all`) ; `dmCardFields` (appli) et
   `cardFieldsText` (Darwin Admin, qui charge aussi `card-forms.js`)
-  comparent ces champs (`CardForms.clozeSummary`). Pour ajouter un test sur une
+  comparent ces champs (`CardForms.clozeSummary`). Forme (cbis) (v303,
+  essai) : texte à trous sans propositions, entre (c) et (d), règles de
+  (b) ; `ORDER` = a, b, c, cbis, d ; allumée par `CardForms.setCbisEnabled`
+  depuis `loadDevSettings` (réglage `cardForms.cbis`, Darwin Admin →
+  Révision) ; dans `app.js`, sur la fiche normale : `revealState`,
+  `clozeRevealHtml`, `revealNextBlank` (appelé par le toucher de la
+  fiche). Pour ajouter un test sur une
   autre règle, extraire de la même façon la logique concernée.
 - **Lancer les tests avant chaque livraison.** Quand une règle de la
   spécification change, mettre à jour son test dans la même branche ;

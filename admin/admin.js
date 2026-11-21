@@ -20,7 +20,7 @@
   // v238 : version de Darwin Admin (la même que l'appli, voir sw.js), et
   // avertissement quand une version plus récente est en ligne (le
   // navigateur garde parfois l'ancienne : Ctrl + Maj + R).
-  const ADMIN_VERSION = "v302";
+  const ADMIN_VERSION = "v303";
   // v281 : les erreurs de Darwin Admin portent aussi leur version
   // (js/error-report.js lit window.FICHES_APP_VERSION).
   window.FICHES_APP_VERSION = ADMIN_VERSION;
@@ -4287,6 +4287,15 @@
   /* ---- Révision ---- */
   PAGES["settings/review"] = (root, params, live) =>
     settingsPage(root, live, "Révision", (root) => {
+      // v303 : essai de la forme (cbis) (spéc. §4.7).
+      root.appendChild(
+        section(
+          "Formes des fiches",
+          "Forme (cbis), en essai : le texte à trous est posé trou après trou, sans propositions ; l'élève touche la fiche pour voir chaque mot, puis s'évalue. Elle se place entre le texte à trous (c) et la question poussée (d). Éteinte : les fiches passent de (c) à (d) comme avant, et celles qui étaient en (cbis) retombent en (c).",
+          [["cardForms"]],
+          setRow("Texte à trous sans propositions (cbis)", switchCtrl(["cardForms", "cbis"]))
+        )
+      );
       root.appendChild(
         section(
           "Disposition de la page de révision",

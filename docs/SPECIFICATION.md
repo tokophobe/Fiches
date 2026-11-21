@@ -321,6 +321,12 @@ par **forme** de chaque fiche (§4.7) :
 - une fiche en question seule = 1 case ; QCM + question = 2 cases ;
   fiche complète (QCM, question, texte à trous, question poussée) =
   4 cases ;
+- avec la forme (cbis) allumée (v303, §4.7), une fiche qui a un texte à
+  trous a une case de plus (fiche complète = 5 cases). Ses notes sont
+  données par l'élève, comme en (b) : « Je sais » n'y compte pas
+  « Parfaitement ». À l'allumage, la case (cbis) d'une fiche déjà en (d)
+  compte comme sue ; celle d'une fiche en (a), (b) ou (c) part en gris
+  (la jauge de ces boîtes baisse un peu) ;
 - chaque case garde la **dernière note obtenue à sa forme** ; une forme
   jamais posée compte « Je ne sais pas » ;
 - en QCM (a) et en texte à trous (c), qui n'ont pas de « Parfaitement »
@@ -402,7 +408,23 @@ Une fiche peut être posée sous quatre formes, en deux niveaux :
 | **(a)** QCM | 2 erreurs → reste en (a) | 1 erreur → reste en (a) | juste du premier coup → **passe en (b)** | — |
 | **(b)** question / réponse | **retour en (a)** | reste en (b) | 2 fois de suite → **passe en (c) ou (d)** ; sinon reste en (b) | **passe en (c) ou (d)** |
 | **(c)** texte à trous | 2 tentatives ratées → reste en (c) | juste à la 2e tentative → reste en (c) | tout juste à la 1re tentative, 2 fois de suite → **passe en (d)** ; sinon reste en (c) | — |
-| **(d)** question / réponse | **retour en (c)** | reste en (d) | reste en (d) | reste en (d) |
+| **(cbis)** texte à trous sans propositions (essai, v303) | **retour en (c)** | reste en (cbis) | 2 fois de suite → **passe en (d)** ; sinon reste en (cbis) | **passe en (d)** |
+| **(d)** question / réponse | **retour en (c)** (en (cbis) si elle est allumée) | reste en (d) | reste en (d) | reste en (d) |
+
+- **Forme (cbis), en essai** (demande du propriétaire, 21 nov. 2026,
+  v303) : entre (c) et (d), le **même texte à trous**, mais posé **trou
+  après trou, sans propositions**. Le trou à trouver est surligné (il
+  clignote doucement) ; l'élève cherche le mot, puis **touche la fiche**
+  pour le voir (il s'affiche en vert) ; le trou suivant est alors
+  surligné. Quand tous les mots sont visibles (avec le complément
+  « Pour aller plus loin »), l'élève **s'évalue avec les 4 boutons**,
+  comme en (b), dont elle suit les règles de passage (tableau
+  ci-dessus). Rien à rédiger : toute fiche qui a un texte à trous a
+  aussi la forme (cbis). Un **interrupteur dans Darwin Admin** (Réglages
+  → Révision → « Formes des fiches ») l'allume ou l'éteint ; éteinte
+  (réglage d'origine), les fiches passent de (c) à (d) comme avant, et
+  une fiche restée en (cbis) est posée en (c). Le nom « (cbis) » est
+  provisoire.
 
 - **Texte à trous (c), « tentatives »** : peu importe le nombre de trous,
   ce qui compte est d'avoir tout juste. L'élève remplit tous les trous
@@ -1591,6 +1613,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v303 | 21 nov. 2026 | Forme (cbis), en essai (§4.7) : entre le texte à trous (c) et la question poussée (d), le même texte à trous posé trou après trou sans propositions — l'élève touche la fiche pour voir chaque mot surligné, puis s'évalue avec les 4 boutons (règles de passage de (b)) ; une case de plus dans la jauge (§4.6) ; interrupteur dans Darwin Admin (Réglages → Révision), éteint par défaut. |
 | — | 21 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : nouvelle règle d'écriture (§5.7, règle 9) — une question ne propose plus d'alternative tirée de ses propositions (« A ou B ? », « Vrai ou faux ? ») ; 309 fiches de la Librairie reformulées, fausses réponses rendues crédibles ; contrôle automatique qui ne peut pas être accepté. |
 | — | 21 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : un texte à trous dit toujours de quoi il parle (§5.7, règle 11) — plus de « Ce vers… », « Il… », « On les… » qui renvoient à la question (d) que l'élève n'a pas encore vue ; 188 textes à trous de la Librairie réécrits (et leurs réponses (d)) ; contrôle automatique ajouté. |
 | — | 21 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : règles d'écriture des boîtes de langue (§5.7, règle 11) après les 3es remarques du propriétaire — question (b) qui donne le verbe, texte à trous autonome à deux trous où deux temps s'opposent, forme (d) = traduction ; ordre des formes (a), (b), (c), (d) gardé ; boîte d'anglais « les temps » refaite en essai, vidéo changée. |

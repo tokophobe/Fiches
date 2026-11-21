@@ -7754,6 +7754,15 @@ body:has(#view-library.is-active[data-cycle]) {
 .cloze-blank.is-fixed s { color: #b6604a; text-decoration-color: #b6604a; }
 .cloze-blank:focus:not(:focus-visible) { outline: none; }
 .cloze-blank.is-active:focus:not(:focus-visible) { outline: 2px solid #ef7d2d; }
+/* v303 : forme (cbis) — texte à trous sans propositions, sur la fiche
+   normale : le trou à trouver clignote doucement, le mot révélé apparaît
+   en vert. */
+.cloze-blank--reveal { cursor: inherit; }
+.cloze-blank--reveal.is-active { animation: cloze-reveal-pulse 1.3s ease-in-out infinite; }
+.cloze-blank--reveal.is-new { animation: cloze-reveal-in 0.35s ease-out; }
+@keyframes cloze-reveal-pulse { 50% { outline-color: transparent; background: rgba(127, 127, 127, 0.1); } }
+@keyframes cloze-reveal-in { from { opacity: 0; transform: scale(0.85); } }
+@media (prefers-reduced-motion: reduce) { .cloze-blank--reveal.is-active, .cloze-blank--reveal.is-new { animation: none; } }
 .qcm-choice.is-selected { border-color: #ef7d2d; background: color-mix(in srgb, #ef7d2d 14%, var(--card-bg-color, var(--paper))); }
 :root.is-night-mode .cloze-blank.is-right, :root.is-night-mode .cloze-blank.is-fixed { color: #7fd1b5; }
 :root.is-night-mode .cloze-blank.is-fixed s { color: #f0a28c; }

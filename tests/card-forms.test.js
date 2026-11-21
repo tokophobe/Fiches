@@ -40,12 +40,12 @@ const after = (card, form, rating, extra) => F.afterRating(at(card, form, extra)
 /* ---------- Les formes d'une fiche ---------- */
 
 test("Formes : la fiche de Confucius a les quatre formes, house / maison a (a), (b) et (d)", () => {
-  assert.deepEqual(F.forms(CONFUCIUS), { a: true, b: true, c: true, d: true });
-  assert.deepEqual(F.forms(HOUSE), { a: true, b: true, c: false, d: true });
+  assert.deepEqual(F.forms(CONFUCIUS), { a: true, b: true, c: true, cbis: false, d: true });
+  assert.deepEqual(F.forms(HOUSE), { a: true, b: true, c: false, cbis: false, d: true });
 });
 
 test("Formes : toujours au moins (b) ; une fiche simple n'a que (b)", () => {
-  assert.deepEqual(F.forms({ question: "Q", answer: "R" }), { a: false, b: true, c: false, d: false });
+  assert.deepEqual(F.forms({ question: "Q", answer: "R" }), { a: false, b: true, c: false, cbis: false, d: false });
 });
 
 test("Formes : un texte à trous n'est valable que si chaque trou a sa réponse et ses 3 propositions fausses", () => {
@@ -319,4 +319,64 @@ test("réponses fausses des trous : une ligne par trou, séparées par « ; » (
   assert.equal(text.split("\n").length, 4);
   assert.deepEqual(F.parseBlankWrongs(text), CONFUCIUS.cloze.blanks.map((b) => b.wrongs));
   assert.deepEqual(F.parseBlankWrongs("a ; b ; c\n\n d;e;f "), [["a", "b", "c"], ["d", "e", "f"]]);
+});
+
+/* ---------- v303 : forme (cbis), essai du 21 nov. 2026 ----------
+   Le texte à trous sans propositions, entre (c) et (d), réglé dans Darwin
+   Admin. Règles de passage : celles de (b). */
+function withCbis(fn) {
+  F.setCbisEnabled(true);
+  try {
+    fn();
+  } finally {
+    F.setCbisEnabled(false);
+  }
+}
+test("(cbis) : éteinte par défaut, la fiche de Confucius passe de (c) à (d) comme avant", () => {
+  assert.equal(F.forms(CONFUCIUS).cbis, false);
+  assert.equal(after(CONFUCIUS, "c", GOOD, { formStreak: 1 }).form, "d");
+});
+test("(cbis) : allumée, toute fiche avec un texte à trous l'a ; sans texte à trous, non", () => {
+  withCbis(() => {
+    assert.equal(F.forms(CONFUCIUS).cbis, true);
+    assert.equal(F.forms(HOUSE).cbis, false);
+  });
+});
+test("(cbis) : (c) réussie 2 fois de suite passe en (cbis)", () => {
+  withCbis(() => assert.equal(after(CONFUCIUS, "c", GOOD, { formStreak: 1 }).form, "cbis"));
+});
+test("(cbis) : Parfaitement passe en (d) ; Je sais 2 fois de suite aussi, une seule fois non", () => {
+  withCbis(() => {
+    assert.equal(after(CONFUCIUS, "cbis", EASY).form, "d");
+    assert.equal(after(CONFUCIUS, "cbis", GOOD).form, "cbis");
+    assert.equal(after(CONFUCIUS, "cbis", GOOD, { formStreak: 1 }).form, "d");
+  });
+});
+test("(cbis) : Je ne sais pas ramène en (c) ; Vague idée reste en (cbis)", () => {
+  withCbis(() => {
+    assert.equal(after(CONFUCIUS, "cbis", AGAIN).form, "c");
+    assert.equal(after(CONFUCIUS, "cbis", HARD).form, "cbis");
+  });
+});
+test("(cbis) : Je ne sais pas en (d) ramène en (cbis)", () => {
+  withCbis(() => assert.equal(after(CONFUCIUS, "d", AGAIN).form, "cbis"));
+});
+test("(cbis) : sans (d), c'est la forme la plus haute", () => {
+  const sansD = Object.assign({}, CONFUCIUS, { q2: "", a2: "" });
+  withCbis(() => assert.equal(after(sansD, "cbis", EASY).form, "cbis"));
+});
+test("(cbis) : une fiche restée en (cbis) retombe en (c) si l'essai est éteint", () => {
+  assert.equal(F.currentForm(at(CONFUCIUS, "cbis")), "c");
+});
+test("jauge (cbis) : fiche complète = 5 cases ; Je sais n'y compte pas Parfaitement", () => {
+  withCbis(() => {
+    const card = at(CONFUCIUS, "cbis", { formRatings: { a: 2, b: 3, c: 2, cbis: 2 } });
+    assert.deepEqual(F.gaugeNotes(card), [3, 3, 3, 2, 0]);
+  });
+});
+test("jauge (cbis) : une fiche déjà en (d) compte sa case (cbis) comme sue", () => {
+  withCbis(() => {
+    const card = at(CONFUCIUS, "d", { formRatings: { a: 2, b: 3, c: 2, d: 3 } });
+    assert.deepEqual(F.gaugeNotes(card), [3, 3, 3, 3, 3]);
+  });
 });

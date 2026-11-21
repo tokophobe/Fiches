@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v302";
+  const APP_VERSION = "v303";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -842,6 +842,12 @@
   let _devSettingsCache;
   let previewDevSettings = null;
   function loadDevSettings() {
+    const s = loadDevSettingsInner();
+    // v303 : la forme (cbis) suit l'interrupteur de Darwin Admin.
+    if (window.CardForms && s.cardForms) CardForms.setCbisEnabled(s.cardForms.cbis);
+    return s;
+  }
+  function loadDevSettingsInner() {
     if (previewDevSettings) return previewDevSettings;
     const raw = localStorage.getItem(DEV_SETTINGS_KEY);
     if (_devSettingsCache && raw === _devSettingsCacheRaw) return _devSettingsCache;
@@ -1982,10 +1988,15 @@
     // question elle-même passe par toDisplayHtml (item 13 : contenu riche).
     // Round 46 : le nom de la boîte n'est plus dans la fiche mais au-dessus
     // (à la place du sélecteur de boîtes), avec sa jauge.
-    questionTextEl.innerHTML = toDisplayHtml(reviewQuestion(card));
+    // v303 : en (cbis), le texte à trous et ses trous à révéler.
+    const cbis = isClozeRevealCard(card);
+    questionTextEl.innerHTML = cbis ? clozeRevealHtml(card) : toDisplayHtml(reviewQuestion(card));
     // v296 : question poussée (forme d, §4.7) signalée sur la fiche.
     const levelBadge = el("card-level-badge");
-    if (levelBadge) levelBadge.hidden = reviewForm(card) !== "d";
+    if (levelBadge) {
+      levelBadge.hidden = reviewForm(card) !== "d" && !cbis;
+      levelBadge.textContent = cbis ? "Texte à trous" : "Approfondie";
+    }
     renderReviewCurrentBox(card);
     renderSubjectBarCount();
     const constructionBtn = el("construction-current-btn");
@@ -5049,6 +5060,8 @@
 
   flipCardEl.addEventListener("click", () => {
     if (!currentCard) return;
+    // v303 : en (cbis), chaque toucher révèle d'abord un trou.
+    if (!isFlipped && revealNextBlank(currentCard)) return;
     // Round 59 : en QCM, la fiche ne se retourne qu'une fois la question
     // résolue (sinon on verrait la réponse).
     if (qcmState && qcmState.cardId === currentCard.id && !qcmState.done) {
@@ -5112,6 +5125,7 @@
   }
 
   /* ---- Round 59 : mode QCM pendant la révision ---- */
+  let revealState = null; // v303 : forme (cbis), { cardId, shown: nombre de trous révélés }
   let qcmState = null; // { cardId, items: [{ html, ok }], wrong: [indices], done, timer }
   // v298 : texte à trous dans la même fiche : { kind: "cloze", cardId,
   // blanks: [{ answer, choices, value, locked, failed }], active, attempt, done, timer }.
@@ -5341,6 +5355,14 @@
       ratingRowEl.hidden = true;
       startCloze(card, panel);
       return;
+    }
+    // v303 : forme (cbis) — trous révélés un par un sur la fiche normale.
+    const cbis = !!card && isClozeRevealCard(card);
+    revealState = cbis ? { cardId: card.id, shown: 0 } : null;
+    setRatingInviteText(cbis);
+    if (cbis) {
+      questionTextEl.innerHTML = clozeRevealHtml(card);
+      if (hint) hint.textContent = "Touche la fiche pour voir le mot surligné";
     }
     if (!qcm) {
       qcmState = null;
@@ -6123,10 +6145,65 @@
   function isClozeCard(card) {
     return reviewForm(card) === "c";
   }
+  /* v303 : forme (cbis), en essai (§4.7) — le texte à trous posé sur la
+     fiche normale, trou après trou, sans propositions : chaque toucher de
+     la fiche révèle le mot du trou surligné ; une fois tout révélé,
+     l'élève s'évalue avec les 4 boutons, comme en (b). */
+  function isClozeRevealCard(card) {
+    return reviewForm(card) === "cbis";
+  }
+  function clozeRevealHtml(card) {
+    const shown = revealState && revealState.cardId === card.id ? revealState.shown : 0;
+    const blanks = card.cloze.blanks;
+    let html = CardForms.clozeSegments(card.cloze.text)
+      .map((txt, i) => {
+        const before = escapeHtml(txt).replace(/\n/g, "<br>");
+        const b = blanks[i];
+        if (!b) return before;
+        if (i < shown) return `${before}<span class="cloze-blank cloze-blank--reveal is-right${i === shown - 1 ? " is-new" : ""}">${escapeHtml(b.answer)}</span>`;
+        return `${before}<span class="cloze-blank cloze-blank--reveal${i === shown ? " is-active" : ""}">&nbsp;${i + 1}&nbsp;</span>`;
+      })
+      .join("");
+    if (shown >= blanks.length && card.more && stripHtml(card.more).trim()) html += `<span class="card-more">${toDisplayHtml(card.more)}</span>`;
+    return html;
+  }
+  /** Touche de la fiche en (cbis) : révèle le trou suivant. Renvoie true
+   *  si le toucher a servi (la fiche ne se retourne pas). */
+  function revealNextBlank(card) {
+    if (!revealState || revealState.cardId !== card.id || !isClozeRevealCard(card)) return false;
+    const total = card.cloze.blanks.length;
+    if (revealState.shown >= total) return false;
+    revealState.shown += 1;
+    questionTextEl.innerHTML = clozeRevealHtml(card);
+    if (revealState.shown >= total) {
+      const hint = document.querySelector("#flip-card .tap-hint");
+      if (hint) hint.textContent = "Touche la fiche pour la retourner";
+      answerSeenCardId = card.id;
+      setRatingInvite(false);
+    }
+    return true;
+  }
+  const RATING_INVITE_HTML = (() => {
+    const t = document.querySelector("#rating-invite .rating-invite-text");
+    return t ? t.innerHTML : "";
+  })();
+  function setRatingInviteText(cbis) {
+    const t = document.querySelector("#rating-invite .rating-invite-text");
+    if (t) t.innerHTML = cbis ? 'Retrouve le mot surligné, touche la fiche pour le voir, puis <span style="white-space:nowrap">évalue-toi</span>.' : RATING_INVITE_HTML;
+  }
   function reviewQuestion(card) {
     return reviewForm(card) === "d" ? card.q2 : card.question;
   }
   function reviewAnswerHtml(card) {
+    // v303 : en (cbis), le dos de la fiche montre le texte complété.
+    if (isClozeRevealCard(card)) {
+      const blanks = card.cloze.blanks;
+      const text = CardForms.clozeSegments(card.cloze.text)
+        .map((t, i) => escapeHtml(t).replace(/\n/g, "<br>") + (blanks[i] ? `<span class="cloze-blank cloze-blank--reveal is-right">${escapeHtml(blanks[i].answer)}</span>` : ""))
+        .join("");
+      const more = card.more && stripHtml(card.more).trim() ? `<span class="card-more">${toDisplayHtml(card.more)}</span>` : "";
+      return text + more;
+    }
     if (reviewForm(card) !== "d") return answerWithMoreHtml(card);
     return toDisplayHtml(card.a2 || "");
   }
