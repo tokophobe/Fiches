@@ -13,14 +13,24 @@
      suivi : `form` (forme actuelle), `formMax` (plus haute atteinte),
              `formStreak` (réussites de suite à la forme actuelle).
              `formRatings` (v297) : dernière note à chaque forme, pour la
-             jauge — { a: 0-3, b: 0-3, c: 0-3, d: 0-3 }.
+             jauge — { a: 0-3, b: 0-3, c: 0-3, cbis: 0-3, d: 0-3 }.
    Étape 1 : règles seules ; branchées dans l'appli en v296 (étape 2) ;
    jauge (§4.6) en v297.
+   v303 (essai du 21 nov. 2026) : forme (cbis) entre (c) et (d) — le même
+   texte à trous, posé trou après trou SANS propositions : l'élève touche
+   la fiche pour voir chaque mot, puis s'évalue (4 boutons, comme (b)).
+   Pas de champ à rédiger : toute fiche qui a un texte à trous l'a, quand
+   l'interrupteur de Darwin Admin est allumé (`setCbisEnabled`).
    ============================================================ */
 (function (root) {
   "use strict";
 
-  const ORDER = ["a", "b", "c", "d"];
+  const ORDER = ["a", "b", "c", "cbis", "d"];
+  /** v303 : forme (cbis) allumée ou non (réglage de Darwin Admin). */
+  let cbisEnabled = false;
+  function setCbisEnabled(on) {
+    cbisEnabled = !!on;
+  }
   /** Délai avant la première interrogation sous une forme supérieure. */
   const FORM_UP_DELAY_MIN = 60;
   const BLANK = /_{3,}/g;
@@ -112,6 +122,7 @@
       a: hasWrongs(c.wrongs),
       b: true,
       c: validCloze(c.cloze),
+      cbis: cbisEnabled && validCloze(c.cloze),
       d: !!(clean(c.q2) && clean(c.a2)),
     };
   }
@@ -159,11 +170,14 @@
     if (form === "a") {
       // Juste du premier coup (« Je sais ») → (b).
       if (rating >= 2) next = "b";
-    } else if (form === "b") {
-      if (rating === 0) next = below(f, "b") || "b";
+    } else if (form === "b" || form === "cbis") {
+      // v303 : (cbis) suit les règles de (b) — « Je ne sais pas » redescend
+      // (en texte à trous avec propositions), « Parfaitement » ou « Je sais »
+      // 2 fois de suite fait monter.
+      if (rating === 0) next = below(f, form) || form;
       else if (rating >= 2) {
         nextStreak = rating === 3 ? 2 : streak + 1;
-        if (nextStreak >= 2 && above(f, "b")) next = above(f, "b");
+        if (nextStreak >= 2 && above(f, form)) next = above(f, form);
       }
     } else if (form === "c") {
       // Tout juste à la 1re tentative (« Je sais »), 2 fois de suite → (d).
@@ -205,7 +219,7 @@
 
   /* ---------- Jauge de progression (§4.6, décidé le 18 nov. 2026) ----------
      Une case par forme de la fiche : (b) seul = 1 case, (a)+(b) = 2,
-     fiche complète = 4. Chaque case garde la dernière note obtenue à sa
+     fiche complète = 4 (5 avec la forme (cbis), v303). Chaque case garde la dernière note obtenue à sa
      forme ; une forme jamais posée compte « Je ne sais pas ». En (a) et
      (c), « Je sais » compte « Parfaitement » (ces formes n'ont pas de
      « Parfaitement » : la fiche monte). */
@@ -278,7 +292,7 @@
   }
 
   const api = {
-    ORDER, FORM_UP_DELAY_MIN, validCloze, clozeSegments, bracketAnswers, clozeToBrackets, clozeFromBrackets, clozeSummary, parseBlankWrongs, blankWrongsText, forms, hasLevel2, currentForm, afterRating, scheduleFormUp, clozeRating,
+    ORDER, FORM_UP_DELAY_MIN, setCbisEnabled, validCloze, clozeSegments, bracketAnswers, clozeToBrackets, clozeFromBrackets, clozeSummary, parseBlankWrongs, blankWrongsText, forms, hasLevel2, currentForm, afterRating, scheduleFormUp, clozeRating,
     legacyFormRatings, withFormRating, gaugeNotes, gaugeCounts,
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;

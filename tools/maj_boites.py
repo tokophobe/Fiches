@@ -304,6 +304,14 @@ def probleme_texte_a_trous(cloze):
             out.append(f"trou {k} : « {avant.strip()[-2:]} » devant le trou, mais toutes les propositions ne commencent pas par une voyelle (mettre l'article dans le trou)")
         elif re.search(r"(?:^|\s)(le|la|de|du|au|que|ce)\s*$", avant, re.I) and any(voyelles):
             out.append(f"trou {k} : « {avant.split()[-1]} » devant le trou, mais une proposition commence par une voyelle (mettre l'article dans le trou)")
+        # 22 nov. 2026 (remarque du propriétaire, « l'offensive du ___ ») :
+        # article devant le trou ET article dans certaines propositions
+        # (« du de la Somme ») : la bonne réponse se devine. Un article
+        # devant un nom propre (« du Marne ») ne se repère pas sûrement :
+        # le relire.
+        art = re.compile(r"^(le|la|les|l['’]|du|de|des|d['’]|au|aux|un|une)(\s|(?<=['’]))", re.I)
+        if re.search(r"(?:^|\s)(le|la|les|du|des|au|aux|un|une)\s*$", avant, re.I) and any(art.match(x) for x in props if x):
+            out.append(f"trou {k} : « {avant.split()[-1]} » devant le trou et un article dans une proposition (mettre l'article dans le trou, pour chaque proposition)")
     return out
 
 
@@ -354,6 +362,19 @@ def question_alternative(q, props):
     return []
 
 
+def complement_redit(reponse, complement):
+    """Vrai si le complément « Pour aller plus loin » ne fait que répéter la
+    réponse : chacune de ses lignes (puces et ponctuation retirées) se lit
+    déjà telle quelle dans la réponse (22 nov. 2026, Triple Entente)."""
+    def plat(t):
+        t = re.sub(r"<[^>]+>", " ", t or "").lower()
+        return " ".join(re.findall(r"[\wàâäéèêëîïôöùûüç'+−-]+", t))
+    rep = plat(reponse)
+    lignes = [plat(l) for l in (complement or "").split("\n")]
+    lignes = [l for l in lignes if l]
+    return bool(lignes) and all(l in rep for l in lignes)
+
+
 def qualite(keys=None):
     """Défauts de qualité des fiches QCM (remarques du 18 nov. 2026, spéc.
     §5.7) : indice dans la question, bonne réponse plus détaillée que les
@@ -373,6 +394,11 @@ def qualite(keys=None):
             # propose une alternative tirée des propositions (« for ou
             # since ? ») laisse éliminer les autres sans réfléchir. Cette
             # alerte ne s'accepte pas : il faut reformuler la question.
+            # 22 nov. 2026 (remarque du propriétaire) : complément qui ne fait
+            # que répéter un morceau de la réponse.
+            if complement_redit(c["answer"], c.get("more")) and c["question"] not in acceptees:
+                stats["détail"] += 1
+                print(f"[{b['key']}#{i}] le complément répète la réponse : le retirer ou y mettre une vraie explication : {c['question'][:70]}")
             alt = question_alternative(c["question"], [c["answer"]] + w)
             if alt:
                 stats["indice"] += 1
@@ -449,8 +475,11 @@ def infos(t):
 # « Ce vers », « On »… ne dit pas de quoi il parle. Sont admis les phrases
 # d'exercice (verbe entre parenthèses) et les transformations qui citent
 # d'abord la phrase de départ entre guillemets.
+# 22 nov. 2026 (2e remarque, Verdun) : aussi « C'est… ». Les renvois au
+# milieu du texte (« s'y affrontent », « cette Déclaration ») ne se
+# repèrent pas sûrement : à relire à chaque lot.
 DEBUT_SANS_SUJET = re.compile(
-    r"^(Ce|Cet|Cette|Ces|Il|Elle|Ils|Elles|On|Son|Sa|Ses|Leur|Leurs|Le premier|"
+    r"^(C['’]est|Ce|Cet|Cette|Ces|Il|Elle|Ils|Elles|On|Son|Sa|Ses|Leur|Leurs|Le premier|"
     r"La première|Le second|La seconde|Les deux|Chacun|Chacune|Celui|Celle|Ceux|Cela)\b")
 
 

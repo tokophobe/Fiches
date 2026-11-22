@@ -104,7 +104,13 @@ avec `qcmQuestionNeedsChoices` (`js/settings-model.js`).
   `.card-forms-filter-btn`, classe `card-forms-all` sur `<body>`, choix
   gardé dans `fiches_card_forms_all`) ; `dmCardFields` (appli) et
   `cardFieldsText` (Darwin Admin, qui charge aussi `card-forms.js`)
-  comparent ces champs (`CardForms.clozeSummary`). Pour ajouter un test sur une
+  comparent ces champs (`CardForms.clozeSummary`). Forme (cbis) (v303,
+  essai) : texte à trous sans propositions, entre (c) et (d), règles de
+  (b) ; `ORDER` = a, b, c, cbis, d ; allumée par `CardForms.setCbisEnabled`
+  depuis `loadDevSettings` (réglage `cardForms.cbis`, Darwin Admin →
+  Révision) ; dans `app.js`, sur la fiche normale : `revealState`,
+  `clozeRevealHtml`, `revealNextBlank` (appelé par le toucher de la
+  fiche). Pour ajouter un test sur une
   autre règle, extraire de la même façon la logique concernée.
 - **Lancer les tests avant chaque livraison.** Quand une règle de la
   spécification change, mettre à jour son test dans la même branche ;
@@ -466,8 +472,19 @@ testables ainsi.
   « Ce vers… », « Il… », « On les… » renvoyant à la question (d) ; nommer
   le sujet, citer le vers, l'équation ou la phrase de départ ; `qualite`
   le signale (`texte_a_trous_sans_sujet`) ; 188 fiches corrigées
-  (`Fiches-contenu/outils/corrections/sujets_r1.py`). **Y veiller à
-  chaque lot.** Suite : français et langues du brevet,
+  (`Fiches-contenu/outils/corrections/sujets_r1.py`) ; 2e passe (22 nov.
+  2026, Verdun) : renvois au milieu du texte (« s'y », « cette … »,
+  « ces espaces ») et « C'est … » (repéré par `qualite`), 73 fiches
+  (`sujets_r2.py`). Les renvois au milieu du texte ne se détectent pas
+  sûrement : relire chaque texte à trous **sans sa question**. **Y
+  veiller à chaque lot.** Complément qui répète la réponse (22 nov. 2026, remarque
+  du propriétaire) : interdit ; `qualite` le signale (`complement_redit`) ;
+  39 fiches corrigées (`Fiches-contenu/outils/corrections/redites_r1.py`).
+  Article devant un trou (22 nov. 2026, « l'offensive du ___ ») : il ne
+  doit convenir qu'à toutes les propositions ; `qualite` repère l'article
+  à la fois devant le trou et dans une proposition, mais pas « du Marne »
+  (genre d'un nom propre) : à relire ; 13 fiches (`articles_r1.py`).
+  Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
   intégrable et venir d'une chaîne d'enseignement (pas de webinaire,

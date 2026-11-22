@@ -764,6 +764,11 @@
           };
         })(),
       },
+      // v303 : forme (cbis) des fiches (texte à trous sans propositions,
+      // spéc. §4.7), en essai : éteinte tant qu'on ne l'a pas allumée.
+      cardForms: {
+        cbis: !!(parsed.cardForms && parsed.cardForms.cbis === true),
+      },
       // v287 (publication avec relecture, étape E) : tant que l'appli
       // n'est pas ouverte au public, la Librairie ne montre que les boîtes
       // de darwin (activé tant qu'on ne l'a pas désactivé). Appliqué par le
