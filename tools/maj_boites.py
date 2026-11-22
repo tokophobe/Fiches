@@ -354,6 +354,19 @@ def question_alternative(q, props):
     return []
 
 
+def complement_redit(reponse, complement):
+    """Vrai si le complément « Pour aller plus loin » ne fait que répéter la
+    réponse : chacune de ses lignes (puces et ponctuation retirées) se lit
+    déjà telle quelle dans la réponse (22 nov. 2026, Triple Entente)."""
+    def plat(t):
+        t = re.sub(r"<[^>]+>", " ", t or "").lower()
+        return " ".join(re.findall(r"[\wàâäéèêëîïôöùûüç'+−-]+", t))
+    rep = plat(reponse)
+    lignes = [plat(l) for l in (complement or "").split("\n")]
+    lignes = [l for l in lignes if l]
+    return bool(lignes) and all(l in rep for l in lignes)
+
+
 def qualite(keys=None):
     """Défauts de qualité des fiches QCM (remarques du 18 nov. 2026, spéc.
     §5.7) : indice dans la question, bonne réponse plus détaillée que les
@@ -373,6 +386,11 @@ def qualite(keys=None):
             # propose une alternative tirée des propositions (« for ou
             # since ? ») laisse éliminer les autres sans réfléchir. Cette
             # alerte ne s'accepte pas : il faut reformuler la question.
+            # 22 nov. 2026 (remarque du propriétaire) : complément qui ne fait
+            # que répéter un morceau de la réponse.
+            if complement_redit(c["answer"], c.get("more")) and c["question"] not in acceptees:
+                stats["détail"] += 1
+                print(f"[{b['key']}#{i}] le complément répète la réponse : le retirer ou y mettre une vraie explication : {c['question'][:70]}")
             alt = question_alternative(c["question"], [c["answer"]] + w)
             if alt:
                 stats["indice"] += 1

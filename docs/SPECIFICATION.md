@@ -962,6 +962,11 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
      possible (« CO : monoxyde de carbone ; C₂O n'existe pas »), plutôt
      qu'une information sans lien. Un exemple est toujours annoncé par
      « Exemple : », pour éviter les confusions (« Exemple : Na⁺ »).
+     Il ne **répète jamais** la réponse ni un morceau de la réponse (pas
+     de « • Le Royaume-Uni • La Russie » sous « La France, le
+     Royaume-Uni et la Russie ») : c'est inutile et ça sème le doute.
+     Sans vraie explication à ajouter, pas de complément (remarque du
+     propriétaire, 22 nov. 2026 ; contrôle automatique).
    - **Le contexte ne trahit pas la réponse** : dans un texte à trous, les
      mots autour d'un trou ne doivent pas permettre d'éliminer les
      fausses réponses (pas « ions ___ positifs » quand les fausses sont
@@ -1613,6 +1618,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 22 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : un complément « Pour aller plus loin » ne répète plus la réponse (§5.7, règle 11) ; 39 compléments retirés ou réduits dans la Librairie ; contrôle automatique ajouté. |
 | v303 | 21 nov. 2026 | Forme (cbis), en essai (§4.7) : entre le texte à trous (c) et la question poussée (d), le même texte à trous posé trou après trou sans propositions — l'élève touche la fiche pour voir chaque mot surligné, puis s'évalue avec les 4 boutons (règles de passage de (b)) ; une case de plus dans la jauge (§4.6) ; interrupteur dans Darwin Admin (Réglages → Révision), éteint par défaut. |
 | — | 21 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : nouvelle règle d'écriture (§5.7, règle 9) — une question ne propose plus d'alternative tirée de ses propositions (« A ou B ? », « Vrai ou faux ? ») ; 309 fiches de la Librairie reformulées, fausses réponses rendues crédibles ; contrôle automatique qui ne peut pas être accepté. |
 | — | 21 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : un texte à trous dit toujours de quoi il parle (§5.7, règle 11) — plus de « Ce vers… », « Il… », « On les… » qui renvoient à la question (d) que l'élève n'a pas encore vue ; 188 textes à trous de la Librairie réécrits (et leurs réponses (d)) ; contrôle automatique ajouté. |
