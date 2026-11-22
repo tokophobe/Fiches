@@ -472,8 +472,12 @@ testables ainsi.
   « Ce vers… », « Il… », « On les… » renvoyant à la question (d) ; nommer
   le sujet, citer le vers, l'équation ou la phrase de départ ; `qualite`
   le signale (`texte_a_trous_sans_sujet`) ; 188 fiches corrigées
-  (`Fiches-contenu/outils/corrections/sujets_r1.py`). **Y veiller à
-  chaque lot.** Complément qui répète la réponse (22 nov. 2026, remarque
+  (`Fiches-contenu/outils/corrections/sujets_r1.py`) ; 2e passe (22 nov.
+  2026, Verdun) : renvois au milieu du texte (« s'y », « cette … »,
+  « ces espaces ») et « C'est … » (repéré par `qualite`), 73 fiches
+  (`sujets_r2.py`). Les renvois au milieu du texte ne se détectent pas
+  sûrement : relire chaque texte à trous **sans sa question**. **Y
+  veiller à chaque lot.** Complément qui répète la réponse (22 nov. 2026, remarque
   du propriétaire) : interdit ; `qualite` le signale (`complement_redit`) ;
   39 fiches corrigées (`Fiches-contenu/outils/corrections/redites_r1.py`).
   Suite : français et langues du brevet,

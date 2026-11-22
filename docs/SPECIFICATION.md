@@ -932,7 +932,11 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
        phrase de départ d'une transformation (« Il dit : « Je viendrai. »
        → Il dit [qu'il viendra] ») (remarque du propriétaire, 22 nov.
        2026 ; contrôle automatique, seules les phrases d'exercice
-       complètes — « Il peut venir… » — s'acceptent) ;
+       complètes — « Il peut venir… » — s'acceptent). Même chose **au
+       milieu du texte** (2e remarque, 22 nov. 2026) : pas de « s'y
+       affrontent » quand le lieu (Verdun) n'est nommé que dans la
+       question (d), pas de « cette Déclaration », « ces espaces »,
+       « C'est [un aparté] » sans dire de quoi on parle ;
      - les fausses réponses ne **contredisent** pas le reste de la phrase
        (pas « séparément » dans « les communes se regroupent pour gérer
        ___ ») ;
@@ -1618,6 +1622,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 22 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : textes à trous qui renvoyaient encore à la question (d) — « s'y » (Verdun), « cette Déclaration », « ces espaces », « C'est … » — 73 textes réécrits (§5.7, règle 11) ; le contrôle automatique repère aussi « C'est » en début de texte. |
 | — | 22 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : un complément « Pour aller plus loin » ne répète plus la réponse (§5.7, règle 11) ; 39 compléments retirés ou réduits dans la Librairie ; contrôle automatique ajouté. |
 | v303 | 21 nov. 2026 | Forme (cbis), en essai (§4.7) : entre le texte à trous (c) et la question poussée (d), le même texte à trous posé trou après trou sans propositions — l'élève touche la fiche pour voir chaque mot surligné, puis s'évalue avec les 4 boutons (règles de passage de (b)) ; une case de plus dans la jauge (§4.6) ; interrupteur dans Darwin Admin (Réglages → Révision), éteint par défaut. |
 | — | 21 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : nouvelle règle d'écriture (§5.7, règle 9) — une question ne propose plus d'alternative tirée de ses propositions (« A ou B ? », « Vrai ou faux ? ») ; 309 fiches de la Librairie reformulées, fausses réponses rendues crédibles ; contrôle automatique qui ne peut pas être accepté. |

@@ -467,8 +467,11 @@ def infos(t):
 # « Ce vers », « On »… ne dit pas de quoi il parle. Sont admis les phrases
 # d'exercice (verbe entre parenthèses) et les transformations qui citent
 # d'abord la phrase de départ entre guillemets.
+# 22 nov. 2026 (2e remarque, Verdun) : aussi « C'est… ». Les renvois au
+# milieu du texte (« s'y affrontent », « cette Déclaration ») ne se
+# repèrent pas sûrement : à relire à chaque lot.
 DEBUT_SANS_SUJET = re.compile(
-    r"^(Ce|Cet|Cette|Ces|Il|Elle|Ils|Elles|On|Son|Sa|Ses|Leur|Leurs|Le premier|"
+    r"^(C['’]est|Ce|Cet|Cette|Ces|Il|Elle|Ils|Elles|On|Son|Sa|Ses|Leur|Leurs|Le premier|"
     r"La première|Le second|La seconde|Les deux|Chacun|Chacune|Celui|Celle|Ceux|Cela)\b")
 
 
