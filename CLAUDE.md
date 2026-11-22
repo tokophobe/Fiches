@@ -480,6 +480,10 @@ testables ainsi.
   veiller à chaque lot.** Complément qui répète la réponse (22 nov. 2026, remarque
   du propriétaire) : interdit ; `qualite` le signale (`complement_redit`) ;
   39 fiches corrigées (`Fiches-contenu/outils/corrections/redites_r1.py`).
+  Article devant un trou (22 nov. 2026, « l'offensive du ___ ») : il ne
+  doit convenir qu'à toutes les propositions ; `qualite` repère l'article
+  à la fois devant le trou et dans une proposition, mais pas « du Marne »
+  (genre d'un nom propre) : à relire ; 13 fiches (`articles_r1.py`).
   Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,

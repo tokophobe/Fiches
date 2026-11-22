@@ -504,7 +504,11 @@ abandonnée : trop de couleurs, risque de confusion.
 - Toutes les formes restent dans le sujet de la boîte (§5.7, règle 8),
   et ne doivent pas se deviner (§5.7, règle 9 : pas d'indice, propositions
   de même forme et crédibles, articles dans les trous, pas de trous
-  collés).
+  collés). Un article laissé devant le trou ne doit convenir qu'à toutes
+  les propositions à la fois : « l'offensive du ___ » trahit « Chemin
+  des Dames » face à « Marne » ou « Somme » ; on écrit « l'offensive
+  ___ » avec « du Chemin des Dames / de la Marne / de la Somme… »
+  (remarque du propriétaire, 22 nov. 2026).
 
 #### Étapes envisagées (après validation)
 
@@ -1622,6 +1626,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| v304 | 22 nov. 2026 | Forme (cbis) : quand le texte est long, la fiche défile toute seule jusqu'au trou surligné (le dernier trou restait caché en bas) ; les mots révélés s'écrivent dans la ligne. Contenu : article devant un trou qui trahissait la réponse (« l'offensive du ___ » → « du Chemin des Dames », pas « du Marne ») — 13 textes à trous corrigés, l'article va dans le trou ; nouveau contrôle automatique (article devant le trou et dans une proposition). |
 | — | 22 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : textes à trous qui renvoyaient encore à la question (d) — « s'y » (Verdun), « cette Déclaration », « ces espaces », « C'est … » — 73 textes réécrits (§5.7, règle 11) ; le contrôle automatique repère aussi « C'est » en début de texte. |
 | — | 22 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : un complément « Pour aller plus loin » ne répète plus la réponse (§5.7, règle 11) ; 39 compléments retirés ou réduits dans la Librairie ; contrôle automatique ajouté. |
 | v303 | 21 nov. 2026 | Forme (cbis), en essai (§4.7) : entre le texte à trous (c) et la question poussée (d), le même texte à trous posé trou après trou sans propositions — l'élève touche la fiche pour voir chaque mot surligné, puis s'évalue avec les 4 boutons (règles de passage de (b)) ; une case de plus dans la jauge (§4.6) ; interrupteur dans Darwin Admin (Réglages → Révision), éteint par défaut. |

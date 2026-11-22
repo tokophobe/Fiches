@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v303";
+  const APP_VERSION = "v304";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -5362,6 +5362,7 @@
     setRatingInviteText(cbis);
     if (cbis) {
       questionTextEl.innerHTML = clozeRevealHtml(card);
+      questionTextEl.scrollTop = 0;
       if (hint) hint.textContent = "Touche la fiche pour voir le mot surligné";
     }
     if (!qcm) {
@@ -6167,6 +6168,18 @@
     if (shown >= blanks.length && card.more && stripHtml(card.more).trim()) html += `<span class="card-more">${toDisplayHtml(card.more)}</span>`;
     return html;
   }
+  /** Le texte d'une fiche défile dans la fiche quand il est long : on garde
+   *  en vue le trou surligné, ou le dernier mot révélé (remarque du
+   *  propriétaire, 22 nov. 2026 : le dernier trou restait caché en bas). */
+  function scrollRevealIntoView() {
+    const box = questionTextEl;
+    const target = box.querySelector(".cloze-blank.is-active") || box.querySelector(".cloze-blank.is-new");
+    if (!target) return;
+    const top = target.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop;
+    const bottom = top + target.offsetHeight;
+    if (bottom > box.scrollTop + box.clientHeight - 8) box.scrollTop = bottom - box.clientHeight + 24;
+    else if (top < box.scrollTop) box.scrollTop = Math.max(0, top - 8);
+  }
   /** Touche de la fiche en (cbis) : révèle le trou suivant. Renvoie true
    *  si le toucher a servi (la fiche ne se retourne pas). */
   function revealNextBlank(card) {
@@ -6175,6 +6188,7 @@
     if (revealState.shown >= total) return false;
     revealState.shown += 1;
     questionTextEl.innerHTML = clozeRevealHtml(card);
+    scrollRevealIntoView();
     if (revealState.shown >= total) {
       const hint = document.querySelector("#flip-card .tap-hint");
       if (hint) hint.textContent = "Touche la fiche pour la retourner";

@@ -7758,6 +7758,9 @@ body:has(#view-library.is-active[data-cycle]) {
    normale : le trou à trouver clignote doucement, le mot révélé apparaît
    en vert. */
 .cloze-blank--reveal { cursor: inherit; }
+/* Mot révélé : dans la ligne, comme le reste du texte (un long mot ne fait
+   plus un pavé sur toute la largeur). */
+.cloze-blank--reveal.is-right { display: inline; padding: 0 3px; text-align: inherit; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .cloze-blank--reveal.is-active { animation: cloze-reveal-pulse 1.3s ease-in-out infinite; }
 .cloze-blank--reveal.is-new { animation: cloze-reveal-in 0.35s ease-out; }
 @keyframes cloze-reveal-pulse { 50% { outline-color: transparent; background: rgba(127, 127, 127, 0.1); } }

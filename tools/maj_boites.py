@@ -304,6 +304,14 @@ def probleme_texte_a_trous(cloze):
             out.append(f"trou {k} : « {avant.strip()[-2:]} » devant le trou, mais toutes les propositions ne commencent pas par une voyelle (mettre l'article dans le trou)")
         elif re.search(r"(?:^|\s)(le|la|de|du|au|que|ce)\s*$", avant, re.I) and any(voyelles):
             out.append(f"trou {k} : « {avant.split()[-1]} » devant le trou, mais une proposition commence par une voyelle (mettre l'article dans le trou)")
+        # 22 nov. 2026 (remarque du propriétaire, « l'offensive du ___ ») :
+        # article devant le trou ET article dans certaines propositions
+        # (« du de la Somme ») : la bonne réponse se devine. Un article
+        # devant un nom propre (« du Marne ») ne se repère pas sûrement :
+        # le relire.
+        art = re.compile(r"^(le|la|les|l['’]|du|de|des|d['’]|au|aux|un|une)(\s|(?<=['’]))", re.I)
+        if re.search(r"(?:^|\s)(le|la|les|du|des|au|aux|un|une)\s*$", avant, re.I) and any(art.match(x) for x in props if x):
+            out.append(f"trou {k} : « {avant.split()[-1]} » devant le trou et un article dans une proposition (mettre l'article dans le trou, pour chaque proposition)")
     return out
 
 
