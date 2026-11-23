@@ -455,7 +455,12 @@ testables ainsi.
   Englishhello**. Alternatives (21 nov. 2026, spéc. §5.7 règle 9) : une
   question ne cite jamais une partie de ses propositions (« A ou B ? »,
   « Vrai ou faux ? ») ; `qualite` le signale et l'alerte ne s'accepte
-  pas (`question_alternative`) ; 309 fiches reformulées le 21 nov. 2026. Lot 6 (`lot6/`) : 8 boîtes
+  pas (`question_alternative`) ; 309 fiches reformulées le 21 nov. 2026 ;
+  23 nov. 2026 : aussi « conducteur ou isolant ? » quand les propositions
+  sont plus longues (`alternative_courte`), 84 fiches reformulées
+  (`Fiches-contenu/outils/corrections/alternatives_r4.py`). Lot 12
+  (`lot12/`, 23 nov. 2026) : 7 boîtes `r37-` de 3e (4 maths, SVT effort,
+  histoire des arts, italien ; 117 fiches). Lot 6 (`lot6/`) : 8 boîtes
   `r35-brevet-fr-` (135 fiches) ; (c) = petit exercice autonome à 2 trous
   ou plus qui s'opposent, (d) = même exercice sans propositions ; vidéos
   de l'indicatif (Englishhello) et des homophones changées, à transcrire ;
