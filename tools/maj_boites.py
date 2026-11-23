@@ -346,8 +346,10 @@ def question_alternative(q, props):
     def positions(x):
         return [m.start() for m in re.finditer(r"(?<!\w)" + re.escape(x.lower()) + r"(?!\w)", low)]
     cites = [x for x in props if positions(x)]
-    if len(cites) < 2 or len(cites) == len(props):
+    if len(cites) == len(props):
         return []
+    if len(cites) < 2:
+        return alternative_courte(q, props)
     # 21 nov. 2026 : on regarde chaque apparition (« à » peut figurer aussi
     # plus tôt dans la phrase citée).
     for x in cites:
@@ -359,6 +361,26 @@ def question_alternative(q, props):
                     entre = low[px + len(x):py]
                     if 0 < len(entre) <= 12 and re.search(r"\bou\b|\bor\b", entre):
                         return [x, y]
+    return alternative_courte(q, props)
+
+
+def alternative_courte(q, props):
+    """23 nov. 2026 : « Le cuivre est-il conducteur ou isolant ? » avec des
+    propositions plus longues (« Conducteur : il laisse passer le
+    courant. ») : la question finit par « X ou Y ? », X et Y commencent
+    chacun une proposition différente, et toutes ne sont pas citées."""
+    m = re.search(r"(\w[\w'’-]*) ou (\w[\w'’-]*)\s*\?\s*$", q)
+    if not m:
+        return []
+    def tete(p):
+        p = re.sub(r"^(le|la|les|l['’]|un|une|des|du|de|c['’]est|en)\s*", "", p.lower().strip())
+        return re.split(r"[\s:(.,]", p)[0]
+    tetes = [tete(p) for p in props]
+    x, y = m.group(1).lower(), m.group(2).lower()
+    if x in tetes and y in tetes and tetes.index(x) != tetes.index(y):
+        autres = [p for p in props if tete(p) not in (x, y)]
+        if any(tete(p) not in q.lower() for p in autres):
+            return [m.group(1), m.group(2)]
     return []
 
 
