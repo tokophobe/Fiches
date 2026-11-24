@@ -432,7 +432,7 @@ def qualite(keys=None):
     fausses ; et textes à trous (article qui trahit, trous collés).
     Liste à relire : une alerte n'est pas toujours une erreur."""
     d = charge()
-    stats = {"indice": 0, "détail": 0, "forme": 0, "texte à trous": 0, "formes poussées": 0}
+    stats = {"indice": 0, "détail": 0, "forme": 0, "texte à trous": 0, "formes poussées": 0, "infos hors trous": 0}
     for b in d["boxes"]:
         if keys and b["key"] not in keys:
             continue
@@ -483,6 +483,10 @@ def qualite(keys=None):
                 for msg in probleme_texte_a_trous(c["cloze"]) + fausses_trompeuses(c["cloze"], boite_de_langue(b)):
                     stats["texte à trous"] += 1
                     print(f"[{b['key']}#{i}] texte à trous : {msg}")
+            hors = infos_hors_trous(c, exercice_de_langue(b))
+            if hors:
+                stats["infos hors trous"] += 1
+                print(f"[{b['key']}#{i}] texte à trous : information donnée en clair, à mettre en trou ({', '.join(hors)}) : {c['question'][:60]}")
             for msg in probleme_formes_poussees(c, contexte):
                 stats["formes poussées"] += 1
                 print(f"[{b['key']}#{i}] {msg} : {c['question'][:60]}")
@@ -547,6 +551,41 @@ def texte_a_trous_sans_sujet(cloze):
     if re.match(r"^(Il y a|Il faut|Il suffit|Il existe|Il n'existe|On dit|On parle|On appelle|On distingue)\b", t):
         return False
     return True
+
+
+# 24 nov. 2026 (remarque du propriétaire, « apologue ») : tant qu'une
+# information est à apprendre, elle doit être un trou du texte (c). Hors
+# des trous ne restent que ce que la question (d) donne déjà et les mots
+# de liaison. Repère : un mot de la fiche (question, réponse ou complément
+# de la forme (b)) écrit en clair dans le texte, absent de la question (d).
+# Les citations « … » (vers, phrase de départ) et les boîtes de langue
+# (phrases d'exercice) sont mises à part.
+MOTS_DE_LIAISON = {"comme", "environ", "souvent", "chaque", "exemple", "surtout", "alors", "ainsi", "ensuite",
+                   "toujours", "beaucoup", "autre", "autres", "abord", "certains", "certaines", "toutes", "faire",
+                   "jusqu", "partir", "celui", "celle", "chacun", "chacune", "grace", "parce", "puisque", "lorsqu",
+                   "lorsque", "quand", "comme", "notamment", "egalement", "encore", "seule", "seules", "seuls"}
+
+
+# Boîtes d'exercices de langue (phrases à compléter) : langues étrangères,
+# langues anciennes et grammaire ; pas les boîtes de littérature française.
+EXERCICE_DE_LANGUE = re.compile(r"(anglais|ang-|-ang|espagnol|esp-|-esp|allemand|all-|-all|ital|latin|lat-|grec|"
+                                r"conjug|homophon|grammaire|orthograph|accord|verbe|modes|temps|nature-fonction|ponctuation)", re.I)
+
+
+def exercice_de_langue(b):
+    return bool(EXERCICE_DE_LANGUE.search(b.get("key", "")) or EXERCICE_DE_LANGUE.search(b.get("name", "")))
+
+
+def infos_hors_trous(c, langue=False):
+    """Mots de la fiche donnés en clair dans le texte à trous (liste triée)."""
+    cl = c.get("cloze")
+    if not cl or langue:
+        return []
+    hors = re.sub(r"_{3,}", " ", str(cl.get("text", "")))
+    hors = re.sub(r"«[^»]*»", " ", hors)
+    donnes = {m[:5] for m in mots(c.get("q2") or "")}
+    fiche = {m[:5] for m in mots(" ".join([c.get("question", ""), c.get("answer", ""), c.get("more") or ""]))}
+    return sorted({m for m in mots(hors) if m[:5] in fiche and m[:5] not in donnes and m not in MOTS_DE_LIAISON})
 
 
 def probleme_formes_poussees(c, contexte=""):

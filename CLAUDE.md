@@ -500,7 +500,13 @@ testables ainsi.
   réponse d'un autre trou (sauf boîtes de langue, `boite_de_langue`), pas
   de « seulement » / « uniquement » ; `qualite` le signale
   (`fausses_trompeuses`) ; 362 fiches (`croises_r1.py` et
-  `corrections_croises.txt`).
+  `corrections_croises.txt`). Toute information à apprendre est un trou
+  (24 nov. 2026, remarque « apologue », spéc. §5.7 règle 11) : hors des
+  trous, seulement ce que donne la question (d) et les mots de liaison ;
+  `qualite` signale un mot de la fiche écrit en clair dans le texte et
+  absent de q2 (`infos_hors_trous`, sauf exercices de langue
+  `exercice_de_langue`) ; 1 573 textes signalés le 24 nov. 2026, environ
+  la moitié à réécrire (le reste : sujet du texte, unité…, à accepter).
   Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,

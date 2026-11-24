@@ -933,6 +933,15 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
        désert français], [Jean-François Gravier] dénonce un pays où
        [Paris] concentre… ») ; pas de trou sur un mot sans intérêt
        (« ensemble ») quand une information est à côté (« services ») ;
+     - **tant qu'une information est à apprendre, elle est un trou**
+       (remarque du propriétaire, 24 nov. 2026, « apologue ») : hors des
+       trous ne restent que ce que la question (d) donne déjà et les mots
+       qui relient. Pas « Un apologue est un court récit qui illustre
+       [une leçon morale] ; la fable et [le conte philosophique]… », mais
+       « Un apologue est un [court récit] qui illustre [une leçon
+       morale] ; [la fable] et [le conte philosophique] en sont deux
+       exemples » (contrôle automatique : un mot de la fiche écrit en
+       clair et absent de la question (d) est signalé, à relire) ;
      - le texte **se suffit à lui-même** : il rappelle de quoi il parle
        (« Les acteurs de l'aménagement du territoire sont… »). Au stade
        (c), l'élève n'a **pas encore vu la question (d)** : le texte ne
@@ -1633,6 +1642,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 24 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : nouvelle règle des textes à trous (§5.7, règle 11) — tant qu'une information est à apprendre, elle est un trou ; fiche « apologue » corrigée ; contrôle automatique ajouté (1 573 textes signalés dans la Librairie, à relire et corriger). |
 | — | 24 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : lot 13 — formes (c) et (d) écrites pour les 20 boîtes de 4e dont la vidéo est transcrite (326 fiches, 97 extraits de vidéo), tous les contrôles automatiques à zéro ; quelques questions de QCM qui citaient leurs propositions reformulées. |
 | — | 24 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : fin du lot 12 — formes (c) et (d) écrites pour les 25 boîtes de 3e « r37- » dont la vidéo est transcrite (393 fiches, 120 extraits de vidéo), avec tous les contrôles automatiques à zéro. |
 | — | 24 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : fausses réponses des textes à trous — 362 fiches corrigées : plus de fausse réponse qui est la bonne réponse d'un autre trou (sauf boîtes de langue), plus de « seulement » / « uniquement » qui trahit la bonne réponse (§5.7, règle 9) ; contrôle automatique ajouté. Formes (c)/(d) de 12 boîtes de français de 3e de plus. |
