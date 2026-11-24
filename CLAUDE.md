@@ -463,7 +463,11 @@ testables ainsi.
   (maths, SVT, histoire des arts, italien, français, oral du brevet, arts
   plastiques, musique ; 393 fiches, 120 extraits) ; vidéos partielles
   notées dans `verifications-videos.json` (« agir dans la cité », arts
-  plastiques, musique : à compléter ou remplacer). Lot 6 (`lot6/`) : 8 boîtes
+  plastiques, musique : à compléter ou remplacer). Lot 13 (`lot13/`, 24 nov.
+  2026) : les 20 boîtes de 4e transcrites (`r37-4e-`, `r38-a4-4e-`,
+  `r4e-` ; 326 fiches, 97 extraits) ; vidéos à remplacer : anglais
+  comparatifs (phrases à répéter), `r4e-fr-fausses-informations`
+  (niveau primaire) ; `r4e-svt-puberte` double `r37-4e-svt-reproduction-puberte`. Lot 6 (`lot6/`) : 8 boîtes
   `r35-brevet-fr-` (135 fiches) ; (c) = petit exercice autonome à 2 trous
   ou plus qui s'opposent, (d) = même exercice sans propositions ; vidéos
   de l'indicatif (Englishhello) et des homophones changées, à transcrire ;

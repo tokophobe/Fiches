@@ -1633,6 +1633,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 24 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : lot 13 — formes (c) et (d) écrites pour les 20 boîtes de 4e dont la vidéo est transcrite (326 fiches, 97 extraits de vidéo), tous les contrôles automatiques à zéro ; quelques questions de QCM qui citaient leurs propositions reformulées. |
 | — | 24 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : fin du lot 12 — formes (c) et (d) écrites pour les 25 boîtes de 3e « r37- » dont la vidéo est transcrite (393 fiches, 120 extraits de vidéo), avec tous les contrôles automatiques à zéro. |
 | — | 24 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : fausses réponses des textes à trous — 362 fiches corrigées : plus de fausse réponse qui est la bonne réponse d'un autre trou (sauf boîtes de langue), plus de « seulement » / « uniquement » qui trahit la bonne réponse (§5.7, règle 9) ; contrôle automatique ajouté. Formes (c)/(d) de 12 boîtes de français de 3e de plus. |
 | — | 23 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : 84 questions de QCM qui citaient encore une partie de leurs propositions (« Le cuivre est-il conducteur ou isolant ? », « joyeux ou fâché ? »), surtout au primaire, reformulées (§5.7, règle 9), et les fausses réponses « Ni l'un ni l'autre », « Les deux », « Aucun des deux » remplacées ; le contrôle automatique les repère maintenant. Formes (c)/(d) de 7 nouvelles boîtes de 3e. |
