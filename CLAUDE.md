@@ -505,8 +505,13 @@ testables ainsi.
   trous, seulement ce que donne la question (d) et les mots de liaison ;
   `qualite` signale un mot de la fiche écrit en clair dans le texte et
   absent de q2 (`infos_hors_trous`, sauf exercices de langue
-  `exercice_de_langue`) ; 1 573 textes signalés le 24 nov. 2026, environ
-  la moitié à réécrire (le reste : sujet du texte, unité…, à accepter).
+  `exercice_de_langue`) ; 1 573 textes signalés le 24 nov. 2026 : 178
+  réécrits (dont des sujets enfin nommés : « ils offrent » → « les
+  États-Unis offrent »), les autres relus et acceptés
+  (`Fiches-contenu/outils/corrections/trous_r1.py`,
+  `corrections_trous.txt` ; `[=k]` renvoie au trou k de la copie figée
+  `avant_trous.json`, jamais à la bibliothèque déjà corrigée ; `lance.sh`
+  applique tout et contrôle la forme, même des fiches acceptées).
   Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
