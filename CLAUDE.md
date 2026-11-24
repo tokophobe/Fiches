@@ -459,8 +459,11 @@ testables ainsi.
   23 nov. 2026 : aussi « conducteur ou isolant ? » quand les propositions
   sont plus longues (`alternative_courte`), 84 fiches reformulées
   (`Fiches-contenu/outils/corrections/alternatives_r4.py`). Lot 12
-  (`lot12/`, 23 nov. 2026) : 7 boîtes `r37-` de 3e (4 maths, SVT effort,
-  histoire des arts, italien ; 117 fiches). Lot 6 (`lot6/`) : 8 boîtes
+  (`lot12/`, 23-24 nov. 2026) : les 25 boîtes `r37-` de 3e transcrites
+  (maths, SVT, histoire des arts, italien, français, oral du brevet, arts
+  plastiques, musique ; 393 fiches, 120 extraits) ; vidéos partielles
+  notées dans `verifications-videos.json` (« agir dans la cité », arts
+  plastiques, musique : à compléter ou remplacer). Lot 6 (`lot6/`) : 8 boîtes
   `r35-brevet-fr-` (135 fiches) ; (c) = petit exercice autonome à 2 trous
   ou plus qui s'opposent, (d) = même exercice sans propositions ; vidéos
   de l'indicatif (Englishhello) et des homophones changées, à transcrire ;
