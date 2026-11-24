@@ -489,6 +489,11 @@ testables ainsi.
   doit convenir qu'à toutes les propositions ; `qualite` repère l'article
   à la fois devant le trou et dans une proposition, mais pas « du Marne »
   (genre d'un nom propre) : à relire ; 13 fiches (`articles_r1.py`).
+  Fausses réponses d'un texte à trous (24 nov. 2026) : jamais la bonne
+  réponse d'un autre trou (sauf boîtes de langue, `boite_de_langue`), pas
+  de « seulement » / « uniquement » ; `qualite` le signale
+  (`fausses_trompeuses`) ; 362 fiches (`croises_r1.py` et
+  `corrections_croises.txt`).
   Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,

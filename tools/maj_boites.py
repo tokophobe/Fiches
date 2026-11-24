@@ -384,6 +384,35 @@ def alternative_courte(q, props):
     return []
 
 
+# Boîtes de langue et de grammaire : la forme (c) y est un petit exercice où
+# deux formes s'opposent (« Noi [siamo] … voi [siete] ») ; une fausse
+# réponse peut y être la bonne réponse de l'autre trou.
+BOITE_DE_LANGUE = re.compile(r"(anglais|ang-|-ang|espagnol|esp-|-esp|allemand|all-|-all|ital|latin|lat-|grec|-fr-|francais|fr-|conjug|homophon|grammaire|orthograph|accord|verbe)", re.I)
+
+
+def boite_de_langue(b):
+    return bool(BOITE_DE_LANGUE.search(b.get("key", "")) or BOITE_DE_LANGUE.search(b.get("name", "")))
+
+
+def fausses_trompeuses(cloze, langue=False):
+    """24 nov. 2026 (remarque du propriétaire, « services marchands / non
+    marchands ») : une fausse réponse ne doit pas être la bonne réponse d'un
+    autre trou du même texte (sauf dans les boîtes de langue), ni contenir
+    « seulement » / « uniquement » quand la bonne réponse ne le dit pas."""
+    out = []
+    blancs = cloze.get("blanks") or []
+    reps = [norm(str(t.get("answer", ""))).lower() for t in blancs]
+    for k, t in enumerate(blancs, 1):
+        bonne = str(t.get("answer", ""))
+        for w in t.get("wrongs") or []:
+            w = str(w)
+            if not langue and norm(w).lower() in reps and reps.index(norm(w).lower()) != k - 1:
+                out.append(f"trou {k} : la fausse réponse « {w} » est la bonne réponse d'un autre trou")
+            if re.search(r"\b(seulement|uniquement)\b", w, re.I) and not re.search(r"\b(seulement|uniquement)\b", bonne, re.I):
+                out.append(f"trou {k} : « seulement » dans la fausse réponse « {w} » (la tournure trahit la bonne réponse)")
+    return out
+
+
 def complement_redit(reponse, complement):
     """Vrai si le complément « Pour aller plus loin » ne fait que répéter la
     réponse : chacune de ses lignes (puces et ponctuation retirées) se lit
@@ -451,7 +480,7 @@ def qualite(keys=None):
                     stats["forme"] += 1
                     print(f"[{b['key']}#{i}] fausses réponses de même forme ({', '.join(sorted(forme))}) : {c['question'][:70]}")
             if c.get("cloze"):
-                for msg in probleme_texte_a_trous(c["cloze"]):
+                for msg in probleme_texte_a_trous(c["cloze"]) + fausses_trompeuses(c["cloze"], boite_de_langue(b)):
                     stats["texte à trous"] += 1
                     print(f"[{b['key']}#{i}] texte à trous : {msg}")
             for msg in probleme_formes_poussees(c, contexte):
