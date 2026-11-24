@@ -508,7 +508,14 @@ abandonnée : trop de couleurs, risque de confusion.
   les propositions à la fois : « l'offensive du ___ » trahit « Chemin
   des Dames » face à « Marne » ou « Somme » ; on écrit « l'offensive
   ___ » avec « du Chemin des Dames / de la Marne / de la Somme… »
-  (remarque du propriétaire, 22 nov. 2026).
+  (remarque du propriétaire, 22 nov. 2026). Une fausse réponse d'un trou
+  n'est jamais la bonne réponse d'un autre trou du même texte (« services
+  [marchands] … services [non marchands] » : « marchands » ne peut pas
+  être une fausse réponse du second trou) ; et une fausse réponse ne dit
+  pas « seulement » ou « uniquement » quand la bonne ne le dit pas
+  (« gratuits seulement » sonne faux et trahit la bonne réponse). Seule
+  exception : les boîtes de langue et de grammaire, où le petit exercice
+  oppose justement deux formes (remarque du propriétaire, 24 nov. 2026).
 
 #### Étapes envisagées (après validation)
 
@@ -1626,6 +1633,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 
 | Version | Date | Changements |
 |---|---|---|
+| — | 24 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : fausses réponses des textes à trous — 362 fiches corrigées : plus de fausse réponse qui est la bonne réponse d'un autre trou (sauf boîtes de langue), plus de « seulement » / « uniquement » qui trahit la bonne réponse (§5.7, règle 9) ; contrôle automatique ajouté. Formes (c)/(d) de 12 boîtes de français de 3e de plus. |
 | — | 23 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : 84 questions de QCM qui citaient encore une partie de leurs propositions (« Le cuivre est-il conducteur ou isolant ? », « joyeux ou fâché ? »), surtout au primaire, reformulées (§5.7, règle 9), et les fausses réponses « Ni l'un ni l'autre », « Les deux », « Aucun des deux » remplacées ; le contrôle automatique les repère maintenant. Formes (c)/(d) de 7 nouvelles boîtes de 3e. |
 | v304 | 22 nov. 2026 | Forme (cbis) : quand le texte est long, la fiche défile toute seule jusqu'au trou surligné (le dernier trou restait caché en bas) ; les mots révélés s'écrivent dans la ligne. Contenu : article devant un trou qui trahissait la réponse (« l'offensive du ___ » → « du Chemin des Dames », pas « du Marne ») — 13 textes à trous corrigés, l'article va dans le trou ; nouveau contrôle automatique (article devant le trou et dans une proposition). |
 | — | 22 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : textes à trous qui renvoyaient encore à la question (d) — « s'y » (Verdun), « cette Déclaration », « ces espaces », « C'est … » — 73 textes réécrits (§5.7, règle 11) ; le contrôle automatique repère aussi « C'est » en début de texte. |
