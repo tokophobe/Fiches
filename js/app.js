@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v307";
+  const APP_VERSION = "v308";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -6972,12 +6972,18 @@
   /** v307 : la zone de remarque ne cache plus la fiche (demande du
    *  propriétaire) : dans une liste, elle s'ouvre juste sous la fiche ;
    *  sinon (révision), elle se pose en bas de l'écran, sans fond grisé. */
+  /* v308 : zone de remarque stable (remarque du propriétaire : texte en
+     partie effacé, zone qui disparaît pendant la saisie). Brouillon gardé
+     à chaque frappe (remarkDrafts), zone remise en place si l'écran est
+     redessiné (MutationObserver), touches et clics isolés du reste. */
+  const remarkDrafts = {};
+  let closeCurrentRemarkSheet = null;
   async function openRemarkSheet(target, fromBtn) {
     if (!target || (target.scope === "fiche" && !target.card)) return;
     const boxName = remarkBoxName(target);
     const key = { scope: target.scope, cardId: target.card && target.card.id, boxName };
-    const old = document.querySelector(".admin-remark-overlay");
-    if (old) old.remove();
+    const draftKey = `${key.scope}|${key.cardId || ""}|${boxName}`;
+    if (closeCurrentRemarkSheet) closeCurrentRemarkSheet();
     const anchor = fromBtn && fromBtn.closest("li");
     const overlay = document.createElement(anchor ? "li" : "div");
     overlay.className = "admin-remark-overlay " + (anchor ? "is-inline" : "is-docked");
@@ -7005,7 +7011,53 @@
     const listEl = overlay.querySelector(".admin-remark-list");
     const input = overlay.querySelector(".admin-remark-input");
     const msg = overlay.querySelector(".admin-remark-msg");
-    const close = () => overlay.remove();
+    let closed = false;
+    let wasFocused = false;
+    let caret = null;
+    input.value = remarkDrafts[draftKey] || "";
+    const keepDraft = () => {
+      remarkDrafts[draftKey] = input.value;
+      caret = [input.selectionStart, input.selectionEnd];
+    };
+    input.addEventListener("input", keepDraft);
+    input.addEventListener("keyup", keepDraft);
+    input.addEventListener("focus", () => (wasFocused = true));
+    const onFocusIn = (e) => {
+      if (!overlay.contains(e.target)) wasFocused = false;
+    };
+    document.addEventListener("focusin", onFocusIn);
+    // Les gestes faits dans la zone ne doivent rien déclencher derrière
+    // (toucher de la fiche, glissement, raccourcis…).
+    ["click", "pointerdown", "pointerup", "mousedown", "touchstart", "touchend", "keydown", "keyup", "keypress", "input"].forEach((t) =>
+      overlay.addEventListener(t, (e) => e.stopPropagation())
+    );
+    // Si l'écran est redessiné (synchronisation, clavier qui s'ouvre…),
+    // la zone est retirée avec la liste : on la remet, texte compris.
+    const observer = new MutationObserver(() => {
+      if (closed || overlay.isConnected) return;
+      const sel = `.admin-remark-btn[data-remark-scope="${key.scope}"]` + (key.cardId ? `[data-remark-card="${CSS.escape(String(key.cardId))}"]` : "");
+      const btn = Array.from(document.querySelectorAll(sel)).find((b) => b.offsetParent !== null && b.closest("li") && (key.cardId || b.dataset.remarkBox === boxName));
+      if (btn) {
+        overlay.className = "admin-remark-overlay is-inline";
+        btn.closest("li").after(overlay);
+      } else {
+        overlay.className = "admin-remark-overlay is-docked";
+        document.body.appendChild(overlay);
+      }
+      if (wasFocused) {
+        input.focus({ preventScroll: true });
+        if (caret) input.setSelectionRange(caret[0], caret[1]);
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    const close = () => {
+      closed = true;
+      observer.disconnect();
+      document.removeEventListener("focusin", onFocusIn);
+      overlay.remove();
+      if (closeCurrentRemarkSheet === close) closeCurrentRemarkSheet = null;
+    };
+    closeCurrentRemarkSheet = close;
     const say = (text) => {
       msg.textContent = text;
       msg.hidden = !text;
@@ -7069,6 +7121,7 @@
       }
       adminRemarks = [res.data].concat(adminRemarks || []);
       input.value = "";
+      delete remarkDrafts[draftKey];
       say("Remarque envoyée : Claude la traitera à ta prochaine demande.");
       draw();
       refreshRemarkBadges();
@@ -7077,7 +7130,9 @@
     await loadAdminRemarks(true);
     if (adminRemarksError === "migration_missing") say("La table des remarques n'existe pas encore : exécute le script supabase/v305_remarques_migration.sql.");
     draw();
-    if (sheet) input.focus({ preventScroll: true });
+    if (closed) return;
+    // Ne pas reprendre la main si la saisie a déjà commencé ailleurs.
+    if (sheet && !wasFocused) input.focus({ preventScroll: true });
     // En liste, la zone est juste sous la fiche : on la fait entrer à
     // l'écran sans faire sortir la fiche (défilement minimal).
     if (anchor) overlay.scrollIntoView({ block: "nearest", behavior: "smooth" });

@@ -1647,6 +1647,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | — | 24 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : fin du lot 12 — formes (c) et (d) écrites pour les 25 boîtes de 3e « r37- » dont la vidéo est transcrite (393 fiches, 120 extraits de vidéo), avec tous les contrôles automatiques à zéro. |
 | — | 24 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : fausses réponses des textes à trous — 362 fiches corrigées : plus de fausse réponse qui est la bonne réponse d'un autre trou (sauf boîtes de langue), plus de « seulement » / « uniquement » qui trahit la bonne réponse (§5.7, règle 9) ; contrôle automatique ajouté. Formes (c)/(d) de 12 boîtes de français de 3e de plus. |
 | — | 23 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : 84 questions de QCM qui citaient encore une partie de leurs propositions (« Le cuivre est-il conducteur ou isolant ? », « joyeux ou fâché ? »), surtout au primaire, reformulées (§5.7, règle 9), et les fausses réponses « Ni l'un ni l'autre », « Les deux », « Aucun des deux » remplacées ; le contrôle automatique les repère maintenant. Formes (c)/(d) de 7 nouvelles boîtes de 3e. |
+| v308 | 25 nov. 2026 | Remarques de l'administrateur : saisie stable (le texte en cours est gardé et la zone se remet en place si l'écran se redessine pendant qu'on écrit). |
 | v307 | 25 nov. 2026 | Remarques de l'administrateur : la zone de saisie ne cache plus la fiche (sous la fiche dans une liste, en bas de l'écran en révision). |
 | v306 | 25 nov. 2026 | Remarques de l'administrateur : l'envoi d'une remarque ne fait plus planter l'appli ; bulles aussi dans la Librairie (chaque fiche et la boîte). |
 | v305 | 25 nov. 2026 | Remarques de l'administrateur pour Claude (§12.1) : bulle 💬 sous chaque fiche (page d'une boîte et révision, avec la forme affichée) et sur la boîte ; états Envoyée / Traitée / Question, réponse de Claude, bouton Supprimer ; Claude les lit au début de chaque demande. Script SQL à exécuter : v305_remarques_migration.sql. |
@@ -1813,7 +1814,9 @@ Darwin Admin (`admin/`) permet de régler, pour tous les utilisateurs :
   Librairie, sur chaque fiche et sur la boîte, sans avoir à l'ajouter à
   ses révisions.
 - La bulle ouvre une zone qui ne cache pas la fiche (v307) : juste sous
-  la fiche dans une liste, en bas de l'écran en révision. On y trouve les remarques déjà écrites sur cette fiche
+  la fiche dans une liste, en bas de l'écran en révision. Le texte en
+  cours n'est jamais perdu : il est gardé tant que l'appli reste ouverte,
+  même si la zone est fermée sans envoyer (v308). On y trouve les remarques déjà écrites sur cette fiche
   (ou cette boîte), avec leur état, la réponse de Claude et un bouton
   « Supprimer », puis une zone pour en écrire une nouvelle. Le nombre
   total de remarques en attente et de questions de Claude est rappelé en
