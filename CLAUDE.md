@@ -45,6 +45,27 @@ en ligne). Rester concret et proportionné : un conseil utile, pas un cours.
   `docs/FEUILLE-DE-ROUTE-EXPLOITATION.md` (questions ❓ en attente de
   réponse ; à tenir à jour à chaque nouvelle tâche d'administration).
 
+## Remarques du propriétaire dans l'appli (v305) — à traiter en premier
+
+- Au début de **chaque** demande, les remarques en attente s'affichent
+  toutes seules (hook `UserPromptSubmit` de `.claude/settings.json`). Si
+  rien ne s'affiche alors qu'on en attend, lancer
+  `python3 tools/remarques.py nouvelles` (et `toutes` pour l'historique).
+- Les traiter **avant** le reste de la demande, puis répondre à chacune :
+  `python3 tools/remarques.py repond ID traitee "réponse courte" --base reel|test`.
+  Statut `question` (et la question dans la réponse) quand il faut une
+  décision du propriétaire. Une correction de contenu suit le circuit
+  habituel (`bibliotheque.json` → Fiches-contenu) : préciser dans la
+  réponse qu'il faut « Importer la dernière version » dans Darwin Admin.
+- Stockage : table `admin_remarks` (`supabase/v305_remarques_migration.sql`),
+  lisible par l'administrateur seulement ; Claude passe par
+  `claude_remarks` / `claude_remark_reply`, protégées par le code de
+  `claude_access` envoyé dans l'en-tête `x-remarques-token` (secret réseau
+  de l'environnement, une valeur par base ; jamais dans le dépôt ni le
+  chat). Dans `app.js` : `remarkButton`, `openRemarkSheet`,
+  `updateReviewRemarkBtn`, `loadAdminRemarks` (bulles visibles si
+  `accountIsAdminFlag`) ; dans `sync.js` : `Sync.remarks`.
+
 ## Spécification fonctionnelle (à lire en premier)
 
 `docs/SPECIFICATION.md` est **la référence de la logique de l'appli**,
@@ -459,8 +480,15 @@ testables ainsi.
   23 nov. 2026 : aussi « conducteur ou isolant ? » quand les propositions
   sont plus longues (`alternative_courte`), 84 fiches reformulées
   (`Fiches-contenu/outils/corrections/alternatives_r4.py`). Lot 12
-  (`lot12/`, 23 nov. 2026) : 7 boîtes `r37-` de 3e (4 maths, SVT effort,
-  histoire des arts, italien ; 117 fiches). Lot 6 (`lot6/`) : 8 boîtes
+  (`lot12/`, 23-24 nov. 2026) : les 25 boîtes `r37-` de 3e transcrites
+  (maths, SVT, histoire des arts, italien, français, oral du brevet, arts
+  plastiques, musique ; 393 fiches, 120 extraits) ; vidéos partielles
+  notées dans `verifications-videos.json` (« agir dans la cité », arts
+  plastiques, musique : à compléter ou remplacer). Lot 13 (`lot13/`, 24 nov.
+  2026) : les 20 boîtes de 4e transcrites (`r37-4e-`, `r38-a4-4e-`,
+  `r4e-` ; 326 fiches, 97 extraits) ; vidéos à remplacer : anglais
+  comparatifs (phrases à répéter), `r4e-fr-fausses-informations`
+  (niveau primaire) ; `r4e-svt-puberte` double `r37-4e-svt-reproduction-puberte`. Lot 6 (`lot6/`) : 8 boîtes
   `r35-brevet-fr-` (135 fiches) ; (c) = petit exercice autonome à 2 trous
   ou plus qui s'opposent, (d) = même exercice sans propositions ; vidéos
   de l'indicatif (Englishhello) et des homophones changées, à transcrire ;
@@ -493,7 +521,18 @@ testables ainsi.
   réponse d'un autre trou (sauf boîtes de langue, `boite_de_langue`), pas
   de « seulement » / « uniquement » ; `qualite` le signale
   (`fausses_trompeuses`) ; 362 fiches (`croises_r1.py` et
-  `corrections_croises.txt`).
+  `corrections_croises.txt`). Toute information à apprendre est un trou
+  (24 nov. 2026, remarque « apologue », spéc. §5.7 règle 11) : hors des
+  trous, seulement ce que donne la question (d) et les mots de liaison ;
+  `qualite` signale un mot de la fiche écrit en clair dans le texte et
+  absent de q2 (`infos_hors_trous`, sauf exercices de langue
+  `exercice_de_langue`) ; 1 573 textes signalés le 24 nov. 2026 : 178
+  réécrits (dont des sujets enfin nommés : « ils offrent » → « les
+  États-Unis offrent »), les autres relus et acceptés
+  (`Fiches-contenu/outils/corrections/trous_r1.py`,
+  `corrections_trous.txt` ; `[=k]` renvoie au trou k de la copie figée
+  `avant_trous.json`, jamais à la bibliothèque déjà corrigée ; `lance.sh`
+  applique tout et contrôle la forme, même des fiches acceptées).
   Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,

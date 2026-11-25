@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v304";
+  const APP_VERSION = "v305";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -5334,6 +5334,7 @@
   }
   function renderReviewMode(card) {
     renderCardLearnLink(card);
+    updateReviewRemarkBtn(card); // v305 : remarque pour Claude (administrateur)
     const panel = el("qcm-panel");
     const badge = el("card-qcm-badge");
     const hint = document.querySelector("#flip-card .tap-hint");
@@ -6818,6 +6819,9 @@
     const side = document.createElement("div");
     side.className = "card-row-side";
 
+    // v305 : remarque pour Claude (administrateur seulement).
+    if (accountIsAdminFlag) side.appendChild(remarkButton({ scope: "fiche", card, context: "boite" }));
+
     const constructionBtn = document.createElement("button");
     constructionBtn.className = "card-row-flag" + (card.underConstruction ? " is-flagged" : "");
     constructionBtn.type = "button";
@@ -6870,6 +6874,214 @@
     li.appendChild(side);
     li.appendChild(popover);
     return li;
+  }
+
+  /* v305 : remarques de l'administrateur (demande du propriétaire, 25 nov.
+     2026). Une bulle sous chaque fiche (page d'une boîte et révision) et
+     une sur la boîte ; Claude lit les remarques en attente au début de
+     chaque demande, les traite et répond (statut « traitée » ou
+     « question »). Table admin_remarks (supabase/v305_remarques_migration.sql),
+     visible du seul administrateur : rien ne s'affiche pour les autres. */
+  let adminRemarks = null; // null : pas encore chargées
+  let adminRemarksError = "";
+  let adminRemarksLoading = null;
+  const REMARK_ICON =
+    '<svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"/></svg>';
+  const REMARK_FORM_LABELS = { a: "QCM", b: "Question", c: "Texte à trous", cbis: "Texte à trous sans propositions", d: "Question poussée" };
+  const REMARK_STATUS = {
+    envoyee: { label: "Envoyée", cls: "is-sent" },
+    traitee: { label: "Traitée", cls: "is-done" },
+    question: { label: "Question", cls: "is-question" },
+  };
+  function remarksFor(target) {
+    return (adminRemarks || []).filter((r) =>
+      target.scope === "boite" ? r.scope === "boite" && r.box_name === target.boxName : r.scope === "fiche" && r.card_id === target.cardId
+    );
+  }
+  function loadAdminRemarks(force) {
+    if (!accountIsAdminFlag || !Sync.remarks) return Promise.resolve([]);
+    if (adminRemarks && !force) return Promise.resolve(adminRemarks);
+    if (!adminRemarksLoading) {
+      adminRemarksLoading = Sync.remarks.list().then((res) => {
+        adminRemarksLoading = null;
+        adminRemarks = res.data || [];
+        adminRemarksError = res.error || "";
+        refreshRemarkBadges();
+        return adminRemarks;
+      });
+    }
+    return adminRemarksLoading;
+  }
+  /** Pastille du bouton : nombre de remarques en attente ou en question. */
+  function refreshRemarkBadges() {
+    document.querySelectorAll(".admin-remark-btn").forEach((btn) => {
+      const list = remarksFor({ scope: btn.dataset.remarkScope, cardId: btn.dataset.remarkCard, boxName: btn.dataset.remarkBox });
+      const open = list.filter((r) => r.status !== "traitee").length;
+      const badge = btn.querySelector(".admin-remark-count");
+      if (badge) {
+        badge.textContent = String(list.length);
+        badge.hidden = list.length === 0;
+        badge.classList.toggle("is-open", open > 0);
+      }
+    });
+  }
+  function remarkCardSnapshot(card) {
+    return {
+      question: stripHtml(card.question || ""),
+      answer: stripHtml(card.answer || ""),
+      more: stripHtml(card.more || ""),
+      wrongs: cardWrongs(card),
+      cloze: card.cloze || null,
+      q2: card.q2 || "",
+      a2: card.a2 || "",
+    };
+  }
+  /** Bouton 💬 ; target : { scope: "fiche" | "boite", card, subjectId,
+   *  context: "boite" | "revision", form }. */
+  function remarkButton(target, label) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "admin-remark-btn" + (label ? " admin-remark-btn--wide" : "");
+    btn.title = target.scope === "boite" ? "Remarque sur cette boîte (pour Claude)" : "Remarque sur cette fiche (pour Claude)";
+    btn.setAttribute("aria-label", btn.title);
+    btn.dataset.remarkScope = target.scope;
+    if (target.card) btn.dataset.remarkCard = target.card.id;
+    btn.dataset.remarkBox = subjectName(target.card ? target.card.subject : target.subjectId);
+    btn.innerHTML = `${REMARK_ICON}${label ? `<span>${escapeHtml(label)}</span>` : ""}<span class="admin-remark-count" hidden>0</span>`;
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openRemarkSheet(typeof target.get === "function" ? target.get() : target);
+    });
+    if (adminRemarks) setTimeout(refreshRemarkBadges, 0);
+    else loadAdminRemarks();
+    return btn;
+  }
+  function remarkDate(iso) {
+    try {
+      return new Date(iso).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+    } catch (e) {
+      return "";
+    }
+  }
+  async function openRemarkSheet(target) {
+    if (!target || (target.scope === "fiche" && !target.card)) return;
+    const boxName = subjectName(target.card ? target.card.subject : target.subjectId);
+    const key = { scope: target.scope, cardId: target.card && target.card.id, boxName };
+    const old = document.querySelector(".admin-remark-overlay");
+    if (old) old.remove();
+    const overlay = document.createElement("div");
+    overlay.className = "admin-remark-overlay";
+    const where =
+      target.scope === "boite"
+        ? `Boîte « ${escapeHtml(boxName)} »`
+        : `${escapeHtml(stripHtml(target.card.question || "").slice(0, 140))}<br><span class="admin-remark-meta">Boîte « ${escapeHtml(boxName)} »${
+            target.form ? ` · forme affichée : ${escapeHtml(REMARK_FORM_LABELS[target.form] || target.form)}` : ""
+          }</span>`;
+    overlay.innerHTML = `<div class="admin-remark-sheet" role="dialog" aria-modal="true" aria-label="Remarque pour Claude">
+      <p class="admin-remark-title">${target.scope === "boite" ? "Remarque sur la boîte" : "Remarque sur la fiche"}</p>
+      <p class="admin-remark-where">${where}</p>
+      <ul class="admin-remark-list"></ul>
+      <textarea class="admin-remark-input" rows="4" placeholder="Ta remarque pour Claude (ce qui ne va pas, ce que tu voudrais)…"></textarea>
+      <p class="admin-remark-msg" hidden></p>
+      <div class="admin-remark-actions">
+        <button type="button" class="secondary admin-remark-cancel">Fermer</button>
+        <button type="button" class="primary admin-remark-send">Envoyer</button>
+      </div>
+      <p class="admin-remark-total"></p>
+    </div>`;
+    document.body.appendChild(overlay);
+    const sheet = overlay.querySelector(".admin-remark-sheet");
+    const listEl = overlay.querySelector(".admin-remark-list");
+    const input = overlay.querySelector(".admin-remark-input");
+    const msg = overlay.querySelector(".admin-remark-msg");
+    const close = () => overlay.remove();
+    const say = (text) => {
+      msg.textContent = text;
+      msg.hidden = !text;
+    };
+    const draw = () => {
+      const list = remarksFor(key).slice().sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+      listEl.innerHTML = list
+        .map((r) => {
+          const st = REMARK_STATUS[r.status] || REMARK_STATUS.envoyee;
+          const form = r.form ? ` · ${escapeHtml(REMARK_FORM_LABELS[r.form] || r.form)}` : "";
+          return `<li class="admin-remark-item">
+            <div class="admin-remark-item-head"><span class="admin-remark-status ${st.cls}">${st.label}</span><span class="admin-remark-meta">${escapeHtml(remarkDate(r.created_at))}${form}</span>
+              <button type="button" class="admin-remark-delete" data-id="${escapeHtml(r.id)}" title="Supprimer cette remarque">Supprimer</button></div>
+            <p class="admin-remark-body">${escapeHtml(r.body)}</p>
+            ${r.reply ? `<p class="admin-remark-reply"><strong>Claude :</strong> ${escapeHtml(r.reply)}</p>` : ""}
+          </li>`;
+        })
+        .join("");
+      listEl.hidden = !list.length;
+      const all = adminRemarks || [];
+      const waiting = all.filter((r) => r.status === "envoyee").length;
+      const questions = all.filter((r) => r.status === "question").length;
+      overlay.querySelector(".admin-remark-total").textContent =
+        `En tout : ${waiting} remarque${waiting > 1 ? "s" : ""} en attente` + (questions ? `, ${questions} question${questions > 1 ? "s" : ""} de Claude` : "") + ".";
+    };
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) close();
+    });
+    overlay.querySelector(".admin-remark-cancel").addEventListener("click", close);
+    listEl.addEventListener("click", async (e) => {
+      const del = e.target.closest(".admin-remark-delete");
+      if (!del) return;
+      const res = await Sync.remarks.remove(del.dataset.id);
+      if (res.error) return say("Suppression impossible : " + res.error);
+      adminRemarks = (adminRemarks || []).filter((r) => r.id !== del.dataset.id);
+      draw();
+      refreshRemarkBadges();
+    });
+    overlay.querySelector(".admin-remark-send").addEventListener("click", async (e) => {
+      const body = input.value.trim();
+      if (!body) return input.focus();
+      e.currentTarget.disabled = true;
+      const row = {
+        scope: target.scope,
+        context: target.context || "boite",
+        form: target.form || null,
+        card_id: target.card ? target.card.id : null,
+        box_name: boxName,
+        card_snapshot: target.card ? remarkCardSnapshot(target.card) : null,
+        body,
+      };
+      const res = await Sync.remarks.add(row);
+      e.currentTarget.disabled = false;
+      if (res.error) {
+        return say(res.error === "migration_missing" ? "La table des remarques n'existe pas encore : exécute le script supabase/v305_remarques_migration.sql." : "Envoi impossible : " + res.error);
+      }
+      adminRemarks = [res.data].concat(adminRemarks || []);
+      input.value = "";
+      say("Remarque envoyée : Claude la traitera à ta prochaine demande.");
+      draw();
+      refreshRemarkBadges();
+    });
+    draw();
+    await loadAdminRemarks(true);
+    if (adminRemarksError === "migration_missing") say("La table des remarques n'existe pas encore : exécute le script supabase/v305_remarques_migration.sql.");
+    draw();
+    if (sheet) input.focus();
+  }
+  /** Bouton 💬 de l'écran de révision (fiche affichée, avec sa forme). */
+  function updateReviewRemarkBtn(card) {
+    const bar = el("subject-bar");
+    if (!bar) return;
+    let btn = el("review-remark-btn");
+    if (!accountIsAdminFlag || !card) {
+      if (btn) btn.hidden = true;
+      return;
+    }
+    if (!btn) {
+      btn = remarkButton({ get: () => ({ scope: "fiche", card: currentCard, context: "revision", form: reviewForm(currentCard) }) });
+      btn.id = "review-remark-btn";
+      bar.appendChild(btn);
+    }
+    btn.hidden = false;
+    btn.dataset.remarkScope = "fiche";
+    btn.dataset.remarkCard = card.id;
+    btn.dataset.remarkBox = subjectName(card.subject);
+    refreshRemarkBadges();
   }
 
   function daysUntil(dueDateIso) {
@@ -19097,6 +19309,13 @@
         (!q || stripHtmlFast(c.question).toLowerCase().includes(q) || stripHtmlFast(c.answer).toLowerCase().includes(q))
     );
     list.innerHTML = "";
+    // v305 : remarque pour Claude sur toute la boîte (administrateur seulement).
+    if (accountIsAdminFlag) {
+      const li = document.createElement("li");
+      li.className = "admin-remark-box-row";
+      li.appendChild(remarkButton({ scope: "boite", subjectId: s.id, context: "boite" }, "Remarque sur la boîte"));
+      list.appendChild(li);
+    }
     if (allBoxCards.length && !boxCards.length) {
       const li = document.createElement("li");
       li.className = "list-empty";
