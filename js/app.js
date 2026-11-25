@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v306";
+  const APP_VERSION = "v307";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -6950,7 +6950,7 @@
     btn.innerHTML = `${REMARK_ICON}${label ? `<span>${escapeHtml(label)}</span>` : ""}<span class="admin-remark-count" hidden>0</span>`;
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-      openRemarkSheet(typeof target.get === "function" ? target.get() : target);
+      openRemarkSheet(typeof target.get === "function" ? target.get() : target, btn);
     });
     if (adminRemarks) setTimeout(refreshRemarkBadges, 0);
     else loadAdminRemarks();
@@ -6969,14 +6969,18 @@
       return "";
     }
   }
-  async function openRemarkSheet(target) {
+  /** v307 : la zone de remarque ne cache plus la fiche (demande du
+   *  propriétaire) : dans une liste, elle s'ouvre juste sous la fiche ;
+   *  sinon (révision), elle se pose en bas de l'écran, sans fond grisé. */
+  async function openRemarkSheet(target, fromBtn) {
     if (!target || (target.scope === "fiche" && !target.card)) return;
     const boxName = remarkBoxName(target);
     const key = { scope: target.scope, cardId: target.card && target.card.id, boxName };
     const old = document.querySelector(".admin-remark-overlay");
     if (old) old.remove();
-    const overlay = document.createElement("div");
-    overlay.className = "admin-remark-overlay";
+    const anchor = fromBtn && fromBtn.closest("li");
+    const overlay = document.createElement(anchor ? "li" : "div");
+    overlay.className = "admin-remark-overlay " + (anchor ? "is-inline" : "is-docked");
     const where =
       target.scope === "boite"
         ? `Boîte « ${escapeHtml(boxName)} »`
@@ -6995,7 +6999,8 @@
       </div>
       <p class="admin-remark-total"></p>
     </div>`;
-    document.body.appendChild(overlay);
+    if (anchor) anchor.after(overlay);
+    else document.body.appendChild(overlay);
     const sheet = overlay.querySelector(".admin-remark-sheet");
     const listEl = overlay.querySelector(".admin-remark-list");
     const input = overlay.querySelector(".admin-remark-input");
@@ -7026,9 +7031,6 @@
       overlay.querySelector(".admin-remark-total").textContent =
         `En tout : ${waiting} remarque${waiting > 1 ? "s" : ""} en attente` + (questions ? `, ${questions} question${questions > 1 ? "s" : ""} de Claude` : "") + ".";
     };
-    overlay.addEventListener("click", (e) => {
-      if (e.target === overlay) close();
-    });
     overlay.querySelector(".admin-remark-cancel").addEventListener("click", close);
     listEl.addEventListener("click", async (e) => {
       const del = e.target.closest(".admin-remark-delete");
@@ -7075,7 +7077,10 @@
     await loadAdminRemarks(true);
     if (adminRemarksError === "migration_missing") say("La table des remarques n'existe pas encore : exécute le script supabase/v305_remarques_migration.sql.");
     draw();
-    if (sheet) input.focus();
+    if (sheet) input.focus({ preventScroll: true });
+    // En liste, la zone est juste sous la fiche : on la fait entrer à
+    // l'écran sans faire sortir la fiche (défilement minimal).
+    if (anchor) overlay.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }
   /** Bouton 💬 de l'écran de révision (fiche affichée, avec sa forme). */
   function updateReviewRemarkBtn(card) {
