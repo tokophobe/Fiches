@@ -533,6 +533,16 @@ testables ainsi.
   `corrections_trous.txt` ; `[=k]` renvoie au trou k de la copie figée
   `avant_trous.json`, jamais à la bibliothèque déjà corrigée ; `lance.sh`
   applique tout et contrôle la forme, même des fiches acceptées).
+  Réponse apprise en (a)/(b) remise en trou dans (c) (25 nov. 2026,
+  remarques dans l'appli, spéc. §5.7 règle 11) : `qualite` le signale
+  (`reponse_hors_trous`, acceptation à part : `accepte-rappel` → champ
+  `rappel_ok`, que les autres acceptations ne cachent pas) ; 610 fiches,
+  464 réécrites, 146 acceptées (exercices d'application)
+  (`Fiches-contenu/outils/corrections/rappel_r1.py`,
+  `corrections_rappel.txt`, copie figée `avant_rappel.json` ; `[@]` /
+  `[@l]` = réponse de la fiche et fausses réponses du QCM). **Lancer aussi
+  le contrôle de forme sur toutes les fiches** (`lance.sh`) : `qualite`
+  saute les fiches acceptées.
   Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
