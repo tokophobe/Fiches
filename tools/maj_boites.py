@@ -601,6 +601,14 @@ def reponse_hors_trous(c, langue=False):
         return False  # « Oui », « Non », formule… : rien à redemander
     dans = {m[:6] for m in mots(trous)}
     n_trous = set(re.findall(r"\d+(?:[.,]\d+)?", trous))
+    # 25 nov. 2026 (remarque « utopie ») : pour « Qu'est-ce qu'une utopie ? »,
+    # c'est le mot défini qui revient en trou (« Une [utopie] décrit une
+    # société [idéale]… »), pas la définition entière.
+    m = re.match(r"\s*qu['’]est-ce qu(?:e|['’])\s*(?:(?:un|une|le|la|les|des)\s+|l['’])?(.+?)\s*\?", str(c.get("question", "")), re.I)
+    if m:
+        defini = {x[:6] for x in mots(m.group(1))}
+        if defini and defini <= dans:
+            return False
     total = len(cles) + len(nombres)
     trouves = len(cles & dans) + len(nombres & n_trous)
     return trouves * 2 < total
