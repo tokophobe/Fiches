@@ -9288,16 +9288,23 @@ body:not(.profile-teacher) #library-mine-toggle { display: none !important; }
 .admin-remark-count.is-open { background: var(--amber); }
 .admin-remark-box-row { list-style: none; padding: 4px 0 10px; }
 #review-remark-btn { margin-left: 8px; flex: 0 0 auto; }
-.admin-remark-overlay {
+/* v307 : la zone ne cache plus la fiche — sous la fiche dans une liste
+   (is-inline), en bas de l'écran en révision (is-docked), sans fond grisé. */
+.admin-remark-overlay { list-style: none; }
+.admin-remark-overlay.is-inline { margin: 6px 0 12px; padding: 0; background: none; box-shadow: none; border: none; }
+.admin-remark-overlay.is-inline .admin-remark-sheet { width: 100%; box-sizing: border-box; border: 2px solid var(--blue); box-shadow: none; }
+.admin-remark-overlay.is-docked {
   position: fixed;
-  inset: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 1000;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 16px;
-  background: rgba(0, 0, 0, 0.35);
+  padding: 0 8px 8px;
+  pointer-events: none;
 }
+.admin-remark-overlay.is-docked .admin-remark-sheet { pointer-events: auto; max-height: 45vh; }
 .admin-remark-sheet {
   width: min(520px, 100%);
   max-height: 90vh;
@@ -9325,3 +9332,8 @@ body:not(.profile-teacher) #library-mine-toggle { display: none !important; }
 .admin-remark-msg { margin: 8px 0 0; font-size: 0.85rem; color: var(--ink-soft); }
 .admin-remark-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
 .admin-remark-total { margin: 10px 0 0; font-size: 0.8rem; color: var(--ink-soft); }
+/* v306 : bulle de remarque sur une fiche de la Librairie (en haut à droite). */
+#view-library-detail .library-detail-cards .library-card-item { position: relative; }
+#view-library-detail .library-detail-cards .library-card-item > .admin-remark-btn { position: absolute; top: 8px; right: 8px; }
+#view-library-detail .library-detail-cards .library-card-item:has(> .admin-remark-btn) .card-row-main { padding-right: 40px; }
+#view-library-detail .library-detail-cards .admin-remark-box-row { background: none; box-shadow: none; border: none; padding: 0 0 6px; }

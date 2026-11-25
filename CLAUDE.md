@@ -63,7 +63,7 @@ en ligne). Rester concret et proportionné : un conseil utile, pas un cours.
   `claude_access` envoyé dans l'en-tête `x-remarques-token` (secret réseau
   de l'environnement, une valeur par base ; jamais dans le dépôt ni le
   chat). Dans `app.js` : `remarkButton`, `openRemarkSheet`,
-  `updateReviewRemarkBtn`, `loadAdminRemarks` (bulles visibles si
+  `updateReviewRemarkBtn`, `loadAdminRemarks`, bulles de la Librairie dans `loadLibraryDetailCards` (v306, `snapshot.lieu = "librairie"`) (bulles visibles si
   `accountIsAdminFlag`) ; dans `sync.js` : `Sync.remarks`.
 
 ## Spécification fonctionnelle (à lire en premier)

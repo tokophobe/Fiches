@@ -78,10 +78,12 @@ def lire(toutes, silencieux):
 def affiche(r):
     snap = r.get("card_snapshot") or {}
     lieu = "boîte" if r.get("scope") == "boite" else ("révision" if r.get("context") == "revision" else "page de la boîte")
+    if snap.get("lieu") == "librairie":  # v306 : remarque faite dans la Librairie
+        lieu += " (Librairie)"
     forme = f", forme affichée : {FORMES.get(r.get('form'), r.get('form'))}" if r.get("form") else ""
     print(f"- id {r['id']} (base {r['_base']}, {r.get('created_at', '')[:16]}, {lieu}{forme}, statut {r.get('status')})")
     print(f"  Boîte : {r.get('box_name') or '?'}")
-    if snap:
+    if snap.get("question"):
         print(f"  Fiche : {snap.get('question', '')} → {str(snap.get('answer', '')).splitlines()[0] if snap.get('answer') else ''}")
         if snap.get("cloze"):
             print(f"  Texte à trous : {snap['cloze'].get('text', '')}")
