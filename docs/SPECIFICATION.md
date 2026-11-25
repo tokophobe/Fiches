@@ -1647,6 +1647,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | — | 24 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : fin du lot 12 — formes (c) et (d) écrites pour les 25 boîtes de 3e « r37- » dont la vidéo est transcrite (393 fiches, 120 extraits de vidéo), avec tous les contrôles automatiques à zéro. |
 | — | 24 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : fausses réponses des textes à trous — 362 fiches corrigées : plus de fausse réponse qui est la bonne réponse d'un autre trou (sauf boîtes de langue), plus de « seulement » / « uniquement » qui trahit la bonne réponse (§5.7, règle 9) ; contrôle automatique ajouté. Formes (c)/(d) de 12 boîtes de français de 3e de plus. |
 | — | 23 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : 84 questions de QCM qui citaient encore une partie de leurs propositions (« Le cuivre est-il conducteur ou isolant ? », « joyeux ou fâché ? »), surtout au primaire, reformulées (§5.7, règle 9), et les fausses réponses « Ni l'un ni l'autre », « Les deux », « Aucun des deux » remplacées ; le contrôle automatique les repère maintenant. Formes (c)/(d) de 7 nouvelles boîtes de 3e. |
+| v305 | 25 nov. 2026 | Remarques de l'administrateur pour Claude (§12.1) : bulle 💬 sous chaque fiche (page d'une boîte et révision, avec la forme affichée) et sur la boîte ; états Envoyée / Traitée / Question, réponse de Claude, bouton Supprimer ; Claude les lit au début de chaque demande. Script SQL à exécuter : v305_remarques_migration.sql. |
 | v304 | 22 nov. 2026 | Forme (cbis) : quand le texte est long, la fiche défile toute seule jusqu'au trou surligné (le dernier trou restait caché en bas) ; les mots révélés s'écrivent dans la ligne. Contenu : article devant un trou qui trahissait la réponse (« l'offensive du ___ » → « du Chemin des Dames », pas « du Marne ») — 13 textes à trous corrigés, l'article va dans le trou ; nouveau contrôle automatique (article devant le trou et dans une proposition). |
 | — | 22 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : textes à trous qui renvoyaient encore à la question (d) — « s'y » (Verdun), « cette Déclaration », « ces espaces », « C'est … » — 73 textes réécrits (§5.7, règle 11) ; le contrôle automatique repère aussi « C'est » en début de texte. |
 | — | 22 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : un complément « Pour aller plus loin » ne répète plus la réponse (§5.7, règle 11) ; 39 compléments retirés ou réduits dans la Librairie ; contrôle automatique ajouté. |
@@ -1798,3 +1799,26 @@ Darwin Admin (`admin/`) permet de régler, pour tous les utilisateurs :
   traité — v287) ;
 - les **établissements** (Super école) : devis, factures, enseignants
   désignés.
+
+### 12.1 Remarques de l'administrateur pour Claude (v305)
+
+- Réservé au compte administrateur : rien n'apparaît pour les autres
+  comptes. Les remarques restent en place après l'ouverture au public.
+- Une bulle 💬 sous chaque fiche de la page d'une boîte, une bulle
+  « Remarque sur la boîte » en tête des fiches de la boîte, et une bulle
+  dans la barre de l'écran de révision (la remarque garde alors la forme
+  affichée : QCM, question, texte à trous…).
+- La bulle ouvre une fenêtre : les remarques déjà écrites sur cette fiche
+  (ou cette boîte), avec leur état, la réponse de Claude et un bouton
+  « Supprimer », puis une zone pour en écrire une nouvelle. Le nombre
+  total de remarques en attente et de questions de Claude est rappelé en
+  bas. Un petit chiffre sur la bulle compte les remarques de la fiche
+  (orange s'il en reste à traiter ou en question, vert sinon).
+- États : **Envoyée** (pas encore traitée), **Traitée** (avec la réponse
+  de Claude en une ligne), **Question** (Claude a besoin d'une décision :
+  sa question est dans la réponse). Une correction du contenu n'arrive
+  dans l'appli qu'après « Importer la dernière version » dans Darwin
+  Admin.
+- Claude lit les remarques en attente au début de chaque demande, les
+  traite en priorité et y répond.
+

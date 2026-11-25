@@ -1894,6 +1894,45 @@ async function isAdmin() {
   }
 }
 
+/** v305 : remarques de l'administrateur sur les fiches et les boîtes
+ *  (table admin_remarks, supabase/v305_remarques_migration.sql), lues et
+ *  traitées par Claude. { data } ou { error } ; error = "migration_missing"
+ *  si le serveur n'a pas encore la table. */
+function remarksError(error) {
+  const msg = String((error && error.message) || error || "");
+  return /relation|does not exist|schema cache|PGRST205/i.test(msg) ? "migration_missing" : msg;
+}
+async function remarksList() {
+  const c = getClient();
+  if (!c) return { error: "not_configured" };
+  try {
+    const { data, error } = await c.from("admin_remarks").select("*").order("created_at", { ascending: false }).limit(500);
+    return error ? { error: remarksError(error) } : { data: data || [] };
+  } catch (e) {
+    return { error: "network" };
+  }
+}
+async function remarkAdd(row) {
+  const c = getClient();
+  if (!c) return { error: "not_configured" };
+  try {
+    const { data, error } = await c.from("admin_remarks").insert(row).select().single();
+    return error ? { error: remarksError(error) } : { data };
+  } catch (e) {
+    return { error: "network" };
+  }
+}
+async function remarkDelete(id) {
+  const c = getClient();
+  if (!c) return { error: "not_configured" };
+  try {
+    const { error } = await c.from("admin_remarks").delete().eq("id", id);
+    return error ? { error: remarksError(error) } : { data: true };
+  } catch (e) {
+    return { error: "network" };
+  }
+}
+
 /** Round 50 : abonnement du compte connecté (table subscriptions), ou null.
  *  { status, plan, current_period_end } ; `missing: true` si la table
  *  n'existe pas encore sur le serveur. */
@@ -1963,6 +2002,7 @@ async function schoolRpc(name, args) {
 
 window.Sync = {
   isAdmin,
+  remarks: { list: remarksList, add: remarkAdd, remove: remarkDelete },
   fetchMySubscription,
   generateSyncCode,
   getConfig,

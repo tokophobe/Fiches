@@ -45,6 +45,27 @@ en ligne). Rester concret et proportionné : un conseil utile, pas un cours.
   `docs/FEUILLE-DE-ROUTE-EXPLOITATION.md` (questions ❓ en attente de
   réponse ; à tenir à jour à chaque nouvelle tâche d'administration).
 
+## Remarques du propriétaire dans l'appli (v305) — à traiter en premier
+
+- Au début de **chaque** demande, les remarques en attente s'affichent
+  toutes seules (hook `UserPromptSubmit` de `.claude/settings.json`). Si
+  rien ne s'affiche alors qu'on en attend, lancer
+  `python3 tools/remarques.py nouvelles` (et `toutes` pour l'historique).
+- Les traiter **avant** le reste de la demande, puis répondre à chacune :
+  `python3 tools/remarques.py repond ID traitee "réponse courte" --base reel|test`.
+  Statut `question` (et la question dans la réponse) quand il faut une
+  décision du propriétaire. Une correction de contenu suit le circuit
+  habituel (`bibliotheque.json` → Fiches-contenu) : préciser dans la
+  réponse qu'il faut « Importer la dernière version » dans Darwin Admin.
+- Stockage : table `admin_remarks` (`supabase/v305_remarques_migration.sql`),
+  lisible par l'administrateur seulement ; Claude passe par
+  `claude_remarks` / `claude_remark_reply`, protégées par le code de
+  `claude_access` envoyé dans l'en-tête `x-remarques-token` (secret réseau
+  de l'environnement, une valeur par base ; jamais dans le dépôt ni le
+  chat). Dans `app.js` : `remarkButton`, `openRemarkSheet`,
+  `updateReviewRemarkBtn`, `loadAdminRemarks` (bulles visibles si
+  `accountIsAdminFlag`) ; dans `sync.js` : `Sync.remarks`.
+
 ## Spécification fonctionnelle (à lire en premier)
 
 `docs/SPECIFICATION.md` est **la référence de la logique de l'appli**,
