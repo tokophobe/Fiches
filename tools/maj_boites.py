@@ -622,7 +622,10 @@ def infos_hors_trous(c, langue=False):
     hors = re.sub(r"_{3,}", " ", str(cl.get("text", "")))
     hors = re.sub(r"«[^»]*»", " ", hors)
     donnes = {m[:5] for m in mots(c.get("q2") or "")}
-    fiche = {m[:5] for m in mots(" ".join([c.get("question", ""), c.get("answer", ""), c.get("more") or ""]))}
+    # 25 nov. 2026 (remarque « Cuba ») : le contexte de la question (a) doit
+    # se retrouver dans (c) ; seuls les mots de la réponse et du complément
+    # sont donc à mettre en trous.
+    fiche = {m[:5] for m in mots(" ".join([c.get("answer", ""), c.get("more") or ""]))}
     return sorted({m for m in mots(hors) if m[:5] in fiche and m[:5] not in donnes and m not in MOTS_DE_LIAISON})
 
 

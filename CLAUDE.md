@@ -550,7 +550,13 @@ testables ainsi.
   81 textes corrigés (`Fiches-contenu/outils/corrections/corrections_regles.txt`,
   copie figée `avant_regles.json`, `FIGE=… ACCEPTE=… python3 rappel_r1.py
   FICHIER`). Pour « Qu'est-ce qu'un X ? », c'est X qui revient en trou
-  (remarque « utopie »), pas la définition entière.
+  (remarque « utopie »), pas la définition entière. Remarques « Cuba »
+  (25 nov. 2026, nuit) : dates en trous (`Fiches-contenu/outils/corrections/dates_r1.py`,
+  automatique, sauf date donnée par q2), groupes nominaux entiers
+  (`groupes_r1.py`), contexte de la question (a) rappelé dans (c)
+  (`corrections_ctx.txt`) ; `infos_hors_trous` ne compte plus les mots de
+  la question. Après un outil automatique, toujours relire un échantillon
+  et lancer le contrôle de forme sur toutes les fiches.
   Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
