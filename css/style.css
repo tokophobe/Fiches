@@ -9325,3 +9325,8 @@ body:not(.profile-teacher) #library-mine-toggle { display: none !important; }
 .admin-remark-msg { margin: 8px 0 0; font-size: 0.85rem; color: var(--ink-soft); }
 .admin-remark-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
 .admin-remark-total { margin: 10px 0 0; font-size: 0.8rem; color: var(--ink-soft); }
+/* v306 : bulle de remarque sur une fiche de la Librairie (en haut à droite). */
+#view-library-detail .library-detail-cards .library-card-item { position: relative; }
+#view-library-detail .library-detail-cards .library-card-item > .admin-remark-btn { position: absolute; top: 8px; right: 8px; }
+#view-library-detail .library-detail-cards .library-card-item:has(> .admin-remark-btn) .card-row-main { padding-right: 40px; }
+#view-library-detail .library-detail-cards .admin-remark-box-row { background: none; box-shadow: none; border: none; padding: 0 0 6px; }
