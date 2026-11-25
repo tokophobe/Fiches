@@ -543,6 +543,14 @@ testables ainsi.
   `[@l]` = réponse de la fiche et fausses réponses du QCM). **Lancer aussi
   le contrôle de forme sur toutes les fiches** (`lance.sh`) : `qualite`
   saute les fiches acceptées.
+  Remarques du 25 nov. 2026 (soir, spéc. §5.7 règle 11) : énumérations
+  entières en trous (ou une seule énumération dans un trou), groupe nominal
+  entier, calcul qui dit ce qu'il calcule, langue : (c) reprend la phrase
+  de (a) ; pas de contrôle automatique fiable : relire à chaque lot.
+  81 textes corrigés (`Fiches-contenu/outils/corrections/corrections_regles.txt`,
+  copie figée `avant_regles.json`, `FIGE=… ACCEPTE=… python3 rappel_r1.py
+  FICHIER`). Pour « Qu'est-ce qu'un X ? », c'est X qui revient en trou
+  (remarque « utopie »), pas la définition entière.
   Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,

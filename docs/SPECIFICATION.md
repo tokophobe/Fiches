@@ -951,6 +951,18 @@ les boîtes toutes prêtes de darwin, et celles que Claude rédige.
        alors plus donner cette réponse. Exception : les fiches où (c) est
        un exercice d'application (calcul avec d'autres nombres, phrase à
        transformer) (contrôle automatique « réponse hors trous ») ;
+     - **règles du 25 nov. 2026 (soir)** : tous les éléments d'une même
+       énumération sont des trous, ou aucun (« [rectiligne], [circulaire]
+       ou [curviligne] ») ; une énumération longue et simple tient dans un
+       seul trou (« [lettres, chiffres et symboles] ») ; on met en trou tout
+       le groupe nominal, pas son complément seul (« [les dangers du
+       présent] », pas « les dangers [du présent] ») ; un calcul dit ce
+       qu'il calcule (« Sur la Lune, le poids d'une personne de 60 kg est
+       P = [m × g] = … ») et explique ses conversions (« pour convertir en
+       km/h, on [multiplie par 3,6] ») ; tout terme de fond est un trou ;
+     - en langue, le texte à trous **reprend la phrase ou la tournure de
+       la question (a)** et la prolonge (« She [plays] tennis every Sunday,
+       but today she [is resting] »), et (d) en est la traduction ;
      - le texte **se suffit à lui-même** : il rappelle de quoi il parle
        (« Les acteurs de l'aménagement du territoire sont… »). Au stade
        (c), l'élève n'a **pas encore vu la question (d)** : le texte ne
@@ -1656,6 +1668,7 @@ sa mise en ligne. Rappelé par le bilan de lancement (`tools/lancement.py`).
 | — | 24 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : fin du lot 12 — formes (c) et (d) écrites pour les 25 boîtes de 3e « r37- » dont la vidéo est transcrite (393 fiches, 120 extraits de vidéo), avec tous les contrôles automatiques à zéro. |
 | — | 24 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : fausses réponses des textes à trous — 362 fiches corrigées : plus de fausse réponse qui est la bonne réponse d'un autre trou (sauf boîtes de langue), plus de « seulement » / « uniquement » qui trahit la bonne réponse (§5.7, règle 9) ; contrôle automatique ajouté. Formes (c)/(d) de 12 boîtes de français de 3e de plus. |
 | — | 23 nov. 2026 | Contenu seulement (rien ne change dans l'appli) : 84 questions de QCM qui citaient encore une partie de leurs propositions (« Le cuivre est-il conducteur ou isolant ? », « joyeux ou fâché ? »), surtout au primaire, reformulées (§5.7, règle 9), et les fausses réponses « Ni l'un ni l'autre », « Les deux », « Aucun des deux » remplacées ; le contrôle automatique les repère maintenant. Formes (c)/(d) de 7 nouvelles boîtes de 3e. |
+| — | 25 nov. 2026 | Contenu seulement (remarques du soir) : nouvelles règles des textes à trous (§5.7, règle 11) — énumérations entières en trous, groupe nominal entier, calculs qui disent ce qu'ils calculent, langues reliées à la question (a) ; boîte d'anglais des temps réécrite ; 8 textes bancals du passage précédent réécrits ; 81 textes corrigés dans toute la Librairie (24 calculs, 55 énumérations, 2 groupes nominaux). |
 | v309 | 25 nov. 2026 | Lenteurs (remarque du propriétaire) : la Librairie affiche le haut de la liste tout de suite et la suite juste après, sans bloquer l'écran, et calcule une seule fois « déjà dans mes révisions » et les pouces ; les bulles de remarque se mettent à jour en un seul passage et ne retéléchargent plus les remarques à chaque ouverture ; le bouton affiche « Envoi… » pendant l'envoi. |
 | — | 25 nov. 2026 | Contenu seulement : nouvelle règle des textes à trous (§5.7, règle 11) — la réponse apprise en (a)/(b) revient en trou dans (c) ; 15 fiches corrigées après les remarques du propriétaire (dont « √25 » retiré des fausses réponses de (√5)², « catholiques » remplacé par « Témoins de Jéhovah », forme (a) de 2/3 + 1/4) ; toute la Librairie traitée : 610 fiches signalées, 464 textes réécrits, 146 relus et acceptés (exercices d'application). |
 | v308 | 25 nov. 2026 | Remarques de l'administrateur : saisie stable (le texte en cours est gardé et la zone se remet en place si l'écran se redessine pendant qu'on écrit). |
