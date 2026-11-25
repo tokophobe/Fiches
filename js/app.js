@@ -5,7 +5,7 @@
   // à garder alignée avec CACHE_NAME dans sw.js à chaque livraison, pour
   // que l'utilisateur puisse vérifier facilement s'il a bien la dernière
   // version installée.
-  const APP_VERSION = "v308";
+  const APP_VERSION = "v309";
   window.FICHES_APP_VERSION = APP_VERSION;
 
   // Valeurs par défaut, libellés et banque d'icônes des réglages communs :
@@ -6885,6 +6885,7 @@
   let adminRemarks = null; // null : pas encore chargées
   let adminRemarksError = "";
   let adminRemarksLoading = null;
+  let adminRemarksLoadedAt = 0;
   const REMARK_ICON =
     '<svg class="icon-inline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"/></svg>';
   const REMARK_FORM_LABELS = { a: "QCM", b: "Question", c: "Texte à trous", cbis: "Texte à trous sans propositions", d: "Question poussée" };
@@ -6904,6 +6905,7 @@
     if (!adminRemarksLoading) {
       adminRemarksLoading = Sync.remarks.list().then((res) => {
         adminRemarksLoading = null;
+        adminRemarksLoadedAt = Date.now();
         adminRemarks = res.data || [];
         adminRemarksError = res.error || "";
         refreshRemarkBadges();
@@ -6912,10 +6914,29 @@
     }
     return adminRemarksLoading;
   }
-  /** Pastille du bouton : nombre de remarques en attente ou en question. */
+  /** Pastille du bouton : nombre de remarques en attente ou en question.
+   *  v309 (lenteurs) : un seul passage par image, même si 50 bulles le
+   *  demandent en même temps (avant : un passage complet par bulle). */
+  let remarkBadgesQueued = false;
   function refreshRemarkBadges() {
+    if (remarkBadgesQueued) return;
+    remarkBadgesQueued = true;
+    requestAnimationFrame(() => {
+      remarkBadgesQueued = false;
+      refreshRemarkBadgesNow();
+    });
+  }
+  function refreshRemarkBadgesNow() {
+    const byCard = new Map();
+    const byBox = new Map();
+    (adminRemarks || []).forEach((r) => {
+      const m = r.scope === "boite" ? byBox : byCard;
+      const k = r.scope === "boite" ? r.box_name : r.card_id;
+      if (!m.has(k)) m.set(k, []);
+      m.get(k).push(r);
+    });
     document.querySelectorAll(".admin-remark-btn").forEach((btn) => {
-      const list = remarksFor({ scope: btn.dataset.remarkScope, cardId: btn.dataset.remarkCard, boxName: btn.dataset.remarkBox });
+      const list = (btn.dataset.remarkScope === "boite" ? byBox.get(btn.dataset.remarkBox) : byCard.get(btn.dataset.remarkCard)) || [];
       const open = list.filter((r) => r.status !== "traitee").length;
       const badge = btn.querySelector(".admin-remark-count");
       if (badge) {
@@ -6952,7 +6973,7 @@
       e.stopPropagation();
       openRemarkSheet(typeof target.get === "function" ? target.get() : target, btn);
     });
-    if (adminRemarks) setTimeout(refreshRemarkBadges, 0);
+    if (adminRemarks) refreshRemarkBadges();
     else loadAdminRemarks();
     return btn;
   }
@@ -7099,6 +7120,7 @@
       // v306 : e.currentTarget vaut null après un await → garder le bouton.
       const sendBtn = e.currentTarget;
       sendBtn.disabled = true;
+      sendBtn.textContent = "Envoi…";
       const row = {
         scope: target.scope,
         context: target.context || "boite",
@@ -7116,6 +7138,7 @@
       };
       const res = await Sync.remarks.add(row);
       sendBtn.disabled = false;
+      sendBtn.textContent = "Envoyer";
       if (res.error) {
         return say(res.error === "migration_missing" ? "La table des remarques n'existe pas encore : exécute le script supabase/v305_remarques_migration.sql." : "Envoi impossible : " + res.error);
       }
@@ -7127,7 +7150,9 @@
       refreshRemarkBadges();
     });
     draw();
-    await loadAdminRemarks(true);
+    // v309 (lenteurs) : on ne retélécharge les remarques (réponses de
+    // Claude) que si la dernière lecture date de plus de 30 secondes.
+    await loadAdminRemarks(Date.now() - adminRemarksLoadedAt > 30000);
     if (adminRemarksError === "migration_missing") say("La table des remarques n'existe pas encore : exécute le script supabase/v305_remarques_migration.sql.");
     draw();
     if (closed) return;
@@ -17145,17 +17170,19 @@
         }
       });
     }
-    renderLibraryList();
+    renderLibraryList(anchor);
     if (!anchor || !list) return;
     const li = list.querySelector(`.library-row[data-col-id="${CSS.escape(anchor)}"]`);
     if (!li) return;
     const r = li.getBoundingClientRect();
     window.scrollBy(0, (r.top + r.bottom) / 2 - anchorTop);
   }
-  function renderLibraryList() {
+  let libraryRenderToken = 0;
+  function renderLibraryList(untilId) {
     const list = el("library-list");
     const empty = el("library-empty");
     if (!list) return;
+    const token = ++libraryRenderToken; // v309 : arrête un affichage progressif en cours
     const q = librarySearchQuery.trim().toLowerCase();
     let collections = libraryCollectionsCache;
     // Round 20, item 4 : "Mes partages" — ne garde que MES collections
@@ -17210,6 +17237,20 @@
     // lien est une vidéo YouTube la montre dans son bloc (voir
     // libraryVideoObserve).
     libraryVideoReset();
+    // v309 (lenteurs) : « déjà dans mes révisions » et pouces calculés une
+    // fois pour toute la liste, au lieu d'un parcours complet par boîte.
+    const inRevisionIds = new Set();
+    subjects.forEach((s) => {
+      if (!s.deleted && s.fromLibrary && s.libraryOriginId != null && isSubjectInRevisions(s)) inRevisionIds.add(s.libraryOriginId);
+    });
+    const likeStats = new Map();
+    const myId = accountCurrentUser && accountCurrentUser.id;
+    libraryRatingsCache.forEach((r) => {
+      const st = likeStats.get(r.collection_id) || { count: 0, liked: false };
+      st.count += 1;
+      if (myId && r.user_id === myId) st.liked = true;
+      likeStats.set(r.collection_id, st);
+    });
     const buildRow = (col) => {
       const n = libraryCardCount(col);
       // Round 48 : bloc épuré — nom en entier, nombre de fiches et
@@ -17217,10 +17258,10 @@
       // Plus d'auteur, de tags, de prix ni de bouton « Détails » (le bloc
       // entier ouvre la fiche de la collection). Déjà dans mes révisions :
       // bloc légèrement transparent + mention.
-      const inRevisions = isLibraryCollectionInRevisions(col.id);
+      const inRevisions = inRevisionIds.has(col.id);
       const taxLabel = taxonomyShortLabel(collectionTaxonomy(col));
       const levelLabel = taxLabel ? ` · ${escapeHtml(taxLabel)}` : "";
-      const { count: likeCount, liked } = libraryCollectionLikeStats(col.id);
+      const { count: likeCount, liked } = likeStats.get(col.id) || { count: 0, liked: false };
       const descriptionText = collectionDescriptionText(col);
       const li = document.createElement("li");
       li.dataset.colId = col.id;
@@ -17284,22 +17325,46 @@
     // v293 : une matière choisie (et pas de recherche) → boîtes rangées
     // par chapitres du programme, titres des chapitres en séparateurs.
     const rows = q || libraryOnlyMine ? null : libraryChapterRows(collections);
+    let items;
     if (!rows) {
-      collections.forEach((col) => list.appendChild(buildRow(col)));
-      return;
+      items = collections.map((col) => ({ col }));
+    } else {
+      const byId = new Map(collections.map((col) => [String(col.id), col]));
+      items = [];
+      rows.forEach((r) => {
+        if (r.kind === "item") {
+          const col = byId.get(String(r.id));
+          if (col) items.push({ col });
+        } else {
+          items.push({ title: r.title, cls: r.kind === "sub" ? "library-subchapter-title" : "library-chapter-title" + (r.other ? " library-chapter-title--other" : "") });
+        }
+      });
     }
-    const byId = new Map(collections.map((col) => [String(col.id), col]));
-    rows.forEach((r) => {
-      if (r.kind === "item") {
-        const col = byId.get(String(r.id));
-        if (col) list.appendChild(buildRow(col));
-        return;
-      }
+    const buildItem = (it) => {
+      if (it.col) return buildRow(it.col);
       const h = document.createElement("li");
-      h.className = r.kind === "sub" ? "library-subchapter-title" : "library-chapter-title" + (r.other ? " library-chapter-title--other" : "");
-      h.textContent = r.title;
-      list.appendChild(h);
-    });
+      h.className = it.cls;
+      h.textContent = it.title;
+      return h;
+    };
+    // v309 (lenteurs) : avec des centaines de boîtes, la liste se dessine
+    // par morceaux : le haut de la liste tout de suite (et jusqu'à la
+    // boîte « untilId » quand il faut garder sa place), la suite juste
+    // après, sans bloquer l'écran. Un nouveau rendu annule l'ancien.
+    let i = 0;
+    const firstCount = Math.max(30, untilId ? items.findIndex((it) => it.col && String(it.col.id) === String(untilId)) + 15 : 0);
+    const appendUpTo = (end) => {
+      const frag = document.createDocumentFragment();
+      for (; i < items.length && i < end; i += 1) frag.appendChild(buildItem(items[i]));
+      list.appendChild(frag);
+    };
+    appendUpTo(firstCount);
+    const next = () => {
+      if (token !== libraryRenderToken || i >= items.length) return;
+      appendUpTo(i + 80);
+      setTimeout(next, 0);
+    };
+    if (i < items.length) setTimeout(next, 0);
   }
 
   /* v293 : index des chapitres du programme (data/chapitres.json, écrit
