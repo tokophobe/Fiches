@@ -10,6 +10,8 @@ Utilisation :
   python3 tools/maj_boites.py qualite [CLE...]   -> alertes à relire : indice dans la question,
                                                     bonne réponse trop détaillée, texte à trous
   python3 tools/maj_boites.py accepte CLE#N...   -> alerte de qualité relue et acceptée
+  python3 tools/maj_boites.py accepte-rappel CLE#N... -> réponse de la fiche volontairement
+                                                    absente des trous (relu, 25 nov. 2026)
   python3 tools/maj_boites.py decoupe PLAN.json  -> découpe des boîtes trop larges
 
 Format d'un lot (LOT.json) :
@@ -432,7 +434,7 @@ def qualite(keys=None):
     fausses ; et textes à trous (article qui trahit, trous collés).
     Liste à relire : une alerte n'est pas toujours une erreur."""
     d = charge()
-    stats = {"indice": 0, "détail": 0, "forme": 0, "texte à trous": 0, "formes poussées": 0, "infos hors trous": 0}
+    stats = {"indice": 0, "détail": 0, "forme": 0, "texte à trous": 0, "formes poussées": 0, "infos hors trous": 0, "réponse hors trous": 0}
     for b in d["boxes"]:
         if keys and b["key"] not in keys:
             continue
@@ -447,6 +449,13 @@ def qualite(keys=None):
             # alerte ne s'accepte pas : il faut reformuler la question.
             # 22 nov. 2026 (remarque du propriétaire) : complément qui ne fait
             # que répéter un morceau de la réponse.
+            # 25 nov. 2026 (remarques du propriétaire) : la réponse apprise
+            # en (a)/(b) revient en trou dans (c). Acceptation à part
+            # (« accepte-rappel », champ rappel_ok) : les acceptations
+            # d'autres alertes ne la cachent pas.
+            if reponse_hors_trous(c, exercice_de_langue(b)) and c["question"] not in set(as_list(b.get("rappel_ok"))):
+                stats["réponse hors trous"] += 1
+                print(f"[{b['key']}#{i}] texte à trous : la réponse de la fiche n'est pas un trou (la redemander en (c)) : {c['question'][:60]}")
             if complement_redit(c["answer"], c.get("more")) and c["question"] not in acceptees:
                 stats["détail"] += 1
                 print(f"[{b['key']}#{i}] le complément répète la réponse : le retirer ou y mettre une vraie explication : {c['question'][:70]}")
@@ -576,6 +585,27 @@ def exercice_de_langue(b):
     return bool(EXERCICE_DE_LANGUE.search(b.get("key", "")) or EXERCICE_DE_LANGUE.search(b.get("name", "")))
 
 
+def reponse_hors_trous(c, langue=False):
+    """25 nov. 2026 (remarques du propriétaire) : ce qu'on a appris en (a)
+    et (b) revient en trou dans (c), pour le consolider. Vrai si les mots
+    importants de la réponse (1re ligne, sans parenthèses) et ses nombres
+    ne sont pas, pour au moins la moitié, dans les réponses des trous."""
+    cl = c.get("cloze")
+    if not cl or langue:
+        return False
+    rep = re.sub(r"\(.*?\)", " ", str(c.get("answer", "")).split("\n")[0])
+    trous = " ".join(str(t.get("answer", "")) for t in cl.get("blanks", []))
+    cles = {m[:6] for m in mots(rep)}
+    nombres = set(re.findall(r"\d+(?:[.,]\d+)?", rep))
+    if not cles and not nombres:
+        return False  # « Oui », « Non », formule… : rien à redemander
+    dans = {m[:6] for m in mots(trous)}
+    n_trous = set(re.findall(r"\d+(?:[.,]\d+)?", trous))
+    total = len(cles) + len(nombres)
+    trouves = len(cles & dans) + len(nombres & n_trous)
+    return trouves * 2 < total
+
+
 def infos_hors_trous(c, langue=False):
     """Mots de la fiche donnés en clair dans le texte à trous (liste triée)."""
     cl = c.get("cloze")
@@ -630,7 +660,7 @@ def probleme_formes_poussees(c, contexte=""):
     return out
 
 
-def accepte(refs):
+def accepte(refs, champ="qualite_ok"):
     """Marque des alertes de qualité comme relues et acceptées (le mot
     commun fait partie de la notion à apprendre, la question cite ses
     propositions…) : « CLE#N » ; la question est notée dans le champ
@@ -642,9 +672,9 @@ def accepte(refs):
         cle, _, n = ref.partition("#")
         b = boites[cle]
         q = b["cards"][int(n)]["question"]
-        ok = as_list(b.get("qualite_ok"))
+        ok = as_list(b.get(champ))
         if q not in ok:
-            b["qualite_ok"] = ok + [q]
+            b[champ] = ok + [q]
         print(f"accepté : [{ref}] {q[:70]}")
     sauve(d)
 
@@ -718,6 +748,8 @@ def main():
         qualite(sys.argv[2:] or None)
     elif cmd == "accepte":
         accepte(sys.argv[2:])
+    elif cmd == "accepte-rappel":
+        accepte(sys.argv[2:], "rappel_ok")
     elif cmd == "decoupe":
         decoupe(sys.argv[2])
 
