@@ -556,7 +556,13 @@ testables ainsi.
   (`groupes_r1.py`), contexte de la question (a) rappelé dans (c)
   (`corrections_ctx.txt`) ; `infos_hors_trous` ne compte plus les mots de
   la question. Après un outil automatique, toujours relire un échantillon
-  et lancer le contrôle de forme sur toutes les fiches.
+  et lancer le contrôle de forme sur toutes les fiches. Remarques
+  « métropoles » (27 nov. 2026) : fin des extraits = début du morceau de
+  sous-titre suivant + 0,5 s (les sous-titres automatiques se
+  chevauchent ; `cale` de `run.py` mis à jour, 719 extraits recalculés par
+  `outils/corrections/fin_extraits.py`) ; trou à deux éléments → fausses
+  réponses à deux éléments (`paires_r1.py`) ; le QCM n'affiche que la 1re
+  ligne de la réponse (`qcmAnswerParts`) : elle doit se suffire.
   Suite : français et langues du brevet,
   puis lycée et autres niveaux.
 - Vidéos des boîtes toutes prêtes : chaque vidéo doit être publique,
