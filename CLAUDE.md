@@ -488,7 +488,10 @@ testables ainsi.
   2026) : les 20 boîtes de 4e transcrites (`r37-4e-`, `r38-a4-4e-`,
   `r4e-` ; 326 fiches, 97 extraits) ; vidéos à remplacer : anglais
   comparatifs (phrases à répéter), `r4e-fr-fausses-informations`
-  (niveau primaire) ; `r4e-svt-puberte` double `r37-4e-svt-reproduction-puberte`. Lot 6 (`lot6/`) : 8 boîtes
+  (niveau primaire) ; `r4e-svt-puberte` double `r37-4e-svt-reproduction-puberte`. Lot 14 (`lot14/`, 28 nov. 2026) :
+  lycée, les 5 boîtes d'histoire de 2nde (86 fiches) ; vidéos partielles
+  (Lumières, Méditerranée, nouveau monde) ; reste 219 boîtes de lycée
+  transcrites (35 en 2nde, 78 en 1re, 106 en terminale). Lot 6 (`lot6/`) : 8 boîtes
   `r35-brevet-fr-` (135 fiches) ; (c) = petit exercice autonome à 2 trous
   ou plus qui s'opposent, (d) = même exercice sans propositions ; vidéos
   de l'indicatif (Englishhello) et des homophones changées, à transcrire ;
