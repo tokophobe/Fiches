@@ -519,7 +519,9 @@ testables ainsi.
   (genre d'un nom propre) : à relire ; 13 fiches (`articles_r1.py`).
   Fausses réponses d'un texte à trous (24 nov. 2026) : jamais la bonne
   réponse d'un autre trou (sauf boîtes de langue, `boite_de_langue`), pas
-  de « seulement » / « uniquement » ; `qualite` le signale
+  de « seulement » / « uniquement », ni de « … seul » ajouté (28 nov. 2026 :
+  173 fiches, `outils/corrections/seul_r1.py`, alerte `seul`, cas où le
+  mot fait partie du sens acceptés par `accepte-seul` → champ `seul_ok`) ; `qualite` le signale
   (`fausses_trompeuses`) ; 362 fiches (`croises_r1.py` et
   `corrections_croises.txt`). Toute information à apprendre est un trou
   (24 nov. 2026, remarque « apologue », spéc. §5.7 règle 11) : hors des

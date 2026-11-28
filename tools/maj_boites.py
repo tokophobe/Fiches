@@ -415,6 +415,30 @@ def fausses_trompeuses(cloze, langue=False):
     return out
 
 
+FIN_SEUL = re.compile(r"\s+seul(e|s|es)?(\s*[.)]?)$", re.I)
+
+
+def fausses_en_seul(c):
+    """28 nov. 2026 (remarque du propriétaire, « la Milice seule ») : une
+    fausse réponse (QCM ou trou) qui finit par « seul(e)(s) » alors que la
+    bonne réponse ne le dit pas : le mot ajouté la désigne comme fausse.
+    « Un seul », « Une seule » (le nombre est la réponse) ne comptent pas."""
+    out = []
+    listes = []
+    if c.get("wrongs"):
+        listes.append(("QCM", c.get("answer", "").split("\n")[0], c["wrongs"]))
+    for k, t in enumerate((c.get("cloze") or {}).get("blanks") or [], 1):
+        listes.append((f"trou {k}", str(t.get("answer", "")), t.get("wrongs") or []))
+    for ou, bonne, ws in listes:
+        if re.search(r"\bseul", bonne, re.I):
+            continue
+        for w in ws:
+            w = str(w)
+            if FIN_SEUL.search(w) and not re.fullmatch(r"\W*(un|une|1|le|la)?\W*", FIN_SEUL.sub("", w), re.I):
+                out.append(f"{ou} : « seul » au bout de la fausse réponse « {w} » (le retirer, ou « accepte-seul » s'il fait partie du sens)")
+    return out
+
+
 def complement_redit(reponse, complement):
     """Vrai si le complément « Pour aller plus loin » ne fait que répéter la
     réponse : chacune de ses lignes (puces et ponctuation retirées) se lit
@@ -434,7 +458,7 @@ def qualite(keys=None):
     fausses ; et textes à trous (article qui trahit, trous collés).
     Liste à relire : une alerte n'est pas toujours une erreur."""
     d = charge()
-    stats = {"indice": 0, "détail": 0, "forme": 0, "texte à trous": 0, "formes poussées": 0, "infos hors trous": 0, "réponse hors trous": 0}
+    stats = {"indice": 0, "détail": 0, "forme": 0, "texte à trous": 0, "formes poussées": 0, "infos hors trous": 0, "réponse hors trous": 0, "seul": 0}
     for b in d["boxes"]:
         if keys and b["key"] not in keys:
             continue
@@ -456,6 +480,14 @@ def qualite(keys=None):
             if reponse_hors_trous(c, exercice_de_langue(b)) and c["question"] not in set(as_list(b.get("rappel_ok"))):
                 stats["réponse hors trous"] += 1
                 print(f"[{b['key']}#{i}] texte à trous : la réponse de la fiche n'est pas un trou (la redemander en (c)) : {c['question'][:60]}")
+            # 28 nov. 2026 : fausse réponse finie par « seul » (« la Milice
+            # seule ») ; acceptation à part (« accepte-seul », champ seul_ok)
+            # quand « seul » fait partie du sens ou que la bonne réponse est
+            # une combinaison (« la règle et le compas »).
+            if not boite_de_langue(b) and c["question"] not in set(as_list(b.get("seul_ok"))):
+                for msg in fausses_en_seul(c):
+                    stats["seul"] += 1
+                    print(f"[{b['key']}#{i}] {msg} : {c['question'][:60]}")
             if complement_redit(c["answer"], c.get("more")) and c["question"] not in acceptees:
                 stats["détail"] += 1
                 print(f"[{b['key']}#{i}] le complément répète la réponse : le retirer ou y mettre une vraie explication : {c['question'][:70]}")
@@ -761,6 +793,8 @@ def main():
         accepte(sys.argv[2:])
     elif cmd == "accepte-rappel":
         accepte(sys.argv[2:], "rappel_ok")
+    elif cmd == "accepte-seul":
+        accepte(sys.argv[2:], "seul_ok")
     elif cmd == "decoupe":
         decoupe(sys.argv[2])
 
